@@ -52,18 +52,18 @@ NIE = [
     "Bash(pip install:*)",
     # Die Fabrik schreibt die Regeln nicht um, nach denen sie beurteilt wird.
     # Ein Fit-Filter, der grenzen.md aendern koennte, hat keine Grenzen.
+    #
+    # Ausschliesslich Edit(), nie Write(): Claude Code prueft Dateirechte allein gegen
+    # Edit()- und Read()-Regeln. Eine Write()-Pfadregel wird zwar angenommen, aber nie
+    # ausgewertet -- sie sieht wie Schutz aus und ist keiner. Edit() deckt alle
+    # eingebauten Werkzeuge ab, die Dateien aendern, das Anlegen neuer Dateien
+    # eingeschlossen.
     "Edit(/CLAUDE.md)",
-    "Write(/CLAUDE.md)",
     "Edit(/grenzen.md)",
-    "Write(/grenzen.md)",
     "Edit(/quellen.yml)",
-    "Write(/quellen.yml)",
     "Edit(/agents/**)",
-    "Write(/agents/**)",
     "Edit(/.claude/**)",
-    "Write(/.claude/**)",
     "Edit(/schema/**)",
-    "Write(/schema/**)",
     # ADRs werden ergaenzt, nie umgeschrieben.
     "Edit(/decisions/**)",
 ]
@@ -149,6 +149,15 @@ def db() -> sqlite3.Connection:
 
 
 def journal_start(verbindung, rolle: str, gegenstand: str | None) -> int:
+    # Laeufe, die beim letzten Mal hart abgebrochen wurden -- Distro heruntergefahren,
+    # Rechner aus, Prozess gekillt -- stehen sonst fuer immer auf "laeuft" und
+    # verfaelschen Kostenbericht und Digest. Zwei Stunden liegen weit ueber dem
+    # laengsten zulaessigen Timeout (1800s), koennen also keinen echten Lauf treffen.
+    verbindung.execute(
+        """UPDATE lauf SET ergebnis = 'abgebrochen', beendet = ?
+           WHERE ergebnis = 'laeuft' AND gestartet < datetime('now', '-2 hours')""",
+        (jetzt(),),
+    )
     zeiger = verbindung.execute(
         "INSERT INTO lauf (gestartet, rolle, gegenstand) VALUES (?,?,?)",
         (jetzt(), rolle, gegenstand),

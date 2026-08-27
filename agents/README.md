@@ -7,9 +7,16 @@ Code — nur eine neue Markdown-Datei.
 ## Warum die Werkzeugliste wichtiger ist als der Prompt
 
 Die Schreibrechte aus [../CLAUDE.md](../CLAUDE.md) stehen nicht nur im Auftragstext,
-sondern in `tools:`. Der Regel-Scout bekommt `Write(signals/regulation/**)` — und damit
+sondern in `tools:`. Der Regel-Scout bekommt `Edit(signals/regulation/**)` — und damit
 schlicht kein Werkzeug, mit dem er eine Idee anlegen könnte. Ein Prompt ist eine Bitte;
 eine fehlende Berechtigung ist ein Riegel.
+
+> **`Edit(...)`, niemals `Write(...)`.** Claude Code prüft Dateirechte allein gegen
+> `Edit()`- und `Read()`-Regeln. Eine `Write()`-Pfadregel wird angenommen und nie
+> ausgewertet — sie sieht wie eine Berechtigung aus und ist keine. Im Modus `dontAsk`
+> führt das dazu, dass die Rolle recherchiert, Tokens verbraucht und am Ende nichts
+> speichern kann. `Edit()` deckt alle eingebauten Werkzeuge ab, die Dateien ändern,
+> das Anlegen neuer Dateien eingeschlossen. Dasselbe gilt für `Read()` statt `Glob()`.
 
 Zusätzlich verbietet [lauf.py](lauf.py) global, was kein Agent je darf: `git push`,
 `gh`, `curl`, `wget`, `rm`, `pip install`. Das sind die harten Regeln 1 und 2 aus

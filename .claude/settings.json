@@ -18,8 +18,7 @@
       "Read(//**/AppData/Local/Microsoft/Edge/**)",
       "Read(//**/AppData/Local/Google/Chrome/**)",
       "Read(//**/AppData/Roaming/Mozilla/**)",
-      "Edit(//**/.git/**)",
-      "Write(//**/.git/**)"
+      "Edit(//**/.git/**)"
     ]
   },
   "sandbox": {

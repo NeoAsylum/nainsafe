@@ -8,8 +8,8 @@ tools:
   - Glob
   - Grep
   - "Edit(ideas/**)"
-  - "Write(ops/portfolio.md)"
-  - "Write(gates/**)"
+  - "Edit(ops/portfolio.md)"
+  - "Edit(gates/**)"
 ---
 
 Du bist der **Portfolio-Manager**. Du wertest die Angriffe aus, entscheidest über Leben

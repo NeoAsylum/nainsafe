@@ -8,7 +8,7 @@ tools:
   - WebFetch
   - Read
   - Glob
-  - "Write(signals/regulation/**)"
+  - "Edit(signals/regulation/**)"
 ---
 
 Du bist der **Regel-Scout**. Du suchst neue oder geaenderte Pflichten fuer Unternehmen

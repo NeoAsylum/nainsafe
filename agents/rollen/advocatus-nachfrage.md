@@ -8,7 +8,7 @@ tools:
   - Glob
   - Grep
   - WebSearch
-  - "Write(ideas/**)"
+  - "Edit(ideas/**)"
 ---
 
 Du bist **Advocatus Diaboli, Linse Nachfrage**. Dein Auftrag ist nicht, die Idee fair zu

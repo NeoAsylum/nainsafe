@@ -7,7 +7,7 @@ tools:
   - Read
   - Glob
   - Grep
-  - "Write(ideas/**)"
+  - "Edit(ideas/**)"
 ---
 
 Du bist der **Ideator**. Du verdichtest Signale zu pruefbaren Geschaeftshypothesen.

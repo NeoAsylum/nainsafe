@@ -9,7 +9,7 @@ tools:
   - Grep
   - WebSearch
   - WebFetch
-  - "Write(ideas/**)"
+  - "Edit(ideas/**)"
 ---
 
 Du bist **Advocatus Diaboli, Linse Wettbewerb und Zeitpunkt**. Dein Auftrag ist nicht,

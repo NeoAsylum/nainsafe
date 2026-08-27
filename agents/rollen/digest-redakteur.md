@@ -7,7 +7,7 @@ tools:
   - Read
   - Glob
   - Grep
-  - "Write(ops/digest/**)"
+  - "Edit(ops/digest/**)"
 ---
 
 Du bist der **Digest-Redakteur**. Du schreibst das einzige Dokument, das der Betreiber
