@@ -27,9 +27,21 @@ ROLLEN = WURZEL / "agents" / "rollen"
 DB = WURZEL / "state.db"
 SCHEMA = WURZEL / "schema" / "state.sql"
 
+# Berechtigungsmodus. "dontAsk" verweigert alles, was nicht ausdruecklich in der
+# Werkzeugliste der Rolle steht -- ohne Rueckfrage, was im unbeaufsichtigten Lauf der
+# einzig sinnvolle Umgang mit einer Rueckfrage ist.
+#
+# Ausdruecklich NICHT "acceptEdits": dieser Modus genehmigt Dateiaenderungen im ganzen
+# Arbeitsverzeichnis und wuerde damit die Rollentrennung aufheben -- der Regel-Scout
+# koennte Ideen schreiben. Aeltere Claude-Code-Versionen kennen "dontAsk" nicht; dort
+# ist "default" der Ersatz (Werkzeuge ausserhalb der Liste loesen dann eine Rueckfrage
+# aus, die unbeaufsichtigt ebenfalls scheitert -- gleiches Ergebnis, langsamer).
+MODUS = "dontAsk"
+
 # Zweite Verteidigungslinie: was kein Agent jemals darf, unabhaengig von seiner Rolle.
-# Regel 1 und 2 aus CLAUDE.md -- kein Geld ausgeben, nicht nach aussen schreiben.
+# Deny sticht Allow, auch wenn eine Rolle sich das Werkzeug in ihr Frontmatter schreibt.
 NIE = [
+    # Regel 1 und 2 aus CLAUDE.md -- kein Geld ausgeben, nichts nach aussen schreiben.
     "Bash(git push:*)",
     "Bash(git remote:*)",
     "Bash(gh:*)",
@@ -38,6 +50,22 @@ NIE = [
     "Bash(npm publish:*)",
     "Bash(rm:*)",
     "Bash(pip install:*)",
+    # Die Fabrik schreibt die Regeln nicht um, nach denen sie beurteilt wird.
+    # Ein Fit-Filter, der grenzen.md aendern koennte, hat keine Grenzen.
+    "Edit(/CLAUDE.md)",
+    "Write(/CLAUDE.md)",
+    "Edit(/grenzen.md)",
+    "Write(/grenzen.md)",
+    "Edit(/quellen.yml)",
+    "Write(/quellen.yml)",
+    "Edit(/agents/**)",
+    "Write(/agents/**)",
+    "Edit(/.claude/**)",
+    "Write(/.claude/**)",
+    "Edit(/schema/**)",
+    "Write(/schema/**)",
+    # ADRs werden ergaenzt, nie umgeschrieben.
+    "Edit(/decisions/**)",
 ]
 
 ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
@@ -173,7 +201,7 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         claude_pfad(), "-p", auftrag,
         "--output-format", "json",
         "--model", kopf.get("modell", "sonnet"),
-        "--permission-mode", "acceptEdits",
+        "--permission-mode", MODUS,
         "--allowedTools", *werkzeuge,
         "--disallowedTools", *NIE,
     ]

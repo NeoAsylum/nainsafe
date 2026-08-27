@@ -46,21 +46,17 @@ auf den Scout — neue Kandidaten wären dann nur Ballast.
 
 ## Zeitplanung
 
-Windows (jetzt):
-
-```
-schtasks /create /tn "Agentenfabrik" /sc daily /st 03:00 ^
-  /tr "python C:\Users\adria\OneDrive\Desktop\nainsafe\nainsafe\agents\nachtlauf.py"
-```
-
-Linux-VPS (später):
+Die Fabrik läuft in WSL2 — siehe [../EINRICHTUNG.md](../EINRICHTUNG.md). Dort gilt cron:
 
 ```cron
-0 3 * * * cd /srv/nainsafe && /usr/bin/python3 agents/nachtlauf.py >> ops/nachtlauf.log 2>&1
+0 3 * * * cd ~/fabrik && /usr/bin/python3 agents/nachtlauf.py >> ops/nachtlauf.log 2>&1
 ```
 
-Der Aufgabenplaner startet Prozesse in einer anderen Umgebung als deine Shell. Wenn ein
-Lauf mit „claude nicht im PATH" abbricht, den vollen Pfad zu `claude` eintragen.
+Auf einem späteren VPS ist es dieselbe Zeile mit anderem Pfad — das ist der Grund für
+WSL2 statt nativem Windows.
+
+Cron startet Prozesse in einer kargen Umgebung. Wenn ein Lauf mit „claude nicht im PATH"
+abbricht, den vollen Pfad eintragen (`which claude`).
 
 ## Journal lesen
 
