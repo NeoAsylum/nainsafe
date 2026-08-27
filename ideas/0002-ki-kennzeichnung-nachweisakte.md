@@ -1,10 +1,10 @@
 ---
 id: 0002-ki-kennzeichnung-nachweisakte
 titel: Kennzeichnungstexte und Nachweisakte für KI-Einsatz nach Art. 50
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-27
 geaendert: 2026-08-27
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/regulation/2026-08-27-ki-kennzeichnungspflicht-art50.md
 
@@ -13,7 +13,7 @@ problem: Seit dem 2. August 2026 müssen KI-erzeugte Inhalte gekennzeichnet und 
 loesung: Ein Dienst, der über eine geführte Selbstauskunft den KI-Bestand eines Shops aufnimmt und daraus die fertigen Hinweistexte für Chatbot, Produktseiten und Impressum sowie eine datierte Nachweisakte über den erfassten Bestand ausgibt.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G5 — die gefuehrte Selbstauskunft ordnet einen konkreten Betrieb den Pflichten aus Art. 50 zu, und die Nachweisakte dokumentiert dieses Ergebnis gegenueber der Marktueberwachung. Fallbezogene Pruefung plus dokumentierte Konformitaetsaussage ist Rechtsdienstleistung nach § 2 RDG, nicht blosse Informationsaufbereitung. Generische Textbausteine ohne Fallpruefung waeren zulaessig, aber laut der Idee selbst will der Kunde genau die Aussage kaufen, die die Grenze reisst. Unsicherheit, widerlegbar: wenn Textauswahl und Akte ohne jede Pruefung des Einzelfalls auskommen und die Akte keinerlei Aussage zur Erfuellung trifft, ist die Idee erneut vorzulegen — dann ist allerdings G7 zu klaeren, weil ein Einmalkauf mit Fenster bis 2026-12-02 bleibt."
 
 score:
   zwang: null

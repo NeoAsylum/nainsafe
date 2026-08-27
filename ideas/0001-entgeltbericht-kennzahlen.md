@@ -1,10 +1,10 @@
 ---
 id: 0001-entgeltbericht-kennzahlen
 titel: Kennzahlengenerator für den Entgelttransparenzbericht
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-27
 geaendert: 2026-08-27
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/regulation/2026-08-27-entgelttransparenz-berichtspflicht.md
 
@@ -13,7 +13,7 @@ problem: Diese Arbeitgeber müssen erstmals zum 7. Juni 2027 einen Bericht über
 loesung: Ein Webdienst, der einen pseudonymisierten Lohndatenexport entgegennimmt und daraus die berichtspflichtigen Entgeltkennzahlen sowie einen ausfüllbaren Berichtsentwurf erzeugt.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G5 — der berichtspflichtige Kennzahlensatz setzt die Einstufung in Gruppen gleicher und gleichwertiger Arbeit voraus. Das ist Subsumtion eines Einzelfalls unter eine Rechtsnorm, keine Rechenaufgabe. Bleibt die Einstufung beim Kunden, bleibt vom Produkt ein Taschenrechner ohne Zahlungsgrund; uebernimmt der Dienst sie, gibt er eine rechtliche Bewertung aus und faellt unter G5. Verschaerfend: am 2026-08-27 existiert kein deutsches Umsetzungsgesetz und kein Referentenentwurf, die zu erzeugenden Kennzahlen sind also nicht bekannt. Unsicherheit, widerlegbar: wenn ein verabschiedetes Umsetzungsgesetz die Kennzahlen abschliessend und ohne Wertungsspielraum definiert und die Gruppenbildung mechanisch aus Lohnartendaten ableitbar ist, ist die Idee erneut vorzulegen."
 
 score:
   zwang: null
