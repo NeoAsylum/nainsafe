@@ -4,73 +4,68 @@ Einmaliger Vorgang. Danach läuft die Fabrik in einem eigenen Linux-Dateisystem,
 aus die Windows-Platte nicht erreichbar ist — und zwar so, wie sie später auch auf einem
 VPS laufen wird. Die Migration dorthin ist dann ein Kopiervorgang, keine Portierung.
 
-**Die Reihenfolge ist wichtig.** Schritt 5 kappt den Zugriff auf die Windows-Platte;
+Drei Skripte, drei Stellen, an denen ein Mensch gebraucht wird. Die Aufteilung folgt
+genau diesen Stellen: Adminrechte, Benutzeranlage, Anmeldung.
+
+| Skript | Wo | Was dich kostet |
+|---|---|---|
+| [1-wsl-installieren.ps1](einrichtung/1-wsl-installieren.ps1) | PowerShell als Admin | ein UAC-Klick |
+| [2-fabrik-aufsetzen.sh](einrichtung/2-fabrik-aufsetzen.sh) | Ubuntu-Shell | Benutzername und Passwort |
+| [3-abschotten.sh](einrichtung/3-abschotten.sh) | Ubuntu-Shell | vorher einmal im Browser anmelden |
+
+**Die Reihenfolge ist nicht beliebig.** Skript 3 kappt den Zugriff auf die Windows-Platte;
 alles, was von dort geholt werden muss, passiert vorher.
 
 ---
 
-## 1 — WSL2 nachrüsten (Windows, als Administrator)
+## Stand
 
-Auf diesem Rechner ist WSL in Version 2 vorgesehen, aber der Kernel fehlt und es ist
-keine Distribution installiert.
+Schritt 1 ist auf diesem Rechner **erledigt**: WSL-Kernel aktualisiert, Ubuntu
+installiert (Version 2, gestoppt). Weiter bei Schritt 2.
+
+## Schritt 2 — Benutzer anlegen, dann Skript
 
 ```powershell
-wsl --update
-wsl --install -d Ubuntu
+wsl -d Ubuntu
 ```
 
-Der zweite Befehl startet Ubuntu und fragt nach Benutzername und Passwort. Dieses
-Passwort brauchst du für `sudo` — notieren.
-
-## 2 — Werkzeuge in Ubuntu (in der WSL-Shell)
+Beim ersten Start fragt Ubuntu nach Benutzername und Passwort. Das Passwort brauchst du
+für `sudo` — notiere es, es steht in keinem dieser Skripte. Danach, in der Ubuntu-Shell:
 
 ```sh
-sudo apt update
-sudo apt install -y git python3 sqlite3 curl bubblewrap
-curl -fsSL https://claude.ai/install.sh | bash
+bash /mnt/c/Users/adria/OneDrive/Desktop/nainsafe/nainsafe/einrichtung/2-fabrik-aufsetzen.sh
 ```
 
-`bubblewrap` ist die Grundlage der Sandbox unter Linux. Fehlt sie, zeigt `/sandbox`
-später nur einen Reiter „Dependencies" statt der Konfiguration.
+Das Skript installiert `git`, `python3`, `sqlite3` und `bubblewrap`, holt Claude Code,
+klont das Repo nach `~/fabrik` und macht einen Trockenlauf. `bubblewrap` ist die
+Grundlage der Sandbox — ohne sie bleibt die Kernel-Isolation aus.
 
-## 3 — Claude Code anmelden
+## Schritt 3 — Anmelden (das kann kein Skript)
 
 ```sh
+cd ~/fabrik
 claude
 ```
 
-Beim ersten Start öffnet sich ein Browser-Login. Falls WSL den lokalen Rückkanal nicht
-erreicht — in WSL2 häufig —, zeigt der Browser stattdessen einen Code, den du im
-Terminal einfügst. Melde dich mit dem Konto an, auf dem dein Max-Abo läuft.
+Beim ersten Start öffnet sich ein Browser-Login. Zeigt der Browser stattdessen einen
+Code — in WSL2 der Normalfall, weil der lokale Rückkanal nicht erreichbar ist —, füge
+ihn im Terminal ein. Melde dich mit dem Konto an, auf dem dein Max-Abo läuft.
 
-Danach `/sandbox` aufrufen und prüfen, dass die Reiter **Mode**, **Overrides** und
-**Config** erscheinen. Nur ein Reiter „Dependencies" heißt: `bubblewrap` fehlt noch.
+Dann im laufenden Claude Code `/sandbox` aufrufen: Es müssen die Reiter **Mode**,
+**Overrides** und **Config** erscheinen. Nur ein Reiter „Dependencies" heißt, dass
+`bubblewrap` fehlt.
 
-## 4 — Repo holen, solange die Windows-Platte noch sichtbar ist
-
-```sh
-git clone /mnt/c/Users/adria/OneDrive/Desktop/nainsafe/nainsafe ~/fabrik
-cd ~/fabrik
-git log --oneline | head -5      # Historie muss vollständig sein
-python3 agents/nachtlauf.py --trocken
-```
-
-Der Klon nimmt die vollständige Git-Historie mit. Das Windows-Original bleibt vorerst
-liegen — lösche es erst, wenn die Fabrik in WSL nachweislich läuft.
-
-## 5 — Die Windows-Platte abklemmen
+Danach Claude Code beenden und abschotten:
 
 ```sh
-sudo tee /etc/wsl.conf > /dev/null <<'EOF'
-[automount]
-enabled = false
-
-[interop]
-appendWindowsPath = false
-EOF
+bash ~/fabrik/einrichtung/3-abschotten.sh
 ```
 
-Dann in PowerShell:
+Das Skript prüft zuerst, ob die Anmeldung wirklich funktioniert — es setzt einen echten
+Testaufruf ab, statt sich auf die Anwesenheit einer Datei zu verlassen. Erst danach
+schreibt es `/etc/wsl.conf` und richtet die Zeitplanung ein.
+
+Zum Schluss in PowerShell:
 
 ```powershell
 wsl --shutdown
@@ -84,44 +79,29 @@ Prompt steht.
 `\\wsl$\Ubuntu\home\<dein-name>\fabrik`, auch im Explorer und in VS Code. Nur die
 Richtung Linux → Windows ist gekappt, und nur die brauchen wir zu.
 
-## 6 — Nachtlauf einrichten
-
-```sh
-crontab -e
-```
-
-Eintragen:
-
-```cron
-0 3 * * * cd ~/fabrik && /usr/bin/python3 agents/nachtlauf.py >> ops/nachtlauf.log 2>&1
-```
-
-WSL2 startet nicht von selbst mit Windows. Damit der Nachtlauf ohne offenes Terminal
-läuft, einmalig eine Aufgabe im Windows-Aufgabenplaner anlegen, die bei der Anmeldung
-`wsl -d Ubuntu -- /bin/true` ausführt — das startet die Distribution im Hintergrund.
-Alternativ läuft die Fabrik nur, wenn du WSL ohnehin offen hast; für den Anfang genügt das.
-
-## 7 — Sicherung
-
-Mit dem Umzug aus OneDrive entfällt die bisherige Sicherung. Das private GitHub-Repo
-übernimmt:
-
-```sh
-git push -u origin main
-```
-
-Agenten dürfen nicht pushen — `Bash(git push:*)` steht in den globalen Verboten. Der
-Push ist deine Sache, oder ein eigener Cron-Eintrag außerhalb der Agentenkette:
-
-```cron
-30 3 * * * cd ~/fabrik && git push origin main >> ops/backup.log 2>&1
-```
-
-Prüfe vorher, dass das GitHub-Repo **privat** ist. `grenzen.md` und die ADRs beschreiben
-deine Arbeitssituation samt Arbeitgeberbranche deutlich genug, dass sie niemanden außer
-dich etwas angehen.
-
 ---
+
+## Danach
+
+Der erste echte Lauf verbraucht Tokens und dauert einige Minuten:
+
+```sh
+cd ~/fabrik && python3 agents/nachtlauf.py
+git log --oneline -10
+ls signals/regulation/ ideas/
+```
+
+Drei Dinge bleiben deine Sache:
+
+- **Das Windows-Original in OneDrive** erst löschen, wenn die Fabrik in WSL nachweislich
+  läuft. Bis dahin ist es dein Rückweg.
+- **Prüfen, dass das GitHub-Remote privat ist**, bevor die Sicherung zum ersten Mal
+  pusht. `grenzen.md` und die ADRs beschreiben deine Arbeitssituation samt
+  Arbeitgeberbranche deutlich genug, dass sie niemanden außer dich etwas angehen.
+- **WSL startet nicht mit Windows.** Damit der Nachtlauf ohne offenes Terminal läuft, im
+  Aufgabenplaner eine Aufgabe bei Anmeldung anlegen, die `wsl -d Ubuntu -- /bin/true`
+  ausführt. Ohne das läuft die Fabrik nur, wenn du WSL ohnehin offen hast — für den
+  Anfang genügt das.
 
 ## Was danach wie geschützt ist
 
@@ -135,5 +115,5 @@ dich etwas angehen.
 | WSL2-Dateisystem | alles übrige auf dem Rechner | Virtualisierung |
 
 Die oberen drei Ebenen greifen sofort. Die Sandbox greift erst, sobald eine Rolle
-tatsächlich `Bash` bekommt — die drei bestehenden Rollen haben es nicht. Wenn später
-der Builder dazukommt, ist sie die Ebene, die zählt.
+tatsächlich `Bash` bekommt — die acht bestehenden Rollen haben es nicht. Wenn später der
+Builder dazukommt, ist sie die Ebene, die zählt.
