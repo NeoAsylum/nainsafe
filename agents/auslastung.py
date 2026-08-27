@@ -96,15 +96,19 @@ def bericht(tage: int = 7) -> str:
             f"| {_tsd(tokens)} |"
         )
 
-    laeufe, tokens, kosten = gesamt
+    laeufe, tokens, gegenwert = gesamt
     aus += ["", f"**Gesamt:** {laeufe} Laeufe, {_tsd(tokens)} Tokens.", ""]
 
-    # Euro nur zeigen, wenn welche angefallen sind. Eine Spalte, die immer null
-    # anzeigt, trainiert einen darauf, den Bericht nicht mehr zu lesen.
-    if (kosten or 0) > 0:
+    # Kein Rechnungsbetrag: Claude Code meldet total_cost_usd auch bei Abo-Anmeldung,
+    # dann als rechnerischer Gegenwert zu Listenpreisen. Abgerechnet wird davon nichts.
+    # Trotzdem die interessantere Zahl als eine Kostenspalte voller Nullen -- sie sagt,
+    # was die Fabrik aus dem Abo zieht.
+    if (gegenwert or 0) > 0:
+        hoch = (gegenwert / max(tage, 1)) * 30
         aus += [
-            f"**Echte API-Kosten:** {kosten:.2f} $ — es laeuft also Last ueber die "
-            "API, nicht nur ueber das Abo.",
+            f"**Gegenwert:** {gegenwert:.2f} $ zu Listenpreisen — hochgerechnet rund "
+            f"{hoch:.0f} $ im Monat. Abgerechnet wird davon nichts, die Laeufe gehen "
+            "ueber das Abo. Die Zahl sagt, was die Fabrik daraus zieht.",
             "",
         ]
 

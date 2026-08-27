@@ -48,9 +48,9 @@ starb. Nichts gefunden? Dann steht hier nichts.>
 ## Zahlen
 
 <Vier Zeilen, aus ops/auslastung.md uebernommen: Laeufe, Tokens, Leerlaufquote,
-aktive Vorhaben. Keine Euro -- die Fabrik laeuft ueber das Abo. Sollte in
-auslastung.md doch eine Kostenzeile stehen, gehoert sie hierher, denn dann laeuft
-Last ueber die API.>
+aktive Vorhaben. Die Gegenwert-Zeile aus auslastung.md darfst du
+uebernehmen, aber nenne sie nie Kosten: Die Laeufe gehen ueber das Abo, abgerechnet
+wird nichts. Sie sagt, was die Fabrik aus dem Abo zieht.>
 ```
 
 ## Regeln
