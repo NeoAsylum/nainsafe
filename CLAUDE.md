@@ -58,7 +58,7 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Verbesserer | `ops/*` | `ops/verbesserung.md` | genau ein Vorschlag pro Woche, baut nicht |
 
 **Keine Rollen, sondern Skripte:** Was sich deterministisch beantworten lässt, macht kein
-Agent. `agents/kosten.py` erzeugt `ops/kosten.md` aus dem Journal, `agents/repo.py`
+Agent. `agents/auslastung.py` erzeugt `ops/auslastung.md` aus dem Journal, `agents/repo.py`
 beantwortet Fragen nach Status und Angriffen. Beides kostet null Tokens und gibt immer
 dieselbe Antwort. Wenn du als Agent eine Zahl aus dem Journal brauchst, lies die fertige
 Datei, statt selbst zu zählen.

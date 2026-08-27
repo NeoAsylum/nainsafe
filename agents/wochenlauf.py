@@ -5,7 +5,7 @@
 
     rechnen  ->  bewerten  ->  berichten
 
-Rechnen ist deterministisch und kostet keine Tokens. Bewerten heißt: Angriffe auswerten,
+Das Rechnen ist deterministisch und kostet keine Tokens. Bewerten heißt: Angriffe auswerten,
 Kandidaten töten, höchstens eine Gate-Vorlage anlegen. Berichten heißt: eine Seite,
 Sonntagmorgen.
 
@@ -19,24 +19,24 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import kosten  # noqa: E402
+import auslastung  # noqa: E402
 import repo  # noqa: E402
 from lauf import WURZEL, git, jetzt, lauf  # noqa: E402
 
 KETTE = ["portfolio-manager", "digest-redakteur"]
 
 
-def kostenbericht() -> None:
+def auslastungsbericht() -> None:
     """Deterministischer Vorlauf: Zahlen stehen fest, bevor ein Modell sie liest."""
-    kosten.ZIEL.parent.mkdir(parents=True, exist_ok=True)
-    kosten.ZIEL.write_text(kosten.bericht(7), encoding="utf-8")
-    if git("status", "--porcelain", "ops/kosten.md").strip():
-        git("add", "ops/kosten.md")
+    auslastung.ZIEL.parent.mkdir(parents=True, exist_ok=True)
+    auslastung.ZIEL.write_text(auslastung.bericht(7), encoding="utf-8")
+    if git("status", "--porcelain", "ops/auslastung.md").strip():
+        git("add", "ops/auslastung.md")
         subprocess.run(
-            ["git", "commit", "-q", "-m", "kosten: Wochenbilanz"],
+            ["git", "commit", "-q", "-m", "auslastung: Wochenbilanz"],
             cwd=WURZEL, capture_output=True, text=True, encoding="utf-8",
         )
-    print(f"  ops/kosten.md geschrieben (0 Tokens).")
+    print("  ops/auslastung.md geschrieben (0 Tokens).")
 
 
 def main(trocken: bool = False) -> int:
@@ -47,7 +47,7 @@ def main(trocken: bool = False) -> int:
           f"{len(reif)} davon vollständig geprüft")
 
     if trocken:
-        print("  Trockenlauf, geplante Kette: kosten -> " + " -> ".join(KETTE))
+        print("  Trockenlauf, geplante Kette: auslastung -> " + " -> ".join(KETTE))
         for k in reif:
             urteile = repo.angriffe(k["_id"])
             print(f"    reif: {k['_id']} ({len(urteile)} Angriffe)")
@@ -56,7 +56,7 @@ def main(trocken: bool = False) -> int:
             print("    wird diese Woche vermutlich keine Gate-Vorlage anlegen.")
         return 0
 
-    kostenbericht()
+    auslastungsbericht()
 
     fehler = 0
     for rolle in KETTE:

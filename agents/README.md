@@ -30,7 +30,7 @@ python agents/lauf.py advocatus-betrieb 0042  # eine Rolle auf einen Gegenstand
 python agents/nachtlauf.py --trocken          # zeigt die Kette, ohne Tokens zu verbrauchen
 python agents/nachtlauf.py                    # der Herzschlag
 python agents/wochenlauf.py                   # der Vorstand, sonntags früh
-python agents/kosten.py                       # nur die Zahlen, kostet nichts
+python agents/auslastung.py                   # nur die Zahlen, kostet nichts
 ```
 
 Jeder Lauf schreibt eine Zeile ins Journal (`state.db`) und committet, was er
@@ -60,9 +60,9 @@ ein zweistelliger Lauf, dessen Ergebnis ohnehin niemand liest.
 **Sonntags früh** — der Vorstand:
 
 ```
-kosten.py ──> portfolio-manager ──> digest-redakteur
- (Skript)      (opus)                (opus)
- 0 Tokens      wertet aus, tötet     eine Seite
+auslastung.py ──> portfolio-manager ──> digest-redakteur
+ (Skript)          (opus)             (opus)
+ 0 Tokens          wertet aus, tötet  eine Seite
 ```
 
 Ist das WIP-Limit erreicht, schrumpft die Nachtkette auf den Scout — neue Kandidaten
