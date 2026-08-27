@@ -216,3 +216,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Agentenfabrik ---
+# Zustand ist reproduzierbar (schema/state.sql) und erzeugt sonst Konflikte
+state.db
+state.db-wal
+state.db-shm
+
+# Rohdaten und Zugaenge
+.env
+*.local.yml
+ops/rohdaten/
+ventures/*/node_modules/

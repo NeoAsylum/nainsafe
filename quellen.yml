@@ -1,0 +1,51 @@
+# Quellen der Sensorik.
+#
+# Jeder Scout liest ausschließlich seinen eigenen Block. Neue Quellen trägt der
+# Betreiber ein, nicht die Agenten — sonst driftet die Sensorik dahin, wo am meisten
+# Text liegt, statt dahin, wo die Signale sind.
+#
+# Regeln für alle Scouts:
+#   - Rohsignal festhalten, nicht interpretieren.
+#   - Immer mit Quell-URL und Abrufdatum.
+#   - Keine Volltexte kopieren; zwei bis drei Sätze Zusammenfassung genügen.
+#   - Ein Signal je Datei, Dateiname `JJJJ-MM-TT-thema.md`.
+
+pain:
+  beschreibung: >
+    Geäußerter Ärger von Unternehmen. Gesucht wird wiederkehrende Klage über
+    denselben Vorgang, nicht einzelne Wutausbrüche.
+  suchmuster:
+    - "nervt jedes Jahr"
+    - "manuell abtippen"
+    - "Excel-Liste pflegen"
+    - "keiner macht das gern"
+    - "Pflicht ab"
+  quellen: []
+    # Hier eintragen, z.B.:
+    # - typ: forum
+    #   url: https://…
+    #   notiz: Handwerksbetriebe, hohe Aktivität dienstags
+
+market:
+  beschreibung: >
+    Bewegungen im Wettbewerb. Besonders interessant: eingestellte Produkte
+    (Nachfrage bleibt, Anbieter weg) und Preiserhöhungen (Unzufriedenheit entsteht).
+  quellen: []
+
+regulation:
+  beschreibung: >
+    Neue Pflichten für Unternehmen. Zwang erzeugt zahlungsbereite Nachfrage mit
+    Stichtag — die verlässlichste Signalart überhaupt.
+  beobachten:
+    - E-Rechnungspflicht im B2B und ihre Ausbaustufen
+    - Barrierefreiheitsstärkungsgesetz
+    - NIS2 und Lieferkettenanforderungen
+    - KI-Verordnung, Transparenz- und Kennzeichnungspflichten
+    - Aufbewahrungs- und Meldepflichten mit neuen Fristen
+  quellen: []
+
+tech:
+  beschreibung: >
+    Neue Bausteine, die gestern noch nicht möglich waren. Relevant ist nur, was die
+    Betriebskosten oder den Aufwand einer bekannten Aufgabe um eine Größenordnung senkt.
+  quellen: []
