@@ -4,6 +4,13 @@ Gedächtnis und Werkstatt eines nebenberuflichen IT-Unternehmens, das von Agente
 betrieben wird. Der Betreiber entscheidet an vier Stellen; dazwischen arbeitet die
 Maschine allein.
 
+> **Diese Kopie ist nicht die laufende Fabrik.** Produktiv läuft sie seit dem
+> 2026-08-27 in WSL2 unter `~/fabrik`; dort entstehen die Commits. Dieses Verzeichnis
+> ist Ausgangspunkt und Sicherung — Änderungen hier wirken sich nicht auf die Fabrik
+> aus, bis sie übertragen werden. Wege dorthin: `\\wsl$\Ubuntu\home\<name>\fabrik` im
+> Explorer, oder `wsl -d Ubuntu -- bash -lc "cd ~/fabrik && …"`. Übertragen von hier
+> nach dort per `git bundle`, weil `/mnt/c` in der Distro abgeklemmt ist.
+
 Die Regeln, an die sich jeder Agent hält, stehen in [CLAUDE.md](CLAUDE.md).
 Die Ausschlusskriterien für Ideen stehen in [grenzen.md](grenzen.md).
 
