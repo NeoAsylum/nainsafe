@@ -46,12 +46,20 @@ Auftragstexte taugen — und er verbraucht Tokens.
 **Nachts** — die Fabrik:
 
 ```
-regel-scout ──> ideator ──> fit-filter ──> advocatus ×3 je Kandidat
- (sonnet)       (opus)      (opus)         (opus, drei Linsen)
- sammelt        verdichtet  lehnt ab       greift an
+regel-scout ─┐
+pain-scout   ├─> ideator ──> fit-filter ──> advocatus ×3 je Kandidat
+markt-scout  │   (opus)      (opus)         (opus, drei Linsen)
+tech-scout  ─┘   verdichtet  lehnt ab       greift an
+ (4× sonnet)
+ sammeln
 ```
 
-Die ersten drei laufen immer, auch wenn der vorherige nichts fand — es kann
+Vier Sensoren, nicht einer: Mit dem Regel-Scout allein stammt jede Idee aus einer
+gesetzlichen Pflicht, und solche Ideen laufen fast zwangsläufig darauf hinaus, eine
+Rechtsfrage zu beantworten — Grenze G5. Genau daran starben beide Ideen des ersten
+echten Laufs.
+
+Die Sensoren und der Ideator laufen immer, auch wenn der vorherige nichts fand — es kann
 unverarbeitetes Material aus früheren Nächten liegen. Die Angriffe werden erst *danach*
 bestimmt, weil der Fit-Filter im selben Lauf neue Kandidaten erzeugt haben kann.
 Gedeckelt auf zwei Ideen pro Nacht: drei Linsen mal viele Kandidaten wären sonst schnell
@@ -65,8 +73,9 @@ auslastung.py ──> portfolio-manager ──> digest-redakteur
  0 Tokens          wertet aus, tötet  eine Seite
 ```
 
-Ist das WIP-Limit erreicht, schrumpft die Nachtkette auf den Scout — neue Kandidaten
-wären dann Ballast, weil ohnehin nichts hochgestuft werden kann.
+Ist das WIP-Limit erreicht, schrumpft die Nachtkette auf die vier Sensoren — neue
+Kandidaten wären dann Ballast, weil ohnehin nichts hochgestuft werden kann. Signale
+sammeln lohnt trotzdem: Sie warten, bis wieder Platz ist.
 
 ## Die drei Linsen
 
@@ -117,7 +126,7 @@ sqlite3 state.db "SELECT rolle, ergebnis, count(*) FROM lauf GROUP BY rolle, erg
 ## Eine neue Rolle anlegen
 
 1. `rollen/<name>.md` anlegen, Frontmatter mit `modell`, `timeout`, `tools`.
-2. `tools` so eng wie möglich fassen — ein Zielverzeichnis, nicht `Write`.
+2. `tools` so eng wie möglich fassen — ein Zielverzeichnis, und `Edit(...)` statt `Write(...)`.
 3. Den Auftrag so schreiben, dass ein leeres Ergebnis ausdrücklich erlaubt ist.
 4. Die Rolle in [../CLAUDE.md](../CLAUDE.md) in die Rollentabelle eintragen.
 5. Einmal einzeln laufen lassen, bevor sie in eine Kette kommt.
