@@ -54,6 +54,12 @@ pruefe "Wochenlauf in der crontab"                 bash -c "crontab -l | grep -q
 pruefe "PATH-Zeile in der crontab"                 bash -c "crontab -l | grep -q '^PATH='"
 
 echo
+echo "Sicherung"
+pruefe "SSH-Schluessel wird von GitHub akzeptiert" bash -c "ssh -o BatchMode=yes -T git@github.com 2>&1 | grep -q 'successfully authenticated'"
+pruefe "Repo ist NICHT oeffentlich lesbar"         bash -c "test \"\$(curl -s -o /dev/null -w '%{http_code}' -m 10 https://api.github.com/repos/NeoAsylum/nainsafe)\" != '200'"
+pruefe "Push-Eintrag in der crontab"               bash -c "crontab -l | grep -q 'git push origin'"
+
+echo
 echo "Anmeldung"
 pruefe "claude antwortet headless"                 bash -c "cd '$ZIEL' && claude -p 'Antworte nur mit: bereit' --output-format text | grep -qi bereit"
 
