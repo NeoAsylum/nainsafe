@@ -35,8 +35,11 @@ else
 fi
 
 echo
-echo "[2] Windows-Platte abklemmen ..."
+echo "[2] Windows-Platte abklemmen, systemd einschalten ..."
 sudo tee /etc/wsl.conf > /dev/null <<'EOF'
+[boot]
+systemd=true
+
 [automount]
 enabled = false
 
@@ -44,6 +47,8 @@ enabled = false
 appendWindowsPath = false
 EOF
 echo "    /etc/wsl.conf geschrieben. Wirksam nach 'wsl --shutdown' in PowerShell."
+echo "    systemd ist Pflicht, nicht Geschmackssache: ohne ihn startet WSL keinen"
+echo "    cron-Daemon, und die Eintraege unten waeren blosse Zeilen in einer Datei."
 
 echo
 echo "[3] Zeitplanung ..."
@@ -90,10 +95,17 @@ Danach nachsehen, was dabei herauskam:
     git log --oneline -10
     ls signals/regulation/ ideas/
 
+Damit die Fabrik ohne offenes Terminal laeuft, muss die Distro dauerhaft oben
+bleiben. WSL2 beendet sie, sobald kein Prozess mehr darin laeuft -- ein blosser
+Startbefehl genuegt daher NICHT. Diese Datei in den Autostart-Ordner legen
+(%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\agentenfabrik-wsl.vbs):
+
+    CreateObject("WScript.Shell").Run "wsl.exe -d Ubuntu -- sleep infinity", 0, False
+
+Der schlafende Prozess ist der Anker: Solange er laeuft, laufen systemd und cron.
+
 Noch offen, weil es dich betrifft:
   - Windows-Original in OneDrive erst loeschen, wenn die Fabrik hier laeuft.
   - Pruefen, dass das GitHub-Remote privat ist, bevor die Sicherung zum ersten Mal pusht.
-  - WSL startet nicht mit Windows. Damit der Nachtlauf ohne offenes Terminal laeuft,
-    im Aufgabenplaner eine Aufgabe bei Anmeldung anlegen:  wsl -d Ubuntu -- /bin/true
 
 ENDE

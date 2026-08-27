@@ -98,10 +98,41 @@ Drei Dinge bleiben deine Sache:
 - **Prüfen, dass das GitHub-Remote privat ist**, bevor die Sicherung zum ersten Mal
   pusht. `grenzen.md` und die ADRs beschreiben deine Arbeitssituation samt
   Arbeitgeberbranche deutlich genug, dass sie niemanden außer dich etwas angehen.
-- **WSL startet nicht mit Windows.** Damit der Nachtlauf ohne offenes Terminal läuft, im
-  Aufgabenplaner eine Aufgabe bei Anmeldung anlegen, die `wsl -d Ubuntu -- /bin/true`
-  ausführt. Ohne das läuft die Fabrik nur, wenn du WSL ohnehin offen hast — für den
-  Anfang genügt das.
+## Zwei Fallen, die Autonomie lautlos verhindern
+
+Beide sehen im Test wie Erfolg aus und führen dazu, dass nachts nichts passiert.
+
+**1. Ohne systemd kein cron.** WSL startet standardmäßig kein systemd; PID 1 ist
+`init(Ubuntu)`, und der cron-Daemon läuft schlicht nicht. Die crontab-Einträge stehen
+dann korrekt in der Datei und werden nie ausgeführt. Deshalb steht in `/etc/wsl.conf`:
+
+```ini
+[boot]
+systemd=true
+```
+
+Prüfen lässt es sich so — beide Zeilen müssen etwas melden:
+
+```sh
+pidof systemd && pgrep -x cron
+```
+
+**2. WSL beendet die Distro, sobald kein Prozess mehr läuft.** Ein Autostart, der nur
+`wsl -d Ubuntu -- /bin/true` ausführt, startet sie und lässt sie Sekunden später wieder
+herunterfahren — mit ihr systemd und cron. Es braucht einen Anker-Prozess. Im
+Autostart-Ordner liegt dafür `agentenfabrik-wsl.vbs`:
+
+```vbs
+CreateObject("WScript.Shell").Run "wsl.exe -d Ubuntu -- sleep infinity", 0, False
+```
+
+Solange der schlafende Prozess läuft, bleibt die Distro oben. Zu finden unter
+`%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup` — dort auch wieder löschbar,
+wenn die Fabrik einmal ruhen soll.
+
+Beides greift bei **Anmeldung**, nicht beim Hochfahren: Meldest du dich ab, steht die
+Fabrik. Für einen Rechner, an dem du täglich arbeitest, genügt das; wenn nicht, ist das
+der Punkt, an dem sich der VPS lohnt.
 
 ## Was danach wie geschützt ist
 
