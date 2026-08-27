@@ -19,7 +19,7 @@ pain:
     - "manuell abtippen"
     - "Excel-Liste pflegen"
     - "keiner macht das gern"
-    - "Pflicht ab"
+    - '"Pflicht ab"'
   quellen: []
     # Hier eintragen, z.B.:
     # - typ: forum
@@ -30,7 +30,20 @@ market:
   beschreibung: >
     Bewegungen im Wettbewerb. Besonders interessant: eingestellte Produkte
     (Nachfrage bleibt, Anbieter weg) und Preiserhöhungen (Unzufriedenheit entsteht).
+    Ein unbesetzter Markt ist meist unbesetzt, weil dort kein Geld liegt — eine
+    frisch entstandene Lücke dagegen hat zahlende Kunden, die niemand bedient.
+  suchmuster:
+    - "wird eingestellt zum"
+    - '"End of Life" Software Mittelstand'
+    - "Nachfolger gesucht für"
+    - '"Preiserhöhung" SaaS Ankündigung Kunden'
+    - '"kleinster Tarif" gestrichen'
+    - Übernahme Produkt abgekündigt
   quellen: []
+
+  # Kandidaten zum Eintragen: Änderungsprotokolle und Statusseiten der Werkzeuge,
+  # die deine Zielbranchen tatsächlich einsetzen -- die kennt der Betreiber besser
+  # als jede allgemeine Suche.
 
 regulation:
   beschreibung: >
@@ -48,4 +61,15 @@ tech:
   beschreibung: >
     Neue Bausteine, die gestern noch nicht möglich waren. Relevant ist nur, was die
     Betriebskosten oder den Aufwand einer bekannten Aufgabe um eine Größenordnung senkt.
+    Werkzeuge, die das Bauen erleichtern, zählen ausdrücklich nicht — Signale betreffen
+    das Verkaufbare, nicht die Werkstatt.
+  beobachten:
+    - neue offene Schnittstellen deutscher Behörden und Register
+    - Formate, die durch eine Pflicht erstmals maschinenlesbar werden
+    - Dienste mit Nutzungsabrechnung, die eine Anschaffung ersetzen
+    - Wegfall von Zugangshürden (Registrierung, Zertifikat, Mindestabnahme)
+  suchmuster:
+    - '"API" Behörde Deutschland neu verfügbar'
+    - Schnittstelle Register maschinenlesbar
+    - '"ab sofort verfügbar" Schnittstelle Verwaltung'
   quellen: []

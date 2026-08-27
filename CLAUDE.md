@@ -28,10 +28,10 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 
 | Rolle | liest | schreibt | Grenze |
 |---|---|---|---|
-| Pain-Scout | `quellen.yml` | `signals/pain/` | bewertet nicht |
-| Markt-Scout | `quellen.yml` | `signals/market/` | kopiert keine fremden Inhalte |
-| Regel-Scout | `quellen.yml` | `signals/regulation/` | bewertet die Rechtslage nicht |
-| Tech-Scout | `quellen.yml` | `signals/tech/` | schlägt keine Ideen vor |
+| Pain-Scout | `quellen.yml` | `Edit(signals/pain/**)` | bewertet nicht |
+| Markt-Scout | `quellen.yml` | `Edit(signals/market/**)` | kopiert keine fremden Inhalte |
+| Regel-Scout | `quellen.yml` | `Edit(signals/regulation/**)` | bewertet die Rechtslage nicht |
+| Tech-Scout | `quellen.yml` | `Edit(signals/tech/**)` | schlägt keine Ideen vor |
 | Ideator | `signals/` | `ideas/` (Status `entwurf`) | hebt den Status nie über `entwurf` |
 | Fit-Filter | `ideas/`, `grenzen.md` | Status `kandidat`\|`abgelehnt` | hebt keine Grenze auf |
 | Advocatus, Linse Nachfrage | `ideas/<id>.md` | `ideas/<id>.angriffe/nachfrage.md` | sieht die anderen Linsen nicht |

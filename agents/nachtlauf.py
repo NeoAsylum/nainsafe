@@ -23,7 +23,22 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import repo  # noqa: E402
 from lauf import db, jetzt, lauf  # noqa: E402
 
-KETTE = ["regel-scout", "ideator", "fit-filter"]
+# Vier Sensoren, nicht einer. Der erste echte Lauf hat gezeigt, warum: Mit dem
+# Regel-Scout als einziger Quelle stammen alle Ideen aus gesetzlichen Pflichten, und
+# solche Ideen laufen fast zwangslaeufig darauf hinaus, eine Rechtsfrage zu beantworten
+# -- Grenze G5. Beide Ideen des ersten Laufs starben genau daran. Erst geaeusserter
+# Aerger, Marktluecken und neue Bausteine machen die Fabrik ergebnisoffen.
+KETTE = [
+    "regel-scout",
+    "pain-scout",
+    "markt-scout",
+    "tech-scout",
+    "ideator",
+    "fit-filter",
+]
+
+# Wenn das WIP-Limit erreicht ist, laufen nur die Sensoren weiter.
+SENSOREN = KETTE[:4]
 
 WIP_AKTIV_MAX = 3
 WIP_BAU_MAX = 1
@@ -43,7 +58,7 @@ def wip() -> tuple[int, int]:
 def main(trocken: bool = False) -> int:
     aktiv, im_bau = wip()
     voll = aktiv >= WIP_AKTIV_MAX
-    kette = ["regel-scout"] if voll else list(KETTE)
+    kette = list(SENSOREN) if voll else list(KETTE)
 
     print(f"[{jetzt()}] Nachtlauf -- WIP: {aktiv}/{WIP_AKTIV_MAX} aktiv, "
           f"{im_bau}/{WIP_BAU_MAX} im Bau")
