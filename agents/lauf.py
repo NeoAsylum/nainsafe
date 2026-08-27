@@ -206,7 +206,17 @@ def claude_pfad() -> str:
         pfad = shutil.which(name)
         if pfad:
             return pfad
-    sys.exit("claude nicht im PATH gefunden - Claude Code installieren oder PATH pruefen.")
+    # cron und der Windows-Aufgabenplaner starten mit einem kargen PATH, in dem die
+    # ueblichen Installationsorte von Claude Code nicht vorkommen. Ohne diesen Zweig
+    # scheitert jeder naechtliche Lauf stumm, waehrend er von Hand einwandfrei laeuft.
+    for kandidat in (
+        Path.home() / ".local" / "bin" / "claude",
+        Path.home() / ".claude" / "local" / "claude",
+        Path("/usr/local/bin/claude"),
+    ):
+        if kandidat.is_file():
+            return str(kandidat)
+    sys.exit("claude nicht gefunden - Claude Code installieren oder PATH pruefen.")
 
 
 def lauf(rolle: str, gegenstand: str | None = None) -> int:

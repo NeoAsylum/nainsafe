@@ -48,15 +48,22 @@ echo "    /etc/wsl.conf geschrieben. Wirksam nach 'wsl --shutdown' in PowerShell
 echo
 echo "[3] Zeitplanung ..."
 PY="$(command -v python3)"
+CLAUDE_DIR="$(dirname "$(command -v claude)")"
+# cron startet mit einem kargen PATH ohne ~/.local/bin. Ohne diese Zeile findet der
+# Nachtlauf claude nicht -- und zwar lautlos, waehrend er von Hand einwandfrei laeuft.
+PATHZEILE="PATH=$CLAUDE_DIR:/usr/local/bin:/usr/bin:/bin"
 NACHT="0 3 * * * cd $ZIEL && $PY agents/nachtlauf.py >> ops/nachtlauf.log 2>&1"
 WOCHE="0 7 * * 0 cd $ZIEL && $PY agents/wochenlauf.py >> ops/wochenlauf.log 2>&1"
 SICHER="30 3 * * * cd $ZIEL && git push origin main >> ops/backup.log 2>&1"
 
 TMP="$(mktemp)"
-crontab -l 2>/dev/null | grep -v "agents/nachtlauf.py\|agents/wochenlauf.py\|git push origin main" > "$TMP" || true
-{ echo "$NACHT"; echo "$WOCHE"; echo "$SICHER"; } >> "$TMP"
+crontab -l 2>/dev/null \
+  | grep -v "agents/nachtlauf.py\|agents/wochenlauf.py\|git push origin main\|^PATH=" \
+  > "$TMP" || true
+{ echo "$PATHZEILE"; echo "$NACHT"; echo "$WOCHE"; echo "$SICHER"; } >> "$TMP"
 crontab "$TMP"
 rm -f "$TMP"
+echo "    PATH fuer cron: $CLAUDE_DIR"
 echo "    Nachtlauf  03:00 taeglich"
 echo "    Wochenlauf 07:00 sonntags"
 echo "    Sicherung  03:30 taeglich (git push, nur wenn ein privates Remote gesetzt ist)"

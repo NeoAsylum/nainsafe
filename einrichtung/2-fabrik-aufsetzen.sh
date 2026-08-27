@@ -27,16 +27,23 @@ echo "    (bubblewrap ist die Grundlage der Sandbox -- ohne sie keine Kernel-Iso
 
 echo
 echo "[2] Claude Code ..."
+export PATH="$HOME/.local/bin:$PATH"
 if command -v claude >/dev/null 2>&1; then
   echo "    bereits vorhanden: $(command -v claude)"
 else
   curl -fsSL https://claude.ai/install.sh | bash
   export PATH="$HOME/.local/bin:$PATH"
-  command -v claude >/dev/null 2>&1 || {
-    echo "    Installiert, aber nicht im PATH dieser Shell." >&2
-    echo "    Shell neu oeffnen oder: export PATH=\"\$HOME/.local/bin:\$PATH\"" >&2
-  }
 fi
+
+# Dauerhaft in den PATH, sonst fehlt claude in jeder neuen Shell -- und in cron.
+if ! grep -qs '\.local/bin' "$HOME/.bashrc"; then
+  echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
+  echo "    PATH-Eintrag in ~/.bashrc ergaenzt."
+fi
+
+command -v claude >/dev/null 2>&1 || {
+  echo "    WARNUNG: claude nach der Installation nicht auffindbar." >&2
+}
 
 echo
 echo "[3] Repo klonen ..."
@@ -44,8 +51,12 @@ if [ -d "$ZIEL/.git" ]; then
   echo "    $ZIEL existiert bereits -- Klonen uebersprungen."
 else
   # Das Windows-Original gehoert einem anderen Benutzer; ohne diese Ausnahme
-  # verweigert git die Arbeit daran.
-  git config --global --add safe.directory "$QUELLE" 2>/dev/null || true
+  # verweigert git die Arbeit daran. Beide Pfade sind noetig: Beim Klonen von einem
+  # lokalen Pfad prueft git das .git-Verzeichnis selbst, nicht das Arbeitsverzeichnis.
+  for p in "$QUELLE" "$QUELLE/.git"; do
+    git config --global --get-all safe.directory | grep -qxF "$p" \
+      || git config --global --add safe.directory "$p"
+  done
   git clone "$QUELLE" "$ZIEL"
 fi
 
