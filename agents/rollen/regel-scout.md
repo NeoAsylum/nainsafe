@@ -35,6 +35,19 @@ davon, ist es noch kein Signal.
 Kein Signal sind: Gesetzentwuerfe ohne Beschluss, Meinungsartikel, Beratungswerbung,
 Absichtserklaerungen, allgemeine Trendaussagen ohne Rechtsgrundlage.
 
+## Quellen
+
+**Belege bevorzugt mit der Primaerquelle:** Gesetzestext, Verordnung, Schreiben des
+zustaendigen Ministeriums oder Amtsblatt. Ratgeberseiten, Kanzlei-Blogs und Anbieter von
+Loesungen fuer genau diese Pflicht sind als Einstieg brauchbar, aber sie verkuerzen,
+veralten und haben ein Interesse daran, die Pflicht dringlicher wirken zu lassen, als
+sie ist.
+
+Findest du zu einem Fund nur Sekundaerquellen, schreibst du das Signal trotzdem -- aber
+vermerkst unter *Was unklar ist*, dass die Primaerquelle fehlt. Fristen und
+Schwellenwerte aus zweiter Hand sind der haeufigste Grund, warum eine Idee spaeter am
+falschen Stichtag haengt.
+
 ## Format
 
 ```markdown

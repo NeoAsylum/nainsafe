@@ -194,18 +194,28 @@ def git(*args: str) -> str:
     return (fertig.stdout or "").strip()
 
 
-def committen(rolle: str, gegenstand: str | None, lauf_id: int) -> tuple[str | None, int]:
-    """Committet, was der Lauf hinterlassen hat. Kein Ergebnis, kein Commit."""
+def committen(rolle: str, gegenstand: str | None,
+              lauf_id: int) -> tuple[str | None, int, str | None]:
+    """Committet, was der Lauf hinterlassen hat. Kein Ergebnis, kein Commit.
+
+    Gibt (Hash, Anzahl Dateien, Fehlermeldung) zurueck. Der Rueckgabewert von
+    `git commit` wird geprueft: Scheitert er -- fehlende Identitaet, Hook, gesperrter
+    Index --, liegen die Dateien zwar im Arbeitsverzeichnis, aber die Historie kennt
+    sie nicht. Ohne diese Pruefung meldet der Lauf "ok" und niemand merkt es.
+    """
     geaendert = [z for z in git("status", "--porcelain").splitlines() if z.strip()]
     if not geaendert:
-        return None, 0
+        return None, 0, None
     git("add", "-A")
     betreff = f"{rolle}: {gegenstand or 'lauf'} ({len(geaendert)} Dateien)"
-    subprocess.run(
+    fertig = subprocess.run(
         ["git", "commit", "-q", "-m", betreff, "-m", f"Lauf {lauf_id}"],
         cwd=WURZEL, capture_output=True, text=True, encoding="utf-8",
     )
-    return git("rev-parse", "--short", "HEAD"), len(geaendert)
+    if fertig.returncode != 0:
+        meldung = ((fertig.stderr or "") + (fertig.stdout or "")).strip()
+        return None, len(geaendert), meldung[:300] or "git commit fehlgeschlagen"
+    return git("rev-parse", "--short", "HEAD"), len(geaendert), None
 
 
 # ---------------------------------------------------------------- Lauf
@@ -228,10 +238,26 @@ def claude_pfad() -> str:
     sys.exit("claude nicht gefunden - Claude Code installieren oder PATH pruefen.")
 
 
+def pruefe_umgebung() -> None:
+    """Prueft vor dem ersten Token, was den Lauf am Ende wertlos machen wuerde.
+
+    Eine fehlende Git-Identitaet faellt sonst erst auf, wenn der Agent fertig
+    recherchiert hat: Die Dateien liegen da, der Commit scheitert, die Tokens sind weg.
+    """
+    if not git("config", "user.email") or not git("config", "user.name"):
+        sys.exit(
+            "Keine Git-Identitaet gesetzt -- jeder Commit wuerde scheitern und der Lauf\n"
+            "waere umsonst. Einmalig im Repo setzen:\n"
+            '  git config user.name "<Name>"\n'
+            '  git config user.email "<Mail>"'
+        )
+
+
 def lauf(rolle: str, gegenstand: str | None = None) -> int:
     datei = ROLLEN / f"{rolle}.md"
     if not datei.exists():
         sys.exit(f"Unbekannte Rolle: {rolle} (erwartet {datei})")
+    pruefe_umgebung()
 
     kopf, auftrag = frontmatter(datei.read_text(encoding="utf-8"))
     werkzeuge = kopf.get("tools") or []
@@ -284,11 +310,18 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         print(f"  Fehlgeschlagen (Code {fertig.returncode}): {antwort[:200]}")
         return fertig.returncode
 
-    commit_hash, anzahl = committen(rolle, gegenstand, lauf_id)
+    commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id)
+    tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
+
+    if commit_fehler:
+        journal_ende(verbindung, lauf_id, "fehler", nutzung, None,
+                     f"Commit gescheitert: {commit_fehler}")
+        print(f"  {anzahl} Dateien geschrieben, aber NICHT committet ({tokens} Tokens)")
+        print(f"  {commit_fehler.splitlines()[0] if commit_fehler else ''}")
+        return 1
+
     ergebnis = "ok" if anzahl else "leer"
     journal_ende(verbindung, lauf_id, ergebnis, nutzung, commit_hash, antwort)
-
-    tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
     if anzahl:
         print(f"  {anzahl} Dateien, {tokens} Tokens, Commit {commit_hash}")
     else:
