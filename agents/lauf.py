@@ -299,7 +299,10 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         nutzung = {
             "input_tokens": verbrauch.get("input_tokens", 0),
             "output_tokens": verbrauch.get("output_tokens", 0),
-            # Abo-Laeufe kosten nichts extra; das Feld traegt nur API-Laeufe.
+            # Claude Code meldet total_cost_usd auch bei Abo-Anmeldung. Der Betrag
+            # wird dann NICHT abgerechnet -- er ist der rechnerische Gegenwert zu
+            # Listenpreisen, also das, was derselbe Lauf ueber die API gekostet haette.
+            # Nuetzlich als Mass dafuer, was die Fabrik aus dem Abo zieht; keine Ausgabe.
             "kosten": roh.get("total_cost_usd", 0.0) or 0.0,
         }
     except (json.JSONDecodeError, AttributeError):
