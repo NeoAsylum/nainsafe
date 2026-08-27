@@ -18,10 +18,12 @@ CLAUDE.md, in Code gegossen.
 ## Bedienung
 
 ```sh
-python agents/lauf.py regel-scout          # ein einzelner Lauf
-python agents/lauf.py ideator              # eine Rolle gezielt
-python agents/nachtlauf.py --trocken       # zeigt die Kette, ohne Tokens zu verbrauchen
-python agents/nachtlauf.py                 # der echte Herzschlag
+python agents/lauf.py regel-scout             # ein einzelner Lauf
+python agents/lauf.py advocatus-betrieb 0042  # eine Rolle auf einen Gegenstand
+python agents/nachtlauf.py --trocken          # zeigt die Kette, ohne Tokens zu verbrauchen
+python agents/nachtlauf.py                    # der Herzschlag
+python agents/wochenlauf.py                   # der Vorstand, sonntags früh
+python agents/kosten.py                       # nur die Zahlen, kostet nichts
 ```
 
 Jeder Lauf schreibt eine Zeile ins Journal (`state.db`) und committet, was er
@@ -32,17 +34,48 @@ lautet `leer` — das ist ein gültiges und häufiges Ergebnis, kein Fehler.
 laufen lassen und ansehen, was dabei herauskommt. Der erste Lauf zeigt, ob die
 Auftragstexte taugen — und er verbraucht Tokens.
 
-## Die Kette
+## Die zwei Takte
+
+**Nachts** — die Fabrik:
 
 ```
-regel-scout  ──>  ideator  ──>  fit-filter
- (sonnet)         (opus)         (opus)
- sammelt          verdichtet     lehnt ab oder bewertet
+regel-scout ──> ideator ──> fit-filter ──> advocatus ×3 je Kandidat
+ (sonnet)       (opus)      (opus)         (opus, drei Linsen)
+ sammelt        verdichtet  lehnt ab       greift an
 ```
 
-Jeder Schritt läuft auch, wenn der vorherige nichts fand: Es kann unverarbeitetes
-Material aus früheren Nächten liegen. Ist das WIP-Limit erreicht, schrumpft die Kette
-auf den Scout — neue Kandidaten wären dann nur Ballast.
+Die ersten drei laufen immer, auch wenn der vorherige nichts fand — es kann
+unverarbeitetes Material aus früheren Nächten liegen. Die Angriffe werden erst *danach*
+bestimmt, weil der Fit-Filter im selben Lauf neue Kandidaten erzeugt haben kann.
+Gedeckelt auf zwei Ideen pro Nacht: drei Linsen mal viele Kandidaten wären sonst schnell
+ein zweistelliger Lauf, dessen Ergebnis ohnehin niemand liest.
+
+**Sonntags früh** — der Vorstand:
+
+```
+kosten.py ──> portfolio-manager ──> digest-redakteur
+ (Skript)      (opus)                (opus)
+ 0 Tokens      wertet aus, tötet     eine Seite
+```
+
+Ist das WIP-Limit erreicht, schrumpft die Nachtkette auf den Scout — neue Kandidaten
+wären dann Ballast, weil ohnehin nichts hochgestuft werden kann.
+
+## Die drei Linsen
+
+Statt drei identischer Skeptiker greifen drei verschiedene an. Redundanz findet
+dieselben Fehler dreimal; Verschiedenheit findet drei verschiedene:
+
+| Linse | Fragt | Tötet meist an |
+|---|---|---|
+| `nachfrage` | Existiert der Schmerz, und zahlt jemand dafür? | Ärger ohne Zahlungsbereitschaft |
+| `wettbewerb` | Warum macht das nicht längst jemand? | etabliertem Anbieter, zu engem Zeitfenster |
+| `betrieb` | Was passiert bei 100 Kunden und im Urlaub? | Aufwand, der mit der Kundenzahl wächst |
+
+Jede Linse fällt ein Urteil (`widerlegt` / `haelt` / `unklar`) und benennt den schwersten
+Einwand. **Zwei von drei `widerlegt` töten die Idee** — der Portfolio-Manager überstimmt
+diese Mehrheit nicht. Alle drei schreiben im Zweifel `widerlegt`: Eine zu Unrecht
+verworfene Idee kostet fast nichts, eine zu Unrecht durchgewinkte kostet Wochen.
 
 ## Zeitplanung
 
@@ -84,6 +117,6 @@ sqlite3 state.db "SELECT rolle, ergebnis, count(*) FROM lauf GROUP BY rolle, erg
 
 ## Was noch fehlt
 
-Portfolio-Manager, Digest-Redakteur und Kostenwächter — die Wochenebene. Erst wenn der
-Nachtlauf ein paar Tage stabil läuft und tatsächlich Kandidaten erzeugt, lohnt sich der
-Vorstand. Vorher gäbe es nichts zu verwalten.
+Die Konzeptionsebene: Architekt, Ökonom, Compliance-Prüfer, Vertriebsplaner,
+Urlaubstester, Antrags-Vorbereiter und Konzept-Judge. Sie lohnen erst, wenn eine Idee
+Gate 1 passiert hat — vorher gäbe es nichts zu konzipieren.

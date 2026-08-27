@@ -34,9 +34,10 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Tech-Scout | `quellen.yml` | `signals/tech/` | schlägt keine Ideen vor |
 | Ideator | `signals/` | `ideas/` (Status `entwurf`) | hebt den Status nie über `entwurf` |
 | Fit-Filter | `ideas/`, `grenzen.md` | Status `kandidat`\|`abgelehnt` | hebt keine Grenze auf |
-| Advocatus Diaboli | `ideas/<id>.md` | `ideas/<id>.angriffe/` | sieht die anderen Läufe nicht |
-| Portfolio-Manager | `ideas/`, `ventures/` | `ops/portfolio.md` | stoppt nichts selbst |
-| Kostenwächter | `schema/`, Abrechnung | `ops/kosten.md` | ändert keine Limits |
+| Advocatus, Linse Nachfrage | `ideas/<id>.md` | `ideas/<id>.angriffe/nachfrage.md` | sieht die anderen Linsen nicht |
+| Advocatus, Linse Wettbewerb | `ideas/<id>.md` | `ideas/<id>.angriffe/wettbewerb.md` | sieht die anderen Linsen nicht |
+| Advocatus, Linse Betrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/betrieb.md` | sieht die anderen Linsen nicht |
+| Portfolio-Manager | `ideas/`, `ventures/` | `ops/portfolio.md`, `gates/` | stoppt nichts selbst, höchstens eine Vorlage |
 | Chronist | `git log`, `gates/` | `decisions/` | ändert keine alten ADRs |
 | Digest-Redakteur | `ops/` | `ops/digest/<kw>.md` | nie länger als eine Seite |
 | Architekt | `ideas/<id>.md` | `specs/<id>/technik.md` | wählt keinen exotischen Stack |
@@ -55,6 +56,12 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Metrik-Analyst | Nutzungsdaten | `ops/metriken.md` | exportiert keine Personendaten |
 | Beleg-Sammler | Belege, Zahlungen | `ops/buchhaltung/` | ersetzt den Steuerberater nicht |
 | Verbesserer | `ops/*` | `ops/verbesserung.md` | genau ein Vorschlag pro Woche, baut nicht |
+
+**Keine Rollen, sondern Skripte:** Was sich deterministisch beantworten lässt, macht kein
+Agent. `agents/kosten.py` erzeugt `ops/kosten.md` aus dem Journal, `agents/repo.py`
+beantwortet Fragen nach Status und Angriffen. Beides kostet null Tokens und gibt immer
+dieselbe Antwort. Wenn du als Agent eine Zahl aus dem Journal brauchst, lies die fertige
+Datei, statt selbst zu zählen.
 
 ## Statusmodell
 

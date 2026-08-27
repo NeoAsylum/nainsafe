@@ -78,29 +78,54 @@ def jetzt() -> str:
 # ---------------------------------------------------------------- Frontmatter
 
 def frontmatter(text: str) -> tuple[dict, str]:
-    """Minimaler YAML-Frontmatter-Parser: key: wert und key:\\n  - listeneintrag.
+    """Minimaler YAML-Frontmatter-Parser fuer die drei hier benutzten Formen:
 
-    Bewusst ohne PyYAML, damit ein frischer VPS ohne Paketinstallation laeuft.
+        schluessel: wert
+        schluessel:
+          - listeneintrag
+        schluessel:
+          unterschluessel: wert     (eine Ebene, z.B. score.summe)
+
+    Bewusst ohne PyYAML, damit ein frischer VPS ohne Paketinstallation laeuft. Ein
+    Schluessel ohne Wert startet als Liste und wird zur Map, sobald eine eingerueckte
+    Zuweisung folgt -- welche der beiden Formen gemeint war, zeigt erst die naechste Zeile.
     """
     if not text.startswith("---"):
         return {}, text
     _, kopf, rumpf = text.split("---", 2)
     daten: dict = {}
-    schluessel = None
+    offen = None  # Schluessel, unter dem eingerueckte Zeilen landen
     for zeile in kopf.splitlines():
         if not zeile.strip() or zeile.lstrip().startswith("#"):
             continue
-        if zeile.lstrip().startswith("- ") and schluessel:
-            daten[schluessel].append(zeile.lstrip()[2:].strip().strip("\"'"))
-        elif ":" in zeile:
-            k, _, v = zeile.partition(":")
-            k, v = k.strip(), v.strip().strip("\"'")
-            if v:
-                daten[k] = v
-                schluessel = None
-            else:
-                daten[k] = []
-                schluessel = k
+        eingerueckt = zeile[:1].isspace()
+        roh = zeile.strip()
+
+        if roh.startswith("- "):
+            if offen is not None and isinstance(daten.get(offen), list):
+                daten[offen].append(roh[2:].strip().strip("\"'"))
+            continue
+
+        if ":" not in roh:
+            continue
+        k, _, v = roh.partition(":")
+        # YAML-Semantik: " #" beginnt einen Kommentar. Die Vorlagen dokumentieren die
+        # zulaessigen Werte hinter dem Feld -- ohne dieses Abschneiden waere der Status
+        # einer aus der Vorlage kopierten Idee nie ein gueltiger Status.
+        k, v = k.strip(), v.split(" #")[0].strip().strip("\"'")
+
+        if eingerueckt and offen is not None:
+            if isinstance(daten.get(offen), list):
+                daten[offen] = {}
+            daten[offen][k] = v
+            continue
+
+        if v:
+            daten[k] = v
+            offen = None
+        else:
+            daten[k] = []
+            offen = k
     return daten, rumpf.lstrip("\n")
 
 

@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""Der Herzschlag: eine Kette von Agentenlaeufen, einmal pro Nacht.
+"""Der Herzschlag: die nächtliche Kette.
 
     python agents/nachtlauf.py [--trocken]
 
-Die Kette ist bewusst kurz: sammeln, verdichten, filtern. Jeder Schritt laeuft auch
-dann, wenn der vorherige nichts gefunden hat -- es kann noch unverarbeitetes Material
-aus frueheren Naechten liegen.
+    sammeln  ->  verdichten  ->  filtern  ->  angreifen
 
-Vor dem Lauf wird das WIP-Limit geprueft. Ist es erreicht, entfaellt die Ideenfindung:
-Neue Kandidaten waeren dann nur Ballast, weil ohnehin nichts hochgestuft werden kann.
+Die ersten drei Schritte laufen immer, auch wenn der vorherige nichts fand: Es kann
+unverarbeitetes Material aus früheren Nächten liegen. Die Angriffe werden erst danach
+bestimmt, weil der Fit-Filter in diesem Lauf neue Kandidaten erzeugt haben kann.
+
+Ist das WIP-Limit erreicht, bleibt nur die Sensorik. Neue Kandidaten wären dann Ballast:
+Sie könnten ohnehin nicht hochgestuft werden und würden nur Angriffsläufe kosten.
 """
 
 from __future__ import annotations
@@ -18,12 +20,17 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import repo  # noqa: E402
 from lauf import db, jetzt, lauf  # noqa: E402
 
 KETTE = ["regel-scout", "ideator", "fit-filter"]
 
 WIP_AKTIV_MAX = 3
 WIP_BAU_MAX = 1
+
+# Höchstens so viele Ideen pro Nacht angreifen. Drei Linsen je Idee -- ohne Deckel
+# wäre eine ergiebige Nacht schnell ein zweistelliger Lauf.
+ANGRIFFE_MAX_IDEEN = 2
 
 
 def wip() -> tuple[int, int]:
@@ -35,26 +42,42 @@ def wip() -> tuple[int, int]:
 
 def main(trocken: bool = False) -> int:
     aktiv, im_bau = wip()
-    kette = list(KETTE)
+    voll = aktiv >= WIP_AKTIV_MAX
+    kette = ["regel-scout"] if voll else list(KETTE)
 
     print(f"[{jetzt()}] Nachtlauf -- WIP: {aktiv}/{WIP_AKTIV_MAX} aktiv, "
           f"{im_bau}/{WIP_BAU_MAX} im Bau")
 
-    if aktiv >= WIP_AKTIV_MAX:
-        kette = ["regel-scout"]
-        print("  WIP-Limit erreicht: nur Sensorik. Ideenfindung entfaellt,")
-        print("  bis am Gate 4 etwas eingestellt wird. Signale sammeln laeuft weiter.")
+    if voll:
+        print("  WIP-Limit erreicht: nur Sensorik. Ideenfindung und Angriffe entfallen,")
+        print("  bis an Gate 4 etwas eingestellt wird.")
 
     if trocken:
         print("  Trockenlauf, geplante Kette:", " -> ".join(kette))
+        offen = repo.offene_angriffe(ANGRIFFE_MAX_IDEEN)
+        if offen and not voll:
+            print(f"  Angriffe nach heutigem Stand: {len(offen)} Läufe")
+            for idee_id, linse in offen:
+                print(f"    advocatus-{linse} -> {idee_id}")
+        elif not voll:
+            print("  Keine offenen Angriffe -- der Fit-Filter kann heute Nacht welche erzeugen.")
         return 0
 
     fehler = 0
     for rolle in kette:
-        code = lauf(rolle)
-        if code != 0:
+        if lauf(rolle) != 0:
             fehler += 1
-            print(f"  {rolle} fehlgeschlagen -- Kette laeuft weiter.")
+            print(f"  {rolle} fehlgeschlagen -- Kette läuft weiter.")
+
+    # Erst jetzt bestimmen: Der Fit-Filter hat gerade neue Kandidaten erzeugt.
+    if not voll:
+        offen = repo.offene_angriffe(ANGRIFFE_MAX_IDEEN)
+        if offen:
+            print(f"  {len(offen)} Angriffe auf "
+                  f"{len({i for i, _ in offen})} Kandidaten")
+        for idee_id, linse in offen:
+            if lauf(f"advocatus-{linse}", idee_id) != 0:
+                fehler += 1
 
     print(f"[{jetzt()}] Nachtlauf beendet, {fehler} Fehler.")
     return 0 if fehler == 0 else 1
