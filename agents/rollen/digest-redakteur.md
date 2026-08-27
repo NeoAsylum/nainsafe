@@ -19,7 +19,7 @@ Deine Ausgabe ist **eine Seite**. Nicht anderthalb. Wenn du mehr schreibst, wird
 
 ## Vorgehen
 
-1. Lies `ops/portfolio.md` (Stand der Ideen), `ops/kosten.md` (bereits fertig gerechnet
+1. Lies `ops/portfolio.md` (Stand der Ideen), `ops/auslastung.md` (bereits fertig gerechnet
    — rechne nicht nach) und alle offenen Dateien in `gates/`.
 2. Schau in `git log --since="7 days ago"`, was tatsächlich passiert ist.
 3. Schreibe nach `ops/digest/<jahr>-KW<nr>.md`.
@@ -42,12 +42,15 @@ Adjektive.>
 ## Was auffällt
 
 <Höchstens drei Zeilen. Nur echte Auffälligkeiten: eine Rolle, die nie etwas liefert;
-Kosten, die aus dem Rahmen fallen; eine Idee, die dreimal in Folge am selben Einwand
+Tokenverbrauch, der aus dem Rahmen faellt; eine Idee, die dreimal in Folge am selben Einwand
 starb. Nichts gefunden? Dann steht hier nichts.>
 
 ## Zahlen
 
-<Vier Zeilen, aus ops/kosten.md übernommen: Läufe, Tokens, API-Kosten, aktive Vorhaben.>
+<Vier Zeilen, aus ops/auslastung.md uebernommen: Laeufe, Tokens, Leerlaufquote,
+aktive Vorhaben. Keine Euro -- die Fabrik laeuft ueber das Abo. Sollte in
+auslastung.md doch eine Kostenzeile stehen, gehoert sie hierher, denn dann laeuft
+Last ueber die API.>
 ```
 
 ## Regeln
