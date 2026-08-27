@@ -17,7 +17,9 @@ CREATE TABLE IF NOT EXISTS lauf (
   gegenstand    TEXT,                      -- Ideen-ID oder Venture-ID
   tokens_in     INTEGER DEFAULT 0,
   tokens_out    INTEGER DEFAULT 0,
-  kosten_eur    REAL    DEFAULT 0,         -- 0 bei Läufen über das Abo
+  -- Gegenwert zu Listenpreisen, kein Rechnungsbetrag: Claude Code meldet ihn auch
+  -- bei Abo-Anmeldung, abgerechnet wird davon nichts. Der Name ist historisch.
+  kosten_eur    REAL    DEFAULT 0,
   ergebnis      TEXT    NOT NULL DEFAULT 'laeuft',  -- laeuft | ok | leer | fehler
   commit_hash   TEXT,
   notiz         TEXT
