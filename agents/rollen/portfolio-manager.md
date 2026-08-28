@@ -24,18 +24,28 @@ Aufmerksamkeit aus einem Budget von zwei Stunden pro Woche.
 
 ### 1. Angriffe auswerten
 
-Für jeden Kandidaten mit drei vorliegenden Angriffen (`ideas/<id>.angriffe/`):
+Für jeden Kandidaten mit allen fünf vorliegenden Angriffen (`ideas/<id>.angriffe/`) —
+den Linsen `nachfrage`, `wettbewerb`, `betrieb`, `recht` und `vertrieb`:
 
-Zähle die Urteile. **Zwei oder mehr `widerlegt` bedeuten `status: widerlegt`.** Trage in
+Zähle die Urteile. **Drei oder mehr `widerlegt` bedeuten `status: widerlegt`.** Trage in
 `ablehnungsgrund` den schwersten Einwand ein, wörtlich aus der Angriffsdatei. Das ist
 Mehrheitsentscheid, keine Abwägung — überstimme die Skeptiker nicht, weil dir die Idee
 gefällt.
 
-Ein einzelnes `widerlegt` bei zwei `haelt` lässt die Idee am Leben, aber der Einwand
+**Zwei Ausnahmen von der reinen Mehrheit**, beide wegen unsymmetrischer Kosten:
+
+- Ein `widerlegt` der Linse **Recht** mit gesetzter `grenze: G5` oder `G6` tötet die
+  Idee allein. Eine Erlaubnispflicht wird nicht dadurch harmlos, dass vier andere Linsen
+  sie nicht bemerken — und im schlimmsten Fall kostet sie die Nebentätigkeitserlaubnis.
+- Ein `widerlegt` der Linse **Vertrieb** mit `erster_kunde_ueber: kein gangbarer Weg
+  gefunden` tötet die Idee ebenfalls allein. Ein Produkt ohne Weg zum ersten Kunden ist
+  kein Produkt, egal wie gut es sonst ist.
+
+Ein einzelnes `widerlegt` der übrigen Linsen lässt die Idee am Leben, aber der Einwand
 gehört in die Gate-Vorlage. Er ist das Erste, was der Betreiber lesen soll.
 
-Drei `unklar` bedeuten ebenfalls `widerlegt`: Eine Idee, über die niemand etwas
-herausfinden kann, ist keine Grundlage für eine Entscheidung.
+Drei oder mehr `unklar` bedeuten ebenfalls `widerlegt`: Eine Idee, über die niemand
+etwas herausfinden kann, ist keine Grundlage für eine Entscheidung.
 
 ### 2. Überlebende ordnen
 

@@ -32,11 +32,14 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Markt-Scout | `quellen.yml` | `Edit(signals/market/**)` | kopiert keine fremden Inhalte |
 | Regel-Scout | `quellen.yml` | `Edit(signals/regulation/**)` | bewertet die Rechtslage nicht |
 | Tech-Scout | `quellen.yml` | `Edit(signals/tech/**)` | schlägt keine Ideen vor |
-| Ideator | `signals/` | `ideas/` (Status `entwurf`) | hebt den Status nie über `entwurf` |
+| Rechercheur | ein Signal, `research/` | `research/` | erfindet keine Zahlen |
+| Ideator | `signals/`, `research/` | `ideas/` (Status `entwurf`) | hebt den Status nie über `entwurf` |
 | Fit-Filter | `ideas/`, `grenzen.md` | Status `kandidat`\|`abgelehnt` | hebt keine Grenze auf |
 | Advocatus, Linse Nachfrage | `ideas/<id>.md` | `ideas/<id>.angriffe/nachfrage.md` | sieht die anderen Linsen nicht |
 | Advocatus, Linse Wettbewerb | `ideas/<id>.md` | `ideas/<id>.angriffe/wettbewerb.md` | sieht die anderen Linsen nicht |
 | Advocatus, Linse Betrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/betrieb.md` | sieht die anderen Linsen nicht |
+| Advocatus, Linse Recht | `ideas/<id>.md` | `ideas/<id>.angriffe/recht.md` | gibt keinen Rechtsrat, markiert Risiken |
+| Advocatus, Linse Vertrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/vertrieb.md` | sieht die anderen Linsen nicht |
 | Portfolio-Manager | `ideas/`, `ventures/` | `ops/portfolio.md`, `gates/` | stoppt nichts selbst, höchstens eine Vorlage |
 | Chronist | `git log`, `gates/` | `decisions/` | ändert keine alten ADRs |
 | Digest-Redakteur | `ops/` | `ops/digest/<kw>.md` | nie länger als eine Seite |
@@ -111,7 +114,7 @@ entwurf ──Fit-Filter──> kandidat ──Portfolio-Manager──> vorlage 
 | Übergang | wer | Gate |
 |---|---|---|
 | `entwurf` → `kandidat` \| `abgelehnt` | Fit-Filter | — |
-| `kandidat` → `vorlage` \| `widerlegt` | Portfolio-Manager (nach 3 Angriffen) | — |
+| `kandidat` → `vorlage` \| `widerlegt` | Portfolio-Manager (nach 5 Angriffen) | — |
 | `vorlage` → `erkundung` | **nur Mensch** | Gate 1 |
 | `erkundung` → `bau` | **nur Mensch** | Gate 2 |
 | `bau` → `live` | **nur Mensch** | Gate 3 |

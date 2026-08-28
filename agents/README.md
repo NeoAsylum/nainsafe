@@ -87,10 +87,14 @@ dieselben Fehler dreimal; Verschiedenheit findet drei verschiedene:
 | `nachfrage` | Existiert der Schmerz, und zahlt jemand dafür? | Ärger ohne Zahlungsbereitschaft |
 | `wettbewerb` | Warum macht das nicht längst jemand? | etabliertem Anbieter, zu engem Zeitfenster |
 | `betrieb` | Was passiert bei 100 Kunden und im Urlaub? | Aufwand, der mit der Kundenzahl wächst |
+| `recht` | Braucht das eine Erlaubnis? | RDG-Nähe, unversicherbarer Haftung |
+| `vertrieb` | Wie kommt der erste Kunde ohne Telefonat? | fehlendem Kanal, Preis-Kanal-Bruch |
 
 Jede Linse fällt ein Urteil (`widerlegt` / `haelt` / `unklar`) und benennt den schwersten
-Einwand. **Zwei von drei `widerlegt` töten die Idee** — der Portfolio-Manager überstimmt
-diese Mehrheit nicht. Alle drei schreiben im Zweifel `widerlegt`: Eine zu Unrecht
+Einwand. **Drei von fünf `widerlegt` töten die Idee** — der Portfolio-Manager überstimmt
+diese Mehrheit nicht. Zwei Linsen haben ein Vetorecht: Recht bei gesetzter Grenze G5/G6,
+Vertrieb wenn kein Weg zum ersten Kunden gefunden wurde. Beide Male sind die Kosten
+unsymmetrisch genug, dass eine Mehrheit sie nicht überstimmen sollte. Alle drei schreiben im Zweifel `widerlegt`: Eine zu Unrecht
 verworfene Idee kostet fast nichts, eine zu Unrecht durchgewinkte kostet Wochen.
 
 ## Zeitplanung

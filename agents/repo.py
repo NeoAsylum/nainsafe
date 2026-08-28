@@ -15,7 +15,15 @@ from lauf import frontmatter
 WURZEL = Path(__file__).resolve().parent.parent
 IDEEN = WURZEL / "ideas"
 
-LINSEN = ("nachfrage", "wettbewerb", "betrieb")
+# Fuenf unabhaengige Blickwinkel je Kandidat. Recht kam dazu, weil zwei der ersten vier
+# Ideen an Erlaubnispflicht starben -- aber erst im Fit-Filter, nach voller Ausarbeitung.
+# Vertrieb kam dazu, weil daran Nebenerwerbe am haeufigsten scheitern: nicht am Produkt,
+# sondern daran, dass niemand davon erfaehrt.
+LINSEN = ("nachfrage", "wettbewerb", "betrieb", "recht", "vertrieb")
+
+# Ab wie vielen "widerlegt" eine Idee stirbt. Bei drei Linsen waren es zwei; bei fuenf
+# bleibt es eine einfache Mehrheit.
+MEHRHEIT = 3
 
 
 def ideen(status: str | None = None) -> list[dict]:
@@ -65,5 +73,30 @@ def offene_angriffe(grenze: int = 2) -> list[tuple[str, str]]:
 
 
 def bereit_zur_bewertung() -> list[dict]:
-    """Kandidaten, bei denen alle drei Linsen vorliegen -- reif fuer den Vorstand."""
+    """Kandidaten, bei denen alle Linsen vorliegen -- reif fuer den Vorstand."""
     return [k for k in ideen("kandidat") if angriffe(k["_id"]) >= set(LINSEN)]
+
+
+SIGNALE = WURZEL / "signals"
+RESEARCH = WURZEL / "research"
+
+
+def offene_recherchen(grenze: int = 6) -> list[str]:
+    """Signale, zu denen noch keine Recherche vorliegt -- neueste zuerst.
+
+    Der Rechercheur laeuft je Signal einmal. Was er einmal ausgegraben hat, bleibt
+    gueltig, bis jemand es bewusst erneuert -- eine Segmentgroesse aendert sich nicht
+    ueber Nacht.
+    """
+    erledigt = set()
+    for d in RESEARCH.glob("*.md"):
+        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        if kopf.get("signal"):
+            erledigt.add(str(kopf["signal"]).strip())
+
+    offen = []
+    for sig in sorted(SIGNALE.glob("*/*.md"), reverse=True):
+        pfad = sig.relative_to(WURZEL).as_posix()
+        if pfad not in erledigt:
+            offen.append(pfad)
+    return offen[:grenze]

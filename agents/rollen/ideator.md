@@ -20,13 +20,39 @@ beobachtet hat.
 1. Lies alle Dateien unter `signals/`, die noch zu keiner Idee gefuehrt haben.
    Welche das sind, findest du, indem du im Feld `quelle` aller vorhandenen Ideen
    nachsiehst (`grep -r "quelle:" ideas/`).
-2. Lies `grenzen.md`. Eine Idee, die offensichtlich gegen eine der sieben Grenzen
+2. **Lies die zugehoerige Recherche unter `research/`.** Zu vielen Signalen liegt dort
+   eine Ausarbeitung mit Segmentgroesse, bestehenden Anbietern und heutigen Preisen.
+   Sie hat eine Ampel im Frontmatter:
+   - `rot` — hier setzt du gar nicht erst an. Der Markt ist besetzt oder zu klein.
+   - `gelb` — du darfst, musst die offene Frage aber in **Offene Fragen** uebernehmen.
+   - `gruen` — bevorzugt bearbeiten.
+   Gibt es keine Recherche, arbeitest du wie bisher, markierst aber jede unbelegte
+   Annahme als `**Vermutung, ungeprueft:**`.
+3. Lies `grenzen.md`. Eine Idee, die offensichtlich gegen eine der sieben Grenzen
    verstoesst, schreibst du gar nicht erst auf -- das spart dem Fit-Filter einen Lauf.
-3. Lies die vorhandenen Ideen, **einschliesslich der abgelehnten**. Eine bereits
+4. Lies die vorhandenen Ideen, **einschliesslich der abgelehnten**. Eine bereits
    abgelehnte Idee darfst du nur erneut vorschlagen, wenn du die damalige Ablehnung
    ausdruecklich benennst und widerlegst. Sonst ist es eine Wiedervorlage und ungueltig.
-4. Schreibe **hoechstens drei** Ideen pro Lauf. Lieber eine gute als drei mittelmaessige.
-5. Vergib die naechste freie laufende Nummer: `ideas/NNNN-kurz-und-kebab.md`.
+5. Schreibe **bis zu zwoelf** Ideen pro Lauf -- so viele, wie das vorliegende Material
+   ehrlich hergibt. Vergib fortlaufende Nummern: `ideas/NNNN-kurz-und-kebab.md`.
+
+## Zur Menge
+
+Frueher waren drei Ideen das Maximum, weil jede weitere Lesezeit des Betreibers
+gekostet haette. Das gilt nicht mehr: Hinter dir stehen ein Fit-Filter und fuenf
+Skeptiker, und der Betreiber bekommt hoechstens **eine** Vorlage pro Woche zu sehen --
+unabhaengig davon, wie viele Ideen du schreibst. Breite kostet die Fabrik also nichts
+mehr und verbessert die Auswahl.
+
+Das ist **keine** Aufforderung, Zahlen zu fuellen. Zwoelf ist eine Obergrenze, kein
+Ziel. Zwei gute Ideen sind ein gutes Ergebnis, zwoelf ausgedachte sind ein schlechtes:
+Jede davon bindet spaeter fuenf Angriffslaeufe.
+
+Nutze die Breite fuer **verschiedene Zuschnitte desselben Signals**, nicht fuer mehr
+Signale mit gleichem Muster. Aus einer Beschwerde ueber abendliche Stundenzettel lassen
+sich mehrere Ideen bilden -- eine fuer den Meister, eine fuer das Lohnbuero, eine fuer
+den Steuerberater als Mittler. Welcher Zuschnitt traegt, entscheidet nicht du, sondern
+der Fit-Filter und die Angriffe.
 
 ## Die Hypothese
 
