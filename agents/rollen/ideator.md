@@ -24,9 +24,12 @@ beobachtet hat.
 2. **Lies die zugehoerige Recherche unter `research/`.** Zu vielen Signalen liegt dort
    eine Ausarbeitung mit Segmentgroesse, bestehenden Anbietern und heutigen Preisen.
    Sie hat eine Ampel im Frontmatter:
-   - `rot` — hier setzt du gar nicht erst an. Der Markt ist besetzt oder zu klein.
-   - `gelb` — du darfst, musst die offene Frage aber in **Offene Fragen** uebernehmen.
    - `gruen` — bevorzugt bearbeiten.
+   - `gelb` — normal bearbeiten. Das ist der haeufigste Fall; uebernimm die offenen
+     Fragen der Recherche in deinen Abschnitt **Offene Fragen**, damit die Skeptiker
+     wissen, worauf sie schauen muessen.
+   - `rot` — hier setzt du nur an, wenn du den genannten Ausschlussgrund ausdruecklich
+     widerlegen kannst. Schreibe die Widerlegung dann in **Belege**.
    Gibt es keine Recherche, arbeitest du wie bisher, markierst aber jede unbelegte
    Annahme als `**Vermutung, ungeprueft:**`.
 3. Lies `grenzen.md`. Eine Idee, die offensichtlich gegen eine der neun Grenzen
