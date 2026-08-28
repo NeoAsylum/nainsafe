@@ -1,10 +1,10 @@
 ---
 id: 0003-cra-schwachstellen-wachdienst
 titel: Wachdienst für Fremdkomponenten in Produkten mit digitalen Elementen
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/regulation/2026-08-27-cyber-resilience-act-meldepflicht.md
 
@@ -13,7 +13,7 @@ problem: Ab dem 11. September 2026 läuft bei einer aktiv ausgenutzten Schwachst
 loesung: Ein Dienst, der die vom Hersteller einmal hinterlegte Komponentenliste (SBOM) täglich gegen öffentliche Schwachstellenverzeichnisse abgleicht und bei einem Treffer eine datierte Benachrichtigung mit Komponente, Version, Fundstelle und Zeitstempel versendet.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G6 — der einzige Zweck des Dienstes ist es, den Lauf einer gesetzlichen Frist von 24 beziehungsweise 72 Stunden auszuloesen. Ein uebersehener Treffer fuehrt unmittelbar dazu, dass der Hersteller die Meldefrist reisst; der Folgeschaden aus Sanktion und ungemeldetem Vorfall uebersteigt ein Abo-Entgelt um Groessenordnungen. Der Sache nach ist das Fristueberwachung, und die nennt G6 ausdruecklich. Die vom Ideator selbst als entscheidend markierte Abgrenzung 'zusaetzliche Beobachtung, keine Uebernahme der Pflicht' traegt voraussichtlich nicht, weil die Ueberwachung die einzige geschuldete Leistung und damit Kardinalpflicht des Vertrags ist; die Haftung dafuer laesst sich in AGB gegenueber Unternehmern nicht auf null begrenzen (Vermutung, ungeprueft — die Beweislast liegt aber bei der Idee, nicht beim Filter). Damit waere eine Vermoegensschadenhaftpflicht noetig und teuer, was nach der Faustregel zu G6 die Idee zu gross fuer ein Nebengewerbe macht. Unsicherheit, widerlegbar: ein verbindliches Praemienangebot eines Versicherers fuer genau diese Taetigkeit, das der Deckungsbeitrag traegt, widerlegt die Ablehnung. Auch dann bleibt vor jeder Konzeption G4 zu klaeren: die Zuordnung von Firmware-Komponentennamen zu CVE-Kennungen und die Triage der Falschtreffer sind nicht als aufwandsneutral bei 100 Kunden nachgewiesen."
 
 score:
   zwang: null

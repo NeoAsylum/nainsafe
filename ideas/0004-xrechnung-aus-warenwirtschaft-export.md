@@ -1,10 +1,10 @@
 ---
 id: 0004-xrechnung-aus-warenwirtschaft-export
 titel: XRechnung aus dem Export einer nicht mehr gepflegten Branchensoftware
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/regulation/2026-08-27-e-rechnung-ausstellungspflicht-stufen.md
 
@@ -13,7 +13,7 @@ problem: Ab dem 1. Januar 2027 müssen diese Unternehmen E-Rechnungen im Format 
 loesung: Ein Dienst, der den strukturierten Rechnungsexport der bestehenden Software entgegennimmt und daraus valide XRechnung- oder ZUGFeRD-Dateien erzeugt, ohne dass die Branchensoftware angefasst wird.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G4 — das Segment ist ueber seine Heterogenitaet definiert: Gemeinsam ist den Kunden ausschliesslich, dass jeder eine andere, nicht mehr gepflegte Branchensoftware mit einem anderen Exportformat einsetzt. Kundenspezifische Feldzuordnung ist damit nicht ein Anlaufproblem, sondern der Kern des Produkts. Jeder Neukunde bringt eine eigene Zuordnung samt Sonderfaellen (Steuersaetze, Skonto, Reverse Charge, Kleinbetragsrechnung, auslaendische Kaeufer), die bei jeder Aenderung des Altsystem-Exports nachgezogen werden muss. Der Aufwand skaliert mit der Kundenzahl statt mit dem Rechnungsvolumen — genau die Pruefrage von G4. Der Ideator benennt diesen Punkt selbst als den, an dem die Idee vermutlich kippt. Verschaerfend: die Umwandlung ist monatlich terminkritisch; ein fehlgeschlagener Export blockiert die Rechnungsstellung des Kunden und erzwingt eine Reaktion am selben Tag, was zusaetzlich G3 beruehrt. Unsicherheit, widerlegbar: ein Nachweis, dass mindestens fuenf Branchensoftwares aus diesem Segment ein gemeinsames, vollstaendiges Exportformat liefern, das ohne kundenspezifische Zuordnung verarbeitbar ist, widerlegt die Ablehnung. Auch dann bliebe G7 offen — ein Preis im Centbereich je Rechnung traegt nach Steuern kein Nebengewerbe, und ein Grundpreis je Kunde ist bisher nur eine Ueberlegung."
 
 score:
   zwang: null
