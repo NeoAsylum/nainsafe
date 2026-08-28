@@ -28,7 +28,16 @@ from lauf import db, jetzt, lauf  # noqa: E402
 # solche Ideen laufen fast zwangslaeufig darauf hinaus, eine Rechtsfrage zu beantworten
 # -- Grenze G5. Beide Ideen des ersten Laufs starben genau daran. Erst geaeusserter
 # Aerger, Marktluecken und neue Bausteine machen die Fabrik ergebnisoffen.
-SENSOREN = ["regel-scout", "pain-scout", "markt-scout", "tech-scout"]
+SENSOREN = [
+    "regel-scout",
+    "pain-scout",
+    "markt-scout",
+    "tech-scout",
+    # Sucht Modelle, die anderswo nachweislich laufen. Die einzige Signalart, bei der
+    # die Frage "zahlt jemand dafuer" schon beantwortet ist -- genau die Frage, an der
+    # bisher jede Idee starb.
+    "modell-scout",
+]
 
 # Nach den Sensoren, vor dem Ideator: Der Rechercheur graebt jedes neue Signal aus,
 # damit die Ideen auf Zahlen stehen statt auf Vermutungen. Er laeuft je Signal einmal.
@@ -50,8 +59,8 @@ WIP_BAU_MAX = 1
 # gegenlesen: Die Frage ist nie, ob mehr Laeufe moeglich sind, sondern ob sie noch
 # Neues finden.
 
-RECHERCHEN_MAX = 6        # Signale, die pro Nacht ausgegraben werden
-ANGRIFFE_MAX_IDEEN = 4    # Kandidaten, die pro Nacht angegriffen werden (× 5 Linsen)
+RECHERCHEN_MAX = 15       # Signale, die pro Nacht ausgegraben werden
+ANGRIFFE_MAX_IDEEN = 10   # Kandidaten, die pro Nacht angegriffen werden (× 5 Linsen)
 
 def wip() -> tuple[int, int]:
     verbindung: sqlite3.Connection = db()

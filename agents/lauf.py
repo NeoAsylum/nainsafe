@@ -19,6 +19,7 @@ import os
 import shutil
 import sqlite3
 import subprocess
+import time
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -188,10 +189,24 @@ def journal_ende(verbindung, lauf_id: int, ergebnis: str, nutzung: dict,
 
 # ---------------------------------------------------------------- Git
 
-def git(*args: str) -> str:
-    fertig = subprocess.run(
-        ["git", *args], cwd=WURZEL, capture_output=True, text=True, encoding="utf-8"
-    )
+# Git haelt beim Schreiben eine Sperre auf dem Index. Laufen mehrere Agenten
+# gleichzeitig -- und das ist der Normalfall, sobald man die Auslastung hochdreht --,
+# scheitert der zweite mit "index.lock: File exists" und verliert seine Arbeit, obwohl
+# nichts kaputt ist. Deshalb wird jeder schreibende Git-Aufruf wiederholt.
+SPERRE_VERSUCHE = 12
+SPERRE_PAUSE = 2.0
+
+
+def git(*args: str, geduldig: bool = False) -> str:
+    """Ruft git auf. `geduldig` wartet, wenn ein anderer Lauf gerade den Index haelt."""
+    for versuch in range(SPERRE_VERSUCHE if geduldig else 1):
+        fertig = subprocess.run(
+            ["git", *args], cwd=WURZEL, capture_output=True, text=True,
+            encoding="utf-8", errors="replace",
+        )
+        if fertig.returncode == 0 or "index.lock" not in (fertig.stderr or ""):
+            return (fertig.stdout or "").strip()
+        time.sleep(SPERRE_PAUSE * (versuch + 1) / 2)
     return (fertig.stdout or "").strip()
 
 
@@ -228,16 +243,25 @@ def committen(rolle: str, gegenstand: str | None, lauf_id: int,
                  if z.strip()]
     if not geaendert:
         return None, 0, None
-    git("add", "--", *pfade)
+    git("add", "--", *pfade, geduldig=True)
     betreff = f"{rolle}: {gegenstand or 'lauf'} ({len(geaendert)} Dateien)"
-    fertig = subprocess.run(
-        ["git", "commit", "-q", "-m", betreff, "-m", f"Lauf {lauf_id}"],
-        cwd=WURZEL, capture_output=True, text=True, encoding="utf-8",
-    )
-    if fertig.returncode != 0:
+
+    # Auch der Commit selbst wartet auf die Sperre. Zwei Agenten, die im selben
+    # Moment fertig werden, sind bei hoher Auslastung der Regelfall, kein Ausnahmefall.
+    for versuch in range(SPERRE_VERSUCHE):
+        fertig = subprocess.run(
+            ["git", "commit", "-q", "-m", betreff, "-m", f"Lauf {lauf_id}"],
+            cwd=WURZEL, capture_output=True, text=True,
+            encoding="utf-8", errors="replace",
+        )
+        if fertig.returncode == 0:
+            return git("rev-parse", "--short", "HEAD"), len(geaendert), None
         meldung = ((fertig.stderr or "") + (fertig.stdout or "")).strip()
-        return None, len(geaendert), meldung[:300] or "git commit fehlgeschlagen"
-    return git("rev-parse", "--short", "HEAD"), len(geaendert), None
+        if "index.lock" not in meldung:
+            break
+        time.sleep(SPERRE_PAUSE * (versuch + 1) / 2)
+
+    return None, len(geaendert), meldung[:300] or "git commit fehlgeschlagen"
 
 
 # ---------------------------------------------------------------- Lauf
