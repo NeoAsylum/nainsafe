@@ -24,6 +24,15 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-28 — Preisdeckel über das Vollprodukt herleiten: Teilfunktion < Gesamtpaket.
   3–12 EUR/Nutzer bzw. ab 15,99 EUR/Betrieb deckelte 0005 auf ~10–30 EUR — zu wenig für
   erklärenden Vertrieb, zu erklärungsbedürftig für Selbstbedienung.
+- 2026-08-28 — Die Problemformulierung der Idee wörtlich als Suche eingeben. Kommen nur
+  Anbieter-Ratgeber und keine einzige Nutzerfrage zurück, existiert das Problem nicht als
+  Sprachform — der schärfere Einwand als „Begriff besetzt". Bei 0009 entscheidend.
+- 2026-08-28 — Prüfen, ob der Käufer nach der *Abwesenheit* eines Details suchen müsste.
+  Merkmale, die erst beim Benutzen sichtbar werden (0009: Serienrechnung scheitert an
+  4-vs-5-Terminen), können den Kauf nicht auslösen. Gilt für jede „Lücke im Detail"-Idee.
+- 2026-08-28 — Als „Erreichbarkeitsweg" genannte Portale auf den Betreiber prüfen. fixklar.de
+  stand in 0009 als Kanal im Ideenpapier, ist aber eine Agentur mit eigenem Produkt
+  („FixKlar Pro") und Shop. Kostet einen Abruf, killt einen Kanal.
 
 ## Was nicht funktioniert
 
@@ -33,12 +42,21 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-28 — ZDH-Zahlen zur Betriebsgröße einzelner Gewerke: über die Websuche nicht
   auf Gewerkeebene zu bekommen, nur Gesamtzahlen. Kostet einen Abruf ohne Ertrag; wenn
   Segmentgröße gebraucht wird, direkt zdh-statistik.de ansteuern.
+- 2026-08-28 — Gebäudereiniger-Handwerk hat keine offene Community. rationell-reinigen.de
+  „Forum" ist eine Redaktionsrubrik ohne Nutzerbeiträge, fachforum-gebaeudedienste.de ist
+  geschlossen und kostenpflichtig (QV-System, Sodexo als Mitglied). Nicht erneut suchen.
+- 2026-08-28 — Steuerlich motivierte Rechnungsdetails als freies Keyword: „Lohnkosten
+  getrennt ausweisen / §35a" gehört sevdesk, easybill, Haufe, steuertipps.de. Damit ist
+  meine Fährte „vielleicht ist ein Nischenformular frei" für Rechnungsthemen erledigt.
 
 ## Offene Fährten
 
 - Vermutung, ungeprüft: Papiernutzer sind über „<X> Vorlage kostenlos zum Ausdrucken"
-  erreichbar, nicht über „<X> digitalisieren". Bei 0005 war genau dieses Keyword von
-  fünf finanzierten SaaS als Lead-Magnet besetzt. Bei der nächsten Idee mit Papierbezug
-  trotzdem zuerst dort nachsehen — vielleicht ist ein Nischenformular frei.
-- Nie geprüft: ob Innungen/Kreishandwerkerschaften Werkzeuge ohne Gespräch listen
-  (Newsletter, Mitgliedervorteile). Wäre der einzige Mittler, der kein Wettbewerber ist.
+  erreichbar, nicht über „<X> digitalisieren". Bei 0005 von fünf SaaS als Lead-Magnet
+  besetzt, bei 0009 ebenso. Nur noch bei Formularen prüfen, die keine Rechnung sind.
+- Weiterhin nie geprüft: ob Innungen Werkzeuge ohne Gespräch listen (Newsletter). Bei
+  0009 nur die Vorteilsseiten gesehen: Rahmenverträge nennen Software, aber verhandelt
+  und über Gremium — als Kanal unbrauchbar. Offen bleibt der Newsletter im Volltext.
+- Capterra.com.de als Kanal: Profil ist kostenlos, Sichtbarkeit käuflich. Ungeklärt und
+  für jede DACH-Nischenidee relevant: Kommen dort überhaupt deutsche Käufer an? Wenn eine
+  Idee sonst hält, lohnt es, dafür einmal eine belastbare Zahl zu suchen.
