@@ -1,10 +1,10 @@
 ---
 id: 0011-wasserprotokoll-je-besuch
 titel: Herstellerneutrales Wasserprotokoll je Servicebesuch am Pool
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/modelle/2026-08-28-branchensoftware-poolservice-betriebe.md
 
@@ -13,7 +13,7 @@ problem: Bei jedem Besuch werden acht Wasserparameter mit dem Photometer gemesse
 loesung: Ein Protokollbuch je Anlage, in das der Techniker die gemessenen Werte vor Ort einträgt und das daraus den Besuchsbeleg für den Haushalt und die Wertehistorie je Becken erzeugt — herstellerneutral, ohne Bindung an einen Chemielieferanten und ausdrücklich ohne Dosierempfehlung.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "G7 — die Marge traegt erst bei einer Stueckzahl, die dieser Markt nicht hergibt, und der Kern des Produkts wird bereits verschenkt. Erstens die Groesse: 1.346 Poolbauer-Adressen in Deutschland, DACH-Huelle rund 1.900, aber nur 72 Firmen bundesweit bezeichnen sich selbst als 'Poolservice'. Welcher Anteil laufenden Service statt Bau betreibt, war nach zwei Rechercheurlaeufen ausdruecklich nicht zu beschaffen — das ist keine offene Beweisfrage mehr, sondern eine unbeschaffbare Zahl, und sie ist die tragende. Bei 40 EUR im Monat braucht ein Nebengewerbe rund 50 zahlende Betriebe fuer einen bescheidenen Ertrag nach Steuern; gemessen an 72 waeren das 70 Prozent Marktanteil. Zweitens der Wettbewerber: Die BAYROL Solution Cloud liefert laut eigenem Beleg exakt den Produktkern — Wasseranalyse ueber bis zu zehn Parameter plus 'Kundendatenbank mit Historie aller Wasseranalysen, Beckengroesse, Pflegemethode, Kontroll- und Servicebesuchen' — zu 0,00 EUR, und zwar vom Chemielieferanten, mit dem die Betriebe ohnehin im Haendlerverhaeltnis stehen und der jeden Grund hat, es weiter zu verschenken. Das ist ein anderer Fall als ein kostenloses Terminbuchungssystem, das etwas Benachbartes tut. Drittens die Saison: gemessen wird Mai bis September, bezahlt wuerde zwoelf Monate — ein Abschlag auf den effektiven Jahrespreis obendrauf. Unsicherheit, die eine Widerlegung traegt: Enthaelt der BAYROL-Fachhaendlervertrag doch eine Gebuehr, oder steht ein belegbar grosser Teil der Betriebe ausserhalb dieses Haendlerverhaeltnisses, faellt Punkt zwei — dann bliebe Punkt eins zu widerlegen, und dafuer braeuchte es die Zahl der Servicebetriebe, die zweimal nicht zu beschaffen war."
 
 score:
   zwang: null

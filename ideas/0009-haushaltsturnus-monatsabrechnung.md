@@ -1,10 +1,10 @@
 ---
 id: 0009-haushaltsturnus-monatsabrechnung
 titel: Monatsrechnung aus den tatsächlich gefahrenen Haushaltsterminen
-status: entwurf
+status: kandidat
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/modelle/2026-08-28-vertikale-software-privathaushalts-reinigungsfirmen.md
 
@@ -16,11 +16,12 @@ zahlungsgrund: nutzen
 ablehnungsgrund: null
 
 score:
-  zwang: null
-  erreichbar: null
-  ruhe: null
-  marge: null
-  genehmigung: null
+  zwang: 2
+  erreichbar: 2
+  ruhe: 4
+  marge: 3
+  genehmigung: 5
+  summe: 16
 ---
 
 ## Belege

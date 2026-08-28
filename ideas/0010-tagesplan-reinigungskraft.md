@@ -1,10 +1,10 @@
 ---
 id: 0010-tagesplan-reinigungskraft
 titel: Der Tagesplan der Reinigungskraft, ohne Zettel und ohne Rückruf
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/modelle/2026-08-28-vertikale-software-privathaushalts-reinigungsfirmen.md
 
@@ -13,7 +13,7 @@ problem: Einsatzinformationen laufen mündlich, per Notizzettel und über Telefo
 loesung: Der Betrieb hinterlegt den Turnus einmal; jede Kraft ruft ihren Tag als Liste ab — Adresse, Zeitfenster, Zutritt, Besonderheiten des Haushalts — und quittiert jeden Einsatz, und der Inhaber sieht den Stand des Tages auf einem Blatt statt in fünf Chatverläufen.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "G6 — die Loesung fuehrt Zutrittsinformationen zu bewohnten Privatwohnungen als Kernfeld ('Adresse, Zeitfenster, Zutritt'). Ein Datenabfluss trifft nicht den zahlenden Betrieb, sondern dessen Haushalte, und ermoeglicht Einbrueche in beliebig viele Wohnungen gleichzeitig; der Schaden uebersteigt jede denkbare Aboeinnahme um Groessenordnungen. Eine Cyber-Deckung fuer diesen Datenbestand waere fuer ein Nebengewerbe teuer — die Faustregel von G6. Streicht man Zutritt und Besonderheiten, bleibt eine reine Terminliste, und dagegen stehen laut eigenem Beleg vier dauerhaft kostenlose Terminbuchungssysteme mit deutschsprachiger Reinigungs-Landingpage sowie Meisterwerks fertiges Modul 'Kalender & Planung' zu 5 EUR je Nutzer. Beide Auflösungen sind toedlich: mit Zutritt G6, ohne Zutritt kein Unterschied zum Markt. Widerlegbar waere das nur durch einen Zuschnitt, der den Zutritt nachweislich nie speichert und trotzdem einen belegten Vorteil gegen die Objektlogik der vorhandenen Anbieter zeigt."
 
 score:
   zwang: null
