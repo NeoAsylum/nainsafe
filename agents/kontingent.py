@@ -47,9 +47,13 @@ def main() -> int:
         tok = tok or 0
         print(f"{rolle:22} {n:>6} {tok:>12,} {tok // max(n,1):>10,}".replace(",", "."))
 
+    # Der schwerste Tag im Zeitraum statt eines festen Datums -- ein hartcodierter
+    # Zeitstempel meldet ab dem naechsten Tag stillschweigend veraltete Zahlen.
     nacht = v.execute(
         """SELECT count(*), sum(tokens_in + tokens_out)
-           FROM lauf WHERE gestartet LIKE '2026-08-28T01%'"""
+           FROM lauf WHERE gestartet > datetime('now', '-7 days')
+           GROUP BY date(gestartet)
+           ORDER BY sum(tokens_in + tokens_out) DESC LIMIT 1"""
     ).fetchone()
 
     fenster = v.execute(
@@ -76,7 +80,7 @@ def main() -> int:
     # Ein Nachtlauf ist der eigentliche Massstab: Er faellt in genau ein Fenster.
     if nacht and nacht[1]:
         n_anteil = nacht[1] / FENSTER_TOKENS
-        print(f"\n  Ein vollstaendiger Nachtlauf ({nacht[0]} Rollen)")
+        print(f"\n  Schwerster Tag ({nacht[0]} Laeufe)")
         print(f"    {balken(n_anteil)}  {n_anteil*100:5.2f} %")
         print(f"    {nacht[1]:,} Tokens".replace(",", "."))
 
