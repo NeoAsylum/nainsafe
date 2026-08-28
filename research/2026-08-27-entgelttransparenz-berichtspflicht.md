@@ -2,8 +2,9 @@
 typ: recherche
 signal: signals/regulation/2026-08-27-entgelttransparenz-berichtspflicht.md
 erstellt: 2026-08-28
+ergaenzt: 2026-08-28
 segmentgroesse: "18.632 rechtliche Einheiten ab 250 Beschaeftigten (Destatis 2024); Band 100-249 nicht separat veroeffentlicht, Obergrenze 84.701 (50 bis unter 250)"
-anbieter_gefunden: "30 kommerziell, davon 8 mit Preisangabe; zusaetzlich 7 kostenlose staatliche Werkzeuge"
+anbieter_gefunden: "33 kommerziell, davon 8 mit Preisangabe; zusaetzlich 7 kostenlose staatliche Werkzeuge. Alle drei grossen HR-Plattformen der Zielgruppe (Personio, SAP, Workday) liefern inzwischen belegt aus"
 preisspanne: "0 EUR (staatlich) bis 8.990 EUR/Jahr; typisch 1.790-4.990 EUR"
 ampel: rot
 ---
@@ -261,6 +262,120 @@ Richtlinie die Beweislast um: Der Arbeitgeber muss beweisen, dass Unterschiede a
 geschlechtsneutralen Kriterien beruhen. Ein falsch gerechneter Bericht ist damit direkt
 prozessrelevant. Das ruehrt an G6.
 
+## Nachtrag vom 2026-08-28: drei der offenen Punkte geschlossen
+
+Nachgeprueft wurden die drei Punkte aus „Offen geblieben", die heute pruefbar waren.
+Alle drei bestaetigen die Ampel; keiner bewegt sie.
+
+### a) Der Kabinettstermin August 2026 ist verstrichen, ohne dass ein Entwurf existiert
+
+Die Erstrecherche hielt fest, der Kabinettstermin sei vom 24.06.2026 auf August 2026
+verschoben worden. Heute, am **2026-08-28**, ist weder ein Referenten- noch ein
+Regierungsentwurf oeffentlich. Belegkette, chronologisch:
+
+| Datum | Quelle | Aussage |
+|---|---|---|
+| 2025-11-10 | mit-unternehmer.com, „Das grosse Warten auf den ersten Gesetzesentwurf" | kein Referentenentwurf |
+| 2026-02 | ra-poeppel.de, „Stand Februar 2026" | Entwurf war fuer Q1/2026 angekuendigt, „nicht oeffentlich bekannt" |
+| 2026-03-12 | mit-unternehmer.com | BMBFSFJ: Abschlussbericht im November 2025 uebergeben, Ministerium „weiterhin in internen Abstimmungen und wird nach Abschluss den Referentenentwurf finalisieren"; genauerer Zeitplan nicht mitteilbar |
+| 2026-05-13 | personalpraxis24.de | BMBFSFJ nur noch: „Die Umsetzung [...] wird in dieser Legislaturperiode erfolgen" |
+| 2026-07 | haufe.de, Wissensbeitrag Entgelttransparenz | „Ein konkreter deutscher Gesetzentwurf lag zum Redaktionsschluss noch nicht vor" |
+
+(alle abgerufen 2026-08-28)
+
+Eine gezielte Suche nach einem Kabinettsbeschluss oder Entwurf aus August 2026 blieb
+ohne Treffer. Nach der Logbuchregel „wenn eine Zahl nach zehn Quellen nicht auftaucht,
+ist ihr Fehlen der Befund" ist das als Negativbefund belastbar, nicht als Suchluecke.
+Die Signalquelle selbst erwartet das Umsetzungsgesetz inzwischen fuer **Anfang 2027** —
+also fuer denselben Zeitraum, in dem der erste Bericht faellig wird.
+
+**Und es gibt nicht einmal Druck von aussen:** Das Vertragsverletzungspaket der
+EU-Kommission gegen Deutschland vom **08.07.2026** — dem ersten nach Ablauf der
+Umsetzungsfrist — betrifft Abfallrecycling, Dividendenbesteuerung und die
+Datenschutzrichtlinie fuer die Strafverfolgung (RL (EU) 2016/680). Die
+Entgelttransparenzrichtlinie kommt darin **nicht** vor
+(germany.representation.ec.europa.eu, Pressemitteilung vom 2026-07-08, abgerufen
+2026-08-28).
+
+Das dreht Grund 5 der Erstrecherche nicht um, sondern verschaerft ihn: Wer heute baut,
+baut gegen eine Spezifikation, die es in weniger als zehn Monaten vor dem Stichtag
+noch immer nicht gibt — Kennzahlenformat, Entgeltbestandteile, Meldestelle nach Art. 29
+und deren Schnittstelle sind samtlich offen, ebenso die Sanktionshoehe.
+
+### b) COMPASS-W und ZERT:Equal halten ihren Termin — Stand heute
+
+Die BMBFSFJ-Seite „Instrumente zur Pruefung der Entgeltgleichheit" nennt fuer beide
+Webanwendungen weiterhin „**voraussichtlich ab Herbst 2026**" (abgerufen 2026-08-28,
+woertlich bestaetigt). Ein Verzug ist also nicht gemeldet. Der Wortlaut zur Leistung
+ebenfalls unveraendert: COMPASS-W ermoeglicht „auf einfache und transparente Weise
+einen Ueberblick ueber gleiche und gleichwertige Arbeit fuer alle Arbeitsplaetze";
+mit ZERT:Equal koennen „alle Arbeitgeber unabhaengig von der Beschaeftigtenzahl ihre
+zu berichtenden Ergebnisse zur Entgeltgleichheit gemaess der ETRL ueberpruefen".
+
+Damit faellt das in der Erstrecherche erwaehnte hypothetische Zeitfenster weg: Die
+kostenlosen staatlichen Werkzeuge kommen frueher als das Gesetz, das sie ausfuellen sollen.
+
+### c) SAP und Workday liefern beide aus — die Personio-Beobachtung war kein Einzelfall
+
+Der offen gebliebene Punkt „was SAP SuccessFactors, Workday, Sage, DATEV und rexx
+konkret liefern, wurde nicht geprueft" ist fuer die zwei grossen jetzt beantwortet:
+
+- **SAP**, Mitteilung vom **2026-02-04**: vier Bausteine. *EU Pay Transparency Insights*
+  (Start 1. Halbjahr 2026) als Teil des **People Intelligence Package** in der SAP
+  Business Data Cloud — „analyze compensation, identify outliers, and address pay gaps";
+  *Gender Pay Gap Reporting* ueber Workforce Insights; *Employee Pay Transparency* als
+  Self-Service-Statement in SuccessFactors Employee Central (Jahresentgelt und
+  Durchschnittsverguetung nach Geschlecht); *Candidate Pay Transparency* mit
+  Entgeltspannen in Stellenanzeigen (SuccessFactors Recruiting, SmartRecruiters). Die
+  uebrigen drei sind bereits verfuegbar.
+  (news.sap.com/2026/02/new-capabilities-advance-pay-equity-aeu-pay-transparency-compliance/,
+  abgerufen 2026-08-28. **Einschraenkung:** Art.-9-Kennzahlen und Vergleichsgruppenbildung
+  werden dort nicht ausdruecklich benannt; die SAP-Roadmap-Quellen sprechen von
+  „reporting of KPIs listed in the EU pay transparency directive article 9", das aber nur
+  ueber die Suchzusammenfassung.)
+- **Workday**, Newsroom-Mitteilung vom **2026-06-11**, also am Tag nach Fristablauf:
+  *Pay Equity Hub* und *Pay Transparency Analyzer powered by Kainos* — bringt interne und
+  externe Entgeltdaten zusammen, „so HR teams can categorise workers, detect pay gaps, and
+  explain pay clearly to employees", verfuegbar in 135 Laendern, Referenzkunden Fugro,
+  David Lloyd Clubs, Kongsberg. Ob im Standard enthalten oder zubuchbar, sagt die Mitteilung
+  nicht. Bemerkenswert die dort zitierte Zahl: **nur 9 % der europaeischen Arbeitgeber**
+  haben bisher eine vollstaendige Transparenzstrategie umgesetzt — Selbsteinschaetzung aus
+  einer Anbieterstudie, als Korridor zu lesen, aber sie passt zur 11-%-Berichtsquote unter
+  der Vorgaengerpflicht (Abschnitt 4).
+  (en-gb.newsroom.workday.com, 2026-06-11, abgerufen 2026-08-28)
+
+**Fuer DATEV blieb es auch im zweiten Anlauf bei einem Fehlbefund:** DATEV taucht nur als
+*Datenquelle* auf, aus der die Pay-Equity-Anbieter importieren, nicht als Anbieter einer
+eigenen Entgelttransparenz-Auswertung.
+
+### d) Drei weitere Anbieter, davon einer wieder im Bestandsprodukt
+
+Neu gefunden, ueber die Erstrecherche hinaus (alle abgerufen 2026-08-28):
+
+| Anbieter | Art | Preis |
+|---|---|---|
+| **4PLAN** (software4you) | bereinigter und unbereinigter Gender Pay Gap, Custom-Reports fuer Management, Betriebsrat und Behoerden, Analyse nach Geschlecht/Position/Abteilung/Hierarchie — ausdruecklich **integrierter Bestandteil** der Suite (4PLAN HR, HR LIGHT, EVE), kein Zusatztool | nicht genannt |
+| **AIHRCON** | „Entgelttransparenz-Audit fuer den Mittelstand" | nicht genannt |
+| **Factorial HR** | HR-Plattform mit Entgelttransparenz-Inhalten | nicht genannt |
+
+Damit stehen 33 kommerzielle Anbieter. Wichtiger als die Zahl ist das Muster, das sich zum
+dritten Mal wiederholt: **4PLAN verkauft die Funktion nicht, es legt sie bei** — wie Personio
+und (im People Intelligence Package) SAP.
+
+Eine Korrektur zur Erstrecherche: **VerSAT** wird von der *mit-unternehmer.com Beratungs-GmbH*
+vertrieben, nicht von Recruiting-Impulse; der Preis von **4.950 EUR netto einmalig** und die
+Zusage „Updates werden kostenfrei aufgespielt" sind auf der Anbieterseite bestaetigt
+(mit-unternehmer.com/software-entgelttransparenz-und-equal-pay, abgerufen 2026-08-28).
+
+### Ergebnis des Nachtrags
+
+Die Ampel bleibt **rot**, und zwar aus einem Grund mehr als vorher. Die Erstrecherche
+nannte die fehlende Spezifikation (Grund 5) als Risiko und den moeglichen Verzug der
+staatlichen Werkzeuge als theoretisches Zeitfenster. Beides hat sich heute in dieselbe
+Richtung aufgeloest: **Das Gesetz verspaetet sich, die kostenlosen Werkzeuge nicht.**
+Wer in dieses Fenster stoesst, baut ohne Spezifikation gegen zwei Gratisanwendungen und
+drei HR-Plattformen, die die Kennzahl inzwischen alle im Bestand fuehren.
+
 ## Offen geblieben
 
 - **Die Zahl der Arbeitgeber im Band 100-249 ist nicht ermittelbar.** Destatis veroeffentlicht
@@ -272,18 +387,32 @@ prozessrelevant. Das ruehrt an G6.
   BMBFSFJ-PDF war nicht abrufbar; alle Aussagen dazu stammen aus drei unabhaengigen
   Zusammenfassungen (entgelt.de, kpmg-law.de, aba-online.de). Die Kernaussagen decken sich,
   aber der genaue Wortlaut zur Gruppenbildung und zu den staatlichen Tools ist ungeprueft.
-- **Ob COMPASS-W und ZERT:Equal den Termin Herbst 2026 halten, ist unbestaetigt.** Beide
-  Ankuendigungen stammen vom 2025-09-12; ein Verzug ist bei EU-finanzierten Projekten die
-  Regel. Sollten beide bis 2027 nicht erscheinen, entsteht ein Zeitfenster — aber in dieses
-  Fenster stossen dann zuerst die 30 Bestandsanbieter und Personio, nicht ein Neueinsteiger.
-- **Was SAP SuccessFactors, Workday, Sage, DATEV und rexx konkret liefern, wurde nicht im
-  Einzelnen geprueft.** Fuer Personio ist es belegt; fuer DATEV fand sich nur ein
-  Gehaltsvergleichs-Produkt und Vorbereitungsliteratur, keine Ankuendigung eines
-  ETRL-Berichts. Da alle grossen HR-Plattformen im Marktueberblick als Kategorie gefuehrt
-  werden, aendert das die Ampel nicht.
+- ~~**Ob COMPASS-W und ZERT:Equal den Termin Herbst 2026 halten, ist unbestaetigt.**~~
+  **Am 2026-08-28 nachgeprueft (Nachtrag b):** Die BMBFSFJ-Seite nennt weiterhin
+  „voraussichtlich ab Herbst 2026", ein Verzug ist nicht gemeldet. Endgueltig entschieden
+  ist es erst mit dem Erscheinen; naechster sinnvoller Pruefzeitpunkt ist Dezember 2026.
+- ~~**Was SAP SuccessFactors, Workday, Sage, DATEV und rexx konkret liefern, wurde nicht
+  im Einzelnen geprueft.**~~ **Am 2026-08-28 fuer SAP und Workday nachgeprueft
+  (Nachtrag c):** beide liefern seit Februar bzw. Juni 2026 benannte Produkte aus. Fuer
+  **DATEV** blieb es beim Fehlbefund — es erscheint nur als Datenquelle fremder Werkzeuge.
+  **Sage und rexx** sind weiterhin ungeprueft; da die drei grossen Plattformen der
+  Zielgruppe belegt sind, aendert das die Ampel nicht.
 - **Die Evaluationszahlen (11 % / 30 % / 4 %) stammen aus zitierender Fachpresse**, nicht aus
   der Bundestagsdrucksache selbst — dserver.bundestag.de ist weiterhin nicht lesbar. Drei
   Quellen nennen sie uebereinstimmend; als Groessenordnung belastbar, als exakte Werte nicht.
 - **Nicht recherchiert, weil es die Ampel nicht bewegt:** ob die Meldestelle nach Art. 29 in
   Deutschland eine Schnittstelle bekommt und welche. Sobald ein Referentenentwurf vorliegt,
   waere das die erste Frage — dann aber fuer einen anderen Zuschnitt als Idee 0001.
+  **Stand 2026-08-28: es liegt keiner vor** (Nachtrag a), die Frage bleibt also
+  unbeantwortbar, nicht nur unbeantwortet.
+- **Ob SAPs *EU Pay Transparency Insights* die sieben Kennzahlen des Art. 9 vollstaendig
+  abdeckt, ist nicht am Original belegt.** Die SAP-Mitteilung vom 2026-02-04 nennt Art. 9
+  nicht ausdruecklich; die Formulierung „reporting of KPIs listed in the EU pay transparency
+  directive article 9" stammt aus einer Suchzusammenfassung zu SAP-Roadmap-Seiten, nicht aus
+  einem abgerufenen Dokument. Nach der Logbuchregel zu ungegengeprueften Suchzusammen-
+  fassungen ist das kein Beleg. Fuer die Ampel ohne Belang — die Personio-Belegstelle ist
+  vollstaendig und deckt dieselbe Groessenklasse ab.
+- **Ob der Workday *Pay Transparency Analyzer* im Standard enthalten oder zubuchbar ist,
+  sagt die Mitteilung vom 2026-06-11 nicht.** Der Zusatz „powered by Kainos" deutet auf ein
+  Partnerprodukt und damit auf einen Aufpreis. Das ist der einzige der drei
+  Plattform-Befunde, bei dem der Preisboden nicht belegt bei null liegt.
