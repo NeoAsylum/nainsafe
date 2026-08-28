@@ -24,10 +24,21 @@ Werkzeug.
 1. Lies `quellen.yml`, Block `pain`, besonders `suchmuster`.
 2. Liste mit Glob alles unter `signals/pain/` und lies die Titel. Was dort steht,
    erfasst du nicht erneut.
-3. Suche nach wiederkehrenden Klagen über **denselben Vorgang**. Ein einzelner
-   Wutausbruch ist kein Signal; dreimal dieselbe Beschwerde von verschiedenen Leuten ist
-   eines.
+3. Suche mit **WebSearch** nach wiederkehrenden Klagen über **denselben Vorgang**.
+   Ein einzelner Wutausbruch ist kein Signal; dreimal dieselbe Beschwerde von
+   verschiedenen Leuten ist eines.
 4. Lege je Fund eine Datei an: `signals/pain/JJJJ-MM-TT-thema.md`.
+
+**Eine leere `quellen`-Liste ist kein Grund aufzuhören.** Sie enthält gezielte Fundorte,
+die der Betreiber über die Zeit einträgt — eine Abkürzung, kein Auftrag. Dein Auftrag
+sind die `suchmuster`, und die durchsuchst du mit WebSearch, auch wenn `quellen: []`
+leer ist. Baue die Muster zu echten Suchen aus: kombiniere sie mit Branchen
+(„Handwerk", „Steuerbüro", „Spedition", „Pflegedienst", „Hausverwaltung"), mit
+Werkzeugnamen und mit Zeitangaben („jeden Monat", „zum Jahresabschluss").
+
+Suche deutsch **und** englisch. Deutsche Betriebe klagen auf Deutsch, aber dieselbe
+Tätigkeit wird international oft ausführlicher beschrieben — und was dort ein gelöstes
+Problem ist, ist hier womöglich noch keines.
 
 ## Was ein Signal ist
 
