@@ -41,6 +41,18 @@ Eintrag — nicht den unbequemsten.
   nur Altbestaende bis 2030. Suchmuster `<Gesetz> Uebergangsfrist gilt nicht fuer Missverstaendnis
   Auslegung Kanzlei` — bei jedem Uebergangsfrist-Signal zuerst fragen, *wofuer* die Frist gerade
   *nicht* gilt. Bei § 38 BFSG: nicht fuer Websites und Apps (die sind Dienstleistung, nicht Produkt).
+- 2026-08-28 — **Fuenfte Erstfrage: Ist die „verlaengerte Frist" ueberhaupt eine Frist?** NIS2: der
+  31.07.2026 war blosse *Vollzugszurueckhaltung* des BSI, die gesetzliche Frist (§ 33 BSIG) lief am
+  06.03.2026 ab — eine Behoerde kann eine Gesetzesfrist gar nicht verlaengern. Suchmuster
+  `<Gesetz> Frist verpasst was jetzt Nachfrist rechtliche Einordnung`. Kanzleiblogs sagen es
+  deutlich, Fachpresse und IHK uebernehmen die Behoerdenzahl unkritisch. Gilt fuer jedes
+  „Frist verlaengert"-Signal.
+- 2026-08-28 — **Bei Regel-Signalen den Erfuellungsaufwand *pro Unternehmen* rechnen, nicht nur
+  gesamt.** VerpackDG: 2,46 Mio EUR fuer die ganze Wirtschaft → einstellige Betraege je Firma,
+  kein Budget. NIS2: 2,2 Mrd EUR jaehrlich auf 29.500 Firmen → rund 70.000 EUR je Firma, echtes
+  Budget. Dieselbe Kennzahl trennt die beiden Faelle in einem Abruf. **Aber:** grosses Budget heisst
+  nicht gruen — bei NIS2 gehen 2,1 von 2,2 Mrd in Beratung und Prozesse, nicht in Lizenzen.
+  Zweite Frage deshalb immer: *wohin* fliesst der Betrag laut Gesetzesbegruendung?
 - 2026-08-28 — **Produkt/Dienstleistung-Trennung im Gesetz ist oft der ganze Befund.** § 1 Abs. 2 vs.
   Abs. 3 BFSG: die Fristenregel haengt komplett daran. Bei jedem Gesetz mit zwei Anwendungslisten
   zuerst pruefen, in welcher der vermutete Kunde steht. Erschlaegt eine Recherche in 15 Minuten.
@@ -100,7 +112,14 @@ Eintrag — nicht den unbequemsten.
   Primaerquellen fuer Recht, Zahlen und Behoerdenauslegung.
 - 2026-08-28 — **Anbieterpreise nicht ueber die Anbieterseite suchen, sondern ueber
   Vergleichsartikel.** `<Thema> Tools Vergleich <Jahr>` lieferte acht Anbieter mit Preisen in einem
-  Abruf; die Einzelseiten haetten acht Abrufe und mehrere 403/503 gekostet.
+  Abruf; die Einzelseiten haetten acht Abrufe und mehrere 403/503 gekostet. **Zusatz NIS2:** wenn
+  es *mehrere konkurrierende* Vergleiche desselben Jahres gibt (hier vier: secjur, Proliance,
+  dsgvo-vergleich, nis2-autopilot), ist das selbst schon der Saettigungsbefund — dann Preise nur
+  noch stichprobenhaft holen. B2B-GRC-Anbieter nennen fast nie Preise (24 von 31); die zwei, drei
+  mit Preisseite tragen die ganze Spanne. Ehrlicher ist, das als Kategoriewert zu kennzeichnen.
+- 2026-08-28 — **`buzer.de/<nr>_BSIG.htm` funktioniert, gibt aber Anlagen/Anhaenge nicht wieder.**
+  § 28 BSIG verweist auf Anlage 1 und 2 (Sektorlisten) — der Wortlaut der Anlagen fehlt. Bei jedem
+  Gesetz, dessen Anwendungsbereich in einer Anlage steht, ist buzer nur die halbe Miete.
 
 ## Offene Faehrten
 
@@ -119,12 +138,28 @@ Eintrag — nicht den unbequemsten.
   Sprache, in der KMU kuenftig antworten *duerfen*. Aber 14 Anbieter ab 49 EUR plus zwei gratis
   offizielle Werkzeuge (EFRAG Digital Template, DNK-Plattform) sind schon da. Vermutlich ebenfalls
   rot; vor einem eigenen Lauf zuerst die zwei Gratiswerkzeuge ansehen.
+- **NIS2 abgeschlossen, Ampel rot** (`research/2026-08-27-nis2-registrierungsfrist-verlaengert.md`).
+  Erstes Signal mit *echtem* Budget (rund 70.000 EUR je Unternehmen, 29.500 Betroffene) — und
+  trotzdem rot: 31 Anbieter, vier Marktvergleiche, ein fertiges Einzelprodukt (NIS2-Autopilot,
+  Systric IT GmbH), das BSI verschenkt die ganze #nis2know-Suite, das BMWE eine zweite
+  Gratisstelle. Nicht erneut aufgreifen. **Offen:** die BMI-Rechtsverordnung zur Konkretisierung
+  des § 30 BSIG (sektorspezifisch, in Arbeit) — erst wenn die einen Stichtag mit *pruefbaren
+  Einzelanforderungen* setzt, entsteht dort wieder etwas Mechanisches. Eigenes Signal abwarten.
+- **Angrenzend und ungeprueft: indirekte NIS2-Betroffenheit ueber die Lieferkette** (§ 30 Abs. 2
+  Nr. 4 BSIG zwingt die 29.500, Fragebogen an Zulieferer weiterzureichen). Gruppe deutlich groesser
+  als 29.500, ohne Budget und ohne ISMS. Vor einem eigenen Lauf zwei Killer pruefen: Antworten auf
+  Sicherheitsfragebogen sind Aussagen ueber die eigene Sicherheitslage (Haftung), und UpGuard,
+  TISAX-/ISO-27001-Dienstleister sowie Berater mit eigenen Landingpages (H5M, ubesafe, secjur)
+  sind schon drin. Aehnelt der CSRD-Fragebogenflut — dort hat der Gesetzgeber sie wegreguliert.
 - **Fuer den Portfolio-Manager, dringend:** Der Regel-Scout erfasst Stichtage ungeprueft — beim
   VerpackDG lag die Frist 15 Tage nach Erfassung (chancenlos), beim Digital Omnibus war es gar
   keine Pflicht, sondern eine Entlastung. Beim BFSG war die erfasste Frist (2030) ein Restposten
-  *nach* der eigentlichen Pflicht (2025-06-28) — der Markt war laengst offen und besetzt. Drei Zeilen
-  im Scout („Frist minus heute < 6 Monate → abgelaufen", „Frist hin oder weg?" und „gibt es einen
-  frueheren Stichtag desselben Gesetzes?") sparen je einen ganzen Rechercheurlauf.
+  *nach* der eigentlichen Pflicht (2025-06-28). Bei NIS2 war die erfasste Frist beim Erfassen schon
+  **27 Tage verstrichen** — und war ueberdies gar keine Frist, sondern Vollzugszurueckhaltung; die
+  echte lag 174 Tage zurueck. Vier Zeilen im Scout („Frist minus heute < 6 Monate → abgelaufen",
+  „Frist in der Vergangenheit? → verwerfen", „Frist hin oder weg?", „gibt es einen frueheren
+  Stichtag desselben Gesetzes?") sparen je einen ganzen Rechercheurlauf. Das ist jetzt der
+  **vierte** Lauf in Folge, den diese Pruefung erledigt haette.
 - **Offene Flanke der KI-Hochrisiko-Recherche:** Art. 111 Abs. 2 KI-VO (Bestandsschutz;
   Behoerdensysteme bis 2030) nur bei *einer* Quelle (itmr-legal.de) gefunden. Baut eine Idee
   darauf auf, muss das am Wortlaut nachgeprueft werden — siehe EUR-Lex-Problem.
