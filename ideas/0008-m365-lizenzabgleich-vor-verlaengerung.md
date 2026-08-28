@@ -1,10 +1,10 @@
 ---
 id: 0008-m365-lizenzabgleich-vor-verlaengerung
 titel: Lizenzabgleich für Microsoft 365 vor der nächsten Vertragsverlängerung
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/market/2026-08-28-microsoft-365-preiserhoehung-juli-2026.md
 
@@ -13,7 +13,7 @@ problem: Zum 1. Juli 2026 sind die Listenpreise der Microsoft-365-Geschäftstari
 loesung: Ein Bericht, der die vorhandenen Lizenzen den tatsächlichen Nutzungsdaten des Mandanten gegenüberstellt und ungenutzte Konten sowie Herabstufungskandidaten mit dem Eurobetrag je Jahr benennt — der Betrieb entscheidet und bucht selbst, der Dienst greift nur lesend zu.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "G3 — erfordert einen Einrichtungsvorgang je Kunde, den die Zielgruppe per Definition nicht allein durchfuehrt. Der Dienst braucht lesenden Zugriff auf den Mandanten, also eine administrative Zustimmung im Verzeichnis des Kunden. Das Segment ist ausdruecklich ueber das Fehlen dieser Faehigkeit definiert: Betriebe ohne eigene Lizenzverwaltung, bei denen die Lizenzen nebenbei von der Geschaeftsfuehrung oder einer IT-Teilzeitkraft verwaltet werden. Wer Lizenzen nebenbei verwaltet, erteilt einem unbekannten Nebengewerbe keine mandantenweite Leseberechtigung per Klick, sondern ruft vorher an — und je hoeher der Vertrauensbedarf, desto sicherer wird daraus ein Termin. Der Ideator stellt genau diese Frage und laesst sie offen; bei Unsicherheit wird abgelehnt. Zweiter, unabhaengiger G3-Pfad: Der Bericht benennt Herabstufungskandidaten, deren Umsetzung den Betrieb des Kunden stoert, wenn sie falsch ist. Der Kunde wird die Umsetzung mitkaufen wollen — der Ideator schreibt selbst, in diesem Fall kippt die Idee an G3. Ohne Umsetzung bleibt ein Bericht, den das Administrationszentrum in Teilen kostenlos beistellt. Ausdruecklich nicht der Ablehnungsgrund ist G2: Die Pruefung davor faellt negativ aus, weil die Idee nachweislich aus einem oeffentlichen Marktsignal stammt (signals/market/2026-08-28-microsoft-365-preiserhoehung-juli-2026.md, Primaerquelle Microsoft-Blog) und die Schnittstelle oeffentlich dokumentiert ist; ein Aussenstehender mit derselben Ausbildung kaeme darauf und koennte es umsetzen. Diese Frage ist damit beantwortet und muss nicht erneut gestellt werden. Unsicherheit, widerlegbar: Ein Nachweis, dass Betriebe dieser Groessenklasse eine mandantenweite Leseberechtigung ohne Ruecksprache im Selbstbedienungsweg erteilen, widerlegt die Ablehnung. Danach bliebe G7 offen und ungeprueft, und zwar in der vom Ideator selbst benannten haerteste Form: Die gefundene Ersparnis ist einmalig, der Preis soll wiederkehren. Ungeprueft geblieben sind ausserdem G4 bis G6; die Pruefung endet nach Hausregel beim ersten Treffer."
 
 score:
   zwang: null

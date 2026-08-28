@@ -1,10 +1,10 @@
 ---
 id: 0007-marktplatz-csv-in-buchhaltungsformat
 titel: Monatsabschluss aus den CSV-Exporten mehrerer Marktplätze
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/pain/2026-08-28-etsy-verkaeufer-csv-buchhaltung-manuell.md
 
@@ -13,7 +13,7 @@ problem: Jede Plattform exportiert ein eigenes CSV-Format, und keines davon tren
 loesung: Der Verkäufer lädt die Rohexporte seiner Plattformen hoch und bekommt eine einzige normalisierte Monatsdatei zurück, in der jede Zeile einer Buchungsart zugeordnet ist und die sich in gängige Buchhaltungen einlesen lässt — reine Umformung, keine steuerliche Aussage.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "G5 — der Entwurf widerspricht sich an der entscheidenden Stelle, und beide Auflösungen sind toedlich. Die Zeile `loesung` verspricht eine Datei, in der jede Zeile einer Buchungsart zugeordnet ist und die sich in gaengige Buchhaltungen einlesen laesst; die offenen Fragen versprechen ausdruecklich das Gegenteil, naemlich reine Umformung nach den Bezeichnungen der Plattform ohne Kontierung. Zuordnung zu Buchungsarten ist Kontieren, und Kontieren ist Hilfeleistung in Steuersachen, die § 6 StBerG einem Dritten ohne Bestellung nicht freistellt — die blosse Erzeugung durch ein Modell aendert daran nichts (grenzen.md, G5: die Grenze verlaeuft frueher als vermutet). Haelt der Entwurf dagegen die Umformung sauber, entfaellt der Wert: eine Datei ohne Buchungsart ist nicht einlesbar, und der Kunde sitzt wieder mit Excel davor. Entscheidend ist, dass die vom Ideator selbst aufgezaehlten Sonderfaelle nicht Umformung, sondern Wertung sind: Ruecksendungen ueber den Monatswechsel ist Periodenabgrenzung, Fremdwaehrung ist die Wahl des Umrechnungskurses, Umsatzsteuer je Zeile ist der Steuerschluessel, Auszahlungsdifferenzen sind eine Zuordnungsentscheidung. Genau an diesen Zeilen entsteht der Nutzen — die trivialen Zeilen kann der Verkaeufer selbst summieren. Der Ideator stellt die Frage selbst und laesst sie offen; bei Unsicherheit wird abgelehnt. Unsicherheit, widerlegbar: Ein Zuschnitt, der nachweislich bei der Gruppierung nach Plattformbezeichnung stehen bleibt, jede der genannten Sonderfallzeilen unbewertet an den Nutzer durchreicht und trotzdem gekauft wird, widerlegt die Ablehnung. Vorher zu klaeren waere ohnehin die vom Ideator als erste markierte Besetzungsfrage: Der kommerzielle CSV-Konverter aus dem Nachbar-Thread existiert bereits, und der einzige namentlich belegte Betroffene hat sich sein Werkzeug selbst gebaut und faellt als Kaeufer aus. Ungeprueft geblieben sind G6 und G7; die Pruefung endet nach Hausregel beim ersten Treffer."
 
 score:
   zwang: null

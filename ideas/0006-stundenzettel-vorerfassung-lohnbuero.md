@@ -1,10 +1,10 @@
 ---
 id: 0006-stundenzettel-vorerfassung-lohnbuero
 titel: Vorerfassung eingereichter Papier-Stundenzettel für Lohnbüros
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/pain/2026-08-28-stundenzettel-abendliche-uebertragung.md
 
@@ -13,7 +13,7 @@ problem: Derselbe Zettel, der den Handwerksbetrieb abends kostet, kostet das Loh
 loesung: Ein Dienst, der die eingereichten Zettelbilder eines Mandanten zu einer geprüften Erfassungsdatei je Mandant und Monat macht, die die Lohnkraft nur noch sichtet und einliest — die Kanzlei behält Prüfung, Verantwortung und Mandantenkontakt vollständig.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "G3 — der Dienst wird Bestandteil eines fristgebundenen Fremdprozesses und erzwingt damit Reaktionszeiten unter 24 Stunden. Die Kanzlei erfasst die Stunden in den ersten Arbeitstagen des Folgemonats, weil Beitragsnachweise und Lohnlauf an feste Termine gebunden sind. Liefert der Dienst an diesem Tag nicht oder unbrauchbar, braucht die Kanzlei am selben Tag eine Antwort — und zwar fuer alle betroffenen Mandanten gleichzeitig, weil der Engpass gebuendelt ist. Das ist genau die Buendelung, die der Entwurf als wirtschaftlichen Vorteil gegenueber 0005 anfuehrt; sie ist zugleich das Betriebsrisiko. Verschaerfend derselbe Punkt beim Einstieg: Kanzlei als Kunde bedeutet Berufsverschwiegenheit nach § 203 StGB und Auftragsverarbeitung ueber zwei Stufen; ein solcher Kunde unterschreibt keinen Standardvertrag im Selbstbedienungsweg, sondern verlangt Nachweise und Rueckfragen je Kunde. Der Ideator benennt G3 selbst als die Frage, bei deren unguenstiger Antwort die Idee unabhaengig von allem anderen tot ist. Unterschied zu 0005, wo genau dieser Punkt nicht greift: Dort ist der Dienst eine Abkuerzung mit vorhandenem Fallback — faellt er aus, tippt der Betrieb ab wie bisher. Unsicherheit, widerlegbar: Ein Nachweis, dass Kanzleien die Zettelerfassung nicht am Stichtag, sondern laufend ueber den Monat verteilt vornehmen und dass ein Ausfall von drei Werktagen folgenlos bliebe, widerlegt die Ablehnung. Danach waere zuerst die vom Ideator selbst als zentral markierte Vermutung zu belegen, dass Lohnbueros Stunden ueberhaupt als Bild bekommen — dafuer liegt im Repo kein einziger Beleg vor, das Signal beschreibt ausschliesslich die Betriebsseite. Ungeprueft geblieben sind G4 bis G7; die Pruefung endet nach Hausregel beim ersten Treffer."
 
 score:
   zwang: null

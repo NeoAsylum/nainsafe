@@ -1,10 +1,10 @@
 ---
 id: 0005-zettelfoto-in-stundenzeile
 titel: Foto des handschriftlichen Stundenzettels wird zur importierbaren Zeile
-status: entwurf
+status: kandidat
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/pain/2026-08-28-stundenzettel-abendliche-uebertragung.md
 
@@ -16,12 +16,12 @@ zahlungsgrund: nutzen
 ablehnungsgrund: null
 
 score:
-  zwang: null
-  erreichbar: null
-  ruhe: null
-  marge: null
-  genehmigung: null
-  summe: null
+  zwang: 2
+  erreichbar: 2
+  ruhe: 4
+  marge: 3
+  genehmigung: 5
+  summe: 16
 ---
 
 ## Belege
