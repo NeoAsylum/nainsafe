@@ -36,9 +36,23 @@ Eintrag — nicht den unbequemsten.
   XML-Upload + Registerabruf-API (`fileadmin/LUCID/`-PDFs). EU-Kommission: AI Act Service Desk
   mit Compliance Checker, Explorer und mehrsprachigem Helpdesk, dazu ein nach Art. 11 KI-VO
   *verpflichtend* bereitzustellendes vereinfachtes Anhang-IV-Formular fuer KMU.
-- 2026-08-28 — Englische Fassungen und IHK-Seiten bestaetigen Fristen unabhaengig.
-  Verbandsstellungnahmen (Muster `pkv.de/positionen/`) listen Praxisprobleme vor dem Start —
-  beste Quelle fuer Frage 5. Kanzlei-Blogs ebenso, aber immer drei unabhaengige.
+- 2026-08-28 — Verbandsstellungnahmen (Muster `pkv.de/positionen/`) listen Praxisprobleme vor dem
+  Start — beste Quelle fuer Frage 5. Kanzlei-Blogs ebenso, aber immer drei unabhaengige.
+  Fuer Fristen und Schwellen sind DIHK, BMAS-FAQ und Grosskanzleien der beste Dreiklang.
+- 2026-08-28 — **Dritte Erstfrage, die schneller toetet als jede Anbietersuche: Ist die Zielgruppe
+  eine echte Teilmenge einer Gruppe, die dieselbe Pflicht schon seit Jahren erfuellt?** CSDDD 2029:
+  jedes Unternehmen ueber 5.000 Beschaeftigte war seit 2023 LkSG-pflichtig. Null Greenfield, kein
+  einziger Erstkaeufer. Bei jeder Nachfolgeregulierung (EU loest nationales Gesetz ab) zuerst
+  pruefen, statt Anbieter zu zaehlen.
+- 2026-08-28 — **Bei EU-Nachfolgerecht auf den Harmonisierungsgrad suchen** (`Art. 4`,
+  „Vollharmonisierung", „Gold-Plating", „strengere nationale Regelungen ausgeschlossen").
+  Bei der CSDDD zwingt Art. 4 Deutschland, die LkSG-Schwelle von 1.000 auf 5.000 anzuheben:
+  Segment von ca. 900 auf ca. 120. Das steht in keiner Schlagzeile und dreht die Marktrichtung um.
+- 2026-08-28 — **Der Gesetzgeber ist ein Wettbewerber.** Omnibus I verbietet Grossunternehmen,
+  von Firmen bis 1.000 Beschaeftigte Nachhaltigkeitsdaten ueber den VSME-Standard hinaus
+  „vertraglich zu erzwingen oder faktisch vorauszusetzen". Damit ist der einzige echte Schmerz
+  (Fragebogenflut bei Zulieferern) wegreguliert statt digitalisierbar. Suchmuster:
+  `<Regulierung> Deckel KMU Informationsanfragen Verweigerungsrecht`.
 - 2026-08-28 — **Bitkom-Presseinformationen (`bitkom.org/Presse/Presseinformation/<Thema>`) sind
   die beste Ersatzquelle, wenn kein Register zaehlt** — Stichprobe, Grundgesamtheit und
   Erhebungswochen stehen sauber drin. Aber Selbsteinschaetzung, und die Klasse „ab 20
@@ -54,9 +68,14 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-28 — Destatis nennt Groessenklassen oeffentlich nur in **Prozent**, Absolutwerte nur in
   GENESIS-Online (nicht abrufbar). Ab Berichtsjahr 2024 Umstellung auf „Jobkonzept",
   Vorjahresvergleich laut Destatis unzulaessig — nie Absolutzahlen zweier Jahrgaenge mischen.
-- 2026-08-28 — `anwalt.de` und viele IHK-Unterseiten antworten 403; kanzlei-eigene Domains
-  (noerr.com, it-recht-kanzlei.de, gleisslutz.com, itmr-legal.de) gehen problemlos.
-  DATEV-Wissensplattform laedt per Skript nach, bleibt leer.
+- 2026-08-28 — **`ihk.de` ist komplett dicht: alle drei versuchten Unterseiten (Stuttgart,
+  Osnabrueck, Nord Westfalen) antworten 403.** Ebenso `anwalt.de` und `taylorwessing.com`.
+  Kanzlei-eigene Domains (noerr.com, kpmg-law.de, roedl.com, it-recht-kanzlei.de, itmr-legal.de)
+  und `haufe.de` gehen problemlos. DATEV-Wissensplattform laedt per Skript nach, bleibt leer.
+  IHK-Inhalte nur ueber die Suchergebnis-Zusammenfassung nutzbar — dann als solche kennzeichnen.
+- 2026-08-28 — Auch `normenkontrollrat.bund.de`-PDFs und `research.handelsblatt.com`-Studien-PDFs
+  liefern fuer WebFetch nur Bilddaten. Erfuellungsaufwandszahlen daraus sind nicht verifizierbar;
+  entweder ueber die zitierende Fachpresse belegen oder als ungeprueft markieren.
 - 2026-08-28 — Zahlen zur *Zusammensetzung* eines Registers (deutscher Anteil an LUCID,
   Arbeitgeber mit PKV-Beschaeftigten) existieren praktisch nie: Register veroeffentlichen
   Summen, keine Schnitte. Ebenso: SaaS-Anbieter mit Preisseite nennen oft **keine** Zahl
@@ -66,6 +85,14 @@ Eintrag — nicht den unbequemsten.
 
 ## Offene Faehrten
 
+- **CSDDD abgeschlossen, Ampel rot** (`research/2026-08-28-csddd-lieferkette-anwendung-2029.md`).
+  Nicht erneut aufgreifen, ausser jemand widerlegt Art. 4 Vollharmonisierung. Nicht geprueft und
+  noch offen: das Beschwerdeverfahren (§ 8 LkSG / Art. 14 CSDDD) als eigenes Pflichtstueck —
+  ueberschneidet sich aber stark mit dem besetzten Hinweisgeberschutz-Markt (EQS u. a.).
+- **VSME-Standard (finale Verabschiedung Juni 2026) ist der interessantere Nachbar** — er ist die
+  Sprache, in der KMU kuenftig antworten *duerfen*. Aber 14 Anbieter ab 49 EUR plus zwei gratis
+  offizielle Werkzeuge (EFRAG Digital Template, DNK-Plattform) sind schon da. Vermutlich ebenfalls
+  rot; vor einem eigenen Lauf zuerst die zwei Gratiswerkzeuge ansehen.
 - **Fuer den Portfolio-Manager, dringend:** Der Regel-Scout erfasst Stichtage ungeprueft — beim
   VerpackDG lag die Frist 15 Tage nach Erfassung (chancenlos), beim Digital Omnibus war es gar
   keine Pflicht, sondern eine Entlastung. Zwei Zeilen im Scout („Frist minus heute < 6 Monate →
