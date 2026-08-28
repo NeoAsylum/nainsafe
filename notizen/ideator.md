@@ -7,39 +7,41 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
 
 ## Was funktioniert
 
-- 2026-08-28 — Die Ampel der Recherche zuerst lesen spart den halben Lauf: alle sieben
-  vorhandenen Recherchen standen auf `rot`, damit fielen sieben von fünfzehn
-  unverarbeiteten Signalen ohne Einzelprüfung weg.
-- 2026-08-28 — Ablehnungsgründe der Vorgänger sind die beste Konstruktionshilfe. 0007 ist
-  bewusst gegen die G4-Ablehnung von 0004 gebaut (Formatvielfalt plattformseitig statt
-  kundenseitig) und benennt den Unterschied ausdrücklich in den offenen Fragen.
-- 2026-08-28 — Pain-Signale tragen mehr Zuschnitte als Regel-Signale: aus einem
-  Forumsthread über Stundenzettel entstanden zwei Ideen mit gleichem Kern und
-  verschiedenen Käufern (Betrieb, Lohnbüro).
+- 2026-08-28 — Erst die Ampeln *aller* Recherchen in einem Zug lesen, dann erst Signale.
+  Im zweiten Lauf des Tages waren alle 27 rot; 23 von 25 unverarbeiteten Signalen fielen
+  damit weg, ohne dass ich eines öffnen musste. Übrig blieb nur, was noch keine Recherche
+  hat. Gegenprobe an zwei roten Recherchen: Das Rot gilt marktweit, nicht je Zuschnitt.
+- 2026-08-28 — Ablehnungen der Vorgänger sind Konstruktionshilfe *und* Abbruchkriterium.
+  0007 ist bewusst gegen die G4-Ablehnung von 0004 gebaut; umgekehrt schreibe ich nichts
+  auf, wenn jeder denkbare Zuschnitt eines Signals auf eine bereits gestorbene Idee zeigt.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — Regel-Signale haben in diesem Lauf null Ideen getragen. Vier ältere Ideen
-  daraus sind bereits tot (2× G5, je 1× G4/G6), die sieben recherchierten Regel-Signale
-  sind rot. Muster über alle roten Recherchen hinweg: Behörde liefert das Werkzeug gratis,
-  Markt hat einen „Software-Vergleich 2026", und der werthaltige Rest ist eine Wertung.
-- 2026-08-28 — Kryptowerte-Meldepflicht (KStTG) nicht aufgeschrieben: Zielgruppe sind
-  Kryptowerte-Dienstleister, also IT für die Finanzbranche — G1, offensichtlich.
-- 2026-08-28 — DATEV-Faktura-Abkündigung (31.12.2026) nicht aufgeschrieben: Stichtag vier
-  Monate entfernt, DATEV bietet Nachfolger und Migrationshilfe selbst an. Dieselbe
-  Konstellation wie LUCID in der Recherche, nur milder.
-- 2026-08-28 — SAP ByDesign, bexio und Deskcenter nicht aufgeschrieben. ByDesign trifft
-  nur Neukunden, bexio ist Schweiz und ein Aufschlag von CHF 7, Deskcenter hat 600
-  Bestandskunden und bereits einen Käufer. Zu klein oder kein Schmerz heute.
+- 2026-08-28 — Regel-Signale trugen null Ideen. Vier daraus sind tot (2× G5, je 1× G4/G6),
+  alle 16 Regel-Recherchen sind rot. Muster: Behörde liefert das Werkzeug gratis, es gibt
+  einen „Software-Vergleich 2026", und der werthaltige Rest ist eine Wertung, also G5.
+- 2026-08-28 — **Preiserhöhungssignale tragen nichts.** Drei geprüft (M365, Atlassian,
+  Lexware), eine Idee daraus (0008), tot an G3. Ursache ist strukturell: Eine Preiserhöhung
+  erzwingt keine Handlung, der Kunde zahlt einfach mehr — `zwang` ist null. Jeder Zuschnitt
+  zeigt auf eine tote Idee: Lizenz-/Editionsabgleich = 0008 (G3, Zugriff je Kunde),
+  Migration aus dem Altsystem = 0004 (G4, Formatvielfalt je Kunde), Altdaten für die
+  Buchhaltung = 0007 (G5, Kontieren). Atlassian zusätzlich: Frist 6.2.2026 ein halbes Jahr
+  vorbei, kein ehrliches „Warum jetzt", dazu G1-Nähe (on-prem aus Compliance = Finanz).
+- 2026-08-28 — Kurzbegründungen zum Nachschlagen, damit nichts wiedervorgelegt wird:
+  Kryptowerte G1 (IT für die Finanzbranche); DATEV-Faktura und SAP ByDesign — Hersteller
+  liefert Nachfolger und Migrationshilfe selbst; bexio Schweiz, Aufschlag CHF 7; Deskcenter
+  600 Bestandskunden, Käufer steht bereits fest.
 
 ## Offene Faehrten
 
-- 2026-08-28 — Etsy-Signal, zweiter Zuschnitt nicht verfolgt: der Abgleich, warum eine
-  Plattformauszahlung nicht zur Summe der Bestellungen passt. Das ist vermutlich der
-  eigentliche Grund für den Taschenrechner, nicht die Formatierung.
-- 2026-08-28 — NIS2-Recherche markiert selbst eine angrenzende Fährte: die indirekt über
-  die Lieferkette betroffenen Zulieferer. Braucht einen eigenen Rechercheurlauf, Warnung
-  dort: G6 wegen Aussagen zur eigenen Sicherheitslage.
-- 2026-08-28 — Alle vier Ideen dieses Laufs haben `zahlungsgrund: nutzen`. Wenn sie
-  reihenweise an fehlendem Zwang scheitern, ist das die Gegenprobe zur Lehre „Pflicht
-  schlägt Wunsch" und gehört beim nächsten Lauf ausgewertet.
+- 2026-08-28 — Etsy-Fährte **geschlossen**, nicht mehr offen: Die Recherche beantwortet sie
+  negativ. Es ist keine Funktions-, sondern eine Preislücke nach unten — die Zielgruppe kann
+  nichts zahlen, und der Preisboden der Wettbewerber ist null. Kein Zuschnitt hilft dagegen.
+- 2026-08-28 — **Das Material ist erschöpft.** Ein weiterer Ideator-Lauf lohnt erst, wenn
+  `signals/` neue Dateien enthält oder `research/` eine gelbe oder grüne Ampel trägt. Gehört
+  in den Wochenbericht: Der Engpass liegt bei den Scouts und dem Rechercheur, nicht hier.
+- 2026-08-28 — Gegenprobe zu „Pflicht schlägt Wunsch" noch nicht entschieden: Von vier
+  `nutzen`-Ideen starben 0006 und 0008 an G3, 0007 an G5 — keine am fehlenden Zwang. 0005
+  lebt als Kandidat. Beim nächsten Lauf erneut auswerten.
+- 2026-08-28 — NIS2: die über die Lieferkette indirekt betroffenen Zulieferer. Braucht einen
+  eigenen Rechercheurlauf; Warnung dort G6 wegen Aussagen zur eigenen Sicherheitslage.
