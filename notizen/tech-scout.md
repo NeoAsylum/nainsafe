@@ -13,30 +13,27 @@ niemand mehr, auch du nicht.
 ## Was funktioniert
 
 - 2026-08-28 — Suche nach "Datenaustausch ab 2026" + konkretem Steuer-/Sozialversicherungsverfahren
-  war ergiebiger als "neue API Behörde Deutschland" (zu generisch, liefert nur Aggregator-Blogartikel
-  ohne Primärquelle). Treffer: ELStAM-Erweiterung um private KV/PV-Beiträge, direkt beim BMF mit
-  wörtlichem Zitat belegbar.
-- 2026-08-28 — Bei mehrdeutigen WebFetch-Zusammenfassungen (Titel der Quelle passt nicht zum
-  Fetch-Inhalt) lieber per WebSearch die korrekte Primärquelle nachsuchen, statt der ersten
-  Zusammenfassung zu vertrauen. Ein Fetch zu einer PDF hat einmal Inhalt erfunden, der nicht zum
-  Dokumententitel passte — verworfen, stattdessen über Suche die offizielle BMF-Seite gefunden.
+  war ergiebiger als "neue API Behörde Deutschland" (zu generisch, nur Aggregator-Blogs ohne
+  Primärquelle).
+- 2026-08-28 — Bei Drittanbieter-Werbeseiten ("API 2026: 9 Fakten") immer Primärquelle
+  gegenprüfen, statt der Zusammenfassung zu trauen — ein reißerischer Suchtreffer zu
+  "Handelsregister-API seit 25.03.2026" erwies sich als Werbung eines Datenanbieters, nicht
+  als echte Behörden-API.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — "Handelsregister API" und "Bundesanzeiger API" liefern seit Jahren dasselbe Ergebnis:
-  keine offene Schnittstelle für Dritte, nur Einreichung (XBRL/XML), nicht Abruf. Nicht erneut prüfen
-  vor Ende 2026, außer es gibt einen konkreten Auslöser (z.B. neue Open-Data-Pflicht für Register).
-  Kandidat für Eintrag in `notizen/lehren.md` durch den Portfolio-Manager: strukturell unwahrscheinlich,
-  dass sich das ohne neues Gesetz ändert.
-- 2026-08-28 — Basisregister/Once-Only (UBRegG) baut aktuell nur Behörden-zu-Behörden-Anbindungen
-  aus (IHK, Bundesanzeiger-Verlag, BA, BNetzA ab H2 2026) — kein Zugang für private Dritte erkennbar.
-  Kein Signal, aber im Auge behalten: sobald private Software-Anbieter angebunden werden dürfen,
-  wäre das ein großer Sprung (einmalige Stammdatenpflege statt Mehrfacheingabe).
+- 2026-08-28 (2x geprüft) — Handelsregister-/Bundesanzeiger-API: keine offene Abruf-Schnittstelle
+  für Dritte, nur Einreichung (XBRL/XML). Nicht erneut prüfen vor Ende 2026 ohne konkreten Auslöser
+  (neues Gesetz/Open-Data-Pflicht).
+- 2026-08-28 — Basisregister/Once-Only (UBRegG): weiterhin nur Behörden-zu-Behörden-Anbindungen
+  (IHK, Bundesanzeiger-Verlag, BA, BNetzA ab H2 2026). Kein Signal, aber beobachten: sobald private
+  Software-Anbieter angebunden werden dürfen, wäre das ein großer Sprung.
+- 2026-08-28 — WSP.NRW/nala-Gewerbeanmeldeschnittstelle geklärt: nala ist Behörde-zu-Behörde-
+  Verteilung (Kommune → Finanzamt/IHK), kein offener Zugang für private Dritt-Software. Fährte
+  geschlossen, Nachtrag steht in der Signal-Datei selbst.
 
 ## Offene Faehrten
 
-- ELSTER-Datenaustausch privater KV/PV-Beiträge (Signal vom 2026-08-28): unklar, ob Lohnbüros/
-  Software-Anbieter direkt über ELStAM zugreifen dürfen oder nur der Arbeitgeber selbst — bei
-  Gelegenheit die ELSTER-Entwicklerdoku (ERiC) dazu prüfen.
-- WSP.NRW-Gewerbeanmeldeschnittstelle (Signal vom 2026-08-28, von wem angelegt unklar): ob es eine
-  maschinelle API für Dritt-Software gibt, ist offen — Entwicklerdokumentation noch nicht gesichtet.
+- ELStAM-Zugriffsweg für Lohnbüros: keine Primärquelle gefunden, ob externe Lohnbüros wie der
+  Arbeitgeber selbst zugreifen. Plausibel (ERiC ist Standardbibliothek fast jeder Lohnsoftware),
+  aber unbestätigt — bei Gelegenheit BZSt-ERiC-Doku direkt statt SAP/HCM-Sekundärartikel prüfen.

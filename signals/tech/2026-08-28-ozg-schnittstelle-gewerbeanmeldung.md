@@ -18,4 +18,15 @@ Nach dem "Einer-für-Alle"-Prinzip überträgt die Schnittstelle Anmeldedaten pe
 
 ## Was unklar ist
 
-Ob es sich um eine maschinell ansprechbare API für Dritt-Software (z.B. Gründungsplattformen, Steuerkanzleien) handelt oder nur um ein bürgerorientiertes Webformular, ist aus den gesichteten Quellen nicht eindeutig — Kandidat für tiefere Prüfung der WSP.NRW-Entwicklerdokumentation. Kosten und Mengenbegrenzungen sind nicht dokumentiert. Für Kommunen wird die Anbindung erst ab 2028 verpflichtend, d.h. die bundesweite Abdeckung wächst noch (aktuell schrittweise Nachnutzung durch Kommunen, nicht flächendeckend erzwungen).
+Für Kommunen wird die Anbindung erst ab 2028 verpflichtend, d.h. die bundesweite Abdeckung wächst noch (aktuell schrittweise Nachnutzung durch Kommunen, nicht flächendeckend erzwungen).
+
+**Nachtrag 2026-08-28:** Die technische Ebene dahinter ist die "nala"-Empfangs- und
+Verteilplattform (Hersteller naviga), die eine Kommune nach Eingang einer Gewerbeanmeldung
+zur automatisierten Weiterleitung an *Behörden* (Finanzamt, IHK, Handwerkskammer,
+Statistikamt) einsetzt — Dokumentation: wsp-veroeffentlichungen.nrw/dokumente/#nala,
+abgerufen 2026-08-28. Ein offener, selbstständig nutzbarer Eingangskanal für private
+Dritt-Software (Gründungsplattformen, Steuerkanzleien), um Anmeldungen einzureichen, ist
+in den gesichteten Quellen nicht erkennbar; Fachverfahrenshersteller-Anbindungen laufen
+laut gesichteten Quellen über individuelle Abstimmung mit dem jeweiligen Softwarehersteller,
+nicht über einen offenen Self-Service-Zugang. Dieser Punkt bleibt eine Vermutung aus
+Sekundärquellen, keine Bestätigung durch Primärdokumentation der Schnittstelle selbst.
