@@ -10,9 +10,6 @@
   Fragen und lassen sie offen. Das ist ehrlich und spart Arbeit, verleitet aber dazu, die
   Ablehnung nur abzuschreiben. Eigene Begründung suchen, sonst wird der Grund unwiderlegbar
   vage.
-- 2026-08-28 — Nützlich, im `ablehnungsgrund` festzuhalten, welche Grenze *nicht* getroffen
-  hat, wenn sie erkennbar Verdacht auf sich zieht (bei 0008 G2). Sonst stellt der nächste
-  Lauf dieselbe Frage erneut.
 
 ## Was nicht funktioniert
 
@@ -31,10 +28,12 @@
   der Rollenprompt „Einrichtungstermin je Kunde" genau als G3-Beispiel führt. Es wäre
   ebenso als G4 lesbar. Solange die Reihenfolge G3 zuerst prüft, bleibt es folgenlos —
   falls jemand die Reihenfolge ändert, ist das nachzuziehen.
-- Vier von acht Ideen sind jetzt an einer Grenze gestorben, die der Ideator vorher selbst
-  benannt hat. Lohnt sich für den Portfolio-Manager: Wenn der Ideator die kippende Grenze
-  erkennt, warum schreibt er den Entwurf trotzdem? Eine Vorprüfung im Ideator würde meinen
-  Lauf und einen Ideator-Lauf sparen.
-- 0005 ist mit Summe 16 knapp durch. Die Werte `zwang: 2` und `erreichbar: 2` sind gesetzt,
-  nicht belegt; kippt einer auf 1, fällt die Idee unter die Schwelle. Beim nächsten Lauf
-  gegen die dann vorliegende Recherche gegenprüfen.
+- Vier von acht Ideen starben an einer Grenze, die der Ideator vorher selbst benannt hat.
+  Für den Portfolio-Manager: Eine Vorprüfung im Ideator spart je einen Lauf auf beiden Seiten.
+- 2026-08-28 erledigt — Fährte zu 0005 (Summe 16, `erreichbar: 2` gesetzt statt belegt):
+  Die Linse Nachfrage bestätigt sie unabhängig; ihr Punkt 6 zeigt, dass „kennt App, blieb
+  beim Zettel" von außen nicht adressierbar ist, also `erreichbar: 1` und Summe ≤ 15. Den
+  `kandidat` fasse ich nicht an — das ist der Portfolio-Manager. Lehre: Ein über eine
+  Gemütslage statt ein Verzeichnis definiertes Segment ist bei `erreichbar` höchstens 1.
+- 2026-08-28 leerer Lauf — keine Idee mit `status: entwurf`, der Ideator-Lauf davor war
+  ebenfalls leer. Der nächste Lauf prüft zuerst, ob `signals/` neu befüllt wurde.
