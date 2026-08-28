@@ -34,11 +34,11 @@ niemand mehr, auch du nicht.
 
 ## Offene Fährten
 
-- 2026-08-28 — SAP-ByDesign-Abwanderer: Odoo mehrfach als Ausweichoption genannt,
-  noch nicht geprüft, ob das ein eigenes Signal (Odoo-Wachstum) wäre.
-- 2026-08-28 — SAP Build Apps: SAP soll laut orbis-group ein "technisches
-  Migrationstool" vorgestellt haben, unklar was es automatisiert — bei Bestätigung
-  würde das die Lücke schließen.
-- 2026-08-28 — Debitoor-Einstellung ist alt (vor 2026), nicht neu aufgenommen —
-  Datum von Abkündigungs-Treffern immer prüfen, Suchergebnisse zeigen sie weiterhin
-  als aktuell an.
+- 2026-08-28 — Odoo/SAP-ByDesign geprüft, kein Signal (nur Vergleichsportale).
+- 2026-08-28 — SAP Build Apps: "technisches Migrationstool" laut orbis-group
+  unbestätigt, würde bei Bestätigung die Lücke schließen.
+- 2026-08-28 — Neues Muster: Kauflizenz-Support-Ende ohne ESU + Verweis auf eigenes
+  Abo als einzigem Weg (Office 2021 → M365, 13.10.2026) — gezielt danach suchen
+  ("Kauflizenz" "kein ESU"), nicht nur nach "Preiserhöhung"/"eingestellt".
+- 2026-08-28 — Enterprise-EOLs (SAP Marketing Cloud, SAP Commerce OnPrem) bewusst
+  übersprungen: nicht erkennbar DACH-Mittelstand, teils schon Nachfolger benannt.
