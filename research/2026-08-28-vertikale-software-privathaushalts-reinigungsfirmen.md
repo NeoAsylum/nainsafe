@@ -2,332 +2,356 @@
 typ: recherche
 signal: signals/modelle/2026-08-28-vertikale-software-privathaushalts-reinigungsfirmen.md
 erstellt: 2026-08-28
-segmentgroesse: "34.824 Betriebe im Gebaeudereiniger-Handwerk gesamt (BIV/IW Consult, Berichtsjahr 2024); die Teilmenge mit ueberwiegend Privathaushaltskundschaft ist nicht ermittelbar"
-anbieter_gefunden: 29
-preisspanne: "0-399 EUR/Monat"
-ampel: rot
+segmentgroesse: "34.824 Betriebe im Gebaeudereiniger-Handwerk (2024), davon rund 80 % unter 500.000 EUR Jahresumsatz; die Teilmenge mit ueberwiegend Privathaushaltskundschaft ist nicht ermittelbar"
+anbieter_gefunden: 52
+preisspanne: "0-399 EUR/Monat (Schwerpunkt im Kleinbetriebssegment 29-79 EUR)"
+ampel: gelb
 ---
 
-# Eine deutsche Entsprechung zu ZenMaid — Branchensoftware fuer kleine, inhabergefuehrte Reinigungsfirmen mit Privathaushaltskundschaft
+# Eine deutschsprachige Entsprechung zu ZenMaid — Branchensoftware fuer kleine, inhabergefuehrte Reinigungsfirmen mit Privathaushaltskundschaft
 
-Die Luecke, die das Signal beschreibt, existiert tatsaechlich: In elf voneinander unabhaengigen
-Suchen habe ich keinen deutschen Anbieter gefunden, der Reinigungsfirmen mit Privatkundschaft
-so bedient wie ZenMaid in den USA. Die Luecke ist aber nicht unbesetzt, sondern **von der
-falschen Seite besetzt** — das fuehrende Buchungsportal fuer Privathaushaltsreinigung in
-Deutschland gibt seinen Partnerfirmen genau diese Software zum Preis von null und finanziert
-sie aus 25 % Vermittlungsprovision. Dazu kommt eine Segmentfrage, die schwerer wiegt als jede
-Anbieterfrage: Die deutsche Privathaushaltsreinigung wird zu ueber 90 % ohne Firma und ohne
-Rechnung erbracht, und der legale Teil davon schrumpft.
+**Zweiter Lauf.** Die erste Fassung dieser Recherche liegt unter
+`research/ueberholt/2026-08-28-vertikale-software-privathaushalts-reinigungsfirmen-20260828.md`
+und kam auf `rot`. Sie ist nach der alten Ampel-Definition entstanden, in der ein
+funktional aehnliches Werkzeug zum Ausschluss reichte. Dieser Lauf pruefte die drei
+Punkte nach, an denen die alte Fassung ihr Urteil aufhing, und ergaenzt sie um
+Belege, die dort fehlten. Die Faktenlage hat sich in zwei Punkten geaendert (Wachstum
+des Betriebsbestands, belegte Zahlungsbereitschaft am unteren Rand), in einem Punkt
+nicht (der Preisboden). Ergebnis: **gelb**, mit einem benannten Befund, der die Idee
+kippen wuerde, wenn ihn jemand nachweist.
+
+Kurzfassung: Ein deutschsprachiges Produkt der Kategorie „maid service software" gibt
+es nach insgesamt 19 Suchen weiterhin nicht — auch nicht in Oesterreich oder der
+Schweiz, und ZenMaid selbst ist englischsprachig. Die Funktion ist aber trotzdem
+verfuegbar, aus drei Richtungen: als Gratis-Beigabe des fuehrenden Buchungsportals,
+als 49-EUR-Handwerkersoftware mit eigener Reinigungsseite und als kostenlose
+Terminbuchungsschicht. Der Preis dafuer ist null bis 49 EUR — und wie gross die
+Zielgruppe ist, veroeffentlicht niemand.
 
 ## 1. Groesse des Segments
 
-### Das Gewerk insgesamt — bezifferbar
+### Das Gewerk insgesamt — bezifferbar, und es waechst
 
 | Kennzahl | Wert | Berichtsjahr | Quelle |
 |---|---|---|---|
-| Betriebe im Gebaeudereiniger-Handwerk | 34.824 | 2024 | BIV-Branchenreport 2025, wiss. begleitet von IW Consult |
+| Betriebe im Gebaeudereiniger-Handwerk | 34.824 | 2024 | BIV-Branchenreport 2025 (IW Consult), via `rationell-reinigen.de` |
 | Beschaeftigte | 658.325 | 2024 | ebenda |
 | Branchenumsatz | 27,55 Mrd. EUR | 2024 | ebenda |
-| Anteil SV-pflichtig Beschaeftigter | 70,9 % | 2024 | ebenda |
-| Lohnkostenanteil | 85 % | 2024 | ebenda |
+| Beschaeftigungsverhaeltnisse nach Methodenwechsel | rund 1 Mio. | 2024 | `die-gebaeudedienstleister.de/die-branche/`, abgerufen 2026-08-28 |
+| Anteil Betriebe unter 500.000 EUR Jahresumsatz | **rund 80 %** (= rund 28.000 Betriebe) | Destatis Fachserie 4 R 7.1.1.2 | `gebaeudereiniger-mn.de/innung/zahlen-fakten.html`, abgerufen 2026-08-28 |
+| deren Anteil am Branchenumsatz | rund 13 % | ebenda | ebenda |
+| Betriebe ueber 5 Mio. EUR Umsatz | rund 2 % der Betriebe, ueber 54 % des Umsatzes | ebenda | ebenda |
 
-Quelle: „Das Gebaeudereiniger-Handwerk zaehlt nunmehr 34.824 Betriebe mit 658.325
-Mitarbeitern […] 27,55 Milliarden Euro" — `rationell-reinigen.de/biv-veroeffentlicht-branchenreport-2025-292547/`,
-abgerufen 2026-08-28. Bestaetigt durch `clean-invoice.com/wissen/allgemein/selbststaendig-als-gebaeudereiniger`
-(„ca. 35.000" Betriebe, „ca. 700.000" Beschaeftigte, „>27 Milliarden Euro (2024)"), abgerufen
-2026-08-28.
+Woertlich: „Kleinbetriebe mit weniger als 500.000 Euro Jahresumsatz stellen bei weitem
+die groesste Zahl der Unternehmen dar (rund 80 %), sie realisieren aber nur rund 13
+Prozent des Branchenumsatzes" (`gebaeudereiniger-mn.de`, abgerufen 2026-08-28; die
+Betriebszahl derselben Seite, 25.315 Unternehmen, stammt von 2019 und ist ueberholt).
 
-Das Gewerk ist damit **gemessen an den Beschaeftigten das groesste Handwerk Deutschlands**.
-Die Betriebszahl ist je nach Abgrenzung unterschiedlich; ohne Direktbeleg, nur aus
-Suchzusammenfassungen und daher als Korridor zu lesen: rund 51.100 Betriebe zum 31.12.2021
-(ZDH-Handwerkszaehlung), rund 65.900 einschliesslich Kleinst- und Einmannbetrieben (2022),
-rund 30.200 Unternehmen mit mehr als 17.500 EUR Jahresumsatz (2023). Die BIV-Zahl 34.824
-liegt plausibel in diesem Feld und ist die einzige, die ich direkt auf der Quellseite
-verifizieren konnte. **Die haeufig zitierte Zahl „21.144 Gebaeudereinigungsunternehmen
-(Stand 30.07.2026)" stammt von einem Adresslistenhaendler ohne Primaerquelle und ist nicht
-verwendbar.**
+**Neu und der Korrektur wert:** Der Betriebsbestand steigt. Die Gebaeudereinigung liegt
+im Ranking der Betriebsbestaende der Anlage B1 auf **Rang zwei** (Statista, Berichtsjahr
+2024), die Anlage B1 insgesamt wuchs im 1. Halbjahr 2025 um **1,5 %** (ZDH-Statistik,
+`zdh-statistik.de`, abgerufen 2026-08-28), und allein in Baden-Wuerttemberg kamen 2025
+**1.371 Gebaeudereiniger-Betriebe** hinzu (Betriebsstatistik 2025, HANDWERK BW,
+abgerufen 2026-08-28).
 
-Die Konzentration ist extrem: Der BIV vertritt nach eigener Angabe rund 2.500 Mitgliedsfirmen
-mit durchschnittlich 250 Beschaeftigten und deckt damit **etwa 85 % des Marktes** ab. Die
-restlichen rund 32.000 Betriebe teilen sich die uebrigen 15 % — es ist ein Gewerk aus wenigen
-Grossen und sehr vielen Kleinsten.
-
-### Die eigentliche Zielgruppe — nicht ermittelbar
-
-**Wie viele dieser Betriebe ueberwiegend Privathaushalte reinigen, ist nicht ermittelbar.**
-Weder der BIV-Branchenreport noch die Handwerkszaehlung noch die Umsatzsteuerstatistik
-kennen eine Merkmalsauspraegung fuer die Kundenart. Zwei Vergleichsartikel und drei
-Verbandsquellen habe ich daraufhin geprueft; keine unterscheidet zwischen
-Privathaushalts- und Objektreinigung. Die Studie des BMFSFJ „Anbieter haushaltsnaher
-Dienstleistungen in Deutschland" waere die richtige Quelle, ist aber als PDF nicht
-auswertbar, und die einzige aus ihr zitierte Zahl (122 Anbieter) bezieht sich auf das Jahr
-2004 und ist damit wertlos.
-
-Was sich stattdessen beziffern laesst, ist die **Nachfrageseite** — und sie sagt mehr:
+### Die Nachfrageseite — und wo die alte Fassung zu weit ging
 
 | Kennzahl | Wert | Stichtag | Quelle |
 |---|---|---|---|
 | Haushalte mit Haushaltshilfe | ueber 4,3 Mio. | 2021 | ZDF/IW |
-| davon offiziell angemeldet | unter 10 % | 2021 | ZDF |
-| Haushalte mit **unangemeldeter** Hilfe | ueber 4 Mio. | 2023 (SOEP) | IW-Kurzbericht 107/2025 |
-| Anteil Schwarzarbeit an Haushaltshilfen | knapp 92 % | 2023 | ebenda |
-| Umsatz des Schwarzmarkts | ca. 8,6 Mrd. EUR | 2024 | ebenda |
-| **Minijobs in Privathaushalten (Haushaltsscheck)** | **253.581** | **30.06.2026** | **Minijob-Zentrale, Quartalsbericht II/2026** |
-| Vorjahresvergleich | **−2,0 %** (Juni 2025: 258.742) | 30.06.2026 | ebenda |
+| Anteil Schwarzarbeit daran | knapp 92 % | 2023 (SOEP) | IW-Kurzbericht 107/2025 |
+| Minijobs in Privathaushalten (Haushaltsscheck) | 253.581 | 30.06.2026 | Minijob-Zentrale, Quartalsbericht II/2026 |
+| Veraenderung zum Vorjahr | −2,0 % | 30.06.2026 | ebenda |
 
-Die Minijob-Zahl habe ich direkt beim Quartalsbericht der Minijob-Zentrale abgerufen
-(`minijob-zentrale.de/DE/service/minijob-statistik/Digitaler_Quartalsbericht_/Digitaler_Quartalsbericht`,
-abgerufen 2026-08-28): „6.959.301 Minijobberinnen und Minijobber", davon 6.705.720 im Gewerbe
-und **253.581 in Privathaushalten**, „um 2,0 Prozent gesunken".
+Die alte Fassung las die sinkende Haushaltsscheck-Zahl als „der Markt schrumpft". Das
+ist so nicht haltbar: Der Haushaltsscheck zaehlt Haushalte, die **selbst Arbeitgeber**
+sind — also genau die Konstellation **ohne** Reinigungsfirma. Dass diese Zahl faellt,
+waehrend der Betriebsbestand des Gewerks steigt, ist mit einer Verschiebung von der
+Direktanstellung zur Firma genauso vereinbar wie mit einem Rueckzug ins Schwarze.
+Beides ist unbelegt; die Zahlen tragen keine Richtungsaussage.
 
-Das ist der entscheidende Befund zur Segmentgroesse: **Der legale Markt fuer
-Privathaushaltsreinigung ist klein und schrumpft, und er ist ueberwiegend kein Firmenmarkt.**
-Vier Millionen Haushalte beschaeftigen direkt und schwarz, eine Viertelmillion direkt und
-angemeldet — beide Gruppen brauchen keine Reinigungsfirma und damit auch keine
-Reinigungsfirmen-Software. Uebrig bleibt der Teil, der ueber eine Firma bucht, und dessen
-Groesse veroeffentlicht niemand.
+### Die eigentliche Zielgruppe — weiterhin nicht ermittelbar
+
+Keine der geprueften Quellen schluesselt Reinigungsbetriebe nach Kundenart auf: nicht
+der BIV-Branchenreport, nicht die Innungsstatistik, nicht die Verbandsseite
+`die-gebaeudedienstleister.de` (auf Nachfrage nach Kundenstruktur: keine Angaben), nicht
+die Handwerkszaehlung. Die BMBFSFJ-Studie „Anbieter haushaltsnaher Dienstleistungen in
+Deutschland" war auch im zweiten Anlauf als PDF nicht auswertbar; ihre einzige oeffentlich
+zitierte Anbieterzahl bezieht sich auf 2004.
+
+**Fuer den Ideator:** Es gibt keine Zahl fuer „inhabergefuehrte Reinigungsfirma mit
+ueberwiegend Privatkundschaft". Was belegbar ist: rund 28.000 Betriebe unter 500.000 EUR
+Umsatz, ein wachsender Bestand, und ein Nachfragefeld von ueber vier Millionen Haushalten,
+das zu ueber neun Zehnteln an Firmen vorbeilaeuft. Ein Segment unter 500 Betrieben —
+der rote Schwellenwert — ist damit ausgeschlossen; alles darueber ist Schaetzung.
 
 ## 2. Wer es heute bedient
 
-Ich habe in elf Suchen (deutsch und englisch, mit absichtlich schlecht formulierten Varianten
-wie „Programm fuer Reinigungsfirma Privathaushalte", „App Putzfirma Termine Kunden verwalten",
-„Reinigungsservice Verwaltung Einzelunternehmer") **29 Anbieter im deutschen Markt** gefunden.
+Insgesamt **52 Anbieter** im deutschsprachigen Markt (29 aus dem ersten Lauf, 23 neu),
+dazu die 48 ueberwiegend englischsprachigen Produkte der Capterra-Kategorie
+„Haushaltsservice Software".
 
-### a) Der Anbieter, der die Signal-Luecke tatsaechlich schliesst: ExtraSauber UNLIMITED
+### a) ExtraSauber UNLIMITED — der naechste Nachbar, und die offene Flanke dieser Recherche
 
-ExtraSauber ist nach eigener Angabe „das fuehrende Buchungsportal fuer Reinigungen" in
-Deutschland, Oesterreich und der Schweiz und wurde 2026 mit dem ntv-Award „Deutschlands beste
-Online-Portale 2026" als Gesamtsieger in der Kategorie Haushaltshilfe ausgezeichnet
-(Vorjahr: Platz 2). Unter `extrasauber.de/partner/software` betreibt es unter dem Titel
-**„Gebaeudereiniger-Software: ExtraSauber UNLIMITED"** genau das Produkt, dessen Fehlen das
-Signal meldet (abgerufen 2026-08-28):
+`extrasauber.de/partner/software` (abgerufen 2026-08-28) fuehrt unter dem Titel
+„Gebaeudereiniger-Software: ExtraSauber UNLIMITED" genau die ZenMaid-Funktionsliste:
+Auftrags- und Kundenverwaltung, „automatische Angebotserstellung – basierend auf deinem
+Kalkulationssatz", „Strategische Personal- und Einsatzplanung", „Rechnungen stellen – mit
+deinem eigenen Logo", „Vollautomatische Erfassung aller Zahlungseingaenge", Mahnwesen bis
+Inkasso, „Auswertung fuer deinen Steuerberater mit wenigen Klicks".
 
-- Auftrags- und Kundenverwaltung
-- automatische Angebotserstellung auf Basis von Kalkulationssaetzen
-- Personalplanung und Einsatzkoordination
-- „Rechnungen stellen mit deinem eigenen Logo" samt vollautomatischer Zahlungserfassung
-- Mahnungsmanagement und Inkasso
-- Steuer-Schnittstellen fuer den Steuerberater
+Konditionen woertlich (`extrasauber.de/partner/`, abgerufen 2026-08-28): „Sobald du
+erstmals die Bruttoauftragsgrenze von 1.000 Euro ueberschreitest, berechnen wir dir 9,95
+Euro pro Monat." Und: „Fuer **erfolgreich vermittelte Auftraege** wird ausserdem eine
+Auftragspauschale von 25 % des Auftragswerts faellig." Keine Softwaregebuehr. Enthalten
+sind Kundenakquise, Kundenservice, Buchhaltung, Coaching.
 
-Die Konditionen (`extrasauber.de/partner/` und `extrasauber.at/partner/`, abgerufen
-2026-08-28): **keine Softwaregebuehr**, 25 % Auftragspauschale vom Auftragswert, dazu
-9,95 EUR/Monat, sobald ueber die Plattform mehr als 1.000 EUR brutto generiert werden; in der
-Anfangsphase kostenlos. Die Provision finanziert ausdruecklich „Plattformwartung und
--entwicklung", „automatisierte Buchhaltung", „Personal- und Einsatzplanung", Kundenservice
-und regelmaessige Video-Coaching-Calls. Vermittelt werden Wohnungs-, Intensiv- und
-Umzugsreinigung fuer Privathaushalte ebenso wie Bueroreinigung.
+**Die entscheidende Frage — verwaltet UNLIMITED auch selbst gewonnene Kunden? — ist
+oeffentlich nicht zu beantworten.** Fuenf Versuche an fuenf Stellen: Softwareseite,
+Buchhaltungsseite, Partnerseite, Fairness-Seite, FAQ. Die FAQ hat ueberhaupt keinen
+Partnerbereich (nur Privat-, Geschaefts- und Ferienobjektkunden). Die AGB enthalten keine
+Regelung zur Softwarenutzung, sondern nur ein an **Kunden** gerichtetes Umgehungsverbot:
+„Solltest du die Servicekraft nach der Buchung in deinem Haushalt oder Unternehmen direkt
+beschaeftigen und dabei den Partnerbetrieb umgehen, so fuegst du dadurch dem Partnerbetrieb
+einen Schaden zu" (`extrasauber.de/agb`, abgerufen 2026-08-28). Die Formulierung „fuer
+erfolgreich vermittelte Auftraege" und der Zusatz, ExtraSauber bringe Auftraege
+„zusaetzlich zu deinem laufenden Geschaeft", lassen beides zu.
 
-Das ist die ZenMaid-Funktionsliste — Termine, Kunden, Rechnung, Personalplanung —
-**zum Preis von null, gebuendelt mit der Kundengewinnung**, die fuer eine kleine Putzfirma
-das eigentlich knappe Gut ist.
+Klaeren liesse sich das nur durch eine Partneranmeldung oder einen Anruf — beides
+Aussenkontakt und damit ausserhalb meiner Grenzen. **Das ist die Stelle, an der diese
+Idee kippt oder haelt** (siehe Abschnitt 5 und „Offen geblieben").
 
-### b) Die uebrigen deutschen Branchenanbieter (B2B-Gebaeudereinigung)
+### b) Branchensoftware fuer die B2B-Objektreinigung (DACH)
 
-Aus drei konkurrierenden Vergleichsartikeln und zwei Verzeichnissen, alle abgerufen
-2026-08-28:
+Unveraendert aus dem ersten Lauf, Preise abgerufen 2026-08-28 aus den Vergleichsartikeln
+`certiscan.de`, `dynvon.com`, `handwerk-digitalisieren.de`, `softwareabc24.de`:
+Blink (149 EUR Basis + 4,90 EUR/Nutzer, Professional 399 EUR), Profacilo (ab 349 EUR
+netto), fortytools/zvoove (ab 89 EUR), HERO (ab 59 EUR + 22 EUR App-Lizenz), ToolTime
+(ab 79 EUR), OfficeOn/Bosch (ab 49,99 EUR), CleanManager (5–40 EUR je Benutzertyp),
+MFR (ab 29 EUR), Crewmeister (1,50 EUR je Nutzer), dazu CERTISCAN, Landwehr L2, aventini,
+PlanD, dynvon, COMP4, Wowflow, Sage 50 Handwerk, blue:solution, Mendato, CleanJack,
+Doinn, RO App, clean-invoice, CleanCalc.
 
-| Anbieter | Preis | Quelle |
-|---|---|---|
-| Blink | 149 EUR Basis + 4,90 EUR/Nutzer/Monat (Standard), 399 EUR Basis (Professional) | certiscan.de |
-| Profacilo | ab 349 EUR netto/Monat | dynvon.com |
-| fortytools (zvoove) | ab 89 EUR/Monat | certiscan.de |
-| HERO | ab 59 EUR/Monat + 22 EUR App-Lizenz/Nutzer | certiscan.de |
-| ToolTime | ab 79 EUR/Monat | handwerk-digitalisieren.de |
-| OfficeOn (Bosch) | ab 49,99 EUR/Monat | ebenda |
-| CleanManager (DK) | 5–40 EUR/Monat je Benutzertyp + Module (App 67 EUR/Monat) | certiscan.de, softguide.de |
-| MFR Deutschland | ab 29 EUR/Monat | handwerk-digitalisieren.de |
-| Crewmeister | 1,50 EUR je Nutzer/Monat (bei 50 MA) | dynvon.com |
-| CERTISCAN, Landwehr L2 (zvoove), aventini, PlanD, dynvon | auf Anfrage | certiscan.de, dynvon.com |
-| plancraft, COMP4, Wowflow, Sage 50 Handwerk, blue:solution smarthandwerk, Mendato | nicht angegeben | softwareabc24.de |
-| CleanJack, Das Programm, Doinn, RO App, clean-invoice, CleanCalc | nicht angegeben | Einzelsuchen |
+**Neu gefunden:** ProClean (`proclean-software.de`, Langen/Hessen, nach eigener Angabe
+„25 Jahre professionelle Software fuer Gebaeudereiniger/Dienstleister", kein Preis
+oeffentlich), Timecount (`timecount.com/gebaeudedienstleister-software/`), Work&Track
+Mobile, Connected Cleaning (Kaercher), sowie fuer die Schweiz AXclean/Axept, softcleaning.ch,
+Aduna, SYZ AG und bexio mit eigener Reinigungs-Branchenseite. Fuer haushaltsnahe
+Betreuungsdienste zusaetzlich Kilanka, curaCAT und fortytools mit eigener Seite
+„Bueros-Software speziell fuer Betreuungsdienste & Alltagshilfe" — dort sind die
+Kostentraeger allerdings Pflegekassen, nicht Privatkunden (abgerufen 2026-08-28).
 
-Drei konkurrierende „Reinigungssoftware-Vergleich 2026" existieren bereits — `certiscan.de`,
-`dynvon.com` und `softwareabc24.de`. **Zwei davon sind von Anbietern geschrieben, die in ihrer
-eigenen Liste stehen** (CERTISCAN als Herausgeber auf Platz 1; dynvon nennt sich selbst in der
-Vergleichstabelle, trotz des Hinweises „Kein Affiliate-Link in diesem Artikel"); der dritte
-verdient nach eigener Angabe an Provisionen der Softwarehersteller. Das ist der
-Saettigungsindikator aus meinem Logbuch in seiner schaerfsten Form.
+Alle diese Produkte zielen auf Objekt- und Mehrkundenstruktur, nicht auf den
+Privathaushalt als Endkunden. Die Beobachtung des Signals bleibt insoweit richtig.
 
-Alle drei Vergleiche differenzieren **nicht** zwischen Privatkunden- und Objektreinigung;
-der Fokus liegt durchweg auf Zoll, Branchenmindestlohn und Rahmentarifvertrag. Insoweit
-bestaetigt die Recherche die Beobachtung des Signals.
+### c) Neu und wichtiger als alles unter b): Handwerkersoftware, die den Kleinstbetrieb ausdruecklich adressiert
 
-### c) Die generische Terminbuchungsschicht — mit dauerhaft kostenloser Stufe
+**Meisterwerk** betreibt unter `blog.meisterwerk.app/gewerke/reinigungsfirma` (abgerufen
+2026-08-28) eine eigene Reinigungsfirmen-Seite und benennt die Groessenklassen woertlich:
+„1–3 Mitarbeiter: Wenige Objekte, ueberschaubare Struktur", „4–10 Mitarbeiter" mit dem
+„groessten Mehrwert", „Ab 10 Mitarbeitern: Mehrere Objektbetreuer, Springer-System".
+Preis: **ab 49 EUR/Monat inkl. 3 Benutzern**, jeder weitere Nutzer 12 EUR, Module
+(Kalender & Planung, Zeiterfassung, Formulare) je 5 EUR/Nutzer, Angebote & Rechnungen
+20 EUR, Buchhaltungsanbindung 5 EUR; im Jahrespaket 25 % guenstiger, KI-Funktionen
+inklusive (`meisterwerk.app/preise`, abgerufen 2026-08-28).
 
-- **SuperSaaS** (`supersaas.de/info/preise`, abgerufen 2026-08-28): dauerhaft kostenlose
-  Stufe mit 50 zukuenftigen Terminen und 50 registrierten Benutzern, werbefrei, mit
-  Kalendersynchronisierung und Zahlungsfunktion. Bezahlt ab 9 EUR/Monat (100 Termine).
-  Eigene Landingpages „Terminplanungssystem fuer Haushaltshilfe & Reinigungsservice" und
-  „Planungssoftware fuer Reinigungs- und Hausmeisterdienste".
-- **EasyWeek** (`easyweek.de/solutions/cleaning`, abgerufen 2026-08-28): dauerhaft kostenlose
-  Stufe, Pro-Plaene „ab 8,33 EUR" monatlich. Online-Buchung rund um die Uhr, automatische
-  Terminerinnerungen, Kundenbewertungen, Mehrsprachigkeit — und ausdruecklich fuer mobile
-  Reinigungsdienste mit Privatkundschaft.
+Denselben Artikel nutzt Meisterwerk fuer einen Marktpreis-Korridor: „zwischen 15 und 50
+Euro pro Mitarbeitenden", Einstiegsloesungen „bei 15–29 Euro", mittlere Loesungen
+„39–49 Euro", ERP-orientierte Anbieter „65–80 Euro".
 
-Damit ist der Preisboden fuer den Terminteil **null**, nicht niedrig.
+Das ist der Befund, der der alten Fassung fehlte: **Am unteren Rand — ein bis zehn
+Mitarbeitende — wird in dieser Branche nachweislich fuer Software bezahlt.** Was diese
+Produkte nicht abbilden, ist die Privatkundenbeziehung (Selbstbuchung, Bewertungs-Funnel,
+Trinkgeld, wiederkehrender Haushaltstermin); ihr Modell ist das Objekt.
 
-### d) Das amerikanische Vorbild selbst
+### d) Die Faktura- und Buchhaltungsschicht mit Reinigungs-Landingpage
 
-ZenMaid (`get.zenmaid.com/pricing`, abgerufen 2026-08-28): Starter 19 USD/Monat (bis 40
-Termine), Pro 39 USD/Monat, Pro Max 49 USD/Monat — **pauschal, unabhaengig von der
-Teamgroesse**, SMS-Kosten nicht enthalten, 14 Tage Test, **keine dauerhaft kostenlose Stufe**.
-Sitz Palo Alto. Weder Deutschland noch Europa noch eine andere Waehrung oder Sprache werden
-auf der Preisseite erwaehnt. Ein Markteintritt in Deutschland ist damit weder angekuendigt
-noch erkennbar vorbereitet — die Barriere-These des Signals haelt.
+Lexware Office (`office.lexware.de/branche/reinigungsfirma/`), sevdesk, orgamax
+(`orgamax.de/.../buchhaltung-reinigungsfirma/`), Softwareprogramme24 „Faktura-Manager
+Gebaeudereinigung", Scoutsystems „Faktura-Software Gebaeudereiniger" mit Tourenplaner —
+alle abgerufen 2026-08-28. Rechnung, Aborechnung, Kundenstamm, teils Terminkalender, zu
+Buchhaltungspreisen (einstellige bis niedrige zweistellige Betraege im Monat).
 
-### e) Die Plattformen, die die Nachfrage buendeln
+### e) Die Terminbuchungsschicht — Preisboden null, breiter als bisher bekannt
 
-- **Helpling**: geschaetzt 25 Mio. EUR Umsatz, 250 Mitarbeitende; „ueber eine Million
-  Reinigungen" im Vorjahr vermittelt. Provision „zwischen 20 und 40 Prozent"; Beispiel-
-  Stundensatz einer Kraft 17,90 EUR brutto, davon geht die Vermittlungsgebuehr ab
-  (ZDF, `zdfheute.de/wirtschaft/putzportale-putzhilfe-online-100.html`, abgerufen 2026-08-28).
-- **ExtraSauber**, **Putzperle**, **Haushaltshelden**, **Mr. Cleaner** — weitere Portale
-  (ebenda). Es existieren bereits **Vergleichsportale fuer die Vergleichsportale**
-  (`putzchecker.de`, `extrasauber.de/magazin/putzportale-vergleich`).
-- **Book a Tiger** zog sich nach eigener Ankuendigung aus dem Privatkundengeschaeft zurueck
-  und firmierte das B2B-Geschaeft als Tiger Facility Services; spaeter Uebernahme durch
-  Helpling. Die Marke wird 2026 weiterhin fuer Privatkunden beworben (ab 15,90 EUR/Stunde).
-  *Die Datierung dieser Vorgaenge konnte ich nur aus Suchzusammenfassungen rekonstruieren.*
+SuperSaaS (dauerhaft kostenlose Stufe, bezahlt ab 7–9 EUR, eigene Seiten
+„Terminplanungssystem fuer Haushaltshilfe & Reinigungsservice"), EasyWeek (kostenlose
+Stufe, Pro ab 8,33 EUR, Seite `easyweek.de/business/solutions/cleaning`), **neu:**
+SimplyBook.me (kostenlose Version mit wiederkehrenden Terminen und eigener Buchungsseite,
+`simplybook.me/de/.../cleaning-services`), Setmore („Kostenlose App zur Online-
+Reinigungsplanung", `setmore.com/de/industries/cleaning-services`), Shore, cituro, anolla.
+Alle abgerufen 2026-08-28.
+
+### f) Neu: Die Kategorie existiert auf Deutsch — die Produkte darin nicht
+
+`capterra.com.de/directory/10062/maid-service/software` fuehrt eine eigene deutsche
+Kategorie **„Haushaltsservice Software"** („bietet Managementloesungen fuer das Front-
+und Back-End von Haushaltsserviceunternehmen") mit **48 Produkten** auf zwei Seiten
+(abgerufen 2026-08-28): Housecall Pro, Jobber, ZenMaid, Automaid, BookingKoala,
+Service Autopilot, ServiceM8, mHelpDesk, Kickserv, GorillaDesk, Operto Teams,
+Synchroteam, ServiceOS, DoTimely und weitere. **Kein einziges Produkt aus Deutschland,
+Oesterreich oder der Schweiz ist darunter.** Capterra uebersetzt lediglich die
+Beschreibungstexte ins Deutsche; das ist keine Lokalisierung des Produkts.
+
+### g) Das Vorbild selbst
+
+ZenMaid: Starter 19 USD, Pro 39 USD, Pro Max 49 USD pauschal, keine dauerhaft kostenlose
+Stufe (`get.zenmaid.com/pricing`, abgerufen 2026-08-28). Die Internationalisierungsseite
+`zenmaid.com/for-international-maid-services/` ist auf den **02.01.2017** datiert, nennt
+UK, Australien, Dubai, Niederlande und Kanada und raeumt ein: „we have more development
+to do to fully serve our international customer base". Sprachen, Waehrungen, Deutschland
+oder DSGVO kommen dort nicht vor. Eine Fremdrezension (`connecteam.com/reviews/zenmaid/`,
+abgerufen 2026-08-28) gibt an, ZenMaid unterstuetze ausschliesslich Englisch und sei in
+EU/UK DSGVO-konform. **Ein Markteintritt im deutschsprachigen Raum ist damit weder
+angekuendigt noch vorbereitet.**
+
+Ebenfalls geprueft: keine Hinweise auf eine deutschsprachige Fassung von Launch27,
+Jobber oder Housecall Pro; kein deutsches SaaS-Startup dieser Nische mit Finanzierungsrunde
+2025/2026 auffindbar (Suchen abgerufen 2026-08-28). Anders als im Handwerk-Stundenzettel-Lauf
+gibt es hier also **keinen frisch finanzierten Marktfuehrer**, der die Luecke gerade
+schliesst.
 
 ## 3. Was heute dafuer gezahlt wird
 
-**Fuer Software, durch die Reinigungsfirma:** 29 EUR bis 399 EUR im Monat (siehe Tabelle
-oben), Schwerpunkt zwischen 49 und 149 EUR. Diese Preise gelten aber der B2B-Objektreinigung
-mit zehn bis mehreren hundert Beschaeftigten — Zielgruppenangaben der Vergleiche: fortytools
-10–100 MA, CleanManager 20–200 MA, Blink „ab 40 Nutzer", Profacilo 10–50 MA.
+**Fuer Software:** 29 bis 399 EUR/Monat in der B2B-Objektreinigung; im Kleinbetriebs-
+segment belegt 29 EUR (MFR), 49 EUR (Meisterwerk, OfficeOn) und 59 EUR (HERO), mit einem
+vom Anbieter selbst genannten Marktkorridor von 15–50 EUR je Mitarbeitendem. ZenMaid
+verlangt 19–49 USD pauschal.
 
-**Fuer die Zielgruppe des Signals — die kleine Privatkundenfirma — wird heute
-nachweislich null fuer Software gezahlt:** ExtraSauber UNLIMITED kostet keine Softwaregebuehr,
-SuperSaaS und EasyWeek haben dauerhaft kostenlose Stufen, und das teuerste plausible Produkt
-in dieser Groessenklasse waere ZenMaid selbst mit 39 USD (rund 35 EUR) im Monat.
+**Fuer Kundengewinnung:** 25 % Auftragspauschale (ExtraSauber), 20–40 % Provision
+(Helpling, ZDF). Das ist die grosse, tatsaechlich fliessende Zahlung — bei 60.000 EUR
+Plattformumsatz rund 15.000 EUR im Jahr.
 
-**Was stattdessen fliesst, ist Provision:** 25 % bei ExtraSauber, 20–40 % bei Helpling. Eine
-Firma mit 60.000 EUR Jahresumsatz ueber die Plattform zahlt damit 15.000 EUR im Jahr — das
-Vielfache jeder Softwaregebuehr. Die Zahlungsbereitschaft existiert also, sie ist nur an die
-**Kundengewinnung** gebunden, nicht an die Verwaltung. Genau diesen Kanal geben die Portale
-nicht her, und sie legen die Verwaltungssoftware als Bindemittel gratis obenauf.
+**Wieviel Verwaltung im Stundensatz ueberhaupt steckt** (neu, und die Obergrenze fuer
+jede Preisdiskussion): Die Beispielkalkulation von `1a-reinigungsberatung.de/bespielkalkulation/`
+(Tarifstand April 2025, abgerufen 2026-08-28) weist bei einem Tariflohn von 14,25 EUR
+unternehmensbezogene Kosten von **17,12 %** aus, davon **Verwaltungskosten 2,60 %** und
+kaufmaennisch-technische Gehaelter 5,60 %; Stundenverrechnungssatz **28,53 EUR**. Die
+zweite gepruefte Kalkulation (CleanCalc, erster Lauf) kommt mit 8 % Verwaltung auf
+24,62 EUR netto. Bei einem Nebenerwerbsbetrieb mit sechs abrechenbaren Stunden pro Woche
+sind 2,6 bis 8 Prozent Verwaltungsanteil ein **einstelliger bis niedrig zweistelliger
+Eurobetrag im Monat** — darunter liegt jedes Abo, ueber das hier gesprochen wird.
 
-**Wichtige Unstimmigkeit beim Vorbild:** GetLatka weist fuer ZenMaid 2,6 Mio. USD
-Jahresumsatz bei „1K customers" und einem „Avg ACV $2.6K" aus (Stand 17.10.2024,
-abgerufen 2026-08-28) — das sind rund 217 USD pro Kunde und Monat. Die eigene Preisliste
-nennt 19 bis 49 USD. **Die beiden Angaben lassen sich um den Faktor vier bis elf nicht
-zusammenbringen.** Entweder ist die Kundenzahl deutlich hoeher als 1.000 (bei 39 USD waeren
-fuer 200.000 USD MRR rund 5.100 Kunden noetig), oder die Umsatzschaetzung ist falsch, oder
-ein wesentlicher Teil des Umsatzes stammt aus etwas anderem als dem gelisteten Abo. Wer auf
-diesem Vorbild aufbaut, sollte mit einem **ARPU von rund 35 EUR im Monat** rechnen, nicht mit
-200 USD.
+**Was die Zahlen des Vorbilds wert sind:** GetLatka weist 2,6 Mio. USD Jahresumsatz bei
+„1K customers" aus (Stand 17.10.2024) — rund 217 USD je Kunde und Monat gegen eine
+Preisliste von 19–49 USD. Die Angaben lassen sich um den Faktor vier bis elf nicht
+zusammenbringen. Wer auf diesem Vorbild rechnet, sollte **rund 35 EUR ARPU** ansetzen.
 
 ## 4. Die heutige Notloesung
 
-Drei Notloesungen, in dieser Reihenfolge:
+**Neu, und die erste belastbare Zeitangabe ueberhaupt:** Der Leitfaden
+`fixklar.de/reinigungsfirma-nebenberuflich-gruenden` (abgerufen 2026-08-28) rechnet ein
+Nebenerwerbsmodell mit 10 Wochenstunden durch und teilt sie woertlich auf: **„6 Std.
+Reinigung, 2 Std. Fahrt/Einkauf, 1 Std. Admin, 1 Std. Puffer"**, bei 45 EUR netto je
+Stunde rund 1.169 EUR Monatsumsatz vor Kosten. **Die Verwaltung eines
+Nebenerwerbsbetriebs ist damit auf rund eine Stunde pro Woche veranschlagt** — und eine
+Notloesung dieser Groesse wird selten ersetzt.
 
-1. **Die Plattform.** Wer Privathaushalte reinigt und keine eigene Verwaltung will, arbeitet
-   ueber ExtraSauber oder Helpling und bekommt Termine, Kundenverwaltung, Rechnung, Mahnwesen
-   und Inkasso mitgeliefert. Kosten: 25 % des Umsatzes — teuer, aber ohne Fixkosten und mit
-   Auftraegen im Paket. Ein Partner berichtet oeffentlich von ueber 90.000 EUR Umsatz im
-   ersten Jahr bei bis zu fuenf Kunden am Tag.
-2. **Excel, WhatsApp, Zettel, Telefon.** Von Blink fuer die Branche ausdruecklich benannt
-   (`blink.de/blog/software-reinigungsunternehmen/`, abgerufen 2026-08-28): „zusammengestellte
-   Software arbeitet aber weder gut zusammen, noch haeltst du damit den Datenschutz ein" und
-   „Informationen jedoch nur muendlich oder per Notizzettel weitergegeben […] ist das
-   fehleranfaellig". **Der Artikel nennt keine Zahl zu Zeitaufwand oder Digitalisierungsgrad**,
-   und ich habe auch sonst keine gefunden. Was diese Notloesung kostet, ist damit unbekannt —
-   und das ist eine Luecke, die gegen die Idee spricht, nicht fuer sie: Ohne belegten
-   Zeitverlust gibt es kein Argument, das eine Ablesung ersetzt.
-3. **Gar keine Firma.** Die mit Abstand haeufigste Notloesung im deutschen Privathaushalt ist
-   die direkt und bar bezahlte Kraft: 15 bis 25 EUR pro Stunde, ohne Anmeldung, in vier
-   Millionen Haushalten.
+Fuer die naechste Groessenklasse gibt es eine Anbieterangabe: „Mit Papierzetteln und
+Excel dauert das einen halben Tag" — gemeint ist das monatliche Zusammenrechnen der
+Stunden je Objekt (Meisterwerk, abgerufen 2026-08-28). Das ist ein Verkaufsargument und
+betrifft die **Mehrobjekt**-Struktur, nicht den Privathaushalt; als Zahl fuer die
+Zielgruppe des Signals taugt es nicht.
 
-Punkt 3 ist der Grund, warum Punkt 1 und 2 so klein bleiben. Eine legal arbeitende Firma muss
-nach der Beispielkalkulation von CleanCalc (`cleancalc.de/stundensatz-gebaeudereinigung.html`,
-abgerufen 2026-08-28) auf dem Branchenmindestlohn von **15,00 EUR (Lohngruppe 1, ab
-01.01.2026)** aufsetzen: 21 % Lohnnebenkosten, 5 % Material, 3 % Fahrt, 8 % Verwaltung, 2 %
-Wagnis ergeben 21,41 EUR Selbstkosten, mit 15 % Gewinnzuschlag **24,62 EUR netto** —
-marktueblich 25 bis 35 EUR netto in der Unterhaltsreinigung. Fuer den Privathaushalt kommen
-19 % Umsatzsteuer obendrauf, also **rund 30 bis 42 EUR brutto pro Stunde gegen 15 bis 25 EUR
-bar**. Diese Spanne, nicht ein Softwaremangel, entscheidet die Marktgroesse.
+Die uebrigen drei Notloesungen unveraendert:
+
+1. **Die Plattform** (ExtraSauber, Helpling, Putzperle, Haushaltshelden, Mr. Cleaner,
+   neu auch FixKlar mit einer „FixKlar Free"-Stufe): Termine, Kunden, Rechnung, Mahnwesen
+   und Auftraege im Paket, bezahlt mit 25–40 % Provision.
+2. **Excel, WhatsApp, Zettel, Telefon** — von Blink fuer die Branche ausdruecklich
+   benannt („Informationen jedoch nur muendlich oder per Notizzettel weitergegeben […]
+   ist das fehleranfaellig", `blink.de/blog/software-reinigungsunternehmen/`).
+3. **Gar keine Firma**: 15–25 EUR bar in ueber vier Millionen Haushalten, gegen 30–42 EUR
+   brutto bei einer legal kalkulierenden Firma (Branchenmindestlohn 15,00 EUR LG 1 ab
+   01.01.2026).
 
 ## 5. Was dagegen spricht
 
-**a) Der Vertriebskanal zur Zielgruppe gehoert dem, der die Software verschenkt.** Wer eine
-kleine Putzfirma mit Privatkundschaft erreichen will, findet sie dort, wo die Auftraege
-herkommen: bei ExtraSauber und Helpling. ExtraSauber liefert exakt die ZenMaid-Funktionen
-ohne Softwaregebuehr und bindet die Firma ueber die Auftraege. Ein Werkzeug, das nur die
-Verwaltung kann, tritt gegen ein Werkzeug an, das Verwaltung **und** Umsatz bringt und
-nichts kostet.
+**a) Der Preisboden ist null, nicht niedrig.** Vier Terminbuchungssysteme mit dauerhaft
+kostenloser Stufe und deutschsprachiger Reinigungs-Landingpage (SuperSaaS, EasyWeek,
+SimplyBook.me, Setmore), dazu ExtraSauber UNLIMITED ohne Softwaregebuehr. Die Decke liegt
+bei den 49 EUR von Meisterwerk bzw. den 35 EUR des Vorbilds.
 
-**b) Der Preisboden ist null, die Decke liegt bei 35 EUR.** SuperSaaS und EasyWeek haben
-dauerhaft kostenlose Stufen mit deutschsprachigen Reinigungs-Landingpages; das Vorbild selbst
-verlangt 19 bis 49 USD pauschal. Ein deutsches Produkt haette damit rund 35 EUR im Monat als
-realistischen Preis — bei einer Zielgruppe, deren Groesse niemand beziffern kann.
+**b) ExtraSauber besetzt Segment und Aufgabe — nur gebuendelt.** Dasselbe Segment
+(kleine Reinigungsfirmen mit Privathaushaltskundschaft in DE/AT/CH), dieselbe Aufgabe
+(Auftrag, Kunde, Rechnung, Personalplanung), Preis null. Der Unterschied zum Signalprodukt
+ist nicht die Funktion, sondern der Handel: 25 % des vermittelten Umsatzes und die
+Kundenbeziehung. Ob das Werkzeug auch die selbst gewonnenen Kunden traegt, ist ungeklaert
+(Abschnitt 2a). **Wird das bejaht, ist das Segment im deutschsprachigen Markt besetzt und
+die Idee tot.**
 
-**c) Das Segment ist nicht bezifferbar, und alle Indizien zeigen nach unten.** 92 %
-Schwarzarbeit, vier Millionen Haushalte ohne Anmeldung, und der legale Haushaltsscheck-Bestand
-faellt um 2,0 % im Jahr. Ein Markt, den niemand zaehlt und dessen einzige zaehlbare
-Nachbargroesse schrumpft, ist nach meinen eigenen Massstaeben ein Befund gegen die Idee.
+**c) Das Segment ist nicht bezifferbar.** Keine Statistik trennt nach Kundenart; die
+einschlaegige Ministeriumsstudie ist nicht auswertbar. Der Ideator darf sich auf keine
+Zahl zur Zielgruppengroesse stuetzen — auch nicht auf die 34.824 oder die rund 28.000
+Kleinbetriebe, die ganz ueberwiegend gewerbliche Auftraggeber bedienen.
 
-**d) Der behauptete lokale Vorteil existiert nicht.** Das Signal nennt die
-„Minijob-/Haushaltsscheck-Logik bei der Beschaeftigung von Putzkraeften" als groessten
-Lokalisierungsvorteil, den ein US-Anbieter nicht abbilden koenne. **Das Haushaltsscheck-
-Verfahren gilt ausschliesslich, wenn eine Privatperson selbst Arbeitgeberin ist** — bei
-haushaltsueblichen Taetigkeiten, die sonst Haushaltsangehoerige verrichten. Beschaeftigt eine
-**Reinigungsfirma** die Putzkraft, ist es ein **gewerblicher** Minijob mit hoeherer
-Abgabenlast (rund 167 EUR statt rund 80 EUR bei 603 EUR Verdienst) und ohne
-Haushaltsscheck-Verfahren; wer in einer Praxis und im Privathaus derselben Aerztin putzt,
-bildet sogar ein einheitliches gewerbliches Beschaeftigungsverhaeltnis. Die Funktion, die
-den Unterschied zum US-Produkt ausmachen sollte, betrifft also **nicht die Kundin der Idee,
-sondern deren Kundin**.
+**d) Der behauptete Lokalisierungsvorteil existiert nicht.** Das Signal nennt die
+Minijob-/Haushaltsscheck-Logik als groessten lokalen Mehrwert. Das
+Haushaltsscheck-Verfahren gilt aber ausschliesslich, wenn eine **Privatperson selbst
+Arbeitgeberin** ist. Beschaeftigt eine **Reinigungsfirma** die Putzkraft, ist es ein
+gewerblicher Minijob mit hoeherer Abgabenlast und ohne Haushaltsscheck. Die Funktion
+betrifft also nicht die Kundin der Idee, sondern deren Kundin. (Belegt im ersten Lauf.)
 
-**e) Was in Deutschland stattdessen der Kern waere, ist der schwerste Teil.** Das
-Gebaeudereinigungsgewerbe steht in § 2a SchwarzArbG und unterliegt damit der
-**Sofortmeldepflicht nach § 28a Abs. 4 SGB IV** (Meldung an die DSRV spaetestens bei
-Beschaeftigungsaufnahme) sowie der **Aufzeichnungspflicht nach § 17 MiLoG**, kontrolliert
-durch den Zoll und die Pruefdienste der Renten- und Unfallversicherung. Dazu der
-allgemeinverbindliche Branchenmindestlohn (15,00 EUR LG 1 / 18,40 EUR LG 6 ab 01.01.2026).
-Genau darauf sind die deutschen Anbieter zugeschnitten — CERTISCAN vermarktet sich
-ausdruecklich als Compliance-Plattform. Ein Nachbau des amerikanischen Funktionsumfangs
-(Route, Trinkgeld, Bewertungs-Funnel, Bewerber-Pipeline) trifft damit an der deutschen
-Realitaet vorbei, und der Teil, der hier zaehlt, fuehrt in Sofortmeldung und
-Entgeltabrechnung — ein Feld, in dem Meldeverfahren an Systempruefungen haengen.
+**e) Der eigentliche deutsche Kern ist der schwerste Teil.** Das Gebaeudereinigungsgewerbe
+steht in § 2a SchwarzArbG und unterliegt der Sofortmeldepflicht nach § 28a Abs. 4 SGB IV
+sowie der Aufzeichnungspflicht nach § 17 MiLoG, kontrolliert durch den Zoll. Genau darauf
+sind die deutschen Anbieter zugeschnitten. Ein Nachbau des US-Funktionsumfangs (Route,
+Trinkgeld, Bewertungs-Funnel, Bewerber-Pipeline) trifft daran vorbei.
 
-**f) Die Kategorie verkauft sich mit Telefon.** CleanManager nennt „persoenliche
-Softwareeinfuehrungen mit unseren Mitarbeitern" sowie Telefon- und E-Mail-Support als im
-Abopreis enthalten; ExtraSauber liefert „regelmaessige Video-Coaching-Calls"; ExtraSauber und
-Blink werben beide mit „persoenlicher Betreuung". Das ist die Norm, gegen die ein Anbieter
-ohne synchrone Kundenkommunikation antreten muesste. *(Ob das eine Grenzverletzung ist,
-entscheidet nicht der Rechercheur — aber es ist eine Tatsache ueber den Markt und gehoert
-hierher.)*
+**f) Die Kategorie verkauft sich synchron.** CleanManager wirbt mit „persoenlichen
+Softwareeinfuehrungen", ExtraSauber mit „regelmaessigem Coaching und persoenlicher
+Unterstuetzung", Meisterwerk nennt „E-Mail- & Telefon-Support und die Einfuehrung"
+ausdruecklich als immer inklusive. Das ist die Norm, gegen die ein Anbieter ohne
+synchrone Kundenkommunikation antreten muesste.
 
-**g) Die Zahlen des Vorbilds tragen sich selbst nicht.** Siehe Abschnitt 3: 1.000 Kunden bei
-einer Preisliste von 19 bis 49 USD ergeben nicht 200.000 USD MRR. Ein Modell, dessen
-oeffentliche Umsatzangabe um das Vier- bis Elffache von der eigenen Preisliste abweicht, ist
-als Beleg fuer Zahlungsbereitschaft schwaecher, als das Signal annimmt.
+**g) Die Zahlen des Vorbilds tragen sich selbst nicht** (Abschnitt 3).
+
+**Was umgekehrt dafuer spricht** — und der Grund, warum dieser Lauf nicht rot ist:
+Es gibt im gesamten deutschsprachigen Raum **kein Produkt der Kategorie**; die Kategorie
+selbst existiert auf Deutsch (Capterra) und ist ausschliesslich mit englischsprachigen
+Produkten gefuellt; das Vorbild ist englischsprachig und seit 2017 nicht weiter
+internationalisiert; im Kleinbetriebssegment fliesst nachweislich Geld fuer Software
+(29–59 EUR); der Betriebsbestand waechst; und es gibt keinen frisch finanzierten
+deutschen Wettbewerber, der die Luecke gerade schliesst.
+
+### Warum gelb und nicht rot
+
+Die alte Fassung war rot wegen ExtraSauber. Nach der geltenden Ampel-Definition setzt rot
+einen **belegten** Ausschlussgrund voraus: einen Anbieter im deutschsprachigen Markt, der
+genau dieses Segment mit genau dieser Aufgabe bedient, ein Segment unter 500 Betrieben,
+oder belegte Null-Zahlungsbereitschaft. Keiner der drei ist erfuellt: Der ExtraSauber-Beleg
+hat eine ungeklaerte Stelle, die das Produkt vom Signalprodukt trennt (eigene Kunden,
+Plattformbindung, 25 %); das Segment liegt deutlich ueber 500; und die
+Zahlungsbereitschaft im Kleinbetrieb ist mit 29–59 EUR belegt, nicht widerlegt. Bei einem
+Signal aus `signals/modelle/` ist ausserdem allein zu pruefen, ob es **den Anbieter** im
+deutschsprachigen Markt gibt — und den gibt es nicht.
+
+Das aendert nichts daran, dass die Punkte a bis g schwer wiegen. Sie gehoeren dem
+Fit-Filter und den fuenf Linsen, nicht der Ampel.
 
 ## Offen geblieben
 
-- **Ob ExtraSauber UNLIMITED auch die selbst gewonnenen Kunden einer Partnerfirma verwaltet
-  oder nur die ueber die Plattform vermittelten.** Die Partnerseiten sprechen von „einfacher
-  Auftrags- und Kundenverwaltung" und „Rechnungen ueber unser System", sagen dazu aber nichts
-  Explizites. Wenn es nur die Plattformauftraege sind, bleibt fuer die eigenen Kunden eine
-  Luecke — sie waere aber klein, weil die Firmen mit nennenswertem Eigenkundenstamm gerade
-  jene sind, die in die B2B-Anbieterliste hineinwachsen. Der Preisanker null steht
-  unabhaengig davon.
-- **Die Groesse der Zielgruppe bleibt unbeziffert.** Es gibt keine Statistik, die
-  Reinigungsbetriebe nach Kundenart aufschluesselt, und die einzige einschlaegige
-  Ministeriumsstudie ist als PDF nicht auswertbar und in ihren zitierten Zahlen von 2004.
-  Der Ideator darf sich auf **keine** Zahl zur Zielgruppengroesse stuetzen — auch nicht auf
-  die 34.824, die das gesamte, ganz ueberwiegend gewerbliche Gewerk meint.
-- **Anzahl der ExtraSauber-Partnerfirmen.** Auf keiner der drei geprueften Partnerseiten
-  genannt. Damit laesst sich nicht sagen, wie viele Firmen bereits gebunden sind.
-- **Zeit- und Kostenaufwand der heutigen Notloesung.** Keine einzige Quelle beziffert, wieviel
-  Buerozeit eine kleine Reinigungsfirma monatlich fuer Terminplanung und Rechnung aufwendet.
-  Ohne diese Zahl ist der Nutzen des Produkts nicht rechenbar.
-- **Ob es einen sehr kleinen, regional taetigen deutschen Anbieter gibt**, der unter einem
-  nicht suchmaschinenfreundlichen Namen firmiert — die offene Frage des Signals. Nach elf
-  Suchen mit bewusst variierten und bewusst schlechten Formulierungen halte ich das fuer
-  unwahrscheinlich, kann es aber nicht ausschliessen. Der einzige Fund in dieser Richtung war
-  „Mr. Cleaner Professional" (Mr. Cleaner Service LLC, kostenlos, letztes Update 30.08.2025,
-  **3 Bewertungen, 2,3 von 5**) — und das ist eine Vermittlungs-App, kein Verwaltungswerkzeug.
-- **Die Datierung des Book-a-Tiger-Rueckzugs aus dem Privatkundengeschaeft** und der
-  Uebernahme durch Helpling stammt nur aus Suchzusammenfassungen; die Primaerquellen
-  (WiWo Gruender, t3n) habe ich nicht einzeln abgerufen. Fuer die Ampel ist das ohne Belang.
+- **Ob ExtraSauber UNLIMITED auch selbst gewonnene, nicht vermittelte Kunden verwaltet.**
+  Fuenf oeffentliche Quellen geprueft (Software-, Buchhaltungs-, Partner-, Fairness-Seite,
+  FAQ) plus AGB — keine Antwort. Es gibt keinen Partnerbereich in der FAQ. Klaerbar nur
+  durch Anmeldung oder Anruf, beides Aussenkontakt. **Das ist die wichtigste offene Frage
+  dieser Recherche**; faellt sie positiv aus, ist die Idee erledigt.
+- **Die Zahl der ExtraSauber-Partnerbetriebe** wird nirgends genannt. Fuer Helpling
+  fanden sich nur veraltete Werte (150 Partnerfirmen 2017, rund 10.000 registrierte
+  Reinigungskraefte 2021, „ueber 200 Staedte"); eine aktuelle Zahl fuer 2025/2026 gibt es
+  nicht.
+- **Die Groesse der Zielgruppe.** Keine Statistik trennt nach Kundenart. Die
+  BMBFSFJ-Studie war auch im zweiten Anlauf als PDF nicht auswertbar. Verwendbar sind nur
+  die Huellzahlen: rund 35.000 Betriebe, davon rund 80 % unter 500.000 EUR Umsatz.
+- **Der Zeitaufwand der Notloesung bei einer Privatkunden-Firma mit mehreren Kraeften.**
+  Belegt ist nur der Nebenerwerbsfall (rund 1 Std./Woche Admin, fixklar) und eine
+  Anbieterangabe zur Mehrobjekt-B2B-Struktur („ein halber Tag" monatlich, Meisterwerk).
+  Dazwischen fehlt jede Zahl — und genau dort laege die Zielgruppe.
+- **Ob die deutschen Kleinbetriebs-Anbieter (Meisterwerk, MFR, HERO) den Privatkunden-
+  Workflow nachruesten.** Auf ihren Reinigungsseiten steht durchweg die Objektlogik; eine
+  Ankuendigung in Richtung Selbstbuchung durch Privathaushalte habe ich nicht gefunden,
+  aber auch nicht ausschliessen koennen.
+- **Ob ein sehr kleiner, regional taetiger deutscher Anbieter existiert**, der unter einem
+  nicht suchmaschinenfreundlichen Namen firmiert. Nach nunmehr 19 Suchen ueber zwei Laeufe,
+  deutsch und englisch, mit bewusst schlechten Formulierungen, halte ich das fuer
+  unwahrscheinlich, kann es aber nicht ausschliessen.
