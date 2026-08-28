@@ -23,25 +23,28 @@ niemand mehr, auch du nicht.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — Direkte Branchen-Kombinationen ("Steuerbüro Excel-Liste pflegen nervt",
-  "Pflegedienst Dienstplan nervt", "Arztpraxis KV Abrechnung nervt", "KFZ Werkstatt
-  Ersatzteile nervt", "Physiotherapie Abrechnung nervt") liefern fast ausschließlich
-  Vorlagen-Downloads und Anbieter-Blogs mit erfundenen/plakativen Zahlen ("10-15 Std.
-  taeglich", "4 Std. woechentlich") — die stammen aus Verkaufstexten, nicht aus echten
-  Klagen, und zaehlen laut Regel nicht.
-- 2026-08-28 — site:reddit.com-Suchen liefern über die WebSearch-Tools kaum echte
-  Reddit-Threads, meist nur Gumroad-Produkte und Wikipedia. Reddit direkt scheint über
-  dieses Werkzeug schlecht durchsuchbar.
-- 2026-08-28 — Ein alter Fund (herber.de, Offene-Posten-Mahnwesen) stammte von 2005 —
-  zu alt, der Markt (Buchhaltungssoftware) hat das Problem seither geloest. Datum vor
-  dem Schreiben pruefen, nicht nur Relevanz des Inhalts.
+- 2026-08-28 — Direkte Branchen-Kombinationen liefern fast ausschließlich
+  Vorlagen-Downloads und Anbieter-Blogs mit erfundenen/plakativen Zahlen — Verkaufstexte,
+  keine echten Klagen, zaehlen laut Regel nicht.
+- 2026-08-28 — Alte Funde vor dem Schreiben unbedingt auf Datum pruefen: Vereinskassenwart-
+  Doppelpflege (Admidio-Forum, homebanking-hilfe.de) klang stichhaltig, Zitate stammten
+  aber von 2007/2010; Pflegedienst-Dienstplan-per-Excel (pflegeboard.de, pflegenetz.net)
+  ebenso stichhaltig, Zitate von 2007/2013. Beide Themen inzwischen dicht mit
+  Vereinssoftware bzw. Dienstplan-SaaS besetzt (WISO MeinVerein, verein.cloud, planerio,
+  Staffomatic) — vermutlich laengst geloest, nicht erneut ohne frische (<2 Jahre) Quelle
+  aufgreifen.
+- 2026-08-28 — pflegeboard.de und forum.pflegenetz.net per WebFetch nicht erreichbar
+  (ECONNREFUSED) — nur WebSearch-Snippets verfuegbar, keine woertlichen Zitate moeglich.
+  Fuer diese Domains ggf. gleich auf Snippet-Paraphrase mit Quellenangabe ausweichen.
+- 2026-08-28 — Bereits SaaS-dicht besetzte Themen (Ferienwohnung-Channel-Manager,
+  Belege-Digitalisierung, Rechnungsabgleich) liefern in DE wie EN nur Marketing-Content
+  von Anbietern, keine echten Forenbeitraege — dort lohnt generelle Suche kaum, nur
+  gezielte Suche in konkreten Nischenforen.
 
 ## Offene Faehrten
 
 - Etsy/Amazon/eBay-CSV-Aufbereitung: naeher pruefen, ob es weitere unabhaengige
   Bestaetigungen gibt (z.B. englischsprachige Etsy-Seller-Foren, r/EtsySellers) und ob
-  das Problem ueber Kleinunternehmer hinaus auch bei umsatzsteuerpflichtigen Haendlern
-  auftritt.
-- Noch nicht durchsucht: Vereins-/Kassenwart-Themenfeld (Admidio-Forum wirkte aktiv),
-  Gastronomie-Trinkgeldverbuchung (GoBD-Pflicht macht Excel dort teils unzulaessig —
-  koennte fuer Regel-Scout statt Pain-Scout relevanter sein).
+  das Problem auch bei umsatzsteuerpflichtigen Haendlern auftritt.
+- Vereinskassenwart und Pflegedienst-Dienstplan (s.o.): nur mit explizit auf 2024-2026
+  eingegrenzter Suche neu versuchen, nicht mit den alten Quellen.
