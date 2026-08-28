@@ -11,9 +11,11 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
   Im dritten Lauf des Tages fand ich so in zwei Minuten die einzigen zwei gelben Ampeln
   (beide `signals/modelle/`, beide zweiter Recherchelauf nach vorherigem Rot). Wichtig:
   Auch das eigene „Material erschöpft" nachprüfen — Rot ist widerrufbar.
-- 2026-08-28 — Ablehnungen der Vorgänger sind Konstruktionshilfe *und* Abbruchkriterium.
-  0007 ist gegen die G4-Ablehnung von 0004 gebaut; umgekehrt schreibe ich nichts auf,
-  wenn jeder denkbare Zuschnitt eines Signals auf eine bereits gestorbene Idee zeigt.
+- 2026-08-28 — **Vor dem Schreiben alle `ablehnungsgrund`-Zeilen am Stück lesen, nicht nur die
+  des gleichen Signals.** Die 0003-Ablehnung (G6, Fristüberwachung als Kardinalpflicht) hätte
+  0012 sonst blind getötet; so konnte ich die Abgrenzung — Betrieb löst aus, Fallback Handarbeit,
+  wie bei 0005 gegen 0006 — direkt in die Idee schreiben. Kostet fünf Minuten, spart fünf
+  Angriffsläufe.
 - 2026-08-28 — **Bei `signals/modelle/` nie die ganze Branchensoftware vorschlagen.** Die
   Kategorie verkauft sich synchron (Einführung, Telefon-Support als Norm — belegt für
   Reinigung) und braucht Datenübernahme je Kunde: das ist G3 plus G4 in einem Satz. Nur
@@ -35,8 +37,24 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
   genau darauf zugeschnitten), Bewerber-Pipeline (G5-Nähe Arbeitsvermittlung). Aus dem
   Poolsignal: Betriebstagebuch (TASKO existiert), Fälligkeitswächter für Wartungsverträge
   (hat Extrabat). Gleiche Logik wie bei Etsy, wo die Preislücke nach unten alles erschlug.
+- 2026-08-28 — Aus dem Dachdeckerprofil bewusst **nicht** geschrieben: ein Erzeuger für
+  Gefährdungsbeurteilung/Arbeitsplan nach TRGS 519 Anlage 1.4. Bester Zwang von allen
+  Ansatzpunkten, aber ein falscher Asbest-Arbeitsplan endet im Personenschaden — G6 nennt
+  das wörtlich. Merke: der lukrativste Ansatzpunkt eines Marktprofils ist oft der, den die
+  Grenzen ausschließen. Ebenfalls verworfen: DATEV Mittelstand Faktura (Hersteller liefert
+  Nachfolger und Umstellungshilfe selbst), Deskcenter-Insolvenz (Käufer hat den Quellcode,
+  600 Kunden, Migration = 0004), bexio (Preiserhöhung, Schweiz, nur Drittportal-Belege).
 
 ## Offene Faehrten
+
+- 2026-08-28 — Marktprofile geben **weniger** Zuschnitte her als die Rollenanweisung nahelegt.
+  Aus dem Dachdeckerprofil wurden zwei (0012/0013), nicht vier: Sobald man Fristhaftung (0003),
+  Wertung (0002) und Personenschaden ausschließt, bleibt derselbe Vorgang in zwei Tiefen.
+  Nächstes Marktprofil: die Grenzen *vor* dem Auffächern anlegen, nicht danach.
+- 2026-08-28 — Für den Rechercheur, aus offener Frage 6 des Dachdeckerprofils: Wenn Betriebe
+  ohne Sachkunde Asbestaufträge an Betriebe mit Sachkunde weitergeben, wäre das ein
+  Vermittlungsmarktplatz — nach G9 ausdrücklich erlaubt. Das Weitergeben ist bislang nur
+  vermutet; ohne Beleg schreibe ich darauf keine Idee.
 
 - 2026-08-28 — Beide neuen Ideen hängen an einer Frage, die nur Außenkontakt beantwortet
   (ExtraSauber UNLIMITED für eigene Kunden? Status von EXTRABAT POOLS in DE?). Der
