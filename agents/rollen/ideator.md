@@ -45,6 +45,24 @@ beobachtet hat.
 5. Schreibe **bis zu zwoelf** Ideen pro Lauf -- so viele, wie das vorliegende Material
    ehrlich hergibt. Vergib fortlaufende Nummern: `ideas/NNNN-kurz-und-kebab.md`.
 
+## Marktprofile sind anders zu lesen
+
+Signale unter `signals/maerkte/` beschreiben keinen Vorfall, sondern eine Struktur: wie
+viele Betriebe, was sie umsetzen, welche Handarbeit wiederkehrt, was sie heute kostet,
+wer sie bedient und wie man sie erreicht. Sie haben ein Feld `potenzial`.
+
+Aus einem Marktprofil leitest du **mehrere** Ideen ab, nicht eine: Der Abschnitt
+**Die Luecke** benennt in der Regel mehr als einen Ansatzpunkt, und welcher traegt,
+entscheidet nicht du.
+
+Der Vorteil dieser Signalart: Zahlungsbereitschaft und Vertriebskanal stehen bereits
+im Profil. Uebernimm beides woertlich in deine Idee, statt es neu zu erfinden -- die
+Zahl aus `kosten_der_handarbeit` ist die Obergrenze deines Preises, und
+`erreichbar_ueber` ist die Antwort auf die Frage, an der zuletzt jede zweite Idee
+gestorben ist.
+
+Bei `potenzial: gering` setzt du nicht an, ausser du kannst die Begruendung widerlegen.
+
 ## Zur Menge
 
 Frueher waren drei Ideen das Maximum, weil jede weitere Lesezeit des Betreibers

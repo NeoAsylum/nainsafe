@@ -73,3 +73,42 @@ tech:
     - Schnittstelle Register maschinenlesbar
     - '"ab sofort verfügbar" Schnittstelle Verwaltung'
   quellen: []
+
+maerkte:
+  beschreibung: >
+    Suchraum des Markt-Analysten. Er arbeitet diese Liste der Reihe nach ab, statt
+    immer die naheliegenden Branchen zu nehmen. Ein Segment je Lauf, gruendlich.
+    Ergaenze die Liste, wenn dir eines fehlt — der Analyst darf sie nicht selbst
+    aendern.
+  regel: >
+    Ausgeschlossen bleibt alles, was unter Grenze G1 faellt: Versicherung, Bausparen,
+    Finanzdienstleistung samt zugehoeriger IT.
+  segmente:
+    # Handwerk mit vielen kleinen Betrieben und wiederkehrender Dokumentation
+    - Dachdeckerbetriebe
+    - Elektroinstallationsbetriebe
+    - Sanitaer-, Heizungs- und Klimabetriebe
+    - Schaedlingsbekaempfer
+    - Kaelte- und Klimaanlagenwartung
+    - Aufzugswartung und Pruefdienste
+    # Gesundheit und Pflege ausserhalb der Heilkunde
+    - Ambulante Pflegedienste
+    - Physiotherapiepraxen
+    - Tierarztpraxen
+    - Hebammen und Geburtshaeuser
+    # Betreute Objekte und Anlagen
+    - Hausverwaltungen fuer Wohnungseigentum
+    - Facility-Dienstleister fuer Kleinobjekte
+    - Betreiber von Spielplaetzen und Sportanlagen
+    - Campingplaetze und Ferienparks
+    # Transport, Logistik, Landwirtschaft
+    - Speditionen unter fuenfzig Fahrzeugen
+    - Landwirtschaftliche Lohnunternehmen
+    - Imkereien und Direktvermarkter
+    # Bildung, Vereine, Kultur
+    - Musikschulen und private Bildungstraeger
+    - Sportvereine mit Hauptamtlichen
+    - Kleine Museen und Gedenkstaetten
+    # Gastgewerbe und Veranstaltung
+    - Caterer und Eventgastronomie
+    - Betreiber von Ferienwohnungen mit mehreren Objekten

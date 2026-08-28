@@ -33,6 +33,7 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Regel-Scout | `quellen.yml` | `Edit(signals/regulation/**)` | bewertet die Rechtslage nicht |
 | Tech-Scout | `quellen.yml` | `Edit(signals/tech/**)` | schlägt keine Ideen vor |
 | Modell-Scout | `quellen.yml` | `Edit(signals/modelle/**)` | kopiert nichts Geschütztes, nur das Modell |
+| Markt-Analyst | `quellen.yml` | `Edit(signals/maerkte/**)` | schlägt kein Produkt vor, endet bei der Lücke |
 | Rechercheur | ein Signal, `research/` | `research/` | erfindet keine Zahlen |
 | Ideator | `signals/`, `research/` | `ideas/` (Status `entwurf`) | hebt den Status nie über `entwurf` |
 | Fit-Filter | `ideas/`, `grenzen.md` | Status `kandidat`\|`abgelehnt` | hebt keine Grenze auf |

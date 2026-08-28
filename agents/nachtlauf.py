@@ -42,6 +42,10 @@ SENSOREN = [
     # die Frage "zahlt jemand dafuer" schon beantwortet ist -- genau die Frage, an der
     # bisher jede Idee starb.
     "modell-scout",
+    # Arbeitet andersherum als die uebrigen: nicht vom Vorfall zur Idee, sondern vom
+    # Markt zum Produkt. Prueft Zahlungsbereitschaft und Vertriebskanal zuerst statt
+    # zuletzt -- genau daran sind die bisherigen Ideen reihenweise gestorben.
+    "markt-analyst",
 ]
 
 # Nach den Sensoren, vor dem Ideator: Der Rechercheur gräbt jedes neue Signal aus,
