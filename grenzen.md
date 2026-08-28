@@ -75,11 +75,68 @@ Gerechnet wird **nach Steuern**: Der Gewinn stapelt sich auf das Hauptgehalt und
 dem Grenzsteuersatz belastet. Aus 1.000 € Gewinn werden grob 560 €. Eine Idee, die
 brutto knapp trägt, trägt netto nicht.
 
+## G8 — Zustand nicht textuell inspizierbar
+
+Das Unternehmen stellt niemanden ein: keinen Redakteur, keinen Tester, keinen Designer.
+Wer die Arbeit macht, prüft sie auch — und das sind Agenten.
+
+**Das Kernversprechen darf trotzdem der visuelle Eindruck sein.** Die Grenze verläuft
+nicht zwischen visuell und textlich, sondern dazwischen, ob der **Zustand** des Systems
+exakt und übersichtlich als Text abrufbar ist. Ein Agent muss die Simulation lesen
+können, nicht ansehen.
+
+Drei Ebenen müssen vorhanden sein — fehlt eine, ist die Idee ausgeschlossen:
+
+| Ebene | Was sie liefert | Beispiel Städtebauspiel |
+|---|---|---|
+| **Übersicht** | Gesamtzustand aggregiert, in einem Blick erfassbar | 14 Bezirke, 8.200 Einwohner, Wasser 91 %, Verkehr 1,4 |
+| **Detail** | ein Objekt vollständig, mit allen Eigenschaften | Bezirk 7: Lage, Gebäude, Bewohner, Anschlüsse, Auslastung |
+| **Veränderung** | Diff zwischen zwei Zeitpunkten | seit gestern +30 Einwohner, −8 % Wasser, 2 Gebäude neu |
+
+Ausgeschlossen ist damit, was seinen Zustand **nur im Rendering** hat: ein Produkt ohne
+auslesbares Datenmodell, eines dessen Wahrheit im Bild entsteht, oder eines dessen
+vollständige Zustandsausgabe so groß wäre, dass ein Agent sie nicht in einem Lauf
+erfassen kann. Das Letzte ist eine Frage der Aggregation, nicht der Größe des Systems.
+
+**Gestaltung wird zyklisch entschieden, nicht laufend.** Wie etwas aussieht, legt der
+Betreiber in seltenen Design-Zyklen fest; danach gilt es als Vorgabe. Jede Idee muss
+benennen, **wie oft** so eine Entscheidung nötig wäre: quartalsweise ist tragbar,
+wöchentlich reißt das Zeitbudget und fällt schon unter G4.
+
+Prüffragen, alle drei müssen mit Ja beantwortbar sein:
+
+1. **Kann ein Agent aus der Textausgabe erkennen, ob das System richtig arbeitet?**
+   Nicht „ob es lief" — ob das Ergebnis *stimmt*.
+2. **Ließe sich ein Fehler aus Zustand, Logs und Daten diagnostizieren**, ohne dass
+   jemand auf einen Bildschirm schaut?
+3. **Kann ein Agent eine Änderung bauen und ihre Wirkung am Zustand nachweisen** — vorher
+   gegen nachher, ohne menschliche Sichtprüfung?
+
+Für die Konzeption folgt daraus eine harte Vorgabe: **Datenmodell und Darstellung
+getrennt, Zustandsausgabe als erstklassige Schnittstelle.** Nicht als Debug-Zugabe,
+sondern als das, worüber die Fabrik ihr eigenes Produkt überhaupt kennt.
+
+Ein Spiel ist zulässig, wenn es über Text, Zahlen oder Zustände gespielt wird — dann
+sind Balance und Verlauf messbar. Es ist ausgeschlossen, wenn sein Reiz an Grafik,
+Animation oder Bedienungsgefühl hängt.
+
+## G9 — Braucht Personal
+
+Ausgeschlossen ist alles, was ohne angestellte oder beauftragte Menschen nicht läuft:
+Redaktion, Support-Schicht, Vertriebsteam, Handwerker vor Ort, Übersetzer, Moderatoren.
+Auch Freelancer und Agenturen zählen dazu — der Betreiber will keine Personalführung,
+und Personalführung fängt beim ersten Auftrag an.
+
+**Was ausdrücklich erlaubt ist:** eine Plattform, auf der *andere* Menschen einander
+beauftragen. Der Betreiber stellt dann niemanden ein; er stellt den Marktplatz. Solange
+Vermittlung, Abwicklung und Streitfälle maschinell laufen, ist das keine Verletzung —
+sondern eine der wenigen Formen, in denen menschliche Arbeit im Modell vorkommen darf.
+
 ---
 
 ## Bewertung der Überlebenden
 
-Ideen, die alle sieben Grenzen passieren, werden in fünf Dimensionen bewertet (je 0–5):
+Ideen, die alle neun Grenzen passieren, werden in fünf Dimensionen bewertet (je 0–5):
 
 | Dimension | Frage |
 |---|---|

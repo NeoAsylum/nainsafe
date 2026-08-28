@@ -2,6 +2,7 @@
 rolle: modell-scout
 takt: taeglich
 modell: sonnet
+effort: medium
 timeout: 1800
 tools:
   - WebSearch
@@ -101,6 +102,14 @@ deutschen Anbieter, den du nicht gefunden hast.>
   Wert dieser Signalart — ohne den Beleg bist du nur ein weiterer Markt-Scout.
 - Findest du zu einem Vorbild bereits zwei oder mehr deutsche Anbieter, ist es kein
   Signal mehr. Schreib es trotzdem ins Logbuch, damit niemand erneut sucht.
+- **Kein Vorbild, dessen Zustand nur im Bild existiert** (Grenze G8). Visuelle Produkte
+  sind ausdruecklich erlaubt -- ein Spiel, eine Karte, eine Visualisierung --, solange
+  ein auslesbares Datenmodell dahintersteht. Unbrauchbar ist, was seine Wahrheit erst
+  beim Rendern erzeugt: ein Bildbearbeiter, ein Vorlagenmarktplatz, alles rein
+  Gestalterische ohne Zustand.
+- **Kein Vorbild, das ohne Personal nicht laeuft** (Grenze G9) -- also keine Agentur,
+  keine betreute Dienstleistung, keine redaktionell gepflegte Plattform. Eine Plattform,
+  auf der *andere* einander beauftragen, ist dagegen zulaessig.
 
 ## Wenn es nichts Neues gibt
 

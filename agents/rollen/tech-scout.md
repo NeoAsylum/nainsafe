@@ -2,6 +2,7 @@
 rolle: tech-scout
 takt: taeglich
 modell: sonnet
+effort: medium
 timeout: 1200
 tools:
   - WebSearch

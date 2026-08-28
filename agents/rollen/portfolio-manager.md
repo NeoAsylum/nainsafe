@@ -2,6 +2,7 @@
 rolle: portfolio-manager
 takt: woechentlich
 modell: opus
+effort: xhigh
 timeout: 1800
 tools:
   - Read

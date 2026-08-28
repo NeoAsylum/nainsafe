@@ -140,7 +140,11 @@ def db() -> sqlite3.Connection:
     kommt in der Praxis vor (abgebrochener Lauf, versehentliches sqlite3-Oeffnen) und
     wuerde bei einer reinen Dateipruefung stumm zu Folgefehlern fuehren.
     """
-    verbindung = sqlite3.connect(DB)
+    # timeout: Bei parallelen Laeufen schreiben mehrere Threads ins Journal. Ohne
+    # Wartezeit wirft sqlite sofort "database is locked" und der Lauf verliert seinen
+    # Journaleintrag, obwohl er sauber gearbeitet hat. Mit WAL aus dem Schema und
+    # dieser Wartezeit serialisieren sich die Schreiber von selbst.
+    verbindung = sqlite3.connect(DB, timeout=30)
     vorhanden = verbindung.execute(
         "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='lauf'"
     ).fetchone()[0]
@@ -221,6 +225,33 @@ def schreibpfade(werkzeuge: list[str]) -> list[str]:
             if p:
                 pfade.append(p)
     return pfade
+
+
+def frisch_geschrieben(pfade: list[str], seit: float) -> int:
+    """Wie viele Dateien in den Schreibpfaden nach `seit` veraendert wurden.
+
+    Noetig, weil bei parallelen Laeufen ein Agent die Dateien eines anderen
+    mitcommittet: `committen` nimmt ganze Verzeichnisse, nicht einzelne Dateien.
+    Der zweite Lauf findet dann nichts mehr vor und meldete bisher "leer", obwohl
+    er sauber gearbeitet hatte. Das verfaelscht jede Auswertung in die gefaehrliche
+    Richtung -- eine produktive Rolle sieht aus, als taugte ihr Auftrag nichts.
+    """
+    anzahl = 0
+    for p in pfade:
+        ziel = WURZEL / p
+        if ziel.is_file():
+            kandidaten = [ziel]
+        elif ziel.is_dir():
+            kandidaten = [d for d in ziel.rglob("*") if d.is_file()]
+        else:
+            continue
+        for d in kandidaten:
+            try:
+                if d.stat().st_mtime > seit:
+                    anzahl += 1
+            except OSError:
+                pass
+    return anzahl
 
 
 def committen(rolle: str, gegenstand: str | None, lauf_id: int,
@@ -317,6 +348,10 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         claude_pfad(), "-p", auftrag,
         "--output-format", "json",
         "--model", kopf.get("modell", "sonnet"),
+        # Denkaufwand je Rolle. Sammeln braucht Sorgfalt, Urteilen braucht Tiefe --
+        # ohne diesen Schalter laeuft beides auf demselben Standardwert, und der ist
+        # fuer die eine Haelfte verschwendet und fuer die andere zu wenig.
+        "--effort", kopf.get("effort", "medium"),
         "--permission-mode", MODUS,
         "--allowedTools", *werkzeuge,
         "--disallowedTools", *NIE,
@@ -324,6 +359,7 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
 
     verbindung = db()
     lauf_id = journal_start(verbindung, rolle, gegenstand)
+    begonnen = time.time()
     print(f"[{jetzt()}] Lauf {lauf_id}: {rolle}" + (f" -> {gegenstand}" if gegenstand else ""))
 
     try:
@@ -342,8 +378,18 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         roh = json.loads(fertig.stdout)
         antwort = roh.get("result", "") or ""
         verbrauch = roh.get("usage") or {}
+        # input_tokens allein ist irrefuehrend: Es zaehlt nur den ungecachten Rest.
+        # Ein Trivialaufruf meldete 2 input_tokens -- und 14.102 cache_creation plus
+        # 24.432 cache_read. Alle drei gehen durchs Kontingent; wer nur input_tokens
+        # journalisiert, untertreibt seinen Verbrauch um Groessenordnungen und dreht
+        # die Auslastung im guten Glauben immer weiter hoch.
+        eingang = (
+            verbrauch.get("input_tokens", 0)
+            + verbrauch.get("cache_creation_input_tokens", 0)
+            + verbrauch.get("cache_read_input_tokens", 0)
+        )
         nutzung = {
-            "input_tokens": verbrauch.get("input_tokens", 0),
+            "input_tokens": eingang,
             "output_tokens": verbrauch.get("output_tokens", 0),
             # Claude Code meldet total_cost_usd auch bei Abo-Anmeldung. Der Betrag
             # wird dann NICHT abgerechnet -- er ist der rechnerische Gegenwert zu
@@ -351,6 +397,15 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
             # Nuetzlich als Mass dafuer, was die Fabrik aus dem Abo zieht; keine Ausgabe.
             "kosten": roh.get("total_cost_usd", 0.0) or 0.0,
         }
+        # Verweigerte Werkzeuge sind der wertvollste Fruehwarnwert ueberhaupt: Genau
+        # so sah der Write()-Fehler aus, der einen ganzen Tag lang Laeufe leer laufen
+        # liess, waehrend das Journal "ok" meldete.
+        verweigert = roh.get("permission_denials") or []
+        if verweigert:
+            namen = sorted({str(d.get("tool_name", d)) for d in verweigert}) \
+                if isinstance(verweigert, list) else [str(verweigert)]
+            antwort = (f"[{len(verweigert)}x Werkzeug verweigert: "
+                       f"{', '.join(namen)[:120]}] " + antwort)
     except (json.JSONDecodeError, AttributeError):
         antwort = (fertig.stdout or fertig.stderr or "")[:500]
 
@@ -359,9 +414,15 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         print(f"  Fehlgeschlagen (Code {fertig.returncode}): {antwort[:200]}")
         return fertig.returncode
 
-    commit_hash, anzahl, commit_fehler = committen(
-        rolle, gegenstand, lauf_id, schreibpfade(werkzeuge))
+    pfade = schreibpfade(werkzeuge)
+    commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id, pfade)
     tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
+
+    # Nichts zu committen heisst nicht, dass nichts entstanden ist: Bei parallelen
+    # Laeufen hat ein anderer Agent die Dateien schon mitgenommen.
+    mitgenommen = 0
+    if not anzahl and not commit_fehler:
+        mitgenommen = frisch_geschrieben(pfade, begonnen)
 
     if commit_fehler:
         journal_ende(verbindung, lauf_id, "fehler", nutzung, None,
@@ -370,10 +431,13 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         print(f"  {commit_fehler.splitlines()[0] if commit_fehler else ''}")
         return 1
 
-    ergebnis = "ok" if anzahl else "leer"
+    ergebnis = "ok" if (anzahl or mitgenommen) else "leer"
     journal_ende(verbindung, lauf_id, ergebnis, nutzung, commit_hash, antwort)
     if anzahl:
         print(f"  {anzahl} Dateien, {tokens} Tokens, Commit {commit_hash}")
+    elif mitgenommen:
+        print(f"  {mitgenommen} Dateien geschrieben, von einem parallelen Lauf "
+              f"mitcommittet ({tokens} Tokens)")
     else:
         print(f"  Nichts Neues ({tokens} Tokens) - das ist ein gueltiges Ergebnis.")
     return 0

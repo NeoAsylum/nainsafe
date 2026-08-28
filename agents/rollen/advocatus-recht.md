@@ -2,6 +2,7 @@
 rolle: advocatus-recht
 takt: naechtlich
 modell: opus
+effort: xhigh
 timeout: 1800
 tools:
   - Read

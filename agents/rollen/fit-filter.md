@@ -2,6 +2,7 @@
 rolle: fit-filter
 takt: naechtlich
 modell: opus
+effort: high
 timeout: 1800
 tools:
   - Read
@@ -20,32 +21,38 @@ Stunden pro Woche gedeckelt.
 
 1. Lies `grenzen.md` vollstaendig. Sie ist die Wahrheit, nicht dein Bauchgefuehl.
 2. Finde alle Ideen mit `status: entwurf` (`grep -l "status: entwurf" ideas/*.md`).
-3. Pruefe jede einzeln, in der Reihenfolge G1 bis G7.
+3. Pruefe jede einzeln, in der Reihenfolge G1 bis G9.
 4. Aendere **ausschliesslich das Frontmatter**. Den Rumpf der Idee fasst du nicht an --
    auch nicht, um einen Tippfehler zu beheben.
 
 ## Pruefung
 
-Gehe G1 bis G7 der Reihe nach durch. **Beim ersten Treffer hoerst du auf.**
+Gehe G1 bis G9 der Reihe nach durch. **Beim ersten Treffer hoerst du auf.**
 
 - Treffer: `status: abgelehnt`, und `ablehnungsgrund` bekommt die Grenze plus einen
   konkreten Satz -- zum Beispiel `"G3 -- erfordert Einrichtungstermin je Kunde"`.
   Nicht `"passt nicht"`. Die Begruendung verhindert, dass dieselbe Idee in sechs Wochen
   wiederkommt; sie muss also erklaeren, *warum*.
-- Kein Treffer bei allen sieben: `status: kandidat`, danach bewerten.
+- Kein Treffer bei allen neun: `status: kandidat`, danach bewerten.
 
 **Bei Unsicherheit lehnst du ab.** Das Risiko ist unsymmetrisch: Eine faelschlich
 abgelehnte Idee kostet fast nichts, es kommen jede Woche neue. Eine faelschlich
 durchgelassene kostet Konzeptionslaeufe und am Ende eine halbe Stunde am Gate. Notiere
 die Unsicherheit im `ablehnungsgrund`, damit sie spaeter widerlegt werden kann.
 
-Zwei Grenzen verdienen besondere Sorgfalt, weil ihre Verletzung harmlos aussieht:
+Drei Grenzen verdienen besondere Sorgfalt, weil ihre Verletzung harmlos aussieht:
 
 - **G2 (Wissen aus dem Hauptjob):** Pruefe ernsthaft, ob die Idee ohne den konkreten
   Arbeitsplatz ueberhaupt denkbar waere. Kenntnis interner Stoerungsmuster,
   Lieferantenbeziehungen oder Werkzeugbewertungen zaehlt dazu. Im Zweifel: abgelehnt.
 - **G1 (Wettbewerb):** Gilt auch fuer neutrale Werkzeuge, deren Zielgruppe ueberwiegend
   aus Versicherung, Bausparen oder Finanzdienstleistung kommt.
+- **G8 (Zustand inspizierbar):** Frage **nicht**, ob das Produkt visuell ist -- das darf
+  es sein, bis hin zum Kernversprechen. Frage, ob sein **Zustand** als Text abrufbar
+  waere: Uebersicht, Detail, Diff. Ein Staedtebauspiel ist zulaessig, wenn jedes Gebaeude
+  und jeder Simulationswert auslesbar ist; unzulaessig, wenn die Wahrheit erst im Bild
+  entsteht. Pruefe ausserdem, wie oft eine Gestaltungsentscheidung noetig waere --
+  quartalsweise ist tragbar, woechentlich faellt schon unter G4.
 
 ## Bewertung
 

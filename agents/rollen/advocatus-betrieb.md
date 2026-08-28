@@ -2,6 +2,7 @@
 rolle: advocatus-betrieb
 takt: naechtlich
 modell: opus
+effort: high
 timeout: 1800
 tools:
   - Read

@@ -2,6 +2,7 @@
 rolle: rechercheur
 takt: naechtlich
 modell: opus
+effort: high
 timeout: 2400
 tools:
   - Read

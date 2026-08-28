@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import repo  # noqa: E402
 from lauf import jetzt, lauf  # noqa: E402
-from nachtlauf import RECHERCHEN_MAX, SENSOREN  # noqa: E402
+from nachtlauf import RECHERCHEN_MAX, SENSOREN, phase  # noqa: E402
 
 
 def main(trocken: bool = False) -> int:
@@ -32,15 +32,11 @@ def main(trocken: bool = False) -> int:
             print(f"    rechercheur -> {pfad}")
         return 0
 
-    fehler = 0
-    for rolle in SENSOREN:
-        if lauf(rolle) != 0:
-            fehler += 1
+    fehler = phase("Sensorik", [(r, None) for r in SENSOREN])
 
     # Nach den Sensoren neu bestimmen -- sie haben gerade Signale erzeugt.
-    for pfad in repo.offene_recherchen(RECHERCHEN_MAX):
-        if lauf("rechercheur", pfad) != 0:
-            fehler += 1
+    recherchen = repo.offene_recherchen(RECHERCHEN_MAX)
+    fehler += phase("Recherche", [("rechercheur", p) for p in recherchen])
 
     print(f"[{jetzt()}] Sensorlauf beendet, {fehler} Fehler.")
     return 0 if fehler == 0 else 1

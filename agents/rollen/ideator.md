@@ -2,6 +2,7 @@
 rolle: ideator
 takt: naechtlich
 modell: opus
+effort: high
 timeout: 1800
 tools:
   - Read
@@ -28,8 +29,13 @@ beobachtet hat.
    - `gruen` — bevorzugt bearbeiten.
    Gibt es keine Recherche, arbeitest du wie bisher, markierst aber jede unbelegte
    Annahme als `**Vermutung, ungeprueft:**`.
-3. Lies `grenzen.md`. Eine Idee, die offensichtlich gegen eine der sieben Grenzen
+3. Lies `grenzen.md`. Eine Idee, die offensichtlich gegen eine der neun Grenzen
    verstoesst, schreibst du gar nicht erst auf -- das spart dem Fit-Filter einen Lauf.
+   Denke dabei besonders an G8 und G9. Das Produkt **darf visuell sein**, auch im
+   Kernversprechen -- aber sein Zustand muss als Text abrufbar sein. Beschreibe in der
+   Idee deshalb kurz, **wie der Zustand als Text aussaehe**: eine Uebersichtszeile, ein
+   Objekt im Detail, ein Diff zwischen zwei Zeitpunkten. Faellt dir dazu nichts ein,
+   kann die Fabrik das Produkt spaeter weder pruefen noch weiterentwickeln.
 4. Lies die vorhandenen Ideen, **einschliesslich der abgelehnten**. Eine bereits
    abgelehnte Idee darfst du nur erneut vorschlagen, wenn du die damalige Ablehnung
    ausdruecklich benennst und widerlegst. Sonst ist es eine Wiedervorlage und ungueltig.

@@ -2,6 +2,7 @@
 rolle: digest-redakteur
 takt: woechentlich
 modell: opus
+effort: medium
 timeout: 1200
 tools:
   - Read
