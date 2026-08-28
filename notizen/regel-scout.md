@@ -12,30 +12,28 @@ niemand mehr, auch du nicht.
 
 ## Was funktioniert
 
-- 2026-08-28 — Paragraphenverweis in der Sekundärquelle (z.B. "§ 68" VerpackDG,
-  "Art. 3 Abs. 1" Data Act) liefert belastbarere Fristen als allgemeine
-  Kanzlei-Zusammenfassungen, bleibt aber Sekundärquelle bis der Gesetzestext geprüft ist.
 - 2026-08-28 — Bei "24-Monats-Pflichten" ohne registrierungsartigen Charakter
-  (Data Act, PPWR) lohnt gezielte Suche nach der betroffenen *Tätigkeit* (Gastro
-  Take-away, IoT-Hersteller) statt nur nach dem Gesetzesnamen -- findet konkrete
-  Einzelpflichten statt nur Überblicksartikel.
+  (Data Act, PPWR) lohnt Suche nach der betroffenen *Tätigkeit* statt nur nach dem
+  Gesetzesnamen -- findet Einzelpflichten statt Überblicksartikel.
+- 2026-08-28 — Offene Fährten des Vorlaufs zuerst abarbeiten schlägt freie Suche:
+  4 von 5 neuen Funden diesmal. Kommissions-Meldungen (trade.ec.europa.eu) und
+  Bundestag-Textarchiv sind quasi-primär und gut per WebFetch erreichbar.
 
 ## Was nicht funktioniert
 
 - 2026-08-28 — Bereits verstrichene Stichtage (Kassensysteme-Meldepflicht 31.07.2025,
-  DORA-Meldefenster 03-04/2026) sind kein Signal, egal wie viele aktuelle Blogartikel
-  dazu erscheinen -- erst den Stichtag prüfen, nicht den Trefferzähler.
-- 2026-08-28 — Pflicht-*Erleichterungen* (Bürokratieentlastungsgesetz IV, LkSG-Novelle
-  zum Wegfall der Berichtspflicht) sind kein Signal, auch mit Stichtag -- Zwang muss
-  zunehmen, nicht abnehmen. LkSG-Novelle zudem noch nicht beschlossen (nur
-  Bundestags-Debatte 01/2026).
+  DORA-Meldefenster 03-04/2026) sind kein Signal -- erst den Stichtag prüfen, nicht
+  den Trefferzähler.
+- 2026-08-28 — Pflichten ohne festen Stichtag sind kein Signal, auch wenn die Pflicht
+  dem Grunde nach feststeht: KRITIS-Dachgesetz-Registrierungsfrist am 28.07.2026
+  (BGBl. 221) ersatzlos gestrichen, neue Frist hängt an noch nicht erlassener
+  KRITIS-VO (erwartet Herbst 2026).
 
 ## Offene Fährten
 
-- CRA: Typ-C-Normen sollten bis 30.10.2026 vorliegen, verschieben sich laut
-  Sekundärquelle aber vermutlich -- das ist eine Normungsfrist, kein Unternehmens-
-  zwang, daher kein Signal. Produktpflicht selbst bleibt bei 11.12.2027.
-- Data Act: Cloud-Wechsel-Gebühren-Wegfall zum 12.01.2027 noch nicht geprüft --
-  andere Zielgruppe (Cloud-Anbieter) als das erfasste Access-by-Design-Signal.
+- KRITIS-Dachgesetz: sobald KRITIS-VO erlassen ist (BBK/BSI beobachten), hat die
+  Registrierung wieder einen Stichtag (3 Monate danach) -- dann nachtragen.
 - PPWR: Mehrwegquoten für Transportverpackung (ab 2030) noch offen, nur die
   Gastro-Mitbringpflicht 2027/2028 ist erfasst.
+- EUDR: HS-Code-Liste der Rohstoffe und Erleichterungen für Niedrigrisiko-Länder
+  noch nicht geprüft, nur der Geltungsbeginn ist erfasst.
