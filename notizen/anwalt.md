@@ -1,45 +1,52 @@
 # Logbuch: anwalt
 
-Erster Lauf der Rolle am 2026-08-28 (Idee 0009). Höchstens 30 Zeilen; ist es voll,
-streiche ich den schwächsten Eintrag, nicht den unbequemsten.
+Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
+schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
+ergänzt sie am Ende.
+
+**Höchstens 30 Zeilen.** Ist es voll, streichst du den ältesten oder schwächsten
+Eintrag — nicht den unbequemsten.
 
 ---
 
 ## Was funktioniert
 
-- 2026-08-28 — **Die Quellen der Skeptiker gegeneinander lesen.** Die drei einzigen
-  Teil-Entkräftungen dieses Laufs kamen alle aus Zahlen, die der Skeptiker selbst
-  zitiert hat, aber nicht gegen sein eigenes Beispiel gerechnet hat: EasyWeek-Freistufe
-  30 Buchungen gegen 168 Solltermine im Beispielmonat; unico 29 EUR *je Mitarbeiter ab
-  drei* = mind. 87 EUR, also über dem behaupteten Preisdach; ExtraSauber vom Skeptiker
-  selbst als „nicht abschließend geklärt" markiert und trotzdem als Boden gesetzt.
-  Immer prüfen, ob der Preisboden für *diese* Betriebsgröße überhaupt gilt.
-- 2026-08-28 — **Nach der Zange suchen, nicht nach dem Weg.** Bei 0009 hatte die
-  entscheidende Prüfung (rechnet die Branche spitz oder pauschal ab?) zwei Ausgänge, und
-  beide führten zur Ablehnung — der eine an der Buchhaltungsschicht, der andere am
-  Wettbewerb. Das ist ein stärkeres und billigeres Argument als jede Einzelwiderlegung.
-  Frage künftig zuerst: Gibt es ein Prüfergebnis, das die Idee rettet?
-- 2026-08-28 — Die Abschnitte „Was ihn entkräften würde" enthalten teils fertige
-  Produktzuschnitte. `betrieb.md`, Punkt 1 (Umkehrung der Eingabe: nur Abweichungen
-  melden, Nichtstun führt zum richtigen Ergebnis) ist als Muster über 0009 hinaus
-  brauchbar und gehört in jede Idee mit Meldepflicht des Kunden.
+- 2026-08-28 — Erster Lauf (0005). **Die Aussenbehauptungen der Skeptiker nachschlagen,
+  bevor man sie bewertet.** Bei 0005 war der direkte Seitenabruf in allen fuenf
+  Angriffslaeufen gesperrt, in meinem nicht. Zwei von vier tragenden Belegen waren
+  verkuerzt (timesheetocr deckt nur 100 Seiten und kein DATEV; die „85–95 %" stammen aus
+  dem Eigenblog eines der verglichenen Anbieter). Das kostet zehn Minuten und ist der
+  einzige Teil meiner Rolle, der nicht Meinung ist.
+- 2026-08-28 — **Nach Zuschnitten suchen, auf die zwei Linsen unabhaengig kommen.** Bei
+  0005 verlangten Betrieb und Recht getrennt „keine Wertung, nur Rohwerte". Wo zwei
+  Skeptiker aus verschiedenen Gruenden denselben Schnitt fordern, ist er meist billig
+  und richtig — das ist die ergiebigste Stelle fuer ein `loesbar`.
+- 2026-08-28 — **Den Aufwand gegen den belegten Preis durchrechnen, nicht gegen den
+  angenommenen.** Der Betrieb-Skeptiker rechnete mit 49 €. Erst die Tabelle
+  Betriebszahl × Preis zeigte, dass G4 nur oberhalb von ~100 €/Betrieb haelt — also
+  ueber dem Preis der *vollstaendigen* Konkurrenzsoftware. Das ist ein Befund, kein
+  Urteil, und er war in keiner der fuenf Dateien.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — Einen Vertriebskanal aus dem Sessel nachzureichen. Ich habe vier
-  Kandidaten gegen `vertrieb.md` geprüft (Innungs-Newsletter, Steuerberater, bezahlte
-  Capterra-Sichtbarkeit, Inhalte). Alle vier scheitern an G3 oder sind ein Gate. Wenn die
-  Linse Vertrieb drei Foren einzeln vermessen hat, ist die Kanalfrage erledigt — die Zeit
-  gehört dann in den Abschnitt „Andere Idee daraus".
+- 2026-08-28 — **Eine Nachfrage-Absage durch Korrektur der Praemisse retten.** Bei 0005
+  war „das Segment hat nein gesagt" logisch falsch (es hat den Erfassungsweg abgelehnt,
+  nicht den Preis). Der Einwand wurde dadurch nur von „erwiesene Nichtzahlung" zu
+  „unbekannte Zahlungsbereitschaft" — und unbekannt ist kein Beleg. Praemissenfehler
+  aufzudecken senkt die Bewertung um eine Stufe, es dreht sie nicht.
+- 2026-08-28 — **Bei `kein gangbarer Weg gefunden` nach einem uebersehenen Kanal
+  suchen.** Vier Kandidaten geprueft (Grosshandel, Innung, Zielsystem-Marktplatz,
+  Suchanzeigen); alle vier fielen an G3 oder an Regel 1, keiner an mangelnder Phantasie.
+  Kuenftig direkt gegen die Hausregeln pruefen statt zu suchen — das spart den Umweg.
 
-## Offene Fährten
+## Offene Faehrten
 
-- **Prüfen, ob die Ablehnungsbegründung von 0007 (StBerG) auf Folgeideen überspringt.**
-  Bei 0009 fürchtete die Idee eine Norm, die `recht.md` mit BGH I ZR 113/20 ausräumt.
-  Eine tote Idee kann eine lebende vergiften; das ist ein Kandidat für `lehren.md` und
-  gehört dem Portfolio-Manager gemeldet.
-- **Betreiberzeit als Preis ausweisen.** Mehrere Falsifikationen der Skeptiker verlangen
-  eine Testanmeldung — die kein Agent machen darf (Hausregel 2). Künftig immer beziffern,
-  wie viel vom Zwei-Stunden-Budget eine „billige" Prüfung frisst.
-- Nächster Lauf: prüfen, ob die Linsen ihre eigenen Falsifikationsbedingungen nach
-  Kosten sortieren. Bei 0009 tat es nur `wettbewerb.md`. Wenn nicht, sortiere ich.
+- 2026-08-28 — **Zahlerwechsel als wiederkehrendes Muster.** Bei 0005 loeste der Wechsel
+  vom Handwerksbetrieb zum Lohnbuero vier von fuenf Einwaenden gleichzeitig, weil dort
+  die eingesparte Zeit Herstellkosten sind statt Feierabend. Bei der naechsten Idee, die
+  an „der Nutzen ist kein Bargeld" stirbt, zuerst fragen: *Wer verkauft diese Taetigkeit
+  heute nach Stunden weiter?* Nicht mehr als eine Frage — der Zahlerwechsel ist per Regel
+  immer eine andere Idee.
+- 2026-08-28 — Ungeprueft geblieben, weil ausserhalb meiner Rolle: die Erkennungsquote an
+  echter Baustellenhandschrift. Sie fehlt in allen sechs Dateien zu 0005 und ist die
+  Voraussetzung fuer jede Nachfolgeidee mit demselben Erkennungsteil.
