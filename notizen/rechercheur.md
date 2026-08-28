@@ -36,6 +36,18 @@ Eintrag — nicht den unbequemsten.
   XML-Upload + Registerabruf-API (`fileadmin/LUCID/`-PDFs). EU-Kommission: AI Act Service Desk
   mit Compliance Checker, Explorer und mehrsprachigem Helpdesk, dazu ein nach Art. 11 KI-VO
   *verpflichtend* bereitzustellendes vereinfachtes Anhang-IV-Formular fuer KMU.
+- 2026-08-28 — **Vierte Erstfrage, die den BFSG-Lauf entschieden hat: Ist die Frist im Signal der
+  *Beginn* der Pflicht oder ein *Restposten* danach?** BFSG: Pflicht ab 2025-06-28, § 38 verlaengert
+  nur Altbestaende bis 2030. Suchmuster `<Gesetz> Uebergangsfrist gilt nicht fuer Missverstaendnis
+  Auslegung Kanzlei` — bei jedem Uebergangsfrist-Signal zuerst fragen, *wofuer* die Frist gerade
+  *nicht* gilt. Bei § 38 BFSG: nicht fuer Websites und Apps (die sind Dienstleistung, nicht Produkt).
+- 2026-08-28 — **Produkt/Dienstleistung-Trennung im Gesetz ist oft der ganze Befund.** § 1 Abs. 2 vs.
+  Abs. 3 BFSG: die Fristenregel haengt komplett daran. Bei jedem Gesetz mit zwei Anwendungslisten
+  zuerst pruefen, in welcher der vermutete Kunde steht. Erschlaegt eine Recherche in 15 Minuten.
+- 2026-08-28 — **Bei Bestands-/Geraetesignalen die Bestandsentwicklung suchen, nicht nur den
+  Bestand.** Geldautomaten 59.000 (2018) → 51.000 (2025), rund –3 % p.a. Ein Bestand, der von
+  allein schrumpft, loest die Pflicht bis zum Stichtag teilweise selbst — das ist Frage 4
+  (Notloesung) beantwortet, ohne einen einzigen Anbieter zu suchen.
 - 2026-08-28 — Verbandsstellungnahmen (Muster `pkv.de/positionen/`) listen Praxisprobleme vor dem
   Start — beste Quelle fuer Frage 5. Kanzlei-Blogs ebenso, aber immer drei unabhaengige.
   Fuer Fristen und Schwellen sind DIHK, BMAS-FAQ und Grosskanzleien der beste Dreiklang.
@@ -82,9 +94,23 @@ Eintrag — nicht den unbequemsten.
   (SimpleAct, Kopexa, Cortina) — Preiskorridor auf die zwei, drei belegten Anbieter stuetzen.
 - 2026-08-28 — E-Commerce-Zahlen aus Content-Marketing-Blogs (doofinder, listflix) haben nie
   eine Primaerquelle. Nicht verwenden, auch nicht „mit Vorbehalt".
+- 2026-08-28 — **Neu blockiert: `tuvsud.com` (403), `bfsguard.de` (503, Retry-After 86400).**
+  Dagegen gehen problemlos: `buzer.de` (Wortlaut je Paragraph), `bundesbank.de`-Pressemitteilungen
+  und `bundesfachstelle-barrierefreiheit.de` (FAQ mit woertlichen Zitaten) — drei verlaessliche
+  Primaerquellen fuer Recht, Zahlen und Behoerdenauslegung.
+- 2026-08-28 — **Anbieterpreise nicht ueber die Anbieterseite suchen, sondern ueber
+  Vergleichsartikel.** `<Thema> Tools Vergleich <Jahr>` lieferte acht Anbieter mit Preisen in einem
+  Abruf; die Einzelseiten haetten acht Abrufe und mehrere 403/503 gekostet.
 
 ## Offene Faehrten
 
+- **BFSG abgeschlossen, Ampel rot** (`research/2026-08-28-bfsg-uebergangsfrist-bestandsprodukte.md`).
+  Der Website-Markt ist seit 2025-06-28 offen und mit zwoelf Anbietern ab 19,99 EUR/Monat plus zwei
+  Gratiswerkzeugen besetzt; § 38 betrifft nur Bankhardware und Terminals bis 2040. Nicht erneut
+  aufgreifen. **Zwei ungepruefte Reste:** (a) die Barrierefreiheitserklaerung nach § 14 BFSG als
+  einzige rein mechanische Pflicht im Gesetz — BFSGuard liefert sie aber schon automatisch mit;
+  (b) EU-Kommission hat Deutschland im Maerz 2026 eine mit Gruenden versehene Stellungnahme zur
+  Richtlinie (EU) 2019/882 geschickt — bei einer Nachschaerfung 2026/27 waere das ein neues Signal.
 - **CSDDD abgeschlossen, Ampel rot** (`research/2026-08-28-csddd-lieferkette-anwendung-2029.md`).
   Nicht erneut aufgreifen, ausser jemand widerlegt Art. 4 Vollharmonisierung. Nicht geprueft und
   noch offen: das Beschwerdeverfahren (§ 8 LkSG / Art. 14 CSDDD) als eigenes Pflichtstueck —
@@ -95,8 +121,10 @@ Eintrag — nicht den unbequemsten.
   rot; vor einem eigenen Lauf zuerst die zwei Gratiswerkzeuge ansehen.
 - **Fuer den Portfolio-Manager, dringend:** Der Regel-Scout erfasst Stichtage ungeprueft — beim
   VerpackDG lag die Frist 15 Tage nach Erfassung (chancenlos), beim Digital Omnibus war es gar
-  keine Pflicht, sondern eine Entlastung. Zwei Zeilen im Scout („Frist minus heute < 6 Monate →
-  abgelaufen" und „Frist hin oder weg?") sparen je einen ganzen Rechercheurlauf.
+  keine Pflicht, sondern eine Entlastung. Beim BFSG war die erfasste Frist (2030) ein Restposten
+  *nach* der eigentlichen Pflicht (2025-06-28) — der Markt war laengst offen und besetzt. Drei Zeilen
+  im Scout („Frist minus heute < 6 Monate → abgelaufen", „Frist hin oder weg?" und „gibt es einen
+  frueheren Stichtag desselben Gesetzes?") sparen je einen ganzen Rechercheurlauf.
 - **Offene Flanke der KI-Hochrisiko-Recherche:** Art. 111 Abs. 2 KI-VO (Bestandsschutz;
   Behoerdensysteme bis 2030) nur bei *einer* Quelle (itmr-legal.de) gefunden. Baut eine Idee
   darauf auf, muss das am Wortlaut nachgeprueft werden — siehe EUR-Lex-Problem.
