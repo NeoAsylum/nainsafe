@@ -18,6 +18,11 @@ niemand mehr, auch du nicht.
 - 2026-08-28 — Offene Fährten des Vorlaufs zuerst abarbeiten schlägt freie Suche:
   4 von 5 neuen Funden diesmal. Kommissions-Meldungen (trade.ec.europa.eu) und
   Bundestag-Textarchiv sind quasi-primär und gut per WebFetch erreichbar.
+- 2026-08-28 (2. Lauf) — Ein einzelner Gesetzestext (PPWR Art. 29) kann mehrere,
+  unabhaengige Signale liefern (Gastro-Mitbringpflicht vs. Mehrwegquote
+  Transportverpackung) -- lohnt, Einzelartikel eines bereits erfassten Gesetzes gezielt
+  durchzugehen statt das Gesetz als "erledigt" abzuhaken. gesetze.legal liefert
+  brauchbare Wortlaut-Zitate, wenn EUR-Lex-PDF/HTML per WebFetch leer bleibt.
 
 ## Was nicht funktioniert
 
@@ -28,12 +33,19 @@ niemand mehr, auch du nicht.
   dem Grunde nach feststeht: KRITIS-Dachgesetz-Registrierungsfrist am 28.07.2026
   (BGBl. 221) ersatzlos gestrichen, neue Frist hängt an noch nicht erlassener
   KRITIS-VO (erwartet Herbst 2026).
+- 2026-08-28 (2. Lauf) — Referentenentwuerfe bleiben kein Signal, auch wenn Medien
+  ein konkretes Datum melden (Kassenpflicht 2028-01-01): "Entwurf" heisst kein
+  Kabinettsbeschluss, keine Rechtsgrundlage.
 
 ## Offene Fährten
 
-- KRITIS-Dachgesetz: sobald KRITIS-VO erlassen ist (BBK/BSI beobachten), hat die
-  Registrierung wieder einen Stichtag (3 Monate danach) -- dann nachtragen.
-- PPWR: Mehrwegquoten für Transportverpackung (ab 2030) noch offen, nur die
-  Gastro-Mitbringpflicht 2027/2028 ist erfasst.
-- EUDR: HS-Code-Liste der Rohstoffe und Erleichterungen für Niedrigrisiko-Länder
-  noch nicht geprüft, nur der Geltungsbeginn ist erfasst.
+- KRITIS-Dachgesetz: KRITIS-VO (§§4,5) am 2026-08-28 immer noch nicht erlassen --
+  Registrierungsfrist (3 Monate nach VO) weiterhin ohne Datum. BSI-Portal-Registrierung
+  fuer "besonders wichtige Einrichtungen" laeuft aber bereits seit 2026-01-06 (separater
+  Vorgang, kein neuer Stichtag). Bei BBK/BSI regelmaessig nachsehen.
+- Registrierkassenpflicht: BMF-Referentenentwurf vom 2026-08-07 nennt 2028-01-01,
+  >100.000 EUR Jahresumsatz -- noch kein Kabinettsbeschluss, also kein Signal. Sobald
+  Kabinett/Bundestag beschliesst, Signal nachtragen.
+- EUDR: Niedrigrisiko-Laenderliste (2025-05-22, 140 Laender inkl. Deutschland) aendert
+  nur die Kontrollquote, nicht Frist/Schwelle/Kreis -- kein eigenes Signal noetig,
+  Faehrte damit erledigt.
