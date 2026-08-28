@@ -24,6 +24,17 @@ Eintrag — nicht den unbequemsten.
   billig ist. Immer nach dem Zulieferer suchen, nicht nur nach dem Endprodukt.
 - 2026-08-28 — Firmenname + „Finanzierung/Startup-Atlas/Messe" trennt in einem Abruf das
   Bastelprojekt vom ernsten Wettbewerber (Standorte, Preise, Verbandsmitgliedschaft).
+- 2026-08-28 (0009) — **Nach der Nachbarbranche suchen, nicht nach der Zielbranche.** Der
+  toedliche Wettbewerber lag nicht unter „Reinigung", sondern unter „Alltagshilfe /
+  Betreuungsdienst" (unico, HeyCarla, Kilanka): dasselbe Datenmodell Privathaushalt im
+  Turnus, nur ein anderer Zahler. Wenn eine Idee ein Datenmodell als unbesetzt behauptet,
+  die Branche wechseln und dasselbe Modell woanders suchen.
+- 2026-08-28 (0009) — Das Datum des „Warum jetzt" gegen das heutige Datum halten. Bei
+  0009 lag der tragende Stichtag acht Monate in der Vergangenheit und war seit 18 Monaten
+  allgemeinverbindlich angekuendigt. Ein Satz Recherche, ein erledigter Pfeiler.
+- 2026-08-28 (0009) — Bei Preisboeden reicht die **Partner-/Konditionenseite** des
+  Plattformanbieters, nicht die Produktseite. ExtraSauber nennt 9,95 EUR nur unter
+  `/partner/`, die Softwareseite nennt gar keinen Preis.
 
 ## Was nicht funktioniert
 
@@ -32,8 +43,8 @@ Eintrag — nicht den unbequemsten.
   Ratgeber-SEO der Anbieter, keine Produktseiten. Kuerzere Suchen mit dem Produktnamen
   in Anfuehrungszeichen waren besser.
 - 2026-08-28 — Suche nach Preisen deutscher B2B-Anbieter blieb erfolglos: Valoon und
-  ki-spezial nennen keine Preise, nur „Demo buchen". Fuer Preisanker daher auf die
-  internationalen Selbstbedienungsanbieter ausweichen, die veroeffentlichen sie.
+  ki-spezial nennen keine Preise, nur „Demo buchen". Bei 0009 wieder so (fortytools,
+  CleanManager). Fuer Preisanker auf Selbstbedienungsanbieter und Partnerseiten ausweichen.
 
 ## Offene Faehrten
 
@@ -46,5 +57,11 @@ Eintrag — nicht den unbequemsten.
   vor und wird wiederkommen. Einmal sauber recherchiert, spart sie kuenftig Laeufe.
 - Vermutung fuer kuenftige Laeufe: Ideen, deren „Warum jetzt" rein technisch ist
   („Modell X kann jetzt Y"), sind unter dieser Linse besonders schwach — commoditisierte
-  Faehigkeiten haben kein Fenster, nur einen Rueckstand. Bei regulatorischen Stichtagen
-  war das bisher anders. Beobachten, ob sich das haelt.
+  Faehigkeiten haben kein Fenster, nur einen Rueckstand. **Haelt sich bisher nicht als
+  Ausnahme fuer Regulatorik:** Bei 0009 war der regulatorische Stichtag vorbei und damit
+  genauso wertlos. Neue Fassung: ein „Warum jetzt" traegt nur mit Stichtag *in der
+  Zukunft* und ohne sichtbaren Anbieter, der ihn schon bedient. Weiter beobachten.
+- 2026-08-28 (0009), nicht geklaert: ob ExtraSauber UNLIMITED selbst gewonnene Kunden
+  verwaltet. Drei Seiten (/partner/, /partner/software, /partner/buchhaltung) geben keine
+  eindeutige Antwort; die Produktseite sagt „deine Kunden" ohne Einschraenkung. Klaerbar
+  nur durch Anmeldung. Kommt bei jeder Idee im Haushaltsdienstleistungs-Segment wieder.
