@@ -23,28 +23,27 @@ niemand mehr, auch du nicht.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — Direkte Branchen-Kombinationen liefern fast ausschließlich
-  Vorlagen-Downloads und Anbieter-Blogs mit erfundenen/plakativen Zahlen — Verkaufstexte,
-  keine echten Klagen, zaehlen laut Regel nicht.
-- 2026-08-28 — Alte Funde vor dem Schreiben unbedingt auf Datum pruefen: Vereinskassenwart-
-  Doppelpflege (Admidio-Forum, homebanking-hilfe.de) klang stichhaltig, Zitate stammten
-  aber von 2007/2010; Pflegedienst-Dienstplan-per-Excel (pflegeboard.de, pflegenetz.net)
-  ebenso stichhaltig, Zitate von 2007/2013. Beide Themen inzwischen dicht mit
-  Vereinssoftware bzw. Dienstplan-SaaS besetzt (WISO MeinVerein, verein.cloud, planerio,
-  Staffomatic) — vermutlich laengst geloest, nicht erneut ohne frische (<2 Jahre) Quelle
-  aufgreifen.
-- 2026-08-28 — pflegeboard.de und forum.pflegenetz.net per WebFetch nicht erreichbar
-  (ECONNREFUSED) — nur WebSearch-Snippets verfuegbar, keine woertlichen Zitate moeglich.
-  Fuer diese Domains ggf. gleich auf Snippet-Paraphrase mit Quellenangabe ausweichen.
-- 2026-08-28 — Bereits SaaS-dicht besetzte Themen (Ferienwohnung-Channel-Manager,
-  Belege-Digitalisierung, Rechnungsabgleich) liefern in DE wie EN nur Marketing-Content
-  von Anbietern, keine echten Forenbeitraege — dort lohnt generelle Suche kaum, nur
-  gezielte Suche in konkreten Nischenforen.
+- 2026-08-28 — Direkte Branchen-Kombinationen ("Branche X" + Suchmuster) liefern fast nur
+  Vorlagen-Downloads/Anbieter-Blogs, keine echten Klagen. Im zweiten Lauf desselben Tages
+  erneut bestaetigt fuer: Steuerkanzlei/DATEV, Spedition, Hausverwaltung, Physiotherapie,
+  KFZ-Werkstatt, Gastro, Verein/SEPA, Handwerk-Kalkulation, Aufmass — dort lohnt generelle
+  Suche kaum, nur gezielte Suche in konkreten Nischenforen.
+- 2026-08-28 — Alte Funde vor dem Schreiben auf Datum pruefen: Vereinskassenwart
+  (2007/2010), Pflegedienst-Dienstplan/pflegeboard.de+pflegenetz.net (2007/2013),
+  Handwerk-Excel-Rechnungen/administrator.de (2011) klingen stichhaltig, tauchen immer
+  wieder oben in der Suche auf, sind aber laengst mit SaaS besetzt (Vereinssoftware,
+  Staffomatic, Handwerkersoftware) — nicht ohne frische (<2 Jahre) Quelle neu aufgreifen.
+- 2026-08-28 — pflegeboard.de, forum.pflegenetz.net, community.ebay.de per WebFetch nicht
+  erreichbar (ECONNREFUSED/Timeout, mehrfach getestet) — dort gleich auf WebSearch-Snippet
+  mit Quellenangabe ausweichen statt WebFetch zu wiederholen.
+- 2026-08-28 — site:reddit.com-Suchen liefern praktisch nie echte Reddit-Threads, nur
+  Gumroad/Vendor-Treffer — fuer Reddit ungeeignete Strategie, im Zweifel auslassen.
 
 ## Offene Faehrten
 
-- Etsy/Amazon/eBay-CSV-Aufbereitung: naeher pruefen, ob es weitere unabhaengige
-  Bestaetigungen gibt (z.B. englischsprachige Etsy-Seller-Foren, r/EtsySellers) und ob
-  das Problem auch bei umsatzsteuerpflichtigen Haendlern auftritt.
-- Vereinskassenwart und Pflegedienst-Dienstplan (s.o.): nur mit explizit auf 2024-2026
-  eingegrenzter Suche neu versuchen, nicht mit den alten Quellen.
+- eBay-Kleinunternehmer: community.ebay.de-Thread "Buchhaltung mit Lexware Office, CSV
+  Datei" (mehrseitig, mehrere Verkaeufer, Rundungsdifferenzen bei Gebuehren) — inhaltlich
+  nah am erfassten Etsy/CSV-Signal, eigene Facette waere Kleinunternehmerregelung/Lexware.
+  Nicht als eigenes Signal angelegt (zu grosse Ueberschneidung); bei Bedarf neu bewerten.
+- Etsy-CSV-Signal englischsprachig verstaerken: alter Link zu "Anyone do their bookkeeping
+  with a spreadsheet" war 404, bei Gelegenheit neu suchen statt Link wiederverwenden.
