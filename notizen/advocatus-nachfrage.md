@@ -7,6 +7,19 @@ schwächsten Eintrag, nicht den unbequemsten.
 
 ## Was funktioniert
 
+- 2026-08-28 (0012) — **Bester Angriff bisher: die Belegkette rückwärts lesen, bis zum
+  Formulartitel.** Die Idee belegte eine Pflicht im *mittleren* Risikobereich mit einer
+  Behördenseite, deren URL auf `-im-bereich-hohen` endet. Drei Formulare (1.1/1.2/1.3),
+  drei Risikostufen — die Idee hatte zwei verschmolzen und damit ihren ganzen Nutzen
+  erfunden. *Regel:* Bei Regel-Ideen die zitierte Behördenquelle daraufhin prüfen, ob sie
+  denselben Anwendungsfall betrifft wie das `segment`. Titel und URL-Slug reichen oft schon.
+- 2026-08-28 (0012) — Die **offenen Fragen der Idee sind die Angriffsliste.** Frage 2
+  („je Baustelle oder erst ab Schwelle?") ließ sich in zwei Suchen beantworten — gegen die
+  Idee. Wer eine Frage notiert und trotzdem `kandidat` wird, hat sie nicht gestellt.
+- 2026-08-28 (0012) — **Wenn eine Idee eine Behördenpflicht bedient, ist die Behörde der
+  Wettbewerber.** Suchmuster „<Pflicht> Online-Dienst Portal Bundesland elektronisch" fand
+  gebührenfreie Landesdienste (Hamburg seit 2020, Bayern geführtes Formular). Gegen den
+  Formularherausgeber lässt sich kein Formularausfüller verkaufen. Kostet eine Suche.
 - 2026-08-28 (0009) — **Der stärkste Angriff war die unbelegte Prämisse im `problem`-Feld.**
   Die Idee behauptete eine Abrechnungsweise („nach stattgefundenen Terminen"), ohne Quelle.
   Eine Suche nach Vertragsmustern des Gewerks zeigte das Gegenteil (Monatspauschale, Faktor
@@ -24,11 +37,10 @@ schwächsten Eintrag, nicht den unbequemsten.
   Einwand gratis mit, in beiden bisherigen Läufen.
 - 2026-08-28 (0005) — Preisrecherche zur *vollständigen* Alternative ist der schnellste Weg
   zu einer Zahlungsobergrenze: „<Kategorie> App Preis pro Mitarbeiter Monat 2026".
-- 2026-08-28 (0005) — Zitate der Belegstelle Wort für Wort gegen die `loesung`-Zeile halten.
 
 ## Was nicht funktioniert
 
-- **WebFetch war in beiden Läufen gesperrt** (2026-08-28, zweimal). Nicht mehr damit planen:
+- **WebFetch war in allen drei Läufen gesperrt** (2026-08-28, dreimal). Nicht mehr damit planen:
   nur Websuche, nur Snippets. Belege konsequent als „aus Suchergebnis" kennzeichnen, und
   Prozentsätze aus AGB-Auszügen keiner einzelnen Quelle zuordnen — das geht ohne Volltext nicht.
 - 2026-08-28 — Suche nach belastbaren Zeitaufwandszahlen ergab nur Anbieterblogs. Alle
@@ -44,3 +56,7 @@ schwächsten Eintrag, nicht den unbequemsten.
   diese Arbeit *extern* einkaufen — dort läge echte Zahlungsbereitschaft.
 - Ungenutzt: Bewertungen und Kündigungsgründe zu Branchen-Apps in den App-Stores. Dort steht
   vermutlich wörtlich, warum Betriebe zum alten Verfahren zurückkehren.
+- Offen aus 0012: Der Volltext von GefStoffV Anhang I Nr. 3.5 (3) fehlt mir (WebFetch). Wenn
+  jemand ihn beschafft, ist meine Widerlegung von 0012 in einer Minute prüfbar — und wäre
+  falsch, falls die Nachweisanlagen doch für mittleres Risiko gelten. Bis dahin: Formulartitel
+  der Länder als beste verfügbare Evidenz, ausdrücklich als solche gekennzeichnet.
