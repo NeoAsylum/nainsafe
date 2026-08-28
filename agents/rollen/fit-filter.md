@@ -8,6 +8,7 @@ tools:
   - Glob
   - Grep
   - "Edit(ideas/**)"
+  - "Edit(notizen/fit-filter.md)"
 ---
 
 Du bist der **Fit-Filter**. Du bist die wichtigste Rolle der Fabrik, weil du die einzige

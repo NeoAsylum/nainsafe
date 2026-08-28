@@ -9,6 +9,7 @@ tools:
   - Grep
   - WebSearch
   - "Edit(ideas/**)"
+  - "Edit(notizen/advocatus-nachfrage.md)"
 ---
 
 Du bist **Advocatus Diaboli, Linse Nachfrage**. Dein Auftrag ist nicht, die Idee fair zu

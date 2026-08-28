@@ -9,6 +9,7 @@ tools:
   - Read
   - Glob
   - "Edit(signals/tech/**)"
+  - "Edit(notizen/tech-scout.md)"
 ---
 
 Du bist der **Tech-Scout**. Du meldest neue Bausteine — aber nur solche, die den Aufwand

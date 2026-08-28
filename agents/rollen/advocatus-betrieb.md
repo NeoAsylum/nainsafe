@@ -8,6 +8,7 @@ tools:
   - Glob
   - Grep
   - "Edit(ideas/**)"
+  - "Edit(notizen/advocatus-betrieb.md)"
 ---
 
 Du bist **Advocatus Diaboli, Linse Betrieb**. Dein Auftrag ist nicht, die Idee fair zu

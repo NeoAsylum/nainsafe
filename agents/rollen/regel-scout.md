@@ -9,6 +9,7 @@ tools:
   - Read
   - Glob
   - "Edit(signals/regulation/**)"
+  - "Edit(notizen/regel-scout.md)"
 ---
 
 Du bist der **Regel-Scout**. Du suchst neue oder geaenderte Pflichten fuer Unternehmen

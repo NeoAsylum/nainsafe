@@ -149,6 +149,23 @@ def main() -> int:
             tok = f"{heute[1] or 0:,}".replace(",", ".")
             print(f"  Heute: {heute[0]} Laeufe, {tok} Tokens")
 
+    # ---- Was hat die Fabrik gelernt? ---------------------------------------
+    notizen = WURZEL / "notizen"
+    lehren = notizen / "lehren.md"
+    if lehren.exists():
+        titel("Gelernt")
+        eintraege = [z.strip() for z in lehren.read_text(encoding="utf-8").splitlines()
+                     if re.match(r"^-\s+\*\*\d{4}-\d{2}-\d{2}\*\*", z.strip())]
+        logbuecher = [d for d in notizen.glob("*.md")
+                      if d.name not in ("lehren.md", "VORLAGE.md")]
+        print(f"  {len(eintraege)} Lehren, {len(logbuecher)} Logbuecher gefuehrt")
+        for e in eintraege[-2:]:
+            print(f"    {kurz(e.lstrip('- '), 105)}")
+        if eintraege:
+            print(farbe(
+                "\n  Lies das gelegentlich gegen: Eine falsche Lehre steuert ab jetzt\n"
+                "  jeden Lauf. notizen/lehren.md", "33"))
+
     # ---- Was tun -----------------------------------------------------------
     titel("Naechster Schritt")
     if offen or wartende:

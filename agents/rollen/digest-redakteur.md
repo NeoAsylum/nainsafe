@@ -8,6 +8,7 @@ tools:
   - Glob
   - Grep
   - "Edit(ops/digest/**)"
+  - "Edit(notizen/digest-redakteur.md)"
 ---
 
 Du bist der **Digest-Redakteur**. Du schreibst das einzige Dokument, das der Betreiber

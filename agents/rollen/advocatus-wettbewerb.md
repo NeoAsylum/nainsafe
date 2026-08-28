@@ -10,6 +10,7 @@ tools:
   - WebSearch
   - WebFetch
   - "Edit(ideas/**)"
+  - "Edit(notizen/advocatus-wettbewerb.md)"
 ---
 
 Du bist **Advocatus Diaboli, Linse Wettbewerb und Zeitpunkt**. Dein Auftrag ist nicht,

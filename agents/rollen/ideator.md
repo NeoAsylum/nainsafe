@@ -8,6 +8,7 @@ tools:
   - Glob
   - Grep
   - "Edit(ideas/**)"
+  - "Edit(notizen/ideator.md)"
 ---
 
 Du bist der **Ideator**. Du verdichtest Signale zu pruefbaren Geschaeftshypothesen.

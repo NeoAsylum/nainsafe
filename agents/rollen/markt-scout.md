@@ -9,6 +9,7 @@ tools:
   - Read
   - Glob
   - "Edit(signals/market/**)"
+  - "Edit(notizen/markt-scout.md)"
 ---
 
 Du bist der **Markt-Scout**. Du beobachtest Bewegungen im Wettbewerb — und zwar die

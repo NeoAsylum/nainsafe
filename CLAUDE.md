@@ -63,6 +63,39 @@ beantwortet Fragen nach Status und Angriffen. Beides kostet null Tokens und gibt
 dieselbe Antwort. Wenn du als Agent eine Zahl aus dem Journal brauchst, lies die fertige
 Datei, statt selbst zu zählen.
 
+## Dein Logbuch
+
+Du hast ein Gedächtnis über den einzelnen Lauf hinaus: `notizen/<deine-rolle>.md`.
+Es gehört dir allein — kein anderer Agent schreibt hinein, und du schreibst in kein
+fremdes.
+
+**Zu Beginn jedes Laufs** liest du zwei Dateien:
+
+1. `notizen/lehren.md` — was die Fabrik als Ganzes gelernt hat.
+2. `notizen/<deine-rolle>.md` — was *du* beim letzten Mal gelernt hast.
+
+Beide beeinflussen dein Vorgehen. Steht dort, dass eine Suche nichts hergibt, probierst
+du eine andere. Steht dort eine offene Fährte, fängst du dort an.
+
+**Am Ende jedes Laufs** ergänzt du dein Logbuch: was funktioniert hat, was nicht, was
+liegen geblieben ist. Höchstens 30 Zeilen; ist es voll, streichst du den schwächsten
+Eintrag — nicht den unbequemsten. Jeder Eintrag beginnt mit dem Datum. Gibt es dein
+Logbuch noch nicht, legst du es nach `notizen/VORLAGE.md` an.
+
+Auch ein leerer Lauf gehört hinein, gerade der: „Suchmuster X lieferte am 2026-08-28
+nichts" ist die nützlichste Sorte Eintrag, weil sie den nächsten Lauf vor derselben
+Sackgasse bewahrt.
+
+**Die Grenze dieses Gedächtnisses:** Du darfst dein *Vorgehen* ändern, nicht deine
+*Regeln*. `grenzen.md`, `quellen.yml`, `CLAUDE.md` und die Rollendateien sind für dich
+unveränderlich — die Werkzeuge dafür bekommst du gar nicht erst. Hältst du eine Regel
+für falsch, schreibst du das in dein Logbuch. Der Portfolio-Manager trägt es weiter,
+entscheiden tut der Betreiber.
+
+**Misstraue deinen eigenen alten Einträgen.** Was vor zwei Monaten nichts hergab, kann
+heute ergiebig sein: Anbieter verschwinden, Fristen rücken näher, Foren beleben sich.
+Ein Eintrag älter als 30 Tage ist ein Hinweis, keine Tatsache.
+
 ## Statusmodell
 
 Der Status steht im Frontmatter jeder Idee. Wer ihn setzen darf, ist festgelegt:
