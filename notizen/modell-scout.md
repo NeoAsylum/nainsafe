@@ -33,13 +33,25 @@ niemand mehr, auch du nicht.
 - Escape-Room-Buchung: bookingkit (Marktführer EU), Butlerapp, QuinBook.
 - Gefährdungsbeurteilung/Arbeitsschutz-Doku: übersättigt, plus kostenlos BAuA/VBG.
 - Zahnarzt-Hygiene-/QM-Software: vismed.de, paul-solutions.de/medizinio.
-- Warranty-Tracking für Gerätehändler (Servatio): kein Zahlungsbeleg auffindbar,
-  nicht Marktsättigung — bei Gelegenheit erneut prüfen, ob Zahlen auftauchen.
+- 2026-08-28 — Fahrschulsoftware (YOU-DRIVE, Fahrschulcockpit, WINDRIVE, 4Fahrt
+  u.a.), Weinbau/Kellerbuch-Software (Weinhelp7, DWine, winestro.cloud, APyS),
+  Baumpflege/Arboristik-Software (TREELAX, planbar, ToolTime), Brandschutz-
+  begehung-Software (KEVOX, Capmo, firstaudit, GUEPARDO Fire), mobile
+  Autoaufbereitung (CATAMA) — alle übersättigt, nicht erneut prüfen.
+- 2026-08-28 — Turno/TurnoverBnB (Ferienwohnungs-Reinigungskoordination +
+  Cleaner-Marktplatz, ~32 Mio. USD Umsatz): operiert bereits selbst in
+  Deutschland und ist offiziell in Smoobu integriert — kein Land→Land-Signal.
 
 ## Offene Faehrten
 
-- Poolservice-Wartungssoftware (Skimmer, heutiges Signal): DE nur Poolbau-Software
+- Poolservice-Wartungssoftware (Skimmer, 2026-08-28): DE nur Poolbau-Software
   (EXTRABAT) und generische Multi-Branchen-Tools gefunden, keine dedizierte
   Wartungs-/Routensoftware. Offen: Marktgröße DE vs. USA (weniger Privatpools).
-- "Groß→klein" kaum bearbeitet — nächstes Mal über GetLatka-Kategorien statt
-  freier Websuche angehen, freie Suche brachte nur große/generische Firmen.
+- "Groß→klein" weiterhin kaum bearbeitet — freie Websuche liefert nur große
+  Enterprise-Anbieter, keine kleinteiligen Lücken. Nächstes Mal gezielt
+  GetLatka-Kategorielisten durchgehen statt freier Suche.
+- Estate-Sale-Marktplätze (EstateSales.NET, ~8 Mio. USD Umsatz) als
+  Kulturimport geprüft: Konzept "öffentlicher Hausverkauf vor Ort" existiert
+  in DE praktisch nicht (Haushaltsauflösung läuft über Räumfirmen, nicht über
+  Publikumsverkauf) — unklar ob das an fehlendem Angebot liegt oder an
+  fehlender Nachfrage. Nicht weiterverfolgt, evtl. für Markt-Analyst relevant.
