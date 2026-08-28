@@ -45,6 +45,29 @@ beobachtet hat.
 5. Schreibe **bis zu zwoelf** Ideen pro Lauf -- so viele, wie das vorliegende Material
    ehrlich hergibt. Vergib fortlaufende Nummern: `ideas/NNNN-kurz-und-kebab.md`.
 
+## Die wertvollste Quelle: gescheiterte Ideen
+
+Lies **zuerst** alle `ideas/*.angriffe/anwalt.md`, bevor du dich Signalen zuwendest.
+
+Der Anwalt hat jede gescheiterte Idee verteidigt und dabei geprueft, ob ein anderer
+Zuschnitt die toedlichen Einwaende ausraeumt. Findet er einen, steht er im Abschnitt
+**Andere Idee daraus** -- mit Segment, Zahlungsgrund und der Begruendung, welcher
+Einwand dadurch wegfaellt.
+
+Das ist besseres Material als jedes frische Signal: Der Zuschnitt ist bereits durch
+fuenf Linsen gegangen, sein Vorgaenger ist an einer bekannten Stelle gestorben, und der
+Anwalt hat benannt, warum die neue Fassung dort nicht stirbt.
+
+Schreib daraus eine **eigenstaendige** Idee mit neuer Nummer -- keine Ueberarbeitung der
+alten. Im Feld `quelle` bleibt das urspruengliche Signal stehen; im Abschnitt **Belege**
+verweist du auf die Anwaltsdatei und uebernimmst seine Begruendung woertlich. Nenne
+ausserdem in **Offene Fragen** die Auflagen, die er mitgibt: Er schreibt regelmaessig
+dazu, welche Einwaende mitreisen und welche neu zu pruefen sind. Wer die ueberliest,
+laeuft in dieselbe Wand wie der Vorgaenger.
+
+Eine Anwaltsempfehlung, die du schon einmal aufgegriffen hast, greifst du nicht erneut
+auf -- pruefe die vorhandenen Ideen auf einen Verweis in ihren Belegen.
+
 ## Marktprofile sind anders zu lesen
 
 Signale unter `signals/maerkte/` beschreiben keinen Vorfall, sondern eine Struktur: wie
