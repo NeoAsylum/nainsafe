@@ -125,10 +125,19 @@ def main() -> int:
 
     # ---- Bestand -----------------------------------------------------------
     titel("Bestand")
-    for typ in ("pain", "market", "regulation", "tech"):
-        n = len(list((WURZEL / "signals" / typ).glob("*.md")))
+    # Nicht hartcodieren: Neue Signalarten -- modelle, maerkte -- waeren sonst
+    # unsichtbar, und gerade sie sind die interessanten.
+    for ordner in sorted((WURZEL / "signals").iterdir()):
+        if not ordner.is_dir():
+            continue
+        n = len(list(ordner.glob("*.md")))
         marke = "" if n else farbe("  ← liefert nichts", "31")
-        print(f"  signals/{typ:11} {n:3}{marke}")
+        print(f"  signals/{ordner.name:11} {n:3}{marke}")
+
+    for name, pfad in (("research", WURZEL / "research"),
+                       ("ideas", WURZEL / "ideas")):
+        n = len(list(pfad.glob("*.md")))
+        print(f"  {name:19} {n:3}")
 
     if DB.exists():
         v: sqlite3.Connection = sqlite3.connect(DB)
