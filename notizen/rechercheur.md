@@ -60,6 +60,22 @@ Eintrag — nicht den unbequemsten.
   Bestand.** Geldautomaten 59.000 (2018) → 51.000 (2025), rund –3 % p.a. Ein Bestand, der von
   allein schrumpft, loest die Pflicht bis zum Stichtag teilweise selbst — das ist Frage 4
   (Notloesung) beantwortet, ohne einen einzigen Anbieter zu suchen.
+- 2026-08-28 — **Sechste Erstfrage, und die schaerfste bei Tech-Signalen aus der Sozialversicherung:
+  Ist der Antragskanal gesetzlich auf zertifizierte Software verengt?** § 106c SGB IV laesst nur
+  „ein systemgeprueftes Programm oder eine systemgepruefte Ausfuellhilfe" zu. Suchmuster:
+  `<Verfahren> systemgeprueft Ausfuellhilfe "§ 95a" SGB IV Systemuntersuchung ITSG`. Die Pruefung ist
+  fuer Software-Ersteller **kostenfrei** — die Huerde ist nicht Geld, sondern das jaehrlich neue
+  Pflichtenheft plus Pilotpruefung bei zwei Anwendern. Genau die Dauerlast, die zwei Stunden pro
+  Woche nicht tragen. Erschlaegt jede „Antrags-App" fuer ein SV-Verfahren in zwei Abrufen.
+- 2026-08-28 — **Zweiter Teil derselben Frage: Was betreibt der Staat selbst — und muss er es?**
+  § 95a SGB IV *verpflichtet* die SV-Traeger, die Ausfuellhilfe dauerhaft bereitzustellen. Das
+  SV-Meldeportal kostet 36 EUR / 3 Jahre (eine Betriebsnummer) bzw. 99 EUR / 3 Jahre (Multi-Mandant,
+  also Steuerberater fuer alle Mandanten). Preisanker 1,00 EUR im Monat. Bei jedem SV-Signal zuerst
+  pruefen, ob die Aufgabe im Meldeportal schon als Formular steht.
+- 2026-08-28 — **`dejure.org/gesetze/<GESETZ>/<nr>.html` ist die dritte Wortlaut-Quelle** neben buzer
+  und gesetze-im-internet — und `buzer.de/gesetz/<nr>/b<nr>.htm` gibt einen **ganzen Abschnitt** auf
+  einmal (hier §§ 106-106c SGB IV in einem Abruf). Fuer Verfahrensparagraphen schneller als drei
+  Einzelabrufe.
 - 2026-08-28 — Verbandsstellungnahmen (Muster `pkv.de/positionen/`) listen Praxisprobleme vor dem
   Start — beste Quelle fuer Frage 5. Kanzlei-Blogs ebenso, aber immer drei unabhaengige.
   Fuer Fristen und Schwellen sind DIHK, BMAS-FAQ und Grosskanzleien der beste Dreiklang.
@@ -120,24 +136,38 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-28 — **`buzer.de/<nr>_BSIG.htm` funktioniert, gibt aber Anlagen/Anhaenge nicht wieder.**
   § 28 BSIG verweist auf Anlage 1 und 2 (Sektorlisten) — der Wortlaut der Anlagen fehlt. Bei jedem
   Gesetz, dessen Anwendungsbereich in einer Anlage steht, ist buzer nur die halbe Miete.
+- 2026-08-28 — **Die PDF-Route ist jetzt vollstaendig tot.** Neu gescheitert:
+  `gkv-datenaustausch.de/media/...` (Gemeinsame Grundsaetze, Besprechungsergebnisse),
+  `sozialpolitik-aktuell.de`-Referentenentwuerfe, `gkv-ag.de`-Pflichtenhefte. Der Umweg ueber
+  `pdftotext` auf der von WebFetch abgelegten Kopie geht nicht: Bash ist gesperrt und das
+  tool-results-Verzeichnis fuer Read verboten. **Konsequenz:** Bei Verfahren, deren Regelwerk nur
+  als PDF existiert, den Befund ueber Kassen-Fachportale (tk.de, aok.de, big-direkt.de),
+  Kanzlei-Mandantenbeitraege und Hersteller-Supportseiten belegen — und das kennzeichnen.
+- 2026-08-28 — **Fallzahlen zu SV-Verfahren gibt es nicht.** DVKA, DRV, BMAS und die US-Seite der
+  Totalization-Vereinbarung veroeffentlichen keine Stueckzahlen zu Entsendebescheinigungen. Was es
+  gibt, ist die EU-Statistik zu A1 (2023: 5,5 Mio EU-weit, davon DE ueber 2 Mio) — auffindbar nicht
+  bei der Kommission, sondern ueber die **Enterprise Europe Network**-Regionalseiten
+  (`een-sachsen.eu`, `een-sachsen-anhalt.de`). Gute Quelle fuer EU-Verfahrensstatistik allgemein.
 
 ## Offene Faehrten
 
-- **BFSG abgeschlossen, Ampel rot** (`research/2026-08-28-bfsg-uebergangsfrist-bestandsprodukte.md`).
-  Der Website-Markt ist seit 2025-06-28 offen und mit zwoelf Anbietern ab 19,99 EUR/Monat plus zwei
-  Gratiswerkzeugen besetzt; § 38 betrifft nur Bankhardware und Terminals bis 2040. Nicht erneut
-  aufgreifen. **Zwei ungepruefte Reste:** (a) die Barrierefreiheitserklaerung nach § 14 BFSG als
-  einzige rein mechanische Pflicht im Gesetz — BFSGuard liefert sie aber schon automatisch mit;
-  (b) EU-Kommission hat Deutschland im Maerz 2026 eine mit Gruenden versehene Stellungnahme zur
-  Richtlinie (EU) 2019/882 geschickt — bei einer Nachschaerfung 2026/27 waere das ein neues Signal.
-- **CSDDD abgeschlossen, Ampel rot** (`research/2026-08-28-csddd-lieferkette-anwendung-2029.md`).
-  Nicht erneut aufgreifen, ausser jemand widerlegt Art. 4 Vollharmonisierung. Nicht geprueft und
-  noch offen: das Beschwerdeverfahren (§ 8 LkSG / Art. 14 CSDDD) als eigenes Pflichtstueck —
-  ueberschneidet sich aber stark mit dem besetzten Hinweisgeberschutz-Markt (EQS u. a.).
+- **BFSG rot** (`research/2026-08-28-bfsg-uebergangsfrist-bestandsprodukte.md`), nicht erneut
+  aufgreifen. Offene Reste dort dokumentiert; neues Signal waere nur eine Nachschaerfung 2026/27
+  nach der Stellungnahme der EU-Kommission vom Maerz 2026.
+- **CSDDD rot** (`research/2026-08-28-csddd-lieferkette-anwendung-2029.md`), nicht erneut aufgreifen,
+  ausser jemand widerlegt Art. 4 Vollharmonisierung. Offener Rest: das Beschwerdeverfahren
+  (§ 8 LkSG / Art. 14 CSDDD) — ueberschneidet sich mit dem besetzten Hinweisgeberschutz-Markt.
 - **VSME-Standard (finale Verabschiedung Juni 2026) ist der interessantere Nachbar** — er ist die
   Sprache, in der KMU kuenftig antworten *duerfen*. Aber 14 Anbieter ab 49 EUR plus zwei gratis
   offizielle Werkzeuge (EFRAG Digital Template, DNK-Plattform) sind schon da. Vermutlich ebenfalls
   rot; vor einem eigenen Lauf zuerst die zwei Gratiswerkzeuge ansehen.
+- **SVA-Entsendebescheinigung rot** (`research/2026-08-28-sva-entsendebescheinigung-digital.md`).
+  Kanal gesetzlich auf systemgepruefte Software verengt, Staat betreibt die Ausfuellhilfe selbst,
+  Fallzahl nirgends veroeffentlicht. **Eine offene Fahrte, die den Befund kippen koennte:** Hat je
+  ein *Dritter* eine Ausfuellhilfe nach § 95a SGB IV zertifizieren lassen? Die Kategorie existiert
+  auf `gkv-ag.de/systemuntersuchung/zertifizierte-programme/`, die Pruefung ist kostenfrei — aber
+  die Liste ist nur ueber eine Suchmaske und teils im geschuetzten Bereich zugaenglich. Wer da
+  hineinkommt, beantwortet die Frage fuer *alle* kuenftigen SV-Meldesignale auf einmal.
 - **NIS2 abgeschlossen, Ampel rot** (`research/2026-08-27-nis2-registrierungsfrist-verlaengert.md`).
   Erstes Signal mit *echtem* Budget (rund 70.000 EUR je Unternehmen, 29.500 Betroffene) — und
   trotzdem rot: 31 Anbieter, vier Marktvergleiche, ein fertiges Einzelprodukt (NIS2-Autopilot,
@@ -160,6 +190,14 @@ Eintrag — nicht den unbequemsten.
   „Frist in der Vergangenheit? → verwerfen", „Frist hin oder weg?", „gibt es einen frueheren
   Stichtag desselben Gesetzes?") sparen je einen ganzen Rechercheurlauf. Das ist jetzt der
   **vierte** Lauf in Folge, den diese Pruefung erledigt haette.
+- **Fuer den Portfolio-Manager, zweitens — der Tech-Scout braucht dieselbe Sorte Vorpruefung.**
+  Beide bisher recherchierten Tech-Signale (ELStAM/PKV, SVA-Entsendebescheinigung) waren
+  *staatliche Kanaele*, keine Bausteine fuer Dritte: Der Staat baut die Schnittstelle, betreibt
+  das Portal selbst und laesst nur zertifizierte Software daran. Eine Zeile im Scout — „Darf ein
+  Dritter diesen Kanal ueberhaupt bedienen, oder braucht er eine Zulassung?" — trennt den Baustein
+  vom blossen Behoerdenprojekt, bevor ein Rechercheurlauf startet. Mein eigenes Logbuch liegt
+  ueberdies weit ueber den erlaubten 30 Zeilen; ich habe diesmal gekuerzt, aber die Regel und die
+  gewachsene Datei passen nicht zusammen. Das ist eine Entscheidung fuer den Betreiber.
 - **Offene Flanke der KI-Hochrisiko-Recherche:** Art. 111 Abs. 2 KI-VO (Bestandsschutz;
   Behoerdensysteme bis 2030) nur bei *einer* Quelle (itmr-legal.de) gefunden. Baut eine Idee
   darauf auf, muss das am Wortlaut nachgeprueft werden — siehe EUR-Lex-Problem.
