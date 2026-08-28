@@ -151,6 +151,14 @@ def main(trocken: bool = False) -> int:
         fehler += phase(
             "Angriffe", [(f"advocatus-{linse}", idee) for idee, linse in offen])
 
+        # --- 5. Verteidigung: erst wenn alle fuenf Linsen vorliegen. Der Anwalt
+        #        prueft, ob die Einwaende loesbar sind, statt sie als Endurteil zu
+        #        nehmen -- Unternehmertum heisst, Probleme zu loesen, nicht vor ihnen
+        #        aufzugeben.
+        fehler += phase(
+            "Verteidigung",
+            [("anwalt", i) for i in repo.offene_anwaelte(ANGRIFFE_MAX_IDEEN)])
+
     print(f"[{jetzt()}] Nachtlauf beendet, {fehler} Fehler.")
     return 0 if fehler == 0 else 1
 

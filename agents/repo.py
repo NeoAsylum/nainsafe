@@ -72,9 +72,29 @@ def offene_angriffe(grenze: int = 2) -> list[tuple[str, str]]:
     return auftraege
 
 
+def offene_anwaelte(grenze: int = 10) -> list[str]:
+    """Kandidaten mit vollstaendigen Angriffen, aber ohne Verteidigung.
+
+    Der Anwalt laeuft nach den Skeptikern und vor dem Vorstand: Er prueft, ob die
+    Einwaende loesbar sind, statt sie als Endurteil zu nehmen. In fast jeder
+    Angriffsdatei steht ein Abschnitt "Was ihn entkraeften wuerde" -- ohne diese Rolle
+    liest ihn niemand.
+    """
+    offen = []
+    for k in ideen("kandidat"):
+        vorhanden = angriffe(k["_id"])
+        if vorhanden >= set(LINSEN) and "anwalt" not in vorhanden:
+            offen.append(k["_id"])
+    return offen[:grenze]
+
+
 def bereit_zur_bewertung() -> list[dict]:
-    """Kandidaten, bei denen alle Linsen vorliegen -- reif fuer den Vorstand."""
-    return [k for k in ideen("kandidat") if angriffe(k["_id"]) >= set(LINSEN)]
+    """Kandidaten, bei denen alle Linsen UND die Verteidigung vorliegen.
+
+    Ohne den Anwalt bewertet der Vorstand nur die Anklage.
+    """
+    noetig = set(LINSEN) | {"anwalt"}
+    return [k for k in ideen("kandidat") if angriffe(k["_id"]) >= noetig]
 
 
 SIGNALE = WURZEL / "signals"

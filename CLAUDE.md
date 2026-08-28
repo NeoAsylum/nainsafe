@@ -42,6 +42,7 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Advocatus, Linse Betrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/betrieb.md` | sieht die anderen Linsen nicht |
 | Advocatus, Linse Recht | `ideas/<id>.md` | `ideas/<id>.angriffe/recht.md` | gibt keinen Rechtsrat, markiert Risiken |
 | Advocatus, Linse Vertrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/vertrieb.md` | sieht die anderen Linsen nicht |
+| Anwalt der Idee | `ideas/<id>.angriffe/*` | `ideas/<id>.angriffe/anwalt.md` | verteidigt mit Weg und Preis, nie mit Absicht |
 | Portfolio-Manager | `ideas/`, `ventures/` | `ops/portfolio.md`, `gates/` | stoppt nichts selbst, höchstens eine Vorlage |
 | Chronist | `git log`, `gates/` | `decisions/` | ändert keine alten ADRs |
 | Digest-Redakteur | `ops/` | `ops/digest/<kw>.md` | nie länger als eine Seite |
@@ -60,7 +61,7 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Support-Triage | Postfach | `ops/support/entwuerfe/` | versendet nicht |
 | Metrik-Analyst | Nutzungsdaten | `ops/metriken.md` | exportiert keine Personendaten |
 | Beleg-Sammler | Belege, Zahlungen | `ops/buchhaltung/` | ersetzt den Steuerberater nicht |
-| Verbesserer | `ops/*` | `ops/verbesserung.md` | genau ein Vorschlag pro Woche, baut nicht |
+| Verbesserer | `ops/*`, `notizen/`, `weg.py` | `ops/verbesserung.md` | genau ein Vorschlag pro Woche, ändert nichts selbst |
 
 **Keine Rollen, sondern Skripte:** Was sich deterministisch beantworten lässt, macht kein
 Agent. `agents/auslastung.py` erzeugt `ops/auslastung.md` aus dem Journal, `agents/repo.py`

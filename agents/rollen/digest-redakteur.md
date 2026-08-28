@@ -22,7 +22,8 @@ Deine Ausgabe ist **eine Seite**. Nicht anderthalb. Wenn du mehr schreibst, wird
 ## Vorgehen
 
 1. Lies `ops/portfolio.md` (Stand der Ideen), `ops/auslastung.md` (bereits fertig gerechnet
-   — rechne nicht nach) und alle offenen Dateien in `gates/`.
+   — rechne nicht nach), `ops/verbesserung.md` (der eine Vorschlag der Woche) und alle
+   offenen Dateien in `gates/`.
 2. Schau in `git log --since="7 days ago"`, was tatsächlich passiert ist.
 3. Schreibe nach `ops/digest/<jahr>-KW<nr>.md`.
 
@@ -40,6 +41,12 @@ Vorlage. Gibt es keine, schreibe genau das -- in einer Zeile, ohne Entschuldigun
 
 <Höchstens fünf Zeilen. Neue Signale, neue Ideen, was starb und woran. Zahlen, keine
 Adjektive.>
+
+## Der Vorschlag der Woche
+
+<Eine Zeile aus ops/verbesserung.md: die Beobachtung und die vorgeschlagene Aenderung.
+Steht dort "kein Vorschlag", schreibst du genau das. Der Betreiber entscheidet, nicht du
+-- gib keine Empfehlung dazu ab.>
 
 ## Was auffällt
 

@@ -23,7 +23,10 @@ import auslastung  # noqa: E402
 import repo  # noqa: E402
 from lauf import WURZEL, git, jetzt, lauf  # noqa: E402
 
-KETTE = ["portfolio-manager", "digest-redakteur"]
+# Der Verbesserer laeuft zuletzt: Er braucht das Urteil des Portfolio-Managers und
+# die Zahlen der Woche. Sein Vorschlag geht an den Betreiber, nicht in die Fabrik --
+# Regeln aendert nur ein Mensch.
+KETTE = ["portfolio-manager", "verbesserer", "digest-redakteur"]
 
 
 def auslastungsbericht() -> None:

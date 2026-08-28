@@ -25,21 +25,42 @@ Aufmerksamkeit aus einem Budget von zwei Stunden pro Woche.
 
 ### 1. Angriffe auswerten
 
-Für jeden Kandidaten mit allen fünf vorliegenden Angriffen (`ideas/<id>.angriffe/`) —
-den Linsen `nachfrage`, `wettbewerb`, `betrieb`, `recht` und `vertrieb`:
+Für jeden Kandidaten mit allen fünf Angriffen **und der Verteidigung**
+(`ideas/<id>.angriffe/` — Linsen `nachfrage`, `wettbewerb`, `betrieb`, `recht`,
+`vertrieb` plus `anwalt.md`):
 
-Zähle die Urteile. **Drei oder mehr `widerlegt` bedeuten `status: widerlegt`.** Trage in
-`ablehnungsgrund` den schwersten Einwand ein, wörtlich aus der Angriffsdatei. Das ist
+**Lies zuerst `anwalt.md`.** Ohne die Verteidigung bewertest du nur die Anklage. Der
+Anwalt hat jeden Einwand daraufhin geprüft, ob er `entkraeftet`, `loesbar`, `teuer` oder
+`unloesbar` ist — und bei den ersten dreien einen Weg mit Preis genannt.
+
+Zähle dann die Urteile, aber zähle **nur die Einwände, die der Anwalt nicht ausräumen
+konnte**. Ein `widerlegt`, das er als `entkraeftet` oder `loesbar` markiert hat, zählt
+nicht mit; ein `teuer` zählt mit, weil der Preis real ist.
+
+**Drei oder mehr verbleibende `widerlegt` bedeuten `status: widerlegt`.** Trage in
+`ablehnungsgrund` den schwersten *nicht ausgeräumten* Einwand ein, wörtlich. Das ist
 Mehrheitsentscheid, keine Abwägung — überstimme die Skeptiker nicht, weil dir die Idee
-gefällt.
+gefällt, und überstimme den Anwalt nicht, weil dir die Einwände einleuchten.
+
+Warum diese Reihenfolge: Unternehmertum heißt, jeden Tag Probleme zu lösen. Ein Einwand
+ist der Anfang einer Aufgabe, nicht ihr Ende. Nur ein Problem, für das niemand einen
+Weg nennen kann, ist ein Grund aufzuhören.
+
+Empfiehlt der Anwalt **`neu-zuschneiden`**, stirbt diese Idee trotzdem — aber sein
+Abschnitt *Andere Idee daraus* gehört wörtlich in `ops/portfolio.md`. Der Ideator greift
+ihn in der nächsten Nacht auf. Das ist der wertvollste Ertrag einer gescheiterten Idee:
+ein Zuschnitt, der bereits durch fünf Linsen gegangen ist.
 
 **Zwei Ausnahmen von der reinen Mehrheit**, beide wegen unsymmetrischer Kosten:
 
 - Ein `widerlegt` der Linse **Recht** mit gesetzter `grenze: G5` oder `G6` tötet die
-  Idee allein. Eine Erlaubnispflicht wird nicht dadurch harmlos, dass vier andere Linsen
+  Idee allein — auch wenn der Anwalt einen Weg nennt. Sein Weg ist dann per Definition
+  eine andere Idee, nicht die Rettung dieser. Eine Erlaubnispflicht wird nicht dadurch harmlos, dass vier andere Linsen
   sie nicht bemerken — und im schlimmsten Fall kostet sie die Nebentätigkeitserlaubnis.
 - Ein `widerlegt` der Linse **Vertrieb** mit `erster_kunde_ueber: kein gangbarer Weg
-  gefunden` tötet die Idee ebenfalls allein. Ein Produkt ohne Weg zum ersten Kunden ist
+  gefunden` tötet die Idee ebenfalls allein — es sei denn, der Anwalt benennt einen
+  konkreten Kanal: dieses Forum, diese Innung, diese Suchanfrage. „Inhalte produzieren"
+  ist keiner. Ein Produkt ohne Weg zum ersten Kunden ist
   kein Produkt, egal wie gut es sonst ist.
 
 Ein einzelnes `widerlegt` der übrigen Linsen lässt die Idee am Leben, aber der Einwand

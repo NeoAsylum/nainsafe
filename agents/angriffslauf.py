@@ -30,6 +30,8 @@ def main(trocken: bool = False) -> int:
         return 0
 
     fehler = phase("Angriffe", [(f"advocatus-{l}", i) for i, l in offen])
+    fehler += phase("Verteidigung",
+                    [("anwalt", i) for i in repo.offene_anwaelte(ANGRIFFE_MAX_IDEEN)])
     print(f"[{jetzt()}] Angriffslauf beendet, {fehler} Fehler.")
     return 0 if fehler == 0 else 1
 
