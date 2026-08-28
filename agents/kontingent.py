@@ -29,8 +29,11 @@ from lauf import DB  # noqa: E402
 
 FENSTER_STUNDEN = 5
 
-# Bezugsgroesse fuer den Gegenwert, keine Kontingentgrenze.
-ABO_MONAT_USD = 200
+# Die einzige echte Ausgabe. Fix: Ob die Fabrik siebzig Laeufe macht oder keinen,
+# kostet dasselbe. Damit ist ungenutzte Kapazitaet verschenktes Geld -- es gibt keinen
+# Sparzwang, nur die Frage, ob zusaetzliche Laeufe noch Neues finden.
+ABO_MONAT_EUR = 200
+TAGE_IM_MONAT = 30
 
 
 def balken(anteil: float, breite: int = 40) -> str:
@@ -90,11 +93,27 @@ def main() -> int:
     if tag and tag[1]:
         print(f"\n  Schwerster Tag: {tag[0]} Läufe, {tag[1]:.2f} $ Gegenwert")
 
-    hoch = (tag[1] * 30) if (tag and tag[1]) else ((woche[1] or 0) * 4)
-    faktor = hoch / ABO_MONAT_USD
-    print(f"\n  Hochgerechnet auf einen Monat bei diesem Tempo")
-    print(f"    {balken(min(faktor / 10, 1.0))}  {hoch:.0f} $ Gegenwert")
-    print(f"    Das Abo kostet {ABO_MONAT_USD} $ — Faktor {faktor:.1f}.")
+    print("\n\033[1mWas es kostet\033[0m")
+    print("─" * 72)
+    pro_tag = ABO_MONAT_EUR / TAGE_IM_MONAT
+    print(f"  Abo:           {ABO_MONAT_EUR} € im Monat, fix")
+    print(f"  Anteilig:      {pro_tag:.2f} € am Tag — unabhängig von der Zahl der Läufe")
+    print(f"  Für die EÜR:   {ABO_MONAT_EUR * 12} € im Jahr als Betriebsausgabe")
+    print()
+    print("  Das ist die einzige Zahl, die tatsächlich abfließt. Weil sie fix ist,")
+    print("  kostet ein zusätzlicher Lauf nichts und ein unterlassener spart nichts.")
+
+    hoch = (tag[1] * TAGE_IM_MONAT) if (tag and tag[1]) else ((woche[1] or 0) * 4)
+    faktor = hoch / ABO_MONAT_EUR
+    print("\n\033[1mZum Vergleich: was dieselbe Arbeit über die API gekostet hätte\033[0m")
+    print("─" * 72)
+    print(f"    {balken(min(faktor / 10, 1.0))}  {hoch:.0f} $ bei diesem Tempo im Monat")
+    print(f"    Faktor {faktor:.1f} gegenüber dem Abopreis.")
+    print()
+    print("  Diese Zahl ist KEINE Ausgabe und KEINE Ersparnis — sie lässt sich weder")
+    print("  verbuchen noch geltend machen. Sie sagt nur, wie intensiv das Abo genutzt")
+    print("  wird. Für die Stückkosten eines Produkts ist sie unbrauchbar: Dort zählen")
+    print("  die echten API-Preise, weil Kundenlast nicht über das Abo laufen darf.")
 
     print("\n\033[1mBefund\033[0m")
     print("─" * 72)
@@ -106,9 +125,6 @@ def main() -> int:
         print("  Kein Lauf ist bisher am Kontingent gescheitert. Solange das so bleibt,")
         print("  ist die Auslastung nicht die Grenze — die Frage ist dann, ob zusätzliche")
         print("  Läufe noch Neues finden, nicht ob sie möglich sind.")
-    print()
-    print(f"  Der Faktor {faktor:.1f} sagt, was die Fabrik aus dem Abo zieht. Er ist keine")
-    print("  Rechnung: Über das Abo wird nichts davon abgerechnet.")
     print()
     return 0
 
