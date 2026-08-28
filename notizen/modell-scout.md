@@ -13,40 +13,33 @@ niemand mehr, auch du nicht.
 ## Was funktioniert
 
 - 2026-08-28 — Gründerinterviews (Indie Hackers, Starter Story, GetLatka, Tropical
-  MBA, Indie Bites) liefern verlässliche MRR/Kundenzahlen für bootstrapped US-Vorbilder.
-  Ergiebiger als allgemeine "Micro-SaaS-Ideen"-Listicle-Blogs (superframeworks,
-  ideaproof, flowjam u.ä.) — die sind SEO-Content ohne echte Belege, nicht zitierfähig.
-- 2026-08-28 — Für den Deutschland-Check funktioniert das Muster "<Branche> Software
-  Terminplanung/Buchung Deutschland Anbieter" gut, um schnell 2+ Anbieter zu finden
-  oder eben nicht.
+  MBA, Indie Bites) liefern verlässliche MRR/Kundenzahlen. Listicle-Blogs
+  (superframeworks, ideaproof, flowjam, "bootstrapped SaaS 2026 MRR"-Suchen) sind
+  SEO-Content ohne Belege, nicht zitierfähig — nicht mehr versuchen.
+- 2026-08-28 — Muster "<Branche> Software Terminplanung/Buchung Deutschland
+  Anbieter" findet zuverlässig 2+ Anbieter oder eben keinen.
+- 2026-08-28 — KI-Suchzusammenfassungen können den Geschäftszweck falsch
+  einordnen (Auxpanel wurde als Compliance-Tool angezeigt, ist aber
+  BI-Analytics) — Firmenzweck vor Verwendung an der eigenen Website prüfen.
 
-## Was nicht funktioniert
+## Was nicht funktioniert — Vorbild bereits in DE besetzt, nicht erneut prüfen
 
-- 2026-08-28 — Fotografen/Kreativen-CRM (Vorbild: HoneyBook/Dubsado, 140 Mio. USD ARR
-  bzw. 35–55 USD/Monat): in Deutschland bereits ≥2 dedizierte Anbieter (CreatorDesk,
-  Fotografen.Management) plus direkte Dubsado-Nutzung. Kein Signal mehr, nicht erneut
-  versuchen.
-- 2026-08-28 — Hundesalon/Tierpflege-Terminbuchung (Vorbild: MoeGo, USA, 10.000+ Kunden,
-  24 Mio. USD Series A): in Deutschland bereits Bookily und anny mit dedizierten
-  Branchenseiten gefunden. Kein Signal mehr.
-- 2026-08-28 — Schornsteinfeger-Software (US-Vorbilder: QuoteIQ, Jobber, Housecall Pro):
-  deutscher Markt ist bereits dicht besetzt (Hero, Kehrtour, KehrVerwaltung, AGzESS,
-  Butlerapp, Homer) — mind. 6 Anbieter. Nicht erneut versuchen.
-- 2026-08-28 — Direkte Suche nach "Nische ohne deutsche Lösung"-Blogposts brachte
-  nichts Verwertbares, nur generische SaaS-Marktartikel. Diese Meta-Suche lieber
-  sparen und stattdessen einzelne Vorbilder mit Deutschland-Gegenprobe durchgehen.
+- Fotografen/Kreativen-CRM (HoneyBook/Dubsado): CreatorDesk, Fotografen.Management.
+- Hundesalon-Terminbuchung (MoeGo): Bookily, anny.
+- Schornsteinfeger-Software (QuoteIQ/Jobber): Hero, Kehrtour, KehrVerwaltung u.a.
+- Bestattersoftware (Passare): ~12 Anbieter laut Capterra (Rapid Data, Pacemo u.a.).
+- Self-Storage-Software (SiteLink/Storable): selfstorage.team, Offimac, 6Storage.
+- Vending-Routensoftware: 4Vending, BüroWARE Vending, icoreon.
+- Escape-Room-Buchung: bookingkit (Marktführer EU), Butlerapp, QuinBook.
+- Gefährdungsbeurteilung/Arbeitsschutz-Doku: übersättigt, plus kostenlos BAuA/VBG.
+- Zahnarzt-Hygiene-/QM-Software: vismed.de, paul-solutions.de/medizinio.
+- Warranty-Tracking für Gerätehändler (Servatio): kein Zahlungsbeleg auffindbar,
+  nicht Marktsättigung — bei Gelegenheit erneut prüfen, ob Zahlen auftauchen.
 
 ## Offene Faehrten
 
-- Noch nicht geprüft: Funeral-Home-/Bestattersoftware (US: Passare, Halcyon),
-  Self-Storage-Verwaltungssoftware (US: Storable/SiteLink), Wartungsvertrags-
-  Erinnerungssoftware für kleine Gerätehändler (Groß→klein-Richtung noch kaum
-  bearbeitet). Bei Bestattern auf G5/G6-Nähe achten (Trauerbegleitung wäre
-  Dienstleistung mit Rechtsfolge, reine Verwaltungssoftware nicht).
-- Minijob-/Haushaltsscheck-Anbindung als Alleinstellungsmerkmal für die
-  Reinigungsfirmen-Idee (siehe heutiges Signal) ist nur vermutet, nicht geprüft, ob
-  die Minijob-Zentrale überhaupt eine offene Schnittstelle dafür hat — das wäre
-  eher etwas für den Rechercheur oder den Tech-Scout.
-- "Groß→klein" und "Manuell→Werkzeug" kaum durchsucht heute — Schwerpunkt lag auf
-  Land→Land und Branche→Branche. Nächstes Mal dort ansetzen, bevor wieder Land→Land
-  probiert wird.
+- Poolservice-Wartungssoftware (Skimmer, heutiges Signal): DE nur Poolbau-Software
+  (EXTRABAT) und generische Multi-Branchen-Tools gefunden, keine dedizierte
+  Wartungs-/Routensoftware. Offen: Marktgröße DE vs. USA (weniger Privatpools).
+- "Groß→klein" kaum bearbeitet — nächstes Mal über GetLatka-Kategorien statt
+  freier Websuche angehen, freie Suche brachte nur große/generische Firmen.
