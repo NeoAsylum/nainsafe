@@ -33,6 +33,16 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-28 — Als „Erreichbarkeitsweg" genannte Portale auf den Betreiber prüfen. fixklar.de
   stand in 0009 als Kanal im Ideenpapier, ist aber eine Agentur mit eigenem Produkt
   („FixKlar Pro") und Shop. Kostet einen Abruf, killt einen Kanal.
+- 2026-08-28 — Bei Pflicht-/Formularideen zuerst nach dem **Online-Dienst des Landes** suchen
+  („<Vorgang> online einreichen Serviceportal Bundesland"). Bei 0012 lief die Anzeige in
+  Hamburg, NRW, Bayern, MV und gemeinsamonline.de schon kostenlos online — Hamburg speichert
+  sogar die Sachkundigen mit Nachweis und Gültigkeit, also genau die Produktmechanik. Ein
+  Abruf, und der Kanal *und* das Produkt sind weg. Immer vor der Wettbewerbsrecherche.
+- 2026-08-28 — Bei Pflichten mit Schulungszwang die **Lehrgangsanbieter** als Mittler prüfen.
+  Sie treffen die Zielgruppe im Moment des Bedarfs und verschenken die Formblätter als
+  Lead-Magnet für einen 280–460-EUR-Kurs (0012: asbest-akademie.de mit Anlagen 1.1–1.5, ZVDH
+  mit eigenem Lehrgang). Gegen ein dreistelliges Backend-Produkt gewinnt kein 20-EUR-Tool
+  den Kanal.
 
 ## Was nicht funktioniert
 
@@ -45,18 +55,21 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-28 — Gebäudereiniger-Handwerk hat keine offene Community. rationell-reinigen.de
   „Forum" ist eine Redaktionsrubrik ohne Nutzerbeiträge, fachforum-gebaeudedienste.de ist
   geschlossen und kostenpflichtig (QV-System, Sodexo als Mitglied). Nicht erneut suchen.
-- 2026-08-28 — Steuerlich motivierte Rechnungsdetails als freies Keyword: „Lohnkosten
-  getrennt ausweisen / §35a" gehört sevdesk, easybill, Haufe, steuertipps.de. Damit ist
-  meine Fährte „vielleicht ist ein Nischenformular frei" für Rechnungsthemen erledigt.
+- 2026-08-28 — Das Dachdeckerhandwerk hat kein Peer-Forum. forum.dachdecker.club: 10 Themen,
+  241 Beiträge, 191 Mitglieder, Rubrik „Bauherren fragen den Dachdecker"; alles Weitere
+  (urbia, bauexpertenforum, bau.net, style-dach) sind Bauherrenforen. DDH und dach.live sind
+  Redaktionen. Nicht erneut suchen.
+- 2026-08-28 — Meine Fährte „<X> Vorlage kostenlos" ist auch für Behördenformulare erledigt.
+  Bei 0012 gehört der Begriff der BAuA (Musterformulare als Word), den Landesbehörden und
+  einem Lehrgangsanbieter mit Gratis-Formblättern. Bei Pflichtformularen ist das Original
+  immer kostenlos und rankt besser — die Fährte ist damit ganz tot, nicht nur für Rechnungen.
 
 ## Offene Fährten
 
-- Vermutung, ungeprüft: Papiernutzer sind über „<X> Vorlage kostenlos zum Ausdrucken"
-  erreichbar, nicht über „<X> digitalisieren". Bei 0005 von fünf SaaS als Lead-Magnet
-  besetzt, bei 0009 ebenso. Nur noch bei Formularen prüfen, die keine Rechnung sind.
-- Weiterhin nie geprüft: ob Innungen Werkzeuge ohne Gespräch listen (Newsletter). Bei
-  0009 nur die Vorteilsseiten gesehen: Rahmenverträge nennen Software, aber verhandelt
-  und über Gremium — als Kanal unbrauchbar. Offen bleibt der Newsletter im Volltext.
+- Weiterhin nie geprüft: ob Innungen Werkzeuge ohne Gespräch listen (Newsletter). Bei 0009
+  nur die Vorteilsseiten gesehen, bei 0012 nicht weitergekommen — die ZVDH-Rundschreiben und
+  Formularsammlungen liegen hinter dem Mitgliederlogin. Ohne Zugang bleibt das unprüfbar;
+  beim nächsten Mal einen öffentlich archivierten Innungs-Newsletter als PDF suchen.
 - Capterra.com.de als Kanal: Profil ist kostenlos, Sichtbarkeit käuflich. Ungeklärt und
   für jede DACH-Nischenidee relevant: Kommen dort überhaupt deutsche Käufer an? Wenn eine
   Idee sonst hält, lohnt es, dafür einmal eine belastbare Zahl zu suchen.
