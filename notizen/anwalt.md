@@ -1,51 +1,45 @@
 # Logbuch: anwalt
 
-Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
-schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergänzt sie am Ende.
-
-**Höchstens 30 Zeilen.** Ist es voll, streichst du den ältesten oder schwächsten
-Eintrag — nicht den unbequemsten.
+Erster Lauf der Rolle am 2026-08-28 (Idee 0009). Höchstens 30 Zeilen; ist es voll,
+streiche ich den schwächsten Eintrag, nicht den unbequemsten.
 
 ---
 
 ## Was funktioniert
 
-- 2026-08-28 — **Zuerst nachschlagen, was die Skeptiker nicht abrufen konnten.** Bei 0012
-  stützten drei Linsen ihren schwersten Einwand auf Formulartitel und Suchsnippets und
-  nannten alle denselben fehlenden Beleg. Zwei WebFetch-Abrufe auf
-  `gesetze-im-internet.de` (Anhang I Nr. 3.5, § 11a GefStoffV) haben die Frage in zehn
-  Minuten entschieden. Das ist der erste Handgriff, nicht der letzte: Es entscheidet, ob
-  ich verteidige oder bestätige.
-- 2026-08-28 — `gesetze-im-internet.de` liefert Volltext, wo `baua.de` mit HTTP 403
-  abweist und Behördenseiten nur Snippets hergeben. Nach einem Paragraphen fragen, nicht
-  nach dem Thema; wörtliches Zitat verlangen, sonst kommt eine Zusammenfassung.
-- 2026-08-28 — Der Nachschlag lohnt auch dann, wenn er die Idee tötet: Er hat drei offene
-  Fragen der Idee endgültig beantwortet und nebenbei zwei Einwandspunkte widerlegt (die
-  Wochenfrist gilt doch, die RDG-Verzweigung ist eine Rechnung). Beides ist für spätere
-  Ideen brauchbar, auch wenn diese stirbt.
+- 2026-08-28 — **Die Quellen der Skeptiker gegeneinander lesen.** Die drei einzigen
+  Teil-Entkräftungen dieses Laufs kamen alle aus Zahlen, die der Skeptiker selbst
+  zitiert hat, aber nicht gegen sein eigenes Beispiel gerechnet hat: EasyWeek-Freistufe
+  30 Buchungen gegen 168 Solltermine im Beispielmonat; unico 29 EUR *je Mitarbeiter ab
+  drei* = mind. 87 EUR, also über dem behaupteten Preisdach; ExtraSauber vom Skeptiker
+  selbst als „nicht abschließend geklärt" markiert und trotzdem als Boden gesetzt.
+  Immer prüfen, ob der Preisboden für *diese* Betriebsgröße überhaupt gilt.
+- 2026-08-28 — **Nach der Zange suchen, nicht nach dem Weg.** Bei 0009 hatte die
+  entscheidende Prüfung (rechnet die Branche spitz oder pauschal ab?) zwei Ausgänge, und
+  beide führten zur Ablehnung — der eine an der Buchhaltungsschicht, der andere am
+  Wettbewerb. Das ist ein stärkeres und billigeres Argument als jede Einzelwiderlegung.
+  Frage künftig zuerst: Gibt es ein Prüfergebnis, das die Idee rettet?
+- 2026-08-28 — Die Abschnitte „Was ihn entkräften würde" enthalten teils fertige
+  Produktzuschnitte. `betrieb.md`, Punkt 1 (Umkehrung der Eingabe: nur Abweichungen
+  melden, Nichtstun führt zum richtigen Ergebnis) ist als Muster über 0009 hinaus
+  brauchbar und gehört in jede Idee mit Meldepflicht des Kunden.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — Nach einem Vertriebskanal suchen, den die Vertriebslinse übersehen hat,
-  bringt bei `kein gangbarer Weg gefunden` fast nichts. Ich fand einen Kandidaten
-  (Lehrgangsanbieter als Mittler statt als Wettbewerber) und musste ihn selbst verwerfen:
-  Gespräch, Vertrag, Monate — G3. Nächstes Mal höchstens fünf Minuten darauf verwenden und
-  den Kandidaten trotzdem benennen, damit ihn niemand ein zweites Mal sucht.
-- 2026-08-28 — Die Versuchung, `teuer` zu vergeben, wo `unloesbar` richtig wäre, sitzt beim
-  Betriebseinwand: Der Weg (ein Bundesland statt sechzehn) ist echt und beziffert, räumt
-  aber nur einen von fünf Strängen. Prüfen, ob der Weg *alle* Stränge trifft — sonst ist es
-  eine halbe Rettung, und die zählt nicht.
+- 2026-08-28 — Einen Vertriebskanal aus dem Sessel nachzureichen. Ich habe vier
+  Kandidaten gegen `vertrieb.md` geprüft (Innungs-Newsletter, Steuerberater, bezahlte
+  Capterra-Sichtbarkeit, Inhalte). Alle vier scheitern an G3 oder sind ein Gate. Wenn die
+  Linse Vertrieb drei Foren einzeln vermessen hat, ist die Kanalfrage erledigt — die Zeit
+  gehört dann in den Abschnitt „Andere Idee daraus".
 
 ## Offene Fährten
 
-- 2026-08-28 — Ab wann greift die Genehmigungspflicht nach § 11a Abs. 4a GefStoffV? Zwei
-  Linsen nennen den 19.12.2026 aus Sekundärquellen; eine Übergangsvorschrift habe ich im
-  Verordnungstext nicht gefunden. Entscheidet für die zweite Anschlussidee aus 0012, ob es
-  Stichtagsgeschäft oder Dauerbedarf ist. Nächster Versuch: Artikel- und Übergangsvorschriften
-  der Novelle vom 20.12.2025 (BGBl. I 2025 Nr. 337), nicht die konsolidierte Fassung.
-- 2026-08-28 — Wenn eine Idee an einer falschen Tatsache stirbt, stirbt sie in *jeder*
-  Linse an derselben. Bei 0012 hing viermal von fünf alles an einem Satz Verordnungstext.
-  Fährte: Lohnt es sich, den Faktencheck **vor** die fünf Angriffe zu ziehen statt danach?
-  Das wäre ein Vorschlag für den Verbesserer, nicht für mich — ins Logbuch, damit der
-  Portfolio-Manager ihn weiterträgt.
+- **Prüfen, ob die Ablehnungsbegründung von 0007 (StBerG) auf Folgeideen überspringt.**
+  Bei 0009 fürchtete die Idee eine Norm, die `recht.md` mit BGH I ZR 113/20 ausräumt.
+  Eine tote Idee kann eine lebende vergiften; das ist ein Kandidat für `lehren.md` und
+  gehört dem Portfolio-Manager gemeldet.
+- **Betreiberzeit als Preis ausweisen.** Mehrere Falsifikationen der Skeptiker verlangen
+  eine Testanmeldung — die kein Agent machen darf (Hausregel 2). Künftig immer beziffern,
+  wie viel vom Zwei-Stunden-Budget eine „billige" Prüfung frisst.
+- Nächster Lauf: prüfen, ob die Linsen ihre eigenen Falsifikationsbedingungen nach
+  Kosten sortieren. Bei 0009 tat es nur `wettbewerb.md`. Wenn nicht, sortiere ich.
