@@ -14,6 +14,7 @@ Der Rumpf der Rollendatei ist der Auftrag und geht unveraendert an das Modell.
 from __future__ import annotations
 
 import json
+import re
 import os
 import shutil
 import sqlite3
@@ -194,19 +195,40 @@ def git(*args: str) -> str:
     return (fertig.stdout or "").strip()
 
 
-def committen(rolle: str, gegenstand: str | None,
-              lauf_id: int) -> tuple[str | None, int, str | None]:
+def schreibpfade(werkzeuge: list[str]) -> list[str]:
+    """Die Verzeichnisse, die eine Rolle laut ihrer Werkzeugliste anfassen darf."""
+    pfade = []
+    for w in werkzeuge:
+        treffer = re.match(r"Edit\((.+?)\)$", w.strip())
+        if treffer:
+            p = treffer.group(1).lstrip("/")
+            p = p.split("*", 1)[0].rstrip("/")
+            if p:
+                pfade.append(p)
+    return pfade
+
+
+def committen(rolle: str, gegenstand: str | None, lauf_id: int,
+              pfade: list[str]) -> tuple[str | None, int, str | None]:
     """Committet, was der Lauf hinterlassen hat. Kein Ergebnis, kein Commit.
+
+    Committet ausschliesslich die Pfade, die die Rolle laut Werkzeugliste beschreiben
+    darf. Ein `git add -A` wuerde alles mitnehmen, was gerade sonst im Arbeits-
+    verzeichnis liegt -- der Agent signierte dann fremde Aenderungen unter seinem
+    Namen, und die Historie sagt nicht mehr, wer was getan hat.
 
     Gibt (Hash, Anzahl Dateien, Fehlermeldung) zurueck. Der Rueckgabewert von
     `git commit` wird geprueft: Scheitert er -- fehlende Identitaet, Hook, gesperrter
     Index --, liegen die Dateien zwar im Arbeitsverzeichnis, aber die Historie kennt
     sie nicht. Ohne diese Pruefung meldet der Lauf "ok" und niemand merkt es.
     """
-    geaendert = [z for z in git("status", "--porcelain").splitlines() if z.strip()]
+    if not pfade:
+        return None, 0, None
+    geaendert = [z for z in git("status", "--porcelain", "--", *pfade).splitlines()
+                 if z.strip()]
     if not geaendert:
         return None, 0, None
-    git("add", "-A")
+    git("add", "--", *pfade)
     betreff = f"{rolle}: {gegenstand or 'lauf'} ({len(geaendert)} Dateien)"
     fertig = subprocess.run(
         ["git", "commit", "-q", "-m", betreff, "-m", f"Lauf {lauf_id}"],
@@ -313,7 +335,8 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         print(f"  Fehlgeschlagen (Code {fertig.returncode}): {antwort[:200]}")
         return fertig.returncode
 
-    commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id)
+    commit_hash, anzahl, commit_fehler = committen(
+        rolle, gegenstand, lauf_id, schreibpfade(werkzeuge))
     tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
 
     if commit_fehler:
