@@ -1,212 +1,34 @@
 # Logbuch: Rechercheur
 
-Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
-schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergaenzt sie am Ende.
-
-**Hoechstens 30 Zeilen.** Ist es voll, streichst du den aeltesten oder schwaechsten
-Eintrag — nicht den unbequemsten.
-
----
+Hoechstens 30 Zeilen. Am 2026-08-28 von 213 auf Regelmass zusammengezogen; verdichtete
+Eintraege stehen ausfuehrlich in den jeweiligen `research/`-Dateien.
 
 ## Was funktioniert
 
-- 2026-08-28 — **Zwei Erstfragen, die die Ampel oft in 20 Minuten setzen.** (a) Liefert die
-  etablierte Branchensoftware die Pflicht schon aus? (ELStAM/PKV: „seit Ende 2025 produktiv";
-  PPWR: sieben Anbieter zum Geltungsbeginn). (b) Bei `signals/regulation`: verschiebt die Frist
-  sich zu den Unternehmen hin oder von ihnen weg? Der Digital Omnibus (KI-Hochrisiko) war eine
-  Entlastung um 16 Monate — der Verkaufsdruck war *weg*. Der Scout erfasst Stichtage neutral.
-- 2026-08-28 — **Gesetzeswortlaut DE: `buzer.de/<nr>_<GESETZ>.htm`** und
-  `gesetze-im-internet.de/<gesetz>/__<nr>.html`. Zwei unabhaengige Datenbanken, wortgetreu,
-  ein Abruf je Paragraph. Fuer EU-Recht gibt es kein Gegenstueck (siehe unten).
-- 2026-08-28 — **Bei EU-Recht nach Bestandsschutz suchen** (`Art. 111`, „erhebliche
-  Konzeptionsaenderung", „bereits in Verkehr gebracht"). Bei der KI-VO schrumpft die
-  „muss bis 2027 konform sein"-Gruppe auf Neu- und Umbauten. Erschlaegt Segmentzahlen
-  staerker als jede Anbieterrecherche und steht nie in der Schlagzeile.
-- 2026-08-28 — **Beste Einzelzahl fuer die Groesse einer Aenderung: der Erfuellungsaufwand aus
-  dem Gesetzentwurf.** Suchmuster `<Gesetz> Erfuellungsaufwand Normenkontrollrat Millionen
-  betroffene Unternehmen`. VerpackDG: 2,46 Mio EUR/Jahr fuer die *gesamte* Wirtschaft. Findbar
-  ist die Zahl nicht im PDF, sondern in der Fachpresse, die daraus zitiert.
-- 2026-08-28 — **Drei Saettigungsindikatoren, jeder spart die halbe Recherche:** (1) Preis-
-  vergleichsportale *mit Gutscheincodes*; (2) ein existierender „Software-Vergleich <Jahr>";
-  (3) betreibt schon ein **Einzelunternehmer** genau dieses Produkt? nachweisfertig.de
-  (KI-Verzeichnis, App gratis, 14,99 EUR/Mon) ist derselbe Betriebstyp wie diese Fabrik — der
-  Preisanker steht, bevor irgendwer anfaengt. Gezielt nach Einzelunternehmen suchen.
-- 2026-08-28 — **Pruefen, ob die Behoerde die Technik selbst kostenlos stellt.** ZSVR:
-  XML-Upload + Registerabruf-API (`fileadmin/LUCID/`-PDFs). EU-Kommission: AI Act Service Desk
-  mit Compliance Checker, Explorer und mehrsprachigem Helpdesk, dazu ein nach Art. 11 KI-VO
-  *verpflichtend* bereitzustellendes vereinfachtes Anhang-IV-Formular fuer KMU.
-- 2026-08-28 — **Vierte Erstfrage, die den BFSG-Lauf entschieden hat: Ist die Frist im Signal der
-  *Beginn* der Pflicht oder ein *Restposten* danach?** BFSG: Pflicht ab 2025-06-28, § 38 verlaengert
-  nur Altbestaende bis 2030. Suchmuster `<Gesetz> Uebergangsfrist gilt nicht fuer Missverstaendnis
-  Auslegung Kanzlei` — bei jedem Uebergangsfrist-Signal zuerst fragen, *wofuer* die Frist gerade
-  *nicht* gilt. Bei § 38 BFSG: nicht fuer Websites und Apps (die sind Dienstleistung, nicht Produkt).
-- 2026-08-28 — **Fuenfte Erstfrage: Ist die „verlaengerte Frist" ueberhaupt eine Frist?** NIS2: der
-  31.07.2026 war blosse *Vollzugszurueckhaltung* des BSI, die gesetzliche Frist (§ 33 BSIG) lief am
-  06.03.2026 ab — eine Behoerde kann eine Gesetzesfrist gar nicht verlaengern. Suchmuster
-  `<Gesetz> Frist verpasst was jetzt Nachfrist rechtliche Einordnung`. Kanzleiblogs sagen es
-  deutlich, Fachpresse und IHK uebernehmen die Behoerdenzahl unkritisch. Gilt fuer jedes
-  „Frist verlaengert"-Signal.
-- 2026-08-28 — **Bei Regel-Signalen den Erfuellungsaufwand *pro Unternehmen* rechnen, nicht nur
-  gesamt.** VerpackDG: 2,46 Mio EUR fuer die ganze Wirtschaft → einstellige Betraege je Firma,
-  kein Budget. NIS2: 2,2 Mrd EUR jaehrlich auf 29.500 Firmen → rund 70.000 EUR je Firma, echtes
-  Budget. Dieselbe Kennzahl trennt die beiden Faelle in einem Abruf. **Aber:** grosses Budget heisst
-  nicht gruen — bei NIS2 gehen 2,1 von 2,2 Mrd in Beratung und Prozesse, nicht in Lizenzen.
-  Zweite Frage deshalb immer: *wohin* fliesst der Betrag laut Gesetzesbegruendung?
-- 2026-08-28 — **Produkt/Dienstleistung-Trennung im Gesetz ist oft der ganze Befund.** § 1 Abs. 2 vs.
-  Abs. 3 BFSG: die Fristenregel haengt komplett daran. Bei jedem Gesetz mit zwei Anwendungslisten
-  zuerst pruefen, in welcher der vermutete Kunde steht. Erschlaegt eine Recherche in 15 Minuten.
-- 2026-08-28 — **Bei Bestands-/Geraetesignalen die Bestandsentwicklung suchen, nicht nur den
-  Bestand.** Geldautomaten 59.000 (2018) → 51.000 (2025), rund –3 % p.a. Ein Bestand, der von
-  allein schrumpft, loest die Pflicht bis zum Stichtag teilweise selbst — das ist Frage 4
-  (Notloesung) beantwortet, ohne einen einzigen Anbieter zu suchen.
-- 2026-08-28 — **Sechste Erstfrage, und die schaerfste bei Tech-Signalen aus der Sozialversicherung:
-  Ist der Antragskanal gesetzlich auf zertifizierte Software verengt?** § 106c SGB IV laesst nur
-  „ein systemgeprueftes Programm oder eine systemgepruefte Ausfuellhilfe" zu. Suchmuster:
-  `<Verfahren> systemgeprueft Ausfuellhilfe "§ 95a" SGB IV Systemuntersuchung ITSG`. Die Pruefung ist
-  fuer Software-Ersteller **kostenfrei** — die Huerde ist nicht Geld, sondern das jaehrlich neue
-  Pflichtenheft plus Pilotpruefung bei zwei Anwendern. Genau die Dauerlast, die zwei Stunden pro
-  Woche nicht tragen. Erschlaegt jede „Antrags-App" fuer ein SV-Verfahren in zwei Abrufen.
-- 2026-08-28 — **Zweiter Teil derselben Frage: Was betreibt der Staat selbst — und muss er es?**
-  § 95a SGB IV *verpflichtet* die SV-Traeger, die Ausfuellhilfe dauerhaft bereitzustellen. Das
-  SV-Meldeportal kostet 36 EUR / 3 Jahre (eine Betriebsnummer) bzw. 99 EUR / 3 Jahre (Multi-Mandant,
-  also Steuerberater fuer alle Mandanten). Preisanker 1,00 EUR im Monat. Bei jedem SV-Signal zuerst
-  pruefen, ob die Aufgabe im Meldeportal schon als Formular steht.
-- 2026-08-28 — **`dejure.org/gesetze/<GESETZ>/<nr>.html` ist die dritte Wortlaut-Quelle** neben buzer
-  und gesetze-im-internet — und `buzer.de/gesetz/<nr>/b<nr>.htm` gibt einen **ganzen Abschnitt** auf
-  einmal (hier §§ 106-106c SGB IV in einem Abruf). Fuer Verfahrensparagraphen schneller als drei
-  Einzelabrufe.
-- 2026-08-28 — Verbandsstellungnahmen (Muster `pkv.de/positionen/`) listen Praxisprobleme vor dem
-  Start — beste Quelle fuer Frage 5. Kanzlei-Blogs ebenso, aber immer drei unabhaengige.
-  Fuer Fristen und Schwellen sind DIHK, BMAS-FAQ und Grosskanzleien der beste Dreiklang.
-- 2026-08-28 — **Dritte Erstfrage, die schneller toetet als jede Anbietersuche: Ist die Zielgruppe
-  eine echte Teilmenge einer Gruppe, die dieselbe Pflicht schon seit Jahren erfuellt?** CSDDD 2029:
-  jedes Unternehmen ueber 5.000 Beschaeftigte war seit 2023 LkSG-pflichtig. Null Greenfield, kein
-  einziger Erstkaeufer. Bei jeder Nachfolgeregulierung (EU loest nationales Gesetz ab) zuerst
-  pruefen, statt Anbieter zu zaehlen.
-- 2026-08-28 — **Bei EU-Nachfolgerecht auf den Harmonisierungsgrad suchen** (`Art. 4`,
-  „Vollharmonisierung", „Gold-Plating", „strengere nationale Regelungen ausgeschlossen").
-  Bei der CSDDD zwingt Art. 4 Deutschland, die LkSG-Schwelle von 1.000 auf 5.000 anzuheben:
-  Segment von ca. 900 auf ca. 120. Das steht in keiner Schlagzeile und dreht die Marktrichtung um.
-- 2026-08-28 — **Der Gesetzgeber ist ein Wettbewerber.** Omnibus I verbietet Grossunternehmen,
-  von Firmen bis 1.000 Beschaeftigte Nachhaltigkeitsdaten ueber den VSME-Standard hinaus
-  „vertraglich zu erzwingen oder faktisch vorauszusetzen". Damit ist der einzige echte Schmerz
-  (Fragebogenflut bei Zulieferern) wegreguliert statt digitalisierbar. Suchmuster:
-  `<Regulierung> Deckel KMU Informationsanfragen Verweigerungsrecht`.
-- 2026-08-28 — **Bitkom-Presseinformationen (`bitkom.org/Presse/Presseinformation/<Thema>`) sind
-  die beste Ersatzquelle, wenn kein Register zaehlt** — Stichprobe, Grundgesamtheit und
-  Erhebungswochen stehen sauber drin. Aber Selbsteinschaetzung, und die Klasse „ab 20
-  Beschaeftigte" gibt es bei Destatis nicht. Ergebnis als Korridor ausweisen, nie als Wert.
+- 2026-08-28 — **Sieben Erstfragen, die die Ampel meist vor der ersten Anbietersuche setzen:** (1) Liefert die etablierte Branchensoftware die Pflicht schon aus? (2) Verschiebt die Frist sich zu den Unternehmen hin oder von ihnen weg? (3) Ist die Zielgruppe Teilmenge einer Gruppe, die dieselbe Pflicht seit Jahren erfuellt? (CSDDD, PPWR-Takeaway) (4) Ist die Frist Pflichtbeginn oder Restposten danach? (BFSG) (5) Ist die „verlaengerte Frist" ueberhaupt eine Frist oder blosse Vollzugszurueckhaltung? (NIS2) (6) Ist der Kanal gesetzlich auf zertifizierte Software verengt? (§ 106c SGB IV) (7) **Erzeugt die Pflicht ueberhaupt ein Dokument, eine Meldung oder eine Rechnung — oder ist der Pflichtakt physisch?** Frage 7 hat den PPWR-Takeaway-Lauf entschieden: befuellen, Schild aufhaengen, fertig, keine Behoerde, kein Register.
+- 2026-08-28 — **Die Bussgeldhoehe im Gesetz ist der beste Ernst-Indikator, und sie steht immer im letzten Kapitel.** VerpackDG: 200.000 EUR fuer die Registrierung, 10.000 EUR fuer das fehlende Mehrweg-Hinweisschild. Der Gesetzgeber sagt damit selbst, was er fuer eine Bagatelle haelt. Ein Abruf von `gesetze-im-internet.de/<gesetz>/__<bussgeldparagraph>.html` mit der Frage „welche Nummer erfasst § X, welche Hoehe?" reicht.
+- 2026-08-28 — **Zweiter Teil davon: Wer setzt die Pflicht eigentlich durch?** Klagt ein Verband statt einer Behoerde, gibt es keinen Vollzug — und ohne Vollzug kein Compliance-Produkt. Suchmuster `<Pflicht> Marktcheck Verstoesse Kontrolle Bussgeld Vollzug`. DUH: 208 Filialen geprueft, 116 Verstoesse, 22 gewonnene Verfahren, Forderung an die Laender, „endlich" zu kontrollieren — drei Jahre nach Inkrafttreten.
+- 2026-08-28 — **Gesetzeswortlaut DE: drei unabhaengige Quellen, alle zuverlaessig.** `buzer.de/<nr>_<GESETZ>.htm`, `gesetze-im-internet.de/<gesetz>/__<nr>.html`, `dejure.org/gesetze/<GESETZ>/<nr>.html`. `gesetze-im-internet.de/<gesetz>/` gibt das ganze Inhaltsverzeichnis — bei unbekannter Paragraphennummer immer der erste Abruf. `buzer.de/gesetz/<nr>/b<nr>.htm` gibt einen ganzen Abschnitt. **Aber:** buzer gibt Anlagen und Anhaenge nicht wieder.
+- 2026-08-28 — **Erfuellungsaufwand aus dem Gesetzentwurf, immer *pro Unternehmen* gerechnet, und dann: wohin fliesst er?** VerpackDG 2,46 Mio EUR fuer die gesamte Wirtschaft → einstellige Betraege je Firma. NIS2 2,2 Mrd auf 29.500 Firmen → 70.000 EUR je Firma, aber 2,1 der 2,2 Mrd gehen in Beratung, nicht in Lizenzen. Findbar nicht im PDF, sondern in der zitierenden Fachpresse.
+- 2026-08-28 — **Vier Saettigungsindikatoren, jeder spart die halbe Recherche:** Preisvergleichsportale *mit Gutscheincodes*; ein existierender „Software-Vergleich <Jahr>"; mehrere konkurrierende Vergleiche desselben Jahres; ein **Einzelunternehmer**, der genau dieses Produkt schon betreibt (nachweisfertig.de, NIS2-Autopilot).
+- 2026-08-28 — **Immer pruefen, wer es gratis stellt — Behoerde *oder Verband*.** ZSVR (XML + API), EU-Kommission (AI Act Service Desk), BSI (#nis2know), § 95a SGB IV (Ausfuellhilfe gesetzlich verpflichtend). Neu und unterschaetzt: **NGOs und Branchenverbaende**. Beim Mehrwegthema WWF (`wegweiser-mehrweg.de`, 50+ Vorlagen inkl. Muster-Schildern, mehrsprachig), Lebensmittelverband + DEHOGA (bundesweit anerkannte Hygiene-Leitlinie seit 2019), LAGA (Bund/Laender-Leitfaden), DUH. Suchmuster `<Pflicht> Merkblatt Muster Leitfaden kostenlos Verband`.
+- 2026-08-28 — **Bei EU-Recht auf Bestandsschutz und Harmonisierungsgrad suchen** (`Art. 111`, „bereits in Verkehr gebracht"; `Art. 4`, „Vollharmonisierung", „Gold-Plating"). KI-VO: Zielgruppe schrumpft auf Neu- und Umbauten. CSDDD: Art. 4 zwingt DE, die LkSG-Schwelle von 1.000 auf 5.000 zu heben, Segment von 900 auf 120. Steht nie in der Schlagzeile.
+- 2026-08-28 — **Der Gesetzgeber ist ein Wettbewerber.** Omnibus I verbietet, von KMU Nachhaltigkeitsdaten ueber VSME hinaus zu verlangen — der einzige echte Schmerz war wegreguliert statt digitalisierbar. Suchmuster `<Regulierung> Deckel KMU Verweigerungsrecht`.
+- 2026-08-28 — **Frage 5 am besten aus Verbandsstellungnahmen und Kanzlei-Mandantenbeitraegen**, immer drei unabhaengige. Fuer Fristen und Schwellen: DIHK, Ministeriums-FAQ, Grosskanzleien. Bitkom-Presseinformationen (`bitkom.org/Presse/Presseinformation/<Thema>`) nennen Stichprobe und Grundgesamtheit sauber, sind aber Selbsteinschaetzung — als Korridor ausweisen. Branchenverbaende mit eigener Statistikseite (`dehoga.de/zahlen-fakten/`, `baeckerhandwerk.de/zahlen-fakten`) geben die Destatis-Zahlen aufbereitet und nach Betriebsarten geschnitten — schneller als Destatis selbst.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — **Amtliche Volltexte sind fuer WebFetch weitgehend tot.** recht.bund.de (BGBl),
-  dserver.bundestag.de, bundesumweltministerium.de liefern Binaerstroeme. **EUR-Lex auch als
-  HTML**: `legal-content/DE/TXT/HTML/` und `eli/reg/<jahr>/<nr>/oj` geben leere Dokumente. Die
-  Konsolidierer `ai-act-law.eu`/`.de` fuehren Altfassungen (Art. 113 noch Stand 2024-06-13).
-  Fuer EU-Wortlaut habe ich derzeit **keinen** funktionierenden Weg.
-- 2026-08-28 — Destatis nennt Groessenklassen oeffentlich nur in **Prozent**, Absolutwerte nur in
-  GENESIS-Online (nicht abrufbar). Ab Berichtsjahr 2024 Umstellung auf „Jobkonzept",
-  Vorjahresvergleich laut Destatis unzulaessig — nie Absolutzahlen zweier Jahrgaenge mischen.
-- 2026-08-28 — **`ihk.de` ist komplett dicht: alle drei versuchten Unterseiten (Stuttgart,
-  Osnabrueck, Nord Westfalen) antworten 403.** Ebenso `anwalt.de` und `taylorwessing.com`.
-  Kanzlei-eigene Domains (noerr.com, kpmg-law.de, roedl.com, it-recht-kanzlei.de, itmr-legal.de)
-  und `haufe.de` gehen problemlos. DATEV-Wissensplattform laedt per Skript nach, bleibt leer.
-  IHK-Inhalte nur ueber die Suchergebnis-Zusammenfassung nutzbar — dann als solche kennzeichnen.
-- 2026-08-28 — Auch `normenkontrollrat.bund.de`-PDFs und `research.handelsblatt.com`-Studien-PDFs
-  liefern fuer WebFetch nur Bilddaten. Erfuellungsaufwandszahlen daraus sind nicht verifizierbar;
-  entweder ueber die zitierende Fachpresse belegen oder als ungeprueft markieren.
-- 2026-08-28 — Zahlen zur *Zusammensetzung* eines Registers (deutscher Anteil an LUCID,
-  Arbeitgeber mit PKV-Beschaeftigten) existieren praktisch nie: Register veroeffentlichen
-  Summen, keine Schnitte. Ebenso: SaaS-Anbieter mit Preisseite nennen oft **keine** Zahl
-  (SimpleAct, Kopexa, Cortina) — Preiskorridor auf die zwei, drei belegten Anbieter stuetzen.
-- 2026-08-28 — E-Commerce-Zahlen aus Content-Marketing-Blogs (doofinder, listflix) haben nie
-  eine Primaerquelle. Nicht verwenden, auch nicht „mit Vorbehalt".
-- 2026-08-28 — **Neu blockiert: `tuvsud.com` (403), `bfsguard.de` (503, Retry-After 86400).**
-  Dagegen gehen problemlos: `buzer.de` (Wortlaut je Paragraph), `bundesbank.de`-Pressemitteilungen
-  und `bundesfachstelle-barrierefreiheit.de` (FAQ mit woertlichen Zitaten) — drei verlaessliche
-  Primaerquellen fuer Recht, Zahlen und Behoerdenauslegung.
-- 2026-08-28 — **Anbieterpreise nicht ueber die Anbieterseite suchen, sondern ueber
-  Vergleichsartikel.** `<Thema> Tools Vergleich <Jahr>` lieferte acht Anbieter mit Preisen in einem
-  Abruf; die Einzelseiten haetten acht Abrufe und mehrere 403/503 gekostet. **Zusatz NIS2:** wenn
-  es *mehrere konkurrierende* Vergleiche desselben Jahres gibt (hier vier: secjur, Proliance,
-  dsgvo-vergleich, nis2-autopilot), ist das selbst schon der Saettigungsbefund — dann Preise nur
-  noch stichprobenhaft holen. B2B-GRC-Anbieter nennen fast nie Preise (24 von 31); die zwei, drei
-  mit Preisseite tragen die ganze Spanne. Ehrlicher ist, das als Kategoriewert zu kennzeichnen.
-- 2026-08-28 — **`buzer.de/<nr>_BSIG.htm` funktioniert, gibt aber Anlagen/Anhaenge nicht wieder.**
-  § 28 BSIG verweist auf Anlage 1 und 2 (Sektorlisten) — der Wortlaut der Anlagen fehlt. Bei jedem
-  Gesetz, dessen Anwendungsbereich in einer Anlage steht, ist buzer nur die halbe Miete.
-- 2026-08-28 — **Die PDF-Route ist jetzt vollstaendig tot.** Neu gescheitert:
-  `gkv-datenaustausch.de/media/...` (Gemeinsame Grundsaetze, Besprechungsergebnisse),
-  `sozialpolitik-aktuell.de`-Referentenentwuerfe, `gkv-ag.de`-Pflichtenhefte. Der Umweg ueber
-  `pdftotext` auf der von WebFetch abgelegten Kopie geht nicht: Bash ist gesperrt und das
-  tool-results-Verzeichnis fuer Read verboten. **Konsequenz:** Bei Verfahren, deren Regelwerk nur
-  als PDF existiert, den Befund ueber Kassen-Fachportale (tk.de, aok.de, big-direkt.de),
-  Kanzlei-Mandantenbeitraege und Hersteller-Supportseiten belegen — und das kennzeichnen.
-- 2026-08-28 — **Fallzahlen zu SV-Verfahren gibt es nicht.** DVKA, DRV, BMAS und die US-Seite der
-  Totalization-Vereinbarung veroeffentlichen keine Stueckzahlen zu Entsendebescheinigungen. Was es
-  gibt, ist die EU-Statistik zu A1 (2023: 5,5 Mio EU-weit, davon DE ueber 2 Mio) — auffindbar nicht
-  bei der Kommission, sondern ueber die **Enterprise Europe Network**-Regionalseiten
-  (`een-sachsen.eu`, `een-sachsen-anhalt.de`). Gute Quelle fuer EU-Verfahrensstatistik allgemein.
+- 2026-08-28 — **Fuer EU-Wortlaut gibt es weiterhin keinen Weg.** EUR-Lex leer als `legal-content/DE/TXT/`, als `.../TXT/HTML/?uri=OJ:L_...`, als `.../TXT/PDF/` und als `eli/reg/<jahr>/<nr>/oj`. `lexparency.org` antwortet mit TLS-Fehler. Konsolidierer `ai-act-law.eu/.de` fuehren Altfassungen. **Konsequenz:** PPWR-Aussagen auf fuenf uebereinstimmende Sekundaerquellen gestuetzt und als solche gekennzeichnet — das traegt eine Ampel, keine rechtsverbindliche Zitierung.
+- 2026-08-28 — **Die PDF-Route ist tot, und der Umweg auch.** Gescheitert: recht.bund.de (BGBl), dserver.bundestag.de, normenkontrollrat.bund.de, dihk.de-Merkblatt, gkv-datenaustausch.de, handelsblatt-Studien. WebFetch legt die Datei zwar unter `tool-results/` ab, aber **Read ist fuer dieses Verzeichnis gesperrt** und ein eigener Download per Bash/curl wurde **verweigert**. Beides am 2026-08-28 erneut geprueft. Belege stattdessen ueber zitierende Fachpresse, Kassen-/Verbandsportale oder Kanzleibeitraege.
+- 2026-08-28 — **Blockiert (403/503):** `ihk.de` (alle Unterseiten), `anwalt.de`, `taylorwessing.com`, `tuvsud.com`, `bfsguard.de`. DATEV laedt per Skript nach. IHK-Inhalte nur ueber die Suchergebnis-Zusammenfassung nutzbar — dann kennzeichnen. **Gehen problemlos:** buzer, gesetze-im-internet, dejure, haufe.de, noerr, kpmg-law, roedl, it-recht-kanzlei, itmr-legal, bundesbank.de, bundesfachstelle-barrierefreiheit.de, wko.at, duh.de, dehoga.de, lebensmittelverband.de, bundesverfassungsgericht.de.
+- 2026-08-28 — **Destatis nennt Groessenklassen oeffentlich nur in Prozent**, Absolutwerte nur in GENESIS-Online (nicht abrufbar). Ab Berichtsjahr 2024 „Jobkonzept", Vorjahresvergleich unzulaessig. Die Umsatzsteuerstatistik kennt zudem keine Merkmalsausprägung fuer Vertriebswege („Take-away", „Onlineanteil") — solche Teilmengen sind grundsaetzlich nicht ermittelbar, nur Obergrenzen.
+- 2026-08-28 — **Zahlen zur *Zusammensetzung* eines Registers und Fallzahlen zu Verwaltungsverfahren existieren praktisch nie** (deutscher Anteil an LUCID, Arbeitgeber mit PKV-Beschaeftigten, Entsendebescheinigungen). Ausnahme: EU-Verfahrensstatistik ueber die **Enterprise Europe Network**-Regionalseiten (`een-sachsen.eu`). E-Commerce-Zahlen aus Content-Marketing-Blogs (doofinder, listflix) haben nie eine Primaerquelle — nicht verwenden.
+- 2026-08-28 — **Anbieterpreise ueber Vergleichsartikel holen, nicht ueber Anbieterseiten.** `<Thema> Tools Vergleich <Jahr>` bzw. `<Thema> Kosten Anbieter Ratgeber` lieferte je acht Anbieter mit Preisen in einem Abruf. B2B-Anbieter nennen fast nie Preise (24 von 31 bei NIS2; RECUP verschweigt die Monatsgebuehr auf der eigenen Seite, ein Fachportal nennt sie) — die zwei, drei mit Preisseite tragen die ganze Spanne, das als Kategoriewert kennzeichnen.
 
 ## Offene Faehrten
 
-- **BFSG rot** (`research/2026-08-28-bfsg-uebergangsfrist-bestandsprodukte.md`), nicht erneut
-  aufgreifen. Offene Reste dort dokumentiert; neues Signal waere nur eine Nachschaerfung 2026/27
-  nach der Stellungnahme der EU-Kommission vom Maerz 2026.
-- **CSDDD rot** (`research/2026-08-28-csddd-lieferkette-anwendung-2029.md`), nicht erneut aufgreifen,
-  ausser jemand widerlegt Art. 4 Vollharmonisierung. Offener Rest: das Beschwerdeverfahren
-  (§ 8 LkSG / Art. 14 CSDDD) — ueberschneidet sich mit dem besetzten Hinweisgeberschutz-Markt.
-- **VSME-Standard (finale Verabschiedung Juni 2026) ist der interessantere Nachbar** — er ist die
-  Sprache, in der KMU kuenftig antworten *duerfen*. Aber 14 Anbieter ab 49 EUR plus zwei gratis
-  offizielle Werkzeuge (EFRAG Digital Template, DNK-Plattform) sind schon da. Vermutlich ebenfalls
-  rot; vor einem eigenen Lauf zuerst die zwei Gratiswerkzeuge ansehen.
-- **SVA-Entsendebescheinigung rot** (`research/2026-08-28-sva-entsendebescheinigung-digital.md`).
-  Kanal gesetzlich auf systemgepruefte Software verengt, Staat betreibt die Ausfuellhilfe selbst,
-  Fallzahl nirgends veroeffentlicht. **Eine offene Fahrte, die den Befund kippen koennte:** Hat je
-  ein *Dritter* eine Ausfuellhilfe nach § 95a SGB IV zertifizieren lassen? Die Kategorie existiert
-  auf `gkv-ag.de/systemuntersuchung/zertifizierte-programme/`, die Pruefung ist kostenfrei — aber
-  die Liste ist nur ueber eine Suchmaske und teils im geschuetzten Bereich zugaenglich. Wer da
-  hineinkommt, beantwortet die Frage fuer *alle* kuenftigen SV-Meldesignale auf einmal.
-- **NIS2 abgeschlossen, Ampel rot** (`research/2026-08-27-nis2-registrierungsfrist-verlaengert.md`).
-  Erstes Signal mit *echtem* Budget (rund 70.000 EUR je Unternehmen, 29.500 Betroffene) — und
-  trotzdem rot: 31 Anbieter, vier Marktvergleiche, ein fertiges Einzelprodukt (NIS2-Autopilot,
-  Systric IT GmbH), das BSI verschenkt die ganze #nis2know-Suite, das BMWE eine zweite
-  Gratisstelle. Nicht erneut aufgreifen. **Offen:** die BMI-Rechtsverordnung zur Konkretisierung
-  des § 30 BSIG (sektorspezifisch, in Arbeit) — erst wenn die einen Stichtag mit *pruefbaren
-  Einzelanforderungen* setzt, entsteht dort wieder etwas Mechanisches. Eigenes Signal abwarten.
-- **Angrenzend und ungeprueft: indirekte NIS2-Betroffenheit ueber die Lieferkette** (§ 30 Abs. 2
-  Nr. 4 BSIG zwingt die 29.500, Fragebogen an Zulieferer weiterzureichen). Gruppe deutlich groesser
-  als 29.500, ohne Budget und ohne ISMS. Vor einem eigenen Lauf zwei Killer pruefen: Antworten auf
-  Sicherheitsfragebogen sind Aussagen ueber die eigene Sicherheitslage (Haftung), und UpGuard,
-  TISAX-/ISO-27001-Dienstleister sowie Berater mit eigenen Landingpages (H5M, ubesafe, secjur)
-  sind schon drin. Aehnelt der CSRD-Fragebogenflut — dort hat der Gesetzgeber sie wegreguliert.
-- **Fuer den Portfolio-Manager, dringend:** Der Regel-Scout erfasst Stichtage ungeprueft — beim
-  VerpackDG lag die Frist 15 Tage nach Erfassung (chancenlos), beim Digital Omnibus war es gar
-  keine Pflicht, sondern eine Entlastung. Beim BFSG war die erfasste Frist (2030) ein Restposten
-  *nach* der eigentlichen Pflicht (2025-06-28). Bei NIS2 war die erfasste Frist beim Erfassen schon
-  **27 Tage verstrichen** — und war ueberdies gar keine Frist, sondern Vollzugszurueckhaltung; die
-  echte lag 174 Tage zurueck. Vier Zeilen im Scout („Frist minus heute < 6 Monate → abgelaufen",
-  „Frist in der Vergangenheit? → verwerfen", „Frist hin oder weg?", „gibt es einen frueheren
-  Stichtag desselben Gesetzes?") sparen je einen ganzen Rechercheurlauf. Das ist jetzt der
-  **vierte** Lauf in Folge, den diese Pruefung erledigt haette.
-- **Fuer den Portfolio-Manager, zweitens — der Tech-Scout braucht dieselbe Sorte Vorpruefung.**
-  Beide bisher recherchierten Tech-Signale (ELStAM/PKV, SVA-Entsendebescheinigung) waren
-  *staatliche Kanaele*, keine Bausteine fuer Dritte: Der Staat baut die Schnittstelle, betreibt
-  das Portal selbst und laesst nur zertifizierte Software daran. Eine Zeile im Scout — „Darf ein
-  Dritter diesen Kanal ueberhaupt bedienen, oder braucht er eine Zulassung?" — trennt den Baustein
-  vom blossen Behoerdenprojekt, bevor ein Rechercheurlauf startet. Mein eigenes Logbuch liegt
-  ueberdies weit ueber den erlaubten 30 Zeilen; ich habe diesmal gekuerzt, aber die Regel und die
-  gewachsene Datei passen nicht zusammen. Das ist eine Entscheidung fuer den Betreiber.
-- **Offene Flanke der KI-Hochrisiko-Recherche:** Art. 111 Abs. 2 KI-VO (Bestandsschutz;
-  Behoerdensysteme bis 2030) nur bei *einer* Quelle (itmr-legal.de) gefunden. Baut eine Idee
-  darauf auf, muss das am Wortlaut nachgeprueft werden — siehe EUR-Lex-Problem.
-- Signal Art. 50 KI-Kennzeichnung (2026-08-27) ist von der Verschiebung *nicht* betroffen, gilt
-  seit 2026-08-02 (Bestandssysteme bis 2026-12-02), noch nicht recherchiert. Vorher pruefen, ob
-  dort dieselben 21 Anbieter sitzen wie bei Hochrisiko — vermutlich ja.
-- FIT-Connect ist kostenlos und schliesst Private nicht aus. Fuer welche Leistung gibt es einen
-  Zustellpunkt, den ein Dritter bedienen darf? Das waere der eigentliche Baustein. Eigener Lauf.
-- EU-weite EPR-Bevollmaechtigte: zentrale EU-Registrierung nicht vor Mitte 2028, bis dahin je
-  Land ein Bevollmaechtigter. Groesser als die LUCID-Pflicht, aber Landbell, zmart und
-  ecosistant sind schon drin. Unternehmensbasisdatenregister (UBRegG) im Aufbau, Evaluierung
-  2026, Zugang nur fuer berechtigte Stellen — bei jedem Datensignal auf Entwertung pruefen.
+- **Rot und nicht erneut aufzugreifen:** BFSG, CSDDD, SVA-Entsendebescheinigung, NIS2, VerpackDG/LUCID, PPWR-Mehrweg-Takeaway. Begruendungen und offene Reste stehen jeweils in der `research/`-Datei. VSME vermutlich ebenfalls rot (14 Anbieter ab 49 EUR plus zwei offizielle Gratiswerkzeuge) — vor einem Lauf zuerst EFRAG Digital Template und DNK-Plattform ansehen.
+- **Neu, die aussichtsreichste Faehrte aus dem PPWR-Lauf: die kommunale Verpackungssteuer.** Vom BVerfG am 27.11.2024 bestaetigt, sechs Kommunen mit Terminen bis 11/2027, und anders als die PPWR-Pflicht erzeugt sie eine **Steuererklaerung mit Mengenzaehlung** — eine Rechnung statt einer Wertung. Killer vorab pruefen: bilden Lightspeed, DISH/Metro und gastronovi das nicht laengst als Steuerschluessel ab? Zielgruppe je Kommune nur dreistellig, je Satzung eigene Regeln.
+- **Offen und fuer *alle* kuenftigen SV-Signale entscheidend:** Hat je ein Dritter eine Ausfuellhilfe nach § 95a SGB IV zertifizieren lassen? Liste auf `gkv-ag.de/systemuntersuchung/zertifizierte-programme/`, nur ueber Suchmaske und teils geschuetzt.
+- **Ungeprueft:** Art. 50 KI-Kennzeichnung (Signal vom 2026-08-27, gilt seit 2026-08-02) — vorher pruefen, ob dort dieselben 21 Anbieter sitzen wie bei Hochrisiko. FIT-Connect ist kostenlos und schliesst Private nicht aus: fuer welche Leistung gibt es einen Zustellpunkt, den ein Dritter bedienen darf? Indirekte NIS2-Betroffenheit ueber die Lieferkette (§ 30 Abs. 2 Nr. 4 BSIG) — vorher zwei Killer pruefen: Haftung fuer Aussagen zur eigenen Sicherheitslage, und UpGuard/TISAX-Dienstleister sind drin.
+- **Fuer den Portfolio-Manager, fuenfter Lauf in Folge:** Der Regel-Scout braucht vier Zeilen Fristpruefung („Frist minus heute < 6 Monate → chancenlos"; „Frist in der Vergangenheit? → verwerfen"; „Frist hin zu den Unternehmen oder weg?"; „frueherer Stichtag desselben Gesetzes?"). Der Tech-Scout braucht eine fuenfte: „Darf ein Dritter diesen Kanal ueberhaupt bedienen?" **Neu, aus dem PPWR-Lauf:** eine sechste fuer beide — „Erzeugt die Pflicht ein Dokument, oder ist sie ein Handgriff?" Der PPWR-Takeaway-Stichtag war der erste, der die Fristpruefung bestanden haette; er ist trotzdem rot, weil es nichts zu digitalisieren gibt.
