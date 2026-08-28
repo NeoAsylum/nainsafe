@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
-"""Wie viel vom Kontingent nutzt die Fabrik wirklich?
+"""Wie viel zieht die Fabrik aus dem Abo, und ist sie je am Limit gescheitert?
 
     python3 agents/kontingent.py
 
-Vergleicht den gemessenen Verbrauch mit dem, was ein Max-20x-Abo hergibt. Die
-Grenzwerte sind Naeherungen -- Anthropic nennt Prompts, keine Tokens, und die
-tatsaechliche Grenze haengt am Modell. Als Groessenordnung reicht es, um die eine
-Frage zu beantworten: Laufen wir am Limit oder im Leerlauf?
+Rohtokens taugen NICHT als Maß fürs Kontingent, und zwar in beide Richtungen. Ein
+einzelner Rechercheur-Lauf meldete sieben Millionen Tokens und lief trotzdem durch --
+davon war fast alles Cache-Lesen, das anders zählt als frischer Kontext. Umgekehrt
+meldete ein Markt-Scout 1,15 Millionen Rohtokens bei 0,87 $ Gegenwert, während ein
+Rechercheur mit 39.000 Rohtokens 4,82 $ kostete.
+
+Der Gegenwert aus `total_cost_usd` gewichtet richtig: Cache-Lesen fällt dort mit einem
+Bruchteil ins Gewicht. Er ist deshalb die Leitgröße dieser Seite. Rohtokens stehen als
+Nebenzahl daneben, ausdrücklich als das, was sie sind.
+
+Was hier bewusst NICHT steht: eine Tokengrenze für das Fünf-Stunden-Fenster. Anthropic
+nennt Prompts, keine Tokens; jede solche Zahl wäre geraten. Belastbar ist stattdessen,
+ob je ein Lauf am Kontingent gescheitert ist -- das steht im Journal.
 """
 
 from __future__ import annotations
@@ -18,16 +27,19 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lauf import DB  # noqa: E402
 
-# Grobe Hausnummern fuer Max 20x. Bewusst konservativ: Wenn wir selbst gegen die
-# vorsichtige Schaetzung im Leerlauf laufen, ist die Antwort eindeutig.
 FENSTER_STUNDEN = 5
-FENSTER_TOKENS = 3_000_000      # konservativ angesetzt je 5-Stunden-Fenster
-WOCHE_TOKENS = 60_000_000       # konservativ angesetzt je Woche
+
+# Bezugsgroesse fuer den Gegenwert, keine Kontingentgrenze.
+ABO_MONAT_USD = 200
 
 
 def balken(anteil: float, breite: int = 40) -> str:
     voll = max(0, min(breite, round(anteil * breite)))
     return "█" * voll + "·" * (breite - voll)
+
+
+def tsd(n) -> str:
+    return f"{n or 0:,}".replace(",", ".")
 
 
 def main() -> int:
@@ -37,76 +49,66 @@ def main() -> int:
     v: sqlite3.Connection = sqlite3.connect(DB)
 
     print("\n\033[1mVerbrauch je Rolle\033[0m")
-    print("─" * 66)
-    print(f"{'Rolle':22} {'Laeufe':>6} {'Tokens':>12} {'je Lauf':>10}")
-    for rolle, n, tok in v.execute(
-        """SELECT rolle, count(*), sum(tokens_in + tokens_out)
+    print("─" * 72)
+    print(f"{'Rolle':22} {'Läufe':>6} {'Gegenwert':>11} {'je Lauf':>9} {'Rohtokens':>14}")
+    for rolle, n, wert, tok in v.execute(
+        """SELECT rolle, count(*), sum(kosten_eur), sum(tokens_in + tokens_out)
            FROM lauf WHERE ergebnis != 'laeuft'
-           GROUP BY rolle ORDER BY sum(tokens_in + tokens_out) DESC"""
+           GROUP BY rolle ORDER BY sum(kosten_eur) DESC"""
     ):
-        tok = tok or 0
-        print(f"{rolle:22} {n:>6} {tok:>12,} {tok // max(n,1):>10,}".replace(",", "."))
-
-    # Der schwerste Tag im Zeitraum statt eines festen Datums -- ein hartcodierter
-    # Zeitstempel meldet ab dem naechsten Tag stillschweigend veraltete Zahlen.
-    nacht = v.execute(
-        """SELECT count(*), sum(tokens_in + tokens_out)
-           FROM lauf WHERE gestartet > datetime('now', '-7 days')
-           GROUP BY date(gestartet)
-           ORDER BY sum(tokens_in + tokens_out) DESC LIMIT 1"""
-    ).fetchone()
+        wert = wert or 0
+        print(f"{rolle:22} {n:>6} {wert:>10.2f}$ {wert/max(n,1):>8.2f}$ {tsd(tok):>14}")
 
     fenster = v.execute(
-        """SELECT count(*), sum(tokens_in + tokens_out) FROM lauf
+        """SELECT count(*), sum(tokens_in + tokens_out), sum(kosten_eur) FROM lauf
            WHERE gestartet > datetime('now', ?)""",
         (f"-{FENSTER_STUNDEN} hours",),
     ).fetchone()
 
+    tag = v.execute(
+        """SELECT count(*), sum(kosten_eur) FROM lauf
+           WHERE gestartet > datetime('now', '-7 days')
+           GROUP BY date(gestartet) ORDER BY sum(kosten_eur) DESC LIMIT 1"""
+    ).fetchone()
+
     woche = v.execute(
-        """SELECT count(*), sum(tokens_in + tokens_out) FROM lauf
+        """SELECT count(*), sum(kosten_eur) FROM lauf
            WHERE gestartet > datetime('now', '-7 days')"""
     ).fetchone()
+
+    gescheitert = v.execute(
+        "SELECT count(*) FROM lauf WHERE ergebnis IN ('fehler','abgebrochen')"
+    ).fetchone()[0]
     v.close()
 
     print("\n\033[1mAuslastung\033[0m")
-    print("─" * 66)
-
-    f_tok = fenster[1] or 0
-    f_anteil = f_tok / FENSTER_TOKENS
+    print("─" * 72)
     print(f"  Laufendes {FENSTER_STUNDEN}-Stunden-Fenster")
-    print(f"    {balken(f_anteil)}  {f_anteil*100:5.2f} %")
-    print(f"    {f_tok:,} von grob {FENSTER_TOKENS:,} Tokens".replace(",", "."))
+    print(f"    {fenster[0] or 0} Läufe, {fenster[2] or 0:.2f} $ Gegenwert")
+    print(f"    ({tsd(fenster[1])} Rohtokens — überwiegend Cache, siehe Kopf der Datei)")
 
-    # Ein Nachtlauf ist der eigentliche Massstab: Er faellt in genau ein Fenster.
-    if nacht and nacht[1]:
-        n_anteil = nacht[1] / FENSTER_TOKENS
-        print(f"\n  Schwerster Tag ({nacht[0]} Laeufe)")
-        print(f"    {balken(n_anteil)}  {n_anteil*100:5.2f} %")
-        print(f"    {nacht[1]:,} Tokens".replace(",", "."))
+    if tag and tag[1]:
+        print(f"\n  Schwerster Tag: {tag[0]} Läufe, {tag[1]:.2f} $ Gegenwert")
 
-    w_tok = woche[1] or 0
-    # Hochrechnen: Bisher lief die Fabrik erst zwei Tage.
-    hoch = (nacht[1] or 0) * 7 if nacht and nacht[1] else w_tok
-    w_anteil = hoch / WOCHE_TOKENS
-    print(f"\n  Sieben Naechte, hochgerechnet")
-    print(f"    {balken(w_anteil)}  {w_anteil*100:5.2f} %")
-    print(f"    {hoch:,} von grob {WOCHE_TOKENS:,} Tokens je Woche".replace(",", "."))
+    hoch = (tag[1] * 30) if (tag and tag[1]) else ((woche[1] or 0) * 4)
+    faktor = hoch / ABO_MONAT_USD
+    print(f"\n  Hochgerechnet auf einen Monat bei diesem Tempo")
+    print(f"    {balken(min(faktor / 10, 1.0))}  {hoch:.0f} $ Gegenwert")
+    print(f"    Das Abo kostet {ABO_MONAT_USD} $ — Faktor {faktor:.1f}.")
 
     print("\n\033[1mBefund\033[0m")
-    print("─" * 66)
-    if w_anteil < 0.05:
-        faktor = int(0.5 / max(w_anteil, 0.001))
-        print(f"  Die Fabrik nutzt ihr Kontingent praktisch nicht. Sie koennte grob")
-        print(f"  das {faktor}-Fache leisten, bevor die Haelfte erreicht waere.")
-        print()
-        print("  Das ist kein Fehler, sondern der Stand des Ausbaus: Es laufen sechs")
-        print("  Rollen einmal taeglich. Die Frage ist nicht, wie man mehr Tokens")
-        print("  verbraucht, sondern welche zusaetzliche Arbeit die eine Entscheidung")
-        print("  am Sonntag besser macht.")
-    elif w_anteil < 0.5:
-        print("  Solide Auslastung mit Luft nach oben.")
+    print("─" * 72)
+    if gescheitert:
+        print(f"  {gescheitert} Läufe sind gescheitert. Sind Abbrüche wegen Kontingent")
+        print("  darunter, ist das Limit erreicht — die Notizen dieser Läufe sagen es:")
+        print("  sqlite3 state.db \"SELECT rolle, notiz FROM lauf WHERE ergebnis='fehler';\"")
     else:
-        print("  Nahe am Limit. Vor jedem Ausbau pruefen, was dafuer wegfaellt.")
+        print("  Kein Lauf ist bisher am Kontingent gescheitert. Solange das so bleibt,")
+        print("  ist die Auslastung nicht die Grenze — die Frage ist dann, ob zusätzliche")
+        print("  Läufe noch Neues finden, nicht ob sie möglich sind.")
+    print()
+    print(f"  Der Faktor {faktor:.1f} sagt, was die Fabrik aus dem Abo zieht. Er ist keine")
+    print("  Rechnung: Über das Abo wird nichts davon abgerechnet.")
     print()
     return 0
 
