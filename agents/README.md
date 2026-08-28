@@ -47,10 +47,10 @@ Auftragstexte taugen — und er verbraucht Tokens.
 
 ```
 regel-scout ─┐
-pain-scout   ├─> ideator ──> fit-filter ──> advocatus ×3 je Kandidat
-markt-scout  │   (opus)      (opus)         (opus, drei Linsen)
-tech-scout  ─┘   verdichtet  lehnt ab       greift an
- (4× sonnet)
+pain-scout   ├─> rechercheur ──> ideator ──> fit-filter ──> advocatus ×5
+markt-scout  │   (opus, je       (opus)      (opus)         (opus, fünf
+tech-scout  ─┘    Signal)        verdichtet  lehnt ab        Linsen)
+ (4× sonnet)      gräbt aus                                 greift an
  sammeln
 ```
 
@@ -62,8 +62,8 @@ echten Laufs.
 Die Sensoren und der Ideator laufen immer, auch wenn der vorherige nichts fand — es kann
 unverarbeitetes Material aus früheren Nächten liegen. Die Angriffe werden erst *danach*
 bestimmt, weil der Fit-Filter im selben Lauf neue Kandidaten erzeugt haben kann.
-Gedeckelt auf zwei Ideen pro Nacht: drei Linsen mal viele Kandidaten wären sonst schnell
-ein zweistelliger Lauf, dessen Ergebnis ohnehin niemand liest.
+Gedeckelt über `RECHERCHEN_MAX` und `ANGRIFFE_MAX_IDEEN` in [nachtlauf.py](nachtlauf.py) —
+die beiden Stellschrauben, mit denen sich die Auslastung hochdrehen lässt.
 
 **Sonntags früh** — der Vorstand:
 
@@ -77,10 +77,10 @@ Ist das WIP-Limit erreicht, schrumpft die Nachtkette auf die vier Sensoren — n
 Kandidaten wären dann Ballast, weil ohnehin nichts hochgestuft werden kann. Signale
 sammeln lohnt trotzdem: Sie warten, bis wieder Platz ist.
 
-## Die drei Linsen
+## Die fünf Linsen
 
-Statt drei identischer Skeptiker greifen drei verschiedene an. Redundanz findet
-dieselben Fehler dreimal; Verschiedenheit findet drei verschiedene:
+Statt fünf identischer Skeptiker greifen fünf verschiedene an. Redundanz findet
+dieselben Fehler mehrfach; Verschiedenheit findet verschiedene:
 
 | Linse | Fragt | Tötet meist an |
 |---|---|---|
@@ -94,8 +94,9 @@ Jede Linse fällt ein Urteil (`widerlegt` / `haelt` / `unklar`) und benennt den 
 Einwand. **Drei von fünf `widerlegt` töten die Idee** — der Portfolio-Manager überstimmt
 diese Mehrheit nicht. Zwei Linsen haben ein Vetorecht: Recht bei gesetzter Grenze G5/G6,
 Vertrieb wenn kein Weg zum ersten Kunden gefunden wurde. Beide Male sind die Kosten
-unsymmetrisch genug, dass eine Mehrheit sie nicht überstimmen sollte. Alle drei schreiben im Zweifel `widerlegt`: Eine zu Unrecht
-verworfene Idee kostet fast nichts, eine zu Unrecht durchgewinkte kostet Wochen.
+unsymmetrisch genug, dass eine Mehrheit sie nicht überstimmen sollte. Alle fünf schreiben
+im Zweifel `widerlegt`: Eine zu Unrecht verworfene Idee kostet fast nichts, eine zu
+Unrecht durchgewinkte kostet Wochen.
 
 ## Zeitplanung
 
