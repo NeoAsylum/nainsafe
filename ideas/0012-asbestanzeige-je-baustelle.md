@@ -1,10 +1,10 @@
 ---
 id: 0012-asbestanzeige-je-baustelle
 titel: Die objektbezogene Asbestanzeige aus Stammdaten und Baustellendaten zusammensetzen
-status: entwurf
+status: kandidat
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/maerkte/2026-08-28-dachdeckerbetriebe.md
 
@@ -16,12 +16,12 @@ zahlungsgrund: zwang
 ablehnungsgrund: null
 
 score:
-  zwang: null
-  erreichbar: null
-  ruhe: null
-  marge: null
-  genehmigung: null
-  summe: null
+  zwang: 4
+  erreichbar: 3
+  ruhe: 3
+  marge: 3
+  genehmigung: 5
+  summe: 18
 ---
 
 ## Belege

@@ -1,10 +1,10 @@
 ---
 id: 0013-zustaendigkeit-und-formularstand-asbest
 titel: Welche Behoerde, welches Formular, welche Anlagen — Nachschlagewerk zur Asbestanzeige
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/maerkte/2026-08-28-dachdeckerbetriebe.md
 
@@ -13,7 +13,7 @@ problem: Die objektbezogene Asbestanzeige geht an die Arbeitsschutzbehoerde am O
 loesung: Ein gepflegtes Verzeichnis, das zu einer Objektadresse die zustaendige Stelle, das aktuell geltende Formular und die vollstaendige Anlagenliste ausgibt — ohne Personendaten, ohne Ausfuellen, ohne Terminueberwachung.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G7 — die Zielgruppe ist dreifach verengt und der Preis eines blossen Nachschlagewerks nach oben gedeckelt; beides zusammen traegt kein Nebengewerbe nach Steuern. Die Verengung steht im Entwurf selbst: von 15.241 SOKA-DACH-pflichtigen Betrieben bleiben erstens die asbestaktiven, zweitens davon die, die Asbestarbeiten selbst ausfuehren statt sie weiterzugeben, drittens davon die landesuebergreifend arbeitenden — denn nur fuer die wechselt der Adressat mit der Baustelle, und genau das ist der einzige Kaufgrund. Ein Betrieb unter zehn gewerblichen Mitarbeitern arbeitet regional; die dritte Stufe ist die schaerfste und schrumpft das Segment in den niedrigen dreistelligen Bereich (Schaetzung, nicht erhoben). Ein Verzeichnis, das weder ausfuellt noch ueberwacht noch Personendaten haelt, traegt keinen Abo-Preis, der diese Stueckzahl kompensiert. Dagegen steht laufende Pflege von rund 41 Stellen und ihren Formularfassungen — der Aufwand ist konstant, der Ertrag nicht. Anders als bei 0011 ist das keine unbeschaffbare Zahl, sondern eine Rechnung, die schon mit den Zahlen des Entwurfs nicht aufgeht. Hinzu kommt der wahrscheinliche Nullpreis: Zustaendigkeit und Formularfassung sind behoerdlich vorgegebene oeffentliche Information, und BAuA, LASI, BG BAU oder ZVDH haben jeden Grund, eine solche Uebersicht kostenlos zu stellen — der Ideator markiert diese Frage selbst als die vor allen anderen zu klaerende. Die vom Ideator erwogene Alternative, den Datensatz an Handwerkersoftware-Haeuser zu verkaufen, hat er zu Recht nicht aufgeschrieben; sie zeigt auf G3. Unsicherheit, widerlegbar: ein Beleg, dass ein belegbar grosser Teil der asbestaktiven Dachdecker tatsaechlich landesuebergreifend arbeitet, zusammen mit dem Nachweis, dass keine amtliche Uebersicht existiert. Faellt beides, ist die Rechnung neu zu stellen. Der Kern des Marktprofils geht nicht verloren: 0012 enthaelt die Zustaendigkeits- und Formularermittlung als Bestandteil, dort aber gebuendelt mit dem Ausfuellen, das den Preis erst traegt."
 
 score:
   zwang: null
