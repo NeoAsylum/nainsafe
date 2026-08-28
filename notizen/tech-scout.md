@@ -12,28 +12,30 @@ niemand mehr, auch du nicht.
 
 ## Was funktioniert
 
-- 2026-08-28 — Suche nach "Datenaustausch ab 2026" + konkretem Steuer-/Sozialversicherungsverfahren
-  war ergiebiger als "neue API Behörde Deutschland" (zu generisch, nur Aggregator-Blogs ohne
-  Primärquelle).
-- 2026-08-28 — Bei Drittanbieter-Werbeseiten ("API 2026: 9 Fakten") immer Primärquelle
-  gegenprüfen, statt der Zusammenfassung zu trauen — ein reißerischer Suchtreffer zu
-  "Handelsregister-API seit 25.03.2026" erwies sich als Werbung eines Datenanbieters, nicht
-  als echte Behörden-API.
+- 2026-08-28 — "Datenaustausch ab 2026" + Steuer-/SV-Verfahren ergiebiger als generische
+  API-Suchen. Aus der Trefferliste Stichworte (z.B. "Entsendung Abkommensstaaten") einzeln
+  vertieft — so das SVA-Signal gefunden.
+- 2026-08-28 — Drittanbieter-Werbeseiten ("API 2026: 9 Fakten") immer gegen Primärquelle prüfen;
+  "Handelsregister-API seit 25.03.2026" ist wiederholt (auch heute) nur Anbieterwerbung.
+- 2026-08-28 — Liefert eine Sekundärquelle beim WebFetch keinen brauchbaren Auszug, einfach die
+  nächste aus der Trefferliste versuchen (meist Krankenkassen-Jahreswechselseiten mit Zitat).
 
 ## Was nicht funktioniert
 
-- 2026-08-28 (2x geprüft) — Handelsregister-/Bundesanzeiger-API: keine offene Abruf-Schnittstelle
-  für Dritte, nur Einreichung (XBRL/XML). Nicht erneut prüfen vor Ende 2026 ohne konkreten Auslöser
-  (neues Gesetz/Open-Data-Pflicht).
-- 2026-08-28 — Basisregister/Once-Only (UBRegG): weiterhin nur Behörden-zu-Behörden-Anbindungen
-  (IHK, Bundesanzeiger-Verlag, BA, BNetzA ab H2 2026). Kein Signal, aber beobachten: sobald private
-  Software-Anbieter angebunden werden dürfen, wäre das ein großer Sprung.
-- 2026-08-28 — WSP.NRW/nala-Gewerbeanmeldeschnittstelle geklärt: nala ist Behörde-zu-Behörde-
-  Verteilung (Kommune → Finanzamt/IHK), kein offener Zugang für private Dritt-Software. Fährte
-  geschlossen, Nachtrag steht in der Signal-Datei selbst.
+- 2026-08-28 (2x geprüft) — Handelsregister-/Bundesanzeiger: keine offene Abruf-API für Dritte,
+  nur Einreichung. Vor Ende 2026 nicht erneut prüfen ohne konkreten Auslöser.
+- 2026-08-28 (erneut geprüft) — NOOTS/Once-Only seit Januar 2026 live, aber weiter reiner
+  Behörde-zu-Behörde-Nachweisabruf, keine private Anbindung erkennbar. Vor 2027 nicht erneut
+  aktiv suchen.
+- 2026-08-28 — WSP.NRW/nala-Gewerbeanmeldung: bestätigt reine Behörde-zu-Behörde-Verteilung,
+  Fährte geschlossen (Details in der Signal-Datei).
+- 2026-08-28 — DaBPV (Kinder-Nachweis Pflegeversicherung): schon seit 2025-07-01 Pflicht, deckt
+  nur den Regelfall ab, Lücke (Stiefkinder) zu schmal. Kein Signal.
 
 ## Offene Faehrten
 
-- ELStAM-Zugriffsweg für Lohnbüros: keine Primärquelle gefunden, ob externe Lohnbüros wie der
-  Arbeitgeber selbst zugreifen. Plausibel (ERiC ist Standardbibliothek fast jeder Lohnsoftware),
-  aber unbestätigt — bei Gelegenheit BZSt-ERiC-Doku direkt statt SAP/HCM-Sekundärartikel prüfen.
+- ELStAM-Zugriffsweg für Lohnbüros weiter unbestätigt — bei Gelegenheit BZSt-ERiC-Doku direkt
+  statt Sekundärartikel prüfen.
+- SVA-Entsendebescheinigung (Signal 2026-08-28): unklar, ob "systemgeprüfte" Lohnsoftware eine
+  kostenpflichtige Zertifizierung braucht oder das SV-Meldeportal frei nutzbar ist — DVKA/DSRV-
+  Primärdoku prüfen, falls die Idee weiterverfolgt wird.
