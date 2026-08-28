@@ -22,20 +22,22 @@ niemand mehr, auch du nicht.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 (2x geprüft) — Handelsregister-/Bundesanzeiger: keine offene Abruf-API für Dritte,
-  nur Einreichung. Vor Ende 2026 nicht erneut prüfen ohne konkreten Auslöser.
+- 2026-08-28 (3x geprüft) — Handelsregister-/Bundesanzeiger: keine offene Abruf-API für Dritte,
+  nur Einreichung. Auch alte FragDenStaat-Anfrage brachte nur "weitestgehend geklärt" ohne
+  konkrete API. Vor Ende 2026 nicht erneut prüfen ohne konkreten Auslöser.
 - 2026-08-28 (erneut geprüft) — NOOTS/Once-Only seit Januar 2026 live, aber weiter reiner
   Behörde-zu-Behörde-Nachweisabruf, keine private Anbindung erkennbar. Vor 2027 nicht erneut
   aktiv suchen.
-- 2026-08-28 — WSP.NRW/nala-Gewerbeanmeldung: bestätigt reine Behörde-zu-Behörde-Verteilung,
-  Fährte geschlossen (Details in der Signal-Datei).
-- 2026-08-28 — DaBPV (Kinder-Nachweis Pflegeversicherung): schon seit 2025-07-01 Pflicht, deckt
-  nur den Regelfall ab, Lücke (Stiefkinder) zu schmal. Kein Signal.
+- 2026-08-28 — WSP.NRW/nala-Gewerbeanmeldung und "Mein Unternehmenskonto"-SSP (NEZO/Postfach 2.0):
+  gleiches Muster — Anbindung nur für Behörden/Fachverfahren, kein Zugang für private
+  Softwareanbieter erkennbar. Beide Fährten geschlossen.
+- 2026-08-28 — eANV/Datenschnittstelle Nachweisverordnung existiert bereits seit ca. 2007-2010,
+  keine neue Entwicklung. Kein Signal.
 
 ## Offene Faehrten
 
-- ELStAM-Zugriffsweg für Lohnbüros weiter unbestätigt — bei Gelegenheit BZSt-ERiC-Doku direkt
-  statt Sekundärartikel prüfen.
 - SVA-Entsendebescheinigung (Signal 2026-08-28): unklar, ob "systemgeprüfte" Lohnsoftware eine
   kostenpflichtige Zertifizierung braucht oder das SV-Meldeportal frei nutzbar ist — DVKA/DSRV-
   Primärdoku prüfen, falls die Idee weiterverfolgt wird.
+- ELStAM-Zugriffsweg für Lohnbüros: 2026-08-28 geklärt (kein Vollmachtsschritt nötig, ins
+  bestehende Signal nachgetragen) — Fährte geschlossen.

@@ -18,4 +18,10 @@ Bis einschließlich 2025 mussten Arbeitnehmer die jährliche Papierbescheinigung
 
 ## Was unklar ist
 
-Ob Lohnsoftware-Anbieter und externe Lohnbüros (nicht nur der Arbeitgeber selbst) direkt über die bestehenden ELStAM-Abrufkanäle Zugriff erhalten, oder ob dafür ein zusätzlicher Vollmachtsschritt nötig ist, ist aus der gesichteten Quelle nicht eindeutig. Die Schnittstelle selbst (ELStAM) ist bereits etabliert und kostenlos nutzbar; neu ist nur die Datenkategorie. Betroffen sind nur Beamte und Angestellte mit privater KV/PV, nicht die gesetzlich Versicherten (für die galt der elektronische Abzug schon vorher).
+Die Schnittstelle selbst (ELStAM) ist bereits etabliert und kostenlos nutzbar; neu ist nur die Datenkategorie. Betroffen sind nur Beamte und Angestellte mit privater KV/PV, nicht die gesetzlich Versicherten (für die galt der elektronische Abzug schon vorher).
+
+**Nachtrag 2026-08-28:** Die zuvor offene Frage, ob externe Lohnbüros einen zusätzlichen
+Vollmachtsschritt brauchen, ist geklärt: "Lohnbüros rufen sie wie gewohnt über die
+Schnittstelle ihrer Lohnsoftware ab." (project-b.dev, "Modernisierung des
+Arbeitgeberverfahren ab 2026", abgerufen 2026-08-28). Kein separates Verfahren nötig —
+läuft über den bestehenden ELStAM-Kanal der Lohnsoftware.
