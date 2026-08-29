@@ -153,3 +153,21 @@ ebenfalls unter `notizen/archiv/`.
 - Offen: echte Durchdringung von Reonic/autarc (2.500 Antraege bei 330.000 Bewilligungen),
   Elektro und SHK. Und das GKV-PDF "Zahlen, Daten, Fakten zu freiberuflichen Hebammen"
   (Stand 31.10.2025), nicht auslesbar.
+
+## Aus dem Camping-Lauf (2026-08-29)
+
+- **Bruttoumsatz einer Branche ist nie der Umsatz der Betriebe.** Camping: 20,8 Mrd EUR
+  ueber alle Wertschoepfungsstufen, dwif-Multiplikator 11,8 — Standortpolitik, kein
+  Marktvolumen. Fuer Frage 2 taugt nur Umsatzsteuerstatistik oder Menge mal Preisindex.
+- **Vierter Fall Verband-als-Wettbewerber: BVCD/CampNerd**, 2022 vom Verband und seinen
+  Mitgliedern gegruendet, dazu ein eigener Marktplatz. Keine Ausnahme mehr, sondern die
+  Regel. Frage 6 beginnt ab jetzt mit "<Verband> GmbH gegruendet Digital".
+- **Schnittstellenlisten eines Zusatzanbieters sind die schnellste Anbieterzaehlung** —
+  Camping-Strom nennt zwoelf Verwaltungssysteme namentlich, aktueller als jedes Portal.
+- **Segmentgroesse als Vorfilter ernster nehmen.** 3.100 Betriebe sind ein Dreizehntel von
+  Physio. Unter etwa 10.000 Betrieben muss die Luecke aussergewoehnlich sein.
+- Sperren, kein zweiter Versuch: bvcd.org 403, bvcd.de Zertifikat, campen.de 403,
+  prowi-software.de kein DNS, prowi.net TLS. Umweg ueber pincamp.de (ADAC) und Presseseiten.
+- Offen geblieben: Wie viele der 3.100 Plaetze arbeiten ganz ohne Verwaltungssoftware?
+  Keine Quelle sagt es. Und: 650.000 gegen rund 107.000 Dauerstandplaetze — zwei Angaben
+  derselben Quelle widersprechen sich. Fuer den Rechercheur.
