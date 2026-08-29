@@ -27,34 +27,30 @@ niemand mehr, auch du nicht.
   Mindeststeuergesetz, DAC8) foerdert Fristen zutage, die keine Registrierungspflicht
   sind, sondern wiederkehrende Konzern-Meldepflichten mit Schwellenwert -- lohnt sich
   als dritte Suchrichtung neben "Beobachtungsliste" und "24-Monats-Pflichten".
+- 2026-08-29 (2. Lauf) — Bereits als Gesetz bekannte EU-Verordnungen (Batterie-VO)
+  gezielt nach noch nicht erfassten Einzelpflichten mit eigenem Stichtag absuchen
+  (hier: digitaler Batteriepass 18.02.2027, getrennt von Sorgfaltspflichten und
+  Kennzeichnung) -- gleiches Muster wie PPWR Art. 29.
 
 ## Was nicht funktioniert
 
 - 2026-08-28 — Bereits verstrichene Stichtage (Kassensysteme-Meldepflicht 31.07.2025,
   DORA-Meldefenster 03-04/2026) sind kein Signal -- erst den Stichtag prüfen, nicht
   den Trefferzähler.
-- 2026-08-28 — Pflichten ohne festen Stichtag sind kein Signal, auch wenn die Pflicht
-  dem Grunde nach feststeht: KRITIS-Dachgesetz-Registrierungsfrist am 28.07.2026
-  (BGBl. 221) ersatzlos gestrichen, neue Frist hängt an noch nicht erlassener
-  KRITIS-VO (erwartet Herbst 2026).
-- 2026-08-28 (2. Lauf) — Referentenentwuerfe bleiben kein Signal, auch wenn Medien
-  ein konkretes Datum melden (Kassenpflicht 2028-01-01): "Entwurf" heisst kein
-  Kabinettsbeschluss, keine Rechtsgrundlage.
-- 2026-08-29 — Auch ein reiner Kabinettsbeschluss (Regierungsentwurf, noch nicht im
-  Bundestag beschlossen) reicht nicht: Reservestaerkungsgesetz (Kabinett 2026-07-01)
-  hat weder finales Datum ("Anfang 2027") noch Bundestagsbeschluss -- kein Signal.
+- 2026-08-29 (2. Lauf) — Ausschussberatung im Bundestag (LkSG-Aenderung, seit
+  16.01.2026 im Ausschuss) ist wie Kabinettsbeschluss kein Signal -- erst der
+  Bundestagsbeschluss selbst zaehlt.
 
 ## Offene Fährten
 
-- KRITIS-Dachgesetz: KRITIS-VO (§§4,5) am 2026-08-29 immer noch nicht erlassen
-  (openkritis.de bestaetigt erneut "Entwurf noch nicht verfuegbar") --
-  Registrierungsfrist (3 Monate nach VO, fruehester Termin 2026-07-17, erste harte
-  Frist Mitte Oktober 2026) weiterhin ohne konkretes Startdatum. Bei BBK/BSI
-  regelmaessig nachsehen.
+- KRITIS-Dachgesetz seit 16.03.2026 in Kraft (BGBl. 2026 I Nr. 66), aber KRITIS-VO
+  am 2026-08-29 weiterhin nicht erlassen (openkritis.de: "Entwurf noch nicht
+  verfuegbar") -- Registrierungsfrist (3 Monate nach VO) weiterhin ohne
+  Startdatum. Bei BBK/BSI regelmaessig nachsehen.
 - Registrierkassenpflicht: weiterhin nur BMF-Referentenentwurf (2028-01-01,
-  >100.000 EUR Jahresumsatz), am 2026-08-29 noch kein Kabinettsbeschluss. Sobald
-  Kabinett/Bundestag beschliesst, Signal nachtragen.
+  >100.000 EUR Jahresumsatz), am 2026-08-29 noch kein Kabinettsbeschluss.
 - Reservestaerkungsgesetz: Kabinettsbeschluss 2026-07-01, Arbeitgeberpflicht zur
-  Freistellung von Reservisten (Ende "doppelte Freiwilligkeit"), Inkrafttreten
-  vage "Anfang 2027" -- sobald Bundestag beschliesst und Datum feststeht, Signal
-  anlegen (bmvg.de/bundesregierung.de als Primärquelle nutzen).
+  Freistellung von Reservisten, Inkrafttreten weiterhin vage "Anfang 2027" --
+  sobald Bundestag beschliesst und Datum feststeht, Signal anlegen.
+- LkSG-Aenderung (Aussetzung Berichtspflicht): seit 16.01.2026 in
+  Ausschussberatung, am 2026-08-29 kein Beschluss, kein Datum.
