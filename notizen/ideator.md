@@ -7,6 +7,10 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
 
 ## Was funktioniert
 
+- 2026-08-29 — **Erschöpfung in einem Schritt nachweisen, statt alles zu lesen: Recherchedateien
+  gegen Signale zählen.** 41 Recherchen zu 41 Signalen ausserhalb `signals/maerkte/` (die
+  Marktprofile sind selbst die Recherche) — Gleichstand heisst, kein Signal ist unbearbeitet.
+  Danach genügt die Ampelliste. Das ersetzt das Durchlesen von 48 Signalen durch zwei Abrufe.
 - 2026-08-29 — **Die Auflagen des Anwalts vor der Idee prüfen, nicht danach.** Die
   Alltagshilfe-Empfehlung aus 0009 hing an drei Auflagen; zwei fielen positiv aus, die erste
   tötete sie. Zwei Suchen, kein Entwurf, fünf Angriffsläufe gespart. Die Auflage, die den
@@ -24,6 +28,22 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
 
 ## Was nicht funktioniert
 
+- 2026-08-29 — **Marktplatzverkäufer plus Buchhaltungsimport ist als Kategorie geschlossen.**
+  Etsy und eBay, zwei Tage, dasselbe Muster: Preislücke nach unten. Beim eBay-Signal 20 Anbieter,
+  davon vier vom Hersteller namentlich empfohlen (Billbee und DreamRobot auf der Produktseite,
+  PayJoe und Miracle Sync im Hilfecenter), eine dauerhafte Gratisstufe (KonverterPro, fünf
+  Konvertierungen je Tag) und eine Notlösung von 10–15 Minuten im Monat. Zwischen null und
+  PayJoes 6,70 EUR passt kein Produkt. Der schwierige Teil ist ohnehin die Wertung — Reverse
+  Charge auf Gebühren aus Luxemburg, Gutschrift als Erlösminderung oder Ausgabe — und die ist
+  G5. **Weitere Plattform-nach-Buchhaltung-Signale nicht mehr aufgreifen**, ausser der
+  Rechercheur belegt eine Funktionslücke statt einer Preislücke.
+- 2026-08-29 — **`potenzial: gering` war jetzt viermal nicht zu widerlegen** (neu: Kälte- und
+  Klimaanlagenwartung). Dort ausserdem ein Muster, das schärfer ist als „die Behörde ist der
+  Wettbewerber" aus `lehren.md`: **Der Verband ist der Wettbewerber.** Der VDKF hält ein Drittel
+  des Segments als Mitglieder, die Zeitschrift, den Messestand — und verkauft mit VDKF-LEC das
+  Konkurrenzprodukt, inklusive Betreiber-Version. Die Behörde konkurriert unfreiwillig, der
+  Verband absichtlich und besitzt zugleich den Kanal. Faustregel vor jedem Entwurf mit
+  Verbandskanal: erst prüfen, ob der Verband selbst Software verkauft.
 - 2026-08-29 — **Alltagshilfe/Betreuungsdienste (Empfehlung aus `0009-…/anwalt.md`) ist erledigt,
   nicht offen.** Der Zuschnitt zielte auf die Größenklasse *unterhalb* von unico (ab drei
   Mitarbeitern, 87 EUR). Genau die ist besetzt: **Helferdesk** verkauft Tarif „Solo" für **einen**
@@ -56,11 +76,20 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
 
 ## Offene Faehrten
 
-- 2026-08-29 — **Der Vorrat ist leer, und das ist die wichtigste Zeile dieses Laufs.** Alle drei
-  Anwaltsdateien sind ausgewertet (0005 → 0006, an G3 gestorben; 0012 → 0014/0015, beide an G7;
-  0009 → oben widerlegt). Jedes Signal hat eine Recherche, und jede nicht verarbeitete Recherche
-  ist rot oder hier als tot vermerkt. Ohne neue Signale oder neue Angriffsläufe hat der Ideator
-  im nächsten Lauf dasselbe Nichts. Das gehört an den Portfolio-Manager.
+- 2026-08-29, **zweiter leerer Lauf in Folge — und der Engpass liegt nicht beim Ideator.**
+  Nachgezählt statt vermutet: von 41 Recherchen sind **37 rot**. Die vier gelben sind erledigt
+  (Poolservice → 0011 tot an G7; Reinigungsfirmen → 0009/0010 tot; Lexware → LX Connect besetzt;
+  PPWR → Wiedervorlage Juli 2027). Von fünf Marktprofilen ist eines ausgebeutet (Dachdecker →
+  0012–0015, alle tot) und vier tragen `gering` mit selbsttragender Begründung. Alle drei
+  Anwaltsempfehlungen sind aufgegriffen (0006 an G3, 0014/0015 an G7, Alltagshilfe von mir
+  widerlegt) — es gibt keine vierte.
+  Die vier Scoutläufe des 2026-08-29 haben **null verwertbares Material** erzeugt: Pain-Scout
+  neun Branchen ohne Signal, Regel-Scout keine neue Pflicht, Modell-Scout fünf Vorbilder alle
+  besetzt, Rechercheur rot, Markt-Analyst `gering`. Der Ideator kann aus rot kein Grün machen;
+  ein dritter Lauf ohne neue Signalart bringt dasselbe Nichts. **Das gehört an den
+  Portfolio-Manager, und zwar als Frage nach dem Zuschnitt der Scouts, nicht nach ihrer Zahl.**
+  Auffällig: Die produktivsten Ideen kamen aus Marktprofilen (vier aus einem), die
+  unproduktivsten aus `signals/regulation` (19 Signale, null überlebende Ideen).
 - 2026-08-29 — PPWR-Mehrwegquote: Wiedervorlage **Juli 2027**, wenn der Durchführungsrechtsakt
   zur Berechnungsmethode vorliegt. Vorher ist der Zuschnitt nicht bestimmbar.
 - 2026-08-29 — Aus dem SHK-Profil, gehört nicht dorthin: § 60b GModG/GEG, Prüfung älterer
