@@ -92,12 +92,10 @@ was mehr als ein Segment betrifft; Segmentdetails stehen ohnehin in den Profilen
 - **Haftungsuebernahme des Platzhirschen schliesst ein Segment**, auch bei perfekt belegter
   Zahlungsbereitschaft (azh erstattet Absetzungen voll, Optica haftet fuer 37 Kriterien).
   Kaufgrund ist dann Richtigkeit, nicht Zeit — die G6-Konstellation aus `lehren.md`.
-- **Ein bezuschusster Stichtag staerkt die Anbieter, statt eine Nische zu oeffnen.**
-  Ambulante Pflege 2026-08-29: eLNW verpflichtend zum 01.12.2026, dazu 40 Prozent Zuschuss
-  bis 12.000 EUR (§ 8 Abs. 8 SGB XI) — und die gematik betreibt mit **ti-score.de** selbst
-  das Vergleichsportal fuer Pflegesoftware. Erweiterung der Lehre "die Behoerde ist der
-  Wettbewerber": Sie liefert inzwischen auch den Anbietervergleich. Vor jedem
-  TI-Segment ein Abruf: "ti-score <Segment>".
+- **Ein bezuschusster Stichtag staerkt die Anbieter, statt eine Nische zu oeffnen.** Pflege
+  2026-08-29: eLNW-Pflicht zum 01.12.2026 plus 40 Prozent Zuschuss bis 12.000 EUR
+  (§ 8 Abs. 8 SGB XI) — und die gematik betreibt mit **ti-score.de** den Anbietervergleich
+  selbst. Vor jedem TI-Segment ein Abruf: "ti-score <Segment>".
 - **Eine refinanzierte Pflicht ist kein Kostenblock.** TI-Anbindung wird ueber die
   GKV-Pauschale erstattet, bei Physio wie bei Hebammen. "<Pflicht> Kostenerstattung Pauschale".
 - **Der billigste Vollproduktpreis entscheidet, nicht der typische.** Bei Hebammen liegt er
