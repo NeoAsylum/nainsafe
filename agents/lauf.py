@@ -196,11 +196,17 @@ def journal_start(verbindung, rolle: str, gegenstand: str | None) -> int:
 def journal_ende(verbindung, lauf_id: int, ergebnis: str, nutzung: dict,
                  commit_hash: str | None, notiz: str | None) -> None:
     verbindung.execute(
-        """UPDATE lauf SET beendet=?, tokens_in=?, tokens_out=?, kosten_eur=?,
-                           ergebnis=?, commit_hash=?, notiz=? WHERE id=?""",
+        """UPDATE lauf SET beendet=?, tokens_in=?, tokens_frisch=?, tokens_cneu=?,
+                           tokens_cles=?, tokens_denken=?, tokens_out=?,
+                           kosten_eur=?, ergebnis=?, commit_hash=?, notiz=?
+           WHERE id=?""",
         (
             jetzt(),
             nutzung.get("input_tokens", 0),
+            nutzung.get("frisch", 0),
+            nutzung.get("cache_neu", 0),
+            nutzung.get("cache_gelesen", 0),
+            nutzung.get("denken", 0),
             nutzung.get("output_tokens", 0),
             nutzung.get("kosten", 0.0),
             ergebnis,
@@ -423,6 +429,11 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         )
         nutzung = {
             "input_tokens": eingang,
+            "frisch": verbrauch.get("input_tokens", 0),
+            "cache_neu": verbrauch.get("cache_creation_input_tokens", 0),
+            "cache_gelesen": verbrauch.get("cache_read_input_tokens", 0),
+            "denken": (verbrauch.get("output_tokens_details") or {}).get(
+                "thinking_tokens", 0),
             "output_tokens": verbrauch.get("output_tokens", 0),
             # Claude Code meldet total_cost_usd auch bei Abo-Anmeldung. Der Betrag
             # wird dann NICHT abgerechnet -- er ist der rechnerische Gegenwert zu

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agentenfabrik</title>
+<style>
+:root {
+  --grund:#f7f8fa; --karte:#fff; --tinte:#141821; --leise:#5c6675;
+  --linie:#e2e7ee; --akzent:#2c5f8d; --warn:#9a6316; --tot:#96352e; --gut:#2f6b4f;
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme=light]) {
+    --grund:#0f131a; --karte:#161b23; --tinte:#e3e8ef; --leise:#8590a0;
+    --linie:#2a323d; --akzent:#7fb0dd; --warn:#dda55c; --tot:#dd8b82; --gut:#7fc4a0;
+  }
+}
+* { box-sizing:border-box }
+body { margin:0; background:var(--grund); color:var(--tinte);
+  font:15px/1.55 "IBM Plex Sans",-apple-system,Segoe UI,system-ui,sans-serif; }
+.seite { max-width:1180px; margin:0 auto; padding:2rem 1.25rem 4rem }
+h1 { font-size:1.7rem; margin:0 0 .2rem; letter-spacing:-.01em }
+h2 { font-size:1.02rem; margin:0 0 .9rem; letter-spacing:.02em;
+  text-transform:uppercase; color:var(--leise); font-weight:600 }
+.stand { color:var(--leise); font-size:.86rem; margin-bottom:1.6rem }
+.raster { display:grid; gap:1rem; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)) }
+.karte { background:var(--karte); border:1px solid var(--linie); border-radius:8px;
+  padding:1.15rem 1.25rem }
+.karte.weit { grid-column:1/-1 }
+.kennzahlen { display:grid; gap:1px; background:var(--linie);
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  border:1px solid var(--linie); border-radius:8px; overflow:hidden; margin-bottom:1rem }
+.kennzahlen div { background:var(--karte); padding:.85rem 1rem }
+.kennzahlen dt { font-size:.7rem; text-transform:uppercase; letter-spacing:.09em;
+  color:var(--leise); margin-bottom:.25rem }
+.kennzahlen dd { margin:0; font-size:1.5rem; font-weight:600;
+  font-variant-numeric:tabular-nums }
+.kennzahlen small { display:block; color:var(--leise); font-size:.78rem;
+  font-weight:400; margin-top:.1rem }
+table { width:100%; border-collapse:collapse; font-size:.87rem }
+th { text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.08em;
+  color:var(--leise); font-weight:600; padding:.35rem .5rem; border-bottom:1px solid var(--linie) }
+td { padding:.38rem .5rem; border-bottom:1px solid var(--linie) }
+tr:last-child td { border-bottom:none }
+.n { text-align:right; font-variant-numeric:tabular-nums }
+.mono { font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace; font-size:.8rem }
+.dim { color:var(--leise) }
+.pill { font-size:.7rem; padding:.1rem .45rem; border-radius:3px;
+  background:var(--linie); color:var(--leise) }
+.pill.ok { color:var(--gut) } .pill.leer { color:var(--leise) }
+.pill.fehler,.pill.abgebrochen { color:var(--tot) } .pill.laeuft { color:var(--warn) }
+.chart { width:100%; height:auto; overflow:visible }
+.chart .bar { fill:var(--akzent); opacity:.85 }
+.chart .lbl { font-size:11px; fill:var(--tinte) }
+.chart .val { font-size:11px; fill:var(--leise); font-variant-numeric:tabular-nums }
+.chart .ax { font-size:9px; fill:var(--leise) }
+.stufe { margin-bottom:.7rem }
+.stufe-kopf { display:flex; justify-content:space-between; font-size:.85rem;
+  margin-bottom:.2rem }
+.stufe-kopf b { font-variant-numeric:tabular-nums }
+.spur { height:7px; background:var(--linie); border-radius:4px; overflow:hidden }
+.fuell { height:100%; background:var(--akzent) }
+.hinweis { font-size:.74rem; color:var(--leise); margin-top:.15rem }
+.bremse { height:9px; background:var(--linie); border-radius:5px; overflow:hidden;
+  margin:.5rem 0 .35rem }
+.bremse div { height:100%; background:var(--akzent) }
+.fuss { margin-top:2rem; padding-top:1rem; border-top:1px solid var(--linie);
+  color:var(--leise); font-size:.8rem }
+.leer { color:var(--leise); font-size:.85rem }
+code { font-family:"IBM Plex Mono",monospace; font-size:.85em;
+  background:var(--linie); padding:.05rem .3rem; border-radius:3px }
+</style></head><body><div class="seite">
+
+<h1>Agentenfabrik</h1>
+<p class="stand">Stand 2026-08-29 09:44 UTC &middot; erzeugt von <code>agents/dashboard.py</code>
+</p>
+
+<dl class="kennzahlen">
+  <div><dt>Läufe heute</dt><dd>23</dd><small>125 in sieben Tagen</small></div>
+  <div><dt>Tokens heute</dt><dd>57.103.501</dd><small>136.020.600 in sieben Tagen</small></div>
+  <div><dt>Signale</dt><dd>44</dd><small>in 6 Arten</small></div>
+  <div><dt>Ideen offen</dt><dd>0</dd><small>6+ verworfen</small></div>
+  <div><dt>Wartet auf dich</dt><dd>0</dd><small>Gate-Vorlagen</small></div>
+</dl>
+
+<div class="raster">
+
+  <div class="karte">
+    <h2>Tagesbremse</h2>
+    <div class="bremse"><div style="width:53.4%"></div></div>
+    <p class="hinweis">64 von 120 Einheiten Gegenwert.
+    Ab der Grenze startet kein Lauf mehr — sie fängt Ausreißer ab, nicht den
+    Normalbetrieb. Steht in <code>agents/lauf.py</code>.</p>
+  </div>
+
+  <div class="karte">
+    <h2>Wohin die Tokens gehen (7 Tage)</h2>
+    <svg viewBox="0 0 560 140" class="chart" role="img"><text x="0" y="15" class="lbl">frisch</text><rect x="150" y="3" width="2" height="16" rx="2" class="bar"/><text x="157" y="15" class="val">0</text><text x="0" y="43" class="lbl">Cache neu</text><rect x="150" y="31" width="2" height="16" rx="2" class="bar"/><text x="157" y="43" class="val">0</text><text x="0" y="71" class="lbl">Cache gelesen</text><rect x="150" y="59" width="2" height="16" rx="2" class="bar"/><text x="157" y="71" class="val">0</text><text x="0" y="99" class="lbl">Ausgabe</text><rect x="150" y="87" width="310" height="16" rx="2" class="bar"/><text x="465" y="99" class="val">2.909.120</text><text x="0" y="127" class="lbl">davon Denken</text><rect x="150" y="115" width="2" height="16" rx="2" class="bar"/><text x="157" y="127" class="val">0</text></svg>
+    <p class="hinweis">Cache-Lesen dominiert jede Summe, zählt aber anders als frisch
+    gesendeter Kontext. Wer nur die Gesamtzahl liest, täuscht sich in beide Richtungen.
+    Ältere Läufe haben die Aufschlüsselung nicht.</p>
+  </div>
+
+  <div class="karte weit">
+    <h2>Tokens je Tag</h2>
+    <svg viewBox="0 0 560 140" class="chart" role="img"><rect x="28.0" y="117.9" width="130.7" height="0.1" rx="2" class="bar"/><text x="93.3" y="132" class="ax" text-anchor="middle">08-27</text><text x="93.3" y="112.9" class="ax" text-anchor="middle">47.285</text><rect x="214.7" y="12.0" width="130.7" height="106.0" rx="2" class="bar"/><text x="280.0" y="132" class="ax" text-anchor="middle">08-28</text><text x="280.0" y="7.0" class="ax" text-anchor="middle">78.869.814</text><rect x="401.3" y="41.3" width="130.7" height="76.7" rx="2" class="bar"/><text x="466.7" y="132" class="ax" text-anchor="middle">08-29</text><text x="466.7" y="36.3" class="ax" text-anchor="middle">57.103.501</text></svg>
+  </div>
+
+  <div class="karte">
+    <h2>Der Trichter</h2>
+    <div class="stufe"><div class="stufe-kopf"><span>Signale</span><b>44</b></div><div class="spur"><div class="fuell" style="width:100.0%"></div></div><div class="hinweis">von sechs Sensoren gesammelt</div></div><div class="stufe"><div class="stufe-kopf"><span>Recherchen</span><b>40</b></div><div class="spur"><div class="fuell" style="width:90.9%"></div></div><div class="hinweis">ausgegraben, mit Ampel</div></div><div class="stufe"><div class="stufe-kopf"><span>Ideen</span><b>15</b></div><div class="spur"><div class="fuell" style="width:34.1%"></div></div><div class="hinweis">vom Ideator geschrieben</div></div><div class="stufe"><div class="stufe-kopf"><span>Kandidaten</span><b>0</b></div><div class="spur"><div class="fuell" style="width:0.0%"></div></div><div class="hinweis">durch den Fit-Filter</div></div><div class="stufe"><div class="stufe-kopf"><span>geprueft</span><b>0</b></div><div class="spur"><div class="fuell" style="width:0.0%"></div></div><div class="hinweis">fuenf Linsen plus Anwalt</div></div><div class="stufe"><div class="stufe-kopf"><span>Vorlagen</span><b>0</b></div><div class="spur"><div class="fuell" style="width:0.0%"></div></div><div class="hinweis">warten auf dich</div></div>
+  </div>
+
+  <div class="karte">
+    <h2>Signale je Quelle</h2>
+    <svg viewBox="0 0 560 168" class="chart" role="img"><text x="0" y="15" class="lbl">regulation</text><rect x="150" y="3" width="310" height="16" rx="2" class="bar"/><text x="465" y="15" class="val">19</text><text x="0" y="43" class="lbl">market</text><rect x="150" y="31" width="196" height="16" rx="2" class="bar"/><text x="351" y="43" class="val">12</text><text x="0" y="71" class="lbl">maerkte</text><rect x="150" y="59" width="65" height="16" rx="2" class="bar"/><text x="220" y="71" class="val">4</text><text x="0" y="99" class="lbl">tech</text><rect x="150" y="87" width="65" height="16" rx="2" class="bar"/><text x="220" y="99" class="val">4</text><text x="0" y="127" class="lbl">pain</text><rect x="150" y="115" width="49" height="16" rx="2" class="bar"/><text x="204" y="127" class="val">3</text><text x="0" y="155" class="lbl">modelle</text><rect x="150" y="143" width="33" height="16" rx="2" class="bar"/><text x="188" y="155" class="val">2</text></svg>
+  </div>
+
+  <div class="karte weit">
+    <h2>Tokens je Rolle (7 Tage)</h2>
+    <svg viewBox="0 0 560 336" class="chart" role="img"><text x="0" y="15" class="lbl">rechercheur</text><rect x="150" y="3" width="310" height="16" rx="2" class="bar"/><text x="465" y="15" class="val">82.465.437</text><text x="0" y="43" class="lbl">ideator</text><rect x="150" y="31" width="26" height="16" rx="2" class="bar"/><text x="181" y="43" class="val">6.793.679</text><text x="0" y="71" class="lbl">markt-analyst</text><rect x="150" y="59" width="24" height="16" rx="2" class="bar"/><text x="179" y="71" class="val">6.431.909</text><text x="0" y="99" class="lbl">modell-scout</text><rect x="150" y="87" width="17" height="16" rx="2" class="bar"/><text x="172" y="99" class="val">4.394.435</text><text x="0" y="127" class="lbl">markt-scout</text><rect x="150" y="115" width="15" height="16" rx="2" class="bar"/><text x="170" y="127" class="val">4.018.796</text><text x="0" y="155" class="lbl">anwalt</text><rect x="150" y="143" width="15" height="16" rx="2" class="bar"/><text x="170" y="155" class="val">3.893.563</text><text x="0" y="183" class="lbl">pain-scout</text><rect x="150" y="171" width="12" height="16" rx="2" class="bar"/><text x="167" y="183" class="val">3.126.124</text><text x="0" y="211" class="lbl">advocatus-nachfrage</text><rect x="150" y="199" width="12" height="16" rx="2" class="bar"/><text x="167" y="211" class="val">3.074.026</text><text x="0" y="239" class="lbl">regel-scout</text><rect x="150" y="227" width="12" height="16" rx="2" class="bar"/><text x="167" y="239" class="val">3.060.012</text><text x="0" y="267" class="lbl">portfolio-manager</text><rect x="150" y="255" width="11" height="16" rx="2" class="bar"/><text x="166" y="267" class="val">3.045.451</text><text x="0" y="295" class="lbl">fit-filter</text><rect x="150" y="283" width="11" height="16" rx="2" class="bar"/><text x="166" y="295" class="val">2.875.126</text><text x="0" y="323" class="lbl">advocatus-wettbewerb</text><rect x="150" y="311" width="10" height="16" rx="2" class="bar"/><text x="165" y="323" class="val">2.706.855</text></svg>
+    <table style="margin-top:1rem">
+      <tr><th>Rolle</th><th class="n">Läufe</th><th class="n">leer</th>
+          <th class="n">Fehler</th><th class="n">Tokens</th><th class="n">je Lauf</th></tr>
+      <tr><td>rechercheur</td><td class='n'>43</td><td class='n'>16</td><td class='n'>0</td><td class='n'>82.465.437</td><td class='n'>1.917.800</td></tr><tr><td>ideator</td><td class='n'>9</td><td class='n'>2</td><td class='n'>0</td><td class='n'>6.793.679</td><td class='n'>754.853</td></tr><tr><td>markt-analyst</td><td class='n'>4</td><td class='n'>0</td><td class='n'>0</td><td class='n'>6.431.909</td><td class='n'>1.607.977</td></tr><tr><td>modell-scout</td><td class='n'>5</td><td class='n'>1</td><td class='n'>0</td><td class='n'>4.394.435</td><td class='n'>878.887</td></tr><tr><td>markt-scout</td><td class='n'>9</td><td class='n'>1</td><td class='n'>0</td><td class='n'>4.018.796</td><td class='n'>446.532</td></tr><tr><td>anwalt</td><td class='n'>3</td><td class='n'>0</td><td class='n'>0</td><td class='n'>3.893.563</td><td class='n'>1.297.854</td></tr><tr><td>pain-scout</td><td class='n'>8</td><td class='n'>1</td><td class='n'>0</td><td class='n'>3.126.124</td><td class='n'>390.765</td></tr><tr><td>advocatus-nachfrage</td><td class='n'>3</td><td class='n'>0</td><td class='n'>0</td><td class='n'>3.074.026</td><td class='n'>1.024.675</td></tr><tr><td>regel-scout</td><td class='n'>10</td><td class='n'>1</td><td class='n'>1</td><td class='n'>3.060.012</td><td class='n'>306.001</td></tr><tr><td>portfolio-manager</td><td class='n'>1</td><td class='n'>0</td><td class='n'>0</td><td class='n'>3.045.451</td><td class='n'>3.045.451</td></tr><tr><td>fit-filter</td><td class='n'>8</td><td class='n'>2</td><td class='n'>0</td><td class='n'>2.875.126</td><td class='n'>359.390</td></tr><tr><td>advocatus-wettbewerb</td><td class='n'>3</td><td class='n'>0</td><td class='n'>0</td><td class='n'>2.706.855</td><td class='n'>902.285</td></tr><tr><td>advocatus-vertrieb</td><td class='n'>3</td><td class='n'>0</td><td class='n'>0</td><td class='n'>2.684.207</td><td class='n'>894.735</td></tr><tr><td>tech-scout</td><td class='n'>8</td><td class='n'>1</td><td class='n'>0</td><td class='n'>2.478.743</td><td class='n'>309.842</td></tr><tr><td>advocatus-recht</td><td class='n'>3</td><td class='n'>0</td><td class='n'>0</td><td class='n'>2.266.548</td><td class='n'>755.516</td></tr><tr><td>advocatus-betrieb</td><td class='n'>3</td><td class='n'>0</td><td class='n'>0</td><td class='n'>1.670.476</td><td class='n'>556.825</td></tr><tr><td>verbesserer</td><td class='n'>1</td><td class='n'>0</td><td class='n'>0</td><td class='n'>595.933</td><td class='n'>595.933</td></tr><tr><td>digest-redakteur</td><td class='n'>1</td><td class='n'>0</td><td class='n'>0</td><td class='n'>439.280</td><td class='n'>439.280</td></tr>
+    </table>
+  </div>
+
+  <div class="karte">
+    <h2>Woran Ideen sterben</h2>
+    <svg viewBox="0 0 560 168" class="chart" role="img"><text x="0" y="15" class="lbl">G7</text><rect x="150" y="3" width="310" height="16" rx="2" class="bar"/><text x="465" y="15" class="val">4</text><text x="0" y="43" class="lbl">ohne Angabe</text><rect x="150" y="31" width="232" height="16" rx="2" class="bar"/><text x="388" y="43" class="val">3</text><text x="0" y="71" class="lbl">G5</text><rect x="150" y="59" width="232" height="16" rx="2" class="bar"/><text x="388" y="71" class="val">3</text><text x="0" y="99" class="lbl">G6</text><rect x="150" y="87" width="155" height="16" rx="2" class="bar"/><text x="310" y="99" class="val">2</text><text x="0" y="127" class="lbl">G3</text><rect x="150" y="115" width="155" height="16" rx="2" class="bar"/><text x="310" y="127" class="val">2</text><text x="0" y="155" class="lbl">G4</text><rect x="150" y="143" width="78" height="16" rx="2" class="bar"/><text x="232" y="155" class="val">1</text></svg>
+  </div>
+
+  <div class="karte">
+    <h2>Welche Linse widerlegt</h2>
+    <svg viewBox="0 0 560 140" class="chart" role="img"><text x="0" y="15" class="lbl">nachfrage</text><rect x="150" y="3" width="310" height="16" rx="2" class="bar"/><text x="465" y="15" class="val">3</text><text x="0" y="43" class="lbl">wettbewerb</text><rect x="150" y="31" width="310" height="16" rx="2" class="bar"/><text x="465" y="43" class="val">3</text><text x="0" y="71" class="lbl">betrieb</text><rect x="150" y="59" width="310" height="16" rx="2" class="bar"/><text x="465" y="71" class="val">3</text><text x="0" y="99" class="lbl">vertrieb</text><rect x="150" y="87" width="310" height="16" rx="2" class="bar"/><text x="465" y="99" class="val">3</text><text x="0" y="127" class="lbl">recht</text><rect x="150" y="115" width="103" height="16" rx="2" class="bar"/><text x="258" y="127" class="val">1</text></svg>
+  </div>
+
+  <div class="karte">
+    <h2>Offene Ideen</h2>
+    <table><tr><th>Idee</th><th>Status</th><th class="n">Punkte</th></tr>
+    <tr><td colspan='3' class='dim'>keine offenen Ideen</td></tr></table>
+  </div>
+
+  <div class="karte">
+    <h2>Zuletzt verworfen</h2>
+    <table><tr><td class='mono'>0008-m365-lizenzabgleich-vor-verlaengerung</td><td class='dim'>G3 — erfordert einen Einrichtungsvorgang je Kunde, den die Zielgruppe per Definition nicht allein durchfuehrt. Der Dienst braucht lesenden Zugriff au…</td></tr><tr><td class='mono'>0010-tagesplan-reinigungskraft</td><td class='dim'>G6 — die Loesung fuehrt Zutrittsinformationen zu bewohnten Privatwohnungen als Kernfeld (&#x27;Adresse, Zeitfenster, Zutritt&#x27;). Ein Datenabfluss trifft ni…</td></tr><tr><td class='mono'>0011-wasserprotokoll-je-besuch</td><td class='dim'>G7 — die Marge traegt erst bei einer Stueckzahl, die dieser Markt nicht hergibt, und der Kern des Produkts wird bereits verschenkt. Erstens die Groes…</td></tr><tr><td class='mono'>0013-zustaendigkeit-und-formularstand-asbest</td><td class='dim'>G7 — die Zielgruppe ist dreifach verengt und der Preis eines blossen Nachschlagewerks nach oben gedeckelt; beides zusammen traegt kein Nebengewerbe n…</td></tr><tr><td class='mono'>0014-asbest-abbruchgenehmigung-antragsmappe</td><td class='dim'>G7 — der Vorgang faellt einmal in sechs Jahren an, und sein Kaufanlass ballt sich vor einem einzigen Stichtag; die Rechnung geht schon mit den Zahlen…</td></tr><tr><td class='mono'>0015-objektanzeige-asbest-fachbetrieb</td><td class='dim'>G7 — die Stueckzahl ist fuer diese Fabrik nicht beschaffbar, und der Preisboden liegt dort, wo ein Bundesland dieselbe Leistung bereits kostenlos erb…</td></tr></table>
+  </div>
+
+  <div class="karte weit">
+    <h2>Die letzten Läufe</h2>
+    <table>
+      <tr><th>Zeit (UTC)</th><th>Rolle</th><th>Ergebnis</th>
+          <th class="n">Tokens</th><th>Gegenstand</th></tr>
+      <tr><td class='mono'>08-29T09:22</td><td>digest-redakteur</td><td><span class='pill ok'>ok</span></td><td class='n'>439.280</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T09:19</td><td>verbesserer</td><td><span class='pill ok'>ok</span></td><td class='n'>595.933</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T09:13</td><td>portfolio-manager</td><td><span class='pill ok'>ok</span></td><td class='n'>3.045.451</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T08:09</td><td>ideator</td><td><span class='pill ok'>ok</span></td><td class='n'>1.621.079</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T07:08</td><td>rechercheur</td><td><span class='pill ok'>ok</span></td><td class='n'>6.151.194</td><td class='mono dim'>signals/regulation/2026-08-29-eu-batteriever</td></tr><tr><td class='mono'>08-29T07:08</td><td>rechercheur</td><td><span class='pill ok'>ok</span></td><td class='n'>7.442.047</td><td class='mono dim'>signals/tech/2026-08-29-zerez-api-zertifikat</td></tr><tr><td class='mono'>08-29T07:08</td><td>rechercheur</td><td><span class='pill ok'>ok</span></td><td class='n'>9.058.108</td><td class='mono dim'>signals/market/2026-08-29-autodesk-preiserho</td></tr><tr><td class='mono'>08-29T07:00</td><td>tech-scout</td><td><span class='pill ok'>ok</span></td><td class='n'>544.825</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T07:00</td><td>markt-analyst</td><td><span class='pill ok'>ok</span></td><td class='n'>1.771.292</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T07:00</td><td>regel-scout</td><td><span class='pill ok'>ok</span></td><td class='n'>1.105.593</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T07:00</td><td>markt-scout</td><td><span class='pill ok'>ok</span></td><td class='n'>1.070.526</td><td class='mono dim'></td></tr><tr><td class='mono'>08-29T07:00</td><td>modell-scout</td><td><span class='pill ok'>ok</span></td><td class='n'>1.836.185</td><td class='mono dim'></td></tr>
+    </table>
+  </div>
+
+  <div class="karte">
+    <h2>Logbücher</h2>
+    <svg viewBox="0 0 560 168" class="chart" role="img"><text x="0" y="15" class="lbl">ideator</text><rect x="150" y="3" width="310" height="16" rx="2" class="bar"/><text x="465" y="15" class="val">5.432</text><text x="0" y="43" class="lbl">advocatus-vertrieb</text><rect x="150" y="31" width="303" height="16" rx="2" class="bar"/><text x="458" y="43" class="val">5.310</text><text x="0" y="71" class="lbl">tech-scout</text><rect x="150" y="59" width="285" height="16" rx="2" class="bar"/><text x="440" y="71" class="val">4.999</text><text x="0" y="99" class="lbl">advocatus-betrieb</text><rect x="150" y="87" width="283" height="16" rx="2" class="bar"/><text x="438" y="99" class="val">4.952</text><text x="0" y="127" class="lbl">advocatus-nachfrage</text><rect x="150" y="115" width="256" height="16" rx="2" class="bar"/><text x="411" y="127" class="val">4.482</text><text x="0" y="155" class="lbl">advocatus-recht</text><rect x="150" y="143" width="235" height="16" rx="2" class="bar"/><text x="390" y="155" class="val">4.113</text></svg>
+    <p class="hinweis">Zeichen. Grenze 12.000 — darüber wird archiviert. Jedes Logbuch
+    wird von seiner Rolle bei jedem Lauf gelesen.</p>
+  </div>
+
+  <div class="karte">
+    <h2>Grundlast</h2>
+    <p style="font-size:1.5rem;font-weight:600;margin:.2rem 0">27.630
+      <span style="font-size:.85rem;font-weight:400;color:var(--leise)">Zeichen</span></p>
+    <p class="hinweis">CLAUDE.md, grenzen.md und lehren.md zusammen — das lädt
+    <em>jeder</em> Lauf, bevor er irgendetwas tut. Rund
+    6.907 Tokens.</p>
+  </div>
+
+</div>
+
+<p class="fuss">Neu erzeugen mit <code>python3 agents/dashboard.py</code>.
+Die Seite ist eigenständig — sie liest nichts aus dem Netz und schickt nichts dorthin.</p>
+</div></body></html>

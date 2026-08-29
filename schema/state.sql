@@ -15,7 +15,15 @@ CREATE TABLE IF NOT EXISTS lauf (
   beendet       TEXT,
   rolle         TEXT    NOT NULL,
   gegenstand    TEXT,                      -- Ideen-ID oder Venture-ID
+  -- tokens_in ist die Summe aller Eingangsarten. Allein betrachtet taeuscht sie:
+  -- Ein Lauf mit sieben Millionen Tokens kann leichter sein als einer mit 39.000,
+  -- weil Cache-Lesen anders zaehlt als frisch gesendeter Kontext. Deshalb stehen
+  -- die Arten einzeln daneben.
   tokens_in     INTEGER DEFAULT 0,
+  tokens_frisch INTEGER DEFAULT 0,   -- neu gesendeter Kontext
+  tokens_cneu   INTEGER DEFAULT 0,   -- Cache-Erzeugung, einmalig
+  tokens_cles   INTEGER DEFAULT 0,   -- Cache-Lesen, dominiert die Summe
+  tokens_denken INTEGER DEFAULT 0,   -- Anteil des Nachdenkens an der Ausgabe
   tokens_out    INTEGER DEFAULT 0,
   -- Gegenwert zu Listenpreisen, kein Rechnungsbetrag: Claude Code meldet ihn auch
   -- bei Abo-Anmeldung, abgerechnet wird davon nichts. Der Name ist historisch.
