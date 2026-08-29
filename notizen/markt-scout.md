@@ -13,40 +13,30 @@ niemand mehr, auch du nicht.
 ## Was funktioniert
 
 - 2026-08-28 — Ohne Primärquelle genügen 2-3 unabhängige Drittportale/Fachhändler
-  mit übereinstimmenden Zahlen/Zitaten (bestätigt bei bexio, Lexware, Atlassian,
-  SAP Build Apps).
+  mit übereinstimmenden Zahlen/Zitaten (bexio, Lexware, Atlassian, SAP Build Apps).
 - 2026-08-28 — Muster "Kauflizenz" + "kein ESU"/"Wartungsverlängerung" findet
-  Anbieter, die Kauflizenzen zugunsten eines Abos abkündigen, auch bei
-  Nischen-Fachsoftware fernab der grossen Business-Suiten (Office 2021 → M365
-  13.10.2026; PV*SOL/Valentin Software: Aktivierung endet 7.4.2026, Mietlizenz
-  seit 11/2024 einziger Weg zu Updates). Weiter so bei Handwerk/Pflege/HV-Software.
+  Anbieter, die Kauflizenzen zugunsten eines Abos abkündigen (Office 2021 → M365
+  13.10.2026; PV*SOL: Aktivierung endet 7.4.2026).
+- 2026-08-29 — Bei Lizenzsoftware großer Hersteller (Autodesk, ähnlich SAP) sind
+  Reseller-/Partner-Blogs oft die einzige Quelle, da der Hersteller selbst nicht
+  öffentlich kommuniziert. Gezielt danach suchen statt nach Pressemitteilungen.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — SAP kommuniziert Abkündigungen nicht selbst, nur über Berater
-  (mission-mobile, orbis-group, All for One, NTT DATA) — site:sap.com fruchtlos.
 - 2026-08-28 — Sevdesk, Papierkram, HERO Software, Personio: keine Preiserhöhung
   2026 nachweisbar.
 - 2026-08-28 — KI-Suchzusammenfassungen bei Preiszahlen immer an der
-  Originalseite gegenprüfen (lexoffice-Fall: vermeintliche Erhöhung war nur
-  Verwechslung zweier Tarifstufen).
-
-## Was nicht funktioniert (Fortsetzung)
-
-- 2026-08-29 — Leerer Lauf: Deskcenter-Nachfolge (mosaic IT, 24.8.) ist nur
-  Fortschreibung des bereits erfassten Signals vom 28.8., kein neuer Fund.
-  Google-Workspace-"Preiserhoehung" aus KI-Suchzusammenfassung stellte sich beim
-  Gegenchecken (WebFetch t3n) als 2023er-Altmeldung heraus, nicht 2026 — Jahr im
-  Artikeltext immer pruefen, nicht nur die "2026" in der Trefferliste.
-- 2026-08-29 — Direkte Suchen zu Nischensegmenten (Musikschul-, Camping-,
-  Aufzug-/Schaedlingsbekaempfer-, Ackerschlagkartei-Software) liefern nur
-  Vergleichsportale, keine Abkuendigungen/Preiserhoehungen. Craftnote/STREIT/
-  MOBIL-ZEIT: nichts Neues seit HVD-Uebernahme 2024.
+  Originalseite/am Jahr gegenprüfen (lexoffice: Tarifverwechslung; Google
+  Workspace: 2023er-Altmeldung als 2026 angezeigt).
+- 2026-08-29 — Nischensegmente (Verein, Camping, Musikschule, Tierarzt, Pflege,
+  Aufzug/Schädlingsbekämpfer) liefern bei direkter Suche wiederholt nur
+  Vergleichsportale, keine Abkündigungen/Preiserhöhungen — evtl. nur über
+  Fachforen/Verbände auffindbar, nicht übers offene Web.
 
 ## Offene Fährten
 
 - 2026-08-28 — SAP Build Apps: "technisches Migrationstool" laut orbis-group
   unbestätigt, würde bei Bestätigung die Lücke schließen.
-- 2026-08-28 — Enterprise-EOLs (SAP Marketing Cloud/Commerce, SharePoint Server,
-  WSUS) bewusst übersprungen: IT-Admin-Werkzeuge bzw. Nachfolger schon benannt,
-  eher Zielgruppe für IT-Dienstleister als für die gelisteten Segmente.
+- 2026-08-29 — Governikus DATA Sign Industry Integration (EOL 30.12.2026)
+  bewusst nicht erfasst: Nachfolger DATA Sign schon benannt, Lücke praktisch
+  geschlossen.
