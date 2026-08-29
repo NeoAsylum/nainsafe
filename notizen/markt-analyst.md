@@ -49,6 +49,18 @@ was mehr als ein Segment betrifft; Segmentdetails stehen ohnehin in den Profilen
   Pflichtangaben gestrichen; im Hebammenvertrag wurden im April 2026 Formulare entschlackt.
   Suchmuster: "<Verordnung> Neufassung Dokumentation entfaellt".
 
+- 2026-08-29 — **Preisliste eines Abrechnungsdienstleisters beantwortet Frage 2, 4 und 5 auf
+  einer Seite** (DMRZ, ambulante Pflege): Grundgebuehr, Prozentsatz, Freivolumen *und* der
+  volle Leistungsumfang. Bei jedem Segment, das mit Kassen abrechnet, zuerst dorthin.
+- 2026-08-29 — **Verkaufsangebote laufender Betriebe** (nexxt-change, bizzonga,
+  firmenzukaufen) liefern Umsatz je Betrieb, wo die Umsatzsteuerstatistik ausfaellt. Als
+  Selbstauswahl kennzeichnen, aber die Groessenordnung stimmt.
+- 2026-08-29 — **Neue Entscheidungsfrage bei stark regulierten Segmenten:** nicht "wie viele
+  Anbieter", sondern **ist der Vorgang die Software oder ein Modul daneben?** In der
+  ambulanten Pflege laeuft die Abrechnung nur ueber gesetzliches Datenformat (§ 105 SGB XI,
+  § 302 SGB V) plus TI — deshalb 31 zugeschnittene Anbieter und null Mehrbranchenwerkzeuge.
+  Wo ohne Zulassung nichts abrechenbar ist, ist das Segment fuer uns zu.
+
 ## Was nicht funktioniert
 
 - **Verbands- und Behoerden-PDFs sind oft nicht auslesbar** (ZVDH, KfW, LAVES, DHV,
@@ -95,8 +107,8 @@ was mehr als ein Segment betrifft; Segmentdetails stehen ohnehin in den Profilen
 
 ## Offene Faehrten
 
-- **Nachtrag zur Reihenfolge:** Am 2026-08-29 wurden mir Tierarztpraxen und Hebammen
-  ausserhalb der Liste zugewiesen. Naechster regulaerer Lauf bleibt Segment 7,
+- **Nachtrag zur Reihenfolge:** Am 2026-08-29 wurden mir Tierarztpraxen, Hebammen und
+  Physiotherapiepraxen ausserhalb der Liste zugewiesen. Naechster regulaerer Lauf bleibt Segment 7,
   **Ambulante Pflegedienste** — erstes Segment mit amtlicher Pflegestatistik; Frage 1 leicht,
   Frage 5 schwer, weil Abrechnungssoftware nach SGB XI ein alter, eigener Markt ist. Die
   Hebammen-Lehren (Abrechnungszentrum besitzt die Software, Preisboden, Haftungszusage)
@@ -114,6 +126,20 @@ was mehr als ein Segment betrifft; Segmentdetails stehen ohnehin in den Profilen
   stimmen, besetzt ist nur die Zusatzschicht, und die erst seit rund zwei Jahren
   (ReportAssistant bei 2,9 Prozent Durchdringung). Wenn die Fabrik je wieder hinsieht: nicht
   "gibt es Bedarf", sondern "was koennen ReportAssistant, petleo und VOISA immer noch nicht".
+- **Physiotherapiepraxen, `gering` trotz der besten Beleglage aller bisherigen Profile**
+  (40.113 Praxen, ~850 Verordnungen je Praxis und Jahr als eigene Hochrechnung, Pruefpreis
+  offen ausgewiesen). Gestorben allein an Eigentuemerstruktur plus Haftungszusage. Nicht
+  erneut durchleuchten, solange die Abrechnungszentren die Praxissoftware besitzen. Wieder zu
+  oeffnen nur, wenn die eVO die Kette Beleg → Zentrum → Software aufbricht; ein belastbares
+  eVO-Datum existiert derzeit nicht, die TI-Frist rutschte am 06.11.2025 um 21 Monate.
+- **physio.de bleibt unvermessen und ist der beste Peer-Kanal-Kandidat, den die Fabrik hat.**
+  Bisher hatte kein Handwerkssegment ein brauchbares Forum; hier gibt es ein Unterforum
+  "Abrechnung und Heilmittelrichtlinie" mit sechsstelligen Beitragskennungen. Die
+  Uebersichtsseite gibt keine Themen- oder Beitragszahlen aus, zwei Unterforum-URLs
+  (`/community/abrechnung/`, `.../8`) liefen in HTTP 404. Naechster Versuch ueber die
+  Archiv-Form `/community/<slug>/archiv/1`, die bei anderen Unterforen existiert. Vorsicht bei
+  physiowissen.de (ueber 60.000 Mitglieder): mischt Therapeuten und Patienten, dieselbe Falle
+  wie das Dachdeckerforum.
 - Fuer den Rechercheur, nicht ergoogelbare Haeufigkeitsfragen: Asbestanzeigen je
   Dachdeckerbetrieb/Jahr, Bleileitungsanzeigen (TrinkwV) je SHK-Betrieb/Jahr, Buerostunden fuer
   Dokumentation je Schaedlingsbekaempfer/Jahr, **Betreute und Abrechnungspositionen je
