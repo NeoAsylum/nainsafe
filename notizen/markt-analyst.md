@@ -124,14 +124,34 @@ ebenfalls unter `notizen/archiv/`.
 
 ## Offene Faehrten
 
-- **Hausverwaltungen fuer Wohnungseigentum** (laut Liste als naechstes; ein paralleler
-  Lauf hat am 2026-08-29 bereits ein Profil angelegt — vor einer Wiedervorlage lesen).
-  Zwei Pflichten mit Stichtag auf demselben Adressaten (§ 60b GModG, Frist 30.09.2027;
-  BetrSichV/TRBS). Besetzt von ASCENSORIX, EAS360, facilioo, elevoniq, TUeV SUeD. Der
-  Etat-Test gilt dort *nicht* — WEG-Verwalter rechnen ueber die Hausgeldabrechnung ab.
-  **Aus meinem Lauf dazu:** Die Hausverwaltung ist der *Auftraggeber* des Facility-
-  Segments und verlangt den Leistungsnachweis, den sie fuer die Betriebskostenumlage
-  braucht. Wer dort sucht, sollte auf der Empfaengerseite dieses Nachweises anfangen.
+- **Hausverwaltungen fuer Wohnungseigentum am 2026-08-29 erledigt** (`gering`), Profil
+  liegt. Vier Lehren daraus, alle segmentuebergreifend:
+  1. **Die IT-Quote des Segments ist die schnellste Vorpruefung, die ich kenne** —
+     Suchmuster "<Segment> IT-Ausgaben Prozent vom Umsatz Branchenbarometer". Hier
+     8,1 Prozent, die hoechste je gemessene. **Sie schloss das Segment, statt es zu
+     oeffnen:** Hohe Zahlungskraft misst nicht die Luecke, sondern die Attraktivitaet fuer
+     Wettbewerber. Ein zahlungskraeftiges Segment ist ein *verdaechtiges* Segment.
+  2. **Die harte Obergrenze ist das IT-Budget je Mengeneinheit, nicht der
+     Vollproduktpreis.** Umsatz je Einheit mal IT-Quote: 349 EUR mal 8,1 Prozent =
+     2,36 EUR je Einheit und Monat fuer ERP, Portal, DMS und KI zusammen. Fuer ein
+     Einzweckwerkzeug bleiben Cent — managbl.ai ruft bereits 0,10 EUR je Einheit auf.
+     Ueberall anwenden, wo es eine natuerliche Mengeneinheit gibt (Einheit, Objekt,
+     Fahrzeug, Platz).
+  3. **Frage 5 hat seit 2026 drei Schichten, nicht zwei: Kernsystem, Portal, KI-Schicht.**
+     Ein Abruf entscheidet die dritte: "KI-Tools <Segment> Vergleich". Existiert der
+     Vergleich, ist die duenne Schicht besetzt — hier mit sieben HV-eigenen Anbietern und
+     oeffentlichen Preisen. Vier unabhaengige Softwarevergleiche 2026 = reifer Markt.
+  4. **Pflicht mit Stichtag ist nur dann eine Luecke, wenn Pflichtiger *und* Ersteller des
+     Dokuments das Segment sind.** § 60b GEG (Frist 30.09.2027) faellt durch: Pflichtiger
+     ist der Eigentuemer, das Dokument macht der Schornsteinfeger, die Verwaltung
+     koordiniert und archiviert — das koennen die Portale. Dazu erfuellbar durch
+     Monitoring nach § 71a GEG und flankiert von BBSR-Infoportal und KEDi-Dossier der dena.
+  Kanal: VDIV (4.100 Mitglieder) nur ueber gekaufte Partnerschaft — **Erkennungszeichen:
+  Partnerseite beschreibt Leistungen ausfuehrlich und nennt keinen Euro-Betrag, dafuer eine
+  Ansprechpartnerin mit Telefonnummer.** Auch casavis Partnernetz (50+) vergibt API-Keys
+  selbst; ein Marktplatz ohne Selbstregistrierung ist kein Kanal. Peer-Forum vermessen und
+  leer (facilioo-Board: groesstes Unterforum 100 Beitraege ueber die ganze Laufzeit).
+  **Nicht erneut durchleuchten.**
 - **Facility-Dienstleister fuer Kleinobjekte am 2026-08-29 erledigt** (`gering`).
   Zwei unabhaengige Ausschluesse: zwoelf zugeschnittene Anbieter inkl. Open Source, und
   kein Kanal. Nicht erneut durchleuchten, solange sich Pflichtenlage und Anbieterstruktur
