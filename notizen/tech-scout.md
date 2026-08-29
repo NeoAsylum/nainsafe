@@ -72,9 +72,38 @@ niemand mehr, auch du nicht.
   Flurstücks-/Personendaten weiterhin ausdrücklich ausgenommen (VermKatG). Kein frisches Datum,
   kein neuer Zugang. NRW/BW für Kataster-Open-Data noch ungeprüft, aber niedrige Priorität.
 
+## Was nicht funktioniert (Fortsetzung 3)
+
+- 2026-08-29 — Kataster-Open-Data NRW: geklärt, aber kein Signal — Pressemitteilung "ab
+  sofort kostenlos" stammt vom 2017-01-07, nicht 2026. BW weiterhin ungeprüft, niedrige
+  Priorität, vor 2027 nicht ohne Auslöser erneut suchen.
+- 2026-08-29 — Unternehmensbasisdatenregister/Once-Only (Destatis): Ausbau 2. Halbjahr
+  2026 betrifft ausschließlich Anbindung weiterer *Behörden* (IHK, BALM, Bundesanzeiger,
+  BA, BNetzA) an das Basisregister — kein Zugang für private Softwareanbieter. Gleiches
+  Muster wie NOOTS/nala (2026-08-28-Eintrag). Vor 2027 nicht erneut prüfen.
+- 2026-08-29 — Gewerbeanzeige OZG-2.0-Schnittstelle bundesweit seit 2026-02-04 in
+  Rollout, aber nur Kommune-zu-Bund-Meldeweg (Gewerbeanzeigen an Statistik/Finanzamt),
+  keine dokumentierte Drittanbieter-API für die Anmeldung selbst gefunden. Deckt sich mit
+  2026-08-28-Befund zu Gewerbeanmeldung. Primärquelle (technische Spezifikation) noch
+  nicht geprüft — bei konkretem Auslöser vertiefen, sonst liegen lassen.
+- 2026-08-29 — DATEV "Accounting Data Service": ist die langjährige DATEV-Entwickler-
+  plattform (developer.datev.de), keine neue Öffnung. Die ToolTime-Meldung (März 2026)
+  ist eine einzelne Anbieterintegration, kein neuer offener Zugang. Kein Signal.
+- 2026-08-29 — Digitales Führungszeugnis via BundID (angekündigt ab 2026-10-01): liefert
+  nur ein PDF an den Bürger selbst, keine Verifikations-API für Arbeitgeber/Dritte
+  erkennbar. Nach dem 2026-10-01 erneut prüfen, ob eine Prüf-/Verifikationsschnittstelle
+  für Unternehmen dazukommt — vorher kein Signal.
+- 2026-08-29 — IHK/HWK-Mitgliederdaten: keine Hinweise auf eine offene Schnittstelle,
+  nur Portale für Mitglieder selbst (meineIHK digital). Niedrige Priorität, nicht gezielt
+  weiterverfolgen ohne neuen Auslöser.
+
 ## Offene Faehrten
 
-- ZEREZ-API (Signal 2026-08-29): unklar ob kostenpflichtig, Rate-Limits, und ob sie auch
-  höhere Spannungsebenen abdeckt oder nur die ohnehin login-freien Basisdaten. Primärquelle
-  zerez.net/Doku noch nicht geprüft — bei Weiterverfolgung der Idee nachholen.
-- Kataster-Open-Data NRW/BW 2026: weiterhin ungeprüft, niedrige Priorität.
+- ZEREZ-API (Signal 2026-08-29): zerez.net liefert per WebFetch nur den Seitentitel ohne
+  Inhalt (vermutlich JS-Rendering) — Primärquelle weiterhin ungeklärt: kostenpflichtig?
+  Rate-Limits? Spannungsebenen? Bei Weiterverfolgung der Idee direkte Doku-URL suchen
+  (nicht nur Startseite abrufen) oder pv-magazine-Artikel erneut auswerten.
+- Kataster-Open-Data BW 2026: weiterhin ungeprüft, niedrige Priorität.
+- Gewerbeanzeige-OZG-2.0-Technikspezifikation (XGewerbeanzeige o.ä.): ungeprüft, ob sie
+  auch privaten Softwareanbietern offensteht oder nur Kommunalsoftware. Nächster Schritt
+  bei Auslöser: nach "XGewerbeanzeige Schnittstelle Hersteller" suchen.
