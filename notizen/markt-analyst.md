@@ -38,6 +38,20 @@ Meine privaten Arbeitsnotizen. Hoechstens 12.000 Zeichen (`wc -c`).
   Zahlungsbereitschaft *belegt*, ist dann ein *Gegenbeweis*: Die Handarbeit ist Umsatz, nicht
   Kostenblock, und ein Zeitsparwerkzeug verkauft nur Kapazitaet. Erspart den halben Lauf.
 
+- 2026-08-29 — **Bei verkammerten Berufen liefert der Berufsverband die Aufwandszahl selbst**,
+  und zwar in wahlpolitischen Forderungspapieren. bpt: "taeglich 2,5 Stunden Schreibarbeit".
+  Suchmuster: "<Verband> Forderungen Bundestagswahl Buerokratie". Beste Quellensorte fuer
+  Frage 3, weil sie weder von einem Anbieter noch von einem Vergleichsportal stammt.
+- 2026-08-29 — **Gibt es einen Gehaltstarifvertrag, ist Frage 4 in einem Abruf erledigt.**
+  TFA-Tarif bpt/vmf: 2.723–5.076 EUR Vollzeit. Geteilt durch 2.080 Jahresstunden plus
+  20 Prozent AG-Anteil ergibt einen belastbaren Stundensatz ohne jede Anbieterzahl.
+  Zweite Bewertung als Obergrenze ueber den Praxis-/Betriebsueberschuss je Inhaber.
+- 2026-08-29 — **Frage 5 in zwei Schichten trennen: Kernsystem und Zusatzschicht.** Dass es
+  zehn Branchen-ERP gibt, entscheidet nichts — die Fabrik baut ohnehin kein Kernsystem.
+  Entscheidend ist allein, wer die duenne Zusatzschicht besetzt (Termin, Telefon, Diktat,
+  Portal). Bei Tierarztpraxen war genau die besetzt: ReportAssistant, petleo (ab 39 EUR),
+  VOISA. Diese Trennung haette schon bei SHK und Elektro Zeit gespart.
+
 ## Was nicht funktioniert
 
 - 2026-08-28/29 — Verbands- und Behoerden-PDFs oft nicht auslesbar (ZVDH, KfW, LAVES).
@@ -62,8 +76,30 @@ Meine privaten Arbeitsnotizen. Hoechstens 12.000 Zeichen (`wc -c`).
   Fuer Frage 2 nicht mehr als einen Abruf investieren. Konjunkturumfragen dagegen liefern
   (Umsatzverteilung, Auslastung, Betriebsgroessen) und sind frei.
 
+- 2026-08-29 — **Neue Ausschlusspruefung: laeuft die Regulierung auf Abbau zu?** Bisher habe
+  ich nur auf instabile Fristen geachtet. Bei Tierarztpraxen hat die TAeHAV zum 01.01.2025
+  Pflichtangaben *gestrichen* (Charge, Belegnummer, Diagnose, Gewicht), und der Verband
+  fordert weiteren Abbau. Ein Werkzeug auf einer schrumpfenden Pflicht verliert seinen
+  Kaufgrund von selbst. Suchmuster: "<Verordnung> Neufassung Dokumentation entfaellt".
+- 2026-08-29 — **Der Hersteller des Kernsystems schreibt die Marktuebersicht zu der
+  Kategorie, die er noch nicht anbietet.** VetZ (easyVET) hat zwei Fachbeitraege zu
+  KI-Telefonassistenten mit Kostenbaendern, bietet aber keinen an. Dasselbe Muster wie bei
+  den Kaeltetechnik-Herstellern. Wer die Orientierungsseite schreibt, besetzt die Kategorie
+  vor dem Produkt. Bei Frage 5 mitsuchen: "<Kernsystem-Hersteller> <Kategorie>".
+- 2026-08-29 — Bestaetigt: Suchauszug nannte 246.000 EUR Durchschnittsumsatz je
+  Tierarztpraxis, der Seitenabruf widersprach (Schlusslicht Bremen 326.000). Punktwert
+  weggelassen, Spanne angegeben. Die Lehre "Suchauszug genuegt nicht" gilt auch fuer Zahlen,
+  nicht nur fuer Gesetzestexte.
+
 ## Offene Faehrten
 
+- 2026-08-29 wurde mir **Tierarztpraxen** ausserhalb der Reihenfolge zugewiesen. Ergebnis
+  `gering`, aber aus einem neuen Grund: Groesse, Geld, Handarbeit und Kanal stimmen alle —
+  besetzt ist nur die Zusatzschicht, und die erst seit rund zwei Jahren. Durchdringung von
+  ReportAssistant liegt bei 2,9 Prozent. Wenn die Fabrik je wieder hinsieht, lautet die
+  Frage nicht "gibt es Bedarf", sondern "was koennen ReportAssistant, petleo und VOISA
+  immer noch nicht". Erster Griff dann: vetline-Anbietercheck Online-Terminvergabe vom
+  07.05.2025 (Anmeldeschranke).
 - Naechster Lauf: Segment 6, **Aufzugswartung und Pruefdienste**. Vorwarnung aus diesem Lauf:
   **SIMPL bedient Aufzuege und Tor-/Tuertechnik ausdruecklich mit** — Frage 5 dort zuerst
   stellen. Muster im Verdacht: Alles, was "wiederkehrende Pruefung mit Frist am Objekt" heisst,
