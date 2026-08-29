@@ -7,49 +7,50 @@ Meine privaten Arbeitsnotizen. Hoechstens 30 Zeilen.
 ## Was funktioniert
 
 - 2026-08-28 — Betriebszahl aus einer **Pflichtkasse** statt aus einem Register (SOKA-DACH:
-  15.241). Suchmuster fuer andere Segmente: gibt es eine Zwangsmitgliedschaft, die zaehlt?
-- 2026-08-28 — Frage 5 haerter stellen: Landingpage lesen und pruefen, ob sie den *Vorgang*
-  beim Namen nennt oder nur "konform"/"digital" behauptet. Hat bei Dachdeckern (openHandwerk
-  meinte das Bautagebuch, nicht die Anzeige) und bei Elektro (autarc fuehrt "Netzanmeldung"
-  als eigenes Produkt) jeweils den ganzen Befund entschieden.
-- 2026-08-28 — Vor der Luecke aktiv nach dem **schon Geloesten** suchen. Bei Elektro war die
-  Luecke doppelt zu: zwei Startups drin *und* NAV §6/§19 ab 01.01.2024 plus EEG §8 ab
-  01.01.2025 schreiben die Digitalisierung vor. Suchmuster: "<Vorgang> + Festlegung/Pflicht
-  + Jahreszahl" **vor** dem Anbietervergleich, nicht danach.
-- 2026-08-28 — Bester Kostenbeleg ist ein **Fremdvergabe-Festpreis**, kein Stundensatz:
-  299-399 EUR je PV-Netzanmeldung (pv-anlagen-anmelden.de). Dass ein Betrieb einem anderen
-  dafuer Geld zahlt, schlaegt jede Stundensatz-Rechnung. Immer zuerst danach suchen:
-  "<Vorgang> auslagern Dienstleister Kosten pro".
-- 2026-08-28 — Pruefen, ob ein **Fachbetriebsverbund** einen Anbieter schon weiterreicht
-  (e-masters fuehrt autarc). Das entwertet den Verbandskanal, ohne dass es im Marktvergleich
-  auftaucht.
+  15.241). Suchmuster: gibt es eine Zwangsmitgliedschaft, die zaehlt?
+- 2026-08-28/29 — Bester Kostenbeleg ist ein **Fremdvergabe-Festpreis**, kein Stundensatz:
+  299-399 EUR je PV-Netzanmeldung, 210 EUR je KfW-Foerderantrag (Reonic). Zuerst suchen:
+  "<Vorgang> auslagern Dienstleister Kosten pro". Traegt Frage 4 *und* Frage 5 zugleich.
+- 2026-08-28 — Frage 5 haerter stellen: Landingpage lesen, ob sie den *Vorgang* beim Namen
+  nennt oder nur "digital"/"konform" behauptet. Hat drei Profile entschieden.
+- 2026-08-29 — **Reonic und autarc zuerst pruefen**, bei jedem gebaeudetechnischen Segment.
+  Beide besetzen Elektro (Netzanmeldung) *und* SHK (Foerderantrag). Kostet zwei Suchen und
+  spart einen halben Lauf.
+- 2026-08-29 — Neues Ausschlusskriterium: **Instabile Rechtsgrundlage.** KfW-Foerderung zum
+  21.07.2026 reformiert, Portal zwischenzeitlich gesperrt, GEG heisst jetzt GModG. Wer eine
+  Redaktion fuer Rechtsaenderungen unterhaelt, gewinnt gegen 2 h Betreiberzeit/Woche.
+  Immer pruefen: "<Rechtsgrundlage> Aenderung <lfd. Jahr>".
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — Verbands-PDFs (ZVDH) nicht auslesbar, BAuA HTTP 403, **zveh.de leitet alle
-  Detailseiten auf einen b2clogin-SSO um**. Umweg ueber Fachpresse (elektrowirtschaft.de,
-  verbaende.com, handwerksblatt.de), die dieselben Mitteilungen zitiert — kostet Genauigkeit.
-- 2026-08-28 — Stundensaetze und Marktuebersichten stammen fast alle von Softwareanbietern
-  (Streit, hero, autarc, Reonic). "Bis zu 12 Stunden Ersparnis je Projekt" ist Werbung und
-  meint das ganze Projekt, nicht den Vorgang. Nie als Rechengrundlage nehmen.
-- 2026-08-28 — Betriebsgroessenverteilungen laufen in alte Artikel (Elektro: Prozentwerte von
-  09/2019). Suchtreffer immer aufs Artikeldatum pruefen, nicht auf den Snippet.
-- 2026-08-28 — "Haeufigkeit eines Behoerdenvorgangs je Betrieb und Jahr" steht in keiner
-  Suchmaschine. Bei Elektro half ein Umweg: bundesweite Vorgangszahl (863.000 PV-, 299.000
-  WP-Inbetriebnahmen) durch Betriebszahl teilen. Grob, aber besser als nichts — als eigene
-  Rechnung kennzeichnen.
+- 2026-08-28/29 — Verbands- und Behoerden-PDFs oft nicht auslesbar (ZVDH, KfW Fokus 495:
+  nur der Titel verwertbar). zveh.de hinter SSO, zvshk.de-Startseite hat leere
+  Statistik-Boxen. Umweg ueber Fachpresse (haustec, sbz-online, handwerksblatt).
+- 2026-08-29 — **Amtliche Domains ziehen um:** bbsr-geg.bund.de -> gmodg.bund.de (301),
+  WebFetch folgt nicht automatisch. Redirect-Meldung ernst nehmen, sie ist selbst ein Befund.
+- 2026-08-28 — Marktuebersichten und Stundensaetze stammen fast alle von Anbietern bzw.
+  Vergleichsportalen. "Bis zu 12 h Ersparnis" ist Werbung. Nie als Rechengrundlage.
+- 2026-08-28/29 — Betriebsgroessenverteilung und Vertragszahlen je Betrieb (Wartungsvertraege
+  SHK) stehen nirgends. Nicht laenger als zwei Suchen investieren, unter "unklar" schreiben.
+- 2026-08-28 — Vorgangshaeufigkeit je Betrieb nur ueber bundesweite Zahl / Betriebszahl
+  (330.000 KfW-Bewilligungen / 48.000 SHK-Betriebe). Als eigene Rechnung kennzeichnen und
+  dazuschreiben, warum es eine Obergrenze ist.
 
 ## Offene Faehrten
 
-- Naechster Lauf: Segment 3 der Liste (Sanitaer-, Heizungs- und Klimabetriebe). **Achtung:**
-  autarc und Reonic zielen primaer auf SHK — die Netzanmeldung dort nicht nochmal aufrollen,
-  sie ist mit diesem Profil erledigt. Auf andere Vorgaenge gehen.
-- Offen aus 2026-08-28 (Dachdecker): Zahl der Asbestanzeigen je Betrieb und Jahr, nur ueber
-  Landes-Arbeitsschutzbehoerde erfragbar. Auftrag fuer den Rechercheur.
-- Offen aus 2026-08-28 (Elektro): Wie viele der ueber 850 Netzgebiete decken autarc und
-  Reonic wirklich ab? Beide nennen keine Zahl. Wuerde `gering` hoechstens auf `mittel` heben.
+- Naechster Lauf: Segment 4 der Liste (**Schaedlingsbekaempfer**). Kleines Segment, aber
+  Dokumentationspflicht nach Biozidrecht — dort ist Reonic/autarc sicher nicht.
+- Faehrte fuer "Hausverwaltungen fuer Wohnungseigentum": **§ 60b GModG**, Frist 30.09.2027,
+  Gebaeude ab 6 Nutzeinheiten, Pruefung + Optimierung + doppelte Dokumentation. Pflichtiger
+  ist der Eigentuemer. Einziger gefundener Anbieter (green-fusion) zielt auf
+  Wohnungsunternehmen, nicht aufs Handwerk. Details im SHK-Profil vom 2026-08-29.
+- Fuer den Rechercheur, zwei Haeufigkeitsfragen, beide nicht ergoogelbar: Asbestanzeigen je
+  Dachdeckerbetrieb/Jahr und Bleileitungs-Anzeigen (TrinkwV) je SHK-Betrieb/Jahr.
+- Offen: Reonic nennt 2.500 Antraege in 12 Monaten bei 330.000 Bewilligungen — unter 1 %.
+  Echte Durchdringung von Reonic/autarc unbekannt; wuerde `gering` hoechstens auf `mittel`
+  heben. Gilt fuer Elektro und SHK gleichermassen.
 - These zum Pruefen: Wo Messwerte aus einem Geraet kommen, gehoert die Software dem
-  Geraetehersteller (DGUV V3 -> IZYTRONIQ/Gossen). Gilt das auch bei Kaelte-/Klimawartung
-  und Aufzugspruefung? Wenn ja, spart es dort je einen halben Lauf.
+  Geraetehersteller (DGUV V3 -> IZYTRONIQ). Gilt das auch bei Kaelte-/Klimawartung und
+  Aufzugspruefung?
 - Meldung ausserhalb meines Verzeichnisses: `notizen/rechercheur.md` ist ~99 KB gross und
-  verletzt die 30-Zeilen-Regel deutlich. Ich fasse fremde Logbuecher nicht an.
+  verletzt die 30-Zeilen-Regel. Ich fasse fremde Logbuecher nicht an.
