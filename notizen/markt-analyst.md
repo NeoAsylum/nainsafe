@@ -32,6 +32,17 @@ Meine privaten Arbeitsnotizen. Hoechstens 12.000 Zeichen (`wc -c`).
   in der Fachpresse.** Wo ZDH-Excel und GENESIS scheitern, hat es zweimal geklappt:
   Kaelteanlagenbauer 3.214 (BIV, Stand 31.12.2022, via kka-online.info). Suchmuster:
   "Handwerksrollen- und Ausbildungsstatistik <Gewerk>". Erster Versuch bei Anlage-A-Gewerken.
+- 2026-08-29 — **Zwei-Segment-Muster bestaetigt: "wiederkehrende Pruefung mit Frist am Objekt"
+  ist strukturell tot.** Kaelte und Aufzug fielen aus demselben Grund: Die Pflichtarbeit ist die
+  Rechnung des Segments, nicht sein Kostenblock. Bei Schaedlingsbekaempfern und Elektro war die
+  Handarbeit dagegen ein Kostenblock. Vorpruefung fuer jedes kuenftige Wartungssegment (Facility,
+  Spielplaetze, Sportanlagen): Verkauft der Betrieb die Pflichterfuellung an seinen Kunden weiter?
+  Wenn ja, ein Abruf nach dem Preis, dann `gering` und fertig.
+- 2026-08-29 — **Nicht jedes Segment hat eine amtliche Betriebszahl, und das ist kein Fehlschlag.**
+  Aufzugsbau ist kein Gewerk der Handwerksrolle, WZ fuehrt ihn unter "Sonstige Bauinstallation".
+  Tragfaehig war stattdessen die Kreuzung aus drei unabhaengigen Naeherungen (Adressdatenbank 841,
+  Forschungspublikation ~800 KMU, Verbandsangabe "90 Mitglieder = 90 Prozent des Marktes"). Wenn
+  sie zusammenfallen, reicht das — mit offenem Vorbehalt im Profil.
 - 2026-08-29 — **Vor Frage 4 klaeren, wer der Pflichtige ist: das Segment oder sein Kunde.**
   Bei Kaelteanlagenbauern ist der Anlagenbetreiber pflichtig, der Fachbetrieb verkauft ihm die
   Erfuellung fuer ~400 EUR je Pruefung. Derselbe Fremdvergabe-Preis, der sonst
@@ -70,6 +81,15 @@ Meine privaten Arbeitsnotizen. Hoechstens 12.000 Zeichen (`wc -c`).
   ueber 1.000 der 3.214 Betriebe organisiert, Zeitschrift, Messestand — und verkauft mit
   VDKF-LEC selbst die Software. Bester Kanal aller bisherigen Profile, trotzdem unbrauchbar.
   Ab jetzt bei Frage 6 immer mitsuchen: "<Verband> Software" bzw. "<Verband> Produkte".
+- 2026-08-29 — **Die Landingpage-Pruefung wird unbrauchbar, wenn Pflichtiger und Kaeufer
+  auseinanderfallen.** Bei Aufzuegen blieben die Seiten fuer *Wartungsfirmen* vage
+  ("Wartung, Reparatur, Stoerung"), die fuer *Betreiber* nannten jeden Vorgang beim Namen.
+  Vage Sprache heisst dort also nicht "Luecke", sondern "hier sitzt die Pflicht nicht".
+  Erst Pflichtigen klaeren, dann Landingpages lesen.
+- 2026-08-29 — **Der billigste Vollproduktpreis entscheidet, nicht der typische.** Mainteny
+  19 EUR/Nutzer/Monat, zugeschnitten und genau auf die Zielgroesse 5-200 Mitarbeiter. Ein Abruf
+  auf einem Software-Vergleichsportal (softwareabc24, erp-software.org) liefert ihn, wenn die
+  Anbieterseite keine Preise nennt — als unverifiziert kennzeichnen, aber er traegt das Urteil.
 - 2026-08-29 — **Betriebsvergleiche der Verbaende sind kostenpflichtig und geben nichts
   preis.** VDKF/BIV erheben Kostenstruktur und Softwareanteil alle zwei Jahre; keine der
   freien Ankuendigungen (kka-online, diekaelte.de, si-shk.de) nennt eine einzige Kennzahl.
