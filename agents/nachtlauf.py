@@ -42,11 +42,24 @@ SENSOREN = [
     # die Frage "zahlt jemand dafuer" schon beantwortet ist -- genau die Frage, an der
     # bisher jede Idee starb.
     "modell-scout",
-    # Arbeitet andersherum als die uebrigen: nicht vom Vorfall zur Idee, sondern vom
-    # Markt zum Produkt. Prueft Zahlungsbereitschaft und Vertriebskanal zuerst statt
-    # zuletzt -- genau daran sind die bisherigen Ideen reihenweise gestorben.
-    "markt-analyst",
 ]
+
+# Der Markt-Analyst steht nicht in SENSOREN, obwohl er einer ist. Zwei Gruende:
+#
+# Erstens arbeitet er andersherum -- nicht vom Vorfall zur Idee, sondern vom Markt zum
+# Produkt. Er prueft Zahlungsbereitschaft und Vertriebskanal zuerst statt zuletzt,
+# genau daran sind die bisherigen Ideen reihenweise gestorben.
+#
+# Zweitens ist er die einzige Rolle mit unerschoepftem Vorrat: Er wartet nicht auf
+# Ereignisse, sondern arbeitet eine Segmentliste ab. Als einzelner Sensorlauf haette er
+# fuer die 25 offenen Segmente 25 Naechte gebraucht -- und die Haelfte davon steht erst
+# seit ADR 0004 auf der Liste, weil der Suchraum vorher unbegruendet auf deutsche KMU
+# verengt war. Drei je Nacht bringen den neuen Suchraum in gut einer Woche durch.
+#
+# Jeder Lauf bekommt sein Segment ausdruecklich zugewiesen. Ohne das wuerden drei
+# gleichzeitig laufende Analysten dieselbe Liste lesen, dasselbe erste unbearbeitete
+# Segment sehen und dieselbe Arbeit dreimal machen.
+MARKT_MAX = 3
 
 # Nach den Sensoren, vor dem Ideator: Der Rechercheur gräbt jedes neue Signal aus,
 # damit die Ideen auf Zahlen stehen statt auf Vermutungen. Er läuft je Signal einmal.
@@ -124,7 +137,11 @@ def main(trocken: bool = False) -> int:
         recherchen = [] if voll else repo.offene_recherchen(RECHERCHEN_MAX)
         offen = [] if voll else repo.offene_angriffe(ANGRIFFE_MAX_IDEEN)
         print(f"  Trockenlauf, {GLEICHZEITIG} Agenten gleichzeitig je Phase:")
-        print(f"    1. Sensorik      {len(SENSOREN)} Läufe")
+        maerkte = repo.offene_segmente()[:MARKT_MAX]
+        print(f"    1. Sensorik      {len(SENSOREN) + len(maerkte)} Läufe "
+              f"({len(SENSOREN)} Sensoren + {len(maerkte)} Marktprofile)")
+        for s in maerkte:
+            print(f"                     markt-analyst -> {s}")
         print(f"    2. Recherche     {len(recherchen)} Läufe (Stand jetzt)")
         if not voll:
             print(f"    3. Verdichtung   {len(VERDICHTUNG)} Läufe, nacheinander")
@@ -133,8 +150,10 @@ def main(trocken: bool = False) -> int:
 
     fehler = 0
 
-    # --- 1. Sensorik: fünf unabhängige Quellen -----------------------------
-    fehler += phase("Sensorik", [(r, None) for r in SENSOREN])
+    # --- 1. Sensorik: unabhängige Quellen, dazu die Marktprofile -----------
+    auftraege: list[tuple[str, str | None]] = [(r, None) for r in SENSOREN]
+    auftraege += [("markt-analyst", s) for s in repo.offene_segmente()[:MARKT_MAX]]
+    fehler += phase("Sensorik", auftraege)
 
     if not voll:
         # --- 2. Recherche: erst jetzt bestimmen, die Sensoren haben gerade
