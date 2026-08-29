@@ -31,6 +31,18 @@ niemand mehr, auch du nicht.
   Originalseite gegenprüfen (lexoffice-Fall: vermeintliche Erhöhung war nur
   Verwechslung zweier Tarifstufen).
 
+## Was nicht funktioniert (Fortsetzung)
+
+- 2026-08-29 — Leerer Lauf: Deskcenter-Nachfolge (mosaic IT, 24.8.) ist nur
+  Fortschreibung des bereits erfassten Signals vom 28.8., kein neuer Fund.
+  Google-Workspace-"Preiserhoehung" aus KI-Suchzusammenfassung stellte sich beim
+  Gegenchecken (WebFetch t3n) als 2023er-Altmeldung heraus, nicht 2026 — Jahr im
+  Artikeltext immer pruefen, nicht nur die "2026" in der Trefferliste.
+- 2026-08-29 — Direkte Suchen zu Nischensegmenten (Musikschul-, Camping-,
+  Aufzug-/Schaedlingsbekaempfer-, Ackerschlagkartei-Software) liefern nur
+  Vergleichsportale, keine Abkuendigungen/Preiserhoehungen. Craftnote/STREIT/
+  MOBIL-ZEIT: nichts Neues seit HVD-Uebernahme 2024.
+
 ## Offene Fährten
 
 - 2026-08-28 — SAP Build Apps: "technisches Migrationstool" laut orbis-group
