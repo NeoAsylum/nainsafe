@@ -54,10 +54,27 @@ niemand mehr, auch du nicht.
   weiterhin restriktiven Zugang ("berechtigtes Interesse" nach GwG unverändert nötig). Keine
   Zugangshürde gefallen, nur eine bequemere Bezahl-API. Kein Signal.
 
+## Was funktioniert (Fortsetzung)
+
+- 2026-08-29 — "<Registername> erweitert API" / "digitale Schnittstelle" als Suchmuster für
+  Fachpresse (hier: pv-magazine.de) ergiebiger als allgemeine Behörden-API-Suche; so das
+  ZEREZ-Signal gefunden (Zertifikatsregister PV, seit 2026-04-17 API für Registrierte statt
+  nur Einzelabfrage-Weboberfläche).
+
+## Was nicht funktioniert (Fortsetzung 2)
+
+- 2026-08-29 — SVA-Entsendebescheinigung (offene Fährte von 2026-08-28): geklärt, aber kein
+  Signal — Zugang läuft seit 1.1.2026 wahlweise über SV-Meldeportal (Registrierung via ELSTER-
+  Organisationszertifikat oder BundID, keine separate Kostenpflicht erkennbar) oder
+  systemgeprüfte Lohnsoftware. Das ist eine neue Pflicht, keine neu billige Zugangsmöglichkeit
+  für Dritte — SV-Meldeportal ist Eigennutzung, keine Drittanbieter-API. Fährte geschlossen.
+- 2026-08-29 — Bayern-Kataster/GDI Bayern: OpenData bereits seit 1.1.2023 gestaffelt kostenlos,
+  Flurstücks-/Personendaten weiterhin ausdrücklich ausgenommen (VermKatG). Kein frisches Datum,
+  kein neuer Zugang. NRW/BW für Kataster-Open-Data noch ungeprüft, aber niedrige Priorität.
+
 ## Offene Faehrten
 
-- SVA-Entsendebescheinigung (Signal 2026-08-28): unklar, ob "systemgeprüfte" Lohnsoftware eine
-  kostenpflichtige Zertifizierung braucht oder das SV-Meldeportal frei nutzbar ist — DVKA/DSRV-
-  Primärdoku prüfen, falls die Idee weiterverfolgt wird.
-- Kataster-Open-Data nach Bundesland: Niedersachsen ist erledigt/alt. Noch nicht geprüft, ob
-  Bayern/NRW/BW 2026 nachgezogen sind — dort läge das frische Datum, falls vorhanden.
+- ZEREZ-API (Signal 2026-08-29): unklar ob kostenpflichtig, Rate-Limits, und ob sie auch
+  höhere Spannungsebenen abdeckt oder nur die ohnehin login-freien Basisdaten. Primärquelle
+  zerez.net/Doku noch nicht geprüft — bei Weiterverfolgung der Idee nachholen.
+- Kataster-Open-Data NRW/BW 2026: weiterhin ungeprüft, niedrige Priorität.
