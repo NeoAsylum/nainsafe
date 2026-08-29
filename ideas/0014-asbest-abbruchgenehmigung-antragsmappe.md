@@ -1,10 +1,10 @@
 ---
 id: 0014-asbest-abbruchgenehmigung-antragsmappe
 titel: Die Antragsmappe fuer die Abbruchgenehmigung nach § 11a Abs. 4a GefStoffV vollstaendig zusammensetzen
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-29
 geaendert: 2026-08-29
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/maerkte/2026-08-28-dachdeckerbetriebe.md
 
@@ -13,7 +13,7 @@ problem: § 11a Abs. 4a GefStoffV macht Abbrucharbeiten im niedrigen und mittler
 loesung: Der Betrieb beantwortet die neun Punkte des bundeseinheitlichen Angabenkatalogs in einer gefuehrten Eingabe, haengt seine Nachweise an und erhaelt die vollstaendige Antragsmappe fuer die Behoerde an seinem Betriebssitz als Dokument zum Selbstversand — mit einer Vollstaendigkeitsliste, die zu jedem der neun Punkte nur sagt, ob etwas vorliegt.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G7 — der Vorgang faellt einmal in sechs Jahren an, und sein Kaufanlass ballt sich vor einem einzigen Stichtag; die Rechnung geht schon mit den Zahlen des Entwurfs nicht auf. Der Entwurf sagt es selbst und uebernimmt es woertlich vom Anwalt: 'Sie faellt einmal in sechs Jahren an, das ist ein Einzelverkauf und kein Abo.' Das Produkt hat damit keinen wiederkehrenden Ertrag, sondern genau ein Verkaufsfenster vor dem 19.12.2026; danach bleiben Neugruendungen und die Wiederholungen ab 2032 — ein Rinnsal. Konzeption, Bau und laufender Betrieb muessen also aus einem Quartal getragen werden, und zwar nach Grenzsteuersatz, wo aus 1.000 EUR grob 560 EUR werden. Ein Einmalpreis fuer das Zusammensetzen eines Formulars ist nach oben gedeckelt, und die Stueckzahl ist dreifach verengt wie schon bei 0012 und 0013: von 15.241 SOKA-DACH-pflichtigen Betrieben bleiben die asbestaktiven, davon die, die die Abnahme selbst ausfuehren statt sie weiterzugeben. Der Entwurf markiert diese Zahl selbst als unbeantwortet. Hinzu kommt, dass unklar ist, ob es den verkauften Vorgang ueberhaupt gibt: Die Genehmigung ergeht 'auf Grundlage der unternehmensbezogenen Anzeige' und gilt nach vier Wochen als erteilt, wenn die Behoerde schweigt. Reicht der Betrieb also nur die Anzeige ein — die 0012 bereits abdeckt —, entsteht kein zweites Dokument und damit kein Produkt. Das ist die dritte offene Frage des Entwurfs, und sie steht vor der Marge: Man kann nicht beziffern, was man nicht als eigenen Vorgang nachgewiesen hat. Das Stichtagsmuster ist dasselbe, das der Anwalt ausdruecklich benannt hat, als er diesen Zuschnitt nicht als Rettung von 0012 gezaehlt hat, und dasselbe, an dem 0002 hing. Unsicherheit, widerlegbar durch drei Belege zusammen: erstens am Verordnungstext, dass der Genehmigungsantrag ein eigener, vom Anzeigevorgang getrennter Schriftsatz ist; zweitens an der Uebergangsvorschrift der GefStoffV, dass die Pflicht laufend statt zu einem einzigen Stichtag greift; drittens eine belegte Stueckzahl der Betriebe, die Abbrucharbeiten im niedrigen oder mittleren Risikobereich selbst ausfuehren — dann auch ueber die Dachdecker hinaus, denn die vom Entwurf vermutete groessere Huelle koennte die Rechnung tragen, verliert aber den ZVDH-Kanal. Fallen alle drei, ist die Rechnung neu zu stellen."
 
 score:
   zwang: null

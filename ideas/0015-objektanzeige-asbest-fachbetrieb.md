@@ -1,10 +1,10 @@
 ---
 id: 0015-objektanzeige-asbest-fachbetrieb
 titel: Die objektbezogene Anzeige im hohen Risikobereich fuer zugelassene Asbest-Fachbetriebe
-status: entwurf
+status: abgelehnt
 erstellt: 2026-08-29
 geaendert: 2026-08-29
-rolle: ideator
+rolle: fit-filter
 
 quelle: signals/maerkte/2026-08-28-dachdeckerbetriebe.md
 
@@ -13,7 +13,7 @@ problem: Bei hohem Risiko ist je Objekt eine objektbezogene Anzeige zu erstatten
 loesung: Der Betrieb hinterlegt Zulassung, Beschaeftigte und die zu ihnen gehoerenden Nachweisdokumente einmal, gibt je Objekt Adresse, Termin und Besetzung ein und erhaelt die objektbezogene Anzeige samt vollstaendigem Anlagenverzeichnis als Dokument zum Selbstversand.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "G7 — die Stueckzahl ist fuer diese Fabrik nicht beschaffbar, und der Preisboden liegt dort, wo ein Bundesland dieselbe Leistung bereits kostenlos erbringt. Zur Stueckzahl: Der Entwurf schreibt 'Anzahl heute unbekannt' und nennt als einzigen Weg die IFG-Auskunft bei den zulassenden Landesbehoerden. Eine IFG-Anfrage ist Schreiben nach aussen; das darf kein Agent (Hausregel 2), und damit kann kein spaeterer Lauf diese Zahl nachreichen — es ist das Muster von 0011, nicht das von 0014, wo eine Recherche denkbar bleibt. Ohne Segmentgroesse gibt es keine G7-Rechnung, und der Entwurf nennt das selbst die Frage, ohne die nichts geht. Zum Preisboden: Die Vertriebslinse zu 0012 hat belegt, dass Hamburg die Asbestanzeige seit Jahren kostenlos online abwickelt, einschliesslich gespeicherter Stammdaten, und ausdruecklich auch Anlage 1.3 — also genau den hohen Risikobereich, den dieser Zuschnitt bedient. Das ist nicht ein benachbarter Gratisdienst wie bei 0009, sondern exakt dieselbe Leistung wie bei 0011: Stammdaten halten, je Objekt zusammensetzen, einreichen. Ihr Anteil waechst mit jedem OZG-Rollout, und der Takt liegt bei jemand anderem. Drittens faellt der Kanal weg, den 0012 noch hatte: Der Entwurf haelt selbst fest, dass der ZVDH-Kanal des Signals hier 'gerade nicht' traegt, und ein zugaengliches Verzeichnis der nach § 11a Abs. 3 zugelassenen Betriebe gibt es nicht — sonst waere nicht die IFG-Auskunft der genannte Weg. Ein Segment unbekannter, sicher kleiner Groesse, das nicht adressierbar ist und dessen Leistung in wachsendem Umfang kostenlos vom Staat gestellt wird, traegt kein Nebengewerbe nach Steuern. Nicht der Ablehnungsgrund, aber mitzureichen an den naechsten Lauf: Der G6-Verzicht auf jede Gueltigkeitsaussage — nur 'hinterlegt ja/nein', keine Ampel, keine Restlaufzeit — ist in diesem Entwurf konstruktiv verankert und haelt nach meiner Pruefung, weil das Produkt beim Erfuellen hilft, statt die Pflicht zu uebernehmen, und der Betrieb einen Ausfall sofort bemerkt. Daran ist die Idee nicht gestorben. Unsicherheit, widerlegbar durch drei Belege zusammen: eine belegte Zahl zugelassener Fachbetriebe, beschafft ohne Anfrage nach aussen; ein selbstbedienbarer Kanal zu ihnen, etwa ein oeffentliches Zulassungsverzeichnis oder ein Fachverband mit offener Mitgliederliste; und der Nachweis, dass die Landesportale den hohen Risikobereich mehrheitlich gerade nicht abdecken. Fallen alle drei, ist die Rechnung neu zu stellen — dann allerdings mit der offenen Frage des Entwurfs, ob ein zugelassener Betrieb seine Nachweisverwaltung nicht ohnehin im Qualitaetsmanagement geloest hat."
 
 score:
   zwang: null

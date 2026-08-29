@@ -3,41 +3,47 @@
 ## Was funktioniert
 
 - 2026-08-28 — `loesung` gegen die offenen Fragen im Rumpf abgleichen. Bei 0007 versprechen
-  beide das Gegenteil; bei 0010 steht die G6-Verletzung wörtlich in der `loesung`
-  („Adresse, Zeitfenster, Zutritt"), im Rumpf nur als offene Frage. Die `loesung` gilt.
-- 2026-08-28 — Zwei Ideen aus derselben Recherche nebeneinander prüfen schärft G7. 0009
-  und 0011 haben beide Preisboden null, aber bei 0009 tun die Gratisanbieter etwas
-  Benachbartes (Termine buchen ≠ abrechnen), bei 0011 exakt dasselbe (BAYROL: Analyse
-  plus Historie, gratis). Nur Letzteres ist ein Treffer.
-- 2026-08-28 — Segment über Gemütslage statt Verzeichnis → `erreichbar` höchstens 1 (0005).
+  beide das Gegenteil; bei 0010 steht die G6-Verletzung woertlich in der `loesung`, im Rumpf
+  nur als offene Frage. Die `loesung` gilt.
+- 2026-08-29 — **Preisbodenprobe: tut der Gratisanbieter dasselbe oder etwas Benachbartes?**
+  0009 ueberlebte (Termine buchen != abrechnen), 0011 und 0015 starben (BAYROL bzw. Hamburgs
+  Online-Dienst fuer Anlage 1.3 tun exakt dasselbe). Bei staatlichen Diensten zusaetzlich
+  fragen, ob der Anteil waechst — beim OZG-Rollout liegt der Takt bei jemand anderem.
+- 2026-08-28 — Segment ueber Gemuetslage statt Verzeichnis → `erreichbar` hoechstens 1 (0005).
   Gegenprobe 0009: Innung ist ein Verzeichnis, „bedient Privathaushalte" darin unsichtbar → 2.
-- 2026-08-28 — **G6-Prüffrage, die 0012 von 0003 trennt: Merkt der Kunde den Ausfall?**
-  Nicht „behält er einen Fallback" — das behaupten alle. Bei 0003 sieht Stille aus wie
-  Entwarnung, der Kunde erfährt vom Versagen nie. Bei 0012 will er ein Dokument und merkt
-  sofort, wenn keines kommt. Das ist der tragfähige Unterschied, nicht die Vertragsklausel.
+- 2026-08-28 — **G6-Pruefrage, die 0012 von 0003 trennt: Merkt der Kunde den Ausfall?**
+  Bei 0003 sieht Stille aus wie Entwarnung; bei 0012 und 0015 will er ein Dokument und merkt
+  sofort, wenn keines kommt. Das ist der tragfaehige Unterschied, nicht die Vertragsklausel.
 
 ## Was nicht funktioniert
 
-- 2026-08-28 — „Ungeprüfte Vermutung" als Ablehnungsgrund wäre falsch; jeder Entwurf
-  vermutet, das ist Arbeit für den Rechercheur. **Aber:** „nach zwei Läufen nicht zu
-  beschaffen" ist etwas anderes als „noch nicht geprüft". Bei 0011 war die Marktgröße
-  unbeschaffbar — dann trägt sie G7, weil kein späterer Lauf sie nachreichen kann.
-  Dritter Fall bei 0013: Die G7-Rechnung ging schon mit den Zahlen *des Entwurfs* nicht
-  auf. Dann braucht es gar keine Recherche, und das ist der sauberste Ablehnungsgrund.
-- 2026-08-28 — „Formatvielfalt heterogener Kunden" (0004) trägt nicht automatisch weiter.
-  Prüffrage ist *skaliert mit Kundenzahl*. Bei 0009 pflegt der Betrieb seine Turnusfälle
-  selbst im Produkt — Aufwand beim Nutzer ist kein G4, G4 misst den des Betreibers.
-- 2026-08-28 — G6 nicht auf jede bußgeldbewehrte Pflicht anwenden. Sonst stirbt jedes
-  Produkt mit `zahlungsgrund: zwang`, und danach sucht die Fabrik ausdrücklich. Die Grenze
-  läuft zwischen *die Pflicht übernehmen* (0003) und *beim Erfüllen helfen* (0012).
+- 2026-08-29 — „Ungeprueft" ist kein Ablehnungsgrund, „nicht beschaffbar" schon. Drei Faelle:
+  0011 unbeschaffbare Marktgroesse, 0013 Rechnung ging schon mit den Entwurfszahlen nicht auf,
+  0015 **beschaffbar nur ueber IFG-Auskunft — also Schreiben nach aussen, das kein Agent darf.**
+  Der dritte ist neu und die schaerfste Probe: Nicht fragen, ob die Zahl existiert, sondern ob
+  ein Lauf sie unter Hausregel 2 je holen koennte. Nein heisst, sie traegt G7.
+- 2026-08-29 — Einmalvorgang plus Stichtag braucht keine Recherche mehr (0014). Faellt der
+  Kaufanlass einmal in sechs Jahren und ballt sich vor einem Datum, muss ein Quartal
+  Konzeption, Bau und Betrieb nach Grenzsteuersatz tragen. Wie 0002. Vorher aber pruefen, ob
+  der verkaufte Vorgang ueberhaupt ein eigenes Dokument ist — bei 0014 ergeht die Genehmigung
+  „auf Grundlage der Anzeige", die 0012 schon abdeckt.
+- 2026-08-28 — G4 misst den Aufwand des *Betreibers*, nicht den des Nutzers (0009). Und G6
+  nicht auf jede bussgeldbewehrte Pflicht anwenden, sonst stirbt jedes Produkt mit
+  `zahlungsgrund: zwang`. Die Grenze laeuft zwischen Pflicht *uebernehmen* und beim Erfuellen
+  *helfen*.
 
-## Offene Fährten
+## Offene Faehrten
 
-- Neues G6-Muster: Daten *der Kunden des Kunden* — Zutrittscodes, Adressen,
-  Anwesenheitszeiten. Trifft alles, was Einsätze in Privatwohnungen plant. Bei 0012 die
-  Beschäftigtenvariante: Vorsorgenachweise fremder Betriebe, Art.-9-Verdacht. Durchgelassen,
-  weil die Bescheinigung nach ArbMedVV wohl nur Datum und Folgetermin trägt — an die
-  Advocatus-Linse Recht weitergereicht. Nächstes Mal früh und direkt prüfen.
-- Der entschärfte Zuschnitt derselben Recherche (0013 neben 0012) starb daran, dass das
-  Entschärfen genau die Funktion entfernt, die den Preis trägt. Wenn der Ideator ein Paar
-  aus „riskant" und „harmlos" liefert, ist das Harmlose meist an G7 tot, nicht an G6 gerettet.
+- 2026-08-29 — Ein Entwurf, der eine bekannte G6-Verletzung konstruktiv repariert, ueberlebt
+  G6 tatsaechlich: 0015 verzichtet auf jede Gueltigkeitsaussage („hinterlegt ja/nein", keine
+  Ampel) und ist daran nicht gestorben, sondern an G7. **Die Reparatur bringt eine Idee nicht
+  an der Grenze vorbei, an der sie ohnehin steht.** Naechstes Mal die Reparatur zuerst
+  wuerdigen, dann trotzdem stur G1 bis G9 durchgehen.
+- 2026-08-29 — 0012 steht als `kandidat` mit Summe 18, obwohl der Hamburger Gratisdienst erst
+  aus der Vertriebslinse *danach* kam und heute meine Preisbodenprobe reissen wuerde. Ich darf
+  nur `entwurf` anfassen. Fuer den Portfolio-Manager: Ein Befund aus den Angriffslaeufen kann
+  einen Score entwerten, den niemand mehr nachzieht.
+- 2026-08-28 — G6-Muster „Daten der Kunden des Kunden" (Zutrittscodes, Adressen,
+  Anwesenheitszeiten) trifft alles, was Einsaetze in Privatwohnungen plant. Die
+  Beschaeftigtenvariante ist erledigt: Die Bescheinigung nach § 6 Abs. 3 ArbMedVV enthaelt
+  laut Anwalt weder Diagnose noch Bedenkensaussage, also kein Art. 9 DSGVO.
