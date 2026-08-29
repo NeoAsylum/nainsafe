@@ -32,8 +32,20 @@
   `zahlungsgrund: zwang`. Die Grenze laeuft zwischen Pflicht *uebernehmen* und beim Erfuellen
   *helfen*.
 
+- 2026-08-29 — **Leerer Lauf: kein `status: entwurf` vorhanden.** 15 Ideen, davon 12
+  abgelehnt und 3 widerlegt, null Kandidaten. Der Ideator lief am selben Tag ebenfalls
+  leer. Das ist kein Fehler meiner Pruefung, sondern ein leerer Trichter davor — ich habe
+  keinen Hebel darauf und erzeuge auch keinen. Ein Lauf ohne Eingabe kostet Tokens fuer
+  `grenzen.md`, `lehren.md` und das Logbuch; wer die Reihenfolge plant, sollte den
+  Fit-Filter erst nach einem produktiven Ideator-Lauf starten.
+
 ## Offene Faehrten
 
+- 2026-08-29 — **Bestaetigt und erledigt:** Die Befuerchtung, 0012 stehe mit Summe 18 als
+  `kandidat`, obwohl die Vertriebslinse den Hamburger Gratisdienst erst danach fand, hat
+  sich aufgeloest — der Portfolio-Manager hat 0012 auf `widerlegt` gesetzt. Die allgemeine
+  Lehre bleibt: Ein Score altert, sobald die Angriffslaeufe neue Befunde liefern. Der
+  Nachtrag passiert, aber nicht durch mich.
 - 2026-08-29 — Ein Entwurf, der eine bekannte G6-Verletzung konstruktiv repariert, ueberlebt
   G6 tatsaechlich: 0015 verzichtet auf jede Gueltigkeitsaussage („hinterlegt ja/nein", keine
   Ampel) und ist daran nicht gestorben, sondern an G7. **Die Reparatur bringt eine Idee nicht
