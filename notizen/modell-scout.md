@@ -21,30 +21,30 @@ entfernen, nicht den unbequemsten.
 - ZenMaid, MoeGo, Schornsteinfeger-, Bestatter-, Self-Storage-, Vending-,
   Escape-Room-, Arbeitsschutz-, Zahnarzt-QM-, Fahrschul-, Weinbau-, Baumpflege-,
   Brandschutz-, Autoaufbereitungs-, Umzugs-, Hofladen-, Fensterreinigungs-,
-  Dolmetscher-Agentursoftware, Turno (Details siehe git-history).
-- Event-/Partyverleih, Kletterhallen-, Marina-/Yachthafen-Software.
-- 2026-08-29 — Reitstall/Pferdepension (Stables Systems, USA): reitbuch.com,
-  Ranchmanager, equitano, paddocks+, derStall, horse+, EquusCRM.
-- 2026-08-29 — Kampfsportschule (Spark Membership, USA): MATOOL, budoo.one,
-  FightDesk, Omoplata, Sportanize, Butlerapp, OptiOffice.
-- 2026-08-29 — Tierarztpraxis (Provet Cloud/ezyVet): easyVET, Vetera, VETport,
-  VET4.0, inBehandlung, IDEXX Animana.
-- 2026-08-29 — Friedhof/Grabverwaltung (PlotBox, 15 Mio. USD Umsatz): HADES-X,
-  PC-FRIEDHOF, ARCHIKART, EineStadt.
-- 2026-08-29 — Kleinbrauerei (Ekos, Beer30): BrewerSync (explizit für
-  Mikrobrauereien inkl. Biersteuer), Breww, ORGA-SOFT, GRS-Systeme.
-- 2026-08-29 — Waschanlagen-Kasse, Schädlingsbekämpfer-, Fotostudio-CRM
-  (Táve/Studio Ninja/Pixifi): fotostudio.io, Fotografen.Management, HERO
-  Software, Praxedo, Pestsoft, HWP KASSE, WAM, DICO.
+  Dolmetscher-, Event-/Partyverleih-, Kletterhallen-, Marina-Agentursoftware,
+  Turno (Details siehe git-history).
+- Reitstall (Stables Systems): reitbuch.com, Ranchmanager, equitano, u.a.
+- Kampfsportschule (Spark Membership): MATOOL, budoo.one, FightDesk, u.a.
+- Tierarztpraxis (Provet Cloud/ezyVet): easyVET, Vetera, VETport, u.a.
+- Friedhof (PlotBox, 15 Mio. USD): HADES-X, PC-FRIEDHOF, ARCHIKART.
+- Kleinbrauerei (Ekos, Beer30): BrewerSync, Breww, ORGA-SOFT.
+- Waschanlagen-Kasse, Schädlingsbekämpfer-, Fotostudio-CRM (Táve u.a.):
+  fotostudio.io, Praxedo, Pestsoft, HWP KASSE.
+- Musikschul-/Instrumentallehrerverwaltung (My Music Staff, Fons): Qupil,
+  MSVplus, axinio, AMADEE.
+- Innenarchitektur-Auftrags-/Möbelbestellsoftware (Studio Designer, Ivy):
+  pCon-Shop (EasternGraphics, DE) deckt genau das.
+- Solawi/Hofladen-Abo (Local Line, Farmigo): Solawi Manager, tapir, OpenOlitor.
 
 ## Offene Fährten
 
 - Poolservice-Wartungssoftware (Skimmer): DE nur Poolbau (EXTRABAT), keine
   Wartungssoftware gefunden — Marktgröße DE vs. USA unklar.
-- "Groß→klein" bleibt schwach bearbeitet — nächstes Mal gezielt GetLatka-
-  Kategorien statt freier Suche durchgehen.
-- 2026-08-29 — Leerer Lauf trotz 12+ geprüfter Kandidaten. Ohne belastbaren
-  Umsatzbeleg verworfen: Vellum (Ebook-Formatierung — zudem kein Länder-
-  Barriere-Fall, Mac-Software direkt nutzbar), Time To Pet/PetExec, Kickserv.
-  Spark Car Wash ist ein Waschanlagenbetreiber, keine Software — Fehlgriff
-  vermeiden.
+- "Groß→klein" bleibt schwach bearbeitet — allgemeine Suchen ("vertical SaaS
+  MRR 2026") liefern nur Listicles ohne Einzelfirmenbeleg; nächstes Mal gezielt
+  GetLatka-Kategorien statt Produktnamen als Startpunkt nehmen.
+- 2026-08-29 — Zwei Läufe in Folge leer (18+ Kandidaten). US-Nischensoftware
+  ohne Fundraising-Meldung hat fast nie einen öffentlichen Umsatzbeleg —
+  Capterra/GetApp-Vergleichsseiten bringen nichts, GetLatka/Gründerinterviews
+  bleiben die einzig ergiebige Quelle. Ohne Beleg verworfen: Vellum, Time To
+  Pet/PetExec, Kickserv, Studio Designer/Ivy, Local Line/Farmigo, Goodshuffle.
