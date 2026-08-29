@@ -41,6 +41,21 @@ niemand mehr, auch du nicht.
 - 2026-08-28 — site:reddit.com-Suchen liefern praktisch nie echte Reddit-Threads,
   nur Vendor-Treffer — im Zweifel auslassen.
 
+- 2026-08-29 — Leerer Lauf: neun Themen/Branchen durchsucht (Personaldienstleister-
+  Stundenabrechnung, Rechnungen-manuell-erfassen bei lex-forum.net, Inventur/Lagerzaehlung,
+  Fahrschule-Fahrtenbuch, Handwerk-Excel-Rechnungen, Handelsvertreter-Provisionsabrechnung,
+  Gastronomie-Kassenabschluss-DATEV, Immobilienmakler-Exposé/Provision, Uebersetzer-
+  Mehrfach-Agentur-Abrechnung) — ueberall nur Vorlagen-/Anbieter-SEO-Content oder
+  Eigenwerbung, kein unabhaengiges Mehrfachzitat gefunden. Handelsvertreter-Fund
+  (fabianstegmaier.com, "5 Arbeitstage/Monat") stammt von einem n8n-Freelancer, der
+  seine eigene Automatisierung bewirbt — zaehlt nicht als Signal.
+- 2026-08-29 — vermieter-forum.com (WEG/Nebenkostenabrechnung-Excel-Threads) per
+  WebFetch durchgehend 403 — wie ebay/airbnb/pflege-Foren auf Snippet ausweichen, nicht
+  wiederholt per WebFetch versuchen. Inhaltlich zudem private Kleinvermieter (3-18
+  Einheiten), keine Unternehmen, und Markt an NK-Abrechnungssoftware bereits dicht.
+- Fahrtenbuch/Unterrichtsnachweis Fahrschule: Markt bereits dicht besetzt (Vimcar,
+  YesHugo, FADATA) — nicht erneut aufgreifen ohne neuen Hinweis auf Luecke.
+
 ## Offene Faehrten
 
 - Etsy-CSV-Signal englischsprachig verstaerken: alter Link war 404, neu suchen.
@@ -48,3 +63,7 @@ niemand mehr, auch du nicht.
   woertliches Zitat (zuletzt 2026-08-29) — vorerst aufgeben.
 - eBay/Marktplatz-Sammelzahlungen-Thema ist bereits als Idee ausgearbeitet und an G7
   abgelehnt (2026-08-29) — nicht weiter vertiefen, auch nicht ueber sevDesk/Debitoor.
+- Noch nicht versucht: branchenspezifische Fachforen mit echter Aktivitaet direkt
+  browsen statt ueber Suchmuster zu raten (analog lex-forum.net-Treffer) — z.B.
+  office-hilfe.com, administrator.de fuer Excel-Behelfsloesungen mit Nutzerkontext,
+  oder aktive Subreddits gezielt per WebFetch statt WebSearch site:-Filter.
