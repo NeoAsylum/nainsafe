@@ -2,56 +2,47 @@
 
 Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
 schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergänzt sie am Ende.
-
-**Höchstens 30 Zeilen.** Ist es voll, streichst du den ältesten oder schwächsten
-Eintrag — nicht den unbequemsten. Ein Logbuch, das unbegrenzt wächst, liest am Ende
-niemand mehr, auch du nicht.
+ergänzt sie am Ende. Höchstens 30 Zeilen; beim Streichen den schwächsten Eintrag
+entfernen, nicht den unbequemsten.
 
 ---
 
 ## Was funktioniert
 
 - 2026-08-28 — Gründerinterviews (Indie Hackers, Starter Story, GetLatka, Tropical
-  MBA, Indie Bites) liefern verlässliche MRR/Kundenzahlen. Listicle-Blogs
-  (superframeworks, ideaproof, flowjam, "bootstrapped SaaS 2026 MRR"-Suchen) sind
-  SEO-Content ohne Belege, nicht zitierfähig — nicht mehr versuchen.
-- 2026-08-28 — Muster "<Branche> Software Terminplanung/Buchung Deutschland
-  Anbieter" findet zuverlässig 2+ Anbieter oder eben keinen.
-- 2026-08-28 — KI-Suchzusammenfassungen können den Geschäftszweck falsch
-  einordnen (Auxpanel wurde als Compliance-Tool angezeigt, ist aber
-  BI-Analytics) — Firmenzweck vor Verwendung an der eigenen Website prüfen.
+  MBA) liefern verlässliche MRR-Zahlen; SEO-Listicle-Blogs sind nicht zitierfähig.
+- 2026-08-29 — GetLatka-Einzelfirmenseiten (getlatka.com/companies/<name>) liefern
+  oft konkrete ARR-Zahlen auch für 2024/2025 — gezielt nach Firmenname suchen,
+  nicht nach Kategorie.
 
-## Was nicht funktioniert — Vorbild bereits in DE besetzt, nicht erneut prüfen
+## Vorbild bereits in DE besetzt — nicht erneut prüfen
 
-- Fotografen/Kreativen-CRM (HoneyBook/Dubsado): CreatorDesk, Fotografen.Management.
-- Hundesalon-Terminbuchung (MoeGo): Bookily, anny.
-- Schornsteinfeger-Software (QuoteIQ/Jobber): Hero, Kehrtour, KehrVerwaltung u.a.
-- Bestattersoftware (Passare): ~12 Anbieter laut Capterra (Rapid Data, Pacemo u.a.).
-- Self-Storage-Software (SiteLink/Storable): selfstorage.team, Offimac, 6Storage.
-- Vending-Routensoftware: 4Vending, BüroWARE Vending, icoreon.
-- Escape-Room-Buchung: bookingkit (Marktführer EU), Butlerapp, QuinBook.
-- Gefährdungsbeurteilung/Arbeitsschutz-Doku: übersättigt, plus kostenlos BAuA/VBG.
-- Zahnarzt-Hygiene-/QM-Software: vismed.de, paul-solutions.de/medizinio.
-- 2026-08-28 — Fahrschulsoftware (YOU-DRIVE, Fahrschulcockpit, WINDRIVE, 4Fahrt
-  u.a.), Weinbau/Kellerbuch-Software (Weinhelp7, DWine, winestro.cloud, APyS),
-  Baumpflege/Arboristik-Software (TREELAX, planbar, ToolTime), Brandschutz-
-  begehung-Software (KEVOX, Capmo, firstaudit, GUEPARDO Fire), mobile
-  Autoaufbereitung (CATAMA) — alle übersättigt, nicht erneut prüfen.
-- 2026-08-28 — Turno/TurnoverBnB (Ferienwohnungs-Reinigungskoordination +
-  Cleaner-Marktplatz, ~32 Mio. USD Umsatz): operiert bereits selbst in
-  Deutschland und ist offiziell in Smoobu integriert — kein Land→Land-Signal.
+- ZenMaid, MoeGo, Schornsteinfeger-, Bestatter-, Self-Storage-, Vending-,
+  Escape-Room-, Arbeitsschutz-, Zahnarzt-QM-, Fahrschul-, Weinbau-, Baumpflege-,
+  Brandschutz-, Autoaufbereitungs-Software, Turno (Details siehe git-history).
+- 2026-08-29 — Event-/Partyverleih (Goodshuffle Pro): Butlerapp, PM II RENT
+  (iterasoft), Bounce Rental Solutions.
+- 2026-08-29 — Kletterhallen-Software (Rock Gym Pro): Freeclimber, Resasports.
+- 2026-08-29 — Marina-/Yachthafen-Software (Dockwa): Marina Manager Rostock
+  (40 Häfen DE/DK/NL), portelo, Ausguck, Fraberger.
+- 2026-08-29 — Umzugssoftware (SmartMoving): Movingstar (800+ Kunden DE),
+  MoveMaster, FastMove, Xlado — übersättigt.
+- 2026-08-29 — Hofladen/Direktvermarktung (GrazeCart): FrachtPilot, HOFLOTSE,
+  ABOFAKT, APRO, FarmVend — übersättigt.
+- 2026-08-29 — Fensterreinigung/Gebäudereinigung (ProValet): Fortytools, Mendato,
+  ProClean, Faktura Software.
+- 2026-08-29 — Dolmetscher-/Sprachdienstleister-Agentursoftware (Boostlingo,
+  37 Mio. USD ARR 2024 lt. GetLatka): AVS-Software und LinguAss (seit 2002)
+  bedienen das genau; Anolla ist nur generisches Buchungstool, kein echter Treffer.
 
 ## Offene Faehrten
 
-- Poolservice-Wartungssoftware (Skimmer, 2026-08-28): DE nur Poolbau-Software
-  (EXTRABAT) und generische Multi-Branchen-Tools gefunden, keine dedizierte
-  Wartungs-/Routensoftware. Offen: Marktgröße DE vs. USA (weniger Privatpools).
-- "Groß→klein" weiterhin kaum bearbeitet — freie Websuche liefert nur große
-  Enterprise-Anbieter, keine kleinteiligen Lücken. Nächstes Mal gezielt
-  GetLatka-Kategorielisten durchgehen statt freier Suche.
-- Estate-Sale-Marktplätze (EstateSales.NET, ~8 Mio. USD Umsatz) als
-  Kulturimport geprüft: Konzept "öffentlicher Hausverkauf vor Ort" existiert
-  in DE praktisch nicht (Haushaltsauflösung läuft über Räumfirmen, nicht über
-  Publikumsverkauf) — unklar ob das an fehlendem Angebot liegt oder an
-  fehlender Nachfrage. Nicht weiterverfolgt, evtl. für Markt-Analyst relevant.
+- Poolservice-Wartungssoftware (Skimmer): DE nur Poolbau (EXTRABAT), keine
+  Wartungssoftware gefunden — Marktgröße DE vs. USA unklar.
+- "Groß→klein" bleibt schwach bearbeitet: Qualio (Life-Science-QMS) und Whip
+  Around/UpKeep (Fleet-Inspection) ohne auffindbare Bootstrapped-Zahlen geprüft,
+  nicht weiterverfolgt — nächstes Mal gezielt GetLatka-Kategorien statt freier
+  Suche durchgehen.
+- Estate-Sale-Marktplätze (EstateSales.NET) als Kulturimport geprüft, in DE
+  praktisch nicht vorhanden — unklar ob Angebots- oder Nachfragelücke, evtl. für
+  Markt-Analyst relevant.
