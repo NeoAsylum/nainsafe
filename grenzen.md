@@ -1,11 +1,33 @@
 # Grenzen
 
-Sieben Ausschlusskriterien. Der Fit-Filter prüft jede Idee gegen alle sieben.
+Neun Ausschlusskriterien. Der Fit-Filter prüft jede Idee gegen alle neun.
 **Ein einziger Treffer bedeutet `abgelehnt`** — es gibt keine Abwägung, keine Ausnahme
 und keine Idee, die gut genug wäre, um eine dieser Grenzen wert zu sein.
 
 Jede Ablehnung wird im Frontmatter der Idee begründet (`ablehnungsgrund`), damit dieselbe
 Idee nicht in sechs Wochen erneut auftaucht.
+
+## Wonach überhaupt gesucht wird
+
+Diese drei Sätze standen bis zum 2026-08-29 nirgends, und ihr Fehlen hat fünfzehn Ideen
+gekostet:
+
+**Das Ziel sind 5.000 € Marge im Monat.** Nicht Umsatz — was nach den laufenden Kosten
+übrig bleibt, vor Steuern. Darunter lohnt die Zeit nicht, die der Aufbau kostet. Was
+diese Schwelle erkennbar nie erreichen kann, wird gar nicht erst ausgearbeitet.
+
+**Der Markt ist nicht auf Deutschland beschränkt.** Englischsprachige Zielgruppen sind
+ausdrücklich erlaubt und oft besser: Der Markt ist um ein Vielfaches größer, und es gibt
+auffindbare Kanäle statt Innungsverzeichnisse. Der Preis dafür ist rechtliche
+Komplexität — siehe G7.
+
+**B2C ist erlaubt.** Endkunden sind selbstbedienbar und über Suche erreichbar, also
+genau das, was G3 verlangt. Der Preis sind Widerrufsrecht, Verbraucherschutz und
+Preisangabenpflichten — auch das steht in G7.
+
+Bis hierher hat die Fabrik ausschließlich Software für deutsche KMU-Nischen gesucht.
+Das ist die am dichtesten besetzte Kategorie überhaupt, und die Beschränkung stand in
+keiner Regel — sie war eine unbegründete Verengung.
 
 ---
 
@@ -17,6 +39,10 @@ Bausparen, Finanzdienstleistung — samt der IT, die diese Branchen bedient.
 Das gilt auch für scheinbar neutrale Werkzeuge, wenn die Zielgruppe überwiegend aus
 diesen Branchen kommt. Ein Dokumentenwerkzeug für Versicherungsmakler ist ein
 Versicherungsprodukt.
+
+**Diese Grenze betrifft die Branche, nicht das Land.** Ein Produkt für
+englischsprachige Zielgruppen außerhalb des Finanzsektors berührt sie nicht — der
+Arbeitgeber konkurriert nicht mit einem Werkzeug für australische Tierärzte.
 
 ## G2 — Wissen aus dem Hauptjob
 
@@ -66,14 +92,54 @@ Sicherheitsfreigaben, Medizin, alles mit Personenschaden.
 Faustregel: Wenn eine Berufshaftpflicht für diese Tätigkeit nötig oder teuer wäre,
 ist die Idee zu groß für ein Nebengewerbe.
 
-## G7 — Marge trägt die Kosten nicht
+## G7 — Erreicht keine 5.000 € Marge im Monat
 
-Ausgeschlossen ist alles, dessen Deckungsbeitrag die variablen Kosten — vor allem
-API-Tokens — nicht deutlich übersteigt, oder erst bei unrealistischer Stückzahl.
+Ausgeschlossen ist alles, was die Schwelle von **5.000 € Marge im Monat** erkennbar nie
+erreichen kann. Marge heißt: was nach den laufenden Kosten übrig bleibt, vor Steuern.
 
-Gerechnet wird **nach Steuern**: Der Gewinn stapelt sich auf das Hauptgehalt und wird mit
-dem Grenzsteuersatz belastet. Aus 1.000 € Gewinn werden grob 560 €. Eine Idee, die
-brutto knapp trägt, trägt netto nicht.
+**Die Rechnung ist Pflicht, nicht Kür.** Jede Idee nennt einen Preis und eine erreichbare
+Kundenzahl, und beide müssen belegt sein — der Preis am nächstgrößeren Vollprodukt, die
+Kundenzahl an der Segmentgröße. Fehlt eine der beiden Zahlen, ist die Idee nicht
+beurteilbar und damit abgelehnt.
+
+| Preis je Kunde und Monat | nötige zahlende Kunden |
+|---|---:|
+| 20 € | rund 300 |
+| 50 € | rund 120 |
+| 150 € | rund 40 |
+| 500 € | rund 12 |
+
+Die zweite Zahl ist die schwierigere. Ein Segment mit 3.000 Betrieben und einem
+Zahlungsbereitschaftsdeckel von 30 € bräuchte **jeden zehnten Betrieb im Land** als
+Kunden — das ist keine Marktdurchdringung, die ein Nebenerwerb erreicht. Ein Prozent ist
+optimistisch, ein Promille realistisch, wenn kein Vertriebskanal belegt ist.
+
+Daraus folgt eine Faustregel: **Entweder das Segment ist groß genug, oder der Preis ist
+hoch genug.** Beides klein trägt nie. Ein Werkzeug für 30 € braucht einen Markt in
+sechsstelliger Größe — den gibt es in einer deutschen Handwerksnische nicht, im
+englischsprachigen Raum oder bei Endkunden dagegen schon.
+
+Gerechnet wird zusätzlich **nach Steuern**, wenn es um deinen Ertrag geht: Der Gewinn
+stapelt sich auf das Hauptgehalt und wird mit dem Grenzsteuersatz belastet. Aus 5.000 €
+Marge werden grob 2.900 € netto.
+
+### Der Preis größerer Märkte
+
+Beides ist erlaubt, beides kostet Aufwand. Wer es wählt, muss ihn benennen:
+
+**Englischsprachiger Markt.** Umsatzsteuer im Zielland, bei Endkunden je nach Land auch
+Verbrauchersteuern. Handhabbar über einen **Merchant of Record** — ein Zahlungsanbieter,
+der als Verkäufer auftritt und die Steuerpflichten übernimmt. Ohne einen solchen ist der
+Aufwand für ein Nebengewerbe zu groß; mit ihm sinkt die Marge um dessen Anteil, was in
+die Rechnung gehört.
+
+**Endkunden statt Betriebe.** Widerrufsrecht von vierzehn Tagen, bei digitalen Inhalten
+nur durch ausdrückliche Verzichtserklärung vor dem Download abwendbar. Dazu
+Verbraucher-AGB, Preisangabenverordnung, Streitschlichtungshinweis. Alles Standard und
+einmalig zu erledigen — aber es gehört vor den Start, nicht danach.
+
+Was **nicht** erlaubt ist: eine Idee, die den größeren Markt nur behauptet. „Weltweit
+verfügbar" ist kein Markt, solange kein Kanal in diesem Markt benannt ist.
 
 ## G8 — Zustand nicht textuell inspizierbar
 
@@ -143,8 +209,18 @@ Ideen, die alle neun Grenzen passieren, werden in fünf Dimensionen bewertet (je
 | `zwang` | Muss der Kunde, oder wäre es nur nett? Pflicht schlägt Nutzen. |
 | `erreichbar` | Kommt man ohne Kaltakquise an die Zielgruppe? |
 | `ruhe` | Läuft es zwei Wochen ohne jeden Eingriff? |
-| `marge` | Trägt der Preis die Kosten nach Steuern deutlich? |
+| `marge` | Erreicht Preis × erreichbare Kundenzahl die 5.000 € (siehe G7)? |
 | `genehmigung` | Würde der Arbeitgeber das ohne Rückfrage genehmigen? |
 
-Maximal 25 Punkte. Unter 15 wird nicht zur Vorlage. Bei `genehmigung` unter 3 wird
-unabhängig von der Gesamtpunktzahl nicht weitergearbeitet.
+Maximal 25 Punkte. Unter 15 wird nicht zur Vorlage.
+
+**Drei Sperren gelten unabhängig von der Gesamtpunktzahl:**
+
+- `genehmigung` unter 3 — eine Idee, die den Arbeitgeber erklärungsbedürftig macht, ist
+  das Risiko nicht wert.
+- `marge` unter 4 — die Schwelle aus G7 ist eine Bedingung, kein Wunsch. Eine 3 heißt
+  „könnte knapp reichen", und knapp reicht bei 5.000 € nie.
+- `erreichbar` unter 3 — alle bisherigen Ideen sind an der Vertriebslinse gestorben, und
+  bei allen stand hier vorher eine 2 oder 3. Der Fit-Filter sah das Problem und ließ sie
+  trotzdem durch, weil die Summe reichte. Fünf Angriffsläufe später stand dasselbe
+  Ergebnis fest.

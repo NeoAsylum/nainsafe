@@ -65,17 +65,23 @@ Nur fuer Ideen, die alle sieben Grenzen passiert haben. Je 0 bis 5, siehe `grenz
 | `zwang` | Muss der Kunde? | waere nett | gesetzliche Pflicht mit Stichtag |
 | `erreichbar` | Kommt man ohne Kaltakquise ran? | nur ueber persoenliche Netzwerke | Zielgruppe sucht aktiv danach |
 | `ruhe` | Laeuft es zwei Wochen ohne Eingriff? | taegliche Handarbeit | vollstaendig unbeaufsichtigt |
-| `marge` | Traegt der Preis nach Steuern? | Deckungsbeitrag nahe null | Vielfaches der variablen Kosten |
+| `marge` | Erreicht Preis × Kundenzahl die 5.000 €? | traegt nie | traegt mit Reserve |
 | `genehmigung` | Wuerde der Arbeitgeber zustimmen? | erklaerungsbeduerftig | offensichtlich unbedenklich |
 
 Trage die fuenf Werte und `summe` ein. Setze `geaendert` auf das heutige Datum und
 `rolle: fit-filter`.
 
-**Zwei harte Schwellen:**
+**Vier harte Schwellen.** Die drei Einzelsperren gelten unabhaengig von der Summe:
 
 - `summe` unter 15 &rarr; `status: abgelehnt`, `ablehnungsgrund: "Score <n> unter Schwelle 15"`.
-- `genehmigung` unter 3 &rarr; `status: abgelehnt`, unabhaengig von der Summe. Eine Idee,
-  die den Arbeitgeber erklaerungsbeduerftig macht, ist das Risiko nicht wert.
+- `genehmigung` unter 3 &rarr; abgelehnt. Eine Idee, die den Arbeitgeber
+  erklaerungsbeduerftig macht, ist das Risiko nicht wert.
+- `marge` unter 4 &rarr; abgelehnt. Die Schwelle aus G7 ist eine Bedingung, kein Wunsch.
+  Eine 3 heisst "koennte knapp reichen", und knapp reicht bei 5.000 EUR nie.
+- `erreichbar` unter 3 &rarr; abgelehnt. Alle bisherigen Ideen sind an der
+  Vertriebslinse gestorben, und bei allen stand hier vorher eine 2 oder 3. Der
+  Fit-Filter sah das Problem und liess sie trotzdem durch, weil die Summe reichte --
+  fuenf Angriffslaeufe spaeter stand dasselbe Ergebnis fest.
 
 ## Grenzen
 

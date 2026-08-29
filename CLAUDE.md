@@ -9,6 +9,23 @@ und hat **rund zwei Stunden pro Woche** für dieses Unternehmen. Diese Zahl ist 
 härteste Randbedingung im ganzen Repo. Jede Entscheidung, die sie verletzt, ist falsch,
 auch wenn sie sonst gut ist.
 
+## Wonach gesucht wird
+
+**Das Ziel sind 5.000 € Marge im Monat.** Nicht Umsatz. Darunter lohnt die Zeit nicht,
+die der Aufbau kostet. Jede Idee nennt deshalb einen Preis und eine erreichbare
+Kundenzahl, beide belegt — die Rechnung steht in `grenzen.md`, G7.
+
+Daraus folgt eine Faustregel, die für jede Rolle gilt: **Entweder das Segment ist groß
+genug, oder der Preis ist hoch genug.** Beides klein trägt nie. Ein Werkzeug für 30 €
+braucht sechsstellig viele mögliche Kunden.
+
+**Der Markt ist nicht auf Deutschland beschränkt, und B2C ist erlaubt.** Beides seit
+2026-08-29. Vorher hat die Fabrik ausschließlich Software für deutsche KMU-Nischen
+gesucht — die am dichtesten besetzte Kategorie überhaupt —, und die Beschränkung stand
+in keiner einzigen Regel. Sie war eine unbegründete Verengung, die fünfzehn Ideen
+gekostet hat. Der Preis der Öffnung sind Umsatzsteuer im Zielland (Merchant of Record)
+und Verbraucherrecht bei Endkunden; wer den größeren Markt wählt, benennt ihn.
+
 ## Die vier harten Regeln
 
 1. **Kein Agent gibt Geld aus.** Keine Bestellung, kein Abo, keine kostenpflichtige API
@@ -77,7 +94,7 @@ vorliegen und griff nur einen auf — nicht aus Nachlässigkeit, sondern weil er
 anderen je eine tödliche Frage notiert hatte und sie nicht beantworten konnte.
 
 **Wofür sie gedacht ist:** eine konkrete Frage klären, an der deine eigene Arbeit hängt.
-Gibt es diesen Anbieter im deutschsprachigen Markt? Was kostet er? Sagt der
+Gibt es diesen Anbieter im Zielmarkt? Was kostet er? Sagt der
 Verordnungstext wirklich das, was in der Zusammenfassung stand? Existiert dieses
 Verzeichnis? Solche Fragen beantwortest du selbst, statt zu raten oder eine Annahme
 weiterzureichen.

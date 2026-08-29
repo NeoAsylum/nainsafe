@@ -99,6 +99,75 @@ def bereit_zur_bewertung() -> list[dict]:
 
 SIGNALE = WURZEL / "signals"
 RESEARCH = WURZEL / "research"
+QUELLEN = WURZEL / "quellen.yml"
+
+
+def _schluessel(text: str) -> str:
+    """Vergleichsform: klein, ohne Umlaute, nur Buchstaben."""
+    t = text.lower()
+    for alt, neu in (("ä", "ae"), ("ö", "oe"), ("ü", "ue"), ("ß", "ss")):
+        t = t.replace(alt, neu)
+    return "".join(c for c in t if c.isalpha())
+
+
+def segmentliste() -> list[str]:
+    """Der Suchraum des Markt-Analysten aus quellen.yml.
+
+    Bewusst ein Zeilenleser statt PyYAML: Die Fabrik soll auf einem frischen VPS
+    ohne Paketinstallation laufen, und dieser eine Block hat ein festes Format.
+    """
+    if not QUELLEN.exists():
+        return []
+    segmente, drin = [], False
+    for zeile in QUELLEN.read_text(encoding="utf-8").splitlines():
+        if zeile.strip().startswith("segmente:"):
+            drin = True
+            continue
+        if drin:
+            roh = zeile.strip()
+            if roh.startswith("- "):
+                segmente.append(roh[2:].strip().strip("\"'"))
+            elif roh and not roh.startswith("#"):
+                break  # naechster Schluessel, Block zu Ende
+    return segmente
+
+
+def offene_segmente() -> list[str]:
+    """Segmente ohne Marktprofil, in der Reihenfolge der Liste.
+
+    Drei Kennungen je Profil, in dieser Rangfolge:
+
+    1. `auftrag` -- der Listeneintrag im Wortlaut, seit 2026-08-29 Pflichtfeld. Nur
+       dieser Vergleich ist exakt und damit verlaesslich.
+    2. das `segment`-Feld. Der Analyst benennt Segmente fachlich praeziser um: aus
+       "Kaelte- und Klimaanlagenwartung" wurde "Kaelteanlagenbauerhandwerk", und aus
+       "Tierarztpraxen" wurde "Tierarztpraxen in Deutschland (niedergelassene ...)".
+       Der Auftrag steckt dann noch drin, aber laenger.
+    3. der Dateiname ohne Datum. Er behaelt den Auftrag meist unveraendert.
+
+    Fuer 2 und 3 gilt nur eine Richtung: **der Listeneintrag muss im Profilnamen
+    stecken**, nicht umgekehrt. Die Gegenrichtung hat beim Oeffnen des Suchraums
+    prompt danebengegriffen -- "Tierarztpraxen im englischsprachigen Raum" galt als
+    erledigt, weil ein Profil ueber deutsche Tierarztpraxen existierte. Es ist ein
+    anderer Markt mit anderer Groesse; genau darum steht er auf der Liste.
+    """
+    bearbeitet, auftraege = [], set()
+    for d in (SIGNALE / "maerkte").glob("*.md"):
+        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        if kopf.get("auftrag"):
+            auftraege.add(_schluessel(str(kopf["auftrag"])))
+        bearbeitet.append(_schluessel(str(kopf.get("segment", ""))))
+        bearbeitet.append(_schluessel(d.stem[11:] if d.stem[:2].isdigit() else d.stem))
+
+    offen = []
+    for s in segmentliste():
+        k = _schluessel(s)
+        if k in auftraege:
+            continue
+        if any(k in b for b in bearbeitet if len(b) > 6):
+            continue
+        offen.append(s)
+    return offen
 
 
 def offene_recherchen(grenze: int = 6) -> list[str]:

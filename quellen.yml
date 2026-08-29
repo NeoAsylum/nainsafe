@@ -82,8 +82,17 @@ maerkte:
     aendern.
   regel: >
     Ausgeschlossen bleibt alles, was unter Grenze G1 faellt: Versicherung, Bausparen,
-    Finanzdienstleistung samt zugehoeriger IT.
+    Finanzdienstleistung samt zugehoeriger IT. Die Grenze betrifft die Branche, nicht
+    das Land.
+  schwelle: >
+    Seit 2026-08-29 gilt eine Mindestgroesse: Preis mal erreichbare Kundenzahl muss
+    5.000 EUR Marge im Monat tragen koennen (G7). Sechzehn der ersten zweiundzwanzig
+    Segmente kamen auf potenzial: gering, und der haeufigste Grund war dieselbe Zahl —
+    ein paar tausend Betriebe mit einem Zahlungsbereitschaftsdeckel von dreissig Euro.
+    Ein deutsches Handwerkssegment kann diese Schwelle fast nur ueber einen hohen Preis
+    erreichen, nicht ueber Menge. Die beiden neuen Bloecke unten drehen das um.
   segmente:
+    # --- Deutscher Mittelstand: Rest der urspruenglichen Liste ---
     # Handwerk mit vielen kleinen Betrieben und wiederkehrender Dokumentation
     - Dachdeckerbetriebe
     - Elektroinstallationsbetriebe
@@ -112,3 +121,34 @@ maerkte:
     # Gastgewerbe und Veranstaltung
     - Caterer und Eventgastronomie
     - Betreiber von Ferienwohnungen mit mehreren Objekten
+
+    # --- Englischsprachiger B2B-Markt ---
+    # Dieselbe Betriebsart, aber im Sprachraum US/UK/CA/AU/IE/NZ statt in einem Land.
+    # Das ist der eine Hebel, der aus dreitausend Betrieben hunderttausend macht, ohne
+    # dass sich am Produkt etwas aendert. Der Preis steht in G7: Umsatzsteuer im
+    # Zielland, handhabbar nur ueber einen Merchant of Record.
+    - Tierarztpraxen im englischsprachigen Raum
+    - Fahrschulen im englischsprachigen Raum
+    - Tanz-, Kampfsport- und Musikstudios mit Kursbetrieb
+    - Baumpflege und Gartenbaubetriebe (arborists, landscapers)
+    - Pool- und Spa-Wartungsdienste
+    - Selfstorage- und Lagerraumbetreiber
+    - Verwalter von Kurzzeitvermietungen (short-term rental managers)
+    - Mobile Dienstleister mit Routenplanung (Reinigung, Aufbereitung, Wartung)
+
+    # --- Endkunden und Prosumer ---
+    # B2C ist seit 2026-08-29 erlaubt (G7). Der Grund ist nicht der Preis, sondern
+    # G3: Endkunden bedienen sich selbst und suchen aktiv — genau der Kanal, an dem
+    # bisher jede zweite Idee gestorben ist. Gesucht wird Freizeit oder Nebenerwerb
+    # mit wiederkehrender Buchfuehrung, Sammlung oder Planung: dort entsteht der
+    # Zustand, den G8 verlangt, ganz von selbst.
+    - Ahnenforschung und Familienarchive
+    - Aquaristik und Terraristik mit Bestandsfuehrung
+    - Hobbyimkerei und Kleintierhaltung
+    - Sammler mit Bestandswert (Muenzen, Karten, Schallplatten, Modellbau)
+    - Selfpublisher und Kleinverlage
+    - Betreiber von Newslettern und Podcasts ohne Redaktion
+    - Verkaeufer auf Marktplaetzen (Etsy, eBay, Kleinanzeigen) im Nebenerwerb
+    - Kleingartenvereine und Selbstversorger mit Anbauplanung
+    - Spielleiter und Gruppen von Tabletop- und Rollenspielen
+    - Amateurastronomie und Naturbeobachtung mit Beobachtungsjournal

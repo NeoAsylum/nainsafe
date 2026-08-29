@@ -46,6 +46,13 @@ Greife an:
 - **Wie lange dauert es bis zum ersten Euro?** Segmente mit Budgetzyklen, Ausschreibungen
   oder Gremienentscheidungen brauchen Monate. Ein Nebenerwerb hält das durch, aber sein
   Betreiber verliert vorher die Lust.
+- **Trägt der Kanal die behauptete Kundenzahl?** Seit 2026-08-29 nennt jede Idee einen
+  Preis und eine erreichbare Kundenzahl (G7). Prüfe die zweite Zahl gegen den Kanal,
+  nicht gegen die Segmentgröße: Ein Verband mit 40.000 Mitgliedern ist kein Kanal zu
+  40.000 Kunden, sondern zu denen, die seinen Newsletter lesen. Bei einem Markt
+  außerhalb Deutschlands greift dieselbe Frage schärfer — „englischsprachiger Raum" ist
+  kein Kanal, sondern eine Landkarte. Nenne konkret, wo die ersten hundert Kunden
+  herkommen sollen, oder widerlege, dass es sie gibt.
 - **Einmalkauf oder Abo?** Erfüllt das Produkt eine Pflicht, die einmal erledigt ist,
   gibt es keine Wiederkehr — dann muss der Preis den gesamten Vertriebsaufwand tragen,
   und die Zielgruppe ist nach einem Jahr abgegrast.

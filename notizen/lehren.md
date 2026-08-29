@@ -116,3 +116,17 @@ was erlaubt ist.
   alle Linsen:* Der direkte Seitenabruf steht seit 2026-08-29 jeder Rolle zur Verfügung.
   Die alte Notiz „WebFetch war gesperrt, nur Snippets" ist damit erledigt; wer einen
   Gesetzestext zitiert, holt ihn im Wortlaut.
+
+- **2026-08-29** — **„Ein kleines Werkzeug für eine kleine Nische reicht" ist widerlegt,
+  und es war die teuerste Annahme bisher.** Die drei besten Ideen (Asbestanzeige 18
+  Punkte, Zettelfoto 16, Haushaltsturnus 16) hatten alle `erreichbar` 2 oder 3 und
+  `marge` 3 — und alle drei starben an der Vertriebslinse, fünf Angriffsläufe nachdem
+  der Fit-Filter dieselbe Schwäche schon im Frontmatter stehen hatte. Parallel kamen
+  sechzehn von zweiundzwanzig Marktprofilen auf `potenzial: gering`, fast immer aus
+  demselben Grund: ein paar tausend Betriebe mal dreißig Euro. *Folgerung für alle
+  Rollen:* Es gibt seit heute eine Untergrenze — **5.000 € Marge im Monat**, gerechnet
+  als Preis mal erreichbare Kundenzahl, beide belegt (ADR 0004, `grenzen.md` G7).
+  Entweder das Segment ist groß genug oder der Preis ist hoch genug; beides klein trägt
+  nie. Der Suchraum umfasst dafür ab sofort auch englischsprachige Zielgruppen und
+  Endkunden — die Beschränkung auf deutsche KMU stand vorher in keiner einzigen Regel
+  und war reine Gewohnheit.

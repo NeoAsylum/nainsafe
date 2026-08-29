@@ -122,6 +122,7 @@ Jede Idee folgt genau diesem Satz, und alle vier Teile muessen konkret sein:
 
 > Fuer **&lt;Segment&gt;** loest **&lt;Loesung&gt;** das Problem **&lt;Problem&gt;**,
 > und bezahlt wird dafuer wegen **&lt;Zwang oder Nutzen&gt;**.
+> Bei **&lt;Preis&gt;** und **&lt;Kundenzahl&gt;** sind das **&lt;Betrag&gt;** im Monat.
 
 - **Segment** ist nie "KMU" oder "Unternehmen". Es ist "Handwerksbetriebe mit 5 bis 50
   Mitarbeitern, die ueber DATEV buchen" -- also so genau, dass man sie finden koennte.
@@ -129,6 +130,42 @@ Jede Idee folgt genau diesem Satz, und alle vier Teile muessen konkret sein:
 - **Loesung** ist ein Satz, kein Funktionskatalog.
 - **Zahlungsgrund** ist `zwang` oder `nutzen`. Pflicht schlaegt Wunsch: Wer muss, kauft.
   Wer nur moechte, vergleicht ein Jahr lang.
+- **Preis und Kundenzahl** sind zwei Zahlen, keine Formulierung. Der Preis wird am
+  naechstgroesseren Vollprodukt im Segment belegt, die Kundenzahl an der Segmentgroesse
+  aus dem Marktprofil oder der Recherche. Ohne beide Zahlen ist die Idee unvollstaendig.
+
+## Die Groessenordnung
+
+**Das Ziel sind 5.000 EUR Marge im Monat** (G7). Diese Zahl stand bis zum 2026-08-29
+nirgends, und ihr Fehlen hat fuenfzehn Ideen gekostet: Es waren durchweg kleine
+Werkzeuge fuer kleine Nischen, jedes fuer sich plausibel, und keines haette die Schwelle
+je erreicht. Sie starben erst fuenf Angriffslaeufe spaeter -- an derselben Rechnung, die
+du jetzt vorher machst.
+
+| Preis je Kunde und Monat | noetige zahlende Kunden |
+|---|---:|
+| 20 EUR | rund 300 |
+| 50 EUR | rund 120 |
+| 150 EUR | rund 40 |
+| 500 EUR | rund 12 |
+
+Entweder das Segment ist gross genug, oder der Preis ist hoch genug. **Beides klein
+traegt nie.** Ein Werkzeug fuer 30 EUR braucht einen Markt in sechsstelliger Groesse --
+den gibt es in einer deutschen Handwerksnische nicht.
+
+Zwei Suchraeume sind seit dem 2026-08-29 ausdruecklich offen, und beide loesen genau
+dieses Problem:
+
+- **Englischsprachige Zielgruppen.** Dieselbe Betriebsart, aber im Sprachraum
+  US/UK/CA/AU statt in einem Land -- der Faktor zwischen dreitausend und
+  hunderttausend Betrieben, ohne dass sich am Produkt etwas aendert.
+- **Endkunden.** Sie bedienen sich selbst und suchen aktiv, also genau der Kanal, an
+  dem bisher jede zweite Idee gestorben ist.
+
+Beides kostet Aufwand -- Merchant of Record fuer die Umsatzsteuer, Widerrufsrecht und
+Verbraucher-AGB bei Endkunden. Benenne ihn in **Offene Fragen**, statt ihn zu
+verschweigen. Was **nicht** zaehlt, ist ein groesserer Markt, der nur behauptet wird:
+"weltweit verfuegbar" ist kein Markt, solange kein Kanal in diesem Markt steht.
 
 ## Format
 
@@ -139,6 +176,9 @@ Benutze `vorlagen/idee.md` unveraendert als Geruest. Pflichten dabei:
 - `score:` -- alle Felder bleiben `null`. Bewerten ist Aufgabe des Fit-Filters.
 - `ablehnungsgrund: null`.
 - Abschnitt **Belege** mit Quelle und Abrufdatum je Zeile.
+- Abschnitt **Rechnung**: Preis, Kundenzahl, Monatsumsatz, je mit Beleg oder als
+  Vermutung markiert. Ohne diesen Abschnitt lehnt der Fit-Filter nach G7 ab, ohne die
+  Idee ueberhaupt zu lesen.
 - Abschnitt **Warum jetzt**: Was hat sich geaendert, das diese Idee heute moeglich oder
   noetig macht und vor einem Jahr nicht? Faellt dir dazu nichts Ehrliches ein, ist die
   Idee vermutlich alt und laengst besetzt -- dann schreibst du sie nicht auf.

@@ -28,10 +28,25 @@ Vertriebsweg darf man nachbauen — und genau das ist dein Auftrag.
 
 1. Lies `notizen/lehren.md` und dein Logbuch.
 2. Liste mit Glob alles unter `signals/modelle/` und lies die Titel. Keine Wiederholungen.
-3. Suche nach vier Übertragungsrichtungen (unten).
+3. Suche nach fünf Übertragungsrichtungen (unten).
 4. Lege je Fund eine Datei an: `signals/modelle/JJJJ-MM-TT-thema.md`.
 
-## Die vier Übertragungsrichtungen
+## Die fünf Übertragungsrichtungen
+
+**0. Kein Transfer — direkt im Zielmarkt.** Seit dem 2026-08-29 ist der Markt nicht
+mehr auf Deutschland beschränkt (siehe `grenzen.md`, *Wonach überhaupt gesucht wird*).
+Damit ist eine Richtung dazugekommen, die vorher nicht existierte: ein Modell, das im
+englischsprachigen Raum trägt, aber dort **noch nicht besetzt** ist — oder nur von einem
+einzigen, teuren, schlecht bewerteten Anbieter.
+
+Das ist die stärkste Richtung, wenn sie sich findet, weil sie die Größenschwelle aus G7
+von selbst löst: Derselbe Zuschnitt hat dort ein Vielfaches der Kunden. Der Preis dafür
+ist die Umsatzsteuer im Zielland — handhabbar über einen Merchant of Record, dessen
+Anteil in jede Rechnung gehört.
+
+Für diese Richtung gilt die Prüfung spiegelbildlich: Nicht „gibt es das hier schon?",
+sondern **„gibt es das dort schon?"** Ein deutscher Anbieter ist dann kein
+Ausschlussgrund, sondern egal.
 
 **1. Land → Land.** Ein kleiner Anbieter in den USA, Großbritannien, den Niederlanden
 oder Skandinavien bedient eine Nische, die es hier nicht gibt. Die stärkste Variante,
@@ -57,8 +72,14 @@ Bevorzugt dort, wo Anbieter ihre Zahlen selbst offenlegen — das erspart der Fa
 Schätzung: Indie-Hacker-Verzeichnisse mit MRR-Angaben, Marktplätze für Firmenverkäufe
 mit Umsatzangaben, öffentliche Preisseiten, App-Verzeichnisse mit Bewertungszahlen.
 
-Suche englisch und deutsch. Prüfe für jeden Fund ausdrücklich, ob es hier schon jemanden
-gibt — ein deutscher Anbieter, den du übersehen hast, macht das Signal wertlos.
+Suche englisch und deutsch. Prüfe für jeden Fund ausdrücklich, ob es **im Zielmarkt der
+jeweiligen Richtung** schon jemanden gibt — bei Richtung 1 bis 4 ist das der
+deutschsprachige Markt, bei Richtung 0 der englischsprachige. Ein übersehener Anbieter
+im Zielmarkt macht das Signal wertlos; einer außerhalb macht es wertvoll.
+
+Achte auf die Größe. Ein Vorbild mit belegten 800 € MRR beweist, dass jemand zahlt,
+aber nicht, dass die Schwelle von 5.000 € Marge erreichbar ist. Schreib die belegte
+Zahl hin und ordne sie ein, statt sie hochzurechnen.
 
 ## Format
 
@@ -69,21 +90,29 @@ erfasst: <heutiges Datum>
 quelle: <URL des Vorbilds>
 abgerufen: <heutiges Datum>
 vorbild: <Name des Anbieters>
-richtung: land | branche | grossklein | manuell
+richtung: direkt | land | branche | grossklein | manuell
+zielmarkt: deutschland | englischsprachig | endkunden
 belegte_zahlung: <Preis, MRR, Nutzerzahl -- was oeffentlich belegt ist>
-deutsche_anbieter: <gefundene, mit Link -- oder "keiner gefunden nach Suche X, Y, Z">
-barriere: <was den Vorbild-Anbieter hier fernhaelt>
+anbieter_im_zielmarkt: <gefundene, mit Link -- oder "keiner gefunden nach Suche X, Y, Z">
+barriere: <was den Vorbild-Anbieter aus dem Zielmarkt fernhaelt -- bei richtung: direkt
+  oft "keine", dann ist das Tempo die einzige Barriere und gehoert hingeschrieben>
 ---
 
 # <Das Modell in einem Satz>
 
 <Zwei bis drei Saetze: Wer bedient wen womit, und was kostet es.>
 
-## Warum es hier fehlt
+## Warum es im Zielmarkt fehlt
 
 <Sprache, Regulierung, Schnittstellen, Zahlungsgewohnheiten, Marktgroesse. Wenn du
 keinen Grund findest, ist das ein Warnsignal -- dann gibt es vielleicht doch einen
-deutschen Anbieter, den du nicht gefunden hast.>
+Anbieter im Zielmarkt, den du nicht gefunden hast.>
+
+## Groessenordnung
+
+<Der belegte Preis des Vorbilds mal die Zahl moeglicher Kunden im Zielmarkt. Beide
+Zahlen mit Quelle. Kommt weniger als 5.000 EUR im Monat heraus, schreib das hin --
+das Signal bleibt trotzdem wertvoll, aber der Ideator muss es wissen.>
 
 ## Belegstelle
 
@@ -100,8 +129,8 @@ deutschen Anbieter, den du nicht gefunden hast.>
 - **Kein Vorbild ohne Beleg für Zahlung.** Ein Anbieter, der existiert, beweist nichts;
   einer mit veröffentlichtem Preis und erkennbaren Kunden schon. Genau darin liegt der
   Wert dieser Signalart — ohne den Beleg bist du nur ein weiterer Markt-Scout.
-- Findest du zu einem Vorbild bereits zwei oder mehr deutsche Anbieter, ist es kein
-  Signal mehr. Schreib es trotzdem ins Logbuch, damit niemand erneut sucht.
+- Findest du zu einem Vorbild bereits zwei oder mehr Anbieter **im Zielmarkt**, ist es
+  kein Signal mehr. Schreib es trotzdem ins Logbuch, damit niemand erneut sucht.
 - **Kein Vorbild, dessen Zustand nur im Bild existiert** (Grenze G8). Visuelle Produkte
   sind ausdruecklich erlaubt -- ein Spiel, eine Karte, eine Visualisierung --, solange
   ein auslesbares Datenmodell dahintersteht. Unbrauchbar ist, was seine Wahrheit erst

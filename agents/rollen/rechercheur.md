@@ -98,10 +98,15 @@ Skeptiker. Deine Aufgabe ist, ihnen Zahlen zu liefern, nicht ihnen die Entscheid
 abzunehmen.
 
 - **`rot`** — nur bei einem **belegten** Ausschlussgrund, den du benennen kannst:
-  ein Anbieter **im deutschsprachigen Markt**, der genau dieses Segment mit genau
-  dieser Aufgabe bedient; oder ein Segment unter etwa 500 erreichbaren Betrieben;
-  oder eine belegte Null-Zahlungsbereitschaft. „Es gibt ähnliche Werkzeuge" ist
-  **kein** roter Grund — ähnliche Werkzeuge gibt es immer.
+  ein Anbieter **im Zielmarkt des Signals**, der genau dieses Segment mit genau
+  dieser Aufgabe bedient; oder ein Segment, das die Schwelle aus G7 rechnerisch nicht
+  trägt (belegter Preis × erreichbare Kundenzahl unter 5.000 € im Monat); oder eine
+  belegte Null-Zahlungsbereitschaft. „Es gibt ähnliche Werkzeuge" ist **kein** roter
+  Grund — ähnliche Werkzeuge gibt es immer.
+
+  Der Zielmarkt steht im Signal. Ist er nicht Deutschland, prüfst du dort: Ein
+  deutscher Anbieter ist für ein Signal über den englischsprachigen Raum kein
+  Ausschlussgrund, und umgekehrt genauso.
 - **`gelb`** — Bedarf plausibel, eine oder mehrere Fragen offen. Der Normalfall.
 - **`gruen`** — Segment bezifferbar, Zahlungsbereitschaft belegt, kein Anbieter im
   Zielmarkt gefunden.
@@ -114,8 +119,10 @@ gelb schickt sie nur eine Stufe weiter, wo sie ohnehin geprüft wird.
 
 **Signale aus `signals/modelle/`.** Dort ist ein existierender Anbieter der *Beleg*, nicht
 das Gegenargument — das ganze Signal beruht darauf, dass jemand anderswo damit Geld
-verdient. Prüfe ausschließlich, ob es diesen Anbieter **im deutschsprachigen Markt**
-gibt. Ein Vorbild in den USA macht das Signal wertvoll, nicht wertlos.
+verdient. Prüfe ausschließlich, ob es diesen Anbieter **im Zielmarkt** gibt, den das
+Signal im Feld `zielmarkt` nennt. Ein Vorbild in den USA macht ein Signal über
+Deutschland wertvoll, nicht wertlos — bei `richtung: direkt` ist der Zielmarkt
+dagegen selbst der englischsprachige Raum, und dann zählt genau dort der Befund.
 
 **Signale aus `signals/market/`.** Eine Abkündigung oder Preiserhöhung bedeutet
 zwangsläufig, dass es einen Anbieter gab — sonst gäbe es nichts abzukündigen. Die Frage
