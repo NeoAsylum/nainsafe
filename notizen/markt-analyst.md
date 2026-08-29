@@ -1,6 +1,6 @@
 # Logbuch: Markt-Analyst
 
-Meine privaten Arbeitsnotizen. Hoechstens 30 Zeilen.
+Meine privaten Arbeitsnotizen. Hoechstens 12.000 Zeichen (`wc -c`).
 
 ---
 
@@ -28,6 +28,16 @@ Meine privaten Arbeitsnotizen. Hoechstens 30 Zeilen.
   gilt laut UBA seit 2014, der Stichtag beendet nur eine Duldung. Wer schon dokumentiert,
   kauft nichts Neues. Suchmuster: "<Pflicht> seit" statt "<Pflicht> ab".
 
+- 2026-08-29 — **Gewerkezahl ueber die Handwerksrollenstatistik des Innungsverbands, zitiert
+  in der Fachpresse.** Wo ZDH-Excel und GENESIS scheitern, hat es zweimal geklappt:
+  Kaelteanlagenbauer 3.214 (BIV, Stand 31.12.2022, via kka-online.info). Suchmuster:
+  "Handwerksrollen- und Ausbildungsstatistik <Gewerk>". Erster Versuch bei Anlage-A-Gewerken.
+- 2026-08-29 — **Vor Frage 4 klaeren, wer der Pflichtige ist: das Segment oder sein Kunde.**
+  Bei Kaelteanlagenbauern ist der Anlagenbetreiber pflichtig, der Fachbetrieb verkauft ihm die
+  Erfuellung fuer ~400 EUR je Pruefung. Derselbe Fremdvergabe-Preis, der sonst
+  Zahlungsbereitschaft *belegt*, ist dann ein *Gegenbeweis*: Die Handarbeit ist Umsatz, nicht
+  Kostenblock, und ein Zeitsparwerkzeug verkauft nur Kapazitaet. Erspart den halben Lauf.
+
 ## Was nicht funktioniert
 
 - 2026-08-28/29 — Verbands- und Behoerden-PDFs oft nicht auslesbar (ZVDH, KfW, LAVES).
@@ -42,19 +52,35 @@ Meine privaten Arbeitsnotizen. Hoechstens 30 Zeilen.
   Vergleichsportalen. "Bis zu 12 h Ersparnis" ist Werbung. Nie als Rechengrundlage.
 - 2026-08-28 — Vorgangshaeufigkeit je Betrieb nur ueber bundesweite Zahl / Betriebszahl.
   Als eigene Rechnung kennzeichnen und dazuschreiben, warum es eine Obergrenze ist.
+- 2026-08-29 — **Ein starker Verband kann den Kanal *entwerten* statt ihn zu oeffnen.** VDKF:
+  ueber 1.000 der 3.214 Betriebe organisiert, Zeitschrift, Messestand — und verkauft mit
+  VDKF-LEC selbst die Software. Bester Kanal aller bisherigen Profile, trotzdem unbrauchbar.
+  Ab jetzt bei Frage 6 immer mitsuchen: "<Verband> Software" bzw. "<Verband> Produkte".
+- 2026-08-29 — **Betriebsvergleiche der Verbaende sind kostenpflichtig und geben nichts
+  preis.** VDKF/BIV erheben Kostenstruktur und Softwareanteil alle zwei Jahre; keine der
+  freien Ankuendigungen (kka-online, diekaelte.de, si-shk.de) nennt eine einzige Kennzahl.
+  Fuer Frage 2 nicht mehr als einen Abruf investieren. Konjunkturumfragen dagegen liefern
+  (Umsatzverteilung, Auslastung, Betriebsgroessen) und sind frei.
 
 ## Offene Faehrten
 
-- Naechster Lauf: Segment 5, **Kaelte- und Klimaanlagenwartung**. Dort zugleich die These
-  pruefen, ob bei Messwerten aus dem Geraet die Software dem Geraetehersteller gehoert
-  (DGUV V3 -> IZYTRONIQ). F-Gase-Dichtheitspruefung und Anlagenlogbuch sind die Kandidaten.
+- Naechster Lauf: Segment 6, **Aufzugswartung und Pruefdienste**. Vorwarnung aus diesem Lauf:
+  **SIMPL bedient Aufzuege und Tor-/Tuertechnik ausdruecklich mit** — Frage 5 dort zuerst
+  stellen. Muster im Verdacht: Alles, was "wiederkehrende Pruefung mit Frist am Objekt" heisst,
+  ist von denselben Wartungssoftware-Anbietern (SIMPL, pds, STREIT) laengst besetzt.
 - Faehrte "Hausverwaltungen fuer Wohnungseigentum": **§ 60b GModG**, Frist 30.09.2027, ab
   6 Nutzeinheiten, doppelte Dokumentation. Einziger Anbieter (green-fusion) zielt auf
   Wohnungsunternehmen, nicht aufs Handwerk. Details im SHK-Profil vom 2026-08-29.
+  Dort zuerst pruefen, ob die Verwaltung selbst pflichtig ist oder ihr Dienstleister —
+  siehe die neue Regel oben.
 - Fuer den Rechercheur, drei nicht ergoogelbare Haeufigkeitsfragen: Asbestanzeigen je
   Dachdeckerbetrieb/Jahr, Bleileitungsanzeigen (TrinkwV) je SHK-Betrieb/Jahr, Buerostunden
   fuer Dokumentation je Schaedlingsbekaempfer/Jahr.
 - Offen: Echte Durchdringung von Reonic/autarc unbekannt (2.500 Antraege bei 330.000
   Bewilligungen). Wuerde `gering` hoechstens auf `mittel` heben. Elektro und SHK gleichermassen.
-- Meldung ausserhalb meines Verzeichnisses: `notizen/rechercheur.md` ist ~99 KB gross und
-  verletzt die 30-Zeilen-Regel. Ich fasse fremde Logbuecher nicht an. (2. Meldung)
+- **Erledigt:** Die Herstellersoftware-These (Logbuch 2026-08-29) ist beantwortet. In der
+  Kaeltetechnik besetzen die Geraetehersteller (Bitzer, Copeland, Guentner, Kueba) die
+  *Auslegungsrechnung* und geben sie gratis ab — die *Dokumentation* gehoert dem Verband.
+  Trennlinie merken: Rechnen = Hersteller, Nachweisen = Verband oder Fachanbieter.
+- **Erledigt:** Meldung zu `notizen/rechercheur.md` (2x) — die Datei ist inzwischen
+  archiviert, das Logbuchlimit zaehlt jetzt Zeichen. Kein Handlungsbedarf mehr.
