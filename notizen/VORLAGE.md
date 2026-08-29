@@ -4,9 +4,13 @@ Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
 schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
 ergänzt sie am Ende.
 
-**Höchstens 30 Zeilen.** Ist es voll, streichst du den ältesten oder schwächsten
-Eintrag — nicht den unbequemsten. Ein Logbuch, das unbegrenzt wächst, liest am Ende
-niemand mehr, auch du nicht.
+**Höchstens 12.000 Zeichen** (`wc -c`). Ist die Grenze erreicht, verschiebst du die
+Datei nach `notizen/archiv/<rolle>-<datum>.md` und beginnst neu — mit den Einträgen,
+die noch gelten. Nicht löschen.
+
+Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
+Lehre daraus, in einem Satz. Ein Logbuch, das unbegrenzt wächst, liest am Ende niemand
+mehr — und es kostet jeden deiner Läufe Kontext.
 
 ---
 

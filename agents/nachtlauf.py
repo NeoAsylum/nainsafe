@@ -59,15 +59,19 @@ WIP_BAU_MAX = 1
 
 # ---------------------------------------------------------------- Skalierung
 #
-# Diese drei Zahlen bestimmen, wie viel Arbeit eine Nacht bewegt. Sie hochzudrehen
-# kostet Tokens, nicht Lesezeit -- der Betreiber sieht ohnehin höchstens eine
-# Gate-Vorlage pro Woche.
+# Diese Zahlen bestimmen, wie viel Arbeit eine Nacht bewegt.
 #
-# Nach jeder Erhöhung `python3 agents/kontingent.py` und `agents/stand.py` gegenlesen:
-# Die Frage ist nie, ob mehr Läufe möglich sind, sondern ob sie noch Neues finden.
+# Am 2026-08-29 von 15 auf 5 und von 10 auf 4 gesenkt. Grund war nicht Sparsamkeit,
+# sondern Ertrag: Der Rechercheur verbrauchte 66 Prozent des Wochenkontingents bei
+# 43 Laeufen, von denen 16 leer blieben -- und der Ideator meldete am selben Tag,
+# dass jede vorliegende Recherche rot oder verarbeitet ist. Der Engpass war nie die
+# Zahl der Recherchen, sondern die Zahl brauchbarer Signale.
+#
+# Nach jeder Aenderung `python3 agents/kontingent.py` gegenlesen: Die Frage ist nie,
+# ob mehr Laeufe moeglich sind, sondern ob sie noch Neues finden.
 
-RECHERCHEN_MAX = 15       # Signale, die pro Nacht ausgegraben werden
-ANGRIFFE_MAX_IDEEN = 10   # Kandidaten, die pro Nacht angegriffen werden (× 5 Linsen)
+RECHERCHEN_MAX = 5        # Signale, die pro Nacht ausgegraben werden
+ANGRIFFE_MAX_IDEEN = 4    # Kandidaten, die pro Nacht angegriffen werden (× 5 Linsen)
 
 # Wie viele Agenten gleichzeitig. Nach oben begrenzt durch das Kontingent, nicht durch
 # die Maschine -- ein Agentenlauf wartet die meiste Zeit auf Antworten. Sechs ist

@@ -110,9 +110,22 @@ Beide beeinflussen dein Vorgehen. Steht dort, dass eine Suche nichts hergibt, pr
 du eine andere. Steht dort eine offene Fährte, fängst du dort an.
 
 **Am Ende jedes Laufs** ergänzt du dein Logbuch: was funktioniert hat, was nicht, was
-liegen geblieben ist. Höchstens 30 Zeilen; ist es voll, streichst du den schwächsten
-Eintrag — nicht den unbequemsten. Jeder Eintrag beginnt mit dem Datum. Gibt es dein
-Logbuch noch nicht, legst du es nach `notizen/VORLAGE.md` an.
+liegen geblieben ist. Jeder Eintrag beginnt mit dem Datum. Gibt es dein Logbuch noch
+nicht, legst du es nach `notizen/VORLAGE.md` an.
+
+**Höchstens 12.000 Zeichen** (`wc -c notizen/<deine-rolle>.md`). Die Grenze zählt
+Zeichen, nicht Zeilen: Eine Zeilengrenze belohnt Zusammenziehen statt Streichen, und
+genau daran ist ein Logbuch auf 180.000 Zeichen gewachsen — bei 51 Zeilen, also formal
+im Rahmen. Es kostete 45.000 Tokens bei jedem Lauf seiner Rolle.
+
+Ist die Grenze erreicht, **verschiebst du die Datei** nach
+`notizen/archiv/<deine-rolle>-<datum>.md` und beginnst neu — mit den Einträgen, die
+noch gelten. Nicht löschen: Hausregel 3 gilt auch hier, und ein archiviertes Logbuch
+bleibt lesbar, wenn jemand wissen will, warum eine Fährte damals verworfen wurde.
+
+**Ein Beleg, der eine Zeile länger macht, gehört nicht ins Logbuch.** Aktenzeichen,
+Preise, Domainlisten stehen in deiner Ergebnisdatei. Ins Logbuch gehört die *Lehre*
+daraus, in einem Satz.
 
 Auch ein leerer Lauf gehört hinein, gerade der: „Suchmuster X lieferte am 2026-08-28
 nichts" ist die nützlichste Sorte Eintrag, weil sie den nächsten Lauf vor derselben

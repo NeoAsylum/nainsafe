@@ -72,6 +72,27 @@ NIE = [
 
 ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 
+# ---------------------------------------------------------------- Notbremse
+#
+# Am 2026-08-29 war das Wochenkontingent fast erschoepft, ohne dass irgendetwas
+# gewarnt haette: Ein einzelner Tag hatte 95 Laeufe und 253 Dollar Gegenwert
+# erzeugt. Es gab keine Stelle, an der die Fabrik von selbst haette anhalten
+# koennen.
+#
+# Der Gegenwert ist der beste verfuegbare Naeherungswert fuer Kontingentverbrauch
+# (siehe agents/kontingent.py). Diese Grenze ist bewusst grosszuegig -- sie soll
+# Ausreisser abfangen, nicht den Normalbetrieb bremsen. Ein voller Nachtlauf lag
+# zuletzt bei rund 40 Dollar.
+TAGESGRENZE_USD = 120.0
+
+
+def tagesverbrauch(verbindung) -> float:
+    """Gegenwert aller Laeufe seit Mitternacht UTC."""
+    zeile = verbindung.execute(
+        "SELECT sum(kosten_eur) FROM lauf WHERE gestartet > date('now')"
+    ).fetchone()
+    return float(zeile[0] or 0)
+
 
 def jetzt() -> str:
     return datetime.now(timezone.utc).strftime(ZEITFORMAT)
@@ -358,6 +379,18 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
     ]
 
     verbindung = db()
+
+    # Notbremse vor dem Start, nicht danach: Ein Lauf, der die Grenze reisst,
+    # soll gar nicht erst beginnen.
+    heute = tagesverbrauch(verbindung)
+    if heute >= TAGESGRENZE_USD:
+        verbindung.close()
+        print(f"  ABGEBROCHEN: Tagesgrenze erreicht "
+              f"({heute:.0f} von {TAGESGRENZE_USD:.0f} $ Gegenwert).")
+        print("  Die Fabrik haelt an, damit das Wochenkontingent nicht in einem Tag")
+        print("  aufgebraucht wird. Grenze steht in agents/lauf.py:TAGESGRENZE_USD.")
+        return 2
+
     lauf_id = journal_start(verbindung, rolle, gegenstand)
     begonnen = time.time()
     print(f"[{jetzt()}] Lauf {lauf_id}: {rolle}" + (f" -> {gegenstand}" if gegenstand else ""))
