@@ -8,6 +8,8 @@ tools:
   - Read
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
   - "Edit(ideas/**)"
   - "Edit(notizen/ideator.md)"
 ---
@@ -67,6 +69,16 @@ laeuft in dieselbe Wand wie der Vorgaenger.
 
 Eine Anwaltsempfehlung, die du schon einmal aufgegriffen hast, greifst du nicht erneut
 auf -- pruefe die vorhandenen Ideen auf einen Verweis in ihren Belegen.
+
+**Nennt der Anwalt eine Frage, von der sein Zuschnitt abhaengt, klaere sie mit
+WebSearch, bevor du entscheidest.** Genau eine Frage je Vorschlag, die blockierende:
+Gibt es dieses Verzeichnis? Faellt der Dienst unter jene Zulassungspflicht? Was verlangt
+der Anbieter fuer den Ein-Personen-Fall? Faellt die Antwort negativ aus, schreibst du
+statt der Idee einen Logbucheintrag mit dem Befund -- das ist ein vollwertiges Ergebnis
+und verhindert, dass jemand denselben Zuschnitt in vier Wochen erneut aufgreift.
+
+Erhebe darueber hinaus keine Marktdaten. Das ist die Arbeit des Rechercheurs und des
+Markt-Analysten; was sie geschrieben haben, uebernimmst du, statt es nachzurecherchieren.
 
 ## Marktprofile sind anders zu lesen
 

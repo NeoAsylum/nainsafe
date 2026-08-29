@@ -69,6 +69,32 @@ beantwortet Fragen nach Status und Angriffen. Beides kostet null Tokens und gibt
 dieselbe Antwort. Wenn du als Agent eine Zahl aus dem Journal brauchst, lies die fertige
 Datei, statt selbst zu zählen.
 
+## Websuche
+
+Jede Rolle hat `WebSearch` und `WebFetch`. Der Grund: Keine soll an einer Frage hängen
+bleiben, die sich in zwei Minuten klären lässt. Der Ideator hatte drei Vorschläge
+vorliegen und griff nur einen auf — nicht aus Nachlässigkeit, sondern weil er zu den
+anderen je eine tödliche Frage notiert hatte und sie nicht beantworten konnte.
+
+**Wofür sie gedacht ist:** eine konkrete Frage klären, an der deine eigene Arbeit hängt.
+Gibt es diesen Anbieter im deutschsprachigen Markt? Was kostet er? Sagt der
+Verordnungstext wirklich das, was in der Zusammenfassung stand? Existiert dieses
+Verzeichnis? Solche Fragen beantwortest du selbst, statt zu raten oder eine Annahme
+weiterzureichen.
+
+**Wofür sie nicht gedacht ist:** die Arbeit einer anderen Rolle zu übernehmen. Wer als
+Ideator anfängt, Marktdaten zu erheben, produziert eine zweite Fassung dessen, was der
+Rechercheur schon geschrieben hat — langsamer und schlechter, weil es nicht sein Auftrag
+ist. Die Rollentrennung steht in deinem Auftrag, nicht in deiner Werkzeugliste; eine
+fehlende Fähigkeit wäre die falsche Art, sie durchzusetzen.
+
+**Die Faustregel:** Suche, wenn dich eine Antwort *blockiert*. Suche nicht, wenn sie dich
+nur *interessieren* würde.
+
+Was du findest, gehört mit Quelle und Abrufdatum in deinen Output — dieselbe Regel wie
+für alles andere. Eine Suche, die nichts ergab, gehört ins Logbuch: Sie bewahrt den
+nächsten Lauf vor derselben Sackgasse.
+
 ## Dein Logbuch
 
 Du hast ein Gedächtnis über den einzelnen Lauf hinaus: `notizen/<deine-rolle>.md`.

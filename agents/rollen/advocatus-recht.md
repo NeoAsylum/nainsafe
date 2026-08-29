@@ -9,6 +9,7 @@ tools:
   - Glob
   - Grep
   - WebSearch
+  - WebFetch
   - "Edit(ideas/**)"
   - "Edit(notizen/advocatus-recht.md)"
 ---

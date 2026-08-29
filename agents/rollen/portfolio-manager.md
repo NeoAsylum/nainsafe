@@ -8,6 +8,8 @@ tools:
   - Read
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
   - "Edit(ideas/**)"
   - "Edit(ops/portfolio.md)"
   - "Edit(gates/**)"

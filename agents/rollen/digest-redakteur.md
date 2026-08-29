@@ -8,6 +8,8 @@ tools:
   - Read
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
   - "Edit(ops/digest/**)"
   - "Edit(notizen/digest-redakteur.md)"
 ---

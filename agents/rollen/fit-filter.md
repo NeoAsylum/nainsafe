@@ -8,6 +8,8 @@ tools:
   - Read
   - Glob
   - Grep
+  - WebSearch
+  - WebFetch
   - "Edit(ideas/**)"
   - "Edit(notizen/fit-filter.md)"
 ---
