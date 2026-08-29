@@ -1,10 +1,10 @@
 ---
 id: 0012-asbestanzeige-je-baustelle
 titel: Die objektbezogene Asbestanzeige aus Stammdaten und Baustellendaten zusammensetzen
-status: kandidat
+status: widerlegt
 erstellt: 2026-08-28
-geaendert: 2026-08-28
-rolle: fit-filter
+geaendert: 2026-08-29
+rolle: portfolio-manager
 
 quelle: signals/maerkte/2026-08-28-dachdeckerbetriebe.md
 
@@ -13,7 +13,7 @@ problem: Seit dem 20.12.2025 ist die objektbezogene Asbestanzeige auch im mittle
 loesung: Der Betrieb pflegt seinen Mitarbeiterstamm mit Sachkunde- und Vorsorgenachweisen einmal, gibt je Baustelle Objektadresse, Termin, Risikostufe und Besetzung ein und erhaelt das ausgefuellte Landesformular samt vollstaendiger Anlagenliste als Dokument zum Selbstversand.
 zahlungsgrund: zwang
 
-ablehnungsgrund: null
+ablehnungsgrund: "Fuenf von fuenf Linsen bleiben nach der Verteidigung widerlegt (4 unloesbar, 1 teuer). Schwerster nicht ausgeraeumter Einwand, Linse Nachfrage, vom Anwalt am Verordnungstext bestaetigt statt entkraeftet: Die Pflicht, die das Produkt bedient, gibt es im Segment nicht. Anhang I Nr. 3.5 Absatz 3 GefStoffV im Wortlaut: 'Bei wechselnden Arbeitsstaetten 1. sind bei Taetigkeiten im Bereich mittleren Risikos ergaenzend zur unternehmensbezogenen Anzeige der Ort der Arbeitsstaette sowie Beginn und Dauer der Taetigkeiten anzuzeigen oder 2. ist bei Taetigkeiten im Bereich hohen Risikos eine objektbezogene Anzeige mit Angaben nach Absatz 2 erforderlich.' Der Anwalt dazu: 'Was je Baustelle wiederkehrt, sind drei Angaben. Was das Produkt zusammensetzt, faellt einmal in sechs Jahren an. Ein Zuschnitt, der das aufhebt, existiert nicht — man kann eine Pflicht nicht herbeischneiden.' Damit ist die Loesungszeile der Idee — Mitarbeiterstamm mit Sachkunde- und Vorsorgenachweisen je Baustelle zusammensetzen — im mittleren Risikobereich gegenstandslos. Zwei Einwaende toeten unabhaengig davon je fuer sich: Linse Recht mit G6 — 'Sobald das Produkt eine Aussage ueber die Gueltigkeit von Sachkunde oder Vorsorge trifft — Ampel, Restlaufzeit, das Wort „gueltig" —, entscheidet es mit, wer an einem Karzinogen der Kategorie 1A arbeitet. Haftung fuer Gesundheitsschaeden ist nicht abdingbar'; und Linse Vertrieb mit 'kein gangbarer Weg gefunden', wozu der Anwalt genau einen Kandidaten fand (Lehrgangsanbieter als Mittler) und selbst verwarf, weil er ueber Monate, Gespraeche und G3 entstuende und der Anbieter das Verschenkte mit dem Asbest-Wiki bereits selbst liefert. Dazu Wettbewerb: Hamburg betreibt den Vorgang seit Jahren gebuehrenfrei online samt gespeicherter Stammdaten, 'der Wettbewerber ist der Herausgeber des Formulars […] Sein Anteil waechst mit jedem OZG-Rollout, und der Takt liegt bei jemand anderem.' Teuer, aber real: Betrieb faellt nur mit dem Zuschnitt auf ein Bundesland unter das Zeitbudget, und der nimmt dem Produkt die Stammdatenhaelfte — genau den Bestandteil, mit dem der Fit-Filter 0012 gegen 0013 abgegrenzt hatte. Drei Korrekturen des Anwalts zugunsten der Idee, die das Urteil nicht drehen: Die Sieben-Tage-Frist stimmt (§ 11a Abs. 4 stellt nur Art und Umfang unter den Risikobereich, nicht die Frist); der Angabenkatalog ist bundeseinheitlich, den Laendern bleibt nur der Adressat; und die Bescheinigung nach § 6 Abs. 3 ArbMedVV enthaelt weder Diagnose noch Bedenkensaussage, es entstehen also keine Gesundheitsdaten nach Art. 9 DSGVO. Anwaltsempfehlung: fallenlassen. Beide Anschlusszuschnitte sind ausgearbeitet und gestorben: 0015 (objektbezogene Anzeige im hohen Risikobereich) und 0014 (Antragsmappe nach § 11a Abs. 4a), beide an G7."
 
 score:
   zwang: 4

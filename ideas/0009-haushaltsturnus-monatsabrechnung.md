@@ -1,10 +1,10 @@
 ---
 id: 0009-haushaltsturnus-monatsabrechnung
 titel: Monatsrechnung aus den tatsächlich gefahrenen Haushaltsterminen
-status: kandidat
+status: widerlegt
 erstellt: 2026-08-28
-geaendert: 2026-08-28
-rolle: fit-filter
+geaendert: 2026-08-29
+rolle: portfolio-manager
 
 quelle: signals/modelle/2026-08-28-vertikale-software-privathaushalts-reinigungsfirmen.md
 
@@ -13,7 +13,7 @@ problem: Abgerechnet wird nicht ein fester Monatsbetrag, sondern was im Monat ta
 loesung: Ein Dienst, der je Haushalt Turnus und Preis führt, daraus die Solltermine des Monats erzeugt, Absagen und Nachholtermine mitnimmt und am Monatsende die Rechnungen genau über die stattgefundenen Einsätze stellt — mit dem vom Betrieb selbst gesetzten Arbeitskostenanteil getrennt ausgewiesen.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "Vier von fuenf Linsen bleiben nach der Verteidigung widerlegt (2 unloesbar, 2 teuer); nur Recht hat der Anwalt ausgeraeumt. Schwerster nicht ausgeraeumter Einwand, Linse Nachfrage, in den Worten des Anwalts: 'Kommt heraus, dass pauschal abgerechnet wird, ist das Produkt eine Serienrechnung und stirbt an der Buchhaltungsschicht. Kommt heraus, dass spitz abgerechnet wird, ist es das, was Meisterwerk auf seiner Reinigungsseite bereits beschreibt […] und stirbt am Wettbewerb. Es gibt keinen Ausgang, in dem die Luecke zugleich existiert und unbesetzt ist. Eine Pruefung, deren beide Ergebnisse zur Ablehnung fuehren, ist kein Weg, sondern ein bezahlter Umweg dorthin.' Die Idee markiert ihren einzig verbliebenen Kaufgrund selbst als unbelegt ('Rechnungen, die sonst vergessen werden. Ob das vorkommt, ist unbelegt.'), und in sieben Belegen der Idee plus zwei gezielten Suchen der Linse beschreibt kein einziger Reinigungsbetrieb dieses Problem. Unabhaengig davon toedlich, Linse Vertrieb: 'erster_kunde_ueber: kein gangbarer Weg gefunden'. Der Anwalt hat vier Kanaele geprueft und verworfen (Innungs-Newsletter — redaktionell entschieden, also G3; Steuerberater als Mittler; bezahlte Sichtbarkeit bei Capterra — Geld, also Gate; Inhalte produzieren — 'das ist der Einwand, nicht seine Loesung') und benennt die Verschraenkung: 'Ein fehlender Kanal ist ueberwindbar, solange die Zielgruppe wenigstens sucht; eine Zielgruppe, die nicht sucht, ist erreichbar, solange es einen Ort gibt, an dem sie versammelt ist. Hier fehlt beides, und zwei Nullen ergeben keinen Weg.' Teuer, aber real: Betrieb deckelt nach allen sechs Schnitten bei rund zwei Dutzend Kunden (~475 EUR brutto, grob 265 EUR netto im Monat) — 'Der Deckel ist erreicht, bevor der Betrieb interessant wird'; Wettbewerb laesst als Alleinstellung nur den getrennten Arbeitskostenausweis uebrig, den easybill, Sage HWP und xrechnungs.de als Feld mitliefern. Zwei Korrekturen des Anwalts, die das Urteil nicht drehen, aber gelten: EasyWeeks Gratisstufe (30 Buchungen) deckt den Beispielbetrieb mit 168 Sollterminen nicht ab, und unico (ab 87 EUR, gegen Kostentraeger) erzeugt fuer Ein- bis Drei-Personen-Betriebe keinen Preisdruck — der behauptete Preisboden ist schwaecher belegt als angenommen, das Preisdach von Meisterwerk (ab 49 EUR Vollprodukt) traegt die Idee trotzdem nicht. Anwaltsempfehlung: fallenlassen. Der Alltagshilfe-Zuschnitt ist vom Ideator am 2026-08-29 geprueft und widerlegt (Helferdesk Tarif 'Solo', 19 EUR/Monat fuer einen Helfer)."
 
 score:
   zwang: 2

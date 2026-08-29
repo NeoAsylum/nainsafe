@@ -1,10 +1,10 @@
 ---
 id: 0005-zettelfoto-in-stundenzeile
 titel: Foto des handschriftlichen Stundenzettels wird zur importierbaren Zeile
-status: kandidat
+status: widerlegt
 erstellt: 2026-08-28
-geaendert: 2026-08-28
-rolle: fit-filter
+geaendert: 2026-08-29
+rolle: portfolio-manager
 
 quelle: signals/pain/2026-08-28-stundenzettel-abendliche-uebertragung.md
 
@@ -13,7 +13,7 @@ problem: Der Zettel gewinnt auf der Baustelle, weil er schneller ist als jede Ap
 loesung: Der Mitarbeiter fotografiert den Zettel mit dem Telefon; der Dienst liest Datum, Mitarbeiter, Auftrag, Stunden und Materialpositionen aus und liefert eine Datei zum Import in das System, das der Betrieb ohnehin nutzt — das Papier bleibt, nur das Abtippen entfällt.
 zahlungsgrund: nutzen
 
-ablehnungsgrund: null
+ablehnungsgrund: "Fuenf von fuenf Linsen widerlegt, keine davon vom Anwalt ausgeraeumt (2 teuer, 3 unloesbar). Schwerster nicht ausgeraeumter Einwand, Linse Betrieb, in den Worten des Anwalts: 'Erst die letzte Zeile haelt G4 ein. Und dort stirbt es: MeinHandwerker kostet 49 € je Betrieb pauschal, Craftboxx ab 15,99 €, typische Cloud-Loesungen 3 bis 12 € je Nutzer — das ist der Preis fuer die *vollstaendige* Software mit Auftrag, Rechnung und Zeiterfassung. Eine Abtipphilfe, die davon eine Teilfunktion ist, muesste das Zwei- bis Sechsfache kosten. Das ist keine Vertriebsfrage mehr, das ist arithmetisch aus.' Zwei weitere Einwaende toeten unabhaengig davon je fuer sich: Linse Recht mit G6 — 'der vertragstypische vorhersehbare Schaden aus einer falsch uebernommenen Lohnzeile ist ein korrigierter Lohnlauf ueber mehrere Mitarbeiter, und der uebersteigt den Jahresumsatz dieses Kunden', vom Anwalt ausdruecklich nicht wegverhandelt; und Linse Vertrieb mit 'erster_kunde_ueber: kein gangbarer Weg gefunden', wozu der Anwalt vier Kanaele einzeln geprueft hat (Fachgrosshandel, Innung, Zielsystem-Marktplatz, Suchanzeigen) und keinen benennbaren fand — 'jeder faellt an einer anderen [Hausregel]'. Was der Anwalt der Anklage abzieht, aendert das Urteil nicht: Die Nachfrage-Praemisse 'das Segment hat nein gesagt' ist falsch (es hat den Erfassungsweg abgelehnt, nicht den Preis), aber unbekannte Zahlungsbereitschaft ist kein Kaufgrund; und es gibt tatsaechlich keinen deutschen Anbieter dieses Zuschnitts — die Luecke ist besetzt durch die Entscheidung von zwoelf Anbietern, das Papier zu ersetzen statt es zu lesen. Nicht widerlegt und weiterhin unbekannt: die Erkennungsquote an echter Baustellenhandschrift; sie fehlt in allen sechs Dateien. Anwaltsempfehlung: fallenlassen. Der Zahlerwechsel zum Lohnbuero ist als 0006 bereits ausgearbeitet und an G3 gestorben."
 
 score:
   zwang: 2
