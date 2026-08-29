@@ -91,37 +91,13 @@ maerkte:
     ein paar tausend Betriebe mit einem Zahlungsbereitschaftsdeckel von dreissig Euro.
     Ein deutsches Handwerkssegment kann diese Schwelle fast nur ueber einen hohen Preis
     erreichen, nicht ueber Menge. Die beiden neuen Bloecke unten drehen das um.
+  reihenfolge: >
+    Der Analyst arbeitet von oben nach unten. Die beiden neuen Bloecke stehen seit
+    2026-08-29 vor dem deutschen, weil dieser sechzehn von zweiundzwanzig Segmenten
+    als potenzial: gering geliefert hat und der haeufigste Grund die Groesse war.
+    Die sieben offenen deutschen Segmente bleiben in der Liste -- sie sind nicht
+    widerlegt, nur nachrangig.
   segmente:
-    # --- Deutscher Mittelstand: Rest der urspruenglichen Liste ---
-    # Handwerk mit vielen kleinen Betrieben und wiederkehrender Dokumentation
-    - Dachdeckerbetriebe
-    - Elektroinstallationsbetriebe
-    - Sanitaer-, Heizungs- und Klimabetriebe
-    - Schaedlingsbekaempfer
-    - Kaelte- und Klimaanlagenwartung
-    - Aufzugswartung und Pruefdienste
-    # Gesundheit und Pflege ausserhalb der Heilkunde
-    - Ambulante Pflegedienste
-    - Physiotherapiepraxen
-    - Tierarztpraxen
-    - Hebammen und Geburtshaeuser
-    # Betreute Objekte und Anlagen
-    - Hausverwaltungen fuer Wohnungseigentum
-    - Facility-Dienstleister fuer Kleinobjekte
-    - Betreiber von Spielplaetzen und Sportanlagen
-    - Campingplaetze und Ferienparks
-    # Transport, Logistik, Landwirtschaft
-    - Speditionen unter fuenfzig Fahrzeugen
-    - Landwirtschaftliche Lohnunternehmen
-    - Imkereien und Direktvermarkter
-    # Bildung, Vereine, Kultur
-    - Musikschulen und private Bildungstraeger
-    - Sportvereine mit Hauptamtlichen
-    - Kleine Museen und Gedenkstaetten
-    # Gastgewerbe und Veranstaltung
-    - Caterer und Eventgastronomie
-    - Betreiber von Ferienwohnungen mit mehreren Objekten
-
     # --- Englischsprachiger B2B-Markt ---
     # Dieselbe Betriebsart, aber im Sprachraum US/UK/CA/AU/IE/NZ statt in einem Land.
     # Das ist der eine Hebel, der aus dreitausend Betrieben hunderttausend macht, ohne
@@ -152,3 +128,33 @@ maerkte:
     - Kleingartenvereine und Selbstversorger mit Anbauplanung
     - Spielleiter und Gruppen von Tabletop- und Rollenspielen
     - Amateurastronomie und Naturbeobachtung mit Beobachtungsjournal
+
+    # --- Deutscher Mittelstand: Rest der urspruenglichen Liste ---
+    # Handwerk mit vielen kleinen Betrieben und wiederkehrender Dokumentation
+    - Dachdeckerbetriebe
+    - Elektroinstallationsbetriebe
+    - Sanitaer-, Heizungs- und Klimabetriebe
+    - Schaedlingsbekaempfer
+    - Kaelte- und Klimaanlagenwartung
+    - Aufzugswartung und Pruefdienste
+    # Gesundheit und Pflege ausserhalb der Heilkunde
+    - Ambulante Pflegedienste
+    - Physiotherapiepraxen
+    - Tierarztpraxen
+    - Hebammen und Geburtshaeuser
+    # Betreute Objekte und Anlagen
+    - Hausverwaltungen fuer Wohnungseigentum
+    - Facility-Dienstleister fuer Kleinobjekte
+    - Betreiber von Spielplaetzen und Sportanlagen
+    - Campingplaetze und Ferienparks
+    # Transport, Logistik, Landwirtschaft
+    - Speditionen unter fuenfzig Fahrzeugen
+    - Landwirtschaftliche Lohnunternehmen
+    - Imkereien und Direktvermarkter
+    # Bildung, Vereine, Kultur
+    - Musikschulen und private Bildungstraeger
+    - Sportvereine mit Hauptamtlichen
+    - Kleine Museen und Gedenkstaetten
+    # Gastgewerbe und Veranstaltung
+    - Caterer und Eventgastronomie
+    - Betreiber von Ferienwohnungen mit mehreren Objekten
