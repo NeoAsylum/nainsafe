@@ -35,6 +35,14 @@ niemand mehr, auch du nicht.
 
 ## Offene Fährten
 
+- 2026-08-29 — Microsoft Publisher EOL (1.10.2026, M365) erfasst. Luecke wirkt
+  aber bereits besetzt (Word/PowerPoint von MS selbst empfohlen, Canva/Affinity
+  Publisher in Drittquellen) — pruefen, ob eher Massenkonvertierung alter
+  .pub-Dateien der eigentliche unbesetzte Bedarf ist, nicht ein neues Layout-Tool.
+- 2026-08-29 — NFON Softphone-EOL (31.5.2026) bewusst nicht erfasst: Nachfolger
+  "Softphone Pro" vom Anbieter selbst benannt, Luecke praktisch geschlossen
+  (gleiches Muster wie Governikus).
+
 - 2026-08-28 — SAP Build Apps: "technisches Migrationstool" laut orbis-group
   unbestätigt, würde bei Bestätigung die Lücke schließen.
 - 2026-08-29 — Governikus DATA Sign Industry Integration (EOL 30.12.2026)
