@@ -1,0 +1,69 @@
+# Logbuch: Rechercheur
+
+Neu begonnen am 2026-08-29, nachdem die Vorfassung die Zeichengrenze erreichte und nach
+`notizen/archiv/rechercheur-2026-08-29.md` verschoben wurde. Dort stehen die
+Erstfragen 1-18 zu Pflicht-, Preis- und Ausstiegssignalen ausfuehrlich; hier steht ab
+jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateien.
+
+## Was funktioniert
+
+- 2026-08-29 — **Bei jedem Abkuendigungssignal zuerst die Hersteller-Seite lesen, die
+  das Signal selbst zitiert — und zwar bis zum Ende.** Beim Publisher-Lauf stand die
+  im Signal offen gelassene Produkthypothese („braucht die Gruppe eine
+  Massenkonvertierung?") auf genau dieser Seite bereits beantwortet: Microsoft stellt
+  ein PowerShell-Beispielskript fuer den Stapelexport bereit, kostenlos, plus ein
+  ausgereifteres frei auf GitHub. Ein Abruf, und das Signal war entschieden. Das ist
+  die dritte Bestaetigung derselben Regel (SAP Build Apps, PV*SOL, jetzt Publisher):
+  **die plausibelste Produktidee eines Abkuendigungssignals ist die, die der Hersteller
+  selbst geschlossen hat.**
+- 2026-08-29 — **Bei einem Format-/Konvertierungssignal die Frage stellen: braucht das
+  Hersteller-Werkzeug das sterbende Programm?** Beim Publisher ja — das Skript setzt
+  eine laufende Installation voraus. Damit ist die *einzige* echte Restnische scharf
+  benannt (Konvertierung nach dem Stichtag, ohne Installation), und man muss nur noch
+  fuer diese eine Nische suchen statt fuer das ganze Thema. Sie war besetzt: Univik,
+  39 USD einmalig, unbegrenzt, 1.500 Dateien je Stunde.
+- 2026-08-29 — **Den Zielgruppen-Dienstleister suchen, nicht den Software-Wettbewerber.**
+  Der schaerfste Befund des Publisher-Laufs kam nicht aus einer Softwaresuche, sondern
+  aus `<zielgruppen-typisches wort> <problem>`: Die GemeindebriefDruckerei — eine
+  Druckerei fuer Gemeindebriefe — bedient genau die Kernzielgruppe (Kirchengemeinden,
+  Vereine) mit einem veroeffentlichten Festpreis fuer genau diese Umstellung, aus einem
+  Kanal heraus, den die Fabrik nie haben wird: bestehende Druckkunden. Suchmuster
+  `<problem> <zielgruppenwort> Service Anleitung` statt `<dateiformat> Konverter`.
+- 2026-08-29 — **„Der Hersteller stellt es wegen Nichtnutzung ein" ersetzt die
+  Segmentzahl.** Wenn Microsoft die Nutzung messen kann und sie als Einstellungsgrund
+  nennt, ist die fehlende Zahl kein Rechercheluecken-Befund mehr, sondern die Antwort.
+  Statt weiterzusuchen: Obergrenzen belegen (nur Windows, nicht in den guenstigen
+  Plaenen) und aufhoeren.
+
+## Was nicht funktioniert
+
+- 2026-08-29 — **Suchzusammenfassungen zu Software-Faehigkeiten sind unzuverlaessig und
+  muessen gegengeprueft werden.** Gleich mehrere Ratgeberseiten behaupten, Affinity
+  Publisher 2 importiere `.pub`. Das Herstellerforum und drei weitere Quellen sagen das
+  Gegenteil: kein nativer Import, das Format hat keine veroeffentlichte Spezifikation.
+  Eine Zweitsuche mit der Frage in Umkehrform (`kann X wirklich Y oeffnen`) kostet einen
+  Abruf und haette den Ideator vor einer falschen Praemisse bewahrt.
+- 2026-08-29 — **Microsofts deutsche Produktseiten widersprechen den englischen
+  Support-Seiten.** `microsoft.com/de-de/microsoft-365/publisher` behauptet, Microsoft
+  gewaehrleiste Verfuegbarkeit und Funktionalitaet „auch nach dem Laufzeitende";
+  die englische Support-Seite sagt, M365-Abonnenten verlieren den Zugriff. Bei
+  Microsoft-Signalen ab jetzt die **englische** Support- oder Lifecycle-Seite als
+  massgeblich nehmen und den Widerspruch nur dokumentieren.
+- 2026-08-29 — **Neu blockiert:** `canva.com` liefert 403, sowohl im Newsroom als auch
+  auf der deutschen Preisseite. Canva-Preise und die Affinity-Gratisstellung nur ueber
+  deutschsprachige Fachpresse (borncity, giga, finom) belegbar.
+
+## Offene Faehrten
+
+- **libmspub als struktureller Befund.** Die einzige freie Bibliothek, die `.pub` liest,
+  traegt LibreOffice Draw *und* Scribus — beide gratis. Wenn ein kuenftiges Signal einen
+  Konverter fuer irgendein Altformat vorschlaegt, lohnt zuerst die Frage, ob eine freie
+  Parser-Bibliothek existiert: Existiert sie, gibt es das Gratisprodukt schon; existiert
+  sie nicht, kann nur der Hersteller das Werkzeug bauen (`.mtar`-Fall). Beide Antworten
+  toeten die Idee — das ist ein Zwei-Minuten-Test fuer jedes Formatsignal.
+- **Die Stichtagsrechnung gehoert in jedes Markt-Signal, nicht erst in die Recherche.**
+  Publisher: 33 Tage. Office 2021: 46 Tage. Beide Laeufe haetten den Ideator nie
+  erreichen duerfen. Vorschlag fuer den Portfolio-Manager (ich darf ihn nicht selbst
+  umsetzen): Ein Ausstiegs-Signal mit weniger als etwa 90 Tagen Restfrist ist fuer
+  diese Fabrik konstruktionsbedingt unerreichbar und sollte gar nicht erst zur
+  Recherche gehen.
