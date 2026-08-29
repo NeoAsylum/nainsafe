@@ -23,6 +23,10 @@ niemand mehr, auch du nicht.
   Transportverpackung) -- lohnt, Einzelartikel eines bereits erfassten Gesetzes gezielt
   durchzugehen statt das Gesetz als "erledigt" abzuhaken. gesetze.legal liefert
   brauchbare Wortlaut-Zitate, wenn EUR-Lex-PDF/HTML per WebFetch leer bleibt.
+- 2026-08-29 — Suche nach Meldefristen abseits der Beobachtungsliste (Pillar-Two/
+  Mindeststeuergesetz, DAC8) foerdert Fristen zutage, die keine Registrierungspflicht
+  sind, sondern wiederkehrende Konzern-Meldepflichten mit Schwellenwert -- lohnt sich
+  als dritte Suchrichtung neben "Beobachtungsliste" und "24-Monats-Pflichten".
 
 ## Was nicht funktioniert
 
@@ -36,16 +40,21 @@ niemand mehr, auch du nicht.
 - 2026-08-28 (2. Lauf) — Referentenentwuerfe bleiben kein Signal, auch wenn Medien
   ein konkretes Datum melden (Kassenpflicht 2028-01-01): "Entwurf" heisst kein
   Kabinettsbeschluss, keine Rechtsgrundlage.
+- 2026-08-29 — Auch ein reiner Kabinettsbeschluss (Regierungsentwurf, noch nicht im
+  Bundestag beschlossen) reicht nicht: Reservestaerkungsgesetz (Kabinett 2026-07-01)
+  hat weder finales Datum ("Anfang 2027") noch Bundestagsbeschluss -- kein Signal.
 
 ## Offene Fährten
 
-- KRITIS-Dachgesetz: KRITIS-VO (§§4,5) am 2026-08-28 immer noch nicht erlassen --
-  Registrierungsfrist (3 Monate nach VO) weiterhin ohne Datum. BSI-Portal-Registrierung
-  fuer "besonders wichtige Einrichtungen" laeuft aber bereits seit 2026-01-06 (separater
-  Vorgang, kein neuer Stichtag). Bei BBK/BSI regelmaessig nachsehen.
-- Registrierkassenpflicht: BMF-Referentenentwurf vom 2026-08-07 nennt 2028-01-01,
-  >100.000 EUR Jahresumsatz -- noch kein Kabinettsbeschluss, also kein Signal. Sobald
+- KRITIS-Dachgesetz: KRITIS-VO (§§4,5) am 2026-08-29 immer noch nicht erlassen
+  (openkritis.de bestaetigt erneut "Entwurf noch nicht verfuegbar") --
+  Registrierungsfrist (3 Monate nach VO, fruehester Termin 2026-07-17, erste harte
+  Frist Mitte Oktober 2026) weiterhin ohne konkretes Startdatum. Bei BBK/BSI
+  regelmaessig nachsehen.
+- Registrierkassenpflicht: weiterhin nur BMF-Referentenentwurf (2028-01-01,
+  >100.000 EUR Jahresumsatz), am 2026-08-29 noch kein Kabinettsbeschluss. Sobald
   Kabinett/Bundestag beschliesst, Signal nachtragen.
-- EUDR: Niedrigrisiko-Laenderliste (2025-05-22, 140 Laender inkl. Deutschland) aendert
-  nur die Kontrollquote, nicht Frist/Schwelle/Kreis -- kein eigenes Signal noetig,
-  Faehrte damit erledigt.
+- Reservestaerkungsgesetz: Kabinettsbeschluss 2026-07-01, Arbeitgeberpflicht zur
+  Freistellung von Reservisten (Ende "doppelte Freiwilligkeit"), Inkrafttreten
+  vage "Anfang 2027" -- sobald Bundestag beschliesst und Datum feststeht, Signal
+  anlegen (bmvg.de/bundesregierung.de als Primärquelle nutzen).
