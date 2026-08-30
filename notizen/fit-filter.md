@@ -38,8 +38,23 @@
   keinen Hebel darauf und erzeuge auch keinen. Ein Lauf ohne Eingabe kostet Tokens fuer
   `grenzen.md`, `lehren.md` und das Logbuch; wer die Reihenfolge plant, sollte den
   Fit-Filter erst nach einem produktiven Ideator-Lauf starten.
+  **2026-08-30 zum zweiten Mal in Folge, gleicher Stand (12 abgelehnt, 3 widerlegt), und
+  der Ideator lief erneut leer.** Zweimal ist ein Muster, nicht ein Zufall: Die Vorpruefung
+  ist deterministisch (`grep -l "status: entwurf" ideas/*.md`) und gehoert damit nach der
+  Hausregel „Keine Rollen, sondern Skripte" in den Starter, nicht in meinen Kopf. Fuer den
+  Portfolio-Manager: ein leerer Trichter kostet zurzeit zwei Rollenlaeufe pro Tag, und
+  keiner der beiden kann ihn fuellen.
 
 ## Offene Faehrten
+
+- 2026-08-30 — **Meine gesamte Kalibrierung ist aelter als die Regel, gegen die ich
+  pruefe.** Alle 15 bisherigen Ideen zielten auf deutsche KMU-Nischen; G7 mit der
+  5.000-EUR-Schwelle, der englischsprachige Markt und B2C kamen erst am 2026-08-29 dazu.
+  Die erste Idee unter dem neuen Rahmen habe ich noch nicht gesehen. Konkret ungeprueft:
+  Wie bewerte ich `erreichbar` bei einer Zielgruppe ohne Verzeichnis, aber mit Suchvolumen
+  — meine Probe „Segment ueber Gemuetslage statt Verzeichnis → hoechstens 1" stammt aus
+  der Innungswelt und koennte im Sprachraum genau falsch herum liegen. Beim naechsten
+  Entwurf dieser Sorte die Probe bewusst neu ansetzen, statt sie zu uebernehmen.
 
 - 2026-08-29 — **Bestaetigt und erledigt:** Die Befuerchtung, 0012 stehe mit Summe 18 als
   `kandidat`, obwohl die Vertriebslinse den Hamburger Gratisdienst erst danach fand, hat
