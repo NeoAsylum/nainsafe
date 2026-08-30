@@ -43,20 +43,27 @@ niemand mehr, auch du nicht.
 
 ## Offene Fährten
 
-- KRITIS-Dachgesetz: Registrierungsfrist war 17.07.2026 (4 Monate nach
-  Inkrafttreten 16.03.2026) -- Stichtag bereits verstrichen, kein Signal mehr.
-  KritisV (Referentenentwurf 26.05.2026) am 2026-08-29 weiterhin nicht erlassen;
-  Folgepflichten (Risikoanalyse +9 Mon., Resilienzplan +10 Mon. nach
-  Registrierung) betreffen nur bereits Registrierte -- kein neues Signal daraus.
-- Registrierkassenpflicht: weiterhin nur Koalitionsvertrags-Ankuendigung
-  (2027-01-01, >100.000 EUR Jahresumsatz), am 2026-08-29 noch kein
-  Referentenentwurf des BMF, kein Kabinettsbeschluss.
-- Reservestaerkungsgesetz: Kabinettsbeschluss 2026-07-01, Bundestagsberatung
-  laut Plan erst "nach der Sommerpause" (Herbst 2026), Inkrafttreten weiterhin
-  vage "Anfang 2027" -- sobald Bundestag beschliesst und Datum feststeht,
-  Signal anlegen.
+- KRITIS-Dachgesetz: Registrierungsfrist (17.07.2026) wurde per Aenderungsgesetz
+  (Bundesanzeiger 28.07.2026) **ersatzlos gestrichen** -- kein Stichtag mehr,
+  Faehrte erledigt (borncity.com, abgerufen 2026-08-30). KritisV weiterhin nur
+  Referentenentwurf (26.05.2026, Konsultation bis 16.06.2026), laut Presseschau
+  Erlass "im Herbst" 2026 erwartet -- noch kein Signal, erst bei Verkuendung.
+- Registrierkassenpflicht: jetzt Referentenentwurf des BMF vom 07.08.2026
+  ("Gesetz zur Einfuehrung einer Kassenpflicht"), konkret: >100.000 EUR
+  Jahresumsatz, TSE-Pflicht + DSFinV-K, Stichtag 01.01.2028 -- aber weiterhin
+  **kein Kabinettsbeschluss**. Nach eigener Regel ("Gesetzentwurf ohne
+  Beschluss ist kein Signal") noch nicht signalreif, obwohl Datum und Schwelle
+  schon konkret sind. Sobald Kabinett beschliesst: sofort Signal anlegen.
+- Reservestaerkungsgesetz: unveraendert, Kabinettsbeschluss 2026-07-01,
+  Bundestagsberatung weiterhin vage "nach der Sommerpause", Inkrafttreten
+  "Anfang 2027" -- weiter kein Signal.
 - LkSG-Aenderung (Aussetzung Berichtspflicht): 1. Lesung 16.01.2026, am
-  2026-08-29 weiterhin keine 2./3. Lesung auffindbar, kein Beschluss.
+  2026-08-30 weiterhin keine 2./3. Lesung auffindbar, kein Beschluss.
+- Neu entdeckt: EU-Geldwaescheverordnung (AMLR, VO 2024/1624) -- bereits
+  erlassen, Anwendungsbeginn 10.07.2027, Nichtfinanzsektor (Guaeterhaendler,
+  Immobilienmakler, Kunsthaendler u.a.) und Bargeldobergrenze 10.000 EUR fuer
+  alle Unternehmen. Als Signal angelegt (2026-08-30). Primaerquelle
+  (Verordnungstext Art. 3, genaue Bargeldobergrenze-Fundstelle) noch offen.
 - BFSG-Kleinstunternehmen-Ausnahme (§ 3 Abs. 3 BFSG) ist laut Gesetzeswortlaut
   **unbefristet** -- ein Blog (mk-websolution.de) behauptete faelschlich, sie
   laufe Ende 2026 aus. Primaerquelle widerspricht: kein Signal, und Vorsicht bei
@@ -72,3 +79,15 @@ niemand mehr, auch du nicht.
   Entgelttransparenz, CRA-Meldepflicht) waren bereits wortgleich mit Stichtag
   erfasst -- lohnt sich, vor jeder Suche erst die vorhandene Datei zu lesen,
   nicht nur den Dateinamen zu ueberfliegen.
+
+## Lauf 2026-08-30 (4.)
+
+- Ein Signal neu: EU-Geldwaescheverordnung (AMLR) Anwendungsbeginn 10.07.2027 --
+  gefunden ueber Suchrichtung "neue Meldepflicht ab 2027 beschlossen" (dritte
+  Suchrichtung neben Beobachtungsliste/24-Monats-Pflichten/offene Faehrten).
+  Lohnt sich als vierte Standardsuche: Verordnungen, die schon Jahre vorher
+  erlassen wurden, aber erst jetzt in den 24-Monats-Horizont ruecken.
+- Wichtige Klarstellung der eigenen Regel: Ein Referentenentwurf mit konkretem
+  Datum/Schwellenwert (hier Registrierkassenpflicht) ist **trotzdem kein
+  Signal** ohne Kabinettsbeschluss -- Konkretheit der Zahlen ersetzt nicht den
+  Verfahrensstand. Vorher versehentlich fast als Signal angelegt.
