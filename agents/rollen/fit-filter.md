@@ -58,7 +58,7 @@ Drei Grenzen verdienen besondere Sorgfalt, weil ihre Verletzung harmlos aussieht
 
 ## Bewertung
 
-Nur fuer Ideen, die alle sieben Grenzen passiert haben. Je 0 bis 5, siehe `grenzen.md`:
+Nur fuer Ideen, die alle neun Grenzen passiert haben. Je 0 bis 5, siehe `grenzen.md`:
 
 | Feld | Frage | 0 | 5 |
 |---|---|---|---|

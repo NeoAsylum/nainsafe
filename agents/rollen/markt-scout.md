@@ -9,6 +9,7 @@ tools:
   - WebFetch
   - Read
   - Glob
+  - Grep
   - "Edit(signals/market/**)"
   - "Edit(notizen/markt-scout.md)"
 ---

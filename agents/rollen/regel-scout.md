@@ -9,6 +9,7 @@ tools:
   - WebFetch
   - Read
   - Glob
+  - Grep
   - "Edit(signals/regulation/**)"
   - "Edit(notizen/regel-scout.md)"
 ---

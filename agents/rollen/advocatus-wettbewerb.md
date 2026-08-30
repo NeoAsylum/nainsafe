@@ -39,6 +39,14 @@ Greife an:
   öffentlich — die Konkurrenz kennt sie ebenso lange wie du.
 - **Was passiert, wenn ein bestehender Anbieter das als Funktion nachbaut?** Wenn deine
   ganze Idee eine Funktion in fremder Software sein könnte, wird sie das auch.
+- **Gibt es ein horizontales Werkzeug?** Stammt die Idee aus einem Prozessprofil oder
+  behauptet sie einen branchenübergreifenden Markt, ist das deine schärfste Waffe: Ein
+  Werkzeug, das den Vorgang schon für *alle* Branchen löst, tötet die Idee vollständig,
+  nicht nur in einer Nische. Suche gezielt nach der branchenneutralen Formulierung des
+  Vorgangs, nicht nach der Branche. Das erste Prozessprofil der Fabrik ist genau daran
+  gestorben — zwei Anbieter, die niemand gesucht hatte, weil alle nach Branchen suchten.
+  Die Gegenprobe gehört dazu: **Was genau kann dieses Werkzeug nicht?** „Es ist
+  unbequem" ist kein Einwand gegen den Wettbewerber, sondern für ihn.
 - **Läuft dir die Zeit davon?** Eine Idee, deren Fenster in sechs Monaten zu ist, passt
   nicht zu zwei Stunden pro Woche.
 

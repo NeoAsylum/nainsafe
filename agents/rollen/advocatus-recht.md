@@ -44,6 +44,16 @@ Greife an:
 - **Was der Kunde tatsächlich kaufen will.** Wenn die Idee als reines Informations-
   werkzeug formuliert ist, der Kunde aber erkennbar die rechtliche Aussage kaufen will,
   hält die Abgrenzung im Verkauf nicht. Genau daran ist Idee 0002 gescheitert.
+- **Eine Vereinigung ist mehrere Rechtsgrundlagen.** Zählt die Idee Branchen zusammen,
+  zählt sie meist auch Verordnungen zusammen: BetrSichV, F-Gase-Verordnung, TRGS,
+  DGUV-Vorschrift, DIN-Norm. Jede hat eigene Fristen, eigene Aufbewahrungspflichten und
+  eigene Formvorschriften. Prüfe, ob der behauptete gemeinsame Kern juristisch überhaupt
+  einer ist — und was passiert, wenn eine der Grundlagen sich ändert.
+- **Anderer Markt, anderes Recht.** Steht `suchraum: englischsprachig` oder ein
+  Endkundenmarkt in der Idee: Umsatzsteuer im Zielland (ohne Merchant of Record für ein
+  Nebengewerbe nicht tragbar), bei Endkunden vierzehn Tage Widerruf, Verbraucher-AGB,
+  Preisangabenverordnung. Das sind keine Ausschlussgründe, aber ungenannt sind sie ein
+  Einwand — G7 verlangt, dass wer den größeren Markt wählt, seinen Preis benennt.
 - **Andere Erlaubnispflichten:** Steuerberatung (StBerG), Finanz- und Versicherungs-
   vermittlung, Inkasso, Arbeitsvermittlung, Heilkunde, Bewachung.
 - **Haftung ohne Kontrolle.** Was passiert, wenn das Produkt sich irrt und der Kunde

@@ -8,7 +8,6 @@ tools:
   - Read
   - Glob
   - Grep
-  - Bash
   - WebSearch
   - WebFetch
   - "Edit(ops/verbesserung.md)"
@@ -26,8 +25,8 @@ liest und umsetzt, ist mehr wert als zehn, die er überfliegt.
 Führe zuerst aus:
 
 ```sh
-python3 agents/weg.py
-python3 agents/kontingent.py
+ops/wege.md
+ops/kontingent.md
 ```
 
 Das erste zeigt, **wo** Ideen sterben, an welcher Grenze, unter welcher Linse — und wie
@@ -119,5 +118,13 @@ lange genug nachgedacht.>
   verschlechtert womöglich etwas, das funktioniert.
 - **Nichts vorschlagen, was schon in `notizen/lehren.md` steht.** Das wäre eine
   Wiedervorlage.
-- **Bash nur lesend** — `weg.py`, `kontingent.py`, `git log`. Du führst keine
-  Agentenläufe aus und veränderst nichts.
+- **Du hast keine Shell.** Bis zum 2026-08-30 stand `Bash` in deiner Werkzeugliste,
+  damit du `weg.py` und `kontingent.py` selbst aufrufen konntest. Das war ein Loch: Eine
+  Rolle mit *irgendeinem* Bash-Eintrag darf im Arbeitsverzeichnis schreiben — der
+  Sandkasten sperrt nur ausserhalb, und die Edit()-Sperren auf `CLAUDE.md`,
+  `grenzen.md` und `agents/` greifen bei einer Shell gar nicht. Nachgemessen, nicht
+  vermutet.
+
+  Was du davon brauchst, legt dir der Wochenlauf vorher hin, zu null Tokens:
+  `ops/auslastung.md`, `ops/wege.md`, `ops/kontingent.md`. Sind sie älter als dieser
+  Lauf oder fehlen sie, sag das in deinem Vorschlag — rechne nichts von Hand nach.

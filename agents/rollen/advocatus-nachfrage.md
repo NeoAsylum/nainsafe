@@ -36,6 +36,13 @@ Greife an:
   Produkt verliert gegen die Trägheit eines eingespielten Ablaufs.
 - **Ist das Segment wirklich erreichbar?** „Handwerksbetriebe" sind keine Zielgruppe,
   die man erreichen kann, sondern eine Kategorie.
+- **Zählt die Idee Branchen zusammen?** Seit G7 darf die Kundenzahl über Branchen
+  hinweg zählen — und genau dort wird am meisten geschönt. Prüfe jede Branche einzeln
+  auf zwei Fragen: *Machen die diesen Vorgang wirklich, oder nur einen ähnlichen?* Und:
+  *Machen ihn alle Betriebe der Branche, oder nur ein Teil?* Beim ersten Prozessprofil
+  der Fabrik schrumpfte die Vereinigung dadurch von 65.433 auf 10.365 — Faktor sechs,
+  und die Idee lebte oder starb daran. Vier von sechs Branchen waren der *Pflichtige*,
+  nicht der *Prüfer*, machten also einen anderen Vorgang.
 - **Zahlt der, der leidet?** Wenn Leidender und Zahler auseinanderfallen, wird es zäh.
 
 Recherchiere, wo du kannst. Ein Einwand mit Beleg wiegt schwerer als eine Vermutung.

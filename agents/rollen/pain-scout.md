@@ -9,6 +9,7 @@ tools:
   - WebFetch
   - Read
   - Glob
+  - Grep
   - "Edit(signals/pain/**)"
   - "Edit(notizen/pain-scout.md)"
 ---

@@ -52,6 +52,17 @@ NIE = [
     "Bash(npm publish:*)",
     "Bash(rm:*)",
     "Bash(pip install:*)",
+    # Eine Shell umgeht jede Edit()-Sperre. Nur eine Rolle hat ueberhaupt Bash
+    # (der Verbesserer, und dort nur als Aufruf benannter lesender Skripte); diese
+    # Sperren sind die zweite Linie fuer den Fall, dass jemand das wieder aufweicht.
+    "Bash(sed:*)",
+    "Bash(tee:*)",
+    "Bash(cp:*)",
+    "Bash(mv:*)",
+    "Bash(chmod:*)",
+    "Bash(git commit:*)",
+    "Bash(git checkout:*)",
+    "Bash(git reset:*)",
     # Die Fabrik schreibt die Regeln nicht um, nach denen sie beurteilt wird.
     # Ein Fit-Filter, der grenzen.md aendern koennte, hat keine Grenzen.
     #
@@ -66,6 +77,9 @@ NIE = [
     "Edit(/agents/**)",
     "Edit(/.claude/**)",
     "Edit(/schema/**)",
+    # Die Vorlage bestimmt, welche Felder eine Idee ueberhaupt hat -- wer sie aendert,
+    # aendert die Bewertung. Kein Werkzeug erlaubt es heute, aber Deny sticht Allow.
+    "Edit(/vorlagen/**)",
     # ADRs werden ergaenzt, nie umgeschrieben.
     "Edit(/decisions/**)",
 ]

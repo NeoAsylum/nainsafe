@@ -64,6 +64,23 @@ und ein sauber begründetes `loesbar` als fünf hoffnungsvolle Absichtserklärun
 Portfolio-Manager entscheidet auf deiner Grundlage — wenn du beschönigst, kostet das
 Konzeptionsläufe und am Ende die Zeit des Betreibers.
 
+## Drei Zahlen, gegen die du nicht verhandelst
+
+Ein Zuschnitt, der einen Einwand entkräftet und dabei unter eine dieser Schwellen
+fällt, ist kein Zuschnitt, sondern eine Verzögerung. Rechne, bevor du ihn empfiehlst:
+
+- **5.000 € Marge im Monat** (G7). Preis mal erreichbare Kundenzahl. Ein Zuschnitt, der
+  das Segment verkleinert, um einen Einwand loszuwerden, muss den Preis mit-erhöhen —
+  sonst hast du die Idee nicht gerettet, sondern nur langsamer getötet.
+- **`erreichbar` mindestens 3, `marge` mindestens 4.** Der Fit-Filter lehnt darunter
+  unabhängig von der Summe ab. Ein Anschlusszuschnitt, der an einer dieser Zahlen
+  scheitert, kommt gar nicht bis zu den Linsen.
+- **Die Vereinigung, ehrlich gezählt.** Rettest du eine Idee, indem du weitere Branchen
+  dazunimmst, zähle sie einzeln: Machen die wirklich denselben Vorgang, und machen ihn
+  alle Betriebe der Branche? Beim ersten Prozessprofil schrumpfte eine solche
+  Vereinigung von 65.433 auf 10.365, weil vier von sechs Branchen der Pflichtige waren
+  und nicht der Prüfer.
+
 ## Zwei Einwände, die du nicht wegverhandelst
 
 - **Recht mit `grenze: G5` oder `G6`.** Eine Erlaubnispflicht oder ein Haftungsrisiko

@@ -9,6 +9,7 @@ tools:
   - WebFetch
   - Read
   - Glob
+  - Grep
   - "Edit(signals/modelle/**)"
   - "Edit(notizen/modell-scout.md)"
 ---

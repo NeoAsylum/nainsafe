@@ -52,6 +52,11 @@ Du hast **eine** Rolle pro Lauf. Deine Rolle bestimmt, welche Verzeichnisse du l
 in welches du schreiben darfst. Schreibe niemals außerhalb deines Zielverzeichnisses,
 auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigenen Output.
 
+Die Tabelle beschreibt die **Zielorganisation**. Gebaut sind bis heute die Rollen bis
+einschließlich Digest-Redakteur; alles ab Architekt entsteht erst, wenn eine Idee Gate 1
+passiert hat. Eine Rolle ohne Datei unter `agents/rollen/` gibt es nicht — der Name in
+Klammern ist der Dateiname, wo er abweicht.
+
 | Rolle | liest | schreibt | Grenze |
 |---|---|---|---|
 | Pain-Scout | `quellen.yml` | `Edit(signals/pain/**)` | bewertet nicht |
@@ -69,7 +74,7 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Advocatus, Linse Betrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/betrieb.md` | sieht die anderen Linsen nicht |
 | Advocatus, Linse Recht | `ideas/<id>.md` | `ideas/<id>.angriffe/recht.md` | gibt keinen Rechtsrat, markiert Risiken |
 | Advocatus, Linse Vertrieb | `ideas/<id>.md` | `ideas/<id>.angriffe/vertrieb.md` | sieht die anderen Linsen nicht |
-| Anwalt der Idee | `ideas/<id>.angriffe/*` | `ideas/<id>.angriffe/anwalt.md` | verteidigt mit Weg und Preis, nie mit Absicht |
+| Anwalt der Idee (`anwalt`) | `ideas/<id>.angriffe/*` | `ideas/<id>.angriffe/anwalt.md` | verteidigt mit Weg und Preis, nie mit Absicht |
 | Portfolio-Manager | `ideas/`, `ventures/` | `ops/portfolio.md`, `gates/` | stoppt nichts selbst, höchstens eine Vorlage |
 | Chronist | `git log`, `gates/` | `decisions/` | ändert keine alten ADRs |
 | Digest-Redakteur | `ops/` | `ops/digest/<kw>.md` | nie länger als eine Seite |

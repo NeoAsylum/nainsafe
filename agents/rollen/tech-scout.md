@@ -9,6 +9,7 @@ tools:
   - WebFetch
   - Read
   - Glob
+  - Grep
   - "Edit(signals/tech/**)"
   - "Edit(notizen/tech-scout.md)"
 ---

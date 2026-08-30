@@ -217,10 +217,12 @@ def offene_recherchen(grenze: int = 6) -> list[str]:
 
     offen = []
     for sig in sorted(SIGNALE.glob("*/*.md"), reverse=True):
-        # Marktprofile brauchen keine Recherche -- sie SIND welche. Der Markt-Analyst
-        # beantwortet dieselben Fragen bereits mit Quellen; ein Rechercheur darauf
-        # waere rund fuenf Dollar fuer eine zweite Fassung derselben Arbeit.
-        if sig.parent.name == "maerkte":
+        # Markt- und Prozessprofile brauchen keine Recherche -- sie SIND welche.
+        # Beide Analysten beantworten dieselben Fragen bereits mit Quellen; ein
+        # Rechercheur darauf waere rund fuenf Dollar fuer eine zweite Fassung
+        # derselben Arbeit. Bei den Prozessprofilen ist es sogar die dritte: Ihr
+        # Rohstoff sind die Marktprofile.
+        if sig.parent.name in ("maerkte", "prozesse"):
             continue
         pfad = sig.relative_to(WURZEL).as_posix()
         if pfad not in erledigt:

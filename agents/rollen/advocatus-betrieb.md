@@ -43,6 +43,12 @@ Greife an:
 - **Rechne die laufende Zeit ehrlich zusammen.** Support, Buchhaltung, Rechnungen,
   Aktualisierungen, Kundenanfragen, Fehlersuche. Die Grenze liegt bei zwei Stunden pro
   Woche — inklusive allem.
+- **Die Schale je Branche.** Bedient die Idee mehrere Branchen mit einem Kern, prüfe,
+  was die branchenspezifische Schale im Betrieb kostet: Prüfkatalog, Formular, Frist,
+  Vokabular. Ist sie *konfiguriert*, kostet sie einmal Arbeit. Ist sie faktisch
+  *programmiert* — und das ist sie, sobald jede neue Branche eine Anpassung braucht —,
+  wächst der Aufwand mit der Kundenzahl und die Idee reißt G4. Frage konkret: Was
+  passiert beim ersten Kunden aus einer siebten Branche?
 - **Modellkosten je Vorgang.** Wenn das Produkt bei jeder Nutzung ein Modell aufruft,
   wächst der Aufwand mit der Nutzung, während der Preis meist eine Pauschale ist.
 
