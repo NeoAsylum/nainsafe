@@ -153,8 +153,29 @@ Entweder das Segment ist gross genug, oder der Preis ist hoch genug. **Beides kl
 traegt nie.** Ein Werkzeug fuer 30 EUR braucht einen Markt in sechsstelliger Groesse --
 den gibt es in einer deutschen Handwerksnische nicht.
 
-Zwei Suchraeume sind seit dem 2026-08-29 ausdruecklich offen, und beide loesen genau
-dieses Problem:
+Der wichtigste Weg zur Groesse ist aber ein anderer, und er kostet keinen neuen Markt:
+**Der Markt wird nach Vorgang geschnitten, nicht nur nach Branche.** Abrechnung,
+Terminbuchung, Nachweisfuehrung und Mailversand loesen Prozessthemen und sind
+branchenuebergreifend. Sechs Segmente dieser Fabrik galten einzeln als zu klein und
+nennen denselben Pruefnachweis -- zusammen 65.433 Betriebe.
+
+Liegt dir ein Profil aus `signals/prozesse/` vor, arbeitest du bevorzugt daraus. Zwei
+Dinge musst du dann uebernehmen, sonst zerfaellt die Idee im Fit-Filter:
+
+- **Kern und Schale trennen.** Der Kern ist, was in allen Branchen gleich ist -- das ist
+  dein Produkt. Die Schale ist Vokabular, Formularlayout und Frist je Branche; sie
+  gehoert **konfiguriert**, nicht programmiert. Schreib in `loesung` den Kern, und nenne
+  die Schale ausdruecklich als konfigurierbar.
+- **Die Branchen einzeln aufzaehlen**, jede mit Betriebszahl, im Abschnitt **Rechnung**.
+  Eine Vereinigung ohne Aufzaehlung zaehlt nicht (G7).
+
+Der haeufigste Fehler dabei: ein Werkzeug entwerfen, das sechs Branchen halb bedient.
+Das verliert gegen sechs Werkzeuge, die je eine ganz bedienen. Traegt der Kern nicht
+allein, ist es kein branchenuebergreifender Vorgang -- dann nimm eine Branche und
+schreib eine ehrliche Nischenidee.
+
+Zwei weitere Suchraeume sind seit dem 2026-08-29 offen, und beide loesen dasselbe
+Groessenproblem auf andere Weise:
 
 - **Englischsprachige Zielgruppen.** Dieselbe Betriebsart, aber im Sprachraum
   US/UK/CA/AU statt in einem Land -- der Faktor zwischen dreitausend und

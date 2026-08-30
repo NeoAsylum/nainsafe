@@ -167,3 +167,20 @@ was erlaubt ist.
   76.537 Betriebe, Kursbetrieb bis 134.000, Tiermedizin 43.500 Praxen zu 85 €). Sie
   verschiebt den Engpass nur: Alle drei starben an der Besetzung oder am Preisboden null,
   **keines an der Größe**. Weder widerlegt noch bestätigt — drei Profile sind zu wenig.
+
+- **2026-08-30** — **„Das Segment ist zu klein" war in sechs Faellen kein Urteil ueber
+  den Markt, sondern ueber den Zuschnitt.** Die `handarbeit`-Felder der achtzehn
+  Marktprofile nebeneinandergelegt: Dachdecker, Aufzug, Kaelteanlagen,
+  Schaedlingsbekaempfer, Spielplaetze und Facility nennen **denselben** Pruefnachweis —
+  einzeln je 841 bis 34.288 Betriebe, alle `potenzial: gering`, zusammen 65.433. Pflege,
+  Hebammen und Physiotherapie nennen denselben Leistungsnachweis: 74.662. *Folgerung fuer
+  alle Rollen:* Es gibt seit heute eine zweite Achse (ADR 0005). Der Markt-Analyst
+  schneidet nach Branche, der neue Prozess-Analyst nach **Vorgang**, und die Kundenzahl
+  in G7 darf ueber Branchen hinweg zaehlen — wenn der Vorgang derselbe ist und ein Kanal
+  mehrere Branchen zugleich erreicht.
+  Der Gegeneinwand gehoert dazu und steht in der Befundtabelle der Rolle: Die grossen
+  horizontalen Kategorien sind die umkaempftesten Softwaremaerkte ueberhaupt.
+  „Branchenuebergreifend" ist kein Fund, sondern eine Suchrichtung. Der Fund liegt dort,
+  wo ein Vorgang branchenuebergreifend **gleich** ist, aber ausschliesslich
+  branchenspezifisch **geloest** wird — mehrere vertikale Nischenanbieter und kein
+  horizontales Werkzeug sind das positive Signal.

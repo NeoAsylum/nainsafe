@@ -119,6 +119,27 @@ hoch genug.** Beides klein trägt nie. Ein Werkzeug für 30 € braucht einen Ma
 sechsstelliger Größe — den gibt es in einer deutschen Handwerksnische nicht, im
 englischsprachigen Raum oder bei Endkunden dagegen schon.
 
+### Die Kundenzahl darf über Branchen hinweg zählen
+
+Der dritte Weg zur Größe, seit ADR 0005: **Die erreichbare Kundenzahl ist nicht auf
+eine Branche beschränkt.** Ein Vorgang, den sechs Branchen gleich erledigen, hat als
+Markt die Summe dieser sechs. Sechzehn Segmente dieser Fabrik galten einzeln als „zu
+klein" — über den Vorgang zusammengefasst ist keines davon klein.
+
+Wer so rechnet, zählt die Branchen **einzeln auf**, jede mit Betriebszahl und Quelle.
+Eine Vereinigung ohne Aufzählung ist eine Behauptung, und für die gilt dieselbe Regel
+wie für „weltweit verfügbar": Sie zählt nicht.
+
+Zwei Bedingungen hängen daran, beide hart:
+
+- **Der Vorgang muss derselbe sein, nicht ein ähnlicher.** Ist die branchenspezifische
+  Schale größer als der gemeinsame Kern, sind es fünf Vorgänge mit einem Oberbegriff.
+  Ein Werkzeug, das sechs Branchen halb bedient, verliert gegen sechs Werkzeuge, die je
+  eine ganz bedienen.
+- **Ein Kanal muss mehrere Branchen zugleich erreichen.** Fünf Branchenverbände sind
+  kein Kanal, sondern fünf Vertriebsprobleme — und dann ist die Vereinigung zwar
+  richtig gerechnet, aber nicht erreichbar.
+
 Gerechnet wird zusätzlich **nach Steuern**, wenn es um deinen Ertrag geht: Der Gewinn
 stapelt sich auf das Hauptgehalt und wird mit dem Grenzsteuersatz belastet. Aus 5.000 €
 Marge werden grob 2.900 € netto.

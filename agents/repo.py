@@ -110,26 +110,42 @@ def _schluessel(text: str) -> str:
     return "".join(c for c in t if c.isalpha())
 
 
-def segmentliste() -> list[str]:
-    """Der Suchraum des Markt-Analysten aus quellen.yml.
+def _liste(schluessel: str) -> list[str]:
+    """Ein Aufzaehlungsblock aus quellen.yml.
 
     Bewusst ein Zeilenleser statt PyYAML: Die Fabrik soll auf einem frischen VPS
-    ohne Paketinstallation laufen, und dieser eine Block hat ein festes Format.
+    ohne Paketinstallation laufen, und diese Bloecke haben ein festes Format.
     """
     if not QUELLEN.exists():
         return []
-    segmente, drin = [], False
+    eintraege, drin = [], False
     for zeile in QUELLEN.read_text(encoding="utf-8").splitlines():
-        if zeile.strip().startswith("segmente:"):
+        if zeile.strip().startswith(schluessel + ":"):
             drin = True
             continue
         if drin:
             roh = zeile.strip()
             if roh.startswith("- "):
-                segmente.append(roh[2:].strip().strip("\"'"))
+                eintraege.append(roh[2:].strip().strip("\"'"))
             elif roh and not roh.startswith("#"):
                 break  # naechster Schluessel, Block zu Ende
-    return segmente
+    return eintraege
+
+
+def segmentliste() -> list[str]:
+    """Der Suchraum des Markt-Analysten: Branchen."""
+    return _liste("segmente")
+
+
+def vorgangsliste() -> list[str]:
+    """Der Suchraum des Prozess-Analysten: Vorgaenge.
+
+    Die zweite Achse, seit ADR 0005. Der Markt-Analyst schneidet nach Branche, der
+    Prozess-Analyst nach Vorgang -- und zwar auf denselben Daten: Jedes Marktprofil
+    nennt in `handarbeit` genau einen Vorgang. Sechzehn Segmente galten einzeln als
+    zu klein; ueber den Vorgang zusammengefasst ist keines davon klein.
+    """
+    return _liste("vorgaenge")
 
 
 def offene_segmente() -> list[str]:
@@ -168,6 +184,22 @@ def offene_segmente() -> list[str]:
             continue
         offen.append(s)
     return offen
+
+
+def offene_prozesse() -> list[str]:
+    """Vorgaenge ohne Prozessprofil, in der Reihenfolge der Liste.
+
+    Wie `offene_segmente`, aber ohne dessen Altlast: Das Feld `auftrag` ist hier von
+    Anfang an Pflicht, ein Fuzzy-Vergleich also nicht noetig.
+    """
+    ordner = SIGNALE / "prozesse"
+    erledigt = set()
+    if ordner.is_dir():
+        for d in ordner.glob("*.md"):
+            kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+            if kopf.get("auftrag"):
+                erledigt.add(_schluessel(str(kopf["auftrag"])))
+    return [v for v in vorgangsliste() if _schluessel(v) not in erledigt]
 
 
 def offene_recherchen(grenze: int = 6) -> list[str]:

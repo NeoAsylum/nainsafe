@@ -19,6 +19,15 @@ Daraus folgt eine Faustregel, die für jede Rolle gilt: **Entweder das Segment i
 genug, oder der Preis ist hoch genug.** Beides klein trägt nie. Ein Werkzeug für 30 €
 braucht sechsstellig viele mögliche Kunden.
 
+**Der Markt wird nach zwei Achsen geschnitten, nicht nach einer.** Die Branche ist die
+eine, der **Vorgang** die andere — und die zweite ist meist die größere. Abrechnung,
+Terminbuchung, Nachweisführung und Mailversand lösen Prozessthemen und sind
+branchenübergreifend; wer sie je Branche sucht, findet je Branche einen zu kleinen
+Markt und je Branche einen Nischenanbieter, der ihn schon bedient. Sechs Segmente
+dieser Fabrik galten einzeln als zu klein und nennen denselben Prüfnachweis — zusammen
+65.433 Betriebe. Der Prozess-Analyst schneidet deshalb nach Vorgang, der Markt-Analyst
+nach Branche, und beide arbeiten auf denselben Daten (ADR 0005).
+
 **Der Markt ist nicht auf Deutschland beschränkt, und B2C ist erlaubt.** Beides seit
 2026-08-29. Vorher hat die Fabrik ausschließlich Software für deutsche KMU-Nischen
 gesucht — die am dichtesten besetzte Kategorie überhaupt —, und die Beschränkung stand
@@ -51,6 +60,7 @@ auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigene
 | Tech-Scout | `quellen.yml` | `Edit(signals/tech/**)` | schlägt keine Ideen vor |
 | Modell-Scout | `quellen.yml` | `Edit(signals/modelle/**)` | kopiert nichts Geschütztes, nur das Modell |
 | Markt-Analyst | `quellen.yml` | `Edit(signals/maerkte/**)` | schlägt kein Produkt vor, endet bei der Lücke |
+| Prozess-Analyst | `quellen.yml`, `signals/maerkte/` | `Edit(signals/prozesse/**)` | zählt eine Branche nur mit, wenn der Vorgang derselbe ist |
 | Rechercheur | ein Signal, `research/` | `research/` | erfindet keine Zahlen |
 | Ideator | `signals/`, `research/` | `ideas/` (Status `entwurf`) | hebt den Status nie über `entwurf` |
 | Fit-Filter | `ideas/`, `grenzen.md` | Status `kandidat`\|`abgelehnt` | hebt keine Grenze auf |

@@ -74,6 +74,41 @@ tech:
     - '"ab sofort verfügbar" Schnittstelle Verwaltung'
   quellen: []
 
+prozesse:
+  beschreibung: >
+    Suchraum des Prozess-Analysten. Seine Einheit ist der Vorgang, nicht die Branche.
+    Der Markt-Analyst fragt "was macht diese Branche von Hand?", der Prozess-Analyst
+    fragt "wer macht diesen Vorgang alles von Hand?" -- dieselben Daten, ganz andere
+    Maerkte. Ein Vorgang je Lauf, gruendlich.
+  warum: >
+    Achtzehn Marktprofile, sechzehn davon potenzial: gering, fast immer mit der
+    Begruendung "zu klein". Die handarbeit-Felder nebeneinandergelegt ergeben ein
+    anderes Bild: Sechs Segmente nennen denselben Pruefnachweis, drei denselben
+    Leistungsnachweis, drei dieselbe Behoerdenmeldung. Einzeln traegt keines die
+    Schwelle aus G7, zusammen traegt jedes. Abrechnung, Terminbuchung und
+    Nachweisfuehrung sind Prozessthemen und branchenuebergreifend; wer sie je Branche
+    sucht, findet je Branche einen zu kleinen Markt.
+  regel: >
+    Die Vereinigung zaehlt nur, wenn der Vorgang wirklich derselbe ist. Ist die
+    branchenspezifische Schale groesser als der gemeinsame Kern, sind es fuenf
+    Vorgaenge mit einem Oberbegriff und kein Markt. Und ein Vorgang, den ein gutes
+    horizontales Werkzeug bereits loest, ist tot -- der Preisboden steht dann.
+  vorgaenge:
+    # --- Aus den vorhandenen Marktprofilen abgeleitet, mit Belegen im Repo ---
+    # Die Reihenfolge folgt der Staerke: zuerst Vorgaenge mit gesetzlichem Zwang und
+    # ohne bekanntes horizontales Werkzeug.
+    - Wiederkehrende Pruefung mit gesetzlicher Frist und Nachweispflicht
+    - Behoerdenmeldung je Vorgang mit Formular und Frist
+    - Leistungsnachweis gegenueber einem Kostentraeger
+    - Wiederkehrende Verbrauchsabrechnung mit Zaehlerablesung
+    - Nachweis der Qualifikation und Unterweisung von Mitarbeitern
+    - Ausgefallene Termine kurzfristig wiederbesetzen
+    - Beitrags- und Mitgliedsabrechnung mit Zahlungsnachlauf
+    # Kontrollprobe: bekannt besetzt (12 KI-Diktatanbieter allein bei Tierarztpraxen).
+    # Steht bewusst auf der Liste -- ein Profil, das hier sauber "tot" begruendet,
+    # eicht das Urteil der Rolle.
+    - Vorgangsdokumentation per Diktat statt Tastatur
+
 maerkte:
   beschreibung: >
     Suchraum des Markt-Analysten. Er arbeitet diese Liste der Reihe nach ab, statt

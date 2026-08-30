@@ -59,7 +59,16 @@ SENSOREN = [
 # Jeder Lauf bekommt sein Segment ausdruecklich zugewiesen. Ohne das wuerden drei
 # gleichzeitig laufende Analysten dieselbe Liste lesen, dasselbe erste unbearbeitete
 # Segment sehen und dieselbe Arbeit dreimal machen.
-MARKT_MAX = 3
+MARKT_MAX = 2
+
+# Die zweite Achse, seit ADR 0005. Der Markt-Analyst schneidet nach Branche, der
+# Prozess-Analyst nach Vorgang -- auf denselben Daten, mit ganz anderem Ergebnis:
+# Sechs Segmente, die einzeln als "zu klein" abgelegt waren, nennen denselben
+# Pruefnachweis und sind zusammen 65.433 Betriebe. Er laeuft nach dem Markt-Analysten
+# in derselben Phase, weil er dessen Profile liest -- die von heute Nacht noch nicht,
+# aber die von gestern schon. Das reicht: Sein Rohstoff sind achtzehn vorhandene
+# Profile, nicht die drei neuen.
+PROZESS_MAX = 2
 
 # Nach den Sensoren, vor dem Ideator: Der Rechercheur gräbt jedes neue Signal aus,
 # damit die Ideen auf Zahlen stehen statt auf Vermutungen. Er läuft je Signal einmal.
@@ -138,10 +147,14 @@ def main(trocken: bool = False) -> int:
         offen = [] if voll else repo.offene_angriffe(ANGRIFFE_MAX_IDEEN)
         print(f"  Trockenlauf, {GLEICHZEITIG} Agenten gleichzeitig je Phase:")
         maerkte = repo.offene_segmente()[:MARKT_MAX]
-        print(f"    1. Sensorik      {len(SENSOREN) + len(maerkte)} Läufe "
-              f"({len(SENSOREN)} Sensoren + {len(maerkte)} Marktprofile)")
+        prozesse = repo.offene_prozesse()[:PROZESS_MAX]
+        print(f"    1. Sensorik      {len(SENSOREN) + len(maerkte) + len(prozesse)} Läufe "
+              f"({len(SENSOREN)} Sensoren + {len(maerkte)} Marktprofile "
+              f"+ {len(prozesse)} Prozessprofile)")
         for s in maerkte:
-            print(f"                     markt-analyst -> {s}")
+            print(f"                     markt-analyst   -> {s}")
+        for v in prozesse:
+            print(f"                     prozess-analyst -> {v}")
         print(f"    2. Recherche     {len(recherchen)} Läufe (Stand jetzt)")
         if not voll:
             print(f"    3. Verdichtung   {len(VERDICHTUNG)} Läufe, nacheinander")
@@ -153,6 +166,7 @@ def main(trocken: bool = False) -> int:
     # --- 1. Sensorik: unabhängige Quellen, dazu die Marktprofile -----------
     auftraege: list[tuple[str, str | None]] = [(r, None) for r in SENSOREN]
     auftraege += [("markt-analyst", s) for s in repo.offene_segmente()[:MARKT_MAX]]
+    auftraege += [("prozess-analyst", v) for v in repo.offene_prozesse()[:PROZESS_MAX]]
     fehler += phase("Sensorik", auftraege)
 
     if not voll:
