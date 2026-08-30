@@ -101,6 +101,32 @@ Lauf-Abschnitte am Ende sind in die Themenbloecke eingearbeitet.
 - **Bruttoumsatz einer Branche ist nie der Umsatz der Betriebe** (Camping: 20,8 Mrd EUR
   ueber alle Wertschoepfungsstufen, Multiplikator 11,8).
 
+## Aus dem Tierarztlauf, englischsprachig (2026-08-30)
+
+- **Gegenprobe von unten: die schmalste denkbare Einzelpflicht pruefen.** Ist auch die
+  besetzt, ist nirgends Platz. Das US-Betaeubungsmittelbuch hat vier zugeschnittene
+  Anbieter ab 149 USD im Jahr, mit Audit-Log und Rollenrechten. Zwei Abrufe, Lauf
+  entschieden — schneller als jede Schichtanalyse.
+- **BLS Occupational Outlook Handbook erledigt Frage 4 im englischsprachigen Raum in
+  einem Abruf**: Medianlohn je Beruf mit Stichtag und Perzentilen, amtlich und
+  anbieterunabhaengig. `bls.gov/ooh/...` ueber die Suche; `bls.gov/oes/...` liefert 403.
+- **Im englischsprachigen Raum stammen Aufwandszahlen noch haeufiger von Anbietern als im
+  deutschen.** Von sechs Quellen zur Dokumentationszeit in der Tiermedizin verkauften
+  fuenf selbst KI-Diktat. Vor jeder Aufwandszahl: Verkauft der Absender im selben Markt?
+- **Zahlungskraft ist ein Verdachtsmoment, hier in Reinform.** Das groesste, reichste und
+  am besten erreichbare Segment des Repos (43.500 Praxen, ~1 Mio EUR Umsatz je Standort,
+  VMX mit 27.000 Besuchern, VIN mit 115.000 Mitgliedern) war zugleich das dichtest
+  besetzte: ueber 30 zugeschnittene Anbieter, sechs Vergleichsportale, Preisboden null.
+  **Groesse und Kanal sind notwendig, nicht hinreichend; Frage 5 entscheidet allein.**
+- **Der Merchant-of-Record-Aufwand ist von keiner Rolle beziffert** — US-Sales-Tax-Nexus,
+  UK-VAT, GST in AU und CA. G7 nennt ihn als Preis der Oeffnung. Fuer den Oekonomen, vor
+  der ersten englischsprachigen Idee.
+- Sperren: **api.census.gov verlangt einen Schluessel, data.census.gov ist JavaScript** —
+  amtliche US-Betriebszahlen gibt es nur ueber Sekundaerzitate. **Reddit ist komplett
+  blockiert**, auch `/about.json`. fred.stlouisfed.org 403, bls.gov/oes 403, dvm360.com
+  403, fve.org Zertifikatsfehler, vetsoftwarehub.com 429 bei zwei Abrufen kurz
+  nacheinander (Pausen lassen).
+
 ## Aus dem Fahrschullauf, englischsprachig (2026-08-30)
 
 - **Grosse Segmente sind nicht automatisch gute Segmente — jetzt gemessen.** 76.537
