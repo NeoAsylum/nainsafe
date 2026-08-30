@@ -39,6 +39,12 @@ entfernen, nicht den unbequemsten.
 - Innenarchitektur-Auftrags-/Möbelbestellsoftware (Studio Designer, Ivy):
   pCon-Shop (EasternGraphics, DE) deckt genau das.
 - Solawi/Hofladen-Abo (Local Line, Farmigo): Solawi Manager, tapir, OpenOlitor.
+- 2026-08-30: Mobiltoiletten/Container-Vermietung (ServiceCore, PE-finanziert):
+  Renttix, WinFuhr-Containerdienst, 2R Software. Auktionssoftware (13 Firmen,
+  78,6 Mio. USD): Bidpath/AuctioWeb, A:NG, KYBERNA. Caravan-/Wohnmobil-Händler-DMS:
+  SYSCARA, Caravan.One, Autrado. Campingplatz-/Stellplatzverwaltung (Campspot
+  17,4 Mio. USD ARR): Resavio, Direst, Easycamp, campalot. Siebdruck-/Stickerei-
+  Werkstattsoftware: ArtWay, EasyWorkFlow, APL Promotion.
 
 ## Offene Fährten
 
@@ -69,3 +75,13 @@ entfernen, nicht den unbequemsten.
   Umsatzbeleg. Nächstes Mal gezielter ansetzen: nicht "Kategorie + Software",
   sondern "einziger Anbieter für X" / Beschwerden über den einzigen teuren
   Anbieter einer Nische suchen.
+- 2026-08-30 — Vierter Lauf in Folge leer (30+ geprüfte Nischen, u.a. RV/Boot-
+  Dealer-DMS, Fahrzeugbewertung für Autohändler, Feueralarm-/Brandschutzmelder-,
+  OSHA-/ADA-Compliance-, Tattoo-/Salon-, Print-Shop-Software): jede Nische mit
+  US-Umsatzbeleg hat, sobald geprüft, mindestens einen deutschen Anbieter.
+  Vermutung: Diese Fabrik hat inzwischen die "leicht auffindbaren" Land→Land-
+  Transfers (GetLatka-Kategorienamen + naheliegende deutsche Übersetzung)
+  weitgehend abgesucht. Fürs nächste Mal: Suchmuster wechseln — z.B. bei
+  US-Branchenverbänden nach "software" fragen, die die Fabrik noch nicht als
+  GetLatka-Kategorie kennt (kein "X software" auf Englisch googlebar), oder
+  konsequent Richtung 0/2/3/4 statt Richtung 1 bearbeiten.
