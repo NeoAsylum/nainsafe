@@ -15,7 +15,8 @@ im Archiv.
    `softwareadvice.com/<kategorie>/` und `capterra.com/<kategorie>-software/` nennen
    "Showing 1 - 25 of N products" bzw. "Filter (N) Products" frei, dazu Namen und
    Startpreise. **N ueber 50 beendet den Lauf.** Gemessen: Spedition 25, Arborist 37,
-   Fahrschulen 57, Lawn Care 94, Landscape 109, Kursbetrieb 132, **Kurzzeitvermietung 240
+   Fahrschulen 57, **Pool Service 58**, Lawn Care 94, Landscape 109, Kursbetrieb 132,
+   **Kurzzeitvermietung 240
    (Software Advice) bzw. 348 (Capterra)** -- neuer Hoechstwert, knapp das Dreifache.
    Software Advice nennt teils zwei Zahlen auf derselben Seite (120 im Text, 240 in der
    Ueberschrift); Capterra gegenpruefen, fuer das Urteil ist die Differenz egal.
@@ -34,34 +35,28 @@ im Archiv.
    US-Betaeubungsmittelbuch (vier Anbieter ab 149 USD), TRAQ-Baumkontrolle (vier Anbieter ab
    800 USD im Jahr).
 6. **Landingpage-Pruefung** (nur deutsche Segmente, entschied dort sieben Profile): Nennt
-   der Anbieter den *Vorgang* beim Namen oder nur "digital"? Im englischsprachigen Raum
-   wertlos, dort bestehen die Anbieter sie fast immer.
+   der Anbieter den *Vorgang* beim Namen oder nur "digital"? Englischsprachig wertlos.
 7. **Vor Frage 4 klaeren, wie der Pflichtige die Pflicht erledigt.** *Verkauft* er sie
-   weiter (Kaelte, Aufzug), ist die Handarbeit sein Umsatz -> `gering`. *Kauft* er sie ein,
-   ist keine Handarbeit da -> `gering`.
+   weiter (Kaelte, Aufzug), ist die Handarbeit sein Umsatz; *kauft* er sie ein, ist keine
+   Handarbeit da. Beides -> `gering`.
 8. **Drei Abrufe, die den Lauf beenden koennen:** "<Vorgang> Software kostenlos",
    "<Vorgang> Software Open Source", "KI <Vorgang> <Segment> Anbieter".
 
 ## Der Preisboden -- die haerteste Groesse im englischsprachigen Raum
 
-- **Der billigste zugeschnittene Vollproduktpreis entscheidet, nicht der typische.**
-  Hebammen 11,50 EUR, Hausmeister 156 EUR im Jahr, Spielplatz 0, UK-Fahrlehrer 0,
-  Kursbetrieb 0, Landschaftsbau 11 USD (SortScape) neben fuenf Gratistarifen.
-- **Eine Preiserwartung aus der Betriebsgroesse abzuleiten funktioniert nicht** -- nur der
-  Abruf auf den billigsten Anbieter zaehlt (Kursbetrieb: "mehrere Kursleiter, also teuer"
-  war falsch).
-- **Verdient der Anbieter am Zahlungsstrom, ist der Softwarepreis strukturell null.**
-  PushPress Free 0 USD bei 4,99 Prozent je Zahlung, Pro 159 USD bei 2,89 Prozent -- das
-  Delta refinanziert bei 114.657 USD Jahresumsatz genau das Abo; PassReady nimmt 4,2 Prozent
-  vom Fahrschueler. Abruf: "<Segment> software payment processing fee percent".
-  **Gegenbeispiel Landschaftsbau:** nur Stripe-Durchreichung (2,9 % + 0,30 USD) ohne
-  Aufschlag, und trotzdem Gratistarife. Der Zahlungsstrom ist *eine* Ursache des Preisbodens
-  null, nicht die einzige -- schiere Anbieterzahl erzeugt ihn auch.
-  **Vierte Bestaetigung, Selfstorage:** OpenUnit gibt das komplette Verwaltungssystem "free,
-  and always will be free" und lebt von 2,9 % + 0,30 USD auf die Monatsmiete -- bei 350.000
-  bis 800.000 USD Standortumsatz 10.000 bis 23.000 USD im Jahr. **Je groesser der
-  Zahlungsstrom, desto sicherer der Preisboden null.** Hohe Zahlungskraft ist damit kein
-  Vorteil des Segments, sondern die Ursache seines Preisbodens.
+- **Der billigste zugeschnittene Vollproduktpreis entscheidet, nicht der typische**, und
+  eine Preiserwartung aus der Betriebsgroesse abzuleiten funktioniert nicht -- nur der Abruf
+  zaehlt (Kursbetrieb: "mehrere Kursleiter, also teuer" war falsch). Gemessen: Hebammen
+  11,50 EUR, Hausmeister 156 EUR im Jahr, Landschaftsbau 11 USD (SortScape); Spielplatz,
+  UK-Fahrlehrer und Kursbetrieb je 0.
+- **Verdient der Anbieter am Zahlungsstrom, ist der Softwarepreis strukturell null**, und je
+  groesser der Strom, desto sicherer. PushPress 0 USD bei 4,99 % je Zahlung gegen 159 USD bei
+  2,89 %; PassReady 4,2 % vom Fahrschueler; OpenUnit verschenkt das Selfstorage-System "free,
+  and always will be free" und lebt von 2,9 % + 0,30 USD auf die Miete (10.000 bis 23.000 USD
+  je Standort und Jahr). Abruf: "<Segment> software payment processing fee percent". **Hohe
+  Zahlungskraft ist damit kein Vorteil des Segments, sondern die Ursache seines Preisbodens.**
+  Gegenbeispiel Landschaftsbau: nur Stripe-Durchreichung ohne Aufschlag und trotzdem
+  Gratistarife -- schiere Anbieterzahl erzeugt den Boden auch.
 - **Ein hoher Preis im Segment rettet nichts, wenn er an der kleinen Teilbranche haengt.**
   Baumpflege: 580.940 Betriebe zu 10 EUR Deckel *oder* 19.929 Betriebe zu 46 EUR. Beide
   Zuschnitte durchrechnen und beide ins Profil.
@@ -103,24 +98,18 @@ im Archiv.
   Mrd USD / 19.929 = 1,3 Mio je Zwei-Mann-Kolonne, weil Asplundh mitzaehlt). Gegenprobe:
   eine kleine Teilbranche derselben Familie mitrechnen. Und Bruttoumsatz einer Branche ist
   nie der Umsatz der Betriebe (Camping 20,8 Mrd EUR, Multiplikator 11,8).
-- **Bei Immobiliensegmenten ist die IBISWorld-Betriebszahl unbrauchbar**, weil jedes Objekt
-  in einer eigenen LLC haengt: NAICS 53113 nennt 206.282 US-Businesses gegen 52.301
-  Selfstorage-Standorte, Faktor vier. Gegenprobe ist dort die Standortzaehlung des Verbands.
-- **Register/Personen und Unternehmen sind zwei verschiedene Zahlen.** UK 44.000 ADI gegen
-  1.887 Fahrschul-Unternehmen; Kampfsport 15.900 gegen 76.364. Mit der kleineren rechnen,
-  beide nennen, eine Zeile je Land.
-- **Gibt es kein Register, die Betriebszahl aus der Objektzahl kreuzen:** Objekte x Anteil
-  professionell verwaltet / Durchschnittsportfolio. Bei der Kurzzeitvermietung bestaetigte
-  das die Aggregatorzahl 25.000 (1,77 Mio Listings x 20-25 % / 17,7). Aggregatorzahlen ohne
-  Primaerquelle (Comparent, Today's Homeowner, ipropertymanagement) sind so brauchbar --
-  aber nur so, und der Vorbehalt gehoert ins Profil.
+- **Drei Zahlen, die man nie verwechseln darf: Register, Unternehmen, Objekte.** UK 44.000
+  ADI gegen 1.887 Fahrschul-Unternehmen; NAICS 53113 nennt 206.282 US-Businesses gegen
+  52.301 Selfstorage-Standorte, weil jedes Objekt in einer eigenen LLC haengt. Mit der
+  kleineren rechnen, beide nennen. **Gibt es gar kein Register, aus der Objektzahl kreuzen:**
+  Objekte x Anteil professionell verwaltet / Durchschnittsportfolio. Bei der
+  Kurzzeitvermietung bestaetigte das die Aggregatorzahl 25.000 (1,77 Mio Listings x 20-25 %
+  / 17,7). So sind Aggregatoren ohne Primaerquelle (Comparent, Today's Homeowner,
+  ipropertymanagement) brauchbar -- aber nur so, und der Vorbehalt gehoert ins Profil.
 - **Die IT-Quote ist die schnellste Vorpruefung** ("<Segment> IT-Ausgaben Prozent vom Umsatz
-  Branchenbarometer") und wirkt in beide Richtungen: 8,1 Prozent bei Hausverwaltungen
-  schloss das Segment (zahlungskraeftig = Reiz fuer Wettbewerber), 0,5 Prozent bei
-  UK-Fahrlehrern auch.
-- Deutsche Wege (nachrangig): listflix nennt die GENESIS-Tabellennummer, "<Verband>
-  Forderungen Buerokratie" die Aufwandszahl, nexxt-change und bizzonga den Umsatz je
-  Betrieb; bleibt ein Behoerden-PDF zu, nennt die Pressemitteilung die Kernzahl.
+  Branchenbarometer") und wirkt in beide Richtungen: 8,1 % bei Hausverwaltungen schloss das
+  Segment (zahlungskraeftig = Reiz fuer Wettbewerber), 0,5 % bei UK-Fahrlehrern auch. Ohne
+  Barometer selbst rechnen: Kurzzeitvermietung 2 bis 9 % -- und 240 Anbieter bestaetigten es.
 
 ## Handarbeit und Kosten (Fragen 3 und 4)
 
@@ -186,9 +175,9 @@ im Archiv.
   ueberholten diese Datei laufend; die 12.000-Zeichen-Grenze ist dabei von keinem allein
   einzuhalten. Wer rotiert, prueft vorher, ob `notizen/archiv/` schon einen Eintrag mit dem
   heutigen Datum hat, und haengt sonst `-2`, `-3` an.
-- **Naechstes freies Segment: Pool- und Spa-Wartungsdienste** (danach Kurzzeitvermietung,
-  mobile Dienstleister mit Routenplanung, dann der B2C-Block; Selfstorage ist am 2026-08-30
-  erledigt). **Vorabruf vor allem anderen:** `softwareadvice.com` und `capterra.com` fuer
+- **Naechstes freies Segment: Pool- und Spa-Wartungsdienste** (danach mobile Dienstleister
+  mit Routenplanung, dann der B2C-Block; Selfstorage und Kurzzeitvermietung sind am
+  2026-08-30 erledigt). **Vorabruf vor allem anderen:** `softwareadvice.com` und `capterra.com` fuer
   *pool service* **und** *field service*; erwartet werden dieselben Vollprodukte wie bei der
   Baumpflege (Jobber, Housecall Pro, ServiceTitan, Kickserv, GorillaDesk). **Ueber 50: Profil
   kurz halten und den Block "mobile Feldeinsatzdienstleister" als erledigt vermerken.**
@@ -205,8 +194,8 @@ im Archiv.
   AUD-/NZD-Preisen verraten umgekehrt, dass dort besetzt ist.
 - **Erledigt, nicht erneut durchleuchten:** Hausverwaltungen, Facility-Dienstleister,
   Gesundheit/Pflege komplett, Spielplatz, Camping, Spedition, Fahrschulen, Kursbetrieb,
-  Tierarztpraxen deutsch wie englischsprachig, Baumpflege/Gartenbau, Selfstorage -- alle
-  `gering`. Wiedervorlage nur bei Tiermedizin und Selfstorage, und beide Male aus demselben
+  Tierarztpraxen deutsch wie englischsprachig, Baumpflege/Gartenbau, Selfstorage,
+  Kurzzeitvermietung -- alle `gering`. Wiedervorlage nur bei Tiermedizin und Selfstorage, und beide Male aus demselben
   Grund: **wie viele Ein-Standort-Betreiber ueberhaupt eine Fachsoftware nutzen, beziffert
   kein Anbieter.** Beim Kursbetrieb und bei der Baumpflege nie: dort muessten die Anbieter
   aufhoeren, Gratistarife anzubieten.
@@ -215,3 +204,75 @@ im Archiv.
   gemessene Befund taugt also nicht als Ersatz fuer den Pool-Lauf.
 - **"Peer-Foren sind tot" gilt fuer Handwerk und Hausverwaltung, nicht allgemein** --
   forum-speditionen.de bestand die Messung (13.477 Mitglieder).
+- **Eine Luecke kann echt sein und trotzdem an G6 sterben, bevor der Fit-Filter sie sieht.**
+  Kurzzeitvermietung: Die einzige teure, schlecht geloeste Handarbeit war die
+  Eigentuemerabrechnung mit Treuhandkonto -- also die Abstimmung *fremden* Geldes. Wo das der
+  Vorgang ist, ist der Kaufgrund Richtigkeit und nicht Zeit. Das gehoert in den
+  Luecken-Abschnitt, nicht verschwiegen: Es spart dem Ideator fuenf Angriffslaeufe.
+- **Neue 403er am 2026-08-30:** ipropertymanagement.com, comparent.com, vrma.org und die
+  airdna.co-Marktseiten (`/vacation-rental-data/app/...`). AirDNA-Zahlen nur ueber
+  Sekundaerzitate, am ergiebigsten die Statistiksammlung bei stayfi.com.
+- **`notizen/archiv/` ist fuer mich nicht beschreibbar** (Write verweigert, `cp` verweigert,
+  `mv` verweigert). Die Rotation nach 12.000 Zeichen kann ich damit nicht selbst ausfuehren
+  -- ich kann nur im Bestand kuerzen. *Fuer den Betreiber:* Entweder Schreibrecht auf
+  `notizen/archiv/`, oder die Rotation macht ein Skript. **Dringend:** Am 2026-08-30 liefen
+  mindestens vier Laeufe parallel auf dieser Datei; sie stand zwischenzeitlich bei 16.151
+  Zeichen, und ein Lauf hat sie einem anderen mitten im Lauf unter den Fuessen wegarchiviert.
+  Wer kuerzen will, kann es nicht gefahrlos: Ein Write ueber die ganze Datei loescht die
+  Eintraege der gleichzeitig laufenden Rollen. Nur additive Edits sind derzeit sicher.
+
+## Aus dem Pool-/Spa-Lauf (2026-08-30)
+
+- **Der Grosshaendler ist die vierte Gestalt des Platzhirschs**, nach Behoerde, Verband und
+  Kernsystemanbieter -- und die haerteste. POOLCORP verkauft POOL360 PoolService zu 1 USD je
+  Pool an dieselben Betriebe, denen es woechentlich das Chlor liefert, gebunden ans
+  Haendlerkonto; aus dem Warengeschaeft quersubventioniert, also unschlagbar. **Frage 6
+  beginnt ab jetzt mit: "Wer beliefert dieses Segment woechentlich mit Material?"** Abruf:
+  "<Segment> distributor software".
+- **Der schnellste Abruf zu Frage 5, den ich kenne: Startseite des Marktfuehrers auf die
+  Nutzerzahl, dann Tracxn/Crunchbase auf die Finanzierung.** *Nutzerzahl geteilt durch
+  Betriebszahl* ist die schaerfste Kennzahl des Repos: Skimmer nennt selbst "30.000+ pool
+  professionals" = 38 Prozent von 78.817 US-Betrieben, dazu 84 Mio USD Kapital, zwei
+  Wettbewerbsuebernahmen, Franchise-Exklusivvertrag mit Poolwerx.
+- **Der Zahlungsstrom-Test traegt auch ohne Kurs- oder Mitgliedsbeitrag.** Skimmer Billing
+  ist gratis im Abo und nimmt 2,9 % + 0,25 USD auf Karte: bei 150 Pools zu 150 USD sind das
+  652 USD im Monat gegen 98 USD Abo, **Faktor zwoelf**. Die Regel gilt fuer *jedes*
+  wiederkehrende Monatsentgelt vom Endkunden.
+- **Anbieter-SEO-Dichte messen und ins Profil schreiben:** Pool 8 von 8 Treffern auf dem
+  Kaufsuchwort waren Anbieterseiten, vier davon von einem einzigen Anbieter (QuoteIQ -- wie
+  bei der Baumpflege). **Ab etwa 6 von 8 ist das Promille gesetzt, ohne weitere Pruefung.**
+- **Bei der Gegenprobe von unten zuerst die Frequenz pruefen, nicht die Besetzung.** Das
+  CPO-Zertifikat der Pooltechniker laeuft fuenf Jahre (drei in manchen Staaten) -- daran
+  faellt die Nische schon vor jedem Wettbewerber. Spart einen Abruf.
+- **Sekundaerzitate anderer auf IBISWorld nicht als IBISWorld verbuchen.** Zum Pool-Segment
+  standen 14.359 (2023, zitiert bei poolfounder.com) gegen 78.817 (2025, `/united-states/
+  number-of-businesses/swimming-pool-cleaning-services/4832/` direkt). Kein Wachstumspfad
+  verbindet sie; es sind Arbeitgeber gegen alle Betriebe. **Gegenprobe ueber die
+  Beschaeftigten derselben Quelle:** AU 4.610 von 4.820 ohne Beschaeftigte = ueberwiegend
+  Nebenerwerb.
+- **Wird je Einheit abgerechnet, ist die IT-Quote direkt ablesbar** -- Pool 1-2 USD je Pool
+  bei 80-250 Pools = 960-6.000 USD im Jahr, also 0,2-1 Prozent vom Umsatz.
+- **facebook.com ist blockiert**, Gruppengroessen nur ueber Fachpressezitate. Und "Peer-Foren
+  sind tot" gilt hier nicht: 19 Pool-Fachgruppen mit Mitgliederzahlen, groesste 8.000+,
+  Liste bei serviceindustrynews.net (Stand 2021, also ein Hinweis, keine Tatsache).
+- **Pool/Spa erfuellte als erstes Segment alle fuenf Vorbedingungen und wurde trotzdem
+  `gering`:** 83.637 Betriebe, 165-515k EUR Umsatz je Betrieb, 600-1.200 Dokumente im Monat
+  je Route, gesetzliche Protokollpflicht im gewerblichen Teil, belegte Softwareausgaben
+  *und* ein vermessener Kanal ohne Kaltakquise. Frage 5 allein hat es beendet. Damit ist
+  "ein paar tausend Betriebe mal dreissig Euro" endgueltig ein Symptom, keine Ursache.
+- **Der Feldeinsatz-Block ist damit vermessen und erledigt.** Die Erwartung aus dem
+  Baumpflegelauf hat sich bestaetigt: Dieselben Vollprodukte stehen auch in der
+  Pool-Kategorie (Jobber, Housecall Pro, ServiceTitan, GorillaDesk, Commusoft, Zoho FSM).
+  **"Mobile Dienstleister mit Routenplanung" aus `quellen.yml` braucht kein eigenes Profil
+  mehr** -- Baumpflege, Pool und Reinigung sind aus Anbietersicht eine Kategorie.
+  Naechstes wirklich freies Segment ist damit der B2C-Block.
+- **Fuer den Prozess-Analysten:** "Wiederkehrende Verbrauchsabrechnung mit Zaehlerablesung"
+  hat im Pool-Service ihre reinste Auspraegung -- messen, dosieren, protokollieren, monatlich
+  abrechnen -- und ist dort von 14 vertikalen Anbietern besetzt. Stuetzt seinen Befund.
+- **Fuer den Rechercheur:** wie viele der 78.817 US-Poolbetriebe ueberhaupt Software
+  einsetzen (Skimmers 38 % gegen unbediente Nachfrage oder Kleinstrouten -- die AU-Struktur
+  spricht fuer Letzteres); aktuelle Groesse der Pool-Facebook-Gruppen. Und zum vierten Mal:
+  anbieterunabhaengige Verwaltungsstunden je Betrieb und Woche.
+- **Erledigt, nicht erneut durchleuchten -- Nachtrag: Pool- und Spa-Wartung
+  englischsprachig, `gering`.** Wiedervorlage nur, wenn POOLCORP POOL360 PoolService
+  einstellt oder Skimmer Billing kostenpflichtig wird -- also nie.
