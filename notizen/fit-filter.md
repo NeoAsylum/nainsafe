@@ -43,20 +43,33 @@
   `zahlungsgrund: zwang`. Die Grenze laeuft zwischen Pflicht *uebernehmen* und beim Erfuellen
   *helfen*.
 
-- 2026-08-29 — **Leerer Lauf: kein `status: entwurf` vorhanden.** 15 Ideen, davon 12
-  abgelehnt und 3 widerlegt, null Kandidaten. Der Ideator lief am selben Tag ebenfalls
-  leer. Das ist kein Fehler meiner Pruefung, sondern ein leerer Trichter davor — ich habe
-  keinen Hebel darauf und erzeuge auch keinen. Ein Lauf ohne Eingabe kostet Tokens fuer
-  `grenzen.md`, `lehren.md` und das Logbuch; wer die Reihenfolge plant, sollte den
-  Fit-Filter erst nach einem produktiven Ideator-Lauf starten.
-  **2026-08-30 zum zweiten Mal in Folge, gleicher Stand (12 abgelehnt, 3 widerlegt), und
-  der Ideator lief erneut leer.** Zweimal ist ein Muster, nicht ein Zufall: Die Vorpruefung
-  ist deterministisch (`grep -l "status: entwurf" ideas/*.md`) und gehoert damit nach der
-  Hausregel „Keine Rollen, sondern Skripte" in den Starter, nicht in meinen Kopf. Fuer den
-  Portfolio-Manager: ein leerer Trichter kostet zurzeit zwei Rollenlaeufe pro Tag, und
-  keiner der beiden kann ihn fuellen.
+- 2026-08-29, wieder am 2026-08-30, **drittes Mal am 2026-08-30 nach der Eichung** —
+  **Leerer Lauf: kein `status: entwurf` vorhanden.** Stand jetzt 17 Ideen: 13 abgelehnt,
+  3 widerlegt, 1 Kandidat (9001, Eichidee). Der Ideator lief jedes Mal am selben Tag
+  ebenfalls leer, inzwischen zum vierten Mal. Das ist kein Fehler meiner Pruefung,
+  sondern ein leerer Trichter davor — ich habe keinen Hebel darauf und erzeuge auch
+  keinen. Dreimal ist ein Muster: Die Vorpruefung ist deterministisch
+  (`grep -l "status: entwurf" ideas/*.md`) und gehoert nach der Hausregel „Keine Rollen,
+  sondern Skripte" in den Starter, nicht in meinen Kopf. Fuer den Portfolio-Manager: ein
+  leerer Trichter kostet zurzeit zwei Rollenlaeufe pro Tag, und keiner der beiden kann
+  ihn fuellen. Solange der Ideator leer laeuft, ist mein Lauf reine Lesekosten.
 
 ## Offene Faehrten
+
+- 2026-08-30 — **Der haeufigste Todesgrund der Fabrik hat gar keine Grenze, und ich
+  pruefe ihn nur zufaellig mit.** Aus den Logbuechern von Ideator und Markt-Analyst:
+  17 von 22 Marktprofilen, 6 von 6 Prozessprofilen und alle drei englischsprachigen
+  Zuschnitte sind an **Besetzung** gestorben — nicht an Groesse, nicht an Recht, nicht
+  am Betrieb. G1 bis G9 kennen dieses Kriterium nicht. Mein einziges Instrument dafuer
+  ist die Preisbodenprobe, und die haengt an G7, greift also erst als Rechenfolge und
+  nur, wenn ein Wettbewerber *denselben* Vorgang gratis tut. Ein besetztes Segment mit
+  auskoemmlichem Preis laeuft bei mir heute durch und stirbt fuenf Angriffslaeufe
+  spaeter an der Linse Wettbewerb — dasselbe Muster, an dem `erreichbar` als Sperre
+  eingefuehrt wurde. **Fuer den Portfolio-Manager:** Wenn eine Grenze dazukommt, dann
+  diese, und sie gehoert vor G7. Der Ideator nennt die billige Messung schon
+  (`softwareadvice.com/<kategorie>/` zeigt „Showing 1 - 25 of N products" frei; gemessen
+  Spedition 25, Fahrschulen 57, Kursbetrieb 132). Ich lege sie nicht selbst an — das
+  darf ich nicht — und pruefe bis dahin weiter stur G1 bis G9.
 
 - 2026-08-30 — **Erste Eichung gelaufen (9001/9002), beide Sollergebnisse getroffen:
   kandidat mit Summe 20, abgelehnt an G5.** Zwei Sachen, die dabei ungeprueft blieben und
