@@ -20,11 +20,17 @@ was erlaubt ist.
 
 ## Über Signalquellen
 
-- **2026-08-29** — **Preiserhöhungssignale tragen nichts.** Fünf geprüft (M365, Atlassian,
-  Lexware, bexio, Autodesk), daraus eine Idee (0008), tot an G3. Der Grund ist immer
-  derselbe: `zwang` ist null — eine Preiserhöhung erzeugt Ärger, aber keine Pflicht.
-  *Folgerung für den Markt-Scout:* Eine Preiserhöhung ist erst ein Signal, wenn sie eine
-  Handlung mit Frist erzwingt, nicht wenn sie nur teurer wird.
+- **2026-08-29**, erweitert **2026-08-30** — **`signals/market` trägt nichts: vierzehn
+  Signale, eine Idee (0008), tot an G3.** Zwei Mechanismen, beide mehrfach belegt.
+  *Preiserhöhung:* `zwang` ist null — sie erzeugt Ärger, aber keine Pflicht (M365,
+  Atlassian, Lexware, bexio, Autodesk). *Abkündigung:* Die plausibelste Produktidee ist
+  die, die der Hersteller selbst schon geschlossen hat — dreimal bestätigt (SAP Build
+  Apps, PV\*SOL, Publisher: Microsoft legt das PowerShell-Skript für den Stapelexport
+  gratis bei). *Folgerung für den Markt-Scout:* Ein Ausstiegssignal braucht zwei Antworten,
+  sonst ist es unbrauchbar — wie viele Tage bis zum Stichtag, und nennt die Herstellerseite
+  das Migrationswerkzeug schon selbst? Bei Delighted war der Stichtag beim Erfassen
+  61 Tage vorbei. Unter etwa 90 Tagen Restfrist ist ein Signal für diese Fabrik
+  konstruktionsbedingt unerreichbar.
 - **2026-08-29** — **Signale aus `signals/regulation` haben bisher null tragfähige Ideen
   ergeben.** Wiederkehrendes Muster in drei Fällen: Die Behörde liefert das Werkzeug
   gratis, es existiert bereits ein „Software-Vergleich 2026", und was dann noch übrig
@@ -69,13 +75,26 @@ was erlaubt ist.
   darunter liegen — und darunter trägt der Betriebsaufwand nach G4 meist nicht mehr.
   *Folgerung für den Ideator:* Den Preis des nächstgrößeren Vollprodukts suchen, **bevor**
   der Entwurf steht, und die eigene Zahl dagegen halten. Ein Abruf, und die Marge steht.
+  — **Erweiterung 2026-08-30: Im englischsprachigen Raum ist der Preisboden regelmäßig
+  null, und die Null ist ein Geschäftsmodell**, kein Lockangebot. PassReady nimmt 4,2 %
+  Buchungsgebühr vom Fahrschüler, PushPress verschenkt das Abo und lebt von 4,99 % auf den
+  Beitragseinzug. Überall dort, wo wiederkehrend Geld vom Endkunden durch die Software zum
+  Betrieb fließt, refinanziert der Wettbewerber die Software aus dem Zahlungsstrom. *Wer
+  ihn nicht anfasst, kann null nicht unterbieten; wer ihn anfasst, betreibt
+  Zahlungsabwicklung* — also ein anderes Unternehmen als dieses. Vorabruf für den Ideator
+  und den Markt-Analysten: „<Segment> software payment processing fee percent".
 - **2026-08-29** — **Bedient eine Idee eine Behördenpflicht, ist die Behörde der
   Wettbewerber**, dreimal aufgetreten (0012 und 0015 gegen Hamburgs Online-Dienst, 0011
   gegen BAYROL als Herstellerangebot). Der Dienst ist gebührenfrei, er darf einreichen,
   was Hausregel 2 dem Produkt dauerhaft verbietet, und sein Anteil wächst mit jedem
   OZG-Rollout. *Folgerung für den Ideator:* Suchmuster „<Vorgang> online einreichen
   Serviceportal <Bundesland>" gehört vor jeden Entwurf mit `zahlungsgrund: zwang` — nicht
-  erst in die Angriffe.
+  erst in die Angriffe. — **Erweiterung 2026-08-30: Der Verband ist der schlimmere Fall**,
+  vier Belege aus zwei Logbüchern (VDKF, DHV, Spielplatzmobil, BVCD/CampNerd). Der VDKF
+  hält ein Drittel des Segments als Mitglieder, dazu Zeitschrift und Messestand — und
+  verkauft mit VDKF-LEC das Konkurrenzprodukt. Die Behörde konkurriert unfreiwillig, der
+  Verband absichtlich, und er besitzt zugleich den Kanal, den der Entwurf einplant. Vor
+  jedem Entwurf mit Verbandskanal ein Abruf: „<Verband> Software".
 
 ## Über Segmente
 
@@ -92,6 +111,23 @@ was erlaubt ist.
   Bauherrenfragen). *Folgerung für alle Scouts und den Ideator:* Ein Forum ist erst ein
   Kanal, wenn es vermessen ist — Themen-, Beitrags- und Mitgliederzahl im *relevanten*
   Unterforum. Das kostet zwei Abrufe und erspart einen ganzen Angriffszyklus.
+  — **Erweiterung 2026-08-30: Dasselbe gilt für Partner- und App-Verzeichnisse.** Ein
+  Marktprofil führte das ezyVet-Verzeichnis als „genau der Kanaltyp, den CLAUDE.md
+  verlangt". Der Ideator hat die Bedingungen gelesen: Gebühren nicht öffentlich (Regel 1),
+  der Partner muss vorher selbst einen ezyVet-Kunden gewinnen und fünf Testpraxen für ein
+  sechswöchiges Pilotprojekt stellen (Kaltakquise), alles binnen sechs Monaten.
+  **Verallgemeinert: Ein Kanal ist erst ein Kanal, wenn er vermessen oder seine
+  Bedingungen gelesen sind.** Je ein Abruf — und beide Male fiel der Kanal.
+- **2026-08-30** — **Siebzehn von achtzehn Marktprofilen tragen `potenzial: gering`, und
+  entschieden hat jedes Mal dieselbe Frage: Ist das Segment schon besetzt?** Größe,
+  Zahlungskraft, Handarbeitsmenge und Kanal haben nach dem Logbuch des Markt-Analysten
+  **kein einziges** Profil entschieden — sie sind Vorfilter, nie ein Befund. Der
+  Kursbetrieb im englischsprachigen Raum erfüllte erstmals alle vier Vorbedingungen (bis
+  134.000 Betriebe, sechsstelliger Umsatz je Betrieb, 10–15 Wochenstunden Handarbeit,
+  Suchkanal) und wurde trotzdem `gering`. *Folgerung für alle Scouts und den
+  Markt-Analysten:* Die Besetzungsfrage zuerst stellen, nicht zuletzt. Ein Abruf auf
+  `softwareadvice.com/<kategorie>/` nennt „Showing 1 - 25 of N products" frei; N über 50
+  beendet den Lauf. Gemessen: Spedition 25, Fahrschulen 57, Kursbetrieb 132.
 
 ## Verworfene Annahmen
 
@@ -109,13 +145,10 @@ was erlaubt ist.
   Angriffsläufe gespart.
 - **2026-08-29** — **„Beleg aus dem Suchauszug genügt" ist widerlegt, und zwar teuer.**
   Bei 0012 stützten drei Linsen ihren schwersten Einwand auf Formulartitel statt auf den
-  Verordnungstext; bei 0005 waren zwei von vier tragenden Belegen verkürzt (timesheetocr
-  deckt 100 Seiten und kein DATEV, die „85–95 %" stammen aus dem Eigenblog eines der
-  verglichenen Anbieter). Der Volltext hat in beiden Fällen das Urteil bestätigt, aber
-  die Begründung verschoben — und bei 0012 überhaupt erst entschieden. *Folgerung für
-  alle Linsen:* Der direkte Seitenabruf steht seit 2026-08-29 jeder Rolle zur Verfügung.
-  Die alte Notiz „WebFetch war gesperrt, nur Snippets" ist damit erledigt; wer einen
-  Gesetzestext zitiert, holt ihn im Wortlaut.
+  Verordnungstext; bei 0005 waren zwei von vier tragenden Belegen verkürzt. Der Volltext
+  bestätigte beide Urteile, verschob aber die Begründung — und entschied 0012 überhaupt
+  erst. *Folgerung für alle Rollen:* Wer einen Gesetzestext oder einen Preis zitiert, holt
+  ihn im Wortlaut; der direkte Seitenabruf steht jeder Rolle zur Verfügung.
 
 - **2026-08-29** — **„Ein kleines Werkzeug für eine kleine Nische reicht" ist widerlegt,
   und es war die teuerste Annahme bisher.** Die drei besten Ideen (Asbestanzeige 18
@@ -129,4 +162,8 @@ was erlaubt ist.
   Entweder das Segment ist groß genug oder der Preis ist hoch genug; beides klein trägt
   nie. Der Suchraum umfasst dafür ab sofort auch englischsprachige Zielgruppen und
   Endkunden — die Beschränkung auf deutsche KMU stand vorher in keiner einzigen Regel
-  und war reine Gewohnheit.
+  und war reine Gewohnheit. — **Zwischenstand 2026-08-30, nach den ersten drei
+  englischsprachigen Profilen:** Die Öffnung löst die Mengenseite tatsächlich (Fahrschulen
+  76.537 Betriebe, Kursbetrieb bis 134.000, Tiermedizin 43.500 Praxen zu 85 €). Sie
+  verschiebt den Engpass nur: Alle drei starben an der Besetzung oder am Preisboden null,
+  **keines an der Größe**. Weder widerlegt noch bestätigt — drei Profile sind zu wenig.

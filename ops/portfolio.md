@@ -1,78 +1,87 @@
 # Portfolio
 
-Stand 2026-08-29, geschrieben vom Portfolio-Manager. Erster Wochenlauf dieser Rolle.
+Stand 2026-08-30, geschrieben vom Portfolio-Manager. Zweiter Lauf dieser Rolle.
 
 ## Lage in einem Satz
 
-Der Vorrat ist auf null gelaufen: Von fünfzehn Ideen sind zwölf am Fit-Filter gescheitert
-und die letzten drei diese Woche an den Angriffen — es gibt keinen Kandidaten mehr, und
-damit auch **keine Gate-Vorlage**.
+Null Kandidaten, null aktive Vorhaben, **keine Gate-Vorlage** — aber anders als am
+2026-08-29 ist der Engpass jetzt vermessen statt vermutet: Die Öffnung des Suchraums hat
+die Mengenseite von G7 tatsächlich gelöst, und alle drei ersten englischsprachigen
+Segmente sind trotzdem gestorben, keines an der Größe.
 
 ## Aktiv
 
-Nichts. Keine Idee in `erkundung`, `bau` oder `live`.
-
-Das WIP-Limit ist damit zu keinem Zeitpunkt die Bremse gewesen. Alle drei Plätze sind
-frei; es fehlt nicht der Platz, sondern der Kandidat.
+Nichts in `erkundung`, `bau` oder `live`. **WIP 0 von 3**, kein Stopp-Vorschlag. Es fehlt
+weiterhin nicht der Platz, sondern der Kandidat.
 
 ## Diese Woche gestorben
 
-Alle drei nach Mehrheitsentscheid, alle drei mit Anwaltsempfehlung `fallenlassen`.
-Gezählt wurden nur Einwände, die die Verteidigung nicht ausräumen konnte.
+**Keine Idee** — es gab keine zu töten. Seit dem 2026-08-29 ist kein Entwurf entstanden;
+der Ideator lief zweimal leer, der Fit-Filter zweimal. Alle 15 Ideen stehen auf
+`abgelehnt` (12) oder `widerlegt` (3), alle drei Angriffsordner sind ausgewertet.
 
-| Idee | Punkte | verbleibend | woran gestorben |
-|---|---:|---|---|
-| 0012 Asbestanzeige je Baustelle | 18 | 4 unlösbar, 1 teuer | Die Pflicht existiert im Segment nicht. Der Anwalt hat den Verordnungstext beschafft, den drei Linsen nur vermuten konnten — im mittleren Risikobereich sind je Baustelle Ort, Beginn und Dauer anzuzeigen; die Nachweisliste, aus der der ganze Produktnutzen besteht, fällt einmal in sechs Jahren an. Dazu je eigenständig tödlich: G6 (Recht) und kein Vertriebskanal. |
-| 0005 Zettelfoto in Stundenzeile | 16 | 3 unlösbar, 2 teuer | Arithmetik. Unter zwei Wochenstunden bleibt der Betrieb erst ab rund 100 € je Kunde und Monat — dem Zwei- bis Sechsfachen dessen, was der Markt für die *vollständige* Handwerkersoftware verlangt. Dazu je eigenständig tödlich: G6 (Recht) und kein Vertriebskanal. |
-| 0009 Haushaltsturnus-Monatsabrechnung | 16 | 2 unlösbar, 2 teuer | Beide Ausgänge der entscheidenden Prüfung führen zur Ablehnung: Rechnet die Branche pauschal ab, ist das Produkt eine Serienrechnung; rechnet sie spitz ab, tut Meisterwerk für 49 € dasselbe. Dazu eigenständig tödlich: kein Vertriebskanal. |
+Gestorben ist stattdessen eine **Annahme**: dass der größere Markt das Problem löst.
+Fünf neue Signale des 2026-08-30, jedes von seinem eigenen Verfasser erledigt.
 
-Zwei Muster, die dreimal auftraten und deshalb in `notizen/lehren.md` stehen: **Recht
-tötete zweimal über G6**, und **die Linse Vertrieb fand dreimal von drei Malen keinen
-Weg zum ersten Kunden** — auch der Anwalt nicht, der insgesamt neun Kanäle einzeln
-gegen die Hausregeln geprüft hat.
+| Segment (englischsprachig) | Betriebe | Preis | woran es starb |
+|---|---:|---:|---|
+| Fahrschulen (US/UK/IE/AU) | 76.537 | 17,50 € | 57 Produkte in der Kategorie; Preisboden 0 € |
+| Tanz-, Kampfsport-, Musikstudios | bis 134.000 | 15 € | Preisboden 0 €, refinanziert über 4,99 % auf den Beitragseinzug |
+| Tierarztpraxen | 43.500 | 85 € | Preis trägt (`traegt_5000: knapp`) — 30 Anbieter, sechs Vergleichsportale |
+
+Dazu zwei rote Recherchen: **Delighted** (Stichtag beim Erfassen 61 Tage vorbei) und
+**AMLR** (der Kreis der Verpflichteten *schrumpft* ab dem 10.07.2027).
+
+Der Befund dahinter, von zwei Logbüchern unabhängig belegt und jetzt in `lehren.md`:
+**Der Preisboden null ist im englischsprachigen Raum ein Geschäftsmodell, keine Wohltat.**
+Wo wiederkehrend Geld vom Endkunden durch die Software fließt, verschenkt der Wettbewerber
+das Abo und lebt vom Zahlungsstrom — den die Fabrik nach Hausregel 2 nicht anfassen kann.
 
 ## Was wartet
 
-Nichts. Und das ist der Punkt, der Aufmerksamkeit braucht.
+Kein Kandidat, keine unverbrauchte Anwaltsempfehlung. Drei Fährten mit Datum:
 
-Die Anschlusszuschnitte aus den drei Anwaltsdateien — sonst der wertvollste Ertrag einer
-gescheiterten Idee — sind **bereits alle drei verbraucht**, bevor dieser Lauf begann:
+- **PPWR-Mehrwegquote** — Wiedervorlage Juli 2027, wenn der Durchführungsrechtsakt vorliegt.
+- **§ 60b GEG**, Heizungsprüfung ab sechs Einheiten, Frist 30.09.2027; Pflichtiger ist der
+  Eigentümer. Achtung: als reine Fristenliste ist das die G6-Falle von 0003.
+- **Vermittlungsmarktplatz für Asbestaufträge** (aus dem Dachdeckerprofil, nach G9
+  ausdrücklich erlaubt) — bislang nur vermutet, ohne Beleg keine Idee.
 
-- 0005 → Zahlerwechsel zum Lohnbüro → als **0006** ausgearbeitet, an G3 gestorben.
-- 0012 → hoher Risikobereich und Antragsmappe → als **0015** und **0014** ausgearbeitet, beide an G7.
-- 0009 → Alltagshilfe gegen Kostenträger → vom Ideator am 2026-08-29 vor dem Entwurf
-  geprüft und widerlegt: Helferdesk verkauft Tarif „Solo" für einen Helfer zu 19 €/Monat
-  in Selbstbedienung — exakt der Preis, den der Anwalt für 0009 gerechnet hatte.
-
-Der Ideator meldet dazu wörtlich: „Der Vorrat ist leer, und das ist die wichtigste Zeile
-dieses Laufs. […] Ohne neue Signale oder neue Angriffsläufe hat der Ideator im nächsten
-Lauf dasselbe Nichts."
-
-## Drei Meldungen an den Betreiber
+## Vier Meldungen an den Betreiber
 
 Regeln ändert nur der Betreiber, deshalb stehen diese Punkte hier und nicht in den Lehren.
 
-1. **Der Engpass sitzt vorn, nicht hinten.** Die Fabrik hat 122 Läufe und 132 Mio. Tokens
-   in eine Woche gesteckt und produziert am Ende null Kandidaten. Die Angriffskette
-   funktioniert — sie hat drei Ideen sauber und begründet getötet, und der Anwalt hat
-   dabei mehrfach Belege korrigiert. Was fehlt, ist Zufluss: Jedes Signal hat eine
-   Recherche, und jede unverarbeitete Recherche ist rot oder als tot vermerkt.
-2. **Ein Befund aus einem Angriffslauf kann einen Score entwerten, den niemand nachzieht.**
-   Der Fit-Filter meldet das für 0012: Der Hamburger Gratisdienst kam erst aus der
-   Vertriebslinse, nach der Bewertung mit 18 Punkten, und würde seine Preisbodenprobe
-   heute reißen. Er darf nur `entwurf` anfassen. Für diesen Lauf folgenlos — 0012 ist
-   ohnehin tot —, aber die Lücke bleibt.
-3. **Der Rechercheur kostet 82 von 132 Mio. Tokens (62 %) bei 16 leeren von 43 Läufen,
-   und sein Logbuch sprengt die 30-Zeilen-Regel**: 52 Zeilen mit rund 92.000 Tokens,
-   die jede Rolle nicht liest, aber der Rechercheur selbst zu Beginn jedes Laufs. Die
-   Erstfragen darin sind gut — sie setzen die Ampel oft vor der ersten Anbietersuche.
-   Sie stehen nur in einer Form, die sich selbst im Weg ist.
+1. **Der Zuschnitt der Scouts, nicht ihre Zahl.** So formuliert es der Ideator wörtlich.
+   Die Zahlen dazu: `signals/regulation` 19 Signale → **null** überlebende Ideen.
+   `signals/market` 14 Signale → **eine** Idee (0008), tot an G3. Die Marktprofile
+   18 Stück → vier Ideen, alle aus *einem* Profil (Dachdecker), alle tot. Nur die
+   Marktprofile haben je Ideen erzeugt. Zugleich kosten Rechercheur und Markt-Analyst
+   zusammen 161 von 225 Mio. Tokens der Woche — **72 %**. *Mein Vorschlag:* Regel-Scout
+   und Markt-Scout aussetzen oder neu zuschneiden, das Kontingent in Marktprofile
+   umlenken. Zur Fairness: Der Apparat funktioniert. Er hat 15 Produkte verhindert, die
+   niemand gekauft hätte — er ist nur auf Quellen gerichtet, die nachweislich nichts
+   hergeben.
+2. **Ausstiegssignale mit weniger als etwa 90 Tagen Restfrist** sind für diese Fabrik
+   konstruktionsbedingt unerreichbar (Publisher 33 Tage, Office 2021 46, Delighted
+   bereits vorbei). Vorschlag des Rechercheurs, den ich teile. Als *Vorgehen* steht er
+   ab heute in `lehren.md`; ob er als Regel nach `quellen.yml` gehört, entscheidet der
+   Betreiber.
+3. **Das Promille in G7 wird angewendet, wo die Regel es nicht verlangt.** G7 sagt: „Ein
+   Prozent ist optimistisch, ein Promille realistisch, *wenn kein Vertriebskanal belegt
+   ist*." Alle drei neuen Marktprofile benennen einen Kanal — zweimal wörtlich „Kanal
+   vorhanden" — und rechnen trotzdem mit einem Promille. Diese Woche folgenlos, weil alle
+   drei ohnehin an der Besetzung starben. Künftig entscheidet der Faktor still über jedes
+   Profil: Bei einem Promille braucht ein 20-€-Produkt 250.000 Betriebe, bei einem Prozent
+   25.000. Der Markt-Analyst rechnet die härtere Variante, ohne dass die Regel es verlangt.
+4. **Offen aus dem 2026-08-29:** Ein Angriffsbefund kann einen Score entwerten, den
+   niemand nachzieht (der Fit-Filter darf nur `entwurf` anfassen), und `widerlegt` kennt
+   kein Wiedervorlagedatum — 0012 hängt an einem Verordnungstext, 0009 an einem
+   Wettbewerberpreis.
 
 ## Empfehlung für die nächste Woche
 
-Keine Gate-Vorlage, und auch keine erzwungene. Eine Woche ohne Gate ist normal; eine
-Vorlage aus dem Rest von drei widerlegten Ideen wäre es nicht.
-
-Die nächste Woche entscheidet sich an den Scouts, nicht an der Angriffskette. Wenn dort
-nichts Neues ankommt, laufen Ideator, Fit-Filter und fünf Linsen ins Leere — das sind
-nach der Auslastung dieser Woche die teuersten Läufe der Fabrik.
+Zweiter Lauf ohne Gate, und keines erzwungen: Ohne Kandidat wäre eine Vorlage nicht
+schwach, sondern frei erfunden. Die nächste Woche entscheidet sich weiterhin vorn — aber
+die Fabrik weiß jetzt, wonach sie vorn suchen muss: **erst den Preisboden, dann die
+Segmentgröße.** Das kehrt die bisherige Reihenfolge um, steht seit heute in `lehren.md`
+und kostet einen Abruf statt eines ganzen Profillaufs.
