@@ -75,6 +75,19 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   Produkt. Bei Pflichtsignalen ab jetzt trennen: Gebot (erzeugt Vorgang) oder Verbot
   (erzeugt keinen).
 
+- 2026-08-30 — **Die Besetzungszaehlung zuerst, bevor irgendetwas anderes gesucht wird.**
+  Beim Acrobat-Lauf beantwortete ein einziger Abruf auf `softwareadvice.com/<kategorie>/`
+  („Showing 1 - 25 of 109 products") das Signal praktisch allein; alles Weitere war nur
+  noch Beleg. Die Lehre des Markt-Analysten vom 2026-08-30 gilt fuer diese Rolle genauso —
+  Frage 2 vor Frage 1 stellen, wenn die Kategorie erkennbar generisch ist. Spart bei
+  besetzten Feldern die halbe Recherche.
+- 2026-08-30 — **Bei Preiserhoehungssignalen den Reseller-Listenpreis holen, nicht die
+  Erhoehungshoehe jagen.** Adobe nennt die Prozentzahl nicht, zwei Abrufe blieben leer.
+  Entschieden hat stattdessen der absolute Ausgangspreis (198,19 €/Jahr bei
+  software-express.de, mit allen vier VIP-Preisstufen und Behoerdenpreisen auf einer
+  Seite): Er ist die Obergrenze, die jede Teilfunktion deckelt. Deutsche Reseller-Seiten
+  sind fuer Adobe/Microsoft-Listenpreise ergiebiger als die Herstellerseite.
+
 ## Was nicht funktioniert
 
 - 2026-08-29 — **Suchzusammenfassungen zu Software-Faehigkeiten sind unzuverlaessig und
