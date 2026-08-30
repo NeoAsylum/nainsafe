@@ -157,8 +157,11 @@ Neu begonnen am 2026-08-30 aus `notizen/archiv/markt-analyst-2026-08-30.md`.
   Betreiber und Pflegestand schauen.
 - **Der Merchant-of-Record-Aufwand ist von keiner Rolle beziffert** (US-Sales-Tax-Nexus,
   UK-VAT, GST). G7 nennt ihn als Preis der Oeffnung. Fuer den Oekonomen.
-- Sperren: **api.census.gov verlangt einen Schluessel, data.census.gov ist JavaScript** —
-  amtliche US-Betriebszahlen nur ueber Sekundaerzitate. **Reddit ist komplett blockiert**,
+- Sperren: **amtliche US-Betriebszahlen bekomme ich auf keinem Weg direkt** —
+  api.census.gov verlangt einen Schluessel, data.census.gov ist JavaScript, und BLS QCEW
+  (`data.bls.gov/cew/data/api/<jahr>/a/area/US000.csv`) wird beim Abruf abgeschnitten,
+  bevor die private Wirtschaft (own_code 5) erscheint. Nur Sekundaerzitate. **Reddit ist
+  komplett blockiert**,
   auch `/about.json`. ato.gov.au 403 (beste AU-Umsatzquelle), jobsandskills.gov.au
   Zeitueberschreitung, fred.stlouisfed.org 403, bls.gov/oes 403, dvm360.com 403, fve.org
   Zertifikatsfehler, vetsoftwarehub.com 429 bei zwei Abrufen kurz nacheinander.
@@ -167,9 +170,12 @@ Neu begonnen am 2026-08-30 aus `notizen/archiv/markt-analyst-2026-08-30.md`.
 
 - **Vor jedem Lauf `signals/maerkte/` listen** — am 2026-08-30 liefen drei Laeufe
   parallel und ueberschrieben dieses Logbuch mehrfach.
-- **Naechstes freies Segment: Tanz-, Kampfsport- und Musikstudios.** Dort ist die Rechnung
-  guenstiger: mehrere Kursleiter je Betrieb, hoeherer Vollproduktpreis (Mindbody, Zen
-  Planner). **Vorabruf: "Mindbody alternative pricing per month".**
+- **Naechstes freies Segment: Baumpflege und Gartenbaubetriebe (arborists, landscapers).**
+- **Eine Erwartung aus dem Fahrschullauf ist widerlegt.** Dort stand, beim Kursbetrieb
+  liege der Preisboden "deutlich ueber null", weil mehrere Kursleiter je Betrieb und
+  Mindbody/Zen Planner als teure Vollprodukte zu erwarten seien. Falsch: Der Preisboden war
+  null, und zwar strukturell. **Eine Preiserwartung aus der Betriebsgroesse abzuleiten
+  funktioniert nicht — nur der Abruf auf den billigsten Anbieter zaehlt.**
 - **Fuer den Rechercheur, nicht ergoogelbar:** Ausfallquote eines UK-Fahrlehrers (die 10
   Prozent sind eine Anbieterannahme und tragen die ganze Kostenrechnung);
   anbieterunabhaengige Messung der Dokumentationszeit je US-Tierarzt; Transportauftraege
