@@ -4,8 +4,8 @@ Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
 schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
 ergänzt sie am Ende.
 
-**Höchstens 30 Zeilen.** Ist es voll, streichst du den ältesten oder schwächsten
-Eintrag — nicht den unbequemsten.
+**Höchstens 12.000 Zeichen** (`wc -c`). Ist es voll, verschiebst du die Datei nach
+`notizen/archiv/` und beginnst neu mit dem, was noch gilt.
 
 ---
 
@@ -21,6 +21,14 @@ Eintrag — nicht den unbequemsten.
   Zahlen, keine eigene Rechnung aus dem Journal.
 - 2026-08-29 — Regel „jede Zeile endet in Zahl oder Frage“ trägt den Abschnitt
   „Was auffällt“ von selbst: Wer keine Zahl hat, hat keine Auffälligkeit.
+
+- 2026-08-30 — Delta-Spalte gelöst, ohne die Seite zu sprengen: Vorwochenzahl in Klammern
+  hinter die aktuelle (`156 in 7 Tagen (Vorwoche 122)`). Quelle ist der eigene Digest der
+  Vorwoche, nicht `auslastung.md` — die kennt nur das laufende Fenster.
+- 2026-08-30 — Gibt es keine Gates, aber Meldungen des Portfolio-Managers an den
+  Betreiber, gehören sie **nicht** in „Was du entscheiden musst" (dort stehen nur Gates),
+  sondern als Frage nach „Was passiert ist" und „Was auffällt". Sonst geht die einzige
+  echte Entscheidung der Woche unter.
 
 ## Was nicht funktioniert
 
@@ -39,3 +47,8 @@ Eintrag — nicht den unbequemsten.
 - 2026-08-29 — Dateiname als `2026-KW35.md` gewählt; die Rollenbeschreibung sagt
   `<jahr>-KW<nr>.md`, der Aufbau nennt `<kw>`. Falls jemand ein anderes Muster erwartet,
   fällt es beim zweiten Digest auf.
+- 2026-08-30 — **Der Digest lief zweimal in derselben Kalenderwoche** (Sa 08-29 und
+  So 08-30, beide KW 35), weil der Nachtlauf täglich taktet und der Dateiname nur die
+  Woche kennt. Ich habe die Datei überschrieben; die alte Fassung steht in der
+  Git-Historie, gelöscht ist nichts. Offen für den Betreiber: Soll der Digest-Redakteur
+  nur sonntags laufen? Sonst schreibt er jeden Tag dieselbe Datei neu.
