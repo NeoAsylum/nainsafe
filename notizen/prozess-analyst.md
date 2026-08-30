@@ -50,6 +50,11 @@ per Diktat**.
 - **2026-08-30** — Zuerst die `handarbeit`-Felder woertlich nebeneinanderlegen, dann erst
   addieren. Grep ueber alle Frontmatter (`segment|betriebe|handarbeit|potenzial`) kostet
   einen Aufruf und ersetzt das Lesen von 300.000 Zeichen Profiltext.
+- **2026-08-30** — Bei Pflichtvorgaengen den **Volltext der Landesbehoerdenseite** holen,
+  nicht den Suchauszug. Er hat die Vorgangsdefinition gedreht: Die objektbezogene
+  Asbestanzeige gilt nur bei *hohem* Risiko und setzt eine behoerdliche Zulassung voraus;
+  bei mittlerem genuegt eine Meldung von Ort und Zeit. Der Auszug haette „je Baustelle,
+  7 Tage" gesagt und mich 15.241 statt 2.588 Betriebe rechnen lassen.
 
 ## Was nicht funktioniert
 
@@ -90,6 +95,17 @@ per Diktat**.
   `befund` sind zwei Fragen; wer nur die Rechnung sieht, meldet einen Fund, wo eine
   Haken-Funktion steht. Beim Leistungsnachweis war die Groesse zum ersten Mal ueberhaupt
   nicht der Engpass.
+
+- **2026-08-30** — **Nach „machen sie denselben Vorgang?" sofort die zweite Frage: „wuerde
+  derselbe Kunde beide Meldungen machen?"** Bei der Behoerdenmeldung war die erste Antwort
+  ja und die zweite nein — Elektro meldet nie Asbest, ein Dachdecker nie ans Netz. 110.804
+  Betriebe, drei Formulare ohne ein gemeinsames Feld ausser Firma und Anschrift. Nein
+  heisst: Summe, kein Markt, `schale_groesser_als_kern: ja`.
+- **2026-08-30** — **Wo ein Preis gezahlt wird, sitzt schon jemand; wo niemand sitzt, wird
+  auch nichts gezahlt.** In einem Profil dreifach belegt: Netzanmeldung 299-399 EUR je
+  Vorgang (vier Anbieter), KfW-Bestaetigung 210 EUR (zwei), Asbestanzeige gebuehrenfrei
+  (keiner). **„Kein Anbieter gefunden" zuerst als Warnsignal lesen, nicht als Fund** — und
+  gegenpruefen: Zahlt irgendwer irgendwem etwas fuer genau diesen Vorgang?
 
 ## Offene Faehrten
 
@@ -151,3 +167,13 @@ per Diktat**.
   der Gesetzgeber selbst branchenuebergreifend beschreibt, ist die **schlechteste**
   Fundstelle dieser Rolle, nicht die beste — die Vorlage lag jedem anderen genauso vor,
   und zwar seit Jahrzehnten.
+- **2026-08-30** — **Ausgefallene Termine kurzfristig wiederbesetzen**, 164.458 Betriebe
+  aus vier Branchen, `traegt_5000: knapp` (6.396 EUR) und trotzdem `befund: tot`. Erste
+  Vereinigung dieser Rolle, deren Rechnung die Schwelle nimmt — sie scheitert an der
+  Bauart, nicht an der Groesse. Zwei Dinge, die ich mitnehme: Der Vorgang beginnt und
+  endet im Terminkalender, also gehoert er dessen Hersteller (Acuity ab Standard 27 USD,
+  Square ab Plus, Waitwhile gratis, Doctolib prueft alle 10 Minuten auf Absagen). Und die
+  Strenge bei Frage 1 hat sich zum ersten Mal *gegen* eine grosse Zahl gerichtet: Das
+  dritte Merkmal — **ein Bestand wartender Kunden** — hat 80.118 Friseursalons aus der
+  Vereinigung geworfen, obwohl Acuity und Fresha sie ausdruecklich als Zielgruppe nennen.
+  Ohne Nachfrageueberhang ist Wiederbesetzung kein Vorgang, sondern Werbung.
