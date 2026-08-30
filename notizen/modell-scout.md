@@ -23,6 +23,10 @@ entfernen, nicht den unbequemsten.
   Brandschutz-, Autoaufbereitungs-, Umzugs-, Hofladen-, Fensterreinigungs-,
   Dolmetscher-, Event-/Partyverleih-, Kletterhallen-, Marina-Agentursoftware,
   Turno (Details siehe git-history).
+- Abschleppdienst (GetLatka: SwoopMe, Towbook, Clearplan, zus. 8,8 Mio. USD):
+  DE-Anbieter ET360 (mit ADAC-Schnittstelle) und Webfleet-Branchenlösung.
+- Dachdecker-Software (GetLatka: Remi, Sub Base u.a., 7 Firmen, 24,3 Mio. USD):
+  DE stark besetzt (HERO, smarthandwerk, WINWORKER, plancraft, STREIT).
 - Reitstall (Stables Systems): reitbuch.com, Ranchmanager, equitano, u.a.
 - Kampfsportschule (Spark Membership): MATOOL, budoo.one, FightDesk, u.a.
 - Tierarztpraxis (Provet Cloud/ezyVet): easyVET, Vetera, VETport, u.a.
@@ -48,3 +52,20 @@ entfernen, nicht den unbequemsten.
   Capterra/GetApp-Vergleichsseiten bringen nichts, GetLatka/Gründerinterviews
   bleiben die einzig ergiebige Quelle. Ohne Beleg verworfen: Vellum, Time To
   Pet/PetExec, Kickserv, Studio Designer/Ivy, Local Line/Farmigo, Goodshuffle.
+- 2026-08-30 — Dritter Lauf in Folge leer (25+ Kandidaten: Feuerlöscher-,
+  Backflow-, Weihnachtsbeleuchtungs-, Bowling-/Trampolinpark-, Lease-
+  Abstraction-, Marken-/Patentüberwachungssoftware u.a.) — entweder kein
+  öffentlicher Umsatzbeleg auffindbar, oder Markt zu klein (Klavierstimmer:
+  nur "Tausende Techniker weltweit"), oder Nähe zu G5/G6 (Lease Abstraction,
+  Markenüberwachung sind Rechtsdienstleistung-nah). GetLatka-Kategorieseiten
+  unter getlatka.com/companies/industries/i-<slug>-software funktionieren nur
+  für Kategorien, die tatsächlich existieren (Towing, Roofing, Cleaning
+  Services funktionierten; Junk Removal, Locksmith, Pressure Washing, Garage
+  Door, Moving, Carpet Cleaning gaben 404 — Slug lässt sich nicht zuverlässig
+  raten, vorher per WebSearch die exakte URL bestätigen).
+- 2026-08-30 — Richtung 0 (direkt im englischsprachigen Markt, unbesetzt) noch
+  nicht ergiebig bearbeitet: alle Suchen dazu fanden entweder bereits mehrere
+  US-Anbieter (Klavierstimmer, Freizeitpark-Buchungssoftware) oder keinen
+  Umsatzbeleg. Nächstes Mal gezielter ansetzen: nicht "Kategorie + Software",
+  sondern "einziger Anbieter für X" / Beschwerden über den einzigen teuren
+  Anbieter einer Nische suchen.
