@@ -106,6 +106,18 @@ niemand mehr, auch du nicht.
   Bei Weiterverfolgung direkt zerez.net/Doku-Unterseite abrufen, nicht nur Startseite/News.
 - Kataster-Open-Data BW 2026: weiterhin ungeprüft, niedrige Priorität.
 
+## Was nicht funktioniert (Fortsetzung 5)
+
+- 2026-08-30 — Generische Suchen ("Register erweitert API", "ab sofort Schnittstelle
+  Verwaltung", "Grundbuch Open Data 2026", "digitale Schnittstelle Fachpresse 2026")
+  liefern nur Bekanntes (ZEREZ erneut, NOOTS/Deutschland-Stack erneut, Grundbuch
+  weiterhin "berechtigtes Interesse" nach §12 GBO unverändert) oder Anbieterwerbung
+  (boniforce.de-Serie zu Unternehmensregister/Bundesanzeiger-API — Wrapper, kein neuer
+  Zugang, Muster wie beim OpenRegister-Befund vom 2026-08-29). E-Rechnungspflicht 2026
+  ist reine Übergangsfrist ohne neue Schnittstelle. Generische Suchmuster ohne Branchen-
+  oder Registernamen sind ausgereizt — nächstes Mal direkt mit Sektor kombinieren
+  (Pflege, Notariat, Apotheke, Energie/Netzanschluss abseits PV noch ungeprüft).
+
 ## Was nicht funktioniert (Fortsetzung 4)
 
 - 2026-08-30 — Gewerbeanzeige-OZG-2.0-Technikspezifikation geklärt: XGewerbeanzeige heißt
