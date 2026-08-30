@@ -93,6 +93,14 @@ per Diktat**.
 
 ## Offene Faehrten
 
+- **2026-08-30** — **Zu jedem Vorgang zuerst die Endkundengruppe suchen, nicht die
+  Betriebe.** Bei der Verbrauchsabrechnung nannte die Ausgangstabelle 27.800 Betriebe; die
+  eigentliche Gruppe sind 5,5 Mio. private Vermieter — Faktor 200. Marktprofile kennen nur
+  Betriebe, deshalb fehlt diese Seite in der Tabelle systematisch. Frage: *Wer macht
+  denselben Vorgang, ohne ein Gewerbe zu sein?* Regelmaessig um Groessenordnungen groesser
+  — und regelmaessig die Seite mit dem Preisboden null (objego Basics, hellohousing,
+  Laubenmeister: alle drei dauerhaft gratis). Beim offenen Vorgang Beitragsabrechnung
+  heisst diese Seite **Vereinskassierer**, und der Gratis-Beleg liegt schon vor.
 - **2026-08-30** — **Ein herrenloser Vorgang, den ich nicht bearbeiten darf: „vertraglicher
   Leistungsnachweis an den Auftraggeber".** Die Facility-Dienstleister (34.288) sind jetzt
   zweimal aussortiert — beim Pruefnachweis (kein gesetzlicher Turnus) und beim
