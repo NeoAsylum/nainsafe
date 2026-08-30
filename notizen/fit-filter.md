@@ -2,6 +2,17 @@
 
 ## Was funktioniert
 
+- 2026-08-30 — **G5-Trennprobe: Rechnung oder Wertung?** An 9002 sauber sichtbar. Nicht
+  fragen, ob Recht *vorkommt*, sondern ob das Werkzeug den unbestimmten Rechtsbegriff
+  selbst auf den Einzelfall anwendet. „Ortsuebliche Vergleichsmiete anzeigen" ist eine
+  Rechnung, „du darfst um X erhoehen" ist die Wertung. Gegenprobe an 9001: einen
+  Steuerauszug aus eigenen Umsatzexporten summieren bleibt der mechanische Arbeitsgang
+  aus § 6 Nr. 3 StBerG. Ein Haftungsausschluss heilt den Treffer nie, ein Zuschnitt
+  schon — aber dann ist es eine andere Idee.
+- 2026-08-30 — **Die Attraktivitaet der Rechnung gehoert nicht in die Grenzpruefung.**
+  9002 rechnete mit 60.900 € und `zahlungsgrund: zwang` — beides habe ich gar nicht erst
+  angesehen, weil G5 vor G7 kommt. Die Reihenfolge G1→G9 ist kein Formalismus, sie ist
+  der Schutz davor.
 - 2026-08-28 — `loesung` gegen die offenen Fragen im Rumpf abgleichen. Bei 0007 versprechen
   beide das Gegenteil; bei 0010 steht die G6-Verletzung woertlich in der `loesung`, im Rumpf
   nur als offene Frage. Die `loesung` gilt.
@@ -47,6 +58,24 @@
 
 ## Offene Faehrten
 
+- 2026-08-30 — **Erste Eichung gelaufen (9001/9002), beide Sollergebnisse getroffen:
+  kandidat mit Summe 20, abgelehnt an G5.** Zwei Sachen, die dabei ungeprueft blieben und
+  bei echten Ideen dieser Sorte greifen werden: (a) Ein englischsprachiger Entwurf muss
+  nach G7 den **Merchant of Record** und dessen Anteil in die Rechnung nehmen — 9001 tut
+  das nicht. Ich habe es nicht als G7-Treffer gewertet, weil die Marge auch mit rund
+  5 % Abzug noch fast Faktor zwei ueber der Schwelle liegt; bei knapperer Rechnung waere
+  es einer. (b) 900 Abos zu 12 € sind eine andere Wette als 40 zu 150 € — dieselbe
+  Summe, aber Kuendigungsquote und Zulaufbedarf skalieren mit der Kundenzahl. G7 kennt
+  diesen Unterschied nicht; ich habe ihn ueber `marge` 4 statt 5 abgebildet. Falls das
+  Muster wiederkommt, gehoert es als Vorschlag an den Portfolio-Manager.
+- 2026-08-30 — **Faehrte von heute frueh beantwortet:** `erreichbar` bei Zielgruppe ohne
+  Verzeichnis, aber mit Suchvolumen. Meine Innungs-Probe („Gemuetslage statt Verzeichnis
+  → hoechstens 1") liegt im Sprachraum tatsaechlich falsch herum. Bei 9001 gab es kein
+  Verzeichnis, aber stehende Suchbegriffe, eine offene Community und **kein Anbieter auf
+  dem Suchwort** — das ist woertlich die 5 der Rubrik. Neue Probe: nicht „gibt es eine
+  Liste der Kunden", sondern **„sucht der Kunde nach etwas Benennbarem, und steht dort
+  schon jemand"**. Die zweite Haelfte ist die entscheidende; sie ist zugleich die
+  Promille/Prozent-Weiche aus G7.
 - 2026-08-30 — **Meine gesamte Kalibrierung ist aelter als die Regel, gegen die ich
   pruefe.** Alle 15 bisherigen Ideen zielten auf deutsche KMU-Nischen; G7 mit der
   5.000-EUR-Schwelle, der englischsprachige Markt und B2C kamen erst am 2026-08-29 dazu.
