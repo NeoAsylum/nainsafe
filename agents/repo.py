@@ -26,12 +26,21 @@ LINSEN = ("nachfrage", "wettbewerb", "betrieb", "recht", "vertrieb")
 MEHRHEIT = 3
 
 
-def ideen(status: str | None = None) -> list[dict]:
-    """Alle Ideen, optional nach Status gefiltert. Sortiert nach Score, dann Datei."""
+def ideen(status: str | None = None, mit_eichung: bool = False) -> list[dict]:
+    """Alle Ideen, optional nach Status gefiltert. Sortiert nach Score, dann Datei.
+
+    Ideen mit `typ: eichung` bleiben aussen vor. Das sind Pruefideen mit bekannter
+    Antwort, mit denen die Kette geeicht wird -- eine, die durchkommen muss, eine, die
+    sterben muss. Sie sind Messwerkzeug und kein Bestand; wer sie mitzaehlt,
+    verfaelscht jede Quote. Der Fit-Filter sieht sie trotzdem, denn er sucht selbst
+    nach `status: entwurf` in `ideas/*.md` -- und genau sein Urteil wird gemessen.
+    """
     treffer = []
     for datei in sorted(IDEEN.glob("*.md")):
         kopf, _ = frontmatter(datei.read_text(encoding="utf-8"))
         if not kopf:
+            continue
+        if kopf.get("typ") == "eichung" and not mit_eichung:
             continue
         if status and kopf.get("status") != status:
             continue
@@ -202,6 +211,24 @@ def offene_prozesse() -> list[str]:
     return [v for v in vorgangsliste() if _schluessel(v) not in erledigt]
 
 
+# Was eine Recherche bringt, haengt messbar an der Signalart. Stand 2026-08-30, nach
+# 46 Recherchen: 41 davon `rot`, nur 4 `gelb`. Von diesen vier kamen **zwei aus
+# signals/modelle** -- einer Quelle mit gerade zwei Signalen. Regulation lieferte bei
+# 20 Signalen eine, market bei 15 eine, pain und tech bei je 4 keine.
+#
+# Das ist eine kleine Stichprobe, und die Reihenfolge ist entsprechend eine Wette, keine
+# Wahrheit. Sie ist aber eine begruendete: Ein Modellsignal bringt den Beleg, dass
+# jemand zahlt, schon mit -- genau die Frage, an der hier alles stirbt. Ein
+# Regulierungssignal bringt eine Pflicht, die oeffentlich ist und die der Wettbewerb
+# genauso lange kennt.
+ERTRAG = {"modelle": 0, "pain": 1, "market": 2, "regulation": 3, "tech": 4}
+
+
+def _recherchevorrang(sig) -> tuple:
+    """Sortierschluessel: erst nach Ertrag der Quelle, dann neueste zuerst."""
+    return (ERTRAG.get(sig.parent.name, 9), [-ord(c) for c in sig.name])
+
+
 def offene_recherchen(grenze: int = 6) -> list[str]:
     """Signale, zu denen noch keine Recherche vorliegt -- neueste zuerst.
 
@@ -216,7 +243,7 @@ def offene_recherchen(grenze: int = 6) -> list[str]:
             erledigt.add(str(kopf["signal"]).strip())
 
     offen = []
-    for sig in sorted(SIGNALE.glob("*/*.md"), reverse=True):
+    for sig in sorted(SIGNALE.glob("*/*.md"), key=_recherchevorrang):
         # Markt- und Prozessprofile brauchen keine Recherche -- sie SIND welche.
         # Beide Analysten beantworten dieselben Fragen bereits mit Quellen; ein
         # Rechercheur darauf waere rund fuenf Dollar fuer eine zweite Fassung

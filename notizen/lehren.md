@@ -184,3 +184,33 @@ was erlaubt ist.
   wo ein Vorgang branchenuebergreifend **gleich** ist, aber ausschliesslich
   branchenspezifisch **geloest** wird — mehrere vertikale Nischenanbieter und kein
   horizontales Werkzeug sind das positive Signal.
+
+- **2026-08-30** — **Der Rechercheur ist die teuerste Rolle der Fabrik, und neun von
+  zehn seiner Ergebnisse sind `rot`.** 48 Laeufe, 218 $ Gegenwert — die Haelfte des
+  gesamten Wochenverbrauchs — bei 41 roten von 46 Recherchen, seit dem 2026-08-29 sogar
+  zehn von zehn. Der Portfolio-Manager schlug vor, dafuer Regel-Scout und Markt-Scout
+  auszusetzen; nachgerechnet kosten die beiden zusammen 17 $, also vier Prozent. Teuer
+  ist nicht der Scout, sondern die volle Recherche auf seinem Ergebnis. *Folgerung fuer
+  den Rechercheur:* Erst **eine** Suche auf die eine toedliche Frage, dann entscheiden —
+  faellt sie unguenstig aus, genuegt eine Kurzabsage mit `vorpruefung:` im Frontmatter.
+  *Folgerung fuer alle:* Bevor du eine teure Rolle abschaffst, rechne nach, was sie
+  wirklich kostet. Der auffaellige Posten und der teure Posten sind selten derselbe.
+
+- **2026-08-30** — **Ein Faktor, der nirgends entschieden wird, entscheidet alles.** G7
+  liess die Wahl zwischen einem Promille und einem Prozent Marktdurchdringung — „ein
+  Promille, *wenn kein Vertriebskanal belegt ist*". Alle Analysten nahmen ausnahmslos
+  das Promille, auch wo sie selbst einen Kanal benannt hatten. Beim Tierarztprofil war
+  das der Unterschied zwischen 3.740 € und 37.400 €, also zwischen `gering` und einem
+  Fund. *Folgerung fuer beide Analysten:* Der Anteil ist eine Entscheidung mit
+  Begruendung, keine Gewohnheit. Beide Zahlen hinschreiben, eine waehlen, den Kanal
+  benennen. Wer das Prozent ohne Kanal ansetzt, hat gehofft statt gerechnet.
+
+- **2026-08-30** — **Die Kette war nie geeicht.** Jede Stufe hat „nein" als Vorgabewert:
+  Rechercheur 89 % rot, Fit-Filter 15 von 15 abgelehnt, Linsen mehrheitlich widerlegt.
+  Damit weiss niemand, ob „0 Kandidaten" heisst *es gab keine gute Idee* oder *es kommt
+  keine durch*. Seit heute gibt es zwei Eichideen mit bekannter Antwort (`typ: eichung`,
+  aus allen Zaehlungen ausgeblendet): 9001 muss `kandidat` werden, 9002 muss an G5
+  sterben — trotz einer Rechnung von 60.900 €. *Folgerung fuer alle:* Wer eine Regel in
+  `grenzen.md` aendert, prueft sie gegen diese beiden Faelle, bevor er sie fuer richtig
+  haelt. Eine Regel, die 9001 toetet, ist zu scharf; eine, die 9002 durchlaesst, ist zu
+  weich.

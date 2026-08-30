@@ -111,8 +111,23 @@ beurteilbar und damit abgelehnt.
 
 Die zweite Zahl ist die schwierigere. Ein Segment mit 3.000 Betrieben und einem
 Zahlungsbereitschaftsdeckel von 30 € bräuchte **jeden zehnten Betrieb im Land** als
-Kunden — das ist keine Marktdurchdringung, die ein Nebenerwerb erreicht. Ein Prozent ist
-optimistisch, ein Promille realistisch, wenn kein Vertriebskanal belegt ist.
+Kunden — das ist keine Marktdurchdringung, die ein Nebenerwerb erreicht.
+
+**Welchen Anteil du ansetzt, ist eine Entscheidung mit Begründung, keine Gewohnheit.**
+Bis zum 2026-08-30 stand hier nur „ein Prozent ist optimistisch, ein Promille
+realistisch, wenn kein Vertriebskanal belegt ist" — und alle Analysten rechneten
+ausnahmslos mit dem Promille, auch wo sie selbst einen Kanal benannt hatten. Beim
+Tierarztprofil war das der Unterschied zwischen 3.740 € und 37.400 €. Der Faktor
+entschied still über jedes Profil.
+
+| Anteil | wann er gilt |
+|---:|---|
+| **ein Promille** | Kein Kanal, oder der gemeinsame Kanal ist von den vorhandenen Anbietern belegt: Sie ranken auf dem Suchwort, stehen in den Vergleichsportalen, sind im Verzeichnis vorn. |
+| **ein Prozent** | Ein Kanal ist belegt *und* erreichbar: Die Zielgruppe sucht aktiv nach etwas Benennbarem, oder es gibt ein Verzeichnis, einen Marktplatz oder eine Schnittstelle, an der man ohne Gespräch andockt. |
+| **darüber** | nur mit einem Vergleichsfall: ein benannter Anbieter im selben Segment, dessen Kundenzahl öffentlich ist. |
+
+Schreib **beide** Zahlen hin und benenne, welche du für die Bewertung nimmst. Wer das
+Prozent ansetzt, ohne den Kanal zu benennen, hat nicht gerechnet, sondern gehofft.
 
 Daraus folgt eine Faustregel: **Entweder das Segment ist groß genug, oder der Preis ist
 hoch genug.** Beides klein trägt nie. Ein Werkzeug für 30 € braucht einen Markt in

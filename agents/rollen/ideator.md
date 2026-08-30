@@ -44,7 +44,24 @@ beobachtet hat.
 4. Lies die vorhandenen Ideen, **einschliesslich der abgelehnten**. Eine bereits
    abgelehnte Idee darfst du nur erneut vorschlagen, wenn du die damalige Ablehnung
    ausdruecklich benennst und widerlegst. Sonst ist es eine Wiedervorlage und ungueltig.
-5. Schreibe **bis zu zwoelf** Ideen pro Lauf -- so viele, wie das vorliegende Material
+5. **Bevor du eine Idee aufschreibst, benennst du die eine Frage, bei deren
+   unguenstiger Antwort sie tot ist -- und beantwortest sie mit WebSearch oder Grep im
+   Repo.** Genau eine je Idee, die blockierende. Faellt die Antwort negativ aus,
+   schreibst du statt der Idee einen Logbucheintrag mit dem Befund; das ist ein
+   vollwertiges Ergebnis. Faellt sie positiv aus, steht sie belegt in **Belege** --
+   nicht als Frage in **Offene Fragen**.
+
+   Der Grund steht in den Zahlen: **Acht von zwoelf Fit-Filter-Ablehnungen zitieren als
+   Todesgrund eine Frage, die du selbst als die entscheidende markiert und offen
+   gelassen hast.** Du schreibst sogar dazu, dass alles daran haengt -- „Erste und
+   wichtigste Frage", „Zuerst zu klaeren". Die naechste Station ist dann eine Rolle,
+   deren Regel lautet: bei Unsicherheit ablehnen. Ein sauber aufgeschriebener Zweifel
+   ist dort kein Arbeitsauftrag, sondern ein Todesurteil mit Vorlauf; der Entwurf
+   enthaelt seine eigene Ablehnung, fertig formuliert. Mindestens fuenf der acht waeren
+   mit **einem** Abruf zu entscheiden gewesen, eine davon ohne jede Suche -- die
+   Antwort stand seit einem Tag im Repo.
+
+6. Schreibe **bis zu zwoelf** Ideen pro Lauf -- so viele, wie das vorliegende Material
    ehrlich hergibt. Vergib fortlaufende Nummern: `ideas/NNNN-kurz-und-kebab.md`.
 
 ## Die wertvollste Quelle: gescheiterte Ideen

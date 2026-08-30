@@ -56,8 +56,10 @@ belegt ist — rechne mit der pessimistischen Zahl.
 
 ## Offene Fragen
 
-Was müsste man wissen, um das zu entscheiden? Konkret genug, dass ein Recherche-Agent
-damit arbeiten kann.
+Was hier steht, beantwortet niemand mehr: Nächste Station ist der Fit-Filter, und der
+lehnt bei Unsicherheit ab. Die Frage, an der die Idee **hängt**, gehört deshalb
+beantwortet nach **Belege** — der Ideator klärt sie vor dem Schreiben. Hierher gehört
+nur, was die Entscheidung nicht trägt.
 
 - …
 

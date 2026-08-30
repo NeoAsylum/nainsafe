@@ -28,6 +28,12 @@ URTEILSROLLEN = {
     "ideator", "fit-filter", "portfolio-manager", "digest-redakteur", "rechercheur",
     "advocatus-nachfrage", "advocatus-wettbewerb", "advocatus-betrieb",
     "advocatus-recht", "advocatus-vertrieb",
+    # Nachgetragen am 2026-08-30: Diese vier urteilen laengst, standen aber noch als
+    # Sammler in der Liste -- die Pruefung meldete sie vier Wochen lang faelschlich als
+    # "sammelt nur, laeuft aber auf opus". Der Markt-Analyst vergibt `potenzial`, der
+    # Prozess-Analyst `befund`, der Anwalt eine Empfehlung, der Verbesserer waehlt
+    # einen Vorschlag aus mehreren aus.
+    "markt-analyst", "prozess-analyst", "anwalt", "verbesserer",
 }
 
 

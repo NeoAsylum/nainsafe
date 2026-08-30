@@ -110,9 +110,17 @@ derselbe — vergleiche das mit deiner Antwort auf Frage 3.
 
 Der Preis wird am nächstgrößeren Vollprodukt belegt — bei dir ist das meist der
 **vertikale** Nischenanbieter aus Frage 5, weil er beweist, was diese Betriebe für genau
-diesen Vorgang zahlen. Für die Kundenzahl gilt G7: ein Prozent Marktdurchdringung ist
-optimistisch, ein Promille realistisch, solange kein Kanal belegt ist. Hast du in Frage
-6 einen belegt, darfst du das Prozent rechnen — dann schreib beide Zahlen hin.
+diesen Vorgang zahlen. Für die zweite Zahl entscheidest du zwischen zwei Anteilen, und die Entscheidung
+gehört begründet (G7, Tabelle *Welchen Anteil du ansetzt*):
+
+- **ein Promille**, wenn kein Kanal existiert **oder** der Kanal von den vorhandenen
+  Anbietern belegt ist — sie ranken auf dem Suchwort, stehen in den Vergleichsportalen.
+- **ein Prozent**, wenn ein Kanal belegt *und* erreichbar ist: aktive Suche nach etwas
+  Benennbarem, ein Verzeichnis, ein Marktplatz, eine Schnittstelle zum Andocken.
+
+Schreib **beide** Zahlen hin und nenne, welche du nimmst und warum. Bis zum 2026-08-30
+setzten alle Profile das Promille an, auch wo sie selbst einen Kanal benannt hatten —
+beim Tierarztprofil war das der Unterschied zwischen 3.740 € und 37.400 €.
 
 ## Der Befund in einer Tabelle
 

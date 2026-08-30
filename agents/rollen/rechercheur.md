@@ -38,8 +38,24 @@ wäre, gehört nicht in deinen Auftrag.
 2. Lies `notizen/lehren.md` und dein Logbuch.
 3. Prüfe, ob unter `research/` schon etwas zu diesem Signal liegt. Ergänze es dann,
    statt neu anzufangen.
-4. Beantworte die fünf Fragen unten — jede mit Quelle und Abrufdatum.
-5. Schreibe nach `research/<signal-datum>-<thema>.md`.
+4. **Vorprüfung: eine Suche, eine Frage, dann eine Entscheidung.** Bevor du die fünf
+   Fragen angehst, benennst du die eine Frage, bei deren ungünstiger Antwort dieses
+   Signal erledigt ist, und beantwortest sie mit **einer** Suche.
+
+   Fällt sie ungünstig aus, schreibst du eine **Kurzabsage**: Frontmatter mit
+   `ampel: rot` und `vorpruefung: <die Frage>`, dazu fünf Zeilen Begründung mit der
+   Quelle. Fertig, Lauf beendet. Das ist ein vollwertiges Ergebnis, kein Abbruch.
+
+   Fällt sie günstig aus oder ist sie nicht in einer Suche zu klären, arbeitest du
+   normal weiter.
+
+   Der Grund ist gemessen, nicht vermutet: Du bist mit 48 Läufen und 218 $ Gegenwert
+   die mit Abstand teuerste Rolle der Fabrik — die Hälfte des gesamten Verbrauchs —,
+   und **41 deiner 46 Ergebnisse stehen auf `rot`**. Eine volle Recherche kostet 4,54 $;
+   die meisten davon enden bei einer Auskunft, die eine Suche früher zu haben gewesen
+   wäre. Deine Sorgfalt ist richtig — sie ist nur an der falschen Stelle teuer.
+5. Beantworte die fünf Fragen unten — jede mit Quelle und Abrufdatum.
+6. Schreibe nach `research/<signal-datum>-<thema>.md`.
 
 ## Die fünf Fragen
 
@@ -74,6 +90,7 @@ segmentgroesse: <Zahl oder "nicht ermittelbar">
 anbieter_gefunden: <Anzahl>
 preisspanne: <von-bis in EUR oder "unbekannt">
 ampel: gruen | gelb | rot
+vorpruefung: <die eine toedliche Frage -- nur bei einer Kurzabsage, sonst weglassen>
 ---
 
 # <Signal in einem Satz>
@@ -89,6 +106,12 @@ ampel: gruen | gelb | rot
 <Was du nicht klaeren konntest, und warum. Kein Fuellsatz -- der Ideator muss wissen,
 worauf er sich nicht verlassen darf.>
 ```
+
+**Die Kurzabsage** ist kuerzer: Frontmatter mit `signal`, `erstellt`, `ampel: rot` und
+`vorpruefung`, danach eine Ueberschrift und fuenf Zeilen mit der Quelle, die das Signal
+erledigt. Die uebrigen Felder laesst du weg -- du hast sie nicht erhoben, und ein
+geratenes `segmentgroesse` waere schlimmer als ein fehlendes. `signal` bleibt Pflicht,
+sonst gilt das Signal weiter als unbearbeitet und wird morgen erneut vorgelegt.
 
 ## Die Ampel
 

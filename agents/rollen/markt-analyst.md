@@ -91,9 +91,17 @@ Potenzial, und du beantwortest sie mit einer Rechnung, nicht mit einem Eindruck:
     plausibler Monatspreis  ×  erreichbare Kundenzahl  =  Monatsumsatz
 
 Der Preis wird am nächstgrößeren Vollprodukt im Segment belegt (Frage 5), die
-Kundenzahl an der Segmentgröße (Frage 1). Für die zweite Zahl gilt: **ein Prozent
-Marktdurchdringung ist optimistisch, ein Promille realistisch**, solange kein Kanal
-belegt ist. Rechne mit der pessimistischen Zahl und schreib beide hin.
+Kundenzahl an der Segmentgröße (Frage 1). Für die zweite Zahl entscheidest du zwischen zwei Anteilen, und die Entscheidung
+gehört begründet (G7, Tabelle *Welchen Anteil du ansetzt*):
+
+- **ein Promille**, wenn kein Kanal existiert **oder** der Kanal von den vorhandenen
+  Anbietern belegt ist — sie ranken auf dem Suchwort, stehen in den Vergleichsportalen.
+- **ein Prozent**, wenn ein Kanal belegt *und* erreichbar ist: aktive Suche nach etwas
+  Benennbarem, ein Verzeichnis, ein Marktplatz, eine Schnittstelle zum Andocken.
+
+Schreib **beide** Zahlen hin und nenne, welche du nimmst und warum. Bis zum 2026-08-30
+setzten alle Profile das Promille an, auch wo sie selbst einen Kanal benannt hatten —
+beim Tierarztprofil war das der Unterschied zwischen 3.740 € und 37.400 €.
 
 Kommt dabei weniger als 5.000 € heraus, ist das Segment `gering` — auch wenn die Lücke
 echt ist. Das ist kein Formfehler, sondern das häufigste Ergebnis: Sechzehn der ersten
