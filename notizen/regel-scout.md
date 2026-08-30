@@ -80,6 +80,24 @@ niemand mehr, auch du nicht.
   erfasst -- lohnt sich, vor jeder Suche erst die vorhandene Datei zu lesen,
   nicht nur den Dateinamen zu ueberfliegen.
 
+## Lauf 2026-08-30 (5.)
+
+- Alle offenen Faehrten erneut geprueft, keine signalreif: Registrierkassenpflicht
+  weiterhin nur Referentenentwurf (BMF 07.08.2026, jetzt konkret 01.01.2028,
+  >100.000 EUR Umsatz), kein Kabinettsbeschluss. KritisV weiterhin Referentenentwurf
+  (Konsultation endete 16.06.2026), kein Erlass. LkSG-Aenderung haengt weiter im
+  Ausschuss fest (seit 1. Lesung 16.01.2026 keine 2./3. Lesung). Reservestaerkungs-
+  gesetz weiter nur Kabinettsbeschluss (01.07.2026), keine Bundestagslesung.
+- Zwei Buerokratierueckbau-Gesetze gefunden (Gewerbeordnung/Energieverbrauchs-
+  kennzeichnung, verkuendet 23.07.2026; Aufbewahrungsfristen 8 statt 10 Jahre) --
+  beide **streichen** Pflichten, erzeugen keine neue. Kein Signal nach eigener
+  Definition (Pflicht, nicht Entlastung).
+- Digitaler Produktpass/ESPR ausserhalb der Batterie-VO (schon erfasst) hat fuer
+  weitere Produktgruppen noch keinen konkreten Stichtag -- nur die Batteriefrist
+  18.02.2027 ist bereits als Signal angelegt.
+- Ergebnis: leerer Lauf, alle 19 Dateien plus Beobachtungsliste plus Faehrten
+  aktuell, nichts Neues seit 2026-08-30 (4.).
+
 ## Lauf 2026-08-30 (4.)
 
 - Ein Signal neu: EU-Geldwaescheverordnung (AMLR) Anwendungsbeginn 10.07.2027 --
