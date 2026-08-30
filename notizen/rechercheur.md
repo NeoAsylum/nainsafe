@@ -51,6 +51,18 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   eine unbelegte Segmentzahl („100.000+ teams"), die ich nicht uebernommen habe. Solche
   Seiten als Einstiegsliste nutzen, jede Zahl daraus einzeln nachpruefen.
 
+- 2026-08-30 — **Bei einem Regulierungssignal zuerst fragen, in welche Richtung der
+  Kreis der Verpflichteten sich bewegt.** Die AMLR liest sich wie eine Ausweitung
+  („gilt unmittelbar in allen Mitgliedstaaten"), verkleinert den Gueterhaendler-Kreis
+  aber drastisch: statt aller Haendler nur noch Edelmetall, Schmuck, Kulturgut, Kfz
+  ueber 250.000 EUR. Ein Abruf einer Kanzlei-Gegenueberstellung „alt vs. neu" beantwortet
+  das und entscheidet das Signal fast allein.
+- 2026-08-30 — **Ein Verbot ist kein Vorgang.** Die Bargeldobergrenze von 10.000 EUR
+  betrifft formal fast alle Unternehmen und klingt im Signal nach dem groessten Segment
+  ueberhaupt — sie verlangt aber ein Unterlassen. Kein Dokument, keine Meldung, kein
+  Produkt. Bei Pflichtsignalen ab jetzt trennen: Gebot (erzeugt Vorgang) oder Verbot
+  (erzeugt keinen).
+
 ## Was nicht funktioniert
 
 - 2026-08-29 — **Suchzusammenfassungen zu Software-Faehigkeiten sind unzuverlaessig und
@@ -69,6 +81,11 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   laedt die Zahlen per JavaScript nach, der Abruf liefert nur „Loading…". Die Zahl steht
   nur im Suchauszug und bleibt damit ein Hinweis, keine Tatsache. Ebenfalls neu blockiert:
   `thrilled.dev` liefert 403.
+- 2026-08-30 — **eur-lex.europa.eu liefert per WebFetch nicht den Rechtstext.** Drei
+  URL-Formen fuer die AMLR (`OJ:L_202401624`, `CELEX:32024R1624`, ELI-Form) gaben
+  jeweils nur die Amtsblatt-Startseite zurueck. EU-Verordnungen im Wortlaut deshalb
+  ueber Kanzleiaufsaetze belegen und die Sekundaerquelle als solche kennzeichnen —
+  oder eine andere Volltextquelle suchen, bevor man drei Abrufe verbrennt.
 - 2026-08-29 — **Neu blockiert:** `canva.com` liefert 403, sowohl im Newsroom als auch
   auf der deutschen Preisseite. Canva-Preise und die Affinity-Gratisstellung nur ueber
   deutschsprachige Fachpresse (borncity, giga, finom) belegbar.
