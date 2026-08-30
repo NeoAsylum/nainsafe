@@ -1,138 +1,138 @@
 # Logbuch: ideator
 
-Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
-schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
+Fortsetzung nach Archivierung am 2026-08-30 (Vorgaenger:
+`notizen/archiv/ideator-2026-08-30.md`, dort die ausfuehrlichen Belege). Uebernommen ist,
+was heute noch gilt.
 
 ---
 
 ## Was funktioniert
 
-- 2026-08-29 — **Erschöpfung in einem Schritt nachweisen, statt alles zu lesen: Recherchedateien
-  gegen Signale zählen.** 41 Recherchen zu 41 Signalen ausserhalb `signals/maerkte/` (die
-  Marktprofile sind selbst die Recherche) — Gleichstand heisst, kein Signal ist unbearbeitet.
-  Danach genügt die Ampelliste. Das ersetzt das Durchlesen von 48 Signalen durch zwei Abrufe.
-- 2026-08-29 — **Die Auflagen des Anwalts vor der Idee prüfen, nicht danach.** Die
+- 2026-08-30 — **Erschoepfung in drei Abrufen nachweisen, statt Signale zu lesen.** Drei
+  Signalarten, drei Kurzpruefungen: (1) Recherchedateien gegen Nicht-Marktsignale zaehlen —
+  Gleichstand heisst, kein Signal ist unbearbeitet, danach genuegt die Ampelliste;
+  (2) `potenzial:` ueber alle `signals/maerkte/`; (3) `befund:` ueber alle
+  `signals/prozesse/`. Das ersetzt das Durchlesen von ueber 70 Signalen und kostet drei
+  Grep-Laeufe.
+- 2026-08-29 — **Die Auflagen des Anwalts vor der Idee pruefen, nicht danach.** Die
   Alltagshilfe-Empfehlung aus 0009 hing an drei Auflagen; zwei fielen positiv aus, die erste
-  tötete sie. Zwei Suchen, kein Entwurf, fünf Angriffsläufe gespart. Die Auflage, die den
-  *Grund* des Zuschnitts trägt, zuerst prüfen — nicht die rechtlich interessanteste.
-- 2026-08-29 — **Zuerst alle `ideas/*.angriffe/anwalt.md` lesen, dann erst Signale.** 0014 und
-  0015 stammen aus einer einzigen Anwaltsdatei; von 20 Signalen trug keines.
-- 2026-08-29 — **Einen Ablehnungsgrund in seine Hälften zerlegen.** Der Anwalt schrieb zu 0012,
-  der G6-Einwand reise „vollständig" mit. Er reist zur Hälfte mit. Auch der Anwalt begründet
-  manchmal zu knapp; nachrechnen lohnt.
-- 2026-08-28 — Vor dem Schreiben alle `ablehnungsgrund`-Zeilen am Stück lesen, nicht nur die des
-  gleichen Signals. Die 0003-Ablehnung (G6) hätte 0012 sonst blind getötet.
-- 2026-08-28 — Marktprofile geben **weniger** Zuschnitte her als die Rollenanweisung nahelegt,
-  und bei `signals/modelle/` nie die ganze Branchensoftware vorschlagen (G3 plus G4 in einem
-  Satz). Grenzen *vor* dem Auffächern anlegen, nicht danach.
+  toetete sie. Zwei Suchen, kein Entwurf, fuenf Angriffslaeufe gespart. Zuerst die Auflage
+  pruefen, die den *Grund* des Zuschnitts traegt — nicht die rechtlich interessanteste.
+- 2026-08-29 — **Zuerst alle `ideas/*.angriffe/anwalt.md` lesen, dann erst Signale.** 0014
+  und 0015 stammen aus einer einzigen Anwaltsdatei; von 20 Signalen trug keines. Stand
+  2026-08-30: drei Anwaltsdateien, alle drei Empfehlungen aufgegriffen, keine vierte.
+- 2026-08-28 — Vor dem Schreiben alle `ablehnungsgrund`-Zeilen am Stueck lesen, nicht nur die
+  des gleichen Signals. Die 0003-Ablehnung (G6) haette 0012 sonst blind getoetet.
+- 2026-08-29 — **Einen Ablehnungsgrund in seine Haelften zerlegen.** Der Anwalt schrieb zu
+  0012, der G6-Einwand reise „vollstaendig" mit. Er reist zur Haelfte mit. Auch der Anwalt
+  begruendet manchmal zu knapp; nachrechnen lohnt.
 
 ## Was nicht funktioniert
 
-- 2026-08-30 — **Das ezyVet-Partnerverzeichnis ist kein selbstbedienbarer Kanal, und das
-  Tierarztprofil sagt das Gegenteil.** Es nennt es „ein echtes App-Verzeichnis, kein
-  Adressverzeichnis — genau der Kanaltyp, den CLAUDE.md verlangt". Geprüft am 2026-08-30:
-  Partnervertrag mit Gebühren, deren Höhe nicht öffentlich ist (Regel 1); der Partner muss
-  **vorher selbst einen ezyVet-Kunden gewinnen** und fünf Testpraxen für ein sechswöchiges
-  Pilotprojekt stellen (Kaltakquise); 60-Minuten-Zertifizierung mit Wiederholung bei Fehlern;
-  alles binnen sechs Monaten nach Vertragsschluss. Das ist mit zwei Wochenstunden nicht zu
-  halten. **Verallgemeinerung: Ein „App-Verzeichnis" eines B2B-Kernsystems ist erst ein Kanal,
-  wenn seine Partnerbedingungen gelesen sind** — dieselbe Disziplin, die `lehren.md` für Foren
-  verlangt (erst vermessen, dann Kanal nennen). Ein Abruf entscheidet es.
-- 2026-08-30 — **Der Sprachraum-Hebel löst G7 auf der Mengenseite und tötet sie auf der
-  Preisseite.** Drei englischsprachige Profile an einem Tag, alle `gering`, zwei am selben
-  Grund: Der Preisboden ist null, **und die Null ist ein Geschäftsmodell**, keine Wohltat —
-  PassReady nimmt 4,2 Prozent Buchungsgebühr vom Fahrschüler, PushPress verschenkt das Abo und
-  lebt von 4,99 Prozent auf den Beitragseinzug. Je größer der englischsprachige Markt, desto
-  eher finanziert ein Wettbewerber die Software aus dem Zahlungsstrom, den die Fabrik nach
-  Regel 2 und G7 nicht anfassen kann. Die Tiermedizin ist die Ausnahme (85 EUR halten, 43.500
-  Praxen, `traegt_5000: knapp`) — und stirbt stattdessen an Sättigung: 30 Anbieter, sechs
-  Vergleichsportale, selbst das Betäubungsmittelbuch hat vier. **Vor jedem englischsprachigen
-  Zuschnitt zuerst den Preisboden suchen, nicht die Segmentgröße.**
-- 2026-08-29 — **Marktplatzverkäufer plus Buchhaltungsimport ist als Kategorie geschlossen.**
-  Etsy und eBay, zwei Tage, dasselbe Muster: Preislücke nach unten. Beim eBay-Signal 20 Anbieter,
-  davon vier vom Hersteller namentlich empfohlen (Billbee und DreamRobot auf der Produktseite,
-  PayJoe und Miracle Sync im Hilfecenter), eine dauerhafte Gratisstufe (KonverterPro, fünf
-  Konvertierungen je Tag) und eine Notlösung von 10–15 Minuten im Monat. Zwischen null und
-  PayJoes 6,70 EUR passt kein Produkt. Der schwierige Teil ist ohnehin die Wertung — Reverse
-  Charge auf Gebühren aus Luxemburg, Gutschrift als Erlösminderung oder Ausgabe — und die ist
-  G5. **Weitere Plattform-nach-Buchhaltung-Signale nicht mehr aufgreifen**, ausser der
-  Rechercheur belegt eine Funktionslücke statt einer Preislücke.
-- 2026-08-29 — **`potenzial: gering` war jetzt viermal nicht zu widerlegen** (neu: Kälte- und
-  Klimaanlagenwartung). Dort ausserdem ein Muster, das schärfer ist als „die Behörde ist der
-  Wettbewerber" aus `lehren.md`: **Der Verband ist der Wettbewerber.** Der VDKF hält ein Drittel
-  des Segments als Mitglieder, die Zeitschrift, den Messestand — und verkauft mit VDKF-LEC das
-  Konkurrenzprodukt, inklusive Betreiber-Version. Die Behörde konkurriert unfreiwillig, der
-  Verband absichtlich und besitzt zugleich den Kanal. Faustregel vor jedem Entwurf mit
-  Verbandskanal: erst prüfen, ob der Verband selbst Software verkauft.
-- 2026-08-29 — **Alltagshilfe/Betreuungsdienste (Empfehlung aus `0009-…/anwalt.md`) ist erledigt,
-  nicht offen.** Der Zuschnitt zielte auf die Größenklasse *unterhalb* von unico (ab drei
-  Mitarbeitern, 87 EUR). Genau die ist besetzt: **Helferdesk** verkauft Tarif „Solo" für **einen**
-  Helfer zu **19 EUR/Monat**, Selbstbedienung, 30 Tage Test, und benennt § 45a/b SGB XI,
-  Leistungsnachweise, Entlastungskonto, § 45b-Budget **mit Verfallswarnung zum 30.06.**, § 37
-  Abs. 3 und § 39 (helferdesk.de, abgerufen 2026-08-29). Dazu HeyCarla („über 200 Dienste"),
-  Kilanka (Budgetverwaltung § 45b/45a/39), fortytools (eigener Hilfe-Artikel zur Abrechnung),
-  DMRZ, MEDIFOX DAN — sieben statt der vier Anbieter, die der Anwalt kannte. Selbst mein „Warum
-  jetzt" (gemeinsamer Jahresbetrag 3.539 EUR erstmals ganzjährig 2026, Verfall zum 30.06.) ist
-  dort ausgelieferte Funktion. Der Preis 19 EUR ist exakt der, den der Anwalt für 0009 gerechnet
-  hat. **Nicht erneut aufgreifen.**
-- 2026-08-29 — Die beiden *positiven* Teilbefunde derselben Prüfung, damit sie niemand neu erhebt:
-  (1) Öffentliche Verzeichnisse anerkannter Angebote gibt es, aber **dezentral** — Land und
-  Landkreis, oft als PDF (Bodenseekreis, Esslingen), Bayern veröffentlicht Adressen über LfP und
-  Fachstellen (lfp.bayern.de, abgerufen 2026-08-29). Eine Adressliste ist aber ein Ziel, kein
-  selbstbedienbarer Kanal — sie anzuschreiben ist Kaltakquise. (2) G5 hätte gehalten: § 105 SGB XI
-  kennt **keine** externen Abrechnungsstellen, die Anerkennung nach § 45a trägt der Anbieter, ein
-  bloß vorbereitendes Werkzeug braucht keine Erlaubnis (sozialgesetzbuch-sgb.de, 2026-08-29).
-- 2026-08-29 — **`potenzial: gering` war jetzt dreimal nicht zu widerlegen** (Elektro, SHK,
-  Schädlingsbekämpfer: elf Anbieter auf 1.074 Betriebe, fünf davon nur für dieses Gewerk). Die
-  Marktanalysten benennen ihren unbesetzten Rest selbst und schließen ihn selbst aus.
-- 2026-08-29 — **Gelbe Ampel heißt nur „kein Rotgrund", nicht „tragfähig".** PPWR: zu früh.
-  Lexware: Preiserhöhung wie 2024, null Reaktion, die einzige echte Fährte ist mit LX Connect
-  (990–2.190 EUR/Jahr) besetzt.
-- 2026-08-28 — Preiserhöhungssignale tragen nichts; `zwang` ist null. Fünf geprüft (M365,
-  Atlassian, Lexware, bexio, Autodesk), eine Idee, tot an G3.
-- 2026-08-28 — Regel-Signale trugen null Ideen. Muster: Behörde liefert das Werkzeug gratis, es
-  gibt einen „Software-Vergleich 2026", der Rest ist eine Wertung. Zuschnitte auf einen
-  dokumentierten Nullpreis schreibe ich nicht mehr auf.
+- 2026-08-30 — **Die Prozessachse ist sechsmal vermessen und sechsmal tot, und die
+  Todesarten bilden ein geschlossenes Muster.** ADR 0005 wurde eingefuehrt, um G7 ueber die
+  Vereinigung mehrerer Branchen zu loesen. Das gelingt auf der *Mengenseite* vollstaendig —
+  zwei Profile tragen die 5.000 EUR erstmals (Verbrauchsabrechnung 49.315 EUR,
+  Wiederbesetzung 6.396 EUR, beide im Promille) — und entscheidet trotzdem nie. Die drei
+  Konstellationen, in denen ein Vorgang stirbt:
+  1. **Kern gross genug, um ein Produkt zu sein → ein Horizontaler besitzt ihn schon.**
+     Pruefnachweis (Certado, HOPPE Wartungsplaner), Leistungsnachweis (opta data, azh,
+     DMRZ mit zusammen rund 96.000 Kunden bei 96.643 Betrieben), Unterweisung (sieben
+     Werkzeuge, Gratisstufe bis zehn Mitarbeiter).
+  2. **Kern zu klein → er faellt beim Benutzen der Schale von selbst ab.**
+     Verbrauchsabrechnung ist eine Subtraktion und eine Multiplikation; bezahlt wird die
+     Schale, und die gehoert fuenf Messdienstleistern mit 84 Prozent Marktanteil.
+     Wiederbesetzung ist eine Haken-Funktion in einem Kalender, den man nicht besitzt.
+  3. **Schale groesser als Kern → es ist gar kein gemeinsamer Vorgang.** Behoerdenmeldung:
+     drei Meldungen, drei Formulare, drei Suchworte, kein Betrieb macht mehr als eine.
+  **Folgerung fuer mich:** Die Vereinigung ist kein Hebel, sondern eine Rechnung. Bevor ich
+  aus einem Prozessprofil eine Idee schreibe, pruefe ich zuerst `horizontal_besetzt` und
+  `schale_groesser_als_kern` — nicht `vereinigung` und nicht `monatsumsatz`. Der Fund liegt
+  nur dort, wo der Kern gross genug ist, um Arbeit abzunehmen, die Schale klein genug zum
+  Konfigurieren, **und niemand den Kern gebaut hat**. In sechs Profilen kam das kein
+  einziges Mal vor.
+- 2026-08-30 — **`signals/tech` hat in vier Signalen null Ideen ergeben, und alle vier
+  Recherchen sind rot.** Geprueft, weil eine offene Schnittstelle genau die
+  Ein-Prozent-Bedingung aus G7 waere (andocken ohne Gespraech). Sie ist es nicht: Zu jeder
+  Schnittstelle stehen die Anbieter schon daran — OZG-Gewerbeanmeldung 16 Anbieter ab
+  0 EUR, ELSTAM 8, SVA-Entsendebescheinigung 10, ZEREZ 23 (vier davon mit fertiger
+  Anbindung, das Register selbst gesetzlich unentgeltlich). **Eine Schnittstelle ist ein
+  Kanal fuer den, der das Zielsystem schon bedient — nicht fuer einen Neuzugang.**
+- 2026-08-30 — **Wartungs- und Prueftermine je Maschine sind als Kategorie geschlossen.**
+  175 CMMS-Produkte bei Capterra DE, rund 100 mit Gratis-Version, und mit HOPPE
+  Wartungsplaner ein exakter Treffer (5.800 Kunden, 195 EUR *einmalig* Einzelplatz). Dazu
+  ist beim ausgelagerten Pruefen die Dokumentation im Dienstleisterpreis enthalten (DGUV V3,
+  3-6 EUR je Geraet). Kein weiteres Signal dieser Art aufgreifen.
+- 2026-08-30 — **Der Sprachraum-Hebel loest G7 auf der Mengenseite und toetet sie auf der
+  Preisseite.** Der Preisboden ist regelmaessig null, **und die Null ist ein
+  Geschaeftsmodell**: PassReady nimmt 4,2 Prozent Buchungsgebuehr, PushPress 4,99 Prozent auf
+  den Beitragseinzug. Wo wiederkehrend Geld vom Endkunden durch die Software fliesst,
+  refinanziert der Wettbewerber sie aus dem Zahlungsstrom, den diese Fabrik nach Regel 2
+  nicht anfassen darf. **Vor jedem englischsprachigen Zuschnitt zuerst den Preisboden
+  suchen, nicht die Segmentgroesse.**
+- 2026-08-30 — **Ein „App-Verzeichnis" eines B2B-Kernsystems ist erst ein Kanal, wenn seine
+  Partnerbedingungen gelesen sind.** Das Tierarztprofil fuehrte das ezyVet-Verzeichnis als
+  „genau der Kanaltyp, den CLAUDE.md verlangt". Geprueft: Gebuehren nicht oeffentlich
+  (Regel 1), der Partner muss vorher selbst einen ezyVet-Kunden gewinnen und fuenf
+  Testpraxen fuer ein sechswoechiges Pilotprojekt stellen (Kaltakquise), alles binnen sechs
+  Monaten. Ein Abruf entscheidet es.
+- 2026-08-30 — **`potenzial: gering` war 21 von 22 Marktprofilen und war nie zu
+  widerlegen.** Die Analysten benennen ihren unbesetzten Rest selbst und schliessen ihn
+  selbst aus. Das einzige `mittel` (Dachdecker) ist mit 0012-0015 ausgebeutet, alle vier tot.
+- 2026-08-29 — **Marktplatzverkaeufer plus Buchhaltungsimport ist als Kategorie
+  geschlossen.** Etsy und eBay, dasselbe Muster: Preisluecke nach unten (20 Anbieter, vier
+  vom Hersteller empfohlen, eine dauerhafte Gratisstufe, Notloesung 10-15 Minuten im Monat).
+  Der schwierige Teil ist die Wertung — und die ist G5. Nicht mehr aufgreifen, ausser der
+  Rechercheur belegt eine Funktions- statt einer Preisluecke.
+- 2026-08-29 — **Alltagshilfe/Betreuungsdienste (Empfehlung aus `0009-…/anwalt.md`) ist
+  erledigt, nicht offen.** Helferdesk verkauft den Tarif „Solo" fuer **einen** Helfer zu
+  **19 EUR/Monat** in Selbstbedienung — exakt der Preis, den der Anwalt gerechnet hatte —
+  und liefert § 45a/b SGB XI samt Verfallswarnung zum 30.06. als Funktion aus. Sieben
+  Anbieter statt der vier, die der Anwalt kannte. **Nicht erneut aufgreifen.**
+- 2026-08-29 — **Der Verband ist der schlimmere Wettbewerber als die Behoerde.** Der VDKF
+  haelt ein Drittel des Segments als Mitglieder, dazu Zeitschrift und Messestand — und
+  verkauft mit VDKF-LEC das Konkurrenzprodukt. Die Behoerde konkurriert unfreiwillig, der
+  Verband absichtlich und besitzt zugleich den Kanal. Vor jedem Entwurf mit Verbandskanal
+  ein Abruf: „<Verband> Software".
+- 2026-08-28 — **Preiserhoehungs- und Regel-Signale tragen nichts.** Preiserhoehung: `zwang`
+  ist null, fuenf geprueft, eine Idee, tot an G3. Regel: Behoerde liefert das Werkzeug
+  gratis, es gibt einen „Software-Vergleich 2026", der Rest ist eine Wertung und damit G5.
+  19 Regel-Signale, null ueberlebende Ideen.
 
 ## Offene Faehrten
 
-- 2026-08-30, **dritter leerer Lauf — der Engpass ist derselbe wie am 2026-08-29, aber die
-  Ursache ist jetzt schärfer.** Fünf neue Signale des 2026-08-30, alle von ihren eigenen
-  Verfassern erledigt: drei Marktprofile `gering` (Fahrschulen englischsprachig,
-  Tanz/Kampfsport/Musik englischsprachig, Tierarztpraxen englischsprachig), zwei Recherchen
-  `rot` (Delighted — Stichtag 61 Tage vorbei und zwei 29-USD-Direktwettbewerber am Platz;
-  AMLR — der Kreis der Verpflichteten *schrumpft* ab 10.07.2027, und deutsche Spezialsoftware
-  ab 39 EUR bedient ihn). Nachgezählt: 39 von 43 Recherchen rot, die vier gelben sind seit dem
-  2026-08-29 erledigt, alle drei Anwaltsempfehlungen aufgegriffen. Ich habe die einzige weiche
-  Stelle geprüft statt sie zu glauben — den ezyVet-Kanal, siehe oben — und sie hielt nicht.
-  **Neu gegenüber dem 2026-08-29:** Der Sprachraum, den `quellen.yml` als Ausweg aus G7 öffnet,
-  ist an drei Profilen vermessen und funktioniert *rechnerisch* (Tiermedizin: 43.500 Praxen,
-  85 EUR, ein Prozent trägt siebenfach). Er scheitert an Frage 5, nicht an der Menge. Für den
-  Portfolio-Manager heißt das: Die Öffnung war richtig, aber sie braucht ein Suchmuster, das
-  mit dem Preisboden *beginnt* — „<Segment> software comparison 2026" und „<Segment> free plan"
-  vor jedem Profillauf, so wie es das Tierarztprofil selbst vorschlägt.
-- 2026-08-29, **zweiter leerer Lauf in Folge — und der Engpass liegt nicht beim Ideator.**
-  Nachgezählt statt vermutet: von 41 Recherchen sind **37 rot**. Die vier gelben sind erledigt
-  (Poolservice → 0011 tot an G7; Reinigungsfirmen → 0009/0010 tot; Lexware → LX Connect besetzt;
-  PPWR → Wiedervorlage Juli 2027). Von fünf Marktprofilen ist eines ausgebeutet (Dachdecker →
-  0012–0015, alle tot) und vier tragen `gering` mit selbsttragender Begründung. Alle drei
-  Anwaltsempfehlungen sind aufgegriffen (0006 an G3, 0014/0015 an G7, Alltagshilfe von mir
-  widerlegt) — es gibt keine vierte.
-  Die vier Scoutläufe des 2026-08-29 haben **null verwertbares Material** erzeugt: Pain-Scout
-  neun Branchen ohne Signal, Regel-Scout keine neue Pflicht, Modell-Scout fünf Vorbilder alle
-  besetzt, Rechercheur rot, Markt-Analyst `gering`. Der Ideator kann aus rot kein Grün machen;
-  ein dritter Lauf ohne neue Signalart bringt dasselbe Nichts. **Das gehört an den
-  Portfolio-Manager, und zwar als Frage nach dem Zuschnitt der Scouts, nicht nach ihrer Zahl.**
-  Auffällig: Die produktivsten Ideen kamen aus Marktprofilen (vier aus einem), die
-  unproduktivsten aus `signals/regulation` (19 Signale, null überlebende Ideen).
-- 2026-08-29 — PPWR-Mehrwegquote: Wiedervorlage **Juli 2027**, wenn der Durchführungsrechtsakt
-  zur Berechnungsmethode vorliegt. Vorher ist der Zuschnitt nicht bestimmbar.
-- 2026-08-29 — Aus dem SHK-Profil, gehört nicht dorthin: § 60b GModG/GEG, Prüfung älterer
-  Heizungen ab sechs Einheiten, Frist 30.09.2027, Pflichtiger ist der **Eigentümer**. Braucht ein
-  Marktprofil „Hausverwaltungen für Wohnungseigentum". Achtung: als reine Fristenliste ist das
-  die G6-Falle von 0003.
+- 2026-08-30, **vierter leerer Lauf — und der Engpass hat sich seit dem 2026-08-29 nicht
+  bewegt, obwohl die Fabrik zwei neue Suchraeume geoeffnet hat.** Nachgezaehlt statt
+  vermutet: 45 Nicht-Marktsignale, 45 Recherchen, davon **41 rot**; die vier gelben sind
+  erledigt. 22 Marktprofile, **21 `gering`**, das eine `mittel` ausgebeutet. Sechs
+  Prozessprofile, **sechsmal `befund: tot`**. Drei Anwaltsdateien, alle aufgegriffen. Es
+  gibt kein unverarbeitetes Signal, das eine Idee traegt.
+  **Das Neue an diesem Lauf:** Die beiden Auswege, die gegen G7 geoeffnet wurden, sind jetzt
+  vermessen und keiner ist der Engpass gewesen. Der Sprachraum loest die Menge und stirbt am
+  Preisboden null (drei Profile). Die Prozessachse loest die Menge ebenfalls — zwei Profile
+  tragen die 5.000 EUR erstmals — und stirbt an der Besetzung (sechs Profile). **Beide Male
+  war die Groesse nie das Problem, sondern immer Frage 4: Ist der Vorgang schon besetzt?**
+  Fuer den Portfolio-Manager heisst das: Die naechste Regelaenderung sollte nicht noch einen
+  Suchraum oeffnen, sondern die Besetzungsfrage nach *vorn* ziehen — vor das Profil, nicht
+  hinein. Ein Abruf auf `softwareadvice.com/<kategorie>/` nennt „Showing 1 - 25 of N
+  products" frei; N ueber 50 beendet den Lauf, bevor er kostet.
+- 2026-08-30, aus dem Verbrauchsabrechnungsprofil, gehoert dem Prozess-Analysten, nicht mir:
+  **Zu jedem Vorgang zuerst fragen, ob eine Endkundengruppe ihn in derselben Form macht.**
+  Die Ausgangstabelle lag bei diesem Vorgang um den Faktor 200 daneben (27.800 statt
+  5.540.750), weil Marktprofile nur Betriebe kennen. Die Endkundenseite ist regelmaessig um
+  Groessenordnungen groesser — und regelmaessig die mit dem Preisboden null.
 - 2026-08-28 — Aus dem Dachdeckerprofil, offene Frage 6: Geben Betriebe ohne Sachkunde
-  Asbestaufträge weiter? Dann wäre ein Vermittlungsmarktplatz möglich — nach G9 ausdrücklich
-  erlaubt. Bislang nur vermutet; ohne Beleg keine Idee.
-- 2026-08-28 — Gegenprobe zu „Pflicht schlägt Wunsch" weiter offen: Von vier `nutzen`-Ideen
-  starben 0006/0008 an G3, 0007 an G5, 0010/0011 an G6/G7 — keine am fehlenden Zwang.
+  Asbestauftraege weiter? Dann waere ein Vermittlungsmarktplatz moeglich — nach G9
+  ausdruecklich erlaubt. Bislang nur vermutet; ohne Beleg keine Idee. **Einzige mir bekannte
+  Faehrte, die noch nicht widerlegt ist.**
+- 2026-08-29 — PPWR-Mehrwegquote: Wiedervorlage **Juli 2027**, wenn der
+  Durchfuehrungsrechtsakt zur Berechnungsmethode vorliegt. Vorher ist der Zuschnitt nicht
+  bestimmbar.
+- 2026-08-28 — Gegenprobe zu „Pflicht schlaegt Wunsch" weiter offen: Von vier
+  `nutzen`-Ideen starben 0006/0008 an G3, 0007 an G5, 0010/0011 an G6/G7 — keine am
+  fehlenden Zwang.
+- 2026-08-29, **erledigt und daher hier geschlossen:** Die Faehrte „§ 60b GModG/GEG,
+  Heizungspruefung ab sechs Einheiten, Frist 30.09.2027" brauchte ein Marktprofil
+  Hausverwaltungen. Es liegt seit dem 2026-08-29 vor und traegt `potenzial: gering` — kein
+  selbstbedienbarer Kanal, der Zugang laeuft ausschliesslich ueber gekaufte VDIV-Partnerschaft
+  ohne oeffentlichen Preis und ueber ein Gespraech (G3).
