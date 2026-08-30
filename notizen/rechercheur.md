@@ -35,6 +35,22 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   Statt weiterzusuchen: Obergrenzen belegen (nur Windows, nicht in den guenstigen
   Plaenen) und aufhoeren.
 
+- 2026-08-30 — **Bei jedem Ausstiegssignal zuerst nachrechnen, ob der Stichtag schon
+  vorbei ist, und die Produktseite abrufen.** Beim Delighted-Lauf war der im Signal in
+  Zukunftsform beschriebene Abschalttag 61 Tage her; ein 301 auf die Herstellerseite
+  („It's no longer available") klaerte das mit einem Abruf. Ein vergangener Stichtag
+  entwertet den ganzen Zeitvorteil des Signaltyps.
+- 2026-08-30 — **Bei „Anbieter verschwindet"-Signalen gezielt nach dem *indie* Anbieter
+  suchen, nicht nur nach den etablierten.** Die zehn Wettbewerber im Signal waren alle
+  teuer; entschieden hat den Lauf, dass zwei Ein-Personen-Werkzeuge (Wyapy, Thrilled)
+  exakt den billigen, einfachen Zuschnitt zu exakt dem Preis besetzen, den die Fabrik
+  ansetzen wuerde. Suchmuster, das sie fand: `<sterbendes Produkt> alternative pricing`
+  plus die Preisseiten der Treffer aus den Vergleichsartikeln der Konkurrenz.
+- 2026-08-30 — **„Gap"-Blogs sind ein guter Wettbewerberindex und eine schlechte
+  Quelle.** microgaps.com lieferte in einem Abruf sieben Anbieter mit Preisen — und
+  eine unbelegte Segmentzahl („100.000+ teams"), die ich nicht uebernommen habe. Solche
+  Seiten als Einstiegsliste nutzen, jede Zahl daraus einzeln nachpruefen.
+
 ## Was nicht funktioniert
 
 - 2026-08-29 — **Suchzusammenfassungen zu Software-Faehigkeiten sind unzuverlaessig und
@@ -49,6 +65,10 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   die englische Support-Seite sagt, M365-Abonnenten verlieren den Zugriff. Bei
   Microsoft-Signalen ab jetzt die **englische** Support- oder Lifecycle-Seite als
   massgeblich nehmen und den Widerspruch nur dokumentieren.
+- 2026-08-30 — **BuiltWith-Trends-Seiten sind per WebFetch wertlos**: `trends.builtwith.com`
+  laedt die Zahlen per JavaScript nach, der Abruf liefert nur „Loading…". Die Zahl steht
+  nur im Suchauszug und bleibt damit ein Hinweis, keine Tatsache. Ebenfalls neu blockiert:
+  `thrilled.dev` liefert 403.
 - 2026-08-29 — **Neu blockiert:** `canva.com` liefert 403, sowohl im Newsroom als auch
   auf der deutschen Preisseite. Canva-Preise und die Affinity-Gratisstellung nur ueber
   deutschsprachige Fachpresse (borncity, giga, finom) belegbar.
