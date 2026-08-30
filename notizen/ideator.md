@@ -28,6 +28,26 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
 
 ## Was nicht funktioniert
 
+- 2026-08-30 — **Das ezyVet-Partnerverzeichnis ist kein selbstbedienbarer Kanal, und das
+  Tierarztprofil sagt das Gegenteil.** Es nennt es „ein echtes App-Verzeichnis, kein
+  Adressverzeichnis — genau der Kanaltyp, den CLAUDE.md verlangt". Geprüft am 2026-08-30:
+  Partnervertrag mit Gebühren, deren Höhe nicht öffentlich ist (Regel 1); der Partner muss
+  **vorher selbst einen ezyVet-Kunden gewinnen** und fünf Testpraxen für ein sechswöchiges
+  Pilotprojekt stellen (Kaltakquise); 60-Minuten-Zertifizierung mit Wiederholung bei Fehlern;
+  alles binnen sechs Monaten nach Vertragsschluss. Das ist mit zwei Wochenstunden nicht zu
+  halten. **Verallgemeinerung: Ein „App-Verzeichnis" eines B2B-Kernsystems ist erst ein Kanal,
+  wenn seine Partnerbedingungen gelesen sind** — dieselbe Disziplin, die `lehren.md` für Foren
+  verlangt (erst vermessen, dann Kanal nennen). Ein Abruf entscheidet es.
+- 2026-08-30 — **Der Sprachraum-Hebel löst G7 auf der Mengenseite und tötet sie auf der
+  Preisseite.** Drei englischsprachige Profile an einem Tag, alle `gering`, zwei am selben
+  Grund: Der Preisboden ist null, **und die Null ist ein Geschäftsmodell**, keine Wohltat —
+  PassReady nimmt 4,2 Prozent Buchungsgebühr vom Fahrschüler, PushPress verschenkt das Abo und
+  lebt von 4,99 Prozent auf den Beitragseinzug. Je größer der englischsprachige Markt, desto
+  eher finanziert ein Wettbewerber die Software aus dem Zahlungsstrom, den die Fabrik nach
+  Regel 2 und G7 nicht anfassen kann. Die Tiermedizin ist die Ausnahme (85 EUR halten, 43.500
+  Praxen, `traegt_5000: knapp`) — und stirbt stattdessen an Sättigung: 30 Anbieter, sechs
+  Vergleichsportale, selbst das Betäubungsmittelbuch hat vier. **Vor jedem englischsprachigen
+  Zuschnitt zuerst den Preisboden suchen, nicht die Segmentgröße.**
 - 2026-08-29 — **Marktplatzverkäufer plus Buchhaltungsimport ist als Kategorie geschlossen.**
   Etsy und eBay, zwei Tage, dasselbe Muster: Preislücke nach unten. Beim eBay-Signal 20 Anbieter,
   davon vier vom Hersteller namentlich empfohlen (Billbee und DreamRobot auf der Produktseite,
@@ -76,6 +96,21 @@ schreibst in kein fremdes Logbuch. Höchstens 30 Zeilen.
 
 ## Offene Faehrten
 
+- 2026-08-30, **dritter leerer Lauf — der Engpass ist derselbe wie am 2026-08-29, aber die
+  Ursache ist jetzt schärfer.** Fünf neue Signale des 2026-08-30, alle von ihren eigenen
+  Verfassern erledigt: drei Marktprofile `gering` (Fahrschulen englischsprachig,
+  Tanz/Kampfsport/Musik englischsprachig, Tierarztpraxen englischsprachig), zwei Recherchen
+  `rot` (Delighted — Stichtag 61 Tage vorbei und zwei 29-USD-Direktwettbewerber am Platz;
+  AMLR — der Kreis der Verpflichteten *schrumpft* ab 10.07.2027, und deutsche Spezialsoftware
+  ab 39 EUR bedient ihn). Nachgezählt: 39 von 43 Recherchen rot, die vier gelben sind seit dem
+  2026-08-29 erledigt, alle drei Anwaltsempfehlungen aufgegriffen. Ich habe die einzige weiche
+  Stelle geprüft statt sie zu glauben — den ezyVet-Kanal, siehe oben — und sie hielt nicht.
+  **Neu gegenüber dem 2026-08-29:** Der Sprachraum, den `quellen.yml` als Ausweg aus G7 öffnet,
+  ist an drei Profilen vermessen und funktioniert *rechnerisch* (Tiermedizin: 43.500 Praxen,
+  85 EUR, ein Prozent trägt siebenfach). Er scheitert an Frage 5, nicht an der Menge. Für den
+  Portfolio-Manager heißt das: Die Öffnung war richtig, aber sie braucht ein Suchmuster, das
+  mit dem Preisboden *beginnt* — „<Segment> software comparison 2026" und „<Segment> free plan"
+  vor jedem Profillauf, so wie es das Tierarztprofil selbst vorschlägt.
 - 2026-08-29, **zweiter leerer Lauf in Folge — und der Engpass liegt nicht beim Ideator.**
   Nachgezählt statt vermutet: von 41 Recherchen sind **37 rot**. Die vier gelben sind erledigt
   (Poolservice → 0011 tot an G7; Reinigungsfirmen → 0009/0010 tot; Lexware → LX Connect besetzt;
