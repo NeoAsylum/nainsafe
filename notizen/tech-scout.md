@@ -101,9 +101,15 @@ niemand mehr, auch du nicht.
 
 - ZEREZ-API (Signal 2026-08-29): zerez.net liefert per WebFetch nur den Seitentitel ohne
   Inhalt (vermutlich JS-Rendering) — Primärquelle weiterhin ungeklärt: kostenpflichtig?
-  Rate-Limits? Spannungsebenen? Bei Weiterverfolgung der Idee direkte Doku-URL suchen
-  (nicht nur Startseite abrufen) oder pv-magazine-Artikel erneut auswerten.
+  Rate-Limits? Spannungsebenen? 2026-08-30 erneut versucht über iwr.de-Sekundärquelle:
+  liefert nur "zwei API-Schlüssel pro Unternehmensaccount", nichts zu Preis/Limits/Status.
+  Bei Weiterverfolgung direkt zerez.net/Doku-Unterseite abrufen, nicht nur Startseite/News.
 - Kataster-Open-Data BW 2026: weiterhin ungeprüft, niedrige Priorität.
-- Gewerbeanzeige-OZG-2.0-Technikspezifikation (XGewerbeanzeige o.ä.): ungeprüft, ob sie
-  auch privaten Softwareanbietern offensteht oder nur Kommunalsoftware. Nächster Schritt
-  bei Auslöser: nach "XGewerbeanzeige Schnittstelle Hersteller" suchen.
+
+## Was nicht funktioniert (Fortsetzung 4)
+
+- 2026-08-30 — Gewerbeanzeige-OZG-2.0-Technikspezifikation geklärt: XGewerbeanzeige heißt
+  jetzt XGewerbeordnung (xGeO, Betrieb durch d-NRW/KoSIT), aber weiterhin ausschließlich
+  Kommune-zu-Behörde-Übermittlung (§14 Abs.8 GewO, §3 GewAnzV) seit Jan. 2017 Pflicht,
+  keine Einreichung durch Bürger/private Software erkennbar. Fährte geschlossen, deckt
+  sich mit 2026-08-29-Befund. Nicht erneut ohne Auslöser prüfen.
