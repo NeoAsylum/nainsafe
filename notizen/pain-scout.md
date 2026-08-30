@@ -67,6 +67,28 @@ niemand mehr, auch du nicht.
   frueher funktionierende Domain) liefern jetzt 404 — Linkverfall, nicht Sperre wie bei
   ebay/airbnb/pflege. Vor dem Zitieren immer direkt gegenpruefen, ob die URL noch laedt.
 
+- 2026-08-30 — Neue ergiebige Quelle: herber.de/forum (HERBERS Excel-Forum). Echte
+  Praktiker bauen dort seit Jahren eigene Excel-Loesungen fuer Betriebsaufgaben und
+  beschreiben woertlich den Aufwand -- anders als Vendor-Blogs sind das rohe Zitate.
+  Fund: Wartungs-/Pruefintervalle fuer Maschinen, Bauteile und Fuhrpark werden seit
+  mindestens 2008 wiederholt unabhaengig voneinander neu in Excel gebaut (Signal:
+  2026-08-30-wartungsintervalle-maschinen-excel-selbstbau.md). Vorgehen: site:herber.de/forum
+  + Thema (z.B. "Wartungsplan", "Pruefliste") liefert mehrere unabhaengige Threads ueber
+  Jahre hinweg -- gut geeignet, um wiederkehrende Muster ueber Zeit statt nur einen
+  Wutausbruch zu belegen.
+- 2026-08-30 — Leerer Anteil dieses Laufs: office-hilfe.com/administrator.de (keine
+  echten Klagen, nur Technik-Fragen), reddit.com generell weiterhin per WebFetch nicht
+  erreichbar (auch old.reddit.com blockiert -- nicht mehr versuchen), sowie sechs
+  US-Kleinbetrieb-Nischen (Pressure Washing, Junk Removal, Landscaping/Lawncare,
+  Vending-Route, Mobile Detailing, Fitnessstudio-Mitgliederverwaltung) lieferten nur
+  Vendor-SEO-Content mit paraphrasierten "Pain Points", keine woertlichen Nutzerzitate --
+  diese Nischen zusaetzlich alle in dicht besetzten CRM/Field-Service-Software-Maerkten,
+  vermutlich deshalb kein frisches Signal zu erwarten.
+- 2026-08-30 — TroubleFreePool (Schwimmbad-Chemiewerte-Tracking) hat echte, mehrfache
+  unabhaengige Excel-Selbstbau-Threads, aber Betroffene sind Privat-Poolbesitzer, keine
+  Unternehmen -- passt nicht zu "Aerger von Unternehmen" trotz B2C-Oeffnung, daher nicht
+  als Signal erfasst.
+
 ## Offene Faehrten
 
 - Etsy-CSV-Signal englischsprachig verstaerken: alter Link war 404, neu suchen.
@@ -83,3 +105,7 @@ niemand mehr, auch du nicht.
   troublefreepool.com/forum, enworld.org/rpg.net fuer GMs, kboards.com-Threads direkt
   per WebFetch statt nur ueber Suchtreffer. WebSearch versteckt die Rohzitate hinter
   KI-Paraphrasen von Anbieterseiten.
+- herber.de/forum weiter ausschoepfen: naechste Themen z.B. "Rechnungen erfassen",
+  "periodisch wiederkehrende Zahlungen", "Zahlungskalender" -- erster Treffer deutete auf
+  taegliches manuelles Rechnungschreiben (ca. 100/Tag ueber Lexware-Fakturierung, "nervt
+  total"), noch nicht per WebFetch verifiziert und nicht auf Dreifachbeleg geprueft.
