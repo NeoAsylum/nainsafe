@@ -19,6 +19,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 <!-- Suchen, Formulierungen, Quellen, Vorgehensweisen, die etwas gebracht haben.
      Format: - JJJJ-MM-TT — Beobachtung -->
 
+- **2026-08-30** — Die Suche „Software fuer Pruefdienstleister <Vorgang>" beantwortet
+  Frage 4 und Frage 6 in einem Abruf: Kommen branchenneutrale Anbieter mit eigener
+  Landingpage zurueck, ist das Suchwort gemeinsam *und* besetzt. Das ist der billigste
+  Test dieser Rolle — vor die Vereinigungszaehlung stellen, nicht danach.
+- **2026-08-30** — Zuerst die `handarbeit`-Felder woertlich nebeneinanderlegen, dann erst
+  addieren. Grep ueber alle Frontmatter (`segment|betriebe|handarbeit|potenzial`) kostet
+  einen Aufruf und ersetzt das Lesen von 300.000 Zeichen Profiltext.
+
 ## Was nicht funktioniert
 
 <!-- Was du versucht hast und was dabei herauskam. Damit du es nicht in drei Wochen
@@ -27,7 +35,36 @@ mehr — und es kostet jeden deiner Läufe Kontext.
      aendert sich, und eine Quelle, die im Maerz nichts hergab, kann im Juni
      ergiebig sein. -->
 
+- **2026-08-30** — Die Vorgangsgruppierung aus der Ausgangstabelle haelt der Pruefung
+  nicht stand: Von 65.433 Betrieben beim Pruefnachweis bleiben 10.365. Facility macht
+  einen vertraglichen, keinen gesetzlichen Nachweis; Dachdecker macht eine einmalige
+  Anzeige je Baustelle, keinen Turnus; Spielplatzbetreiber sind Pflichtige, keine Pruefer.
+  **Lehre: Ein `handarbeit`-Feld, das aehnlich klingt, ist noch kein gleicher Vorgang —
+  drei Merkmale pruefen (fremdes Objekt? gesetzliche Frist? Vorlagepflicht?).** Die
+  Marktprofile selbst sind korrekt, die Fehler stecken in der Gruppierung.
+- **2026-08-30** — „Kleine Schale, grosser Kern" ist **kein** Fundsignal, sondern das
+  Gegenteil. Ist der branchenneutrale Kern gross, hat ihn jemand gebaut; die vertikalen
+  Anbieter beweisen dann nur Zahlungsbereitschaft, nicht eine Luecke. Der Fund braucht
+  zusaetzlich, dass das horizontale Werkzeug **fehlt** — Frage 4 entscheidet, nicht Frage 3.
+
 ## Offene Faehrten
+
+- **2026-08-30** — **Die Rollentrennung Pflichtiger/Pruefer ist die zweite Achse in der
+  zweiten Achse.** Bei jedem Pflichtvorgang stehen zwei Parteien am selben Dokument mit
+  gegenlaeufigem Interesse: Fuer den Pruefer ist der Vorgang Umsatz, fuer den Pflichtigen
+  Ausgabe. Beim naechsten Vorgang der Liste zuerst entscheiden, auf welcher Seite
+  geschnitten wird — sonst zaehlt man beide zusammen und rechnet mit einer Union, die es
+  nicht gibt. Vermutung, an einem Vorgang belegt: Wo Fachkunde vorgeschrieben ist,
+  entsteht immer ein Dienstleister, und dann ist die Prueferseite nie eine Last.
+- **2026-08-30** — Ungezaehlte Prueferbranchen, die denselben Vorgang machen und fuer die
+  ich keine amtliche Zahl fand: DGUV-V3-Pruefdienstleister, Torpruefer, Regalpruefer
+  (DIN EN 15635), Trinkwasser-Probenehmer, Spielplatz-Pruefdienstleister. Keine wird als
+  Wirtschaftszweig gefuehrt. Wer hier eine Zaehlung findet, hebt jede kuenftige
+  Prueferunion — bei diesem Vorgang haette es das Urteil nicht gedreht.
+- **2026-08-30** — Naechster Vorgang der Liste: **Behoerdenmeldung je Vorgang mit Formular
+  und Frist** (Elektro 44.975, Dachdecker 15.241, SHK 48.000). Warnung vorab aus
+  `lehren.md`: Dort ist die Behoerde der Wettbewerber und ihr Online-Dienst gebuehrenfrei —
+  Frage 4 lautet hier „Serviceportal", nicht „Excel".
 
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
      Lauf faengt hier an. -->
