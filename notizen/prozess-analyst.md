@@ -155,7 +155,26 @@ per Diktat**.
   der Nenner. Ich lasse `traegt_5000` und `befund` deshalb bewusst auseinanderfallen, statt
   die Rechnung passend zu machen.
 
+- **2026-08-30** — **Das Wirtschaftsportal des Landes ist ein horizontales Werkzeug und
+  gehoert bei jedem Behoerdenvorgang in Frage 4.** WSP.NRW: ueber 80 Online-Dienste,
+  ELSTER-Unternehmenskonto, Stammdaten mehrfach nutzbar. Hamburg: Asbestanzeige seit 2020
+  digital, mit Statusverfolgung und Filter. Gebuehrenfrei und per OZG wachsend. Abruf:
+  „<Meldung> Onlinedienst Serviceportal <Land>".
+
 ## Einträge
+
+- **2026-08-30** — Fuenfter Vorgang, **Behoerdenmeldung je Vorgang**: `befund: tot`, aber
+  an einer anderen Stelle als die uebrigen — nicht an Frage 4, sondern an **Frage 3**.
+  Alle drei Branchen machen wirklich eine Behoerdenmeldung je Auftrag; es sind nur drei
+  verschiedene. Zwei Drittel der Vereinigung sind zusaetzlich besetzt, und zwar **quer**:
+  autarc und Reonic bedienen Netzanmeldung *und* KfW-Foerderantrag, in Elektro *und* SHK —
+  sie haben den Vorgangsschnitt, den diese Rolle sucht, bereits vollzogen. Gerechnet habe
+  ich bewusst mit dem **Prozent** (Kanal belegt, von keinem Wettbewerber besetzt); es
+  traegt trotzdem nicht, weil fuer die einzige freie Teilmenge kein Preis existiert.
+  **Melde an den Portfolio-Manager:** Das Dachdeckerprofil vom 2026-08-28 ordnet die
+  objektbezogene Asbestanzeige „mittleres + hohes Risiko" zu und nennt sie den Regelfall je
+  Baustelle — nach dem Volltext der NRW-Arbeitsschutzverwaltung gilt sie nur bei hohem
+  Risiko. Nicht falsch, aber aufwandsueberzeichnend. Ich fasse `signals/maerkte/` nicht an.
 
 - **2026-08-30** — Sechster Vorgang, **Leistungsnachweis gegenueber einem Kostentraeger**:
   neun Branchen, 96.643 Betriebe, `befund: tot`. Erstmals waren *alle* Vorbedingungen
