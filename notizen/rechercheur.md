@@ -57,6 +57,18 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   aber drastisch: statt aller Haendler nur noch Edelmetall, Schmuck, Kulturgut, Kfz
   ueber 250.000 EUR. Ein Abruf einer Kanzlei-Gegenueberstellung „alt vs. neu" beantwortet
   das und entscheidet das Signal fast allein.
+- 2026-08-30 — **Bei einem Pain-Signal aus einem Selbstbau-Forum zuerst den deutschen
+  Nischenanbieter suchen, nicht die SaaS-Kategorie.** Beim Wartungsintervall-Lauf
+  entschied ein einziger Treffer: `<Problem> Software kleine Betriebe Preis` fand HOPPE
+  Wartungsplaner (195 EUR einmalig, 5.800 Kunden, exakt Maschinen + Fuhrpark +
+  Prueffristen). Solche alteingesessenen Einmallizenz-Anbieter tauchen in
+  Capterra-Listen und Vergleichsartikeln kaum auf, besetzen die Nische aber vollstaendig
+  und setzen zugleich den Preisdeckel.
+- 2026-08-30 — **Bei jeder Pflicht mit ausgelagerter Durchfuehrung pruefen, ob die
+  Dokumentation im Dienstleisterpreis steckt.** DGUV V3: 3-6 EUR je Geraet, und
+  Barcode-Erfassung, Plakette und Protokoll sind enthalten. Wer pruefen laesst, hat den
+  Nachweis schon — das halbiert das Segment vor jeder weiteren Frage. Suchmuster:
+  `<Pruefung> Kosten pro Geraet Dienstleister Dokumentation inklusive`.
 - 2026-08-30 — **Ein Verbot ist kein Vorgang.** Die Bargeldobergrenze von 10.000 EUR
   betrifft formal fast alle Unternehmen und klingt im Signal nach dem groessten Segment
   ueberhaupt — sie verlangt aber ein Unterlassen. Kein Dokument, keine Meldung, kein
