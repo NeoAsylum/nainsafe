@@ -55,6 +55,17 @@ niemand mehr, auch du nicht.
   Einheiten), keine Unternehmen, und Markt an NK-Abrechnungssoftware bereits dicht.
 - Fahrtenbuch/Unterrichtsnachweis Fahrschule: Markt bereits dicht besetzt (Vimcar,
   YesHugo, FADATA) — nicht erneut aufgreifen ohne neuen Hinweis auf Luecke.
+- 2026-08-30 — Leerer Lauf bei den neuen englischsprachigen/Prosumer-Bloecken aus
+  quellen.yml: Self-Publisher-Tantiemen (dicht besetzt: ScribeCount, RoyaltiesHQ,
+  Royaltally), Arborist/Landscaper-Jobkalkulation, Pool-Service-Routen/Chemiewerte,
+  Tabletop-RPG-Kampagnentracking, Tanzstudio-Abrechnung, Selfstorage-Lien-Tracking,
+  Etsy-Mehrkanal-Buchhaltung (EN) — ueberall nur Vendor-Blogs/Vergleichsseiten mit
+  paraphrasierten "Pain Points", keine woertlichen Zitate von Betroffenen selbst.
+  WebSearch liefert bei diesen Themen fast nur KI-zusammengefasste Anbieterinhalte,
+  keine rohen Forenbeitraege.
+- 2026-08-30 — community.etsy.com: konkrete alte Thread-URLs aus Suchtreffern (auch
+  frueher funktionierende Domain) liefern jetzt 404 — Linkverfall, nicht Sperre wie bei
+  ebay/airbnb/pflege. Vor dem Zitieren immer direkt gegenpruefen, ob die URL noch laedt.
 
 ## Offene Faehrten
 
@@ -67,3 +78,8 @@ niemand mehr, auch du nicht.
   browsen statt ueber Suchmuster zu raten (analog lex-forum.net-Treffer) — z.B.
   office-hilfe.com, administrator.de fuer Excel-Behelfsloesungen mit Nutzerkontext,
   oder aktive Subreddits gezielt per WebFetch statt WebSearch site:-Filter.
+- 2026-08-30 — Fuer die neuen EN/Prosumer-Bloecke naechstes Mal direkt ins jeweilige
+  Nischenforum gehen statt WebSearch-Zusammenfassung zu vertrauen: z.B. arboristsite.com,
+  troublefreepool.com/forum, enworld.org/rpg.net fuer GMs, kboards.com-Threads direkt
+  per WebFetch statt nur ueber Suchtreffer. WebSearch versteckt die Rohzitate hinter
+  KI-Paraphrasen von Anbieterseiten.
