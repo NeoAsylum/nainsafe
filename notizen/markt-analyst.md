@@ -337,6 +337,52 @@ im Archiv.
   **englischsprachige B2B-Block vollstaendig abgearbeitet -- acht Segmente, acht Mal
   `gering`**, und der gesamte Feldeinsatz-Block (Baumpflege, Pool, Reinigung,
   Aufbereitung) ist *eine* Kategorie, die nicht noch einmal aufgeteilt gehoert.
+## Aus dem ersten Unterhaltungslauf: Betriebs- und Managementsimulationen (2026-08-31)
+
+- **Erstes Segment des Repos, das nicht an Frage 5 stirbt, sondern an Frage 7.** Kein
+  Platzhirsch, keine Behoerde, kein Verband, kein Zahlungsstrom, Preisboden haelt bei
+  12 EUR — und trotzdem `gering`, weil die *Verteilung* toetet statt der Besetzung.
+  „Ueberfuellt" und „besetzt" sind zwei verschiedene Befunde und brauchen zwei
+  verschiedene Rechnungen.
+- **In Unterhaltung kuerzt sich der Preis aus der Rechnung heraus.** 5.000 EUR Marge
+  heissen immer denselben Bruttoumsatz (rund 93.000 USD im Jahr), egal ob der Titel 13
+  oder 25 USD kostet. Die einzige Frage ist das Perzentil. **Damit ist die
+  Preisboden-Analyse, die 24 B2B-Profile entschieden hat, hier wertlos** — die
+  Kohortenverteilung ersetzt sie.
+- **Die schaerfste Zahl des Suchraums ist eine Startkohorte, kein Median.** „38 Titel im
+  August 2025, einer ueber 70.000 USD" schlaegt jeden Genre-Median, weil sie ungefiltert
+  ist. Suchmuster: `gamediscover.co` + „<Genre> subgenre" + Monatsname. Mediane aus
+  derselben Quelle widersprachen sich um Faktor >10 (Juli 2024 gegen September 2025) --
+  nicht mitteln, die neuere nehmen, beide ins Profil.
+- **Der Erfolgsfall traegt nicht dauerhaft, auch nicht der groesste.** Marktfuehrer:
+  27 Mio USD in 10 Monaten, dann 5 Mio im Folgejahr. In Unterhaltung gehoert der
+  **Abklingfaktor** in jede Rechnung; ein Einmalkauf ist kein Monatsumsatz.
+- **Der Wunsch der Spieler und die Kaufursache liegen auseinander, und das entscheidet.**
+  Rezensionen mit 20-38 Stunden Spielzeit fordern einhellig Tiefe (Spaetspiel,
+  Wirtschaftskreislauf, echte Delegation) — verkauft hat das Genre die Ego-Perspektive
+  und die Vorfuehrbarkeit im Video. Der auslesbare Teil (G8) ist genau der, der nicht
+  verkauft. **Diese Gegenprobe gehoert in jedes weitere Unterhaltungsprofil:** Woran
+  haengt der Kauf, und woran haengt die Zufriedenheit?
+- **Rezensionsseiten sind die beste Quelle des Suchraums und kosten einen Abruf**
+  (`steamcommunity.com/app/<id>/reviews/?browsefilter=toprated&filterLanguage=english`,
+  liefert Wortlaut). Vier Titel gaben dieselbe Klage her. Steam-Storeseiten liefern Preis,
+  Datum und Rezensionszahl zuverlaessig; `games-stats.com` ist 403, `steamspy.com/tag/*`
+  liefert 0, `steamspy.com/app/<id>` nur Besitzerspannen.
+- **Storesuche `store.steampowered.com/search/?term=X&category1=998` nennt die Trefferzahl
+  frei**, greift aber auf Beschreibungen zu: „simulator" 18.567, „manager" 18.840 sind
+  darum keine Titelzaehlung und als Dichtemass wertlos. „tycoon" 901 ist brauchbarer.
+  Die einzige belastbare Dichte kam von GameDiscoverCo (38-39 Titel je Monat).
+- **Der Kanal ist hier kein Suchwort, sondern Sichtbarkeit — und der einzige aktiv
+  betreibbare Teil ist nach Hausregel 2 gesperrt** (E-Mail an Videomacher; belegter
+  Billigfall: 55.000 Stueck bei 50 USD Ausgaben). Steam-Direct-Gebuehr 100 USD je Titel
+  ist Regel 1. Beides gehoert ins Profil, nicht in die Angriffe.
+- **Erledigt, `gering`: Management- und Betriebssimulationen.** Offen und fuer die zwei
+  restlichen Unterhaltungssegmente entscheidend: **der Median des Draufsicht-Zuschnitts
+  (Tag „Management") ist mit meinen Mitteln nicht auffindbar** — an den Rechercheur
+  gegeben. Die beiden anderen Genres (Aufbau/Wirtschaft, Automation) teilen die
+  Verteilung, nicht aber notwendig die Ego-Perspektive; dort zuerst die Startkohorte
+  eines Monats messen, dann erst alles andere.
+
 - **Rotation weiterhin unmoeglich, am 2026-08-31 erneut geprueft:** Write, `cp`, `mv` und
   `touch` auf `notizen/archiv/` alle verweigert. Die Datei stand vor diesem Lauf bei
   20.605 Zeichen. Ein paralleler Lauf (Ahnenforschung) hat sie waehrenddessen gekuerzt und
