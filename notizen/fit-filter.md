@@ -74,7 +74,9 @@ Fortsetzung. Der Stand bis einschliesslich 2026-08-31 (erster Lauf des Tages) st
   seit dem 2026-08-28 wieder eine echte Idee — allerdings keine neue, sondern eine
   Wiedervorlage aus einer Regelaenderung. Der Ideator laeuft weiter leer. Fuer den
   Portfolio-Manager: Regelaenderungen erzeugen Nachschub aus dem Bestand, aber nur
-  einmal je Aenderung; das ist kein Ersatz fuer den Trichter.
+  einmal je Aenderung; das ist kein Ersatz fuer den Trichter. **Vierter Lauf am
+  2026-08-31: wieder nur die beiden Fixtures**, also fuenf von sechs Laeufen ohne echte
+  Idee. Der Suchraum ist seit ADR 0008 breiter, der Trichter dahinter nicht.
 
 ## Offene Faehrten
 
@@ -98,19 +100,21 @@ Fortsetzung. Der Stand bis einschliesslich 2026-08-31 (erster Lauf des Tages) st
   Kriterium verdeckt jedes spaetere — die Kehrseite von „beim ersten Treffer hoerst du
   auf". Bei jeder weiteren Regelaenderung neu pruefen, ob die Eichung noch das misst,
   wofuer sie gebaut wurde.
-- 2026-08-31, dritter Lauf — **Die Eichung misst ADR 0008 nicht, und das ist eine Luecke
-  im Messinstrument, kein Nebenbefund.** Nach der Zulassung von Unterhaltung erneut
-  gelaufen, dritte Wiederholung mit identischem Ergebnis (9001 kandidat 20, 9002 an G5).
-  Genau das ist das Problem: Beide Eichungen sind Werkzeugideen mit `zahlungsgrund`
-  `nutzen` bzw. `zwang`. Kein Fixture prueft `wunsch`, keines prueft die neue G8-Frage
-  („Zustand als Text abrufbar", drei Ebenen) und keines prueft, ob ich bei `zwang: 0` die
-  Schwelle 15 tatsaechlich halte statt sie stillschweigend zu senken. Solange das fehlt,
-  sagt eine bestandene Eichung nichts ueber den Suchraum, in dem die Fabrik ab jetzt
-  sucht. **Fuer den Portfolio-Manager:** Es fehlen zwei Fixtures — eines mit
-  `zahlungsgrund: wunsch`, das durchkommen muss (Simulation mit auslesbarem Zustand,
-  Summe knapp ueber 15), und eines, das an G8 sterben muss (Reiz haengt an Grafik oder
-  Bedienungsgefuehl, Zustand entsteht erst im Bild). Ich lege sie nicht selbst an, das
-  waere eine neue Idee.
+- 2026-08-31, dritter und vierter Lauf — **Die Eichung misst ADR 0008 nicht, und das ist
+  eine Luecke im Messinstrument, kein Nebenbefund.** Nach der Zulassung von Unterhaltung
+  zweimal erneut gelaufen, vierte Wiederholung mit identischem Ergebnis (9001 kandidat 20,
+  9002 an G5). Genau das ist das Problem: Beide Eichungen sind Werkzeugideen mit
+  `zahlungsgrund` `nutzen` bzw. `zwang`. Kein Fixture prueft `wunsch`, keines prueft die
+  neue G8-Frage („Zustand als Text abrufbar", drei Ebenen) und keines prueft, ob ich bei
+  `zwang: 0` die Schwelle 15 tatsaechlich halte statt sie stillschweigend zu senken.
+  **Vierter Lauf, neuer Beleg dafuer:** Die einzige Regelaenderung seit dem dritten Lauf
+  war die `genehmigung`-Klarstellung fuer Spiele — und sie ging spurlos durch die Eichung,
+  weil keines der beiden Fixtures ein Spiel ist. Eine Eichung, die eine Regelaenderung
+  nicht einmal beruehrt, hat sie auch nicht geprueft. **Fuer den Portfolio-Manager:** Es
+  fehlen zwei Fixtures — eines mit `zahlungsgrund: wunsch`, das durchkommen muss
+  (Simulation mit auslesbarem Zustand, Summe knapp ueber 15), und eines, das an G8 sterben
+  muss (Reiz haengt an Grafik oder Bedienungsgefuehl, Zustand entsteht erst im Bild). Ich
+  lege sie nicht selbst an, das waere eine neue Idee.
 - 2026-08-30 — Zwei Sachen, die die Eichung nicht abdeckt und die bei echten Ideen greifen
   werden: (a) Ein englischsprachiger Entwurf muss nach G7 den **Merchant of Record** und
   dessen Anteil in die Rechnung nehmen; bei 9001 habe ich es durchgelassen, weil die Marge
