@@ -80,6 +80,34 @@ niemand mehr, auch du nicht.
   erfasst -- lohnt sich, vor jeder Suche erst die vorhandene Datei zu lesen,
   nicht nur den Dateinamen zu ueberfliegen.
 
+## Lauf 2026-08-31 (6.)
+
+- Ein Signal neu: VerpackDG-Zulassungspflicht (§ 19/§ 68) fuer Hersteller nicht
+  systembeteiligungspflichtiger Verpackungen (B2B-Transport-/Industrieverpackungen),
+  Uebergangsfrist bis 31.12.2027 -- gefunden nach demselben Muster wie PPWR Art. 29
+  und Batterie-VO: ein bereits erfasstes Gesetz (VerpackDG, siehe LUCID-Registrierung
+  vom 08-28) hat unter einem anderen Paragraphen (§ 68 statt § 68-Registrierung) eine
+  zweite, unabhaengige Pflicht (Zulassung statt Registrierung). gesetze-im-internet.de
+  lieferte den Volltext von § 68 direkt per WebFetch -- lohnt sich, bei aehnlichen
+  Funden zuerst dort nachzuschlagen statt bei Kanzlei-Blogs, die sich bei diesem Gesetz
+  auffaellig oft selbst widersprachen (KPMG, zmart, xictron nannten je andere/vage
+  Fristen fuer dieselbe Vorschrift).
+- Alle offenen Faehrten erneut geprueft, weiterhin nicht signalreif: Registrierkassen-
+  pflicht (weiterhin nur Referentenentwurf, BMF nennt jetzt 01.01.2028 statt 2027,
+  aber immer noch kein Kabinettsbeschluss), KritisV (weiterhin Referentenentwurf seit
+  Konsultation 16.06.2026), LkSG-Aenderung (weiterhin keine 2./3. Lesung seit
+  1. Lesung 16.01.2026), Reservestaerkungsgesetz (Kabinettsbeschluss 01.07.2026,
+  weiterhin keine Bundestagslesung gefunden), Entgelttransparenz (Kabinett beraet laut
+  Presse im August 2026 ueber Ausgestaltung, aber weiterhin kein Referentenentwurf).
+- Neuer Fund, aber verworfen: BFSG-Aenderungsverordnung (BGBl. I 2026 Nr. 205,
+  15.07.2026) regelt barrierefreien Notruf 112 -- Frist 28.06.2027 fuer synchronisierte
+  Sprache/Echtzeittext bei Notrufleitstellen. Kein Signal: Verpflichtete sind
+  oeffentliche Rettungsleitstellen (Land/Kommune), keine Unternehmen im Sinne dieser
+  Fabrik. Fuer TK-Anbieter gilt die Uebermittlungspflicht schon seit 16.07.2026 --
+  Stichtag verstrichen, ebenfalls kein Signal.
+- E-Rechnung (Stufe 800.000-EUR-Schwelle ab 01.01.2027) und CSRD/Omnibus-Schwellen
+  bereits inhaltsgleich in bestehenden Dateien erfasst, keine Aenderung gefunden.
+
 ## Lauf 2026-08-30 (5.)
 
 - Alle offenen Faehrten erneut geprueft, keine signalreif: Registrierkassenpflicht
