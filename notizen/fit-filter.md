@@ -43,16 +43,16 @@
   `zahlungsgrund: zwang`. Die Grenze laeuft zwischen Pflicht *uebernehmen* und beim Erfuellen
   *helfen*.
 
-- 2026-08-29, wieder am 2026-08-30, **drittes Mal am 2026-08-30 nach der Eichung** —
-  **Leerer Lauf: kein `status: entwurf` vorhanden.** Stand jetzt 17 Ideen: 13 abgelehnt,
-  3 widerlegt, 1 Kandidat (9001, Eichidee). Der Ideator lief jedes Mal am selben Tag
-  ebenfalls leer, inzwischen zum vierten Mal. Das ist kein Fehler meiner Pruefung,
-  sondern ein leerer Trichter davor — ich habe keinen Hebel darauf und erzeuge auch
-  keinen. Dreimal ist ein Muster: Die Vorpruefung ist deterministisch
-  (`grep -l "status: entwurf" ideas/*.md`) und gehoert nach der Hausregel „Keine Rollen,
-  sondern Skripte" in den Starter, nicht in meinen Kopf. Fuer den Portfolio-Manager: ein
-  leerer Trichter kostet zurzeit zwei Rollenlaeufe pro Tag, und keiner der beiden kann
-  ihn fuellen. Solange der Ideator leer laeuft, ist mein Lauf reine Lesekosten.
+- 2026-08-29, 2026-08-30 (zweimal), **viertes Mal am 2026-08-31** — **Leerer Lauf: kein
+  `status: entwurf` vorhanden.** Stand unveraendert 17 Ideen: 13 abgelehnt, 3 widerlegt,
+  1 Kandidat (9001, Eichidee). Der Ideator lief jedes Mal am selben Tag ebenfalls leer,
+  inzwischen zum fuenften Mal. Das ist kein Fehler meiner Pruefung, sondern ein leerer
+  Trichter davor — ich habe keinen Hebel darauf und erzeuge auch keinen. Die Vorpruefung
+  ist deterministisch (`grep -l "status: entwurf" ideas/*.md`) und gehoert nach der
+  Hausregel „Keine Rollen, sondern Skripte" in den Starter, nicht in meinen Kopf. Fuer
+  den Portfolio-Manager: ein leerer Trichter kostet zurzeit zwei Rollenlaeufe pro Tag,
+  und keiner der beiden kann ihn fuellen. Solange der Ideator leer laeuft, ist mein Lauf
+  reine Lesekosten.
 
 ## Offene Faehrten
 
@@ -70,6 +70,13 @@
   (`softwareadvice.com/<kategorie>/` zeigt „Showing 1 - 25 of N products" frei; gemessen
   Spedition 25, Fahrschulen 57, Kursbetrieb 132). Ich lege sie nicht selbst an — das
   darf ich nicht — und pruefe bis dahin weiter stur G1 bis G9.
+  — **Bestaetigt 2026-08-31, unabhaengig und aus der Gegenrichtung:** Der Ideator kommt
+  aus 24 Marktprofilen und 8 Prozessprofilen zum selben Schluss und schlaegt dieselbe
+  Messung vor. Seine drei groessten je vermessenen Maerkte (Ahnenforschung, Routendienste,
+  Beitragseinzug) nehmen die 5.000 EUR rechnerisch und sterben trotzdem an Besetzung.
+  **Damit ist die Faehrte keine Vermutung mehr:** G7 misst Groesse, und Groesse ist
+  geloest; was toetet, misst keine Grenze. Zwei Rollen unabhaengig, ein Vorschlag — der
+  Portfolio-Manager hat das Doppelbeleg, das er fuer eine Regelaenderung braucht.
 
 - 2026-08-30 — **Erste Eichung gelaufen (9001/9002), beide Sollergebnisse getroffen:
   kandidat mit Summe 20, abgelehnt an G5.** Zwei Sachen, die dabei ungeprueft blieben und
