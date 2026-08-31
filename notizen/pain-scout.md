@@ -105,7 +105,25 @@ niemand mehr, auch du nicht.
   troublefreepool.com/forum, enworld.org/rpg.net fuer GMs, kboards.com-Threads direkt
   per WebFetch statt nur ueber Suchtreffer. WebSearch versteckt die Rohzitate hinter
   KI-Paraphrasen von Anbieterseiten.
-- herber.de/forum weiter ausschoepfen: naechste Themen z.B. "Rechnungen erfassen",
-  "periodisch wiederkehrende Zahlungen", "Zahlungskalender" -- erster Treffer deutete auf
-  taegliches manuelles Rechnungschreiben (ca. 100/Tag ueber Lexware-Fakturierung, "nervt
-  total"), noch nicht per WebFetch verifiziert und nicht auf Dreifachbeleg geprueft.
+- 2026-08-31 — Fruehere Faehrte abgehakt, kein Treffer: "Rechnungen erfassen",
+  "periodisch wiederkehrende Zahlungen", "Zahlungskalender" bei herber.de/forum per
+  WebFetch verifiziert -- alle Einzelfaelle ohne erkennbaren Unternehmenskontext (eher
+  Excel-Hobbyisten/Privat), kein Dreifachbeleg. Nicht weiter verfolgen.
+- 2026-08-31 — Leerer Lauf: zusaetzlich Mahnwesen/Mahnliste, Angebotskalkulation
+  Handwerk, Verleih-/Ausleihliste, Spendenbescheinigungen (Vereins-Kassenwart, auch
+  spg-direkt.de- und jverein-forum.de-Foren gezielt gefetcht), Lieferscheine-zu-
+  Sammelrechnung, Inventurliste/Wareneingang (herber.de, zwei Threads verifiziert:
+  "riesen Arbeit" bei Monatsinventur, 3000+ Artikel per Barcode -- aber Inventur-/
+  Warenwirtschaftssoftware ist bereits ein dichter Markt, kein frisches Signal),
+  Fuehrerscheinkontrolle Fuhrpark (nur Vendor-ROI-Zahlen von Lapid/Avrios/Webfleet/
+  Vimcar/Mobexo -- Markt fuer digitale Fuehrerscheinkontrolle bereits dicht besetzt,
+  keine unabhaengigen Nutzerzitate) -- ueberall entweder Einzelfall, Vendor-Content
+  oder bereits gesaettigter Markt. woodcnc.de/forum (Werkzeugverwaltung Werkstatt) per
+  WebFetch 401 -- wie andere Foren auf WebSearch-Snippet ausweichen, nicht erneut per
+  WebFetch versuchen.
+- 2026-08-31 — Offene Faehrte: woodcnc.de-Forum (Holzbearbeitung/CNC-Werkstaetten) als
+  Nischenforum-Typ noch nicht ausgeschoepft -- naechstes Mal per WebSearch-Snippet statt
+  WebFetch, Themen wie Werkzeugverwaltung, Materialbestand, Auftragskalkulation.
+  spg-direkt.de/jverein-forum.de sind Software-Support-Foren (analog lex-forum.net),
+  liefern aber eher Bedienungsfragen als echte "das nervt"-Klagen -- fuer neue Themen
+  geeignet, nicht fuer Spendenbescheinigungen.
