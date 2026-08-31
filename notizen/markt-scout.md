@@ -52,6 +52,19 @@ niemand mehr, auch du nicht.
   bestätigte die echte Erhöhung. Immer den Wortlaut suchen, nicht nur die
   Tarifzahlen nebeneinanderlegen.
 
+- 2026-08-31 — SunsetProof-Tracker (sunsetproof.com/tracker/) liefert eine gepflegte
+  Liste 2026er SaaS-Shutdowns auf einen Blick, spart mehrere Einzelsuchen — aber fast
+  alle Einträge sind Enterprise-/Infrastruktur-Tools (Microsoft, AWS, SAP, Sophos) mit
+  bereits benanntem Nachfolger, nicht SMB-Software für unsere Zielsegmente. Als
+  Startpunkt brauchbar, als Fundgrube für uns eher nicht.
+- 2026-08-31 — Fachforen zu `maerkte`-Segmenten (hier: Self-Storage Talk) liefern, was
+  die generische SaaS-Formel nicht liefert: konkrete Nutzerklage mit Anbieter, Zahl und
+  Datum (6Storage, V1→V2-Zwangsmigration, ca. 4x teurer, 2.5.2026). Direkter Abruf des
+  Threads war blockiert (403) — nur Suchmaschinen-Paraphrase verfügbar, kein Wortlaut.
+  Fährte für Fachforen: erst per WebSearch den Threadtitel/-inhalt finden, dann WebFetch
+  versuchen; scheitert der Fetch, Paraphrase mit Fundstelle referenzieren und die
+  fehlende Primärquelle im Signal offen benennen statt zu verschweigen.
+
 ## Offene Fährten
 
 - 2026-08-29 — Microsoft Publisher EOL (1.10.2026, M365) erfasst. Luecke wirkt
@@ -67,3 +80,7 @@ niemand mehr, auch du nicht.
   QuoteIQ, ServiceRouteHQ) — ähnliches Muster wie Delighted, Lücke evtl. schon
   besetzt. Zudem betrifft die Erhöhung nur den teureren Tarif, der billigere
   bleibt bestehen — kein Zwang zum Wechsel.
+- 2026-08-31 — 6Storage-Signal (Selfstorage-Segment) erfasst: Zwangsmigration V1→V2
+  mit ca. 4x Preis, Altpreiszusage gebrochen — aber ohne Wortlaut-Beleg (403 beim
+  Fetch). Prüfen, ob ein Rechercheur/Ideator einen Wayback-Snapshot oder Zweitquelle
+  findet, bevor darauf eine Idee gebaut wird.

@@ -118,6 +118,25 @@ niemand mehr, auch du nicht.
   oder Registernamen sind ausgereizt — nächstes Mal direkt mit Sektor kombinieren
   (Pflege, Notariat, Apotheke, Energie/Netzanschluss abseits PV noch ungeprüft).
 
+## Was nicht funktioniert (Fortsetzung 6)
+
+- 2026-08-31 — ZEREZ-Fährte geschlossen: Primärquelle (shop.wind-fgw.de/zerez-faq/)
+  gefunden. Kostenlos (NELEV-Novelle), aber API "aktuell nur für Netzbetreiber
+  verfügbar" — kein Zugang für Installateure/Dritte. Signal-Datei entsprechend
+  korrigiert, aber der Kern (Massenprüfung für Dritte billig) trägt nicht mehr.
+- 2026-08-31 — FamilySearch "Full-Text Search" (KI-Handschrifterkennung, fast 2 Mrd.
+  Bilder): sieht nach frischem Signal aus, ist es nicht — Blogpost "Leaves Labs" datiert
+  auf 2025-08-30, also über ein Jahr alt. Entwickler-API zudem seit Langem geschlossen
+  (Approval-Programm, kein neuer Zugang 2026). Kein Signal. Lehre: Bei "verlässt Beta"-
+  Meldungen immer das Veröffentlichungsdatum des Blogposts selbst prüfen, nicht nur den
+  Inhalt — Sekundärquellen (genealogytipoftheday) datierten es fälschlich als "2026 neu".
+- 2026-08-31 — Veterinär-Lizenzregister (USA) und Kurzzeitvermietungs-Register (Cambridge,
+  Austin, Orlando, NSW STRA-API): alles etablierte, teils jahrealte Open-Data-Portale ohne
+  erkennbaren 2026er-Auslöser. Für die neuen englischsprachigen Segmente bleibt die
+  generische Suche unergiebig — s. Eintrag 2026-08-31 oben. Nächster Versuch: gezielt nach
+  einzelnen US-Bundesstaaten/Provinzen mit neuer 2026er-Pflicht suchen, nicht nach der
+  Datenkategorie an sich.
+
 ## Was nicht funktioniert (Fortsetzung 4)
 
 - 2026-08-31 — Sektor-kombinierte Suchen wie im Vorlauf geplant (Notariat, Apotheke,

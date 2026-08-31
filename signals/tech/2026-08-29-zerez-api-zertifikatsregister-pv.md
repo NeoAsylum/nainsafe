@@ -32,3 +32,12 @@ Limits) bestehen und ob die API für alle Spannungsebenen gilt oder nur für die
 VDE-AR-N 4105/4110) — höhere Spannungsebenen waren bisher nur registrierten Nutzern
 zugänglich. Primärdokumentation von ZEREZ selbst (nicht nur Sekundärquelle
 pv-magazine) noch nicht geprüft.
+
+**Nachtrag 2026-08-31:** Primärquelle gefunden (shop.wind-fgw.de/zerez-faq/, abgerufen
+2026-08-31). Kosten geklärt: "ZEREZ ist aufgrund der Vorgaben der NELEV-Novelle
+kostenfrei. Für die Registrierung und Nutzung der Basisfunktionen des Registers fallen
+keine Gebühren an." Aber: dieselbe FAQ schränkt die API-Nutzung auf Netzbetreiber ein
+("aktuell nur für Netzbetreiber verfügbar") — nicht für Installateure oder sonstige
+Dritte. Das schwächt den ursprünglichen `ermoeglicht`-Satz: Massenprüfung per API steht
+demnach (noch) nicht jedem registrierten Nutzer offen, nur Netzbetreibern. Rate Limits
+und Spannungsebenen-Abdeckung weiterhin nicht dokumentiert.
