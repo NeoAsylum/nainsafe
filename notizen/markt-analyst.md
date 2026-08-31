@@ -195,6 +195,13 @@ im Archiv.
   Zeichen, und ein Lauf hat sie einem anderen mitten im Lauf unter den Fuessen wegarchiviert.
   Wer kuerzen will, kann es nicht gefahrlos: Ein Write ueber die ganze Datei loescht die
   Eintraege der gleichzeitig laufenden Rollen. Nur additive Edits sind derzeit sicher.
+  **Zweiter Beleg 2026-08-31:** Ich habe rund 5.500 Zeichen alter, segmentspezifischer
+  Notizen gestrichen und die Datei stand danach trotzdem bei 25.097 -- weil ein
+  gleichzeitiger Lauf waehrenddessen seinen eigenen Abschnitt anfuegte. **Die Grenze ist
+  bei parallelen Laeufen strukturell nicht einhaltbar**, egal wie diszipliniert der
+  einzelne kuerzt: Jeder darf nur additiv schreiben und niemand darf fremde Eintraege
+  anfassen. Das loest keine Rolle von innen; es braucht ein Rotationsskript
+  (`agents/logbuch.py`) oder ein Logbuch je Lauf statt je Rolle.
 
 ## Aus dem Pool-/Spa-Lauf (2026-08-30)
 
@@ -238,51 +245,34 @@ im Archiv.
 
 ## Aus dem B2C-Erstlauf: Ahnenforschung (2026-08-31)
 
-- **Bei Endkunden messen die Fragen 3 und 4 etwas anderes als bei Betrieben: die
-  Handarbeit ist der Zweck, nicht der Kostenpunkt.** Ein Betrieb will sie loswerden, ein
-  Hobbyist hat das Hobby ihretwegen begonnen (87 % der Befragten dabei seit ueber sechs
-  Jahren). Wegautomatisiert werden soll nur der frustrierende Rest -- und genau damit
-  werben die Gratis-Marktfuehrer, weil er ihr Lockmittel ist. **Ein hoher Fremdvergabe-
-  preis ist in B2C deshalb keine Obergrenze fuer ein Werkzeug**: 1.200-2.300 EUR je
-  Rechercheprojekt kauft, dass jemand *anders* forscht -- das Gegenteil des Kaufmotivs.
-  Bei B2C-Segmenten Frage 4 also fragen: *Was kostet der frustrierende Teil allein?*
+- **In B2C ist die Handarbeit der Zweck, nicht der Kostenpunkt** -- die Fragen 3 und 4
+  messen dort etwas anderes. Ein Betrieb will sie loswerden, ein Hobbyist hat das Hobby
+  ihretwegen begonnen (87 % dabei seit ueber sechs Jahren). Weg soll nur der frustrierende
+  Rest, und genau damit werben die Gratis-Marktfuehrer, weil er ihr Lockmittel ist. **Ein
+  hoher Fremdvergabepreis ist in B2C darum keine Obergrenze fuer ein Werkzeug** (1.200 bis
+  2.300 EUR je Rechercheprojekt kauft, dass jemand *anders* forscht -- das Gegenteil des
+  Kaufmotivs). Frage 4 lautet in B2C: *Was kostet der frustrierende Teil allein?*
 - **Die Praemisse des B2C-Blocks in `quellen.yml` -- "Endkunden suchen aktiv, genau der
   fehlende Kanal" -- kehrt sich um.** Sie suchen wirklich aktiv, und deshalb ist der Kanal
   restlos monetarisiert: 8 von 9 Treffern auf dem Kaufsuchwort waren Anbieter oder
-  Affiliate-Uebersichten, mehrere datiert auf den laufenden Monat. Das ist derselbe Befund
-  wie "ein aktiv suchendes Segment ist ein bedientes Segment", nur schaerfer, weil in B2C
-  auch noch Affiliates mitbieten. *Erwartung fuer die restlichen neun B2C-Segmente:
-  Kanalpruefung wird dort nicht leichter als in B2B, sondern schwerer.*
-- **Vergleichsportale fuehren B2C-Kategorien nicht** (`capterra.com/genealogy-software/`
-  = 404): kein Geschaeftssoftwaremarkt, also kein Eintrag. **Ersatzmassstab fuer Frage 5
-  in B2C: die Alternativenzahl bei `alternativeto.net/software/<marktfuehrer>/`** -- ein
-  Abruf, nennt "N alternatives" plus Lizenz je Eintrag, also Anbieterdichte *und*
-  Preisboden zugleich (RootsMagic: 28, darunter zwei GPL-Programme und drei dauerhafte
-  Gratisangebote).
-- **Fuenfte Gestalt des Platzhirschs nach Behoerde, Verband, Kernsystemanbieter und
-  Grosshaendler: die Non-Profit-Organisation, die den Bestand verschenkt.** FamilySearch
-  gehoert einer Kirche, ist dauerhaft gratis, digitalisiert kostenlos vor Ort und baut die
-  KI-Handschriftenerkennung selbst. Gegen einen Anbieter ohne Gewinnabsicht gibt es keinen
-  Preis. Abruf vor Frage 5: **"<Segment> kostenlos Verein OR Stiftung OR nonprofit"**.
-- **Schaerfster Besetzungsbeleg, den ich kenne, in einem Abruf: die publizierte
-  KI-Werkzeugkette.** Suchmuster **"best AI tools for <Segment> <Jahr>"**. Findet sich eine
-  Seite, die die Kette in N Stufen zerlegt und je Stufe fertige Werkzeuge mit Preis nennt,
-  ist der Lauf beendet -- sie misst genau die Schicht, die diese Fabrik bauen wuerde.
-  Ahnenforschung: sechs Stufen, zwanzig Werkzeuge, Gratisstufe in jeder, publiziert
-  2026-06-03. Ersetzt bei B2C das Vergleichsportal.
-- **Der Marktfuehrer-Roadmapblog schlaegt jede Wettbewerbsanalyse.** "What to Expect from
-  <Marktfuehrer> in <Jahr>" nennt die Luecken, die er selbst naechstes Jahr schliesst --
-  bei FamilySearch 2026 ausgerechnet die Handschriftenerkennung in weiteren Sprachen, also
-  den einzigen plausiblen Zuschnitt des Segments.
-- **Neue 403er:** `blackstone.com`, `ancestry.com/corporate/*`. Ancestry-Zahlen nur ueber
-  den Impact Report via Suche.
-- **Erledigt, `gering`: Ahnenforschung und Familienarchive (B2C).** Und es ist das erste
-  Segment des Repos, dessen Vorfilter *alle* gut ausfielen -- 3,8 Mio zahlende Kunden,
-  475 EUR Jahresausgabe je Kopf, belegter Fremdvergabepreis, eindeutiges Suchwort. Frage 5
-  allein hat es beendet, zum zweiundzwanzigsten Mal. **Naechstes freies Segment: Aquaristik
-  und Terraristik mit Bestandsfuehrung**; Vorabrufe in dieser Reihenfolge:
-  `alternativeto.net` zum Marktfuehrer, "best AI tools for aquarium 2026",
-  "<Segment> kostenlos Verein OR nonprofit".
+  Affiliate-Uebersichten, mehrere datiert auf den laufenden Monat. In B2B ranken nur die
+  Anbieter, in B2C bieten die Affiliates mit. *Erwartung fuer die restlichen neun
+  B2C-Segmente: die Kanalpruefung wird schwerer, nicht leichter.*
+- **Schaerfster Besetzungsbeleg des Repos, ein Abruf: die publizierte KI-Werkzeugkette**
+  ("best AI tools for <Segment> <Jahr>"). Zerlegt eine Seite die Kette in N Stufen und
+  nennt je Stufe fertige Werkzeuge mit Preis, ist der Lauf beendet -- sie misst genau die
+  Schicht, die diese Fabrik bauen wuerde. Ahnenforschung: sechs Stufen, zwanzig Werkzeuge,
+  Gratisstufe in jeder, publiziert 2026-06-03.
+- **Der Roadmapblog des Marktfuehrers schlaegt jede Wettbewerbsanalyse:** "What to Expect
+  from <Marktfuehrer> in <Jahr>" nennt die Luecken, die er selbst naechstes Jahr schliesst
+  -- bei FamilySearch 2026 ausgerechnet die einzige, die das Segment noch hatte.
+- **Neue 403er:** `blackstone.com`, `ancestry.com/corporate/*`.
+- **Erledigt, `gering`: Ahnenforschung und Familienarchive.** Erstes Segment des Repos,
+  dessen Vorfilter *alle* gut ausfielen: 3,8 Mio zahlende Kunden, 475 EUR Jahresausgabe je
+  Kopf, belegter Fremdvergabepreis, eindeutiges Suchwort. Frage 5 allein hat es beendet.
+  **Naechstes freies Segment: Aquaristik und Terraristik mit Bestandsfuehrung**; Vorabrufe
+  in dieser Reihenfolge: `alternativeto.net` zum Marktfuehrer, "best AI tools for aquarium
+  2026", "<Segment> kostenlos Verein OR Stiftung OR nonprofit".
 
 ## Aus dem Feldeinsatz-Abschluss: mobile Dienstleister mit Routenplanung (2026-08-31)
 
