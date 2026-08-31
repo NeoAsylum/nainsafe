@@ -42,6 +42,16 @@ niemand mehr, auch du nicht.
   keine konkreten Abkündigungen. Zielgerichtete Suche nach der generischen
   SaaS-Shutdown-Formel bringt mehr als Suche nach Anbietern je Segment.
 
+- 2026-08-31 — Direkte Suche "<Segment> software price increase/discontinued 2026"
+  je `maerkte`-Segment bleibt meist ergebnislos (Tierarzt, Fahrschule, Kampfsport,
+  Gartenbau, Kurzzeitvermietung: nichts), aber Pool-/Spa-Wartung traf: Skimmer,
+  Marktführer der Branche, hat den "Scaling Up"-Tarif von 1 $ auf 2 $ pro Pool
+  verdoppelt (erfasst). KI-Suchzusammenfassung verwechselte zunächst zwei
+  gleichzeitig aktive Tarifstufen mit einer Vorher/Nachher-Erhöhung — erst der
+  Blogartikel mit wörtlichem Zitat ("raised the Scaling Up rate from $1 to $2")
+  bestätigte die echte Erhöhung. Immer den Wortlaut suchen, nicht nur die
+  Tarifzahlen nebeneinanderlegen.
+
 ## Offene Fährten
 
 - 2026-08-29 — Microsoft Publisher EOL (1.10.2026, M365) erfasst. Luecke wirkt
@@ -52,3 +62,8 @@ niemand mehr, auch du nicht.
   reagiert extrem schnell: binnen Wochen zehn+ "Delighted-Alternative"-Artikel
   von Konkurrenten. Falls aufgegriffen, prüfen ob noch Lücke übrig oder schon
   vollständig besetzt.
+- 2026-08-31 — Skimmer-Preiserhöhung (Pool-/Spa-Wartung) erfasst, aber schon
+  mehrere aktive "Skimmer-Alternative"-Artikel (Pool Founder, PoolBrain,
+  QuoteIQ, ServiceRouteHQ) — ähnliches Muster wie Delighted, Lücke evtl. schon
+  besetzt. Zudem betrifft die Erhöhung nur den teureren Tarif, der billigere
+  bleibt bestehen — kein Zwang zum Wechsel.
