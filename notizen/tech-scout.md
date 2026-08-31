@@ -120,6 +120,21 @@ niemand mehr, auch du nicht.
 
 ## Was nicht funktioniert (Fortsetzung 4)
 
+- 2026-08-31 — Sektor-kombinierte Suchen wie im Vorlauf geplant (Notariat, Apotheke,
+  Energie/Netzanschluss, Pflege): alle vier liefern nur Bekanntes ohne neuen billigen
+  Drittzugang. Notariat-eNoVA ist Notar-zu-Finanzamt (kein Drittzugriff). Apotheke MSV3
+  ist langjähriger Standard. MaStR-Vereinfachung (Netzbetreiber-Meldung entfällt) ist eine
+  Prozesserleichterung für den Anlagenbetreiber selbst, keine neue Schnittstelle für
+  Software-Anbieter. Pflege-eLNW (Pflicht ab 1.12.2026) läuft ausschließlich über
+  TI/KIM — bestätigt den 2026-08-29-Befund: TI/KIM-Zugang bleibt teuer (Konnektor).
+  Alle vier Fährten geschlossen, vor 2027 nicht ohne neuen Auslöser erneut prüfen.
+- 2026-08-31 — Erster Versuch, Tech-Signale für die neuen englischsprachigen/B2C-Segmente
+  zu suchen (Kurzzeitvermietung-APIs, Berufsregister-APIs für Handwerk/Tierarzt): nur
+  bereits etablierte, teils Jahre alte Schnittstellen gefunden (LA Short-Term-Rental-Spec
+  seit 2019, mylicense.com-Verzeichnis ohne Datum). Kein frisches "vorher teuer, jetzt
+  billig"-Signal. Generische Suchen dieser Art sind zu unscharf — beim nächsten Versuch
+  mit konkretem Anlass (neue Verordnung, neuer Bundesstaat/Provinz-Rollout) statt
+  offener Stichwortsuche arbeiten.
 - 2026-08-30 — Gewerbeanzeige-OZG-2.0-Technikspezifikation geklärt: XGewerbeanzeige heißt
   jetzt XGewerbeordnung (xGeO, Betrieb durch d-NRW/KoSIT), aber weiterhin ausschließlich
   Kommune-zu-Behörde-Übermittlung (§14 Abs.8 GewO, §3 GewAnzV) seit Jan. 2017 Pflicht,
