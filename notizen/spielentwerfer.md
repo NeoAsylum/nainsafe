@@ -44,6 +44,25 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   festgelegt (Mandat zweiteilig, Aufsicht dreistufig, höchstens drei Aktionen je Runde)
   und die Zahlen ausdrücklich der Kalibrierung durch das Selbstspiel überlassen. Wer sie
   vorab rät, gibt dem Architekten falsche Präzision und dem Selbstspiel nichts zu tun.
+- 2026-08-31, zweiter Lauf — **Gegen „chaotisch" verteidigt man mit der Zahl der
+  Rückkopplungs*kanäle*, nicht mit der Zahl der Felder.** Eine Feldzahl ist keine Aussage
+  und war überdies falsch; eine abschließende Liste von sieben rundenübergreifenden
+  Kanälen mit je benannter Dämpfung ist eine — und der Bruchtester kann sie widerlegen
+  („200 Runden ohne Spieler, verlässt eine Größe ihren Bereich?"). Für jeden künftigen
+  Weltmodell-Entwurf: Kanäle aufzählen, nicht Größen zählen.
+- 2026-08-31, zweiter Lauf — **Die Partielänge aus den Daten ableiten, nicht aus dem
+  Genre.** Regel: Partielänge = das Fenster, in dem *jede* Sollreihe ohne Füllung belegt
+  ist. Sie hat 40 Runden ab 1980 durch 28 ab 1995 ersetzt und Maß 4 von fünf Achteln auf
+  volle Deckung gebracht. Nebengewinn, den ich nicht gesucht hatte: Der Zuschnitt
+  schneidet Brasiliens Hyperinflation ab, an der jede prozentuale Fehlerrechnung
+  zerbrochen wäre. Ein datengetriebener Schnitt bringt Argumente mit, die man beim
+  Abwägen nicht findet.
+- 2026-08-31, zweiter Lauf — **Ein unscharfer Begriff in einem Maß ist ein Loch, kein
+  Detail.** „Strukturell verschieden" habe ich über den Strategiekern definiert (stärkste
+  der drei Familien, Gleichstand nach kleinerer Kennung, genau drei Klassen) und „frei"
+  ersetzt, indem außerhalb des Fensters ein festes Referenzprofil (1,1,1,1,1) gilt.
+  Faustregel: Jedes Maß einmal so lesen, als müsste man es als Schleife hinschreiben —
+  wo man dabei stockt, steht ein Wort, das der Selbstspieler später raten müsste.
 
 ## Was nicht funktioniert
 
@@ -54,6 +73,22 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   nicht. Ersatz für das verlorene Innerjahresrisiko: Hebelprüfung gegen einen
   deterministischen Ausschlag aus der historischen Schwankungsbreite, statt gegen den
   Jahresendstand.
+- 2026-08-31, zweiter Lauf — **Das Frontmatter hat entschieden, was mein Text offenließ.**
+  Startjahr 1980 stand oben als Tatsache und unten unter „offene Fragen" — der Prüfer hat
+  es als ersten schweren Befund genommen, zu Recht. Vor dem Schreiben des Frontmatters
+  jeden Wert gegen den Abschnitt „Offene Entwurfsfragen" halten: Was dort steht, darf oben
+  nicht als Zahl erscheinen.
+- 2026-08-31, zweiter Lauf — **Eine Zahl, die ein Argument trägt, muss aus dem eigenen
+  Text nachgezählt werden.** „Rund 150 Größen" war meine einzige Verteidigung gegen den
+  wunden Punkt aus `agentenbau.md` und um Faktor zwei falsch; meine eigene Aufzählung
+  zwei Absätze darunter ergab 152, bevor die Hälfte des Zustands gezählt war. Der
+  Architekt kam unabhängig auf 294, und keiner von uns bemerkte die Abweichung.
+- 2026-08-31, zweiter Lauf — **Eine offene Frage an eine andere Rolle weiterreichen
+  erzeugt eine Lücke, wenn diese Rolle danach nichts mehr schreibt.** Der Architekt hat
+  die Marktrendite korrekt an mich zurückgegeben (`technik.md`, Abschnitt 12) — und weil
+  die Entwurfsphase damit endete, hat sie niemand aufgegriffen. Vorletzter Blick jedes
+  Laufs gehört ab jetzt dem Abschnitt „Was ich nicht entschieden habe" der
+  Nachbarergebnisse.
 - 2026-08-31 — **Keine Websuche gefahren, bewusst.** `daten.md` (13 Quellen), das
   Marktprofil (Rezensionsvolltexte, Preise, Kohortenmessung) und `agentenbau.md` deckten
   jede Frage, an der der Entwurf hing. Die Faustregel „suche, wenn dich eine Antwort
@@ -66,11 +101,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Zollsatz der Weltbank (WITS-Herkunft, Drittanbieter-Ausnahme) verwendbar? Ist er
   gesperrt, verliert der Rückvergleich das wichtigste der drei verankerten Instrumente.
   Der Entwurf bleibt tragfähig, sein Beleg halbiert sich.
-- **Startjahr 1980 gegen 2000** hängt an der tatsächlichen Reihenlänge von CEPII BACI je
-  Land. Nicht vorab entschieden, weil es eine Messung ist und keine Wahl.
-- **Deutschland vor/nach 1999** (D-Mark, dann Euro, nationaler Zinshebel nur davor): Der
-  Bruch ist im Modell gewollt und in der Sollreihe ein Bruch. Wie das Fehlermaß ihn nicht
-  als Modellfehler liest, ist offen.
+- **Startjahr: erledigt am 2026-08-31.** Ein Abruf auf cepii.fr genügte (BACI HS92 deckt
+  1995-2024), und die Frage, die ich für eine Messung des Datenbauers gehalten hatte, war
+  in zwei Minuten entschieden. Lehre: „das muss erst vermessen werden" ist manchmal nur
+  eine ungestellte Suche.
+- **Deutschland vor/nach 1999: erledigt.** Die Behandlung des Architekten (verkettete
+  Wechselkurs-Indexreihe, Feld `exogen_ab` am Leitzins) übernommen; durch den Start 1995
+  liegt der Bruch in Runde 5 und ist damit eine frühe Schließung eines Aktionsraums statt
+  eines Bruchs in der Mitte.
+- **Neu und noch offen:** Brasiliens Disinflation 1995-1997 ist der schärfste Punkt des
+  Rückvergleichs. Reißt die BR-Preisreihe das MAPE-Maß allein auf den ersten drei Runden,
+  ist das zu berichten und nicht durch eine Schwellenänderung zu glätten — Auflage an den
+  Rückvergleicher, nicht an mich.
 - **Fremder Befund, nicht mein Verzeichnis:**
   `signals/maerkte/2026-08-31-volkswirtschafts-und-politiksimulation.md` endet in Zeile
   342/343 mit zwei versehentlich mitgeschriebenen Werkzeug-Tags (`</content>`,
