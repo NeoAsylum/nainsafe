@@ -103,6 +103,23 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   Seite): Er ist die Obergrenze, die jede Teilfunktion deckelt. Deutsche Reseller-Seiten
   sind fuer Adobe/Microsoft-Listenpreise ergiebiger als die Herstellerseite.
 
+- 2026-08-31 — **Bei jeder neuen Zulassungs- oder Genehmigungspflicht zuerst den Paragrafen
+  selbst abrufen und nach der Befreiungsklausel suchen.** § 19 VerpackDG nimmt aus, wer seine
+  Herstellerverantwortung an eine zugelassene Organisation delegiert — ein Abruf auf
+  `gesetze-im-internet.de/<gesetz>/__<paragraf>.html` beantwortete damit das ganze Signal.
+  Muster: Eine Pflicht mit gesetzlich vorgesehenem Delegationsweg erzeugt beim einzelnen
+  Betrieb keinen Vorgang, sondern einen Vertrag — und den verkauft der bestehende
+  Kollektivanbieter. Ergaenzt die Gebot/Verbot-Unterscheidung vom 2026-08-30 um eine dritte
+  Sorte: **Pflicht mit Ausweg.**
+- 2026-08-31 — **Verlangt der Antrag eine insolvenzfeste Sicherheit oder einen
+  Bonitaetsnachweis, ist er keine Softwareaufgabe.** Solche Voraussetzungen filtern das
+  Segment zugleich auf Grossorganisationen herunter, die Kanzleien mandatieren. Zwei Zeilen im
+  Gesetzestext ersetzen die Segmentrecherche.
+- 2026-08-31 — **Eine zweite Recherche zum selben Gesetz ist billig, wenn die erste gelesen
+  wird.** Der LUCID-Lauf vom 2026-08-28 hatte die zehn dualen Systeme samt Preisen schon
+  tabelliert; fuer das B2B-Pendant war nur zu pruefen, ob dieselben Akteure es besetzen. Drei
+  Abrufe statt einer vollen Recherche. Vor jedem Regel-Signal `ls research/ | grep <gesetz>`.
+
 ## Was nicht funktioniert
 
 - 2026-08-29 — **Suchzusammenfassungen zu Software-Faehigkeiten sind unzuverlaessig und
