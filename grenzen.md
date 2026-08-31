@@ -327,7 +327,7 @@ Ideen, die alle neun Grenzen passieren, werden in fünf Dimensionen bewertet (je
 
 | Dimension | Frage |
 |---|---|
-| `zwang` | Muss der Kunde, oder wäre es nur nett? Pflicht schlägt Nutzen. |
+| `zwang` | Muss der Kunde, oder wäre es nur nett? Pflicht schlägt Nutzen. Ein Unterhaltungsprodukt (`zahlungsgrund: wunsch`) bekommt hier **null** — das ist richtig so und wird nicht weggerechnet. |
 | `erreichbar` | Kommt man ohne Kaltakquise an die Zielgruppe? |
 | `ruhe` | Läuft es zwei Wochen ohne jeden Eingriff? |
 | `marge` | Erreicht Preis × erreichbare Kundenzahl die 5.000 € (siehe G7)? |
@@ -341,6 +341,14 @@ Maximal 25 Punkte. Unter 15 wird nicht zur Vorlage.
   das Risiko nicht wert.
 - `marge` unter 4 — die Schwelle aus G7 ist eine Bedingung, kein Wunsch. Eine 3 heißt
   „könnte knapp reichen", und knapp reicht bei 5.000 € nie.
+**Unterhaltungsprodukte** sind seit dem 2026-08-31 zugelassen (`zahlungsgrund: wunsch`,
+G8 erlaubt Spiele über Text, Zahlen und Zustände). Für sie gilt keine Sonderregel,
+sondern die volle Härte: `zwang` ist null, damit sind höchstens 20 Punkte erreichbar, und
+die Schwelle bleibt bei 15. Auch **G7 bleibt unverändert bei 5.000 € je Idee** — ein
+Spiel muss allein tragen, nicht im Portfolio. Wer das für zu streng hält, sehe sich die
+Zahlen an: Der Median eines Steam-Spiels lag 2025 bei 249 $ Bruttoumsatz im Jahr, und
+5.000 € im Monat entsprechen dort etwa dem 95. Perzentil.
+
 - `erreichbar` unter 3 — alle bisherigen Ideen sind an der Vertriebslinse gestorben, und
   bei allen stand hier vorher eine 2 oder 3. Der Fit-Filter sah das Problem und ließ sie
   trotzdem durch, weil die Summe reichte. Fünf Angriffsläufe später stand dasselbe

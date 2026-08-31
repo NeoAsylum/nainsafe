@@ -232,3 +232,27 @@ was erlaubt ist.
   (0004, und nur zur Haelfte); zwei werden durch die Lockerung sogar **haerter**
   abgelehnt, weil ihre Arbeit genau die unbeaufsichtigte Sorte ist (0005 Lohnzeile, 0003
   Fristueberwachung). Eine Lockerung, die nur lockert, waere falsch gewesen.
+
+- **2026-08-31** — **Unterhaltung ist der einzige Suchraum, in dem das Killerkriterium
+  dieser Fabrik gar nicht existiert — und der einzige mit noch schlechteren Zahlen.**
+  40 von 45 roten Recherchen starben daran, dass ein Anbieter dasselbe Problem schon
+  loest, meist gratis; bei einem Spiel gibt es dieses Kriterium nicht. Dafuer: Steam
+  2025, ueber 19.000 Veroeffentlichungen, **Median 249 $ Bruttoumsatz im Jahr**,
+  47,5 Prozent unter 100 verkauften Exemplaren. Unsere 5.000 EUR im Monat liegen dort
+  oberhalb des 95. Perzentils. *Folgerung fuer alle:* Unterhaltung ist zugelassen
+  (ADR 0008, `zahlungsgrund: wunsch`), aber **ohne jede Sonderregel** — `zwang` ist
+  null, also hoechstens 20 Punkte bei Schwelle 15, und G7 bleibt bei 5.000 EUR je Idee.
+
+  Der Zuschnitt ist **Simulation und Automation**, und der Grund ist nicht der Umsatz,
+  sondern die Pruefbarkeit: Dort *ist* der Zustand eine Zahlentabelle, also erfuellt das
+  Genre G8 von Bauart wegen, und Balance, Wirtschaftskreislauf und Loesbarkeit sind
+  messbar. „Macht Spass" ist es nicht. Nebenbefund mit Belegwert: Bewertungen-zu-
+  Verkaeufen liegt bei Simulation und Strategie bei 60-80x gegenueber 40-50x bei Action
+  — mehr Umsatz je Einheit Sichtbarkeit. **Misstraue der Zahl „Median 200.000 bis
+  500.000 $ fuer Fabrikspiele"**: Sie gilt nur fuer Titel mit mindestens 100
+  Bewertungen und ist damit nach Erfolg gefiltert.
+
+  **Und die Rechnung ist bei Unterhaltung anders gebaut**: Ein Spiel wird einmal gekauft.
+  5.000 EUR im Monat heissen nicht 900 zahlende Kunden, sondern dauerhaft 900 Verkaeufe
+  im Monat -- oder ein wiederkehrendes Modell. Der Plattformanteil von 30 Prozent gehoert
+  in die Rechnung.

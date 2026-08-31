@@ -73,6 +73,7 @@ NIE = [
     # eingeschlossen.
     "Edit(/CLAUDE.md)",
     "Edit(/grenzen.md)",
+    "Edit(/agentenbau.md)",
     "Edit(/quellen.yml)",
     "Edit(/agents/**)",
     "Edit(/.claude/**)",

@@ -35,6 +35,13 @@ in keiner einzigen Regel. Sie war eine unbegründete Verengung, die fünfzehn Id
 gekostet hat. Der Preis der Öffnung sind Umsatzsteuer im Zielland (Merchant of Record)
 und Verbraucherrecht bei Endkunden; wer den größeren Markt wählt, benennt ihn.
 
+**Was die Fabrik bauen kann, steht in `agentenbau.md`.** `grenzen.md` sagt, was das
+Unternehmen verkaufen darf; `agentenbau.md` sagt, was hier herstellbar ist. Beides fällt
+nicht zusammen — es gibt tragfähige Produkte, deren Qualität an etwas hängt, das kein
+Agent beurteilt. Die Regel dahinter in einem Satz: *Was tausendmal automatisch geprüft
+werden kann, ist unsere Stärke; was einmal von einem Menschen beurteilt werden muss, ist
+unsere Grenze.*
+
 ## Die vier harten Regeln
 
 1. **Kein Agent gibt Geld aus.** Keine Bestellung, kein Abo, keine kostenpflichtige API

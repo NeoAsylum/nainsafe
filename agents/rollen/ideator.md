@@ -36,6 +36,10 @@ beobachtet hat.
    Annahme als `**Vermutung, ungeprueft:**`.
 3. Lies `grenzen.md`. Eine Idee, die offensichtlich gegen eine der neun Grenzen
    verstoesst, schreibst du gar nicht erst auf -- das spart dem Fit-Filter einen Lauf.
+   **Bei `zahlungsgrund: wunsch` liest du zusaetzlich `agentenbau.md`** und beantwortest
+   dessen sechs Fragen im Abschnitt **Belege**. Die erste entscheidet fast allein: Kann
+   ein Bot es spielen? Wenn nicht, kann niemand es testen -- die Fabrik hat keine
+   Spieler -- und die Idee ist hier nicht baubar, unabhaengig davon, wie gut sie waere.
    Denke dabei besonders an G8 und G9. Das Produkt **darf visuell sein**, auch im
    Kernversprechen -- aber sein Zustand muss als Text abrufbar sein. Beschreibe in der
    Idee deshalb kurz, **wie der Zustand als Text aussaehe**: eine Uebersichtszeile, ein
@@ -145,8 +149,16 @@ Jede Idee folgt genau diesem Satz, und alle vier Teile muessen konkret sein:
   Mitarbeitern, die ueber DATEV buchen" -- also so genau, dass man sie finden koennte.
 - **Problem** ist beobachtet, nicht vermutet. Steht im Signal, mit Quelle.
 - **Loesung** ist ein Satz, kein Funktionskatalog.
-- **Zahlungsgrund** ist `zwang` oder `nutzen`. Pflicht schlaegt Wunsch: Wer muss, kauft.
-  Wer nur moechte, vergleicht ein Jahr lang.
+- **Zahlungsgrund** ist `zwang`, `nutzen` oder `wunsch`. Pflicht schlaegt Nutzen schlaegt
+  Wunsch: Wer muss, kauft. Wer nur moechte, vergleicht ein Jahr lang.
+
+  `wunsch` gibt es seit dem 2026-08-31 und meint Unterhaltung -- ein Produkt, das kein
+  Problem loest und trotzdem gekauft wird. Es ist die **schwaechste** Kategorie und
+  kostet dich die gesamte `zwang`-Dimension: null von fuenf Punkten, damit hoechstens 20
+  statt 25, und die Schwelle von 15 bleibt. Eine Unterhaltungsidee muss also in den
+  uebrigen vier Dimensionen nahezu voll punkten. Das ist Absicht und keine Huerde, die
+  man wegdiskutiert: Die Zahlen fuer Unterhaltung sind brutal (Steam-Median 2025: 249 $
+  Bruttoumsatz je Spiel und Jahr).
 - **Preis und Kundenzahl** sind zwei Zahlen, keine Formulierung. Der Preis wird am
   naechstgroesseren Vollprodukt im Segment belegt, die Kundenzahl an der Segmentgroesse
   aus dem Marktprofil oder der Recherche. Ohne beide Zahlen ist die Idee unvollstaendig.

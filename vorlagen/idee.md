@@ -13,7 +13,7 @@ quelle: signals/regulation/2026-01-01-beispiel.md
 segment: Wen genau trifft es? Branche, Größe, Rolle. Nicht "KMU".
 problem: Was tut heute weh? Beobachtbar, nicht vermutet.
 loesung: Was tut das Produkt? Ein Satz, kein Feature-Katalog.
-zahlungsgrund: zwang     # zwang | nutzen — Pflicht schlägt Wunsch
+zahlungsgrund: zwang     # zwang | nutzen | wunsch — siehe grenzen.md, Bewertung
 
 # Die Rechnung. Pflicht seit 2026-08-29, siehe G7. Ohne diese drei Zahlen ist die
 # Idee nicht beurteilbar; der Fit-Filter lehnt sie ab, ohne den Rumpf zu lesen.

@@ -147,6 +147,22 @@ maerkte:
     - Verwalter von Kurzzeitvermietungen (short-term rental managers)
     - Mobile Dienstleister mit Routenplanung (Reinigung, Aufbereitung, Wartung)
 
+    # --- Unterhaltung: Simulation mit auslesbarem Zustand ---
+    # Seit 2026-08-31, auf Wunsch des Betreibers. Die Begruendung ist nicht, dass
+    # Unterhaltung leichter waere -- sie ist es nicht, der Steam-Median lag 2025 bei
+    # 249 $ Jahresumsatz je Spiel. Sie ist, dass hier als einzigem Suchraum kein
+    # Platzhirsch dasselbe Problem schon gratis loest: 40 von 45 roten Recherchen sind
+    # genau daran gestorben, hier gibt es das Kriterium gar nicht.
+    #
+    # Der Zuschnitt ist eng und folgt G8: Simulation und Automation, deren Zustand aus
+    # Zahlen besteht. Nur dort kann die Fabrik ihr eigenes Produkt pruefen -- Balance,
+    # Verlauf, Wirtschaftskreislauf und Loesbarkeit sind messbar, "macht Spass" ist es
+    # nicht. Und es ist das Genre mit dem hoechsten Umsatz je Sichtbarkeit
+    # (Bewertungs-zu-Verkaufs-Verhaeltnis 60-80x gegenueber 40-50x bei Action).
+    - Aufbau- und Wirtschaftssimulationen mit auslesbarem Zustand
+    - Automatisierungs- und Fabrikspiele (factory/automation)
+    - Management- und Betriebssimulationen (Job- und Betriebssimulatoren)
+
     # --- Endkunden und Prosumer ---
     # B2C ist seit 2026-08-29 erlaubt (G7). Der Grund ist nicht der Preis, sondern
     # G3: Endkunden bedienen sich selbst und suchen aktiv — genau der Kanal, an dem

@@ -151,6 +151,48 @@ kostet vier Stunden im Monat, und keiner der fuenf Anbieter deckt sie ab".>
 ## Was unklar ist
 ```
 
+## Wenn dein Segment ein Unterhaltungsgenre ist
+
+Seit dem 2026-08-31 stehen drei Simulationsgenres auf der Liste (`suchraum:
+unterhaltung`). Dort gibt es keine Betriebe und keine Handarbeit; die sieben Fragen
+gelten trotzdem, nur übersetzt:
+
+| Frage | im Unterhaltungsfall |
+|---|---|
+| 1 Größe | Wie viele Käufer hat das Genre? Genre-Umsatzanteil, Zahl der Titel im Jahr, Verkaufszahlen vergleichbarer Titel — mit Quelle, nicht geschätzt. |
+| 2 Zahlungskraft | Preisspanne im Genre und typische Verkaufszahl. Nicht der Ausreißer, der Median. |
+| 3 „Handarbeit" | **Der ungelöste Wunsch.** Was fordern Spieler wiederholt in Rezensionen und Foren, das kein Titel liefert? Das ist hier die Lücke — belegt mit Zitaten und Fundstelle, nicht mit Vermutung. |
+| 4 Was es kostet | Was Spieler heute für den nächstbesten Titel zahlen. |
+| 5 Wer bedient es | Die konkurrierenden Titel, mit Verkaufszahl, Bewertungszahl und Preis. |
+| 6 Kanal | Sichtbarkeit ist hier der ganze Vertrieb: Wunschlisten vor dem Start, Verzeichnisse, Communities, Streamer. **Prüfe, wie viel davon menschliche Arbeit ist** — das ist G3 und G4. |
+| 7 Rechnung | siehe unten, sie ist anders gebaut |
+
+**Die Rechnung ist der Punkt, an dem Unterhaltung sich am stärksten unterscheidet.** Ein
+Spiel wird **einmal** gekauft, kein Abo. 5.000 € Marge im Monat heißen also nicht 900
+zahlende Kunden, sondern **dauerhaft 900 Verkäufe im Monat** — oder ein Modell, das
+wiederkehrt (Erweiterungen, Saison, Betrieb als Dienst). Schreib ausdrücklich hin,
+welches von beidem du unterstellst:
+
+    Preis  ×  Verkäufe je Monat  ×  0,7 (Plattformanteil)  =  Monatsumsatz
+
+Der Plattformanteil gehört in die Rechnung: Steam nimmt 30 Prozent. Und rechne mit dem
+**Median des Genres**, nicht mit dem bekannten Titel — der Median aller Steam-Spiele lag
+2025 bei 249 $ Bruttoumsatz **im Jahr**, und 5.000 € im Monat liegen dort etwa im 95.
+Perzentil. Eine Genre-Zahl, die deutlich besser aussieht, ist fast immer nach Erfolg
+gefiltert („Titel mit mindestens 100 Bewertungen") — schreib die Bedingung dazu, sonst
+ist die Zahl wertlos.
+
+Zwei Dinge prüfst du zusätzlich, weil sie über die Bearbeitbarkeit entscheiden — die
+ausführliche Fassung steht in `agentenbau.md`, lies sie vor einem Unterhaltungsprofil:
+
+- **Ist der Zustand auslesbar?** (G8) Bei Simulation und Automation ja, von Bauart wegen
+  — der Zustand *ist* eine Zahlentabelle. Bei allem, dessen Reiz an Grafik, Animation
+  oder Bediengefühl hängt, nein. Das entscheidet, ob diese Fabrik das Produkt überhaupt
+  prüfen könnte.
+- **Wie viel Gestaltung braucht es je Monat?** Ein Genre, das laufend neue Inhalte
+  verlangt, reißt G4 — es sei denn, die Inhalte entstehen aus Regeln statt aus
+  Handarbeit.
+
 ## Das Potenzial
 
 - `hoch` — belegte Handarbeit mit belegten Kosten, kein zugeschnittener Anbieter,
