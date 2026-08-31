@@ -90,6 +90,21 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   ueber genau die geaenderte Preismechanik".** Hier hiess der gefundene Artikel woertlich
   „Alternatives Without Per-Pool Pricing" — der Wettbewerber hatte die Idee schon als
   Ueberschrift. Suchmuster: `<Anbieter> alternatives without <geaenderte Preiseinheit>`.
+- 2026-08-31 — **Zweite Kurzabsage, eine Suche plus ein Abruf: Suchmuster
+  `<Anbieter> alternatives cheap <Kategorie> software small <Einheit> pricing per month`
+  liefert Wettbewerberliste, Einstiegspreise und Gratisanbieter in einem Zug.** Beim
+  6Storage-Lauf standen danach 30–45 USD/Monat Einstieg und ein gratis Anbieter
+  (Innago, refinanziert ueber Mietertransaktionen) fest; der Abruf auf
+  `softwareadvice.com/<kategorie>/` gab die Besetzungszahl (36 gelistet, 58 im
+  Einleitungstext). **Achtung: Die Zahl auf der Software-Advice-Seite ist nicht
+  eindeutig** — Listenkopf und Fliesstext nannten verschiedene Werte; beide notieren.
+- 2026-08-31 — **Bei Preiserhoehungssignalen pruefen, ob der erhoehende Anbieter die
+  Vergleichsseite selbst betreibt.** 6Storage veroeffentlicht „Which Self Storage
+  Software Has the Best Prices" — die naheliegendste Produktidee des Signals gehoert
+  damit dem Ausloeser. Ergaenzt die Regel vom selben Tag (vermarktet sich eine
+  Alternative ueber die geaenderte Preismechanik?) um die Umkehrung: **vermarktet sich
+  der Ausloeser selbst darueber?** Ein Abruf auf die Anbieterdomain mit `pricing
+  comparison`.
 - 2026-08-31 — **Vor jedem Lauf `ls research/ | grep <Thema>`.** Zum Poolservice lag
   bereits eine volle Recherche (DACH, `gelb`). Sie hat den Lauf nicht ersetzt — anderer
   Zielmarkt —, aber sie hat mich vor dem Wiederholen der Segmentfragen bewahrt und
@@ -115,6 +130,14 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   Bonitaetsnachweis, ist er keine Softwareaufgabe.** Solche Voraussetzungen filtern das
   Segment zugleich auf Grossorganisationen herunter, die Kanzleien mandatieren. Zwei Zeilen im
   Gesetzestext ersetzen die Segmentrecherche.
+- 2026-08-31 — **Nennt ein Pflichtsignal als Betroffene „alle Arbeitgeber, unabhaengig von
+  Branche und Groesse", ist das kein grosses Segment, sondern eine besetzte
+  Softwarekategorie.** Bei § 8 BVV lieferte eine Suche acht deutsche Anbieter, die den
+  Stichtag 2027 selbst als Werbeaufhaenger fuehren — darunter die Lohn- und HR-Systeme,
+  in denen die Unterlagen ohnehin entstehen. **Die toedliche Vorpruefungsfrage bei
+  Pflichtsignalen ohne Branchenzuschnitt lautet: Erfuellt das System, in dem das Dokument
+  entsteht, die Pflicht selbst?** Suchmuster, das sie in einem Zug beantwortet:
+  `<Paragraf> <Stichtag> Pflicht <die zwei Marktfuehrer der betroffenen Software>`.
 - 2026-08-31 — **Eine zweite Recherche zum selben Gesetz ist billig, wenn die erste gelesen
   wird.** Der LUCID-Lauf vom 2026-08-28 hatte die zehn dualen Systeme samt Preisen schon
   tabelliert; fuer das B2B-Pendant war nur zu pruefen, ob dieselben Akteure es besetzen. Drei
