@@ -10,6 +10,7 @@ Dokumenten:
   1. datenkurator        allein und zuerst -- er beantwortet eine binaere Sperrfrage
   2. spielentwerfer      braucht zu wissen, welche Daten es ueberhaupt gibt
   3. architekt           braucht den Entwurf
+  4. entwurf-pruefer     prueft beide, blind fuer ihre Begruendungen
 
 Stufe 1 laeuft ausdruecklich allein: Faellt die Lizenzfrage negativ aus, ist jede
 weitere Konzeptionsarbeit verschwendet.
@@ -36,6 +37,10 @@ STUFEN: list[tuple[str, list[str]]] = [
     ("Daten", ["datenkurator"]),
     ("Entwurf", ["spielentwerfer"]),
     ("Technik", ["architekt"]),
+    # Der Entwurf wird geprueft wie jedes Bauwerk -- und zwar hier, weil ein Fehler im
+    # Entwurf sich in jedem Paket danach vervielfaeltigt. Teuerster Fund, billigste
+    # Pruefung.
+    ("Review", ["entwurf-pruefer"]),
     # Oekonom, Vertriebsplaner, Compliance-Pruefer, Urlaubstester, Antrags-Vorbereiter
     # und Konzept-Judge liegen seit dem 2026-08-31 unter agents/rollen/archiv/. Der
     # Betreiber hat entschieden: gebaut wird, die wirtschaftliche Betrachtung tritt in

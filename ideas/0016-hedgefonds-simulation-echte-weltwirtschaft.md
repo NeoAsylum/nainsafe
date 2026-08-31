@@ -1,10 +1,10 @@
 ---
 id: 0016-hedgefonds-simulation-echte-weltwirtschaft
 titel: Hedgefonds-Simulation auf echten Weltwirtschaftsdaten, mit nachvollziehbarer Wirkungskette
-status: entwurf
+status: erkundung
 erstellt: 2026-08-31
 geaendert: 2026-08-31
-rolle: ideator
+rolle: mensch (Gate 1)
 
 quelle: signals/maerkte/2026-08-31-volkswirtschafts-und-politiksimulation.md
 

@@ -27,7 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import repo  # noqa: E402
-from lauf import db, jetzt, lauf  # noqa: E402
+from lauf import WURZEL, db, jetzt, lauf  # noqa: E402
 
 # Fünf Sensoren, nicht einer. Der erste echte Lauf hat gezeigt, warum: Mit dem
 # Regel-Scout als einziger Quelle stammen alle Ideen aus gesetzlichen Pflichten, und
@@ -171,9 +171,21 @@ def fokuslauf(trocken: bool) -> int:
         print("  (Status vorher auf `erkundung` setzen -- das ist Gate 1.)")
         return 0
 
-    print("  Die Bewertung ist abgeschlossen. Weiter geht es nicht naechtlich,")
-    print(f"  sondern auf Zuruf:  python3 agents/konzeptlauf.py {FOKUS}")
-    return 0
+    # Ab `erkundung` uebernimmt der Bau -- und zwar naechtlich, ohne Zuruf. Das ist der
+    # Punkt, an dem die Fabrik wieder von allein laeuft: Der Projektmanager zerlegt, die
+    # Bauagenten arbeiten ihre Pakete ab, die Pruefer nehmen ab, der Geschaeftsfuehrer
+    # berichtet. Der Betreiber liest morgens ops/plan.md.
+    technik = WURZEL / "specs" / FOKUS / "technik.md"
+    if not technik.exists():
+        print("  Der Entwurf fehlt noch -- ohne technik.md hat der Projektmanager")
+        print("  nichts zu zerlegen. Erst:")
+        print(f"    python3 agents/konzeptlauf.py {FOKUS} --ab 2")
+        return 0
+
+    import baulauf  # spaet importiert: baulauf importiert phase aus diesem Modul
+    (WURZEL / "ventures" / FOKUS).mkdir(parents=True, exist_ok=True)
+    print(f"  Entwurf liegt vor. Der Nachtlauf baut.")
+    return baulauf.main(FOKUS, trocken)
 
 
 def main(trocken: bool = False) -> int:
