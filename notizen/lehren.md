@@ -214,3 +214,21 @@ was erlaubt ist.
   `grenzen.md` aendert, prueft sie gegen diese beiden Faelle, bevor er sie fuer richtig
   haelt. Eine Regel, die 9001 toetet, ist zu scharf; eine, die 9002 durchlaesst, ist zu
   weich.
+
+- **2026-08-31** — **G4 hat vier Wochen lang Arbeit bestraft statt Arbeitszeit, und G9,
+  an dem nie eine Idee gestorben ist, war gar nicht die Ursache.** Die Prueffrage lautete
+  „skaliert der Aufwand mit der Kundenzahl" und fragte nicht, **wer** ihn traegt. Drei
+  Betriebslinsen-Urteile beschreiben deshalb Arbeit, die ein taeglich laufender Agent
+  erledigen kann: Feldzuordnung je Kunde (0004), Auslegungsregeln je Betrieb (0005),
+  41 Zustaendigkeiten und 38 Landesformulare nachfuehren (0012). *Folgerung fuer alle:*
+  G4 fragt seit heute **„Was davon muss ein Mensch tun, und warum?"** (ADR 0007). G9
+  schliesst nur noch aus, was Verantwortung, Anwesenheit oder Fuehrung braucht.
+
+  **Und die Gegenrechnung gehoert immer dazu**, sonst ist es keine Regel: Was aus G4
+  herausfaellt, taucht in **G7** als Stueckkosten wieder auf (grob 1,50 bis 4,50 EUR je
+  Kunde und Monat fuer eine schmale taegliche Aufgabe -- bei einem 12-EUR-Produkt ein
+  Drittel des Preises) und in **G6** als Haftung, wo der Agent unbeaufsichtigt im Prozess
+  des Kunden handelt. Rueckwirkend lebt genau **eine** von fuenfzehn Ideen wieder auf
+  (0004, und nur zur Haelfte); zwei werden durch die Lockerung sogar **haerter**
+  abgelehnt, weil ihre Arbeit genau die unbeaufsichtigte Sorte ist (0005 Lohnzeile, 0003
+  Fristueberwachung). Eine Lockerung, die nur lockert, waere falsch gewesen.

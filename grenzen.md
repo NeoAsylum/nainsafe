@@ -63,14 +63,40 @@ Ein Agent kann kein Gespräch führen. Jede Idee, deren Wertversprechen an einem
 zur Verfügung hängt, verletzt das Zeitbudget — unabhängig davon, wie gut sie sonst ist.
 Das schließt Beratung, Agenturleistung und Individualentwicklung praktisch vollständig aus.
 
-## G4 — Betriebsaufwand über zwei Stunden pro Woche
+## G4 — Mehr als zwei Stunden **des Betreibers** pro Woche
 
 Ausgeschlossen ist alles, dessen laufender Betrieb im eingeschwungenen Zustand mehr als
-zwei Stunden pro Woche kostet. Manuelle Freigaben, händische Datenpflege, wachsender
-Supportaufwand pro Kunde.
+zwei Stunden **menschliche** Arbeit pro Woche kostet.
 
-Prüffrage: *Was passiert bei 100 Kunden statt 10?* Skaliert der Aufwand mit der Kundenzahl,
-ist es abgelehnt.
+**Seit dem 2026-08-31 zählt nicht die Arbeit, sondern wer sie tut.** Bis dahin las sich
+diese Grenze so, als wäre wiederkehrende Arbeit an sich das Problem — und die
+Betriebslinse hat entsprechend geurteilt: „die Auslegungsregeln sind je Betrieb
+verschieden und ändern sich laufend, womit der Aufwand mit der Kundenzahl wächst" (0005),
+„kundenspezifische Feldzuordnung ist nicht ein Anlaufproblem, sondern der Kern des
+Produkts" (0004). Beides beschreibt Arbeit, die **ein Agent täglich erledigen kann**.
+
+Die Prüffrage lautet deshalb nicht mehr *„Was passiert bei 100 Kunden statt 10?"*,
+sondern:
+
+> **Was davon muss ein Mensch tun, und warum?**
+
+Drei Sorten Arbeit, drei verschiedene Antworten:
+
+| Sorte | Beispiel | wohin sie gehört |
+|---|---|---|
+| **Agentenarbeit** | Feldzuordnung je Kunde herleiten, Formularstände nachführen, Auffälligkeiten sichten, Supportantworten entwerfen, Datenfehler beheben | erlaubt — aber sie kostet Geld, siehe **G7** |
+| **Menschenarbeit** | Freigaben mit Rechtsfolge, Vertragsverhandlung, alles mit einem Namen darunter, Streitfälle mit Geldfolge | zählt gegen die zwei Stunden |
+| **Verlagerte Arbeit** | ein Agent handelt unbeaufsichtigt im Prozess des Kunden | zählt gegen **G6** — der Aufwand ist nicht weg, er ist zu Haftung geworden |
+
+Die dritte Zeile ist die wichtige. Ein Agent, der eine Lohnzeile falsch überträgt oder
+eine Frist falsch berechnet, verursacht denselben Schaden wie ein Mensch — nur schneller
+und öfter. Wer G4 über Agenten löst, hat die Grenze nicht überwunden, sondern die Frage
+nach G6 verschoben. Beide Grenzen müssen einzeln halten.
+
+**Was unverändert bleibt:** Ein Einrichtungstermin je Kunde, eine Rückfrage, die nur der
+Betreiber beantworten kann, ein Vertrauensbeweis, den niemand delegieren kann — das
+bleibt menschliche Zeit und zählt voll. Ein Agent nimmt Arbeit ab, keine Verantwortung
+und keine Anwesenheit.
 
 ## G5 — Erlaubnispflicht
 
@@ -91,6 +117,17 @@ Sicherheitsfreigaben, Medizin, alles mit Personenschaden.
 
 Faustregel: Wenn eine Berufshaftpflicht für diese Tätigkeit nötig oder teuer wäre,
 ist die Idee zu groß für ein Nebengewerbe.
+
+**Seit dem 2026-08-31 gibt es einen zweiten Weg hierher.** G4 und G9 erlauben jetzt, die
+laufende Arbeit von einem Agenten tun zu lassen. Wo dieser Agent **unbeaufsichtigt im
+Prozess des Kunden handelt** — eine Zuordnung ändert, eine Meldung absetzt, eine Zeile
+überträgt —, ist der Aufwand nicht verschwunden, sondern in Haftung umgewandelt: Ein
+Fehler geschieht dann schneller, öfter und ohne dass jemand hinsieht.
+
+Prüffrage: *Was kostet der zehnte falsche Vorgang, bevor jemand ihn bemerkt?* Fällt die
+Antwort größer aus als der Jahresumsatz mit diesem Kunden, greift G6 — auch wenn G4
+sauber eingehalten ist. Der Ausweg ist nicht mehr Aufsicht, denn Aufsicht ist wieder
+menschliche Zeit; der Ausweg ist ein Produkt, dessen schlimmster Einzelfehler klein ist.
 
 ## G7 — Erreicht keine 5.000 € Marge im Monat
 
@@ -154,6 +191,35 @@ Zwei Bedingungen hängen daran, beide hart:
 - **Ein Kanal muss mehrere Branchen zugleich erreichen.** Fünf Branchenverbände sind
   kein Kanal, sondern fünf Vertriebsprobleme — und dann ist die Vereinigung zwar
   richtig gerechnet, aber nicht erreichbar.
+
+### Agentenkosten je Kunde
+
+Seit dem 2026-08-31 darf ein Agent die laufende Arbeit tun (G4, G9). Das verschiebt
+Aufwand aus den zwei Stunden des Betreibers in die **variablen Kosten** — und Marge
+heißt: was nach den laufenden Kosten übrig bleibt.
+
+Wer Agentenarbeit im Betrieb vorsieht, rechnet sie aus:
+
+    Läufe je Kunde und Monat  ×  Tokens je Lauf  ×  API-Preis  =  Stückkosten
+
+Anhaltspunkt aus dem eigenen Betrieb: Ein kleiner Verdichtungslauf dieser Fabrik liegt
+bei rund 0,6 Mio. Tokens, ein schwerer Rechercheurlauf bei rund 4 Mio. Eine schmale
+Aufgabe je Kunde und Tag — eine Zuordnung prüfen, eine Auffälligkeit sichten — liegt
+eine Größenordnung darunter, also rund 60.000 Tokens; täglich sind das etwa 1,8 Mio. im
+Monat. Was das kostet, hängt am Modell und am Cache-Anteil und schwankt zwischen **unter
+einem Euro und rund sechs Euro je Kunde und Monat**.
+
+Diese Spanne ist ein Anhaltspunkt, keine Zahl zum Abschreiben: **Rechne sie für deine
+Idee neu**, mit der tatsächlichen Aufgabengröße und dem Modell, das sie braucht. Das
+Ergebnis entscheidet oft die Idee.
+
+Bei einem Produkt für 12 € kann das die halbe Marge sein, bei einem für 150 € ist es ein
+Rundungsfehler. **Je billiger das Produkt, desto weniger Agentenarbeit trägt
+es** — und die billigen Produkte sind gerade die in den großen Segmenten. Wer beides
+zugleich will, muss es vorrechnen.
+
+Das Abo des Betreibers zählt hier **nicht**. Es deckt die Fabrik, nicht die Kundenlast;
+Kundenlast läuft über API-Preise, und die sind echte Ausgaben.
 
 Gerechnet wird zusätzlich **nach Steuern**, wenn es um deinen Ertrag geht: Der Gewinn
 stapelt sich auf das Hauptgehalt und wird mit dem Grenzsteuersatz belastet. Aus 5.000 €
@@ -224,10 +290,29 @@ Animation oder Bedienungsgefühl hängt.
 
 ## G9 — Braucht Personal
 
-Ausgeschlossen ist alles, was ohne angestellte oder beauftragte Menschen nicht läuft:
-Redaktion, Support-Schicht, Vertriebsteam, Handwerker vor Ort, Übersetzer, Moderatoren.
-Auch Freelancer und Agenturen zählen dazu — der Betreiber will keine Personalführung,
-und Personalführung fängt beim ersten Auftrag an.
+Ausgeschlossen ist alles, was ohne angestellte oder beauftragte **Menschen** nicht läuft:
+Vertriebsteam, Handwerker vor Ort, eine Schicht, die besetzt sein muss. Auch Freelancer
+und Agenturen zählen dazu — der Betreiber will keine Personalführung, und Personalführung
+fängt beim ersten Auftrag an.
+
+**Nicht mehr ausgeschlossen, seit dem 2026-08-31: Arbeit, die ein Agent täglich tun
+kann.** Redaktion, Übersetzung, Moderation, Supportentwürfe, Datenpflege und Einrichtung
+je Kunde standen bis dahin in dieser Liste, weil unausgesprochen angenommen wurde, dass
+sie einen Menschen brauchen. Das stimmt nicht mehr. Ein täglich laufender Agent ist kein
+Personal: Er wird nicht geführt, nicht bezahlt, nicht krank und nicht gekündigt.
+
+Die Grenze verläuft jetzt an drei Stellen, und alle drei bleiben scharf:
+
+- **Verantwortung.** Wo ein Name unter dem Ergebnis stehen muss — eine Freigabe, ein
+  Gutachten, eine Unterschrift —, braucht es einen Menschen. Ein Agent kann sie
+  vorbereiten, nicht geben.
+- **Anwesenheit.** Wer vor Ort sein oder ans Telefon gehen muss, ist Personal. Das ist
+  ohnehin schon G3.
+- **Führung.** Sobald jemand eingewiesen, kontrolliert und bezahlt werden muss, ist es
+  Personalführung — unabhängig von der Vertragsform.
+
+Und die Gegenrechnung gehört dazu: **Agentenarbeit ist gratis in Stunden und teuer in
+Tokens.** Was hier hereinkommt, muss in G7 wieder heraus.
 
 **Was ausdrücklich erlaubt ist:** eine Plattform, auf der *andere* Menschen einander
 beauftragen. Der Betreiber stellt dann niemanden ein; er stellt den Marktplatz. Solange

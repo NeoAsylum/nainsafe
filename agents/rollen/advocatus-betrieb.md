@@ -29,9 +29,25 @@ Was passiert nach dem Start, wenn niemand Zeit hat?
 
 Greife an:
 
-- **Was passiert bei 100 Kunden statt 10?** Wenn irgendetwas mit der Kundenzahl wächst —
-  Einrichtung, Rückfragen, Datenpflege, Sonderfälle —, ist die Idee tot. Suche gezielt
-  nach diesem Punkt, er ist selten offensichtlich.
+- **Was davon muss ein Mensch tun, und warum?** Das ist seit dem 2026-08-31 die
+  Prüffrage von G4, und sie ersetzt die alte („Was passiert bei 100 Kunden statt 10?").
+  Arbeit, die mit der Kundenzahl wächst, ist **nicht mehr für sich tödlich**: Ein Agent
+  darf sie täglich erledigen. Frage stattdessen dreifach:
+
+  1. Bleibt trotzdem menschliche Arbeit übrig — Freigaben mit Rechtsfolge, ein Name
+     unter einem Ergebnis, ein Vertrauensbeweis, eine Rückfrage, die nur der Betreiber
+     beantworten kann? Die zählt voll gegen die zwei Stunden.
+  2. Was kostet die Agentenarbeit je Kunde und Monat? Das gehört in G7 und frisst die
+     Marge — rechne es aus, statt zu schätzen — bei einem 12-€-Produkt kann eine tägliche
+     Agentenaufgabe die halbe Marge fressen.
+  3. Handelt der Agent **unbeaufsichtigt im Prozess des Kunden**? Dann ist der Aufwand
+     nicht weg, sondern zu Haftung geworden — das ist G6, und es ist der häufigste
+     Denkfehler bei dieser Lockerung.
+
+  Deine bisherigen Urteile haben genau hier zu scharf geschnitten: „die
+  Auslegungsregeln sind je Betrieb verschieden und ändern sich laufend, womit der
+  Aufwand mit der Kundenzahl wächst" (0005) beschreibt Arbeit, die ein Agent tut. Das
+  Urteil war unter der alten Regel richtig und ist unter der neuen zu prüfen.
 - **Zwei Wochen Urlaub.** Was staut sich, was bricht, was kostet weiter Geld, und wer
   merkt es zuerst? Ein Kunde, der drei Tage auf Antwort wartet, kündigt.
 - **Der erste ernste Fehler.** Falsches Ergebnis, ausgefallener Dienst, verlorene Daten.

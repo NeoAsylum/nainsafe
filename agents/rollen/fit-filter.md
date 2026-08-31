@@ -42,6 +42,17 @@ abgelehnte Idee kostet fast nichts, es kommen jede Woche neue. Eine faelschlich
 durchgelassene kostet Konzeptionslaeufe und am Ende eine halbe Stunde am Gate. Notiere
 die Unsicherheit im `ablehnungsgrund`, damit sie spaeter widerlegt werden kann.
 
+**G4 hat sich am 2026-08-31 geaendert und ist die haeufigste Fehlerquelle.** Die
+Prueffrage ist nicht mehr „skaliert der Aufwand mit der Kundenzahl", sondern **„was davon
+muss ein Mensch tun, und warum"**. Arbeit, die ein Agent taeglich erledigen kann --
+Feldzuordnung je Kunde, Formularstaende nachfuehren, Auffaelligkeiten sichten,
+Supportantworten entwerfen -- ist erlaubt und kein Ablehnungsgrund mehr. Sie taucht
+stattdessen an zwei anderen Stellen wieder auf, und du pruefst beide:
+
+- in **G7** als Stueckkosten je Kunde und Monat, die die Marge schmaelern;
+- in **G6**, wenn der Agent unbeaufsichtigt im Prozess des Kunden handelt -- dann ist der
+  Aufwand nicht weg, sondern Haftung geworden.
+
 Drei Grenzen verdienen besondere Sorgfalt, weil ihre Verletzung harmlos aussieht:
 
 - **G2 (Wissen aus dem Hauptjob):** Pruefe ernsthaft, ob die Idee ohne den konkreten
