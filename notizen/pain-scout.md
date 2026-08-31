@@ -127,3 +127,19 @@ niemand mehr, auch du nicht.
   spg-direkt.de/jverein-forum.de sind Software-Support-Foren (analog lex-forum.net),
   liefern aber eher Bedienungsfragen als echte "das nervt"-Klagen -- fuer neue Themen
   geeignet, nicht fuer Spendenbescheinigungen.
+- 2026-08-31 — Faehrte abgehakt, kein Treffer: woodcnc.de/forum "Werkzeugverwaltung in
+  Excel" per WebSearch-Snippet gefunden (Diamantwerkzeuge/Saegeblaetter-Tracking), aber
+  WebFetch weiterhin 401 -- auch cncarena.com/de.industryarena.com (Schwesterforum,
+  gleiches Thema) per WebFetch 403. Ohne Volltext kein zitierfaehiger Beleg; Thema zudem
+  vermutlich besetzt (COSCOM ToolDIRECTOR, model2parts als dedizierte Werkzeugverwaltung
+  fuer CNC). Nicht weiter verfolgen ohne neuen Fetch-Weg.
+- 2026-08-31 — Leerer Lauf, zusaetzlich zu obigem: Schulungs-/Unterweisungsnachweis
+  Mitarbeiter (Markt bereits mit "Nachweispflichten Software" wie optikronix besetzt),
+  Terminausfall/Warteliste-Nachbesetzung in Praxen (dicht: betterwait.app, flurin.app,
+  meetergo.com als dedizierte Anbieter), Nachkalkulation/Auftragskalkulation und
+  Reklamationsliste/Retouren auf herber.de (nur alte generische Excel-Formel-Hilfe-Threads,
+  keine Unternehmens-Klage), Mängelliste/Bautagebuch Bau (dicht: myxbuild, bautagebuch.org,
+  coman-software als Vendoren), STR-Cleaning-Turnover-Koordination (dicht: TurnoverBnB,
+  Breezeway-artige Anbieter), Arborist-Baumbestand/ISA-Reports (dicht: ArboStar, PlanIT
+  Geo, ArborPlus, SingleOps) -- durchgehend entweder generische Excel-Hilfe ohne
+  Geschaeftskontext oder bereits mehrfach besetzter Software-Markt.
