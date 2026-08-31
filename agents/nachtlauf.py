@@ -27,7 +27,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import repo  # noqa: E402
-from lauf import WURZEL, db, jetzt, lauf  # noqa: E402
+from lauf import WURZEL, db, frontmatter, jetzt, lauf  # noqa: E402
 
 # Fünf Sensoren, nicht einer. Der erste echte Lauf hat gezeigt, warum: Mit dem
 # Regel-Scout als einziger Quelle stammen alle Ideen aus gesetzlichen Pflichten, und
@@ -182,9 +182,25 @@ def fokuslauf(trocken: bool) -> int:
         print(f"    python3 agents/konzeptlauf.py {FOKUS} --ab 2")
         return 0
 
+    # Aus einem zurueckgewiesenen Entwurf zu bauen waere der teuerste Fehler der ganzen
+    # Kette: Der Fehler vervielfaeltigt sich in jedes Arbeitspaket, und die Pruefer
+    # finden ihn dann einzeln wieder. Also erst der Entwurf, dann der Bau.
+    befunde = sorted((WURZEL / "ventures" / FOKUS / "befunde").glob("pruefung-entwurf*.md"))
+    urteil = None
+    if befunde:
+        kopf, _ = frontmatter(befunde[-1].read_text(encoding="utf-8"))
+        urteil = kopf.get("urteil")
+
+    if urteil != "geprueft":
+        stand = urteil or "noch nicht geprueft"
+        print(f"  Der Entwurf steht auf `{stand}` -- es wird nicht gebaut.")
+        print("  Der Nachtlauf dreht stattdessen eine Entwurfsrunde:")
+        import konzeptlauf
+        return konzeptlauf.main(FOKUS, trocken, ab=2)
+
     import baulauf  # spaet importiert: baulauf importiert phase aus diesem Modul
     (WURZEL / "ventures" / FOKUS).mkdir(parents=True, exist_ok=True)
-    print(f"  Entwurf liegt vor. Der Nachtlauf baut.")
+    print("  Entwurf abgenommen. Der Nachtlauf baut.")
     return baulauf.main(FOKUS, trocken)
 
 
