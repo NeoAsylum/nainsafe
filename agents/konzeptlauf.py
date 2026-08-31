@@ -4,21 +4,21 @@
     python3 agents/konzeptlauf.py <idee-id> [--trocken] [--ab <stufe>]
 
 Die Phase beginnt, wenn der Betreiber eine Idee an Gate 1 auf `erkundung` gesetzt hat,
-und endet mit einer Gate-2-Vorlage. Ihr Ergebnis ist ein Ordner `specs/<idee-id>/` mit
-acht Dokumenten, aus denen der Konzept-Judge eine Seite fuer den Betreiber macht.
-
-Die Reihenfolge ist keine Geschmacksfrage, sondern eine Abhaengigkeitskette:
+und liefert den Entwurf, aus dem gebaut wird. Ergebnis ist `specs/<idee-id>/` mit drei
+Dokumenten:
 
   1. datenkurator        allein und zuerst -- er beantwortet eine binaere Sperrfrage
   2. spielentwerfer      braucht zu wissen, welche Daten es ueberhaupt gibt
   3. architekt           braucht den Entwurf
-  4. oekonom, vertriebsplaner, compliance-pruefer, urlaubstester   parallel
-  5. antrags-vorbereiter braucht die Stundenzahl aus ausfall.md
-  6. konzept-judge       braucht alles
 
 Stufe 1 laeuft ausdruecklich allein: Faellt die Lizenzfrage negativ aus, ist jede
-weitere Konzeptionsarbeit verschwendet, und das kostet dann rund fuenf Dollar statt
-fuenfzig.
+weitere Konzeptionsarbeit verschwendet.
+
+Die wirtschaftliche und rechtliche Pruefung -- Oekonom, Vertriebsplaner,
+Compliance-Pruefer, Urlaubstester, Antrags-Vorbereiter, Konzept-Judge -- lag hier bis
+zum 2026-08-31 als Stufen 4 bis 6. Der Betreiber hat sie in den Hintergrund gestellt;
+die Rollendateien liegen unter `agents/rollen/archiv/`. Danach uebernimmt
+`agents/baulauf.py`.
 """
 
 from __future__ import annotations
@@ -36,9 +36,10 @@ STUFEN: list[tuple[str, list[str]]] = [
     ("Daten", ["datenkurator"]),
     ("Entwurf", ["spielentwerfer"]),
     ("Technik", ["architekt"]),
-    ("Pruefung", ["oekonom", "vertriebsplaner", "compliance-pruefer", "urlaubstester"]),
-    ("Antrag", ["antrags-vorbereiter"]),
-    ("Gate 2", ["konzept-judge"]),
+    # Oekonom, Vertriebsplaner, Compliance-Pruefer, Urlaubstester, Antrags-Vorbereiter
+    # und Konzept-Judge liegen seit dem 2026-08-31 unter agents/rollen/archiv/. Der
+    # Betreiber hat entschieden: gebaut wird, die wirtschaftliche Betrachtung tritt in
+    # den Hintergrund. Die Dateien bleiben -- zurueckholen heisst zurueckschieben.
 ]
 
 # Was am Ende dastehen soll. Fehlt etwas, sagt der Lauf es -- der Judge liest sonst
@@ -47,11 +48,6 @@ ERWARTET = {
     "datenkurator": "daten.md",
     "spielentwerfer": "spiel.md",
     "architekt": "technik.md",
-    "oekonom": "rechnung.md",
-    "vertriebsplaner": "vertrieb.md",
-    "compliance-pruefer": "pflichten.md",
-    "urlaubstester": "ausfall.md",
-    "antrags-vorbereiter": "antrag.md",
 }
 
 

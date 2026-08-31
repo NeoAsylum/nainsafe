@@ -72,7 +72,11 @@ PROZESS_MAX = 2
 
 # Nach den Sensoren, vor dem Ideator: Der Rechercheur gräbt jedes neue Signal aus,
 # damit die Ideen auf Zahlen stehen statt auf Vermutungen. Er läuft je Signal einmal.
-VERDICHTUNG = ["ideator", "fit-filter"]
+# Der Fit-Filter liegt seit dem 2026-08-31 im Archiv -- die Fabrik bewertet keine neuen
+# Ideen mehr, sie baut eine. Er bleibt hier auskommentiert stehen statt geloescht:
+# Wer die Suche ueber FOKUS = None wieder aufnimmt, braucht ihn zurueck.
+#     VERDICHTUNG = ["ideator", "fit-filter"]
+VERDICHTUNG = ["ideator"]
 
 KETTE = SENSOREN + VERDICHTUNG
 
@@ -161,25 +165,11 @@ def fokuslauf(trocken: bool) -> int:
     print(f"[{jetzt()}] Fokus auf {FOKUS} -- Status `{st}`. Die Suche ruht.")
 
     if st in ("entwurf", "kandidat"):
-        offen = [(i, l) for i, l in repo.offene_angriffe(99) if i == FOKUS]
-        anwalt = [i for i in repo.offene_anwaelte(99) if i == FOKUS]
-        if trocken:
-            print(f"    Fit-Filter   {1 if st == 'entwurf' else 0} Lauf")
-            print(f"    Angriffe     {len(offen)} Laeufe")
-            print(f"    Verteidigung {len(anwalt)} Laeufe")
-            return 0
-        fehler = 0
-        if st == "entwurf":
-            fehler += lauf("fit-filter") != 0
-            offen = [(i, l) for i, l in repo.offene_angriffe(99) if i == FOKUS]
-        if offen:
-            fehler += phase("Angriffe",
-                            [(f"advocatus-{l}", i) for i, l in offen])
-        anwalt = [i for i in repo.offene_anwaelte(99) if i == FOKUS]
-        if anwalt:
-            fehler += phase("Verteidigung", [("anwalt", i) for i in anwalt])
-        print(f"[{jetzt()}] Fokuslauf beendet, {fehler} Fehler.")
-        return 0 if fehler == 0 else 1
+        print("  Die Bewertungskette ist seit dem 2026-08-31 archiviert -- der")
+        print("  Betreiber hat entschieden, dass gebaut statt bewertet wird.")
+        print(f"  Weiter mit:  python3 agents/konzeptlauf.py {FOKUS} --ab 2")
+        print("  (Status vorher auf `erkundung` setzen -- das ist Gate 1.)")
+        return 0
 
     print("  Die Bewertung ist abgeschlossen. Weiter geht es nicht naechtlich,")
     print(f"  sondern auf Zuruf:  python3 agents/konzeptlauf.py {FOKUS}")

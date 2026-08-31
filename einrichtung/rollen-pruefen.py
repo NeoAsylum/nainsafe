@@ -85,13 +85,21 @@ def main() -> int:
     import nachtlauf  # noqa: E402
     import wochenlauf  # noqa: E402
     verkettet = set(nachtlauf.SENSOREN) | set(nachtlauf.VERDICHTUNG) | set(wochenlauf.KETTE)
-    verkettet |= {"markt-analyst", "prozess-analyst", "rechercheur", "anwalt"}
-    verkettet |= {f"advocatus-{l}" for l in __import__("repo").LINSEN}
+    verkettet |= {"markt-analyst", "prozess-analyst", "rechercheur"}
+    # Fit-Filter, die fuenf Linsen und der Anwalt liegen seit dem 2026-08-31 unter
+    # agents/rollen/archiv/ -- sie werden nicht mehr gerufen und deshalb hier nicht
+    # mehr verlangt. Wer sie zurueckholt, schiebt sie zurueck und nimmt diese Zeile
+    # wieder heraus.
     # Die Konzeptionsphase, seit 2026-08-31. Sie laeuft nicht naechtlich, sondern auf
     # Zuruf nach Gate 1 -- deshalb steht sie in konzeptlauf.py und nicht im Nachtlauf.
     import konzeptlauf  # noqa: E402
     for _, stufenrollen in konzeptlauf.STUFEN:
         verkettet |= set(stufenrollen)
+    # Die Bauphase, seit 2026-08-31. Sie faehrt Arbeitspakete, nicht Rollen -- die
+    # Rollenmenge steht deshalb im Runner und nicht in einer Kette.
+    import baulauf  # noqa: E402
+    verkettet |= baulauf.BAUROLLEN | baulauf.PRUEFROLLEN
+    verkettet |= {"projektmanager", "geschaeftsfuehrer", "spielentwerfer", "datenkurator"}
     vorhanden = {d.stem for d in rollen}
     for r in sorted(verkettet - vorhanden):
         befunde.append(f"KETTE: ruft `{r}` auf, aber agents/rollen/{r}.md fehlt")
