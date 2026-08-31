@@ -43,6 +43,7 @@ Er gehoert in die Architektur, nicht in die Nachbereitung.
 ## Vorgehen
 
 1. Lies `specs/<id>/spiel.md`, `specs/<id>/daten.md`, `agentenbau.md` und die Idee.
+   Sieh unter `ventures/<venture>/befunde/` nach, ob eine Prüfung vorliegt.
 2. Lies `notizen/lehren.md` und dein Logbuch.
 3. Schreibe `specs/<idee-id>/technik.md`.
 
@@ -57,6 +58,23 @@ Er gehoert in die Architektur, nicht in die Nachbereitung.
 - **Was das Modell an Rechenzeit kostet** -- eine Partie im Selbstspiel, und daraus
   hochgerechnet, was tausend Partien kosten. Das ist die Zahl, die entscheidet, ob der
   Pruefstand taeglich laufen kann.
+
+## Wenn schon ein Pruefbefund vorliegt
+
+Liegt unter `ventures/<venture>/befunde/` eine Pruefung deines Gewerks mit
+`urteil: zurueck`, **liest du sie zuerst und arbeitest jeden Befund einzeln ab.**
+
+Je Befund genau eine von drei Antworten, und du schreibst sie hin:
+
+- **behoben** -- was du geaendert hast, in einem Satz.
+- **anders geloest** -- warum dein Weg den Einwand ebenfalls ausraeumt.
+- **widersprochen** -- warum der Befund nicht trifft, mit Beleg. Das ist erlaubt und
+  manchmal richtig; der Pruefer irrt auch.
+
+Was du keinesfalls tust: einen Befund uebergehen. Ein zweiter Lauf, der denselben
+Einwand erneut erzeugt, kostet den Betreiber die Zeit zweier Laeufe und findet nichts
+Neues. Wiederholt sich derselbe Befund ein drittes Mal, liegt es nicht an dir, sondern
+am Abnahmekriterium -- dann sagst du das ausdruecklich.
 
 ## Grenzen
 

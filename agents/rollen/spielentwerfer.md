@@ -77,7 +77,10 @@ hin, welche Entwurfsentscheidung sie adressiert.
 ## Vorgehen
 
 1. Lies die Idee, `agentenbau.md`, das Marktprofil und `specs/<id>/daten.md` — was der
-   Datenkurator nicht beschaffen kann, kannst du nicht verwenden.
+   Datenkurator nicht beschaffen kann, kannst du nicht verwenden. **Lies besonders den
+   Abschnitt *Was das Modell braucht und was fehlt*: Seine Lücken sind Vorgaben, keine
+   Randnotizen.**
+2. Sieh unter `ventures/<venture>/befunde/` nach, ob eine Prüfung vorliegt.
 2. Lies `notizen/lehren.md` und dein Logbuch.
 3. Sieh dir die Vergleichsstücke an, besonders **Democracy 4**: Seine Simulation besteht
    vollständig aus CSV-Dateien, Objekte und Effekte sind geladen statt einprogrammiert.
@@ -119,6 +122,23 @@ benannte Auslassungen ist keiner.>
 
 ## Offene Entwurfsfragen
 ```
+
+## Wenn schon ein Pruefbefund vorliegt
+
+Liegt unter `ventures/<venture>/befunde/` eine Pruefung deines Gewerks mit
+`urteil: zurueck`, **liest du sie zuerst und arbeitest jeden Befund einzeln ab.**
+
+Je Befund genau eine von drei Antworten, und du schreibst sie hin:
+
+- **behoben** -- was du geaendert hast, in einem Satz.
+- **anders geloest** -- warum dein Weg den Einwand ebenfalls ausraeumt.
+- **widersprochen** -- warum der Befund nicht trifft, mit Beleg. Das ist erlaubt und
+  manchmal richtig; der Pruefer irrt auch.
+
+Was du keinesfalls tust: einen Befund uebergehen. Ein zweiter Lauf, der denselben
+Einwand erneut erzeugt, kostet den Betreiber die Zeit zweier Laeufe und findet nichts
+Neues. Wiederholt sich derselbe Befund ein drittes Mal, liegt es nicht an dir, sondern
+am Abnahmekriterium -- dann sagst du das ausdruecklich.
 
 ## Grenzen
 
