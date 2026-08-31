@@ -81,6 +81,21 @@ jetzt nur, was seither dazugekommen ist. Belege stehen in den `research/`-Dateie
   noch Beleg. Die Lehre des Markt-Analysten vom 2026-08-30 gilt fuer diese Rolle genauso —
   Frage 2 vor Frage 1 stellen, wenn die Kategorie erkennbar generisch ist. Spart bei
   besetzten Feldern die halbe Recherche.
+- 2026-08-31 — **Erste Kurzabsage nach der neuen Vorpruefungsregel: eine Suche, ein
+  Abruf, Lauf beendet.** Beim Skimmer-Lauf nannte das Signal die Alternativen selbst;
+  die tragende Frage war nur, ob eine davon die *Gegenposition zum Ausloeser* fuehrt.
+  Suchmuster `<Anbieter A> vs <Anbieter B> pricing <Einheit> per month` lieferte in
+  einem Zug fuenf Preislisten. **Verallgemeinert fuer Preiserhoehungssignale: Die
+  toedliche Frage ist nicht „gibt es Alternativen", sondern „vermarktet sich eine davon
+  ueber genau die geaenderte Preismechanik".** Hier hiess der gefundene Artikel woertlich
+  „Alternatives Without Per-Pool Pricing" — der Wettbewerber hatte die Idee schon als
+  Ueberschrift. Suchmuster: `<Anbieter> alternatives without <geaenderte Preiseinheit>`.
+- 2026-08-31 — **Vor jedem Lauf `ls research/ | grep <Thema>`.** Zum Poolservice lag
+  bereits eine volle Recherche (DACH, `gelb`). Sie hat den Lauf nicht ersetzt — anderer
+  Zielmarkt —, aber sie hat mich vor dem Wiederholen der Segmentfragen bewahrt und
+  gehoerte als Abgrenzung in die Absage, damit niemand den roten US-Befund fuer ein
+  Urteil ueber den DACH-Befund haelt. **Ein roter Lauf muss sagen, welche vorhandene
+  Recherche er nicht widerlegt.**
 - 2026-08-30 — **Bei Preiserhoehungssignalen den Reseller-Listenpreis holen, nicht die
   Erhoehungshoehe jagen.** Adobe nennt die Prozentzahl nicht, zwei Abrufe blieben leer.
   Entschieden hat stattdessen der absolute Ausgangspreis (198,19 €/Jahr bei
