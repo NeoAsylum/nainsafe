@@ -4,7 +4,7 @@ typ: eichung
 titel: EICHUNG B — diese Idee muss an G5 sterben
 status: abgelehnt
 erstellt: 2026-08-30
-geaendert: 2026-08-30
+geaendert: 2026-08-31
 rolle: fit-filter
 
 quelle: signals/maerkte/2026-08-30-eichung-fixture.md
@@ -19,7 +19,7 @@ preis: 29
 kunden_noetig: 173
 kunden_erreichbar: 2100
 
-ablehnungsgrund: "G5 -- gibt zum konkreten Einzelfall aus, ob und um wie viel erhoeht werden darf. Das ist eine rechtliche Pruefung einer konkreten fremden Angelegenheit nach § 2 Abs. 1 RDG, nicht eine Rechnung: ortsuebliche Vergleichsmiete, Kappungsgrenze und Mietpreisbremse sind Wertungsbegriffe, deren Anwendung auf Adresse, Baujahr und Ausstattung die Bewertung selbst ist. Der Weg ueber eine Inkasso-Registrierung (BGH VIII ZR 285/18) beseitigt den Treffer nicht, sondern bestaetigt ihn -- er verlangt genau die Erlaubnis, die G5 ausschliesst. Nicht heilbar durch Haftungsausschluss; heilbar nur durch einen Zuschnitt, der Daten aufbereitet und die Bewertung dem Nutzer laesst (z. B. Vergleichsmieten anzeigen ohne Zulaessigkeitsaussage) -- das waere eine andere Idee mit anderem Zahlungsgrund. Rechnung (60.900 €) und Zwang nicht geprueft: abgelehnt ist abgelehnt."
+ablehnungsgrund: "G5 — ermittelt die zulaessige Hoechstmiete aus Kappungsgrenze, Mietpreisbremse und ortsueblicher Vergleichsmiete und gibt aus, ob und um wieviel der Nutzer erhoehen darf. Das ist die Anwendung unbestimmter Rechtsbegriffe auf den konkreten Einzelfall, also Rechtsdienstleistung nach § 2 Abs. 1 RDG — nicht die von § 6 Nr. 3 StBerG gedeckte mechanische Rechnung. Ein Haftungsausschluss heilt das nicht; ein Zuschnitt, der nur die Vergleichsmiete anzeigt und die Wertung dem Nutzer laesst, waere eine andere Idee. G6 bis G9 nicht geprueft, Pruefung endet beim ersten Treffer."
 
 score:
   zwang: null

@@ -4,7 +4,7 @@ typ: eichung
 titel: EICHUNG A — diese Idee muss den Fit-Filter passieren
 status: kandidat
 erstellt: 2026-08-30
-geaendert: 2026-08-30
+geaendert: 2026-08-31
 rolle: fit-filter
 
 quelle: signals/maerkte/2026-08-30-eichung-fixture.md

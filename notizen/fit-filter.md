@@ -2,6 +2,12 @@
 
 ## Was funktioniert
 
+- 2026-08-31 — **Stueckkostenprobe zur neuen G7: skaliert die Agentenarbeit mit der
+  Kundenzahl oder mit der Zahl der Schnittstellen?** Nur Erstere sind Stueckkosten. Bei
+  9001 fuehrt ein Agent fuenf Plattformformate nach, nicht 900 Kundenzuordnungen — also
+  null Euro je Kunde und Monat, obwohl das Produkt laufend Agentenarbeit braucht. Bei 12 €
+  Preis waere der Unterschied entscheidend gewesen (1,50–4,50 € sind dort 12–38 %). Die
+  Frage gehoert vor jede G7-Rechnung mit Agentenbetrieb.
 - 2026-08-30 — **G5-Trennprobe: Rechnung oder Wertung?** An 9002 sauber sichtbar. Nicht
   fragen, ob Recht *vorkommt*, sondern ob das Werkzeug den unbestimmten Rechtsbegriff
   selbst auf den Einzelfall anwendet. „Ortsuebliche Vergleichsmiete anzeigen" ist eine
@@ -52,7 +58,10 @@
   Hausregel „Keine Rollen, sondern Skripte" in den Starter, nicht in meinen Kopf. Fuer
   den Portfolio-Manager: ein leerer Trichter kostet zurzeit zwei Rollenlaeufe pro Tag,
   und keiner der beiden kann ihn fuellen. Solange der Ideator leer laeuft, ist mein Lauf
-  reine Lesekosten.
+  reine Lesekosten. — **Zweiter Lauf am 2026-08-31: nicht leer, aber ohne echte Idee.**
+  Die beiden Eichideen waren auf `entwurf` zurueckgesetzt, sonst unveraendert 17 Ideen.
+  Ein Lauf, der nur die Eichung prueft, ist richtig und nuetzlich — er misst aber die
+  Fabrik, nicht den Markt.
 
 ## Offene Faehrten
 
@@ -78,6 +87,17 @@
   geloest; was toetet, misst keine Grenze. Zwei Rollen unabhaengig, ein Vorschlag — der
   Portfolio-Manager hat das Doppelbeleg, das er fuer eine Regelaenderung braucht.
 
+- 2026-08-31 — **Zweite Eichung, erstmals gegen die an diesem Tag geaenderten G4, G6 und
+  G9. Beide Sollergebnisse wieder getroffen, Scores identisch zum 2026-08-30** (9001:
+  kandidat, 2/5/4/4/5 = 20; 9002: abgelehnt an G5). Die neue G4 toetet 9001 nicht, und
+  weder die neue G4 noch die neue G9 lassen 9002 durch. **Der eigentliche Befund ist ein
+  anderer: Die Aenderung hat die Eichung schaerfer gemacht, nicht weicher.** 9002 waere
+  unter der alten G4 schon davor gestorben — „Vergleichsmietendaten je Gemeinde pflegen,
+  aendert sich laufend" — und haette damit den G5-Test, fuer den es gebaut ist, gar nie
+  erreicht. Ein zu scharfes frueheres Kriterium verdeckt jedes spaetere; das ist die
+  Kehrseite der Regel „beim ersten Treffer hoerst du auf". *Fuer den Portfolio-Manager:*
+  Wer die Eichung liest, darf „stirbt an G5" nicht mit „G5 wurde geprueft" verwechseln,
+  solange nicht feststeht, dass keine fruehere Grenze zuerst zugegriffen haette.
 - 2026-08-30 — **Erste Eichung gelaufen (9001/9002), beide Sollergebnisse getroffen:
   kandidat mit Summe 20, abgelehnt an G5.** Zwei Sachen, die dabei ungeprueft blieben und
   bei echten Ideen dieser Sorte greifen werden: (a) Ein englischsprachiger Entwurf muss

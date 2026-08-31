@@ -1,10 +1,10 @@
 ---
 id: 0004-xrechnung-aus-warenwirtschaft-export
 titel: XRechnung aus dem Export einer nicht mehr gepflegten Branchensoftware
-status: abgelehnt
+status: entwurf
 erstellt: 2026-08-28
 geaendert: 2026-08-28
-rolle: fit-filter
+rolle: wiedervorlage
 
 quelle: signals/regulation/2026-08-27-e-rechnung-ausstellungspflicht-stufen.md
 
@@ -13,7 +13,9 @@ problem: Ab dem 1. Januar 2027 müssen diese Unternehmen E-Rechnungen im Format 
 loesung: Ein Dienst, der den strukturierten Rechnungsexport der bestehenden Software entgegennimmt und daraus valide XRechnung- oder ZUGFeRD-Dateien erzeugt, ohne dass die Branchensoftware angefasst wird.
 zahlungsgrund: zwang
 
-ablehnungsgrund: "G4 — das Segment ist ueber seine Heterogenitaet definiert: Gemeinsam ist den Kunden ausschliesslich, dass jeder eine andere, nicht mehr gepflegte Branchensoftware mit einem anderen Exportformat einsetzt. Kundenspezifische Feldzuordnung ist damit nicht ein Anlaufproblem, sondern der Kern des Produkts. Jeder Neukunde bringt eine eigene Zuordnung samt Sonderfaellen (Steuersaetze, Skonto, Reverse Charge, Kleinbetragsrechnung, auslaendische Kaeufer), die bei jeder Aenderung des Altsystem-Exports nachgezogen werden muss. Der Aufwand skaliert mit der Kundenzahl statt mit dem Rechnungsvolumen — genau die Pruefrage von G4. Der Ideator benennt diesen Punkt selbst als den, an dem die Idee vermutlich kippt. Verschaerfend: die Umwandlung ist monatlich terminkritisch; ein fehlgeschlagener Export blockiert die Rechnungsstellung des Kunden und erzwingt eine Reaktion am selben Tag, was zusaetzlich G3 beruehrt. Unsicherheit, widerlegbar: ein Nachweis, dass mindestens fuenf Branchensoftwares aus diesem Segment ein gemeinsames, vollstaendiges Exportformat liefern, das ohne kundenspezifische Zuordnung verarbeitbar ist, widerlegt die Ablehnung. Auch dann bliebe G7 offen — ein Preis im Centbereich je Rechnung traegt nach Steuern kein Nebengewerbe, und ein Grundpreis je Kunde ist bisher nur eine Ueberlegung."
+ablehnungsgrund: null
+ablehnungsgrund_alt: "G4 — das Segment ist ueber seine Heterogenitaet definiert: Gemeinsam ist den Kunden ausschliesslich, dass jeder eine andere, nicht mehr gepflegte Branchensoftware mit einem anderen Exportformat einsetzt. Kundenspezifische Feldzuordnung ist damit nicht ein Anlaufproblem, sondern der Kern des Produkts. Jeder Neukunde bringt eine eigene Zuordnung samt Sonderfaellen (Steuersaetze, Skonto, Reverse Charge, Kleinbetragsrechnung, auslaendische Kaeufer), die bei jeder Aenderung des Altsystem-Exports nachgezogen werden muss. Der Aufwand skaliert mit der Kundenzahl statt mit dem Rechnungsvolumen — genau die Pruefrage von G4. Der Ideator benennt diesen Punkt selbst als den, an dem die Idee vermutlich kippt. Verschaerfend: die Umwandlung ist monatlich terminkritisch; ein fehlgeschlagener Export blockiert die Rechnungsstellung des Kunden und erzwingt eine Reaktion am selben Tag, was zusaetzlich G3 beruehrt. Unsicherheit, widerlegbar: ein Nachweis, dass mindestens fuenf Branchensoftwares aus diesem Segment ein gemeinsames, vollstaendiges Exportformat liefern, das ohne kundenspezifische Zuordnung verarbeitbar ist, widerlegt die Ablehnung. Auch dann bliebe G7 offen — ein Preis im Centbereich je Rechnung traegt nach Steuern kein Nebengewerbe, und ein Grundpreis je Kunde ist bisher nur eine Ueberlegung."
+wiedervorlage: "2026-08-31 -- G4 wurde geaendert: Arbeit, die ein Agent taeglich tun kann, zaehlt nicht mehr gegen die zwei Stunden. Die alte Ablehnung stuetzt sich genau darauf."
 
 score:
   zwang: null
@@ -23,6 +25,28 @@ score:
   genehmigung: null
   summe: null
 ---
+
+> **Wiedervorlage am 2026-08-31, nicht vom Ideator, sondern wegen einer Regelaenderung.**
+>
+> Die Ablehnung vom 2026-08-28 lautete auf G4 und stuetzte sich darauf, dass die
+> kundenspezifische Feldzuordnung „nicht ein Anlaufproblem, sondern der Kern des
+> Produkts" sei und der Aufwand mit der Kundenzahl statt mit dem Rechnungsvolumen
+> skaliere. Das war unter der damaligen Fassung von G4 richtig.
+>
+> **G4 fragt seit dem 2026-08-31 nicht mehr, ob Arbeit mit der Kundenzahl waechst,
+> sondern wer sie tut.** Eine Feldzuordnung aus einem Beispielexport herzuleiten und sie
+> nachzufuehren, wenn das Altsystem sein Format aendert, ist Agentenarbeit. Damit faellt
+> die tragende Haelfte der alten Begruendung weg.
+>
+> **Die andere Haelfte faellt nicht weg**, und sie ist zu pruefen: „die Umwandlung ist
+> monatlich terminkritisch; ein fehlgeschlagener Export blockiert die Rechnungsstellung
+> des Kunden und erzwingt eine Reaktion am selben Tag". Das beruehrt G3 und — seit
+> derselben Aenderung — G6: Ein Agent, der unbeaufsichtigt im Rechnungslauf eines Kunden
+> handelt, verwandelt Aufwand in Haftung. Pruefe beide einzeln.
+>
+> Die alte Begruendung steht vollstaendig in `ablehnungsgrund_alt`. Faellt dein Urteil
+> wieder auf Ablehnung, ist das ein gueltiges Ergebnis — die Regelaenderung ist ein
+> Grund zur erneuten Pruefung, keiner zur Annahme.
 
 ## Belege
 
