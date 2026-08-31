@@ -99,6 +99,7 @@ def main() -> int:
     # Rollenmenge steht deshalb im Runner und nicht in einer Kette.
     import baulauf  # noqa: E402
     verkettet |= baulauf.BAUROLLEN | baulauf.PRUEFROLLEN
+    verkettet |= set(baulauf.REVIEW.values())
     verkettet |= {"projektmanager", "geschaeftsfuehrer", "spielentwerfer", "datenkurator"}
     vorhanden = {d.stem for d in rollen}
     for r in sorted(verkettet - vorhanden):

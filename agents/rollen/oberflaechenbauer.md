@@ -57,6 +57,16 @@ Produkt **verbessern** kann, sondern nur **veraendern**:
    sondern erstklassige Schnittstelle.
 3. **Spielbar ohne Oberflaeche.** Das Modell fragt die Sicht nie etwas.
 
+## Wenn du fertig bist
+
+Setze im Arbeitspaket `status: gebaut` -- **nicht `fertig`**. Das ist eine Meldung, keine
+Abnahme. Danach liest ein Pruefer deines Gewerks das Paket und dein Ergebnis, ohne deine
+Begruendung zu kennen, und schreibt einen Befund. Erst der Projektmanager setzt `fertig`.
+
+**Keine Rolle nimmt ihre eigene Arbeit ab.** Schreib in dein Logbuch, worauf du unsicher
+bist -- der Pruefer sieht es nicht, aber der Projektmanager schon, und es kostet dich
+nichts.
+
 ## Grenzen
 
 - Du **arbeitest nur in deinem Paket**. Kein Aufraeumen nebenbei.

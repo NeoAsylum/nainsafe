@@ -19,8 +19,19 @@ Ablauf je Lauf:
   1. projektmanager       zerlegt und entblockiert -- immer zuerst, sonst laufen die
                           Bauagenten leer
   2. Bau                  alle offenen Pakete ohne offene Abhaengigkeit, parallel
-  3. Pruefung             selbstspieler, rueckvergleicher, bruchtester auf ihren Paketen
-  4. geschaeftsfuehrer    schreibt ops/plan.md fuer den Betreiber
+  3. Review               je Gewerk ein Pruefer auf jedes gebaute Paket
+  4. Pruefung             selbstspieler, rueckvergleicher, bruchtester
+  5. geschaeftsfuehrer    schreibt ops/plan.md fuer den Betreiber
+
+Der Zustand eines Arbeitspakets:
+
+    offen --Bauagent--> gebaut --Pruefer--> (Befund) --Projektmanager--> fertig
+                                                 |
+                                                 +--> zurueck --> wieder offen
+
+Der Bauagent setzt `gebaut`, nie `fertig`. Nur der Projektmanager setzt `fertig`, und
+nur, wenn ein Pruefbefund mit `urteil: geprueft` vorliegt. Damit kann keine Rolle ihre
+eigene Arbeit abnehmen -- das ist der ganze Zweck der Reviewstufe.
 """
 
 from __future__ import annotations
@@ -35,6 +46,20 @@ from nachtlauf import phase  # noqa: E402
 BAUROLLEN = {"datenbauer", "kernbauer", "oberflaechenbauer", "auslieferer",
              "testentwickler"}
 PRUEFROLLEN = {"selbstspieler", "rueckvergleicher", "bruchtester"}
+
+# Je Gewerk ein Pruefer. Er liest das Arbeitspaket und das Ergebnis -- aber
+# ausdruecklich NICHT das Logbuch des Bauagenten. Das ist dieselbe Blindheit, die die
+# fuenf Angriffslinsen wirksam gemacht hat: Wer die Begruendung liest, uebernimmt sie
+# und prueft dann die Absicht statt das Ergebnis.
+REVIEW = {
+    "datenbauer": "daten-pruefer",
+    "kernbauer": "kern-pruefer",
+    "oberflaechenbauer": "oberflaechen-pruefer",
+    "auslieferer": "auslieferungs-pruefer",
+    "testentwickler": "test-pruefer",
+    "architekt": "entwurf-pruefer",
+    "spielentwerfer": "entwurf-pruefer",
+}
 
 # Zwei Pakete, die dieselbe Datei anfassen, duerfen nicht gleichzeitig laufen. Das ist
 # der Grund fuer das Feld `dateien` im Paket -- ohne diese Pruefung ueberschreiben sich
@@ -60,13 +85,13 @@ def pakete(venture: str) -> list[dict]:
     return alle
 
 
-def startbereit(alle: list[dict], rollen: set[str]) -> list[dict]:
-    """Offene Pakete der genannten Rollen, deren Abhaengigkeiten fertig sind --
+def startbereit(alle: list[dict], rollen: set[str], zustand: str = "offen") -> list[dict]:
+    """Pakete im genannten Zustand, deren Abhaengigkeiten fertig sind --
     und die sich nicht in denselben Dateien treffen."""
     fertig = {p["_id"] for p in alle if p.get("status") == "fertig"}
     dran, belegt = [], set()
     for p in alle:
-        if p.get("status") != "offen" or p.get("rolle") not in rollen:
+        if p.get("status") != zustand or p.get("rolle") not in rollen:
             continue
         if p["_haengt"] - fertig:
             continue
@@ -79,25 +104,31 @@ def startbereit(alle: list[dict], rollen: set[str]) -> list[dict]:
 
 def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) -> int:
     alle = pakete(venture)
-    offen = [p for p in alle if p.get("status") == "offen"]
-    fertig = [p for p in alle if p.get("status") == "fertig"]
-    blockiert = [p for p in alle if p.get("status") == "blockiert"]
+    zaehl = {z: len([p for p in alle if p.get("status") == z])
+             for z in ("offen", "gebaut", "zurueck", "fertig", "blockiert")}
 
-    print(f"[{jetzt()}] Baulauf {venture} -- {len(fertig)} fertig, {len(offen)} offen, "
-          f"{len(blockiert)} blockiert")
+    print(f"[{jetzt()}] Baulauf {venture} -- "
+          + ", ".join(f"{n} {z}" for z, n in zaehl.items() if n))
+    if not alle:
+        print("  Noch keine Arbeitspakete.")
 
     bau = startbereit(alle, BAUROLLEN)[:gleichzeitig]
     pruef = startbereit(alle, PRUEFROLLEN)[:gleichzeitig]
+
+    review = [p for p in alle if p.get("status") == "gebaut" and p.get("rolle") in REVIEW]
 
     if trocken:
         print("  1. projektmanager")
         print(f"  2. Bau        {len(bau)} Pakete gleichzeitig")
         for p in bau:
             print(f"       {p.get('rolle'):18} {p['_id']}")
-        print(f"  3. Pruefung   {len(pruef)} Pakete")
+        print(f"  3. Review     {len(review[:gleichzeitig])} Pakete")
+        for p in review[:gleichzeitig]:
+            print(f"       {REVIEW[p['rolle']]:18} {p['_id']}")
+        print(f"  4. Pruefung   {len(pruef)} Pakete")
         for p in pruef:
             print(f"       {p.get('rolle'):18} {p['_id']}")
-        print("  4. geschaeftsfuehrer")
+        print("  5. geschaeftsfuehrer")
         if not alle:
             print()
             print("  Es gibt noch keine Arbeitspakete. Der erste Lauf legt sie an --")
@@ -115,6 +146,15 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
     bau = startbereit(alle, BAUROLLEN)[:gleichzeitig]
     if bau:
         fehler += phase("Bau", [(p["rolle"], p["_id"]) for p in bau])
+
+    # Review: jedes gebaute Paket bekommt einen Pruefer seines Gewerks. Er liest den
+    # Auftrag und das Ergebnis, nicht die Begruendung des Bauagenten.
+    alle = pakete(venture)
+    review = [p for p in alle if p.get("status") == "gebaut"
+              and p.get("rolle") in REVIEW][:gleichzeitig]
+    if review:
+        fehler += phase("Review",
+                        [(REVIEW[p["rolle"]], p["_id"]) for p in review])
 
     alle = pakete(venture)
     pruef = startbereit(alle, PRUEFROLLEN)[:gleichzeitig]
