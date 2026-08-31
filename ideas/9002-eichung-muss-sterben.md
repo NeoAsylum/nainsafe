@@ -19,7 +19,7 @@ preis: 29
 kunden_noetig: 173
 kunden_erreichbar: 2100
 
-ablehnungsgrund: "G5 — ermittelt die zulaessige Hoechstmiete aus Kappungsgrenze, Mietpreisbremse und ortsueblicher Vergleichsmiete und gibt aus, ob und um wieviel der Nutzer erhoehen darf. Das ist die Anwendung unbestimmter Rechtsbegriffe auf den konkreten Einzelfall, also Rechtsdienstleistung nach § 2 Abs. 1 RDG — nicht die von § 6 Nr. 3 StBerG gedeckte mechanische Rechnung. Ein Haftungsausschluss heilt das nicht; ein Zuschnitt, der nur die Vergleichsmiete anzeigt und die Wertung dem Nutzer laesst, waere eine andere Idee. G6 bis G9 nicht geprueft, Pruefung endet beim ersten Treffer."
+ablehnungsgrund: "G5 — ermittelt aus Adresse, Baujahr, Ausstattung und bisheriger Miete die zulaessige Hoechstmiete und gibt aus, ob und um wieviel der Nutzer erhoehen darf. Das ist die Anwendung unbestimmter Rechtsbegriffe (ortsuebliche Vergleichsmiete, Kappungsgrenze, Mietpreisbremse) auf den konkreten Einzelfall, also Rechtsdienstleistung nach § 2 Abs. 1 RDG — nicht die mechanische Rechnung, die § 6 Nr. 3 StBerG deckt. Ein Haftungsausschluss heilt den Treffer nicht; ein Zuschnitt, der nur die Vergleichsmiete anzeigt und die Wertung dem Nutzer laesst, waere eine andere Idee. G1 bis G4 geprueft und gefallen — G4 faellt seit dem 2026-08-31 sauber, weil das Nachfuehren von Mietspiegeln und Kappungsgrenzen Agentenarbeit ist und keine Betreiberzeit. G6 bis G9 nicht geprueft, die Pruefung endet beim ersten Treffer. Die Rechnung ueber 60.900 € wurde nicht angesehen, weil G5 vor G7 kommt."
 
 score:
   zwang: null
