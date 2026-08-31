@@ -510,3 +510,65 @@ im Archiv.
 - **Logbuchgrenze, dritter Beleg am 2026-08-31:** Beim Schreiben dieses Abschnitts hat ein
   paralleler Lauf die Datei erneut unter mir veraendert (25.664 -> 33.508 Zeichen), mein
   erster Edit schlug deshalb fehl. Additiv anhaengen funktioniert, kuerzen nicht.
+
+## Aus dem vierten Unterhaltungslauf: Politik- und Volkswirtschaftssimulation (2026-08-31)
+
+- **Messfehler, der meine drei frueheren Unterhaltungsprofile betrifft:**
+  `appreviews/<appid>?json=1&num_per_page=0` untertreibt **um Faktor 2 bis 4**, wenn
+  `language=all&purchase_type=all` fehlt (gemessen: 81 gegen 162, 14 gegen 59, 4 gegen 16,
+  3 gegen 5). Die Storeseite zaehlt immer voll -- **Gegenprobe an der Storeseite gehoert
+  zu jedem appreviews-Abruf.** Ab jetzt nur noch mit beiden Parametern abrufen.
+- **Steam-Tag-IDs bekomme ich ueber die Suchmaschine, nicht ueber steamdb** (403): Der
+  Suchtreffer `steamdb.info/tag/<id>/` nennt die ID im Titel, und **dieselbe ID
+  funktioniert in der Steam-Storesuche** (Political Sim 26921, Grand Strategy 4364,
+  Economy 4695, City Builder 4328). Achtung: Zahlen aus `/category/...`-URLs sind
+  **Kategorie-IDs, keine Tag-IDs** -- `tags=1741` lieferte 7.951 Treffer aus "Strategy".
+- **`sort_by=Released_DESC` ist der Kohortenzaehler, und er nennt eine andere Gesamtzahl
+  als dieselbe Suche ohne Sortierung** (622 gegen 1.022 im selben Tag, vermutlich
+  unveroeffentlichte Titel). Beide ins Profil, nicht mitteln. Die Trefferliste gibt Titel,
+  Datum, Preis und ueber die `/app/NNNN/`-Links die AppIDs her -- damit ist die
+  ungefilterte Startkohorte eines Monats in **einem** Abruf plus N Bewertungsabrufen
+  vermessen. Billigste harte Zahl des Suchraums.
+- **Die Startkohorte muss um zwei Faelle bereinigt werden**, sonst luegt der Median nach
+  oben: Gratistitel (kein Umsatz) und **Early-Access-Absolventen**, deren "Erscheinungs"-
+  datum das Ende von 17 Monaten Verkauf ist. August 2026, Tag Political Sim: 12 von 25
+  gemessen, Median 8,5 Bewertungen, bereinigt **6**.
+- **Erstes Segment des Repos, in dem der ungeloeste Wunsch der Kaeufer und die messbare
+  Staerke der Fabrik denselben Gegenstand haben.** Drei unabhaengige Titel, Spielzeiten
+  von 3 bis 1.000 Stunden, immer dieselbe Klage: *die Wirkungskette ist nicht glaubhaft*
+  ("consequences feel intangible", "broad as an ocean but deep as a puddle", "socialism
+  always bankrupts you"). Das sind woertlich die drei Masse aus `agentenbau.md`
+  (Entscheidungsdichte, dominante Strategie, Spannungsbogen). Im Automations- und
+  Aufbauprofil war der Wunsch nur als Gestaltungsqualitaet fassbar -- **hier als Zahl.**
+- **Gegenprobe "Kauf gegen Zufriedenheit" faellt hier erstmals zusammen**: gekauft wird
+  die Simulation, beklagt wird die Simulation. Der Marktfuehrer verkauft eine
+  2D-Knotenoberflaeche (Democracy 4, Tags Minimalist/2D) -- die Kapselbild-Sperre des
+  Aufbauprofils wiegt hier am leichtesten von allen vier Genres.
+- **Der Blog eines Ein-Personen-Studios schlaegt jede Marktanalyse.** Positech
+  (positech.co.uk/cliffsblog) veroeffentlicht Netto- und Bruttoumsatz, Entwicklungskosten,
+  Wunschlisten und Konversion woertlich: 500.000 / 800.000 USD nach zwei Monaten,
+  357.000 USD Kosten, **60.000 Wunschlisten bei 13 % Konversion**, 35.000 von 150.000 USD
+  Marketing ausgegeben. **Suchmuster fuer jedes weitere Genre: "<Genre-Marktfuehrer>
+  developer blog sales revenue wishlists".** Genau diese Zahl erklaert auch die Absage --
+  der Kanal ist frei, aber seine Waehrung war gekauft.
+- **Das Genre widerlegt den Preisboden als Todesursache endgueltig** (4,15 bis 59,99 EUR,
+  zwei belegte wiederkehrende Modelle: Capitalism Lab mit Erweiterungen, Eversim mit
+  Jahresausgabe) und stirbt trotzdem -- **zum vierten Mal an der Verteilung, nicht an der
+  Besetzung.** Vier von vier Unterhaltungssegmenten, immer Frage 7.
+- **Duennstes besetztes Genre der vier** (1.022 Titel gegen City Builder 3.392 und
+  Automation 3.449) und **kein einziger Platzhirsch, der es gratis loest** -- der
+  Vorteil des Suchraums aus `quellen.yml` stimmt hier tatsaechlich. Er reicht nicht.
+- **Antwort auf die Frage des Betreibers:** Ja, das Segment traegt ein Ein-Personen-
+  Produkt (Democracy 4: rund 119.000 Einheiten in 71 Monaten). Nein, es traegt kein
+  Zwei-Stunden-Produkt ohne Reihe und ohne Budget: Faktor 14 zwischen den noetigen 3.520
+  Einheiten im Jahr und den 255 des Kohortenmedians.
+- **Erledigt, `gering`: Volkswirtschafts- und Politiksimulation.** Damit ist der
+  **Unterhaltungsblock vollstaendig abgearbeitet -- vier Segmente, vier Mal `gering`,
+  viermal an Frage 7.** *Wiedervorlage genau dann*, wenn G7 einen Portfoliomassstab
+  bekommt oder ein wiederkehrendes Modell zugelassen wird; dieses Segment gehoert dann
+  als erstes aufgerufen, weil die Luecke belegt und agentenpruefbar ist.
+  *Naechstes freies Segment:* B2C, "Aquaristik und Terraristik mit Bestandsfuehrung".
+- **Offen fuer den Rechercheur:** die Perzentilkurve eines Steam-Tags (wie viele Titel
+  erreichen N Bewertungen im Jahr). steamdb, games-stats und vginsights sind gesperrt,
+  die Storesuche sortiert nicht nach Bewertungszahl. Ohne diese Kurve ist die
+  Startkohorte mein einziger Verteilungsbeleg -- und sie deckt nur einen Monat ab.
