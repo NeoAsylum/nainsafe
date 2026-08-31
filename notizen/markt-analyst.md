@@ -444,3 +444,69 @@ im Archiv.
   verworfen. **Bestaetigt: bei parallelem Lauf nur additive Edits.** *Fuer den Betreiber:*
   Schreibrecht auf `notizen/archiv/` oder ein Rotationsskript; ohne das eine oder andere
   bleibt die Grenze aus `CLAUDE.md` fuer diese Rolle strukturell unerfuellbar.
+
+## Aus dem ersten Unterhaltungslauf: Fabrik- und Automationsspiele (2026-08-31)
+
+- **Steam ist als Datenquelle offen, und zwar besser als jede B2B-Quelle des Repos.**
+  Vier Abrufe, alle ohne Schluessel, alle im Klartext:
+  `store.steampowered.com/search/?tags=<tagid>&category1=998` nennt „N results match your
+  search" (Frage 1 und 5 in einem Abruf), `&sort_by=Released_DESC` die Neuzugaenge mit
+  Datum, Preis und AppID, `&filter=topsellers` die Titel mit laufendem Absatz;
+  `store.steampowered.com/appreviews/<appid>?json=1&num_per_page=0` die **aktuelle**
+  Bewertungszahl. Mit `review_type=negative&num_per_page=100` bekommt man die Rezensionen
+  im Volltext -- die einzige nicht-interessierte Primaerquelle zu Frage 3, die ich je
+  hatte. **Damit ersetzt Steam im Unterhaltungsraum Portal, Verband und Verzeichnis
+  zugleich.**
+- **SteamSpy taugt fuer alte Titel, nicht fuer neue.** Owner-Spannen und Preise der
+  Kerntitel stimmen (`api.php?request=appdetails&appid=`), fuer 2026 erschienene Titel
+  meldet es `0 .. 20.000` und **0 Bewertungen**, obwohl der Store 4.261 zaehlt. Immer
+  gegen `appreviews` gegenpruefen. Die Tag-Abfrage (`request=tag&tag=`) liefert die
+  Spitze brauchbar, aber zwei Auswertungen desselben Abrufs nannten 516 gegen 329
+  Eintraege -- **grosse JSON nicht auszaehlen lassen, nur die Kopfzeilen nehmen.**
+- **Der Besetzungstest hat im Unterhaltungsraum eine andere Waehrung, und der Rekord ist
+  brutal:** 3.449 Titel im Tag "Automation", rund **vier Neuzugaenge je Tag**. Bisheriger
+  Repo-Hoechstwert war 1.093 (Capterra Field Service). Anders als in B2B beendet das den
+  Lauf aber **nicht** -- die Titel konkurrieren nicht um dieselbe Funktion.
+- **Zum ersten Mal in 25 Profilen ist der Kanal echt und selbstbedienbar:** Steam Next
+  Fest und der von Valve selbst veranstaltete **Automation Fest** (259 Titel, Juli 2025).
+  Anmeldung ueber Steamworks, kein Gespraech, kein Mittler. *Und es hat trotzdem nicht
+  gereicht.*
+- **Neuer Todesgrund, den es in B2B nicht gibt: die Verteilung.** Das Genre hat keine
+  Mitte -- Sandustry 4.261 Bewertungen in 18 Tagen, ein am selben Tag erschienener
+  Tag-Nachbar 0. Vorfilter alle gut, Kanal frei, kein Platzhirsch, der es gratis loest --
+  und trotzdem `gering`, weil bei einem Promille **kein im Genre plausibler Preis** die
+  5.000 EUR traegt (noetig waeren 34,29 EUR Startpreis; nur Satisfactory liegt darueber).
+  *Lehre:* Im Unterhaltungsraum entscheidet nicht Frage 5, sondern Frage 7 -- erstmals.
+- **Die Genre-Zahl, die gut aussieht, ist immer gefiltert.** „Median 200-500 Tsd USD" gilt
+  nur fuer Titel mit 100+ Bewertungen. Ungefiltert nennt dieselbe Quelle 5-15 Tsd USD fuer
+  den Steam-Median. **Die Filterbedingung steht regelmaessig im Nebensatz** -- wer sie
+  nicht sucht, rechnet um Faktor 30 daneben.
+- **Frage 3 ist im Unterhaltungsraum die schwerste, nicht Frage 5.** Der „ungeloeste
+  Wunsch" liess sich aus zwei Rezensions-Volltexten nicht als *Funktion* fassen, nur als
+  Gestaltungsqualitaet (Einstieg, Zaehigkeit im Mittelspiel). Ratgeberseiten
+  (gamefoundry, automation-games.org, lifemeetspixel) sind hier das Gegenstueck zum
+  Advertorial in B2B: SEO-Fuellmaterial, als Beleg wertlos. **Nur der Rezensions-Volltext
+  zaehlt.**
+- **Umrechnung, die ich das naechste Mal sofort brauche:** Schwelle x 24 Monate =
+  120.000 EUR netto; geteilt durch (Preis x 0,7) = noetige Einheiten; geteilt durch 30
+  (Boxleiter, Mitte fuer Titel nach 2020) = noetige Steam-Bewertungen. Wunschlisten zum
+  Start: Konversion Woche 1 = 0,10-0,15x, Lebensabsatz grob 3-4x Woche 1. Zukowski
+  Juni 2026: 5.000 Bronze / 8.000 Silber / 50.000 Gold / 90.000 Diamant. **USt. gehoert
+  zusaetzlich abgezogen** -- EUR-Preise sind brutto, das sind nochmal 16 Prozent.
+- **G8 ist im Genre trivial erfuellt und belegbar:** Factorio legt die Welt als
+  skriptbare Datenstruktur offen (`LuaEntity`, `LuaInventory`, `LuaFlowStatistics`,
+  `LuaForce`, `LuaSurface`, lua-api.factorio.com 2.1.17). Fuer die beiden verbleibenden
+  Unterhaltungssegmente muss ich das nicht erneut pruefen, nur die jeweilige API nennen.
+- **Neue 403er:** `steamdb.info` komplett (Tag- und Release-Statistik -- die
+  Jahresverteilung der Neuzugaenge ist damit unerreichbar), `games-stats.com`,
+  `thinkygames.com`. Steamworks-Ankuendigungen im `steamcommunity.com/groups/`-Pfad
+  liefern nur Kopf und Fuss, nicht den Rumpf.
+- **Erledigt, `gering`: Automatisierungs- und Fabrikspiele.** Wiedervorlage nur, wenn G7
+  je einen Portfolio- statt Einzelmassstab bekommt -- bei dieser Verteilung ist genau das
+  der Unterschied zwischen Los und Rechnung. *Naechstes freies Unterhaltungssegment:*
+  „Aufbau- und Wirtschaftssimulationen mit auslesbarem Zustand"; Vorabrufe in dieser
+  Reihenfolge: Steam-Suche auf den Tag (Titelzahl), `appreviews` auf die drei Kerntitel,
+  dann Rezensions-Volltext fuer Frage 3. **Frage 7 zuerst durchrechnen, nicht zuletzt.**
+- **Logbuchgrenze, dritter Beleg am 2026-08-31:** Beim Schreiben dieses Abschnitts hat ein
+  paralleler Lauf die Datei erneut unter mir veraendert (25.664 -> 33.508 Zeichen), mein
+  erster Edit schlug deshalb fehl. Additiv anhaengen funktioniert, kuerzen nicht.
