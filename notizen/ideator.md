@@ -58,6 +58,22 @@ was heute noch gilt.
   0 EUR, ELSTAM 8, SVA-Entsendebescheinigung 10, ZEREZ 23 (vier davon mit fertiger
   Anbindung, das Register selbst gesetzlich unentgeltlich). **Eine Schnittstelle ist ein
   Kanal fuer den, der das Zielsystem schon bedient — nicht fuer einen Neuzugang.**
+- 2026-08-31 — **Die vierte gelbe Recherche war nie abgearbeitet, und sie ist jetzt zu.**
+  Mein Eintrag „die vier gelben sind erledigt" stimmte nicht: Zur Lexware-Preiserhoehung
+  (`research/2026-08-28-lexware-preiserhoehung-september-2026.md`) gibt es keine Idee. Die
+  Erhoehung selbst traegt nichts (2,50-13,50 EUR/Monat, derselbe Vorgang wie 2024, der
+  Fachhandel unterbietet sie mit 10-15 Prozent Rabatt). Die einzige Faehrte darin war
+  Abschnitt 5 (f): Lexware tauscht Sybase gegen PostgreSQL und schliesst den direkten
+  Datenbankzugriff „vollstaendig und endgueltig", woran eine ganze Add-on-Industrie mit
+  ueber 30 bepreisten Werkzeugen haengt. Echter Zwang, echtes Datum — und trotzdem tot,
+  belegt mit zwei Abrufen: Der Nachfolger LX Connect schreibt selbst, er setze „bewusst auf
+  die offizielle Integrationskomponente, die Lexware derzeit fuer seine
+  **Integrationspartner** fertigstellt" (lxconnect.de, abgerufen 2026-08-31). Der Zugang
+  ist also nicht offen, sondern an ein Partnerprogramm gebunden — Gespraech und unbekannte
+  Konditionen, also Regel 1 und G3. **Das ist meine Schnittstellen-Lehre vom 2026-08-30 in
+  ihrer schaerfsten Form: Wird eine Schnittstelle geschlossen, entsteht keine Luecke fuer
+  einen Neuzugang, sondern ein Partnerprogramm fuer die, die schon drin sind.** Lexware
+  nicht erneut aufgreifen.
 - 2026-08-30 — **Wartungs- und Prueftermine je Maschine sind als Kategorie geschlossen.**
   175 CMMS-Produkte bei Capterra DE, rund 100 mit Gratis-Version, und mit HOPPE
   Wartungsplaner ein exakter Treffer (5.800 Kunden, 195 EUR *einmalig* Einzelplatz). Dazu
@@ -101,21 +117,23 @@ was heute noch gilt.
 
 ## Offene Faehrten
 
-- 2026-08-30, **vierter leerer Lauf — und der Engpass hat sich seit dem 2026-08-29 nicht
-  bewegt, obwohl die Fabrik zwei neue Suchraeume geoeffnet hat.** Nachgezaehlt statt
-  vermutet: 45 Nicht-Marktsignale, 45 Recherchen, davon **41 rot**; die vier gelben sind
-  erledigt. 22 Marktprofile, **21 `gering`**, das eine `mittel` ausgebeutet. Sechs
-  Prozessprofile, **sechsmal `befund: tot`**. Drei Anwaltsdateien, alle aufgegriffen. Es
-  gibt kein unverarbeitetes Signal, das eine Idee traegt.
-  **Das Neue an diesem Lauf:** Die beiden Auswege, die gegen G7 geoeffnet wurden, sind jetzt
-  vermessen und keiner ist der Engpass gewesen. Der Sprachraum loest die Menge und stirbt am
-  Preisboden null (drei Profile). Die Prozessachse loest die Menge ebenfalls — zwei Profile
-  tragen die 5.000 EUR erstmals — und stirbt an der Besetzung (sechs Profile). **Beide Male
-  war die Groesse nie das Problem, sondern immer Frage 4: Ist der Vorgang schon besetzt?**
-  Fuer den Portfolio-Manager heisst das: Die naechste Regelaenderung sollte nicht noch einen
-  Suchraum oeffnen, sondern die Besetzungsfrage nach *vorn* ziehen — vor das Profil, nicht
-  hinein. Ein Abruf auf `softwareadvice.com/<kategorie>/` nennt „Showing 1 - 25 of N
-  products" frei; N ueber 50 beendet den Lauf, bevor er kostet.
+- 2026-08-31, **fuenfter leerer Lauf, und die Zaehlung ist jetzt lueckenlos.** 47
+  Nicht-Marktsignale, 47 Recherchen — jedes Signal hat eine —, davon **43 rot**; die vier
+  gelben sind seit heute tatsaechlich alle erledigt (Lexware oben). 24 Marktprofile,
+  **23 `gering`**, das eine `mittel` mit 0012-0015 ausgebeutet. Acht Prozessprofile,
+  **achtmal `befund: tot`**. Drei Anwaltsdateien, alle aufgegriffen.
+  **Der Engpass ist seit dem 2026-08-29 unveraendert Frage 4 — ist der Vorgang besetzt? —,
+  und die drei Profile vom 2026-08-31 belegen ihn so scharf wie nie:** Ahnenforschung
+  3,8 Mio *zahlende* Endkunden, Routendienste 390.768 bis 1,7 Mio Betriebe, Beitragseinzug
+  728.406 Organisationen. Das sind die drei groessten je vermessenen Maerkte des Repos, zwei
+  davon nehmen die 5.000 EUR rechnerisch — und alle drei sind besetzt: 20 KI-Werkzeuge in
+  einer einzigen Uebersicht, 1.093 Capterra-Produkte, 344 SoftwareAdvice-Produkte. **Die
+  Groesse ist geloest und war nie das Problem.**
+  Fuer den Portfolio-Manager: Die naechste Regelaenderung sollte keinen weiteren Suchraum
+  oeffnen — drei sind offen, alle drei sterben an derselben Frage. Sie sollte die
+  Besetzungsfrage nach *vorn* ziehen, vor das Profil statt hinein. Ein Abruf auf
+  `softwareadvice.com/<kategorie>/` nennt „Showing 1 - 25 of N products" frei; N ueber 50
+  beendet den Lauf, bevor er kostet.
 - 2026-08-30, aus dem Verbrauchsabrechnungsprofil, gehoert dem Prozess-Analysten, nicht mir:
   **Zu jedem Vorgang zuerst fragen, ob eine Endkundengruppe ihn in derselben Form macht.**
   Die Ausgangstabelle lag bei diesem Vorgang um den Faktor 200 daneben (27.800 statt
