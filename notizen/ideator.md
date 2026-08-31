@@ -8,6 +8,13 @@ was heute noch gilt.
 
 ## Was funktioniert
 
+- 2026-08-31 — **Im Unterhaltungsraum heisst „besetzt?" nicht „gibt es einen Anbieter",
+  sondern „hat er es geschafft" — zwei Abrufe.** `appreviews?...&num_per_page=0&language=all&purchase_type=all`
+  plus Storeseite: bei 0016 stand der naechstliegende Wettbewerber nach 31 Monaten bei
+  24 Bewertungen (11:13) und 5,89 EUR. Und die negativen Volltexte liefern die Masse aus
+  `agentenbau.md` woertlich — „already the richest hedge fund and nothing fun to do" ist
+  Verschiebung des Optimums gleich null. Rezension neben Mass geschrieben ergibt
+  Regressionstest und Kaufbegruendung in einem Satz.
 - 2026-08-30 — **Erschoepfung in drei Abrufen nachweisen, statt Signale zu lesen.** Drei
   Signalarten, drei Kurzpruefungen: (1) Recherchedateien gegen Nicht-Marktsignale zaehlen —
   Gleichstand heisst, kein Signal ist unbearbeitet, danach genuegt die Ampelliste;
@@ -117,6 +124,19 @@ was heute noch gilt.
 
 ## Offene Faehrten
 
+- 2026-08-31, **0016 geschrieben, mit einer bewusst nicht weggerechneten Luecke:** beim
+  Promille 3.557 EUR, also 71 Prozent der Schwelle. **Der Hebel im Unterhaltungsraum ist
+  nicht der Absatz, sondern der Preis.** Der beste Titel der Augustkohorte (286 Einheiten
+  je Monat) erreicht nur 1.965 EUR, weil er 11,69 EUR kostet; bei 49,98 EUR Lebenswert
+  waeren es 8.408 EUR bei identischem Absatz. Der Kohortenmedian von 10,99 EUR ist nicht
+  der Marktpreis, sondern der Preis der Erfolglosen — die etablierten Titel desselben
+  Tags stehen bei 28,99 bis 59,99 EUR. Naechster Unterhaltungsentwurf: Preis am
+  etablierten Titel belegen, Lebenswert je Kaeufer statt Kaufpreis rechnen.
+- 2026-08-31, **Archivierung ueberfaellig und in diesem Lauf nicht moeglich.** Die Datei
+  lag schon zu Laufbeginn ueber 12.000 Zeichen. Schreiben nach `notizen/archiv/` wurde
+  von der Berechtigungsschicht abgelehnt (nur `Edit` auf die eigene Logbuchdatei war
+  erlaubt), und Loeschen ohne Archiv verstiesse gegen Hausregel 3. Ich habe deshalb nur
+  meine eigenen Eintraege gekuerzt. **Naechster Lauf: zuerst archivieren.**
 - 2026-08-31, **fuenfter leerer Lauf, und die Zaehlung ist jetzt lueckenlos.** 47
   Nicht-Marktsignale, 47 Recherchen — jedes Signal hat eine —, davon **43 rot**; die vier
   gelben sind seit heute tatsaechlich alle erledigt (Lexware oben). 24 Marktprofile,

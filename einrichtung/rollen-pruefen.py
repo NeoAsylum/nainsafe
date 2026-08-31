@@ -87,6 +87,11 @@ def main() -> int:
     verkettet = set(nachtlauf.SENSOREN) | set(nachtlauf.VERDICHTUNG) | set(wochenlauf.KETTE)
     verkettet |= {"markt-analyst", "prozess-analyst", "rechercheur", "anwalt"}
     verkettet |= {f"advocatus-{l}" for l in __import__("repo").LINSEN}
+    # Die Konzeptionsphase, seit 2026-08-31. Sie laeuft nicht naechtlich, sondern auf
+    # Zuruf nach Gate 1 -- deshalb steht sie in konzeptlauf.py und nicht im Nachtlauf.
+    import konzeptlauf  # noqa: E402
+    for _, stufenrollen in konzeptlauf.STUFEN:
+        verkettet |= set(stufenrollen)
     vorhanden = {d.stem for d in rollen}
     for r in sorted(verkettet - vorhanden):
         befunde.append(f"KETTE: ruft `{r}` auf, aber agents/rollen/{r}.md fehlt")

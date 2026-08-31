@@ -59,10 +59,12 @@ Du hast **eine** Rolle pro Lauf. Deine Rolle bestimmt, welche Verzeichnisse du l
 in welches du schreiben darfst. Schreibe niemals außerhalb deines Zielverzeichnisses,
 auch wenn du dort einen Fehler siehst — melde ihn stattdessen in deinem eigenen Output.
 
-Die Tabelle beschreibt die **Zielorganisation**. Gebaut sind bis heute die Rollen bis
-einschließlich Digest-Redakteur; alles ab Architekt entsteht erst, wenn eine Idee Gate 1
-passiert hat. Eine Rolle ohne Datei unter `agents/rollen/` gibt es nicht — der Name in
-Klammern ist der Dateiname, wo er abweicht.
+Die Tabelle beschreibt die **Zielorganisation**. Gebaut sind die Suchphase (bis
+Digest-Redakteur) und seit dem 2026-08-31 die **Konzeptionsphase** — neun Rollen, die
+`agents/konzeptlauf.py` nach Gate 1 in sechs Stufen abarbeitet. Die Bau- und
+Betriebsrollen ab Builder entstehen, wenn eine Idee Gate 2 passiert hat. Eine Rolle ohne
+Datei unter `agents/rollen/` gibt es nicht — der Name in Klammern ist der Dateiname, wo
+er abweicht.
 
 | Rolle | liest | schreibt | Grenze |
 |---|---|---|---|
@@ -85,7 +87,9 @@ Klammern ist der Dateiname, wo er abweicht.
 | Portfolio-Manager | `ideas/`, `ventures/` | `ops/portfolio.md`, `gates/` | stoppt nichts selbst, höchstens eine Vorlage |
 | Chronist | `git log`, `gates/` | `decisions/` | ändert keine alten ADRs |
 | Digest-Redakteur | `ops/` | `ops/digest/<kw>.md` | nie länger als eine Seite |
-| Architekt | `ideas/<id>.md` | `specs/<id>/technik.md` | wählt keinen exotischen Stack |
+| Spielentwerfer | `ideas/<id>.md`, `agentenbau.md`, `specs/<id>/daten.md` | `specs/<id>/spiel.md` | entwirft die kleinste Fassung, an der die vier Maße laufen |
+| Datenkurator | `ideas/<id>.md`, `agentenbau.md` | `specs/<id>/daten.md` | keine Quelle ohne Lizenzzitat, gibt keinen Rechtsrat |
+| Architekt | `specs/<id>/spiel.md`, `daten.md` | `specs/<id>/technik.md` | wählt keinen exotischen Stack, schreibt keinen Code |
 | Ökonom | `specs/<id>/technik.md` | `specs/<id>/rechnung.md` | rundet nie zugunsten der Idee |
 | Compliance-Prüfer | `specs/<id>/` | `specs/<id>/pflichten.md` | gibt keinen Rechtsrat, nur Flags |
 | Vertriebsplaner | `research/`, `specs/<id>/` | `specs/<id>/vertrieb.md` | plant keine Kaltakquise |
