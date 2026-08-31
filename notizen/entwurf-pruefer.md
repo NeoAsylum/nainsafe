@@ -39,6 +39,27 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   gefuellt = nicht belastbar) ist der Jahrgang 1980 damit ausgeschlossen, ohne dass es
   jemand entschieden haette. Zwei Minuten Suche, ein Befund hoher Schwere.
 
+- 2026-08-31 (2. Lauf) — **Die Belegtheit der Sollreihen selbst abrufen, statt dem
+  Entwurf zu glauben.** Der Entwurf begruendete Startjahr und Partielaenge mit "die
+  uebrigen Reihen sind laenger". Sechs Abrufe der Weltbank-API zeigten, dass die
+  US-Sektoranteile erst 1997 beginnen und 2021 enden — die Partielaenge war um vier Jahre
+  zu lang, und an ihr hing jede abgeleitete Zahl beider Dokumente. **Wo ein Entwurf eine
+  Datenreihe als vorhanden voraussetzt, ist ein Abruf billiger als jede Ueberlegung.**
+- 2026-08-31 (2. Lauf) — **Jede als "Anteil" deklarierte Groesse an echten Zahlen
+  nachrechnen.** `handelsanteil` = Handel geteilt durch Wertschoepfung war als 0…100 %
+  deklariert und in einer Mischformel als Gewicht verbaut; fuer Deutschlands
+  Landwirtschaft 1995 sind es 269 %. Bruttostrom durch Nettogroesse ist nie ein Anteil —
+  das ist ein Muster, kein Einzelfall.
+- 2026-08-31 (2. Lauf) — **Pruefen, ob ein Lauf, den ein Mass vorschreibt, ueberhaupt
+  laufen kann.** Der Rueckvergleich faehrt "Fonds mit Nullvermoegen"; die Renditeformel
+  braucht dieses Vermoegen als Nenner, und die Todesart Anlegerabzug greift nach drei
+  Runden. Ein Mass ist erst dann eine Rechenvorschrift, wenn sein eigener Lauf zu Ende
+  laeuft.
+- 2026-08-31 (2. Lauf) — **Bei einer zweiten Fassung nachsehen, ob die beantworteten
+  Rueckfragen die aktuellen sind.** `spiel.md` beantwortete die zwei offenen Punkte der
+  *ersten* Fassung von `technik.md`; die zwei neuen der zweiten blieben liegen, einer
+  davon die Abnahmeregel von Mass 4. Abgearbeitete Befundlisten lesen sich vollstaendig.
+
 ## Was nicht funktioniert
 
 - 2026-08-31 — **Es gab kein Arbeitspaket.** `aufgaben/` war leer; das Abnahmekriterium
@@ -46,6 +67,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   zusammensetzen. Das geht, kostet aber einen halben Lauf und macht das Urteil
   angreifbar. Beim naechsten Mal zuerst `ls aufgaben/` und, wenn leer, das ersatzweise
   benutzte Kriterium im Frontmatter ausweisen — nicht nachtraeglich im Text.
+- 2026-08-31 (2. Lauf) — **Immer noch kein Arbeitspaket**, zweiter Lauf in Folge. Das
+  Ausweisen im Frontmatter hat funktioniert und kostet nichts; die Ursache bleibt. Steht
+  es beim dritten Mal wieder leer, gehoert der Hinweis nicht in meinen Befund, sondern
+  ins Logbuch des Portfolio-Managers — ueber den Projektmanager.
 
 ## Offene Faehrten
 
@@ -53,11 +78,17 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Richtungstreue ueber 40 Jahre mit endogener Produktivitaet erreichbar sind, kann erst
   der Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler — aber wenn es
   scheitert, scheitert die vierte Pruefachse, also der Grund fuer die echte Welt.
-- **Die Marktrendite (Befund 4) kommt zurueck.** Der Architekt hat sie korrekt an den
-  Spielentwerfer zurueckgegeben; wenn dessen naechster Lauf sie uebernimmt, ist zu
-  pruefen, ob die Todesart Anlegerabzug fuer einen grossen Fonds dadurch unausweichlich
-  wird — dann waere Gegenkraft 3 keine Gegenkraft mehr, sondern eine Obergrenze.
+- **Die Marktrendite ist erledigt** (2026-08-31, 2. Lauf): Gewichtung nach
+  Modellmarktwerten statt nach dem Fondsbestand, damit geht die Ueberrendite eines grossen
+  Fonds nicht rechnerisch gegen null. Gegenkraft 3 ist eine Gegenkraft geblieben.
 - **Bei der naechsten Entwurfspruefung zuerst pruefen, ob eine Groesse zwei Herren hat.**
-  Sektorgliederung, Startjahrgang und Marktrendite standen alle drei in beiden Dokumenten
-  und in keinem entschieden. Das ist offenbar die typische Bruchstelle zwischen
-  Spielentwerfer und Architekt.
+  Bestaetigt im zweiten Lauf: Sektorgliederung, Startjahrgang, Marktrendite, dann die
+  Abnahmeregel von Mass 4 und die Abbildung Profil→Aktionen. Immer dieselbe Bruchstelle
+  zwischen Spielentwerfer und Architekt — und sie wandert, sie verschwindet nicht.
+- **Die Partielaenge 28 wird auf 24 fallen** (oder die Sektoranteile werden gestrichen).
+  Wenn die dritte Fassung kommt, ist jede abgeleitete Zahl neu zu pruefen: Ergebnisskala,
+  Partiedrittel, Fenster von Mass 3, Suchbotkosten, Rechenzeittabelle. Eine geaenderte
+  Grundzahl ist die billigste Stelle, an der eine Nachbesserung unvollstaendig bleibt.
+- **Offen: die Leitzinsreihen von China und Brasilien in den neunziger Jahren.**
+  `technik.md` nennt sie selbst als Verdachtsfall; ich habe nur die Sektoranteile
+  abgerufen. Sind sie ebenfalls kurz, verschiebt sich das Prueffenster ein zweites Mal.
