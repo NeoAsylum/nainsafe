@@ -45,6 +45,9 @@ entfernen, nicht den unbequemsten.
   SYSCARA, Caravan.One, Autrado. Campingplatz-/Stellplatzverwaltung (Campspot
   17,4 Mio. USD ARR): Resavio, Direst, Easycamp, campalot. Siebdruck-/Stickerei-
   Werkstattsoftware: ArtWay, EasyWorkFlow, APL Promotion.
+- 2026-08-31: COI-/Versicherungsnachweis-Tracking (myCOI, Certfocus): BAUBESCHEINIGUNGEN,
+  DEXEVO, CoCrafter, SubCheck. Schrotthandel-/Recyclinghof-Software (ScrapRight):
+  EUREC, 2R Software/david, RecyclingMonitor.
 
 ## Offene Fährten
 
@@ -69,6 +72,19 @@ entfernen, nicht den unbequemsten.
   Services funktionierten; Junk Removal, Locksmith, Pressure Washing, Garage
   Door, Moving, Carpet Cleaning gaben 404 — Slug lässt sich nicht zuverlässig
   raten, vorher per WebSearch die exakte URL bestätigen).
+- 2026-08-31 — Fünfter Lauf in Folge leer (COI-Tracking/Versicherungsnachweis-
+  Tracking: myCOI 6,2 Mio. USD, Certfocus 3,1 Mio. USD Umsatz — aber DE bereits
+  vierfach besetzt: BAUBESCHEINIGUNGEN, DEXEVO, CoCrafter, SubCheck. Schrott-/
+  Recyclinghof-Software: ScrapRight kein Umsatzbeleg, DE dreifach besetzt EUREC,
+  2R/david, RecyclingMonitor. Pottery-Studio-Software: kein Umsatzbeleg, DE-Bedarf
+  ohnehin durch horizontale Kursbuchungstools (kursifant, Butlerapp) gedeckt.
+  Prozessserver-/Gerichtsberichterstatter-Software: kein Umsatzbeleg, zudem
+  Rechtssystem-Barriere macht Transfer nach DE ohnehin fragwürdig). *Lehre:*
+  GetLatka-Kategorienamen sind jetzt fast vollständig abgegrast — generische
+  WebSearch-Anfragen nach "reddit expensive niche software alternative" liefern
+  nur Listicle-Rauschen, keine Einzelfälle. Für den nächsten Lauf: gezielt in
+  US-Branchenverbands-Foren oder -Newslettern nach Softwareempfehlungen suchen,
+  nicht mehr über GetLatka-Kategorienamen.
 - 2026-08-30 — Richtung 0 (direkt im englischsprachigen Markt, unbesetzt) noch
   nicht ergiebig bearbeitet: alle Suchen dazu fanden entweder bereits mehrere
   US-Anbieter (Klavierstimmer, Freizeitpark-Buchungssoftware) oder keinen
