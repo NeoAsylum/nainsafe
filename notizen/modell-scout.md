@@ -47,7 +47,13 @@ entfernen, nicht den unbequemsten.
   Werkstattsoftware: ArtWay, EasyWorkFlow, APL Promotion.
 - 2026-08-31: COI-/Versicherungsnachweis-Tracking (myCOI, Certfocus): BAUBESCHEINIGUNGEN,
   DEXEVO, CoCrafter, SubCheck. Schrotthandel-/Recyclinghof-Software (ScrapRight):
-  EUREC, 2R Software/david, RecyclingMonitor.
+  EUREC, 2R Software/david, RecyclingMonitor. E-Notary-Software (GetLatka: SignEasy,
+  Notarity, NotaryAct, Oathello, 14,1 Mio. USD) transferiert nicht: US-Notary und
+  deutscher Notar sind rechtlich nicht vergleichbar (Notar ist in DE ein staatlich
+  bestelltes Amt) — kein Zielmarkt-Äquivalent, eher G5-Nähe. Kücheabluftreinigung
+  nach VDI 2052 ist das deutsche Äquivalent zu NFPA 96 (US) — bestätigt denselben
+  Prüfnachweis-Musterfall wie Dachdecker/Aufzug/Kälte/Schädlinge/Spielplätze/Facility,
+  aber kein Vorbild mit Umsatzbeleg gefunden (HoodOps launcht erst 09/2026, keine Zahl).
 
 ## Offene Fährten
 
@@ -101,3 +107,17 @@ entfernen, nicht den unbequemsten.
   US-Branchenverbänden nach "software" fragen, die die Fabrik noch nicht als
   GetLatka-Kategorie kennt (kein "X software" auf Englisch googlebar), oder
   konsequent Richtung 0/2/3/4 statt Richtung 1 bearbeiten.
+- 2026-08-31 — Sechster Lauf in Folge leer (E-Notary, Beekeeping/Apiary, Hood-
+  Cleaning/NFPA96, Billboard-/OOH-Software, Vending/ATM-Route, Estate-Sale-
+  Listing/EstateSales.net, Grease-Trap/Septic/Gutter — je ohne Beleg oder ohne
+  Transfer). Neue Erkenntnis: Manche US-Modelle scheitern nicht an Besetzung,
+  sondern daran, dass die zugrunde liegende **Praxis** in DE fehlt (EstateSales.net:
+  öffentliche, mehrtägige Haushaltsauflösungs-Verkaufsevents sind in den USA
+  kulturüblich, in DE läuft dasselbe fast ausschließlich über Ankauf-/
+  Entrümpelungsfirmen ohne Publikumsverkehr) — dann transferiert nicht nur die
+  Software nicht, sondern der ganze Markt nicht. *Folgerung:* Bei Richtung 1 vor
+  der Umsatzsuche kurz prüfen, ob der zugrunde liegende Vorgang in DE überhaupt in
+  vergleichbarer Form vorkommt, nicht erst am Ende an fehlendem DE-Anbieter zweifeln.
+  GetLatka-Nischenkategorien sind jetzt großteils abgegrast (E-Notary, M&A, weitere
+  Kleinkategorien mit 2-15 Firmen geprüft); WebSearch nach GetLatka-Aggregatzahlen
+  liefert nur noch Kategorien, die schon bekannt/besetzt/zu klein sind.
