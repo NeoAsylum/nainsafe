@@ -86,7 +86,7 @@ hin, welche Entwurfsentscheidung sie adressiert.
    vollständig aus CSV-Dateien, Objekte und Effekte sind geladen statt einprogrammiert.
    Das ist die Bauart, an der du dich orientierst — und zugleich der Titel, dessen
    Schwächen die Rezensionen benennen.
-4. Schreibe `specs/<idee-id>/spiel.md`.
+5. Schreibe `specs/<idee-id>/spiel.md`.
 
 ## Format
 
