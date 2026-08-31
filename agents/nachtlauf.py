@@ -76,6 +76,26 @@ VERDICHTUNG = ["ideator", "fit-filter"]
 
 KETTE = SENSOREN + VERDICHTUNG
 
+# ---------------------------------------------------------------- Fokus
+#
+# Steht hier eine Ideen-ID, sucht die Fabrik nicht mehr. Entschieden vom Betreiber am
+# 2026-08-31: "Ab jetzt bauen wir nur noch das Spiel."
+#
+# Abgeschaltet werden damit die Sensorik (sechs Scouts), die Marktprofile, die
+# Prozessprofile, die Recherche und der Ideator -- alles, was NEUE Ideen erzeugt. Das
+# ist der weitaus groesste Teil des Verbrauchs: Rechercheur und Analysten waren
+# zusammen ueber siebzig Prozent.
+#
+# Weiter laufen ausschliesslich Rollen, die AN DIESER Idee arbeiten. Solange sie noch
+# `entwurf` oder `kandidat` ist, sind das Fit-Filter, die fuenf Linsen und der Anwalt --
+# die einzige Mechanik, die je den toedlichen Einwand gefunden hat, und ihre Befunde
+# sind der Rohstoff der Konzeptionsphase. Steht die Idee auf `erkundung` oder weiter,
+# hat der Nachtlauf nichts mehr zu tun: Dann faehrt `agents/konzeptlauf.py` auf Zuruf.
+#
+# Nichts ist geloescht. FOKUS = None stellt die Suche vollstaendig wieder her, und
+# quellen.yml behaelt alle 44 Segmente und acht Vorgaenge.
+FOKUS: str | None = "0016-hedgefonds-simulation-echte-weltwirtschaft"
+
 WIP_AKTIV_MAX = 3
 WIP_BAU_MAX = 1
 
@@ -131,7 +151,45 @@ def phase(name: str, auftraege: list[tuple[str, str | None]]) -> int:
     return fehler
 
 
+def fokuslauf(trocken: bool) -> int:
+    """Der Nachtlauf, wenn die Fabrik nicht mehr sucht, sondern an einer Idee arbeitet."""
+    kopf = next((k for k in repo.ideen(mit_eichung=False) if k["_id"] == FOKUS), None)
+    if kopf is None:
+        print(f"  FOKUS steht auf {FOKUS}, aber die Idee gibt es nicht.")
+        return 1
+    st = kopf.get("status")
+    print(f"[{jetzt()}] Fokus auf {FOKUS} -- Status `{st}`. Die Suche ruht.")
+
+    if st in ("entwurf", "kandidat"):
+        offen = [(i, l) for i, l in repo.offene_angriffe(99) if i == FOKUS]
+        anwalt = [i for i in repo.offene_anwaelte(99) if i == FOKUS]
+        if trocken:
+            print(f"    Fit-Filter   {1 if st == 'entwurf' else 0} Lauf")
+            print(f"    Angriffe     {len(offen)} Laeufe")
+            print(f"    Verteidigung {len(anwalt)} Laeufe")
+            return 0
+        fehler = 0
+        if st == "entwurf":
+            fehler += lauf("fit-filter") != 0
+            offen = [(i, l) for i, l in repo.offene_angriffe(99) if i == FOKUS]
+        if offen:
+            fehler += phase("Angriffe",
+                            [(f"advocatus-{l}", i) for i, l in offen])
+        anwalt = [i for i in repo.offene_anwaelte(99) if i == FOKUS]
+        if anwalt:
+            fehler += phase("Verteidigung", [("anwalt", i) for i in anwalt])
+        print(f"[{jetzt()}] Fokuslauf beendet, {fehler} Fehler.")
+        return 0 if fehler == 0 else 1
+
+    print("  Die Bewertung ist abgeschlossen. Weiter geht es nicht naechtlich,")
+    print(f"  sondern auf Zuruf:  python3 agents/konzeptlauf.py {FOKUS}")
+    return 0
+
+
 def main(trocken: bool = False) -> int:
+    if FOKUS:
+        return fokuslauf(trocken)
+
     aktiv, im_bau = wip()
     voll = aktiv >= WIP_AKTIV_MAX
 

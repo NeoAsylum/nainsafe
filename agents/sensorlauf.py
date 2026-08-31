@@ -19,10 +19,19 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import repo  # noqa: E402
 from lauf import jetzt, lauf  # noqa: E402
-from nachtlauf import RECHERCHEN_MAX, SENSOREN, phase  # noqa: E402
+from nachtlauf import FOKUS, RECHERCHEN_MAX, SENSOREN, phase  # noqa: E402
 
 
 def main(trocken: bool = False) -> int:
+    # Der Sensorlauf ist reine Suche. Steht die Fabrik im Fokusmodus, hat er nichts zu
+    # tun -- sonst haette das Abschalten im Nachtlauf nur die halbe Wirkung, und die
+    # Scouts wuerden weiter Signale erzeugen, die niemand mehr aufgreift.
+    if FOKUS:
+        print(f"[{jetzt()}] Sensorlauf ruht -- die Fabrik arbeitet an {FOKUS}.")
+        print("  Die Suche steht in nachtlauf.py:FOKUS. FOKUS = None nimmt sie wieder auf.")
+        return 0
+
+
     offen = repo.offene_recherchen(RECHERCHEN_MAX)
     print(f"[{jetzt()}] Sensorlauf -- {len(offen)} Signale ohne Recherche")
 

@@ -266,3 +266,20 @@ was erlaubt ist.
   Nicht erneut aufwerfen, keine Idee daran bewerten. Unberuehrt bleibt G1 — ein Produkt
   mit Versicherern, Bausparkassen oder Finanzdienstleistern **als Kunden** ist weiter
   ausgeschlossen; der Unterschied ist die Zielgruppe, nicht das Thema.
+
+- **2026-08-31** — **Die Fabrik sucht nicht mehr. Entschieden vom Betreiber: „Ab jetzt
+  bauen wir nur noch das Spiel."** Gegenstand ist
+  `0016-hedgefonds-simulation-echte-weltwirtschaft`. Abgeschaltet ist alles, was NEUE
+  Ideen erzeugt: sechs Scouts, Markt- und Prozessanalyst, Rechercheur, Ideator. Das war
+  der weitaus groesste Teil des Verbrauchs — Rechercheur und Analysten allein ueber
+  siebzig Prozent. *Folgerung fuer alle:* `nachtlauf.py:FOKUS` steht auf der Ideen-ID;
+  weiter laufen nur Rollen, die an dieser Idee arbeiten. Nichts ist geloescht,
+  `FOKUS = None` stellt die Suche vollstaendig wieder her, und quellen.yml behaelt alle
+  Segmente und Vorgaenge.
+
+  **Was dabei offen bleibt und die Konzeption loesen muss:** Die Idee traegt nach ihren
+  eigenen Zahlen noch nicht — 170 noetige Kaeufer je Monat gegen 121 erreichbare beim
+  Promille. Das ist Faktor 1,4 statt der Faktoren 5 bis 10 aller frueheren Ideen, aber
+  es ist eine Luecke. Sie zu schliessen ist die Aufgabe von Oekonom und
+  Vertriebsplaner; gelingt es nicht, ist Gate 2 die Stelle, an der das sichtbar wird.
+  Wer diese Zahl spaeter glaettet, hat den Zweck der Kette verfehlt.
