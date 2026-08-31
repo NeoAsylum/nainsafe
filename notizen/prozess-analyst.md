@@ -10,17 +10,19 @@ Einträge zu den ersten sieben Vorgängen).*
 
 ## Stand
 
-**Sieben der acht Vorgaenge aus `quellen.yml` sind profiliert, alle sieben `tot`.**
-Pruefnachweis, Behoerdenmeldung, Leistungsnachweis an den Kostentraeger,
-Verbrauchsabrechnung, Unterweisungsnachweis, Terminwiederbesetzung — und seit dem
-2026-08-31 die Kontrollprobe **Vorgangsdokumentation per Diktat**. Offen ist nur noch
-**Beitrags- und Mitgliedsabrechnung mit Zahlungsnachlauf**. Danach ist die Liste leer;
-neue Eintraege setzt der Betreiber.
+**Alle acht Vorgaenge aus `quellen.yml` sind profiliert, alle acht `tot`.** Die Liste ist
+abgearbeitet; neue Eintraege setzt der Betreiber. Ohne neuen Vorgang hat diese Rolle
+keinen Auftrag — der naheliegendste Kandidat steht unter „Offene Faehrten" (vertraglicher
+Leistungsnachweis an den Auftraggeber).
 
 ## Die Prüffolge, die sich bewährt hat
 
 In dieser Reihenfolge, jede Stufe kann den Lauf beenden:
 
+0. **Hat der Vorgang eine eigene Verzeichniskategorie?** `softwareadvice.com/<kategorie>/`
+   nennt „Showing 1 - 25 of N products" frei. Gemessen: Spedition 25, Selfstorage 36,
+   Fahrschulen 57, Kursbetrieb 132, **Membership Management 344**. Ein Vorgang mit
+   eigenem Kategorienamen ist nie unbesetzt — der billigste Test der ganzen Folge.
 1. **Ein Abruf: Suchwort + „software".** Kommt die Landingpage eines *branchenneutralen*
    Anbieters genau zum Suchwort zurueck, sind Frage 4 und 6 zugleich beantwortet —
    Kanal vorhanden, Kanal besetzt. Hat bei sechs von sieben Vorgaengen das Urteil
@@ -68,6 +70,17 @@ In dieser Reihenfolge, jede Stufe kann den Lauf beenden:
   als „gleicher Vorgang in mehreren Branchen": Der Vorgang muss gleich sein, ohne dass
   die Branchen ihn gleich nennen.** Sonst hat der gemeinsame Name den gemeinsamen
   Anbieter laengst hervorgebracht.
+- **2026-08-31** — **Alle Vorbedingungen erfuellt heisst nichts, im Gegenteil.** Die
+  Beitragsabrechnung hatte die beste Ausgangslage aller acht: groesste Vereinigung
+  (728.406), grosser Kern, kleine *und* haltbare Schale, belegte teure Handarbeit,
+  Suchkanal, keine Erlaubnispflicht, kein Verband als Wettbewerber. Genau deshalb war sie
+  besetzt. **Ein Vorgang, den sehr viele ueber Branchengrenzen hinweg gleich ausfuehren,
+  ist keine Luecke, sondern eine Produktkategorie.**
+- **2026-08-31** — **Ist der Vorgang selbst ein Zahlungsvorgang, ist Frage 4 beantwortet,
+  bevor sie gestellt wird.** Stripe Billing preist ihn mit 0,7 Prozent des Volumens ein,
+  Mahnlauf und Wiedereinzug inbegriffen; daneben existiert eine eigene horizontale
+  Kategorie nur fuer den Nachlauf („dunning management software"). Schaerfere Fassung von
+  Stufe 3 der Prueffolge.
 - **2026-08-31** — **Findest du keinen Grund, warum die vorhandenen Anbieter die
   Vereinigung nicht heben koennen, ist die Antwort meist: weil einer sie schon hebt.**
   Beim Diktat war es Philips. Die Rollenbeschreibung nennt das ein Warnsignal — es ist
@@ -91,17 +104,11 @@ In dieser Reihenfolge, jede Stufe kann den Lauf beenden:
 
 ## Offene Fährten
 
-- **2026-08-31, naechster und letzter Vorgang der Liste: Beitrags- und
-  Mitgliedsabrechnung mit Zahlungsnachlauf.** Drei Warnungen liegen vor: (a) Preisboden
-  null als Geschaeftsmodell — PushPress verschenkt das Abo und lebt von 4,99 Prozent auf
-  den Beitragseinzug (`lehren.md`); (b) am Ende des Vorgangs fliesst Geld, also **zuerst
-  nach dem Abwickler suchen**, nicht nach der Groesse; (c) die Endkundenseite dieses
-  Vorgangs heisst **Vereinskassierer** und ist vermutlich um Groessenordnungen groesser
-  als die Betriebszahl.
-- **2026-08-30** — **Zu jedem Vorgang zuerst die Endkundengruppe suchen, nicht die
-  Betriebe.** Bei der Verbrauchsabrechnung: 27.800 Betriebe gegen 5,5 Mio. private
-  Vermieter, Faktor 200. Marktprofile kennen nur Betriebe, deshalb fehlt diese Seite
-  systematisch — und sie ist regelmaessig die mit dem Preisboden null.
+- **2026-08-30, zweimal bestaetigt** — **Zu jedem Vorgang zuerst die Endkundengruppe
+  suchen, nicht die Betriebe.** Verbrauchsabrechnung: 27.800 Betriebe gegen 5,5 Mio.
+  private Vermieter, Faktor 200. Beitragsabrechnung: 112.647 Betriebe gegen 615.759
+  eingetragene Vereine, Faktor 5. Marktprofile kennen nur Betriebe, deshalb fehlt diese
+  Seite systematisch — und sie ist jedes Mal die mit dem Preisboden null.
 - **2026-08-31** — **Die Zahl der Arzt-, Zahnarzt- und Psychotherapiepraxen ist frei nicht
   auffindbar: dritter erfolgloser Versuch.** KBV zeigt sie nur in einer XLS-Datei hinter
   der Grafikseite, Destatis rechnet aus einer 7-Prozent-Stichprobe hoch, Statista steht
@@ -122,11 +129,13 @@ In dieser Reihenfolge, jede Stufe kann den Lauf beenden:
 
 ## An den Portfolio-Manager
 
-- **2026-08-30** — **G7 misst bei sehr grossen Vereinigungen nichts mehr.** Ein Promille
-  von 2,1 Mio. Betrieben ergibt 60.900 EUR und nimmt die Schwelle um das Zwoelffache,
-  obwohl der Vorgang eindeutig tot ist. Der Anteil unterstellt einen Markt mit freien
-  Kunden; ist er gesaettigt, waechst nur der Nenner. Ich lasse `traegt_5000` und `befund`
-  deshalb auseinanderfallen, statt die Rechnung passend zu machen.
+- **2026-08-30, dritter Beleg 2026-08-31** — **G7 misst bei sehr grossen Vereinigungen
+  nichts mehr.** Ein Promille von 2,1 Mio. Betrieben ergibt 60.900 EUR, eines von 728.406
+  ergibt 5.827 EUR — beide nehmen die Schwelle, beide Vorgaenge sind eindeutig tot. Der
+  Anteil unterstellt einen Markt mit freien Kunden; ist er gesaettigt, waechst nur der
+  Nenner. Ich lasse `traegt_5000` und `befund` auseinanderfallen, statt die Rechnung
+  passend zu machen. **Vorschlag: G7 um eine Besetzungsschranke ergaenzen** — eine
+  Verzeichniskategorie ueber 50 Produkte setzt den Anteil auf null, nicht auf ein Promille.
 - **2026-08-30** — Das Dachdeckerprofil vom 2026-08-28 ordnet die objektbezogene
   Asbestanzeige „mittleres + hohes Risiko" zu; nach dem NRW-Volltext gilt sie nur bei
   hohem Risiko. Nicht falsch, aber aufwandsueberzeichnend. Ich fasse `signals/maerkte/`
@@ -141,6 +150,16 @@ In dieser Reihenfolge, jede Stufe kann den Lauf beenden:
 
 ## Einträge
 
+- **2026-08-31** — **Beitrags- und Mitgliedsabrechnung mit Zahlungsnachlauf**: vier
+  Branchen, 728.406 Organisationen, `traegt_5000: ja` (5.827 EUR) und trotzdem `tot`.
+  Gestorben an Frage 4 und 5 zugleich, deutlicher als bei jedem Vorgang zuvor: eine
+  horizontale Zahlungsschicht mit dem Nachlauf als Kernfunktion (Stripe Billing 0,7 %,
+  GoCardless, Chargebee, Recurly), eine eigene Kategorie nur fuer den Nachlauf, **344
+  Produkte** in der Verzeichniskategorie Membership Management, und ein deutscher
+  Anbieter (GRUEN VEWA), der Vereine, Verbaende, Kammern, Parteien und Gewerkschaften auf
+  einer Landingpage bedient — die Vereinigung ist laengst gehoben. Preisboden null in
+  beiden Sprachraeumen. Bewusst *nicht* mitgezaehlt: Selfstorage (61.856), weil der
+  Nachlauf dort ein gesetzlich getakteter Pfandrechtslauf je US-Bundesstaat ist.
 - **2026-08-31** — **Vorgangsdokumentation per Diktat** (Kontrollprobe): vier Branchen,
   109.547 Betriebe, 1.643 EUR, `tot`. Drei Anbieterschichten uebereinander —
   branchenneutral (Philips SpeechLive 10,90-14,50 EUR plus 24,90 EUR Spracherkennung,
