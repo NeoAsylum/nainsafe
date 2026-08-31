@@ -331,7 +331,7 @@ Ideen, die alle neun Grenzen passieren, werden in fünf Dimensionen bewertet (je
 | `erreichbar` | Kommt man ohne Kaltakquise an die Zielgruppe? |
 | `ruhe` | Läuft es zwei Wochen ohne jeden Eingriff? |
 | `marge` | Erreicht Preis × erreichbare Kundenzahl die 5.000 € (siehe G7)? |
-| `genehmigung` | Würde der Arbeitgeber das ohne Rückfrage genehmigen? |
+| `genehmigung` | Würde der Arbeitgeber das ohne Rückfrage genehmigen? Für Unterhaltungsprodukte siehe die Klarstellung unter der Tabelle. |
 
 Maximal 25 Punkte. Unter 15 wird nicht zur Vorlage.
 
@@ -341,6 +341,18 @@ Maximal 25 Punkte. Unter 15 wird nicht zur Vorlage.
   das Risiko nicht wert.
 - `marge` unter 4 — die Schwelle aus G7 ist eine Bedingung, kein Wunsch. Eine 3 heißt
   „könnte knapp reichen", und knapp reicht bei 5.000 € nie.
+**Zu `genehmigung` bei Spielen — vom Betreiber entschieden am 2026-08-31.** Ein Spiel
+über Finanzmärkte, Lobbyismus und Korruption ist **unbedenklich**. Der Arbeitgeber ist
+eine Bauspar- und Versicherungsgruppe; die Entfernung zu Hedgefonds und
+Finanzmarktaufsicht ist groß genug, dass keine Erklärungsbedürftigkeit entsteht. Diese
+Frage ist damit geklärt und wird nicht erneut aufgeworfen — weder vom Fit-Filter noch
+von der Rechtslinse. Wer sie trotzdem für offen hält, schreibt das ins Logbuch, statt
+eine Idee daran zu bewerten.
+
+Unberührt bleibt G1: Ein Produkt, das Versicherungen, Bausparkassen oder
+Finanzdienstleister **als Kunden** hat, ist weiterhin ausgeschlossen. Der Unterschied ist
+die Zielgruppe, nicht das Thema.
+
 **Unterhaltungsprodukte** sind seit dem 2026-08-31 zugelassen (`zahlungsgrund: wunsch`,
 G8 erlaubt Spiele über Text, Zahlen und Zustände). Für sie gilt keine Sonderregel,
 sondern die volle Härte: `zwang` ist null, damit sind höchstens 20 Punkte erreichbar, und

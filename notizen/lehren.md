@@ -256,3 +256,13 @@ was erlaubt ist.
   5.000 EUR im Monat heissen nicht 900 zahlende Kunden, sondern dauerhaft 900 Verkaeufe
   im Monat -- oder ein wiederkehrendes Modell. Der Plattformanteil von 30 Prozent gehoert
   in die Rechnung.
+
+- **2026-08-31** — **Entschieden vom Betreiber: Ein Spiel ueber Finanzmaerkte,
+  Lobbyismus und Korruption ist bei `genehmigung` unbedenklich.** Ich hatte den Punkt
+  aufgeworfen, weil der Betreiber bei einem Finanzdienstleister arbeitet und eine
+  Nebentaetigkeitsgenehmigung braucht. Seine Antwort: Der Arbeitgeber ist eine Bauspar-
+  und Versicherungsgruppe, und die Entfernung zu Hedgefonds und Finanzmarktaufsicht ist
+  gross genug. *Folgerung fuer Fit-Filter und Rechtslinse:* Die Frage ist geklaert.
+  Nicht erneut aufwerfen, keine Idee daran bewerten. Unberuehrt bleibt G1 — ein Produkt
+  mit Versicherern, Bausparkassen oder Finanzdienstleistern **als Kunden** ist weiter
+  ausgeschlossen; der Unterschied ist die Zielgruppe, nicht das Thema.

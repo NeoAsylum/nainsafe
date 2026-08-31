@@ -162,6 +162,26 @@ maerkte:
     - Aufbau- und Wirtschaftssimulationen mit auslesbarem Zustand
     - Automatisierungs- und Fabrikspiele (factory/automation)
     - Management- und Betriebssimulationen (Job- und Betriebssimulatoren)
+    # Vorschlag des Betreibers vom 2026-08-31: Weltwirtschaft aus Politik,
+    # Regulierung, Handel und Unternehmen. Auf agentenbau.md gemessen der bisher
+    # beste Treffer -- der Zustand IST eine Zahlentabelle, und das Genre hat als
+    # einziges eine zweite Pruefachse: Der Modellauf laesst sich gegen echte
+    # Wirtschaftszeitreihen halten. Beim Profil besonders zu pruefen:
+    #   - Democracy 4 (Positech, Ein-Personen-Studio, reine Zahlen- und
+    #     Knotenoberflaeche) als naechstes Vergleichsstueck -- Verkaufszahl, Preis,
+    #     Bewertungen. Ist das Segment gross genug fuer ein Ein-Personen-Produkt?
+    #   - Victoria 3, Capitalism Lab, Offworld Trading Company, Workers & Resources
+    #   - der ungeloeste Wunsch: Was fordern Spieler dieser Titel wiederholt, das
+    #     keiner liefert? Beim Automatisierungsprofil war genau das nicht belegbar.
+    #   - Zuschnitt vom 2026-08-31, geschaerft: Der Spieler ist ein Hedgefonds und
+    #     versucht die Welt zu uebernehmen -- ueber Finanzmaerkte, Lobbyismus und
+    #     Korruption. Rolle und Siegbedingung statt Sandkasten. **Die echte Welt, mit
+    #     echten Daten**, ausdruecklich keine erfundene: Nur dann steht die vierte
+    #     Pruefachse aus agentenbau.md offen (Rueckvergleich gegen Zeitreihen).
+    #     Genehmigungsfrage ist geklaert, siehe grenzen.md und lehren.md.
+    #     Vor dem ersten Entwurf zu klaeren: Welche Datenquelle erlaubt gewerbliche
+    #     Weiterverbreitung? Das entscheidet, ob das Modell ausgeliefert werden darf.
+    - Volkswirtschafts- und Politiksimulation (Handel, Regulierung, Unternehmen)
 
     # --- Endkunden und Prosumer ---
     # B2C ist seit 2026-08-29 erlaubt (G7). Der Grund ist nicht der Preis, sondern

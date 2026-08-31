@@ -84,6 +84,13 @@ laufend neuer Gestaltung hängt, ist hier nicht baubar — unabhängig davon, wi
   Übereinstimmung von Baubarkeit und Markt.
 - **Logistik- und Wirtschaftssimulation.** Lieferketten, Preise, Routen. Dieselben
   Eigenschaften, etwas näher an der Optimierung als am Aufbau.
+- **Simulation der echten Weltwirtschaft.** Der stärkste Fall, weil als einziger die
+  vierte Prüfachse offensteht: Echte Daten machen den Rückvergleich möglich. Zustand ist
+  von Bauart wegen eine Zahlentabelle, Inhalt entsteht aus Datentabellen statt aus
+  Handarbeit. Der wunde Punkt ist Kriterium 3 — ein Modell mit tausenden rückgekoppelten
+  Größen wird leicht chaotisch, und dann trägt kein Regressionstest mehr. Ganzzahl- statt
+  Gleitkommaarithmetik und begrenzte Rückkopplungen sind hier keine Feinheit, sondern
+  Voraussetzung.
 - **Programmier- und Optimierungspuzzle.** Lösbarkeit ist beweisbar, Schwierigkeit exakt
   messbar (Zuglänge, Befehlszahl, Durchsatz). Von allen Genres das agentenfreundlichste —
   und das mit dem kleinsten Markt. Der Zielkonflikt ist hier am schärfsten.
@@ -121,8 +128,40 @@ berechenbar und kommen dem „lohnt sich" näher als alles andere:
 - **Verschiebung des Optimums** — ändert sich die beste Strategie im Verlauf? Wenn ja,
   gibt es einen Spannungsbogen; wenn nein, ist es ein Laufband.
 
-Diese drei sind der eigentliche Grund, warum „agent first" hier mehr sein kann als eine
-Notlösung: Ein Agentenschwarm kann eine Balance millionenfach durchspielen, was kein
+### Die vierte Prüfachse: die Wirklichkeit als Orakel
+
+Für eine Simulation, die **die echte Welt** modelliert, gibt es eine Prüfmöglichkeit, die
+kein anderes Spielgenre hat und die stärker ist als alle drei oben: **Man lädt echte
+Daten für ein Startjahr, lässt das Modell vorwärts laufen und vergleicht mit dem, was
+tatsächlich passiert ist.**
+
+Damit wird „verhält es sich plausibel" — bei einer Wirtschaftssimulation ein erheblicher
+Teil des „lohnt sich zu spielen" — zu einem **automatisierten Regressionstest**. Genau
+die Frage, von der oben steht, ein Agent könne sie nicht beantworten, wird hier
+beantwortbar. Das ist der Grund, eine erfundene Welt *nicht* zu wählen, wo die echte
+möglich ist: Eine erfundene Welt hat kein Orakel.
+
+Zwei Bedingungen hängen daran, und beide gehören vor den ersten Entwurf geprüft:
+
+- **Die Lizenz muss gewerbliche Weiterverbreitung erlauben.** Ein Spiel mit eingebetteten
+  Daten verbreitet sie mit. In Frage kommen Weltbank, Eurostat, OECD, IWF, UN Comtrade,
+  Destatis, Our World in Data — die Bedingungen unterscheiden sich erheblich, manche
+  erlauben nur nichtgewerbliche Nutzung oder untersagen die Weitergabe im Bulk. **Das ist
+  eine Recherchefrage, keine Annahme**, und sie entscheidet, ob das Modell überhaupt
+  ausgeliefert werden darf.
+- **Echte Institutionen ja, echte lebende Personen nein.** Länder, Behörden, Notenbanken
+  und Politikinstrumente zu modellieren ist üblich und unproblematisch — Democracy 4 und
+  Victoria 3 tun genau das. Namentlich benannte lebende Personen in Verbindung mit
+  Korruptionsmechanik sind etwas anderes und gehören nicht ins Produkt.
+
+Und die Grenze des Orakels gehört dazu, damit niemand mehr aus ihm herausliest, als
+drinsteckt: Der Rückvergleich prüft die **Dynamik der Maschine** über den historischen
+Zeitraum. Er sagt nichts darüber, ob das Modell auch dann plausibel bleibt, wenn der
+Spieler etwas tut, das nie jemand getan hat — und das ist der eigentliche Spielinhalt.
+Das Orakel deckt die Physik ab, nicht den Ast, den der Spieler betritt.
+
+Diese drei — und im Fall einer Weltsimulation vier — sind der eigentliche Grund, warum
+„agent first" hier mehr sein kann als eine Notlösung: Ein Agentenschwarm kann eine Balance millionenfach durchspielen, was kein
 kleines Studio kann. **Das gehört deshalb in den Entwurf und nicht in die Nachbereitung
 — ein Spiel, an dem sich diese drei Zahlen nicht berechnen lassen, verschenkt den
 einzigen Vorteil, den diese Fabrik hat.**
