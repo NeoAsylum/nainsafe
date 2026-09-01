@@ -185,11 +185,16 @@ def fokuslauf(trocken: bool) -> int:
     # Aus einem zurueckgewiesenen Entwurf zu bauen waere der teuerste Fehler der ganzen
     # Kette: Der Fehler vervielfaeltigt sich in jedes Arbeitspaket, und die Pruefer
     # finden ihn dann einzeln wieder. Also erst der Entwurf, dann der Bau.
-    befunde = sorted((WURZEL / "ventures" / FOKUS / "befunde").glob("pruefung-entwurf*.md"))
-    urteil = None
-    if befunde:
-        kopf, _ = frontmatter(befunde[-1].read_text(encoding="utf-8"))
-        urteil = kopf.get("urteil")
+    # Nach Inhalt suchen, nicht nach Dateiname: Der Pruefer benennt seinen Befund nach
+    # der Paketkennung, und die aendert sich. Ein Namensmuster haette hier still das
+    # falsche -- naemlich ein veraltetes -- Urteil gelesen.
+    ordner = WURZEL / "ventures" / FOKUS / "befunde"
+    entwurfsbefunde = []
+    for d in ordner.glob("pruefung-*.md") if ordner.is_dir() else []:
+        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        if kopf.get("pruefer") == "entwurf-pruefer":
+            entwurfsbefunde.append((d.stat().st_mtime, kopf))
+    urteil = max(entwurfsbefunde)[1].get("urteil") if entwurfsbefunde else None
 
     if urteil != "geprueft":
         stand = urteil or "noch nicht geprueft"

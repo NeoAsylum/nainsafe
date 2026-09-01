@@ -52,3 +52,18 @@ Hier steht, wann er fertig ist. Nicht „fehlerfrei" — **baubar**.
 Dieses Paket geht höchstens dreimal zurück. Danach ist nicht der Entwerfer das Problem,
 sondern dieses Kriterium — dann `blockiert` und eine Meldung an den Geschäftsführer,
 der es dem Betreiber vorlegt.
+
+**Der Zähler steht bei 1, nicht bei 3.** Nachgetragen am 2026-09-01, damit die Zahl
+nicht stillschweigend zurechtgebogen wird: Die Rückläufe der Runden 1 und 2 sind gegen
+ein Kriterium ergangen, das der Prüfer sich selbst gegeben hatte, weil es dieses Paket
+noch nicht gab — er hat das in beiden Befunden ausdrücklich vermerkt. Gegen *diese* fünf
+Bedingungen ist bisher **einmal** geprüft worden, und die Befundzahl ist dabei von zwölf
+auf drei gefallen.
+
+Zwei weitere Rückläufe gegen dieses Kriterium sind erlaubt. Dann `blockiert`.
+
+| Runde | Kriterium | Befunde | Urteil |
+|---|---|---:|---|
+| 1 | selbst gegeben | 8 | zurück |
+| 2 | selbst gegeben | 12 | zurück |
+| 3 | **dieses Paket** | 3 | zurück — Zähler 1 von 3 |
