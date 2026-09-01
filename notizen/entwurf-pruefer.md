@@ -17,78 +17,80 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 ## Was funktioniert
 
 - 2026-08-31 — **Jede Zahl im Entwurf selbst nachrechnen, auch die beilaeufigen.** Drei
-  von acht Befunden des ersten Laufs waren Rechenfehler in Nebensaetzen: "rund 150
-  Groessen" (tatsaechlich 294, und es war die einzige Verteidigung gegen Kriterium 3),
-  "vier Laender mal fuenf Gegenueber" bei vier aufgezaehlten, "4 x 41 + 20 = 184" bei 24
-  wegfallenden Feldern. Prosa wird gelesen, Arithmetik nicht.
-- 2026-08-31 — **Die Kostentabelle verraet die ungenannte Lesart eines Masses.** Mass 3
-  war in `spiel.md` unterbestimmt ("im einen Fenster eingefroren, im anderen frei"). Dass
-  `technik.md` dafuer exakt das Doppelte der Strategievielfalt ansetzt, legt die Lesart
-  offen, die keiner der beiden hingeschrieben hat. Wo zwei Dokumente stillschweigend
-  dieselbe Annahme brauchen, ist sie geraten. **Erst die Zahlen, dann den Text.**
-- 2026-08-31 — **Die Luecken des Datenkurators einzeln abhaken, nicht im Ueberblick.**
-  Drei von vier waren sauber beantwortet, die vierte (Sektorgliederung) mit einem Satz,
-  der das Gegenteil dessen behauptete, was `daten.md` vorgegeben hatte. Im Ueberblick
-  gelesen wirkt der Abschnitt vollstaendig.
-- 2026-08-31 — **Eine Begruendung an ihrer eigenen Groesse pruefen.** "Ohne Deckelung
-  zoege eine Bankrottpartie jeden Median" — ein Median ist gegen Einzelausreisser
-  unempfindlich. Falsche Begruendungen markieren zuverlaessig Stellen, an denen eine
-  Regel aus einem anderen Grund eingefuehrt wurde als dem genannten.
-- 2026-08-31 — **Ein Abruf auf die Jahreszahl einer Datenquelle entscheidet manchmal eine
-  offene Entwurfsfrage.** BACI beginnt 1995; zusammen mit T24 (mehr als ein Fuenftel
-  gefuellt = nicht belastbar) ist der Jahrgang 1980 damit ausgeschlossen, ohne dass es
-  jemand entschieden haette. Zwei Minuten Suche, ein Befund hoher Schwere.
-
-- 2026-08-31 (2. Lauf) — **Die Belegtheit der Sollreihen selbst abrufen, statt dem
-  Entwurf zu glauben.** Der Entwurf begruendete Startjahr und Partielaenge mit "die
-  uebrigen Reihen sind laenger". Sechs Abrufe der Weltbank-API zeigten, dass die
-  US-Sektoranteile erst 1997 beginnen und 2021 enden — die Partielaenge war um vier Jahre
-  zu lang, und an ihr hing jede abgeleitete Zahl beider Dokumente. **Wo ein Entwurf eine
-  Datenreihe als vorhanden voraussetzt, ist ein Abruf billiger als jede Ueberlegung.**
-- 2026-08-31 (2. Lauf) — **Jede als "Anteil" deklarierte Groesse an echten Zahlen
-  nachrechnen.** `handelsanteil` = Handel geteilt durch Wertschoepfung war als 0…100 %
-  deklariert und in einer Mischformel als Gewicht verbaut; fuer Deutschlands
-  Landwirtschaft 1995 sind es 269 %. Bruttostrom durch Nettogroesse ist nie ein Anteil —
-  das ist ein Muster, kein Einzelfall.
-- 2026-08-31 (2. Lauf) — **Pruefen, ob ein Lauf, den ein Mass vorschreibt, ueberhaupt
-  laufen kann.** Der Rueckvergleich faehrt "Fonds mit Nullvermoegen"; die Renditeformel
-  braucht dieses Vermoegen als Nenner, und die Todesart Anlegerabzug greift nach drei
-  Runden. Ein Mass ist erst dann eine Rechenvorschrift, wenn sein eigener Lauf zu Ende
-  laeuft.
-- 2026-08-31 (2. Lauf) — **Bei einer zweiten Fassung nachsehen, ob die beantworteten
-  Rueckfragen die aktuellen sind.** `spiel.md` beantwortete die zwei offenen Punkte der
-  *ersten* Fassung von `technik.md`; die zwei neuen der zweiten blieben liegen, einer
-  davon die Abnahmeregel von Mass 4. Abgearbeitete Befundlisten lesen sich vollstaendig.
+  von acht Befunden des ersten Laufs waren Rechenfehler in Nebensaetzen; Prosa wird
+  gelesen, Arithmetik nicht.
+- 2026-08-31, bestaetigt 2026-09-01 — **Die Kostentabelle verraet die ungenannte Lesart
+  eines Masses. Erst die Zahlen, dann den Text.** Im zweiten Lauf legte das exakte
+  Doppelte der Strategievielfalt die unausgesprochene Fensterlesart von Mass 3 offen. Im
+  dritten Lauf war es die Suchbotpartie `R × (1 + 60)`: Sie beweist, dass je Kandidat
+  genau **ein** Weltschritt gerechnet wird — ein Nachspiel bis Partieende kostete das
+  Zwoelffache —, und damit, dass nach diesem einen Schritt eine **statische Bewertung**
+  gebraucht wird, die nirgends steht. Die Zahl hat den Befund erzeugt, nicht der Text.
+- 2026-08-31 — **Eine Begruendung an ihrer eigenen Groesse pruefen.** Falsche
+  Begruendungen markieren zuverlaessig Stellen, an denen eine Regel aus einem anderen
+  Grund eingefuehrt wurde als dem genannten.
+- 2026-08-31, bestaetigt 2026-09-01 — **Die Belegtheit der Sollreihen selbst abrufen,
+  statt dem Entwurf zu glauben.** Im zweiten Lauf brachte das den teuersten Befund
+  (Partielaenge um vier Jahre zu lang). Im dritten Lauf habe ich denselben Abruf
+  wiederholt, obwohl Entwerfer *und* Vorrunde ihn schon gemacht hatten: 1997-2021 belegt,
+  1994-1996 und 2022-2024 leer. **Eine Bedingung, die auf einer Messung steht, wird
+  nachgemessen, nicht zitiert** — es kostet einen Abruf und macht das Urteil unangreifbar.
+- 2026-08-31 — **Jede als „Anteil" deklarierte Groesse an echten Zahlen nachrechnen.**
+  Bruttostrom durch Nettogroesse ist nie ein Anteil — Muster, kein Einzelfall.
+- 2026-08-31 — **Pruefen, ob ein Lauf, den ein Mass vorschreibt, ueberhaupt laufen kann.**
+  Ein Mass ist erst dann eine Rechenvorschrift, wenn sein eigener Lauf zu Ende laeuft.
+- 2026-08-31 — **Bei einer neuen Fassung nachsehen, ob die beantworteten Rueckfragen die
+  aktuellen sind.** Abgearbeitete Befundlisten lesen sich vollstaendig.
+- 2026-09-01 — **Eine Tabelle, die von sich sagt „abschliessend", gegen die Feldliste
+  abzaehlen.** `spiel.md` fuehrt je Instrument vier Felder auf und listet in der
+  Startwerttabelle nur eines davon; 32 der 310 Adressen hatten dadurch keinen Startwert.
+  Der Satz „hier stehen alle uebrigen" ist eine pruefbare Behauptung, keine Ueberleitung —
+  und er wird zuverlaessig geglaubt statt nachgezaehlt.
+- 2026-09-01 — **Nach einer geaenderten Grundzahl jede abgeleitete Zahl nachrechnen —
+  auch wenn nichts herauskommt.** R fiel von 28 auf 24; ich habe rund zwanzig abgeleitete
+  Groessen beider Dokumente nachgerechnet (Feldzahl, Sollmaske, alle Kostenzeilen,
+  Ergebnisbaender, Kalibrierung, Tiefe 2, Profilkennungen, `durchgriff`) und **keinen**
+  Fehler gefunden. Der Grund steht in `technik.md` T40: keine abgeleitete Zahl mehr als
+  Literal. Wo eine Architektur den Fehlertyp ausschliesst, ist die Nachrechnung billig und
+  einmalig — danach genuegt die Stichprobe.
 
 ## Was nicht funktioniert
 
-- 2026-08-31 — **Es gab kein Arbeitspaket.** `aufgaben/` war leer; das Abnahmekriterium
-  musste ich aus den beiden Rollendateien, `agentenbau.md` und `daten.md`
-  zusammensetzen. Das geht, kostet aber einen halben Lauf und macht das Urteil
-  angreifbar. Beim naechsten Mal zuerst `ls aufgaben/` und, wenn leer, das ersatzweise
-  benutzte Kriterium im Frontmatter ausweisen — nicht nachtraeglich im Text.
-- 2026-08-31 (2. Lauf) — **Immer noch kein Arbeitspaket**, zweiter Lauf in Folge. Das
-  Ausweisen im Frontmatter hat funktioniert und kostet nichts; die Ursache bleibt. Steht
-  es beim dritten Mal wieder leer, gehoert der Hinweis nicht in meinen Befund, sondern
-  ins Logbuch des Portfolio-Managers — ueber den Projektmanager.
+- 2026-08-31 (1. und 2. Lauf) — **Kein Arbeitspaket, zweimal in Folge.** Ersatzweise
+  Kriterien selbst zusammenzusetzen kostet einen halben Lauf und macht das Urteil
+  angreifbar. **Erledigt seit 2026-09-01:** `aufgaben/0001-entwurf-abnahme.md` nennt fuenf
+  Bedingungen, und der Unterschied ist messbar — zwoelf Befunde ohne Paket, **drei** mit,
+  bei derselben Suchtiefe. Das lag nicht an einem besseren Entwurf: Was ich diesmal nicht
+  aufgeschrieben habe, waere ohne Paket ein Befund geworden. *Erste Handlung jedes Laufs
+  bleibt `ls aufgaben/`; ist es leer, das Ersatzkriterium ins Frontmatter.*
+- 2026-09-01 — **Die Ausschlussliste des Pakets muss man aktiv gegen sich selbst
+  anwenden.** „Kalibrierbare Zahl ist kein Befund" und „Genauigkeit ueber die Bedingungen
+  hinaus ist kein Befund" haben bei mir je zwei Kandidaten getoetet, die sich sauber
+  begruenden liessen (Heuristikbot-Rangfolge, `R ≤ 26` um eine Runde zu konservativ, die
+  `V`-Regel in T42). Beide gehoeren in den Abschnitt *wonach ich gesucht habe* — dort
+  belegen sie die Tiefe der Pruefung, im Befundteil waeren sie Rauschen.
 
 ## Offene Faehrten
 
-- **Mass 4 ist ungemessen und ist das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
-  Richtungstreue ueber 40 Jahre mit endogener Produktivitaet erreichbar sind, kann erst
-  der Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler — aber wenn es
-  scheitert, scheitert die vierte Pruefachse, also der Grund fuer die echte Welt.
-- **Die Marktrendite ist erledigt** (2026-08-31, 2. Lauf): Gewichtung nach
-  Modellmarktwerten statt nach dem Fondsbestand, damit geht die Ueberrendite eines grossen
-  Fonds nicht rechnerisch gegen null. Gegenkraft 3 ist eine Gegenkraft geblieben.
-- **Bei der naechsten Entwurfspruefung zuerst pruefen, ob eine Groesse zwei Herren hat.**
-  Bestaetigt im zweiten Lauf: Sektorgliederung, Startjahrgang, Marktrendite, dann die
-  Abnahmeregel von Mass 4 und die Abbildung Profil→Aktionen. Immer dieselbe Bruchstelle
-  zwischen Spielentwerfer und Architekt — und sie wandert, sie verschwindet nicht.
-- **Die Partielaenge 28 wird auf 24 fallen** (oder die Sektoranteile werden gestrichen).
-  Wenn die dritte Fassung kommt, ist jede abgeleitete Zahl neu zu pruefen: Ergebnisskala,
-  Partiedrittel, Fenster von Mass 3, Suchbotkosten, Rechenzeittabelle. Eine geaenderte
-  Grundzahl ist die billigste Stelle, an der eine Nachbesserung unvollstaendig bleibt.
-- **Offen: die Leitzinsreihen von China und Brasilien in den neunziger Jahren.**
-  `technik.md` nennt sie selbst als Verdachtsfall; ich habe nur die Sektoranteile
-  abgerufen. Sind sie ebenfalls kurz, verschiebt sich das Prueffenster ein zweites Mal.
+- **Geschlossen 2026-09-01:** Startjahrgang (eigener Abruf, 1997-2021), `handelsanteil`
+  → `durchgriff`, Marktrendite, Abbildung Profil→Aktionen, Abnahmeregel Mass 4. Alle
+  zwoelf Vorrundenbefunde sind sachlich behoben, keiner nur behauptet.
+- **Die Bruchstelle „eine Groesse mit zwei Herren" ist gewandert, nicht verschwunden.**
+  Erst Sektorgliederung, dann Startjahrgang und Marktrendite, dann Abnahmeregel und
+  Profilabbildung — diesmal liegt sie **in der Luecke zwischen** beiden Dokumenten: Der
+  Architekt hat seine Haelfte der Suchbotfrage geschlossen (Kandidatenziehung, T41), die
+  andere Haelfte (Zielgroesse) gehoert dem Spielentwerfer und steht in keiner Liste
+  offener Punkte. *Beim naechsten Lauf zuerst dort suchen, wo eine Rolle ausdruecklich
+  „meine Haelfte" sagt — die andere Haelfte ist der wahrscheinlichste Fundort.*
+- **Mass 4 ist ungemessen und bleibt das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
+  Richtungstreue mit endogener Produktivitaet erreichbar sind, kann erst der
+  Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler.
+- **Offen, aber entschaerft: die IFS-Leitzinsreihen von China und Brasilien.** `imf.org`
+  weist mit HTTP 403 ab, `FR.INR.LEND` ist ein Indiz und eine andere Reihe. Nach T40
+  kostet ein engeres Fenster nur noch eine Manifestzeile — die Faehrte kann kein Paket
+  mehr zweimal bauen lassen.
+- **Beim vierten Lauf zu pruefen, falls es einen gibt:** ob die Vergleichsgroesse des
+  Suchbots wirklich in `spiel.md` steht und nicht nur im Befundabarbeitungsteil behauptet
+  wird, und ob die zwei fehlenden Startwertzeilen tatsaechlich in der Tabelle gelandet
+  sind statt in einem Nebensatz. Beides ist billig zu beheben und deshalb leicht zu
+  vergessen.
