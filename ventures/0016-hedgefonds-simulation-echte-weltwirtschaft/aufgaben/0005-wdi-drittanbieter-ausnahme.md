@@ -1,7 +1,7 @@
 ---
 id: 0005-wdi-drittanbieter-ausnahme
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-wdi.md]
 abnahme: Für jede der vier Verdachtsreihen steht im Befund Indikatorcode, das wörtliche Feld "Source" aus dem Indikatorendatensatz, die Abruf-URL, das Abrufdatum und ein Urteil frei|gesperrt|unklar mit Begründung; bei jedem Urteil ausser "frei" steht die Folge nach T26 daneben.
