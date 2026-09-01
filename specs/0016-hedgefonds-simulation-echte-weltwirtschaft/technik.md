@@ -2,43 +2,50 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 4 (nach ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-2026-09-01.md)
+fassung: 5 (nach spiel.md Fassung 4 und ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde4-2026-09-01.md)
 stack: Rust (stabile Kette, Edition 2021); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche egui/eframe (MIT OR Apache-2.0)
 determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
 zustand: fester, allokationsfreier Wert, 310 i64 (2.480 Byte), Prüfsumme über kanonische Byteform
 speicherstand: Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme -- nicht der Zustand
 kalibrierung: alle Zahlenwerte in einer Parameterdatei ausserhalb des Codes, mitgehasht
 partie: R Runden, R ist eine Größe des Jahrgangs; im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte
-suchbot: Zielgröße B nach T44 -- statische Ergebnisprognose des Zwischenzustands, aus der Ergebnisgröße von spiel.md abgeleitet, ohne freien Parameter
-herkunft: jede der 310 Adressen trägt genau einen Herkunftseintrag; eine Lücke bricht den Jahrgangsbau ab (T45)
+fondsvermoegen: Kasse + bewertete Positionen + bewertete Beteiligungen - Hebel, Beteiligungen zum Ausstiegswert; genau eine Funktion im Kern, gelesen von Abrechnung, Mandat, Todesart 1, Invariantentest und B (T47)
+suchbot: Zielgröße B nach T44 -- statische Ergebnisprognose des Zwischenzustands, im Zweig "überlebt" formelgleich mit der Ergebnisgröße von spiel.md, ohne freien Parameter
+herkunft: jede der 310 Adressen trägt genau einen Herkunftseintrag aus fünf Arten; 136 Datenanker, 150 Entwurf, 11 Parameter, 2 Manifest, 11 Vorgabe (T45, T46) -- eine Lücke oder ein zweiter Eintrag bricht den Jahrgangsbau ab
 tick_planwert: 10 Mikrosekunden je Weltschritt (Bandbreite 5 bis 30) -- geschätzt, nicht gemessen; es gibt noch keinen Kern
 nachtlauf: 11.783.264 Weltschritte, 2,0 Minuten auf einem Kern beim Planwert, 9,8 Minuten im ungünstigen Fall
 ---
 
 # Der Kern ist eine reine Ganzzahlfunktion ohne Ziehung -- damit ist Determinismus keine Disziplin, sondern eine Eigenschaft des Typsystems.
 
-Vierte Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md` und die drei
-Befunde der dritten Prüfung. Die Abarbeitung steht am Ende der Datei. Die Abarbeitungen der
-**ersten und zweiten** Prüfung standen in den Fassungen 2 und 3 und sind dort je vom Prüfer
-als erledigt abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
+Fünfte Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`, gegen die
+Prüfung der Runde 4 und gegen **`spiel.md` Fassung 4**, die vier Stellen dieses Dokuments
+neu rechnen lässt. Die Abarbeitung steht am Ende der Datei. Die Abarbeitungen der ersten
+drei Prüfungen standen in den Fassungen 2 bis 4 und sind dort je vom Prüfer als erledigt
+abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
 
-Die Vorgaben sind mit **T1** bis **T43** durchnummeriert. Der Builder weicht von keiner ab,
+Die Vorgaben sind mit **T1** bis **T47** durchnummeriert. Der Builder weicht von keiner ab,
 ohne dass ein ADR sie aufhebt; der Prüfer zitiert die Nummer, statt sie zu umschreiben.
-**Die Nummern behalten über alle Fassungen ihre Bedeutung**, damit beide Prüfungen
+**Die Nummern behalten über alle Fassungen ihre Bedeutung**, damit alle Prüfungen
 zitierbar bleiben; neue Vorgaben tragen die nächsten freien Nummern und stehen dort, wo sie
 inhaltlich hingehören. Die Nummerierung ist deshalb innerhalb der Abschnitte nicht
 fortlaufend.
 
-**Die teuerste Lehre dieser Fassung steht in T44 und T45, und beide betreffen denselben
-Fehlertyp: eine Größe, die keinem der beiden Dokumente gehört.** Die Zielgröße des Suchbots
-war nirgends genannt, weil `spiel.md` den Bot dem Prüfstand zurechnet und der Prüfstand die
-Bewertung dem Entwurf — zweiunddreissig Zustandsadressen hatten keinen Startwert, weil die
-Tabelle, die sich abschliessend nennt, sie nicht führt und T23 auf ebendiese Tabelle
-verwies. Die Antwort auf den ersten Fall ist eine **Ableitung statt einer Erfindung**: T44
-rechnet die Zielgröße aus der Ergebnisgröße von `spiel.md` und hat keinen freien Parameter.
-Die auf den zweiten ist eine Prüfung, die den Fehlertyp künftig unmöglich macht (T45).
-Dieselbe Bauart wie T40, an dem die vorige Fassung dasselbe gelernt hat: nicht die fehlende
-Zahl nachtragen, sondern die Stelle schliessen, an der sie fehlen konnte.
+**Die teuerste Lehre dieser Fassung: Eine Prüfung, die nur ihr eigenes Versprechen prüft,
+prüft zu wenig.** T45 verlangt seit Fassung 4, dass jede der 310 Adressen genau einen
+Herkunftseintrag trägt, und nennt vier zulässige Eintragsarten. Diese Fassung hat die
+Zuordnung zum ersten Mal **ausgezählt statt behauptet** — und dabei drei Dinge gefunden,
+die keine Prüfung bisher gesehen hat: elf Adressen, für die keine der vier Arten passt
+(Neubasierungszähler, US-Wechselkurs als Numéraire, fünf Aggregatgrößen der Restwelt ohne
+Reihe), zwei Adressen, deren Wert der Jahrgangsbau selbst errechnet, und eine Klasse von
+Zeilen, die nach dem Wortlaut **zwei** Einträge bekämen und den Bau damit abbrächen. Die
+Antwort sind eine fünfte Eintragsart, eine Vorrangregel und **T46**, das die
+Vorgabeadressen abschliessend aufzählt statt sie zu erwähnen. Die Summe geht jetzt auf:
+`136 + 150 + 11 + 2 + 11 = 310`.
+
+Dieselbe Bauart wie T40 und T44: nicht die fehlende Zahl nachtragen, sondern die Stelle
+schliessen, an der sie fehlen konnte — und die Zusage einer Tabelle dadurch prüfen, dass
+man sie einmal von Hand einlöst.
 
 ## 1. Stack
 
@@ -98,13 +105,18 @@ Bedeutung steht in dieser Tabelle und nirgends sonst:
 
 | Klasse | Einheit | Beispiel | Bereich |
 |---|---|---|---|
-| Fondsgeld (Kasse, Position, Hebel, Anlegerbestand) | US-Cent | 4.200.000.000 = 42 Mio USD | ±9,2·10^16 USD |
+| Fondsgeld (Kasse, Position, **Beteiligungswert**, Hebel, Anlegerbestand) | US-Cent | 4.200.000.000 = 42 Mio USD | ±9,2·10^16 USD |
 | Volkswirtschaftliche Beträge (BIP, Wertschöpfung, Kapitalstock, Handelsstrom, Marktkorbwert) | Tausend USD zu konstanten Preisen des Basisjahrs | 21.000.000.000 = 21 Bio USD | reichlich |
 | Raten (Zins, Inflation, Zoll, Haushaltssaldo, Schuldenquote, Rendite, Überrendite) | Basispunkte (1 bp = 0,01 %) | 250 = 2,50 % | ±2 Mio % |
 | Anteile (Sektoranteil, Marktanteil, Einfluss, Zustimmung, `durchgriff`) | Zehntausendstel | 10.000 = 100 % | 0 bis 10.000 |
 | Preise und Preisniveaus | Index, Startjahr = 10.000 | 12.500 = +25 % | siehe T8 |
 | Wechselkurs | Index gegen USD, Startjahr = 10.000 | 8.000 = Aufwertung um 25 % | siehe T8 |
+| Zähler und Restdauern (Aufsicht, Nachahmer, Restverzögerung, die drei Restdauern, `basiswechsel`, Runde, Mandatsstand, Positionsstufe) | Stück bzw. Runden | 3 = drei Runden | 0 … Obergrenze aus `parameter.toml` |
 | Ergebnis einer Partie | Milli-Runden | 12.000 = Runde 12,0 | siehe T34 |
+
+Die vorletzte Zeile ist in Fassung 5 nachgetragen: T5 sagt von sich, die Bedeutung stehe
+„in dieser Tabelle und nirgends sonst", und die reinen Zähler standen bis dahin in keiner
+Klasse. Sie sind die einzige Klasse ohne Skalenfaktor — eine 3 heisst drei, nicht 0,0003.
 
 Einfluss und Zustimmung erscheinen dem Spieler als 0 bis 100 (so nennt sie `spiel.md`);
 gespeichert sind sie in Zehntausendsteln, damit die Gegenkräfte unterhalb eines
@@ -152,7 +164,7 @@ nichts entstehen zur Laufzeit:
 | Abgeleitete Größe | Formel | bei R = 24 |
 |---|---|---|
 | Ergebnisband „Mandat erfüllt" | `1.000 … R × 1.000` | 1.000 … 24.000 |
-| Ergebnisband „überlebt" | `(R+1) × 1.000 … (R+1) × 1.000 + 2.000` | 25.000 … 27.000 |
+| Ergebnisband „überlebt" | `(R+1) × 1.000 … (R+1) × 1.000 + 3.000` | 25.000 … 28.000 |
 | Ergebnisband „Todesart" | `30.000 + 1.000 … 30.000 + R × 1.000` | 31.000 … 54.000 |
 | Partiedrittel (Maß 1, Fenster von Maß 3) | `1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R` | 1-8, 9-16, 17-24 |
 | Gewinnschwelle Maß 2 | `E(p) ≤ R × 1.000` | 24.000 |
@@ -161,12 +173,22 @@ nichts entstehen zur Laufzeit:
 | `exogen_ab_runde` je Reihe | `bruchjahr − startjahr + 1` | DE-Leitzins: 1999 − 1997 + 1 = 3 |
 
 **Eine Schranke gehört dazu, weil die Ergebnisskala von `spiel.md` an einer Stelle ein
-echtes Literal trägt** — die 30.000, ab der die Todesarten zählen. Das Band „überlebt"
-endet bei `(R+1) × 1.000 + 2.000`; es stösst an die 30.000, sobald `R ≥ 27`. Der
-Jahrgangsbau bricht deshalb mit `R > 26` ab, statt eine Skala zu erzeugen, in der ein Wert
-zwei Bedeutungen trägt. Für das Fenster 1997–2021 ist das folgenlos, und `spiel.md` lässt
-das Fenster nur enger werden, nie weiter. Es ist eine Wand, keine Einschränkung — aber es
-ist eine, die vor dem Bau sichtbar sein muss und nicht danach.
+echtes Literal trägt** — die 30.000, ab der die Todesarten zählen. Der Jahrgangsbau bricht
+mit `R > 26` ab, statt eine Skala zu erzeugen, in der ein Wert zwei Bedeutungen trägt.
+
+**Die Schranke bleibt in Fassung 5 unverändert bei `R ≤ 26`, ist jetzt aber scharf statt
+grosszügig, und das habe ich in diesem Lauf nachgerechnet.** `spiel.md` Fassung 4 hat die
+Kappung des Fehlbetrags gestrichen; das Band „überlebt" endet dadurch bei
+`(R+1) × 1.000 + 3.000` statt bei `+ 2.000`. Der niedrigste erreichbare Wert des Todesbandes
+ist `30.000 + (R + 1 − R) × 1.000 = 31.000`, unabhängig von R. Disjunkt sind beide Bänder
+also genau dann, wenn `(R+1) × 1.000 + 3.000 < 31.000`, das heisst `R < 27`. Bei `R = 26`
+endet „überlebt" bei 30.000 und lässt 999 Milli-Runden Luft; bei `R = 27` fiele sein oberes
+Ende mit dem unteren Ende des Todesbandes zusammen. **Das breitere Band kostet damit keine
+Runde Partielänge** — dieselbe Schranke, aber ohne Reserve.
+
+Für das Fenster 1997–2021 ist das folgenlos, und `spiel.md` lässt das Fenster nur enger
+werden, nie weiter. Es ist eine Wand, keine Einschränkung — aber es ist eine, die vor dem
+Bau sichtbar sein muss und nicht danach.
 
 **T8 — Preisniveau und Wechselkurs werden geführt und neu basiert.** Der Prüfjahrgang
 beginnt nach `spiel.md` Fassung 3 im Jahr **1997**, also lange nach dem Plano Real; dort
@@ -278,7 +300,7 @@ damit die Summe nachzählbar ist:**
 | politisch | Zustimmung, Aufsichtszähler, Einfluss | 3 | ebd. |
 | Instrumente (4×) | Stand, anliegender Druck, Gegendruck, Restverzögerung | 16 | ebd. |
 | Restdauern | `marktverbot_rest`, `lobbykosten_rest`, `regierungsdruck_rest` | 3 | Gegenkraft 1 (dritte Schwelle) und Gegenkraft 2 |
-| Buchhaltung | `basiswechsel` | 1 | T8 |
+| Buchhaltung | `basiswechsel` | 1 | T8; Herkunft nach T46 |
 | **je spielbarem Land** | | **44** | |
 | **vier spielbare Länder** | | **176** | |
 | **Restwelt** | Sektoren 12 + Aggregat 9 + `basiswechsel` 1; **keine** Instrumente, Zustimmung, Aufsicht, Einfluss, Restdauern | **22** | „Die Restwelt" |
@@ -295,7 +317,16 @@ damit die Summe nachzählbar ist:**
 
 Nachrechnung: `4 × 44 + 22 = 198` für die Gebiete, `40 + 2 + 12 + 2 = 56` für die Welt,
 `5 + 3 + 20 + 24 = 52` für den Fonds, `4` für die Partie. `198 + 56 + 52 + 4 = 310`.
-`spiel.md` nennt dieselbe Zahl und verweist für die Aufstellung hierher.
+`spiel.md` nennt dieselbe Zahl und verweist für die Aufstellung hierher. **Dieselben 310
+Adressen sind in T45 ein zweites Mal aufgeteilt, diesmal nach ihrer Herkunft** — die beiden
+Summen laufen über dieselbe Menge und müssen beide aufgehen; dass die zweite es in Fassung 4
+nicht tat, ist der Grund für T46.
+
+**Die Restwelt trägt vier Adressen, die keine Regel liest** (`leitzins`, `wechselkurs`,
+`staatsschuld`, `haushaltssaldo`). Sie stehen hier, weil der Aggregatblock für alle fünf
+Gebiete gleich gebaut ist — gleichförmige Adressierung nach T17, dieselbe Begründung wie der
+dauerhaft leere Steckplatz aus T16. Ihre Behandlung steht in T46, ihre Schreibregel
+(`Vortrag`, kein anderer Lesezugriff) ebenfalls.
 
 **`landespreis` bekommt keine Zeile, und das ist die Behebung von Befund 6, nicht ihre
 Umgehung.** Die Größe ist nach `spiel.md` der Sektorpreis der Vorrunde. Sie hat deshalb
@@ -471,24 +502,25 @@ liest die eingefrorenen Rohdateien und schreibt `jahrgang-<jahr>.bin`,
 Lizenz und Abrufdatum. Der Bau des Spiels lädt **nichts** aus dem Netz. Der Jahrgang
 enthält:
 
-1. **Startwerte** für jede Zustandsgröße mit Datenanker; die Größen ohne Anker stehen in
-   der Tabelle „Jede Größe ohne Datenanker" in `spiel.md` und kommen von dort oder aus
-   `parameter.toml`. **Zwei Klassen führt jene Tabelle nicht** — die zweiunddreissig
-   Adressen aus Befund 2 der dritten Prüfung —, und für sie gilt diese Zeile:
+1. **Startwerte** für jede Zustandsgröße mit Datenanker; die Größen ohne Anker kommen aus
+   der Tabelle „Jede Größe ohne Datenanker" in `spiel.md`, aus `parameter.toml`, aus dem
+   Manifest oder aus **T46**. Welche Adresse woher kommt, entscheidet T45, und die Zuordnung
+   ist dort abgezählt.
 
-   | Adresse | Zahl | Startwert | warum dieser Wert nicht gewählt, sondern erzwungen ist |
-   |---|---:|---:|---|
-   | `land.<L>.instrument.<I>.druck` (anliegender Lobbydruck) | 4 × 4 = 16 | 0 | Druck entsteht nach `spiel.md` ausschliesslich durch Aktion 3; vor Runde 1 hat keine Aktion stattgefunden |
-   | `land.<L>.instrument.<I>.rest` (Restverzögerung) | 4 × 4 = 16 | 0 | Die Verzögerung zählt eine Wirkung herunter, die ein Druck ausgelöst hat; ohne Druck gibt es keine |
+   **Die Vorgabetabelle der Fassung 4 an dieser Stelle ist gestrichen, und das ist kein
+   Rückzug, sondern die Vermeidung eines Abbruchs.** Sie führte
+   `land.<L>.instrument.<I>.druck` und `…​.rest` mit Startwert 0, je 16 Adressen, weil
+   `spiel.md` sie damals nicht führte. `spiel.md` Fassung 4 hat alle 32 in seine Tabelle
+   aufgenommen. Stünden sie hier weiter als Herkunftseintrag, trügen sie **zwei** Einträge —
+   und genau das bricht den Jahrgangsbau nach T45 ab. Ihre Herkunft ist ab sofort `Entwurf`.
 
-   Nur die vier spielbaren Länder tragen Instrumente (T15), daher 16 und nicht 20 je Klasse.
-   Beide sind Laufzähler von Schritt 3 und damit dieselbe Klasse wie der Gegendruck und die
-   drei Restdauerzähler, die `spiel.md` selbst auf 0 setzt. Der Wert ist deshalb keine
-   Entwurfsentscheidung, sondern die einzige mit der dortigen Entstehungsregel verträgliche
-   Zahl — trüge eine der beiden Adressen zu Partiebeginn einen Wert ungleich null, gäbe es
-   eine Ursache ohne Aktion, und die Kette aus T18 könnte sie in Runde 1 nicht benennen.
-   Nimmt der Spielentwerfer die beiden Zeilen in seine Tabelle auf, sticht sie diese hier;
-   dass es überhaupt so weit kam, beantwortet **T45**;
+   Was bleibt, ist die Begründung, weil sie den Wert erzwingt statt ihn zu wählen, und weil
+   ein späterer Leser sonst nicht weiss, warum dort 0 steht: Beide sind Laufzähler von
+   Schritt 3, Druck entsteht nach `spiel.md` ausschliesslich durch Aktion 3, und vor Runde 1
+   hat keine Aktion stattgefunden. Trüge eine der Adressen zu Partiebeginn einen Wert
+   ungleich null, gäbe es eine Ursache ohne Aktion, und die Kette aus T18 könnte sie in
+   Runde 1 nicht benennen. Nur die vier spielbaren Länder tragen Instrumente (T15), daher
+   je 16 und nicht je 20. **Dieser Absatz ist ein Nachweis, kein Herkunftseintrag;**
 2. **Sollreihen** für die 31 Reihen aus `spiel.md` plus den Handelsblock über 40 Ströme, je
    Reihe mit der Klassifikation aus T37;
 3. **historische Politikpfade** für Leitzins, Zollniveau und Haushaltssaldo. Der vierte
@@ -548,29 +580,100 @@ ausschliesst. Zwei Tabellenzeilen nachzutragen behebt den Fall; sie nachzutragen
 Stelle offenzulassen, an der niemand das Fehlen bemerkt, behebt ihn nicht.
 
 Der Jahrgangsbau führt über **alle 310 Adressen aus T15** eine Herkunftstabelle mit genau
-vier zulässigen Einträgen:
+**fünf** zulässigen Einträgen. Vier standen in Fassung 4; die fünfte ist in dieser Fassung
+hinzugekommen, weil das Auszählen zwei Adressen gefunden hat, deren Wert weder in einer
+Reihe noch in einem Dokument steht, sondern vom Jahrgangsbau selbst gerechnet wird.
 
-| Eintrag | Bedeutung | Beispiel |
-|---|---|---|
-| `Datenanker(nr)` | eine Reihe der Reihenliste weiter unten | `land.DE.sektor.2.wertschoepfung` → Reihe 1 × 2 |
-| `Entwurf` | die Tabelle „Jede Größe ohne Datenanker" in `spiel.md` | `land.CN.aufsichtszaehler` → 0 |
-| `Parameter(schluessel)` | `parameter.toml` nach T27 | `fonds.kasse` → `startkapital` |
-| `Vorgabe(T-Nummer)` | dieses Dokument; derzeit allein T23 Punkt 1 | `land.BR.instrument.zoll.druck` → 0 |
+| Eintrag | Bedeutung | Adressen | Beispiel |
+|---|---|---:|---|
+| `Datenanker(nr)` | eine Reihe der Reihenliste weiter unten | 136 | `land.DE.sektor.2.wertschoepfung` → Reihe 1 × 2 |
+| `Entwurf` | die Tabelle „Jede Größe ohne Datenanker" in `spiel.md` nennt einen **Zahlenwert** | 150 | `land.CN.aufsichtszaehler` → 0 |
+| `Parameter(schluessel)` | `parameter.toml` nach T27 | 11 | `fonds.kasse` → `startkapital` |
+| `Manifest(feld)` | vom Jahrgangsbau gerechnet und im Manifest ausgewiesen | 2 | `markt.wert` → Startkorb zu Startpreisen (T33) |
+| `Vorgabe(T-Nummer)` | dieses Dokument, abschliessend aufgezählt in **T46** | 11 | `restwelt.basiswechsel` → 0 (T8) |
+| **Summe** | | **310** | |
+
+**Die Vorrangregel, ohne die die Summe nicht aufgeht.** Die Entwurfstabelle in `spiel.md`
+nennt für einige Zeilen keinen Zahlenwert, sondern eine **Bezugsquelle** — „aus
+`parameter.toml`" bei Zustimmung, Finanzmarktregulierung, Fondskasse, Anlegerbestand und
+Parametersatz-Prüfsumme, „aus dem Manifest des Jahrgangs" bei der Jahrgangskennung. Nach dem
+Wortlaut der Fassung 4 trügen diese Adressen zwei Einträge und brächen den Bau ab. Es gilt
+deshalb: **Der Eintrag ist die Stelle, die den Wert *bestimmt*, nicht die, die ihn
+erwähnt.** Verweist die Entwurfstabelle weiter, lautet der Eintrag `Parameter(…)`
+beziehungsweise `Manifest(…)`; `Entwurf` bleibt den Zeilen vorbehalten, die eine Zahl
+hinschreiben. Ein Verweis ist kein zweiter Eintrag.
 
 **Eine Adresse ohne Eintrag bricht den Jahrgangsbau ab, eine Adresse mit zwei Einträgen
 ebenso.** Der zweite Fall ist der wichtigere: Er ist die Stelle, an der eine Größe zwei
 Herren bekäme und die beiden Werte auseinanderlaufen könnten — derselbe Fehlertyp, den T39
-für `landespreis` und T23 Punkt 9 für die BACI-Konkordanz schon geschlossen haben.
+für `landespreis`, T23 Punkt 9 für die BACI-Konkordanz und T47 für das Fondsvermögen schon
+geschlossen haben. Er ist in dieser Fassung einmal eingetreten und behoben: die 32
+Druck- und Restverzögerungsadressen, die `spiel.md` Fassung 4 aufgenommen hat und die T23
+Punkt 1 weiterhin führte.
+
+**Wie die Zahlen der dritten Spalte entstanden sind, damit sie nachzählbar sind statt
+geglaubt.** Je spielbarem Land tragen 21 Adressen einen Datenanker (9 Sektorgrößen ohne den
+Preis, 8 Aggregatgrößen ohne den Wechselkurs, der Wechselkurs selbst, 3 Instrumentenstände),
+20 den Eintrag `Entwurf` (3 Sektorpreise, Aufsichtszähler, Einfluss, 12 Druck-, Gegendruck-
+und Restverzögerungsfelder, 3 Restdauern), 2 einen Parameterschlüssel (Zustimmung,
+Finanzmarktregulierung) und 1 eine Vorgabe (`basiswechsel`) — zusammen die 44 aus T15. Für
+die USA fällt der Wechselkurs vom Anker in die Vorgabe (Numéraire), also `3 × 21 + 20 = 83`
+Anker. Die Restwelt trägt 13 Anker, 3 `Entwurf` und 6 Vorgaben. Dazu 40 Handelsströme mit
+Anker.
+
+```
+Datenanker  83 + 13 + 40                                            = 136
+Entwurf     4×20 + 3 + 2 + 12 + 1 + 6 + 24 + 20 + 2                 = 150
+            (Länder, RW-Sektorpreise, Weltpreise, Nachahmer,
+             markt.rendite, Fondsaggregate, Beteiligungen,
+             Positionen, Runde und Mandatsstand)
+Parameter   4×2 + Fondskasse + Anlegerbestand + Prüfsummenfeld      =  11
+Manifest    markt.wert + Jahrgangskennung                           =   2
+Vorgabe     T46                                                     =  11
+                                                                      ---
+                                                                      310
+```
 
 Die vollständige Tabelle — 310 Zeilen aus Adresse, Herkunft und Startwert — wird ins
 Manifest geschrieben. Damit ist die Abnahmebedingung 2 des Arbeitspakets **maschinell
-beantwortbar**, statt drei Dokumente nebeneinanderzulegen: Wer sie prüfen will, liest eine
+beantwortbar**, statt vier Dokumente nebeneinanderzulegen: Wer sie prüfen will, liest eine
 Datei, die der Jahrgangsbau gar nicht erst hätte schreiben können, wenn eine Zeile fehlte.
 
 Der Preis ist 310 Vergleiche, einmal je Datenlauf und nicht je Partie. Die naheliegende
 Alternative — Startwert null, wenn nichts dasteht — wäre die teure gewesen: Sie hätte
-Befund 2 in eine Zahl verwandelt, die niemand mehr hinterfragt, und zwar in genau die Zahl,
-die hier zufällig richtig ist.
+Befund 2 der dritten Prüfung in eine Zahl verwandelt, die niemand mehr hinterfragt, und
+zwar in genau die Zahl, die dort zufällig richtig ist.
+
+**T46 — Die elf Adressen, deren Herkunft dieses Dokument ist, abschliessend.** Fassung 4
+hat `Vorgabe(T-Nummer)` eingeführt und mit „derzeit allein T23 Punkt 1" beschrieben. Das war
+falsch, und der Fehler ist erst beim Auszählen aufgefallen: Nach der Aufnahme der 32
+Adressen in `spiel.md` hat T23 Punkt 1 gar keine Adresse mehr — dafür haben elf andere seit
+jeher keinen zulässigen Eintrag gehabt, ohne dass es jemandem aufgefallen wäre. Sie stehen
+hier mit Startwert, Grund und Regel im Lauf:
+
+| Adresse | Zahl | Startwert | Grund und Regel im Lauf |
+|---|---:|---:|---|
+| `gebiet.<G>.basiswechsel`, alle fünf Gebiete | 5 | 0 | Zähler der Neubasierungen nach **T8**. Vor Runde 1 hat keine stattgefunden; im Lauf erhöht ihn allein die Regel aus T8. Keine Reihe kann ihn tragen, weil er eine Eigenschaft des Modells ist und nicht der Welt |
+| `land.US.wechselkurs` | 1 | 10.000 | Der US-Dollar ist der Numéraire (**T5**). Reihe 10 trägt drei Länder, die USA definitionsgemäß nicht. Der Wert ist über die ganze Partie fest und wird je Runde mit der Ursache `Vortrag` geschrieben (T18) — dieselbe Bauart wie der dauerhaft leere Steckplatz aus T16 |
+| `restwelt.leitzins`, `restwelt.staatsschuld`, `restwelt.haushaltssaldo` | 3 | 0 | Die Restwelt hat nach `spiel.md` keine Politikinstrumente, keine Regierung und keinen Aufsichtszähler; sie hat folglich auch keine Notenbank und keinen Haushalt. Diese drei Adressen und die nächste existieren nur, weil T15 der Restwelt denselben Aggregatblock gibt wie einem Land. **Keine Modellregel liest sie**, alle vier werden je Runde mit der Ursache `Vortrag` fortgeschrieben, damit die Sollmaske aus T38 aufgeht |
+| `restwelt.wechselkurs` | 1 | 10.000 | Ebenso ungelesen, aber mit anderem Startwert: Die Restwelt rechnet im Numéraire, und ein Kurs eines Währungsaggregats gegen den Dollar hat keine Bedeutung. 10.000 statt 0, damit eine versehentliche Verwendung nicht durch null teilt, sondern die Zahl unverändert lässt |
+| `restwelt.inflation` | 1 | 0 | Reihe 8 (Verbraucherpreise) trägt vier Länder, die Restwelt nicht. Im Lauf ist die Größe endogen wie überall — Jahresrate von `restwelt.preisniveau`, das Reihe 15 verankert. Nur ihr Startwert hat keine Quelle |
+
+**Zwei Auflagen, ohne die die vier Restweltadressen eine stille Annahme wären.** Erstens:
+Auf sie ist **ausser dem Vortrag selbst kein Lesezugriff zulässig**. Der `Schreiber` führt
+sie in einer Liste `nur_vortrag`; ein `lies_alt` oder `lies_neu` darauf aus einer anderen
+Ursache als `Vortrag{adresse}` ist ein harter Fehler, kein Bericht, und der Bruchtester
+prüft es in Prüfung 5 und 6 mit. Sonst wüchse eine Modellregel auf einer Zahl, die niemand
+gesetzt hat. Zweitens: Fällt später eine Regel an, die eine davon braucht, ist das ein ADR
+und keine Zeile Code — dann bekommt die Adresse einen Datenanker oder eine begründete
+Bildungsregel.
+
+**Warum T46 überhaupt gebraucht wird und die Adressen nicht einfach entfallen.** Sie zu
+streichen wäre die sauberere Architektur und ist ausgeschlossen: `spiel.md` nennt **310**
+Größen und verweist für die Aufstellung hierher. 306 hier und 310 dort wäre ein Widerspruch
+in einer Zahl, also genau der Fall, den Abnahmebedingung 3 ausschliesst — und ändern darf
+ich `spiel.md` nicht. Vier Adressen, die nie gelesen werden, kosten 32 Byte und einen Test;
+ein Widerspruch zwischen den beiden Dokumenten kostet einen Lauf.
 
 **T24 — Lücken werden gekennzeichnet, nicht stillschweigend gefüllt — und der Prüfjahrgang
 duldet keine.** Je Reihe, Land und Jahr ein Flag `gefuellt`. Die Füllregel steht im
@@ -660,11 +763,20 @@ Größen ohne Datenanker sind die Zeilen 17, 18, 19 und das Instrument
 Finanzmarktregulierung — genau die vier, die `spiel.md` unter „Die Grenze des Orakels"
 aufzählt.
 
+**Und hier steht die Zeile, deren Fehlen T46 nötig gemacht hat.** Die Spalte „Dimension"
+ist zu lesen, wie sie dasteht: Zeile 8 trägt **4**, nicht 4 + RW; die Zeilen 9, 11 und 12
+tragen **4**, Zeile 10 trägt **3**. Daraus folgt, dass elf Zustandsadressen von keiner Reihe
+gedeckt sind — der US-Wechselkurs (Numéraire), fünf Aggregatgrößen der Restwelt und die fünf
+Neubasierungszähler. Sie stehen in **T46**. Bis Fassung 4 stand das nirgends, weil niemand
+die Dimensionen gegen T15 gelegt hat; die Prüfung der Runde 4 hat Bedingung 2 für erfüllt
+erklärt und dabei auf dieselbe Lücke geschaut wie ich.
+
 **T27 — Die Kalibrierdatei liegt ausserhalb des Codes.** Sämtliche Zahlenwerte, die
-`spiel.md` ausdrücklich der Kalibrierung überlässt — Mandatsschwelle, drei
-Aufsichtsschwellen, Nachahmergeschwindigkeit, Stufenweite einer Position, Lobbykosten,
-Anlegerabzugsanteil, Startkapital, Startzustimmung, Verzögerungen, Elastizitäten — stehen
-in `parameter.toml`, werden als Dezimalzeichenketten in skalierte Ganzzahlen gelesen (T4)
+`spiel.md` ausdrücklich der Kalibrierung überlässt — Mandatsschwelle (`schwelle_v` und
+`schwelle_e`), drei Aufsichtsschwellen, Nachahmergeschwindigkeit, Stufenweite einer
+Position, Lobbykosten, Anlegerabzugsanteil, Startkapital, Startzustimmung, Startstand der
+Finanzmarktregulierung, `ausstiegsabschlag` und `zwangsabschlag` (T47), Verzögerungen,
+Elastizitäten — stehen in `parameter.toml`, werden als Dezimalzeichenketten in skalierte Ganzzahlen gelesen (T4)
 und in eine Struktur mit benannten Feldern gefüllt, nie über eine Schleife über Schlüssel
 (T9). Die Prüfsumme des Parametersatzes steht im Zustand und in jedem Speicherstand. Damit
 ist Kalibrieren eine Datenänderung, die kein Übersetzen braucht — genau die Bauart, die
@@ -730,16 +842,61 @@ Bestand des Fonds. Die Regel, in Schritt 6 der Runde und nur im `spielmodus`:
 Mengenwachstum erzeugt damit keine Scheinrendite.
 
 **Die Fondsrendite entsteht in derselben Reihenfolge, und die Reihenfolge ist die Regel:**
-(a) Positionen bewerten, (b) Fondsvermögen als Kasse plus bewertete Positionen minus Hebel
-bilden, (c) ist es **null oder kleiner**, greift nach `spiel.md` Todesart 1 in derselben
-Runde und die Partie endet ohne Renditebildung, (d) erst sonst wird die Rendite gebildet:
-Änderung des Fondsvermögens gegenüber der Vorrunde, **bereinigt um Anlegerzu- und -abflüsse
-dieser Runde** — sonst zählte frisches Anlegergeld als Leistung und der Anlegerabzug aus
+(a) Positionen bewerten, (a') Beteiligungen bewerten, (b) Fondsvermögen bilden, (c) ist es
+**null oder kleiner**, greift nach `spiel.md` Todesart 1 in derselben Runde und die Partie
+endet ohne Renditebildung, (d) erst sonst wird die Rendite gebildet: Änderung des
+Fondsvermögens gegenüber der Vorrunde, **bereinigt um Anlegerzu- und -abflüsse dieser
+Runde** — sonst zählte frisches Anlegergeld als Leistung und der Anlegerabzug aus
 Gegenkraft 3 verstärkte sich selbst. Die Überrendite ist die Differenz beider Größen in
 Basispunkten und steht für drei Runden im Zustand.
 
 Schritt (c) vor (d) ist keine Feinheit: Er ist der Grund, warum `teile_gerundet` in diesem
 Modell nie einen Nenner null sieht, ohne dass irgendwo ein Sonderfall geprüft würde.
+
+**T47 — Das Fondsvermögen ist genau eine Funktion, und der Beteiligungswert genau eine
+zweite.** `spiel.md` Fassung 4 hat entschieden, dass die zwölf Beteiligungen zum
+Fondsvermögen zählen, und wie sie bewertet werden. Das ist die Modellfrage, die Abschnitt 12
+zurückgegeben hatte; sie ist beantwortet, und hier steht nur noch, wo gerechnet wird.
+
+```
+beteiligung_wert(l, s) = mal_geteilt(mal_geteilt(korbwert(l, s), anteil[l][s], 10.000),
+                                     10.000 − ausstiegsabschlag, 10.000)
+
+fondsvermoegen(z) = kasse
+                  + Σ über die 20 Steckplätze  positionswert(p)
+                  + Σ über die 12 Land×Sektor  beteiligung_wert(l, s)
+                  − hebelstand
+```
+
+Beide Summen laufen über die Indexordnung aus T9, nie über eine Menge. `korbwert(l, s)` ist
+der Modellmarktwert desselben Land×Sektor-Korbs, den auch der Marktkorb aus Punkt 1 dieses
+Abschnitts verwendet — **eine Bewertung, nicht zwei**, sonst könnten Marktrendite und
+Fondsvermögen denselben Korb verschieden ansetzen.
+
+Vier Eigenschaften, die diese Fassung binden, alle aus `spiel.md`:
+
+1. **`ausstiegsabschlag` ist ein Schlüssel aus `parameter.toml`** (T27), kein Literal, und
+   liegt in Zehntausendsteln. Der Abschlag steckt damit im Wertansatz und ist beim
+   **Aufbau** bezahlt: Die Kasse gibt beim Einstieg den vollen Korbanteil ab, das
+   Fondsvermögen fällt in derselben Runde um den Abschlag. Beim gewöhnlichen Ausstieg wird
+   er **nicht ein zweites Mal** abgezogen; illiquide bleibt die Beteiligung über die zwei
+   Runden, die `restdauer[l][s]` zählt.
+2. **Der Zwangsverkauf aus Gegenkraft 1 zieht `zwangsabschlag` zusätzlich ab** — ein zweiter
+   Parameterschlüssel, eine zusätzliche Strafe, keine Ersetzung des ersten.
+3. **`fondsvermoegen` hat genau einen Aufrufort je Zweck und keinen zweiten Rechenweg.**
+   Gelesen wird sie von der Abrechnung (Schritt 6), der Mandatsprüfung, Todesart 1, dem
+   Invariantentest aus T30 Prüfung 2 und von `v(z)` in T44. Dass alle fünf dieselbe Zahl
+   sehen, ist der Grund, warum „Fondsvermögen" durchgehend dasselbe heisst — *was der Fonds
+   wert ist, wenn er hier aufhört*.
+4. **Sie ist keine Zustandsadresse.** Der Zustand hält Kasse, Steckplätze, Anteile und
+   Hebel; das Vermögen ist deren Funktion. Ein Feld dafür wäre eine zweite Kopie derselben
+   Zahl — derselbe Fehlertyp, den T39 für `landespreis` und T23 Punkt 9 für die
+   BACI-Konkordanz schon geschlossen haben. Die 310 aus T15 ändern sich deshalb nicht.
+
+**Was die Änderung an Rechenzeit kostet:** zwölf Bewertungen je Runde, je zwei
+`mal_geteilt` mit `i128`-Zwischenergebnis, zusammen wenige Dutzend Ganzzahloperationen
+gegen 7.500 je Weltschritt (Abschnitt 10). Unter einem Prozent, und Abschnitt 10 bleibt
+unverändert.
 
 ## 9. Test- und Prüfstandsaufbau
 
@@ -750,7 +907,7 @@ in einem Aufruf läuft, läuft nachts nicht.
 | # | Prüfung | Gegenstand | Verantwortlich |
 |---:|---|---|---|
 | 1 | Einheitstests je Wirkungskette | jeder Pfeil aus `spiel.md` einzeln, auf einem Minimalzustand: Zoll rauf → Einfuhr runter → Preis rauf → Realeinkommen runter → Zustimmung runter. Dazu die Vorratsinvariante aus T43, geprüft für `k = 1` (fünf Runden) **und** `k = 3` (fünfzehn), damit die Verwechslung aus Befund 3 auch im Code auffällt | Testentwickler |
-| 2 | Invariantentest | Summe aller Handelsbilanzen einschliesslich Restwelt = 0; Staatsschuld(t) = Staatsschuld(t−1) − Saldo; Fondsvermögen = Kasse + bewertete Positionen − Hebel; die drei Sektoranteile je Gebiet summieren auf 10.000; kein Anteil ausserhalb 0…10.000; jedes Partieergebnis in einem der drei Bänder aus T34 | Testentwickler |
+| 2 | Invariantentest | Summe aller Handelsbilanzen einschliesslich Restwelt = 0; Staatsschuld(t) = Staatsschuld(t−1) − Saldo; **Fondsvermögen = Kasse + bewertete Positionen + bewertete Beteiligungen − Hebel** (T47, gegen `fondsvermoegen()` und gegen eine im Test getrennt hingeschriebene Summe, damit der Test nicht die geprüfte Funktion wiederholt); die drei Sektoranteile je Gebiet summieren auf 10.000; kein Anteil ausserhalb 0…10.000; jedes Partieergebnis in einem der drei Bänder aus T34 | Testentwickler |
 | 3 | Determinismustest | derselbe Startwert, Modus und dieselbe Aktionsfolge ergeben dieselbe Prüfsumme — zweimal im Lauf, über Speichern und Laden hinweg, und auf jeder Zielplattform verglichen | Testentwickler |
 | 4 | Regressionsbestand | gespeicherte Partien nach T22 rechnen bitgleich nach; zusätzlich eine Prüfsumme über die Kette, damit auch eine geänderte *Begründung* auffällt; mindestens eine Partie auf einem Spieljahrgang 1980 mit Basiswechsel (T8) | Testentwickler |
 | 5 | Bruchlauf | 10.000 Partien mit dem Zufallsbot: kein Absturz, kein Überlauf, keine Invariantenverletzung, kein Kettenüberlauf, kein doppelter Schreibzugriff und keine Maskenverletzung (T18, T38, T39) | Bruchtester |
@@ -783,9 +940,12 @@ nicht gedeckelt. Was der Architektur zusteht, ist ausschliesslich:
   `1.000 … R × 1.000 + 30.000` — bei R = 24 also 1.000 … 54.000 — ist ein harter Fehler.
   Geprüft wird schärfer und ohne eigene Entscheidung, weil es aus derselben Tabelle folgt:
   Der Wert muss in **einem der drei Bänder** aus T40 liegen. Die Lücken dazwischen
-  (24.001 … 24.999 und 27.001 … 30.999 bei R = 24) sind unerreichbar; ein Wert dort ist ein
-  Rechenfehler und kein Ausreisser. Die Prüfung kostet zwei Vergleiche und findet genau die
-  Kante, die Befund 10 an der Skala selbst gefunden hat.
+  (24.001 … 24.999 und **28.001 … 30.999** bei R = 24) sind unerreichbar; ein Wert dort ist
+  ein Rechenfehler und kein Ausreisser. Die Prüfung kostet zwei Vergleiche und findet genau
+  die Kante, die Befund 10 an der Skala selbst gefunden hat. Die obere Lücke beginnt seit
+  `spiel.md` Fassung 4 bei 28.001 und nicht mehr bei 27.001, weil die Kappung des
+  Fehlbetrags entfallen ist (T40); der Bereich `1.000 … R × 1.000 + 30.000` ist davon
+  unberührt, weil sein oberes Ende aus dem Todesband kommt.
 
 **T35 — Die Ziehregel für Maß 1, ausgeschrieben, weil sie sonst am Zufallserzeuger hängt.**
 `spiel.md` gibt vor: Bündelgröße gleichverteilt aus `{0,1,2,3}`, dann so viele Aktionen
@@ -834,15 +994,17 @@ Dinge zu, und beide stehen hier:
   3,4,5`) fällt dabei zeichengleich heraus. Damit ist das Verfahren nicht nur beschrieben,
   sondern hat einen Test, der eine falsche Implementierung in fünf Runden fängt statt in
   einer 24-Runden-Partie mit Median über zwanzig Startwerte.
-- **Dieselbe Invariante in allgemeiner Form, weil an ihr Befund 3 hängt:** Nach `5k` Runden
-  steht der Vorratsvektor wieder auf `(0,0,0,0,0)`, und Art `i` hat `3k·ai` der `15k`
-  Steckplätze bekommen. Für `k = 1` sind das fünf Runden und `3·ai` von fünfzehn — genau der
-  Fall, den `spiel.md` zwei Absätze unter dem strittigen Satz als Probe rechnet. Für `k = 3`
-  sind es fünfzehn Runden und `9·ai` von fünfundvierzig. Der Satz „über 15 Runden bekommt
-  Art `i` genau `3·ai` Steckplätze" mischt beide Fälle und wird durch **ein** Wort richtig,
-  wahlweise `15 → fünf` oder `3·ai → 9·ai`. Verbindlich für den Bau ist diese Invariante;
-  der Einheitstest aus T30 Prüfung 1 prüft `k = 1` und `k = 3`, damit die Verwechslung auch
-  dann auffällt, wenn jemand sie in die Implementierung übernimmt.
+- **Dieselbe Invariante in allgemeiner Form — und seit `spiel.md` Fassung 4 steht sie in
+  beiden Dokumenten wörtlich gleich:** Nach `5k` Runden steht der Vorratsvektor wieder auf
+  `(0,0,0,0,0)`, und Art `i` hat `3k·ai` der `15k` Steckplätze bekommen. Für `k = 1` sind
+  das fünf Runden und `3·ai` von fünfzehn — genau der Fall, den `spiel.md` zwei Absätze
+  darunter als Probe rechnet. Für `k = 3` sind es fünfzehn Runden und `9·ai` von
+  fünfundvierzig. Der Satz, der in den Fassungen 2 und 3 von `spiel.md` „über 15 Runden
+  … `3·ai`" sagte und beide Fälle mischte, ist dort ersetzt; die Stelle, die dreimal
+  Befund war, ist geschlossen, und ich habe beide Sätze in diesem Lauf nebeneinandergelegt.
+  Verbindlich für den Bau bleibt diese Invariante; der Einheitstest aus T30 Prüfung 1 prüft
+  `k = 1` und `k = 3`, damit die Verwechslung auch dann auffällt, wenn jemand sie aus einer
+  älteren Fassung in die Implementierung übernimmt.
 
 **T41 — Wie das Profil die Kandidaten des Suchbots einschränkt.** Das war die Hälfte von
 Befund 4, die mir gehörte: T35 schrieb die Ziehregel nur für Maß 1 aus. Verbindlich ist:
@@ -877,18 +1039,24 @@ selbst stellt: *Was ergäbe diese Partie, wenn sie hier endete?*
 ```
 B(z) =  r × 1.000                      das Mandat ist in Runde r erfüllt
         30.000 + (R + 1 − d) × 1.000   in Runde d an einer Todesart gestorben
-        25.000 + v(z) + e(z)           sonst — die Partie läuft weiter
+        (R + 1) × 1.000 + v(z) + e(z)  sonst — die Partie läuft weiter
 ```
 
-Die ersten beiden Zeilen sind wörtlich die Ergebnisgröße aus `spiel.md`. Die dritte ist ihr
-Band „überlebt", auf `z` gerechnet statt auf das Partieende:
+**Alle drei Zeilen sind seit `spiel.md` Fassung 4 wörtlich die Ergebnisgröße aus `spiel.md`,
+nur auf `z` gerechnet statt auf das Partieende.** Die dritte Zeile trug in Fassung 4 dieses
+Dokuments noch das Literal `25.000`; sie steht jetzt als Formel in R, weil T40 keine
+abgeleitete Zahl als Literal duldet und `(R+1) × 1.000` bei einem anderen Jahrgang eben
+nicht 25.000 ist. Bei R = 24 ist es 25.000, also unverändert.
 
 - `v(z) = teile_gerundet(max(0, schwelle_v − fondsvermoegen(z)) · 1.000, schwelle_v)` —
-  fehlendes Vermögen in Promille seiner Schwelle. `fondsvermoegen` ist die Größe aus
-  `spiel.md` (Kasse + bewertete Positionen − Hebel), keine andere.
+  fehlendes Vermögen in Promille seiner Schwelle. `fondsvermoegen` ist die Funktion aus
+  **T47** und damit seit `spiel.md` Fassung 4 einschliesslich der zum Ausstiegswert
+  bewerteten Beteiligungen; einen zweiten Rechenweg gibt es nicht.
 - `e(z)` = Summe über die **zwei Länder mit dem höchsten Einfluss** (Gleichstand nach
   `LandId`) von `teile_gerundet(max(0, schwelle_e − einfluss[land]) · 1.000, schwelle_e)` —
   fehlender Einfluss in Promille seiner Schwelle. Zwei Länder, weil das Mandat zwei verlangt.
+  `spiel.md` Fassung 4 hat dieselbe Regel für die Ergebnisgröße übernommen; beide Dokumente
+  rechnen den Fehlbetrag jetzt mit **einer** Formel.
 
 Beide Schwellen stehen bereits in `parameter.toml` (T27, Mandatsschwelle). **`B` hat damit
 keinen freien Parameter** — keine Gewichtung, keinen eigenen Kalibrierwert, nichts, was ein
@@ -900,22 +1068,26 @@ Vergleichsgröße selbst, sticht seine Fassung diese hier, und T44 schrumpft auf
 Rechenvorschrift dazu. Ändert sich die Ergebnisgröße, ändert sich `B` mit ihr, ohne dass
 jemand zwei Stellen nachführen müsste.
 
-**Die einzige Abweichung von der Ergebnisgröße ist die Kappung, und sie ist begründet.**
-`spiel.md` begrenzt jeden der beiden Teile bei 1.000 Promille, damit das Band „überlebt"
-zwischen 25.000 und 27.000 bleibt. Für ein Partieergebnis ist das richtig; für eine
-Bewertungsfunktion wäre es tödlich. Ein Fonds, der zu Partiebeginn in beiden Ländern
-Einfluss null hat, säße bei gekappten 1.000, und eine Verbesserung des ersten Landes von 0
-auf 60 Prozent der Schwelle bliebe **unsichtbar** — der Bot wäre in genau der Phase blind,
-in der er die Weichen stellt. `B` kappt deshalb nicht.
+**Es gibt seit `spiel.md` Fassung 4 keine Abweichung mehr zwischen `B` und der
+Ergebnisgröße, und das ist die eigentliche Nachricht dieser Fassung.** Fassung 4 dieses
+Dokuments musste hier eine Kappung ausnehmen: `spiel.md` begrenzte damals jeden der beiden
+Teile bei 1.000 Promille, und für eine Bewertungsfunktion wäre das tödlich gewesen — ein
+Fonds, der zu Partiebeginn in beiden Ländern Einfluss null hat, säße bei gekappten 1.000,
+und eine Verbesserung des ersten Landes von 0 auf 60 Prozent der Schwelle bliebe
+**unsichtbar**. Der Spielentwerfer hat dieselbe Begründung eine Ebene höher gelten lassen
+und die Kappung **ganz gestrichen**. Damit rechnen beide Dokumente in diesem Zweig
+buchstabengleich, und die Stelle kann nicht mehr auseinanderlaufen.
 
-Der Preis ist ein breiteres Band, und es bleibt disjunkt: `v < 1.000` gilt ohnehin, solange
-der Fonds lebt (bei `fondsvermoegen ≤ 0` greift Todesart 1 in derselben Runde, T33), und
-`e ≤ 2.000`, also `25.000 ≤ B ≤ 28.000` im laufenden Fall — oberhalb des Bandes „Mandat
-erfüllt" (bis 24.000) und unterhalb des Todesbandes (ab 31.000). **Daraus folgt eine
-Eigenschaft, die eine Bewertung haben muss und die man ihr nicht ansieht: Der Bot zieht den
-Tod nie vor.** Der schlechteste laufende Zustand steht bei 28.000, der beste Tod bei 31.000.
-`B` ist eine botinterne Größe, wird nie als Partieergebnis berichtet, und die Bandprüfung
-aus T34 gilt für sie nicht.
+Der Preis steht in T40 und T34 und ist zweimal eine Zahl (Bandende 27.000 → 28.000,
+Lückengrenze 27.001 → 28.001). Die Schranke bleibt: `v ≤ 1.000`, solange der Fonds lebt
+(bei `fondsvermoegen ≤ 0` greift Todesart 1 in derselben Runde, T33 und T47; die 1.000
+erreicht nur die Rundung), und `e ≤ 2.000`, also `25.000 ≤ B ≤ 28.000` im laufenden Fall —
+oberhalb des Bandes „Mandat erfüllt" (bis 24.000) und unterhalb des Todesbandes (ab 31.000).
+**Daraus folgt eine Eigenschaft, die eine Bewertung haben muss und die man ihr nicht ansieht:
+Der Bot zieht den Tod nie vor.** Der schlechteste laufende Zustand steht bei 28.000, der
+beste Tod bei 31.000. `B` bleibt trotz der Formelgleichheit eine **botinterne** Größe: Sie
+wird nie als Partieergebnis berichtet, und die Bandprüfung aus T34 gilt für sie nicht, weil
+sie auf einem Zwischenzustand steht und nicht auf einem Partieende.
 
 **Warum das den Lobbyweg nicht strukturell erschlägt** — die Frage, an der eine reine
 Vermögensbewertung gescheitert wäre: Einfluss ist nach `spiel.md` der geglättete Anteil des
@@ -929,20 +1101,18 @@ nicht die, die es beantwortet, bevor es läuft.
 
 **Dieselbe Prüfung für die beiden anderen Klassen, weil eine einzeln geprüfte Klasse nichts
 beweist.** Klasse 1 (Position) wirkt unmittelbar auf `fondsvermoegen` und damit auf `v`;
-unproblematisch. Klasse 2 (Beteiligung) hängt an einer Frage, die `spiel.md` entscheidet und
-nicht ich: Dort heisst es „Fondsvermögen (Kasse + bewertete Positionen − Hebel)". Zählen die
-zwölf Beteiligungen zu den *bewerteten Positionen*, wirkt Aktion 2 wie Aktion 1, nur
-illiquide, und `B` behandelt sie gleich. Zählen sie nicht dazu, verwandelt jede Beteiligung
-Kasse in etwas, das im Mandat nicht vorkommt: Sie hebt `v`, senkt `e` nicht, und **Klasse 2
-kann Maß 2 dann nicht bestehen** — aus genau dem Grund, aus dem eine reine
-Vermögensbewertung Klasse 3 erschlagen hätte. `B` erbt die Antwort, welche es auch sei; die
-Frage steht in Abschnitt 12, weil sie eine Modellfrage ist und keine Rechenfrage.
+unproblematisch. **Klasse 2 (Beteiligung) hing an einer Frage, die `spiel.md` Fassung 4
+entschieden hat: Die zwölf Beteiligungen zählen zum Fondsvermögen** (T47), bewertet zum
+Ausstiegswert. Damit wirkt Aktion 2 auf `v` wie Aktion 1, nur illiquide und um den
+Ausstiegsabschlag verringert, und `B` behandelt beide gleich. Die Erörterung der Fassung 4 —
+was geschähe, wenn sie nicht dazuzählten — ist damit gegenstandslos und gestrichen; sie
+hatte einen einzigen Zweck, nämlich die Frage sichtbar zu halten, bis sie beantwortet ist.
 
-Ein zweiter Weg der Klasse 2 bleibt bei Tiefe 1 in jedem Fall unsichtbar: Eine Beteiligung
-verbilligt nach `spiel.md` das Lobbying im selben Sektor, zahlt sich also erst in einer
-späteren Runde aus. Das ist kein Fehler der Bewertung, sondern der Preis eines Zuges
-Vorausschau — und damit das erste konkrete Argument für die Tiefe 2, die Abschnitt 12 offen
-hält.
+Ein zweiter Weg der Klasse 2 bleibt bei Tiefe 1 unsichtbar, und dieser Punkt bleibt
+bestehen: Eine Beteiligung verbilligt nach `spiel.md` das Lobbying im selben Sektor, zahlt
+sich also erst in einer späteren Runde aus. Das ist kein Fehler der Bewertung, sondern der
+Preis eines Zuges Vorausschau — und damit das erste konkrete Argument für die Tiefe 2, die
+Abschnitt 12 offen hält.
 
 **Ordnung und Gleichstand.** Gewählt wird der Kandidat mit dem kleinsten `B`. Bei
 Gleichstand entscheidet die lexikographisch kleinste Folge der Aktionskennungen des Bündels
@@ -1100,6 +1270,11 @@ Kette (T18). Teuer sind darin die `i128`-Divisionen aus T6. **Planwert: 10 Mikro
 je Schritt**, Bandbreite 5 bis 30. Die Spalte „ungünstig" rechnet mit 50 Mikrosekunden,
 also dem Fünffachen des Planwerts — eine Reserve, keine Erwartung.
 
+**Die Beteiligungsbewertung aus T47 ändert diese Schätzung nicht.** Zwölf Beteiligungen, je
+zwei `mal_geteilt`, fallen nur in Schritt 6 an und nur im `spielmodus`; das sind wenige
+Dutzend Operationen gegen 7.500, also unter einem Prozent und tief innerhalb der Bandbreite.
+Keine Zeile der Tabelle unten bewegt sich.
+
 **Der Planwert ist unverändert geschätzt und nicht gemessen.** Mein Logbuch verlangt, beim
 nächsten Lauf zuerst den gemessenen `ticks_je_sekunde` zu lesen; es gibt ihn nicht, weil
 unter `ventures/0016-…/` noch keine Zeile Code steht. Das bleibt die größte Unsicherheit
@@ -1182,8 +1357,10 @@ gepflegt — sonst weichen sie beim ersten Datenaktualisierungslauf von der Wahr
 ## 12. Was ich nicht entschieden habe
 
 Die beiden Rückfragen aus Fassung 2 — Abnahme über 31 oder 23 Reihen, Zusammenfassung des
-Handelsblocks — sind von `spiel.md` Fassung 3 beantwortet und stehen jetzt in T37. Offen
-bleibt:
+Handelsblocks — sind von `spiel.md` Fassung 3 beantwortet und stehen in T37. Die Rückfrage
+aus Fassung 4 — gehören die zwölf Beteiligungen zum Fondsvermögen? — ist von Fassung 4 des
+Entwurfs mit **ja** beantwortet und steht in T47; sie ist hier gestrichen, weil eine
+beantwortete Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
 
 - **Der Planwert von 10 Mikrosekunden je Weltschritt ist weiterhin geschätzt.** Es gibt
   keinen Kern, also keine Messung. Liegt der gemessene Wert über 50 µs, trägt Abschnitt 10
@@ -1207,34 +1384,30 @@ bleibt:
   offengelassen** — sie folgt dem Muster, das T24 für gefüllte Jahre schon setzt, und ohne
   sie bricht der Rückvergleich an einem bilateralen Nullstrom ab. Sie ändert keine Schwelle.
   Hält der Spielentwerfer sie für falsch, ist sie eine Zeile in T42 und sonst nichts.
+- **Die elf Startwerte in T46 habe ich ebenso entschieden statt zurückgegeben**, und der
+  Grund ist derselbe: Jeder von ihnen folgt aus einer Regel, die schon dasteht (Numéraire,
+  Zähler ohne Vorgeschichte, Aggregatblock ohne Regierung), keiner ist eine Wahl zwischen
+  zwei sinnvollen Zahlen. Eine Rückgabe hätte einen Lauf des Spielentwerfers gekostet und
+  dieselben elf Zahlen ergeben. Hält er eine für falsch, ist es eine Tabellenzeile.
 
-**Drei Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
+**Zwei Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
 mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
 
-1. **Zum zweiten Mal gemeldet, weil ich ihn nicht ändern darf:** Der Satz zum
-   Vorratsverfahren „über 15 Runden bekommt Art `i` genau `3·ai` Steckplätze" passt nicht
-   zur Probe zwei Absätze darunter, die fünf Runden und fünfzehn Steckplätze rechnet. Der
-   Prüfer hat ihn in Fassung 3 als Befund 3 aufgenommen, und Abnahmebedingung 3 verlangt an
-   dieser Stelle in beiden Dokumenten denselben Wert. Die allgemeine Form steht jetzt in
-   T43: nach `5k` Runden `3k·ai` von `15k`. Damit sind es zwei Wörter zur Auswahl, von denen
-   **eines** genügt — `15 → fünf` oder `3·ai → 9·ai`. Der Algorithmus ist von der
-   Verwechslung nicht betroffen, die Invariante steht als Einheitstest in T43, und das
-   Programm kann die falsche Lesart nicht annehmen.
-2. Die Ergebnisskala trägt in der 30.000 ein echtes Literal, und das Band „überlebt" stösst
-   dagegen, sobald `R ≥ 27`. Für 1997–2021 ist das folgenlos, und `spiel.md` lässt das
-   Fenster nur enger werden. T40 zieht die Schranke bei `R ≤ 26` in den Jahrgangsbau, damit
-   sie nicht erst in einer Ergebnisverteilung auffällt.
-3. **Neu, und aus T44 herausgefallen: Gehören die zwölf Beteiligungen zum Fondsvermögen?**
-   `spiel.md` schreibt „Fondsvermögen (Kasse + bewertete Positionen − Hebel)" und trennt in
-   T15 zugleich Positionssteckplätze (20) von Beteiligungen (24). Beide Lesarten sind
-   möglich, und sie sind nicht gleichwertig: Sind Beteiligungen draussen, verwandelt Aktion 2
-   Kasse in etwas, das in keiner Hälfte des Mandats vorkommt — dann kann **Klasse 2 die
-   erste Abnahmehälfte von Maß 2 nicht bestehen**, unabhängig von jeder Kalibrierung, und
-   zwar aus demselben Grund, aus dem Befund 1 eine reine Vermögensbewertung verworfen hat.
-   Betroffen sind ausserdem die Todesart-1-Schwelle und die Invariante in T30 Prüfung 2.
-   Ein Halbsatz genügt; die Architektur folgt beiden Lesarten ohne Änderung, weil `B` das
-   Fondsvermögen nur liest. **Das ist eine Modellfrage, keine Rechenfrage** — deshalb steht
-   sie hier und nicht in T44.
+1. Die Ergebnisskala trägt in der 30.000 ein echtes Literal, und das Band „überlebt" stösst
+   seit dem Wegfall der Kappung dagegen, sobald `R ≥ 27` — die Schranke ist jetzt scharf
+   statt grosszügig, in T40 nachgerechnet. Für 1997–2021 ist das folgenlos, und `spiel.md`
+   lässt das Fenster nur enger werden. T40 zieht die Schranke bei `R ≤ 26` in den
+   Jahrgangsbau, damit sie nicht erst in einer Ergebnisverteilung auffällt.
+2. **Neu: Die Tabelle „Jede Größe ohne Datenanker" nennt sich in Fassung 4 zum zweiten Mal
+   abschliessend und ist es zum zweiten Mal nicht** — diesmal fehlen die fünf
+   `basiswechsel`-Zähler, der US-Wechselkurs und fünf Aggregatgrößen der Restwelt. Das ist
+   **kein Vorwurf und blockiert nichts**: Die Tabelle kann es nicht wissen, weil die
+   Aufstellung der 310 Adressen und die Reihenliste beide hier stehen und nicht dort. Die
+   elf Adressen sind in T46 versorgt, und T45 hat mit `Vorgabe(T-Nummer)` genau dafür eine
+   Eintragsart. **Die Lehre gehört trotzdem hierher: Eine Tabelle, die sich abschliessend
+   nennt, ohne dass irgendwer gegen sie abzählt, wird es nicht.** Der Abzählschritt aus T45
+   ist die einzige Stelle, an der das auffällt — er hat es diesmal getan, und zwar von Hand,
+   weil es noch keinen Jahrgangsbau gibt, der es maschinell täte.
 
 ## 13. Hinweis für den Projektmanager
 
@@ -1243,7 +1416,8 @@ gleichzeitig offene Pakete dürfen sich nicht im selben Kasten treffen. Die nat�
 Reihenfolge ist `kern` (Zustand, Festkomma, Zufall, Prüfsumme, Schreiber mit T18/T38/T39)
 → `daten` und `schnittstelle` parallel → `konsole` → Tests und `pruefstand` →
 `oberflaeche`. Der Jahrgang (`werkzeuge/aufbereitung`) kann von Beginn an parallel laufen,
-weil er nur gegen T5, T23 bis T26 und T40 gebaut wird und nichts vom Kern braucht.
+weil er nur gegen T5, T23 bis T26, T40 und **T45/T46** gebaut wird und nichts vom Kern
+braucht.
 
 **Zwei Pakete sind vorzuziehen, weil sie Entwurfsrisiko tragen und nicht Bauaufwand:** der
 Jahrgangsbau 1997 (T24 sagt, dass er scheitern kann — 25 Stützstellen ohne Füllung für alle
@@ -1257,105 +1431,109 @@ Zahl im Manifest und kein zweites Paket. Der Jahrgangsbau muss deshalb nicht meh
 Kern fertig sein, sondern nur vor dem ersten Rückvergleich — er bleibt trotzdem vorn, weil
 er das Vorhaben kippen kann und nicht nur verzögern.
 
-## 14. Befundabarbeitung — die beiden früheren Prüfungen
+## 14. Befundabarbeitung — die drei früheren Prüfungen
 
 **Erledigt und im Git-Verlauf.** Fassung 2 hat die acht Befunde der ersten Prüfung
-beantwortet, Fassung 3 die zwölf der zweiten. Die Prüfung vom 2026-09-01 hat Letzteres unter
-ihrer Bedingung 5 ausdrücklich abgenommen — „alle zwölf Vorrundenbefunde sind in beiden
-Dokumenten mit *behoben* beantwortet, keiner mit *widersprochen*, keiner übersprungen" —
-und fünf davon zusätzlich gegen die Sache statt gegen die Behauptung nachgeprüft.
+beantwortet, Fassung 3 die zwölf der zweiten, Fassung 4 die drei der dritten. Jede dieser
+Abarbeitungen ist von der jeweils nächsten Prüfung unter deren Bedingung 5 ausdrücklich
+abgenommen worden; die Prüfung der Runde 4 sagt es für Fassung 4 wörtlich: „Alle drei
+Vorrundenbefunde sind beantwortet, je mit einer der drei zulässigen Antworten … Keiner
+übersprungen, keiner mit *widersprochen*."
 
 Sie hier weiterzuschleppen kostete jeden Leser hundert Zeilen und brächte nichts, was
-`git log -p specs/0016-…/technik.md` nicht genauer sagt. Dieselbe Behandlung hat Fassung 3
-den acht Befunden der ersten Prüfung gegeben, und der Prüfer hat sie nicht beanstandet.
-Gelöscht ist nichts: Beide Abarbeitungen stehen unverändert in der Versionsgeschichte.
+`git log -p specs/0016-…/technik.md` nicht genauer sagt. Gelöscht ist nichts: Alle drei
+Abarbeitungen stehen unverändert in der Versionsgeschichte.
 
 Was aus ihnen **fortwirkt**, steht nicht in einer Abarbeitungsliste, sondern in den
 Vorgaben, die daraus entstanden sind — T38 bis T43 tragen die zwölf Antworten der zweiten
-Prüfung als Regel statt als Bericht, und jede nennt an ihrer Stelle den Befund, der sie
-erzwungen hat.
+Prüfung als Regel statt als Bericht, T44 und T45 die drei der dritten, und jede nennt an
+ihrer Stelle den Befund, der sie erzwungen hat.
 
-## 15. Befundabarbeitung — Prüfung `0001-entwurf-abnahme` vom 2026-09-01
+## 15. Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01 und `spiel.md` Fassung 4
 
-Drei Befunde, je eine der drei zulässigen Antworten. Kein Befund war falsch; es gibt auch
-diesmal kein *widersprochen*.
+Zwei Befunde, **beide ausdrücklich an den Spielentwerfer adressiert**, beide von seiner
+Fassung 4 behoben. Ich arbeite sie trotzdem einzeln ab, weil die Rolle es verlangt und weil
+beide Folgen in diesem Dokument haben — der zweite an vier Stellen.
 
-**Befund 1, der Suchbot hat keine Bewertungsfunktion — behoben, mit T44.** Der Befund
-trifft: Zwischen T41 (welche 60 Kandidaten) und dem Gleichstandsbrecher (was bei gleichem
-Wert gilt) fehlte der Satz, *welcher* Wert verglichen wird. Die Behebung ist **T44** und
-folgt dem Weg, den der Prüfer selbst als tragfähig bezeichnet hat — dem Mandatsabstand, nicht
-dem Fondsvermögen —, aber sie erfindet ihn nicht, sondern **leitet ihn aus der
-Ergebnisgröße von `spiel.md` ab**: Die drei Fälle von `B` sind deren drei Bänder, gerechnet
-auf den Zwischenzustand statt auf das Partieende. Vier Eigenschaften, die der Befund
-verlangt hat, und alle vier stehen dort mit Begründung:
+**Befund 1, Bedingung 3 unverändert gerissen (Steckplatzzahl) — behoben, und zwar auf der
+Seite, der er gehörte.** `spiel.md` Fassung 4 schreibt jetzt: „Nach `5k` Runden steht der
+Vorratsvektor wieder auf `(0,0,0,0,0)`, und Art `i` hat genau `3k·ai` der `15k` Steckplätze
+bekommen — für `k = 1` also `3·ai` von fünfzehn nach **fünf** Runden, für `k = 3` `9·ai` von
+fünfundvierzig nach fünfzehn." Das ist Wort für Wort die allgemeine Form aus T43. Ich habe
+beide Absätze in diesem Lauf nebeneinandergelegt und keine Abweichung gefunden. Der Befund
+war dreimal offen (Prüfung 2 als Befund 3, Prüfung 3, Prüfung 4 als Befund 1) und ist
+geschlossen; die Beobachtung dazu ist aus Abschnitt 12 gestrichen, weil sie nichts mehr
+meldet. Der Einheitstest über `k = 1` und `k = 3` in T30 Prüfung 1 **bleibt**: Er schützt
+nicht mehr vor dem Dokument, sondern vor einer Implementierung, die eine ältere Fassung
+gelesen hat.
 
-- **kein freier Parameter** — keine Gewichtung, kein eigener Kalibrierwert, also nichts, was
-  Maß 2 zur Messung einer Bauagentenwahl machen könnte;
-- **Klasse 3 ist nicht strukturell ausgeschlossen** — Einfluss ist der geglättete Anteil am
-  Lobbydruck, also hebt Aktion 3 ihn schon in dem einen vorausgerechneten Weltschritt;
-- **der Bot zieht den Tod nie vor** — das laufende Band endet bei 28.000, das Todesband
-  beginnt bei 31.000, beide disjunkt zum Band „Mandat erfüllt" bis 24.000;
-- **die Kosten bleiben `R × (1 + 60) = 1.464`**, weil `B` statisch ist; das Nachspiel bis
-  Runde R, das der Prüfer durchgerechnet hat, kostete `60 · 300 + 24 = 18.024` und würfe
-  Abschnitt 10 um. Ich habe beide Zahlen in diesem Lauf nachgerechnet.
+**Befund 2, die Ergebnisgröße sagt nicht, wie „fehlender Einfluss" über die Länder gerechnet
+wird — behoben, und der Spielentwerfer ist dabei weiter gegangen als der Befund verlangte.**
+Er hat die Aggregation aus T44 übernommen (Summe über die zwei Länder mit dem höchsten
+Einfluss, Gleichstand nach `LandId`) **und zusätzlich die Kappung gestrichen**, mit meiner
+eigenen Begründung aus T44, eine Ebene höher angewandt. Das war der teurere und der bessere
+Weg: Die Kappung hätte die untere Hälfte des Ergebnisraums geglättet, und zwar genau dort,
+wo Maß 3 sein Argminimum sucht, wenn im Fenster kein Profil das Mandat erreicht.
 
-Eine Abweichung von der Ergebnisgröße gibt es, und sie steht benannt statt versteckt: `B`
-kappt die beiden Fehlbeträge **nicht** bei 1.000 Promille. Mit Kappung wäre der Bot in der
-Frühphase blind, weil beide Teile dort an der Kappe stehen und jede Verbesserung unsichtbar
-bliebe. Das Band wird dadurch 25.000 … 28.000 statt 25.000 … 27.000; `B` ist botintern und
-wird nie als Partieergebnis berichtet, die Bandprüfung aus T34 gilt für sie nicht.
+Der Preis sind die vier Stellen, die `spiel.md` unter „Was der Architekt neu rechnen muss"
+aufführt. Alle vier sind eingearbeitet, und hier steht, wo:
 
-Die Wendung „Nachspiel von einem Zug mit dem Heuristikbot als Fortsetzung" aus der Botliste
-ist gestrichen. Bei Tiefe 1 gibt es keine Fortsetzung, und die Formulierung war die Stelle,
-an der eine fehlende Vorgabe wie eine vorhandene aussah.
+| Was | wo eingearbeitet | nachgerechnet |
+|---|---|---|
+| Band „überlebt" `(R+1)×1.000 … +3.000`, also 25.000 … 28.000 | **T40**, Bandtabelle | `25 × 1.000 + 3.000 = 28.000` |
+| Schranke `R ≤ 26` jetzt scharf statt grosszügig | **T40**, mit Rechenweg | `(R+1)·1.000 + 3.000 < 31.000 ⇔ R < 27`; bei `R = 26` bleiben 999 Milli-Runden Luft |
+| unerreichbare Lücke `28.001 … 30.999` | **T34**, Bandprüfung | Bereich `1.000 … 54.000` unberührt, weil sein oberes Ende aus dem Todesband kommt |
+| Kappungsunterschied zwischen `B` und der Ergebnisgröße entfällt | **T44** | `v ≤ 1.000`, `e ≤ 2.000`, also `25.000 ≤ B ≤ 28.000`; Todesband ab 31.000, Mandatsband bis 24.000 — weiter disjunkt |
+| Fondsvermögen einschliesslich Beteiligungen, zum Ausstiegswert | **T47** (neu), dazu T5, T27, T30 Prüfung 2, T33, T44 `v(z)` | keine neue Zustandsadresse, die 310 bleiben; Kosten unter einem Prozent eines Weltschritts |
 
-**Befund 2, zweiunddreissig Adressen ohne Startwert — behoben, und die zwei Zeilen sind
-nicht die Behebung.** `land.<L>.instrument.<I>.druck` und `…​.rest` stehen jetzt in **T23
-Punkt 1** mit Startwert 0, je 16 Adressen für die vier spielbaren Länder. Der Wert ist
-erzwungen und nicht gewählt: Beide sind Laufzähler von Schritt 3, Druck entsteht
-ausschliesslich durch Aktion 3, und vor Runde 1 hat keine Aktion stattgefunden — trüge eine
-der Adressen einen Wert ungleich null, gäbe es eine Ursache ohne Aktion, und die Kette aus
-T18 könnte sie nicht benennen. Sie liegen damit in derselben Klasse wie der Gegendruck und
-die drei Restdauerzähler, die `spiel.md` selbst auf 0 setzt.
+**Zwei Dinge, die ich beim Einarbeiten geändert habe, ohne dass sie im Befund standen.**
+Erstens trug T44 die dritte Zeile von `B` als Literal `25.000`. Das verstösst gegen T40 —
+`(R+1) × 1.000` ist bei einem anderen Jahrgang eben nicht 25.000 — und steht jetzt als
+Formel. Bei R = 24 ändert sich nichts. Zweitens sagte T44 `v < 1.000`; `spiel.md` Fassung 4
+rechnet genauer und kommt auf `v ≤ 1.000`, weil die Rundung die 1.000 erreichen kann. Die
+Bandgrenze hält in beiden Lesarten, die schärfere ist übernommen.
 
-Die eigentliche Antwort ist **T45**: Der Jahrgangsbau führt eine Herkunftstabelle über alle
-310 Adressen mit vier zulässigen Eintragsarten und **bricht ab, wenn eine Adresse keinen
-oder zwei Einträge hat**. Die Tabelle geht ins Manifest. Damit ist Abnahmebedingung 2 künftig
-maschinell beantwortbar, statt drei Dokumente nebeneinanderzulegen — und der Fehlertyp
-„eine Tabelle nennt sich abschliessend und ist es nicht" kann nicht mehr unbemerkt bleiben.
-Der naheliegende Weg, bei fehlendem Eintrag still null einzusetzen, ist ausdrücklich
-ausgeschlossen: Er hätte diesen Befund in eine Zahl verwandelt, die niemand mehr
-hinterfragt, und zwar in genau die, die hier zufällig richtig ist.
+**Die drei Punkte aus „Geprüft und nicht gezählt", weil der Prüfer sie an den nächsten Lauf
+adressiert hat.**
 
-**Der Rest gehört dem Spielentwerfer.** Seine Tabelle „Jede Größe ohne Datenanker" sagt von
-sich, sie führe alle übrigen abschliessend; sie tut es erst mit diesen beiden Zeilen. Nimmt
-er sie auf, sticht seine Fassung die meine, und beide nennen 0.
+1. **Beide Reparaturen der Fassung 4 standen im falschen Dokument** — die Botzielgröße in
+   T44 statt `spiel.md`, die zweiunddreissig Startwerte in T23 Punkt 1 statt in der
+   Entwurfstabelle. Der Spielentwerfer hat beides gezogen. Für T23 Punkt 1 war das kein
+   Schönheitsfehler, sondern eine Gefahr: Die 32 Adressen trügen sonst **zwei**
+   Herkunftseinträge und brächen den Jahrgangsbau nach T45 ab. Die Tabelle dort ist deshalb
+   gestrichen; ihre Begründung bleibt als Nachweis stehen, ausdrücklich ohne Eintragsstatus.
+2. **Gehören die zwölf Beteiligungen zum Fondsvermögen?** `spiel.md` Fassung 4 sagt ja,
+   bewertet zum Ausstiegswert. Eingearbeitet in T47; die Erörterung des Gegenfalls in T44
+   und die offene Frage in Abschnitt 12 sind gestrichen, weil eine beantwortete Frage in
+   einer Offen-Liste nur noch Platz kostet.
+3. **Sechs Adressen ohne zulässige Eintragsart** (zwei Weltpreise, vier Partiefelder). Sie
+   stehen jetzt in der Entwurfstabelle von `spiel.md` und tragen den Eintrag `Entwurf` —
+   erledigt, aber nicht so, wie der Prüfer erwartet hat („eine Zeile in T45 oder T23"). Beim
+   Nachzählen ist stattdessen etwas anderes herausgekommen, siehe unten.
 
-**Befund 3, `spiel.md` und `technik.md` nennen verschiedene Rundenzahlen — anders gelöst,
-und die verbleibende Hälfte steht nicht in diesem Dokument.** Der Befund trifft, und meine
-Zahl ist die richtige: Der Vorratsvektor schliesst sich nach **fünf** Runden, nicht nach
-fünfzehn. Ändern kann ich `spiel.md` nicht; die Rolle verbietet es, und die Werkzeuge dafür
-habe ich nicht.
+**Was diese Fassung über die Befunde hinaus geändert hat, und warum es dazugehört.** Der
+Prüfer hat Bedingung 2 für erfüllt erklärt und dabei die Zuordnung geglaubt, statt sie
+auszuzählen — verständlich, denn Fassung 4 hat sie behauptet. Ich habe sie in diesem Lauf
+Adresse für Adresse gegen T15 und die Reihenliste gelegt, weil T45 genau das vom
+Jahrgangsbau verlangt und es noch keinen gibt, der es täte. Drei Befunde an mich selbst:
 
-Was ich stattdessen getan habe, räumt den Einwand in der Sache aus. **T43 trägt die
-Invariante jetzt in allgemeiner Form**: Nach `5k` Runden steht der Vektor wieder auf null,
-und Art `i` hat `3k·ai` der `15k` Steckplätze. Beide Sätze sind damit Sonderfälle einer
-Regel — `k = 1` gibt fünf Runden und `3·ai` von fünfzehn, `k = 3` gibt fünfzehn Runden und
-`9·ai` von fünfundvierzig —, und der Satz in `spiel.md` wird durch **ein** Wort richtig,
-wahlweise `15 → fünf` oder `3·ai → 9·ai`. Zwei Reparaturen zur Auswahl statt einer Rückfrage.
+- **Elf Adressen haben keinen zulässigen Eintrag** — fünf `basiswechsel`-Zähler, der
+  US-Wechselkurs (Reihe 10 trägt drei Länder, die USA definitionsgemäß nicht) und fünf
+  Aggregatgrößen der Restwelt (die Reihen 8, 9, 10, 11 und 12 tragen ausweislich ihrer
+  Dimensionsspalte nur die vier spielbaren Länder). Sie stehen in **T46**, abschliessend
+  aufgezählt, mit Startwert, Grund und Schreibregel.
+- **Zwei Adressen bestimmt der Jahrgangsbau selbst** (`markt.wert`, `partie.jahrgangskennung`)
+  und keine der vier Eintragsarten passte. Neue Art `Manifest(feld)`.
+- **Sechs Zeilen der Entwurfstabelle verweisen weiter, statt einen Wert zu nennen** („aus
+  `parameter.toml`", „aus dem Manifest"). Nach dem Wortlaut der Fassung 4 trügen sie zwei
+  Einträge und brächen den Bau ab. Die Vorrangregel in T45 sagt jetzt: Der Eintrag ist die
+  Stelle, die den Wert **bestimmt**, nicht die, die ihn erwähnt.
 
-Dazu ein Riegel gegen den Schaden, den der Widerspruch anrichten könnte: Der Einheitstest
-aus T30 Prüfung 1 prüft `k = 1` **und** `k = 3`. Übernimmt ein Bauagent die falsche Lesart,
-fällt sie in fünf beziehungsweise fünfzehn Runden auf und nicht in einer Ergebnisverteilung
-über 126 Profile.
+Damit geht die Summe zum ersten Mal auf: `136 + 150 + 11 + 2 + 11 = 310`, gegengerechnet
+gegen dieselben 310 aus T15 (`4 × 44 + 22 + 40 + 2 + 12 + 2 + 5 + 3 + 20 + 24 + 4`). Zwei
+unabhängige Aufteilungen derselben Menge, beide von Hand gerechnet.
 
-**Gemeldet, nicht abgehakt:** Dies ist die zweite Fassung, in der ich die Stelle melde —
-Fassung 3 hatte sie in Abschnitt 12 als Beobachtung. Sie steht dort weiter, jetzt mit beiden
-Reparaturen. Kommt sie ein drittes Mal zurück, ohne dass `spiel.md` das eine Wort geändert
-hat, liegt es nicht mehr an der Fassung, sondern daran, dass Abnahmebedingung 3 eine
-Übereinstimmung verlangt, die keines der beiden Gewerke allein herstellen kann.
-
-**Was diese Fassung sonst nicht geändert hat:** Weder `spiel.md` noch die Prüfung haben eine
-Zahl bewegt, an der etwas hängt. R bleibt 24, die Sollmaske 175 von 310, der Nachtlauf
-11.783.264 Weltschritte. Ich habe alle Summen dieses Dokuments in diesem Lauf erneut
-nachgerechnet, weil eine Fassung ohne Zahländerung genau die ist, in der man es unterlässt.
+**Was diese Fassung nicht geändert hat:** R bleibt 24, die Sollmaske 175 von 310, die drei
+Maße kosten 11.519.040 Weltschritte, der Nachtlauf 11.783.264. Ich habe alle Summen dieses
+Dokuments in diesem Lauf erneut nachgerechnet, weil eine Fassung, in der die
+Kostenrechnung nicht angefasst wird, genau die ist, in der man es unterlässt.
