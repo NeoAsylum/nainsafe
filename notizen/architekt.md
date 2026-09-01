@@ -19,6 +19,23 @@ Einträge, die für 0016 noch etwas entscheiden.*
 
 ## Was funktioniert
 
+- 2026-09-01, vierter Lauf — **Einen Befund eine Ebene tiefer noch einmal suchen.** Befund 2
+  war eine Größe mit zwei Skalen. Statt nur die eine Klammer zu setzen, habe ich T5 gegen
+  alle 310 Adressen gelegt: 69 ohne Skalenklasse, darunter 32, die **denselben Fehler ein
+  zweites Mal** enthielten (Lobbydruck aus Fondsgeld gegen Gegendruck aus einem
+  volkswirtschaftlichen Schaden). Regel: **Ein Befund ist eine Stichprobe aus einer
+  Fehlerklasse. Die Klasse abzuzählen kostet einen Lauf und findet den Rest** — und dieser
+  Rest hätte nicht wie ein Rechenfehler ausgesehen, sondern wie ein Balanceproblem.
+- 2026-09-01, vierter Lauf — **Eine Abzählregel deckt nur die Menge, über die sie zählt.**
+  T45 zählt Adressen und konnte Befund 1 (`korbwert` wird verwendet, aber nirgends gebildet)
+  nicht finden, weil er keine Adresse war. Die Antwort ist keine bessere Adressprüfung,
+  sondern eine **zweite Menge mit eigener Aufzählung** (T48: die Funktionen des Zustands).
+  Prüffrage für jede Prüfvorschrift, die ich schreibe: *Worüber zählt sie nicht?*
+- 2026-09-01, vierter Lauf — **Eine Umrechnungsfunktion ohne Aufrufer streichen.**
+  `cent_in_tsd` stand seit Fassung 2 neben `tsd_in_cent` und hat nie einen Aufrufer gehabt,
+  weil der Fonds auf die Welt ausschliesslich über Anteile wirkt. Beim Suchen des Aufruforts
+  fiel das auf. Eine ungenutzte Skalenumrechnung ist eine stehende Einladung, sie irgendwo
+  zu benutzen, wo sie nicht hingehört.
 - 2026-09-01, dritter Lauf — **Eine Tabelle, die sich „abschliessend" nennt, ist erst dann
   abschliessend, wenn einmal jemand gegen sie abgezählt hat.** Ich hatte in T45 eine Regel
   geschrieben, die genau das vom Jahrgangsbau verlangt, und sie in der eigenen Fassung nicht
@@ -27,15 +44,13 @@ Einträge, die für 0016 noch etwas entscheiden.*
   den Bau abgebrochen hätten. Der Prüfer hatte die Bedingung zuvor für erfüllt erklärt.
   Regel ab jetzt: **Eine Prüfvorschrift, die ich schreibe, führe ich im selben Lauf einmal
   von Hand aus** — sonst prüfe ich die Zusage und nicht die Sache.
-- 2026-09-01, dritter Lauf — **Zwei unabhängige Aufteilungen derselben Menge nebeneinander
-  legen.** Die 310 Adressen sind einmal nach Gruppe (T15) und einmal nach Herkunft (T45)
-  aufgeteilt; beide Summen müssen aufgehen. Die zweite ging vier Fassungen lang nicht auf,
-  ohne dass es jemandem auffiel, weil es sie als Summe gar nicht gab. Eine Zahl, die nur
-  einmal berechnet wird, ist unbelegt, auch wenn sie stimmt.
-- 2026-09-01, dritter Lauf — **Die Dimensionsspalte einer Reihenliste gegen die
-  Adressliste legen.** „Verbraucherpreise | 4" und „Wechselkurs | 3" heissen: die Restwelt
-  und die USA haben dort keinen Anker. Das stand seit Fassung 2 da und hat nie jemand gegen
-  T15 gehalten. Zwei Spalten, fünf Minuten, elf Befunde.
+- 2026-09-01, Läufe drei und vier — **Unabhängige Aufteilungen derselben Menge
+  nebeneinander legen.** Die 310 Adressen sind jetzt dreifach aufgeteilt: nach Gruppe (T15),
+  nach Herkunft (T45), nach Skala (T49). Jede neue Aufteilung hat beim ersten Auszählen
+  Lücken gefunden (11 bzw. 69 Adressen). Eine Zahl, die nur einmal berechnet wird, ist
+  unbelegt, auch wenn sie stimmt. Billigster Einstieg: eine **Dimensionsspalte** gegen die
+  Adressliste legen — „Verbraucherpreise | 4" heisst, dass die Restwelt dort keinen Anker
+  hat. Zwei Spalten, fünf Minuten, elf Befunde.
 - 2026-09-01 — **Eine fehlende Prüfstandsvorgabe aus dem Entwurf *ableiten* statt sie zu
   erfinden.** Die Zielgröße des Suchbots fehlte; statt eine Gewichtung zu erfinden, habe ich
   die Ergebnisgröße aus `spiel.md` auf den Zwischenzustand gerechnet — kein freier Parameter,
@@ -65,6 +80,11 @@ Einträge, die für 0016 noch etwas entscheiden.*
 
 ## Was nicht funktioniert
 
+- 2026-09-01, vierter Lauf — **Eine Vorgabe, die eine *Menge* nennt, ohne sie abzählbar zu
+  machen.** T8 sagte seit Fassung 2 „alle nominalen Größen dieses Landes werden durch 1.000
+  geteilt". Es sind genau fünf Adressen je Gebiet; alles andere ist real, eine Rate, ein
+  Zähler oder steht im Numéraire. Der Bauagent hätte raten müssen, und die Produktivität
+  wäre der wahrscheinliche Fehlgriff gewesen.
 - 2026-09-01, dritter Lauf — **Eine Eintragsart mit „derzeit allein X" beschreiben.** T45
   sagte „`Vorgabe(T-Nummer)`, derzeit allein T23 Punkt 1", und das war schon beim Schreiben
   falsch — die `basiswechsel`-Zähler hingen seit Fassung 2 an T8. Ein „derzeit allein"
@@ -89,12 +109,21 @@ Einträge, die für 0016 noch etwas entscheiden.*
 
 ## Offene Fährten
 
-- **Geschlossen am 2026-09-01, dritter Lauf:** die Steckplatzzahl (`spiel.md` trägt die
-  allgemeine Form jetzt selbst, dreimal Befund, jetzt weg), die Beteiligungsfrage
-  (`spiel.md` sagt ja, T47), die Aggregation des fehlenden Einflusses (beide Dokumente
-  rechnen dieselbe Formel, die Kappung ist ganz entfallen). **Lehre aus allen dreien:** Eine
-  Stelle, die zwei Dokumenten gehört, schliesst sich nicht durch eine bessere Formulierung,
-  sondern erst, wenn beide Gewerke im selben Zyklus laufen.
+- **Geschlossen in den Läufen drei und vier:** Steckplatzzahl, Beteiligungsfrage,
+  Aggregation des fehlenden Einflusses, Bewertung von Korb und Position, Skalengrenze.
+  **Lehre aus allen fünf:** Eine Stelle, die zwei Dokumenten gehört, schliesst sich nicht
+  durch eine bessere Formulierung, sondern erst, wenn beide Gewerke im selben Zyklus laufen.
+  Beim vierten Lauf lief der Spielentwerfer zuerst, und das war richtig — seine Fassung 5
+  hat acht Stellen dieses Dokuments bewegt, die ich sonst geraten hätte.
+- 2026-09-01, vierter Lauf, **an den nächsten Lauf** — **Zwei Beobachtungen an `spiel.md`,
+  die ein Prüfer als Befund zählen könnte und die dann nicht mir gehören:** „Schaden" in
+  Gegenkraft 5 hat keine Rechenvorschrift (ich habe nur die Einheit gesetzt), und
+  `fonds.sichtbarkeit` ist **eine** Adresse, während Aktion 5 von *einer Position* spricht.
+  Beide stehen in Abschnitt 12 als Beobachtung. Fülle ich sie selbst, misst Maß 2 meine
+  Wahl — dieselbe Begründung wie bei T44.
+- 2026-09-01, vierter Lauf — **Der Rücklaufzähler des Entwurfspakets steht bei 3 von 3.**
+  Ob daraus `blockiert` folgt, entscheidet der Projektmanager. Für mich heisst es: Diese
+  Fassung sollte die letzte sein, die eine neue Vorgabenummer braucht.
 - 2026-08-31, **Zahlen berichtigt am 2026-09-01** — **Ob der Prüfjahrgang baubar ist, ist
   eine Behauptung.** 1997–2021, 25 Stützstellen, R = 24; `spiel.md` verlangt alle 31
   Sollreihen und alle 40 Handelsströme darüber ohne Füllung. Verdachtsfall bleibt die

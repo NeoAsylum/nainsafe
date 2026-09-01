@@ -2,7 +2,7 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 5 (nach spiel.md Fassung 4 und ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde4-2026-09-01.md)
+fassung: 6 (nach spiel.md Fassung 5 und ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde6-2026-09-01.md)
 stack: Rust (stabile Kette, Edition 2021); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche egui/eframe (MIT OR Apache-2.0)
 determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
 zustand: fester, allokationsfreier Wert, 310 i64 (2.480 Byte), Prüfsumme über kanonische Byteform
@@ -10,6 +10,9 @@ speicherstand: Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme -- nicht 
 kalibrierung: alle Zahlenwerte in einer Parameterdatei ausserhalb des Codes, mitgehasht
 partie: R Runden, R ist eine Größe des Jahrgangs; im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte
 fondsvermoegen: Kasse + bewertete Positionen + bewertete Beteiligungen - Hebel, Beteiligungen zum Ausstiegswert; genau eine Funktion im Kern, gelesen von Abrechnung, Mandat, Todesart 1, Invariantentest und B (T47)
+skalen: dreizehn Klassen, zwölf davon mit Zustandsadressen; jede der 310 Adressen trägt genau eine -- 3 Fondsgeld, 71 volkswirtschaftlich, 36 Raten, 22 Anteile, 22 Nominalindizes, 5 Wechselkurs, 5 Realindizes, 25 Personen, 32 Lobbydruck, 4 Instrumentenstufe, 83 Zähler, 2 Kennungen (T49)
+skalenuebergaenge: genau drei, je eine benannte Funktion an genau einem Ort -- tsd_in_cent (Bewertung), lobbypunkte_aus_geld (Aktion 3), lobbypunkte_aus_schaden (Gegenkraft 5); cent_in_tsd hat keinen Aufrufer und gibt es nicht (T50)
+abgeleitet: 17 Funktionen des Zustands im Kern, 3 im Prüfstand, abschliessend aufgezählt; ein Name in einer Formel, der weder Adresse (T15) noch Parameter (T27) noch Jahrgangskonstante (T23) noch abgeleitete Größe ist, ist ein Befund (T48)
 suchbot: Zielgröße B nach T44 -- statische Ergebnisprognose des Zwischenzustands, im Zweig "überlebt" formelgleich mit der Ergebnisgröße von spiel.md, ohne freien Parameter
 herkunft: jede der 310 Adressen trägt genau einen Herkunftseintrag aus fünf Arten; 136 Datenanker, 150 Entwurf, 11 Parameter, 2 Manifest, 11 Vorgabe (T45, T46) -- eine Lücke oder ein zweiter Eintrag bricht den Jahrgangsbau ab
 tick_planwert: 10 Mikrosekunden je Weltschritt (Bandbreite 5 bis 30) -- geschätzt, nicht gemessen; es gibt noch keinen Kern
@@ -18,34 +21,45 @@ nachtlauf: 11.783.264 Weltschritte, 2,0 Minuten auf einem Kern beim Planwert, 9,
 
 # Der Kern ist eine reine Ganzzahlfunktion ohne Ziehung -- damit ist Determinismus keine Disziplin, sondern eine Eigenschaft des Typsystems.
 
-Fünfte Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`, gegen die
-Prüfung der Runde 4 und gegen **`spiel.md` Fassung 4**, die vier Stellen dieses Dokuments
-neu rechnen lässt. Die Abarbeitung steht am Ende der Datei. Die Abarbeitungen der ersten
-drei Prüfungen standen in den Fassungen 2 bis 4 und sind dort je vom Prüfer als erledigt
-abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
+Sechste Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`, gegen die
+Prüfung der Runde 6 und gegen **`spiel.md` Fassung 5**, die acht Stellen dieses Dokuments
+nachführen lässt. Die Abarbeitung steht am Ende der Datei. Die Abarbeitungen der ersten
+vier Prüfungen standen in den Fassungen 2 bis 5 und sind dort je von der nächsten Prüfung
+unter deren Bedingung 5 abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht
+wiederholt.
 
-Die Vorgaben sind mit **T1** bis **T47** durchnummeriert. Der Builder weicht von keiner ab,
+Die Vorgaben sind mit **T1** bis **T51** durchnummeriert. Der Builder weicht von keiner ab,
 ohne dass ein ADR sie aufhebt; der Prüfer zitiert die Nummer, statt sie zu umschreiben.
 **Die Nummern behalten über alle Fassungen ihre Bedeutung**, damit alle Prüfungen
 zitierbar bleiben; neue Vorgaben tragen die nächsten freien Nummern und stehen dort, wo sie
 inhaltlich hingehören. Die Nummerierung ist deshalb innerhalb der Abschnitte nicht
 fortlaufend.
 
-**Die teuerste Lehre dieser Fassung: Eine Prüfung, die nur ihr eigenes Versprechen prüft,
-prüft zu wenig.** T45 verlangt seit Fassung 4, dass jede der 310 Adressen genau einen
-Herkunftseintrag trägt, und nennt vier zulässige Eintragsarten. Diese Fassung hat die
-Zuordnung zum ersten Mal **ausgezählt statt behauptet** — und dabei drei Dinge gefunden,
-die keine Prüfung bisher gesehen hat: elf Adressen, für die keine der vier Arten passt
-(Neubasierungszähler, US-Wechselkurs als Numéraire, fünf Aggregatgrößen der Restwelt ohne
-Reihe), zwei Adressen, deren Wert der Jahrgangsbau selbst errechnet, und eine Klasse von
-Zeilen, die nach dem Wortlaut **zwei** Einträge bekämen und den Bau damit abbrächen. Die
-Antwort sind eine fünfte Eintragsart, eine Vorrangregel und **T46**, das die
-Vorgabeadressen abschliessend aufzählt statt sie zu erwähnen. Die Summe geht jetzt auf:
-`136 + 150 + 11 + 2 + 11 = 310`.
+**Die teuerste Lehre dieser Fassung: Der Abzählschritt aus T45 zählt Adressen, und Befund 2
+der Runde 6 lag zwischen zweien.** Die gemischten Skalen in `beteiligung_wert` waren keine
+fehlende Adresse und keine fehlende Zahl, sondern eine **fehlende Einheit an einer
+vorhandenen Größe**. Ich habe deshalb dieselbe Prüfung, die Fassung 5 für die Herkunft von
+Hand ausgeführt hat, in diesem Lauf für die **Skala** ausgeführt — und dabei gefunden, dass
+T5 von sich sagt, die Bedeutung stehe „in dieser Tabelle und nirgends sonst", während **69
+der 310 Adressen** in keiner ihrer Zeilen vorkamen: 25 Personengrößen, 5 Produktivitäten,
+4 Regulierungsstände, 32 Druck- und Gegendruckfelder, die Sichtbarkeit des Fonds und die
+beiden Kennungsfelder.
 
-Dieselbe Bauart wie T40 und T44: nicht die fehlende Zahl nachtragen, sondern die Stelle
-schliessen, an der sie fehlen konnte — und die Zusage einer Tabelle dadurch prüfen, dass
-man sie einmal von Hand einlöst.
+Die 32 Druckfelder sind darunter der teure Fall, und sie sind wörtlich Befund 2 ein zweites
+Mal: Der anliegende Druck entsteht aus dem **Lobbybudget des Fonds** (US-Cent), der
+Gegendruck aus dem **Schaden eines Sektors** (Tausend USD), und `spiel.md` verrechnet beide
+in Schritt 3 gegeneinander. Ohne erklärte Einheit hätte der Bauagent zwei Skalen addiert,
+die um den Faktor 100.000 auseinanderliegen — und diesmal hätte es nicht wie ein
+Rechenfehler ausgesehen, sondern wie eine Gegenlobby, die nie greift.
+
+Die Antwort sind **T49** (jede der 310 Adressen trägt genau eine Skalenklasse, abgezählt),
+**T50** (die Skalengrenzen werden von benannten Funktionen an genau einem Ort überquert) und
+**T48** (die abgeleiteten Größen, die keine Adresse sind, abschliessend aufgezählt — die
+Menge, in der Befund 1 lag). Dieselbe Bauart wie T40, T44 und T45: nicht die fehlende Zahl
+nachtragen, sondern die Stelle schliessen, an der sie fehlen konnte, und die Zusage einer
+Tabelle dadurch prüfen, dass man sie einmal von Hand einlöst. Beide Summen gehen auf:
+`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 + 83 + 2 = 310` neben
+`136 + 150 + 11 + 2 + 11 = 310`.
 
 ## 1. Stack
 
@@ -103,20 +117,51 @@ skalierte Ganzzahlen zerlegt, nie über `parse::<f64>()`.
 **T5 — Jede Größenklasse hat eine deklarierte Skala.** Der Typ ist überall `i64`, die
 Bedeutung steht in dieser Tabelle und nirgends sonst:
 
-| Klasse | Einheit | Beispiel | Bereich |
-|---|---|---|---|
-| Fondsgeld (Kasse, Position, **Beteiligungswert**, Hebel, Anlegerbestand) | US-Cent | 4.200.000.000 = 42 Mio USD | ±9,2·10^16 USD |
-| Volkswirtschaftliche Beträge (BIP, Wertschöpfung, Kapitalstock, Handelsstrom, Marktkorbwert) | Tausend USD zu konstanten Preisen des Basisjahrs | 21.000.000.000 = 21 Bio USD | reichlich |
-| Raten (Zins, Inflation, Zoll, Haushaltssaldo, Schuldenquote, Rendite, Überrendite) | Basispunkte (1 bp = 0,01 %) | 250 = 2,50 % | ±2 Mio % |
-| Anteile (Sektoranteil, Marktanteil, Einfluss, Zustimmung, `durchgriff`) | Zehntausendstel | 10.000 = 100 % | 0 bis 10.000 |
-| Preise und Preisniveaus | Index, Startjahr = 10.000 | 12.500 = +25 % | siehe T8 |
-| Wechselkurs | Index gegen USD, Startjahr = 10.000 | 8.000 = Aufwertung um 25 % | siehe T8 |
-| Zähler und Restdauern (Aufsicht, Nachahmer, Restverzögerung, die drei Restdauern, `basiswechsel`, Runde, Mandatsstand, Positionsstufe) | Stück bzw. Runden | 3 = drei Runden | 0 … Obergrenze aus `parameter.toml` |
-| Ergebnis einer Partie | Milli-Runden | 12.000 = Runde 12,0 | siehe T34 |
+| # | Klasse | Einheit | Beispiel | Bereich |
+|---:|---|---|---|---|
+| 1 | Fondsgeld (Kasse, **Positionswert**, **Beteiligungswert**, Hebel, Anlegerbestand) | US-Cent | 4.200.000.000 = 42 Mio USD | ±9,2·10^16 USD |
+| 2 | Volkswirtschaftliche Beträge (BIP, Wertschöpfung, Kapitalstock, Handelsstrom, **Korbwert**, Marktkorbwert) | Tausend USD zu konstanten Preisen des Basisjahrs | 21.000.000.000 = 21 Bio USD | reichlich |
+| 3 | Raten (Zins, Inflation, Zoll, Haushaltssaldo, Schuldenquote, Rendite, Überrendite, **`aufschlag`**) | Basispunkte (1 bp = 0,01 %) | 250 = 2,50 % | ±2 Mio % |
+| 4 | Anteile (Sektoranteil, Marktanteil, Einfluss, Zustimmung, **Sichtbarkeit**, **Beteiligungsanteil**, `durchgriff`, **`stufenweite`**) | Zehntausendstel | 10.000 = 100 % | 0 bis 10.000 |
+| 5 | Nominalindizes (Sektorpreise, Weltpreise, Preisniveau, **`anleihekurs`**) | Index, Startjahr = 10.000 | 12.500 = +25 % | > 0, siehe T8 und T50 |
+| 6 | Wechselkurs | Index gegen USD, Startjahr = 10.000 | 8.000 = Aufwertung um 25 % | ≥ 1, siehe T8 und T50 |
+| 7 | **Realindizes (Produktivität)** | Index, Startjahr = 10.000, **nie neu basiert** | 11.200 = +12 % | > 0 |
+| 8 | **Personen** (Bevölkerung, Erwerbstätige, Beschäftigung je Sektor) | Personen | 82.000.000 | 0 … 10^10 |
+| 9 | **Lobbydruck** (anliegender Druck, Gegendruck) | Lobbypunkte | 1.500 | 0 … `druck_max` |
+| 10 | **Instrumentenstufe** (allein Finanzmarktregulierung) | Stufe | 3 | 0 … `regulierung_stufen` |
+| 11 | Zähler und Restdauern (Aufsicht, Nachahmer, Restverzögerung, die drei Restdauern, `basiswechsel`, Runde, Mandatsstand, Positionsstufe) | Stück bzw. Runden | 3 = drei Runden | 0 … Obergrenze aus `parameter.toml`; Positionsstufe `−stufen_max … +stufen_max` |
+| 12 | **Kennungen** (Jahrgangskennung, Parametersatz-Prüfsumme) | Bitmuster ohne Größenbedeutung | — | jede `i64`; **jede Arithmetik ausser Gleichheit ist ein Fehler** |
+| 13 | Ergebnis einer Partie (**keine Zustandsadresse**) | Milli-Runden | 12.000 = Runde 12,0 | siehe T34 |
 
-Die vorletzte Zeile ist in Fassung 5 nachgetragen: T5 sagt von sich, die Bedeutung stehe
-„in dieser Tabelle und nirgends sonst", und die reinen Zähler standen bis dahin in keiner
-Klasse. Sie sind die einzige Klasse ohne Skalenfaktor — eine 3 heisst drei, nicht 0,0003.
+**Fünf Klassen sind in dieser Fassung neu, und sie sind es nicht aus Ordnungsliebe.** T5
+sagt von sich, die Bedeutung stehe „in dieser Tabelle und nirgends sonst"; ich habe die
+Zusage in diesem Lauf zum ersten Mal gegen alle 310 Adressen eingelöst und 69 gefunden, die
+in keiner Zeile vorkamen. Welche das sind und wie die Zuordnung aufgeht, steht in **T49**;
+was die neuen Klassen bedeuten, hier:
+
+- **Personen (8).** 25 Adressen. Ohne eigene Klasse hätte ein Bauagent Erwerbstätige in
+  Tausenden oder in Personen führen können, und die Produktivität hinge am Faktor 1.000.
+- **Realindizes (7).** 5 Adressen. Die Trennung von Klasse 5 ist keine Feinheit, sondern
+  eine Regel: T8 teilt bei einer Neubasierung die **nominalen** Größen eines Gebiets durch
+  1.000. Die Produktivität ist real und darf nicht mitlaufen; stünde sie in Klasse 5, würde
+  ein brasilianischer Basiswechsel die Produktivität um drei Größenordnungen senken.
+- **Lobbydruck (9).** 32 Adressen, und der Grund steht oben im Vorspann: `druck` kommt aus
+  dem Fondsbudget, `gegendruck` aus einem volkswirtschaftlichen Schaden, und Schritt 3
+  verrechnet beide gegeneinander. Die gemeinsame Einheit ist der **Lobbypunkt**; die beiden
+  Übergänge dorthin stehen in T50.
+- **Instrumentenstufe (10).** 4 Adressen. Drei der vier Instrumente stehen in Basispunkten,
+  weil ihr historischer Politikpfad in Basispunkten vorliegt; die Finanzmarktregulierung hat
+  nach `spiel.md` keinen Anker und deshalb keine natürliche Einheit. Sie bekommt eine
+  Stufenskala, und „höchstens ein Schritt je Runde" heisst dort **eine Stufe**, bei den
+  anderen dreien `schrittweite[instrument]` Basispunkte aus `parameter.toml`.
+- **Kennungen (12).** 2 Adressen. Das Verbot der Arithmetik ist der eigentliche Inhalt: Eine
+  Prüfsumme, die versehentlich in eine Summe gerät, erzeugt eine Zahl, die keine Prüfung
+  bemerkt, weil sie in keinem Wertebereich liegt.
+
+**Zwei bestehende Klassen sind erweitert, und auch das ist kein Ordnungsschritt:**
+**Fondsgeld (1)** und **volkswirtschaftliche Beträge (2)** führen jetzt `positionswert` und
+`korbwert` ausdrücklich, auf beiden Seiten der Grenze. Das ist Befund 2 der Runde 6 an seiner
+Wurzel — die beiden Namen standen in T47 in einer Formel, aber in keiner Klasse.
 
 Einfluss und Zustimmung erscheinen dem Spieler als 0 bis 100 (so nennt sie `spiel.md`);
 gespeichert sind sie in Zehntausendsteln, damit die Gegenkräfte unterhalb eines
@@ -126,11 +171,112 @@ Der Koeffizient heisst seit `spiel.md` Fassung 3 **`durchgriff`** und nicht mehr
 `handelsanteil`. Er bleibt in der Klasse Anteile — anders als sein Vorgänger hält er ihren
 Bereich jetzt per Konstruktion ein; die Bildungsregel steht in T23 Punkt 5.
 
-**Zwischen Fondsskala und volkswirtschaftlicher Skala liegt der Faktor 100.000, und er wird
-an genau einer Stelle überschritten:** `cent_in_tsd` und `tsd_in_cent`, beide mit der
-Rundung aus T6; jede andere Vermischung ist ein Fehler. Der Fonds bewegt Preise auf
-Märkten, deren Größen in einer anderen Einheit stehen als sein Geld — das ist die
-wahrscheinlichste stille Fehlerquelle des Modells.
+**`stufenweite` steht seit `spiel.md` Fassung 5 in der Klasse Anteile und nicht in der
+Klasse Fondsgeld**, und das ist die Entscheidung, an der Befund 2 hing: Eine Stufe ist
+*`stufenweite` Zehntausendstel des Marktes*, an dem der Steckplatz hängt, kein Geldbetrag.
+Damit ist der Anteil, den Gegenkraft 1 und der Preisstoß lesen, dieselbe Zahl wie die, aus
+der der Positionswert entsteht, und der Zustand braucht keine zwanzig Einstandspreise.
+
+**Zwischen Fondsskala und volkswirtschaftlicher Skala liegt der Faktor 100.000** (1 Tausend
+USD = 100.000 US-Cent). Wo er überschritten wird, sagt **T50** — und er wird nur in **einer
+Richtung** überschritten, weshalb es `cent_in_tsd` in dieser Fassung nicht mehr gibt.
+
+**T49 — Jede der 310 Adressen trägt genau eine Skalenklasse, und die Zuordnung ist
+abgezählt.** Das ist T45 eine Ebene tiefer, aus demselben Grund und mit demselben Verfahren:
+Der Jahrgangsbau führt neben der Herkunftstabelle eine **Skalentabelle** über alle 310
+Adressen; eine Adresse ohne Klasse und eine mit zwei Klassen brechen den Bau ab. Beide
+Tabellen werden ins Manifest geschrieben, und beide müssen auf 310 summieren.
+
+**Je spielbarem Land**, die 44 aus T15 nach Klasse:
+
+| Klasse | Adressen | welche |
+|---|---:|---|
+| 2 volkswirtschaftlich | 6 | 3 Wertschöpfungen, 3 Sektorkapitalstöcke |
+| 8 Personen | 5 | 3 Sektorbeschäftigungen, Bevölkerung, Erwerbstätige |
+| 5 Nominalindizes | 4 | 3 Sektorpreise, Preisniveau |
+| 7 Realindizes | 1 | Produktivität |
+| 3 Raten | 7 | Inflation, Leitzins, Staatsschuld, Haushaltssaldo, 3 Instrumentenstände (Leitzins, Zoll, Haushalt) |
+| 6 Wechselkurs | 1 | Wechselkurs |
+| 4 Anteile | 2 | Zustimmung, Einfluss |
+| 9 Lobbydruck | 8 | 4 anliegende Drücke, 4 Gegendrücke |
+| 10 Instrumentenstufe | 1 | Stand der Finanzmarktregulierung |
+| 11 Zähler | 9 | Aufsichtszähler, 4 Restverzögerungen, 3 Restdauern, `basiswechsel` |
+| **Summe** | **44** | wie T15 |
+
+**Die Restwelt** trägt davon 22: 6 volkswirtschaftlich, 5 Personen, 4 Nominalindizes,
+1 Realindex, 4 Raten, 1 Wechselkurs, 1 Zähler — sie hat keine Instrumente, keine
+Zustimmung, keinen Aufsichtszähler, keinen Einfluss und keine Restdauern.
+
+**Die ganze Zerlegung**, gegen dieselben 310:
+
+```
+Klasse  1 Fondsgeld           Kasse, Hebelstand, Anlegerbestand                  =   3
+Klasse  2 volkswirtschaftlich 4×6 + 6 + 40 Handelsströme + markt.wert            =  71
+Klasse  3 Raten               4×7 + 4 + markt.rendite + 3 Überrenditen           =  36
+Klasse  4 Anteile             4×2 + Sichtbarkeit + Marktanteil + 12 Beteiligungsanteile = 22
+Klasse  5 Nominalindizes      4×4 + 4 + 2 Weltpreise                             =  22
+Klasse  6 Wechselkurs         4 + 1                                              =   5
+Klasse  7 Realindizes         4 + 1                                              =   5
+Klasse  8 Personen            4×5 + 5                                            =  25
+Klasse  9 Lobbydruck          4×8                                                =  32
+Klasse 10 Instrumentenstufe   4×1                                                =   4
+Klasse 11 Zähler              4×9 + 1 + 12 Nachahmer + 20 Stufen + 12 Restdauern
+                              + Runde + Mandatsstand                             =  83
+Klasse 12 Kennungen           Jahrgangskennung, Parametersatz-Prüfsumme          =   2
+                                                                                   ---
+                                                                                   310
+```
+
+Gegengerechnet gegen die Gruppenzerlegung aus T15 (`198 + 56 + 52 + 4`) und gegen die
+Herkunftszerlegung aus T45 (`136 + 150 + 11 + 2 + 11`). **Drei unabhängige Aufteilungen
+derselben Menge, alle drei von Hand gerechnet** — eine Zahl, die nur einmal entsteht, ist
+unbelegt, auch wenn sie stimmt.
+
+**Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines Zufalls.**
+`land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` sind dieselbe Größe, ebenso
+`land.<L>.haushaltssaldo` und `land.<L>.instrument.haushalt.stand`; T15 führt beide, weil
+`spiel.md` beide aufzählt. Verbindlich ist deshalb: **Geschrieben wird der Instrumentenstand
+in Schritt 3; die Aggregatgröße wird in Schritt 4 mit `lies_neu` vom Stand übernommen und
+trägt die Ursache `Instrument{l, i}`.** Der Invariantentest (T30 Prüfung 2) prüft die
+Gleichheit je Runde. Ohne diese Regel gäbe es zwei Herren über eine Zahl — derselbe
+Fehlertyp, den T39 für `landespreis`, T23 Punkt 9 für die BACI-Konkordanz und T47 für das
+Fondsvermögen schon geschlossen haben. Dass das Paar überhaupt existiert, ist eine
+Beobachtung an `spiel.md` und steht in Abschnitt 12; es blockiert nichts.
+
+**T50 — Es gibt genau drei Skalenübergänge, jeder hat eine benannte Funktion und genau
+einen Aufrufort.** Ein Übergang ohne Namen ist die Fehlerart, an der Befund 2 der Runde 6
+hing; ein Name ohne Ortsbindung ist derselbe Fehler eine Woche später.
+
+| # | von | nach | Funktion | einziger Aufrufort |
+|---:|---|---|---|---|
+| 1 | volkswirtschaftlich (2) | Fondsgeld (1) | `tsd_in_cent(x) = x · 100.000` | äusserster Aufruf von `positionswert` und `beteiligung_wert` (T47) |
+| 2 | Fondsgeld (1) | Lobbydruck (9) | `lobbypunkte_aus_geld(cent, rabatt) = mal_geteilt(cent, 10.000, lobbykosten · rabatt)` | Aktion 3, Schritt 2 |
+| 3 | volkswirtschaftlich (2) | Lobbydruck (9) | `lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz, 10.000)` | Gegenkraft 5, Schritt 5 |
+
+`lobbykosten` (US-Cent je Lobbypunkt, ≥ 1), `gegenlobby_satz` (Lobbypunkte je 10.000 Tausend
+USD Schaden) und `beteiligungsrabatt` (Zehntausendstel; `rabatt` ist 10.000 ohne und
+`beteiligungsrabatt` mit Beteiligung im betroffenen Sektor, also `1 ≤ beteiligungsrabatt ≤
+10.000`) stehen nach T27 in `parameter.toml` und werden kalibriert, nicht entworfen. Ein
+kleinerer Rabattwert heisst mehr Punkte für dasselbe Geld — das ist der „Bruchteil", den
+`spiel.md` der Aktion 3 mit Beteiligung zusagt. **Der Rabatt sitzt am Preis eines
+Lobbypunkts, nicht an der Punktzahl** — sonst wäre `einfluss`, nach `spiel.md` der Anteil
+des Fonds am gesamten Lobbydruck, über Länder hinweg nicht mehr vergleichbar. *Wie hoch*
+der Schaden eines Sektors ist, bleibt Sache von `spiel.md` und des Bauagenten; T50 legt nur
+fest, in welcher Einheit er ankommt.
+
+**`cent_in_tsd` gibt es nicht.** Fassung 5 hat die Umkehrfunktion neben `tsd_in_cent`
+genannt; sie hat in diesem Modell **keinen Aufrufer**, und der Grund ist eine Eigenschaft
+des Entwurfs und kein Zufall: Der Fonds wirkt auf die Welt ausschliesslich über **Anteile in
+Zehntausendsteln** (Preisstoß aus Aktion 1, Fußabdruck in Gegenkraft 1, Nachahmerzähler),
+nie über einen Geldbetrag. Eine Umrechnungsfunktion ohne Aufrufer ist eine stehende
+Einladung, sie irgendwo zu benutzen, wo sie nicht hingehört; sie ist deshalb gestrichen.
+Fällt später eine Regel an, die sie braucht, ist das ein ADR.
+
+**Wo die Übergänge erzwungen werden.** Alle drei Funktionen und alle abgeleiteten Größen aus
+T48 stehen im Modul `kern::werte`; `tsd_in_cent` und die beiden Lobbyumrechnungen sind dort
+privat. Ein Treffer von `grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` ausserhalb dieses
+einen Moduls ist ein Befund — dieselbe Bauart wie der Gleitkommanachweis aus T4, und ebenso
+mechanisch.
 
 **T6 — Genau eine Rundungsregel, `/` auf Zustandsgrößen ist verboten, und der Nenner null
 ist ein harter Fehler.** Alle Divisionen laufen über `teile_gerundet(zaehler, nenner)` mit
@@ -176,8 +322,8 @@ nichts entstehen zur Laufzeit:
 echtes Literal trägt** — die 30.000, ab der die Todesarten zählen. Der Jahrgangsbau bricht
 mit `R > 26` ab, statt eine Skala zu erzeugen, in der ein Wert zwei Bedeutungen trägt.
 
-**Die Schranke bleibt in Fassung 5 unverändert bei `R ≤ 26`, ist jetzt aber scharf statt
-grosszügig, und das habe ich in diesem Lauf nachgerechnet.** `spiel.md` Fassung 4 hat die
+**Die Schranke steht seit Fassung 5 unverändert bei `R ≤ 26`, ist seither aber scharf statt
+grosszügig, und sie ist dort nachgerechnet worden.** `spiel.md` Fassung 4 hat die
 Kappung des Fehlbetrags gestrichen; das Band „überlebt" endet dadurch bei
 `(R+1) × 1.000 + 3.000` statt bei `+ 2.000`. Der niedrigste erreichbare Wert des Todesbandes
 ist `30.000 + (R + 1 − R) × 1.000 = 31.000`, unabhängig von R. Disjunkt sind beide Bänder
@@ -197,6 +343,17 @@ ausdrücklich als **Spieljahrgänge** erhält und Brasilien zwischen 1980 und 19
 Nullen gestrichen hat. Regel: Übersteigt der Preisindex eines Landes das 100.000-fache
 seines Startwerts, werden Index, Wechselkurs und alle nominalen Größen dieses Landes durch
 1.000 geteilt und der Zähler `basiswechsel` erhöht.
+
+**Welche Größen das sind, ist seit T49 abzählbar und steht deshalb hier statt in einer
+Auslegung: genau fünf je Gebiet** — die drei Sektorpreise, das Preisniveau (Klasse 5) und
+der Wechselkurs (Klasse 6). Sonst nichts. Die volkswirtschaftlichen Beträge stehen nach T5
+Klasse 2 **zu konstanten Preisen des Basisjahrs**, sind also real und laufen nicht mit; die
+Produktivität steht in Klasse 7 und darf es nicht (sonst senkte ein brasilianischer
+Basiswechsel die Produktivität um drei Größenordnungen); Raten, Anteile, Personen,
+Lobbypunkte und Zähler haben keine Währungsdimension; das Fondsgeld steht in US-Cent, also
+im Numéraire, und ist von einer Währungsreform des Gastlandes nicht berührt. „Alle nominalen
+Größen dieses Landes" war bis Fassung 5 eine Formulierung, die der Bauagent hätte auslegen
+müssen; es sind fünf Adressen, und sie stehen hier namentlich.
 
 Weil sie im Prüfjahrgang nie greift, wäre sie ungeprüfter Code. **Auflage an den
 Testentwickler:** Mindestens eine Partie im Regressionsbestand (T31) läuft auf einem
@@ -274,6 +431,15 @@ werkzeuge/aufbereitung -> daten           einmal je Jahrgang: Rohdaten -> Jahrga
 `kern` kennt weder Bildschirm noch Datei noch Uhr. Dass das Modell die Sicht nie etwas
 fragt, ist damit keine Verabredung, sondern scheitert am Übersetzer, sobald es jemand
 versucht.
+
+**Innerhalb von `kern` gibt es ein Modul, dessen Schnitt eine Vorgabe ist und keine
+Geschmacksfrage: `kern::werte`.** Dort und nur dort stehen die abgeleiteten Größen aus T48
+und die drei Skalenübergänge aus T50; `tsd_in_cent`, `lobbypunkte_aus_geld` und
+`lobbypunkte_aus_schaden` sind dort privat. Damit ist die öffentliche Schnittstelle dieses
+Moduls **dieselbe Liste**, die T48 aufzählt — ein Prüfer legt `pub fn` gegen die Tabelle und
+ist fertig. Das ist der mechanische Nachweis, den Befund 1 der Runde 6 gebraucht hätte und
+den der Abzählschritt aus T45 nicht liefern konnte, weil er Adressen zählt und keine
+Funktionen.
 
 **T14 — Die Textoberfläche ist Teil des Produkts, nicht Werkzeug.** `konsole` spielt das
 Spiel vollständig — Zustand in drei Ebenen, Aktionen, Speichern, Laden. Sie ist zugleich
@@ -371,9 +537,16 @@ Eine Adresse, die sich nicht ändert, wird trotzdem geschrieben, mit der Ursache
 `Vortrag` — „unverändert" ist eine Aussage und keine Lücke.
 
 Das ist die maschinelle Fassung der Vorgabe aus `spiel.md` und zugleich die billigste Art,
-die dortige Behauptung über **sieben** rundenübergreifende Rückkopplungskanäle prüfbar zu
+die dortige Behauptung über **acht** rundenübergreifende Rückkopplungskanäle prüfbar zu
 machen: Eine Rückkopplung innerhalb der Runde erzeugt zwangsläufig einen zweiten
-Schreibzugriff und stirbt hier, statt als achter Kanal unbemerkt zu entstehen. Kosten:
+Schreibzugriff und stirbt hier, statt als neunter Kanal unbemerkt zu entstehen.
+
+**Acht statt sieben seit `spiel.md` Fassung 5**, und der Zuwachs ist die Ausbeute des
+Befundes 1: Kanal 8 ist *Vermögen → Lobbybudget → Instrument → Kurs → Bewertung → Vermögen*.
+Er war die ganze Zeit da; sein Glied „Bewertung" wurde erst zu einem gerechneten Schritt,
+als T47 und der Abschnitt *Was ein Korb wert ist* die Bewertungsformeln hinschrieben. Das
+ist der Grund, warum eine fehlende **Funktion** teurer ist als eine fehlende Zahl: Sie
+versteckt einen Rückkopplungskanal. Kosten:
 40 Byte je Runde, ein Bittest je Schreibzugriff.
 
 **T39 — Es gibt zwei Lesezugriffe, und der falsche stirbt sofort.** Der `Schreiber` hält
@@ -485,6 +658,15 @@ einführen. Was ein Bündel als Ganzes betrifft — derselbe Steckplatz zweimal,
 überzogen, mehr als drei Aktionen —, prüft `buendel_zulaessig(zustand, buendel)` gegen
 denselben Rundenanfangszustand. Zwei Prüfungen, beide zustandsfrei innerhalb der Runde.
 
+**Zwei Zulässigkeitsbedingungen kommen mit `spiel.md` Fassung 5 hinzu, und beide folgen aus
+der Anteilsskala.** Eine Aktion 1 oder 2, nach der `fondsanteil(l, s)` über **10.000** läge,
+ist unzulässig — ein Anteil über hundert Prozent ist kein Anteil, und Gegenkraft 1 und der
+Preisstoß lesen genau diese Zahl. Ebenso unzulässig ist eine Aktion, nach der
+`|stufen(p)| > stufen_max` wäre. Beide werden **im Bündel** geprüft, nicht je Aktion: Drei
+Aufstockungen desselben Steckplatzes in einer Runde sind einzeln zulässig und zusammen nicht.
+Der Invariantentest (T30 Prüfung 2, Schranke 7) prüft danach, dass die Zulässigkeitsprüfung
+gehalten hat — die Prüfung schützt den Spieler, der Test schützt vor der Prüfung.
+
 **T22 — Ein Speicherstand ist Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme, nicht
 der Zustand.** Datei: `{schema_version, jahrgang_id, modus, daten_pruefsumme,
 parameter_pruefsumme, startwert, aktionen: [[runde, aktion…]], end_pruefsumme}`. Beim Laden
@@ -507,6 +689,24 @@ enthält:
    Manifest oder aus **T46**. Welche Adresse woher kommt, entscheidet T45, und die Zuordnung
    ist dort abgezählt.
 
+   **Zwei Startwerte entstehen aus je zwei Reihen und nicht aus einer, und beide behalten
+   den Rang `Datenanker`.** Reihe 1 liefert ein BIP je Gebiet, Reihe 3 einen Kapitalstock je
+   Gebiet; T15 führt von beidem **drei** je Gebiet. Dieselbe Regel bildet beide, mit den auf
+   10.000 normierten Sektoranteilen aus Reihe 2:
+
+   ```
+   wertschoepfung[g][s] = mal_geteilt(bip_start[g],          sektoranteil[g][s], 10.000)
+   kapitalstock[g][s]   = mal_geteilt(kapitalstock_start[g], sektoranteil[g][s], 10.000)
+   ```
+
+   Der Herkunftseintrag lautet `Datenanker(1 × 2)` beziehungsweise `Datenanker(3 × 2)`; die
+   Zählung in T45 ändert sich dadurch nicht, weil beide Adressgruppen dort schon als Anker
+   geführt sind. Die Regel für den Kapitalstock ist in Fassung 6 nachgetragen — `spiel.md`
+   Fassung 5 verlangt sie, weil der Korbwert seit dem am Sektorkapitalstock hängt und der
+   damit zum ersten Mal eine Größe ist, die jemand ausrechnen muss. Der Aufteilungsfehler
+   ist derselbe wie bei der Wertschöpfung und für den Rückvergleich folgenlos, weil die
+   zwölf Sektoranteil-Sollreihen aus **derselben** Normierung entstehen.
+
    **Die Vorgabetabelle der Fassung 4 an dieser Stelle ist gestrichen, und das ist kein
    Rückzug, sondern die Vermeidung eines Abbruchs.** Sie führte
    `land.<L>.instrument.<I>.druck` und `…​.rest` mit Startwert 0, je 16 Adressen, weil
@@ -528,8 +728,12 @@ enthält:
    Startwert — was das Orakel für dieses Instrument blind macht, und das gehört in jeden
    Befund;
 4. **exogene Pfade** nach T25;
-5. **Konstanten des Jahrgangs**: `durchgriff[Gebiet][handelbarer Sektor]`, also zehn Werte
-   in Zehntausendsteln. Bildungsregel mit `H` = Aus- plus Einfuhr des Sektors im Startjahr
+5. **Konstanten des Jahrgangs**: **vierzehn Werte** — `durchgriff[Gebiet][handelbarer
+   Sektor]`, also zehn in Zehntausendsteln, und **`leitzins_start[l]`**, vier in
+   Basispunkten. Die vier sind die erste Stützstelle des Politikpfads aus Reihe 9, also
+   keine neue Datenanforderung; sie stehen hier, weil `anleihekurs` sie über die ganze
+   Partie braucht und ein Rückgriff auf „den Leitzins in Runde 1" einen Zustand voraussetzte,
+   den der Zustand nicht mehr hat. Bildungsregel für `durchgriff` mit `H` = Aus- plus Einfuhr des Sektors im Startjahr
    (aus BACI über die Konkordanz in Punkt 9) und `N` = seine Wertschöpfung (aus WDI):
 
    ```
@@ -545,7 +749,30 @@ enthält:
    Befund**, weil ein Gebiet mit einem leeren Sektor eine Datenfrage aufwirft und keine
    Rechenfrage. Er tritt im Prüfjahrgang bei keinem der fünf Gebiete auf; die Regel steht
    hier, damit der Jahrgangsbau nicht an einer Division abbricht, deren Ursache er nicht
-   nennt;
+   nennt.
+
+   **Und der Jahrgangsbau prüft eine Bedingung an den Parametersatz, die `spiel.md`
+   Fassung 5 aufstellt und die genau dieses Fenster trifft:** `anleihekurs(l)` hat den Nenner
+   `leitzins[l] + aufschlag`, der Leitzins hat deshalb die Untergrenze `1 − aufschlag`, und
+   der historische Politikpfad muss sie einhalten. Der Jahrgangsbau rechnet
+
+   ```
+   aufschlag_min = 1 − min über alle l und t von leitzins_pfad[l][t]
+   ```
+
+   und weist einen Parametersatz mit `aufschlag < aufschlag_min` für diesen Jahrgang als
+   **unzulässig** zurück, statt später durch null zu teilen. Für 1997–2021 ist das keine
+   theoretische Schranke: Deutschland folgt dem Euroraum ab Runde 3 exogen, und die EZB hat
+   ihren Einlagesatz am 2014-06-11 erstmals auf −0,10 % gesenkt und bis September 2019 auf
+   **−0,50 %** (`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` und
+   `ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html`,
+   abgerufen 2026-09-01 vom Spielentwerfer, hier übernommen). Zieht der Jahrgang den
+   Einlagesatz, ist `aufschlag_min = 1 − (−50) = 51` Basispunkte; zieht er den
+   Hauptrefinanzierungssatz, der ab 2016 bei 0,00 % steht, ist `aufschlag_min = 1`. **Welche
+   Reihe eingebettet wird, entscheidet der Jahrgangsbau; die Schranke rechnet er in beiden
+   Fällen selbst aus, statt eine Zahl zu übernehmen.** Dieselbe Untergrenze gilt im
+   `spielmodus` am Instrument selbst (T51) — sonst unterliefe sie eine Lobbyaktion, die kein
+   Jahrgangsbau je zu sehen bekommt;
 6. **abgeleitete Kennzahlen**: die mittlere absolute Jahresänderung je Land als
    Schwankungsbreite für den Innerjahresausschlag. Mittlere absolute Abweichung, nicht
    Standardabweichung — die bräuchte eine Wurzel und damit Gleitkomma (T4);
@@ -713,6 +940,32 @@ Orakels, und deshalb ist sie eng gezogen.**
 | Preise, Zinswirkung, Handel, Staatsfinanzen, Zustimmung | **endogen** | das ist die Maschine, die geprüft werden soll |
 | Politikinstrumente | im `spielmodus` endogen, im `weltlauf` auf die historischen Pfade gesetzt | so verlangt es `spiel.md` — mit der Folge aus T37 und der Maske aus T38 |
 
+**T51 — Jedes Politikinstrument hat eine Schrittweite und einen Wertebereich, beide aus
+`parameter.toml`, und der Wertebereich gilt in beiden Modi.** `spiel.md` sagt „Instrumente
+bewegen sich um höchstens einen Schritt je Runde" und nennt für die Finanzmarktregulierung
+keine Einheit; seit T5 Klasse 10 gibt es eine, und damit lässt sich der Satz aufschreiben:
+
+| Instrument | Klasse | ein Schritt | Wertebereich |
+|---|---|---|---|
+| Leitzins | 3 Raten | `schrittweite[leitzins]` bp | `instrument_min[leitzins] … instrument_max[leitzins]`, und **`instrument_min[leitzins] ≥ 1 − aufschlag`** |
+| Zollniveau | 3 Raten | `schrittweite[zoll]` bp | `0 … instrument_max[zoll]` |
+| Haushaltssaldo | 3 Raten | `schrittweite[haushalt]` bp | `instrument_min … instrument_max` |
+| Finanzmarktregulierung | 10 Instrumentenstufe | **1 Stufe** | `0 … regulierung_stufen` |
+
+Nach jeder Bewegung in Schritt 3 gilt `stand = min(max(stand ± schritt, min), max)`; die
+Kappung trägt die Ursache des auslösenden Drucks und nicht `Vortrag`, damit die Kette aus
+T18 sagt, *dass* gekappt wurde. **Im `weltlauf` gilt die Schrittweite nicht** — der
+historische Pfad ist dort die Wahrheit und darf in einem Jahr weiter springen —, **der
+Wertebereich schon**: Verlässt der Pfad ihn, ist das ein Befund des Jahrgangsbaus und kein
+stilles Kappen einer Sollgröße.
+
+Die Zeile, an der das hängt, ist die zweite Spalte des Leitzinses. Ohne sie kann eine
+Lobbyaktion den Zins unter `−aufschlag` drücken, und `anleihekurs` teilt in derselben Runde
+durch null oder wechselt das Vorzeichen. Der Jahrgangsbau prüft die Bedingung gegen den
+historischen Pfad (T23 Punkt 5), das Instrument prüft sie gegen den Spieler, und der
+Invariantentest prüft sie gegen beide (T30 Prüfung 2). Drei Prüfungen für eine Schranke ist
+nicht zu viel: Sie ist die einzige Stelle des Modells, an der ein Kurs unendlich wird.
+
 **T26 — Ein gesperrter oder fehlender Datenanker ändert das Programm nicht, nur das
 Manifest.** Drei Fälle, alle nach demselben Muster: Der Jahrgang trägt ein Modellkonstrukt,
 das Manifest sagt es, der Befund wiederholt es.
@@ -771,12 +1024,35 @@ Neubasierungszähler. Sie stehen in **T46**. Bis Fassung 4 stand das nirgends, w
 die Dimensionen gegen T15 gelegt hat; die Prüfung der Runde 4 hat Bedingung 2 für erfüllt
 erklärt und dabei auf dieselbe Lücke geschaut wie ich.
 
-**T27 — Die Kalibrierdatei liegt ausserhalb des Codes.** Sämtliche Zahlenwerte, die
-`spiel.md` ausdrücklich der Kalibrierung überlässt — Mandatsschwelle (`schwelle_v` und
-`schwelle_e`), drei Aufsichtsschwellen, Nachahmergeschwindigkeit, Stufenweite einer
-Position, Lobbykosten, Anlegerabzugsanteil, Startkapital, Startzustimmung, Startstand der
+**T27 — Die Kalibrierdatei liegt ausserhalb des Codes, und jeder Schlüssel trägt eine
+Skalenklasse.** Sämtliche Zahlenwerte, die `spiel.md` ausdrücklich der Kalibrierung
+überlässt — Mandatsschwelle (`schwelle_v` und `schwelle_e`), drei Aufsichtsschwellen,
+Nachahmergeschwindigkeit, Anlegerabzugsanteil, Startkapital, Startzustimmung, Startstand der
 Finanzmarktregulierung, `ausstiegsabschlag` und `zwangsabschlag` (T47), Verzögerungen,
-Elastizitäten — stehen in `parameter.toml`, werden als Dezimalzeichenketten in skalierte Ganzzahlen gelesen (T4)
+Elastizitäten — stehen in `parameter.toml`.
+
+**Elf Schlüssel bekommen in dieser Fassung eine Einheit oder gibt es neu**, weil T49 und T50
+sie sonst nicht einordnen könnten. Ein Parameterschlüssel ohne Klasse ist derselbe Fehler
+wie eine Adresse ohne Klasse:
+
+| Schlüssel | Klasse (T5) | Bedeutung | woher |
+|---|---|---|---|
+| `stufenweite` | 4 Anteile | Anteil des Marktes je Positionsstufe, **kein Geldbetrag** | `spiel.md` Fassung 5 |
+| `stufen_max` | 11 Zähler | Betragsgrenze der Stufenzahl je Steckplatz | T16 |
+| `ausstiegsabschlag`, `zwangsabschlag` | 4 Anteile | Abschläge auf den Beteiligungswert | T47 |
+| `aufschlag` | 3 Raten | Abstand Leitzins ↔ Anleiherendite, `≥ aufschlag_min` (T23 Punkt 5) | **neu**, `spiel.md` Fassung 5 |
+| `lobbykosten` | 1 Fondsgeld | US-Cent je Lobbypunkt, `≥ 1` | T50 |
+| `beteiligungsrabatt` | 4 Anteile | Preisnachlass auf den Lobbypunkt bei Beteiligung, `1 … 10.000` | **neu**, T50 |
+| `gegenlobby_satz` | 9 Lobbydruck | Lobbypunkte je 10.000 Tausend USD Schaden | **neu**, T50 |
+| `druck_max` | 9 Lobbydruck | Obergrenze für Druck und Gegendruck je Instrument | **neu**, T5 Klasse 9 |
+| `regulierung_stufen` | 10 Instrumentenstufe | Zahl der Stufen der Finanzmarktregulierung | **neu**, T5 Klasse 10 |
+| `schrittweite[i]`, `instrument_min[i]`, `instrument_max[i]` | wie das Instrument | Bewegung je Runde und Wertebereich | **neu**, T51 |
+
+`leitzins_start[l]` steht **nicht** hier, sondern im Jahrgang (T23 Punkt 5): Es ist keine
+Kalibriergröße, sondern eine Messung. Die Zahl der Adressen mit Herkunft
+`Parameter(schluessel)` bleibt bei elf (T45) — neue Schlüssel sind keine neuen Adressen.
+
+Alle Werte werden als Dezimalzeichenketten in skalierte Ganzzahlen gelesen (T4)
 und in eine Struktur mit benannten Feldern gefüllt, nie über eine Schleife über Schlüssel
 (T9). Die Prüfsumme des Parametersatzes steht im Zustand und in jedem Speicherstand. Damit
 ist Kalibrieren eine Datenänderung, die kein Übersetzen braucht — genau die Bauart, die
@@ -829,17 +1105,34 @@ Bestand des Fonds. Die Regel, in Schritt 6 der Runde und nur im `spielmodus`:
 
 1. Der **Marktkorb** umfasst die 12 Land×Sektor-Körbe und die 4 Staatsanleihen, jeweils zu
    Modellmarktwerten. Währungen tragen keine Marktkapitalisierung und gehen nicht ein; ihre
-   Wirkung steckt in der Umrechnung der übrigen Körbe in den Numéraire.
+   Wirkung steckt in der Umrechnung der übrigen Körbe in den Numéraire. **Seit `spiel.md`
+   Fassung 5 sind Menge und Kurs benannt**, und damit ist der Korb eine Rechnung statt einer
+   Umschreibung — die Mengen sind Kapitalstock und Staatsschuld, die Kurse Sektorpreis,
+   Anleihekurs und Wechselkurs (T48):
+
+   ```
+   marktkorb(m, k) = Σ über die 12 Land×Sektor  wert_(m,k)(kapitalstock[l][s], sektorpreis[l][s], l)
+                   + Σ über die  4 Anleihen     wert_(m,k)(schuld(l),          anleihekurs(l),    l)
+   ```
+
+   `m` und `k` sagen, aus welcher Runde die Menge und aus welcher der Kurs gelesen wird;
+   beide Summen laufen über die Indexordnung aus T9. Der Wert steht in der
+   **volkswirtschaftlichen** Skala (T5 Klasse 2) und überquert keine Skalengrenze.
 2. `markt.wert` trägt den Wert dieses Korbs am Ende der Vorrunde. **In Runde 1 ist es der
    Startwert aus dem Jahrgang** — der Wert des Startkorbs zu Startpreisen, vom Jahrgangsbau
-   gerechnet und im Manifest ausgewiesen. Damit ist die zweite Hälfte von Befund 2
-   geschlossen, unabhängig vom Modus.
-3. Bewerte den **Mengenkorb der Vorrunde** zu den Preisen dieser Runde: `W_neu`.
-   `markt.rendite = teile_gerundet((W_neu − markt.wert) · 10.000, markt.wert)` in
+   als `marktkorb(start, start)` gerechnet und im Manifest ausgewiesen. Damit ist die zweite
+   Hälfte von Befund 2 der zweiten Prüfung geschlossen, unabhängig vom Modus.
+3. Bewerte den **Mengenkorb der Vorrunde** zu den Preisen dieser Runde:
+   `W_neu = marktkorb(alt, neu)`, also Mengen über `lies_alt` und Kurse über `lies_neu`
+   (T39). `markt.rendite = teile_gerundet((W_neu − markt.wert) · 10.000, markt.wert)` in
    Basispunkten.
-4. Erst danach wird `markt.wert` auf den Wert des **neuen** Korbs zu neuen Preisen gesetzt.
+4. Erst danach wird `markt.wert = marktkorb(neu, neu)` gesetzt.
 
-Mengenwachstum erzeugt damit keine Scheinrendite.
+Mengenwachstum erzeugt damit keine Scheinrendite. **`markt.wert` ist nie null** — er ist
+eine Summe positiver Mengen mal positiver Kurse, und beide Wertebereiche prüft der
+Invariantentest (T30 Prüfung 2). Damit sieht die Division in Punkt 3 nie einen Nenner null,
+ohne dass irgendwo ein Sonderfall stünde; das ist dieselbe Bauart wie Schritt (c) vor (d)
+weiter unten.
 
 **Die Fondsrendite entsteht in derselben Reihenfolge, und die Reihenfolge ist die Regel:**
 (a) Positionen bewerten, (a') Beteiligungen bewerten, (b) Fondsvermögen bilden, (c) ist es
@@ -853,14 +1146,35 @@ Basispunkten und steht für drei Runden im Zustand.
 Schritt (c) vor (d) ist keine Feinheit: Er ist der Grund, warum `teile_gerundet` in diesem
 Modell nie einen Nenner null sieht, ohne dass irgendwo ein Sonderfall geprüft würde.
 
-**T47 — Das Fondsvermögen ist genau eine Funktion, und der Beteiligungswert genau eine
-zweite.** `spiel.md` Fassung 4 hat entschieden, dass die zwölf Beteiligungen zum
-Fondsvermögen zählen, und wie sie bewertet werden. Das ist die Modellfrage, die Abschnitt 12
-zurückgegeben hatte; sie ist beantwortet, und hier steht nur noch, wo gerechnet wird.
+**T47 — Das Fondsvermögen ist genau eine Funktion, und jede Bewertung darin überquert die
+Skalengrenze genau einmal, am äussersten Aufruf.** `spiel.md` Fassung 5 bildet `korbwert`
+und `positionswert`, die Fassung 4 nur verwendet hatte (Befund 1 der Runde 6), und
+entscheidet, auf welcher Seite der Grenze `korbwert` steht (Befund 2). Hier steht, wo
+gerechnet wird.
+
+**Die Marktwerte, alle in der volkswirtschaftlichen Skala** (T5 Klasse 2); `wert` ist die
+eine Bewertungsformel, aus der alle drei Steckplatzarten entstehen:
 
 ```
-beteiligung_wert(l, s) = mal_geteilt(mal_geteilt(korbwert(l, s), anteil[l][s], 10.000),
-                                     10.000 − ausstiegsabschlag, 10.000)
+wert(menge, kurs, g) = mal_geteilt(menge, kurs, wechselkurs[g])
+
+korbwert(l, s)   = wert(kapitalstock[l][s], sektorpreis[l][s], l)
+anleihewert(l)   = wert(schuld(l),          anleihekurs(l),    l)
+waehrungswert(l) = wert(handelsvolumen(l),  10.000,            l)
+
+markt(p)         = korbwert | anleihewert | waehrungswert, je nach Steckplatzart
+stufenwert(p)    = mal_geteilt(markt(p), stufenweite, 10.000)
+```
+
+**Die beiden Fondswerte, in US-Cent** (T5 Klasse 1) — und genau hier liegt die Grenze:
+
+```
+positionswert(p)       = 0                                        falls stufen(p) = 0
+                       = tsd_in_cent(stufen(p) · stufenwert(p))   sonst
+
+beteiligung_wert(l, s) = tsd_in_cent(
+                           mal_geteilt(mal_geteilt(korbwert(l, s), anteil[l][s], 10.000),
+                                       10.000 − ausstiegsabschlag, 10.000))
 
 fondsvermoegen(z) = kasse
                   + Σ über die 20 Steckplätze  positionswert(p)
@@ -869,9 +1183,58 @@ fondsvermoegen(z) = kasse
 ```
 
 Beide Summen laufen über die Indexordnung aus T9, nie über eine Menge. `korbwert(l, s)` ist
-der Modellmarktwert desselben Land×Sektor-Korbs, den auch der Marktkorb aus Punkt 1 dieses
-Abschnitts verwendet — **eine Bewertung, nicht zwei**, sonst könnten Marktrendite und
-Fondsvermögen denselben Korb verschieden ansetzen.
+derselbe Wert, den auch der Marktkorb aus Punkt 1 dieses Abschnitts verwendet — **eine
+Bewertung, nicht zwei**, sonst könnten Marktrendite und Fondsvermögen denselben Korb
+verschieden ansetzen.
+
+**Das ist die Behebung von Befund 2, und sie steht an der Wurzel und nicht in einer
+Klammer.** Die Formel der Fassung 5 bestand aus zwei `mal_geteilt` mit einheitenlosen
+Anteilen, war also skalenerhaltend: Was in Tausend USD hineinging, kam in Tausend USD
+heraus und wurde als US-Cent verbucht — Faktor 100.000, Kasse fällt um das
+Hunderttausendfache dessen, was das Beteiligungsvermögen steigt, Todesart 1 in derselben
+Runde, Klasse 2 von Maß 2 von Bauart wegen chancenlos. `tsd_in_cent` um den äussersten
+Aufruf schliesst das.
+
+**Von den beiden Wegen, die der Prüfer offengelassen hat, ist der andere ausgeschlossen,
+und die Begründung ist nicht meine.** `korbwert` gleich in Cent zu führen hiesse, denselben
+Korb in zwei Skalen zu führen, denn T33 bewertet dieselben zwölf Körbe volkswirtschaftlich —
+zwei Bewertungen für einen Korb, also genau das, was der Absatz darüber ausschliesst.
+`spiel.md` Fassung 5 entscheidet das unter *Wo die Skalengrenze liegt* und weist mir nur
+noch zu, **welche Funktion** es tut. Es ist `tsd_in_cent` aus T50, und sie hat in diesem
+Dokument genau die zwei Aufruforte, die oben stehen.
+
+**Die Reihenfolge der Rundungen ist verbindlich, weil sie das Ergebnis ändert.**
+`stufen(p) · stufenwert(p)` und `mal_geteilt(markt(p), stufen(p) · stufenweite, 10.000)`
+unterscheiden sich um bis zu `|stufen(p)|` Einheiten. Verbindlich ist die erste Form, weil
+`spiel.md` sie so schreibt; die zweite wäre genauer und macht jeden Regressionsbestand
+ungültig, der mit der ersten entstanden ist. Wer sie will, braucht einen ADR, keinen
+besseren Grund.
+
+**Zwei Wertebereichsschranken gehören dazu, sonst ist die Formel nur bei gutem Wetter
+richtig.** Erstens teilt `wert` durch `wechselkurs[g]`: Ein Nenner null ist nach T6 ein
+Abbruch, ein **negativer** Nenner wäre schlimmer — er drehte das Vorzeichen jeder Bewertung,
+ohne dass irgendetwas abbräche. `wechselkurs[g] ≥ 1` ist deshalb eine Invariante (T30
+Prüfung 2), keine Erwartung. Zweitens ist `tsd_in_cent` die einzige Stelle, an der ein `i64`
+überlaufen kann: `x · 100.000` verlässt den Bereich ab `|x| > 9,2 · 10^13` Tausend USD. Der
+grösste Wert, der dort ankommen kann, ist durch den ganzen Marktkorb beschränkt; bei einem
+Weltkapitalstock in der Größenordnung von `4 · 10^11` Tausend USD — grob das Drei- bis
+Vierfache eines Weltbruttoinlandsprodukts von rund `10^11` Tausend USD, als Größenordnung
+und nicht als Messung — liegen gut zwei Größenordnungen dazwischen. Der Jahrgangsbau prüft
+`marktkorb(start, start) < 9,2 · 10^13`, der Invariantentest prüft `markt.wert` je Runde
+gegen dieselbe Schranke. Damit ist der Überlauf nicht bloß unwahrscheinlich, sondern
+ausgeschlossen und geprüft.
+
+**Was die Anteilsskala nach unten begrenzt, und warum das eine Auflage an den Selbstspieler
+ist.** `stufenweite` ist ganzzahlig und mindestens 1; eine Stufe kostet deshalb mindestens
+ein Zehntausendstel des Korbs, an dem sie hängt. Die sechzehn Marktwerte eines Jahrgangs
+liegen weit auseinander — der Kapitalstock der Dienstleistungen in den USA gegen die
+Landwirtschaft Brasiliens —, und **derselbe** `stufenweite`-Wert gilt für alle. Der
+Jahrgangsbau weist deshalb den kleinsten und den grössten der sechzehn Startmarktwerte im
+Manifest aus. Das ist die Zahl, die der Selbstspieler braucht, bevor er `startkapital` und
+`stufenweite` sucht: Eine Stufe auf dem grössten Korb muss bezahlbar sein (sonst gewinnt
+Klasse 1 nie), und erreichbare Stufenzahlen müssen die Aufsichtsschwellen erreichen (sonst
+greift keine Gegenkraft und Maß 3 fällt auf null) — die beiden Bedingungen, die `spiel.md`
+unter *Offene Entwurfsfragen* aufstellt, hier mit der Zahl versehen, an der man sie abliest.
 
 Vier Eigenschaften, die diese Fassung binden, alle aus `spiel.md`:
 
@@ -893,10 +1256,100 @@ Vier Eigenschaften, die diese Fassung binden, alle aus `spiel.md`:
    Zahl — derselbe Fehlertyp, den T39 für `landespreis` und T23 Punkt 9 für die
    BACI-Konkordanz schon geschlossen haben. Die 310 aus T15 ändern sich deshalb nicht.
 
-**Was die Änderung an Rechenzeit kostet:** zwölf Bewertungen je Runde, je zwei
-`mal_geteilt` mit `i128`-Zwischenergebnis, zusammen wenige Dutzend Ganzzahloperationen
-gegen 7.500 je Weltschritt (Abschnitt 10). Unter einem Prozent, und Abschnitt 10 bleibt
-unverändert.
+**Was ein Aufruf kostet, diesmal ausgezählt statt geschätzt.** Fassung 5 sprach von „wenigen
+Dutzend Operationen"; der Prüfer der Runde 6 hat das unter *geprüft und nicht gezählt* als
+zu klein bezeichnet und recht damit. Im ungünstigsten Fall — alle zwanzig Steckplätze
+belegt, alle zwölf Beteiligungen ungleich null:
+
+| Teil | Aufrufe | Operationen |
+|---|---:|---:|
+| `bip(l)` | 4 | 8 Additionen |
+| `schuld(l)` | 4 | 4 `mal_geteilt` |
+| `anleihekurs(l)` | 4 | 4 Additionen, 4 `teile_gerundet` |
+| `anleihewert(l)` | 4 | 4 `mal_geteilt` |
+| `handelsvolumen(l)` | 4 | 64 Additionen |
+| `waehrungswert(l)` | 3 | 3 `mal_geteilt` |
+| `korbwert(l, s)` | 12 | 12 `mal_geteilt` |
+| `stufenwert(p)` | 20 | 20 `mal_geteilt` |
+| `positionswert(p)` | 20 | 40 Multiplikationen |
+| `beteiligung_wert(l, s)` | 12 | 24 `mal_geteilt`, 12 Multiplikationen |
+| zwei Summen | 1 | 32 Additionen |
+| **Summe** | | **rund 230, davon 71 `i128`-Divisionen** |
+
+Gegen 7.500 Operationen je Weltschritt sind das **gut drei Prozent**, nicht drei Promille.
+Der Planwert von 10 µs hat Bandbreite bis 30 und die Reserve rechnet mit 50; keine Zeile
+von Abschnitt 10 bewegt sich. Zwei Vorgaben senken den tatsächlichen Preis weit darunter:
+`positionswert` bricht bei `stufen(p) = 0` ab, bevor `markt(p)` überhaupt gerechnet wird
+(die meisten Steckplätze sind die meiste Zeit leer), und **`korbwert(l, s)` wird je Aufruf
+von `fondsvermoegen` einmal in ein Feld von zwölf gerechnet und von Steckplatz und
+Beteiligung daraus gelesen** — nicht, um Zeit zu sparen, sondern weil „eine Bewertung, nicht
+zwei" sonst nur ein Satz wäre und keine Eigenschaft des Codes.
+
+**T48 — Die abgeleiteten Größen sind Funktionen des Zustands, keine Adressen, und sie sind
+abschliessend aufgezählt.** Das ist die architektonische Antwort auf Befund 1 der Runde 6,
+und sie ist die einzige, die dessen Wiederholung ausschliesst. Zwei Formeln nachzutragen
+behebt den Fall; ihn zu beheben und die Menge offenzulassen, in der niemand ein Fehlen
+bemerkt, behebt ihn nicht. T45 zählt **Adressen** ab und konnte die Lücke deshalb nicht
+finden — `korbwert` war nie eine der 310. Diese Tabelle ist die Menge, in der er lag.
+
+| # | Name | Klasse (T5) | Definition | steht in |
+|---:|---|---:|---|---|
+| 1 | `wert(menge, kurs, g)` | 2 | `mal_geteilt(menge, kurs, wechselkurs[g])` | T47 |
+| 2 | `korbwert(l, s)` | 2 | `wert(kapitalstock[l][s], sektorpreis[l][s], l)` | T47 |
+| 3 | `anleihewert(l)` | 2 | `wert(schuld(l), anleihekurs(l), l)` | T47 |
+| 4 | `waehrungswert(l)` | 2 | `wert(handelsvolumen(l), 10.000, l)` | T47 |
+| 5 | `markt(p)` | 2 | Fallunterscheidung über die drei Steckplatzarten aus T16 | T47 |
+| 6 | `stufenwert(p)` | 2 | `mal_geteilt(markt(p), stufenweite, 10.000)` | T47 |
+| 7 | `marktkorb(m, k)` | 2 | Σ 12 `korbwert` + Σ 4 `anleihewert`, Mengen aus `m`, Kurse aus `k` | T33 |
+| 8 | `korbbestand(z)` | 2 | siehe unten | T47 |
+| 9 | `bip(l)` | 2 | `Σ über die 3 Sektoren wertschoepfung[l][s]` | hier |
+| 10 | `schuld(l)` | 2 | `mal_geteilt(bip(l), staatsschuld[l], 10.000)` | hier |
+| 11 | `handelsvolumen(l)` | 2 | siehe unten | hier |
+| 12 | `anleihekurs(l)` | 5 | siehe unten | hier |
+| 13 | `landespreis(g, s)` | 5 | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | T39 |
+| 14 | `fondsanteil(l, s)` | 4 | `\|stufen(l, s)\| · stufenweite + anteil[l][s]` | hier |
+| 15 | `positionswert(p)` | 1 | `tsd_in_cent(stufen(p) · stufenwert(p))`, 0 bei `stufen = 0` | T47 |
+| 16 | `beteiligung_wert(l, s)` | 1 | Korbanteil abzüglich `ausstiegsabschlag`, dann `tsd_in_cent` | T47 |
+| 17 | `fondsvermoegen(z)` | 1 | Kasse + Positionen + Beteiligungen − Hebel | T47 |
+
+Die vier, die bisher nirgends standen:
+
+```
+bip(l)            = Σ über die 3 Sektoren  wertschoepfung[l][s]
+
+handelsvolumen(l) = Σ über die 4 Gegenüber g und die 2 handelbaren Sektoren s
+                      handel[l][g][s] + handel[g][l][s]
+
+anleihekurs(l)    = teile_gerundet(10.000 · (leitzins_start[l] + aufschlag),
+                                   leitzins[l] + aufschlag)
+
+korbbestand(z)    = Σ über die 12 Körbe     mal_geteilt(korbwert(l, s),  fondsanteil(l, s), 10.000)
+                  + Σ über die  4 Anleihen  mal_geteilt(anleihewert(l),  |stufen(p)| · stufenweite, 10.000)
+```
+
+`handelsvolumen` liest **beide Richtungen** je Paar; die Zuordnung des dichten
+Gegenüber-Index zum Gebietsindex ist die feste Abbildung aus T9 und steht im Code als
+benannte Tabelle, nicht als Rechnung auf Indizes. Der Nenner von `anleihekurs` ist nach T51
+nie null und nie negativ. **`fonds.marktanteil` ist keine abgeleitete Größe, sondern eine
+Adresse**, in Schritt 6 geschrieben als `mal_geteilt(korbbestand(z), 10.000, markt.wert)` —
+`spiel.md` schreibt dort `teile_gerundet(korbbestand · 10.000, markt.wert)`; das ist dieselbe
+Zahl, aber die naive Form läuft nach T6 über, und deshalb ist die `i128`-Form verbindlich.
+
+**Drei Größen liegen ausserhalb des Kerns** und stehen deshalb nicht in der Tabelle: `B(z)`,
+`v(z)` und `e(z)` aus T44. Sie sind Prüfstandsgrößen, gehören dem Kasten `pruefstand` und
+verlassen die Partie nie.
+
+**Die Regel, die daraus folgt, und der mechanische Nachweis dazu.** Ein Name in einer Formel
+dieses Dokuments oder in `spiel.md`, der weder eine Zustandsadresse aus T15 noch ein
+Parameterschlüssel aus T27 noch eine Jahrgangskonstante aus T23 noch eine der siebzehn
+Größen oben ist, **ist ein Befund und keine Bauentscheidung** — das ist der Fall, den
+Befund 1 beschreibt, und der Grund, warum er teuer war: Wählt der Bauagent, misst Maß 2
+seine Wahl. Nachgewiesen wird es wie der Gleitkommaverzicht aus T4: Die siebzehn Namen sind
+die öffentliche Schnittstelle des Moduls `kern::werte` (T13), und `grep -n 'pub fn'
+kern/src/werte.rs` gegen diese Tabelle gelegt ist eine Prüfung von zwei Minuten. **Ich habe
+sie in diesem Lauf einmal von Hand ausgeführt**, in der einzigen Form, die vor dem Bau
+möglich ist: jede Formel aus `spiel.md` Fassung 5 und aus diesem Dokument Name für Name
+gegen die vier Mengen gelegt. Übrig blieben die vier oben, und sie stehen jetzt da.
 
 ## 9. Test- und Prüfstandsaufbau
 
@@ -907,13 +1360,35 @@ in einem Aufruf läuft, läuft nachts nicht.
 | # | Prüfung | Gegenstand | Verantwortlich |
 |---:|---|---|---|
 | 1 | Einheitstests je Wirkungskette | jeder Pfeil aus `spiel.md` einzeln, auf einem Minimalzustand: Zoll rauf → Einfuhr runter → Preis rauf → Realeinkommen runter → Zustimmung runter. Dazu die Vorratsinvariante aus T43, geprüft für `k = 1` (fünf Runden) **und** `k = 3` (fünfzehn), damit die Verwechslung aus Befund 3 auch im Code auffällt | Testentwickler |
-| 2 | Invariantentest | Summe aller Handelsbilanzen einschliesslich Restwelt = 0; Staatsschuld(t) = Staatsschuld(t−1) − Saldo; **Fondsvermögen = Kasse + bewertete Positionen + bewertete Beteiligungen − Hebel** (T47, gegen `fondsvermoegen()` und gegen eine im Test getrennt hingeschriebene Summe, damit der Test nicht die geprüfte Funktion wiederholt); die drei Sektoranteile je Gebiet summieren auf 10.000; kein Anteil ausserhalb 0…10.000; jedes Partieergebnis in einem der drei Bänder aus T34 | Testentwickler |
+| 2 | Invariantentest | Summe aller Handelsbilanzen einschliesslich Restwelt = 0; Staatsschuld(t) = Staatsschuld(t−1) − Saldo; **Fondsvermögen = Kasse + bewertete Positionen + bewertete Beteiligungen − Hebel** (T47, gegen `fondsvermoegen()` und gegen eine im Test getrennt hingeschriebene Summe, damit der Test nicht die geprüfte Funktion wiederholt); die drei Sektoranteile je Gebiet summieren auf 10.000; kein Anteil ausserhalb 0…10.000; **die sieben Wertebereichsschranken aus T5/T49** (siehe darunter); jedes Partieergebnis in einem der drei Bänder aus T34 | Testentwickler |
 | 3 | Determinismustest | derselbe Startwert, Modus und dieselbe Aktionsfolge ergeben dieselbe Prüfsumme — zweimal im Lauf, über Speichern und Laden hinweg, und auf jeder Zielplattform verglichen | Testentwickler |
 | 4 | Regressionsbestand | gespeicherte Partien nach T22 rechnen bitgleich nach; zusätzlich eine Prüfsumme über die Kette, damit auch eine geänderte *Begründung* auffällt; mindestens eine Partie auf einem Spieljahrgang 1980 mit Basiswechsel (T8) | Testentwickler |
 | 5 | Bruchlauf | 10.000 Partien mit dem Zufallsbot: kein Absturz, kein Überlauf, keine Invariantenverletzung, kein Kettenüberlauf, kein doppelter Schreibzugriff und keine Maskenverletzung (T18, T38, T39) | Bruchtester |
-| 6 | **Beschränktheit** | **200 Runden ohne Spieler**; verlässt eine Größe ihren Wertebereich, gibt es einen achten Rückkopplungskanal, und der ist ein Befund | Bruchtester |
+| 6 | **Beschränktheit** | **200 Runden ohne Spieler**; verlässt eine Größe ihren Wertebereich, gibt es einen **neunten** Rückkopplungskanal, und der ist ein Befund. Die Kanaltabelle in `spiel.md` zählt seit Fassung 5 **acht** | Bruchtester |
 | 7 | Die drei Maße | Entscheidungsdichte, Strategievielfalt, Optimumsverschiebung nach den Rechenvorschriften in `spiel.md`, gegen die dortigen Schwellen: **0,4 je Partiedrittel**; **drei Klassen mit je einem Gewinner bei höchstens 25 % Abstand**; **Verschiebung ≥ 0,4** | Selbstspieler |
 | 8 | Rückvergleich | im Modus `weltlauf` (T38), 31 Sollreihen plus Handelsblock, Fehlermaße nach T42, Abnahme über die **16 Prüfgegenstände mit Toleranz 2** nach T37 | Rückvergleicher |
+
+**Die sieben Wertebereichsschranken, die Prüfung 2 je Runde prüft.** Sie folgen aus T5, T49
+und T51 und stehen hier zusammen, damit der Testentwickler sie nicht aus zwölf
+Tabellenzeilen zusammensuchen muss. Jede ist ein **harter Fehler**, kein Bericht:
+
+| # | Schranke | Adressen | warum sie nicht bloß Kosmetik ist |
+|---:|---|---:|---|
+| 1 | `wechselkurs[g] ≥ 1` | 5 | Nenner jeder Bewertung (T47); null bricht ab, negativ dreht still jedes Vorzeichen |
+| 2 | Nominalindizes `> 0` | 22 | Nenner der Ratenbildung in T42 und Faktor jeder Bewertung |
+| 3 | `produktivitaet[g] > 0` | 5 | Faktor der Produktionsfunktion |
+| 4 | `leitzins[l] + aufschlag ≥ 1` | 4 | Nenner von `anleihekurs`; die Schranke sitzt am Instrument (T51) |
+| 5 | `0 < markt.wert < 9,2 · 10^13` | 1 | Nenner von `markt.rendite` und `marktanteil`, Überlaufschranke von `tsd_in_cent` (T47) |
+| 6 | `0 ≤ druck, gegendruck ≤ druck_max` | 32 | Klasse 9; ohne Obergrenze ist Kanal 8 unbeschränkt |
+| 7 | `0 ≤ fondsanteil(l, s) ≤ 10.000`, `\|stufen(p)\| ≤ stufen_max` | 12 + 20 | ein Anteil über 100 % ist kein Anteil; die Zulässigkeitsprüfung aus T32 hält ihn ein, der Test prüft, dass sie es tut |
+
+Dazu die **zwei Gleichheiten** aus T49: `land.<L>.leitzins = land.<L>.instrument.leitzins.stand`
+und `land.<L>.haushaltssaldo = land.<L>.instrument.haushalt.stand`, je Runde und je Land.
+
+Schranke 1 und 5 sind die beiden, die ohne Test still falsch würden statt laut: Ein
+negativer Wechselkurs macht aus jedem Gewinn einen Verlust, und ein Marktkorb jenseits der
+Überlaufschranke stürzt zwar nach T7 ab, aber erst in `tsd_in_cent` und damit an einer
+Stelle, an der niemand die Ursache sucht.
 
 **Prüfung 6 läuft über das Ende des Jahrgangsfensters hinaus, und das braucht eine Regel.**
 Die exogenen Pfade aus T25 tragen nur R+1 Stützstellen. Ab Runde R+1 werden sie **auf ihrem
@@ -1127,9 +1602,16 @@ Grund, warum der Befund entstehen konnte. Bei Tiefe `d > 1` ist der Wert eines
 Zwischenknotens das Minimum von `B` über seine 60 Kandidaten, rekursiv bis zur Tiefe `d`;
 das Spiel hat einen einzigen Spieler, es gibt also keinen Gegenzug und kein Maximum.
 
-**Kosten.** `B` rechnet eine Division für `v`, vier Vergleiche und zwei Divisionen für `e`,
-zusammen rund zwanzig Ganzzahloperationen gegen 7.500 je Weltschritt (Abschnitt 10), also
-rund **drei Promille** eines Weltschritts. Die Kostenrechnung `R × (1 + 60) = 1.464` bleibt
+**Kosten, in dieser Fassung berichtigt.** Fassung 5 nannte „rund zwanzig
+Ganzzahloperationen, also drei Promille" und zählte damit nur `v` und `e` selbst — der
+Prüfer der Runde 6 hat das unter *geprüft und nicht gezählt* beanstandet und recht damit.
+`v(z)` ruft `fondsvermoegen(z)`, und das sind nach der Auszählung in T47 rund **230**
+Operationen, davon 71 `i128`-Divisionen; dazu eine Division für `v`, vier Vergleiche und
+zwei Divisionen für `e`. Zusammen **rund 240 Ganzzahloperationen** gegen 7.500 je
+Weltschritt, also gut **drei Prozent** statt drei Promille. Im Suchbot fallen sie 60-mal je
+Runde an, gegen 61 Weltschritte — auch dort rund drei Prozent. Der Planwert von 10 µs hat
+Bandbreite bis 30, die Reserve rechnet mit 50, und die Abkürzung bei leeren Steckplätzen
+(T47) senkt den tatsächlichen Wert weiter. Die Kostenrechnung `R × (1 + 60) = 1.464` bleibt
 unverändert — und genau dafür braucht es eine statische Bewertung. Ein Nachspiel bis Runde R
 je Kandidat kostete `60 · Σ(R+1−t) + R = 60 · 300 + 24 = 18.024` Weltschritte je Partie, das
 Zwölffache, und würfe Abschnitt 10 um.
@@ -1270,10 +1752,14 @@ Kette (T18). Teuer sind darin die `i128`-Divisionen aus T6. **Planwert: 10 Mikro
 je Schritt**, Bandbreite 5 bis 30. Die Spalte „ungünstig" rechnet mit 50 Mikrosekunden,
 also dem Fünffachen des Planwerts — eine Reserve, keine Erwartung.
 
-**Die Beteiligungsbewertung aus T47 ändert diese Schätzung nicht.** Zwölf Beteiligungen, je
-zwei `mal_geteilt`, fallen nur in Schritt 6 an und nur im `spielmodus`; das sind wenige
-Dutzend Operationen gegen 7.500, also unter einem Prozent und tief innerhalb der Bandbreite.
-Keine Zeile der Tabelle unten bewegt sich.
+**Die Bewertung aus T47 ändert diese Schätzung nicht, und diesmal ist die Zahl gezählt statt
+gerundet.** Ein voller Aufruf von `fondsvermoegen` kostet nach der Tabelle in T47 rund 230
+Ganzzahloperationen, davon 71 `i128`-Divisionen; er fällt im `spielmodus` einmal je
+Weltschritt in Schritt 6 an und im Suchbot zusätzlich je Kandidat. Das sind gut drei Prozent
+eines Weltschritts, nicht die drei Promille der Fassung 5 — und weiterhin tief innerhalb der
+Bandbreite 5 bis 30 µs, die der Planwert ohnehin trägt. **Im `weltlauf` fällt er gar nicht
+an**, weil das Fondsteilsystem nach T38 nicht läuft; der Rückvergleich ist von der
+Korrektur nicht berührt. Keine Zeile der Tabelle unten bewegt sich.
 
 **Der Planwert ist unverändert geschätzt und nicht gemessen.** Mein Logbuch verlangt, beim
 nächsten Lauf zuerst den gemessenen `ticks_je_sekunde` zu lesen; es gibt ihn nicht, weil
@@ -1356,11 +1842,10 @@ gepflegt — sonst weichen sie beim ersten Datenaktualisierungslauf von der Wahr
 
 ## 12. Was ich nicht entschieden habe
 
-Die beiden Rückfragen aus Fassung 2 — Abnahme über 31 oder 23 Reihen, Zusammenfassung des
-Handelsblocks — sind von `spiel.md` Fassung 3 beantwortet und stehen in T37. Die Rückfrage
-aus Fassung 4 — gehören die zwölf Beteiligungen zum Fondsvermögen? — ist von Fassung 4 des
-Entwurfs mit **ja** beantwortet und steht in T47; sie ist hier gestrichen, weil eine
-beantwortete Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
+Die Rückfragen der Fassungen 2 und 4 — Abnahme über 31 oder 23 Reihen, Zusammenfassung des
+Handelsblocks, Beteiligungen im Fondsvermögen — sind von `spiel.md` Fassung 3 und 4
+beantwortet und stehen in T37 und T47; sie sind hier gestrichen, weil eine beantwortete
+Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
 
 - **Der Planwert von 10 Mikrosekunden je Weltschritt ist weiterhin geschätzt.** Es gibt
   keinen Kern, also keine Messung. Liegt der gemessene Wert über 50 µs, trägt Abschnitt 10
@@ -1389,8 +1874,16 @@ beantwortete Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
   Zähler ohne Vorgeschichte, Aggregatblock ohne Regierung), keiner ist eine Wahl zwischen
   zwei sinnvollen Zahlen. Eine Rückgabe hätte einen Lauf des Spielentwerfers gekostet und
   dieselben elf Zahlen ergeben. Hält er eine für falsch, ist es eine Tabellenzeile.
+- **Die dreizehn Skalenklassen und die drei Übergänge habe ich entschieden statt
+  zurückgegeben**, aus demselben Grund wie die elf Startwerte: Eine Einheit ist keine
+  Spielfrage. Bei zweien ist der Spielraum trotzdem grösser als bei den übrigen, und ich
+  nenne sie, damit sie nicht als selbstverständlich durchgehen — der **Lobbypunkt** (T50;
+  jede andere gemeinsame Einheit für Druck und Gegendruck täte es auch, aber irgendeine muss
+  es geben) und die **Instrumentenstufe** der Finanzmarktregulierung (T5 Klasse 10; sie
+  könnte ebenso in Zehntausendsteln stehen, dann hiesse „ein Schritt" eine andere Zahl).
+  Beide sind je eine Zeile, falls der Spielentwerfer sie anders will.
 
-**Zwei Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
+**Vier Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
 mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
 
 1. Die Ergebnisskala trägt in der 30.000 ein echtes Literal, und das Band „überlebt" stösst
@@ -1398,16 +1891,28 @@ mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
    statt grosszügig, in T40 nachgerechnet. Für 1997–2021 ist das folgenlos, und `spiel.md`
    lässt das Fenster nur enger werden. T40 zieht die Schranke bei `R ≤ 26` in den
    Jahrgangsbau, damit sie nicht erst in einer Ergebnisverteilung auffällt.
-2. **Neu: Die Tabelle „Jede Größe ohne Datenanker" nennt sich in Fassung 4 zum zweiten Mal
-   abschliessend und ist es zum zweiten Mal nicht** — diesmal fehlen die fünf
-   `basiswechsel`-Zähler, der US-Wechselkurs und fünf Aggregatgrößen der Restwelt. Das ist
-   **kein Vorwurf und blockiert nichts**: Die Tabelle kann es nicht wissen, weil die
-   Aufstellung der 310 Adressen und die Reihenliste beide hier stehen und nicht dort. Die
-   elf Adressen sind in T46 versorgt, und T45 hat mit `Vorgabe(T-Nummer)` genau dafür eine
-   Eintragsart. **Die Lehre gehört trotzdem hierher: Eine Tabelle, die sich abschliessend
-   nennt, ohne dass irgendwer gegen sie abzählt, wird es nicht.** Der Abzählschritt aus T45
-   ist die einzige Stelle, an der das auffällt — er hat es diesmal getan, und zwar von Hand,
-   weil es noch keinen Jahrgangsbau gibt, der es maschinell täte.
+2. **Zwei Adresspaare tragen denselben Wert.** `land.<L>.leitzins` steht im Aggregatblock
+   *und* als Instrumentenstand, `land.<L>.haushaltssaldo` ebenso; `spiel.md` zählt beide
+   auf, T15 führt beide, und die Sollmaske aus T38 schreibt beide. Die sauberere Fassung
+   hätte je Paar eine Adresse und käme auf **302 statt 310** (vier Länder mal zwei Paare;
+   die Restwelt hat keine Instrumente) — das ist eine Zeile in `spiel.md` und deshalb nicht
+   meine. Solange sie dasteht, gilt die Schreib- und Leseregel aus T49 und die
+   Gleichheitsprüfung in T30 Prüfung 2. **Es blockiert nichts; ungeregelt wäre es der
+   Fehlertyp „zwei Herren über eine Zahl", geregelt kostet es 64 Byte und einen Test.**
+3. **„Schaden" in Gegenkraft 5 ist eine Größe ohne Rechenvorschrift.** `spiel.md` sagt, das
+   Gegenbudget wachse „proportional zum erlittenen Schaden"; welche Zahl das ist —
+   Preisverschiebung mal Menge, Wertschöpfungsverlust, Bewertungsverlust —, steht nirgends.
+   T50 legt fest, in welcher **Einheit** sie ankommt (volkswirtschaftlich, Tausend USD) und
+   mit welchem Satz sie in Lobbypunkte übergeht; *wie hoch* sie ist, bleibt offen. Das ist
+   dieselbe Art Lücke wie Befund 1 der Runde 6, eine Ebene weiter unten, und ich melde sie
+   als Beobachtung statt sie zu füllen: Fülle ich sie, misst Maß 2 meine Wahl.
+4. **`fonds.sichtbarkeit` ist eine Adresse, Aktion 5 spricht von einer Position.**
+   `spiel.md` lässt den Fonds „eine Position öffentlich offenlegen", der Zustand führt aber
+   nur **eine** globale Sichtbarkeit und kein Offenlegungsmerkmal je Steckplatz. Ich lese das
+   als Anteil in Zehntausendsteln (T5 Klasse 4), den Aktion 5 um einen Parameterschritt hebt
+   oder senkt — das ist die einzige Lesart, die ohne neue Adressen auskommt. Meint der
+   Entwurf eine Offenlegung je Steckplatz, kostet das zwanzig Adressen und damit die Zahl
+   310; dann ist es keine Zeile mehr, sondern ein ADR.
 
 ## 13. Hinweis für den Projektmanager
 
@@ -1416,8 +1921,11 @@ gleichzeitig offene Pakete dürfen sich nicht im selben Kasten treffen. Die nat�
 Reihenfolge ist `kern` (Zustand, Festkomma, Zufall, Prüfsumme, Schreiber mit T18/T38/T39)
 → `daten` und `schnittstelle` parallel → `konsole` → Tests und `pruefstand` →
 `oberflaeche`. Der Jahrgang (`werkzeuge/aufbereitung`) kann von Beginn an parallel laufen,
-weil er nur gegen T5, T23 bis T26, T40 und **T45/T46** gebaut wird und nichts vom Kern
-braucht.
+weil er nur gegen T5, T23 bis T26, T40, **T45/T46** und **T49/T51** gebaut wird und nichts
+vom Kern braucht. Er trägt seit dieser Fassung zwei Prüfungen mehr, die das Vorhaben nicht
+kippen, aber einen späten Abbruch ersparen: die Skalentabelle über alle 310 Adressen (T49)
+und die Untergrenze `aufschlag ≥ aufschlag_min` gegen den historischen Leitzinspfad (T23
+Punkt 5).
 
 **Zwei Pakete sind vorzuziehen, weil sie Entwurfsrisiko tragen und nicht Bauaufwand:** der
 Jahrgangsbau 1997 (T24 sagt, dass er scheitern kann — 25 Stützstellen ohne Füllung für alle
@@ -1431,109 +1939,124 @@ Zahl im Manifest und kein zweites Paket. Der Jahrgangsbau muss deshalb nicht meh
 Kern fertig sein, sondern nur vor dem ersten Rückvergleich — er bleibt trotzdem vorn, weil
 er das Vorhaben kippen kann und nicht nur verzögern.
 
-## 14. Befundabarbeitung — die drei früheren Prüfungen
+## 14. Befundabarbeitung — die vier früheren Prüfungen
 
 **Erledigt und im Git-Verlauf.** Fassung 2 hat die acht Befunde der ersten Prüfung
-beantwortet, Fassung 3 die zwölf der zweiten, Fassung 4 die drei der dritten. Jede dieser
-Abarbeitungen ist von der jeweils nächsten Prüfung unter deren Bedingung 5 ausdrücklich
-abgenommen worden; die Prüfung der Runde 4 sagt es für Fassung 4 wörtlich: „Alle drei
-Vorrundenbefunde sind beantwortet, je mit einer der drei zulässigen Antworten … Keiner
-übersprungen, keiner mit *widersprochen*."
+beantwortet, Fassung 3 die zwölf der zweiten, Fassung 4 die drei der dritten, Fassung 5 die
+zwei der vierten (Runde 4). Jede dieser Abarbeitungen ist von der jeweils nächsten Prüfung
+unter deren Bedingung 5 ausdrücklich abgenommen worden; die Prüfung der Runde 6 sagt es für
+Fassung 5 wörtlich: „Beide Befunde der Vorrunde sind beantwortet, je mit einer der drei
+zulässigen Antworten … Beide habe ich gegen die Sache nachgeprüft, nicht gegen die
+Behauptung."
 
 Sie hier weiterzuschleppen kostete jeden Leser hundert Zeilen und brächte nichts, was
-`git log -p specs/0016-…/technik.md` nicht genauer sagt. Gelöscht ist nichts: Alle drei
+`git log -p specs/0016-…/technik.md` nicht genauer sagt. Gelöscht ist nichts: Alle vier
 Abarbeitungen stehen unverändert in der Versionsgeschichte.
 
 Was aus ihnen **fortwirkt**, steht nicht in einer Abarbeitungsliste, sondern in den
 Vorgaben, die daraus entstanden sind — T38 bis T43 tragen die zwölf Antworten der zweiten
-Prüfung als Regel statt als Bericht, T44 und T45 die drei der dritten, und jede nennt an
-ihrer Stelle den Befund, der sie erzwungen hat.
+Prüfung als Regel statt als Bericht, T44 und T45 die drei der dritten, T46 und T47 die zwei
+der vierten, und jede nennt an ihrer Stelle den Befund, der sie erzwungen hat.
 
-## 15. Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01 und `spiel.md` Fassung 4
+## 15. Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01 und `spiel.md` Fassung 5
 
-Zwei Befunde, **beide ausdrücklich an den Spielentwerfer adressiert**, beide von seiner
-Fassung 4 behoben. Ich arbeite sie trotzdem einzeln ab, weil die Rolle es verlangt und weil
-beide Folgen in diesem Dokument haben — der zweite an vier Stellen.
+Zwei Befunde. Der Prüfer hat sie zwei Gewerken zugewiesen: Befund 1 dem Spielentwerfer,
+Befund 2 mir. Beide sind einzeln abgearbeitet, weil die Rolle es verlangt und weil der
+erste hier acht Stellen bewegt.
 
-**Befund 1, Bedingung 3 unverändert gerissen (Steckplatzzahl) — behoben, und zwar auf der
-Seite, der er gehörte.** `spiel.md` Fassung 4 schreibt jetzt: „Nach `5k` Runden steht der
-Vorratsvektor wieder auf `(0,0,0,0,0)`, und Art `i` hat genau `3k·ai` der `15k` Steckplätze
-bekommen — für `k = 1` also `3·ai` von fünfzehn nach **fünf** Runden, für `k = 3` `9·ai` von
-fünfundvierzig nach fünfzehn." Das ist Wort für Wort die allgemeine Form aus T43. Ich habe
-beide Absätze in diesem Lauf nebeneinandergelegt und keine Abweichung gefunden. Der Befund
-war dreimal offen (Prüfung 2 als Befund 3, Prüfung 3, Prüfung 4 als Befund 1) und ist
-geschlossen; die Beobachtung dazu ist aus Abschnitt 12 gestrichen, weil sie nichts mehr
-meldet. Der Einheitstest über `k = 1` und `k = 3` in T30 Prüfung 1 **bleibt**: Er schützt
-nicht mehr vor dem Dokument, sondern vor einer Implementierung, die eine ältere Fassung
-gelesen hat.
+**Befund 1, `positionswert(p)` und `korbwert(l, s)` haben keine Entstehungsregel —
+behoben, auf der Seite, der er gehörte, und hier vollständig aufgenommen.** `spiel.md`
+Fassung 5 bildet beide Namen, dazu `anleihewert`, `waehrungswert` und den `anleihekurs`, den
+der Prüfer im fünften Schritt seines Nachweises eigens benannt hatte. Ich habe die acht
+Stellen abgearbeitet, die der Entwurf unter *Was der Architekt neu rechnen muss* auflistet;
+hier steht, wo jede gelandet ist:
 
-**Befund 2, die Ergebnisgröße sagt nicht, wie „fehlender Einfluss" über die Länder gerechnet
-wird — behoben, und der Spielentwerfer ist dabei weiter gegangen als der Befund verlangte.**
-Er hat die Aggregation aus T44 übernommen (Summe über die zwei Länder mit dem höchsten
-Einfluss, Gleichstand nach `LandId`) **und zusätzlich die Kappung gestrichen**, mit meiner
-eigenen Begründung aus T44, eine Ebene höher angewandt. Das war der teurere und der bessere
-Weg: Die Kappung hätte die untere Hälfte des Ergebnisraums geglättet, und zwar genau dort,
-wo Maß 3 sein Argminimum sucht, wenn im Fenster kein Profil das Mandat erreicht.
-
-Der Preis sind die vier Stellen, die `spiel.md` unter „Was der Architekt neu rechnen muss"
-aufführt. Alle vier sind eingearbeitet, und hier steht, wo:
-
-| Was | wo eingearbeitet | nachgerechnet |
+| aus `spiel.md` Fassung 5 | eingearbeitet in | nachgerechnet oder nachgewiesen |
 |---|---|---|
-| Band „überlebt" `(R+1)×1.000 … +3.000`, also 25.000 … 28.000 | **T40**, Bandtabelle | `25 × 1.000 + 3.000 = 28.000` |
-| Schranke `R ≤ 26` jetzt scharf statt grosszügig | **T40**, mit Rechenweg | `(R+1)·1.000 + 3.000 < 31.000 ⇔ R < 27`; bei `R = 26` bleiben 999 Milli-Runden Luft |
-| unerreichbare Lücke `28.001 … 30.999` | **T34**, Bandprüfung | Bereich `1.000 … 54.000` unberührt, weil sein oberes Ende aus dem Todesband kommt |
-| Kappungsunterschied zwischen `B` und der Ergebnisgröße entfällt | **T44** | `v ≤ 1.000`, `e ≤ 2.000`, also `25.000 ≤ B ≤ 28.000`; Todesband ab 31.000, Mandatsband bis 24.000 — weiter disjunkt |
-| Fondsvermögen einschliesslich Beteiligungen, zum Ausstiegswert | **T47** (neu), dazu T5, T27, T30 Prüfung 2, T33, T44 `v(z)` | keine neue Zustandsadresse, die 310 bleiben; Kosten unter einem Prozent eines Weltschritts |
+| `korbwert`, `positionswert` und fünf weitere Namen werden gebildet | **T47**, aufgezählt in **T48** (neu) | 17 Funktionen im Kern, 3 im Prüfstand; vier (`bip`, `handelsvolumen`, `anleihekurs`, `korbbestand`) standen bis heute nirgends und stehen jetzt in T48 |
+| Marktkorb mit Menge und Kurs statt „Modellmarktwerten" | **T33** Punkt 1 bis 4 | `marktkorb(m, k)`, Mengen über `lies_alt`, Kurse über `lies_neu` (T39) |
+| Skalengrenze je Bewertung einmal, am äussersten Aufruf | **T47**, **T5**, **T50** (neu) | `tsd_in_cent` mit genau zwei Aufruforten; `cent_in_tsd` gestrichen, weil ohne Aufrufer |
+| `stufenweite` ist ein Anteil, neuer Schlüssel `aufschlag` | **T5** Klassen 4 und 3, **T27** | elf Parameterschlüssel mit Skalenklasse, davon fünf neu; die 11 Adressen mit Herkunft `Parameter` bleiben 11 |
+| `leitzins_start[l]` als Konstante des Jahrgangs | **T23** Punkt 5 | vierzehn Jahrgangskonstanten statt zehn, ohne neue Datenanforderung (erste Stützstelle von Reihe 9) |
+| Kapitalstock je Sektor aus den normierten Anteilen | **T23** Punkt 1 | `Datenanker(3 × 2)`, dieselbe Regel wie bei der Wertschöpfung; T45 zählt unverändert 136 Anker |
+| „sieben Kanäle" → acht, „achter Kanal" → neunter | **T18**, **T30** Prüfung 6 | zwei Stellen, beide Wortlaut |
+| Leitzins-Untergrenze `1 − aufschlag` | **T51** (neu), **T23** Punkt 5, **T30** Prüfung 2 | `aufschlag_min = 1 − min(leitzins_pfad)`; beim EZB-Einlagesatz (−50 bp) sind das **51 bp**, beim Hauptrefinanzierungssatz **1 bp** |
 
-**Zwei Dinge, die ich beim Einarbeiten geändert habe, ohne dass sie im Befund standen.**
-Erstens trug T44 die dritte Zeile von `B` als Literal `25.000`. Das verstösst gegen T40 —
-`(R+1) × 1.000` ist bei einem anderen Jahrgang eben nicht 25.000 — und steht jetzt als
-Formel. Bei R = 24 ändert sich nichts. Zweitens sagte T44 `v < 1.000`; `spiel.md` Fassung 4
-rechnet genauer und kommt auf `v ≤ 1.000`, weil die Rundung die 1.000 erreichen kann. Die
-Bandgrenze hält in beiden Lesarten, die schärfere ist übernommen.
+**Und eine Sache habe ich über die Aufnahme hinaus getan, weil sie zu genau diesem Befund
+gehört.** Der Prüfer schreibt: „T45s Abzählschritt findet sie nicht, weil sie **keine
+Zustandsadresse** ist." Das ist der eigentliche Inhalt des Befundes, und er wäre mit zwei
+nachgetragenen Formeln nicht beantwortet gewesen. **T48** zählt deshalb die Menge auf, in
+der die Lücke lag — die Funktionen des Zustands —, gibt ihr eine Regel („ein Name, der
+weder Adresse noch Parameter noch Jahrgangskonstante noch abgeleitete Größe ist, ist ein
+Befund") und einen mechanischen Nachweis (die öffentliche Schnittstelle von `kern::werte`
+gegen die Tabelle). Ich habe den Nachweis in diesem Lauf von Hand geführt, in der einzigen
+Form, die vor dem Bau möglich ist; die vier Namen, die dabei herausfielen, stehen oben.
 
-**Die drei Punkte aus „Geprüft und nicht gezählt", weil der Prüfer sie an den nächsten Lauf
+**Befund 2, `beteiligung_wert` liefert Tausend USD und wird als US-Cent verbucht — behoben,
+und der Befund war richtig.** Die Formel der Fassung 5 bestand aus zwei `mal_geteilt` mit
+einheitenlosen Anteilen und war damit skalenerhaltend; zwischen Ein- und Ausgabe liegt aber
+der Faktor 100.000 aus T5. Die Behebung steht in **T47**: `tsd_in_cent` um den äussersten
+Aufruf, dieselbe Klammer bei `positionswert`, und beides als **T50** festgeschrieben, damit
+die Umrechnung einen Namen und einen Ort hat statt einer Gelegenheit.
+
+**Die Wahl zwischen den beiden Wegen habe ich nicht getroffen, sondern übernommen.**
+`spiel.md` Fassung 5 entscheidet sie unter *Wo die Skalengrenze liegt*: `korbwert` bleibt
+volkswirtschaftlich, weil T33 denselben Korb bewertet und „eine Bewertung, nicht zwei" sonst
+nur ein Satz wäre. Mir blieb, welche Funktion es tut und wo sie steht — und die Antwort
+auf beides steht in T47 und T50.
+
+**Die Zahlenprobe des Prüfers, mit der Behebung nachgerechnet.** Korb 21.000.000.000 (Tsd
+USD), `anteil = 20`, `ausstiegsabschlag = 0`: innen `21.000.000.000 · 20 / 10.000 =
+42.000.000` Tausend USD, das sind 42 Mrd USD und damit genau 0,2 % von 21 Bio USD; nach
+`tsd_in_cent` **4.200.000.000.000 Cent**. Die Kasse gibt denselben Betrag ab, das
+Fondsvermögen bleibt unverändert, Todesart 1 greift nicht. Der Fonds mit 42 Mio USD aus dem
+Beispiel kann diese Beteiligung nicht kaufen — das ist jetzt richtigerweise eine
+**Zulässigkeitsfrage** (Kasse überzogen, T32) und kein Partieende, und es ist genau die
+Kalibrierbedingung, die `spiel.md` unter *Offene Entwurfsfragen* stellt.
+
+**Derselbe Fehlertyp ein zweites Mal, an einer Stelle, die kein Befund war — und das ist der
+teure Teil dieses Laufs.** Befund 2 war eine Größe mit zwei Skalen. Ich habe deshalb T5
+gegen alle 310 Adressen gelegt, so wie Fassung 5 T45 gegen alle 310 gelegt hat, und **69
+Adressen ohne Skalenklasse** gefunden. Darunter die 32 Druck- und Gegendruckfelder, und die
+sind wörtlich Befund 2 noch einmal: `druck` entsteht aus dem Lobbybudget des Fonds
+(US-Cent), `gegendruck` aus dem Schaden eines Sektors (Tausend USD), und `spiel.md` Schritt 3
+verrechnet beide gegeneinander. **Der Unterschied zum ersten Mal ist, dass es nicht wie ein
+Rechenfehler ausgesehen hätte, sondern wie eine Gegenlobby, die nie greift** — also wie ein
+Balanceproblem, das der Selbstspieler wochenlang wegzukalibrieren versucht hätte. Die
+Antwort sind die fünf neuen Klassen in **T5**, die abgezählte Zuordnung in **T49** und die
+drei benannten Übergänge in **T50**.
+
+**Die drei Punkte aus „Geprüft und nicht gezählt", weil der Prüfer sie an diesen Lauf
 adressiert hat.**
 
-1. **Beide Reparaturen der Fassung 4 standen im falschen Dokument** — die Botzielgröße in
-   T44 statt `spiel.md`, die zweiunddreissig Startwerte in T23 Punkt 1 statt in der
-   Entwurfstabelle. Der Spielentwerfer hat beides gezogen. Für T23 Punkt 1 war das kein
-   Schönheitsfehler, sondern eine Gefahr: Die 32 Adressen trügen sonst **zwei**
-   Herkunftseinträge und brächen den Jahrgangsbau nach T45 ab. Die Tabelle dort ist deshalb
-   gestrichen; ihre Begründung bleibt als Nachweis stehen, ausdrücklich ohne Eintragsstatus.
-2. **Gehören die zwölf Beteiligungen zum Fondsvermögen?** `spiel.md` Fassung 4 sagt ja,
-   bewertet zum Ausstiegswert. Eingearbeitet in T47; die Erörterung des Gegenfalls in T44
-   und die offene Frage in Abschnitt 12 sind gestrichen, weil eine beantwortete Frage in
-   einer Offen-Liste nur noch Platz kostet.
-3. **Sechs Adressen ohne zulässige Eintragsart** (zwei Weltpreise, vier Partiefelder). Sie
-   stehen jetzt in der Entwurfstabelle von `spiel.md` und tragen den Eintrag `Entwurf` —
-   erledigt, aber nicht so, wie der Prüfer erwartet hat („eine Zeile in T45 oder T23"). Beim
-   Nachzählen ist stattdessen etwas anderes herausgekommen, siehe unten.
+1. **Die Kostenaussage zu `B` war zu klein — der Prüfer hat recht, und sie ist jetzt
+   ausgezählt.** Nicht „rund zwanzig Operationen, drei Promille", sondern rund 240, davon 71
+   `i128`-Divisionen, also gut drei Prozent eines Weltschritts. Nachgeführt in **T44**, in
+   **T47** (mit der Auszählung je Teil) und in **Abschnitt 10**. Es war eine Zeile und kein
+   Lauf, wie der Prüfer schrieb; die Auszählung hat trotzdem zwei Vorgaben erzeugt, die
+   Rechenzeit sparen und zugleich eine Zusage einlösen — die Abkürzung bei `stufen(p) = 0`
+   und die einmalige Berechnung der zwölf `korbwert` je Aufruf.
+2. **`markt.wert` mit Herkunft `Manifest` trotz Erwähnung in der Entwurfstabelle.** Die
+   Vorrangregel aus T45 löst das, der Prüfer hat es fallen lassen, der Spielentwerfer hat die
+   Auflösung übernommen. Keine Änderung.
+3. **`einfluss` als 0…100 in `spiel.md`, in Zehntausendsteln im Speicher.** Bleibt, wie es
+   ist, und steht seit dieser Fassung zusätzlich in T49 als Klasse 4 — die Konvention ist
+   damit nicht mehr nur in einem Absatz erklärt, sondern in einer Tabelle abgezählt.
 
-**Was diese Fassung über die Befunde hinaus geändert hat, und warum es dazugehört.** Der
-Prüfer hat Bedingung 2 für erfüllt erklärt und dabei die Zuordnung geglaubt, statt sie
-auszuzählen — verständlich, denn Fassung 4 hat sie behauptet. Ich habe sie in diesem Lauf
-Adresse für Adresse gegen T15 und die Reihenliste gelegt, weil T45 genau das vom
-Jahrgangsbau verlangt und es noch keinen gibt, der es täte. Drei Befunde an mich selbst:
+**Was ich nicht entschieden habe, weil es nicht meine Rolle ist:** die Meldung des Prüfers
+an den Projektmanager, dass der Rücklaufzähler mit Runde 6 bei 3 von 3 steht und die Tabelle
+im Arbeitspaket seit Runde 3 nicht nachgeführt ist. Ich schreibe weder in das Arbeitspaket
+noch urteile ich über `blockiert`. Was ich beitragen kann, ist die Sachlage: Befund 2 dieser
+Runde war eine Skalenmischung mit Todesfolge für Klasse 2 von Maß 2, also kein
+Genauigkeitsbefund; er ist behoben, und der Fehlertyp ist mit T48, T49 und T50 an drei
+Stellen geschlossen statt an einer.
 
-- **Elf Adressen haben keinen zulässigen Eintrag** — fünf `basiswechsel`-Zähler, der
-  US-Wechselkurs (Reihe 10 trägt drei Länder, die USA definitionsgemäß nicht) und fünf
-  Aggregatgrößen der Restwelt (die Reihen 8, 9, 10, 11 und 12 tragen ausweislich ihrer
-  Dimensionsspalte nur die vier spielbaren Länder). Sie stehen in **T46**, abschliessend
-  aufgezählt, mit Startwert, Grund und Schreibregel.
-- **Zwei Adressen bestimmt der Jahrgangsbau selbst** (`markt.wert`, `partie.jahrgangskennung`)
-  und keine der vier Eintragsarten passte. Neue Art `Manifest(feld)`.
-- **Sechs Zeilen der Entwurfstabelle verweisen weiter, statt einen Wert zu nennen** („aus
-  `parameter.toml`", „aus dem Manifest"). Nach dem Wortlaut der Fassung 4 trügen sie zwei
-  Einträge und brächen den Bau ab. Die Vorrangregel in T45 sagt jetzt: Der Eintrag ist die
-  Stelle, die den Wert **bestimmt**, nicht die, die ihn erwähnt.
-
-Damit geht die Summe zum ersten Mal auf: `136 + 150 + 11 + 2 + 11 = 310`, gegengerechnet
-gegen dieselben 310 aus T15 (`4 × 44 + 22 + 40 + 2 + 12 + 2 + 5 + 3 + 20 + 24 + 4`). Zwei
-unabhängige Aufteilungen derselben Menge, beide von Hand gerechnet.
-
-**Was diese Fassung nicht geändert hat:** R bleibt 24, die Sollmaske 175 von 310, die drei
-Maße kosten 11.519.040 Weltschritte, der Nachtlauf 11.783.264. Ich habe alle Summen dieses
-Dokuments in diesem Lauf erneut nachgerechnet, weil eine Fassung, in der die
-Kostenrechnung nicht angefasst wird, genau die ist, in der man es unterlässt.
+**Was diese Fassung nicht geändert hat:** R bleibt 24, die 310 Adressen bleiben 310, die
+Herkunftszerlegung bleibt `136 + 150 + 11 + 2 + 11`, die Sollmaske 175 von 310, die
+Ergebnisbänder, die vier Maße und ihre Schwellen, die drei Maße kosten 11.519.040
+Weltschritte und der Nachtlauf 11.783.264. Ich habe alle Summen dieses Dokuments in diesem
+Lauf erneut nachgerechnet — auch die, die ich nicht angefasst habe, weil eine Fassung, in
+der die Kostenrechnung nicht angefasst wird, genau die ist, in der man es unterlässt. Neu
+nachgerechnet sind die Skalenzerlegung (`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 + 83 +
+2 = 310`, je Land `6 + 5 + 4 + 1 + 7 + 1 + 2 + 8 + 1 + 9 = 44`), die Operationszahl von
+`fondsvermoegen` (230) und die Untergrenze `aufschlag_min` (51 bp).
