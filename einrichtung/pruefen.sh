@@ -49,7 +49,7 @@ pruefe "nichts Uncommittetes liegen geblieben"     bash -c "cd '$ZIEL' && test -
 
 echo
 echo "Zeitplanung"
-pruefe "Nachtlauf in der crontab"                  bash -c "crontab -l | grep -q nachtlauf.py"
+pruefe "Tageslauf in der crontab"                  bash -c "crontab -l | grep -q tageslauf.py"
 pruefe "Wochenlauf in der crontab"                 bash -c "crontab -l | grep -q wochenlauf.py"
 pruefe "PATH-Zeile in der crontab"                 bash -c "crontab -l | grep -q '^PATH='"
 
