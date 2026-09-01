@@ -20,12 +20,10 @@ Lehre daraus, in einem Satz.
 
 - **Die Datenlage entscheidet den Zuschnitt, nicht der Geschmack.** Zuerst `daten.md` und
   besonders seine Lücken lesen, dann schneiden — die Idee nannte 12 Länder, 6 Sektoren,
-  Quartalsrunden, die Daten trugen 4, 3 und Jahresrunden. Wer so vorgeht, bekommt jede
-  Entscheidung mitgeliefert und muss nichts abwägen.
+  Quartalsrunden, die Daten trugen 4, 3 und Jahresrunden.
 - **Jede Verkleinerung gegen ein Maß verteidigen, jede Vergrößerung auch.** Vier Länder
-  statt drei mit Maß 1 (bei drei hat jeder Zoll genau einen Ausweichpartner, die Wahl ist
-  keine), drei Sektoren statt sechs mit Maß 4 (sechs wären ein Konstrukt ohne Sollreihe).
-  Das ergibt Zahlen, die man verteidigen kann, statt Zahlen, die plausibel klingen.
+  statt drei mit Maß 1 (bei drei hat jeder Zoll genau einen Ausweichpartner), drei Sektoren
+  statt sechs mit Maß 4 (sechs wären ein Konstrukt ohne Sollreihe).
 - **Die Gegenkraft gehört in die Siegbedingung, nicht daneben.** Das Mandat verlangt
   Kapital UND Einfluss, und Einfluss ist genau die Größe, deren Erwerb Aufsicht,
   Gegenlobby und Regierungswechsel weckt. Zuerst fragen, was der Sieg verlangt, dann
@@ -34,39 +32,43 @@ Lehre daraus, in einem Satz.
   wird abgegrast) und Marktenge (Überrendite fällt mit dem Marktanteil) sind bloße Zähler
   mit Schwelle. Eine Optimumsverschiebung, die aus Regeln folgt, überlebt jede
   Kalibrierung; eine, die aus Zahlenwerten folgt, nicht.
-- **Long UND short ist die billigste Antwort auf „eine Richtung dominiert".** Weil der
-  Fonds gegen eine Politik verdienen kann, ist keine Richtung vorteilhaft — die Klage aus
+- **Long UND short ist die billigste Antwort auf „eine Richtung dominiert"** — die Klage aus
   Democracy 4 ohne eine einzige Ausgleichsregel.
 - **Schwellenwerte gehören nicht in den Entwurf.** Die *Form* festlegen, die Zahlen der
   Kalibrierung überlassen. Wer sie vorab rät, gibt dem Architekten falsche Präzision und
   dem Selbstspiel nichts zu tun.
 - **Gegen „chaotisch" verteidigt man mit der Zahl der Rückkopplungs*kanäle*, nicht mit der
-  Zahl der Felder.** Eine abschließende Liste rundenübergreifender Kanäle mit je benannter
-  Dämpfung ist eine Aussage — und der Bruchtester kann sie widerlegen („200 Runden ohne
-  Spieler, verlässt eine Größe ihren Bereich?").
+  Zahl der Felder.** Eine Liste mit je benannter Dämpfung ist eine Aussage, die der
+  Bruchtester widerlegen kann („200 Runden ohne Spieler, verlässt eine Größe ihren
+  Bereich?").
 - **Die Partielänge aus den Daten ableiten, nicht aus dem Genre.** Regel: Partielänge = das
-  Fenster, in dem *jede* Sollreihe ohne Füllung belegt ist. Nebengewinn, den ich nicht
-  gesucht hatte: Der Schnitt entfernte Brasiliens Hyperinflation, an der jede prozentuale
-  Fehlerrechnung zerbrochen wäre.
+  Fenster, in dem *jede* Sollreihe ohne Füllung belegt ist.
 - **Ein unscharfer Begriff in einem Maß ist ein Loch, kein Detail.** Faustregel: Jedes Maß
   einmal so lesen, als müsste man es als Schleife hinschreiben — wo man stockt, steht ein
   Wort, das der Selbstspieler später raten müsste.
 - **Eine Zahl, die zwölf andere trägt, schreibt man als Buchstaben.** Eine falsche
   Partielänge machte in Fassung 2 Ergebnisskala, Partiedrittel, Fenstergrenzen und vier
-  Kostenformeln falsch. Jede abgeleitete Größe steht jetzt als Formel in R; ein weiteres
-  Kürzen ist eine Substitution statt einer Neufassung.
+  Kostenformeln falsch; als Formel in R ist ein Kürzen eine Substitution.
 - **Verlässt eine Größe ihren Wertebereich, ist der Ausweg meist eine monotone Abbildung,
-  nicht eine Kappung.** `H/(H+N)` statt `H/N`: streng monoton darin, per Konstruktion in
-  [0,1], Rangfolge erhalten. — **Zweiter Fall, 2026-09-01:** Die Kappung im Fehlbetrag der
-  Ergebnisskala war der Ersatz für eine fehlende Aggregationsregel und entfiel mit ihr
-  ersatzlos, weil jeder Summand per Konstruktion beschränkt ist. **Eine Kappung ist meist
-  der Verband über einer Lücke in der Definition — erst die Regel schreiben, dann sehen,
-  ob die Kappung noch etwas tut.**
+  nicht eine Kappung.** `H/(H+N)` statt `H/N`: streng monoton, per Konstruktion in [0,1],
+  Rangfolge erhalten. Zweiter Fall am selben Tag: die Kappung im Fehlbetrag der
+  Ergebnisskala, ersatzlos entfallen. **Eine Kappung ist meist der Verband über einer Lücke
+  in der Definition — erst die Regel schreiben, dann sehen, ob sie noch etwas tut.**
 - **Ein Prüflauf ist ein anderer Modus als eine Partie, und das gehört in den Entwurf.**
   Der Rückvergleich mit „Fonds mit Nullvermögen" teilte in Runde 1 durch null. Lösung:
   eigener Modus, Fondsteilsystem ganz aus, Instrumente exogen. **Jedes Maß einmal als
   Programmablauf durchgehen und fragen, welche Regel des Spiels darin gilt und welche
   nicht** — „ohne Spieler" ist keine Antwort darauf.
+- **2026-09-01 — Ein Abzählschritt findet fehlende Adressen, nie fehlende Funktionen.**
+  `korbwert` und `positionswert` waren im Nachbardokument verwendet und nirgends gebildet,
+  die Adressprüfung ging trotzdem auf. **Jede Formel des Nachbardokuments Symbol für Symbol
+  lesen und je Namen fragen, wo er entsteht** — fünf Minuten, zwei Läufe wert.
+- **2026-09-01 — Eine Größe, die in zwei Skalen gebraucht wird, gehört in die, in der sie
+  entsteht**, und die Umrechnung an genau eine Stelle. Sonst zwei Wahrheiten für einen
+  Gegenstand. Der Entwurf entscheidet die Skala, die Umrechnung gehört dem Architekten.
+- **2026-09-01 — Vor jedem neuen Parameter fragen, ob eine vorhandene Zahl dieselbe Wirkung
+  hat.** Ein „investierbarer Anteil" des Marktes wirkt nur über sein Verhältnis zum
+  Startkapital — redundant, und er kostet die Kalibrierung eine Dimension ohne Gegenwert.
 - **2026-09-01 — Bei mehreren Lesarten zuerst fragen, welche dieselbe *Ordnung* erzeugen.**
   Der Prüfer legte drei nebeneinander (Summe, Mittel, schwächeres der beiden); Summe und
   Mittel gehen durch Halbieren auseinander hervor und ordnen identisch. Zu entscheiden war
@@ -87,14 +89,12 @@ Lehre daraus, in einem Satz.
   `agentenbau.md` und um Faktor zwei falsch.
 - **Eine offene Frage an eine andere Rolle weiterreichen erzeugt eine Lücke, wenn diese
   Rolle danach nichts mehr schreibt.** Vorletzter Blick jedes Laufs gehört dem Abschnitt
-  „Was ich nicht entschieden habe" der Nachbarergebnisse. — 2026-09-01 zum zweiten Mal
-  aufgetreten und diesmal geschlossen (Beteiligungen im Fondsvermögen, aus `technik.md`
-  Abschnitt 12): **Läuft man ohnehin, kostet die Entscheidung nichts; lässt man sie liegen,
-  sieht sie später aus wie ein Balanceproblem, obwohl sie eine Definition ist.**
+  „Was ich nicht entschieden habe" der Nachbarergebnisse. **Läuft man ohnehin, kostet die
+  Entscheidung nichts; lässt man sie liegen, sieht sie später aus wie ein Balanceproblem,
+  obwohl sie eine Definition ist.** Dreimal aufgetreten, zuletzt 2026-09-01.
 - **„Ein Abruf hat die Frage geklärt" war falsch, und ich hatte es als Erfolg notiert.**
-  Wer eine Regel über *alle* Reihen aufstellt, hat sie erst belegt, wenn er die **bindende**
-  Reihe gesucht hat, nicht die erstbeste. Ein Abruf klärt eine Reihe, nie ein Minimum über
-  viele.
+  Ein Abruf klärt eine Reihe, nie ein Minimum über viele — wer eine Regel über *alle*
+  Reihen aufstellt, muss die **bindende** suchen, nicht die erstbeste.
 - **2026-09-01 — Ich habe eine Invariante behauptet und zwei Absätze darunter die Probe
   dazu gerechnet, die ihr widersprach.** „Über 15 Runden `3·ai` Steckplätze" gegen „Runden
   1 bis 5: drei von fünfzehn"; richtig war die Probe, gefunden hat es der Architekt.
@@ -107,16 +107,24 @@ Lehre daraus, in einem Satz.
   Ausweg: Steht im Repo bereits ein Argument gegen genau diese Konstruktion, und gilt es
   hier auch?** Hier stand es im Nachbardokument — der Architekt kappt seine Botzielgröße
   aus demselben Grund nicht.
-- **Keine Websuche gefahren, in vier Läufen nicht.** `daten.md`, das Marktprofil und
-  `agentenbau.md` deckten jede Frage, an der der Entwurf hing. „Suche, wenn dich eine
-  Antwort blockiert" hat hier zu null Suchen geführt, und das war richtig.
+- **2026-09-01 — Meine Kanaltabelle nannte sich abschließend und ließ ausgerechnet den
+  Kanal aus, an dem das Genre stirbt** (Vermögen → Lobby → Instrument → Kurs → Bewertung →
+  Vermögen); sichtbar wurde er erst, als die Bewertung ein *gerechneter* Schritt war statt
+  eines Wortes. **Eine Kanaltabelle prüft man, indem man jede Aktionsart bis zurück zum
+  eigenen Vermögen verfolgt** — nicht, indem man die Zustandsgrößen durchgeht.
+- **Websuche: eine in fünf Läufen.** Die eine galt keiner Entscheidung, sondern einem
+  **Beleg** — ich hatte einen negativen Leitzins als Tatsache hingeschrieben, ohne Quelle.
+  Der Auslöser ist nicht nur „blockiert mich das", sondern auch „behaupte ich hier etwas
+  über die Außenwelt".
 
 ## Offene Faehrten
 
-- **Stand 2026-09-01: Der Ruecklaufzaehler des Pakets `0001-entwurf-abnahme` steht bei 2
-  von 3.** Danach `blockiert` und Meldung an den Betreiber. Fassung 5 ist die letzte, die
-  zurueckgehen darf; offen sind nur noch Messungen am laufenden Kern, keine
-  Entwurfsfragen.
+- **Stand 2026-09-01, nach Runde 6: Der Ruecklaufzaehler des Pakets `0001-entwurf-abnahme`
+  steht bei 3 von 3**, und die Tabelle im Arbeitspaket ist seit Runde 3 nicht nachgefuehrt.
+  Ob daraus `blockiert` folgt oder ein vierter Ruecklauf, entscheidet der Projektmanager,
+  nicht ich. Fassung 5 liegt vor; offen sind aus meiner Sicht nur noch Messungen am
+  laufenden Kern und die Frage, ob ein zulaessiger Parametersatz existiert (Fondsgroesse
+  gegen Marktgroesse).
 - **Die schwerste offene Frage des Entwurfs steht in `spiel.md`:** Ist der aggregierte
   Zollsatz der Weltbank (WITS-Herkunft, Drittanbieter-Ausnahme) verwendbar? Ist er
   gesperrt, verliert der Rueckvergleich das wichtigste seiner drei verankerten
@@ -126,6 +134,7 @@ Lehre daraus, in einem Satz.
   versucht). Ersatzindiz: die freie WDI-Zinsreihe `FR.INR.LEND` beginnt fuer BR ebenfalls
   1997. Lehre: **Ist die eigentliche Quelle gesperrt, gibt eine benachbarte freie Reihe
   oft dieselbe Kante** — ein Indiz fuer den Preis eines Abrufs, kein Beweis.
-- Erledigt und nur als Merkposten: Deutschland vor/nach 1999 (Behandlung des Architekten
-  uebernommen, Bruch in Runde 3) und Brasiliens Disinflation (faellt mit dem Start 1997
-  heraus).
+- **Neu offen seit Fassung 5: Gibt es einen Parametersatz, in dem der Fonds gross genug
+  und nicht zu gross ist?** Die Maerkte des Modells sind ganze Sektorkapitalstoecke. Eine
+  Stufe muss bezahlbar sein und erreichbare Stufenzahlen muessen die Aufsichtsschwellen
+  erreichen; beides zugleich ist nicht garantiert und nur am Pruefstand zu sehen.

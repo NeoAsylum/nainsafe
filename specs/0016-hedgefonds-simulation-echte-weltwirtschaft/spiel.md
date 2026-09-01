@@ -17,13 +17,14 @@ messbar_rueckvergleich: Startjahrgang 1997, R = 24 Runden im Weltlauf (Fondsteil
 
 # Ein Hedgefonds mit vier Ländern, drei Sektoren und vier Politikhebeln — und jede Zahl, die sich bewegt, sagt warum.
 
-*Vierte Fassung, nach
-`ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde4-2026-09-01.md` und gegen
-`ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Geändert sind gegenüber der dritten
-Fassung genau vier Stellen: das Vorratsverfahren (eine Zahl), der Fehlbetrag der
-Ergebnisgröße, das Fondsvermögen und die Tabelle der Größen ohne Datenanker. Die
-Abarbeitung beider Befunde steht am Ende der Datei, die der zwölf Befunde der zweiten
-Fassung darunter.*
+*Fünfte Fassung, nach
+`ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde6-2026-09-01.md` und gegen
+`ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Geändert sind gegenüber der vierten
+Fassung genau drei Stellen: der neue Abschnitt **Was ein Korb wert ist, was eine Stufe ist
+und was eine Anleihe kostet** (Befund 1), die **Kanaltabelle**, die dadurch einen achten
+Kanal bekommt, und drei Zeilen in der Tabelle der Größen ohne Datenanker. Keine Zahl der
+vierten Fassung ändert sich, keine Zustandsadresse kommt hinzu. Die Abarbeitung der zwei
+Befunde steht am Ende der Datei, die der früheren Runden darunter.*
 
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
@@ -229,8 +230,12 @@ sämtliche Gegenkräfte weckt.
 
 Die Abnahmebedingung 2 verlangt, dass jede Größe entweder auf eine Reihe aus `daten.md`
 zurückgeführt oder als Modellkonstrukt mit Entstehungsregel gekennzeichnet ist. Die
-verankerten stehen in der Reihenliste des Architekten. Hier stehen **alle übrigen**,
-abschließend:
+verankerten stehen in der Reihenliste des Architekten. Hier stehen **alle übrigen** — bis
+auf die elf, deren Herkunft `technik.md` T46 ist und die diese Tabelle nicht kennen kann,
+weil sie aus dem Vergleich der Reihenliste mit der Adressaufstellung folgen (US-Wechselkurs
+als Numéraire, fünf Aggregatgrößen der Restwelt, fünf Neubasierungszähler). **Mit T46
+zusammen ist die Aufzählung abschließend, und nur zusammen war sie es je.** Das ist
+Beobachtung 2 aus `technik.md` Abschnitt 12, hier angenommen statt bestritten:
 
 | Größe | Startwert | Regel im Lauf |
 |---|---|---|
@@ -247,10 +252,11 @@ abschließend:
 | Restverzögerung je Instrument (16) | 0 | Schritt 3 |
 | drei Restdauerzähler je Land (12) | 0 | Gegenkraft 1 und 2 |
 | Finanzmarktregulierung (Stand) | aus `parameter.toml` | Instrument wie die anderen drei |
-| `markt.wert` | Wert des Startkorbs zu Startpreisen | eingefrorener Mengenkorb, Gegenkraft 3 |
+| `markt.wert` | Wert des Startkorbs zu Startpreisen | eingefrorener Mengenkorb aus zwölf Körben und vier Anleihen, T33; Bewertung siehe *Was ein Korb wert ist* |
 | `markt.rendite` | 0 | ebd. |
 | Fondskasse, Anlegerbestand | aus `parameter.toml` (Startkapital) | Aktionen und Abrechnung |
-| Hebelstand, Sichtbarkeit, Marktanteil, Überrendite (3) | 0 | Aktionen 4 und 5, Abrechnung |
+| Marktanteil | 0 | Wertanteil am Marktkorb, Formel unter *Was ein Korb wert ist* |
+| Hebelstand, Sichtbarkeit, Überrendite (3) | 0 | Aktionen 4 und 5, Abrechnung |
 | Beteiligungen (12 Anteile + 12 Restdauern) | 0 | Aktion 2 |
 | Positionssteckplätze (20) | 0 | Aktion 1 |
 | Partie: Runde | 0 | Buchführung des Laufs |
@@ -258,8 +264,9 @@ abschließend:
 | Partie: Parametersatz-Prüfsumme | aus `parameter.toml` | fest über die Partie |
 | Partie: Mandatsstand | 0 | Schritt 6, Mandatsprüfung |
 
-**Diese Tabelle ist der Herkunftseintrag für alles, was keinen Datenanker hat**, und erst
-mit den sieben neuen Zeilen ist sie das, was sie von sich behauptet: abschließend. Der
+**Diese Tabelle ist der Herkunftseintrag für die 150 Entwurfsadressen**, und erst mit den
+sieben Zeilen der vierten Fassung und dem Verweis auf T46 ist sie das, was sie von sich
+behauptet. Der
 Abgleich gegen die 310 Adressen aus `technik.md` T15 stammt nicht von mir, sondern aus der
 Prüfung vom 2026-09-01: Ohne Herkunftseintrag blieben dort **32** Adressen (Lobbydruck und
 Restverzögerung je Instrument, vom Architekten in T23 Punkt 1 nachgetragen) und **sechs**
@@ -293,13 +300,221 @@ Abschlag ist eine zusätzliche Strafe und kommt oben drauf.
 oder darunter, greift Todesart 1 (Zwangsliquidation) in derselben Runde. Eine Rendite auf
 einen nichtpositiven Nenner wird damit nie gebildet.
 
+### Was ein Korb wert ist, was eine Stufe ist und was eine Anleihe kostet
+
+Die vierte Fassung hat entschieden, **dass** die Beteiligungen zum Fondsvermögen zählen, und
+`technik.md` T47 hat das als Formel hingeschrieben. Damit wurde sichtbar, dass zwei Namen
+darin nirgends gebildet werden: `korbwert(l, s)` und `positionswert(p)`. Beide sind
+Modellentscheidungen und stehen deshalb hier; mit dem **Anleihekurs**, den der Prüfer als
+dritte Lücke benannt hat („für die vier Anleihe-Steckplätze gibt es nicht einmal einen
+Preis"), sind es drei, und sie hängen zusammen.
+
+#### Eine Bewertungsformel, drei Mengen, drei Kurse
+
+Jede Bewertung im Modell hat dieselbe Bauart — **Menge mal Kurs, umgerechnet in den
+Numéraire**:
+
+```
+wert(menge, kurs, gebiet) = mal_geteilt(menge, kurs, wechselkurs[gebiet])
+```
+
+Kurs und Wechselkurs sind beide Indizes mit Startwert 10.000; ihr Skalenfaktor kürzt sich
+gegeneinander weg, und die Bewertung braucht keine Konstante. Für die USA steht
+`wechselkurs` als Numéraire dauerhaft auf 10.000; dort ist die Formel eine reine
+Kursbewertung. Menge und Kurs je Steckplatzart:
+
+| Steckplatzart | Menge | Kurs |
+|---|---|---|
+| Land×Sektor (12) | `kapitalstock[l][s]` | `sektorpreis[l][s]` |
+| Währung (4) | `handelsvolumen[l]` — Aus- plus Einfuhr des Landes über beide handelbaren Sektoren, aus der Handelsmatrix | 10.000, fest |
+| Anleihe (4) | `schuld[l] = mal_geteilt(bip[l], staatsschuld[l], 10.000)`, mit `bip[l]` = Summe der drei Wertschöpfungen | `anleihekurs[l]`, siehe unten |
+
+Daraus die vier Bewertungen, aus denen T47 seine beiden fehlenden Namen bekommt:
+
+```
+korbwert(l, s)   = wert(kapitalstock[l][s], sektorpreis[l][s], l)
+anleihewert(l)   = wert(schuld[l],          anleihekurs[l],    l)
+waehrungswert(l) = wert(handelsvolumen[l],  10.000,            l)
+
+stufenwert(p)    = mal_geteilt(markt(p), stufenweite, 10.000)
+positionswert(p) = stufen(p) · stufenwert(p), in Fondsgeld umgerechnet
+```
+
+`markt(p)` ist der Korb-, Anleihe- oder Währungswert des Steckplatzes, `stufen(p)` seine
+vorzeichenbehaftete Stufenzahl aus T16. Die ersten vier Größen stehen in der
+**volkswirtschaftlichen Skala**, `positionswert` ist nach T5 **Fondsgeld** — die Skalengrenze
+verläuft also genau zwischen `stufenwert` und `positionswert`, und was das heißt, steht
+unten. Der Steckplatz Währung USA bleibt nach T16 dauerhaft leer, die Formel ist dort ohne
+Wirkung.
+
+`staatsschuld[l]` ist nach Reihenliste Nr. 11 und der Klasse *Raten* aus T5 die **Quote in
+Basispunkten**, nicht der Betrag — deshalb der Umweg über `bip[l]`. Ein Nenner null tritt
+in keiner der drei Zeilen auf: Der Wechselkurs ist als Index strikt positiv — das ist eine
+Bedingung an die Wechselkursregel und eine Wertebereichsgrenze, die der Bruchlauf prüft —,
+die 10.000 ist ein Literal, und der Anleihenenner ist unten beschränkt.
+
+#### Warum der Kapitalstock und nicht die Wertschöpfung
+
+Beide stehen im Zustand, und der Prüfer hat beide als Kandidaten benannt. Es ist der
+**Kapitalstock**, aus drei Gründen, und der dritte entscheidet:
+
+1. **T33 Punkt 3 verlangt einen Mengenkorb**, den man zu den Preisen dieser Runde bewertet.
+   Ein Bestand ist eine Menge, ein Jahresstrom ist keine. Mit dem Kapitalstock ist der
+   eingefrorene Mengenkorb aus T33 zum ersten Mal eine benennbare Größe.
+2. **Eine Beteiligung ist ein Anteil an dem, was ein Sektor besitzt**, nicht an dem, was er
+   in einem Jahr erwirtschaftet. Der Ertrag steckt im Kurs, nicht in der Menge.
+3. **Die Wertschöpfung schwankt jährlich, der Kapitalstock nicht.** Hinge der Wert eines
+   Korbs an der Wertschöpfung, bewegte ihn jede Produktionsschwankung stärker als jede
+   Lobbyaktion — und die Wirkungskette, die dieses Spiel verkauft
+   („Zoll → Importpreis → dein Bestand"), verschwände im Rauschen ihrer eigenen
+   Nebengrößen. Der Kapitalstock ändert sich nur über Kanal 1, also langsam und mit
+   Verzögerung; **damit ist die Kursänderung der sichtbare Teil der Bewertung, und das ist
+   genau die Zahl, die der Käufer erklärt haben will.**
+
+Ein Vielfaches auf die Wertschöpfung („Kurs-Gewinn-Verhältnis") wäre die dritte Lesart. Sie
+kostet einen zweiten freien Parameter ohne Anker und liefert dieselbe Ordnung; sie ist
+deshalb nicht gewählt.
+
+**Der Kapitalstock je Sektor braucht eine Startregel, und es ist dieselbe wie bei der
+Wertschöpfung.** Reihenliste Nr. 3 liefert einen Kapitalstock **je Gebiet**, der Zustand
+führt drei **je Gebiet und Sektor**. Sie entstehen im Startjahr aus den auf 10.000
+normierten Sektoranteilen (Reihe 2), also genau so, wie aus BIP und denselben Anteilen die
+drei Wertschöpfungen entstehen:
+
+```
+kapitalstock[l][s] = mal_geteilt(kapitalstock[l], sektoranteil[l][s], 10.000)
+```
+
+Danach ist er endogen über Kanal 1. Das ist kein neuer Mechanismus, sondern der schon
+vorhandene, ein zweites Mal angewandt — und es hält die drei Sektorkapitalstöcke im Rang
+`Datenanker`, weil beide Eingangsreihen verankert sind.
+
+#### Warum eine Stufe ein Anteil ist und kein Betrag
+
+`stufenweite` steht in `parameter.toml` (T27). **Sie ist ein Anteil in Zehntausendsteln des
+Marktes, an dem der Steckplatz hängt, kein Geldbetrag.** Eine Stufe auf `US×Industrie` ist
+also *`stufenweite` Zehntausendstel dieses Korbs*, und ihr Preis ist, was dieser Anteil heute
+kostet.
+
+**Der Grund ist der Zustand, nicht der Geschmack.** Wäre eine Stufe ein fester Geldbetrag,
+brauchte jeder Steckplatz seinen Einstandspreis, um überhaupt bewertbar zu sein — zwanzig
+weitere Adressen, ein zweiter Ort für dieselbe Wahrheit und ein Zustand, der nicht mehr aus
+sich heraus lesbar ist. Als Anteil folgt der Wert **vollständig aus dem heutigen Zustand**:
+Kaufe ich eine Stufe, gibt die Kasse ihren heutigen Wert ab und der Steckplatz nimmt ihn
+auf, netto null; bewegt sich danach der Kurs, bewegt sich der Steckplatz und sonst nichts.
+Bei negativer Stufenzahl kehrt sich das Vorzeichen um, und ein Kursanstieg ist ein Verlust —
+long und short sind dieselbe Formel, wie es Maß 2 verlangt.
+
+**Drei Größen, die daran hängen, sind damit ebenfalls gerechnet:**
+
+- **Der Anteil des Fonds an einem Land×Sektor**, in Zehntausendsteln:
+  `|stufen| · stufenweite + anteil[l][s]`. Position und Beteiligung sind Anteile an
+  **demselben** Korb und addieren sich. Beträge, nicht Vorzeichen — ein großer Short bewegt
+  einen Markt so stark wie ein großer Long.
+- **Der lokale Fußabdruck aus Gegenkraft 1** liest genau diese Zahl, und der Preisstoß aus
+  Aktion 1 ebenfalls („umso stärker, je größer sein Anteil an diesem Markt ist"). Beide
+  brauchen keinen eigenen Begriff mehr.
+- **`fonds.marktanteil`**, gebildet in Schritt 6 nach T33 Punkt 4, also gegen den neuen
+  `markt.wert`:
+
+  ```
+  korbbestand  = Σ über die 12 Körbe    mal_geteilt(korbwert(l,s), |stufen|·stufenweite + anteil[l][s], 10.000)
+               + Σ über die 4 Anleihen  mal_geteilt(anleihewert(l), |stufen|·stufenweite,               10.000)
+  marktanteil  = teile_gerundet(korbbestand · 10.000, markt.wert)
+  ```
+
+  Währungen gehen nicht ein — nach T33 Punkt 1 tragen sie keine Kapitalisierung. Das
+  `handelsvolumen` ist die **Tiefe** des Währungsmarktes und trägt Stufenwert und
+  Preisstoß, nicht den Marktkorb. `markt.wert` ist eine Summe positiver Mengen mal positiver
+  Kurse und damit nie null.
+
+**Was die Kalibrierung dabei zu treffen hat, und woran sie scheitert.** Startkapital und
+`stufenweite` legen zusammen fest, wie groß der Fonds gegenüber der Welt werden kann. Zwei
+Bedingungen, beide am Prüfstand ablesbar: Eine Stufe muss aus dem Startkapital bezahlbar
+sein, und erreichbare Stufenzahlen müssen die Aufsichtsschwellen aus Gegenkraft 1 überhaupt
+erreichen können. Verfehlt der Parametersatz die erste, gewinnt Klasse 1 nie; verfehlt er
+die zweite, greift keine Gegenkraft und Maß 3 fällt auf null. **Ein dritter Regler dafür —
+etwa ein „investierbarer Anteil" des Kapitalstocks — wäre mit dem Startkapital redundant:
+Nur das Verhältnis beider Größen wirkt.** Es gibt ihn deshalb nicht.
+
+#### Der Anleihekurs, die einzige neue Kursgröße
+
+Der Zustand führt je Land `leitzins` und `staatsschuld`, aber keinen Anleihekurs — der
+Prüfer hat zu Recht bemerkt, dass die vier Anleihesteckplätze damit an nichts hängen. Er
+bekommt **keine Adresse, sondern eine Regel**, wie `landespreis` auch (T39):
+
+```
+anleihekurs(l) = teile_gerundet(10.000 · (leitzins_start[l] + aufschlag), leitzins[l] + aufschlag)
+```
+
+`leitzins_start[l]` ist der Leitzins des Startjahrs, den der Jahrgang als erste Stützstelle
+des Politikpfads ohnehin trägt (Reihe 9); `aufschlag` ist ein neuer Schlüssel in
+`parameter.toml`, in Basispunkten, und bedeutet den Abstand zwischen Leitzins und
+Anleiherendite.
+
+Das ist der Kurs einer ewigen Anleihe: streng fallend im Zins, im Startjahr per
+Konstruktion genau 10.000, positiv für jeden positiven Nenner, ohne Kappung. **Die Schranke
+sitzt am Instrument und nicht am Kurs:** Der Leitzins hat eine Untergrenze, und sie ist
+`1 − aufschlag`. Damit ist der Nenner nie null und nie negativ, und der Jahrgangsbau kann
+sie prüfen — der historische Politikpfad muss sie einhalten, sonst ist der Parametersatz
+für diesen Jahrgang unzulässig.
+
+**Das ist eine echte Bedingung und keine formale, und sie trifft genau dieses Fenster.** Die
+EZB senkte ihren Einlagesatz am 2014-06-11 erstmals unter null auf **−0,10 %** und bis
+September 2019 auf **−0,50 %**; negativ blieb er bis 2022
+(`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` und
+`ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html`,
+abgerufen 2026-09-01). Deutschland folgt dem Euroraum ab Runde 3 exogen, also liegt der
+negative Zins **im Prüfjahrgang**. Ob die IFS-Reihe, die der Jahrgang zieht, den Einlagesatz
+oder den Hauptrefinanzierungssatz führt, entscheidet der Jahrgangsbau; die Untergrenze muss
+in beiden Fällen unter dem Minimum der Reihe liegen, und `aufschlag` ist damit nicht frei
+wählbar, sondern nach unten gebunden.
+
+Zwei Eigenschaften, die dabei geschenkt entstehen und die ich behalte. Erstens ist die
+Zinsempfindlichkeit **implizit und länderverschieden**: Bei niedrigem Zins reagiert der
+Kurs stark, bei hohem schwach — ein deutscher Bestand hängt am Zins, ein brasilianischer
+kaum. Das kostet keinen Parameter und unterscheidet zwei der vier Länder um eine weitere
+Achse. Zweitens ist die Anleihe die einzige Anlage, die der Fonds **ohne Einfluss** halten
+kann; sie kann deshalb nie allein gewinnen, weil das Mandat zwei Hälften hat. Eine
+Zinswette ist ein Weg, Kapital aufzubauen, und nie ein Weg, das Spiel zu gewinnen.
+
+#### Wo die Skalengrenze liegt
+
+`korbwert`, `anleihewert`, `waehrungswert`, `stufenwert`, `korbbestand`, `schuld` und
+`markt.wert` sind **volkswirtschaftliche Beträge** und stehen in deren Skala (T5, Zeile 109).
+`positionswert`, `beteiligung_wert`, Kasse und Hebel sind **Fondsgeld** (Zeile 108). Die
+Umrechnung liegt genau auf dieser Grenze und findet **je Bewertung einmal statt, am äußersten
+Aufruf** — also nachdem die Anteile verrechnet sind, nicht davor. `marktanteil` überquert die
+Grenze gar nicht: Zähler und Nenner stehen beide in der volkswirtschaftlichen Skala.
+
+Der zweite Weg, den der Prüfer offengelassen hat — `korbwert` gleich in Fondsgeld führen —
+ist damit ausgeschlossen, und der Grund ist T33: Der Marktkorb bewertet dieselben zwölf
+Körbe, und er ist eine volkswirtschaftliche Größe. Zwei Skalen für einen Korb wären zwei
+Bewertungen für einen Korb, und T47 verlangt „eine Bewertung, nicht zwei". **Welche
+Funktion die Umrechnung leistet, ist Sache des Architekten; dass sie an dieser Stelle und
+nur dort steht, ist Entwurf.**
+
+#### Keine neue Adresse
+
+Keine Größe dieses Abschnitts ist eine Zustandsadresse. `korbwert`, `anleihewert`,
+`waehrungswert`, `stufenwert`, `korbbestand`, `anleihekurs`, `schuld`, `bip` und
+`handelsvolumen` sind Funktionen des Zustands; `stufenweite`, `aufschlag` und
+`leitzins_start` sind Parameter beziehungsweise Konstanten des Jahrgangs. `marktanteil` ist
+die einzige Adresse, die überhaupt vorkommt, und sie steht schon in T15.
+
+**Die 310 aus `technik.md` T15 bleiben damit unverändert, die Tabelle *Größen ohne
+Datenanker* bekommt keine neue Adresse — nur drei genauere Regeln —, und der Abzählschritt
+aus T45 geht unverändert auf.** Genau deshalb hat er die Lücke auch nicht gefunden: Sie lag
+außerhalb der Menge, über die er zählt. Der Abzählschritt prüft Adressen; diese Lücke war
+eine fehlende **Funktion**, und dagegen hilft nur, dass jemand die Formel hinschreibt.
+
 ### Warum die Größe des Zustands keine Verteidigung ist
 
 `agentenbau.md` nennt als wunden Punkt dieses Genres, dass „ein Modell mit tausenden
 rückgekoppelten Größen leicht chaotisch wird, und dann trägt kein Regressionstest mehr".
 Dagegen hilft nicht eine kleine Zahl von Feldern, sondern eine kleine Zahl von
 **rückgekoppelten Kanälen**. Innerhalb einer Runde gibt es keine; über die Rundengrenze
-gibt es genau sieben, und sie sind hier abschließend aufgezählt:
+gibt es genau acht, und sie sind hier abschließend aufgezählt:
 
 | # | Kanal | Dämpfung |
 |---:|---|---|
@@ -310,9 +525,21 @@ gibt es genau sieben, und sie sind hier abschließend aufgezählt:
 | 5 | Sichtbarkeit → Aufsichtszähler → Zwangsverkauf → Marktanteil → Sichtbarkeit | Zähler ganzzahlig mit Obergrenze, drei feste Schwellen |
 | 6 | Überrendite → Nachahmerzähler → Preis → Überrendite | Zähler ganzzahlig mit Obergrenze |
 | 7 | Überrendite → Anlegerbestand → Positionsgröße → Preisstoß → Überrendite | Abzug erst nach drei Runden, fester Anteil je Runde |
+| 8 | Vermögen → Lobbybudget → Instrument → Kurs → Bewertung → Vermögen | Verzögerung und höchstens ein Schritt je Runde; Gegendruck wächst mit dem Schaden (Gegenkraft 5); Aufsicht wächst mit Einfluss mal Anteil (Gegenkraft 1); Nachahmer grasen den Kursgewinn ab (Gegenkraft 4) |
 
-Der achte Kanal, `Sektorpreis(t−1) → landespreis → Sektorpreis(t)`, ist **kein neuer**: Er
-ist Kanal 3 in seinem Preisglied, jetzt ausgeschrieben. Seine Dämpfung ist der Anteil
+**Kanal 8 ist neu in dieser Fassung, und er war die ganze Zeit da.** Er ist die Schleife,
+an der dieses Genre stirbt — *wer vorn liegt, kann mehr lobbyieren, und wer mehr lobbyiert,
+liegt weiter vorn* —, und er steht wörtlich im Beispiel der Idee („Zoll +5pp → Importpreis
+→ dein Bestand Sektor 3 +8,3%"). In der Tabelle fehlte er, weil das Glied *Bewertung* bis zu
+dieser Fassung kein gerechneter Schritt war, sondern ein Wort; erst der Abschnitt *Was ein
+Korb wert ist* macht ihn benennbar. Vier Dämpfungen greifen an ihm, alle vier stehen schon
+im Entwurf, und **drei davon wachsen mit dem Erfolg** — das ist der Grund, warum er
+gedämpft ist und nicht bloß langsam. Die Anleihevariante desselben Kanals (Lobby auf den
+Leitzins statt auf den Zoll, `anleihekurs` statt `sektorpreis`) ist kein neunter Kanal,
+sondern derselbe mit anderem Instrument und anderem Kurs.
+
+Der Preiskanal `Sektorpreis(t−1) → landespreis → Sektorpreis(t)` ist dagegen **kein eigener**:
+Er ist Kanal 3 in seinem Preisglied, ausgeschrieben. Seine Dämpfung ist der Anteil
 `(10.000 − durchgriff)/10.000`, also strikt kleiner als eins, solange `durchgriff > 0`;
 für Dienstleistungen mit `durchgriff = 0` ist er eine reine Fortschreibung ohne
 Verstärkung.
@@ -781,6 +1008,20 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   folgt. Hebel bleibt gefährlich, ohne dass eine zweite Zeitschicht entsteht.
 - **Ein Weltaktienindex als Vergleichsmaßstab.** Es gibt keinen unter freier Lizenz. Die
   Marktrendite ist deshalb eine Modellgröße ohne Anker — benannt, nicht versteckt.
+- **Ein eigener Kurs neben dem Sektorpreis.** Ein Korb wird mit dem Preis seines Sektors
+  bewertet, nicht mit einem Aktienkurs, der davon abweichen dürfte. Damit gibt es keine
+  Bewertungsblase und keine Stimmung — der Wert eines Bestandes folgt seiner
+  Ursachenkette und sonst nichts. Das ist ein Verlust an Genre-Erwartung und der Preis
+  dafür, dass jede Wertänderung erklärbar bleibt.
+- **Veränderliche Bonität.** Der `aufschlag` zwischen Leitzins und Anleiherendite ist eine
+  Konstante. Ein Land, dessen Schuldenquote davonläuft, zahlt im Modell keinen höheren
+  Aufschlag; Staatspleiten und Risikoprämien gibt es nicht. Der Aufschlag hätte einen
+  Anker (Renditereihen), aber keine Sollreihe im Zustand, und er kostete einen neunten
+  Rückkopplungskanal (Haushalt → Aufschlag → Kurs → Haushalt).
+- **Die Geldmenge als Tiefe des Währungsmarktes.** Sie läge bei IWF IFS vor und wäre die
+  bessere Größe als das Handelsvolumen. Sie kostet eine Zustandsadresse je Land und einen
+  exogenen Pfad, und sie verbessert kein Maß. Das Handelsvolumen ordnet die vier Länder
+  gleich und steht schon im Zustand.
 - **Einzelne Unternehmen.** Nur Land×Sektor-Körbe. Firmendaten unter freier Lizenz gibt es
   nicht, und was der Datenkurator nicht beschaffen kann, kommt nicht vor.
 - **Derivate, Optionen, strukturierte Produkte.** Long, short, Hebel. Mehr Instrumente
@@ -838,6 +1079,15 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   Selbstspiel sucht die Werte, bei denen Maß 1 bis 3 ihre Schwellen erreichen. Genau dafür
   gibt es die Maße. Festgelegt ist die Form, nicht die Zahl; die Werte stehen nach T27 in
   `parameter.toml`.
+- **Ob ein Parametersatz existiert, in dem der Fonds groß genug und nicht zu groß ist.**
+  Neu mit dieser Fassung, und die Frage ist eine Messung, keine Entscheidung: Startkapital
+  und `stufenweite` müssen zusammen eine Stufe bezahlbar machen **und** erreichbare
+  Stufenzahlen bis an die Aufsichtsschwellen heranreichen lassen. Beides zugleich ist nicht
+  garantiert — die Märkte des Modells sind ganze Sektorkapitalstöcke, und ein Fonds, der
+  sie bewegt, ist groß. Verfehlt der Selbstspieler die erste Bedingung, gewinnt Klasse 1
+  nie; verfehlt er die zweite, greift keine Gegenkraft und Maß 3 fällt auf null. **Beides
+  ist am Prüfstand sichtbar**, und beides ist ein Befund über den Parametersatz, nicht über
+  den Entwurf — es sei denn, es gibt keinen zulässigen. Dann ist es der Entwurf.
 - **Wie fein der Aktionsraum sein darf.** Zu grob, und Maß 1 findet keine Unterschiede; zu
   fein, und die Stichprobe von 30 Bündeln deckt zu wenig ab. Empirisch am Prototyp zu
   bestimmen — messbar daran, ob `Dichte(t)` bei K=30 und K=60 dieselbe Antwort gibt.
@@ -850,7 +1100,37 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 
 Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
 
-### Neu in Fassung 4 — vier Stellen, alle klein
+### Neu in Fassung 5 — acht Stellen, und keine davon ist eine Zahl
+
+Der neue Abschnitt *Was ein Korb wert ist* ist Entwurf und braucht von dir eine Aufnahme,
+keine Entscheidung. Was daraus in `technik.md` nachzuführen ist:
+
+| war (`technik.md`) | ist | betrifft |
+|---|---|---|
+| T47 verwendet `korbwert(l, s)` und `positionswert(p)`, gebildet werden sie nirgends | beide gebildet, dazu `anleihewert`, `waehrungswert`, `anleihekurs`, `schuld` und `handelsvolumen` | T47 |
+| T33: „Modellmarktwerte", der Mengenkorb ohne Menge | Marktkorb = Σ der 12 `korbwert` + Σ der 4 `anleihewert`; die Mengen sind Kapitalstock und Schuld, die Kurse Sektorpreis, Anleihekurs und Wechselkurs | T33 Punkt 1 und 3 |
+| Skalengrenze in T47 nicht gezogen — **Befund 2 der Runde 6** | `korbwert` bleibt volkswirtschaftlich, die Umrechnung liegt je Bewertung einmal am äußersten Aufruf; der zweite Weg (`korbwert` in Cent) ist ausgeschlossen, weil T33 denselben Korb bewertet | T5, T47 |
+| T27: `stufenweite` ohne Bedeutung | **Anteil in Zehntausendsteln des Marktes**, kein Geldbetrag; dazu ein neuer Schlüssel `aufschlag` in Basispunkten | T27 |
+| T23 Punkt 5: Konstanten des Jahrgangs sind zehn `durchgriff`-Werte | dazu **`leitzins_start[l]`**, vier Werte, erste Stützstelle des Politikpfads aus Reihe 9 | T23 Punkt 5 |
+| Reihe 3 liefert **einen** Kapitalstock je Gebiet, T15 führt **drei** je Gebiet | Startregel: Aufteilung über die normierten Sektoranteile, dieselbe Regel wie bei der Wertschöpfung; der Rang `Datenanker` bleibt | T23 Punkt 1, Reihenliste Nr. 3 |
+| „sieben rundenübergreifende Kanäle"; „gibt es einen **achten** Kanal, und der ist ein Befund" | **acht**; „einen **neunten**" | Z. 374 (T38-Begründung), T30 Prüfung 6 |
+| Leitzins ohne Untergrenze | Untergrenze **`1 − aufschlag`**, vom Jahrgangsbau gegen den historischen Politikpfad geprüft; sie hält den Anleihenenner positiv | T23, T27, T40-Umfeld |
+
+**Was sich ausdrücklich nicht ändert:** keine Zahl der vierten Fassung, keine
+Zustandsadresse, R, die Ergebnisbänder, die vier Maße, ihre Schwellen und alle
+Kostenzeilen. Der Abzählschritt aus T45 geht unverändert auf.
+
+**Und zwei Entscheidungen aus deinem Abschnitt 12 nehme ich an statt sie zurückzuholen:**
+die Ausschlussregel für Stützstellen mit `soll = 0` (T42) und die elf Startwerte in T46.
+Beide folgen aus Regeln, die schon dastehen; ich habe je eine Zeile gelesen und keine
+gefunden, die ich anders setzen würde. Deine Beobachtung 2 zur Tabelle *Größen ohne
+Datenanker* ist oben eingearbeitet — die Tabelle verweist jetzt auf T46, statt eine
+Abschließlichkeit zu behaupten, die sie allein nicht haben kann.
+
+### Aus Fassung 4 — vom Architekten am 2026-09-01 erledigt
+
+Steht nur noch als Nachweis hier; alle vier sind in `technik.md` Fassung 5 nachgeführt und
+vom Prüfer der Runde 6 einzeln nachgerechnet worden.
 
 | war (`technik.md`) | ist | betrifft |
 |---|---|---|
@@ -894,6 +1174,78 @@ Neu hinzugekommen und ohne Vorbild in Fassung 2: das **Vorratsverfahren** (Profi
 Aktionen), die **HS92-Konkordanz** und die Tabelle **Größen ohne Datenanker**. Alle drei
 sind Entwurf, nicht Architektur — sie brauchen von dir nur eine Aufnahme, keine
 Entscheidung.
+
+## Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01
+
+**Befund 1, `positionswert(p)` und `korbwert(l, s)` ohne Entstehungsregel — behoben, und der
+Befund war richtig.** Der Abschnitt *Was ein Korb wert ist, was eine Stufe ist und was eine
+Anleihe kostet* bildet beide, dazu `anleihewert`, `waehrungswert` und den `anleihekurs`, den
+der Prüfer im fünften Schritt seines Nachweises eigens benannt hat („für die vier
+Anleihe-Steckplätze gibt es nicht einmal einen Preis"). Drei Entscheidungen stecken darin,
+und ich nenne sie einzeln, weil
+jede anders hätte ausfallen können:
+
+1. **Der Korb hängt am Kapitalstock, nicht an der Wertschöpfung.** Grund ist nicht die
+   Volkswirtschaftslehre, sondern T33: Der eingefrorene Mengenkorb braucht eine Menge, und
+   ein Jahresstrom ist keine. Der zweite Grund ist die Wirkungskette — hinge der Korbwert an
+   der Wertschöpfung, überdeckte jede Produktionsschwankung die Kursänderung, die dieses
+   Spiel erklären will.
+2. **Eine Stufe ist ein Anteil, kein Betrag.** Das ist die Entscheidung, die den Zustand
+   rettet: Ein fester Geldbetrag verlangte je Steckplatz den Einstandspreis, also zwanzig
+   weitere Adressen. Als Anteil folgt der Wert vollständig aus dem heutigen Zustand, long
+   und short sind dieselbe Formel, und der Anteil, den Gegenkraft 1 und der Preisstoß lesen,
+   ist dieselbe Zahl.
+3. **Der Anleihekurs ist eine Regel, keine Adresse** — die Bauart, die T39 für `landespreis`
+   schon trägt. Er ist der Kurs einer ewigen Anleihe, im Startjahr per Konstruktion 10.000,
+   streng fallend im Zins und ohne Kappung positiv; die Schranke sitzt am Leitzins, wo sie
+   hingehört, und der Jahrgangsbau kann sie prüfen.
+
+**Die Frage nach der Größenordnung, die der Befund mitstellte, ist beantwortet, aber nicht
+so, wie er sie stellte.** „Wie groß ein Anteil in Zehntausendsteln überhaupt sein kann"
+hängt am Verhältnis von Startkapital zu Marktgröße, und dieses Verhältnis hat genau einen
+Regler. Ein zweiter — ein „investierbarer Anteil" des Kapitalstocks — wäre mit dem
+Startkapital redundant gewesen und hätte der Kalibrierung eine Dimension ohne Wirkung
+gegeben. Er ist deshalb nicht eingebaut; stattdessen stehen die **zwei Bedingungen** unter
+*Offene Entwurfsfragen*, die ein zulässiger Parametersatz erfüllen muss, und beide sind am
+Prüfstand ablesbar.
+
+**Und ein Kanal ist dabei aufgefallen, den der Befund nicht verlangt hat.** Sobald die
+Bewertung ein gerechneter Schritt ist, wird sichtbar, dass *Vermögen → Lobbybudget →
+Instrument → Kurs → Bewertung → Vermögen* eine Rückkopplung über die Rundengrenze ist — die
+Schleife, an der dieses Genre stirbt. Sie stand nicht in der Kanaltabelle. Sie steht jetzt
+als Kanal 8 mit vier Dämpfungen, von denen drei mit dem Erfolg wachsen. **Das ist der teure
+Teil dieses Laufs und der einzige, der eine Zahl in `technik.md` bewegt:** T30 Prüfung 6
+und die Begründung zu T38 sprechen von „sieben" und vom „achten Kanal als Befund"; beides
+wird um eins größer.
+
+**Befund 2, `beteiligung_wert` mischt Tausend USD und US-Cent — behoben, soweit er dem
+Entwurf gehört, und die Wahl zwischen den beiden Wegen ist getroffen.** Der Prüfer hat den
+Befund dem Architekten zugewiesen und zwei Auswege offengelassen. Der Entwurf entscheidet
+zwischen ihnen, weil nur einer mit T33 verträglich ist: **`korbwert` bleibt eine
+volkswirtschaftliche Größe**, denn der Marktkorb bewertet dieselben zwölf Körbe und ist
+selbst volkswirtschaftlich. Führte man `korbwert` in Cent, gäbe es zwei Skalen für einen
+Korb und damit zwei Bewertungen für einen Korb — genau das, was T47 mit „eine Bewertung,
+nicht zwei" ausschließt. Die Umrechnung liegt deshalb auf der Grenze zum Fondsbuch und
+findet je Bewertung **einmal am äußersten Aufruf** statt, nachdem die Anteile verrechnet
+sind. Welche Funktion sie leistet, bleibt deine Sache; wo sie steht, ist Entwurf.
+
+Der Rechenfehler selbst — Faktor 100.000, Kasse fällt um das Hunderttausendfache dessen, was
+das Beteiligungsvermögen steigt, Todesart 1 in derselben Runde — ist damit an seiner Wurzel
+geschlossen und nicht durch eine Klammer. Der Prüfer hat recht damit, dass er Maß 2 von
+Bauart wegen getroffen hätte: Klasse 2 hätte die erste Abnahmehälfte nicht bestehen können,
+und im Prüfstand hätte es wie ein Balanceproblem ausgesehen.
+
+**Die drei Punkte aus „Geprüft und nicht gezählt", weil dieser Lauf ohnehin stattfand.**
+Die Kostenaussage zu `B` ist eine Zeile des Architekten und keine Entwurfsfrage; ich rühre
+sie nicht an. Die Doppelführung von `markt.wert` löst T45s Vorrangregel, und ich übernehme
+die Auflösung. Die Skalenkonvention bei `einfluss` (0…100 in der Sicht, Zehntausendstel im
+Speicher) ist erklärt und bleibt, wie sie ist — ich habe nachgerechnet, dass `e ≤ 2.000` in
+beiden Einheiten gilt, weil `schwelle_e` in derselben steht wie `einfluss`.
+
+**Was ich nicht angefasst habe:** die Meldung des Prüfers an den Projektmanager, dass der
+Rücklaufzähler mit dieser Runde bei 3 von 3 steht und die Tabelle im Arbeitspaket seit
+Runde 3 nicht nachgeführt ist. Das ist Ablaufsteuerung und nicht meine Rolle; ich schreibe
+weder in das Arbeitspaket noch entscheide ich über `blockiert`.
 
 ## Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01
 
