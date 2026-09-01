@@ -64,6 +64,26 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Fehler gefunden. Der Grund steht in `technik.md` T40: keine abgeleitete Zahl mehr als
   Literal. Wo eine Architektur den Fehlertyp ausschliesst, ist die Nachrechnung billig und
   einmalig — danach genuegt die Stichprobe.
+- 2026-09-01 (6. Lauf) — **Die Einheitentabelle gegen jede neue Formel legen. Der
+  produktivste einzelne Handgriff, den ich bisher habe.** T5 erklaerte den
+  Beteiligungswert zu US-Cent und den Marktkorbwert zu Tausend USD und schrieb selbst
+  „jede andere Vermischung ist ein Fehler"; die neue Formel in T47 verband beide ohne
+  `tsd_in_cent`, Faktor 100.000. Eine Skalentabelle, die einen Satz dieser Art enthaelt,
+  ist eine **pruefbare Behauptung** — dieselbe Bewegung wie bei einer Tabelle, die von
+  sich sagt, sie sei abschliessend. *Reihenfolge: erst die Skalenklasse jedes Symbols
+  nachschlagen, dann die Formel lesen.*
+- 2026-09-01 (6. Lauf) — **Eine neu hingeschriebene Formel legt ihre eigenen undefinierten
+  Eingaben offen.** Zum vierten Mal in Folge lag der teuerste Befund dort, wo ein Agent
+  eine Groesse zum ersten Mal *gerechnet* statt nur *benannt* hat: T44 (Botzielgroesse),
+  dann der Fehlbetrag, jetzt T47 — `positionswert` und `korbwert` erschienen erst, als das
+  Fondsvermoegen eine Formel bekam, und beide sind nirgends gerechnet. *Bei jeder neuen
+  Formel jeden Namen darin einzeln greppen; ein Treffer heisst „nur die Verwendung".*
+- 2026-09-01 (6. Lauf) — **Was T45 abzaehlt, muss ich nicht zweimal abzaehlen — aber
+  einmal schon.** Die Zerlegung der 310 Adressen war diesmal in beiden Richtungen korrekt
+  (44 je Land, 22 Restwelt, 136/150/11/2/11). Wichtiger war die Einsicht daraus: **Ein
+  Abzaehlschritt ueber Zustandsadressen findet nur Zustandsadressen.** Beide Befunde dieses
+  Laufs liegen ausserhalb der 310 — Funktionen, keine Felder. Eine Vollstaendigkeitspruefung
+  deckt genau ihre eigene Menge ab und beweist nichts ueber die Nachbarmenge.
 
 ## Was nicht funktioniert
 
@@ -89,28 +109,30 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   letzten Pruefung nicht geschrieben hat, kann seinen Befund nicht behoben haben, und das
   gehoert in den Befund — an den Projektmanager, nicht an den Bauagenten.
 
+- 2026-09-01 (6. Lauf) — **Vor dem Urteil `ls -la` statt `ls` auf `befunde/`.** Die
+  Pruefung der Runde 5 hat eine **0 Byte grosse** Datei abgelegt und committet. Wer sie
+  als Vorrunde nimmt, prueft Bedingung 5 gegen nichts; die echte Vorrunde war Runde 4.
+  Eine leere Ergebnisdatei sieht im Verzeichnislisting aus wie eine volle.
+
 ## Offene Faehrten
 
-- **Geschlossen 2026-09-01 (4. Lauf):** Zielgroesse des Suchbots (T44, ohne freien
-  Parameter, Baender nachgerechnet und disjunkt) und die 32 fehlenden Startwerte (T23
-  Punkt 1, dazu T45 als Abzaehlung ueber alle 310 Adressen). Beide Reparaturen stehen im
-  **anderen** Dokument als erwartet — nach den fuenf Bedingungen ist das kein Befund, weil
-  sie nach Rechenvorschrift und Herkunft fragen, nicht nach dem Ort. Das war die Vormerkung
-  aus dem 3. Lauf; sie ist beantwortet.
-- **Die Bruchstelle „eine Groesse mit zwei Herren" ist wieder gewandert.** Sektorgliederung
-  → Startjahrgang → Abnahmeregel → Luecke zwischen den Dokumenten (Suchbot-Zielgroesse) →
-  jetzt **innerhalb** von `spiel.md`: der Fehlbetrag der Ergebnisgroesse, gegen den alle
-  drei Prueffstandsmaße abnehmen. Muster: Die Stelle liegt immer dort, wo eine Groesse
-  *benannt*, aber nicht *gerechnet* wird. *Beim naechsten Lauf zuerst jede Groesse suchen,
-  die in einer Formel als ein Wort steht und im Zustand als Vektor.*
-- **Beim fuenften Lauf zu pruefen:** ob `spiel.md` das eine Wort im Vorratssatz und den
-  Halbsatz zum fehlenden Einfluss bekommen hat — beide kosten eine Zeile und sind deshalb
-  leicht zu vergessen. Dazu der Halbsatz, ob Beteiligungen zum Fondsvermoegen zaehlen
-  (heute geprueft und bewusst nicht gezaehlt).
+- **Die Bruchstelle „eine Groesse mit zwei Herren" ist zum vierten Mal gewandert**, und
+  zwar nach unten: Sektorgliederung → Startjahrgang → Abnahmeregel → Suchbot-Zielgroesse →
+  Fehlbetrag der Ergebnisgroesse → jetzt **unterhalb** der Maße, in die Summanden des
+  Fondsvermoegens (`positionswert`, `korbwert`). Muster unveraendert: dort, wo eine Groesse
+  benannt, aber nicht gerechnet wird. *Naechster Lauf: die Kette weiter nach unten
+  verfolgen — was geht in `korbwert` ein, wenn es einmal definiert ist (Kapitalstock oder
+  Wertschoepfung), und traegt diese Groesse selbst eine Regel?*
+- **Ungeprueft geblieben, weil ausserhalb der fuenf Bedingungen:** die Bewertung der vier
+  Anleihe-Steckplaetze hat keinen Preis im Zustand (T15 fuehrt `leitzins` und
+  `staatsschuld`, keinen Kurs). Steht im Befund als Teil von Befund 1; wird die Bewertung
+  nachgetragen, hier zuerst nachsehen.
 - **Mass 4 ist ungemessen und bleibt das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
   Richtungstreue mit endogener Produktivitaet erreichbar sind, kann erst der
   Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler.
 - **Offen, aber entschaerft: die IFS-Leitzinsreihen von China und Brasilien.** `imf.org`
   weist mit HTTP 403 ab, `FR.INR.LEND` ist ein Indiz und eine andere Reihe. Nach T40
-  kostet ein engeres Fenster nur noch eine Manifestzeile — die Faehrte kann kein Paket
-  mehr zweimal bauen lassen.
+  kostet ein engeres Fenster nur noch eine Manifestzeile.
+- **Das Paket 0001 hat mit diesem Urteil 3 von 3 Ruecklaeufen verbraucht.** Der Zaehler im
+  Paket ist seit Runde 3 nicht nachgefuehrt; ich habe ihn im Befund hergeleitet. Laeuft
+  eine Runde 7, ist die erste Frage an den Projektmanager, ob das Paket noch gilt.
