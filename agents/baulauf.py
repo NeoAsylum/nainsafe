@@ -77,6 +77,7 @@ GLEICHZEITIG = 4
 RUECKLAUF_MAX = 3
 
 ANSI = re.compile(chr(27) + r"\[[0-9;]*m")
+NL = chr(10)          # Zeilenumbruch als Konstante -- haelt die Textbausteine lesbar
 
 
 def uebersetzen(venture: str) -> str | None:
@@ -93,37 +94,71 @@ def uebersetzen(venture: str) -> str | None:
     im Wochenlauf.
     """
     wurzel = WURZEL / "ventures" / venture
-    manifeste = sorted(wurzel.rglob("Cargo.toml"))
     ziel = wurzel / "befunde" / f"uebersetzung-{jetzt()[:10]}.md"
     ziel.parent.mkdir(parents=True, exist_ok=True)
 
+    # Die Bauart wird am Projekt erkannt, nicht an einer Konstante. Bis zum 2026-09-01
+    # rief diese Funktion fest `cargo` -- und beim Wechsel auf C++ waere sie stumm
+    # falsch geworden statt laut. Ein Runner, der eine Sprache voraussetzt, ist ein
+    # Runner, der beim naechsten Vorhaben neu geschrieben werden muss.
+    bauart, manifeste = None, []
+    for name, art in (("CMakeLists.txt", "cmake"), ("Cargo.toml", "cargo")):
+        gefunden = [m for m in sorted(wurzel.rglob(name)) if "befunde" not in m.parts]
+        if gefunden:
+            bauart, manifeste = art, gefunden
+            break
+    if not bauart:
+        quellen = [q for q in wurzel.rglob("*.cpp") if "messung-stack" not in q.parts]
+        if quellen:
+            bauart, manifeste = "cpp-blank", quellen
+
+    # Nichts gefunden heisst NICHT "ok". Genau diese Verwechslung hatte mein eigener
+    # Patch am 2026-09-01 eingebaut: kein Quelltext, keine Fehler, also "ergebnis: ok"
+    # -- die gefaehrlichste Rueckmeldung ueberhaupt, weil sie das Ausbleiben von Arbeit
+    # wie gelungene Arbeit aussehen laesst.
     if not manifeste:
-        ziel.write_text(f"""---
-typ: uebersetzung
-venture: {venture}
-datum: {jetzt()[:10]}
-ergebnis: kein_quelltext
----
-
-# Es gibt nichts zu uebersetzen
-
-Unter `ventures/{venture}/` liegt **keine `Cargo.toml`** und damit kein uebersetzbares
-Projekt. Gefunden wurden nur Textdateien.
-
-**Das ist ein Befund, kein Zustand.** Ein Bauagent liefert Quelldateien, keine
-Dokumente ueber Quelldateien. Wer ein Paket auf `gebaut` setzt, ohne dass danach etwas
-uebersetzbar ist, hat es nicht gebaut.
-
-Der Kern gehoert nach `ventures/{venture}/kern/` mit eigener `Cargo.toml`.
-""", encoding="utf-8")
+        ziel.write_text(
+            "---" + NL + "typ: uebersetzung" + NL + f"venture: {venture}" + NL
+            + f"datum: {jetzt()[:10]}" + NL + "ergebnis: kein_quelltext" + NL + "---"
+            + NL + NL + "# Es gibt nichts zu uebersetzen" + NL + NL
+            + f"Unter `ventures/{venture}/` liegt weder eine `CMakeLists.txt` noch eine"
+            + NL + "Quelldatei. Gefunden wurden nur Textdateien." + NL + NL
+            + "**Das ist ein Befund, kein Zustand.** Ein Bauagent liefert Quelldateien,"
+            + NL + "keine Dokumente ueber Quelldateien. Wer ein Paket auf `gebaut`"
+            + NL + "setzt, ohne dass danach etwas uebersetzbar ist, hat es nicht"
+            + NL + "gebaut." + NL + NL
+            + f"Der Kern gehoert nach `ventures/{venture}/kern/` mit eigener"
+            + NL + "`CMakeLists.txt`." + NL, encoding="utf-8")
         return "kein_quelltext"
 
     umgebung = dict(os.environ)
     umgebung["PATH"] = str(Path.home() / ".cargo" / "bin") + ":" + umgebung.get("PATH", "")
     ausgaben, schlecht = [], False
+
+    def befehle(bauart: str, manifest: Path) -> list[list[str]]:
+        """Uebersetzen und pruefen, je nach erkannter Bauart.
+
+        Die C++-Schalter sind keine Geschmacksfrage, sie stehen in ADR 0011:
+        `-fwrapv` macht vorzeichenbehafteten Ueberlauf zu definiertem Umbruch -- die
+        Gefahr ist nicht der Ueberlauf, sondern was ein Optimierer aus seiner
+        angeblichen Unmoeglichkeit folgert. Die Sanitizer machen im Testlauf laut, was
+        sonst still bliebe.
+        """
+        if bauart == "cargo":
+            return [["cargo", "build", "--manifest-path", str(manifest)],
+                    ["cargo", "test", "--manifest-path", str(manifest)]]
+        if bauart == "cmake":
+            bau = manifest.parent / "bau"
+            return [["cmake", "-S", str(manifest.parent), "-B", str(bau),
+                     "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+                     "-DCMAKE_CXX_FLAGS=-fwrapv -fno-fast-math"],
+                    ["cmake", "--build", str(bau), "--parallel"],
+                    ["ctest", "--test-dir", str(bau), "--output-on-failure"]]
+        return [["g++", "-std=c++20", "-O2", "-fwrapv", "-fno-fast-math",
+                 "-Wall", "-Wextra", "-o", str(manifest.with_suffix("")), str(manifest)]]
+
     for manifest in manifeste:
-        for befehl in (["cargo", "build", "--manifest-path", str(manifest)],
-                       ["cargo", "test", "--manifest-path", str(manifest)]):
+        for befehl in befehle(bauart, manifest):
             try:
                 fertig = subprocess.run(befehl, cwd=WURZEL, capture_output=True,
                                         text=True, encoding="utf-8", errors="replace",
@@ -132,18 +167,22 @@ Der Kern gehoert nach `ventures/{venture}/kern/` mit eigener `Cargo.toml`.
             except subprocess.TimeoutExpired:
                 code, text = -1, "Zeitueberschreitung nach 900 s."
             except FileNotFoundError:
-                code, text = -1, "cargo nicht gefunden -- Rust-Werkzeugkette fehlt."
+                code, text = -1, f"{befehl[0]} nicht gefunden -- Werkzeugkette fehlt."
             schlecht = schlecht or code != 0
             ausgaben.append(
                 "## `" + " ".join(befehl[:2]) + "` -- "
-                + ("FEHLER" if code else "ok") + f" (Code {code})\n\n"
+                + ("FEHLER" if code else "ok")
+                + " (Code " + str(code) + ")\n\n"
                 + "```\n" + ANSI.sub("", text).strip()[-6000:] + "\n```\n")
+            if code != 0:
+                break          # ein gescheiterter Schritt macht die folgenden sinnlos
 
     ergebnis = "fehler" if schlecht else "ok"
     ziel.write_text(f"""---
 typ: uebersetzung
 venture: {venture}
 datum: {jetzt()[:10]}
+bauart: {bauart}
 manifeste: {len(manifeste)}
 ergebnis: {ergebnis}
 ---

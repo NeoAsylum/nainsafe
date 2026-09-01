@@ -7,11 +7,13 @@ ergebnis: kein_quelltext
 
 # Es gibt nichts zu uebersetzen
 
-Unter `ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/` liegt **keine `Cargo.toml`** und damit kein uebersetzbares
-Projekt. Gefunden wurden nur Textdateien.
+Unter `ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/` liegt weder eine `CMakeLists.txt` noch eine
+Quelldatei. Gefunden wurden nur Textdateien.
 
-**Das ist ein Befund, kein Zustand.** Ein Bauagent liefert Quelldateien, keine
-Dokumente ueber Quelldateien. Wer ein Paket auf `gebaut` setzt, ohne dass danach etwas
-uebersetzbar ist, hat es nicht gebaut.
+**Das ist ein Befund, kein Zustand.** Ein Bauagent liefert Quelldateien,
+keine Dokumente ueber Quelldateien. Wer ein Paket auf `gebaut`
+setzt, ohne dass danach etwas uebersetzbar ist, hat es nicht
+gebaut.
 
-Der Kern gehoert nach `ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/` mit eigener `Cargo.toml`.
+Der Kern gehoert nach `ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/` mit eigener
+`CMakeLists.txt`.

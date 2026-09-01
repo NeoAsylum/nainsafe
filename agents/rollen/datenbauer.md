@@ -68,13 +68,13 @@ tun waere, kein Entwurf in Prosa. Wenn dein Paket erledigt ist, liegt Code da, d
 uebersetzen laesst.
 
 Das steht hier, weil am 2026-09-01 ein vollstaendiger Baulauf durchlief und **null
-Zeilen Code** hinterliess -- vier Markdown-Dateien und keine einzige `.rs`. Ein Agent,
+Zeilen Code** hinterliess -- vier Markdown-Dateien und keine einzige Quelldatei. Ein Agent,
 der Code schreiben soll, schreibt ueber Code, wenn ihn nichts daran hindert.
 
 Seit demselben Tag hindert dich etwas daran: **Nach jeder Baustufe ruft der Runner den
 Compiler** und legt sein Urteil unter `ventures/<venture>/befunde/uebersetzung-<datum>.md`
-ab. Dort steht kein Gutachten, sondern `cargo build` und `cargo test` im Wortlaut. Gibt
-es keine `Cargo.toml`, steht dort `ergebnis: kein_quelltext` -- und das ist ein Befund
+ab. Dort steht kein Gutachten, sondern den Uebersetzer und die Tests im Wortlaut. Gibt
+es keine `CMakeLists.txt`, steht dort `ergebnis: kein_quelltext` -- und das ist ein Befund
 gegen dich, kein Zustand.
 
 Lies diese Datei zu Beginn deines Laufs. Was der Compiler sagt, ist wahr; was ein
@@ -89,6 +89,34 @@ Begruendung zu kennen, und schreibt einen Befund. Erst der Projektmanager setzt 
 **Keine Rolle nimmt ihre eigene Arbeit ab.** Schreib in dein Logbuch, worauf du unsicher
 bist -- der Pruefer sieht es nicht, aber der Projektmanager schon, und es kostet dich
 nichts.
+
+## Die Sprache und die drei Ueberlaufmassnahmen
+
+**C++20**, uebersetzt mit `g++`. Vom Betreiber am 2026-09-01 entschieden (ADR 0011).
+
+Vorzeichenbehafteter Ganzzahlueberlauf ist in C++ **undefiniertes Verhalten**, und
+unser Kern ist Festkommaarithmetik. Die Gefahr ist nicht der Ueberlauf selbst, sondern
+was ein Optimierer aus seiner angeblichen Unmoeglichkeit folgert. Drei Massnahmen, alle
+mechanisch, alle nicht verhandelbar:
+
+1. **`-fwrapv`** in jedem Profil. Damit ist Ueberlauf definiert als Umbruch im
+   Zweierkomplement. Der Runner setzt den Schalter; verlass dich nicht darauf, sondern
+   schreib keinen Code, der ohne ihn falsch waere.
+2. **`-fsanitize=undefined,address`** im Testprofil. Was trotzdem unbeabsichtigt
+   ueberlaeuft, wird im Nachtlauf laut statt still.
+3. **`__int128` fuer jeden Zwischenwert** einer Multiplikation-Division -- nie ein
+   nachtraeglicher Test auf Ueberlauf.
+
+**Kein Gleitkommatyp im Kern.** `float`, `double`, `long double` -- ein Pruefer weist es
+mit einem `grep` nach. Die Sperre ist hier eine Pruefregel statt eines Sprachmerkmals,
+aber sie prueft dasselbe.
+
+**Und der Preis der Entscheidung, damit er nicht ueberrascht:** C++ hat keine
+Speichersicherheit. In einer Fabrik ohne menschliche Codedurchsicht ist das eine eigene
+Fehlerklasse, die sich beim Kaeufer zeigt und nicht im Uebersetzungslauf. Der
+Adressen-Sanitizer und der Bruchtester decken Pfade ab, nicht alle Faelle. Schreib
+defensiv: feste Groessen statt Zeigerarithmetik, `std::array` statt roher Felder,
+Indexpruefung an jeder Grenze.
 
 ## Grenzen
 
