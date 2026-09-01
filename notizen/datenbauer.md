@@ -39,6 +39,15 @@ Lehre daraus, in einem Satz.
   CC BY 4.0), eine blieb hängen, weil ihre Anbieter die Zustimmung ausdrücklich
   vorbehalten. Der Verdacht allein entscheidet nie.
 
+- 2026-09-01 (Paket 0007) — **Tabellenzeilen durchnummerieren macht die eigene Arbeit
+  ohne Shell prüfbar.** Ohne Bash ist `Grep` mit `output_mode: count` der einzige Zähler,
+  den diese Rolle hat; eine laufende Nummer plus ein Spaltenmuster
+  (`^\| [0-9]+ \|.*\| 11 \| [^|]+ \|$`) ersetzt `awk`. Vier Zerlegungen einer 310er-Menge
+  waren so in zwölf Aufrufen belegt statt geglaubt.
+- 2026-09-01 (Paket 0007) — **Zuletzt die eigenen Prosazahlen prüfen, nicht die Tabelle.**
+  Die 310 Zeilen stimmten auf Anhieb; falsch war ein Satz *über* die Tabelle. Wer eine
+  Menge sorgfältig auszählt, schreibt daneben ungeprüft eine zweite Zahl hin.
+
 ## Was nicht funktioniert
 
 - 2026-09-01 — `imf.org` weist den direkten Abruf weiterhin mit **HTTP 403** ab, genau
@@ -50,8 +59,24 @@ Lehre daraus, in einem Satz.
   Organisation, bevor man auf einen Suchtreffer zurückfällt. Beim IWF gab es keine
   solche zweite Adresse.
 
+- 2026-09-01 (Paket 0007) — `Bash` ist dieser Rolle gesperrt, auch `cat` und `wc -c`.
+  `Read` mit `offset`, `Glob` und `Grep` reichen; nicht erneut versuchen.
+
 ## Offene Fährten
 
+- **Paket 0007, worauf ich unsicher bin:** Von den 310 Adressen sind **177 gebildet**,
+  nicht zitiert. Drei Stellen haben *keine* Vorlage statt einer schwachen, und nach T17
+  gehört jede in die Schnittstellenversion: die Gebietskennung `RW` im Handelsblock,
+  `welt.preis.<s>` und `fonds.position.waehrung.<L>` / `.anleihe.<L>`. Jetzt ist der
+  billigste Zeitpunkt, sie anders zu wollen.
+- **Paket 0007, gemeldeter Widerspruch, bewusst nicht behoben:** `technik.md` T23 Punkt 1
+  schreibt die Restverzögerung als `…​.rest`, T15/T38/T45 nennen sie durchgehend
+  Restverzögerung. Ich habe `restverzoegerung` gesetzt und es als Befund gemeldet; eine
+  Adressänderung braucht nach T17 einen ADR und nicht meine Wahl.
+- **Paket 0007, drei erfundene Namen, alle markiert:** die Parameterschlüssel
+  `startzustimmung` und `regulierung_start` und der Manifestname `marktkorb_start`. Sie
+  gehören zu Paket 0009 beziehungsweise ins Manifest — markiert, damit sie beim
+  Zusammenführen auffallen, statt sich stillschweigend durchzusetzen.
 - **Worauf ich unsicher bin, für den Projektmanager:** Mein Urteil zu Reihe 7
   (Beschäftigung, ILO) lautet `unklar` und nicht `frei`, obwohl die ILO ihre Datenbanken
   im Wortlaut unter CC BY 4.0 stellt. Grund: Die ILO steht nicht unter den in `daten.md`
