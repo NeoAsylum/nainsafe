@@ -45,6 +45,25 @@ Bruchtesters, der ohne Test verschwindet, kommt wieder.
 er rot wird, wenn man die Sache kaputtmacht — sonst weißt du nicht, ob er misst oder nur
 läuft.
 
+## Was du ablieferst
+
+**Quelldateien.** Kein Dokument ueber Quelldateien, keine Beschreibung dessen, was zu
+tun waere, kein Entwurf in Prosa. Wenn dein Paket erledigt ist, liegt Code da, der sich
+uebersetzen laesst.
+
+Das steht hier, weil am 2026-09-01 ein vollstaendiger Baulauf durchlief und **null
+Zeilen Code** hinterliess -- vier Markdown-Dateien und keine einzige `.rs`. Ein Agent,
+der Code schreiben soll, schreibt ueber Code, wenn ihn nichts daran hindert.
+
+Seit demselben Tag hindert dich etwas daran: **Nach jeder Baustufe ruft der Runner den
+Compiler** und legt sein Urteil unter `ventures/<venture>/befunde/uebersetzung-<datum>.md`
+ab. Dort steht kein Gutachten, sondern `cargo build` und `cargo test` im Wortlaut. Gibt
+es keine `Cargo.toml`, steht dort `ergebnis: kein_quelltext` -- und das ist ein Befund
+gegen dich, kein Zustand.
+
+Lies diese Datei zu Beginn deines Laufs. Was der Compiler sagt, ist wahr; was ein
+Pruefer dagegen behauptet, irrt.
+
 ## Wie du deinen Auftrag bekommst
 
 Du arbeitest **ein Arbeitspaket** ab, nicht ein Gewerk. Seine Kennung steht unter

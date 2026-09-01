@@ -283,3 +283,28 @@ was erlaubt ist.
   es ist eine Luecke. Sie zu schliessen ist die Aufgabe von Oekonom und
   Vertriebsplaner; gelingt es nicht, ist Gate 2 die Stelle, an der das sichtbar wird.
   Wer diese Zahl spaeter glaettet, hat den Zweck der Kette verfehlt.
+
+- **2026-09-01** — **Ein Agent, der Code schreiben soll und ihn nie uebersetzen kann,
+  schreibt ueber Code.** Der erste vollstaendige Baulauf hinterliess vier
+  Markdown-Dateien und **null Zeilen Rust**. Ursache war meine eigene Aenderung vom
+  2026-08-30: Ich hatte allen Rollen `Bash` entzogen, weil eine Shell jede Edit()-Sperre
+  umgeht -- richtig und nachgemessen -- und dabei uebersehen, dass damit kein Bauagent
+  je einen Compiler aufrufen kann. Der Testentwickler sollte einen Pruefstand bauen, den
+  er nie laufen lassen kann. *Folgerung:* Der Compiler laeuft jetzt **im Runner**, nicht
+  in einer Rolle -- `baulauf.py:uebersetzen()` ruft nach jeder Baustufe `cargo build`
+  und `cargo test` und legt das Urteil unter `befunde/uebersetzung-<datum>.md` ab. Kein
+  Modell, kein Gutachten, keine Meinung. Dasselbe Muster wie die Berichte im Wochenlauf.
+
+  **Die allgemeine Lehre dahinter:** Wenn eine Rolle ein Werkzeug nicht haben darf, ihre
+  Arbeit aber ohne dessen Ausgabe wertlos ist, gehoert das Werkzeug in den Runner und
+  seine Ausgabe in eine Datei. Erst der Verbesserer (weg.py, kontingent.py), jetzt der
+  Bau (cargo). Beim naechsten Mal zuerst fragen: *Was kann diese Rolle nicht mehr
+  nachsehen, seit ich ihr das weggenommen habe?*
+
+- **2026-09-01** — **Eine Bremse an der Stelle, die gerade weh tut, ist keine Bremse.**
+  Die Rueckläufe des Entwurfs kosteten 95 $ ohne Konvergenz. Ich baute
+  `konzeptlauf.py:RUECKLAUF_MAX` ein -- und der Geschaeftsfuehrer wies im ersten Lauf
+  darauf hin, dass im Baulauf dieselbe Grenze fehlt, wo dieselbe Nichtkonvergenz Code
+  statt Prosa kostet. *Folgerung:* Beim Einbau einer Bremse jede Stelle suchen, an der
+  dieselbe Schleife laufen kann, nicht nur die, die gerade brannte. Beide Grenzen stehen
+  jetzt, und die zweite hat der Apparat selbst gefunden -- genau dafuer gibt es ihn.

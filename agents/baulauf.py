@@ -36,6 +36,9 @@ eigene Arbeit abnehmen -- das ist der ganze Zweck der Reviewstufe.
 
 from __future__ import annotations
 
+import os
+import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -66,6 +69,94 @@ REVIEW = {
 # zwei Bauagenten, und der Verlust faellt erst Tage spaeter auf.
 GLEICHZEITIG = 4
 
+# Wie oft ein Paket zurueckgehen darf, bevor nicht mehr der Bauagent das Problem ist,
+# sondern sein Abnahmekriterium. Dieselbe Bremse wie konzeptlauf.py:RUECKLAUF_MAX --
+# und sie fehlte hier, worauf der Geschaeftsfuehrer im ersten Lauf hinwies: "Im Baulauf
+# gibt es keine entsprechende Grenze; dieselbe Nichtkonvergenz kostet dort Code statt
+# Prosa."
+RUECKLAUF_MAX = 3
+
+ANSI = re.compile(chr(27) + r"\[[0-9;]*m")
+
+
+def uebersetzen(venture: str) -> str | None:
+    """Ruft den Compiler und legt sein Urteil als Befund ab.
+
+    Der Grund, warum das hier steht und nicht in einer Rolle: Kein Bauagent hat eine
+    Shell. Das ist Absicht -- eine Shell umgeht jede Edit()-Sperre, nachgemessen am
+    2026-08-30. Die Folge war aber ein Fehler: Ein Agent, der Code schreiben soll und
+    ihn nie uebersetzen kann, schreibt am Ende Prosa. Genau das ist am 2026-09-01
+    passiert -- ein voller Baulauf, vier Markdown-Dateien, null Zeilen Rust.
+
+    Also laeuft der Compiler dort, wo ohnehin kein Modell sitzt: im Runner. Sein Urteil
+    wird eine Datei, und Dateien koennen alle lesen. Dasselbe Muster wie die Berichte
+    im Wochenlauf.
+    """
+    wurzel = WURZEL / "ventures" / venture
+    manifeste = sorted(wurzel.rglob("Cargo.toml"))
+    ziel = wurzel / "befunde" / f"uebersetzung-{jetzt()[:10]}.md"
+    ziel.parent.mkdir(parents=True, exist_ok=True)
+
+    if not manifeste:
+        ziel.write_text(f"""---
+typ: uebersetzung
+venture: {venture}
+datum: {jetzt()[:10]}
+ergebnis: kein_quelltext
+---
+
+# Es gibt nichts zu uebersetzen
+
+Unter `ventures/{venture}/` liegt **keine `Cargo.toml`** und damit kein uebersetzbares
+Projekt. Gefunden wurden nur Textdateien.
+
+**Das ist ein Befund, kein Zustand.** Ein Bauagent liefert Quelldateien, keine
+Dokumente ueber Quelldateien. Wer ein Paket auf `gebaut` setzt, ohne dass danach etwas
+uebersetzbar ist, hat es nicht gebaut.
+
+Der Kern gehoert nach `ventures/{venture}/kern/` mit eigener `Cargo.toml`.
+""", encoding="utf-8")
+        return "kein_quelltext"
+
+    umgebung = dict(os.environ)
+    umgebung["PATH"] = str(Path.home() / ".cargo" / "bin") + ":" + umgebung.get("PATH", "")
+    ausgaben, schlecht = [], False
+    for manifest in manifeste:
+        for befehl in (["cargo", "build", "--manifest-path", str(manifest)],
+                       ["cargo", "test", "--manifest-path", str(manifest)]):
+            try:
+                fertig = subprocess.run(befehl, cwd=WURZEL, capture_output=True,
+                                        text=True, encoding="utf-8", errors="replace",
+                                        env=umgebung, timeout=900)
+                code, text = fertig.returncode, (fertig.stdout or "") + (fertig.stderr or "")
+            except subprocess.TimeoutExpired:
+                code, text = -1, "Zeitueberschreitung nach 900 s."
+            except FileNotFoundError:
+                code, text = -1, "cargo nicht gefunden -- Rust-Werkzeugkette fehlt."
+            schlecht = schlecht or code != 0
+            ausgaben.append(
+                "## `" + " ".join(befehl[:2]) + "` -- "
+                + ("FEHLER" if code else "ok") + f" (Code {code})\n\n"
+                + "```\n" + ANSI.sub("", text).strip()[-6000:] + "\n```\n")
+
+    ergebnis = "fehler" if schlecht else "ok"
+    ziel.write_text(f"""---
+typ: uebersetzung
+venture: {venture}
+datum: {jetzt()[:10]}
+manifeste: {len(manifeste)}
+ergebnis: {ergebnis}
+---
+
+# Der Compiler hat gesprochen: {ergebnis}
+
+Erzeugt vom Baulauf, nicht von einem Modell. Was hier steht, ist keine Einschaetzung
+und keine Meinung -- es ist das Urteil des Uebersetzers. Ein Pruefer, der etwas
+anderes behauptet, irrt.
+
+""" + "\n".join(ausgaben), encoding="utf-8")
+    return ergebnis
+
 
 def pakete(venture: str) -> list[dict]:
     ordner = WURZEL / "ventures" / venture / "aufgaben"
@@ -83,6 +174,18 @@ def pakete(venture: str) -> list[dict]:
                            str(kopf.get("haengt_an", "")).strip("[]").split(",") if s.strip()}
         alle.append(kopf)
     return alle
+
+
+def rueckläufe(venture: str, paket: str) -> int:
+    """Wie oft dieses Paket schon zurueckgewiesen wurde."""
+    ordner = WURZEL / "ventures" / venture / "befunde"
+    if not ordner.is_dir():
+        return 0
+    n = 0
+    for d in ordner.glob("pruefung-" + paket + "-*.md"):
+        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        n += kopf.get("urteil") == "zurueck"
+    return n
 
 
 def startbereit(alle: list[dict], rollen: set[str], zustand: str = "offen") -> list[dict]:
@@ -135,6 +238,15 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
             print("  der Projektmanager liest specs/ und zerlegt sie.")
         return 0
 
+    # Konvergenzbremse, bevor Tokens fliessen: Ein Paket, das RUECKLAUF_MAX Mal
+    # zurueckgewiesen wurde, geht nicht noch einmal in den Bau. Dann ist nicht der
+    # Bauagent das Problem, sondern sein Abnahmekriterium -- und das aendert kein
+    # weiterer Versuch, sondern der Projektmanager oder der Betreiber.
+    for q in alle:
+        if q.get("status") in ("offen", "gebaut") and                 rueckläufe(venture, q["_id"]) >= RUECKLAUF_MAX:
+            print(f"  FESTGEFAHREN: {q['_id']} ist {RUECKLAUF_MAX} Mal zurueckgewiesen "
+                  "worden -- zu pruefen ist das Abnahmekriterium, nicht die Arbeit.")
+
     fehler = 0
 
     # Immer zuerst: ohne Rueckstand laufen die Bauagenten leer.
@@ -143,9 +255,15 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
         print("  projektmanager fehlgeschlagen -- Kette laeuft weiter.")
 
     alle = pakete(venture)
-    bau = startbereit(alle, BAUROLLEN)[:gleichzeitig]
+    bau = [q for q in startbereit(alle, BAUROLLEN)
+           if rueckläufe(venture, q["_id"]) < RUECKLAUF_MAX][:gleichzeitig]
     if bau:
         fehler += phase("Bau", [(p["rolle"], p["_id"]) for p in bau])
+
+    # Der Compiler urteilt vor dem Pruefer. Findet er etwas, weiss der Pruefer es schon,
+    # wenn er liest -- und muss es nicht selbst suchen.
+    ergebnis = uebersetzen(venture)
+    print(f"  Uebersetzung: {ergebnis}")
 
     # Review: jedes gebaute Paket bekommt einen Pruefer seines Gewerks. Er liest den
     # Auftrag und das Ergebnis, nicht die Begruendung des Bauagenten.

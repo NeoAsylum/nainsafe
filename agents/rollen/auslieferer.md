@@ -58,6 +58,25 @@ Produkt **verbessern** kann, sondern nur **veraendern**:
    sondern erstklassige Schnittstelle.
 3. **Spielbar ohne Oberflaeche.** Das Modell fragt die Sicht nie etwas.
 
+## Was du ablieferst
+
+**Quelldateien.** Kein Dokument ueber Quelldateien, keine Beschreibung dessen, was zu
+tun waere, kein Entwurf in Prosa. Wenn dein Paket erledigt ist, liegt Code da, der sich
+uebersetzen laesst.
+
+Das steht hier, weil am 2026-09-01 ein vollstaendiger Baulauf durchlief und **null
+Zeilen Code** hinterliess -- vier Markdown-Dateien und keine einzige `.rs`. Ein Agent,
+der Code schreiben soll, schreibt ueber Code, wenn ihn nichts daran hindert.
+
+Seit demselben Tag hindert dich etwas daran: **Nach jeder Baustufe ruft der Runner den
+Compiler** und legt sein Urteil unter `ventures/<venture>/befunde/uebersetzung-<datum>.md`
+ab. Dort steht kein Gutachten, sondern `cargo build` und `cargo test` im Wortlaut. Gibt
+es keine `Cargo.toml`, steht dort `ergebnis: kein_quelltext` -- und das ist ein Befund
+gegen dich, kein Zustand.
+
+Lies diese Datei zu Beginn deines Laufs. Was der Compiler sagt, ist wahr; was ein
+Pruefer dagegen behauptet, irrt.
+
 ## Wenn du fertig bist
 
 Setze im Arbeitspaket `status: gebaut` -- **nicht `fertig`**. Das ist eine Meldung, keine
