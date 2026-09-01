@@ -35,6 +35,23 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   statt strittig.
 - 2026-09-01 — Zeit ohne Gleitkomma in Python: `time.perf_counter_ns()` gibt direkt
   `int`. `time.perf_counter()` waere der naheliegende Griff und liefert `float`.
+- 2026-09-01 — Stack-Messung, Java-Fassung geschrieben (`messung-stack/java/Schritt.java`,
+  110 Zeilen, erster Uebersetzungslauf gruen). Java hat keinen 128-Bit-Typ; der billige
+  Ersatz ist `Math.multiplyHigh(a,b)` plus der Test `hoch == (tief >> 63)` — ist das obere
+  Wort nur die Vorzeichenerweiterung des unteren, passt das Produkt in 64 Bit und die
+  Maschine rechnet direkt, sonst uebernimmt `BigInteger`. Beide Wege liefern dieselbe
+  Zahl, das ist nachgemessen (s.u.), und der schnelle Weg kostet 313 ns je Weltschritt
+  gegen 707.800 ns, wenn man `BigInteger` erzwingt — Faktor 2.200.
+- 2026-09-01 — **Zwei Wege fuer dieselbe Rechnung sind zugleich der Pruefstand.** Ein
+  Einzeiler (`if (true || ...)`) zwingt jeden der 64 Millionen Aufrufe in den exakten
+  `BigInteger`-Weg; stimmt die Pruefsumme mit der des schnellen Wegs ueberein, ist die
+  Ueberlauf- und Rundungslogik an echten Daten belegt statt an ausgedachten Faellen.
+  Genau so gemacht, beide Male `pruefsumme=2430192870` nach 3 Schritten.
+- 2026-09-01 — Runden „halbe Betraege von null weg" ohne Ueberlauf: `|rest| >= |c| -
+  |rest|` statt `|rest| * 2 >= |c|`. Wegen `|rest| < |c|` kann die Differenz nicht
+  ueberlaufen, die Verdopplung schon. Zeit ohne Gleitkomma in Java: `System.nanoTime()`
+  gibt `long`, und der Ueberlaufumbruch der Pruefsumme ist bei `long` ohnehin die
+  Vorgabe — anders als in Rust oder Python war nichts nachzubauen.
 
 ## Was nicht funktioniert
 
@@ -70,6 +87,21 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Uebereinstimmende Pruefsummen belegen hier fast nichts. Wer die Messung wiederholt,
   senkt entweder die Obergrenze oder erhoeht den Abzug (`z[i]/4096`) so weit, dass das
   Modell in ein Gleichgewicht unterhalb der Klemme laeuft — dann traegt der Vergleich.
+- 2026-09-01 — **Die Saettigungs-Vermutung der Python-Fassung ist nachgemessen und
+  stimmt.** Nach 300 Schritten `pruefsumme=2059331384364447` (also noch in Bewegung),
+  nach 400 Schritten `2080000000000000` und ab da unveraendert bis 1.000.000. Die Klemme
+  ist ein Fixpunkt, und 999.600 der 1.000.000 Schritte rechnen nichts mehr aus, was die
+  Pruefsumme sehen wuerde. Damit misst der Pruefsummenvergleich nicht die Rundung,
+  sondern nur, ob eine Fassung ueberhaupt waechst und klemmt — **die Zeit je Schritt
+  misst er dagegen weiterhin ehrlich**, denn gerechnet wird trotzdem.
+- 2026-09-01 — **Unsicher, und der Projektmanager muss es wissen: Ich habe selbst
+  uebersetzt und ausgefuehrt, die Python-Fassung ausdruecklich nicht.** Damit ist die
+  Messgroesse „Anlaeufe bis zum gruenen Uebersetzungslauf" fuer die vier Sprachen nicht
+  mehr unter gleichen Bedingungen erhoben — meiner ist 1, weil ich vorher probieren
+  durfte. Mein Auftrag nannte `javac` ausdruecklich und verlangte uebereinstimmende
+  Pruefsummen, die Aufgabe nennt den Runner als Zaehler; beides zusammen ist
+  widerspruechlich. Wer die Messung auswertet, sollte je Fassung dazuschreiben, ob ihr
+  Agent Zugriff auf den Compiler hatte. Ohne das ist die Spalte wertlos.
 - 2026-09-01 — Unsicher am eigenen Quelltext: Ich habe die drei Schritte in die heisse
   Schleife ausgeschrieben, statt `mal_geteilt`/`klemme` als Funktionen aufzurufen. In
   CPython kosten 3 · 64.000.000 Aufrufe mehr als die Rechnung; das haette der Sprache
