@@ -1,24 +1,58 @@
 ---
 typ: spiel
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
-erstellt: 2026-08-31
+erstellt: 2026-09-01
 schleife: Der Spieler stellt je Runde bis zu drei Aktionen aus fünf Arten, die Welt rechnet ein Jahr weiter, und jede Zahländerung trägt die Kette ihrer Ursachen mit sich.
-siegbedingung: Das Mandat — Fondsvermögen über einer Schwelle UND Einfluss über einer Schwelle in mindestens zwei Ländern — erreicht innerhalb von 28 Runden, ohne vorher an einer der drei Todesarten zu sterben. Ergebnis ist die Rundenzahl bis zur Erfüllung.
+siegbedingung: Das Mandat — Fondsvermögen über einer Schwelle UND Einfluss über einer Schwelle in mindestens zwei Ländern — erreicht innerhalb von R Runden, ohne vorher an einer der drei Todesarten zu sterben. Ergebnis ist die Rundenzahl bis zur Erfüllung.
 aktionen: 5
 laender: 4 spielbar (USA, China, Deutschland, Brasilien) plus ein nicht spielbares Restwelt-Aggregat
 gueter: 3 Sektoren (Landwirtschaft, Industrie, Dienstleistungen), davon 2 mit Handelszeilen
-takt: 1 Runde = 1 Jahr; Standardpartie 28 Runden, Startzustand 1995, Endzustand 2023
+takt: 1 Runde = 1 Jahr; R = 24 Runden, Startzustand 1997, Endzustand 2021, 25 Stützstellen
 gegenkraefte: 5
-messbar_entscheidungsdichte: Je Runde t 30 gezogene Aktionsbündel, jedes von diesem Zustand aus bis Runde 28 mit dem Heuristikbot auf dem Referenzprofil (1,1,1,1,1) und identischem abgeleitetem Startwert nachgespielt; Dichte(t) = Anteil der Bündel, deren Ergebnis um mehr als 1.000 Milli-Runden vom Median abweicht. Abnahme = Mittel der Dichte(t) je Partiedrittel (1-9, 10-19, 20-27) jeweils >= 0,4.
-messbar_strategievielfalt: Profil = Fünftelverteilung über die fünf Aktionsarten (126 Profile), je Profil Suchbot über 20 Startwerte, Profilergebnis = Median. Profil gewinnt, wenn sein Median < 28.000 liegt. Strategiekern = die stärkste der drei Familien Position/Beteiligung/Lobby, Gleichstand nach kleinerer Kennung. Abnahme = alle drei Strategiekerne stellen mindestens einen Gewinner, und das beste Klassenergebnis ist höchstens 25 Prozent besser als das schlechteste der drei.
-messbar_optimumsverschiebung: Frühfenster = Runden 1-9 mit Profil p, Rest mit Referenzprofil; Spätfenster = Runden 20-28 mit Profil p, Rest mit Referenzprofil; je 126 Profile x 20 Startwerte, Median als Profilergebnis, bestes Profil je Fenster nach kleinstem Median (Gleichstand nach Profilkennung). Verschiebung = L1-Abstand der beiden Profilvektoren, 0 bis 2. Schwelle 0,5.
-messbar_rueckvergleich: Startjahrgang 1995, 28 Runden ohne Spieler, Politikinstrumente auf die historisch tatsächlichen Werte gesetzt; 31 Sollreihen (davon 27 unabhängig) plus Handelsblock, jede über volle 29 Stützstellen ohne Füllung belegt. Fehlermaß je Reihe: mittlerer absoluter prozentualer Fehler (Schwelle 20 Prozent) und Richtungstreue (Schwelle 0,6).
+messbar_entscheidungsdichte: Je Runde t = 1…R und je Startwert 30 gezogene Aktionsbündel; jedes ersetzt die Bot-Aktionen der Runde t, danach spielt der Heuristikbot auf dem Referenzprofil (1,1,1,1,1) bis Runde R. Dichte(t, Startwert) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden vom Median dieser 30 abweichen; Dichte(t) = Mittel über die 50 Startwerte. Abnahme = Mittel der Dichte(t) je Partiedrittel (1-8, 9-16, 17-24) jeweils >= 0,4.
+messbar_strategievielfalt: Profil = Fünftelverteilung über die fünf Aktionsarten (126 Profile), Wirkung über das Vorratsverfahren; je Profil Suchbot über 20 Startwerte, Profilergebnis = Median. Profil gewinnt, wenn sein Median <= 24.000 liegt. Strategiekern = die stärkste der drei Familien Position/Beteiligung/Lobby; die 6 Profile ohne jede Familienaktion haben keinen Kern und zählen nicht. Abnahme = alle drei Kerne stellen mindestens einen Gewinner, und das beste Klassenergebnis ist höchstens 25 Prozent besser als das schlechteste der drei.
+messbar_optimumsverschiebung: Frühfenster = Runden 1-8 mit Profil p, Rest mit Referenzprofil; Spätfenster = Runden 17-24 mit Profil p, Rest mit Referenzprofil; je 126 Profile x 20 Startwerte, Median als Profilergebnis, bestes Profil je Fenster nach kleinstem Median (Gleichstand nach Profilkennung). Verschiebung = L1-Abstand der beiden Profilvektoren geteilt durch 5, Werte aus {0; 0,4; …; 2,0}. Schwelle 0,4.
+messbar_rueckvergleich: Startjahrgang 1997, R = 24 Runden im Weltlauf (Fondsteilsystem abgeschaltet), Politikinstrumente exogen auf den historischen Pfaden; 16 Prüfgegenstände aus 23 freien Sollreihen plus Handelsblock, je über 25 Stützstellen ohne Füllung. Schwellen: MAPE 20 Prozent für Niveaureihen, mittlerer absoluter Fehler 300 Basispunkte für Ratenreihen, Richtungstreue 0,6 für alle. Bestanden, wenn höchstens 2 der 16 Prüfgegenstände reißen.
 ---
 
 # Ein Hedgefonds mit vier Ländern, drei Sektoren und vier Politikhebeln — und jede Zahl, die sich bewegt, sagt warum.
 
-*Zweite Fassung nach `ventures/0016-.../befunde/pruefung-entwurf-2026-08-31.md`. Die
-Abarbeitung der acht Befunde steht am Ende der Datei.*
+*Dritte Fassung nach `ventures/0016-.../befunde/pruefung-entwurf-fassung2-2026-08-31.md`
+und gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Die Abarbeitung der zwölf
+Befunde steht am Ende der Datei.*
+
+## Die Partielänge R, und warum sie hier als Buchstabe steht
+
+Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
+die Länge des Fensters, in dem jede Sollreihe ohne Füllung belegt ist* — und dann eine
+falsche Zahl eingesetzt. Die Regel bleibt. Die Zahl ist neu, und sie ist diesmal gemessen:
+
+| Reihe (USA) | belegt | fehlt |
+|---|---|---|
+| `NV.AGR.TOTL.ZS` | 1997–2021 | 1990–1996, 2022–2024 |
+| `NV.IND.TOTL.ZS` | 1997–2021 | 1990–1996, 2022–2024 |
+
+(`api.worldbank.org/v2/country/USA/indicator/<code>?date=1990:2024`, eigener Abruf am
+2026-09-01. `NV.SRV.TOTL.ZS` folgt derselben Abgrenzung und damit demselben Fenster.)
+
+CEPII BACI (HS92) beginnt 1995 und reicht bis 2024
+(`cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37`, abgerufen 2026-08-31). Der
+Schnitt aus beidem ist **1997 bis 2021**, also **25 Stützstellen und R = 24 Runden**.
+
+**Und die eigentliche Lehre steht nicht in der Zahl, sondern in ihrer Fassung.** Die
+zweite Fassung hat `28` in jede abgeleitete Größe geschrieben — Ergebnisskala,
+Partiedrittel, Fenstergrenzen, Kostenformeln. Eine einzige falsche Messung machte damit
+zwölf Zahlen falsch. **Deshalb steht in diesem Entwurf jede abgeleitete Größe als Formel
+in R, mit R = 24 eingesetzt.** Misst der Jahrgangsbau an einer Reihe, die ich nicht
+geprüft habe, ein engeres Fenster — die chinesische und die brasilianische Leitzinsreihe
+der neunziger Jahre sind der von `technik.md` T24 selbst benannte Verdachtsfall —, dann
+ist R zu ersetzen und sonst nichts. Kein Paket ist dann zweimal zu bauen.
+
+Der Zuschnitt kostet vier Runden und gewinnt zwei Dinge. Er schneidet **Brasiliens
+Disinflation 1995–1997** ab, die in der zweiten Fassung als schärfster Punkt des
+Rückvergleichs offenstand. Und er enthält weiterhin jeden Bruch, der etwas prüft: den
+Euro-Beginn 1999 (Ende Runde 2), Chinas WTO-Beitritt 2001 (Ende Runde 4), 2008 (Ende
+Runde 11) und den Einbruch 2020 (Ende Runde 23).
 
 ## Die Schleife
 
@@ -40,25 +74,83 @@ Startwert und dieselbe Aktionsfolge in drei Monaten dasselbe Ergebnis liefern.
 6. **Abrechnung.** Positionen bewertet, Hebel gegen den Innerjahresausschlag geprüft,
    Mandat geprüft, Kette als Diff gespeichert.
 
-Innerhalb einer Runde wird **jede Zustandsgröße genau einmal geschrieben**, und die
-Reihenfolge oben ist zyklenfrei. Die einzige Schleife im ganzen Modell ist die
-Markträumung in Schritt 4, und sie läuft mit fester Iterationszahl. Alles, was wie eine
-Rückkopplung aussieht, überquert eine Rundengrenze — siehe **Der Zustand**.
+Innerhalb einer Runde wird **keine Zustandsgröße zweimal geschrieben**, und die
+Reihenfolge oben ist zyklenfrei. *Welche* Größen überhaupt geschrieben werden, hängt vom
+Modus ab — im Spielmodus alle, im Weltlauf des Rückvergleichs eine erklärte Teilmenge
+(siehe **Maß 4**). Die einzige Schleife im ganzen Modell ist die Markträumung in
+Schritt 4, und sie läuft mit fester Iterationszahl. Alles, was wie eine Rückkopplung
+aussieht, überquert eine Rundengrenze — siehe **Der Zustand**.
 
-**Was für die Preisbildung gelten muss** (das Wie ist Sache des Architekten): Für die
-beiden Sektoren mit Handelszeilen gibt es je einen Weltpreis, der alle Angebote und
-Nachfragen räumt, und darauf je Land einen Zollkeil. Der Sektorpreis eines Landes hängt
-aber **nicht vollständig** am Weltpreis, sondern nur zum Anteil `handelsanteil`, einem
-exogenen Koeffizienten je Land und Sektor aus dem Jahrgang (Ausfuhr plus Einfuhr des
-Sektors geteilt durch seine Wertschöpfung im Startjahr, aus BACI und WDI); der Rest folgt
-dem Landespreis. Dienstleistungen haben nur einen Landespreis und keine Handelszeile.
+### Was für die Preisbildung gelten muss
 
-Der Koeffizient ist der Grund, warum die Sektorgliederung des Datenkurators tragbar ist:
-Ein Zoll trifft Chinas Industrie über ihren hohen `handelsanteil` hart und die
-US-Industrie, in der Bau und Versorger dominieren, schwach — ohne dass dafür ein
-Sektorzoll erfunden werden muss, den es unter freier Lizenz nicht gibt. Er ist exogen und
-über die Partie konstant; damit bildet das Modell Chinas wachsende Handelsoffenheit über
-die Mengen ab, nicht über die Preisübertragung. Das ist eine benannte Vereinfachung.
+Das Wie ist Sache des Architekten; was gelten muss, steht hier.
+
+Für die beiden Sektoren mit Handelszeilen gibt es je einen Weltpreis, der alle Angebote
+und Nachfragen räumt, und darauf je Land einen Zollkeil. Der Sektorpreis eines Landes
+hängt aber **nicht vollständig** am Weltpreis, sondern nur zum Anteil `durchgriff`:
+
+```
+preis = weltpreis_mit_zoll · durchgriff + landespreis · (10.000 − durchgriff)
+        alles geteilt durch 10.000
+```
+
+Beide Größen darin sind jetzt bestimmt, und beide waren es in der zweiten Fassung nicht:
+
+**`landespreis` ist der Sektorpreis derselben Größe aus der Vorrunde.** In Runde 1 ist es
+der Startwert des Jahrgangs (Index 10.000). Damit ist die Überschussfunktion monoton im
+Weltpreis, die Halbierungssuche aus `technik.md` T28 ist ein einziger Durchlauf, und es
+entsteht keine Fixpunktaufgabe. Inhaltlich ist das Preisträgheit: Der Inlandspreis eines
+Sektors folgt dem Weltpreis mit einem Jahr Verzögerung, und wie stark, sagt `durchgriff`.
+
+**`durchgriff` ist ein Modellkonstrukt mit Regel, kein gemessener Anteil.** Die zweite
+Fassung nannte ihn `handelsanteil` und definierte ihn als (Ausfuhr + Einfuhr) geteilt
+durch die Wertschöpfung des Sektors. Diese Größe verlässt ihren Wertebereich, und zwar
+nicht als Ausreißer, sondern von Bauart wegen: Aus- und Einfuhr sind Bruttoströme,
+Wertschöpfung ist netto. Für Deutschland 1995 ergibt sie 2,69 in der Landwirtschaft und
+1,20 in der Industrie (nachgerechnet vom Prüfer aus WDI, abgerufen 2026-08-31); das
+Gewicht auf dem Landespreis wird negativ, und aus der angekündigten Mischung wird eine
+Extrapolation mit negativen Preisen.
+
+Die Regel lautet deshalb, mit `H` = Aus- plus Einfuhr des Sektors und `N` = seine
+Wertschöpfung, beide im Startjahr:
+
+```
+durchgriff = teile_gerundet(10.000 · H, H + N)
+```
+
+Das ist streng monoton in `H/N`, liegt für alle nichtnegativen `H`, `N` mit `H + N > 0`
+im Bereich 0 … 10.000 und braucht keine Kappung. Aus den beiden nachgerechneten Fällen
+werden `71,94/98,71` → **7.288** für die deutsche Landwirtschaft und `915,39/1.675,41` →
+**5.464** für die deutsche Industrie; eine US-Industrie mit `H/N = 0,3` käme auf 2.308.
+**Die Ordnung, die das Argument trägt, bleibt also erhalten** — ein Zoll
+trifft Chinas Industrie über ihren hohen `durchgriff` hart und die US-Industrie, in der
+Bau und Versorger dominieren, schwach —, und der Wertebereich hält.
+
+Was der Koeffizient damit **nicht** ist: eine Messung der Handelsoffenheit. Sein
+Zahlenwert hat keine volkswirtschaftliche Bedeutung; er muss Länder und Sektoren richtig
+ordnen, und das tut er. Er ist exogen und über die Partie konstant; Chinas wachsende
+Handelsoffenheit bildet das Modell über die Mengen ab, nicht über die Preisübertragung.
+Zwei benannte Vereinfachungen, keine versteckten.
+
+Dienstleistungen haben keine Handelszeile, keinen Weltpreis und nur einen Landespreis.
+
+### Die Zuordnung der BACI-Warencodes zu den zwei handelbaren Sektoren
+
+Ohne sie ist weder `H` noch der Handelsblock berechenbar. Sie ist eine Tabelle im
+Manifest des Jahrgangs und lautet:
+
+| HS92-Kapitel | Modellsektor |
+|---|---|
+| 01–24 | 1 Landwirtschaft |
+| 25–97 | 2 Industrie |
+
+**Der Fehler dieser Grobzuordnung gehört dazu:** Rohholz (44), Häute (41) und pflanzliche
+Spinnstoffe (50–53) zählt WDI zur Landwirtschaft, diese Tabelle zur Industrie;
+verarbeitete Nahrungsmittel (16–21) zählt WDI zum verarbeitenden Gewerbe, diese Tabelle
+zur Landwirtschaft. Der Fehler ist für alle fünf Gebiete derselbe, weil dieselbe Tabelle
+gilt — und er trifft die Sollreihe genauso wie das Modell, weil der Handelsblock des
+Rückvergleichs aus **derselben** Aggregation entsteht. Verglichen wird damit aggregiert
+gegen aggregiert, so wie bei den auf 10.000 normierten Sektoranteilen auch.
 
 ## Die Aktionen
 
@@ -92,13 +184,14 @@ Optimumsverschiebung, die Maß 3 verlangt.
 
 ## Der Zustand
 
-Rund **300** ganzzahlige Größen. Die Zahl selbst ist keine Verteidigung — siehe unten.
+**310** ganzzahlige Größen; die Aufstellung Zeile für Zeile steht in `technik.md` T15 und
+ist dort nachgerechnet. Die Zahl selbst ist keine Verteidigung — siehe unten.
 
 **Je Land** (vier Länder): drei Sektoren mit Wertschöpfung, Kapitalstock, Beschäftigung
 und Preis; Bevölkerung und Erwerbstätige; Produktivität; Preisniveau und Inflation;
 Leitzins; Wechselkurs gegen den US-Dollar als Numéraire; Staatsschuld und Haushaltssaldo;
 Zustimmung zur Regierung; Aufsichtszähler; Einfluss; vier Politikinstrumente, jedes mit
-Stand, anliegendem Druck, Gegendruck und Restverzögerung.
+Stand, anliegendem Druck, Gegendruck und Restverzögerung; drei Restdauerzähler.
 
 **Die Restwelt** trägt dieselben Sektor- und Aggregatgrößen, aber **keine
 Politikinstrumente, keine Zustimmung, keinen Aufsichtszähler und keinen Einfluss** — der
@@ -112,8 +205,7 @@ Handelszeilen = 40 Ströme**, die Restwelt mit eigenen Zeilen. Nur so hält die 
 
 **Der Fonds:** Kasse, Positionen, Beteiligungen, Hebelstand, globale Sichtbarkeit,
 Anlegerbestand, Marktanteil, Überrendite der letzten drei Runden. Dazu je Land×Sektor ein
-Nachahmerzähler (12) und der Marktwert aller handelbaren Körbe als Bezugsgröße der
-Marktrendite.
+Nachahmerzähler (12) und der Marktkorb (Wert und Rendite) als Bezugsgröße.
 
 **Einfluss je Land** ist der geglättete Anteil des Fonds am gesamten Lobbydruck in diesem
 Land, 0 bis 100. Er ist die zweite Hälfte der Siegbedingung — und die Größe, deren Erwerb
@@ -123,10 +215,41 @@ sämtliche Gegenkräfte weckt.
 
 | Instrument | Datenanker | Bemerkung |
 |---|---|---|
-| Leitzins | ja (IWF IFS) | Für Deutschland **exogen ab 1999**, also ab Runde 5. Diese Asymmetrie ist gewollt, siehe unten. |
-| Zollniveau | ja, aber **nur aggregiert je Land** (WDI, mit Vorbehalt) | Kein Zoll je Sektor. Die Sektorwirkung entsteht aus `handelsanteil` und den Importanteilen, nicht aus einem erfundenen Sektorzoll. |
+| Leitzins | ja (IWF IFS) | Für Deutschland **exogen ab 1999**, also ab Runde 3. Diese Asymmetrie ist gewollt, siehe unten. |
+| Zollniveau | ja, aber **nur aggregiert je Land** (WDI, mit Vorbehalt) | Kein Zoll je Sektor. Die Sektorwirkung entsteht aus `durchgriff` und den Importanteilen, nicht aus einem erfundenen Sektorzoll. |
 | Haushaltssaldo / Staatsausgabenquote | ja (IWF WEO) | |
 | Kapitalverkehrs- und Finanzmarktregulierung | **nein, reines Modellkonstrukt** | Muss existieren, weil die Aufsicht sonst keinen Angriffspunkt auf den Fonds hat. Ohne Sollreihe; im Rückvergleich fest auf dem Startwert, und das Orakel ist für dieses Instrument blind. |
+
+### Jede Größe ohne Datenanker, mit ihrem Startwert
+
+Die Abnahmebedingung 2 verlangt, dass jede Größe entweder auf eine Reihe aus `daten.md`
+zurückgeführt oder als Modellkonstrukt mit Entstehungsregel gekennzeichnet ist. Die
+verankerten stehen in der Reihenliste des Architekten. Hier stehen **alle übrigen**,
+abschließend:
+
+| Größe | Startwert | Regel im Lauf |
+|---|---|---|
+| Sektorpreis (je Gebiet × Sektor) | Index 10.000 | Markträumung, siehe oben |
+| `landespreis` | = Sektorpreis, Runde 1 also 10.000 | Sektorpreis der Vorrunde |
+| `durchgriff` (je Gebiet × handelbarem Sektor) | Konstante des Jahrgangs | `10.000·H/(H+N)`, über die Partie fest |
+| Zustimmung (je Land) | aus `parameter.toml` | Gegenkraft 2 |
+| Aufsichtszähler (je Land) | 0 | Gegenkraft 1 |
+| Nachahmerzähler (je Land × Sektor) | 0 | Gegenkraft 4 |
+| Einfluss (je Land) | 0 | geglätteter Anteil am Lobbydruck |
+| Gegendruck je Instrument | 0 | Gegenkraft 5 |
+| drei Restdauerzähler je Land | 0 | Gegenkraft 1 und 2 |
+| Finanzmarktregulierung (Stand) | aus `parameter.toml` | Instrument wie die anderen drei |
+| `markt.wert` | Wert des Startkorbs zu Startpreisen | eingefrorener Mengenkorb, Gegenkraft 3 |
+| `markt.rendite` | 0 | ebd. |
+| Fondskasse, Anlegerbestand | aus `parameter.toml` (Startkapital) | Aktionen und Abrechnung |
+| Hebelstand, Sichtbarkeit, Marktanteil, Überrendite (3) | 0 | Aktionen 4 und 5, Abrechnung |
+| Beteiligungen (12 Anteile + 12 Restdauern) | 0 | Aktion 2 |
+| Positionssteckplätze (20) | 0 | Aktion 1 |
+
+**Und eine Regel, die den Nenner der Fondsrendite sichert:** Fällt das Fondsvermögen
+(Kasse + bewertete Positionen − Hebel) auf null oder darunter, greift Todesart 1
+(Zwangsliquidation) in derselben Runde. Eine Rendite auf einen nichtpositiven Nenner wird
+damit nie gebildet.
 
 ### Warum die Größe des Zustands keine Verteidigung ist
 
@@ -146,9 +269,15 @@ gibt es genau sieben, und sie sind hier abschließend aufgezählt:
 | 6 | Überrendite → Nachahmerzähler → Preis → Überrendite | Zähler ganzzahlig mit Obergrenze |
 | 7 | Überrendite → Anlegerbestand → Positionsgröße → Preisstoß → Überrendite | Abzug erst nach drei Runden, fester Anteil je Runde |
 
+Der achte Kanal, `Sektorpreis(t−1) → landespreis → Sektorpreis(t)`, ist **kein neuer**: Er
+ist Kanal 3 in seinem Preisglied, jetzt ausgeschrieben. Seine Dämpfung ist der Anteil
+`(10.000 − durchgriff)/10.000`, also strikt kleiner als eins, solange `durchgriff > 0`;
+für Dienstleistungen mit `durchgriff = 0` ist er eine reine Fortschreibung ohne
+Verstärkung.
+
 **Das ist die Verteidigung, und sie ist prüfbar**, anders als eine Feldzahl: Der
 Bruchtester bekommt die Auflage, das Modell **200 Runden ohne Spieler** laufen zu lassen;
-verlässt dabei eine Größe ihren Wertebereich, gibt es einen achten Kanal, und der ist ein
+verlässt dabei eine Größe ihren Wertebereich, gibt es einen Kanal mehr, und der ist ein
 Fehler. Ein Kanal, der nicht in dieser Tabelle steht, ist kein Feature, sondern ein
 Befund.
 
@@ -162,16 +291,13 @@ der Mechanismus, aus dem Maß 3 überhaupt entstehen kann.
 
 Die vier sind nach struktureller Verschiedenheit gewählt, nicht nach Bedeutung: **USA**
 (großer Binnenmarkt, Leitwährung, dienstleistungsschwer), **China** (industriestark, hoher
-`handelsanteil`, gemanagter Wechselkurs, starker Zollhebel), **Deutschland**
-(Exportüberschuss und **kein eigener Zinshebel ab Runde 5** — die einzige Asymmetrie, die
+`durchgriff`, gemanagter Wechselkurs, starker Zollhebel), **Deutschland**
+(Exportüberschuss und **kein eigener Zinshebel ab Runde 3** — die einzige Asymmetrie, die
 einen Aktionsraum schließt und damit einen anderen erzwingt), **Brasilien** (Agrarexport,
 hohe Zinsen, volatile Währung). Vier Länder, die sich gleichen, wären vier Kopien und
 kosteten Strategievielfalt, statt sie zu erzeugen.
 
 ### Welche drei Sektoren, und aus welcher Reihe jeder entsteht
-
-Der Datenkurator hat vier WDI-Positionen genannt, von denen eine Teilmenge einer anderen
-ist. Die Zuordnung ist deshalb ausdrücklich diese und keine andere:
 
 | Modellsektor | WDI-Reihe | Handelszeile | enthält auch |
 |---|---|---|---|
@@ -228,9 +354,9 @@ geschlossen statt als Pfeil.
 **3. Marktenge.** Der Fonds lebt von Anlegergeld, und Anleger vergleichen seine Rendite
 mit einer Marktrendite. Diese Marktrendite ist die **wertgewichtete Rendite aller im
 Modell handelbaren Körbe und Anleihen zu Modellmarktwerten** — gewichtet nach dem Markt,
-**nicht nach dem Bestand des Fonds**. Sie hat keinen eigenen Datenanker; ihre Startwerte
-stammen aus den Daten, ihre Fortschreibung ist Modell. Das steht in der Liste der
-ankerlosen Größen, siehe *Die Grenze des Orakels*.
+**nicht nach dem Bestand des Fonds**. Sie hat keinen eigenen Datenanker; ihr Startwert ist
+der Wert des Startkorbs zu Startpreisen, ihre Fortschreibung ist Modell (`technik.md`
+T33).
 
 Die Kraft dieser Gegenkraft liegt **im Preisstoß, nicht in der Definition des
 Vergleichsmaßstabs**: Je größer der Fondsanteil an einem Markt, desto stärker bewegt jeder
@@ -263,132 +389,270 @@ Alle vier laufen im Selbstspiel ohne Darstellung über dieselbe Zustandsschnitts
 hier steht, ist eine Rechenvorschrift; wo eine Wahl offenbliebe, ist sie hier getroffen.
 Jeder Gleichstand wird nach Aktions- beziehungsweise Profilkennung gebrochen, nie nach
 Auffindereihenfolge. Der Median über eine gerade Anzahl ist der kleinere der beiden
-mittleren Werte.
+mittleren Werte. **R = 24.**
 
 ### Die Ergebnisgröße einer Partie
 
 Ein `i64` in Milli-Runden, **kleiner ist besser**, streng geordnet und ohne Sammelwert:
 
-| Ausgang | Wert | Bereich |
+| Ausgang | Wert | Bereich bei R = 24 |
 |---|---|---|
-| Mandat in Runde r erfüllt | `r × 1.000` | 1.000 … 28.000 |
-| 28 Runden überlebt, Mandat nicht erfüllt | `28.000 + Fehlbetrag`, Fehlbetrag = fehlendes Vermögen plus fehlender Einfluss, je in Promille der eigenen Schwelle, **je Teil bei 1.000 begrenzt** | 28.000 … 30.000 |
-| an einer Todesart in Runde d gestorben | `30.000 + (29 − d) × 1.000` | 31.000 … 58.000 |
+| Mandat in Runde r erfüllt | `r × 1.000` | 1.000 … 24.000 |
+| R Runden überlebt, Mandat nicht erfüllt | `(R+1) × 1.000 + Fehlbetrag`, Fehlbetrag = fehlendes Vermögen plus fehlender Einfluss, je in Promille der eigenen Schwelle, **je Teil bei 1.000 begrenzt** | 25.000 … 27.000 |
+| an einer Todesart in Runde d gestorben | `30.000 + (R + 1 − d) × 1.000` | 31.000 … 54.000 |
 
-Der frühe Tod ist damit schlechter als der späte, und zwar um volle Runden — genau die
-Auflösung, die Maß 1 im letzten Partiedrittel braucht. Eine Sammelkappe auf den
-Gesamtwert gibt es **nicht**; siehe Befund 6.
+**Die Kante aus Befund 10 ist damit geschlossen:** Das Band 1.000 … 24.000 heißt genau
+„Mandat erfüllt", der überlebte Misserfolg beginnt bei 25.000, und kein Wert trägt zwei
+Bedeutungen. Der frühe Tod ist schlechter als der späte, und zwar um volle Runden — genau
+die Auflösung, die Maß 1 im letzten Partiedrittel braucht. Eine Sammelkappe auf den
+Gesamtwert gibt es **nicht**. Der Bereichstest lautet: ein Ergebnis ausserhalb
+1.000 … 54.000 ist ein harter Fehler.
 
-### Das Referenzprofil
+### Das Aktionsprofil und wie es auf Aktionen wirkt
 
 Ein **Aktionsprofil** ist die Verteilung des Rundenbudgets über die fünf Aktionsarten in
 Fünftelrasterung, also ein Vektor `(a1…a5)` mit `ai ∈ {0…5}` und `Σai = 5`. Das sind
-`C(9,4) = 126` Profile. Das **Referenzprofil** ist `(1,1,1,1,1)`. Es ist die „feste
-Folgepolitik" von Maß 1 und die Füllung außerhalb der Fenster von Maß 3 — dieselbe
-Vorgabe an beiden Stellen, damit die Maße vergleichbar bleiben.
+`C(9,4) = 126` Profile. Das **Referenzprofil** ist `(1,1,1,1,1)`.
+
+Das Profil ist ein Werkzeug des Prüfstands, keine Spielgröße — der Mensch wählt frei. Wie
+es auf Aktionen wirkt, war in der zweiten Fassung nicht gesagt, und Maß 2 und Maß 3 stehen
+vollständig darauf. **Das Vorratsverfahren, verbindlich:**
+
+Jede Art `i` führt einen ganzzahligen Vorrat `vi`, zu Partiebeginn null.
+
+1. **Am Rundenanfang:** `vi += 3 · ai` für alle fünf Arten. Die Summe wächst damit je Runde
+   um 15.
+2. **Für jeden der drei Steckplätze der Runde, nacheinander:** Wähle unter den Arten, die
+   in dieser Runde noch mindestens eine zulässige Aktion haben, die mit dem größten `vi`;
+   bei Gleichstand die kleinere Kennung. Setze eine Aktion dieser Art und rechne
+   `vi −= 5`. Hat keine Art eine zulässige Aktion, bleibt der Steckplatz leer und kein
+   Vorrat wird verrechnet.
+3. **Welche** Aktion innerhalb der gewählten Art gesetzt wird, entscheidet der Bot: der
+   Heuristikbot nach seiner festen Rangfolge, der Suchbot durch Suche.
+
+Drei Fragen, die der Prüfer zu Recht gestellt hat, sind damit beantwortet. Der Bot füllt
+**immer drei Steckplätze**, solange zulässige Aktionen da sind; die Bündelgröße gehört
+nicht zum Profil. `ai = 0` **verbietet die Art nicht**, sondern schiebt sie ans Ende — ein
+hartes Verbot ließe Profile mit Nullen ihre Steckplätze nicht füllen und machte Maß 2 zu
+einem Vergleich zwischen drei und weniger als drei Aktionen je Runde statt zwischen
+Strategien. Es wird nie gerundet und nie gezogen: über 15 Runden bekommt Art `i` genau
+`3·ai` Steckplätze, der Rest ist beschränkt.
+
+Zur Probe das Referenzprofil: Runden 1 bis 5 vergeben die Arten
+1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 und stehen danach wieder auf `(0,0,0,0,0)` — je
+Art genau drei von fünfzehn Steckplätzen, gleichverteilt und deterministisch.
+
+**Für den Suchbot** legt das Profil die Artenzusammensetzung des Rundenbündels fest; die
+60 Kandidatenbündel entstehen aus der nach T32 geordneten Zulässigkeitsliste,
+**eingeschränkt auf genau diese Zusammensetzung**, und gezogen nach T35. Der Suchbot sucht
+also über Ziele und Stufen, nie über Arten.
 
 ### Maß 1 — Entscheidungsdichte
 
-Für jede Runde `t = 1 … 27`: Ziehe **30 Aktionsbündel**. Ein Bündel entsteht, indem zuerst
-die Bündelgröße gleichverteilt aus `{0,1,2,3}` gezogen wird und dann so viele Aktionen
-ohne Zurücklegen gleichverteilt aus der Liste der in dieser Runde zulässigen Aktionen.
-Doppelte Bündel im Stichprobensatz werden **nicht** entfernt — sonst hinge die
-Stichprobengröße vom Zustand ab. Der Zufallsstartwert folgt aus `(Jahrgang, Parametersatz,
-Wurzelstartwert, t, Stichprobenindex)`.
+**Eingabe:** 50 Startwerte, je Startwert eine Trägerpartie mit dem Heuristikbot auf dem
+Referenzprofil.
 
-Jedes Bündel wird gesetzt, dann läuft die Partie mit dem Heuristikbot auf dem
-Referenzprofil bis Runde 28 durch. `Dichte(t)` = Anteil der 30 Ergebnisse, die um **mehr
-als 1.000 Milli-Runden** vom Median der 30 abweichen.
+Für jede Runde `t = 1 … R` und jeden Startwert: Ziehe **30 Aktionsbündel**. Ein Bündel
+entsteht, indem zuerst die Bündelgröße gleichverteilt aus `{0,1,2,3}` gezogen wird und
+dann so viele Aktionen ohne Zurücklegen gleichverteilt aus der Liste der in dieser Runde
+zulässigen Aktionen. Doppelte Bündel im Stichprobensatz werden **nicht** entfernt — sonst
+hinge die Stichprobengröße vom Zustand ab. Der Zufallsstartwert folgt aus `(Jahrgang,
+Parametersatz, Wurzelstartwert, t, Stichprobenindex)`.
 
-Abnahme: Mittel der `Dichte(t)` über jedes Partiedrittel — Runden 1-9, 10-19, 20-27 —
+Das Bündel **ersetzt die Bot-Aktionen der Runde t**; Runde `t` wird gerechnet, danach
+spielt der Heuristikbot auf dem Referenzprofil bis Runde `R` durch. Der Vorrat aus dem
+Vorratsverfahren wird für Runde `t` so fortgeschrieben, als hätte der Bot die Arten des
+gezogenen Bündels gespielt (`vi += 3·ai` am Rundenanfang, `vi −= 5` je tatsächlich
+gesetzter Aktion) — sonst wäre der Zustand des Zählers nach der Einspeisung undefiniert.
+
+**Rechenweg:**
+
+```
+Ergebnis(t, s, k)      k = 1…30 Bündel, s = 1…50 Startwerte
+Dichte(t, s) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden
+               vom Median dieser 30 abweichen
+Dichte(t)    = Mittel der Dichte(t, s) über die 50 Startwerte
+```
+
+**Über die Startwerte wird erst am Ende gemittelt, und zwar über Dichten, nicht über
+Ergebnisse.** Ein gemeinsamer Median über alle 1.500 Ergebnisse einer Runde wäre falsch:
+Verschiedene Startwerte erzeugen nach `technik.md` T11 verschiedene Jahrgangsstreuungen,
+und ein Median über mehrere Welten triebe den Abweichungsanteil gegen 1, ohne dass eine
+einzige Entscheidung dichter geworden wäre.
+
+**Abnahme:** Mittel der `Dichte(t)` über jedes Partiedrittel — die Drittel sind
+`1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R`, bei R = 24 also **1-8, 9-16, 17-24** —
 jeweils **≥ 0,4**, nicht nur über die ganze Partie. Ein Spiel, das nur in der Mitte lebt,
 fällt hier durch. Fällt es durch, ist „the consequences of choices often feel intangible"
 gerade gemessen worden.
 
-Kosten je Startwert: `30 × Σ(28−t)` für `t = 1…27` = **11.340 Weltschritte**.
+**Kosten.** Ein Bündel in Runde `t` kostet die Runden `t … R`, also `R + 1 − t`
+Weltschritte — Maß 1 misst die Entscheidung **der Runde t**, deshalb wird sie mitgerechnet.
+
+```
+je Startwert:  30 · Σ(R+1−t) für t = 1…R  =  30 · R(R+1)/2  =  30 · 300 =  9.000
+               zuzüglich Trägerpartie R                                 =     24
+                                                                          ------
+                                                                           9.024
+50 Startwerte:                                                           451.200
+```
 
 ### Maß 2 — Strategievielfalt
 
-Je Profil `p` spielt der **Suchbot** über **20 Startwerte** eine volle Partie; das
-Profilergebnis `E(p)` ist der Median der 20 Ergebnisse. Ein Profil **gewinnt**, wenn
-`E(p) < 28.000` — also wenn es das Mandat im Median erfüllt.
+**Eingabe:** alle 126 Profile, je 20 Startwerte, Suchbot.
 
-„Strukturell verschieden" ist hier definiert und nicht mehr offen: Der **Strategiekern**
-eines Profils ist die Aktionsart mit dem größten Anteil unter den drei Familien
-`{1 Position, 2 Beteiligung, 3 Lobby}`, bei Gleichstand die kleinere Kennung. Hebel und
-Sichtbarkeit sind Verstärker, keine Strategien, und gehen in den Kern nicht ein. Es gibt
-damit genau drei Klassen.
+Das Profilergebnis `E(p)` ist der Median der 20 Partieergebnisse. Ein Profil **gewinnt**,
+wenn `E(p) ≤ R × 1.000 = 24.000` — also genau dann, wenn es im Median im Band „Mandat
+erfüllt" landet.
 
-Abnahme, beide Teile:
+Der **Strategiekern** eines Profils ist die Aktionsart mit dem größten Anteil unter den
+drei Familien `{1 Position, 2 Beteiligung, 3 Lobby}`, bei Gleichstand die kleinere
+Kennung. Hebel und Sichtbarkeit sind Verstärker, keine Strategien, und gehen in den Kern
+nicht ein.
+
+**Die sechs Profile `(0,0,0,a4,a5)` mit `a4 + a5 = 5` haben keinen Strategiekern.** Sie
+enthalten keine einzige Familienaktion; ihnen über den Gleichstand die Klasse 1 zuzuweisen
+hieße, eine Positionsstrategie als erfüllt zu zählen, in der keine Position vorkommt. Sie
+laufen mit, ihr Ergebnis wird berichtet, und sie gehen in **keine** der beiden
+Abnahmehälften ein. Klassifiziert sind damit 120 Profile, verteilt auf genau drei Klassen.
+
+**Abnahme, beide Teile:**
 
 1. **Jede der drei Klassen stellt mindestens einen Gewinner.**
-2. Sei `Ek` das beste Profilergebnis der Klasse `k`. Dann muss
+2. Sei `Ek` das beste (kleinste) Profilergebnis der Klasse `k`. Dann muss
    `max(Ek) ≤ 1,25 × min(Ek)` gelten.
 
 Der zweite Teil ist der wichtigere — sonst gewinnen drei, aber eines dominiert, und das
 ist derselbe Defekt unter anderem Namen. Das ist die Zahl hinter „trying to implement the
 tiniest socialist policy will always result in bankruptcy".
 
-Kosten: `126 × 20 × 1.708` = **4.304.160 Weltschritte**.
+**Kosten:** eine Suchbotpartie `R × (1 + 60) = 24 × 61 = 1.464`;
+`126 × 20 × 1.464` = **3.689.280 Weltschritte**.
 
 ### Maß 3 — Verschiebung des Optimums
 
 Zwei getrennte Läufe je Profil, jeder über die **volle Partie**, damit keine Runde ohne
-Vorgabe bleibt:
+Vorgabe bleibt. Die Fenster sind das erste und das letzte Partiedrittel aus Maß 1:
 
-- **Frühfenster:** Runden 1-9 mit Profil `p`, Runden 10-28 mit dem Referenzprofil.
+- **Frühfenster:** Runden 1-8 mit Profil `p`, Runden 9-24 mit dem Referenzprofil.
   Ergebnis `Efrüh(p)` = Median über 20 Startwerte.
-- **Spätfenster:** Runden 1-19 mit dem Referenzprofil, Runden 20-28 mit Profil `p`.
+- **Spätfenster:** Runden 1-16 mit dem Referenzprofil, Runden 17-24 mit Profil `p`.
   Ergebnis `Espät(p)` = Median über 20 Startwerte.
 
+Der Profilwechsel geschieht am Rundenanfang; der Vorrat des Vorratsverfahrens läuft über
+den Wechsel hinweg weiter und wird nicht zurückgesetzt. Beide Läufe verwenden den
+Suchbot, innerhalb wie außerhalb des Fensters.
+
 `p*` = Profil mit kleinstem `Efrüh`, `q*` = Profil mit kleinstem `Espät`, Gleichstand nach
-Profilkennung. **Verschiebung** = `Σ|p*i − q*i| / 5`, also der L1-Abstand der beiden
-Anteilsvektoren, Wertebereich 0 bis 2. Abnahmeschwelle **≥ 0,5**.
+Profilkennung; alle 126 Profile sind wählbar. **Verschiebung** = `Σ|p*i − q*i| / 5`.
 
-Beide Läufe verwenden den Suchbot, innerhalb wie außerhalb des Fensters; „frei" bedeutet
-also: frei innerhalb des jeweils gesetzten Profils, nie frei über Profile hinweg. Erzwungen
-wird die Verschiebung nicht durch Balance, sondern durch Gegenkraft 4 und 3: Nachahmer
-grasen jede frühe Position ab, der Preisstoß entwertet Größe. Das ist die Zahl hinter
-„already the richest hedge fund in the game and nothing fun to do".
+**Abnahmeschwelle 0,4.** Beide Vektoren summieren auf 5, die Summe der Beträge ist deshalb
+stets gerade, und die Verschiebung nimmt nur die Werte `{0; 0,4; 0,8; 1,2; 1,6; 2,0}` an.
+Die Schwelle 0,5 der zweiten Fassung verlangte in Wahrheit 0,8, also zwei verschobene
+Fünftel; gemeint war und gefordert ist **eines**.
 
-Kosten: `2 × 126 × 20 × 1.708` = **8.608.320 Weltschritte**.
+Erzwungen wird die Verschiebung nicht durch Balance, sondern durch Gegenkraft 4 und 3:
+Nachahmer grasen jede frühe Position ab, der Preisstoß entwertet Größe. Das ist die Zahl
+hinter „already the richest hedge fund in the game and nothing fun to do".
+
+**Kosten:** `2 × 126 × 20 × 1.464` = **7.378.560 Weltschritte**.
+
+**Summe der drei Maße:** `451.200 + 3.689.280 + 7.378.560` = **11.519.040 Weltschritte**.
+Was der ganze Nachtlauf kostet, steht in `technik.md` Abschnitt 10 und nicht hier — die
+zweite Fassung hat an dieser Stelle eine Zahl genannt, die Vorgaben des Prüfstands
+voraussetzte, die sie selbst nicht machte.
 
 ### Maß 4 — Rückvergleich
 
-Startjahrgang **1995**, 28 Runden ohne Spieler (Fonds mit Nullvermögen, keine Aktionen),
-und — das ist der schärfere Teil — **die Politikinstrumente werden auf die historisch
-tatsächlichen Werte gesetzt**. Das prüft die Übertragung Politik → Wirtschaft, also die
-Wirkungskette selbst; ein Lauf mit erfundener Politik prüfte nur die halbe Maschine.
+**Der Rückvergleich ist ein Weltlauf, keine Partie.** Das ist die Antwort auf Befund 2, und
+sie ist eine Entwurfsentscheidung, keine Auslegung: Ein Fonds mit Nullvermögen dividiert in
+Runde 1 durch null und stirbt, wenn man ihn davor bewahrt, spätestens in Runde 3 am
+Anlegerabzug. Beides ist kein Zustand, in dem sich eine Weltmaschine prüfen lässt.
 
-31 Sollreihen, davon 27 unabhängig: BIP je Land (4), Sektoranteile (12, davon 8
-unabhängig), Verbraucherpreise (4), Leitzins (4), Wechselkurs gegen USD (3),
-Staatsschuldenquote (4); dazu der Handelsblock als eigener Block. Zwei Fehlermaße je
-Reihe: mittlerer absoluter prozentualer Fehler über 28 Runden (Schwelle 20 Prozent) und
-Richtungstreue, also der Anteil der Jahre mit richtigem Vorzeichen der Änderung (Schwelle
-0,6). Die Richtungstreue ist das wichtigere Maß — ein Modell, das die Wendepunkte trifft,
-ist ein Simulationsmodell; eines, das nur die Niveaus trifft, ist eine Interpolation.
+Im Modus `weltlauf` gilt deshalb:
 
-**Warum 1995 und warum 28 Runden.** Die Regel, aus der beide Zahlen folgen: *Die
-Partielänge ist die Länge des Fensters, in dem jede Sollreihe ohne Füllung belegt ist.*
-CEPII BACI (HS92) beginnt **1995** und reicht bis 2024
-(`cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37`, abgerufen 2026-08-31); die
-übrigen Reihen sind länger. Ein Jahrgang 1980 ließe 15 von 40 Runden ohne bilaterale
-Ströme — nach `technik.md` T24 („mehr als ein Fünftel gefüllt gilt als nicht belastbar")
-wäre der Handelsblock als nicht belastbar zu kennzeichnen, bevor die erste Zeile Code
-steht. Der Endzustand 2023 statt 2024 lässt ein Jahr Abstand zum jüngsten, für
-Sektoranteile regelmäßig unvollständigen WDI-Jahrgang.
+- **Das Fondsteilsystem läuft nicht.** Schritt 2 (Aktionen) und Schritt 6 (Abrechnung)
+  entfallen vollständig; aus Schritt 5 laufen nur Zustimmung und Regierungswechsel. Die
+  Gegenkräfte 1, 3, 4 und 5 werden nicht gerechnet, es gibt keine Rendite, keine
+  Überrendite, keinen Anlegerbestand, kein Mandat und **keine Todesart**. Kein Feld des
+  Fondsblocks und kein Nachahmerzähler wird geschrieben; sie behalten ihre Startwerte.
+- **Die Politikinstrumente sind exogen** und folgen Runde für Runde den historischen
+  Pfaden für Leitzins, Zollniveau und Haushaltssaldo. Jede Regel, die ein Instrument
+  schriebe — Lobbydruck, Gegenlobby, der Instrumentenrückstellung durch einen
+  Regierungswechsel —, wird nicht ausgeführt. Ein Regierungswechsel wird berechnet und
+  ausgewiesen, bleibt aber ohne Wirkung; das Orakel ist an dieser Stelle blind, und das
+  gehört in jeden Befund.
+- **Die Schreibregel wird dadurch nicht weicher, sondern schmaler:** Auch im Weltlauf wird
+  keine Adresse zweimal je Runde geschrieben. Die Menge der überhaupt geschriebenen
+  Adressen ist je Modus fest und wird vom Prüfstand mit ausgewiesen.
 
-Der Zuschnitt ist kein bloßer Verzicht. Er schneidet **Brasiliens Hyperinflation vor dem
-Plano Real** ab, an der jede prozentuale Fehlerrechnung zerbrochen wäre, und er enthält
-trotzdem den Euro-Beginn 1999 (Runde 5), Chinas WTO-Beitritt 2001 (Runde 7), 2008
-(Runde 14) und 2020 (Runde 26). Und er hat eine Eigenschaft, die 1980 nicht hätte: Maß 4
-prüft **jede Runde der Standardpartie**, nicht fünf Achtel davon.
+Damit prüft Maß 4 genau, was es prüfen soll: die Übertragung Politik → Wirtschaft über die
+Schritte 3 und 4. Ein Lauf mit erfundener Politik prüfte nur die halbe Maschine; ein Lauf
+mit einem sterbenden Fonds prüfte gar nichts.
+
+**Die 31 Sollreihen** sind BIP je Land (4), Sektoranteile (12, davon 8 unabhängig),
+Verbraucherpreise (4), Leitzins (4), Wechselkurs gegen USD (3), Staatsschuldenquote (4);
+dazu der Handelsblock über 40 Ströme als eigener Block. Jede über 25 Stützstellen ohne
+Füllung. Nach der Klassifikation aus `technik.md` T37 sind die vier Leitzinsreihen
+**gesetzt** (Eingabe des Laufs, Fehler null per Konstruktion) und die vier
+Staatsschuldenquoten **abgeleitet**.
+
+**Die drei Fehlermaße, je Reihe:**
+
+| Reihen | verglichen wird | Schwelle |
+|---|---|---|
+| BIP (4), Sektoranteile (12), Staatsschuldenquote (4), Handelsströme (40) | das **Niveau** | MAPE über die 25 Stützstellen ≤ 20 % |
+| Verbraucherpreise (4), Wechselkurs (3), Leitzins (4) | die **Jahresänderungsrate** in Basispunkten | mittlerer absoluter Fehler über die 24 Übergänge ≤ 300 bp |
+| alle | die **Richtung** | Anteil der 24 Übergänge mit `sgn(Δmodell) = sgn(Δsoll)` ≥ 0,6 |
+
+Die zweite Zeile ist die Folge von `technik.md` T8: Ein prozentualer Fehler auf einem
+Index, der über zwei Jahrzehnte um eine Größenordnung wandert, misst den Anfang und nicht
+die Maschine — und ein prozentualer Fehler auf einer Rate nahe null explodiert. Die 300
+Basispunkte, also drei Prozentpunkte mittlerer Fehler auf der Jahresrate, haben denselben
+Status wie die 20 Prozent und die 0,6: eine gesetzte Latte. Erweist sie sich als
+unerreichbar, ist das ein Befund über das Modell und kein Anlass, sie zu verschieben.
+
+**Die Abnahmeregel — 16 Prüfgegenstände, Toleranz 2.** Die zweite Fassung nannte zwei
+Fehlermaße und keine Regel, wie über die Reihen zusammengefasst wird; `technik.md` T37 hat
+daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
+
+1. **Abnahmerelevant sind nur die freien Reihen.** Die vier gesetzten Leitzinsreihen und
+   die vier abgeleiteten Schuldenquoten werden berichtet und entscheiden nichts. Eine
+   Reihe, die per Konstruktion fehlerfrei ist, darf kein Gesamtmaß mildern.
+2. **Prüfgegenstand ist nicht die Reihe, sondern die Größe.** Es sind sechzehn:
+
+   | Prüfgegenstand | Zahl | zusammengefasst aus |
+   |---|---:|---|
+   | BIP je Land | 4 | je eine Reihe |
+   | Sektorstruktur je Land | 4 | die **drei** Anteilsreihen des Landes, alle drei müssen bestehen |
+   | Verbraucherpreise je Land | 4 | je eine Reihe |
+   | Wechselkurs je Land ausser USA | 3 | je eine Reihe |
+   | Handelsblock | 1 | 40 Ströme, Median des MAPE und Median der Richtungstreue; das schlechteste Fünftel wird ausgewiesen |
+   | **Summe** | **16** | |
+
+   Die drei Anteilsreihen eines Landes sind durch die Normierung auf 10.000 nicht
+   unabhängig; als drei Zähler geführt, würde ein einzelnes falsch modelliertes Land die
+   Toleranz allein aufbrauchen. Als **ein** Zähler geführt, kostet es einen von sechzehn —
+   und muss dafür in allen drei Anteilen bestehen.
+
+3. **Ein Prüfgegenstand besteht**, wenn er beide für ihn geltenden Schwellen einhält.
+4. **Der Lauf ist bestanden, wenn höchstens zwei der sechzehn Prüfgegenstände reißen.**
+   Jeder gerissene wird im Befund einzeln benannt, mit beiden Zahlen. Drei reißende sind
+   ein Durchfallen, auch wenn sie knapp reißen.
+
+Der Median über die 40 Handelsströme ist der Vorschlag des Architekten (`technik.md`
+Abschnitt 12) und wird hiermit übernommen, mit seiner Begründung: Einzelne kleine Ströme
+— Brasilien–China in der Landwirtschaft — schwanken prozentual stark, ohne dass das Modell
+falsch wäre; ein Mittel ginge daran kaputt, eine Je-Strom-Schwelle schneller.
+
+**Kosten:** R = 24 Weltschritte.
 
 **Und die Grenze des Orakels, ausdrücklich.** Ohne Sollreihe sind: **Sektorpreise**
 (Lücke 2 des Datenkurators), **Zustimmung** (Lücke 4), das Instrument
-**Finanzmarktregulierung** und die **Marktrendite**. Vier Größen, alle im Zustand
-sichtbar, keine vom Rückvergleich gedeckt. Er prüft die Dynamik der Maschine über den
-historischen Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
+**Finanzmarktregulierung** und die **Marktrendite**. Dazu kommt im Weltlauf das gesamte
+Fondsteilsystem, das gar nicht läuft. Alle diese Größen sind im Zustand sichtbar, keine ist
+vom Rückvergleich gedeckt. Er prüft die Dynamik der Maschine über den historischen
+Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 
 ### Die drei Klagen und was sie beantwortet
 
@@ -408,10 +672,17 @@ historischen Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   vierter Sektor „übrige Industrie" hätte keine eigene Quellreihe und müsste als Differenz
   gebildet werden. Vier Sektoren mit einem ungedeckten, drei mit lauter gedeckten: die
   Wahl ist die zweite.
-- **Startjahrgänge vor 1995.** 1980 und früher bleiben als **Spieljahrgänge** möglich und
-  sind der naheliegende Inhalt des Erweiterungsmodells aus der Idee. Sie tragen dann
-  keinen Handelsblock im Rückvergleich und sind damit Spiel-, aber keine Prüfjahrgänge.
-  Das gehört ins Kaufangebot geschrieben, nicht in eine Fußnote.
+- **Startjahrgänge vor 1997**, und die Grenze liegt jetzt zwei Jahre später als in der
+  zweiten Fassung. 1995 und früher bleiben als **Spieljahrgänge** möglich und sind der
+  naheliegende Inhalt des Erweiterungsmodells aus der Idee. Sie tragen keinen Handelsblock
+  im Rückvergleich (BACI beginnt 1995) und keine US-Sektorstruktur aus Daten; ein
+  Spieljahrgang vor 1997 übernimmt als US-Startwert die Struktur von 1997 und kennzeichnet
+  sie als gefüllt. Damit sind sie Spiel-, aber keine Prüfjahrgänge. Das gehört ins
+  Kaufangebot geschrieben, nicht in eine Fußnote.
+- **Ein feinerer Warenschlüssel als HS92-Kapitel.** Die Zuordnung 01–24 / 25–97 ist grob
+  und ihr Fehler oben benannt. Eine echte HS-nach-ISIC-Konkordanz wäre genauer und kostete
+  eine weitere Quelle mit eigener Lizenzfrage — für zwei Modellsektoren steht das nicht
+  dafür.
 - **Quartals- und Tagestakt.** Damit fallen Panik, Runs und Margin Calls im Wortsinn weg —
   ein spürbarer Verlust an Genre-Erwartung, und ich nenne ihn als solchen. Der Grund ist
   hart: BIP, Sektorstruktur, Produktivität und Zoll liegen **jährlich** vor. Quartalsrunden
@@ -434,9 +705,9 @@ historischen Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   regressiv nicht prüfbar. Ereignisse entstehen hier aus Schwellen.
 - **Krieg, Klima, Migration, Demografie als Spielgröße, Mehrspieler.**
 - **Ein Zollsatz je Sektor.** Es gibt ihn nicht unter tragfähiger Lizenz. Die
-  Sektorwirkung entsteht aus `handelsanteil` und den Importanteilen.
-- **Ein zeitlich veränderlicher `handelsanteil`.** Er wäre richtiger und kostete vier
-  weitere exogene Pfade. Konstant genügt, weil die Mengen ohnehin endogen sind.
+  Sektorwirkung entsteht aus `durchgriff` und den Importanteilen.
+- **Ein zeitlich veränderlicher `durchgriff`.** Er wäre richtiger und kostete zehn weitere
+  exogene Pfade. Konstant genügt, weil die Mengen ohnehin endogen sind.
 - **Grafik über Tabelle, Verlaufsgraph und Kettenansicht hinaus.** Democracy 4 verkauft
   sich mit einer 2D-Knotenoberfläche und besteht in seiner Simulation vollständig aus
   geladenen Tabellen statt einprogrammierter Effekte
@@ -451,98 +722,147 @@ historischen Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   verankerten Instrumente. Das ändert den Entwurf nicht — `technik.md` T26 hat den Fall
   architektonisch aufgefangen —, aber es halbiert seinen Beleg. Zu prüfen, bevor gebaut
   wird.
-- **Die übrigen WDI-Reihen unter der Drittanbieter-Ausnahme.** Der Architekt hat die
-  Reihenliste geliefert; zu prüfen sind nach seiner Kennzeichnung Nr. 7 (sektorale
-  Beschäftigung, ILO-Schätzung), Nr. 8 (Verbraucherpreise, IWF-gestützt), Nr. 10
-  (Wechselkurs) und Nr. 13 (Zoll). Je Reihe ist das Feld „Source" im Indikatorendatensatz
-  zu lesen. Vier Abrufe, und die Frage ist geschlossen — Aufgabe des Datenbauers, weil sie
-  am Jahrgang hängt und nicht am Entwurf.
-- **Brasiliens Disinflation 1995-1997 ist der schärfste Punkt des Rückvergleichs.** 1995
-  liegt nach dem Plano Real, aber die Inflationsrate fällt in den ersten drei Runden noch
-  um eine Größenordnung. Reißt die BR-Preisreihe das MAPE-Maß **allein** auf den Runden 1
-  bis 3, ist das gesondert zu berichten und nicht durch eine Schwellenänderung zu glätten.
-  Auflage an den Rückvergleicher, keine Entwurfsfrage.
-- **Die Zahlenwerte der Schwellen** — Mandatsschwelle, Aufsichtsschwellen,
+- **Die übrigen WDI-Reihen unter der Drittanbieter-Ausnahme.** Zu prüfen sind nach der
+  Kennzeichnung des Architekten Nr. 7 (sektorale Beschäftigung, ILO-Schätzung), Nr. 8
+  (Verbraucherpreise, IWF-gestützt), Nr. 10 (Wechselkurs) und Nr. 13 (Zoll). Je Reihe ist
+  das Feld „Source" im Indikatorendatensatz zu lesen. Vier Abrufe, und die Frage ist
+  geschlossen — Aufgabe des Datenbauers, weil sie am Jahrgang hängt und nicht am Entwurf.
+- **Bleibt das Fenster bei 1997–2021?** Geprüft habe ich die drei US-Sektoranteilsreihen
+  (eigener Abruf 2026-09-01) und BACI. Offen bleibt der Verdachtsfall aus `technik.md`
+  T24, die chinesische und die brasilianische **Leitzinsreihe** der neunziger Jahre: Sie
+  stammt nach der Reihenliste aus IWF IFS, und `imf.org` weist den Abruf mit HTTP 403 ab
+  (eigener Versuch 2026-09-01, dasselbe Verhalten, das `daten.md` schon meldet).
+
+  **Ein Ersatzbeleg, der die Frage verkleinert, ohne sie zu schließen:** Die nächstliegende
+  frei abrufbare Zinsreihe, `FR.INR.LEND` (Sollzins der Banken, WDI), trägt China lückenlos
+  1995–2023 und Brasilien **1997**–2023 — 1995 und 1996 fehlen
+  (`api.worldbank.org/v2/country/CHN;BRA/indicator/FR.INR.LEND?date=1995:2023`, abgerufen
+  2026-09-01). Der Verdachtsfall zeigt damit genau an derselben Stelle dieselbe Kante wie
+  die US-Sektoranteile, und der Schnitt auf 1997 räumt beide zugleich ab. Das ist ein
+  Indiz, kein Beweis: `FR.INR.LEND` ist eine andere Reihe als der IFS-Leitzins. Zu prüfen
+  bleibt sie beim Jahrgangsbau. **Misst der Jahrgangsbau ein engeres Fenster, ist R zu
+  ersetzen und sonst nichts**; jede abgeleitete Zahl dieses Entwurfs steht als Formel in R
+  daneben.
+- **Die Zahlenwerte der Schwellen** — Mandatsschwelle, Aufsichtsschwellen, Startkapital,
   Nachahmergeschwindigkeit, Stufenweite einer Position, Anlegerabzugsanteil. Sie gehören
   nicht in diesen Entwurf, weil sie nicht entschieden, sondern **kalibriert** werden: Das
   Selbstspiel sucht die Werte, bei denen Maß 1 bis 3 ihre Schwellen erreichen. Genau dafür
-  gibt es die Maße. Festgelegt ist die Form, nicht die Zahl.
+  gibt es die Maße. Festgelegt ist die Form, nicht die Zahl; die Werte stehen nach T27 in
+  `parameter.toml`.
 - **Wie fein der Aktionsraum sein darf.** Zu grob, und Maß 1 findet keine Unterschiede; zu
   fein, und die Stichprobe von 30 Bündeln deckt zu wenig ab. Empirisch am Prototyp zu
   bestimmen — messbar daran, ob `Dichte(t)` bei K=30 und K=60 dieselbe Antwort gibt.
+- **Ob die Schwellen von Maß 4 mit endogener Produktivität überhaupt erreichbar sind.**
+  Unverändert das größte ungemessene Risiko des Vorhabens. Es ist keine Entwurfsfrage
+  mehr, sondern eine Messung des Rückvergleichers am laufenden Kern — die Abnahmeregel
+  steht jetzt, also lässt sich das Ergebnis überhaupt beurteilen.
 
-## Befundabarbeitung — Prüfung vom 2026-08-31
+## Was der Architekt neu rechnen muss
 
-**Befund 1, Sektorgliederung ohne Quellreihe — behoben.** Die drei Modellsektoren sind
-jetzt Landwirtschaft, Industrie (einschließlich Bau), Dienstleistungen mit je genau einer
-benannten WDI-Reihe; `NV.IND.MANF.ZS` bleibt ungenutzt, nichts verschwindet, die
-Normierung auf 10.000 steht im Manifest, und von 31 Sollreihen sind 27 unabhängig. Der
-Einwand gegen Lesart B — Bau und Versorger sind nicht handelbar — ist über den exogenen
-Koeffizienten `handelsanteil` je Land und Sektor gelöst: „handelbar" heißt, dass ein Sektor
-Handelszeilen hat, nicht dass sein Preis vollständig am Weltpreis hängt. Der Satz „der
-Tausch ist nicht knapp" ist gestrichen; er trug nicht.
+Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
 
-**Befund 2, Startjahrgang an zwei Stellen verschieden — behoben.** Frontmatter und Text
-sagen dasselbe: 1995, 28 Runden, Endzustand 2023. Die Entscheidung ist an einer Regel
-aufgehängt (Partielänge = ungefülltes Fenster aller Sollreihen) und an einer geprüften
-Zahl: BACI HS92 beginnt 1995 (cepii.fr, abgerufen 2026-08-31). 1980 fällt als Prüfjahrgang
-weg und bleibt als Spieljahrgang für das Erweiterungsmodell erhalten, ausdrücklich ohne
-Handelsblock im Rückvergleich.
+| war | ist | betrifft |
+|---|---|---|
+| 28 Runden, 1995–2023, 29 Stützstellen | **R = 24**, 1997–2021, 25 Stützstellen | Frontmatter, T22, T23, T24, Abschnitt 10 |
+| Suchbotpartie `28 × 61 = 1.708` | **`24 × 61 = 1.464`** | Frontmatter, Abschnitt 10, 12 |
+| Maß 1 je Startwert 11.368 | **9.024** (Formel korrigiert, siehe Befund 11) | Abschnitt 10 |
+| Maß 2 4.304.160 / Maß 3 8.608.320 | **3.689.280 / 7.378.560** | Abschnitt 10 |
+| Nachtlauf 13.789.108 | neu zu summieren; die drei Maße tragen **11.519.040** | Frontmatter, Abschnitt 10 |
+| Ergebnisbereich 1.000 … 58.000 | **1.000 … 54.000** | T34 |
+| `handelsanteil` | **`durchgriff`**, neue Bildungsregel, bleibt Klasse Anteile | T5, T23 Punkt 5, T25, T28, Reihenliste Nr. 16 |
+| `landespreis` undefiniert | **Sektorpreis der Vorrunde**, Startwert 10.000 | T28, T15 (keine neue Zeile) |
+| Rückvergleich als Partie | **Modus `weltlauf`**, Fondsteilsystem aus, Instrumente exogen | T30 Prüfung 8, T37 |
+| Maß-4-Abnahme offen (Abschnitt 12) | **16 Prüfgegenstände, Toleranz 2**; Handelsblock nach deinem Vorschlag | T37, Abschnitt 12 |
+| DE `exogen_ab` in Runde 5 | **Runde 3** (1999 liegt jetzt am Ende von Runde 2) | T23 Punkt 8 |
+| 50 Startwerte „Vorgabe des Prüfstands" | jetzt in `spiel.md` gesetzt, samt Zusammenfassungsregel | Abschnitt 10 |
 
-**Befund 3, die Zahl 150 — behoben, aber anders als verlangt.** Die Zahl ist auf rund 300
-berichtigt. Die Verteidigung gegen „chaotisch" steht jetzt nicht mehr auf der Feldzahl,
-sondern auf der abschließenden Liste der **sieben** rundenübergreifenden
-Rückkopplungskanäle mit je benannter Dämpfung, plus einer Beschränktheitsprüfung über 200
-Runden für den Bruchtester. Eine Feldzahl ist keine Aussage über Chaos; eine Kanalzahl ist
-eine, und sie ist widerlegbar.
+Neu hinzugekommen und ohne Vorbild in Fassung 2: das **Vorratsverfahren** (Profil →
+Aktionen), die **HS92-Konkordanz** und die Tabelle **Größen ohne Datenanker**. Alle drei
+sind Entwurf, nicht Architektur — sie brauchen von dir nur eine Aufnahme, keine
+Entscheidung.
 
-**Befund 4, Marktrendite ohne Datenreihe — anders gelöst.** Ich übernehme die Auslegung des
-Architekten (wertgewichtete Rendite aller handelbaren Körbe und Anleihen), aber nicht seine
-Gewichtung: gewichtet wird nach **Modellmarktwerten**, nicht nach dem Bestand des Fonds.
-Damit tritt die von ihm selbst benannte Folge nicht ein, dass die Überrendite eines großen
-Fonds rechnerisch gegen null geht. Gegenkraft 3 wirkt stattdessen über den Preisstoß beim
-Handeln, der mit dem Marktanteil wächst — und der Ausweg für einen großen Fonds ist
-benannt: Konzentration und Ursache statt Breite. Die Marktrendite steht jetzt in der Liste
-der Größen ohne Datenanker, zusammen mit Sektorpreisen, Zustimmung und
-Finanzmarktregulierung.
+## Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31
 
-**Befund 5, Maß 2 und 3 als Absichtserklärungen — behoben.** „Strukturell verschieden" ist
-über den Strategiekern definiert (stärkste der drei Familien, Gleichstand nach kleinerer
-Kennung, genau drei Klassen). „Frei" in Maß 3 ist ersetzt: Beide Fenster laufen über die
-volle Partie, außerhalb des Fensters gilt das Referenzprofil `(1,1,1,1,1)`, die Runden 10
-bis 19 sind damit nicht mehr unbestimmt. Maß 1 zieht **ganze Bündel**, nicht einzelne
-Aktionen, mit angegebener Ziehregel; die feste Folgepolitik ist der Heuristikbot auf
-demselben Referenzprofil. Die Lesart, die `technik.md` stillschweigend brauchte, ist damit
-ausgesprochen — und sie ist genau die, die seine Rechnung voraussetzte: 2 × 126 × 20 ×
-Partiekosten.
+**Befund 1, Prüfjahrgang 1995 nicht belegt — behoben, und der Befund war richtig.** Ich
+habe die drei US-Sektoranteilsreihen selbst abgerufen (2026-09-01): 1997 bis 2021, an
+beiden Enden wie beschrieben. Das Fenster ist 1997–2021, **R = 24**. Der teuerste Teil des
+Befundes war nicht die Zahl, sondern ihre Verbreitung in zwölf abgeleitete Größen; deshalb
+steht jede davon jetzt als Formel in R, und ein weiteres Kürzen des Fensters ist eine
+Substitution statt einer Neufassung. Das ist die dritte Befundrunde zum Startjahrgang, aber
+nicht dreimal derselbe Befund: erst ein Widerspruch zwischen Frontmatter und Text, dann
+eine unbelegte Zahl, jetzt eine gemessene mit einer Fassung, die den Fehlertyp ausschließt.
 
-**Befund 6, Deckelung der Ergebnisgröße — behoben, mit anderer Lösung als der
-zurückgewiesenen.** Die Deckelung bei 40.000 + min(60.000, …) entfällt; ihre Begründung
-(„sonst zöge eine Bankrottpartie jeden Median") traf auf einen Median nicht zu. An ihre
-Stelle tritt eine dreiteilige, streng geordnete Skala, in der der Tod in Runde d den Wert
-`30.000 + (29 − d) × 1.000` trägt. Damit unterscheiden sich scheiternde Partien
-voneinander um volle Runden, statt auf einem Wert zusammenzufallen — genau dort, wo Maß 1
-im letzten Drittel sonst blind geworden wäre. Die Skala gehört zu diesem Entwurf und nicht
-in die Architektur.
+**Befund 2, Rückvergleichslauf nicht durchführbar — behoben.** Maß 4 läuft im Modus
+`weltlauf`: Fondsteilsystem vollständig abgeschaltet, keine Rendite, keine Todesart,
+Politikinstrumente exogen. Damit gibt es weder den Nenner null noch den Tod in Runde 3. Die
+zweite Lücke — `markt.wert` ohne Startwert — ist unabhängig davon geschlossen: Der
+Startwert steht in der Tabelle *Größen ohne Datenanker* (Wert des Startkorbs zu
+Startpreisen), und im Spielmodus sichert die Regel „Fondsvermögen ≤ 0 löst Todesart 1 in
+derselben Runde aus", dass nie durch null geteilt wird.
 
-**Befund 7, Handelsmatrix vier gegen fünf Gegenüber — behoben.** Die Fassung des
-Architekten ist die richtige und steht jetzt hier: fünf Gebiete × vier Gegenüber × zwei
-Sektoren mit Handelszeilen = 40 Ströme, die Restwelt mit eigenen Zeilen. Nur so hält die
-Invariante „Summe aller Handelsbilanzen = 0". Der widersprüchliche Klammerzusatz ist weg.
+**Befund 3, `handelsanteil` verlässt seinen Wertebereich — behoben, mit einer vierten
+Lösung.** Der Prüfer nannte drei Auswege; ich nehme keinen davon unverändert. Der
+Koeffizient heißt jetzt `durchgriff` und wird als `10.000·H/(H+N)` gebildet: monoton in
+`H/N`, per Konstruktion in 0…10.000, ohne Kappung, ohne negatives Gewicht auf dem
+Landespreis, ohne negative Preise. Die Rangfolge zwischen Ländern und Sektoren — das
+Einzige, was das Argument trägt — bleibt exakt erhalten. Dass sein Zahlenwert keine
+volkswirtschaftliche Bedeutung hat, steht ausdrücklich dabei; die Umbenennung soll
+verhindern, dass ihn jemand für einen gemessenen Anteil hält.
 
-**Befund 8 ist nicht mein Gewerk** (Feldzählung in `technik.md` T15). Was der Entwurf dazu
-vorgibt, steht unter *Der Zustand*: Die Restwelt trägt keine Politikinstrumente, keine
-Zustimmung, keinen Aufsichtszähler und keinen Einfluss — vier Streichungen mehr als der
-Klammerzusatz nannte. Der Architekt zählt danach neu.
+**Befund 4, Profil → Aktionen nicht definiert — behoben.** Das **Vorratsverfahren** steht
+oben mit Schritt, Zähler und Gleichstandsregel: `vi += 3·ai` je Runde, `vi −= 5` je
+Steckplatz, drei Steckplätze je Runde, größtes `vi` gewinnt, Gleichstand nach kleinerer
+Kennung. Alle drei Fragen des Befundes sind beantwortet — nicht runden und nicht ziehen,
+`ai = 0` schiebt ans Ende statt zu verbieten, die Bündelgröße gehört nicht zum Profil. Für
+den Suchbot ist ergänzt, wie das Profil die 60 Kandidaten einschränkt: über die
+Artenzusammensetzung, gesucht wird nur über Ziele und Stufen.
 
-**Zwei Rückfragen aus `technik.md`, Abschnitt 12, hiermit beantwortet.** Der Umgang mit dem
-deutschen Bruch 1999 (verkettete Wechselkurs-Indexreihe, Feld `exogen_ab` am Leitzins)
-entspricht dem Entwurf und wird übernommen; er liegt jetzt in Runde 5 statt Runde 19 und
-ist damit eine frühe, historisch verankerte Schließung eines Aktionsraums. Das Startjahr
-ist oben entschieden und damit keine offene Architekturfrage mehr.
+**Befund 5, Maß 4 ohne Abnahmeregel — behoben.** Sechzehn Prüfgegenstände, nur die freien
+Reihen, die drei Anteilsreihen eines Landes als **ein** Gegenstand, Toleranz zwei. Die
+Rückfrage aus `technik.md` Abschnitt 12 ist damit beantwortet (die 23 freien entscheiden,
+alle 31 werden berichtet), und die zweite Rückfrage zum Handelsblock ebenfalls: Der
+Vorschlag des Architekten wird übernommen, Median über die 40 Ströme, schlechtestes Fünftel
+ausgewiesen. Dazu kam eine Lücke, die der Befund nicht nannte und die dieselbe Stelle
+betrifft: Für Preis- und Wechselkursreihen ist ein MAPE nach T8 gar nicht das verglichene
+Maß; für sie gilt jetzt ein mittlerer absoluter Fehler auf der Jahresrate.
 
-**Eine Folge für den Architekten, die er nicht kennen kann:** Die Partielänge fällt von 40
-auf 28 Runden. Eine Partie kostet damit 28 Weltschritte mit dem Heuristikbot und
-`28 + 60 × 28 = 1.708` mit dem Suchbot; die Rechenzeittabelle in Abschnitt 10 ist auf
-dieser Grundlage neu zu rechnen. Die drei Maße kosten zusammen rund 13,5 Millionen
-Weltschritte statt der bisherigen 19,6 Millionen.
+**Befund 6, `landespreis` nicht definiert — behoben, mit der Lesart, die der Prüfer als
+wohldefiniert bezeichnet.** `landespreis` ist der Sektorpreis der Vorrunde, Startwert
+10.000. Damit bleibt die Überschussfunktion monoton im Weltpreis, die Halbierung aus T28
+ist zulässig, und es entsteht keine Fixpunktaufgabe. Die Größe braucht keine eigene Adresse
+— sie **ist** der Sektorpreis, einen Schritt früher gelesen; der daraus entstehende
+Preiskanal ist oben in die Kanaltabelle eingeordnet und gedämpft.
+
+**Befund 7, Zusammenfassung über die 50 Startwerte fehlt — behoben.** Die 50 stehen jetzt
+in `spiel.md`, und die Zusammenfassung auch: `Dichte(t, s)` gegen den Median **derselben**
+30, dann Mittel über die 50 Startwerte. Der vom Prüfer benannte Fehlweg — ein gemeinsamer
+Median über 1.500 Ergebnisse aus verschiedenen Jahrgangsstreuungen — ist als solcher
+benannt und ausgeschlossen. Die Gesamtkostenzahl nennt nur noch die Summe der drei Maße,
+also genau das, was dieser Entwurf selbst festlegt.
+
+**Befund 8, sechs Profile ohne Familienaktion — behoben, durch die vom Prüfer als billig
+bezeichnete zweite Variante.** Die sechs Profile `(0,0,0,a4,a5)` haben keinen
+Strategiekern, laufen mit, werden berichtet und gehen in keine der beiden Abnahmehälften
+von Maß 2 ein. Klassifiziert sind 120 Profile. Für Maß 3 bleiben alle 126 wählbar — dort
+misst der Vektorabstand, nicht die Klasse.
+
+**Befund 9, Schwelle zwischen zwei erreichbaren Werten — behoben.** Maß 3 verlangt jetzt
+**0,4**, also genau ein verschobenes Fünftel; die Wertemenge `{0; 0,4; …; 2,0}` steht
+daneben, damit die Kalibrierung sieht, worauf sie zielt.
+
+**Befund 10, Ergebnisskala nicht streng geordnet — behoben.** Das Band „Mandat erfüllt"
+endet bei `R × 1.000 = 24.000`, der überlebte Misserfolg beginnt bei `(R+1) × 1.000 =
+25.000`. Kein Wert trägt zwei Bedeutungen, und Maß 2 kann als `E(p) ≤ 24.000` geschrieben
+werden, ohne dass die beiden Hälften des Satzes auseinanderfallen.
+
+**Befund 11, Kostenformel eine Runde zu kurz — behoben, und die dahinterstehende Frage
+entschieden.** Maß 1 misst die Entscheidung **der Runde t**: Das Bündel wird in Runde `t`
+gesetzt, Runde `t` wird gerechnet, Kosten `R + 1 − t`. Die Drittel meinen damit die Runden,
+die sie nennen. Neu: `t` läuft bis `R` statt bis `R − 1`, weil auch die letzte Runde über
+das Mandat entscheidet. Je Startwert 9.000 statt der alten Formel, plus 24 Trägerpartie.
+
+**Befund 12, BACI-Konkordanz fehlt — behoben.** HS92-Kapitel 01–24 → Sektor 1, 25–97 →
+Sektor 2, als Tabelle im Manifest. Der Fehler dieser Grobzuordnung ist benannt (Rohholz,
+Häute, Spinnstoffe, verarbeitete Nahrungsmittel) und folgenlos für den Rückvergleich, weil
+Sollreihe und Modell aus derselben Aggregation entstehen. Damit sind `H`, der Handelsblock
+und die Startmatrix berechenbar.

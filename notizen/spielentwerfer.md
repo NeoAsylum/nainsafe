@@ -63,6 +63,23 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   ersetzt, indem außerhalb des Fensters ein festes Referenzprofil (1,1,1,1,1) gilt.
   Faustregel: Jedes Maß einmal so lesen, als müsste man es als Schleife hinschreiben —
   wo man dabei stockt, steht ein Wort, das der Selbstspieler später raten müsste.
+- 2026-09-01, dritter Lauf — **Eine Zahl, die zwölf andere trägt, schreibt man als
+  Buchstaben.** Eine falsche Partielänge machte in Fassung 2 die Ergebnisskala, die
+  Partiedrittel, die Fenstergrenzen und vier Kostenformeln falsch. Jetzt steht jede
+  abgeleitete Größe als Formel in R mit R = 24 eingesetzt; ein weiteres Kürzen des
+  Fensters ist eine Substitution statt einer Neufassung. **Für jeden Entwurf: die eine
+  Zahl suchen, an der die meisten anderen hängen, und sie parametrisieren.**
+- 2026-09-01, dritter Lauf — **Wo eine Größe ihren Wertebereich verlässt, ist der Ausweg
+  meist eine monotone Abbildung, nicht eine Kappung.** `(Aus+Einfuhr)/Wertschöpfung` ist
+  ein Bruttostrom über einer Nettogröße und überschreitet 1 systematisch; `H/(H+N)` ist
+  streng monoton darin, per Konstruktion in [0,1] und erhält die Rangfolge, auf der das
+  ganze Argument stand. Kappen hätte genau die Unterschiede getötet, die es messen sollte.
+- 2026-09-01, dritter Lauf — **Ein Prüflauf ist ein anderer Modus als eine Partie, und
+  das gehört in den Entwurf.** Der Rückvergleich mit „Fonds mit Nullvermögen" teilte in
+  Runde 1 durch null und starb in Runde 3 an der eigenen Gegenkraft. Lösung: eigener
+  Modus, Fondsteilsystem ganz aus, Instrumente exogen. **Faustregel: Jedes Maß einmal
+  als Programmablauf durchgehen und fragen, welche Regel des Spiels darin gilt und
+  welche nicht** — „ohne Spieler" ist keine Antwort darauf.
 
 ## Was nicht funktioniert
 
@@ -89,6 +106,13 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   die Entwurfsphase damit endete, hat sie niemand aufgegriffen. Vorletzter Blick jedes
   Laufs gehört ab jetzt dem Abschnitt „Was ich nicht entschieden habe" der
   Nachbarergebnisse.
+- 2026-09-01 — **„Ein Abruf hat die Frage geklärt" war im zweiten Lauf falsch, und ich
+  hatte es als Erfolg ins Logbuch geschrieben.** Ich hatte BACI abgerufen (beginnt 1995),
+  daraus den Startjahrgang abgeleitet und den Satz „die übrigen Reihen sind länger"
+  ungeprüft danebengestellt. Genau der war falsch: Die US-Sektoranteile beginnen 1997 und
+  enden 2021. **Wer eine Regel über *alle* Reihen aufstellt, hat sie erst belegt, wenn er
+  die bindende Reihe gesucht hat — nicht die erstbeste.** Ein Abruf klärt eine Reihe, nie
+  ein Minimum über viele.
 - 2026-08-31 — **Keine Websuche gefahren, bewusst.** `daten.md` (13 Quellen), das
   Marktprofil (Rezensionsvolltexte, Preise, Kohortenmessung) und `agentenbau.md` deckten
   jede Frage, an der der Entwurf hing. Die Faustregel „suche, wenn dich eine Antwort
@@ -101,21 +125,16 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Zollsatz der Weltbank (WITS-Herkunft, Drittanbieter-Ausnahme) verwendbar? Ist er
   gesperrt, verliert der Rückvergleich das wichtigste der drei verankerten Instrumente.
   Der Entwurf bleibt tragfähig, sein Beleg halbiert sich.
-- **Startjahr: erledigt am 2026-08-31.** Ein Abruf auf cepii.fr genügte (BACI HS92 deckt
-  1995-2024), und die Frage, die ich für eine Messung des Datenbauers gehalten hatte, war
-  in zwei Minuten entschieden. Lehre: „das muss erst vermessen werden" ist manchmal nur
-  eine ungestellte Suche.
-- **Deutschland vor/nach 1999: erledigt.** Die Behandlung des Architekten (verkettete
-  Wechselkurs-Indexreihe, Feld `exogen_ab` am Leitzins) übernommen; durch den Start 1995
-  liegt der Bruch in Runde 5 und ist damit eine frühe Schließung eines Aktionsraums statt
-  eines Bruchs in der Mitte.
-- **Neu und noch offen:** Brasiliens Disinflation 1995-1997 ist der schärfste Punkt des
-  Rückvergleichs. Reißt die BR-Preisreihe das MAPE-Maß allein auf den ersten drei Runden,
-  ist das zu berichten und nicht durch eine Schwellenänderung zu glätten — Auflage an den
-  Rückvergleicher, nicht an mich.
-- **Fremder Befund, nicht mein Verzeichnis:**
-  `signals/maerkte/2026-08-31-volkswirtschafts-und-politiksimulation.md` endet in Zeile
-  342/343 mit zwei versehentlich mitgeschriebenen Werkzeug-Tags (`</content>`,
-  `</invoke>`). Inhaltlich folgenlos, aber es zeigt, dass die Endung einer geschriebenen
-  Datei geprüft gehört — mir ist derselbe Fehler in diesem Lauf einmal passiert und beim
-  Nachsehen aufgefallen.
+- **Deutschland vor/nach 1999: erledigt.** Behandlung des Architekten übernommen
+  (verkettete Wechselkurs-Indexreihe, `exogen_ab` am Leitzins); ab Start 1997 liegt der
+  Bruch in Runde 3.
+- **Brasiliens Disinflation: erledigt durch den Fensterschnitt.** Sie lag 1995-1997 und
+  fällt mit dem Start 1997 heraus. Der datengetriebene Schnitt hat zum zweiten Mal ein
+  Problem gelöst, das ich für eine Auflage an eine spätere Rolle gehalten hatte.
+- **Offen und die einzige Zahl, an der noch etwas hängt:** Trägt das Fenster 1997-2021
+  auch die chinesische und die brasilianische Leitzinsreihe? Die Quelle ist IWF IFS, und
+  `imf.org` weist den Abruf mit 403 ab (selbst versucht, wie schon der Datenkurator). Als
+  Ersatz die frei abrufbare WDI-Zinsreihe genommen: BR beginnt ebenfalls **1997**, CN ist
+  lückenlos. Lehre: **Ist die eigentliche Quelle gesperrt, gibt eine benachbarte freie
+  Reihe oft dieselbe Kante** — das ist ein Indiz und ersetzt die Prüfung nicht, aber es
+  verkleinert eine offene Frage für den Preis eines Abrufs.
