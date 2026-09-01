@@ -332,3 +332,20 @@ was erlaubt ist.
   aller geprueften Sprachen. Der oft zitierte 23-Prozent-Wert stammt aus Kryptografie,
   der schwersten Rust-Domaene; unser Kern ist Ganzzahlarithmetik ohne `async` und ohne
   Lebenszeit-Generik, also der einfache Teil.
+
+- **2026-09-01** — **`state.db` von Windows aus geoeffnet, Datenbank zerstoert, 54
+  Journaleintraege verloren.** Ich habe die Datei wiederholt ueber den UNC-Pfad mit
+  `file:state.db?mode=ro&immutable=1` gelesen, waehrend WSL-Prozesse hineinschrieben.
+  `immutable=1` sagt SQLite, die Datei aendere sich nicht -- ueber eine
+  Netzwerkfreigabe, auf eine Datei mit aktivem WAL. Dazu habe ich einen laufenden
+  Prozess mit `pkill` mitten im Schreiben beendet. Beides meine Fehler, beide vermeidbar.
+
+  Gerettet hat `sqlite3 state.db ".recover"` 188 von 242 Zeilen. Verloren ist
+  **Buchhaltung, nicht Arbeit**: Alle Ergebnisse -- specs, Befunde, Arbeitspakete,
+  Commits -- liegen in git und sind unversehrt. Was fehlt, sind die Kosten- und
+  Tokenzahlen von zwei Tagen.
+
+  *Folgerung fuer alle:* `state.db` wird ausschliesslich aus WSL heraus geoeffnet
+  (steht jetzt in CLAUDE.md). Und allgemeiner: **Ein Lesezugriff, der eine Sperre
+  umgeht, ist kein Lesezugriff.** `immutable`, `nolock` und dergleichen sind
+  Optimierungen fuer unveraenderliche Dateien, nicht Abkuerzungen fuer bequemen Zugriff.

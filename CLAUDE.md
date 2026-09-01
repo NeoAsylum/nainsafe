@@ -42,6 +42,13 @@ Agent beurteilt. Die Regel dahinter in einem Satz: *Was tausendmal automatisch g
 werden kann, ist unsere Stärke; was einmal von einem Menschen beurteilt werden muss, ist
 unsere Grenze.*
 
+**`state.db` wird ausschliesslich aus WSL heraus geoeffnet.** Nie ueber den
+UNC-Pfad von Windows aus, nie mit `immutable=1`, nie waehrend ein Lauf schreibt. Am
+2026-09-01 hat genau das die Datenbank zerstoert und 54 Journaleintraege gekostet:
+`immutable=1` sagt SQLite, die Datei aendere sich nicht -- ueber eine Netzwerkfreigabe,
+auf eine Datei mit aktivem WAL. Der Weg ist immer
+`wsl -d Ubuntu -- bash -lc "cd ~/fabrik && ..."`.
+
 ## Die vier harten Regeln
 
 1. **Kein Agent gibt Geld aus.** Keine Bestellung, kein Abo, keine kostenpflichtige API
