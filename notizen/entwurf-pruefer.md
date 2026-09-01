@@ -46,6 +46,17 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Startwerttabelle nur eines davon; 32 der 310 Adressen hatten dadurch keinen Startwert.
   Der Satz „hier stehen alle uebrigen" ist eine pruefbare Behauptung, keine Ueberleitung —
   und er wird zuverlaessig geglaubt statt nachgezaehlt.
+- 2026-09-01 (4. Lauf) — **Wo ein Dokument sagt „diese Regel gilt hier nicht", nachsehen,
+  ob es sie anderswo ueberhaupt gibt.** T44 schrieb die Aggregation des fehlenden
+  Einflusses fuer die Botgroesse `B` und schloss sie fuer die Ergebnisgroesse ausdruecklich
+  aus — der Ausschluss war der Fund: Die Ergebnisgroesse hat keine. Eine Hilfsgroesse, die
+  eine Rechenvorschrift *erfinden muss*, zeigt zuverlaessig die Luecke in der Hauptgroesse,
+  gegen die abgenommen wird. Dieselbe Bewegung wie im 3. Lauf, nur eine Ebene hoeher.
+- 2026-09-01 (4. Lauf) — **Eine Groesse je Land, die als eine Zahl in eine Formel geht,
+  braucht eine Aggregationsregel.** Drei plausible Lesarten (Summe, schwaecheres der zwei
+  besten, Mittel) an zwei erfundenen Partien durchgerechnet: drei verschiedene Sieger. Der
+  Beleg *„dieselben Laeufe, verschiedene Ordnung"* macht aus einer Auslegungsfrage einen
+  Befund, den niemand als Geschmack abtun kann.
 - 2026-09-01 — **Nach einer geaenderten Grundzahl jede abgeleitete Zahl nachrechnen —
   auch wenn nichts herauskommt.** R fiel von 28 auf 24; ich habe rund zwanzig abgeleitete
   Groessen beider Dokumente nachgerechnet (Feldzahl, Sollmaske, alle Kostenzeilen,
@@ -70,18 +81,32 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   `V`-Regel in T42). Beide gehoeren in den Abschnitt *wonach ich gesucht habe* — dort
   belegen sie die Tiefe der Pruefung, im Befundteil waeren sie Rauschen.
 
+- 2026-09-01 (4. Lauf) — **Eine Bedingung, die zwei Gewerke gemeinsam erfuellen muessen,
+  kann ein Lauf mit nur einem Gewerk nicht schliessen.** Bedingung 3 verlangt Gleichheit
+  zwischen `spiel.md` und `technik.md`; zum Ruecklauf lief nur der Architekt, der `spiel.md`
+  gar nicht anfassen darf — Zaehler steigt, ohne dass jemand einen Fehler gemacht hat.
+  **Erst `git log --name-only` auf die betroffenen Dateien, dann urteilen:** Wer seit der
+  letzten Pruefung nicht geschrieben hat, kann seinen Befund nicht behoben haben, und das
+  gehoert in den Befund — an den Projektmanager, nicht an den Bauagenten.
+
 ## Offene Faehrten
 
-- **Geschlossen 2026-09-01:** Startjahrgang (eigener Abruf, 1997-2021), `handelsanteil`
-  → `durchgriff`, Marktrendite, Abbildung Profil→Aktionen, Abnahmeregel Mass 4. Alle
-  zwoelf Vorrundenbefunde sind sachlich behoben, keiner nur behauptet.
-- **Die Bruchstelle „eine Groesse mit zwei Herren" ist gewandert, nicht verschwunden.**
-  Erst Sektorgliederung, dann Startjahrgang und Marktrendite, dann Abnahmeregel und
-  Profilabbildung — diesmal liegt sie **in der Luecke zwischen** beiden Dokumenten: Der
-  Architekt hat seine Haelfte der Suchbotfrage geschlossen (Kandidatenziehung, T41), die
-  andere Haelfte (Zielgroesse) gehoert dem Spielentwerfer und steht in keiner Liste
-  offener Punkte. *Beim naechsten Lauf zuerst dort suchen, wo eine Rolle ausdruecklich
-  „meine Haelfte" sagt — die andere Haelfte ist der wahrscheinlichste Fundort.*
+- **Geschlossen 2026-09-01 (4. Lauf):** Zielgroesse des Suchbots (T44, ohne freien
+  Parameter, Baender nachgerechnet und disjunkt) und die 32 fehlenden Startwerte (T23
+  Punkt 1, dazu T45 als Abzaehlung ueber alle 310 Adressen). Beide Reparaturen stehen im
+  **anderen** Dokument als erwartet — nach den fuenf Bedingungen ist das kein Befund, weil
+  sie nach Rechenvorschrift und Herkunft fragen, nicht nach dem Ort. Das war die Vormerkung
+  aus dem 3. Lauf; sie ist beantwortet.
+- **Die Bruchstelle „eine Groesse mit zwei Herren" ist wieder gewandert.** Sektorgliederung
+  → Startjahrgang → Abnahmeregel → Luecke zwischen den Dokumenten (Suchbot-Zielgroesse) →
+  jetzt **innerhalb** von `spiel.md`: der Fehlbetrag der Ergebnisgroesse, gegen den alle
+  drei Prueffstandsmaße abnehmen. Muster: Die Stelle liegt immer dort, wo eine Groesse
+  *benannt*, aber nicht *gerechnet* wird. *Beim naechsten Lauf zuerst jede Groesse suchen,
+  die in einer Formel als ein Wort steht und im Zustand als Vektor.*
+- **Beim fuenften Lauf zu pruefen:** ob `spiel.md` das eine Wort im Vorratssatz und den
+  Halbsatz zum fehlenden Einfluss bekommen hat — beide kosten eine Zeile und sind deshalb
+  leicht zu vergessen. Dazu der Halbsatz, ob Beteiligungen zum Fondsvermoegen zaehlen
+  (heute geprueft und bewusst nicht gezaehlt).
 - **Mass 4 ist ungemessen und bleibt das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
   Richtungstreue mit endogener Produktivitaet erreichbar sind, kann erst der
   Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler.
@@ -89,8 +114,3 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   weist mit HTTP 403 ab, `FR.INR.LEND` ist ein Indiz und eine andere Reihe. Nach T40
   kostet ein engeres Fenster nur noch eine Manifestzeile — die Faehrte kann kein Paket
   mehr zweimal bauen lassen.
-- **Beim vierten Lauf zu pruefen, falls es einen gibt:** ob die Vergleichsgroesse des
-  Suchbots wirklich in `spiel.md` steht und nicht nur im Befundabarbeitungsteil behauptet
-  wird, und ob die zwei fehlenden Startwertzeilen tatsaechlich in der Tabelle gelandet
-  sind statt in einem Nebensatz. Beides ist billig zu beheben und deshalb leicht zu
-  vergessen.
