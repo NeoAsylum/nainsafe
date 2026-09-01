@@ -28,6 +28,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-01 — Die nützlichste Frage nach dem Engpass war nicht „was fehlt", sondern
   „welche Größe lesen die meisten Stellen". `fondsvermoegen(z)` hat fünf Leser, und damit
   war Paket 0002 ohne Abwägung der Engpass.
+- 2026-09-01 (2. Lauf) — **Nach einem Baulauf zuerst `git log --stat` gegen die
+  Statuszeilen der Pakete halten, nicht die Ergebnisdateien lesen.** Der Abgleich fand in
+  drei Minuten alles, worauf es ankam: ein Paket mit Datei ohne Statuswechsel, eines mit
+  Commit ohne Datei. Die Befunde selbst musste ich nur für die zwei Zahlen öffnen, die in
+  den Plan gehören.
+- 2026-09-01 — **Ein Logbuch, das die Vorlage geblieben ist, ist der billigste Beweis für
+  einen leeren Lauf.** Jede Rolle schreibt am Ende hinein; wo nichts steht, hat der Lauf
+  nicht bis zum Ende gearbeitet. Schneller als jede Journalabfrage.
 
 ## Was nicht funktioniert
 
@@ -35,7 +43,16 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   mit `offset`/`limit` und `grep` gehen. Kein Zeitverlust, wenn man gleich so anfängt.
 - 2026-09-01 — `ops/portfolio.md` (2026-08-30) und `ops/kontingent.md` (2026-08-30) sind
   älter als die Umstellung auf 0016 und beschreiben eine Fabrik, die es nicht mehr gibt.
-  Für den Stand eines Vorhabens sind sie unbrauchbar; nicht wieder dort anfangen.
+  Für den Stand eines Vorhabens sind sie unbrauchbar; nicht wieder dort anfangen. Dasselbe
+  gilt für `ops/auslastung.md` — vom 2026-08-30, kennt keinen einzigen Baulauf.
+- 2026-09-01 — **Die Commit-Betreffs sagen nicht, wer was getan hat.** Jeder Bauagent
+  committet seinen ganzen Schreibpfad (`ventures/`), also nimmt der erste fertige Lauf die
+  Dateien der drei parallelen mit. Wer aus `git log` auf Urheber schließt, irrt sich um bis
+  zu drei Läufe; nur `--stat` gegen das Feld `dateien` des Pakets trägt.
+- 2026-09-01 — `python3 -c` und mehrzeilige Bash-Schleifen sind abgelehnt, einzeilige
+  `git`-, `grep`- und `ls`-Aufrufe gehen. Das Journal (`state.db`) ist damit für mich nicht
+  lesbar — die Frage „warum blieb der Lauf leer" gehört in den Plan, nicht in meine
+  eigene Recherche.
 
 ## Offene Faehrten
 
@@ -44,8 +61,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   (Empfehlung: erster bestandener Rückvergleich). Beim nächsten Lauf prüfen, ob eine
   davon beantwortet ist — unbeantwortete Empfehlungen zweimal hintereinander unverändert
   hinzuschreiben wäre genau der Bericht, der jede Woche gleich aussieht.
-- **Ob der Kernbauer in 0002 wirklich entschieden hat oder nur beschrieben.** Das Paket
-  verlangt Code samt Einheit; fünf Runden Prosa gingen voraus. Erste Frage nächstes Mal:
-  Gibt es `kern/bewertung.rs`, und rechnet ein Test einen Fall von Hand nach?
-- **Leere Prüfausgaben.** Runde 5 hatte 0 Byte und fiel durch jede Zählung. Wenn das im
-  Bau wieder vorkommt, ist es kein Einzelfall, sondern eine Lücke in `pruefung.py`.
+- **Leere Läufe sind kein Einzelfall mehr, sondern das Muster.** Runde 5 im Entwurf
+  (0 Byte), 0004 im Bau (kein Byte), der Prüfer zu 0005 (kein Befund) — drei Fälle in zwei
+  Tagen, keiner davon in irgendeiner Zählung sichtbar. Nächster Lauf: Ist es wieder
+  passiert, gehört es nicht mehr in „was quer liegt", sondern nach oben als Engpass.
+- **Vier Entscheidungen hängen jetzt beim Betreiber** (Reihe 9/R, leere Läufe sichtbar
+  machen, Rücklaufgrenze, 170-gegen-121). Beim nächsten Lauf zuerst prüfen, welche
+  beantwortet ist — und wenn keine, die Zahl selbst zum Thema machen statt der Liste.
+- **Ob das Vorhaben je einen Übersetzer sieht.** `rueckstand.md` baut jedes
+  Abnahmekriterium auf „kein Agent hat eine Shell", und das stimmt so nicht. Die Frage ist
+  nicht geklärt, sondern ungemessen — ein einziger `cargo --version`-Versuch eines
+  Bauagenten würde sie beantworten.
