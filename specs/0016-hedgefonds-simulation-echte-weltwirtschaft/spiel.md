@@ -17,9 +17,13 @@ messbar_rueckvergleich: Startjahrgang 1997, R = 24 Runden im Weltlauf (Fondsteil
 
 # Ein Hedgefonds mit vier Ländern, drei Sektoren und vier Politikhebeln — und jede Zahl, die sich bewegt, sagt warum.
 
-*Dritte Fassung nach `ventures/0016-.../befunde/pruefung-entwurf-fassung2-2026-08-31.md`
-und gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Die Abarbeitung der zwölf
-Befunde steht am Ende der Datei.*
+*Vierte Fassung, nach
+`ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde4-2026-09-01.md` und gegen
+`ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Geändert sind gegenüber der dritten
+Fassung genau vier Stellen: das Vorratsverfahren (eine Zahl), der Fehlbetrag der
+Ergebnisgröße, das Fondsvermögen und die Tabelle der Größen ohne Datenanker. Die
+Abarbeitung beider Befunde steht am Ende der Datei, die der zwölf Befunde der zweiten
+Fassung darunter.*
 
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
@@ -162,7 +166,8 @@ Kennungen 1 bis 5 sind zugleich die Gleichstandsordnung aller Maße.
    Der Ein- und Ausstieg bewegt den Preis gegen den Fonds, und zwar umso stärker, je
    größer sein Anteil an diesem Markt ist.
 2. **Beteiligung.** Ein dauerhafter Anteil an einem Land×Sektor. Sie ist illiquide — der
-   Ausstieg dauert zwei Runden und kostet einen Abschlag — und sie ist der einzige Weg zu
+   Ausstieg dauert zwei Runden, und ihr Ausstiegsabschlag steckt bereits im Wertansatz, ist
+   beim Einstieg also sofort bezahlt (siehe *Was das Fondsvermögen ist*) — und sie ist der einzige Weg zu
    billigem Lobbying: Lobbyaktionen in einem Sektor, an dem der Fonds beteiligt ist,
    kosten einen Bruchteil.
 3. **Lobbybudget.** Geld auf ein Politikinstrument eines Landes, in eine Richtung. Wirkt
@@ -229,15 +234,18 @@ abschließend:
 
 | Größe | Startwert | Regel im Lauf |
 |---|---|---|
-| Sektorpreis (je Gebiet × Sektor) | Index 10.000 | Markträumung, siehe oben |
+| Sektorpreis (je Gebiet × Sektor, 15) | Index 10.000 | Markträumung, siehe oben |
+| Weltpreis (je handelbarem Sektor, 2) | Index 10.000 | Markträumung in Schritt 4, siehe oben |
 | `landespreis` | = Sektorpreis, Runde 1 also 10.000 | Sektorpreis der Vorrunde |
 | `durchgriff` (je Gebiet × handelbarem Sektor) | Konstante des Jahrgangs | `10.000·H/(H+N)`, über die Partie fest |
 | Zustimmung (je Land) | aus `parameter.toml` | Gegenkraft 2 |
 | Aufsichtszähler (je Land) | 0 | Gegenkraft 1 |
 | Nachahmerzähler (je Land × Sektor) | 0 | Gegenkraft 4 |
 | Einfluss (je Land) | 0 | geglätteter Anteil am Lobbydruck |
-| Gegendruck je Instrument | 0 | Gegenkraft 5 |
-| drei Restdauerzähler je Land | 0 | Gegenkraft 1 und 2 |
+| Lobbydruck je Instrument (16) | 0 | Aktion 3, Verrechnung in Schritt 3 |
+| Gegendruck je Instrument (16) | 0 | Gegenkraft 5 |
+| Restverzögerung je Instrument (16) | 0 | Schritt 3 |
+| drei Restdauerzähler je Land (12) | 0 | Gegenkraft 1 und 2 |
 | Finanzmarktregulierung (Stand) | aus `parameter.toml` | Instrument wie die anderen drei |
 | `markt.wert` | Wert des Startkorbs zu Startpreisen | eingefrorener Mengenkorb, Gegenkraft 3 |
 | `markt.rendite` | 0 | ebd. |
@@ -245,11 +253,45 @@ abschließend:
 | Hebelstand, Sichtbarkeit, Marktanteil, Überrendite (3) | 0 | Aktionen 4 und 5, Abrechnung |
 | Beteiligungen (12 Anteile + 12 Restdauern) | 0 | Aktion 2 |
 | Positionssteckplätze (20) | 0 | Aktion 1 |
+| Partie: Runde | 0 | Buchführung des Laufs |
+| Partie: Jahrgangskennung | aus dem Manifest des Jahrgangs | fest über die Partie |
+| Partie: Parametersatz-Prüfsumme | aus `parameter.toml` | fest über die Partie |
+| Partie: Mandatsstand | 0 | Schritt 6, Mandatsprüfung |
 
-**Und eine Regel, die den Nenner der Fondsrendite sichert:** Fällt das Fondsvermögen
-(Kasse + bewertete Positionen − Hebel) auf null oder darunter, greift Todesart 1
-(Zwangsliquidation) in derselben Runde. Eine Rendite auf einen nichtpositiven Nenner wird
-damit nie gebildet.
+**Diese Tabelle ist der Herkunftseintrag für alles, was keinen Datenanker hat**, und erst
+mit den sieben neuen Zeilen ist sie das, was sie von sich behauptet: abschließend. Der
+Abgleich gegen die 310 Adressen aus `technik.md` T15 stammt nicht von mir, sondern aus der
+Prüfung vom 2026-09-01: Ohne Herkunftseintrag blieben dort **32** Adressen (Lobbydruck und
+Restverzögerung je Instrument, vom Architekten in T23 Punkt 1 nachgetragen) und **sechs**
+(zwei Weltpreise, vier Partiefelder, für die T45 keine zulässige Eintragsart kannte). Alle
+38 stehen jetzt hier, wo die Tabelle sie zugesagt hatte. Das ist die Bedingung, an der der
+Jahrgangsbau nach T45 sonst abbräche.
+
+### Was das Fondsvermögen ist, und ob die Beteiligungen dazugehören
+
+Der Architekt hat die Frage zurückgegeben (`technik.md` Abschnitt 12, Punkt 3), und sie ist
+eine Modellfrage. **Sie zählen dazu:**
+
+```
+fondsvermoegen = Kasse + bewertete Positionen + bewertete Beteiligungen − Hebel
+```
+
+**Der Grund ist kein Geschmack, sondern Maß 2.** Zählten sie nicht, verwandelte Aktion 2
+Kasse in etwas, das in keiner Hälfte des Mandats vorkommt; Klasse 2 könnte die erste
+Abnahmehälfte von Maß 2 dann unabhängig von jeder Kalibrierung nicht bestehen, und ein Maß,
+das eine seiner drei Klassen von Bauart wegen durchfallen lässt, misst nichts.
+
+**Bewertet wird zum Ausstiegswert, also zum Modellwert des Land×Sektor-Korbs abzüglich des
+Ausstiegsabschlags.** Damit heißt „Fondsvermögen" durchgehend dasselbe — *was der Fonds
+wert ist, wenn er hier aufhört* —, und genau das brauchen die Ergebnisgröße, das Mandat und
+Todesart 1. Der Abschlag ist damit beim **Aufbau** der Beteiligung bezahlt und wird beim
+gewöhnlichen Ausstieg nicht ein zweites Mal abgezogen; illiquide bleibt sie über die zwei
+Runden Ausstiegsdauer. Der Zwangsverkauf aus Gegenkraft 1 ist davon unberührt — sein
+Abschlag ist eine zusätzliche Strafe und kommt oben drauf.
+
+**Und die Regel, die den Nenner der Fondsrendite sichert:** Fällt das Fondsvermögen auf null
+oder darunter, greift Todesart 1 (Zwangsliquidation) in derselben Runde. Eine Rendite auf
+einen nichtpositiven Nenner wird damit nie gebildet.
 
 ### Warum die Größe des Zustands keine Verteidigung ist
 
@@ -398,8 +440,53 @@ Ein `i64` in Milli-Runden, **kleiner ist besser**, streng geordnet und ohne Samm
 | Ausgang | Wert | Bereich bei R = 24 |
 |---|---|---|
 | Mandat in Runde r erfüllt | `r × 1.000` | 1.000 … 24.000 |
-| R Runden überlebt, Mandat nicht erfüllt | `(R+1) × 1.000 + Fehlbetrag`, Fehlbetrag = fehlendes Vermögen plus fehlender Einfluss, je in Promille der eigenen Schwelle, **je Teil bei 1.000 begrenzt** | 25.000 … 27.000 |
+| R Runden überlebt, Mandat nicht erfüllt | `(R+1) × 1.000 + v + e`, siehe **Der Fehlbetrag** | 25.000 … 28.000 |
 | an einer Todesart in Runde d gestorben | `30.000 + (R + 1 − d) × 1.000` | 31.000 … 54.000 |
+
+#### Der Fehlbetrag, und wie „fehlender Einfluss" über die Länder gerechnet wird
+
+Der Fehlbetrag ist `v + e`, beide in Promille der jeweiligen Mandatsschwelle
+(`schwelle_v`, `schwelle_e` aus `parameter.toml`):
+
+```
+v = teile_gerundet(max(0, schwelle_v − fondsvermoegen) · 1.000, schwelle_v)
+
+e = Summe über die zwei Länder mit dem höchsten Einfluss (Gleichstand nach LandId) von
+    teile_gerundet(max(0, schwelle_e − einfluss[land]) · 1.000, schwelle_e)
+```
+
+**Zwei Länder, weil das Mandat zwei verlangt, und die eigenen zwei besten, weil ein Fonds
+nicht für die Länder büßen soll, die er nie betreten wollte.** Von den drei naheliegenden
+Lesarten — Summe, Mittel, schwächeres der beiden — ist die Summe gewählt: Sie misst die
+**verbleibende Arbeit**. Ein Fonds mit einem Land am Ziel und einem bei null (0 + 1.000)
+und einer mit zwei Ländern bei je der Hälfte (500 + 500) sind gleich weit vom Mandat
+entfernt, und genau das sagt die Summe. Das Mittel ordnet identisch — es ist die Summe
+halbiert —, das schwächere der beiden nicht: Es erklärte den halbierten Fonds für deutlich
+näher dran und belohnte damit Breite, die das Mandat nicht verlangt.
+
+**Es wird nichts gekappt, und es muss auch nichts gekappt werden.** `einfluss` liegt nach
+Bauart in 0 … 100, also ist jeder der beiden Summanden in `e` per Konstruktion in
+0 … 1.000 und damit `0 ≤ e ≤ 2.000`; im Band „überlebt" lebt der Fonds, also ist
+`fondsvermoegen > 0` (sonst hätte Todesart 1 in derselben Runde gegriffen) und damit
+`0 ≤ v ≤ 1.000`, wobei 1.000 nur die Rundung erreicht. Daraus folgt
+`0 ≤ v + e ≤ 3.000` und das Band 25.000 … 28.000 — nachgerechnet und nicht verordnet. Die
+Kappung der dritten Fassung war der Ersatz für eine fehlende Aggregationsregel; mit der
+Regel entfällt sie, und sie war schädlich: Sie hätte jeden Fonds mit weniger als einer
+Schwelle Gesamteinfluss auf denselben Wert 1.000 gelegt — also die untere Hälfte des
+Ergebnisraums geglättet, und zwar genau dort, wo Maß 3 sein Argminimum sucht, wenn im
+Fenster kein Profil das Mandat erreicht.
+
+**Damit rechnen `spiel.md` und die Botzielgröße `B` aus `technik.md` T44 in diesem Zweig
+dieselbe Formel** — die dort begründete Abweichung (T44 kappt nicht, weil Kappen den Bot
+in der Frühphase blind machte) verschwindet, weil hier ebenfalls nicht gekappt wird. `B`
+bleibt botintern, die Bandprüfung gilt weiter nur für das Partieergebnis.
+
+**Die Bänder bleiben disjunkt, auch das obere:** „überlebt" endet bei
+`(R+1) × 1.000 + 3.000`, das Todesband beginnt bei `31.000`; disjunkt sind sie genau für
+`R ≤ 26`. Das ist **dieselbe Schranke**, die `technik.md` T40 schon in den Jahrgangsbau
+zieht — sie bleibt unverändert gültig, ist jetzt aber scharf statt großzügig, und das
+breitere Band kostet keine Runde Partielänge. Bei R = 24 sind die unerreichbaren Lücken
+24.001 … 24.999 und **28.001 … 30.999**.
 
 **Die Kante aus Befund 10 ist damit geschlossen:** Das Band 1.000 … 24.000 heißt genau
 „Mandat erfüllt", der überlebte Misserfolg beginnt bei 25.000, und kein Wert trägt zwei
@@ -435,8 +522,10 @@ Drei Fragen, die der Prüfer zu Recht gestellt hat, sind damit beantwortet. Der 
 nicht zum Profil. `ai = 0` **verbietet die Art nicht**, sondern schiebt sie ans Ende — ein
 hartes Verbot ließe Profile mit Nullen ihre Steckplätze nicht füllen und machte Maß 2 zu
 einem Vergleich zwischen drei und weniger als drei Aktionen je Runde statt zwischen
-Strategien. Es wird nie gerundet und nie gezogen: über 15 Runden bekommt Art `i` genau
-`3·ai` Steckplätze, der Rest ist beschränkt.
+Strategien. Es wird nie gerundet und nie gezogen: **Nach `5k` Runden steht der Vorratsvektor wieder
+auf `(0,0,0,0,0)`, und Art `i` hat genau `3k·ai` der `15k` Steckplätze bekommen** — für
+`k = 1` also `3·ai` von fünfzehn nach **fünf** Runden, für `k = 3` `9·ai` von
+fünfundvierzig nach fünfzehn. Zwischen zwei solchen Punkten ist die Abweichung beschränkt.
 
 Zur Probe das Referenzprofil: Runden 1 bis 5 vergeben die Arten
 1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 und stehen danach wieder auf `(0,0,0,0,0)` — je
@@ -648,7 +737,7 @@ falsch wäre; ein Mittel ginge daran kaputt, eine Je-Strom-Schwelle schneller.
 **Kosten:** R = 24 Weltschritte.
 
 **Und die Grenze des Orakels, ausdrücklich.** Ohne Sollreihe sind: **Sektorpreise**
-(Lücke 2 des Datenkurators), **Zustimmung** (Lücke 4), das Instrument
+und **Weltpreise** (Lücke 2 des Datenkurators), **Zustimmung** (Lücke 4), das Instrument
 **Finanzmarktregulierung** und die **Marktrendite**. Dazu kommt im Weltlauf das gesamte
 Fondsteilsystem, das gar nicht läuft. Alle diese Größen sind im Zustand sichtbar, keine ist
 vom Rückvergleich gedeckt. Er prüft die Dynamik der Maschine über den historischen
@@ -761,6 +850,31 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 
 Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
 
+### Neu in Fassung 4 — vier Stellen, alle klein
+
+| war (`technik.md`) | ist | betrifft |
+|---|---|---|
+| Ergebnisband „überlebt" `(R+1)×1.000 … +2.000`, 25.000 … 27.000 | **`(R+1)×1.000 … +3.000`, 25.000 … 28.000** (keine Kappung mehr) | T40, Bandtabelle |
+| unerreichbare Lücken 24.001 … 24.999 und **27.001** … 30.999 | 24.001 … 24.999 und **28.001** … 30.999 | T34, Bandprüfung |
+| T44: „Die einzige Abweichung von der Ergebnisgröße ist die Kappung" | **entfällt** — der Zweig „überlebt" von `B` und die Ergebnisgröße sind jetzt dieselbe Formel; `B`s eigene Zahlen (`e ≤ 2.000`, 25.000 … 28.000) bleiben richtig | T44 |
+| `Fondsvermögen = Kasse + bewertete Positionen − Hebel` | **`… + bewertete Beteiligungen − Hebel`**, bewertet zum Ausstiegswert | Schritt „Abrechnung", T30 Prüfung 2 (Invariantentest), T44 `v(z)` |
+
+**Zwei Dinge, die ich nachgerechnet habe, damit du es nicht musst.** Erstens: Die Schranke
+`R ≤ 26` aus T40 bleibt unverändert gültig — mit dem breiteren Band ist sie jetzt genau die
+Disjunktheitsbedingung statt einer großzügigen; das Band kostet also keine Runde
+Partielänge. Zweitens: Der Bereichstest `1.000 … R × 1.000 + 30.000` ist unberührt, weil
+sein oberes Ende aus dem Todesband kommt.
+
+**Und drei Stellen, die durch diese Fassung *entfallen* statt sich zu ändern:** die offene
+Frage aus Abschnitt 12 Punkt 3 (Beteiligungen, oben entschieden), die Klasse-2-Erörterung
+in T44 (sie hing an genau dieser Frage) und der Nachtrag in T23 Punkt 1 — er bleibt
+richtig, ist aber jetzt doppelt, weil die 32 Adressen in der Entwurfstabelle stehen, die
+sie zugesagt hatte.
+
+### Aus Fassung 3 — vom Architekten am 2026-09-01 erledigt
+
+Steht nur noch als Nachweis hier; nichts davon ist offen.
+
 | war | ist | betrifft |
 |---|---|---|
 | 28 Runden, 1995–2023, 29 Stützstellen | **R = 24**, 1997–2021, 25 Stützstellen | Frontmatter, T22, T23, T24, Abschnitt 10 |
@@ -780,6 +894,62 @@ Neu hinzugekommen und ohne Vorbild in Fassung 2: das **Vorratsverfahren** (Profi
 Aktionen), die **HS92-Konkordanz** und die Tabelle **Größen ohne Datenanker**. Alle drei
 sind Entwurf, nicht Architektur — sie brauchen von dir nur eine Aufnahme, keine
 Entscheidung.
+
+## Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01
+
+**Befund 1, `spiel.md` und `technik.md` widersprechen sich in der Steckplatzzahl — behoben,
+und der Fehler war meiner.** Der Satz sagte „über 15 Runden … `3·ai` Steckplätze" und
+mischte damit `k = 1` und `k = 3`. Er steht jetzt in der allgemeinen Form, die T43 schon
+trägt: nach `5k` Runden `3k·ai` von `15k`, mit beiden Fällen ausgeschrieben. Die Probe zwei
+Absätze darunter (fünf Runden, drei von fünfzehn) war die ganze Zeit richtig und ist jetzt
+nicht mehr der Widerspruch zum eigenen Satz. Der Prüfer hat den Rechenweg von Hand
+nachgerechnet, ich habe ihn gegen dieselbe Probe geprüft und komme auf dieselbe Zahl.
+
+**Befund 2, die Aggregation des fehlenden Einflusses fehlt — behoben, aber nicht auf dem
+vorgeschlagenen Weg, und der Unterschied kostet zwei Zahlen.** Die Aggregation ist
+übernommen, wie der Prüfer sie vorschlägt und wie T44 sie für `B` schon schreibt: Summe
+über die zwei Länder mit dem höchsten Einfluss, Gleichstand nach `LandId`. Beide Dokumente
+rechnen dieselbe Größe damit gleich.
+
+**Nicht übernommen habe ich die Kappung**, und das ist die eine Stelle, an der ich vom
+billigsten Weg abweiche. Der Prüfer hat sie ausdrücklich stehen lassen dürfen — sie ist in
+T44 begründet und war kein Befund. Aber dieselbe Begründung schlägt zurück: T44 verwirft
+das Kappen für `B`, weil ein Fonds bei Einfluss null in beiden Ländern auf dem gekappten
+Wert 1.000 säße und eine Verbesserung auf 60 Prozent der Schwelle **unsichtbar** bliebe.
+Für das Partieergebnis gilt das eine Ebene höher: Die Kappung legte jeden Fonds mit
+weniger als einer Schwelle Gesamteinfluss auf denselben Wert und glättete damit die untere
+Hälfte des Ergebnisraums — genau dort, wo Maß 3 sein Argminimum sucht, wenn im Fenster kein
+Profil das Mandat erreicht. Das ist der Fall, den der Befund selbst als den plausiblen
+benennt. Ich hätte damit eine Blindheit eingebaut, die der Prüfstand nicht mehr findet,
+weil sie kein Fehler ist, sondern eine Definition.
+
+Gebraucht wird die Kappung ohnehin nicht: `einfluss` liegt nach Bauart in 0 … 100, also ist
+jeder Summand per Konstruktion höchstens 1.000, und `fondsvermoegen > 0` gilt für jeden
+lebenden Fonds. Die Schranke folgt jetzt aus der Rechnung statt aus einer Deckelung.
+**Der Preis steht in „Was der Architekt neu rechnen muss" und ist zweimal eine Zahl:**
+Ergebnisband 27.000 → 28.000 (T40) und Lückengrenze 27.001 → 28.001 (T34). Dafür entfällt
+der Kappungsunterschied zwischen `B` und der Ergebnisgröße vollständig — zwei Formeln
+werden zu einer, und die Stelle kann nicht mehr auseinanderlaufen. Nachgerechnet habe ich
+auch, was der Befund nicht verlangte: Die Bänder bleiben disjunkt, und T40s Schranke
+`R ≤ 26` gilt unverändert.
+
+**Dazu zwei Punkte aus „Geprüft und nicht gezählt", weil dieser Lauf ohnehin stattfand.**
+Der Prüfer hat beide ausdrücklich nicht als Befund gezählt; beide waren an mich adressiert,
+und beide kosten hier eine Entscheidung statt eines weiteren Laufs.
+
+1. **Gehören die zwölf Beteiligungen zum Fondsvermögen? Ja** — der Abschnitt *Was das
+   Fondsvermögen ist* entscheidet es samt Bewertung zum Ausstiegswert. Ich lasse das nicht
+   offen, obwohl es kein Befund ist: Fiele die Antwort später anders aus, könnte Klasse 2
+   die erste Abnahmehälfte von Maß 2 von Bauart wegen nicht bestehen, und das sähe im
+   Prüfstand aus wie ein Balanceproblem, obwohl es eine Definition wäre.
+2. **Die 38 Adressen ohne Herkunftseintrag** (32 aus T23 Punkt 1, sechs ohne zulässige
+   Eintragsart) stehen jetzt in der Entwurfstabelle, die von sich sagt, sie führe „alle
+   übrigen, abschließend". Damit ist die Zusage der Tabelle wieder wahr, und T45 braucht
+   keine neue Eintragsart.
+
+**Was ich nicht angefasst habe:** die Bemerkung des Prüfers an den Projektmanager, dass ein
+Rücklauf ohne Lauf des Spielentwerfers nicht schließbar war. Das ist eine Frage der
+Ablaufsteuerung und nicht meine; dieser Lauf ist die Antwort darauf.
 
 ## Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31
 
