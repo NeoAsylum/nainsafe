@@ -308,3 +308,27 @@ was erlaubt ist.
   statt Prosa kostet. *Folgerung:* Beim Einbau einer Bremse jede Stelle suchen, an der
   dieselbe Schleife laufen kann, nicht nur die, die gerade brannte. Beide Grenzen stehen
   jetzt, und die zweite hat der Apparat selbst gefunden -- genau dafuer gibt es ihn.
+
+- **2026-09-01** — **Ein Argument ist kein Vergleich, und eine Stackwahl zerfaellt meist
+  in zwei.** Der Architekt hat Rust in drei guten Saetzen begruendet und keine einzige
+  Alternative genannt. Der Betreiber fragte nach, die Pruefung gab ihm recht in der
+  Sache — Rust ist die einzige verbreitete Sprache, in der sich Determinismus **vom
+  Werkzeug** erzwingen laesst (Gleitkomma im Kern verbietbar und per `grep` nachweisbar,
+  `overflow-checks` auch im Freigabeprofil, `BTreeMap` statt streuender Mengen). Go
+  scheitert genau daran: `float64` ist nicht verbietbar, die Kartenreihenfolge absichtlich
+  gestreut. *Folgerung fuer den Architekten:* Eine Tabelle mit mindestens drei Kandidaten,
+  nicht zwei Saetze fuer den einen (ADR 0010).
+
+  **Und der zweite Teil ist der wertvollere:** Die Oberflaechenwahl (egui) stand im
+  selben Dokument, obwohl sie jetzt niemand braucht — die Architektur verlangt ohnehin,
+  dass das Spiel ohne Darstellung spielbar ist. Sie ist vertagt. *Frage, die kuenftig in
+  jeden Entwurf gehoert:* **Welche Festlegung muss jetzt fallen, und welche laesst sich
+  vertagen?** Godot waere fuer den Kern ungeeignet (Physik durchgehend Gleitkomma) und
+  fuer die Sicht ein ernster Kandidat — das laesst sich erst entscheiden, wenn bekannt
+  ist, was die Sicht zeigen muss.
+
+  Der Einwand gegen Rust, den der Architekt selbst nannte und wegtauschte, traegt
+  uebrigens nicht: 99,5 Prozent Uebersetzungserfolg bei Sprachportierung, hoechster Wert
+  aller geprueften Sprachen. Der oft zitierte 23-Prozent-Wert stammt aus Kryptografie,
+  der schwersten Rust-Domaene; unser Kern ist Ganzzahlarithmetik ohne `async` und ohne
+  Lebenszeit-Generik, also der einfache Teil.

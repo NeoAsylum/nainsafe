@@ -50,7 +50,20 @@ Er gehoert in die Architektur, nicht in die Nachbereitung.
 ## Was hineingehoert
 
 - **Stack**, und zwar ein langweiliger. Eine Sprache, die Agenten sicher schreiben und
-  testen koennen, keine exotische Wahl. Begruende sie in zwei Saetzen.
+  testen koennen, keine exotische Wahl.
+
+  **Eine Tabelle mit mindestens drei Kandidaten, gemessen an den Kriterien dieses
+  Vorhabens** -- nicht zwei Saetze Begruendung fuer den, den du ohnehin nehmen wolltest.
+  Der Unterschied ist der zwischen einem Vergleich und einem Argument, und er ist am
+  2026-09-01 aufgefallen: Der erste Entwurf begruendete Rust gut und erwaehnte Go, C#,
+  C++ und TypeScript mit keinem Wort. Die Wahl war am Ende richtig -- nachweisen liess
+  sie sich erst, als jemand die Tabelle nachtrug.
+
+  Dazu die Frage, die am meisten spart: **Welche Festlegung muss jetzt fallen, und
+  welche laesst sich vertagen?** Eine Oberflaeche, die das Modell nie etwas fragt, ist
+  spaeter austauschbar -- also entscheide sie spaeter, wenn bekannt ist, was sie zeigen
+  muss. Was du heute festlegst und morgen nicht brauchst, ist Ballast; was du festlegst,
+  ohne es zu muessen, ist eine verschenkte Entscheidung.
 - **Trennung von Modell und Darstellung** -- das Modell fragt die Sicht nie etwas.
 - **Datenmodell**, so weit, dass der Zustand daraus ableitbar ist.
 - **Test- und Pruefstandsaufbau**: Regressionstests gegen gespeicherte Partien, die vier
