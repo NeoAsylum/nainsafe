@@ -1,103 +1,81 @@
 #!/usr/bin/env python3
-"""Deterministischer Festkomma-Weltschritt -- Umsetzung in Python.
+"""Deterministischer Festkomma-Weltschritt -- Python-Fassung der Stackmessung.
 
-Vorgabe: ../AUFGABE.md. Kein Gleitkommatyp, keine Fremdbibliothek, keine
-Argumente, keine Eingabe.
+Rechenvorschrift: ../AUFGABE.md. Keine Fremdbibliothek, kein Gleitkommatyp,
+auch nicht fuer die Zeitmessung. Laeuft ohne Argumente und ohne Eingabe.
 
-Pythons int ist beliebig genau. Das erfuellt die 128-Bit-Forderung an das
-Zwischenprodukt von selbst, verlangt aber umgekehrt, den 64-Bit-Wertebereich
-ausdruecklich herzustellen -- dafuer gibt es `umbruch64`.
+Pythons int ist beliebig genau. Das erspart die 128-Bit-Kruecke im
+Zwischenergebnis von mal_geteilt(), macht aber zwei Dinge noetig, die in Rust,
+C++ und Java umsonst kommen: die Klemmung auf 64 Bit mit Vorzeichen (zu_i64)
+und die gegen null abschneidende Division (geteilt), denn Pythons // rundet
+zur naechstkleineren Zahl ab und sein % traegt das Vorzeichen des Divisors.
 """
 
 import time
 
-GROESSE = 64
+BREITE = 64
 SCHRITTE = 1_000_000
-NACHBAR_VERSATZ = 17
-STREUER = 977
-NENNER = 10_000
-NACHBAR_TEILER = 1_024
-EIGEN_TEILER = 4_096
-UNTERGRENZE = 0
-OBERGRENZE = 1_000_000_000_000
-PRUEFSUMME_MOD = (1 << 63) - 1
+UNTEN = -1_000_000_000_000
+OBEN = 1_000_000_000_000
 
-_MASKE64 = (1 << 64) - 1
-_VORZEICHENBIT64 = 1 << 63
+I64_MASKE = (1 << 64) - 1
+I64_VORZEICHEN = 1 << 63
 
 
-def umbruch64(x):
-    """Bildet x auf den Wertebereich eines vorzeichenbehafteten 64-Bit-Ganzworts
-    ab: Ueberlauf bricht um, wie in C, Rust (wrapping) und Java."""
-    x &= _MASKE64
-    return x - (1 << 64) if x & _VORZEICHENBIT64 else x
+def zu_i64(x):
+    """Bildet x auf 64 Bit mit Vorzeichen ab -- Ueberlaufumbruch wie in C, Java, Rust."""
+    x &= I64_MASKE
+    return x - (1 << 64) if x >= I64_VORZEICHEN else x
 
 
-def pruefsumme(z):
-    """summe(z[i] * (i + 1)) mit Ueberlaufumbruch, danach mod 2^63 - 1."""
-    summe = 0
-    for i in range(GROESSE):
-        summe = umbruch64(summe + umbruch64(z[i] * (i + 1)))
-    return summe % PRUEFSUMME_MOD
+def geteilt(a, b):
+    """Ganzzahldivision, die gegen null abschneidet."""
+    q = abs(a) // abs(b)
+    return -q if (a < 0) != (b < 0) else q
+
+
+def rest(a, b):
+    """Rest zur abschneidenden Division -- traegt das Vorzeichen von a."""
+    return a - geteilt(a, b) * b
+
+
+def mal_geteilt(a, b, c):
+    """a * b / c ohne Ueberlauf im Zwischenergebnis, auf halbe Betraege von null weg."""
+    zaehler = a * b
+    negativ = (zaehler < 0) != (c < 0)
+    z, n = abs(zaehler), abs(c)
+    q = (2 * z + n) // (2 * n)
+    return -q if negativ else q
+
+
+def klemme(x, u, o):
+    """Begrenzt x auf [u, o]."""
+    if x < u:
+        return u
+    if x > o:
+        return o
+    return x
 
 
 def main():
-    # Startbelegung: z[i] = 1_000_000 + i * 37
-    z = [1_000_000 + i * 37 for i in range(GROESSE)]
+    z = [zu_i64(1_000_000 + i * 37) for i in range(BREITE)]
 
-    # Die drei Schritte stehen ausgeschrieben in der Schleife statt in
-    # Hilfsfunktionen: 64.000.000 Fortschreibungen mal drei Aufrufe kosten in
-    # CPython mehr Zeit als die Rechnung selbst und wuerden die Messung
-    # verfaelschen. Ein Python-Programmierer schreibt eine so heisse Schleife
-    # ebenso; die Rechenvorschrift ist Zeile fuer Zeile dieselbe.
-    #
-    # Zwei Eigenschaften der Vorgabe erlauben die kurzen Formen:
-    #
-    # 1. `klemme(..., 0, 10^12)` haelt jeden Zustandswert dauerhaft in
-    #    [0, 10^12], und die Startbelegung liegt schon darin. Alle Operanden
-    #    von `%` und `//` sind also nie negativ -- dort stimmen Pythons
-    #    abrundende Operatoren mit der gegen null abschneidenden
-    #    Ganzzahldivision der Vorgabe ueberein.
-    # 2. Damit ist `mal_geteilt(a, b, 10_000)` mit a, b >= 0 gleich
-    #    (2*a*b + 10_000) // 20_000 -- das ist genau "auf halbe Betraege von
-    #    null weg" gerundet, denn a*b/10_000 = k + f wird zu k + f + 1/2
-    #    abgerundet.
-    #
-    # Kein Zwischenwert verlaesst dabei den 64-Bit-Bereich: das Produkt bleibt
-    # unter 10^12 * 10.976, also rund 1,1 * 10^16. Der Umbruch bleibt deshalb
-    # der Pruefsumme vorbehalten.
-    grenze = GROESSE
-    versatz = NACHBAR_VERSATZ
-    streuer = STREUER
-    nenner = NENNER
-    doppel_nenner = 2 * NENNER
-    nachbar_teiler = NACHBAR_TEILER
-    eigen_teiler = EIGEN_TEILER
-    untergrenze = UNTERGRENZE
-    obergrenze = OBERGRENZE
-
-    beginn = time.perf_counter_ns()
+    begonnen = time.perf_counter_ns()
     for _ in range(SCHRITTE):
-        for i in range(grenze):
-            # 1. Nachbar -- in-place, ein spaeteres i sieht die schon
-            #    fortgeschriebenen Werte der frueheren.
-            nachbar = z[(i + versatz) % grenze]
-            eigen = z[i]
-            # 2. roh = mal_geteilt(z[i], 10_000 + (nachbar mod 977), 10_000)
-            zaehler = eigen * (nenner + nachbar % streuer)
-            roh = (2 * zaehler + nenner) // doppel_nenner
-            # 3. klemme(roh + nachbar/1024 - z[i]/4096, 0, 10^12)
-            wert = roh + nachbar // nachbar_teiler - eigen // eigen_teiler
-            if wert < untergrenze:
-                wert = untergrenze
-            elif wert > obergrenze:
-                wert = obergrenze
-            z[i] = wert
-    ende = time.perf_counter_ns()
+        for i in range(BREITE):
+            nachbar = z[(i + 17) % BREITE]
+            alt = z[i]
+            roh = mal_geteilt(alt, 9_512 + rest(nachbar, 977), 10_000)
+            z[i] = klemme(roh + geteilt(nachbar, 1024) - geteilt(alt, 4096), UNTEN, OBEN)
+    gedauert = time.perf_counter_ns() - begonnen
 
-    print("pruefsumme=%d" % pruefsumme(z))
-    print("nanosekunden_je_schritt=%d" % ((ende - beginn) // SCHRITTE))
-    print("zustand0=%d" % z[0])
+    pruefsumme = 0
+    for i in range(BREITE):
+        pruefsumme = zu_i64(pruefsumme + zu_i64(z[i] * (i + 1)))
+
+    print("pruefsumme=" + str(pruefsumme))
+    print("nanosekunden_je_schritt=" + str(gedauert // SCHRITTE))
+    print("zustand0=" + str(z[0]))
 
 
 if __name__ == "__main__":

@@ -1,101 +1,88 @@
 import java.math.BigInteger;
 
 /**
- * Stack-Messung fuer 0016: deterministischer Festkomma-Weltschritt in Java.
+ * Deterministischer Festkomma-Weltschritt, Messfassung fuer den Stackvergleich.
  *
- * Vorgabe: messung-stack/AUFGABE.md. Ganzzahlarithmetik durchgehend, kein
- * Komma-Typ, keine Fremdbibliothek, keine Eingabe, keine Argumente.
- *
- * Uebersetzen und laufen lassen:
- *   javac -d <zielverzeichnis> Schritt.java && java -cp <zielverzeichnis> Schritt
+ * Ganzzahlarithmetik durchgehend, kein Gleitkommatyp -- auch nicht in der
+ * Zeitmessung. Java rundet die Ganzzahldivision und den Restoperator gegen null
+ * ab; das ist genau die von der Aufgabe verlangte Abschneiderichtung.
  */
 public final class Schritt {
 
-    private static final int BREITE = 64;
-    private static final long SCHRITTE = 1_000_000L;
-    private static final long UNTERGRENZE = 0L;
-    private static final long OBERGRENZE = 1_000_000_000_000L;
+    private static final int N = 64;
+    private static final int SCHRITTE = 1_000_000;
+    private static final long UNTERE_GRENZE = -1_000_000_000_000L;
+    private static final long OBERE_GRENZE = 1_000_000_000_000L;
+    private static final long NENNER = 10_000L;
 
     private Schritt() {
     }
 
     public static void main(String[] args) {
-        long[] z = new long[BREITE];
-        for (int i = 0; i < BREITE; i++) {
+        long[] z = new long[N];
+        for (int i = 0; i < N; i++) {
             z[i] = 1_000_000L + (long) i * 37L;
         }
 
-        long beginn = System.nanoTime();
-        for (long s = 0L; s < SCHRITTE; s++) {
+        long begonnen = System.nanoTime();
+        for (int s = 0; s < SCHRITTE; s++) {
             weltschritt(z);
         }
-        long dauer = System.nanoTime() - beginn;
+        long gedauert = System.nanoTime() - begonnen;
 
-        // Ueberlaufumbruch ist in Java die Vorgabe fuer long, nichts weiter zu tun.
-        long pruefsumme = 0L;
-        for (int i = 0; i < BREITE; i++) {
-            pruefsumme += z[i] * (long) (i + 1);
-        }
-
-        System.out.println("pruefsumme=" + pruefsumme);
-        System.out.println("nanosekunden_je_schritt=" + (dauer / SCHRITTE));
+        System.out.println("pruefsumme=" + pruefsumme(z));
+        System.out.println("nanosekunden_je_schritt=" + gedauert / SCHRITTE);
         System.out.println("zustand0=" + z[0]);
     }
 
-    /**
-     * Ein Weltschritt, i aufsteigend, in derselben Tabelle. Ein spaeteres i sieht
-     * also bereits fortgeschriebene Nachbarn -- das ist so gewollt.
-     */
+    /** Ein Weltschritt, i aufsteigend, an Ort und Stelle. */
     private static void weltschritt(long[] z) {
-        for (int i = 0; i < BREITE; i++) {
+        for (int i = 0; i < N; i++) {
+            long nachbar = z[(i + 17) & (N - 1)];
             long alt = z[i];
-            long nachbar = z[(i + 17) % BREITE];
-            long roh = malGeteilt(alt, 10_000L + Math.floorMod(nachbar, 977L), 10_000L);
-            z[i] = klemme(roh + (nachbar / 1024L) - (alt / 4096L), UNTERGRENZE, OBERGRENZE);
+            long roh = malGeteilt(alt, 9_512L + nachbar % 977L, NENNER);
+            z[i] = klemme(roh + nachbar / 1024L - alt / 4096L, UNTERE_GRENZE, OBERE_GRENZE);
         }
     }
 
     /**
      * a * b / c ohne Ueberlauf im Zwischenergebnis, gerundet auf halbe Betraege
-     * von null weg.
+     * von null weg. c ist positiv.
      *
-     * Schneller Weg: passt das 128-Bit-Produkt in 64 Bit -- erkennbar daran, dass
-     * das obere Wort nur die Vorzeichenerweiterung des unteren ist --, rechnet die
-     * Maschine direkt. Sonst uebernimmt BigInteger.
+     * Passt das Produkt in 64 Bit -- was bei geklemmtem Zustand immer der Fall
+     * ist --, laeuft der schnelle Weg; sonst rechnet BigInteger die vollen
+     * 128 Bit. Die Erkennung vergleicht das hohe Wort mit der Vorzeichenmaske
+     * des niedrigen.
      */
     private static long malGeteilt(long a, long b, long c) {
         long tief = a * b;
         long hoch = Math.multiplyHigh(a, b);
-        if (hoch != (tief >> 63)) {
-            return malGeteiltGross(a, b, c);
+        if (hoch == (tief >> 63)) {
+            return geteiltGerundet(tief, c);
         }
-
-        long q = tief / c;   // schneidet gegen null ab
-        long rest = tief % c;
-        if (rest == 0L) {
-            return q;
-        }
-        long betragRest = Math.abs(rest);
-        long betragC = Math.abs(c);
-        // |rest| * 2 >= |c|, ohne die Verdopplung ueberlaufen zu lassen.
-        if (betragRest >= betragC - betragRest) {
-            q += ((tief < 0L) != (c < 0L)) ? -1L : 1L;
-        }
-        return q;
-    }
-
-    /** Derselbe Vertrag wie malGeteilt, nur ohne Breitenbegrenzung. */
-    private static long malGeteiltGross(long a, long b, long c) {
         BigInteger produkt = BigInteger.valueOf(a).multiply(BigInteger.valueOf(b));
         BigInteger nenner = BigInteger.valueOf(c);
-        BigInteger[] geteilt = produkt.divideAndRemainder(nenner);
-        BigInteger q = geteilt[0];
-        BigInteger rest = geteilt[1];
-        if (rest.signum() != 0
-                && rest.abs().shiftLeft(1).compareTo(nenner.abs()) >= 0) {
-            q = q.add(BigInteger.valueOf(produkt.signum() == nenner.signum() ? 1L : -1L));
+        BigInteger betrag = produkt.abs();
+        BigInteger ganz = betrag.divide(nenner);
+        BigInteger rest = betrag.subtract(ganz.multiply(nenner));
+        if (rest.shiftLeft(1).compareTo(nenner) >= 0) {
+            ganz = ganz.add(BigInteger.ONE);
         }
-        return q.longValue();
+        if (produkt.signum() < 0) {
+            ganz = ganz.negate();
+        }
+        return ganz.longValueExact();
+    }
+
+    /** n / c auf halbe Betraege von null weg gerundet, c positiv. */
+    private static long geteiltGerundet(long n, long c) {
+        long betrag = n < 0 ? -n : n;
+        long ganz = betrag / c;
+        long rest = betrag - ganz * c;
+        if (rest >= c - rest) {
+            ganz++;
+        }
+        return n < 0 ? -ganz : ganz;
     }
 
     private static long klemme(long x, long unten, long oben) {
@@ -106,5 +93,14 @@ public final class Schritt {
             return oben;
         }
         return x;
+    }
+
+    /** summe(z[i] * (i + 1)) mit Ueberlaufumbruch, danach mod 2^63 - 1. */
+    private static long pruefsumme(long[] z) {
+        long summe = 0L;
+        for (int i = 0; i < N; i++) {
+            summe += z[i] * (long) (i + 1);
+        }
+        return summe % Long.MAX_VALUE;
     }
 }

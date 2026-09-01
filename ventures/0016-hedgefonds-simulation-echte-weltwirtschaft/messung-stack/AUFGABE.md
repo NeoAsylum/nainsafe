@@ -17,8 +17,8 @@ Ein deterministischer Festkomma-Weltschritt, wie ihn der Kern von 0016 braucht.
 **Ein Weltschritt**, genau in dieser Reihenfolge, `i` aufsteigend von 0 bis 63:
 
 1. `nachbar = z[(i + 17) mod 64]`
-2. `roh = mal_geteilt(z[i], 10_000 + (nachbar mod 977), 10_000)`
-3. `z[i] = klemme(roh + (nachbar / 1024) - (z[i] / 4096), 0, 1_000_000_000_000)`
+2. `roh = mal_geteilt(z[i], 9_512 + (nachbar mod 977), 10_000)`
+3. `z[i] = klemme(roh + (nachbar / 1024) - (z[i] / 4096), -1_000_000_000_000, 1_000_000_000_000)`
 
 Dabei:
 
@@ -36,6 +36,14 @@ zustand0=<dezimal>
 ```
 
 Die Prüfsumme ist `summe(z[i] * (i + 1)) mod 2^63 - 1`, berechnet mit Überlaufumbruch.
+
+**Warum die Zahlen so aussehen.** Der erste Entwurf dieser Aufgabe hatte den Faktor
+`10_000 + (nachbar mod 977)` — also immer mindestens 1,0. Die Werte konnten nur wachsen
+und klebten nach kurzer Zeit alle an der oberen Klemmgrenze; die Prüfsumme war dann
+`10^12 × 2080` und bewies nichts mehr, weil an der Decke jede Rundung dasselbe Ergebnis
+hat. Der Faktor ist jetzt um 1,0 zentriert (0,9512 bis 1,0488), die untere Grenze ist
+negativ, und damit wird die Rundung **in beide Richtungen** geprüft — genau der Fall, in
+dem sich „auf halbe Beträge von null weg" von „gegen null" unterscheidet.
 
 ## Regeln
 
