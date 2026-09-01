@@ -53,7 +53,23 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   gibt `long`, und der Ueberlaufumbruch der Pruefsumme ist bei `long` ohnehin die
   Vorgabe — anders als in Rust oder Python war nichts nachzubauen.
 
+- 2026-09-01 — Stack-Messung, Rust-Fassung geschrieben (`messung-stack/rust/schritt.rs`,
+  ~70 Zeilen). Rust braucht fuer diese Aufgabe fast nichts nachgebaut: `i128` ist ein
+  eingebauter Typ, `/` und `%` schneiden gegen null ab, und `Instant::elapsed().as_nanos()`
+  gibt `u128` statt Gleitkomma. Nachzubauen war nur der Ueberlaufumbruch der Pruefsumme —
+  Rust bricht nicht still um, das muss `wrapping_add`/`wrapping_mul` ausdruecklich sagen.
+- 2026-09-01 — Runden „halbe Betraege von null weg" in `i128` als `(2*|z| + |n|) /
+  (2*|n|)` nach Abspalten des Vorzeichens. In `i128` ist die Verdopplung ungefaehrlich
+  (Zwischenwert hier rund 2·10^16), und die Formel stimmt auch bei ungeradem Nenner —
+  anders als das naheliegende `(|z| + |n|/2) / |n|`.
+
 ## Was nicht funktioniert
+
+- 2026-09-01 — **In diesem Lauf gab es kein `rustc`** (`command -v rustc` leer, kein
+  `~/.cargo`), und `Bash` durfte weder in `$TMPDIR` schreiben noch `python3 -c` ausfuehren.
+  Die Rust-Fassung ist daher **nicht uebersetzt und nicht gerechnet**, sondern nur gelesen.
+  Wer die Java-Fassung mit dem Compiler in der Hand gebaut hat und diese ohne, darf die
+  Spalte „Anlaeufe bis zum gruenen Uebersetzungslauf" nicht zwischen beiden vergleichen.
 
 <!-- Was du versucht hast und was dabei herauskam. Damit du es nicht in drei Wochen
      erneut versuchst.
@@ -66,7 +82,22 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
      Lauf faengt hier an. -->
 
-- 2026-09-01 — **Unsicher, und es betrifft alle vier Sprachen: „mod 2^63 - 1" in der
+- 2026-09-01 — **Die Aufgabe wurde nach dem ersten Messlauf geaendert; meine Eintraege
+  weiter unten zur Saettigung an der Klemmgrenze gelten nicht mehr.** Der Faktor heisst
+  jetzt `9_512 + (nachbar mod 977)` (um 1,0 zentriert statt immer wachsend) und die
+  Untergrenze ist `-10^12`. Genau der Einwand von oben — „die Pruefsumme unterscheidet
+  nichts, weil alles an der Decke klebt" — ist damit erledigt.
+- 2026-09-01 — **Unsicher, und es entscheidet ueber die Uebereinstimmung aller vier
+  Pruefsummen: das Vorzeichen von `nachbar mod 977`.** Die Aufgabe sagt normativ
+  „Ganzzahldivision schneidet gegen null ab" (dann Rest wie in Rust/C++/Java, Bereich
+  −976…976, Faktor 0,8536…1,0488), begruendet den Faktor in der Prosa aber mit
+  „0,9512 bis 1,0488" — das setzt einen **nichtnegativen** Rest wie in Python voraus. Ich
+  bin der normativen Regel gefolgt und habe `%` unveraendert benutzt. Sobald der Zustand
+  negativ wird, weichen beide Lesarten ab; eine Python-Fassung, die `%` naiv nimmt,
+  trifft die andere Lesart. **Weichen die Pruefsummen ab, ist das der erste Ort zum
+  Nachsehen, nicht die Rundung.** Der Aufgabensteller sollte den Rest ausdruecklich
+  festlegen.
+- 2026-09-01 — **Unsicher, unveraendert seit der C++-Fassung: „mod 2^63 - 1" in der
   Aufgabe ist zweideutig** — Rest modulo (2^63−1) oder Umbruch bei 2^63. Ich habe mit
   Umbruch (`uint64`) summiert und danach modulo (2^63−1) gerechnet. Praktisch egal: Der
   Zustand saettigt an der Klemmgrenze 10^12, die Summe liegt bei rund 2,08·10^15 und
