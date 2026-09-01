@@ -2,23 +2,25 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 3 (nach ventures/0016-.../befunde/pruefung-entwurf-fassung2-2026-08-31.md)
+fassung: 4 (nach ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-2026-09-01.md)
 stack: Rust (stabile Kette, Edition 2021); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche egui/eframe (MIT OR Apache-2.0)
 determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
 zustand: fester, allokationsfreier Wert, 310 i64 (2.480 Byte), Prüfsumme über kanonische Byteform
 speicherstand: Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme -- nicht der Zustand
 kalibrierung: alle Zahlenwerte in einer Parameterdatei ausserhalb des Codes, mitgehasht
 partie: R Runden, R ist eine Größe des Jahrgangs; im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte
+suchbot: Zielgröße B nach T44 -- statische Ergebnisprognose des Zwischenzustands, aus der Ergebnisgröße von spiel.md abgeleitet, ohne freien Parameter
+herkunft: jede der 310 Adressen trägt genau einen Herkunftseintrag; eine Lücke bricht den Jahrgangsbau ab (T45)
 tick_planwert: 10 Mikrosekunden je Weltschritt (Bandbreite 5 bis 30) -- geschätzt, nicht gemessen; es gibt noch keinen Kern
 nachtlauf: 11.783.264 Weltschritte, 2,0 Minuten auf einem Kern beim Planwert, 9,8 Minuten im ungünstigen Fall
 ---
 
 # Der Kern ist eine reine Ganzzahlfunktion ohne Ziehung -- damit ist Determinismus keine Disziplin, sondern eine Eigenschaft des Typsystems.
 
-Dritte Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md` und die zwölf
-Befunde der zweiten Prüfung. Die Abarbeitung steht am Ende der Datei. Die Abarbeitung der
-**ersten** Prüfung stand in Fassung 2 und ist dort vom Prüfer als erledigt abgenommen
-worden; sie steht im Git-Verlauf und wird hier nicht wiederholt.
+Vierte Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md` und die drei
+Befunde der dritten Prüfung. Die Abarbeitung steht am Ende der Datei. Die Abarbeitungen der
+**ersten und zweiten** Prüfung standen in den Fassungen 2 und 3 und sind dort je vom Prüfer
+als erledigt abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
 
 Die Vorgaben sind mit **T1** bis **T43** durchnummeriert. Der Builder weicht von keiner ab,
 ohne dass ein ADR sie aufhebt; der Prüfer zitiert die Nummer, statt sie zu umschreiben.
@@ -27,10 +29,16 @@ zitierbar bleiben; neue Vorgaben tragen die nächsten freien Nummern und stehen 
 inhaltlich hingehören. Die Nummerierung ist deshalb innerhalb der Abschnitte nicht
 fortlaufend.
 
-**Die teuerste Lehre dieser Fassung steht in T40 und nicht in einer Zahl.** Befund 1 hat
-nicht eine falsche Jahreszahl gekostet, sondern zwölf abgeleitete Größen, in die sie
-eingesetzt war. Die Antwort darauf ist keine bessere Jahreszahl, sondern eine Architektur,
-in der die Partielänge nirgends als Literal steht.
+**Die teuerste Lehre dieser Fassung steht in T44 und T45, und beide betreffen denselben
+Fehlertyp: eine Größe, die keinem der beiden Dokumente gehört.** Die Zielgröße des Suchbots
+war nirgends genannt, weil `spiel.md` den Bot dem Prüfstand zurechnet und der Prüfstand die
+Bewertung dem Entwurf — zweiunddreissig Zustandsadressen hatten keinen Startwert, weil die
+Tabelle, die sich abschliessend nennt, sie nicht führt und T23 auf ebendiese Tabelle
+verwies. Die Antwort auf den ersten Fall ist eine **Ableitung statt einer Erfindung**: T44
+rechnet die Zielgröße aus der Ergebnisgröße von `spiel.md` und hat keinen freien Parameter.
+Die auf den zweiten ist eine Prüfung, die den Fehlertyp künftig unmöglich macht (T45).
+Dieselbe Bauart wie T40, an dem die vorige Fassung dasselbe gelernt hat: nicht die fehlende
+Zahl nachtragen, sondern die Stelle schliessen, an der sie fehlen konnte.
 
 ## 1. Stack
 
@@ -465,7 +473,22 @@ enthält:
 
 1. **Startwerte** für jede Zustandsgröße mit Datenanker; die Größen ohne Anker stehen in
    der Tabelle „Jede Größe ohne Datenanker" in `spiel.md` und kommen von dort oder aus
-   `parameter.toml`;
+   `parameter.toml`. **Zwei Klassen führt jene Tabelle nicht** — die zweiunddreissig
+   Adressen aus Befund 2 der dritten Prüfung —, und für sie gilt diese Zeile:
+
+   | Adresse | Zahl | Startwert | warum dieser Wert nicht gewählt, sondern erzwungen ist |
+   |---|---:|---:|---|
+   | `land.<L>.instrument.<I>.druck` (anliegender Lobbydruck) | 4 × 4 = 16 | 0 | Druck entsteht nach `spiel.md` ausschliesslich durch Aktion 3; vor Runde 1 hat keine Aktion stattgefunden |
+   | `land.<L>.instrument.<I>.rest` (Restverzögerung) | 4 × 4 = 16 | 0 | Die Verzögerung zählt eine Wirkung herunter, die ein Druck ausgelöst hat; ohne Druck gibt es keine |
+
+   Nur die vier spielbaren Länder tragen Instrumente (T15), daher 16 und nicht 20 je Klasse.
+   Beide sind Laufzähler von Schritt 3 und damit dieselbe Klasse wie der Gegendruck und die
+   drei Restdauerzähler, die `spiel.md` selbst auf 0 setzt. Der Wert ist deshalb keine
+   Entwurfsentscheidung, sondern die einzige mit der dortigen Entstehungsregel verträgliche
+   Zahl — trüge eine der beiden Adressen zu Partiebeginn einen Wert ungleich null, gäbe es
+   eine Ursache ohne Aktion, und die Kette aus T18 könnte sie in Runde 1 nicht benennen.
+   Nimmt der Spielentwerfer die beiden Zeilen in seine Tabelle auf, sticht sie diese hier;
+   dass es überhaupt so weit kam, beantwortet **T45**;
 2. **Sollreihen** für die 31 Reihen aus `spiel.md` plus den Handelsblock über 40 Ströme, je
    Reihe mit der Klassifikation aus T37;
 3. **historische Politikpfade** für Leitzins, Zollniveau und Haushaltssaldo. Der vierte
@@ -518,6 +541,36 @@ enthält:
 Größenordnung: 5 Gebiete × 25 Jahre × rund 30 Reihen × 8 Byte = 30 kB, Handel
 `40 × 25 × 8` = 8 kB. Der ausgelieferte Datenteil bleibt je Jahrgang deutlich unter
 100 kB und mit allen Jahrgängen deutlich unter einem Megabyte.
+
+**T45 — Der Jahrgangsbau zählt die Adressen ab und bricht bei einer Lücke ab.** Das ist die
+architektonische Antwort auf Befund 2, und sie ist die einzige, die dessen Wiederholung
+ausschliesst. Zwei Tabellenzeilen nachzutragen behebt den Fall; sie nachzutragen und die
+Stelle offenzulassen, an der niemand das Fehlen bemerkt, behebt ihn nicht.
+
+Der Jahrgangsbau führt über **alle 310 Adressen aus T15** eine Herkunftstabelle mit genau
+vier zulässigen Einträgen:
+
+| Eintrag | Bedeutung | Beispiel |
+|---|---|---|
+| `Datenanker(nr)` | eine Reihe der Reihenliste weiter unten | `land.DE.sektor.2.wertschoepfung` → Reihe 1 × 2 |
+| `Entwurf` | die Tabelle „Jede Größe ohne Datenanker" in `spiel.md` | `land.CN.aufsichtszaehler` → 0 |
+| `Parameter(schluessel)` | `parameter.toml` nach T27 | `fonds.kasse` → `startkapital` |
+| `Vorgabe(T-Nummer)` | dieses Dokument; derzeit allein T23 Punkt 1 | `land.BR.instrument.zoll.druck` → 0 |
+
+**Eine Adresse ohne Eintrag bricht den Jahrgangsbau ab, eine Adresse mit zwei Einträgen
+ebenso.** Der zweite Fall ist der wichtigere: Er ist die Stelle, an der eine Größe zwei
+Herren bekäme und die beiden Werte auseinanderlaufen könnten — derselbe Fehlertyp, den T39
+für `landespreis` und T23 Punkt 9 für die BACI-Konkordanz schon geschlossen haben.
+
+Die vollständige Tabelle — 310 Zeilen aus Adresse, Herkunft und Startwert — wird ins
+Manifest geschrieben. Damit ist die Abnahmebedingung 2 des Arbeitspakets **maschinell
+beantwortbar**, statt drei Dokumente nebeneinanderzulegen: Wer sie prüfen will, liest eine
+Datei, die der Jahrgangsbau gar nicht erst hätte schreiben können, wenn eine Zeile fehlte.
+
+Der Preis ist 310 Vergleiche, einmal je Datenlauf und nicht je Partie. Die naheliegende
+Alternative — Startwert null, wenn nichts dasteht — wäre die teure gewesen: Sie hätte
+Befund 2 in eine Zahl verwandelt, die niemand mehr hinterfragt, und zwar in genau die Zahl,
+die hier zufällig richtig ist.
 
 **T24 — Lücken werden gekennzeichnet, nicht stillschweigend gefüllt — und der Prüfjahrgang
 duldet keine.** Je Reihe, Land und Jahr ein Flag `gefuellt`. Die Füllregel steht im
@@ -696,7 +749,7 @@ in einem Aufruf läuft, läuft nachts nicht.
 
 | # | Prüfung | Gegenstand | Verantwortlich |
 |---:|---|---|---|
-| 1 | Einheitstests je Wirkungskette | jeder Pfeil aus `spiel.md` einzeln, auf einem Minimalzustand: Zoll rauf → Einfuhr runter → Preis rauf → Realeinkommen runter → Zustimmung runter. Dazu die Fünf-Runden-Invariante des Vorratsverfahrens aus T43 | Testentwickler |
+| 1 | Einheitstests je Wirkungskette | jeder Pfeil aus `spiel.md` einzeln, auf einem Minimalzustand: Zoll rauf → Einfuhr runter → Preis rauf → Realeinkommen runter → Zustimmung runter. Dazu die Vorratsinvariante aus T43, geprüft für `k = 1` (fünf Runden) **und** `k = 3` (fünfzehn), damit die Verwechslung aus Befund 3 auch im Code auffällt | Testentwickler |
 | 2 | Invariantentest | Summe aller Handelsbilanzen einschliesslich Restwelt = 0; Staatsschuld(t) = Staatsschuld(t−1) − Saldo; Fondsvermögen = Kasse + bewertete Positionen − Hebel; die drei Sektoranteile je Gebiet summieren auf 10.000; kein Anteil ausserhalb 0…10.000; jedes Partieergebnis in einem der drei Bänder aus T34 | Testentwickler |
 | 3 | Determinismustest | derselbe Startwert, Modus und dieselbe Aktionsfolge ergeben dieselbe Prüfsumme — zweimal im Lauf, über Speichern und Laden hinweg, und auf jeder Zielplattform verglichen | Testentwickler |
 | 4 | Regressionsbestand | gespeicherte Partien nach T22 rechnen bitgleich nach; zusätzlich eine Prüfsumme über die Kette, damit auch eine geänderte *Begründung* auffällt; mindestens eine Partie auf einem Spieljahrgang 1980 mit Basiswechsel (T8) | Testentwickler |
@@ -781,6 +834,15 @@ Dinge zu, und beide stehen hier:
   3,4,5`) fällt dabei zeichengleich heraus. Damit ist das Verfahren nicht nur beschrieben,
   sondern hat einen Test, der eine falsche Implementierung in fünf Runden fängt statt in
   einer 24-Runden-Partie mit Median über zwanzig Startwerte.
+- **Dieselbe Invariante in allgemeiner Form, weil an ihr Befund 3 hängt:** Nach `5k` Runden
+  steht der Vorratsvektor wieder auf `(0,0,0,0,0)`, und Art `i` hat `3k·ai` der `15k`
+  Steckplätze bekommen. Für `k = 1` sind das fünf Runden und `3·ai` von fünfzehn — genau der
+  Fall, den `spiel.md` zwei Absätze unter dem strittigen Satz als Probe rechnet. Für `k = 3`
+  sind es fünfzehn Runden und `9·ai` von fünfundvierzig. Der Satz „über 15 Runden bekommt
+  Art `i` genau `3·ai` Steckplätze" mischt beide Fälle und wird durch **ein** Wort richtig,
+  wahlweise `15 → fünf` oder `3·ai → 9·ai`. Verbindlich für den Bau ist diese Invariante;
+  der Einheitstest aus T30 Prüfung 1 prüft `k = 1` und `k = 3`, damit die Verwechslung auch
+  dann auffällt, wenn jemand sie in die Implementierung übernimmt.
 
 **T41 — Wie das Profil die Kandidaten des Suchbots einschränkt.** Das war die Hälfte von
 Befund 4, die mir gehörte: T35 schrieb die Ziehregel nur für Maß 1 aus. Verbindlich ist:
@@ -797,9 +859,110 @@ Befund 4, die mir gehörte: T35 schrieb die Ziehregel nur für Maß 1 aus. Verbi
 
 **Genau drei Ziehungen je Kandidat, genau 60 Kandidaten, keine Verwerfungsschleife, keine
 Zählung eines Produktraums.** Doppelte Kandidaten bleiben — wie in Maß 1 —, sie kosten ein
-Nachspiel und ändern kein Ergebnis. Der Preis ist damit fest bei `1 + 60` Weltschritten je
+Weltschritt und ändern kein Ergebnis. Der Preis ist damit fest bei `1 + 60` Weltschritten je
 Runde, unabhängig davon, wie groß die Zulässigkeitsliste gerade ist; das ist dieselbe
 Begründung wie bei T28 und der Grund, warum die Rechnung in Abschnitt 10 überhaupt trägt.
+
+**T44 — Die Zielgröße des Suchbots ist die Ergebnisprognose des Zwischenzustands, und sie
+ist abgeleitet, nicht erfunden.** T41 sagte, **welche** 60 Kandidaten entstehen, aber nicht,
+**wonach** unter ihnen gewählt wird; der Gleichstandsbrecher setzte eine Vergleichsgröße
+voraus, die kein Satz benannte. Solange sie fehlt, misst Maß 2 die Wahl des Bauagenten
+statt das Spiel, und Maß 3 misst sie zweimal.
+
+Nach genau einem Weltschritt läuft die Partie in aller Regel noch; die Ergebnisgröße von
+`spiel.md` ist aber erst am Partieende definiert. Gebraucht wird also eine **statische**
+Bewertung `B(z)` des Zwischenzustands, und sie beantwortet die Frage, die die Ergebnisgröße
+selbst stellt: *Was ergäbe diese Partie, wenn sie hier endete?*
+
+```
+B(z) =  r × 1.000                      das Mandat ist in Runde r erfüllt
+        30.000 + (R + 1 − d) × 1.000   in Runde d an einer Todesart gestorben
+        25.000 + v(z) + e(z)           sonst — die Partie läuft weiter
+```
+
+Die ersten beiden Zeilen sind wörtlich die Ergebnisgröße aus `spiel.md`. Die dritte ist ihr
+Band „überlebt", auf `z` gerechnet statt auf das Partieende:
+
+- `v(z) = teile_gerundet(max(0, schwelle_v − fondsvermoegen(z)) · 1.000, schwelle_v)` —
+  fehlendes Vermögen in Promille seiner Schwelle. `fondsvermoegen` ist die Größe aus
+  `spiel.md` (Kasse + bewertete Positionen − Hebel), keine andere.
+- `e(z)` = Summe über die **zwei Länder mit dem höchsten Einfluss** (Gleichstand nach
+  `LandId`) von `teile_gerundet(max(0, schwelle_e − einfluss[land]) · 1.000, schwelle_e)` —
+  fehlender Einfluss in Promille seiner Schwelle. Zwei Länder, weil das Mandat zwei verlangt.
+
+Beide Schwellen stehen bereits in `parameter.toml` (T27, Mandatsschwelle). **`B` hat damit
+keinen freien Parameter** — keine Gewichtung, keinen eigenen Kalibrierwert, nichts, was ein
+Bauagent wählen könnte. Genau das ist die Antwort auf den Einwand: Maß 2 misst nicht mehr
+die Wahl des Bots, weil an dieser Stelle keine Wahl mehr besteht.
+
+**Und `B` ist an `spiel.md` gebunden, nicht daneben gestellt.** Benennt der Entwurf die
+Vergleichsgröße selbst, sticht seine Fassung diese hier, und T44 schrumpft auf die
+Rechenvorschrift dazu. Ändert sich die Ergebnisgröße, ändert sich `B` mit ihr, ohne dass
+jemand zwei Stellen nachführen müsste.
+
+**Die einzige Abweichung von der Ergebnisgröße ist die Kappung, und sie ist begründet.**
+`spiel.md` begrenzt jeden der beiden Teile bei 1.000 Promille, damit das Band „überlebt"
+zwischen 25.000 und 27.000 bleibt. Für ein Partieergebnis ist das richtig; für eine
+Bewertungsfunktion wäre es tödlich. Ein Fonds, der zu Partiebeginn in beiden Ländern
+Einfluss null hat, säße bei gekappten 1.000, und eine Verbesserung des ersten Landes von 0
+auf 60 Prozent der Schwelle bliebe **unsichtbar** — der Bot wäre in genau der Phase blind,
+in der er die Weichen stellt. `B` kappt deshalb nicht.
+
+Der Preis ist ein breiteres Band, und es bleibt disjunkt: `v < 1.000` gilt ohnehin, solange
+der Fonds lebt (bei `fondsvermoegen ≤ 0` greift Todesart 1 in derselben Runde, T33), und
+`e ≤ 2.000`, also `25.000 ≤ B ≤ 28.000` im laufenden Fall — oberhalb des Bandes „Mandat
+erfüllt" (bis 24.000) und unterhalb des Todesbandes (ab 31.000). **Daraus folgt eine
+Eigenschaft, die eine Bewertung haben muss und die man ihr nicht ansieht: Der Bot zieht den
+Tod nie vor.** Der schlechteste laufende Zustand steht bei 28.000, der beste Tod bei 31.000.
+`B` ist eine botinterne Größe, wird nie als Partieergebnis berichtet, und die Bandprüfung
+aus T34 gilt für sie nicht.
+
+**Warum das den Lobbyweg nicht strukturell erschlägt** — die Frage, an der eine reine
+Vermögensbewertung gescheitert wäre: Einfluss ist nach `spiel.md` der geglättete Anteil des
+Fonds **am gesamten Lobbydruck** eines Landes, nicht die Wirkung des Instruments. Aktion 3
+legt den Druck in derselben Runde an; sie hebt `einfluss` also schon in dem einen
+Weltschritt, den der Bot vorausrechnet — gedämpft durch die Glättung, aber ungleich null und
+monoton im eingesetzten Budget. Der Kassenabfluss hebt `v`, der Druck senkt `e`, und welche
+Wirkung überwiegt, entscheidet der Zustand und nicht die Bauart der Bewertung. Klasse 3
+**kann** damit Gewinner stellen; ob sie es tut, ist die Frage, die Maß 2 stellen soll, und
+nicht die, die es beantwortet, bevor es läuft.
+
+**Dieselbe Prüfung für die beiden anderen Klassen, weil eine einzeln geprüfte Klasse nichts
+beweist.** Klasse 1 (Position) wirkt unmittelbar auf `fondsvermoegen` und damit auf `v`;
+unproblematisch. Klasse 2 (Beteiligung) hängt an einer Frage, die `spiel.md` entscheidet und
+nicht ich: Dort heisst es „Fondsvermögen (Kasse + bewertete Positionen − Hebel)". Zählen die
+zwölf Beteiligungen zu den *bewerteten Positionen*, wirkt Aktion 2 wie Aktion 1, nur
+illiquide, und `B` behandelt sie gleich. Zählen sie nicht dazu, verwandelt jede Beteiligung
+Kasse in etwas, das im Mandat nicht vorkommt: Sie hebt `v`, senkt `e` nicht, und **Klasse 2
+kann Maß 2 dann nicht bestehen** — aus genau dem Grund, aus dem eine reine
+Vermögensbewertung Klasse 3 erschlagen hätte. `B` erbt die Antwort, welche es auch sei; die
+Frage steht in Abschnitt 12, weil sie eine Modellfrage ist und keine Rechenfrage.
+
+Ein zweiter Weg der Klasse 2 bleibt bei Tiefe 1 in jedem Fall unsichtbar: Eine Beteiligung
+verbilligt nach `spiel.md` das Lobbying im selben Sektor, zahlt sich also erst in einer
+späteren Runde aus. Das ist kein Fehler der Bewertung, sondern der Preis eines Zuges
+Vorausschau — und damit das erste konkrete Argument für die Tiefe 2, die Abschnitt 12 offen
+hält.
+
+**Ordnung und Gleichstand.** Gewählt wird der Kandidat mit dem kleinsten `B`. Bei
+Gleichstand entscheidet die lexikographisch kleinste Folge der Aktionskennungen des Bündels
+in der kanonischen Ordnung aus T32, danach der kleinere Kandidatenindex `c` aus T41 — nie
+die Auffindereihenfolge. Doppelte Kandidaten (T41 lässt sie ausdrücklich zu) tragen dieselbe
+Kennungsfolge und denselben `B`; ihr Gleichstand fällt auf `c` und ist damit entschieden.
+
+**Tiefe.** Bei Tiefe 1 wird `B` auf dem Zustand nach dem einen Weltschritt ausgewertet, und
+es gibt **keine** Fortsetzung durch den Heuristikbot — die Wendung „Nachspiel mit dem
+Heuristikbot als Fortsetzung" aus Fassung 3 war an dieser Stelle irreführend und ist der
+Grund, warum der Befund entstehen konnte. Bei Tiefe `d > 1` ist der Wert eines
+Zwischenknotens das Minimum von `B` über seine 60 Kandidaten, rekursiv bis zur Tiefe `d`;
+das Spiel hat einen einzigen Spieler, es gibt also keinen Gegenzug und kein Maximum.
+
+**Kosten.** `B` rechnet eine Division für `v`, vier Vergleiche und zwei Divisionen für `e`,
+zusammen rund zwanzig Ganzzahloperationen gegen 7.500 je Weltschritt (Abschnitt 10), also
+rund **drei Promille** eines Weltschritts. Die Kostenrechnung `R × (1 + 60) = 1.464` bleibt
+unverändert — und genau dafür braucht es eine statische Bewertung. Ein Nachspiel bis Runde R
+je Kandidat kostete `60 · Σ(R+1−t) + R = 60 · 300 + 24 = 18.024` Weltschritte je Partie, das
+Zwölffache, und würfe Abschnitt 10 um.
 
 **Die drei Bots:**
 
@@ -808,9 +971,10 @@ Begründung wie bei T28 und der Grund, warum die Rechnung in Abschnitt 10 überh
 - **Heuristikbot(profil)** — Arten nach dem Vorratsverfahren (T43), innerhalb einer Art
   nach einer festen, dokumentierten Rangfolge. Keine Nachspiele, also billig. **Er ist auf
   dem Referenzprofil `(1,1,1,1,1)` die „feste Folgepolitik" von Maß 1.**
-- **Suchbot(profil, kandidaten=60, tiefe=1)** — 60 Kandidaten nach T41, bewertet durch ein
-  Nachspiel von einem Zug mit dem Heuristikbot als Fortsetzung. Gleichstand nach
-  Aktionskennung, nie nach Auffindereihenfolge. Kosten je Partie `R × 61`, bei R = 24 also
+- **Suchbot(profil, kandidaten=60, tiefe=1)** — 60 Kandidaten nach T41, jeder um einen
+  Weltschritt vorausgerechnet und **statisch bewertet nach T44**; gewählt wird das kleinste
+  `B`, Gleichstand nach T44 und nie nach Auffindereihenfolge. Eine Fortsetzung durch den
+  Heuristikbot gibt es bei Tiefe 1 nicht. Kosten je Partie `R × 61`, bei R = 24 also
   **1.464** Weltschritte.
 
 **T36 — Was der Prüfstand zu Maß 2 und 3 fest verdrahtet.**
@@ -836,6 +1000,11 @@ Begründung wie bei T28 und der Grund, warum die Rechnung in Abschnitt 10 überh
   (`spiel.md`). Damit kostet ein Lauf dasselbe wie eine gewöhnliche Suchbotpartie, und die
   Rechnung in Abschnitt 10 trägt. Für Maß 3 sind alle 126 Profile wählbar, auch die sechs
   ohne Kern — dort misst der Vektorabstand und nicht die Klasse.
+- **Was `B` aus T44 in beiden Maßen nicht ist.** Das Profilergebnis `E(p)`, der
+  Gewinnvergleich gegen `R × 1.000` und die Argminima `p*` und `q*` laufen ausschliesslich
+  über die **Ergebnisgröße** aus `spiel.md`, nie über `B`. `B` steuert den Bot innerhalb der
+  Partie und verlässt sie nicht. Beide Maße hängen deshalb an T44 — das ist der Grund,
+  warum sein Fehlen ein schwerer Befund war —, aber keines von beiden rechnet mit ihr.
 
 **T37 — Der Rückvergleich weist je Sollreihe aus, ob sie überhaupt etwas prüfen kann — und
 `spiel.md` hat entschieden, welche entscheiden.** Im Weltlauf werden die Politikinstrumente
@@ -1021,7 +1190,9 @@ bleibt:
   nicht mehr, und dann ist die Markträumung anders zu bauen als über 40 Halbierungsschritte.
   Das ist die einzige Zahl dieses Dokuments, die eine Prüfung im Bau umwerfen kann.
 - **Ob der Suchbot mit Tiefe 1 stark genug ist, damit Maß 2 das Spiel misst und nicht den
-  Bot.** Neu gerechnet für R = 24: Tiefe 2 kostet je Partie `24 × (1 + 60 × 61) = 87.864`
+  Bot.** *Wonach* er sucht, ist seit T44 entschieden und hat keinen freien Parameter mehr;
+  offen ist allein, *wie weit*. Neu gerechnet für R = 24: Tiefe 2 kostet je Partie
+  `24 × (1 + 60 × 61) = 87.864`
   statt 1.464 Weltschritte, Maß 2 und 3 zusammen **664 Millionen**, also 1,8 Stunden auf
   einem Kern und **rund 14 Minuten auf acht** beim Planwert, im ungünstigen Fall 1,2 Stunden
   auf acht. Das sprengt den Nachtlauf nicht, es verlegt ihn. Tiefe 2 ist damit kein
@@ -1037,19 +1208,33 @@ bleibt:
   sie bricht der Rückvergleich an einem bilateralen Nullstrom ab. Sie ändert keine Schwelle.
   Hält der Spielentwerfer sie für falsch, ist sie eine Zeile in T42 und sonst nichts.
 
-**Zwei Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
-mir, dem Entwurf zu widersprechen; beide blockieren nichts):
+**Drei Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
+mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
 
-1. Der Satz zum Vorratsverfahren „über 15 Runden bekommt Art `i` genau `3·ai` Steckplätze"
-   passt nicht zur Probe zwei Absätze darunter, die fünf Runden und fünfzehn Steckplätze
-   rechnet. Ich habe das Verfahren für alle 126 Profile durchgerechnet: Die Invariante gilt
-   **je fünf Runden**, und die Probe des Referenzprofils fällt zeichengleich heraus. Der
-   Algorithmus selbst ist eindeutig; betroffen ist nur der zusammenfassende Satz. Die
-   Invariante steht als Einheitstest in T43.
+1. **Zum zweiten Mal gemeldet, weil ich ihn nicht ändern darf:** Der Satz zum
+   Vorratsverfahren „über 15 Runden bekommt Art `i` genau `3·ai` Steckplätze" passt nicht
+   zur Probe zwei Absätze darunter, die fünf Runden und fünfzehn Steckplätze rechnet. Der
+   Prüfer hat ihn in Fassung 3 als Befund 3 aufgenommen, und Abnahmebedingung 3 verlangt an
+   dieser Stelle in beiden Dokumenten denselben Wert. Die allgemeine Form steht jetzt in
+   T43: nach `5k` Runden `3k·ai` von `15k`. Damit sind es zwei Wörter zur Auswahl, von denen
+   **eines** genügt — `15 → fünf` oder `3·ai → 9·ai`. Der Algorithmus ist von der
+   Verwechslung nicht betroffen, die Invariante steht als Einheitstest in T43, und das
+   Programm kann die falsche Lesart nicht annehmen.
 2. Die Ergebnisskala trägt in der 30.000 ein echtes Literal, und das Band „überlebt" stösst
    dagegen, sobald `R ≥ 27`. Für 1997–2021 ist das folgenlos, und `spiel.md` lässt das
    Fenster nur enger werden. T40 zieht die Schranke bei `R ≤ 26` in den Jahrgangsbau, damit
    sie nicht erst in einer Ergebnisverteilung auffällt.
+3. **Neu, und aus T44 herausgefallen: Gehören die zwölf Beteiligungen zum Fondsvermögen?**
+   `spiel.md` schreibt „Fondsvermögen (Kasse + bewertete Positionen − Hebel)" und trennt in
+   T15 zugleich Positionssteckplätze (20) von Beteiligungen (24). Beide Lesarten sind
+   möglich, und sie sind nicht gleichwertig: Sind Beteiligungen draussen, verwandelt Aktion 2
+   Kasse in etwas, das in keiner Hälfte des Mandats vorkommt — dann kann **Klasse 2 die
+   erste Abnahmehälfte von Maß 2 nicht bestehen**, unabhängig von jeder Kalibrierung, und
+   zwar aus demselben Grund, aus dem Befund 1 eine reine Vermögensbewertung verworfen hat.
+   Betroffen sind ausserdem die Todesart-1-Schwelle und die Invariante in T30 Prüfung 2.
+   Ein Halbsatz genügt; die Architektur folgt beiden Lesarten ohne Änderung, weil `B` das
+   Fondsvermögen nur liest. **Das ist eine Modellfrage, keine Rechenfrage** — deshalb steht
+   sie hier und nicht in T44.
 
 ## 13. Hinweis für den Projektmanager
 
@@ -1072,98 +1257,105 @@ Zahl im Manifest und kein zweites Paket. Der Jahrgangsbau muss deshalb nicht meh
 Kern fertig sein, sondern nur vor dem ersten Rückvergleich — er bleibt trotzdem vorn, weil
 er das Vorhaben kippen kann und nicht nur verzögern.
 
-## 14. Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31
+## 14. Befundabarbeitung — die beiden früheren Prüfungen
 
-Zwölf Befunde, je einer der drei zulässigen Antworten. Kein Befund war falsch; es gibt
+**Erledigt und im Git-Verlauf.** Fassung 2 hat die acht Befunde der ersten Prüfung
+beantwortet, Fassung 3 die zwölf der zweiten. Die Prüfung vom 2026-09-01 hat Letzteres unter
+ihrer Bedingung 5 ausdrücklich abgenommen — „alle zwölf Vorrundenbefunde sind in beiden
+Dokumenten mit *behoben* beantwortet, keiner mit *widersprochen*, keiner übersprungen" —
+und fünf davon zusätzlich gegen die Sache statt gegen die Behauptung nachgeprüft.
+
+Sie hier weiterzuschleppen kostete jeden Leser hundert Zeilen und brächte nichts, was
+`git log -p specs/0016-…/technik.md` nicht genauer sagt. Dieselbe Behandlung hat Fassung 3
+den acht Befunden der ersten Prüfung gegeben, und der Prüfer hat sie nicht beanstandet.
+Gelöscht ist nichts: Beide Abarbeitungen stehen unverändert in der Versionsgeschichte.
+
+Was aus ihnen **fortwirkt**, steht nicht in einer Abarbeitungsliste, sondern in den
+Vorgaben, die daraus entstanden sind — T38 bis T43 tragen die zwölf Antworten der zweiten
+Prüfung als Regel statt als Bericht, und jede nennt an ihrer Stelle den Befund, der sie
+erzwungen hat.
+
+## 15. Befundabarbeitung — Prüfung `0001-entwurf-abnahme` vom 2026-09-01
+
+Drei Befunde, je eine der drei zulässigen Antworten. Kein Befund war falsch; es gibt auch
 diesmal kein *widersprochen*.
 
-**Befund 1, Prüfjahrgang 1995 mit 28 Runden nicht belegt — behoben, und die Behebung ist
-nicht die Zahl.** R = 24, Fenster 1997–2021, 25 Stützstellen: Frontmatter, T22, T23 Punkt 8,
-T24, T26 und Abschnitt 10 sind darauf neu gerechnet. Die eigentliche Antwort ist **T40**:
-R ist eine Größe des Jahrgangs, und jede abgeleitete Zahl entsteht zur Laufzeit aus R statt
-als Literal im Code. Ein weiteres Kürzen des Fensters kostet damit eine Manifestzeile. Dazu
-die Schranke `R ≤ 26`, weil die Ergebnisskala von `spiel.md` bei 30.000 ein Literal trägt —
-gefunden, indem ich die drei Bänder für wachsendes R ausgerechnet habe, statt die Skala zu
-übernehmen.
+**Befund 1, der Suchbot hat keine Bewertungsfunktion — behoben, mit T44.** Der Befund
+trifft: Zwischen T41 (welche 60 Kandidaten) und dem Gleichstandsbrecher (was bei gleichem
+Wert gilt) fehlte der Satz, *welcher* Wert verglichen wird. Die Behebung ist **T44** und
+folgt dem Weg, den der Prüfer selbst als tragfähig bezeichnet hat — dem Mandatsabstand, nicht
+dem Fondsvermögen —, aber sie erfindet ihn nicht, sondern **leitet ihn aus der
+Ergebnisgröße von `spiel.md` ab**: Die drei Fälle von `B` sind deren drei Bänder, gerechnet
+auf den Zwischenzustand statt auf das Partieende. Vier Eigenschaften, die der Befund
+verlangt hat, und alle vier stehen dort mit Begründung:
 
-**Befund 2, Rückvergleichslauf nicht durchführbar — behoben.** `spiel.md` hat den Modus
-`weltlauf` entschieden; **T38** gibt ihm eine Architektur: Der Modus ist Argument von
-`schritt` und kein 311. Zustandsfeld (das widerspräche der Feldzahl, die `spiel.md` selbst
-nennt), er bringt eine **Sollmaske** mit, und der `Schreiber` prüft sie zweiseitig — jede
-Adresse der Maske genau einmal geschrieben, keine ausserhalb berührt. Nachgerechnet: 175 der
-310 Adressen im Weltlauf, 135 ausserhalb. Der Nenner null entsteht damit nicht, statt
-abgefangen zu werden. Zwei Riegel kommen dazu: **T6** macht `nenner == 0` zum Abbruch statt
-zum stillen Nullwert, und **T33** legt die Reihenfolge in Schritt 6 fest — Todesart-Prüfung
-*vor* Renditebildung. Die zweite Lücke des Befundes, `markt.wert` ohne Startwert, schliesst
-T33 Punkt 2 mit dem Startwert aus dem Jahrgang.
+- **kein freier Parameter** — keine Gewichtung, kein eigener Kalibrierwert, also nichts, was
+  Maß 2 zur Messung einer Bauagentenwahl machen könnte;
+- **Klasse 3 ist nicht strukturell ausgeschlossen** — Einfluss ist der geglättete Anteil am
+  Lobbydruck, also hebt Aktion 3 ihn schon in dem einen vorausgerechneten Weltschritt;
+- **der Bot zieht den Tod nie vor** — das laufende Band endet bei 28.000, das Todesband
+  beginnt bei 31.000, beide disjunkt zum Band „Mandat erfüllt" bis 24.000;
+- **die Kosten bleiben `R × (1 + 60) = 1.464`**, weil `B` statisch ist; das Nachspiel bis
+  Runde R, das der Prüfer durchgerechnet hat, kostete `60 · 300 + 24 = 18.024` und würfe
+  Abschnitt 10 um. Ich habe beide Zahlen in diesem Lauf nachgerechnet.
 
-**Befund 3, `handelsanteil` verlässt seinen Wertebereich — behoben, mit der vierten Lösung
-des Spielentwerfers.** Der Koeffizient heisst in T5, T23 Punkt 5, T25, T28 und Reihenliste
-Nr. 16 jetzt `durchgriff` und wird als `teile_gerundet(10.000·H, H+N)` gebildet. **Eine
-Ergänzung ist meine:** `H + N = 0` ist der einzige Fall, in dem die Formel undefiniert
-bleibt; T23 Punkt 5 setzt dann `durchgriff = 0` und meldet den Fall im Manifest als Befund,
-damit der Jahrgangsbau nicht an einer Division abbricht, deren Ursache er nicht nennt. Die
-Invariante „kein Anteil ausserhalb 0…10.000" in T30 Prüfung 2 hält jetzt per Konstruktion
-und bleibt trotzdem als Wächter stehen.
+Eine Abweichung von der Ergebnisgröße gibt es, und sie steht benannt statt versteckt: `B`
+kappt die beiden Fehlbeträge **nicht** bei 1.000 Promille. Mit Kappung wäre der Bot in der
+Frühphase blind, weil beide Teile dort an der Kappe stehen und jede Verbesserung unsichtbar
+bliebe. Das Band wird dadurch 25.000 … 28.000 statt 25.000 … 27.000; `B` ist botintern und
+wird nie als Partieergebnis berichtet, die Bandprüfung aus T34 gilt für sie nicht.
 
-**Befund 4, Profil → Aktionen nicht definiert — behoben; die Hälfte davon war meine.** Das
-Vorratsverfahren gehört `spiel.md`; **T43** nimmt es auf, sagt, gegen welche
-Zulässigkeitsliste es prüft (die aus T32, einmal je Runde gebildet), und gibt ihm eine
-Invariante: nach je fünf Runden Vorrat wieder null und genau `3·ai` Steckplätze je Art. Ich
-habe das für alle 126 Profile durchgerechnet; die Probe, die `spiel.md` selbst angibt, fällt
-zeichengleich heraus. **T41** schliesst den Teil, den der Befund ausdrücklich mir zuschrieb:
-wie das Profil die 60 Kandidatenbündel des Suchbots einschränkt — drei Ziehungen je
-Kandidat entlang der Artenfolge, feste 60, keine Verwerfungsschleife, kein gezählter
-Produktraum. Damit bleibt der Preis bei `1 + 60` Weltschritten je Runde, und die Rechnung in
-Abschnitt 10 trägt.
+Die Wendung „Nachspiel von einem Zug mit dem Heuristikbot als Fortsetzung" aus der Botliste
+ist gestrichen. Bei Tiefe 1 gibt es keine Fortsetzung, und die Formulierung war die Stelle,
+an der eine fehlende Vorgabe wie eine vorhandene aussah.
 
-**Befund 5, Maß 4 ohne Abnahmeregel — behoben.** Meine Rückfrage aus Abschnitt 12 ist
-beantwortet: 16 Prüfgegenstände, Toleranz 2, nur die freien Reihen entscheiden, Handelsblock
-nach meinem Vorschlag am Median. T37 trägt die Regel, Abschnitt 12 nennt sie nicht mehr als
-offen. **T42** schreibt die drei Fehlermaße als Rechenvorschrift aus, weil `spiel.md` sie
-beziffert und nicht rechnet — einschliesslich zweier Fälle, die dort nicht vorkommen und
-den Lauf sonst abbrechen liessen: `soll = 0` bei einem bilateralen Strom, und eine
-Neubasierung nach T8 innerhalb einer Ratenreihe.
+**Befund 2, zweiunddreissig Adressen ohne Startwert — behoben, und die zwei Zeilen sind
+nicht die Behebung.** `land.<L>.instrument.<I>.druck` und `…​.rest` stehen jetzt in **T23
+Punkt 1** mit Startwert 0, je 16 Adressen für die vier spielbaren Länder. Der Wert ist
+erzwungen und nicht gewählt: Beide sind Laufzähler von Schritt 3, Druck entsteht
+ausschliesslich durch Aktion 3, und vor Runde 1 hat keine Aktion stattgefunden — trüge eine
+der Adressen einen Wert ungleich null, gäbe es eine Ursache ohne Aktion, und die Kette aus
+T18 könnte sie nicht benennen. Sie liegen damit in derselben Klasse wie der Gegendruck und
+die drei Restdauerzähler, die `spiel.md` selbst auf 0 setzt.
 
-**Befund 6, `landespreis` nicht definiert — behoben, und zwar so, dass die zweite Lesart
-nicht mehr formulierbar ist.** `landespreis` ist der Sektorpreis der Vorrunde. **T39** gibt
-ihm einen Ort statt eines Feldes: `lies_alt(adresse)` gegen den Zustand der Vorrunde, und
-`lies_neu` auf eine in dieser Runde noch ungeschriebene Adresse ist ein harter Fehler statt
-eines stillen Rückgriffs. T28 belegt damit die Monotonie der Überschussfunktion, statt sie
-zu behaupten. T15 bekommt keine neue Zeile — ein Feld wäre eine zweite Kopie derselben Zahl.
+Die eigentliche Antwort ist **T45**: Der Jahrgangsbau führt eine Herkunftstabelle über alle
+310 Adressen mit vier zulässigen Eintragsarten und **bricht ab, wenn eine Adresse keinen
+oder zwei Einträge hat**. Die Tabelle geht ins Manifest. Damit ist Abnahmebedingung 2 künftig
+maschinell beantwortbar, statt drei Dokumente nebeneinanderzulegen — und der Fehlertyp
+„eine Tabelle nennt sich abschliessend und ist es nicht" kann nicht mehr unbemerkt bleiben.
+Der naheliegende Weg, bei fehlendem Eintrag still null einzusetzen, ist ausdrücklich
+ausgeschlossen: Er hätte diesen Befund in eine Zahl verwandelt, die niemand mehr
+hinterfragt, und zwar in genau die, die hier zufällig richtig ist.
 
-**Befund 7, Zusammenfassung über die 50 Startwerte fehlt — behoben.** Die 50 und die
-Zusammenfassungsregel stehen jetzt in `spiel.md`; Abschnitt 10 rechnet nur noch, was dort
-festgelegt ist, und weist die Teilsummen aus. Die Gesamtzahl setzt keine Vorgabe mehr
-voraus, die dieses Dokument selbst macht.
+**Der Rest gehört dem Spielentwerfer.** Seine Tabelle „Jede Größe ohne Datenanker" sagt von
+sich, sie führe alle übrigen abschliessend; sie tut es erst mit diesen beiden Zeilen. Nimmt
+er sie auf, sticht seine Fassung die meine, und beide nennen 0.
 
-**Befund 8, sechs Profile ohne Familienaktion — behoben.** T36 macht den Strategiekern
-vierwertig: `ohne` statt der Klasse 1 über den Gleichstandsbrecher. Die sechs Profile laufen
-mit, werden berichtet und gehen in keine Abnahmehälfte von Maß 2 ein; klassifiziert sind
-120. Dazu zwei nachgerechnete Anker für den Test: In der lexikographischen, nullbasierten
-Profilliste sind es genau die Kennungen **0 bis 5**, und das Referenzprofil trägt die
-Kennung **76**.
+**Befund 3, `spiel.md` und `technik.md` nennen verschiedene Rundenzahlen — anders gelöst,
+und die verbleibende Hälfte steht nicht in diesem Dokument.** Der Befund trifft, und meine
+Zahl ist die richtige: Der Vorratsvektor schliesst sich nach **fünf** Runden, nicht nach
+fünfzehn. Ändern kann ich `spiel.md` nicht; die Rolle verbietet es, und die Werkzeuge dafür
+habe ich nicht.
 
-**Befund 9, Schwelle zwischen zwei erreichbaren Werten — behoben.** T30 Prüfung 7 nennt
-für Maß 3 **0,4** statt 0,5; die übrigen beiden Schwellen sind unverändert und stehen
-jetzt ausgeschrieben in derselben Zeile.
+Was ich stattdessen getan habe, räumt den Einwand in der Sache aus. **T43 trägt die
+Invariante jetzt in allgemeiner Form**: Nach `5k` Runden steht der Vektor wieder auf null,
+und Art `i` hat `3k·ai` der `15k` Steckplätze. Beide Sätze sind damit Sonderfälle einer
+Regel — `k = 1` gibt fünf Runden und `3·ai` von fünfzehn, `k = 3` gibt fünfzehn Runden und
+`9·ai` von fünfundvierzig —, und der Satz in `spiel.md` wird durch **ein** Wort richtig,
+wahlweise `15 → fünf` oder `3·ai → 9·ai`. Zwei Reparaturen zur Auswahl statt einer Rückfrage.
 
-**Befund 10, Ergebnisskala nicht streng geordnet — behoben, und schärfer geprüft als
-verlangt.** T34 nennt den Bereich `1.000 … R × 1.000 + 30.000`, bei R = 24 also
-1.000 … 54.000. Geprüft wird nicht der Bereich, sondern die Zugehörigkeit zu **einem der
-drei Bänder** — die Lücken dazwischen sind unerreichbar, ein Wert dort ist ein Rechenfehler.
-Das kostet zwei Vergleiche und folgt ohne Auslegung aus der Tabelle in `spiel.md`.
+Dazu ein Riegel gegen den Schaden, den der Widerspruch anrichten könnte: Der Einheitstest
+aus T30 Prüfung 1 prüft `k = 1` **und** `k = 3`. Übernimmt ein Bauagent die falsche Lesart,
+fällt sie in fünf beziehungsweise fünfzehn Runden auf und nicht in einer Ergebnisverteilung
+über 126 Profile.
 
-**Befund 11, Kostenformel eine Runde zu kurz — behoben.** `spiel.md` hat die dahinterstehende
-Frage entschieden (Maß 1 misst die Entscheidung der Runde `t`, Kosten `R + 1 − t`).
-Abschnitt 10 rechnet `Σ(R+1−t) = 300`, also `30 × 300 + 24 = 9.024` je Startwert und
-451.200 für fünfzig — in diesem Lauf gerechnet, nicht übernommen.
+**Gemeldet, nicht abgehakt:** Dies ist die zweite Fassung, in der ich die Stelle melde —
+Fassung 3 hatte sie in Abschnitt 12 als Beobachtung. Sie steht dort weiter, jetzt mit beiden
+Reparaturen. Kommt sie ein drittes Mal zurück, ohne dass `spiel.md` das eine Wort geändert
+hat, liegt es nicht mehr an der Fassung, sondern daran, dass Abnahmebedingung 3 eine
+Übereinstimmung verlangt, die keines der beiden Gewerke allein herstellen kann.
 
-**Befund 12, BACI-Konkordanz fehlt — behoben.** T23 Punkt 9 nimmt die Tabelle 01–24 → Sektor
-1, 25–97 → Sektor 2 als **Manifesteintrag** auf, ausdrücklich nicht als Code: Dieselbe
-Tabelle erzeugt `H` für den `durchgriff`, die Handelsstartmatrix und die 40 Sollströme, und
-genau deshalb ist ihr Zuordnungsfehler für den Rückvergleich folgenlos. Eine zweite Kopie
-wäre die Gelegenheit, sie auseinanderlaufen zu lassen. Punkt 10 kommt hinzu, weil er an
-derselben Stelle hing: wie die Restwelt als Rest entsteht und warum es je gerichtetem Paar
-genau eine Zahl gibt — sonst hängt die Invariante „Summe aller Handelsbilanzen = 0" an der
-Datenqualität statt an der Bauart.
+**Was diese Fassung sonst nicht geändert hat:** Weder `spiel.md` noch die Prüfung haben eine
+Zahl bewegt, an der etwas hängt. R bleibt 24, die Sollmaske 175 von 310, der Nachtlauf
+11.783.264 Weltschritte. Ich habe alle Summen dieses Dokuments in diesem Lauf erneut
+nachgerechnet, weil eine Fassung ohne Zahländerung genau die ist, in der man es unterlässt.
