@@ -1,29 +1,63 @@
 ---
 id: 0003-einheit-beteiligung
 rolle: kernbauer
-status: offen
-haengt_an: [0002-fondsbewertung-definieren]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/einheiten.rs]
+status: blockiert
+haengt_an: []
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/einheiten.rs]
 abnahme: Jede Geldgröße trägt ihre Einheit im Typ, nicht im Kommentar. Ein Test, der zwei verschiedene Einheiten addiert, wird vom Compiler abgelehnt statt zur Laufzeit falsch zu rechnen.
 ---
 
-# Einheiten: der Fehler, den das Dokument selbst benennt
+# Einheiten: blockiert am 2026-09-01, weil Paket und Vorgabe sich widersprechen
 
-Aus Befund 2 der sechsten Entwurfsprüfung:
+**Der Sachbefund, aus dem dieses Paket entstand, ist behoben** — nicht hier, sondern im
+Entwurf: `beteiligung_wert` lieferte Tausend USD und wurde als US-Cent verbucht;
+`technik.md` T47 setzt seit dem 2026-09-01 `tsd_in_cent` um den äussersten Aufruf, und
+T50 bindet die Umrechnung an einen Namen und genau einen Ort. Die Zahlenprobe ist in
+T47 nachgerechnet.
 
-> `beteiligung_wert` liefert Tausend USD und wird als US-Cent verbucht; T5 nennt genau
-> diese Mischung einen Fehler.
+**Was nicht mehr gilt, ist der Weg, den dieses Paket vorschreibt.** Es verlangt
+Wrappertypen je Größenklasse:
 
-Das Dokument widerspricht sich selbst: Es verbietet die Mischung an einer Stelle und
-begeht sie an einer anderen.
+> Die Einheit gehört in den Typ, nicht in den Namen und nicht in den Kommentar. In Rust
+> kostet das wenig — ein Wrappertyp je Größenklasse, Addition nur innerhalb derselben
+> Klasse, Umrechnung nur über eine benannte Funktion.
 
-## Was du baust
+`technik.md` T5 entscheidet dieselbe Frage anders, und zwar ausdrücklich:
 
-**Die Einheit gehört in den Typ, nicht in den Namen und nicht in den Kommentar.** In
-Rust kostet das wenig — ein Wrappertyp je Größenklasse, Addition nur innerhalb
-derselben Klasse, Umrechnung nur über eine benannte Funktion.
+> **T5 — Jede Größenklasse hat eine deklarierte Skala.** Der Typ ist überall `i64`, die
+> Bedeutung steht in dieser Tabelle und nirgends sonst.
 
-Das ist der Grund, warum dieser Befund an den Bau geht und nicht in eine siebte
-Entwurfsrunde: **Ein Einheitenfehler in Prosa ist eine Fundstelle unter vielen, ein
-Einheitenfehler im Typsystem ist ein Übersetzungsfehler.** Danach ist diese Klasse von
-Befund für immer erledigt, nicht nur an dieser einen Stelle.
+Beides zugleich geht nicht. Ein Kernbauer, der dieses Abnahmekriterium erfüllte, wiche
+von `specs/` ab — was seine Rolle ihm verbietet; einer, der T5 folgte, könnte das
+Kriterium nie erfüllen. Nach der Regel dieser Rolle ist damit **nicht der Bauagent das
+Problem, sondern die Vorgabe**, und der Zustand dafür ist `blockiert`.
+
+## Der Zweck ist erfüllt, auf dem anderen Weg
+
+Das Paket wollte die Fehlerklasse *gemischte Skalen* für immer schließen, nicht nur an
+einer Stelle. Genau das ist zwischenzeitlich geschehen, an drei Stellen statt an einer:
+
+- **T5** hat fünf Skalenklassen ergänzt, nachdem der Architekt die Tabelle zum ersten
+  Mal gegen alle 310 Adressen gelegt und **69 ohne Klasse** gefunden hat — darunter die
+  32 Druck- und Gegendruckfelder, die derselbe Fehler ein zweites Mal waren.
+- **T49** gibt jeder der 310 Adressen genau eine Klasse; eine ohne und eine mit zwei
+  brechen den Jahrgangsbau ab. Das ist Paket **0007**.
+- **T50** gibt den drei Skalenübergängen je eine benannte, private Funktion mit genau
+  einem Aufrufort, nachweisbar über `grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/`.
+  Das ist Paket **0002**.
+
+Der Unterschied zu Wrappertypen ist der Nachweisweg: Typprüfung braucht einen
+Übersetzer, `grep` nicht — und **kein Agent dieser Fabrik hat eine Shell**
+(`rueckstand.md`, Abschnitt *Es gibt keinen Übersetzer*). Der Weg, den T5 wählt, ist
+hier also nicht nur der vorgegebene, sondern auch der einzige, der in dieser Fabrik
+tatsächlich geprüft werden kann.
+
+## Meldung an den Geschäftsführer
+
+Zu entscheiden ist **nichts**, solange T5 gilt. Will der Betreiber die Wrappertypen
+trotzdem — sie wären in einer Fabrik mit Übersetzungslauf das schärfere Werkzeug —, ist
+das ein **ADR gegen T5** und danach ein neues Paket, kein Wiederaufwecken dieses hier.
+Ich löse den Widerspruch nicht selbst auf: Über den Entwurf entscheide ich nicht.
+
+Bis dahin bleibt dieses Paket blockiert und wird von keinem Bauagenten aufgegriffen —
+`baulauf.py:startbereit` sieht nur `offen`.
