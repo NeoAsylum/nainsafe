@@ -26,6 +26,15 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-01 — Zeit ohne Gleitkomma: `steady_clock` plus
   `duration_cast<nanoseconds>().count()` liefert direkt eine Ganzzahl. Wer
   `duration<double>` nimmt, faellt beim grep durch — der bequeme Weg ist hier der falsche.
+- 2026-09-01 — Stack-Messung, Python-Fassung geschrieben
+  (`messung-stack/python/schritt.py`). Ohne Ausfuehrenkoennen ist die **Invariante** das
+  einzige Pruefmittel: Aus `klemme(..., 0, 10^12)` folgt, dass jeder Operand von `%` und
+  `//` nie negativ wird — und damit fallen alle Vorzeichenfragen (Abschneiden gegen null,
+  Runden von null weg) ersatzlos weg, statt einzeln nachgebaut werden zu muessen. Die
+  Herleitung gehoert in den Quelltext, dann ist der Befund des Pruefers ueberpruefbar
+  statt strittig.
+- 2026-09-01 — Zeit ohne Gleitkomma in Python: `time.perf_counter_ns()` gibt direkt
+  `int`. `time.perf_counter()` waere der naheliegende Griff und liefert `float`.
 
 ## Was nicht funktioniert
 
@@ -51,3 +60,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-01 — Nicht selbst uebersetzt, obwohl `Bash` verfuegbar war: Die Messgroesse
   „Anlaeufe bis zum gruenen Uebersetzungslauf" zaehlt der Runner. Wer vorher selbst
   kompiliert und nachbessert, macht daraus konstant 1 und loescht den Messwert.
+- 2026-09-01 — **Unsicher, und es ist ein Einwand gegen die Messung selbst, nicht gegen
+  eine Fassung: Die Pruefsumme unterscheidet vermutlich nichts.** Der Zustand waechst je
+  Schritt um rund 4,9 Prozent (Faktor bis 1,0976, Abzug nur 0,024 Prozent) und steht
+  daher nach etwa 300 der 1.000.000 Schritte auf der Klemmgrenze 10^12 — die dann ein
+  Fixpunkt ist. Erwartet also `zustand0=1000000000000` und
+  `pruefsumme=2080000000000000` (10^12 · 2080), und zwar **auch dann, wenn eine Fassung
+  die Rundung oder das Abschneiden verfehlt**: Die Saettigung frisst den Unterschied.
+  Uebereinstimmende Pruefsummen belegen hier fast nichts. Wer die Messung wiederholt,
+  senkt entweder die Obergrenze oder erhoeht den Abzug (`z[i]/4096`) so weit, dass das
+  Modell in ein Gleichgewicht unterhalb der Klemme laeuft — dann traegt der Vergleich.
+- 2026-09-01 — Unsicher am eigenen Quelltext: Ich habe die drei Schritte in die heisse
+  Schleife ausgeschrieben, statt `mal_geteilt`/`klemme` als Funktionen aufzurufen. In
+  CPython kosten 3 · 64.000.000 Aufrufe mehr als die Rechnung; das haette der Sprache
+  einen Messwert angelastet, der aus meinem Stil kommt. Der Preis ist, dass die
+  Rechenvorschrift nicht mehr Funktion fuer Funktion neben der Aufgabe steht.
