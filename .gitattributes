@@ -1,0 +1,11 @@
+# Zeilenenden. Angelegt am 2026-09-01, nachdem ein Python-Aufruf von der
+# Windows-Seite aus 103 Dateien auf CRLF umgestellt hat -- darunter
+# einrichtung/pruefen.sh, das danach mit "syntax error near unexpected token" starb.
+#
+# Die Fabrik laeuft in WSL, wird aber gelegentlich von Windows aus bearbeitet. Python
+# uebersetzt dort \n beim Schreiben still zu \r\n. Markdown vertraegt das, ein
+# Shell-Skript nicht.
+* text=auto eol=lf
+*.png binary
+*.pdf binary
+*.bundle binary
