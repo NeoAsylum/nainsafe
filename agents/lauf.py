@@ -98,7 +98,15 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # (siehe agents/kontingent.py). Diese Grenze ist bewusst grosszuegig -- sie soll
 # Ausreisser abfangen, nicht den Normalbetrieb bremsen. Ein voller Nachtlauf lag
 # zuletzt bei rund 40 Dollar.
-TAGESGRENZE_USD = 120.0
+# 2026-09-01 vom Betreiber auf 400 angehoben: "Du kannst das Tageslimit jetzt
+# resetten. Wir haben noch genuegend Token." Die Bremse bleibt, sie steht weiter
+# hinten -- sie soll den Ausreisser abfangen, nicht den Betrieb.
+#
+# Wichtiger als diese Zahl ist seit heute die zweite Bremse: Geld allein hat den
+# 95-Dollar-Leerlauf vom 2026-09-01 nicht verhindert, weil die Schleife brav unter
+# der Grenze blieb und trotzdem nicht konvergierte. Die Konvergenzbremse steht in
+# konzeptlauf.py:RUECKLAUF_MAX.
+TAGESGRENZE_USD = 400.0
 
 
 def tagesverbrauch(verbindung) -> float:

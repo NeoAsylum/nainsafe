@@ -47,6 +47,34 @@ STUFEN: list[tuple[str, list[str]]] = [
     # den Hintergrund. Die Dateien bleiben -- zurueckholen heisst zurueckschieben.
 ]
 
+# Wie oft der Entwurf zurueckgehen darf, bevor nicht mehr er das Problem ist, sondern
+# das Abnahmekriterium.
+#
+# Diese Bremse hat am 2026-09-01 gefehlt, und sie hat 95 Dollar gekostet. Die Regel
+# stand im Arbeitspaket -- durchsetzen konnte sie nur der Projektmanager, und der laeuft
+# im Baulauf, der nie lief, weil der Entwurf zurueckgewiesen war. Verklemmung durch
+# Konstruktion. Eine Regel, die nur an der Stelle steht, die sie nicht erreicht, ist
+# keine Regel.
+#
+# Der zweite Grund, warum Geld allein nicht reicht: Die Schleife blieb brav unter der
+# Tagesgrenze. Sie war nicht zu teuer, sie war ergebnislos -- Befunde stagnierten bei
+# zwei, waehrend die Dokumente von 23 auf 242 kB wuchsen.
+RUECKLAUF_MAX = 3
+
+
+def entwurfsurteile(idee_id: str) -> list[dict]:
+    """Alle Urteile des Entwurfspruefers, aeltestes zuerst."""
+    ordner = WURZEL / "ventures" / idee_id / "befunde"
+    if not ordner.is_dir():
+        return []
+    treffer = []
+    for d in ordner.glob("pruefung-*.md"):
+        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        if kopf.get("pruefer") == "entwurf-pruefer":
+            treffer.append((d.stat().st_mtime, kopf))
+    return [k for _, k in sorted(treffer)]
+
+
 # Was am Ende dastehen soll. Fehlt etwas, sagt der Lauf es -- der Judge liest sonst
 # eine Luecke, ohne sie zu bemerken.
 ERWARTET = {
@@ -91,6 +119,25 @@ def main(idee_id: str, trocken: bool = False, ab: int = 1) -> int:
         for nr, (name, rollen) in enumerate(STUFEN, 1):
             marke = "  " if nr >= ab else "  (uebersprungen) "
             print(f"{marke}{nr}. {name:10} {', '.join(rollen)}")
+        return 0
+
+    # Konvergenzbremse vor dem ersten Token: Geht der Entwurf zum RUECKLAUF_MAX-ten Mal
+    # zurueck, ist nicht der Entwerfer das Problem. Weiterschreiben hilft dann nicht.
+    zurueck = [u for u in entwurfsurteile(idee_id) if u.get("urteil") == "zurueck"]
+    if len(zurueck) >= RUECKLAUF_MAX:
+        print()
+        print(f"  ANGEHALTEN: Der Entwurf ist {len(zurueck)} Mal zurueckgegangen "
+              f"(Grenze {RUECKLAUF_MAX}).")
+        print("  Damit ist nicht mehr der Entwerfer das Problem, sondern das")
+        print("  Abnahmekriterium. Eine weitere Schreibrunde findet dieselbe Sorte")
+        print("  Befund im neu geschriebenen Material -- das ist am 2026-09-01")
+        print("  vier Durchgaenge lang nachgemessen worden.")
+        print()
+        letzte = zurueck[-1]
+        print(f"  Letztes Urteil: {letzte.get('befunde', '?')} Befunde.")
+        print(f"  Zu lesen: ventures/{idee_id}/befunde/ und das Abnahmepaket.")
+        print("  Der Betreiber entscheidet: Kriterium aendern, Befunde als")
+        print("  Arbeitspakete an den Bau geben, oder Entwurf verwerfen.")
         return 0
 
     ziel.mkdir(parents=True, exist_ok=True)

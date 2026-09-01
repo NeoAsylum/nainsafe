@@ -1,7 +1,7 @@
 ---
 id: 0001-entwurf-abnahme
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md, specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die fünf Bedingungen unten, alle fünf. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -67,3 +67,39 @@ Zwei weitere Rückläufe gegen dieses Kriterium sind erlaubt. Dann `blockiert`.
 | 1 | selbst gegeben | 8 | zurück |
 | 2 | selbst gegeben | 12 | zurück |
 | 3 | **dieses Paket** | 3 | zurück — Zähler 1 von 3 |
+
+---
+
+## Abgeschlossen am 2026-09-01 — vom Betreiber entschieden
+
+Der Entwurf ist **fünfmal** zurückgegangen. Damit ist die Regel dieses Pakets gefallen:
+*Danach ist nicht der Entwerfer das Problem, sondern dieses Kriterium.*
+
+**Die Messung, die das belegt:**
+
+| Runde | Befunde | `spiel.md` | `technik.md` |
+|---|---:|---:|---:|
+| 1 | 8 | 23 kB | — |
+| 2 | 12 | 38 kB | 35 kB |
+| 3 | 3 | | |
+| 4 | 2 | 70 kB | 109 kB |
+| 5 | *(leer)* | | |
+| 6 | 2 | 94 kB | 148 kB |
+
+Die Befunde stagnieren bei zwei, während die Dokumente sich vervierfacht haben. Jede
+Runde schreibt der Entwerfer Material nach, und im neuen Material findet der Prüfer zwei
+neue Lücken. Das terminiert nicht.
+
+**Woran es lag — Bedingung 2 war falsch gestellt.** Sie verlangt, dass *jede* Größe in
+Prosa zurückgeführt ist. Bei 242 kB Spezifikation ist das die Arbeit eines Compilers,
+nicht eines Lesers: Undefinierte Symbole und Einheitenfehler findet `rustc` in fünf
+Sekunden und vollständig, ein Prüfer in zwanzig Minuten und stichprobenweise. Der
+Entwurf war zu Quelltext in Prosaform geworden, und Prosa lässt sich nicht typprüfen.
+
+**Die beiden letzten Befunde sind echt und bleiben es.** Sie werden nicht weggewischt,
+sondern zu Arbeitspaketen 0002 und 0003 — dort trifft sie ein Werkzeug, das sie
+vollständig findet.
+
+**Was daraus als Regel bleibt** (siehe `konzeptlauf.py:RUECKLAUF_MAX`): Ein Entwurf ist
+fertig, wenn ein Bauagent anfangen kann — nicht, wenn kein Prüfer mehr etwas findet. Das
+zweite Kriterium ist bei wachsenden Dokumenten nie erfüllt.

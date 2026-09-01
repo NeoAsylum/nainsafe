@@ -185,20 +185,19 @@ def fokuslauf(trocken: bool) -> int:
     # Aus einem zurueckgewiesenen Entwurf zu bauen waere der teuerste Fehler der ganzen
     # Kette: Der Fehler vervielfaeltigt sich in jedes Arbeitspaket, und die Pruefer
     # finden ihn dann einzeln wieder. Also erst der Entwurf, dann der Bau.
-    # Nach Inhalt suchen, nicht nach Dateiname: Der Pruefer benennt seinen Befund nach
-    # der Paketkennung, und die aendert sich. Ein Namensmuster haette hier still das
-    # falsche -- naemlich ein veraltetes -- Urteil gelesen.
-    ordner = WURZEL / "ventures" / FOKUS / "befunde"
-    entwurfsbefunde = []
-    for d in ordner.glob("pruefung-*.md") if ordner.is_dir() else []:
-        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
-        if kopf.get("pruefer") == "entwurf-pruefer":
-            entwurfsbefunde.append((d.stat().st_mtime, kopf))
-    urteil = max(entwurfsbefunde)[1].get("urteil") if entwurfsbefunde else None
+    # Entscheidend ist der Status des Abnahmepakets, nicht das Urteil des Pruefers.
+    # Der Pruefer beraet, das Paket entscheidet -- und ueber das Paket entscheidet der
+    # Projektmanager oder der Betreiber. Bis zum 2026-09-01 hing das Tor am Pruefurteil,
+    # und weil der Pruefer bei wachsenden Dokumenten immer etwas findet, kam die Kette
+    # nie zum Bau. Fuenf Rueckläufe, 242 kB Spezifikation, kein Code.
+    abnahme = WURZEL / "ventures" / FOKUS / "aufgaben" / "0001-entwurf-abnahme.md"
+    frei = False
+    if abnahme.exists():
+        kopf, _ = frontmatter(abnahme.read_text(encoding="utf-8"))
+        frei = kopf.get("status") == "fertig"
 
-    if urteil != "geprueft":
-        stand = urteil or "noch nicht geprueft"
-        print(f"  Der Entwurf steht auf `{stand}` -- es wird nicht gebaut.")
+    if not frei:
+        print("  Der Entwurf ist nicht abgenommen -- es wird nicht gebaut.")
         print("  Der Nachtlauf dreht stattdessen eine Entwurfsrunde:")
         import konzeptlauf
         return konzeptlauf.main(FOKUS, trocken, ab=2)
