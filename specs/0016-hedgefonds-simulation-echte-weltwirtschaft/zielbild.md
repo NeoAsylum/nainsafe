@@ -60,9 +60,29 @@ freigeschaltete Fähigkeiten, betretene Märkte und Einfluss je Land sind Zahlen
 Die Kollision liegt woanders, bei Kriterium 6 — **wie oft muss jemand über Gestaltung
 entscheiden?**
 
-**Ein Hauptquartier mit Räumen braucht Bildmaterial, und Bildmaterial erzeugt kein
-Agent.** Das ist die erste Anforderung dieses Vorhabens, die weder ein Modell noch ein
-Runner erfüllen kann. Drei Wege, alle offen und alle vom Betreiber zu entscheiden:
+**Ein Hauptquartier mit Räumen braucht eine Bildsprache.** Wie teuer die ist, hängt
+davon ab, ob sie *gezeichnet* oder *konstruiert* wird — und das ist ein Unterschied, den
+ich zunächst übersehen hatte.
+
+> **Nachtrag vom 2026-09-01, vom Betreiber:** *„Ein solches Hauptquartier kann auch
+> konstruktiv durch einen Agenten entworfen werden."*
+>
+> Das trifft zu und korrigiert die ursprüngliche Fassung dieses Abschnitts, die
+> behauptete, Bildmaterial könne kein Agent erzeugen. Richtig ist: Ein Agent **zeichnet**
+> nicht, aber er **konstruiert** — Geometrie aus Grundformen, Räume aus einem Raster,
+> Symbole aus Regeln, alles als SVG.
+>
+> Und damit greift dasselbe Argument wie bei der Ansicht überhaupt: **SVG ist Text.** Ein
+> konstruiertes Hauptquartier ist prüfbar wie jede andere Ausgabe dieser Fabrik — ein
+> Agent kann es lesen, vergleichen und gegen den Zustand halten. Ein gemaltes Bild kann
+> er das nicht.
+>
+> Der teure Rest ist damit klein und klar umrissen: die **Bildsprache selbst** — welche
+> Formen, welche Farben, welcher Aufbau. Das ist eine Entscheidung, keine laufende
+> Arbeit, und genau die zyklische Form, die Kriterium 6 erlaubt.
+
+Drei Wege bleiben, alle offen und alle vom Betreiber zu entscheiden — später, nicht
+jetzt:
 
 1. **Erzeugte Darstellung statt gezeichneter.** Die Weltkugel ist damit fast umsonst zu
    haben: Ländergrenzen sind freie Daten, die Einfärbung ist eine Projektion des
