@@ -1,7 +1,7 @@
 ---
 id: 0007-adressverzeichnis-310
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Das Verzeichnis führt genau 310 Zeilen, jede mit Adresse nach T17, Gruppe nach T15, Herkunft nach T45/T46 und genau einer Skalenklasse nach T5/T49; die drei Gruppierungen summieren auf 198+56+52+4, auf 136+150+11+2+11 und auf die zwölf Klassenzeilen aus T49, jede Summe 310.

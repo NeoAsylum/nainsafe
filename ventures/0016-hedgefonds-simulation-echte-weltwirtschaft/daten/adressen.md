@@ -527,6 +527,12 @@ Prüfer sie einzeln nachrechnen kann:
 | Steckplätze Währung und Anleihe | `fonds.position.waehrung.<L>`, `fonds.position.anleihe.<L>` | T16 (12 Land×Sektor, 4 Währung, 4 Anleihe); `waehrung`/`anleihe` an der Sektorstelle, weil dort sonst ein Index stünde, den es nicht gibt |
 | Partie | `partie.<feld>` | T15; die Feldnamen `jahrgang_id` und `parameter_pruefsumme` aus T22 |
 
+**Warum `land.US.sektor.1.preis` unmarkiert ist und `restwelt.sektor.1.preis` markiert.**
+Die Marke sitzt an der Neuheit, nicht am Zitat: Beim Land sind Präfix und Sektorpfad
+zusammen in T17 zu sehen, bei der Restwelt kommen die beiden Bestandteile in keinem
+Dokument gemeinsam vor — T46 zeigt `restwelt.` nur mit Aggregatgrößen. Wer die Marke
+enger oder weiter setzen will, ändert damit keine Adresse, sondern nur die Zahl 177.
+
 **Zwei Parameterschlüssel sind ebenfalls gebildet** und mit `*` markiert:
 `startzustimmung` und `regulierung_start`. T27 nennt beide Größen („Startzustimmung",
 „Startstand der Finanzmarktregulierung"), aber keinen Schlüsselnamen. Das gehört in Paket
