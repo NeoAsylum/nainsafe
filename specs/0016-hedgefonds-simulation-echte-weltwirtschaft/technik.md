@@ -20,27 +20,48 @@ tick_planwert: 10 Mikrosekunden je Weltschritt (Bandbreite 5 bis 30) -- geschät
 nachtlauf: 11.783.264 Weltschritte, 2,0 Minuten auf einem Kern beim Planwert, 9,8 Minuten im ungünstigen Fall
 ---
 
-# Der Kern ist eine reine Ganzzahlfunktion ohne Ziehung -- damit ist Determinismus keine Disziplin, sondern eine Eigenschaft des Typsystems.
+# Der Kern ist eine reine Ganzzahlfunktion ohne Ziehung -- damit ist Determinismus keine Disziplin, sondern eine Eigenschaft des Bauprofils.
 
-Sechste Fassung, gegen `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`, gegen die
-Prüfung der Runde 6 und gegen **`spiel.md` Fassung 5**, die acht Stellen dieses Dokuments
-nachführen lässt. Die Abarbeitung steht am Ende der Datei. Die Abarbeitungen der ersten
-vier Prüfungen standen in den Fassungen 2 bis 5 und sind dort je von der nächsten Prüfung
-unter deren Bedingung 5 abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht
-wiederholt.
+Siebte Fassung, gegen `ventures/0016-.../aufgaben/0011-stack-auf-cpp.md` und **ADR 0011**.
+Sie tauscht **die Bauart und sonst nichts**: Zustandsaufbau, 310 Adressen, dreizehn
+Skalenklassen, Formeln, Herkunftseinträge und Jahrgangskonstanten stehen unverändert, weil
+nichts davon an einer Sprache hängt. Berührt sind T1 bis T15 in Abschnitt 1 bis 4 und die
+Stellen weiter hinten, die ein Sprachmerkmal beim Namen nannten.
 
-Die Vorgaben sind mit **T1** bis **T51** durchnummeriert. Der Builder weicht von keiner ab,
+Die Vorfassung begründete den Determinismus damit, dass er sich in Rust **vom Werkzeug**
+erzwingen lasse. Der Betreiber hat am 2026-09-01 C++ entschieden, und die Überschrift oben
+ist deshalb um ein Wort geändert: Was in Rust das Typsystem trug, tragen hier das Bauprofil
+und drei Prüfregeln — die Gleitkommasperre (T4), die geprüfte Arithmetik (T7) und die
+geordneten Behälter (T9). **Das ist der Unterschied, der beim Lesen wichtig ist:** Jede
+dieser drei ist mechanisch nachweisbar, aber keine ist geschenkt. Wo die Vorfassung eine
+Spracheigenschaft nannte, nennt diese eine Prüfung — und sagt dazu, was sie *nicht* deckt.
+
+Die Abarbeitung der Prüfung zu `0001-entwurf-abnahme` steht am Ende der Datei und ist von
+diesem Lauf nicht berührt. Die Abarbeitungen der ersten vier Prüfungen standen in den
+Fassungen 2 bis 5 und sind dort je von der nächsten Prüfung unter deren Bedingung 5
+abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
+
+Die Vorgaben sind mit **T1** bis **T52** durchnummeriert. Der Builder weicht von keiner ab,
 ohne dass ein ADR sie aufhebt; der Prüfer zitiert die Nummer, statt sie zu umschreiben.
 **Die Nummern behalten über alle Fassungen ihre Bedeutung**, damit alle Prüfungen
 zitierbar bleiben; neue Vorgaben tragen die nächsten freien Nummern und stehen dort, wo sie
 inhaltlich hingehören. Die Nummerierung ist deshalb innerhalb der Abschnitte nicht
 fortlaufend.
 
-**Die teuerste Lehre dieser Fassung: Der Abzählschritt aus T45 zählt Adressen, und Befund 2
-der Runde 6 lag zwischen zweien.** Die gemischten Skalen in `beteiligung_wert` waren keine
-fehlende Adresse und keine fehlende Zahl, sondern eine **fehlende Einheit an einer
-vorhandenen Größe**. Ich habe deshalb dieselbe Prüfung, die Fassung 5 für die Herkunft von
-Hand ausgeführt hat, in diesem Lauf für die **Skala** ausgeführt — und dabei gefunden, dass
+**Zwei Vorgaben tragen in dieser Fassung einen Buchstaben — T2b und T6b.** Sie sind keine
+neuen Regeln, sondern die C++-Hälfte einer bestehenden: T2b sagt, was an die Stelle von
+`#![forbid(unsafe_code)]` tritt, T6b schreibt die Divisionsform vor, an der die
+Geschwindigkeitsmessung aus ADR 0011 hing. Ein Buchstabe statt einer neuen Nummer, damit die
+Prüfungen der Runden 1 bis 6 zitierbar bleiben und niemand T2 gegen T53 nachschlagen muss.
+Wirklich neu ist allein **T52** (Plattformunabhängigkeit der Ganzzahlrechnung), und die
+Vorfassung brauchte sie nicht, weil Rust sie geschenkt hatte.
+
+**Die teuerste Lehre der Fassung 6, unverändert gültig: Der Abzählschritt aus T45 zählt
+Adressen, und Befund 2 der Runde 6 lag zwischen zweien.** Die gemischten Skalen in
+`beteiligung_wert` waren keine fehlende Adresse und keine fehlende Zahl, sondern eine
+**fehlende Einheit an einer vorhandenen Größe**. Fassung 6 hat deshalb dieselbe Prüfung, die
+Fassung 5 für die Herkunft von Hand ausgeführt hat, für die **Skala** ausgeführt — und dabei
+gefunden, dass
 T5 von sich sagt, die Bedeutung stehe „in dieser Tabelle und nirgends sonst", während **69
 der 310 Adressen** in keiner ihrer Zeilen vorkamen: 25 Personengrößen, 5 Produktivitäten,
 4 Regulierungsstände, 32 Druck- und Gegendruckfelder, die Sichtbarkeit des Fonds und die
@@ -80,7 +101,7 @@ stammen aus `ventures/0016-…/messung-stack/BEFUND.md` (2026-09-01, erzeugt von
 | **C++20 (gewählt)** | **ja, aber zusammengesetzt** — drei Prüfregeln statt drei Spracheigenschaften (T4, T7, T9) | **erster Anlauf** | **947** | **ja** | **nein** |
 | Rust | ja, vom Werkzeug — `overflow-checks`, `clippy::float_arithmetic`, `BTreeMap` | erster Anlauf | 494 | ja | ja |
 | Java | teilweise — Gleitkomma nicht verbietbar, `HashMap` gestreut | erster Anlauf | **316** | nein, braucht JRE | ja |
-| Python | nein | erster Anlauf | 50.383 | nein | ja |
+| Python | nein | ja, aber ohne Übersetzungslauf | 50.383 | nein | ja |
 | Go | nein — `float64` nicht verbietbar, Kartenreihenfolge absichtlich gestreut | *nicht gemessen* | *nicht gemessen* | ja | ja |
 | C# | nein — nur durch Disziplin | *nicht gemessen* | *nicht gemessen* | mit Laufzeit | ja |
 
@@ -100,11 +121,11 @@ einem Steam-Titel ist ein Auslieferungsproblem, das keine Rechenzeit aufwiegt.
 **Der Einwand gegen die Wahl gehört dazu, und es sind zwei.** *Erstens:* C++ war in der
 Messung 1,92-mal langsamer als Rust und 3,0-mal langsamer als Java (947 / 494 bzw.
 947 / 316, beide in diesem Lauf gerechnet). Das ist eine Eigenschaft **dieser Umsetzung**,
-nicht der Sprache — T6 sagt jetzt, woran es lag und wie es der Kern anders macht.
+nicht der Sprache — **T6b** sagt jetzt, woran es lag und wie es der Kern anders macht.
 *Zweitens, und das ist der bleibende Preis:* C++ hat keine Speichersicherheit. In einer
 Fabrik ohne menschliche Codedurchsicht ist das eine eigene Fehlerklasse, und sie zeigt sich
 beim Käufer statt im Übersetzungslauf. Gegenmassnahmen sind der Adressen-Sanitizer im
-Testprofil (T7), der Warnsatz mit `-Werror` und die Zeigerfreiheit des Kerns (T2) — sie
+Testprofil (T7), der Warnsatz mit `-Werror` und die Zeigerfreiheit des Kerns (**T2b**) — sie
 decken Pfade ab, nicht alle Fälle. Das steht hier, damit es später nicht überrascht.
 
 **Was jetzt fallen muss und was sich vertagen lässt.** Die Frage kostet nichts und spart am
@@ -161,12 +182,12 @@ das jeweilige Paket; dass es *keine weitere* gibt, entscheidet diese Vorgabe.
 |---|---|---|
 | `daten` | Leser für `parameter.toml` und die Jahrgangsdateien, **ohne Gleitkomma** (T4) | offen; die Anforderung schliesst jeden Leser aus, der über `double` geht |
 | `schnittstelle` | Protokollformat schreiben und lesen | offen; das Format steht in T17, nicht in einer Bibliothek |
-| `pruefstand` | Parallelität über Partien | offen; T39 bindet die **Ergebnisgleichheit**, nicht das Mittel — `std::thread` und `<execution>` erfüllen sie beide |
+| `pruefstand` | Parallelität über Partien | offen; Abschnitt 9 bindet die **Ergebnisgleichheit** mit einem und mit zweiunddreissig Kernen, nicht das Mittel — `std::thread` und `<execution>` erfüllen sie beide |
 | `werkzeuge` | Datei-Prüfsummen für den Jahrgangsbau | offen; darf eine Fremdbibliothek sein, weil das Erzeugnis geprüft wird und nicht der Weg |
 | `oberflaeche` | — | **vertagt** (ADR 0010) |
 
 **Jede tatsächlich eingesetzte Bibliothek braucht einen ADR mit Lizenzzitat**, und keine
-davon darf in den Kern (T2). Die frühere Liste dieser Vorgabe nannte sechs Rust-Kästen
+davon darf in den Kern (T2). Die frühere Liste dieser Vorgabe nannte sechs Fremdbibliotheken
 namentlich; sie ist ersatzlos gestrichen, weil sie eine Wahl festschrieb, die niemand
 treffen musste — und weil die Oberflächenzeile darin seit ADR 0010 ohnehin vertagt war.
 
@@ -204,7 +225,7 @@ danach eingebunden wird, zerbricht daran, weil etwa `<string>` ein `std::to_stri
 den Bau anhalten.
 
 Nachweis, zwei Zeilen: `grep -c 'include "kern/sperre.hpp"' kern/src/*.cpp` gibt für jede
-Quelle genau `1`, und `grep -rnE 'f32|f64|float|double' kern/` trifft nur `sperre.hpp`
+Quelle genau `1`, und `grep -rnE 'float|double' kern/` trifft nur `sperre.hpp`
 selbst. Auch die Parameterdatei wird ohne Gleitkomma gelesen — Dezimalzeichenketten werden
 direkt in skalierte Ganzzahlen zerlegt, nie über einen Gleitkommaumweg; in `daten` gilt
 dieselbe Sperre.
@@ -376,12 +397,61 @@ mechanisch.
 
 **T6 — Genau eine Rundungsregel, `/` auf Zustandsgrößen ist verboten, und der Nenner null
 ist ein harter Fehler.** Alle Divisionen laufen über `teile_gerundet(zaehler, nenner)` mit
-Rundung **auf halbe Beträge vom Null weg**. Grund: Rusts `/` schneidet gegen null ab und ist
-damit über dem Vorzeichen unsymmetrisch — bei einem Fonds, der nach `spiel.md` ausdrücklich
-long **und** short sein können soll, würde das eine Richtung still bevorzugen und Maß 2
-verfälschen. Ebenso verpflichtend: `mal_geteilt(a, b, c)` rechnet `a·b/c` über ein
-`i128`-Zwischenergebnis; die naive Form läuft bei Beträgen in Cent mal Anteilen in
-Zehntausendsteln über.
+Rundung **auf halbe Beträge von null weg**.
+
+**Die Regel bleibt, ihre Begründung wechselt die Sprache.** Die Vorfassungen begründeten sie
+mit Rusts Divisionsverhalten. C++ verhält sich seit C++11 genauso: `/` liefert für
+ganzzahlige Operanden den algebraischen Quotienten mit abgeschnittenem Bruchteil, schneidet
+also **gegen null** ab (ISO/IEC 14882, `[expr.mul]`; vor C++11 war es für negative Operanden
+implementierungsabhängig, weshalb der Sprachstand aus T1 hier mitbindet und nicht nur eine
+Bequemlichkeit ist). Damit gilt unverändert derselbe Einwand: Abschneiden gegen null ist über
+dem Vorzeichen unsymmetrisch — bei einem Fonds, der nach `spiel.md` ausdrücklich long **und**
+short sein können soll, würde es eine Richtung still bevorzugen und Maß 2 verfälschen.
+
+Ebenso verpflichtend: `mal_geteilt(a, b, c)` rechnet `a·b/c` über einen
+**`__int128`**-Zwischenwert (ADR 0011, Massnahme 3); die naive Form läuft bei Beträgen in
+Cent mal Anteilen in Zehntausendsteln über. Ein nachträglicher Überlauftest käme dafür zu
+spät — das Produkt wäre dann schon gebildet und nach T7 still umgebrochen.
+
+**Schreibweise für den Rest des Dokuments:** `i128` steht überall als Kurzform für
+`__int128`, so wie im Kern der gleichlautende Aliasname dafür steht. `__int128` ist eine
+Erweiterung des Typsystems, nicht des Sprachmodus — es bleibt unter `-std=c++20` verfügbar,
+und `-Wpedantic` ist nach T2b genau deswegen abgeschaltet.
+
+**T6b — Die Divisionsform ist vorgeschrieben: Vorzeichen zuerst, dann genau eine
+vorzeichenlose 128-Bit-Division auf den Beträgen.** Also `betrag()` auf Zähler und Nenner, ein
+`unsigned __int128`-Quotient, der Rest als `az − ganz·an` statt als zweite Operation, die
+Aufrundungsbedingung als `rest ≥ an − rest` statt als `2·rest ≥ an`, und das Vorzeichen zum
+Schluss.
+
+Das ist keine Geschmacksfrage, sondern die Antwort auf den Geschwindigkeitseinwand aus T1.
+Die 947 ns der Messung sind **eine** Umsetzung, nicht die Sprache, und ADR 0011 vermutet als
+Ursache einen fehlenden `__int128`. Das trifft nicht zu: Die gemessene C++-Fassung benutzt
+`__int128` (`messung-stack/cpp/schritt.cpp`, Zeilen 21–31). Der nachweisbare Unterschied
+liegt eine Ebene tiefer, und er steht im Erzeugnis statt in der Vermutung — `objdump -d` über
+die beiden abgelegten Programme in diesem Lauf ausgeführt:
+
+| Umsetzung | Divisionsform | Aufrufe der Übersetzerhilfe |
+|---|---|---|
+| `messung-stack/cpp/schritt` | signiert dividieren **und** Rest nehmen | `__divmodti4` |
+| `messung-stack/rust/schritt` | Vorzeichen zuerst, dann Beträge dividieren | `__udivti3` |
+
+Eine 128-Bit-Division ist auf x86-64 kein Befehl, sondern ein Aufruf in die Laufzeitbibliothek
+des Übersetzers, und die **vorzeichenlose** Form ist die billigere: Die signierte normalisiert
+zuerst die Vorzeichen und ruft dann dieselbe unsignierte Routine. Dazu kommt in der
+C++-Fassung ein zusätzliches 128-Bit-Produkt für `rest_betrag * 2`, das die hier
+vorgeschriebene Form nicht braucht — und das nach der eigenen Anmerkung in `festkomma.hpp`
+bei einem Nenner nahe der `i128`-Grenze selbst überlaufen könnte.
+
+**Was ich damit nicht behaupte:** Ich habe die schnellere Form nicht nachgemessen; der
+Abstand von 1,92 könnte auch nur teilweise daran hängen. Die Vorgabe steht trotzdem, weil sie
+unter jedem Übersetzer die kleinere Rechnung ist und weil sie den Überlauf in der
+Aufrundungsbedingung gleich mit ausräumt. **Entschieden wird die Frage nicht hier, sondern
+durch `ticks_je_sekunde` aus dem ersten Prüfstandsbefund** (Abschnitt 9, Berichtspflicht).
+
+Mechanischer Nachweis: `objdump -d` über die Kernbibliothek darf `__divti3` und
+`__divmodti4` **nicht** enthalten; erlaubt ist allein `__udivti3`. Die 64-Bit-Divisionen der
+Zähler und Restdauern erzeugen keinen solchen Aufruf und stören die Prüfung nicht.
 
 **`nenner == 0` bricht ab und wird nie still zu null.** Befund 2 der zweiten Prüfung
 entstand genau an dieser Stelle: Ein Rückvergleich mit einem Fonds ohne Vermögen brauchte
@@ -389,11 +459,120 @@ dieses Vermögen als Nenner. Ein stiller Ersatzwert hätte den Fehler in eine fa
 verwandelt statt in einen Abbruch; die Behebung gehört nach T38 in den Modus und nicht in
 die Divisionsregel, aber die Regel bleibt die Wand, gegen die ein solcher Fehler läuft.
 
-**T7 — Überlauf ist ein Absturz, kein Umlauf.** `overflow-checks = true` auch im
-Freigabeprofil. Rust schaltet die Prüfung im Freigabeprofil ab und läuft dann still im
-Zweierkomplement um (doc.rust-lang.org/book/ch03-02-data-types.html, abgerufen
-2026-08-31) — ein stiller Umlauf würde einen Regressionsbestand vergiften, statt ihn rot
-zu machen. Die Kosten sind wenige Prozent und in Abschnitt 10 eingerechnet.
+**T7 — Überlauf erzeugt nie still eine falsche Zahl.** Die Vorgabe behält Nummer und Sinn;
+ihr Mittel wechselt mit der Sprache. Rust hätte sie mit `overflow-checks = true` im
+Freigabeprofil erledigt — **eine** Einstellung. In C++ sind es vier Massnahmen, drei davon
+aus ADR 0011 und eine, die dort fehlt.
+
+**Massnahme 1 — `-fwrapv` in jedem Profil.** Damit ist vorzeichenbehafteter Ganzzahlüberlauf
+als Umbruch im Zweierkomplement **definiert**. Die eigentliche Gefahr ist nämlich nicht der
+Überlauf, sondern was ein Optimierer aus seiner angeblichen Unmöglichkeit folgert: Ohne
+`-fwrapv` darf er Vergleiche wegwerfen, die „nicht eintreten können", und aus einem
+Zahlenfehler wird ein weggefallener Programmzweig. Der Schalter steht in
+`werkzeugkette.cmake` und nicht nur im Runner — ein Determinismusschalter, der allein im
+Nachtlauf gilt, ist keiner.
+
+**Massnahme 2 — `-fsanitize=undefined,address` im Testprofil**, mit
+`-fno-sanitize-recover=all`, damit ein Fund ein Abbruch wird und keine Meldung, die ein
+grüner Testlauf überschreibt. Der Prüfstand läuft darüber. Weil ein Sanitizer nur findet,
+was er selbst übersetzt hat, wird der Kern für die Proben ein **zweites Mal** übersetzt
+(`kern_geprueft`); linkten die Proben die ungeprüfte Bibliothek, sicherte die Massnahme den
+Testcode ab und nicht den Code, um den es geht.
+
+> **Und hier ist ADR 0011 zu widersprechen, in genau einem Punkt.** Dort steht, ein Überlauf,
+> der trotz `-fwrapv` unbeabsichtigt ist, werde durch Massnahme 2 „im Nachtlauf laut statt
+> still". **Das trifft nicht zu.** Seit GCC 8 schaltet `-fwrapv` die Prüfung
+> `-fsanitize=signed-integer-overflow` ab — der Sanitizer meldet nur *undefiniertes*
+> Verhalten, und `-fwrapv` hat den Überlauf gerade definiert. Die beiden Massnahmen heben
+> sich an dieser einen Stelle gegenseitig auf; genau deshalb hat der Linux-Kernel seine
+> UBSan-Überlaufprüfungen wieder ausgebaut, nachdem er `-fno-strict-overflow` gesetzt hatte.
+>
+> **Was Massnahme 2 deshalb wirklich leistet — und es ist trotzdem viel:** Sie deckt den
+> Adressen-Sanitizer ab und die übrigen UB-Klassen (Schiebeweiten, Ausrichtung,
+> Feldgrenzen, Nullzeiger). Das ist genau die Fehlerklasse, die C++ nach T1 gegenüber Rust
+> offen hat, und sie ist der Grund, die Massnahme unverändert zu behalten. Sie ist nur
+> **nicht** die Antwort auf den Überlauf, als die ADR 0011 sie einführt.
+
+**Massnahme 3 — `__int128` für jeden Zwischenwert** einer Multiplikation-Division, nie ein
+nachträglicher Test auf Überlauf (T6, T6b).
+
+**Massnahme 4 — geprüfte Arithmetik im Kern. Sie schliesst die Lücke, die Massnahme 2
+offenlässt, und ohne sie hätte das Vorhaben keinen Ersatz für `overflow-checks = true`.**
+Zwei Formen, beide vom Übersetzer unabhängig, weil sie ausdrücklich prüfen statt sich auf
+undefiniertes Verhalten zu verlassen:
+
+1. **Die Verengung von `__int128` auf `i64` ist der Prüfpunkt.** Jeder Wert, der aus einem
+   128-Bit-Zwischenwert in eine Zustandsadresse zurückkehrt, läuft durch einen Wächter, der
+   gegen `I64_MIN`/`I64_MAX` prüft und bei Verletzung **abbricht** statt zu kappen. Weil
+   T6 jede Multiplikation-Division ohnehin über `__int128` führt, liegt der weitaus grösste
+   Teil aller Überlaufgelegenheiten genau auf diesem Weg — die Prüfung ist damit kein
+   Flickwerk, sondern sitzt an der Engstelle.
+2. **Was nicht über `__int128` läuft — Additionen und Subtraktionen auf `i64` —, benutzt
+   `__builtin_add_overflow` und `__builtin_sub_overflow`.** Sie rechnen in unendlicher
+   Genauigkeit und melden, ob das Ergebnis in den Zieltyp passt; `-fwrapv` berührt sie
+   nicht, weil sie kein undefiniertes Verhalten auslösen, sondern eines abfragen.
+
+**Der Abbruch ist eine Ausnahme und kein `std::abort`**, und das aus zwei mechanischen
+Gründen: Bei der Auswertung zur Übersetzungszeit macht ein `throw` den Ausdruck zu keiner
+Konstante — ein `static_assert`, das den Abbruchpfad trifft, ist damit ein
+**Übersetzungsfehler** statt eines unprüfbaren Falls; und ein Signal lässt CTest nicht als
+erwartetes Ergebnis verbuchen, eine Ausnahme dagegen fängt die Probe und weist sie nach. Was
+nicht nachweisbar ist, ist in dieser Fabrik nicht gebaut. Still ist der Abbruch trotzdem
+nicht: Er hat keinen Rückgabewert, den jemand versehentlich weiterrechnet.
+
+**Zwei Stellen brechen absichtlich um, und sie sind die Ausnahme von T7:** die Prüfsumme aus
+T12 und der Zufallserzeuger aus T11. Beide rechnen auf **vorzeichenlosen** Typen, deren
+Umbruch in C++ seit jeher definiert ist und deren Rechenvorschrift ihn ausdrücklich verlangt.
+Sie bekommen keinen Wächter — ein Wächter dort wäre kein Schutz, sondern ein Fehler.
+
+Die Kosten sind wenige Prozent und in Abschnitt 10 eingerechnet.
+
+**Quellen zu Massnahme 2**, beide abgerufen am 2026-09-02:
+GCC-Dokumentation zu `-fsanitize=signed-integer-overflow` und `-fno-sanitize-recover`
+(<https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html>) — sie beschreibt die
+Prüfung, **erwähnt die Wechselwirkung mit `-fwrapv` nicht**, weshalb sie hier steht;
+der Beleg für die Abschaltung ist der Kernel-Patch „ubsan: remove overflow checks"
+(<https://lkml.iu.edu/hypermail/linux/kernel/2102.1/03333.html>): *„Since GCC 8.0
+-fsanitize=signed-integer-overflow doesn't work with -fwrapv. -fwrapv makes signed overflows
+defines and GCC essentially disables ubsan checks."* Die Überlaufbausteine aus Massnahme 4
+sind in
+<https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html> beschrieben.
+
+**T52 — Dieselbe Aktionsfolge ergibt auf jeder Zielplattform denselben Zustand, und in C++
+ist das eine Vorgabe statt einer Selbstverständlichkeit.** *Neu in Fassung 7.*
+
+Warum die Anforderung überhaupt noch gilt: Der Speicherstand ist unverändert **Startwert
+plus Aktionsfolge** und nicht der Zustand (Frontmatter, **T22**). Ein Spielstand, der auf einem
+Rechner geschrieben und auf einem anderen geladen wird, wird also **nachgerechnet** — läuft
+die Rechnung dort anders, ist der Spielstand still ein anderer. T30 Prüfung 3 vergleicht die
+Prüfsummen deshalb über die Zielplattformen hinweg; das bleibt so.
+
+Rust hatte die Eigenschaft geschenkt, weil seine Ganzzahltypen überall dieselbe Breite
+haben. C++ hat sie nicht geschenkt, und die vier Stellen, an denen sie verloren geht, sind
+benannt:
+
+1. **Nur Typen fester Breite aus `<cstdint>`** in jedem Wert, der eine Zustandsadresse
+   erreicht oder in eine Formel eingeht: `std::int64_t`, `std::uint64_t`, `std::uint8_t`.
+   **`int`, `long`, `unsigned` und `std::size_t` sind dort verboten.** `long` ist unter
+   Windows 32 Bit und unter Linux 64 Bit — das ist die klassische Falle und die einzige
+   dieser vier, die schweigend eine falsche Zahl erzeugt statt eines Warnhinweises.
+2. **Kein `char` in einer Rechnung.** Ob `char` vorzeichenbehaftet ist, entscheidet die
+   Zielarchitektur. Wo ein Byte gemeint ist, steht `std::uint8_t`.
+3. **Kein Wert aus `sizeof` oder einer Ausrichtung** in einer Formel des Kerns.
+4. **Schiebeoperationen** sind zulässig und der Zufallserzeuger braucht sie. Sie sind hier
+   ungefährlich, **weil** T1 auf C++20 festlegt: Seit C++20 ist die
+   Zweierkomplementdarstellung vorgeschrieben und das Rechtsschieben negativer Werte als
+   arithmetisches Schieben definiert. Unter einem älteren Sprachstand wäre beides
+   implementierungsabhängig. Das ist der zweite Grund, aus dem der Sprachstand aus T1 bindet
+   und keine Bequemlichkeit ist — der erste steht in T6.
+
+**Beobachtung an ADR 0011, gemeldet und nicht selbst entschieden:** Das erste Argument des
+ADR lautet, die plattformübergreifende Reproduzierbarkeit falle weg, *wenn* der Spielstand
+den Zustand speichert statt der Aktionsfolge. Diesen Wechsel ordnet der ADR in seinen Folgen
+aber nicht an, und mein Arbeitspaket auch nicht. **Bis er angeordnet ist, gilt die
+Anforderung** — deshalb steht T52 hier statt eines gestrichenen Absatzes. Der Wechsel wäre
+eine Erleichterung, keine Notwendigkeit: Die vier Regeln oben sind mechanisch und kosten den
+Bauagenten nichts, den sie nicht ohnehin zahlt.
 
 **T40 — Die Partielänge R ist eine Größe des Jahrgangs, keine Konstante des Codes, und
 keine aus ihr abgeleitete Zahl steht als Literal irgendwo.** Das ist die architektonische
@@ -464,11 +643,31 @@ Rechenvorschrift steht in T42, einschliesslich der Korrektur, die eine Neubasier
 innerhalb der Reihe erzwingt.
 
 **T9 — Feste Reihenfolge, keine streuenden Behälter.** Länder, Sektoren, Instrumente und
-Handelspaare sind dichte Indexlisten (`Vec` fester Länge, angesprochen über `LandId(u8)`,
-`SektorId(u8)`, `InstrumentId(u8)`). `HashMap` und `HashSet` sind im Kern verboten;
-gebraucht wird eine Zuordnung, ist es ein `BTreeMap`. Die sechs Schritte der Runde laufen
-in der Reihenfolge aus `spiel.md`, Abschnitt „Die Schleife", und diese Reihenfolge steht
-als benannte Konstantenliste im Code, damit ein Umstellen sichtbar wird.
+Handelspaare sind dichte Indexlisten: **`std::array` fester Länge**, angesprochen über eigene
+Indextypen `LandId`, `SektorId`, `InstrumentId` — je ein `enum class : std::uint8_t` oder ein
+Hüllentyp über `std::uint8_t`, damit zwei Indexarten sich nicht stillschweigend vermischen.
+Ein blanker `int` als Index ist ein Befund.
+
+**Verboten im Kern sind `std::unordered_map` und `std::unordered_set`.** Ihre
+Durchlaufreihenfolge hängt von Streuwert, Einfügefolge und Standardbibliothek ab und ist
+damit genau das, was T9 ausschliesst. Wird eine Zuordnung gebraucht, ist es **`std::map`**
+oder **`std::set`** — die geordnete Entsprechung zu Rusts `BTreeMap`, mit einer
+Durchlaufreihenfolge, die eine Eigenschaft des Schlüssels ist und keine des Speichers.
+
+**Zwei Fallen, die C++ zusätzlich stellt und Rust nicht:**
+
+- **`std::sort` ist nicht stabil.** Wo sortiert wird — der Prüfstand tut es in T39 —, ist
+  entweder `std::stable_sort` zu nehmen oder nach einem Schlüssel zu sortieren, der die
+  Elemente **eindeutig** ordnet. Eine Sortierung mit Gleichständen ist sonst eine
+  Reihenfolge, die der Übersetzer wählt.
+- **Die Auswertungsreihenfolge von Funktionsargumenten ist unbestimmt.** Solange die
+  Argumentausdrücke des Kerns seiteneffektfrei sind, ist das folgenlos — und genau deshalb
+  ist es eine Vorgabe: **Kein Argumentausdruck im Kern verändert etwas.** Kein `++i` und
+  keine Zuweisung innerhalb eines Aufrufs.
+
+Die sechs Schritte der Runde laufen in der Reihenfolge aus `spiel.md`, Abschnitt
+„Die Schleife", und diese Reihenfolge steht als benannte Konstantenliste im Code, damit ein
+Umstellen sichtbar wird.
 
 **T10 — Der Weltschritt zieht nicht.** Nach `spiel.md` ist jede Regel eine Schwelle, ein
 Zähler oder eine Rechnung; auch der Innerjahresausschlag folgt „deterministisch aus der
@@ -481,8 +680,17 @@ exakt wiederholbaren Rechnung.
 Erstens die Streuung der Startjahrgänge (ein Spiel soll nicht immer identisch beginnen),
 zweitens die Bots und Stichproben des Prüfstands. Der Erzeuger ist selbst geschrieben —
 SplitMix64 zur Ableitung, xoshiro256\*\* zur Erzeugung, zwanzig Zeilen, im Repo
-festgeschrieben, **kein Kasten** (T2): Ein Versionssprung eines fremden Zufallskastens
-würde sonst jede gespeicherte Partie entwerten.
+festgeschrieben, **keine Fremdbibliothek** (T2): Ein Versionssprung eines fremden
+Zufallskastens würde sonst jede gespeicherte Partie entwerten.
+
+**Auch `<random>` aus der Standardbibliothek ist ausgeschlossen, und der Grund ist
+schärfer als der allgemeine.** Der Standard legt die *Erzeuger* fest (`std::mt19937` liefert
+überall dieselbe Folge), aber **nicht die Verteilungen**: Was
+`std::uniform_int_distribution` aus einer Bitfolge macht, ist der Standardbibliothek
+überlassen und unterscheidet sich zwischen libstdc++ und libc++. Ein Spielstand, der auf
+einer Verteilung beruht, wäre damit an eine Standardbibliotheksfassung gebunden statt an
+eine Rechenvorschrift. Die Reduktion auf einen Wertebereich wird deshalb im Kern
+ausgeschrieben und ist Teil des geprüften Codes.
 
 Jeder Strom wird **abgeleitet**, nicht fortgeschrieben:
 
@@ -507,9 +715,16 @@ geschriebene Funktion in Bytes gefasst (feste Feldreihenfolge, `i64` in Little-E
 **nie über die Speicheranordnung der Struktur**. Darüber läuft FNV-1a-64, ebenfalls im
 Kern implementiert. Diese Prüfsumme ist die Währung aller Regressionstests.
 
+**In C++ ist die Abkürzung besonders naheliegend und deshalb ausdrücklich verboten:** ein
+`memcpy` über die Struktur oder ein `reinterpret_cast` auf `unsigned char*` sind zwei Zeilen
+und liefern eine Prüfsumme, die Füllbytes zwischen den Feldern und die Bytefolge des
+Zielsystems mitnimmt. Füllbytes haben keinen festgelegten Inhalt — dieselbe Partie ergäbe
+auf demselben Rechner zwei Prüfsummen. Die Byteform wird Feld für Feld geschrieben, und der
+`reinterpret_cast` steht ohnehin auf der Grep-Liste aus T2b.
+
 ## 3. Trennung von Modell und Darstellung
 
-**T13 — Die Kastenrichtung ist die Trennung, und `cargo` erzwingt sie.**
+**T13 — Die Bausteinrichtung ist die Trennung, und CMake erzwingt sie.**
 
 ```
 kern            (keine Abhängigkeit)      Zustand, Regeln, Kette, Festkomma, Zufall, Prüfsumme
@@ -520,22 +735,43 @@ schnittstelle   -> kern, daten            Protokoll, drei Zustandsebenen, Partie
   ^          ^
 konsole      pruefstand                   Binärprogramme: Text und Protokoll / Bots und Maße
   ^
-oberflaeche  -> schnittstelle             Binärprogramm: egui
+oberflaeche  -> schnittstelle             Binärprogramm (vertagt, ADR 0010)
 werkzeuge/aufbereitung -> daten           einmal je Jahrgang: Rohdaten -> Jahrgang
 ```
 
-`kern` kennt weder Bildschirm noch Datei noch Uhr. Dass das Modell die Sicht nie etwas
-fragt, ist damit keine Verabredung, sondern scheitert am Übersetzer, sobald es jemand
-versucht.
+Jeder Baustein ist ein eigenes CMake-Ziel mit eigenem Verzeichnis; die Pfeile sind
+`target_link_libraries`, und die Sichtbarkeit der Kopfverzeichnisse folgt ihnen. **Wer nicht
+verlinkt ist, findet die Köpfe nicht** — `kern` kennt weder Bildschirm noch Datei noch Uhr,
+und dass das Modell die Sicht nie etwas fragt, ist damit keine Verabredung, sondern
+scheitert am Übersetzer, sobald es jemand versucht.
+
+*Der Unterschied zur Vorfassung, damit er nicht unbemerkt bleibt:* Ihr Bauwerkzeug hätte die
+Richtung erzwungen, weil ein Baustein ohne Eintrag in der Abhängigkeitsliste gar nicht erst
+gefunden wird. CMake erzwingt sie nur, solange die Kopfverzeichnisse **`PRIVATE`** bzw. sauber `PUBLIC`
+vergeben sind; ein globales `include_directories()` auf Arbeitsbereichsebene würde die
+Trennung still aufheben, ohne dass ein Bau fehlschlägt. **`include_directories()` ist
+deshalb im ganzen Vorhaben verboten**; Kopfverzeichnisse werden ausschliesslich über
+`target_include_directories` am jeweiligen Ziel vergeben. Das ist die eine Stelle, an der
+diese Bauart eine Prüfregel braucht, wo die alte eine Werkzeugeigenschaft hatte.
 
 **Innerhalb von `kern` gibt es ein Modul, dessen Schnitt eine Vorgabe ist und keine
-Geschmacksfrage: `kern::werte`.** Dort und nur dort stehen die abgeleiteten Größen aus T48
-und die drei Skalenübergänge aus T50; `tsd_in_cent`, `lobbypunkte_aus_geld` und
-`lobbypunkte_aus_schaden` sind dort privat. Damit ist die öffentliche Schnittstelle dieses
-Moduls **dieselbe Liste**, die T48 aufzählt — ein Prüfer legt `pub fn` gegen die Tabelle und
-ist fertig. Das ist der mechanische Nachweis, den Befund 1 der Runde 6 gebraucht hätte und
-den der Abzählschritt aus T45 nicht liefern konnte, weil er Adressen zählt und keine
+Geschmacksfrage: der Namensraum `kern::werte` mit dem Kopf `kern/include/kern/werte.hpp`.**
+Dort und nur dort stehen die abgeleiteten Größen aus T48 und die drei Skalenübergänge aus
+T50; `tsd_in_cent`, `lobbypunkte_aus_geld` und `lobbypunkte_aus_schaden` liegen im
+Unternamensraum `kern::werte::intern` und sind damit als nicht öffentlich gekennzeichnet.
+
+Damit ist die öffentliche Schnittstelle dieses Moduls **dieselbe Liste**, die T48 aufzählt —
+ein Prüfer legt die Deklarationen in `werte.hpp` ausserhalb von `intern` gegen die Tabelle
+und ist fertig. Das ist der mechanische Nachweis, den Befund 1 der Runde 6 gebraucht hätte
+und den der Abzählschritt aus T45 nicht liefern konnte, weil er Adressen zählt und keine
 Funktionen.
+
+*Die Grenze dieses Nachweises gehört dazu:* `intern` ist eine Kennzeichnung, keine Sperre —
+C++ hat für Funktionen eines Namensraums kein `pub`. Ein Aufruf von aussen übersetzt. Die
+Sperre ist deshalb die Grep-Regel aus T50: Ein Treffer von
+`grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` ausserhalb dieses einen Moduls ist ein
+Befund. Zwei schwache Nachweise an derselben Stelle sind hier billiger als ein starker, den
+die Sprache nicht hergibt.
 
 **T14 — Die Textoberfläche ist Teil des Produkts, nicht Werkzeug.** `konsole` spielt das
 Spiel vollständig — Zustand in drei Ebenen, Aktionen, Speichern, Laden. Sie ist zugleich
@@ -546,10 +782,23 @@ die grafische Oberfläche je klemmt. Was `oberflaeche` zeigt, muss aus der Ausga
 ## 4. Datenmodell
 
 **T15 — `Zustand` ist ein Wert fester Größe ohne Speicheranforderung: 310 `i64`, also
-2.480 Byte.** Feste Felder, feste Arrays, keine `Vec`, kein `String`, kein
-`Option<Box<…>>`. `Clone` ist damit ein Speicherumzug von 2,5 kB (etwa 200 Nanosekunden) —
-die Voraussetzung dafür, dass der Prüfstand Millionen von Nachspielen aus Zwischenständen
-startet.
+2.480 Byte.** Feste Felder, `std::array` fester Länge, **kein `std::vector`, kein
+`std::string`, kein Zeiger, kein `std::unique_ptr`**. Das Kopieren ist damit ein
+Speicherumzug von 2,5 kB (etwa 200 Nanosekunden) — die Voraussetzung dafür, dass der
+Prüfstand Millionen von Nachspielen aus Zwischenständen startet.
+
+**Zwei `static_assert` machen daraus eine geprüfte Eigenschaft statt einer Beschreibung**,
+und beide gehören in denselben Kopf wie der Typ:
+
+- `static_assert(std::is_trivially_copyable_v<Zustand>)` — sie fällt in dem Augenblick, in
+  dem jemand ein `std::vector` oder einen eigenen Kopierkonstruktor einbaut. Das ist der
+  billigste Wächter des ganzen Datenmodells: Er verteidigt nicht die Grösse, sondern die
+  Eigenschaft, aus der die Grösse folgt.
+- `static_assert(sizeof(Zustand) == 2480)` — sie fällt bei Füllbytes und bei jeder
+  Adressenzahl ungleich 310. Zusammen mit T12 heisst das: Die Struktur *ist* füllbytefrei,
+  und die Byteform wird trotzdem Feld für Feld geschrieben. Der Gürtel ersetzt die
+  Hosenträger nicht — die Prüfsumme darf auch dann nicht an der Speicheranordnung hängen,
+  wenn diese zufällig passt.
 
 Fünf Gebiete (USA, China, Deutschland, Brasilien, Restwelt), drei Sektoren, davon zwei mit
 Handelszeilen, vier Politikinstrumente. **Jede Zeile nennt ihre Herkunft in `spiel.md`,
@@ -1432,7 +1681,7 @@ Adresse**, in Schritt 6 geschrieben als `mal_geteilt(korbbestand(z), 10.000, mar
 Zahl, aber die naive Form läuft nach T6 über, und deshalb ist die `i128`-Form verbindlich.
 
 **Drei Größen liegen ausserhalb des Kerns** und stehen deshalb nicht in der Tabelle: `B(z)`,
-`v(z)` und `e(z)` aus T44. Sie sind Prüfstandsgrößen, gehören dem Kasten `pruefstand` und
+`v(z)` und `e(z)` aus T44. Sie sind Prüfstandsgrößen, gehören dem Baustein `pruefstand` und
 verlassen die Partie nie.
 
 **Die Regel, die daraus folgt, und der mechanische Nachweis dazu.** Ein Name in einer Formel
@@ -1441,8 +1690,9 @@ Parameterschlüssel aus T27 noch eine Jahrgangskonstante aus T23 noch eine der s
 Größen oben ist, **ist ein Befund und keine Bauentscheidung** — das ist der Fall, den
 Befund 1 beschreibt, und der Grund, warum er teuer war: Wählt der Bauagent, misst Maß 2
 seine Wahl. Nachgewiesen wird es wie der Gleitkommaverzicht aus T4: Die siebzehn Namen sind
-die öffentliche Schnittstelle des Moduls `kern::werte` (T13), und `grep -n 'pub fn'
-kern/src/werte.rs` gegen diese Tabelle gelegt ist eine Prüfung von zwei Minuten. **Ich habe
+die öffentliche Schnittstelle des Moduls `kern::werte` (T13), und die Deklarationen in
+`kern/include/kern/werte.hpp` ausserhalb von `namespace intern` gegen diese Tabelle gelegt
+sind eine Prüfung von zwei Minuten. **Ich habe
 sie in diesem Lauf einmal von Hand ausgeführt**, in der einzigen Form, die vor dem Bau
 möglich ist: jede Formel aus `spiel.md` Fassung 5 und aus diesem Dokument Name für Name
 gegen die vier Mengen gelegt. Übrig blieben die vier oben, und sie stehen jetzt da.
@@ -1858,9 +2108,11 @@ an**, weil das Fondsteilsystem nach T38 nicht läuft; der Rückvergleich ist von
 Korrektur nicht berührt. Keine Zeile der Tabelle unten bewegt sich.
 
 **Der Planwert ist unverändert geschätzt und nicht gemessen.** Mein Logbuch verlangt, beim
-nächsten Lauf zuerst den gemessenen `ticks_je_sekunde` zu lesen; es gibt ihn nicht, weil
-unter `ventures/0016-…/` noch keine Zeile Code steht. Das bleibt die größte Unsicherheit
-dieses Abschnitts, und sie steht in Abschnitt 12.
+nächsten Lauf zuerst den gemessenen `ticks_je_sekunde` zu lesen; es gibt ihn weiterhin
+nicht. Unter `ventures/0016-…/kern/` stehen inzwischen Festkomma, Zufall, Prüfsumme,
+Zustand und Schreiber, aber kein Weltschritt und kein Prüfstandslauf — gemessen ist damit
+die Arithmetik, nicht die Schleife. Das bleibt die größte Unsicherheit dieses Abschnitts,
+und sie steht in Abschnitt 12.
 
 Grundlage ist die **R = 24-Runden-Partie** aus `spiel.md` Fassung 3. Alle Zeilen sind in
 diesem Lauf gerechnet.
@@ -1890,8 +2142,11 @@ Bruchlauf, Beschränktheit, Rückvergleich und Regressionsbestand:
 `11.519.040 + 240.000 + 200 + 24 + 24.000 = 11.783.264`. Die beiden Zeilen „1.000 Partien"
 sind Vergleichswerte und gehen nicht in die Summe ein.
 
-Alles auf **einem** Kern. Mit acht Kernen (`rayon`) fällt der Nachtlauf auf rund
-**15 Sekunden** beim Planwert und auf rund **1,2 Minuten** im ungünstigen Fall.
+Alles auf **einem** Kern. Mit acht Rechenkernen fällt der Nachtlauf auf rund
+**15 Sekunden** beim Planwert und auf rund **1,2 Minuten** im ungünstigen Fall. Womit
+parallelisiert wird, ist nach T3 offen und für dieses Dokument gleichgültig: Gebunden ist
+nach Abschnitt 9, dass ein Lauf mit einem und mit zweiunddreissig Kernen dasselbe Ergebnis
+liefert, nicht das Mittel, mit dem das erreicht wird.
 
 **Die Antwort auf die Frage, die dieser Abschnitt beantworten soll: Ja, der Prüfstand kann
 täglich laufen — und stündlich.** Der Engpass ist nicht die Rechenzeit, sondern das
@@ -1943,10 +2198,22 @@ Handelsblocks, Beteiligungen im Fondsvermögen — sind von `spiel.md` Fassung 3
 beantwortet und stehen in T37 und T47; sie sind hier gestrichen, weil eine beantwortete
 Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
 
-- **Der Planwert von 10 Mikrosekunden je Weltschritt ist weiterhin geschätzt.** Es gibt
-  keinen Kern, also keine Messung. Liegt der gemessene Wert über 50 µs, trägt Abschnitt 10
-  nicht mehr, und dann ist die Markträumung anders zu bauen als über 40 Halbierungsschritte.
-  Das ist die einzige Zahl dieses Dokuments, die eine Prüfung im Bau umwerfen kann.
+- **Zwei Stellen in ADR 0011, die ich nicht selbst entscheiden kann. Beide blockieren
+  nichts, beide gehören dem Betreiber.** *Erstens:* Massnahme 2 des ADR soll unbeabsichtigte
+  Überläufe „laut statt still" machen; sie kann das nicht, weil `-fwrapv` aus Massnahme 1
+  genau diese Sanitizer-Prüfung abschaltet (Beleg in T7). Ich habe die Lücke mit einer
+  vierten Massnahme geschlossen statt den ADR zu ändern — das ist meine Entscheidung, die
+  Frage, ob der ADR nachgeführt wird, nicht. *Zweitens:* Das erste Argument des ADR setzt
+  voraus, dass der Spielstand künftig den **Zustand** speichert statt der Aktionsfolge; die
+  Folgen des ADR ordnen diesen Wechsel nicht an. Bis dahin gilt T22 unverändert, und daraus
+  folgt T52. Wird der Wechsel angeordnet, wird T52 billiger, aber nicht überflüssig.
+- **Der Planwert von 10 Mikrosekunden je Weltschritt ist weiterhin geschätzt.** Den Kern
+  gibt es inzwischen in Teilen — Festkomma, Zufall, Prüfsumme, Zustand, Schreiber —, aber
+  keinen Weltschritt, also weiterhin keinen gemessenen `ticks_je_sekunde`. Liegt der
+  gemessene Wert über 50 µs, trägt Abschnitt 10 nicht mehr, und dann ist die Markträumung
+  anders zu bauen als über 40 Halbierungsschritte. Das ist die einzige Zahl dieses
+  Dokuments, die eine Prüfung im Bau umwerfen kann — und seit T6b hängt an ihr zusätzlich
+  die Frage, ob die Divisionsform den Abstand aus der Stackmessung erklärt.
 - **Ob der Suchbot mit Tiefe 1 stark genug ist, damit Maß 2 das Spiel misst und nicht den
   Bot.** *Wonach* er sucht, ist seit T44 entschieden und hat keinen freien Parameter mehr;
   offen ist allein, *wie weit*. Neu gerechnet für R = 24: Tiefe 2 kostet je Partie
@@ -2012,8 +2279,8 @@ mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
 
 ## 13. Hinweis für den Projektmanager
 
-Der Kastenschnitt aus T13 ist zugleich der Kollisionsschnitt für Arbeitspakete: Zwei
-gleichzeitig offene Pakete dürfen sich nicht im selben Kasten treffen. Die natürliche
+Der Bausteinschnitt aus T13 ist zugleich der Kollisionsschnitt für Arbeitspakete: Zwei
+gleichzeitig offene Pakete dürfen sich nicht im selben Baustein treffen. Die natürliche
 Reihenfolge ist `kern` (Zustand, Festkomma, Zufall, Prüfsumme, Schreiber mit T18/T38/T39)
 → `daten` und `schnittstelle` parallel → `konsole` → Tests und `pruefstand` →
 `oberflaeche`. Der Jahrgang (`werkzeuge/aufbereitung`) kann von Beginn an parallel laufen,

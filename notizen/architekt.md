@@ -15,6 +15,15 @@ Lehre daraus, in einem Satz.
 `notizen/archiv/architekt-2026-09-01.md` und war bei 10.728 Zeichen; übernommen sind nur
 Einträge, die für 0016 noch etwas entscheiden.*
 
+*2026-09-02, Lauf zu `0011-stack-auf-cpp`: Die Datei stand bei 11.583 Zeichen, also an der
+Grenze. **Der Versuch, sie nach `notizen/archiv/architekt-2026-09-02.md` zu verschieben,
+wurde verweigert** — der eine gescheiterte Aufruf war `Edit` auf genau diesen Pfad; `Edit`
+auf diese Datei hier geht. Ich habe deshalb gekürzt statt archiviert: Fünf Einträge unten
+sind gestrichen, weil sie erledigt oder von der Stackentscheidung überholt sind. Sie sind
+nicht verloren — der Stand vor diesem Lauf steht im Git-Verlauf
+(`git log -p notizen/architekt.md`). Wer archivieren darf, sollte den Pfad für diese Rolle
+freigeben.*
+
 ---
 
 ## Was funktioniert
@@ -31,33 +40,37 @@ Einträge, die für 0016 noch etwas entscheiden.*
   nicht finden, weil er keine Adresse war. Die Antwort ist keine bessere Adressprüfung,
   sondern eine **zweite Menge mit eigener Aufzählung** (T48: die Funktionen des Zustands).
   Prüffrage für jede Prüfvorschrift, die ich schreibe: *Worüber zählt sie nicht?*
-- 2026-09-01, vierter Lauf — **Eine Umrechnungsfunktion ohne Aufrufer streichen.**
-  `cent_in_tsd` stand seit Fassung 2 neben `tsd_in_cent` und hat nie einen Aufrufer gehabt,
-  weil der Fonds auf die Welt ausschliesslich über Anteile wirkt. Beim Suchen des Aufruforts
-  fiel das auf. Eine ungenutzte Skalenumrechnung ist eine stehende Einladung, sie irgendwo
-  zu benutzen, wo sie nicht hingehört.
-- 2026-09-01, dritter Lauf — **Eine Tabelle, die sich „abschliessend" nennt, ist erst dann
-  abschliessend, wenn einmal jemand gegen sie abgezählt hat.** Ich hatte in T45 eine Regel
-  geschrieben, die genau das vom Jahrgangsbau verlangt, und sie in der eigenen Fassung nicht
-  angewandt. Beim Auszählen der 310 Adressen fielen elf ohne zulässigen Eintrag heraus, zwei
-  ohne passende Eintragsart und sechs, die nach dem Wortlaut **zwei** Einträge getragen und
-  den Bau abgebrochen hätten. Der Prüfer hatte die Bedingung zuvor für erfüllt erklärt.
-  Regel ab jetzt: **Eine Prüfvorschrift, die ich schreibe, führe ich im selben Lauf einmal
-  von Hand aus** — sonst prüfe ich die Zusage und nicht die Sache.
-- 2026-09-01, Läufe drei und vier — **Unabhängige Aufteilungen derselben Menge
-  nebeneinander legen.** Die 310 Adressen sind jetzt dreifach aufgeteilt: nach Gruppe (T15),
-  nach Herkunft (T45), nach Skala (T49). Jede neue Aufteilung hat beim ersten Auszählen
-  Lücken gefunden (11 bzw. 69 Adressen). Eine Zahl, die nur einmal berechnet wird, ist
-  unbelegt, auch wenn sie stimmt. Billigster Einstieg: eine **Dimensionsspalte** gegen die
-  Adressliste legen — „Verbraucherpreise | 4" heisst, dass die Restwelt dort keinen Anker
-  hat. Zwei Spalten, fünf Minuten, elf Befunde.
-- 2026-09-01 — **Eine fehlende Prüfstandsvorgabe aus dem Entwurf *ableiten* statt sie zu
-  erfinden.** Die Zielgröße des Suchbots fehlte; statt eine Gewichtung zu erfinden, habe ich
-  die Ergebnisgröße aus `spiel.md` auf den Zwischenzustand gerechnet — kein freier Parameter,
-  also fällt der Einwand „das Maß misst die Wahl des Bauagenten" nicht durch ein Argument,
-  sondern weil es keine Wahl mehr gibt. **Bestätigt im dritten Lauf:** Der Spielentwerfer hat
-  daraufhin seine eigene Formel an meine angeglichen, statt umgekehrt. Eine abgeleitete Größe
-  zieht die andere Seite zu sich.
+- 2026-09-02, **neu und die teuerste Lehre dieses Laufs** — **Ein ADR trägt eine
+  Entscheidung, keinen Beweis. Die Entscheidung bindet mich, seine technische Behauptung
+  nicht.** ADR 0011 führt `-fsanitize=undefined` ein, damit ein Überlauf „laut statt still"
+  wird — das kann sie nicht, weil `-fwrapv` aus derselben Massnahmenliste genau diese Prüfung
+  abschaltet (seit GCC 8). **Eine Websuche von zwei Minuten** hat es geklärt. Die zwei
+  Massnahmen hoben sich auf, und niemand hätte es gemerkt, bis ein Überlauf beim Käufer
+  auftritt. Prüffrage für jeden ADR, den ich umsetze: *Welcher Satz darin ist eine Tatsache,
+  und habe ich sie nachgesehen?*
+- 2026-09-02, **neu** — **Trägt eine Messung ein Urteil, lies das Erzeugnis statt der
+  Zusammenfassung.** ADR 0011 erklärt die 947 ns der C++-Messung mit einem fehlenden
+  `__int128`. Der Quelltext benutzt `__int128`; `objdump` über die zwei abgelegten Programme
+  zeigt den wirklichen Unterschied in einer Zeile — `__divmodti4` gegen `__udivti3`, also
+  signiert dividieren gegen Beträge dividieren. Zwei Minuten, und aus einer Vermutung wurde
+  eine Bauvorgabe (T6b). **Bei jedem Leistungsbefund: Welches Erzeugnis liegt herum, das die
+  Frage direkt beantwortet?**
+- 2026-09-01, vierter Lauf — **Eine Umrechnungsfunktion ohne Aufrufer streichen** — sie ist
+  eine stehende Einladung, sie irgendwo zu benutzen, wo sie nicht hingehört.
+- 2026-09-01, dritter Lauf — **Eine Prüfvorschrift, die ich schreibe, führe ich im selben
+  Lauf einmal von Hand aus** — sonst prüfe ich die Zusage und nicht die Sache. Beim
+  Auszählen der 310 Adressen gegen die eigene Regel aus T45 fielen elf ohne Eintrag heraus
+  und sechs, die nach dem Wortlaut zwei getragen hätten. Der Prüfer hatte die Bedingung
+  zuvor für erfüllt erklärt.
+- 2026-09-01, Läufe drei und vier — **Unabhängige Aufteilungen derselben Menge nebeneinander
+  legen.** Die 310 Adressen sind dreifach aufgeteilt (Gruppe T15, Herkunft T45, Skala T49);
+  jede neue Aufteilung fand beim ersten Auszählen Lücken. Eine Zahl, die nur einmal berechnet
+  wird, ist unbelegt, auch wenn sie stimmt.
+- 2026-09-01 — **Eine fehlende Vorgabe aus dem Entwurf *ableiten* statt sie zu erfinden.**
+  Die Zielgröße des Suchbots entstand als Rechnung auf `spiel.md` statt als eigene
+  Gewichtung — ohne freien Parameter fällt der Einwand „das Maß misst die Wahl des
+  Bauagenten" weg, weil es keine Wahl mehr gibt. Der Spielentwerfer hat daraufhin seine
+  Formel an meine angeglichen, statt umgekehrt.
 - 2026-09-01 — **Eine Botbewertung gegen *jede* Strategieklasse einzeln prüfen, nicht nur
   gegen die, die der Prüfer nennt.** Prüffrage in einem Satz: *Welche Klasse kann diese
   Bewertung strukturell nicht gewinnen?* Genau daraus ist die Beteiligungsfrage entstanden,
@@ -102,52 +115,47 @@ Einträge, die für 0016 noch etwas entscheiden.*
   Deshalb steht `ticks_je_sekunde` als Berichtspflicht in jedem Prüfstandsbefund. Beim
   nächsten Lauf ist das Erste, was ich lese, der gemessene Wert — liegt er über 50 µs, muss
   die Markträumung anders gebaut werden als über 40 Halbierungsschritte.
-- 2026-08-31 — **Rust ist die Wahl mit dem höchsten Autorenaufwand, die ich vertreten
-  konnte.** Hängen die Bauagenten wiederholt am Ausleihprüfer (erkennbar am Logbuch des
-  Kernbauers oder an dreimal `zurueck` auf demselben Paket), gehört die Wahl neu gerechnet —
-  dann gegen C# mit `checked`-Arithmetik.
+- 2026-09-02 — **Ein Abnahmekriterium kann mit dem Rest seines eigenen Pakets unvereinbar
+  sein, und dann erfülle ich den Zweck und sage es.** `0011-stack-auf-cpp` verlangt, dass ein
+  `grep` nach „Rust" nichts mehr findet — und im selben Paket eine Kandidatentabelle (Rust
+  ist eine der vier gemessenen Zeilen) und die Frage, was an die Stelle von
+  `#![forbid(unsafe_code)]` tritt. Beides ist ohne den Namen nicht schreibbar. Vierzehn
+  Nennungen bleiben, alle vergleichend, keine als Festlegung. **Wer eine Zahl in ein
+  Kriterium schreibt, prüfe sie gegen die anderen Absätze desselben Pakets.**
 
 ## Offene Fährten
 
-- **Geschlossen in den Läufen drei und vier:** Steckplatzzahl, Beteiligungsfrage,
-  Aggregation des fehlenden Einflusses, Bewertung von Korb und Position, Skalengrenze.
-  **Lehre aus allen fünf:** Eine Stelle, die zwei Dokumenten gehört, schliesst sich nicht
-  durch eine bessere Formulierung, sondern erst, wenn beide Gewerke im selben Zyklus laufen.
-  Beim vierten Lauf lief der Spielentwerfer zuerst, und das war richtig — seine Fassung 5
-  hat acht Stellen dieses Dokuments bewegt, die ich sonst geraten hätte.
+- **Lehre aus fünf geschlossenen Fährten (Läufe drei und vier):** Eine Stelle, die zwei
+  Dokumenten gehört, schliesst sich nicht durch eine bessere Formulierung, sondern erst, wenn
+  beide Gewerke im selben Zyklus laufen — und der andere zuerst.
 - 2026-09-01, vierter Lauf, **an den nächsten Lauf** — **Zwei Beobachtungen an `spiel.md`,
   die ein Prüfer als Befund zählen könnte und die dann nicht mir gehören:** „Schaden" in
   Gegenkraft 5 hat keine Rechenvorschrift (ich habe nur die Einheit gesetzt), und
   `fonds.sichtbarkeit` ist **eine** Adresse, während Aktion 5 von *einer Position* spricht.
   Beide stehen in Abschnitt 12 als Beobachtung. Fülle ich sie selbst, misst Maß 2 meine
   Wahl — dieselbe Begründung wie bei T44.
-- 2026-09-01, vierter Lauf — **Der Rücklaufzähler des Entwurfspakets steht bei 3 von 3.**
-  Ob daraus `blockiert` folgt, entscheidet der Projektmanager. Für mich heisst es: Diese
-  Fassung sollte die letzte sein, die eine neue Vorgabenummer braucht.
+- 2026-09-02, **neu** — **ADR 0011 stützt sein erstes Argument auf einen Wechsel, den es
+  nicht anordnet.** Es sagt, die plattformübergreifende Reproduzierbarkeit falle weg, *wenn*
+  der Spielstand den Zustand speichert statt der Aktionsfolge — in den Folgen steht dieser
+  Wechsel nicht, T22 gilt unverändert. Ich habe daraus T52 gemacht statt den ADR zu deuten.
+  Beim nächsten Lauf zuerst nachsehen, ob der Betreiber den Wechsel angeordnet hat; dann
+  wird T52 billiger, aber nicht überflüssig.
 - 2026-08-31, **Zahlen berichtigt am 2026-09-01** — **Ob der Prüfjahrgang baubar ist, ist
-  eine Behauptung.** 1997–2021, 25 Stützstellen, R = 24; `spiel.md` verlangt alle 31
-  Sollreihen und alle 40 Handelsströme darüber ohne Füllung. Verdachtsfall bleibt die
-  chinesische und die brasilianische Leitzinsreihe (IWF IFS, Abruf mit HTTP 403 abgewiesen);
-  `FR.INR.LEND` ist nur ein Indiz. Das bleibt die wahrscheinlichste Stelle, an der das
-  Vorhaben an Daten scheitert. Der Jahrgangsbau gehört an den Anfang der Paketfolge, weil er
-  das Vorhaben *kippen* kann — nicht weil ein engeres Fenster teuer wäre (seit T40 eine
-  Manifestzeile).
+  eine Behauptung.** 1997–2021, 25 Stützstellen, R = 24, alle 31 Sollreihen und 40
+  Handelsströme ohne Füllung. Verdachtsfall bleibt die chinesische und brasilianische
+  Leitzinsreihe (IWF IFS, HTTP 403). Die wahrscheinlichste Stelle, an der das Vorhaben an
+  Daten scheitert — deshalb gehört der Jahrgangsbau nach vorn: Er kann *kippen*, nicht nur
+  verzögern.
 - 2026-08-31, **für R = 24 neu gerechnet am 2026-09-01** — **Ob ein Suchbot mit Tiefe 1 für
-  Maß 2 stark genug ist, ist weiter ungeprüft.** *Wonach* er sucht, ist seit T44
-  parameterfrei entschieden; offen ist nur, *wie weit*. Tiefe 2 kostet je Partie
-  `24 × (1 + 60 × 61) = 87.864` statt 1.464 Weltschritte, Maß 2 und 3 zusammen 664 Mio, rund
-  14 Minuten auf acht Kernen beim Planwert. Meine ältere Notiz („sprengt den Nachtlauf") war
-  falsch. Ist der Bot zu schwach, misst Maß 2 seine Schwäche statt die des Spiels — dann ist
-  Tiefe 2 der Weg, nicht eine Schwellenänderung. Zusätzliches Argument: Der Umweg der
-  Klasse 2 (Beteiligung verbilligt späteres Lobbying) ist bei Tiefe 1 grundsätzlich
-  unsichtbar.
-- 2026-09-01, dritter Lauf, **neu und an den nächsten Lauf** — **Die vier Restweltadressen
-  aus T46 (`leitzins`, `wechselkurs`, `staatsschuld`, `haushaltssaldo`) sind Ballast mit
-  Auflage.** Sie existieren nur, weil `spiel.md` die Zahl 310 nennt und ich sie nicht ändern
-  darf; keine Regel liest sie. Fällt später eine Regel an, die eine davon braucht, ist das
-  ein ADR. Sauberer wäre, den Aggregatblock der Restwelt zu kürzen — das kostet eine Zeile
-  in `spiel.md` und ist deshalb nicht meine Entscheidung. Beim nächsten Lauf des
-  Spielentwerfers erwähnenswert, aber kein Befund: Es blockiert nichts.
+  Maß 2 stark genug ist, ist ungeprüft.** *Wonach* er sucht, ist seit T44 parameterfrei;
+  offen ist *wie weit*. Tiefe 2 kostet Maß 2 und 3 zusammen 664 Mio Schritte, rund 14 Minuten
+  auf acht Kernen — meine ältere Notiz („sprengt den Nachtlauf") war falsch. Ist der Bot zu
+  schwach, misst Maß 2 seine Schwäche; dann ist Tiefe 2 der Weg, nicht eine
+  Schwellenänderung.
+- 2026-09-01, dritter Lauf — **Die vier Restweltadressen aus T46 sind Ballast mit Auflage:**
+  Sie existieren nur, weil `spiel.md` die Zahl 310 nennt; keine Regel liest sie. Kürzen wäre
+  sauberer, kostet aber eine Zeile in `spiel.md` und ist deshalb nicht meine Entscheidung.
+  Es blockiert nichts.
 - 2026-09-01, dritter Lauf — **Die Neubasierung (T8) greift im Prüfjahrgang nie**, ist also
   ungeprüfter Code, und dasselbe gilt für die Ausschlussregel `soll = 0` in T42. Beide haben
   eine Testauflage bekommen (Regressionspartie 1980). Allgemein: **Jeder Zweig, den der
