@@ -26,6 +26,12 @@ Kanal bekommt, und drei Zeilen in der Tabelle der Größen ohne Datenanker. Kein
 vierten Fassung ändert sich, keine Zustandsadresse kommt hinzu. Die Abarbeitung der zwei
 Befunde steht am Ende der Datei, die der früheren Runden darunter.*
 
+*Nachgetragen am **2026-09-02** aus Arbeitspaket `0021-schaden-gegenkraft-5`: der Abschnitt
+**Der Schaden in Gegenkraft 5, als Rechenvorschrift**, sechs Zeilen unter „Was bewusst
+fehlt", fünf unter „Offene Entwurfsfragen" und eine Tabelle unter „Was der Architekt neu
+rechnen muss". Auch dieser Nachtrag ändert keine Zahl der fünften Fassung und keine
+Zustandsadresse; er füllt die Lücke, die `technik.md` Abschnitt 12 Punkt 3 gemeldet hat.*
+
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
 Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
@@ -647,10 +653,290 @@ funktionierende Strategie **selbstverbrauchend**. Das ist nicht Balance, das ist
 die Maß 3 erzwingt: Was im ersten Drittel optimal war, ist im letzten abgegrast.
 
 **5. Gegenlobby.** Einfluss ist relativ zur Summe allen Lobbydrucks auf ein Instrument.
-Wer etwas durchsetzt, schädigt einen anderen Sektor — und dessen Gegenbudget wächst
-proportional zum erlittenen Schaden. Je stärker man in eine Richtung verschiebt, desto
-teurer wird der nächste Schritt in dieselbe Richtung. Die Rückkopplung, die im Genre nach
-oben läuft, läuft hier gegen sich selbst.
+Wer etwas durchsetzt, schädigt einen anderen Sektor — und dessen Gegenbudget wächst um
+`gegenlobby_satz` Lobbypunkte je 10.000 Tausend USD erlittenen Schadens. Je stärker man in
+eine Richtung verschiebt, desto teurer wird der nächste Schritt in dieselbe Richtung. Die
+Rückkopplung, die im Genre nach
+oben läuft, läuft hier gegen sich selbst. **Welche Zahl dieser Schaden ist, steht im
+nächsten Abschnitt.** Bis zum 2026-09-02 stand hier nur das Adjektiv, und ein Gegenbudget,
+das „proportional zu" etwas wächst, ohne dass die Größe benannt wäre, ist keine Gegenkraft,
+sondern eine Absicht — genau die Sorte Satz, gegen die der Kopf dieses Abschnitts sich
+richtet.
+
+### Der Schaden in Gegenkraft 5, als Rechenvorschrift
+
+`technik.md` T50 hat die **Einheit** des Schadens festgelegt — volkswirtschaftlich, Tausend
+USD, Skalenklasse 2, Übergang in Lobbypunkte über
+`lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz, 10.000)` — und die **Höhe**
+ausdrücklich hierher zurückgegeben, mit der richtigen Begründung: Füllte der Architekt die
+Lücke, misst Maß 2 seine Wahl. Sie ist hier gefüllt.
+
+#### Die eine Regel
+
+> **Der Schaden eines Instruments ist die Verschiebung des Preises, den es setzt, mal der
+> Menge, auf die dieser Preis wirkt — beides an der Rundengrenze gemessen.**
+
+Vier Instrumente, vier Preise, vier Mengen, eine Rechenform. Für jedes der vier Länder `l`
+und jedes seiner vier Instrumente `i`:
+
+```
+schaden(l, i) = mal_geteilt( menge(l, i), verschiebung(l, i), 10.000 )      [Klasse 2]
+```
+
+Die Bausteine, alle aus dem Zustand und keiner neu:
+
+```
+hub(l, i)           = | lies_neu(land.<l>.instrument.<i>.stand)
+                      − lies_alt(land.<l>.instrument.<i>.stand) |
+
+preishub(l, s)      = | lies_neu(land.<l>.sektor.<s>.preis)
+                      − lies_alt(land.<l>.sektor.<s>.preis) |
+
+handelsvolumen(l,s) = Σ über die vier Gegenüber g:
+                        lies_neu(handel.<l>.<g>.<s>) + lies_neu(handel.<g>.<l>.<s>)
+
+bip(l)              = Σ über die drei Sektoren  lies_neu(land.<l>.sektor.<s>.wertschoepfung)
+schuld(l)           = mal_geteilt( bip(l), lies_neu(land.<l>.staatsschuld), 10.000 )
+```
+
+`bip` und `schuld` sind die Nummern 9 und 10 aus `technik.md` T48, unverändert übernommen.
+`handelsvolumen(l, s)` ist die sektorweise Fassung der Nummer 11; ihre Summe über die beiden
+handelbaren Sektoren ist die alte Größe. Keiner dieser Namen ist eine Zustandsadresse — es
+sind Funktionen des Zustands, dieselbe Bauart wie `korbwert` im Abschnitt *Was ein Korb wert
+ist*.
+
+Damit die vier Zeilen:
+
+| Instrument | `verschiebung(l, i)` | Klasse | `menge(l, i)` | `schaden(l, i)` |
+|---|---|---:|---|---|
+| `zoll` | `preishub(l, s)`, je handelbarem Sektor einzeln | 5 | `handelsvolumen(l, s)` | `Σ` über s ∈ {1, 2}: `mal_geteilt(handelsvolumen(l,s), preishub(l,s), 10.000)` |
+| `leitzins` | `hub(l, leitzins)` | 3 | `schuld(l)` | `mal_geteilt(schuld(l), hub(l,leitzins), 10.000)` |
+| `haushalt` | `hub(l, haushalt)` | 3 | `bip(l)` | `mal_geteilt(bip(l), hub(l,haushalt), 10.000)` |
+| `regulierung` | `hub(l, regulierung) · regulierung_last` | 10 × 3 | `bip(l)` | `mal_geteilt(bip(l), hub(l,regulierung) · regulierung_last, 10.000)` |
+
+Der dritte Sektor trägt in der Zollzeile null, weil er keine Handelszeile hat; ob man über
+zwei oder über drei Sektoren summiert, ändert die Zahl nicht.
+
+**Warum der Zoll als einziger nicht seinen eigenen Stand liest.** Ein Zollsatz ist kein
+Preis, sondern ein Keil: Was der Käufer zahlt, ist der Sektorpreis, und der entsteht in
+Schritt 4 aus Weltpreis, Zollkeil und `durchgriff`. Genau das ist die Kette aus Kanal 3
+— *Instrument → Handel → Weltpreis → Schaden* —, wörtlich gelesen. Der Leitzins dagegen
+**ist** der Preis des Geldes, der Haushaltssaldo **ist** der Anteil am Ausstoß, und die
+Regulierungsstufe wird mit ihrem Lastsatz zu einem solchen Anteil. Drei Instrumente setzen
+ihren Preis selbst, eines setzt ihn über den Markt; die Regel ist für alle vier dieselbe.
+
+#### Wer geschädigt wird, und an welche der 16 Adressen es fließt
+
+| Instrument | Wer trägt den Schaden | warum diese Menge |
+|---|---|---|
+| `zoll` | die beiden handelbaren Sektoren des Landes und ihre Gegenüber im Handel, ein- wie ausfuhrseitig | der Keil wirkt auf die Waren, die die Grenze überqueren — deshalb der Handelsstrom in beide Richtungen |
+| `leitzins` | der Staat als Schuldner und über seinen Haushalt alle drei Sektoren | der Zins wird auf den Schuldenstand gezahlt, nicht auf den Ausstoß |
+| `haushalt` | die Empfänger der Staatsleistung, also alle drei Sektoren nach Wertschöpfungsanteil | der Saldo steht in Basispunkten **des BIP**; die Menge ist deshalb das BIP |
+| `regulierung` | das Finanzgewerbe in Sektor 3 und über die Kapitalkosten die übrigen | der Zustand führt keinen Finanzsektor; das BIP ist die gröbste ehrliche Menge |
+
+**Die Zuordnung in einem Satz:** Der Schaden wird **je Land aus den Größen dieses Landes**
+gerechnet und legt sich auf die Instrumente **desselben** Landes —
+`land.<l>.instrument.<i>.gegendruck`, vier Länder mal vier Instrumente, die sechzehn
+Adressen. Damit ist jede einzelne herleitbar: Wer `land.BR.instrument.leitzins.gegendruck`
+aufschlägt, rechnet `mal_geteilt(schuld(BR), hub(BR, leitzins), 10.000)` und danach
+`lobbypunkte_aus_schaden` darauf.
+
+**Ein ausländischer Schaden geht dabei nicht verloren.** Ein deutscher Industriesektor, den
+ein amerikanischer Zoll trifft, spürt die Verschiebung im **deutschen** Sektorpreis — über
+Weltpreis und `durchgriff` —, sein Schaden wird in Deutschland gerechnet und legt sich auf
+das **deutsche** Zollinstrument. Das ist keine Notlösung, sondern die Regel:
+**Eine Gegenlobby bildet sich dort, wo sie handeln kann**, beim eigenen Gesetzgeber und
+nicht beim fremden. Was sie dort erreicht, ist Widerstand gegen Bewegung und nicht
+Vergeltung — siehe *Was bewusst fehlt*.
+
+#### Wie das Gegenbudget wächst und wieder vergeht
+
+In Schritt 5, für alle sechzehn Adressen, genau einmal je Runde:
+
+```
+gegendruck_neu(l, i) = min( druck_max,
+                            teile_gerundet( lies_alt(land.<l>.instrument.<i>.gegendruck), 2 )
+                            + lobbypunkte_aus_schaden( schaden(l, i) ) )
+```
+
+**Die Halbierung ist eine Regel und keine Kalibrierzahl**, und das ist eine Entscheidung
+gegen einen naheliegenden Parameter. Ein Zerfallssatz neben `gegenlobby_satz` wäre für den
+Beharrungswert exakt redundant: Bei gleichbleibendem Schaden `D` läuft der Gegendruck gegen
+`2 · lobbypunkte_aus_schaden(D)`, und ein freier Satz verschöbe nur, welche der beiden
+Zahlen diesen Wert trägt. Unterscheiden würden sich die beiden allein im Einschwingen —
+eine Kalibrierdimension, die nur den Übergang formt, kostet den Nachtlauf über tausend
+Parametersätzen eine ganze Achse und gewinnt kein Maß. Die Aussage der Halbierung ist
+inhaltlich und prüfbar: *Ein Gegner, der eine Runde lang nicht neu geschädigt wird, verliert
+die Hälfte seines Budgets.*
+
+**Ein Gegendruck ohne Zerfall wäre kein Zerfall, sondern ein Endzustand.** Er liefe in jedem
+Land, das der Fonds anfasst, gegen `druck_max` und bliebe dort; die Strategiefamilie Lobby
+könnte im letzten Partiedrittel nichts mehr bewegen, und Maß 2 fiele nicht an einer
+Kalibrierung, sondern an der Bauart. Umgekehrt wäre ein reiner Zufluss ohne Vortrag zu
+mild: Wer abwechselnd lobbyiert und etwas anderes tut, träfe jedes zweite Mal auf einen
+Gegendruck von null. Die Halbierung ist die kleinste Fassung, die beides vermeidet.
+
+#### Warum diese Lesart und nicht die beiden anderen
+
+`technik.md` Abschnitt 12 nennt drei: **Preisverschiebung mal Menge**,
+**Wertschöpfungsverlust**, **Bewertungsverlust**. Gewählt ist die erste, und die beiden
+anderen scheitern nicht am Geschmack.
+
+**Der Wertschöpfungsverlust** — `wertschoepfung_alt − wertschoepfung_neu` — ist die
+einfachere Formel und die falsche Größe, aus drei Gründen, deren erster genügt:
+
+1. **Er ist gegenüber dem Zoll blind.** Klasse 2 steht nach T5 in *Tausend USD zu konstanten
+   Preisen des Basisjahrs*. Die Wertschöpfung ist damit eine **reale** Größe; ein Zoll
+   verschiebt Preise, nicht reale Mengen — jedenfalls nicht in derselben Runde, denn der
+   reale Weg läuft über Investition und Kapitalstock und ist Kanal 1. Der Zoll ist das
+   einzige Instrument, das Kanal 3 überhaupt nennt, und das einzige mit Datenanker im
+   Handelsblock. Eine Schadensgröße, die ihn nicht sieht, misst die falsche Kette.
+2. **Er ist Konjunktur, nicht Reaktion.** In einem Wachstumsjahr ist er für alle zwölf
+   Land×Sektor-Paare null, im Einbruchsjahr 2008 oder 2020 für alle zwölf gleichzeitig groß
+   — ohne dass eine einzige Lobbyaktion stattgefunden hätte. Gegenkraft 5 wäre dann keine
+   Kraft, die *mit dem Erfolg wächst*, sondern ein Konjunkturrauschen mit Lobbywirkung, und
+   die Auflage aus dem Kopf dieses Abschnitts wäre verfehlt.
+3. **Er lässt sich keinem Instrument zuordnen.** Eine Differenz, vier Instrumente: Jede
+   Aufteilung auf die sechzehn Adressen wäre erfunden.
+
+**Und der Satz, der auf Maß 2 zeigt:** Die Familie Lobby ist die einzige der drei, deren
+Gegenkraft ausschließlich Gegenkraft 5 ist — Position wird von Preisstoß und Nachahmern
+gebremst, Beteiligung von Aufsicht und Illiquidität. Eine Gegenkraft, die nicht auf die
+Aktion des Spielers antwortet, ist für diese Familie keine, und die Familie ohne Preis
+dominiert. Maß 2 verlangt `max(Ek) ≤ 1,25 × min(Ek)` über die drei Klassen; das ist
+derselbe Defekt, den die Rezension als „trying to implement the tiniest socialist policy
+will always result in bankruptcy" von der anderen Seite beschreibt, und er fällt hier auf
+die andere Richtung.
+
+**Der Bewertungsverlust** scheitert zweimal, und der erste Grund ist der schwerere:
+
+1. **Er ist eine Fondsgröße und würde die Gegenkraft an den Misserfolg koppeln.** Verliert
+   der Fonds, wächst die Gegenlobby; gewinnt er, verschwindet sie. Das ist die Umkehrung
+   dessen, was eine Gegenkraft dieses Entwurfs leisten muss, und würde Kanal 8 nicht
+   dämpfen, sondern verstärken.
+2. **Er kostet einen vierten Skalenübergang.** Er steht in Klasse 1 (US-Cent), `cent_in_tsd`
+   gibt es nach T50 ausdrücklich nicht, und eine Umkehrfunktion nachzurüsten ist ein ADR
+   gegen T50 und kein Satz in `spiel.md`.
+
+Liest man „Bewertungsverlust" stattdessen als Änderung des **Sektorkorbs** — `korbwert(l,s)`,
+Klasse 2, also skalenrechtlich zulässig —, dann ist er beinahe die gewählte Regel, mit
+`kapitalstock` statt `handelsvolumen` als Menge und einem zusätzlichen Glied für die
+Kapitalstockänderung. Genau dieses Glied ist der Einwand: Es gehört zu Kanal 1 und würde in
+Kanal 3 ein zweites Mal verbucht. Der Handelsstrom ist die Menge, die der Zollkeil berührt;
+der Kapitalstock ist es nicht.
+
+#### Wo die Regel läuft, und warum Kanal 3 zyklenfrei bleibt
+
+Gerechnet wird in **Schritt 5**, dem Ort, den T50 als einzigen Aufrufort von
+`lobbypunkte_aus_schaden` festlegt — sechzehn Aufrufe je Runde, alle hier. Gelesen wird:
+
+| woher | Adressen | Zahl |
+|---|---|---:|
+| Schritt 3 | `lies_neu(land.<l>.instrument.<i>.stand)` | 16 |
+| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.preis)`, s ∈ {1, 2} | 8 |
+| Schritt 4 | `lies_neu(handel.<a>.<b>.<s>)`, der ganze Handelsblock | 40 |
+| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, für `bip` | 12 |
+| Schritt 4 | `lies_neu(land.<l>.staatsschuld)`, für `schuld` | 4 |
+| Vorrunde | `lies_alt(land.<l>.instrument.<i>.stand)` | 16 |
+| Vorrunde | `lies_alt(land.<l>.sektor.<s>.preis)`, s ∈ {1, 2} | 8 |
+| Vorrunde | `lies_alt(land.<l>.instrument.<i>.gegendruck)` | 16 |
+
+120 Lesezugriffe, 16 Schreibzugriffe, **keine neue Adresse**. Jede gelesene Größe steht in
+`daten/adressen.md`; `bip`, `schuld` und `handelsvolumen` sind Funktionen daraus und keine
+Felder. Die Zahl 310 bleibt, und der Abzählschritt aus T45 geht unverändert auf.
+
+**Die Rundengrenze ist die Lösung, nicht ein zweiter Satz Adressen.** Ein Schaden, der den
+Zustand vor dem Instrumentenschritt mit dem danach vergleicht, bräuchte Schattenadressen;
+der Vergleich `lies_neu` gegen `lies_alt` braucht keine, weil der Schreiber nach T39 beide
+Stände ohnehin führt.
+
+**Kanal 3, abgegangen:** Instrument (Schritt 3, `stand`) → Handel (Schritt 4, `handel`) →
+Weltpreis (Schritt 4, Markträumung, angekommen im Sektorpreis) → Schaden (Schritt 5, hier) →
+Gegenlobbybudget (Schritt 5, `gegendruck`) → Instrument (Schritt 3 der **Folgerunde**).
+Genau eine Rundengrenze wird überquert, und sie wird nicht versprochen, sondern erzwungen:
+Schritt 3 muss `lies_alt(gegendruck)` lesen, weil die Adresse in dieser Runde noch nicht
+geschrieben ist und `lies_neu` darauf nach T39 ein harter Fehler wäre. Die Dämpfung
+„Gegendruck wirkt erst in der Folgerunde" ist damit eine Eigenschaft, die jeder Lauf
+nachweist.
+
+Nicht gelesen wird `welt.preis.<s>` selbst. Der Weltpreis ist für alle Gebiete derselbe und
+könnte nicht unterscheiden, wen es getroffen hat; gemessen wird die Verschiebung dort, wo
+sie ankommt — am Sektorpreis des Landes, in dem der Geschädigte sitzt.
+
+#### Die Skalenprobe
+
+Klasse 5 (Preisindex) und Klasse 3 (Basispunkte) sind beide **Zehntausendstel**, und Klasse
+2 steht zu konstanten Preisen des Basisjahrs. Für eine reale Menge `Q` und einen Preisindex
+`P` ist der Nominalwert `Q · P / 10.000`; verschiebt sich der Preis um `ΔP`, verschiebt sich
+der Wert um `Q · ΔP / 10.000`. Das ist die Formel, Zeichen für Zeichen. Für die Zinszeile
+dieselbe Rechnung mit einer Rate statt eines Index: Schuldenstand mal Ratenänderung in
+Basispunkten durch 10.000 ist der zusätzliche Zinsdienst eines Jahres, in Tausend USD.
+**Aus Klasse 2 mal Zehntausendstel geteilt durch 10.000 kommt Klasse 2**, und dieses
+Ergebnis geht unverändert in `lobbypunkte_aus_schaden`. Ein vierter Skalenübergang entsteht
+an keiner Stelle.
+
+Zum Überlauf: Der größte Faktor ist `bip(US)`, nach T5 in der Größenordnung `2,1 · 10^10`
+Tausend USD; mal einer Verschiebung in Zehntausendsteln bleibt das Zwischenergebnis
+weit unter der `i64`-Grenze, und `mal_geteilt` rechnet nach T6 ohnehin über `i128`.
+
+#### Was Gegenkraft 5 im Weltlauf tut
+
+**Nichts, und das ist bereits entschieden.** Im Modus `weltlauf` läuft das Fondsteilsystem
+nicht; aus Schritt 5 laufen nur Zustimmung und Regierungswechsel, die Gegenkräfte 1, 3, 4
+und 5 werden nicht gerechnet. `gegendruck` gehört nach `technik.md` T38 zum Block
+*Instrumente ohne Stand* und steht dort auf **nein**: Die Adresse wird nicht geschrieben und
+behält ihren Startwert 0. Diese Rechenvorschrift wird im Weltlauf nicht ausgewertet.
+
+Das ist kein Verlust, sondern die Bedingung des Maßes. Die Politikinstrumente sind im
+Weltlauf exogen; ein Gegendruck hätte dort keinen Adressaten, und die Regulierung, deren
+Schadenszeile ohnehin die einzige ohne Datenanker ist, steht fest auf dem Startwert.
+Die Eingangsgrößen der Formel — Instrumentenstände, Sektorpreise, Handelsblock,
+Wertschöpfung, Staatsschuld — stehen sämtlich in der Weltlaufmaske; die Rechnung *ließe*
+sich also mitlaufen. Sie zu schreiben würde die Maske brechen, und eine Ausgabe daneben ist
+Sache des Prüfstands und keine Entwurfsfrage.
+
+**Die Folge, ausdrücklich benannt: Maß 4 prüft diese Vorschrift nicht.** Geprüft wird sie
+von Maß 2 (bleibt die Familie Lobby innerhalb der 25 Prozent?), von Maß 3 (verschiebt sich
+das beste Profil zwischen Früh- und Spätfenster?) und vom Bruchtester über die Invariante
+`0 ≤ gegendruck ≤ druck_max` aus T30 Prüfung 6. Wer eine Zahl dieser Vorschrift ändert,
+sieht die Wirkung im Selbstspiel und nirgends sonst.
+
+#### Was diese Regel für Maß 2 und Maß 3 leistet
+
+**Ein Satz, vier Mengen.** `gegenlobby_satz` gilt für alle sechzehn Adressen gleich; was
+sich unterscheidet, ist die Menge, an der er ansetzt — und die steht nicht in
+`parameter.toml`, sondern im Jahrgang. Die vier Länder sind oben nach struktureller
+Verschiedenheit gewählt (*Warum vier Länder und nicht drei*), und genau diese
+Verschiedenheit trägt jetzt einen Preis: Wer einen Exportüberschuss hat, hat eine teure
+Zollzeile; wer hohe Zinsen auf hoher Schuld zahlt, eine teure Zinszeile. **Welches Instrument
+billig zu bewegen ist, hängt damit am Land und nicht an einer Balancezahl.** Das ist die
+Bauart, die dieser Entwurf an Democracy 4 belegt hat: Wirkung aus geladenen Tabellen, nicht
+aus einprogrammierten Ausnahmen.
+
+**Und die Mengen bewegen sich über die Partie.** `handelsvolumen`, `schuld` und `bip` sind
+endogene Größen auf einem historischen Pfad, und die vier Brüche, die der Zuschnitt oben
+ausdrücklich im Fenster behalten hat — Euro 1999, WTO-Beitritt 2001, 2008, 2020 —, laufen
+sämtlich über Handel, Staatsschuld oder Ausstoß und damit über genau diese drei Mengen. Das
+billigste Lobbyziel der dritten Runde ist deshalb nicht zwangsläufig das billigste der
+zwanzigsten — eine **dritte** Quelle der Optimumsverschiebung neben Nachahmern (Gegenkraft
+4) und Preisstoß (Gegenkraft 3), und diesmal eine, die aus dem Jahrgang kommt statt aus
+einer Regel. *In welche Richtung und wie stark*, misst der Jahrgangsbau und danach der
+Prüfstand; dieser Entwurf behauptet es nicht.
+
+Dazu kommt die Asymmetrie, die schon dasteht und jetzt eine Menge hinter sich hat:
+Deutschland hat ab Runde 3 keinen eigenen Zinshebel. Die Zinszeile ist dort geschlossen,
+gleich was sie kostete, und der Ausweg führt über ein Instrument mit anderer Menge. Ein
+geschlossener Aktionsraum, der einen anderen erzwingt — dafür ist die Asymmetrie oben
+gewählt worden, und Gegenkraft 5 gibt ihr jetzt einen Preis statt nur eine Sperre.
+
+**Wächst mit dem Erfolg?** Ja, auf zwei Wegen. Der erste ist der gewollte: Ein Instrument
+bewegt sich absichtlich nur durch Aktion 3, deren Wirkung mit dem Fondsvermögen wächst
+(Kanal 8) — mehr Erfolg, mehr Bewegung, mehr Schaden, mehr Gegendruck. Der zweite ist eine
+Verzahnung mit Gegenkraft 2: Ein Regierungswechsel stellt **alle** Instrumente in Richtung
+ihres historischen Mittels zurück, erzeugt damit in einer Runde Schaden an allen vier und
+legt in der Folgerunde auf alle vier Gegendruck. Das ist nicht Zufall, sondern der Erfolg
+eine Stufe später: Der Regierungswechsel ist selbst die Folge erfolgreichen Lobbyierens.
+Dass daraus zwei Strafen aus einer Ursache werden, steht unter *Offene Entwurfsfragen*.
 
 ## Wie die vier Masse berechnet werden
 
@@ -1038,6 +1324,27 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   Sektorwirkung entsteht aus `durchgriff` und den Importanteilen.
 - **Ein zeitlich veränderlicher `durchgriff`.** Er wäre richtiger und kostete zehn weitere
   exogene Pfade. Konstant genügt, weil die Mengen ohnehin endogen sind.
+- **Eine Gegenlobby, die selbst etwas durchsetzen will.** `gegendruck` ist ein Skalar, der
+  in Schritt 3 gegen `druck` verrechnet wird; er kann Bewegung **hemmen, nicht verlangen**.
+  Was Gegenkraft 5 abbildet, ist Mobilisierung und nicht Vergeltung — ein geschädigter
+  Sektor macht jede Bewegung seines Zollinstruments teurer, auch die, die ihm helfen würde.
+  Vergeltungszölle kosteten eine Richtung je Instrument und damit sechzehn weitere Adressen.
+- **Eine Aufteilung des Schadens auf den geschädigten Sektor.** Wer ihn trägt, steht als
+  Regel da; gerechnet wird er je Land und Instrument, nicht je Sektor. Die Aufteilung
+  bräuchte eine Vorleistungsmatrix — eine weitere Quelle mit eigener Lizenzfrage —, und sie
+  änderte an keiner der sechzehn Zahlen in Schritt 3 etwas.
+- **Ein Gedächtnis der Gegenlobby über eine Runde hinaus.** Die Halbierung ist die ganze
+  Geschichte. Ein verteilter Nachlauf über mehrere Runden kostete sechzehn weitere Adressen
+  und formte nur das Einschwingen.
+- **Schaden der Restwelt.** Sie hat keine Politikinstrumente und damit keine Adresse, an der
+  sich eine Gegenlobby bilden könnte. Ihre Preisverschiebungen bleiben unverbucht; die
+  Restwelt schließt den Kreislauf, sie handelt nicht.
+- **Ein Schaden, der Anstieg und Rückgang unterscheidet.** Die Verschiebung geht als Betrag
+  ein: Jede Bewegung schädigt jemanden. Die Richtung trägt bereits die Verrechnung gegen
+  `druck` in Schritt 3, und ein Vorzeichen im Schaden zöge sie ein zweites Mal ein.
+- **Ein eigener Gegenlobbysatz je Instrument.** Ein `gegenlobby_satz`, vier Mengen. Vier
+  Sätze gäben der Kalibrierung drei Achsen, deren Wirkung die Mengen ohnehin erzeugen —
+  und zwar aus dem Jahrgang statt aus einer Zahl.
 - **Grafik über Tabelle, Verlaufsgraph und Kettenansicht hinaus.** Democracy 4 verkauft
   sich mit einer 2D-Knotenoberfläche und besteht in seiner Simulation vollständig aus
   geladenen Tabellen statt einprogrammierter Effekte
@@ -1073,6 +1380,20 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   bleibt sie beim Jahrgangsbau. **Misst der Jahrgangsbau ein engeres Fenster, ist R zu
   ersetzen und sonst nichts**; jede abgeleitete Zahl dieses Entwurfs steht als Formel in R
   daneben.
+
+  **Nachtrag 2026-09-02: Er hat gemessen, und er misst enger.** Paket
+  `0006-deckung-pruefjahrgang-1997` ist `fertig`; nach
+  `daten/deckungsbefund-1997.md` binden zwei Reihen, die dieser Entwurf nicht geprüft hat —
+  die **US-Staatsschuldenquote** beginnt erst 2001, der **US-Leitzins** endet 2020 —, und
+  daraus folgt `R = 19` über dem Fenster 2001–2020. Der Wert gilt erst, wenn die
+  Leitzinslücke für Deutschland und China geschlossen ist; der Befund legt drei Auswege mit
+  je einem R daneben (19, 20 oder 24, je nachdem, ob Reihe 9 und Reihe 11 ergänzt oder
+  gestrichen werden) und weist die Entscheidung ausdrücklich dem Spielentwerfer zu.
+  **Sie ist hier nicht getroffen, weil sie nicht Gegenstand von Paket 0021 ist**, und sie ist
+  kein Federstrich: Sie streicht möglicherweise Sollreihen, also Prüfgegenstände von Maß 4.
+  Bis dahin steht in dieser Datei weiter `R = 24`, und die Ersetzungsregel oben ist genau für
+  diesen Fall geschrieben — R ist zu ersetzen und sonst nichts. **Das braucht ein eigenes
+  Arbeitspaket mit eigener Abnahme.**
 - **Die Zahlenwerte der Schwellen** — Mandatsschwelle, Aufsichtsschwellen, Startkapital,
   Nachahmergeschwindigkeit, Stufenweite einer Position, Anlegerabzugsanteil. Sie gehören
   nicht in diesen Entwurf, weil sie nicht entschieden, sondern **kalibriert** werden: Das
@@ -1091,6 +1412,43 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 - **Wie fein der Aktionsraum sein darf.** Zu grob, und Maß 1 findet keine Unterschiede; zu
   fein, und die Stichprobe von 30 Bündeln deckt zu wenig ab. Empirisch am Prototyp zu
   bestimmen — messbar daran, ob `Dichte(t)` bei K=30 und K=60 dieselbe Antwort gibt.
+- **Der Lastsatz der Finanzmarktregulierung, `regulierung_last`.** Neu mit der
+  Schadensvorschrift, Klasse 3, Basispunkte des BIP je Regulierungsstufe. Er ist die einzige
+  Zahl in Gegenkraft 5 ohne datenverankerte Entsprechung — und zwar genau dort, wo die
+  Instrumententabelle oben ohnehin „reines Modellkonstrukt, ohne Sollreihe" sagt. Die drei
+  übrigen Zeilen kommen ohne neue Zahl aus. Sein Wert wird kalibriert, nicht entworfen; im
+  Weltlauf ist er ohne Wirkung, weil das Instrument dort feststeht.
+- **Ob `druck` derselben Rundengrenzenregel folgt wie `gegendruck`.** Zum anliegenden
+  Lobbydruck sagt dieser Entwurf nur „Aktion 3, Verrechnung in Schritt 3"; ob er über die
+  Runde stehen bleibt, zerfällt oder verbraucht wird, steht nirgends. Das ist dieselbe Art
+  Lücke wie die geschlossene, eine Ebene daneben, und **sie ist nicht folgenlos**: Einfluss
+  ist der Anteil des Fonds am gesamten Lobbydruck, also am Verhältnis `druck : gegendruck`,
+  und dieses Verhältnis hängt an beiden Regeln. Mein Vorschlag für das Folgepaket ist
+  dieselbe Halbierung aus demselben Grund; entschieden ist sie hier nicht, weil sie zu
+  Schritt 3 gehört und nicht zu Gegenkraft 5.
+- **Ob die Gegenlobby die Einflusshälfte des Mandats erreichbar lässt.** Einfluss ist der
+  Anteil des Fonds am gesamten Lobbydruck auf ein Instrument; ein Gegendruck, der in jedem
+  angefassten Land gegen `druck_max` läuft, drückt diesen Anteil unter jede Schwelle, und
+  die Familie Lobby stellt in Maß 2 keinen Gewinner. Das ist die schärfste
+  Kalibrierbedingung, die aus dieser Vorschrift folgt, und sie ist am Prüfstand sichtbar.
+  Gibt es keinen zulässigen Satz, ist es ein Befund über den Entwurf und nicht über die
+  Parameter.
+- **Ob `gegenlobby_satz` als Ganzzahl fein genug ist.** Klasse 9 kennt keine
+  Unterteilung, der kleinste zulässige Wert ist also ein Lobbypunkt je 10.000 Tausend USD.
+  Eine Größenordnungsprobe — ausdrücklich eine Schätzung, weil `schrittweite[haushalt]` noch
+  nicht feststeht: Bei einem BIP von `2,1 · 10^10` Tausend USD und einer angenommenen
+  Schrittweite von 50 Basispunkten sind das `1,05 · 10^8` Tausend USD Schaden und damit
+  rund **10.500 Lobbypunkte** bei `gegenlobby_satz = 1`. Ob das zu `druck_max` und zu dem
+  passt, was der Fonds über `lobbykosten` aufbringt, entscheidet die Suche; da in Schritt 3
+  nur das Verhältnis zählt, kann sie über `lobbykosten` gegensteuern. Reicht auch das nicht,
+  wäre der Ausweg eine Zehntausendstel-Skala für `gegenlobby_satz` — ein ADR gegen T5
+  Klasse 9, und zu entscheiden am Prüfstand, nicht hier.
+- **Ob der Regierungswechsel Schaden erzeugen soll.** Entschieden ist: ja — die Rückstellung
+  aller Instrumente ist selbst die Folge erfolgreichen Lobbyierens. Offen bleibt, ob die
+  Kalibrierung danach noch einen Weg zurück findet: Gegenkraft 2 verdoppelt die Lobbykosten
+  für mehrere Runden, Gegenkraft 5 legt in derselben Runde Gegendruck auf alle vier
+  Instrumente. Zwei Strafen aus einer Ursache; ob daraus eine Sackgasse wird, misst Maß 2
+  und nicht dieser Entwurf.
 - **Ob die Schwellen von Maß 4 mit endogener Produktivität überhaupt erreichbar sind.**
   Unverändert das größte ungemessene Risiko des Vorhabens. Es ist keine Entwurfsfrage
   mehr, sondern eine Messung des Rückvergleichers am laufenden Kern — die Abnahmeregel
@@ -1099,6 +1457,24 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 ## Was der Architekt neu rechnen muss
 
 Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
+
+### Neu aus Paket 0021 — der Schaden in Gegenkraft 5
+
+Fünf Stellen, keine davon eine Entscheidung. `technik.md` habe ich nicht angefasst; Paket
+0011 arbeitet darin.
+
+| war (`technik.md`) | ist | betrifft |
+|---|---|---|
+| T50: „*Wie hoch* der Schaden eines Sektors ist, bleibt Sache von `spiel.md`"; Abschnitt 12 Punkt 3 meldet die Lücke | Die Vorschrift steht im Abschnitt *Der Schaden in Gegenkraft 5*: `mal_geteilt(menge, verschiebung, 10.000)` je Land und Instrument, vier Zeilen | T50, Abschnitt 12 Punkt 3 |
+| `handelsvolumen(l)` über beide handelbaren Sektoren zusammen | dazu die sektorweise Fassung `handelsvolumen(l, s)`; ihre Summe über s ist die alte Größe, die Definition ändert sich nicht | T48 Nr. 11 |
+| `parameter.toml` ohne Lastsatz für die Finanzmarktregulierung | neuer Schlüssel **`regulierung_last`**, Klasse 3, Basispunkte des BIP je Regulierungsstufe, kalibriert wie `gegenlobby_satz` | T27 |
+| `lobbypunkte_aus_schaden` mit Aufrufort, ohne Aufrufzahl | **16 Aufrufe je Runde**, sämtlich in Schritt 5; dazu 120 Lesezugriffe und 16 Schreibzugriffe, aufgeschlüsselt im Abschnitt | T50, Kostenzeile in Abschnitt 10 |
+| T30 Prüfung 6 prüft `0 ≤ gegendruck ≤ druck_max`, ohne dass ein Erzeuger die Grenze hielte | Die Obergrenze steht jetzt im Entwurf als `min(druck_max, …)`; die Prüfung bleibt, sie ist nun eine Probe und keine Hoffnung | T30 |
+
+**Was sich ausdrücklich nicht ändert:** keine Zustandsadresse, die 310, der Abzählschritt
+aus T45, die drei Skalenübergänge aus T50, die acht Kanäle, R, die vier Maße und ihre
+Schwellen. Die Vorschrift liest ausschließlich Größen, die `daten/adressen.md` führt, und
+drei Funktionen aus T48.
 
 ### Neu in Fassung 5 — acht Stellen, und keine davon ist eine Zahl
 
