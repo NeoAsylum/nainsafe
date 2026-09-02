@@ -1,0 +1,1607 @@
+####################################################################
+# reihen.toml -- die Reihenliste, maschinenlesbar
+#
+# Paket 0017-reihenliste-maschinenlesbar, Datenbauer, Stand 2026-09-02.
+#
+# WAS DIESE DATEI IST
+#
+# Die Eingabetabelle des Jahrgangsbaus (T23). `werkzeuge/aufbereitung`
+# liest sie und kann Fliesstext nicht lesen. Bis heute stand die
+# Reihenliste an drei Orten in Prosa -- als Tabelle in `technik.md`
+# Abschnitt 7, als Deckungsbefund in `daten/deckungsbefund-1997.md` und
+# als zwei Lizenzbefunde in `daten/lizenzbefund-wdi.md` und
+# `daten/lizenzbefund-reihen.md`. Diese Datei zieht die vier Orte
+# zusammen, ohne einen davon zu aendern.
+#
+# WAS DIESE DATEI NICHT IST
+#
+# **Sie enthaelt keine Datenzeile.** Kein Messwert, kein Land-Jahr-Wert,
+# nichts Heruntergeladenes. Sie beschreibt Reihen.
+#
+# **Sie entscheidet nichts.** Keine Reihe ist abgewaehlt, kein Fenster
+# gewaehlt, kein Widerspruch aufgeloest. Beide Auswege aus T24 -- Reihe
+# streichen oder Fenster kuerzen -- gehoeren dem Spielentwerfer. Wo zwei
+# Quelldateien einander widersprechen, steht der Widerspruch unter
+# `[[widerspruch]]` und nicht eine geglaettete Fassung.
+#
+# **Sie misst nicht nach.** Jedes Urteil in dieser Datei stammt aus
+# 0005, 0006 oder 0014 und traegt seine Herkunft im Feld `beleg`.
+#
+# LESEREGELN
+#
+# 1. `rolle_tabelle` und `t37_klasse` sind zwei verschiedene Dinge. Das
+#    Wort `frei` in der Spalte "Rolle" der Reihenliste ist die
+#    T37-Klasse und **kein Lizenzurteil** (`rueckstand.md` Punkt 9). Das
+#    Lizenzurteil steht in `lizenzurteil` und nirgends sonst.
+# 2. `exogen_ab` und `verkettet_ab` sind Jahreszahlen. **0 heisst
+#    leer.** Ein Jahrgang dieses Vorhabens beginnt fruehestens 1950
+#    (PWT); eine 0 kann keine Jahreszahl sein. Die Umrechnung in eine
+#    Runde nach T40 steht **nicht** hier -- R ist eine Groesse des
+#    Jahrgangs.
+# 3. Jede Reihe traegt je Umrechnungsschritt einen Block
+#    `[[reihe.umrechnung]]`. Wo die Quelleneinheit in keiner der drei
+#    Befunddateien gemessen ist, traegt der Block `art = "ungemessen"`
+#    und **keinen** Faktor. Eine 1 an dieser Stelle waere genau der
+#    stille Faktor, den das Paket verbietet -- sie behauptete, es sei
+#    nichts umzurechnen. Betroffen sind zwei Reihen, 3 und 14; beide
+#    nennen die offene Frage in ihrem Feld `offen`.
+# 4. Woertliche Uebernahmen aus der Tabelle in `technik.md` Abschnitt 7
+#    stehen in `bezeichnung`, `dimension`, `modelleinheit`,
+#    `quelle_tabelle`, `rolle_tabelle` und `verdacht_tabelle`. Entfernt
+#    ist allein die Fettauszeichnung (`**`); Backticks bleiben stehen,
+#    weil sie in Reihe 2 und 16 Indikatorcodes und Groessennamen
+#    abgrenzen.
+# 5. T4 gilt auch hier: kein Dezimalpunkt in einem Zahlenwert. Wo eine
+#    Quelle eine gebrochene Zahl nennt, steht sie skaliert und der
+#    Skalenfaktor im Schluesselnamen (`..._mal_100000`).
+#
+# Quellen dieser Datei:
+#   specs/0016-.../technik.md  T4, T5, T8, T23 (Punkte 1-10), T24, T25,
+#                              T26, T27, T33, T37, T40, T45, T46, T51,
+#                              Abschnitt 7
+#   specs/0016-.../daten.md    Quellen und Lizenzen
+#   daten/deckungsbefund-1997.md   (Paket 0006, Stand 2026-09-02)
+#   daten/lizenzbefund-wdi.md      (Paket 0005, Stand 2026-09-01)
+#   daten/lizenzbefund-reihen.md   (Paket 0014, Stand 2026-09-02)
+####################################################################
+
+[datei]
+paket = "0017-reihenliste-maschinenlesbar"
+rolle = "datenbauer"
+stand = "2026-09-02"
+gegenstand = "Die 19 Reihen der Reihenliste aus technik.md Abschnitt 7"
+reihen = 19
+enthaelt_datenzeilen = false
+
+# Der Stand der vier Vorlagen, gegen den diese Datei geschrieben ist.
+# Aendert sich eine davon, ist diese Datei nachzuziehen -- sie ist eine
+# Uebertragung, keine zweite Messung.
+[datei.vorlagen]
+reihenliste = "specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md, Abschnitt 7"
+deckung = "ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/deckungsbefund-1997.md, Stand 2026-09-02"
+lizenz_wdi = "ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-wdi.md, Stand 2026-09-01"
+lizenz_reihen = "ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md, Stand 2026-09-02"
+
+
+####################################################################
+# ZAEHLUNG -- damit die Summen maschinell nachrechenbar sind und nicht
+# geglaubt werden muessen. Wer diese Datei prueft, addiert `sollreihen`
+# ueber alle `[[reihe]]` und vergleicht mit `sollreihen_gesamt`.
+####################################################################
+
+[zaehlung]
+sollreihen_gesamt = 31
+sollreihen_frei = 23
+sollreihen_gesetzt = 4
+sollreihen_abgeleitet = 4
+frei_zerlegung = "Reihe 1 (4) + Reihe 2 (12) + Reihe 8 (4) + Reihe 10 (3) = 23"
+gesetzt_zerlegung = "Reihe 9 (4)"
+abgeleitet_zerlegung = "Reihe 11 (4)"
+probe = "23 + 4 + 4 = 31"
+beleg = "technik.md T37 und Abschnitt 7 (Die 31 Sollreihen sind die Zeilen 1, 2, 8, 9, 10 und 11)"
+
+# Der Handelsblock zaehlt getrennt und **nicht** in den 31. Er ist die
+# einzige Nicht-Sollreihe mit T37-Klasse; das ist so gewollt und kein
+# Fehler der Zaehlung.
+[zaehlung.handelsblock]
+reihe = 14
+stroeme = 40
+t37_klasse = "frei"
+in_den_31_enthalten = false
+
+# T37 rechnet nicht in Reihen, sondern in Pruefgegenstaenden. Die Zahl
+# steht hier, weil jede Lizenzfrage ueber sie ihren Preis bekommt.
+[zaehlung.pruefgegenstaende]
+gesamt = 16
+bip_je_land = 4
+sektorstruktur_je_land = 4
+verbraucherpreise_je_land = 4
+wechselkurs_je_land_ausser_usa = 3
+handelsblock = 1
+toleranz = 2
+beleg = "technik.md T37"
+
+# Lizenzstand der 31 Sollreihen, aus 0005 und 0014 fortgeschrieben.
+[zaehlung.lizenz]
+sollreihen_frei = 7
+sollreihen_unklar = 24
+sollreihen_gesperrt = 0
+frei_zerlegung = "Reihe 8 (4) + Reihe 10 (3) = 7, beide aus Paket 0005"
+unklar_zerlegung = "Reihe 1 (4) + Reihe 2 (12) + Reihe 9 (4) + Reihe 11 (4) = 24"
+beleg = "daten/lizenzbefund-reihen.md, Abschnitt 5"
+gegenrechnung = '''Die sieben freien Sollreihen haengen an der IWF-Erlaubnis, deren Volltext niemand lesen konnte und in deren Definitionssatz nach Abschnitt 3 von lizenzbefund-reihen.md ein Vorbehalt steht. Nimmt man die Regel "Suchauszug genuegt nicht" auch dort ernst, lautet die Zeile: frei 0, unklar 31, gesperrt 0. Beide Zahlen stehen nebeneinander; diese Datei loest den Widerspruch nicht auf (siehe [[widerspruch]] Nr. 1).'''
+
+
+####################################################################
+# NAMENSNENNUNG -- gehoert nach den Lizenzen ins Produkt, nicht in eine
+# Notiz. Sie steht hier, damit der Jahrgangsbau sie ins Manifest und in
+# die ausgelieferte `LIZENZEN.md` schreiben kann, ohne sie neu
+# zusammenzusuchen.
+####################################################################
+
+[namensnennung]
+drei_orte = [
+  "LIZENZEN.md neben der ausgelieferten Datendatei",
+  "Seite 'Datenquellen' im Spiel, erreichbar aus dem Hauptmenue",
+  "Ein Satz zur Bearbeitung, siehe bearbeitungshinweis",
+]
+bearbeitungshinweis = '''Die Ausgangsdaten wurden auf die Gebiete und Sektoren des Modells aggregiert und fuer die Simulation in ganzzahlige Einheiten umgerechnet. Die Quellen verantworten diese Bearbeitung nicht.'''
+beleg = "specs/0016-.../daten.md, Abschnitt 'Was dafuer zu tun ist -- Namensnennung, konkret'"
+
+[namensnennung.weltbank]
+gilt_fuer_reihen = [1, 2, 5, 6, 7, 8, 10, 13]
+lizenz = "CC BY 4.0"
+form = "The World Bank: Dataset name: Data source (if known)"
+zusatz = "Kennzeichnung von Aenderungen; die Namensnennungspflicht ist an jeden weiterzureichen, dem man die Daten weitergibt."
+lizenz_url = "https://datacatalog.worldbank.org/public-licenses"
+beleg = "daten.md Nr. 1; daten/deckungsbefund-1997.md, Abschnitt Namensnennung"
+
+[namensnennung.iwf]
+gilt_fuer_reihen = [8, 9, 10, 11, 12]
+lizenz = "eigene Bedingungen, gewerblicher Verkauf erlaubt"
+form = "Quelle IWF, unveraendert und korrekt genannt; materielle Transformation ist ausdruecklich auszuweisen."
+pflichtsatz = "Die verwendeten IWF-Statistikdaten sind beim IWF kostenfrei erhaeltlich."
+datenfluesse = ["IMF.RES/WEO 9.0.0 (Stand der Reihe 2025-09-30)", "IMF.STA/MFS_IR 9.0.0"]
+hinweis = "Gilt nach Paket 0005 auch fuer die beiden WDI-Reihen 8 und 10, weil deren Freiheit an der IWF-Zustimmung haengt und nicht an der CC-BY-Lizenz der Weltbank."
+beleg = "daten.md Nr. 2; daten/lizenzbefund-wdi.md, Auflage 1 unter Reihe 8"
+
+[namensnennung.cepii_baci]
+gilt_fuer_reihen = [14, 16]
+lizenz = "Etalab Open Licence 2.0"
+form = "BACI: International Trade Database at the Product-Level (CEPII), moeglichst mit Link auf die Webseite"
+fassung = "202601, Stand 2026-01-30"
+lizenz_url = "https://raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md"
+beleg = "daten.md Nr. 3; daten/lizenzbefund-reihen.md, Abschnitt 3"
+
+[namensnennung.pwt]
+gilt_fuer_reihen = [3, 4, 15]
+lizenz = "CC BY 4.0"
+form = "Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer -- die vorgeschriebene Zitierung im Wortlaut, samt Kennzeichnung der Aenderungen"
+lizenz_url = "https://www.rug.nl/ggdc/productivity/pwt/"
+beleg = "daten.md Nr. 4; daten/lizenzbefund-reihen.md, Abschnitt 3"
+
+
+####################################################################
+# WIDERSPRUECHE -- Stellen, an denen zwei Quelldateien nicht dasselbe
+# sagen. Sie stehen hier als Widerspruch und nicht aufgeloest; ein
+# Zusammenzug, der zwei Aussagen glaettet, ist genau der Fehler, an dem
+# Paket 0006 zurueckging.
+####################################################################
+
+[[widerspruch]]
+nr = 1
+betrifft_reihen = [8, 10]
+kurz = "0005 urteilt frei, 0014 entzieht dem Urteil die Grundlage"
+lang = '''lizenzbefund-wdi.md (Paket 0005) urteilt zu Reihe 8 und 10 `frei`, weil der genannte Drittanbieter der IWF ist und dessen Bedingungen das Verkaufen erlauben. lizenzbefund-reihen.md (Paket 0014) haelt fest, dass genau dieser IWF-Text nach fuenf Anlaeufen aus drei Rollen ungelesen ist (HTTP 403) und dass ein Suchauszug einen Vorbehalt im Definitionssatz des Wortes "Data" andeutet. 0014 rechnet die beiden Reihen trotzdem weiter als `frei`, weil sie nicht sein Paket sind, und stellt die Gegenrechnung daneben.'''
+in_dieser_datei = "Uebertragen ist das Urteil `frei` aus 0005; die Gegenrechnung steht in [zaehlung.lizenz].gegenrechnung und im Feld `offen` beider Reihen."
+entscheidet = "Betreiber -- ein einziger Seitenabruf auf imf.org/en/about/copyright-and-terms im Volltext"
+
+[[widerspruch]]
+nr = 2
+betrifft_reihen = [1, 2, 5, 6, 7, 8, 10, 13]
+kurz = "Die Spalte Verdacht der Reihenliste haelt bei keiner gemessenen Reihe"
+lang = '''Zwoelf WDI-Codes ueber acht Reihen sind in 0005 und 0014 gemessen worden. Rechenweg: lizenzbefund-wdi.md Z. 36-41 fuehrt vier Reihen mit zusammen sechs Codes (Reihe 13: TM.TAX.MRCH.WM.AR.ZS; Reihe 7: SL.AGR.EMPL.ZS, SL.IND.EMPL.ZS, SL.SRV.EMPL.ZS; Reihe 8: FP.CPI.TOTL.ZG; Reihe 10: PA.NUS.FCRF); lizenzbefund-reihen.md Z. 9 fuehrt sechs weitere ueber vier Reihen (Reihe 1: NY.GDP.MKTP.KD; Reihe 2: NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.SRV.TOTL.ZS; Reihe 5: SP.POP.TOTL; Reihe 6: SL.TLF.TOTL.IN). 6 + 6 = 12 Codes ueber 4 + 4 = 8 Reihen. Alle zwoelf nennen im Feld "Source" mindestens einen Bestand ausserhalb der Weltbank -- auch die sechs aus 0014, die die Spalte "Verdacht" mit "nein" fuehrt (lizenzbefund-reihen.md Z. 31-34). Nicht mitgezaehlt sind die zwei Gegenprobecodes aus lizenzbefund-reihen.md Z. 10 (SL.EMP.TOTL.SP.ZS, IQ.CPA.ECON.XQ): sie tragen dort ausdruecklich kein Urteil und keine volle Abruf-URL. Einer davon, die Kontrollreihe IQ.CPA.ECON.XQ, zeigt, dass es Reihen ohne Fremdbestand gibt -- nur keine, die dieses Modell braucht. Die Spalte trennt nichts. Zum Feld betrifft_reihen: es fuehrt genau diese acht Reihen aufsteigend (1, 2, 5, 6, 7, 8, 10, 13). Korrektur vom 2026-09-02: Hier stand "Zehn", und betrifft_reihen liess Reihe 7 aus. Die Zehn entsteht, wenn man "sechs Codes" aus 0014 und "vier Reihen" aus 0005 addiert -- lizenzbefund-reihen.md Z. 600-603 sagt an der entsprechenden Stelle richtig "Alle sechs gemessenen Codes ... zusammen mit den vier Reihen aus 0005". Reihe 7 fehlte, obwohl sie in 0005 gemessen ist und im Feld "Source" die ILO nennt (lizenzbefund-wdi.md Z. 39), und obwohl dieser Block behauptet, die Spalte halte bei keiner gemessenen Reihe.'''
+in_dieser_datei = "Das Feld `verdacht_tabelle` traegt den Wortlaut der Spalte; das Feld `lizenzurteil` traegt die Messung. Wo beide auseinandergehen, gilt fuer den Jahrgangsbau `lizenzurteil`."
+entscheidet = "Architekt (Befund 1 aus lizenzbefund-reihen.md)"
+
+[[widerspruch]]
+nr = 3
+betrifft_reihen = [2]
+kurz = "Reihe 2 zerfaellt in zwei Lizenzlagen, die Reihenliste fuehrt sie als eine"
+lang = '''`NV.AGR.TOTL.ZS` nennt im Feld `Source` die OECD, `NV.IND.TOTL.ZS` und `NV.SRV.TOTL.ZS` nennen sie nicht -- dort stehen nationale Statistikaemter und Notenbanken. Die Zeile "Start + Soll (12, frei, 8 unabhaengig)" fasst damit zwei verschiedene Lizenzlagen zusammen. Fuer T37 ist das folgenlos (die Alle-drei-Bedingung macht die Gruppe unteilbar), fuer die Klaerungskosten nicht.'''
+in_dieser_datei = "Reihe 2 traegt zwei Blocks [[reihe.lizenzbeleg]] -- einen fuer 2a, einen fuer 2b und 2c."
+entscheidet = "Architekt (Befund 2 aus lizenzbefund-reihen.md)"
+
+[[widerspruch]]
+nr = 4
+betrifft_reihen = [10]
+kurz = "Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6 (Startjahr = 10.000)"
+lang = '''Das Arbeitspaket gibt fuer Reihe 10 den Faktor 10.000 vor und begruendet ihn mit technik.md Z. 884 (`land.US.wechselkurs` fest auf 10.000, Numeraire): aus 1,73405583 DEM/USD wird 17.341. T5 Klasse 6 beschreibt dieselbe Groesse dagegen als "Index gegen USD, Startjahr = 10.000" -- danach traegt Deutschland im Startjahr 10.000 und nicht 17.341. Beide Lesarten geben fuer die USA 10.000 und gehen fuer die drei uebrigen Laender auseinander.'''
+in_dieser_datei = "Eingetragen ist der vom Arbeitspaket verlangte Faktor 10.000 (ein Eintrag mit 1 waere nach der Abnahme ein Befund). Die Frage nach der Basierung steht im Feld `offen` der Reihe 10."
+entscheidet = "Architekt -- eine Zeile in T5 Klasse 6 oder in T23"
+
+[[widerspruch]]
+nr = 5
+betrifft_reihen = [9]
+kurz = "Die Reihenliste nennt IWF IFS; IFS gibt es nicht mehr"
+lang = '''Der alte IFS-Zugang ist tot (DNS-Fehler), der neue fuehrt keinen Datenfluss namens IFS. Eingebettet wird nach 0006 `IMF.STA/MFS_IR` 9.0.0, Code `DISR_RT_PT_A_PT` (Diskontsatz). Dieser Code misst je Land eine andere Groesse -- fuer die USA den Diskontsatz des Fed-Diskontfensters, fuer Brasilien den Rediskontsatz, der nicht die Selic ist -- und fuehrt Deutschland und China ueberhaupt nicht.'''
+in_dieser_datei = "quelle_eingebettet nennt den Nachfolgefluss, quelle_tabelle den Wortlaut der Reihenliste. Die Deckungsluecke steht in [[reihe.deckung]]."
+entscheidet = "Spielentwerfer -- Reihe streichen oder Quelle ersetzen (rueckstand.md Punkt 6)"
+
+[[widerspruch]]
+nr = 6
+betrifft_reihen = [6]
+kurz = "Der gewaehlte Code liefert Erwerbspersonen, die Reihenliste verlangt Erwerbstaetige"
+lang = '''`SL.TLF.TOTL.IN` heisst "Labor force, total" und umfasst Erwerbstaetige **und** Erwerbslose. Der Code, der Erwerbstaetige liefert, waere `SL.EMP.TOTL.SP.ZS` mal Bevoelkerung -- eine andere Groesse und eine andere Rechnung. Fuer das Lizenzurteil ist es gleich (beide ILO), fuer den Jahrgangsbau nicht. Der Code steht nirgends in specs/; er ist in 0014 gewaehlt worden.'''
+in_dieser_datei = "code_herkunft = 'gewaehlt-0014'; die Frage steht im Feld `offen` der Reihe 6."
+entscheidet = "Architekt (Befund 3 aus lizenzbefund-reihen.md)"
+
+[[widerspruch]]
+nr = 7
+betrifft_reihen = [17, 18, 19]
+kurz = "Drei Reihen ohne Quelle tragen ein Lizenzurteil, das keine Befunddatei belegt"
+lang = '''Die Abnahme verlangt "keine Reihe ohne Urteil" und zugleich "kein Urteil ohne Beleg" aus einer der drei Befunddateien. Die Reihen 17, 18 und 19 fuehren in der Reihenliste die Quelle "keine"; keine der drei Befunddateien behandelt sie, weil es an ihnen nichts zu pruefen gibt. Eingetragen ist `frei` mit dem Beleg der Reihenliste selbst und dem Vermerk `lizenz_beleg_typ = "ohne_fremdbestand"`.'''
+in_dieser_datei = "Sichtbar gemacht statt stillschweigend gefuellt. Wer die Abnahme streng liest, kann das als Befund fuehren; die Alternative -- `unklar` -- waere die falschere Aussage, denn an einer Groesse ohne Quelle ist nichts unklar."
+entscheidet = "Pruefer dieses Pakets"
+
+[[widerspruch]]
+nr = 8
+betrifft_reihen = [16]
+kurz = "Reihe 16 hat kein eigenes Lizenzurteil in einer Befunddatei"
+lang = '''`durchgriff` wird nach T23 Punkt 5 aus H (BACI, Reihe 14, Urteil `frei`) und N (WDI-Wertschoepfung, Reihe 2, Urteil `unklar`) gerechnet. Weder 0005 noch 0014 urteilt ueber Reihe 16.'''
+in_dieser_datei = "Eingetragen ist `unklar` mit der ausdruecklichen Angabe, dass das Urteil von Reihe 2 geerbt und nicht gemessen ist. Ob eine abgeleitete Groesse das schwaechere Urteil ihrer Eingaben erbt, entscheidet nicht diese Datei."
+entscheidet = "Betreiber beziehungsweise Datenkurator"
+
+
+####################################################################
+# DIE 19 REIHEN
+####################################################################
+
+# --- Reihe 1 ------------------------------------------------------
+[[reihe]]
+nr = 1
+bezeichnung = "BIP, konstante Preise"
+dimension = "4 + RW"
+modelleinheit = "Tsd USD"
+quelle_tabelle = "WDI / PWT"
+rolle_tabelle = "Start + Soll (4, frei)"
+verdacht_tabelle = "nein"
+rolle = ["start", "soll"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = "PWT"
+quellenwahl = "offen"
+quellenwahl_grund = "Der Deckungsbefund hat die Wahl nur fuer die Reihen 9, 10 und 11 gemessen. Hier ist die WDI-Reihe gemessen worden, die Wahl gegen PWT ist damit nicht entschieden."
+codes = ["NY.GDP.MKTP.KD"]
+code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"
+sollreihen = 4
+t37_klasse = "frei"
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = "Kein benannter Fall von T26 (Befund 4 aus lizenzbefund-reihen.md). Der allgemeine Satz gilt -- das Programm aendert sich nicht, nur das Manifest. Ersatz nach Reihenliste: PWT."
+deckung_gemessen = true
+deckung_urteil = "traegt 1997-2021 vollstaendig"
+offen = [
+  "Welches Basisjahr PWT 11.0 traegt, ist ungemessen. Ein Ersatz, der das Basisjahr wechselt, aendert die Sollreihe und damit den Massstab von T42; er ist vor dem Einfrieren des Jahrgangs zu ziehen.",
+  "Die OECD steht in daten.md Nr. 8 als 'ungeklaert, nicht einplanen'. Ihr Volltext hebt Reihe 1 und 2a, also 8 Sollreihen und 4 Pruefgegenstaende.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "geteilt"
+faktor = 1000
+status = "gemessen"
+begruendung = "Quelle in USD (IndicatorName 'GDP (constant 2015 US$)'), Modelleinheit Tsd USD. Die Reihe ist real, laeuft also nach T8 bei einem Basiswechsel nicht mit; ein Wechselkursschritt entfaellt."
+beleg = "daten/deckungsbefund-1997.md, Reihe 1"
+
+[[reihe.lizenzbeleg]]
+codes = ["NY.GDP.MKTP.KD"]
+feld = "Source"
+wortlaut = '''Country official statistics, National Statistical Organizations and/or Central Banks; National Accounts data files, Organisation for Economic Co-operation and Development (OECD); Staff estimates, World Bank (WB)'''
+url = "https://api.worldbank.org/v2/sources/2/series/NY.GDP.MKTP.KD/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.KD?format=json"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+grund = "Die Weltbank nennt die OECD namentlich als Lieferanten. daten.md Nr. 8 fuehrt die OECD als 'ungeklaert, nicht einplanen'; eine Quelle ohne Lizenzzitat im Wortlaut gilt als ungeprueft, nicht als erlaubt."
+
+[[reihe.deckung]]
+land = "USA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "CHN"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "DEU"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "BRA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+
+# --- Reihe 2 ------------------------------------------------------
+[[reihe]]
+nr = 2
+bezeichnung = "Wertschöpfungsanteil je Sektor: `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS`"
+dimension = "(4+RW) × 3"
+modelleinheit = "Zehntausendstel, auf 10.000 normiert"
+quelle_tabelle = "WDI"
+rolle_tabelle = "Start + Soll (12, frei, 8 unabhängig)"
+verdacht_tabelle = "nein"
+rolle = ["start", "soll"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur WDI. Eine geprueffte Ausweichquelle gibt es nicht: PWT liefert keine sektorale Wertschoepfung, feinere Gliederungen liegen nur bei OECD (ungeklaert) und Eurostat (fuer die Nicht-EU-Laender des Modells gesperrt)."
+codes = ["NV.AGR.TOTL.ZS", "NV.IND.TOTL.ZS", "NV.SRV.TOTL.ZS"]
+code_herkunft = "specs (technik.md Abschnitt 7)"
+sollreihen = 12
+t37_klasse = "frei"
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = "Kein benannter Fall von T26 und keine geprueffte Ausweichquelle (Befund 4 aus lizenzbefund-reihen.md). Reihe 2 traegt vier der sechzehn Pruefgegenstaende; nach T37 muessen alle drei Anteilsreihen eines Landes bestehen, faellt allein 2a, fallen alle vier."
+deckung_gemessen = true
+deckung_urteil = "traegt 1997-2021 vollstaendig, alle zwoelf"
+offen = [
+  "Rundet Reihe 2 vor oder nach der Normierung? Die Rundungsstelle ist eine Entwurfsfrage mit Folgen fuer den Determinismus und steht in rueckstand.md Punkt 9 als Punkt an den Geschaeftsfuehrer.",
+  "Die Normierung ist kein Rundungsdetail: Die drei WDI-Anteile summieren sich nicht auf 100 (der Rest sind Nettoguetersteuern), sie verschiebt jeden der zwoelf Werte.",
+  "Der Ausweg '100 % minus IND minus SRV' traegt nicht -- er schoebe die gesamte Differenz zum BIP in den kleinsten Sektor (fuer ein Modelland 1,0322 % gemessen).",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "gemessen"
+begruendung = "Quelleneinheit '% of GDP', Modelleinheit Zehntausendstel. sourceNote woertlich: 'This indicator is expressed as a percentage of Gross Domestic Product (GDP)'."
+beleg = "api.worldbank.org/v2/indicator/NV.AGR.TOTL.ZS?format=json, nachgemessen 2026-09-02, zitiert in aufgaben/0017-reihenliste-maschinenlesbar.md"
+
+[[reihe.umrechnung]]
+schritt = 2
+art = "normierung"
+faktor = 10000
+status = "vorgegeben"
+rundungsstelle = "offen"
+begruendung = "T23 Punkt 7: Die drei Sektoranteile je Gebiet und Jahr werden auf 10.000 normiert. Verfahren und der je Gebiet und Jahr abgeschnittene Rest stehen im Manifest; der Rueckvergleich vergleicht normiert gegen normiert. technik.md Z. 698 setzt die Normierung voraus."
+beleg = "technik.md T23 Punkt 7 und Z. 698; rueckstand.md Punkt 9 fuer die offene Rundungsstelle"
+
+[[reihe.lizenzbeleg]]
+codes = ["NV.AGR.TOTL.ZS"]
+feld = "Source"
+wortlaut = '''Country official statistics, National Statistical Organizations and/or Central Banks; National Accounts data files, Organisation for Economic Co-operation and Development (OECD); Staff estimates, World Bank (WB)'''
+url = "https://api.worldbank.org/v2/sources/2/series/NV.AGR.TOTL.ZS/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/NV.AGR.TOTL.ZS?format=json"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+sollreihen = 4
+grund = "OECD namentlich genannt; daten.md Nr. 8 fuehrt sie als 'ungeklaert, nicht einplanen'. Zeichengleich derselbe Text wie bei Reihe 1."
+
+[[reihe.lizenzbeleg]]
+codes = ["NV.IND.TOTL.ZS", "NV.SRV.TOTL.ZS"]
+feld = "Source"
+wortlaut = '''Country official statistics, National Statistical Offices (NSOs); National Accounts data files, Central Banks; Staff estimates, World Bank (WB)'''
+url = "https://api.worldbank.org/v2/sources/2/series/NV.IND.TOTL.ZS/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/sources/2/series/NV.SRV.TOTL.ZS/metadata?format=json"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+sollreihen = 8
+grund = "Ein anderer Text als bei 2a: Die OECD kommt nicht vor, an ihrer Stelle stehen Notenbanken und nationale Statistikaemter. Genannt sind keine Organisationen mit eigenen veroeffentlichten Bedingungen. Von den vier Modelllaendern ist genau ein Statistikamt geprueft (Destatis, daten.md Nr. 5, positiv); fuer die drei uebrigen liegt nichts vor."
+
+[[reihe.deckung]]
+land = "USA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+gilt_fuer = "alle drei Codes"
+
+[[reihe.deckung]]
+land = "CHN"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+gilt_fuer = "alle drei Codes"
+
+[[reihe.deckung]]
+land = "DEU"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+gilt_fuer = "alle drei Codes"
+
+[[reihe.deckung]]
+land = "BRA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+gilt_fuer = "alle drei Codes"
+
+
+# --- Reihe 3 ------------------------------------------------------
+[[reihe]]
+nr = 3
+bezeichnung = "Kapitalstock"
+dimension = "4 + RW"
+modelleinheit = "Tsd USD"
+quelle_tabelle = "PWT"
+rolle_tabelle = "Start"
+verdacht_tabelle = "nein"
+rolle = ["start"]
+datenanker = true
+quelle_eingebettet = "PWT"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur PWT."
+codes = []
+code_herkunft = "nirgends festgeschrieben"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = ""
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe; PWT 11.0 reicht nach daten.md von 1950 bis 2023 und kann in keinem betrachteten Fenster binden."
+offen = [
+  "Die Quelleneinheit des PWT-Kapitalstocks ist in keiner der drei Befunddateien gemessen. Der Umrechnungsfaktor in Tsd USD steht deshalb als ungemessen und nicht als 1.",
+  "T23 Punkt 1 teilt den Kapitalstock ueber die auf 10.000 normierten Sektoranteile aus Reihe 2 auf drei Sektoren je Gebiet auf (Herkunftseintrag 'Datenanker(3 x 2)'). Die Reihe haengt damit an der Lizenzlage von Reihe 2 mit.",
+  "Kein Indikatorcode festgeschrieben.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "ungemessen"
+status = "ungemessen"
+begruendung = "Modelleinheit ist Tsd USD (T5 Klasse 2, konstante Preise des Basisjahrs). Welche Einheit und welches Basisjahr PWT 11.0 fuer den Kapitalstock fuehrt, hat keine der drei Befunddateien gemessen. Ein Faktor 1 waere hier eine Behauptung, kein Befund."
+frage = "In welcher Einheit und zu welchem Basisjahr fuehrt PWT 11.0 den Kapitalstock?"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = '''Penn World Table 11.0 by Robert C. Feenstra, Robert Inklaar and Marcel P. Timmer is licensed under a Creative Commons Attribution 4.0 International License.'''
+url = "https://www.rug.nl/ggdc/productivity/pwt/"
+abrufdatum = "2026-09-02"
+urteil = "frei"
+grund = "Ein Satz ueber fremde Inhalte, fremdes Urheberrecht oder abweichende Bedingungen fuer Teile des Datensatzes steht dort nicht. Festgehalten als Abwesenheit eines Vorbehalts, nicht als Zusicherung."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+referenzzeitraum = "1950-2023 (PWT 11.0 nach daten.md)"
+
+
+# --- Reihe 4 ------------------------------------------------------
+[[reihe]]
+nr = 4
+bezeichnung = "Produktivität (TFP)"
+dimension = "4 + RW"
+modelleinheit = "Index"
+quelle_tabelle = "PWT"
+rolle_tabelle = "nur Start (T25)"
+verdacht_tabelle = "nein"
+rolle = ["start"]
+datenanker = true
+quelle_eingebettet = "PWT"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur PWT."
+codes = []
+code_herkunft = "nirgends festgeschrieben"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = ""
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe, nach T25 nur Startwert"
+offen = [
+  "Kein Indikatorcode festgeschrieben.",
+  "T25: Die Produktivitaet ist im Spiel endogen; wuerde sie jaehrlich aus den Daten gelesen, waere das BIP im Rueckvergleich eine Wiedergabe der Sollreihe. Nur der Startwert kommt aus PWT.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "basierung"
+faktor = 10000
+status = "abgeleitet"
+begruendung = "T5 Klasse 7 (Realindizes): Index, Startjahr = 10.000, nie neu basiert. Die Quellenreihe wird auf ihr Startjahr basiert; ein Quelleneinheitenfaktor entfaellt, weil ein Index dimensionslos ist. Die Trennung von Klasse 5 ist keine Feinheit: T8 teilt bei einer Neubasierung die nominalen Groessen eines Gebiets durch 1.000, die Produktivitaet darf nicht mitlaufen."
+beleg = "technik.md T5 Klasse 7"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = '''Penn World Table 11.0 by Robert C. Feenstra, Robert Inklaar and Marcel P. Timmer is licensed under a Creative Commons Attribution 4.0 International License.'''
+url = "https://www.rug.nl/ggdc/productivity/pwt/"
+abrufdatum = "2026-09-02"
+urteil = "frei"
+grund = "Kein Drittanbietervorbehalt im Lizenztext."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+referenzzeitraum = "1950-2023 (PWT 11.0 nach daten.md)"
+
+
+# --- Reihe 5 ------------------------------------------------------
+[[reihe]]
+nr = 5
+bezeichnung = "Bevölkerung"
+dimension = "4 + RW"
+modelleinheit = "Personen"
+quelle_tabelle = "WDI / PWT"
+rolle_tabelle = "exogener Pfad"
+verdacht_tabelle = "nein"
+rolle = ["exogen"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = "PWT"
+quellenwahl = "offen"
+quellenwahl_grund = "Der Deckungsbefund hat die Wahl nur fuer die Reihen 9, 10 und 11 gemessen. Beide Quellen sind eingetragen."
+codes = ["SP.POP.TOTL"]
+code_herkunft = "gewaehlt-0014, in specs/ nicht genannt"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = "Kein benannter Fall von T26 (Befund 4 aus lizenzbefund-reihen.md). Ersatz nach Reihenliste: PWT, bei einer Personenzahl ohne Basisjahrfrage und damit billiger als bei Reihe 1."
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe. Die Reihe ist trotzdem nicht folgenlos: Startwert und Pfad fuer 4 + RW, der Weltlauf braucht sie in jedem Jahr."
+offen = [
+  "Eurostat ist unter den vier genannten Bestaenden. daten.md Nr. 7 nimmt Daten fuer Nicht-EU/EFTA-Laender von der gewerblichen Weiterverwendung aus (die Seite nennt USA, Japan und China als Beispiele) -- also drei der vier Modelllaender. Ob Eurostat fuer diese Laender ueberhaupt etwas beigesteuert hat, ist aus dem Feld nicht zu beantworten: Source nennt eine Menge, keine Zuordnung.",
+  "Kein Indikatorcode in specs/; SP.POP.TOTL ist eine Wahl.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "keine"
+faktor = 1
+status = "abgeleitet"
+begruendung = "Quelleneinheit Personen (IndicatorName 'Population, total'), Modelleinheit Personen (T5 Klasse 8). Keine Umrechnung noetig."
+beleg = "daten/lizenzbefund-reihen.md, Reihe 5; technik.md T5 Klasse 8"
+
+[[reihe.lizenzbeleg]]
+codes = ["SP.POP.TOTL"]
+feld = "Source"
+wortlaut = '''World Population Prospects, United Nations (UN), uri: https://population.un.org/wpp/, publisher: UN Population Division; Statistical databases and publications from national statistical offices, National Statistical Offices (NSOs), uri: https://unstats.un.org/home/nso_sites/, publisher: National Statistical Offices; Eurostat: Demographic Statistics, Eurostat (ESTAT), uri: https://ec.europa.eu/eurostat/data/database?node_code=earn_ses_monthly, publisher: Eurostat; Population and Vital Statistics Report (various years), United Nations (UN), uri: https://unstats.un.org, publisher: UN Statistics Division'''
+url = "https://api.worldbank.org/v2/sources/2/series/SP.POP.TOTL/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/SP.POP.TOTL?format=json"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+grund = "Vier fremde Bestaende, jeder mit uri und publisher ausgewiesen -- deutlicher als bei jeder anderen gemessenen Reihe. Einer davon ist Eurostat, dessen Bedingungen daten.md Nr. 7 fuer Nicht-EU/EFTA-Laender negativ gelesen hat."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+
+
+# --- Reihe 6 ------------------------------------------------------
+[[reihe]]
+nr = 6
+bezeichnung = "Erwerbstätige"
+dimension = "4 + RW"
+modelleinheit = "Personen"
+quelle_tabelle = "WDI / PWT"
+rolle_tabelle = "exogener Pfad"
+verdacht_tabelle = "nein"
+rolle = ["exogen"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = "PWT"
+quellenwahl = "offen"
+quellenwahl_grund = "Der Deckungsbefund hat die Wahl nur fuer die Reihen 9, 10 und 11 gemessen. Beide Quellen sind eingetragen; die PWT fuehrt Beschaeftigte als emp."
+codes = ["SL.TLF.TOTL.IN"]
+code_herkunft = "gewaehlt-0014, in specs/ nicht genannt, Wahl nicht eindeutig"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = "Kein benannter Fall von T26 (Befund 4 aus lizenzbefund-reihen.md). Ersatz nach Reihenliste: PWT (emp)."
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe"
+offen = [
+  "Der gewaehlte Code liefert Erwerbspersonen, nicht Erwerbstaetige (siehe Widerspruch Nr. 6). Der Code, der Erwerbstaetige liefert, waere SL.EMP.TOTL.SP.ZS mal Bevoelkerung -- eine andere Groesse und eine andere Rechnung. Fuer das Lizenzurteil ist es gleich (beide ILO), fuer den Jahrgangsbau nicht.",
+  "ILO-Stichtagsfrage: Die ILO deckt Datenbanken seit dem 2023-05-03 mit CC BY 4.0, aber 'produced prior to 3 May 2023' ist nicht bestimmt. Reihe 6 traegt anders als Reihe 7 kein date accessed, an dem sich die Frage ueberhaupt aufhaengen liesse.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "keine"
+faktor = 1
+status = "abgeleitet"
+begruendung = "Quelleneinheit Personen (IndicatorName 'Labor force, total'), Modelleinheit Personen (T5 Klasse 8). Gilt nur fuer den gewaehlten Code -- der Ausweichcode SL.EMP.TOTL.SP.ZS ist ein Prozentsatz und braeuchte eine andere Rechnung."
+beleg = "daten/lizenzbefund-reihen.md, Reihe 6; technik.md T5 Klasse 8"
+
+[[reihe.lizenzbeleg]]
+codes = ["SL.TLF.TOTL.IN"]
+feld = "Source"
+wortlaut = '''International Labour Organization (ILO), type: estimates based on external database;
+United Nations (UN), publisher: UN Population Division;
+Staff estimates, World Bank (WB)'''
+wortlaut_form = "mehrzeilig, zeichengleich zur Quelle: die zwei Zeilenumbrueche des Feldes Source stehen als echte Umbrueche und nicht als '; '. Quelle: lizenzbefund-reihen.md Z. 272-274 (drei Zeilen). Bis zum 2026-09-02 standen sie hier als Leerzeichen, ohne Vermerk. Warum das der gewaehlte Weg ist und nicht ein Feld wortlaut_normalisiert: siehe [pruefweg].schnitt_2."
+url = "https://api.worldbank.org/v2/sources/2/series/SL.TLF.TOTL.IN/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/SL.TLF.TOTL.IN?format=json"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+grund = "Derselbe Drittanbieter wie Reihe 7, dieselbe Lage. Die ILO steht nicht unter den in daten.md geprueften Quellen; sie gewaehrt ihren Datenbanken seit dem 2023-05-03 im Wortlaut CC BY 4.0, mit dem Stichtagsvorbehalt. Beide Lesarten stehen offen, 0014 waehlt keine."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+referenzzeitraum = "1990-2025 (Feld Referenceperiod von SL.TLF.TOTL.IN, abgerufen 2026-09-02)"
+hinweis = "Aussage ueber die Reihenlaenge, nicht ueber Luecken je Land."
+
+
+# --- Reihe 7 ------------------------------------------------------
+[[reihe]]
+nr = 7
+bezeichnung = "Beschäftigung je Sektor"
+dimension = "(4+RW) × 3"
+modelleinheit = "Personen"
+quelle_tabelle = "WDI (ILO)"
+rolle_tabelle = "Start"
+verdacht_tabelle = "ja"
+rolle = ["start"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur WDI (ILO)."
+codes = ["SL.AGR.EMPL.ZS", "SL.IND.EMPL.ZS", "SL.SRV.EMPL.ZS"]
+code_herkunft = "gewaehlt-0005, in specs/ nicht genannt"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-wdi.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = "T26, zweiter Fall: Aufteilung nach Wertschoepfungsanteil; der Startwert wird ein Modellkonstrukt. Keine Sollreihe betroffen -- Reihe 7 ist reiner Startwert. Der Ersatzweg liegt in Reihe 2 bereits vor. Kostet drei Adressen ihren Datenanker und sonst nichts."
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe"
+offen = [
+  "ILO-Stichtagsfrage: 'produced prior to 3 May 2023' ist nicht bestimmt. Das Feld 'date accessed: January 17, 2026' ist der Tag, an dem die Weltbank den Bestand geholt hat, und sagt ueber den Tag der Erzeugung durch die ILO nichts.",
+  "Die Umrechnung braucht eine Bezugsgroesse (Gesamtbeschaeftigung). Der fuer Reihe 6 gewaehlte Code liefert Erwerbspersonen, nicht Erwerbstaetige -- solange das offen ist, ist auch der zweite Umrechnungsschritt dieser Reihe offen.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "abgeleitet"
+begruendung = "Quelleneinheit '% of total employment' (IndicatorName), Zwischeneinheit Zehntausendstel."
+beleg = "daten/lizenzbefund-wdi.md, Reihe 7 (IndicatorName im Wortlaut)"
+
+[[reihe.umrechnung]]
+schritt = 2
+art = "mal_geteilt"
+faktor = 10000
+bezugsgroesse = "Gesamtbeschaeftigung des Gebiets (Reihe 6)"
+status = "abgeleitet"
+begruendung = "Die Quelle liefert einen Anteil, die Modelleinheit ist Personen (T5 Klasse 8). Der Anteil in Zehntausendsteln mal der Bezugsgroesse, geteilt durch 10.000. Ein Anteil allein kann keine Personenzahl ergeben."
+beleg = "technik.md T5 Klasse 8; daten/lizenzbefund-wdi.md, Reihe 7"
+
+[[reihe.lizenzbeleg]]
+codes = ["SL.AGR.EMPL.ZS", "SL.IND.EMPL.ZS", "SL.SRV.EMPL.ZS"]
+feld = "Source"
+wortlaut = '''ILO Modelled Estimates database (ILOEST), International Labour Organization (ILO), uri: https://ilostat.ilo.org/data/bulk/, publisher: ILOSTAT, type: external database, date accessed: January 17, 2026'''
+url = "https://api.worldbank.org/v2/sources/2/series/SL.AGR.EMPL.ZS/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/SL.AGR.EMPL.ZS?format=json"
+abrufdatum = "2026-09-01"
+urteil = "unklar"
+hinweis = "Bei allen drei Codes zeichengleich derselbe Text."
+grund = "Die Weltbank bezeichnet den Bestand selbst als 'type: external database'; die Drittanbieter-Ausnahme ist der Fassung nach eroeffnet. Der Drittanbieter verweigert aber nicht, sondern erlaubt (ILO, CC BY 4.0 seit 2023-05-03, www.ilo.org/rights-and-permissions, abgerufen 2026-09-01). Zwei Lesarten, 0005 waehlt keine."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+
+
+# --- Reihe 8 ------------------------------------------------------
+[[reihe]]
+nr = 8
+bezeichnung = "Verbraucherpreise"
+dimension = "4"
+modelleinheit = "bp Jahresrate"
+quelle_tabelle = "WDI / IWF IFS"
+rolle_tabelle = "Start + Soll (4, frei)"
+verdacht_tabelle = "ja (IWF-gestützt)"
+rolle = ["start", "soll"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = "IWF IFS"
+quellenwahl = "offen"
+quellenwahl_grund = "Der Deckungsbefund hat die Wahl nur fuer die Reihen 9, 10 und 11 gemessen. Gemessen worden ist hier die WDI-Reihe FP.CPI.TOTL.ZG; die Wahl gegen den IWF-Weg ist damit nicht entschieden. Zur Sache: das Feld Source der WDI-Reihe nennt ohnehin den IWF, beide Wege zeigen auf denselben Bestand."
+codes = ["FP.CPI.TOTL.ZG"]
+code_herkunft = "gewaehlt-0005, in specs/ nicht genannt"
+sollreihen = 4
+t37_klasse = "frei"
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = "daten/lizenzbefund-wdi.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = ""
+deckung_gemessen = true
+deckung_urteil = "traegt 1997-2021 vollstaendig"
+offen = [
+  "Das Urteil frei haengt an den IWF-Bedingungen, deren Volltext nach fuenf Anlaeufen aus drei Rollen ungelesen ist (HTTP 403). Siehe Widerspruch Nr. 1 und zaehlung.lizenz.gegenrechnung.",
+  "Namensnennung: nicht die der Weltbank allein. Wer sich fuer die Weitergabe auf die IWF-Zustimmung stuetzt, uebernimmt deren Auflagen -- siehe namensnennung.iwf.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "gemessen"
+begruendung = "Quelle in Prozent (Jahresrate), Modelleinheit bp Jahresrate. Kein Reihenwechsel, kein Wechselkursschritt."
+beleg = "daten/deckungsbefund-1997.md, Reihe 8"
+
+[[reihe.lizenzbeleg]]
+codes = ["FP.CPI.TOTL.ZG"]
+feld = "Source"
+wortlaut = '''International Financial Statistics database, International Monetary Fund (IMF)'''
+url = "https://api.worldbank.org/v2/sources/2/series/FP.CPI.TOTL.ZG/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/FP.CPI.TOTL.ZG?format=json"
+abrufdatum = "2026-09-01"
+urteil = "frei"
+grund = "Der genannte Drittanbieter ist der IWF; dessen Bedingungen erlauben nach daten.md Nr. 2 das Vervielfaeltigen, Verbreiten und Verkaufen. Die Weltbank-Ausnahme verlangt 'the consent of the original data provider' -- dieser Anbieter hat sie in seinen allgemeinen Bedingungen erteilt. Dieselbe Groesse kommt in diesem Vorhaben ohnehin unmittelbar vom IWF (Reihen 9, 11, 12)."
+bestritten_durch = "daten/lizenzbefund-reihen.md, Abschnitt 3 und 5 -- der IWF-Volltext ist ungelesen, der Suchauszug deutet einen Vorbehalt im Definitionssatz des Wortes Data an."
+referenzzeitraum = "1960-2025, Periodicity Annual"
+
+[[reihe.deckung]]
+land = "USA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "CHN"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "DEU"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "BRA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+
+# --- Reihe 9 ------------------------------------------------------
+[[reihe]]
+nr = 9
+bezeichnung = "Leitzins"
+dimension = "4"
+modelleinheit = "bp"
+quelle_tabelle = "IWF IFS"
+rolle_tabelle = "Start + Politikpfad + Soll (4, gesetzt)"
+verdacht_tabelle = "nein"
+rolle = ["start", "politikpfad", "soll"]
+datenanker = true
+quelle_eingebettet = "IWF, Datenfluss IMF.STA/MFS_IR 9.0.0"
+quelle_rueckfall = ""
+quellenwahl = "gemessen"
+quellenwahl_grund = "Der alte IFS-Zugang existiert nicht mehr (DNS-Fehler), der neue fuehrt keinen Datenfluss namens IFS. IFS ist in Teiltabellen zerlegt; die Zinsen liegen in IMF.STA/MFS_IR. Gemessen in Paket 0006. Siehe Widerspruch Nr. 5."
+codes = ["DISR_RT_PT_A_PT"]
+code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"
+sollreihen = 4
+t37_klasse = "gesetzt"
+handelsblock_stroeme = 0
+exogen_ab = 1999
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = "Kein benannter Fall von T26. Der allgemeine Satz gilt -- das Programm aendert sich nicht, nur das Manifest. Ein Ersatz ist nicht benannt; die Reihe haengt mit 11 und 12 an derselben IWF-Kette."
+deckung_gemessen = true
+deckung_urteil = "reisst -- DEU und CHN tragen in dieser Quelle keinen einzigen Wert, USA endet 2020"
+offen = [
+  "DISR ist kein einheitlicher Begriff ueber Laender hinweg: fuer die USA der Diskontsatz des Fed-Diskontfensters, fuer Brasilien der Rediskontsatz, und der ist nicht die Selic. Eine Sollreihe, die je Land eine andere Groesse misst, misst im Rueckvergleich je Land etwas anderes. Entwurfsfrage, gehoert dem Spielentwerfer.",
+  "Der IWF-Lizenztext ist nach fuenf Anlaeufen aus drei Rollen ungelesen (HTTP 403). An ihm haengen 15 der 31 Sollreihen und 7 der 16 Pruefgegenstaende.",
+  "T23 Punkt 5 macht aus der ersten Stuetzstelle dieses Pfads die Jahrgangskonstante leitzins_start[l], vier Werte in Basispunkten. Faellt die Reihe, faellt auch sie.",
+  "T51 und T23 Punkt 5: Der Jahrgangsbau rechnet aufschlag_min = 1 minus dem Minimum des Pfads und weist einen Parametersatz mit kleinerem aufschlag zurueck. Welche Reihe eingebettet wird, entscheidet die Schranke mit -- Einlagesatz oder Hauptrefinanzierungssatz geben verschiedene Werte.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "gemessen"
+begruendung = "Quelle in Prozent pro Jahr (gemessene Werte bestaetigen es: USA 1997 = 5,00, BRA 1997 = 45,09), Modelleinheit bp. Kein Reihenwechsel, kein Wechselkursschritt."
+beleg = "daten/deckungsbefund-1997.md, Reihe 9, Abschnitt 'Zur Einheit'"
+
+[[reihe.bruch]]
+art = "exogen"
+land = "DEU"
+jahr = 1999
+grund = "Euroraum -- Deutschland folgt ab 1999 exogen der gemeinsamen Geldpolitik."
+beleg = "technik.md T23 Punkt 8"
+hinweis = "Die Umrechnung in eine Runde nach T40 gehoert nicht in diese Datei; R ist eine Groesse des Jahrgangs. Bei Fensterbeginn 2001 laege der Bruch vor dem Fenster, und Deutschland verloere sein Zinsinstrument ueber die ganze Partie."
+
+[[reihe.lizenzbeleg]]
+codes = ["DISR_RT_PT_A_PT"]
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = '''The term "Data" refers to any published statistical data produced by the IMF that is not owned by a third-party.'''
+url = "https://www.imf.org/en/about/copyright-and-terms"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+grund = "Nicht, weil ein Drittanbieter etwas verweigert, sondern weil der Lizenztext, auf dem alles ruht, ungelesen bleibt. Der direkte Abruf ist am 2026-08-31, am 2026-09-01 und dreimal am 2026-09-02 mit HTTP 403 abgewiesen worden; der zitierte Satz stammt aus einem Suchauszug, nicht aus dem Volltext, und die Fabrik laesst 'Beleg aus dem Suchauszug genuegt' ausdruecklich nicht gelten. Wenn der Satz so dort steht, ist er der stillere Vorbehalt von beiden: Die Weltbank erlaubt und nimmt Fremdbestaende aus, der IWF nimmt sie aus dem Begriff heraus, fuer den die Erlaubnis ueberhaupt gilt."
+hinweis = "Ausweichhost geprueft und verworfen: imfconnect.org fuehrt die Bedingungen einer anderen Webseite und nicht den Datenabschnitt."
+
+[[reihe.deckung]]
+land = "USA"
+vorhanden = true
+erstes_jahr = 1950
+letztes_jahr = 2020
+luecken_1997_2021 = 1
+stuetzstellen = 24
+urteil = "verkuerzt -- 2021 fehlt, kostet eine Stuetzstelle"
+
+[[reihe.deckung]]
+land = "BRA"
+vorhanden = true
+erstes_jahr = 1997
+letztes_jahr = 2025
+luecken_1997_2021 = 0
+stuetzstellen = 25
+urteil = "traegt"
+
+[[reihe.deckung]]
+land = "DEU"
+vorhanden = false
+luecken_1997_2021 = 25
+stuetzstellen = 0
+urteil = "ohne Deckung -- Deutschland steht in der Laenderliste dieser Reihe nicht, und auch kein Euroraum-Aggregat (U2, EA, XM, EMU geprueft, keines vorhanden). Kein Fenster ist so kurz, dass die Reihe hineinpasst."
+
+[[reihe.deckung]]
+land = "CHN"
+vorhanden = false
+luecken_1997_2021 = 25
+stuetzstellen = 0
+urteil = "ohne Deckung -- China traegt in MFS_IR ueberhaupt keine Jahresreihe."
+
+
+# --- Reihe 10 -----------------------------------------------------
+[[reihe]]
+nr = 10
+bezeichnung = "Wechselkurs gegen USD"
+dimension = "3"
+modelleinheit = "Index"
+quelle_tabelle = "IWF IFS / WDI"
+rolle_tabelle = "Start + Soll (3, frei)"
+verdacht_tabelle = "prüfen"
+rolle = ["start", "soll"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = "IWF IFS"
+quellenwahl = "gemessen"
+quellenwahl_grund = "Gemessen in Paket 0006 an der WDI-Reihe PA.NUS.FCRF. Das Feld Source dieser Reihe nennt den IWF (IFS); beide Wege der Reihenliste zeigen auf denselben Bestand."
+codes = ["PA.NUS.FCRF"]
+code_herkunft = "gewaehlt-0005, in specs/ nicht genannt"
+sollreihen = 3
+t37_klasse = "frei"
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 1999
+lizenzurteil = "frei"
+lizenz_quelldatei = "daten/lizenzbefund-wdi.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = ""
+deckung_gemessen = true
+deckung_urteil = "traegt 1997-2021 vollstaendig, mit einem Einheitenbruch 1999, der keine Luecke ist"
+offen = [
+  "Der Faktor 10.000 auf den Rohkurs steht gegen T5 Klasse 6 ('Index gegen USD, Startjahr = 10.000'). Siehe Widerspruch Nr. 4. Eingetragen ist der vom Arbeitspaket verlangte Faktor.",
+  "Das Urteil frei haengt an derselben IWF-Kette wie Reihe 8. Siehe Widerspruch Nr. 1.",
+  "Faellt Reihe 10, verliert der Rueckvergleich die Groesse Wechselkurs vollstaendig -- alle drei Sollreihen und alle drei Pruefgegenstaende.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 10000
+status = "vorgegeben"
+begruendung = "Numeraire-Index: land.US.wechselkurs steht fest auf 10.000 (technik.md Z. 884), restwelt.wechselkurs ebenso (Z. 886), und Z. 1377 macht wechselkurs[g] >= 1 zur Invariante. Aus 1,73405583 DEM/USD wird 17.341, nicht 1,73."
+beleg = "aufgaben/0017-reihenliste-maschinenlesbar.md, Abnahme 3; technik.md Z. 884, 886, 1377"
+
+[[reihe.umrechnung]]
+schritt = 2
+art = "verkettung"
+gilt_ab_jahr = 1999
+umrechnungskurs_dem_je_eur_mal_100000 = 195583
+status = "vorgegeben"
+begruendung = "Die Weltbank verkettet die Reihe nicht, sondern wechselt 1999 die Einheit (1998: 1,7596676 DEM je USD; 1999: 0,938283072395283 EUR je USD). Auf Niveaus gelesen faellt der Kurs um 47 Prozent, ohne dass sich etwas bewegt haette. T23 Punkt 8 faengt das mit dem unwiderruflichen Umrechnungskurs 1,95583 DEM je EUR ab."
+beleg = "daten/deckungsbefund-1997.md, Reihe 10; technik.md T23 Punkt 8"
+hinweis = "Der Kurs steht nach T4 skaliert: 195583 = 1,95583 mal 100.000. Fuer jedes Fenster, das 1997, 1998 oder 1999 enthaelt, wird die Verkettung gebraucht; bei Fensterbeginn 2001 entfaellt sie."
+
+[[reihe.bruch]]
+art = "verkettet"
+land = "DEU"
+jahr = 1999
+grund = "DEM auf EUR, unwiderruflicher Umrechnungskurs 1,95583 DEM je EUR"
+beleg = "technik.md T23 Punkt 8; daten/deckungsbefund-1997.md, Reihe 10"
+
+[[reihe.lizenzbeleg]]
+codes = ["PA.NUS.FCRF"]
+feld = "Source"
+wortlaut = '''International Financial Statistics database, International Monetary Fund (IMF)'''
+url = "https://api.worldbank.org/v2/sources/2/series/PA.NUS.FCRF/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/PA.NUS.FCRF?format=json"
+abrufdatum = "2026-09-01"
+urteil = "frei"
+grund = "Zeichengleich dasselbe Feld wie bei Reihe 8, dieselbe Begruendung: Der genannte Drittanbieter ist der IWF, dessen Bedingungen nach daten.md Nr. 2 das Verkaufen erlauben."
+bestritten_durch = "daten/lizenzbefund-reihen.md, Abschnitt 3 und 5 -- der IWF-Volltext ist ungelesen."
+referenzzeitraum = "1960-2025, Periodicity Annual"
+
+[[reihe.deckung]]
+land = "CHN"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+[[reihe.deckung]]
+land = "DEU"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+hinweis = "Einheitenbruch 1999, keine Luecke."
+
+[[reihe.deckung]]
+land = "BRA"
+erstes_jahr = 1997
+letztes_jahr = 2021
+luecken_1997_2021 = 0
+stuetzstellen = 25
+
+
+# --- Reihe 11 -----------------------------------------------------
+[[reihe]]
+nr = 11
+bezeichnung = "Staatsschuldenquote"
+dimension = "4"
+modelleinheit = "bp"
+quelle_tabelle = "IWF WEO"
+rolle_tabelle = "Start + Soll (4, abgeleitet)"
+verdacht_tabelle = "nein"
+rolle = ["start", "soll"]
+datenanker = true
+quelle_eingebettet = "IWF, Datenfluss IMF.RES/WEO 9.0.0 (Stand der Reihe 2025-09-30)"
+quelle_rueckfall = ""
+quellenwahl = "gemessen"
+quellenwahl_grund = "Die Weltbank ist kein Ausweg: GC.DOD.TOTL.GD.ZS liefert USA 25, BRA 12 (erst ab 2010), CHN 0, DEU 0 -- deutlich schlechter als WEO und zwei Laender gar nicht. Die Wahl der Reihenliste ist richtig, sie reicht nur nicht bis 1997."
+codes = ["GGXWDG_NGDP"]
+code_herkunft = "specs nennt die Quelle IWF WEO; der Code ist in 0006 belegt"
+sollreihen = 4
+t37_klasse = "abgeleitet"
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = "Kein benannter Fall von T26. Der allgemeine Satz gilt -- das Programm aendert sich nicht, nur das Manifest. Ein Ersatz ist nicht benannt; die WDI-Alternative ist gemessen und schlechter."
+deckung_gemessen = true
+deckung_urteil = "kuerzt das Fenster -- USA beginnt 2001 und ist die bindende Reihe des ganzen Deckungsbefunds"
+offen = [
+  "Der IWF-Lizenztext ist ungelesen (HTTP 403 an vier Tagen). Siehe Reihe 9.",
+  "Reihe 11 reisst fuer zwei der vier Laender (USA ab 2001, BRA ab 2000) und nicht fuer eines. Fuer die Frage 'Reihe streichen oder Fenster kuerzen' zaehlt das.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "gemessen"
+begruendung = "Quelle in Prozent des BIP (gemessene Werte bestaetigen es: USA 2021 = 125,05, DEU 2020 = 68,04), Modelleinheit bp. Passt zu schuld(l) = mal_geteilt(bip(l), staatsschuld[l], 10.000) -- der Nenner 10.000 setzt bp voraus und nicht Prozent."
+beleg = "daten/deckungsbefund-1997.md, Reihe 11, Abschnitt 'Zur Einheit'"
+
+[[reihe.lizenzbeleg]]
+codes = ["GGXWDG_NGDP"]
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = '''The term "Data" refers to any published statistical data produced by the IMF that is not owned by a third-party.'''
+url = "https://www.imf.org/en/about/copyright-and-terms"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+grund = "Wie Reihe 9: Der Lizenztext, auf dem alles ruht, ist nach fuenf Anlaeufen aus drei Rollen ungelesen; der zitierte Vorbehalt stammt aus einem Suchauszug und nicht aus dem Volltext."
+
+[[reihe.deckung]]
+land = "USA"
+erstes_jahr = 2001
+letztes_jahr = 2031
+luecken_1997_2021 = 4
+stuetzstellen = 21
+urteil = "verkuerzt -- 1997 bis 2000 fehlen, kostet vier Stuetzstellen und erzwingt das Startjahr 2001"
+
+[[reihe.deckung]]
+land = "CHN"
+erstes_jahr = 1995
+letztes_jahr = 2031
+luecken_1997_2021 = 0
+stuetzstellen = 25
+urteil = "traegt"
+
+[[reihe.deckung]]
+land = "DEU"
+erstes_jahr = 1991
+letztes_jahr = 2031
+luecken_1997_2021 = 0
+stuetzstellen = 25
+urteil = "traegt"
+
+[[reihe.deckung]]
+land = "BRA"
+erstes_jahr = 2000
+letztes_jahr = 2031
+luecken_1997_2021 = 3
+stuetzstellen = 22
+urteil = "verkuerzt -- 1997 bis 1999 fehlen; liegt vor dem ohnehin bindenden Startjahr 2001 und kostet keine weitere Stuetzstelle"
+
+
+# --- Reihe 12 -----------------------------------------------------
+[[reihe]]
+nr = 12
+bezeichnung = "Haushaltssaldo"
+dimension = "4"
+modelleinheit = "bp"
+quelle_tabelle = "IWF WEO"
+rolle_tabelle = "Start + Politikpfad"
+verdacht_tabelle = "nein"
+rolle = ["start", "politikpfad"]
+datenanker = true
+quelle_eingebettet = "IWF, Datenfluss IMF.RES/WEO 9.0.0"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur IWF WEO."
+codes = ["GGXCNL_NGDP"]
+code_herkunft = "gewaehlt-0006 als Gegenprobe zu Reihe 11, in specs/ nicht genannt"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = "Kein benannter Fall von T26. Der allgemeine Satz gilt. Reihe 12 traegt keine Sollreihe, wohl aber einen der drei verankerten Politikpfade."
+deckung_gemessen = true
+deckung_urteil = "keine Sollreihe, T24 verlangt keine 25 Stuetzstellen -- aber die USA beginnen wie Reihe 11 erst 2001"
+offen = [
+  "Ein Politikpfad mit vier fehlenden Anfangsjahren macht das erste Fuenftel des Weltlaufs fuer dieses Instrument blind. Wer das Fenster bei 1997 halten will, muss das mitentscheiden.",
+  "Der IWF-Lizenztext ist ungelesen. Siehe Reihe 9.",
+  "Die Einheit ist aus der Messung zu Reihe 11 abgeleitet und nicht eigenstaendig gemessen.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "abgeleitet"
+begruendung = "Dieselbe WEO-Tabelle und dieselbe Endung _NGDP wie Reihe 11, also Prozent des BIP; die in 0006 gemessenen Werte (USA 2009 = -13,18, 2020 = -14,13) bestaetigen die Groessenordnung. Modelleinheit bp (T5 Klasse 3)."
+beleg = "daten/deckungsbefund-1997.md, Reihe 11 Punkt 3; technik.md T5 Klasse 3"
+
+[[reihe.lizenzbeleg]]
+codes = ["GGXCNL_NGDP"]
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = '''The term "Data" refers to any published statistical data produced by the IMF that is not owned by a third-party.'''
+url = "https://www.imf.org/en/about/copyright-and-terms"
+abrufdatum = "2026-09-02"
+urteil = "unklar"
+grund = "Wie Reihe 9 und 11: IWF-Volltext ungelesen."
+
+[[reihe.deckung]]
+land = "USA"
+erstes_jahr = 2001
+letztes_jahr = 2031
+luecken_1997_2021 = 4
+stuetzstellen = 21
+urteil = "verkuerzt, aber keine Sollreihe -- der Politikpfad ist im ersten Fuenftel des Fensters 1997-2021 blind"
+
+[[reihe.deckung]]
+land = "CHN"
+status = "nicht_gemessen"
+
+[[reihe.deckung]]
+land = "DEU"
+status = "nicht_gemessen"
+
+[[reihe.deckung]]
+land = "BRA"
+status = "nicht_gemessen"
+
+
+# --- Reihe 13 -----------------------------------------------------
+[[reihe]]
+nr = 13
+bezeichnung = "Zollniveau, aggregiert"
+dimension = "4"
+modelleinheit = "bp"
+quelle_tabelle = "WDI (aus WITS)"
+rolle_tabelle = "Start + Politikpfad"
+verdacht_tabelle = "ja, entscheidend"
+rolle = ["start", "politikpfad"]
+datenanker = true
+quelle_eingebettet = "WDI"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur WDI (aus WITS). Nach daten.md gibt es fuer eine Zollreihe keine Quelle unter freier Lizenz: WTO, WITS und UNCTAD TRAINS sind negativ oder widerspruechlich; MacMap des ITC ist ungeprueft."
+codes = ["TM.TAX.MRCH.WM.AR.ZS"]
+code_herkunft = "gewaehlt-0005, in specs/ nicht genannt"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "gesperrt"
+lizenz_quelldatei = "daten/lizenzbefund-wdi.md"
+lizenz_beleg_typ = "feld_source"
+t26_folge = "T26, erster Fall: kein Zollpfad; der Weltlauf laeuft mit konstantem Zoll. Das Orakel hat zwei statt drei verankerte Instrumente. Reihe 13 traegt keine der 31 Sollreihen, der Rueckvergleich verliert also keine Sollreihe, wohl aber seine Verankerung im wichtigsten Instrument des Spiels."
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe"
+offen = [
+  "'Staff estimates' steht an erster Stelle: Der veroeffentlichte Wert ist eine Berechnung der Weltbank aus fremden Tariflinien, keine Durchreichung. Ob eine solche Aggregation die Auflagen der Lieferanten abstreift, ist eine Rechtsfrage und gehoert dem Betreiber.",
+  "Das Feld License_Type dieser Reihe lautet CC BY-4.0. Es sagt bei allen gemessenen Reihen dasselbe -- auch bei ITU und World Federation of Exchanges -- und unterscheidet deshalb nichts. Wer es findet, ohne die Kontrollabrufe zu kennen, liest es als Freigabe und hebt damit dieses Urteil auf.",
+  "Der Marker 'type: external database' fehlt ausgerechnet bei dieser, der einzigen gesperrten Reihe. Er taugt nicht als Filter.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "mal"
+faktor = 100
+status = "abgeleitet"
+begruendung = "Quelle in Prozent (IndicatorName 'Tariff rate, applied, weighted mean, all products (%)'), Modelleinheit bp (T5 Klasse 3)."
+beleg = "daten/lizenzbefund-wdi.md, Reihe 13 (IndicatorName im Wortlaut); technik.md T5 Klasse 3"
+
+[[reihe.lizenzbeleg]]
+codes = ["TM.TAX.MRCH.WM.AR.ZS"]
+feld = "Source"
+wortlaut = '''Staff estimates;
+World Integrated Trade Solution system (WITS), World Bank (WB);
+Trade Analysis and Information System (TRAINS), UN Conference on Trade and Development (UNCTAD);
+Integrated Data Base (IDB), World Trade Organization (WTO);
+Consolidated Tariff Schedules (CTS), World Trade Organization (WTO)'''
+wortlaut_form = "mehrzeilig, zeichengleich zur Quelle: die vier Zeilenumbrueche des Feldes Source stehen als echte Umbrueche und nicht als '; '. Quelle: lizenzbefund-wdi.md Z. 61-65 (fuenf Zeilen). Genau diese vier Umbrueche fuehrt lizenzbefund-wdi.md Z. 273-279 als Echtheitsnachweis: sie stehen im Rohtext als JSON-Escapes (u000a) und belegen, dass die zwei unabhaengigen Abrufe zeichengleich waren. Ein Wortlaut mit ersetzten Umbruechen findet gegen die Schnittstelle keinen Treffer, und der spaetere Leser weiss dann nicht, ob die Reihe sich geaendert hat oder ob nur die Leerzeichen anders sind. Bis zum 2026-09-02 standen sie hier als Leerzeichen, ohne Vermerk. Warum das der gewaehlte Weg ist und nicht ein Feld wortlaut_normalisiert: siehe [pruefweg].schnitt_2."
+url = "https://api.worldbank.org/v2/sources/2/series/TM.TAX.MRCH.WM.AR.ZS/metadata?format=json"
+url_gegenprobe = "https://api.worldbank.org/v2/indicator/TM.TAX.MRCH.WM.AR.ZS?format=json"
+abrufdatum = "2026-09-01"
+urteil = "gesperrt"
+grund = "Von fuenf genannten Bestaenden ist einer eine Eigenleistung der Weltbank, die vier uebrigen sind Drittbestaende. Zu dreien hat daten.md die Bedingungen im Wortlaut gelesen: WTO Nr. 12 ('Commercial use of materials from the website requires written permission from the WTO' -- negativ, weil Hausregel 2 den Weg ueber eine Anfrage verschliesst), WITS Nr. 13 (reicht die Auflagen seiner Lieferanten durch, negativ), UNCTAD Nr. 9 (widerspruechlich, ungeprueft). Die einzige der geprueften Reihen, bei der der Drittanbieter seine Zustimmung ausdruecklich vorbehaelt."
+referenzzeitraum = "1988-2022"
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+referenzzeitraum = "1988-2022 (Feld Referenceperiod, abgerufen 2026-09-01)"
+hinweis = "Der Pruefjahrgang 1997-2021 liegt darin. Aussage ueber die Reihenlaenge, nicht ueber Luecken je Land."
+
+
+# --- Reihe 14 -----------------------------------------------------
+[[reihe]]
+nr = 14
+bezeichnung = "Bilaterale Ströme nach HS92, aggregiert über die Konkordanz aus T23 Punkt 9"
+dimension = "5 × 4 × 2"
+modelleinheit = "Tsd USD"
+quelle_tabelle = "CEPII BACI"
+rolle_tabelle = "Start + Sollblock (frei)"
+verdacht_tabelle = "nein"
+rolle = ["start", "soll"]
+datenanker = true
+quelle_eingebettet = "CEPII BACI, Nomenklatur HS92, Fassung 202601 (Stand 2026-01-30)"
+quelle_rueckfall = "IWF DOTS, nur fuer Spieljahrgaenge vor 1997 (T26, dritter Fall)"
+quellenwahl = "gemessen"
+quellenwahl_grund = "HS92 ist die einzige Nomenklatur, die jedes Fenster ab 1995 deckt; HS02 begaenne erst 2002 und wuerde selbst zur bindenden Reihe."
+codes = []
+code_herkunft = "keine Indikatorcodes -- Rohbestand, ueber die Konkordanz HS92 aggregiert"
+sollreihen = 0
+t37_klasse = "frei"
+handelsblock_stroeme = 40
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = ""
+deckung_gemessen = true
+deckung_urteil = "traegt -- HS92 deckt 1995 bis 2024 und bindet in keiner Variante des Deckungsbefunds"
+offen = [
+  "Die Quelleneinheit von BACI ist in keiner der drei Befunddateien gemessen. Der Umrechnungsfaktor steht deshalb als ungemessen und nicht als 1.",
+  "Ob BACI in laufenden oder konstanten Preisen meldet, ist ebenfalls ungemessen. T5 Klasse 2 verlangt 'Tausend USD zu konstanten Preisen des Basisjahrs'.",
+  "Dass BACI das Jahr 1997 fuehrt, heisst nicht, dass jeder der 40 Stroeme in jedem Jahr eine Zeile hat. BACI meldet je gerichtetem Paar nur beobachtete Stroeme; ein Paar ohne Zeile bedeutet gemessene Null, nicht fehlender Wert. Eine Null ist keine Luecke und darf nicht als gefuellt gekennzeichnet werden, sonst zaehlt der Rueckvergleich echte Nullhandelsjahre aus dem Fehlermass heraus. Zu messen ist das beim Jahrgangsbau an der fertig aggregierten Matrix.",
+  "T23 Punkt 10: Je gerichtetem Paar steht genau eine Zahl (BACI meldet den Ausfuhrwert). Ein getrennter Einfuhrwert wuerde die Invariante 'Summe aller Handelsbilanzen = 0' von der Datenqualitaet abhaengig machen statt von der Bauart.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "ungemessen"
+status = "ungemessen"
+begruendung = "Modelleinheit ist Tsd USD (T5 Klasse 2). In welcher Einheit BACI die Werte fuehrt und ob sie laufend oder konstant sind, hat keine der drei Befunddateien gemessen. Ein Faktor 1 waere hier eine Behauptung."
+frage = "In welcher Einheit und zu welchen Preisen meldet BACI 202601 den Wert eines Stroms?"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = """Il est garanti au « Réutilisateur » que l'« Information » ne contient pas de « Droits de propriété intellectuelle » appartenant à des tiers qui pourraient faire obstacle aux libertés qui lui sont accordées par la présente licence."""
+url = "https://raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md"
+abrufdatum = "2026-09-02"
+urteil = "frei"
+grund = "Das Gegenteil eines Vorbehalts. Wo die Weltbank ihre Sammlung ausdruecklich unter Vorbehalt fremder Rechte stellt, sichert Etalab dem Weiterverwender zu, dass keine solchen Rechte im Weg stehen. Zusammen mit dem in daten.md Nr. 3 belegten Comtrade-Satz zu transformierten Bestaenden ist Reihe 14 die einzige Reihe des Vorhabens, bei der die Frage nicht nur unbeantwortet, sondern gegenteilig beantwortet ist. Der Text liegt nur franzoesisch vor; die Lizenz untersteht nach ihrem Schlussabschnitt dem franzoesischen Recht."
+hinweis = "Der Handelsblock ist der einzige der sechzehn Pruefgegenstaende, dessen Lizenzkette vollstaendig im Volltext gelesen ist."
+
+[[reihe.deckung]]
+land = "alle"
+erstes_jahr = 1995
+letztes_jahr = 2024
+urteil = "traegt -- Jahresabdeckung der Nomenklatur HS92, nicht Strom fuer Strom gemessen"
+beleg = "cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37, abgerufen 2026-09-01"
+
+[[reihe.konkordanz]]
+nomenklatur = "HS92"
+kapitel_von = 1
+kapitel_bis = 24
+sektor = 1
+sektorname = "Landwirtschaft"
+beleg = "technik.md T23 Punkt 9"
+
+[[reihe.konkordanz]]
+nomenklatur = "HS92"
+kapitel_von = 25
+kapitel_bis = 97
+sektor = 2
+sektorname = "Industrie"
+beleg = "technik.md T23 Punkt 9"
+
+
+# --- Reihe 15 -----------------------------------------------------
+[[reihe]]
+nr = 15
+bezeichnung = "Preisniveau im Ländervergleich"
+dimension = "4 + RW"
+modelleinheit = "Index"
+quelle_tabelle = "PWT"
+rolle_tabelle = "Start (Numéraire)"
+verdacht_tabelle = "nein"
+rolle = ["start"]
+datenanker = true
+quelle_eingebettet = "PWT"
+quelle_rueckfall = ""
+quellenwahl = "einzige"
+quellenwahl_grund = "Die Reihenliste nennt nur PWT."
+codes = []
+code_herkunft = "nirgends festgeschrieben"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "lizenztext"
+t26_folge = ""
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine Sollreihe"
+offen = [
+  "Kein Indikatorcode festgeschrieben.",
+  "T46: restwelt.inflation hat keinen Startwert aus einer Reihe -- im Lauf ist die Groesse die Jahresrate von restwelt.preisniveau, das diese Reihe verankert. Nur ihr Startwert hat keine Quelle.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "basierung"
+faktor = 10000
+status = "abgeleitet"
+begruendung = "T5 Klasse 5 (Nominalindizes, darunter Preisniveau): Index, Startjahr = 10.000. Die Quellenreihe wird auf ihr Startjahr basiert; ein Quelleneinheitenfaktor entfaellt, weil ein Index dimensionslos ist. Anders als Reihe 4 laeuft diese Groesse bei einer Neubasierung nach T8 mit."
+beleg = "technik.md T5 Klasse 5, T8"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "Lizenztext der Quelle (kein WDI-Feld Source)"
+wortlaut = '''Penn World Table 11.0 by Robert C. Feenstra, Robert Inklaar and Marcel P. Timmer is licensed under a Creative Commons Attribution 4.0 International License.'''
+url = "https://www.rug.nl/ggdc/productivity/pwt/"
+abrufdatum = "2026-09-02"
+urteil = "frei"
+grund = "Kein Drittanbietervorbehalt im Lizenztext."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+referenzzeitraum = "1950-2023 (PWT 11.0 nach daten.md)"
+
+
+# --- Reihe 16 -----------------------------------------------------
+[[reihe]]
+nr = 16
+bezeichnung = "`durchgriff`"
+dimension = "5 × 2"
+modelleinheit = "Zehntausendstel"
+quelle_tabelle = "BACI + WDI, abgeleitet nach T23 Punkt 5"
+rolle_tabelle = "Konstante des Jahrgangs"
+verdacht_tabelle = "nein"
+rolle = ["konstante"]
+datenanker = false
+quelle_eingebettet = "abgeleitet aus Reihe 14 (H) und Reihe 2 (N)"
+quelle_rueckfall = ""
+quellenwahl = "entfaellt"
+quellenwahl_grund = "Keine eigene Quelle -- die Groesse wird vom Jahrgangsbau gerechnet."
+codes = []
+code_herkunft = "keine"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "unklar"
+lizenz_quelldatei = "daten/lizenzbefund-reihen.md"
+lizenz_beleg_typ = "geerbt"
+t26_folge = "Kein benannter Fall von T26. Das Urteil ist von Reihe 2 geerbt und in keiner Befunddatei gemessen -- siehe Widerspruch Nr. 8."
+deckung_gemessen = false
+deckung_urteil = "nicht gemessen -- keine eigene Reihe. Der Fall H + N = 0 tritt im Pruefjahrgang bei keinem der fuenf Gebiete auf."
+offen = [
+  "H (Aus- plus Einfuhr aus BACI) und N (Wertschoepfung aus WDI) muessen in derselben Einheit stehen, sonst ist der Quotient bedeutungslos. Die Einheit von BACI ist ungemessen (siehe Reihe 14).",
+  "Kein Befund urteilt ueber die Lizenz dieser abgeleiteten Groesse. Eingetragen ist das schwaechere der beiden Eingabeurteile (Reihe 14 frei, Reihe 2 unklar); dass eine abgeleitete Groesse so erbt, ist eine Uebertragung dieser Datei und keine Messung.",
+  "T23 Punkt 5: Der einzige undefinierte Fall ist H + N = 0. Der Jahrgangsbau setzt dann durchgriff = 0 und meldet den Fall im Manifest als Befund. Eine Kappung gibt es nicht und darf es nicht geben.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "keine"
+faktor = 1
+status = "abgeleitet"
+begruendung = "Die Bildungsregel aus T23 Punkt 5 -- durchgriff = teile_gerundet(10.000 mal H, H + N) -- liefert die Modelleinheit Zehntausendstel unmittelbar. Der Wertebereich 0 bis 10.000 gilt fuer alle nichtnegativen H, N per Konstruktion. Eine nachtraegliche Umrechnung gibt es nicht."
+beleg = "technik.md T23 Punkt 5"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "keines -- geerbt von den Eingabereihen"
+wortlaut = ""
+url = ""
+abrufdatum = ""
+urteil = "unklar"
+grund = "Geerbt: Reihe 14 (BACI) ist frei, Reihe 2 (WDI-Wertschoepfung) ist unklar. Weder lizenzbefund-wdi.md noch lizenzbefund-reihen.md urteilt ueber Reihe 16."
+verweis = "Die Belege stehen bei Reihe 2 und Reihe 14."
+
+[[reihe.deckung]]
+land = "alle"
+status = "nicht_gemessen"
+
+
+# --- Reihe 17 -----------------------------------------------------
+[[reihe]]
+nr = 17
+bezeichnung = "Sektorpreise"
+dimension = "(4+RW) × 3"
+modelleinheit = "Index"
+quelle_tabelle = "keine"
+rolle_tabelle = "endogen, kein Soll"
+verdacht_tabelle = "—"
+rolle = ["endogen"]
+datenanker = false
+quelle_eingebettet = ""
+quelle_rueckfall = ""
+quellenwahl = "entfaellt"
+quellenwahl_grund = "Die Reihenliste fuehrt fuer diese Reihe die Quelle 'keine'."
+codes = []
+code_herkunft = "keine"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = ""
+lizenz_beleg_typ = "ohne_fremdbestand"
+t26_folge = ""
+deckung_gemessen = false
+deckung_urteil = "entfaellt -- keine Quelle, keine Deckungsfrage"
+offen = [
+  "Eine der vier Groessen ohne Datenanker, die spiel.md unter 'Die Grenze des Orakels' aufzaehlt. Startwert nach T45 aus der Entwurfstabelle in spiel.md.",
+  "Das Lizenzurteil ist auf keine der drei Befunddateien zurueckfuehrbar -- siehe Widerspruch Nr. 7.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "keine"
+faktor = 1
+status = "entfaellt"
+begruendung = "Kein Fremdbestand, keine Quelleneinheit, also keine Umrechnung. Die Groesse entsteht im Modell (T5 Klasse 5, Index mit Startjahr = 10.000)."
+beleg = "technik.md Abschnitt 7, Spalte Quelle: keine"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "keines -- kein Fremdbestand"
+wortlaut = ""
+url = ""
+abrufdatum = ""
+urteil = "frei"
+grund = "Die Reihenliste fuehrt die Quelle 'keine'. Es wird kein fremder Bestand eingebettet, also gibt es nichts zu lizenzieren. Keine der drei Befunddateien behandelt diese Reihe; das Urteil ruht auf der Reihenliste selbst."
+
+[[reihe.deckung]]
+land = "alle"
+status = "entfaellt"
+
+
+# --- Reihe 18 -----------------------------------------------------
+[[reihe]]
+nr = 18
+bezeichnung = "Zustimmung"
+dimension = "4"
+modelleinheit = "Zehntausendstel"
+quelle_tabelle = "keine"
+rolle_tabelle = "aus `parameter.toml`"
+verdacht_tabelle = "—"
+rolle = ["start", "endogen"]
+datenanker = false
+quelle_eingebettet = "parameter.toml"
+quelle_rueckfall = ""
+quellenwahl = "entfaellt"
+quellenwahl_grund = "Die Reihenliste fuehrt fuer diese Reihe die Quelle 'keine'; der Startwert kommt nach T45 aus parameter.toml."
+codes = []
+code_herkunft = "keine"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = ""
+lizenz_beleg_typ = "ohne_fremdbestand"
+t26_folge = ""
+deckung_gemessen = false
+deckung_urteil = "entfaellt -- keine Quelle, keine Deckungsfrage"
+offen = [
+  "Eine der vier Groessen ohne Datenanker. Herkunft nach T45: Parameter(schluessel), nicht Datenanker.",
+  "Das Lizenzurteil ist auf keine der drei Befunddateien zurueckfuehrbar -- siehe Widerspruch Nr. 7.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "keine"
+faktor = 1
+status = "entfaellt"
+begruendung = "Kein Fremdbestand. Der Wert steht nach T27 als Dezimalzeichenkette in parameter.toml und wird ohne Gleitkomma in eine skalierte Ganzzahl gelesen (T4); die Modelleinheit Zehntausendstel ist dort schon die Einheit des Schluessels."
+beleg = "technik.md T27, T45; parameter.toml"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "keines -- kein Fremdbestand"
+wortlaut = ""
+url = ""
+abrufdatum = ""
+urteil = "frei"
+grund = "Die Reihenliste fuehrt die Quelle 'keine'. Der Wert ist eine Kalibriergroesse dieses Vorhabens. Keine der drei Befunddateien behandelt diese Reihe."
+
+[[reihe.deckung]]
+land = "alle"
+status = "entfaellt"
+
+
+# --- Reihe 19 -----------------------------------------------------
+[[reihe]]
+nr = 19
+bezeichnung = "Marktkorbwert und Marktrendite"
+dimension = "1 + 1"
+modelleinheit = "Tsd USD / bp"
+quelle_tabelle = "keine"
+rolle_tabelle = "Startwert nach T33, endogen, kein Soll"
+verdacht_tabelle = "—"
+rolle = ["start", "endogen"]
+datenanker = false
+quelle_eingebettet = "Manifest des Jahrgangs (T33)"
+quelle_rueckfall = ""
+quellenwahl = "entfaellt"
+quellenwahl_grund = "Die Reihenliste fuehrt fuer diese Reihe die Quelle 'keine'; der Startwert wird nach T33 vom Jahrgangsbau gerechnet und im Manifest ausgewiesen."
+codes = []
+code_herkunft = "keine"
+sollreihen = 0
+t37_klasse = ""
+handelsblock_stroeme = 0
+exogen_ab = 0
+verkettet_ab = 0
+lizenzurteil = "frei"
+lizenz_quelldatei = ""
+lizenz_beleg_typ = "ohne_fremdbestand"
+t26_folge = ""
+deckung_gemessen = false
+deckung_urteil = "entfaellt -- keine Quelle, keine Deckungsfrage"
+offen = [
+  "Eine der vier Groessen ohne Datenanker. Herkunft nach T45: Manifest(feld) fuer markt.wert.",
+  "Der Korbwert haengt seit spiel.md Fassung 5 am Sektorkapitalstock und damit mittelbar an Reihe 3 und Reihe 2.",
+  "Das Lizenzurteil ist auf keine der drei Befunddateien zurueckfuehrbar -- siehe Widerspruch Nr. 7.",
+]
+
+[[reihe.umrechnung]]
+schritt = 1
+art = "keine"
+faktor = 1
+status = "entfaellt"
+begruendung = "Kein Fremdbestand. Der Startwert entsteht nach T33 aus dem eingefrorenen Mengenkorb zu Startpreisen; beide Modelleinheiten (T5 Klasse 2 und Klasse 3) sind die der Eingangsgroessen."
+beleg = "technik.md T33, T45"
+
+[[reihe.lizenzbeleg]]
+codes = []
+feld = "keines -- kein Fremdbestand"
+wortlaut = ""
+url = ""
+abrufdatum = ""
+urteil = "frei"
+grund = "Die Reihenliste fuehrt die Quelle 'keine'. Der Wert wird vom Jahrgangsbau gerechnet. Keine der drei Befunddateien behandelt diese Reihe."
+
+[[reihe.deckung]]
+land = "alle"
+status = "entfaellt"
+
+
+####################################################################
+# PRUEFWEG -- wie diese Datei nachzuzaehlen ist, damit der Pruefer
+# nicht selbst eine Zaehlregel erfinden muss.
+####################################################################
+
+[pruefweg]
+toml_geprueft = "nein -- nicht maschinell geprueft, und das ist keine Nachlaessigkeit, sondern der Stand der Umgebung. Ein TOML-Leser laeuft hier nicht: der python3-Aufruf wird abgewiesen (viermal ueber zwei Pakete, dem Datenbauer wie dem Pruefer), und die Werkzeugliste der Rolle datenbauer -- agents/rollen/datenbauer.md Z. 7-14: Read, Glob, Grep, WebSearch, WebFetch, Edit(ventures/**), Edit(notizen/datenbauer.md) -- fuehrt kein Werkzeug, das Code ausfuehrt. Was den Punkt schliesst, sind drei Zeilen im Runner; er steht als Punkt 2 in rueckstand.md. Belegt ist die Gueltigkeit deshalb strukturell, durch die sieben Schnitte schnitt_1 bis schnitt_7. Jeder nennt sein Muster und sein Ergebnis, jeder ist mit dem Werkzeug Grep wiederholbar, und jeder ist am 2026-09-02 gegen genau diese Fassung der Datei gelaufen. Bis zum 2026-09-02 stand hier, die Datei sei mit Pythons tomllib eingelesen worden. Das ist nicht geschehen."
+toml_geprueft_grenze = "Was die sieben Schnitte nicht leisten: Sie pruefen Form und Zaehlung, nicht die Grammatik von TOML 1.0. Eine Verletzung, die keines der sieben Muster trifft -- etwa ein ungueltiger Schluesselname oder eine falsch verschachtelte Tabelle --, bleibt unentdeckt. Wer diese Datei zum ersten Mal einliest, prueft das zuerst."
+schnitt_1 = "Dezimalpunkt (T4, Leseregel 5). Grep-Muster '= [0-9]+\\.[0-9]', output_mode content. Ergebnis: 6 Treffer in den Zeilen 218, 219, 540, 946, 1345, 1458. Alle sechs stehen innerhalb einer Zeichenkette und sind deutsche Tausendertrenner (10.000, 1.000); kein blanker Zahlenwert traegt einen Punkt. Gebrochene Zahlen stehen skaliert mit dem Faktor im Schluesselnamen, siehe umrechnungskurs_dem_je_eur_mal_100000 = 195583."
+schnitt_2 = "Begrenzer der Zeichenketten. Grep-Muster ''' zaehlt 28 Zeilen; dasselbe Muster mit -o zaehlt 52 Vorkommen, also eine gerade Zahl und damit paarweise. Grep-Muster ^'''|'''$ zaehlt 26 Zeilen: 24 Zeilen, die ein Literal oeffnen und schliessen, plus die zwei Schlusszeilen der beiden mehrzeiligen Literale. 24 * 2 + 4 = 52, die Rechnung geht auf. Das Gegenstueck aus drei doppelten Anfuehrungszeichen kommt in genau einer Zeile vor, 1276, dem Etalab-Text der Reihe 14; er fuehrt Apostrophe und kann deshalb kein Apostroph-Literal sein. Genau zwei Literale erstrecken sich ueber mehrere Zeilen: Reihe 6, Zeile 658 bis 660, und Reihe 13, Zeile 1211 bis 1215. Warum mehrzeilig und nicht ein Feld wortlaut_normalisiert daneben: Der Wortlaut ist so zeichengleich zur Quelle statt nur sinngleich, und beide Texte brechen keine Formregel -- gepruefte Voraussetzung, weil ein Apostroph-Literal weder einen Apostroph enthalten noch auf einem enden darf und weil ein Dezimalpunkt oder ein doppeltes Anfuehrungszeichen die Schnitte 1 und 2 brechen wuerde. Keiner der beiden Texte fuehrt eines davon. Ein Vermerk daneben haette die Ersetzung dokumentiert, den Vergleich gegen die Schnittstelle aber weiterhin scheitern lassen."
+schnitt_2_offen = "Nicht Gegenstand dieses Pakets, hier nur benannt, damit schnitt_2 nicht mehr behauptet, als er zeigt: Drei weitere Wortlaute tragen dieselbe Ersetzung ohne Vermerk -- Zeile 304 und 394 (Reihe 1 und Reihe 2a) gegen lizenzbefund-reihen.md Z. 97-99, Zeile 405 (Reihe 2b und 2c) gegen lizenzbefund-reihen.md Z. 177-179, je drei Quellzeilen in einer Zeile. Der Pruefbefund zu 0017 nennt allein Reihe 6 und Reihe 13, und das Arbeitspaket 0022 laesst keine vierte Aenderung zu. Wer die drei angleicht, braucht ein eigenes Paket."
+schnitt_3 = "Tabellenkoepfe. Grep-Muster ^\\[\\[ zaehlt 112 Zeilen. Dasselbe Muster nach Typ aufgezaehlt ergibt ebenfalls 112: 19 [[reihe]], 8 [[widerspruch]], 22 [[reihe.umrechnung]], 20 [[reihe.lizenzbeleg]], 39 [[reihe.deckung]], 2 [[reihe.konkordanz]], 2 [[reihe.bruch]]. Weil beide Zahlen gleich sind, gibt es keinen achten, unbenannten Tabellentyp. Alle Untertabellen folgen ihrem [[reihe]]; kein Schluessel steht nach einer Untertabelle wieder auf Reihenebene."
+schnitt_4 = "Pflichtfelder je Reihe. Grep-Muster ^exogen_ab = zaehlt 19, ^verkettet_ab = zaehlt 19, ^lizenzurteil = zaehlt 19. Das Sammelmuster ^(lizenzurteil|bezeichnung|dimension|modelleinheit|quelle_tabelle|rolle_tabelle|verdacht_tabelle|quelle_eingebettet) = zaehlt 152 = 8 * 19. Bei 19 [[reihe]]-Bloecken aus schnitt_3 heisst das: jedes dieser Felder steht genau einmal je Reihe -- keines fehlt, keines steht doppelt. Grep-Muster ^t37_klasse = zaehlt 20: 19 Reihen plus die eine Zeile in [zaehlung.handelsblock]. Grep-Muster ^nr = zaehlt 27 = 19 Reihen + 8 Widersprueche."
+schnitt_5 = "Sollreihen. Grep-Muster ^sollreihen = mit output_mode content ergibt 21 Zeilen: 277, 357, 399, 410, 463, 519, 575, 631, 692, 758, 840, 934, 1028, 1111, 1183, 1248, 1324, 1380, 1437, 1492, 1547. Zwei davon stehen in einer Untertabelle -- Zeile 399 (Wert 4) und Zeile 410 (Wert 8), die beiden [[reihe.lizenzbeleg]] der Reihe 2; siehe falle. Die uebrigen 19 stehen auf Reihenebene, eine je Reihe, mit dreizehn Nullen und den sechs Werten 4 + 12 + 4 + 4 + 3 + 4 = 31. Die Summe ueber alle 21 Zeilen ist 43 und die Zahl, auf die ein Zeilenzaehler hereinfaellt."
+schnitt_6 = "Doppelter Schluessel innerhalb einer Tabelle. Vollstaendig ist das ohne Parser nicht zeigbar; was zeigbar ist, steht in schnitt_4 und schnitt_5: Fuer die elf dort gezaehlten Schluessel eines Reihenblocks ist die Zeilenzahl genau die Blockzahl 19, und ein zweites Vorkommen innerhalb eines Blocks wuerde sie anheben. Nicht abgedeckt sind die selteneren Schluessel und die Schluessel der Untertabellen. Genau diese Luecke schliesst der Parserlauf aus rueckstand.md Punkt 2."
+schnitt_7 = "Wortlautfelder. Grep-Muster ^wortlaut = zaehlt 20, eines je [[reihe.lizenzbeleg]] aus schnitt_3. Vier davon sind leer: die Reihen 16, 17, 18 und 19 ohne eigene Quelle, siehe zaehlregel_lizenz. Grep-Muster ^wortlaut_form = zaehlt 2, die beiden mehrzeiligen Wortlaute aus schnitt_2."
+zaehlregel_sollreihen = "Summiere den Schluessel `sollreihen` je [[reihe]] -- also nur auf der obersten Ebene eines Reihenblocks. Ergebnis 31."
+zaehlregel_t37 = "Gruppiere dieselben Werte nach `t37_klasse` der Reihe. Ergebnis frei 23 (Reihen 1, 2, 8, 10 mit 4 + 12 + 4 + 3), gesetzt 4 (Reihe 9), abgeleitet 4 (Reihe 11)."
+handelsblock = "Reihe 14 traegt `t37_klasse = frei` bei `sollreihen = 0` und `handelsblock_stroeme = 40`. Sie ist die einzige Nicht-Sollreihe mit Klasse; das verlangt die Abnahme so."
+falle = '''Ein `grep` auf `^sollreihen = ` findet zwei Zeilen zu viel: Die beiden Belegbloecke [[reihe.lizenzbeleg]] der Reihe 2 fuehren denselben Schluesselnamen fuer die Aufteilung 4 (2a) + 8 (2b und 2c). Ein TOML-Leser verwechselt sie nicht, weil sie in einer Untertabelle stehen; ein Zeilenzaehler schon und kaeme auf 43. Der Name ist beim Nachtragen dieser Zeile nicht mehr aenderbar gewesen, deshalb steht die Falle hier statt in einem Kommentar, den ein Werkzeug ueberliest.'''
+zaehlregel_umrechnung = "Jede Reihe fuehrt mindestens einen Block [[reihe.umrechnung]]. Zwei davon tragen `art = ungemessen` und keinen Faktor: Reihe 3 (PWT-Kapitalstock) und Reihe 14 (BACI). Das ist Absicht, siehe Leseregel 3 im Kopf."
+zaehlregel_lizenz = "Jede Reihe fuehrt `lizenzurteil` aus frei | gesperrt | unklar und mindestens einen Block [[reihe.lizenzbeleg]] mit `wortlaut`, `url` und `abrufdatum`. Leer sind diese drei Felder allein bei den Reihen 16, 17, 18 und 19 -- den vier Reihen ohne eigene Quelle; siehe [[widerspruch]] Nr. 7 und Nr. 8."

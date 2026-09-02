@@ -1,0 +1,4 @@
+wortlaut = '''International Labour Organization (ILO), type: estimates based on external database;
+United Nations (UN), publisher: UN Population Division;
+Staff estimates, World Bank (WB)'''
+wortlaut_form = "mehrzeilig, zeichengleich zur Quelle: die zwei Zeilenumbrueche des Feldes Source stehen als echte Umbrueche und nicht als '; '. Quelle: lizenzbefund-reihen.md Z. 272-274 (drei Zeilen). Bis zum 2026-09-02 standen sie hier als Leerzeichen, ohne Vermerk. Warum das der gewaehlte Weg ist und nicht ein Feld wortlaut_normalisiert: siehe [pruefweg].schnitt_2."
