@@ -121,7 +121,7 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # Nachzueichen am 2026-09-13: Bis dahin ist das Wochenlimit um 50 Prozent erhoeht.
 # Danach sind dieselben 398,8 Dollar rund 31 statt 21 Prozent, und beide Zahlen hier
 # gehoeren auf zwei Drittel gesenkt -- 200 und 1.070.
-TAGESGRENZE_USD = 400.0
+TAGESGRENZE_USD = 900.0
 
 # Die eigentliche Bremse. Gerechnet ueber sieben rollende Tage statt ueber Anthropics
 # Wochenfenster (Montag 10:00): Der genaue Zuschnitt ist zweitrangig, die
