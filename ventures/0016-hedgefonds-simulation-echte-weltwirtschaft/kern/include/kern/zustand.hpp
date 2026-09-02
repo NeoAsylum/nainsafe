@@ -1,2 +1,2 @@
 #pragma once
-//! Platzhalter. Gebaut in Paket 0008-kern-zustand-310-felder.
+//! `kern::zustand` -- die 310 Adressen als Wert fester Groesse.

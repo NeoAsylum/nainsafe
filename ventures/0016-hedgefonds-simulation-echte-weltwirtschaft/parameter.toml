@@ -2,11 +2,21 @@
 # parameter.toml -- die Kalibrierdatei des Spiels
 #
 # Paket 0009-parameterdatei-schluessel, Datenbauer, Stand 2026-09-02,
-# **Fassung 2 nach Ruecklauf 1** (Pruefbefund vom 2026-09-02,
-# `urteil: zurueck`). Geaendert wurden drei Stellen: `startzustimmung`
-# von 0 auf 1 (Befund 1), die Aufzaehlung der gekoppelten Paare unter
-# BEFUNDE Punkt 5 (Befund 2) und die Schranke der `schrittweite` in den
-# Instrumententabellen (Befund 4). **Nicht geaendert:** die fuenf
+# **Fassung 3 nach Ruecklauf 2** (Pruefbefund
+# `befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md`,
+# `urteil: zurueck`, drei Befunde). Geaendert wurden drei Stellen: die
+# Schranke von `hebelaufschlag`, die keine Herkunft nannte und deren
+# Klasse sie nicht traegt (Befund 1); der vierte Fall in BEFUNDE Punkt 5
+# Gruppe (b), `aufsicht_tempo` gegen `aufsicht_max` (Befund 2); und der
+# Pruefweg der Selbstprobe im Abschnitt "WIE DER PRUEFER ZAEHLT"
+# (Befund 3). Dazu die zweideutige Zeile zu Regel A, die der Pruefer
+# ausdruecklich **nicht** als Befund gefuehrt hat.
+#
+# *Fassung 2 nach Ruecklauf 1* hatte geaendert: `startzustimmung` von 0
+# auf 1, die Aufzaehlung der gekoppelten Paare unter BEFUNDE Punkt 5 und
+# die Schranke der `schrittweite` in den vier Instrumententabellen. Alle
+# drei sind in Runde 2 nachgerechnet worden und halten.
+# **Nicht geaendert:** die fuenf
 # Klasse-4-Schluessel `preisstoss`, `zustimmung_elastizitaet`,
 # `nachahmer_wirkung`, `hebel_max`, `innerjahresausschlag_faktor` aus
 # Befund 3 des Pruefbefunds. Ob Klasse 4 ihren Deckel von 10.000 auch
@@ -48,9 +58,16 @@
 #      ihn liest sich so, als duerfe auch bei einer strengen Ungleichung
 #      jeder der beiden auf derselben Zahl stehen -- und genau das war
 #      `startzustimmung = 0` neben `zustimmung_wechselschwelle = 0`,
-#      zwei Werte ausserhalb ihrer eigenen Schranke. Betroffen ist genau
-#      ein Paar; die Aufzaehlung aller gekoppelten Paare steht unter
-#      BEFUNDE Punkt 5.
+#      zwei Werte ausserhalb ihrer eigenen Schranke. **Streng geordnete
+#      Paare gibt es drei** -- `aufsicht_schwelle_1 < _2`, `_2 < _3` und
+#      `startzustimmung > zustimmung_wechselschwelle` --, und der Zusatz
+#      gilt fuer alle drei; bei den Aufsichtsschwellen ist er sichtbar
+#      angewandt (1, 2, 3, je ein ganzzahliger Schritt). **Verletzt hatte
+#      seine Schranke genau eines davon**, das dritte. Der Satz stand bis
+#      Fassung 2 als "Betroffen ist genau ein Paar" hier und liess beide
+#      Lesarten zu (Ruecklauf 2, Hinweis des Pruefers ohne Befundrang).
+#      Die Aufzaehlung aller gekoppelten Paare steht unter BEFUNDE
+#      Punkt 5.
 #   B) Wertebereiche der Instrumente: Der Wertebereich ist keine
 #      Kalibriergroesse im selben Sinn -- er muss nach T51 im `weltlauf`
 #      den historischen Pfad enthalten, sonst erzeugt der Jahrgangsbau
@@ -113,8 +130,17 @@
 #                                                   ---
 #                                                    50 Schluessel
 #
-#   Davon 46 mit `# PLATZHALTER` und 4 mit `# FEST (T51)`.
-#   `grep -c PLATZHALTER` und `grep -c 'FEST (T51)'` zaehlen es nach.
+#   Davon 46 Schluesselzeilen mit der Marke PLATZHALTER und 4 mit der
+#   Marke FEST (T51). Nachgezaehlt wird mit einem Ausdruck, der **nur
+#   Schluesselzeilen** trifft -- ein Kommentar beginnt mit `#` und faellt
+#   dadurch heraus:
+#     grep -c '^[a-z_0-9]* *=.*PLATZHALTER'  -> 46
+#     grep -c '^[a-z_0-9]* *=.*FEST (T51)'   -> 4
+#   Der unverankerte Aufruf, der bis Fassung 2 hier stand, zaehlte diese
+#   Kopfzeilen mit und lieferte 47 und 5 statt 46 und 4 (Ruecklauf 2,
+#   Befund 3). Die beiden Zahlen waren richtig, der vorgeschriebene
+#   Pruefweg nicht -- eine Selbstprobe, die sich selbst mitzaehlt, ist
+#   keine.
 #
 # **Ein `*` hinter einem Schluesselnamen im Kommentar heisst: Der Name
 # steht in keinem Dokument woertlich und ist nach dem Muster der
@@ -597,7 +623,13 @@ nachahmer_wirkung = 0  # PLATZHALTER
 # **nicht aus dem Vermoegen allein, sonst waere er nur eine
 # Vermoegenssteuer** (spiel.md Gegenkraft 1). Der Schluessel ist der
 # Umrechnungsfaktor aus dem Produkt zweier Anteile in Zaehlerschritte.
-# Schranke: >= 0.
+# Schranke: >= 0 aus der Klasse (T5 Klasse 11, Bereich "0 ... Obergrenze
+#   aus `parameter.toml`"). specs/ nennt keine obere; wirksam begrenzt
+#   ist nicht dieser Schluessel, sondern sein Ergebnis -- der
+#   Aufsichtszaehler ist durch `aufsicht_max` gekappt. Genau dasselbe
+#   Verhaeltnis wie `nachahmer_tempo` zu `nachahmer_max`; beide stehen
+#   unter BEFUNDE Punkt 5b. Der Verweis fehlte bis Fassung 2
+#   (Ruecklauf 2, Befund 2).
 # Kalibriert: Selbstspieler.
 # Scheitert daran: Bei 0 ist Gegenkraft 1 aus, alle drei
 #   Aufsichtsschwellen sind unerreichbar und Kanal 5 ist offen.
@@ -634,12 +666,41 @@ hebel_max = 0  # PLATZHALTER
 # zum Leitzins des Landes plus einem Aufschlag, der mit der Sichtbarkeit
 # des Fonds steigt", Kanal 4: "Aufschlag steigt mit Sichtbarkeit".
 # Nicht zu verwechseln mit `aufschlag` (Leitzins <-> Anleiherendite).
-# Schranke: >= 0.
+# Schranke: >= 1 -- **Folgerung aus spiel.md Aktion 4, keine woertliche
+#   Vorgabe aus specs/.** Dieselbe Bauart wie `druck_max >= 1`,
+#   `stufen_max >= 1` und `schrittweite >= 1`.
+#   Herkunft ist der oben zitierte Satz selbst: Der Aufschlag *steigt*
+#   mit der Sichtbarkeit (spiel.md Aktion 4, Zeile 177-178; Kanal 4,
+#   Zeile 524). Aus der Klasse folgt hier nichts -- T5 gibt Klasse 3
+#   (Raten) den Bereich "±2 Mio %" (technik.md Zeile 124), symmetrisch
+#   um null. Ein blankes ">= 0" haette also keine Quelle; bis Fassung 2
+#   stand genau das hier (Ruecklauf 2, Befund 1).
+#   Aus "steigt" folgen beide Haelften der Schranke:
+#     * Ein **negativer** Faktor laesst den Aufschlag mit der
+#       Sichtbarkeit *sinken* und kehrt Kanal 4 um. Zusammen mit
+#       `leitzins` an seiner Untergrenze -50 bp wird Kreditaufnahme
+#       ertragreich -- und nichts bricht ab, weil kein Test der Datei
+#       darueber laeuft: Die sieben Wertebereichsschranken aus T30
+#       Pruefung 2 pruefen Zustandsadressen, keinen Parameterschluessel.
+#       Derselbe stille Ausfall wie `schrittweite = 0` in Ruecklauf 1.
+#     * Ein Faktor **0** laesst ihn gerade nicht steigen und streicht
+#       den Halbsatz aus spiel.md ersatzlos. Deshalb 1, der kleinste
+#       positive Wert der Klasse.
+#   Die schwaechere Lesart (">= 0", nur das Vorzeichen gebunden, 0 als
+#   wirkungsloser Rand wie bei `gegenlobby_satz`) waere vertretbar --
+#   dort traegt die Klasse die Null aber selbst (T5 Klasse 9: "0 ...
+#   druck_max"), hier nicht. **Dass dies eine Wahl zwischen zwei
+#   zulaessigen Lesarten ist und nicht die einzig moegliche, steht hier
+#   und nicht nur im Logbuch** -- der Pruefer soll die Alternative sehen,
+#   ohne sie sich selbst herleiten zu muessen.
+#   Eine obere Schranke nennt specs/ nicht.
 # Kalibriert: Selbstspieler.
-# Scheitert daran: Bei 0 ist Sichtbarkeit auf der Kostenseite gratis und
-#   die Wahl "laut und schnell gegen leise und langsam" hat nur eine
-#   Seite.
-hebelaufschlag = 0  # PLATZHALTER
+# Scheitert daran: Zu klein -- Sichtbarkeit ist auf der Kostenseite
+#   praktisch gratis und die Wahl "laut und schnell gegen leise und
+#   langsam" hat nur eine Seite. Zu gross -- jeder Hebel auf einem
+#   sichtbaren Fonds ist unbezahlbar, Aktion 4 entfaellt und mit ihr die
+#   Angriffsflaeche der ersten Todesart.
+hebelaufschlag = 1  # PLATZHALTER
 
 # `sichtbarkeit_schritt`* -- Klasse 4 (Anteile). Aenderung von
 # `fonds.sichtbarkeit` je Aktion 5 (spiel.md Aktion 5: "Der Fonds legt
@@ -886,6 +947,14 @@ instrument_max = 1  # FEST (T51), muss `regulierung_stufen` gleichen
 #        (T5 Klasse 9): `0 <= 1`.
 #      * `nachahmer_tempo` -> Nachahmerzaehler, gekappt durch
 #        `nachahmer_max` (T5 Klasse 11): `0 <= 0`.
+#      * `aufsicht_tempo` -> Aufsichtszaehler, gekappt durch
+#        `aufsicht_max` (T5 Klasse 11): `0 <= 3`. **Nachgetragen in
+#        Fassung 3** (Ruecklauf 2, Befund 2): Dieser vierte Fall fehlte,
+#        obwohl der Abschnitt Vollstaendigkeit zusagt und obwohl er
+#        Zeichen fuer Zeichen dieselbe Bauart hat wie der Fall darueber
+#        -- beide Klasse 11, beide erhoehen einen Zaehler je Runde, beide
+#        haben einen `_max`-Schluessel in dieser Datei. Kein Wert war
+#        betroffen; falsch war die Zusage.
 #      * `schrittweite` -> Stand, gekappt durch den Wertebereich
 #        desselben Instruments (T51): `1` gegen die Spannen 10.050,
 #        10.000, 20.000 und 1. Bei der Regulierung sind Weite und
