@@ -144,8 +144,16 @@
 #
 # **Ein `*` hinter einem Schluesselnamen im Kommentar heisst: Der Name
 # steht in keinem Dokument woertlich und ist nach dem Muster der
-# uebrigen gebildet.** Dieselbe Kennzeichnung wie im Adressverzeichnis
-# aus Paket 0007. 25 der 50 Namen sind so gebildet; sie stehen einzeln
+# uebrigen gebildet.** Verwandt, aber nicht dieselbe Kennzeichnung wie
+# im Adressverzeichnis: Dort -- `daten/adressen.md`, Spaltenlegende
+# `Adresse` und *Befund 2* -- sitzt die Marke an den Bestandteilen und
+# heisst "ein Bestandteil ist neu erfunden", weshalb `handel.US.CN.1`
+# dort keine Marke traegt, obwohl diese Zeichenkette nirgends
+# woertlich steht; hier heisst sie "nicht woertlich belegt". Fuer
+# Schluesselnamen fallen die beiden Regeln zusammen, weil ein
+# Schluessel keine Gebiets- und Sektorindizes traegt: Er ist als
+# Ganzes belegt oder als Ganzes gebildet.
+# 25 der 50 Namen sind so gebildet; sie stehen einzeln
 # unter BEFUNDE am Dateiende.
 #
 # ---------------------------------------------------------------------

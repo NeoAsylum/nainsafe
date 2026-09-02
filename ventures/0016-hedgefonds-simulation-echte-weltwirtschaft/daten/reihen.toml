@@ -306,7 +306,7 @@ url = "https://api.worldbank.org/v2/sources/2/series/NY.GDP.MKTP.KD/metadata?for
 url_gegenprobe = "https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.KD?format=json"
 abrufdatum = "2026-09-02"
 urteil = "unklar"
-grund = "Die Weltbank nennt die OECD namentlich als Lieferanten. daten.md Nr. 8 fuehrt die OECD als 'ungeklaert, nicht einplanen'; eine Quelle ohne Lizenzzitat im Wortlaut gilt als ungeprueft, nicht als erlaubt."
+grund = "Zwei voneinander unabhaengige Sperrgruende, jeder allein genuegt fuer 'unklar'. Erstens die OECD: Die Weltbank nennt sie namentlich als Lieferanten, daten.md Nr. 8 fuehrt die OECD als 'ungeklaert, nicht einplanen'; eine Quelle ohne Lizenzzitat im Wortlaut gilt als ungeprueft, nicht als erlaubt. Zweitens die nationalen Statistikaemter und Notenbanken des ersten Halbsatzes ('Country official statistics, National Statistical Organizations and/or Central Banks') -- dieselben Stellen wie bei 2b und 2c, nur als eine Angabe statt als zwei geschrieben: Von den acht Stellen der vier Modelllaender (je Amt und Notenbank) ist genau eine geprueft (Destatis, daten.md Nr. 5, positiv), sieben sind offen. Keiner der beiden Gruende ersetzt den anderen -- wer nur die OECD klaert, hebt Reihe 1 nicht. Belegt in lizenzbefund-reihen.md, Reihe 1 und Klaerung 4."
 
 [[reihe.deckung]]
 land = "USA"
@@ -397,7 +397,7 @@ url_gegenprobe = "https://api.worldbank.org/v2/indicator/NV.AGR.TOTL.ZS?format=j
 abrufdatum = "2026-09-02"
 urteil = "unklar"
 sollreihen = 4
-grund = "OECD namentlich genannt; daten.md Nr. 8 fuehrt sie als 'ungeklaert, nicht einplanen'. Zeichengleich derselbe Text wie bei Reihe 1."
+grund = "Zeichengleich derselbe Text wie bei Reihe 1 und damit dieselben zwei voneinander unabhaengigen Sperrgruende; jeder allein genuegt fuer 'unklar'. Erstens die OECD, namentlich genannt: daten.md Nr. 8 fuehrt sie als 'ungeklaert, nicht einplanen'. Zweitens die nationalen Statistikaemter und Notenbanken des ersten Halbsatzes ('Country official statistics, National Statistical Organizations and/or Central Banks'): Von den acht Stellen der vier Modelllaender (je Amt und Notenbank) ist genau eine geprueft (Destatis, daten.md Nr. 5, positiv), sieben sind offen. Die Klaerung der OECD allein hebt 2a nicht. Belegt in lizenzbefund-reihen.md, Reihe 2a und Klaerung 4."
 
 [[reihe.lizenzbeleg]]
 codes = ["NV.IND.TOTL.ZS", "NV.SRV.TOTL.ZS"]
@@ -408,7 +408,7 @@ url_gegenprobe = "https://api.worldbank.org/v2/sources/2/series/NV.SRV.TOTL.ZS/m
 abrufdatum = "2026-09-02"
 urteil = "unklar"
 sollreihen = 8
-grund = "Ein anderer Text als bei 2a: Die OECD kommt nicht vor, an ihrer Stelle stehen Notenbanken und nationale Statistikaemter. Genannt sind keine Organisationen mit eigenen veroeffentlichten Bedingungen. Von den vier Modelllaendern ist genau ein Statistikamt geprueft (Destatis, daten.md Nr. 5, positiv); fuer die drei uebrigen liegt nichts vor."
+grund = "Ein anderer Text als bei 2a: Die OECD kommt nicht vor, an ihrer Stelle stehen zwei getrennte Angaben -- die nationalen Statistikaemter ('National Statistical Offices (NSOs)') und die Notenbanken ('National Accounts data files, Central Banks'). Genannt sind keine Organisationen mit eigenen veroeffentlichten Bedingungen. Die Notenbanken sind ein eigener Lieferant, den Destatis nicht mit abdeckt: Von den acht Stellen der vier Modelllaender (je Amt und Notenbank) ist genau eine geprueft (Destatis, daten.md Nr. 5, positiv); fuer die Aemter der drei uebrigen Laender und fuer alle vier Notenbanken liegt nichts vor. Offen sind damit sieben der acht Stellen aus der Tabelle unter Klaerung 4 in lizenzbefund-reihen.md, nicht drei."
 
 [[reihe.deckung]]
 land = "USA"

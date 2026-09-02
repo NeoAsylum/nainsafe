@@ -1,7 +1,7 @@
 ---
 id: 0028-parameterdatei-querverweis
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0015-adressen-markierungssatz, 0009-parameterdatei-schluessel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

@@ -1,7 +1,7 @@
 ---
 id: 0032-reihentoml-notenbanken-nachziehen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0024-notenbanken-unter-reihe-2b]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
