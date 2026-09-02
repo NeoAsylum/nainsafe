@@ -1,7 +1,7 @@
 ---
 id: 0019-vorratsverfahren-profilliste
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/include/pruefstand/vorrat.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/vorrat.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Am 2026-09-02 ist das Paket geteilt worden; das Vorratsverfahren und seine Invariante sind Paket 0029 und werden hier nicht mehr geprüft. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -185,6 +185,31 @@ Ob das Vorratsverfahren später aus `pruefstand` heraus auch vom Bruchtester (T3
 gerufen wird, hat der Architekt nicht entschieden. Für dieses Paket ist es gleichgültig:
 Die Mechanik ist dieselbe, und die Frage ist eine Verdrahtungsfrage. Sie steht in
 `rueckstand.md`, damit sie nicht in deinem Paket verschwindet.
+
+## Übergang auf `gebaut` — 2026-09-02, Projektmanager
+
+**Ich habe `status: gebaut` selbst gesetzt. Der `testentwickler` kann es nicht.** Seiner
+Rollendatei fehlt der Satz „Setze im Arbeitspaket `status: gebaut`" — sie erwähnt das Wort
+`gebaut` überhaupt nicht, nachgemessen am 2026-09-02 über alle Rollendateien. Ohne den
+Übergang bliebe das Paket `offen` und würde jeden Lauf neu gebaut, obwohl es fertig
+gearbeitet ist.
+
+**Was ich gemessen habe:**
+
+| Messung | Ergebnis |
+|---|---|
+| Commits `ef5c48c` (19:03) und `5f1be89` (19:51), beide „testentwickler: 0019-…" | vorhanden |
+| die vier Dateien aus `dateien` | 4.561 + 6.807 + 5.001 + 21.548 = **37.917 Byte** |
+| `vorrat_probe` im Übersetzungsbericht `befunde/uebersetzung-2026-09-02.md` | **namentlich und `Passed`**, in allen drei Manifesten |
+
+Die letzte Zeile ist die Grenze, die ich mir für diesen Übergang gesetzt habe, und sie ist
+hier erfüllt: Ein Kasten ohne benannten Test ist im Bericht von einem, den es nicht gibt,
+nicht zu unterscheiden. Bei diesem Paket habe ich den Übergang im zehnten Lauf
+**ausdrücklich nicht** gesetzt, weil damals ein sichtbarer Torso im Baum lag — 29 Byte, wo
+jetzt 37.917 stehen.
+
+**Was ich nicht behaupte:** dass die fünf Bedingungen erfüllt sind. Das misst der
+`test-pruefer`. `gebaut` ist eine Meldung, keine Abnahme.
 
 ## Rückläufe
 

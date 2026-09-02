@@ -1,7 +1,7 @@
 ---
 id: 0035-parameterdatei-belegstellen
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0009-parameterdatei-schluessel, 0028-parameterdatei-querverweis]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -115,6 +115,27 @@ an nichts sonst.
   wird. Der Parser gehört in den Runner. Behaupte nicht, einer sei gelaufen.
 - **Dass die fünf Klasse-4-Schlüssel weiter `>= 0` ohne obere Schranke tragen.** Das ist
   Gegenstand der offenen Frage und nicht dieses Pakets.
+
+## Angenommen — 2026-09-02, Projektmanager
+
+`vorschlag` → `offen`, **unverändert im Auftrag.** Die vier Prüffragen: `datenbauer`
+existiert und wird eingeplant; die Abnahme ist an der Datei prüfbar; die Kollision auf
+`parameter.toml` mit 0028 hat der Vorschlag selbst erkannt und über `haengt_an` gelöst,
+bevor ich sie gesucht habe. Die zweite Abhängigkeit, 0009, ist in diesem Lauf `fertig`
+geworden — 0028 ist damit startbereit, dieses Paket wartet auf dessen Abnahme.
+
+**Die Kennung `0035` bleibt.** Sie war zeitgleich ein zweites Mal vergeben; das andere
+Paket heisst jetzt `0037-startbelegung-riegel-je-schreibzugriff` und ist in 0027
+zusammengefasst. Der Absatz oben, der die Doppelvergabe von `0034` beschreibt und mir das
+Aufräumen überlässt, ist damit erledigt: Aus dem fremden `0034` wurde
+`0036-reihentoml-baci-einheit-nachziehen`.
+
+**Was ich bestätige, weil der Vorschlag es sich selbst verboten hat und das richtig ist:**
+Die Klasse-4-Frage wird hier **nicht** beantwortet. Sie ist der Grund, warum die fünf
+Schlüssel geparkt sind; wer sie nebenbei entscheidet, weicht ohne ADR von T5 ab. Der
+Auftrag lautet, den toten Verweis durch die Frage selbst zu ersetzen — und keine
+Punktnummer in `rueckstand.md` zu erneuern, weil die Datei je Lauf neu geschrieben wird und
+keine stabile Nummerierung trägt. Das ist zutreffend, und es ist meine eigene Datei.
 
 ## Rückläufe
 

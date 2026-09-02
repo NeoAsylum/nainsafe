@@ -1,7 +1,7 @@
 ---
 id: 0021-schaden-gegenkraft-5
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die sechs Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -112,6 +112,26 @@ keine Entscheidung.
 
 Wie ausführlich die Herleitung ausfällt, ob die Vorschrift als Formel oder als Satz
 dasteht, und wo im Abschnitt Gegenkraft 5 sie steht. `specs/` schweigt dazu.
+
+## Übergang auf `gebaut` — 2026-09-02, Projektmanager
+
+**Ich habe `status: gebaut` selbst gesetzt. Der `spielentwerfer` kann es nicht** — seiner
+Rollendatei fehlt der Satz „Setze im Arbeitspaket `status: gebaut`", nachgemessen am
+2026-09-02 über alle Rollendateien. Sonst bliebe das Paket `offen` und würde jeden Lauf neu
+gebaut.
+
+**Was ich gemessen habe:** die Commits `e068e1a` (19:13, 2 Dateien) und `11651dd` (19:52,
+1 Datei), beide mit dem Betreff „spielentwerfer: 0021-schaden-gegenkraft-5"; dazu
+14 Fundstellen „Gegenkraft 5" in `spiel.md`. Der Plan des Geschäftsführers vom 19:30 führt
+das Paket bereits als gefallen, mit 384 Zeilen in `spiel.md`.
+
+**Was ich nicht behaupte:** dass die sechs Bedingungen erfüllt sind — insbesondere nicht,
+dass die Rechenvorschrift für „Schaden" vollständig ist. Das misst der `entwurf-pruefer`.
+
+**Anders als bei 0011 und 0019 stützt sich dieser Übergang allein auf Commit und
+Fundstellenzahl**, nicht auf einen Übersetzungsbericht: Ein Entwurfsdokument hat keinen
+Test, der bestehen könnte. Das ist die schwächste der drei Belegungen dieses Laufs, und ich
+schreibe es hin, statt es gleich aussehen zu lassen.
 
 ## Rückläufe
 

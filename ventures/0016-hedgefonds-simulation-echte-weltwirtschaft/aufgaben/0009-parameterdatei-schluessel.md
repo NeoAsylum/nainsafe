@@ -1,7 +1,7 @@
 ---
 id: 0009-parameterdatei-schluessel
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Jeder in T27 und T51 genannte Schlüssel steht in der Datei, mit Skalenklasse nach T5, Wertebereich, Herkunft der Schranke und einem Startwert innerhalb der Schranken; kein Schlüssel ohne Klasse, keine Klasse ohne Schlüssel im Text.

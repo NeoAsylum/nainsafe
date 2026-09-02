@@ -1,10 +1,40 @@
 ---
-id: 0035-startbelegung-riegel-je-schreibzugriff
+id: 0037-startbelegung-riegel-je-schreibzugriff
 rolle: kernbauer
-status: vorschlag
+status: fertig
 haengt_an: [0027-zustand-schreibweg-schliessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustand_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schreiber_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt Abnahme. Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
+---
+
+# ZUSAMMENGEFASST in 0027 — 2026-09-02
+
+> **Dieser Vorschlag ist angenommen, aber nicht als eigenes Paket.** Sein Inhalt steht
+> vollständig in `0027-zustand-schreibweg-schliessen.md`, Abschnitt *Rücklauf 1*, und
+> Bedingung 3 dieses Pakets ist danach neu gefasst. Baue **0027**, nicht dies hier.
+>
+> **Zwei Gründe, beide technisch:**
+>
+> 1. **Deadlock.** Der Vorschlag hängt an 0027, und 0027 hat für genau diese Sache
+>    `urteil: zurueck` bekommen. Ein Paket, dessen Voraussetzung ohne es selbst nie
+>    `fertig` werden kann, wird nie eingeplant.
+> 2. **Dieselben vier Dateien.** `startbereit()` plant zwei Pakete mit sich schneidenden
+>    Dateilisten nie gleichzeitig ein. Getrennt wären sie zwei Läufe nacheinander an
+>    denselben Zeilen, mit doppeltem Review.
+>
+> **Was am Vorschlag richtig war und übernommen ist:** die Analyse in voller Länge, der
+> Ausweg („vor der ersten Runde **oder** selbst gesetzt"), die beiden Nebenfragen zu Kopie
+> und Lebensdauer, das Verbot des 311. Felds und die Prüfsumme `25e8b19071bea26c` als
+> Gegenprobe gegen Zubetonieren. Nichts davon ist gestrichen.
+>
+> **Was nicht übernommen ist:** die Einschätzung „das ist kein Rücklauf in der Sache". Sie
+> ist inhaltlich gut begründet, steht aber gegen das Urteil, das derselbe Befund trägt.
+> Bei diesem Widerspruch entscheidet das Urteil — sonst nähme die Bauseite die Abnahme
+> selbst vorweg. — *Projektmanager*
+>
+> Der Rest dieser Datei ist der Vorschlag im Wortlaut, unverändert. Er bleibt lesbar, weil
+> die Herleitung dort steht.
+
 ---
 
 # Der Startwertzugang wird beim Schreiben verriegelt, nicht beim Binden

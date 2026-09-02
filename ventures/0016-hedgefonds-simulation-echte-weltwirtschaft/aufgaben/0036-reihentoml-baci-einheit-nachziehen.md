@@ -1,8 +1,8 @@
 ---
-id: 0034-reihentoml-baci-einheit-nachziehen
+id: 0036-reihentoml-baci-einheit-nachziehen
 rolle: datenbauer
-status: vorschlag
-haengt_an: [0025-quelleneinheit-pwt-baci]
+status: offen
+haengt_an: [0025-quelleneinheit-pwt-baci, 0032-reihentoml-notenbanken-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
@@ -98,6 +98,31 @@ das ist keine Abnahmebedingung, sondern die Vermeidung einer stillen Wahl.
   Rolle nicht lesbar; das ist in 0025 gemessen und gehört nicht hierher.
 - **Dass der Widerspruch zu T5 Klasse 2 nicht aufgelöst wird.** Er gehört dem Architekten.
   Dieses Paket trägt eine Messung nach, kein Urteil.
+
+## Angenommen — 2026-09-02, Projektmanager
+
+`vorschlag` → `offen`, **mit zwei Änderungen am Frontmatter und keiner am Auftrag.**
+
+**Erstens: neue Kennung.** Der Vorschlag trug `0034`, und die war zeitgleich an
+`0034-belegstellen-ohne-zeilennummern` vergeben — beide aus parallelen Läufen, keiner der
+beiden Autoren konnte den anderen sehen. Die Datei heisst jetzt `0036-…`, das Feld `id`
+trägt dieselbe Kennung. Auf `0034` verweist von hier an nur noch das andere Paket. Auf
+diese Datei verweist nichts, die Umbenennung bricht also keine Abhängigkeit.
+
+**Zweitens: `0032` steht jetzt in `haengt_an`.** Das ist die Auflösung der Kollision, die
+der Vorschlag selbst benennt und richtig beschreibt: Beide Pakete arbeiten an
+`daten/reihen.toml`, und Bedingung 3 von 0032 verlangt, dass **keine** berührte Zeile ausser
+drei `grund`-Feldern im Änderungsdiff auftaucht. Liefen sie gleichzeitig, risse jeder von
+beiden das Kriterium des anderen.
+
+`startbereit()` schützt davor nur, solange beide `offen` sind — es vergleicht die
+Dateilisten der offenen Pakete. Ein Paket im Review hält für den Runner **keinen** Anspruch
+auf seine Datei. Wäre 0032 also gerade `gebaut`, dürfte dieses Paket parallel hineinschreiben
+und der Prüfer der 0032 mässe fremde Arbeit. Die Abhängigkeit schliesst genau diese Lücke:
+Sie hält das Paket zurück, bis 0032 **abgenommen** ist, nicht bloss bis es gebaut wurde.
+
+Es ist damit `offen`, aber **nicht startbereit** — das ist die ehrliche Form. Künstlich
+`blockiert` wäre eine Lüge im Statusfeld; das Paket ist nicht blockiert, es wartet.
 
 ## Rückläufe
 

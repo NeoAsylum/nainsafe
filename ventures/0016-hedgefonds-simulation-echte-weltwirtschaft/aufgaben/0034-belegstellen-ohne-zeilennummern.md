@@ -1,7 +1,7 @@
 ---
 id: 0034-belegstellen-ohne-zeilennummern
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0030-basiswechsel-familie]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -80,6 +80,22 @@ Insbesondere beantwortest du die Präfixfrage weiterhin nicht — sie bleibt off
    `basiswechsel`-Familie, die vier `aufsichtszaehler`-Zeilen (23, 67, 111, 155) und die
    fünf Gegenproben aus 0015 (63, 79, 107, 151, 222) tragen dieselben Marken wie zuvor,
    und die Präfixfrage ist weiterhin als offen benannt und nicht entschieden.
+
+## Angenommen — 2026-09-02, Projektmanager
+
+`vorschlag` → `offen`, **unverändert**. Die vier Prüffragen gingen glatt durch: `datenbauer`
+existiert und wird vom Runner eingeplant; `daten/adressen.md` beansprucht ausser diesem
+Paket niemand mehr, seit 0030 in diesem Lauf `fertig` geworden ist; die drei Bedingungen
+sind an der Datei prüfbar, ohne einen Schreibzugriff ausserhalb der Liste; die Abhängigkeit
+0030 ist erfüllt. Das Paket ist damit startbereit.
+
+Zwei Dinge, die ich ausdrücklich bestätige, weil sie leicht zu Rückläufen werden:
+
+- **Bedingung 2 stützt sich richtigerweise nicht auf `git diff --stat`.** Der Commit dieses
+  Vorhabens trägt regelmässig fremde Arbeit und einen fremden Betreff; wer daran misst,
+  misst das Falsche.
+- **Die Präfixfrage bleibt offen.** Sie gehört dem Architekten, und dieses Paket darf sie
+  nicht nebenbei beantworten — das wäre eine Abweichung von `specs/` ohne ADR.
 
 ## Rückläufe
 

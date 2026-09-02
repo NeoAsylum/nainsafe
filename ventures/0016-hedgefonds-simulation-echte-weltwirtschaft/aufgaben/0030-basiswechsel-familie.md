@@ -1,7 +1,7 @@
 ---
 id: 0030-basiswechsel-familie
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0015-adressen-markierungssatz]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
