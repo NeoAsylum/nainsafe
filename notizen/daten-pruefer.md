@@ -21,8 +21,11 @@ Lehre daraus, in einem Satz.
 
 ### Das Muster, das am zuverlässigsten etwas findet
 
-- 2026-09-02, **fünfter Fall in zwei Tagen** — **Suche im geprüften Dokument die Stelle, an
-  der es seine eigene Methode nicht anwendet.** Bisher: eine Tabelle, deren „Verdacht"-Spalte
+- 2026-09-02, **sechster Fall in zwei Tagen** — **Suche im geprüften Dokument die Stelle, an
+  der es seine eigene Methode nicht anwendet.** Neu (0009 Runde 2): ein Schlüssel, dessen
+  Herkunftszitat zwei Zeilen *über* seiner herkunftslosen Schranke steht — die Datei hatte
+  die Quelle in der Hand und schrieb sie nicht in die Zeile, auf die es ankam. Bisher: eine
+  Tabelle, deren „Verdacht"-Spalte
   ungeprüft übernommen wurde (0005); ein Kopplungspaar, das zur „einzigen Stelle" erklärt
   wurde, während es fünf gab (0009); ein Zusammenzug, der der eigenen Reihentabelle
   widersprach (0006); zwei Reihen, die als einzige keinen Umrechnungsfaktor nennen (0006
@@ -69,6 +72,12 @@ Lehre daraus, in einem Satz.
 
 ### Einheiten und Basisjahre
 
+- 2026-09-02 — **Ohne Datenanker ist der Ersatzschnitt: Klasse gegen die *Richtung* der
+  Schranke, nicht nur gegen den Bereich.** Bei 0009 alle blanken `Schranke: >= 0` greppen und
+  je Treffer fragen, ob der T5-Bereich der *deklarierten* Klasse diese Null überhaupt hergibt.
+  Klasse 4 und 11 beginnen bei 0, Klasse 3 ist symmetrisch (±2 Mio %) — dort kommt die Null
+  nirgendwoher, und genau dort lag der Befund. Der Bereichsvergleich allein findet das nicht,
+  weil `0` in `±2 Mio %` ja liegt.
 - 2026-09-02 — **Der ergiebigste Schnitt ist Skalenklasse gegen Datenanker in derselben
   Zeile.** So fiel auf, dass Klasse 2 („konstante Preise") BACI-Handelsströme (laufende
   Preise) und BIP (konstante Preise) im selben Topf führt. Eine Tabelle, die Einheit und
@@ -139,8 +148,11 @@ Lehre daraus, in einem Satz.
   Hebelobergrenze) können darüber liegen.** Befund 3 zu 0009. Sobald ein Paket
   `parameter.toml` einliest oder eine Bereichsprüfung setzt: Trägt Klasse 4 ihren Deckel auch
   für Regler oder nur für Zustandsgrössen?
-- 2026-09-02 — **`schrittweite` je Instrument hat nirgends eine Untergrenze.** `= 0` schaltet
-  Aktion 3 stumm ab, ohne dass etwas abbricht. Beim Paket zu Schritt 3 zuerst dort hinsehen.
+- 2026-09-02 — **`hebelaufschlag` trägt `>= 0` ohne Herkunft, und Klasse 3 ist symmetrisch.**
+  Befund 1 zu 0009 Runde 2. Bei negativem Wert sinkt der Kreditzins mit der Sichtbarkeit,
+  Kanal 4 kehrt sich um, nichts bricht ab. Beim Paket, das `parameter.toml` einliest, prüfen,
+  ob die Bereichsprüfung für die Klasse-3-Schlüssel überhaupt eine Untergrenze setzt.
+  (*Erledigt:* Die `schrittweite`-Fährte — Rücklauf 1 hat ihr `>= 1` und ganzzahlig gegeben.)
 - 2026-09-02 — **Die Spalte „Verdacht" ist erledigt: 0014 hat alle sechs offenen Zeilen
   gemessen, alle sechs nennen einen Fremdbestand.** Offen bleibt der Ersatzweg: Fällt Reihe 1
   auf PWT zurück, wechselt das Basisjahr (WDI: konstante Preise 2015 US$), und niemand hat
