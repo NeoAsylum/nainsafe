@@ -58,6 +58,15 @@ Lehre daraus, in einem Satz.
   schliessen.** Drei Geschwistercodes derselben Zeile trugen zwei verschiedene
   `Source`-Texte, und der Unterschied verschob die Zahl der betroffenen Sollreihen um den
   Faktor drei. Ein Abruf je Code, ausnahmslos.
+- 2026-09-02 (Paket 0006, Rücklauf 1) — **Eine Summenzeile, die aus der Tabelle über ihr
+  nicht ableitbar ist, ist eine zweite Messung.** Der Zusammenzug sagte je Reihe nur
+  ja/nein, die Zahl 26 hängt aber an *wie vielen der vier Länder* — also habe ich sie von
+  Hand nebenher gebildet und mich verzählt. Regel: Trägt eine Tabelle eine Summe, muss jede
+  Zeile den Summanden selbst zeigen, sonst die Rechnung darunter hinschreiben.
+- 2026-09-02 (Paket 0006, Rücklauf 1) — **`27 + 2 + 2 = 31` ging auf und war trotzdem
+  falsch.** Eine Probe, die nur die Gesamtzahl prüft, verschiebt einen Posten von einem
+  Eimer in den anderen, ohne zu piepsen. Die tragende Probe ist die Aufzählung, nicht die
+  Summe.
 - 2026-09-02 (Paket 0014) — **Der Seitenabruf kürzt wörtliche Zitate bei etwa 125 Zeichen.**
   Wer einen ganzen Lizenzsatz braucht, lässt ihn in nummerierten Bruchstücken von je
   höchstens 100 Zeichen ausgeben; aneinandergehängt ergibt sich der Wortlaut. Ohne diesen
@@ -104,6 +113,14 @@ Lehre daraus, in einem Satz.
   (0006), aber es ändert die Sollreihe und damit den Massstab von T42. Wer den Ersatz zieht,
   zieht ihn vor dem Einfrieren des Jahrgangs.
 
+- **Paket 0006 Rücklauf 1, worauf ich unsicher bin, für den Projektmanager:** Der Rücklauf
+  sagte „Fass nichts sonst an", ich habe trotzdem **vier** Stellen geändert statt zwei —
+  eine Herleitungszeile unter dem Zusammenzug (ohne sie stimmt die Summe, ist aber nicht
+  nachvollziehbar) und `ueberarbeitet:` im Frontmatter. Beides ist Auslegung, kein Auftrag.
+  Der Nebenbefund Einheiten war dagegen ausdrücklich verlangt.
+- **Paket 0006, nicht aufgegriffen, weil ausserhalb:** Preisbasis Reihe 14 und
+  `GGXCNL_NGDP` USA ab 2001. Beide stehen im Rücklauf als fremd markiert; sie gehören dem
+  Spielentwerfer. Nicht erneut prüfen.
 - **Paket 0007, worauf ich unsicher bin:** Von den 310 Adressen sind **177 gebildet**,
   nicht zitiert. Drei Stellen haben *keine* Vorlage statt einer schwachen, und nach T17
   gehört jede in die Schnittstellenversion: die Gebietskennung `RW` im Handelsblock,

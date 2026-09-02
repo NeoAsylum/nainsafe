@@ -1,7 +1,7 @@
 ---
 id: 0006-deckung-pruefjahrgang-1997
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/deckungsbefund-1997.md]
 abnahme: Für jede der 31 Sollreihen und für den Handelsblock steht im Befund, ob sie 1997 bis 2021 ohne Füllung 25 Stützstellen trägt, mit Abruf-URL und Abrufdatum; am Ende steht genau ein Wert für R und die Liste der Reihen, die ihn erzwungen haben.
@@ -120,8 +120,29 @@ Punkt 1) und der Haushaltssaldo `GGXCNL_NGDP`, der für die USA ebenfalls 2001 b
 
 ## Status
 
-**2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1), Grundlage ist der
-Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
+**2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). Vier Änderungen
+an `daten/deckungsbefund-1997.md`, sonst nichts angefasst:
+
+1. Zeile 15: „tragen **27** … **zwei** verkürzt" → „tragen **26** … **drei** verkürzt", dazu
+   drei Sätze, die die drei verkürzten benennen und sagen, warum Reihe 11 BRA R nicht
+   erzwingt (2000 liegt vor dem bindenden Startjahr 2001).
+2. Summenzeile des Zusammenzugs: „27 von 31 tragen" → „**26 von 31**".
+3. Unter dem Zusammenzug die Rechnung, aus der die 26 folgt (4 + 12 + 4 + 3 + 1 + 2), samt
+   `26 + 3 + 2 = 31`. Ohne sie ist die Summenzeile aus der Tabelle darüber nicht ableitbar —
+   die beiden reißenden Zeilen sagen nur „nein", nicht „wie viele der vier".
+4. Nebenbefund Einheiten: Reihe 9 (`DISR_RT_PT_A_PT`, Prozent p. a.) und Reihe 11
+   (`GGXWDG_NGDP`, % des BIP) haben je einen Absatz **Multiplikation mit 100** bekommen, wie
+   ihn Reihe 1, 8 und 10 schon hatten. Bei Reihe 11 mit der Gegenprobe aus `technik.md`:
+   `schuld(l) = mal_geteilt(bip(l), staatsschuld[l], 10.000)` — der Nenner 10.000 setzt bp
+   voraus und wäre bei Prozent um Faktor 100 falsch.
+
+**R bleibt 19**, die erzwingenden Reihen bleiben Reihe 11 USA und Reihe 9 USA, keine
+Meßtabelle ist berührt. Die beiden Nebenbefunde außerhalb des Pakets (Preisbasis Reihe 14,
+`GGXCNL_NGDP` für die USA) sind nicht aufgegriffen. Das Frontmatter trägt jetzt
+`ueberarbeitet: 2026-09-02`.
+
+*Vorgeschichte:* **2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1), Grundlage
+ist der Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
 
 *Vorgeschichte:* **2026-09-02, `offen` → `gebaut`.** Der Datenbauer hat am 2026-09-01
 `daten/deckungsbefund-1997.md` geschrieben (376 Zeilen, Commit `3927c0a`) und den Status

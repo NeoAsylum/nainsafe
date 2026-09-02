@@ -4,10 +4,13 @@
 # `[dependencies]`. C++ hat keinen solchen Abschnitt; die Entsprechung ist, dass der
 # Kern nichts hereinholt und nichts dazulinkt.
 #
-#   Mechanischer Nachweis (T2), zwei Aufrufe:
-#   grep -nE 'find_package|FetchContent|ExternalProject|add_subdirectory' kern/CMakeLists.txt
-#   grep -n  'target_link_libraries(kern '                                kern/CMakeLists.txt
-#   -> beide liefern nichts ausser diesen Kommentarzeilen.
+#   Mechanischer Nachweis (T2), zwei Mustervergleiche ueber diese Datei: Der erste
+#   sucht jede Anweisung, die fremden Code hereinholt oder ein weiteres Verzeichnis
+#   dazunimmt, der zweite jede Bibliothek, die an den Kern gelinkt wird. Beide muessen
+#   leer ausgehen. Ihr Wortlaut steht in der Abnahme von Paket 0004, Bedingung 3, und
+#   absichtlich nicht hier: Eine Datei, die ihre eigenen Suchmuster zitiert, laesst sie
+#   nie leer ausgehen, und die Ausnahme davon gehoerte dann ins Kriterium statt in die
+#   geprueften Zeilen.
 #
 # Ein Kasten ohne Abhaengigkeiten kann durch kein fremdes Versionsupdate sein
 # Ergebnis aendern. Die Standardbibliothek ist keine Fremdabhaengigkeit: Sie kommt

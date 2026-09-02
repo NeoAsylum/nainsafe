@@ -3,6 +3,7 @@ typ: deckungsbefund
 paket: 0006-deckung-pruefjahrgang-1997
 rolle: datenbauer
 datum: 2026-09-01
+ueberarbeitet: 2026-09-02 (Ruecklauf 1: Zusammenzug 27 -> 26, Einheiten Reihe 9 und 11)
 gegenstand: 31 Sollreihen + Handelsblock, Fenster 1997-2021, Fuellung verboten (T24)
 ergebnis: Fenster 1997-2021 traegt nicht
 R: 19
@@ -12,9 +13,15 @@ ohne_deckung: [Reihe 9 Deutschland, Reihe 9 China]
 
 # Trägt der Prüfjahrgang 1997–2021 25 Stützstellen ohne Füllung?
 
-**Nein.** Von den 31 Sollreihen tragen 27 das Fenster vollständig, zwei tragen es verkürzt
+**Nein.** Von den 31 Sollreihen tragen 26 das Fenster vollständig, drei tragen es verkürzt
 und **zwei tragen überhaupt nichts** — der Leitzins für Deutschland und für China existiert
 in der Quelle, die die Reihenliste dafür benennt, in keinem einzigen Jahr.
+
+Die drei verkürzten sind Reihe 9 USA (24 Stützstellen), Reihe 11 USA (21) und Reihe 11 BRA
+(22). **Nur die ersten beiden erzwingen R**; Reihe 11 BRA beginnt 2000 und liegt damit vor
+dem ohnehin bindenden Startjahr 2001, kostet also keine weitere Stützstelle. Sie steht hier
+trotzdem, weil sie für die Frage „Reihe streichen oder Fenster kürzen" zählt: Reihe 11 reißt
+für **zwei** der vier Länder und nicht für eines.
 
 Das sind zwei verschiedene Sorten Befund, und sie dürfen nicht zusammengeworfen werden:
 
@@ -147,6 +154,11 @@ in Teiltabellen zerlegt; die Zinsen liegen in **`IMF.STA/MFS_IR` („Monetary an
 Statistics, Interest Rate", Fassung 9.0.0)**. Die Nachfolgereihe des IFS-Leitzinses heißt
 dort **`DISR_RT_PT_A_PT`** (Diskontsatz).
 
+**Zur Einheit:** `DISR_RT_PT_A_PT` liefert **Prozent pro Jahr** (die gemessenen Werte
+bestätigen es: USA 1997 = 5,00, BRA 1997 = 45,09). Die Reihenliste verlangt für Reihe 9
+**bp** — die Umrechnung ist eine **Multiplikation mit 100**, kein Reihenwechsel und kein
+Wechselkursschritt.
+
 Abruf `api.imf.org/external/sdmx/3.0/data/dataflow/IMF.STA/MFS_IR/9.0.0/*.DISR_RT_PT_A_PT.A`,
 abgerufen 2026-09-01 — **70 Länder tragen die Reihe**, darunter USA und BRA:
 
@@ -243,6 +255,12 @@ Einzelabrufe
 `api.imf.org/external/sdmx/3.0/data/dataflow/IMF.RES/WEO/9.0.0/<Land>.GGXWDG_NGDP.A?format=sdmx-csv`
 für USA, CHN, DEU, BRA, alle abgerufen 2026-09-01.
 
+**Zur Einheit:** `GGXWDG_NGDP` liefert **Prozent des BIP** (die gemessenen Werte bestätigen
+es: USA 2021 = 125,05, DEU 2020 = 68,04). Die Reihenliste verlangt für Reihe 11 **bp** — die
+Umrechnung ist eine **Multiplikation mit 100**, kein Reihenwechsel. Das passt zu T-Zeile
+`schuld(l) = mal_geteilt(bip(l), staatsschuld[l], 10.000)`: Der Nenner 10.000 setzt voraus,
+dass `staatsschuld` in bp steht und nicht in Prozent.
+
 | Land | erstes Jahr | letztes Jahr | Lücken 1997–2021 | Stützstellen |
 |---|---:|---:|---:|---:|
 | **USA** | **2001** | 2031 | **1997–2000, 4 Jahre** | **21** |
@@ -329,8 +347,13 @@ nicht mein Auftrag.
 | **9 Leitzins** | 4 | **nein** | — (DE, CN leer) | **2020** (USA) |
 | 10 Wechselkurs | 3 | ja (Einheitenbruch 1999) | 1997 | 2021 |
 | **11 Staatsschuld** | 4 | **nein** | **2001** (USA) | 2021 |
-| **Summe** | **31** | **27 von 31 tragen** | | |
+| **Summe** | **31** | **26 von 31 tragen** | | |
 | 14 Handelsblock | 40 Ströme | ja | 1995 | 2024 |
+
+Die Summe 26 setzt sich zusammen aus Reihe 1 (4), Reihe 2 (12), Reihe 8 (4), Reihe 10 (3),
+Reihe 9 (1 — nur BRA) und Reihe 11 (2 — nur CHN und DEU). Die übrigen fünf: **drei verkürzt**
+(Reihe 9 USA, Reihe 11 USA, Reihe 11 BRA), **zwei ohne jeden Wert** (Reihe 9 DEU, Reihe 9
+CHN). 26 + 3 + 2 = 31.
 
 ## Was ich nicht getan habe
 

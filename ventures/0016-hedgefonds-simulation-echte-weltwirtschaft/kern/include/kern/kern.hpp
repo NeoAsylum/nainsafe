@@ -40,12 +40,20 @@
 //! Ergebnis nicht mehr in `i64` passt, bricht der Kern ab, statt umzulaufen.
 //!
 //! **T9 -- feste Reihenfolge.** Laender, Sektoren, Instrumente und Handelspaare sind
-//! dichte Indexlisten. `std::unordered_map` und `std::unordered_set` sind im Kern
-//! verboten; gebraucht wird eine Zuordnung, ist es `std::map`. Der Grund ist nicht
-//! Geschmack: Eine streuende Reihenfolge macht denselben Startwert zu zwei Partien.
+//! dichte Indexlisten. Streuende Behaelter sind im Kern verboten; gebraucht wird eine
+//! Zuordnung, ist es die geordnete Fassung -- `std::map`, `std::set`. Der Grund ist
+//! nicht Geschmack: Eine streuende Reihenfolge macht denselben Startwert zu zwei
+//! Partien.
 //!
-//! **T13 -- der Kern kennt weder Bildschirm noch Datei noch Uhr.** Kein `<iostream>`,
-//! kein `<fstream>`, kein `<chrono>`. Das Modell fragt die Sicht nie etwas.
+//! **T13 -- der Kern kennt weder Bildschirm noch Datei noch Uhr.** Keine Stromausgabe,
+//! kein Dateizugriff, keine Zeitquelle; die drei zugehoerigen Standardkoepfe bindet
+//! keine Kerndatei ein. Das Modell fragt die Sicht nie etwas.
+//!
+//! Die verbotenen Behaelter- und Kopfnamen stehen hier absichtlich **nicht**
+//! ausgeschrieben. Die Abnahme dieses Pakets sucht sie mit einem Mustervergleich ueber
+//! den ganzen Kern, und der ist der einzige mechanische Waechter fuer T9. Ein Treffer
+//! in Fliesstext macht aus dem Ablesen ein Durchsehen -- der naechste echte Treffer
+//! staende dann zwischen bekannten, die man gewohnt ist zu ueberspringen.
 //!
 //! **Kein `unsafe`.** C++ hat dafuer kein Wort, deshalb steht die Regel hier und der
 //! Nachweis in `kern/CMakeLists.txt`: keine Zeigerarithmetik, keine eigene

@@ -25,7 +25,14 @@
 # Regel fuer jeden Platzhalter, damit keiner wie ein Ergebnis aussieht:
 #
 #   A) Skalare: Wo eine untere Schranke steht, ist der Platzhalter genau
-#      diese Schranke; wo keine steht, 0.
+#      diese Schranke; wo keine steht, 0. **Ist die Schranke streng
+#      (`>` statt `>=`), ist der Platzhalter der kleinste ganzzahlige
+#      Wert darueber.** Der Zusatz stammt aus Ruecklauf 1: Regel A ohne
+#      ihn liest sich so, als duerfe auch eine strenge Schranke selbst
+#      der Platzhalter sein -- und genau das war `startzustimmung = 0`
+#      neben `zustimmung_wechselschwelle = 0`, zwei Werte ausserhalb
+#      ihrer eigenen Schranke. Betroffen ist genau ein Paar; die
+#      Aufzaehlung aller gekoppelten Paare steht unter BEFUNDE Punkt 5.
 #   B) Wertebereiche der Instrumente: Der Wertebereich ist keine
 #      Kalibriergroesse im selben Sinn -- er muss nach T51 im `weltlauf`
 #      den historischen Pfad enthalten, sonst erzeugt der Jahrgangsbau
@@ -40,6 +47,16 @@
 # ihrer Schranke klebt, kann von niemandem fuer ein Ergebnis gehalten
 # werden. Die erste Aufgabe des Selbstspielers ist, einen zu finden, der
 # nicht wirkungslos ist.
+#
+# **Wirkungslos heisst nicht folgenlos, und der Unterschied hat einen
+# Fehler gekostet.** Ein Platzhalter auf seiner Schranke schaltet eine
+# Wirkung ab; ein Platzhalter *ausserhalb* seiner Schranke loest eine
+# aus. `startzustimmung = 0` bei `zustimmung_wechselschwelle = 0` liess
+# in Runde 1 die Regierung in allen vier Laendern wechseln, bevor der
+# Fonds eine Aktion getan hatte -- kein wirkungsloser Satz, sondern ein
+# aktiver. Deshalb ist die Probe auf die eigene Schranke bei jedem
+# gekoppelten Paar zu rechnen und nicht nur bei dem, das gerade
+# auffaellt (BEFUNDE Punkt 5).
 #
 # ---------------------------------------------------------------------
 # LESEART DER WERTE
@@ -376,14 +393,25 @@ startkapital = 1  # PLATZHALTER
 # Parameterschluessel fuehrt (T27 "Startzustimmung", T45, spiel.md "Jede
 # Groesse ohne Datenanker").
 # Dem Spieler erscheint die Groesse als 0 bis 100 (T5).
-# Schranke: 0 ... 10.000 aus der Klasse (T5); ueber
+# Schranke: 0 ... 10.000 aus der Klasse (T5); **streng ueber**
 #   `zustimmung_wechselschwelle`, sonst wechselt jede Regierung in
 #   Runde 1 -- Folgerung, keine Vorgabe aus specs/.
-# Kalibriert: Selbstspieler.
+# Platzhalter: 1, nicht 0. Regel A in der strengen Fassung: Die untere
+#   Schranke ist `zustimmung_wechselschwelle` (Platzhalter 0), die
+#   Ungleichung ist streng, also ist der kleinste zulaessige Wert 1.
+#   `1 > 0` geht auf. **Bei 0 ginge sie nicht auf**, und die Folge waere
+#   nicht Wirkungslosigkeit, sondern das Gegenteil: Gegenkraft 2 loeste
+#   in Runde 1 in allen vier Laendern aus, `lobbykosten_rest` und
+#   `regierungsdruck_rest` stuenden vor der ersten Fondsaktion.
+#   (Ruecklauf 1 zu Paket 0009, Befund 1 des Pruefbefunds vom
+#   2026-09-02.)
+# Kalibriert: Selbstspieler, gemeinsam mit `zustimmung_wechselschwelle`
+#   und `zustimmung_elastizitaet` -- der Abstand zwischen Startwert und
+#   Schwelle entscheidet, wie viele Runden Kanal 2 braucht.
 # Scheitert daran: Zu niedrig -- Regierungswechsel in Runde 1 in allen
 #   vier Laendern. Zu hoch -- Gegenkraft 2 erreicht ihre Schwelle in R
 #   Runden nie und Kanal 2 ist tot.
-startzustimmung = 0  # PLATZHALTER
+startzustimmung = 1  # PLATZHALTER
 
 # `regulierung_start`* -- Klasse 10 (Instrumentenstufe). Startstand der
 # Finanzmarktregulierung in allen vier spielbaren Laendern (T27
@@ -518,8 +546,14 @@ zustimmung_elastizitaet = 0  # PLATZHALTER
 # `zustimmung_wechselschwelle`* -- Klasse 4 (Anteile). Unter diesem Stand
 # von `land.<L>.zustimmung` wechselt die Regierung (spiel.md
 # Gegenkraft 2: "unter einer Schwelle wechselt die Regierung").
-# Schranke: 0 ... 10.000 aus der Klasse (T5); unter `startzustimmung`.
-# Kalibriert: Selbstspieler.
+# Schranke: 0 ... 10.000 aus der Klasse (T5); **streng unter**
+#   `startzustimmung`, sonst wechselt jede Regierung in Runde 1 --
+#   dieselbe Folgerung wie dort, von der anderen Seite gelesen.
+# Platzhalter: 0, die untere Schranke der Klasse. Die strenge
+#   Ungleichung traegt hier `startzustimmung = 1`; von den beiden Werten
+#   eines streng geordneten Paares steht nur einer auf der Schranke
+#   seiner Klasse, der andere einen Schritt daneben (Regel A).
+# Kalibriert: Selbstspieler, gemeinsam mit `startzustimmung`.
 # Scheitert daran: Zu hoch -- Dauerwechsel, kein Instrument bleibt je
 #   stehen. Zu niedrig -- unerreichbar, Gegenkraft 2 wirkt nur ueber die
 #   Zustimmung selbst und nie ueber den Wechsel.
