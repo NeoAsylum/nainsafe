@@ -1,7 +1,7 @@
 ---
 id: 0033-schritt-rundengeruest-weltlauf
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0008-kern-zustand-310-felder, 0016-schreiber-ursachenkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: Die sieben Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
