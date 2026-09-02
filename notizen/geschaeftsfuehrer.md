@@ -45,6 +45,15 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   eingeplant werden kann.** `BAUROLLEN` gegen das Feld `rolle` halten, zwei greps. 0011
   (Rolle `architekt`) wäre sonst monatelang als „offen" erschienen, obwohl kein Lauf es je
   anfassen kann. Ein Paket ohne planende Rolle ist kein Rückstand, sondern ein Loch.
+- 2026-09-02 (2. Lauf) — **Die Fragen, die der Rückstand dem Betreiber vorlegt, auf ihre
+  Ursache zurückrechnen, statt sie zu referieren.** Der Projektmanager legte sechs vor;
+  alle sechs hingen an denselben zwei nicht einplanbaren Rollen. Damit war der Engpass
+  ohne Abwägung benannt, und aus einer Liste wurde eine Entscheidung. Das ist die beste
+  Form der Engpassfrage bisher — besser als „welche Größe hat die meisten Leser".
+- 2026-09-02 (2. Lauf) — **Ein Vertagungspreis trägt nur mit Paket und Zeitpunkt.** „C
+  kostet etwas" ist folgenlos; „0002 giesst die Preisbasis in `kern::werte`, sobald 0008
+  gebaut ist, also in etwa einem Lauf" ist eine Frist. Dafür genügte, die `haengt_an`-Kette
+  rückwärts zu lesen.
 
 ## Was nicht funktioniert
 
@@ -62,23 +71,40 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   `git`-, `grep`- und `ls`-Aufrufe gehen. Das Journal (`state.db`) ist damit für mich nicht
   lesbar — die Frage „warum blieb der Lauf leer" gehört in den Plan, nicht in meine
   eigene Recherche.
+- 2026-09-02 (2. Lauf) — **`git commit` ist meiner Rolle nicht erlaubt**, in jeder Form
+  (Heredoc, `-m`, doppeltes `-m`). `git add` geht. Der Lauf committet, nicht ich: Dateien
+  schreiben, stagen, fertig — die drei abgelehnten Aufrufe spart sich der nächste Lauf.
+- 2026-09-02 (2. Lauf) — **Das Paket, das nach der Vorgabe klingt, ist selten das, das sie
+  ausführt.** Ich wollte schreiben, 0008 (Zustand, 310 Felder) giesse den Preisbasis-Fehler
+  ein — nachgesehen: 0008 baut die *Ablage*, die Bedeutung der Zahlen entsteht in 0002.
+  Ein `grep` auf die zitierten Vorgabenpunkte (`T5`, `T50`) trennt beides in Sekunden.
+  Ungeprüft wäre die schärfste Zahl des Berichts falsch gewesen.
+- 2026-09-02 (2. Lauf) — **Zwei Pläne hintereinander dieselbe Empfehlung, zweimal nicht
+  ausgeführt.** Beim ersten Mal stand sie neben einer zweiten Frage, im Rückstand neben
+  fünf. Vermutung für den nächsten Lauf: Eine Empfehlung, die um Aufmerksamkeit
+  konkurriert, wird vertagt. Deshalb diesmal **eine** Frage im Plan und die anderen
+  ausdrücklich darunter gehängt. Beim nächsten Lauf prüfen, ob das getragen hat — wenn
+  nein, liegt es nicht an der Darstellung und ich muss eine andere Ursache suchen.
 
 ## Offene Faehrten
 
-- **Erledigt und nicht wieder aufzuwärmen:** Übersetzungslauf (läuft seit 2026-09-02,
-  cmake/ctest grün — die Prämisse „es gibt keinen Übersetzer" ist widerlegt) und
-  Rücklaufgrenze (`RUECKLAUF_MAX = 3`). Zwei von vier Fragen des 2026-09-01 beantwortet.
-- **Reihe 9 / R und „Schaden" sind zum zweiten Mal unbeantwortet.** Ich habe sie deshalb
-  nicht erneut als eigene Frage hingeschrieben, sondern in die Ursache umgehängt: Ihre
-  Rolle (Spielentwerfer) wird vom Baulauf nicht geplant. Beim nächsten Mal prüfen, ob das
-  getragen hat — wenn eine Frage dreimal steht, war meine Umdeutung auch falsch.
-- **Nächster Lauf zuerst:** Ist `BAUROLLEN` um `architekt`/`spielentwerfer` erweitert, und
-  steht 0004 auf `gebaut`? Beides sind Ja/Nein-Fragen mit einem grep. Wenn nein, ist der
-  Engpass unverändert und gehört wortgleich wieder nach oben — dann ist nicht der Bericht
-  langweilig, sondern das Vorhaben steht.
+- **Erledigt und nicht wieder aufzuwärmen:** Übersetzungslauf (cmake/ctest grün seit
+  2026-09-02), Rücklaufgrenze (`RUECKLAUF_MAX = 3`), Rust-Dateinamen in den Codepaketen
+  (Projektmanager hat alle nachgezogen), und die abgeschnittenen Läufe — am 2026-09-02
+  haben alle fünf Rollen ihr Logbuch ergänzt, **ohne dass jemand eingegriffen hat.** Die
+  Ursachenfrage (Kontingentgrenze?) hat sich damit von selbst erledigt; nicht erneut
+  stellen, solange das Muster nicht wiederkommt.
+- **Lehre daraus, allgemein:** Einen Engpass nie aus dem letzten Plan fortschreiben, ohne
+  ihn neu zu messen. Ich hätte ihn diesmal beinahe wiederholt; ein `grep -c` über die
+  Logbücher hat ihn in zehn Sekunden für erledigt erklärt.
+- **Nächster Lauf zuerst:** Steht `architekt` in `BAUROLLEN` (`grep -n BAUROLLEN
+  agents/baulauf.py`), und ist 0002 gebaut (`grep '^status:' …/aufgaben/0002-*.md`)?
+  Erste Frage nein + zweite ja = die Preisbasis-Mischung ist in Code gegossen und der
+  Plan muss von Nacharbeit handeln, nicht mehr von Vorbeugung.
 - **Die 170-gegen-121-Lücke** hat seit dem 2026-09-01 niemand angefasst und sie blockiert
   noch nichts. Erst wieder aufgreifen, wenn der Kern rechnet.
-- **Offen und ungemessen: Warum brechen Läufe vor der Schlussarbeit ab?** Vermutung
-  (unbelegt): Kontingent- oder Zeitgrenze am Ende langer Bauläufe. `agents/auslastung.py`
-  kennt Tokens je Lauf und könnte es zeigen — ich schreibe nicht nach `ops/auslastung.md`,
-  also gehört die Frage in den Plan, nicht in meine eigene Recherche.
+- **Neue Fährte: Die Abnahmekriterien werden zum zweiten Engpass.** Drei von sechs
+  Prüfungen gingen zurück, bei 0004 beide Befunde gegen den *Wortlaut* des Kriteriums
+  statt gegen den Code. Wenn das im nächsten Lauf wieder passiert, ist es kein Einzelfall
+  mehr, sondern ein Muster — dann gehört die Frage nach oben, wer Abnahmekriterien prüft,
+  bevor der Bauagent gegen sie arbeitet.
