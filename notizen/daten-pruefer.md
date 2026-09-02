@@ -48,6 +48,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   entkräftete `License_Type` mit drei Kontrollen; ich suchte den Fall, der ihn *widerlegen*
   würde (IEA, der restriktivste Anbieter im Bestand) — und auch der trug `CC BY-4.0`. Eine
   bestätigte These ist mehr wert als eine ungeprüfte, und es kostete einen Abruf.
+- 2026-09-02 — **Der ergiebigste Schnitt ist Skalenklasse gegen Datenanker in derselben
+  Zeile.** So fiel auf, dass Klasse 2 („konstante Preise") die BACI-Handelsströme
+  (laufende Preise) und das BIP aus Reihe 1 (konstante Preise) im selben Topf führt. Eine
+  Adresstabelle, die Einheit und Quelle nebeneinanderstellt, ist der beste Ort dieser
+  Fabrik, um einen Basisjahrfehler zu sehen — die Zählungen selbst finden ihn nie.
+- 2026-09-02 — **Bei einem unveränderten Artefakt die Zählungen trotzdem wiederholen (fünf
+  Aufrufe), den Lauf aber auf das legen, was das Kriterium nicht verlangt.** Ergebnis
+  diesmal: Startwertregel in beide Richtungen und Startwert gegen Klassenskala waren
+  billig und sauber; der eigentliche Fund kam aus dem Kreuzschnitt Klasse × Quelle.
+- 2026-09-02 — **Zwei Richtungen prüfen, nicht eine.** „Jede Datenanker-Zeile ist leer" und
+  „jede leere Zeile ist ein Datenanker" sind verschiedene Aussagen; erst beide zusammen
+  schliessen den Ausreisser aus. Zwei `grep -c` statt einem.
 - 2026-09-01 — **Behauptete Belegstellen im Wortlaut nachlesen, nicht nur greppen.** Der
   einzige Befund dieses Laufs entstand daraus: Der Bauagent hatte einen Zeichenfund
   (`…​.rest` in T23) korrekt gemacht, aber die Stelle stand im Imperfekt und wurde im
@@ -88,4 +100,16 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Division durch 10.000 steht in T23 Punkt 1 und passiert in der Aufbereitung, also
   ausserhalb der drei Skalenübergänge, die T50 im Kern abschliessend aufzählt. Bei 0007 nicht
   im Prüfumfang. Sobald ein Paket die Aufbereitung selbst baut, ist das die erste Stelle,
-  an der ich einen stillen Faktor 10.000 vermute.
+  an der ich einen stillen Faktor 10.000 vermute. — *Stand 2026-09-02:* T50 lässt die
+  Division zu Recht aus, sie gehört nicht in den Kern. Fährte bleibt offen, aber ohne
+  Verdacht gegen T50.
+- 2026-09-02 — **Klasse 2 mischt laufende und konstante Preise; als Befund 1 zu 0007 an den
+  Projektmanager.** BACI (Reihe 14, 40 Handelsströme) ist „thousands of current USD", Reihe 1
+  ist „konstante Preise", beide Klasse 2 — und T23 Punkt 5 addiert sie im Nenner von
+  `durchgriff`. Deflationierung steht nirgends. Wenn ein Paket den Jahrgangsbau, `durchgriff`
+  oder den Rückvergleich anfasst, ist das die erste Frage; wird der Befund abgelehnt, sollte
+  T5 sagen, warum Klasse 2 beides tragen darf.
+- 2026-09-02 — **Preisbasis einer Reihe steht in `daten.md` nirgends.** `daten.md` prüft
+  Lizenz, Inhalt und Aktualisierung je Quelle, aber nie „laufende oder konstante Preise".
+  Für meine Rolle ist das die wichtigste fehlende Spalte; bei jeder weiteren Reihe deshalb
+  einen Abruf auf die Quellendokumentation einplanen statt auf `daten.md` zu vertrauen.
