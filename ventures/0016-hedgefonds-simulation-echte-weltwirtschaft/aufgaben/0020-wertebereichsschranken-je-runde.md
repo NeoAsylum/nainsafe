@@ -1,7 +1,7 @@
 ---
 id: 0020-wertebereichsschranken-je-runde
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0008-kern-zustand-310-felder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -115,3 +115,35 @@ Ausgabeformat jenseits der in Bedingung 2 und 3 genannten Zahlen. `specs/` schwe
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `offen` → `gebaut`. Diesen Übergang hat nicht der Bauagent
+gesetzt, sondern ich — und das ist erklärungsbedürftig.**
+
+Die Rolle `testentwickler` steht in `BAUROLLEN` und in `REVIEW`, aber ihre Rollendatei
+enthält keine Anweisung, das Arbeitspaket auf `gebaut` zu setzen; der Satz steht nur in
+vier der sieben Baurollen (`auslieferer`, `kernbauer`, `datenbauer`,
+`oberflaechenbauer` — selbst nachgemessen mit `grep -l 'status: gebaut'
+agents/rollen/*.md`). Ein Paket dieser Rolle bleibt deshalb dauerhaft `offen`: Es wird
+jeden Lauf neu gebaut und neu bezahlt, und weil `baulauf.py` Zeile 320 nur Pakete im
+Zustand `gebaut` an einen Prüfer gibt, sieht es nie einer.
+
+**Die Arbeit ist da und läuft.** `kern/test/schranken_probe.cpp` hat 1.042 Zeilen mit
+eigenem `main`, das 0 oder 1 zurückgibt; `kern/CMakeLists.txt` sammelt jede Datei unter
+`test/` von selbst ein (Zeile 97–105), und der Übersetzungsbericht
+`befunde/uebersetzung-2026-09-02.md` führt `schranken_probe` namentlich als **Test #3,
+Passed** — kein leerer Bauabschnitt. Nachgesehen: kein `float`/`double`, kein
+`fstream`/`fopen`/`std::filesystem` (Bedingung 5), die Schranken sind mit ihrer Nummer
+bezeichnet.
+
+**Was ich damit nicht behaupte.** `gebaut` ist eine Meldung, keine Abnahme — ob alle
+sieben Schranken, die zwei Gleichheiten und die Anteilssumme vollständig sind, ob jede
+davon einmal rot gezeigt wird (Bedingung 3 verlangt zehn solcher Fälle) und ob die
+Adresszahlen gegen `daten/adressen.md` stimmen, habe ich **nicht** geprüft. Das ist die
+Arbeit des `test-pruefer`, und sein Befund entscheidet wie bei jedem anderen Paket. Ich
+habe nur den Übergang gesetzt, den die Rolle selbst nicht setzen kann; findet er die
+Arbeit unfertig, ist das ein regulärer Rücklauf und kein Schaden.
+
+Die eigentliche Behebung sind drei Zeilen in drei Rollendateien, und die liegen ausserhalb
+meines Schreibbereichs. Gemeldet in `rueckstand.md` Punkt 2.

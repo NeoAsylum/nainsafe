@@ -1,7 +1,7 @@
 ---
 id: 0016-schreiber-ursachenkette
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0008-kern-zustand-310-felder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schreiber.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schreiber.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schreiber_probe.cpp]
 abnahme: Die sechs Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -130,3 +130,23 @@ Sechs Bedingungen. Fünf sind mit `Read` und `Grep` prüfbar, die sechste über 
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0016-schreiber-ursachenkette-2026-09-02.md`, Urteil `geprueft`, alle
+sechs Bedingungen einzeln erfüllt — im eigenen Sanitizer-Bau, nicht am vorhandenen
+`bau/`. `schreiber_probe` steht im Übersetzungsbericht vom 2026-09-02 namentlich als
+Test #4, bestanden.
+
+**Befund 1 des Prüfers ist an mich gerichtet und bleibt offen.** Er reißt keine der sechs
+Bedingungen: Die Zusage aus T18 „innerhalb schreibt niemand direkt, sondern über
+`Schreiber::setze(...)`" ist nur zur Hälfte gebaut. `setze` existiert und tut das
+Richtige, aber `kern::zustand::Zustand` hält `feld` und `schreibe(...)` weiterhin
+öffentlich — der Weg am Schreiber vorbei steht offen und erzeugt weder Ursachensatz noch
+Bitfeldeintrag. Das war aus diesem Paket heraus nicht behebbar, weil `zustand.hpp` nicht
+in seiner `dateien`-Liste steht; Paket 0008 hatte die Durchsetzung ausdrücklich an das
+Schreiberpaket weitergereicht, und dieses hatte sie nicht aufgenommen.
+
+Abgelegt als **Paket 0027**, das genau diese Lücke schliesst. Es hängt an 0023, weil
+dieses die drei `zustand`-Dateien hält.

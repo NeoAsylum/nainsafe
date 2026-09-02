@@ -1,7 +1,7 @@
 ---
 id: 0022-reihenliste-drei-korrekturen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0017-reihenliste-maschinenlesbar]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -106,3 +106,22 @@ nicht bricht — sieh nach, bevor du wählst, und schreib hin, warum es der gew�
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0022-reihenliste-drei-korrekturen-2026-09-02.md`, Urteil `geprueft`,
+alle vier Bedingungen einzeln gemessen.
+
+Selbst nachgesehen, weil der Befundtext beschädigt ist (siehe unten): `reihen.toml` hat
+1.608 Zeilen wie im Befund angegeben, Zeile 203 trägt „Zwoelf … über acht Reihen" mit
+ausgeschriebenem Rechenweg, `betrifft_reihen` in Zeile 201 führt Reihe 7 (`[1, 2, 5, 6,
+7, 8, 10, 13]`), und `toml_geprueft` in Zeile 1592 sagt „nein — nicht maschinell
+geprueft" statt des behaupteten Parserlaufs. Die drei Korrekturen sind also an der Datei
+nachweisbar, nicht nur im Urteil.
+
+**Der Befund ist unvollständig abgelegt.** Die Datei bricht nach 17 Zeilen mitten im
+Einleitungssatz ab, obwohl ihr Frontmatter `befunde: 3` nennt. Das Urteil und das Feld
+`kriterium_geprueft` sind vollständig und tragen die Abnahme; die drei Befunde selbst
+sind verloren und stehen auch nicht in Git (der Abbruch ist mitcommittet, `c7e0aa8`).
+Sie sind nicht rekonstruierbar. Steht in `rueckstand.md` Punkt 1.

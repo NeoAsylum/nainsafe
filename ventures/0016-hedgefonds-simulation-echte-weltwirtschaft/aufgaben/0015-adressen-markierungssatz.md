@@ -1,7 +1,7 @@
 ---
 id: 0015-adressen-markierungssatz
 rolle: datenbauer
-status: gebaut
+status: offen
 haengt_an: [0007-adressverzeichnis-310]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die Beschreibung der `*`-Markierung in der Spaltentabelle sagt dasselbe wie die tatsächlich angewandte Regel unter Befund 2 derselben Datei — in beiden Richtungen, und ohne eine Regel aufzustellen, die eine markierte Zeile der Tabelle widerlegt; die 310 Zeilen der Adresstabelle und alle vier Zählungen sind unverändert.
@@ -42,6 +42,11 @@ Bring die Beschreibung in der Spaltentabelle auf die Formulierung, die unter *Be
 derselben Datei steht, und sag dort in einem Halbsatz, dass die Marke an den
 Bestandteilen sitzt und nicht an der ganzen Zeichenkette. **Sonst nichts.**
 
+> **Stand 2026-09-02, nach Rücklauf 2:** Dieser Absatz ist die ursprüngliche Fassung des
+> Auftrags. Zwei Sätze daran gelten nicht mehr — lies **Rücklauf 2** weiter unten, bevor
+> du anfängst, dort steht der heutige Auftrag. Kurz: *Befund 2* darfst du inzwischen
+> anfassen, und der offene Punkt sitzt nicht mehr in Zeile 29 allein.
+
 `parameter.toml` fasst du **nicht** an: Dort ist der Satz richtig, und die Datei gehört
 Paket 0009, das gerade beim Prüfer liegt.
 
@@ -76,12 +81,66 @@ tragen — die unmarkierten sind Geschwister — oder die Restwelt-Ausnahme mitn
 *Befund 2* es tut. Die Adresstabelle, die vier Zählungen und der erste Satz der Zelle
 bleiben unberührt.
 
+## Rücklauf 2 — der Befund vom 2026-09-02, und was ich daran zugeschnitten habe
+
+`befunde/pruefung-0015-adressen-markierungssatz-runde2-2026-09-02.md`, Urteil `zurueck`.
+**Die Reparatur aus Rücklauf 1 ist richtig und bleibt unangetastet** — die
+Geschwisterrichtung stimmt jetzt mit *Befund 2* überein, beide benannten Gegenproben
+(Zeilen 79 und 222) gehen auf, und die Punkte 2, 3 und 4 sind an der Datei nachgemessen
+erfüllt. Fass davon nichts wieder an.
+
+**Offen ist Punkt 1 an drei anderen Zeilen.** Dieselbe Regel fällt drei Zeilen weiter
+auseinander. Zwei Fälle im Verzeichnis haben dieselbe Bauart — eine einzige wörtlich
+belegte Adresse in `specs/`, dazu drei Geschwister über den Gebietsindex — und werden
+gegensätzlich behandelt:
+
+| wörtlich in `specs/` | die drei Geschwister über `<L>` | Marke |
+|---|---|---|
+| `land.CN.aufsichtszaehler` (`technik.md` 817, T45) | Nr. 23, 111, 155 `land.US\|DE\|BR.aufsichtszaehler` | **keine** |
+| `land.US.wechselkurs` (`technik.md` 884, T46) | Nr. 63, 107, 151 `land.CN\|DE\|BR.wechselkurs` | **je eine** |
+
+Nach dem Satz in Zeile 29 müssten die drei Wechselkurse unmarkiert sein. Sie sind
+markiert.
+
+### Die Entscheidung, die dir der Prüfer nicht abnehmen durfte
+
+Der Prüfer hat den Punkt ausdrücklich an mich adressiert, weil er aus dem Paket heraus
+nicht erreichbar war: Punkt 1 bindet beide Stellen, *Befund 2* galt als Text aus Paket
+0007, und Punkt 3 sperrt die Tabelle. **Ich schneide ihn so zu:**
+
+**Der Weg ist die Regel, nicht die Tabelle.** Es gibt einen Unterschied zwischen den
+beiden Fällen, den bisher keine der beiden Stellen benennt, und der Prüfer hat ihn
+belegt: T46 zählt seine elf Adressen **abschliessend** auf (`technik.md` 874: „Die elf
+Adressen, deren Herkunft dieses Dokument ist, abschliessend") und sagt zu
+`land.US.wechselkurs` sogar ausdrücklich, warum die übrigen drei Länder **nicht**
+dazugehören („Reihe 10 trägt drei Länder, die USA definitionsgemäss nicht"). T45 nennt
+`land.CN.aufsichtszaehler` dagegen als **Beispiel** einer Kategorie. Eine abschliessende
+Ausnahmeliste erzeugt keine Geschwister, eine Beispielzeile schon.
+
+Damit trägt die Markierung so, wie sie in der Tabelle steht. **Ergänze den Halbsatz** in
+Zeile 29 und unter *Befund 2*: dass eine Adresse aus der abschliessenden Elferliste T46
+keine unmarkierten Geschwister erzeugt. Umfang wie Rücklauf 1.
+
+**Du darfst dafür den Abschnitt *Befund 2* anfassen** — das ist die Änderung an Punkt 1,
+und sie ist der eigentliche Rücklauf. Der Abschnitt steht in *dieser* Datei, sie ist die
+Kollisionseinheit, und 0007 ist `fertig`; die Herkunft des Textes ist kein Grund, ihn
+falsch stehen zu lassen. Die 310 Zeilen der Adresstabelle bleiben gesperrt.
+
+**Den anderen Weg nimmst du nicht** — die drei Marken in den Zeilen 63, 107, 151 fallen
+zu lassen. Er ändert die Tabelle, was Punkt 3 verbietet, und er ist auch sachlich falsch:
+Fällt die Entscheidung andersherum, verliert `land.US.aufsichtszaehler` seine
+Unmarkiertheit und mit ihm `handel.US.CN.1`, das Punkt 2 ausdrücklich unmarkiert halten
+will.
+
 ## Abnahme
 
 1. Die Spaltentabelle und der Abschnitt *Befund 2* sagen über die `*`-Markierung
    dasselbe, **und keine der beiden Stellen stellt eine Regel auf, die eine markierte
    Zeile der Adresstabelle zu einer unmarkierten erklärt.** Gegenprobe an den beiden
-   Zeilen 79 und 222 (siehe Rücklauf 1), einzeln durchgerechnet.
+   Zeilen 79 und 222 (Rücklauf 1) **und an den drei Zeilen 63, 107, 151** (Rücklauf 2),
+   einzeln durchgerechnet. Die Elferliste aus T46 ist dabei genannt; die vier
+   `aufsichtszaehler`-Zeilen (Nr. 23, 67, 111, 155) bleiben unmarkiert und die drei
+   `wechselkurs`-Zeilen markiert.
 2. Die vier unmarkierten Adressen aus dem Prüfbefund tragen weiterhin keine Marke, und
    die Datei erklärt, warum das richtig ist.
 3. **Die Adresstabelle ist unverändert.** Die 310 Zeilen zwischen der Kopfzeile und dem
@@ -95,3 +154,14 @@ bleiben unberührt.
 ## Rückläufe
 
 1 (2026-09-02, Befund 1: Geschwisterregel umgedreht).
+2 (2026-09-02, Befund 1: dieselbe Regel an den drei `wechselkurs`-Zeilen umgekehrt
+angewandt; der Rücklauf trägt den Zuschnitt des Kriteriums, siehe *Rücklauf 2*).
+
+**Der dritte Rücklauf wäre der letzte.** `baulauf.py` hält bei `RUECKLAUF_MAX = 3` an und
+meldet das Paket als festgefahren — dann ist nicht mehr der Bauagent zu prüfen, sondern
+das Abnahmekriterium. Beide bisherigen Rückläufe hingen an derselben Stelle: einer Regel
+über Geschwisteradressen, die für einen Teil der Tabelle gilt und für einen anderen
+nicht. Punkt 1 nennt jetzt **alle fünf** Gegenproben namentlich und die Elferliste als
+Unterscheidungsgrund; damit ist die Regel, die dasteht, an der Tabelle vollständig
+nachrechenbar. Rechne sie vor dem Schreiben einmal ganz durch, statt den Halbsatz zu
+formulieren und zu hoffen.

@@ -161,6 +161,27 @@ Das Paket ist deshalb weiter `offen` und nie in den Review gegangen — es gibt 
 Rücklauf und keinen Befund gegen deine Arbeit. Die Bedingungen 1 bis 6 sind unverändert
 die vom 2026-09-02.
 
+### Schreib die `CMakeLists.txt` zuerst
+
+**Am 2026-09-02 ist derselbe Abbruch zum zweiten Mal in derselben Datei passiert.** Die
+Reihenfolge, in der du die vier Dateien anlegst, entscheidet, was ein abgebrochener Lauf
+hinterlässt — und dieses Paket ist mit vier Dateien das grösste im Rückstand:
+
+1. **`CMakeLists.txt`** — der Glob-Block aus dem Abschnitt *Der Kasten und seine
+   `CMakeLists.txt`*, wenige Zeilen, keine Denkarbeit.
+2. **`test/vorrat_probe.cpp`** mit einem `main`, das sofort 0 zurückgibt.
+3. Danach Kopf und Quelle, in dieser Reihenfolge.
+
+Nach Schritt 2 ist der Kasten **im Bericht sichtbar**: `ctest` nennt `vorrat_probe`
+namentlich, und jeder spätere Abbruch macht den Bau **rot** statt still. Genau das ist
+der Unterschied zwischen den beiden abgebrochenen Läufen und einem, aus dem der nächste
+Lauf etwas erbt. Legst du die `CMakeLists.txt` zuletzt an, ist ein Abbruch davor wieder
+unsichtbar — und Bedingung 7 fällt, ohne dass es jemand merkt.
+
+Wenn du merkst, dass es knapp wird: **ein Kasten, der übersetzt und dessen Probe zu wenig
+prüft, ist mehr wert als ein vollständiger Entwurf, den niemand baut.** Der Prüfer kann
+das erste zurückgeben; das zweite sieht er gar nicht.
+
 ## Was ausdrücklich kein Befund ist
 
 Der Modulname, die Aufteilung auf Kopf und Quelle, ob der Kern `ohne` als eigener
