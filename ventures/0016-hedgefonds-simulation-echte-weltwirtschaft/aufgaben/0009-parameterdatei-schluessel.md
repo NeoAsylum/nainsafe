@@ -1,7 +1,7 @@
 ---
 id: 0009-parameterdatei-schluessel
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Jeder in T27 und T51 genannte Schlüssel steht in der Datei, mit Skalenklasse nach T5, Wertebereich, Herkunft der Schranke und einem Startwert innerhalb der Schranken; kein Schlüssel ohne Klasse, keine Klasse ohne Schlüssel im Text.
@@ -132,8 +132,58 @@ Erlaubnis, sie selbst zu treffen.
 
 ## Status
 
-**2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1), Grundlage ist der
-Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
+**2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). `parameter.toml`
+liegt als **Fassung 2** vor, 932 Zeilen, Kopfstand 2026-09-02. Was sich geändert hat, je
+Punkt des Rücklaufs:
+
+1. **`startzustimmung` 0 → 1.** `zustimmung_wechselschwelle` bleibt auf 0, der unteren
+   Schranke ihrer Klasse; die strenge Ungleichung trägt der andere der beiden. Regel A im
+   Dateikopf ist entsprechend geschärft: Bei einem streng geordneten Paar bleibt der
+   Schlüssel, dessen Schranke aus der Klasse kommt, auf der Klassenschranke, und der
+   andere rückt genau einen ganzzahligen Schritt weiter. Beide Kommentarblöcke (Zeilen um
+   429 und 575) nennen die Ungleichung jetzt ausdrücklich als *streng* und verweisen
+   aufeinander.
+2. **Befund 5 der Datei ersetzt.** Statt der Einzigartigkeitsbehauptung steht dort die
+   vollständige Aufzählung in vier Gruppen: **(a)** acht in dieser Datei nachrechenbare
+   Bedingungen zwischen je zwei Schlüsseln, jede eingesetzt und ausgerechnet, zusammen 15
+   Einzelvergleiche — das sind die fünf Paare des Prüfbefunds plus `instrument_min ≤
+   instrument_max` je Instrument (4), `lobbykosten · beteiligungsrabatt ≥ 1` und
+   `stufen_max · stufenweite ≤ 10.000`; **(b)** drei Stellen, an denen der eine nicht den
+   anderen begrenzt, sondern dessen Ergebnis (`gegenlobby_satz`/`druck_max`,
+   `nachahmer_tempo`/`nachahmer_max`, `schrittweite`/Spanne des Wertebereichs); **(c)**
+   vier Kopplungen an Zahlen aus dem Jahrgang oder Manifest, hier grundsätzlich nicht
+   nachrechenbar und deshalb als Auflage an den Jahrgangsbau benannt; **(d)** fünf
+   gemeinsam kalibrierte Gruppen ohne Ungleichung, nur der Vollständigkeit halber. Die
+   Gegenprobe: Jede Stelle der Datei, die „gekoppelt", „zusammen mit", „gemeinsam mit"
+   oder „im Verhältnis zu" sagt, kommt in einer der vier Gruppen vor.
+3. **`schrittweite` hat jetzt in allen vier Tabellen Wertebereich und Herkunft.** Schranke
+   `>= 1` und ganzzahlig. Die Ableitung steht einmal im Gruppenkopf der Instrumente und
+   ist je Instrument kurz wiederholt: T5 Klasse 10 sagt wörtlich, „höchstens ein Schritt
+   je Runde" heiße bei der Regulierung **eine Stufe** und „bei den anderen dreien
+   `schrittweite[instrument]` Basispunkte" — T51 beziffert die eine Schrittweite, die es
+   beziffert, mit 1, dem kleinsten positiven Wert ihrer Klasse. Dazu die beiden Ausfälle
+   aus der Bewegungsregel `stand = min(max(stand ± schritt, min), max)`: Weite 0 lässt das
+   Instrument stehen, ohne dass etwas abbricht; negative Weite dreht die Richtung um. **Als
+   Folgerung gekennzeichnet, nicht als wörtliche Vorgabe** — dieselbe Bauart wie
+   `stufen_max >= 1`. Eine obere Schranke nennt `specs/` nicht; wirksam begrenzt ist die
+   Wirkung durch `instrument_max − instrument_min` (10.050 / 10.000 / 20.000 / 1 bp).
+
+**Nicht angefasst, wie angewiesen:** die fünf Klasse-4-Schlüssel aus Befund 3 des
+Prüfbefunds. Der Dateikopf sagt jetzt ausdrücklich, dass sie unverändert bleiben, warum
+(die Frage berührt T5 und steht in `rueckstand.md`), und dass der Satz „specs/ nennt keine
+obere" bei `preisstoss` als **bestrittene** Aussage zu lesen ist.
+
+**Was ich nicht nachweisen kann:** Ein TOML-Parser lief auch in diesem Lauf nicht —
+`python3` mit `tomllib` ist vorhanden, der Aufruf wurde von der Umgebung abgewiesen.
+Abnahme 4 ist damit wie beim ersten Mal strukturell belegt und nicht maschinell: 50 Zeilen
+beginnen mit einem Kleinbuchstaben und alle 50 passen auf `^[a-z_0-9]+ *=`, kein Wert
+trägt Dezimalpunkt, Anführungszeichen oder Apostroph, alle 38 blanken Schlüssel stehen vor
+dem ersten Tabellenkopf (Zeile 754), vier Tabellenköpfe, keine Zeile beginnt mit etwas
+anderem als `#`, `[`, Leerraum oder einem Schlüsselnamen, 46 `# PLATZHALTER` plus 4
+`# FEST (T51)` = 50.
+
+*Vorgeschichte:* **2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1),
+Grundlage ist der Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
 
 *Vorgeschichte:* **2026-09-02, `offen` → `gebaut`.** `parameter.toml` liegt mit 763
 Zeilen vor und trägt im Kopf dieses Paket mit Stand 2026-09-02; der Datenbauer hat den

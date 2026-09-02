@@ -40,14 +40,17 @@
 # Regel fuer jeden Platzhalter, damit keiner wie ein Ergebnis aussieht:
 #
 #   A) Skalare: Wo eine untere Schranke steht, ist der Platzhalter genau
-#      diese Schranke; wo keine steht, 0. **Ist die Schranke streng
-#      (`>` statt `>=`), ist der Platzhalter der kleinste ganzzahlige
-#      Wert darueber.** Der Zusatz stammt aus Ruecklauf 1: Regel A ohne
-#      ihn liest sich so, als duerfe auch eine strenge Schranke selbst
-#      der Platzhalter sein -- und genau das war `startzustimmung = 0`
-#      neben `zustimmung_wechselschwelle = 0`, zwei Werte ausserhalb
-#      ihrer eigenen Schranke. Betroffen ist genau ein Paar; die
-#      Aufzaehlung aller gekoppelten Paare steht unter BEFUNDE Punkt 5.
+#      diese Schranke; wo keine steht, 0. **Ist die Schranke ein anderer
+#      Schluessel und die Ungleichung streng (`>` statt `>=`), bleibt
+#      der Schluessel, dessen Schranke aus der Klasse kommt, auf der
+#      Klassenschranke, und der andere rueckt genau einen ganzzahligen
+#      Schritt weiter.** Der Zusatz stammt aus Ruecklauf 1: Regel A ohne
+#      ihn liest sich so, als duerfe auch bei einer strengen Ungleichung
+#      jeder der beiden auf derselben Zahl stehen -- und genau das war
+#      `startzustimmung = 0` neben `zustimmung_wechselschwelle = 0`,
+#      zwei Werte ausserhalb ihrer eigenen Schranke. Betroffen ist genau
+#      ein Paar; die Aufzaehlung aller gekoppelten Paare steht unter
+#      BEFUNDE Punkt 5.
 #   B) Wertebereiche der Instrumente: Der Wertebereich ist keine
 #      Kalibriergroesse im selben Sinn -- er muss nach T51 im `weltlauf`
 #      den historischen Pfad enthalten, sonst erzeugt der Jahrgangsbau
@@ -216,7 +219,8 @@ zwangsabschlag = 0  # PLATZHALTER
 #   wird (T51); drei Stellen pruefen sie (Jahrgangsbau, Instrument,
 #   Invariantentest T30 Pruefung 2).
 # **Gekoppelt an `instrument_min` des Leitzinses** -- wer diesen Wert
-#   aendert, prueft `[instrument.leitzins]` mit.
+#   aendert, prueft `[instrument.leitzins]` mit. Es ist nicht die
+#   einzige Kopplung der Datei; alle stehen unter BEFUNDE Punkt 5.
 aufschlag = 51  # PLATZHALTER
 
 # Klasse 1 (Fondsgeld, US-Cent). Preis eines Lobbypunkts:
@@ -284,7 +288,8 @@ druck_max = 1  # PLATZHALTER
 #   Instrument einmal und danach nie wieder. Zu gross -- bei einer Stufe
 #   je Runde (T51) erreicht es in R Runden nie eine wirksame Hoehe.
 # **Gekoppelt an `instrument_max` der Regulierung und an
-#   `regulierung_start`** -- wer diesen Wert aendert, prueft beide mit.
+#   `regulierung_start`** -- wer diesen Wert aendert, prueft beide mit
+#   (BEFUNDE Punkt 5, Bedingungen 3 und 4).
 regulierung_stufen = 1  # PLATZHALTER
 
 
@@ -705,11 +710,11 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 #     `stand = min(max(stand +/- schritt, min), max)`: Bei
 #     `schrittweite = 0` steht das Instrument in jeder Runde still,
 #     Aktion 3 und die faelligen Verzoegerungen aus Schritt 3 laufen ins
-#     Leere, und **nichts bricht ab** -- der Fehler zeigte sich erst am
-#     Selbstspieler. Bei `schrittweite < 0` kehrt sich die Richtung jeder
-#     Bewegung um, weil das Vorzeichen in `+/-` schon die Richtung des
-#     ausloesenden Drucks traegt; das Instrument bewegte sich gegen den,
-#     der es bezahlt hat.
+#     Leere, und **nichts bricht ab** -- der Fehler wuerde sich erst am
+#     Selbstspieler zeigen. Bei `schrittweite < 0` kehrt sich die
+#     Richtung jeder Bewegung um, weil das Vorzeichen in `+/-` schon die
+#     Richtung des ausloesenden Drucks traegt; das Instrument bewegte
+#     sich gegen den, der es bezahlt hat.
 #
 # **Es ist eine Folgerung, keine woertliche Vorgabe**, und als solche
 # gekennzeichnet -- dieselbe Bauart wie `stufen_max >= 1` und
