@@ -1,7 +1,7 @@
 ---
 id: 0014-lizenzpruefung-restliche-reihen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0005-wdi-drittanbieter-ausnahme]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: Für jeden geprüften Indikatorcode steht im Befund das wörtliche Feld "Source", die Abruf-URL, das Abrufdatum und ein Urteil frei|gesperrt|unklar mit Begründung; bei jedem Urteil ausser "frei" steht die Folge nach T26 daneben und die Zahl der Sollreihen, die daran hängen. Für jede Reihe ohne WDI-Quelle steht, ob die Lizenz ihrer Quelle einen Drittanbietervorbehalt enthält, mit wörtlichem Satz und Fundstelle.

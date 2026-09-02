@@ -48,6 +48,21 @@ Lehre daraus, in einem Satz.
   Die 310 Zeilen stimmten auf Anhieb; falsch war ein Satz *über* die Tabelle. Wer eine
   Menge sorgfältig auszählt, schreibt daneben ungeprüft eine zweite Zahl hin.
 
+- 2026-09-02 (Paket 0014) — **Die Kontrolle muss diesmal in die andere Richtung laufen: Sagt
+  das Feld jemals gar nichts?** Bei `License_Type` war die Frage „widerspricht es je"; beim
+  Feld `Source` ist sie „nennt es je *keinen* Fremdbestand". Ein Abruf auf eine
+  weltbank-eigene Reihe beantwortet sie mit ja — und erst dadurch ist das Nennen einer
+  fremden Stelle eine Aussage statt einer Formelzeile. Ein Feld, das immer dasselbe sagt,
+  entscheidet nichts; eines, das schweigen kann, schon.
+- 2026-09-02 (Paket 0014) — **Nie von einem Code einer mehrcodigen Reihe auf die Reihe
+  schliessen.** Drei Geschwistercodes derselben Zeile trugen zwei verschiedene
+  `Source`-Texte, und der Unterschied verschob die Zahl der betroffenen Sollreihen um den
+  Faktor drei. Ein Abruf je Code, ausnahmslos.
+- 2026-09-02 (Paket 0014) — **Der Seitenabruf kürzt wörtliche Zitate bei etwa 125 Zeichen.**
+  Wer einen ganzen Lizenzsatz braucht, lässt ihn in nummerierten Bruchstücken von je
+  höchstens 100 Zeichen ausgeben; aneinandergehängt ergibt sich der Wortlaut. Ohne diesen
+  Kniff bleibt jeder längere Vertragssatz ein Fragment.
+
 ## Was nicht funktioniert
 
 - 2026-09-01 — `imf.org` weist den direkten Abruf weiterhin mit **HTTP 403** ab, genau
@@ -60,9 +75,34 @@ Lehre daraus, in einem Satz.
   solche zweite Adresse.
 
 - 2026-09-01 (Paket 0007) — `Bash` ist dieser Rolle gesperrt, auch `cat` und `wc -c`.
-  `Read` mit `offset`, `Glob` und `Grep` reichen; nicht erneut versuchen.
+  `Read` mit `offset`, `Glob` und `Grep` reichen; nicht erneut versuchen. — *2026-09-02:
+  Lesende Shell-Befehle liefen wieder, `curl` wurde abgewiesen. Der Netzzugang bleibt der
+  Seitenabruf; Rohtext über die Shell gibt es nicht.*
+- 2026-09-02 (Paket 0014) — **Ein Ausweichhost derselben Organisation führt nicht zwingend
+  denselben Text.** Bei der ILO trug er, beim IWF nicht: Die zweite IWF-Adresse führt die
+  Bedingungen einer anderen Webseite, nicht den Datenabschnitt. Vor dem Zitieren prüfen, ob
+  der Abschnitt überhaupt derselbe ist — ein falscher Volltext ist schlimmer als gar keiner.
+- 2026-09-02 (Paket 0014) — Der Etalab-Lizenztext liegt nur französisch vor;
+  `…/LO.en.md` gibt 404, und der PDF-Link auf `etalab.gouv.fr` leitet auf `data.gouv.fr`
+  um. Der Weg, der trägt: `raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md`.
 
 ## Offene Fährten
+
+- **Paket 0014, worauf ich unsicher bin, für den Projektmanager:** Ich habe die drei
+  IWF-Reihen `unklar` genannt, weil ihr Lizenztext nach fünf Anläufen ungelesen bleibt und
+  ein Suchauszug einen Vorbehalt im Definitionssatz andeutet — und zugleich die beiden
+  `frei`-Urteile aus 0005 stehen lassen, die auf demselben Text ruhen. Das ist angreifbar.
+  Ich habe es nicht aufgelöst, weil 0005 nicht mein Paket ist, und beide Zahlen
+  nebeneinandergestellt. Ein Prüfer wird entweder die Konsequenz oder die Zurückhaltung
+  loben; eines von beidem ist falsch, und ich weiss nicht, welches.
+- **Zweite Unsicherheit aus 0014:** Ob „Country official statistics, National Statistical
+  Offices" eine Reihe überhaupt zu einer „von Dritten bereitgestellten" macht, entscheidet
+  acht Sollreihen. Sagt der Betreiber nein, sind zwei der drei Sektorcodes frei und die
+  Zusammenfassung sieht anders aus. Die Frage ist bewusst offen gelassen.
+- **Paket 0014, ungemessen und nicht mein Paket:** Wird Reihe 1 auf PWT umgestellt, wechselt
+  das Basisjahr. Welches PWT 11.0 trägt, habe ich nicht nachgesehen — es gehört zur Deckung
+  (0006), aber es ändert die Sollreihe und damit den Massstab von T42. Wer den Ersatz zieht,
+  zieht ihn vor dem Einfrieren des Jahrgangs.
 
 - **Paket 0007, worauf ich unsicher bin:** Von den 310 Adressen sind **177 gebildet**,
   nicht zitiert. Drei Stellen haben *keine* Vorlage statt einer schwachen, und nach T17
