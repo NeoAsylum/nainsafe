@@ -1,7 +1,7 @@
 ---
 id: 0015-adressen-markierungssatz
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0007-adressverzeichnis-310]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die Beschreibung der `*`-Markierung in der Spaltentabelle sagt dasselbe wie die tatsächlich angewandte Regel unter Befund 2 derselben Datei; die 310 Zeilen und alle vier Zählungen sind unverändert.

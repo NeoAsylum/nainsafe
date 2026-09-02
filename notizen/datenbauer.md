@@ -8,8 +8,7 @@ ergänzt sie am Ende.
 Datei nach `notizen/archiv/datenbauer-<datum>.md` und beginnst neu — mit den Einträgen,
 die noch gelten. Nicht löschen.
 
-Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
-Lehre daraus, in einem Satz.
+Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die Lehre.
 
 ---
 
@@ -23,16 +22,13 @@ Lehre daraus, in einem Satz.
   `sourceOrganization`. Der Metadaten-Endpunkt ist der ergiebigere — mit ihm anfangen.
 - 2026-09-01 — **Beide Endpunkte für dieselbe Reihe abrufen ist die Gegenprobe gegen das
   Werkzeug, nicht gegen die Quelle.** Der Seitenabruf reicht auf, statt roh
-  durchzureichen; ein einzelnes Zitat kann umformuliert sein. Zwei Abrufe verschiedener
-  URLs mit zeichengleichem Ergebnis sind der billigste Wortlautbeleg, den diese Rolle
-  bekommen kann. Kostet einen Abruf je Reihe.
-- 2026-09-01 — **Kontrollabrufe sind der Kern der Arbeit, nicht die Zugabe.** Das Feld
-  `License_Type` sah aus wie die Antwort auf die ganze Paketfrage. Drei Abrufe auf
-  Reihen mit völlig anderer Herkunft (ITU, World Federation of Exchanges,
-  weltbank-eigenes BIP) ergaben denselben Wert `CC BY-4.0` — ein Feld, das nie
-  widerspricht, unterscheidet nichts. Ohne die Kontrollen hätte ich es als Freigabe
-  gelesen. *Regel für den nächsten Lauf:* Bevor ein Metadatenfeld ein Urteil trägt, an
-  einem Fall messen, bei dem es widersprechen müsste.
+  durchzureichen; zwei Abrufe verschiedener URLs mit zeichengleichem Ergebnis sind der
+  billigste Wortlautbeleg dieser Rolle. Kostet einen Abruf je Reihe.
+- 2026-09-01 — **Kontrollabrufe sind der Kern der Arbeit, nicht die Zugabe.**
+  `License_Type` sah aus wie die Antwort auf die ganze Paketfrage, sagte aber bei drei
+  ganz verschiedenen Herkünften dasselbe: Ein Feld, das nie widerspricht, unterscheidet
+  nichts. Bevor ein Metadatenfeld ein Urteil trägt, an einem Fall messen, bei dem es
+  widersprechen müsste.
 - 2026-09-01 — Wenn eine Reihe einen Drittanbieter nennt, ist die nächste Frage nicht
   „wie schlimm", sondern **„was sagt dieser Drittanbieter selbst".** Zwei von vier
   Verdachtsreihen lösten sich so auf (IWF erlaubt das Verkaufen, ILO seit 2023-05-03
@@ -58,15 +54,11 @@ Lehre daraus, in einem Satz.
   schliessen.** Drei Geschwistercodes derselben Zeile trugen zwei verschiedene
   `Source`-Texte, und der Unterschied verschob die Zahl der betroffenen Sollreihen um den
   Faktor drei. Ein Abruf je Code, ausnahmslos.
-- 2026-09-02 (Paket 0006, Rücklauf 1) — **Eine Summenzeile, die aus der Tabelle über ihr
-  nicht ableitbar ist, ist eine zweite Messung.** Der Zusammenzug sagte je Reihe nur
-  ja/nein, die Zahl 26 hängt aber an *wie vielen der vier Länder* — also habe ich sie von
-  Hand nebenher gebildet und mich verzählt. Regel: Trägt eine Tabelle eine Summe, muss jede
-  Zeile den Summanden selbst zeigen, sonst die Rechnung darunter hinschreiben.
-- 2026-09-02 (Paket 0006, Rücklauf 1) — **`27 + 2 + 2 = 31` ging auf und war trotzdem
-  falsch.** Eine Probe, die nur die Gesamtzahl prüft, verschiebt einen Posten von einem
-  Eimer in den anderen, ohne zu piepsen. Die tragende Probe ist die Aufzählung, nicht die
-  Summe.
+- 2026-09-02 (Paket 0006, Rücklauf 1) — **Eine Summe, die aus der Tabelle über ihr nicht
+  ableitbar ist, ist eine zweite Messung — und `27 + 2 + 2 = 31` ging auf und war trotzdem
+  falsch.** Jede Zeile muss ihren Summanden selbst zeigen; eine Probe auf die Gesamtzahl
+  allein verschiebt einen Posten von einem Eimer in den anderen, ohne zu piepsen. Die
+  tragende Probe ist die Aufzählung.
 - 2026-09-02 (Paket 0014) — **Der Seitenabruf kürzt wörtliche Zitate bei etwa 125 Zeichen.**
   Wer einen ganzen Lizenzsatz braucht, lässt ihn in nummerierten Bruchstücken von je
   höchstens 100 Zeichen ausgeben; aneinandergehängt ergibt sich der Wortlaut. Ohne diesen
@@ -75,6 +67,10 @@ Lehre daraus, in einem Satz.
   den der Satz finden soll.** Die Datei rechnete das eine Paar nach, das sie für das
   einzige hielt; ein zweites verletzte seine Schranke. Nie eine Einzigartigkeit
   behaupten — die Liste hinschreiben und jede Zeile einsetzen.
+- 2026-09-02 (Paket 0015) — **Eine Legende ist eine zweite Behauptung über die Tabelle,
+  keine Beschriftung.** Die Marke selbst stimmte in allen 310 Zeilen; falsch war der Satz,
+  der sie erklärt — dieselbe Sorte Fehler wie die ungeprüfte Prosazahl aus 0007. Regel:
+  Wer eine Spalte markiert, prüft die Legende an einer Zeile, die sie widerlegen müsste.
 
 ## Was nicht funktioniert
 
@@ -87,6 +83,10 @@ Lehre daraus, in einem Satz.
   Organisation, bevor man auf einen Suchtreffer zurückfällt. Beim IWF gab es keine
   solche zweite Adresse.
 
+- 2026-09-02 (Paket 0015) — **Ein abgewiesenes `Edit` ist nicht immer eine Sperre:**
+  derselbe erlaubte Pfad unter `ventures/**` ging beim zweiten bzw. vierten Versuch
+  durch. Wiederholen, bevor man die Rechte verdächtigt. `sed` in einer Pipe kippt
+  dagegen den ganzen Bash-Aufruf, auch wenn nur gezählt wird.
 - 2026-09-01 (Paket 0007) — `Bash` ist dieser Rolle gesperrt, auch `cat` und `wc -c`.
   `Read` mit `offset`, `Glob` und `Grep` reichen; nicht erneut versuchen. — *2026-09-02:
   Lesende Shell-Befehle liefen wieder, `curl` wurde abgewiesen. Der Netzzugang bleibt der

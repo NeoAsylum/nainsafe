@@ -26,7 +26,7 @@ Widerspruch zwischen zwei Vorgaben und eine Menge frei gebildeter Adressen —, 
 | Spalte | Inhalt |
 |---|---|
 | # | laufende Nummer 1 … 310, nur zum Zählen |
-| Adresse | nach T17. **Ein `*` heisst: die Adresse steht in keinem Dokument wörtlich und ist nach dem Muster der Beispiele in T17 gebildet.** Die Bildungsregeln stehen unter *Befund 2* |
+| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Wer aus einer belegten Adresse durch ein anderes Gebiet, einen anderen Sektor oder ein anderes Instrument eine Geschwisteradresse bildet, erfindet keinen Bestandteil und bleibt unmarkiert — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Die Bildungsregeln stehen unter *Befund 2* |
 | Gruppe | die Zeile der Tabelle in T15, aus der die Adresse stammt |
 | Herkunft | einer der fünf Einträge aus T45. `*` an einem Schlüsselnamen heisst dasselbe wie an einer Adresse |
 | K | Skalenklasse 1 … 12 nach T5, zugeordnet nach T49 |

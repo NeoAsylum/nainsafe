@@ -3,15 +3,25 @@ typ: lizenzbefund
 paket: 0014-lizenzpruefung-restliche-reihen
 rolle: datenbauer
 datum: 2026-09-02
+ueberarbeitet: 2026-09-02 (Paket 0018-lizenzbefund-klaerungsliste)
 gegenstand: Die restlichen Reihen der Reihenliste — WDI-Reihen 1, 2, 5, 6 gegen die Drittanbieter-Ausnahme, und die Lizenzen der vier Nicht-WDI-Quellen gegen einen gleichartigen Vorbehalt
-codes_abgerufen: 8
-reihen_frei: 4 (3, 4, 14, 15)
-reihen_unklar: 7 (1, 2, 5, 6, 9, 11, 12)
-reihen_gesperrt: 0
-sollreihen_frei: 7
-sollreihen_unklar: 24
-sollreihen_gesperrt: 0
-pruefgegenstaende_ungefaehrdet: 1 von 16
+zaehlbereiche: "_paket zaehlt die 11 Reihen dieses Pakets, _gesamt alle 15 Reihen mit Datenanker unter Fortschreibung der Urteile aus Paket 0005 (Reihen 7, 8, 10, 13)"
+codes_abgerufen_reihen: 6 (NY.GDP.MKTP.KD, NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.SRV.TOTL.ZS, SP.POP.TOTL, SL.TLF.TOTL.IN)
+codes_abgerufen_gegenprobe: 2 (SL.EMP.TOTL.SP.ZS, IQ.CPA.ECON.XQ) — tragen kein Urteil und keine volle Abruf-URL; das Abnahmekriterium gilt gegen die sechs darueber
+reihen_paket: 11 (1, 2, 3, 4, 5, 6, 9, 11, 12, 14, 15)
+reihen_frei_paket: 4 (3, 4, 14, 15)
+reihen_unklar_paket: 7 (1, 2, 5, 6, 9, 11, 12)
+reihen_gesperrt_paket: 0
+sollreihen_frei_paket: 0 (die Reihen 3, 4, 14, 15 tragen keine Sollreihe)
+sollreihen_unklar_paket: 24 (Reihe 1: 4, Reihe 2: 12, Reihe 9: 4, Reihe 11: 4; die Reihen 5, 6, 12 tragen keine)
+sollreihen_gesperrt_paket: 0
+reihen_frei_gesamt: 6 (3, 4, 8, 10, 14, 15)
+reihen_unklar_gesamt: 8 (1, 2, 5, 6, 7, 9, 11, 12)
+reihen_gesperrt_gesamt: 1 (13, aus Paket 0005)
+sollreihen_frei_gesamt: 7 (Reihe 8: 4, Reihe 10: 3 — beide aus Paket 0005)
+sollreihen_unklar_gesamt: 24 (dieselben vier Reihen wie sollreihen_unklar_paket)
+sollreihen_gesperrt_gesamt: 0 (Reihe 13 traegt keine Sollreihe)
+pruefgegenstaende_ungefaehrdet_gesamt: 1 von 16
 befund_an_projektmanager: ja
 befund_an_architekt: ja
 ---
@@ -30,6 +40,11 @@ als das der Landwirtschaftsreihe. Vom OECD-Problem betroffen sind damit **4 der 
 Sollreihen, nicht zwölf. Die übrigen acht sind nicht frei, sondern auf andere Weise
 unklar — sie nennen nationale Ämter und Notenbanken statt einer benannten Organisation mit
 eigenen Bedingungen.
+
+**Die beiden Gründe schliessen einander nicht aus, und darauf kommt es bei der Klärungsliste
+an.** Reihe 1 und 2a tragen den Ämter-und-Notenbanken-Grund **zusätzlich** zur OECD, im ersten
+Halbsatz ihres eigenen `Source`-Feldes. Kein einzelner Klärungsschritt hebt deshalb einen
+Prüfgegenstand; die Rechnung dazu steht unter „Was zu tun bleibt".
 
 **Kein Urteil lautet `gesperrt`.** Es gibt keinen zweiten Fall wie Reihe 13, wo ein
 Drittanbieter seine Zustimmung ausdrücklich vorbehält. Was es gibt, sind sieben Reihen,
@@ -86,12 +101,28 @@ und `https://api.worldbank.org/v2/indicator/NY.GDP.MKTP.KD?format=json`.
 (Der Zeilenumbruch steht im Rohtext als JSON-Escape; der Metadaten-Endpunkt gibt dieselben
 drei Bestände in einer Zeile mit Semikolon.)
 
-**Begründung:** Die Weltbank nennt die OECD namentlich als Lieferanten eines Bestandes
-(„National Accounts data files"). `daten.md` Nr. 8 führt die OECD als **„ungeklaert, nicht
-einplanen"** — die dort zitierte Erlaubnisklausel spricht von „written content", und ob
-statistische Datenbanken darunter fallen, ist offen. Nach der Regel dieser Fabrik gilt eine
-Quelle ohne Lizenzzitat im Wortlaut als ungeprüft, nicht als erlaubt. Das ist dieselbe Lage
-wie bei Reihe 7 (ILO): Der Drittanbieter verweigert nichts, er ist nur nicht geprüft.
+**Begründung — zwei Lieferantengruppen, zwei voneinander unabhängige Gründe.** Das Feld nennt
+drei Bestände; die Weltbank selbst ist der dritte und unproblematisch. Die beiden anderen
+tragen je einen eigenen Grund, und **jeder allein genügt für `unklar`:**
+
+1. **Die OECD**, namentlich als Lieferant eines Bestandes („National Accounts data files").
+   `daten.md` Nr. 8 führt die OECD als **„ungeklaert, nicht einplanen"** — die dort zitierte
+   Erlaubnisklausel spricht von „written content", und ob statistische Datenbanken darunter
+   fallen, ist offen. Nach der Regel dieser Fabrik gilt eine Quelle ohne Lizenzzitat im
+   Wortlaut als ungeprüft, nicht als erlaubt. Das ist dieselbe Lage wie bei Reihe 7 (ILO):
+   Der Drittanbieter verweigert nichts, er ist nur nicht geprüft.
+2. **Die nationalen Ämter und Notenbanken** der Meldeländer, im ersten Halbsatz genannt
+   („Country official statistics, National Statistical Organizations and/or Central Banks").
+   Das sind **dieselben Stellen wie bei 2b und 2c**, nur als eine Angabe statt als zwei
+   geschrieben, und es gilt derselbe Massstab: `daten.md` hat von den vier Modellländern genau
+   ein statistisches Amt geprüft (Destatis, Nr. 5) und **keine einzige Notenbank**. Für die
+   Ämter der drei übrigen Länder und für alle vier Notenbanken liegt nichts vor. Die Aufzählung
+   der zu prüfenden Stellen steht unter Klärung 4.
+
+**Beide Gründe stehen nebeneinander, keiner ersetzt den anderen.** Wer nur die OECD klärt,
+hebt Reihe 1 nicht — Grund 2 bleibt stehen. Das ist der Unterschied zwischen der ersten und
+der überarbeiteten Fassung dieser Datei; die frühere Fassung nannte hier nur die OECD, obwohl
+die Übersichtstabelle oben beide Gruppen führt.
 
 **Folge nach T26:** T26 kennt drei Fälle, und **keiner davon ist dieser.** Der allgemeine
 Satz von T26 gilt weiter — das Programm ändert sich nicht, nur das Manifest —, aber einen
@@ -125,7 +156,16 @@ gegengelesen gegen `https://api.worldbank.org/v2/indicator/NV.AGR.TOTL.ZS?format
 
 > Country official statistics, National Statistical Organizations and/or Central Banks; National Accounts data files, Organisation for Economic Co-operation and Development (OECD); Staff estimates, World Bank (WB)
 
-**Urteil: unklar**, Begründung wie dort (OECD, `daten.md` Nr. 8). **Sollreihen: 4.**
+**Urteil: unklar**, Begründung wie dort und aus **beiden** Gründen: die OECD (`daten.md` Nr. 8,
+ungeklärt) **und** die nationalen Ämter/Notenbanken des ersten Halbsatzes (von vier
+Modellländern ein Amt geprüft, keine Notenbank). Jeder Grund allein genügt; die Klärung der
+OECD allein hebt 2a nicht.
+
+**Folge nach T26:** kein Fall von T26, und **keine Ausweichquelle** — siehe den Abschnitt „Was
+Reihe 2 als Ganzes kostet" unten und Befund 4 dieser Datei. Die Reihenliste führt für Reihe 2
+allein „WDI"; die PWT liefert keine sektorale Wertschöpfung.
+
+**Sollreihen: 4.**
 
 ### 2b und 2c — `NV.IND.TOTL.ZS` und `NV.SRV.TOTL.ZS`
 
@@ -152,6 +192,10 @@ version 2.0", erlaubt ausdrücklich die Aufnahme in „products and applications
 Ämter der drei übrigen Länder liegt nichts vor. Ich löse das nicht auf — die Frage, ob eine
 nationale Statistikbehörde hier Drittanbieter ist, ist eine Rechtsfrage und gehört dem
 Betreiber.
+
+**Folge nach T26:** kein Fall von T26, und **keine Ausweichquelle** — dieselbe Lage wie bei 2a,
+ausgeführt im Abschnitt „Was Reihe 2 als Ganzes kostet" unten und in Befund 4 dieser Datei.
+Die Zeile gilt für 2b und 2c gemeinsam, weil beide Codes dasselbe `Source`-Feld tragen.
 
 **Sollreihen: 4 + 4 = 8.**
 
@@ -362,6 +406,11 @@ verweigert, sondern weil der Lizenztext, auf dem alles ruht, nach fünf Anläufe
 Rollen ungelesen bleibt. **Sollreihen: 4 (Reihe 9) + 4 (Reihe 11) = 8.** Reihe 12 trägt
 keine.
 
+**Folge nach T26:** kein Fall von T26, und **keine Ausweichquelle** für keine der drei. Die
+Reihenliste führt als Quelle für Reihe 9 allein „IWF IFS", für die Reihen 11 und 12 allein
+„IWF WEO" — anders als bei den Reihen 1, 5 und 6 steht dort kein zweiter Weg. Reihe 10
+(„IWF IFS / WDI") hat einen, gehört aber zu Paket 0005 und trägt hier kein Urteil.
+
 **Was das für Paket 0005 bedeutet, ohne dass ich es aufhebe:** Die Urteile `frei` zu den
 Reihen 8 und 10 stützen sich auf dieselbe IWF-Erlaubnis. Der Befund hat das selbst als
 „schwächsten Punkt" benannt; dieses Paket gibt dem Punkt einen Namen. Ich rechne die beiden
@@ -448,21 +497,91 @@ Rückvergleichs, und sie ist zugleich die einzige, die als Einzelgegenstand zäh
 
 ## Was zu tun bleibt, für den, der die Zahlen bewegen will
 
-Keine Empfehlung, nur die Preise. Vier Klärungen, nach Kosten geordnet:
+Keine Empfehlung, nur die Preise. Vier Klärungen — die Nummern sind die aus der ersten Fassung
+und bleiben stehen, damit Verweise darauf tragen. Die Reihenfolge ist **nicht** mehr die nach
+Kosten: So gelesen, kauft man den billigsten Schritt und bekommt null.
 
-1. **OECD im Volltext** (`daten.md` Nr. 8, 403 am 2026-08-31): hebt Reihe 1 und 2a, also
-   **8 Sollreihen** und **4 Prüfgegenstände** — die vier BIP-Gegenstände. Die vier
-   Sektorstruktur-Gegenstände hebt sie **nicht**: Nach T37 müssen alle drei Anteilsreihen
-   bestehen, und 2b und 2c bleiben davon unberührt unklar.
-2. **IWF im Volltext** (403 an vier Tagen): entscheidet 15 Sollreihen (8 aus 9 und 11, 7 aus
-   8 und 10) und 7 Prüfgegenstände.
-3. **ILO in die geprüften Quellen aufnehmen, samt der Stichtagsfrage aus Abschnitt 4**:
-   hebt Reihe 6 und Reihe 7, kostet **keine** Sollreihe und keinen Prüfgegenstand, gibt aber
-   den Startwerten beider Reihen ihren Datenanker zurück.
-4. **Die Statistikämter der drei Nicht-EU-Modellländer**: hebt 2b und 2c, allein aber
-   nutzlos — ohne 2a bleiben die vier Sektorstruktur-Gegenstände gerissen. Die vier
-   Sektorstruktur-Gegenstände hängen an Klärung 1 **und** Klärung 4 zugleich; keine der
-   beiden allein bewegt sie.
+**Der Satz, der über der Liste steht: Kein einzelner der vier Schritte hebt auch nur einen
+Prüfgegenstand.** Jede Reihe, an der ein Prüfgegenstand hängt, hat mehr als einen Sperrgrund.
+Wer einen Gegenstand zurückwill, kauft mindestens ein Paar.
+
+**Nach Wirkung geordnet:** das Paar 1 + 4 zuerst (8 Prüfgegenstände), dann 2 (sichert 7),
+dann 3 (0).
+
+### Das Paar: Klärung 1 **und** Klärung 4 — nur zusammen tragen sie
+
+1. **OECD im Volltext** (`daten.md` Nr. 8, 403 am 2026-08-31).
+   **Allein: 0 Sollreihen, 0 Prüfgegenstände.** Sie hebt bei Reihe 1 und 2a nur die
+   OECD-Hälfte; der zweite Sperrgrund dieser beiden Codes — die nationalen Ämter und
+   Notenbanken des ersten Halbsatzes — bleibt unberührt stehen. Auf 2b und 2c wirkt sie gar
+   nicht: Deren `Source`-Feld nennt die OECD nicht.
+
+4. **Die nationalen Ämter *und* die Notenbanken der vier Modellländer** (Aufzählung unten).
+   **Allein: 8 Sollreihen (2b und 2c), 0 Prüfgegenstände.** Sie ist die zweite Hälfte auch
+   für Reihe 1 und 2a, nicht nur für 2b und 2c — bei 2b und 2c ist sie der einzige
+   Sperrgrund, bei Reihe 1 und 2a der zweite neben der OECD. Prüfgegenstände hebt sie allein
+   trotzdem keinen: Nach T37 müssen bei der Sektorstruktur **alle drei** Anteilsreihen
+   bestehen, und 2a bliebe an der OECD hängen.
+
+**Zusammen: 16 Sollreihen und 8 Prüfgegenstände.** Die Rechnung, Posten für Posten:
+
+| gehoben | Sollreihen | Prüfgegenstände |
+|---|---:|---:|
+| Reihe 1 und 2a (braucht 1 **und** 4) | 4 + 4 = 8 | 4 — die BIP-Gegenstände, aus Reihe 1 |
+| Reihe 2b und 2c (braucht 4) | 4 + 4 = 8 | 4 — die Sektorstruktur-Gegenstände, erst wenn 2a, 2b **und** 2c frei sind |
+| **Summe** | **16** | **8** |
+
+Die vier BIP-Gegenstände hängen damit an derselben Doppelbedingung wie die vier
+Sektorstruktur-Gegenstände. Die erste Fassung dieser Datei hat die Doppelbedingung nur bei
+der Sektorstruktur aufgeschrieben und Klärung 1 die vier BIP-Gegenstände allein zugeschrieben;
+das war falsch.
+
+**Welche Stellen Klärung 4 tatsächlich meint.** Das Feld `Source` nennt zwei Lieferantenarten
+nebeneinander („Country official statistics, National Statistical Organizations and/or Central
+Banks" bei Reihe 1 und 2a; „National Statistical Offices (NSOs)" **und** „National Accounts
+data files, Central Banks" als zwei getrennte Angaben bei 2b und 2c). Die Notenbanken sind
+also ein eigener Lieferant und nicht von den Ämtern mit abgedeckt. Für die vier Modellländer
+aus `spiel.md` (USA, China, Deutschland, Brasilien) sind das acht Stellen, von denen `daten.md`
+**eine** geprüft hat:
+
+| Land | statistisches Amt | Notenbank |
+|---|---|---|
+| Deutschland | Destatis — **geprüft**, `daten.md` Nr. 5, positiv | Deutsche Bundesbank — ungeprüft |
+| USA | Bureau of Economic Analysis (BEA) — ungeprüft | Federal Reserve Board — ungeprüft |
+| China | National Bureau of Statistics of China (NBS) — ungeprüft | People's Bank of China — ungeprüft |
+| Brasilien | Instituto Brasileiro de Geografia e Estatística (IBGE) — ungeprüft | Banco Central do Brasil — ungeprüft |
+
+**Sieben Abrufe, nicht drei.** Die erste Fassung nannte nur „die Statistikämter der drei
+Nicht-EU-Modellländer" und ließ die vier Notenbanken samt der Bundesbank aus, die Destatis
+nicht mit abdeckt.
+
+**Zwei Einschränkungen zu dieser Tabelle, damit niemand mehr hineinliest, als drinsteht.**
+Erstens ist die Zuordnung Land → Stelle **von mir benannt und nicht gemessen**: `Source`
+nennt eine Menge von Lieferantenarten, keine Zuordnung, und welche Stelle welchen
+Land-Jahr-Wert getragen hat, steht nirgends — dieselbe Grenze wie bei Reihe 5. Für die USA
+ist die Wahl zudem nicht eindeutig, weil die Volkswirtschaftliche Gesamtrechnung dort beim
+BEA liegt und nicht bei einem zentralen Statistikamt. Zweitens klärt ein positiver Befund je
+Stelle die Frage nur, wenn zuvor entschieden ist, **ob eine nationale Statistikbehörde im
+Sinne der Weltbank-Ausnahme überhaupt Drittanbieter ist**. Das ist eine Rechtsfrage und
+gehört dem Betreiber; fällt sie mit „nein", entfällt Klärung 4 ersatzlos und Klärung 1 hebt
+Reihe 1 und 2a doch allein.
+
+### Die übrigen zwei
+
+2. **IWF im Volltext** (403 an vier Tagen).
+   **Allein: hebt 8 Sollreihen (Reihe 9 und 11), 0 Prüfgegenstände** — T37 führt beide als
+   `gesetzt` beziehungsweise `abgeleitet`, sie entscheiden nichts. Der eigentliche Wert liegt
+   woanders und ist kein Heben, sondern ein Sichern: An demselben Text hängen die schon als
+   `frei` gezählten 7 Sollreihen und **7 Prüfgegenstände** der Reihen 8 und 10. Fällt er,
+   fallen sie — das ist die Zeile „1 von 16" in Abschnitt 5. Zusammen entscheidet der Abruf
+   also 15 Sollreihen und 7 Prüfgegenstände, er *gewinnt* aber keinen.
+3. **ILO in die geprüften Quellen aufnehmen, samt der Stichtagsfrage aus Abschnitt 4**.
+   **Allein: 0 Sollreihen, 0 Prüfgegenstände.** Hebt Reihe 6 und Reihe 7 und gibt den
+   Startwerten beider Reihen ihren Datenanker zurück; keine der beiden trägt eine Sollreihe.
+
+**Und die Probe auf die Zahlen.** 16 gehobene Sollreihen (1 + 4) plus 8 (Klärung 2) = 24 —
+genau die 24 unklaren aus dem Frontmatter. Prüfgegenstände: 8 gehoben (1 + 4) plus 7 gesichert
+(Klärung 2) plus der Handelsblock, der schon steht = 16.
 
 **Was dieser Befund nicht ist:** kein Rechtsrat. Er zitiert, was die Weltbank, die Penn World
 Table, Etalab und die ILO über sich selbst sagen, und hält beim IWF fest, dass sich nichts
@@ -490,6 +609,16 @@ entweder gemessene Werte tragen oder verschwinden.
 „Start + Soll (12, frei, 8 unabhängig)" fasst damit zwei verschiedene Lizenzlagen zusammen.
 Für T37 ist das folgenlos — die Alle-drei-Bedingung macht die Gruppe ohnehin unteilbar —,
 für die Klärungskosten nicht: Es hängt eine einzige Frage an der OECD, nicht drei.
+
+**Nachgetragen am 2026-09-02 (Paket 0018), damit die falsche Zelle geändert wird:** Die
+Lizenzlage trägt in der Reihenliste die Spalte **„Verdacht"**, nicht die Spalte „Rolle". Das
+`frei` in „Start + Soll (12, frei, 8 unabhängig)" ist die **T37-Klasse** — T37 kennt genau die
+drei Klassen `frei`, `gesetzt` und `abgeleitet` und vergibt sie zeilenweise (Reihe 9
+`gesetzt`, Reihe 11 `abgeleitet`, die Reihen 1, 2, 8, 10 `frei`, mit den „8 unabhängig" aus
+T37s „19 unabhängig"). Wer dieses `frei` streicht oder differenziert, zerschiesst die
+Verbindung zwischen Reihenliste und T37 und lässt die Spalte, die wirklich falsch ist,
+unberührt. Die Sache selbst — Reihe 2 zerfällt lizenzseitig in zwei Gruppen — bleibt richtig
+und belegt; sie gehört in die Spalte „Verdacht", die Befund 1 dieser Datei ohnehin trifft.
 
 # Befund 3 — an den Architekten: die Reihenliste nennt Codes nur für Reihe 2
 
