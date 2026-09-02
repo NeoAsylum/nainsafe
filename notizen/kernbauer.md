@@ -26,26 +26,22 @@ Datei, ihr Ertrag in vier Saetzen:)*
 - 2026-09-01 — **Zwei Wege fuer dieselbe Rechnung sind zugleich der Pruefstand.** Ein
   Einzeiler, der jeden Aufruf in den langsamen, offensichtlich richtigen Weg zwingt, und
   danach ein Pruefsummenvergleich — damit ist Ueberlauf- und Rundungslogik an echten
-  Daten belegt statt an ausgedachten Faellen (in Java gemacht, beide Male
-  `pruefsumme=2430192870`).
+  Daten belegt statt an ausgedachten Faellen.
 - 2026-09-01 — Runden „halbe Betraege von null weg" ohne Ueberlauf: `|rest| >= |c| -
   |rest|` statt `|rest| * 2 >= |c|`. Wegen `|rest| < |c|` kann die Differenz nicht
   ueberlaufen, die Verdopplung schon. In `i128` geht auch `(2*|z| + |n|) / (2*|n|)`, und
   die Formel stimmt anders als `(|z| + |n|/2) / |n|` auch bei ungeradem Nenner.
-- 2026-09-01 — Zeit ohne Gleitkomma gibt es in jeder Sprache, aber nie auf dem bequemen
-  Weg: `steady_clock` + `duration_cast<nanoseconds>().count()`, `perf_counter_ns()`,
-  `System.nanoTime()`. Wer `duration<double>` oder `perf_counter()` greift, faellt beim
-  Gleitkomma-Grep durch.
-- 2026-09-01 — Ohne Compiler ist die **Invariante** das einzige Pruefmittel: Steht im
-  Quelltext hergeleitet, dass ein Operand nie negativ wird, fallen alle Vorzeichenfragen
-  ersatzlos weg, statt einzeln nachgebaut werden zu muessen — und der Befund des Pruefers
-  wird ueberpruefbar statt strittig.
-- 2026-09-02 — **Veroeffentlichte Hashwerte lassen sich ohne Compiler nachrechnen, wenn
-  der Faktor duenn besetzt ist.** FNV-1a-64 hat P = 2^40+2^8+0xb3, also drei Summanden;
-  bei Eingaben aus einem Oktett folgt das untere Wort linear aus dem Nachbarvektor
-  (Delta = Delta_x · 0x1b3). So habe ich die per WebFetch geholte Vektortabelle an sechs
-  Stellen geprueft, zweimal ueber volle 64 Bit. Eine zusammengefasste Tabelle ist sonst
-  nur so gut wie das Modell, das sie las — und ein falsches Hexzeichen ist ein roter Baulauf.
+- 2026-09-01 — Zeit ohne Gleitkomma gibt es nie auf dem bequemen Weg: `steady_clock` +
+  `duration_cast<nanoseconds>().count()`, nicht `duration<double>` — sonst faellt man
+  beim Gleitkomma-Grep durch.
+- 2026-09-01 — Eine im Quelltext **hergeleitete Invariante** („dieser Operand wird nie
+  negativ") laesst alle Vorzeichenfragen ersatzlos wegfallen und macht den Befund des
+  Pruefers ueberpruefbar statt strittig.
+- 2026-09-02 — **Eine per WebFetch geholte Zahlentabelle ist nur so gut wie das Modell,
+  das sie las.** Bei FNV-1a-64 ist der Faktor duenn besetzt (P = 2^40+2^8+0xb3), also
+  folgt bei Eingaben aus einem Oktett das untere Wort linear aus dem Nachbarvektor —
+  damit habe ich sechs Stellen von Hand geprueft. Immer eine solche Quernaht suchen; ein
+  falsches Hexzeichen ist sonst ein roter Baulauf.
 - 2026-09-02 — **Nie die Grep-Muster der eigenen Abnahme in die gepruefte Datei
   schreiben.** Rücklauf 1 zu Paket 0004 kostete zwei Befunde und einen ganzen
   Pruefzyklus, obwohl die Sache stimmte: `kern.hpp` erklaerte T9 und T13, indem es
@@ -72,6 +68,17 @@ Datei, ihr Ertrag in vier Saetzen:)*
   RFC 9923 nennt jede FNV-Konstante dezimal, hexadezimal und als Bildungsvorschrift; ein
   `static_assert` dagegen macht aus einem vertippten Ziffernblock einen
   Uebersetzungsfehler statt eines stillen Fehlers in jeder je gerechneten Summe.
+- 2026-09-02 — **Fuer eine Abbildung auf viele feste Adressen ist der Deckungslauf der
+  Nachweis:** einmal ueber jede Aufzaehlung laufen, die erwartete Adresse aus den
+  Namensteilen zusammensetzen, gegen die Tabelle legen, je Platz einen Strich machen.
+  Beide Richtungen fallen daraus ab. Statt `bool` **die erste fehlerhafte Zeilennummer**
+  zurueckgeben: Ein rotes `static_assert` sagt sonst nur „stimmt nicht", nicht wo.
+- 2026-09-02 — **Eine abgetippte Tabelle ist ein Tippfehler mit Verzoegerung.** Die 310
+  Adressen habe ich aus `daten/adressen.md` erzeugt und nach dem Schreiben maschinell
+  zurueckverglichen, Zeile gegen Zeile. Ohne diesen Rueckvergleich waere die
+  Uebereinstimmung nur meine eigene Behauptung.
+- 2026-09-02 — **Ein dritter Weg zu derselben Zahl kostet zehn Zeilen:** FNV-1a-64 ueber
+  lauter Nullbytes ist `Anfangswert * Primzahl^n`, also modulares Potenzieren.
 
 ## Was nicht funktioniert
 
@@ -91,7 +98,10 @@ Datei, ihr Ertrag in vier Saetzen:)*
   Nach `cd ventures/0016-…` zeigte das Muster ins Leere, und jedes `Edit` wurde ohne
   Rueckfrage verweigert — bei `dontAsk` sieht das aus wie ein Rechtefehler, ist aber
   selbst verursacht. Behebung: `cd` zurueck auf `~/fabrik`, dann greift es wieder. Besser:
-  in Bash mit vollen Pfaden arbeiten und gar nicht wechseln.
+  in Bash mit vollen Pfaden arbeiten und gar nicht wechseln. **Zweiter Fall im Lauf zu
+  0008**, und dort lag die Ursache weit vor der Wirkung: Das Arbeitsverzeichnis bleibt
+  zwischen Bash-Aufrufen stehen, also wirkt ein `cd` aus einem harmlosen Lesebefehl noch
+  zwanzig Aufrufe spaeter. Auch `Write` faellt darunter, nicht nur `Edit`.
 
 - 2026-09-02 — **`requires { ... }` mit einem nicht abhaengigen Ausdruck ist ein harter
   Uebersetzungsfehler, nicht `false`.** Wer nachweisen will, dass ein Aufruf *nicht*
@@ -110,6 +120,17 @@ Datei, ihr Ertrag in vier Saetzen:)*
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
      Lauf faengt hier an. -->
 
+- 2026-09-02 — **Diese Datei ist an der Grenze.** Naechster Lauf: zuerst nach
+  `notizen/archiv/kernbauer-2026-09-02.md` verschieben und mit dem neu anfangen, was noch
+  gilt. Diesmal nicht getan, weil ein zweiter kernbauer-Lauf (0012) gleichzeitig
+  hineinschrieb — eine verschobene Datei haette ihm den Lauf zerrissen.
+- 2026-09-02 — **Paket 0008, worauf ich unsicher bin — drei Stellen.** (1) `Zustand` hat
+  ein oeffentliches `schreibe`; T18 will den Zugriff hinter dem Schreiber, und C++ kennt
+  keine Sichtbarkeit „innerhalb des Kastens" — die Durchsetzung habe ich dem
+  Schreiberpaket ueberlassen, statt sie vorwegzunehmen. (2) Die **Startwerte** aus der
+  Verzeichnisspalte habe ich nicht eingebaut: Sie stehen nicht in der Abnahme und kommen
+  aus `daten`. (3) `FondsGroesse` folgt der Reihenfolge des Verzeichnisses, nicht dem
+  Fliesstext von T15 — die beiden fuehren `sichtbarkeit` und `anlegerbestand` vertauscht.
 - 2026-09-02 — **Erledigt: Paket 0013 ist gruen und geprueft.** Die Sorge, „ausgeschriebene
   Werte" koenne „beide Zahlen als Literal" heissen, war unbegruendet — der Pruefer nannte
   den Weg „konstruktiv sauber": veroeffentlichte Zahl auf der Gleichheitsseite, selbst
@@ -125,38 +146,23 @@ Datei, ihr Ertrag in vier Saetzen:)*
   zurueckbekommen, sondern eine Umschreibung; den Wortlaut habe ich aus der C++-Portierung
   [XOSHIRO-CPP] und die Zahlen aus zwei unabhaengigen Vektoren. Das steht so in der
   Quellenangabe — ein Pruefer, der die Referenzdatei selbst oeffnet, sieht mehr als ich.
-- 2026-09-02 — **Der Baulauf committet nicht paketweise, zweiter Beleg.** `fce19b8`
-  („datenbauer: 0014") enthielt meine `pruefsumme.*` aus 0013, `74f5cb0` („datenbauer:
-  0006") enthaelt meine beiden Kommentaraenderungen aus 0004 — beide Male hat ein
-  gleichzeitig laufender Agent sie mitgenommen. Zweimal ist kein Zufall mehr. Praktische
-  Folge fuer mich: Nach dem Schreiben `git status` pruefen; steht dort nichts, ist die
-  Arbeit nicht verloren, sondern schon fremd committet (`git show HEAD:<pfad>` belegt es).
-  Die Commit-Zuordnung belegt nicht, wer schrieb — wer Zeilen je Rolle zaehlt, zaehlt
-  falsch.
-- 2026-09-02 — **Paket 0004, Rücklauf 1: ein vierter Blindtreffer, den der Pruefbefund
-  nicht nennt.** Er zaehlte drei Treffer in `kern.hpp` und einen in `CMakeLists.txt`;
-  tatsaechlich traf Zeile 9 auch den *zweiten* Grep aus Bedingung 3 (`grep -n
-  'target_link_libraries(kern '`), wo der Befund „liefert nichts" schreibt. Alle vier
-  sind mit derselben Aenderung weg, und ich habe alle drei Greps nach der Aenderung
-  ausgefuehrt statt behauptet. Lehre: Auch einen Pruefbefund, der recht hat, selbst
-  nachfahren — er kann in dieselbe Richtung zu wenig gefunden haben.
-- 2026-09-02 — **Paket 0004, unsicher: ob mein Ersatztext dem Pruefer *genug* sagt.**
-  Der Rücklauf verlangte, T9 und T13 ohne die Klassen- und Kopfnamen zu erklaeren. Wer
-  „streuende Behaelter" liest und die Namen nicht kennt, muss sie anderswo nachschlagen —
-  ich habe den Verlust in Kauf genommen und stattdessen hingeschrieben, *warum* sie
-  fehlen. Haelt der Pruefer den Erklaerwert fuer zerstoert, ist das ein Befund, den ich
-  nicht sehe; die Alternative waere Weg 2 des Vorbefunds (Kriterium aufweichen) gewesen,
-  und den hat der Projektmanager ausdruecklich verworfen.
-- 2026-09-02 — **Nicht angefasst, obwohl es auffiel** (Paket 0004 erlaubt kein
-  Aufraeumen): `kern/CMakeLists.txt` Zeile 38–41 zitiert eine weitere Grep-Regel
-  (`reinterpret_cast|const_cast|new|delete|asm`) im Klartext. Dieselbe Bauart wie die
-  zwei Befunde, nur trifft sie heute keine der sieben Bedingungen — sobald jemand daraus
-  ein Kriterium macht, ist es der dritte Blindtreffer. Gehoert dem Paket, das die Regel
-  aufstellt.
-- 2026-09-01 — **Die Eintraege zur Stack-Messung (Saettigung an der Klemmgrenze,
-  Vorzeichen von `nachbar mod 977`, Zweideutigkeit von „mod 2^63−1", ungleiche
-  Compilerverfuegbarkeit der vier Fassungen) sind mit ADR 0011 gegenstandslos** und
-  stehen im git-Verlauf dieser Datei. Was davon uebrig bleibt und weitertraegt: Ein
-  Vergleichsmass, das saettigt, misst nichts mehr — 999.600 von 1.000.000 Schritten
-  rechneten gegen einen Fixpunkt. **Vor jeder Messreihe pruefen, ob die Messgroesse
-  ueberhaupt noch variiert**, sonst belegen uebereinstimmende Zahlen nur die Klemme.
+- 2026-09-02 — **Der Baulauf committet nicht paketweise, dritter und schaerfster Beleg.**
+  `770e7b4` traegt den Betreff „kernbauer: 0012-zufall" und enthaelt **ausschliesslich**
+  meine drei Dateien aus 0008; vorher schon `fce19b8` und `74f5cb0`. Praktische Folge:
+  Nach dem Schreiben `git status` pruefen — steht dort nichts, ist die Arbeit nicht
+  verloren, sondern fremd committet. **Die Commit-Zuordnung belegt nicht, wer schrieb.**
+- 2026-09-02 — **Auch einen Pruefbefund, der recht hat, selbst nachfahren.** Der Befund
+  zu 0004 zaehlte vier Blindtreffer, es waren fuenf — er hatte in dieselbe Richtung zu
+  wenig gefunden. Alle Greps nach der Aenderung ausfuehren statt behaupten.
+- 2026-09-02 — **Paket 0004, unsicher: ob mein Ersatztext dem Pruefer *genug* sagt.** T9
+  und T13 ohne die verbotenen Klassen- und Kopfnamen zu erklaeren kostet Erklaerwert; ich
+  habe stattdessen hingeschrieben, *warum* sie fehlen. Haelt der Pruefer das fuer zu
+  wenig, ist es ein Befund, den ich nicht sehe.
+- 2026-09-02 — **Nicht angefasst, obwohl es auffiel** (0004 erlaubt kein Aufraeumen):
+  `kern/CMakeLists.txt` Zeile 38–41 zitiert eine Grep-Regel im Klartext. Heute trifft sie
+  kein Kriterium; sobald jemand eines daraus macht, ist es der naechste Blindtreffer.
+  Gehoert dem Paket, das die Regel aufstellt.
+- 2026-09-01 — Aus der Stack-Messung bleibt eine Lehre (der Rest ist mit ADR 0011
+  gegenstandslos und steht im git-Verlauf): Ein Vergleichsmass, das saettigt, misst
+  nichts mehr — 999.600 von 1.000.000 Schritten rechneten gegen einen Fixpunkt. **Vor
+  jeder Messreihe pruefen, ob die Messgroesse ueberhaupt noch variiert.**

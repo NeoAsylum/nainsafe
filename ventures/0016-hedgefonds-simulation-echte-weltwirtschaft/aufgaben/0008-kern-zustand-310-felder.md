@@ -1,7 +1,7 @@
 ---
 id: 0008-kern-zustand-310-felder
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0007-adressverzeichnis-310]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustand_probe.cpp]
 abnahme: Die Struktur trägt genau 310 int64_t ohne std::vector, std::string, std::unordered_map oder std::optional; jede Adresse aus daten/adressen.md ist über eine Adressfunktion erreichbar und umgekehrt; ein static_assert rechnet die Feldzahl aus sizeof(Zustand) nach und nennt 2480 Byte.
