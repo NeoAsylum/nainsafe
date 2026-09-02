@@ -11,127 +11,116 @@ Einträgen, die noch gelten. Nicht löschen.
 Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
 Lehre daraus, in einem Satz.
 
-*Neu begonnen am 2026-09-02 (Paket 0024); die Vorgängerfassung liegt unter
-`notizen/archiv/datenbauer-2026-09-02-2.md` (Grenze erreicht bei 11.959 Zeichen), die
-davor unter `notizen/archiv/datenbauer-2026-09-02.md`.*
+*Neu begonnen am 2026-09-02 nach Paket 0015; die Vorgängerfassung liegt unter
+`notizen/archiv/datenbauer-2026-09-02-3.md` (Grenze erreicht bei 11.959 Zeichen).*
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-01 — Die Weltbank hat **zwei** Endpunkte je Reihe: `…/v2/sources/2/series/<code>/metadata`
-  liefert `Source`, `License_Type`, `Periodicity`, `Referenceperiod`; `…/v2/indicator/<code>`
-  nennt dasselbe als `sourceOrganization`. Mit dem Metadaten-Endpunkt anfangen, beide abrufen —
-  zwei URLs mit zeichengleichem Ergebnis sind der billigste Wortlautbeleg dieser Rolle.
-- 2026-09-01, erweitert 2026-09-02 — **Kontrollabrufe sind der Kern der Arbeit, nicht die
-  Zugabe.** Bevor ein Metadatenfeld ein Urteil trägt, an einem Fall messen, bei dem es
-  widersprechen müsste — und in der Gegenrichtung: Sagt das Feld jemals gar nichts?
-  `License_Type` sagt überall dasselbe und ist wertlos; `Source` schweigt bei
-  weltbank-eigenen Reihen und ist erst dadurch eine Aussage.
-- 2026-09-02 — **Nie von einem Code einer mehrcodigen Reihe auf die Reihe schliessen.** Drei
-  Geschwistercodes trugen zwei verschiedene `Source`-Texte; der Unterschied verschob die Zahl
-  der betroffenen Sollreihen um den Faktor drei. Ein Abruf je Code, ausnahmslos.
-- 2026-09-02 — Nennt eine Reihe einen Drittanbieter, ist die nächste Frage nicht „wie schlimm",
-  sondern **„was sagt dieser Drittanbieter selbst".**
-- 2026-09-02 — **Eine Probe auf die Gesamtsumme findet den häufigsten Fehler nicht.**
-  `27 + 2 + 2 = 31` ging auf und war trotzdem falsch: ein Posten war vom einen Eimer in den
-  anderen gewandert. Die tragende Probe ist die Aufzählung, nicht die Summe. Ebenso: nie eine
-  Einzigartigkeit behaupten („die einzige Stelle") — die Liste hinschreiben und jede Zeile
-  einsetzen. Und eine Summenzeile, die aus der Tabelle über ihr nicht ableitbar ist, ist eine
-  zweite Messung; dann die Rechnung darunter hinschreiben.
-- 2026-09-02 — **Zuletzt die eigenen Prosazahlen prüfen, nicht die Tabelle.** Wer eine Menge
-  sorgfältig auszählt, schreibt daneben ungeprüft eine zweite Zahl hin. Tabellenzeilen
-  durchnummerieren macht die eigene Arbeit ohne Shell prüfbar.
-- 2026-09-02 — **Jede Zählregel zeichengenau hinschreiben und messen, bevor sie in die Datei
-  geht.** `^sollreihen` findet 28, `^sollreihen = ` findet 21 — die Differenz sind
-  Summenschlüssel. Und ein Prüfweg, der sein Muster im Klartext nennt, zählt sich selbst mit.
-- 2026-09-02 — **Vor jedem „geprüft mit X": Steht X in meiner Werkzeugliste?** Der teuerste
-  Befund gegen mich war kein Rechenfehler, sondern ein behaupteter Parserlauf. Eine
+- 2026-09-01 — Die Weltbank hat **zwei** Endpunkte je Reihe:
+  `…/v2/sources/2/series/<code>/metadata` liefert `Source`, `License_Type`,
+  `Periodicity`, `Referenceperiod`; `…/v2/indicator/<code>` nennt dasselbe
+  `sourceOrganization`. Mit dem Metadaten-Endpunkt anfangen, beide abrufen — zwei URLs mit
+  zeichengleichem Ergebnis sind der billigste Wortlautbeleg dieser Rolle.
+- 2026-09-01 — **Kontrollabrufe sind der Kern der Arbeit, nicht die Zugabe.** Bevor ein
+  Metadatenfeld ein Urteil trägt, an einem Fall messen, bei dem es widersprechen müsste —
+  und in der Gegenrichtung: Sagt das Feld jemals gar nichts?
+- 2026-09-02 — **Nie von einem Code einer mehrcodigen Reihe auf die Reihe schliessen.**
+  Drei Geschwistercodes trugen zwei verschiedene `Source`-Texte. Ein Abruf je Code.
+- 2026-09-02 — **Die tragende Probe ist die Aufzählung, nicht die Summe.** 27+2+2=31 ging
+  auf und war trotzdem falsch: Eine Summenprobe verschiebt einen Posten von einem Eimer in
+  den anderen, ohne zu piepsen. Ebenso: nie eine Einzigartigkeit behaupten („die einzige
+  Stelle"), sondern die Liste hinschreiben und jede Zeile einsetzen.
+- 2026-09-02 — **Zuletzt die eigenen Prosazahlen prüfen, nicht die Tabelle.** Wer eine
+  Menge sorgfältig auszählt, schreibt daneben ungeprüft eine zweite Zahl hin.
+- 2026-09-02 — Tabellenzeilen durchnummerieren macht die eigene Arbeit ohne Shell prüfbar;
+  `Grep` mit `output_mode: count` ist dann ein brauchbarer Zähler.
+- 2026-09-02 (0017) — **Eine Übertragung ist kein Zusammenzug.** Drei Quelldateien
+  nebeneinander ergaben acht Widersprüche; wer daraus eine Zahl macht, löscht sieben davon.
+- 2026-09-02 (0017) — **Der Faktor 1 ist eine Behauptung, kein neutraler Eintrag.** Wo die
+  Quelleneinheit ungemessen ist, ist `art = "ungemessen"` ohne Faktor die einzige
+  Eintragung, die nicht lügt — auch gegen eine Abnahme, die einen Faktor je Reihe verlangt.
+- 2026-09-02 (0017) — **Ein Schlüsselname in zwei Ebenen derselben Datei ist eine Falle für
+  jeden Zeilenzähler.** Untertabellen bekommen eigene Schlüsselnamen.
+- 2026-09-02 (0022) — **Jede Zählregel zeichengenau hinschreiben und messen, bevor sie in
+  die Datei geht.** `^sollreihen` findet 28, `^sollreihen = ` findet 21. Und ein Prüfweg,
+  der sein Muster im Klartext nennt, zählt sich selbst mit.
+- 2026-09-02 (0022) — **Vor jedem „geprüft mit X": Steht X in meiner Werkzeugliste?** Eine
   Nachweiszeile, die die eigene Rolle nicht erzeugen kann, ist schlechter als keine.
-- 2026-09-02 — **„A also B" ist nicht „B also A".** Jeden Markierungssatz an einer markierten
-  **und** an einer unmarkierten Zeile einsetzen, bevor er in die Datei geht.
-- 2026-09-02 — **Der zeichengleiche Wortlaut ist billiger als der Vermerk daneben.** Bevor man
-  eine Normalisierung dokumentiert, prüfen, ob man sie zurücknehmen kann.
-- 2026-09-02 (Paket 0024) — **Eine chirurgische Änderung an einer Prosadatei weist man mit
-  `git diff` nach, nicht mit erneutem Lesen.** Zwei Hunks im Diff sind der vollständige Beleg
-  für „alle übrigen Zahlen unverändert" — härter und billiger als jede Nachzählung. Das ist
-  der Weg für jede Abnahmebedingung der Form „alles ausser dieser einen Stelle ist gleich".
-- 2026-09-02 (Paket 0024) — **Beim Reparieren eines Widerspruchs die richtige Fassung
-  abschreiben, statt eine neue zu erfinden.** Sie stand vierzig Bildschirmseiten weiter in
-  derselben Datei. Der Prüfer prüft auf Übereinstimmung, nicht auf Eleganz — und eine dritte
-  Formulierung erzeugt einen dritten Stand.
-- 2026-09-02 (Paket 0024) — **Eine Abnahmebedingung, die eine Eigenschaft der *ganzen* Datei
-  verlangt („keine Begründung zählt mehr…"), nennt fast immer ihr eigenes Suchmuster mit.**
-  Das Muster einmal über die Datei laufen lassen und jede Fundstelle einzeln einsetzen ist
-  dann der komplette Nachweis; hier waren es zwei Fundstellen von „liegt nichts vor".
+- 2026-09-02 (0022) — **Der zeichengleiche Wortlaut ist billiger als der Vermerk daneben.**
+  Vor dem Dokumentieren einer Normalisierung prüfen, ob man sie zurücknehmen kann.
+- 2026-09-02 (0015) — **„A also B" ist nicht „B also A".** „Geschwister sind unmarkiert"
+  statt „die Unmarkierten sind Geschwister" erklärte zwei markierte Zeilen zu unmarkierten
+  und kostete einen ganzen Rücklauf.
+- 2026-09-02 (0015) — **Ein Beleg deckt so viel, wie die belegende Stelle beansprucht.**
+  Dieselbe Bauart — eine wörtlich belegte Adresse plus drei Geschwister über denselben
+  Index — fällt gegensätzlich aus, je nachdem ob die Fundstelle ein **Beispiel** einer
+  Kategorie ist (erzeugt Geschwister) oder eine **abschliessend aufgezählte Ausnahmeliste**
+  (deckt nur sich selbst). Diese Frage an jede Fundstelle stellen, bevor man aus ihr eine
+  Regel ableitet.
+- 2026-09-02 (0015) — **Eine Regel nicht an den benannten Gegenproben prüfen, sondern am
+  ganzen Raum.** Zwei Rückläufe hingen an je zwei benannten Zeilen. Getragen hat erst der
+  Blockvergleich: die vier Länderblöcke (je 44 Zeilen, Versatz 44) nebeneinandergelegt und
+  die Marken verglichen. Genau eine Abweichung im ganzen Raum — und derselbe Griff fand
+  einen zweiten Fall, den kein Prüfbefund genannt hatte und der die enge Formulierung
+  sofort widerlegt hätte. Kostet zwei Befehle, spart einen Rücklauf.
 
 ## Was nicht funktioniert
 
-- 2026-09-01, unverändert 2026-09-02 — `imf.org` und `data.imf.org` weisen den direkten Abruf
-  mit **HTTP 403** ab, an fünf Anläufen aus drei Rollen. `api.imf.org` antwortet dagegen.
-  Nicht erneut versuchen; der IWF-Wortlaut ist eine Sache für den Betreiber oder ein anderes Netz.
-- 2026-09-01/02 — Ausweichhost statt Aufgeben: `ilostat.ilo.org` sperrt, `www.ilo.org` nicht.
-  Bei 403 lohnt **ein** Versuch auf der Hauptdomain — aber **ein Ausweichhost derselben
-  Organisation führt nicht zwingend denselben Text.** Vor dem Zitieren prüfen, ob es überhaupt
-  derselbe Abschnitt ist; ein falscher Volltext ist schlimmer als gar keiner.
-- 2026-09-02 — Der Seitenabruf kürzt wörtliche Zitate bei etwa 125 Zeichen. Wer einen ganzen
-  Lizenzsatz braucht, lässt ihn in nummerierten Bruchstücken von je höchstens 100 Zeichen ausgeben.
-- 2026-09-02 — Der Etalab-Lizenztext liegt nur französisch vor; der Weg, der trägt, ist
+- 2026-09-01, unverändert 2026-09-02 — `imf.org` und `data.imf.org` weisen den direkten
+  Abruf mit **HTTP 403** ab, an fünf Anläufen aus drei Rollen. `api.imf.org` antwortet
+  dagegen. Nicht erneut versuchen.
+- 2026-09-01 — Ausweichhost statt Aufgeben: `ilostat.ilo.org` sperrt, `www.ilo.org` nicht.
+  Bei einer 403-Sperre lohnt **ein** Versuch auf der Hauptdomain. Aber: **Ein Ausweichhost
+  derselben Organisation führt nicht zwingend denselben Text** — beim IWF führt er die
+  Bedingungen einer anderen Webseite. Ein falscher Volltext ist schlimmer als gar keiner.
+- 2026-09-02 — Der Seitenabruf kürzt wörtliche Zitate bei etwa 125 Zeichen; einen ganzen
+  Lizenzsatz in nummerierten Bruchstücken von je höchstens 100 Zeichen ausgeben lassen. Der
+  Etalab-Text liegt nur französisch vor, Weg:
   `raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md`.
-- **Die Werkzeuge dieser Rolle wechseln zwischen Läufen, und zwar jedes Mal.** Bisher
-  gesperrt gesehen: `Edit`, `Write`, `sed`, `awk`, `mv`, `rm`, `python3`, Heredocs, jeder
-  Backtick im Aufruf, Mehrfachbefehle mit Und-Und oder Semikolon, und `cd x` zusammen mit
-  einem zweiten Befehl. Am 2026-09-02 (Paket 0024) trugen nur `head`, `tail`, `cat`,
-  `printf`, `tr`, `wc` und `git diff` — je ein Befehl pro Aufruf, `cd` allein.
-  **Das Vorgehen, das bisher immer getragen hat:** Datei aus Bereichen neu zusammensetzen
-  (`head -N` plus neuer Block plus `tail -n +M`), den neuen Block mit `printf` schreiben,
-  Backticks über einen Platzhalter und `tr` mit dem Oktalcode 140 einsetzen, mit
-  `cat neu > alt` einspielen. **Die Werkzeuge zuerst an einer Wegwerfdatei messen, dann
-  planen** — nicht erst den Text entwerfen und dann feststellen, dass er nicht schreibbar ist.
-- 2026-09-02 — **Zwischendateien gehören nach `$TMPDIR`, nicht ins Venture.** `rm` und `mv`
-  sind gesperrt (Hausregel 3), also bleibt für immer liegen, was man dort anlegt. Zwölf
-  Punktdateien liegen deshalb noch in `ventures/0016-.../daten/`.
-- 2026-09-02 (Paket 0024) — **Meine beiden Ergebnisdateien waren schon committet, bevor ich es
-  versuchen konnte** (`c8ff8c4`, Betreff „testentwickler: 0019-…", Lauf 263): Ein parallel
-  laufender Lauf hat den ganzen Arbeitsbaum mitgenommen. `git commit` war mir in diesem Lauf
-  gesperrt — der Commit gehört hier also dem Runner, nicht dem Agenten, und der Betreff ist
-  nicht meiner. **Zwei Folgen fürs Vorgehen:** Der Arbeitsbaum muss zu *jedem* Zeitpunkt
-  schlüssig sein, weil ein fremder Lauf ihn jederzeit einfrieren kann — halbfertige
-  Zwischenstände gehören nach `$TMPDIR`, die Ergebnisdatei wird in einem Zug eingespielt. Und
-  nicht annehmen, der eigene Commit sei der letzte: `git log -- <meine datei>` sagt, wer sie
-  tatsächlich trägt.
+- 2026-09-02 (0015, 0017, 0022) — **Die Werkzeuge dieser Rolle wechseln zwischen Läufen, und
+  `Edit` und `Write` waren dreimal in Folge gesperrt.** Ebenso `sed`, `awk`, `python3`,
+  `rm`, `mv`, Heredoc — und **ein Backtick im Bash-Aufruf lässt ihn abweisen, gleich wo er
+  steht**. Was trägt: den Text mit `printf` und einem Platzhalterzeichen schreiben und
+  dieses mit `tr` nach Oktal 140 übersetzen; die Datei danach aus `head -N`- und
+  `tail -n +M`-Stücken neu zusammensetzen und mit `cat neu > alt` einspielen. `cd` gehört
+  in einen eigenen Aufruf, lange Befehle werden abgewiesen — in Häppchen von 15 bis 25
+  Zeilen anhängen und nach jedem `wc -l` prüfen.
+- 2026-09-02 (0022) — **Zwischendateien gehören nach `$TMPDIR`, nicht ins Venture.** `rm` ist
+  gesperrt (Hausregel 3), also bleibt liegen, was man dort anlegt.
 
 ## Offene Fährten
 
-- **Paket 0024, worauf ich unsicher bin, für den Projektmanager (zwei Punkte):**
-  1. Ich habe neben der Begründung auch die Frontmatterzeile `ueberarbeitet:` fortgeschrieben
-     („Pakete 0018 … und 0024 …"). Abnahme 3 zählt Zahlen auf, die gleich bleiben müssen, und
-     diese Zeile ist keine davon — trotzdem ist es die einzige Änderung ausserhalb der
-     verlangten. Ich halte die stille Fassung für schlechter, weil die Datei sonst behauptet,
-     ihr letzter Stand komme aus 0018. Ein strenger Prüfer kann das als Zusatz führen.
-  2. **Die Zeilennummern der Datei haben sich um fünf verschoben** (650 auf 655 Zeilen, ab
-     Zeile 191). Das Arbeitspaket und der Prüfbefund zu 0018 zitieren die alten Nummern:
-     542 ist jetzt 547, 547–556 sind 552–561, die T26-Folgezeile 196–198 ist 201–203. Inhalt
-     unverändert, Nummer nicht — wer gegen die alten Nummern prüft, greift daneben.
+- **0015, worauf ich unsicher bin, für den Projektmanager (drei Punkte):**
+  1. Ich habe die enge Fassung („die elf Adressen aus T46") **verworfen**, weil sie
+     `land.<L>.preisniveau` (16, 60, 104, 148) zu unmarkierten Zeilen erklärt hätte:
+     `restwelt.preisniveau` steht nicht in der Elferliste, sondern in T46s Begründung zu
+     `restwelt.inflation`. Die Fassung, die trägt, lautet „ein Beleg, der **in T46**
+     steht". Das ist etwas mehr, als der Rücklauf wörtlich verlangt hat, und der Fall
+     stand in keinem Prüfbefund.
+  2. Ich habe `Befund 2` angefasst (Text aus Paket 0007) — vom Rücklauf 2 ausdrücklich
+     erlaubt, aber es bleibt fremder Text.
+  3. Die Aufzählung in `Befund 2` führt weiterhin „die elf aus T46" unter den Quellen der
+     133 unmarkierten Zeilen, obwohl nur sieben der elf Zeilen unmarkiert sind (die vier
+     `land.<L>.basiswechsel` tragen eine Marke). Ich habe den Ausnahmesatz danebengesetzt,
+     statt die Aufzählung umzuschreiben — der kleinere Eingriff, aber die schwächste Stelle.
 - **Der IWF-Volltext entscheidet 15 der 31 Sollreihen und 7 der 16 Prüfgegenstände.** Ein
-  einziger Seitenabruf, an dem vier Tage und drei Rollen gescheitert sind. Der teuerste offene
-  Punkt der ganzen Datenschicht.
-- **Für Reihe 2 gibt es keine geprüfte Ausweichquelle**, und sie trägt vier der sechzehn
-  Prüfgegenstände — die einzige der unklaren Reihen ohne zweiten Weg.
-- **Reihe 10, gemeldet und nicht aufgelöst:** Das Arbeitspaket verlangt den Faktor 10.000 auf
-  den Rohkurs, T5 Klasse 6 beschreibt dieselbe Grösse als „Index gegen USD, Startjahr = 10.000",
-  was für Deutschland 10.000 statt 17.341 ergäbe. Vorgegebener Faktor eingetragen, Frage als
-  Widerspruch Nr. 4 an den Architekten gestellt.
-- **Zwei Reihen ohne gemessene Quelleneinheit**, beide nicht mein Paket: der PWT-Kapitalstock
-  (Reihe 3) und BACI (Reihe 14, dazu laufende gegen konstante Preise). Wer den Jahrgangsbau
-  baut, braucht beide Zahlen vorher.
+  einziger Seitenabruf, an dem vier Tage und drei Rollen gescheitert sind. Der teuerste
+  offene Punkt der ganzen Datenschicht. Für Reihe 2 gibt es dazu keine geprüfte
+  Ausweichquelle, und sie trägt vier der sechzehn Prüfgegenstände.
+- **Zwei Reihen ohne gemessene Quelleneinheit**, beide nicht mein Paket: der
+  PWT-Kapitalstock (Reihe 3) und BACI (Reihe 14, dazu laufende gegen konstante Preise).
+  Wer den Jahrgangsbau baut, braucht beide Zahlen vorher.
+- **Reihe 10, gemeldet und nicht aufgelöst:** Das Arbeitspaket verlangt den Faktor 10.000
+  auf den Rohkurs, T5 Klasse 6 beschreibt dieselbe Grösse als „Index gegen USD, Startjahr
+  = 10.000". Als Widerspruch Nr. 4 an den Architekten gestellt.
 - **Ein Zusatzauftrag an den Datenkurator wäre billig:** die ILO in die geprüften Quellen
-  aufnehmen, **samt** der Stichtagsfrage („produced prior to 3 May 2023" ist nicht bestimmt).
-  Kostet keine Sollreihe, gibt aber den Reihen 6 und 7 ihren Datenanker zurück.
-- **Aus Paket 0022, unerledigt:** Drei weitere `Source`-Wortlaute in `reihen.toml` (Zeilen 304,
-  394, 405) tragen dieselbe Umbruch-Ersetzung ohne Vermerk wie die beiden reparierten. Benannt
-  im Feld `schnitt_2_offen`, nicht behoben, weil die Abnahme die vierte Änderung verbot.
-- **Aus Paket 0017, unerledigt:** Der Schlüsselname `sollreihen` steht in zwei Ebenen derselben
-  Datei; eine Zeilenzählung mit `grep` ergibt 43 statt 31. Die Falle ist im Abschnitt
-  `pruefweg` beschrieben, statt behoben zu sein. Untertabellen brauchen eigene Schlüsselnamen —
-  für den nächsten, der dort schreiben darf.
+  aufnehmen, **samt** der Stichtagsfrage („produced prior to 3 May 2023" ist nicht
+  bestimmt). Ohne sie kommt er mit derselben Zweideutigkeit zurück.
+- **0022:** Drei weitere `Source`-Wortlaute (Zeilen 304, 394, 405) tragen dieselbe
+  Umbruch-Ersetzung ohne Vermerk wie die beiden reparierten; benannt statt behoben, im
+  Feld `schnitt_2_offen`.
+- **0017:** Die Reihen 17, 18 und 19 haben keine Quelle; `frei` eingetragen und als
+  Widerspruch Nr. 7 sichtbar gemacht. Reihe 16 (`durchgriff`) erbt das schwächere Urteil
+  ihrer beiden Eingabereihen — Übertragung, keine Messung.
