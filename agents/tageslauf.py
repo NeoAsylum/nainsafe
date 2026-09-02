@@ -25,10 +25,20 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import nachtlauf  # noqa: E402
-from lauf import TAGESGRENZE_USD, db, jetzt  # noqa: E402
+from lauf import TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt  # noqa: E402
 
-GRENZE = 700.0
+GRENZE = 250.0
 DURCHGAENGE = 12
+
+
+def wochenverbrauch() -> float:
+    verbindung = db()
+    wert = verbindung.execute(
+        "SELECT coalesce(sum(kosten_eur), 0) FROM lauf "
+        "WHERE gestartet > datetime('now', '-7 days')"
+    ).fetchone()[0]
+    verbindung.close()
+    return float(wert)
 
 
 def verbrauch() -> float:
@@ -54,6 +64,11 @@ def main(grenze: float = GRENZE, durchgaenge: int = DURCHGAENGE,
     fehler = 0
     for nr in range(1, durchgaenge + 1):
         heute = verbrauch()
+        rest_woche = WOCHENGRENZE_USD - wochenverbrauch()
+        if rest_woche <= 0:
+            print(f"[{jetzt()}] Wochengrenze erreicht -- angehalten nach {nr - 1} "
+                  "Durchgaengen. Die Woche bindet, nicht der Tag.")
+            break
         if heute >= grenze:
             print(f"[{jetzt()}] Budget erreicht ({heute:.1f} von {grenze:.0f} $) "
                   f"nach {nr - 1} Durchgaengen.")

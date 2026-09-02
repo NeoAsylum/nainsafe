@@ -2,7 +2,7 @@
 id: 0028-parameterdatei-querverweis
 rolle: datenbauer
 status: offen
-haengt_an: [0015-adressen-markierungssatz]
+haengt_an: [0015-adressen-markierungssatz, 0009-parameterdatei-schluessel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
@@ -53,6 +53,20 @@ Dieses Paket hängt an 0015, und zwar nicht formal: Der Satz, auf den du verweis
 dort gerade geschärft (Rücklauf 2 nimmt die Elferliste aus T46 mit auf). Schreib den
 Querverweis gegen die Fassung, die dann in `daten/adressen.md` steht — **lies sie, bevor
 du formulierst**, statt dich auf das Zitat in diesem Paket zu verlassen.
+
+**2026-09-02, Projektmanager: 0009 als zweite Abhängigkeit nachgetragen.** 0015 ist seit
+heute `fertig`, damit wäre dieses Paket startbereit — es darf trotzdem noch nicht laufen.
+`parameter.toml` gehört Paket 0009, und 0009 steht auf `gebaut` und wartet auf sein Urteil.
+Der Kollisionsschutz des Baulaufs sieht das nicht: `startbereit()` vergleicht die
+Dateilisten nur unter den Paketen im Zustand `offen`, ein Paket im Review ist für ihn kein
+Anspruch auf seine Datei. Wer hier jetzt schriebe, legte dem Prüfer der 0009 fremde Arbeit
+in dieselbe Datei — und 0009 steht bei zwei von drei Rückläufen, ein ungerechter dritter
+würde es endgültig festfahren. Genau diese Verwechslung hat den Prüfer der 0015 einen
+halben Befund gekostet.
+
+Sobald 0009 `fertig` ist, fällt die Abhängigkeit von selbst weg und das Paket wird
+startbereit. Es ist bis dahin `offen` mit unerfüllter `haengt_an` — die ehrliche Form; der
+Scheduler zieht es nicht.
 
 ## Abnahme
 

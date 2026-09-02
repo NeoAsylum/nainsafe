@@ -414,3 +414,29 @@ was erlaubt ist.
   Stelle, die der Ablauf nicht so erreicht, wie ich dachte. Sie faellt jedes Mal
   dadurch auf, dass etwas **nicht** geschieht -- und der Geschaeftsfuehrer hat sie jedes
   Mal vor mir gesehen.
+
+- **2026-09-02** — **Die Kontingentbremse war zum ersten Mal geeicht, und sie stand
+  zweifach falsch.** Der Betreiber hat seine Anzeige vorgelesen: Fenster 4 Prozent, Woche
+  21 Prozent. Die Fabrik hatte im selben Wochenfenster 398,8 Dollar Gegenwert verbraucht.
+  Daraus die erste belastbare Zahl seit dem Start: **100 Prozent der Woche sind mindestens
+  1.900 Dollar Gegenwert** -- mindestens, weil das Gespraech mit dem Betreiber auf
+  dasselbe Kontingent geht.
+
+  **Erstens war die Zahl zu hoch.** Ich hatte sie am selben Tag von 400 auf 800
+  verdoppelt. Ein Tag mit 391 Dollar ist rund 18 Prozent der Woche; fuenf solche Tage
+  sind die ganze Woche, und die hat sieben. 300 haelt durch, 800 nicht.
+
+  **Zweitens, und wichtiger: Sie sass am falschen Fenster.** Bindend ist die Woche, nicht
+  der Tag -- das Fuenf-Stunden-Fenster stand bei 4 Prozent, waehrend die Woche bei 21
+  stand. Eine Tagesgrenze allein laesst sieben volle Tage zu und damit ein Vielfaches des
+  Wochenlimits. *Folgerung:* `lauf.py` hat jetzt zwei Bremsen, und die woechentliche ist
+  die eigentliche.
+
+  **Und eine Wiedervorlage mit Datum, weil sie sonst vergessen wird:** Das Wochenlimit
+  ist bis zum **2026-09-13** um 50 Prozent erhoeht. Danach sind dieselben 398,8 Dollar
+  rund 31 statt 21 Prozent, und beide Grenzen gehoeren auf zwei Drittel -- 200 und 1.070.
+
+  Die allgemeine Lehre: **Ich habe zwei Wochen lang gegen eine Zahl gebremst, die ich mir
+  ausgedacht hatte.** Sie stand nach dem 253-Dollar-Tag da, wurde zweimal verdoppelt und
+  war nie an etwas gemessen. Ein Grenzwert ohne Eichung ist eine Beruhigung, keine
+  Sicherung -- und wenn er am falschen Fenster sitzt, ist er nicht einmal das.

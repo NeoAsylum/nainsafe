@@ -98,21 +98,49 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # (siehe agents/kontingent.py). Diese Grenze ist bewusst grosszuegig -- sie soll
 # Ausreisser abfangen, nicht den Normalbetrieb bremsen. Ein voller Nachtlauf lag
 # zuletzt bei rund 40 Dollar.
-# 2026-09-01 vom Betreiber auf 400 angehoben: "Du kannst das Tageslimit jetzt
-# resetten. Wir haben noch genuegend Token." Die Bremse bleibt, sie steht weiter
-# hinten -- sie soll den Ausreisser abfangen, nicht den Betrieb.
+# Am 2026-09-02 zum ersten Mal an echten Zahlen geeicht, statt geraten. Der Betreiber
+# hat seine Anzeige vorgelesen: Fenster 4 Prozent, Woche 21 Prozent. Die Fabrik hatte im
+# selben Wochenfenster (Montag 10:00 bis Mittwoch abend) 398,8 Dollar Gegenwert
+# verbraucht.
 #
-# Wichtiger als diese Zahl ist seit heute die zweite Bremse: Geld allein hat den
-# 95-Dollar-Leerlauf vom 2026-09-01 nicht verhindert, weil die Schleife brav unter
-# der Grenze blieb und trotzdem nicht konvergierte. Die Konvergenzbremse steht in
-# konzeptlauf.py:RUECKLAUF_MAX.
-TAGESGRENZE_USD = 800.0
+# Daraus folgt eine Untergrenze: 100 Prozent der Woche sind MINDESTENS 1.900 Dollar
+# Gegenwert -- mindestens, weil das Gespraech mit dem Betreiber auf dasselbe Kontingent
+# geht und in den 21 Prozent mit drinsteckt.
+#
+# Und daraus zwei Korrekturen an dem, was hier vorher stand:
+#
+# Erstens war die Zahl zu hoch. Ein Tag mit 391 Dollar war rund 18 Prozent der Woche;
+# fuenf solche Tage sind die ganze Woche, und die hat sieben. 300 ist die Zahl, die
+# durchhaelt.
+#
+# Zweitens war die Bremse am falschen Fenster. Bindend ist die WOCHE, nicht der Tag --
+# das Fuenf-Stunden-Fenster stand bei 4 Prozent, waehrend die Woche bei 21 stand. Eine
+# Tagesgrenze allein laesst sieben volle Tage zu und damit ein Vielfaches des
+# Wochenlimits. Deshalb steht darunter jetzt eine zweite.
+#
+# Nachzueichen am 2026-09-13: Bis dahin ist das Wochenlimit um 50 Prozent erhoeht.
+# Danach sind dieselben 398,8 Dollar rund 31 statt 21 Prozent, und beide Zahlen hier
+# gehoeren auf zwei Drittel gesenkt -- 200 und 1.070.
+TAGESGRENZE_USD = 300.0
+
+# Die eigentliche Bremse. Gerechnet ueber sieben rollende Tage statt ueber Anthropics
+# Wochenfenster (Montag 10:00): Der genaue Zuschnitt ist zweitrangig, die
+# Groessenordnung nicht.
+WOCHENGRENZE_USD = 1600.0
 
 
 def tagesverbrauch(verbindung) -> float:
     """Gegenwert aller Laeufe seit Mitternacht UTC."""
     zeile = verbindung.execute(
         "SELECT sum(kosten_eur) FROM lauf WHERE gestartet > date('now')"
+    ).fetchone()
+    return float(zeile[0] or 0)
+
+
+def wochenverbrauch(verbindung) -> float:
+    """Gegenwert der letzten sieben Tage -- die Groesse, die wirklich bindet."""
+    zeile = verbindung.execute(
+        "SELECT sum(kosten_eur) FROM lauf WHERE gestartet > datetime('now', '-7 days')"
     ).fetchone()
     return float(zeile[0] or 0)
 
@@ -411,6 +439,15 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
 
     # Notbremse vor dem Start, nicht danach: Ein Lauf, der die Grenze reisst,
     # soll gar nicht erst beginnen.
+    woche = wochenverbrauch(verbindung)
+    if woche >= WOCHENGRENZE_USD:
+        verbindung.close()
+        print(f"  ABGEBROCHEN: Wochengrenze erreicht "
+              f"({woche:.0f} von {WOCHENGRENZE_USD:.0f} $ Gegenwert in sieben Tagen).")
+        print("  Das ist die Grenze, die wirklich bindet -- Anthropic rechnet")
+        print("  woechentlich. Grenze in agents/lauf.py:WOCHENGRENZE_USD.")
+        return 2
+
     heute = tagesverbrauch(verbindung)
     if heute >= TAGESGRENZE_USD:
         verbindung.close()

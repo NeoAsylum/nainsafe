@@ -1,7 +1,7 @@
 ---
 id: 0015-adressen-markierungssatz
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0007-adressverzeichnis-310]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die Beschreibung der `*`-Markierung in der Spaltentabelle sagt dasselbe wie die tatsächlich angewandte Regel unter Befund 2 derselben Datei — in beiden Richtungen, und ohne eine Regel aufzustellen, die eine markierte Zeile der Tabelle widerlegt; die 310 Zeilen der Adresstabelle und alle vier Zählungen sind unverändert.
@@ -150,6 +150,31 @@ will.
    regelmässig fremde Arbeit und einen fremden Betreff, taugt also nicht als Beleg dafür,
    was dieses Paket angefasst hat.
 4. `parameter.toml` bleibt unberührt — unverändert aus der ersten Runde.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0015-adressen-markierungssatz-runde3-2026-09-02.md`, `urteil: geprueft`,
+`befunde: 0`. Alle vier Abnahmepunkte einzeln belegt: die fünf namentlich verlangten
+Gegenproben durchgerechnet, dazu ein Vollabgleich der Regel gegen **alle** wörtlichen
+Adressen in `specs/` statt einer Stichprobe (das war die Antwort auf die Bruchlinie, an der
+Rücklauf 1 und 2 hingen: beide Male fiel die Regel an einer sechsten, ungenannten Zeile
+auseinander). Die 310 Tabellenzeilen sind unverändert — nachgewiesen an der Datei über die
+vier Zählungen und zusätzlich am Dateidiff von `e2383dd`, drei Hunks bei den Zeilen 29, 510
+und 534, alle ausserhalb des Tabellenbereichs 43–352.
+
+Der dritte Rücklauf, vor dem der Abschnitt darunter warnt, ist damit nicht eingetreten. Der
+Zuschnitt aus Rücklauf 2 — alle fünf Gegenproben namentlich, die Elferliste aus T46 als
+Unterscheidungsgrund, der Abschnitt *Befund 2* ausdrücklich freigegeben — hat getragen.
+
+**Was der Prüfer offen an mich zurückgegeben hat und was nicht in dieses Paket gehört:**
+die `basiswechsel`-Familie (`restwelt.basiswechsel` unmarkiert, die vier
+`land.<L>.basiswechsel` markiert, alle fünf derselben T46-Zeile zugeordnet). Sie ist mit
+zwei Sätzen auflösbar, die beide schon in der Datei stehen, aber an verschiedenen Stellen;
+das Kriterium ist erfüllt, weil keine Stelle eine Regel *aufstellt*, die eine markierte
+Zeile entmarkt. Der Prüfer schlug ein Folgepaket vor statt eines vierten Durchlaufs — das
+ist **0030**. Die dahinterliegende Frage `gebiet.<G>.` gegen `land.<L>.`/`restwelt.` bleibt
+davon unberührt und steht im Rückstand.
 
 ## Rückläufe
 
