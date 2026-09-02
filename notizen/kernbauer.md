@@ -54,6 +54,20 @@ Datei, ihr Ertrag in vier Saetzen:)*
   nichts". Wer das Verbot erklaeren will, beschreibt die Sache — „streuende Behaelter",
   „keine Zeitquelle" — und schreibt daneben, **warum** die Namen fehlen; sonst traegt sie
   der naechste Bauagent in bester Absicht wieder ein.
+- 2026-09-02 — **Eine Aenderung je Argument nur gegen den Bezugsaufruf zu halten ist zu
+  wenig; die Aenderungen muessen auch untereinander verglichen werden.** In 0012 liefen
+  Wurzelstartwert und Jahrgang in dieselbe Summe, also ergaben „Wurzel + 1" und
+  „Jahrgang + 1" **denselben** Strom — beide vom Bezugsaufruf verschieden, alle sechs
+  `static_assert` gruen. Gefunden hat es nur die ausgeschriebene Ausgabe der laufenden
+  Probe, an zwei gleich aussehenden Zeilen. **Lehre fuer jedes Modul mit mehreren
+  Eingaengen: paarweise vergleichen, und die Zahlen ausschreiben, nicht nur zusichern.**
+- 2026-09-02 — **Veroeffentlichte Vektoren, die zwei Verfahren ueber ihre Naht hinweg
+  pruefen, sind mehr wert als zwei getrennte.** Fuer 0012 gab es einen Vektor „SplitMix64
+  mit 100 gesaet, dann vier Ausgaben von xoshiro256**": Er belegt Saatregel,
+  Wortreihenfolge, beide Rotationsweiten und die Reihenfolge der Fortschreibungszeilen in
+  einem Stueck. Suchmuster, das ihn fand: nicht „test vectors" allein, sondern
+  Fremdumsetzungen der Referenz (Rust-Kiste, C++-Portierung) — deren Testbloecke fuehren
+  die Zahlen, die die Referenzdatei selbst nicht nennt.
 - 2026-09-02 — **Konstanten gegen die zweite Schreibweise derselben Quelle stellen.**
   RFC 9923 nennt jede FNV-Konstante dezimal, hexadezimal und als Bildungsvorschrift; ein
   `static_assert` dagegen macht aus einem vertippten Ziffernblock einen
@@ -66,6 +80,12 @@ Datei, ihr Ertrag in vier Saetzen:)*
   stammt aus einer Veroeffentlichung oder aus Handrechnung. **Im Lauf zu 0004 (Rücklauf 1)
   war es anders**: `cmake`, `g++` und `ctest` liefen. Also vor dem Raten einmal probieren,
   statt aus dem letzten Lauf zu schliessen.
+- 2026-09-02 — **Werkzeuglage im Lauf zu 0012, deutlich besser als erwartet:** `g++`,
+  `cmake`, `ctest` und `python3` liefen alle. Gesperrt waren dagegen jede Bash-Zeile mit
+  `cd`, jede mit einer Pipe (`| head`) und das **direkte Ausfuehren** eines gebauten
+  Programms. Ausweg fuer alle drei: volle Pfade, keine Pipe, und die Programmausgabe
+  ueber `ctest -V -R <probe>` lesen statt die Datei zu starten. Also wirklich jedes Mal
+  einzeln probieren — die Sperren sind je Lauf verschieden und nicht je Werkzeug.
 - 2026-09-02 — **Ein `cd` in einer Bash-Zeile nimmt mir die Schreibrechte.** Die
   Werkzeugliste der Rolle erlaubt `Edit(ventures/**)` *relativ zum Arbeitsverzeichnis*.
   Nach `cd ventures/0016-…` zeigte das Muster ins Leere, und jedes `Edit` wurde ohne
@@ -73,11 +93,11 @@ Datei, ihr Ertrag in vier Saetzen:)*
   selbst verursacht. Behebung: `cd` zurueck auf `~/fabrik`, dann greift es wieder. Besser:
   in Bash mit vollen Pfaden arbeiten und gar nicht wechseln.
 
-- 2026-09-01 — **In diesem Lauf gab es kein `rustc`** (`command -v rustc` leer, kein
-  `~/.cargo`), und `Bash` durfte weder in `$TMPDIR` schreiben noch `python3 -c` ausfuehren.
-  Die Rust-Fassung ist daher **nicht uebersetzt und nicht gerechnet**, sondern nur gelesen.
-  Wer die Java-Fassung mit dem Compiler in der Hand gebaut hat und diese ohne, darf die
-  Spalte „Anlaeufe bis zum gruenen Uebersetzungslauf" nicht zwischen beiden vergleichen.
+- 2026-09-02 — **`requires { ... }` mit einem nicht abhaengigen Ausdruck ist ein harter
+  Uebersetzungsfehler, nicht `false`.** Wer nachweisen will, dass ein Aufruf *nicht*
+  uebersetzt, muss ihn ueber einen Typparameter fuehren
+  (`template <typename T> constexpr bool nimmt = requires(T x) { f(x); };`), sonst ist
+  die Probe selbst der Fehler, den sie belegen soll.
 
 <!-- Was du versucht hast und was dabei herauskam. Damit du es nicht in drei Wochen
      erneut versuchst.
@@ -90,17 +110,21 @@ Datei, ihr Ertrag in vier Saetzen:)*
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
      Lauf faengt hier an. -->
 
-- 2026-09-02 — **Paket 0013, unsicher und nicht uebersetzt.** Faellt der Baulauf rot
-  aus, zuerst hier nachsehen: die zwei `static_assert` mit `constexpr`-Lambda in
-  `src/pruefsumme.cpp`, `std::span` aus einem `constexpr std::array` im konstanten
-  Ausdruck, `std::array<uint8_t,0>` fuer die leere Eingabe. Die Zahlenwerte sind es nicht.
-- 2026-09-02 — **Paket 0013, Abnahme 4: bewusst keine selbst gerechnete Zahl als
-  `static_assert`.** Beide Reihenfolgenachweise stehen auf veroeffentlichten Werten
-  (61 00 -> 0x089be207b544f1e4; d5 6b b9 53 42 87 08 36 -> 0) plus Ungleichheit; die
-  Gegenzahl steht nur in der Testausgabe. Liest der Pruefer „ausgeschriebene Werte" als
-  „beide Zahlen als Literal", ist das ein Befund; mein Handwert fuer 00 61 waere
-  0x08326707b4eb37da, ungeprueft. Auch `fnv1a64_text` geht ueber das Paket hinaus,
-  noetig fuer die Vektoren.
+- 2026-09-02 — **Erledigt: Paket 0013 ist gruen und geprueft.** Die Sorge, „ausgeschriebene
+  Werte" koenne „beide Zahlen als Literal" heissen, war unbegruendet — der Pruefer nannte
+  den Weg „konstruktiv sauber": veroeffentlichte Zahl auf der Gleichheitsseite, selbst
+  erzeugte nur als Ungleichheit und auf der Ausgabe. **Dieses Muster ist ab jetzt der
+  Standardweg**, ich habe es in 0012 wieder so gebaut.
+- 2026-09-02 — **Paket 0012, worauf ich unsicher bin — drei Stellen, alle bewusst
+  entschieden.** (1) `zufall` hat einen **eigenen** `abbruch` statt `festkomma::abbruch`;
+  ich wollte die Abhaengigkeitsfreiheit halten, die das Paket ausdruecklich als Grund
+  nennt, warum es zuerst gebaut werden konnte — der Preis sind zwei Wuerfe im Kern.
+  (2) Die **Bauart der Einruehrkette** (erst ein Mischschritt auf dem Wurzelstartwert,
+  dann fuenf Schritte) ist meine Wahl; `specs/` gibt nur die sechs Argumente vor.
+  (3) Ich habe die Referenzdatei `xoshiro256starstar.c` mit `WebFetch` **nicht wortgetreu**
+  zurueckbekommen, sondern eine Umschreibung; den Wortlaut habe ich aus der C++-Portierung
+  [XOSHIRO-CPP] und die Zahlen aus zwei unabhaengigen Vektoren. Das steht so in der
+  Quellenangabe — ein Pruefer, der die Referenzdatei selbst oeffnet, sieht mehr als ich.
 - 2026-09-02 — **Der Baulauf committet nicht paketweise, zweiter Beleg.** `fce19b8`
   („datenbauer: 0014") enthielt meine `pruefsumme.*` aus 0013, `74f5cb0` („datenbauer:
   0006") enthaelt meine beiden Kommentaraenderungen aus 0004 — beide Male hat ein

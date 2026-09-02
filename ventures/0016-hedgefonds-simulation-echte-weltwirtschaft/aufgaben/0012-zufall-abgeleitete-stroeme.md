@@ -1,7 +1,7 @@
 ---
 id: 0012-zufall-abgeleitete-stroeme
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zufall.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zufall.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zufall_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
