@@ -1,0 +1,18 @@
+- 2026-09-02 (Paket 0022) — **Ein Prüfweg, der sein Muster im Klartext nennt, zählt sich
+  selbst mit.** `[']{3}` statt dreier Apostrophe: dieselbe Regex, aber die Zeile, die sie
+  nennt, trifft sich nicht. Erst dadurch bleibt „28 Zeilen, 52 Vorkommen, gerade also
+  paarweise" nach dem Schreiben noch wahr.
+- 2026-09-02 (Paket 0022) — **Ein Muster ohne das Gleichheitszeichen zählt die
+  Nachbarschlüssel mit.** `^sollreihen` findet 28, `^sollreihen = ` findet 21; die
+  Differenz sind sieben Summenschlüssel. Jede Zählregel wird zeichengenau hingeschrieben
+  **und** gemessen, bevor sie in die Datei geht — sonst steht eine falsche Anleitung dort,
+  wo der Prüfer sie am wenigsten prüft.
+- 2026-09-02 (Paket 0022) — **Vor jedem „geprüft mit X": Steht X in meiner Werkzeugliste?**
+  Der teuerste Befund gegen mich war kein Rechenfehler, sondern ein behaupteter Parserlauf.
+  Eine Nachweiszeile, die die eigene Rolle nicht erzeugen kann, ist schlechter als keine:
+  sie hält den nächsten Leser davon ab, selbst nachzusehen.
+- 2026-09-02 (Paket 0022) — **Der zeichengleiche Wortlaut ist billiger als der Vermerk
+  daneben.** Bevor man eine Normalisierung dokumentiert, prüfen, ob man sie zurücknehmen
+  kann: Ein mehrzeiliges Literal trug hier, weil der Text weder Apostroph noch Dezimalpunkt
+  noch Anführungszeichen führt. Ein Vermerk hätte die Ersetzung erklärt und den Vergleich
+  gegen die Schnittstelle trotzdem scheitern lassen.

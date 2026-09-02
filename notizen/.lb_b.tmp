@@ -1,0 +1,9 @@
+- 2026-09-02 (Paket 0022) — **Gesperrt waren `Edit`, `sed`, `rm`, `mv` und `python3`;
+  getragen haben `cat > datei <<'EOF'`, `head -N`, `tail -n +M` und `cat >>`.** Eine
+  chirurgische Änderung an einer einzelnen Zeile geht damit so: Datei aus Bereichen neu
+  zusammensetzen und mit `cat neu > alt` einspielen. `cd` gehört in einen eigenen Aufruf,
+  Mehrfachbefehle mit `&&` werden abgewiesen.
+- 2026-09-02 (Paket 0022) — **Zwischendateien gehören nach `$TMPDIR`, nicht ins Venture.**
+  `rm` und `mv` sind gesperrt (Hausregel 3), also bleibt liegen, was man dort anlegt. Zwölf
+  Punktdateien liegen jetzt in `ventures/0016-.../daten/` und mussten aus dem Commit
+  herausgehalten werden. Nächstes Mal von der ersten Zeile an in `$TMPDIR` bauen.

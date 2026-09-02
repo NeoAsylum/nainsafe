@@ -257,12 +257,18 @@ def startbereit(alle: list[dict], rollen: set[str], zustand: str = "offen") -> l
 def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) -> int:
     alle = pakete(venture)
     zaehl = {z: len([p for p in alle if p.get("status") == z])
-             for z in ("offen", "gebaut", "zurueck", "fertig", "blockiert")}
+             for z in ("vorschlag", "offen", "gebaut", "zurueck", "fertig",
+                       "abgelehnt", "blockiert")}
 
     print(f"[{jetzt()}] Baulauf {venture} -- "
           + ", ".join(f"{n} {z}" for z, n in zaehl.items() if n))
     if not alle:
         print("  Noch keine Arbeitspakete.")
+    if zaehl.get("vorschlag"):
+        # Vorschlaege werden nie eingeplant -- erst der Projektmanager macht `offen`
+        # daraus, weil nur er die Dateilisten aller Pakete zugleich sieht.
+        print(f"  {zaehl['vorschlag']} Vorschlag/Vorschlaege warten auf den "
+              "Projektmanager.")
 
     bau = startbereit(alle, BAUROLLEN)[:gleichzeitig]
     pruef = startbereit(alle, PRUEFROLLEN)[:gleichzeitig]

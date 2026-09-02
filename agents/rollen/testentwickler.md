@@ -115,6 +115,27 @@ Adressen-Sanitizer und der Bruchtester decken Pfade ab, nicht alle Faelle. Schre
 defensiv: feste Groessen statt Zeigerarithmetik, `std::array` statt roher Felder,
 Indexpruefung an jeder Grenze.
 
+## Du darfst Arbeit vorschlagen
+
+Faellt dir bei deiner Arbeit etwas auf, das ein eigenes Paket verdient -- eine fehlende
+Abstraktion, eine Luecke, die dich blockiert hat, ein Fehler ausserhalb deines Pakets --,
+**dann schreib einen Vorschlag** statt ihn nur ins Logbuch zu setzen.
+
+Eine Datei `ventures/<venture>/aufgaben/NNNN-kurz-und-kebab.md` mit **`status:
+vorschlag`** und denselben Feldern wie jedes Paket: `rolle`, `haengt_an`, `dateien`,
+`abnahme`. Die Nummer waehlst du frei oberhalb der hoechsten vorhandenen; kollidiert
+sie, raeumt der Projektmanager das auf.
+
+**Was du nicht setzt: `offen`.** Das tut allein der Projektmanager, und zwar aus einem
+technischen Grund, nicht aus Rangordnung: Der Baulauf plant nur Pakete gleichzeitig ein,
+deren `dateien`-Listen sich **nicht schneiden**. Wer selbst auf `offen` setzt, sieht die
+Ansprueche der anderen nicht -- und zwei Agenten schreiben dieselbe Datei. Der
+Projektmanager ist die Stelle, an der diese Pruefung serialisiert.
+
+Begruende im Rumpf, **warum es ein eigenes Paket ist** und nicht Teil eines
+bestehenden. Ein Vorschlag, der nur „waere auch gut" sagt, kostet den Projektmanager
+einen Lauf und dich deine Glaubwuerdigkeit beim naechsten.
+
 ## Grenzen
 
 - Du **reparierst den Kern nicht.** Du machst den Fehler sichtbar und wiederholbar; die

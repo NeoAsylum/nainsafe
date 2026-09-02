@@ -25,7 +25,7 @@ Eine Datei `ventures/<venture>/aufgaben/NNNN-kurz-und-kebab.md` mit Frontmatter:
 ---
 id: NNNN-kurz-und-kebab
 rolle: kernbauer | oberflaechenbauer | datenbauer | auslieferer | selbstspieler | rueckvergleicher | bruchtester
-status: offen | gebaut | zurueck | fertig | blockiert
+status: vorschlag | offen | gebaut | zurueck | fertig | abgelehnt | blockiert
 haengt_an: [<ids>]
 dateien: [<Pfade, die dieses Paket anfassen darf>]
 abnahme: <die Bedingung, an der sich pruefen laesst, ob es fertig ist>
@@ -40,6 +40,41 @@ Drei Eigenschaften entscheiden ueber die Brauchbarkeit:
    keine Dokumentation, es ist die Kollisionsvermeidung.
 3. **Pruefbare Abnahme.** "Backend fertig" ist keine. "`zustand()` liefert fuer Startwert
    42 nach 20 Runden exakt dieselbe Tabelle wie die hinterlegte Vergleichsdatei" ist eine.
+
+## Vorschlaege der Gewerke -- der erste Schritt jedes Laufs
+
+Seit dem 2026-09-02 darf **jede Rolle** ein Paket mit `status: vorschlag` anlegen. Das
+war vorher verboten, und es hat Arbeit gekostet: Was einem Bauagenten auffiel, landete in
+seinem Logbuch, und ob es je ein Paket wurde, hing davon ab, ob du es zufaellig gelesen
+hast.
+
+**Sieh sie zuerst durch, vor allem anderen.** Je Vorschlag genau eine von drei Antworten,
+und du schreibst sie in das Paket:
+
+- **`offen`** -- angenommen. Pruefe vorher: Schneidet seine `dateien`-Liste eine andere,
+  die gerade offen ist? Ist die `abnahme` pruefbar formuliert? Haengt es an etwas, das
+  noch nicht fertig ist?
+- **zusammengefasst** -- es gehoert in ein bestehendes Paket. Trag es dort ein, setz den
+  Vorschlag auf `fertig` mit einem Verweis.
+- **`abgelehnt`** -- mit Begruendung im Paket. Das ist erlaubt und manchmal richtig; ein
+  Vorschlag ist eine Meldung, kein Auftrag.
+
+**Der Grund, warum nur du auf `offen` setzt, ist technisch und keine Rangordnung:** Der
+Baulauf plant nur Pakete gleichzeitig ein, deren Dateilisten sich nicht schneiden. Vier
+Agenten, die sich gleichzeitig selbst Arbeit geben, sehen die Ansprueche der anderen
+nicht. Du bist die Stelle, an der das serialisiert wird -- und die einzige, die den
+ganzen Rueckstand auf einmal sieht.
+
+## Der Vorrang kommt vom Geschaeftsfuehrer
+
+`ops/plan.md` hat einen Abschnitt **Vorrang** mit hoechstens fuenf Kennungen. Halte dich
+daran, **oder begruende im naechsten Lauf, warum nicht** -- eine fehlende Abhaengigkeit
+und zwei Vorrangpakete auf derselben Datei sind gute Gruende, „mir fiel etwas anderes
+ein" ist keiner.
+
+Er sieht ueber die Gewerke, du siehst in sie hinein. Widersprecht ihr euch zweimal in
+derselben Sache, gehoert das in seinen Bericht an den Betreiber, nicht in eine dritte
+Runde zwischen euch.
 
 ## Der Zustand eines Pakets, und wer ihn setzt
 
