@@ -1,7 +1,22 @@
 # =====================================================================
 # parameter.toml -- die Kalibrierdatei des Spiels
 #
-# Paket 0009-parameterdatei-schluessel, Datenbauer, Stand 2026-09-02.
+# Paket 0009-parameterdatei-schluessel, Datenbauer, Stand 2026-09-02,
+# **Fassung 2 nach Ruecklauf 1** (Pruefbefund vom 2026-09-02,
+# `urteil: zurueck`). Geaendert wurden drei Stellen: `startzustimmung`
+# von 0 auf 1 (Befund 1), die Aufzaehlung der gekoppelten Paare unter
+# BEFUNDE Punkt 5 (Befund 2) und die Schranke der `schrittweite` in den
+# Instrumententabellen (Befund 4). **Nicht geaendert:** die fuenf
+# Klasse-4-Schluessel `preisstoss`, `zustimmung_elastizitaet`,
+# `nachahmer_wirkung`, `hebel_max`, `innerjahresausschlag_faktor` aus
+# Befund 3 des Pruefbefunds. Ob Klasse 4 ihren Deckel von 10.000 auch
+# fuer einen Regler traegt, entscheidet nicht diese Datei, sondern eine
+# Zeile in T5; die Frage steht in `rueckstand.md` als Vorlage an den
+# Geschaeftsfuehrer. Eine Antwort hier waere eine Abweichung von specs/
+# ohne ADR. Der Satz "specs/ nennt keine obere" bei `preisstoss` bleibt
+# deshalb stehen und ist als bestrittene Aussage zu lesen -- der
+# Pruefbefund vom 2026-09-02 zeigt, dass T5 fuer die Klasse, die diese
+# Datei dem Schluessel zuweist, sehr wohl eine nennt.
 # Quellen: specs/0016-.../technik.md T5, T27, T45, T46, T47, T50, T51,
 #          T23 Punkt 5, T15, T16, T6, T40; specs/0016-.../spiel.md
 #          (Aktionen, Gegenkraefte, "Jede Groesse ohne Datenanker",
@@ -669,6 +684,46 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 # Jahrgangsbaus und kein stilles Kappen einer Sollgroesse (T51). Daraus
 # folgt Regel B fuer die Platzhalter: Die Wertebereiche stehen hier
 # **weit**. Ein enger Wertebereich waere eine Kalibrierung.
+#
+# **Die Schranke der Schrittweite, einmal fuer alle vier Instrumente**
+# (nachgetragen im Ruecklauf 1, Befund 4 des Pruefbefunds vom
+# 2026-09-02 -- drei der vier Tabellen trugen fuer `schrittweite` weder
+# Wertebereich noch Herkunft):
+#
+#   `schrittweite >= 1`, ganzzahlig.
+#
+# Herkunft, in zwei Schritten und beide belegt:
+#   * T5 Klasse 10 (Zeile 155-156) sagt woertlich, "hoechstens ein
+#     Schritt je Runde" heisse bei der Finanzmarktregulierung **eine
+#     Stufe**, "bei den anderen dreien `schrittweite[instrument]`
+#     Basispunkte aus `parameter.toml`". Die vier Schrittweiten sind
+#     damit dieselbe Groesse in vier Einheiten, und T51 setzt die eine,
+#     die es beziffert, auf 1 -- den kleinsten positiven Wert ihrer
+#     Klasse. Was fuer die bezifferte gilt, gilt der Form nach fuer die
+#     drei unbezifferten.
+#   * Die beiden Ausfaelle sind aus der Bewegungsregel von T51 ablesbar,
+#     `stand = min(max(stand +/- schritt, min), max)`: Bei
+#     `schrittweite = 0` steht das Instrument in jeder Runde still,
+#     Aktion 3 und die faelligen Verzoegerungen aus Schritt 3 laufen ins
+#     Leere, und **nichts bricht ab** -- der Fehler zeigte sich erst am
+#     Selbstspieler. Bei `schrittweite < 0` kehrt sich die Richtung jeder
+#     Bewegung um, weil das Vorzeichen in `+/-` schon die Richtung des
+#     ausloesenden Drucks traegt; das Instrument bewegte sich gegen den,
+#     der es bezahlt hat.
+#
+# **Es ist eine Folgerung, keine woertliche Vorgabe**, und als solche
+# gekennzeichnet -- dieselbe Bauart wie `stufen_max >= 1` und
+# `druck_max >= 1`. T51 beziffert `schrittweite` fuer Leitzins, Zoll und
+# Haushalt nicht.
+#
+# **Eine obere Schranke nennt specs/ fuer die Schrittweite nicht.**
+# Wirksam begrenzt ist die *Wirkung* durch den Wertebereich desselben
+# Instruments: Eine Weite ueber `instrument_max - instrument_min` traegt
+# den Stand in einem Schritt von einer Grenze zur anderen, die Kappung
+# aus T51 faengt sie ab, und "hoechstens ein Schritt je Runde" ist dann
+# keine Daempfung mehr. Dieselbe Unterscheidung zwischen dem Bereich der
+# Groesse und dem Bereich des Reglers wie bei `gegenlobby_satz`
+# (Klasse 9, begrenzt ist das Ergebnis durch `druck_max`).
 # ---------------------------------------------------------------------
 
 # Klasse 3 (Raten, bp). Datenanker Reihe 9 (IWF IFS); fuer Deutschland
@@ -681,6 +736,11 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 # `instrument_max` weit: Brasiliens Leitzins liegt am Anfang des
 # Pruefjahrgangs im zweistelligen Prozentbereich, ein enger Wert erzeugte
 # einen Befund des Jahrgangsbaus.
+# `schrittweite`: Klasse 3 (Raten, bp), Schranke `>= 1` und ganzzahlig
+#   nach dem Gruppenkopf oben (T5 Klasse 10 Zeile 155-156 mit T51,
+#   Folgerung). Keine obere aus specs/; wirksam wird sie bei
+#   `instrument_max - instrument_min = 10.050` bp -- darueber traegt ein
+#   Schritt den Zins von einer Grenze zur anderen.
 # Kalibriert: Selbstspieler (`schrittweite`); die beiden Grenzen sind
 #   gegen den Jahrgang zu pruefen, nicht zu suchen.
 # Scheitert daran: `schrittweite` zu klein -- der Spieler bewegt den Zins
@@ -699,9 +759,15 @@ instrument_max = 10000  # PLATZHALTER
 # `instrument_min` ist nach T51 **fest 0** -- der Wertebereich lautet
 # dort `0 ... instrument_max[zoll]`, ein negativer Zoll waere eine
 # Subvention und ist im Modell nicht vorgesehen.
+# `schrittweite`: Klasse 3 (Raten, bp), Schranke `>= 1` und ganzzahlig
+#   nach dem Gruppenkopf oben (T5 Klasse 10 Zeile 155-156 mit T51,
+#   Folgerung). Keine obere aus specs/; wirksam wird sie bei
+#   `instrument_max - instrument_min = 10.000` bp.
 # Kalibriert: Selbstspieler (`schrittweite`).
-# Scheitert daran: `instrument_max` zu eng -- der historische Pfad
-#   verlaesst den Bereich und der Jahrgangsbau meldet einen Befund.
+# Scheitert daran: `schrittweite` zu klein -- der Spieler bewegt den Zoll
+#   in R Runden nicht spuerbar; zu gross -- keine Daempfung von Kanal 8.
+#   `instrument_max` zu eng -- der historische Pfad verlaesst den Bereich
+#   und der Jahrgangsbau meldet einen Befund.
 [instrument.zoll]
 schrittweite = 1  # PLATZHALTER
 instrument_min = 0  # FEST (T51)
@@ -712,6 +778,10 @@ instrument_max = 10000  # PLATZHALTER
 # Zahl und keine Bedingung; beide sind gegen den historischen Pfad zu
 # pruefen. Der Saldo ist im Pruefjahrgang in mehreren Laendern deutlich
 # negativ, der Platzhalter deshalb weit nach unten offen.
+# `schrittweite`: Klasse 3 (Raten, bp), Schranke `>= 1` und ganzzahlig
+#   nach dem Gruppenkopf oben (T5 Klasse 10 Zeile 155-156 mit T51,
+#   Folgerung). Keine obere aus specs/; wirksam wird sie bei
+#   `instrument_max - instrument_min = 20.000` bp.
 # Kalibriert: Selbstspieler (`schrittweite`).
 # Scheitert daran: wie beim Zoll.
 [instrument.haushalt]
@@ -774,11 +844,71 @@ instrument_max = 1  # FEST (T51), muss `regulierung_stufen` gleichen
 #    dieselbe Zahl** (T51). Auflage: Gleichheit beim Einlesen pruefen,
 #    Ungleichheit ist ein Abbruch.
 #
-# 5. **`aufschlag` und `instrument_min[leitzins]` sind gekoppelt**
-#    (`instrument_min >= 1 - aufschlag`, T51). Diese Datei haelt die
-#    Kopplung mit 51 und -50 ein. Sie ist die einzige Stelle, an der
-#    zwei Platzhalter voneinander abhaengen; wer einen aendert, prueft
-#    den anderen.
+# 5. **Welche Platzhalter voneinander abhaengen -- vollstaendig, und
+#    jede Bedingung nachgerechnet.**
+#
+#    Bis zum Ruecklauf 1 stand hier, `aufschlag` und
+#    `instrument_min[leitzins]` seien "die einzige Stelle, an der zwei
+#    Platzhalter voneinander abhaengen". Das war falsch, und der Satz
+#    hat den Fehler gedeckt, den er haette finden sollen: Die Datei
+#    rechnete genau das eine Paar nach, das sie fuer das einzige hielt,
+#    und `startzustimmung = 0` neben `zustimmung_wechselschwelle = 0`
+#    blieb unbemerkt. Deshalb steht hier jetzt die Aufzaehlung statt
+#    einer Behauptung ueber sie.
+#
+#    **(a) Bedingungen zwischen zwei Schluesseln dieser Datei --
+#    in dieser Datei nachrechenbar, hier nachgerechnet:**
+#
+#    | # | Bedingung | Herkunft | eingesetzt |
+#    |---|---|---|---|
+#    | 1 | `instrument_min[leitzins] >= 1 - aufschlag` | T51, T23 P5 | `-50 >= 1 - 51 = -50` ok |
+#    | 2 | `1 <= aufsicht_schwelle_1 < _2 < _3 <= aufsicht_max` | Folgerung aus spiel.md Gegenkraft 1 | `1 <= 1 < 2 < 3 <= 3` ok |
+#    | 3 | `0 <= regulierung_start <= regulierung_stufen` | T51 | `0 <= 0 <= 1` ok |
+#    | 4 | `instrument_max[regulierung] = regulierung_stufen` | T51 | `1 = 1` ok |
+#    | 5 | `startzustimmung > zustimmung_wechselschwelle` | Folgerung, spiel.md Gegenkraft 2 | `1 > 0` ok |
+#    | 6 | `instrument_min <= instrument_max`, je Instrument | T51 (Wertebereich) | `-50 <= 10.000`; `0 <= 10.000`; `-10.000 <= 10.000`; `0 <= 1` ok |
+#    | 7 | `lobbykosten * beteiligungsrabatt >= 1` (Nenner) | T50, T6 | `1 * 1 = 1` ok |
+#    | 8 | `stufen_max * stufenweite <= 10.000` | Folgerung, keine Vorgabe aus specs/ | `1 * 1 = 1` ok |
+#
+#    Acht Bedingungen, 15 Einzelvergleiche, alle erfuellt. **Wer einen
+#    der beteiligten Schluessel aendert, rechnet die Zeile neu, in der
+#    er vorkommt.**
+#
+#    **(b) Der eine begrenzt nicht den anderen, sondern dessen
+#    Ergebnis** -- eine Aenderung verletzt hier keine Schranke, sie
+#    verschiebt die Wirkung:
+#      * `gegenlobby_satz` -> Gegendruck, gekappt durch `druck_max`
+#        (T5 Klasse 9): `0 <= 1`.
+#      * `nachahmer_tempo` -> Nachahmerzaehler, gekappt durch
+#        `nachahmer_max` (T5 Klasse 11): `0 <= 0`.
+#      * `schrittweite` -> Stand, gekappt durch den Wertebereich
+#        desselben Instruments (T51): `1` gegen die Spannen 10.050,
+#        10.000, 20.000 und 1. Bei der Regulierung sind Weite und
+#        Spanne gleich gross -- das ist die Vorgabe (eine Stufe, zwei
+#        Staende), keine Enge dieser Datei.
+#
+#    **(c) Gekoppelt an eine Zahl, die nicht in dieser Datei steht** --
+#    hier grundsaetzlich nicht nachrechenbar, und deshalb Auflage an den
+#    Jahrgangsbau und nicht an den Pruefer dieser Datei:
+#      * `startkapital` und `stufenweite` gegen den groessten und den
+#        kleinsten der sechzehn Startmarktwerte (T47; die beiden Zahlen
+#        weist das Manifest aus),
+#      * `stufenweite` gegen die drei `aufsicht_schwelle_*`: erreichbare
+#        Stufenzahlen muessen die Schwellen erreichen (T47),
+#      * `aufschlag` gegen `min(leitzins_pfad)` des eingebetteten
+#        Jahrgangs (T23 P5) -- der Platzhalter 51 haelt beide Kandidaten
+#        des Pruefjahrgangs ein, ein anderer Jahrgang kann mehr
+#        verlangen,
+#      * `instrument_min`/`instrument_max` aller vier Instrumente gegen
+#        den historischen Pfad (T51).
+#
+#    **(d) Gemeinsam kalibriert, aber ohne Ungleichung** -- kein
+#    Paar dieser Sorte kann eine Schranke verletzen, sie sind hier nur
+#    genannt, damit die Aufzaehlung vollstaendig ist: `schwelle_v` mit
+#    `startkapital`; `lobbykosten` mit `startkapital` und `druck_max`;
+#    `nachahmer_tempo`, `nachahmer_max` und `nachahmer_wirkung`;
+#    `abschreibungsrate` mit `investitionsquote`; `startzustimmung`,
+#    `zustimmung_wechselschwelle` und `zustimmung_elastizitaet`.
 #
 # 6. **`startzustimmung` und `regulierung_start` tragen je vier
 #    Adressen** -- ein Wert fuer alle vier spielbaren Laender. So zaehlt

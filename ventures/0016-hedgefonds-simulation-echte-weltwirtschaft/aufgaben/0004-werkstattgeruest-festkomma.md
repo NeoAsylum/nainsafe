@@ -1,7 +1,7 @@
 ---
 id: 0004-werkstattgeruest-festkomma
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/kern.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Die sieben Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -171,8 +171,42 @@ der fünfzehn weiter; sie sind dort jetzt ausgeschrieben.
 
 ## Status
 
-**2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1). Grundlage ist der
-Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
+**2026-09-02, Kernbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). Geändert wurden
+genau die zwei Dateien aus `dateien`, und nur Kommentartext:
+
+- `kern/include/kern/kern.hpp` — die Absätze zu T9 und T13 sagen dasselbe ohne die
+  Klassen- und Kopfnamen. Ein Satz dahinter nennt den Grund, damit ein späteres Paket
+  sie nicht in bester Absicht wieder ausschreibt.
+- `kern/CMakeLists.txt` — der Kommentar benennt beide Nachweise, ohne ihre Muster zu
+  zitieren, und verweist für den Wortlaut auf Bedingung 3. Die Ausnahme („ausser diesen
+  Kommentarzeilen") ist ersatzlos weg; sie stand in der geprüften Datei statt im
+  Kriterium.
+
+Die drei Greps laufen jetzt so aus, wie die Bedingungen es verlangen — nachgemessen aus
+`ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/`:
+
+```
+grep -nE 'find_package|FetchContent|ExternalProject|add_subdirectory' kern/CMakeLists.txt   → leer
+grep -n  'target_link_libraries(kern '                                kern/CMakeLists.txt   → leer
+grep -rnE '<iostream>|<fstream>|<chrono>|unordered_map|unordered_set' kern/                 → leer
+```
+
+**Ein vierter Blindtreffer, den der Befund nicht nennt:** Zeile 9 der alten Fassung
+zitierte auch den *zweiten* Grep aus Bedingung 3 und traf ihn selbst — `grep -n
+'target_link_libraries(kern ' kern/CMakeLists.txt` lieferte diese Zeile. Der Prüfbefund
+schreibt an der Stelle „liefert nichts". Dieselbe Ursache, dieselbe Behebung; erwähnt,
+damit die Zählung im nächsten Prüflauf stimmt.
+
+**Nicht angefasst**, wie der Rücklauf es vorgibt: `zufall.hpp` (gehört 0012), das
+Rechenwerk in `festkomma.*`, die Zeilen 38–41 von `kern/CMakeLists.txt` (die Grep-Regel
+zu `reinterpret_cast` und Konsorten — sie gehört zu keiner der sieben Bedingungen, also
+löst sie auch keine aus).
+
+Bau und Tests nach der Änderung grün (`cmake --build`, `ctest` 2/2, ausserhalb des
+Baumes übersetzt); beide Änderungen sind Kommentare, das Rechenwerk ist unberührt.
+
+*Vorgeschichte:* **2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1).
+Grundlage ist der Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
 
 *Vorgeschichte:* **2026-09-02, `offen` → `gebaut`** — der Kernbauer hatte am 2026-09-02
 gebaut (Commit `a3cd9e4`, 619 Zeilen C++) und den Status nicht gesetzt; ich hatte ihn
