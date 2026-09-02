@@ -35,13 +35,11 @@ zusammenziehen.** Nichts geht verloren, `git log -p` hat jede Fassung.
 - **Geschärfte Vorgaben gehören in das Paket, das die Sache ohnehin baut.** Prüffrage:
   Gibt es ein offenes, noch nie gebautes Paket, das diese Datei ohnehin anfasst? Dann ist
   es kein Kriterienzuwachs, sondern ein schärferes Kriterium vor dem ersten Versuch.
-- **2026-09-02, neunter Lauf — Bricht ein Paket zweimal an derselben Stelle ab, schreib
-  die Reihenfolge seiner Dateien vor.** Bei 0019 (vier Dateien): `CMakeLists.txt` und ein
-  leeres `main` **zuerst**, Kopf und Quelle danach. Dann ist der Kasten im Bericht
-  sichtbar, und jeder spätere Abbruch macht den Bau **rot statt still**. Merksatz für den
-  Bauagenten: *Ein Kasten, der übersetzt und zu wenig prüft, ist mehr wert als ein
-  vollständiger Entwurf, den niemand baut* — das erste kann der Prüfer zurückgeben, das
-  zweite sieht er nicht.
+- **Bricht ein Paket an derselben Stelle ab, hilft die Reihenfolge seiner Dateien** —
+  `CMakeLists.txt` und ein leeres `main` zuerst, dann ist der Kasten im Bericht sichtbar
+  und jeder Abbruch macht den Bau **rot statt still**. Merksatz für den Bauagenten: *Ein
+  Kasten, der übersetzt und zu wenig prüft, ist mehr wert als ein vollständiger Entwurf,
+  den niemand baut.* **Aber sie ersetzt keinen Zuschnitt** — siehe unten, zehnter Lauf.
 
 ## Was nicht funktioniert
 
@@ -85,6 +83,22 @@ zusammenziehen.** Nichts geht verloren, `git log -p` hat jede Fassung.
   jünger aus, als es ist. Trägt das Frontmatter Urteil und `kriterium_geprueft`
   vollständig, hält die Abnahme trotzdem; dann aber **die Zieldatei selbst nachsehen**,
   weil die Begründung fehlt.
+- **2026-09-02, zehnter Lauf — Eine Ermahnung ist kein Zuschnitt.** 0019 ist dreimal in
+  derselben Datei abgebrochen (25 Zeilen, mitten im Namensraum). Beim dritten Mal stand
+  meine Reihenfolgevorgabe schon im Paket. Ursache war nicht die Reihenfolge, sondern die
+  Größe: vier Dateien, zwei Verfahren, sieben Bedingungen, zwei absichtlich falsche
+  Fassungen. **Beim zweiten Abbruch teilen, nicht beim vierten** — ich habe drei Läufe
+  lang die Hausregel „was zwei Läufe braucht, ist zwei Pakete" mit einem guten Ratschlag
+  überschrieben. Schnittkante war der Kopf: Er deklarierte vier Funktionen, zwei je Paket,
+  je eine eigene Quelle und Probe. **Deklariert und undefiniert ist kein Fehler**, solange
+  niemand ruft — damit ist ein Kopf, der beide Hälften kennt, kein Grund gegen die Teilung.
+- **2026-09-02, zehnter Lauf — Der Kollisionsschutz sieht `gebaut` nicht.**
+  `startbereit()` vergleicht `dateien` nur unter den Paketen im Zustand `offen`. Ein Paket
+  im Review hält für den Runner **keinen** Anspruch auf seine Datei — ein neu startbereites
+  schreibt hinein, und der Prüfer misst fremde Arbeit. **Prüffrage bei jedem Paket, das
+  ich startbereit mache: Hält ein Paket auf `gebaut` eine seiner Dateien?** Dann gehört es
+  in `haengt_an`. Bei 0028/0009 getan; 0009 stand bei zwei von drei Rückläufen und hätte
+  einen ungerechten dritten nicht überlebt.
 
 ## Offene Fährten
 
@@ -99,19 +113,25 @@ zusammenziehen.** Nichts geht verloren, `git log -p` hat jede Fassung.
   Abnahme**; der Prüfer entscheidet weiterhin, ein Irrtum kostet einen Rücklauf. **Grenze:
   nur wenn der Übersetzungsbericht die Probe namentlich als bestanden führt.** Bei 0019
   (sichtbarer Torso) ausdrücklich nicht getan — ein Prüfer daran wäre ein verbrannter Lauf.
-- **Den Preis einer Dauerblockade an der Zieldatei messen, nicht am Statusfeld.** 0011
-  („Stack auf C++") hält seit ADR 0011 einen von vier Bauplätzen — und `technik.md` trägt
-  heute **8 Treffer für „Rust" und 0 für „C++"**. Die Datei hat sich nie geändert. Erst
-  diese Zahl macht aus „ein Paket hängt" ein Argument, das der Geschäftsführer wiegen kann.
-  **Suchmuster: bei jedem lange offenen Paket einmal `grep -c` auf das, was drinstehen
-  müsste.**
+- **Den Preis einer Dauerblockade an der Zieldatei messen, nicht am Statusfeld.**
+  Suchmuster: bei jedem lange offenen Paket einmal `grep -c` auf das, was drinstehen
+  müsste. — **2026-09-02, zehnter Lauf: Die Messung stimmt, meine Erklärung war falsch.**
+  Ich habe zwei Pläne lang gemeldet, 0011 halte einen von vier Bauplätzen und ändere seine
+  Datei nie (`technik.md`: 8× „Rust", 0× „C++"). `git log` kennt seit dem 2026-09-01
+  **keinen** Commit mit Betreff `architekt:` oder `spielentwerfer:` — die Rollen wurden
+  eingeplant und nie aufgerufen, weil der laufende Cron-Prozess die alte `BAUROLLEN` hielt.
+  **Ein Paket, das nichts bewegt hat, hat drei Ursachen: es lief und scheiterte, es lief
+  und meldete nicht, oder es lief nie.** Die dritte ist nur am fehlenden Commit-Betreff zu
+  sehen und kostet einen `git log`-Aufruf. Ich habe sie zweimal übersprungen und daraus
+  ein Argument für die falsche Empfehlung gebaut.
 - **Ein Kriterium, das zwei Textstellen bindet, von denen eine „einem anderen Paket
-  gehört", ist unbaubar.** Bei 0015 zweimal zurückgekommen, bis der Prüfer es an mich
-  zurückgab. **Auflösung: Die Datei ist die Kollisionseinheit — ist das Herkunftspaket
-  `fertig`, ist die Herkunft eines Textes kein Schreibverbot.** Freigabe ausschreiben,
-  statt sie den Bauagenten raten zu lassen. Und: Steckt ein Rücklauf zweimal an derselben
+  gehört", ist unbaubar** (0015, zweimal zurück). **Auflösung, im zehnten Lauf bestätigt —
+  0015 bestand mit 0 Befunden:** Die Datei ist die Kollisionseinheit; ist das
+  Herkunftspaket `fertig`, ist die Herkunft eines Textes kein Schreibverbot. Freigabe
+  ausschreiben, statt sie raten zu lassen. Und: Steckt ein Rücklauf zweimal an derselben
   Regel, ist die Regel unvollständig, nicht der Bauagent — dann **alle** Gegenproben
-  namentlich ins Kriterium, nicht nur die zwei, die aufgefallen sind.
+  namentlich hinein. Der Prüfer hat daraufhin von sich aus vollabgeglichen statt
+  stichprobenartig, und genau das fand die sechste Zeile, an der es zweimal brach.
 - **Das Paket, das von nichts abhängt, ist die Reserve gegen einen blockierten kritischen
   Pfad.** Suchmuster: Welche Vorgabe rechnet mit Zahlen, die nirgends herkommen?
 - **Eine gemeldete Sperre ist kein Grund, den Rückstand dahinter nicht zu füllen.** Ein
