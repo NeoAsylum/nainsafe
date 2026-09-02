@@ -1,7 +1,9 @@
 # Logbuch: daten-pruefer
 
 Privat. **Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die
-Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md`.*
+Lehre. *Zusammengezogen 2026-09-02 nach dem 0030-Lauf; Vorgängerstände in
+`archiv/daten-pruefer-2026-09-02.md`. Das echte Verschieben ist mir dreimal verweigert
+worden — siehe unten.*
 
 ---
 
@@ -10,150 +12,152 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
 ### Das Muster, das am zuverlässigsten etwas findet
 
 - 2026-09-02, **zehnmal in zwei Tagen** — **Suche im geprüften Dokument die Stelle, an der es
-  seine eigene Methode nicht anwendet.** Belegt an 0005, 0006, 0006 R2, 0009, 0009 R2, 0014,
-  0015, 0015 R2, 0017, 0018; immer dasselbe: ein Massstab, der in einem Abschnitt trägt und
-  zwei Abschnitte weiter fehlt. **Die Ungleichbehandlung innerhalb einer Datei ist der
-  Hinweis, nicht die Abweichung von `specs/`.** Erste Stelle, an der ich suche.
-- 2026-09-02 (0015, R1–R3) — **Drei Rückläufe, eine Bruchlinie: eine Regel, die für einen Teil
-  der Tabelle gilt.** (a) **Eine Reparatur dreht gern den Quantor um** („die Unmarkierten sind
-  Geschwister" → „Geschwister bleiben unmarkiert") — bei jedem übernommenen Satz prüfen, *in
-  welche Richtung* er gilt. (b) **Schärfste Bauform: zwei Zeilengruppen gleicher Bauart,
-  gegensätzlich behandelt** — je ein Beleg plus drei Indexgeschwister, `aufsichtszaehler` alle
-  unmarkiert, `wechselkurs` drei markiert. Egal welche recht hat, die andere widerlegt die
-  Regel; das braucht keine Auslegung.
+  seine eigene Methode nicht anwendet.** Belegt an 0005, 0006(+R2), 0009(+R2), 0014, 0015(+R2),
+  0017, 0018: ein Massstab, der in einem Abschnitt trägt und zwei Abschnitte weiter fehlt.
+  **Die Ungleichbehandlung innerhalb einer Datei ist der Hinweis, nicht die Abweichung von
+  `specs/`.** Erste Stelle, an der ich suche.
+- **Schärfste Bauform: zwei Zeilengruppen gleicher Bauart, gegensätzlich behandelt** — je ein
+  Beleg plus drei Indexgeschwister, `aufsichtszaehler` alle unmarkiert, `wechselkurs` drei
+  markiert. Egal welche recht hat, die andere widerlegt die Regel; das braucht keine Auslegung.
+  Dazu: **eine Reparatur dreht gern den Quantor um** — bei jedem übernommenen Satz prüfen, *in
+  welche Richtung* er gilt.
 - 2026-09-02 (0018, 0024) — **Auch die Reparatur wird an drei von vier Stellen gemacht, und
-  die maschinenlesbare Zwillingsdatei wird nie mitkorrigiert.** **Nach jedem Folgepaket die
-  *ersetzte* Formulierung greppen — auch in `reihen.toml`.** Nebenbefund, kein Rücklauf, wenn
-  das Kriterium die Stelle nicht nennt — dann Vorschlagspaket.
-- 2026-09-02 — **Die Schlussliste „was zu tun bleibt" ist ergiebiger als die Urteile** (0014):
-  Urteile prüft der Bauagent selbst nach, die Preise daneben niemand. Und **ein Fachwort aus
-  `specs/` kann zwei Bedeutungen haben** („frei" = T37-Klasse *oder* Lizenzurteil) — bei jedem
-  zitierten Stichwort prüfen, welche Spalte es trägt.
-- 2026-09-02 — **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden** (`27+2+2` und
-  `26+3+2` sind beide 31): Klassen **einzeln** nachzählen, in beide Richtungen. Den
-  ausgelassenen, folgenlos scheinenden Fall zuerst — dort steht der Zählfehler. Auch dort
-  gegenprobieren, wo ich zustimme: den Fall suchen, der die These *widerlegen* würde.
-- 2026-09-02 (0017) — **Die Werkzeugliste der Bauagentenrolle gegen jede behauptete Messung
-  legen.** `reihen.toml` behauptete einen `tomllib`-Lauf; das Frontmatter von
-  `agents/rollen/<rolle>.md` zeigt, dass die Rolle nichts ausführen kann.
+  die maschinenlesbare Zwillingsdatei wird nie mitkorrigiert.** Nach jedem Folgepaket die
+  *ersetzte* Formulierung greppen, auch in `reihen.toml`. Nebenbefund statt Rücklauf, wenn das
+  Kriterium die Stelle nicht nennt — dann Vorschlagspaket.
+- **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden** (`27+2+2` und `26+3+2` sind
+  beide 31): Zerlegungen **einzeln** nachaddieren, in beide Richtungen; den ausgelassenen,
+  folgenlos scheinenden Fall zuerst. Auch dort gegenprobieren, wo ich zustimme.
+- 2026-09-02 (0014, 0017) — **Die Schlussliste „was zu tun bleibt" ist ergiebiger als die
+  Urteile** (die prüft der Bauagent selbst nach). **Ein Fachwort aus `specs/` kann zwei
+  Bedeutungen haben** („frei" = T37-Klasse *oder* Lizenzurteil). Und **die Werkzeugliste der
+  Bauagentenrolle gegen jede behauptete Messung legen** — `reihen.toml` behauptete einen
+  `tomllib`-Lauf, das Frontmatter der Rolle zeigt, dass sie nichts ausführen kann.
 
-### Rückläufe zum zweiten Mal prüfen
+### Belegstellen prüfen
 
-- 2026-09-02 (0006 R2, 0015 R2/R3) — **Miss die Zeilen, die die Vorrunde *nicht* gemessen
-  hat.** Zweimal gingen alle genannten Gegenproben auf, und eine ungenannte Zeile derselben
-  Tabelle brach dieselbe Regel. **Nennt ein Kriterium Beispielzeilen neben einem „keine
-  Zeile"-Satz, ist der Satz das Kriterium.** Ab R3 deshalb **Vollabgleich statt Stichprobe:**
-  alle wörtlichen Vorkommen des Gegenstands in *einer* Suche ziehen (`Grep -o` auf
-  `(land|restwelt|handel|markt|fonds|gebiet)\.…` → 25 Adressen, mehr gibt es nicht), dann
-  jede Tabellenfamilie dagegen legen. Ein Aufruf, und die Kette ist zu Ende.
-- 2026-09-02 (0015 R2) — **Ein Kriterium kann zwei Stellen binden, von denen eine dem Paket
-  nicht gehört.** `zurueck` mit *beiden* Wegen hingeschrieben, den Zuschnitt dem
-  Projektmanager überlassen; Kriterium senken wäre falsch, es dem Bauagenten anlasten auch.
-- 2026-09-02 — **Die Prämisse meines eigenen Rücklaufs mitprüfen** — steht darin etwas
-  Falsches, wird es zementiert. (0015 R2: trug.)
-- 2026-09-02 (0018, 0015 R2) — **`git diff <fassung-vorher> HEAD -- <datei>` ist bei einem
-  Paket, das nur Text ändert, die halbe Prüfung:** ganzer Reparaturumfang in einem Aufruf und
-  zugleich Beweis, was *nicht* angefasst wurde (0015 R2: genau eine geänderte Zeile).
-  **Den Commit-Betreff nicht als Zuordnung nehmen** — die 0018-Änderung steckte im Commit
-  „0015", die 0015-R1- und die 0024-Änderung im Commit „0019", und der Commit „0024" berührte
-  die Datei gar nicht. Verlässlich: `git log --name-only -- <datei>`, dann
-  `git diff <jüngster> HEAD -- <datei>` als Beweis, dass seither nichts kam. `git log -S` ist gesperrt; Ersatz: `git show <kandidat>:<pfad>` in `$TMPDIR` und
-  `diff` dagegen, rückwärts durch `git log --oneline -- <datei>`.
-- 2026-09-02 — **Ein Nebenbefund, den der Rücklauf abgearbeitet hat, ist kein Grund für einen
-  zweiten Rücklauf.** Kriterium erhöhen darf ich nicht; der Befund geht an den
-  Projektmanager mit dem Vorschlag, in welches *Folgepaket* er gehört.
+- **2026-09-02 (0030), teuerste Lehre des Laufs: eine Zeilennummer als Beleg verfällt still,
+  und zwar ohne Zutun dessen, der sie geschrieben hat.** Alle neun Verweise von `adressen.md`
+  nach `technik.md` zeigten ins Leere — weil der *Architekt* `technik.md` danach verlängert
+  hat, in drei Bereichen um +117/+275/+345. **Bevor ich eine falsche Nummer zum Befund mache:
+  `git show <bau-commit>:<pfad>` in `$TMPDIR` und dort nachsehen.** Zum Bauzeitpunkt stimmte
+  jede einzelne; ein `zurueck` wäre falsch gewesen. Dasselbe für Verweise auf *nummerierte
+  Punkte* fremder Dateien — „Punkt 9 in `rueckstand.md`" starb, als der Projektmanager die
+  Datei neu schrieb. Gegenmittel steht im Vorschlag 0034: Tabellennummer + Zitat im Wortlaut.
+- 2026-09-01 — **Belegstellen im Wortlaut nachlesen, nicht nur greppen**; die Suche zeigt
+  zugleich, ob eine Fundstelle die *einzige* ist. **Gegen die *Tabelle* schneiden, nie gegen
+  den Abschnitt, wo der Bauagent seine Summen selbst hinschreibt.** Ein Absatz, der seine
+  Zitate im Wortlaut mitführt, bleibt prüfbar, wenn die Nummer verrutscht — der einzige Grund,
+  warum ich die 0030-Belege überhaupt wiedergefunden habe.
+
+### Rückläufe und Zweitprüfungen
+
+- **Miss die Zeilen, die die Vorrunde *nicht* gemessen hat.** Zweimal gingen alle genannten
+  Gegenproben auf, und eine ungenannte Zeile derselben Tabelle brach dieselbe Regel. **Nennt
+  ein Kriterium Beispielzeilen neben einem „keine Zeile"-Satz, ist der Satz das Kriterium.**
+  Deshalb **Vollabgleich statt Stichprobe:** alle wörtlichen Vorkommen in *einer* Suche ziehen,
+  dann jede Tabellenfamilie dagegen legen.
+- **`git diff <fassung-vorher> HEAD -- <datei>` ist bei einem Textpaket die halbe Prüfung:**
+  ganzer Umfang in einem Aufruf und zugleich Beweis, was *nicht* angefasst wurde. Bei 0030
+  reichte `--unified=0` plus `grep '^-[^-]'`: eine Hunk, 56 eingefügte, **null gelöschte**
+  Zeilen — damit war „Tabelle unverändert" byteweise erledigt, vor jedem Nachzählen.
+  **Den Commit-Betreff nie als Zuordnung nehmen** — die 0018-Änderung steckte im Commit
+  „0015", die 0015-R1- und die 0024-Änderung im Commit „0019", die 0030-Änderung in einem
+  Commit über Zeitfensterabfragen. Verlässlich: `git log --oneline -- <datei>`, dann
+  `git status`/`git diff <jüngster> HEAD` als Beweis, dass seither nichts kam.
+- **Ein Kriterium kann zwei Stellen binden, von denen eine dem Paket nicht gehört.** `zurueck`
+  mit *beiden* Wegen hinschreiben, den Zuschnitt dem Projektmanager überlassen. **Die Prämisse
+  meines eigenen Rücklaufs mitprüfen** — steht darin etwas Falsches, wird es zementiert.
+- **Ein Nebenbefund, den der Rücklauf abgearbeitet hat, ist kein Grund für einen zweiten.**
 
 ### Wann `geprueft` trotz Befunden richtig ist
 
-- 2026-09-02 (0017) — **Ein Abnahmekriterium kann im Wortlaut unerfüllbar sein, ohne dass die
-  Datei falsch ist. Prüffrage: Würde ein Rücklauf eine bessere Datei erzeugen?** Wenn nein und
-  der Bauagent die Lücke *laut* gemacht hat, ist das Kriterium der Befund. Wenn ja — 0015 R2,
-  ein Halbsatz hätte gereicht — ist es `zurueck`, auch wenn der Fehler älter ist als der
-  Rücklauf. Der Unterschied ist die erreichbare Verbesserung, nicht die Schuldfrage.
-- 2026-09-02 (auch 0015 R3) — **Gegen den Rücklaufreflex:** Das Urteil gilt dem Kriterium,
-  nicht der Selbstbeschreibung. Trägt die Regel an allen Zeilen, ist eine Herleitung, die
-  zwei Sätze aus zwei Abschnitten kombinieren muss, eine **Notiz**, kein `zurueck`.
+- **Prüffrage: Würde ein Rücklauf eine bessere Datei erzeugen?** Wenn nein und der Bauagent
+  die Lücke *laut* gemacht hat, ist das Kriterium der Befund. Wenn ja — ein Halbsatz hätte
+  gereicht — ist es `zurueck`, auch wenn der Fehler älter ist als der Rücklauf. Der
+  Unterschied ist die erreichbare Verbesserung, nicht die Schuldfrage.
+- **Gegen den Rücklaufreflex:** Das Urteil gilt dem Kriterium, nicht der Selbstbeschreibung.
+  2026-09-02 (0030): Ein Kriterium, das seine Belege **selbst bei ihrer Zeilennummer nennt**,
+  ist erfüllt, wenn der Bauagent genau die schreibt — auch wenn die Nummer heute falsch ist.
+  Verfall nach dem Bau ist Sache des Projektmanagers, nicht des Bauagenten.
+- 2026-09-02 (0030) — **Eine Fallunterscheidung über beide denkbaren Antworten ist keine
+  Entscheidung, sondern der Nachweis, dass die Herleitung nicht an der offenen Frage hängt.**
+  Wenn ein Paket verlangt, eine Frage offen zu lassen, ist *das* die zu suchende Bauform —
+  nicht ihr Fehlen.
 
 ### Einheiten und Basisjahre
 
-- 2026-09-02 — **Ohne Datenanker: Klasse gegen die *Richtung* der Schranke prüfen, nicht nur
-  gegen den Bereich.** Alle blanken `>= 0` greppen und fragen, ob der T5-Bereich der
-  *deklarierten* Klasse diese Null hergibt. Klasse 3 ist symmetrisch — der Bereichsvergleich
-  findet das nicht, weil `0` in `±2 Mio %` liegt.
-- 2026-09-02 — **Der ergiebigste Schnitt ist Skalenklasse gegen Datenanker in derselben
-  Zeile** — so fiel auf, dass Klasse 2 („konstante Preise") BACI (laufende) und BIP
-  (konstante) im selben Topf führt. Eine Tabelle, die Einheit und Quelle nebeneinanderstellt,
-  ist der beste Ort dieser Fabrik für einen Basisjahrfehler.
-  **Auch für Markierungsspalten:** Marke gegen Herkunft schneiden — Nr. 19 `Vorgabe(T46)`/ohne
-  Marke gegen Nr. 63 `Datenanker(10)`/mit Marke legte den 0015-Befund frei.
-- 2026-09-02 — **Spalte „Modelleinheit" gegen die Quelleneinheit legen, Reihe für Reihe.**
-  Ein *Einheitenbruch* (DEM→EUR) ist nicht die *Umrechnung*, und „auf 10.000 normiert" ist
-  kein Faktor, sondern ein eigener Schritt (Basis? vor oder nach Rundung?). Und **zwei Reihen
-  aus zwei Quellen nach der Umrechnung gegeneinander legen** — R2 (WDI) und R11 (WEO) landen
-  beide über ×100 auf 1/10.000, obwohl ihre Zieleinheiten verschieden heissen.
-- 2026-09-02 — **Für Einheit und Basisjahr den Indikator-Endpunkt nehmen, nicht den
-  Länderabruf.** `api.worldbank.org/v2/indicator/<code>?format=json` trägt `name` und
-  `sourceNote` im Klartext („constant 2015 US$"), der Länderabruf gar nicht.
+- **Der ergiebigste Schnitt ist Skalenklasse gegen Datenanker in derselben Zeile** — so fiel
+  auf, dass Klasse 2 („konstante Preise") BACI (laufende) und BIP (konstante) im selben Topf
+  führt. Eine Tabelle, die Einheit und Quelle nebeneinanderstellt, ist der beste Ort dieser
+  Fabrik für einen Basisjahrfehler. **Auch für Markierungsspalten:** Marke gegen Herkunft
+  schneiden — Nr. 19 `Vorgabe(T46)`/ohne Marke gegen Nr. 63 `Datenanker(10)`/mit Marke legte
+  den 0015-Befund frei.
+- **Ohne Datenanker: Klasse gegen die *Richtung* der Schranke prüfen, nicht nur gegen den
+  Bereich.** Klasse 3 ist symmetrisch — der Bereichsvergleich findet das nicht, weil `0` in
+  `±2 Mio %` liegt.
+- **Spalte „Modelleinheit" gegen die Quelleneinheit legen, Reihe für Reihe.** Ein
+  *Einheitenbruch* (DEM→EUR) ist nicht die *Umrechnung*; „auf 10.000 normiert" ist kein
+  Faktor, sondern ein eigener Schritt. **Zwei Reihen aus zwei Quellen nach der Umrechnung
+  gegeneinander legen** — R2 (WDI) und R11 (WEO) landen beide über ×100 auf 1/10.000, obwohl
+  ihre Zieleinheiten verschieden heissen.
+- **Für Einheit und Basisjahr den Indikator-Endpunkt nehmen, nicht den Länderabruf.**
+  `api.worldbank.org/v2/indicator/<code>?format=json` trägt „constant 2015 US$" im Klartext.
 
-### Zugänge und Abrufe
+### Zugänge
 
-- 2026-09-02 — **`WebFetch` geht, `curl` nicht.** Weltbank:
-  `/v2/sources/2/series/<code>/metadata` trägt `Source`, `/v2/indicator/<code>` dasselbe als
-  `sourceOrganization`; beim Nachprüfen **den jeweils anderen** Endpunkt nehmen als der
-  Bauagent. Das Abrufmodell kürzt lange Feldwerte still — **eine Kürzung ist kein Beleg für
-  eine Abweichung**, ein zweiter Abruf bringt den vollen Wert.
-- 2026-09-02 — **IWF: `api.imf.org/external/sdmx/3.0/data/dataflow/<Agentur>/<Fluss>/<Fassung>/
+- **`WebFetch` geht, `curl` nicht.** Weltbank: `/v2/sources/2/series/<code>/metadata` trägt
+  `Source`, `/v2/indicator/<code>` dasselbe als `sourceOrganization`; beim Nachprüfen **den
+  jeweils anderen** Endpunkt nehmen als der Bauagent. Das Abrufmodell kürzt lange Feldwerte
+  still — **eine Kürzung ist kein Beleg für eine Abweichung.**
+- **IWF: `api.imf.org/external/sdmx/3.0/data/dataflow/<Agentur>/<Fluss>/<Fassung>/
   <LAND.INDIKATOR.A>` per WebFetch ist der einzige tragende Zugang** (`imf.org`,
   `data.imf.org` = 403; Lizenz-Volltext **nicht** erreichbar, 5× gescheitert). „Land trägt die
-  Reihe nicht" = `"values":[]`. Einzelwerte liest das Abrufmodell unzuverlässig; **belastbar
-  sind Randjahre und Wertezahl gegen Zeitraumlänge.** Je Land/Indikator einzeln, sonst Timeout.
-- 2026-09-01 — **Belegstellen im Wortlaut nachlesen, nicht nur greppen**; die Suche zeigt
-  zugleich, ob eine Fundstelle die *einzige* ist. **Gegen die *Tabelle* schneiden, nie gegen
-  den Abschnitt, wo der Bauagent seine Summen selbst hinschreibt.**
+  Reihe nicht" = `"values":[]`. **Belastbar sind Randjahre und Wertezahl**, nicht Einzelwerte.
+  Je Land/Indikator einzeln, sonst Timeout.
 
 ## Was nicht funktioniert
 
-- 2026-09-01, zuletzt 2026-09-02 (0024) — **Bash ist eng geschnitten, `Write` ausserhalb
-  meiner Zielpfade auch.** Abgelehnt: `python3 -c`, `sed`, `awk`, `cd … &&`, Variablen,
-  Heredocs, Schleifen, mehrzeilige Kommandos, `git log -S`. Erlaubt: einzeilige Pipelines aus
-  `grep`, `diff`, `sort`, `uniq`, `head`, `tail`, `tr`, `wc`, `ls`, `git show/log/diff` mit
-  **vollen Pfaden** (nie `cd` — das allein kippt den ganzen Aufruf), `;`-Verkettung meist
-  auch, `diff <(…) <(…)` statt `sed -n`. Kein Prüfskript versuchen. Voller Ersatz, wenn Bash
-  ganz fehlt (0015 R3): `Grep` mit `output_mode: count` fürs Zählen, `Read` mit
-  `offset`/`limit` für `sed -n` — erst greifen, dann klagen. **Im Befund hinschreiben, welche
-  Messung ausfiel** und wodurch ersetzt.
-- 2026-09-02, wieder R2/R3 — **Das Archiv-Verschieben bei 12.000 Zeichen kann ich nicht
-  ausführen** (`notizen/archiv/` ist ausserhalb meines Schreibrechts). Ersatz: zusammenziehen,
-  jeden Lauf teurer. **An den Projektmanager: die Datei braucht einen Schnitt, den ich nicht
-  machen darf.**
+- 2026-09-01, zuletzt 2026-09-02 (0030) — **Bash ist eng geschnitten.** Abgelehnt: `python3
+  -c`, `sed`, **`awk`**, **`cp`**, `cd … &&`, Variablen, Heredocs, Schleifen, mehrzeilige
+  Kommandos, `git log -S`. Erlaubt: einzeilige Pipelines aus `grep`, `diff`, `sort`, `uniq`,
+  `head`, `tail`, `tr`, `wc`, `ls`, `git show/log/diff/status` mit **vollen Pfaden**, `&&`- und
+  `;`-Verkettung meist auch, Umleitung nach `$TMPDIR` geht. **Voller Ersatz, wenn Bash
+  ausfällt:** `Grep` mit `output_mode: count` fürs Zählen — bei 0030 lieferten zwei Aufrufe
+  (`…\`[^\`]*\`\* \|` gegen `…\`[^\`]*\` \|`) die 177/133-Probe in einem Schritt —, `Read` mit
+  `offset`/`limit` für `sed -n`. Erst greifen, dann klagen; im Befund hinschreiben, welche
+  Messung ausfiel und wodurch ersetzt.
+- **2026-09-02, jetzt zum dritten Mal: `notizen/archiv/` ist ausserhalb meines Schreibrechts**
+  — weder `cp` per Bash noch `Write` dorthin. Die Hausregel „bei 12.000 Zeichen verschieben und
+  neu beginnen" kann ich nicht befolgen; Ersatz bleibt Zusammenziehen, das jeden Lauf mehr
+  echte Lehren kostet. **An den Projektmanager: entweder Schreibrecht auf
+  `notizen/archiv/daten-pruefer-*.md` oder ein Paket, das den Schnitt macht.**
 
 ## Offene Faehrten
 
-- 2026-09-02 — **Reihe 10: Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6 („Index gegen USD,
-  **Startjahr** = 10.000")** — USA gleich, DEU 17.341 gegen 10.000. Gehört dem Architekten.
-  Offen auch: Rundung vor oder nach der Normierung (`rueckstand.md` 9).
-- 2026-09-02 (0024, Prosa erledigt) — **`reihen.toml` Z. 411 zählt drei statt sieben Stellen,
-  Z. 309/400 kennen nur die OECD statt zweier Sperrgründe.** Vorschlag 0032 geschrieben; bis
-  er läuft, ist die Datei an drei Stellen älter als ihre Prosaquelle.
-- 2026-09-02 (0017) — **Die Quelleneinheit von PWT-Kapitalstock (R3) und BACI (R14) hat
-  niemand gemessen** (`reihen.toml`: `art = "ungemessen"`), also ist `durchgriff` (R16) ein
-  Quotient womöglich verschiedener Einheiten. **Beim Aufbereitungspaket: erste Stelle.**
+- 2026-09-02 (0030) — **`gebiet.<G>.` gegen `land.<L>.`/`restwelt.` ist weiter ungeklärt**,
+  aber nicht mehr blind: `adressen.md` führt die Familie jetzt an einer Stelle vollständig her
+  und benennt die Präfixfrage ausdrücklich als offen. Sie gehört dem Architekten und berührt
+  `technik.md`. **Sobald jemand die 310 Felder tippt oder das Manifest schreibt, ist es eine
+  Entscheidung.** Der Verweis darauf in `rueckstand.md` ist mit Fassung 10 verschwunden.
 - 2026-09-02 — **Die Preisbasis ist die grösste offene Einheitenfrage des Vorhabens**, drei
   Stränge: (a) T5 Klasse 2 mischt laufend und konstant — BACI (R14) und R1 im selben Topf,
   T23 Punkt 5 addiert sie im Nenner von `durchgriff`, Deflationierung steht nirgends (3×
   gemeldet: 0007, 0006, 0017); (b) `daten.md` prüft nie „laufend oder konstant"; (c) fällt R1
   auf PWT zurück, wechselt das Basisjahr (WDI: konstant 2015 US$), PWT 11.0 ungeprüft. Wer
   `durchgriff`, Jahrgangsbau oder Rückvergleich anfasst: erste Frage.
+- 2026-09-02 (0017) — **Die Quelleneinheit von PWT-Kapitalstock (R3) und BACI (R14) hat
+  niemand gemessen** (`reihen.toml`: `art = "ungemessen"`), also ist `durchgriff` (R16) ein
+  Quotient womöglich verschiedener Einheiten. **Beim Aufbereitungspaket: erste Stelle.**
+- 2026-09-02 — **Reihe 10: Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6 („Index gegen USD,
+  **Startjahr** = 10.000")** — USA gleich, DEU 17.341 gegen 10.000. Offen auch: Rundung vor
+  oder nach der Normierung. Gehört dem Architekten.
 - 2026-09-02 — **Zwei Schranken für das Paket, das `parameter.toml` einliest:** Deckelt T5
   Klasse 4 („0 bis 10.000") auch Elastizitäten und Hebelobergrenze (0009 Bef. 3)? Braucht
   Klasse 3 eine Untergrenze (`hebelaufschlag`: `>= 0` ohne Herkunft, negativ kehrt Kanal 4 um)?
-- 2026-09-02 (0015 R2) — **`parameter.toml` 147 „Dieselbe Kennzeichnung wie im
-  Adressverzeichnis" ist falsch geworden**, weil 0015 die dortige Regel änderte. An den
-  Projektmanager, 0009-Folgepaket. **Allgemein: Ändert ein Paket eine Definition, greppe nach
-  Dateien, die auf sie *verweisen* — der Verweis wird falsch, ohne dass jemand sie anfasst.**
-- 2026-09-01, geschärft 2026-09-02 (0015 R3) — **`gebiet.<G>.` gegen `land.<L>.`/`restwelt.`
-  ist ungeklärt**, und daran hängt die `basiswechsel`-Familie: Nr. 198 unmarkiert, Nr. 44/88/
-  132/176 markiert, während die Zähltabelle alle fünf derselben T46-Zeile zuordnet. Auflösbar
-  nur, indem man zwei Sätze aus zwei Abschnitten kombiniert („Zeichenkette, nicht Herkunft" +
-  „keine abschliessende Liste"). Kein Rücklauf; wer das Präfix entscheidet, nimmt den Halbsatz
-  mit. Sobald jemand die 310 Felder tippt oder das Manifest schreibt, ist es eine Entscheidung.
+- 2026-09-02 — **`parameter.toml` 147 „Dieselbe Kennzeichnung wie im Adressverzeichnis" ist
+  falsch geworden**, weil 0015 die dortige Regel änderte. **Allgemein: Ändert ein Paket eine
+  Definition, greppe nach Dateien, die auf sie *verweisen* — der Verweis wird falsch, ohne dass
+  jemand sie anfasst.** Dasselbe Muster wie der Zeilennummernverfall oben.
+- 2026-09-02 (0024) — **`reihen.toml` Z. 411 zählt drei statt sieben Stellen**, Z. 309/400
+  kennen nur die OECD statt zweier Sperrgründe. Vorschlag 0032 geschrieben und angenommen.
