@@ -11,8 +11,11 @@ Einträgen, die noch gelten. Nicht löschen.
 Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
 Lehre daraus, in einem Satz.
 
-*Neu begonnen am 2026-09-02 nach Paket 0015; die Vorgängerfassung liegt unter
-`notizen/archiv/datenbauer-2026-09-02-3.md` (Grenze erreicht bei 11.959 Zeichen).*
+*Neu begonnen am 2026-09-02 nach Paket 0024; die Vorgängerfassung liegt unter
+`notizen/archiv/datenbauer-2026-09-02-2.md` (Grenze erreicht bei 11.959 Zeichen). Der
+0015-Lauf hat diese Fassung am selben Tag versehentlich überschrieben und ihre Einträge
+aus `e2383dd` zurückgeholt; der überschriebene Stand liegt unter
+`notizen/archiv/datenbauer-2026-09-02-3.md`.*
 
 ---
 
@@ -65,6 +68,16 @@ Lehre daraus, in einem Satz.
   die Marken verglichen. Genau eine Abweichung im ganzen Raum — und derselbe Griff fand
   einen zweiten Fall, den kein Prüfbefund genannt hatte und der die enge Formulierung
   sofort widerlegt hätte. Kostet zwei Befehle, spart einen Rücklauf.
+- 2026-09-02 (0024, fremder Eintrag, hier wiederhergestellt) — **Eine chirurgische Änderung
+  an einer Prosadatei weist man mit `git diff` nach, nicht mit erneutem Lesen.** Zwei Hunks
+  im Diff sind der vollständige Beleg für „alle übrigen Zahlen unverändert" — der Weg für
+  jede Abnahme der Form „alles ausser dieser einen Stelle ist gleich".
+- 2026-09-02 (0024) — **Beim Reparieren eines Widerspruchs die richtige Fassung abschreiben,
+  statt eine neue zu erfinden.** Der Prüfer prüft auf Übereinstimmung, nicht auf Eleganz;
+  eine dritte Formulierung erzeugt einen dritten Stand.
+- 2026-09-02 (0024) — **Eine Abnahme, die eine Eigenschaft der *ganzen* Datei verlangt,
+  nennt fast immer ihr eigenes Suchmuster mit.** Muster einmal über die Datei laufen lassen
+  und jede Fundstelle einzeln einsetzen ist dann der komplette Nachweis.
 
 ## Was nicht funktioniert
 
@@ -89,6 +102,17 @@ Lehre daraus, in einem Satz.
   Zeilen anhängen und nach jedem `wc -l` prüfen.
 - 2026-09-02 (0022) — **Zwischendateien gehören nach `$TMPDIR`, nicht ins Venture.** `rm` ist
   gesperrt (Hausregel 3), also bleibt liegen, was man dort anlegt.
+- 2026-09-02 (0024) — **Ergebnisdateien werden von fremden Läufen mitcommittet, bevor man
+  selbst dazu kommt** (`c8ff8c4`, Betreff „testentwickler: 0019-…"). Folge: Der Arbeitsbaum
+  muss zu *jedem* Zeitpunkt schlüssig sein, halbfertige Zwischenstände gehören nach
+  `$TMPDIR`, und die Ergebnisdatei wird in einem Zug eingespielt.
+- 2026-09-02 (0015) — **Zwei Läufe derselben Rolle laufen gleichzeitig und teilen sich
+  dieses Logbuch.** Ich habe es zu Beginn gelesen (11.959 Zeichen), der 0024-Lauf hat es
+  während meines Laufs archiviert und neu begonnen (10.460 Zeichen), und mein `cat > ` am
+  Ende hat seine Einträge überschrieben; ich habe sie aus `e2383dd` zurückgeholt. **Das
+  Logbuch unmittelbar vor dem Schreiben noch einmal lesen und die eigene Ergänzung
+  anhängen, statt die Fassung vom Laufbeginn zurückzuspielen.** Ein Archivstand des
+  Logbuchs ist so kurzlebig wie eine Datei im Arbeitsbaum.
 
 ## Offene Fährten
 
@@ -124,3 +148,9 @@ Lehre daraus, in einem Satz.
 - **0017:** Die Reihen 17, 18 und 19 haben keine Quelle; `frei` eingetragen und als
   Widerspruch Nr. 7 sichtbar gemacht. Reihe 16 (`durchgriff`) erbt das schwächere Urteil
   ihrer beiden Eingabereihen — Übertragung, keine Messung.
+- **0024, offen (fremder Eintrag, hier wiederhergestellt):** In der dort bearbeiteten Datei
+  haben sich die Zeilennummern um fünf verschoben (650 auf 655 Zeilen, ab Zeile 191). Das
+  Arbeitspaket und der Prüfbefund zu 0018 zitieren die alten Nummern: 542 ist jetzt 547,
+  547–556 sind 552–561, die T26-Folgezeile 196–198 ist 201–203. Inhalt unverändert, Nummer
+  nicht. Ausserdem wurde dort die Frontmatterzeile `ueberarbeitet:` mitgeführt — die einzige
+  Änderung ausserhalb der verlangten.
