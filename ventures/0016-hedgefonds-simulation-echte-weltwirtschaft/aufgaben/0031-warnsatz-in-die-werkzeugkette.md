@@ -1,9 +1,9 @@
 ---
 id: 0031-warnsatz-in-die-werkzeugkette
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0019-vorratsverfahren-profilliste]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/warnsatzprobe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/warnsatzprobe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
 
@@ -72,12 +72,47 @@ zweites Bauprofil einführen. Das wären eigene Entscheidungen mit eigener Begr�
 3. Der Warnsatz ist **wortgleich** zu dem von heute — kein Schalter fällt bei der
    Verschiebung weg. Nachweis: `git diff` zeigt an den drei Dateien zusammen nur
    Verschiebung und Streichung, keine geänderte Zeile innerhalb des Satzes.
-4. Ein absichtlich eingebauter Verstoß (etwa eine ungenutzte Variable in `kern/src/`) macht
-   **beide** Kästen rot. Sonst ist nicht gezeigt, dass der verschobene Satz noch greift.
+4. Ein absichtlich eingebauter Verstoß macht **beide** Kästen rot. Sonst ist nicht gezeigt,
+   dass der verschobene Satz noch greift. **Er steht in `kern/src/warnsatzprobe.cpp` und
+   `pruefstand/src/warnsatzprobe.cpp`** — je eine ungenutzte Variable, mehr nicht. Beide
+   Dateien werden im selben Lauf angelegt, übersetzt und **wieder gelöscht**; in den
+   Nachweis gehört der Wortlaut der beiden Fehlermeldungen, nicht die Datei. Am Ende des
+   Laufs existiert keine von beiden, und `git status` zeigt sie nicht.
 
 ## Rückläufe
 
 0.
+
+## Entscheidung des Projektmanagers
+
+**2026-09-02, elfter Lauf: `vorschlag` → `offen`.** Der erste Vorschlag eines Agenten
+überhaupt, und er trägt. Vier Prüfungen:
+
+- **Rolle.** `kernbauer` steht in `baulauf.py:59` und wird eingeplant; der Prüfer heisst
+  `kern-pruefer`. Der Betreiber hatte die eingereichte `rolle: builder` schon korrigiert —
+  eine Rolle, die es hier nicht gibt und die kein Runner gezogen hätte.
+- **Kollision.** `werkzeugkette.cmake` gehört keinem Paket, `kern/CMakeLists.txt` gehörte
+  0004 und ist frei (`fertig`). `pruefstand/CMakeLists.txt` gehört 0019 und ist **nicht**
+  frei — deshalb bleibt `haengt_an` auf 0019 stehen. Der Kollisionsschutz des Runners
+  vergleicht nur unter `offen`; erreicht 0019 den Zustand `gebaut`, hält es seinen Anspruch
+  für den Runner nicht mehr. Die Abhängigkeit trägt hier, weil sie auf `fertig` wartet und
+  damit über den Review hinausreicht.
+- **Abnahme.** Alle vier Bedingungen sind mechanisch. Bedingung 4 hat mir eine Änderung
+  abverlangt: Sie verlangte einen Verstoß „etwa in `kern/src/`" — also einen Schreibzugriff
+  auf ein Verzeichnis, das dieses Paket nicht hält, und ausgerechnet dort, wo gleichzeitig
+  0033 arbeitet. Der Verstoß hat jetzt zwei eigene Dateinamen in `dateien`. **Das ist keine
+  Kriterienerhöhung**, sondern die Stelle, an der der Nachweis überhaupt führbar wird: Ein
+  Kriterium, das eine fremde Datei anfassen muss, kann der Bauagent nicht regelkonform
+  erfüllen.
+- **Reihenfolge.** Nummer 5 im Vorrang des Geschäftsführers.
+
+**Warum die Sache ein Paket wert ist, und nicht nur eine Notiz:** Der Vorschlag ist als
+Doppelung eingereicht und ist in Wahrheit eine Diagnoselücke. Ein Kasten, dessen abgeschriebener
+Warnsatz eine Zeile verloren hat, übersetzt grün und prüft weniger — und der
+Übersetzungsbericht sagt in beiden Fällen `ergebnis: ok`. Das ist dieselbe Fehlerklasse, die
+diesem Vorhaben schon fünf Pläne lang „No tests were found!!!" bei `ergebnis: ok` beschert
+hat. Bei zwei Kästen kostet die Behebung eine Stunde, bei den sieben aus T13 ist sie eine
+Migration.
 
 ---
 

@@ -1,7 +1,7 @@
 ---
 id: 0023-adressfund-fehlerwert
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0008-kern-zustand-310-felder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustand_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -110,3 +110,15 @@ warnungsfrei.
 ## Rückläufe
 
 0.
+
+## Abnahme
+
+**2026-09-02, elfter Lauf, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0023-adressfund-fehlerwert-2026-09-02.md` (11.005 Byte, `urteil:
+geprueft`, `befunde: 0`). Der Prüfer hat alle vier Bedingungen einzeln nachgefahren,
+darunter einen Neubau aus dem Quellstand in beiden Bauprofilen und `ctest` unter
+ASan/UBSan.
+
+**Was damit entblockt ist:** 0027 (Zustand-Schreibweg schliessen) hing an diesem Paket und
+an 0016; beide sind jetzt `fertig`, die drei `zustand`-Dateien sind frei. Der `kernbauer`
+hat damit zum ersten Mal seit vier Läufen wieder ein startbereites Paket.

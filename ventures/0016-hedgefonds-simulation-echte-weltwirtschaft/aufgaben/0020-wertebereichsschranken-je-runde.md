@@ -1,7 +1,7 @@
 ---
 id: 0020-wertebereichsschranken-je-runde
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0008-kern-zustand-310-felder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -147,3 +147,25 @@ Arbeit unfertig, ist das ein regulärer Rücklauf und kein Schaden.
 
 Die eigentliche Behebung sind drei Zeilen in drei Rollendateien, und die liegen ausserhalb
 meines Schreibbereichs. Gemeldet in `rueckstand.md` Punkt 2.
+
+## Abnahme
+
+**2026-09-02, elfter Lauf, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0020-wertebereichsschranken-je-runde-2026-09-02.md` (10.507 Byte,
+`urteil: geprueft`, `befunde: 1`). Alle fünf Bedingungen einzeln nachgewiesen, die
+Empfindlichkeit der Probe mit 21 Mutanten gemessen, von denen jeder einzelne sie rot macht.
+
+**Der Übergang, den ich im zehnten Lauf selbst gesetzt habe, war richtig.** Ich hatte
+`gebaut` an Stelle des `testentwickler` gemeldet, weil dessen Rollendatei den Satz nicht
+kennt, und dabei ausgeschrieben, dass ich nichts über die Vollständigkeit behaupte. Der
+Prüfer hat sie unabhängig geprüft und bestätigt. Die Grenze der Selbsthilfe — nur wenn der
+Übersetzungsbericht die Probe namentlich als bestanden führt — hat gehalten; bei 0019
+(sichtbarer Torso) habe ich sie im selben Lauf ausdrücklich nicht angewandt.
+
+**Der Nebenbefund wird nicht zum Paket, und das ist die Empfehlung des Prüfers.**
+`anteile_aus_zustand` sichert die Summe zweifach, nicht aber den Quotienten; der Abbruch
+ist laut und T7-konform, zeigt aber auf `festkomma` statt auf die Sektoranteile. Im
+heutigen Zuschnitt ist der Fall unerreichbar, weil die Probe ihre Zustände selbst setzt.
+Scharf wird er erst, wenn die Prüfung aus der Probe in ein aufrufbares Modul wandert und
+der Bruchtester sie nach T30 über 10.000 Partien ruft. Steht in `rueckstand.md` unter „Was
+quer liegt"; die dritte Wache gehört in das Paket, das diese Verschiebung baut.

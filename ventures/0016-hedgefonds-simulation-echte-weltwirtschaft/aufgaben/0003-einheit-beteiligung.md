@@ -86,13 +86,17 @@ ist seit dem 2026-09-02 stärker geworden, nicht schwächer —, ist das ein **A
 und danach ein neues Paket, kein Wiederaufwecken dieses hier. Ich löse den Widerspruch
 nicht selbst auf: Über den Entwurf entscheide ich nicht.
 
-**Das Feld `dateien` nennt weiter eine `.rs`-Datei, und das bleibt so.** `ops/plan.md`
-führt es unter „Rest-Rust"; die Begründung von oben gilt unverändert — eine Datei, die es
-nach T5 nie geben soll, braucht keinen richtigen Namen, und ein nachgezogener
-C++-Dateiname sähe aus wie ein Paket, das nur auf einen Bauagenten wartet. Sollte der
-Betreiber den ADR gegen T5 erlassen, entsteht ein neues Paket mit neuem Namen; sollte er
-es nicht tun, ist die Zeile nie wieder relevant. Kein Bauagent liest sie, weil
-`baulauf.py:startbereit` nur `offen` sieht.
+**Nachtrag 2026-09-02, elfter Lauf: Dieser Absatz stand hier noch in seiner überholten
+Fassung und ist gestrichen.** Er sagte, das Feld `dateien` nenne weiter eine `.rs`-Datei
+und das bleibe so — und widersprach damit dem Frontmatter derselben Datei, das seit der
+Korrektur weiter oben die drei C++-Dateien nennt. Zwei Absätze, die sich in derselben Datei
+über dieselbe Zeile widersprechen, sind schlimmer als der Fehler, den einer von beiden
+beschreibt: Wer nur den zweiten liest, hält das Frontmatter für unkorrigiert.
+
+Es gilt die Korrektur weiter oben: `dateien` nennt die drei C++-Dateien, weil das Feld die
+**Kollisionsvermeidung** ist und kein Name. **Am Widerspruch zu T5 ändert das nichts** — er
+ist der Grund für `blockiert`, und der steht unverändert. Sollte der Betreiber den ADR
+gegen T5 erlassen, entsteht ein neues Paket mit neuem Namen und dieses hier bleibt liegen.
 
 Bis dahin bleibt dieses Paket blockiert und wird von keinem Bauagenten aufgegriffen —
 `baulauf.py:startbereit` sieht nur `offen`.

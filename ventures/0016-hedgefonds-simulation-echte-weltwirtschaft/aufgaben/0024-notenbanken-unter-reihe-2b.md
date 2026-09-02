@@ -1,7 +1,7 @@
 ---
 id: 0024-notenbanken-unter-reihe-2b
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0018-lizenzbefund-klaerungsliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -102,3 +102,15 @@ ist, ist eine Rechtsfrage und gehört dem Betreiber. Dieses Paket korrigiert ein
 ## Rückläufe
 
 0.
+
+## Abnahme
+
+**2026-09-02, elfter Lauf, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0024-notenbanken-unter-reihe-2b-2026-09-02.md` (10.245 Byte, `urteil:
+geprueft`, `befunde: 1`). Der eine Befund ist ausdrücklich ein Nebenbefund und kein
+Rücklaufgrund: Die falsche Zahl **drei** steht bereits in `daten/reihen.toml` Z. 411, einer
+Datei, die dieses Paket nicht hält. Der Bauagent hat sie richtigerweise nicht angefasst.
+
+**Weitergeführt als 0032-reihentoml-notenbanken-nachziehen**, im selben Lauf von
+`vorschlag` auf `offen` gesetzt. Es hängt an diesem Paket — die Prosafassung, die es
+abschreibt, ist erst mit dieser Abnahme verbindlich.

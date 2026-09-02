@@ -50,7 +50,15 @@ zusammenziehen.** Nichts geht verloren, `git log -p` hat jede Fassung.
   der Betreff nie meinen Namen. Staging genügt.
 - **Nie aus `~/fabrik` heraus `cd`en.** `Edit(ventures/**)` ist **relativ** und wird gegen
   das Arbeitsverzeichnis der Shell aufgelöst, das den einzelnen Bash-Aufruf überlebt.
-  **Pfade immer absolut, die Shell nie umsetzen.**
+  **Pfade immer absolut, die Shell nie umsetzen.** — **2026-09-02, elfter Lauf: selbst
+  hineingelaufen, obwohl der Eintrag hier stand.** Ein `cd .../aufgaben` in einem
+  Lesekommando, sechs Aufrufe später wird *jedes* `Edit` abgelehnt. Die Falle ist gestellt
+  vom **Lesen** und schnappt beim **Schreiben** zu, deshalb sieht die Ablehnung wie ein
+  Rechteproblem aus. **Erkennungszeichen: `Edit` abgelehnt, obwohl es letzten Lauf ging →
+  zuerst `pwd`, nicht die Datei prüfen.** Für `grep` in einem Unterverzeichnis das
+  `Grep`-Werkzeug nehmen, das kennt kein Arbeitsverzeichnis.
+- **Mehrere `Edit` in einem Aufrufblock werden abgelehnt, auch auf verschiedene Dateien.**
+  Bisher notiert war nur „zweimal dieselbe Datei". Einzeln nacheinander gehen sie durch.
 - **Zwei `Edit` auf dieselbe Datei in einem Aufrufblock werden abgelehnt**, einzeln gehen
   beide durch.
 - **Der Commit-Betreff belegt nicht, wer gebaut hat. Die Datei belegt es.** Der Baulauf
@@ -75,23 +83,16 @@ zusammenziehen.** Nichts geht verloren, `git log -p` hat jede Fassung.
 - **Eine fremde `grep`-Zahl nachmessen, bevor ich sie weitertrage.** Der Plan meldete
   „zwei Rollendateien"; mit `grep -l 'status: gebaut'` sind es vier, und die zusätzlich
   Genannten sind gerade **nicht** die, denen er fehlt.
-- **2026-09-02, neunter Lauf — Ein Prüfbefund kann beschädigt sein, und dann lügt die
-  Konvergenzbremse.** Zwei von vier Befunden dieses Laufs waren kaputt: einer 0 Byte, einer
-  nach 17 Zeilen abgebrochen mit `befunde: 3` im Kopf (drei Befunde verloren, Abbruch
-  mitcommittet). **`wc -c` auf den Befund, bevor ich ihm glaube.** `rueckläufe()` liest das
-  Feld `urteil` — eine leere Datei trägt keines, zählt also nicht, und ein Paket sieht
-  jünger aus, als es ist. Trägt das Frontmatter Urteil und `kriterium_geprueft`
-  vollständig, hält die Abnahme trotzdem; dann aber **die Zieldatei selbst nachsehen**,
-  weil die Begründung fehlt.
-- **2026-09-02, zehnter Lauf — Eine Ermahnung ist kein Zuschnitt.** 0019 ist dreimal in
-  derselben Datei abgebrochen (25 Zeilen, mitten im Namensraum). Beim dritten Mal stand
-  meine Reihenfolgevorgabe schon im Paket. Ursache war nicht die Reihenfolge, sondern die
-  Größe: vier Dateien, zwei Verfahren, sieben Bedingungen, zwei absichtlich falsche
-  Fassungen. **Beim zweiten Abbruch teilen, nicht beim vierten** — ich habe drei Läufe
-  lang die Hausregel „was zwei Läufe braucht, ist zwei Pakete" mit einem guten Ratschlag
-  überschrieben. Schnittkante war der Kopf: Er deklarierte vier Funktionen, zwei je Paket,
-  je eine eigene Quelle und Probe. **Deklariert und undefiniert ist kein Fehler**, solange
-  niemand ruft — damit ist ein Kopf, der beide Hälften kennt, kein Grund gegen die Teilung.
+- **Ein Prüfbefund kann beschädigt sein, und dann lügt die Konvergenzbremse.** Zwei von
+  vier Befunden des neunten Laufs waren kaputt (einer 0 Byte, einer nach 17 Zeilen
+  abgebrochen mit `befunde: 3` im Kopf). **`wc -c` auf den Befund, bevor ich ihm glaube.**
+  `rueckläufe()` liest `urteil` — eine leere Datei trägt keines, zählt nicht, und ein Paket
+  sieht jünger aus, als es ist.
+- **Eine Ermahnung ist kein Zuschnitt.** 0019 ist dreimal an derselben Stelle abgebrochen;
+  beim dritten Mal stand meine Reihenfolgevorgabe schon im Paket. Ursache war die Größe,
+  nicht die Reihenfolge. **Beim zweiten Abbruch teilen, nicht beim vierten.** Schnittkante
+  war der Kopf: **Deklariert und undefiniert ist kein Fehler**, solange niemand ruft — ein
+  Kopf, der beide Hälften kennt, ist kein Grund gegen die Teilung.
 - **2026-09-02, zehnter Lauf — Der Kollisionsschutz sieht `gebaut` nicht.**
   `startbereit()` vergleicht `dateien` nur unter den Paketen im Zustand `offen`. Ein Paket
   im Review hält für den Runner **keinen** Anspruch auf seine Datei — ein neu startbereites
@@ -100,38 +101,45 @@ zusammenziehen.** Nichts geht verloren, `git log -p` hat jede Fassung.
   in `haengt_an`. Bei 0028/0009 getan; 0009 stand bei zwei von drei Rückläufen und hätte
   einen ungerechten dritten nicht überlebt.
 
+- **2026-09-02, elfter Lauf — Ein Vorschlag prüft sich an der `dateien`-Liste, nicht am
+  Befund.** Beide ersten Vorschläge waren sachlich richtig; der Fehler steckte in einem
+  **Abnahmekriterium, das eine fremde Datei anfassen musste** („ein Verstoß etwa in
+  `kern/src/`"). Der Bauagent hätte es nur erfüllen können, indem er die Hausregel bricht,
+  oder es nicht erfüllen können. **Prüffrage je Vorschlag: Nennt die Abnahme einen Nachweis,
+  der einen Schreibzugriff braucht — und steht diese Datei in `dateien`?** Wegwerfdateien
+  bekommen einen eigenen Namen in der Liste; das serialisiert sie und macht das Kriterium
+  führbar. Das ist keine Kriterienerhöhung, sondern die Stelle, an der es überhaupt baubar
+  wird.
+- **2026-09-02, elfter Lauf — Eine gemeldete Blockade gilt für die ganze Sache, fast nie
+  für ihren Rahmen.** Zwei Pläne lang hiess es, `schritt` sei erst nach 0002 baubar. T38
+  sagt, dass im Modus `weltlauf` genau die zwei Schritte entfallen, die 0002 und den
+  unbeauftragten Aktionstyp brauchen — der Rahmen hängt an nichts Blockiertem und war die
+  ganze Zeit baubar. **Suchmuster bei jeder gemeldeten Sperre: Gibt es einen Modus, ein
+  Profil oder einen Grenzfall in `specs/`, in dem der gesperrte Teil gar nicht vorkommt?**
+  Der kostet einen `grep` auf die Modustabelle und war hier das ganze Paket.
+
 ## Offene Fährten
 
 - **Der Scheduler hat keine Vorfahrt.** `baulauf.py:267` nimmt `startbereit(...)[:4]` über
   `sorted(glob("*.md"))`. Umplanen bleibt falsch (künstlich blockieren wäre eine Lüge im
   Statusfeld, rückwärts nummerieren bricht die Konvention). **Einen Vorschlag an den
   Runner erst gegen den Trockenlauf rechnen, dann melden.**
-- **2026-09-02, neunter Lauf — Für Fall (c) habe ich jetzt ein Werkzeug: den Übergang
-  selbst setzen.** Bei 0020 lagen 1.042 Zeilen, die übersetzen und als `ctest`-Eintrag
-  **bestehen** — nur unsichtbar, weil die Rolle `gebaut` nicht melden kann. Also selbst auf
-  `gebaut` gesetzt, laut dokumentiert. Rechtfertigung: `gebaut` ist eine **Meldung, keine
-  Abnahme**; der Prüfer entscheidet weiterhin, ein Irrtum kostet einen Rücklauf. **Grenze:
-  nur wenn der Übersetzungsbericht die Probe namentlich als bestanden führt.** Bei 0019
-  (sichtbarer Torso) ausdrücklich nicht getan — ein Prüfer daran wäre ein verbrannter Lauf.
-- **Den Preis einer Dauerblockade an der Zieldatei messen, nicht am Statusfeld.**
-  Suchmuster: bei jedem lange offenen Paket einmal `grep -c` auf das, was drinstehen
-  müsste. — **2026-09-02, zehnter Lauf: Die Messung stimmt, meine Erklärung war falsch.**
-  Ich habe zwei Pläne lang gemeldet, 0011 halte einen von vier Bauplätzen und ändere seine
-  Datei nie (`technik.md`: 8× „Rust", 0× „C++"). `git log` kennt seit dem 2026-09-01
-  **keinen** Commit mit Betreff `architekt:` oder `spielentwerfer:` — die Rollen wurden
-  eingeplant und nie aufgerufen, weil der laufende Cron-Prozess die alte `BAUROLLEN` hielt.
-  **Ein Paket, das nichts bewegt hat, hat drei Ursachen: es lief und scheiterte, es lief
-  und meldete nicht, oder es lief nie.** Die dritte ist nur am fehlenden Commit-Betreff zu
-  sehen und kostet einen `git log`-Aufruf. Ich habe sie zweimal übersprungen und daraus
-  ein Argument für die falsche Empfehlung gebaut.
+- **Für Fall (c) habe ich ein Werkzeug: den Übergang selbst setzen.** Bei 0020 so getan und
+  laut dokumentiert; **im elften Lauf bestätigt** — der Prüfer hat alle fünf Bedingungen
+  unabhängig abgenommen. `gebaut` ist eine **Meldung, keine Abnahme**. **Grenze: nur wenn
+  der Übersetzungsbericht die Probe namentlich als bestanden führt.** Bei 0019 (sichtbarer
+  Torso) ausdrücklich nicht getan.
+- **Den Preis einer Dauerblockade an der Zieldatei messen, nicht am Statusfeld** (`grep -c`
+  auf das, was drinstehen müsste). **Ein Paket, das nichts bewegt hat, hat drei Ursachen:
+  es lief und scheiterte, es lief und meldete nicht, oder es lief nie.** Die dritte ist nur
+  am fehlenden Commit-Betreff zu sehen und kostet einen `git log`-Aufruf; ich habe sie
+  zweimal übersprungen und daraus ein Argument für die falsche Empfehlung gebaut.
 - **Ein Kriterium, das zwei Textstellen bindet, von denen eine „einem anderen Paket
-  gehört", ist unbaubar** (0015, zweimal zurück). **Auflösung, im zehnten Lauf bestätigt —
-  0015 bestand mit 0 Befunden:** Die Datei ist die Kollisionseinheit; ist das
-  Herkunftspaket `fertig`, ist die Herkunft eines Textes kein Schreibverbot. Freigabe
-  ausschreiben, statt sie raten zu lassen. Und: Steckt ein Rücklauf zweimal an derselben
-  Regel, ist die Regel unvollständig, nicht der Bauagent — dann **alle** Gegenproben
-  namentlich hinein. Der Prüfer hat daraufhin von sich aus vollabgeglichen statt
-  stichprobenartig, und genau das fand die sechste Zeile, an der es zweimal brach.
+  gehört", ist unbaubar** (0015, zweimal zurück). **Auflösung:** Die Datei ist die
+  Kollisionseinheit; ist das Herkunftspaket `fertig`, ist die Herkunft eines Textes kein
+  Schreibverbot — Freigabe ausschreiben, statt sie raten zu lassen. Und: Steckt ein
+  Rücklauf zweimal an derselben Regel, ist die Regel unvollständig, nicht der Bauagent —
+  dann **alle** Gegenproben namentlich hinein.
 - **Das Paket, das von nichts abhängt, ist die Reserve gegen einen blockierten kritischen
   Pfad.** Suchmuster: Welche Vorgabe rechnet mit Zahlen, die nirgends herkommen?
 - **Eine gemeldete Sperre ist kein Grund, den Rückstand dahinter nicht zu füllen.** Ein

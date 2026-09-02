@@ -1,7 +1,7 @@
 ---
 id: 0032-reihentoml-notenbanken-nachziehen
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0024-notenbanken-unter-reihe-2b]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -94,3 +94,28 @@ Betreiber. Dieses Paket zieht eine **Begründung** nach, kein Urteil.
 ## Rückläufe
 
 0.
+
+## Entscheidung des Projektmanagers
+
+**2026-09-02, elfter Lauf: `vorschlag` → `offen`, unverändert.** Vier Prüfungen, alle ohne
+Änderung am Paket:
+
+- **Rolle.** `datenbauer` steht in `baulauf.py:59`, Prüfer ist `daten-pruefer`. Beide sind
+  in diesem Vorhaben mehrfach gelaufen.
+- **Kollision.** `daten/reihen.toml` gehört sonst 0017 und 0022, beide `fertig`. Kein
+  offenes und kein gebautes Paket hält die Datei. Ein `.paket.tmp` in `aufgaben/` nennt sie
+  ebenfalls — das ist eine liegengebliebene Zwischendatei und kein Paket; `baulauf.py` liest
+  nur `*.md`.
+- **Abnahme.** Drei Bedingungen, alle am Text nachweisbar; Bedingung 3 verlangt den
+  vollständigen Änderungsdiff und benennt jede Feldgruppe, die zeichengleich bleiben muss.
+  Das ist die schärfere Form, weil sie den Prüfer nicht nach dem suchen lässt, was nicht da
+  sein darf.
+- **Abhängigkeit.** 0024 ist in diesem Lauf `fertig` geworden; das Paket ist damit
+  startbereit.
+
+**Warum ich es nicht in 0024 zusammenfasse**, obwohl beide dieselbe Sachaussage
+richtigstellen: 0024 ist abgenommen und geschlossen. Es nachträglich zu öffnen hiesse, ein
+`fertig` zurückzunehmen, das ein Prüfbefund trägt — und die Datei stand nie in seiner
+`dateien`-Liste, der Bauagent hätte sie nach den Hausregeln gar nicht anfassen dürfen. Der
+Prüfer hat genau deshalb einen Nebenbefund geschrieben und keinen Rücklauf. Das ist der
+Mechanismus, wie er gedacht ist.
