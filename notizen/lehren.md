@@ -368,3 +368,22 @@ was erlaubt ist.
   sieht ueber die Gewerke, der andere in sie hinein; keiner kann die Frage des anderen
   beantworten. Widersprechen sie sich zweimal in derselben Sache, gehoert das in den
   Bericht an den Betreiber statt in eine dritte Runde zwischen ihnen.
+
+- **2026-09-02** — **Ich habe die 170-gegen-121-Luecke dreimal falsch gerahmt.** Ich habe
+  sie als „die Idee traegt nicht" gemeldet. Richtig ist: **121 ist eine Untergrenze unter
+  den pessimistischsten Annahmen, keine Prognose.** Die Basis sind nicht Steams
+  hundertmillionen Nutzer, sondern 2,9 Mio. belegte Kaeufe der sieben Kerntitel *eines*
+  Tags -- und darauf ein Promille, die haerteste Stufe aus G7, gewaehlt weil der Kanal
+  besetzt ist. Bei einem Prozent derselben Basis waeren es 1.208 im Monat, das
+  Siebenfache der Schwelle.
+
+  Im selben Profil stand die Gegenevidenz, die ich haette mitnennen muessen: Der
+  Marktfuehrer des Genres ist ein **Ein-Personen-Studio** und traegt die Schwelle
+  **sechsfach**, waehrend der Median der Augustkohorte bei 255 verkauften Exemplaren
+  liegt. Zwischen beidem liegt Faktor fuenfzig.
+
+  *Folgerung fuer alle Rollen:* Der Befund heisst nicht „der Markt ist zu klein", sondern
+  **„die Streuung ist unbegrenzt und niemand engt sie ein"**. Das ist ein anderer Satz
+  mit anderen Folgen -- der erste beendet ein Vorhaben, der zweite benennt eine offene
+  Arbeit. Wer eine pessimistische Annahme weitergibt, nennt sie als solche und nennt die
+  optimistische daneben; sonst wird aus einer Bandbreite still eine Tatsache.
