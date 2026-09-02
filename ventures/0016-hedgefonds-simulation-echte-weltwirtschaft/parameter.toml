@@ -1,0 +1,763 @@
+# =====================================================================
+# parameter.toml -- die Kalibrierdatei des Spiels
+#
+# Paket 0009-parameterdatei-schluessel, Datenbauer, Stand 2026-09-02.
+# Quellen: specs/0016-.../technik.md T5, T27, T45, T46, T47, T50, T51,
+#          T23 Punkt 5, T15, T16, T6, T40; specs/0016-.../spiel.md
+#          (Aktionen, Gegenkraefte, "Jede Groesse ohne Datenanker",
+#          Kanaltabelle, "Der Fehlbetrag", "Offene Entwurfsfragen").
+#
+# ---------------------------------------------------------------------
+# WAS DIESE DATEI IST
+#
+# T27: "Die Kalibrierdatei liegt ausserhalb des Codes, und jeder
+# Schluessel traegt eine Skalenklasse." Hier steht die *Form* -- jeder
+# Schluessel, seine Skalenklasse nach T5, sein Wertebereich, die Stelle
+# in specs/, aus der die Schranke stammt, und wer ihn kalibriert.
+#
+# ---------------------------------------------------------------------
+# WAS DIESE DATEI NICHT IST
+#
+# **Keine Zahl in dieser Datei ist kalibriert.** spiel.md ("Offene
+# Entwurfsfragen") und technik.md Abschnitt 12 sagen dasselbe: Die Werte
+# werden vom Selbstspieler *gesucht*, nicht entworfen.
+#
+# Regel fuer jeden Platzhalter, damit keiner wie ein Ergebnis aussieht:
+#
+#   A) Skalare: Wo eine untere Schranke steht, ist der Platzhalter genau
+#      diese Schranke; wo keine steht, 0.
+#   B) Wertebereiche der Instrumente: Der Wertebereich ist keine
+#      Kalibriergroesse im selben Sinn -- er muss nach T51 im `weltlauf`
+#      den historischen Pfad enthalten, sonst erzeugt der Jahrgangsbau
+#      einen Befund. Der Platzhalter ist deshalb **weit**, nicht eng.
+#      Weit heisst: er schraenkt nichts ein und nimmt nichts vorweg.
+#      Die Zahl, die ihn eng macht, ist eine Kalibrierung.
+#
+# **Folge, ausdruecklich benannt:** Dieser Satz ist zulaessig, aber
+# wirkungslos. `druck_max = 1`, `gegenlobby_satz = 0`, `hebel_max = 0`
+# und `nachahmer_max = 0` schalten Lobbyismus, Gegenlobby, Hebel und
+# Nachahmer praktisch ab. Das ist Absicht: Ein Satz, in dem jede Zahl an
+# ihrer Schranke klebt, kann von niemandem fuer ein Ergebnis gehalten
+# werden. Die erste Aufgabe des Selbstspielers ist, einen zu finden, der
+# nicht wirkungslos ist.
+#
+# ---------------------------------------------------------------------
+# LESEART DER WERTE
+#
+# T27: "Alle Werte werden als Dezimalzeichenketten in skalierte
+# Ganzzahlen gelesen (T4) und in eine Struktur mit benannten Feldern
+# gefuellt, nie ueber eine Schleife ueber Schluessel (T9)."
+#
+# Hier stehen sie als **TOML-Ganzzahlen**, nicht als Zeichenketten in
+# Anfuehrungszeichen. Begruendung, und sie ist eine Entscheidung dieses
+# Pakets: Eine TOML-Ganzzahl ist per Sprachdefinition ein i64; ein Wert
+# mit Dezimalpunkt waere eine TOML-Gleitkommazahl und faellt damit schon
+# beim Einlesen auf, statt erst beim Umwandeln. Das Verbot aus T4 wird so
+# vom Parser getragen und nicht von unserem Code. Als Zeichenkette waere
+# "1.5" ein gueltiger TOML-Wert. -- Gemeldet im Logbuch; wer es anders
+# will, braucht eine Zeile in einem Befund, keinen ADR.
+#
+# ---------------------------------------------------------------------
+# SKALENKLASSEN (T5), soweit sie hier vorkommen
+#
+#   1  Fondsgeld ................ US-Cent
+#   3  Raten .................... Basispunkte (1 bp = 0,01 %)
+#   4  Anteile .................. Zehntausendstel (10.000 = 100 %)
+#   9  Lobbydruck ............... Lobbypunkte, 0 ... druck_max
+#  10  Instrumentenstufe ........ Stufe, 0 ... regulierung_stufen
+#  11  Zaehler und Restdauern ... Stueck bzw. Runden
+#
+# ---------------------------------------------------------------------
+# WIE DER PRUEFER ZAEHLT
+#
+#   Gruppe A, Tabelle in T27 ....................... 10 Skalare
+#   Gruppe A, Instrumente nach T51 .. 4 x 3 ........ 12
+#   Gruppe B, Fliesstext in T27 .................... 12
+#   Gruppe B2, "Verzoegerungen" aus T27 ............  4
+#   Gruppe C, "Elastizitaeten" aus T27 ............. 12
+#                                                   ---
+#                                                    50 Schluessel
+#
+#   Davon 46 mit `# PLATZHALTER` und 4 mit `# FEST (T51)`.
+#   `grep -c PLATZHALTER` und `grep -c 'FEST (T51)'` zaehlen es nach.
+#
+# **Ein `*` hinter einem Schluesselnamen im Kommentar heisst: Der Name
+# steht in keinem Dokument woertlich und ist nach dem Muster der
+# uebrigen gebildet.** Dieselbe Kennzeichnung wie im Adressverzeichnis
+# aus Paket 0007. 25 der 50 Namen sind so gebildet; sie stehen einzeln
+# unter BEFUNDE am Dateiende.
+#
+# ---------------------------------------------------------------------
+# WAS HIER BEWUSST NICHT STEHT
+#
+# * `leitzins_start[l]` -- keine Kalibriergroesse, sondern eine Messung;
+#   sie steht im Jahrgang (T27, T23 Punkt 5).
+# * `durchgriff` -- Konstante des Jahrgangs (T23 Punkt 5).
+# * `markt.wert` (Startkorb zu Startpreisen) -- Manifest (T33, T45).
+# * Die Partielaenge R -- Groesse des Jahrgangs, `R =
+#   manifest.stuetzstellen - 1`, keine Konstante des Codes (T40).
+# * Die Pruefsumme des Parametersatzes -- sie wird ueber diese Datei
+#   *gerechnet* und in `partie.parameter_pruefsumme` abgelegt (T27, T45).
+#   Ein Schluessel dafuer in dieser Datei waere die Pruefsumme ihrer
+#   selbst.
+# * Zahlen, die spiel.md bereits festlegt und die deshalb keine
+#   Kalibriergroessen sind: drei Aktionen je Runde, zwei Runden
+#   Ausstiegsdauer der Beteiligung, drei Runden bis zum Anlegerabzug,
+#   eine Runde Verzug des Gegendrucks, Faktor 2 auf die Lobbykosten nach
+#   einem Regierungswechsel, 40 Halbierungsschritte der Marktraeumung
+#   (T28).
+#
+# Diese Datei traegt **keinen Datenanker**. Sie enthaelt keine Zahl aus
+# einer externen Quelle, also auch keine Namensnennung; die Lizenzen und
+# ihre Namensnennung gehoeren zum Jahrgang und stehen in dessen
+# Manifest (T23).
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+# GRUPPE A -- die elf Zeilen der Tabelle in T27
+# ---------------------------------------------------------------------
+
+# Klasse 4 (Anteile, Zehntausendstel). Anteil des Marktes je
+# Positionsstufe -- **kein Geldbetrag** (T5, T27, spiel.md Fassung 5).
+# Schranke: ganzzahlig und >= 1 (T47), <= 10.000 aus der Klasse (T5).
+# Kalibriert: Selbstspieler, zusammen mit `startkapital`.
+# Scheitert daran: Zu gross -- eine Stufe auf dem groessten der sechzehn
+#   Startmarktwerte ist nicht bezahlbar, Klasse 1 von Mass 2 gewinnt nie.
+#   Zu klein -- erreichbare Stufenzahlen erreichen die Aufsichtsschwellen
+#   nicht, keine Gegenkraft greift, Mass 3 faellt auf null. Die beiden
+#   Zahlen, an denen man das abliest (kleinster und groesster der
+#   sechzehn Startmarktwerte), weist der Jahrgangsbau im Manifest aus
+#   (T47, spiel.md "Offene Entwurfsfragen").
+stufenweite = 1  # PLATZHALTER
+
+# Klasse 11 (Zaehler). Betragsgrenze der Stufenzahl je Steckplatz; die
+# Positionsstufe liegt in `-stufen_max ... +stufen_max` (T5, T16, T27).
+# Schranke: >= 1. Bei 0 ist jeder der zwanzig Steckplaetze dauerhaft
+#   leer und Aktion 1 wirkungslos -- Folgerung, keine Vorgabe aus specs/.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu klein -- Klasse 1 von Mass 2 kann nicht gewinnen.
+#   Zu gross zusammen mit `stufenweite` -- eine einzelne Position ueber-
+#   steigt den Markt, an dem sie haengt (`stufen_max * stufenweite >
+#   10.000`); die Schranke dafuer steht in keiner Vorgabe, die Wirkung
+#   sieht der Bruchtester im 200-Runden-Lauf.
+stufen_max = 1  # PLATZHALTER
+
+# Klasse 4 (Anteile). Abschlag auf den Beteiligungswert, im Wertansatz
+# enthalten und damit beim **Aufbau** bezahlt; beim gewoehnlichen
+# Ausstieg wird er nicht ein zweites Mal abgezogen (T47 Punkt 1,
+# spiel.md "Was das Fondsvermoegen ist").
+# Schranke: 0 ... 10.000 aus der Klasse (T5).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 10.000 ist jede Beteiligung sofort wertlos und
+#   Klasse 2 von Mass 2 chancenlos; bei 0 ist Aktion 2 kostenlos und die
+#   Illiquiditaet die einzige Bremse.
+ausstiegsabschlag = 0  # PLATZHALTER
+
+# Klasse 4 (Anteile). Zusaetzlicher Abschlag beim Zwangsverkauf aus
+# Gegenkraft 1 -- eine zweite Strafe, keine Ersetzung von
+# `ausstiegsabschlag` (T47 Punkt 2).
+# Schranke: 0 ... 10.000 aus der Klasse (T5).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist die zweite Aufsichtsschwelle folgenlos und
+#   Gegenkraft 1 haengt allein an der dritten.
+zwangsabschlag = 0  # PLATZHALTER
+
+# Klasse 3 (Raten, Basispunkte). Abstand zwischen Leitzins und
+# Anleiherendite; Nenner von `anleihekurs(l)` (T27, spiel.md "Der
+# Anleihekurs").
+# Schranke: `aufschlag >= aufschlag_min` mit
+#   `aufschlag_min = 1 - min ueber alle l und t von leitzins_pfad[l][t]`
+#   (T51, T23 Punkt 5). **Die Zahl kommt aus dem Jahrgang**; sie steht
+#   hier als Verweis und nicht als Wert. T23 Punkt 5 nennt fuer
+#   1997-2021 zwei Kandidaten, je nachdem welche EZB-Reihe eingebettet
+#   wird: 51 (Einlagesatz, tiefster Stand -0,50 %) oder 1
+#   (Hauptrefinanzierungssatz, tiefster Stand 0,00 %).
+# Platzhalter: 51, also der kleinste Wert, der **beide** Kandidaten
+#   einhaelt. Ist das `aufschlag_min` des tatsaechlich eingebetteten
+#   Jahrgangs groesser, weist der Jahrgangsbau diesen Satz zurueck --
+#   das ist die vorgesehene Wirkung und kein Fehler dieser Datei.
+# Kalibriert: Selbstspieler, gegen die Schranke des Jahrgangs.
+# Scheitert daran: Zu klein -- `leitzins + aufschlag` wird null oder
+#   negativ, `anleihekurs` teilt durch null oder wechselt das Vorzeichen.
+#   Das ist die einzige Stelle des Modells, an der ein Kurs unendlich
+#   wird (T51); drei Stellen pruefen sie (Jahrgangsbau, Instrument,
+#   Invariantentest T30 Pruefung 2).
+# **Gekoppelt an `instrument_min` des Leitzinses** -- wer diesen Wert
+#   aendert, prueft `[instrument.leitzins]` mit.
+aufschlag = 51  # PLATZHALTER
+
+# Klasse 1 (Fondsgeld, US-Cent). Preis eines Lobbypunkts:
+# `lobbypunkte_aus_geld(cent, rabatt) =
+#      mal_geteilt(cent, 10.000, lobbykosten * rabatt)` (T50, Uebergang 2).
+# Schranke: >= 1 (T50). Bei 0 ist der Nenner null -- nach T6 ein harter
+#   Fehler, kein stiller Ersatzwert.
+# Kalibriert: Selbstspieler, gemeinsam mit `startkapital` und
+#   `druck_max` -- die drei entscheiden zusammen, wie viel Druck ein
+#   Fonds ueberhaupt erzeugen kann.
+# Scheitert daran: Zu klein -- Einfluss ist frei kaeufbar, die zweite
+#   Haelfte des Mandats trivial. Zu gross -- Aktion 3 ist unbezahlbar,
+#   Klasse 3 von Mass 2 gewinnt nie.
+# Hinweis, keine eigene Groesse: Nach einem Regierungswechsel
+#   verdoppelt Gegenkraft 2 diese Kosten fuer `lobbykosten_dauer` Runden.
+#   Den Faktor 2 legt spiel.md fest, er ist kein Schluessel.
+lobbykosten = 1  # PLATZHALTER
+
+# Klasse 4 (Anteile). Preisnachlass auf den Lobbypunkt bei Beteiligung
+# im betroffenen Sektor. `rabatt` ist 10.000 ohne und
+# `beteiligungsrabatt` mit Beteiligung; **der Rabatt sitzt am Preis
+# eines Lobbypunkts, nicht an der Punktzahl** (T50).
+# Schranke: `1 <= beteiligungsrabatt <= 10.000` (T50). Die 1 unten, weil
+#   `lobbykosten * rabatt` der Nenner ist (T6); die 10.000 oben, weil ein
+#   groesserer Wert kein Nachlass mehr waere.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu klein -- Beteiligung ist der einzige sinnvolle Weg,
+#   Klasse 2 und 3 von Mass 2 fallen zusammen. Bei 10.000 gibt es keinen
+#   Nachlass, und spiel.md sagt Aktion 3 mit Beteiligung einen
+#   "Bruchteil" der Kosten zu.
+beteiligungsrabatt = 1  # PLATZHALTER
+
+# Klasse 9 (Lobbydruck, Lobbypunkte). Lobbypunkte je 10.000 Tausend USD
+# Schaden: `lobbypunkte_aus_schaden(tsd) =
+#      mal_geteilt(tsd, gegenlobby_satz, 10.000)` (T50, Uebergang 3).
+# Schranke: >= 0. specs/ nennt keine obere Schranke; wirksam begrenzt
+#   ist das Ergebnis durch `druck_max` (T5 Klasse 9).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 gibt es keine Gegenlobby, Gegenkraft 5 ist aus
+#   und Kanal 3 ungedaempft. Zu gross -- jede durchgesetzte Lobbyaktion
+#   erzeugt sofort mehr Gegendruck als Druck, Aktion 3 ist tot.
+# *Wie hoch* der Schaden eines Sektors ist, bleibt Sache von spiel.md und
+#   des Kernbauers; T50 legt nur die Einheit fest, in der er ankommt.
+gegenlobby_satz = 0  # PLATZHALTER
+
+# Klasse 9 (Lobbydruck). Obergrenze fuer Druck und Gegendruck je
+# Instrument; die Klasse 9 ist definiert als `0 ... druck_max`
+# (T5, T27).
+# Schranke: >= 0 aus der Klasse; >= 1, sonst ist die Klasse leer und
+#   Aktion 3 ohne Wirkung -- Folgerung, keine Vorgabe aus specs/.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu klein -- Druck saettigt sofort, Einfluss (der
+#   Anteil am gesamten Druck) wird zu einer groben Stufenfunktion. Zu
+#   gross -- die Kappung greift nie und Kanal 8 ist ungedaempft.
+druck_max = 1  # PLATZHALTER
+
+# Klasse 10 (Instrumentenstufe). Zahl der Stufen der
+# Finanzmarktregulierung; der Wertebereich des Instruments ist
+# `0 ... regulierung_stufen` (T5 Klasse 10, T27, T51).
+# Schranke: >= 1. Bei 0 hat das Instrument einen einzigen Stand und die
+#   Aufsicht keinen Angriffspunkt auf den Fonds -- genau der Grund, aus
+#   dem spiel.md das Instrument ueberhaupt fuehrt.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu klein -- die erste Aufsichtsschwelle bewegt das
+#   Instrument einmal und danach nie wieder. Zu gross -- bei einer Stufe
+#   je Runde (T51) erreicht es in R Runden nie eine wirksame Hoehe.
+# **Gekoppelt an `instrument_max` der Regulierung und an
+#   `regulierung_start`** -- wer diesen Wert aendert, prueft beide mit.
+regulierung_stufen = 1  # PLATZHALTER
+
+
+# ---------------------------------------------------------------------
+# GRUPPE B -- die uebrigen Kalibriergroessen aus dem Fliesstext von T27
+# ---------------------------------------------------------------------
+
+# Klasse 1 (Fondsgeld, US-Cent). Vermoegensschwelle des Mandats; zugleich
+# Nenner des Fehlbetrags
+# `v = teile_gerundet(max(0, schwelle_v - fondsvermoegen) * 1.000,
+#                     schwelle_v)` (spiel.md "Der Fehlbetrag", T27).
+# Schranke: >= 1, weil Nenner (T6: Nenner null ist ein harter Fehler).
+# Kalibriert: Selbstspieler, im Verhaeltnis zu `startkapital`.
+# Scheitert daran: Zu klein -- das Mandat ist in Runde 1 erfuellt und
+#   Mass 1 misst nichts. Zu gross -- keine Partie erreicht es und der
+#   ganze Ergebnisraum liegt im Band "ueberlebt".
+schwelle_v = 1  # PLATZHALTER
+
+# Klasse 4 (Anteile). Einflussschwelle des Mandats, in derselben Einheit
+# wie `land.<L>.einfluss`; dem Spieler erscheint sie als 0 bis 100, die
+# Umrechnung findet in der Sicht statt (T5). Nenner des zweiten
+# Fehlbetrags, summiert ueber die zwei Laender mit dem hoechsten
+# Einfluss (spiel.md "Der Fehlbetrag").
+# Schranke: 1 ... 10.000 -- die 1, weil Nenner (T6), die 10.000 aus der
+#   Klasse (T5).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu gross -- unerreichbar, weil Einfluss ein *Anteil*
+#   am gesamten Lobbydruck ist und Gegenkraft 5 mit ihm waechst.
+schwelle_e = 1  # PLATZHALTER
+
+# `aufsicht_schwelle_1`*, `_2`*, `_3`* -- Klasse 11 (Zaehler).
+# Die drei Aufsichtsschwellen aus Gegenkraft 1, in derselben Einheit wie
+# `land.<L>.aufsichtszaehler` (T27 "drei Aufsichtsschwellen"; spiel.md
+# Gegenkraft 1). Erste: Das Instrument Finanzmarktregulierung bewegt
+# sich gegen den Fonds, unabhaengig von dessen Lobbybudget und mit
+# Vorrang davor. Zweite: Die Beteiligung wird zwangsverkauft, mit
+# `zwangsabschlag`. Dritte: Marktverbot in diesem Land fuer
+# `marktverbot_dauer` Runden.
+# Schranke: `1 <= _1 < _2 < _3 <= aufsicht_max`. Die strenge Ordnung
+#   folgt aus der Reihenfolge in spiel.md ("bei der ersten ... bei der
+#   zweiten ... bei der dritten"); ein Gleichstand liesse zwei Folgen in
+#   derselben Runde eintreten und die Kette aus T18 koennte sie nicht
+#   trennen.
+# Kalibriert: Selbstspieler, gemeinsam mit `stufenweite` und
+#   `startkapital` -- erreichbare Stufenzahlen muessen diese Schwellen
+#   ueberhaupt erreichen koennen (T47, spiel.md).
+# Scheitert daran: Zu hoch -- keine Gegenkraft greift, Mass 3 faellt auf
+#   null. Zu niedrig -- jede Partie stirbt am Marktverbot, bevor Mass 2
+#   drei Klassen sehen kann.
+aufsicht_schwelle_1 = 1  # PLATZHALTER
+aufsicht_schwelle_2 = 2  # PLATZHALTER
+aufsicht_schwelle_3 = 3  # PLATZHALTER
+
+# `aufsicht_max`* -- Klasse 11 (Zaehler). Obergrenze des
+# Aufsichtszaehlers. T5 Klasse 11 gibt den Bereich als
+# "0 ... Obergrenze aus `parameter.toml`" an, spiel.md nennt als
+# Daempfung von Kanal 5 "Zaehler ganzzahlig mit Obergrenze"; der
+# Schluessel selbst steht in keinem Dokument.
+# Schranke: >= `aufsicht_schwelle_3`, sonst ist die dritte Schwelle
+#   unerreichbar.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu niedrig -- der Zaehler saettigt und Gegenkraft 1
+#   hoert auf zu wachsen; zu hoch -- die Obergrenze daempft Kanal 5 nicht.
+aufsicht_max = 3  # PLATZHALTER
+
+# `nachahmer_tempo`* -- Klasse 11 (Zaehler). Die "Nachahmergeschwindigkeit"
+# aus T27: Zuwachs des Nachahmerzaehlers je Runde mit Ueberrendite auf
+# diesem Land x Sektor (spiel.md Gegenkraft 4).
+# Schranke: >= 0. specs/ nennt keine obere; wirksam begrenzt durch
+#   `nachahmer_max`.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist keine Strategie selbstverbrauchend und
+#   Mass 3 -- "was im ersten Drittel optimal war, ist im letzten
+#   abgegrast" -- faellt auf null. Zu gross -- jede Position ist nach
+#   einer Runde entwertet und Mass 1 verliert seine Entscheidungsdichte.
+nachahmer_tempo = 0  # PLATZHALTER
+
+# `nachahmer_max`* -- Klasse 11 (Zaehler). Obergrenze des
+# Nachahmerzaehlers; Herkunft der Schranke wie bei `aufsicht_max`
+# (T5 Klasse 11, spiel.md Kanal 6 "Zaehler ganzzahlig mit Obergrenze").
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Gegenkraft 4 aus. Zu gross -- Kanal 6 ist
+#   ungedaempft.
+nachahmer_max = 0  # PLATZHALTER
+
+# `anlegerabzug_anteil`* -- Klasse 4 (Anteile). Der "Anlegerabzugsanteil"
+# aus T27: fester Anteil des Anlegerbestands, der je Runde abzieht,
+# nachdem die Ueberrendite drei Runden unter null lag (spiel.md
+# Gegenkraft 3, Kanal 7 "Abzug erst nach drei Runden, fester Anteil je
+# Runde"). Die **drei Runden** legt spiel.md fest -- der Zustand haelt
+# genau drei Ueberrenditen (T15) --, sie sind kein Schluessel.
+# Schranke: 0 ... 10.000 aus der Klasse (T5).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist die dritte Todesart unerreichbar und
+#   Gegenkraft 3 wirkt nur ueber den Preisstoss. Bei 10.000 ist der
+#   Fonds nach einer schlechten Serie sofort tot, und der frueh
+#   Gestorbene fuellt das ganze Todesband.
+anlegerabzug_anteil = 0  # PLATZHALTER
+
+# Klasse 1 (Fondsgeld, US-Cent). Startkapital des Fonds.
+# **Ein Schluessel, zwei Adressen:** Er bestimmt `fonds.kasse` *und*
+# `fonds.anlegerbestand` (spiel.md "Fondskasse, Anlegerbestand | aus
+# `parameter.toml` (Startkapital)"; T45 zaehlt beide als
+# `Parameter(...)`). Das ist eine Vorgabe, keine Wahl dieses Pakets --
+# als Befund am Dateiende vermerkt.
+# Schranke: >= 1. Ein Fonds mit Nullvermoegen dividiert in Runde 1 durch
+#   null und stirbt sonst spaetestens in Runde 3 am Anlegerabzug
+#   (spiel.md, Modus `weltlauf`).
+# Kalibriert: Selbstspieler, zusammen mit `stufenweite` -- nur das
+#   Verhaeltnis beider Groessen wirkt, ein dritter Regler waere redundant
+#   und ist deshalb nicht eingebaut (spiel.md).
+# Scheitert daran: Zu klein -- eine Stufe auf dem groessten der sechzehn
+#   Startmarktwerte ist nicht bezahlbar. Zu gross -- der Fonds bewegt in
+#   Runde 1 jeden Markt und der Preisstoss dominiert alles.
+startkapital = 1  # PLATZHALTER
+
+# `startzustimmung`* -- Klasse 4 (Anteile). Startwert von
+# `land.<L>.zustimmung` in allen vier spielbaren Laendern; **eine Zahl
+# fuer alle vier**, weil T45 genau vier Adressen auf einen
+# Parameterschluessel fuehrt (T27 "Startzustimmung", T45, spiel.md "Jede
+# Groesse ohne Datenanker").
+# Dem Spieler erscheint die Groesse als 0 bis 100 (T5).
+# Schranke: 0 ... 10.000 aus der Klasse (T5); ueber
+#   `zustimmung_wechselschwelle`, sonst wechselt jede Regierung in
+#   Runde 1 -- Folgerung, keine Vorgabe aus specs/.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu niedrig -- Regierungswechsel in Runde 1 in allen
+#   vier Laendern. Zu hoch -- Gegenkraft 2 erreicht ihre Schwelle in R
+#   Runden nie und Kanal 2 ist tot.
+startzustimmung = 0  # PLATZHALTER
+
+# `regulierung_start`* -- Klasse 10 (Instrumentenstufe). Startstand der
+# Finanzmarktregulierung in allen vier spielbaren Laendern (T27
+# "Startstand der Finanzmarktregulierung", T45). Das Instrument hat
+# keinen Datenanker und steht im `weltlauf` fest auf diesem Wert -- das
+# Orakel ist fuer dieses Instrument blind, und das gehoert in jeden
+# Befund (spiel.md, T23 Punkt 3).
+# Schranke: `0 ... regulierung_stufen` (T51).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei `regulierung_stufen` kann die Aufsicht nicht mehr
+#   verschaerfen; bei 0 hat der Fonds nichts zu lockern.
+regulierung_start = 0  # PLATZHALTER
+
+
+# ---------------------------------------------------------------------
+# GRUPPE B2 -- "Verzoegerungen" (T27)
+#
+# T27 nennt die Gruppe, keinen einzelnen Schluessel. Die vier hier
+# entsprechen genau den vier verzoegerten Groessen, die T15 im Zustand
+# fuehrt: `...instrument.<I>.restverzoegerung` (16 Adressen) und die drei
+# Restdauern je Land `marktverbot_rest`, `lobbykosten_rest`,
+# `regierungsdruck_rest` (12 Adressen). Alle Namen sind gebildet.
+# Alle vier sind Klasse 11 (Restdauern in Runden), Schranke >= 0.
+# Alle vier startet der Zustand bei 0 (spiel.md, T23 Punkt 1); die Werte
+# hier sind die Dauern, die ein Ereignis *setzt*, nicht die Startwerte.
+# ---------------------------------------------------------------------
+
+# `verzoegerung_lobby`* -- Runden zwischen dem Durchsetzen einer
+# Lobbyaktion und der Bewegung des Instruments; laedt
+# `land.<L>.instrument.<I>.restverzoegerung` (spiel.md Schleife
+# Schritt 3 "faellige Verzoegerungen aus frueheren Runden greifen",
+# Kanal 8 "Verzoegerung und hoechstens ein Schritt je Runde", T15).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 wirkt Aktion 3 sofort und Kanal 8 verliert
+#   seine Daempfung. Zu gross -- keine Lobbyaktion wirkt innerhalb von R
+#   Runden und Klasse 3 von Mass 2 gewinnt nie.
+verzoegerung_lobby = 0  # PLATZHALTER
+
+# `marktverbot_dauer`* -- Runden Marktverbot nach der dritten
+# Aufsichtsschwelle; laedt `marktverbot_rest` (spiel.md Gegenkraft 1
+# "Marktverbot in diesem Land fuer mehrere Runden", T15).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist die dritte Schwelle folgenlos; zu gross --
+#   das Marktverbot ist gleichbedeutend mit dem Partieende und die
+#   zweite Todesart verliert ihre eigene Bedeutung.
+marktverbot_dauer = 0  # PLATZHALTER
+
+# `lobbykosten_dauer`* -- Runden, in denen die Lobbykosten nach einem
+# Regierungswechsel verdoppelt sind; laedt `lobbykosten_rest` (spiel.md
+# Gegenkraft 2, T15). Den Faktor 2 legt spiel.md fest.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist der Regierungswechsel fuer den Fonds
+#   folgenlos; zu gross -- ein einziger Wechsel beendet Aktion 3 fuer den
+#   Rest der Partie.
+lobbykosten_dauer = 0  # PLATZHALTER
+
+# `regierungsdruck_dauer`* -- Runden, in denen eine neue Regierung alle
+# Instrumente in Richtung ihres historischen Mittels zuruecksetzt; laedt
+# `regierungsdruck_rest` (spiel.md Gegenkraft 2, T15).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 hat der Regierungswechsel keine Wirkung auf die
+#   Instrumente und Kanal 2 ist offen; zu gross -- die Instrumente
+#   haengen dauerhaft am historischen Mittel und der Spieler bewegt
+#   nichts mehr.
+regierungsdruck_dauer = 0  # PLATZHALTER
+
+
+# ---------------------------------------------------------------------
+# GRUPPE C -- "Elastizitaeten" (T27)
+#
+# **Hier ist die Datei am schwaechsten, und das gehoert an den Anfang der
+# Gruppe und nicht ans Ende.** T27 zaehlt "Elastizitaeten" als
+# Kalibriergroesse auf; **weder spiel.md noch technik.md nennt eine
+# einzige davon beim Namen.** Die zwoelf Schluessel unten sind deshalb
+# alle gebildet. Ausgewaehlt sind sie nach genau einer Regel: Es gibt
+# eine in spiel.md **benannte** Wirkung, sie braucht eine Zahl, und die
+# Zahl hat sonst kein Zuhause -- keinen Datenanker, kein Manifestfeld,
+# keine Vorgabe in technik.md. Je Schluessel steht die Fundstelle dabei.
+#
+# Zwei Fehler sind hier moeglich, und keinen kann dieses Paket
+# ausschliessen: eine Wirkung zu viel (ein Regler ohne Modellregel) oder
+# eine zu wenig (eine Modellregel ohne Regler). Abschliessend beantworten
+# kann das erst das Paket, das Schritt 3 bis 5 baut. Als Befund vermerkt.
+# ---------------------------------------------------------------------
+
+# `abschreibungsrate`* -- Klasse 3 (Raten, bp). Jaehrlicher Abgang des
+# Kapitalstocks; ausdrueckliche Daempfung von Kanal 1 (spiel.md
+# Kanaltabelle: "eine Runde Verzoegerung, Abschreibungsrate").
+# Schranke: 0 ... 10.000, sonst faellt der Kapitalstock in einer Runde
+#   unter null -- Folgerung, keine Vorgabe aus specs/.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Kanal 1 ungedaempft und der Kapitalstock
+#   waechst unbegrenzt; zu gross -- die Wirtschaft schrumpft in jeder
+#   Partie und der Rueckvergleich (Mass 4) scheitert an der BIP-Sollreihe.
+abschreibungsrate = 0  # PLATZHALTER
+
+# `investitionsquote`* -- Klasse 4 (Anteile). Anteil des Gewinns, der in
+# den Kapitalstock der Folgerunde geht; das Glied "Gewinn -> Investition"
+# von Kanal 1 (spiel.md Kanaltabelle).
+# Schranke: 0 ... 10.000 aus der Klasse (T5).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zusammen mit `abschreibungsrate` entscheidet sie, ob
+#   das Modell ueber 25 Runden waechst oder schrumpft -- das ist die
+#   Groesse, an der Mass 4 zuerst haengt.
+investitionsquote = 0  # PLATZHALTER
+
+# `preisstoss`* -- Klasse 4 (Anteile). Preisaenderung in
+# Zehntausendsteln je Zehntausendstel Marktanteil, den der Fonds beim
+# Ein- oder Ausstieg bewegt (spiel.md Aktion 1: "bewegt den Preis gegen
+# den Fonds, und zwar umso staerker, je groesser sein Anteil an diesem
+# Markt ist"; "Warum eine Stufe ein Anteil ist" nennt den Anteil als die
+# Zahl, die der Preisstoss liest).
+# Schranke: >= 0. specs/ nennt keine obere.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Groesse kostenlos, Gegenkraft 3 verliert
+#   ihre Kraft ("die Kraft dieser Gegenkraft liegt im Preisstoss") und
+#   die Kanaele 4, 6 und 7 sind ungedaempft. Zu gross -- jede Umschichtung
+#   vernichtet mehr, als sie einbringt, und Klasse 1 von Mass 2 gewinnt nie.
+preisstoss = 0  # PLATZHALTER
+
+# `zustimmung_elastizitaet`* -- Klasse 4 (Anteile). Aenderung der
+# Zustimmung in Zehntausendsteln je Zehntausendstel Aenderung des
+# Realeinkommens (spiel.md Gegenkraft 2: "Sinkt das Realeinkommen, sinkt
+# die Zustimmung").
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Gegenkraft 2 aus, und mit ihr Kanal 2 -- die
+#   Wirkungskette, die spiel.md ausdruecklich als "die Wirkungskette der
+#   Idee" bezeichnet.
+zustimmung_elastizitaet = 0  # PLATZHALTER
+
+# `zustimmung_wechselschwelle`* -- Klasse 4 (Anteile). Unter diesem Stand
+# von `land.<L>.zustimmung` wechselt die Regierung (spiel.md
+# Gegenkraft 2: "unter einer Schwelle wechselt die Regierung").
+# Schranke: 0 ... 10.000 aus der Klasse (T5); unter `startzustimmung`.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Zu hoch -- Dauerwechsel, kein Instrument bleibt je
+#   stehen. Zu niedrig -- unerreichbar, Gegenkraft 2 wirkt nur ueber die
+#   Zustimmung selbst und nie ueber den Wechsel.
+zustimmung_wechselschwelle = 0  # PLATZHALTER
+
+# `nachahmer_wirkung`* -- Klasse 4 (Anteile). Preisanhebung in
+# Zehntausendsteln je Punkt Nachahmerzaehler (spiel.md Gegenkraft 4:
+# "Nachahmerkapital tritt als Gegenposition auf, hebt den Einstiegspreis
+# und senkt die kuenftige Rendite derselben Position").
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler, zusammen mit `nachahmer_tempo` und
+#   `nachahmer_max` -- die drei bilden eine Groesse mit drei Reglern und
+#   sind einzeln nicht ablesbar.
+# Scheitert daran: Bei 0 zaehlt der Nachahmerzaehler folgenlos hoch und
+#   Mass 3 faellt auf null, obwohl die Gegenkraft dem Namen nach laeuft.
+nachahmer_wirkung = 0  # PLATZHALTER
+
+# `aufsicht_tempo`* -- Klasse 11 (Zaehler). Zuwachs des
+# Aufsichtszaehlers je Runde, gebildet aus globaler Sichtbarkeit mal
+# lokalem Fussabdruck (Einfluss mal Positionsanteil am Sektor) --
+# **nicht aus dem Vermoegen allein, sonst waere er nur eine
+# Vermoegenssteuer** (spiel.md Gegenkraft 1). Der Schluessel ist der
+# Umrechnungsfaktor aus dem Produkt zweier Anteile in Zaehlerschritte.
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Gegenkraft 1 aus, alle drei
+#   Aufsichtsschwellen sind unerreichbar und Kanal 5 ist offen.
+aufsicht_tempo = 0  # PLATZHALTER
+
+# `einfluss_glaettung`* -- Klasse 4 (Anteile). Gewicht der laufenden
+# Runde in `land.<L>.einfluss`; spiel.md nennt Einfluss den
+# **geglaetteten** Anteil des Fonds am gesamten Lobbydruck eines Landes
+# ("Der Zustand", "Einfluss je Land"). Die Glaettung ist benannt, ihr
+# Gewicht nirgends.
+# Schranke: 1 ... 10.000 aus der Klasse (T5); die 1 unten, weil bei 0 der
+#   Einfluss dauerhaft auf seinem Startwert 0 stuende und die zweite
+#   Haelfte des Mandats unerreichbar waere.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 10.000 gibt es keine Glaettung, und Einfluss
+#   springt mit jedem Lobbybudget -- dann ist die zweite Haelfte des
+#   Mandats in einer Runde kaufbar.
+einfluss_glaettung = 1  # PLATZHALTER
+
+# `hebel_max`* -- Klasse 4 (Anteile). Obergrenze des Hebelstands als
+# Vielfaches des Fondsvermoegens in Zehntausendsteln (10.000 = einmal
+# das Fondsvermoegen); ausdrueckliche Daempfung von Kanal 4 (spiel.md
+# Kanaltabelle: "Hebelobergrenze").
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 gibt es keinen Hebel, Aktion 4 entfaellt und
+#   mit ihr die Angriffsflaeche der ersten Todesart -- "ohne ihn ist
+#   Groesse risikolos" (spiel.md). Zu gross -- jede Partie endet an
+#   Todesart 1 und das Todesband fuellt den Ergebnisraum.
+hebel_max = 0  # PLATZHALTER
+
+# `hebelaufschlag`* -- Klasse 3 (Raten, bp). Aufschlag auf den Leitzins
+# des Landes je 10.000 Sichtbarkeit; spiel.md Aktion 4: "Kreditaufnahme
+# zum Leitzins des Landes plus einem Aufschlag, der mit der Sichtbarkeit
+# des Fonds steigt", Kanal 4: "Aufschlag steigt mit Sichtbarkeit".
+# Nicht zu verwechseln mit `aufschlag` (Leitzins <-> Anleiherendite).
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Sichtbarkeit auf der Kostenseite gratis und
+#   die Wahl "laut und schnell gegen leise und langsam" hat nur eine
+#   Seite.
+hebelaufschlag = 0  # PLATZHALTER
+
+# `sichtbarkeit_schritt`* -- Klasse 4 (Anteile). Aenderung von
+# `fonds.sichtbarkeit` je Aktion 5 (spiel.md Aktion 5: "Der Fonds legt
+# eine Position oeffentlich offen oder zieht sich zurueck").
+# Schranke: 0 ... 10.000 aus der Klasse (T5).
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 ist Aktion 5 wirkungslos; zu gross -- eine
+#   einzige Aktion schaltet zwischen unsichtbar und voll sichtbar, und
+#   die Entscheidung wird binaer statt dosierbar.
+sichtbarkeit_schritt = 0  # PLATZHALTER
+
+# `innerjahresausschlag_faktor`* -- Klasse 4 (Anteile). Gewicht der
+# historischen Schwankungsbreite des Landes im Innerjahresausschlag,
+# gegen den der Hebel in Schritt 6 geprueft wird (spiel.md "Was bewusst
+# fehlt": "Der Hebel wird nicht gegen den Jahresendstand geprueft,
+# sondern gegen einen Innerjahresausschlag, der deterministisch aus der
+# Jahresbewegung und der historischen Schwankungsbreite des Landes
+# folgt"). Die Schwankungsbreite selbst ist eine Kennzahl des Jahrgangs
+# (T23 Punkt 6, mittlere absolute Jahresaenderung); hier steht nur ihr
+# Gewicht.
+# Schranke: >= 0.
+# Kalibriert: Selbstspieler.
+# Scheitert daran: Bei 0 wird der Hebel gegen den Jahresendstand
+#   geprueft -- genau das, was spiel.md ausschliesst -- und Todesart 1
+#   verliert ihren Ersatz fuer das fehlende Quartalsraster.
+innerjahresausschlag_faktor = 0  # PLATZHALTER
+
+
+# ---------------------------------------------------------------------
+# GRUPPE A, Fortsetzung -- die Instrumente nach T51
+#
+# Feste Reihenfolge nach T9: leitzins, zoll, haushalt, regulierung.
+# Die drei Schluesselnamen je Instrument stehen woertlich in T27
+# (`schrittweite[i]`, `instrument_min[i]`, `instrument_max[i]`); als
+# Tabelle je Instrument statt als Feld ueber einen Index, weil T27 die
+# Struktur mit **benannten Feldern** verlangt und eine Schleife ueber
+# Schluessel ausschliesst (T9).
+#
+# Nach jeder Bewegung in Schritt 3 gilt
+# `stand = min(max(stand +/- schritt, min), max)`; die Kappung traegt die
+# Ursache des ausloesenden Drucks und nicht `Vortrag`, damit die Kette
+# aus T18 sagt, *dass* gekappt wurde (T51).
+#
+# **Im `weltlauf` gilt die Schrittweite nicht** -- der historische Pfad
+# ist dort die Wahrheit und darf in einem Jahr weiter springen --, **der
+# Wertebereich schon**: Verlaesst der Pfad ihn, ist das ein Befund des
+# Jahrgangsbaus und kein stilles Kappen einer Sollgroesse (T51). Daraus
+# folgt Regel B fuer die Platzhalter: Die Wertebereiche stehen hier
+# **weit**. Ein enger Wertebereich waere eine Kalibrierung.
+# ---------------------------------------------------------------------
+
+# Klasse 3 (Raten, bp). Datenanker Reihe 9 (IWF IFS); fuer Deutschland
+# exogen ab 1999, also ab Runde 3 (spiel.md, T23 Punkt 8).
+# `instrument_min` traegt die einzige Schranke des Modells, an der ein
+# Kurs unendlich wird: **`instrument_min >= 1 - aufschlag`** (T51). Mit
+# `aufschlag = 51` heisst das `>= -50`; der Platzhalter steht genau
+# darauf, weil der tiefste bekannte Stand im Pruefjahrgang der
+# EZB-Einlagesatz von -0,50 % ist (T23 Punkt 5).
+# `instrument_max` weit: Brasiliens Leitzins liegt am Anfang des
+# Pruefjahrgangs im zweistelligen Prozentbereich, ein enger Wert erzeugte
+# einen Befund des Jahrgangsbaus.
+# Kalibriert: Selbstspieler (`schrittweite`); die beiden Grenzen sind
+#   gegen den Jahrgang zu pruefen, nicht zu suchen.
+# Scheitert daran: `schrittweite` zu klein -- der Spieler bewegt den Zins
+#   in R Runden nicht spuerbar; zu gross -- ein Schritt je Runde ist
+#   keine Daempfung von Kanal 8 mehr.
+[instrument.leitzins]
+schrittweite = 1  # PLATZHALTER
+instrument_min = -50  # PLATZHALTER
+instrument_max = 10000  # PLATZHALTER
+
+# Klasse 3 (Raten, bp). Aggregiertes Zollniveau je Land, Datenanker
+# Reihe 13 (WDI aus WITS) -- **die Reihe mit dem entscheidenden
+# Lizenzverdacht** (T26, T51). Faellt sie aus, laeuft der Weltlauf mit
+# konstantem Zoll und das Orakel traegt zwei statt drei verankerte
+# Instrumente; an dieser Datei aendert das nichts.
+# `instrument_min` ist nach T51 **fest 0** -- der Wertebereich lautet
+# dort `0 ... instrument_max[zoll]`, ein negativer Zoll waere eine
+# Subvention und ist im Modell nicht vorgesehen.
+# Kalibriert: Selbstspieler (`schrittweite`).
+# Scheitert daran: `instrument_max` zu eng -- der historische Pfad
+#   verlaesst den Bereich und der Jahrgangsbau meldet einen Befund.
+[instrument.zoll]
+schrittweite = 1  # PLATZHALTER
+instrument_min = 0  # FEST (T51)
+instrument_max = 10000  # PLATZHALTER
+
+# Klasse 3 (Raten, bp). Haushaltssaldo bzw. Staatsausgabenquote,
+# Datenanker Reihe 12 (IWF WEO). T51 nennt fuer beide Grenzen keine
+# Zahl und keine Bedingung; beide sind gegen den historischen Pfad zu
+# pruefen. Der Saldo ist im Pruefjahrgang in mehreren Laendern deutlich
+# negativ, der Platzhalter deshalb weit nach unten offen.
+# Kalibriert: Selbstspieler (`schrittweite`).
+# Scheitert daran: wie beim Zoll.
+[instrument.haushalt]
+schrittweite = 1  # PLATZHALTER
+instrument_min = -10000  # PLATZHALTER
+instrument_max = 10000  # PLATZHALTER
+
+# Klasse 10 (Instrumentenstufe). Kapitalverkehrs- und
+# Finanzmarktregulierung: **kein Datenanker, reines Modellkonstrukt**
+# (spiel.md, T5 Klasse 10). Alle drei Werte legt T51 fest, keiner ist
+# kalibrierbar:
+#   `schrittweite`   = 1  ("hoechstens ein Schritt je Runde" heisst hier
+#                          **eine Stufe**, T5 Klasse 10, T51)
+#   `instrument_min` = 0  (Wertebereich `0 ... regulierung_stufen`, T51)
+#   `instrument_max` = `regulierung_stufen` (ebd.)
+# **`instrument_max` ist damit eine zweite Kopie von
+# `regulierung_stufen`.** Das ist genau der Fehlertyp, den T45 fuer
+# Adressen ausschliesst -- eine Groesse mit zwei Herren. Die Vorgabe
+# erzeugt ihn, dieses Paket kann ihn nicht aufloesen (das waere eine
+# Abweichung von specs/ und braeuchte einen ADR). Auflage an das Paket,
+# das diese Datei einliest: **Gleichheit pruefen und bei Ungleichheit
+# abbrechen**, nicht eine der beiden Zahlen bevorzugen. Als Befund
+# vermerkt.
+# Scheitert daran: Nichts -- hier ist nichts zu kalibrieren. Der Regler
+#   dieses Instruments heisst `regulierung_stufen`.
+[instrument.regulierung]
+schrittweite = 1  # FEST (T51)
+instrument_min = 0  # FEST (T51)
+instrument_max = 1  # FEST (T51), muss `regulierung_stufen` gleichen
+
+
+# =====================================================================
+# BEFUNDE -- was ein Pruefer wissen muss, bevor er zaehlt
+#
+# 1. **25 der 50 Namen sind gebildet, nicht zitiert.** Woertlich in
+#    specs/ stehen: stufenweite, stufen_max, ausstiegsabschlag,
+#    zwangsabschlag, aufschlag, lobbykosten, beteiligungsrabatt,
+#    gegenlobby_satz, druck_max, regulierung_stufen, schwelle_v,
+#    schwelle_e, startkapital sowie schrittweite / instrument_min /
+#    instrument_max in den vier Instrumententabellen (12 Schluessel).
+#    Gebildet sind die uebrigen 25: startzustimmung, regulierung_start
+#    (beide schon in Paket 0007 so gebildet und dort markiert),
+#    aufsicht_schwelle_1/_2/_3, aufsicht_max, nachahmer_tempo,
+#    nachahmer_max, anlegerabzug_anteil, die vier Verzoegerungen und die
+#    zwoelf der Gruppe C.
+#
+# 2. **T27 nennt "Elastizitaeten", specs/ nennt keine einzige.** Die
+#    zwoelf Schluessel der Gruppe C sind nach der oben genannten Regel
+#    ausgewaehlt (benannte Wirkung, braucht eine Zahl, hat sonst kein
+#    Zuhause). Ob es genau diese zwoelf sind, entscheidet erst das Paket,
+#    das Schritt 3 bis 5 baut. Hier ist sowohl ein Regler zu viel als
+#    auch einer zu wenig moeglich.
+#
+# 3. **`startkapital` bestimmt zwei Adressen** -- `fonds.kasse` und
+#    `fonds.anlegerbestand` (spiel.md, T45; so auch im
+#    Adressverzeichnis aus Paket 0007). Wer den Anlegerbestand vom
+#    Startkapital trennen will, braucht einen ADR.
+#
+# 4. **`instrument_max[regulierung]` und `regulierung_stufen` sind
+#    dieselbe Zahl** (T51). Auflage: Gleichheit beim Einlesen pruefen,
+#    Ungleichheit ist ein Abbruch.
+#
+# 5. **`aufschlag` und `instrument_min[leitzins]` sind gekoppelt**
+#    (`instrument_min >= 1 - aufschlag`, T51). Diese Datei haelt die
+#    Kopplung mit 51 und -50 ein. Sie ist die einzige Stelle, an der
+#    zwei Platzhalter voneinander abhaengen; wer einen aendert, prueft
+#    den anderen.
+#
+# 6. **`startzustimmung` und `regulierung_start` tragen je vier
+#    Adressen** -- ein Wert fuer alle vier spielbaren Laender. So zaehlt
+#    T45 (`4x2` von elf Parameteradressen). Ein Startwert je Land waere
+#    eine andere Zaehlung und braeuchte einen ADR.
+#
+# 7. **Nicht abgedeckt, weil nirgends gefordert:** ein Schluessel fuer
+#    die Obergrenze der Klasse-11-Zaehler `land.<L>.aufsichtszaehler`
+#    und Nachahmerzaehler ist mit `aufsicht_max` und `nachahmer_max`
+#    gesetzt; fuer die uebrigen Zaehler der Klasse 11 (Runde,
+#    Mandatsstand, Restdauern) nennt T5 ebenfalls "Obergrenze aus
+#    parameter.toml", ohne dass eine Modellregel eine braeuchte -- Runde
+#    und Mandatsstand sind durch R begrenzt (T40), die Restdauern durch
+#    die vier Dauern der Gruppe B2. Deshalb steht dafuer kein
+#    Schluessel hier.
+# =====================================================================
