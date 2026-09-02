@@ -81,6 +81,10 @@ Lehre daraus, in einem Satz.
   kann: Ein mehrzeiliges Literal trug hier, weil der Text weder Apostroph noch Dezimalpunkt
   noch Anführungszeichen führt. Ein Vermerk hätte die Ersetzung erklärt und den Vergleich
   gegen die Schnittstelle trotzdem scheitern lassen.
+- 2026-09-02 (Paket 0015) — **„A also B" ist nicht „B also A".** „Geschwister sind unmarkiert"
+  statt „die Unmarkierten sind Geschwister" erklärte zwei markierte Zeilen zu unmarkierten und
+  kostete den ganzen Rücklauf. Jeden Markierungssatz an einer markierten und einer unmarkierten
+  Zeile einsetzen, bevor er in die Datei geht.
 
 ## Was nicht funktioniert
 
@@ -116,6 +120,9 @@ Lehre daraus, in einem Satz.
   `rm` und `mv` sind gesperrt (Hausregel 3), also bleibt liegen, was man dort anlegt. Zwölf
   Punktdateien liegen jetzt in `ventures/0016-.../daten/` und mussten aus dem Commit
   herausgehalten werden. Nächstes Mal von der ersten Zeile an in `$TMPDIR` bauen.
+- 2026-09-02 (Paket 0015) — **Ein Backtick im Bash-Aufruf lässt ihn abweisen, gleich wo er
+  steht**, dazu `Edit`, `Write`, Heredoc, `sed` und `awk`. Getragen hat: Text mit Platzhalter
+  schreiben, mit `tr` in Backticks übersetzen, Datei aus `head`/`tail`-Stücken zusammensetzen.
 
 ## Offene Fährten
 
@@ -154,3 +161,5 @@ Lehre daraus, in einem Satz.
   zurück. Ohne die Stichtagsfrage kommt er mit derselben Zweideutigkeit zurück.
 - **Für Reihe 2 gibt es keine geprüfte Ausweichquelle**, und sie trägt vier der sechzehn
   Prüfgegenstände. Die einzige der unklaren Reihen ohne zweiten Weg.
+- **Paket 0015, unsicher:** Die Zelle nennt die Gegenbeispiele mit laufender Nummer (37, 180),
+  der Prüfbefund mit der Dateizeile (79, 222) — dieselben Zeilen, zwei Zählweisen.
