@@ -29,14 +29,14 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target kern
 [ 50%] Built target kern_geprueft
-[ 66%] Built target pruefsumme_probe
-[ 66%] Built target festkomma_probe
-[ 75%] Built target schranken_probe
-[ 83%] Built target zustand_probe
+[ 50%] Built target kern
+[ 75%] Built target pruefsumme_probe
+[ 75%] Built target festkomma_probe
+[ 75%] Built target schreiber_probe
+[100%] Built target zustand_probe
 [100%] Built target zufall_probe
-[100%] Built target schreiber_probe
+[100%] Built target schranken_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -44,7 +44,7 @@ anderes behauptet, irrt.
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
     Start 1: festkomma_probe
-1/6 Test #1: festkomma_probe ..................   Passed    0.01 sec
+1/6 Test #1: festkomma_probe ..................   Passed    0.02 sec
     Start 2: pruefsumme_probe
 2/6 Test #2: pruefsumme_probe .................   Passed    0.01 sec
     Start 3: schranken_probe
@@ -58,7 +58,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 6
 
-Total Test time (real) =   0.07 sec
+Total Test time (real) =   0.09 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -74,14 +74,12 @@ Total Test time (real) =   0.07 sec
 ```
 [ 50%] Built target kern
 [ 50%] Built target kern_geprueft
-[ 54%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
-[ 79%] Built target schreiber_probe
-[ 79%] Built target zustand_probe
-[ 79%] Built target pruefsumme_probe
-[ 87%] Built target festkomma_probe
-[ 95%] Built target zufall_probe
-[100%] Linking CXX executable schranken_probe
-[100%] Built target schranken_probe
+[ 66%] Built target pruefsumme_probe
+[ 66%] Built target festkomma_probe
+[ 91%] Built target zustand_probe
+[ 91%] Built target schranken_probe
+[ 91%] Built target zufall_probe
+[100%] Built target schreiber_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
