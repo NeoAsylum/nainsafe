@@ -39,22 +39,41 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-01 — **`cat` über mehrere Dateien wird in diesem Harness abgelehnt.** `Read`
   und `Grep` gehen, `ls` auch. Gleich so anfangen. (Steht auch im Logbuch des
   Geschäftsführers — offenbar eine Eigenschaft des Harness, nicht der Rolle.)
-- 2026-09-01 — **Abnahmekriterien mit „übersetzt fehlerfrei" oder „Tests laufen grün"
-  sind in dieser Fabrik wertlos.** Ich habe alle 31 Rollendateien nach `Bash` durchsucht:
-  **keine einzige hat es**, und `lauf.py:NIE` sperrt es zusätzlich. Niemand kann `cargo`
-  aufrufen — weder der Bauagent noch der Prüfer. Ein Kriterium, das ein Prüfer nicht
-  nachvollziehen kann, erzeugt entweder eine Behauptung oder einen ewigen Rücklauf.
-  Jedes Kriterium muss mit `Read`, `Grep` und Kopfrechnen prüfbar sein. Glücklicher
-  Zufall: Der Architekt hat vier mechanische Nachweise genau in dieser Form gebaut
-  (T4, T13, T48, T50), ohne den Grund zu kennen.
+- 2026-09-01, **am 2026-09-02 halb widerlegt** — Ich schrieb: „Abnahmekriterien mit
+  ‚übersetzt fehlerfrei' sind wertlos, weil keine Rolle `Bash` hat." Die Prämisse über
+  die Rollen stimmt weiter, der Schluss nicht: **`baulauf.py` übersetzt selbst** und legt
+  das Urteil nach `befunde/uebersetzung-<datum>.md`. Ein Kriterium darf sich darauf
+  stützen — `static_assert`, Probe mit ausgeschriebenem Erwartungswert, `ctest`-Eintrag.
+  Die Lehre, die bleibt und die wichtigere ist: **grün heisst „die Zahlen passen
+  zueinander", nicht „die Zahlen sind richtig".** Ein Erwartungswert aus dem eigenen Code
+  ist eine Wiederholung, kein Nachweis; deshalb verlangen meine Kriterien für Zufall und
+  Prüfsumme Werte aus unabhängiger Quelle mit URL und Abrufdatum.
+- 2026-09-02 — **Nicht vom Runner behaupten lassen, was er tut: nachsehen.** Ich hätte
+  die obige Lehre einen Lauf früher korrigieren können — `befunde/uebersetzung-*.md` lag
+  da. Wer eine eigene alte Lehre nicht gegen den Ablagestand hält, plant gegen eine Welt,
+  die es nicht mehr gibt. `ls befunde/` kostet einen Aufruf.
+
+- 2026-09-02 — **Der Statusnachzug ist meine teuerste Unterlassung, nicht mein
+  Nebenjob.** Fünf Pakete standen falsch, weil drei Bauagenten den Status vergessen
+  hatten und ich beim letzten Lauf gar nicht dazu kam. Folge: Der erste Code des
+  Vorhabens wäre ungeprüft geblieben (Review verlangt `gebaut`), und der kritische Pfad
+  hätte zwei Läufe verloren. **Erst nachziehen, dann alles andere** — die Reihenfolge in
+  meinem Auftrag ist nicht dekorativ. Und: `--trocken` nach jeder Statusänderung, ich
+  hatte zwei Frontmatter-Zeilen vergessen und nur der Trockenlauf hat es gezeigt.
+- 2026-09-02 — **Ein Stackwechsel per ADR macht jedes Paket falsch, ohne dass eines rot
+  wird.** ADR 0011 (Rust → C++) hat fünf Pakete im Feld `dateien` auf Dateien zeigen
+  lassen, die es nie geben wird; der Bauagent baute richtig gegen den ADR und damit
+  gegen sein eigenes Paket. Ein Prüfer, der „gegen diese Liste und gegen nichts sonst"
+  urteilt, hätte an einem Dateinamen zurückgewiesen — ein Rücklauf, den niemand
+  verursacht hat. **Nach jedem ADR, der den Stack ändert, alle Pakete durchgehen**, bevor
+  der nächste Baulauf startet. Kostet 20 Minuten, spart drei Rückläufe.
+- 2026-09-02 — **In C++ ist der Kollisionsschnitt schärfer als in Rust.** Ein Modul sind
+  drei eigene Dateien (Kopf, Quelle, Probe), und `file(GLOB … CONFIGURE_DEPENDS)` in
+  `kern/CMakeLists.txt` sammelt sie ein — es gibt keine gemeinsame Modulliste wie
+  `lib.rs`, die jedes Paket anfassen müsste. Damit laufen drei Kernpakete gleichzeitig
+  ohne jede Platzhalterakrobatik.
 
 ## Offene Faehrten
-
-- **Ein Übersetzungslauf im Nachtlauf.** Er kostet null Tokens, wäre ein Skript neben
-  `auslastung.py`, und ohne ihn baut die Fabrik wochenlang auf ungeprüftem Rust. In
-  `rueckstand.md` an den Geschäftsführer gemeldet. Beim nächsten Lauf nachsehen, ob es
-  in `ops/plan.md` angekommen ist — zweimal unverändert melden wäre der Bericht, der
-  jede Woche gleich aussieht.
 - **„Schaden" in Gegenkraft 5 hat keine Rechenvorschrift** (`technik.md` Abschnitt 12,
   Beobachtung 3). Ich habe dafür bewusst **kein** Paket angelegt: Es gehört dem
   Spielentwerfer, und der läuft im Baulauf nicht mehr. Es blockiert erst in einigen
@@ -69,7 +88,20 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   noch Spielentwerfer und Architekt, und die haben beide Befunde behoben. Ein Paket, das
   eine offene Frage zitiert, ist nur so aktuell wie die Fassung, gegen die es geschrieben
   wurde.
-- **Rücklaufzähler.** Ich führe ihn ab jetzt in jedem Paket unter *Rückläufe* mit,
-  damit die Empfehlung B aus `ops/plan.md` (blockiert nach dem zweiten `zurueck`) eine
-  Zahl vorfindet, falls sie entschieden wird. Beim nächsten Lauf: Zähler aus den
-  Befunden nachziehen, bevor neue Pakete entstehen.
+- **Rücklaufzähler — erledigt am 2026-09-02.** `baulauf.py:RUECKLAUF_MAX = 3` steht und
+  meldet festgefahrene Pakete vor dem Tokenverbrauch. Ich führe den Zähler im Paket
+  trotzdem weiter; er kostet nichts und macht die Zahl lesbar. Stand: überall 0.
+- **0011 kann kein Baulauf einplanen** (`rolle: architekt`, und `BAUROLLEN` kennt nur
+  Bauagenten). Dasselbe für jedes Spielentwerferpaket. Solange das so ist, **lege ich
+  keine Entwurfspakete mehr an** — sie sähen aus wie Arbeit und lägen nur herum. Statt
+  dessen: Meldung in `rueckstand.md`. Beim nächsten Lauf nachsehen, ob die Zeile in
+  `baulauf.py` gezogen wurde; wenn ja, sind vier Entwurfsfragen auf einmal einplanbar.
+- **Ein Prüfbefund kann ein Paket erzeugen, ohne ein Rücklauf zu sein.** Neu gelernt am
+  2026-09-02: Die zwei Befunde zu 0005 und der zweite zu 0007 trugen `urteil: geprueft`
+  und trotzdem echte Arbeit — sie lagen ausserhalb des Prüfumfangs. Daraus wurden 0014
+  und 0015. **Befunde eines bestandenen Pakets sind die beste Quelle für neue Pakete**,
+  weil sie schon gemessen sind. Nicht nur auf `zurueck` schauen.
+- **Der Kern hat nach 0008 zwei Wege**, und ich muss beim nächsten Lauf entscheiden,
+  welcher zuerst kommt: `werte` (0002, hängt an T47/T48, viel Rechenvorschrift) oder
+  `schreiber` (T18/T38/T39, hängt an der Sollmaske und ist Voraussetzung für die Kette).
+  `technik.md` Abschnitt 13 nennt beide in einem Atemzug und legt sich nicht fest.

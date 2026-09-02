@@ -1,7 +1,7 @@
 ---
 id: 0005-wdi-drittanbieter-ausnahme
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-wdi.md]
 abnahme: Für jede der vier Verdachtsreihen steht im Befund Indikatorcode, das wörtliche Feld "Source" aus dem Indikatorendatensatz, die Abruf-URL, das Abrufdatum und ein Urteil frei|gesperrt|unklar mit Begründung; bei jedem Urteil ausser "frei" steht die Folge nach T26 daneben.
@@ -69,3 +69,22 @@ Jahrgang schon vermieden hat.
 ## Rückläufe
 
 0.
+
+## Abnahme
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0005-wdi-drittanbieter-ausnahme-2026-09-02.md`, `urteil: geprueft`.
+Der Daten-Prüfer hat das Feld „Source" aller sieben Indikatorcodes am 2026-09-02
+unabhängig über beide Weltbank-Endpunkte neu abgerufen und zeichenweise gegen den
+Wortlaut im Befund gehalten — er hat die Angabe also gemessen und nicht gelesen.
+
+**Die zwei Befunde gehen an mich und sind hier nicht offen geblieben:**
+
+- **Befund 1** (die Spalte „Verdacht" der Reihenliste ist keine Messung; die Reihen 1, 2
+  und 6 nennen ebenfalls Drittanbieter, und Reihe 2 trägt 12 der 31 Sollreihen) ist zu
+  **Paket 0014-lizenzpruefung-restliche-reihen** geworden. Nicht dieses Paket wird
+  wiedereröffnet: Sein Umfang war auf vier Reihen gesetzt, es hat ihn erfüllt, und die
+  offene Frage betrifft andere Reihen.
+- **Befund 2** (der ILO-Stichtag meint die Erzeugung des Bestandes, nicht den Abruf
+  durch die Weltbank) steht als ausdrückliche Teilfrage in 0014, damit der nächste Lauf
+  nicht mit derselben Zweideutigkeit zurückkommt.

@@ -1,7 +1,7 @@
 ---
 id: 0009-parameterdatei-schluessel
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Jeder in T27 und T51 genannte Schlüssel steht in der Datei, mit Skalenklasse nach T5, Wertebereich, Herkunft der Schranke und einem Startwert innerhalb der Schranken; kein Schlüssel ohne Klasse, keine Klasse ohne Schlüssel im Text.
@@ -70,3 +70,11 @@ Vorher lesen: `technik.md` T5, T27, T50, T51, T47.
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `offen` → `gebaut`.** `parameter.toml` liegt mit 763
+Zeilen vor und trägt im Kopf dieses Paket mit Stand 2026-09-02; der Datenbauer hat den
+Status nicht gesetzt. Nachgezogen, damit der Daten-Prüfer das Paket sieht. Keine
+Abnahme — ob jeder Schlüssel aus T27 und T51 mit Klasse, Wertebereich, Herkunft der
+Schranke und einem Startwert innerhalb der Schranken dasteht, misst der Prüfer.

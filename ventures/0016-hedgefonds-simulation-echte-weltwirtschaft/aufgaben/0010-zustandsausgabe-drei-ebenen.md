@@ -3,7 +3,7 @@ id: 0010-zustandsausgabe-drei-ebenen
 rolle: kernbauer
 status: offen
 haengt_an: [0002-fondsbewertung-definieren]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/zustandsausgabe.rs]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Drei Aufrufe liefern Text. `uebersicht()` fasst den Zustand in höchstens 40 Zeilen. `detail(bereich)` gibt einen Bereich vollständig mit allen 310 Adressen ihres Bereichs, je mit Wert, Skalenklasse und Herkunft. `diff(a, b)` nennt jede Adresse, die sich zwischen zwei Zeitpunkten geändert hat, mit altem Wert, neuem Wert und Differenz. Ein Test weist für jede der 310 Adressen nach, dass sie in mindestens einer der drei Ausgaben vorkommt.
 ---
 
@@ -16,6 +16,20 @@ anderes.
 
 Und sie ist zugleich Stufe 1 der Oberfläche (`specs/.../zielbild.md`): Mit ihr ist das
 Spiel spielbar und selbstspielbar, bevor eine einzige Grafik existiert.
+
+## Zwei Anmerkungen des Projektmanagers, 2026-09-02
+
+**Die Dateinamen sind auf C++20 gezogen** (ADR 0011). Sonst unverändert.
+
+**Und eine offene Frage, die vor dem Bau beantwortet sein muss, nicht von dir:** Dieses
+Paket legt die Ausgabe in den Kasten `kern`. `technik.md` T13 gibt die drei
+Zustandsebenen dem Kasten `schnittstelle` und sagt, der Kern kenne „weder Bildschirm
+noch Datei noch Uhr"; T20 beschreibt sie als zwei Ausgabeformen, Text und JSON-Zeile.
+Ein Aufruf, der eine Zeichenkette **zurückgibt**, verletzt T13 nicht — aber welcher
+Kasten sie beherbergt, entscheidet der Entwurf und nicht ich. Das Paket hängt an 0002
+und ist damit nicht dringend; die Frage steht in `rueckstand.md` für den
+Geschäftsführer. Wird sie zugunsten von `schnittstelle` beantwortet, ändern sich die
+drei Pfade im Feld `dateien` und sonst nichts.
 
 ## Die drei Ebenen
 

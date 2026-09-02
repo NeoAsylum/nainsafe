@@ -1,7 +1,7 @@
 ---
 id: 0007-adressverzeichnis-310
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Das Verzeichnis führt genau 310 Zeilen, jede mit Adresse nach T17, Gruppe nach T15, Herkunft nach T45/T46 und genau einer Skalenklasse nach T5/T49; die drei Gruppierungen summieren auf 198+56+52+4, auf 136+150+11+2+11 und auf die zwölf Klassenzeilen aus T49, jede Summe 310.
@@ -78,3 +78,24 @@ steht so in T49, und dieses Paket ist die vierte unabhängige Zählung.
 ## Rückläufe
 
 0.
+
+## Abnahme
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage sind zwei Befunde mit
+`urteil: geprueft` — `befunde/pruefung-0007-adressverzeichnis-310-2026-09-01.md` und
+`…-2026-09-02.md`. Der zweite hat die vier Zählungen gegen die Tabelle geschnitten (nicht
+gegen die Summenzeile des Bauagenten) und zusätzlich die Startwertregel in beide
+Richtungen geprüft. Dass der Status erst heute steht, ist mein Versäumnis vom
+2026-09-01, kein Mangel des Pakets: Der erste Befund lag vor und blieb ohne Nachzug
+liegen.
+
+**Die zwei Befunde des zweiten Prüflaufs:**
+
+- **Befund 1** (T5 nennt Klasse 2 „zu konstanten Preisen", die 40 Handelsströme darin
+  hängen an BACI, und BACI führt laufende Preise) ist ein Widerspruch zwischen zwei
+  Vorgaben und **kein Arbeitspaket**. Er ändert `technik.md` — T5, T49, T23 Punkt 5 und
+  T8 hängen daran — und geht an den Geschäftsführer. Steht in `rueckstand.md`.
+- **Befund 2** (die Datei beschreibt ihre eigene `*`-Markierung falsch, Zeile 29 gegen
+  Zeile 530) ist eine Zeile Text in `daten/adressen.md` und wird
+  **Paket 0015-adressen-markierungssatz**. Kein Rückgabegrund: Das Abnahmekriterium
+  verlangt die Markierung, nicht ihre Beschreibung.

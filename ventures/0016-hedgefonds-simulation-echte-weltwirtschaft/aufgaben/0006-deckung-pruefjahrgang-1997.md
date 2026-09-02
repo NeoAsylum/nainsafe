@@ -1,7 +1,7 @@
 ---
 id: 0006-deckung-pruefjahrgang-1997
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/deckungsbefund-1997.md]
 abnahme: Für jede der 31 Sollreihen und für den Handelsblock steht im Befund, ob sie 1997 bis 2021 ohne Füllung 25 Stützstellen trägt, mit Abruf-URL und Abrufdatum; am Ende steht genau ein Wert für R und die Liste der Reihen, die ihn erzwungen haben.
@@ -64,3 +64,19 @@ eine Sackgasse, die dokumentiert ist, spart dem nächsten Lauf denselben Weg.
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `offen` → `gebaut`.** Der Datenbauer hat am 2026-09-01
+`daten/deckungsbefund-1997.md` geschrieben (376 Zeilen, Commit `3927c0a`) und den Status
+nicht gesetzt; im Baulauf vom 2026-09-02 wurde das Paket ein zweites Mal eingeplant und
+der Lauf hat den Befund nicht angefasst. Ich ziehe den Status nach, damit der
+Daten-Prüfer das Paket überhaupt sieht — Review verlangt `gebaut`.
+
+**Keine Abnahme.** Ob der Befund je Sollreihe und für den Handelsblock alles enthält,
+was das Kriterium verlangt, prüft der Daten-Prüfer. Zwei Dinge, die er unabhängig messen
+muss, weil daran das Vorhaben hängt: **R = 19** mit dem Fenster 2001–2020 statt der
+geplanten 25 Stützstellen, und die zwei Reihen ohne jede Deckung (Leitzins Deutschland
+und China). Das zweite ist nach T24 keine Datenfrage mehr, sondern eine Entwurfsfrage —
+Reihe streichen oder Quelle ersetzen —, und sie gehört dem Spielentwerfer. Steht in
+`rueckstand.md`.

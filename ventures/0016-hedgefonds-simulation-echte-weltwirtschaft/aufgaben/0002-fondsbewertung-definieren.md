@@ -2,8 +2,8 @@
 id: 0002-fondsbewertung-definieren
 rolle: kernbauer
 status: offen
-haengt_an: [0004-werkstattgeruest-festkomma, 0008-kern-zustand-310-felder]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.rs]
+haengt_an: [0008-kern-zustand-310-felder]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die öffentliche Schnittstelle von kern::werte ist Name für Name die Tabelle der siebzehn Größen aus T48; die drei Skalenübergänge aus T50 sind privat und haben genau die dort genannten Aufruforte; ein Test rechnet die Zahlenprobe aus T47 nach und nennt 4.200.000.000.000 Cent.
 ---
 
@@ -16,8 +16,13 @@ Skalengrenze, die Reihenfolge der Rundungen und eine durchgerechnete Zahlenprobe
 Kernbauer, der noch selbst entschiede, wiche von `specs/` ab — was seine eigene Rolle
 verbietet.
 
-Vorher lesen: `technik.md` T47, T48, T50, T5, T13, T33, T39; `rueckstand.md`, Abschnitt
-*Es gibt keinen Übersetzer*.
+Vorher lesen: `technik.md` T47, T48, T50, T5, T13, T33, T39; ADR 0011.
+
+**Nachgezogen am 2026-09-02, Projektmanager:** C++20 statt Rust (ADR 0011) — das Modul
+sind die drei Dateien im Feld `dateien`, „öffentlich" heisst „im Kopf `werte.hpp`
+deklariert", „privat" heisst „nur in `werte.cpp`, ohne Deklaration im Kopf". Und
+`haengt_an` nennt nur noch 0008: 0004 ist gebaut und übersetzt grün, die Werte hängen am
+`Zustand` und nicht am Gerüst.
 
 ## Was du baust
 
@@ -50,9 +55,11 @@ Skalenübergänge aus T50.
 
 ## Abnahme
 
-1. `grep -n 'pub fn' kern/src/werte.rs` liefert **genau die siebzehn Namen aus T48**,
-   keinen mehr und keinen weniger. Das ist der mechanische Nachweis, den T13 und T48
-   ausdrücklich für dieses Modul vorsehen.
+1. Die Deklarationen in `kern/include/kern/werte.hpp` sind **genau die siebzehn Namen
+   aus T48**, keiner mehr und keiner weniger. Das ist der mechanische Nachweis, den T13
+   und T48 ausdrücklich für dieses Modul vorsehen — in Rust wäre es
+   `grep -n 'pub fn' werte.rs`, in C++ ist es der Kopf, weil dort und nur dort steht,
+   was das Modul nach aussen anbietet.
 2. `grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` liefert Treffer **nur in dieser
    Datei** (T50). `tsd_in_cent` hat genau die zwei Aufruforte aus T50: den äussersten
    Aufruf von `positionswert` und den von `beteiligung_wert`.

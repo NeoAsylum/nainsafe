@@ -9,6 +9,15 @@ abnahme: Jede Geldgröße trägt ihre Einheit im Typ, nicht im Kommentar. Ein Te
 
 # Einheiten: blockiert am 2026-09-01, weil Paket und Vorgabe sich widersprechen
 
+**Nachtrag 2026-09-02, Projektmanager: ADR 0011 ändert daran nichts, und das ist der
+Punkt.** Der Stackwechsel auf C++ macht den Widerspruch weder kleiner noch grösser — die
+Frage lautet weiter „Einheit im Typ oder Skala in einer Tabelle", und T5 beantwortet sie
+mit der Tabelle. Der Weg über einen Wrappertyp ist in C++ so gangbar wie in Rust
+(`enum class`, ein Strukturtyp mit einem Feld) und in beiden Sprachen dieselbe Abweichung
+von T5. Das Paket bleibt `blockiert`; entschieden wird es vom Betreiber, per ADR gegen
+T5 oder gar nicht. Die Dateiendung ziehe ich bewusst **nicht** nach: Eine Datei, die es
+nicht geben soll, braucht keinen richtigen Namen.
+
 **Der Sachbefund, aus dem dieses Paket entstand, ist behoben** — nicht hier, sondern im
 Entwurf: `beteiligung_wert` lieferte Tausend USD und wurde als US-Cent verbucht;
 `technik.md` T47 setzt seit dem 2026-09-01 `tsd_in_cent` um den äussersten Aufruf, und
