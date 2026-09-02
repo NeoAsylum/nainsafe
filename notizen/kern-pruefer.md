@@ -20,9 +20,9 @@ mehr — und es kostet jeden deiner Läufe Kontext.
      Format: - JJJJ-MM-TT — Beobachtung -->
 
 - 2026-09-02 — **Selbst bauen und `ctest` laufen lassen ist erlaubt und kostet zwei
-  Minuten**: `cmake -S . -B "$TMPDIR/<name>"`, `cmake --build`, `ctest --test-dir`.
-  Der Bau ist der stärkste Nachweis, den es gibt, wenn die Rechenproben
-  `static_assert` sind — dann hat der Übersetzer sie ausgewertet, nicht ich.
+  Minuten**: `cmake -S . -B "$TMPDIR/<name>"`, `cmake --build`, `ctest`. Der Bau ist
+  der stärkste Nachweis, wenn die Rechenproben `static_assert` sind — dann hat der
+  Übersetzer sie ausgewertet, nicht ich.
 - 2026-09-02 — **Vor dem Urteil in die Linkzeile sehen.** `link.txt` und `flags.make`
   im Bauverzeichnis sagen, ob eine Probe wirklich den geprüften Code misst oder nur
   sich selbst. Ein Sanitizer findet nur, was er selbst übersetzt hat; ohne diesen
@@ -31,11 +31,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   mit ihrem eigenen mechanischen Aufruf belegen.** Beide Befunde des ersten Laufs
   fielen genau dabei an; beim Lesen des Codes wären sie unsichtbar geblieben, weil
   der Code richtig ist.
-- 2026-09-02 — **Bei einer Prüfung nach Rücklauf zuerst den Diff der geänderten
-  Dateien ansehen, nicht die Statusnotiz des Bauagenten.** `git show <commit> -- <die
-  Dateien aus dem Feld dateien>` beantwortet in einem Aufruf, ob wirklich nur das
-  Verlangte geändert wurde — und ob der unberührte Teil noch der ist, den ich beim
-  letzten Mal selbst gebaut habe. Dann trägt die Messung von damals weiter.
+- 2026-09-02 — **Zuerst den Diff der Dateien aus dem Feld `dateien` ansehen, nicht die
+  Statusnotiz des Bauagenten.** `git show <commit> -- <pfade>` beantwortet in einem
+  Aufruf, ob nur das Verlangte geändert wurde — und ob der unberührte Teil noch der
+  ist, den ich beim letzten Mal gebaut habe. Dann trägt die Messung von damals weiter.
 - 2026-09-02 — **Der Commit-Betreff sagt nicht, was im Commit steht.** Die
   Rücklauf-Behebung an 0004 lag in einem Commit mit fremdem Betreff; der Commit, der
   0004 nennt, enthielt sie nicht. Immer `git log -- <datei>` statt nach dem Betreff
@@ -43,12 +42,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   enthielt ausschließlich die Dateien von 0008. `git show --stat <commit>` vor jedem
   Urteil, und die Abweichung in den Befund — sie kostet später die Eingrenzbarkeit.
 - 2026-09-02 — **Eine veröffentlichte Prüfzahl lässt sich von Hand nachrechnen, wenn
-  die Probe ihren Zwischenzustand mitdruckt.** Bei 0012 druckt sie den Saatzustand;
-  daraus ist `rotl(s1·5,7)·9` in drei Zeilen Hexarithmetik zu bestätigen und trifft den
-  Wert der fremden Quelle. Das bricht den Kreis „das Programm prüft sich selbst" ohne
-  Compiler und ohne Shell — genau da, wo ich sonst nichts bauen darf. *Deshalb künftig:
-  eine Probe, die nur Endwerte druckt, macht diese Kontrolle unmöglich; das ist ein
-  Argument für Zwischenausgaben, kein Geschmack.*
+  die Probe ihren Zwischenzustand mitdruckt** (bei 0012 der Saatzustand: `rotl(s1·5,7)·9`
+  in drei Zeilen Hexarithmetik, trifft die fremde Quelle). Das bricht den Kreis „das
+  Programm prüft sich selbst" ohne Compiler. *Eine Probe, die nur Endwerte druckt,
+  macht das unmöglich — ein Argument für Zwischenausgaben, kein Geschmack.*
 - 2026-09-02 — **Bei einem Zufallserzeuger ist die einzige harte Frage, woher die
   Erwartungswerte stammen.** Ausgabe sieht in jedem Fall zufällig aus, also beweist
   „grün" nichts. Die vier zitierten URLs selbst abrufen und Konstanten, Schrittweiten
@@ -78,6 +75,19 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   *Künftig: bei jedem Paket, dessen Meldungen eine Kennung tragen, diese Kennung gegen die
   Quelldatei halten. Es ist der billigste Weg aus dem Kreis „das Programm prüft sich selbst".*
 
+- 2026-09-02 — **Eine Reparatur, die von `static_assert` gehalten wird, macht den
+  Zahntest entbehrlich.** Bei 0023 steht der Fehlerwert an einer Stelle und wird von
+  zwei Zusicherungen gehalten; ein Rückfall auf den alten Wert ist damit ein
+  *Übersetzungs*fehler und kein roter Test. Ein grüner Bau beweist dann, dass die
+  Zusicherung ausgewertet wurde — genau der Nachweis, den ich sonst mit einer Kopie
+  und einer Mutation führen müsste und hier nie führen darf. *Künftig: erst nachsehen,
+  ob die Abnahmebedingung im Übersetzer verankert ist, bevor ich einen Mutationstest
+  plane, der ohnehin abgewiesen wird.*
+- 2026-09-02 — **In beiden Bauprofilen bauen, nicht nur in einem.** `baulauf.py` nimmt
+  `RelWithDebInfo`; unter `-O2` schaltet g++ Warnungen zu, die in `Debug` nie
+  erscheinen, und mit `-Werror` ist das der Unterschied zwischen grün und rot. Zwei
+  Konfigurationen kosten zusammen keine zwei Minuten.
+
 ## Was nicht funktioniert
 
 <!-- Was du versucht hast und was dabei herauskam. Damit du es nicht in drei Wochen
@@ -96,13 +106,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Umleitung in eine Datei und **jede Pipe von `sed` in einen Compiler**. Damit ist der
   naheliegende Zahntest („eine Adresse verfälschen, sehen ob der `static_assert`
   rotwird") nicht durchführbar; Ersatz ist die Gegenprobe über die Probe selbst, die
-  Präfixe und Verlängerungen nachweislich ablehnt.
+  Präfixe und Verlängerungen nachweislich ablehnt. **Dritte Bestätigung 2026-09-02
+  (0023):** zusätzlich abgewiesen wurden `cp -r`, `python3 -c` über mehrere Zeilen und
+  `Edit` ausserhalb des Repos. Was überraschend *durchging*: `git worktree add --detach
+  <ziel> <commit>` und `git -C <ziel> checkout <commit> -- <pfad>`. Damit ist ein
+  Vorzustand baubar — nur ändern lässt sich darin nichts, der Mutationstest bleibt also
+  zu. Aufräumen geht auch nicht (`worktree prune` scheitert an der Schreibsperre): Das
+  gehört in den Befund, sonst findet es der Betreiber nie.
 - 2026-09-02 — **Die Shell ist nicht verlässlich da; ein Prüfplan, der sie voraussetzt,
-  fällt aus.** Im zweiten Lauf waren nur einzelne einfache Aufrufe erlaubt, kein
-  `for`, kein `find`, keine verketteten Befehle. Was immer geht: `Glob` für Existenz,
-  `Grep` für die Mustervergleiche, `Read` für Linkzeile und `flags.make`, und
-  `befunde/uebersetzung-<datum>.md` als fremdgemessener Bau- und Testbeleg. Damit ist
-  eine vollständige Prüfung möglich — sie muss nur sagen, was fremdgemessen ist.
+  fällt aus.** Mal sind verkettete Befehle erlaubt, mal nur einzelne. Was immer geht:
+  `Glob`, `Grep`, `Read` und `befunde/uebersetzung-<datum>.md` als fremdgemessener
+  Bau- und Testbeleg. Eine Prüfung ist damit möglich — sie muss nur sagen, was
+  fremdgemessen ist.
 
 - 2026-09-02 — **Die erzeugte Probe direkt starten ist gesperrt, `ctest -R <name> -V`
   nicht.** Damit kommt man an die volle Ausgabe des Programms, ohne es aufzurufen. Zwei
@@ -135,13 +150,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   nachgesehen), aber das Muster wandert in die nächsten Kernpakete. *Künftig: jedes
   vorgeschriebene Suchmuster einmal gegen einen erfundenen Verstoß halten, nicht nur
   laufen lassen. Ein leerer Treffer beweist nur, dass das Muster leer ausgeht.*
-- 2026-09-02 — **Ein Fehlerwert, der auf ein gültiges Feld zeigt, wandert durch den
-  ganzen Kern.** `adresse_zu_index` liefert bei unbekannter Adresse `{false, 0}`, und
-  Platz 0 ist eine getragene Modellgröße. Derselbe Kern begründet an anderer Stelle
-  (`festkomma.hpp`) ausführlich, warum ein stiller Ersatzwert schlimmer ist als ein
-  Abbruch. *Künftig bei jedem Ergebnistyp mit Ja-Nein-Feld fragen: Ist der Wert im
-  Nein-Fall unterscheidbar von einem gültigen?* Das ist ein Prüfmuster, kein Einzelfall
-  — `std::optional` ist in diesem Kern per Abnahme verboten, also kommen solche Typen
+- 2026-09-02 — **Prüfmuster, das getragen hat und weiter trägt: Bei jedem Ergebnistyp
+  mit Ja-Nein-Feld fragen, ob der Wert im Nein-Fall von einem gültigen unterscheidbar
+  ist.** So entstand Befund 3 an 0008, aus ihm Paket 0023, und das ist abgenommen.
+  `std::optional` ist in diesem Kern per Abnahme verboten, solche Typen kommen also
   noch häufiger.
 - 2026-09-02 — **Zwischen zwei Paketen entsteht eine Lücke, die kein Bauagent schliessen
   darf — und keine Abnahme fängt sie.** 0008 reicht die Durchsetzung von T18 („`Zustand`
