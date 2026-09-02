@@ -269,3 +269,59 @@ Damit diese Pruefung von einer, die nicht stattfand, unterscheidbar ist:
 
 ---
 
+## Anhang -- die Ausgaben im Wortlaut
+
+Ausfuehrlicher Testlauf `zustand_probe`, Profil RelWithDebInfo, eigener Bau. Jede Zeile
+der Programmausgabe als Punkt:
+
+- sizeof(Zustand) gleich 2480 Byte, 310 Felder
+- Rundlauf Adresse zu Platz: 310 von 310 genau einmal
+- Abbruch wie erwartet (Zeile 324): kern::zustand::lege_ab -- Index ausserhalb der 310 Felder
+- Abbruch wie erwartet (Zeile 326): kern::zustand::lies -- Index ausserhalb der 310 Felder
+- Abbruch wie erwartet (Zeile 327): kern::zustand::index_zu_adresse -- Index ausserhalb der 310 Felder
+- Fehlerwert der Adresssuche: 310, gueltige Plaetze 0 bis 309
+- Adressfunktionen decken 310 von 310 Plaetzen genau einmal
+- Steckplaetze: 20 Adressen, 19 spielbar
+- Nullzustand: Kette 01d663224c4054e5, Bytefolge 01d663224c4054e5, Potenz 01d663224c4054e5
+- letztes Feld auf minus eins: a491e70cc3f70d5d
+- Felder, die die Summe aendern: 310 von 310
+- **Zaehlzustand (Feld i traegt i): 25e8b19071bea26c** -- die Zahl aus Befund 1, Schritt 4
+- Abbruch wie erwartet (Zeile 696): kern::zustand::Startbelegung -- die Partie laeuft schon
+  (partie.runde ist nicht null); Startwerte gibt es nur vor der ersten Runde
+- Abbruch wie erwartet (Zeile 697): dieselbe Meldung, zweite Ausloesung
+- Startwertzugang: vor Runde 1 offen, in Runde 12 verriegelt
+- kern::zustand -- alle Proben bestanden.
+
+Ausfuehrlicher Testlauf `schreiber_probe`, dasselbe Profil, die Zeilen, auf die sich
+Bedingung 3 und Bedingung 4 stuetzen:
+
+- lies_alt gleich 4711, lies_neu gleich 815 (erwartet 4711 und 815)
+- Sollmaske weltlauf 175, spielmodus 310, Kettenkapazitaet 310
+- Abbruch wie erwartet (Zeile 339): kern::schreiber -- Rundenende Runde 1: in der
+  Sollmaske, aber nicht geschrieben: welt.preis.2 (Nr. 240)
+- Abbruch wie erwartet (Zeile 350): kern::schreiber -- Rundenende Runde 1: ausserhalb der
+  Sollmaske geschrieben: fonds.hebelstand (Nr. 256)
+- Weltlauf: 175 Adressen geschrieben, Kette 175 Glieder (erwartet 175)
+- Spielmodus: 310 Adressen geschrieben, Kette 310 Glieder (erwartet 310)
+- Abbruch wie erwartet (Zeile 474): kern::zustand::Startbelegung -- die Partie laeuft
+  schon (partie.runde ist nicht null); Startwerte gibt es nur vor der ersten Runde
+- Startwert 1000000 ohne Ursachensatz: 0 Kettenglieder nennen ihn, Kette der Runde 175
+  Glieder
+- schreiber_probe: alle Pruefungen bestanden
+
+Die vorletzte Zeile ist der Nachweis der **ersten** Haelfte von Bedingung 3 -- ein
+Startwert erzeugt kein Kettenglied -- und sie ist sauber. Beanstandet ist die zweite
+Haelfte.
+
+---
+
+## Berichtigung in eigener Sache
+
+Zwei Schoenheitsfehler dieser Datei, die ich nicht mehr herausnehmen konnte, weil mir in
+diesem Lauf nur das Anhaengen an eine Datei offenstand und kein Ersetzen:
+
+1. Im Abschnitt zu Bedingung 1 steht der Satzanfang "Wortlaut des Uebersetzers" zweimal.
+2. In der ersten Zeile der Meldungstabelle ist der Typ des Feldes als "std::array of long
+   int, 310" wiedergegeben. Der Uebersetzer schreibt ihn in spitzen Klammern -- ein Feld
+   von 310 Ganzzahlen zu acht Byte. An der Aussage aendert das nichts, aber ein Zitat ist
+   ein Zitat, und ein veraendertes gehoert benannt.
