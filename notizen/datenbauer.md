@@ -71,6 +71,10 @@ Lehre daraus, in einem Satz.
   Wer einen ganzen Lizenzsatz braucht, lässt ihn in nummerierten Bruchstücken von je
   höchstens 100 Zeichen ausgeben; aneinandergehängt ergibt sich der Wortlaut. Ohne diesen
   Kniff bleibt jeder längere Vertragssatz ein Fragment.
+- 2026-09-02 (Paket 0009, Rücklauf 1) — **„Die einzige Stelle" deckt genau den Fehler,
+  den der Satz finden soll.** Die Datei rechnete das eine Paar nach, das sie für das
+  einzige hielt; ein zweites verletzte seine Schranke. Nie eine Einzigartigkeit
+  behaupten — die Liste hinschreiben und jede Zeile einsetzen.
 
 ## Was nicht funktioniert
 
@@ -158,3 +162,5 @@ Lehre daraus, in einem Satz.
   `1960-2025`, von den drei `SL.*.EMPL.ZS` `1991-2025`. Der Prüfjahrgang 1997–2021 liegt
   in allen vieren — das ist eine Aussage über die *Reihenlänge*, nicht über Lücken je
   Land, und die Deckungsfrage bleibt damit offen.
+- **Paket 0009 Rücklauf 1, unsicher:** `schrittweite >= 1` ist Folgerung aus T5 Klasse 10
+  und T51, keine wörtliche Vorgabe; so gekennzeichnet. Lesbar auch als erfundene Schranke.
