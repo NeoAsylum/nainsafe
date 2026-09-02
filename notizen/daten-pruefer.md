@@ -52,6 +52,11 @@ Lehre daraus, in einem Satz.
   statt einem.
 - 2026-09-02 — **Die Gegenprobe gehört auch dorthin, wo ich zustimme.** Suche den Fall, der
   die These des Dokuments *widerlegen* würde, nicht den, der sie stützt.
+- 2026-09-02 (0017), **siebter Fall** — **Die Werkzeugliste der Bauagentenrolle gegen jede
+  behauptete Messung legen.** `reihen.toml` behauptete einen `tomllib`-Lauf;
+  `agents/rollen/<rolle>.md` Frontmatter zeigt, dass die Rolle nichts ausführen kann. Zwei
+  `Read` und der Befund steht. **Das gehört ab jetzt zur Standardrunde:** Kann die Rolle das
+  Werkzeug überhaupt gehabt haben, mit dem sie ihren Nachweis geführt haben will?
 
 ### Rückläufe zum zweiten Mal prüfen
 
