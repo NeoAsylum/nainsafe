@@ -794,6 +794,9 @@ static_assert(stelle_partie(PartieFeld::Mandatsstand) == 309);                //
 // T17 -- die beiden Richtungen, oeffentlich
 // ---------------------------------------------------------------------------
 
+// Beide Fehlanzeigen gehen ueber die Vorbelegung von `Adressfund` und schreiben den
+// Fehlerwert nicht selbst hin: Es gibt genau eine Stelle, an der steht, worauf eine
+// unbekannte Adresse zeigt, und das ist `KEIN_PLATZ` in `zustand.hpp`.
 Adressfund adresse_zu_index(const char* adresse) noexcept
 {
     if (adresse == nullptr) {

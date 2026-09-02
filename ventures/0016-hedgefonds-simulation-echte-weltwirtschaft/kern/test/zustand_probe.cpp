@@ -28,6 +28,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
+#include <stdexcept>
 
 #include "kern/pruefsumme.hpp"
 #include "kern/zustand.hpp"
@@ -87,6 +88,7 @@ using kern::zustand::FONDSGROESSEN;
 using kern::zustand::GEBIETE;
 using kern::zustand::INSTRUMENTE;
 using kern::zustand::INSTRUMENTFELDER;
+using kern::zustand::KEIN_PLATZ;
 using kern::zustand::LAENDER;
 using kern::zustand::MARKTGROESSEN;
 using kern::zustand::PARTIEFELDER;
@@ -107,6 +109,24 @@ void pruefe(bool bedingung, const char* text, int zeile)
         std::fprintf(stderr, "FEHLGESCHLAGEN Zeile %d: %s\n", zeile, text);
         ++fehlgeschlagen;
     }
+}
+
+/// Weist nach, dass ein Aufruf abbricht -- und schreibt die Meldung mit.
+///
+/// Der Wortlaut gehoert ins Protokoll: Ein `catch (...)` belegt nur, dass *irgendwo*
+/// etwas geworfen wurde. Erst die Meldung zeigt, dass es die Indexpruefung war, die
+/// abgebrochen hat, und nicht ein anderer Fehler auf demselben Weg.
+template <typename Aufruf>
+void erwarte_abbruch(Aufruf aufruf, const char* text, int zeile)
+{
+    try {
+        aufruf();
+    } catch (const std::domain_error& fehler) {
+        std::fprintf(stdout, "  Abbruch wie erwartet (Zeile %d): %s\n", zeile, fehler.what());
+        return;
+    }
+    std::fprintf(stderr, "KEIN ABBRUCH Zeile %d: %s\n", zeile, text);
+    ++fehlgeschlagen;
 }
 
 /// Nimmt dem Uebersetzer die Konstantenfaltung, damit die Sanitizer die Rechnung
@@ -159,6 +179,8 @@ u64 potenz_mod_2hoch64(u64 basis, std::size_t exponent)
 
 #define PRUEFE(ausdruck) pruefe((ausdruck), #ausdruck, __LINE__)
 #define VERMERKE(liste, stelle) (liste).vermerke((stelle), __LINE__)
+#define ERWARTE_ABBRUCH(ausdruck) \
+    erwarte_abbruch([&] { ausdruck; }, #ausdruck, __LINE__)
 
 int main()
 {
@@ -218,6 +240,65 @@ int main()
         // Und die Gegenprobe zu Befund 1 des Verzeichnisses: geschrieben wird
         // `restverzoegerung`, nicht `rest`.
         PRUEFE(adresse_zu_index("land.BR.instrument.zoll.restverzoegerung").gefunden);
+    }
+
+    // --- Der Fehlerwert zeigt auf keinen Platz (Paket 0023) ----------------------
+    //
+    // Der vierstufige Weg aus dem Arbeitspaket, ausgefahren statt beschrieben: Ein
+    // Aufrufer bildet eine Adresse mit Tippfehler, wertet `gefunden` **nicht** aus
+    // und reicht `index` an `schreibe` weiter. Frueher war das ein stiller
+    // Schreibzugriff auf Platz 0 -- `land.US.sektor.1.wertschoepfung`, eine getragene
+    // Groesse des Modells. Jetzt ist es ein Abbruch, und die Meldung steht im
+    // Protokoll.
+    {
+        Zustand zustand;
+        const Index platz_null = stelle_sektorgroesse(Gebiet::US, Sektor::Landwirtschaft,
+                                                      SektorGroesse::Wertschoepfung);
+        PRUEFE(platz_null == 0);
+
+        // Ein Wert, den man wiedererkennt: Er steht vor und nach dem Fehlversuch da.
+        zustand.schreibe(platz_null, undurchsichtig(4711));
+        PRUEFE(zustand.lies(platz_null) == 4711);
+
+        // Schritt 1 und 2 -- die Adresse mit Tippfehler, die Antwort der Suche.
+        const Adressfund fund = adresse_zu_index("land.US.sektor.1.wertschoepfun");
+        PRUEFE(!fund.gefunden);
+        PRUEFE(fund.index == KEIN_PLATZ);
+        PRUEFE(fund.index >= FELDER);
+
+        // Schritt 3 und 4 -- `.index` ohne `.gefunden` weitergereicht. Alle drei
+        // Zugriffe des Zustands muessen ihn abweisen, nicht nur der eine aus dem
+        // Arbeitspaket.
+        ERWARTE_ABBRUCH(zustand.schreibe(undurchsichtig_index(fund.index),
+                                         undurchsichtig(-1)));
+        ERWARTE_ABBRUCH((void)zustand.lies(undurchsichtig_index(fund.index)));
+        ERWARTE_ABBRUCH((void)index_zu_adresse(undurchsichtig_index(fund.index)));
+
+        // Nachher wie vorher -- und zwar in keinem der 310 Felder etwas anderes.
+        PRUEFE(zustand.lies(platz_null) == 4711);
+        Zustand vergleich;
+        vergleich.schreibe(platz_null, undurchsichtig(4711));
+        PRUEFE(zustand == vergleich);
+
+        // Jede Fehlanzeige traegt denselben Wert, nicht nur diese eine.
+        PRUEFE(adresse_zu_index(nullptr).index == KEIN_PLATZ);
+        PRUEFE(adresse_zu_index("").index == KEIN_PLATZ);
+        PRUEFE(adresse_zu_index("land.US.sektor.1.preis.").index == KEIN_PLATZ);
+        PRUEFE(adresse_zu_index("land.US.sektor.1.prei").index == KEIN_PLATZ);
+        PRUEFE(adresse_zu_index("handel.US.US.1").index == KEIN_PLATZ);
+        PRUEFE(adresse_zu_index("fonds.position.waehrung.RW").index == KEIN_PLATZ);
+
+        // Die Gegenprobe, an der eine zu grobe Reparatur scheitert: Platz 0 ist
+        // weiterhin ein gueltiger Platz und ueber seine Adresse erreichbar.
+        const Adressfund echt = adresse_zu_index("land.US.sektor.1.wertschoepfung");
+        PRUEFE(echt.gefunden);
+        PRUEFE(echt.index == 0);
+        zustand.schreibe(echt.index, undurchsichtig(-4711));
+        PRUEFE(zustand.lies(platz_null) == -4711);
+
+        std::fprintf(stdout,
+                     "Fehlerwert der Adresssuche: %zu -- gueltige Plaetze 0 ... %zu\n",
+                     KEIN_PLATZ, FELDER - 1);
     }
 
     // --- Jede Gruppe ueber ihre `stelle_*`-Funktion, jeder Platz genau einmal -----

@@ -206,10 +206,14 @@ inline constexpr std::size_t MARKTGROESSEN = 2;
 
 /// Die fuenf Fondsaggregate, in der Reihenfolge aus `daten/adressen.md`.
 ///
-/// Die Reihenfolge weicht von der Aufzaehlung in T15 ab: Dort steht "Kasse,
-/// Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil" als Fliesstext, das
-/// Verzeichnis fuehrt `sichtbarkeit` vor `anlegerbestand`. Beide Fassungen nennen
-/// dieselben fuenf Groessen; massgeblich ist nach dem Arbeitspaket das Verzeichnis.
+/// Alle Vorgaben nennen dieselbe Folge, und die Aufzaehlung unten folgt ihr:
+/// T15 ("Kasse, Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil",
+/// `technik.md:477`), `daten/adressen.md` Zeile 255-259 und `spiel.md:212-213`.
+/// Ein Widerspruch zwischen den Vorgaben besteht hier **nicht** -- eine fruehere
+/// Fassung dieses Kommentars behauptete einen und widerlegte sich in ihrem eigenen
+/// Zitat, das `Sichtbarkeit` bereits vor `Anlegerbestand` fuehrte (Befund 1 der
+/// Pruefung zu Paket 0008). Der Hinweis bleibt stehen, damit die Nachrecherche
+/// kein zweites Mal gefuehrt wird.
 enum class FondsGroesse : std::uint8_t {
     Kasse = 0,
     Hebelstand = 1,
@@ -423,23 +427,51 @@ static_assert(std::is_trivially_copyable_v<Zustand>,
 // T17 -- die Adressabbildung, beide Richtungen
 // ---------------------------------------------------------------------------
 
+/// Der Platz, den es nicht gibt -- der Fehlerwert jeder Adresssuche.
+///
+/// Er liegt ausserhalb `0 ... 309` und ist damit **kein** Feld des Zustands. Das ist
+/// der ganze Zweck: `lies`, `schreibe` und `index_zu_adresse` pruefen `index >=
+/// FELDER` ohnehin, also wird aus einer nicht ausgewerteten Fehlanzeige ein Abbruch
+/// statt eines Zugriffs auf ein fremdes Feld.
+inline constexpr Index KEIN_PLATZ = FELDER;
+
+static_assert(KEIN_PLATZ >= FELDER,
+              "der Fehlerwert darf kein gueltiger Platz sein, sonst schreibt er still");
+
 /// Das Ergebnis einer Adresssuche.
 ///
 /// Ein Ergebnistyp mit einem Ja-Nein-Feld statt eines Behaelters aus der
 /// Standardbibliothek, der "vielleicht ein Wert" bedeutet: T15 schliesst solche
 /// Behaelter im Zustand aus, und ein zweiter Weg, dasselbe zu sagen, waere genau die
 /// Sorte Ausnahme, deren Begruendung spaeter niemand mehr findet.
+///
+/// **Warum die Vorbelegung `KEIN_PLATZ` ist und nicht `0`.** Der Aufrufer *soll*
+/// `gefunden` auswerten, aber ein Ergebnistyp, der beim Vergessen still das falsche
+/// Feld trifft, verlaesst sich darauf. Platz 0 ist
+/// `land.US.sektor.1.wertschoepfung`, eine getragene Groesse des Modells: Eine
+/// Adresse mit Tippfehler haette ihren Wert ueberschrieben, ohne dass irgendetwas
+/// abbricht. Das ist derselbe stille Ersatzwert, gegen den `festkomma.hpp` an seiner
+/// Abbruchstelle ausdruecklich entschieden hat -- nur als Index statt als Zahl, und
+/// eine falsche Zahl wandert in den Regressionsbestand und wird dort zum Sollwert.
+/// Der Fehlerwert liegt deshalb ausserhalb der 310 (Befund 3 der Pruefung zu Paket
+/// 0008). Der gueltige Platz 0 ist davon unberuehrt: Er kommt nur mit
+/// `gefunden == true` zurueck.
 struct Adressfund {
     bool gefunden = false;
-    Index index = 0;
+    Index index = KEIN_PLATZ;
 };
+
+static_assert(!Adressfund{}.gefunden && Adressfund{}.index == KEIN_PLATZ,
+              "die Fehlanzeige zeigt auf keinen Platz");
 
 /// Adresse nach T17 -> Platz im Zustand.
 ///
 /// `adresse` ist ein nullbyte-begrenzter Text. Steht sie nicht in
-/// `daten/adressen.md`, kommt `{false, 0}` zurueck -- eine unbekannte Adresse ist
-/// eine Frage und kein Fehler: Sie kommt aus Protokoll, Testvorlage oder Oberflaeche
-/// und darf dort beantwortet werden. Ein Nullzeiger gilt als unbekannte Adresse.
+/// `daten/adressen.md`, kommt `{false, KEIN_PLATZ}` zurueck -- eine unbekannte
+/// Adresse ist eine Frage und kein Fehler: Sie kommt aus Protokoll, Testvorlage oder
+/// Oberflaeche und darf dort beantwortet werden. Wer die Antwort trotzdem nicht
+/// liest und `index` weiterreicht, bekommt einen Abbruch und keinen falschen Wert.
+/// Ein Nullzeiger gilt als unbekannte Adresse.
 [[nodiscard]] Adressfund adresse_zu_index(const char* adresse) noexcept;
 
 /// Platz im Zustand -> Adresse nach T17.
