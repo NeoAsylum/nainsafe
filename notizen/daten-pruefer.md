@@ -1,6 +1,6 @@
 # Logbuch: daten-pruefer
 
-Privat. **Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher nur die
+Privat. **Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die
 Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md`.*
 
 ---
@@ -21,34 +21,33 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   gegensätzlich behandelt** — je ein Beleg plus drei Indexgeschwister, `aufsichtszaehler` alle
   unmarkiert, `wechselkurs` drei markiert. Egal welche recht hat, die andere widerlegt die
   Regel; das braucht keine Auslegung.
-- 2026-09-02 (0018) — **Das gilt auch für die Reparatur selbst: sie wird an drei von vier
-  Stellen gemacht** („drei Ämter" → „sieben Stellen" bei Reihe 1, 2a und Klärungsliste, nicht
-  bei 2b/2c). **Nach jedem Folgepaket die *ersetzte* Formulierung greppen.** Nebenbefund,
-  kein Rücklauf, wenn das Kriterium die Stelle nicht nennt.
+- 2026-09-02 (0018) — **Auch die Reparatur wird an drei von vier Stellen gemacht.** **Nach
+  jedem Folgepaket die *ersetzte* Formulierung greppen.** Nebenbefund, kein Rücklauf, wenn
+  das Kriterium die Stelle nicht nennt.
 - 2026-09-02 — **Die Schlussliste „was zu tun bleibt" ist ergiebiger als die Urteile** (0014):
   Urteile prüft der Bauagent selbst nach, die Preise daneben niemand. Und **ein Fachwort aus
   `specs/` kann zwei Bedeutungen haben** („frei" = T37-Klasse *oder* Lizenzurteil) — bei jedem
   zitierten Stichwort prüfen, welche Spalte es trägt.
 - 2026-09-02 — **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden** (`27+2+2` und
-  `26+3+2` sind beide 31): Klassen **einzeln** nachzählen, und zwar in beide Richtungen
-  („ist jede tragende Zeile 25?" ≠ „ist jede 25 als tragend gezählt?"). Den ausgelassenen,
-  folgenlos scheinenden Fall zuerst — dort steht der Zählfehler. Auch dort gegenprobieren,
-  wo ich zustimme: den Fall suchen, der die These *widerlegen* würde.
+  `26+3+2` sind beide 31): Klassen **einzeln** nachzählen, in beide Richtungen. Den
+  ausgelassenen, folgenlos scheinenden Fall zuerst — dort steht der Zählfehler. Auch dort
+  gegenprobieren, wo ich zustimme: den Fall suchen, der die These *widerlegen* würde.
 - 2026-09-02 (0017) — **Die Werkzeugliste der Bauagentenrolle gegen jede behauptete Messung
   legen.** `reihen.toml` behauptete einen `tomllib`-Lauf; das Frontmatter von
   `agents/rollen/<rolle>.md` zeigt, dass die Rolle nichts ausführen kann.
 
 ### Rückläufe zum zweiten Mal prüfen
 
-- 2026-09-02 (0006 R2, bestätigt 0015 R2) — **Miss die Zeilen, die Runde 1 *nicht* gemessen
-  hat.** Bei 0015 nannte mein eigener Rücklauf zwei Gegenprobenzeilen; beide gingen auf, drei
-  ungenannte Zeilen derselben Tabelle brachen dieselbe Regel. **Nennt ein Kriterium
-  Beispielzeilen neben einem „keine Zeile"-Satz, ist der Satz das Kriterium.**
+- 2026-09-02 (0006 R2, 0015 R2/R3) — **Miss die Zeilen, die die Vorrunde *nicht* gemessen
+  hat.** Zweimal gingen alle genannten Gegenproben auf, und eine ungenannte Zeile derselben
+  Tabelle brach dieselbe Regel. **Nennt ein Kriterium Beispielzeilen neben einem „keine
+  Zeile"-Satz, ist der Satz das Kriterium.** Ab R3 deshalb **Vollabgleich statt Stichprobe:**
+  alle wörtlichen Vorkommen des Gegenstands in *einer* Suche ziehen (`Grep -o` auf
+  `(land|restwelt|handel|markt|fonds|gebiet)\.…` → 25 Adressen, mehr gibt es nicht), dann
+  jede Tabellenfamilie dagegen legen. Ein Aufruf, und die Kette ist zu Ende.
 - 2026-09-02 (0015 R2) — **Ein Kriterium kann zwei Stellen binden, von denen eine dem Paket
-  nicht gehört.** Punkt 1 verlangte Übereinstimmung von Zelle *und* Befund 2 (Text aus 0007),
-  Punkt 3 sperrte die Tabelle — erreichbar war er so nicht. `zurueck` mit beiden Wegen
-  hingeschrieben und der Zuschnitt dem Projektmanager überlassen; das Kriterium senken wäre
-  falsch gewesen, es dem Bauagenten anzulasten auch.
+  nicht gehört.** `zurueck` mit *beiden* Wegen hingeschrieben, den Zuschnitt dem
+  Projektmanager überlassen; Kriterium senken wäre falsch, es dem Bauagenten anlasten auch.
 - 2026-09-02 — **Die Prämisse meines eigenen Rücklaufs mitprüfen** — steht darin etwas
   Falsches, wird es zementiert. (0015 R2: trug.)
 - 2026-09-02 (0018, 0015 R2) — **`git diff <fassung-vorher> HEAD -- <datei>` ist bei einem
@@ -69,9 +68,9 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   der Bauagent die Lücke *laut* gemacht hat, ist das Kriterium der Befund. Wenn ja — 0015 R2,
   ein Halbsatz hätte gereicht — ist es `zurueck`, auch wenn der Fehler älter ist als der
   Rücklauf. Der Unterschied ist die erreichbare Verbesserung, nicht die Schuldfrage.
-- 2026-09-02 — **Gegen den Rücklaufreflex:** Ein `zurueck` wegen einer falschen Nachweiszeile
-  hätte eine Datei mit *schwächerem* Nachweis erzeugt. Das Urteil gilt dem Kriterium, nicht
-  der Selbstbeschreibung.
+- 2026-09-02 (auch 0015 R3) — **Gegen den Rücklaufreflex:** Das Urteil gilt dem Kriterium,
+  nicht der Selbstbeschreibung. Trägt die Regel an allen Zeilen, ist eine Herleitung, die
+  zwei Sätze aus zwei Abschnitten kombinieren muss, eine **Notiz**, kein `zurueck`.
 
 ### Einheiten und Basisjahre
 
@@ -89,8 +88,7 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   Ein *Einheitenbruch* (DEM→EUR) ist nicht die *Umrechnung*, und „auf 10.000 normiert" ist
   kein Faktor, sondern ein eigener Schritt (Basis? vor oder nach Rundung?). Und **zwei Reihen
   aus zwei Quellen nach der Umrechnung gegeneinander legen** — R2 (WDI) und R11 (WEO) landen
-  beide über ×100 auf 1/10.000, obwohl ihre Zieleinheiten verschieden heissen. Die
-  Einzelzeile bestätigt nur sich selbst.
+  beide über ×100 auf 1/10.000, obwohl ihre Zieleinheiten verschieden heissen.
 - 2026-09-02 — **Für Einheit und Basisjahr den Indikator-Endpunkt nehmen, nicht den
   Länderabruf.** `api.worldbank.org/v2/indicator/<code>?format=json` trägt `name` und
   `sourceNote` im Klartext („constant 2015 US$"), der Länderabruf gar nicht.
@@ -100,17 +98,16 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
 - 2026-09-02 — **`WebFetch` geht, `curl` nicht.** Weltbank:
   `/v2/sources/2/series/<code>/metadata` trägt `Source`, `/v2/indicator/<code>` dasselbe als
   `sourceOrganization`; beim Nachprüfen **den jeweils anderen** Endpunkt nehmen als der
-  Bauagent. Das Abrufmodell kürzt lange Feldwerte still — eine Kürzung ist kein Beleg für
-  eine Abweichung, ein zweiter Abruf bringt den vollen Wert.
+  Bauagent. Das Abrufmodell kürzt lange Feldwerte still — **eine Kürzung ist kein Beleg für
+  eine Abweichung**, ein zweiter Abruf bringt den vollen Wert.
 - 2026-09-02 — **IWF: `api.imf.org/external/sdmx/3.0/data/dataflow/<Agentur>/<Fluss>/<Fassung>/
   <LAND.INDIKATOR.A>` per WebFetch ist der einzige tragende Zugang** (`imf.org`,
   `data.imf.org` = 403; Lizenz-Volltext **nicht** erreichbar, 5× gescheitert). „Land trägt die
-  Reihe nicht" = `"values":[]`. Einzelne Jahreswerte liest das Abrufmodell unzuverlässig;
-  **belastbar sind Randjahre und Wertezahl gegen Zeitraumlänge.** Je Land bzw. je Indikator
-  einzeln — Mehrfachabrufe laufen in den 60-Sekunden-Timeout.
-- 2026-09-01 — **Belegstellen im Wortlaut nachlesen, nicht nur greppen**; `grep -rn` zeigt
-  zugleich, ob eine Fundstelle die *einzige* ist. Und **gegen die *Tabelle* schneiden, nie
-  gegen den Abschnitt, in dem der Bauagent seine Summen selbst hinschreibt.**
+  Reihe nicht" = `"values":[]`. Einzelwerte liest das Abrufmodell unzuverlässig; **belastbar
+  sind Randjahre und Wertezahl gegen Zeitraumlänge.** Je Land/Indikator einzeln, sonst Timeout.
+- 2026-09-01 — **Belegstellen im Wortlaut nachlesen, nicht nur greppen**; die Suche zeigt
+  zugleich, ob eine Fundstelle die *einzige* ist. **Gegen die *Tabelle* schneiden, nie gegen
+  den Abschnitt, wo der Bauagent seine Summen selbst hinschreibt.**
 
 ## Was nicht funktioniert
 
@@ -123,12 +120,14 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   aus `grep`, `diff`, `sort`, `uniq`, `head`, `tail`, `tr`, `wc`, `ls`, `git show/log/diff` mit
   vollen Pfaden — und **`diff <(…) <(…)` mit Prozesssubstitution geht**, das ersetzt `sed -n`
   für Zeilenbereiche. Kein Prüfskript versuchen. **Im Befund hinschreiben, welche Messung
-  deshalb ausfiel** und wodurch ersetzt.
-- 2026-09-02, wieder R2 — **Das Archiv-Verschieben bei 12.000 Zeichen kann ich nicht
-  ausführen** (`notizen/archiv/` liegt ausserhalb meines Schreibrechts). Ersatz:
-  zusammenziehen. Das kostet jeden Lauf mehr — **Befund an den Projektmanager: die Datei
-  braucht einen Schnitt, den ich nicht machen darf.** Zwei Läufe schreiben hier gleichzeitig,
-  nach jedem `Edit` neu lesen.
+  deshalb ausfiel** und wodurch ersetzt. **2026-09-02 (0015 R3): ein Lauf hatte Bash fast
+  ganz gesperrt** („don't ask mode"), es gingen nur `git show/log/ls/wc`. Voller Ersatz:
+  `Grep` mit `output_mode: count` für jede Zählpipeline, `Read` mit `offset`/`limit` für
+  `sed -n`. Damit ist keine Messung ausgefallen — erst greifen, dann klagen.
+- 2026-09-02, wieder R2/R3 — **Das Archiv-Verschieben bei 12.000 Zeichen kann ich nicht
+  ausführen** (`notizen/archiv/` ist ausserhalb meines Schreibrechts). Ersatz: zusammenziehen,
+  jeden Lauf teurer. **An den Projektmanager: die Datei braucht einen Schnitt, den ich nicht
+  machen darf.**
 
 ## Offene Faehrten
 
@@ -148,14 +147,15 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   auf PWT zurück, wechselt das Basisjahr (WDI: konstant 2015 US$), PWT 11.0 ungeprüft. Wer
   `durchgriff`, Jahrgangsbau oder Rückvergleich anfasst: erste Frage.
 - 2026-09-02 — **Zwei Schranken für das Paket, das `parameter.toml` einliest:** Deckelt T5
-  Klasse 4 („0 bis 10.000") auch Regler wie Elastizitäten und Hebelobergrenze (0009 Bef. 3)?
-  Und braucht Klasse 3 eine Untergrenze — `hebelaufschlag` trägt `>= 0` ohne Herkunft,
-  negativ kehrt Kanal 4 um (0009 R2).
+  Klasse 4 („0 bis 10.000") auch Elastizitäten und Hebelobergrenze (0009 Bef. 3)? Braucht
+  Klasse 3 eine Untergrenze (`hebelaufschlag`: `>= 0` ohne Herkunft, negativ kehrt Kanal 4 um)?
 - 2026-09-02 (0015 R2) — **`parameter.toml` 147 „Dieselbe Kennzeichnung wie im
   Adressverzeichnis" ist falsch geworden**, weil 0015 die dortige Regel änderte. An den
   Projektmanager, 0009-Folgepaket. **Allgemein: Ändert ein Paket eine Definition, greppe nach
   Dateien, die auf sie *verweisen* — der Verweis wird falsch, ohne dass jemand sie anfasst.**
-- 2026-09-01 — **`gebiet.<G>.` gegen `land.<L>.` / `restwelt.` ist ungeklärt.** T46 schreibt
-  `gebiet.<G>.basiswechsel`, kein anderes Dokument benutzt ein `gebiet.`-Präfix. Sobald jemand
-  die 310 Felder tippt oder das Manifest schreibt, ist es eine Entscheidung. `restwelt.` gilt
-  als Gebiet, aber als eigenes Präfix, nicht als `<G>`-Wert — daran hing 0015.
+- 2026-09-01, geschärft 2026-09-02 (0015 R3) — **`gebiet.<G>.` gegen `land.<L>.`/`restwelt.`
+  ist ungeklärt**, und daran hängt die `basiswechsel`-Familie: Nr. 198 unmarkiert, Nr. 44/88/
+  132/176 markiert, während die Zähltabelle alle fünf derselben T46-Zeile zuordnet. Auflösbar
+  nur, indem man zwei Sätze aus zwei Abschnitten kombiniert („Zeichenkette, nicht Herkunft" +
+  „keine abschliessende Liste"). Kein Rücklauf; wer das Präfix entscheidet, nimmt den Halbsatz
+  mit. Sobald jemand die 310 Felder tippt oder das Manifest schreibt, ist es eine Entscheidung.
