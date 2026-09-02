@@ -1,0 +1,51 @@
+# Arbeitsbereich des Vorhabens 0016 -- die Werkstatt, in die alle Pakete schreiben.
+#
+# Das ist die C++-Entsprechung des Arbeitsbereichs, den Paket 0004 als `Cargo.toml`
+# beschreibt; die Sprache ist seit ADR 0011 (2026-09-01) C++20 mit CMake.
+#
+# Die Mitglieder sind die aus T13, in der Richtung, die T13 vorgibt:
+#
+#   kern            (keine Abhaengigkeit)  Zustand, Regeln, Kette, Festkomma, Zufall, Pruefsumme
+#     ^
+#   daten           -> kern                Jahrgang laden, Sollreihen, Parameterdatei
+#     ^
+#   schnittstelle   -> kern, daten         Protokoll, drei Zustandsebenen, Partieformat
+#     ^          ^
+#   konsole      pruefstand                Binaerprogramme: Text und Protokoll / Bots und Masse
+#     ^
+#   oberflaeche  -> schnittstelle          Binaerprogramm (vertagt, ADR 0010)
+#   werkzeuge/aufbereitung -> daten        einmal je Jahrgang: Rohdaten -> Jahrgang
+#
+# In diesem Paket bekommt nur `kern` ein Verzeichnis. Die uebrigen legt jeweils ihr
+# eigenes Paket an -- deshalb wird jedes Mitglied hier nur dann eingebunden, wenn es
+# schon existiert. Das ist keine Bequemlichkeit, sondern derselbe Kollisionsschutz
+# wie die Platzhalterdateien im Kern: So muss kein spaeteres Paket diese Datei
+# anfassen, und zwei Bauagenten treffen sich nie darin.
+
+cmake_minimum_required(VERSION 3.22)
+
+project(hedgefonds
+        VERSION 0.1.0
+        DESCRIPTION "Hedgefonds-Simulation auf einer echten Weltwirtschaft -- Arbeitsbereich"
+        LANGUAGES CXX)
+
+include(${CMAKE_CURRENT_LIST_DIR}/werkzeugkette.cmake)
+
+enable_testing()
+
+set(FABRIK_MITGLIEDER
+    kern
+    daten
+    schnittstelle
+    konsole
+    pruefstand
+    oberflaeche
+    werkzeuge/aufbereitung)
+
+foreach(mitglied IN LISTS FABRIK_MITGLIEDER)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${mitglied}/CMakeLists.txt)
+    add_subdirectory(${mitglied})
+  else()
+    message(STATUS "Mitglied '${mitglied}' ist noch nicht gebaut -- uebersprungen.")
+  endif()
+endforeach()
