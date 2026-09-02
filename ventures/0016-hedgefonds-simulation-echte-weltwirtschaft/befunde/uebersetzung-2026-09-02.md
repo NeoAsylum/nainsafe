@@ -30,24 +30,12 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 22%] Building CXX object kern/CMakeFiles/kern.dir/src/zufall.cpp.o
-[ 22%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zufall.cpp.o
-[ 22%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
-[ 22%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 27%] Linking CXX static library libkern.a
-[ 38%] Built target kern
-[ 44%] Linking CXX static library libkern_geprueft.a
 [ 55%] Built target kern_geprueft
-[ 61%] Building CXX object kern/CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
-[ 66%] Building CXX object kern/CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
-[ 72%] Linking CXX executable festkomma_probe
-[ 77%] Linking CXX executable pruefsumme_probe
-[ 88%] Built target pruefsumme_probe
-[ 88%] Built target festkomma_probe
-[ 94%] Linking CXX executable zustand_probe
-[100%] Linking CXX executable zufall_probe
-[100%] Built target zustand_probe
+[ 55%] Built target kern
+[100%] Built target pruefsumme_probe
+[100%] Built target festkomma_probe
 [100%] Built target zufall_probe
+[100%] Built target zustand_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -55,7 +43,7 @@ anderes behauptet, irrt.
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
     Start 1: festkomma_probe
-1/4 Test #1: festkomma_probe ..................   Passed    0.01 sec
+1/4 Test #1: festkomma_probe ..................   Passed    0.03 sec
     Start 2: pruefsumme_probe
 2/4 Test #2: pruefsumme_probe .................   Passed    0.01 sec
     Start 3: zufall_probe
@@ -65,7 +53,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 4
 
-Total Test time (real) =   0.04 sec
+Total Test time (real) =   0.06 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -79,23 +67,11 @@ Total Test time (real) =   0.04 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 16%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zufall.cpp.o
-[ 16%] Building CXX object CMakeFiles/kern.dir/src/zufall.cpp.o
-[ 16%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 22%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
-[ 27%] Linking CXX static library libkern.a
-[ 38%] Built target kern
-[ 44%] Linking CXX static library libkern_geprueft.a
+[ 55%] Built target kern
 [ 55%] Built target kern_geprueft
-[ 61%] Building CXX object CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
-[ 66%] Building CXX object CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
-[ 77%] Linking CXX executable festkomma_probe
-[ 77%] Linking CXX executable pruefsumme_probe
-[ 83%] Built target pruefsumme_probe
-[ 88%] Built target festkomma_probe
-[ 94%] Linking CXX executable zustand_probe
-[100%] Linking CXX executable zufall_probe
-[100%] Built target zustand_probe
+[ 66%] Built target pruefsumme_probe
+[ 94%] Built target zustand_probe
+[ 94%] Built target festkomma_probe
 [100%] Built target zufall_probe
 ```
 
@@ -114,5 +90,5 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 4
 
-Total Test time (real) =   0.04 sec
+Total Test time (real) =   0.05 sec
 ```
