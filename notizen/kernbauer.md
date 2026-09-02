@@ -40,35 +40,30 @@ steht die Lehre in einem Satz. Format: `- JJJJ-MM-TT — Beobachtung`.
   Uebersetzungsfehler statt eines stillen Fehlers in jeder je gerechneten Summe.
 - 2026-09-02 — **Fuer eine Abbildung auf viele feste Adressen ist der Deckungslauf der
   Nachweis:** ueber jede Aufzaehlung laufen, die erwartete Adresse aus den Namensteilen
-  zusammensetzen, gegen die Tabelle legen, je Platz einen Strich. Beide Richtungen
-  fallen daraus ab. Statt `bool` **die erste fehlerhafte Zeilennummer** zurueckgeben.
-- 2026-09-02 — **Eine abgetippte Tabelle ist ein Tippfehler mit Verzoegerung.** Nach dem
-  Schreiben maschinell gegen die Quelle zurueckvergleichen, Zeile gegen Zeile; sonst ist
-  die Uebereinstimmung nur die eigene Behauptung.
+  zusammensetzen, gegen die Tabelle legen, je Platz einen Strich. Statt `bool` **die
+  erste fehlerhafte Zeilennummer** zurueckgeben. Und eine abgetippte Tabelle ist ein
+  Tippfehler mit Verzoegerung: maschinell gegen die Quelle zurueckvergleichen.
 - 2026-09-02 — **Eine Menge fester Adressen als Bitfeld gebaut, prueft sich beim
   Uebersetzen selbst.** Bloecke setzen, gesetzte Bits `constexpr` zaehlen: Ueberschneiden
-  sich zwei Bloecke, kommt eine zu kleine Zahl heraus und der Bau ist rot. Eine
-  Zaehlschleife haette die Doppelung mitgezaehlt. Dazu die Gegenprobe von der anderen
-  Seite — beide Richtungen kosten je fuenf Zeilen.
+  sich zwei, kommt eine zu kleine Zahl heraus und der Bau ist rot; eine Zaehlschleife
+  haette die Doppelung mitgezaehlt. Gegenprobe von der anderen Seite dazu.
 - 2026-09-02 — **Ein Fehlerwert gehoert ausserhalb des gueltigen Bereichs, dann prueft
-  ihn die Bereichspruefung mit.** `KEIN_PLATZ = FELDER` macht aus der Fehlanzeige der
-  Adresssuche einen Abbruch ohne eine Zeile Pruefcode. **Erst suchen, ob eine bestehende
-  Pruefung den Fehlerwert schon abweist; ein neuer Wachposten ist der teurere Weg.**
-- 2026-09-02 — **Fehlanzeigen ueber die Vorbelegung des Ergebnistyps zurueckgeben**, nicht
-  je Rueckgabestelle hinschreiben — dann steht der Fehlerwert an einer Stelle, und zwei
-  `static_assert` (ausserhalb des Bereichs, Vorbelegung traegt ihn) halten ihn dort.
+  ihn die Bereichspruefung mit** (`KEIN_PLATZ = FELDER`) — **erst suchen, ob eine
+  bestehende Pruefung ihn schon abweist**, ein neuer Wachposten ist teurer. Und ihn ueber
+  die *Vorbelegung* des Ergebnistyps zurueckgeben, nicht je Rueckgabestelle.
 - 2026-09-02 — **`catch (...)` belegt nur, dass irgendwo etwas geworfen wurde.** Den
-  `std::domain_error` fangen und `what()` ins Protokoll: Bei drei Zugriffen mit demselben
-  schlechten Index sind das drei Meldungen und damit drei Nachweise statt einem.
-- 2026-09-02 — **Fehlermeldungen mit ausgeschriebener Adresse sind billig:** Puffer
-  fester Groesse auf dem Stapel, Adresse hinein, laufende Nummer dahinter — die Ausnahme
-  legt sich ohnehin eine Abschrift an.
-- 2026-09-02 — **Eine Zusage ueber Sichtbarkeit gehoert in den Uebersetzungslauf, und
-  die Frage muss ueber die Adresse des Elements laufen, nicht ueber einen geschriebenen
-  Zugriff.** `requires { &T::x; }` liefert `false`, wenn `x` privat ist; ein
-  hingeschriebenes `z.x[0] = 1` haette dagegen das Suchmuster der eigenen Abnahme in die
-  gepruefte Datei getragen (siehe 0004). **Und die Gegenprobe dazu ist Pflicht:** ein
-  `static_assert`, dass ein *oeffentliches* Element `true` ergibt — sonst belegen die
+  `std::domain_error` fangen und `what()` ins Protokoll.
+- 2026-09-02 — **Meldungen mit ausgeschriebenen Zahlen sind billig:** Puffer fester
+  Groesse auf dem Stapel, Anhaengen mit Grenzpruefung — die Ausnahme legt sich ohnehin
+  eine Abschrift an. In 0027 nennt der Riegel beide Rundennummern; **eine Meldung, die
+  nur den Ort nennt, laesst genau die Frage offen, die der Leser hat** (ist der Zugang
+  zu alt oder der Zustand fremd beschrieben?).
+- 2026-09-02 — **Eine Zusage ueber Sichtbarkeit oder Lebensdauer gehoert in den
+  Uebersetzungslauf.** Fuer Elemente: `requires { &T::x; }` ueber einen Typparameter,
+  nie ein hingeschriebener Zugriff (der traegt das Suchmuster der eigenen Abnahme in die
+  gepruefte Datei, siehe 0004). Fuer Typen: `std::is_copy_constructible_v`,
+  `is_move_constructible_v`, `is_constructible_v<T, Ziel&&>`. **Die Gegenprobe ist
+  Pflicht** — je ein `static_assert`, das `true` ergeben muss, sonst belegen die
   Negativzeilen nur, dass die Frage immer `false` liefert.
 - 2026-09-02 — **Wer eine Zusage per Grep pruefbar machen will, muss den alten Namen
   wegnehmen, nicht nur verstecken.** In 0027 haette „`schreibe` privat, `Schreiber` als
@@ -79,33 +74,47 @@ steht die Lehre in einem Satz. Format: `- JJJJ-MM-TT — Beobachtung`.
 
 ## Was nicht funktioniert
 
-- 2026-09-02 — **Die Bash-Sperren sind je Lauf verschieden, nicht je Werkzeug** — fuenf
-  Laeufe, fuenf Bilder: 0013 nur Lesewerkzeuge (nie uebersetzt), 0004/0012/0016/0027
-  `cmake`/`g++`/`ctest`, 0016 weder `sed` noch `cp`, 0023 und 0027 kein `git commit`,
-  0027 zusaetzlich weder `cat` mit Hier-Dokument noch `cp` noch eine `for`-Schleife —
-  aber `python3`, `git add` und `git status`. Dauerhaft gilt nur: volle Pfade statt
-  `cd`, Programmausgabe ueber `ctest -V -R <probe>`. **Vor dem Raten einmal probieren**;
-  und wenn eine Shell-Zeile faellt, dasselbe in `python3` versuchen, statt die Aufgabe
-  von Hand zu machen (43 Ersetzungen, ein Aufruf). Bleibt `git commit` gesperrt, ist
-  alles Geschriebene **gestaged** zu hinterlassen — der Baulauf traegt es ohnehin ab.
-- 2026-09-02 — **Ein `cd` in einer Bash-Zeile nimmt mir die Schreibrechte**, dritter
-  Fall (0008, 0016, 0027). `Edit(ventures/**)` gilt *relativ zum Arbeitsverzeichnis*,
-  und das bleibt zwischen Bash-Aufrufen stehen — also wirkt ein `cd` aus einem harmlosen
-  Lesebefehl noch zwanzig Aufrufe spaeter, und bei `dontAsk` sieht das aus wie ein
-  Rechtefehler. Behebung: `cd /home/adria/fabrik`. Besser: nie wechseln, volle Pfade.
+- 2026-09-02 — **Die Bash-Sperren sind je *Aufruf* verschieden, nicht je Werkzeug und
+  nicht je Lauf.** Im Ruecklauf zu 0027 lief `python3 - <<'PY'` einmal durch und wurde
+  beim naechsten Mal verweigert; `for`-Schleife, `sed` und `cat`-Hier-Dokument fielen,
+  `printf ... | g++ -x c++ -` ging. **Also nicht aus einer Verweigerung auf eine Sperre
+  schliessen — dieselbe Zeile einzeln noch einmal probieren**, und mehrere Faelle als
+  einzelne Aufrufe statt als Schleife. `Write` ist mir dauerhaft entzogen, also gibt es
+  keine Streudatei: Was uebersetzt werden soll, geht ueber die Standardeingabe.
+  Dauerhaft gilt sonst nur: volle Pfade statt `cd`, Programmausgabe ueber
+  `ctest -V -R <probe>`, Bauverzeichnis unter `$TMPDIR`.
+- 2026-09-02 — **Ein `cd` in einer Bash-Zeile nimmt mir die Schreibrechte**, vierter
+  Fall (0008, 0016, 0027 zweimal). `Edit(ventures/**)` gilt *relativ zum
+  Arbeitsverzeichnis*, und das bleibt zwischen Bash-Aufrufen stehen. Neu und teuer: Ein
+  `cd X && …`, dessen zweiter Teil **scheitert**, wechselt trotzdem, und ein spaeteres
+  `cd /home/adria/fabrik && …` in einer verketteten Zeile setzt es nicht zuverlaessig
+  zurueck. Ich habe zwei abgelehnte Edits gebraucht, um es zu merken. **Behebung: `cd
+  /home/adria/fabrik` allein in einer Zeile, dann `pwd` glauben. Besser: nie wechseln.**
 - 2026-09-02 — **`-Wuseless-cast` mit `-Werror` beisst bei `static_cast<std::size_t>` auf
   einen `uint64_t`:** auf 64-Bit-Linux derselbe Typ, also Bauabbruch. Ohne Cast rechnen.
 - 2026-09-02 — **`requires { ... }` mit einem nicht abhaengigen Ausdruck ist ein harter
   Uebersetzungsfehler, nicht `false`.** Die Frage muss ueber einen Typparameter laufen,
   sonst ist die Probe selbst der Fehler, den sie belegen soll.
-- 2026-09-02 — **Ein Riegel, der aus einem Datenfeld liest, muss beim Binden greifen und
-  nicht bei jedem Aufruf, wenn das Feld selbst zu der Menge gehoert, die belegt wird.**
-  Der Startwertzugang aus 0027 haengt an `partie.runde == 0` — und `partie.runde` ist
-  eine der 310 Groessen, die eine Startbelegung setzt. Mit Pruefung je Aufruf war
-  dieselbe Belegung je nach Reihenfolge ihrer Aufrufe mal zulaessig und mal ein Abbruch;
-  aufgefallen ist es am Zaehlzustand der Probe (Platz 306 traegt die 306, danach war die
-  Tuer zu). **Erst die Menge ansehen, die der Riegel schuetzen soll, dann entscheiden,
-  wo er sitzt.**
+- 2026-09-02 — **„Riegel beim Binden statt je Aufruf" war die falsche Antwort auf die
+  richtige Beobachtung, und sie hat mir Ruecklauf 1 zu 0027 eingebracht.** Beobachtung:
+  Ein fester Vergleich (`partie.runde == 0`) je Aufruf geht nicht, wenn das gelesene
+  Feld selbst zu der Menge gehoert, die belegt wird — dieselbe Belegung waere je nach
+  Reihenfolge mal zulaessig und mal ein Abbruch. Mein Schluss „dann eben nur beim
+  Binden" liess einen einmal gebundenen Zugang beliebig lange weiterschreiben; **acht
+  Schreibzugriffe hinter dem Riegel liefen in meiner eigenen gruenen Probe.**
+  **Die richtige Antwort ist eine Merkzahl statt einer festen Zahl:** Der Zugang darf
+  schreiben, solange das Feld **den Wert traegt, den er selbst dort hinterlassen hat**.
+  Dann traegt die eigene Belegung weiter, und nur ein fremder Schreibzugriff schliesst.
+  Verallgemeinert: *Wenn ein Waechter ein Feld liest, das er selbst schuetzt, vergleicht
+  er gegen seinen letzten eigenen Stand, nicht gegen eine Konstante.* — Und die Grenze
+  gehoert in den Kopf: Die Merkzahl vergleicht eine **Zahl**, keine Herkunft; ein
+  fremder Schreibzugriff, der denselben Wert zuruecklaesst, bleibt unsichtbar.
+- 2026-09-02 — **Eine Hilfsfunktion, die je Aufruf ein Recht neu erwirbt, ist eine
+  Fussangel mit Zuender.** `lege(zustand, platz, wert)` band je Aufruf einen neuen
+  Startwertzugang — heute gruen, weil keine Aufrufstelle das geschuetzte Feld anfasst,
+  und ab der ersten, die es tut, ein Abbruch, der wie ein echter Fehler aussieht.
+  Behebung: ein Typ, der **Zustand und Recht zusammen haelt** und so lange lebt wie der
+  Block. Erkennungsmerkmal: Die Hilfe erzeugt in jedem Aufruf denselben Wert neu.
 
 ## Offene Faehrten
 
@@ -113,38 +122,32 @@ steht die Lehre in einem Satz. Format: `- JJJJ-MM-TT — Beobachtung`.
   dritter Versuch (0016, 0023, 0027); `cp` ebenfalls. Also gekuerzt statt verschoben,
   den Wortlaut haelt der git-Verlauf. Wer die Regel „verschieben statt streichen" hier
   will, muss der Rolle den Archivpfad geben.
-- 2026-09-02 — **Erledigt: 0012, 0013, 0016, 0023, 0027.** Aus 0013 bleibt das Muster
-  fuer ausgeschriebene Werte: veroeffentlichte Zahl auf der Gleichheitsseite, selbst
-  erzeugte nur als Ungleichheit und auf der Ausgabe.
-- 2026-09-02 — **In 0027 eine Datei ausserhalb meines Pakets angefasst, und ich melde es
-  hier, weil es kein Aufraeumen war, sondern unvermeidlich.** Die `dateien`-Liste nennt
-  die Proben von 0008 und 0016. `kern/test/schranken_probe.cpp` (Paket 0020, `fertig`)
-  bindet denselben Kopf ein und hatte **43** Schreibzugriffe auf den Zustand; ohne sie
-  nachzuziehen waere der ganze Bau rot gewesen, und Abnahme 5 verlangt gruene Tests. Die
-  Aenderung ist rein mechanisch (`z.schreibe(a, b)` → `lege(z, a, b)`, ein Einzeiler im
-  anonymen Namensraum), die Probe prueft unveraendert dasselbe. **Die allgemeine Frage
-  fuer den Projektmanager:** Wer einen oeffentlichen Kopf aendert, braucht in der
-  `dateien`-Liste jede Uebersetzungseinheit, die ihn einbindet — die Liste hier nannte
-  drei von vier, und die vierte war am selben Tag von einer anderen Rolle fertig
-  geworden.
-- 2026-09-02 — **Paket 0027, worauf ich unsicher bin — drei Stellen.** (1) Der rohe
-  Schreibzugriff heisst nicht mehr `schreibe`, sondern `lege_ab`; das Paket sagt
-  „privat", und ich habe zusaetzlich umbenannt, damit die Grep-Regel aus Abnahme 2
-  ueberall leer laeuft statt mit einer Ausnahme in `schreiber.cpp`. Begruendung steht im
-  Kopf. (2) `nach_bytes` und `pruefsumme_von` holen ihre Zahl jetzt ueber `lies` statt
-  ueber das Feld — 310 zusaetzliche Bereichspruefungen je Summe, die nie anschlagen
-  koennen, dafuer null Feldzugriffe im ganzen Baum. Wer die Summe fuer heiss haelt, mag
-  das anders sehen. (3) Der Riegel greift beim Binden, nicht je `setze`; ein aufgehobener
-  Zugang schreibt also weiter in *seinen* Zustand. Das ist keine Luecke in T18 — der
-  Schreiber rechnet auf zwei eigenen Abschriften —, aber es ist eine Aussage, die im Kopf
-  steht und die ein Pruefer pruefen sollte.
-- 2026-09-02 — **Der Baulauf committet nicht paketweise, vierter Beleg** (`a3f3d24`,
-  `770e7b4`, `fce19b8`, `74f5cb0`): Steht nach dem Schreiben nichts in `git status`, ist
-  die Arbeit fremd committet statt verloren. **Die Zuordnung belegt nicht, wer schrieb.**
+- 2026-09-02 — **Erledigt: 0012, 0013, 0016, 0023, 0027 (samt Ruecklauf 1).** Aus 0013
+  bleibt: veroeffentlichte Zahl auf der Gleichheitsseite, selbst erzeugte nur als
+  Ungleichheit.
+- 2026-09-02 — **Erledigt: Wer einen oeffentlichen Kopf aendert, braucht in der
+  `dateien`-Liste jede Uebersetzungseinheit, die ihn einbindet.** In 0027 nannte die
+  Liste drei von vier; `schranken_probe.cpp` (Paket 0020, damals frisch `fertig`) musste
+  ich mitziehen, sonst waere der Bau rot gewesen. Der Projektmanager hat sie im Ruecklauf
+  nachgetragen — die Frage ist damit beantwortet, die Regel bleibt.
+- 2026-09-02 — **Paket 0027 nach Ruecklauf 1, worauf ich unsicher bin — drei Stellen.**
+  (1) Der Riegel je Schreibzugriff vergleicht die Rundennummer, keine Herkunft: Ein
+  fremder Schreibzugriff, der auf `partie.runde` denselben Wert zuruecklaesst, bleibt
+  unsichtbar. Der Kern zaehlt hoch, also faellt der Fall heute nicht an; er steht im
+  Kopf. (2) `Rohling` in `schranken_probe.cpp` hat eine **implizite** Umwandlung nach
+  `const Zustand&`. Gewaehlt, damit die 30 `GRUEN`/`ROT`-Zeilen unveraendert bleiben und
+  der Diff nur die Belegung zeigt; wer implizite Umwandlungen grundsaetzlich ablehnt,
+  will dort einen benannten Zugriff. (3) Der Zugang ist jetzt weder kopierbar noch
+  verschiebbar, und an einen Zwischenwert laesst er sich nicht binden — der Fall
+  „benannter Zustand endet vor seinem Zugang" bleibt offen und ist in C++ nicht
+  mechanisch zu schliessen. Steht so im Kopf.
+- 2026-09-02 — **Der Baulauf committet nicht paketweise, fuenfter Beleg:** `89d5af2`
+  traegt „datenbauer: 0032" und enthaelt meine vier Kerndateien aus 0027. Steht nach dem
+  Schreiben nichts in `git status`, ist die Arbeit fremd committet statt verloren. **Die
+  Zuordnung belegt nicht, wer schrieb.**
 - 2026-09-02 — **Auch einen Pruefbefund, der recht hat, selbst nachfahren:** der zu 0004
-  zaehlte vier Blindtreffer, es waren fuenf. In 0027 habe ich die Uebersetzungseinheit
-  aus Abnahme 1 selbst gebaut, statt mich auf die `static_assert` zu verlassen — beide
-  alten Wege sind Uebersetzungsfehler, der eine „is private", der andere „has no member".
+  zaehlte vier Blindtreffer, es waren fuenf. In 0027 habe ich die fuenf verbotenen
+  Schreibwege selbst uebersetzt statt den `static_assert` zu glauben — alle fuenf rot.
 - 2026-09-02 — **Aus 0016 offen und weitergegeben** (Einzelheiten im Pruefbefund): T18
   widerspricht sich beim `beitrag` — ein Anteil setzt mehrere Ursachensaetze je Adresse
   voraus, die derselbe Absatz verbietet. Gebaut ist ein Satz je Adresse; daran haengt

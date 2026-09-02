@@ -81,15 +81,41 @@ using kern::zustand::KEIN_PLATZ;
 using kern::zustand::LAENDER;
 using kern::zustand::SEKTOREN;
 
-/// Legt einen Wert in einen Zustand, den diese Probe gerade baut.
+/// Ein Zustand, den diese Probe gerade baut, samt dem **einen** Startwertzugang, der
+/// ihn fuellt.
 ///
 /// **Nachgezogen von Paket 0027, mechanisch und ohne Bedeutungsaenderung.** Bis dahin
 /// stand an jeder dieser Stellen ein Schreibzugriff auf den Zustand selbst; den gibt es
 /// nicht mehr, seit T18 auch im Code durchgesetzt ist. Diese Probe spielt keine Runde,
 /// sie baut Ausgangslagen und laesst die Wertebereichspruefung darauf laufen -- also
-/// genau der Fall, fuer den es den Startwertzugang gibt. Jeder dieser Zustaende traegt
-/// `partie.runde` gleich null, der Zugang steht ihnen allen offen.
-void lege(Zustand& ziel, Index platz, i64 wert) { Startbelegung{ziel}.setze(platz, wert); }
+/// genau der Fall, fuer den es den Startwertzugang gibt.
+///
+/// **Warum ein Typ und keine Hilfsfunktion, die je Aufruf einen Zugang bindet.** Genau
+/// so stand es hier, und es ging nur so lange gut, wie keine der Stellen unten
+/// `partie.runde` anfasst: Ein Zugang laesst sich an einen Zustand mit gelaufener Runde
+/// nicht mehr binden. Die erste Schranke, die einen Randfall auf einem solchen Zustand
+/// braucht, waere an einer Meldung gestorben, die von einem echten Fehler nicht zu
+/// unterscheiden ist. Ein Zustand und ein Zugang, gemeinsam gebaut und gemeinsam
+/// lebend, haben das Problem nicht -- der Zugang traegt weiter, auch ueber die
+/// Rundennummer hinweg, weil sie dann von ihm selbst stammt.
+///
+/// Der Zugang ist weder kopierbar noch verschiebbar, also ist ein `Rohling` es auch
+/// nicht. Das ist hier kein Verlust: Jeder steht in dem Block, in dem er gebraucht
+/// wird. Die Umwandlung nach `const Zustand&` steht da, damit `GRUEN` und `ROT`
+/// unveraendert einen Zustand bekommen und diese Umstellung nichts anderes anfasst.
+class Rohling {
+public:
+    Rohling() = default;
+    explicit Rohling(const Zustand& vorlage) : zustand_(vorlage) {}
+
+    void lege(Index platz, i64 wert) { zugang_.setze(platz, wert); }
+
+    operator const Zustand&() const { return zustand_; }
+
+private:
+    Zustand       zustand_;
+    Startbelegung zugang_{zustand_};
+};
 
 int fehlgeschlagen = 0;
 
@@ -687,26 +713,26 @@ Befund pruefe_wertebereiche(const Zustand& zustand, const Verzeichnis& v, const 
 
 Zustand gueltiger_zustand(const Verzeichnis& v)
 {
-    Zustand z;
+    Rohling z;
     for (std::size_t k = 0; k < v.wechselkurs.anzahl; ++k) {
-        lege(z, v.wechselkurs.platz[k], 10'000);
+        z.lege(v.wechselkurs.platz[k], 10'000);
     }
     for (std::size_t k = 0; k < v.nominalindex.anzahl; ++k) {
-        lege(z, v.nominalindex.platz[k], 10'000);
+        z.lege(v.nominalindex.platz[k], 10'000);
     }
     for (std::size_t k = 0; k < v.produktivitaet.anzahl; ++k) {
-        lege(z, v.produktivitaet.platz[k], 10'000);
+        z.lege(v.produktivitaet.platz[k], 10'000);
     }
     for (std::size_t k = 0; k < v.marktwert.anzahl; ++k) {
-        lege(z, v.marktwert.platz[k], 1'000'000);
+        z.lege(v.marktwert.platz[k], 1'000'000);
     }
     // Leitzinsstand, Druecke, Anteile und Stufen bleiben null -- null liegt in jedem
     // dieser Bereiche, und `0 + aufschlag = 51 >= 1` haelt Schranke 4.
     for (std::size_t k = 0; k < v.sektoren.anzahl; ++k) {
         const Dreier& gruppe = v.sektoren.gruppe[k];
-        lege(z, gruppe.platz[0], 3'000);
-        lege(z, gruppe.platz[1], 3'000);
-        lege(z, gruppe.platz[2], 4'000);
+        z.lege(gruppe.platz[0], 3'000);
+        z.lege(gruppe.platz[1], 3'000);
+        z.lege(gruppe.platz[2], 4'000);
     }
     return z;
 }
@@ -829,6 +855,24 @@ int main()
         PRUEFE(befund.verletzt != 0);
     }
 
+    // --- Die Fussangel aus Ruecklauf 1 zu Paket 0027, ausgeraeumt ----------------
+    //
+    // Der Vorgaenger von `Rohling` band je Aufruf einen neuen Startwertzugang. Ein
+    // Randfall auf einem Zustand mit gelaufener Runde waere damit am Binden gestorben,
+    // mit einer Meldung, die von einem echten Fehler nicht zu unterscheiden ist. Hier
+    // laeuft genau dieser Fall: erst die Rundennummer setzen, danach weiter belegen.
+    //
+    // Die Maske bleibt dabei null, denn `partie.runde` gehoert zu keiner der zehn
+    // Sachen. Die Aussage dieser Zeilen ist deshalb nicht die Maske, sondern dass die
+    // Belegung ueberhaupt bis zum Ende durchlaeuft.
+    {
+        Rohling nach_dem_anpfiff{gut};
+        nach_dem_anpfiff.lege(STELLE("partie.runde"), 12);
+        nach_dem_anpfiff.lege(STELLE("markt.wert"), 1'000'000);
+        GRUEN("Belegung traegt auch bei partie.runde = 12", nach_dem_anpfiff);
+        std::fprintf(stdout, "\n");
+    }
+
     std::fprintf(stdout, "Abnahme 3 -- jede Sache einmal rot, und die Raender:\n");
 
     // --- Schranke 1 --------------------------------------------------------------
@@ -836,46 +880,46 @@ int main()
         const Index us = STELLE("land.US.wechselkurs");
         const Index rw = STELLE("restwelt.wechselkurs");
 
-        Zustand randfall = gut;
-        lege(randfall, us, 1);
+        Rohling randfall{gut};
+        randfall.lege(us, 1);
         GRUEN("wechselkurs = 1 besteht", randfall);
 
-        Zustand kaputt = gut;
-        lege(kaputt, us, 0);
+        Rohling kaputt{gut};
+        kaputt.lege(us, 0);
         ROT("wechselkurs = 0", kaputt, Sache::Schranke1Wechselkurs);
 
-        Zustand negativ = gut;
-        lege(negativ, rw, -1);
+        Rohling negativ{gut};
+        negativ.lege(rw, -1);
         ROT("restwelt.wechselkurs = -1", negativ, Sache::Schranke1Wechselkurs);
     }
 
     // --- Schranke 2 --------------------------------------------------------------
     {
-        Zustand randfall = gut;
-        lege(randfall, STELLE("land.US.sektor.1.preis"), 1);
+        Rohling randfall{gut};
+        randfall.lege(STELLE("land.US.sektor.1.preis"), 1);
         GRUEN("Nominalindex = 1 besteht", randfall);
 
-        Zustand kaputt = gut;
-        lege(kaputt, STELLE("land.US.sektor.1.preis"), 0);
+        Rohling kaputt{gut};
+        kaputt.lege(STELLE("land.US.sektor.1.preis"), 0);
         ROT("land.US.sektor.1.preis = 0", kaputt, Sache::Schranke2Nominalindizes);
 
-        Zustand welt = gut;
-        lege(welt, STELLE("welt.preis.2"), -1);
+        Rohling welt{gut};
+        welt.lege(STELLE("welt.preis.2"), -1);
         ROT("welt.preis.2 = -1", welt, Sache::Schranke2Nominalindizes);
 
-        Zustand niveau = gut;
-        lege(niveau, STELLE("restwelt.preisniveau"), 0);
+        Rohling niveau{gut};
+        niveau.lege(STELLE("restwelt.preisniveau"), 0);
         ROT("restwelt.preisniveau = 0", niveau, Sache::Schranke2Nominalindizes);
     }
 
     // --- Schranke 3 --------------------------------------------------------------
     {
-        Zustand randfall = gut;
-        lege(randfall, STELLE("land.BR.produktivitaet"), 1);
+        Rohling randfall{gut};
+        randfall.lege(STELLE("land.BR.produktivitaet"), 1);
         GRUEN("produktivitaet = 1 besteht", randfall);
 
-        Zustand kaputt = gut;
-        lege(kaputt, STELLE("land.BR.produktivitaet"), 0);
+        Rohling kaputt{gut};
+        kaputt.lege(STELLE("land.BR.produktivitaet"), 0);
         ROT("land.BR.produktivitaet = 0", kaputt, Sache::Schranke3Produktivitaet);
     }
 
@@ -888,14 +932,14 @@ int main()
         const Index stand = STELLE("land.US.instrument.leitzins.stand");
         const Index aggregat = STELLE("land.US.leitzins");
 
-        Zustand randfall = gut;
-        lege(randfall, stand, -50);
-        lege(randfall, aggregat, -50);
+        Rohling randfall{gut};
+        randfall.lege(stand, -50);
+        randfall.lege(aggregat, -50);
         GRUEN("leitzins = -50, also -50 + 51 = 1", randfall);
 
-        Zustand kaputt = gut;
-        lege(kaputt, stand, -51);
-        lege(kaputt, aggregat, -51);
+        Rohling kaputt{gut};
+        kaputt.lege(stand, -51);
+        kaputt.lege(aggregat, -51);
         ROT("leitzins = -51, also -51 + 51 = 0", kaputt, Sache::Schranke4Leitzinsuntergrenze);
     }
 
@@ -903,24 +947,24 @@ int main()
     {
         const Index wert = STELLE("markt.wert");
 
-        Zustand unten = gut;
-        lege(unten, wert, 1);
+        Rohling unten{gut};
+        unten.lege(wert, 1);
         GRUEN("markt.wert = 1 besteht", unten);
 
-        Zustand oben = gut;
-        lege(oben, wert, MARKT_WERT_MAX - 1);
+        Rohling oben{gut};
+        oben.lege(wert, MARKT_WERT_MAX - 1);
         GRUEN("markt.wert = 9,2e13 - 1 besteht", oben);
 
-        Zustand null = gut;
-        lege(null, wert, 0);
+        Rohling null{gut};
+        null.lege(wert, 0);
         ROT("markt.wert = 0", null, Sache::Schranke5Marktkorb);
 
-        Zustand negativ = gut;
-        lege(negativ, wert, -1);
+        Rohling negativ{gut};
+        negativ.lege(wert, -1);
         ROT("markt.wert = -1", negativ, Sache::Schranke5Marktkorb);
 
-        Zustand schranke = gut;
-        lege(schranke, wert, MARKT_WERT_MAX);
+        Rohling schranke{gut};
+        schranke.lege(wert, MARKT_WERT_MAX);
         ROT("markt.wert = 9,2e13 (echt kleiner)", schranke, Sache::Schranke5Marktkorb);
     }
 
@@ -929,16 +973,16 @@ int main()
         const Index druck = STELLE("land.US.instrument.zoll.druck");
         const Index gegen = STELLE("land.DE.instrument.regulierung.gegendruck");
 
-        Zustand randfall = gut;
-        lege(randfall, druck, g.druck_max);
+        Rohling randfall{gut};
+        randfall.lege(druck, g.druck_max);
         GRUEN("druck = druck_max besteht", randfall);
 
-        Zustand zuviel = gut;
-        lege(zuviel, druck, g.druck_max + 1);
+        Rohling zuviel{gut};
+        zuviel.lege(druck, g.druck_max + 1);
         ROT("druck = druck_max + 1", zuviel, Sache::Schranke6Lobbydruck);
 
-        Zustand negativ = gut;
-        lege(negativ, gegen, -1);
+        Rohling negativ{gut};
+        negativ.lege(gegen, -1);
         ROT("gegendruck = -1", negativ, Sache::Schranke6Lobbydruck);
     }
 
@@ -948,39 +992,39 @@ int main()
         const Index stufe = STELLE("fonds.position.US.1");
         const Index anleihe = STELLE("fonds.position.anleihe.BR");
 
-        Zustand randfall = gut;
-        lege(randfall, anteil, 10'000);
+        Rohling randfall{gut};
+        randfall.lege(anteil, 10'000);
         GRUEN("fondsanteil = 10.000 besteht", randfall);
 
-        Zustand zuviel = gut;
-        lege(zuviel, anteil, 10'001);
+        Rohling zuviel{gut};
+        zuviel.lege(anteil, 10'001);
         ROT("fondsanteil = 10.001", zuviel, Sache::Schranke7AnteilUndStufe);
 
-        Zustand negativ = gut;
-        lege(negativ, anteil, -1);
+        Rohling negativ{gut};
+        negativ.lege(anteil, -1);
         ROT("fondsanteil = -1", negativ, Sache::Schranke7AnteilUndStufe);
 
-        Zustand randfall_kurz = gut;
-        lege(randfall_kurz, stufe, -g.stufen_max);
+        Rohling randfall_kurz{gut};
+        randfall_kurz.lege(stufe, -g.stufen_max);
         GRUEN("stufe = -stufen_max besteht", randfall_kurz);
 
-        Zustand zu_lang = gut;
-        lege(zu_lang, stufe, g.stufen_max + 1);
+        Rohling zu_lang{gut};
+        zu_lang.lege(stufe, g.stufen_max + 1);
         ROT("stufe = stufen_max + 1", zu_lang, Sache::Schranke7AnteilUndStufe);
 
-        Zustand zu_kurz = gut;
-        lege(zu_kurz, anleihe, -g.stufen_max - 1);
+        Rohling zu_kurz{gut};
+        zu_kurz.lege(anleihe, -g.stufen_max - 1);
         ROT("stufe = -stufen_max - 1", zu_kurz, Sache::Schranke7AnteilUndStufe);
     }
 
     // --- Gleichheit 1 und 2 (T49) -------------------------------------------------
     {
-        Zustand kaputt = gut;
-        lege(kaputt, STELLE("land.US.leitzins"), 7);
+        Rohling kaputt{gut};
+        kaputt.lege(STELLE("land.US.leitzins"), 7);
         ROT("land.US.leitzins != instrument.stand", kaputt, Sache::Gleichheit1Leitzins);
 
-        Zustand saldo = gut;
-        lege(saldo, STELLE("land.BR.haushaltssaldo"), -3);
+        Rohling saldo{gut};
+        saldo.lege(STELLE("land.BR.haushaltssaldo"), -3);
         ROT("land.BR.haushaltssaldo != instrument", saldo, Sache::Gleichheit2Haushaltssaldo);
     }
 
@@ -992,20 +1036,20 @@ int main()
 
         // Drei gleich grosse Sektoren: 10.000/3 = 3.333 dreimal ergibt 9.999. Das ist
         // der Rundungsschlupf und kein Fehler -- der Grund, warum ANTEIL_SCHLUPF 1 ist.
-        Zustand gedrittelt = gut;
-        lege(gedrittelt, eins, 1);
-        lege(gedrittelt, zwei, 1);
-        lege(gedrittelt, drei, 1);
+        Rohling gedrittelt{gut};
+        gedrittelt.lege(eins, 1);
+        gedrittelt.lege(zwei, 1);
+        gedrittelt.lege(drei, 1);
         GRUEN("Sektoren 1:1:1, Anteilssumme 9.999", gedrittelt);
 
-        Zustand negativ = gut;
-        lege(negativ, eins, -100);
+        Rohling negativ{gut};
+        negativ.lege(eins, -100);
         ROT("wertschoepfung < 0, Anteil < 0", negativ, Sache::Sektoranteile);
 
-        Zustand leer = gut;
-        lege(leer, eins, 0);
-        lege(leer, zwei, 0);
-        lege(leer, drei, 0);
+        Rohling leer{gut};
+        leer.lege(eins, 0);
+        leer.lege(zwei, 0);
+        leer.lege(drei, 0);
         ROT("Summe 0, kein Anteil bildbar", leer, Sache::Sektoranteile);
     }
 

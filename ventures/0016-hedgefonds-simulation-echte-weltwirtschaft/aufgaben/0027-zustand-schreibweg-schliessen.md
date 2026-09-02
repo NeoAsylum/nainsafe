@@ -1,7 +1,7 @@
 ---
 id: 0027-zustand-schreibweg-schliessen
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0023-adressfund-fehlerwert, 0016-schreiber-ursachenkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustand_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schreiber_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme", in der Fassung des Rücklaufs vom 2026-09-02. Bedingung 3 ist neu gefasst; 1, 2, 4 und 5 sind unverändert und bereits einmal belegt. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
