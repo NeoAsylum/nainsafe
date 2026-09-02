@@ -1,7 +1,7 @@
 ---
 id: 0017-reihenliste-maschinenlesbar
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0006-deckung-pruefjahrgang-1997, 0014-lizenzpruefung-restliche-reihen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die sechs Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
