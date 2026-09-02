@@ -34,6 +34,17 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 - **Ein Vertagungspreis trägt nur mit Paket und Zeitpunkt.** `haengt_an` rückwärts lesen:
   0027←0023, 0028←0015, 0026←0025+0011, 0002←0026, 0010←0002. So wird aus „der Review
   stockt" eine Kette mit Namen.
+- **Der Übersetzungsbericht ist die billigste Grundwahrheit im ganzen Vorhaben**
+  (2026-09-02, 10. Lauf). `befunde/uebersetzung-<datum>.md` ist runner-erzeugt und nennt
+  Ziele und Tests **namentlich** mit `Passed`. `tail -35` darauf hat mir die wichtigste
+  Änderung des Laufs gegeben (erster Prüfstandstest). **Zuerst lesen, nicht zuletzt** —
+  vor `rueckstand.md`, der immer den Stand *vor* der Bauphase beschreibt.
+- **Die `dateien:`-Felder gegen die Kästen des Zielbilds halten — das nennt, was nie
+  beauftragt wurde.** `grep "^dateien:" aufgaben/*.md | grep -c <kasten>` → 0 heisst: kein
+  Paket, keine Blockade, sondern eine Lücke im Auftrag. So fand ich, dass `schritt` in 32
+  Paketen nicht vorkommt. **Das ist meine Sonde für die Fehlerklasse des Betreibers**, sie
+  kostet einen Aufruf — und ich habe fünf Pläne lang „7 von 9" gemeldet, ohne zu fragen,
+  wer die fehlenden zwei bauen soll. Bei jeder wiederkehrenden Zahl künftig zuerst.
 - **Vor jedem „unverändert seit N Plänen" die Uhr des Betreibers prüfen:** `git log` nach
   Commits *ohne* Rollenpräfix filtern. Am 2026-09-02 lagen drei meiner Pläne (07:32,
   08:25, 09:25) hinter seinem letzten Commit (06:39). **Eine Empfehlung, die er noch
@@ -65,37 +76,48 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
   Befund-Frontmatter, `rueckstand.md`, `agents/*.py`. Die Wahrheit über den Zustand steht
   in den Skripten, nicht in den Dokumenten.
 
+## Erledigt — nicht erneut aufgreifen
+
+Alle vier am 2026-09-02 im 10. Lauf gefallen, nachdem sie 3–5 Pläne lang gestanden hatten:
+Review-Engpass (3 von 4 Urteilen statt 1 von 4), 0019 (29 Byte → 30.835), „No tests were
+found!!!" (`vorrat_probe … Passed`), Architektendiagnose (Betreiber, 19:13).
+**Die Lehre daraus:** Was ich fünfmal gemeldet habe, fiel nicht an meiner Wiederholung,
+sondern an einer Teilung des Pakets (0019) und an einer Rollendatei (Architekt). *Wenn ein
+Paket dreimal nicht liefert, ist die Größe die Ursache, nicht die Reihenfolge* — und der
+Adressat einer Meldung ist der Projektmanager oder der Betreiber, nie mein eigener Plan.
+
 ## Offene Faehrten
 
-- **2026-09-02 (9. Lauf), Engpass: Der Review liefert ein Urteil je vier Plätze.** Vier
-  Pakete stehen auf `gebaut` ganz ohne Befunddatei (0020, 0023, 0024, 0025).
-  **Der Mechanismus:** `rueckläufe()` (`baulauf.py:236`) zählt nur `urteil: zurueck` —
-  ein Prüfer, der nichts schreibt, zählt nicht. 0009 hat fünf Reviewplätze verbraucht,
-  steht weiter bei 2 von 3 und hält als Erster der Liste `[:4]` Platz 1 auf Dauer.
-  **Nächster Lauf zuerst:** `grep -H "^urteil:" ventures/*/befunde/*.md` gegen die Liste
-  der `gebaut`-Pakete halten — die Differenz ist die Zahl.
-- **Empfehlung B steht seit drei Plänen** (Runner setzt `gebaut` + schreibt
-  `ops/baulauf.log`). Sie deckt jetzt beide Engpässe. **Prüfen:** `ls ops/*.log` und ob
-  `baulauf.py` einen `open(... "baulauf.log")` enthält. Solange nein: unverändert
-  wiederholen und dazusagen, zum wievielten Mal.
+- **2026-09-02 (10. Lauf), Engpass: der Architekt.** Eine Rolle, eine Datei, vier Fragen
+  in `technik.md`, das genau einen Bauplatz trägt — 0011, 0026, Wohnort der
+  Zustandsausgabe, Präfix `gebiet.`/`land.`. Solange sie steht, hat `kernbauer` kein
+  startbereites Paket. **Nächster Lauf zuerst:** `git log -- specs/*/technik.md | head -3`.
+  Bewegt sie sich, hat die Rollenänderung von 19:13 getragen; bewegt sie sich nicht, ist
+  es der dritte leere Architektenlauf und ein eigener Befund.
+- **`schritt` hat kein Arbeitspaket** — 32 Pakete, `grep -c schritt` auf die `dateien:`-
+  Zeilen gibt 0. Im Vorrang an den Projektmanager gemeldet. **Prüfen, ob er es anlegt;
+  wenn nicht, im nächsten Plan als offene Bitte wiederholen, aber nur einmal** (siehe
+  oben).
+- **Die Rohdaten sind meine erste eigene Entscheidungsfrage, nicht geerbt** (Plan vom
+  10. Lauf, Empfehlung B: Betreiber lädt vier Quellen von Hand). `daten/` hat null
+  Datenzeilen nach zehn Bauläufen. **Prüfen:** `ls .../daten/roh/`.
 - **Die Fehlerklasse, vom Betreiber benannt (`953bbf5`):** eine Regel oder Rolle an einer
   Stelle, die der Ablauf nicht erreicht — es fällt erst auf, wenn etwas **nicht**
-  geschieht. Sechster Fall: die Konvergenzbremse greift nicht beim stummen Prüfer.
-  Meine Rolle ist die einzige, die ausbleibende Arbeit sehen kann. **Aktiv danach
-  suchen.**
+  geschieht. Sechster Fall: `schritt` im Zielbild ohne Paket. Meine Rolle ist die einzige,
+  die ausbleibende Arbeit sehen kann. **Aktiv danach suchen.**
+- **Eine Empfehlung zurückzunehmen ist billiger, als sie zum vierten Mal zu wiederholen.**
+  `ops/baulauf.log` war richtig, aber der Betreiber hat die Frage von Hand aus dem
+  Rückgabetext des Architekten beantwortet. Eine Empfehlung, deren Zweck anders erfüllt
+  wurde, gehört herabgestuft — sonst verdrängt sie die neue Frage.
 - **Ein Prüfer committet den Befund eines anderen mit** (Lauf 269 trug den 0015-Befund).
-  Der Runner committet den ganzen Schreibpfad. Deshalb nie vom Commit auf den Autor des
-  Befunds schließen — die Datei selbst nennt `pruefer:` im Frontmatter.
-- **0019: vierter Bauversuch, null eigene Bytes.** 14 und 15 Byte, unverändert seit
-  07:54, obwohl der Projektmanager die Dateireihenfolge eigens vorgeschrieben hat. Ab
-  dem fünften vergeblichen Versuch ist das ein eigener Befund, kein Nebensatz mehr.
-- **`pruefstand/bau` meldet „No tests were found!!!" und `ctest` gibt Code 0.** Der
-  Übersetzungsbefund ist die Grundwahrheit der Fabrik und kann in diesem Bausatz nie
-  durchfallen. Blockiert nichts, entwertet aber ein Urteil — melden, wenn 0019 liefert.
-- **`specs/technik.md` unverändert seit 2026-09-01 09:17, 6 Zeilen Rust, 0 Zeilen C++.**
-  Das ist die Stelle, an der Gebautes und Vorgabe auseinanderlaufen — meine eigentliche
-  Frage. Jeden Lauf neu messen, sie ist billig.
+  Der Runner committet den ganzen Schreibpfad. Nie vom Commit auf den Autor schließen —
+  die Datei nennt `pruefer:` im Frontmatter.
+- **`specs/technik.md`: 10 Zeilen Rust/cargo/rustc, 0 Zeilen C++**, unverändert seit
+  2026-09-01 09:17. Die Stelle, an der Gebautes und Vorgabe auseinanderlaufen — meine
+  eigentliche Frage. Jeden Lauf neu messen, sie ist billig. (Der Wert stieg von 6 auf 10,
+  weil ich das Suchmuster erweitert habe, nicht der Text — Messmuster im Plan nennen.)
 - **0003 (Einheiten) ist eine Betreiberfrage, keine Bausache.** Nicht als Rückstand
   zählen, solange es nichts blockiert. Die 170-gegen-121-Lücke ebenso: erst wieder
   aufgreifen, wenn der Kern rechnet.
-- **`.tmp`-Dateien im Repo: 14** (`git ls-files "*.tmp" | wc -l`). Ab etwa 30 melden.
+- **`.tmp`-Dateien im Repo: 18** (`git ls-files "*.tmp" | wc -l`, vorher 14). Ab etwa 30
+  melden.

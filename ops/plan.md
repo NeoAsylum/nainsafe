@@ -1,83 +1,101 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-02, nach dem neunten Baulauf (09:40–10:10, Läufe 262–270).
+Stand 2026-09-02 19:30, nach dem zehnten Baulauf (18:51–19:26, Läufe 272–280).
 
 ## Wo das Vorhaben steht
 
-Der Kern übersetzt, sechs von sechs Prüfläufen bestehen — unverändert. Von 28 Paketen
-(zwei neue) sind 13 `fertig`, 6 `gebaut`, 7 `offen`, 2 `blockiert`. **Sieben von neun
-Kernkästen tragen Code — den dritten Lauf in Folge unverändert:** `werte` und `schritt`
-haben je zwei Zeilen, eine Spielrunde ist nie gerechnet worden.
+**Der Prüfstand hat seit 19:13 seinen ersten Test** — `vorrat_probe … Passed`. Das
+„No tests were found!!!", das in fünf meiner Pläne stand, ist weg; sieben grüne Tests,
+sechs im Kern, einer im Prüfstand. Von 32 Paketen sind 14 `fertig`, 6 `gebaut`, 8 `offen`,
+2 `blockiert`, 2 `vorschlag`.
 
-Zum ersten Mal sind 0024 und 0025 gebaut worden — die zwei Pakete, die drei Pläne lang
-„kommen nie dran" hießen. Das ist keine Besserung: Die Bauschlange ist leerer geworden.
+Zwei Pakete, die vier Läufe lang totlagen, sind gefallen: **0019** nach der Teilung durch
+den Projektmanager — vier Dateien, 30.835 Byte, wo drei Läufe lang 29 Byte standen — und
+**0021** mit 384 Zeilen in `spiel.md`. Der Review lieferte drei von vier Urteilen statt
+einem von vier; der Engpass meines letzten Plans ist erledigt.
+
+Ein Bauplatz blieb leer: der Architekt. Der Betreiber hat die Ursache um 19:13 gefunden
+und die Rollendatei geändert.
 
 ## Der Engpass
 
-**Der Review gibt ein Urteil je vier Plätze zurück — und alles, was noch baubar wäre,
-wartet auf ein Urteil.**
+**Der Architekt — eine Rolle, eine Datei, vier Fragen in der Schlange, seit 34 Stunden
+keine Zeile.**
 
-Lauf 9 hatte vier Reviewplätze und **eine** Urteilsdatei:
+`technik.md` ist zuletzt am 2026-09-01 09:17 geschrieben worden. Seither hat der Architekt
+zwei Bauplätze verbraucht und nichts geliefert; beim letzten meldete er, jedes
+Schreibwerkzeug sei gesperrt — eine falsche Diagnose, die gründlich aussah.
 
-- **0023** (kern-pruefer): kein Commit. Journalnummer 267 fehlt in der Folge 262–270.
-- **0009** (Lauf 270): committet nur sein eigenes Logbuch. Fünfter Reviewplatz, dritter
-  ohne Urteil.
-- **0020** (Lauf 269): committet den Befund zu **0015** und den Übersetzungsbericht.
-  Ein `pruefung-0020-*` gibt es nicht.
-- **0015** (Lauf 268): committet nur sein Logbuch — sein eigener Befund (`geprueft`,
-  0 Befunde) wurde vom parallel laufenden 0020-Prüfer mitgenommen.
+Vier Fragen liegen in derselben Datei, und `technik.md` trägt genau einen Bauplatz:
+0011 (Stack auf C++), 0026 (Klasse 2, laufende gegen konstante Preise), wo die
+Zustandsausgabe wohnt, und das Präfix `gebiet.` gegen `land.`/`restwelt.`.
 
-Vier Pakete stehen damit auf `gebaut` **ohne jedes Urteil**: 0020, 0023, 0024, 0025.
-Daran hängt der Rest: 0027 wartet auf 0023, 0026 auf 0025 (und auf 0011), 0002 auf 0026,
-0010 auf 0002.
-
-**Warum es sich nicht selbst korrigiert:** `rueckläufe()` (`baulauf.py:236`) zählt nur
-Dateien mit `urteil: zurueck`. Ein Prüfer, der nichts schreibt, zählt nicht. 0009 steht
-deshalb nach fünf Reviewplätzen weiter bei zwei von drei Rückläufen, ist Erster in der
-nach Dateinamen sortierten Liste `[:4]` — und belegt Platz 1 auf Dauer. Die
-Konvergenzbremse greift bei genau der Sorte Paket nicht, für die sie gebaut wurde.
+Daran hängt der ganze Kern: **`kernbauer` hat gerade kein einziges startbereites Paket**
+(0002 und 0003 blockiert, 0010 hängt an 0002, 0027 wartet auf das Urteil zu 0023). Und
+die Kette zur Spielrunde läuft vollständig durch den Architekten:
+**0011 → 0026 → 0002 (`werte`) → `schritt`.**
 
 ## Was quer liegt
 
-- **Der Trockenlauf plant für Lauf 10 nur noch drei Baupakete: 0011, 0019, 0021.** Zwei
-  davon gehören Architekt und Spielentwerfer, die zum dritten Mal in Folge nicht
-  aufgerufen wurden — Lauf 9 baute {0015, 0019, 0024, 0025}, geplant war
-  {0011, 0015, 0019, 0021}. Der Projektmanager hat 0011/0021 nicht angefasst,
-  `rueckläufe` ist für beide 0, `befunde/` enthält keine ihrer Prüfungen. **Damit hat der
-  nächste Lauf einen einzigen wirksamen Bauplatz** — 0019.
-- **0019 hat im vierten Bauversuch keine eigene Datei geschrieben.**
-  `pruefstand/CMakeLists.txt` 14 Byte, `test/vorrat_probe.cpp` 15 Byte, beide unverändert
-  seit 07:54; der Commit zu Lauf 263 enthält ausschließlich fremde Dateien. Die
-  geschärfte Reihenfolgevorgabe des Projektmanagers hat nichts bewegt.
-- **Gebautes und Vorgabe laufen auseinander.** `specs/technik.md` ist seit dem
-  2026-09-01 09:17 unverändert: 6 Zeilen nennen Rust, keine nennt C++, 2 nennen
-  `cargo`/`rustc` — während der Kern vollständig in C++ steht (ADR 0011). Jedes
-  Kernpaket bezahlt die Übersetzung erneut, und ein Prüfer, der `specs/` gegen den Code
-  hält, misst gegen den falschen Text.
-- Unverändert: `pruefstand` kann nicht durchfallen („No tests were found!!!", Code 0);
-  ein TOML-Parser fehlt im Runner; 14 `.tmp`-Dateien liegen committet im Repo.
+- **`schritt` hat kein Arbeitspaket.** 32 Pakete, keines nennt `kern/src/schritt.cpp` im
+  Feld `dateien` (`grep "^dateien:" aufgaben/*.md | grep -c schritt` → 0). Die Zahl, die
+  ich seit vier Plänen melde, kann nicht steigen, weil ihre eine Hälfte nie beauftragt
+  wurde. `werte` ist blockiert, `schritt` ist ungefragt — den Unterschied haben meine
+  bisherigen Pläne verwischt. **Sechster Fall der vom Betreiber benannten Fehlerklasse**
+  (`953bbf5`): ein Kasten im Zielbild, den der Ablauf nicht erreicht.
+- **`technik.md` sagt weiter Rust.** 10 Zeilen nennen Rust, `cargo` oder `rustc`, 0 Zeilen
+  nennen C++ (`grep -c -i`, gezählt sind Zeilen). Der Kern steht seit ADR 0011 vollständig
+  in C++. Jedes Kernpaket bezahlt die Übersetzung erneut, und ein Prüfer, der `specs/`
+  gegen den Code hält, misst gegen den falschen Text.
+- **0025 ist der einzige Reviewplatz ohne Urteil** — und sitzt direkt auf der
+  Engpasskette: 0026 hängt an 0011 **und** 0025.
+- **Beide Vorschläge tragen.** 0031 (`FABRIK_STRENGE` steht zweimal wortgleich, bei sieben
+  Kästen siebenmal) und 0032 (`reihen.toml` zählt drei, wo sieben offen sind) kommen aus
+  der Hand, die drangesessen hat. Klein, und beide hängen an einem Paket, das gerade
+  durchgeht.
+- Unverändert: kein `ops/baulauf.log`; 18 `.tmp`-Dateien im Repo (vor drei Läufen 14).
 
 ## Was der Betreiber entscheiden muss
 
-Dieselbe Frage wie in meinen letzten beiden Plänen — **sie ist nicht abgelehnt, sondern
-ungelesen.** Der letzte Commit des Betreibers ist von 06:39, meine Pläne von 07:32, 08:25
-und 09:25 kamen danach. Kein Gate: kein Geld, kein Recht, keine Außenwirkung. Aber kein
-Agent darf `baulauf.py` oder `agents/rollen/*.md` anfassen.
+**Die Rohdaten.** `daten/` enthält nach zehn Bauläufen fünf Textbefunde und `reihen.toml`
+— Metadaten über Reihen, **keine einzige Datenzeile**. Ein Simulator der echten
+Weltwirtschaft ohne die echte Weltwirtschaft: Der Jahrgangsbau 1997 hat deshalb kein
+Paket, und die drei Prüfrollen haben nichts zu prüfen. Kein Gate — `daten.md` nennt für
+alle vier tragenden Quellen ausdrücklich keine Registrierung und kein Abonnement, also
+kein Geld und keine Anmeldung.
 
-**Empfehlung unverändert B, jetzt mit zwei Gründen statt einem:** `baulauf.py` setzt
-`gebaut` selbst, wenn der Bauagent mit 0 zurückkommt **und** eine Datei aus `dateien`
-sich geändert hat — **plus die Zeilen, die jeden Lauf nach `ops/baulauf.log` schreiben**
-(geplant, aufgerufen, Rückgabecode, ob die erwartete Datei entstand).
+Die Frage ist, welche Hand lädt:
 
-Das Protokoll ist inzwischen die wichtigere Hälfte. Es beantwortet beide offenen Fragen
-auf einmal: warum 0011 und 0021 nicht starten, und wie oft ein Paket einen Prüfer ohne
-Urteil verbraucht. Ohne es steht der ungeklärte Satz zum vierten Mal im nächsten Plan.
+- **A — der Runner bekommt einen Ladeschritt.** Einmal Arbeit am Skript, danach hat jeder
+  Datenbauer echte Zeilen.
+- **B — der Betreiber lädt die vier Quellen einmal von Hand** nach `…/daten/roh/`.
 
-*Alternative A* — den `gebaut`-Satz in die drei fehlenden Rollendateien kopieren — löst
-den Testentwickler und rührt weder den Review-Engpass noch den Aufruf an.
+**Empfehlung B.** Eine Viertelstunde statt einer Runner-Änderung, heute Abend machbar —
+und sie beantwortet die Frage, die A voraussetzt: ob die vier Quellen so aussehen, wie
+`daten.md` sie beschreibt. Fällt dabei etwas auf, ist A danach billig; fällt nichts auf,
+wäre A ins Blaue gebaut worden.
+
+Meine Empfehlung aus den letzten vier Plänen (Runner schreibt `ops/baulauf.log`) stufe ich
+zur Notiz herab: nicht falsch, aber der Betreiber hat die Frage am 19:13 von Hand aus dem
+Rückgabetext des Architekten beantwortet.
+
+## Vorrang
+
+1. **0011** — der Architekt ist der Engpass, und dies ist die Probe auf die Rollenänderung
+   von 19:13. Geht es durch, fällt die Rust/C++-Divergenz mit.
+2. **0025** — das fehlende Urteil. Ohne es kann 0026 auch mit fertigem 0011 nicht starten.
+3. **0026** — sobald 0011 und 0025 stehen: entblockt 0002 und damit `werte`.
+4. **0029** — die einzige Bauarbeit, die ohne den Architekten läuft. Hält den zweiten
+   Bauplatz besetzt und baut den Prüfstand weiter, der gerade seinen ersten Test bekam.
+5. **0031** — klein, und der erste Vorschlag eines Agenten überhaupt. Ihn anzunehmen lehrt
+   den Mechanismus, solange er noch einen Fall hat.
+
+**Ohne Kennung, an den Projektmanager:** `schritt` braucht ein Paket. Bauen lässt es sich
+erst nach 0002 — schreiben lässt es sich jetzt. Es ist das einzige fehlende Paket, das die
+eine Zahl erklärt.
 
 ## Die eine Zahl
 
-**Sieben von neun Kernkästen tragen Code — der dritte Lauf in Folge unverändert.**
-Es fehlen `werte` und `schritt`. `schritt` ist die Spielrunde; sein Entwurfspaket (0021)
-ist seit drei Läufen eingeplant und nie gestartet.
+**Sieben von neun Kernkästen tragen Code, den fünften Lauf in Folge unverändert.** Neu ist
+der Grund: `werte` (78 Byte) ist blockiert, `schritt` (63 Byte) ist nie beauftragt worden.
+Eine Spielrunde ist noch immer nie gerechnet worden.
