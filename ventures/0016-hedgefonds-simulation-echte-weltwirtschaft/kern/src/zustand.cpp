@@ -822,11 +822,19 @@ const char* index_zu_adresse(Index index)
 // T12 -- die kanonische Byteform
 // ---------------------------------------------------------------------------
 
+// Beide Schleifen holen ihre Zahl ueber `lies` und nicht ueber das Feld selbst.
+//
+// Der Grund ist nicht Vorsicht, sondern dieselbe Grep-Regel wie in `zustand.hpp`: Ein
+// indizierter Feldzugriff kommt im ganzen Baum nicht mehr vor, auch nicht an den beiden
+// Stellen, an denen er erlaubt waere. Eine Regel mit zwei zugelassenen Ausnahmen ist in
+// einem halben Jahr eine Regel mit fuenf. Die Indexpruefung, die `lies` dabei mitbringt,
+// kann hier nicht anschlagen -- die Schleifengrenze *ist* `FELDER` --, und beide
+// Funktionen bleiben deshalb `noexcept`, ohne dass sich daran etwas aendert.
 void nach_bytes(const Zustand& zustand, std::array<std::uint8_t, BYTES>& ziel) noexcept
 {
     for (Index i = 0; i < FELDER; ++i) {
         const std::array<std::uint8_t, pruefsumme::BYTES_JE_I64> acht =
-            pruefsumme::nach_bytes_le(zustand.feld[i]);
+            pruefsumme::nach_bytes_le(zustand.lies(i));
         for (std::size_t b = 0; b < pruefsumme::BYTES_JE_I64; ++b) {
             ziel[i * pruefsumme::BYTES_JE_I64 + b] = acht[b];
         }
@@ -837,9 +845,49 @@ u64 pruefsumme_von(const Zustand& zustand) noexcept
 {
     pruefsumme::Summe summe;
     for (Index i = 0; i < FELDER; ++i) {
-        summe.nimm_i64(zustand.feld[i]);
+        summe.nimm_i64(zustand.lies(i));
     }
     return summe.wert();
+}
+
+// ---------------------------------------------------------------------------
+// Der Startwertzugang
+// ---------------------------------------------------------------------------
+
+namespace {
+
+/// Der Platz von `partie.runde`, aus der Adressrechnung statt aus einer Zahl.
+///
+/// `daten/adressen.md` fuehrt ihn als laufende Nummer 307, der Kern zaehlt ab null.
+/// Die Gegenrechnung steht als `static_assert` daneben: Verschoebe ein spaeteres Paket
+/// den Partieblock, waere das hier ein roter Bau und kein Riegel, der ins Leere greift.
+constexpr Index PLATZ_RUNDE = stelle_partie(PartieFeld::Runde);
+
+static_assert(PLATZ_RUNDE == 306, "daten/adressen.md Nr. 307 ist partie.runde");
+static_assert(PLATZ_RUNDE < FELDER, "der Riegel liegt auf einem Feld des Zustands");
+
+}  // namespace
+
+bool vor_der_ersten_runde(const Zustand& zustand) { return zustand.lies(PLATZ_RUNDE) == 0; }
+
+Startbelegung::Startbelegung(Zustand& ziel) : ziel_(&ziel)
+{
+    if (!vor_der_ersten_runde(ziel)) {
+        // Kein Ersatzwert, keine stille Wirkungslosigkeit: Ein Startwert, der nach dem
+        // Anpfiff gesetzt wuerde, waere eine Aenderung ohne Ursachensatz -- genau die
+        // Sorte, die T18 ausschliesst und die die Diff-Ebene aus T20 spaeter als
+        // Aenderung ohne Ursache zeigen wuerde.
+        festkomma::abbruch(
+            "kern::zustand::Startbelegung -- die Partie laeuft schon (partie.runde ist "
+            "nicht null); Startwerte gibt es nur vor der ersten Runde");
+    }
+}
+
+void Startbelegung::setze(Index adresse, i64 wert)
+{
+    // Die Indexpruefung macht der rohe Schreibzugriff; sie hier zu wiederholen hiesse,
+    // dieselbe Schranke an zwei Stellen zu pflegen.
+    ziel_->lege_ab(adresse, wert);
 }
 
 }  // namespace kern::zustand

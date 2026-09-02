@@ -14,6 +14,10 @@
 //!      Fehler, den T39 ausschliesst, und er ist von aussen nur an zwei verschiedenen
 //!      Zahlen zu sehen -- deshalb stehen sie hier ausgeschrieben.
 //!   4. **Die Zahlen im Wortlaut.** Was diese Probe ausrechnet, schreibt sie hin.
+//!   5. **Dass der Startwertzugang neben dem Schreibweg steht und nicht in ihm**
+//!      (Paket 0027): Ein Startwert erzeugt kein Kettenglied, und sobald eine Runde
+//!      gelaufen ist, ist der Zugang zu. Beides braucht eine gespielte Runde und einen
+//!      gefangenen Abbruch, also diese Probe und keinen `static_assert`.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -60,6 +64,7 @@ using kern::zustand::PolitischeGroesse;
 using kern::zustand::Restdauerzaehler;
 using kern::zustand::Sektor;
 using kern::zustand::SektorGroesse;
+using kern::zustand::Startbelegung;
 using kern::zustand::Zustand;
 using kern::zustand::FELDER;
 
@@ -98,6 +103,14 @@ i64 undurchsichtig(i64 wert)
 
 /// Eine Ursache, die in jeder dieser Proben taugt, wo es auf die Form nicht ankommt.
 Ursache irgendeine() { return Ursache::gegenkraft(3); }
+
+/// Legt einen Startwert in einen Zustand -- der Zugang aus Paket 0027.
+///
+/// Diese Proben brauchen Ausgangslagen, die nicht durchgehend null sind, und ein
+/// Schreibzugriff daneben ist seit Paket 0027 kein Weg mehr: `Zustand` ist von aussen
+/// nur lesbar. Der Zugang hier arbeitet ausschliesslich vor der ersten Runde und haengt
+/// keinen Ursachensatz an -- `probe_startwertzugang` unten weist beides nach.
+void startwert(Zustand& ziel, Index platz, i64 wert) { Startbelegung{ziel}.setze(platz, wert); }
 
 }  // namespace
 
@@ -209,7 +222,7 @@ void probe_alt_bleibt_alt()
                                                            SektorGroesse::Preis);
 
     Zustand vorrunde;
-    vorrunde.schreibe(ziel, 4711);
+    startwert(vorrunde, ziel, 4711);
 
     Schreiber schreiber(vorrunde, Modus::Spielmodus, 12);
     PRUEFE(schreiber.lies_alt(ziel) == 4711);
@@ -361,8 +374,8 @@ void probe_maskenpruefung_zweiseitig()
 void probe_volle_runde()
 {
     Zustand vorrunde;
-    vorrunde.schreibe(7, 123'456);
-    vorrunde.schreibe(300, -987);
+    startwert(vorrunde, 7, 123'456);
+    startwert(vorrunde, 300, -987);
 
     Schreiber schreiber(vorrunde, Modus::Spielmodus, 40);
 
@@ -410,6 +423,63 @@ void probe_volle_runde()
     PRUEFE(schreiber.kette().laenge() == KETTE_KAPAZITAET);
 }
 
+// ---------------------------------------------------------------------------
+// Paket 0027 -- der Startwertzugang steht neben dem Schreibweg, nicht in ihm
+// ---------------------------------------------------------------------------
+//
+// Zwei Aussagen, beide ausgeloest statt behauptet:
+//
+//   1. Ein ueber den Startwertzugang gesetzter Wert erzeugt **keinen** Ursachensatz.
+//      Der Schreiber der ersten Runde findet ihn als `alt` vor, hat ihn nicht
+//      geschrieben, fuehrt kein Kettenglied darueber -- und `lies_neu` bricht auf ihm
+//      ab wie auf jeder anderen noch ungeschriebenen Adresse. Das ist gewollt: Ein
+//      Startwert ist der Anfang, auf den sich Ursachen beziehen, und hat selbst keine.
+//   2. Genau deshalb ist der Zugang nur **vor** der ersten Runde offen. `partie.runde`
+//      liegt in der Sollmaske des Weltlaufs (T38) und traegt nach der Runde deren
+//      Nummer; ab da ist ein Startwert ein harter Fehler.
+
+void probe_startwertzugang()
+{
+    const Index kasse = kern::zustand::stelle_fonds(FondsGroesse::Kasse);
+
+    Zustand start;
+    startwert(start, kasse, undurchsichtig(1'000'000));
+    PRUEFE(kern::zustand::vor_der_ersten_runde(start));
+
+    Schreiber schreiber(start, Modus::Weltlauf, 1);
+    PRUEFE(schreiber.lies_alt(kasse) == 1'000'000);
+    PRUEFE(!schreiber.ist_geschrieben(kasse));
+    PRUEFE(schreiber.kette().laenge() == 0);
+    ERWARTE_ABBRUCH(static_cast<void>(schreiber.lies_neu(kasse)));
+
+    // Die Runde laeuft, und sie schreibt `partie.runde` mit -- das ist der Riegel.
+    weltlauf_runde(schreiber, FELDER, FELDER);
+    const Zustand& nach_runde = schreiber.rundenende();
+    PRUEFE(schreiber.kette().laenge() == 175);
+    PRUEFE(!kern::zustand::vor_der_ersten_runde(nach_runde));
+
+    // Der Startwert steht unveraendert da: `fonds.kasse` liegt ausserhalb der Maske des
+    // Weltlaufs, behaelt also seinen Startwert (T38). Kein Kettenglied nennt ihn.
+    PRUEFE(nach_runde.lies(kasse) == 1'000'000);
+    std::size_t glieder_auf_kasse = 0;
+    for (std::size_t n = 0; n < schreiber.kette().laenge(); ++n) {
+        if (schreiber.kette().eintrag(n).ziel == kasse) {
+            ++glieder_auf_kasse;
+        }
+    }
+    PRUEFE(glieder_auf_kasse == 0);
+
+    // Und jetzt ist der Zugang zu -- der Abbruch im Wortlaut ins Protokoll.
+    Zustand abschrift = nach_runde;
+    ERWARTE_ABBRUCH(startwert(abschrift, kasse, undurchsichtig(0)));
+    PRUEFE(abschrift.lies(kasse) == 1'000'000);
+
+    std::printf("  Startwert %lld ohne Ursachensatz: %zu Kettenglieder nennen ihn, "
+                "Kette der Runde %zu Glieder\n",
+                static_cast<long long>(nach_runde.lies(kasse)), glieder_auf_kasse,
+                schreiber.kette().laenge());
+}
+
 }  // namespace
 
 int main()
@@ -420,6 +490,7 @@ int main()
     probe_maskengroessen();
     probe_maskenpruefung_zweiseitig();
     probe_volle_runde();
+    probe_startwertzugang();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

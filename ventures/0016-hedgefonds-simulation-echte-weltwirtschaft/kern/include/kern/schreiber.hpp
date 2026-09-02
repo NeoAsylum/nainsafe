@@ -23,6 +23,15 @@
 //! dabei die gefaehrlichere Bequemlichkeit: Er macht das Ergebnis von der Reihenfolge
 //! der sechs Schritte abhaengig, ohne dass irgendwo steht, dass es das tut.
 //!
+//! **Seit Paket 0027 gelten sie auch fuer den, der sich nicht daran haelt.** Bis dahin
+//! war `setze` zwar der einzige *gebaute* Schreibweg, aber nicht der einzige
+//! *moegliche*: `Zustand` trug sein Feld oeffentlich, und eine beliebige
+//! Uebersetzungseinheit konnte einen Wert daneben hineinlegen -- ohne Ursachensatz,
+//! ohne Bitfeld, ohne Rundenendpruefung, und damit als neunter Rueckkopplungskanal, den
+//! keine Kette zeigt. Der rohe Schreibzugriff ist jetzt privat und `Schreiber` einer
+//! von zwei `friend`s; der andere ist `zustand::Startbelegung` und arbeitet
+//! ausschliesslich vor der ersten Runde.
+//!
 //! ## Was hier nicht steht
 //!
 //! Der **Rundenablauf** (`kern::schritt`): welche sechs Schritte in welcher Reihenfolge

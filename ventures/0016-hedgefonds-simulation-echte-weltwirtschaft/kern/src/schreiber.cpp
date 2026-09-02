@@ -299,7 +299,10 @@ void Schreiber::setze(Index adresse, i64 wert, Ursache ursache, i64 verzoegerung
     }
 
     const i64 vorher = alt_.lies(adresse);
-    neu_.schreibe(adresse, wert);
+    // Der rohe Schreibzugriff des Zustands ist privat (T18, Paket 0027); dass er hier
+    // erreichbar ist, steht als `friend`-Zeile in `zustand.hpp` und nirgends sonst.
+    // Diese eine Zeile ist der ganze Schreibweg des Modells innerhalb einer Runde.
+    neu_.lege_ab(adresse, wert);
     geschrieben_.setze(adresse);
 
     Ursachensatz satz;

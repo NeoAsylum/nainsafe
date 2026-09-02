@@ -20,6 +20,11 @@
 //!      `Anfangswert * Primzahl^2480`, gerechnet mit modularem Potenzieren -- eine
 //!      Zahl, die in keinem der beiden anderen Wege vorkommt.
 //!   4. **Die Zahlen im Wortlaut.** Was diese Probe ausrechnet, schreibt sie hin.
+//!   5. **Den Startwertzugang und seinen Riegel** (Paket 0027). Dass der Zustand von
+//!      aussen nicht mehr schreibbar ist, steht als `static_assert` weiter unten und
+//!      ist damit Sache des Uebersetzers. Dass der eine erlaubte Zugang vor der ersten
+//!      Runde traegt und danach abbricht, ist es nicht -- ein Abbruch laesst sich nur
+//!      zur Laufzeit fangen, und seine Meldung gehoert ins Protokoll.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -52,6 +57,7 @@ using kern::zustand::PolitischeGroesse;
 using kern::zustand::Restdauerzaehler;
 using kern::zustand::Sektor;
 using kern::zustand::SektorGroesse;
+using kern::zustand::Startbelegung;
 using kern::zustand::Steckplatz;
 using kern::zustand::u64;
 using kern::zustand::Zustand;
@@ -128,6 +134,51 @@ void erwarte_abbruch(Aufruf aufruf, const char* text, int zeile)
     std::fprintf(stderr, "KEIN ABBRUCH Zeile %d: %s\n", zeile, text);
     ++fehlgeschlagen;
 }
+
+/// Legt einen Startwert -- der Zugang aus Paket 0027, als Einzeiler.
+///
+/// Diese Probe kennt den Schreiber nicht und spielt keine Runde; sie baut
+/// Ausgangslagen. Genau dafuer gibt es `Startbelegung`, und genau deshalb steht sie
+/// hier statt eines Schreibzugriffs auf den Zustand: Den gibt es von aussen nicht
+/// mehr, und die Probe unten weist das auch nach.
+void startwert(Zustand& ziel, Index platz, i64 wert) { Startbelegung{ziel}.setze(platz, wert); }
+
+// ---------------------------------------------------------------------------
+// Der Nachweis, dass der alte Weg zu ist -- beim Uebersetzen statt zur Laufzeit
+// ---------------------------------------------------------------------------
+//
+// Eine Zusage ueber Sichtbarkeit ist eine Eigenschaft des Codes oder keine, also
+// gehoert ihr Nachweis in den Uebersetzungslauf und nicht in eine gefangene Ausnahme.
+// Die Frage laeuft ueber einen Typparameter und nicht ueber den Typ selbst: Ein
+// `requires` mit einem nicht abhaengigen Ausdruck ist ein harter Uebersetzungsfehler
+// statt `false` -- dann waere die Probe selbst der Fehler, den sie belegen soll.
+//
+// Gefragt wird nach der Adresse des Elements und nicht nach einem geschriebenen
+// Zugriff. Der Grund ist die Grep-Regel aus der Abnahme: Ein Suchmuster, das in der
+// Datei steht, die es pruefen soll, geht nie leer aus.
+
+template <typename Z>
+constexpr bool hat_offenes_feld = requires { &Z::feld; };
+
+template <typename Z>
+constexpr bool hat_offenen_schreibzugriff = requires { &Z::schreibe; };
+
+template <typename Z>
+constexpr bool hat_rohen_schreibzugriff = requires { &Z::lege_ab; };
+
+template <typename Z>
+constexpr bool hat_lesezugriff = requires { &Z::lies; };
+
+static_assert(!hat_offenes_feld<Zustand>, "T18: die 310 Groessen sind von aussen nicht erreichbar");
+static_assert(!hat_offenen_schreibzugriff<Zustand>,
+              "T18: den frueheren oeffentlichen Schreibzugriff gibt es nicht mehr");
+static_assert(!hat_rohen_schreibzugriff<Zustand>,
+              "T18: auch der neue rohe Schreibzugriff ist von aussen nicht erreichbar");
+
+// Die Gegenprobe, an der eine zu grobe Fassung dieser Frage auffliegt: Waere hier
+// alles unerreichbar, sagten die drei Zeilen oben nichts ueber Sichtbarkeit aus,
+// sondern nur darueber, dass `requires` immer `false` liefert.
+static_assert(hat_lesezugriff<Zustand>, "lesen bleibt jedem erlaubt -- sonst prueft das hier nichts");
 
 /// Nimmt dem Uebersetzer die Konstantenfaltung, damit die Sanitizer die Rechnung
 /// wirklich zu sehen bekommen.
@@ -246,7 +297,7 @@ int main()
     //
     // Der vierstufige Weg aus dem Arbeitspaket, ausgefahren statt beschrieben: Ein
     // Aufrufer bildet eine Adresse mit Tippfehler, wertet `gefunden` **nicht** aus
-    // und reicht `index` an `schreibe` weiter. Frueher war das ein stiller
+    // und reicht `index` an einen Schreibzugriff weiter. Frueher war das ein stiller
     // Schreibzugriff auf Platz 0 -- `land.US.sektor.1.wertschoepfung`, eine getragene
     // Groesse des Modells. Jetzt ist es ein Abbruch, und die Meldung steht im
     // Protokoll.
@@ -257,7 +308,7 @@ int main()
         PRUEFE(platz_null == 0);
 
         // Ein Wert, den man wiedererkennt: Er steht vor und nach dem Fehlversuch da.
-        zustand.schreibe(platz_null, undurchsichtig(4711));
+        startwert(zustand, platz_null, undurchsichtig(4711));
         PRUEFE(zustand.lies(platz_null) == 4711);
 
         // Schritt 1 und 2 -- die Adresse mit Tippfehler, die Antwort der Suche.
@@ -268,16 +319,17 @@ int main()
 
         // Schritt 3 und 4 -- `.index` ohne `.gefunden` weitergereicht. Alle drei
         // Zugriffe des Zustands muessen ihn abweisen, nicht nur der eine aus dem
-        // Arbeitspaket.
-        ERWARTE_ABBRUCH(zustand.schreibe(undurchsichtig_index(fund.index),
-                                         undurchsichtig(-1)));
+        // Arbeitspaket. Der schreibende geht seit Paket 0027 ueber den
+        // Startwertzugang; die Indexpruefung dahinter ist dieselbe.
+        ERWARTE_ABBRUCH(startwert(zustand, undurchsichtig_index(fund.index),
+                                  undurchsichtig(-1)));
         ERWARTE_ABBRUCH((void)zustand.lies(undurchsichtig_index(fund.index)));
         ERWARTE_ABBRUCH((void)index_zu_adresse(undurchsichtig_index(fund.index)));
 
         // Nachher wie vorher -- und zwar in keinem der 310 Felder etwas anderes.
         PRUEFE(zustand.lies(platz_null) == 4711);
         Zustand vergleich;
-        vergleich.schreibe(platz_null, undurchsichtig(4711));
+        startwert(vergleich, platz_null, undurchsichtig(4711));
         PRUEFE(zustand == vergleich);
 
         // Jede Fehlanzeige traegt denselben Wert, nicht nur diese eine.
@@ -293,7 +345,7 @@ int main()
         const Adressfund echt = adresse_zu_index("land.US.sektor.1.wertschoepfung");
         PRUEFE(echt.gefunden);
         PRUEFE(echt.index == 0);
-        zustand.schreibe(echt.index, undurchsichtig(-4711));
+        startwert(zustand, echt.index, undurchsichtig(-4711));
         PRUEFE(zustand.lies(platz_null) == -4711);
 
         std::fprintf(stdout,
@@ -437,11 +489,11 @@ int main()
         Zustand zustand;
         const Index platz = stelle_position(steckplatz_sektor(Gebiet::DE, Sektor::Industrie));
         PRUEFE(zustand.lies(platz) == 0);
-        zustand.schreibe(platz, undurchsichtig(-7));
+        startwert(zustand, platz, undurchsichtig(-7));
         PRUEFE(zustand.lies(platz) == -7);
-        zustand.schreibe(platz, undurchsichtig(11));
+        startwert(zustand, platz, undurchsichtig(11));
         PRUEFE(zustand.lies(platz) == 11);
-        zustand.schreibe(platz, 0);
+        startwert(zustand, platz, 0);
         PRUEFE(zustand.lies(platz) == 0);
         PRUEFE(zustand == Zustand{});
     }
@@ -459,7 +511,7 @@ int main()
 
         abgebrochen = false;
         try {
-            zustand.schreibe(undurchsichtig_index(FELDER), 1);
+            startwert(zustand, undurchsichtig_index(FELDER), 1);
         } catch (...) {
             abgebrochen = true;
         }
@@ -512,7 +564,7 @@ int main()
     // --- Die Byteform ist Little-Endian und feldweise, nicht das Speicherbild ----
     {
         Zustand zustand;
-        zustand.schreibe(stelle_partie(PartieFeld::Mandatsstand), undurchsichtig(-1));
+        startwert(zustand, stelle_partie(PartieFeld::Mandatsstand), undurchsichtig(-1));
 
         std::array<std::uint8_t, BYTES> bytes{};
         nach_bytes(zustand, bytes);
@@ -544,7 +596,7 @@ int main()
         int verschieden = 0;
         for (Index i = 0; i < FELDER; ++i) {
             Zustand einer;
-            einer.schreibe(i, undurchsichtig(1));
+            startwert(einer, i, undurchsichtig(1));
             if (pruefsumme_von(einer) != grundsumme) {
                 ++verschieden;
             }
@@ -558,10 +610,18 @@ int main()
     // Der Erwartungswert stammt aus einer zweiten, unabhaengigen Rechnung in
     // beliebig genauer Ganzzahlarithmetik ausserhalb dieses Programms. Er belegt die
     // Feldreihenfolge: Zwei vertauschte Felder ergeben eine andere Zahl.
+    //
+    // Beide Zustaende dieses Blocks bekommen **eine** Startbelegung fuer alle 310
+    // Werte, keine je Feld. Der Grund steht an der Klasse: Unter den 310 ist
+    // `partie.runde` selbst, und ein Zugang, der sich je Aufruf neu bindet, haette sich
+    // beim Platz 306 die Tuer vor der eigenen Nase zugezogen.
     {
         Zustand zaehlend;
-        for (Index i = 0; i < FELDER; ++i) {
-            zaehlend.schreibe(i, static_cast<i64>(i));
+        {
+            Startbelegung belegung{zaehlend};
+            for (Index i = 0; i < FELDER; ++i) {
+                belegung.setze(i, static_cast<i64>(i));
+            }
         }
         std::array<std::uint8_t, BYTES> bytes{};
         nach_bytes(zaehlend, bytes);
@@ -573,24 +633,75 @@ int main()
         PRUEFE(summe == 0x25e8b19071bea26cULL);
 
         // Und die Gegenprobe zur Reihenfolge: dieselben Werte, zwei davon getauscht.
-        Zustand getauscht = zaehlend;
-        getauscht.schreibe(0, static_cast<i64>(FELDER - 1));
-        getauscht.schreibe(FELDER - 1, 0);
+        // Frisch gebaut statt aus `zaehlend` abgeschrieben und nachgebessert -- dessen
+        // Platz 306 traegt jetzt die 306, und an einen solchen Zustand laesst sich kein
+        // Startwertzugang mehr binden. Das ist derselbe Riegel wie unten, nur hier
+        // gewollt umgangen, indem die Belegung von vorn beginnt.
+        Zustand getauscht;
+        {
+            Startbelegung belegung{getauscht};
+            for (Index i = 0; i < FELDER; ++i) {
+                belegung.setze(i, static_cast<i64>(i));
+            }
+            belegung.setze(0, static_cast<i64>(FELDER - 1));
+            belegung.setze(FELDER - 1, 0);
+        }
         PRUEFE(pruefsumme_von(getauscht) != summe);
     }
 
     // --- Kopieren ist ein Speicherumzug, und der Vergleich ist feldweise ---------
     {
         Zustand a;
-        a.schreibe(stelle_fonds(FondsGroesse::Kasse), undurchsichtig(1'000'000));
+        startwert(a, stelle_fonds(FondsGroesse::Kasse), undurchsichtig(1'000'000));
         const Zustand b = a;
         PRUEFE(a == b);
         PRUEFE(pruefsumme_von(a) == pruefsumme_von(b));
 
         Zustand c = a;
-        c.schreibe(stelle_fonds(FondsGroesse::Marktanteil), undurchsichtig(1));
+        startwert(c, stelle_fonds(FondsGroesse::Marktanteil), undurchsichtig(1));
         PRUEFE(!(a == c));
         PRUEFE(pruefsumme_von(a) != pruefsumme_von(c));
+    }
+
+    // --- Der Startwertzugang und sein Riegel (Paket 0027) ------------------------
+    //
+    // Die Sichtbarkeit ist oben beim Uebersetzen belegt; hier laeuft, was ein
+    // `static_assert` nicht kann: dass der Zugang vor der ersten Runde traegt, dass er
+    // danach abbricht, und mit welcher Meldung er das tut. Der Zustand mit gelaufener
+    // Runde entsteht hier ohne den Schreiber -- diese Probe kennt ihn nicht; es genuegt,
+    // dass `partie.runde` eine Rundennummer traegt, denn das ist der Riegel selbst.
+    {
+        const Index runde = stelle_partie(PartieFeld::Runde);
+        const Index kasse = stelle_fonds(FondsGroesse::Kasse);
+
+        // Vor der ersten Runde: offen, und der Wert steht danach da.
+        Zustand vor_dem_anpfiff;
+        PRUEFE(kern::zustand::vor_der_ersten_runde(vor_dem_anpfiff));
+        PRUEFE(vor_dem_anpfiff.lies(runde) == 0);
+        startwert(vor_dem_anpfiff, kasse, undurchsichtig(1'000'000));
+        PRUEFE(vor_dem_anpfiff.lies(kasse) == 1'000'000);
+
+        // Eine Partie in Runde 12. Gebaut ueber denselben Zugang, solange er offen ist
+        // -- danach ist er es nicht mehr, und genau das ist die Aussage.
+        Zustand in_der_partie;
+        {
+            Startbelegung belegung{in_der_partie};
+            belegung.setze(kasse, undurchsichtig(1'000'000));
+            belegung.setze(runde, undurchsichtig(12));
+        }
+        PRUEFE(in_der_partie.lies(runde) == 12);
+        PRUEFE(!kern::zustand::vor_der_ersten_runde(in_der_partie));
+
+        // Und der Abbruch, im Wortlaut ins Protokoll.
+        ERWARTE_ABBRUCH(startwert(in_der_partie, kasse, undurchsichtig(0)));
+        ERWARTE_ABBRUCH((void)Startbelegung{in_der_partie});
+
+        // Der Versuch hat nichts hinterlassen -- kein halber Schreibzugriff.
+        PRUEFE(in_der_partie.lies(kasse) == 1'000'000);
+
+        std::fprintf(stdout,
+                     "Startwertzugang: vor Runde 1 offen, in Runde %lld verriegelt\n",
+                     static_cast<long long>(in_der_partie.lies(runde)));
     }
 
     if (fehlgeschlagen == 0) {

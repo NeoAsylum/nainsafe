@@ -47,11 +47,12 @@
 //!
 //! ## Was hier nicht steht
 //!
-//! Startwerte. Das Verzeichnis fuehrt fuer die Herkuenfte `Entwurf` und `Vorgabe`
-//! eine Startwertspalte, aber die Werte kommen zusammen mit Jahrgang, Parametersatz
-//! und Manifest -- also aus dem Kasten `daten` und nicht aus diesem Paket. Ein
-//! frischer `Zustand` ist deshalb durchgehend null, und das ist ausdruecklich kein
-//! Startzustand des Spiels.
+//! Startwerte -- wohl aber seit Paket 0027 der **Zugang** fuer sie. Das Verzeichnis
+//! fuehrt fuer die Herkuenfte `Entwurf` und `Vorgabe` eine Startwertspalte, aber die
+//! Werte selbst kommen zusammen mit Jahrgang, Parametersatz und Manifest, also aus dem
+//! Kasten `daten`. Ein frischer `Zustand` ist deshalb durchgehend null, und das ist
+//! ausdruecklich kein Startzustand des Spiels. `Startbelegung` weiter unten ist die
+//! Stelle, an der `daten` seine Zahlen spaeter einsetzt.
 
 #include <array>
 #include <cstddef>
@@ -60,6 +61,18 @@
 
 #include "kern/festkomma.hpp"
 #include "kern/pruefsumme.hpp"
+
+namespace kern::schreiber {
+
+/// Der Rundenschreiber aus T18, nur angekuendigt.
+///
+/// Dieser Kopf holt `kern/schreiber.hpp` **nicht** herein, und das ist keine
+/// Bequemlichkeit: Der Schreiber baut auf dem Zustand auf, nicht umgekehrt, und ein
+/// gegenseitiges Einbinden waere die erste Abhaengigkeit im Kreis in einem Kasten, der
+/// nach T2 sonst gar keine hat. Fuer eine `friend`-Nennung genuegt der Name.
+class Schreiber;
+
+}  // namespace kern::schreiber
 
 namespace kern::zustand {
 
@@ -374,6 +387,9 @@ static_assert(STECKPLAETZE_SPIELBAR + 1 == STECKPLAETZE, "T16: genau ein Platz b
 // Der Zustand
 // ---------------------------------------------------------------------------
 
+/// Der Startwertzugang, hier nur angekuendigt -- er steht gleich unter dem Zustand.
+class Startbelegung;
+
 /// Der ganze Weltzustand als Wert fester Groesse (T15).
 ///
 /// Kein wachsender Behaelter, kein Text, keine streuende Zuordnung, keine eigene
@@ -381,16 +397,30 @@ static_assert(STECKPLAETZE_SPIELBAR + 1 == STECKPLAETZE, "T16: genau ein Platz b
 /// Zuteilung -- die Voraussetzung dafuer, dass der Pruefstand Millionen Nachspiele
 /// aus Zwischenstaenden startet.
 ///
-/// **Zum Schreibzugriff:** T18 will, dass innerhalb des Kerns niemand direkt
-/// schreibt, sondern ueber `Schreiber::setze(adresse, wert, ursache, ...)`, und dass
-/// die Felder ausserhalb des Kerns gar nicht schreibbar sind. C++ kennt keine
-/// Sichtbarkeit "innerhalb des Kastens"; die Durchsetzung gehoert deshalb dem Paket,
-/// das den Schreiber baut. `schreibe` ist der Zugriff, den er benutzt -- und die
-/// Stelle, an der ausser ihm niemand stehen sollte.
-struct Zustand {
-    /// Die 310 Groessen in der Reihenfolge aus `daten/adressen.md`.
-    std::array<i64, FELDER> feld{};
-
+/// **Zum Schreibzugriff (T18): von aussen ist dieser Typ nur lesbar.** Die 310
+/// Groessen und der rohe Schreibzugriff darauf liegen im privaten Teil. Geschrieben
+/// wird ein Zustand auf genau zwei Wegen, und beide stehen unten als `friend`:
+///
+///   1. `schreiber::Schreiber::setze` -- der Weg **innerhalb** einer Runde. Er haengt
+///      an jeden Schreibzugriff einen Ursachensatz, fuehrt das Bitfeld ueber alle 310
+///      Adressen und prueft am Rundenende gegen die Sollmaske aus T38.
+///   2. `Startbelegung` -- der Weg **vor** der ersten Runde. Warum das kein zweiter
+///      Schreibweg im Sinne von T18 ist, steht in einem Satz an der Klasse selbst.
+///
+/// Eine dritte Stelle gibt es nicht, und das ist keine Verabredung, sondern eine
+/// Eigenschaft des Codes: Wer eine vierte Uebersetzungseinheit schreibt, die diesen
+/// Kopf einbindet und einen Wert in ein Feld legen will, bekommt einen
+/// Uebersetzungsfehler. Vorher stand hier ein `struct` mit oeffentlichem Feld, und die
+/// beiden Zusagen des Schreibers -- "genau einmal je Runde" und "acht Kanaele, nicht
+/// neun" -- galten nur fuer den, der sich daran hielt.
+///
+/// C++ kennt keine Sichtbarkeit "innerhalb des Kastens"; `friend` ueber zwei
+/// namentlich genannte Klassen ist die naechste Entsprechung. Gewaehlt ist sie und
+/// nicht ein Zugriffsschluessel, weil ein Schluessel dieselbe Wirkung mit einem
+/// zusaetzlichen Typ und einem zusaetzlichen Argument je Aufruf erkauft -- und die
+/// Liste der Berechtigten dann nicht mehr am Zustand steht, sondern am Schluessel.
+class Zustand {
+public:
     /// Lesen mit Indexpruefung. Ein Index ausserhalb `0 ... 309` bricht ab.
     [[nodiscard]] constexpr i64 lies(Index index) const
     {
@@ -400,18 +430,34 @@ struct Zustand {
         return feld[index];
     }
 
-    /// Schreiben mit Indexpruefung. Siehe die Bemerkung zu T18 oben.
-    constexpr void schreibe(Index index, i64 wert)
+    /// Feldweiser Vergleich -- die Grundlage der Diff-Ebene und des Rueckvergleichs:
+    /// Zwei Zustaende sind gleich, wenn alle 310 Zahlen gleich sind.
+    constexpr bool operator==(const Zustand&) const = default;
+
+private:
+    /// Die 310 Groessen in der Reihenfolge aus `daten/adressen.md`.
+    std::array<i64, FELDER> feld{};
+
+    /// Der rohe Schreibzugriff mit Indexpruefung -- die eine Stelle im ganzen
+    /// Programm, an der ein Feld des Zustands seinen Wert bekommt.
+    ///
+    /// **Er heisst nicht mehr `schreibe`, und der Name ist die halbe Massnahme.** Die
+    /// Sichtbarkeit allein schuetzt den naechsten Bauagenten nicht davor, den alten
+    /// Aufruf hinzuschreiben und erst am Uebersetzer zu merken, dass es ihn nicht mehr
+    /// gibt; mit dem Namenswechsel ist der alte Aufruf zusaetzlich **suchbar** tot.
+    /// Damit wird aus T18 eine Regel derselben Machart wie die Gleitkommasperre aus
+    /// T4: Ein Mustervergleich ueber `kern/` findet weder den alten Schreibzugriff noch
+    /// einen indizierten Feldzugriff -- nirgends, auch nicht in dieser Datei.
+    constexpr void lege_ab(Index index, i64 wert)
     {
         if (index >= FELDER) {
-            festkomma::abbruch("kern::zustand::schreibe -- Index ausserhalb der 310 Felder");
+            festkomma::abbruch("kern::zustand::lege_ab -- Index ausserhalb der 310 Felder");
         }
         feld[index] = wert;
     }
 
-    /// Feldweiser Vergleich -- die Grundlage der Diff-Ebene und des Rueckvergleichs:
-    /// Zwei Zustaende sind gleich, wenn alle 310 Zahlen gleich sind.
-    constexpr bool operator==(const Zustand&) const = default;
+    friend class kern::schreiber::Schreiber;
+    friend class Startbelegung;
 };
 
 /// Die Abnahmebedingung des Arbeitspakets, mechanisch: Die Feldzahl wird aus
@@ -422,6 +468,79 @@ static_assert(sizeof(Zustand) == 2480, "T15: der Zustand ist 2.480 Byte gross");
 static_assert(sizeof(Zustand) / sizeof(i64) == FELDER, "T15: 310 Felder");
 static_assert(std::is_trivially_copyable_v<Zustand>,
               "T15: Kopieren ist ein Speicherumzug, keine Zuteilung");
+
+// Die drei Zahlen oben haengen daran, dass der private Teil nichts enthaelt ausser den
+// 310 Groessen: kein Merker, kein Zeiger, kein Bit "Partie laeuft schon". Genau
+// deshalb liest der Startwertzugang unten seine Schranke aus dem Zustand selbst.
+static_assert(sizeof(Zustand) == FELDER * sizeof(i64),
+              "T15: der Zustand traegt die 310 Groessen und sonst nichts");
+
+// ---------------------------------------------------------------------------
+// Der Startwertzugang -- der zweite benannte Weg, und warum er keiner ist
+// ---------------------------------------------------------------------------
+
+/// Legt die **Startwerte** in einen Zustand, bevor die erste Runde laeuft.
+///
+/// Gebraucht wird er, weil die 310 Groessen irgendwo herkommen muessen: Der Kasten
+/// `daten` setzt Jahrgangskennung, Parameterpruefsumme und die Startwertspalte aus
+/// `daten/adressen.md` ein, und die Proben dieses Kastens bauen sich Ausgangslagen,
+/// gegen die sie rechnen. Ohne ihn bliebe ein frischer Zustand fuer immer durchgehend
+/// null -- und das ist ausdruecklich kein Startzustand des Spiels.
+///
+/// **Warum er kein zweiter Schreibweg im Sinne von T18 ist, in einem Satz:** T18
+/// regelt, was *in einer Runde* geschieht -- ein Schreibzugriff je Adresse, ein
+/// Ursachensatz je Schreibzugriff, eine Sollmaske je Modus --, und vor der ersten
+/// Runde gibt es weder Runde noch Ursache noch Maske, weshalb dieser Zugang genau dort
+/// und nur dort arbeitet.
+///
+/// **Die Grenze ist mechanisch und nicht verabredet.** Der Zugang laesst sich nur an
+/// einen Zustand binden, der `partie.runde == 0` traegt -- den Wert, den
+/// `daten/adressen.md` fuer dieses Feld als Startwert fuehrt (Nr. 307). Sobald eine
+/// Runde gelaufen ist, traegt das Feld ihre Nummer, denn es steht in beiden Sollmasken
+/// aus T38 und wird jede Runde geschrieben; ein Startwertzugang auf einen solchen
+/// Zustand ist ein harter Fehler mit ausgeschriebener Meldung. Der Riegel liegt damit
+/// **im Zustand selbst** und nicht in einem Merker daneben: Ein Zustand ist 2.480 Byte,
+/// und ein 311. Feld haette T15 gerissen.
+///
+/// **Geprueft wird beim Binden und nicht bei jedem `setze`, und das ist Absicht.** Eine
+/// Startbelegung setzt die 310 Groessen einer Ausgangslage, und darunter ist
+/// `partie.runde` selbst; eine Pruefung je Aufruf haette dieselbe Belegung, je nach
+/// Reihenfolge ihrer Aufrufe, mal zugelassen und mal abgebrochen. Der Preis dieser Wahl
+/// steht daneben, damit ihn niemand suchen muss: Wer einen einmal gebundenen Zugang
+/// ueber die erste Runde hinaus aufhebt, schreibt weiter in **den** Zustand, an den er
+/// gebunden ist. Das ist kein Loch in T18, sondern die Kehrseite davon, dass dieser
+/// Zugang ein Werkzeug fuer einen Zustand ist und kein Recht am Typ: Eine laufende
+/// Runde rechnet ohnehin auf zwei Abschriften im Schreiber (`alt` und `neu`), an die
+/// von hier aus niemand herankommt.
+class Startbelegung {
+public:
+    /// Bindet den Zugang an einen Zustand vor seiner ersten Runde.
+    ///
+    /// **Harter Fehler, wenn die Partie schon laeuft** -- siehe oben. `explicit`, damit
+    /// aus einem Zustand nirgends beilaeufig ein Schreibrecht wird: Wer schreibt, nennt
+    /// diesen Typ und damit seine Absicht.
+    explicit Startbelegung(Zustand& ziel);
+
+    /// Setzt den Startwert einer Adresse. Ein Index ausserhalb `0 ... 309` bricht ab.
+    ///
+    /// Es entsteht **kein** Ursachensatz, und das Bitfeld einer Runde sieht diesen Wert
+    /// nie. Beides ist gewollt: Ein Startwert hat keine Ursache im Modell -- er ist der
+    /// Anfang, auf den sich jede spaetere Ursache bezieht. Zweimal dieselbe Adresse zu
+    /// setzen ist hier ebenfalls erlaubt; die Regel "genau einmal" aus T18 gilt je
+    /// Runde, und eine Runde ist das hier nicht.
+    void setze(Index adresse, i64 wert);
+
+private:
+    Zustand* ziel_;
+};
+
+/// Ob dieser Zustand noch vor seiner ersten Runde steht, also ob `partie.runde` null
+/// ist -- die Frage, die `Startbelegung` beim Binden stellt.
+///
+/// Sie steht hier, damit ein Aufrufer sie stellen kann, statt sie am Abbruch zu
+/// erfahren. Erlaubt ist die Frage; nur die Antwort "dann schreibe ich eben trotzdem"
+/// ist es nicht -- es gibt von aussen keinen Weg, sie zu geben.
+[[nodiscard]] bool vor_der_ersten_runde(const Zustand& zustand);
 
 // ---------------------------------------------------------------------------
 // T17 -- die Adressabbildung, beide Richtungen
