@@ -106,7 +106,7 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # 95-Dollar-Leerlauf vom 2026-09-01 nicht verhindert, weil die Schleife brav unter
 # der Grenze blieb und trotzdem nicht konvergierte. Die Konvergenzbremse steht in
 # konzeptlauf.py:RUECKLAUF_MAX.
-TAGESGRENZE_USD = 400.0
+TAGESGRENZE_USD = 800.0
 
 
 def tagesverbrauch(verbindung) -> float:

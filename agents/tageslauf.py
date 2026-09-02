@@ -27,7 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import nachtlauf  # noqa: E402
 from lauf import TAGESGRENZE_USD, db, jetzt  # noqa: E402
 
-GRENZE = 350.0
+GRENZE = 700.0
 DURCHGAENGE = 12
 
 
