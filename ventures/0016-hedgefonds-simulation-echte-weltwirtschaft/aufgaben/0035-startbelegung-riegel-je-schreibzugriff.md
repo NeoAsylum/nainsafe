@@ -75,3 +75,46 @@ Zwei Nebendinge, die dazugehoeren:
 - **Kein elftes Feld im Zustand.** T15 haelt die 310, und 0027 hat aus gutem Grund den
   Riegel in den Zustand selbst gelegt statt in einen Merker daneben.
 
+## Abnahme
+
+1. **Ein Zugang, an dem eine Runde vorbeigelaufen ist, bricht beim naechsten
+   Schreibzugriff ab.** Die Probe bindet einen Zugang vor der ersten Runde, laesst eine
+   Runde ueber denselben Zustand laufen, schreibt das Rundenende zurueck und benutzt den
+   alten Zugang. Das muss ein harter Fehler mit ausgeschriebener Meldung sein, und die
+   Meldung nennt den Grund, nicht nur den Ort.
+2. **Die beiden Belegungsschleifen in `zustand_probe.cpp` laufen unveraendert durch.** Der
+   Zaehlzustand ergibt weiterhin die Pruefsumme `25e8b19071bea26c`, und die Gegenprobe mit
+   zwei getauschten Feldern ergibt weiterhin eine andere. Wer diese Zahl aendert, hat die
+   Feldreihenfolge angefasst und braucht dafuer einen eigenen Grund.
+3. **Alle fuenf Bedingungen von 0027 halten unveraendert**, insbesondere: Feld und roher
+   Schreibzugriff bleiben von aussen Uebersetzungsfehler, die beiden Suchlaeufe ueber
+   `kern/` bleiben leer, ein Startwert erzeugt weiterhin keinen Ursachensatz, und das
+   Binden an einen Zustand mit gelaufener Runde bleibt ein harter Fehler.
+4. **Beide Kaesten stehen namentlich und bestanden im Uebersetzungsbericht**
+   (`zustand_probe` und `schreiber_probe`). Ein leerer Bauabschnitt ist ein Ruecklauf.
+
+## Was ausdruecklich kein Befund ist
+
+- **Wie die Verriegelung gebaut ist** -- ob als Merker im Zugang, als engere Lebensdauer
+  oder als Zugang, der den Zustand als Wert nimmt und ihn zurueckgibt. `specs/` schweigt
+  dazu, also ist die Entscheidung des Bauagenten gueltig, solange Bedingung 1 und 3
+  zugleich halten.
+- **Der Name der Meldung und der Wortlaut ihres Textes.**
+
+## Was hier nicht hingehoert
+
+Der zweite Befund derselben Pruefung -- dass `kern/test/schranken_probe.cpp` von Paket 0027
+geaendert wurde, ohne in dessen Dateiliste zu stehen -- ist eine Sache fuer `rueckstand.md`
+und nicht fuer dieses Paket. Erwaehnt sei nur die Fussangel: Die dortige Hilfsfunktion
+bindet je Aufruf einen neuen Zugang und bricht deshalb ab, sobald eine Schranke einen
+Randfall auf einem Zustand mit gelaufener Runde braucht.
+
+## Rueckläufe
+
+0.
+
+## Berichtigung
+
+Im Abschnitt *Was du nicht baust* steht "kein elftes Feld im Zustand". Gemeint ist das
+**311.** Feld: T15 haelt die Zahl der Groessen bei 310, und genau deshalb hat 0027 den
+Riegel auf ein vorhandenes Feld gelegt statt auf einen Merker daneben.
