@@ -54,6 +54,17 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   kostet etwas" ist folgenlos; „0002 giesst die Preisbasis in `kern::werte`, sobald 0008
   gebaut ist, also in etwa einem Lauf" ist eine Frist. Dafür genügte, die `haengt_an`-Kette
   rückwärts zu lesen.
+- 2026-09-02 (3. Lauf) — **Vor jedem „unverändert seit drei Plänen" die Uhr des Betreibers
+  prüfen:** `git log` nach Commits *ohne* Rollenpräfix filtern. Sein letzter Griff war
+  2026-09-01 21:02, meine drei Pläne entstanden in 100 Minuten derselben Nacht. Drei
+  Pläne sind dann keine drei Ablehnungen, sondern eine Nachtschicht. Das hat meine
+  Vermutung von gestern („eine Empfehlung, die um Aufmerksamkeit konkurriert, wird
+  vertagt") widerlegt, bevor ich sie zur Tatsache gemacht habe.
+- 2026-09-02 (3. Lauf) — **Einen Ausweg, den ich als Option anbiete, einmal wirklich
+  aufmachen.** Ich führte den Konzeptlauf zwei Pläne lang als Alternative; er hält seit
+  fünf `zurueck`-Urteilen bei `RUECKLAUF_MAX = 3` vor dem ersten Token an. Zwei greps
+  (Bremse zählen, `return 0` lesen) haben aus einer Option eine geschlossene Tür gemacht.
+  Eine Option, die ich nicht nachgesehen habe, ist eine Vermutung im Entscheidungstext.
 
 ## Was nicht funktioniert
 
@@ -85,6 +96,8 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   konkurriert, wird vertagt. Deshalb diesmal **eine** Frage im Plan und die anderen
   ausdrücklich darunter gehängt. Beim nächsten Lauf prüfen, ob das getragen hat — wenn
   nein, liegt es nicht an der Darstellung und ich muss eine andere Ursache suchen.
+  **Erledigt am 2026-09-02 (3. Lauf): Die Vermutung war falsch, siehe oben. Nicht
+  wieder aufwärmen.**
 
 ## Offene Faehrten
 
@@ -100,7 +113,17 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - **Nächster Lauf zuerst:** Steht `architekt` in `BAUROLLEN` (`grep -n BAUROLLEN
   agents/baulauf.py`), und ist 0002 gebaut (`grep '^status:' …/aufgaben/0002-*.md`)?
   Erste Frage nein + zweite ja = die Preisbasis-Mischung ist in Code gegossen und der
-  Plan muss von Nacharbeit handeln, nicht mehr von Vorbeugung.
+  Plan muss von Nacharbeit handeln, nicht mehr von Vorbeugung. Am 2026-09-02 war es
+  nein + nein, die Vorbeugung also noch möglich.
+- **Zweite Frage nächster Lauf: Hat 0008 wieder nichts geliefert?**
+  (`wc -l …/kern/include/kern/zustand.hpp`, 2 Zeilen = Platzhalter). Beim ersten Mal habe
+  ich es als selbstheilend eingestuft, weil der parallele Kernbauer die mutmaßliche
+  Ursache um 05:02 ins Logbuch schrieb und der 0008-Lauf sie nicht mehr lesen konnte.
+  Zweimal leer widerlegt das und macht 0008 zum Engpass.
+- **Ein Bauagent, der nichts liefert, verrät sich über sein Logbuch, nicht über den
+  Commit.** Der Commit `kernbauer: 0008` enthielt ausschließlich fremde Dateien (das
+  Quersammeln paralleler Läufe), `grep -n 0008 notizen/kernbauer.md` war leer. Der
+  Commit-Betreff belegt nur, dass der Lauf *geplant* war.
 - **Die 170-gegen-121-Lücke** hat seit dem 2026-09-01 niemand angefasst und sie blockiert
   noch nichts. Erst wieder aufgreifen, wenn der Kern rechnet.
 - **Neue Fährte: Die Abnahmekriterien werden zum zweiten Engpass.** Drei von sechs
