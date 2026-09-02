@@ -502,16 +502,35 @@ static_assert(sizeof(Zustand) == FELDER * sizeof(i64),
 /// **im Zustand selbst** und nicht in einem Merker daneben: Ein Zustand ist 2.480 Byte,
 /// und ein 311. Feld haette T15 gerissen.
 ///
-/// **Geprueft wird beim Binden und nicht bei jedem `setze`, und das ist Absicht.** Eine
-/// Startbelegung setzt die 310 Groessen einer Ausgangslage, und darunter ist
-/// `partie.runde` selbst; eine Pruefung je Aufruf haette dieselbe Belegung, je nach
-/// Reihenfolge ihrer Aufrufe, mal zugelassen und mal abgebrochen. Der Preis dieser Wahl
-/// steht daneben, damit ihn niemand suchen muss: Wer einen einmal gebundenen Zugang
-/// ueber die erste Runde hinaus aufhebt, schreibt weiter in **den** Zustand, an den er
-/// gebunden ist. Das ist kein Loch in T18, sondern die Kehrseite davon, dass dieser
-/// Zugang ein Werkzeug fuer einen Zustand ist und kein Recht am Typ: Eine laufende
-/// Runde rechnet ohnehin auf zwei Abschriften im Schreiber (`alt` und `neu`), an die
-/// von hier aus niemand herankommt.
+/// **Und er wird bei jedem `setze` gefragt, nicht nur beim Binden.** Die Regel in einem
+/// Satz: *Ein Zugang schreibt, solange `partie.runde` genau die Zahl traegt, die er
+/// dort selbst hinterlassen hat* -- beim Binden ist das die geforderte Null, danach die
+/// Zahl, die er zuletzt auf den Platz von `partie.runde` gelegt hat. Steht dort etwas
+/// anderes, hat jemand anders geschrieben, und das ist genau der Fall "an diesem Zugang
+/// ist eine Runde vorbeigelaufen".
+///
+/// **Warum die Regel nicht schlicht `partie.runde == 0` lautet.** Unter den 310
+/// Groessen ist `partie.runde` selbst, und eine Startbelegung setzt sie mit. Eine
+/// Pruefung, die stumpf die Null verlangt, liesse dieselbe Belegung je nach Reihenfolge
+/// ihrer Aufrufe mal zu und braeche mal ab -- die Belegung zoege sich beim eigenen
+/// Schreibzugriff auf diesen Platz die Tuer vor der Nase zu. Mit der Regel oben traegt
+/// sie weiter, und nur ein **fremder** Schreibzugriff schliesst.
+///
+/// **Wogegen der Riegel nichts ausrichtet, damit es niemand suchen muss:** Er
+/// vergleicht eine Zahl und keine Herkunft. Ein fremder Schreibzugriff, der auf
+/// `partie.runde` genau die Zahl zuruecklaesst, die schon dort stand, bleibt ihm
+/// verborgen. Die Runde des Kerns tut das nicht -- sie traegt ihre eigene Nummer ein,
+/// und die ist groesser als jede vorige --, und ausser ihr schreibt niemand auf dieses
+/// Feld.
+///
+/// **Warum das mehr ist als Ordnungsliebe.** Der Schreiber nimmt den Vorrundenzustand
+/// unveraenderlich entgegen und rechnet auf zwei eigenen Abschriften; das Ergebnis holt
+/// der Aufrufer aus `rundenende()` zurueck. Eine Rundenschleife bindet den
+/// Startwertzugang also vor der Schleife und schreibt jede Runde in denselben Zustand
+/// zurueck -- danach stuende der Zugang immer noch da. Seine naechste Setzung waere
+/// eine Aenderung ohne Ursachensatz, ohne Kettenglied und ohne Maskenpruefung, und die
+/// Diff-Ebene aus T20 zeigte sie als Aenderung ohne Ursache. Genau die verhindert die
+/// Regel oben.
 class Startbelegung {
 public:
     /// Bindet den Zugang an einen Zustand vor seiner ersten Runde.
@@ -521,7 +540,31 @@ public:
     /// diesen Typ und damit seine Absicht.
     explicit Startbelegung(Zustand& ziel);
 
-    /// Setzt den Startwert einer Adresse. Ein Index ausserhalb `0 ... 309` bricht ab.
+    /// **Kein Zugang auf einen Zustand ohne Namen.** Ein Zugang zeigt auf einen
+    /// Zustand, den er nicht besitzt; an einen Zwischenwert gebunden waere er von der
+    /// naechsten Anweisung an ein Zeiger ins Leere. Diese eine Form der zu kurzen
+    /// Lebensdauer schliesst der Uebersetzer hier aus. Der andere Fall -- ein benannter
+    /// Zustand, der vor seinem Zugang endet -- ist in C++ nicht mechanisch
+    /// auszuschliessen; er steht hier, damit ihn niemand fuer ausgeschlossen haelt, und
+    /// die geloeschten Zeilen darunter halten den Zugang wenigstens in dem Block, in
+    /// dem er steht.
+    Startbelegung(Zustand&&) = delete;
+
+    /// **Eine Kopie nimmt das Schreibrecht nicht mit, weil keine entstehen kann.**
+    /// Zwei Zugaenge auf denselben Zustand traegen zwei verschiedene Merkzahlen; nach
+    /// der Regel oben duerfte dann der eine schreiben, waehrend der andere abbricht --
+    /// und welcher, haenge an der Reihenfolge der Aufrufe. Eine Berechtigung, die davon
+    /// abhaengt, ist keine. Ohne Kopie und ohne Verschiebung laesst sich ein Zugang
+    /// ausserdem nicht in einem Behaelter ablegen, nicht zurueckgeben und nicht
+    /// wegspeichern.
+    Startbelegung(const Startbelegung&)            = delete;
+    Startbelegung& operator=(const Startbelegung&) = delete;
+
+    /// Setzt den Startwert einer Adresse. Zwei harte Fehler, beide ohne Ersatzwert:
+    /// ein Index ausserhalb `0 ... 309`, und ein Zugang, an dem eine Runde
+    /// vorbeigelaufen ist. Die Meldung des zweiten nennt beide Rundennummern
+    /// ausgeschrieben -- die im Zustand und die des Zugangs --, denn der Ort allein
+    /// sagt nicht, ob der Zugang zu alt ist oder der Zustand fremd beschrieben wurde.
     ///
     /// Es entsteht **kein** Ursachensatz, und das Bitfeld einer Runde sieht diesen Wert
     /// nie. Beides ist gewollt: Ein Startwert hat keine Ursache im Modell -- er ist der
@@ -532,6 +575,12 @@ public:
 
 private:
     Zustand* ziel_;
+
+    /// Die Zahl, die dieser Zugang zuletzt auf dem Platz von `partie.runde`
+    /// hinterlassen hat. Beim Binden ist es die Null, die der Konstruktor dort
+    /// vorgefunden hat -- die Merkzahl stimmt also von der ersten Anweisung an und
+    /// nicht erst nach dem ersten Schreibzugriff.
+    i64 hinterlassene_runde_ = 0;
 };
 
 /// Ob dieser Zustand noch vor seiner ersten Runde steht, also ob `partie.runde` null

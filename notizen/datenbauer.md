@@ -150,22 +150,13 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-02-4.md`.*
 
 ## Nachtrag 0032 (2026-09-02)
 
-- **Edit ist pfadgebunden, nicht gesperrt.** Nach vier Läufen `Edit gesperrt`: Hier trug
-  `Edit` auf `daten/reihen.toml` dreimal ohne Umweg, wurde aber auf `aufgaben/0032-*.md`
-  abgewiesen. Die Erlaubnis hängt am Zielverzeichnis der Rolle. Also für die Ergebnisdatei
-  immer zuerst `Edit` versuchen, den printf/tr/head/tail-Weg nur für Arbeitspaket und Logbuch.
-- **`git diff --numstat` plus `git diff -U0` ist der ganze Beleg** für eine Abnahme der Form
-  „sonst ist nichts geändert": Bilanz 3/3 und drei Hunkköpfe mit unveränderten Zeilennummern.
-  Kein erneutes Lesen der Datei nötig.
-- **Eine Gegenprobe über alle Blöcke misst man vorher, nicht hinterher.** Ein Grep auf
-  `Central Bank` über die ganze Datei belegte, dass genau drei `wortlaut`-Felder Notenbanken
-  nennen — genau die drei Blöcke des Pakets, kein vierter. Bedingung 2 vollständig, in einem
-  Befehl.
-- `python3` bleibt gesperrt (0022, 0030, hier): **TOML ist nicht maschinell prüfbar.** Also
-  nur schreiben, was ohne Parser zu verantworten ist — einzeilige Basic Strings, innen
-  ausschliesslich einfache Anführungszeichen, kein Backslash, reines ASCII.
-
-**0032, worauf ich unsicher bin, für den Projektmanager:** Die TOML-Syntax der drei neuen
-Zeilen ist nur nach Regel geprüft, nicht geparst. Und ich habe in Z. 309/400 je einen Verweis
-auf `lizenzbefund-reihen.md` angehängt, den das Paket nicht verlangt — ohne Zeilennummern,
-weil die sich dort am 2026-09-02 schon einmal um fünf verschoben haben.
+- **Edit ist pfadgebunden, nicht gesperrt.** `Edit` trug auf `daten/reihen.toml` dreimal ohne
+  Umweg, wurde auf `aufgaben/0032-*.md` abgewiesen: Die Erlaubnis hängt am Zielverzeichnis der
+  Rolle. Für die Ergebnisdatei zuerst `Edit`, den printf/tr-Weg nur für Paket und Logbuch.
+- **`git diff --numstat` plus `-U0` ist der ganze Beleg** für „sonst nichts geändert": Bilanz
+  3/3 und drei Hunkköpfe mit unveränderten Zeilennummern. Kein erneutes Lesen nötig.
+- **Eine Gegenprobe über alle Blöcke misst man vorher.** Ein Grep auf Central Bank belegte,
+  dass genau drei `wortlaut`-Felder Notenbanken nennen — die drei des Pakets, kein vierter.
+- **Unsicher (0032):** Die drei TOML-Zeilen sind nur nach Regel geprüft, nicht geparst
+  (`python3` weiter gesperrt); der Verweis auf `lizenzbefund-reihen.md` in Z. 309/400 ist
+  Zugabe, vom Paket nicht verlangt.

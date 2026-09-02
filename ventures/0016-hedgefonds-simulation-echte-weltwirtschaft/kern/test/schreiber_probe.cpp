@@ -480,6 +480,52 @@ void probe_startwertzugang()
                 schreiber.kette().laenge());
 }
 
+// ---------------------------------------------------------------------------
+// Ruecklauf 1 zu Paket 0027 -- ein Zugang, an dem eine Runde vorbeigelaufen ist
+// ---------------------------------------------------------------------------
+//
+// Die Form, in der der Schaden entstuende, wenn der Riegel nur am Binden laege, und
+// genau die Form, die `kern::schritt` bekommen wird: Der Schreiber nimmt den
+// Vorrundenzustand unveraenderlich entgegen und rechnet auf zwei eigenen Abschriften,
+// das Ergebnis holt der Aufrufer aus `rundenende()` zurueck. Eine Rundenschleife bindet
+// den Startwertzugang also **vor** der Schleife und schreibt jede Runde in denselben
+// Zustand zurueck. Danach steht der Zugang immer noch da.
+//
+// Diese Probe fuehrt genau das vor: binden, eine echte Runde laufen lassen, das
+// Rundenende zurueckschreiben, den alten Zugang benutzen. Der letzte Schritt muss
+// abbrechen -- am Schreibzugriff, denn gebunden ist er laengst.
+//
+// `zustand_probe.cpp` hat dieselbe Aussage ohne den Schreiber; hier ist die Runde eine
+// echte, samt Ursachenkette und Maskenpruefung.
+
+void probe_zugang_ueberlebt_keine_runde()
+{
+    const Index kasse = kern::zustand::stelle_fonds(FondsGroesse::Kasse);
+    const Index runde = kern::zustand::stelle_partie(PartieFeld::Runde);
+
+    Zustand partie;
+    Startbelegung zugang{partie};
+    zugang.setze(kasse, undurchsichtig(1'000'000));
+    PRUEFE(kern::zustand::vor_der_ersten_runde(partie));
+
+    // Die Runde laeuft und schreibt `partie.runde` mit -- sie steht in der Sollmaske
+    // des Weltlaufs (T38). Das Rundenende geht in denselben Zustand zurueck, an dem
+    // `zugang` haengt.
+    Schreiber schreiber(partie, Modus::Weltlauf, 1);
+    weltlauf_runde(schreiber, FELDER, FELDER);
+    partie = schreiber.rundenende();
+
+    PRUEFE(!kern::zustand::vor_der_ersten_runde(partie));
+    PRUEFE(partie.lies(kasse) == 1'000'000);   // ausserhalb der Maske, also unberuehrt
+
+    // Der Zugang von vorhin ist noch da, und er ist zu.
+    ERWARTE_ABBRUCH(zugang.setze(kasse, undurchsichtig(0)));
+    PRUEFE(partie.lies(kasse) == 1'000'000);
+
+    std::printf("  Zugang von vor Runde 1 nach der Runde (partie.runde = %lld): zu\n",
+                static_cast<long long>(partie.lies(runde)));
+}
+
 }  // namespace
 
 int main()
@@ -491,6 +537,7 @@ int main()
     probe_maskenpruefung_zweiseitig();
     probe_volle_runde();
     probe_startwertzugang();
+    probe_zugang_ueberlebt_keine_runde();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

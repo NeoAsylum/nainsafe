@@ -34,6 +34,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <stdexcept>
+#include <type_traits>
 
 #include "kern/pruefsumme.hpp"
 #include "kern/zustand.hpp"
@@ -179,6 +180,29 @@ static_assert(!hat_rohen_schreibzugriff<Zustand>,
 // alles unerreichbar, sagten die drei Zeilen oben nichts ueber Sichtbarkeit aus,
 // sondern nur darueber, dass `requires` immer `false` liefert.
 static_assert(hat_lesezugriff<Zustand>, "lesen bleibt jedem erlaubt -- sonst prueft das hier nichts");
+
+// ---------------------------------------------------------------------------
+// Und dieselbe Art Nachweis fuer den Startwertzugang selbst
+// ---------------------------------------------------------------------------
+//
+// Zwei Fragen des Ruecklaufs 1 zu Paket 0027 sind hier beantwortet statt beschrieben:
+// ob eine Kopie das Schreibrecht mitnimmt, und ob sich ein Zugang an einen Zustand
+// binden laesst, den er nicht ueberlebt. Beide Antworten sind "nein", und beide gelten
+// beim Uebersetzen -- die Begruendungen stehen an der Klasse in `zustand.hpp`.
+
+static_assert(!std::is_copy_constructible_v<Startbelegung>,
+              "eine Kopie nimmt das Schreibrecht nicht mit, weil keine entstehen kann");
+static_assert(!std::is_move_constructible_v<Startbelegung>,
+              "auch verschieben gibt es nicht -- sonst liesse sich ein Zugang wegspeichern");
+static_assert(!std::is_copy_assignable_v<Startbelegung>, "ein Zugang wird nicht umgehaengt");
+static_assert(!std::is_move_assignable_v<Startbelegung>, "ein Zugang wird nicht umgehaengt");
+static_assert(!std::is_constructible_v<Startbelegung, Zustand&&>,
+              "kein Zugang auf einen Zustand ohne Namen -- er wuerde ihn nicht ueberleben");
+
+// Die Gegenprobe, ohne die die fuenf Zeilen oben nur belegten, dass diese Frage immer
+// `false` liefert: An einen benannten Zustand laesst sich sehr wohl einer binden.
+static_assert(std::is_constructible_v<Startbelegung, Zustand&>,
+              "an einen benannten Zustand bindet der Zugang -- sonst prueft das hier nichts");
 
 /// Nimmt dem Uebersetzer die Konstantenfaltung, damit die Sanitizer die Rechnung
 /// wirklich zu sehen bekommen.
@@ -615,6 +639,13 @@ int main()
     // Werte, keine je Feld. Der Grund steht an der Klasse: Unter den 310 ist
     // `partie.runde` selbst, und ein Zugang, der sich je Aufruf neu bindet, haette sich
     // beim Platz 306 die Tuer vor der eigenen Nase zugezogen.
+    //
+    // Dass die Schleifen ueber Platz 306 hinaus durchlaufen, ist zugleich die
+    // Gegenprobe zum Riegel aus dem Ruecklauf 1: Er fragt bei jedem Schreibzugriff, und
+    // er laesst den Zugang trotzdem weiterschreiben, weil die Rundennummer, die dort
+    // steht, von ihm selbst stammt. Ein stumpfes `partie.runde == 0` je Aufruf haette
+    // beide Schleifen bei Platz 307 rot gemacht -- und die Pruefsumme unten waere eine
+    // andere, weil die Plaetze 307 bis 309 dann Nullen truegen.
     {
         Zustand zaehlend;
         {
@@ -635,8 +666,9 @@ int main()
         // Und die Gegenprobe zur Reihenfolge: dieselben Werte, zwei davon getauscht.
         // Frisch gebaut statt aus `zaehlend` abgeschrieben und nachgebessert -- dessen
         // Platz 306 traegt jetzt die 306, und an einen solchen Zustand laesst sich kein
-        // Startwertzugang mehr binden. Das ist derselbe Riegel wie unten, nur hier
-        // gewollt umgangen, indem die Belegung von vorn beginnt.
+        // *neuer* Startwertzugang mehr binden. Umgangen wird dabei nichts: Der Riegel
+        // greift hier gar nicht, weil dieser zweite Zugang eine eigene Merkzahl hat und
+        // sie an einem frischen Zustand erwirbt.
         Zustand getauscht;
         {
             Startbelegung belegung{getauscht};
@@ -702,6 +734,54 @@ int main()
         std::fprintf(stdout,
                      "Startwertzugang: vor Runde 1 offen, in Runde %lld verriegelt\n",
                      static_cast<long long>(in_der_partie.lies(runde)));
+    }
+
+    // --- Der Riegel greift beim Schreiben, nicht beim Binden (Ruecklauf 1) -------
+    //
+    // Der Fall, an dem die erste Fassung gerissen ist: Ein Zugang wird gebunden,
+    // *danach* setzt jemand anders die Rundennummer, und der alte Zugang schreibt
+    // trotzdem weiter. Er darf es nicht, und er tut es nicht mehr -- der Nachweis
+    // laeuft, statt in einem Kommentar zu stehen.
+    //
+    // Der fremde Schreibzugriff kommt hier von einem *zweiten* Startwertzugang und
+    // nicht vom Schreiber: Diese Probe kennt den Schreiber nicht. Fuer den Riegel ist
+    // das dasselbe -- er fragt, ob die Zahl auf `partie.runde` von ihm selbst stammt,
+    // und nicht, wer sie sonst hingeschrieben hat. Die Fassung mit einer echten Runde
+    // steht in `schreiber_probe.cpp`.
+    {
+        const Index runde = stelle_partie(PartieFeld::Runde);
+        const Index kasse = stelle_fonds(FondsGroesse::Kasse);
+
+        Zustand       gemeinsam;
+        Startbelegung frueher{gemeinsam};
+        frueher.setze(kasse, undurchsichtig(1'000'000));
+        PRUEFE(gemeinsam.lies(kasse) == 1'000'000);
+
+        // Der zweite Zugang bindet noch -- die Partie steht ja weiter vor Runde 1 --
+        // und setzt dann die Rundennummer. Ab hier ist `frueher` veraltet.
+        {
+            Startbelegung spaeter{gemeinsam};
+            spaeter.setze(runde, undurchsichtig(7));
+            // Und *er* schreibt weiter: Die 7 stammt von ihm selbst.
+            spaeter.setze(kasse, undurchsichtig(2'000'000));
+        }
+        PRUEFE(gemeinsam.lies(runde) == 7);
+        PRUEFE(gemeinsam.lies(kasse) == 2'000'000);
+
+        // Der alte Zugang dagegen bricht ab -- beim Schreiben, nicht beim Binden, denn
+        // gebunden ist er laengst. Die Meldung nennt beide Rundennummern.
+        ERWARTE_ABBRUCH(frueher.setze(kasse, undurchsichtig(3'000'000)));
+        PRUEFE(gemeinsam.lies(kasse) == 2'000'000);
+
+        // Auch eine Adresse, die mit der Runde nichts zu tun hat, bleibt zu: Der Riegel
+        // haengt am Zugang und nicht an der Adresse.
+        ERWARTE_ABBRUCH(frueher.setze(runde, undurchsichtig(0)));
+        PRUEFE(gemeinsam.lies(runde) == 7);
+
+        std::fprintf(stdout,
+                     "Riegel je Schreibzugriff: Zugang mit Merkzahl 0 gegen "
+                     "partie.runde %lld -- zu\n",
+                     static_cast<long long>(gemeinsam.lies(runde)));
     }
 
     if (fehlgeschlagen == 0) {
