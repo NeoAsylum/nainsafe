@@ -26,7 +26,7 @@ Widerspruch zwischen zwei Vorgaben und eine Menge frei gebildeter Adressen —, 
 | Spalte | Inhalt |
 |---|---|
 | # | laufende Nummer 1 … 310, nur zum Zählen |
-| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Die 133 unmarkierten Zeilen sind wörtlich belegte Adressen und die daraus über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Umgekehrt gilt der Satz nicht: Ist der eingesetzte Bestandteil selbst neu, trägt auch die Geschwisteradresse eine Marke — so bei `restwelt.` vor einem Sektorpfad (Nr. 180, gebildet aus `land.DE.sektor.2.preis`) und beim Instrument `regulierung` (Nr. 37, gebildet aus `land.BR.instrument.zoll.stand`). Die Bildungsregeln stehen unter *Befund 2* |
+| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Die 133 unmarkierten Zeilen sind wörtlich belegte Adressen und die daraus über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Umgekehrt gilt der Satz nicht: Ist der eingesetzte Bestandteil selbst neu, trägt auch die Geschwisteradresse eine Marke — so bei `restwelt.` vor einem Sektorpfad (Nr. 180, gebildet aus `land.DE.sektor.2.preis`) und beim Instrument `regulierung` (Nr. 37, gebildet aus `land.BR.instrument.zoll.stand`). **Und ein Beleg, der in T46 steht, deckt nur die Adresse selbst: T46 zählt seine elf Vorgabeadressen abschliessend auf und erzeugt deshalb keine unmarkierten Geschwister.** Wer dort einen Index anders belegt, verlässt die Ausnahmeliste — die drei übrigen Länderwechselkurse (Nr. 63, 107, 151) tragen deshalb eine Marke, die drei übrigen Aufsichtszähler (Nr. 23, 111, 155) dagegen nicht, weil T45 `land.CN.aufsichtszaehler` als Beispiel einer Kategorie von 150 Adressen führt und nicht als abschliessende Liste. Eine Adresse mit eigenem wörtlichem Beleg bleibt davon unberührt: `land.<L>.leitzins` (Nr. 18, 62, 106, 150) steht mit Index in `technik.md` Zeile 236. Die Bildungsregeln und die Gegenprobe an allen acht T46-Zeilen stehen unter *Befund 2* |
 | Gruppe | die Zeile der Tabelle in T15, aus der die Adresse stammt |
 | Herkunft | einer der fünf Einträge aus T45. `*` an einem Schlüsselnamen heisst dasselbe wie an einer Adresse |
 | K | Skalenklasse 1 … 12 nach T5, zugeordnet nach T49 |
@@ -510,6 +510,7 @@ Beispiele aus T45, die elf aus T46, `markt.wert`, `markt.rendite`, `fonds.markta
 über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister, die deshalb
 nicht markiert sind: Wo `land.DE.sektor.2.wertschoepfung` dasteht, ist
 `land.BR.sektor.1.wertschoepfung` keine Wahl, sondern derselbe Index anders belegt.
+**Ausgenommen sind die Adressen, deren Beleg in T46 steht**; warum, steht unter der Bildungsregeltabelle.
 
 **Markiert ist alles, wo ein Bestandteil neu erfunden ist.** Die Bildungsregeln, damit der
 Prüfer sie einzeln nachrechnen kann:
@@ -532,6 +533,27 @@ Die Marke sitzt an der Neuheit, nicht am Zitat: Beim Land sind Präfix und Sekto
 zusammen in T17 zu sehen, bei der Restwelt kommen die beiden Bestandteile in keinem
 Dokument gemeinsam vor — T46 zeigt `restwelt.` nur mit Aggregatgrößen. Wer die Marke
 enger oder weiter setzen will, ändert damit keine Adresse, sondern nur die Zahl 177.
+
+**Warum `land.CN.wechselkurs` markiert ist und `land.DE.aufsichtszaehler` nicht.** Beide sind
+Geschwister einer einzigen wörtlich belegten Adresse über den Gebietsindex; der Unterschied
+liegt in der Stelle, die den Beleg trägt. T46 zählt seine elf Vorgabeadressen
+**abschliessend** auf (`technik.md` Zeile 874) und sagt zu `land.US.wechselkurs` sogar, warum
+die drei anderen Länder nicht dazugehören („Reihe 10 trägt drei Länder, die USA
+definitionsgemäß nicht"). **Ein Beleg, der in T46 steht, deckt deshalb nur die Adresse
+selbst** — wer dort einen Index anders belegt, verlässt die Ausnahmeliste und bildet eine neue
+Adresse. Das betrifft alle acht unmarkierten Zeilen, die ihren Beleg dort haben: Nr. 19
+`land.US.wechselkurs` und die sieben Restweltzeilen 192 bis 198. Gemeint ist die Zeichenkette
+und nicht die Herkunftsspalte — `restwelt.preisniveau` (192) steht in der Begründung zu
+`restwelt.inflation` und trägt trotzdem `Datenanker(15)`. Ihre Ländergeschwister sind
+deshalb markiert: die drei Wechselkurse (63, 107, 151), `land.<L>.preisniveau`
+(16, 60, 104, 148), `land.<L>.inflation` (17, 61, 105, 149), `land.<L>.staatsschuld`
+(20, 64, 108, 152) und die vier `land.<L>.basiswechsel` (44, 88, 132, 176), bei denen
+zusätzlich der Präfix `gebiet.<G>.` in `land.<L>.` umgeschrieben ist. Zwei Geschwisterpaare
+bleiben unmarkiert, und zwar nicht als Ausnahme: `land.<L>.leitzins` (18, 62, 106, 150) und
+`land.<L>.haushaltssaldo` (21, 65, 109, 153) stehen mit Index in `technik.md` Zeile 236 und
+237 und beziehen ihren Beleg gar nicht aus T46. `land.CN.aufsichtszaehler` schliesslich steht
+in T45 als **Beispiel** einer Kategorie von 150 Adressen und nicht als abschliessende Liste;
+die drei übrigen Aufsichtszähler (23, 111, 155) bleiben deshalb unmarkiert.
 
 **Zwei Parameterschlüssel sind ebenfalls gebildet** und mit `*` markiert:
 `startzustimmung` und `regulierung_start`. T27 nennt beide Größen („Startzustimmung",
