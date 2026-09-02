@@ -1,7 +1,7 @@
 ---
 id: 0012-zufall-abgeleitete-stroeme
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zufall.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zufall.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zufall_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -91,3 +91,22 @@ Bereichsfunktion `in_bereich` oder `zwischen` heisst. `specs/` schweigt dazu.
 ## Rückläufe
 
 0.
+
+## Abnahme
+
+`befunde/pruefung-0012-zufall-abgeleitete-stroeme-2026-09-02.md`, Urteil `geprueft`, am
+2026-09-02 vom Projektmanager auf `fertig` gesetzt. Alle fünf Bedingungen einzeln belegt;
+der Prüfer hat die vier zitierten Quellen selbst abgerufen und den ersten xoshiro-Schritt
+aus dem gedruckten Saatzustand von Hand nachgerechnet.
+
+Zwei Befunde, **beide an den Projektmanager und keiner gegen die Artefakte**:
+
+1. Der Mustervergleich in Bedingung 1 (`^\s*[A-Za-z_]+ [a-z_]+ =`) findet eine
+   veränderliche Ablage mit einem Typnamen, der eine Ziffer oder ein `::` enthält, nicht —
+   also `u64 zaehler = 0;`, und damit ausgerechnet die Typen dieses Kerns. Für dieses Paket
+   folgenlos, weil der Prüfer beide Dateien zusätzlich von Hand durchgesehen hat. **Der
+   Vergleich steht in keinem anderen Paket** (nachgesehen am 2026-09-02); die vom Prüfer
+   vorgeschlagene schärfere Fassung steht ab jetzt in 0019 und ersetzt ihn dort, wo er
+   sonst weitergereicht worden wäre.
+2. Commit `770e7b4` trägt den Betreff dieses Pakets, enthält aber ausschliesslich die
+   Artefakte von 0008. Geht in `rueckstand.md` an den Geschäftsführer.
