@@ -237,6 +237,33 @@ def rueckläufe(venture: str, paket: str) -> int:
     return n
 
 
+def reviewbereit(venture: str, alle: list[dict]) -> list[dict]:
+    """Gebaute Pakete, die eine Pruefung bekommen sollen -- am wenigsten geprueftes zuerst.
+
+    Zwei Regeln, beide aus einem Befund vom 2026-09-02:
+
+    **Wer die Ruecklaufgrenze erreicht hat, bekommt kein Urteil mehr.** Ein viertes
+    Urteil ueber dasselbe Paket sagt nichts Neues; was fehlt, ist eine Entscheidung des
+    Projektmanagers oder des Betreibers ueber das Abnahmekriterium. Die Grenze galt
+    bisher nur in der Baustufe -- ein festgefahrenes Paket belegte seinen Pruefplatz
+    also endlos.
+
+    **Und die Reihenfolge ist nicht der Dateiname, sondern die Zahl der bisherigen
+    Urteile.** Vorher nahm die Stufe die ersten vier nach Namen; 0009 und 0015 standen
+    vorn, kamen dreimal zurueck und verhungerten 0023, 0024 und 0025, die nie ein
+    einziges Urteil gesehen haben. Wer noch nie geprueft wurde, geht zuerst.
+    """
+    dran = []
+    for p in alle:
+        if p.get("status") != "gebaut" or p.get("rolle") not in REVIEW:
+            continue
+        n = rueckläufe(venture, p["_id"])
+        if n >= RUECKLAUF_MAX:
+            continue
+        dran.append((n, p["_id"], p))
+    return [p for _, _, p in sorted(dran)]
+
+
 def startbereit(alle: list[dict], rollen: set[str], zustand: str = "offen") -> list[dict]:
     """Pakete im genannten Zustand, deren Abhaengigkeiten fertig sind --
     und die sich nicht in denselben Dateien treffen."""
@@ -273,7 +300,7 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
     bau = startbereit(alle, BAUROLLEN)[:gleichzeitig]
     pruef = startbereit(alle, PRUEFROLLEN)[:gleichzeitig]
 
-    review = [p for p in alle if p.get("status") == "gebaut" and p.get("rolle") in REVIEW]
+    review = reviewbereit(venture, alle)
 
     if trocken:
         print("  1. projektmanager")
@@ -323,8 +350,7 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
     # Review: jedes gebaute Paket bekommt einen Pruefer seines Gewerks. Er liest den
     # Auftrag und das Ergebnis, nicht die Begruendung des Bauagenten.
     alle = pakete(venture)
-    review = [p for p in alle if p.get("status") == "gebaut"
-              and p.get("rolle") in REVIEW][:gleichzeitig]
+    review = reviewbereit(venture, alle)[:gleichzeitig]
     if review:
         fehler += phase("Review",
                         [(REVIEW[p["rolle"]], p["_id"]) for p in review])

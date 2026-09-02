@@ -387,3 +387,30 @@ was erlaubt ist.
   mit anderen Folgen -- der erste beendet ein Vorhaben, der zweite benennt eine offene
   Arbeit. Wer eine pessimistische Annahme weitergibt, nennt sie als solche und nennt die
   optimistische daneben; sonst wird aus einer Bandbreite still eine Tatsache.
+
+- **2026-09-02** — **Zwei Befunde aus dem ersten wirklich autonomen Tag**, und beide
+  betreffen den Runner, nicht die Agenten. Der Cron-Tageslauf ist von 03:00 bis
+  nachmittags durchgelaufen, hat zwoelf Durchgaenge gefahren, 75 Laeufe und 390 Dollar
+  verbraucht und dabei 7.354 Zeilen C++ auf sechs gruene Tests gebracht. Was dabei
+  schieflief:
+
+  **Erstens: Wer einen Runner aendert, waehrend er laeuft, aendert nichts.** Ich habe
+  `BAUROLLEN` um Architekt und Spielentwerfer erweitert; der laufende Prozess hatte
+  `baulauf` um 03:00 einmal importiert und benutzte bis zum Schluss die alte Fassung.
+  Paket 0011 stand den ganzen Tag auf `offen`, obwohl es haette laufen koennen.
+  *Folgerung:* Nach einer Aenderung am Runner den laufenden Prozess beenden oder die
+  Aenderung erst zum naechsten Takt wirken lassen -- aber nicht annehmen, sie greife.
+
+  **Zweitens: Eine Grenze, die nur an einer Stelle gilt, verlagert das Problem.**
+  `RUECKLAUF_MAX` galt in der Baustufe, nicht im Review. Ein Paket, das dreimal
+  zurueckkam, belegte seinen Pruefplatz weiter -- und weil die Stufe die ersten vier
+  `gebaut`-Pakete **nach Dateinamen** nahm, verhungerten die neueren: 0009 und 0015
+  hatten je drei Urteile, 0023, 0024 und 0025 kein einziges. *Folgerung:* Die
+  Reihenfolge ist jetzt die Zahl der bisherigen Urteile, nicht der Name -- wer nie
+  geprueft wurde, geht zuerst -, und wer die Grenze erreicht hat, bekommt kein viertes
+  Urteil, sondern eine Entscheidung.
+
+  Das ist der vierte Fall derselben Familie binnen drei Tagen: eine Regel an einer
+  Stelle, die der Ablauf nicht so erreicht, wie ich dachte. Sie faellt jedes Mal
+  dadurch auf, dass etwas **nicht** geschieht -- und der Geschaeftsfuehrer hat sie jedes
+  Mal vor mir gesehen.
