@@ -510,18 +510,18 @@ dann 3 (0).
 
 ### Das Paar: Klärung 1 **und** Klärung 4 — nur zusammen tragen sie
 
-1. **OECD im Volltext** (`daten.md` Nr. 8, 403 am 2026-08-31).
-   **Allein: 0 Sollreihen, 0 Prüfgegenstände.** Sie hebt bei Reihe 1 und 2a nur die
-   OECD-Hälfte; der zweite Sperrgrund dieser beiden Codes — die nationalen Ämter und
-   Notenbanken des ersten Halbsatzes — bleibt unberührt stehen. Auf 2b und 2c wirkt sie gar
-   nicht: Deren `Source`-Feld nennt die OECD nicht.
+**Klärung 1 — OECD im Volltext** (`daten.md` Nr. 8, 403 am 2026-08-31).
+**Allein: 0 Sollreihen, 0 Prüfgegenstände.** Sie hebt bei Reihe 1 und 2a nur die
+OECD-Hälfte; der zweite Sperrgrund dieser beiden Codes — die nationalen Ämter und
+Notenbanken des ersten Halbsatzes — bleibt unberührt stehen. Auf 2b und 2c wirkt sie gar
+nicht: Deren `Source`-Feld nennt die OECD nicht.
 
-4. **Die nationalen Ämter *und* die Notenbanken der vier Modellländer** (Aufzählung unten).
-   **Allein: 8 Sollreihen (2b und 2c), 0 Prüfgegenstände.** Sie ist die zweite Hälfte auch
-   für Reihe 1 und 2a, nicht nur für 2b und 2c — bei 2b und 2c ist sie der einzige
-   Sperrgrund, bei Reihe 1 und 2a der zweite neben der OECD. Prüfgegenstände hebt sie allein
-   trotzdem keinen: Nach T37 müssen bei der Sektorstruktur **alle drei** Anteilsreihen
-   bestehen, und 2a bliebe an der OECD hängen.
+**Klärung 4 — die nationalen Ämter *und* die Notenbanken der vier Modellländer**
+(Aufzählung unten). **Allein: 8 Sollreihen (2b und 2c), 0 Prüfgegenstände.** Sie ist die
+zweite Hälfte auch für Reihe 1 und 2a, nicht nur für 2b und 2c — bei 2b und 2c ist sie der
+einzige Sperrgrund, bei Reihe 1 und 2a der zweite neben der OECD. Prüfgegenstände hebt sie
+allein trotzdem keinen: Nach T37 müssen bei der Sektorstruktur **alle drei** Anteilsreihen
+bestehen, und 2a bliebe an der OECD hängen.
 
 **Zusammen: 16 Sollreihen und 8 Prüfgegenstände.** Die Rechnung, Posten für Posten:
 
@@ -568,16 +568,17 @@ Reihe 1 und 2a doch allein.
 
 ### Die übrigen zwei
 
-2. **IWF im Volltext** (403 an vier Tagen).
-   **Allein: hebt 8 Sollreihen (Reihe 9 und 11), 0 Prüfgegenstände** — T37 führt beide als
-   `gesetzt` beziehungsweise `abgeleitet`, sie entscheiden nichts. Der eigentliche Wert liegt
-   woanders und ist kein Heben, sondern ein Sichern: An demselben Text hängen die schon als
-   `frei` gezählten 7 Sollreihen und **7 Prüfgegenstände** der Reihen 8 und 10. Fällt er,
-   fallen sie — das ist die Zeile „1 von 16" in Abschnitt 5. Zusammen entscheidet der Abruf
-   also 15 Sollreihen und 7 Prüfgegenstände, er *gewinnt* aber keinen.
-3. **ILO in die geprüften Quellen aufnehmen, samt der Stichtagsfrage aus Abschnitt 4**.
-   **Allein: 0 Sollreihen, 0 Prüfgegenstände.** Hebt Reihe 6 und Reihe 7 und gibt den
-   Startwerten beider Reihen ihren Datenanker zurück; keine der beiden trägt eine Sollreihe.
+**Klärung 2 — IWF im Volltext** (403 an vier Tagen).
+**Allein: hebt 8 Sollreihen (Reihe 9 und 11), 0 Prüfgegenstände** — T37 führt beide als
+`gesetzt` beziehungsweise `abgeleitet`, sie entscheiden nichts. Der eigentliche Wert liegt
+woanders und ist kein Heben, sondern ein Sichern: An demselben Text hängen die schon als
+`frei` gezählten 7 Sollreihen und **7 Prüfgegenstände** der Reihen 8 und 10. Fällt er,
+fallen sie — das ist die Zeile „1 von 16" in Abschnitt 5. Zusammen entscheidet der Abruf
+also 15 Sollreihen und 7 Prüfgegenstände, er *gewinnt* aber keinen.
+
+**Klärung 3 — ILO in die geprüften Quellen aufnehmen, samt der Stichtagsfrage aus
+Abschnitt 4.** **Allein: 0 Sollreihen, 0 Prüfgegenstände.** Hebt Reihe 6 und Reihe 7 und gibt
+den Startwerten beider Reihen ihren Datenanker zurück; keine der beiden trägt eine Sollreihe.
 
 **Und die Probe auf die Zahlen.** 16 gehobene Sollreihen (1 + 4) plus 8 (Klärung 2) = 24 —
 genau die 24 unklaren aus dem Frontmatter. Prüfgegenstände: 8 gehoben (1 + 4) plus 7 gesichert

@@ -1,7 +1,7 @@
 ---
 id: 0009-parameterdatei-schluessel
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Jeder in T27 und T51 genannte Schlüssel steht in der Datei, mit Skalenklasse nach T5, Wertebereich, Herkunft der Schranke und einem Startwert innerhalb der Schranken; kein Schlüssel ohne Klasse, keine Klasse ohne Schlüssel im Text.
@@ -219,7 +219,69 @@ Erlaubnis, sie selbst zu treffen.
 
 ## Status
 
-**2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). `parameter.toml`
+**2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 2 abgearbeitet). `parameter.toml`
+liegt als **Fassung 3** vor, 1001 Zeilen, Kopfstand 2026-09-02.
+
+**Zur Vorgeschichte dieses Laufs, damit der Prüfer sie nicht selbst rekonstruieren muss:**
+Die drei Änderungen lagen bei Beginn meines Laufs bereits in der Datei (Commit `f0cae94`,
+2026-09-02 05:47, „datenbauer: 0009-parameterdatei-schluessel"). Der vorangegangene Lauf
+hat sie geschrieben, aber `status:` nicht gesetzt — dasselbe Versäumnis wie beim ersten
+Mal. Ich habe deshalb nicht neu geschrieben, sondern **nachgemessen** und den Status
+gesetzt. Was ich selbst geprüft habe, steht unten; was ich nicht selbst geprüft habe,
+steht auch dort.
+
+Je Befund des Rücklaufs:
+
+1. **`hebelaufschlag` (Zeile 664–703): Herkunft nachgetragen, Schranke `>= 0` → `>= 1`,
+   Wert `0` → `1`.** Als **Folgerung** aus `spiel.md` Aktion 4 gekennzeichnet („ein
+   Aufschlag, der mit der Sichtbarkeit des Fonds *steigt*", Zeile 177–178; Kanal 4,
+   Zeile 524) — dieselbe Bauart wie `druck_max >= 1`, `stufen_max >= 1`,
+   `schrittweite >= 1`. Ausdrücklich dabei steht, dass die Klasse hier **nichts** trägt
+   (T5 Klasse 3 = ±2 Mio %, symmetrisch um null) und dass beide Halbschranken aus
+   demselben Satz folgen: negativ kehrt Kanal 4 um, 0 lässt den Aufschlag nicht steigen.
+   Die schwächere Lesart `>= 0` ist als **zulässige Alternative benannt**, nicht
+   verschwiegen — der Prüfer soll die Wahl sehen, statt sie sich herzuleiten. Der neue
+   Wert 1 folgt Regel A (Platzhalter = untere Schranke).
+2. **Vierter Fall in BEFUNDE Punkt 5 Gruppe (b) nachgetragen** (Zeilen 950–957):
+   `aufsicht_tempo` → Aufsichtszähler, gekappt durch `aufsicht_max`, `0 <= 3`. Zusätzlich
+   trägt der Kommentarblock von `aufsicht_tempo` selbst jetzt die Herkunft und den Verweis
+   auf `aufsicht_max` (Zeilen 626–632) — vorher stand dort blank `Schranke: >= 0.`, und
+   genau deshalb war der Fall in (b) nicht aufgefallen.
+3. **Der Prüfweg der Selbstprobe ist verankert** (Zeilen 133–143): statt
+   `grep -c PLATZHALTER` jetzt `grep -c '^[a-z_0-9]* *=.*PLATZHALTER'`, also nur
+   Schlüsselzeilen. Der alte Aufruf zählte die Kopfzeile mit, die die Zeichenkette
+   führt.
+
+Dazu die zweideutige Zeile zu Regel A, die der Prüfer als **Hinweis ohne Befundrang**
+notiert hatte (Zeilen 61–70): Sie sagt jetzt getrennt, dass es **drei** streng geordnete
+Paare gibt und dass **eines** davon seine Schranke verletzt hatte.
+
+**Was ich in diesem Lauf selbst nachgemessen habe** (nicht nachgelesen):
+
+- Der von der Datei vorgeschriebene Prüfweg liefert jetzt die Zahlen, die sie behauptet:
+  `^[a-z_0-9]* *=.*PLATZHALTER` → **46**, `^[a-z_0-9]* *=.*FEST \(T51\)` → **4**,
+  `^[a-z_0-9]* *=` → **50**. Damit ist Befund 3 nicht nur repariert, sondern belegt.
+- **Die fünf verbliebenen blanken `Schranke: >= 0.`** (Zeilen 399, 585, 612, 656, 724)
+  einzeln aufgelöst: 585/612/656/724 sind `zustimmung_elastizitaet`,
+  `nachahmer_wirkung`, `hebel_max`, `innerjahresausschlag_faktor` — vier der fünf
+  geparkten Klasse-4-Schlüssel, unangetastet wie angewiesen. Zeile 399 ist
+  `nachahmer_max`; sie ist **nicht** blank im Sinn von Befund 1, weil der Kommentarblock
+  zwei Zeilen darüber die Herkunft nennt („wie bei `aufsicht_max`", T5 Klasse 11,
+  spiel.md Kanal 6). Nach Befund 1 blieb damit kein zweiter Fall offen.
+- Die strukturellen TOML-Proben halten nach der Änderung:
+  `^[a-z_0-9]* *=.*[."']` ist leer (kein Dezimalpunkt, kein Anführungszeichen, kein
+  Apostroph in einem Wert), vier Tabellenköpfe ohne Wiederholung in der Reihenfolge aus
+  T9 (Zeilen 815/837/853/876), alle 38 blanken Schlüssel davor.
+
+**Nicht angefasst:** die fünf geparkten Klasse-4-Schlüssel. Die Frage berührt T5 und steht
+in `rueckstand.md` als Vorlage an den Geschäftsführer.
+
+**Was ich nicht nachweisen kann, unverändert seit Runde 1:** Ein TOML-Parser lief auch in
+diesem Lauf nicht — `python3` mit `tomllib` wurde von der Umgebung abgewiesen. Abnahme 4
+ist strukturell belegt und **nicht maschinell**. Der Rücklauf sagt selbst, dass das in den
+Runner gehört und in `rueckstand.md` steht; ich behaupte nichts anderes.
+
+*Vorgeschichte:* **2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). `parameter.toml`
 liegt als **Fassung 2** vor, 932 Zeilen, Kopfstand 2026-09-02. Was sich geändert hat, je
 Punkt des Rücklaufs:
 

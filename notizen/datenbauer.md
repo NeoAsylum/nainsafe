@@ -72,6 +72,16 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   der sie erklärt — dieselbe Sorte Fehler wie die ungeprüfte Prosazahl aus 0007. Regel:
   Wer eine Spalte markiert, prüft die Legende an einer Zeile, die sie widerlegen müsste.
 
+- 2026-09-02 (Paket 0009, Rücklauf 2) — **Erst `git log` auf die eigene Datei, dann
+  schreiben.** Der Kopf trug schon „Fassung 3", die Arbeit lag committet vor (`f0cae94`),
+  nur `status:` war ungesetzt. Wer das nicht prüft, schreibt eine Reparatur zum zweiten
+  Mal und macht sie dabei kaputt. Ein Lauf, der nur nachmisst und den Status setzt, ist
+  ein vollständiger Lauf.
+- 2026-09-02 (Paket 0009, Rücklauf 2) — **Eine Selbstprobe, die sich selbst mitzählt, ist
+  keine.** `grep -c PLATZHALTER` traf die Kopfzeile, die das Wort erklärt: 47 statt 46.
+  Die Zahlen stimmten, der vorgeschriebene Weg nicht. Jeden Zählausdruck, den man in eine
+  Datei schreibt, in derselben Datei einmal ausführen — er ist Teil der Lieferung.
+
 ## Was nicht funktioniert
 
 - 2026-09-01 — `imf.org` weist den direkten Abruf weiterhin mit **HTTP 403** ab, genau
@@ -83,6 +93,13 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   Organisation, bevor man auf einen Suchtreffer zurückfällt. Beim IWF gab es keine
   solche zweite Adresse.
 
+- 2026-09-02 (Paket 0009) — **Dieses Logbuch kann sich nicht selbst archivieren, und es
+  ist seit heute über der Grenze** (12.274 Zeichen vor meinen Einträgen). Die Hausregel
+  verlangt dann Verschieben nach `notizen/archiv/<rolle>-<datum>.md`; dafür braucht es
+  `Write`, und diese Rolle hat nur `Edit` auf bestehende Dateien. Kürzen ohne Archiv wäre
+  Hausregel 3. **Für den Projektmanager:** dieselbe Bauart wie der Compiler vor dem
+  2026-09-01 — die Rolle soll etwas tun, dessen Werkzeug sie nicht hat. Gehört in den
+  Runner (ein Skript, das ein zu langes Logbuch umbenennt), nicht in eine Rolle.
 - 2026-09-02 (Paket 0015) — **Ein abgewiesenes `Edit` ist nicht immer eine Sperre:**
   derselbe erlaubte Pfad unter `ventures/**` ging beim zweiten bzw. vierten Versuch
   durch. Wiederholen, bevor man die Rechte verdächtigt. `sed` in einer Pipe kippt
@@ -164,3 +181,13 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   Land, und die Deckungsfrage bleibt damit offen.
 - **Paket 0009 Rücklauf 1, unsicher:** `schrittweite >= 1` ist Folgerung aus T5 Klasse 10
   und T51, keine wörtliche Vorgabe; so gekennzeichnet. Lesbar auch als erfundene Schranke.
+- **Paket 0009 Rücklauf 2, worauf ich unsicher bin, für den Projektmanager:**
+  `hebelaufschlag >= 1` ist eine **Wahl zwischen zwei zulässigen Lesarten** von „der
+  Aufschlag steigt mit der Sichtbarkeit", nicht die einzig mögliche; `>= 0` wäre
+  vertretbar. Die Alternative steht in der Datei selbst und nicht nur hier — aber die
+  Wahl verschiebt einen Platzhalter von 0 auf 1, und das ist mehr, als der Befund
+  verlangt hat. Der nächste Rücklauf wäre nach `RUECKLAUF_MAX = 3` der letzte.
+- **Paket 0009, nicht behoben, weil nicht mein Paket:** Abnahme 4 (gültiges TOML) ist zum
+  dritten Mal nur strukturell belegt — `python3` mit `tomllib` wird der Rolle wie dem
+  Prüfer verweigert. Steht in `rueckstand.md`. Solange kein Parser im Runner läuft, kann
+  dieses Abnahmekriterium von niemandem erfüllt werden, den es adressiert.

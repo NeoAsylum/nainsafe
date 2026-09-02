@@ -1,7 +1,7 @@
 ---
 id: 0018-lizenzbefund-klaerungsliste
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0014-lizenzpruefung-restliche-reihen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
