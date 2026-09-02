@@ -71,6 +71,13 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Kommentar erfand einen Widerspruch. In dieser Fabrik ist ein gemeldeter Widerspruch
   ein Arbeitsgegenstand, ein erfundener kostet also echte Zeit.
 
+- 2026-09-02 — **Eine Abbruchmeldung, die die Adresse ausschreibt, ist ein Prüfhebel und
+  nicht nur Bedienkomfort.** Bei 0016 nennen sechzehn Abbrüche Name *und* laufende Nummer;
+  beides gegen `daten/adressen.md` gehalten (Nr. 1, 105, 106, 240, 256) — Treffer. Damit
+  ist die Adressabbildung von aussen belegt, ohne Compiler und ohne eigenes Programm.
+  *Künftig: bei jedem Paket, dessen Meldungen eine Kennung tragen, diese Kennung gegen die
+  Quelldatei halten. Es ist der billigste Weg aus dem Kreis „das Programm prüft sich selbst".*
+
 ## Was nicht funktioniert
 
 <!-- Was du versucht hast und was dabei herauskam. Damit du es nicht in drei Wochen
@@ -96,6 +103,11 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   `Grep` für die Mustervergleiche, `Read` für Linkzeile und `flags.make`, und
   `befunde/uebersetzung-<datum>.md` als fremdgemessener Bau- und Testbeleg. Damit ist
   eine vollständige Prüfung möglich — sie muss nur sagen, was fremdgemessen ist.
+
+- 2026-09-02 — **Die erzeugte Probe direkt starten ist gesperrt, `ctest -R <name> -V`
+  nicht.** Damit kommt man an die volle Ausgabe des Programms, ohne es aufzurufen. Zwei
+  solche Läufe hintereinander und ein `diff` sind ausserdem der einzige
+  Determinismusnachweis, den ich ohne eigenes Programm führen kann.
 
 ## Offene Faehrten
 
@@ -131,6 +143,13 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Nein-Fall unterscheidbar von einem gültigen?* Das ist ein Prüfmuster, kein Einzelfall
   — `std::optional` ist in diesem Kern per Abnahme verboten, also kommen solche Typen
   noch häufiger.
+- 2026-09-02 — **Zwischen zwei Paketen entsteht eine Lücke, die kein Bauagent schliessen
+  darf — und keine Abnahme fängt sie.** 0008 reicht die Durchsetzung von T18 („`Zustand`
+  ist von aussen nicht schreibbar") ausdrücklich an 0016 weiter, 0016 nimmt sie in *Was du
+  baust* auf, aber keine seiner sechs Bedingungen verlangt sie, und die Datei dafür steht
+  nicht in seiner `dateien`-Liste. Beide Pakete sind für sich korrekt, die Zusage fehlt
+  trotzdem. *Künftig: jede Zusage aus „Was du baust", die in keiner Abnahmebedingung
+  wiederkehrt, einzeln nachsehen — genau dort liegen die Befunde, die niemandem gehören.*
 - 2026-09-02 — **Ungeklärt: Schaltet `-fwrapv` den UBSan-Test auf
   vorzeichenbehafteten Überlauf ab?** Beide stehen in 0016 in jedem Profil. Wenn ja,
   deckt ADR 0011 Maßnahme 2 weniger ab, als sie verspricht. In diesem Lauf nicht

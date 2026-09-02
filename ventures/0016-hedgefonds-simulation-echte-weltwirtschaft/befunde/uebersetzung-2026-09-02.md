@@ -29,13 +29,14 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 54%] Built target kern
-[ 54%] Built target kern_geprueft
-[ 81%] Built target schreiber_probe
-[ 81%] Built target festkomma_probe
-[ 81%] Built target pruefsumme_probe
+[ 50%] Built target kern
+[ 50%] Built target kern_geprueft
+[ 66%] Built target pruefsumme_probe
+[ 66%] Built target festkomma_probe
+[ 75%] Built target schranken_probe
+[ 83%] Built target zustand_probe
 [100%] Built target zufall_probe
-[100%] Built target zustand_probe
+[100%] Built target schreiber_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -43,19 +44,21 @@ anderes behauptet, irrt.
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
     Start 1: festkomma_probe
-1/5 Test #1: festkomma_probe ..................   Passed    0.01 sec
+1/6 Test #1: festkomma_probe ..................   Passed    0.01 sec
     Start 2: pruefsumme_probe
-2/5 Test #2: pruefsumme_probe .................   Passed    0.01 sec
-    Start 3: schreiber_probe
-3/5 Test #3: schreiber_probe ..................   Passed    0.01 sec
-    Start 4: zufall_probe
-4/5 Test #4: zufall_probe .....................   Passed    0.01 sec
-    Start 5: zustand_probe
-5/5 Test #5: zustand_probe ....................   Passed    0.01 sec
+2/6 Test #2: pruefsumme_probe .................   Passed    0.01 sec
+    Start 3: schranken_probe
+3/6 Test #3: schranken_probe ..................   Passed    0.01 sec
+    Start 4: schreiber_probe
+4/6 Test #4: schreiber_probe ..................   Passed    0.01 sec
+    Start 5: zufall_probe
+5/6 Test #5: zufall_probe .....................   Passed    0.01 sec
+    Start 6: zustand_probe
+6/6 Test #6: zustand_probe ....................   Passed    0.01 sec
 
-100% tests passed, 0 tests failed out of 5
+100% tests passed, 0 tests failed out of 6
 
-Total Test time (real) =   0.06 sec
+Total Test time (real) =   0.07 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -69,13 +72,16 @@ Total Test time (real) =   0.06 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 54%] Built target kern
-[ 54%] Built target kern_geprueft
-[ 72%] Built target pruefsumme_probe
-[ 72%] Built target zufall_probe
-[ 81%] Built target festkomma_probe
-[ 90%] Built target schreiber_probe
-[100%] Built target zustand_probe
+[ 50%] Built target kern
+[ 50%] Built target kern_geprueft
+[ 54%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+[ 79%] Built target schreiber_probe
+[ 79%] Built target zustand_probe
+[ 79%] Built target pruefsumme_probe
+[ 87%] Built target festkomma_probe
+[ 95%] Built target zufall_probe
+[100%] Linking CXX executable schranken_probe
+[100%] Built target schranken_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -83,37 +89,27 @@ Total Test time (real) =   0.06 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
     Start 1: festkomma_probe
-1/5 Test #1: festkomma_probe ..................   Passed    0.01 sec
+1/6 Test #1: festkomma_probe ..................   Passed    0.01 sec
     Start 2: pruefsumme_probe
-2/5 Test #2: pruefsumme_probe .................   Passed    0.01 sec
-    Start 3: schreiber_probe
-3/5 Test #3: schreiber_probe ..................   Passed    0.01 sec
-    Start 4: zufall_probe
-4/5 Test #4: zufall_probe .....................   Passed    0.01 sec
-    Start 5: zustand_probe
-5/5 Test #5: zustand_probe ....................   Passed    0.01 sec
+2/6 Test #2: pruefsumme_probe .................   Passed    0.01 sec
+    Start 3: schranken_probe
+3/6 Test #3: schranken_probe ..................   Passed    0.01 sec
+    Start 4: schreiber_probe
+4/6 Test #4: schreiber_probe ..................   Passed    0.01 sec
+    Start 5: zufall_probe
+5/6 Test #5: zufall_probe .....................   Passed    0.01 sec
+    Start 6: zustand_probe
+6/6 Test #6: zustand_probe ....................   Passed    0.01 sec
 
-100% tests passed, 0 tests failed out of 5
+100% tests passed, 0 tests failed out of 6
 
-Total Test time (real) =   0.06 sec
+Total Test time (real) =   0.07 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- The C compiler identification is GNU 15.2.0
--- The CXX compiler identification is GNU 15.2.0
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
--- Configuring done (0.4s)
+-- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/bau
 CMake Warning (dev) in CMakeLists.txt:
