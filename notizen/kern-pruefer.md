@@ -39,7 +39,21 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-02 — **Der Commit-Betreff sagt nicht, was im Commit steht.** Die
   Rücklauf-Behebung an 0004 lag in einem Commit mit fremdem Betreff; der Commit, der
   0004 nennt, enthielt sie nicht. Immer `git log -- <datei>` statt nach dem Betreff
-  suchen.
+  suchen. **Zum zweiten Mal bestätigt bei 0012:** ein Commit trug die Kennung 0012 und
+  enthielt ausschließlich die Dateien von 0008. `git show --stat <commit>` vor jedem
+  Urteil, und die Abweichung in den Befund — sie kostet später die Eingrenzbarkeit.
+- 2026-09-02 — **Eine veröffentlichte Prüfzahl lässt sich von Hand nachrechnen, wenn
+  die Probe ihren Zwischenzustand mitdruckt.** Bei 0012 druckt sie den Saatzustand;
+  daraus ist `rotl(s1·5,7)·9` in drei Zeilen Hexarithmetik zu bestätigen und trifft den
+  Wert der fremden Quelle. Das bricht den Kreis „das Programm prüft sich selbst" ohne
+  Compiler und ohne Shell — genau da, wo ich sonst nichts bauen darf. *Deshalb künftig:
+  eine Probe, die nur Endwerte druckt, macht diese Kontrolle unmöglich; das ist ein
+  Argument für Zwischenausgaben, kein Geschmack.*
+- 2026-09-02 — **Bei einem Zufallserzeuger ist die einzige harte Frage, woher die
+  Erwartungswerte stammen.** Ausgabe sieht in jedem Fall zufällig aus, also beweist
+  „grün" nichts. Die vier zitierten URLs selbst abrufen und Konstanten, Schrittweiten
+  und Zeilenreihenfolge Zeichen für Zeichen dagegenhalten — das ist die Prüfung, alles
+  andere ist Beiwerk. Bei 0012 stimmten alle vier.
 
 ## Was nicht funktioniert
 
@@ -79,6 +93,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   trifft es, ein `.gitignore`-treues Werkzeug nicht. Bei jeder Abnahme, die einen
   Suchlauf über ein Verzeichnis vorschreibt, künftig dazuschreiben, womit gemessen
   wurde — sonst urteilen zwei Prüfläufe verschieden über dieselbe Datei.
+- 2026-09-02 — **Ein Grep als Abnahmekriterium muss gegen die Typnamen dieses Kerns
+  geprüft werden, bevor man ihm glaubt.** Bedingung 1 von 0012 sucht veränderliche
+  Ablagen mit `^\s*[A-Za-z_]+ [a-z_]+ =` — und `[A-Za-z_]+` bricht bei `u64` nach dem
+  `u` ab. `u64 zaehler = 0;` auf Namensraum-Ebene bliebe unsichtbar, also genau der
+  Typ, aus dem der ganze Kern besteht. Das Paket war trotzdem sauber (von Hand
+  nachgesehen), aber das Muster wandert in die nächsten Kernpakete. *Künftig: jedes
+  vorgeschriebene Suchmuster einmal gegen einen erfundenen Verstoß halten, nicht nur
+  laufen lassen. Ein leerer Treffer beweist nur, dass das Muster leer ausgeht.*
 - 2026-09-02 — **Ungeklärt: Schaltet `-fwrapv` den UBSan-Test auf
   vorzeichenbehafteten Überlauf ab?** Beide stehen in 0016 in jedem Profil. Wenn ja,
   deckt ADR 0011 Maßnahme 2 weniger ab, als sie verspricht. In diesem Lauf nicht
