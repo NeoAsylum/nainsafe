@@ -24,11 +24,13 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   Werkzeug, nicht gegen die Quelle.** Der Seitenabruf reicht auf, statt roh
   durchzureichen; zwei Abrufe verschiedener URLs mit zeichengleichem Ergebnis sind der
   billigste Wortlautbeleg dieser Rolle. Kostet einen Abruf je Reihe.
-- 2026-09-01 — **Kontrollabrufe sind der Kern der Arbeit, nicht die Zugabe.**
-  `License_Type` sah aus wie die Antwort auf die ganze Paketfrage, sagte aber bei drei
-  ganz verschiedenen Herkünften dasselbe: Ein Feld, das nie widerspricht, unterscheidet
-  nichts. Bevor ein Metadatenfeld ein Urteil trägt, an einem Fall messen, bei dem es
-  widersprechen müsste.
+- 2026-09-01, erweitert 2026-09-02 — **Kontrollabrufe sind der Kern der Arbeit, und sie
+  laufen in zwei Richtungen.** *Widerspricht das Feld je?* `License_Type` sagte bei drei
+  ganz verschiedenen Herkünften dasselbe — ein Feld, das nie widerspricht, unterscheidet
+  nichts. *Schweigt es je?* Bei `Source` ist das die Frage; ein Abruf auf eine
+  weltbank-eigene Reihe beantwortet sie mit ja, und erst dadurch ist das Nennen einer
+  fremden Stelle eine Aussage statt einer Formelzeile. Beide Fälle messen, bevor ein
+  Metadatenfeld ein Urteil trägt.
 - 2026-09-01 — Wenn eine Reihe einen Drittanbieter nennt, ist die nächste Frage nicht
   „wie schlimm", sondern **„was sagt dieser Drittanbieter selbst".** Zwei von vier
   Verdachtsreihen lösten sich so auf (IWF erlaubt das Verkaufen, ILO seit 2023-05-03
@@ -44,12 +46,6 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   Die 310 Zeilen stimmten auf Anhieb; falsch war ein Satz *über* die Tabelle. Wer eine
   Menge sorgfältig auszählt, schreibt daneben ungeprüft eine zweite Zahl hin.
 
-- 2026-09-02 (Paket 0014) — **Die Kontrolle muss diesmal in die andere Richtung laufen: Sagt
-  das Feld jemals gar nichts?** Bei `License_Type` war die Frage „widerspricht es je"; beim
-  Feld `Source` ist sie „nennt es je *keinen* Fremdbestand". Ein Abruf auf eine
-  weltbank-eigene Reihe beantwortet sie mit ja — und erst dadurch ist das Nennen einer
-  fremden Stelle eine Aussage statt einer Formelzeile. Ein Feld, das immer dasselbe sagt,
-  entscheidet nichts; eines, das schweigen kann, schon.
 - 2026-09-02 (Paket 0014) — **Nie von einem Code einer mehrcodigen Reihe auf die Reihe
   schliessen.** Drei Geschwistercodes derselben Zeile trugen zwei verschiedene
   `Source`-Texte, und der Unterschied verschob die Zahl der betroffenen Sollreihen um den
@@ -81,6 +77,22 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   keine.** `grep -c PLATZHALTER` traf die Kopfzeile, die das Wort erklärt: 47 statt 46.
   Die Zahlen stimmten, der vorgeschriebene Weg nicht. Jeden Zählausdruck, den man in eine
   Datei schreibt, in derselben Datei einmal ausführen — er ist Teil der Lieferung.
+
+- 2026-09-02 (Paket 0018) — **Ein Massstab, den man in einem Abschnitt entwickelt, gilt in
+  allen.** Ich hatte unter 2b/2c „nationale Ämter, nur eines von vier geprüft, also unklar"
+  hergeleitet und ihn zwei Abschnitte später bei Reihe 1 und 2a nicht mehr angelegt, obwohl
+  meine eigene Übersichtstabelle beide Lieferantengruppen führte. *Regel:* Die
+  Übersichtstabelle Zelle für Zelle gegen jede Einzelbegründung legen — sie ist die
+  Zusammenfassung, also die Probe, nicht die Zugabe.
+- 2026-09-02 (Paket 0018) — **Eine nach Kosten geordnete Liste ist eine Empfehlung, auch
+  wenn „keine Empfehlung, nur die Preise" darübersteht.** Wer sie so liest, wie sie
+  dasteht, kauft den ersten Posten. *Regel:* Bei jedem Posten dazuschreiben, was er
+  **allein** bringt, nicht nur, was er im günstigsten Fall auslöst. Bei mir hoben vier
+  Schritte einzeln null Prüfgegenstände und erst als Paar acht.
+- 2026-09-02 (Paket 0018) — **Frontmatter, das zwei Zählbereiche unter ähnlichen Namen
+  mischt, macht die richtige Zahl unglaubwürdig.** `reihen_frei: 4` neben
+  `sollreihen_frei: 7` — beide stimmten, gegeneinander gerechnet kam 0 heraus. Ein Suffix
+  `_paket`/`_gesamt` an jedem Zahlenfeld kostet nichts und schliesst es.
 
 ## Was nicht funktioniert
 
@@ -116,7 +128,35 @@ Belege gehören nicht hierher, sondern in die Ergebnisdatei — hier steht die L
   `…/LO.en.md` gibt 404, und der PDF-Link auf `etalab.gouv.fr` leitet auf `data.gouv.fr`
   um. Der Weg, der trägt: `raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md`.
 
+- 2026-09-02 (Paket 0018) — **`Write` auf eine neue Datei und `Bash` (`cp`, `mv`, `sed`,
+  `grep`) waren gesperrt; `Edit` auf bestehende Dateien lief.** Damit ist die vorgeschriebene
+  Logbuch-Archivierung nach `notizen/archiv/` aus dieser Rolle heraus **nicht ausführbar** —
+  ich konnte nur in der Datei zusammenziehen. Wer das nächste Mal an die 12.000 Zeichen
+  stösst, braucht dafür jemanden mit Schreibrechten. *Siehe die Fährte unten.*
+
 ## Offene Fährten
+
+- **Paket 0018, worauf ich unsicher bin, für den Projektmanager (das Wichtigste):** Klärung 4
+  verlangt die Namen der zu prüfenden Stellen, und `Source` nennt nur *Arten* von Lieferanten,
+  keine Zuordnung zu Ländern. Ich habe die acht Stellen selbst benannt (Destatis/Bundesbank,
+  BEA/Fed, NBS/PBoC, IBGE/BCB) und als „benannt, nicht gemessen" gekennzeichnet. Bei den USA
+  ist die Wahl echt zweifelhaft: Die Volkswirtschaftliche Gesamtrechnung liegt dort beim BEA,
+  ein zentrales Statistikamt gibt es nicht. Wer die sieben Abrufe tatsächlich kauft, prüft
+  diese Zuordnung zuerst — sonst prüft er die falsche Behörde.
+- **Paket 0018, zweite Unsicherheit:** Ich habe die Klärungsnummern 1 bis 4 unverändert
+  gelassen und nur die Lesereihenfolge geändert, weil Prüfbefund und Arbeitspaket auf „Klärung
+  1" und „Klärung 4" namentlich verweisen. Ein Prüfer kann das ebenso gut als Nichtbefolgung
+  des „die Reihenfolge ändert sich" aus dem Paket lesen. Die Abnahmebedingung nennt keine
+  Reihenfolge; ich habe stabile Verweise vorgezogen.
+- **Paket 0018, über den Auftrag hinaus geändert, bewusst:** drei Stellen, die das Paket nicht
+  ausdrücklich nennt — ein Absatz in der Einleitung (dort entsteht der Eindruck, OECD und
+  Ämter seien Alternativen statt Summanden), eine T26-Folgezeile bei den IWF-Reihen 9, 11, 12
+  (Abnahme 4 sagt „kein Urteil ausser `frei` ohne Folgezeile", und diese drei hatten keine)
+  und `ueberarbeitet:` im Frontmatter. Alles drei ist Auslegung, keine Anweisung.
+- **Paket 0018, was ich nicht angefasst habe, obwohl es auffiel:** Die Zeile
+  `pruefgegenstaende_ungefaehrdet: 1 von 16` heisst jetzt `…_gesamt`, aber die „1" ruht auf
+  der IWF-Kette und wäre nach der eigenen Gegenrechnung der Datei auch anders lesbar. Das
+  Paket verbietet Urteilsänderungen; ich habe nur den Namen geschärft.
 
 - **Paket 0014, worauf ich unsicher bin, für den Projektmanager:** Ich habe die drei
   IWF-Reihen `unklar` genannt, weil ihr Lizenztext nach fünf Anläufen ungelesen bleibt und
