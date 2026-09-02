@@ -1,83 +1,85 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-02, nach dem fünften Baulauf (05:47–06:14).
+Stand 2026-09-02, nach dem sechsten Baulauf (06:39–07:24).
 
 ## Wo das Vorhaben steht
 
-Der Kern ist von vier auf **sechs von neun Kästen** gewachsen — der größte Sprung bisher:
-`zustand` (Paket 0008, 726 + 842 Zeilen plus 521 Zeilen Probe) und `zufall` (0012), beide
-übersetzt, `ctest` 4/4 grün, 0012 bereits `geprueft`. Damit ist die Frage meiner letzten
-drei Pläne beantwortet: 0008 war nicht festgefahren, es hat geliefert. Die Datenseite
-trägt weiter, der Übersetzungslauf bleibt grün.
+**Der Betreiber hat um 06:39 eingegriffen und den Engpass der letzten fünf Pläne
+aufgemacht** (`953bbf5`): `architekt` und `spielentwerfer` stehen jetzt in `BAUROLLEN`,
+dazu `einrichtung/rollen-pruefen.py` gegen die Wiederholung derselben Fehlerklasse. Der
+Trockenlauf zieht damit zum ersten Mal ein Architektenpaket (0011). Der Lauf selbst hat
+alle vier Bauplätze gefüllt — 0009, 0015, 0017, 0018 stehen auf `gebaut`, kein leerer
+Bauplatz —, und 0008 wie 0017 haben `urteil: geprueft`, werden im nächsten Lauf also
+`fertig`. Damit fallen `werte` (0002) und `schreiber` (0016) beide von selbst frei.
 
 ## Der Engpass
 
-**Der Kern hat ab dem nächsten Lauf keine baubare Aufgabe mehr.** `baulauf.py --trocken`
-zieht vier Pakete, und alle vier sind Datenpakete (0009, 0015, 0017, 0018) — **kein
-einziges Kernpaket**. Die drei leeren Kästen sind sämtlich zu:
+**`schritt` hat kein Arbeitspaket, und nach dem nächsten Lauf ist es der einzige leere
+Kernkasten.** Der Grund steht seit dem 2026-09-02 im Logbuch des Projektmanagers
+(Zeile 109): „Schaden" in Gegenkraft 5 (`technik.md` Abschnitt 12) hat keine
+Rechenvorschrift. `grep -l schritt.hpp aufgaben/*.md` findet genau ein Paket — 0004, das
+Werkstattgerüst, und das hat nur den Zweizeiler-Stub angelegt.
 
-- `werte` (0002) — `blockiert`, wartet auf die Klasse-2-Entscheidung
-- `schreiber` (0016) — hängt an 0008, und 0008 steht auf `gebaut`, nicht `fertig`
-- `schritt` — hat kein Paket, weil „Schaden" in Gegenkraft 5 keine Rechenvorschrift hat
+Die geöffnete Tür ändert daran nichts: Der Architekt ist jetzt einplanbar, sein
+Rückstand enthält aber genau ein Paket (0011, Stackwechsel). Eine Frage ohne Paket zieht
+kein Lauf — das ist derselbe Mechanismus wie gestern, nur eine Ebene höher: gestern
+fehlte der Rolle der Runner, heute fehlt der Rolle die Aufgabe.
 
-Nur der mittlere löst sich allein: 0008 wird nächsten Lauf geprüft, im übernächsten
-`fertig`, dann startet 0016. Die beiden anderen brauchen den Architekten — und der ist
-weiter nicht einplanbar (`baulauf.py:49`, heute nachgesehen, unverändert).
-
-Das ist keine Fortschreibung. Bisher kostete „Architekt nicht einplanbar" **ein**
-blockiertes Paket; seit 0008 und 0012 gebaut sind, kostet es **den ganzen Kern**. Der
-Preis der Vertagung ist in einem Lauf um eine Größenordnung gestiegen.
+`schritt` ist die Runde. Ohne sie rechnet der Kern nie, gleich wie viele Datenpakete
+durchgehen.
 
 ## Was quer liegt
 
-- **0015 lieferte nichts** — kein Commit auf seiner Paketdatei, kein Logbucheintrag,
-  `adressen.md` unverändert seit dem 2026-09-01. Damit ging zwei Läufe hintereinander
-  **genau einer von vier Bauplätzen** leer aus, beide Male ein anderes Paket (vorher 0008,
-  das diesmal lieferte). **Meine Vermutung von gestern war falsch:** Es liegt nicht am
-  Paket, es liegt am Platz. Gemessene Rate 1 von 4, über zwei Läufe. Für einen Eingriff zu
-  dünn, für die dritte Messung gehört es hierher.
-- **0009: Arbeit da, Meldung nicht.** Der Datenbauer hat um 05:47 `parameter.toml` um 87
-  Zeilen geändert, aber `status: offen` stehen lassen und nichts ins Logbuch geschrieben.
-  Folge: Der Trockenlauf plant 0009 als **Bau**, nicht als **Review** — der Prüfer sieht
-  Runde 2 nie, der nächste Datenbauer findet fertige Arbeit vor. Kostet einen Lauf und
-  heilt vermutlich selbst. Kommt 0009 ein zweites Mal ohne Statuswechsel zurück, ist es
-  kein Zufall.
-- **Der Kernbauer meldet drei eigene Unsicherheiten zu 0008**, eine davon inhaltlich:
-  `FondsGroesse` folgt der Reihenfolge des Adressverzeichnisses, T15 führt `sichtbarkeit`
-  und `anlegerbestand` vertauscht. Er hat die Stelle im Code vermerkt; der Prüfer bekommt
-  0008 im nächsten Lauf. Richtiger Ort, kein Eingriff.
-- **`technik.md` sagt elfmal Rust, gebaut wird C++20** (ADR 0011). Unverändert. Paket
-  0011, Rolle `architekt`.
-- **Drei Sachen brauchen dieselbe Hand am Runner**, keine ist ein Gate: ein TOML-Parser
-  neben `uebersetzen()` (0009 und 0017 können ihre Abnahme sonst nicht nachweisen — zwei
-  Runden lang konnte es weder Bauer noch Prüfer), die Rohdaten, die keine Baurolle
-  beschaffen kann, und A unten.
-- **Die 170-gegen-121-Lücke** unberührt, blockiert weiter nichts.
+- **Der Ausfall ist vom Bau- auf den Prüfplatz gewandert.** Alle vier Bauplätze
+  lieferten; von vier Prüfungen sind zwei leer: 0015 hat **keine** Befunddatei und
+  keinen Logbucheintrag, 0009 Runde 3 ist eine **0-Byte-Datei** (07:18). Das ist die
+  dritte Messung meiner Fährte — das Muster „ein Platz je Lauf geht leer aus" gilt
+  weiter, aber die Sorte Platz hat gewechselt und die Rate ist auf 2 von 4 gestiegen.
+- **0009 steht bei zwei von drei Rückläufen.** Runde 1 und 2 `zurueck`, Runde 3 leer
+  (zählt nicht mit, `rueckläufe()` liest `urteil`). Ein weiteres `zurueck`, und
+  `baulauf.py:295` erklärt das Paket für festgefahren — dann fällt `parameter.toml` aus
+  dem Betrieb und mit ihr die Schlüssel aus T27/T51. Einziges Paket in dieser Lage.
+- **Der Trockenlauf zeigt weniger, als der Lauf tut.** Er plant zwei Baupakete; im echten
+  Lauf hebt der Projektmanager erst 0008 und 0017 auf `fertig` (`baulauf.py:302`), lädt
+  neu (306) — dann kommen 0016 und 0020 dazu. Wer nur den Trockenlauf liest,
+  unterschätzt den nächsten Lauf um zwei Pakete. Korrektur an meiner eigenen Messmethode.
+- **0003 (Einheiten) ist eine Betreiberfrage, keine Bausache.** Das Paket sagt es selbst:
+  „entschieden wird es vom Betreiber, per ADR gegen T5 oder gar nicht." Blockiert derzeit
+  nichts, gehört aber nicht als Rückstand gezählt.
+- **`technik.md` sagt elfmal Rust, gebaut wird C++20** — erstmals beauftragbar, 0011 wird
+  im nächsten Lauf gezogen. Erste Sache dieser Liste, die von selbst verschwindet.
+- **`ops/kontingent.md` ist vom 2026-08-30** und kennt keinen einzigen Baulauf. Die
+  aktuelle Zahl (162 von 400 $) steht nur in der Commit-Botschaft des Betreibers.
+- **Vierter Fall der Fehlerklasse aus `953bbf5`, und diesmal in `CLAUDE.md` selbst:** Die
+  Regel „Logbuch bei 12.000 Zeichen nach `notizen/archiv/` verschieben" kann keine Rolle
+  ausführen — `mv`, `cp` und `Write` dorthin sind allen verwehrt. Mein Logbuch ist heute
+  darauf gelaufen, der daten-pruefer meldet es seit dem 2026-09-02 (Zeile 130). Ich habe
+  neu begonnen und auf `git show 9cb86d9:` verwiesen; nichts ist verloren, aber die Regel
+  steht wieder an einer Stelle, die der Ablauf nicht erreicht. Kein Gate, keine Eile.
 
 ## Was der Betreiber entscheiden muss
 
-Dieselbe eine Frage, zum fünften Mal — **und das bedeutet nichts:** Alle fünf Pläne sind
-seit dem letzten Griff des Betreibers (2026-09-01, 21:02) in derselben Nacht entstanden.
-Wiederholung ist hier kein Widerstand.
+Die Frage der letzten fünf Pläne ist beantwortet. Neu, und sie ist kleiner:
 
-**Wie kommt der Entwurf in einen Lauf?**
+**Wer schreibt die Rechenvorschrift für „Schaden"?**
 
-- *A:* `architekt` und `spielentwerfer` in `BAUROLLEN` aufnehmen (`baulauf.py:49`).
-  **Neu nachgemessen, und der Grund, warum A billig ist:** Beide stehen schon in `REVIEW`
-  (Zeile 63/64 → `entwurf-pruefer`), bekommen ihre Prüfung also automatisch. Und die
-  Rücklaufbremse des Baulaufs zählt **je Paket** (`baulauf.py:218-227`), nicht wie die des
-  Konzeptlaufs über alles — die fünf `zurueck` des Entwurfsprüfers auf 0001 blockieren
-  0011 nicht. Eine Zeile, kein Nebeneffekt.
-- *B:* Von Hand `python3 agents/lauf.py architekt 0016-…`. Funktioniert nachweislich —
-  aber für jede der sieben offenen Entwurfssachen einzeln.
-- *C:* Nichts tun. Kostet ab sofort den Kern, nicht ein Paket.
+- *A:* Der Projektmanager legt ein Architektenpaket dafür an — Zerlegen ist seine Rolle,
+  und er hat die Frage bereits im Logbuch, nur als Fährte statt als Paket. Kostet nichts
+  und greift mit dem nächsten Lauf.
+- *B:* Der Betreiber entscheidet sie selbst per ADR, wie bei 0003 vorgesehen.
+- *C:* Nichts tun. Dann steht der Kern nach dem übernächsten Lauf wieder ohne Kernarbeit
+  da — diesmal ohne dass eine Zeile im Runner hilft.
 
-**Empfehlung: A**, in derselben Sitzung mit dem TOML-Parser — dieselbe Datei, dieselbe
-Hand. Reihenfolge für den Architekten danach: Klasse 2 zuerst (entblockt 0002, ändert T5,
-T49, T23 Punkt 5, T8), dann 0011, dann Klasse 4.
+**Empfehlung: A, und ausdrücklich nicht B.** Das ist eine Entwurfsfrage aus `technik.md`,
+kein Gate: kein Geld, kein Recht, keine Außenwirkung. Der Betreiber wird erst gebraucht,
+wenn der Architekt meldet, der Entwurf gebe es nicht her. Falls dieser Plan überhaupt
+einen Griff braucht, ist es ein Satz an den Projektmanager: *Für `schritt` fehlt ein
+Paket.*
 
 ## Die eine Zahl
 
-**Von den drei verbleibenden Kernkästen ist im nächsten Lauf keiner baubar.** Bis heute
-früh lautete das Maß „5 von 9 leer" bei einem Kasten je Lauf; dieser Lauf brachte zwei.
-Die Zahl wechselt jetzt, weil nicht mehr die Bauleistung knapp ist, sondern die Freigabe.
+**Sechs von neun Kernkästen tragen Code — unverändert seit dem letzten Plan.** Dieser
+Lauf hat keinen Kasten dazugebracht, und das war vorhergesagt: Es war kein Kernbauer
+eingeplant, weil kein Kernpaket startbereit war. Die Vorhersage hat gehalten, die
+Ursache ist behoben. Ab dem nächsten Lauf wird wieder Bauleistung gemessen, nicht
+Freigabe.
