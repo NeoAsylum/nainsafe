@@ -24,6 +24,19 @@ Lehre. *Neu begonnen 2026-09-02 nach Paket 0025, Vorgänger: archiv/daten-pruefe
   Teil sind die **erfolglosen** Abrufe des Bauagenten: Wer nur die tragende Seite nachholt,
   prüft die Messung; wer die Sackgassen nachgeht, prüft die Nichtmessung — und die ist bei
   einem Einheitenpaket die eigentliche Aussage.
+- 2026-09-02 (0028) — **Ein Verweis wird an drei Dingen geprüft, nicht an einem:** Existiert
+  die genannte Fundstelle? Steht der zitierte Satz dort wörtlich? Und — der Schritt, den man
+  überspringt — stimmt das *Beispiel*, mit dem der Verweis seine Aussage trägt? Bei 0028 war
+  `handel.US.CN.1` erst dann ein Nachweis, als ich die Tabellenzeile selbst gezogen hatte
+  (Nr. 199, Marke leer). Aus der Legende abgeschrieben wäre es nur eine zweite Kopie.
+- 2026-09-02 (0028) — **Verkürzt ein Verweis die Regel der Zielstelle, ist zu prüfen, ob die
+  Zielstelle sich selbst genauso verkürzt.** `adressen.md` gibt seine Disjunktion unter
+  *Befund 2* fett als einen Ast wieder; wer den Wortlaut dieser Selbstzusammenfassung
+  übernimmt, gibt nicht falsch wieder. Sonst hätte ich hier ein Kriterium angehoben.
+- 2026-09-02 (0028) — **Steht der beanstandete Halbsatz wörtlich im Auftrag, ist der
+  Bauagent der falsche Adressat.** Prüfen, ob eine Formulierung vom Paket vorgeschrieben war,
+  *bevor* daraus ein Rücklauf wird — sonst bestraft man Gehorsam. Ging als Vorschlag 0039 an
+  den Projektmanager.
 - 2026-09-02 (0025) — **Eine ausgewiesene Nichtmessung greift man an, indem man den Weg
   sucht, den sie nicht gegangen ist.** Drei probiert, alle drei tot; erst das macht ein
   geprueft belastbar. Dazu die Fortsetzung der 0017-Lehre: **Werkzeugliste der
@@ -90,8 +103,13 @@ Lehre. *Neu begonnen 2026-09-02 nach Paket 0025, Vorgänger: archiv/daten-pruefe
 - **Zwei Schranken für das Paket, das parameter.toml einliest:** Deckelt T5 Klasse 4 auch
   Elastizitäten und Hebelobergrenze? Braucht Klasse 3 eine Untergrenze, weil hebelaufschlag
   negativ Kanal 4 umkehrt?
-- **parameter.toml Z. 147 ist durch 0015 falsch geworden.** Allgemein: Ändert ein Paket eine
-  Definition, nach Dateien greppen, die auf sie verweisen — der Verweis wird falsch, ohne
-  dass jemand ihn anfasst.
+- **Erledigt 2026-09-02:** parameter.toml Z. 147 (durch 0015 falsch geworden) ist mit 0028
+  geheilt und geprüft. Die allgemeine Lehre bleibt: Ändert ein Paket eine Definition, nach
+  Dateien greppen, die auf sie verweisen — der Verweis wird falsch, ohne dass jemand ihn
+  anfasst.
+- **parameter.toml kennt genau einen Index, den Instrumentenindex der vier
+  `[instrument.*]`-Tabellen.** Er trägt heute nichts, weil alle zwölf Schlüssel darunter
+  wörtlich belegt sind. Kommt je ein Schlüssel je Instrument dazu, den T51 nicht nennt,
+  gehen die beiden Marken-Regeln auseinander — dort zuerst hinsehen. Vorschlag 0039.
 - **gebiet-Präfix gegen land und restwelt ist ungeklärt**, daran hängt die
   basiswechsel-Familie. Wer das Präfix entscheidet, nimmt den Halbsatz mit.
