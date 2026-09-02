@@ -36,6 +36,15 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-01 — **Ein Logbuch, das die Vorlage geblieben ist, ist der billigste Beweis für
   einen leeren Lauf.** Jede Rolle schreibt am Ende hinein; wo nichts steht, hat der Lauf
   nicht bis zum Ende gearbeitet. Schneller als jede Journalabfrage.
+- 2026-09-02 — **Der Trick von gestern, verschärft: `grep -c "<datum>" notizen/*.md` über
+  alle beteiligten Rollen auf einmal.** Ein Aufruf, und der ganze Engpass stand da — drei
+  Bauagenten mit 0 Treffern, der Prüfer mit 10. Damit war belegbar, dass die Läufe nicht
+  leer, sondern *abgeschnitten* waren: Arbeit da, Schlussarbeit nicht. Das ist ein anderes
+  Fehlerbild als „leer" und keine Zählung der Fabrik sieht es.
+- 2026-09-02 — **Wenn ein Paket liegen bleibt, erst prüfen, ob seine Rolle überhaupt
+  eingeplant werden kann.** `BAUROLLEN` gegen das Feld `rolle` halten, zwei greps. 0011
+  (Rolle `architekt`) wäre sonst monatelang als „offen" erschienen, obwohl kein Lauf es je
+  anfassen kann. Ein Paket ohne planende Rolle ist kein Rückstand, sondern ein Loch.
 
 ## Was nicht funktioniert
 
@@ -56,19 +65,20 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 
 ## Offene Faehrten
 
-- **Die zwei Entscheidungen aus `ops/plan.md` vom 2026-09-01 nachhalten**: Rücklaufgrenze
-  im Baulauf (Empfehlung B, Grenze je Paket) und Auslöser für die 170-gegen-121-Lücke
-  (Empfehlung: erster bestandener Rückvergleich). Beim nächsten Lauf prüfen, ob eine
-  davon beantwortet ist — unbeantwortete Empfehlungen zweimal hintereinander unverändert
-  hinzuschreiben wäre genau der Bericht, der jede Woche gleich aussieht.
-- **Leere Läufe sind kein Einzelfall mehr, sondern das Muster.** Runde 5 im Entwurf
-  (0 Byte), 0004 im Bau (kein Byte), der Prüfer zu 0005 (kein Befund) — drei Fälle in zwei
-  Tagen, keiner davon in irgendeiner Zählung sichtbar. Nächster Lauf: Ist es wieder
-  passiert, gehört es nicht mehr in „was quer liegt", sondern nach oben als Engpass.
-- **Vier Entscheidungen hängen jetzt beim Betreiber** (Reihe 9/R, leere Läufe sichtbar
-  machen, Rücklaufgrenze, 170-gegen-121). Beim nächsten Lauf zuerst prüfen, welche
-  beantwortet ist — und wenn keine, die Zahl selbst zum Thema machen statt der Liste.
-- **Ob das Vorhaben je einen Übersetzer sieht.** `rueckstand.md` baut jedes
-  Abnahmekriterium auf „kein Agent hat eine Shell", und das stimmt so nicht. Die Frage ist
-  nicht geklärt, sondern ungemessen — ein einziger `cargo --version`-Versuch eines
-  Bauagenten würde sie beantworten.
+- **Erledigt und nicht wieder aufzuwärmen:** Übersetzungslauf (läuft seit 2026-09-02,
+  cmake/ctest grün — die Prämisse „es gibt keinen Übersetzer" ist widerlegt) und
+  Rücklaufgrenze (`RUECKLAUF_MAX = 3`). Zwei von vier Fragen des 2026-09-01 beantwortet.
+- **Reihe 9 / R und „Schaden" sind zum zweiten Mal unbeantwortet.** Ich habe sie deshalb
+  nicht erneut als eigene Frage hingeschrieben, sondern in die Ursache umgehängt: Ihre
+  Rolle (Spielentwerfer) wird vom Baulauf nicht geplant. Beim nächsten Mal prüfen, ob das
+  getragen hat — wenn eine Frage dreimal steht, war meine Umdeutung auch falsch.
+- **Nächster Lauf zuerst:** Ist `BAUROLLEN` um `architekt`/`spielentwerfer` erweitert, und
+  steht 0004 auf `gebaut`? Beides sind Ja/Nein-Fragen mit einem grep. Wenn nein, ist der
+  Engpass unverändert und gehört wortgleich wieder nach oben — dann ist nicht der Bericht
+  langweilig, sondern das Vorhaben steht.
+- **Die 170-gegen-121-Lücke** hat seit dem 2026-09-01 niemand angefasst und sie blockiert
+  noch nichts. Erst wieder aufgreifen, wenn der Kern rechnet.
+- **Offen und ungemessen: Warum brechen Läufe vor der Schlussarbeit ab?** Vermutung
+  (unbelegt): Kontingent- oder Zeitgrenze am Ende langer Bauläufe. `agents/auslastung.py`
+  kennt Tokens je Lauf und könnte es zeigen — ich schreibe nicht nach `ops/auslastung.md`,
+  also gehört die Frage in den Plan, nicht in meine eigene Recherche.

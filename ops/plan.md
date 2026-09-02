@@ -1,101 +1,98 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-01, nach dem ersten Baulauf (17:58–18:30). Der Vorgängerplan von heute
-Mittag ist damit überholt; seine zwei offenen Fragen stehen unten unverändert.
+Stand 2026-09-02, nach dem zweiten Baulauf (03:13–03:31). Der Plan vom 2026-09-01 ist
+damit überholt; was aus ihm offen blieb, steht unten.
 
 ## Wo das Vorhaben steht
 
-Die Datenseite bewegt sich, die Codeseite steht: Von vier gestarteten Paketen liegen zwei
-Befunde vor (0005 Lizenz, 0007 Adressverzeichnis — letzteres schon mit `urteil: geprueft`),
-0006 hat gemessen, aber seinen Status nicht gewechselt, und das einzige Codepaket 0004 hat
-nichts hinterlassen. Das Vorhaben weiß seit heute zwei Dinge, die es gestern nicht wusste:
-**Reihe 13 (Zollniveau) ist lizenzrechtlich gesperrt** — damit tritt T26 Fall 1 ein, zwei
-statt drei verankerte Instrumente im Rückvergleich — und **der Prüfjahrgang 1997–2021
-trägt nicht**: R = 19 statt 24, und die Leitzinsreihe für Deutschland und China hat in der
-vorgesehenen Quelle keinen einzigen Wert. Beide Antworten fallen gegen den Entwurf aus,
-keine kippt ihn — genau dafür waren die zwei Datenpakete vorgezogen worden.
+Das Vorhaben hat Code, und der Code übersetzt: 619 Zeilen C++ im Kern, dazu `cmake`,
+`cmake --build` und `ctest` alle drei grün (`befunde/uebersetzung-2026-09-02.md`,
+maschinell erzeugt — kein Modell hat das behauptet). Damit ist die Prämisse widerlegt,
+auf der `rueckstand.md` **jedes** Abnahmekriterium dieses Vorhabens aufbaut: „Es gibt
+keinen Übersetzer." Beide Datenpakete sind seit heute Nacht geprüft (0005 und 0007, je
+`urteil: geprueft` mit zwei Befunden), und der Stack steht auf C++ (ADR 0011).
 
 ## Der Engpass
 
-**Paket 0004 — Werkstattgerüst und Festkomma.** Nicht mehr 0002: 0002 hängt an 0008, 0008
-hängt an 0004 und 0007, 0004 hängt an nichts. Die ganze Codeseite steht dahinter.
+**Vier von fünf Agentenläufen dieser Nacht haben ihre Schlussarbeit nicht getan.** Der
+Kernbauer hat 619 Zeilen geschrieben und danach weder den Status seines Pakets auf
+`gebaut` gesetzt noch sein Logbuch ergänzt (`grep -c 2026-09-02 notizen/kernbauer.md`
+→ 0). Dasselbe beim Datenbauer — `parameter.toml` liegt mit 763 Zeilen da und trägt im
+Kopf Paket 0009 vom 2026-09-02, Status weiter `offen`. Und beim Projektmanager, der als
+Erster läuft und gar nichts geschrieben hat. Nur der Daten-Prüfer ist bis zum Ende
+gekommen.
 
-Sein erster Versuch hat **keine Spur hinterlassen** — keine `Cargo.toml`, keine `.rs`-Datei,
-kein Eintrag in `notizen/kernbauer.md` (unverändert die Vorlage), Status weiter `offen`.
-Was es gibt, ist ein Commit unter seinem Namen (`a629f73 kernbauer: 0004-…​ (2 Dateien)`),
-der ausschließlich Dateien des Datenbauers enthält: Jeder Bauagent committet ganz
-`ventures/`, also signiert der leere Lauf fremde Arbeit. Warum er leer blieb, steht im
-Journal (`state.db`), nicht im Repo — `ops/auslastung.md` ist vom 2026-08-30 und schweigt
-dazu; `python3 agents/auslastung.py` beantwortet es für null Tokens.
+Das ist **kein leerer Lauf** — die Arbeit ist da und sie ist gut. Es ist ein
+abgeschnittener, und der Unterschied ist teuer: `ops/auslastung.md` zählt solche Läufe
+als „ergiebig". Die Spalte „leer" ist gegen dieses Muster blind.
 
-Und die Terminfolge, falls 0004 heute Nacht gelingt: Prüfer im selben Lauf, `fertig` erst
-zu Beginn des nächsten, dann 0008, dann 0002. **Drei Baulaufe, wenn nichts zurückkommt.**
+Vier Folgen, alle jetzt wirksam:
+
+- **Der erste Code des Vorhabens wird nie geprüft.** Review verlangt `gebaut`, 0004 steht
+  auf `offen`. `notizen/kern-pruefer.md` ist noch Zeichen für Zeichen die Vorlage — die
+  Rolle hat in diesem Vorhaben nie gelaufen.
+- **0008 und 0002 bleiben blockiert.** Beide hängen an 0004, und 0004 ist formal offen.
+- **0006 wurde ein zweites Mal eingeplant** und hat wieder nichts hinterlassen; sein
+  Befund ist unverändert vom 2026-09-01, sein Commit trägt fremde Dateien.
+- **0007 müsste `fertig` sein.** Der Prüfbefund vom 2026-09-01 trägt `geprueft`, und den
+  Status setzt allein der Projektmanager.
 
 ## Was quer liegt
 
-- **0006 hat gemessen und steht trotzdem auf `offen`.** Der Befund ist da und erfüllt sein
-  Abnahmekriterium (ein Wert für R, die erzwingenden Reihen benannt). Folge des fehlenden
-  Statuswechsels: Heute Nacht plant `startbereit()` das Paket erneut ein — rund vierzig
-  Abrufe ein zweites Mal —, und ein Prüfer sieht es nie, weil Review `gebaut` verlangt.
-  Billigster Weg: Der Projektmanager setzt es zu Beginn des nächsten Laufs auf `gebaut`.
-- **Das Ergebnis von 0006 verlangt den Spielentwerfer, und der läuft im Baulauf nicht.**
-  T24 lässt für eine leere Reihe nur zwei Auswege — streichen oder Quelle ersetzen —, und
-  beide gehören ihm. Dieselbe Rolle schuldet nach `rueckstand.md` auch die Rechenvorschrift
-  für „Schaden" in Gegenkraft 5. Zwei offene Entwurfsfragen, eine Rolle, kein Lauf.
-- **Diese Entscheidung berührt bereits abgenommene Arbeit.** `daten/adressen.md` führt
-  30 Leitzins-Adressen. Fällt Reihe 9, ändert sich das Verzeichnis, das gerade geprüft
-  wurde. Heute kostet das eine Nacharbeit; sobald 0008 die 310 Felder getippt hat, zwei.
-- **0005 ist `gebaut` und hat keinen Prüfbefund.** Der Baulauf plant für jedes gebaute
-  Paket einen Prüfer seines Gewerks ein; entstanden ist nur `pruefung-0007-…`. Nebeneffekt
-  derselben Gleichzeitigkeit: Drei Datenbauer teilen ein Logbuch, und die Lehren aus 0006
-  — vor allem der neue IWF-Zugang über `api.imf.org` — stehen nicht darin, nur im Befund.
-- **Die Prämisse „kein Agent hat eine Shell" hält nicht.** `rueckstand.md` leitet daraus
-  jedes Abnahmekriterium des Vorhabens ab. Der Datenprüfer hat am selben Tag
-  `grep | sort | uniq -c`-Pipelines ausgeführt und notiert, was ihm verweigert wurde (`cd`,
-  Heredoc, `python3 -c`). Die Folgerung — Abnahme muss mit `Read` und `Grep` prüfbar sein —
-  bleibt richtig, ihre Begründung nicht, und ob ein Übersetzungslauf möglich wäre, ist
-  damit ungemessen statt beantwortet.
-- **Unbeantwortet aus dem Vormittagsplan:** Rücklaufgrenze im Bau (Empfehlung B) und der
-  Auslöser für die 170-gegen-121-Lücke (Empfehlung: erster bestandener Rückvergleich). Der
-  Projektmanager führt den Zähler „Rückläufe" seit heute in jedem Paket mit; die Grenze
-  selbst gibt es nicht.
+- **`specs/` sagt Rust, gebaut wird C++.** `technik.md` nennt Rust an zehn Stellen. Paket
+  0011 fasst T1/T2 neu — Rolle `architekt`, und `BAUROLLEN` in `baulauf.py` kennt
+  `architekt` nicht. **Kein Baulauf kann dieses Paket einplanen.** Es liegt, bis es von
+  Hand läuft.
+- **Dieselbe Lücke in den Paketen selbst.** 0002, 0003, 0008 und 0010 nennen im Feld
+  `dateien` `.rs`-Dateien; 0004s Abnahme prüft `lib.rs` auf `forbid(unsafe_code)`. Der
+  Kernbauer hat richtig gegen ADR 0011 gebaut und damit gegen sein eigenes Paket. Ein
+  Kern-Prüfer, der „gegen diese Liste und gegen nichts sonst" urteilt, müsste 0004 an
+  einem Dateinamen scheitern lassen.
+- **Zwei Entwurfsfragen aus dem letzten Plan sind unbeantwortet:** Reihe 9 samt R, und die
+  Rechenvorschrift für „Schaden" (Gegenkraft 5). Beide gehören dem Spielentwerfer, der
+  wie der Architekt im Baulauf nicht vorkommt. `spiel.md` ist seit dem 2026-09-01
+  unverändert.
+- **0003 steht seit dem 2026-09-01 auf `blockiert`**, niemand hat es angefasst. Der
+  Sachbefund dahinter ist behoben (T47/T50); überholt ist nur der Wortlaut des Pakets.
+- **Erledigt und hiermit vom Tisch:** Übersetzungslauf (läuft, grün) und Rücklaufgrenze
+  (`RUECKLAUF_MAX = 3`). Beide waren offene Fragen des letzten Plans.
 
 ## Was der Betreiber entscheiden muss
 
-**1. Wer entscheidet über Reihe 9 und R?** Reihe 13 braucht keine Entscheidung — T26 nennt
-den Fall und die Folge. Reihe 9 braucht eine, und ohne sie ist R nach dem Wortlaut der
-Spezifikation überhaupt nicht messbar.
+**1. Wie kommen die drei Entwurfsaufgaben in einen Lauf?** Architekt und Spielentwerfer
+stehen in `REVIEW`, aber nicht in `BAUROLLEN`. Daran hängen: der Stackwechsel in
+`technik.md` (0011), Reihe 9 mit R, und „Schaden".
 
-- *A:* Den Spielentwerfer einmal von Hand laufen lassen
-  (`python3 agents/lauf.py spielentwerfer 0016-hedgefonds-simulation-echte-weltwirtschaft`),
-  mit beiden offenen Fragen zugleich — Reihe 9 samt R und „Schaden". Er ändert `specs/`,
-  was `spiel.md` für genau diesen Fall selbst vorsieht: „Misst der Jahrgangsbau ein engeres
-  Fenster, ist R zu ersetzen und sonst nichts."
-- *B:* Selbst entscheiden. Der Befund legt die Zahlen nebeneinander: Reihe 9 streichen →
-  27 Sollreihen, R = 20; Quelle ergänzen → R = 19. Kostet zehn Minuten Lesen, keinen Lauf,
-  löst „Schaden" aber nicht mit.
-- *C:* Vertagen bis zum Jahrgangsbau. Heute billig, teuer ab dem Moment, in dem 0008 die
-  310 Felder getippt hat.
+- *A:* `BAUROLLEN` um `architekt` und `spielentwerfer` erweitern — eine Zeile in
+  `baulauf.py`. Ab dem nächsten Lauf planen Entwurfspakete sich selbst ein.
+- *B:* Von Hand starten, drei Läufe:
+  `python3 agents/lauf.py architekt 0016-hedgefonds-simulation-echte-weltwirtschaft`,
+  zweimal dasselbe mit `spielentwerfer`.
+- *C:* Vertagen. Kostet ab sofort jeden Baulauf, denn 0011 ist die Voraussetzung dafür,
+  dass die Abnahmekriterien der Codepakete auf den gebauten Code überhaupt passen.
 
-**Empfehlung: A.** Es sind seine zwei Fragen, ein Lauf erledigt beide, und die Entscheidung
-kostet Sie nur den Start, nicht das Lesen. Zwei Wochen später ist sie dreimal so teuer.
+**Empfehlung: A, und 0011 als erstes.** Die Rollen sind entworfen, ihre Prüfer sind schon
+zugeordnet — dass der Baulauf sie nicht kennt, ist eine Lücke im Skript, keine Absicht.
+B löst dieselbe Sache dreimal und lässt die Lücke stehen.
 
-**2. Soll ein leerer Lauf sichtbar werden?** Heute sind zwei Aufträge ohne Ergebnis
-geblieben (0004 und der Prüfer zu 0005), und beide fallen durch jede Zählung — nach der
-0-Byte-Prüfung der Runde 5 der dritte Fall desselben Musters.
+**2. Soll der Statuswechsel dem Agenten aus der Hand genommen werden?** Heute Nacht haben
+ihn alle drei Bauagenten vergessen, im Baulauf davor einer von dreien.
 
-- *A:* Nichts tun. Das Paket wird ohnehin neu eingeplant — nur unbemerkt beliebig oft.
-- *B:* `baulauf.py` meldet am Ende jeder Phase, welche Aufträge ohne Datei endeten, und
-  schreibt es in diesen Plan. `lauf.py` kennt die Zahl schon (`frisch_geschrieben`).
-- *C:* Zusätzlich zählen: zweiter leerer Lauf → `blockiert`. Das ist die Rücklaufgrenze aus
-  dem Vormittagsplan, erweitert auf den leeren Lauf.
+- *A:* Nichts tun, der Projektmanager zieht nach. Er ist heute Nacht selbst leer gelaufen.
+- *B:* `baulauf.py` setzt nach der Bauphase mechanisch `gebaut`, wenn die im Feld
+  `dateien` genannten Dateien existieren und nicht leer sind. Null Tokens, immer dieselbe
+  Antwort — dieselbe Bauart wie `auslastung.py`.
+- *C:* Zusätzlich melden, welcher Lauf ohne Statuswechsel endete. Das ist das Gegenstück
+  zur Spalte „leer", die dieses Muster nicht sieht.
 
-**Empfehlung: B jetzt, C gemeinsam mit der noch offenen Rücklaufgrenze.** Ein Lauf, der
-nichts hinterlässt, ist teurer als einer, der etwas Falsches hinterlässt: Der zweite wird
-geprüft.
+**Empfehlung: B und C — aber nach 0011, nicht davor.** B liest das Feld `dateien`, und
+genau dieses Feld nennt in fünf Paketen noch Rust-Namen. Heute gezogen, setzt B keinen
+einzigen Status und sähe dabei aus, als funktioniere es.
 
 ## Die eine Zahl
 
-**0 Zeilen Code — unverändert seit dem Vormittagsplan**, nach einem Baulauf mit vier
-Bauagenten. Sie ersetzt sich erst, wenn der Kern rechnet, durch die Abnahme des
-Rückvergleichs: **16 Prüfgegenstände, höchstens 2 dürfen reißen** (T37).
+**6 von 9 Kernkästen sind leer.** Inhalt haben `festkomma`, `kern` und `sperre`;
+`pruefsumme`, `schreiber`, `schritt`, `werte`, `zufall` und `zustand` sind
+Zwei-Zeilen-Platzhalter. Auftragsgemäß — aber sie sind der Weg zum ersten Weltschritt.
+Abgelöst wird diese Zahl vom Rückvergleich: 16 Prüfgegenstände, höchstens 2 dürfen
+reißen (T37).
