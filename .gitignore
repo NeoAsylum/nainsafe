@@ -228,3 +228,6 @@ state.db-shm
 *.local.yml
 ops/rohdaten/
 ventures/*/node_modules/
+
+# CMake-Bauverzeichnisse -- erzeugt, nicht gepflegt
+ventures/**/bau/

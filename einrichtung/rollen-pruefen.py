@@ -107,6 +107,28 @@ def main() -> int:
     for r in sorted(vorhanden - verkettet):
         befunde.append(f"WAISE: agents/rollen/{r}.md steht in keiner Kette")
 
+    # Arbeitspakete: Gibt es welche fuer Rollen, die kein Runner einplanen kann?
+    #
+    # Diese Pruefung fehlte, und dieselbe Fehlerklasse hat binnen zwei Tagen dreimal
+    # zugeschlagen: eine Ruecklaufgrenze im Arbeitspaket statt im Runner, eine
+    # Torpruefung nach einem Dateinamen, der sich aenderte, und ein Paket fuer den
+    # Architekten, den `baulauf` nicht kannte. Jedes Mal lag die Regel an einer Stelle,
+    # die der Ablauf nicht erreicht -- und jedes Mal fiel es erst auf, als etwas nicht
+    # geschah. Ausbleibende Arbeit sieht aus wie erledigte.
+    import baulauf  # noqa: E402
+    einplanbar = baulauf.BAUROLLEN | baulauf.PRUEFROLLEN
+    for ordner in sorted((WURZEL / "ventures").glob("*/aufgaben")):
+        for datei in sorted(ordner.glob("*.md")):
+            kopf, _ = frontmatter(datei.read_text(encoding="utf-8"))
+            rolle = kopf.get("rolle")
+            if kopf.get("status") in ("fertig", None):
+                continue
+            if rolle and rolle not in einplanbar:
+                befunde.append(
+                    f"PAKET: {datei.name} steht auf `{kopf.get('status')}` und "
+                    f"gehoert `{rolle}` -- diese Rolle plant kein Runner ein, "
+                    f"das Paket wird nie laufen")
+
     print(f"{len(rollen)} Rollen geprueft.")
     for b in befunde:
         print(f"  BEFUND  {b}")

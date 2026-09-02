@@ -46,8 +46,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from lauf import WURZEL, frontmatter, jetzt, lauf  # noqa: E402
 from nachtlauf import phase  # noqa: E402
 
+# Architekt und Spielentwerfer gehoeren dazu, seit der Bau laeuft. Sie standen bis zum
+# 2026-09-02 nur in REVIEW -- also wurde ihre Arbeit geprueft, aber nie eingeplant.
+# Paket 0011 (Stack auf C++) waere nie gelaufen, und der Geschaeftsfuehrer hat es im
+# ersten Lauf gemeldet: "Der Kern hat ab dem naechsten Lauf keine baubare Aufgabe mehr",
+# weil alle drei verbleibenden Kernkaesten auf Entwurfsentscheidungen warten.
+#
+# Dritter Fall derselben Sorte binnen zwei Tagen: eine Regel, ein Paket oder eine Rolle
+# an einer Stelle abgelegt, die der Ablauf nicht erreicht. Die Pruefung dagegen heisst
+# rollen-pruefen.py -- sie meldet Waisen, aber nur fuer Rollendateien, nicht fuer
+# Pakete. Das ist die Luecke, die als naechstes zu schliessen ist.
 BAUROLLEN = {"datenbauer", "kernbauer", "oberflaechenbauer", "auslieferer",
-             "testentwickler"}
+             "testentwickler", "architekt", "spielentwerfer"}
 PRUEFROLLEN = {"selbstspieler", "rueckvergleicher", "bruchtester"}
 
 # Je Gewerk ein Pruefer. Er liest das Arbeitspaket und das Ergebnis -- aber
