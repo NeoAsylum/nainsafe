@@ -38,6 +38,22 @@ Lehre daraus, in einem Satz.
   Rücklauf; was daneben liegt, hat sonst niemanden. **Also jeden Befund ganz lesen, auch
   den bestandenen** — die Adresszeile „an den Projektmanager" steht regelmässig erst hinter
   der Abnahmetabelle.
+- **2026-09-02, siebter Lauf — Ein Abnahmekriterium, das einen Wert erzwingt, wo die
+  Wahrheit unbekannt ist, erzeugt eine Falschaussage.** Zwei von sechs Bedingungen der 0017
+  waren wörtlich nicht erfüllbar: „jede Reihe trägt einen Umrechnungsfaktor, auch wenn er 1
+  ist" — bei zwei Reihen ist unbekannt, ob eine Umrechnung nötig ist, und die `1` wäre bei
+  PWT um Faktor 1.000 falsch **und stumm**. Der Bauagent hat richtig gehandelt und die
+  Nichtmessung laut gemacht. **Formel ab jetzt: „je X ein Y **oder** eine ausgewiesene
+  Nichtmessung mit der offenen Frage."** Dieselbe Naht bei Belegpflichten: „jedes Urteil
+  belegt" plus „kein Fall ohne Urteil" ist unerfüllbar, sobald es Fälle ohne Fremdquelle
+  gibt.
+- **2026-09-02 — Wer eine Rolle bekommt, sagt `specs/`, nicht der Plan.** Der Plan empfahl
+  für „Schaden" ein **Architekten**paket; `technik.md:264` sagt wörtlich, die Größe sei
+  „Sache von `spiel.md`", und der Architekt hatte die Lücke mit Absicht offen gelassen
+  („Fülle ich sie, misst Maß 2 meine Wahl"). Also Spielentwerfer. **Zweiter Grund, der
+  allein schon reicht: Die Datei ist die Kollisionseinheit** — `technik.md` war von 0011
+  besetzt, das Paket wäre nie eingeplant worden. Vor der Rollenwahl nachsehen, wem
+  `specs/` die Datei gibt und wer sie gerade hält.
 - 2026-09-02, abends — **Geschärfte Vorgaben gehören in das Paket, das die Sache ohnehin
   baut, nicht in ein neues.** Prüffrage: Gibt es ein offenes, noch nie gebautes Paket, das
   diese Datei oder dieses Kriterium ohnehin anfasst? Dann ist es kein Kriterienzuwachs,
@@ -51,6 +67,14 @@ Lehre daraus, in einem Satz.
   `head`, `ls`, `wc`, `python3` und `git log` gingen. Für Dateiausschnitte `Read` mit
   `offset`/`limit`, für Muster das `Grep`-Werkzeug. **Eine Ablehnung ist kein Urteil über
   den Inhalt** — bei Schreibzugriffen wiederholen, nicht umschreiben und nicht aufgeben.
+- **2026-09-02, der teuerste Fund des Laufs, und er erklärt einen Teil des Eintrags
+  darüber: nie aus `~/fabrik` heraus `cd`en.** Meine Rechteregel heisst `Edit(ventures/**)`
+  und ist **relativ** — sie wird gegen das Arbeitsverzeichnis der Shell aufgelöst, und das
+  überlebt den einzelnen Bash-Aufruf. Ein `cd .../befunde` am Anfang des Laufs, und
+  derselbe `Edit` mit demselben absoluten Pfad wurde zweimal abgelehnt; nach `cd
+  ~/fabrik` ging er sofort durch. Sauberes Gegenexperiment, keine Vermutung. **Merkregel:
+  Pfade immer absolut *und* die Shell nie umsetzen** — `cd x && …` nur als `grep … x/datei`.
+  Auch `Grep` mit relativem `path` bricht danach („Path does not exist").
 - 2026-09-02, abends — **Zwei `Edit` auf dieselbe Datei in einem Aufrufblock werden
   abgelehnt, einzeln gehen beide durch.**
 - 2026-09-02, zweimal beobachtet — **Der Commit-Betreff belegt nicht, wer gebaut hat. Die
@@ -72,36 +96,42 @@ Lehre daraus, in einem Satz.
   Status ist mein einziges Vorwärtswerkzeug gegen eine Vorgabe, die gerade repariert wird;
   die Prosa in `rueckstand.md` liest kein Scheduler. Merkregel: Sagt ein Prüfbefund „das
   ändert `specs/`", dann nachsehen, welches offene Paket genau diese Stelle abschreibt.
-- **2026-09-02, sechster Lauf, der teuerste Fund über mich selbst** — **Ich habe fünf Läufe
-  lang notiert, welche Rolle in `BAUROLLEN` *fehlt*, und nie nachgesehen, welche eingetragene
-  Rolle *leer läuft*.** `testentwickler` steht dort seit dem ersten Baulauf, hat einen
-  Prüfer in `REVIEW` (`baulauf.py:62`), eine Rollendatei, ein Logbuch — und hatte bis heute
-  kein einziges Paket. Gleichzeitig stand im Plan „der Kern hat keine baubare Aufgabe mehr".
-  Beides zusammen war einen Lauf lang wahr, ohne dass es mir auffiel. **Merkregel: `BAUROLLEN`
-  und `PRUEFROLLEN` einmal je Lauf ganz durchgehen und je Rolle fragen, ob sie ein offenes
-  Paket hat.** Die Antwort steht in drei Sekunden im Trockenlauf.
+- **2026-09-02, sechster Lauf** — **Fünf Läufe lang notiert, welche Rolle in `BAUROLLEN`
+  *fehlt*, und nie nachgesehen, welche eingetragene Rolle *leer läuft*:** `testentwickler`
+  stand dort seit dem ersten Baulauf und hatte kein einziges Paket, während der Plan „keine
+  baubare Aufgabe" meldete. **`BAUROLLEN` und `PRUEFROLLEN` je Lauf ganz durchgehen.**
+  Ergänzung 2026-09-02, siebter Lauf: Dabei **zwei Fälle unterscheiden** — Rolle ohne Paket,
+  aber baubar (mein Fehler), gegen Rolle ohne Paket, weil eine Voraussetzung nachweisbar
+  fehlt (richtig, gehört in den Rückstand). Bei den fünf heute leeren Rollen ist es der
+  zweite Fall; den Nachweis führe ich, statt ihn anzunehmen.
 
 ## Offene Faehrten
 
-- **Der Scheduler hat keine Vorfahrt.** `baulauf.py:257` nimmt `startbereit(...)[:4]`, und
-  `pakete()` liest `sorted(ordner.glob("*.md"))` — also reine Dateinamen-Reihenfolge. Ein
-  neu angelegtes Paket mit hoher Nummer kommt nicht dran, solange vier niedriger
-  nummerierte `offen` stehen, und ein steckengebliebenes Paket (0015 lieferte zweimal
-  nichts, 0009 vergass den Statuswechsel) belegt seinen Platz dauerhaft. **Vor dem Anlegen
-  eines Pakets prüfen, ob es überhaupt einen Platz bekommen kann** — sonst schreibe ich für
-  den übernächsten Lauf. Umplanen ist trotzdem falsch: ein Paket künstlich zu blockieren
-  wäre eine Lüge im Statusfeld, rückwärts nummerieren verstösst gegen die Konvention.
-  Melden, und wenn es nach dem nächsten Lauf steht, ist es eine Zeile im Runner.
+- **Der Scheduler hat keine Vorfahrt.** `baulauf.py:267` nimmt `startbereit(...)[:4]` über
+  `sorted(glob("*.md"))` — reine Dateinamen-Reihenfolge. Ein neues Paket mit hoher Nummer
+  kommt nicht dran, solange vier niedrigere `offen` stehen. **Vor dem Anlegen prüfen, ob es
+  überhaupt einen Platz bekommen kann**; umplanen ist trotzdem falsch (künstlich blockieren
+  wäre eine Lüge im Statusfeld, rückwärts nummerieren bricht die Konvention). — 2026-09-02:
+  Mein alter Vorschlag „je Rolle höchstens zwei Plätze" ist **nachgerechnet wirkungslos**,
+  er ändert an der Auswahl keine Zeile. Richtig ist ein **Reihum: erst ein Paket je Rolle,
+  dann auffüllen** — fünf Gewerke statt vier, Engpasspaket eine Runde früher. **Lehre:
+  einen Vorschlag an den Runner erst gegen den Trockenlauf rechnen, dann melden.** Ich habe
+  den alten zweimal weitergereicht, ohne ihn je einzusetzen.
 - **Die Rolle, die von nichts abhängt, ist die Reserve gegen einen blockierten kritischen
   Pfad.** Als der Kern an 0008 hing und `werte`/`schritt` zu waren, war die brauchbare
   Arbeit das Vorratsverfahren (T43/T36): fünf Ganzzahlen, drei Steckplätze, kein `Zustand`,
   kein Zufall („wird nie gerundet und nie gezogen"), und Maß 2 und 3 stehen darauf.
   **Suchmuster für den nächsten Engpass: Welche Vorgabe rechnet mit Zahlen, die nirgends
   herkommen?** Die ist immer sofort baubar.
-- **`BAUROLLEN` kennt weiter keinen `architekt` und keinen `spielentwerfer`** —
-  `baulauf.py:49`, am 2026-09-02 zum vierten Mal nachgesehen. Solange das so ist, **lege
-  ich keine Entwurfspakete an**; statt dessen Meldung in `rueckstand.md`. Jeden Lauf einmal
-  nachsehen.
+- **Erledigt am 2026-09-02: `architekt` und `spielentwerfer` stehen in `BAUROLLEN`**
+  (`baulauf.py:59`), nach fünf Meldungen. Einen Umweg gab es nicht — beide Entwurfsrollen
+  waren gesperrt, also auch der Weg über `spiel.md`. **Die Lehre ist die Gegenrichtung:
+  Ich habe fünf Läufe lang „keine Entwurfspakete" als Planungsannahme geführt, und als die
+  Sperre fiel, war der Rückstand an Entwurfsarbeit genau ein Paket.** Eine gemeldete Sperre
+  ist kein Grund, den Rückstand dahinter nicht zu füllen — die Pakete hätten `blockiert`
+  dastehen können, bereit für den Tag, an dem die Zeile im Runner kommt.
+- **Die Rollentabellen einmal je Lauf gegenlesen** (`baulauf.py:59`/`67`). Ändert der
+  Betreiber sie, wird meine Planungsannahme lautlos falsch — kein Paket wird rot.
 - **Zwei Werkzeuge fehlen dem Runner, immer dasselbe Muster:** ein TOML-Parser neben
   `uebersetzen()` und eine Hand, die die Rohdaten auf die Platte legt. **Prüffrage bei jedem
   Abnahmekriterium, das ich schreibe: Kann die Rolle den Nachweis überhaupt führen?** Kann

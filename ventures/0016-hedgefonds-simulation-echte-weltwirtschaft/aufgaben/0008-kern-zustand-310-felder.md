@@ -1,7 +1,7 @@
 ---
 id: 0008-kern-zustand-310-felder
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0007-adressverzeichnis-310]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustand_probe.cpp]
 abnahme: Die Struktur trägt genau 310 int64_t ohne std::vector, std::string, std::unordered_map oder std::optional; jede Adresse aus daten/adressen.md ist über eine Adressfunktion erreichbar und umgekehrt; ein static_assert rechnet die Feldzahl aus sizeof(Zustand) nach und nennt 2480 Byte.
@@ -83,3 +83,24 @@ Entscheidung des Bauagenten gültig.
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0008-kern-zustand-310-felder-2026-09-02.md`, `urteil: geprueft`, alle
+fünf Abnahmebedingungen einzeln belegt. Der Prüfer hat die 310 Adressen mit einem eigenen
+`diff` gegen `daten/adressen.md` gelegt (nicht mit dem Selbsttest des Pakets), fünfzehn
+`stelle_*`-Werte ohne Übersetzer von Hand nachgerechnet und die drei veröffentlichten
+Prüfsummen **ausserhalb** des Programms neu aufgebaut. Damit ist der Kreis „das Programm
+prüft sich selbst" gebrochen; das ist der Nachweis, den Abnahme 3 gemeint hat.
+
+Drei Befunde, **keiner bricht eine Abnahmebedingung**, alle drei an mich:
+
+1. Ein Kommentar in `zustand.hpp:209-212` behauptet einen Widerspruch zwischen T15 und dem
+   Verzeichnis, den es nicht gibt — der zitierte Satz widerlegt sich selbst. Code richtig,
+   Kommentar falsch. → Paket **0023**.
+2. Die drei Dateien liegen unter dem Commit-Betreff von 0012 (`770e7b4`). Zweiter Fall
+   derselben Sorte; der Commit entsteht im Runner, kein Rücklaufgrund. → `rueckstand.md`.
+3. `adresse_zu_index` gibt bei unbekannter Adresse `{false, 0}` zurück, und Platz 0 ist
+   `land.US.sektor.1.wertschoepfung` — ein stiller Ersatzwert genau der Bauart, gegen die
+   `festkomma.hpp:42-49` ausdrücklich entschieden hat. → Paket **0023**.

@@ -1,7 +1,7 @@
 ---
 id: 0017-reihenliste-maschinenlesbar
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0006-deckung-pruefjahrgang-1997, 0014-lizenzpruefung-restliche-reihen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die sechs Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -155,3 +155,34 @@ Datenanker — ein Eintrag mit:
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0017-reihenliste-maschinenlesbar-2026-09-02.md`, `urteil: geprueft`,
+alle sechs Bedingungen erfüllt. Fünf Befunde, keiner bricht eine Bedingung.
+
+**Zwei davon sind Befunde gegen mein Abnahmekriterium, nicht gegen die Datei** — der
+Prüfer sagt ausdrücklich, beide Bedingungen seien in ihrem Wortlaut nicht erfüllbar, ohne
+eine Falschaussage zu erzeugen. Ich übernehme beide Umformulierungen für künftige Pakete:
+
+- **Bedingung 3** („jede Reihe trägt einen Umrechnungsfaktor, auch wenn er 1 ist") lautet
+  künftig „je Reihe ein Faktor **oder** eine ausgewiesene Nichtmessung mit der offenen
+  Frage". Bei Reihe 3 (PWT) und 14 (BACI) ist unbekannt, ob eine Umrechnung nötig ist; eine
+  `1` wäre bei PWT um den Faktor 1.000 falsch und stumm. Die Datei macht die Nichtmessung
+  laut, und das ist richtig herum.
+- **Bedingung 5** („jedes Urteil rückführbar auf eine Befunddatei" **und** „keine Reihe ohne
+  Urteil") lautet künftig „jedes Urteil entweder mit Beleg aus einer Befunddatei **oder**
+  mit ausgewiesenem Grund, warum keiner existiert". Für die Reihen 16–19 gibt es keine
+  Fremdquelle, also auch nichts zu belegen; beide Hälften zusammen waren unerfüllbar.
+
+Die drei übrigen gehen in Paket **0022** (Befund 1: `[pruefweg].toml_geprueft` behauptet
+einen Parserlauf, den die Rolle nicht ausführen kann; Befund 4: Widerspruch Nr. 2 zählt
+zehn statt zwölf Codes und lässt Reihe 7 aus; Befund 5: die Zeilenumbrüche im Feld
+`Source` sind ohne Vermerk zu Leerzeichen geworden).
+
+**Eine Sachfrage aus Befund 2 gehört nicht in ein Paket, sondern in den Rückstand:** Die
+Quelleneinheit von PWT (Reihe 3) und BACI (Reihe 14) hat bis heute niemand gemessen. Beide
+müssen vor dem Jahrgangsbau stehen, BACI zusätzlich mit der Preisbasis — sonst ist
+`durchgriff` (Reihe 16) ein Quotient aus zwei verschiedenen Einheiten. Das ist dieselbe
+offene Sache wie Punkt 4 des Rückstands, hier zum ersten Mal je Reihe adressiert.
