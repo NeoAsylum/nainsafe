@@ -155,7 +155,7 @@ def phase(name: str, auftraege: list[tuple[str, str | None]]) -> int:
     return fehler
 
 
-def fokuslauf(trocken: bool) -> int:
+def fokuslauf(trocken: bool, bericht: bool = True) -> int:
     """Der Nachtlauf, wenn die Fabrik nicht mehr sucht, sondern an einer Idee arbeitet."""
     kopf = next((k for k in repo.ideen(mit_eichung=False) if k["_id"] == FOKUS), None)
     if kopf is None:
@@ -205,12 +205,12 @@ def fokuslauf(trocken: bool) -> int:
     import baulauf  # spaet importiert: baulauf importiert phase aus diesem Modul
     (WURZEL / "ventures" / FOKUS).mkdir(parents=True, exist_ok=True)
     print("  Entwurf abgenommen. Der Nachtlauf baut.")
-    return baulauf.main(FOKUS, trocken)
+    return baulauf.main(FOKUS, trocken, bericht=bericht)
 
 
-def main(trocken: bool = False) -> int:
+def main(trocken: bool = False, bericht: bool = True) -> int:
     if FOKUS:
-        return fokuslauf(trocken)
+        return fokuslauf(trocken, bericht)
 
     aktiv, im_bau = wip()
     voll = aktiv >= WIP_AKTIV_MAX

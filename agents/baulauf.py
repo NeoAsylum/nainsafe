@@ -281,7 +281,8 @@ def startbereit(alle: list[dict], rollen: set[str], zustand: str = "offen") -> l
     return dran
 
 
-def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) -> int:
+def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG,
+         bericht: bool = True) -> int:
     alle = pakete(venture)
     zaehl = {z: len([p for p in alle if p.get("status") == z])
              for z in ("vorschlag", "offen", "gebaut", "zurueck", "fertig",
@@ -313,7 +314,8 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
         print(f"  4. Pruefung   {len(pruef)} Pakete")
         for p in pruef:
             print(f"       {p.get('rolle'):18} {p['_id']}")
-        print("  5. geschaeftsfuehrer")
+        print("  5. geschaeftsfuehrer" if bericht else
+              "  5. geschaeftsfuehrer -- entfaellt, nur im letzten Durchgang")
         if not alle:
             print()
             print("  Es gibt noch keine Arbeitspakete. Der erste Lauf legt sie an --")
@@ -360,7 +362,16 @@ def main(venture: str, trocken: bool = False, gleichzeitig: int = GLEICHZEITIG) 
     if pruef:
         fehler += phase("Pruefung", [(p["rolle"], p["_id"]) for p in pruef])
 
-    if lauf("geschaeftsfuehrer", venture) != 0:
+    # Der Geschaeftsfuehrer schreibt einen Bericht fuer einen Menschen, und der liest
+    # einen. Bis zum 2026-09-02 lief er je Durchgang -- bei zwoelf Durchgaengen zwoelf
+    # Plaene in einer Nacht, von denen elf niemand sieht. Er hat es selbst gemeldet:
+    # "Dieselbe eine Frage, zum fuenften Mal; alle fuenf Plaene sind in derselben Nacht
+    # entstanden."
+    #
+    # Jetzt laeuft er nur, wenn der Aufrufer es verlangt -- der Tageslauf tut das im
+    # letzten Durchgang. Der Bericht wird dadurch nicht duenner, sondern besser: Er
+    # deckt die ganze Nacht ab statt eines Durchgangs.
+    if bericht and lauf("geschaeftsfuehrer", venture) != 0:
         fehler += 1
 
     uebrig = len([p for p in pakete(venture) if p.get("status") == "offen"])

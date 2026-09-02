@@ -76,7 +76,9 @@ def main(grenze: float = GRENZE, durchgaenge: int = DURCHGAENGE,
         print()
         print(f"=== Durchgang {nr} -- {grenze - heute:.1f} $ Spielraum " + "=" * 30)
         try:
-            if nachtlauf.main(False) != 0:
+            # Bericht nur im letzten Durchgang -- siehe baulauf.py.
+            letzter = nr == durchgaenge or heute + 60 >= grenze
+            if nachtlauf.main(False, bericht=letzter) != 0:
                 fehler += 1
         except Exception as ausnahme:          # ein Durchgang darf den Tag nicht kippen
             fehler += 1
