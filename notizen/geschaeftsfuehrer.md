@@ -65,6 +65,16 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   fünf `zurueck`-Urteilen bei `RUECKLAUF_MAX = 3` vor dem ersten Token an. Zwei greps
   (Bremse zählen, `return 0` lesen) haben aus einer Option eine geschlossene Tür gemacht.
   Eine Option, die ich nicht nachgesehen habe, ist eine Vermutung im Entscheidungstext.
+- 2026-09-02 (4. Lauf) — **`baulauf.py --trocken` ist die schärfste Engpassmessung, die
+  ich habe.** Sie sagt nicht, was offen ist, sondern was der nächste Lauf *anfasst*. Vier
+  gezogene Pakete, alle vier vom Datenbauer, null Kernpakete — damit stand der Engpass
+  ohne jede Abwägung da. Der Rückstand konnte das nicht zeigen: Er war 20 Minuten vor dem
+  Ende des Laufs geschrieben. **Erst den Trockenlauf, dann den Rückstand lesen.**
+- 2026-09-02 (4. Lauf) — **Nicht nur prüfen, ob eine Option machbar ist, sondern welche
+  Nebenwirkungen das Skript ihr gibt.** Zu „Architekt in `BAUROLLEN`" fand ich zwei
+  Sachen, die ich sonst geraten hätte: Er steht schon in `REVIEW` (bekommt seinen Prüfer
+  automatisch), und `rueckläufe()` zählt **je Paket** — anders als im Konzeptlauf. Aus
+  „eine Zeile" wurde damit „eine Zeile ohne Nebeneffekt", und das ist ein anderer Satz.
 
 ## Was nicht funktioniert
 
@@ -101,6 +111,9 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 
 ## Offene Faehrten
 
+- **2026-09-02: Diese Datei steht bei 11.500 von 12.000 Zeichen.** Nächster Lauf zuerst
+  nach `notizen/archiv/geschaeftsfuehrer-2026-09-02.md` verschieben und mit dem neu
+  anfangen, was noch gilt — nicht mittendrin, wenn die Grenze reißt.
 - **Erledigt und nicht wieder aufzuwärmen:** Übersetzungslauf (cmake/ctest grün seit
   2026-09-02), Rücklaufgrenze (`RUECKLAUF_MAX = 3`), Rust-Dateinamen in den Codepaketen
   (Projektmanager hat alle nachgezogen), und die abgeschnittenen Läufe — am 2026-09-02
@@ -113,21 +126,30 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - **Nächster Lauf zuerst:** Steht `architekt` in `BAUROLLEN` (`grep -n BAUROLLEN
   agents/baulauf.py`), und ist 0002 gebaut (`grep '^status:' …/aufgaben/0002-*.md`)?
   Erste Frage nein + zweite ja = die Preisbasis-Mischung ist in Code gegossen und der
-  Plan muss von Nacharbeit handeln, nicht mehr von Vorbeugung. Am 2026-09-02 war es
-  nein + nein, die Vorbeugung also noch möglich.
-- **Zweite Frage nächster Lauf: Hat 0008 wieder nichts geliefert?**
-  (`wc -l …/kern/include/kern/zustand.hpp`, 2 Zeilen = Platzhalter). Beim ersten Mal habe
-  ich es als selbstheilend eingestuft, weil der parallele Kernbauer die mutmaßliche
-  Ursache um 05:02 ins Logbuch schrieb und der 0008-Lauf sie nicht mehr lesen konnte.
-  Zweimal leer widerlegt das und macht 0008 zum Engpass.
+  Plan muss von Nacharbeit handeln, nicht mehr von Vorbeugung. Am 2026-09-02 (4. Lauf)
+  war es zum zweiten Mal nein + nein; zusätzlich nachgesehen, dass `zustand.hpp` trotz
+  1.568 Zeilen **keine** Preisbasis festlegt. Die Vorbeugung ist noch möglich.
+- **Erledigt am 2026-09-02 (4. Lauf): 0008 hat geliefert**, 726 + 842 Zeilen plus Probe.
+  Die Einstufung „selbstheilend" hat getragen. **Aber die Lehre ist eine andere als
+  erwartet:** Leer ging derselbe Lauf trotzdem an *einem* von vier Bauplätzen aus, nur an
+  einem anderen Paket (0015). **Die Einheit des Fehlers ist der Bauplatz, nicht das
+  Paket** — zwei Läufe, je 1 von 4, je ein anderes Paket. Ein leeres Paket dem Paket
+  anzulasten, bevor die zweite Messung da ist, wäre falsch gewesen. Dritte Messung im
+  nächsten Lauf: Ging wieder genau einer von vier leer aus?
+- **Ein Bauagent kann Arbeit schreiben und trotzdem aus dem Review fallen.** 0009 hat am
+  2026-09-02 um 05:47 87 Zeilen `parameter.toml` bekommen, aber `status: offen` behalten —
+  also plant der Runner es als Bau statt als Review, und der Prüfer sieht die Runde nie.
+  Prüfmuster in zwei Aufrufen: `git log` auf die **Ergebnisdatei** gegen `git log` auf die
+  **Paketdatei**. Stehen dort verschiedene Zeiten, ist die Meldung ausgefallen, nicht die
+  Arbeit. Das ist ein drittes Fehlerbild neben „leer" und „abgeschnitten".
 - **Ein Bauagent, der nichts liefert, verrät sich über sein Logbuch, nicht über den
   Commit.** Der Commit `kernbauer: 0008` enthielt ausschließlich fremde Dateien (das
   Quersammeln paralleler Läufe), `grep -n 0008 notizen/kernbauer.md` war leer. Der
   Commit-Betreff belegt nur, dass der Lauf *geplant* war.
 - **Die 170-gegen-121-Lücke** hat seit dem 2026-09-01 niemand angefasst und sie blockiert
   noch nichts. Erst wieder aufgreifen, wenn der Kern rechnet.
-- **Neue Fährte: Die Abnahmekriterien werden zum zweiten Engpass.** Drei von sechs
-  Prüfungen gingen zurück, bei 0004 beide Befunde gegen den *Wortlaut* des Kriteriums
-  statt gegen den Code. Wenn das im nächsten Lauf wieder passiert, ist es kein Einzelfall
-  mehr, sondern ein Muster — dann gehört die Frage nach oben, wer Abnahmekriterien prüft,
-  bevor der Bauagent gegen sie arbeitet.
+- **Fährte „Abnahmekriterien werden zum zweiten Engpass" — abgeschwächt, nicht erledigt.**
+  Am 2026-09-02 (4. Lauf) ging die einzige Prüfung (0012) mit `geprueft` durch, beide
+  Befunde ausdrücklich nicht gegen die Artefakte. Das ist ein Gegenbeleg. Offen bleibt
+  nur 0009, und dort hängen beide Rückläufe an *derselben* Bedingung 3 — ein Kriterium,
+  nicht ein Muster. Erst wieder aufgreifen, wenn ein zweites Paket denselben Weg nimmt.
