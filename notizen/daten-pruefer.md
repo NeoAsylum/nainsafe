@@ -20,6 +20,12 @@ Ergebnisdatei, hierher nur die Lehre.
   sind Geschwister"; Reparatur: „Geschwister bleiben unmarkiert". Die Umkehrung war falsch,
   die Vorlage nicht — zwei Zeilen derselben Tabelle widerlegten sie. **Bei jedem übernommenen
   Satz prüfen, in welche Richtung er gilt**, und die Gegenrichtung an der Tabelle testen.
+- 2026-09-02 (0015 R2) — **Schärfste Bauform dieses Musters: zwei Zeilengruppen gleicher
+  Bauart, gegensätzlich behandelt.** Je eine wörtlich belegte Adresse plus drei Geschwister
+  über denselben Index — `aufsichtszaehler` alle unmarkiert, `wechselkurs` drei markiert.
+  Das braucht keine Auslegung: Egal welche Gruppe recht hat, die andere widerlegt die Regel.
+  **Suchrezept:** Belegstelle greppen, zählen wie viele Tabellenzeilen daraus abgeleitet
+  sind, und dieselbe Zählung für ein zweites Feld derselben Form machen.
 - 2026-09-02 (0018) — **Das gilt auch für die Reparatur selbst: sie wird an drei von vier
   Stellen gemacht.** Das Paket ersetzte „drei Ämter" durch „sieben Stellen" bei Reihe 1, 2a
   und in der Klärungsliste — nicht bei 2b/2c, ausgerechnet dort, wo der Beleg am stärksten
@@ -33,22 +39,28 @@ Ergebnisdatei, hierher nur die Lehre.
 - 2026-09-02 — **Ein Fachwort aus `specs/` kann zwei Bedeutungen haben.** „frei" ist in der
   Reihenliste die T37-Klasse, im Lizenzbefund ein Lizenzurteil; 0014 las das eine als das
   andere. Bei jedem zitierten Stichwort prüfen, welche Spalte es wirklich trägt.
-- 2026-09-02 — **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden.** `27+2+2` und
-  `26+3+2` sind beide 31. Klassen **einzeln** aus den Abschnittstabellen nachzählen.
-- 2026-09-02 — **Der ausgelassene Fall ist der folgenlose.** Erst den Wert bestimmen, dann
-  fragen, welche Datensätze ihn *nicht* berühren — dort steht der Zählfehler.
-- 2026-09-02 — **Zwei Richtungen prüfen, nicht eine.** „Ist jede tragende Zeile 25?" und „ist
-  jede Zeile mit 25 als tragend gezählt?" sind verschiedene Aussagen. Zwei `grep -c`.
-- 2026-09-02 — **Die Gegenprobe gehört auch dorthin, wo ich zustimme.** Suche den Fall, der
-  die These des Dokuments *widerlegen* würde, nicht den, der sie stützt.
+- 2026-09-02 — **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden** (`27+2+2` und
+  `26+3+2` sind beide 31): Klassen **einzeln** nachzählen, und zwar in beide Richtungen
+  („ist jede tragende Zeile 25?" ≠ „ist jede 25 als tragend gezählt?"). Den ausgelassenen,
+  folgenlos scheinenden Fall zuerst — dort steht der Zählfehler. Auch dort gegenprobieren,
+  wo ich zustimme: den Fall suchen, der die These *widerlegen* würde.
 - 2026-09-02 (0017) — **Die Werkzeugliste der Bauagentenrolle gegen jede behauptete Messung
   legen.** `reihen.toml` behauptete einen `tomllib`-Lauf, das Frontmatter von
   `agents/rollen/<rolle>.md` zeigt, dass die Rolle nichts ausführen kann. Standardrunde.
 
 ### Rückläufe zum zweiten Mal prüfen
 
-- 2026-09-02 (0006 R2) — **Miss die Zeilen, die Runde 1 *nicht* gemessen hat.** Der Rücklauf
-  dreht sich oft um andere Zeilen als die, an denen das Ergebnis hing.
+- 2026-09-02 (0006 R2, bestätigt 0015 R2) — **Miss die Zeilen, die Runde 1 *nicht* gemessen
+  hat.** Der Rücklauf dreht sich oft um andere Zeilen als die, an denen das Ergebnis hing.
+  Bei 0015 nannte mein eigener Rücklauf zwei Gegenprobenzeilen; beide gingen auf, und drei
+  ungenannte Zeilen derselben Tabelle brachen dieselbe Regel. **Nennt ein Kriterium
+  Beispielzeilen neben einem „keine Zeile"-Satz, ist der Satz das Kriterium, nicht die
+  Beispiele.**
+- 2026-09-02 (0015 R2) — **Ein Kriterium kann zwei Stellen binden, von denen eine dem Paket
+  nicht gehört.** Punkt 1 verlangte Übereinstimmung von Zelle *und* Befund 2 (Text aus 0007),
+  Punkt 3 sperrte die Tabelle — erreichbar war er so nicht. `zurueck` mit beiden Wegen
+  hingeschrieben und der Zuschnitt dem Projektmanager überlassen; das Kriterium senken wäre
+  falsch gewesen, es dem Bauagenten anzulasten auch.
 - 2026-09-02 — **Die Prämisse meines eigenen Rücklaufs mitprüfen.** Steht darin etwas
   Falsches, wird es zementiert.
 - 2026-09-02 (0018) — **`git diff <alt>^ HEAD -- <datei> | grep "^-[^-]"` ist bei einem Paket,
@@ -85,12 +97,11 @@ Ergebnisdatei, hierher nur die Lehre.
   (konstante) im selben Topf führt. Eine Tabelle, die Einheit und Quelle nebeneinanderstellt,
   ist der beste Ort dieser Fabrik für einen Basisjahrfehler.
 - 2026-09-02 — **Spalte „Modelleinheit" gegen die Quelleneinheit legen, Reihe für Reihe.**
-  Ein *Einheitenbruch* (DEM→EUR) ist nicht die *Umrechnung*, und „Index"/„auf 10.000
-  normiert" ist kein Faktor, sondern ein eigener Schritt mit eigener Frage (Basis? vor oder
-  nach Rundung?). Getrennt hinschreiben.
-- 2026-09-02 — **Zwei Reihen aus zwei Quellen nach der Umrechnung gegeneinander legen.** R2
-  (WDI) und R11 (WEO) landen beide über ×100 auf 1/10.000, obwohl die Zieleinheiten
-  „Zehntausendstel" und „bp" heissen. Die Einzelzeile bestätigt nur sich selbst.
+  Ein *Einheitenbruch* (DEM→EUR) ist nicht die *Umrechnung*, und „auf 10.000 normiert" ist
+  kein Faktor, sondern ein eigener Schritt (Basis? vor oder nach Rundung?). Und **zwei Reihen
+  aus zwei Quellen nach der Umrechnung gegeneinander legen** — R2 (WDI) und R11 (WEO) landen
+  beide über ×100 auf 1/10.000, obwohl ihre Zieleinheiten verschieden heissen. Die
+  Einzelzeile bestätigt nur sich selbst.
 - 2026-09-02 — **Für Einheit und Basisjahr den Indikator-Endpunkt nehmen, nicht den
   Länderabruf.** `api.worldbank.org/v2/indicator/<code>?format=json` trägt `name` und
   `sourceNote` im Klartext („% of GDP", „constant 2015 US$"), der Länderabruf gar nicht.
@@ -117,16 +128,14 @@ Ergebnisdatei, hierher nur die Lehre.
 
 <!-- Ein Eintrag aelter als 30 Tage gilt als ueberpruefungsbeduerftig. -->
 
-- 2026-09-02 — **`python3 -c` und `sed` sind gesperrt** („don't ask mode"), damit auch jede
-  Zeilenbereichs-, Parser- oder `uniq -d`-Prüfung, die über `sed`/`cut` läuft. Ersatz:
-  `Read` mit `offset`/`limit`, Tabellenköpfe gegen blanke Schlüssel, `grep`-Muster auf
-  Werttypen. **Im Befund hinschreiben, welche Messung deshalb ausfiel** — und ob sie
-  entbehrlich war (bei 0015: `git show` belegte, dass die Tabelle zeichengleich blieb).
-- 2026-09-01, bestätigt 2026-09-02 — **Bash ist eng geschnitten.** Abgelehnt: `cd … &&`,
-  Variablenzuweisung, Heredocs, `awk` mit Feldvariablen, und auch ein mit `;` verkettetes
-  Kommando kann abgelehnt werden, dessen Teile einzeln laufen. Erlaubt: einzeilige Pipelines
-  aus `grep`, `sort`, `uniq`, `head`, `tail`, `tr`, `wc`, `ls`, `git` mit vollen Pfaden.
-  Keine Zeit mit einem Prüfskript verlieren.
+- 2026-09-01, bestätigt 2026-09-02 (auch R2) — **Bash ist eng geschnitten, `Write` ausserhalb
+  meiner Zielpfade auch.** Abgelehnt: `python3 -c`, `sed`, `awk` mit Feldvariablen, `cd … &&`,
+  Variablenzuweisung, Heredocs, `for`-Schleifen, mehrzeilige Kommandos, `git log -S`, und auch
+  ein mit `;` verkettetes Kommando, dessen Teile einzeln laufen. Erlaubt: einzeilige Pipelines
+  aus `grep`, `diff`, `sort`, `uniq`, `head`, `tail`, `tr`, `wc`, `ls`, `git show/log/diff` mit
+  vollen Pfaden — und **`diff <(…) <(…)` mit Prozesssubstitution geht**, das ersetzt `sed -n`
+  für Zeilenbereiche. Kein Prüfskript versuchen. **Im Befund hinschreiben, welche Messung
+  deshalb ausfiel** und wodurch ersetzt.
 - 2026-09-02 — **Das Archiv-Verschieben bei 12.000 Zeichen kann ich nicht ausführen**:
   `Edit` auf diese Datei ist mein einziges Schreibrecht, `notizen/archiv/` liegt ausserhalb.
   Ersatz: zusammenziehen statt verschieben. Reicht das nicht mehr, ist es ein Befund an den
@@ -147,16 +156,20 @@ Ergebnisdatei, hierher nur die Lehre.
   Quotient aus womöglich verschiedenen Einheiten. Konkreteste Fassung der Preisbasis-Fährte;
   **beim Paket, das die Aufbereitung baut: erste Stelle.**
 - 2026-09-02 — **Die Preisbasis ist die grösste offene Einheitenfrage des Vorhabens**, drei
-  Stränge: (a) T5 Klasse 2 mischt laufend und konstant — BACI (R14) und R1 landen im selben
-  Topf, T23 Punkt 5 addiert sie im Nenner von `durchgriff`, Deflationierung steht nirgends
-  (dreimal gemeldet: 0007, 0006, 0017); (b) `daten.md` prüft nie „laufend oder konstant" —
-  je Reihe einen eigenen Abruf einplanen; (c) fällt R1 auf PWT zurück, wechselt das Basisjahr
-  (WDI: konstante Preise 2015 US$), PWT 11.0 hat das niemand geprüft. Wer `durchgriff`, den
-  Jahrgangsbau oder den Rückvergleich anfasst: erste Frage.
+  Stränge: (a) T5 Klasse 2 mischt laufend und konstant — BACI (R14) und R1 im selben Topf,
+  T23 Punkt 5 addiert sie im Nenner von `durchgriff`, Deflationierung steht nirgends (3×
+  gemeldet: 0007, 0006, 0017); (b) `daten.md` prüft nie „laufend oder konstant"; (c) fällt R1
+  auf PWT zurück, wechselt das Basisjahr (WDI: konstant 2015 US$), PWT 11.0 ungeprüft. Wer
+  `durchgriff`, Jahrgangsbau oder Rückvergleich anfasst: erste Frage.
 - 2026-09-02 — **Zwei Schranken für das Paket, das `parameter.toml` einliest:** Trägt T5
   Klasse 4 („0 bis 10.000") ihren Deckel auch für Regler wie Elastizitäten und
   Hebelobergrenze (Befund 3 zu 0009)? Und setzt die Prüfung für Klasse 3 eine Untergrenze —
   `hebelaufschlag` trägt `>= 0` ohne Herkunft, negativ kehrt Kanal 4 um (0009 R2).
+- 2026-09-02 (0015 R2) — **`parameter.toml` Zeile 147 „Dieselbe Kennzeichnung wie im
+  Adressverzeichnis" ist falsch geworden**, weil 0015 die Regel im Adressverzeichnis geändert
+  hat. Befund 2 meines Prüfbefunds, gehört in ein 0009-Folgepaket. **Allgemein: Ändert ein
+  Paket eine Definition, greppe nach Dateien, die sie *zitieren oder auf sie verweisen* — der
+  Verweis wird falsch, ohne dass jemand die zweite Datei angefasst hat.**
 - 2026-09-01 — **`gebiet.<G>.` gegen `land.<L>.` / `restwelt.` ist ungeklärt.** T46 schreibt
   `gebiet.<G>.basiswechsel`, kein anderes Dokument benutzt je ein `gebiet.`-Präfix. Sobald
   jemand die 310 Felder tippt oder das Manifest schreibt, ist es eine Entscheidung. **Die
