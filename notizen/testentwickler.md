@@ -52,6 +52,11 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   angelegt werden: `cmake -S/-B` über den vorhandenen Stand hinweg konfiguriert sauber neu,
   auch wenn der alte Cache aus einer Platzhalterfassung stammt.
 
+- 2026-09-02 — Paket 0019 ist grün, und zwar nachgemessen auf **beiden** Bauwegen:
+  `pruefstand/bau` allein (1/1 `vorrat_probe … Passed`) und über den Arbeitsbereich
+  (7/7, `vorrat_probe` als siebter). Beide Anker rechnen von Hand nach: 56 Profile mit
+  `a1=0` (C(8,3)), +15 für `a2=0`, +4 für `a3=0`, +1 für `a4=0` ⇒ `(1,1,1,1,1)` bei 76.
+
 ## Offene Faehrten
 
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste

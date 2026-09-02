@@ -13,7 +13,7 @@
 //! ist. Ebenso wenig geprueft: die Zulaessigkeitsliste aus T32, die Bots, die drei
 //! Masse, die Fensterlogik von Mass 3.
 //!
-//! ## Die vier Pruefungen
+//! ## Die fuenf Pruefungen
 //!
 //!   1 Bauform der Liste: 126 Eintraege, `kennung == index`, `ai` aus `0..5`,
 //!     `Sum ai = 5`, und die Folge ist **echt** lexikographisch aufsteigend.
@@ -23,12 +23,19 @@
 //!     `a1 = a2 = a3 = 0`.
 //!   3 Der Strategiekern ist vierwertig: **6** Profile ohne Kern, **120**
 //!     klassifiziert, und kein Profil ohne Familienaktion traegt eine Klasse.
-//!   4 **Die Abweichung.** Derselbe Zaehler laeuft ein zweites Mal ueber einen
-//!     absichtlich dreiwertigen Kern -- den, gegen den Befund 8 geschrieben ist. Die
-//!     Probe weist nach, dass Pruefung 3 ihn **verwirft**, und nennt Kennung und
-//!     Vektor des Profils, an dem es auffaellt. Eine Pruefung, die nie rot wird,
-//!     prueft nichts; deshalb steht die falsche Fassung im Testcode und nicht im
-//!     Modul.
+//!   4 **Die Abweichung zu Pruefung 3.** Derselbe Zaehler laeuft ein zweites Mal
+//!     ueber einen absichtlich dreiwertigen Kern -- den, gegen den Befund 8
+//!     geschrieben ist. Die Probe weist nach, dass Pruefung 3 ihn **verwirft**, und
+//!     nennt Kennung und Vektor des Profils, an dem es auffaellt.
+//!   5 **Die Abweichung zu Pruefung 1 und 2.** Dasselbe Praedikat laeuft ueber eine
+//!     Liste, die lexikographisch ueber `(a5..a1)` statt ueber `(a1..a5)` geordnet
+//!     ist. Sie zeigt nicht nur, dass die Pruefung rot wird, sondern **welche
+//!     Bedingung sie faengt und welche sie durchlaesst**: Die Bauform bleibt heil,
+//!     Anker 1 bleibt bei 76 (das Referenzprofil ist symmetrisch), gefangen wird sie
+//!     von der Ordnungspruefung und von Anker 2.
+//!
+//! Eine Pruefung, die nie rot wird, prueft nichts; deshalb stehen beide falschen
+//! Fassungen im Testcode und nicht im Modul.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -104,7 +111,130 @@ bool hat_familienaktion(const Profil& anteile)
 }
 
 // ---------------------------------------------------------------------------
-// Die Abweichung: der dreiwertige Strategiekern
+// Die Bauformpruefung als Praedikat
+// ---------------------------------------------------------------------------
+//
+// Alles, was Pruefung 1 und 2 ueber eine Profilliste feststellen, steht in dieser
+// einen Funktion -- aus demselben Grund wie `zaehle_kerne` weiter unten: Pruefung 5
+// legt sie auf eine absichtlich falsche Liste an, und nur so ist nachweisbar,
+// dass die Vorfuehrung **denselben** Massstab benutzt und nicht einen milderen.
+
+struct Bauformbefund {
+    /// `kennung == Index`, `ai` aus `0..BUDGET`, `Summe ai == BUDGET`.
+    bool bauform_heil = true;
+    /// Die Folge ist echt lexikographisch aufsteigend.
+    bool ordnung_heil = true;
+    /// Die erste Kennung, an der die Ordnung kippt. `-1` heisst: keine.
+    i64 ordnungsverstoss = -1;
+    /// Anker 1: welche Kennung traegt `(1,1,1,1,1)`? `-1` heisst: nicht gefunden.
+    i64 referenzkennung = -1;
+    /// Anker 2: genau die Kennungen `0..5` haben `a1 = a2 = a3 = 0`.
+    bool anker2_heil = true;
+    /// Die erste Kennung, an der Anker 2 verletzt ist. `-1` heisst: keine.
+    i64 anker2_verstoss = -1;
+};
+
+Bauformbefund pruefe_bauform(const Profilliste& liste)
+{
+    Bauformbefund befund;
+    const Profil referenz = Profil{1, 1, 1, 1, 1};
+
+    for (std::size_t i = 0; i < PROFILE; ++i) {
+        const Profileintrag& eintrag = liste[i];
+
+        if (eintrag.kennung != static_cast<i64>(i)) {
+            befund.bauform_heil = false;
+        }
+
+        i64 summe = 0;
+        for (std::size_t k = 0; k < ARTEN; ++k) {
+            if (eintrag.anteile[k] < 0 || eintrag.anteile[k] > BUDGET) {
+                befund.bauform_heil = false;
+            }
+            summe += eintrag.anteile[k];
+        }
+        if (summe != BUDGET) {
+            befund.bauform_heil = false;
+        }
+
+        if (i > 0 && !lexikographisch_kleiner(liste[i - 1].anteile, eintrag.anteile)) {
+            befund.ordnung_heil = false;
+            if (befund.ordnungsverstoss < 0) {
+                befund.ordnungsverstoss = static_cast<i64>(i);
+            }
+        }
+
+        if (eintrag.anteile == referenz) {
+            befund.referenzkennung = eintrag.kennung;
+        }
+
+        // "Genau" in beide Richtungen: unter 6 muss es zutreffen, ab 6 darf es nicht.
+        if (!hat_familienaktion(eintrag.anteile) != (i < 6)) {
+            befund.anker2_heil = false;
+            if (befund.anker2_verstoss < 0) {
+                befund.anker2_verstoss = static_cast<i64>(i);
+            }
+        }
+    }
+
+    return befund;
+}
+
+/// Pruefung 1 und 2 als ein Urteil. Bestanden heisst: Bauform heil, Ordnung echt
+/// aufsteigend, `(1,1,1,1,1)` bei Kennung 76, und genau `0..5` ohne Familienaktion.
+bool besteht_bauformpruefung(const Bauformbefund& befund)
+{
+    return befund.bauform_heil && befund.ordnung_heil
+           && befund.referenzkennung == 76 && befund.anker2_heil;
+}
+
+// ---------------------------------------------------------------------------
+// Die erste Abweichung: die Liste in umgekehrter Stellenordnung
+// ---------------------------------------------------------------------------
+//
+// Wortgleich zu `erzeuge_profilliste`, mit **einer** Vertauschung: die aeusserste
+// Schleife laeuft ueber `a5` statt ueber `a1`, die Ordnung also lexikographisch
+// ueber `(a5..a1)` statt ueber `(a1..a5)`. Die Menge der 126 Vektoren bleibt
+// dieselbe, Summe und Wertebereich bleiben heil -- nur die Reihenfolge kippt.
+//
+// Sie steht hier, weil Pruefung 1 und 2 sich sonst nicht selbst vorfuehren: Der
+// dreiwertige Kern weiter unten ist die falsche Fassung fuer Pruefung 3, die beiden
+// anderen haetten keine, und ein Test, der nie rot wird, prueft nichts.
+
+Profilliste erzeuge_profilliste_umgekehrt()
+{
+    Profilliste liste{};
+    std::size_t naechste = 0;
+
+    for (i64 a5 = 0; a5 <= BUDGET; ++a5) {
+        for (i64 a4 = 0; a4 <= BUDGET - a5; ++a4) {
+            for (i64 a3 = 0; a3 <= BUDGET - a5 - a4; ++a3) {
+                for (i64 a2 = 0; a2 <= BUDGET - a5 - a4 - a3; ++a2) {
+                    const i64 a1 = BUDGET - a5 - a4 - a3 - a2;
+
+                    // Indexpruefung an der Grenze -- dieselbe Vorsicht wie im Modul.
+                    // Testcode, der hinter das Feldende schreibt, faelscht das
+                    // Urteil, statt es zu faellen.
+                    if (naechste >= PROFILE) {
+                        return liste;
+                    }
+
+                    Profileintrag& eintrag = liste[naechste];
+                    eintrag.kennung = static_cast<i64>(naechste);
+                    eintrag.anteile = Profil{a1, a2, a3, a4, a5};
+                    eintrag.kern = pruefstand::vorrat::strategiekern(eintrag.anteile);
+
+                    ++naechste;
+                }
+            }
+        }
+    }
+
+    return liste;
+}
+
+// ---------------------------------------------------------------------------
+// Die zweite Abweichung: der dreiwertige Strategiekern
 // ---------------------------------------------------------------------------
 //
 // Wortgleich zu `pruefstand::vorrat::strategiekern`, **ohne** die Abfrage auf den
@@ -181,34 +311,14 @@ int main()
     std::fprintf(stdout, "  Eintraege                 %zu (erwartet 126)\n", PROFILE);
     pruefe(PROFILE == 126, "PROFILE ist 126 = C(9,4)", __LINE__);
 
-    bool bauform_heil = true;
-    bool ordnung_heil = true;
-    for (std::size_t i = 0; i < PROFILE; ++i) {
-        const Profileintrag& eintrag = liste[i];
-
-        if (eintrag.kennung != static_cast<i64>(i)) {
-            bauform_heil = false;
-        }
-
-        i64 summe = 0;
-        for (std::size_t k = 0; k < ARTEN; ++k) {
-            if (eintrag.anteile[k] < 0 || eintrag.anteile[k] > BUDGET) {
-                bauform_heil = false;
-            }
-            summe += eintrag.anteile[k];
-        }
-        if (summe != BUDGET) {
-            bauform_heil = false;
-        }
-
-        if (i > 0 && !lexikographisch_kleiner(liste[i - 1].anteile, eintrag.anteile)) {
-            ordnung_heil = false;
-        }
-    }
-    pruefe(bauform_heil, "jeder Eintrag: kennung == Index, ai aus 0..5, Summe 5", __LINE__);
-    pruefe(ordnung_heil, "die Folge ist echt lexikographisch aufsteigend", __LINE__);
-    std::fprintf(stdout, "  kennung == Index          %s\n", bauform_heil ? "ja" : "NEIN");
-    std::fprintf(stdout, "  lexikographisch aufwaerts %s\n", ordnung_heil ? "ja" : "NEIN");
+    const Bauformbefund bauform = pruefe_bauform(liste);
+    pruefe(bauform.bauform_heil, "jeder Eintrag: kennung == Index, ai aus 0..5, Summe 5",
+           __LINE__);
+    pruefe(bauform.ordnung_heil, "die Folge ist echt lexikographisch aufsteigend", __LINE__);
+    std::fprintf(stdout, "  kennung == Index          %s\n",
+                 bauform.bauform_heil ? "ja" : "NEIN");
+    std::fprintf(stdout, "  lexikographisch aufwaerts %s\n",
+                 bauform.ordnung_heil ? "ja" : "NEIN");
 
     // -----------------------------------------------------------------------
     // Pruefung 2 -- die beiden Anker aus T36
@@ -216,32 +326,26 @@ int main()
     std::fprintf(stdout, "\nAnker 1: das Referenzprofil (1,1,1,1,1)\n");
 
     const Profil referenz = Profil{1, 1, 1, 1, 1};
-    i64 referenzkennung = -1;
-    for (const Profileintrag& eintrag : liste) {
-        if (eintrag.anteile == referenz) {
-            referenzkennung = eintrag.kennung;
-            schreibe_profil("gefunden bei", eintrag.kennung, eintrag.anteile, eintrag.kern);
-        }
+    if (bauform.referenzkennung >= 0) {
+        const Profileintrag& treffer =
+            liste[static_cast<std::size_t>(bauform.referenzkennung)];
+        schreibe_profil("gefunden bei", treffer.kennung, treffer.anteile, treffer.kern);
     }
     std::fprintf(stdout, "  Kennung %lld (erwartet 76)\n",
-                 static_cast<long long>(referenzkennung));
-    pruefe(referenzkennung == 76, "(1,1,1,1,1) traegt die Kennung 76", __LINE__);
+                 static_cast<long long>(bauform.referenzkennung));
+    pruefe(bauform.referenzkennung == 76, "(1,1,1,1,1) traegt die Kennung 76", __LINE__);
     pruefe(liste[76].anteile == referenz, "liste[76] ist (1,1,1,1,1)", __LINE__);
 
     std::fprintf(stdout, "\nAnker 2: die Kennungen 0 bis 5 sind genau die (0,0,0,a4,a5)\n");
-    bool anker2_heil = true;
-    for (std::size_t i = 0; i < PROFILE; ++i) {
-        const bool ohne_familie = !hat_familienaktion(liste[i].anteile);
-        // "Genau" in beide Richtungen: unter 6 muss es zutreffen, ab 6 darf es nicht.
-        if (ohne_familie != (i < 6)) {
-            anker2_heil = false;
-            schreibe_profil("VERSTOSS", liste[i].kennung, liste[i].anteile, liste[i].kern);
-        }
-        if (i < 6) {
-            schreibe_profil("", liste[i].kennung, liste[i].anteile, liste[i].kern);
-        }
+    for (std::size_t i = 0; i < 6; ++i) {
+        schreibe_profil("", liste[i].kennung, liste[i].anteile, liste[i].kern);
     }
-    pruefe(anker2_heil, "genau die Kennungen 0..5 haben a1 = a2 = a3 = 0", __LINE__);
+    if (bauform.anker2_verstoss >= 0) {
+        const Profileintrag& verstoss =
+            liste[static_cast<std::size_t>(bauform.anker2_verstoss)];
+        schreibe_profil("VERSTOSS", verstoss.kennung, verstoss.anteile, verstoss.kern);
+    }
+    pruefe(bauform.anker2_heil, "genau die Kennungen 0..5 haben a1 = a2 = a3 = 0", __LINE__);
 
     // -----------------------------------------------------------------------
     // Pruefung 3 -- der Strategiekern ist vierwertig
@@ -323,6 +427,51 @@ int main()
            "auf den 120 klassifizierten Profilen sind beide Fassungen einig", __LINE__);
     std::fprintf(stdout, "  Unterschied genau auf den 6 kernlosen: %s\n",
                  einig_auf_120 ? "ja" : "NEIN");
+
+    // -----------------------------------------------------------------------
+    // Pruefung 5 -- die umgekehrte Stellenordnung wird verworfen
+    // -----------------------------------------------------------------------
+    std::fprintf(stdout, "\nAbweichung: Ordnung ueber (a5..a1) statt (a1..a5)\n");
+
+    const Profilliste umgekehrt = erzeuge_profilliste_umgekehrt();
+    const Bauformbefund falsch = pruefe_bauform(umgekehrt);
+
+    // Dieselbe Funktion, anderes Urteil -- das ist der ganze Nachweis.
+    pruefe(besteht_bauformpruefung(bauform),
+           "die echte Liste besteht die Bauformpruefung", __LINE__);
+    pruefe(!besteht_bauformpruefung(falsch),
+           "die Bauformpruefung VERWIRFT die umgekehrte Ordnung", __LINE__);
+
+    std::fprintf(stdout, "  Bauform heil              %s (die echte Fassung: ja)\n",
+                 falsch.bauform_heil ? "ja" : "NEIN");
+    std::fprintf(stdout, "  lexikographisch aufwaerts %s (die echte Fassung: ja)\n",
+                 falsch.ordnung_heil ? "ja" : "NEIN");
+    pruefe(falsch.ordnungsverstoss >= 0,
+           "die Ordnung kippt an einer benannten Kennung", __LINE__);
+    if (falsch.ordnungsverstoss >= 0) {
+        const Profileintrag& kipp =
+            umgekehrt[static_cast<std::size_t>(falsch.ordnungsverstoss)];
+        schreibe_profil("kippt bei", kipp.kennung, kipp.anteile, kipp.kern);
+    }
+    if (falsch.anker2_verstoss >= 0) {
+        const Profileintrag& verstoss =
+            umgekehrt[static_cast<std::size_t>(falsch.anker2_verstoss)];
+        schreibe_profil("Anker 2 bricht", verstoss.kennung, verstoss.anteile, verstoss.kern);
+    }
+
+    // **Und was diese Abweichung ausdruecklich NICHT ausloest**, weil ein Test auch
+    // sagen muss, was er durchlaesst: Die Bauform bleibt heil -- es sind dieselben
+    // 126 Vektoren, nur anders sortiert. Und Anker 1 bleibt bei 76, weil
+    // `(1,1,1,1,1)` sein eigenes Spiegelbild ist: Eine Umkehrung der Stellenordnung
+    // kann ein symmetrisches Profil nicht verschieben. Anker 1 allein wuerde diesen
+    // Fehler also **nicht** fangen -- genau dafuer gibt es Anker 2 und die
+    // Ordnungspruefung daneben.
+    pruefe(falsch.bauform_heil,
+           "die Umkehrung laesst die Bauform heil -- sie trifft nur die Ordnung", __LINE__);
+    pruefe(falsch.referenzkennung == 76,
+           "Anker 1 bleibt bei 76: (1,1,1,1,1) ist symmetrisch", __LINE__);
+    pruefe(!falsch.ordnung_heil, "gefangen wird sie von der Ordnungspruefung", __LINE__);
+    pruefe(!falsch.anker2_heil, "und von Anker 2", __LINE__);
 
     // -----------------------------------------------------------------------
     std::fprintf(stdout, "\n%s -- %d Pruefung(en) fehlgeschlagen\n",
