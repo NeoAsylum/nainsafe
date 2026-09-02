@@ -1,7 +1,7 @@
 ---
 id: 0013-pruefsumme-fnv1a-64
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/pruefsumme.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/pruefsumme.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/pruefsumme_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

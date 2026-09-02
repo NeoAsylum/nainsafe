@@ -62,8 +62,22 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   (2*|n|)` nach Abspalten des Vorzeichens. In `i128` ist die Verdopplung ungefaehrlich
   (Zwischenwert hier rund 2·10^16), und die Formel stimmt auch bei ungeradem Nenner —
   anders als das naheliegende `(|z| + |n|/2) / |n|`.
+- 2026-09-02 — **Veroeffentlichte Hashwerte lassen sich ohne Compiler nachrechnen, wenn
+  der Faktor duenn besetzt ist.** FNV-1a-64 hat P = 2^40+2^8+0xb3, also drei Summanden;
+  bei Eingaben aus einem Oktett folgt das untere Wort linear aus dem Nachbarvektor
+  (Delta = Delta_x · 0x1b3). So habe ich die per WebFetch geholte Vektortabelle an sechs
+  Stellen geprueft, zweimal ueber volle 64 Bit. Eine zusammengefasste Tabelle ist sonst
+  nur so gut wie das Modell, das sie las — und ein falsches Hexzeichen ist ein roter Baulauf.
+- 2026-09-02 — **Konstanten gegen die zweite Schreibweise derselben Quelle stellen.**
+  RFC 9923 nennt jede FNV-Konstante dezimal, hexadezimal und als Bildungsvorschrift; ein
+  `static_assert` dagegen macht aus einem vertippten Ziffernblock einen
+  Uebersetzungsfehler statt eines stillen Fehlers in jeder je gerechneten Summe.
 
 ## Was nicht funktioniert
+
+- 2026-09-02 — **`Bash` war bis auf `ls`/`find`/`cat`/`grep`/`wc` gesperrt** (kein
+  `python3`, kein `g++`). Paket 0013 ist daher nicht uebersetzt; jeder Erwartungswert
+  stammt aus einer Veroeffentlichung oder aus Handrechnung.
 
 - 2026-09-01 — **In diesem Lauf gab es kein `rustc`** (`command -v rustc` leer, kein
   `~/.cargo`), und `Bash` durfte weder in `$TMPDIR` schreiben noch `python3 -c` ausfuehren.
@@ -82,6 +96,20 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
      Lauf faengt hier an. -->
 
+- 2026-09-02 — **Paket 0013, unsicher und nicht uebersetzt.** Faellt der Baulauf rot
+  aus, zuerst hier nachsehen: die zwei `static_assert` mit `constexpr`-Lambda in
+  `src/pruefsumme.cpp`, `std::span` aus einem `constexpr std::array` im konstanten
+  Ausdruck, `std::array<uint8_t,0>` fuer die leere Eingabe. Die Zahlenwerte sind es nicht.
+- 2026-09-02 — **Paket 0013, Abnahme 4: bewusst keine selbst gerechnete Zahl als
+  `static_assert`.** Beide Reihenfolgenachweise stehen auf veroeffentlichten Werten
+  (61 00 -> 0x089be207b544f1e4; d5 6b b9 53 42 87 08 36 -> 0) plus Ungleichheit; die
+  Gegenzahl steht nur in der Testausgabe. Liest der Pruefer „ausgeschriebene Werte" als
+  „beide Zahlen als Literal", ist das ein Befund; mein Handwert fuer 00 61 waere
+  0x08326707b4eb37da, ungeprueft. Auch `fnv1a64_text` geht ueber das Paket hinaus,
+  noetig fuer die Vektoren.
+- 2026-09-02 — **Der Baulauf committet nicht paketweise.** `fce19b8` heisst
+  „datenbauer: 0014", enthaelt aber meine `pruefsumme.*` aus Paket 0013 — `add -A`
+  bei zwei gleichzeitigen Agenten. Die Commit-Zuordnung belegt nicht, wer schrieb.
 - 2026-09-01 — **Die Aufgabe wurde nach dem ersten Messlauf geaendert; meine Eintraege
   weiter unten zur Saettigung an der Klemmgrenze gelten nicht mehr.** Der Faktor heisst
   jetzt `9_512 + (nachbar mod 977)` (um 1,0 zentriert statt immer wachsend) und die
