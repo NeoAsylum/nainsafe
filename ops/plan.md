@@ -1,84 +1,88 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-02, nach dem siebten Baulauf (07:45–08:16).
+Stand 2026-09-02, nach dem achten Baulauf (08:42–09:16, Läufe 252–260).
 
 ## Wo das Vorhaben steht
 
-Der Kern übersetzt und fünf Prüfläufe bestehen (`befunde/uebersetzung-2026-09-02.md`,
-Code 0). **Sieben von neun Kernkästen tragen Code**, `schreiber` ist in diesem Lauf
-dazugekommen. Leer bleiben `werte` (2 Zeilen, hängt an der Klasse-2-Entscheidung) und
-`schritt` (2 Zeilen) — es ist noch nie eine Spielrunde gerechnet worden.
+Der Kern übersetzt, und **sechs von sechs Prüfläufen bestehen** — einer mehr als gestern,
+`schranken_probe` aus Paket 0020 ist echt und läuft (`befunde/uebersetzung-2026-09-02.md`).
+Von 26 Paketen sind 11 `fertig`, 5 `gebaut`, 8 `offen`, 2 `blockiert`. **Sieben von neun
+Kernkästen tragen Code — unverändert:** `werte` und `schritt` haben je zwei Zeilen, es ist
+weiterhin nie eine Spielrunde gerechnet worden.
 
 ## Der Engpass
 
-**Fünf der sieben Baurollen setzen kein `status: gebaut` — die Anweisung dazu steht nur
-in zwei Rollendateien.** `grep -n gebaut agents/rollen/*.md`: nur `kernbauer.md:83` und
-`datenbauer.md:85` tragen den Satz. `testentwickler`, `architekt`, `spielentwerfer`,
-`oberflaechenbauer` und `auslieferer` haben ihn nicht.
+**Architekt und Spielentwerfer stehen in `BAUROLLEN`, werden aber vom echten Lauf nicht
+aufgerufen.** Nicht „laufen und liefern nichts" — sie laufen nicht.
 
-Zwei Folgen, beide heute eingetreten:
+Der Beweis steht in den Commit-Bodies. Jeder Lauf trägt seine Journalnummer; Lauf 8 ist
+**252–260 ohne Lücke**: 252 Projektmanager, 253–256 Bau (0020, 0019, 0015, 0023),
+257–260 Review, 261 dieser Bericht. Kein aufgerufener Agent fehlt in der Liste.
+Der Trockenlauf plante um 08:42 aber {**0011**, 0015, 0019, 0020}.
 
-1. `startbereit()` zieht nur `offen` — ein Testentwicklerpaket wird also **jeden Lauf neu
-   gebaut und neu bezahlt**. 0019 und 0020 sind heute gelaufen (Commits 07:56 und 08:02,
-   ~600 Zeilen) und stehen beide weiter auf `offen`. Der Trockenlauf plant sie erneut.
-2. Der Review zieht nur `gebaut` — ein solches Paket erreicht **nie** seinen Prüfer.
-   `notizen/test-pruefer.md` (1.252 Zeichen) und `notizen/testentwickler.md` (1.256) sind
-   unverändert `VORLAGE.md` (1.242). Beide Rollen haben noch nie geschrieben.
+Dieselbe Rechnung für Lauf 7: geplant {**0011**, 0016, 0019, 0020}, gebaut
+{0016, 0019, 0020, 0022}. **Beide Läufe gehen exakt auf, wenn man 0011 (architekt) und
+0021 (spielentwerfer) aus der Trockenlaufliste streicht und von unten auffüllt.**
+Zweimal unabhängig bestätigt.
 
-Das trifft auch 0021 („Schaden", spielentwerfer) — das Paket, das den letzten Engpass
-lösen soll. Selbst wenn es läuft, bleibt es `offen` und der Entwurfsprüfer sieht es nicht.
-**Fünfter Fall der Fehlerklasse aus `953bbf5`:** eine Regel an einer Stelle, die der
-Ablauf nicht erreicht.
+Wo es passiert, weiß ich nicht. Der einzige Filter, den der echte Pfad hat und der
+Trockenlauf (`baulauf.py:267`) nicht, ist `baulauf.py:307–308` — aber `befunde/` enthält
+keine einzige Datei `pruefung-0011-*` oder `pruefung-0021-*`, also gibt `rueckläufe()`
+für beide 0 zurück und erklärt nichts. **Weiter komme ich nicht, weil `baulauf.py` kein
+Protokoll schreibt.** Das ist der zweite Plan in Folge, der den Lauf aus `git` rekonstruiert.
+
+Was es kostet: `specs/` ist seit dem 2026-09-01 09:17 unverändert. Damit steht
+0011 → 0026 → 0002 → 0010 — die längste Kette des Vorhabens — und 0021 → `schritt`.
 
 ## Was quer liegt
 
-- **Der Lauf hat etwas anderes gebaut, als jede Messung vorhergesagt hat.** Vorhergesagt
-  {0011, 0016, 0019, 0020} — vom Trockenlauf um 07:32 und vom Projektmanager selbst
-  (`rueckstand.md` Punkt 2). Gebaut wurde {0016, 0019, 0020, **0022**}. Ich kann die
-  Abweichung nicht auflösen: **der Baulauf schreibt kein Protokoll.** `ops/` kennt
-  `nachtlauf.log`, `sensorlauf.log`, `wochenlauf.log` — keinen Baulauf. Jede Zahl in
-  diesem Bericht ist aus `git` und Dateizeiten rekonstruiert.
-- **Architekt und Spielentwerfer sind seit 06:39 einplanbar und haben null Bytes
-  geliefert.** `specs/` hat seit dem 2026-09-01 keinen Commit, beide Logbücher keinen
-  Eintrag vom 2026-09-02. `einrichtung/rollen-pruefen.py` meldet „keine Befunde" — die
-  Verdrahtung stimmt also, die Arbeit fehlt trotzdem. Meine Vorhersage im letzten Plan
-  („zieht zum ersten Mal ein Architektenpaket") war falsch.
-- **Auch ein Bauplatz ging leer aus, nicht nur Prüfplätze.** 0020 hat als einzige Datei
-  `kern/test/schranken_probe.cpp` — die Datei existiert nicht. 0019 hat Kopf und Quelle,
-  aber `vorrat_probe.cpp` ist 15 Byte und taucht in den fünf Prüfläufen nicht auf.
-- **Vierte Messung der Fährte, Rate unverändert: 2 von 4 Prüfplätzen leer.** 0015
-  `zurueck` ✓, 0018 `geprueft` ✓, **0016 ohne Befunddatei**, **0009 ohne vierte Runde**.
-- **0009 steht weiter bei zwei von drei Rückläufen** und hat jetzt zwei Läufe hintereinander
-  keine Prüfung bekommen. Ein weiteres `zurueck` macht es festgefahren (`baulauf.py:295`).
-- **14 `.tmp`-Dateien liegen im Repo**, darunter `daten/.neu3.tmp` mit 1.608 Zeilen. Die
-  Bauagenten behelfen sich mit Zwischendateien, und der Runner committet den ganzen
-  Schreibpfad. Kein Gate, wächst aber.
-- Unverändert aus `rueckstand.md`: TOML-Parser fehlt im Runner (viermal gemessen),
-  Klasse 2 misst laufende gegen konstante Preise, die Rohdaten hat niemand.
+- **Korrektur an meinem letzten Plan:** Der `gebaut`-Satz fehlt in **drei** Rollendateien,
+  nicht in fünf (`auslieferer.md:110` und `oberflaechenbauer.md:81` haben ihn). Es fehlen
+  `testentwickler`, `architekt`, `spielentwerfer`. Der Projektmanager hat das selbst
+  gefunden (`rueckstand.md`, Punkt 1) und kommt auf dieselbe Empfehlung.
+- **0019 ist dreimal gebaut worden und hat noch nichts geliefert.** Seine zwei
+  entscheidenden Dateien sind Rümpfe: `pruefstand/CMakeLists.txt` 14 Byte,
+  `pruefstand/test/vorrat_probe.cpp` 15 Byte. Der Commit zu Lauf 254 enthält **keine**
+  seiner vier Dateien, nur die parallele Arbeit von 0015 und 0023.
+- **Der dritte CMake-Bausatz kann nicht durchfallen.** `pruefstand/bau` meldet
+  „No tests were found!!!" und `ctest` gibt Code 0 zurück — der Übersetzungsbefund, den
+  die Fabrik als Grundwahrheit behandelt, sagt dort `ok`, egal was drinsteht.
+- **0009 und 0015 stehen beide bei zwei von drei Rückläufen** (`baulauf.py:295`). 0015 hat
+  seinen zweiten heute bekommen. 0009 hatte einen Reviewplatz (Lauf 257), der nur das
+  Logbuch des Prüfers geändert hat — dritte Prüfung ohne Urteilsdatei.
+- **0024 und 0025 sind baubar und kommen nie dran.** 0025 hängt an nichts.
+  `startbereit(...)[:4]` nimmt die ersten vier nach Dateinamen, und 0019/0020 halten zwei
+  Plätze dauerhaft.
+- Besser als gestern: **kein leerer Platz mehr.** Lauf 7 hatte zwei Läufe ohne Commit
+  (248, 249), Lauf 8 keinen. Die Fährte „leerer Platz" ist damit nicht mehr die Zahl,
+  sondern der Inhalt — siehe 0019.
+- Unverändert: `.tmp`-Dateien im Repo, Klasse 2 misst laufende gegen konstante Preise,
+  die Rohdaten hat niemand.
 
 ## Was der Betreiber entscheiden muss
 
-**Wie kommt ein Paket der fünf übrigen Baurollen auf `gebaut`?** Kein Gate — kein Geld,
-kein Recht, keine Außenwirkung. Aber kein Agent darf `agents/rollen/*.md` oder
-`baulauf.py` anfassen, es braucht also seine Hand.
+**Wie kommen die zwei Entwurfsrollen auf einen Bauplatz, und wie meldet ein fertiges Paket
+`gebaut`?** Kein Gate — kein Geld, kein Recht, keine Außenwirkung. Aber kein Agent darf
+`baulauf.py` oder `agents/rollen/*.md` anfassen.
 
-- *A:* Den Satz aus `kernbauer.md:83` in die fünf anderen Rollendateien kopieren.
-  Fünf Stellen für eine Regel — genau die Bauart, die diese Woche fünfmal gescheitert ist.
+- *A:* Den `gebaut`-Satz in die drei fehlenden Rollendateien kopieren. Löst den
+  Testentwickler, rührt den Engpass **nicht an** — Architekt und Spielentwerfer werden
+  gar nicht erst aufgerufen.
 - *B:* `baulauf.py` setzt `gebaut` selbst, wenn der Bauagent mit 0 zurückkommt **und** die
-  Dateien aus `dateien` sich geändert haben. Eine Stelle, deterministisch, und es prüft
-  sich mit: 0020 hat nichts geschrieben und bliebe zu Recht `offen`, während es unter A
-  fälschlich `gebaut` gemeldet hätte.
-- *C:* Nichts tun. Dann zahlt jeder Lauf 0019 und 0020 erneut, 0011 und 0021 kommen nie
-  durch, und `schritt` bekommt kein Paket.
+  Dateien aus `dateien` sich geändert haben — **plus zwei Zeilen, die den Lauf nach
+  `ops/baulauf.log` schreiben.** B prüft sich mit: 0019 hat keine seiner Dateien
+  geschrieben und bliebe zu Recht `offen`, während A es fälschlich gemeldet hätte.
+- *C:* Nichts tun. Dann halten 0011, 0019, 0020, 0021 alle vier Plätze auf Dauer, `schritt`
+  bekommt keinen Entwurf, und jeder Lauf bezahlt 0019 und 0020 erneut.
 
-**Empfehlung: B.** Es ist dieselbe Lehre wie beim Compiler am 2026-09-01 — was
-deterministisch entscheidbar ist, gehört in den Runner, nicht in eine Rollendatei.
-Zwei Zeilen dazu, die den Baulauf nach `ops/baulauf.log` schreiben, kosten nichts und
-hätten die Abweichung oben beantwortet.
+**Empfehlung: B — und davon das Protokoll zuerst.** Der `gebaut`-Teil ist die billigere
+Hälfte; die teurere ist, dass ich zum zweiten Mal nicht sagen kann, warum eine eingeplante
+Rolle nicht startet. Ohne `ops/baulauf.log` steht derselbe ungeklärte Satz im nächsten Plan
+ein drittes Mal.
 
 ## Die eine Zahl
 
-**Sieben von neun Kernkästen tragen Code (vorher sechs).** Der Zuwachs ist echt
-(`kern/src/schreiber.cpp`, 388 Zeilen, übersetzt und geprüft). Die beiden fehlenden sind
-`werte` und `schritt` — und `schritt` ist die Runde. Solange sie zwei Zeilen hat, rechnet
-das Spiel nicht, gleich wie viele Pakete durchgehen.
+**Sieben von neun Kernkästen tragen Code — zum zweiten Lauf in Folge unverändert.**
+Ein voller Baulauf hat die Zahl nicht bewegt. Die fehlenden sind `werte` und `schritt`;
+`schritt` ist die Spielrunde, und die Rolle, die sie entwerfen müsste, ist seit drei
+Läufen nicht aufgerufen worden.
