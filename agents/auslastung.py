@@ -60,7 +60,7 @@ def bericht(tage: int = 7) -> str:
 
     fenster = verbindung.execute(
         """SELECT count(*), sum(tokens_in + tokens_out)
-           FROM lauf WHERE gestartet > datetime('now', ?)""",
+           FROM lauf WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', ?)""",
         (f"-{FENSTER_STUNDEN} hours",),
     ).fetchone()
 

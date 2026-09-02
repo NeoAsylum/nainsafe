@@ -140,7 +140,8 @@ def tagesverbrauch(verbindung) -> float:
 def wochenverbrauch(verbindung) -> float:
     """Gegenwert der letzten sieben Tage -- die Groesse, die wirklich bindet."""
     zeile = verbindung.execute(
-        "SELECT sum(kosten_eur) FROM lauf WHERE gestartet > datetime('now', '-7 days')"
+        "SELECT sum(kosten_eur) FROM lauf "
+        "WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')"
     ).fetchone()
     return float(zeile[0] or 0)
 

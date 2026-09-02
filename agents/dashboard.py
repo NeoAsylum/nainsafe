@@ -99,6 +99,16 @@ def trichter(stufen: list[tuple[str, int, str]]) -> str:
 
 # ---------------------------------------------------------------- Daten
 
+def _ordner(pfad):
+    """Eintraege eines Verzeichnisses, das es nach dem Aufraeumen nicht mehr geben muss.
+
+    `signals/` liegt seit dem 2026-09-02 unter `archiv/suche/`. Ohne diese Huelle ist
+    das Dashboard alle dreissig Minuten still gescheitert -- die Seite blieb einfach
+    stehen, und nichts sagte warum.
+    """
+    return sorted(pfad.iterdir()) if pfad.is_dir() else []
+
+
 def sammeln() -> dict:
     d: dict = {"erzeugt": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")}
     v: sqlite3.Connection = sqlite3.connect(DB)
@@ -110,26 +120,26 @@ def sammeln() -> dict:
 
     d["woche"] = v.execute(
         """SELECT count(*), sum(tokens_in + tokens_out), sum(kosten_eur)
-           FROM lauf WHERE gestartet > datetime('now','-7 days')"""
+           FROM lauf WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S','now','-7 days')"""
     ).fetchone()
 
     d["arten"] = v.execute(
         """SELECT sum(tokens_frisch), sum(tokens_cneu), sum(tokens_cles),
                   sum(tokens_out), sum(tokens_denken)
-           FROM lauf WHERE gestartet > datetime('now','-7 days')"""
+           FROM lauf WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S','now','-7 days')"""
     ).fetchone()
 
     d["rollen"] = v.execute(
         """SELECT rolle, count(*), sum(ergebnis='leer'),
                   sum(ergebnis IN ('fehler','abgebrochen')),
                   sum(tokens_in + tokens_out)
-           FROM lauf WHERE gestartet > datetime('now','-7 days') AND ergebnis!='laeuft'
+           FROM lauf WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S','now','-7 days') AND ergebnis!='laeuft'
            GROUP BY rolle ORDER BY sum(tokens_in + tokens_out) DESC"""
     ).fetchall()
 
     d["tage"] = v.execute(
         """SELECT date(gestartet), count(*), sum(tokens_in + tokens_out)
-           FROM lauf WHERE gestartet > datetime('now','-14 days')
+           FROM lauf WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S','now','-14 days')
            GROUP BY date(gestartet) ORDER BY date(gestartet)"""
     ).fetchall()
 
@@ -145,7 +155,7 @@ def sammeln() -> dict:
 
     # --- Pipeline aus dem Dateisystem ---
     signale = {o.name: len(list(o.glob("*.md")))
-               for o in sorted((WURZEL / "signals").iterdir()) if o.is_dir()}
+               for o in sorted(_ordner(WURZEL / "signals")) if o.is_dir()}
     alle = repo.ideen()
     d["signale"] = signale
     d["pipeline"] = [

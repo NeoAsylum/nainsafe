@@ -56,6 +56,17 @@ def main() -> int:
     if len(ideen) != 1:
         befunde.append(f"ideas/ enthaelt {len(ideen)} Dateien, erwartet ist genau die aktive")
 
+    # Die Berichtsskripte wirklich AUSFUEHREN, nicht nur importieren. Genau daran ist
+    # diese Pruefung beim ersten Mal vorbeigelaufen: `dashboard` liess sich importieren
+    # und scheiterte beim Lauf an `signals/`, das ins Archiv gewandert war -- alle
+    # dreissig Minuten, still, eine Stunde lang.
+    for skript in ("agents/dashboard.py", "agents/kontingent.py", "agents/auslastung.py"):
+        f = subprocess.run([sys.executable, skript], cwd=WURZEL,
+                           capture_output=True, text=True, timeout=180)
+        if f.returncode != 0:
+            befunde.append("LAUF " + skript + " scheitert: "
+                           + (f.stderr or "")[-500:])
+
     # Trockenlauf der Kette, die nachts wirklich faehrt
     fertig = subprocess.run([sys.executable, "agents/nachtlauf.py", "--trocken"],
                             cwd=WURZEL, capture_output=True, text=True, timeout=120)

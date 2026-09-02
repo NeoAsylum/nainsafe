@@ -555,6 +555,62 @@ bleiben unmarkiert, und zwar nicht als Ausnahme: `land.<L>.leitzins` (18, 62, 10
 in T45 als **Beispiel** einer Kategorie von 150 Adressen und nicht als abschliessende Liste;
 die drei übrigen Aufsichtszähler (23, 111, 155) bleiben deshalb unmarkiert.
 
+**Die `basiswechsel`-Familie, alle fünf Zeilen an einer Stelle.** Sie ist der Fall, in dem
+die beiden vorstehenden Sätze zusammen gelesen werden müssen — einzeln genommen ergibt jeder
+für sich das falsche Ergebnis. `restwelt.basiswechsel` (198) ist **unmarkiert**, die vier
+`land.<L>.basiswechsel` (44, 88, 132, 176) sind **markiert**, und die Zähltabelle oben
+(*Die elf `Vorgabe`-Zeilen gegen T46*) ordnet alle fünf derselben T46-Zeile
+`gebiet.<G>.basiswechsel` zu.
+
+*Erstens, gemeint ist die Zeichenkette und nicht die Herkunftsspalte* (Satz oben zu Nr. 192).
+Von den fünf Zeichenketten steht genau **eine** wörtlich in `specs/`: `restwelt.basiswechsel`
+in `technik.md` Zeile 820. `land.US.basiswechsel` und seine drei Geschwister stehen nirgends
+— Volltextsuche über `specs/0016-…/` nach `basiswechsel` ergibt zehn Fundstellen, alle in
+`technik.md`, davon genau zwei mit vollständiger Adresse: Zeile 820 und die T46-Zeile 883
+`gebiet.<G>.basiswechsel`. Nr. 198 ist damit zitiert, die vier anderen sind gebildet. Dass
+alle fünf in der Herkunftsspalte `Vorgabe(T46)` tragen, ändert daran nichts; ebenso wenig wie
+bei `restwelt.preisniveau` (192), das `Datenanker(15)` trägt.
+
+*Zweitens, ein Beispiel erzeugt Geschwister, eine abschliessende Liste nicht* (Satz oben zu
+`land.CN.aufsichtszaehler`). Zeile 820 steht in der Spalte „Beispiel“ von T45, ist also
+dieselbe Bauart wie Zeile 817 — mit einem Unterschied in der Bedeutungsspalte, und der
+entscheidet: 820 verweist für seine Kategorie ausdrücklich auf die abschliessende Liste
+(„dieses Dokument, **abschliessend aufgezählt in T46**“), 817 auf eine offene („die Tabelle
+‚Jede Größe ohne Datenanker‘ in `spiel.md` nennt einen **Zahlenwert**“, 150 Adressen). Das
+Beispiel in 820 steht folglich für die elf Zeilen aus T46 und für keine zwölfte; es erzeugt
+keine unmarkierten Geschwister, und die vier gebildeten Zeilen tragen ihre Marke zu Recht.
+
+| Adresse | Nr. | wörtlich in `specs/` | Fundstelle | Marke |
+|---|---|---|---|---|
+| `land.<L>.basiswechsel` | 44, 88, 132, 176 | nein | — | **je eine** |
+| `restwelt.basiswechsel` | 198 | ja | `technik.md` 820 (T45, Spalte „Beispiel“) | keine |
+
+**Gegenprobe, damit der Satz zu Zeile 820 nichts anderes bewegt.** T45 hat fünf Einträge
+(`technik.md` 816–820), und nur 820 verweist für seine Kategorie auf eine abschliessend
+aufgezählte **Adressliste**: 816 nennt „eine Reihe der Reihenliste weiter unten“ — eine Liste
+von Reihen, keine von Adressen —, 817 die Entwurfstabelle in `spiel.md` mit 150 Adressen,
+818 `parameter.toml` nach T27, 819 den Jahrgangsbau. Die Beispiele der übrigen vier
+(`land.DE.sektor.2.wertschoepfung`, `land.CN.aufsichtszaehler`, `fonds.kasse`, `markt.wert`)
+behalten damit die Lesart, die sie oben schon haben; die letzten beiden tragen ohnehin keinen
+Index, über den sich ein Geschwister bilden liesse.
+
+**Was hier offen bleibt und hier nicht entschieden wird.** Warum die Familie drei Präfixe
+kennt — `gebiet.<G>.` in T46 gegen `land.<L>.` und `restwelt.` in dieser Tabelle —, ist
+ungeklärt. Ob `gebiet.<G>.` für die beiden anderen zugleich steht, sagt dieses Verzeichnis
+nicht; die Frage berührt `technik.md` und liegt beim Architekten, geführt als Punkt 9 in
+`ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/rueckstand.md`. Auch die Zuordnung
+aller fünf Zeilen zur T46-Zeile `gebiet.<G>.basiswechsel` oben unter *Die elf `Vorgabe`-Zeilen
+gegen T46* ist keine Antwort darauf: Sie sagt, aus welcher T46-Zeile der Herkunftseintrag
+stammt, und nicht, dass ein Präfix für ein anderes steht. **Die Herleitung
+oben hängt nicht daran**, denn sie fragt nur, ob eine Zeichenkette wörtlich belegt ist und ob
+die belegende Stelle abschliessend aufzählt — nicht, wie ein Präfix zustande kommt. Beide
+denkbaren Antworten ergeben dieselben Marken: Steht `gebiet.<G>.` für alle fünf Gebiete, sind
+die vier `land.<L>.`-Zeilen anders belegte Indizes einer T46-Adresse und deshalb markiert
+(Satz oben zu Nr. 19); steht es nicht dafür, sind sie ohne Vorlage gebildet und ebenfalls
+markiert. Nr. 198 bleibt in beiden Fällen unmarkiert: Ihre Zeichenkette steht wörtlich in
+Zeile 820 — und deckte T46 sie zusätzlich ab, so deckt ein T46-Beleg die Adresse selbst, nur
+eben keine Geschwister.
+
 **Zwei Parameterschlüssel sind ebenfalls gebildet** und mit `*` markiert:
 `startzustimmung` und `regulierung_start`. T27 nennt beide Größen („Startzustimmung",
 „Startstand der Finanzmarktregulierung"), aber keinen Schlüsselnamen. Das gehört in Paket

@@ -64,19 +64,19 @@ def main() -> int:
 
     fenster = v.execute(
         """SELECT count(*), sum(tokens_in + tokens_out), sum(kosten_eur) FROM lauf
-           WHERE gestartet > datetime('now', ?)""",
+           WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', ?)""",
         (f"-{FENSTER_STUNDEN} hours",),
     ).fetchone()
 
     tag = v.execute(
         """SELECT count(*), sum(kosten_eur) FROM lauf
-           WHERE gestartet > datetime('now', '-7 days')
+           WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')
            GROUP BY date(gestartet) ORDER BY sum(kosten_eur) DESC LIMIT 1"""
     ).fetchone()
 
     woche = v.execute(
         """SELECT count(*), sum(kosten_eur) FROM lauf
-           WHERE gestartet > datetime('now', '-7 days')"""
+           WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')"""
     ).fetchone()
 
     gescheitert = v.execute(

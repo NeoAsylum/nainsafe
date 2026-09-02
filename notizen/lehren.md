@@ -440,3 +440,33 @@ was erlaubt ist.
   ausgedacht hatte.** Sie stand nach dem 253-Dollar-Tag da, wurde zweimal verdoppelt und
   war nie an etwas gemessen. Ein Grenzwert ohne Eichung ist eine Beruhigung, keine
   Sicherung -- und wenn er am falschen Fenster sitzt, ist er nicht einmal das.
+
+- **2026-09-02** — **Jede Zeitfensterabfrage der Fabrik war falsch, und niemand hat es
+  gemerkt, weil sie plausible Zahlen lieferte.** Das Journal speichert
+  `2026-09-02T01:00:00` mit einem `T`, SQLites `datetime('now','-5 hours')` liefert
+  `2026-09-02 11:59:00` mit einem **Leerzeichen**. Im Zeichenvergleich ist `T` groesser
+  als das Leerzeichen -- also war *jede* Zeile des Tages im Fenster. „Letzte fuenf
+  Stunden" hiess in Wahrheit „heute", und weil beides oft aehnlich aussieht, ist es
+  wochenlang durchgegangen. Aufgefallen ist es erst an einer Zahl, die offensichtlich
+  falsch war: 80 Laeufe in sechzehn Minuten.
+
+  Betroffen waren `kontingent.py`, `auslastung.py`, `dashboard.py` und die
+  Wochenbremse, die ich eine Stunde vorher eingebaut hatte. *Folgerung:*
+  `strftime('%Y-%m-%dT%H:%M:%S', ...)` statt `datetime(...)`, damit das Format zum
+  Journal passt. Bei Tagesspannen faellt der Fehler nicht auf, weil der Datumsteil schon
+  trennt -- bei Stundenspannen kippt der Vergleich vollstaendig.
+
+  **Und die richtige Zahl dahinter aendert die Empfehlung:** Im laufenden
+  Sitzungsfenster hat die Fabrik 7,8 Dollar verbraucht, waehrend die Anzeige des
+  Betreibers von 4 auf 12 Prozent stieg. Die acht Punkte kommen also ueberwiegend aus
+  dem **Gespraech**, nicht aus den Agentenlaeufen -- jede Antwort schickt den ganzen
+  Verlauf mit. Eine Fensterbremse fuer die Fabrik haette gegen den falschen Verursacher
+  gebremst. Der Nachtlauf um 03:00 laeuft, wenn kein Gespraech mitlaeuft, und bekommt
+  ein sauberes Fenster.
+
+- **2026-09-02** — **Eine Pruefung, die importiert statt auszufuehren, prueft nichts.**
+  `nach-aufraeumen.py` hat `dashboard` erfolgreich importiert und „keine Befunde"
+  gemeldet -- waehrend dasselbe Skript beim Ausfuehren an `signals/` scheiterte, das ins
+  Archiv gewandert war. Alle dreissig Minuten, still, eine Stunde lang. *Folgerung:* Die
+  Pruefung fuehrt die Berichtsskripte jetzt wirklich aus. Ein Import beweist, dass eine
+  Datei syntaktisch heil ist, sonst nichts.

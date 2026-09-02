@@ -35,7 +35,7 @@ def wochenverbrauch() -> float:
     verbindung = db()
     wert = verbindung.execute(
         "SELECT coalesce(sum(kosten_eur), 0) FROM lauf "
-        "WHERE gestartet > datetime('now', '-7 days')"
+        "WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')"
     ).fetchone()[0]
     verbindung.close()
     return float(wert)
