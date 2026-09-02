@@ -1,7 +1,7 @@
 ---
 id: 0002-fondsbewertung-definieren
 rolle: kernbauer
-status: offen
+status: blockiert
 haengt_an: [0008-kern-zustand-310-felder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die öffentliche Schnittstelle von kern::werte ist Name für Name die Tabelle der siebzehn Größen aus T48; die drei Skalenübergänge aus T50 sind privat und haben genau die dort genannten Aufruforte; ein Test rechnet die Zahlenprobe aus T47 nach und nennt 4.200.000.000.000 Cent.
@@ -83,6 +83,43 @@ der Schleife nicht schreibbar.
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `offen` → `blockiert`.** Nicht wegen eines Fehlers im
+Paket, sondern weil seine Vorgabe an genau der Stelle in Revision ist, die es abschreiben
+soll.
+
+**Der Sachverhalt** (Prüfbefund zu 0007 vom 2026-09-02, Befund 1; `ops/plan.md` vom
+2026-09-02): T5 nennt Klasse 2 „Tausend USD zu **konstanten** Preisen des Basisjahrs". In
+Klasse 2 liegen die 40 Handelsströme aus CEPII BACI — und BACI führt „thousands
+**current** USD". Im selben Topf liegen die Wertschöpfungen aus Reihe 1 in konstanten
+Preisen. Eine Deflationierung steht nirgends, und T50 zählt die Skalenübergänge
+abschliessend auf; ein Preisbasiswechsel ist keiner davon.
+
+**Warum das gerade dieses Paket trifft.** Abnahme 5 verlangt, dass jede der siebzehn
+Formeln „Zeichen für Zeichen" mit T47 beziehungsweise T48 übereinstimmt, und Punkt 2
+verlangt die drei Skalenübergänge aus T50. Die Auflösung der Klasse-2-Frage ändert nach
+`ops/plan.md` T5, T49, T23 Punkt 5 und T8 — und wenn sie einen vierten Skalenübergang
+braucht, ändert sie T50. Dann ändert sich mit ihr das Abnahmekriterium dieses Pakets,
+nachdem es gebaut wurde. `fondsvermoegen` hat fünf Leser (T47 Punkt 3); Nacharbeit an
+diesem Modul ist die teuerste im ganzen Kern.
+
+**Ich löse den Widerspruch nicht auf** — Entwurf ist nicht meine Rolle, und der
+Geschäftsführer hat die Frage in `ops/plan.md` bereits vorgelegt. Was ich tue, ist, kein
+Bauwerk gegen eine Vorgabe einzuplanen, von der zwei Prüfbefunde und ein Plan sagen, dass
+sie an dieser Stelle falsch ist.
+
+**Was das Paket entblockt:** eine Entscheidung des Architekten zur Klasse-2-Frage,
+schriftlich in `technik.md` oder in einem ADR. Danach `blockiert` → `offen`, ohne
+Änderung an Umfang oder Abnahme, sofern T47, T48 und T50 unberührt bleiben — ändern sie
+sich, ziehe ich Punkt 1 bis 3 und Abnahme 4 nach.
+
+**Der kritische Pfad steht dadurch nicht still.** Nach 0008 ist der `Schreiber`
+(0016-schreiber-ursachenkette, T18/T38/T39) der nächste Kernkasten; er hängt am `Zustand`
+und nicht an den Werten. 0010 (Zustandsausgabe) hängt an diesem Paket und bleibt
+mittelbar mit blockiert; das ist unvermeidbar und war schon vorher der Fall, weil es auf
+0002 wartet.
 
 ---
 

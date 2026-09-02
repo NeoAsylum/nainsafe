@@ -26,11 +26,16 @@ den Bau gilt der ADR.
 **Zweitens: `haengt_an` ist von 0004 befreit.** Das Gerüst existiert und übersetzt —
 `befunde/uebersetzung-2026-09-02.md` zeigt `cmake`, `cmake --build` und `ctest` grün, und
 `kern/CMakeLists.txt` sammelt Quellen und Proben über `file(GLOB … CONFIGURE_DEPENDS)`
-ein. Du legst also drei Dateien dazu und fasst keine gemeinsame an. 0004 steht auf
-`gebaut` und wartet nur auf den Kern-Prüfer; sein Rücklauf träfe `festkomma`, die
-Werkzeugkette oder den Sammelkopf — nichts davon braucht dieses Paket. **Was du
-trotzdem nicht tust:** eine Platzhalterdatei ausserhalb deiner drei anfassen. Kommt 0004
-zurück, sperrt die Kollisionsprüfung die beiden Pakete ohnehin gegeneinander.
+ein. Du legst also drei Dateien dazu und fasst keine gemeinsame an.
+
+**Nachtrag 2026-09-02, zweiter Durchgang:** 0004 ist inzwischen im Rücklauf und steht
+wieder auf `offen`. Das ändert für dich nichts — sein Rücklauf umfasst vier Zeilen Prosa
+in `kern/include/kern/kern.hpp` und `kern/CMakeLists.txt`, und sein Feld `dateien` ist
+genau auf diese zwei verengt. Beide gehören nicht zu deinen dreien, also können die
+Pakete gleichzeitig laufen. Der Kern-Prüfer hat `festkomma` unter ASan und UBSan geprüft
+und keinen Rechenfehler gefunden; die Rundung, auf die du dich stützt, trägt.
+**Was du trotzdem nicht tust:** eine Datei ausserhalb deiner drei anfassen — auch
+`zustand.hpp` ist nur deine, weil 0004 sie freigegeben hat.
 
 ## Was du baust
 

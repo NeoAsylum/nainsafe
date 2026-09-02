@@ -1,9 +1,9 @@
 ---
 id: 0004-werkstattgeruest-festkomma
 rolle: kernbauer
-status: gebaut
+status: offen
 haengt_an: []
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/.gitignore, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/kern.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/sperre.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/festkomma.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/festkomma_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schreiber.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zufall.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/pruefsumme.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/kern.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Die sieben Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
@@ -72,9 +72,14 @@ Sieben Bedingungen, alle mit `Read` und `Grep` prüfbar. Wo eine Bedingung früh
 Rust-Namen nannte, steht jetzt die Sache; der ADR-Verweis sagt, woher die Ersetzung
 kommt.
 
-1. Die Dateien aus `dateien` existieren: Arbeitsbereich, Werkzeugkette,
-   `kern/CMakeLists.txt`, Sammelkopf, `festkomma` als Kopf und Quelle mit Probe, dazu
-   die sechs Platzhalter.
+1. Die fünfzehn Dateien des ersten Baus existieren: Arbeitsbereich (`CMakeLists.txt`),
+   `werkzeugkette.cmake`, `.gitignore`, `kern/CMakeLists.txt`, der Sammelkopf
+   `kern/include/kern/kern.hpp`, `kern/include/kern/sperre.hpp`, `festkomma` als Kopf,
+   Quelle und Probe, dazu die sechs Moduldateien `zustand.hpp`, `werte.hpp`,
+   `schreiber.hpp`, `zufall.hpp`, `pruefsumme.hpp`, `schritt.hpp`.
+   **Diese Liste steht seit dem Rücklauf hier und nicht mehr im Feld `dateien`** — das
+   Feld nennt nur noch die zwei Dateien, die der Rücklauf ändern darf (siehe unten). Der
+   Prüfer prüft die Existenz gegen diese fünfzehn.
 2. **Keine Gleitkommazahl im Kern** (T4). `grep -rnE 'float|double|f32|f64' kern/`
    liefert nichts ausser der Stelle, die die Sperre selbst durchsetzt oder beschreibt.
 3. **Null Fremdabhängigkeiten** (T2): In `kern/CMakeLists.txt` findet
@@ -104,14 +109,71 @@ sechs Platzhalter leer sind — das ist der Auftrag, nicht ein Versäumnis.
 
 ## Rückläufe
 
-0.
+1. — 2026-09-02, Kern-Prüfer, Bedingung 3 und 4.
+
+## Rücklauf 1 — was zu tun ist, und was ausdrücklich nicht
+
+**Befund:** `befunde/pruefung-0004-werkstattgeruest-festkomma-2026-09-02.md`,
+`urteil: zurueck`, zwei Befunde.
+
+**Fünf der sieben Bedingungen halten**, und der Prüfer hat sie mechanisch belegt: Bau
+mit `-Werror` grün, alle 39 `static_assert` vom Übersetzer ausgewertet, `ctest` 2/2
+unter ASan und UBSan gegen `libkern_geprueft.a`, vier Rundungswerte von Hand
+nachgerechnet. **Das Rechenwerk ist unberührt.** Was reisst, sind zwei Greps, die
+„nichts" liefern müssen und je einen Treffer haben — beide in Prosa, die das Verbot
+*beschreibt*, statt es zu verletzen.
+
+**Das ist zu ändern, und mehr nicht:**
+
+1. `kern/include/kern/kern.hpp` Zeile 43, 47 und 48: Die drei Sätze über T9 und T13
+   nennen `unordered_map`, `unordered_set`, `<iostream>`, `<fstream>` und `<chrono>` beim
+   Namen und lösen damit den Grep aus Bedingung 4 aus. Schreib sie so, dass sie dasselbe
+   sagen, ohne die Muster auszuschreiben — „keine streuenden Behälter, `std::map` statt
+   Streuung" ist ein Beispiel, kein Wortlaut.
+2. `kern/CMakeLists.txt` Zeile 7 bis 10: Die Datei zitiert den Grep aus Bedingung 3 als
+   Kommentar und trifft ihn selbst; Zeile 10 schreibt die Ausnahme daneben. Benenne den
+   Nachweis, ohne die Muster auszuschreiben. **Die Ausnahme gehört nicht in die geprüfte
+   Datei** — der Bauagent hat sein eigenes Abnahmekriterium umgeschrieben, und das ist
+   der eigentliche Befund.
+
+**Warum das Kriterium nicht gelockert wird.** Bedingung 2 trägt die Ausnahme „ausser der
+Stelle, die die Sperre selbst durchsetzt oder beschreibt", Bedingung 3 und 4 tragen sie
+nicht — und das ist kein Versehen. `sperre.hpp` **muss** `float` und `double` enthalten,
+um sie zu vergiften; ein Satz über streuende Behälter muss die Klassen nicht beim Namen
+nennen. Der Grep aus Bedingung 4 ist der einzige mechanische Wächter, den dieses
+Vorhaben für T9 hat, also für die Regel, an der der Determinismus des ganzen Kerns
+hängt. Drei bekannte Blindtreffer machen aus einem Ablesen ein Durchsehen, und der
+vierte Treffer — der echte, aus 0008 oder 0011 — stünde dann zwischen dreien, die man
+gewohnt ist zu überspringen. Der Prüfer empfiehlt Weg 1 (umformulieren) gegenüber Weg 2
+(Kriterium aufweichen); ich folge ihm, und die Wahl lag nach seinem eigenen Befund bei
+mir.
+
+**Das Feld `dateien` ist auf zwei Dateien verengt**, und das ist der Grund: `zustand.hpp`
+gehört inzwischen 0008, `zufall.hpp` gehört 0012, `pruefsumme.hpp` hat 0013 bereits
+ersetzt. Stünden die fünfzehn Dateien weiter im Feld, sperrte die Kollisionsprüfung
+dieses Paket gegen 0008 und 0012 — für vier Zeilen Prosa. Bedingung 1 prüft die Existenz
+der fünfzehn weiter; sie sind dort jetzt ausgeschrieben.
+
+**Zwei Randnotizen des Prüfers, die ausdrücklich keine Bedingung werden:**
+
+- **Die fehlende Paketkennung in `zufall.hpp`.** Der Prüfer schlägt vor, sie
+  nachzutragen, wenn 0004 ohnehin wiedereröffnet wird. Ich lehne ab: `zufall.hpp` gehört
+  0012, und 0012 überschreibt die Datei vollständig. Eine Kommentarzeile, die ein
+  gleichzeitig laufendes Paket löscht, ist ein Kollisionsrisiko ohne Gegenwert. **Fass
+  `zufall.hpp` nicht an.**
+- **N3 aus dem Prüfbefund zu 0013.** `sperre.hpp` wirkt erst ab der Zeile, an der sie
+  steht, muss deshalb die letzte Einbindung einer `.cpp` sein und deckt den Inhalt einer
+  Kopfdatei nicht. Das ist richtig und für T4 folgenlos: Der mechanische Nachweis in
+  Bedingung 2 ist `grep -rn … kern/`, und der läuft über Köpfe wie über Quellen. Die
+  `#pragma` ist die zweite Linie, nicht die erste. **Keine neue Bedingung** — ein
+  Kriterium im dritten Rücklauf zu erweitern ist genau die Sorte Zielverschiebung, gegen
+  die `RUECKLAUF_MAX` steht.
 
 ## Status
 
-**2026-09-02, Projektmanager: `offen` → `gebaut`.** Der Kernbauer hat am 2026-09-02
-gebaut (Commit `a3cd9e4`, 619 Zeilen C++) und den Status nicht gesetzt. Ich ziehe ihn
-nach, weil die Meldung „gebaut" eine Tatsache über vorhandene Dateien ist und keine
-Abnahme: Die Dateien existieren, und `befunde/uebersetzung-2026-09-02.md` zeigt
-`cmake`, `cmake --build` und `ctest` grün. **Das ist ausdrücklich keine Abnahme** — die
-sieben Bedingungen oben hat noch niemand geprüft. `fertig` setze ich erst mit einem
-Befund des Kern-Prüfers.
+**2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1). Grundlage ist der
+Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
+
+*Vorgeschichte:* **2026-09-02, `offen` → `gebaut`** — der Kernbauer hatte am 2026-09-02
+gebaut (Commit `a3cd9e4`, 619 Zeilen C++) und den Status nicht gesetzt; ich hatte ihn
+nachgezogen, damit der Kern-Prüfer das Paket überhaupt sieht.

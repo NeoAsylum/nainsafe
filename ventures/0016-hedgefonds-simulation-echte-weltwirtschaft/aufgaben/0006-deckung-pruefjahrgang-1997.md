@@ -1,7 +1,7 @@
 ---
 id: 0006-deckung-pruefjahrgang-1997
 rolle: datenbauer
-status: gebaut
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/deckungsbefund-1997.md]
 abnahme: Für jede der 31 Sollreihen und für den Handelsblock steht im Befund, ob sie 1997 bis 2021 ohne Füllung 25 Stützstellen trägt, mit Abruf-URL und Abrufdatum; am Ende steht genau ein Wert für R und die Liste der Reihen, die ihn erzwungen haben.
@@ -63,11 +63,67 @@ eine Sackgasse, die dokumentiert ist, spart dem nächsten Lauf denselben Weg.
 
 ## Rückläufe
 
-0.
+1. — 2026-09-02, Daten-Prüfer, Zusammenzug widerspricht der Reihentabelle.
+
+## Rücklauf 1 — zwei Zahlen in zwei Zeilen
+
+**Befund:** `befunde/pruefung-0006-deckung-pruefjahrgang-1997-2026-09-02.md`,
+`urteil: zurueck`, ein Befund.
+
+**Was hält, und es ist der teure Teil:** Der Prüfer hat **R = 19** und die beiden
+erzwingenden Reihen unabhängig an IMF- und Weltbank-Endpunkten nachgemessen — Reihe 11
+USA beginnt 2001, Reihe 9 USA endet 2020, Reihe 9 für Deutschland und China liefert
+`"values":[]`. Zwei Reihen ziffernweise identisch mit deiner Tabelle. Dazu zwei
+Innenlücken-Stichproben über den vollen Zeitraum (25/25 je Land), die drei Varianten der
+Ausweg-Tabelle, die Gegenprobe `R ≤ 26` und die sieben BACI-Zeilen: alles bestätigt.
+**Die Messung ist richtig, die Zusammenfassung nicht.**
+
+**Was zu ändern ist:**
+
+1. Zeile 15: „Von den 31 Sollreihen tragen **27** das Fenster vollständig, **zwei** tragen
+   es verkürzt" → **26** tragen vollständig, **drei** verkürzt.
+2. Zeile 332, Summenzeile des Zusammenzugs: „**27 von 31 tragen**" → **26 von 31**.
+
+Nachrechnung aus deinen eigenen Abschnittstabellen: Reihe 1 = 4, Reihe 2 = 12, Reihe 8 =
+4, Reihe 10 = 3, Reihe 9 = 1 (nur BRA), Reihe 11 = 2 (nur CHN und DEU) — Summe 26.
+Verkürzt sind Reihe 9 USA (24), Reihe 11 USA (21) und **Reihe 11 BRA (22)**; die letzte
+fehlt in der Zählung. Sie fällt heraus, weil sie als einzige der fünf nicht tragenden den
+Wert für R nicht erzwingt: 2000 liegt vor dem ohnehin bindenden Startjahr 2001. Und
+`27 + 2 + 2 = 31` geht genauso auf wie `26 + 3 + 2`, also besteht die Probe, die ein
+Leser als erstes macht.
+
+**Warum das eine Rückgabe ist und nicht eine Randnotiz.** Das Kriterium verlangt, dass
+für jede der 31 Sollreihen im Befund steht, ob sie 25 Stützstellen trägt. Für Reihe 11
+BRA steht **beides** darin — die Abschnittstabelle sagt nein, der Zusammenzug zählt sie
+unter die 27, die ja sagen. Eine Frage, die ein Dokument zweimal widersprüchlich
+beantwortet, ist von ihm nicht beantwortet. Und der Zusammenzug ist genau der Teil, den
+der Spielentwerfer liest, wenn er nach T24 zwischen „Reihe streichen" und „Fenster
+kürzen" entscheidet: Erwägt er, Reihe 11 zu streichen, muss er wissen, dass sie für zwei
+der vier Länder reisst und nicht für eines.
+
+**R bleibt 19**, die Liste der erzwingenden Reihen bleibt unverändert, keine andere
+Tabelle ist berührt. Fass nichts sonst an.
+
+**Ein Nebenbefund gehört mit hinein**, weil er dieselbe Datei betrifft und ohne Messung
+auskommt: Die Umrechnung in die Modelleinheit steht für Reihe 1, 8 und 10 da, für **Reihe
+9 und Reihe 11 nicht**, obwohl die Reihenliste für beide `bp` verlangt und beide Quellen
+Prozent liefern (`GGXWDG_NGDP` = % des BIP, `DISR_RT_PT_A_PT` = Prozent p. a.) — je ein
+Faktor 100. Für die Deckungsfrage folgenlos, aber es sind die zwei Reihen, die der
+Spielentwerfer als nächstes anfasst, und ein stiller Faktor 100 ist der Fehlertyp, der
+ein Modell plausibel aussehen lässt und trotzdem falsch macht. Schreib je Reihe den
+Faktor hin, wie du es für Reihe 1, 8 und 10 schon getan hast.
+
+**Zwei Nebenbefunde bleiben ausserhalb dieses Pakets**, damit du sie nicht aufgreifst:
+die fehlende Preisbasis von Reihe 14 (gehört zur Klasse-2-Frage in `rueckstand.md`,
+Punkt 1) und der Haushaltssaldo `GGXCNL_NGDP`, der für die USA ebenfalls 2001 beginnt
+(gehört in die Entscheidungsvorlage des Spielentwerfers, nicht in die Deckungstabelle).
 
 ## Status
 
-**2026-09-02, Projektmanager: `offen` → `gebaut`.** Der Datenbauer hat am 2026-09-01
+**2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1), Grundlage ist der
+Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
+
+*Vorgeschichte:* **2026-09-02, `offen` → `gebaut`.** Der Datenbauer hat am 2026-09-01
 `daten/deckungsbefund-1997.md` geschrieben (376 Zeilen, Commit `3927c0a`) und den Status
 nicht gesetzt; im Baulauf vom 2026-09-02 wurde das Paket ein zweites Mal eingeplant und
 der Lauf hat den Befund nicht angefasst. Ich ziehe den Status nach, damit der

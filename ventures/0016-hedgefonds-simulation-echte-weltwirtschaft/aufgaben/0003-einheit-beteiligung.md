@@ -56,17 +56,33 @@ einer Stelle. Genau das ist zwischenzeitlich geschehen, an drei Stellen statt an
   Das ist Paket **0002**.
 
 Der Unterschied zu Wrappertypen ist der Nachweisweg: Typprüfung braucht einen
-Übersetzer, `grep` nicht — und **kein Agent dieser Fabrik hat eine Shell**
-(`rueckstand.md`, Abschnitt *Es gibt keinen Übersetzer*). Der Weg, den T5 wählt, ist
-hier also nicht nur der vorgegebene, sondern auch der einzige, der in dieser Fabrik
-tatsächlich geprüft werden kann.
+Übersetzer, `grep` nicht.
+
+**Korrektur am 2026-09-02, und sie geht gegen meine eigene frühere Begründung.** Hier
+stand, kein Agent dieser Fabrik habe eine Shell, deshalb sei der Weg über T5 „nicht nur
+der vorgegebene, sondern auch der einzige, der in dieser Fabrik tatsächlich geprüft
+werden kann". Der zweite Halbsatz ist seit dem 2026-09-02 falsch: `baulauf.py` übersetzt
+und legt das Urteil nach `befunde/uebersetzung-<datum>.md`; eine Bedingung, die der
+Compiler zurückweist, ist hier ein prüfbares Abnahmekriterium. **Der Widerspruch zu T5
+bleibt unberührt** — er war nie ein Nachweisproblem, sondern eine Entwurfsentscheidung
+—, aber das Argument, das ihn zusätzlich stützte, trägt nicht mehr. Wer die Frage
+entscheidet, entscheidet sie jetzt allein nach dem Entwurf.
 
 ## Meldung an den Geschäftsführer
 
 Zu entscheiden ist **nichts**, solange T5 gilt. Will der Betreiber die Wrappertypen
-trotzdem — sie wären in einer Fabrik mit Übersetzungslauf das schärfere Werkzeug —, ist
-das ein **ADR gegen T5** und danach ein neues Paket, kein Wiederaufwecken dieses hier.
-Ich löse den Widerspruch nicht selbst auf: Über den Entwurf entscheide ich nicht.
+trotzdem — mit dem Übersetzungslauf sind sie das schärfere Werkzeug, und dieses Argument
+ist seit dem 2026-09-02 stärker geworden, nicht schwächer —, ist das ein **ADR gegen T5**
+und danach ein neues Paket, kein Wiederaufwecken dieses hier. Ich löse den Widerspruch
+nicht selbst auf: Über den Entwurf entscheide ich nicht.
+
+**Das Feld `dateien` nennt weiter eine `.rs`-Datei, und das bleibt so.** `ops/plan.md`
+führt es unter „Rest-Rust"; die Begründung von oben gilt unverändert — eine Datei, die es
+nach T5 nie geben soll, braucht keinen richtigen Namen, und ein nachgezogener
+C++-Dateiname sähe aus wie ein Paket, das nur auf einen Bauagenten wartet. Sollte der
+Betreiber den ADR gegen T5 erlassen, entsteht ein neues Paket mit neuem Namen; sollte er
+es nicht tun, ist die Zeile nie wieder relevant. Kein Bauagent liest sie, weil
+`baulauf.py:startbereit` nur `offen` sieht.
 
 Bis dahin bleibt dieses Paket blockiert und wird von keinem Bauagenten aufgegriffen —
 `baulauf.py:startbereit` sieht nur `offen`.

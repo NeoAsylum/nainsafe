@@ -1,174 +1,195 @@
 # Rückstand — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-02, geschrieben vom Projektmanager. Fassung 2; die Fassung vom 2026-09-01
-steht in `git log -p` und ist in ihrem wichtigsten Satz **widerlegt**. Diese Datei sagt,
-welche Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer
-entscheiden lassen muss.
+Stand 2026-09-02, geschrieben vom Projektmanager. Fassung 3. Diese Datei sagt, welche
+Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer entscheiden
+lassen muss.
 
-## Was sich seit dem 2026-09-01 grundlegend geändert hat
+## Was dieser Lauf getan hat
 
-**Es gibt einen Übersetzer.** Die alte Fassung baute *jedes* Abnahmekriterium dieses
-Vorhabens auf dem Satz „Kein Agent dieser Fabrik hat eine Shell, also kann niemand
-übersetzen" auf. Der Satz stimmt für Agenten weiter — aber `baulauf.py` übersetzt seit
-dem 2026-09-02 selbst und legt das Ergebnis nach `befunde/uebersetzung-<datum>.md`. Der
-Lauf vom 2026-09-02 meldet `cmake`, `cmake --build` und `ctest` **grün**, maschinell
-erzeugt.
+**Sechs Statusnachzüge, alle mit Begründung im jeweiligen Paket.** Zum ersten Mal
+liegen mehr Prüfbefunde vor als Bauergebnisse — vier Urteile aus der Nacht vom
+2026-09-02, drei davon `zurueck`.
 
-Drei Folgen, und alle drei sind Gewinn:
+| Paket | von | nach | Grund |
+|---|---|---|---|
+| 0013 Prüfsumme | `gebaut` | **`fertig`** | Prüfbefund `geprueft`, alle fünf Bedingungen, zwei Summen unabhängig nachgerechnet |
+| 0004 Gerüst + Festkomma | `gebaut` | **`offen`** | Prüfbefund `zurueck`, Rücklauf 1 |
+| 0006 Deckung 1997 | `gebaut` | **`offen`** | Prüfbefund `zurueck`, Rücklauf 1 |
+| 0009 `parameter.toml` | `gebaut` | **`offen`** | Prüfbefund `zurueck`, Rücklauf 1 |
+| 0002 Fondsbewertung | `offen` | **`blockiert`** | seine Vorgabe ist an der Stelle in Revision, die es abschreiben soll — siehe unten |
+| 0003 Einheiten | `blockiert` | `blockiert` | unverändert; eine falsch gewordene Begründung darin korrigiert |
 
-1. **Ein Abnahmekriterium darf sich jetzt auf den Übersetzer stützen.** `static_assert`,
-   eine Probe mit ausgeschriebenem Erwartungswert, ein `ctest`-Eintrag — das sind
-   Nachweise und keine Behauptungen mehr. 0008 nutzt das als Erstes (2.480 Byte als
-   `static_assert` statt als Kopfrechnung).
-2. **Der Nachweis bleibt trotzdem zweistufig.** Grün heisst „die Zahlen passen
-   zueinander", nicht „die Zahlen sind die richtigen". Wo ein Erwartungswert aus dem
-   eigenen Code stammt, ist er eine Wiederholung; deshalb verlangen 0012 und 0013
-   ausdrücklich Werte aus **unabhängiger Quelle** mit URL und Abrufdatum.
-3. **Die Auflage „schreib keinen Code, den nie jemand übersetzt hat" entfällt.** Sie
-   stand in jedem Paket und kostete jeden Bauagenten Aufmerksamkeit für ein Problem, das
-   es nicht mehr gibt.
+**Zwei neue Pakete**, beide aus `specs/`, beide für den Fall, dass die drei Rückläufe
+schneller durch sind als der nächste Lauf:
 
-**Der Stack ist C++20** (ADR 0011). Alle Codepakete sind an diesem Lauf nachgezogen —
-Dateinamen, Nachweise, Behältertypen. `technik.md` sagt an zehn Stellen weiter Rust; das
-ist Paket 0011 und weiter offen. **Für den Bau gilt bis dahin der ADR, nicht der
-Vorgabentext**, und das steht jetzt in jedem betroffenen Paket.
+- **0016 `kern::schreiber`** (kernbauer, hängt an 0008) — T18, T38, T39, T19. Der
+  einzige Schreibweg in den `Zustand`, die Ursachenkette, das Bitfeld über 310 Adressen
+  und die zweiseitige Maskenprüfung je Modus.
+- **0017 Reihenliste maschinenlesbar** (datenbauer, hängt an 0006 und 0014) — T23 Punkt 2
+  und 8, T37. Die Eingabetabelle des Jahrgangsbaus, aus den drei gemessenen Befunden
+  statt aus Fließtext.
+
+**Alle drei Rückläufe sind klein**, und das ist der bemerkenswerte Teil: 0004 braucht vier
+Zeilen umformulierte Prosa, 0006 zwei Zahlen in zwei Zeilen, 0009 drei Stellen in einer
+Datei. Kein einziger Befund traf eine Rechnung. Der Kern-Prüfer hat `festkomma` unter ASan
+und UBSan durchgerechnet, der Daten-Prüfer `R = 19` an fremden Endpunkten nachgemessen —
+beides hielt.
 
 ## Wo die Pakete stehen
 
 | Paket | Rolle | Status | woran es hängt |
 |---|---|---|---|
 | 0001 Entwurfsabnahme | spielentwerfer | `fertig` | — |
-| 0002 Fondsbewertung | kernbauer | `offen` | 0008 |
-| 0003 Einheiten | kernbauer | `blockiert` | Entscheidung des Betreibers |
-| 0004 Gerüst + Festkomma | kernbauer | **`gebaut`** | Kern-Prüfer |
-| 0005 WDI-Lizenz | datenbauer | **`fertig`** | — |
-| 0006 Deckung 1997 | datenbauer | **`gebaut`** | Daten-Prüfer |
-| 0007 Adressverzeichnis | datenbauer | **`fertig`** | — |
+| 0002 Fondsbewertung | kernbauer | **`blockiert`** | Klasse-2-Entscheidung |
+| 0003 Einheiten | kernbauer | `blockiert` | ADR gegen T5, oder gar nicht |
+| 0004 Gerüst + Festkomma | kernbauer | **`offen`**, startbereit | Rücklauf 1 |
+| 0005 WDI-Lizenz | datenbauer | `fertig` | — |
+| 0006 Deckung 1997 | datenbauer | **`offen`**, startbereit | Rücklauf 1 |
+| 0007 Adressverzeichnis | datenbauer | `fertig` | — |
 | 0008 Zustand, 310 Felder | kernbauer | `offen`, startbereit | — |
-| 0009 parameter.toml | datenbauer | **`gebaut`** | Daten-Prüfer |
-| 0010 Zustandsausgabe | kernbauer | `offen` | 0002 + eine Entwurfsfrage |
+| 0009 `parameter.toml` | datenbauer | **`offen`**, startbereit | Rücklauf 1 |
+| 0010 Zustandsausgabe | kernbauer | `offen` | 0002 (blockiert) + eine Entwurfsfrage |
 | 0011 Stack auf C++ | **architekt** | `offen`, **nicht einplanbar** | `BAUROLLEN` |
 | 0012 Zufall | kernbauer | `offen`, startbereit | — |
-| 0013 Prüfsumme | kernbauer | `offen`, startbereit | — |
-| 0014 Lizenz, übrige Reihen | datenbauer | `offen`, startbereit | — |
+| 0013 Prüfsumme | kernbauer | **`fertig`** | — |
+| 0014 Lizenz, übrige Reihen | datenbauer | `gebaut` | Daten-Prüfer |
 | 0015 Markierungssatz | datenbauer | `offen`, startbereit | — |
+| 0016 `kern::schreiber` | kernbauer | **neu**, `offen` | 0008 |
+| 0017 Reihenliste | datenbauer | **neu**, `offen` | 0006, 0014 |
 
-`python3 agents/baulauf.py 0016-… --trocken` zieht daraus vier Baupakete (0008, 0012,
-0013, 0014) und drei Reviews (0004, 0006, 0009). Kein Bauagent läuft leer, und keine
-zwei Pakete treffen sich in einer Datei.
+`python3 agents/baulauf.py 0016-… --trocken` meldet 10 offen, 1 gebaut, 4 fertig, 2
+blockiert und zieht daraus vier Baupakete — 0004, 0006, 0008, 0009 — und ein Review
+(0014). Kein Bauagent läuft leer, keine zwei Pakete treffen sich in einer Datei, und im
+Vorrat liegen vier weitere (0012, 0015, 0016, 0017).
 
-**Fünf Statusnachzüge in diesem Lauf**, alle mit ihrer Begründung im jeweiligen Paket:
-0005 und 0007 auf `fertig` (je ein Prüfbefund mit `urteil: geprueft`; bei 0007 lag er
-seit dem 2026-09-01 vor und blieb liegen — mein Versäumnis), 0004, 0006 und 0009 auf
-`gebaut`. Die drei Bauagenten hatten ihren Status nicht gesetzt; ich ziehe nach, weil
-„gebaut" eine Tatsache über vorhandene Dateien ist und keine Abnahme. **`fertig` habe
-ich in keinem Fall ohne Prüfbefund gesetzt.**
+**Eine Kollision musste ich dafür auflösen.** 0004 führte fünfzehn Dateien im Feld
+`dateien`, darunter die sechs Modulplatzhalter. Wiedereröffnet hätte es damit 0008
+(`zustand.hpp`) und 0012 (`zufall.hpp`) gesperrt — für vier Zeilen Prosa. Das Feld nennt
+jetzt genau die zwei Dateien, die der Rücklauf ändern darf; die Existenzprüfung über alle
+fünfzehn steht ausgeschrieben in Bedingung 1. Das Feld `dateien` ist Kollisionsvermeidung
+und keine Baugeschichte — beim Rücklauf gehört es auf den Rücklauf verengt.
 
 ## Die Reihenfolge und warum sie so ist
 
 ```
-0004 Gerüst (gebaut) ──> [Kern-Prüfer]
-                                        0008 Zustand ──> 0002 Werte ──> 0010 Ausgabe
-0012 Zufall     (frei)                       ^
-0013 Prüfsumme  (frei) ──── Bytefolge ───────┘
-0014 Lizenz     (frei)   0015 Markierung (frei)
+0004 Rücklauf (Prosa)        0006 Rücklauf ─┐
+0012 Zufall     (frei)                      ├──> 0017 Reihenliste
+0015 Markierung (frei)       0014 (Review) ─┘
+0009 Rücklauf   (frei)
+
+0008 Zustand ──> 0016 Schreiber ──> (schritt, später)
+             └─> 0002 Werte [BLOCKIERT] ──> 0010 Ausgabe
 ```
 
-**Warum 0008 nicht mehr auf 0004 wartet.** Es hing an ihm, weil ohne Gerüst kein Modul
-existieren kann. Das Gerüst existiert und übersetzt grün, und `kern/CMakeLists.txt`
-sammelt Quellen und Proben über `file(GLOB … CONFIGURE_DEPENDS)` ein — ein neues Modul
-legt drei Dateien dazu und fasst keine gemeinsame an. Ein Rücklauf von 0004 träfe
-`festkomma`, die Werkzeugkette oder den Sammelkopf; nichts davon braucht der `Zustand`.
-Das spart dem kritischen Pfad einen ganzen Lauf. Kommt 0004 zurück, sperrt die
-Kollisionsprüfung die beiden Pakete ohnehin gegeneinander, weil 0004 die
-Platzhalterdateien in seinem Feld `dateien` führt.
+**Der Kern hat nach 0008 zwei Wege, und die Wahl ist diesen Lauf gefallen.** Meine offene
+Frage vom 2026-09-02 lautete: `werte` (0002) oder `schreiber` (T18/T38/T39) zuerst?
+`technik.md` Abschnitt 13 nennt beide in einem Atemzug und legt sich nicht fest.
+Entschieden hat es nicht meine Vorliebe, sondern die Klasse-2-Frage: 0002 ist blockiert,
+also ist der `Schreiber` der Kernkasten, der ohne offene Entwurfsfrage vorangeht. Er
+hängt am `Zustand` und nicht an den Werten. Das war Glück, kein Plan — hätten beide Wege
+an derselben Frage gehangen, stünde der Kern jetzt.
 
-**Warum drei Kernmodule gleichzeitig gehen.** Der Kastenschnitt aus T13 ist der
-Kollisionsschnitt (Abschnitt 13 von `technik.md` sagt es), und in C++ ist er noch
-schärfer als in Rust: ein Modul = Kopf + Quelle + Probe, drei eigene Dateien, keine
-gemeinsame Modulliste. `zufall` (T11) und `pruefsumme` (T12) kennen den `Zustand` nicht
-und können deshalb neben ihm entstehen.
-
-**Warum 0013 den Schnitt hat, den es hat.** T12 verlangt zweierlei — die Summe über eine
-Bytefolge und die feste Feldreihenfolge über die 310 Felder. Nur das zweite braucht den
-`Zustand`; es bleibt bei 0008. Das ist eine Paketentscheidung, keine Entwurfsentscheidung:
-T12 sagt nicht, in welcher Reihenfolge die beiden entstehen.
+**Warum 0002 blockiert ist und nicht nur langsam.** Abnahme 5 dieses Pakets verlangt, dass
+jede der siebzehn Formeln „Zeichen für Zeichen" mit T47 und T48 übereinstimmt, Punkt 2 die
+drei Skalenübergänge aus T50. Die Klasse-2-Frage ändert nach `ops/plan.md` T5, T49, T23
+Punkt 5 und T8 — und wenn sie einen vierten Skalenübergang braucht, auch T50. Dann ändert
+sich das Abnahmekriterium, **nachdem** gebaut wurde, an dem Modul mit fünf Lesern
+(`fondsvermoegen`, T47 Punkt 3). Ich löse den Widerspruch nicht auf; ich plane nur nichts
+gegen eine Vorgabe ein, von der zwei Prüfbefunde und ein Plan sagen, dass sie an dieser
+Stelle falsch ist. **Entblocken kostet eine Architektenentscheidung und sonst nichts** —
+bleiben T47, T48 und T50 unberührt, geht das Paket unverändert wieder auf `offen`.
 
 ## Was der Geschäftsführer entscheiden lassen muss
 
-**1. Klasse 2 misst zweierlei — laufende und konstante Preise.** *Neu, aus dem
-Prüfbefund zu 0007 vom 2026-09-02, Befund 1, und die schwerste offene Sache.* T5 nennt
-Klasse 2 „Tausend USD zu konstanten Preisen des Basisjahrs". In Klasse 2 liegen die 40
-Handelsströme mit `Datenanker(14)` — Reihe 14 ist CEPII BACI, und BACI führt „thousands
-current USD". Im selben Topf liegen die Wertschöpfungen aus Reihe 1, „BIP, konstante
-Preise". Eine Deflationierung steht nirgends, und T50 zählt die Skalenübergänge
-abschliessend auf; ein Preisbasiswechsel ist keiner davon.
+**1. Wie kommen die Entwurfsaufgaben in einen Lauf?** Unverändert, zum dritten Mal, und
+inzwischen hängen **fünf** Sachen daran: `architekt` und `spielentwerfer` stehen in
+`REVIEW`, aber nicht in `BAUROLLEN` (`baulauf.py:49`, heute nachgesehen: unverändert).
+Daran hängen 0011 (Stackwechsel in `technik.md`), Punkt 2, Punkt 3, Punkt 4 und der
+Schaden aus Gegenkraft 5. Der Plan empfiehlt eine Zeile in `baulauf.py`; ich schliesse
+mich unverändert an.
 
-Zwei Stellen, an denen es weh tut: `durchgriff = teile_gerundet(10.000 · H, H + N)`
-addiert im Nenner laufende und konstante Preise und fällt systematisch zu klein aus, in
-allen zehn Werten gleichgerichtet; und Maß 4 hielte reale Modellströme gegen eine
-nominale Sollreihe und misste dann Inflation statt Modellgüte. **Das ist kein
-Arbeitspaket** — es ändert T5, T49, T23 Punkt 5 und T8 und gehört Architekt und
-Spielentwerfer.
+**Neu ist der Preis, und er ist seit heute bezifferbar:** Ein blockiertes Paket auf dem
+kritischen Pfad des Kerns. Bis zum 2026-09-02 war die Antwort auf „was kostet das
+Vertagen" eine Vermutung; jetzt ist sie ein Status im Frontmatter.
 
-**2. Wie kommen die Entwurfsaufgaben in einen Lauf?** Unverändert aus `ops/plan.md` vom
-2026-09-02, und inzwischen dringender: `architekt` und `spielentwerfer` stehen in
-`REVIEW`, aber nicht in `BAUROLLEN`. Daran hängen **vier** Sachen: 0011 (Stackwechsel in
-`technik.md`), Punkt 1 oben, Reihe 9 samt R, und „Schaden". Der Plan empfiehlt, `BAUROLLEN`
-um beide Rollen zu erweitern — eine Zeile in `baulauf.py`. Ich schliesse mich an und habe
-nichts hinzuzufügen ausser der vierten Sache.
+**2. Klasse 2 misst zweierlei — laufende und konstante Preise.** Unverändert aus dem
+Prüfbefund zu 0007 vom 2026-09-02, Befund 1, und weiter die schwerste offene Sache. T5
+nennt Klasse 2 „Tausend USD zu konstanten Preisen"; darin liegen die 40 Handelsströme aus
+CEPII BACI („thousands current USD") und die Wertschöpfungen aus Reihe 1 (konstante
+Preise). `durchgriff = teile_gerundet(10.000 · H, H + N)` addiert im Nenner laufende und
+konstante Preise und fällt in allen zehn Werten gleichgerichtet zu klein aus; Maß 4 misste
+Inflation statt Modellgüte. **Der Prüfbefund zu 0006 nennt dieselbe Lücke ein zweites
+Mal** (Nebenbefund 2: Reihe 14 ist die einzige Reihe ohne Angabe zur Preisbasis, und sie
+ist die, bei der es klemmt). Zwei Prüfer, zwei Pakete, dieselbe Ursache.
 
-**3. Reihe 9 und R = 19.** Der Deckungsbefund vom 2026-09-01 sagt: Das Fenster 1997–2021
-trägt nicht, R = 19 mit dem Fenster 2001–2020, und **zwei Reihen tragen überhaupt
-nichts** — der Leitzins für Deutschland und für China. Nach T24 heisst das: Reihe
-streichen oder Quelle ersetzen. Beides entscheidet der Spielentwerfer. Der Befund liegt
-seit dem 2026-09-01, geprüft wird er im nächsten Lauf.
+**3. Klasse 4 — trägt sie ihren Deckel auch für Regler?** *Neu, aus dem Prüfbefund zu
+0009, Befund 3.* T5 gibt Klasse 4 den Bereich 0 bis 10.000 und sagt, die Bedeutung stehe
+„in dieser Tabelle und nirgends sonst". Fünf Klasse-4-Schlüssel in `parameter.toml`
+(`preisstoss`, `zustimmung_elastizitaet`, `nachahmer_wirkung`, `hebel_max`,
+`innerjahresausschlag_faktor`) tragen `>= 0` ohne obere Schranke; bei `preisstoss` steht
+sogar „specs/ nennt keine obere", was nachweislich falsch ist. Beide Lesarten sind aus der
+Datei belegbar, und das Paket, das sie einliest, muss sich für eine entscheiden: Mit dem
+Deckel ist `hebel_max ≤ 10.000`, der Hebel kann das Fondsvermögen nie übersteigen und
+Todesart 1 wird praktisch unerreichbar; ohne ihn hält Klasse 4 ihren zugesagten Bereich
+nicht mehr. **Das ist eine Entwurfsfrage und keine Datenfrage** — entweder gehören die
+fünf nicht in Klasse 4, oder in T5 fehlt der Satz, der Größe und Regler unterscheidet. Die
+Datei kann es: Bei `gegenlobby_satz` steht genau diese Auflösung. Ich habe den Datenbauer
+angewiesen, die fünf Schlüssel im Rücklauf **nicht** anzufassen.
 
-**4. „Schaden" in Gegenkraft 5 hat keine Rechenvorschrift.** Unverändert offen seit dem
-2026-09-01 (`technik.md` Abschnitt 12, Beobachtung 3): `spiel.md` sagt, das Gegenbudget
-wachse „proportional zum erlittenen Schaden"; welche Zahl das ist, steht nirgends. T50
-legt nur die Einheit fest. Solange es offen ist, ist Gegenkraft 5 nicht baubar. Es
-trifft den Kern erst in einigen Wochen — aber wenn der Weltschritt an der Reihe ist, ist
-es zu spät, die Frage dann erst zu stellen.
+**4. Reihe 9 und R = 19.** Der Deckungsbefund ist jetzt geprüft, und der Prüfer hat die
+Zahlen unabhängig nachgemessen: Fenster 2001–2020, 20 Stützstellen, **R = 19**, erzwungen
+von Reihe 11 USA (Start 2001) und Reihe 9 USA (Ende 2020). Reihe 9 trägt für Deutschland
+und China **keine einzige Beobachtung** (`"values":[]`, zweimal bestätigt). Nach T24
+heisst das: Reihe streichen oder Quelle ersetzen — beides entscheidet der Spielentwerfer.
+Die drei Varianten sind durchgerechnet und stehen im Befund: ohne Reihe 9 wird R = 20,
+ohne Reihe 9 und 11 wird R = 24. Keine Variante reisst die Schranke `R ≤ 26`.
 
-**5. 0003 Einheiten, seit dem 2026-09-01 blockiert.** Das Paket verlangt Wrappertypen je
-Größenklasse, T5 sagt „der Typ ist überall `i64`". ADR 0011 ändert daran nichts — in C++
-ist der Wrappertyp so gangbar wie in Rust und dieselbe Abweichung von T5. Entweder ein
-ADR gegen T5, oder das Paket bleibt liegen. Der Sachbefund dahinter ist über T47/T50
-längst behoben.
+**5. „Schaden" in Gegenkraft 5 hat keine Rechenvorschrift.** Unverändert offen seit dem
+2026-09-01 (`technik.md` Abschnitt 12, Beobachtung 3). Solange es offen ist, ist
+Gegenkraft 5 nicht baubar. Es trifft den Kern erst über `schritt`, also nach 0016 — aber
+wenn der Weltschritt an der Reihe ist, ist es zu spät, die Frage dann erst zu stellen.
 
-**6. Wo die Zustandsausgabe wohnt.** 0010 legt die drei Ebenen in den Kasten `kern`; T13
-gibt sie `schnittstelle`. Ein Aufruf, der Text **zurückgibt**, verletzt T13 nicht, aber
-welcher Kasten sie beherbergt, entscheidet der Entwurf. Nicht dringend — 0010 hängt an
-0002 —, aber vor dem Bau zu klären.
+**6. Wo die Zustandsausgabe wohnt.** Unverändert: 0010 legt die drei Ebenen in den Kasten
+`kern`, T13 gibt sie `schnittstelle`. Nicht dringend — 0010 hängt an 0002 und ist damit
+mittelbar mit blockiert.
 
-## Zwei Sachen, die vom Tisch sind
-
-- **Der Übersetzungslauf** war die offene Frage der letzten Fassung. Er läuft und ist
-  grün.
-- **Die Rücklaufgrenze** ebenfalls: `baulauf.py:RUECKLAUF_MAX = 3` steht, und der Lauf
-  meldet ein festgefahrenes Paket, bevor Tokens fliessen. Ich führe den Zähler trotzdem
-  in jedem Paket unter *Rückläufe* mit — er kostet nichts und macht die Zahl lesbar,
-  ohne Befunddateien zu zählen. Stand heute: überall 0.
-
-Dazu eine Nebenwirkung dieses Laufs, die `ops/plan.md` betrifft: Der Grund, aus dem der
-Plan seine Empfehlung B (Statuswechsel mechanisch aus dem Feld `dateien` setzen) auf
-später vertagt hat — „genau dieses Feld nennt in fünf Paketen noch Rust-Namen" —, ist
-weg. **Alle Codepakete tragen jetzt die Dateinamen, die auf der Platte stehen.** B wäre
-ab sofort ziehbar.
+**7. 0003 Einheiten.** Unverändert blockiert; zu entscheiden ist nichts, solange T5 gilt.
+**Eine Korrektur gehört dazu:** Die Begründung im Paket stützte sich darauf, dass kein
+Agent übersetzen kann und Typprüfung deshalb hier nicht nachweisbar sei. Seit dem
+2026-09-02 ist das falsch — `baulauf.py` übersetzt. Der Widerspruch zu T5 bleibt
+unberührt, aber das Zusatzargument trägt nicht mehr, und Wrappertypen sind mit einem
+Übersetzungslauf das schärfere Werkzeug. Wer die Frage entscheidet, entscheidet sie jetzt
+allein nach dem Entwurf. Ich habe die Stelle im Paket korrigiert, statt sie stehen zu
+lassen.
 
 ## Was als Nächstes ansteht und noch kein Paket ist
 
-**Die Rohdaten hat niemand.** `werkzeuge/aufbereitung` liest nach T23 „die eingefrorenen
-Rohdateien"; unter `daten/` liegen drei Textbefunde und keine einzige Datenzeile.
-`daten.md` sagt für alle vier tragenden Quellen ausdrücklich: keine Registrierung, kein
-Abonnement — es ist also **kein Gate**, sondern ein Beschaffungsschritt, der bisher
-niemandem gehört. Ich lege dafür kein Paket an, solange 0014 die Lizenzfrage für die
-Reihen 1, 2, 5 und 6 nicht beantwortet hat: Reihe 2 trägt 12 der 31 Sollreihen, und wer
-vorher herunterlädt, lädt möglicherweise das Falsche. Danach ist es das nächste grosse
-Datenpaket.
+**Die Rohdaten hat niemand, und das ist kein Paket, sondern eine Runner-Frage.** `daten/`
+enthält vier Textbefunde und keine einzige Datenzeile; `werkzeuge/aufbereitung` liest nach
+T23 „die eingefrorenen Rohdateien". Ich habe das am 2026-09-02 als „nächstes grosses
+Datenpaket" geführt und korrigiere mich: **Kein Bauagent kann es erledigen.** `Edit` und
+`Write` schreiben Text, `WebFetch` liefert aufbereiteten Text, eine Shell hat keine
+Baurolle — eine Rohdatei (BACI kommt als Archiv je HS-Fassung) landet so nie auf der
+Platte. Das ist derselbe Fall wie der Übersetzer am 2026-09-01: **Wenn eine Rolle ein
+Werkzeug nicht haben darf, ihre Arbeit aber ohne dessen Ausgabe wertlos ist, gehört das
+Werkzeug in den Runner und seine Ausgabe in eine Datei.** Ein Paket dafür anzulegen hiesse,
+Arbeit auszuschreiben, die niemand ausführen kann — genau der Fehler, den ich bei 0011
+schon einmal gemacht habe.
 
-**Die Reihenliste als maschinenlesbare Datei** (T23 Punkt 2 und 8: je Reihe die
-T37-Klassifikation, `exogen_ab` und `verkettet_ab`) ist der natürliche nächste Schritt
-nach 0014 und 0006 — nicht davor. Sie würde sonst die Spalte „Verdacht" fortschreiben,
-von der der Prüfbefund zu 0005 gezeigt hat, dass sie keine Messung ist.
+Es ist **kein Gate**: `daten.md` sagt für alle vier tragenden Quellen ausdrücklich keine
+Registrierung und kein Abonnement. Es kostet kein Geld und keine Rechtsfolge, nur eine
+Hand am Runner — dieselbe Hand, die `BAUROLLEN` erweitern müsste.
+
+**Der Jahrgangsbau selbst** (`werkzeuge/aufbereitung`) kann nach `technik.md` Abschnitt 13
+von Beginn an parallel laufen und braucht nichts vom Kern. Er wird schreibbar, sobald 0017
+die Eingabetabelle liefert; sein Abnahmekriterium braucht aber Daten, an denen er laufen
+kann. Deshalb steht er hinter der Rohdatenfrage und nicht davor.
+
+## Zwei Sachen, die vom Tisch bleiben
+
+- **Der Übersetzungslauf** ist grün und wird von den Prüfern bereits als Beleg benutzt —
+  der Kern-Prüfer hat ihn am 2026-09-02 unabhängig nachgestellt, der Prüfer von 0013 sich
+  ausdrücklich darauf gestützt und dazugesagt, was er damit **nicht** behauptet.
+- **Die Rücklaufgrenze** `baulauf.py:RUECKLAUF_MAX = 3` steht. Stand nach diesem Lauf:
+  0004, 0006 und 0009 je 1, alle übrigen 0. Ich führe den Zähler im Paket weiter; er
+  kostet nichts und macht die Zahl lesbar, ohne Befunddateien zu zählen.

@@ -1,7 +1,7 @@
 ---
 id: 0009-parameterdatei-schluessel
 rolle: datenbauer
-status: gebaut
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Jeder in T27 und T51 genannte Schlüssel steht in der Datei, mit Skalenklasse nach T5, Wertebereich, Herkunft der Schranke und einem Startwert innerhalb der Schranken; kein Schlüssel ohne Klasse, keine Klasse ohne Schlüssel im Text.
@@ -69,11 +69,73 @@ Vorher lesen: `technik.md` T5, T27, T50, T51, T47.
 
 ## Rückläufe
 
-0.
+1. — 2026-09-02, Daten-Prüfer, Abnahme 3 (Startwert innerhalb der eigenen Schranke).
+
+## Rücklauf 1 — drei Sachen in dieser Datei, eine ausserhalb
+
+**Befund:** `befunde/pruefung-0009-parameterdatei-schluessel-2026-09-02.md`,
+`urteil: zurueck`, vier Befunde. **Drei davon sind dein Rücklauf, der vierte nicht.**
+
+**Abnahme 1, 2 und 4 halten.** Der Prüfer hat alle 50 Schlüssel gegen T27 und T51
+abgezählt, die zehn Klassenzuweisungen der T27-Tabelle zeichengenau verglichen, die
+Gegenrichtung geprüft (keine Klasse ohne Schlüssel) und sechs Ungleichungen nachgerechnet.
+Auch deine Kreuzprobe zu den elf Parameteradressen aus T45 geht auf. Nicht bestätigt ist
+nur, dass die Datei maschinell als TOML geparst wurde — dem Prüfer stand kein Parser zur
+Verfügung; er hat sie strukturell nachgelesen.
+
+**Was zu ändern ist:**
+
+1. **`startzustimmung = 0` und `zustimmung_wechselschwelle = 0` verletzen beide ihre
+   eigene Schranke.** Zeile 379–381 verlangt `startzustimmung` **über**
+   `zustimmung_wechselschwelle`, Zeile 521 verlangt `zustimmung_wechselschwelle`
+   **unter** `startzustimmung` — und beide stehen auf 0. `0 > 0` ist falsch, `0 < 0`
+   auch. Das ist der Kern des Rücklaufs und kein Formfehler: Die Datei nennt die Folge
+   selbst — in Runde 1 steht die Zustimmung aller vier spielbaren Länder auf ihrer
+   Wechselschwelle, Gegenkraft 2 löst in allen vier Ländern aus, `lobbykosten_rest` und
+   `regierungsdruck_rest` werden gesetzt, bevor der Fonds eine Aktion getan hat. Deine
+   eigene Regel A („wo eine untere Schranke steht, ist der Platzhalter genau diese
+   Schranke") gibt die Antwort: Die untere Schranke von `startzustimmung` ist der
+   kleinste Wert über 0.
+2. **Befund 5 der Datei behauptet eine Einzigartigkeit, die nicht besteht** (Zeile
+   743–747): `aufschlag`/`instrument_min[leitzins]` sei „die einzige Stelle, an der zwei
+   Platzhalter voneinander abhaengen". Nach der Datei selbst sind es mindestens sechs
+   Paare — dazu `aufsicht_schwelle_3`/`aufsicht_max` (314),
+   `regulierung_start`/`regulierung_stufen` (394),
+   `instrument_max[regulierung]`/`regulierung_stufen` (709),
+   `gegenlobby_satz`/`druck_max` (224) und das Paar aus Punkt 1 (380/521). Das ist der
+   Grund, aus dem Punkt 1 unbemerkt blieb: Die Datei rechnet genau das eine Paar nach,
+   das sie für das einzige hält. Der Satz steht im Abschnitt BEFUNDE und wird deshalb von
+   der nächsten Rolle als geprüfte Aussage gelesen — zähl die Paare auf und rechne jedes
+   nach.
+3. **`schrittweite` hat in drei von vier Instrumententabellen weder Wertebereich noch
+   Herkunft einer Schranke** — `[instrument.leitzins]` (656), `[instrument.zoll]` (672),
+   `[instrument.haushalt]` (684), alle drei `= 1  # PLATZHALTER`. Damit ist für drei der
+   50 Schlüssel nicht prüfbar, was Abnahme 3 verlangt. Praktische Folge: `schrittweite =
+   0` ist nach dieser Datei zulässig, dann bewegt sich das Instrument im `spielmodus` nie
+   und Aktion 3 läuft ins Leere; ein negativer Wert kehrt die Richtung jeder
+   Lobbybewegung um. Nicht betroffen sind `instrument_min`/`instrument_max` von Zoll und
+   Haushalt — dort nennst du T51 als Herkunft und sagst ausdrücklich, dass T51 keine Zahl
+   führt. Das ist eine benannte Herkunft und genügt.
+
+**Was ausserhalb dieses Pakets liegt und was du deshalb nicht entscheidest.** Befund 3
+des Prüfers: Fünf Klasse-4-Schlüssel (`preisstoss`, `zustimmung_elastizitaet`,
+`nachahmer_wirkung`, `hebel_max`, `innerjahresausschlag_faktor`) tragen `>= 0` ohne den
+Deckel 10.000, den T5 für Klasse 4 nennt; bei `preisstoss` steht sogar „specs/ nennt
+keine obere", und das ist nachweislich falsch. Das ist **keine Reparatur an dieser
+Datei**: Es entscheidet, ob T5 Klasse 4 ihren Bereich auch für Regler trägt, und berührt
+damit `specs/`. Steht in `rueckstand.md` als Frage an den Geschäftsführer. **Fass die
+fünf Schlüssel nicht an**, bis die Frage beantwortet ist — sonst baust du eine Antwort
+ein, die dir nicht zusteht. Deine eigene Auflösung bei `gegenlobby_satz` (Klasse 9,
+Schranke `>= 0`, „wirksam begrenzt ist das **Ergebnis** durch `druck_max`") ist übrigens
+genau die Unterscheidung, um die es geht; sie ist ein Argument für die Vorlage, keine
+Erlaubnis, sie selbst zu treffen.
 
 ## Status
 
-**2026-09-02, Projektmanager: `offen` → `gebaut`.** `parameter.toml` liegt mit 763
+**2026-09-02, Projektmanager: `gebaut` → `offen`** (Rücklauf 1), Grundlage ist der
+Prüfbefund vom 2026-09-02 mit `urteil: zurueck`.
+
+*Vorgeschichte:* **2026-09-02, `offen` → `gebaut`.** `parameter.toml` liegt mit 763
 Zeilen vor und trägt im Kopf dieses Paket mit Stand 2026-09-02; der Datenbauer hat den
 Status nicht gesetzt. Nachgezogen, damit der Daten-Prüfer das Paket sieht. Keine
 Abnahme — ob jeder Schlüssel aus T27 und T51 mit Klasse, Wertebereich, Herkunft der

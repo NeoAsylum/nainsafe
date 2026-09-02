@@ -1,7 +1,7 @@
 ---
 id: 0013-pruefsumme-fnv1a-64
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/pruefsumme.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/pruefsumme.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/pruefsumme_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -78,3 +78,25 @@ steht.
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0013-pruefsumme-fnv1a-64-2026-09-02.md`, `urteil: geprueft`. Der
+Kern-Prüfer hat alle fünf Bedingungen einzeln abgearbeitet, die drei Quellen selbst
+aufgerufen und zwei Summen von Hand nachgerechnet — darunter eine, die keine
+Veröffentlichung führt. Damit ist Bedingung 1 in ihrem eigentlichen Sinn erfüllt: Der
+Erwartungswert stammt nicht aus dem geprüften Code.
+
+**Drei Nebenbefunde, keine Rückgabe** — der Prüfer sagt es ausdrücklich:
+
+- *N1* (Autorennennung zu RFC 9923 unvollständig, K. Vo fehlt) und *N2* (zwei Angaben
+  zur FNV-Nullsumme beim Abruf nicht aufgetaucht) betreffen keine der fünf Bedingungen.
+  URL, Abschnittsnummern und jedes zitierte Zeichen stimmen. Ich eröffne dafür kein
+  Paket: Der Beleg trägt, und ein Rücklauf für eine Namensreihenfolge kostet mehr als er
+  einbringt.
+- *N3* ist ein Befund **gegen 0004**, nicht gegen dieses Paket, und steht dort unter
+  „Randnotizen". Kurz: `sperre.hpp` wirkt erst ab der Zeile, an der sie steht, muss
+  deshalb als letzte Einbindung in einer `.cpp` stehen und deckt den Inhalt einer
+  Kopfdatei nicht. Für T4 im Kopf trägt der Grep aus Bedingung 2 von 0004, nicht das
+  `#pragma`.
