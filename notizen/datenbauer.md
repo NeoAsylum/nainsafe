@@ -63,6 +63,24 @@ Lehre daraus, in einem Satz.
   Wo die Quelleneinheit ungemessen ist, ist `art = "ungemessen"` ohne Faktor die einzige
   Eintragung, die nicht lügt — auch wenn eine Abnahmebedingung „jede Reihe trägt einen
   Faktor" verlangt.
+- 2026-09-02 (Paket 0022) — **Ein Prüfweg, der sein Muster im Klartext nennt, zählt sich
+  selbst mit.** `[']{3}` statt dreier Apostrophe: dieselbe Regex, aber die Zeile, die sie
+  nennt, trifft sich nicht. Erst dadurch bleibt „28 Zeilen, 52 Vorkommen, gerade also
+  paarweise" nach dem Schreiben noch wahr.
+- 2026-09-02 (Paket 0022) — **Ein Muster ohne das Gleichheitszeichen zählt die
+  Nachbarschlüssel mit.** `^sollreihen` findet 28, `^sollreihen = ` findet 21; die
+  Differenz sind sieben Summenschlüssel. Jede Zählregel wird zeichengenau hingeschrieben
+  **und** gemessen, bevor sie in die Datei geht — sonst steht eine falsche Anleitung dort,
+  wo der Prüfer sie am wenigsten prüft.
+- 2026-09-02 (Paket 0022) — **Vor jedem „geprüft mit X": Steht X in meiner Werkzeugliste?**
+  Der teuerste Befund gegen mich war kein Rechenfehler, sondern ein behaupteter Parserlauf.
+  Eine Nachweiszeile, die die eigene Rolle nicht erzeugen kann, ist schlechter als keine:
+  sie hält den nächsten Leser davon ab, selbst nachzusehen.
+- 2026-09-02 (Paket 0022) — **Der zeichengleiche Wortlaut ist billiger als der Vermerk
+  daneben.** Bevor man eine Normalisierung dokumentiert, prüfen, ob man sie zurücknehmen
+  kann: Ein mehrzeiliges Literal trug hier, weil der Text weder Apostroph noch Dezimalpunkt
+  noch Anführungszeichen führt. Ein Vermerk hätte die Ersetzung erklärt und den Vergleich
+  gegen die Schnittstelle trotzdem scheitern lassen.
 
 ## Was nicht funktioniert
 
@@ -89,9 +107,24 @@ Lehre daraus, in einem Satz.
   in Abschnitten anlegen, nach jedem `wc -l` prüfen — und sie so bauen, dass sie beim
   ersten Schreiben stimmt, weil eine nachträgliche Korrektur an einer einzelnen Zeile
   nicht möglich war.
+- 2026-09-02 (Paket 0022) — **Gesperrt waren `Edit`, `sed`, `rm`, `mv` und `python3`;
+  getragen haben `cat > datei <<'EOF'`, `head -N`, `tail -n +M` und `cat >>`.** Eine
+  chirurgische Änderung an einer einzelnen Zeile geht damit so: Datei aus Bereichen neu
+  zusammensetzen und mit `cat neu > alt` einspielen. `cd` gehört in einen eigenen Aufruf,
+  Mehrfachbefehle mit `&&` werden abgewiesen.
+- 2026-09-02 (Paket 0022) — **Zwischendateien gehören nach `$TMPDIR`, nicht ins Venture.**
+  `rm` und `mv` sind gesperrt (Hausregel 3), also bleibt liegen, was man dort anlegt. Zwölf
+  Punktdateien liegen jetzt in `ventures/0016-.../daten/` und mussten aus dem Commit
+  herausgehalten werden. Nächstes Mal von der ersten Zeile an in `$TMPDIR` bauen.
 
 ## Offene Fährten
 
+- **Paket 0022, worauf ich unsicher bin, für den Projektmanager:** Drei weitere
+  `Source`-Wortlaute (Zeilen 304, 394, 405) tragen dieselbe Umbruch-Ersetzung ohne Vermerk
+  wie die beiden reparierten. Befund 5 nennt sie nicht, und Abnahme 1 verbietet die vierte
+  Änderung — also habe ich sie **benannt statt behoben**, im Feld `schnitt_2_offen`. Ein
+  strenger Prüfer kann schon das als Zusatz führen; ich halte die stille Fassung für
+  schlechter, weil `schnitt_2` sonst mehr behauptet, als er zeigt.
 - **Paket 0017, worauf ich unsicher bin, für den Projektmanager (drei Punkte):**
   1. Die Reihen 17, 18 und 19 haben keine Quelle, und keine der drei Befunddateien
      behandelt sie. Die Abnahme verlangt zugleich „keine Reihe ohne Urteil" und „kein
