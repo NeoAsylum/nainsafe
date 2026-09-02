@@ -44,7 +44,24 @@ mehr — und es kostet jeden deiner Läufe Kontext.
      aendert sich, und eine Quelle, die im Maerz nichts hergab, kann im Juni
      ergiebig sein. -->
 
+- 2026-09-02 — Zusammengesetzte Shell-Befehle (`a && b`, `a; b`, Heredoc an `python3`)
+  werden im Lauf abgelehnt, einzelne Aufrufe nicht. Ein Bauzyklus ist deshalb drei Aufrufe:
+  `cmake -S/-B`, `cmake --build`, `ctest`. Kostet Läufe, wenn man es erst beim dritten Mal
+  merkt.
+- 2026-09-02 — `rm -rf bau` wird abgelehnt (Hausregel 3). Ein Bauverzeichnis muss nicht neu
+  angelegt werden: `cmake -S/-B` über den vorhandenen Stand hinweg konfiguriert sauber neu,
+  auch wenn der alte Cache aus einer Platzhalterfassung stammt.
+
 ## Offene Faehrten
 
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
      Lauf faengt hier an. -->
+
+- 2026-09-02 — `FABRIK_STRENGE` steht jetzt zweimal wortgleich im Baum (`kern/`,
+  `pruefstand/`), weil `set()` in CMake verzeichnisgebunden ist. Beim dritten Kasten ist es
+  dreimal da, und die dritte Fassung ist die, die niemand nachführt. Als Paket 0031
+  vorgeschlagen; ich durfte `werkzeugkette.cmake` nicht anfassen, sie gehört keinem Paket.
+- 2026-09-02 — Der Prüfstand hat noch keinen **Regressionsbestand** und keinen
+  **Determinismustest** — die beiden Sachen, die laut Rollenbeschreibung meine wichtigsten
+  sind. Beide brauchen einen gerechneten Weltschritt und stehen deshalb erst nach dem
+  Kernpaket zu „Schaden" an. `vorrat_probe` ist bis dahin der einzige Prüfstandstest.
