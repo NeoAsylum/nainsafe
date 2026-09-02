@@ -54,6 +54,22 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   „grün" nichts. Die vier zitierten URLs selbst abrufen und Konstanten, Schrittweiten
   und Zeilenreihenfolge Zeichen für Zeichen dagegenhalten — das ist die Prüfung, alles
   andere ist Beiwerk. Bei 0012 stimmten alle vier.
+- 2026-09-02 — **`python3 -c` als Nachrechner geht, wenn es genau ein Ausdruck ist.**
+  Damit ist die von aussen gerechnete Vergleichszahl doch möglich, obwohl keine Datei
+  geschrieben werden darf: `print(hex(__import__('functools').reduce(<schritt>,
+  <bytes>, <start>)))` in einer Zeile. So habe ich bei 0008 alle drei veröffentlichten
+  FNV-Summen unabhängig neu aufgebaut. **Das ist der stärkste Nachweis, den ich habe**,
+  weil er den Kreis „das Programm prüft sich selbst" ohne Compiler bricht.
+- 2026-09-02 — **Eine Tabelle im Code gegen ihre Quelldatei zu `diff`en schlägt jeden
+  Selbsttest des Pakets.** Bei 0008 beweist der eingebaute `static_assert`-Deckungslauf
+  nur, dass Tabelle und Rechenvorschrift **zueinander** passen; ob beide zum Verzeichnis
+  passen, beweist er nicht. Zwei `grep|sed` in eine Prozesssubstitution und ein `diff` —
+  zehn Sekunden, und die Bedingung ist von aussen belegt statt von innen behauptet.
+- 2026-09-02 — **Jede Behauptung „weicht ab von T&lt;n&gt;" im Quelltext gegen T&lt;n&gt;
+  halten.** Bei 0008 stand über einer Aufzählung, ihre Reihenfolge weiche von T15 ab —
+  und der zitierte T15-Satz trug genau dieselbe Reihenfolge. Der Code war richtig, der
+  Kommentar erfand einen Widerspruch. In dieser Fabrik ist ein gemeldeter Widerspruch
+  ein Arbeitsgegenstand, ein erfundener kostet also echte Zeit.
 
 ## Was nicht funktioniert
 
@@ -68,6 +84,12 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Was geht, ist der Bau des Pakets selbst. Beim nächsten Mal die eigenen Werte gleich
   als Kopfrechnung gegen den Quelltext planen und im Befund sauber trennen, was
   ausgeführt und was gerechnet wurde — sonst sieht ein Urteil härter aus, als es ist.
+  **Teil-Widerruf 2026-09-02, dritter Lauf:** Der Nachrechner geht doch, siehe oben —
+  einzeiliges `python3 -c`. Gesperrt bleiben mehrzeilige `-c`-Skripte, Heredocs, jede
+  Umleitung in eine Datei und **jede Pipe von `sed` in einen Compiler**. Damit ist der
+  naheliegende Zahntest („eine Adresse verfälschen, sehen ob der `static_assert`
+  rotwird") nicht durchführbar; Ersatz ist die Gegenprobe über die Probe selbst, die
+  Präfixe und Verlängerungen nachweislich ablehnt.
 - 2026-09-02 — **Die Shell ist nicht verlässlich da; ein Prüfplan, der sie voraussetzt,
   fällt aus.** Im zweiten Lauf waren nur einzelne einfache Aufrufe erlaubt, kein
   `for`, kein `find`, keine verketteten Befehle. Was immer geht: `Glob` für Existenz,
@@ -101,6 +123,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   nachgesehen), aber das Muster wandert in die nächsten Kernpakete. *Künftig: jedes
   vorgeschriebene Suchmuster einmal gegen einen erfundenen Verstoß halten, nicht nur
   laufen lassen. Ein leerer Treffer beweist nur, dass das Muster leer ausgeht.*
+- 2026-09-02 — **Ein Fehlerwert, der auf ein gültiges Feld zeigt, wandert durch den
+  ganzen Kern.** `adresse_zu_index` liefert bei unbekannter Adresse `{false, 0}`, und
+  Platz 0 ist eine getragene Modellgröße. Derselbe Kern begründet an anderer Stelle
+  (`festkomma.hpp`) ausführlich, warum ein stiller Ersatzwert schlimmer ist als ein
+  Abbruch. *Künftig bei jedem Ergebnistyp mit Ja-Nein-Feld fragen: Ist der Wert im
+  Nein-Fall unterscheidbar von einem gültigen?* Das ist ein Prüfmuster, kein Einzelfall
+  — `std::optional` ist in diesem Kern per Abnahme verboten, also kommen solche Typen
+  noch häufiger.
 - 2026-09-02 — **Ungeklärt: Schaltet `-fwrapv` den UBSan-Test auf
   vorzeichenbehafteten Überlauf ab?** Beide stehen in 0016 in jedem Profil. Wenn ja,
   deckt ADR 0011 Maßnahme 2 weniger ab, als sie verspricht. In diesem Lauf nicht
