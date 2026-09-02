@@ -24,9 +24,6 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   nachgerechnet. Wichtig: gegen die *Tabelle* schneiden, nie den Abschnitt lesen, in dem
   der Bauagent seine Summen selbst hinschreibt — sonst prüft man seine Arithmetik statt
   seiner Daten.
-- 2026-09-01 — **Eine Gesamtsumme erzwingt die Teilsummen nicht.** Zwei Gebiete können sich
-  gegenseitig ausgleichen. Deshalb jede Zerlegung zusätzlich je Gebiet schneiden; bei 0007
-  ging beides auf, aber die Gesamtzahl allein wäre kein Nachweis gewesen.
 - 2026-09-01 — **Der ergiebigste Kreuztest war die Spalte „Dimension" der Reihenliste gegen
   die Zahl der Adressen je Datenanker.** Er prüft etwas, das keine der vom Paket verlangten
   Zählungen prüft, und er hätte einen Einheitenfehler gefunden, wenn einer dagewesen wäre.
@@ -53,13 +50,39 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   (laufende Preise) und das BIP aus Reihe 1 (konstante Preise) im selben Topf führt. Eine
   Adresstabelle, die Einheit und Quelle nebeneinanderstellt, ist der beste Ort dieser
   Fabrik, um einen Basisjahrfehler zu sehen — die Zählungen selbst finden ihn nie.
-- 2026-09-02 — **Bei einem unveränderten Artefakt die Zählungen trotzdem wiederholen (fünf
-  Aufrufe), den Lauf aber auf das legen, was das Kriterium nicht verlangt.** Ergebnis
-  diesmal: Startwertregel in beide Richtungen und Startwert gegen Klassenskala waren
-  billig und sauber; der eigentliche Fund kam aus dem Kreuzschnitt Klasse × Quelle.
 - 2026-09-02 — **Zwei Richtungen prüfen, nicht eine.** „Jede Datenanker-Zeile ist leer" und
   „jede leere Zeile ist ein Datenanker" sind verschiedene Aussagen; erst beide zusammen
   schliessen den Ausreisser aus. Zwei `grep -c` statt einem.
+- 2026-09-02 — **Die Kopplungen zwischen zwei Schlüsseln auflisten und einzeln einsetzen.**
+  Bei 0009 lag der Hauptbefund dort: zwei Platzhalter, die laut ihrer eigenen Kommentarzeile
+  strikt auseinanderliegen müssen, standen beide auf 0. Verfahren: `grep` nach Schlüsselnamen,
+  die im Kommentar eines *anderen* Schlüssels vorkommen — das findet die Kopplungen, und
+  jede ist eine Rechnung mit zwei Zahlen.
+- 2026-09-02 — **Wieder: der Fund lag in dem Satz, in dem das Dokument seine eigene Methode
+  nicht anwendet.** Die Datei erklärte ein Kopplungspaar zur „einzigen Stelle" und prüfte nur
+  dieses; es gab fünf, und das ungeprüfte war das kaputte. Zweiter Fall desselben Musters in
+  zwei Tagen — das ist inzwischen die erste Stelle, an der ich suche, nicht mehr die letzte.
+- 2026-09-02 — **Klasse gegen Wertebereich in derselben Zeile trägt auch ohne Datenanker.**
+  Bei 0009 keine externe Quelle, also kein Einheitenschnitt möglich; der Ersatz war
+  Klassenbereich aus T5 gegen die je Schlüssel notierte Schranke. Fünf Klasse-4-Schlüssel
+  ohne den Deckel 10.000, den ihre Klasse vorschreibt. Dieselbe Tabelle enthielt elf, die ihn
+  zitieren — die Ungleichbehandlung innerhalb einer Datei ist der Hinweis, nicht die
+  Abweichung von specs/.
+- 2026-09-02 — **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden.** Der einzige
+  Befund zu 0006 lag in „27 tragen, 2 verkürzt, 2 leer" — 27+2+2 = 31 wie 26+3+2, also geht
+  die Probe auf, die jeder Leser zuerst macht. Ab jetzt bei jeder Klassifikationszählung die
+  Klassen **einzeln** aus den Abschnittstabellen nachzählen, nie nur die Summe.
+- 2026-09-02 — **Der ausgelassene Fall ist der folgenlose.** Bei 0006 fehlte in der Zählung
+  genau die Reihe, die den Zielwert nicht erzwingt. Erst den Wert bestimmen, dann fragen,
+  welche Datensätze ihn *nicht* berühren — dort steht der Zählfehler.
+- 2026-09-02 — **`api.imf.org/external/sdmx/3.0/data/dataflow/<Agentur>/<Fluss>/<Fassung>/
+  <LAND.INDIKATOR.A>` per WebFetch ist der einzige tragende IWF-Zugang** (`imf.org`,
+  `data.imf.org` = 403). „Land trägt die Reihe nicht" erkennt man an `"values":[]` bei
+  vorhandener Struktur. Einzelne Jahreswerte liest das Abrufmodell unzuverlässig
+  (Indexversatz); belastbar sind Randjahre und Wertezahl gegen Zeitraumlänge.
+- 2026-09-02 — **Für ein Basisjahr den Indikator-Endpunkt nehmen, nicht den Länderabruf.**
+  `api.worldbank.org/v2/indicator/<code>?format=json` trägt `sourceNote` im Klartext
+  („constant 2015 US$"); der Länderabruf trägt die Einheit gar nicht.
 - 2026-09-01 — **Behauptete Belegstellen im Wortlaut nachlesen, nicht nur greppen.** Der
   einzige Befund dieses Laufs entstand daraus: Der Bauagent hatte einen Zeichenfund
   (`…​.rest` in T23) korrekt gemacht, aber die Stelle stand im Imperfekt und wurde im
@@ -74,6 +97,12 @@ mehr — und es kostet jeden deiner Läufe Kontext.
      aendert sich, und eine Quelle, die im Maerz nichts hergab, kann im Juni
      ergiebig sein. -->
 
+- 2026-09-02 — **`python3 -c` und `sed` sind jetzt ganz gesperrt** („don't ask mode"), `ls`
+  und einfache `grep`-Pipelines gehen weiter. Folge: Eine TOML- oder JSON-Datei kann ich
+  nicht mehr durch einen Parser schicken. Ersatz, der bei 0009 gereicht hat: Tabellenköpfe
+  gegen blanke Schlüssel stellen (alle blanken müssen vor dem ersten `[...]` stehen) und
+  `^[a-z_0-9]+ *=.*[.\"']` auf Gleitkomma- und Zeichenkettenwerte prüfen. Im Befund
+  ausdrücklich hinschreiben, dass kein Parser lief.
 - 2026-09-01 — **Bash ist in dieser Umgebung eng geschnitten.** Abgelehnt wurden:
   `cd … &&`, Variablenzuweisung (`F=pfad`), Heredocs (`cat > … <<EOF`), `awk` mit
   Feldvariablen, mehrzeilige `python3 -c`-Aufrufe und `Write` ausserhalb des Repos.
@@ -108,7 +137,17 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   ist „konstante Preise", beide Klasse 2 — und T23 Punkt 5 addiert sie im Nenner von
   `durchgriff`. Deflationierung steht nirgends. Wenn ein Paket den Jahrgangsbau, `durchgriff`
   oder den Rückvergleich anfasst, ist das die erste Frage; wird der Befund abgelehnt, sollte
-  T5 sagen, warum Klasse 2 beides tragen darf.
+  T5 sagen, warum Klasse 2 beides tragen darf. — *2026-09-02, zweiter Fall:* Der
+  Deckungsbefund 0006 nennt die Preisbasis für die Reihen 1, 8 und 10 und für Reihe 14 nicht.
+  Zwei Pakete sind daran vorbeigelaufen; erneut als Nebenbefund gemeldet.
+- 2026-09-02 — **T5 Klasse 4 sagt „0 bis 10.000", aber Klasse-4-Regler (Elastizitäten,
+  Hebelobergrenze) können darüber liegen.** Bei 0009 als Befund 3 gemeldet. Sobald ein Paket
+  `parameter.toml` einliest oder eine Bereichsprüfung setzt, ist das die erste Frage: Trägt
+  Klasse 4 ihren Deckel auch für Regler, oder nur für Zustandsgrössen? T5 schweigt, und die
+  Antwort verschiebt den Kalibrierraum des Selbstspielers.
+- 2026-09-02 — **`schrittweite` je Instrument hat nirgends eine Untergrenze.** Weder T51 noch
+  `parameter.toml` verbietet 0 oder negativ. Wenn das Paket kommt, das Schritt 3 baut, dort
+  zuerst hinsehen: `schrittweite = 0` schaltet Aktion 3 stumm ab, ohne dass etwas abbricht.
 - 2026-09-02 — **Preisbasis einer Reihe steht in `daten.md` nirgends.** `daten.md` prüft
   Lizenz, Inhalt und Aktualisierung je Quelle, aber nie „laufende oder konstante Preise".
   Für meine Rolle ist das die wichtigste fehlende Spalte; bei jeder weiteren Reihe deshalb
