@@ -1,198 +1,208 @@
 # Rückstand — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-02, siebter Baulauf. Fassung 6, geschrieben vom Projektmanager. Diese Datei
+Stand 2026-09-02, achter Baulauf. Fassung 7, geschrieben vom Projektmanager. Diese Datei
 sagt, welche Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer
 entscheiden lassen muss.
 
 ## Was dieser Lauf getan hat
 
-**Zwei Prüfbefunde, beide `geprueft`, beide auf `fertig` nachgezogen.**
+**Zwei Prüfbefunde, einer `geprueft`, einer `zurueck`. Beide nachgezogen.**
 
-- **0008 (`kern::zustand`, 310 Felder)** — der Prüfer hat die Abnahme nicht nachgelesen,
-  sondern von aussen nachgemessen: eigener `diff` der 310 Adressen gegen `daten/adressen.md`
-  statt des Selbsttests, fünfzehn `stelle_*`-Werte ohne Übersetzer von Hand, und die drei
-  veröffentlichten Prüfsummen in beliebig genauer Ganzzahlarithmetik **ausserhalb** des
-  Programms neu aufgebaut. Damit ist der Kreis „das Programm prüft sich selbst" gebrochen.
-- **0017 (Reihenliste, maschinenlesbar)** — alle sechs Bedingungen halten. Zwei davon sind
-  in ihrem Wortlaut aber nicht erfüllbar, ohne eine Falschaussage zu erzeugen; das ist ein
-  Befund gegen **mein** Abnahmekriterium, nicht gegen die Datei. Beide Umformulierungen
-  stehen in 0017 unter „Status" und gelten ab jetzt.
+- **0018 (Klärungsliste)** — `geprueft`, auf `fertig` gesetzt. Der Prüfer hat die Zahlen
+  aus den Abschnittstabellen neu geholt statt aus den Summenzeilen und die Kaskade
+  16 → 8 → 1 gegengerechnet. Alle vier Bedingungen halten.
+- **0015 (Markierungssatz)** — `zurueck`, auf `offen` gesetzt, Befund im Paket. Der erste
+  Satz der neuen Zelle ist richtig und bleibt; die zweite Hälfte stellt die Geschwisterregel
+  **umgekehrt** auf und wird von zwei Zeilen derselben Tabelle widerlegt (Zeile 79 und 222,
+  beide markiert). Umfang des Rücklaufs: ein Halbsatz.
 
-**Damit fallen 0016 und 0020 von selbst frei** — beide hingen allein an 0008. Der Kern hat
-wieder eine baubare Aufgabe, und alle vier Bauplätze sind mit echter Arbeit belegt.
+**Drei neue Pakete.**
 
-**Drei neue Pakete, aus den Befunden dieser beiden Prüfungen und aus dem Plan:**
+- **0024 Notenbanken unter Reihe 2b/2c** (datenbauer, `lizenzbefund-reihen.md`) — Befund 1
+  der Prüfung zu 0018, ausdrücklich **kein** Rücklauf: Das Kriterium verlangte die zwei
+  Lieferantengruppen für Reihe 1 und 2a, dort stehen sie. Unter 2b/2c zählt die Begründung
+  drei offene Stellen, wo sieben offen sind — und widerspricht damit der Klärungsliste
+  derselben Datei.
+- **0025 Quelleneinheit PWT und BACI** (datenbauer, neue Befunddatei) — Befund 2 der
+  Prüfung zu 0017, seit drei Fassungen als Punkt 3 hier stehend und bis heute ohne Paket.
+  Drei ungemessene Größen: Einheit und Basisjahr des PWT-Kapitalstocks, Einheit **und
+  Preisbasis** von BACI. **Das Paket hängt an nichts** und ist sofort baubar.
+- **0026 Klasse 2, Preisbasis** (architekt, `technik.md`) — das Paket, das **0002
+  entblockt**; dessen Entblockungssatz nennt wörtlich „eine Entscheidung des Architekten
+  zur Klasse-2-Frage". Es hängt an 0011 (das `technik.md` besetzt hält) und an 0025 (das
+  die Preisbasis misst, gegen die entschieden wird).
 
-- **0021 „Schaden" in Gegenkraft 5** (spielentwerfer, `spiel.md`) — das ist die Empfehlung
-  A des Plans, mit **einer Abweichung in der Rolle**: Der Plan schlägt ein Architektenpaket
-  vor, `technik.md` Zeile 264 sagt aber wörtlich, *„wie hoch der Schaden eines Sektors ist,
-  bleibt Sache von `spiel.md`"*, und der Architekt hat die Lücke ausdrücklich nicht gefüllt
-  („Fülle ich sie, misst Maß 2 meine Wahl"). Für den Spielentwerfer gilt dieser Einwand
-  nicht — die Gegenkräfte sind sein Gewerk. Zweiter Grund: 0011 hält `technik.md` besetzt,
-  ein zweites Architektenpaket wäre kollidiert und gar nicht erst eingeplant worden.
-- **0022 Reihenliste, drei Korrekturen** (datenbauer, `reihen.toml`) — Befunde 1, 4 und 5
-  der Prüfung zu 0017. Alle drei sind Aussagen **über** die Daten, die gegen ihre eigene
-  Quelldatei nicht halten, und alle drei stehen in Blöcken, die später jemand als Beleg
-  zitiert. Der schwerste: `[pruefweg].toml_geprueft` behauptet einen Parserlauf, den die
-  Rolle nicht ausführen kann.
-- **0023 Fehlerwert von `adresse_zu_index`** (kernbauer, `zustand`-Trio) — Befunde 3 und 1
-  der Prüfung zu 0008. `{false, 0}` bei unbekannter Adresse, und Platz 0 ist
-  `land.US.sektor.1.wertschoepfung`; wer `.gefunden` nicht auswertet, schreibt still auf
-  eine getragene Größe. Das ist genau die Bauart, gegen die `festkomma.hpp:42-49` in
-  diesem Kern ausdrücklich entschieden hat.
+**Eine geschärfte Bedingung in 0019**, vor dem ersten Review und deshalb kein
+Kriterienzuwachs: Der Übersetzungslauf muss die Probe wirklich ausführen. Warum, steht
+unter „Was quer liegt".
 
 ## Wo die Pakete stehen
 
 | Paket | Rolle | Status | woran es hängt |
 |---|---|---|---|
 | 0001 Entwurfsabnahme | spielentwerfer | `fertig` | — |
-| 0002 Fondsbewertung | kernbauer | `blockiert` | Klasse-2-Entscheidung (Punkt 3) |
+| 0002 Fondsbewertung | kernbauer | `blockiert` | **0026** (Klasse-2-Entscheidung) |
 | 0003 Einheiten | kernbauer | `blockiert` | Betreiberfrage, ADR gegen T5 oder gar nicht |
 | 0004 Gerüst + Festkomma | kernbauer | `fertig` | — |
 | 0005 WDI-Lizenz | datenbauer | `fertig` | — |
 | 0006 Deckung 1997 | datenbauer | `fertig` | — |
 | 0007 Adressverzeichnis | datenbauer | `fertig` | — |
-| 0008 Zustand, 310 Felder | kernbauer | **`fertig`** | — |
-| 0009 `parameter.toml` | datenbauer | `gebaut`, im Review | Rücklauf 2 von 3 |
-| 0010 Zustandsausgabe | kernbauer | `offen` | 0002 (blockiert) + zwei Entwurfsfragen |
+| 0008 Zustand, 310 Felder | kernbauer | `fertig` | — |
+| 0009 `parameter.toml` | datenbauer | `gebaut`, im Review | Rücklauf 2 von 3, **zwei Läufe ohne Urteil** |
+| 0010 Zustandsausgabe | kernbauer | `offen` | 0002 → 0026 |
 | 0011 Stack auf C++ | architekt | `offen`, **eingeplant** | — |
 | 0012 Zufall | kernbauer | `fertig` | — |
 | 0013 Prüfsumme | kernbauer | `fertig` | — |
 | 0014 Lizenz, übrige Reihen | datenbauer | `fertig` | — |
-| 0015 Markierungssatz | datenbauer | `gebaut`, im Review | — |
-| 0016 `kern::schreiber` | kernbauer | `offen`, **eingeplant** | — |
-| 0017 Reihenliste | datenbauer | **`fertig`** | — |
-| 0018 Klärungsliste | datenbauer | `gebaut`, im Review | — |
+| 0015 Markierungssatz | datenbauer | **`offen`**, Rücklauf 1, **eingeplant** | — |
+| 0016 `kern::schreiber` | kernbauer | `gebaut`, im Review | — |
+| 0017 Reihenliste | datenbauer | `fertig` | — |
+| 0018 Klärungsliste | datenbauer | **`fertig`** | — |
 | 0019 Vorrat + Profile | testentwickler | `offen`, **eingeplant** | — |
 | 0020 Wertebereichsschranken | testentwickler | `offen`, **eingeplant** | — |
-| 0021 Schaden, Gegenkraft 5 | **spielentwerfer** | **neu**, `offen`, startbereit | — |
-| 0022 Reihenliste, Korrekturen | **datenbauer** | **neu**, `offen`, startbereit | — |
-| 0023 Adressfund-Fehlerwert | **kernbauer** | **neu**, `offen`, startbereit | — |
+| 0021 Schaden, Gegenkraft 5 | spielentwerfer | `offen` | wartet auf einen Platz |
+| 0022 Reihenliste, Korrekturen | datenbauer | `gebaut`, im Review | — |
+| 0023 Adressfund-Fehlerwert | kernbauer | `offen` | wartet auf einen Platz |
+| 0024 Notenbanken 2b/2c | **datenbauer** | **neu**, `offen` | wartet auf einen Platz |
+| 0025 Einheit PWT/BACI | **datenbauer** | **neu**, `offen`, startbereit | — |
+| 0026 Klasse 2 | **architekt** | **neu**, `offen` | 0011, 0025 |
 
-`python3 agents/baulauf.py 0016-… --trocken` meldet 8 offen, 3 gebaut, 10 fertig, 2
-blockiert — Summe 23, also alle Paketdateien, kein Frontmatterfehler.
+`python3 agents/baulauf.py 0016-… --trocken` meldet 10 offen, 3 gebaut, 11 fertig, 2
+blockiert — Summe 26, also alle Paketdateien, kein Frontmatterfehler.
 
 ## Die Reihenfolge und warum sie so ist
 
 ```
-0011 Stack [architekt] ──> (Reihe-2-Rundung, `frei` in Spalte Rolle: technik.md ist besetzt)
+0011 Stack [architekt] ──┐
+                         ├─> 0026 Klasse 2 ──> 0002 Werte ──> 0010 Ausgabe
+0025 Einheit PWT/BACI ───┘        (entblockt die längste Kette des Vorhabens)
 
-0008 Zustand [FERTIG] ──> 0016 Schreiber   [eingeplant]
-                      ├─> 0020 Schranken   [eingeplant]
-                      ├─> 0023 Fehlerwert  [wartet auf einen Platz]
-                      └─> 0002 Werte [BLOCKIERT] ──> 0010 Ausgabe
+0008 [FERTIG] ──> 0016 Schreiber [im Review]
+              ├─> 0020 Schranken [eingeplant]
+              └─> 0023 Fehlerwert [wartet]
 
-0019 Vorrat [eingeplant]        0021 Schaden ──> später: schritt
-0022 Korrekturen                (beide warten auf einen Platz)
+0015 Rücklauf [eingeplant]   0019 Vorrat [eingeplant]   0021 Schaden ──> später: schritt
+0024 Notenbanken [wartet]                               0022 [im Review]
 ```
 
-**Zum ersten Mal ist der Rückstand tiefer als die Bank.** Bisher war die Frage, ob genug
-baubare Arbeit da ist; jetzt ist mehr da, als der Runner gleichzeitig zieht. Das ist die
-gesündere Lage — sie kostet aber genau das, was Punkt 2 unten beschreibt.
+Der Rückstand ist zum zweiten Mal tiefer als die Bank: zehn offene Pakete, vier Bauplätze.
+Was das kostet, steht unter Punkt 2 — und es kostet seit diesem Lauf mehr als Wartezeit.
 
 ## Was der Geschäftsführer entscheiden lassen muss
 
-**1. Ein TOML-Parser gehört in den Runner.** Unverändert seit Fassung 4, jetzt **viermal**
-gemessen über zwei Pakete: `python3` mit `tomllib` wird in dieser Umgebung abgewiesen, dem
-Datenbauer wie dem Prüfer. Abnahme 4 von 0009 und Bedingung 6 von 0017 verlangen beide
-gültiges TOML, und beide sind bis heute nur strukturell belegt. Drei Zeilen neben
-`uebersetzen()`, die jede `*.toml` durch `tomllib` schicken. Kein Gate.
+**1. Drei Rollen können `gebaut` nicht melden, und sie halten drei der vier Bauplätze.**
+Das ist der Engpass des letzten Plans, mit zwei Korrekturen und einer Zahl.
 
-Neu daran ist die Folge, die 0017 sichtbar gemacht hat: Die Datei hat den fehlenden Nachweis
-nicht offengelassen, sondern **behauptet** — `[pruefweg].toml_geprueft` nennt einen Lauf, den
-es nicht gab. Ein fehlendes Werkzeug erzeugt nicht nur eine Lücke, es erzeugt eine
-Falschaussage an der Stelle, an der die Lücke unbequem ist.
+*Korrektur an der Zählung:* `grep -n 'status: gebaut' agents/rollen/*.md` findet **vier**
+Rollendateien mit dem Satz, nicht zwei — `kernbauer.md:83`, `datenbauer.md:85`,
+**`auslieferer.md:110`** und **`oberflaechenbauer.md:81`**. Es fehlen also drei Rollen,
+nicht fünf: `testentwickler`, `architekt`, `spielentwerfer`. (In `architekt.md` und
+`spielentwerfer.md` kommt das Wort „gebaut" nur in der Prosa vor, in
+`testentwickler.md` gar nicht.) Für Weg *A* heisst das drei Stellen statt fünf.
 
-**2. Der Scheduler hat keine Vorfahrt, und diesmal kostet es die Engpassfrage.** Unverändert
-in der Sache, aber zum ersten Mal mit Preis. `baulauf.py:267` nimmt `startbereit(...)[:4]`,
-und `startbereit` läuft über `sorted(ordner.glob("*.md"))` — reine Dateinamen-Reihenfolge.
-Der Trockenlauf zieht 0011, 0016, 0019, 0020. **0021, das Paket zur Engpassfrage des letzten
-Plans, ist Sechster in der Namensfolge und läuft nicht.** Ebenso wenig 0022 und 0023.
+*Die Zahl, die der Plan noch nicht hatte:* Der Trockenlauf plant **0011 (architekt), 0015
+(datenbauer), 0019 und 0020 (testentwickler)**. Drei dieser vier Pakete gehören Rollen
+ohne den Satz. Also kann in diesem Lauf **genau ein** Paket überhaupt vorankommen, und
+die anderen drei werden zum wiederholten Mal gebaut und bezahlt, ohne je einen Prüfer zu
+erreichen. Es ist kein Stau mehr, sondern ein Laufband: 0011, 0019 und 0020 halten ihre
+Plätze dauerhaft, und 0021, 0023, 0024, 0025, 0026 kommen nie dran.
 
-Die in Fassung 5 vorgeschlagene Regel („je Rolle höchstens zwei Plätze") hilft hier
-**nicht** — ich habe es nachgerechnet, sie ändert an dieser Auswahl keine Zeile. Was hilft,
-ist ein Reihum: **erst ein Paket je Rolle, dann die freien Plätze auffüllen.** Dann zieht
-derselbe Lauf 0011 (architekt), 0016 (kernbauer), 0019 (testentwickler) und **0021
-(spielentwerfer)** statt des zweiten Testentwicklerpakets — fünf Gewerke statt vier, und die
-Engpassfrage läuft eine Runde früher. Der Zuschnitt der Pakete ändert sich dafür nicht.
+*Die Empfehlung des Plans (Weg B, der Runner setzt `gebaut` selbst, wenn der Bauagent mit
+0 zurückkommt und die Dateien aus `dateien` sich geändert haben) trägt auch die Korrektur:*
+Sie prüft sich mit — 0020 hat in diesem Lauf keine Datei geschrieben und bliebe zu Recht
+`offen`, während Weg A es fälschlich als `gebaut` gemeldet hätte. **Kein Gate.**
+
+**2. Der Scheduler hat keine Vorfahrt.** Unverändert in der Sache
+(`baulauf.py:267`, `startbereit(...)[:4]` über `sorted(glob("*.md"))`), aber Punkt 1 macht
+daraus einen Dauerzustand statt einer Verzögerung. Der Reihum-Vorschlag aus Fassung 6
+(erst ein Paket je Rolle, dann auffüllen) ändert an der Auswahl dieses Laufs **nichts** —
+sie enthält bereits drei Gewerke. Er hilft erst, wenn Punkt 1 gelöst ist. Ich melde ihn
+deshalb weiter, aber nicht mehr als dringend.
 
 Ich plane weiterhin nicht um: Ein Paket künstlich zu blockieren, damit ein anderes drankommt,
 wäre eine Lüge im Statusfeld, und rückwärts zu nummerieren verstösst gegen die Konvention.
 
-**3. Klasse 2 misst zweierlei — laufende und konstante Preise.** Unverändert und weiter die
-schwerste offene Sache. T5 nennt Klasse 2 „Tausend USD zu konstanten Preisen", darin liegen
-die 40 Handelsströme aus CEPII BACI („thousands current USD"). Maß 4 misst so Inflation statt
-Modellgüte. **Sie blockiert 0002 und über 0002 das Paket 0010.**
+**3. Ein TOML-Parser gehört in den Runner.** Unverändert, jetzt **viermal** gemessen über
+zwei Pakete: `python3` mit `tomllib` wird in dieser Umgebung abgewiesen, dem Datenbauer wie
+dem Prüfer. Abnahme 4 von 0009 und Bedingung 6 von 0017 verlangen beide gültiges TOML, und
+beide sind bis heute nur strukturell belegt. Drei Zeilen neben `uebersetzen()`. Kein Gate.
 
-Neu und dieselbe Sache eine Ebene tiefer, aus Befund 2 der Prüfung zu 0017: **Die
-Quelleneinheit von PWT (Reihe 3) und BACI (Reihe 14) hat bis heute niemand gemessen.** Beide
-müssen vor dem Jahrgangsbau stehen, BACI zusätzlich mit der Preisbasis — sonst ist
-`durchgriff` (Reihe 16) ein Quotient aus zwei verschiedenen Einheiten und damit
-bedeutungslos. `reihen.toml` führt beide Reihen richtigerweise als `ungemessen` mit
-ausgeschriebener Frage, statt eine `1` hinzuschreiben, die bei PWT um den Faktor 1.000 falsch
-und stumm wäre.
+**4. Klasse 2 misst zweierlei — laufende und konstante Preise.** Unverändert die schwerste
+offene Sache, aber sie hat seit diesem Lauf einen Weg: **0025 misst, 0026 entscheidet,
+0002 wird frei.** Keine Betreiberentscheidung nötig, nur Bauplätze — siehe Punkt 1.
 
-**4. Klasse 4 — trägt sie ihren Deckel auch für Regler?** Unverändert offen; fünf
+**5. Klasse 4 — trägt sie ihren Deckel auch für Regler?** Unverändert offen; fünf
 Klasse-4-Schlüssel in `parameter.toml` tragen `>= 0` ohne obere Schranke, obwohl T5 der
 Klasse 0 bis 10.000 gibt. Der Datenbauer hat sie in zwei Rückläufen wie angewiesen nicht
 angefasst.
 
-**5. Reihe 9 und R = 19.** Unverändert; Reihe streichen oder Quelle ersetzen, beides
+**6. Reihe 9 und R = 19.** Unverändert; Reihe streichen oder Quelle ersetzen, beides
 entscheidet der Spielentwerfer. Die drei Varianten sind durchgerechnet, keine reisst `R ≤ 26`.
 
-**6. Wo die Zustandsausgabe wohnt, und woher sie zwei Spalten nimmt.** 0010 legt die drei
-Ebenen in `kern`, T13 gibt sie `schnittstelle` — unverändert. Dazu neu aus der Prüfung zu
-0008: **Die Abnahme von 0010 verlangt je Adresse Wert, Skalenklasse *und* Herkunft; der Kern
-trägt die beiden letzten nicht**, `daten/adressen.md` schon. Eine zweite Tabelle über
-dieselben 310 Adressen wäre die Sorte Doppelführung, gegen die T17 argumentiert. Nicht
-dringend — 0010 hängt ohnehin an 0002 —, aber es ist die zweite offene Frage an demselben
-Paket, und beide gehören dem Architekten.
-
-**7. Zwei Entwurfsfragen für den Architekten, sobald 0011 durch ist.** Unverändert: Das
-`frei` in der Spalte „Rolle" der Reihenliste ist die T37-Klasse und kein Lizenzurteil
-(Warnung vor einer Reparatur, die die Verbindung zu T37 zerschösse), und: Rundet Reihe 2 vor
-oder nach der Normierung? Beide liegen in `technik.md`, das 0011 gerade besetzt hält; sie
-werden ein Paket, sobald 0011 `fertig` ist. **Kein Bedarf an einer Entscheidung, nur an
-Reihenfolge** — steht hier, damit es nicht vergessen wird.
+**7. Wo die Zustandsausgabe wohnt, und woher sie zwei Spalten nimmt.** Unverändert: 0010
+legt die drei Ebenen in `kern`, T13 gibt sie `schnittstelle`; und die Abnahme von 0010
+verlangt je Adresse Wert, Skalenklasse *und* Herkunft, während der Kern die beiden letzten
+nicht trägt. Zusammen mit der Rundungsfrage bei Reihe 2 und dem `frei` in der Spalte
+„Rolle" (das die T37-Klasse ist und kein Lizenzurteil) ist das **das nächste
+Architektenpaket nach 0026** — alle drei liegen in `technik.md`, und die Datei trägt einen
+Halter zur Zeit. Kein Bedarf an einer Entscheidung, nur an Reihenfolge.
 
 **8. Wandert das Vorratsverfahren später aus `pruefstand` heraus?** Unverändert, blockiert
-nichts. T43 nennt es einen Baustein des Prüfstands, T30 Prüfung 5 und 6 geben dem Bruchtester
-Läufe, die es je Runde brauchen. Dieselbe Verdrahtungsfrage stellt sich für die Prüffunktion
-aus 0020.
+nichts. Dieselbe Verdrahtungsfrage stellt sich für die Prüffunktion aus 0020.
 
 ## Was quer liegt, aber keine Entscheidung braucht
 
-**Der Ausfall sitzt jetzt auf dem Prüfplatz, nicht auf dem Bauplatz.** Von vier Prüfungen des
-letzten Laufs sind zwei ohne Ergebnis geblieben: **0015 hat keine Befunddatei**, und
-**0009 Runde 3 ist eine 0-Byte-Datei**. Beide Pakete stehen deshalb weiter auf `gebaut` und
-gehen in diesem Lauf erneut in den Review — das ist richtig so, ein fehlendes Urteil ist kein
-Urteil. Für 0009 heisst es zugleich: Der Rücklaufzähler steht weiter bei **zwei von drei**,
-weil `rueckläufe()` `urteil` liest und die leere Datei keines trägt. Der nächste `zurueck`
-macht das Paket festgefahren; dann ist mein Abnahmekriterium zu prüfen und nicht die Arbeit.
+**Der Übersetzungslauf ist grün und übersetzt eine Datei nicht, die nicht übersetzt.** Das
+ist der teuerste Fund dieses Laufs. `pruefstand/` enthält seit dem letzten Lauf vier
+Dateien aus 0019, davon drei unbrauchbar: `src/vorrat.cpp` bricht nach 25 Zeilen mitten in
+`namespace pruefstand::vorrat {` ab, `test/vorrat_probe.cpp` ist eine Zeile
+`// PLATZHALTER`, und `CMakeLists.txt` ist eine Zeile `# PLATZHALTER`. Weil die
+`CMakeLists.txt` kein Ziel erzeugt, übersetzt niemand die abgebrochene Quelle:
+`uebersetzung-2026-09-02.md` meldet für diesen Kasten einen leeren Bauabschnitt und *„No
+tests were found!!!"* — und trotzdem `ergebnis: ok`. **Ein Prüfstand, den `ctest` nicht
+aufruft, ist im Bericht von einem, den es nicht gibt, nicht zu unterscheiden.** Das Paket
+0019 trägt deshalb seit diesem Lauf eine siebte Bedingung (der Testlauf muss die Probe
+namentlich mit `Passed` zeigen) und einen Abschnitt, der den Torso beschreibt — damit der
+nächste Lauf ihn nicht für eine Vorgängerfassung hält, gegen die er weiterbaut.
 
-**Die Rohdaten hat niemand.** Unverändert: `daten/` enthält fünf Textbefunde und keine
-Datenzeile; `werkzeuge/aufbereitung` liest nach T23 „die eingefrorenen Rohdateien". Kein
-Bauagent kann das erledigen, und deshalb hat der Jahrgangsbau 1997 kein Paket — obwohl T13
-ihn als eines der beiden vorzuziehenden nennt, weil er das Vorhaben kippen kann. Ein Paket
-dafür anzulegen hiesse, ein Abnahmekriterium zu schreiben, das die Rolle nicht nachweisen
-kann. Kein Gate: `daten.md` sagt für alle vier tragenden Quellen ausdrücklich keine
-Registrierung und kein Abonnement. Es ist dieselbe Hand am Runner wie Punkt 1.
+**Vierte Messung am Prüfplatz, und diesmal besser: 2 von 4 leer war der letzte Lauf, 0 von
+4 wäre dieser.** Nach dem Nachzug stehen nur noch drei Pakete auf `gebaut` (0009, 0016,
+0022) — alle drei bekommen einen Prüfer, ein Prüfplatz bleibt frei. **0009 hat jetzt zwei
+Läufe hintereinander keine Prüfung bekommen** (Runde 3 ist eine 0-Byte-Datei) und steht
+weiter bei zwei von drei Rückläufen, weil `rueckläufe()` `urteil` liest und eine leere
+Datei keines trägt. Der nächste `zurueck` macht es festgefahren; dann ist mein
+Abnahmekriterium zu prüfen und nicht die Arbeit.
 
-**Drei Rollen haben kein Paket, und das ist diesmal richtig.** `oberflaechenbauer` steht in
-T13 als letzter Kasten der natürlichen Reihenfolge; `auslieferer` hat nichts auszuliefern;
-die drei Prüfrollen (`selbstspieler`, `rueckvergleicher`, `bruchtester`) brauchen eine
-gespielte Partie und damit `schritt`. Ich schreibe es hin, weil das Gegenteil mich letzten
-Lauf einen Fehler gekostet hat: `testentwickler` stand in denselben Tabellen und war
-baubar — der Unterschied ist, dass diese fünf eine Voraussetzung haben, die nachweisbar
-fehlt, und nicht bloss kein Paket.
+**Der Commit-Betreff ist für dieses Vorhaben keine Zuordnung mehr, das ist jetzt belegt.**
+Beide Prüfer dieses Laufs sind unabhängig darauf gestossen: `efac2b1` heisst „datenbauer:
+0015-…" und enthält die vollständige Leistung von **0018**; `b324cce` mit dem Betreff 0018
+berührt nur ein Logbuch. Der Prüfer der 0015 hat daraus die richtige Folge gezogen — die
+Abnahmebedingung „`git diff --stat` zeigt eine Änderung" ist als Nachweis unbrauchbar. Sie
+ist im Rücklauf durch eine Bedingung an der Datei ersetzt. **Für mich bleibt es eine
+Arbeitsregel:** Vor jedem Nachzug in die Zieldatei sehen, nicht in den Commit-Betreff.
 
-**Ein Commit trägt zum zweiten Mal die falsche Paketkennung.** `770e7b4` heisst „kernbauer:
-0012-…" und enthält ausschliesslich die drei `zustand`-Dateien, also die Arbeit an **0008**.
-Der Kern-Prüfer ist von selbst darauf gestossen. Das Ergebnis kostet es nichts, die Historie
-schon. Für mich bleibt es eine Arbeitsregel und keine Bitte an den Runner: **Vor jedem
-Nachzug in die Zieldatei sehen, nicht in den Commit-Betreff.**
+**14 `.tmp`-Dateien liegen im Repo**, inzwischen auch zwei in `aufgaben/` (`.kopf.tmp`,
+`.paket.tmp`, beide mit `status: gebaut` im Kopf). Sie sind unschädlich, weil
+`startbereit()` über `glob("*.md")` läuft und sie nicht sieht. Gemeldet, weil es wächst und
+weil ein Bauagent, der sich mit Zwischendateien behilft, den ganzen Schreibpfad committet.
 
-**Der Übersetzungslauf ist grün** (`befunde/uebersetzung-2026-09-02.md`). Grün heisst
-weiterhin „die Zahlen passen zueinander", nicht „die Zahlen sind richtig". Mit 0019 kommt
-eine dritte `CMakeLists.txt` dazu; im Paket steht ausgeschrieben, dass sie **allein**
-durchlaufen muss.
+**Die Rohdaten hat niemand.** Unverändert: `daten/` enthält Textbefunde und keine
+Datenzeile; `werkzeuge/aufbereitung` liest nach T23 „die eingefrorenen Rohdateien". Deshalb
+hat der Jahrgangsbau 1997 weiter kein Paket, obwohl T13 ihn als vorzuziehend nennt.
+**0025 ist der Teil davon, der ohne Rohdaten geht** — die Einheit steht in der
+Dokumentation, nicht in den Daten. Kein Gate: `daten.md` sagt für alle vier tragenden
+Quellen ausdrücklich keine Registrierung und kein Abonnement. Es ist dieselbe Hand am
+Runner wie Punkt 3.
+
+**Drei Rollen haben kein Paket, und das ist weiter richtig.** `oberflaechenbauer` steht in
+T13 als letzter Kasten der natürlichen Reihenfolge (`kern` → `daten`/`schnittstelle` →
+`konsole` → Tests und `pruefstand` → `oberflaeche`); `auslieferer` hat nichts
+auszuliefern; die drei Prüfrollen (`selbstspieler`, `rueckvergleicher`, `bruchtester`)
+brauchen eine gespielte Partie und damit `schritt`. Allen fünf fehlt eine Voraussetzung
+nachweisbar — das ist der andere Fall als eine Rolle, die baubar wäre und kein Paket hat.
+
+**`schritt` hat weiter kein Paket, und das ist die eine Zahl.** Es braucht die
+Rechenvorschrift für „Schaden" (0021, wartet auf einen Platz) **und** `kern::werte` (0002,
+blockiert bis 0026). Solange `schritt` zwei Zeilen hat, rechnet das Spiel nicht, gleich wie
+viele Pakete durchgehen. Beide Zulieferer stehen jetzt im Rückstand und beide hängen an
+Punkt 1.

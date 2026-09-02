@@ -4,7 +4,7 @@ rolle: testentwickler
 status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/include/pruefstand/vorrat.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/vorrat.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp]
-abnahme: Die sechs Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
+abnahme: Die sieben Bedingungen im Abschnitt "Abnahme" — die siebte ist am 2026-09-02 dazugekommen, vor dem ersten Review. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # Vorratsverfahren und Profilliste — der Baustein des Prüfstands, der von nichts abhängt
@@ -127,10 +127,39 @@ Prüfstand `rayon`; hier wird nichts parallel gerechnet, also kommt es nicht her
    Vorhabens nicht. Der Prüfer führt ihn zusätzlich von Hand nach; ein Mustervergleich, der
    nichts findet, ist kein Nachweis, dass nichts da ist.
 
+7. **Der Übersetzungslauf führt die Probe wirklich aus.** In
+   `befunde/uebersetzung-<datum>.md` steht unter `ctest --test-dir …/pruefstand/bau` ein
+   Test mit Namen und `Passed`. Diese Bedingung ist **neu am 2026-09-02** und steht hier,
+   weil ihr Fehlen am 2026-09-02 unbemerkt geblieben wäre: siehe „Stand" unten.
+
 Der Übersetzungslauf (`befunde/uebersetzung-<datum>.md`) ist der zweite Nachweis für die
 Bedingungen 1 bis 5: Stimmt eine Zahl nicht, ist `ctest` rot. Der Prüfer urteilt trotzdem
 gegen die Liste — grün heisst „die Zahlen passen zueinander", nicht „die Zahlen sind die
 richtigen".
+
+## Stand am 2026-09-02 — was im Baum liegt, ist ein Torso, kein Vorgänger
+
+Der Lauf vom 2026-09-02 (Commit `a3f3d24`, 07:50–07:56) hat vier Dateien angelegt und ist
+mitten in der dritten abgebrochen. Was dort liegt, ist **keine Fassung, gegen die du
+weiterbaust** — sieh es dir an, bevor du es weiterschreibst:
+
+| Datei | Stand |
+|---|---|
+| `include/pruefstand/vorrat.hpp` | 162 Zeilen, sieht vollständig aus |
+| `src/vorrat.cpp` | **25 Zeilen, abgeschnitten** — endet mitten in `namespace pruefstand::vorrat {`, übersetzt nicht |
+| `test/vorrat_probe.cpp` | **eine Zeile: `// PLATZHALTER`** |
+| `CMakeLists.txt` | **eine Zeile: `# PLATZHALTER`** |
+
+**Warum der grüne Übersetzungslauf das nicht gemeldet hat:** Die `CMakeLists.txt` ist ein
+Platzhalter, also erzeugt sie kein Ziel, also übersetzt niemand die abgeschnittene Quelle.
+`befunde/uebersetzung-2026-09-02.md` meldet für den Kasten `pruefstand` folgerichtig einen
+leeren Bauabschnitt und *„No tests were found!!!"* — und trotzdem `ergebnis: ok`. Genau
+deshalb steht die Bedingung 7 jetzt in der Abnahme: Ein Prüfstand, den `ctest` nicht
+aufruft, ist von einem, den es nicht gibt, im Bericht nicht zu unterscheiden.
+
+Das Paket ist deshalb weiter `offen` und nie in den Review gegangen — es gibt keinen
+Rücklauf und keinen Befund gegen deine Arbeit. Die Bedingungen 1 bis 6 sind unverändert
+die vom 2026-09-02.
 
 ## Was ausdrücklich kein Befund ist
 

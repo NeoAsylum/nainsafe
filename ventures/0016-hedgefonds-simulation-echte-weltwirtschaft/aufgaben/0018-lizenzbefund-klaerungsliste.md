@@ -1,7 +1,7 @@
 ---
 id: 0018-lizenzbefund-klaerungsliste
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0014-lizenzpruefung-restliche-reihen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -148,3 +148,15 @@ ausführlichen Abschnitt verweist. Eine verschobene Überschrift, keine neue Rec
 ## Rückläufe
 
 0.
+
+## Status
+
+**`fertig` am 2026-09-02**, Grundlage `befunde/pruefung-0018-lizenzbefund-klaerungsliste-2026-09-02.md`,
+Urteil `geprueft`. Alle vier Bedingungen erfüllt; der Prüfer hat die Zahlen aus den
+Abschnittstabellen neu geholt statt aus den Summenzeilen und die Kaskade 16 → 8 → 1
+gegengerechnet.
+
+Der eine Nebenbefund („drei Abrufe" statt „sieben" in der Begründung unter Reihe 2b/2c)
+ist ausdrücklich **kein** Kriterienverstoß — die Abnahme verlangt die zwei
+Lieferantengruppen für Reihe 1 und 2a, und dort stehen sie. Er ist als eigenes Paket
+**0024** angelegt und nicht als Rücklauf.
