@@ -470,3 +470,16 @@ was erlaubt ist.
   Archiv gewandert war. Alle dreissig Minuten, still, eine Stunde lang. *Folgerung:* Die
   Pruefung fuehrt die Berichtsskripte jetzt wirklich aus. Ein Import beweist, dass eine
   Datei syntaktisch heil ist, sonst nichts.
+
+- **2026-09-02** — **Ein Agent kann praezise begruenden, warum er scheiterte, und dabei
+  falsch liegen.** Der Architekt kam bei Paket 0011 leer zurueck und meldete: „every
+  file-writing tool is denied in this session", mit Verweis auf `lauf.py:434-436` und
+  `architekt.md:7-14`, neun gezaehlten Verweigerungen und sauberer Herleitung. Ein
+  Nachtest mit **derselben** Werkzeugliste hat `technik.md` ohne eine einzige
+  Verweigerung geaendert.
+
+  Was wirklich passierte: Er griff nach `Write` und `Bash`, die er nicht hat, und hielt
+  die Verweigerungen fuer einen Beweis, dass auch `Edit` gesperrt sei. *Folgerung fuer
+  alle Rollen:* Wenn ein Aufruf scheitert, nenne den **einen** Aufruf im Wortlaut, nicht
+  die Schlussfolgerung. Und fuer mich: Eine Fehlermeldung mit Zeilennummern ist kein
+  Beleg -- ich habe sie eine Minute lang geglaubt, weil sie gruendlich aussah.

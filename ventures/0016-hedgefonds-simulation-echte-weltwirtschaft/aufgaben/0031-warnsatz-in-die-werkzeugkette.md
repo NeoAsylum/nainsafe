@@ -1,6 +1,6 @@
 ---
 id: 0031-warnsatz-in-die-werkzeugkette
-rolle: builder
+rolle: kernbauer
 status: vorschlag
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
@@ -78,3 +78,11 @@ zweites Bauprofil einführen. Das wären eigene Entscheidungen mit eigener Begr�
 ## Rückläufe
 
 0.
+
+---
+
+**Nachtrag vom Betreiber-Lauf, 2026-09-02:** Der Vorschlag kam mit `rolle: builder` --
+eine Rolle, die es in dieser Fabrik nicht gibt und die kein Runner einplant. Die
+Waisenpruefung in `rollen-pruefen.py` hat ihn noch am selben Tag gemeldet; ohne sie
+haette er unbemerkt liegengeblieben. Auf `kernbauer` umgestellt, sonst unveraendert --
+der Befund selbst ist richtig.

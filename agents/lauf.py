@@ -109,9 +109,9 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 #
 # Und daraus zwei Korrekturen an dem, was hier vorher stand:
 #
-# Erstens war die Zahl zu hoch. Ein Tag mit 391 Dollar war rund 18 Prozent der Woche;
-# fuenf solche Tage sind die ganze Woche, und die hat sieben. 300 ist die Zahl, die
-# durchhaelt.
+# Erstens war die Zahl zu hoch. Am 2026-09-02 abends nachgerechnet: 22 Prozent nach 2,4
+# von 7 Tagen ist langsamer als linear, hochgerechnet 65 Prozent bis Montag. 400 am Tag
+# passt dazu; 800 nicht. Der Tag ist ohnehin nur Glaettung -- die Woche sichert.
 #
 # Zweitens war die Bremse am falschen Fenster. Bindend ist die WOCHE, nicht der Tag --
 # das Fuenf-Stunden-Fenster stand bei 4 Prozent, waehrend die Woche bei 21 stand. Eine
@@ -121,7 +121,7 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # Nachzueichen am 2026-09-13: Bis dahin ist das Wochenlimit um 50 Prozent erhoeht.
 # Danach sind dieselben 398,8 Dollar rund 31 statt 21 Prozent, und beide Zahlen hier
 # gehoeren auf zwei Drittel gesenkt -- 200 und 1.070.
-TAGESGRENZE_USD = 300.0
+TAGESGRENZE_USD = 400.0
 
 # Die eigentliche Bremse. Gerechnet ueber sieben rollende Tage statt ueber Anthropics
 # Wochenfenster (Montag 10:00): Der genaue Zuschnitt ist zweitrangig, die

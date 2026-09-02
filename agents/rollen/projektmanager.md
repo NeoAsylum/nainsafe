@@ -51,9 +51,14 @@ hast.
 **Sieh sie zuerst durch, vor allem anderen.** Je Vorschlag genau eine von drei Antworten,
 und du schreibst sie in das Paket:
 
-- **`offen`** -- angenommen. Pruefe vorher: Schneidet seine `dateien`-Liste eine andere,
+- **`offen`** -- angenommen. Pruefe vorher vier Dinge: Gibt es die genannte **Rolle**
+  ueberhaupt, und plant ein Runner sie ein? Schneidet die `dateien`-Liste eine andere,
   die gerade offen ist? Ist die `abnahme` pruefbar formuliert? Haengt es an etwas, das
   noch nicht fertig ist?
+
+  Die Rollenfrage steht zuerst, weil sie am 2026-09-02 gleich beim ersten Vorschlag
+  zuschlug: Er kam mit `rolle: builder` -- die gibt es hier nicht, und kein Runner haette
+  ihn je gezogen. Die Waisenpruefung hat es gemeldet, aber verlass dich nicht darauf.
 - **zusammengefasst** -- es gehoert in ein bestehendes Paket. Trag es dort ein, setz den
   Vorschlag auf `fertig` mit einem Verweis.
 - **`abgelehnt`** -- mit Begruendung im Paket. Das ist erlaubt und manchmal richtig; ein

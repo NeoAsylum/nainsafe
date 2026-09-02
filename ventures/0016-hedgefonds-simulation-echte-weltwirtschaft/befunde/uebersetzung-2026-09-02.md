@@ -29,14 +29,17 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target kern_geprueft
-[ 50%] Built target kern
-[ 75%] Built target pruefsumme_probe
-[ 75%] Built target festkomma_probe
-[ 75%] Built target schreiber_probe
-[100%] Built target zustand_probe
-[100%] Built target zufall_probe
+[  6%] Built target pruefstand
+[ 20%] Built target pruefstand_geprueft
+[ 33%] Built target kern_geprueft
+[ 53%] Built target kern
+[ 60%] Built target pruefsumme_probe
+[ 73%] Built target zustand_probe
+[ 73%] Built target festkomma_probe
 [100%] Built target schranken_probe
+[100%] Built target schreiber_probe
+[100%] Built target zufall_probe
+[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -44,21 +47,23 @@ anderes behauptet, irrt.
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
     Start 1: festkomma_probe
-1/6 Test #1: festkomma_probe ..................   Passed    0.02 sec
+1/7 Test #1: festkomma_probe ..................   Passed    0.02 sec
     Start 2: pruefsumme_probe
-2/6 Test #2: pruefsumme_probe .................   Passed    0.01 sec
+2/7 Test #2: pruefsumme_probe .................   Passed    0.01 sec
     Start 3: schranken_probe
-3/6 Test #3: schranken_probe ..................   Passed    0.01 sec
+3/7 Test #3: schranken_probe ..................   Passed    0.01 sec
     Start 4: schreiber_probe
-4/6 Test #4: schreiber_probe ..................   Passed    0.01 sec
+4/7 Test #4: schreiber_probe ..................   Passed    0.01 sec
     Start 5: zufall_probe
-5/6 Test #5: zufall_probe .....................   Passed    0.01 sec
+5/7 Test #5: zufall_probe .....................   Passed    0.01 sec
     Start 6: zustand_probe
-6/6 Test #6: zustand_probe ....................   Passed    0.01 sec
+6/7 Test #6: zustand_probe ....................   Passed    0.01 sec
+    Start 7: vorrat_probe
+7/7 Test #7: vorrat_probe .....................   Passed    0.01 sec
 
-100% tests passed, 0 tests failed out of 6
+100% tests passed, 0 tests failed out of 7
 
-Total Test time (real) =   0.09 sec
+Total Test time (real) =   0.10 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -72,13 +77,13 @@ Total Test time (real) =   0.09 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target kern
 [ 50%] Built target kern_geprueft
-[ 66%] Built target pruefsumme_probe
+[ 50%] Built target kern
 [ 66%] Built target festkomma_probe
-[ 91%] Built target zustand_probe
+[ 66%] Built target pruefsumme_probe
+[ 83%] Built target zufall_probe
+[ 83%] Built target zustand_probe
 [ 91%] Built target schranken_probe
-[ 91%] Built target zufall_probe
 [100%] Built target schreiber_probe
 ```
 
@@ -97,11 +102,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
     Start 5: zufall_probe
 5/6 Test #5: zufall_probe .....................   Passed    0.01 sec
     Start 6: zustand_probe
-6/6 Test #6: zustand_probe ....................   Passed    0.01 sec
+6/6 Test #6: zustand_probe ....................   Passed    0.02 sec
 
 100% tests passed, 0 tests failed out of 6
 
-Total Test time (real) =   0.07 sec
+Total Test time (real) =   0.08 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -110,35 +115,24 @@ Total Test time (real) =   0.07 sec
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/bau
-CMake Warning (dev) in CMakeLists.txt:
-  No project() command is present.  The top-level CMakeLists.txt file must
-  contain a literal, direct call to the project() command.  Add a line of
-  code such as
-
-    project(ProjectName)
-
-  near the top of the file, but after cmake_minimum_required().
-
-  CMake is pretending there is a "project(Project)" command on the first
-  line.
-This warning is for project developers.  Use -Wno-dev to suppress it.
-
-CMake Warning (dev) in CMakeLists.txt:
-  cmake_minimum_required() should be called prior to this top-level project()
-  call.  Please see the cmake-commands(7) manual for usage documentation of
-  both commands.
-This warning is for project developers.  Use -Wno-dev to suppress it.
 ```
 
 ## `cmake --build` -- ok (Code 0)
 
 ```
-
+[ 66%] Built target pruefstand_geprueft
+[ 50%] Built target pruefstand
+[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
 
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/bau
-No tests were found!!!
+    Start 1: vorrat_probe
+1/1 Test #1: vorrat_probe .....................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.01 sec
 ```
