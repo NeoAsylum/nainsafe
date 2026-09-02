@@ -14,24 +14,21 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   0015, 0015 R2, 0017, 0018; immer dasselbe: ein Massstab, der in einem Abschnitt trägt und
   zwei Abschnitte weiter fehlt. **Die Ungleichbehandlung innerhalb einer Datei ist der
   Hinweis, nicht die Abweichung von `specs/`.** Erste Stelle, an der ich suche.
-- 2026-09-02 (0015) — **Eine Reparatur dreht gern den Quantor um.** Vorlage: „die Unmarkierten
-  sind Geschwister"; Reparatur: „Geschwister bleiben unmarkiert". **Bei jedem übernommenen
-  Satz prüfen, in welche Richtung er gilt**, und die Gegenrichtung an der Tabelle testen.
-- 2026-09-02 (0015 R2) — **Schärfste Bauform: zwei Zeilengruppen gleicher Bauart,
-  gegensätzlich behandelt.** Je eine wörtlich belegte Adresse plus drei Geschwister über
-  denselben Index — `aufsichtszaehler` alle unmarkiert, `wechselkurs` drei markiert. Egal
-  welche Gruppe recht hat, die andere widerlegt die Regel; das braucht keine Auslegung.
-  **Rezept:** Belegstelle greppen, abgeleitete Tabellenzeilen zählen, dieselbe Zählung für
-  ein zweites Feld derselben Form.
+- 2026-09-02 (0015, R1–R3) — **Drei Rückläufe, eine Bruchlinie: eine Regel, die für einen Teil
+  der Tabelle gilt.** (a) **Eine Reparatur dreht gern den Quantor um** („die Unmarkierten sind
+  Geschwister" → „Geschwister bleiben unmarkiert") — bei jedem übernommenen Satz prüfen, *in
+  welche Richtung* er gilt. (b) **Schärfste Bauform: zwei Zeilengruppen gleicher Bauart,
+  gegensätzlich behandelt** — je ein Beleg plus drei Indexgeschwister, `aufsichtszaehler` alle
+  unmarkiert, `wechselkurs` drei markiert. Egal welche recht hat, die andere widerlegt die
+  Regel; das braucht keine Auslegung.
 - 2026-09-02 (0018) — **Das gilt auch für die Reparatur selbst: sie wird an drei von vier
   Stellen gemacht** („drei Ämter" → „sieben Stellen" bei Reihe 1, 2a und Klärungsliste, nicht
   bei 2b/2c). **Nach jedem Folgepaket die *ersetzte* Formulierung greppen.** Nebenbefund,
   kein Rücklauf, wenn das Kriterium die Stelle nicht nennt.
-- 2026-09-02 — **Die Schlussliste „was zu tun bleibt" ist ergiebiger als die Urteile:** die
-  Urteile prüft der Bauagent selbst nach, die Preise daneben niemand (0014). Jeden Posten
-  gegen die Begründungen zurückrechnen. Und **ein Fachwort aus `specs/` kann zwei Bedeutungen
-  haben** — „frei" ist in der Reihenliste die T37-Klasse, im Lizenzbefund ein Lizenzurteil;
-  bei jedem zitierten Stichwort prüfen, welche Spalte es trägt.
+- 2026-09-02 — **Die Schlussliste „was zu tun bleibt" ist ergiebiger als die Urteile** (0014):
+  Urteile prüft der Bauagent selbst nach, die Preise daneben niemand. Und **ein Fachwort aus
+  `specs/` kann zwei Bedeutungen haben** („frei" = T37-Klasse *oder* Lizenzurteil) — bei jedem
+  zitierten Stichwort prüfen, welche Spalte es trägt.
 - 2026-09-02 — **Eine Summe, die aufgeht, ist kein Beweis für ihre Summanden** (`27+2+2` und
   `26+3+2` sind beide 31): Klassen **einzeln** nachzählen, und zwar in beide Richtungen
   („ist jede tragende Zeile 25?" ≠ „ist jede 25 als tragend gezählt?"). Den ausgelassenen,
