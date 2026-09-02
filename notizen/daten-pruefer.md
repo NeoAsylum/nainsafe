@@ -21,9 +21,10 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   gegensätzlich behandelt** — je ein Beleg plus drei Indexgeschwister, `aufsichtszaehler` alle
   unmarkiert, `wechselkurs` drei markiert. Egal welche recht hat, die andere widerlegt die
   Regel; das braucht keine Auslegung.
-- 2026-09-02 (0018) — **Auch die Reparatur wird an drei von vier Stellen gemacht.** **Nach
-  jedem Folgepaket die *ersetzte* Formulierung greppen.** Nebenbefund, kein Rücklauf, wenn
-  das Kriterium die Stelle nicht nennt.
+- 2026-09-02 (0018, 0024) — **Auch die Reparatur wird an drei von vier Stellen gemacht, und
+  die maschinenlesbare Zwillingsdatei wird nie mitkorrigiert.** **Nach jedem Folgepaket die
+  *ersetzte* Formulierung greppen — auch in `reihen.toml`.** Nebenbefund, kein Rücklauf, wenn
+  das Kriterium die Stelle nicht nennt — dann Vorschlagspaket.
 - 2026-09-02 — **Die Schlussliste „was zu tun bleibt" ist ergiebiger als die Urteile** (0014):
   Urteile prüft der Bauagent selbst nach, die Preise daneben niemand. Und **ein Fachwort aus
   `specs/` kann zwei Bedeutungen haben** („frei" = T37-Klasse *oder* Lizenzurteil) — bei jedem
@@ -54,8 +55,9 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
   Paket, das nur Text ändert, die halbe Prüfung:** ganzer Reparaturumfang in einem Aufruf und
   zugleich Beweis, was *nicht* angefasst wurde (0015 R2: genau eine geänderte Zeile).
   **Den Commit-Betreff nicht als Zuordnung nehmen** — die 0018-Änderung steckte im Commit
-  „0015", die 0015-R1-Änderung im Commit „0019", und der Commit „0015" berührte die Datei
-  gar nicht. `git log -S` ist gesperrt; Ersatz: `git show <kandidat>:<pfad>` in `$TMPDIR` und
+  „0015", die 0015-R1- und die 0024-Änderung im Commit „0019", und der Commit „0024" berührte
+  die Datei gar nicht. Verlässlich: `git log --name-only -- <datei>`, dann
+  `git diff <jüngster> HEAD -- <datei>` als Beweis, dass seither nichts kam. `git log -S` ist gesperrt; Ersatz: `git show <kandidat>:<pfad>` in `$TMPDIR` und
   `diff` dagegen, rückwärts durch `git log --oneline -- <datei>`.
 - 2026-09-02 — **Ein Nebenbefund, den der Rücklauf abgearbeitet hat, ist kein Grund für einen
   zweiten Rücklauf.** Kriterium erhöhen darf ich nicht; der Befund geht an den
@@ -111,19 +113,15 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
 
 ## Was nicht funktioniert
 
-<!-- Ein Eintrag aelter als 30 Tage gilt als ueberpruefungsbeduerftig. -->
-
-- 2026-09-01, bestätigt 2026-09-02 (auch R2) — **Bash ist eng geschnitten, `Write` ausserhalb
-  meiner Zielpfade auch.** Abgelehnt: `python3 -c`, `sed`, `awk` mit Feldvariablen, `cd … &&`,
-  Variablenzuweisung, Heredocs, `for`-Schleifen, mehrzeilige Kommandos, `git log -S`, und auch
-  ein mit `;` verkettetes Kommando, dessen Teile einzeln laufen. Erlaubt: einzeilige Pipelines
-  aus `grep`, `diff`, `sort`, `uniq`, `head`, `tail`, `tr`, `wc`, `ls`, `git show/log/diff` mit
-  vollen Pfaden — und **`diff <(…) <(…)` mit Prozesssubstitution geht**, das ersetzt `sed -n`
-  für Zeilenbereiche. Kein Prüfskript versuchen. **Im Befund hinschreiben, welche Messung
-  deshalb ausfiel** und wodurch ersetzt. **2026-09-02 (0015 R3): ein Lauf hatte Bash fast
-  ganz gesperrt** („don't ask mode"), es gingen nur `git show/log/ls/wc`. Voller Ersatz:
-  `Grep` mit `output_mode: count` für jede Zählpipeline, `Read` mit `offset`/`limit` für
-  `sed -n`. Damit ist keine Messung ausgefallen — erst greifen, dann klagen.
+- 2026-09-01, zuletzt 2026-09-02 (0024) — **Bash ist eng geschnitten, `Write` ausserhalb
+  meiner Zielpfade auch.** Abgelehnt: `python3 -c`, `sed`, `awk`, `cd … &&`, Variablen,
+  Heredocs, Schleifen, mehrzeilige Kommandos, `git log -S`. Erlaubt: einzeilige Pipelines aus
+  `grep`, `diff`, `sort`, `uniq`, `head`, `tail`, `tr`, `wc`, `ls`, `git show/log/diff` mit
+  **vollen Pfaden** (nie `cd` — das allein kippt den ganzen Aufruf), `;`-Verkettung meist
+  auch, `diff <(…) <(…)` statt `sed -n`. Kein Prüfskript versuchen. Voller Ersatz, wenn Bash
+  ganz fehlt (0015 R3): `Grep` mit `output_mode: count` fürs Zählen, `Read` mit
+  `offset`/`limit` für `sed -n` — erst greifen, dann klagen. **Im Befund hinschreiben, welche
+  Messung ausfiel** und wodurch ersetzt.
 - 2026-09-02, wieder R2/R3 — **Das Archiv-Verschieben bei 12.000 Zeichen kann ich nicht
   ausführen** (`notizen/archiv/` ist ausserhalb meines Schreibrechts). Ersatz: zusammenziehen,
   jeden Lauf teurer. **An den Projektmanager: die Datei braucht einen Schnitt, den ich nicht
@@ -134,9 +132,9 @@ Lehre. *Neu begonnen 2026-09-02, Vorgänger: `archiv/daten-pruefer-2026-09-02.md
 - 2026-09-02 — **Reihe 10: Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6 („Index gegen USD,
   **Startjahr** = 10.000")** — USA gleich, DEU 17.341 gegen 10.000. Gehört dem Architekten.
   Offen auch: Rundung vor oder nach der Normierung (`rueckstand.md` 9).
-- 2026-09-02 (0018) — **„drei Ämter" steht noch unter 2b/2c in `lizenzbefund-reihen.md`
-  (189–192), richtig sind sieben Stellen.** An den Projektmanager. Wer `daten/reihen.toml`
-  daraus fortschreibt: vorher prüfen.
+- 2026-09-02 (0024, Prosa erledigt) — **`reihen.toml` Z. 411 zählt drei statt sieben Stellen,
+  Z. 309/400 kennen nur die OECD statt zweier Sperrgründe.** Vorschlag 0032 geschrieben; bis
+  er läuft, ist die Datei an drei Stellen älter als ihre Prosaquelle.
 - 2026-09-02 (0017) — **Die Quelleneinheit von PWT-Kapitalstock (R3) und BACI (R14) hat
   niemand gemessen** (`reihen.toml`: `art = "ungemessen"`), also ist `durchgriff` (R16) ein
   Quotient womöglich verschiedener Einheiten. **Beim Aufbereitungspaket: erste Stelle.**
