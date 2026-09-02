@@ -28,7 +28,7 @@ und acht Vorgänge, und die dreizehn Rollen der Bewertungskette liegen unter
 | `CLAUDE.md` | die Hausregeln — vier harte Regeln, Rollentabelle, Statusmodell |
 | `grenzen.md` | was das Unternehmen **verkaufen** darf: neun Grenzen, 5.000 € Schwelle |
 | `agentenbau.md` | was die Fabrik **herstellen** kann: sechs Baubarkeitsfragen |
-| `quellen.yml` | wo gesucht wird, wenn gesucht wird |
+| `quellen.yml` | wo gesucht wird, falls die Suche je wieder anläuft |
 | `decisions/` | warum es so ist, wie es ist — neun ADRs |
 | `notizen/lehren.md` | was schiefging und was daraus folgt |
 
@@ -50,9 +50,9 @@ ein Agent braucht, erzeugt stattdessen der Runner und legt sie als Datei hin.
 
 ```
 03:00 täglich    agents/tageslauf.py    fährt den Nachtlauf, bis das Tagesbudget steht
-09:00 täglich    agents/sensorlauf.py   ruht im Fokusmodus
 07:00 sonntags   agents/wochenlauf.py   Portfolio, Verbesserung, Digest
 alle 30 min      agents/dashboard.py    ops/dashboard.html
+03:30 / 03:45    Push und Bundle
 ```
 
 `nachtlauf.py` entscheidet selbst, was ansteht: eine Entwurfsrunde, solange der Entwurf
@@ -69,9 +69,10 @@ Fabrik, die nicht von einem Modell kommt.
 ```sh
 bash    einrichtung/pruefen.sh          # 17 Bedingungen für den unbeaufsichtigten Lauf
 python3 einrichtung/rollen-pruefen.py   # jede Rollendatei gegen die Hausregeln
+python3 einrichtung/nach-aufraeumen.py  # laeuft der naechste Takt noch?
 bash    einrichtung/eichen.sh           # nach jeder Änderung an grenzen.md
 python3 agents/kontingent.py            # Verbrauch je Rolle
-python3 agents/weg.py                   # wo Ideen sterben
+python3 agents/baulauf.py --trocken     # was der naechste Takt zieht
 ```
 
 ## Was hier liegt
@@ -79,9 +80,8 @@ python3 agents/weg.py                   # wo Ideen sterben
 | Pfad | Inhalt |
 |---|---|
 | `agents/` | Runner und Rollendateien; `agents/rollen/archiv/` ist stillgelegt |
-| `signals/` | Rohbeobachtungen, Markt- und Prozessprofile |
-| `research/` | Recherchen mit Quelle und Abrufdatum |
-| `ideas/` | Ideen mit Status; 9001 und 9002 sind Eichideen, kein Bestand |
+| `ideas/` | die eine aktive Idee; alles Übrige liegt im Archiv |
+| `archiv/` | die Suchphase — 81 Signale, 49 Recherchen, 15 verworfene Ideen |
 | `specs/` | der Entwurf des laufenden Vorhabens |
 | `ventures/` | der Bau: `aufgaben/`, `befunde/`, Quelltext |
 | `gates/` | die Entscheidungen des Betreibers |
@@ -95,10 +95,10 @@ Frontmattern, und sie würde bei jedem Lauf Konflikte erzeugen.
 
 ## Der Stand, in Zahlen
 
-Zum 2026-09-01: **31 aktive Rollen**, 13 archivierte. 27 Marktprofile, 8 Prozessprofile,
-49 Recherchen, 16 Ideen — davon **eine** in Arbeit, der Rest abgelehnt oder widerlegt.
+Zum 2026-09-02, nach sieben Tagen Betrieb: **7.354 Zeilen C++** in 23 Dateien, sechs
+grüne Tests, 28 Arbeitspakete davon 13 fertig. 271 Agentenläufe, 11 ADRs, Gate 1 erteilt.
 
-Das ist kein Fehler, sondern der Zweck: Die Fabrik hat fünfzehn Produkte verhindert, die
-niemand gekauft hätte. Was sie noch nicht hat, ist eine Zeile ausgelieferten Code — der
-erste Baulauf war am 2026-09-01, und er hinterließ Markdown statt Rust. Woran das lag
-und was dagegen eingebaut wurde, steht in `notizen/lehren.md`.
+Davor lagen 81 Signale, 49 Recherchen und 15 verworfene Ideen — die liegen jetzt unter
+`archiv/suche/`. Das ist kein Verlust, sondern der Zweck: Die Fabrik hat fünfzehn
+Produkte verhindert, die niemand gekauft hätte, und die Begründungen sind der Beleg
+hinter den Entscheidungen 0004 bis 0011.
