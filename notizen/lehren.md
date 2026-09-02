@@ -354,17 +354,17 @@ was erlaubt ist.
   Projektmanager.** Bis dahin war es allen ausser ihm verboten, Pakete anzulegen; was
   einem Bauagenten auffiel, landete im Logbuch und wurde nur dann ein Paket, wenn der
   Projektmanager es zufaellig las. Das hat Arbeit gekostet. *Folgerung fuer alle:* Ein
-  Befund darf jetzt ein Paket mit  werden -- mit Rolle,
+  Befund darf jetzt ein Paket mit `status: vorschlag` werden -- mit Rolle,
   Abhaengigkeiten, Dateiliste und pruefbarer Abnahme.
 
-  **Warum trotzdem nur der Projektmanager  setzt, und zwar aus einem technischen
+  **Warum trotzdem nur der Projektmanager `offen` setzt, und zwar aus einem technischen
   Grund statt aus Rangordnung:** Der Baulauf plant nur Pakete gleichzeitig ein, deren
   Dateilisten sich nicht schneiden. Vier Agenten, die sich gleichzeitig selbst Arbeit
   geben, sehen die Ansprueche der anderen nicht -- und schreiben dieselbe Datei. Er ist
   die Stelle, an der das serialisiert wird.
 
   **Und die Arbeitsteilung mit dem Geschaeftsfuehrer:** Der legt den *Vorrang* fest
-  (hoechstens fuenf Kennungen in ), der Projektmanager den *Ablauf*. Er
+  (hoechstens fuenf Kennungen in `ops/plan.md`), der Projektmanager den *Ablauf*. Er
   sieht ueber die Gewerke, der andere in sie hinein; keiner kann die Frage des anderen
   beantworten. Widersprechen sie sich zweimal in derselben Sache, gehoert das in den
   Bericht an den Betreiber statt in eine dritte Runde zwischen ihnen.
