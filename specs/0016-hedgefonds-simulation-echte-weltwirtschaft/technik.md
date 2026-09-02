@@ -2,8 +2,9 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 6 (nach spiel.md Fassung 5 und ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde6-2026-09-01.md)
-stack: Rust (stabile Kette, Edition 2021); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche egui/eframe (MIT OR Apache-2.0)
+fassung: 7 (nach ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md -- ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert)
+stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake; Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
+ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
 determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
 zustand: fester, allokationsfreier Wert, 310 i64 (2.480 Byte), Prüfsumme über kanonische Byteform
 speicherstand: Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme -- nicht der Zustand
@@ -63,59 +64,154 @@ Tabelle dadurch prüfen, dass man sie einmal von Hand einlöst. Beide Summen geh
 
 ## 1. Stack
 
-**T1 — Kern, Datenschicht, Schnittstelle, Prüfstand und Werkzeuge in Rust**, stabile
-Toolchain, in `rust-toolchain.toml` auf eine Version festgenagelt, Abhängigkeiten
-mit `cargo vendor` im Repo eingefroren.
+**T1 — Kern, Datenschicht, Schnittstelle, Prüfstand und Werkzeuge in C++20**, übersetzt mit
+`g++`, gebaut über CMake, Übersetzerkennung und -version in `werkzeugkette.cmake`
+festgenagelt. Entschieden hat das der Betreiber am 2026-09-01 (**ADR 0011**); diese Fassung
+trägt die Entscheidung nach und ersetzt die Rust-Fassung der Vorfassungen.
 
-Zwei Sätze Begründung, wie verlangt. **Erstens:** Rust ist die einzige verbreitete Sprache,
-in der sich die drei Determinismusregeln vom Werkzeug erzwingen lassen statt von der
-Sorgfalt des nächsten Agenten — `i64`/`i128` mit `overflow-checks = true` auch im
-Freigabeprofil, `BTreeMap` und `Vec` statt streuender Mengen, und ein Kern-Kasten ohne
-jeden Gleitkommatyp, was ein Prüfer mit einem einzigen `grep` nachweist.
-**Zweitens:** Der Prüfstand entscheidet über den einzigen Vorsprung dieser Fabrik, und er
-kostet knapp 11,8 Millionen Weltschritte je Nacht — in einer übersetzten Sprache sind das
-Minuten, in einer gedeuteten Stunden (Abschnitt 10 rechnet es vor). Dass ein einzelnes
-Programm ohne Laufzeitumgebung herausfällt, das Steam unverändert ausliefert, ist der
-dritte Grund und der einzige, der den Betreiber betrifft.
+**Die Kandidaten, an den Kriterien dieses Vorhabens gemessen.** Die Vorfassungen haben *für*
+eine Sprache argumentiert statt *unter* Alternativen zu wählen; das ist der Befund, aus dem
+ADR 0010 und die Tabellenpflicht dieser Rolle entstanden sind. Die vier gemessenen Zeilen
+stammen aus `ventures/0016-…/messung-stack/BEFUND.md` (2026-09-01, erzeugt von
+`agents/stackmessung.py`): dieselbe Festkomma-Aufgabe, vier Agenten, vier Sprachen.
 
-**Der Einwand gegen die Wahl gehört dazu.** Die Rolle verbietet exotische Stacks. Rust ist
-nicht exotisch, aber es ist auch nicht Python: Ein Bauagent braucht mehr Anläufe bis zum
-grünen Übersetzungslauf, und Umbauten am Zustandsgraphen kosten Nacharbeit am Ausleihprüfer.
-Der Tausch ist bewusst: Autorenaufwand gegen mechanisch nachweisbaren Determinismus und
-gegen einen Prüfstand, der täglich läuft. Fällt der Prüfstand aus dem Nachtlauf, ist das
-Produkt für diese Fabrik wertlos — der Autorenaufwand ist dagegen nur teuer.
+| Sprache | Determinismus mechanisch erzwingbar | Agent trifft die Vorschrift | ns/Messschritt | Einzelprogramm beim Käufer | Speichersicher |
+|---|---|---|---:|---|---|
+| **C++20 (gewählt)** | **ja, aber zusammengesetzt** — drei Prüfregeln statt drei Spracheigenschaften (T4, T7, T9) | **erster Anlauf** | **947** | **ja** | **nein** |
+| Rust | ja, vom Werkzeug — `overflow-checks`, `clippy::float_arithmetic`, `BTreeMap` | erster Anlauf | 494 | ja | ja |
+| Java | teilweise — Gleitkomma nicht verbietbar, `HashMap` gestreut | erster Anlauf | **316** | nein, braucht JRE | ja |
+| Python | nein | erster Anlauf | 50.383 | nein | ja |
+| Go | nein — `float64` nicht verbietbar, Kartenreihenfolge absichtlich gestreut | *nicht gemessen* | *nicht gemessen* | ja | ja |
+| C# | nein — nur durch Disziplin | *nicht gemessen* | *nicht gemessen* | mit Laufzeit | ja |
 
-**T2 — Der Kasten `kern` hat null Fremdabhängigkeiten** und trägt `#![forbid(unsafe_code)]`.
-Kein `serde`, kein Zufallskasten, keine Zeit, keine Ein- und Ausgabe. Ein Kasten ohne
-Abhängigkeiten kann durch kein fremdes Versionsupdate sein Ergebnis ändern.
+Go und C# sind **nicht gemessen**; ihre Zeilen stehen aus ADR 0010 und sind Argument, nicht
+Zahl. Sie bleiben in der Tabelle, damit sichtbar ist, was geprüft wurde und was nicht.
 
-**T3 — Die Abhängigkeiten ausserhalb des Kerns sind abschliessend aufgezählt:**
-`serde` und `serde_json` (Protokoll), `toml` (Parameterdatei), `eframe`/`egui` und
-`egui_plot` (Oberfläche), `rayon` (Prüfstand), `sha2` (nur in `werkzeuge`, für
-Datei-Prüfsummen). Alle unter MIT oder Apache-2.0. egui und eframe sind unter
-„MIT OR Apache-2.0" doppelt lizenziert, eframe nennt Linux, Mac und Windows ausdrücklich
-als Ziele (github.com/emilk/egui, abgerufen 2026-08-31). Eine Abhängigkeit mehr braucht
-einen ADR.
+**Was die Messung entschieden hat und was nicht.** Alle vier Umsetzungen trafen dieselbe
+Prüfsumme `1163237642073673` beim ersten Anlauf, einschliesslich der Rundung auf halbe
+Beträge von null weg bei negativen Werten. **Damit ist die Spalte „Agentenzuverlässigkeit"
+für diese Domäne leer** — sie war das Hauptargument der Rust-Fassung und trägt nicht mehr.
+Python scheidet an der Geschwindigkeit aus (in dieser Messung Faktor 53,2 gegenüber C++,
+gerechnet als 50.383 / 947); zwischen den drei übersetzten Sprachen ist die Geschwindigkeit
+gleichgültig, weil 11,78 Millionen Weltschritte überall Minuten sind (Abschnitt 10).
+Java ist mit 316 ns die schnellste und fällt trotzdem heraus: Eine Laufzeitumgebung neben
+einem Steam-Titel ist ein Auslieferungsproblem, das keine Rechenzeit aufwiegt.
 
-**Ausdrücklich nicht gewählt:** Eine Spiel-Engine (Godot, Unity, Bevy) — sie bringt eine
+**Der Einwand gegen die Wahl gehört dazu, und es sind zwei.** *Erstens:* C++ war in der
+Messung 1,92-mal langsamer als Rust und 3,0-mal langsamer als Java (947 / 494 bzw.
+947 / 316, beide in diesem Lauf gerechnet). Das ist eine Eigenschaft **dieser Umsetzung**,
+nicht der Sprache — T6 sagt jetzt, woran es lag und wie es der Kern anders macht.
+*Zweitens, und das ist der bleibende Preis:* C++ hat keine Speichersicherheit. In einer
+Fabrik ohne menschliche Codedurchsicht ist das eine eigene Fehlerklasse, und sie zeigt sich
+beim Käufer statt im Übersetzungslauf. Gegenmassnahmen sind der Adressen-Sanitizer im
+Testprofil (T7), der Warnsatz mit `-Werror` und die Zeigerfreiheit des Kerns (T2) — sie
+decken Pfade ab, nicht alle Fälle. Das steht hier, damit es später nicht überrascht.
+
+**Was jetzt fallen muss und was sich vertagen lässt.** Die Frage kostet nichts und spart am
+meisten, also steht sie ausgeschrieben da:
+
+| Festlegung | jetzt oder später | Grund |
+|---|---|---|
+| Sprache und Übersetzer des Kerns | **jetzt** | Jede Zeile Kern hängt daran; ein Wechsel später ist ein Neubau. |
+| Ganzzahldisziplin (T4, T6, T7) | **jetzt** | Nicht nachrüstbar: Sie ist die Voraussetzung jedes Regressionstests. |
+| Bausteinrichtung (T13) | **jetzt** | Sie ist zugleich der Kollisionsschnitt der Arbeitspakete (Abschnitt 13). |
+| Oberfläche | **später** (ADR 0010) | Das Modell fragt die Sicht nie etwas; sie ist austauschbar, solange der Kern steht. Entschieden wird, wenn bekannt ist, was sie zeigen muss. |
+| Parameterdatei-Leser | **später** | Er sitzt in `daten`, nicht im Kern; T3 nennt die Anforderung, nicht das Erzeugnis. |
+| Parallelisierung des Prüfstands | **später** | T39 verlangt Ergebnisgleichheit mit einem und mit vielen Kernen — das bindet das Verfahren, nicht die Bibliothek. |
+
+**T2 — Der Baustein `kern` hat null Fremdabhängigkeiten.** Kein Protokollkasten, keine
+Zufallsbibliothek, keine Zeit, keine Ein- und Ausgabe. Ein Baustein ohne Abhängigkeiten kann
+durch kein fremdes Versionsupdate sein Ergebnis ändern. **Die Standardbibliothek ist keine
+Fremdabhängigkeit** — sie kommt mit dem Übersetzer, den `werkzeugkette.cmake` festnagelt.
+
+*Wie das erzwungen wird, denn C++ hat keinen Abschnitt `[dependencies]`, der leer bleiben
+könnte.* Die Entsprechung ist eine Eigenschaft der `CMakeLists.txt` des Kerns, und sie ist
+mit zwei Mustervergleichen über diese eine Datei nachweisbar: Der erste sucht jede
+Anweisung, die fremden Code hereinholt oder ein weiteres Quellverzeichnis dazunimmt, der
+zweite jede Bibliothek, die an `kern` gelinkt wird. **Beide müssen leer ausgehen.** Ihr
+Wortlaut gehört in das Abnahmekriterium des jeweiligen Pakets und ausdrücklich nicht in die
+geprüfte Datei: Eine Datei, die ihre eigenen Suchmuster zitiert, lässt sie nie leer ausgehen.
+
+**T2b — Was an die Stelle von `#![forbid(unsafe_code)]` tritt.** Das Attribut gibt es in C++
+nicht, und das ist der Preis aus ADR 0011: Speichersicherheit ist hier eine **Prüfregel statt
+einer Spracheigenschaft**. An seine Stelle treten drei Dinge, alle mechanisch, alle im
+Bauprofil verankert statt in einer Verabredung:
+
+1. **Der Warnsatz mit `-Werror`:** `-Wall -Wextra -Wconversion -Wsign-conversion -Wshadow
+   -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal
+   -Wnull-dereference -Wformat=2`. Was der Übersetzer als zweifelhaft erkennt, ist damit ein
+   Bauabbruch und keine Zeile, die im Protokoll untergeht. **`-Wpedantic` steht bewusst
+   nicht dabei:** Es warnt vor `__int128`, und `__int128` ist nach T6 verpflichtend. Ein
+   Warnschalter, der eine Vorschrift anmeckert, wird abgeschaltet oder ignoriert — beides
+   ist schlechter, als ihn nicht zu setzen.
+2. **Der Adressen-Sanitizer im Testprofil** (T7, Massnahme 2). Er ist die einzige der drei,
+   die Speicherfehler *findet* statt sie zu *erschweren*.
+3. **Die Zeigerfreiheit als Grep-Regel:**
+   `grep -rnE 'reinterpret_cast|const_cast|\bnew\b|\bdelete\b|\basm\b' kern/` liefert nichts.
+   Der Kern kommt ohne rohe Zeiger und ohne eigene Speicherverwaltung aus — feste Grössen und
+   `std::array` statt roher Felder (T15). Das ist keine Härtung, sondern eine Folge des
+   Datenmodells: Ein Zustand ohne Zeiger hat keine Stelle, an der ein Zeiger falsch sein
+   könnte.
+
+**T3 — Die Abhängigkeiten ausserhalb des Kerns sind abschliessend aufgezählt, und zwar als
+Anforderung, nicht als Erzeugnis.** Welche Bibliothek eine Anforderung erfüllt, entscheidet
+das jeweilige Paket; dass es *keine weitere* gibt, entscheidet diese Vorgabe.
+
+| Baustein | Anforderung | Lage |
+|---|---|---|
+| `daten` | Leser für `parameter.toml` und die Jahrgangsdateien, **ohne Gleitkomma** (T4) | offen; die Anforderung schliesst jeden Leser aus, der über `double` geht |
+| `schnittstelle` | Protokollformat schreiben und lesen | offen; das Format steht in T17, nicht in einer Bibliothek |
+| `pruefstand` | Parallelität über Partien | offen; T39 bindet die **Ergebnisgleichheit**, nicht das Mittel — `std::thread` und `<execution>` erfüllen sie beide |
+| `werkzeuge` | Datei-Prüfsummen für den Jahrgangsbau | offen; darf eine Fremdbibliothek sein, weil das Erzeugnis geprüft wird und nicht der Weg |
+| `oberflaeche` | — | **vertagt** (ADR 0010) |
+
+**Jede tatsächlich eingesetzte Bibliothek braucht einen ADR mit Lizenzzitat**, und keine
+davon darf in den Kern (T2). Die frühere Liste dieser Vorgabe nannte sechs Rust-Kästen
+namentlich; sie ist ersatzlos gestrichen, weil sie eine Wahl festschrieb, die niemand
+treffen musste — und weil die Oberflächenzeile darin seit ADR 0010 ohnehin vertagt war.
+
+**Ausdrücklich nicht gewählt:** Eine Spiel-Engine (Godot, Unity, Unreal) — sie bringt eine
 Bildschleife, eine Zeitachse und eine eigene Zahlenwelt mit, also genau die drei Quellen
 von Nichtreproduzierbarkeit, die hier ausgeschlossen werden sollen; das Spiel braucht
 Tabellen, Verlaufsgraphen und eine Kettenansicht. Eine Netzoberfläche (Electron, Tauri) —
 JavaScript kennt keinen Ganzzahltyp, und ein versehentliches `/` erzeugt still eine
 Gleitkommazahl. Python — siehe die Rechnung in Abschnitt 10. Steamworks-SDK — für den
 ersten Titel nicht nötig (keine Erfolge, kein Wolkenspeicher), also eine Abhängigkeit und
-ein Konto weniger.
+ein Konto weniger. **Ein Testrahmen** (GoogleTest, Catch2) — die Proben sind eigenständige
+Programme mit `static_assert` und Rückgabewert, von CTest aufgerufen; das kostet keine
+Abhängigkeit und macht die Hälfte der Prüfungen zu Übersetzungsfehlern statt zu
+Laufzeitmeldungen.
 
 ## 2. Der deterministische Kern
 
-**T4 — Keine Gleitkommazahl im Kern, in der Datenschicht und im Protokoll.** Kein `f32`,
-kein `f64`, kein `sqrt`, kein `powf`, kein `ln`. Nachweis: `grep -rn 'f32\|f64' kern/`
-liefert nichts, und `clippy::float_arithmetic` ist im Kern auf `deny`. Auch die
-Parameterdatei wird ohne Gleitkomma gelesen — Dezimalzeichenketten werden direkt in
-skalierte Ganzzahlen zerlegt, nie über `parse::<f64>()`.
+**T4 — Keine Gleitkommazahl im Kern, in der Datenschicht und im Protokoll.** Kein `float`,
+kein `double`, kein `long double`, kein `sqrt`, kein `pow`, kein `log`, kein `exp`.
 
-**T5 — Jede Größenklasse hat eine deklarierte Skala.** Der Typ ist überall `i64`, die
-Bedeutung steht in dieser Tabelle und nirgends sonst:
+**Die Sperre ist ein Übersetzungsfehler, kein Vorsatz.** Rust hätte hier
+`#![deny(clippy::float_arithmetic)]` gehabt; die C++-Entsprechung ist `#pragma GCC poison`
+in `kern/include/kern/sperre.hpp`. Ein vergifteter Bezeichner ist ab dieser Zeile ein harter
+Fehler des Vorverarbeiters. Wer im Kern `double` schreibt, bekommt keinen Zahlenfehler in
+Runde 400, sondern einen roten Übersetzungslauf. Vergiftet sind `float` und `double`
+(`long double` sind zwei Token und damit miterfasst), die Wurzel-, Potenz-, Logarithmus- und
+Exponentialfunktionen in allen drei Suffixformen und die Zeichenketten-Umwandler `atof`,
+`strtod`, `strtof`, `strtold`.
+
+**Die Einbauregel, und sie ist der ganze Trick:** `sperre.hpp` ist die **letzte** Zeile des
+Include-Blocks jeder Kernquelle und steht in **keiner** `.hpp`. Die Vergiftung gilt ab der
+Stelle, an der sie steht, bis zum Ende der Übersetzungseinheit — ein Standardkopf, der
+danach eingebunden wird, zerbricht daran, weil etwa `<string>` ein `std::to_string` für
+`double` deklariert. Eine Sperre in einem Kopf würde also nicht den Kern schützen, sondern
+den Bau anhalten.
+
+Nachweis, zwei Zeilen: `grep -c 'include "kern/sperre.hpp"' kern/src/*.cpp` gibt für jede
+Quelle genau `1`, und `grep -rnE 'f32|f64|float|double' kern/` trifft nur `sperre.hpp`
+selbst. Auch die Parameterdatei wird ohne Gleitkomma gelesen — Dezimalzeichenketten werden
+direkt in skalierte Ganzzahlen zerlegt, nie über einen Gleitkommaumweg; in `daten` gilt
+dieselbe Sperre.
+
+**T5 — Jede Größenklasse hat eine deklarierte Skala.** Der Typ ist überall `i64` — im Kern
+ein Aliasname für `std::int64_t`, damit die Breite an keiner Stelle vom Zielsystem abhängt —,
+die Bedeutung steht in dieser Tabelle und nirgends sonst:
 
 | # | Klasse | Einheit | Beispiel | Bereich |
 |---:|---|---|---|---|
