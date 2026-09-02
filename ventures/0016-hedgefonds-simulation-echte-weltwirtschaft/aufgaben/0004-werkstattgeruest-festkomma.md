@@ -1,7 +1,7 @@
 ---
 id: 0004-werkstattgeruest-festkomma
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/kern.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Die sieben Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -171,8 +171,23 @@ der fünfzehn weiter; sie sind dort jetzt ausgeschrieben.
 
 ## Status
 
-**2026-09-02, Kernbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). Geändert wurden
-genau die zwei Dateien aus `dateien`, und nur Kommentartext:
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0004-werkstattgeruest-festkomma-runde2-2026-09-02.md`,
+`urteil: geprueft`, **null Befunde** — das erste Paket dieses Vorhabens, das ohne
+Nebenbefund durchgeht. Alle sieben Bedingungen einzeln: die drei Mustervergleiche aus
+Bedingung 3 und 4, an denen Rücklauf 1 hing, gehen jetzt leer aus (vom Prüfer nachgemessen,
+nicht übernommen), Bedingung 2 liefert dieselben acht gedeckten Zeilen wie in Runde 1, und
+Bedingung 5, 6 und 7 stützen sich auf `befunde/uebersetzung-2026-09-02.md`: `-Werror`-Bau
+grün, `ctest` 2/2 gegen `libkern_geprueft.a`.
+
+Damit steht das Gerüst, in das alle Kernpakete schreiben. **Das Feld `dateien` bleibt auf
+die zwei Dateien des Rücklaufs verengt** — es ist Kollisionsvermeidung und keine
+Baugeschichte, und ein Paket auf `fertig` blockiert ohnehin niemanden (`startbereit` zählt
+nur `offen`). Die Existenzprüfung über alle fünfzehn Dateien steht ausgeschrieben in
+Bedingung 1 und ist dort geprüft worden.
+
+*Vorgeschichte:* **2026-09-02, Kernbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet).
+Geändert wurden genau die zwei Dateien aus `dateien`, und nur Kommentartext:
 
 - `kern/include/kern/kern.hpp` — die Absätze zu T9 und T13 sagen dasselbe ohne die
   Klassen- und Kopfnamen. Ein Satz dahinter nennt den Grund, damit ein späteres Paket

@@ -1,7 +1,7 @@
 ---
 id: 0006-deckung-pruefjahrgang-1997
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/deckungsbefund-1997.md]
 abnahme: Für jede der 31 Sollreihen und für den Handelsblock steht im Befund, ob sie 1997 bis 2021 ohne Füllung 25 Stützstellen trägt, mit Abruf-URL und Abrufdatum; am Ende steht genau ein Wert für R und die Liste der Reihen, die ihn erzwungen haben.
@@ -120,8 +120,31 @@ Punkt 1) und der Haushaltssaldo `GGXCNL_NGDP`, der für die USA ebenfalls 2001 b
 
 ## Status
 
-**2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet). Vier Änderungen
-an `daten/deckungsbefund-1997.md`, sonst nichts angefasst:
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0006-deckung-pruefjahrgang-1997-runde2-2026-09-02.md`,
+`urteil: geprueft`, ein Nebenbefund ausserhalb des Kriteriums.
+
+Der Prüfer hat den Rücklaufpunkt nicht nachgelesen, sondern nachgemessen: die
+Klassifikation `26 tragen / 3 verkürzt / 2 leer` Klasse für Klasse aus den
+Abschnittstabellen nachgezählt (nicht über die Summe — daran war Runde 1 gescheitert), die
+vier bisher **ungemessenen** Zeilen — Reihe 11 BRA/CHN/DEU und Reihe 9 BRA — am 2026-09-02
+selbst an `api.imf.org` abgerufen und ziffernweise verglichen (vier von vier gleich, alle
+lückenlos, also auch keine Innenlücke), beide Richtungen der Klassifikation geprüft und per
+`grep` nach stehengebliebenen Altwerten gesucht (keiner). **R bleibt 19**, Fenster
+2001–2020, erzwungen von Reihe 11 USA und Reihe 9 USA. Die beiden neuen Einheitenabsätze zu
+Reihe 9 und 11 (Faktor 100) sind gegen die Reihenliste und gegen `technik.md` Z. 1306
+gegengeprüft und richtig.
+
+**Der Nebenbefund geht nicht an dich zurück, sondern in 0017.** Er ist ausdrücklich „an den
+Projektmanager" adressiert und sagt selbst: „Ein Rücklauf zu 0006 wäre eine
+Kriterienerhöhung und steht mir nicht zu." Inhalt: Reihe 2 (12 der 31 Sollreihen) und
+Reihe 10 haben **keinen** Umrechnungsfaktor — Reihe 2 braucht Faktor 100 *und* die
+Normierung auf 10.000, Reihe 10 einen Faktor 10.000 auf den Numéraire-Index. Beides steht
+jetzt in Paket 0017 Abnahme 3, wo die Umrechnungsspalte ohnehin entsteht. Die
+Rundungsfrage der Normierung ist eine Entwurfsfrage und steht in `rueckstand.md`.
+
+*Vorgeschichte:* **2026-09-02, Datenbauer: `offen` → `gebaut`** (Rücklauf 1 abgearbeitet).
+Vier Änderungen an `daten/deckungsbefund-1997.md`, sonst nichts angefasst:
 
 1. Zeile 15: „tragen **27** … **zwei** verkürzt" → „tragen **26** … **drei** verkürzt", dazu
    drei Sätze, die die drei verkürzten benennen und sagen, warum Reihe 11 BRA R nicht

@@ -1,7 +1,7 @@
 ---
 id: 0009-parameterdatei-schluessel
 rolle: datenbauer
-status: gebaut
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Jeder in T27 und T51 genannte Schlüssel steht in der Datei, mit Skalenklasse nach T5, Wertebereich, Herkunft der Schranke und einem Startwert innerhalb der Schranken; kein Schlüssel ohne Klasse, keine Klasse ohne Schlüssel im Text.
@@ -70,6 +70,93 @@ Vorher lesen: `technik.md` T5, T27, T50, T51, T47.
 ## Rückläufe
 
 1. — 2026-09-02, Daten-Prüfer, Abnahme 3 (Startwert innerhalb der eigenen Schranke).
+2. — 2026-09-02, Daten-Prüfer, Abnahme 3 (Herkunft der Schranke). **Der nächste Rücklauf
+   ist der letzte:** `baulauf.py:RUECKLAUF_MAX = 3`. Kommt dieses Paket ein drittes Mal
+   zurück, plant der Runner es nicht mehr ein und meldet `FESTGEFAHREN` — dann ist nicht
+   der Datenbauer das Problem, sondern das Abnahmekriterium.
+
+## Rücklauf 2 — drei Stellen, alle in dieser Datei, zusammen fünf Zeilen
+
+**Befund:** `befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md`,
+`urteil: zurueck`, drei Befunde. **Alle drei sind dein Rücklauf**, und keiner berührt
+`specs/`.
+
+**Zuerst das Erfreuliche, weil es sagt, was du nicht noch einmal anfassen musst.** Alle
+drei Punkte aus Rücklauf 1 halten, vom Prüfer nachgerechnet und nicht nachgelesen: die
+strenge Ungleichung `1 > 0`, die acht Bedingungen der Gruppe (a) einzeln eingesetzt (15
+Einzelvergleiche, die Zahl stimmt), `schrittweite` mit Wertebereich und Herkunft in allen
+vier Tabellen, das T5-Zitat zeichengenau gegen `technik.md` Zeile 155–156. Auch Abnahme 1
+und 2 sind erneut voll geprüft: 50 Schlüssel, die Summe `10+12+4+12+12` je Summand, die
+Gegenrichtung, alle zehn Klassenzuweisungen der T27-Tabelle. Und `aufschlag = 51` hält
+gegen den Jahrgang — der Prüfer hat T23 Punkt 5 im Wortlaut geholt und gegengeprüft, dass
+unter den vier spielbaren Ländern kein tieferer Leitzins als der EZB-Einlagesatz vorkommt.
+
+**Was zu ändern ist:**
+
+1. **`hebelaufschlag` (Zeile 642): eine Schranke ohne Herkunft, und die Klasse trägt sie
+   nicht.** Dort steht `Schranke: >= 0.` ohne jeden Verweis. `hebelaufschlag` ist
+   **Klasse 3** (Raten), und T5 gibt Klasse 3 den Bereich `±2 Mio %` — symmetrisch um
+   null. Aus der Klasse folgt `>= 0` gerade **nicht**. Der Prüfer hat alle elf
+   `Schranke: >= 0` durchgegangen: sieben stehen blank, sechs davon sind über ihre Klasse
+   gedeckt (Klasse 11 und Klasse 4 beginnen bei 0), `hebelaufschlag` ist der einzige, bei
+   dem die Null nirgendwoher kommt. Die Gegenprobe an den beiden anderen
+   Klasse-3-Schlüsseln fällt gegen dich aus: `aufschlag` nennt T51 und T23 Punkt 5,
+   `abschreibungsrate` nennt die Schranke ausdrücklich als „Folgerung, keine Vorgabe aus
+   specs/".
+   **Die Herkunft steht zwei Zeilen darüber und wird nicht benutzt:** Deine eigene
+   Bedeutungszeile zitiert `spiel.md` Aktion 4 — „ein Aufschlag, der mit der Sichtbarkeit
+   des Fonds **steigt**". Das ist die Vorgabe. Schreib sie als Herkunft hin und kennzeichne
+   sie als Folgerung, so wie du es bei `abschreibungsrate`, `druck_max` und `stufen_max`
+   schon tust — oder schreib ausdrücklich hin, dass `specs/` keine nennt.
+   *Warum das kein Formfehler ist:* `hebelaufschlag` kommt in keiner Prüfung von T30 vor;
+   die sieben Wertebereichsschranken je Runde laufen ausschliesslich über
+   Zustandsadressen. Ein Bauagent, der `>= 0` für eine Klassenschranke hält und sie beim
+   Einlesen weglässt, lässt `hebelaufschlag < 0` zu — dann sinkt der Kreditzins mit
+   steigender Sichtbarkeit, Kanal 4 kehrt sich um, und **nichts bricht ab**. Derselbe
+   stille Ausfall wie bei `schrittweite = 0` in Rücklauf 1.
+   *Und wenn du „steigt" als Herkunft nimmst, denk die Schranke zu Ende:* Ein Faktor 0
+   lässt den Aufschlag gerade nicht steigen. Der Prüfer nennt `>= 1` als die Lesart, die
+   dann folgt. Entscheide es und schreib die Begründung dazu — beide Wege sind zulässig,
+   keiner darf unbegründet bleiben.
+2. **BEFUNDE Punkt 5 Gruppe (b) sagt „vollständig" zu und ist es nicht.** Es fehlt ein
+   vierter Fall derselben Bauart: `aufsicht_tempo` (Zeile 604) erhöht nach seinem eigenen
+   Kommentar den Aufsichtszähler je Runde, und der ist durch `aufsicht_max` (Zeile 356)
+   gekappt — das sagt deine Datei bei `aufsicht_max` selbst („Zu niedrig — der Zähler
+   sättigt"). Das ist Zeichen für Zeichen dasselbe Verhältnis wie
+   `nachahmer_tempo`/`nachahmer_max`, das in (b) steht: beide Klasse 11, beide erhöhen
+   einen Zähler je Runde, beide haben einen `_max`-Schlüssel in dieser Datei. Kein Wert ist
+   betroffen (`0 <= 3` hält); falsch ist die Vollständigkeitszusage. **Das ist derselbe
+   Fehlertyp wie die Einzigartigkeitsbehauptung aus Rücklauf 1** — ein Satz im Abschnitt
+   BEFUNDE wird von der nächsten Rolle als geprüfte Aussage gelesen. Trag den vierten Fall
+   nach.
+3. **Die Selbstprobe im Dateikopf (Zeile 116–117) liefert nicht die Zahlen, die sie belegen
+   soll.** `grep -c "# PLATZHALTER"` liefert **47** statt 46, `grep -c "# FEST (T51)"`
+   liefert **5** statt 4 — der überzählige Treffer ist jeweils Zeile 116 selbst, die beide
+   Zeichenketten führt. Ohne das `# ` davor, also genau so, wie der Text den Aufruf
+   vorschreibt, trifft zusätzlich Zeile 117: dann 48 und 6. **Die Zahlen 46 und 4 stimmen**
+   (der Prüfer hat sie über die Schlüsselzeilen nachgezählt); falsch ist nur der Prüfweg,
+   den deine Datei vorschreibt. Schreib die beiden Marken im Kopftext anders oder schränk
+   den Aufruf auf Schlüsselzeilen ein.
+
+**Was du weiterhin nicht anfasst.** Die fünf geparkten Klasse-4-Schlüssel (`preisstoss`,
+`zustimmung_elastizitaet`, `nachahmer_wirkung`, `hebel_max`,
+`innerjahresausschlag_faktor`). Der Prüfer bestätigt ausdrücklich, dass sie unangetastet
+sind, und sagt dazu, dass Befund 1 **einen anderen Schlüssel, eine andere Klasse und die
+andere Richtung** betrifft und der offenen Frage in `rueckstand.md` nicht vorgreift. Die
+Frage ist unverändert offen.
+
+**Ein Hinweis, der kein Befund ist** und den du nur mitnimmst, wenn du ohnehin an der
+Stelle bist: Zeile 51–52 sagt zur verschärften Regel A „Betroffen ist genau ein Paar". Der
+Satz hat zwei Lesarten; unter der einen ist er richtig, unter der anderen falsch (streng
+geordnet sind drei Paare). Es ist der zweite Satz dieser Art an derselben Stelle — eine
+eindeutige Formulierung erspart den dritten.
+
+**Was in zwei Runden nicht nachweisbar war und nicht dein Fehler ist:** Abnahme 4 (gültiges
+TOML) ist wieder nur strukturell belegt. `python3` mit `tomllib` wurde beide Male von der
+Umgebung abgewiesen — dem Datenbauer wie dem Prüfer. Das ist dieselbe Bauart wie der
+Compiler vor dem 2026-09-01 und gehört in den Runner, nicht in eine Rolle; steht in
+`rueckstand.md` als Punkt an den Geschäftsführer. **Belaste dich nicht damit**, und
+behaupte vor allem nicht, ein Parser sei gelaufen.
 
 ## Rücklauf 1 — drei Sachen in dieser Datei, eine ausserhalb
 

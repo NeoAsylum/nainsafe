@@ -3,7 +3,7 @@ id: 0003-einheit-beteiligung
 rolle: kernbauer
 status: blockiert
 haengt_an: []
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/einheiten.rs]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/einheiten.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/einheiten.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/einheiten_probe.cpp]
 abnahme: Jede Geldgröße trägt ihre Einheit im Typ, nicht im Kommentar. Ein Test, der zwei verschiedene Einheiten addiert, wird vom Compiler abgelehnt statt zur Laufzeit falsch zu rechnen.
 ---
 
@@ -15,8 +15,18 @@ Frage lautet weiter „Einheit im Typ oder Skala in einer Tabelle", und T5 beant
 mit der Tabelle. Der Weg über einen Wrappertyp ist in C++ so gangbar wie in Rust
 (`enum class`, ein Strukturtyp mit einem Feld) und in beiden Sprachen dieselbe Abweichung
 von T5. Das Paket bleibt `blockiert`; entschieden wird es vom Betreiber, per ADR gegen
-T5 oder gar nicht. Die Dateiendung ziehe ich bewusst **nicht** nach: Eine Datei, die es
-nicht geben soll, braucht keinen richtigen Namen.
+T5 oder gar nicht.
+
+**Korrektur am 2026-09-02, abends.** Ich hatte hier geschrieben, die Dateiendung ziehe ich
+bewusst nicht nach — „eine Datei, die es nicht geben soll, braucht keinen richtigen Namen".
+Das war falsch begründet. `dateien` ist kein Name, sondern die Kollisionsvermeidung: Solange
+dort `kern/src/einheiten.rs` steht, schützt das Feld eine Datei, die es nie geben kann, und
+schützt `kern/include/kern/einheiten.hpp` nicht — die Datei, die ein entblocktes 0003
+tatsächlich anfassen würde. Ein Feld, das nichts schützt, sieht wie Schutz aus und ist
+keiner; das ist derselbe Fehler, den `lauf.py` im Kommentar zu `Write()` schon einmal
+beschreibt. Das Feld nennt jetzt die drei C++-Dateien nach dem Kastenschnitt aus ADR 0011.
+**Am Widerspruch zu T5 ändert das nichts** — er ist der Grund für `blockiert`, und der
+steht unverändert.
 
 **Der Sachbefund, aus dem dieses Paket entstand, ist behoben** — nicht hier, sondern im
 Entwurf: `beteiligung_wert` lieferte Tausend USD und wurde als US-Cent verbucht;

@@ -1,7 +1,7 @@
 ---
 id: 0014-lizenzpruefung-restliche-reihen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0005-wdi-drittanbieter-ausnahme]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: Für jeden geprüften Indikatorcode steht im Befund das wörtliche Feld "Source", die Abruf-URL, das Abrufdatum und ein Urteil frei|gesperrt|unklar mit Begründung; bei jedem Urteil ausser "frei" steht die Folge nach T26 daneben und die Zahl der Sollreihen, die daran hängen. Für jede Reihe ohne WDI-Quelle steht, ob die Lizenz ihrer Quelle einen Drittanbietervorbehalt enthält, mit wörtlichem Satz und Fundstelle.
@@ -85,3 +85,36 @@ ob der Rückvergleich mit dem, was übrig bleibt, noch 16 Prüfgegenstände hat.
 ## Rückläufe
 
 0.
+
+## Status
+
+**2026-09-02, Projektmanager: `gebaut` → `fertig`.** Grundlage ist
+`befunde/pruefung-0014-lizenzpruefung-restliche-reihen-2026-09-02.md`, `urteil: geprueft`,
+vier Befunde — **keiner davon ein Rücklauf**: drei liegen ausserhalb des Kriteriums, der
+vierte ist eine Platzierung.
+
+Der Prüfer hat alle sechs Reihen-Codes am 2026-09-02 selbst nachgerufen, und zwar am
+*jeweils anderen* Endpunkt (`sourceOrganization` statt des im Befund zitierten) — sechsmal
+zeichengleich. Dazu Etalab, ILO und das Weltbank-Kontrollzitat im Volltext. Die Sollreihen-
+und Prüfgegenstandszahlen sind je Summand nachgerechnet, nicht über die Summe: `frei: 7`,
+`unklar: 24`, T37 `4+4+4+3+1 = 16`, die Verfallsrechnung `16 − 4 − 4 = 8` und
+`8 − 4 − 3 = 1`. Ausdrücklich hervorgehoben hat der Prüfer den IWF-Teil: Der Abruf
+scheiterte mehrfach mit 403, und statt den Suchauszug als Beleg zu verkaufen, schreibt der
+Befund hin, dass er nach den Regeln dieser Fabrik keiner ist, und liefert die Gegenrechnung
+ohne ihn (`frei: 0, unklar: 31`) daneben.
+
+**Wohin die vier Befunde gehen:**
+
+- **Befund 1** (Klärung 1 hebt Reihe 1 und 2a nicht, ihr Preis ist falsch), **Befund 3**
+  (das Frontmatter mischt Paket- und Gesamtzählung) und **Befund 4** (die T26-Folge zu
+  Reihe 2 steht nicht neben dem Urteil) sind an den Projektmanager adressiert und werden
+  **Paket 0018**. Sie sind echte Arbeit an derselben Datei, aber kein Rücklauf: Das
+  Abnahmekriterium dieses Pakets ist erfüllt, und ein Rücklauf darauf wäre eine
+  Kriterienerhöhung.
+- **Befund 2** (das `frei` in der Spalte „Rolle" ist die T37-Klasse und kein Lizenzurteil)
+  ist an den Architekten adressiert und berührt `technik.md`. Er steht in `rueckstand.md`
+  als Meldung an den Geschäftsführer, weil `architekt` weiter nicht in `BAUROLLEN` steht.
+
+*Vorgeschichte:* **2026-09-02, `offen` → `gebaut`.** `daten/lizenzbefund-reihen.md` liegt
+vor; der Status wurde vom Projektmanager nachgezogen, damit der Daten-Prüfer das Paket
+sieht.

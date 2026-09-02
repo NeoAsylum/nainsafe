@@ -47,11 +47,39 @@ Datenanker — ein Eintrag mit:
 3. **Dimension und Modelleinheit**, wörtlich aus der Tabelle. Die Spalte „Dimension" ist
    zu lesen, wie sie dasteht: Zeile 8 trägt **4**, nicht 4 + RW; die Zeilen 9, 11 und 12
    tragen 4, Zeile 10 trägt 3. An dieser Lesart hängt T46.
-4. **Der Umrechnungsfaktor in die Modelleinheit**, je Reihe ausgeschrieben. Der
-   Prüfbefund zu 0006 hat gezeigt, wo das fehlt: Reihe 9 und Reihe 11 verlangen `bp`, ihre
-   Quellen liefern Prozent — je ein Faktor 100, und er stand nirgends. Ein stiller Faktor
-   100 ist der Fehlertyp, der ein Modell plausibel aussehen lässt und trotzdem falsch
+4. **Der Umrechnungsfaktor in die Modelleinheit**, je Reihe ausgeschrieben. Ein stiller
+   Faktor ist der Fehlertyp, der ein Modell plausibel aussehen lässt und trotzdem falsch
    macht. Wo keine Umrechnung nötig ist, steht `1` und nicht nichts.
+
+   **Die zweite Runde des Prüfbefunds zu 0006 hat vier Reihen benannt, und zwei davon sind
+   die, die niemand mehr aufmacht.** Reihe 9 und Reihe 11 verlangen `bp`, ihre Quellen
+   liefern Prozent — je Faktor 100; die stehen inzwischen im Deckungsbefund. Reihe 2 und
+   Reihe 10 stehen dort **nicht**, und der Prüfer hat seine eigene Runde-1-Aussage dazu
+   ausdrücklich zurückgenommen:
+
+   - **Reihe 2** ist der grössere Posten, 12 der 31 Sollreihen. Quelleneinheit ist
+     „% of GDP" — am 2026-09-02 an
+     `api.worldbank.org/v2/indicator/NV.AGR.TOTL.ZS?format=json` nachgemessen, `sourceNote`
+     wörtlich: „This indicator is expressed as a percentage of Gross Domestic Product
+     (GDP)". Modelleinheit ist Zehntausendstel, also Faktor **100** — und dazu ein zweiter
+     Schritt, den kein Faktor abdeckt: **auf 10.000 normiert**. Die drei WDI-Anteile
+     summieren sich nicht auf 100 (der Rest sind Nettogütersteuern), die Normierung ist
+     also kein Rundungsdetail, sondern verschiebt jeden der zwölf Werte. `technik.md`
+     Z. 698 rechnet danach
+     `wertschoepfung[g][s] = mal_geteilt(bip_start[g], sektoranteil[g][s], 10.000)` und
+     setzt die Normierung voraus.
+   - **Reihe 10** stand nie da. Was der Deckungsbefund zu Reihe 10 schreibt, ist der
+     Einheiten*bruch* DEM→EUR 1999 und die Verkettung mit 1,95583 — eine andere Frage. Die
+     Modelleinheit ist ein Index mit Basis 10.000: `technik.md` Z. 884 setzt
+     `land.US.wechselkurs` fest auf **10.000** als Numéraire, Z. 886 dasselbe für
+     `restwelt.wechselkurs`, Z. 1377 macht `wechselkurs[g] ≥ 1` zur Invariante. Aus
+     1,73405583 DEM/USD wird also **17.341**, nicht 1,73 — ein Faktor 10.000.
+
+   **Die Reihenfolge von Rundung und Normierung entscheidest du nicht.** Ob bei Reihe 2 vor
+   oder nach der Normierung gerundet wird, ist eine Entwurfsfrage mit Folgen für den
+   Determinismus; sie steht in `rueckstand.md` als Punkt an den Geschäftsführer. Trag den
+   Faktor 100 und die Normierung als **zwei getrennte Schritte** ein und markier die
+   Rundungsstelle als offen — genau so, wie du es bei jeder anderen offenen Frage tust.
 5. **Die Rolle** — `start`, `soll`, `politikpfad`, `exogen`, `konstante`, `endogen` — und
    für die 31 Sollreihen die **Klassifikation nach T37**: `frei` (23, dazu der
    Handelsblock), `gesetzt` (Leitzins, 4), `abgeleitet` (Staatsschuldenquote, 4). T23
@@ -91,8 +119,18 @@ Datenanker — ein Eintrag mit:
    (Reihe 11), Summe 31; der Handelsblock steht als eigener Block mit 40 Strömen und der
    Klasse `frei`. Eine Sollreihe ohne Klasse und eine Nicht-Sollreihe mit Klasse sind
    beides Befunde.
-3. **Jede Reihe trägt einen Umrechnungsfaktor**, auch wenn er 1 ist, und für Reihe 9 und
-   Reihe 11 steht dort **100** mit der Begründung „Quelle in Prozent, Modelleinheit bp".
+3. **Jede Reihe trägt einen Umrechnungsfaktor**, auch wenn er 1 ist. Vier Reihen sind
+   namentlich zu prüfen, weil für sie gemessen ist, was dort stehen muss:
+   - **Reihe 9** und **Reihe 11**: `100`, Begründung „Quelle in Prozent, Modelleinheit bp".
+   - **Reihe 2**: `100` **und** ein zweiter, getrennt ausgewiesener Schritt „auf 10.000
+     normiert", mit der Angabe, dass die Rundungsstelle offen ist. Ein Eintrag, der nur
+     `100` führt, ist ein Befund — die drei Anteile summieren sich nicht auf 100, und die
+     Normierung verschiebt jeden der zwölf Werte.
+   - **Reihe 10**: `10.000`, Begründung „Numéraire-Index, `land.US.wechselkurs` fest auf
+     10.000" (`technik.md` Z. 884). Ein Eintrag mit `1` ist ein Befund.
+
+   Der Prüfer legt `technik.md` Abschnitt 7 Spalte „Modelleinheit" neben die Datei und
+   vergleicht je Reihe; für die vier genannten gegen die Zahlen oben.
 4. **`exogen_ab` und `verkettet_ab` stehen bei jeder Reihe als Feld**, leer oder mit
    Jahreszahl; der deutsche Leitzins trägt 1999, die Wechselkursreihe trägt 1999. Keine
    Rundenzahl in dieser Datei.
