@@ -1,7 +1,7 @@
 ---
 id: 0024-notenbanken-unter-reihe-2b
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0018-lizenzbefund-klaerungsliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

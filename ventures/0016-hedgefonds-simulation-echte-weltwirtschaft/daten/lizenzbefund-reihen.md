@@ -3,7 +3,7 @@ typ: lizenzbefund
 paket: 0014-lizenzpruefung-restliche-reihen
 rolle: datenbauer
 datum: 2026-09-02
-ueberarbeitet: 2026-09-02 (Paket 0018-lizenzbefund-klaerungsliste)
+ueberarbeitet: 2026-09-02 (Pakete 0018-lizenzbefund-klaerungsliste und 0024-notenbanken-unter-reihe-2b)
 gegenstand: Die restlichen Reihen der Reihenliste — WDI-Reihen 1, 2, 5, 6 gegen die Drittanbieter-Ausnahme, und die Lizenzen der vier Nicht-WDI-Quellen gegen einen gleichartigen Vorbehalt
 zaehlbereiche: "_paket zaehlt die 11 Reihen dieses Pakets, _gesamt alle 15 Reihen mit Datenanker unter Fortschreibung der Urteile aus Paket 0005 (Reihen 7, 8, 10, 13)"
 codes_abgerufen_reihen: 6 (NY.GDP.MKTP.KD, NV.AGR.TOTL.ZS, NV.IND.TOTL.ZS, NV.SRV.TOTL.ZS, SP.POP.TOTL, SL.TLF.TOTL.IN)
@@ -188,8 +188,13 @@ Organisationen mit eigenen veröffentlichten Bedingungen, sondern die amtliche S
 Meldeländer. Ob ein Indikator damit im Sinne der Weltbank-Ausnahme „provided by third
 parties" ist, sagt das Feld nicht, und `daten.md` hat von den vier Modellländern genau ein
 statistisches Amt geprüft: **Destatis, Nr. 5, positiv** („Data licence Germany – attribution –
-version 2.0", erlaubt ausdrücklich die Aufnahme in „products and applications"). Für die
-Ämter der drei übrigen Länder liegt nichts vor. Ich löse das nicht auf — die Frage, ob eine
+version 2.0", erlaubt ausdrücklich die Aufnahme in „products and applications") — und **keine
+einzige Notenbank**. Die Notenbanken sind hier der zweite Lieferant, im Feld `Source` als
+eigene, zweite Angabe ausgewiesen („National Accounts data files, Central Banks"), und
+Destatis deckt sie nicht mit ab: Für die Ämter der drei übrigen Länder **und für alle vier
+Notenbanken** liegt nichts vor — offen sind damit **sieben der acht Stellen** aus der Tabelle
+unter Klärung 4, nicht drei.
+Ich löse das nicht auf — die Frage, ob eine
 nationale Statistikbehörde hier Drittanbieter ist, ist eine Rechtsfrage und gehört dem
 Betreiber.
 
