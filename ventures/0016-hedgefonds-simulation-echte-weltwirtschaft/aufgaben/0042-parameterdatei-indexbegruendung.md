@@ -1,7 +1,7 @@
 ---
 id: 0042-parameterdatei-indexbegruendung
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0028-parameterdatei-querverweis, 0035-parameterdatei-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

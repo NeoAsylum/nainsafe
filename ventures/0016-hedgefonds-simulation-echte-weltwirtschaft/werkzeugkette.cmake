@@ -111,3 +111,62 @@ set(FABRIK_STRENGE
     -Wdouble-promotion -Wfloat-equal
     -Wnon-virtual-dtor -Woverloaded-virtual
     -Wnull-dereference -Wformat=2)
+
+# ---------------------------------------------------------------------------
+# Der Riegel: wer den Warnsatz anhaengt, muss diese Datei haben
+# ---------------------------------------------------------------------------
+#
+# Seit der Satz nur noch hier steht, erreicht er ein Mitglied auf zwei Wegen: ueber
+# `add_subdirectory` beim Arbeitsbereichsbau, oder ueber den eigenen
+# `PROJECT_IS_TOP_LEVEL`-Block beim Alleinbau. Fehlt dieser Block, dann stuende in dem
+# Mitglied `target_compile_options(x PRIVATE )` mit null Schaltern -- eine undefinierte
+# Variable expandiert in CMake zu einer leeren Liste, nicht zu einem Fehler.
+#
+# Gemessen am 2026-09-03 an einem Mitglied ohne den Block: `cmake` Code 0,
+# `cmake --build` Code 0, `CXX_FLAGS = -std=gnu++20`. Verloren waren nicht nur die 15
+# Warnschalter und die zwei Ueberlaufschalter, sondern auch der Sprachmodus -- `gnu++20`
+# statt `c++20`, also genau die Compiler-Erweiterungen, die ADR 0011 ausschliesst. Eine
+# Uebersetzungseinheit mit ungenutzter Variable ging gruen durch.
+#
+# Der Umzug hat diese Luecke verschaerft, statt sie zu schaffen: Vorher kostete ein
+# vergessener Einbindungsblock auch `enable_testing()`, und dieser Verlust ist **laut**
+# ("No tests were found!!!"). Ein Mitglied ohne eigene Proben -- `konsole` und
+# `oberflaeche` aus T13 sind Binaerprogramme -- hat den lauten Teil gar nicht.
+#
+# Deshalb haengt kein Mitglied den Satz mehr selbst an, sondern ruft diese Funktion.
+# Warum eine Funktion und nicht ein `if(NOT DEFINED …)`-Riegel in jedem Mitglied: Einen
+# Riegel kann das siebte Mitglied genauso vergessen wie die Einbindung, das waere
+# derselbe Fehler eine Ebene hoeher. Ein Aufruf dagegen, den CMake nicht kennt, ist ein
+# harter Konfigurationsfehler -- `Unknown CMake command`, Code 1, die naechste Zeile
+# wird nicht mehr erreicht. Der Fehler faellt damit dorthin, wo er hingehoert: in den
+# Konfigurationslauf, statt in einen gruenen Bau, der weniger prueft.
+#
+# Die Sanitizer bleiben ausdruecklich draussen (ADR 0011, Massnahme 2): Sie haengen nur
+# an den `_geprueft`-Zielen und haben eine andere Sichtbarkeit (`PUBLIC` statt
+# `PRIVATE`), weil sie an die Proben durchreichen muessen.
+function(fabrik_warnsatz_anlegen ziel)
+  if(NOT TARGET ${ziel})
+    message(FATAL_ERROR
+      "fabrik_warnsatz_anlegen('${ziel}'): kein solches Ziel. Der Aufruf gehoert hinter "
+      "`add_library`/`add_executable`.")
+  endif()
+
+  # Der Aufruf allein reicht nicht: Wird diese Datei aus einem engeren Gueltigkeitsbereich
+  # eingebunden als dem, aus dem gerufen wird, ist die Funktion bekannt und der Satz
+  # trotzdem leer. Das waere genau die Signatur, gegen die dieses Paket geschrieben ist,
+  # nur eine Ebene weiter -- also wird sie hier zum Abbruch statt zum stillen Nichts.
+  if(NOT DEFINED FABRIK_STRENGE OR "${FABRIK_STRENGE}" STREQUAL "")
+    message(FATAL_ERROR
+      "fabrik_warnsatz_anlegen('${ziel}'): `FABRIK_STRENGE` ist hier leer. Ein leerer "
+      "Warnsatz uebersetzt gruen und prueft nichts -- das ist kein Bauzustand, sondern "
+      "ein Fehler.")
+  endif()
+  if(NOT DEFINED FABRIK_UEBERLAUF_SCHALTER OR "${FABRIK_UEBERLAUF_SCHALTER}" STREQUAL "")
+    message(FATAL_ERROR
+      "fabrik_warnsatz_anlegen('${ziel}'): `FABRIK_UEBERLAUF_SCHALTER` ist hier leer. "
+      "Ohne `-fwrapv` ist vorzeichenbehafteter Ganzzahlueberlauf undefiniert (ADR 0011, "
+      "Massnahme 1), und der Kern rechnet in Festkomma.")
+  endif()
+
+  target_compile_options(${ziel} PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+endfunction()

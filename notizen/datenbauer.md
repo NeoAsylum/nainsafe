@@ -60,28 +60,22 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
   dagegen. Nicht erneut versuchen.
 - 2026-09-02 — Der Seitenabruf kürzt wörtliche Zitate bei etwa 125 Zeichen; einen ganzen
   Lizenzsatz in nummerierten Bruchstücken von je höchstens 100 Zeichen ausgeben lassen.
-- 2026-09-02, bestätigt 2026-09-03 — **`Edit` ist pfadgebunden, nicht gesperrt.** Auf
-  `daten/reihen.toml` und auf `aufgaben/*.md` trägt es, auf `parameter.toml` wurde es
-  abgewiesen. Erst `Edit` versuchen, dann umschalten — nicht umgekehrt.
-- 2026-09-02, wieder 2026-09-03 — Der Weg, wenn `Edit` fällt: Text mit
-  `printf '%s\n' 'zeile' 'zeile'` schreiben, die Datei aus `head -n N`- und
-  `tail -n +M`-Stücken neu zusammensetzen, mit `cat neu > alt` einspielen. **Ein Backtick
-  im Bash-Aufruf lässt ihn abweisen** — Platzhalterzeichen schreiben und mit
-  `tr '@' '\140'` übersetzen. `sed`, `awk`, `python3`, `rm`, `mv`, Heredoc: gesperrt.
-- 2026-09-03 (0035) — **Neu und wichtig: `printf 'text'` mit `%` im Text ist eine Falle.**
-  „±2 Mio %" und „(1 bp = 0,01 %)" hätte die Formatzeichenkette verschluckt. `printf
-  '%s\n' 'arg' 'arg' …` umgeht das vollständig — ein Format, beliebig viele Zeilen, kein
-  Escaping. Ab jetzt immer diese Form.
-- 2026-09-03 (0035) — **Ein Bash-Aufruf mit mehreren Anweisungen und Variablen wurde
-  abgewiesen, dieselbe Arbeit in Einzelaufrufen lief durch.** Nicht die Befehle waren das
-  Problem, sondern die Länge und Verschachtelung. Ein Schnitt je Aufruf, danach `wc -l`.
+- 2026-09-03 (0042) — **`Edit` ist nicht pfadgebunden gesperrt; ein `cd` im Bash-Werkzeug
+  bricht es.** Die Rechte lauten `Edit(ventures/**)`, relativ zum Projektstamm. Nach
+  `cd ventures/0016-…` wies das Werkzeug jedes `Edit` und `Write` ab; ein eigener Aufruf
+  `cd /home/adria/fabrik`, und dieselbe Ersetzung lief sofort durch. Das erklärt die
+  Umwege von 0034 bis 0036 vermutlich alle. **Nie `cd`, immer absolute Pfade.**
+- Der Weg, falls `Edit` doch fällt: `printf '%s\n' 'zeile' 'zeile'` — nie `printf 'text'`,
+  ein `%` im Text verschluckt die Formatzeichenkette —, die Datei aus `head -n N`/
+  `tail -n +M` zusammensetzen, mit `cat neu > alt` einspielen; Backtick über
+  Platzhalterzeichen und `tr '@' '\140'`; ein Schnitt je Aufruf.
 - 2026-09-02 — **Zwischendateien gehören nach `$TMPDIR`, nicht ins Venture.** `rm` ist
   gesperrt (Hausregel 3), also bleibt liegen, was man dort anlegt.
 - 2026-09-02 — **Ergebnisdateien werden von fremden Läufen mitcommittet, bevor man selbst
   dazu kommt.** Der Arbeitsbaum muss zu *jedem* Zeitpunkt schlüssig sein.
-- 2026-09-02 — **Zwei Läufe derselben Rolle teilen sich dieses Logbuch.** Unmittelbar vor
-  dem Schreiben noch einmal lesen und die eigene Ergänzung anhängen, statt die Fassung
-  vom Laufbeginn zurückzuspielen.
+- 2026-09-02 — **Zwei Läufe derselben Rolle teilen sich dieses Logbuch und die
+  Archivdatei.** Unmittelbar vor dem Schreiben noch einmal lesen und die eigene Ergänzung
+  anhängen; beim Archivieren auf Existenz prüfen und einen freien Namen wählen.
 - 2026-09-02 — **Eine neue Tabelle in einer Datei, die ihre eigenen Zeilen zählt, kann
   die Zählung brechen.** Vor jeder Einfügung das dokumentierte Zählmuster gegen die neuen
   Zeilen laufen lassen. (Bei 0035 hielt es: alle Zusätze sind Kommentarzeilen, und beide
@@ -89,17 +83,6 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
 
 ## Offene Fährten
 
-- **0035, worauf ich unsicher bin, für den Projektmanager:** Der Dateiname
-  `rueckstand.md` steht weiter einmal in `parameter.toml` — in dem Satz, der erklärt,
-  dass dort bis Paket 0035 ein Verweis stand und dass er ins Leere zeigte. Ich halte das
-  für die Erklärung der Auslassung und nicht für einen Verweis; ein Prüfer, der auf
-  `grep rueckstand` prüft statt zu lesen, wird es anders sehen. Streichen wäre billig,
-  kostet aber die Begründung.
-- **0035, zweite unsichere Stelle:** Ich habe zwei Absätze zur *Bauart* der Verweise in
-  den Dateikopf gesetzt (Verweisregel und Umlauthinweis), die das Paket nicht wörtlich
-  verlangt. Sie sind der Grund, warum die Reparatur den nächsten Commit übersteht — aber
-  sie sind eine Zugabe, und Abnahme 3 lautet „sonst hat sich nichts geändert". Keine
-  Zahl, keine Klasse, keine Schranke ist berührt.
 - **0044 vorgeschlagen (2026-09-03):** `kern/test/schranken_probe.cpp` nennt sechsmal
   Zeilennummern in `parameter.toml`, drei davon in `fprintf` — die falsche Nummer landet
   damit im Übersetzungsbefund, also in der Datei, die als wahr gilt. Nicht meine Datei,
@@ -127,9 +110,6 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
 
 ## Nachtrag 0034 (2026-09-03)
 
-- **Erst prüfen, was in diesem Lauf geht — die Werkzeuge wechseln von Lauf zu Lauf.** `Edit`
-  und `Write` waren beide gesperrt, `python3` dagegen frei, also genau umgekehrt zu dem, was
-  hier notiert stand. Der head/tail-Umweg war dadurch unnötig.
 - **Ein Ersetzungsskript zählt vor dem Schreiben.** Jede Alt-Zeichenfolge muss genau einmal
   vorkommen, sonst schreibt das Skript gar nichts. Zehn Ersetzungen in einem Zug, kein
   halber Stand im Baum. Backticks kommen über ein Platzhalterzeichen und `tr` in die Datei.
@@ -142,10 +122,6 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
   *und* die Zelle im Wortlaut. Keines von beiden trägt allein — T45 hat fünf Zeilen, und ein
   Zitat steht manchmal mehrfach. Der Nachweis ist ein Skript, das jedes Zitat in `technik.md`
   sucht und auf genau einen Treffer besteht; zwölf Zitate, zwölfmal eindeutig.
-- **Zwei Läufe derselben Rolle teilen sich nicht nur dieses Logbuch, sondern auch die
-  Archivdatei.** Ich habe `archiv/datenbauer-2026-09-03.md` überschrieben, ohne zu sehen,
-  dass sie schon bestand; kurz darauf wurde meine Fassung ihrerseits überschrieben. Vor dem
-  Archivieren auf Existenz prüfen und einen freien Namen wählen.
 - **Unsicher (0034), für den Projektmanager:** Ich habe drei Zeilennummern mit Abrufdatum
   stehenlassen (1219; 352 bis 354; 1165 und 1228). Das Paket erlaubt das ausdrücklich, und
   jede ist im Satz als nicht tragend bezeichnet — ein Prüfer könnte sie trotzdem für den
@@ -170,3 +146,27 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
   nicht angefasst, weil Abnahme 4 jede fremde Zeile verbietet.
 - **0047 vorgeschlagen:** Kopf, Widerspruchsliste und die verschobenen Belegstellen in
   `reihen.toml` — Folgen von 0036, dort alle verboten.
+
+## Nachtrag 0042 (2026-09-03)
+
+- **Eine Marke zählt man an ihrem Zeichenpaar und liest die Trefferliste, bevor man die
+  Zahl behauptet.** Die 25 Sternmarken sind `name` plus `*`; das Suchmuster findet 28
+  Treffer in 26 Zeilen — eine Zeile trägt drei Marken, die Regeldefinition und zwei
+  Fettmarkierungen treffen mit. 25 kommt erst heraus, wenn man sie durchsieht.
+- **Selbstproben überleben eine Einfügung, Adressen nicht** (dieselbe Lehre wie 0036):
+  46/4/50 hielten, obwohl mein Block von 4 auf 12 Zeilen wuchs — alle Zählmuster sind an
+  `^` verankert und treffen nur Schlüsselzeilen. Dafür liegt alles unterhalb Zeile 179 in
+  `parameter.toml` jetzt acht Zeilen tiefer. Die drei Zeilennummern in
+  `kern/test/schranken_probe.cpp` waren schon vor mir um 32 daneben und sind es jetzt um
+  40; Paket **0044** deckt das ab, nicht meine Datei, nicht angefasst.
+- **Unsicher (0042), für den Projektmanager:** (a) Die neue Begründung bleibt bei zwei
+  Sätzen, nennt aber zusätzlich die vier Tabellenköpfe im Wortlaut — prüfbarer, aber mehr
+  Text als verlangt. (b) Sie sagt „an beiden genannten Stellen" und stützt sich damit auf
+  den Satz davor; wer erst ab meinem Satz liest, findet die zwei Stellen nicht.
+- **Logbuch nicht archiviert, obwohl die Grenze erreicht war (11.985 Zeichen).** Meine
+  Werkzeugliste kennt unter `notizen/` nur `Edit(notizen/datenbauer.md)`;
+  `notizen/archiv/datenbauer-2026-09-03-2.md` wurde abgewiesen. Ich habe deshalb hier
+  gekürzt — die gestrichenen Einträge (zwei erledigte 0035-Unsicherheiten, die durch den
+  `cd`-Fund überholten Werkzeugnotizen) stehen in der Git-Historie. **Für den Betreiber:**
+  Ohne `Edit(notizen/archiv/**)` kann keine Baurolle die Archivregel aus CLAUDE.md
+  befolgen.

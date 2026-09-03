@@ -36,9 +36,13 @@ endif()
 # Pruefstand musste den Satz deshalb abschreiben, und ein abgeschriebener Warnsatz mit
 # einer verlorenen Zeile uebersetzt gruen und prueft weniger.
 #
-# Unten benutzbar ist er trotzdem: Beim Bau ueber den Arbeitsbereich hat
-# `../CMakeLists.txt` die Werkzeugkette schon eingebunden, beim Alleinbau tut es der
-# `PROJECT_IS_TOP_LEVEL`-Block oben -- in beiden Faellen vor dieser Zeile.
+# Angehaengt wird er seit Paket 0046 nicht mehr hier, sondern von
+# `fabrik_warnsatz_anlegen(<ziel>)` aus derselben Datei. Der Grund steht dort: Haengt ein
+# Mitglied den Satz selbst an und fehlt ihm der `PROJECT_IS_TOP_LEVEL`-Block, dann haengt
+# es eine leere Liste an -- eine undefinierte Variable ist in CMake kein Fehler, sondern
+# nichts. Der Kasten uebersetzt gruen und prueft weniger. Ein Aufruf, den CMake nicht
+# kennt, bricht dagegen ab. Die Funktion gibt es nur, wenn die Werkzeugkette eingebunden
+# ist; damit ist der Block oben nicht mehr vergessbar, sondern erzwungen.
 
 # Die Quellen werden eingesammelt statt aufgezaehlt, und der Grund ist derselbe wie
 # beim Arbeitsbereich: Jedes spaetere Kernpaket bringt genau seine eigene Datei mit
@@ -50,7 +54,7 @@ file(GLOB KERN_KOEPFE  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/ker
 add_library(kern STATIC ${KERN_QUELLEN} ${KERN_KOEPFE})
 target_include_directories(kern PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(kern PUBLIC cxx_std_20)
-target_compile_options(kern PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+fabrik_warnsatz_anlegen(kern)
 
 # ---------------------------------------------------------------------------
 # Das Testprofil (ADR 0011, Massnahme 2)
@@ -68,7 +72,7 @@ if(FABRIK_SANITIZER)
   add_library(kern_geprueft STATIC ${KERN_QUELLEN} ${KERN_KOEPFE})
   target_include_directories(kern_geprueft PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
   target_compile_features(kern_geprueft PUBLIC cxx_std_20)
-  target_compile_options(kern_geprueft PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+  fabrik_warnsatz_anlegen(kern_geprueft)
   target_compile_options(kern_geprueft PUBLIC  ${FABRIK_SANITIZER_SCHALTER})
   target_link_options(kern_geprueft    PUBLIC  ${FABRIK_SANITIZER_SCHALTER})
   set(FABRIK_PROBEN_BIBLIOTHEK kern_geprueft)
@@ -85,6 +89,6 @@ foreach(probe IN LISTS KERN_PROBEN)
   get_filename_component(name ${probe} NAME_WE)
   add_executable(${name} ${probe})
   target_link_libraries(${name} PRIVATE ${FABRIK_PROBEN_BIBLIOTHEK})
-  target_compile_options(${name} PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+  fabrik_warnsatz_anlegen(${name})
   add_test(NAME ${name} COMMAND ${name})
 endforeach()

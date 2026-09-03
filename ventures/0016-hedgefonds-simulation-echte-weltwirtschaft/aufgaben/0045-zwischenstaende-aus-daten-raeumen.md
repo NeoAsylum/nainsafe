@@ -1,7 +1,7 @@
 ---
 id: 0045-zwischenstaende-aus-daten-raeumen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0032-reihentoml-notenbanken-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu2.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu3.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f201.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f203.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f658.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1208.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1592.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1592b.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1595.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1599.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.schreibprobe.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/LIESMICH-zwischenstaende.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -150,3 +150,37 @@ dafür wäre teurer als der Schaden. Sie steht als Punkt im Rückstand.
 `daten/` ist kein Kasten mit `file(GLOB … CONFIGURE_DEPENDS)`, du kannst hier also nichts
 vergiften — aber ein Abbruch mitten im abschnittsweisen Aufbau ist genau die
 Nebenwirkung, die dieses Paket aufräumt. Wiederhol sie nicht beim Aufräumen.
+
+## Gebaut — 2026-09-03, Datenbauer
+
+**Weg 1 gewählt.** Die zwölf Dateien liegen jetzt in `daten/zwischenstaende/`, die
+LIESMICH dort daneben. `git mv` stand zur Verfügung und ist in einem einzigen Aufruf über
+alle zwölf gelaufen. Die `dateien`-Liste nennt `daten/LIESMICH-zwischenstaende.md`; für
+Weg 1 verlangt das Paket die LIESMICH im neuen Verzeichnis, dort liegt sie.
+
+**Zu Abnahme 1.** `ls -la daten/` führt noch `adressen.md`, `deckungsbefund-1997.md`,
+`einheitenbefund-pwt-baci.md`, `lizenzbefund-reihen.md`, `lizenzbefund-wdi.md`,
+`reihen.toml` und das Verzeichnis `zwischenstaende/` — keine `.tmp`-Datei mehr. Beide
+Zweige der Bedingung sind erfüllt, nicht nur einer: Die Kopien liegen nicht mehr neben
+`reihen.toml`, **und** `zwischenstaende/LIESMICH-zwischenstaende.md` nennt jede der
+zwölf beim Namen. Mechanisch nachgewiesen statt behauptet — die Namen aus dem
+Verzeichnislisting gegen die im LIESMICH gefundenen mit `comm -3` gelegt: zwölf gegen
+zwölf, kein Unterschied.
+
+**Zu Abnahme 2.** `git status --porcelain` führt zwölfmal `R` und keinmal `M`.
+`git diff --cached -M --numstat` gibt für jede der zwölf `0	0` aus. Zusätzlich
+`git hash-object` am neuen Ort gegen `git ls-tree 89a4d12`: zwölf Blobs, zeichengleich
+und in derselben Reihenfolge. Nichts gelöscht, nichts gekürzt.
+
+**Zu Abnahme 3.** `reihen.toml` kommt im Änderungsdiff des Pakets nicht vor — weder
+unter den zwölf Umbenennungen noch sonst. Die Datei ist in diesem Lauf nur gelesen
+worden, für die Volltextsuche nach den beiden Wortlauten aus 0032.
+
+**Was die LIESMICH über die Paketvorgabe hinaus enthält**, weil es sonst beim ersten
+Leser verloren geht: je Datei Größe, Zeitstempel und Git-Blob — der Byte-Nachweis ist
+damit ohne diese Paketdatei führbar —, eine Zeile dazu, was drinsteht, und die Warnung,
+dass die Zahl in `.fN.tmp` die Zeilennummer **zur Entstehungszeit** ist und sich seither
+verschoben hat. Dazu die beiden Suchmuster aus 0032 mit ihrem Ergebnis und der Hinweis,
+dass die Befunde zu 0032 und 0036 die alten Pfade nennen.
+
+**Nicht angefasst:** `aufgaben/.paket.tmp`, wie das Paket es vorgibt.

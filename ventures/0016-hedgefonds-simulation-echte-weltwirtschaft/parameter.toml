@@ -173,10 +173,18 @@
 # `Adresse` und *Befund 2* -- sitzt die Marke an den Bestandteilen und
 # heisst "ein Bestandteil ist neu erfunden", weshalb `handel.US.CN.1`
 # dort keine Marke traegt, obwohl diese Zeichenkette nirgends
-# woertlich steht; hier heisst sie "nicht woertlich belegt". Fuer
-# Schluesselnamen fallen die beiden Regeln zusammen, weil ein
-# Schluessel keine Gebiets- und Sektorindizes traegt: Er ist als
-# Ganzes belegt oder als Ganzes gebildet.
+# woertlich steht; hier heisst sie "nicht woertlich belegt". Von den
+# drei Indexarten, die `daten/adressen.md` an beiden genannten
+# Stellen aufzaehlt -- Gebiets-, Sektor- und Instrumentenindex --,
+# kommt in dieser Datei genau eine vor: der Instrumentenindex der
+# vier Tabellen `[instrument.leitzins]`, `[instrument.zoll]`,
+# `[instrument.haushalt]` und `[instrument.regulierung]`; einen
+# Gebiets- oder Sektorindex traegt kein Schluessel hier. Und weil die
+# zwoelf Schluessel unter diesem Index woertlich belegt sind (BEFUNDE
+# Punkt 1: "schrittweite / instrument_min / instrument_max in den
+# vier Instrumententabellen"), ergeben beide Regeln dort dasselbe --
+# keine Marke; die Abweichung hat in dieser Datei also keinen Fall,
+# und zwar nicht deshalb, weil es den Index nicht gaebe.
 # 25 der 50 Namen sind so gebildet; sie stehen einzeln
 # unter BEFUNDE am Dateiende.
 #

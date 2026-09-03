@@ -1,7 +1,7 @@
 ---
 id: 0046-warnsatzriegel-fuer-kuenftige-mitglieder
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0031-warnsatz-in-die-werkzeugkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

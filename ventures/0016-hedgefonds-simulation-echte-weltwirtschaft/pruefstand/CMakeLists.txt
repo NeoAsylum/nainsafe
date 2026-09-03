@@ -35,9 +35,19 @@ endif()
 # ist weg. Was sie gekostet haette, steht dort: Eine Zeile, die beim Abschreiben
 # verlorengeht, macht den Kasten nicht rot, sondern still nachlaessiger.
 #
-# Benutzbar ist der Satz auf beiden Wegen dieser Datei: ueber den Arbeitsbereich hat
-# `../CMakeLists.txt` die Werkzeugkette schon eingebunden, beim Alleinbau tut es der
-# `PROJECT_IS_TOP_LEVEL`-Block oben -- in beiden Faellen vor dieser Zeile.
+# Angehaengt wird er seit Paket 0046 nicht mehr hier, sondern von
+# `fabrik_warnsatz_anlegen(<ziel>)` aus derselben Datei. Der Grund steht dort: Haengt ein
+# Mitglied den Satz selbst an und fehlt ihm der `PROJECT_IS_TOP_LEVEL`-Block, dann haengt
+# es eine leere Liste an -- eine undefinierte Variable ist in CMake kein Fehler, sondern
+# nichts. Der Kasten uebersetzt gruen und prueft weniger. Ein Aufruf, den CMake nicht
+# kennt, bricht dagegen ab. Die Funktion gibt es nur, wenn die Werkzeugkette eingebunden
+# ist; damit ist der Block oben nicht mehr vergessbar, sondern erzwungen.
+#
+# Fuer diesen Kasten war der vergessene Block bisher wenigstens laut -- ohne ihn faellt
+# `enable_testing()` mit, und `ctest` meldet "No tests were found!!!". Fuer `konsole` und
+# `oberflaeche` aus T13, die keine eigenen Proben haben, gilt das nicht: Sie haetten den
+# Verlust lautlos. Der Riegel steht deshalb nicht wegen dieser Datei da, sondern wegen
+# der fuenf Mitglieder, die es noch nicht gibt.
 
 # Eingesammelt statt aufgezaehlt, und das ist hier eine **Zusage an Paket 0029**:
 # Es legt `src/vorrat_verfahren.cpp` und `test/vorrat_verfahren_probe.cpp` daneben und
@@ -49,7 +59,7 @@ file(GLOB PRUEFSTAND_KOEPFE  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/inclu
 add_library(pruefstand STATIC ${PRUEFSTAND_QUELLEN} ${PRUEFSTAND_KOEPFE})
 target_include_directories(pruefstand PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(pruefstand PUBLIC cxx_std_20)
-target_compile_options(pruefstand PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+fabrik_warnsatz_anlegen(pruefstand)
 
 # Das Testprofil (ADR 0011, Massnahme 2), wortgleich zum Kern und aus demselben
 # Grund: Ein Sanitizer findet nur, was er selbst uebersetzt hat. Linkten die Proben
@@ -59,7 +69,7 @@ if(FABRIK_SANITIZER)
   add_library(pruefstand_geprueft STATIC ${PRUEFSTAND_QUELLEN} ${PRUEFSTAND_KOEPFE})
   target_include_directories(pruefstand_geprueft PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
   target_compile_features(pruefstand_geprueft PUBLIC cxx_std_20)
-  target_compile_options(pruefstand_geprueft PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+  fabrik_warnsatz_anlegen(pruefstand_geprueft)
   target_compile_options(pruefstand_geprueft PUBLIC  ${FABRIK_SANITIZER_SCHALTER})
   target_link_options(pruefstand_geprueft    PUBLIC  ${FABRIK_SANITIZER_SCHALTER})
   set(FABRIK_PROBEN_BIBLIOTHEK pruefstand_geprueft)
@@ -76,6 +86,6 @@ foreach(probe IN LISTS PRUEFSTAND_PROBEN)
   get_filename_component(name ${probe} NAME_WE)
   add_executable(${name} ${probe})
   target_link_libraries(${name} PRIVATE ${FABRIK_PROBEN_BIBLIOTHEK})
-  target_compile_options(${name} PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+  fabrik_warnsatz_anlegen(${name})
   add_test(NAME ${name} COMMAND ${name})
 endforeach()
