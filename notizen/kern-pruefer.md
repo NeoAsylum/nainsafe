@@ -46,6 +46,25 @@ Lehre in einem Satz.
   dieselbe Frage fuer den Lesezugriff, die `true` ergeben muss. Sauber gebaut -- aber der
   Nachweis, der zaehlt, sind drei eigene Uebersetzungseinheiten, je eine Zeile, gegen den
   Kopfbaum. Der Uebersetzer sagt dann selbst "is private within this context".
+- 2026-09-03 -- **Ein gruener Bau ist nie der Nachweis, dass ein Uebersetzerschalter
+  ankommt -- die erzeugte `flags.make` ist es.** Bei 0031 kann der Warnsatz leer sein und
+  der Bau trotzdem gruen; die Zeile `CXX_FLAGS` zeigt dagegen, was am Ziel wirklich
+  landet. *Allgemein: Wo eine Bedingung still scheitern kann, such das Zwischenerzeugnis,
+  das den Zustand zeigt, statt das Ergebnis, das ihn verdeckt.*
+- 2026-09-03 -- **Ich kann ausserhalb des Repos bauen und damit pruefen, ohne den Baum
+  anzufassen.** `cmake -S <quelle im repo> -B $TMPDIR/…` gegen die Originalquellen, dazu
+  `-DCMAKE_BUILD_TYPE=Release` als zweites Profil. Kalt statt warm, und kein Artefakt
+  bleibt liegen. Ersetzte bei 0031 eine Bedingung, die das Anlegen einer Datei im Baum
+  verlangt haette -- verboten fuer mich und riskant fuer alle nachfolgenden Laeufe.
+- 2026-09-03 -- **Den Schalter, der rot macht, gegen seine eigene Abwesenheit halten.**
+  Erst mit dem Satz aus `flags.make` uebersetzen (Code 1, Schalter steht in eckigen
+  Klammern in der Meldung), dann ohne ihn (Code 0). Ohne die zweite Haelfte beweist die
+  erste nur, dass irgendetwas rot wurde.
+- 2026-09-03 -- **Eine Abnahmebedingung, deren Wortlaut ihr eigenes Suchmuster enthaelt,
+  ist woertlich unerfuellbar** -- sie ist in dem Moment verletzt, in dem sie geschrieben
+  wird. Nicht deswegen zurueckweisen: den Nebensatz lesen, der die gemeinte Menge nennt
+  (bei 0031 "und sie steht in `werkzeugkette.cmake`"), die Auslegung hinschreiben und die
+  **schaerfere** Frage beantworten, nicht die laxere.
 - 2026-09-02 -- **Der ausgefuehrte Gegenbeweis steckt oft schon in der Probe des Pakets.**
   Bei 0027 musste ich kein eigenes Programm starten: Die Belegungsschleife des Pakets
   laeuft selbst achtmal an ihrem eigenen Riegel vorbei, und die veroeffentlichte Pruefsumme
@@ -70,6 +89,15 @@ Lehre in einem Satz.
   Aufzaehlung ging durch. *Kuenftig: Datei anlegen, in Abschnitten von rund dreissig
   Zeilen anhaengen, Aufzaehlungen statt Rahmen und Tabellen, und keine
   Uebersetzeraufrufe im Wortlaut zitieren -- sie beschreiben statt sie hinzuschreiben.*
+
+- 2026-09-03 -- **Die Werkzeuglage war eine andere als am 2026-09-02, in beide
+  Richtungen.** Es ging: `cmake`, `ctest`, `g++`, `git`, `grep`, `wc`, `mkdir`, ein
+  Einzelbefehl mit Prozesssubstitution (`diff <(…) <(…)`), und ein Quelltext per
+  Heredoc in `g++ -x c++ -` beziehungsweise `cmake -P /dev/stdin`. Es ging **nicht**:
+  `Write` ausserhalb des Repos, `cp`, `rm -rf`, `tee`/`git archive` und ueberhaupt jeder
+  Befehl mit `;` oder einer Rohrleitung in eine Datei. *Kuenftig: einen Befehl je Aufruf,
+  Dateien nie kopieren, Testquelltext per Heredoc direkt in den Uebersetzer statt in eine
+  Datei.* Der Zahntest ist damit wieder offen -- ausserhalb des Baums.
 
 ## Offene Faehrten
 
