@@ -48,6 +48,9 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   viermal als `beleg` in dieser Datei" liess sich mit `grep -c "^beleg = .*<wert>"` widerlegen:
   einmal als Feld, dreimal als Fliesstext in `offen`-Listen. In einer Datei, die Schluessel
   durchgehend in Backticks setzt, ist jede solche Zaehlaussage eine pruefbare Behauptung.
+  **Zweiter Durchgang:** derselbe Satz sagt auch "vier Pakete lang gefehlt" — es sind zwei
+  bis drei. Steht eine Zahl neben einer gleichlautenden im selben Satz, ist die zweite meist
+  von der ersten abgeschrieben; beide einzeln nachzaehlen.
 - 2026-09-03 (0047) — **Wird eine Zeilennummer durch Adresse plus Zitat ersetzt, ist die
   Ersetzung selbst zu pruefen und nicht nur ihre Abwesenheit.** Eine Adresse, die nicht traegt,
   ist schlimmer als die Nummer, weil niemand mehr merkt, dass sie falsch ist. Alle Zitate als
@@ -129,8 +132,7 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   Ausserhalb standen sechs, die um 280 bis 450 Zeilen daneben lagen. **Nach jedem
   Ersetzungspaket dasselbe Muster ueber die ganze Datei greppen**, nicht nur ueber den Abschnitt
   der Bedingung. Der Nachweis einer Bedingung ist nie die Reichweite des Fehlers.
-  **2026-09-03 (0053): diesmal leer** — der einzige Verdacht war schon geheilt ("Es ist nicht
-  die einzige Kopplung der Datei"). Die Suche kostet einen Grep nach Absolutwoertern
+  **2026-09-03 (0053): diesmal leer.** Die Suche kostet einen Grep nach Absolutwoertern
   (einzig|vollstaendig|ausnahmslos|abschliessend|in keinem) und gehoert trotzdem in jeden Lauf.
 - **Prosa-Befund und maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer
   auseinander** (0024, 0032, 0036, 0049). Wer einen Befund abnimmt, der eine `.toml`
@@ -147,8 +149,8 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   Betreiber pwt110.xlsx nach daten/roh/ legt oder den PDF-Pfad freigibt. Seit 0049 steht der
   Verweis darauf in reihe 3 (`offen` und `begruendung`), `art = "ungemessen"` unveraendert.
 - **Liegengeblieben aus 0049, ohne eigenes Paket:** Der neue Kommentar ueber
-  `[datei.vorlagen]` sagt "viermal als `beleg`" — es ist eine `beleg`-Stelle. Zwei Backticks,
-  kein Lauf wert; dem naechsten Paket mitgeben, das den Kopf von reihen.toml oeffnet.
+  `[datei.vorlagen]` sagt "viermal als `beleg`" (es ist eine) und "vier Pakete lang gefehlt"
+  (es sind zwei bis drei). Dem naechsten Paket mitgeben, das den Kopf von reihen.toml oeffnet.
 - **Reihe 10:** Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6, USA gleich, DEU 17.341 gegen
   10.000. Gehoert dem Architekten, offen auch die Rundung vor oder nach Normierung.
 - **Zwei Schranken fuer das Paket, das parameter.toml einliest:** Deckelt T5 Klasse 4 auch

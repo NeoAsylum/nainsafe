@@ -4,17 +4,24 @@ rolle: kernbauer
 status: vorschlag
 haengt_an: [0058-warnsatz-schlussriegel-alle-ziele]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
-abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
-# Der Schlussriegel schweigt an zwei Stellen, an denen er reden muesste
+# Der Schlussriegel schweigt an drei Stellen, an denen er reden muesste
 
-Aus der Pruefung von Paket 0058 (2026-09-03, Rolle `kern-pruefer`). Messungen in
-`befunde/pruefung-0058-warnsatz-schlussriegel-alle-ziele-2026-09-03.md`.
+Aus den zwei Pruefungen von Paket 0058 (2026-09-03, Rolle `kern-pruefer`). Messungen in
+`befunde/pruefung-0058-warnsatz-schlussriegel-alle-ziele-2026-09-03.md` (Befund 1 und 2)
+und `…-runde2-2026-09-03.md` (Befund 3).
 
-Paket 0058 ist **erfuellt** — alle drei Abnahmebedingungen nachgefahren, nichts daran
-verletzt. Was hier steht, sind zwei Luecken **ausserhalb** seiner Abnahme, und die erste
-davon geht auf meinen eigenen Vorschlag zurueck, nicht auf den Bauagenten.
+Paket 0058 ist **erfuellt** — alle drei Abnahmebedingungen zweimal unabhaengig
+nachgefahren, nichts daran verletzt. Was hier steht, sind drei Luecken **ausserhalb**
+seiner Abnahme, und die erste davon geht auf meinen eigenen Vorschlag zurueck, nicht auf
+den Bauagenten.
+
+Alle drei sind dieselbe Frage in drei Gestalten: **Ist der Nein-Fall vom gueltigen
+unterscheidbar?** Befund 1 — ein uebersetzendes Ziel, das der Riegel nicht ansieht.
+Befund 2 — ein Riegel, der nichts gesehen hat, meldet Erfolg. Befund 3 — ein Ziel, das den
+Satz traegt und ihn zugleich abgeschaltet hat.
 
 ## Befund 1: `MODULE_LIBRARY` entkommt vollstaendig
 
@@ -48,24 +55,56 @@ ein verschobener `include` oder ein `DEFER`, das nicht mehr greift, den Riegel l
 laesst: Dann steht `0 … alle mit Warnsatz` im Bericht, `ergebnis: ok`, und niemand sieht
 es. Dieselbe Frage wie bei 0038: **Ist der Nein-Wert von einem gueltigen unterscheidbar?**
 
+## Befund 3: der Satz laesst sich anhaengen und im selben Atemzug abschalten
+
+*Nachgetragen am 2026-09-03 aus der zweiten Pruefrunde zu 0058
+(`befunde/pruefung-0058-warnsatz-schlussriegel-alle-ziele-runde2-2026-09-03.md`), solange
+dieses Paket noch auf `status: vorschlag` stand. Die Bedingungen 1 und 2 sind unveraendert;
+hinzugekommen ist Bedingung 3.*
+
+Der Riegel prueft, ob die Schalter **dastehen**, nicht ob sie **wirken**. Ein Ziel, das
+`fabrik_warnsatz_anlegen` ordentlich ruft und danach `-Wno-error` oder `-w` anhaengt, hat
+den vollen Satz in `COMPILE_OPTIONS` und uebersetzt trotzdem ohne jede Diagnose. Gemessen
+an zweimal derselben Quelle, `int f(double d){ int i = d; return i; }`:
+
+```
+nur fabrik_warnsatz_anlegen(z)   Riegel: 1 … alle mit Warnsatz   BAUCODE=2
+                                 error: conversion from 'double' to 'int' [-Werror=float-conversion]
+dasselbe + -Wno-error -w         Riegel: 1 … alle mit Warnsatz   BAUCODE=0, Diagnosen=keine
+```
+
+Der Riegel sagt in beiden Faellen wortgleich dasselbe. Der zweite Fall ist der
+wahrscheinliche: Ein Bauagent, der auf eine Warnung stoesst, die er nicht loesen kann,
+haengt `-Wno-error` an. Das ist der billigste Ausweg, und er sieht harmlos aus, **weil**
+der Riegel Vollzug meldet.
+
+Ein Weg, gemessen wie die beiden anderen: nach der Luecken-Schleife ein zweiter Durchgang
+ueber `COMPILE_OPTIONS`, der auf eine kleine Sperrliste trifft -- `-w`, `-Wno-error` und
+`-Wno-error=*`. Wer eine Warnung wirklich nicht loesen kann, unterdrueckt sie einzeln
+(`-Wno-conversion` an genau einem Ziel) und begruendet das; ein Pauschalabschalter ist
+etwas anderes. Die Sperrliste ist **keine** Ausnahmeliste im Sinne des Verbots oben: Sie
+erlaubt nichts, sie verbietet zusaetzlich.
+
 ## Warum das ein eigenes Paket ist
 
-Beide Luecken liegen in `fabrik_schlussriegel`, also in der Funktion, die 0058 gerade
-angelegt hat — aber keine von beiden ist eine seiner drei Abnahmebedingungen, und
-Bedingung 1 nennt die vier Arten abschliessend. Ein Bauagent, der sie nebenbei erweitert
-haette, waere aus seiner Abnahme herausgelaufen.
+Alle drei Luecken liegen in `fabrik_schlussriegel`, also in der Funktion, die 0058 gerade
+angelegt hat — aber keine von ihnen ist eine seiner drei Abnahmebedingungen. Bedingung 1
+nennt die vier Arten abschliessend und spricht woertlich von einem Ziel „ohne Warnsatz";
+ein Ziel mit `-Wno-error` hat ihn. Ein Bauagent, der das nebenbei erweitert haette, waere
+aus seiner Abnahme herausgelaufen.
 
-Beide zusammen in **einem** Paket, nicht in zweien: Sie aendern dieselbe Funktion in
+Alle drei zusammen in **einem** Paket, nicht in dreien: Sie aendern dieselbe Funktion in
 derselben Datei, ihre `dateien`-Listen waeren identisch, und der Baulauf muesste sie
-ohnehin serialisieren. Zwei Pakete kosten hier einen Lauf und bringen nichts.
+ohnehin serialisieren. Drei Pakete kosten hier zwei Laeufe und bringen nichts.
 
 ## Was zu tun ist
 
-Die Bauform steht frei. Ein Weg, den ich am 2026-09-03 gebaut und gemessen habe — zwei
-Aenderungen, zusammen sechs Zeilen:
+Die Bauform steht frei. Ein Weg, dessen erste zwei Schritte ich am 2026-09-03 gebaut und
+gemessen habe — drei Aenderungen, zusammen rund ein Dutzend Zeilen:
 
 1. `MODULE_LIBRARY` in die Artenliste (`set(arten …)`).
 2. Vor der Erfolgsmeldung ein `if(gezaehlt EQUAL 0)` mit `FATAL_ERROR`.
+3. Eine Sperrliste gegen Pauschalabschalter, gepruefte je Ziel (Befund 3).
 
 Gemessen mit dieser Fassung:
 
@@ -100,6 +139,15 @@ eigenes Paket), oder die Sanitizer aufnehmen.
    allein, `pruefstand` allein) konfigurieren weiter mit Code 0 und melden 15 / 10 / 5.
    Dazu der Bytevergleich aller erzeugten `CXX_FLAGS` vorher gegen nachher wie in 0058
    Bedingung 2 — 30 Ziele, bytegleich. Nicht „der Bau ist gruen".
+
+3. **Ein Ziel mit Warnsatz und Pauschalabschalter bricht die Konfiguration ab.** Nachweis:
+   ein Wegwerf-Baum mit `fabrik_warnsatz_anlegen(z)` und danach
+   `target_compile_options(z PRIVATE -Wno-error -w)` endet mit Code ungleich 0, und die
+   Meldung nennt den Schalter, an dem es liegt. Daneben, am Stand **vor** der Aenderung
+   gemessen, dieselbe Datei mit Code 0 und `1 … alle mit Warnsatz`. Und die Gegenrichtung,
+   weil sonst nur gemessen ist, dass irgendetwas rot wurde: dasselbe Ziel mit einer
+   **einzeln** unterdrueckten Warnung (`-Wno-conversion`) konfiguriert weiter mit Code 0.
+   Die drei heutigen Bauwege bleiben bei 15 / 10 / 5.
 
 **Nachweisort:** dieselbe Staffelung wie in 0046 und 0058 — zuerst `$TMPDIR` ausserhalb
 des Repos, sonst unterhalb von `befunde/` (`baulauf.py:116` sammelt dort keine Manifeste
