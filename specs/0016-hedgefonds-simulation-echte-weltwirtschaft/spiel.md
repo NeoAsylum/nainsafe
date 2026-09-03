@@ -51,6 +51,13 @@ Begründung steht vollständig im Abschnitt **Die Partielänge R**, die Liste de
 Stellen unter *Was der Architekt neu rechnen muss*. Dies ist der Fall, für den die
 Ersetzungsregel der fünften Fassung geschrieben war: R ist ersetzt und sonst nichts.*
 
+*Zweiter Lauf desselben Pakets, ebenfalls am **2026-09-03**. Die Entscheidung steht
+unverändert; nachgetragen ist allein der Block **Nachtrag desselben Tages** unter *Was der
+Architekt neu rechnen muss*, weil die Nachziehtabelle des ersten Laufs sieben Stellen in
+`technik.md` nicht genannt hatte — sechs davon außerhalb eines T-Blocks, darunter das
+vollständige Laufzeitbudget in dessen Abschnitt 10. Keine Zahl dieser Datei ändert sich
+dadurch, keine Zustandsadresse, und `technik.md` ist weiterhin nicht angefasst.*
+
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
 Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
@@ -1986,6 +1993,60 @@ Startjahr 1997 steht.
 | T23 Punkt 5: `leitzins_start[l]` = erste Stützstelle des Politikpfads | unverändert richtig, jetzt der Wert von **2001** | T23 Punkt 5 |
 | Größenordnung „5 Gebiete × **25** Jahre × rund 30 Reihen", Handel `40 × 25 × 8` | **21** Jahre; die Schätzung fällt entsprechend | T23, Schlusssatz |
 | T22/T23: Prüfjahrgang **1997**–2021 | **2001–2021** | überall, wo das Startjahr als Zahl steht |
+
+#### Nachtrag desselben Tages: die Tabelle oben war nicht vollständig
+
+Sie ist entstanden, indem ich die T-Nummern durchgegangen bin, die R oder das Startjahr
+**definieren**. Das findet jede Regel und keine Erwähnung. Ein zweiter Durchgang, diesmal
+über jede *Zahl* in `technik.md` statt über jede *Regel*, hat sieben weitere Stellen
+ergeben; sechs davon stehen außerhalb eines T-Blocks, und genau deshalb hat der erste
+Durchgang sie nicht gesehen. Keine ist eine Regel, alle sind ausgeschriebene Zahlen. Die
+beiden Tabellen zusammen sind die Liste — **die erste ist ergänzt, nicht ersetzt.**
+
+| war (`technik.md`) | ist | betrifft |
+|---|---|---|
+| **Frontmatter Z. 12**: „im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte" | „im Prüfjahrgang **2001–2021** ist **R = 20** … **20 × 61 = 1.220**" | Frontmatter, Schlüssel `partie` |
+| T23 Punkt 2: „**Sollreihen** für die **31** Reihen aus `spiel.md` plus den Handelsblock" | **27** Reihen | T23 Punkt 2 |
+| Abschnitt 7, Schlusssatz der Reihenliste: „Die **31** Sollreihen sind die Zeilen 1, 2, 8, **9**, 10 und 11 (4+12+4+**4**+3+4)" | „Die **27** Sollreihen sind die Zeilen 1, 2, 8, 10 und 11 (**4+12+4+3+4**)". Zeile 9 fällt aus dieser Aufzählung, **nicht** aus der Reihenliste — sie bleibt als Start und Politikpfad | Abschnitt 7 |
+| T30, Prüfungstabelle Nr. 8: „**31** Sollreihen plus Handelsblock" | **27** | T30 |
+| T43: „… fängt eine falsche Implementierung in fünf Runden statt in einer **24**-Runden-Partie" | **20**-Runden-Partie | T43 |
+| Abschnitt 10, Laufzeitbudget: die ganze Tabelle **und** ihre Nachzählzeile stehen auf `R = 24` | Zeile für Zeile in der Zahlentabelle darunter | Abschnitt 10 |
+| Abschnitt 13: „der Jahrgangsbau **1997** … **25** Stützstellen ohne Füllung für alle **31** Reihen … und der IFS-Leitzins ist nur durch ein Indiz gestützt" | Jahrgangsbau **2001**, **21** Stützstellen, **27** Reihen. Hier ändert sich mehr als drei Zahlen: Der Halbsatz zum IFS-Leitzins begründet, warum das Paket Entwurfsrisiko trägt — und der Leitzins ist seit heute keine Sollreihe mehr. **Das Paket trägt weniger Risiko, als dort steht** | Abschnitt 13 |
+
+**Abschnitt 10 im Einzelnen, damit es eine Substitution bleibt und keine Rechnung.** Jede
+Zeile ist aus R neu gerechnet und **nicht** aus der alten Tabelle skaliert:
+
+| Zeile | war (R = 24) | ist (R = 20) |
+|---|---:|---:|
+| eine Partie, Heuristikbot | 24 | **20** |
+| eine Partie, Suchbot | 1.464 | **1.220** |
+| 1.000 Partien, Heuristikbot | 24.000 | **20.000** |
+| 1.000 Partien, Suchbot | 1.464.000 | **1.220.000** |
+| Entscheidungsdichte, K=30, ein Startwert | 9.024 | **6.320** |
+| Entscheidungsdichte, 50 Startwerte | 451.200 | **316.000** |
+| Strategievielfalt, 126 × 20 | 3.689.280 | **3.074.400** |
+| Optimumsverschiebung, zwei Fenster | 7.378.560 | **6.148.800** |
+| Bruchlauf, 10.000 Zufallspartien | 240.000 | **200.000** |
+| Beschränktheit, 200 Runden | 200 | **200 — unverändert**, die Zeile prüft 200 gesetzte Runden und nicht R |
+| Rückvergleich, ein Weltlauf | 24 | **20** |
+| Regressionsbestand, 1.000 Partien | 24.000 | **20.000** |
+| **Nachtlauf gesamt** | 11.783.264 | **9.759.420** |
+
+Die Nachzählzeile darunter lautet damit: `Σ(R+1−t)` für `t = 1…20` ist `210`, also
+`30 × 210 = 6.300` je Startwert, zuzüglich 20 Weltschritte für die Trägerpartie ergibt
+**6.320**; mal 50 Startwerte **316.000**. `1.220 = 20 × 61`,
+`3.074.400 = 126 × 20 × 1.220`, `6.148.800` das Doppelte davon; die drei Maße zusammen
+**9.539.200**, so wie dieses Dokument es oben rechnet. Der Nachtlauf ist
+`9.539.200 + 200.000 + 200 + 20 + 20.000 = 9.759.420`. `126 = C(9,4)` bleibt stehen, es
+hängt nicht an R. Die beiden Zeitspalten gehören dem Architekten: Sie folgen aus der
+ersten Spalte und einem `ticks_je_sekunde`, den es weiterhin nicht gibt.
+
+**Auch die Kalibrierschleife am Ende von Abschnitt 10 steht auf der alten Zahl.** Tausend
+Parametersätze über den vollen Maßsatz kosten `1.000 × 9.539.200` = **9,54 Milliarden**
+Weltschritte statt 11,52, beim Planwert also rund **26,5 Stunden auf einem Kern und 3,3 auf
+acht**. Die verkürzte Nachtfassung wird `10 × 6.320` = **63.200** für Maß 1 und
+`126 × 5 × 1.220` = **768.600** für Maß 2. Der Schluss des Abschnitts — in voller Breite
+keine Nachtaufgabe, verkürzt nachtfähig — ändert sich dadurch nicht.
 
 **Zwei Dinge, die ich nachgerechnet habe, damit du es nicht musst.** Erstens hält die
 Schranke `R ≤ 26` aus T40 mit Abstand: Das Band „überlebt" endet bei 24.000, das Todesband
