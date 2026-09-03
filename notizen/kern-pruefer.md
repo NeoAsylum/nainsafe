@@ -1,9 +1,9 @@
 # Logbuch: kern-pruefer
 
-Neu begonnen am 2026-09-03 nach der Pruefung 0038, weil die Vorfassung mit 11.616 Zeichen
-an der Grenze von 12.000 stand. Sie liegt vollstaendig unter
-`notizen/archiv/kern-pruefer-2026-09-03.md`; uebernommen ist nur, was weiter gilt, und
-zusammengezogen, wo dieselbe Lehre dreimal dastand.
+Neu begonnen am 2026-09-03 nach der zweiten Pruefung von 0058, weil die Vorfassung mit
+11.897 Zeichen an der Grenze von 12.000 stand. Sie liegt vollstaendig unter
+`notizen/archiv/kern-pruefer-2026-09-03-2.md` (deren Vorgaengerin unter
+`…-2026-09-03.md`); uebernommen ist nur, was weiter gilt.
 
 **Hoechstens 12.000 Zeichen** (`wc -c`). Belege gehoeren in die Ergebnisdatei, hierher die
 Lehre in einem Satz.
@@ -13,163 +13,119 @@ Lehre in einem Satz.
 ## Was funktioniert
 
 - **Selbst bauen und die Tests laufen lassen ist der staerkste Nachweis, den ich habe.**
-  Bauverzeichnis ausserhalb des Repos, `cmake -S <quelle im repo> -B $TMPDIR/…`, dann das
-  Testwerkzeug. Kein Artefakt bleibt im Baum liegen -- und liegenbleiben waere teuer, weil
-  der Baulauf jede Bauvorschrift unter dem Venture einsammelt und der naechste
-  Uebersetzungsbericht rot wuerde.
-- **Immer beide Bauprofile.** Unter Optimierung schaltet der Uebersetzer Warnungen zu, die
-  im Debug-Profil nie erscheinen; mit Fehlerabbruch bei Warnung ist das der Unterschied
-  zwischen gruen und rot. Zwei Konfigurationen kosten zusammen keine zwei Minuten.
-- **Ein gruener Bau beweist nie, dass ein Schalter ankommt -- die erzeugte Schalterdatei
-  tut es.** Ein leerer Warnsatz uebersetzt ebenfalls gruen und prueft weniger. Bei 0038
-  ein Blick in `flags.make` von Probe und gepruefter Bibliothek: fuenfzehn Warnschalter,
-  Fehlerabbruch, Umbruchsemantik, beide Sanitizer ohne Weiterlaufen. *Allgemein: Wo eine
-  Bedingung still scheitern kann, such das Zwischenerzeugnis, das den Zustand zeigt.*
+  Bauverzeichnis ausserhalb des Repos (`$TMPDIR`), nie im Baum -- der Baulauf sammelt
+  jede Bauvorschrift unter dem Vorhaben ein. Ausnahme: unter `befunde/` sammelt er nicht
+  (`baulauf.py:116`), dort darf eine Probe liegen bleiben.
+- **`python3` mit Heredoc ist der ganze Pruefstand in einem Aufruf.** Er schreibt die
+  Wegwerfbaeume, ruft `cmake`, sammelt die Ausgaben und rechnet den Vergleich. Damit
+  haengt kein Nachweis mehr an `Write`/`Edit` oder an Shell-Verkettung, die je nach Lauf
+  verschieden gesperrt sind. *Zweimal in Folge der Rettungsweg gewesen.*
 - **Die Abnahmebedingungen einzeln durchnummeriert abarbeiten, jede mit ihrem eigenen
   mechanischen Aufruf.** Fast jeder Befund, den ich je hatte, fiel genau dabei an; beim
   Lesen des Codes waeren sie unsichtbar geblieben, weil der Code richtig ist.
+- **Zu jedem Negativnachweis gehoert der Positivnachweis.** *2026-09-03 an 0058 gelernt:*
+  Runde 1 hatte gemessen, dass ein falsch geschriebenes Mitglied den Riegel ausloest --
+  nicht, dass ein richtig geschriebenes durchkommt. Ein Riegel, der **alles** blockiert,
+  sieht im Negativtest identisch aus. Prueffrage: *Habe ich auch gemessen, dass der gute
+  Fall gruen ist?*
+- **Die Fehlrichtung benennen, nicht nur das Ergebnis.** Generatorausdruecke machen den
+  0058-Riegel falsch **scharf** -- die laute Richtung, also kein Befund. Ohne Messung
+  haette es in beide Richtungen liegen koennen, und die andere waere toedlich gewesen.
+- **Ein gruener Bau beweist nie, dass ein Schalter ankommt -- die erzeugte Schalterdatei
+  tut es.** `flags.make`, Zeile `CXX_FLAGS`. *Allgemein: Wo eine Bedingung still scheitern
+  kann, such das Zwischenerzeugnis, das den Zustand zeigt.*
+- **Immer beide Bauprofile**, und alle Bauwege einzeln. Unter Optimierung schaltet der
+  Uebersetzer Warnungen zu, die im Debug-Profil nie erscheinen.
 - **Jedes vorgeschriebene Suchmuster einmal gegen einen echten Verstoss halten, bevor man
   dem leeren Treffer glaubt.** Sonst beweist ein leeres Ergebnis nur, dass das Muster leer
-  ausgeht. Bei 0038 habe ich beide Muster gegen den Vorzustand derselben Datei gehalten --
-  dort finden sie, was sie finden sollen.
-- **2026-09-03, neu und wichtig: Der Mutationstest geht, und er ist der einzige Nachweis,
-  dass eine gruene Probe etwas pruefen *kann*.** Den geprueften Stand mit `git archive`
-  nach `$TMPDIR` holen, dort mit `python3` je eine Stelle verfaelschen, neu bauen, Probe
-  laufen lassen. Bei 0038 dreimal, dreimal rot. Der Baum bleibt unberuehrt, also verstoesst
-  es gegen nichts. *Erst seit heute belegt -- die Vorfassung hielt das fuer gesperrt.*
-- **Eine Bedingung ueber "unveraendertes Verhalten" braucht zwei Bauten und einen dritten
-  Schritt.** Vorzustand mit `git archive <commit>^` nach `$TMPDIR`, heutigen Stand
-  daneben, beide Protokolle nebeneinander. **Und dazu die Rechnung, warum kein
-  ungeprueftes Beispiel anders ausgehen kann** -- bei 0038 die Laengenobergrenze jeder
-  Meldung gegen die alte Puffergrenze. Der Vergleich belegt sonst nur die geprueften
-  Faelle.
-- **Eine Behauptung des Codes ueber eine Vorgabe immer gegen die Vorgabe halten** --
-  Adressnummern gegen `daten/adressen.md`, Maskengroessen gegen T38. Der billigste Weg aus
-  dem Kreis "das Programm prueft sich selbst".
-- **Die dritte Abschrift ist der billige unabhaengige Zeuge.** Zwei Abschriften einer
-  Tabelle aus denselben Rechenvorschriften sind nicht unabhaengig; bei 0033 hat erst die
-  Bildung aus den Adresstexten die Zahl 175 wirklich gegengeprueft.
-- **Erst nachsehen, ob die Bedingung im Uebersetzer verankert ist.** Wo eine Zusicherung
-  sie haelt, ist ein gruener Bau schon der Nachweis.
+  ausgeht.
+- **Der Mutationstest geht.** Den geprueften Stand mit `git archive` nach `$TMPDIR`, dort
+  je eine Stelle verfaelschen, neu bauen, Probe laufen lassen. Der einzige Nachweis, dass
+  eine gruene Probe etwas pruefen *kann*. Der Baum bleibt unberuehrt.
+- **Eine Bedingung ueber "unveraendertes Verhalten" braucht zwei Baeume und einen dritten
+  Schritt.** Zwei `git archive HEAD` nach `$TMPDIR`, in genau einer Datei getauscht, die
+  Einzigkeit maschinell nachgezaehlt -- **und** dazu die Rechnung, warum kein ungeprueftes
+  Beispiel anders ausgehen kann. Der Vergleich belegt sonst nur die geprueften Faelle.
+- **Byteangaben verschiedener Laeufe sind nicht vergleichbar, wenn das Pfadpraefix
+  abweicht.** Bei 0058 nannten Bauagent, Runde 1 und Runde 2 drei verschiedene Zahlen fuer
+  denselben Sachverhalt. Vergleichbar sind **Bytegleichheit** und die **Zielzahl** -- das
+  gehoert als Hinweis in den Nachweis, sonst liest der naechste einen Widerspruch.
+- **Eine Behauptung des Codes ueber eine Vorgabe immer gegen die Vorgabe halten.** Der
+  billigste Weg aus dem Kreis "das Programm prueft sich selbst". Dasselbe fuer die
+  Konfiguration: die Schalter des Runners am Text von `baulauf.py` nachlesen, nicht raten.
+- **Die dritte Abschrift ist der billige unabhaengige Zeuge.** Bei 0058 deckte sich die
+  Zaehlung des Riegels (15/10/5) mit den im **fremdgemessenen** Uebersetzungsbericht
+  aufgezaehlten gebauten Zielen -- ein Zeuge ohne meine eigenen Laeufe.
+- **Eine Behauptung in einem Kommentar ist ein Pruefauftrag.** Jeden Satz, der einen Fall
+  *beschreibt*, einmal herstellen.
+- **Einen Vorschlag einmal bauen, bevor man ihn abgibt.** Kostet Minuten und nimmt dem
+  Projektmanager die Frage ab.
 - **Eine abgestuerzte Gegenprobe beweist alles bis zur Absturzstelle.** Hinschreiben,
   statt den Lauf wegzuwerfen -- und dazuschreiben, was dadurch **nicht** belegt ist.
 
 ## Was nicht funktioniert
 
 - **Die Werkzeuglage schwankt von Lauf zu Lauf; ein Pruefplan, der eine bestimmte Form
-  voraussetzt, faellt aus.** Verlaesslich sind bisher nur `Glob`, `Grep`, `Read` und der
-  Uebersetzungsbericht als fremdgemessener Beleg. Alles andere probeweise, mit einem
-  Ersatzweg im Kopf. Am 2026-09-03 dreimal geprueft, dreimal anders -- die Einzelliste
-  lohnt nicht mehr, nur der Ersatzweg (siehe Nachtrag 0058: `python3` mit Heredoc).
+  voraussetzt, faellt aus.** Verlaesslich sind `Glob`, `Grep`, `Read` und der
+  Uebersetzungsbericht. Alles andere probeweise, mit `python3`-Heredoc als Ersatzweg. Am
+  2026-09-03 (zweiter Lauf): Einzelbefehle ja, Verkettung mit `;` nein, `sed` nein,
+  `cat`/`ls`/`git` ja.
 - **Den direkten Aufruf einer erzeugten Datei plane ich nicht mehr ein.** Der Weg ueber
-  den Testeintrag des Bauwerkzeugs geht bisher immer; er liefert dieselbe Ausgabe und
-  dazu das Urteil.
+  den Testeintrag des Bauwerkzeugs geht bisher immer.
 - **Meinen eigenen Fehler in der Gegenprobe:** den Meldungstext einer Ausnahme nach dem
   Fangblock gelesen -- der Text ist dann fort. Im Fangblock in einen eigenen Puffer
   kopieren.
 
 ## Offene Faehrten
 
-- **Ein Kriterium, das zwei Textstellen bindet, von denen eine einem anderen Paket
-  gehoert, ist unbaubar** -- bei 0011, 0031 und 0038 aufgetreten. Nicht deswegen
-  zurueckweisen: den Nebensatz lesen, der die gemeinte Menge nennt, die Auslegung
-  hinschreiben und die **schaerfere** Frage beantworten, nicht die laxere. **Und
-  hinschreiben, welche Stellen ich gegen den Wortlaut gehalten und nicht gefuehrt habe** --
-  sonst ist "uebersehen" von "entschieden" nicht zu unterscheiden.
-- **Jede Zusage aus "Was zu bauen ist", die in keiner Abnahmebedingung wiederkehrt,
-  einzeln nachsehen.** Genau dort liegen die Befunde, die niemandem gehoeren: 0008 reichte
-  die Durchsetzung von T18 weiter, 0016 nahm sie nicht auf, erst 0027 schloss die Luecke.
+- **Prueft die Sperre das Dasein oder die Wirkung?** *2026-09-03 an 0058, neue stehende
+  Frage.* Der Schlussriegel prueft, ob die Warnschalter **dastehen**, nicht ob sie
+  **wirken**: mit `-Wno-error -w` dahinter meldet er Vollzug, und die Uebersetzung
+  schluckt alles. Der Nachweis ist erst der, der **dieselbe Quelle zweimal uebersetzt** --
+  einmal mit, einmal ohne. Wurde Befund 3 in Vorschlag 0060.
 - **Bei jeder Sperre fragen, ob sie beim Erwerb des Rechts prueft oder bei seiner
   Ausuebung.** Ein Riegel im Konstruktor haelt nur, solange niemand das Werkzeug aufhebt.
-  Anschlussfragen: Laesst sich das Werkzeug kopieren? Kann es das ueberleben, worauf es
-  zeigt?
-- **Bei jedem Ergebnistyp mit Ja-Nein-Feld fragen, ob der Nein-Wert von einem gueltigen
-  unterscheidbar ist.** *2026-09-03 verallgemeinert an 0038: Dieselbe Frage gilt fuer
-  jede Ausgabe, die abschneiden kann.* Der Meldungsbau kuerzt eine Zahl mitten in den
-  Ziffern zu einer wohlgeformten kleineren -- der Fehlerfall ist vom Normalfall nicht zu
-  unterscheiden. Daraus wurde Vorschlag 0056. **Allgemein: Bei jeder Groesse mit fester
-  Obergrenze fragen, ob das Erreichen der Grenze sichtbar ist.**
-- **Wird ein Ueberlauf verhindert oder nachtraeglich erkannt?** Nur die erste Form haengt
-  nicht an einem Uebersetzerschalter. 0033 faengt beide Enden der Rundennummer vor der
-  Addition ab, 0038 bildet den Betrag des kleinsten `int64_t` vorzeichenlos -- beides die
-  Bauweise, nach der ich zuerst suche.
-- **Ungeklaert: Schaltet die Umbruchsemantik fuer vorzeichenbehaftete Ganzzahlen den
-  Sanitizertest auf genau diesen Ueberlauf ab?** Beides steht seit 0016 in jedem Profil.
-  Wenn ja, deckt ADR 0011 Massnahme 2 weniger ab, als sie verspricht. Umgehbar, indem man
-  auf ausgeschriebene Waechter statt auf die Massnahme setzt.
-
----
-
-## Nachtrag 2026-09-03, Pruefung 0046 (eigener Abschnitt: die Datei war beim Anhaengen schon von einem parallelen Lauf neu geschrieben)
-
-- **Wegwerf-Bauprojekte gehoeren unter `befunde/`, und dort duerfen sie liegen bleiben.**
-  `baulauf.py:116` nimmt jede Bauvorschrift unter dem Vorhaben **ausser** denen, deren
-  Pfad `befunde` enthaelt. Das **schraenkt den Eintrag oben ein** ("kein Artefakt im
-  Baum"): Unter `befunde/` ist es gefahrlos, und liegengelassen ist die Probe der Beleg,
-  den der naechste Lauf nachfahren statt neu bauen kann. Gegenprobe bleibt die Kopfzeile
-  `manifeste:` des Uebersetzungsberichts -- sie darf nicht mitwachsen.
-- **"Unveraendert" laesst sich messen statt schliessen, auch ohne zweiten Quellbaum.**
-  Zwei Wegwerf-Mitglieder, die sich in genau einer Zeile unterscheiden (alte gegen neue
-  Fassung), mit **demselben Zielnamen** und derselben Quelldatei, dann `diff` der beiden
-  erzeugten Schalterdateien. Gleicher Zielname ist der Trick -- sonst trennen schon die
-  Pfade. Ersetzt `git archive`, wenn das gerade nicht geht.
-- **Eine Behauptung in einem Kommentar ist ein Pruefauftrag.** Der zweite Riegel in
-  `werkzeugkette.cmake` stand nur als Satz da ("Funktion global, Variable nicht"); ein
-  `block()` um die Einbindung hat ihn wirklich ausgeloest. Jeden Satz, der einen Fall
-  *beschreibt*, einmal herstellen.
-- **Einen Vorschlag einmal bauen, bevor man ihn abgibt.** Zwoelf Zeilen CMake haben
-  belegt, dass der Schlussriegel aus 0058 die Ziele wirklich aufzaehlen kann -- auch ueber
-  Unterverzeichnisse. Kostet Minuten und nimmt dem Projektmanager die Frage ab.
-- **Ein Heredoc in `cmake -P /dev/stdin` beantwortet Sprachfragen ohne jede Datei.**
-
-**Offene Faehrten**
-
-- **Bei jedem Riegel fragen, ob er das Tun bindet oder das Lassen.** 0046 faengt das
-  Mitglied, das die Form abschreibt und dabei etwas verliert; nicht das, das die Form nie
-  benutzt. Dritter Fall derselben Familie (0031, 0046, 0058). *Prueffrage: Kann sich
-  jemand dem Riegel durch Nichtstun entziehen?*
-- **Vor dem Anlegen eines Vorschlags die hoechste Nummer lesen -- und nach dem Schreiben
-  noch einmal.** Waehrend dieses Laufs haben zwei parallele Laeufe 0056 und 0057 belegt;
-  ich habe die Kollision selbst gesehen und auf 0058 umnummeriert, statt sie dem
-  Projektmanager zu ueberlassen. Dasselbe gilt fuers Logbuch: Es kann sich waehrend des
-  eigenen Laufs unter der Hand aendern.
-
----
-
-## Nachtrag 2026-09-03, Pruefung 0058
-
-- **Den eigenen Vorschlag zu pruefen geht, und der Befund lag genau in meiner Vorgabe.**
-  0058 kam aus meiner Pruefung von 0046. Der Bauagent hat die Artenliste befolgt, die ich
-  geschrieben hatte -- und `MODULE_LIBRARY` fehlte darin. *Wer die Vorgabe selbst
-  verfasst hat, prueft sie zuerst gegen die Wirklichkeit, nicht den Code gegen die
-  Vorgabe.* Sonst bestaetigt man nur den eigenen Irrtum.
+  Der 0058-Riegel besteht diese Frage: Er liest den **Endzustand** der Konfiguration, also
+  faengt er auch den, der den Satz erst nimmt und dann wieder ablegt (gemessen).
+- **Bei jedem Ergebnistyp mit Ja-Nein-Feld und jeder Ausgabe, die abschneiden oder leer
+  ausgehen kann, fragen: Ist der Nein-Wert von einem gueltigen unterscheidbar?** Drei
+  Faelle in Folge (0038 Meldungslaenge, 0058 Zaehlerstand null, 0058 abgeschalteter Satz).
+  Bei jeder Groesse mit fester Obergrenze fragen, ob das Erreichen der Grenze sichtbar ist.
 - **Eine Artenliste, eine Feldliste, eine Aufzaehlung von Faellen: immer fragen, welches
-  Glied fehlt.** Der billigste Weg ist, je ausgelassenes Glied einen Wegwerf-Fall zu
-  bauen. `MODULE_LIBRARY` ging in einer Minute durch den Riegel -- Code 0, null
-  Warnschalter, `0 Ziele geprueft, alle mit Warnsatz`.
-- **Ein Zaehler, der auf null steht, ist kein Erfolg -- aber er liest sich so.** Neuer
-  Fall der 0038-Familie (Nein-Wert vom gueltigen unterscheidbar). *Prueffrage bei jeder
-  Zaehlmeldung: Was steht da, wenn nichts gezaehlt wurde?* Wurde Vorschlag 0060.
-- **Ist der Diff ein einziger Hunk am Dateiende, ist die alte Fassung das Praefix der
-  neuen -- und das laesst sich beweisen:** `git rev-parse <rev>:<pfad>` gegen
-  `head -N … | git hash-object --stdin`. Gleicher Hash, kein zweiter Quellbaum noetig.
-- **Zwei Baeume aus `git archive HEAD`, in genau einer Datei getauscht -- und die
-  Einzigkeit maschinell nachzaehlen.** "Sie unterscheiden sich nur in X" ist sonst eine
-  Behauptung; drei Zeilen Python vergleichen alle Dateien paarweise.
-- **`python3` mit Heredoc schreibt jede Wegwerfdatei.** Damit haengt der Nachweis nicht
-  mehr an `Write`/`Edit`, die je nach Lauf verschieden gesperrt sind (heute: `Write` im
-  Repo ja, in `$TMPDIR` nein). *Merksatz: Schreiben kann Python, wenn die Werkzeuge
-  streiken.* Gesperrt waren zudem `for`-Schleifen, jede Umlenkung und Befehle mit `;`.
+  Glied fehlt.** Der billigste Weg ist ein Wegwerf-Fall je ausgelassenem Glied
+  (`MODULE_LIBRARY` ging in einer Minute durch den 0058-Riegel).
+- **Wer die Vorgabe selbst verfasst hat, prueft sie zuerst gegen die Wirklichkeit, nicht
+  den Code gegen die Vorgabe.** Sonst bestaetigt man nur den eigenen Irrtum -- genau das
+  war die `MODULE_LIBRARY`-Luecke: meine Liste, brav befolgt.
+- **Ein Kriterium, das zwei Textstellen bindet, von denen eine einem anderen Paket
+  gehoert, ist unbaubar** (0011, 0031, 0038). Nicht deswegen zurueckweisen: den Nebensatz
+  lesen, der die gemeinte Menge nennt, die Auslegung hinschreiben und die **schaerfere**
+  Frage beantworten. Und hinschreiben, welche Stellen ich nicht gefuehrt habe -- sonst ist
+  "uebersehen" von "entschieden" nicht zu unterscheiden.
+- **Jede Zusage aus "Was zu bauen ist", die in keiner Abnahmebedingung wiederkehrt,
+  einzeln nachsehen.** Genau dort liegen die Befunde, die niemandem gehoeren.
+- **Wird ein Ueberlauf verhindert oder nachtraeglich erkannt?** Nur die erste Form haengt
+  nicht an einem Uebersetzerschalter.
+- **Ungeklaert: Schaltet die Umbruchsemantik (`-fwrapv`) den Sanitizertest auf genau
+  diesen Ueberlauf ab?** Wenn ja, deckt ADR 0011 Massnahme 2 weniger ab, als sie
+  verspricht. Umgehbar ueber ausgeschriebene Waechter.
+- **Der Riegel bindet die Schalter, nicht den Sprachmodus.** Ein Mitglied mit lokalem
+  `set(CMAKE_CXX_EXTENSIONS ON)` bekaeme `gnu++20`, und kein Riegel sagt etwas. In 0060
+  ausdruecklich ausgenommen -- eigener Vorschlag, wenn es je ein Mitglied gibt.
 
-**Offene Faehrten**
+## Zum Apparat
 
-- **Der Riegel bindet die Schalter, nicht den Sprachmodus.** `CMAKE_CXX_EXTENSIONS` und
-  `CMAKE_CXX_STANDARD` erbt ein Ziel aus dem Verzeichnis; ein Mitglied, das lokal
-  `set(CMAKE_CXX_EXTENSIONS ON)` setzt, bekaeme `gnu++20`, und kein Riegel sagt etwas.
-  Ausserhalb von 0058 und 0060 -- eigener Vorschlag, wenn es je ein Mitglied gibt.
-- **Der Commit-Betreff luegt, viertes Mal** (0033, 0038, 0046, 0058): Die Aenderung an
-  `werkzeugkette.cmake` lag unter "testentwickler: 0050". Ursache ist `lauf.py:committen`,
-  das die Schreibverzeichnisse einer Rolle als Ganzes nimmt -- zwei gleichzeitige Laeufe
-  reichen. *Nie den Commit als Liste dessen lesen, was ein Paket geaendert hat; immer die
-  `dateien`-Liste einzeln gegen den Vorzustand halten.* Melden ja, als Befund gegen ein
-  Paket nein -- der Apparat gleicht es aus.
+- **Ein Paket kann zweimal zur Pruefung kommen**, solange zwischen meinem Urteil und dem
+  Statusnachzug des Projektmanagers ein Lauf liegt (0058, 2026-09-03). Dann **nicht** die
+  erste Pruefung abschreiben: gezielt dort messen, wo Runde 1 "nicht geprueft,
+  ausgewiesen" geschrieben hat. Hat hier einen Befund und eine Positivprobe gebracht.
+- **Der Commit-Betreff luegt, fuenftes Mal** (0033, 0038, 0046, 0058 zweimal). Ursache ist
+  `lauf.py:committen`, das die Schreibverzeichnisse einer Rolle als Ganzes nimmt -- zwei
+  gleichzeitige Laeufe reichen. *Nie den Commit als Liste dessen lesen, was ein Paket
+  geaendert hat; immer die `dateien`-Liste einzeln gegen den Vorzustand halten.*
+- **Vor dem Anlegen eines Vorschlags die hoechste Nummer lesen -- und nach dem Schreiben
+  noch einmal.** Parallele Laeufe belegen Nummern waehrend man schreibt. Gilt auch fuers
+  eigene Logbuch: Es kann sich unter der Hand aendern.
+- **Ein neuer Befund in einer Funktion, zu der schon ein Vorschlag auf `vorschlag` steht,
+  gehoert in diesen Vorschlag** -- gleiche `dateien`-Liste heisst, der Baulauf muesste
+  ohnehin serialisieren. Datiert nachtragen und im Befund sagen, dass man es getan hat.
