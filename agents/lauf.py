@@ -21,7 +21,7 @@ import sqlite3
 import subprocess
 import time
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 WURZEL = Path(__file__).resolve().parent.parent
@@ -121,7 +121,7 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # Nachzueichen am 2026-09-13: Bis dahin ist das Wochenlimit um 50 Prozent erhoeht.
 # Danach sind dieselben 398,8 Dollar rund 31 statt 21 Prozent, und beide Zahlen hier
 # gehoeren auf zwei Drittel gesenkt -- 200 und 1.070.
-TAGESGRENZE_USD = 900.0
+TAGESGRENZE_USD = 400.0
 
 # Die eigentliche Bremse. Gerechnet ueber sieben rollende Tage statt ueber Anthropics
 # Wochenfenster (Montag 10:00): Der genaue Zuschnitt ist zweitrangig, die
@@ -137,11 +137,35 @@ def tagesverbrauch(verbindung) -> float:
     return float(zeile[0] or 0)
 
 
+def wochenfenster() -> str:
+    """Beginn des laufenden Abo-Wochenfensters, als UTC-Zeitstempel wie im Journal.
+
+    Bis zum 2026-09-03 rechnete die Bremse ueber sieben **rollende** Tage. Das ist die
+    falsche Woche: Anthropic setzt das Wochenkontingent montags um 10:00 Ortszeit
+    zurueck. Am 2026-09-03 kostete der Unterschied die halbe Fabrik -- die rollende
+    Rechnung sah 1.131 von 1.600 Dollar verbraucht und liess 469 uebrig, waehrend im
+    tatsaechlich laufenden Fenster erst rund 620 Dollar standen. Gedrosselt wurde also
+    gegen eine Woche, die es nicht mehr gab.
+
+    Faellt die Zeitzonendatenbank aus, bleibt es bei sieben rollenden Tagen: zu streng
+    ist hier die richtige Richtung zu irren.
+    """
+    try:
+        from zoneinfo import ZoneInfo
+        ortszeit = datetime.now(ZoneInfo("Europe/Berlin"))
+    except Exception:
+        return (datetime.now(timezone.utc) - timedelta(days=7)).strftime(ZEITFORMAT)
+    start = ortszeit.replace(hour=10, minute=0, second=0, microsecond=0) \
+        - timedelta(days=ortszeit.weekday())
+    if start > ortszeit:                       # montags vor 10:00 gilt noch die Vorwoche
+        start -= timedelta(days=7)
+    return start.astimezone(timezone.utc).strftime(ZEITFORMAT)
+
+
 def wochenverbrauch(verbindung) -> float:
-    """Gegenwert der letzten sieben Tage -- die Groesse, die wirklich bindet."""
+    """Gegenwert im laufenden Wochenfenster -- die Groesse, die wirklich bindet."""
     zeile = verbindung.execute(
-        "SELECT sum(kosten_eur) FROM lauf "
-        "WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')"
+        "SELECT sum(kosten_eur) FROM lauf WHERE gestartet > ?", (wochenfenster(),)
     ).fetchone()
     return float(zeile[0] or 0)
 

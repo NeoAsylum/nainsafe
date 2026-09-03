@@ -27,9 +27,10 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import nachtlauf  # noqa: E402
-from lauf import TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt  # noqa: E402
+from lauf import (TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt,  # noqa: E402
+                  wochenverbrauch as lauf_wochenverbrauch)
 
-GRENZE = 830.0
+GRENZE = 350.0
 DURCHGAENGE = 12
 
 # Nur ein Tageslauf zugleich. Am 2026-09-03 liefen vier gleichzeitig -- einer aus der
@@ -77,13 +78,12 @@ def sperre_geben() -> None:
 
 
 def wochenverbrauch() -> float:
+    """Dieselbe Rechnung wie in lauf.py -- eine zweite Fassung war eine zweite Wahrheit."""
     verbindung = db()
-    wert = verbindung.execute(
-        "SELECT coalesce(sum(kosten_eur), 0) FROM lauf "
-        "WHERE gestartet > strftime('%Y-%m-%dT%H:%M:%S', 'now', '-7 days')"
-    ).fetchone()[0]
-    verbindung.close()
-    return float(wert)
+    try:
+        return lauf_wochenverbrauch(verbindung)
+    finally:
+        verbindung.close()
 
 
 def verbrauch() -> float:
