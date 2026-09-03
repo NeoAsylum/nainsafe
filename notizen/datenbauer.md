@@ -123,3 +123,18 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03-2.md`.*
 - **Die LIESMICH führt mehr, als das Paket verlangt** (Größe, Zeitstempel, Git-Blob je
   Datei, eine Zeile zum Inhalt). Der Byte-Nachweis ist dadurch ohne das Arbeitspaket
   führbar — aber es ist eine Zugabe.
+
+## Lauf 0053 (2026-09-03)
+
+- **Eine eckige Klammer im Bash-Aufruf laesst ihn abweisen, genau wie ein Backtick.** Derselbe Aufruf lief mit Platzhalter sofort durch. `tr` nimmt drei Paare in einem Durchgang, also gehen Backtick und beide Klammern zusammen zurueck.
+- **Erst das Zeichen verdaechtigen, dann die Laenge.** Fuenf printf-Argumente in einem Aufruf fielen; ich hielt es fuer die Laengenregel aus 0045, es war die Klammer. Ein Aufruf je Zeile klaert das in einem Versuch.
+- **Faellt Bash an einer Klammer, misst das Grep-Werkzeug dieselbe Regex.** Die drei Selbstproben der Parameterdatei laufen darueber unveraendert; ein Werkzeugausfall ist kein Grund, die Probe zu aendern.
+- **Die Sternmarke zaehlt man am Backtick davor, nicht am Stern allein.** Die Datei benutzt den Stern auch fuer Fettschrift: das naive Muster findet 66 Zeilen, das richtige 26.
+- **Eine Einfuegung verschiebt die Marken, ohne sie zu aendern** — der Beleg dafuer ist die Zeilenliste vorher und nachher: dieselbe Zahl, unterhalb des Hunks jede um genau die Zeilenbilanz versetzt. Das ist staerker als ein blosser Zaehlervergleich.
+
+### Unsicher (0053), fuer den Projektmanager
+
+- **Die Zahl 25 habe ich nicht nachgezaehlt, nur ihre Unveraendertheit belegt.** Die 26 Fundzeilen sind nicht 25 Marken: eine ist der Regelsatz selbst, eine traegt drei Marken. Fuer Abnahme 3 reicht der Vorher-Nachher-Vergleich, weil mein Hunk keinen Stern enthaelt — wer die 25 selbst prueft, braucht die Aufzaehlung.
+- **Der Wortlaut ist meiner, und ich weiche an einer Stelle vom Vorschlagstext ab:** Das Paket sagt "die drei datenverankerten Instrumente", ich nenne sie beim Namen. Nachpruefbarer, aber wer den Vorschlag als Wortlaut liest, sieht eine Abweichung.
+- **Der Absatz ist um neun Zeilen laenger geworden.** Er hat jetzt fuenfzehn Kommentarzeilen fuer eine Randbemerkung ueber zwei Markierungsregime. Sachlich richtig, aber ein Pruefer darf ihn fuer zu lang halten; kuerzen wuerde die Fundstelle kosten, die Abnahme 1 verlangt.
+- **BEFUNDE Punkt 1 habe ich auftragsgemaess nicht angefasst und auch nicht nachgeprueft.** Ob dessen "woertlich in specs/" fuer die Zoll- und die Haushaltszeile so genau ist wie fuer den Leitzins, bleibt offen; mein neuer Satz stuetzt sich fuer alle zwoelf Schluessel auf genau diese Zusage.

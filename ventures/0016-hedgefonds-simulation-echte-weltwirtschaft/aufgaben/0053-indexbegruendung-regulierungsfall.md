@@ -1,7 +1,7 @@
 ---
 id: 0053-indexbegruendung-regulierungsfall
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0042-parameterdatei-indexbegruendung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

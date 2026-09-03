@@ -179,12 +179,21 @@
 # kommt in dieser Datei genau eine vor: der Instrumentenindex der
 # vier Tabellen `[instrument.leitzins]`, `[instrument.zoll]`,
 # `[instrument.haushalt]` und `[instrument.regulierung]`; einen
-# Gebiets- oder Sektorindex traegt kein Schluessel hier. Und weil die
-# zwoelf Schluessel unter diesem Index woertlich belegt sind (BEFUNDE
-# Punkt 1: "schrittweite / instrument_min / instrument_max in den
-# vier Instrumententabellen"), ergeben beide Regeln dort dasselbe --
-# keine Marke; die Abweichung hat in dieser Datei also keinen Fall,
-# und zwar nicht deshalb, weil es den Index nicht gaebe.
+# Gebiets- oder Sektorindex traegt kein Schluessel hier. An den neun
+# Schluesseln der Instrumente `leitzins`, `zoll` und `haushalt`
+# ergeben beide Regeln dasselbe -- keine Marke --, an den drei
+# Schluesseln unter `[instrument.regulierung]` dagegen nicht:
+# Woertlich belegt sind alle zwoelf (BEFUNDE Punkt 1: "schrittweite /
+# instrument_min / instrument_max in den vier Instrumententabellen"),
+# aber die Instrumentenkennung `regulierung` fuehrt
+# `daten/adressen.md` in seiner Bildungsregeltabelle als gebildet
+# (Zeile "Instrumentenkennung der Finanzmarktregulierung"), weshalb
+# dort `land.<L>.instrument.regulierung.stand` (Nr. 37, 81, 125, 169)
+# als einzige der vier Instrumentenadressen eine Marke traegt. Die
+# Abweichung hat in dieser Datei also genau einen Fall, und er kostet
+# keine Marke: Hier gilt die Regel dieser Datei, und nach ihr bleiben
+# `schrittweite`, `instrument_min` und `instrument_max` unter
+# `[instrument.regulierung]` unmarkiert.
 # 25 der 50 Namen sind so gebildet; sie stehen einzeln
 # unter BEFUNDE am Dateiende.
 #
