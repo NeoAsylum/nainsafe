@@ -28,21 +28,16 @@ if(PROJECT_IS_TOP_LEVEL)
   enable_testing()
 endif()
 
-# Derselbe Warnsatz wie im Kern, und er steht hier ein zweites Mal, weil `set()` in
-# CMake verzeichnisgebunden ist: Was `kern/CMakeLists.txt` setzt, sieht ein
-# Geschwisterverzeichnis nicht. Die Alternative waere, ihn in `werkzeugkette.cmake`
-# hochzuziehen -- das ist eine Aenderung an einer Datei, die keinem Paket gehoert,
-# und gehoert deshalb in einen Vorschlag statt in diesen Lauf.
+# Der Warnsatz `FABRIK_STRENGE` stand hier am 2026-09-02 einen Tag lang als Abschrift
+# des Satzes aus dem Kern -- `set()` ist in CMake verzeichnisgebunden, ein
+# Geschwisterverzeichnis sieht den Satz des anderen nicht. Seit Paket 0031 steht er
+# einmal in `werkzeugkette.cmake` und reicht von dort nach unten durch; die Abschrift
+# ist weg. Was sie gekostet haette, steht dort: Eine Zeile, die beim Abschreiben
+# verlorengeht, macht den Kasten nicht rot, sondern still nachlaessiger.
 #
-# `-Wpedantic` fehlt aus demselben Grund wie im Kern: Es warnt vor `__int128`, und
-# `__int128` ist nach ADR 0011 Massnahme 3 vorgeschrieben.
-set(FABRIK_STRENGE
-    -Wall -Wextra -Werror
-    -Wconversion -Wsign-conversion
-    -Wshadow -Wold-style-cast -Wcast-qual -Wuseless-cast
-    -Wdouble-promotion -Wfloat-equal
-    -Wnon-virtual-dtor -Woverloaded-virtual
-    -Wnull-dereference -Wformat=2)
+# Benutzbar ist der Satz auf beiden Wegen dieser Datei: ueber den Arbeitsbereich hat
+# `../CMakeLists.txt` die Werkzeugkette schon eingebunden, beim Alleinbau tut es der
+# `PROJECT_IS_TOP_LEVEL`-Block oben -- in beiden Faellen vor dieser Zeile.
 
 # Eingesammelt statt aufgezaehlt, und das ist hier eine **Zusage an Paket 0029**:
 # Es legt `src/vorrat_verfahren.cpp` und `test/vorrat_verfahren_probe.cpp` daneben und

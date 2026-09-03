@@ -28,32 +28,17 @@ if(PROJECT_IS_TOP_LEVEL)
   enable_testing()
 endif()
 
-# Was in Rust `#![forbid(unsafe_code)]` waere.
+# Der Warnsatz `FABRIK_STRENGE` -- das, was hier an die Stelle von Rusts
+# `#![forbid(unsafe_code)]` tritt -- stand bis zum 2026-09-02 an dieser Stelle und
+# steht seit Paket 0031 in `werkzeugkette.cmake`, samt seiner vollstaendigen
+# Begruendung und den beiden kernlokalen Massnahmen daneben (Gleitkommasperre,
+# Grep-Regel). Der Grund fuer den Umzug: `set()` ist verzeichnisgebunden, der
+# Pruefstand musste den Satz deshalb abschreiben, und ein abgeschriebener Warnsatz mit
+# einer verlorenen Zeile uebersetzt gruen und prueft weniger.
 #
-# C++ kennt kein solches Attribut, und das ist der Preis der Entscheidung aus
-# ADR 0011: Speichersicherheit ist hier eine Pruefregel statt einer Spracheigenschaft.
-# An ihre Stelle treten drei Dinge, alle mechanisch:
-#
-#   1. Dieser Warnsatz mit `-Werror`. Was der Uebersetzer als zweifelhaft erkennt,
-#      ist damit ein Bauabbruch und keine Zeile, die im Protokoll untergeht.
-#   2. `#pragma GCC poison` in `include/kern/sperre.hpp` -- die Gleitkommasperre aus
-#      T4 als Uebersetzungsfehler statt als Vorsatz.
-#   3. Die Grep-Regel des Pruefers:
-#      grep -rnE 'reinterpret_cast|const_cast|\bnew\b|\bdelete\b|\basm\b' kern/
-#      -> liefert nichts. Der Kern kommt ohne Zeiger und ohne eigene Speicher-
-#      verwaltung aus; feste Groessen und `std::array` statt roher Felder.
-#
-# `-Wpedantic` steht bewusst NICHT dabei: Es warnt vor `__int128`, und `__int128` ist
-# nach ADR 0011 Massnahme 3 verpflichtend fuer jeden Zwischenwert. Ein Warnschalter,
-# der eine Vorschrift anmeckert, wuerde entweder abgeschaltet oder ignoriert -- beides
-# schlechter, als ihn gar nicht zu setzen.
-set(FABRIK_STRENGE
-    -Wall -Wextra -Werror
-    -Wconversion -Wsign-conversion
-    -Wshadow -Wold-style-cast -Wcast-qual -Wuseless-cast
-    -Wdouble-promotion -Wfloat-equal
-    -Wnon-virtual-dtor -Woverloaded-virtual
-    -Wnull-dereference -Wformat=2)
+# Unten benutzbar ist er trotzdem: Beim Bau ueber den Arbeitsbereich hat
+# `../CMakeLists.txt` die Werkzeugkette schon eingebunden, beim Alleinbau tut es der
+# `PROJECT_IS_TOP_LEVEL`-Block oben -- in beiden Faellen vor dieser Zeile.
 
 # Die Quellen werden eingesammelt statt aufgezaehlt, und der Grund ist derselbe wie
 # beim Arbeitsbereich: Jedes spaetere Kernpaket bringt genau seine eigene Datei mit

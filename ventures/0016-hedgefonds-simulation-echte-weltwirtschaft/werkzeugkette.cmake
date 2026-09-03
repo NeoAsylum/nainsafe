@@ -17,8 +17,8 @@
 # ADR 0011: C++20, uebersetzt mit g++. Keine Compiler-Erweiterungen im Sprachmodus
 # (`-std=c++20`, nicht `gnu++20`) -- derselbe Schalter, den `baulauf.py` fuer blanke
 # Quelldateien setzt. `__int128` bleibt trotzdem verfuegbar; es ist eine Erweiterung
-# des Typsystems, nicht des Sprachmodus, und `-Wpedantic` ist deshalb aus (siehe
-# `kern/CMakeLists.txt`).
+# des Typsystems, nicht des Sprachmodus, und `-Wpedantic` ist deshalb aus (begruendet
+# beim Warnsatz am Ende dieser Datei).
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -61,3 +61,53 @@ set(FABRIK_UEBERLAUF_SCHALTER -fwrapv -fno-fast-math)
 # laeuft ein Test trotz gemeldeter UB gruen durch, und die Massnahme prueft nichts.
 option(FABRIK_SANITIZER "Sanitizer im Testprofil (ADR 0011, Massnahme 2)." ON)
 set(FABRIK_SANITIZER_SCHALTER -fsanitize=undefined,address -fno-sanitize-recover=all)
+
+# ---------------------------------------------------------------------------
+# Der Warnsatz -- fuer jeden Kasten derselbe
+# ---------------------------------------------------------------------------
+#
+# Er stand bis zum 2026-09-02 in `kern/CMakeLists.txt` und, wortgleich abgeschrieben,
+# ein zweites Mal im Pruefstand. `set()` ist in CMake verzeichnisgebunden: Was ein
+# Verzeichnis setzt, sieht ein Geschwisterverzeichnis nicht, also musste der Satz
+# abgeschrieben werden. Bei den sieben Mitgliedern aus T13 stuende er am Ende siebenmal
+# da, und die siebte Fassung ist die, die niemand nachfuehrt.
+#
+# Das ist keine Kosmetik, sondern eine Diagnoseluecke: Ein Kasten, dessen abgeschriebener
+# Warnsatz eine Zeile verloren hat, uebersetzt gruen und prueft weniger -- und der
+# Uebersetzungsbericht sagt in beiden Faellen `ergebnis: ok`. Genau die Fehlerklasse,
+# gegen die `-Werror` hier ueberhaupt gesetzt ist. Hier steht der Satz einmal und reicht
+# nach unten durch: beim Bau ueber den Arbeitsbereich ueber `add_subdirectory`, beim
+# Alleinbau eines Mitglieds ueber dessen `PROJECT_IS_TOP_LEVEL`-Block, der diese Datei
+# vor der ersten Benutzung einbindet.
+#
+# Die folgende Begruendung ist aus `kern/CMakeLists.txt` unveraendert uebernommen. Punkt 1
+# gilt seither fuer jeden Kasten. Punkt 2 und 3 nennen Pfade unter `kern/` und gelten
+# weiter nur dort; sie stehen mit hier, weil sie sagen, was der Warnsatz *ersetzt* -- und
+# der Ersatz ist nur zu dritt vollstaendig.
+
+# Was in Rust `#![forbid(unsafe_code)]` waere.
+#
+# C++ kennt kein solches Attribut, und das ist der Preis der Entscheidung aus
+# ADR 0011: Speichersicherheit ist hier eine Pruefregel statt einer Spracheigenschaft.
+# An ihre Stelle treten drei Dinge, alle mechanisch:
+#
+#   1. Dieser Warnsatz mit `-Werror`. Was der Uebersetzer als zweifelhaft erkennt,
+#      ist damit ein Bauabbruch und keine Zeile, die im Protokoll untergeht.
+#   2. `#pragma GCC poison` in `include/kern/sperre.hpp` -- die Gleitkommasperre aus
+#      T4 als Uebersetzungsfehler statt als Vorsatz.
+#   3. Die Grep-Regel des Pruefers:
+#      grep -rnE 'reinterpret_cast|const_cast|\bnew\b|\bdelete\b|\basm\b' kern/
+#      -> liefert nichts. Der Kern kommt ohne Zeiger und ohne eigene Speicher-
+#      verwaltung aus; feste Groessen und `std::array` statt roher Felder.
+#
+# `-Wpedantic` steht bewusst NICHT dabei: Es warnt vor `__int128`, und `__int128` ist
+# nach ADR 0011 Massnahme 3 verpflichtend fuer jeden Zwischenwert. Ein Warnschalter,
+# der eine Vorschrift anmeckert, wuerde entweder abgeschaltet oder ignoriert -- beides
+# schlechter, als ihn gar nicht zu setzen.
+set(FABRIK_STRENGE
+    -Wall -Wextra -Werror
+    -Wconversion -Wsign-conversion
+    -Wshadow -Wold-style-cast -Wcast-qual -Wuseless-cast
+    -Wdouble-promotion -Wfloat-equal
+    -Wnon-virtual-dtor -Woverloaded-virtual
+    -Wnull-dereference -Wformat=2)

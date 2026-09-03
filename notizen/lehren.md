@@ -483,3 +483,40 @@ was erlaubt ist.
   alle Rollen:* Wenn ein Aufruf scheitert, nenne den **einen** Aufruf im Wortlaut, nicht
   die Schlussfolgerung. Und fuer mich: Eine Fehlermeldung mit Zeilennummern ist kein
   Beleg -- ich habe sie eine Minute lang geglaubt, weil sie gruendlich aussah.
+
+- **2026-09-03** — **Die Fabrik haengt an einem Rechner, der schlafen darf.** Vom
+  2026-09-02 21:30 bis zum 2026-09-03 15:00 stand der 30-Minuten-Takt still: Der
+  Windows-Wirt schlief, die WSL-VM war eingefroren. `uptime` meldete trotzdem sechs Tage
+  Laufzeit, weil es die Wanduhr liest und nicht die Rechenzeit — die Maschine sah gesund
+  aus. Cron holt nichts nach, also fielen der 03:00-Tageslauf, der Push und das Bundle
+  dieses Tages ersatzlos aus, ohne eine einzige Fehlermeldung.
+
+  *Folgerung:* Eine feste Uhrzeit ist die falsche Bauform fuer eine Maschine, die
+  schlafen darf. Tageslauf und Sicherung laufen jetzt **stuendlich** und pruefen selbst,
+  ob heute schon gearbeitet wurde. Das ist billig: Ist das Tagesbudget erreicht, endet
+  der Versuch nach null Durchgaengen ohne einen einzigen Agentenaufruf, und das Bundle
+  entsteht nur, wenn die Datei des Tages fehlt. Erkennbar war der Ausfall nur an einer
+  **Luecke** im Protokoll, nicht an einem Eintrag darin — dieselbe Familie wie das still
+  scheiternde `dashboard.py` einen Tag zuvor.
+
+- **2026-09-03** — **Der Nachstart von Hand war schlimmer als der verpasste Lauf.** Als
+  ich den Ausfall bemerkte, startete ich nach, ohne zu pruefen, ob schon einer laeuft.
+  Am Ende liefen **vier** Tagesläufe gleichzeitig — einer aus der crontab, zwei von Hand,
+  einer aus einer Warteschleife. Das Ergebnis war nicht vierfache Arbeit, sondern fast
+  keine: sechs Laeufe an einem ganzen Tag, vier davon seit Stunden haengend. Sie
+  konkurrieren um dieselben Arbeitspakete, um den Git-Index und um das Kontingent.
+
+  *Folgerung:* `ops/tageslauf.sperre` haelt eine Prozessnummer; ein zweiter Lauf endet
+  sofort. Verwaist die Sperre — abgestuerzter Prozess, oder Nummer neu vergeben —, wird
+  sie nach sechs Stunden uebernommen, damit ein Absturz die Fabrik nicht dauerhaft
+  blockiert. Ohne diese Sperre macht die stuendliche Crontab-Zeile oben alles schlimmer
+  statt besser; die beiden Aenderungen gehoeren zusammen.
+
+- **2026-09-03** — **Logik in einer Cron-Zeile wird beim Schreiben eingebrannt.** Der
+  erste Versuch, das Bundle nachholend zu machen, schrieb `$(date +%Y-%m-%d)` in die
+  crontab. Durch die Schichten aus Shell, Heredoc und `wsl.exe` kam das Datum
+  **ausgewertet** an: Die Zeile suchte fortan ewig nach dem Bundle vom 2026-09-03, fand
+  es und legte nie wieder eines an. Aufgefallen ist es nur, weil `crontab -l` das Datum
+  ausgeschrieben zeigte. *Folgerung:* Die Cron-Zeile ruft ein Skript im Repo auf
+  (`einrichtung/sichern.sh`), sonst nichts. Dort ist die Logik versioniert, lesbar und
+  einmal pruefbar — `sh -n` haette den Fehler nie gefunden, ein Blick in die Datei schon.
