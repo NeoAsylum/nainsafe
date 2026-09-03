@@ -21,9 +21,17 @@
 # `nachahmer_wirkung`, `hebel_max`, `innerjahresausschlag_faktor` aus
 # Befund 3 des Pruefbefunds. Ob Klasse 4 ihren Deckel von 10.000 auch
 # fuer einen Regler traegt, entscheidet nicht diese Datei, sondern eine
-# Zeile in T5; die Frage steht in `rueckstand.md` als Vorlage an den
-# Geschaeftsfuehrer. Eine Antwort hier waere eine Abweichung von specs/
-# ohne ADR. Der Satz "specs/ nennt keine obere" bei `preisstoss` bleibt
+# Zeile in T5. **Die offene Frage im Wortlaut, weil sie der Grund fuer
+# die Auslassung ist und nicht anderswo nachzuschlagen sein soll:**
+# Traegt T5 Klasse 4 ("0 bis 10.000") ihren Deckel auch fuer einen
+# Regler, oder nur fuer die Groesse, die er stellt? Sie ist **offen**
+# und wird hier nicht beantwortet; bis sie beantwortet ist, bleiben die
+# fuenf Schluessel unveraendert. An dieser Stelle stand bis Paket 0035
+# statt der Frage ein Verweis auf `rueckstand.md`; er zeigte ins Leere.
+# Eine Punktnummer dort wird **nicht** erneuert -- die Datei wird je
+# Lauf neu geschrieben und traegt keine stabile Nummerierung. Eine
+# Antwort hier waere eine Abweichung von specs/ ohne ADR. Der Satz
+# "specs/ nennt keine obere" bei `preisstoss` bleibt
 # deshalb stehen und ist als bestrittene Aussage zu lesen -- der
 # Pruefbefund vom 2026-09-02 zeigt, dass T5 fuer die Klasse, die diese
 # Datei dem Schluessel zuweist, sehr wohl eine nennt.
@@ -31,6 +39,22 @@
 #          T23 Punkt 5, T15, T16, T6, T40; specs/0016-.../spiel.md
 #          (Aktionen, Gegenkraefte, "Jede Groesse ohne Datenanker",
 #          Kanaltabelle, "Der Fehlbetrag", "Offene Entwurfsfragen").
+#
+# **Wie diese Datei nach specs/ verweist** (Paket 0035): mit
+# Tabellennummer oder Abschnittsnamen **und** dem Zitat im Wortlaut,
+# nie tragend mit einer Zeilennummer. Sieben Verweise hingen an Zeilen,
+# die zwei Commits desselben Tages verschoben haben -- der Versatz je
+# Datei einheitlich (+6 in spiel.md, +117 in technik.md), zwischen den
+# Dateien verschieden, also nicht pauschal nachziehbar. Der Inhalt
+# aller vier Zitate war weiterhin richtig; falsch waren allein die
+# Nummern. Eine Zeilennummer darf zusaetzlich stehen, wenn sie ein
+# Abrufdatum traegt -- tragend ist sie dann nicht mehr.
+#
+# **Umlaute** sind dabei die eine Falle: Diese Datei schreibt
+# durchgaengig ohne sie, auch in Zitaten, specs/ nicht. Wer eine
+# Fundstelle woertlich sucht, nimmt deshalb einen umlautfreien Teil des
+# Zitats -- jede der vier hat einen, und jede Belegstelle unten nennt
+# ihn mit.
 #
 # ---------------------------------------------------------------------
 # WAS DIESE DATEI IST
@@ -678,9 +702,18 @@ hebel_max = 0  # PLATZHALTER
 #   Vorgabe aus specs/.** Dieselbe Bauart wie `druck_max >= 1`,
 #   `stufen_max >= 1` und `schrittweite >= 1`.
 #   Herkunft ist der oben zitierte Satz selbst: Der Aufschlag *steigt*
-#   mit der Sichtbarkeit (spiel.md Aktion 4, Zeile 177-178; Kanal 4,
-#   Zeile 524). Aus der Klasse folgt hier nichts -- T5 gibt Klasse 3
-#   (Raten) den Bereich "±2 Mio %" (technik.md Zeile 124), symmetrisch
+#   mit der Sichtbarkeit. Zwei Fundstellen, beide ohne Zeilennummer
+#   wiederzufinden:
+#     * spiel.md, Abschnitt "Die Aktionen", Nummer 4 (**Hebel**):
+#       "Kreditaufnahme zum Leitzins des Landes plus einem Aufschlag,
+#       der mit der Sichtbarkeit des Fonds steigt".
+#     * spiel.md, Kanaltabelle der acht rueckgekoppelten Kanaele im
+#       Abschnitt "Warum die Groesse des Zustands keine Verteidigung
+#       ist", Tabellenzeile "| 4 |", Spalte "Daempfung":
+#       "Hebelobergrenze, Aufschlag steigt mit Sichtbarkeit".
+#   Aus der Klasse folgt hier nichts -- technik.md T5, Tabellenzeile
+#   "| 3 |" (Raten, "Basispunkte (1 bp = 0,01 %)"), Spalte "Bereich":
+#   "±2 Mio %", symmetrisch
 #   um null. Ein blankes ">= 0" haette also keine Quelle; bis Fassung 2
 #   stand genau das hier (Ruecklauf 2, Befund 1).
 #   Aus "steigt" folgen beide Haelften der Schranke:
@@ -767,10 +800,12 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 #   `schrittweite >= 1`, ganzzahlig.
 #
 # Herkunft, in zwei Schritten und beide belegt:
-#   * T5 Klasse 10 (Zeile 155-156) sagt woertlich, "hoechstens ein
-#     Schritt je Runde" heisse bei der Finanzmarktregulierung **eine
-#     Stufe**, "bei den anderen dreien `schrittweite[instrument]`
-#     Basispunkte aus `parameter.toml`". Die vier Schrittweiten sind
+#   * technik.md T5, Erlaeuterung zu Klasse 10 unter der Klassentabelle
+#     (Aufzaehlungspunkt "**Instrumentenstufe (10).**") sagt woertlich,
+#     "hoechstens ein Schritt je Runde" heisse bei der
+#     Finanzmarktregulierung **eine Stufe**, "bei den anderen dreien
+#     `schrittweite[instrument]` Basispunkte aus `parameter.toml`". Die
+#     vier Schrittweiten sind
 #     damit dieselbe Groesse in vier Einheiten, und T51 setzt die eine,
 #     die es beziffert, auf 1 -- den kleinsten positiven Wert ihrer
 #     Klasse. Was fuer die bezifferte gilt, gilt der Form nach fuer die
@@ -811,7 +846,8 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 # Pruefjahrgangs im zweistelligen Prozentbereich, ein enger Wert erzeugte
 # einen Befund des Jahrgangsbaus.
 # `schrittweite`: Klasse 3 (Raten, bp), Schranke `>= 1` und ganzzahlig
-#   nach dem Gruppenkopf oben (T5 Klasse 10 Zeile 155-156 mit T51,
+#   nach dem Gruppenkopf oben (technik.md T5, Erlaeuterung zu Klasse 10,
+#   Aufzaehlungspunkt "Instrumentenstufe (10)", mit T51,
 #   Folgerung). Keine obere aus specs/; wirksam wird sie bei
 #   `instrument_max - instrument_min = 10.050` bp -- darueber traegt ein
 #   Schritt den Zins von einer Grenze zur anderen.
@@ -834,7 +870,8 @@ instrument_max = 10000  # PLATZHALTER
 # dort `0 ... instrument_max[zoll]`, ein negativer Zoll waere eine
 # Subvention und ist im Modell nicht vorgesehen.
 # `schrittweite`: Klasse 3 (Raten, bp), Schranke `>= 1` und ganzzahlig
-#   nach dem Gruppenkopf oben (T5 Klasse 10 Zeile 155-156 mit T51,
+#   nach dem Gruppenkopf oben (technik.md T5, Erlaeuterung zu Klasse 10,
+#   Aufzaehlungspunkt "Instrumentenstufe (10)", mit T51,
 #   Folgerung). Keine obere aus specs/; wirksam wird sie bei
 #   `instrument_max - instrument_min = 10.000` bp.
 # Kalibriert: Selbstspieler (`schrittweite`).
@@ -853,7 +890,8 @@ instrument_max = 10000  # PLATZHALTER
 # pruefen. Der Saldo ist im Pruefjahrgang in mehreren Laendern deutlich
 # negativ, der Platzhalter deshalb weit nach unten offen.
 # `schrittweite`: Klasse 3 (Raten, bp), Schranke `>= 1` und ganzzahlig
-#   nach dem Gruppenkopf oben (T5 Klasse 10 Zeile 155-156 mit T51,
+#   nach dem Gruppenkopf oben (technik.md T5, Erlaeuterung zu Klasse 10,
+#   Aufzaehlungspunkt "Instrumentenstufe (10)", mit T51,
 #   Folgerung). Keine obere aus specs/; wirksam wird sie bei
 #   `instrument_max - instrument_min = 20.000` bp.
 # Kalibriert: Selbstspieler (`schrittweite`).

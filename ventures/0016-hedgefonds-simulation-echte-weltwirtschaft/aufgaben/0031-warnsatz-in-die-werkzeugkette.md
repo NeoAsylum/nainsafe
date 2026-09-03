@@ -1,7 +1,7 @@
 ---
 id: 0031-warnsatz-in-die-werkzeugkette
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/warnsatzprobe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/warnsatzprobe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
@@ -78,6 +78,119 @@ zweites Bauprofil einführen. Das wären eigene Entscheidungen mit eigener Begr�
    Dateien werden im selben Lauf angelegt, übersetzt und **wieder gelöscht**; in den
    Nachweis gehört der Wortlaut der beiden Fehlermeldungen, nicht die Datei. Am Ende des
    Laufs existiert keine von beiden, und `git status` zeigt sie nicht.
+
+## Nachweis, Lauf vom 2026-09-03 (Kernbauer)
+
+Die Schritte 1 bis 3 lagen bei Laufbeginn im Baum. Nachgefahren statt geglaubt --
+die Messung des Projektmanagers ist als Hinweis behandelt, nicht als Nachweis.
+
+### Bedingung 1 -- genau eine Fundstelle
+
+`grep -rn 'set(FABRIK_STRENGE'` über das Vorhaben liefert **eine** Fundstelle in einer
+Bau-Datei: `werkzeugkette.cmake:107`. Die drei weiteren Treffer stehen in Prosa
+(`aufgaben/0031-…md` dreimal, `rueckstand.md` einmal) und sind Zitate des Kriteriums
+selbst -- derselbe Blindtreffer-Fall, vor dem `kern/CMakeLists.txt` Zeile 8-13 warnt.
+
+### Bedingung 3 -- wortgleich verschoben
+
+Der Block ist gegen **beide** Vorfassungen aus `95903a6^` verglichen, Zeile für Zeile:
+
+| Fassung | Zeilen | Stand |
+|---|---|---|
+| `95903a6^:kern/CMakeLists.txt` | 7 | identisch |
+| `95903a6^:pruefstand/CMakeLists.txt` (die Abschrift) | 7 | identisch |
+| heute `werkzeugkette.cmake:107` | 7 | -- |
+
+15 Schalter, keiner ist beim Umzug verlorengegangen. Damit ist zugleich belegt, dass
+die Abschrift von 2026-09-02 vollständig war -- die Diagnoselücke war zu diesem
+Zeitpunkt eine Möglichkeit, kein eingetretener Schaden.
+
+### Bedingung 2 -- beide Kästen, beide Bauwege
+
+Alleinbau, den `baulauf.py` geht:
+
+```
+cmake -S kern       -B kern/bau        -> Code 0
+cmake -S pruefstand -B pruefstand/bau  -> Code 0
+cmake --build kern/bau                 -> Code 0
+cmake --build pruefstand/bau           -> Code 0
+ctest --test-dir kern/bau              -> 100% tests passed, 0 tests failed out of 7
+ctest --test-dir pruefstand/bau        -> 100% tests passed, 0 tests failed out of 2
+```
+
+Zur Zahl **2**: Beim ersten Messen waren es 1/1. Während dieses Laufs sind
+`pruefstand/src/vorrat_verfahren.cpp` und `test/vorrat_verfahren_probe.cpp` aus **Paket
+0029** dazugekommen — beim ersten `ls` lag unter `src/` allein `vorrat.cpp`, zwei
+Aufrufe später beide. Ich habe sie nicht angefasst; sie sind grün. Die Zahl steht hier
+so, wie sie am Ende des Laufs gemessen wurde, und der Sprung hat nichts mit diesem
+Paket zu tun.
+
+Bau über den Arbeitsbereich, denselben Stand:
+
+```
+cmake -S . -B bau && cmake --build bau -> Code 0
+ctest --test-dir bau                   -> 100% tests passed, 0 tests failed out of 9
+```
+
+Die von der Bedingung benannte Gefahr -- beim Alleinbau wird `werkzeugkette.cmake`
+erst im `PROJECT_IS_TOP_LEVEL`-Block eingebunden, die `set()`-Reihenfolge muss davor
+liegen -- ist damit ausgeschlossen: Der Block steht in beiden `CMakeLists.txt` vor
+der ersten Benutzung von `${FABRIK_STRENGE}`, und der Alleinbau ist der Weg, der oben
+grün ist. Wäre die Reihenfolge falsch, wäre `${FABRIK_STRENGE}` beim Alleinbau leer
+und der Bau **trotzdem grün** -- lautlos ohne Warnschalter. Genau deshalb steht
+Bedingung 4 daneben; sie ist der einzige Nachweis, den diese Fehlerklasse zulässt.
+
+### Bedingung 4 -- der absichtliche Verstoß, beide Kästen rot
+
+Je eine ungenutzte Variable, sonst nichts. Die Dateien lagen einzeln und nacheinander
+im Baum -- angelegt, übersetzt, Wortlaut notiert, gelöscht --, nie beide gleichzeitig.
+Der Wortlaut ist der Nachweis, weil die Dateien es nicht mehr sind:
+
+`kern/src/warnsatzprobe.cpp`, `cmake --build kern/bau` endet mit **Code 2**:
+
+```
+-- GLOB mismatch!
+The following files were added:
+  +/home/adria/.../kern/src/warnsatzprobe.cpp
+[  3%] Building CXX object CMakeFiles/kern.dir/src/warnsatzprobe.cpp.o
+/home/adria/.../kern/src/warnsatzprobe.cpp: In function ‘int kern::warnsatzprobe()’:
+/home/adria/.../kern/src/warnsatzprobe.cpp:9:7: error: unused variable ‘ungenutzt’ [-Werror=unused-variable]
+    9 |   int ungenutzt = 0;
+      |       ^~~~~~~~~
+cc1plus: all warnings being treated as errors
+gmake[2]: *** [CMakeFiles/kern.dir/build.make:135: CMakeFiles/kern.dir/src/warnsatzprobe.cpp.o] Error 1
+```
+
+`pruefstand/src/warnsatzprobe.cpp`, `cmake --build pruefstand/bau` endet mit **Code 2**:
+
+```
+-- GLOB mismatch!
+The following files were added:
+  +/home/adria/.../pruefstand/src/warnsatzprobe.cpp
+[ 10%] Building CXX object CMakeFiles/pruefstand.dir/src/warnsatzprobe.cpp.o
+/home/adria/.../pruefstand/src/warnsatzprobe.cpp: In function ‘int pruefstand::warnsatzprobe()’:
+/home/adria/.../pruefstand/src/warnsatzprobe.cpp:10:7: error: unused variable ‘ungenutzt’ [-Werror=unused-variable]
+   10 |   int ungenutzt = 0;
+      |       ^~~~~~~~~
+cc1plus: all warnings being treated as errors
+gmake[2]: *** [CMakeFiles/pruefstand.dir/build.make:93: CMakeFiles/pruefstand.dir/src/warnsatzprobe.cpp.o] Error 1
+```
+
+**`[-Werror=unused-variable]` ist die Stelle, auf die es ankommt.** Nicht nur, dass es
+rot wird -- die Klammer nennt den Schalter, der es rot macht, und er stammt aus dem
+`-Wall -Werror` des verschobenen Satzes. Ein leeres `${FABRIK_STRENGE}` hätte beide
+Kästen grün gelassen.
+
+Nach dem Löschen wiederhergestellt: `kern` 7/7 Passed, `pruefstand` 2/2 Passed,
+Arbeitsbereich 9/9 Passed. `git status` zeigt keine der beiden Dateien; unter
+`kern/src/` liegen die sechs bekannten Quellen, unter `pruefstand/src/` allein
+`vorrat.cpp`.
+
+### Was der Prüfer nachfahren kann
+
+Bedingung 4 ist die einzige, deren Beweismittel nicht mehr existiert -- so verlangt.
+Wer sie nachfahren will, legt die beiden Dateien neu an und löscht sie wieder; die
+Reihenfolge oben ist die, die einen Abbruch mitten im Lauf überlebt.
 
 ## Rückläufe
 

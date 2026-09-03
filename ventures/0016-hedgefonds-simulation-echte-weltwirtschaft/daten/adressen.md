@@ -26,7 +26,7 @@ Widerspruch zwischen zwei Vorgaben und eine Menge frei gebildeter Adressen —, 
 | Spalte | Inhalt |
 |---|---|
 | # | laufende Nummer 1 … 310, nur zum Zählen |
-| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Die 133 unmarkierten Zeilen sind wörtlich belegte Adressen und die daraus über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Umgekehrt gilt der Satz nicht: Ist der eingesetzte Bestandteil selbst neu, trägt auch die Geschwisteradresse eine Marke — so bei `restwelt.` vor einem Sektorpfad (Nr. 180, gebildet aus `land.DE.sektor.2.preis`) und beim Instrument `regulierung` (Nr. 37, gebildet aus `land.BR.instrument.zoll.stand`). **Und ein Beleg, der in T46 steht, deckt nur die Adresse selbst: T46 zählt seine elf Vorgabeadressen abschliessend auf und erzeugt deshalb keine unmarkierten Geschwister.** Wer dort einen Index anders belegt, verlässt die Ausnahmeliste — die drei übrigen Länderwechselkurse (Nr. 63, 107, 151) tragen deshalb eine Marke, die drei übrigen Aufsichtszähler (Nr. 23, 111, 155) dagegen nicht, weil T45 `land.CN.aufsichtszaehler` als Beispiel einer Kategorie von 150 Adressen führt und nicht als abschliessende Liste. Eine Adresse mit eigenem wörtlichem Beleg bleibt davon unberührt: `land.<L>.leitzins` (Nr. 18, 62, 106, 150) steht mit Index in `technik.md` Zeile 236. Die Bildungsregeln und die Gegenprobe an allen acht T46-Zeilen stehen unter *Befund 2* |
+| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Die 133 unmarkierten Zeilen sind wörtlich belegte Adressen und die daraus über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Umgekehrt gilt der Satz nicht: Ist der eingesetzte Bestandteil selbst neu, trägt auch die Geschwisteradresse eine Marke — so bei `restwelt.` vor einem Sektorpfad (Nr. 180, gebildet aus `land.DE.sektor.2.preis`) und beim Instrument `regulierung` (Nr. 37, gebildet aus `land.BR.instrument.zoll.stand`). **Und ein Beleg, der in T46 steht, deckt nur die Adresse selbst: T46 zählt seine elf Vorgabeadressen abschliessend auf und erzeugt deshalb keine unmarkierten Geschwister.** Wer dort einen Index anders belegt, verlässt die Ausnahmeliste — die drei übrigen Länderwechselkurse (Nr. 63, 107, 151) tragen deshalb eine Marke, die drei übrigen Aufsichtszähler (Nr. 23, 111, 155) dagegen nicht, weil T45 `land.CN.aufsichtszaehler` als Beispiel einer Kategorie von 150 Adressen führt und nicht als abschliessende Liste. Eine Adresse mit eigenem wörtlichem Beleg bleibt davon unberührt: `land.<L>.leitzins` (Nr. 18, 62, 106, 150) steht mit Index in `technik.md`, **T49**, im Absatz „Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines Zufalls“ — dort im Wortlaut: „`land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` sind dieselbe Größe“. Die Bildungsregeln und die Gegenprobe an allen acht T46-Zeilen stehen unter *Befund 2* |
 | Gruppe | die Zeile der Tabelle in T15, aus der die Adresse stammt |
 | Herkunft | einer der fünf Einträge aus T45. `*` an einem Schlüsselnamen heisst dasselbe wie an einer Adresse |
 | K | Skalenklasse 1 … 12 nach T5, zugeordnet nach T49 |
@@ -537,7 +537,9 @@ enger oder weiter setzen will, ändert damit keine Adresse, sondern nur die Zahl
 **Warum `land.CN.wechselkurs` markiert ist und `land.DE.aufsichtszaehler` nicht.** Beide sind
 Geschwister einer einzigen wörtlich belegten Adresse über den Gebietsindex; der Unterschied
 liegt in der Stelle, die den Beleg trägt. T46 zählt seine elf Vorgabeadressen
-**abschliessend** auf (`technik.md` Zeile 874) und sagt zu `land.US.wechselkurs` sogar, warum
+**abschliessend** auf — die Überschrift der Tabelle sagt es selbst: „T46 — Die elf Adressen,
+deren Herkunft dieses Dokument ist, abschliessend“ (`technik.md`; am 2026-09-03 Zeile 1219,
+die Nummer ist nicht tragend) — und sagt zu `land.US.wechselkurs` sogar, warum
 die drei anderen Länder nicht dazugehören („Reihe 10 trägt drei Länder, die USA
 definitionsgemäß nicht"). **Ein Beleg, der in T46 steht, deckt deshalb nur die Adresse
 selbst** — wer dort einen Index anders belegt, verlässt die Ausnahmeliste und bildet eine neue
@@ -550,8 +552,12 @@ deshalb markiert: die drei Wechselkurse (63, 107, 151), `land.<L>.preisniveau`
 (20, 64, 108, 152) und die vier `land.<L>.basiswechsel` (44, 88, 132, 176), bei denen
 zusätzlich der Präfix `gebiet.<G>.` in `land.<L>.` umgeschrieben ist. Zwei Geschwisterpaare
 bleiben unmarkiert, und zwar nicht als Ausnahme: `land.<L>.leitzins` (18, 62, 106, 150) und
-`land.<L>.haushaltssaldo` (21, 65, 109, 153) stehen mit Index in `technik.md` Zeile 236 und
-237 und beziehen ihren Beleg gar nicht aus T46. `land.CN.aufsichtszaehler` schliesslich steht
+`land.<L>.haushaltssaldo` (21, 65, 109, 153) stehen mit Index in `technik.md` unter **T49**,
+im Absatz „Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines
+Zufalls“ — im Wortlaut „`land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` sind
+dieselbe Größe, ebenso `land.<L>.haushaltssaldo` und `land.<L>.instrument.haushalt.stand`“
+(am 2026-09-03 Zeile 352 bis 354; die Nummern sind nicht tragend) —, und beziehen ihren Beleg
+gar nicht aus T46. `land.CN.aufsichtszaehler` schliesslich steht
 in T45 als **Beispiel** einer Kategorie von 150 Adressen und nicht als abschliessende Liste;
 die drei übrigen Aufsichtszähler (23, 111, 155) bleiben deshalb unmarkiert.
 
@@ -564,32 +570,40 @@ für sich das falsche Ergebnis. `restwelt.basiswechsel` (198) ist **unmarkiert**
 
 *Erstens, gemeint ist die Zeichenkette und nicht die Herkunftsspalte* (Satz oben zu Nr. 192).
 Von den fünf Zeichenketten steht genau **eine** wörtlich in `specs/`: `restwelt.basiswechsel`
-in `technik.md` Zeile 820. `land.US.basiswechsel` und seine drei Geschwister stehen nirgends
+in `technik.md`, **T45**, Zeile `Vorgabe(T-Nummer)`, Spalte „Beispiel“ — die Zelle lautet
+„`restwelt.basiswechsel` → 0 (T8)“. `land.US.basiswechsel` und seine drei Geschwister stehen
+nirgends
 — Volltextsuche über `specs/0016-…/` nach `basiswechsel` ergibt zehn Fundstellen, alle in
-`technik.md`, davon genau zwei mit vollständiger Adresse: Zeile 820 und die T46-Zeile 883
-`gebiet.<G>.basiswechsel`. Nr. 198 ist damit zitiert, die vier anderen sind gebildet. Dass
+`technik.md`, davon genau zwei mit vollständiger Adresse: die eben genannte T45-Zelle und die
+T46-Zeile, die mit „`gebiet.<G>.basiswechsel`, alle fünf Gebiete“ beginnt (am 2026-09-03
+Zeile 1165 und 1228; die Nummern sind nicht tragend). Nr. 198 ist damit zitiert, die vier
+anderen sind gebildet. Dass
 alle fünf in der Herkunftsspalte `Vorgabe(T46)` tragen, ändert daran nichts; ebenso wenig wie
 bei `restwelt.preisniveau` (192), das `Datenanker(15)` trägt.
 
 *Zweitens, ein Beispiel erzeugt Geschwister, eine abschliessende Liste nicht* (Satz oben zu
-`land.CN.aufsichtszaehler`). Zeile 820 steht in der Spalte „Beispiel“ von T45, ist also
-dieselbe Bauart wie Zeile 817 — mit einem Unterschied in der Bedeutungsspalte, und der
-entscheidet: 820 verweist für seine Kategorie ausdrücklich auf die abschliessende Liste
-(„dieses Dokument, **abschliessend aufgezählt in T46**“), 817 auf eine offene („die Tabelle
-‚Jede Größe ohne Datenanker‘ in `spiel.md` nennt einen **Zahlenwert**“, 150 Adressen). Das
-Beispiel in 820 steht folglich für die elf Zeilen aus T46 und für keine zwölfte; es erzeugt
+`land.CN.aufsichtszaehler`). Die T45-Zeile `Vorgabe(T-Nummer)` steht in der Spalte
+„Beispiel“, ist also dieselbe Bauart wie die T45-Zeile `Entwurf` — mit einem Unterschied in
+der Bedeutungsspalte, und der entscheidet: `Vorgabe(T-Nummer)` verweist für seine Kategorie
+ausdrücklich auf die abschliessende Liste („dieses Dokument, abschliessend aufgezählt in
+**T46**“), `Entwurf` auf eine offene („die Tabelle ‚Jede Größe ohne Datenanker‘ in `spiel.md`
+nennt einen **Zahlenwert**“, 150 Adressen). Das Beispiel der Zeile `Vorgabe(T-Nummer)` steht
+folglich für die elf Zeilen aus T46 und für keine zwölfte; es erzeugt
 keine unmarkierten Geschwister, und die vier gebildeten Zeilen tragen ihre Marke zu Recht.
 
 | Adresse | Nr. | wörtlich in `specs/` | Fundstelle | Marke |
 |---|---|---|---|---|
 | `land.<L>.basiswechsel` | 44, 88, 132, 176 | nein | — | **je eine** |
-| `restwelt.basiswechsel` | 198 | ja | `technik.md` 820 (T45, Spalte „Beispiel“) | keine |
+| `restwelt.basiswechsel` | 198 | ja | `technik.md`, T45, Zeile `Vorgabe(T-Nummer)`, Spalte „Beispiel“: „`restwelt.basiswechsel` → 0 (T8)“ | keine |
 
-**Gegenprobe, damit der Satz zu Zeile 820 nichts anderes bewegt.** T45 hat fünf Einträge
-(`technik.md` 816–820), und nur 820 verweist für seine Kategorie auf eine abschliessend
-aufgezählte **Adressliste**: 816 nennt „eine Reihe der Reihenliste weiter unten“ — eine Liste
-von Reihen, keine von Adressen —, 817 die Entwurfstabelle in `spiel.md` mit 150 Adressen,
-818 `parameter.toml` nach T27, 819 den Jahrgangsbau. Die Beispiele der übrigen vier
+**Gegenprobe, damit der Satz zur Zeile `Vorgabe(T-Nummer)` nichts anderes bewegt.** T45 hat
+fünf Einträge — `Datenanker(nr)`, `Entwurf`, `Parameter(schluessel)`, `Manifest(feld)` und
+`Vorgabe(T-Nummer)` —, und nur `Vorgabe(T-Nummer)` verweist für seine Kategorie auf eine
+abschliessend aufgezählte **Adressliste**: `Datenanker(nr)` nennt „eine Reihe der Reihenliste
+weiter unten“ — eine Liste von Reihen, keine von Adressen —, `Entwurf` die Entwurfstabelle in
+`spiel.md` mit 150 Adressen, `Parameter(schluessel)` „`parameter.toml` nach T27“ und
+`Manifest(feld)` das „vom Jahrgangsbau gerechnet und im Manifest ausgewiesen“. Die Beispiele
+der übrigen vier
 (`land.DE.sektor.2.wertschoepfung`, `land.CN.aufsichtszaehler`, `fonds.kasse`, `markt.wert`)
 behalten damit die Lesart, die sie oben schon haben; die letzten beiden tragen ohnehin keinen
 Index, über den sich ein Geschwister bilden liesse.
@@ -597,8 +611,8 @@ Index, über den sich ein Geschwister bilden liesse.
 **Was hier offen bleibt und hier nicht entschieden wird.** Warum die Familie drei Präfixe
 kennt — `gebiet.<G>.` in T46 gegen `land.<L>.` und `restwelt.` in dieser Tabelle —, ist
 ungeklärt. Ob `gebiet.<G>.` für die beiden anderen zugleich steht, sagt dieses Verzeichnis
-nicht; die Frage berührt `technik.md` und liegt beim Architekten, geführt als Punkt 9 in
-`ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/rueckstand.md`. Auch die Zuordnung
+nicht; die Frage berührt `technik.md` und liegt beim Architekten. Sie ist hier ausdrücklich
+**offen** und wird von diesem Verzeichnis nicht entschieden. Auch die Zuordnung
 aller fünf Zeilen zur T46-Zeile `gebiet.<G>.basiswechsel` oben unter *Die elf `Vorgabe`-Zeilen
 gegen T46* ist keine Antwort darauf: Sie sagt, aus welcher T46-Zeile der Herkunftseintrag
 stammt, und nicht, dass ein Präfix für ein anderes steht. **Die Herleitung
@@ -607,8 +621,9 @@ die belegende Stelle abschliessend aufzählt — nicht, wie ein Präfix zustande
 denkbaren Antworten ergeben dieselben Marken: Steht `gebiet.<G>.` für alle fünf Gebiete, sind
 die vier `land.<L>.`-Zeilen anders belegte Indizes einer T46-Adresse und deshalb markiert
 (Satz oben zu Nr. 19); steht es nicht dafür, sind sie ohne Vorlage gebildet und ebenfalls
-markiert. Nr. 198 bleibt in beiden Fällen unmarkiert: Ihre Zeichenkette steht wörtlich in
-Zeile 820 — und deckte T46 sie zusätzlich ab, so deckt ein T46-Beleg die Adresse selbst, nur
+markiert. Nr. 198 bleibt in beiden Fällen unmarkiert: Ihre Zeichenkette steht wörtlich in der
+T45-Zeile `Vorgabe(T-Nummer)`, Spalte „Beispiel“ — und deckte T46 sie zusätzlich ab, so deckt
+ein T46-Beleg die Adresse selbst, nur
 eben keine Geschwister.
 
 **Zwei Parameterschlüssel sind ebenfalls gebildet** und mit `*` markiert:
