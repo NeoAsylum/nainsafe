@@ -50,6 +50,7 @@ pruefe "nichts Uncommittetes liegen geblieben"     bash -c "cd '$ZIEL' && test -
 echo
 echo "Zeitplanung"
 pruefe "Tageslauf stuendlich in der crontab"       bash -c "crontab -l | grep -q '^0 \* \* \* \* .*tageslauf.py'"
+pruefe "Takt entspricht einrichtung/crontab"     bash -c "diff <(crontab -l | grep -vE '^#|^$') <(grep -vE '^#|^$' '$ZIEL/einrichtung/crontab') > /dev/null"
 pruefe "Wochenlauf in der crontab"                 bash -c "crontab -l | grep -q wochenlauf.py"
 pruefe "PATH-Zeile in der crontab"                 bash -c "crontab -l | grep -q '^PATH='"
 

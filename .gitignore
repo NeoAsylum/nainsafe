@@ -231,3 +231,7 @@ ventures/*/node_modules/
 
 # CMake-Bauverzeichnisse -- erzeugt, nicht gepflegt
 ventures/**/bau/
+
+# Laufsperre -- gehoert dem Prozess, nicht der Historie. Ohne diese Zeile meldet jede
+# Bereitschaftspruefung waehrend eines Laufs einen schmutzigen Arbeitsbereich.
+ops/tageslauf.sperre
