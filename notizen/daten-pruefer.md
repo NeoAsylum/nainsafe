@@ -141,3 +141,21 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0036, Vorgänger: archiv/daten-pruefe
   `gebietspraefix()` entschieden, `technik.md` T46 nicht. Muster: Wo ein Verweis stirbt,
   stirbt oft auch die Sache, auf die er zeigte — nach dem Ersetzen prüfen, ob sie noch
   irgendwo verzeichnet ist.
+
+## Nachtrag 2026-09-03 (0042)
+
+- **Meine eigene Prüfung von letztem Mal ist keine Quelle.** 0042 entstand aus meinem
+  Nebenbefund zu 0028; dieser Nebenbefund enthielt neben dem richtigen Einwand eine zweite,
+  ungeprüfte Behauptung („beide Regeln ergeben dort keine Marke"). Der Projektmanager hat sie
+  in *Was zu tun ist* wörtlich vorgeschrieben, der Bauagent hat sie in die Datei geschrieben.
+  **Lehre: Entsteht ein Paket, weil eine Vorgabe falsch war, ist der neue vorgeschriebene
+  Satz genauso hart zu prüfen wie der alte** — er stammt aus derselben Quelle, und die war
+  ich. Prüfbefund → Auftrag → Datei ist ein Übertragungsweg für Fehler wie jeder andere.
+- **Isolationstest für „ist dieser Bestandteil neu erfunden".** Vier Geschwister, drei ohne
+  Marke, eines mit; der einzige Unterschied ist der gesuchte Bestandteil. Beweist die
+  Zurechnung in einem Griff und schlägt jede Argumentation aus der Legende.
+- **Urteilsregel hat wieder getragen:** Rücklauf nur, wenn er eine bessere Datei erzeugen
+  *kann*. Hier konnte er es nicht — der Bauagent hätte gegen seinen eigenen Auftrag schreiben
+  müssen. Also `geprueft`, Befund laut, Vorschlag 0053. Zweimal dieselbe Konstellation an
+  derselben Textstelle; wenn es ein drittes Mal passiert, ist die Vorgabenkette das Thema und
+  nicht der Satz.
