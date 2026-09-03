@@ -2,9 +2,9 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 7 (nach ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md -- ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert)
-stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake; Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
-ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
+fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16); die Fassung selbst folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md -- ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
+stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake, jede Fremdbibliothek als Quelltext unter fremd/ im Repo eingefroren (find_package und FetchContent verboten); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
+ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, nach Rechenart geschnitten (Verengung, Strichrechnung, Multiplikation ohne Division), weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
 determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
 zustand: fester, allokationsfreier Wert, 310 i64 (2.480 Byte), Prüfsumme über kanonische Byteform
 speicherstand: Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme -- nicht der Zustand
@@ -87,8 +87,9 @@ Tabelle dadurch prüfen, dass man sie einmal von Hand einlöst. Beide Summen geh
 
 **T1 — Kern, Datenschicht, Schnittstelle, Prüfstand und Werkzeuge in C++20**, übersetzt mit
 `g++`, gebaut über CMake, Übersetzerkennung und -version in `werkzeugkette.cmake`
-festgenagelt. Entschieden hat das der Betreiber am 2026-09-01 (**ADR 0011**); diese Fassung
-trägt die Entscheidung nach und ersetzt die Rust-Fassung der Vorfassungen.
+festgenagelt, **jede Fremdbibliothek nach T3 im Repo eingefroren**. Entschieden hat das der
+Betreiber am 2026-09-01 (**ADR 0011**); diese Fassung trägt die Entscheidung nach und ersetzt
+die Rust-Fassung der Vorfassungen.
 
 **Die Kandidaten, an den Kriterien dieses Vorhabens gemessen.** Die Vorfassungen haben *für*
 eine Sprache argumentiert statt *unter* Alternativen zu wählen; das ist der Befund, aus dem
@@ -147,11 +148,25 @@ Fremdabhängigkeit** — sie kommt mit dem Übersetzer, den `werkzeugkette.cmake
 
 *Wie das erzwungen wird, denn C++ hat keinen Abschnitt `[dependencies]`, der leer bleiben
 könnte.* Die Entsprechung ist eine Eigenschaft der `CMakeLists.txt` des Kerns, und sie ist
-mit zwei Mustervergleichen über diese eine Datei nachweisbar: Der erste sucht jede
-Anweisung, die fremden Code hereinholt oder ein weiteres Quellverzeichnis dazunimmt, der
-zweite jede Bibliothek, die an `kern` gelinkt wird. **Beide müssen leer ausgehen.** Ihr
-Wortlaut gehört in das Abnahmekriterium des jeweiligen Pakets und ausdrücklich nicht in die
-geprüfte Datei: Eine Datei, die ihre eigenen Suchmuster zitiert, lässt sie nie leer ausgehen.
+mit **drei** Mustervergleichen nachweisbar. Zwei laufen über diese eine Datei: Der erste sucht
+jede Anweisung, die fremden Code hereinholt oder ein weiteres Quellverzeichnis dazunimmt, der
+zweite jede Bibliothek, die an `kern` gelinkt wird. Der dritte läuft über **alle übrigen**
+`CMakeLists.txt` des Vorhabens und sucht dort `link_libraries(` sowie
+`target_link_libraries(kern` — die zwei Formen, mit denen sich `kern` von aussen eine
+Abhängigkeit anhängen lässt, ohne dass in seiner eigenen Datei eine Zeile steht (T13).
+**Alle drei müssen leer ausgehen.** Ihr Wortlaut gehört in das Abnahmekriterium des jeweiligen
+Pakets und ausdrücklich nicht in die geprüfte Datei: Eine Datei, die ihre eigenen Suchmuster
+zitiert, lässt sie nie leer ausgehen.
+
+*Warum der dritte Vergleich dazugehört und nicht Vorsicht ist:* Zwei Vergleiche über
+`kern/CMakeLists.txt` prüfen die Datei und nicht die Eigenschaft. `link_libraries(fremd)`
+eine Ebene höher gilt für jedes danach angelegte Ziel, also auch für `kern` aus
+`add_subdirectory(kern)`; und seit CMake 3.13 — verlangt sind 3.22 — darf
+`target_link_libraries(kern PRIVATE fremd)` in einem *anderen* Verzeichnis stehen als dem, in
+dem `kern` angelegt wurde. In beiden Fällen bleiben die ersten zwei Vergleiche leer, und der
+Kern linkt trotzdem eine Fremdbibliothek: T2 formal erfüllt, sachlich gebrochen. Das ist
+dieselbe Lücke, die T13 auf der **Kopfseite** mit dem Verbot von `include_directories()`
+schliesst — sie hat auf der Linkseite eine Zwillingsform, und die schliesst T13 jetzt mit.
 
 **T2b — Was an die Stelle von `#![forbid(unsafe_code)]` tritt.** Das Attribut gibt es in C++
 nicht, und das ist der Preis aus ADR 0011: Speichersicherheit ist hier eine **Prüfregel statt
@@ -190,6 +205,29 @@ das jeweilige Paket; dass es *keine weitere* gibt, entscheidet diese Vorgabe.
 davon darf in den Kern (T2). Die frühere Liste dieser Vorgabe nannte sechs Fremdbibliotheken
 namentlich; sie ist ersatzlos gestrichen, weil sie eine Wahl festschrieb, die niemand
 treffen musste — und weil die Oberflächenzeile darin seit ADR 0010 ohnehin vertagt war.
+
+**Und jede eingesetzte Bibliothek liegt im Repo, nicht auf dem Rechner des Übersetzenden.**
+Das ist der Nachfolger von `cargo vendor`, und er hat beim Umschreiben auf C++ zunächst
+gefehlt: Der Satz der Vorfassung hatte zwei Hälften — Werkzeugkette festgenagelt,
+Abhängigkeiten eingefroren —, und nur die erste ist zu `werkzeugkette.cmake` geworden.
+Konkret tritt an die Stelle der zweiten: Der Quelltext liegt unter `fremd/<name>/`, Fassung
+und Commit-Kennung stehen in ihrem ADR, und übersetzt wird sie über
+`add_subdirectory(fremd/<name>)` mit. **`find_package()`, `FetchContent`, `ExternalProject`
+und `pkg_check_modules` sind im ganzen Vorhaben verboten** — sie binden den Bau an das, was
+auf dem jeweiligen Rechner gerade installiert ist. Das Verbot ist die eigentliche Vorgabe und
+nicht ein Zusatz zu T23: Ein `find_package(… REQUIRED)` **lädt nichts herunter**, verstösst
+also gegen „der Bau lädt nichts aus dem Netz" nicht und richtet trotzdem genau den Schaden
+an, den `cargo vendor` ausschloss.
+
+*Warum das heute nichts kostet und trotzdem jetzt dasteht:* Das Vorhaben hat null
+tatsächliche Fremdabhängigkeiten — T2 verbietet sie im Kern, und alle fünf Zeilen der Tabelle
+oben stehen auf „offen" oder „vertagt". Es ist also nichts kaputt, sondern etwas unbewacht.
+Die Zusage dahinter ist der Rückvergleich: Zwei Übersetzungen im Abstand von drei Monaten
+müssen dasselbe Programm ergeben, sonst prüft T31 gegen einen Regressionsbestand, den niemand
+identisch wiederherstellen kann — und der Parameterleser aus der ersten Tabellenzeile ist
+genau die Sorte Bibliothek, deren Fassungswechsel eine Zahl um eine Stelle verschiebt, ohne
+dass irgendetwas abbricht. Eine Vorgabe vor der ersten Bibliothek kostet einen Absatz;
+dieselbe Vorgabe nach der ersten Bibliothek kostet einen Umbau.
 
 **Ausdrücklich nicht gewählt:** Eine Spiel-Engine (Godot, Unity, Unreal) — sie bringt eine
 Bildschleife, eine Zeitachse und eine eigene Zahlenwelt mit, also genau die drei Quellen
@@ -498,8 +536,11 @@ nachträglicher Test auf Überlauf (T6, T6b).
 
 **Massnahme 4 — geprüfte Arithmetik im Kern. Sie schliesst die Lücke, die Massnahme 2
 offenlässt, und ohne sie hätte das Vorhaben keinen Ersatz für `overflow-checks = true`.**
-Zwei Formen, beide vom Übersetzer unabhängig, weil sie ausdrücklich prüfen statt sich auf
-undefiniertes Verhalten zu verlassen:
+Drei Formen, alle vom Übersetzer unabhängig, weil sie ausdrücklich prüfen statt sich auf
+undefiniertes Verhalten zu verlassen. Sie sind nach der **Rechenart** geschnitten und nicht
+nach der Stelle, damit keine Art zwischen ihnen liegen bleibt: die Verengung jedes
+128-Bit-Zwischenwerts (1), die Strichrechnung auf `i64` (2), die Multiplikation ohne
+folgende Division (3).
 
 1. **Die Verengung von `__int128` auf `i64` ist der Prüfpunkt.** Jeder Wert, der aus einem
    128-Bit-Zwischenwert in eine Zustandsadresse zurückkehrt, läuft durch einen Wächter, der
@@ -511,6 +552,47 @@ undefiniertes Verhalten zu verlassen:
    `__builtin_add_overflow` und `__builtin_sub_overflow`.** Sie rechnen in unendlicher
    Genauigkeit und melden, ob das Ergebnis in den Zieltyp passt; `-fwrapv` berührt sie
    nicht, weil sie kein undefiniertes Verhalten auslösen, sondern eines abfragen.
+3. **Auch eine Multiplikation ohne nachfolgende Division läuft über `__int128` und den
+   Wächter aus 4.1**, nämlich über `mal(a, b)` in `kern/include/kern/festkomma.hpp`, gebaut
+   wie `mal_geteilt`: Produkt als `i128`, Rückkehr durch `intern::nach_i64`. Der
+   Zwischenwert kann dabei nicht selbst überlaufen, weil `|a·b| ≤ 2^126`, also rund
+   `8,5·10^37`, unter der `i128`-Grenze `1,7·10^38` bleibt — dasselbe Argument, das
+   `potenz` in derselben Datei schon führt.
+
+**Punkt 3 ist in dieser Fassung nachgetragen, und die Lücke davor war keine Formalie.** Die
+Aufzählung nannte „Additionen und Subtraktionen" und liess damit die **blanke Multiplikation
+zweier `i64`** zwischen den Massnahmen liegen: Massnahme 3 deckt die Multiplikation *mit*
+nachfolgender Division, 4.1 die Verengung eines 128-Bit-Werts, 4.2 die Strichrechnung — und
+Massnahme 1 macht ihren Überlauf gerade **definiert**, also still. `overflow-checks = true`
+der Vorfassung deckte mit *einer* Einstellung jede Rechenart; hier wäre mit der Bauart ein
+Stück Inhalt verschwunden. Der Weg in den Fehler steht im Dokument selbst:
+`tsd_in_cent(x) = x · 100.000` (T50) hat keine Division, keinen 128-Bit-Zwischenwert und
+keine Addition, `positionswert` rechnet davor `stufen · stufenwert` (T48) ebenso blank, und
+das Ergebnis geht nach T47 unmittelbar ins Fondsvermögen — also in Abrechnung, Mandat,
+Todesart 1 und die Botzielgröße `B`. Die Invariante `0 < markt.wert < 9,2·10^13` (T30
+Prüfung 2) fängt davon **einen** Aufrufer ab, am Rundenende und nicht auf der Fondsseite; ein
+Detektor nach der Tatsache ist nicht die Zusage, die T7 in seiner Überschrift gibt.
+
+**Warum `mal` und nicht `__builtin_mul_overflow`:** Beides schliesst die Lücke. Der
+`i128`-Weg hat denselben Abbruchpfad wie 4.1 statt eines zweiten, hält die ganze
+Punktrechnung bei *einer* Regel, und `mal` steht neben `mal_geteilt` in der Datei, die T6
+ohnehin als einzige Rechenstelle des Kerns ausweist.
+
+**Die Vorgabe gilt für jede Multiplikation, nicht für eine Liste von Stellen.** Der
+Weltschritt multipliziert schon in der Preismischung (T28) blank, dazu `fondsanteil`,
+`anleihekurs` und `lobbypunkte_aus_geld` (T48, T50), und jede neue Formel bringt weitere; eine
+Aufzählung wäre hier die Form, die beim nächsten Zusatz still falsch wird. Der Nachweis ist
+deshalb eine **Zuordnung**, und ich habe sie in diesem Lauf einmal ausgeführt:
+`grep -rn ' \* ' kern/src kern/include` liefert heute **52 Zeilen**, und jede fällt in eine
+von vier zugelassenen Arten — Adressrechnung auf `Index`/`std::size_t` (`zustand.hpp`,
+`zustand.cpp`), vorzeichenlose Rechnung in `zufall.hpp` und `pruefsumme.hpp` (die beiden
+Ausnahmen unten), `i128`-Zwischenwert innerhalb von `festkomma.hpp`, oder Fliesstext in einem
+Kommentar. Eine fünfte Art — zwei `i64` mit Größenbedeutung nach T5 — kommt heute **nicht**
+vor, weil `kern::werte` noch nicht gebaut ist; genau dort entsteht sie. Ein solcher Treffer
+ausserhalb von `festkomma.hpp` ist ein Befund. `kern/test` steht nicht unter der Regel,
+sondern prüft sie; dort kommen sechs weitere Trefferzeilen dazu, davon zwei echte
+Multiplikationen der Form `static_cast<i64>(platz) * 10`, mit denen eine Probe sich ihre
+Eingabewerte aus einem Schleifenindex baut.
 
 **Der Abbruch ist eine Ausnahme und kein `std::abort`**, und das aus zwei mechanischen
 Gründen: Bei der Auswertung zur Übersetzungszeit macht ein `throw` den Ausdruck zu keiner
@@ -751,8 +833,22 @@ gefunden wird. CMake erzwingt sie nur, solange die Kopfverzeichnisse **`PRIVATE`
 vergeben sind; ein globales `include_directories()` auf Arbeitsbereichsebene würde die
 Trennung still aufheben, ohne dass ein Bau fehlschlägt. **`include_directories()` ist
 deshalb im ganzen Vorhaben verboten**; Kopfverzeichnisse werden ausschliesslich über
-`target_include_directories` am jeweiligen Ziel vergeben. Das ist die eine Stelle, an der
-diese Bauart eine Prüfregel braucht, wo die alte eine Werkzeugeigenschaft hatte.
+`target_include_directories` am jeweiligen Ziel vergeben.
+
+**Dasselbe gilt für die Linkseite, und das ist die zweite Hälfte desselben Gedankens.** Ein
+`link_libraries()` ohne Ziel wirkt auf jedes danach angelegte Ziel des Verzeichnisses und
+seiner Unterverzeichnisse, und seit CMake 3.13 darf `target_link_libraries(<ziel> …)` in
+einer anderen `CMakeLists.txt` stehen als der, in der `<ziel>` entsteht. Beides hängt einem
+Baustein eine Abhängigkeit an, ohne seine eigene Datei anzufassen — die Kopfseite verliert
+dabei die Trennung, die Linkseite die Nullabhängigkeit des Kerns aus T2. **`link_libraries()`
+ist deshalb im ganzen Vorhaben verboten, und `target_link_libraries(<ziel> …)` steht
+ausschliesslich in der `CMakeLists.txt` des Verzeichnisses, in dem `<ziel>` mit
+`add_library` oder `add_executable` angelegt wird.** Damit ist die Abhängigkeitsliste eines
+Bausteins wieder an genau einer Stelle lesbar, und der dritte Mustervergleich aus T2 hat
+etwas, wogegen er prüfen kann.
+
+Das sind die zwei Stellen, an denen diese Bauart eine Prüfregel braucht, wo die alte eine
+Werkzeugeigenschaft hatte.
 
 **Innerhalb von `kern` gibt es ein Modul, dessen Schnitt eine Vorgabe ist und keine
 Geschmacksfrage: der Namensraum `kern::werte` mit dem Kopf `kern/include/kern/werte.hpp`.**
@@ -2423,3 +2519,63 @@ der die Kostenrechnung nicht angefasst wird, genau die ist, in der man es unterl
 nachgerechnet sind die Skalenzerlegung (`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 + 83 +
 2 = 310`, je Land `6 + 5 + 4 + 1 + 7 + 1 + 2 + 8 + 1 + 9 = 44`), die Operationszahl von
 `fondsvermoegen` (230) und die Untergrenze `aufschlag_min` (51 bp).
+
+## 16. Befundabarbeitung — Prüfung zu Paket `0011-stack-auf-cpp`, Runde 1 vom 2026-09-03
+
+Drei Befunde, alle in dieser Datei, alle **behoben**. Kein Widerspruch, kein „anders gelöst":
+Der Prüfer hat in allen drei Fällen recht, und in allen drei war der Fehler derselbe — beim
+Übersetzen von Rust nach C++ ist eine Zusage von der Bauart mitgenommen worden, die an ihr gar
+nicht hing. Was der Prüfer ausdrücklich nicht als Befund führt, ist nicht angefasst.
+
+**Befund 1, der Ersatz für `overflow-checks` erreicht die blanke Multiplikation nicht —
+behoben.** Massnahme 4 hat einen dritten Punkt bekommen: Jede Multiplikation zweier `i64`
+ohne folgende Division läuft über `mal(a, b)` in `festkomma.hpp`, also über `__int128` und den
+Wächter aus 4.1. Die Aufzählung der Massnahme ist zugleich vom Ort auf die **Rechenart**
+umgestellt — Verengung, Strichrechnung, Multiplikation ohne Division —, denn eine Aufzählung
+nach Stellen wird beim nächsten Zusatz wieder unvollständig, und genau das war passiert. Zwei
+Dinge, die nicht im Befund standen und dazugehören: Ich habe `__builtin_mul_overflow` nicht
+genommen und sage in T7, warum (ein Abbruchpfad statt zweier); und der Nachweis ist eine
+Zuordnung statt einer Liste, in diesem Lauf einmal ausgeführt —
+`grep -rn ' \* ' kern/src kern/include` gibt heute 52 Zeilen in vier zugelassenen Arten, keine
+davon eine `i64`-Größenmultiplikation, weil `kern::werte` noch nicht gebaut ist.
+
+**Befund 2, `cargo vendor` ist gestrichen statt neu gefasst — behoben.** T3 hat den Nachfolger
+bekommen: Quelltext jeder Fremdbibliothek unter `fremd/<name>/`, Fassung und Commit-Kennung im
+ADR, Einbindung über `add_subdirectory`; `find_package()`, `FetchContent`, `ExternalProject`
+und `pkg_check_modules` sind verboten. T1 nennt die Vorgabe am Ort des alten Satzes und
+verweist auf T3, damit die übersetzte Zusage dort wieder beide Hälften hat. Den Hinweis des
+Prüfers, dass `find_package` **nichts herunterlädt** und deshalb an T23 vorbeigeht, habe ich
+in die Vorgabe selbst geschrieben — er ist der Grund, warum ein Verbot des Ladens hier nicht
+genügt.
+
+**Befund 3, die Erzwingung von T2 liest nur `kern/CMakeLists.txt` — behoben, an beiden
+Stellen.** T13 verbietet `link_libraries()` im ganzen Vorhaben und bindet
+`target_link_libraries(<ziel> …)` an die `CMakeLists.txt` des Verzeichnisses, in dem `<ziel>`
+angelegt wird — die Zwillingsform des dort schon stehenden Verbots von
+`include_directories()`, wie der Prüfer es vorgezeichnet hat. T2 hat einen **dritten**
+Mustervergleich bekommen, der über alle übrigen `CMakeLists.txt` läuft und `link_libraries(`
+sowie `target_link_libraries(kern` sucht; ohne ihn wäre das Verbot eine Verabredung. Beides
+gehört zusammen: T13 sagt, was nicht sein darf, T2 sagt, wie man es sieht.
+
+**Gegen den heutigen Baum geprüft, nicht nur behauptet.** Die drei neuen Verbote sind keine
+nachträgliche Verurteilung des Gebauten:
+`grep -rnE 'link_libraries|include_directories|find_package|FetchContent' --include=CMakeLists.txt .`
+gibt über das ganze Vorhaben **sechs** Zeilen — vier `target_include_directories` und zwei
+`target_link_libraries(${name} PRIVATE …)`
+für Probenziele, jede in der Datei, in der ihr Ziel entsteht. Kein Treffer auf
+`link_libraries(`, `include_directories(` oder `find_package(`. Die Pakete 0004 und 0031 haben
+also schon so gebaut; diese Fassung schreibt hin, was bisher Gewohnheit war.
+
+**Zwei Meldungen an den Projektmanager, weil sie ausserhalb meines Verzeichnisses liegen und
+ich dort nichts ändere.** Erstens: `festkomma.hpp` hat heute kein `mal(a, b)` — es ist die
+einzige Zeile Code, die diese Nachbesserung nach sich zieht, und sie gehört in ein eigenes
+kleines Paket samt Probe für den Abbruchfall. Zweitens: Die Abnahme von Paket 0004,
+Bedingung 3, schreibt die zwei Mustervergleiche über `kern/CMakeLists.txt` wörtlich aus und
+kennt den dritten deshalb nicht. Der Prüfer hat das gesehen und ausdrücklich gesagt, die
+Lücke gehöre in die Vorgabe geschlossen; hier ist sie geschlossen. Ob 0004 nachgeführt wird,
+entscheidet nicht der Architekt.
+
+**Was diese Nachbesserung nicht geändert hat:** kein Wort an der Stacktabelle, an T6, T6b,
+T2b, T9, den Massnahmen 1 bis 3, den 310 Adressen, den Formeln, den Maßen oder den
+Kostenrechnungen. Der Umfang ist ein Punkt in T7, ein Absatz in T3 mit einem Halbsatz in T1
+und je ein Absatz in T2 und T13 — das ist der Rücklauf und keine achte Fassung.

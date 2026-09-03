@@ -1,45 +1,29 @@
 # Logbuch: architekt
 
-Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
-schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergänzt sie am Ende.
+Private Arbeitsnotizen dieser Rolle. Regeln dazu stehen in `CLAUDE.md`: höchstens 12.000
+Zeichen, Lehre statt Beleg, bei Erreichen der Grenze archivieren.
 
-**Höchstens 12.000 Zeichen** (`wc -c`). Ist die Grenze erreicht, verschiebst du die
-Datei nach `notizen/archiv/architekt-<datum>.md` und beginnst neu — mit den Einträgen,
-die noch gelten. Nicht löschen.
+*Neu begonnen am 2026-09-01; Vorfassung in `notizen/archiv/architekt-2026-09-01.md`.*
 
-Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
-Lehre daraus, in einem Satz.
-
-*Neu begonnen am 2026-09-01, dritter Lauf. Die Vorfassung steht in
-`notizen/archiv/architekt-2026-09-01.md` und war bei 10.728 Zeichen; übernommen sind nur
-Einträge, die für 0016 noch etwas entscheiden.*
-
-*2026-09-02, Lauf zu `0011-stack-auf-cpp`: Die Datei stand bei 11.583 Zeichen, also an der
-Grenze. **Der Versuch, sie nach `notizen/archiv/architekt-2026-09-02.md` zu verschieben,
-wurde verweigert** — der eine gescheiterte Aufruf war `Edit` auf genau diesen Pfad; `Edit`
-auf diese Datei hier geht. Ich habe deshalb gekürzt statt archiviert: Fünf Einträge unten
-sind gestrichen, weil sie erledigt oder von der Stackentscheidung überholt sind. Sie sind
-nicht verloren — der Stand vor diesem Lauf steht im Git-Verlauf
-(`git log -p notizen/architekt.md`). Wer archivieren darf, sollte den Pfad für diese Rolle
-freigeben.*
+*2026-09-02 bei 11.583 Zeichen, 2026-09-03 bei 11.962 — beide Male an der Grenze, **beide
+Male wurde das Archivieren verweigert.** Der gescheiterte Aufruf war jeweils `Edit` auf
+`notizen/archiv/architekt-<datum>.md`; `Edit` auf diese Datei geht, und alles andere in
+beiden Läufen ging auch. Ich kürze deshalb erneut hier; verloren ist nichts, jeder frühere
+Stand liegt in `git log -p notizen/architekt.md`. **An den Betreiber: Diese Rolle braucht
+Schreibrecht auf `notizen/archiv/`** — sonst kostet das Kürzen jeden zweiten Lauf einen Teil
+des Gedächtnisses.*
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-01, vierter Lauf — **Einen Befund eine Ebene tiefer noch einmal suchen.** Befund 2
-  war eine Größe mit zwei Skalen. Statt nur die eine Klammer zu setzen, habe ich T5 gegen
-  alle 310 Adressen gelegt: 69 ohne Skalenklasse, darunter 32, die **denselben Fehler ein
-  zweites Mal** enthielten (Lobbydruck aus Fondsgeld gegen Gegendruck aus einem
-  volkswirtschaftlichen Schaden). Regel: **Ein Befund ist eine Stichprobe aus einer
-  Fehlerklasse. Die Klasse abzuzählen kostet einen Lauf und findet den Rest** — und dieser
-  Rest hätte nicht wie ein Rechenfehler ausgesehen, sondern wie ein Balanceproblem.
-- 2026-09-01, vierter Lauf — **Eine Abzählregel deckt nur die Menge, über die sie zählt.**
-  T45 zählt Adressen und konnte Befund 1 (`korbwert` wird verwendet, aber nirgends gebildet)
-  nicht finden, weil er keine Adresse war. Die Antwort ist keine bessere Adressprüfung,
-  sondern eine **zweite Menge mit eigener Aufzählung** (T48: die Funktionen des Zustands).
-  Prüffrage für jede Prüfvorschrift, die ich schreibe: *Worüber zählt sie nicht?*
+- 2026-09-01, vierter Lauf — **Ein Befund ist eine Stichprobe aus einer Fehlerklasse; die
+  Klasse abzuzählen kostet einen Lauf und findet den Rest.** Aus einer Größe mit zwei Skalen
+  wurden beim Auszählen von T5 gegen alle 310 Adressen 69 ohne Skalenklasse, darunter 32 mit
+  demselben Fehler. Der Rest hätte nicht wie ein Rechenfehler ausgesehen, sondern wie ein
+  Balanceproblem. Zweite Hälfte derselben Lehre: **Eine Abzählregel deckt nur die Menge, über
+  die sie zählt** — T45 zählt Adressen und konnte deshalb eine fehlende *Funktion* nicht
+  finden. Prüffrage: *Worüber zählt sie nicht?*
 - 2026-09-02, **neu und die teuerste Lehre dieses Laufs** — **Ein ADR trägt eine
   Entscheidung, keinen Beweis. Die Entscheidung bindet mich, seine technische Behauptung
   nicht.** ADR 0011 führt `-fsanitize=undefined` ein, damit ein Überlauf „laut statt still"
@@ -55,8 +39,18 @@ freigeben.*
   signiert dividieren gegen Beträge dividieren. Zwei Minuten, und aus einer Vermutung wurde
   eine Bauvorgabe (T6b). **Bei jedem Leistungsbefund: Welches Erzeugnis liegt herum, das die
   Frage direkt beantwortet?**
-- 2026-09-01, vierter Lauf — **Eine Umrechnungsfunktion ohne Aufrufer streichen** — sie ist
-  eine stehende Einladung, sie irgendwo zu benutzen, wo sie nicht hingehört.
+- 2026-09-03, **neu** — **Eine Aufzählung von Rechenarten muss eine Partition sein, sonst
+  ist sie eine Liste mit Loch.** T7 Massnahme 4 zählte {Multiplikation-Division, Addition,
+  Subtraktion} auf und liess die blanke Multiplikation zweier `i64` dazwischen liegen; unter
+  `-fwrapv` bricht die still um. Der Prüfer hat es gefunden, ich hätte es beim Schreiben
+  finden können. **Wo ich Operationen aufzähle, schneide ich seitdem nach der Rechenart und
+  frage, welche Art zwischen zwei Punkten liegt** — nach der *Stelle* geschnitten wird jede
+  solche Liste beim nächsten Zusatz wieder unvollständig.
+- 2026-09-03, **neu** — **Eine Grep-Vorschrift einmal gegen den echten Baum laufen lassen,
+  bevor sie im Dokument steht.** Mein erster Regexentwurf für „blanke Multiplikation" traf 40
+  Zeilen `const char*` und kursive Sterne in Kommentaren. Erst das Muster ` * ` ergab 58
+  Zeilen, die sich sämtlich vier Arten zuordnen liessen. Ohne den Probelauf hätte dort eine
+  Vorschrift gestanden, die beim ersten Gebrauch unbrauchbar ist — und gründlich ausgesehen.
 - 2026-09-01, dritter Lauf — **Eine Prüfvorschrift, die ich schreibe, führe ich im selben
   Lauf einmal von Hand aus** — sonst prüfe ich die Zusage und nicht die Sache. Beim
   Auszählen der 310 Adressen gegen die eigene Regel aus T45 fielen elf ohne Eintrag heraus
@@ -71,27 +65,26 @@ freigeben.*
   Gewichtung — ohne freien Parameter fällt der Einwand „das Maß misst die Wahl des
   Bauagenten" weg, weil es keine Wahl mehr gibt. Der Spielentwerfer hat daraufhin seine
   Formel an meine angeglichen, statt umgekehrt.
-- 2026-09-01 — **Eine Botbewertung gegen *jede* Strategieklasse einzeln prüfen, nicht nur
-  gegen die, die der Prüfer nennt.** Prüffrage in einem Satz: *Welche Klasse kann diese
-  Bewertung strukturell nicht gewinnen?* Genau daraus ist die Beteiligungsfrage entstanden,
-  die `spiel.md` jetzt entschieden hat.
 - 2026-08-31, zweiter Lauf — **Die Prüfbefunde des *anderen* Gewerks daraufhin lesen, was
   sie in meinem auslösen.** Im dritten Lauf war es wieder so: Beide Befunde gehörten dem
   Spielentwerfer, und seine Antwort darauf hat vier Stellen dieses Dokuments bewegt. Wer nur
   seine eigenen abarbeitet, liefert eine Fassung, die zum neuen Entwurf nicht mehr passt.
 - 2026-08-31, zweiter Lauf — **Jede Summe in einer Tabelle bekommt eine Nachrechnungszeile
-  im Fließtext.** Zwei Zeilen Prosa mit den Teilsummen machen den Fehler beim Schreiben
-  sichtbar, nicht erst beim Prüfen.
-- 2026-08-31 — **Die teuerste Schleife zuerst beziffern, dann den Stack wählen.** Damit war
-  die Entscheidung eine Rechnung (Minuten gegen Stunden) statt eines Geschmacksurteils.
+  im Fließtext.**
 - 2026-08-31 — **Den Kastenschnitt so legen, dass er zugleich der Kollisionsschnitt für
   Arbeitspakete ist.** Kostet beim Entwerfen nichts und spart dem Projektmanager einen
   Schritt.
-- 2026-08-31 — **Lizenzrisiko in die Datenschicht schieben.** Was rechtlich wackelt, gehört
-  in ein Erzeugnis, nicht in den Kern — dann kostet ein negativer Bescheid einen Datenlauf
-  und keinen Umbau.
 
 ## Was nicht funktioniert
+
+- 2026-09-03, **neu und die Lehre dieses Laufs** — **Beim Übersetzen einer Vorgabe in eine
+  andere Sprache überlebt nur die Hälfte, die ein Gegenstück hat.** Der T1-Satz trug zwei
+  Zusagen: Werkzeugkette festgenagelt (→ `werkzeugkette.cmake`, übersetzt) und Abhängigkeiten
+  mit `cargo vendor` eingefroren (→ nichts, weil CMake keinen Befehl gleichen Namens hat).
+  Die zweite fiel lautlos weg, und „gestrichen" sah aus wie „übersetzt". Dasselbe eine Ebene
+  tiefer bei T2: Die Erzwingung las weiter *eine* Datei, während CMake die Lücke in der
+  Nachbardatei hat. **Regel: Jeden übersetzten Satz vorher in seine Zusagen zerlegen und jede
+  einzeln quittieren** — übersetzt, anders eingelöst oder ausdrücklich fallengelassen.
 
 - 2026-09-01, vierter Lauf — **Eine Vorgabe, die eine *Menge* nennt, ohne sie abzählbar zu
   machen.** T8 sagte seit Fassung 2 „alle nominalen Größen dieses Landes werden durch 1.000
@@ -115,13 +108,13 @@ freigeben.*
   Deshalb steht `ticks_je_sekunde` als Berichtspflicht in jedem Prüfstandsbefund. Beim
   nächsten Lauf ist das Erste, was ich lese, der gemessene Wert — liegt er über 50 µs, muss
   die Markträumung anders gebaut werden als über 40 Halbierungsschritte.
-- 2026-09-02 — **Ein Abnahmekriterium kann mit dem Rest seines eigenen Pakets unvereinbar
-  sein, und dann erfülle ich den Zweck und sage es.** `0011-stack-auf-cpp` verlangt, dass ein
-  `grep` nach „Rust" nichts mehr findet — und im selben Paket eine Kandidatentabelle (Rust
-  ist eine der vier gemessenen Zeilen) und die Frage, was an die Stelle von
-  `#![forbid(unsafe_code)]` tritt. Beides ist ohne den Namen nicht schreibbar. Vierzehn
-  Nennungen bleiben, alle vergleichend, keine als Festlegung. **Wer eine Zahl in ein
-  Kriterium schreibt, prüfe sie gegen die anderen Absätze desselben Pakets.**
+- 2026-09-02, **am 2026-09-03 bestätigt** — **Ein Abnahmekriterium kann mit dem Rest seines
+  eigenen Pakets unvereinbar sein, und dann erfülle ich den Zweck und sage es.**
+  `0011-stack-auf-cpp` verlangte ein `grep` ohne Rust-Treffer und im selben Paket eine
+  Kandidatentabelle, in der Rust eine der gemessenen Zeilen ist. Der Projektmanager hat das
+  Kriterium daraufhin berichtigt, der Prüfer gegen die berichtigte Fassung geprüft. **Den
+  Zweck erfüllen und den Widerspruch benennen war richtig** — hätte ich still das Kriterium
+  gehalten, wäre die Tabelle weggefallen.
 
 ## Offene Fährten
 
@@ -152,10 +145,11 @@ freigeben.*
   auf acht Kernen — meine ältere Notiz („sprengt den Nachtlauf") war falsch. Ist der Bot zu
   schwach, misst Maß 2 seine Schwäche; dann ist Tiefe 2 der Weg, nicht eine
   Schwellenänderung.
-- 2026-09-01, dritter Lauf — **Die vier Restweltadressen aus T46 sind Ballast mit Auflage:**
-  Sie existieren nur, weil `spiel.md` die Zahl 310 nennt; keine Regel liest sie. Kürzen wäre
-  sauberer, kostet aber eine Zeile in `spiel.md` und ist deshalb nicht meine Entscheidung.
-  Es blockiert nichts.
+- 2026-09-03, **neu** — **`festkomma.hpp` hat kein `mal(a, b)`.** T7 Massnahme 4.3 verlangt
+  es seit heute, und es ist die einzige Codezeile, die aus dem Rücklauf zu 0011 folgt. In
+  Abschnitt 16 von `technik.md` an den Projektmanager gemeldet; ein Paket anzulegen ist nicht
+  meine Rolle. Beim nächsten Lauf zuerst nachsehen, ob es gebaut ist — daran hängt, ob die
+  Vorgabe eine Zusage oder eine Tatsache ist.
 - 2026-09-01, dritter Lauf — **Die Neubasierung (T8) greift im Prüfjahrgang nie**, ist also
   ungeprüfter Code, und dasselbe gilt für die Ausschlussregel `soll = 0` in T42. Beide haben
   eine Testauflage bekommen (Regressionspartie 1980). Allgemein: **Jeder Zweig, den der

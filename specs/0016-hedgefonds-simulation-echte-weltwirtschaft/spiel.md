@@ -32,6 +32,16 @@ fehlt", fünf unter „Offene Entwurfsfragen" und eine Tabelle unter „Was der 
 rechnen muss". Auch dieser Nachtrag ändert keine Zahl der fünften Fassung und keine
 Zustandsadresse; er füllt die Lücke, die `technik.md` Abschnitt 12 Punkt 3 gemeldet hat.*
 
+*Geändert am **2026-09-03** aus Arbeitspaket `0039-zollzeile-konjunktursockel`, nach
+Befund 1 und 2 der Prüfung vom 2026-09-02. Die **Zollzeile** der Schadensvorschrift misst
+nicht mehr die ganze Verschiebung des Sektorpreises, sondern **allein den Anteil, den der
+Zollkeil daran hat** — Weg 1 von den dreien, die der Befund offengelassen hat. Betroffen
+sind sechs Abschnitte unter *Der Schaden in Gegenkraft 5*, eine neue Zeile unter *Was für
+die Preisbildung gelten muss*, die Zeile zu Kanal 3, vier Zeilen unter „Was bewusst
+fehlt", drei unter „Offene Entwurfsfragen" und die Nachziehtabelle. Auch dieser Nachtrag
+kommt **ohne neue Zustandsadresse** aus; die Zahl der Lesezugriffe fällt von behaupteten
+120 auf nachgezählte **106**. Die Abarbeitung beider Befunde steht am Ende der Datei.*
+
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
 Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
@@ -142,6 +152,28 @@ Zahlenwert hat keine volkswirtschaftliche Bedeutung; er muss Länder und Sektore
 ordnen, und das tut er. Er ist exogen und über die Partie konstant; Chinas wachsende
 Handelsoffenheit bildet das Modell über die Mengen ab, nicht über die Preisübertragung.
 Zwei benannte Vereinfachungen, keine versteckten.
+
+### Der Zollkeil ist multiplikativ, und das entscheidet die Skalentabelle
+
+`technik.md` T28 **nennt** den Keil („der Zollkeil je Gebiet auf dem Weltpreis"), ohne ihn
+hinzuschreiben. Bis zum 2026-09-03 war das folgenlos; seit die Schadensvorschrift von
+Gegenkraft 5 den Keil vom übrigen Preishub trennt, ist es das nicht mehr. Was gelten muss:
+
+```
+weltpreis_mit_zoll(l, s) = mal_geteilt( welt.preis.<s>, 10.000 + zollstand(l), 10.000 )
+```
+
+**Die additive Lesart ist nicht schlechter begründet, sondern gar nicht bildbar.** Der
+Zollstand steht nach `technik.md` T5 in **Klasse 3** (Basispunkte), der Weltpreis in
+**Klasse 5** (Index, Startjahr 10.000); eine Summe über zwei Klassen kennt T5 nicht, und
+`10.000 + zollstand` ist der einzige Ausdruck, in dem eine Rate als Faktor auftreten darf.
+Inhaltlich ist es dasselbe: Ein aggregierter Zollsatz je Land in Basispunkten ist ein
+Wertzoll, sonst wäre er keine Rate. Beides zeigt in dieselbe Richtung, deshalb ist die
+Festlegung hier eine Klarstellung und keine Wahl.
+
+Die Form ist ab jetzt festgelegt, weil eine Rechenvorschrift, die auf eine ungeschriebene
+Formel zeigt, wieder nur ein Adjektiv ist — genau der Mangel, gegen den Paket 0021
+angetreten ist.
 
 Dienstleistungen haben keine Handelszeile, keinen Weltpreis und nur einen Landespreis.
 
@@ -544,6 +576,14 @@ gedämpft ist und nicht bloß langsam. Die Anleihevariante desselben Kanals (Lob
 Leitzins statt auf den Zoll, `anleihekurs` statt `sektorpreis`) ist kein neunter Kanal,
 sondern derselbe mit anderem Instrument und anderem Kurs.
 
+Die Abkürzung `Instrument → Schaden → Gegenlobbybudget → Instrument`, die seit dem
+2026-09-03 in der Zollzeile von Gegenkraft 5 steht, ist **kein neunter**: Sie ist Kanal 3
+ohne seinen Umweg über die Menge. Der Zollstand geht dort jetzt zweimal ein — über
+`handelsvolumen` wie bisher und über `hub(l, zoll)` neu —, beide Male in dasselbe Glied
+*Schaden*, und beide Male mit derselben Dämpfung: Der Gegendruck wird nur in Schritt 5
+geschrieben und kann erst in Schritt 3 der Folgerunde wirken. Es kommt kein Glied hinzu und
+keine Rundengrenze weg.
+
 Der Preiskanal `Sektorpreis(t−1) → landespreis → Sektorpreis(t)` ist dagegen **kein eigener**:
 Er ist Kanal 3 in seinem Preisglied, ausgeschrieben. Seine Dämpfung ist der Anteil
 `(10.000 − durchgriff)/10.000`, also strikt kleiner als eins, solange `durchgriff > 0`;
@@ -676,21 +716,26 @@ Lücke, misst Maß 2 seine Wahl. Sie ist hier gefüllt.
 > **Der Schaden eines Instruments ist die Verschiebung des Preises, den es setzt, mal der
 > Menge, auf die dieser Preis wirkt — beides an der Rundengrenze gemessen.**
 
-Vier Instrumente, vier Preise, vier Mengen, eine Rechenform. Für jedes der vier Länder `l`
-und jedes seiner vier Instrumente `i`:
+Vier Instrumente, vier Preise, vier Mengen, eine Rechenform. **„Der Preis, den es setzt" ist
+beim Zoll der Keil und nicht der Sektorpreis** — der Sektorpreis entsteht aus Weltpreis,
+Keil und Preisträgheit, und nur der Keil hat das Instrument als Ursache. Seit dem 2026-09-03
+misst die Zollzeile deshalb ihn; die Begründung steht zwei Abschnitte weiter unten.
+
+Für jedes der vier Länder `l` und jedes seiner vier Instrumente `i`:
 
 ```
 schaden(l, i) = mal_geteilt( menge(l, i), verschiebung(l, i), 10.000 )      [Klasse 2]
 ```
 
-Die Bausteine, alle aus dem Zustand und keiner neu:
+Die Bausteine, alle aus dem Zustand und dem Jahrgang, keiner eine neue Adresse:
 
 ```
 hub(l, i)           = | lies_neu(land.<l>.instrument.<i>.stand)
                       − lies_alt(land.<l>.instrument.<i>.stand) |
 
-preishub(l, s)      = | lies_neu(land.<l>.sektor.<s>.preis)
-                      − lies_alt(land.<l>.sektor.<s>.preis) |
+keilhub(l, s)       = mal_geteilt( lies_neu(welt.preis.<s>), hub(l, zoll), 10.000 )
+
+preishub_zoll(l, s) = mal_geteilt( keilhub(l, s), durchgriff(l, s), 10.000 )
 
 handelsvolumen(l,s) = Σ über die vier Gegenüber g:
                         lies_neu(handel.<l>.<g>.<s>) + lies_neu(handel.<g>.<l>.<s>)
@@ -703,33 +748,202 @@ schuld(l)           = mal_geteilt( bip(l), lies_neu(land.<l>.staatsschuld), 10.0
 `handelsvolumen(l, s)` ist die sektorweise Fassung der Nummer 11; ihre Summe über die beiden
 handelbaren Sektoren ist die alte Größe. Keiner dieser Namen ist eine Zustandsadresse — es
 sind Funktionen des Zustands, dieselbe Bauart wie `korbwert` im Abschnitt *Was ein Korb wert
-ist*.
+ist*. `durchgriff(l, s)` ist keine Zustandsgröße, sondern eine der vierzehn
+**Jahrgangskonstanten** (`technik.md` T23 Punkt 5), über die Partie fest.
+
+**`keilhub` und `preishub_zoll` sind seit dem 2026-09-03 neu und ersetzen `preishub`.** Die
+Vorfassung las die volle Verschiebung des Sektorpreises; warum das die falsche Größe war und
+warum diese die richtige ist, steht unter *Warum die Zollzeile nur den Keil misst*.
 
 Damit die vier Zeilen:
 
 | Instrument | `verschiebung(l, i)` | Klasse | `menge(l, i)` | `schaden(l, i)` |
 |---|---|---:|---|---|
-| `zoll` | `preishub(l, s)`, je handelbarem Sektor einzeln | 5 | `handelsvolumen(l, s)` | `Σ` über s ∈ {1, 2}: `mal_geteilt(handelsvolumen(l,s), preishub(l,s), 10.000)` |
+| `zoll` | `preishub_zoll(l, s)`, je handelbarem Sektor einzeln | 5 | `handelsvolumen(l, s)` | `Σ` über s ∈ {1, 2}: `mal_geteilt(handelsvolumen(l,s), preishub_zoll(l,s), 10.000)` |
 | `leitzins` | `hub(l, leitzins)` | 3 | `schuld(l)` | `mal_geteilt(schuld(l), hub(l,leitzins), 10.000)` |
 | `haushalt` | `hub(l, haushalt)` | 3 | `bip(l)` | `mal_geteilt(bip(l), hub(l,haushalt), 10.000)` |
 | `regulierung` | `hub(l, regulierung) · regulierung_last` | 10 × 3 | `bip(l)` | `mal_geteilt(bip(l), hub(l,regulierung) · regulierung_last, 10.000)` |
 
-Der dritte Sektor trägt in der Zollzeile null, weil er keine Handelszeile hat; ob man über
-zwei oder über drei Sektoren summiert, ändert die Zahl nicht.
+Der dritte Sektor trägt in der Zollzeile null, weil er weder eine Handelszeile noch einen
+Weltpreis hat und nach T28 `durchgriff = 0` trägt — drei Gründe, von denen jeder einzeln
+genügt; ob man über zwei oder über drei Sektoren summiert, ändert die Zahl nicht.
+`welt.preis.<s>` gibt es ohnehin nur für s ∈ {1, 2}.
 
-**Warum der Zoll als einziger nicht seinen eigenen Stand liest.** Ein Zollsatz ist kein
-Preis, sondern ein Keil: Was der Käufer zahlt, ist der Sektorpreis, und der entsteht in
-Schritt 4 aus Weltpreis, Zollkeil und `durchgriff`. Genau das ist die Kette aus Kanal 3
-— *Instrument → Handel → Weltpreis → Schaden* —, wörtlich gelesen. Der Leitzins dagegen
-**ist** der Preis des Geldes, der Haushaltssaldo **ist** der Anteil am Ausstoß, und die
-Regulierungsstufe wird mit ihrem Lastsatz zu einem solchen Anteil. Drei Instrumente setzen
-ihren Preis selbst, eines setzt ihn über den Markt; die Regel ist für alle vier dieselbe.
+#### Warum die Zollzeile nur den Keil misst
+
+**Die Entscheidung, in einem Satz:** Von der Verschiebung des Sektorpreises zählt als
+Schaden **allein der Teil, den der Zollschritt verursacht hat** — der Rest ist Konjunktur
+und gehört nicht in eine Gegenkraft.
+
+Bis zum 2026-09-03 stand hier die volle Verschiebung, und das war falsch. Der Nachweis ist
+zwei Zeilen lang und stammt aus der Preisbildungsregel oben:
+
+```
+preis_neu − preis_alt = durchgriff/10.000 · ( weltpreis_mit_zoll_neu − preis_alt )
+```
+
+Der Klammerausdruck zerfällt in zwei Summanden, und nur der erste hat einen Verursacher:
+
+```
+weltpreis_mit_zoll_neu − preis_alt
+    = welt.preis_neu · (zoll_neu − zoll_alt)/10.000        ← der Zollkeilanteil
+    + ( welt.preis_neu · (10.000 + zoll_alt)/10.000 − preis_alt )   ← der Sockel
+```
+
+Der zweite Summand ist genau die Verschiebung, die eingetreten wäre, **wenn der Zollstand
+sich nicht bewegt hätte**. Er ist nach der Preisträgheitsregel oben („der Inlandspreis
+folgt dem Weltpreis mit einem Jahr Verzögerung") von Bauart wegen von null verschieden,
+in jeder Runde, ohne jede Aktion. `preishub_zoll` ist die alte Größe minus diesen zweiten
+Summanden, und sonst ändert sich nichts.
+
+**Was der Sockel wirklich ist: die Inflation, mal dem Handelsvolumen.** `handelsvolumen`
+steht nach T5 Klasse 2 zu konstanten Preisen, `preishub` war ein Nominalindex — das Produkt
+ist die nominale Aufwertung des Handelsstroms und damit ungefähr die jährliche Sektorpreis­-
+steigerung des Landes. Die Zollzeile hat vor dieser Änderung die **Inflation gemessen** und
+sie als Lobbyschaden gebucht.
+
+**Drei Gründe, und der erste allein genügt.**
+
+1. **Er trifft Maß 2 an seiner empfindlichsten Stelle, und keine Kalibrierung holt ihn
+   zurück.** Die Familie Lobby ist die einzige der drei, deren Gegenkraft ausschließlich
+   Gegenkraft 5 ist. Ein Sockel, der ohne Aktion entsteht, ist für jedes Profil derselbe
+   und für kein Profil vermeidbar — er zieht die Grundlinie unter genau einer der drei
+   Klassen weg. `gegenlobby_satz` hilft nicht, weil er Sockel und Aktionsantwort gemeinsam
+   skaliert; wer den Sockel halbiert, halbiert die Antwort mit. Und Einfluss ist der
+   **Anteil** des Fonds am gesamten Lobbydruck, also verschiebt ein exogen gespeister
+   Gegendruck diesen Anteil dauerhaft. Die Abnahme von Maß 2 lautet
+   `max(Ek) ≤ 1,25 × min(Ek)` über die drei Klassen; ein Handicap, das genau eine Klasse
+   trägt und über die Partie mit dem Preisniveau wächst, ist die naheliegendste Art, sie zu
+   reißen — und sie fiele nicht an einer Zahl, sondern an der Bauart.
+2. **Er steht gegen die eigene Begründung dieses Abschnitts.** Der Wertschöpfungsverlust ist
+   unten mit dem Satz verworfen: *„Er ist Konjunktur, nicht Reaktion … ohne dass eine einzige
+   Lobbyaktion stattgefunden hätte."* Dieselbe Eigenschaft hatte die Zollzeile, und dort war
+   sie nicht die Ausnahme, sondern die Regel. Zwei Größen mit derselben Eigenschaft
+   verschieden zu behandeln ist kein Entwurf, sondern ein Versehen.
+3. **Er macht den Rückschlag unerklärbar, und das ist die erste der drei Klagen.** Schritt 1
+   zeigt die Kette der Vorrunde. Unter der alten Regel las sie sich: *Gegendruck auf dem
+   deutschen Zollinstrument +6.570, Ursache: Schaden 32.850.000 Tsd USD, Ursache: der
+   Sektorpreis hat sich bewegt* — und dahinter steht keine Aktion, sondern der Weltmarkt.
+   Genau das meint „the consequences of choices often feel intangible": nicht, dass zu wenig
+   passiert, sondern dass das, was passiert, nicht am Spieler hängt. Der Entwurf verspricht
+   im Titel, dass jede Zahl sagt, warum sie sich bewegt. Der Sockel konnte das nicht.
+
+**Und der Nebeneffekt ist der zweite Beleg dafür, dass die alte Größe die falsche war.**
+`technik.md` T8 basiert bei Hyperinflation die drei Sektorpreise eines Landes neu (Division
+durch 1.000), `welt.preis.<s>` dagegen nicht — es hängt an keinem Gebiet. Eine Differenz
+`preis_neu − preis_alt` über eine solche Neubasierung hinweg ist nicht die Preisverschiebung,
+sondern der Basiswechsel; sie hätte den Gegendruck des betroffenen Landes still auf
+`druck_max` gelegt. Dass eine Differenz das braucht, weiß der Architekt bereits: T42 rechnet
+für den Rückvergleich genau diese Korrektur heraus. Die Schadensvorschrift hatte sie nicht.
+Im Prüfjahrgang 1997 tritt der Fall nie ein — in den Spieljahrgängen vor 1997, die dieser
+Entwurf ausdrücklich erhält, schon. **Die neue Fassung differenziert nur den Zollstand
+(Klasse 3, wird nie neu basiert) und liest den Weltpreis als Niveau; T8 kann sie nicht
+treffen.**
+
+#### Die beiden anderen Wege, und warum sie es nicht sind
+
+**Weg 2 — `hub(l, zoll)` lesen wie die drei anderen Zeilen.** Er ist billiger und löst den
+Sockel ebenfalls. Er scheitert an zwei Stellen.
+
+Erstens macht er die Zeile blind für die Sektorwirkung. `schaden(l, zoll)` wäre dann
+`mal_geteilt(handelsvolumen(l), hub(l,zoll), 10.000)` und hinge nur noch am Land. Der
+Entwurf begründet aber vierhundert Zeilen weiter oben die Ordnung, die `durchgriff`
+herstellt: *„ein Zoll trifft Chinas Industrie über ihren hohen `durchgriff` hart und die
+US-Industrie, in der Bau und Versorger dominieren, schwach"*. Unter Weg 2 trifft er beide je
+Einheit Handelsvolumen gleich hart. Das ist derselbe Selbstwiderspruch wie unter 2 oben, nur
+in die andere Richtung.
+
+Zweitens verwechselt er eine Rate mit einem Preis. Ein Zollsatz ist kein Preis, sondern ein
+Keil; was der Käufer zahlt, ist der Sektorpreis. Der Leitzins dagegen **ist** der Preis des
+Geldes, der Haushaltssaldo **ist** der Anteil am Ausstoß, und die Regulierungsstufe wird mit
+ihrem Lastsatz zu einem solchen Anteil. Diese Unterscheidung stand schon in der Fassung vom
+2026-09-02 und gilt unverändert — sie ist der Grund, warum die Zollzeile den Zollstand
+**umrechnet** statt ihn einzusetzen. Genau das leistet `keilhub`: Er übersetzt eine Rate in
+Basispunkten am Weltpreisniveau in eine Verschiebung in Indexpunkten, und erst `durchgriff`
+lässt davon durch, was im Inland ankommt.
+
+**Weg 3 — den Sockel behalten und hinschreiben.** Er fällt an Grund 1: Ein hingeschriebener
+Konstruktionsfehler bleibt einer. Der Sockel ist nichts, was die Kalibrierung noch drehen
+könnte, und er wäre auch für Maß 3 schädlich, nicht nur folgenlos: Er wächst mit dem
+nominalen Preisniveau über die Partie, verteuert die Familie Lobby also im letzten
+Partiedrittel systematisch — eine Verschiebung des Optimums, die **auch bei abgeschaltetem
+Fonds** entstünde. Maß 3 hätte seine Schwelle dann mit einer Drift der Welt erreicht statt
+mit einer Eigenschaft des Spiels. Ein Maß, das sich so bedienen lässt, misst nicht mehr.
+
+#### Was die Entscheidung kostet, und was sie nicht kostet
+
+**Sie kostet nicht:** eine neue Zustandsadresse (`welt.preis.1` und `welt.preis.2` sind die
+Nummern 239 und 240 in `daten/adressen.md`), eine neue Reihe, einen vierten Skalenübergang,
+einen neunten Kanal oder eine zweite Markträumung. Und sie kostet **nichts an Signal**: Der
+Aktionsanteil des Schadens ist Zeichen für Zeichen derselbe wie vorher, nur der Sockel fällt
+weg. Die Zerlegung oben ist exakt, nicht ungefähr.
+
+**Sie kostet:** den Schaden, den ein *fremder* Zoll im Inland anrichtet. Ein deutscher
+Industriesektor, den ein amerikanischer Zollschritt über den Weltpreis trifft, erzeugt in
+Deutschland keinen Gegendruck mehr, weil `hub(DE, zoll)` null ist. Das steht unter *Was
+bewusst fehlt*, und der Kanal ist nicht durchtrennt, sondern umgeleitet: Der fremde
+Zollschritt hebt den deutschen Sektorpreis, senkt das Realeinkommen, senkt die Zustimmung
+und löst über Gegenkraft 2 einen Regierungswechsel aus, der **alle vier** deutschen
+Instrumente zurückstellt und damit über `hub` Schaden erzeugt. Das ist schwellengesteuert
+statt stetig, und der Unterschied gehört benannt — aber es ist derselbe Weg, den der Entwurf
+für Preiswirkungen ohnehin vorsieht.
+
+**Eine Bedingung, die daraus folgt und die der Jahrgangsbau prüfen muss.** `preishub_zoll`
+entsteht aus zwei Rundungen. Ist der kleinstmögliche Zollschritt zu klein, rundet die Zeile
+für ein Land×Sektor-Paar auf null, und die Gegenkraft ist dort **stumm, ohne es zu sagen**.
+Was gelten muss, als Form und ohne Zahl:
+
+```
+mal_geteilt( mal_geteilt(welt.preis_start(s), schrittweite[zoll], 10.000),
+             durchgriff(l, s), 10.000 )  ≥  1     für jedes Land×Sektor des Jahrgangs
+```
+
+Der Wert von `schrittweite[zoll]`, der das erfüllt, ist Kalibrierung und steht nicht hier;
+dass die Bedingung geprüft wird, ist Entwurf und steht hier.
+
+#### Zwei Zustände, zwei Zahlen
+
+Dieselbe Probe wie in Paket 0021, jetzt an der Zeile, die dort keine hatte. Beide Zustände
+unterscheiden sich in **genau einer** Größe, dem Zollstand.
+
+| Größe | Zustand A (ein Zollschritt) | Zustand B (keine Aktion) |
+|---|---:|---:|
+| `handelsvolumen(DE,1)` / `(DE,2)` (Tsd USD) | 40.000.000 / 100.000.000 | dieselben |
+| `durchgriff(DE,1)` / `(DE,2)` (Jahrgang) | 7.288 / 5.464 | dieselben |
+| `lies_neu(welt.preis.1)` / `(welt.preis.2)` | 11.000 / 10.400 | dieselben |
+| `…instrument.zoll.stand`, `lies_alt` → `lies_neu` | 380 → 430 bp | 380 → 380 bp |
+| `hub(DE, zoll)` | 50 | **0** |
+| `keilhub(DE,1)` / `(DE,2)` | 55 / 52 | 0 / 0 |
+| `preishub_zoll(DE,1)` / `(DE,2)` | 40 / 28 | 0 / 0 |
+| Beitrag Sektor 1 / Sektor 2 | 160.000 / 280.000 | 0 / 0 |
+| **`schaden(DE, zoll)`** | **440.000** | **0** |
+
+Nachgerechnet mit `mal_geteilt` und der Rundungsregel aus T6 (auf halbe Beträge von null
+weg): `11.000 · 50 / 10.000 = 55` glatt; `7.288 · 55 / 10.000 = 40,084 → 40`;
+`5.464 · 52 / 10.000 = 28,4128 → 28`; `40.000.000 · 40 / 10.000 = 160.000`;
+`100.000.000 · 28 / 10.000 = 280.000`.
+
+**Zustand B ist die Abnahme, und er ist ohne jede Kenntnis der Keilform nachrechenbar.**
+Bewegt sich der Zollstand nicht, ist `hub` null, damit `keilhub` null, damit
+`preishub_zoll` null und damit `schaden(l, zoll)` **exakt null** — für jeden Weltpreis, jede
+Preisträgheit und jedes Handelsvolumen. Zum Vergleich die Zahl der Vorfassung für denselben
+Zustand B, mit den Zahlen des Befunds (Weltpreis 10.400 gegen Vorrundenpreis 10.000,
+Handelsvolumen 1,5·10^9): **32.850.000** statt null.
+
+**Damit gilt für alle vier Zeilen derselbe Satz**, und das ist die eigentliche Wirkung
+dieser Entscheidung: *Der Schaden eines Instruments ist genau dann von null verschieden,
+wenn das Instrument sich in dieser Runde bewegt hat.* Vorher galt er für drei von vier.
+
+Dass ein Instrument sich auch ohne Aktion des Spielers bewegen kann, bleibt möglich — ein
+Regierungswechsel stellt alle vier zurück. Das ist keine Ausnahme von dem Satz, sondern
+dieselbe Kette eine Stufe später, und sie trifft alle vier Zeilen gleich; siehe *Wächst mit
+dem Erfolg?*.
 
 #### Wer geschädigt wird, und an welche der 16 Adressen es fließt
 
 | Instrument | Wer trägt den Schaden | warum diese Menge |
 |---|---|---|
-| `zoll` | die beiden handelbaren Sektoren des Landes und ihre Gegenüber im Handel, ein- wie ausfuhrseitig | der Keil wirkt auf die Waren, die die Grenze überqueren — deshalb der Handelsstrom in beide Richtungen |
+| `zoll` | die beiden handelbaren Sektoren des Landes und ihre Gegenüber im Handel, ein- wie ausfuhrseitig | der Keil wirkt auf die Waren, die die Grenze überqueren — deshalb der Handelsstrom in beide Richtungen, und deshalb nur die Verschiebung, die der Keil selbst erzeugt |
 | `leitzins` | der Staat als Schuldner und über seinen Haushalt alle drei Sektoren | der Zins wird auf den Schuldenstand gezahlt, nicht auf den Ausstoß |
 | `haushalt` | die Empfänger der Staatsleistung, also alle drei Sektoren nach Wertschöpfungsanteil | der Saldo steht in Basispunkten **des BIP**; die Menge ist deshalb das BIP |
 | `regulierung` | das Finanzgewerbe in Sektor 3 und über die Kapitalkosten die übrigen | der Zustand führt keinen Finanzsektor; das BIP ist die gröbste ehrliche Menge |
@@ -741,13 +955,17 @@ Adressen. Damit ist jede einzelne herleitbar: Wer `land.BR.instrument.leitzins.g
 aufschlägt, rechnet `mal_geteilt(schuld(BR), hub(BR, leitzins), 10.000)` und danach
 `lobbypunkte_aus_schaden` darauf.
 
-**Ein ausländischer Schaden geht dabei nicht verloren.** Ein deutscher Industriesektor, den
-ein amerikanischer Zoll trifft, spürt die Verschiebung im **deutschen** Sektorpreis — über
-Weltpreis und `durchgriff` —, sein Schaden wird in Deutschland gerechnet und legt sich auf
-das **deutsche** Zollinstrument. Das ist keine Notlösung, sondern die Regel:
-**Eine Gegenlobby bildet sich dort, wo sie handeln kann**, beim eigenen Gesetzgeber und
-nicht beim fremden. Was sie dort erreicht, ist Widerstand gegen Bewegung und nicht
-Vergeltung — siehe *Was bewusst fehlt*.
+**Die Regel dahinter bleibt: Eine Gegenlobby bildet sich dort, wo sie handeln kann**, beim
+eigenen Gesetzgeber und nicht beim fremden. Was sie dort erreicht, ist Widerstand gegen
+Bewegung und nicht Vergeltung — siehe *Was bewusst fehlt*.
+
+**Seit dem 2026-09-03 gilt diese Regel für den Zoll allerdings nur noch für den eigenen
+Schritt.** Bis dahin trug die Zollzeile auch den Schaden, den ein *fremder* Zoll über den
+Weltpreis im Inland anrichtete; mit dem Sockel fällt er weg, denn er hängt am Weltpreis und
+nicht am eigenen Keil. Ihn zurückzuholen hieße, den allgemeinen Gleichgewichtsanteil eines
+Zollschritts zu isolieren, und das braucht eine **zweite Markträumung** je Runde — die
+teuerste Rechnung des Modells noch einmal, für einen Zustand, den es nicht gibt. Er steht
+deshalb unter *Was bewusst fehlt*, mit dem Weg, über den er trotzdem ankommt.
 
 #### Wie das Gegenbudget wächst und wieder vergeht
 
@@ -830,20 +1048,31 @@ der Kapitalstock ist es nicht.
 Gerechnet wird in **Schritt 5**, dem Ort, den T50 als einzigen Aufrufort von
 `lobbypunkte_aus_schaden` festlegt — sechzehn Aufrufe je Runde, alle hier. Gelesen wird:
 
-| woher | Adressen | Zahl |
-|---|---|---:|
-| Schritt 3 | `lies_neu(land.<l>.instrument.<i>.stand)` | 16 |
-| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.preis)`, s ∈ {1, 2} | 8 |
-| Schritt 4 | `lies_neu(handel.<a>.<b>.<s>)`, der ganze Handelsblock | 40 |
-| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, für `bip` | 12 |
-| Schritt 4 | `lies_neu(land.<l>.staatsschuld)`, für `schuld` | 4 |
-| Vorrunde | `lies_alt(land.<l>.instrument.<i>.stand)` | 16 |
-| Vorrunde | `lies_alt(land.<l>.sektor.<s>.preis)`, s ∈ {1, 2} | 8 |
-| Vorrunde | `lies_alt(land.<l>.instrument.<i>.gegendruck)` | 16 |
+| woher | Adressen | Zahl | für welche Zeile |
+|---|---|---:|---|
+| Schritt 3 | `lies_neu(land.<l>.instrument.<i>.stand)` | 16 | alle vier |
+| Schritt 4 | `lies_neu(welt.preis.<s>)`, s ∈ {1, 2} | 2 | `zoll` |
+| Schritt 4 | `lies_neu(handel.<a>.<b>.<s>)`, der ganze Handelsblock | 40 | `zoll` |
+| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, für `bip` | 12 | `leitzins`, `haushalt`, `regulierung` |
+| Schritt 4 | `lies_neu(land.<l>.staatsschuld)`, für `schuld` | 4 | `leitzins` |
+| Vorrunde | `lies_alt(land.<l>.instrument.<i>.stand)` | 16 | alle vier |
+| Vorrunde | `lies_alt(land.<l>.instrument.<i>.gegendruck)` | 16 | alle vier |
 
-120 Lesezugriffe, 16 Schreibzugriffe, **keine neue Adresse**. Jede gelesene Größe steht in
-`daten/adressen.md`; `bip`, `schuld` und `handelsvolumen` sind Funktionen daraus und keine
-Felder. Die Zahl 310 bleibt, und der Abzählschritt aus T45 geht unverändert auf.
+`16 + 2 + 40 + 12 + 4 + 16 + 16 =` **106 Lesezugriffe**, 16 Schreibzugriffe, **keine neue
+Adresse**. Gezählt sind unterschiedliche Adressen, nicht Zugriffsvorgänge — der
+Handelsblock steht deshalb mit 40 und nicht mit 64, weil ein Strom zwischen zwei spielbaren
+Ländern in zwei `handelsvolumen` eingeht. Jede gelesene Größe steht in `daten/adressen.md`,
+`welt.preis.1` und `welt.preis.2` als Nummern 239 und 240; `bip`, `schuld` und
+`handelsvolumen` sind Funktionen daraus und keine Felder, `durchgriff` ist eine
+Jahrgangskonstante. Die Zahl 310 bleibt, und der Abzählschritt aus T45 geht unverändert auf.
+
+**Die Zahl ist zweimal falsch gewesen, und die Korrektur gehört zur Entscheidung.** Die
+Fassung vom 2026-09-02 nannte 120 und zählte den Zollstand doppelt mit 16, obwohl die
+Zollzeile ihn damals gar nicht las — der Prüfbefund 2 hat das gefunden und 112 gerechnet.
+Nach dieser Entscheidung liest der Zoll seinen Stand wieder, dafür fallen beide
+Sektorpreiszeilen (`lies_neu` und `lies_alt`, je 8) ersatzlos weg und die zwei Weltpreise
+kommen hinzu: `112 + 4 + 4 − 8 − 8 + 2 = 106`. Beide Zahlen der Vorfassungen sind damit
+abgelöst, und die Nachziehtabelle am Ende nennt dieselbe 106.
 
 **Die Rundengrenze ist die Lösung, nicht ein zweiter Satz Adressen.** Ein Schaden, der den
 Zustand vor dem Instrumentenschritt mit dem danach vergleicht, bräuchte Schattenadressen;
@@ -851,7 +1080,7 @@ der Vergleich `lies_neu` gegen `lies_alt` braucht keine, weil der Schreiber nach
 Stände ohnehin führt.
 
 **Kanal 3, abgegangen:** Instrument (Schritt 3, `stand`) → Handel (Schritt 4, `handel`) →
-Weltpreis (Schritt 4, Markträumung, angekommen im Sektorpreis) → Schaden (Schritt 5, hier) →
+Weltpreis (Schritt 4, Markträumung) → Schaden (Schritt 5, hier) →
 Gegenlobbybudget (Schritt 5, `gegendruck`) → Instrument (Schritt 3 der **Folgerunde**).
 Genau eine Rundengrenze wird überquert, und sie wird nicht versprochen, sondern erzwungen:
 Schritt 3 muss `lies_alt(gegendruck)` lesen, weil die Adresse in dieser Runde noch nicht
@@ -859,9 +1088,22 @@ geschrieben ist und `lies_neu` darauf nach T39 ein harter Fehler wäre. Die Däm
 „Gegendruck wirkt erst in der Folgerunde" ist damit eine Eigenschaft, die jeder Lauf
 nachweist.
 
-Nicht gelesen wird `welt.preis.<s>` selbst. Der Weltpreis ist für alle Gebiete derselbe und
-könnte nicht unterscheiden, wen es getroffen hat; gemessen wird die Verschiebung dort, wo
-sie ankommt — am Sektorpreis des Landes, in dem der Geschädigte sitzt.
+**`welt.preis.<s>` wird gelesen, aber nicht differenziert, und der Unterschied ist der
+ganze Punkt.** Die Vorfassung hat den Weltpreis mit dem Argument ausgeschlossen, er sei für
+alle Gebiete derselbe und könne nicht unterscheiden, wen es getroffen hat. Das Argument
+gilt weiterhin — und es trifft die neue Zeile nicht, weil dort keine Weltpreis*differenz*
+steht. Unterschieden wird durch `durchgriff(l, s)`, `handelsvolumen(l, s)` und
+`hub(l, zoll)`, alle drei land- oder landessektorspezifisch; der Weltpreis liefert allein
+das **Niveau**, an dem eine Rate in Basispunkten zu einer Verschiebung in Indexpunkten wird.
+Ein Niveau kann niemanden auszeichnen und soll es auch nicht.
+
+**Und es ist kein neunter Kanal.** Der Zollstand erreicht den Schaden jetzt auf zwei Wegen
+statt einem: über die Menge (Instrument → Handel → `handelsvolumen`) wie bisher und über die
+Verschiebung (Instrument → `hub` → Schaden) neu. Beide sind Glieder von Kanal 3, der zweite
+ist der erste ohne seinen Umweg. Die Dämpfung ist unverändert dieselbe und wird unverändert
+erzwungen: `gegendruck` wird nur in Schritt 5 geschrieben, `lies_neu` darauf in Schritt 3
+ist nach T39 ein harter Fehler, also überquert der Weg genau eine Rundengrenze. Innerhalb
+der Runde bleibt die Ordnung 3 → 4 → 5 zyklenfrei.
 
 #### Die Skalenprobe
 
@@ -875,9 +1117,22 @@ Basispunkten durch 10.000 ist der zusätzliche Zinsdienst eines Jahres, in Tause
 Ergebnis geht unverändert in `lobbypunkte_aus_schaden`. Ein vierter Skalenübergang entsteht
 an keiner Stelle.
 
+**Die Zollzeile hat seit dem 2026-09-03 zwei Zwischenschritte statt einem, und beide halten
+die Klasse.** `keilhub` ist Klasse 5 mal Klasse 3 durch 10.000, also wieder Klasse 5 — die
+Verschiebung des zollbelasteten Weltpreises in Indexpunkten. `preishub_zoll` ist Klasse 5
+mal Klasse 4 (`durchgriff`, Zehntausendstel) durch 10.000, also erneut Klasse 5. Erst der
+letzte Schritt verlässt die Indexwelt, und er ist derselbe wie in den drei anderen Zeilen:
+Klasse 2 mal Zehntausendstel durch 10.000 ist Klasse 2. **Kein vierter Skalenübergang, und
+Klasse 1 wird an keiner Stelle berührt** — die Einordnung der Zollzeile in der
+Instrumententabelle bleibt Klasse 5, wie in der Vorfassung.
+
 Zum Überlauf: Der größte Faktor ist `bip(US)`, nach T5 in der Größenordnung `2,1 · 10^10`
 Tausend USD; mal einer Verschiebung in Zehntausendsteln bleibt das Zwischenergebnis
-weit unter der `i64`-Grenze, und `mal_geteilt` rechnet nach T6 ohnehin über `i128`.
+weit unter der `i64`-Grenze, und `mal_geteilt` rechnet nach T6 ohnehin über `i128`. Die
+Zollzeile bleibt darunter: `welt.preis` ist ein Index in der Größenordnung 10^4,
+`hub(l, zoll)` durch `instrument_max[zoll]` begrenzt, `keilhub` und `preishub_zoll` damit
+selbst Indexgrößen; das größte Produkt ist `handelsvolumen · preishub_zoll` und liegt bei
+einem Handelsstrom in der Größenordnung 10^9 bei rund 10^13.
 
 #### Was Gegenkraft 5 im Weltlauf tut
 
@@ -890,9 +1145,10 @@ behält ihren Startwert 0. Diese Rechenvorschrift wird im Weltlauf nicht ausgewe
 Das ist kein Verlust, sondern die Bedingung des Maßes. Die Politikinstrumente sind im
 Weltlauf exogen; ein Gegendruck hätte dort keinen Adressaten, und die Regulierung, deren
 Schadenszeile ohnehin die einzige ohne Datenanker ist, steht fest auf dem Startwert.
-Die Eingangsgrößen der Formel — Instrumentenstände, Sektorpreise, Handelsblock,
-Wertschöpfung, Staatsschuld — stehen sämtlich in der Weltlaufmaske; die Rechnung *ließe*
-sich also mitlaufen. Sie zu schreiben würde die Maske brechen, und eine Ausgabe daneben ist
+Die Eingangsgrößen der Formel — Instrumentenstände, **Weltpreise**, Handelsblock,
+Wertschöpfung, Staatsschuld — stehen sämtlich in der Weltlaufmaske (`technik.md` T38 führt
+die Weltpreise dort mit **ja**); die Sektorpreise, die die Vorfassung noch brauchte, stehen
+seit dem 2026-09-03 gar nicht mehr in der Formel. Die Rechnung *ließe* sich also mitlaufen. Sie zu schreiben würde die Maske brechen, und eine Ausgabe daneben ist
 Sache des Prüfstands und keine Entwurfsfrage.
 
 **Die Folge, ausdrücklich benannt: Maß 4 prüft diese Vorschrift nicht.** Geprüft wird sie
@@ -913,8 +1169,16 @@ billig zu bewegen ist, hängt damit am Land und nicht an einer Balancezahl.** Da
 Bauart, die dieser Entwurf an Democracy 4 belegt hat: Wirkung aus geladenen Tabellen, nicht
 aus einprogrammierten Ausnahmen.
 
+**Und die Zollzeile ist die einzige mit Struktur unterhalb des Landes.** `schuld` und `bip`
+kennen nur das Land; die Zollzeile rechnet je Land **und Sektor**, weil `durchgriff(l, s)`
+und `handelsvolumen(l, s)` es tun. Das ist der Grund, warum die Entscheidung vom 2026-09-03
+auf den Keil und nicht auf den nackten Zollstand fällt: Ein Zoll, dessen Preis nicht mehr
+davon abhängt, welchen Sektor er trifft, wäre für Maß 2 die vierte Zeile derselben Sorte
+statt einer eigenen.
+
 **Und die Mengen bewegen sich über die Partie.** `handelsvolumen`, `schuld` und `bip` sind
-endogene Größen auf einem historischen Pfad, und die vier Brüche, die der Zuschnitt oben
+endogene Größen auf einem historischen Pfad — seit dem 2026-09-03 kommt in der Zollzeile
+`welt.preis.<s>` als vierte hinzu, ebenfalls endogen —, und die vier Brüche, die der Zuschnitt oben
 ausdrücklich im Fenster behalten hat — Euro 1999, WTO-Beitritt 2001, 2008, 2020 —, laufen
 sämtlich über Handel, Staatsschuld oder Ausstoß und damit über genau diese drei Mengen. Das
 billigste Lobbyziel der dritten Runde ist deshalb nicht zwangsläufig das billigste der
@@ -1260,7 +1524,7 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 
 | Klage aus den Rezensionen | Entwurfsentscheidung |
 |---|---|
-| „the consequences of choices often feel intangible" | **Höchstens drei Aktionen je Runde** — Knappheit zwingt jede Aktion, groß genug zum Wirken zu sein. Dazu die Kette als eigener Zustandsteil (Schritt 1 und 6) und Maß 1 als Abnahmeschwelle je Partiedrittel statt als Wunsch. |
+| „the consequences of choices often feel intangible" | **Höchstens drei Aktionen je Runde** — Knappheit zwingt jede Aktion, groß genug zum Wirken zu sein. Dazu die Kette als eigener Zustandsteil (Schritt 1 und 6) und Maß 1 als Abnahmeschwelle je Partiedrittel statt als Wunsch. **Seit dem 2026-09-03 dazu die Gegenprobe:** In Gegenkraft 5 ist der Schaden jedes Instruments genau dann von null verschieden, wenn das Instrument sich bewegt hat. Eine Kette, die eine Strafe zeigt und dahinter keine Aktion, ist dieselbe Klage von hinten — deshalb ist der Konjunktursockel der Zollzeile gefallen. |
 | „trying to implement the tiniest socialist policy will always result in bankruptcy" | **Der Fonds kann long und short sein.** Damit ist keine politische Richtung dominant: Wer auf Regulierung setzt, weil er short steht, gewinnt genauso wie wer sie verhindert. Dazu die zweiteilige Siegbedingung (Kapital UND Einfluss) und Maß 2, das jede der drei Familien einzeln gewinnen sehen will. |
 | „no dramatic setbacks or successes", „everything is incredibly surface level" | **Drei Todesarten mit sichtbaren Schwellen** (Zwangsliquidation, Marktverbot, Anlegerabzug), die Ergebnisskala, die den frühen Tod schlechter bewertet als den späten, und Maß 3, erzwungen durch Nachahmer und Preisstoß. Der Rückschlag ist dramatisch, aber nie willkürlich — siehe „Keine verdeckte Größe". |
 
@@ -1342,6 +1606,26 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 - **Ein Schaden, der Anstieg und Rückgang unterscheidet.** Die Verschiebung geht als Betrag
   ein: Jede Bewegung schädigt jemanden. Die Richtung trägt bereits die Verrechnung gegen
   `druck` in Schritt 3, und ein Vorzeichen im Schaden zöge sie ein zweites Mal ein.
+- **Der Konjunkturanteil der Preisverschiebung, seit dem 2026-09-03 und ausdrücklich.** Ein
+  Sektorpreis, der dem Weltpreis nachläuft, verschiebt sich in jeder Runde; dass jemand
+  darunter leidet, ist wahr und trotzdem kein Lobbyschaden. Wer die Preisträgheit als Schaden
+  bucht, bucht die Inflation als Gegenkraft — die Begründung steht unter *Warum die Zollzeile
+  nur den Keil misst*. Was dadurch **nicht** fehlt: die Wirkung des Zolls auf den Sektor. Sie
+  steckt in `durchgriff(l, s)`, und das ist der einzige Grund, warum die Zeile nicht einfach
+  `hub(l, zoll)` liest.
+- **Der allgemeine Gleichgewichtsanteil eines Zollschritts.** Ein amerikanischer Zoll bewegt
+  über die Markträumung den Weltpreis und damit die Sektorpreise aller Länder. Dieser Teil
+  seiner Wirkung geht in keine Schadenszeile ein, denn er ließe sich nur gegen einen
+  Zustand messen, den es nicht gibt: dieselbe Runde mit dem alten Zollstand, also eine
+  **zweite Markträumung** mit noch einmal 40 Halbierungsschritten je Sektor. Der Preis wäre
+  die teuerste Rechnung des Modells verdoppelt, der Ertrag eine Zahl, die kein Maß prüft.
+- **Der Schaden, den ein fremder Zoll im Inland anrichtet, als eigene Zeile.** Er ist die
+  Folge des Vorigen und fällt mit ihm. Er verschwindet nicht aus dem Spiel, sondern wechselt
+  die Gegenkraft: Der fremde Zollschritt hebt den inländischen Sektorpreis, senkt das
+  Realeinkommen und die Zustimmung und kann über Gegenkraft 2 einen Regierungswechsel
+  auslösen, der alle vier Instrumente zurückstellt und damit Schaden erzeugt. Der Unterschied
+  gehört benannt und ist keine Kleinigkeit: Der alte Weg war stetig, der neue ist
+  schwellengesteuert und um mindestens eine Runde langsamer.
 - **Ein eigener Gegenlobbysatz je Instrument.** Ein `gegenlobby_satz`, vier Mengen. Vier
   Sätze gäben der Kalibrierung drei Achsen, deren Wirkung die Mengen ohnehin erzeugen —
   und zwar aus dem Jahrgang statt aus einer Zahl.
@@ -1426,6 +1710,22 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   und dieses Verhältnis hängt an beiden Regeln. Mein Vorschlag für das Folgepaket ist
   dieselbe Halbierung aus demselben Grund; entschieden ist sie hier nicht, weil sie zu
   Schritt 3 gehört und nicht zu Gegenkraft 5.
+- **Ob `schrittweite[zoll]` die Rundungsschwelle der Zollzeile überschreitet.** Neu am
+  2026-09-03 und die einzige Bedingung, die aus der Zollkeilentscheidung folgt. Ein
+  Zollschritt läuft über zwei Rundungen — Weltpreisniveau mal Rate, dann mal `durchgriff` —,
+  und für ein Land×Sektor-Paar mit niedrigem `durchgriff` kann `preishub_zoll` bei kleinen
+  Schritten auf null fallen. Dann ist die Zollzeile dort **stumm, ohne es zu melden**. Die
+  Prüfform steht im Abschnitt; die Zahl, die sie erfüllt, ist Kalibrierung. Der Jahrgangsbau
+  hat alle acht Paare vorliegen und kann die Bedingung mechanisch prüfen — sie gehört in
+  seine Ausgabe, nicht in einen Nachtlauf.
+- **Ob ein `gegenlobby_satz` alle vier Zeilen zugleich trägt, jetzt mit anderem Vorzeichen.**
+  Die Frage stand schon; die Entscheidung vom 2026-09-03 verschiebt sie. Die Zollzeile ist
+  um den Sockel kleiner geworden — ihr Aktionsanteil ist unverändert, aber der Abstand zur
+  Haushaltszeile, deren Menge das ganze BIP ist, liegt jetzt offen. Ob ein Satz beide trägt
+  oder ob die Familie Lobby faktisch nur noch ein bezahlbares Instrument hat, ist am
+  Prüfstand zu sehen und nicht hier. Der Entwurf hält an einem Satz fest, weil vier Sätze
+  der Kalibrierung drei Achsen gäben, deren Wirkung die Mengen ohnehin erzeugen; fällt Maß 2
+  daran, ist es ein Befund über den Entwurf und nicht über die Parameter.
 - **Ob die Gegenlobby die Einflusshälfte des Mandats erreichbar lässt.** Einfluss ist der
   Anteil des Fonds am gesamten Lobbydruck auf ein Instrument; ein Gegendruck, der in jedem
   angefassten Land gegen `druck_max` läuft, drückt diesen Anteil unter jede Schwelle, und
@@ -1468,13 +1768,30 @@ Fünf Stellen, keine davon eine Entscheidung. `technik.md` habe ich nicht angefa
 | T50: „*Wie hoch* der Schaden eines Sektors ist, bleibt Sache von `spiel.md`"; Abschnitt 12 Punkt 3 meldet die Lücke | Die Vorschrift steht im Abschnitt *Der Schaden in Gegenkraft 5*: `mal_geteilt(menge, verschiebung, 10.000)` je Land und Instrument, vier Zeilen | T50, Abschnitt 12 Punkt 3 |
 | `handelsvolumen(l)` über beide handelbaren Sektoren zusammen | dazu die sektorweise Fassung `handelsvolumen(l, s)`; ihre Summe über s ist die alte Größe, die Definition ändert sich nicht | T48 Nr. 11 |
 | `parameter.toml` ohne Lastsatz für die Finanzmarktregulierung | neuer Schlüssel **`regulierung_last`**, Klasse 3, Basispunkte des BIP je Regulierungsstufe, kalibriert wie `gegenlobby_satz` | T27 |
-| `lobbypunkte_aus_schaden` mit Aufrufort, ohne Aufrufzahl | **16 Aufrufe je Runde**, sämtlich in Schritt 5; dazu 120 Lesezugriffe und 16 Schreibzugriffe, aufgeschlüsselt im Abschnitt | T50, Kostenzeile in Abschnitt 10 |
+| `lobbypunkte_aus_schaden` mit Aufrufort, ohne Aufrufzahl | **16 Aufrufe je Runde**, sämtlich in Schritt 5; dazu **106** Lesezugriffe und 16 Schreibzugriffe, aufgeschlüsselt im Abschnitt (die 120 der Fassung vom 2026-09-02 waren falsch, siehe Befundabarbeitung) | T50, Kostenzeile in Abschnitt 10 |
 | T30 Prüfung 6 prüft `0 ≤ gegendruck ≤ druck_max`, ohne dass ein Erzeuger die Grenze hielte | Die Obergrenze steht jetzt im Entwurf als `min(druck_max, …)`; die Prüfung bleibt, sie ist nun eine Probe und keine Hoffnung | T30 |
 
 **Was sich ausdrücklich nicht ändert:** keine Zustandsadresse, die 310, der Abzählschritt
 aus T45, die drei Skalenübergänge aus T50, die acht Kanäle, R, die vier Maße und ihre
 Schwellen. Die Vorschrift liest ausschließlich Größen, die `daten/adressen.md` führt, und
 drei Funktionen aus T48.
+
+### Neu aus Paket 0039 — die Zollzeile misst nur noch den Keil
+
+Vier Stellen, und die erste ist die einzige, an der `technik.md` etwas **hinzubekommt** statt
+ersetzt zu werden. Angefasst habe ich sie nicht.
+
+| war (`technik.md`) | ist | betrifft |
+|---|---|---|
+| T28 nennt „der Zollkeil je Gebiet auf dem Weltpreis", ohne ihn hinzuschreiben | `weltpreis_mit_zoll(l,s) = mal_geteilt(welt.preis.<s>, 10.000 + zollstand(l), 10.000)`, im Abschnitt *Der Zollkeil ist multiplikativ*. Die additive Lesart ist gegen T5 nicht bildbar | T28 |
+| `preishub(l, s)` als Differenz der Sektorpreise | entfällt; an seine Stelle treten `keilhub(l, s)` und `preishub_zoll(l, s)`, beide Klasse 5. `land.<l>.sektor.<s>.preis` wird von Gegenkraft 5 **nicht mehr gelesen**, `welt.preis.<s>` neu | T50, T48 |
+| Kostenzeile mit 120 Lesezugriffen (aus der Fassung vom 2026-09-02) | **106**, aufgeschlüsselt in der Lesetabelle. Die 120 zählten den Zollstand doppelt mit 16, obwohl die alte Zollzeile ihn gar nicht las; die 112 des Prüfbefunds galten für die alte Zeile | T50, Kostenzeile in Abschnitt 10 |
+| `durchgriff` wird allein in der Markträumung (Schritt 4) gebraucht | zusätzlich in Schritt 5, für `preishub_zoll`. Es bleibt eine Jahrgangskonstante nach T23 Punkt 5 und wird keine Adresse | T23 Punkt 5, T50 |
+
+**Und eine Bedingung für den Jahrgangsbau, keine für dich:** Der Ausdruck
+`mal_geteilt(mal_geteilt(welt.preis_start(s), schrittweite[zoll], 10.000), durchgriff(l,s), 10.000)`
+muss für jedes der acht Land×Sektor-Paare mindestens 1 ergeben, sonst ist die Zollzeile dort
+stumm. Die Zahl, die das erfüllt, kommt aus der Kalibrierung.
 
 ### Neu in Fassung 5 — acht Stellen, und keine davon ist eine Zahl
 
@@ -1550,6 +1867,50 @@ Neu hinzugekommen und ohne Vorbild in Fassung 2: das **Vorratsverfahren** (Profi
 Aktionen), die **HS92-Konkordanz** und die Tabelle **Größen ohne Datenanker**. Alle drei
 sind Entwurf, nicht Architektur — sie brauchen von dir nur eine Aufnahme, keine
 Entscheidung.
+
+## Befundabarbeitung — Prüfung 0021 vom 2026-09-02, Paket 0039
+
+Zwei Befunde, beide `Schwere: mittel` beziehungsweise `gering`, keiner ein Rücklaufgrund.
+Das Abnahmekriterium von 0021 war erfüllt; diese Abarbeitung ändert daran nichts und
+beantwortet die Frage, die der Prüfer offengelassen hat.
+
+**Befund 1 — die Zollzeile wächst auch dann, wenn niemand etwas tut: behoben.** Gewählt ist
+**Weg 1**, den Zollkeilanteil der Preisverschiebung zu isolieren. Die Zerlegung ist exakt und
+steht mit ihrer Herleitung im Abschnitt *Warum die Zollzeile nur den Keil misst*; sie zieht
+genau den Summanden ab, der übrig bliebe, wenn der Zollstand stehen bliebe, und lässt den
+Aktionsanteil unberührt. Die Begründung nennt Maß 2 wie verlangt und führt zwei weitere
+Gründe. Weg 2 (`hub(l, zoll)` lesen) und Weg 3 (den Sockel behalten) sind einzeln mit Grund
+verworfen, Weg 2 zusätzlich mit dem Selbstwiderspruch, den er gegen Zeile *Die Ordnung, die
+das Argument trägt* erzeugt hätte. Der Prüfer kann `schaden(l, zoll)` jetzt für einen
+Zustand ohne Aktion ausrechnen: Er ist **null**, und zwar ohne dass er die Form des
+Zollkeils kennen müsste. Die Probe steht als Tabelle mit zwei Zuständen.
+
+Was ich dabei **zusätzlich** gefunden habe und was den Befund verstärkt: Die alte Größe
+differenzierte den Sektorpreis, und `technik.md` T8 basiert genau den bei Hyperinflation
+neu. Eine Differenz über eine Neubasierung hinweg ist der Basiswechsel und nicht die
+Preisverschiebung. Im Prüfjahrgang 1997 tritt der Fall nie ein, in den Spieljahrgängen vor
+1997 schon. Die neue Fassung kann er nicht treffen.
+
+**Befund 2 — die Lesetabelle zählt acht Zugriffe, die nicht stattfinden: behoben, mit
+anderer Zahl.** Der Zählfehler ist bestätigt: Die 120 der Vorfassung zählten
+`land.<l>.instrument.<i>.stand` zweimal mit 16, obwohl die damalige Zollzeile ihn nicht las.
+Die 112 des Befunds sind für die damalige Zeile richtig nachgerechnet — sie sind aber nicht
+die Zahl, die jetzt gilt. Nach der Entscheidung liest der Zoll seinen Stand wieder (zweimal
+16 statt zweimal 12), dafür fallen beide Sektorpreiszeilen weg (zweimal 8) und die beiden
+Weltpreise kommen hinzu: `112 + 8 − 16 + 2 =` **106**. Die Lesetabelle und die
+Nachziehtabelle nennen beide diese Zahl, und die Zeilenzuordnung zur Instrumententabelle
+steht in einer eigenen Spalte, damit sie nachzählbar ist statt nachvollziehbar.
+
+**Was ich nicht getan habe.** `technik.md` habe ich nicht angefasst; was dort nachzuziehen
+ist, steht in der Tabelle *Neu aus Paket 0039*. Keine neue Zustandsadresse, keine neue Reihe,
+keine Kalibrierzahl. Die Bedingung an `schrittweite[zoll]` steht als Form ohne Wert.
+
+**Und ein Vorschlag, der nicht in dieses Paket gehört, aber aus ihm folgt:** Die Fassung des
+Zollkeils war bis heute nirgends aufgeschrieben, obwohl sie seit der zweiten Fassung in der
+Markträumung steht. Ich habe sie hier festgelegt, weil die Schadensvorschrift sie braucht
+und weil T5 nur eine Lesart zulässt. Ob `technik.md` T28 sie übernimmt oder eine andere
+Begründung dagegen hat, ist Sache des Architekten — widerspricht er, ist es ein Befund gegen
+diesen Abschnitt und nicht gegen die Zollzeile.
 
 ## Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01
 
