@@ -167,3 +167,19 @@ Der Verweis „Punkt 9 in `rueckstand.md`" war die letzte Stelle, an der die off
 Präfixfrage verzeichnet war. Er musste weg — er zeigte ins Leere, weil `rueckstand.md` je
 Baulauf neu geschrieben wird. Nach dem Paket gilt:
 
+- In `rueckstand.md` steht die Frage **nicht mehr**; eine Suche nach Präfix und
+  `gebiet.<G>.` über die Datei findet nichts.
+- Ein Arbeitspaket dafür gibt es **nicht**; ich habe alle 48 Kennungen unter `aufgaben/`
+  durchgesehen.
+- Als offen benannt ist sie nur noch in Prosa: in `daten/adressen.md`, in `aufgaben/0030`
+  und in drei Dateien unter `befunde/`.
+
+Dazu kommt der Teil, der aus einer Fussnote ein Paket macht: **`kern/src/zustand.cpp` hat
+die Frage in Code bereits beantwortet.** `gebietspraefix()` (Zeilen 494 bis 504) setzt
+`land.<L>.` für die vier spielbaren Länder und `restwelt.` für die Restwelt — der
+Kommentar darüber sagt es wörtlich —, und `stelle_basiswechsel()` benutzt genau diese
+Funktion. `technik.md` T46 schreibt an derselben Stelle weiter `gebiet.<G>.basiswechsel`
+und sagt nirgends, dass beides dasselbe ist.
+
+Damit steht eine Vorgabe des Architekten gegen eine Festlegung im Kern, ohne ADR und ohne
+Paket. Vorschlag `0049-t46-gebietspraefix-entscheiden` geschrieben.
