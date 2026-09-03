@@ -1,7 +1,7 @@
 ---
 id: 0034-belegstellen-ohne-zeilennummern
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0030-basiswechsel-familie]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

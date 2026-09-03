@@ -1,7 +1,7 @@
 ---
 id: 0035-parameterdatei-belegstellen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0009-parameterdatei-schluessel, 0028-parameterdatei-querverweis]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -136,6 +136,65 @@ Schlüssel geparkt sind; wer sie nebenbei entscheidet, weicht ohne ADR von T5 ab
 Auftrag lautet, den toten Verweis durch die Frage selbst zu ersetzen — und keine
 Punktnummer in `rueckstand.md` zu erneuern, weil die Datei je Lauf neu geschrieben wird und
 keine stabile Nummerierung trägt. Das ist zutreffend, und es ist meine eigene Datei.
+
+## Gebaut — 2026-09-03, Datenbauer
+
+Sechs Hunks in `parameter.toml`, alle in Kommentarzeilen, 51 eingefügt und 13 gelöscht.
+Die 13 gelöschten sind genau die sieben Fundstellen mit Zeilennummer und der Halbsatz
+auf `rueckstand.md`; keine Schlüsselzeile ist im Diff.
+
+**Zu (a).** Die vier Zitate stehen jetzt mit Abschnittsname beziehungsweise
+Tabellennummer und dem Wortlaut da. Jede ist in der heutigen Fassung ohne Zählen
+gefunden worden:
+
+| Verweis neu | gesucht mit | gefunden |
+|---|---|---:|
+| spiel.md, Abschnitt „Die Aktionen", Nummer 4 (**Hebel**) | „Kreditaufnahme zum Leitzins des Landes plus einem Aufschlag" | spiel.md 183 |
+| spiel.md, Kanaltabelle im Abschnitt „Warum die Größe des Zustands keine Verteidigung ist", Tabellenzeile `\| 4 \|`, Spalte „Dämpfung" | „Hebelobergrenze, Aufschlag steigt mit Sichtbarkeit" | spiel.md 530 |
+| technik.md T5, Tabellenzeile `\| 3 \|` (Raten), Spalte „Bereich" | „Basispunkte (1 bp = 0,01 %)" | technik.md 241 |
+| technik.md T5, Erläuterung zu Klasse 10, Aufzählungspunkt „**Instrumentenstufe (10).**" | „heisst dort **eine Stufe**" | technik.md 269–273 |
+
+Die vierte Fundstelle ist dabei **nicht** die T5-Tabellenzeile, sondern der
+Erläuterungspunkt darunter; der alte Verweis „T5 Klasse 10 Zeile 155-156" ließ das
+offen. Vier Fundstellen tragen ihn (der Gruppenkopf der Schrittweite und die drei
+Instrumententabellen Leitzins, Zoll, Haushalt).
+
+Zwei Zugaben, beide Bauart und keine Zahl: eine Regel im Kopf, **wie** diese Datei nach
+`specs/` verweist, samt der gemessenen Ursache (+6 in `spiel.md`, +117 in `technik.md`,
+je Datei einheitlich und zwischen den Dateien verschieden) — und der Hinweis, dass die
+Datei durchgängig ohne Umlaute schreibt, `specs/` aber nicht. Der Hinweis ist nicht
+kosmetisch: Das Zitat „hoechstens ein Schritt je Runde" steht in `technik.md` mit
+Umlaut, und ohne den Hinweis führt eine wörtliche Suche danach ins Leere. Jede der vier
+Belegstellen nennt deshalb zusätzlich einen umlautfreien Teil des Zitats.
+
+**Zu (b).** Der Halbsatz auf `rueckstand.md` ist durch die Frage im Wortlaut ersetzt:
+*Trägt T5 Klasse 4 („0 bis 10.000") ihren Deckel auch für einen Regler, oder nur für die
+Größe, die er stellt?* Sie ist als **offen** markiert und nicht beantwortet; daneben
+steht, dass die fünf Schlüssel bis zu ihrer Beantwortung unverändert bleiben. Eine
+Punktnummer in `rueckstand.md` ist nicht erneuert, und **warum** sie es nicht ist, steht
+an Ort und Stelle. Der Dateiname `rueckstand.md` kommt noch einmal vor — in dem Satz,
+der sagt, dass dort bis Paket 0035 ein Verweis stand und dass er ins Leere zeigte. Das
+ist die Erklärung der Auslassung, kein Verweis, dem jemand folgen soll.
+
+**Zu Abnahme 3.** An der Datei nachgewiesen, nicht über `git diff --stat`:
+
+- `grep -c '^[a-z_0-9]* *=.*PLATZHALTER'` → **46**
+- `grep -c '^[a-z_0-9]* *=.*FEST (T51)'` → **4**
+- `grep -cE '^[a-z_0-9]+ *='` → **50**
+- `grep -n 'Zeile [0-9]'` → **nichts**
+- Umlaute in der Datei: **null**, wie vorher.
+
+Die fünf geparkten Schlüssel `preisstoss`, `zustimmung_elastizitaet`,
+`nachahmer_wirkung`, `hebel_max`, `innerjahresausschlag_faktor` sind unberührt; die
+Klasse-4-Frage ist nicht beantwortet.
+
+**Nebenbefund, als eigenes Paket vorgeschlagen:**
+`0044-schranken-probe-belegstellen`. `kern/test/schranken_probe.cpp` nennt sechsmal eine
+Zeilennummer in `parameter.toml` (304, 205, 250 für `druck_max`, `stufen_max`,
+`aufschlag`; heute 336, 237, 282) — dieselbe Bauart in der Gegenrichtung. Drei der sechs
+sind `fprintf`-Zeilen und drucken die falsche Nummer in den Übersetzungsbefund. Die
+Nummern waren schon vor diesem Lauf um 8 verschoben (Paket 0028); mein Lauf hat 24
+weitere hinzugefügt. Die Datei gehört dem Testentwickler; ich habe sie nicht angefasst.
 
 ## Rückläufe
 

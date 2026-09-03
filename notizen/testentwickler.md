@@ -32,6 +32,15 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   nicht als eigenen Test. Dann misst die Vorführung nachweislich denselben Maßstab.
   Konkret: `zaehle_kerne(liste, kernfunktion)` plus `besteht_kernpruefung(befund)`, einmal
   mit der echten und einmal mit der kaputten Funktion.
+- 2026-09-03 — Zwei falsche Fassungen belegen nur dann, dass zwei Bedingungen
+  *Verschiedenes* messen, wenn je Fassung **beides** zugesichert wird: welche Bedingung
+  sie fängt und welche sie durchlässt. Die Erwartung gehört in den Aufruf
+  (`fuehre_abweichung_vor(..., invariante_soll, folge_soll)`), nicht ins Ergebnis —
+  sonst prüft die Vorführung sich selbst.
+- 2026-09-03 — Einen Erwartungswert aus der Vorgabe **zweimal** abschreiben (einmal als
+  Zeichenkette für „zeichengleich", einmal als Tabelle für „in welcher Runde") und die
+  beiden Abschriften vor allem anderen gegeneinander prüfen. Ein Tippfehler im Maßstab
+  läuft sonst still grün, und ein falscher Maßstab ist schlimmer als ein roter Test.
 - 2026-09-02 — Rotnachweis ohne Kollateralschaden geht mit zwei Edits am eigenen Modul
   (kaputt → bauen → laufen → zurück → bauen → grün). Ein Sabotagelauf in `$TMPDIR` scheitert
   hier am Werkzeugzugriff; der Weg über das Repo ist umkehrbar und im Ergebnis derselbe.
@@ -48,6 +57,9 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   werden im Lauf abgelehnt, einzelne Aufrufe nicht. Ein Bauzyklus ist deshalb drei Aufrufe:
   `cmake -S/-B`, `cmake --build`, `ctest`. Kostet Läufe, wenn man es erst beim dritten Mal
   merkt.
+- 2026-09-03 — `grep` über die Shell wird im Lauf abgelehnt, das Grep-Werkzeug tut
+  dasselbe. Die Nachweis-Greps einer Abnahme laufen darüber; kostet einen Aufruf, wenn
+  man es erst beim Fehlschlag merkt.
 - 2026-09-02 — `rm -rf bau` wird abgelehnt (Hausregel 3). Ein Bauverzeichnis muss nicht neu
   angelegt werden: `cmake -S/-B` über den vorhandenen Stand hinweg konfiguriert sauber neu,
   auch wenn der alte Cache aus einer Platzhalterfassung stammt.
@@ -69,4 +81,11 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-02 — Der Prüfstand hat noch keinen **Regressionsbestand** und keinen
   **Determinismustest** — die beiden Sachen, die laut Rollenbeschreibung meine wichtigsten
   sind. Beide brauchen einen gerechneten Weltschritt und stehen deshalb erst nach dem
-  Kernpaket zu „Schaden" an. `vorrat_probe` ist bis dahin der einzige Prüfstandstest.
+  Kernpaket zu „Schaden" an. Der Prüfstand trägt seit dem 2026-09-03 zwei Proben
+  (`vorrat_probe`, `vorrat_verfahren_probe`), beide ohne Weltschritt.
+- 2026-09-03 — **Eine Invariante fängt Nullfälle prinzipiell nicht.** Nachgemessen an
+  T43: Macht man `ai = 0` zum harten Verbot, bleibt die Invariante für alle 126 Profile
+  und beide `k` grün — die Art soll `3k·0 = 0` Steckplätze bekommen und bekommt genau
+  null. Nur ein eigens gebauter Fall mit *einer* zulässigen Art fängt es. Wer eine
+  Invariante als alleinigen Maßstab nimmt, prüft die Nullzweige nie; das gilt über
+  dieses Paket hinaus.

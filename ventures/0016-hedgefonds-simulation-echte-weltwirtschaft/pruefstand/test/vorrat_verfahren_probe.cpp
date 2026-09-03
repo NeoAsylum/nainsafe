@@ -45,12 +45,32 @@
 //!     zulaessige Art mit `ai = 0` bekommt alle drei Steckplaetze, obwohl eine andere
 //!     Art den weit groesseren Vorrat hat.
 //!
+//! ## Was die Vorfuehrung von Pruefung 4 ergeben hat, und warum sie noetig war
+//!
+//! Pruefung 1 und 2 fuehren sich ueber `Abweichung` selbst vor. Pruefung 4 hat keinen
+//! solchen Fall im Kopf, also ist sie am 2026-09-03 von Hand vorgefuehrt worden --
+//! zwei Aenderungen am Modul, gebaut, gelaufen, zurueckgenommen. Was dabei herauskam,
+//! steht hier, weil es die Pruefung begruendet:
+//!
+//!   - Verrechnet der leere Steckplatz doch Vorrat (`vi -= 5` fuer alle statt gar
+//!     nichts), faellt **allein 4a** um. Pruefung 1 und 2 merken nichts: Bei
+//!     durchgehender Zulaessigkeit bleibt nie ein Platz leer, der Zweig wird nie
+//!     betreten.
+//!   - Macht man `ai = 0` zum harten Verbot -- der Fehler, gegen den `spiel.md` den
+//!     Satz ueberhaupt geschrieben hat --, faellt **allein 4b** um, mit vier
+//!     Zusicherungen. **Pruefung 1 bleibt dabei fuer alle 126 Profile und beide `k`
+//!     gruen**, und das ist kein Zufall: Eine Art mit `ai = 0` soll `3k*0 = 0`
+//!     Steckplaetze bekommen, und genau null bekommt sie auch, wenn man sie verbietet.
+//!     Die Invariante kann diesen Fehler **prinzipiell nicht** fangen. Ohne 4b waere
+//!     der Satz "`ai = 0` verbietet die Art nicht" in diesem Kasten ungeprueft.
+//!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
 
 #include <array>
 #include <cstddef>
 #include <cstdio>
+#include <stdexcept>
 
 #include "pruefstand/vorrat.hpp"
 
@@ -67,6 +87,7 @@ using pruefstand::vorrat::Profileintrag;
 using pruefstand::vorrat::Profilliste;
 using pruefstand::vorrat::PROFILE;
 using pruefstand::vorrat::Rundenfolge;
+using pruefstand::vorrat::RUNDEN_HOECHSTENS;
 using pruefstand::vorrat::STECKPLAETZE;
 using pruefstand::vorrat::Vorrat;
 using pruefstand::vorrat::Zulaessigkeit;
@@ -573,6 +594,55 @@ int main()
                "ihr Vorrat wird negativ (0 - 3*5) und nicht abgeschnitten", __LINE__);
         pruefe(lauf.vorrat[0] == ZUWACHS * 5,
                "der Vorrat der unzulaessigen Art 1 waechst trotzdem", __LINE__);
+    }
+
+    // -----------------------------------------------------------------------
+    // Die Schranke von `spiele` -- Indexschutz, keine Spielregel
+    // -----------------------------------------------------------------------
+    //
+    // Steht nicht in der Abnahme von Paket 0029; sie ist eine Zusage des Kopfes
+    // ("Wirft `std::domain_error`, wenn `runden` ausserhalb 0 .. RUNDEN_HOECHSTENS
+    // liegt") und schuetzt den Schreibzugriff auf `Laufergebnis::folge`. Eine
+    // Schranke ohne Test ist eine Behauptung, und die Fehlerklasse dahinter ist
+    // genau die, die C++ diesem Vorhaben mitbringt.
+    std::fprintf(stdout, "\nDie Schranke von spiele (Indexschutz)\n");
+    {
+        const Zulaessigkeit keine = Zulaessigkeit{false, false, false, false, false};
+        bool wirft_zu_gross = false;
+        bool wirft_negativ = false;
+        bool nimmt_grenze = false;
+
+        try {
+            (void)pruefstand::vorrat::spiele(
+                REFERENZPROFIL, keine, static_cast<i64>(RUNDEN_HOECHSTENS) + 1);
+        } catch (const std::domain_error&) {
+            wirft_zu_gross = true;
+        }
+        try {
+            (void)pruefstand::vorrat::spiele(REFERENZPROFIL, keine, -1);
+        } catch (const std::domain_error&) {
+            wirft_negativ = true;
+        }
+        // Die Grenze selbst gehoert **hinein**, nicht hinaus: ein Abweisen bei
+        // genau `RUNDEN_HOECHSTENS` waere der Zaunpfahlfehler in die andere Richtung.
+        try {
+            const Laufergebnis grenze = pruefstand::vorrat::spiele(
+                REFERENZPROFIL, keine, static_cast<i64>(RUNDEN_HOECHSTENS));
+            nimmt_grenze = (grenze.runden == static_cast<i64>(RUNDEN_HOECHSTENS));
+        } catch (const std::domain_error&) {
+            nimmt_grenze = false;
+        }
+
+        std::fprintf(stdout, "  runden = %zu + 1 wirft      %s\n", RUNDEN_HOECHSTENS,
+                     wirft_zu_gross ? "ja" : "NEIN");
+        std::fprintf(stdout, "  runden = -1 wirft          %s\n",
+                     wirft_negativ ? "ja" : "NEIN");
+        std::fprintf(stdout, "  runden = %zu laeuft         %s\n", RUNDEN_HOECHSTENS,
+                     nimmt_grenze ? "ja" : "NEIN");
+
+        pruefe(wirft_zu_gross, "spiele wirft ueber RUNDEN_HOECHSTENS", __LINE__);
+        pruefe(wirft_negativ, "spiele wirft bei negativer Rundenzahl", __LINE__);
+        pruefe(nimmt_grenze, "und laeuft bei genau RUNDEN_HOECHSTENS noch", __LINE__);
     }
 
     // -----------------------------------------------------------------------

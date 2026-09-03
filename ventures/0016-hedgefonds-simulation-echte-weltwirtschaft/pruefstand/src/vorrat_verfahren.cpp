@@ -60,6 +60,14 @@ namespace {
 /// Rueckgabewert von `waehle`, wenn keine Art zur Wahl steht. Kein gueltiger Index --
 /// deshalb genau `ARTEN` und nicht `-1`: Der Wert ist derselbe Typ wie ein Index und
 /// faellt trotzdem bei jeder Indexpruefung durch.
+///
+/// **Die einzige Deklaration auf Dateiebene in dieser Quelle, und sie ist
+/// `constexpr`** -- also unveraenderlich und nach der Abnahme von Paket 0029
+/// ausdruecklich zugelassen. Der Hinweis steht hier, weil der dort vorgeschriebene
+/// Mustervergleich sie **nicht** findet: Sein `[a-z_][a-z0-9_]*` verlangt einen
+/// kleingeschriebenen Namen, `KEINE_ART` ist gross. Ein Mustervergleich, der nichts
+/// findet, ist kein Nachweis, dass nichts da ist -- die Stelle, die von Hand
+/// nachzusehen ist, ist diese.
 constexpr std::size_t KEINE_ART = ARTEN;
 
 /// Die Art mit dem groessten `vi` unter den zulaessigen; bei Gleichstand die kleinere
