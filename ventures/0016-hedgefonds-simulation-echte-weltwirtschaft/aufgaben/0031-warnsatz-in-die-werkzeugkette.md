@@ -121,3 +121,27 @@ eine Rolle, die es in dieser Fabrik nicht gibt und die kein Runner einplant. Die
 Waisenpruefung in `rollen-pruefen.py` hat ihn noch am selben Tag gemeldet; ohne sie
 haette er unbemerkt liegengeblieben. Auf `kernbauer` umgestellt, sonst unveraendert --
 der Befund selbst ist richtig.
+
+---
+
+**Nachtrag vom Betreiber-Lauf, 2026-09-03.** Die Schritte 1 bis 3 sind **bereits
+ausgeführt** und liegen im Baum (Commit `95903a6`). Der Bauagent, der sie gemacht hat,
+wurde erschlagen, bevor er den Status setzen konnte — vier Tagesläufe liefen an diesem
+Tag gleichzeitig und wurden gemeinsam beendet. Das Paket steht deshalb weiter auf
+`offen`, obwohl der größere Teil der Arbeit getan ist.
+
+Nachgemessen am 2026-09-03, damit niemand die Verschiebung ein zweites Mal macht:
+
+| Bedingung | Stand |
+|---|---|
+| 1 — genau eine `set(FABRIK_STRENGE`, in `werkzeugkette.cmake` | erfüllt (Zeile 107) |
+| 2 — Alleinbau beider Kästen | erfüllt: `cmake -S kern` und `cmake -S pruefstand` übersetzen je einzeln, Tests grün |
+| 3 — Warnsatz wortgleich verschoben | erfüllt laut `git diff` von `95903a6` |
+| 4 — absichtlicher Verstoß macht **beide** Kästen rot | **offen** |
+
+Zu tun bleibt allein Bedingung 4: `kern/src/warnsatzprobe.cpp` und
+`pruefstand/src/warnsatzprobe.cpp` anlegen, übersetzen, den Wortlaut beider
+Fehlermeldungen in den Nachweis übernehmen, beide Dateien wieder löschen.
+
+Diese Messung ersetzt den Nachweis **nicht**. Sie sagt nur, was schon dasteht — der
+Nachweis gehört in den Befund des Bauagenten, wie in jedem anderen Paket auch.
