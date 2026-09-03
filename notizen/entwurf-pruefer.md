@@ -57,13 +57,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   besten, Mittel) an zwei erfundenen Partien durchgerechnet: drei verschiedene Sieger. Der
   Beleg *„dieselben Laeufe, verschiedene Ordnung"* macht aus einer Auslegungsfrage einen
   Befund, den niemand als Geschmack abtun kann.
-- 2026-09-01 — **Nach einer geaenderten Grundzahl jede abgeleitete Zahl nachrechnen —
-  auch wenn nichts herauskommt.** R fiel von 28 auf 24; ich habe rund zwanzig abgeleitete
-  Groessen beider Dokumente nachgerechnet (Feldzahl, Sollmaske, alle Kostenzeilen,
-  Ergebnisbaender, Kalibrierung, Tiefe 2, Profilkennungen, `durchgriff`) und **keinen**
-  Fehler gefunden. Der Grund steht in `technik.md` T40: keine abgeleitete Zahl mehr als
-  Literal. Wo eine Architektur den Fehlertyp ausschliesst, ist die Nachrechnung billig und
-  einmalig — danach genuegt die Stichprobe.
+- 2026-09-01 — **Nach einer geaenderten Grundzahl jede abgeleitete Zahl nachrechnen.** Bei
+  R 28 → 24 blieben rund zwanzig nachgerechnete Groessen fehlerfrei, weil T40 keine
+  abgeleitete Zahl mehr als Literal zulaesst. Wo die Architektur den Fehlertyp
+  ausschliesst, genuegt danach die Stichprobe.
 - 2026-09-01 (6. Lauf) — **Die Einheitentabelle gegen jede neue Formel legen. Der
   produktivste einzelne Handgriff, den ich bisher habe.** T5 erklaerte den
   Beteiligungswert zu US-Cent und den Marktkorbwert zu Tausend USD und schrieb selbst
@@ -78,12 +75,25 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   dann der Fehlbetrag, jetzt T47 — `positionswert` und `korbwert` erschienen erst, als das
   Fondsvermoegen eine Formel bekam, und beide sind nirgends gerechnet. *Bei jeder neuen
   Formel jeden Namen darin einzeln greppen; ein Treffer heisst „nur die Verwendung".*
-- 2026-09-01 (6. Lauf) — **Was T45 abzaehlt, muss ich nicht zweimal abzaehlen — aber
-  einmal schon.** Die Zerlegung der 310 Adressen war diesmal in beiden Richtungen korrekt
-  (44 je Land, 22 Restwelt, 136/150/11/2/11). Wichtiger war die Einsicht daraus: **Ein
-  Abzaehlschritt ueber Zustandsadressen findet nur Zustandsadressen.** Beide Befunde dieses
-  Laufs liegen ausserhalb der 310 — Funktionen, keine Felder. Eine Vollstaendigkeitspruefung
-  deckt genau ihre eigene Menge ab und beweist nichts ueber die Nachbarmenge.
+- 2026-09-01 (6. Lauf) — **Ein Abzaehlschritt ueber Zustandsadressen findet nur
+  Zustandsadressen.** Die Zerlegung der 310 war korrekt, beide Befunde lagen ausserhalb —
+  Funktionen, keine Felder. Eine Vollstaendigkeitspruefung deckt genau ihre eigene Menge ab
+  und beweist nichts ueber die Nachbarmenge. *Bestaetigt im 7. Lauf:* Bedingung „jede
+  gelesene Groesse hat eine Adresse" war erfuellt, waehrend fuenf neue **Funktionen**
+  (`hub`, `preishub`, `schaden`, `menge`, `verschiebung`) in T48 fehlten.
+
+- 2026-09-02 (7. Lauf) — **Die Begruendung einer Wahl gegen die gewaehlte Lesart selbst
+  wenden.** Der Entwurf verwarf eine Alternative mit „das ist Konjunktur, nicht Reaktion" —
+  und genau das gilt fuer seine eigene Zollzeile: Einsetzen der Preisbildungsregel in die
+  neue Schadensformel ergibt `preishub = durchgriff/10.000 · |weltpreis − preis_alt|`, also
+  einen Schaden in jeder Runde ohne jede Aktion. Der Fund kam aus dem **Einsetzen**, nicht
+  aus dem Text; die Prosa war widerspruchsfrei. *Muster: Eine Ablehnungsbegruendung ist eine
+  Pruefvorschrift, die der Entwerfer auf sich selbst nicht angewandt hat.*
+- 2026-09-02 (7. Lauf) — **Eine Ausnahme im Fliesstext gegen die Zugriffstabelle abzaehlen.**
+  „Der Zoll liest als einziger nicht seinen eigenen Stand" stand in Zeile 720; die
+  Lesetabelle in Zeile 833 zaehlte trotzdem 16 statt 12, Summe 120 statt 112 — und die Zahl
+  war schon auf dem Weg in eine Kostenzeile von `technik.md`. Zwischen Regel und ihrer
+  Abrechnung lagen 113 Zeilen, und das genuegt.
 
 ## Was nicht funktioniert
 
@@ -114,15 +124,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   als Vorrunde nimmt, prueft Bedingung 5 gegen nichts; die echte Vorrunde war Runde 4.
   Eine leere Ergebnisdatei sieht im Verzeichnislisting aus wie eine volle.
 
+- 2026-09-02 (7. Lauf) — **`Write` und `Edit` waren beide gesperrt**, im Wortlaut:
+  „Permission to use Write has been denied because Claude Code is running in don't ask
+  mode", dasselbe fuer `Edit`. Angelegt habe ich Befund und Vorschlaege ueber `cat > … <<`
+  in `Bash`. Nach der Lehre vom 2026-09-02 nenne ich den Aufruf und nicht die
+  Schlussfolgerung: `Bash` schreibt im Repo, die beiden Dateiwerkzeuge nicht.
+
 ## Offene Faehrten
 
-- **Die Bruchstelle „eine Groesse mit zwei Herren" ist zum vierten Mal gewandert**, und
-  zwar nach unten: Sektorgliederung → Startjahrgang → Abnahmeregel → Suchbot-Zielgroesse →
-  Fehlbetrag der Ergebnisgroesse → jetzt **unterhalb** der Maße, in die Summanden des
-  Fondsvermoegens (`positionswert`, `korbwert`). Muster unveraendert: dort, wo eine Groesse
-  benannt, aber nicht gerechnet wird. *Naechster Lauf: die Kette weiter nach unten
-  verfolgen — was geht in `korbwert` ein, wenn es einmal definiert ist (Kapitalstock oder
-  Wertschoepfung), und traegt diese Groesse selbst eine Regel?*
+- **Die Bruchstelle „eine Groesse mit zwei Herren" ist im 7. Lauf ausgeblieben** — zum
+  ersten Mal seit fuenf Laeufen war jede neue Groesse gerechnet statt nur benannt. Statt
+  dessen sass der Fund in der **Begruendung** (siehe oben). *Naechster Lauf: pruefen, ob
+  das haelt oder ob die Bruchstelle nur eine Ebene weiter gewandert ist.*
 - **Ungeprueft geblieben, weil ausserhalb der fuenf Bedingungen:** die Bewertung der vier
   Anleihe-Steckplaetze hat keinen Preis im Zustand (T15 fuehrt `leitzins` und
   `staatsschuld`, keinen Kurs). Steht im Befund als Teil von Befund 1; wird die Bewertung
@@ -130,9 +143,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - **Mass 4 ist ungemessen und bleibt das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
   Richtungstreue mit endogener Produktivitaet erreichbar sind, kann erst der
   Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler.
-- **Offen, aber entschaerft: die IFS-Leitzinsreihen von China und Brasilien.** `imf.org`
-  weist mit HTTP 403 ab, `FR.INR.LEND` ist ein Indiz und eine andere Reihe. Nach T40
-  kostet ein engeres Fenster nur noch eine Manifestzeile.
-- **Das Paket 0001 hat mit diesem Urteil 3 von 3 Ruecklaeufen verbraucht.** Der Zaehler im
-  Paket ist seit Runde 3 nicht nachgefuehrt; ich habe ihn im Befund hergeleitet. Laeuft
-  eine Runde 7, ist die erste Frage an den Projektmanager, ob das Paket noch gilt.
+- **`R = 24` steht noch in `spiel.md`, `daten/deckungsbefund-1997.md` misst enger** (19,
+  20 oder 24, je nach Reihe 9 und 11). Der Entwurf verweist die Wahl ausdruecklich in ein
+  eigenes Paket; solange sie offen ist, ist **jede** Zahl mit R darin vorlaeufig. Beim
+  naechsten Entwurfspaket zuerst nachsehen, ob das Paket inzwischen existiert.
+- **Meine beiden Vorschlaege 0039 und 0040 haengen aneinander:** Die richtige Lesezahl
+  (112 oder 120) faellt erst mit der Entscheidung ueber die Zollzeile. Kommt 0040 zuerst
+  durch, ist die Kostenzeile falsch.

@@ -1,0 +1,81 @@
+---
+id: 0040-t48-groessen-gegenkraft-5
+rolle: architekt
+status: vorschlag
+haengt_an: [0021-schaden-gegenkraft-5, 0039-zollzeile-konjunktursockel]
+dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
+---
+
+# Die Schadensvorschrift bringt fünf abgeleitete Größen mit; T48 kennt eine davon
+
+Aus `befunde/pruefung-0021-schaden-gegenkraft-5-2026-09-02.md`, Abschnitt *Wonach ich
+gesucht habe*. Kein Rücklauf gegen Paket 0021 — dessen Abnahme fragt nach
+Zustandsadressen, und die sind vollständig. Dies ist die Seite `technik.md`.
+
+## Warum ein eigenes Paket und nicht Teil von 0021
+
+Weil es die andere Datei und das andere Gewerk ist. Paket 0021 verbietet dem
+Spielentwerfer ausdrücklich, `technik.md` anzufassen, und er hat sich daran gehalten: Er
+hat eine Nachziehtabelle geschrieben (`spiel.md` Zeile 1466-1477). Sie ist unvollständig,
+und das ist der Gegenstand hier.
+
+## Der Sachverhalt
+
+T48 sagt von sich, die abgeleiteten Größen seien **abschließend** aufgezählt, und stellt
+die Regel auf: *„Ein Name in einer Formel dieses Dokuments oder in `spiel.md`, der weder
+eine Zustandsadresse aus T15 noch ein Parameterschlüssel aus T27 noch eine
+Jahrgangskonstante aus T23 noch eine der siebzehn Größen oben ist, ist ein Befund und keine
+Bauentscheidung."*
+
+Der neue Abschnitt *Der Schaden in Gegenkraft 5* führt fünf solche Namen ein:
+
+| Name | Klasse (T5) | Definition in `spiel.md` |
+|---|---:|---|
+| `hub(l, i)` | wie das Instrument (3 bzw. 10) | Zeile 689-690, Betrag der Standänderung |
+| `preishub(l, s)` | 5 | Zeile 692-693, Betrag der Sektorpreisänderung |
+| `menge(l, i)` | 2 | Spalte der Instrumententabelle Zeile 710-715 |
+| `verschiebung(l, i)` | 3 bzw. 5 | ebenda |
+| `schaden(l, i)` | 2 | Zeile 683, `mal_geteilt(menge, verschiebung, 10.000)` |
+
+Die Nachziehtabelle des Entwurfs meldet davon **keine** und schreibt statt dessen: *„Die
+Vorschrift liest ausschließlich Größen, die `daten/adressen.md` führt, und drei Funktionen
+aus T48."* Gemeldet ist allein die zweistellige Fassung `handelsvolumen(l, s)`, die neben
+T48 Nr. 11 tritt.
+
+**Es ist derselbe Fall wie `korbwert` in Runde 6** — genau der, für den T48 gebaut wurde;
+der Entwurf beruft sich in Zeile 704-706 sogar auf dessen Bauart, ohne die Registrierung
+mitzunehmen.
+
+## Was ausserdem nachzuziehen ist
+
+- `regulierung_last` als neuer Schlüssel in T27, Klasse 3, Basispunkte des BIP je
+  Regulierungsstufe, kalibriert wie `gegenlobby_satz` (`spiel.md` Zeile 1470). In
+  `parameter.toml` fehlt er noch; das ist ein Folgepaket des Datenbauers und nicht dieses.
+- Die Kostenzeile in Abschnitt 10: 16 Aufrufe von `lobbypunkte_aus_schaden` je Runde, dazu
+  16 Schreibzugriffe. **Die Lesezahl erst nach Paket 0039 übernehmen** — `spiel.md` nennt
+  120, nachgezählt sind es 112, und welche gilt, hängt daran, ob die Zollzeile künftig
+  ihren eigenen Stand liest. Deshalb steht 0039 in `haengt_an`.
+- T50 kann den Satz *„Wie hoch der Schaden eines Sektors ist, bleibt Sache von `spiel.md`"*
+  jetzt mit einem Verweis schließen; Abschnitt 12 Punkt 3 meldet die Lücke als bestehend,
+  obwohl sie gefüllt ist.
+
+## Abnahme
+
+1. **T48 führt die fünf Namen**, jeder mit Klasse und Definition, oder das Dokument
+   begründet je Name, warum er keine abgeleitete Größe im Sinne von T48 ist. Der Prüfer
+   legt die Namensliste aus `spiel.md` gegen die Tabelle und darf keinen Rest behalten.
+2. **`handelsvolumen(l, s)` steht neben Nr. 11**, und der Text sagt, dass die Summe über
+   die beiden handelbaren Sektoren die einstellige Fassung ist — sonst sind es zwei Größen
+   mit demselben Namen.
+3. **T50 und Abschnitt 12 Punkt 3 melden die Lücke nicht mehr als offen**, sondern
+   verweisen auf den Abschnitt in `spiel.md`.
+4. **Die Kostenzeile nennt eine Zahl, die der Prüfer aus der Lesetabelle nachzählen kann**,
+   und sie stimmt mit `spiel.md` überein.
+
+## Grenzen
+
+- Keine Entscheidung über die Höhe des Schadens. Die gehört dem Spielentwerfer, T50 sagt
+  das selbst.
+- Keine neue Zustandsadresse, die 310 bleibt.
+- `parameter.toml` gehört dem Datenbauer.
