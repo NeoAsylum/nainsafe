@@ -37,6 +37,14 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0036, Vorgänger: archiv/daten-pruefe
   nicht als Messung". Faktor 1 bei BACI ergibt ein Fünftel des Welt-BIP an Handel; Faktor
   1.000 ergäbe das Zweihundertfache und risse die Überlaufschranke aus T47. Das prüft den
   Faktor ohne eine einzige Außenquelle.
+- 2026-09-03 (0045) — **Bei einem Verschiebepaket ist der Blob-Objektname der ganze Beweis.**
+  Gleicher Hash heißt byteweise gleich, nicht ähnlich; `R100` im `--name-status` und ein leeres
+  `git status -- <pfad>` ziehen Index und Arbeitsbaum mit ein. Drei Bedingungen, drei
+  `git ls-tree`-Aufrufe — die billigste Prüfung, die ich bisher hatte.
+- 2026-09-03 (0045) — **Eine LIESMICH über Daten ist selbst eine Datenaussage.** Die Abnahme
+  verlangte nur „nennt die zwölf beim Namen"; die Datei nannte dazu Größen, Blobs und je eine
+  Inhaltszeile. Alles nachgemessen (auch die Rechnung 6.083 − 6.061 = 22), alles hielt — aber
+  ungeprüft wäre es eine Quelle geworden, die niemand mehr anfasst.
 - 2026-09-02 (0025) — **Die Messung wiederholen, nicht nachlesen.** Bei einem Paket, dessen
   Beleg außerhalb des Repos liegt, ist der eigene Abruf die ganze Prüfung. Der ergiebigere
   Teil sind die **erfolglosen** Abrufe: Wer nur die tragende Seite nachholt, prüft die
@@ -93,11 +101,10 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0036, Vorgänger: archiv/daten-pruefe
   auseinander.** Viermal belegt (0024, 0032, 0036, jetzt 0049). Das ist kein Einzelfall,
   sondern die Bauart. Wer einen Befund abnimmt, der eine `.toml` beantwortet, sollte im selben
   Zug das Übertragspaket vorschlagen.
-- **Eine Korrektur macht die Kopien schlimmer, nicht besser.** `daten/.neu*.tmp` (drei fast
-  vollständige, eingecheckte Fassungen von reihen.toml) tragen nach 0032 *und* nach 0036 den
-  alten Wortlaut. 0045 räumt auf und hat den Fall vorhergesagt. **Nach jeder inhaltlichen
-  Korrektur den alten Satz im ganzen Verzeichnis suchen**, und `git ls-files` statt
-  `git status`, sonst sieht man Punktdateien nie.
+- **Nach jeder inhaltlichen Korrektur den alten Satz im ganzen Verzeichnis suchen**, und
+  `git ls-files` statt `git status`, sonst sieht man Punktdateien nie. Die drei
+  Schattenfassungen von reihen.toml sind mit 0045 nach `daten/zwischenstaende/` verschoben
+  (geprüft 2026-09-03) — die Bauart bleibt: Der Datenbauer erzeugt sie bei jeder großen Datei.
 - **Belegstellen als Zeilennummern sind eine Bauart, kein Einzelfall.** 0034, 0035, 0044,
   0047. Bei 0036 hat *ein* Paket acht Adressen in `[pruefweg]` um zwei Zeilen verschoben,
   ohne eine davon zu berühren. Nach jedem Paket, das Zeilen einfügt, in die Gegenrichtung
