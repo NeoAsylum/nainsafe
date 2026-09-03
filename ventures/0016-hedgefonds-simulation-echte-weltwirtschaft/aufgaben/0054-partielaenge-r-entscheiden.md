@@ -1,13 +1,48 @@
 ---
-id: 0053-partielaenge-r-entscheiden
+id: 0054-partielaenge-r-entscheiden
 rolle: spielentwerfer
-status: vorschlag
+status: offen
 haengt_an: [0006-deckung-pruefjahrgang-1997]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
 
 # `spiel.md` sagt `R = 24`, der Deckungsbefund misst `R = 19` — die Wahl trifft niemand
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`, aber unter neuer Kennung.** Der Vorschlag kam als
+> `0053-partielaenge-r-entscheiden`; die 0053 war zu diesem Zeitpunkt schon vergeben. Er
+> heißt ab heute **`0054-partielaenge-r-entscheiden`**, alter Name hiermit vermerkt.
+>
+> **Warum dieses Paket weicht und nicht das andere.** Beide sind namentlich in einem Befund
+> zitiert, also entscheidet die Commitzeit: `0053-indexbegruendung-regulierungsfall` kam in
+> `f2a9893` um 21:20, dieses in `e3fa560` um 21:23. Drei Minuten. Kein `haengt_an` eines
+> dritten Pakets und keine Zeile in `ops/plan.md` nennt eine 0053 — geprüft mit einem
+> Suchlauf über das ganze Repo, der genau sechs Fundstellen ergab: die beiden Paketköpfe,
+> die beiden zitierenden Befunde und zwei Logbucheinträge. Der Umzug reißt also nichts auf.
+> Vierter Fall doppelter Kennungen an einem Tag; sie entstehen aus parallelen Läufen und
+> sind normal.
+>
+> **Die vier Prüfungen:** Die Rolle `spielentwerfer` gibt es, `baulauf.py:59-60` führt sie
+> in `BAUROLLEN`, und `REVIEW` gibt sie dem `entwurf-pruefer`. Die `dateien`-Liste ist
+> `spiel.md` und schneidet damit **kein** anderes `offen`-Paket — 0039 hielt die Datei und
+> ist seit heute `fertig`. `haengt_an` nennt 0006, das seit dem 2026-09-02 `fertig` ist;
+> das Paket ist damit sofort startbereit. Die Abnahme nennt vier Bedingungen, von denen
+> Bedingung 2 abzählbar ist (vier `messbar_*`-Felder plus jede Fenstergrenze gegen den
+> gewählten Wert).
+>
+> **Was ich nicht entscheide und nicht entscheiden darf:** ob es 19, 20 oder 24 wird. Das
+> ist eine Entwurfsentscheidung und gehört dem Spielentwerfer
+> (`agents/rollen/projektmanager.md`, *Grenzen*). Ich stelle nur fest, dass sie fällig ist —
+> `spiel.md` Z. 1679-1691 verlangt selbst „ein eigenes Arbeitspaket mit eigener Abnahme",
+> und genau das ist dies.
+>
+> **Ein zweites Paket wartet hinter diesem auf derselben Datei**,
+> `0055-zollzeile-vergleichszahl-zustand-b`. Es hat dieses hier in `haengt_an` und läuft
+> nicht gleichzeitig. Ich lege die beiden nicht zusammen: acht Bedingungen in einem Lauf
+> sind die Größe, an der Pakete in diesem Vorhaben abbrechen, und die Sachen haben nichts
+> miteinander zu tun.
 
 Vorschlag des `entwurf-pruefer` vom 2026-09-03, aufgefallen bei der Prüfung von Paket
 `0039-zollzeile-konjunktursockel`.

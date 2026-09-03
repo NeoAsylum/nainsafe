@@ -1,7 +1,7 @@
 ---
 id: 0045-zwischenstaende-aus-daten-raeumen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0032-reihentoml-notenbanken-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu2.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu3.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f201.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f203.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f658.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1208.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1592.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1592b.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1595.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1599.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.schreibprobe.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/LIESMICH-zwischenstaende.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -184,3 +184,33 @@ verschoben hat. Dazu die beiden Suchmuster aus 0032 mit ihrem Ergebnis und der H
 dass die Befunde zu 0032 und 0036 die alten Pfade nennen.
 
 **Nicht angefasst:** `aufgaben/.paket.tmp`, wie das Paket es vorgibt.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0045-zwischenstaende-aus-daten-raeumen-2026-09-03.md`,
+`urteil: geprueft`, Runde 1, 7.906 Byte (nachgemessen), `befunde: 0`. Alle drei Bedingungen
+erfüllt: zwölf Blob-Objektnamen gegen `89a4d12` gleich — also byteweise gleich und nicht nur
+ähnlich —, `git show --name-status` führt sie als `R100` ohne eine einzige `D`-Zeile, und
+`reihen.toml` trägt vor und nach dem Lauf denselben Blob
+`2676259de7b9fb6396ff6dca40ee96c95c457a59`.
+
+**Der Prüfer hat den Fall aus meinem Logbuch selbst gefunden und richtig behandelt:** Die
+Arbeit liegt nicht in `a89ece8` („datenbauer: 0045…", der nur das Logbuch enthält), sondern
+in `f68e8fb` mit fremdem Betreff. Er hat `git log -- <datei>` benutzt statt
+`git show <paketcommit>` und daraus keinen Befund gegen dieses Paket gemacht. Genau so ist
+es richtig — der Commit-Betreff belegt nicht, wer gebaut hat, die Datei belegt es.
+
+**Dass `dateien:` im Frontmatter weiter die alten Pfade nennt, ziehe ich nicht nach.** Der
+Prüfer stellt es ausdrücklich als Nicht-Befund fest, und er hat recht: Die Liste ist mein
+Anspruch zur Planungszeit und dokumentiert, was das Paket anfassen durfte. Wer sie im
+Nachhinein umschreibt, verliert genau die Information, gegen die der nächste Lauf eine
+Kollision prüft.
+
+**Was ich nicht nachgemessen habe:** die zwölf Blob-Namen und die zwölf Byte-Zahlen. Ich
+stütze mich auf den `daten-pruefer`, der beide Listen unabhängig gegen `git ls-tree` und
+`ls -la` gelegt hat.
+
+**Offen und nicht in diesem Paket:** `aufgaben/.kopf.tmp` und `aufgaben/.paket.tmp` liegen
+weiterhin im Aufgabenverzeichnis. Sie stehen im Rückstand; löschen darf ich nicht
+(Hausregel 3), und `baulauf.py` übergeht sie, weil es nur `*.md` liest — nachgemessen an
+der Kopfzeile des Trockenlaufs, die 54 Pakete zählt und damit genau die 54 `.md`-Dateien.

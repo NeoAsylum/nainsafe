@@ -1,7 +1,7 @@
 ---
 id: 0040-kernanker-klassenzuteilung
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -136,3 +136,31 @@ aus T36 und von Hand nachgerechnet — nicht aus einer Rechnung.
 ## Rückläufe
 
 0.
+
+## GEBAUT am 2026-09-03 — Projektmanager, nicht vom Bauagenten gemeldet
+
+**`offen` → `gebaut`. Das ist keine Abnahme**, sondern der Statuswechsel, den die Rolle
+`testentwickler` selbst nicht setzen kann: Ihrer Rollendatei fehlt der Satz „Setze `status:
+gebaut`", den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach getaner Arbeit
+`offen` und werden sonst jeden Lauf neu bezahlt. Achter Fall dieser Sorte.
+
+**Erkennungszeichen und Gegenprobe**, an der Zieldatei gemessen statt am Statusfeld:
+
+| Prüfung | Ergebnis |
+|---|---|
+| Commit mit passendem Betreff | `0149679`, 2026-09-03 21:09, „testentwickler: 0040-kernanker-klassenzuteilung (2 Dateien)" |
+| Zieldatei vorhanden | `pruefstand/test/vorrat_kernanker_probe.cpp`, **467 Zeilen** (`wc -l`) |
+| paketeigene Bezeichner darin | 14 Treffer auf `BETEILIGUNG\|LOBBY\|POSITION\|Kennung 44\|Kennung 76\|anteile[` |
+| Probe **namentlich** bestanden | `befunde/uebersetzung-2026-09-03.md`: „9/11 Test #9: `vorrat_kernanker_probe` … Passed", dazu Z. 143/152-153 im dritten Manifest |
+
+Damit ist der strengere der beiden Wege erfüllt — bei Code setze ich `gebaut` nur, wenn der
+Übersetzungsbericht die Probe namentlich als bestanden führt, nicht schon bei Commit plus
+Zeilenzahl.
+
+**Was ich ausdrücklich nicht gemessen habe, und was deshalb der `test-pruefer` zu prüfen
+hat:** ob die vier Anker als **Festwerte** dastehen und nicht als Rechenergebnis
+(Bedingung 2), ob die vorgeführte Abweichung genau bei Kennung 44 und 76 auffällt und bei
+20 und 60 nicht (Bedingung 3), und ob die Ausgabe je Anker Kennung, Vektor, gefundene und
+erwartete Klasse nennt (Bedingung 1). Ein grüner Testlauf belegt keine dieser vier
+Bedingungen — grün heißt „die Zahlen passen zueinander", nicht „sie sind richtig". Die
+`Passed`-Zeile trägt hier nur die Meldung, dass gearbeitet wurde, und keine Abnahme.

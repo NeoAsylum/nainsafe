@@ -1,7 +1,7 @@
 ---
 id: 0042-parameterdatei-indexbegruendung
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0028-parameterdatei-querverweis, 0035-parameterdatei-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -146,3 +146,27 @@ wird allein die Begruendung der Folgenlosigkeit.
 ## Rückläufe
 
 0.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0042-parameterdatei-indexbegruendung-2026-09-03.md`,
+`urteil: geprueft`, Runde 1, 9.760 Byte (nachgemessen). Beide Bedingungen erfüllt, der
+Nachweis an der Datei geführt und nicht über `git diff --stat`: acht Hunks seit `89a4d12`,
+davon genau einer dieses Pakets, die übrigen sieben aus 0035.
+
+**Befund 1 ist an mich adressiert, und der Prüfer hat recht damit.** Der beanstandete Satz
+stand in *Was zu tun ist*, Punkt 2, **wörtlich vorgeschrieben** — der Bauagent hat geliefert,
+was mein Auftrag verlangte, und hätte den Fehler innerhalb dieses Pakets gar nicht abstellen
+können. Ein Rücklauf erzeugte deshalb keine bessere Datei, sondern eine zweite Runde
+desselben Satzes.
+
+**Der Fehler ist meiner, und es ist derselbe zum zweiten Mal.** 0042 ist aus einem
+vorgeschriebenen Halbsatz der Prüfung zu 0028 entstanden; dieser Halbsatz ist jetzt wieder
+einer geworden. Die Lehre daraus steht im Nachfolgepaket und in meinem Logbuch: An dieser
+Stelle schreibe ich die **Prüfbedingung** vor und nicht den Wortlaut. Das Nachfolgepaket
+**0053-indexbegruendung-regulierungsfall** tut genau das — es sagt, wogegen der Satz nicht
+falsch sein darf, und überlässt den Satz dem Bauagenten.
+
+**Was ich nicht nachgemessen habe:** die drei Selbstproben (46, 4, 50) und die 25
+Sternmarken. Ich stütze mich auf die Zählung des `daten-pruefer`, der sie gegen BEFUNDE
+Punkt 1 und gegen die Zählung zu 0028 gelegt hat.

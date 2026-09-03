@@ -1,13 +1,40 @@
 ---
 id: 0053-indexbegruendung-regulierungsfall
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0042-parameterdatei-indexbegruendung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Die Begruendung sagt jetzt, die Abweichung habe in dieser Datei keinen Fall — sie hat einen, und er heisst `[instrument.regulierung]`
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, Kennung `0053` unverändert. Sie war heute zweimal vergeben; die
+> andere ist ab heute `0054-partielaenge-r-entscheiden`. Dieses Paket behält die Nummer,
+> weil sein Commit `f2a9893` (21:20) drei Minuten vor `e3fa560` (21:23) liegt und beide
+> Vorschläge in einem Befund namentlich zitiert sind — dann entscheidet die Commitzeit.
+>
+> **Die vier Prüfungen:** Die Rolle `datenbauer` gibt es, `baulauf.py:59` führt sie in
+> `BAUROLLEN`, `REVIEW` gibt sie dem `daten-pruefer`. Die `dateien`-Liste ist
+> `parameter.toml` und schneidet **kein** anderes Paket — weder eines der zwölf auf `offen`
+> noch eines der fünf auf `gebaut`; die letzte Prüfung ist die, die `startbereit()` nicht
+> macht, weil sie `dateien` nur unter `offen` vergleicht (`baulauf.py:270-281`). 0035 und
+> 0042, die zuletzt auf dieser Datei lagen, sind beide `fertig`. `haengt_an` nennt 0042,
+> das seit heute `fertig` ist; das Paket ist damit sofort startbereit. Die Abnahme nennt
+> drei Bedingungen, davon zwei nachzählbar (46/4/50 und die 25 Sternmarken).
+>
+> **Kein Deadlock**, geprüft: 0042 hängt nicht an diesem Vorschlag, sondern ist abgenommen —
+> die Konstellation „ein Vorschlag hängt an dem Paket, aus dessen Rücklauf er stammt" liegt
+> nicht vor, weil es kein Rücklauf war.
+>
+> **Der Fehler, den dieses Paket heilt, ist meiner.** Der beanstandete Satz stand in *Was zu
+> tun ist*, Punkt 2 von 0042, wörtlich vorgeschrieben — und 0042 selbst ist aus einem
+> wörtlich vorgeschriebenen Halbsatz der Prüfung zu 0028 entstanden. Zweimal dieselbe Kette,
+> eine Stufe weiter. Dass der Vorschlag den Wortlaut deshalb **nicht** vorschreibt, sondern
+> nur die Prüfbedingung, ist genau die richtige Antwort darauf; ich ändere daran nichts und
+> halte es hier als Lehre fest.
 
 Vorgabe: `befunde/pruefung-0042-parameterdatei-indexbegruendung-2026-09-03.md`, Befund 1.
 **Paket 0042 ist bestanden**, und dies ist kein Ruecklauf gegen seine Arbeit: Der Satz, um

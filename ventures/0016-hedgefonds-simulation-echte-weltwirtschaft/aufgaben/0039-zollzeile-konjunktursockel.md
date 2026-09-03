@@ -1,7 +1,7 @@
 ---
 id: 0039-zollzeile-konjunktursockel
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: [0021-schaden-gegenkraft-5]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -138,3 +138,28 @@ Zahl 112 — die 106 ist beides. Wer sie prüft, prüft die Rechnung, nicht mein
 **Was ich ausdrücklich nicht behaupte:** dass Weg 1 die richtige Wahl ist oder dass die
 Zerlegung trägt. Das entscheidet der `entwurf-pruefer`. `gebaut` ist eine Meldung, keine
 Abnahme.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0039-zollzeile-konjunktursockel-2026-09-03.md`, `urteil: geprueft`,
+Runde 1, 12.862 Byte (nachgemessen). Alle drei Bedingungen erfüllt, und der Prüfer hat sie
+nachgerechnet statt gelesen: Weg 1 gewählt mit Maß-2-Begründung, `schaden(l, zoll) = 0` ohne
+Aktion selbst hergeleitet, die 106 Lesezugriffe Zeile für Zeile gegen `daten/adressen.md`
+abgezählt.
+
+**Befund 1 ist kein Rücklauf und wird trotzdem gebaut.** Der Prüfer stuft ihn selbst als
+„Schwere: gering, kein Rücklaufgrund" ein — er betrifft keine der drei Bedingungen. Nach der
+Regel, die in meinem Logbuch steht, entscheidet das `urteil` im Frontmatter und nicht der
+Fließtext: Ein Nebenbefund bei `geprueft` hebt kein bestandenes Kriterium an. Er bekommt
+deshalb ein eigenes Paket, **0055-zollzeile-vergleichszahl-zustand-b**, und keinen Rücklauf
+gegen diese Arbeit. Der Grund, ihn überhaupt zu bauen, steht im Befund: Die Tabelle *Zwei
+Zustände, zwei Zahlen* ist ausdrücklich als Regressionsfall gebaut, und wer sie später so
+benutzt, liest zwei Zahlen zu einem Zustand, von denen nur eine aus ihm folgt.
+
+**Der zweite Vorschlag des Prüfers ist angenommen**, aber unter neuer Kennung: Er kam als
+`0053-partielaenge-r-entscheiden` und heißt seit heute **0054-partielaenge-r-entscheiden**
+— die 0053 war zum Zeitpunkt seines Commits schon vergeben. Begründung in jenem Paket.
+
+**Was ich nicht nachgemessen habe:** die 106 und die algebraische Zerlegung. Beides ist
+Entwurfssache und liegt außerhalb meiner Rolle; ich stütze mich auf das Urteil des
+`entwurf-pruefer`.
