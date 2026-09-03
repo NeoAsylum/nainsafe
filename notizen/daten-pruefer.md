@@ -39,6 +39,15 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   ist. Erst der Griff in den *Bestand* — `art = "ungemessen"` steht genau einmal, und `tomllib`
   sagt, bei welcher Reihe — zeigt, dass die **neue** Aussage stimmt. Wo eine Bedingung eine
   Zeichenfolge als Nachweis nennt, ist die Gegenprobe am Bestand immer noch faellig.
+- 2026-09-03 (0049) — **Ein Widerruf ist keine Wiederholung.** Verlangt eine Bedingung, dass
+  eine Behauptung wegfaellt, darf ihre Zeichenfolge stehenbleiben, wenn sie als Zitat des
+  alten Standes mit Widerruf daneben steht ("die Verallgemeinerung war falsch"). `count > 0`
+  ist hier kein Ruecklaufgrund — die Fundstelle lesen, nicht zaehlen. Umgekehrt gilt
+  dasselbe: Die verlangte Angabe kann als Zitat dastehen und trotzdem fehlen.
+- 2026-09-03 (0049) — **Backticks sind eine Behauptung ueber einen Schluesselnamen.** "steht
+  viermal als `beleg` in dieser Datei" liess sich mit `grep -c "^beleg = .*<wert>"` widerlegen:
+  einmal als Feld, dreimal als Fliesstext in `offen`-Listen. In einer Datei, die Schluessel
+  durchgehend in Backticks setzt, ist jede solche Zaehlaussage eine pruefbare Behauptung.
 - 2026-09-03 (0047) — **Wird eine Zeilennummer durch Adresse plus Zitat ersetzt, ist die
   Ersetzung selbst zu pruefen und nicht nur ihre Abwesenheit.** Eine Adresse, die nicht traegt,
   ist schlimmer als die Nummer, weil niemand mehr merkt, dass sie falsch ist. Alle Zitate als
@@ -91,11 +100,20 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   `**` der Fettschrift; 26 Treffer waren 25 Namen (`regulierung_start` zweimal). Nie die
   Laenge vergleichen, immer die Namensliste — und sie gegen die Aufzaehlung im Dokument legen.
 - **Der Commit eines Pakets muss die geaenderte Datei nicht enthalten.** Immer
-  `git log -- <datei>`, nie `git show <paketcommit>`.
+  `git log -- <datei>`, nie `git show <paketcommit>`. 2026-09-03 (0049) verschaerft: **Der
+  Betreff nennt bei keinem der sechs reihen.toml-Commits das Paket, das die Datei geaendert
+  hat** — er nennt die Leitrolle des Buendels. Wer eine Liste wie `nachgezogen_durch` auf
+  Vollstaendigkeit prueft, ordnet jeden Commit ueber seinen **Diff-Inhalt** einem Paket zu.
+  Zaehlen der Betreffs haette hier drei falsche Pakete ergeben und drei richtige uebersehen.
 - **Ein `cd` in Bash bleibt ueber Aufrufe hinweg stehen.** Danach schweigt `git diff -- <pfad>`
   einfach. Nach jedem cd relative Pfade neu denken; `git -C <wurzel>` ist der sichere Weg.
 - **Zwei Bash-Aufrufe in einem Kommando verketten wird oefter abgelehnt als jeder einzeln.**
   `git show > datei && python3 ...` fiel durch, getrennt gingen beide.
+- 2026-09-03 (0049) — **Der sichere Umweg um jede Bash-Sperre ist `subprocess` im
+  python3-Heredoc.** Abgelehnt waren `sed`, die `for`-Schleife und die Verkettung mit
+  Umleitung; `python3 - <<'PY'` mit `subprocess.run(['git','-C',R,'show',...])` und
+  `capture_output` trug alles in einem Aufruf — Alt- und Neufassung parsen, vergleichen und
+  die Schnitte nachzaehlen, ohne eine Datei anzulegen. Erste Wahl statt letzte.
 
 ## Offene Faehrten
 
@@ -124,7 +142,11 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
 - **rueckstand.md wird je Baulauf neu nummeriert** — "Punkt N" ist nach dem naechsten Lauf
   falsch. Zitiert ein Paket so, die Fassung zur Bauzeit ueber git show pruefen.
 - **PWT bleibt ungemessen** — Kapitalstockeinheit und Basisjahr. Loest sich erst, wenn der
-  Betreiber pwt110.xlsx nach daten/roh/ legt oder den PDF-Pfad freigibt.
+  Betreiber pwt110.xlsx nach daten/roh/ legt oder den PDF-Pfad freigibt. Seit 0049 steht der
+  Verweis darauf in reihe 3 (`offen` und `begruendung`), `art = "ungemessen"` unveraendert.
+- **Liegengeblieben aus 0049, ohne eigenes Paket:** Der neue Kommentar ueber
+  `[datei.vorlagen]` sagt "viermal als `beleg`" — es ist eine `beleg`-Stelle. Zwei Backticks,
+  kein Lauf wert; dem naechsten Paket mitgeben, das den Kopf von reihen.toml oeffnet.
 - **Reihe 10:** Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6, USA gleich, DEU 17.341 gegen
   10.000. Gehoert dem Architekten, offen auch die Rundung vor oder nach Normierung.
 - **Zwei Schranken fuer das Paket, das parameter.toml einliest:** Deckelt T5 Klasse 4 auch
