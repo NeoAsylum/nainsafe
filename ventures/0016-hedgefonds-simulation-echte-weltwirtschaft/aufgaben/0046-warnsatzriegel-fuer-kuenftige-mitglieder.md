@@ -162,3 +162,157 @@ Bedingungen 2 und 3 sind davon unberührt und bleiben wörtlich, wie sie stehen.
 ist die schärfere von beiden, weil sie den Bytevergleich der erzeugten `CXX_FLAGS`
 verlangt und nicht „der Bau ist grün" — genau die Unterscheidung, an der dieses Paket
 hängt.
+
+---
+
+## Nachweis, Lauf vom 2026-09-03 (Kernbauer)
+
+Gebaut ist die Form, die der Vorschlag als tragfähig nennt: `werkzeugkette.cmake` stellt
+`fabrik_warnsatz_anlegen(<ziel>)` bereit, die beiden vorhandenen `CMakeLists.txt` rufen
+sie an sechs Stellen statt der bisherigen `target_compile_options`-Zeilen —
+`kern`, `kern_geprueft`, jede Kernprobe; `pruefstand`, `pruefstand_geprueft`, jede
+Prüfstandsprobe. Die Sanitizer-Zeilen sind unberührt (`PUBLIC`, eigene Sichtbarkeit).
+
+Das Wegwerf-Verzeichnis lag in **Rang 1** der gestaffelten Ortsangabe: `$TMPDIR`
+(`/tmp/claude-1000`), außerhalb des Repos. Kein Rückgriff auf Rang 2 oder 3 nötig.
+
+### Bedingung 1 — ein Mitglied ohne Werkzeugkette bricht ab
+
+Ein Mitglied `vergessen` unter `$TMPDIR/vergessenes-mitglied/`, gebaut wie
+`pruefstand/CMakeLists.txt`, mit genau einem Unterschied: der `PROJECT_IS_TOP_LEVEL`-Block
+fehlt. Eine Übersetzungseinheit `src/etwas.cpp` mit ungenutzter Variable — der Verstoß,
+den der Warnsatz fangen muss und ohne ihn durchlässt.
+
+**Gegenprobe, gemessen am Stand *vor* der Änderung** (Mitglied hängt den Satz selbst an):
+
+```
+cmake-Code: 0
+build-Code: 0
+[100%] Built target vergessen
+CXX_FLAGS = -std=gnu++20
+```
+
+Grün, Code 0, und verloren waren nicht nur die 15 Warnschalter und die zwei
+Überlaufschalter, sondern auch der **Sprachmodus**: `gnu++20` statt `c++20`, also genau
+die Compiler-Erweiterungen, die ADR 0011 ausschließt (`CMAKE_CXX_EXTENSIONS OFF` steht
+ebenfalls in `werkzeugkette.cmake`). Das ist eine Ecke der Lücke, die der Vorschlag noch
+nicht kannte.
+
+**Nach der Änderung**, dieselbe Datei mit dem Aufruf statt der Zeile:
+
+```
+cmake-Code: 1
+-- Detecting CXX compile features - done
+CMake Error at CMakeLists.txt:21 (fabrik_warnsatz_anlegen):
+  Unknown CMake command "fabrik_warnsatz_anlegen".
+
+
+-- Configuring incomplete, errors occurred!
+```
+
+Die nächste Zeile wird nicht mehr erreicht; ein Bau findet nicht statt.
+
+**Positivkontrolle** — dasselbe Mitglied **mit** dem Block, damit der Abbruch nachweislich
+an der fehlenden Einbindung hängt und nicht an etwas anderem:
+
+```
+cmake-Code: 0
+CXX_FLAGS = -std=c++20 -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow
+  -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal
+  -Wnon-virtual-dtor -Woverloaded-virtual -Wnull-dereference -Wformat=2 -fwrapv
+  -fno-fast-math
+build-Code: 2
+/tmp/claude-1000/erinnertes-mitglied/src/etwas.cpp:3:7: error: unused variable
+  ‘ungenutzt’ [-Werror=unused-variable]
+cc1plus: all warnings being treated as errors
+```
+
+Damit steht die Reihe vollständig da, und der mittlere Fall ist der, den es vorher nicht
+gab:
+
+| Fall | `cmake` | `cmake --build` | `CXX_FLAGS` |
+|---|---|---|---|
+| ohne Block, **vor** dieser Änderung | 0 | 0 — **grün** | `-std=gnu++20` |
+| ohne Block, **nach** dieser Änderung | **1**, `Unknown CMake command` | nicht erreicht | — |
+| mit Block, nach dieser Änderung | 0 | 2, `[-Werror=unused-variable]` | alle 17 |
+
+Die dritte Zeile ist der Grund, warum die erste ein Befund ist: Derselbe Quelltext wird
+rot, sobald die Schalter da sind. Ein grüner Bau belegt nichts über ihr Vorhandensein.
+
+Beide Wegwerf-Verzeichnisse liegen außerhalb des Repos; im Baum ist keine Datei
+liegengeblieben.
+
+### Bedingung 2 — beide Kästen tragen unverändert alle 15 Schalter
+
+Nicht drei Zeilen, sondern **alle** erzeugten `CXX_FLAGS`, zweimal erhoben und maschinell
+verglichen.
+
+*Erste Erhebung, blanke Konfiguration* (`cmake -S … -B …` ohne weitere Schalter), je ein
+Baum vor und nach der Änderung, 28 Ziele über die drei geforderten Bauwege:
+
+```
+$ diff flags-vorher.txt flags-nachher.txt
+$ echo $?
+0
+```
+
+Kein Unterschied, in keiner der 28 Zeilen — und da die Zeilen ihren Pfad als Präfix
+tragen, ist zugleich belegt, dass dieselbe Menge Ziele entsteht.
+
+Die drei ausdrücklich verlangten Stellen im Wortlaut, alle drei identisch:
+
+```
+kern-allein/CMakeFiles/kern.dir/flags.make
+pruefstand-allein/CMakeFiles/pruefstand.dir/flags.make
+arbeitsbereich/pruefstand/CMakeFiles/pruefstand.dir/flags.make
+
+CXX_FLAGS = -std=c++20 -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow
+  -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal
+  -Wnon-virtual-dtor -Woverloaded-virtual -Wnull-dereference -Wformat=2 -fwrapv
+  -fno-fast-math
+```
+
+*Zweite Erhebung, Konfiguration des Runners* (`-DCMAKE_BUILD_TYPE=RelWithDebInfo
+-DCMAKE_CXX_FLAGS=-fwrapv -fno-fast-math`, also die Zeile aus `baulauf.py`). Der
+Vergleichsstand ist hier nicht ein zweiter Lauf, sondern der Baum aus `git show HEAD:` —
+die drei geänderten Dateien im Stand vor diesem Lauf, der Rest unverändert:
+
+```
+Ziele HEAD: 30  Ziele jetzt: 30
+nur im HEAD-Stand: []
+nur im jetzigen  : []
+ungleiche Zeilen : []
+```
+
+Beide Erhebungen zusammen: Die erzeugten Schalter sind bytegleich, blank wie unter der
+Konfiguration, unter der der Nachtlauf tatsächlich übersetzt.
+
+### Bedingung 3 — beide Kästen gebaut, alle Tests `Passed`
+
+Die drei Befehle aus `baulauf.py` (`cmake -S`, `cmake --build --parallel`, `ctest`) mit
+denselben Schaltern, über beide Wege gefahren:
+
+| Weg | `cmake -S` | `cmake --build` | `ctest` | Tests |
+|---|---|---|---|---|
+| Arbeitsbereich | 0 | 0 | 0 | 11/11 `Passed` |
+| `kern` allein | 0 | 0 | 0 | 8/8 `Passed` |
+| `pruefstand` allein | 0 | 0 | 0 | 3/3 `Passed` |
+
+**Die Testzahlen sind Stand 2026-09-03 nach diesem Lauf.** Der Übersetzungsbericht
+desselben Tages nennt oben noch 10 Tests: Während des Tages ist eine Probe dazugekommen,
+die nicht aus diesem Paket stammt. Der Bericht, an dem Bedingung 3 hängt, wird vom Runner
+nach diesem Lauf neu geschrieben — die obige Messung ist derselbe Befehlssatz, von Hand
+gefahren, nicht ein Ersatz dafür.
+
+### Was der Prüfer nachfahren kann
+
+Die Gegenprobe in einem Satz: ein Verzeichnis mit einer `CMakeLists.txt` anlegen, die
+`fabrik_warnsatz_anlegen(<ziel>)` ruft, ohne `werkzeugkette.cmake` einzubinden. `cmake`
+endet mit Code 1 und `Unknown CMake command`. Dieselbe Datei mit dem
+`PROJECT_IS_TOP_LEVEL`-Block konfiguriert durch und wird an einer ungenutzten Variablen
+rot.
+
+Nicht angefasst, weil außerhalb dieses Pakets: `pruefstand/bau/pruefung-0019/CMakeLists.txt`
+(Mutationsstand des Test-Prüfers) ist das vierte Manifest, das der Runner findet. Es setzt
+seine Schalter selbst und rührt `FABRIK_STRENGE` nicht an — von dieser Änderung also
+unberührt, geprüft.

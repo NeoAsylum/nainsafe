@@ -41,9 +41,23 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Zeichenkette für „zeichengleich", einmal als Tabelle für „in welcher Runde") und die
   beiden Abschriften vor allem anderen gegeneinander prüfen. Ein Tippfehler im Maßstab
   läuft sonst still grün, und ein falscher Maßstab ist schlimmer als ein roter Test.
+- 2026-09-03 — Eine falsche Fassung lässt sich **herleiten** statt nachbauen. Spiegelt man
+  die drei Familienstellen eines Profils, wird aus „kleinster Index unter den Größten" der
+  größte — also aus dem Gleichstand an die kleinere Kennung der an die größere, ohne dass
+  der Gleichstandsbrecher ein zweites Mal im Baum steht. Bedingung: Die Herleitung wird
+  gegen von Hand nachgerechnete Festwerte geprüft, sonst belegt sie nur, dass sie
+  *irgendetwas anderes* liefert.
+- 2026-09-03 — Ein Anker aus Festwerten und eine Zählung messen Verschiedenes, und die
+  Zählung ist die schwächere: 6/120 bleibt grün, wenn Modul und Prüfkopie denselben
+  Denkfehler tragen. Wo ein Test eine Klasse, einen Namen oder eine Reihenfolge prüft,
+  gehört mindestens ein von Hand nachgerechneter Fall daneben, der nichts rechnet.
 - 2026-09-02 — Rotnachweis ohne Kollateralschaden geht mit zwei Edits am eigenen Modul
   (kaputt → bauen → laufen → zurück → bauen → grün). Ein Sabotagelauf in `$TMPDIR` scheitert
   hier am Werkzeugzugriff; der Weg über das Repo ist umkehrbar und im Ergebnis derselbe.
+  — **Ergänzung 2026-09-03:** Gehört das Modul einem fremden Paket, geht es auch ohne es:
+  eine Zeile in der *eigenen* Probe auf die falsche Zuteilung umlegen, bauen, laufen,
+  zurück. Das misst sogar mehr als ein Prädikat allein — dass aus dem Verwerfen wirklich
+  Rückgabe 1 wird, statt nur eine Zusicherung mit umgedrehtem Vorzeichen.
 
 ## Was nicht funktioniert
 
@@ -60,6 +74,13 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-03 — `grep` über die Shell wird im Lauf abgelehnt, das Grep-Werkzeug tut
   dasselbe. Die Nachweis-Greps einer Abnahme laufen darüber; kostet einen Aufruf, wenn
   man es erst beim Fehlschlag merkt.
+- 2026-09-03 — `cp` und `Write` nach `$TMPDIR` wurden beide abgelehnt. Der Mutationslauf
+  gegen eine Kopie des Moduls außerhalb des Repos ist damit kein Weg mehr, den ich noch
+  einmal probieren muss; er kostet zwei Aufrufe und endet immer gleich.
+- 2026-09-03 — Beim Sabotieren beißt `-Werror=unused-function`: Fällt durch die Sabotage
+  eine Funktion aus dem Spiel, wird der **Bau** rot statt des Tests, und der Nachweis
+  misst nichts. Die Sabotage so legen, dass jede Funktion aufgerufen bleibt — oder eine
+  Vorwärtsdeklaration danebenstellen und mit zurücknehmen.
 - 2026-09-02 — `rm -rf bau` wird abgelehnt (Hausregel 3). Ein Bauverzeichnis muss nicht neu
   angelegt werden: `cmake -S/-B` über den vorhandenen Stand hinweg konfiguriert sauber neu,
   auch wenn der alte Cache aus einer Platzhalterfassung stammt.
