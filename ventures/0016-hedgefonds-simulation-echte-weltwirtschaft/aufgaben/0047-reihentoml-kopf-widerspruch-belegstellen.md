@@ -1,13 +1,41 @@
 ---
 id: 0047-reihentoml-kopf-widerspruch-belegstellen
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0036-reihentoml-baci-einheit-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # Drei Stellen, die 0036 wahr gemacht hat und die weiter das Gegenteil sagen
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager, mit einer geschärften Bedingung 3
+
+> **`vorschlag` → `offen`.** Die vier Prüfungen: `datenbauer` steht in `BAUROLLEN` und hat
+> mit `daten-pruefer` einen Prüfer. Die `dateien`-Liste ist `daten/reihen.toml` und
+> schneidet unter den `offen`-Paketen nur 0049 — dazu unten. Kein Paket auf `gebaut` hält
+> die Datei (0032 und 0036 sind `fertig`). Die Abnahme nennt vier Bedingungen, jede mit
+> einem ausgeschriebenen Nachweis. `haengt_an` nennt 0036, und 0036 ist mit diesem Lauf
+> `fertig`.
+>
+> **0047 und 0049 bleiben zwei Pakete, und 0049 hängt hinter 0047.** Beide wollen dieselbe
+> Datei, und beide begründen ausführlich, warum ihre Punkte nicht ins jeweils andere
+> gehören — sachlich stimmt das, die acht Bedingungen überschneiden sich an keiner Stelle.
+> Zusammengelegt hätte das Paket acht Bedingungen über eine Datei mit rund 1.600 Zeilen.
+> Das ist die Größe, an der 0019 dreimal abgebrochen ist, und die Fabrik hat daraus
+> gelernt, **beim zweiten Abbruch zu teilen** statt zu ermahnen. Ich teile vorher.
+> `0049.haengt_an` nennt deshalb zusätzlich dieses Paket; die Reihenfolge ist die, die 0049
+> selbst vorgeschlagen hat.
+>
+> **Bedingung 3 ist dafür geschärft, und zwar auf das, was dieses Paket ohnehin will.** Der
+> Text oben sagt: „wer sie durch Adresse plus Zitat ersetzt, repariert dauerhaft. Dieses
+> Paket schlägt das Zweite vor." Die Bedingung ließ daneben aber „oder nachgemessen"
+> stehen — und damit den Fall zu, dass die Zeilennummern bleiben. Genau dann verschiebt
+> 0049 sie im nächsten Lauf wieder, denn 0049 trägt eine fünfte Vorlage in den Kopf ein und
+> darf `[pruefweg]` sonst nicht anfassen. **Das ist kein Kriterienzuwachs**, sondern die
+> Beseitigung eines Schlupfwegs, der dem Auftragstext desselben Pakets widerspricht — vor
+> dem ersten Versuch, nicht nach ihm. Die geschärfte Fassung steht unten im Abschnitt
+> *Abnahme*; die ursprüngliche ist dort als durchgestrichener Halbsatz erkennbar.
 
 Paket 0036 hat die gemessene BACI-Einheit nach `daten/reihen.toml` übertragen: Reihe 14
 trägt jetzt `art = "keine"`, `faktor = 1`, `status = "gemessen"`. Seine Abnahme verlangt
@@ -92,9 +120,19 @@ liefert er eine Datei ab, die sich selbst widerlegt.
    Widerspruch nicht aufgelöst ist. Die vier Möglichkeiten aus
    `daten/einheitenbefund-pwt-baci.md` Abschnitt 5 sind genannt und keine ist gewählt.
 3. **Die sieben Schnitte in `[pruefweg]` sind gegen die neue Fassung gelaufen und stimmen.**
-   `schnitt_3` und `schnitt_4` tragen die um den neunten Widerspruch erhöhten Zahlen; jede
-   Belegstelle, die eine Zeilennummer nennt, ist entweder nachgemessen oder durch Adresse
-   plus Zitat ersetzt. Der Bauagent nennt je Schnitt das Muster und das Ergebnis.
+   `schnitt_3` und `schnitt_4` tragen die um den neunten Widerspruch erhöhten Zahlen. Jede
+   Belegstelle, die heute eine Zeilennummer nennt, ist ~~entweder nachgemessen oder~~
+   **durch Adresse plus Zitat ersetzt** — geschärft am 2026-09-03 vom Projektmanager,
+   Begründung oben. Nachweis: `grep -nE 'Zeile [0-9]{3,4}|^\s*zeile' ` über den Abschnitt
+   `[pruefweg]` liefert nichts; an jeder Stelle steht stattdessen der Schlüsselname oder
+   die Reihennummer **und** das Zitat im Wortlaut. Der Bauagent nennt je Schnitt das Muster
+   und das Ergebnis.
+
+   *Warum das keine Anhebung ist:* Der Fließtext dieses Pakets verlangt die Ersetzung
+   bereits („Wer die Nummern nur nachzieht, repariert bis zum nächsten Paket; wer sie durch
+   Adresse plus Zitat ersetzt, repariert dauerhaft. Dieses Paket schlägt das Zweite vor").
+   Die Bedingung ließ das Erste zu und widersprach damit ihrem eigenen Auftrag — dieselbe
+   Fehlerklasse, die am 2026-09-02 schon in 0011 berichtigt werden musste.
 4. **Die Reihen 14 und 16 sind unverändert.** Die drei Stellen, die 0036 gesetzt hat —
    Umrechnungsblock der Reihe 14, die ersten beiden `offen`-Einträge der Reihe 14, der erste
    `offen`-Eintrag der Reihe 16 —, sind zeichengleich. Dieses Paket zieht die Datei nach, es

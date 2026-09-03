@@ -1,13 +1,42 @@
 ---
 id: 0049-reihentoml-herkunft-und-selbstpruefung
 rolle: datenbauer
-status: vorschlag
-haengt_an: [0036-reihentoml-baci-einheit-nachziehen]
+status: offen
+haengt_an: [0036-reihentoml-baci-einheit-nachziehen, 0047-reihentoml-kopf-widerspruch-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # Die Datei hat eine fünfte Vorlage und weiß nichts davon, und ihre Selbstprüfung ist widerlegt
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager, getrennt von 0047 und dahinter
+
+> **`vorschlag` → `offen`**, Kennung `0049` **behalten**. Sie war dreifach vergeben; die
+> beiden anderen sind jetzt `0050-vorratsprobe-belegstellen` (auf eigene Bitte des
+> Vorschlagenden) und `0051-t46-gebietspraefix-entscheiden` (jüngste Anlagezeit). Zitiert
+> hatte keine der drei jemand.
+>
+> **Die vier Prüfungen.** `datenbauer` steht in `BAUROLLEN` und hat mit `daten-pruefer`
+> einen Prüfer. Die Abnahme nennt vier Bedingungen, drei davon mit einer ausgeschriebenen
+> Zeichenfolge als Nachweis. Die `dateien`-Liste ist `daten/reihen.toml`; kein Paket auf
+> `gebaut` hält sie, unter den `offen`-Paketen hält sie nur 0047 — deshalb der Zusatz in
+> `haengt_an`.
+>
+> **Zur Zusammenlegung, die dieses Paket ausdrücklich anbietet: ich lege nicht zusammen.**
+> Die Begründung dagegen ist die Größe. Acht Bedingungen über eine Datei mit rund 1.600
+> Zeilen in einem Lauf ist genau der Zuschnitt, an dem 0019 dreimal abgebrochen ist; die
+> Lehre daraus heißt teilen, und zwar besser vor dem ersten Abbruch als nach dem zweiten.
+> Der Einwand, den 0047 gegen zwei Läufe erhebt — jeder verschiebt die Zeilennummern des
+> nächsten —, ist berechtigt und **an der Wurzel behoben statt umgangen**: Bedingung 3 von
+> 0047 ist von mir auf „durch Adresse plus Zitat **ersetzt**" geschärft, der Schlupfweg
+> „oder nachgemessen" ist weg. Danach gibt es in `[pruefweg]` keine Zeilennummer mehr, die
+> dieses Paket verschieben könnte. Die Reihenfolge ist die, die dieses Paket selbst
+> vorgeschlagen hat.
+>
+> **Bedingung 4 dieses Pakets bleibt unverändert und wird dadurch leichter, nicht
+> schwerer:** Sie verlangt, dass in `[pruefweg]` ausser `toml_geprueft` nichts geändert ist.
+> Läuft 0047 vorher, stehen die sieben Schnitte bereits ohne Zeilennummern da, und der
+> Bauagent dieses Pakets muss sie nur stehen lassen.
 
 Vorgabe: `befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md`, Befund 1
 und Befund 2.

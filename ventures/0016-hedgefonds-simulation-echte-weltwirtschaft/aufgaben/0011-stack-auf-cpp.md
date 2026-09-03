@@ -1,7 +1,7 @@
 ---
 id: 0011-stack-auf-cpp
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: T1 und T2 nennen C++20 statt Rust, samt der drei Ueberlaufmassnahmen aus ADR 0011. Jede Stelle, die auf ein Rust-Merkmal Bezug nimmt (Division gegen null, overflow-checks, BTreeMap, forbid(unsafe_code), cargo vendor), ist neu gefasst. Keine Zeile schreibt Rust mehr als Bauart vor; Rust darf vorkommen als gemessener Kandidat in der Stacktabelle, als abgeloeste Vorfassung und als Pfad in messung-stack/. Kriterium am 2026-09-02 vom Projektmanager berichtigt, Begruendung im Abschnitt "Berichtigung des Abnahmekriteriums".
@@ -137,3 +137,48 @@ gekennzeichneten Widerspruch zu ADR 0011, die zwei zusätzlichen Warnschalter in
 Datei in `dateien` dieses Pakets. Drei eigene Kennungen würden sich mit 0011 auf derselben
 Datei schneiden — genau die Kollision, gegen die die Einplanung gebaut ist. Der Prüfer hat
 deshalb keines vorgeschlagen, und das war richtig.
+
+---
+
+## Übergang auf `gebaut`, zweites Mal — 2026-09-03, Projektmanager
+
+**Wieder habe ich `status: gebaut` selbst gesetzt, aus demselben Grund wie am 2026-09-02:**
+Der Rolle `architekt` fehlt in `agents/rollen/architekt.md` der Satz „Setze im Arbeitspaket
+`status: gebaut`", den `kernbauer`, `datenbauer`, `oberflaechenbauer` und `auslieferer`
+tragen. Ohne den Nachzug bliebe das Paket `offen`, verbrauchte in der nächsten Nacht einen
+dritten Bauplatz für Arbeit, die getan ist, und bekäme kein Urteil — der Prüfplatz hängt an
+`gebaut` (`baulauf.py:258`).
+
+**Was ich gemessen habe** (nicht: was ich über die Richtigkeit behaupte), je Rücklaufbefund
+eine Zeile:
+
+| Rücklaufbefund | Fundstelle in `technik.md` am 2026-09-03 |
+|---|---|
+| 1 — `overflow-checks` deckt die blanke Multiplikation nicht | Z. 576, „Warum `mal` und nicht `__builtin_mul_overflow`" — Massnahme 4 hat einen dritten Punkt, und die Aufzählung ist vom Ort auf die Rechenart umgestellt |
+| 2 — `cargo vendor` ist gestrichen statt neu gefasst | Z. 210-220, T3: Quelltext unter `fremd/<name>/`, `add_subdirectory`, `find_package`/`FetchContent`/`ExternalProject`/`pkg_check_modules` verboten; Z. 6 und Z. 90 tragen die Zusage mit |
+| 3 — die Erzwingung von T2 liest nur `kern/CMakeLists.txt` | Z. 154-165, dritter Mustervergleich über alle übrigen `CMakeLists.txt`; Z. 839-844, T13 verbietet `link_libraries()` im ganzen Vorhaben |
+| Commit `360421d`, 20:18 | `technik.md` +184 Zeilen, jetzt 2.581 Zeilen |
+
+**Zur dritten Datei in diesem Commit, damit sie niemand für einen Regelbruch hält:**
+`360421d` trägt neben `technik.md` und dem Logbuch auch `spiel.md` mit +459 Zeilen —
+und `spiel.md` steht **nicht** in der `dateien`-Liste dieses Pakets. Das ist trotzdem keine
+Grenzüberschreitung des Architekten: Die Zeilen sind die Arbeit des Spielentwerfers an
+Paket 0039, nachgewiesen an der Zeile
+`*Geändert am 2026-09-03 aus Arbeitspaket `0039-zollzeile-konjunktursockel`…*, die in
+genau diesem Diff steht. Der Runner committet, was im Baum liegt, und zwei Agenten liefen
+parallel. **Der Commit-Betreff belegt nicht, wer gebaut hat — die Datei belegt es.**
+
+**Was ich ausdrücklich nicht behaupte:** dass die drei Sätze richtig oder ausreichend sind,
+und dass sonst nichts angefasst wurde. Der Architekt schreibt selbst, er habe
+`__builtin_mul_overflow` **nicht** genommen und stattdessen `mal(a, b)` vorgeschrieben —
+das ist eine der beiden Behebungen, die der Prüfer angeboten hat, aber es ist eine
+Entscheidung und keine Abschrift. Sie zu beurteilen ist Sache des `entwurf-pruefer`, und
+er urteilt gegen die berichtigte Fassung des Kriteriums im Frontmatter. `gebaut` ist eine
+Meldung, keine Abnahme.
+
+**Eine Meldung des Architekten habe ich aufgenommen, die zweite nicht.** Aufgenommen:
+`kern/include/kern/festkomma.hpp` hat heute kein `mal(a, b)`, das die neue Massnahme 4.3
+verlangt — das trägt seit heute Paket **0052-festkomma-mal-mit-waechter**, das an diesem
+hier hängt, weil die Vorgabe erst mit seiner Abnahme steht. Nicht aufgenommen: Bedingung 3
+von Paket **0004** kennt den dritten Mustervergleich nicht. 0004 ist abgenommen, und ein
+bestandenes Kriterium hebe ich nicht nachträglich an; die Lücke steht im Rückstand.

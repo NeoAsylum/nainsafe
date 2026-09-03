@@ -1,7 +1,7 @@
 ---
 id: 0029-vorratsverfahren-invariante
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/vorrat_verfahren.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_verfahren_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -179,3 +179,16 @@ einzeln misst, ob die Folge in Bedingung 2 wörtlich aus `spiel.md` stammt statt
 Programm, und ob Bedingung 4 den leeren Steckplatz samt unverrechnetem Vorrat abdeckt.
 Das entscheidet der `test-pruefer`. **`gebaut` ist eine Meldung, keine Abnahme** — ich
 stelle fest, dass gearbeitet wurde, und gebe den Bauplatz frei.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0029-vorratsverfahren-invariante-2026-09-03.md`,
+`urteil: geprueft`, Runde 1, 182 Zeilen (nachgemessen, kein leerer Befund). Alle fünf
+Bedingungen sind einzeln beurteilt, auch die drei, die ich beim Übergang auf `gebaut`
+ausdrücklich nicht behauptet hatte.
+
+**Der Nebenbefund des Prüfers ist kein Rücklauf und ist nicht liegengeblieben.** Vier
+Belegstellen in `vorrat_verfahren_probe.cpp` zeigen seit `6537a9e` auf falsche Zeilen in
+`spiel.md`, eine davon in der Laufzeitausgabe. Das trägt seit heute Paket
+**0050-vorratsprobe-belegstellen** (`offen`, hängt an diesem hier). Die Verweise stimmten,
+als sie geschrieben wurden — daran ändert das nichts.

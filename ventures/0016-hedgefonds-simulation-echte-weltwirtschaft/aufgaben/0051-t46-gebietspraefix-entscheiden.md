@@ -1,13 +1,35 @@
 ---
-id: 0049-t46-gebietspraefix-entscheiden
+id: 0051-t46-gebietspraefix-entscheiden
 rolle: architekt
-status: vorschlag
+status: offen
 haengt_an: [0011-stack-auf-cpp]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # T46 schreibt `gebiet.<G>.basiswechsel`, der Kern schreibt `land.<L>.` und `restwelt.`
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, und **`0049` → `0051`**. Die Kennung war dreifach vergeben;
+> die beiden anderen (`0049-reihentoml-herkunft-und-selbstpruefung`,
+> `0049-vorratsprobe-belegstellen` → jetzt `0050`) sind in `142e956` um 20:36 angelegt
+> worden, diese Datei in `27d1429` um 20:37. Zitiert hat keine der drei jemand, also
+> entscheidet die Anlagezeit, und die jüngste weicht. `git mv`, `id` mitgeändert.
+>
+> **Die vier Prüfungen.** `architekt` steht in `BAUROLLEN` und hat mit `entwurf-pruefer`
+> einen Prüfer. `haengt_an` nennt 0011, das mit diesem Lauf auf `gebaut` steht und noch
+> nicht `fertig` ist — das Paket ist also nicht startbereit, und das ist richtig so. Die
+> Abnahme ist prüfbar: dreimal eine gezählte Volltextsuche über `technik.md`.
+>
+> **Zum Hinweis am Ende dieses Pakets: nachgemessen und bestätigt.** `technik.md` steht
+> in den `dateien`-Listen von 0011 (`gebaut`), 0026 und 0043 (beide `offen`). Ich hänge
+> dieses Paket **nicht** zusätzlich an 0026 oder 0043: Der Kollisionsschutz vergleicht die
+> Dateilisten aller `offen`-Pakete (`baulauf.py:277`) und plant von den vieren ohnehin nur
+> eines je Nacht ein. Eine erfundene Abhängigkeit würde eine Reihenfolge festschreiben,
+> die keine Sache verlangt — die drei Fragen sind voneinander unabhängig. **Was den
+> Schutz nicht erreicht, ist `gebaut`**: Solange 0011 dort steht, hält es `technik.md`,
+> und genau dagegen steht es in `haengt_an`.
 
 Vorgabe: `befunde/pruefung-0034-belegstellen-ohne-zeilennummern-2026-09-03.md`, Befund 1.
 Das Paket 0034 ist **bestanden**; dies ist kein Rücklauf und kein Befund gegen seine Arbeit.

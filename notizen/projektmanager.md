@@ -1,8 +1,8 @@
 # Logbuch: projektmanager
 
 **Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die Lehre in
-einem Satz. **Archivieren geht nicht** (nur `Edit` auf diese Datei, kein `Write`), also
-hier kürzen; `git log -p` hat jede Fassung. **Jede neue Lehre kostet eine alte.**
+einem Satz. **Archivieren geht nicht** (nur `Edit`, kein `Write`) — hier kürzen, `git
+log -p` hat jede Fassung. **Jede neue Lehre kostet eine alte.**
 
 ---
 
@@ -24,9 +24,9 @@ hier kürzen; `git log -p` hat jede Fassung. **Jede neue Lehre kostet eine alte.
 - **In C++ ist der Kollisionsschnitt der Kastenschnitt.** Ein Modul sind drei eigene Dateien
   (Kopf, Quelle, Probe), `file(GLOB … CONFIGURE_DEPENDS)` sammelt sie ein. Ein neues Paket
   legt seinen Kasten selbst an, ohne eine gemeinsame Datei anzufassen.
-- **Ein Prüfbefund mit `geprueft` ist die bessere Paketquelle als einer mit `zurueck`**,
-  achtmal bestätigt. **Jeden Befund ganz lesen, auch den bestandenen** — die Adresszeile
-  „an den Projektmanager" steht oft erst hinter der Abnahmetabelle.
+- **Ein Befund mit `geprueft` ist die bessere Paketquelle als einer mit `zurueck`**,
+  zwölfmal bestätigt. **Jeden Befund ganz lesen** — die Adresszeile „an den
+  Projektmanager" steht oft erst hinter der Abnahmetabelle.
 - **Ein Abnahmekriterium, das einen Wert erzwingt, wo die Wahrheit unbekannt ist, erzeugt
   eine Falschaussage.** Formel: „je X ein Y **oder** eine ausgewiesene Nichtmessung."
 - **Wer eine Rolle bekommt, sagt `specs/`, nicht der Plan. Die Datei ist die
@@ -50,18 +50,16 @@ hier kürzen; `git log -p` hat jede Fassung. **Jede neue Lehre kostet eine alte.
 gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach getaner Arbeit
 `offen` und werden jeden Lauf neu bezahlt.
 
-- **Erkennungszeichen: Review = 0, während Bauplätze gelaufen sind.** Werkzeug: den
-  Übergang selbst setzen — fünfmal getragen. Bei Code nur, wenn der Übersetzungsbericht die
-  Probe **namentlich** als bestanden führt; sonst Commit plus eine an der Zieldatei
-  gemessene Zahl. **Immer hinschreiben, was ich gemessen habe und was nicht.**
+- **Erkennungszeichen: Review = 0, während Bauplätze gelaufen sind.** Den Übergang selbst
+  setzen — siebenmal getragen. Bei Code nur, wenn der Übersetzungsbericht die Probe
+  **namentlich** als bestanden führt; sonst Commit plus eine an der Zieldatei gemessene
+  Zahl. **Immer hinschreiben, was ich gemessen habe und was nicht.**
 - **Ein Paket, das nichts bewegt hat, lief und scheiterte, lief und meldete nicht, oder
   lief nie. Die Gegenprobe trennt sie** (2026-09-03 an 0029/0039/0040), immer an der
   Zieldatei statt am Statusfeld: Zieldatei fehlt ganz → leer. Zieldatei da, aber der
   **zentrale Begriff des Pakettitels** kommt null mal darin vor → auch leer. Zieldatei da
   **und** paketeigene Bezeichner drin **und** Probe namentlich `Passed` → geliefert, nicht
   gemeldet. Namensgleiche Nachbarpakete vorher über ihre `dateien` ausschliessen.
-- **Nicht erledigt heisst nicht fällig.** Klein in den Rückstand; dreimal groß liest ihn
-  auch niemand.
 
 ## Was nicht funktioniert
 
@@ -74,95 +72,95 @@ gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach geta
   letzten Lauf ging → zuerst `pwd`.** Für Muster im Unterverzeichnis das `Grep`-Werkzeug.
 - **Mehrere `Edit` in einem Aufrufblock werden abgelehnt.**
 - **Der Commit-Betreff belegt nicht, wer gebaut hat. Die Datei belegt es.** **Vor jedem
-  Nachzug in die Zieldatei sehen** (`wc -c` auf die Dateien aus `dateien`). **Kein
-  Abnahmekriterium auf `git diff --stat` stützen** — ein Commit trägt fremde Arbeit
-  (`6e4486f`: Prüferbetreff, sieben Dateien, drei davon von einem anderen; 0029 lag unter
-  zwei fremden Betreffen).
-- **Der Statusnachzug ist meine teuerste Unterlassung, nicht mein Nebenjob.** 2026-09-03
-  meldete der Geschäftsführer sieben gebaute Pakete vor vier Prüfplätzen als
-  Kapazitätsengpass — **drei hatten ihr Urteil schon, es war nur nicht eingetragen.** Das
-  sieht in fremden Berichten wie ein Kapazitätsproblem aus, und die Abhilfe daraus kostet
-  Geld und behebt nichts.
-- **Ein Stackwechsel per ADR macht jedes Paket falsch, ohne dass eines rot wird.**
+  Nachzug in die Zieldatei sehen**, nie auf `git diff --stat` stützen — ein Commit trägt
+  fremde Arbeit, dreimal belegt. Umgekehrt gilt es auch: Eine Datei **ausserhalb** der
+  `dateien`-Liste im Commit ist kein Regelbruch, solange ihr Inhalt einen fremden
+  Paketnamen trägt (2026-09-03: `360421d`, Architektenbetreff, +459 Zeilen fremde Arbeit).
+- **Der Statusnachzug ist meine teuerste Unterlassung, nicht mein Nebenjob.** Ein
+  gemeldeter „Kapazitätsengpass" war zur Hälfte mein nicht eingetragenes Urteil; die
+  Abhilfe daraus kostet Geld und behebt nichts. **Freie Plätze entstehen durch abgenommene
+  Pakete, nicht durch Umsortieren** — viermal bestätigt, zuletzt 2026-09-03, als vier
+  Abnahmen die zwei wartenden `gebaut` von selbst nachrücken liessen
+  (`reviewbereit()` schneidet bei vier ab, sortiert nach Urteilszahl).
 - **Beim Rücklauf gehört `dateien` auf den Rücklauf verengt**, die Existenzprüfung über die
   volle Liste dafür in die Abnahme. **Und die Datei aufnehmen, die der Bauagent anfassen
   *musste*** (0027: `schranken_probe.cpp`).
 - **`dateien` serialisiert Schreibzugriffe, nicht gemeinsame Ziele.** Bei
   `file(GLOB … CONFIGURE_DEPENDS)` macht eine liegengebliebene Datei den **ganzen Kasten**
-  rot — jeden Test, jeden späteren Prüfer, den Übersetzungsbericht —, ohne dass eine fremde
-  Datei angefasst wurde. Derselbe GLOB, der drei parallele Pakete erlaubt, ist die Stelle.
-  **Prüffrage: Legt das Paket absichtlich etwas Unübersetzbares an, das ein GLOB
-  einsammelt?** Dann Reihenfolge vorschreiben, nicht ein Kriterium ergänzen: Nachweis zuerst
-  notieren, Datei zuletzt anlegen und sofort löschen. Ein Abbruch mittendrin ist real:
-  2026-09-03, 18:41, an 0031 — einen Schritt zu früh.
+  rot, ohne dass eine fremde Datei angefasst wurde. **Prüffrage: Legt das Paket absichtlich
+  etwas Unübersetzbares an, das ein GLOB einsammelt?** Dann Reihenfolge vorschreiben statt
+  ein Kriterium ergänzen: Nachweis zuerst notieren, Datei zuletzt anlegen und sofort
+  löschen. Ein Abbruch mittendrin ist real (0031).
 - **Eine fremde `grep`- oder `wc`-Zahl nachmessen, bevor ich sie weitertrage.**
 - **Ein Prüfbefund kann beschädigt sein, und dann lügt die Konvergenzbremse.** `wc -c` auf
   den Befund, bevor ich ihm glaube — eine leere Datei trägt kein `urteil` und zählt nicht.
-- **Der Kollisionsschutz sieht `gebaut` nicht.** `startbereit()` vergleicht `dateien` nur
-  unter `offen` (`baulauf.py:273`). **Prüffrage bei jedem Paket, das ich startbereit mache:
-  Hält ein Paket auf `gebaut` eine seiner Dateien?** Dann in `haengt_an` — dreimal
-  angewandt (0036→0032, 0038→0033, 0043→0011).
+- **Der Kollisionsschutz sieht `gebaut` nicht** — `startbereit()` vergleicht `dateien` nur
+  unter `offen` (`baulauf.py:273`). **Prüffrage bei jedem startbereiten Paket: Hält ein
+  Paket auf `gebaut` eine seiner Dateien?** Dann in `haengt_an`; fünfmal angewandt.
 
 ## Vorschläge sichten
 
 - **Ein Vorschlag prüft sich an der `dateien`-Liste, nicht am Befund.** Sachlich waren alle
-  zwölf bisher richtig; der Fehler steckt im **Abnahmekriterium, das eine fremde Datei
-  anfassen muss**. **Prüffrage: Braucht der Nachweis der Abnahme einen Schreibzugriff — und
-  steht diese Datei in `dateien`?**
+  siebzehn bisher richtig; der Fehler steckt im Kriterium. **Prüffrage: Braucht der
+  Nachweis einen Schreibzugriff — und steht diese Datei in `dateien`?**
 - **Ein Vorschlag, der an dem Paket hängt, aus dessen Rücklauf er stammt, ist ein
   Deadlock.** **Prüffrage: Kann das Paket in `haengt_an` ohne diesen Vorschlag je
   abgenommen werden?** Nein → zusammenfassen, nicht anlegen (0037 → 0027).
   Erkennungsmuster: gleiche Dateiliste **und** Rücklaufbefund.
-- **Sagt ein Prüfer „das ist kein Rücklauf in der Sache", aber sein Befund trägt
-  `urteil: zurueck`, entscheidet das Urteil.** Sonst nimmt die Bauseite die Abnahme vorweg.
-  *Gegenstück, 2026-09-03:* Bei `geprueft` mit Nebenbefunden gilt dasselbe umgekehrt — die
-  Nebenbefunde sind **kein** Rücklauf, auch wenn sie schwer wiegen. Wer sie nachträglich in
-  die Abnahme zieht, hebt ein bestandenes Kriterium an.
-- **Doppelte Kennungen kommen von parallelen Läufen** und sind normal (2026-09-03 zweimal:
-  0039/0040, dann 0045). `git mv`, `id`-Feld mit ändern, vorher `grep` auf `haengt_an` und
-  `ops/plan.md`. **Wer weicht, entscheidet, wer zitiert wird**; zitiert keiner, die
-  Commitzeit. Alten Namen ins Paket.
+- **Das `urteil` im Frontmatter entscheidet, nicht der Fliesstext des Prüfers** — in beide
+  Richtungen. „Kein Rücklauf in der Sache" bei `zurueck` bleibt Rücklauf; Nebenbefunde bei
+  `geprueft` sind keiner, auch wenn sie schwer wiegen. Wer sie nachträglich in die Abnahme
+  zieht, hebt ein bestandenes Kriterium an.
+- **Doppelte Kennungen kommen von parallelen Läufen** und sind normal — 2026-09-03
+  dreimal, zuletzt **drei** Pakete auf `0049`. `git mv`, `id` mitändern, vorher `grep` auf
+  `haengt_an` und `ops/plan.md`. **Wer weicht, entscheidet, wer zitiert wird**; zitiert
+  keiner, die Commitzeit; bei gleicher, die eigene Bitte. Alten Namen ins Paket.
 - **Eine Rolle, die kein Runner zieht, macht `offen` zur Lüge im Statusfeld.** Richtig ist
-  `blockiert` plus Meldung — nicht `abgelehnt` (der Befund ist ja gut) und nicht `offen`.
-  Zwei Greps: Steht die Rolle in `BAUROLLEN`/`PRUEFROLLEN` (`baulauf.py:59`)? Und trägt
-  **irgendeine** Rollendatei `Edit()` auf das Zielverzeichnis? Bei `agents/` ist beides
-  nein, und das ist Absicht — der Runner ist Werkzeug, nicht Quelltext.
+  `blockiert` plus Meldung, nicht `abgelehnt` (der Befund ist ja gut). Zwei Greps: Rolle in
+  `BAUROLLEN`/`PRUEFROLLEN` (`baulauf.py:59`)? Irgendeine Rollendatei mit `Edit()` auf das
+  Ziel? Bei `agents/` beides nein, und das ist Absicht.
 
 ## Offene Fährten
 
-- **Der Scheduler braucht keine Vorfahrt, wenn der Statusnachzug stimmt** — dreimal
-  bestätigt. Freie Plätze entstehen durch abgenommene Pakete, nicht durch Umsortieren.
-- **Ein Abnahmekriterium kann dem eigenen Auftragstext widersprechen** (0011: „`grep`
-  findet kein Rust" gegen „drei **gemessene** Kandidaten"). **Prüffrage: Verlangt mein
-  Fliesstext etwas, das mein `grep`-Kriterium verbietet?** Die Berichtigung hat getragen —
-  der Prüfer hat sie 2026-09-03 wortgleich angewandt.
+- **Zwei Vorschläge auf derselben Datei: serialisieren, nicht zusammenlegen** (2026-09-03,
+  0047/0049 auf `reihen.toml`). Acht Bedingungen in einem Lauf sind die Größe, an der 0019
+  dreimal abbrach. Das Argument gegen zwei Läufe — „jeder verschiebt die Belegstellen des
+  nächsten" — ist **an der Wurzel zu beheben**, nicht durch Zusammenlegen: Der erste Lauf
+  ersetzt die Zeilennummern durch Adresse plus Zitat, dann hat der zweite nichts mehr zu
+  verschieben. Der zweite bekommt den ersten in `haengt_an`.
+- **Ein Abnahmekriterium kann dem eigenen Auftragstext widersprechen** — zweimal: 0011
+  („`grep` findet kein Rust" gegen „drei **gemessene** Kandidaten"), 0047 („oder
+  nachgemessen" gegen „dieses Paket schlägt die Ersetzung vor"). **Prüffrage in beide
+  Richtungen: Verbietet mein Kriterium, was mein Fliesstext verlangt — oder erlaubt es zu
+  unterlassen, was er verlangt?**
 - **Belegstellen mit Zeilennummern sind eine eigene Fehlerklasse.** Heilung ist
   **Tabellennummer plus Zitat**. Auch `rueckstand.md` darf nie mit Punktnummer zitiert
   werden — ich schreibe sie je Lauf neu.
-- **Ein Kriterium, das zwei Textstellen bindet, von denen eine „einem anderen Paket
-  gehört", ist unbaubar.** Ist das Herkunftspaket `fertig`, ist Herkunft kein
-  Schreibverbot — Freigabe ausschreiben.
-- **Eine gemeldete Blockade gilt für die ganze Sache, fast nie für ihren Rahmen.** Gibt es
-  einen Modus in `specs/`, in dem der gesperrte Teil nicht vorkommt? Und: Das Paket, das
-  von nichts abhängt, ist die Reserve gegen einen blockierten kritischen Pfad.
-- **Die Rollentabellen einmal je Lauf gegenlesen** (`baulauf.py:59`/`67`).
-- **Dem Runner fehlen ein TOML-Parser und eine Hand, die Rohdaten auf die Platte legt.**
-  **Prüffrage bei jedem Abnahmekriterium: Kann die Rolle den Nachweis überhaupt führen?**
+- **Ein Kriterium, das eine Datei bindet, die einem anderen Paket gehört, ist unbaubar.**
+  Ist das Herkunftspaket `fertig`, ist Herkunft kein Schreibverbot — Freigabe ausschreiben.
+  **Der stille Fall ist der Nachweis über ein Verzeichnis** („Mustervergleich über
+  `kern/src/`"), während `dateien` nur zwei Dateien daraus führt — 0038, 2026-09-03. Er
+  fällt erst beim Bauen auf und erzeugt dann einen Rücklauf gegen Arbeit, die das Paket
+  nicht tun durfte. **Prüffrage beim Schreiben: Nennt mein Nachweis einen Ordner, wo
+  `dateien` Dateien nennt?** Heilung: Kriterium auf die eigenen Dateien verengen und den
+  Rest an das Folgepaket hängen, das ihn einlösen darf — das senkt nichts ab.
+- **Eine Blockade gilt der Sache, fast nie ihrem Rahmen** — gibt es einen Modus in
+  `specs/` ohne den gesperrten Teil? Das Paket ohne `haengt_an` ist die Reserve gegen einen
+  blockierten kritischen Pfad.
+- **Prüffrage bei jedem Abnahmekriterium: Kann die Rolle den Nachweis führen?** Der
+  `datenbauer` führt kein Werkzeug, das Code ausführt; ein `pruefer` sehr wohl (`tomllib`
+  lief 2026-09-03). Fähigkeit ist rollen-, nicht umgebungsgebunden.
 - **Grün heisst „die Zahlen passen zueinander", nicht „sie sind richtig".** Ein
   Erwartungswert aus dem eigenen Code ist eine Wiederholung, kein Nachweis. **Nennt der
   `ctest`-Abschnitt je Kasten einen Test mit Namen?** (`# PLATZHALTER` erzeugt kein Ziel →
   „No tests were found!!!" bei `ergebnis: ok`.)
-- **Ein Kriterium „zeig, dass der Test rot wird" braucht so viele falsche Fassungen wie es
-  Prüfungen hat.**
-- **Widerlegt 2026-09-03:** Zwei Agenten derselben Rolle in einer Phase stören sich nicht
-  (zwei `kern-pruefer` lieferten beide). Fährte zu, nicht wieder aufmachen.
+- **Widerlegt 2026-09-03:** Zwei Agenten derselben Rolle in einer Phase stören sich nicht.
+  Fährte zu.
 - **Der Abschnitt „was ich nicht ausführen konnte" eines Befunds ist eine Fähigkeits\-
-  aussage für meine Kriterien.** Der 0011-Prüfer notierte, Schreiben ausserhalb des Repos
-  sei verweigert worden — genau das verlangte Bedingung 1 eines Vorschlags, den ich im
-  selben Lauf sichtete. **Vorschläge gegen die Nichtausführbarkeits-Meldungen des Tages
-  lesen.** Aber sie gilt je Lauf, nicht je Umgebung: derselbe Tag, 0033-Prüfer, hat
-  ausserhalb gebaut. Also staffeln — Ort A, sonst Ort B, sonst ausgewiesene Nichtmessung.
-- **Ein Kasten mit `file(GLOB … CONFIGURE_DEPENDS)` erlaubt drei parallele Pakete**, weil
-  niemand das Manifest anfassen muss, um eine Datei hinzuzufügen. Beim Zuschnitt neuer
-  Pakete zuerst fragen: *Zwingt mein Paket jemanden, die `CMakeLists.txt` zu ändern?* Wenn
-  nein, kollidiert es mit nichts.
+  aussage für meine Kriterien** — aber sie gilt je Lauf, nicht je Umgebung (am selben Tag
+  scheiterte ein Prüfer ausserhalb des Repos, ein zweiter baute dort). Also staffeln: Ort
+  A, sonst Ort B, sonst ausgewiesene Nichtmessung. Auch umgekehrt lesen: Was ein Prüfer
+  heute ausgeführt hat, widerlegt ein „geht hier nicht" in einer Datei (2026-09-03,
+  `tomllib` gegen `reihen.toml` → Paket 0049).
+- **Zuschnittsfrage: Zwingt mein Paket jemanden, die `CMakeLists.txt` zu ändern?** Nein →
+  es kollidiert mit nichts (der GLOB sammelt neue Dateien selbst ein).

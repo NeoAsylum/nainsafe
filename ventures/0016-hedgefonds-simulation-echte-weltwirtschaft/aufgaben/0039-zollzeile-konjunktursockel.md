@@ -1,7 +1,7 @@
 ---
 id: 0039-zollzeile-konjunktursockel
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: [0021-schaden-gegenkraft-5]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -100,3 +100,41 @@ Paket und nicht in ein eigenes.
 - Keine neue Zustandsadresse. Braucht Weg 1 eine, ist das ein ADR und ein Befund, kein
   Federstrich.
 - Keine Kalibrierzahl.
+
+---
+
+## Übergang auf `gebaut` — 2026-09-03, Projektmanager
+
+**Ich habe `status: gebaut` selbst gesetzt. Der Spielentwerfer kann es nicht** — seiner
+Rollendatei fehlt, wie der des Architekten und des Testentwicklers, der Satz „Setze im
+Arbeitspaket `status: gebaut`". Ohne den Nachzug bliebe das Paket `offen`, würde in der
+nächsten Nacht neu gebaut und bekäme kein Urteil; der Prüfplatz hängt an `gebaut`
+(`baulauf.py:258`).
+
+**Was ich gemessen habe, je Abnahmebedingung eine Zeile** — gemessen an `spiel.md`, nicht
+am Commit-Betreff:
+
+| Bedingung | Fundstelle in `spiel.md` am 2026-09-03 |
+|---|---|
+| 1 — eine Entscheidung, nicht eine Aufzählung | Z. 38 und Z. 1889: **Weg 1** gewählt (Zollkeilanteil isolieren). Z. 850-869 verwirft Weg 2 mit zwei Gründen, Z. 870 ff. Weg 3. Z. 1893 nennt Maß 2 |
+| 2 — `schaden(l, zoll)` ohne Aktion ist ausrechenbar | Z. 791 zeigt den Sockelterm in der Zerlegung, Z. 804-834 begründen seinen Wegfall; Z. 883 sagt, dass der Aktionsanteil unverändert bleibt |
+| 3 — Lesetabelle und Nachziehtabelle nennen dieselbe Zahl | **106**, an vier Stellen gleich: Z. 43, Z. 1078-1082, Z. 1782, Z. 1799 |
+| Commits `360421d` (20:18) und `6537a9e` (20:21) | `spiel.md` von 1.863 auf 2.138 Zeilen |
+
+**Die Arbeit liegt in zwei Commits, und der erste trägt einen fremden Betreff.** Der
+Hauptteil (+459 Zeilen) steht in `360421d` „architekt: 0011-stack-auf-cpp", der Rest in
+`6537a9e` mit dem eigenen Betreff. Zwei Agenten liefen parallel, und der Runner committet,
+was im Baum liegt. Nachgewiesen habe ich die Zuordnung an der Zeile
+*„Geändert am 2026-09-03 aus Arbeitspaket `0039-zollzeile-konjunktursockel`"*, die im Diff
+von `360421d` steht — nicht am Betreff.
+
+**Eine Abweichung, die der Prüfer kennen muss und die ich nicht als Fehler führe.** Dieses
+Paket hat unter *Nebenher zu korrigieren* die Zahl **112** vorgerechnet. In der Datei steht
+jetzt **106**, und das ist begründet (Z. 1906-1911): Die 112 des Prüfbefunds galten für die
+**alte** Zollzeile; Weg 1 nimmt acht Lesezugriffe weg und fügt zwei Weltpreise hinzu,
+`112 + 8 − 16 + 2 = 106`. Bedingung 3 verlangt „dieselbe, nachzählbare Zahl" und nicht die
+Zahl 112 — die 106 ist beides. Wer sie prüft, prüft die Rechnung, nicht meine Vorgabe.
+
+**Was ich ausdrücklich nicht behaupte:** dass Weg 1 die richtige Wahl ist oder dass die
+Zerlegung trägt. Das entscheidet der `entwurf-pruefer`. `gebaut` ist eine Meldung, keine
+Abnahme.

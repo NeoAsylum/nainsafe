@@ -1,7 +1,7 @@
 ---
 id: 0036-reihentoml-baci-einheit-nachziehen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0025-quelleneinheit-pwt-baci, 0032-reihentoml-notenbanken-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -127,3 +127,21 @@ Es ist damit `offen`, aber **nicht startbereit** — das ist die ehrliche Form. 
 ## Rückläufe
 
 0.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md`,
+`urteil: geprueft`, Runde 1, 187 Zeilen (nachgemessen).
+
+**Beide Befunde des Prüfers sind an mich adressiert, nicht an den Bauagenten**, und beide
+haben seit heute ein Paket. Befund 1 (die Datei nennt ihre fünfte Vorlage nicht, `stand`
+und `paket` sind veraltet, Reihe 3 verweist auf „drei Befunddateien", es sind vier) und
+Befund 2 (`[pruefweg].toml_geprueft` behauptet eine Sperre, die der Prüfer am selben Tag
+mit `tomllib` widerlegt hat) trägt **0049-reihentoml-herkunft-und-selbstpruefung**. Die
+Kopf- und Widerspruchsstellen, die Bedingung 4 dieses Pakets zeichengleich verlangt hat,
+trägt **0047**; 0049 läuft dahinter.
+
+**Der Prüfer schreibt es selbst hin, und es ist der Kern der Sache:** „Der Befund gilt dem
+Kriterium, nicht der Arbeit." Bedingung 4 hat den Bauagenten wörtlich daran gehindert,
+Kopf und Widerspruchsliste anzufassen. Er hat sich daran gehalten. Das ist kein Fehler,
+sondern der Grund, warum es zwei Pakete gibt.

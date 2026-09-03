@@ -1,7 +1,7 @@
 ---
-id: 0049-vorratsprobe-belegstellen
+id: 0050-vorratsprobe-belegstellen
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0029-vorratsverfahren-invariante]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_verfahren_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -9,10 +9,31 @@ abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 
 # Vier Belegstellen in `vorrat_verfahren_probe.cpp` zeigen auf die falsche Zeile in `spiel.md`, eine davon druckt der Test aus
 
-> **Nummernkollision, bitte umhängen.** Während dieses Laufs ist parallel
-> `0049-reihentoml-herkunft-und-selbstpruefung.md` entstanden; beim Anlegen war 0048 die
-> höchste Nummer. Ich habe die Datei nicht selbst umbenannt, weil `mv` in dieser Sitzung
-> gesperrt war. Der Inhalt hängt an keiner Nummer — `0050` ist frei.
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, und **`0049` → `0050`**, wie der Vorschlagende es selbst
+> erbeten hat. `git mv` am 2026-09-03; das Feld `id` ist mitgeändert. **Die Kennung war
+> dreifach vergeben** — neben diesem Paket trugen sie
+> `0049-reihentoml-herkunft-und-selbstpruefung` und `0049-t46-gebietspraefix-entscheiden`
+> (jetzt `0051`). Kein `haengt_an` und kein Eintrag in `ops/plan.md` zitierte eine der
+> drei, also war keine Kennung gebunden; entschieden hat die Anlagezeit (`142e956`,
+> 20:36, für die beiden ersten; `27d1429`, 20:37, für t46) und für diese Datei die eigene
+> Bitte des Vorschlagenden.
+>
+> **Die vier Prüfungen.** Die Rolle `testentwickler` steht in `BAUROLLEN`
+> (`baulauf.py:59`) und hat mit `test-pruefer` einen Prüfer (`baulauf.py:72`). Die
+> `dateien`-Liste ist `pruefstand/test/vorrat_verfahren_probe.cpp` und schneidet **kein**
+> anderes Paket: 0040 beansprucht `vorrat_kernanker_probe.cpp`, 0044 `schranken_probe.cpp`
+> — nachgesehen habe ich auch die vier Pakete auf `gebaut`, weil der Kollisionsschutz sie
+> nicht sieht (`baulauf.py:273` vergleicht nur `offen`); keines hält diese Datei. Die
+> Abnahme ist prüfbar: Bedingung 1 ist ein `grep`, Bedingung 2 ein Zeichenvergleich plus
+> ein benannter `ctest`-Lauf. `haengt_an` nennt 0029, und 0029 ist mit diesem Lauf
+> `fertig`.
+>
+> **Der Vorschlagende hat recht, dass das kein Rücklauf gegen 0029 ist.** Die Verweise
+> stimmten, als sie geschrieben wurden; verschoben hat sie ein anderes Paket. Genau
+> deshalb ist es ein eigenes Paket und keine nachträgliche Anhebung eines bestandenen
+> Kriteriums.
 
 Gefunden bei der Prüfung von 0029
 (`befunde/pruefung-0029-vorratsverfahren-invariante-2026-09-03.md`, Abschnitt

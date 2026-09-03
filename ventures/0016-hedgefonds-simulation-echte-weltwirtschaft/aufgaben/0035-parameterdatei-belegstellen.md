@@ -1,7 +1,7 @@
 ---
 id: 0035-parameterdatei-belegstellen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0009-parameterdatei-schluessel, 0028-parameterdatei-querverweis]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -199,3 +199,19 @@ weitere hinzugefügt. Die Datei gehört dem Testentwickler; ich habe sie nicht a
 ## Rückläufe
 
 0.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0035-parameterdatei-belegstellen-2026-09-03.md`,
+`urteil: geprueft`, Runde 1, 125 Zeilen (nachgemessen).
+
+**Zwei Dinge aus dem Befund, die keine Befunde sind und trotzdem hierher gehören.**
+Erstens: Der Prüfer hat die Verschiebung nachgerechnet, die dieser Lauf in
+`schranken_probe.cpp` erzeugt hat, und bestätigt, dass die Zahlen von Paket **0044**
+tragen. 0044 bleibt `offen` und wird startbereit, sobald 0027 abgenommen ist. Zweitens:
+Ein Teil der 90 `specs/`-Verweise nennt nur eine Tabellennummer ohne Zitat. Der Prüfer hat
+das gesehen, ausdrücklich **nicht** als Befund geführt und dazugeschrieben, ein Kriterium
+anheben dürfe er nicht. Das ist richtig, und ich hebe es auch nicht nachträglich an: Das
+Kriterium fragte nach Zeilennummern, und die halten ausnahmslos. Ich lege daraus **kein**
+Folgepaket an — eine Tabellennummer ist ohne Zitat auffindbar, sie überlebt jeden Schnitt,
+und der Aufwand stünde in keinem Verhältnis.

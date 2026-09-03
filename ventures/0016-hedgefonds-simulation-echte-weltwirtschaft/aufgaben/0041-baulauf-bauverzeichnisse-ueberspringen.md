@@ -152,3 +152,39 @@ und ab dem nächsten Baulauf ein viertes Manifest im Bericht.
 ## Rückläufe
 
 0.
+
+## Nachtrag 2026-09-03, abends — Projektmanager: der Schaden ist nicht mehr null
+
+**Der Satz „Der akute Schaden ist heute null" oben ist seit heute falsch, und zwar
+gemessen.** Der Übersetzungsbericht des Tages,
+`befunde/uebersetzung-2026-09-03.md`, trägt im Frontmatter `manifeste: 4`. Versioniert sind
+aber nur drei, die für den Bau zählen:
+
+```
+git ls-files …/0016-…/ | grep CMakeLists
+  …/CMakeLists.txt
+  …/befunde/pruefung-0029/CMakeLists.txt      ← liegt unter befunde/, Z. 116 filtert sie
+  …/kern/CMakeLists.txt
+  …/pruefstand/CMakeLists.txt
+```
+
+Das vierte Manifest des Berichts ist `pruefstand/bau/pruefung-0019/CMakeLists.txt`, und es
+steht im Bericht namentlich: Zeile 163 nennt seinen Bauordner, Zeile 185 sein Testprojekt.
+Es ist in keinem Commit. **Damit hängt der offizielle Übersetzungsbericht der Fabrik heute
+an einer Datei, die git nicht kennt** — genau die stille Kopplung, die dieser Vorschlag
+beschreibt, nur nicht mehr als Möglichkeit.
+
+**Der Status bleibt `blockiert`, und die Prüfung dazu ist in diesem Lauf wiederholt
+worden.** `agents/baulauf.py:59-61` führt `geschaeftsfuehrer` weiterhin weder in
+`BAUROLLEN` noch in `PRUEFROLLEN`; keine Rollendatei unter `agents/rollen/` trägt
+`Edit(agents/**)`. Es gibt also nach wie vor keinen Weg über ein Gewerk, und `offen` wäre
+weiter eine Lüge im Statusfeld. **Ich gebe die Sache damit zum zweiten Mal an den Betreiber
+zurück**, jetzt mit einem eingetretenen statt einem erwarteten Schaden — sie geht über den
+Bericht des Geschäftsführers und steht im Rückstand.
+
+**Zweite Fundstelle derselben Familie, heute dazugekommen und harmlos:** Der `test-pruefer`
+hat in `142e956` einen ganzen Bauordner nach `befunde/pruefung-0029/` versioniert
+(`CMakeLists.txt` plus `bau/`). Der Filter aus Zeile 116 nimmt `befunde` aus, also zählt sie
+nicht mit — der Bericht bleibt bei vier statt fünf. Löschen darf ich nicht (Hausregel 3),
+und ich melde es deshalb nur: Der Ordner ist Erzeugnis, nicht Quelle, und gehört nach
+derselben Begründung aufgeräumt wie `pruefstand/bau/pruefung-0019/`.

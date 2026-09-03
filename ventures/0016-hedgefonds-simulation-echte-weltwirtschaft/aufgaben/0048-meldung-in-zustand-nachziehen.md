@@ -1,13 +1,38 @@
 ---
 id: 0048-meldung-in-zustand-nachziehen
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0038-meldung-mit-adresse-gemeinsam, 0027-zustand-schreibweg-schliessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Die zweite Fassung des Meldungsbaus in `kern/src/zustand.cpp` auf den Kopf umstellen
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager, und 0038 ist deshalb berichtigt worden
+
+> **`vorschlag` → `offen`.** Die vier Prüfungen: `kernbauer` steht in `BAUROLLEN` und hat
+> mit `kern-pruefer` einen Prüfer. Die Abnahme nennt drei Bedingungen, die erste ein
+> ausgeschriebenes `grep` mit erwarteter Trefferzahl, die beiden anderen benannte Proben
+> im Übersetzungsbericht. Die `dateien`-Liste ist `kern/src/zustand.cpp` und schneidet
+> **0027**, das auf `gebaut` steht — der Kollisionsschutz sieht `gebaut` nicht
+> (`baulauf.py:273`), das Paket hat das erkannt und 0027 selbst in `haengt_an` gesetzt.
+> Beide Abhängigkeiten sind unerfüllt, das Paket ist also nicht startbereit, und das ist
+> richtig.
+>
+> **Die Deadlock-Prüfung, weil dieses Paket an einem Kriterium hängt, das es selbst
+> erfüllt:** Kann 0038 ohne 0048 je abgenommen werden? **Ja — nach der Berichtigung, die
+> ich heute in 0038 geschrieben habe, und nur nach ihr.** Bedingung 1 von 0038 verlangte
+> einen Mustervergleich über ganz `kern/src/`, während `kern/src/zustand.cpp` nicht in der
+> `dateien`-Liste von 0038 steht. Damit band das Kriterium eine Datei, die dem Paket nicht
+> gehört — unbaubar, und beim nächsten Urteil ein Rücklauf gegen Code, der richtig ist. Die
+> Berichtigung steht im Paket 0038; sie verengt Bedingung 1 auf dessen eigene Dateien und
+> nennt dieses Paket als den Ort der zweiten Fassung. Damit ist der Kreis auf: 0038 kann
+> geprüft werden, danach 0027, danach läuft dieses Paket.
+>
+> **Was ich nicht entscheide:** ob der Umbau mechanisch geht. Das Paket nennt die eine
+> Stelle, an der es das nicht ist (`meldung.hpp` → `zustand.hpp` → `index_zu_adresse`), und
+> verlangt vom Bauagenten, sie geprüft zu haben statt vermutet. Das ist die richtige Form.
 
 ## Der Anlass ist ein unerfuelltes Abnahmekriterium, kein „waere auch gut"
 

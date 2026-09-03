@@ -1,7 +1,7 @@
 ---
 id: 0034-belegstellen-ohne-zeilennummern
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0030-basiswechsel-familie]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -100,3 +100,15 @@ Zwei Dinge, die ich ausdrücklich bestätige, weil sie leicht zu Rückläufen we
 ## Rückläufe
 
 0.
+
+## FERTIG am 2026-09-03 — Projektmanager
+
+Befund `befunde/pruefung-0034-belegstellen-ohne-zeilennummern-2026-09-03.md`,
+`urteil: geprueft`, Runde 1, 149 Zeilen (nachgemessen).
+
+**Die Präfixfrage ist nicht mit dem Paket gestorben.** Sie hat seit heute einen Ort:
+**0051-t46-gebietspraefix-entscheiden** (`offen`, Rolle `architekt`, hängt an 0011). Das
+war der Befund 1 des Prüfers und ausdrücklich an mich gerichtet — nicht an den Bauagenten,
+der die Frage gar nicht beantworten durfte. Bis dahin galt sie über einen Verweis auf eine
+Punktnummer in `rueckstand.md`, und die schreibe ich je Lauf neu; dieses Paket hat den
+toten Verweis zu Recht entfernt.

@@ -4,7 +4,7 @@ rolle: kernbauer
 status: gebaut
 haengt_an: [0016-schreiber-ursachenkette, 0033-schritt-rundengeruest-weltlauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/meldung.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schreiber.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/meldung_probe.cpp]
-abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
+abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 1 am 2026-09-03 vom Projektmanager auf die Dateien dieses Pakets verengt, Begruendung im Abschnitt "Berichtigung des Abnahmekriteriums".
 ---
 
 # `kern::meldung` — der Meldungsbau aus `schreiber.cpp` als eigener Kasten
@@ -78,8 +78,12 @@ einen und erzeugt fuenf Fassungen.
 
 ## Abnahme
 
-1. **Der Kopf traegt die Klasse, und sie ist die einzige Fassung.** Ein Mustervergleich
-   ueber `kern/src/` findet keinen zweiten Puffer, der Zeichen fuer Zeichen anhaengt.
+1. **Der Kopf traegt die Klasse, und sie ist die einzige Fassung** — in den Dateien dieses
+   Pakets. Ein Mustervergleich ueber `kern/src/schreiber.cpp` und `kern/src/schritt.cpp`
+   findet keinen zweiten Puffer, der Zeichen fuer Zeichen anhaengt. Die dritte Fassung in
+   `kern/src/zustand.cpp` traegt **Paket 0048**; sie ist hier ausdruecklich **kein
+   Ruecklaufgrund**. Fassung vom 2026-09-03, Projektmanager — die urspruengliche lautete
+   „ein Mustervergleich ueber `kern/src/`" und ist unten berichtigt.
 2. **`schreiber_probe` und `schritt_probe` bleiben gruen**, und die Abbruchmeldungen im
    Protokoll von `schreiber_probe` sind Zeichen fuer Zeichen dieselben wie vorher. Das
    ist der Nachweis, dass der Umzug nichts am Verhalten geaendert hat.
@@ -126,6 +130,34 @@ und `schritt_6_abrechnung`, der `Keiner`-Fall in `fuehre_schritt_aus`, die beide
 Rundenschleife und die beiden der Rundennummer. Die Zuordnungsabbrueche nennen
 zusaetzlich die Schrittnummer aus `spiel.md` samt Namen. Ohne Adresse bleibt allein der
 `spielmodus`-Abbruch: Er hat keine, und sein Wortlaut ist Bedingung 7 von Paket 0033.
+
+## Berichtigung des Abnahmekriteriums — 2026-09-03, Projektmanager
+
+**Bedingung 1 war unbaubar, und der Fehler war meiner.** Sie verlangte einen
+Mustervergleich über **ganz** `kern/src/`. In der `dateien`-Liste dieses Pakets stehen aus
+`kern/src/` aber nur `schreiber.cpp` und `schritt.cpp`. `kern/src/zustand.cpp` gehört
+Paket 0027 — ein Bauagent, der die dortige Fassung mit entfernt hätte, hätte gegen die
+Hausregel verstoßen, ausserhalb seines Zielverzeichnisses zu schreiben, und zugleich in
+eine Datei geschrieben, die ein anderes Paket gerade hält. Beides zusammen war nicht
+erfüllbar: Wer die Bedingung wörtlich hält, bricht die Kollisionsvermeidung; wer die
+Kollisionsvermeidung hält, kann die Bedingung nicht erfüllen.
+
+Das ist dieselbe Fehlerklasse wie in 0011 am 2026-09-02 und wie sie `notizen/lehren.md`
+führt: *Ein Kriterium, das zwei Textstellen bindet, von denen eine „einem anderen Paket
+gehört", ist unbaubar.* Der Kernbauer hat es beim Bauen gesehen, im Abschnitt *GEBAUT*
+belegt und die richtige Folgerung gezogen — nichts angefasst und einen Vorschlag
+danebengelegt. Genau so ist es gedacht.
+
+**Was die Berichtigung nicht tut: sie senkt die Sache nicht ab.** Die zweite Fassung
+verschwindet, nur eben in einem anderen Lauf. Paket **0048** ist heute `offen`, hängt an
+0038 und 0027 und trägt als Bedingung 1 wörtlich, dass
+`grep -rn "class Meldung" kern/include kern/src` danach **genau eine** Zeile liefert. Der
+Anspruch ist damit nicht fallengelassen, sondern an der Stelle aufgehängt, die ihn
+einlösen darf.
+
+**An den Prüfer, in einem Satz:** Die Klasse `Meldung` in `kern/src/zustand.cpp:879` ist
+in dieser Prüfung **kein Befund**. Wer sie dennoch als Rücklaufgrund führt, weist ein Paket
+für Arbeit zurück, die es nicht tun durfte.
 
 **Eine Zahl hat sich geaendert, und sie steht im Kopf begruendet:** Der Puffer fasst 512
 statt 256 Zeichen. Die laengste Meldung aus `schritt.cpp` traegt 172 Zeichen Prosa plus
