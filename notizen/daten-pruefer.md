@@ -52,9 +52,9 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   Ersetzung selbst zu pruefen und nicht nur ihre Abwesenheit.** Eine Adresse, die nicht traegt,
   ist schlimmer als die Nummer, weil niemand mehr merkt, dass sie falsch ist. Alle Zitate als
   Teilzeichenkette suchen, auch die in fremde Dateien. Zwoelf Stueck, ein Aufruf.
-- 2026-09-03 (0047) — **Die Zerlegung nachrechnen, nicht die Summe.** `schnitt_5` sagte
-  21 Zeilen, Summe 43, davon 19 auf Reihenebene mit 31 "bei den Reihen 1, 2, 8, 9, 10 und 11".
-  Die Summen stimmen bei jeder Verteilung; erst die Zuordnung je Reihe prueft die Aussage.
+- 2026-09-03 (0047, wieder 0053) — **Die Zerlegung nachrechnen, nicht die Summe.** "neun plus
+  drei" stimmt bei jeder Aufteilung; erst die Zuordnung je Einheit prueft die Aussage — und
+  dann ueber **alle** zwoelf, nicht nur die drei, die die Bedingung vorzeigt.
 
 ### Einheiten und Basisjahre
 
@@ -92,13 +92,15 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   einmal versuchen**, bevor man sie im Befund unmoeglich nennt. Zweimal in Folge getragen.
 - **Grosse Dateien in Haeppchen schreiben.** Heredoc bis etwa 4.000 Zeichen, dann anhaengen.
   Bei printf kippen Codeticks und Tabellen-Pipes den Aufruf; im gequoteten Heredoc nicht.
-- 2026-09-03 (0053) — **Bei einem reinen Kommentarpaket ist der Vergleich zweier geparster
-  Woerterbuecher der ganze Nachweis der Negativbedingung.** `tomllib` auf `<commit>^` und auf
-  den Baum, `alt == neu` → True: "keine Zahl, keine Klasse, keine Schranke angefasst" in einem
-  Aufruf, unabhaengig vom Diff und von der Zeilenzaehlung.
-- 2026-09-03 (0053) — **Trefferzahl ist nicht Markenzahl.** Der Marken-Regex faengt auch das
-  `**` der Fettschrift; 26 Treffer waren 25 Namen (`regulierung_start` zweimal). Nie die
-  Laenge vergleichen, immer die Namensliste — und sie gegen die Aufzaehlung im Dokument legen.
+- 2026-09-03 (0053) — **Bei einem reinen Kommentarpaket tragen drei Proben die
+  Negativbedingung:** `tomllib` auf `<commit>^` und den Baum (`alt == neu` → True), alle
+  Aenderungszeilen auf `#` geprueft, und der Abschnitt, der unangetastet bleiben soll, als
+  **Zeichenkette** verglichen statt ueber Zeilenbereiche. Zaehlaussagen nie ueber die
+  Trefferzahl: 26 Markentreffer waren 25 Namen (`regulierung_start` zweimal).
+- 2026-09-03 (0053, Runde 2) — **Zuerst den Blob-Hash gegen den Stand des letzten Urteils
+  legen.** Ist er gleich, gab es keinen Neubau. Dann pruefe ich **mit anderen Proben neu**,
+  statt auf mein altes Urteil zu verweisen, und melde die Wiedervorlage dem Projektmanager:
+  Die Reviewstufe waehlt aus `gebaut` und sieht nicht, dass die Datei unveraendert ist.
 - **Der Commit eines Pakets muss die geaenderte Datei nicht enthalten.** Immer
   `git log -- <datei>`, nie `git show <paketcommit>`. 2026-09-03 (0049) verschaerft: **Der
   Betreff nennt bei keinem der sechs reihen.toml-Commits das Paket, das die Datei geaendert

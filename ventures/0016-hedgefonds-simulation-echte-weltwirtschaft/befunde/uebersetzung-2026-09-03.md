@@ -30,21 +30,21 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 21%] Built target pruefstand_geprueft
-[ 21%] Built target pruefstand
+[  7%] Built target pruefstand_geprueft
+[ 14%] Built target pruefstand
 [ 30%] Built target kern
 [ 47%] Built target kern_geprueft
-[ 61%] Built target vorrat_verfahren_probe
-[ 61%] Built target meldung_probe
-[ 61%] Built target schranken_probe
-[ 83%] Built target schritt_probe
-[ 83%] Built target schreiber_probe
-[ 83%] Built target vorrat_probe
-[ 85%] Built target zustand_probe
-[ 85%] Built target festkomma_probe
-[ 90%] Built target zufall_probe
-[ 95%] Built target pruefsumme_probe
-[100%] Built target vorrat_kernanker_probe
+[ 57%] Built target meldung_probe
+[ 57%] Built target pruefsumme_probe
+[ 76%] Built target vorrat_probe
+[ 76%] Built target festkomma_probe
+[ 76%] Built target vorrat_kernanker_probe
+[ 76%] Built target schranken_probe
+[ 80%] Built target vorrat_verfahren_probe
+[ 85%] Built target zufall_probe
+[ 90%] Built target schritt_probe
+[ 95%] Built target zustand_probe
+[100%] Built target schreiber_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -76,7 +76,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 11
 
-Total Test time (real) =   0.13 sec
+Total Test time (real) =   0.14 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -93,14 +93,14 @@ Total Test time (real) =   0.13 sec
 ```
 [ 46%] Built target kern
 [ 46%] Built target kern_geprueft
-[ 66%] Built target zufall_probe
-[ 66%] Built target festkomma_probe
-[ 66%] Built target pruefsumme_probe
-[ 73%] Built target meldung_probe
-[ 86%] Built target schranken_probe
-[ 86%] Built target schreiber_probe
-[100%] Built target schritt_probe
-[100%] Built target zustand_probe
+[ 60%] Built target festkomma_probe
+[ 60%] Built target pruefsumme_probe
+[ 66%] Built target schranken_probe
+[ 73%] Built target schritt_probe
+[ 80%] Built target meldung_probe
+[ 86%] Built target zustand_probe
+[ 93%] Built target zufall_probe
+[100%] Built target schreiber_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -122,11 +122,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
     Start 7: zufall_probe
 7/8 Test #7: zufall_probe .....................   Passed    0.01 sec
     Start 8: zustand_probe
-8/8 Test #8: zustand_probe ....................   Passed    0.01 sec
+8/8 Test #8: zustand_probe ....................   Passed    0.02 sec
 
 100% tests passed, 0 tests failed out of 8
 
-Total Test time (real) =   0.09 sec
+Total Test time (real) =   0.10 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -143,9 +143,9 @@ Total Test time (real) =   0.09 sec
 ```
 [ 50%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
-[ 83%] Built target vorrat_kernanker_probe
-[ 83%] Built target vorrat_probe
 [100%] Built target vorrat_verfahren_probe
+[100%] Built target vorrat_kernanker_probe
+[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -161,7 +161,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =   0.03 sec
+Total Test time (real) =   0.04 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -175,16 +175,16 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 48%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 48%] Built target mut6_abgelegter_kern_immer_ohne
-[ 48%] Built target mut1_dreiwertiger_kern
-[ 48%] Built target kontrolle_unveraendert
-[ 54%] Built target mut2_gleichstand_an_groessere_kennung
-[ 54%] Built target mut3_ordnung_a5_bis_a1
-[ 63%] Built target mut4_kennung_einsbasiert
-[ 81%] Built target anker_gegen_mut2
-[ 81%] Built target mut7_position_und_lobby_vertauscht
-[100%] Built target anker_von_hand
+[ 51%] Built target kontrolle_unveraendert
+[ 75%] Built target anker_von_hand
+[ 81%] Built target mut1_dreiwertiger_kern
+[ 51%] Built target mut4_kennung_einsbasiert
+[ 90%] Built target mut2_gleichstand_an_groessere_kennung
+[ 90%] Built target mut7_position_und_lobby_vertauscht
+[ 90%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 90%] Built target anker_gegen_mut2
+[ 90%] Built target mut3_ordnung_a5_bis_a1
+[ 90%] Built target mut6_abgelegter_kern_immer_ohne
 [100%] Built target mut8_profil_doppelt_eines_fehlt
 ```
 
@@ -217,5 +217,5 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 11
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.03 sec
 ```
