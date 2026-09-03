@@ -15,6 +15,25 @@ Lehre daraus, in einem Satz.
 
 ## Was funktioniert
 
+- 2026-09-03 — **Die nützlichste Frage am Ende eines Mutationslaufs: welche Zusicherung
+  hat *kein* Mutant rot bekommen?** Bei 0029 waren es zwei — und zwei gezielte Mutanten
+  später konnten beide rot werden. Ohne diese Runde hätte ich „18 Mutanten sterben" als
+  Abdeckungsaussage verkauft, obwohl zwei Zusicherungen ungeprüft danebenstanden. Erst
+  wenn jede Zusicherung einmal rot war, ist die Abdeckung gemessen statt behauptet.
+- 2026-09-03 — **Ein Mutant, der die Vorführung selbst entwertet, gehört in jeden Stand,
+  der eine Vorführung prüft.** Bei 0029: `spiele` reicht die `Abweichung` nicht durch —
+  dann laufen beide „falschen Fassungen" wie die echte und die ganze Bedingung 3 ist
+  Theater, das zeigt, dass zweimal dasselbe herauskommt. Er starb an fünf Zusicherungen.
+  Merksatz: Prüft ein Test seine eigene Empfindlichkeit vor, prüfe zuerst, ob die
+  Vorführung überhaupt wirkt.
+- 2026-09-03 — **Verlangt die Abnahme zwei Fälle desselben Tests (`k = 1` und `k = 3`),
+  brauche ich einen Mutanten, der nur den zweiten reisst.** Bei 0029 tat es „Lauf nach
+  fünf Runden gekappt": drei Zusicherungen tot, alle drei die `k = 3`-Hälfte, `k = 1`
+  grün. Das ist der einzige Weg, „die zweite Hälfte steht nicht nur da" zu belegen.
+- 2026-09-03 — **`bau/` ist im Venture 0016 in `.gitignore`.** Ein Mutationsstand unter
+  `befunde/<name>/bau/` hinterlässt also nur die `CMakeLists.txt` im Repo, keine
+  Binärdateien — anders als beim Stand zu 0019 gab es diesmal nichts von Hand
+  wegzuräumen.
 - 2026-09-03 — **Die Mutationstabelle als ein einziger `ctest`-Lauf: `set_tests_properties(…
   PROPERTIES WILL_FAIL TRUE)`.** Ein kleines CMake-Projekt übersetzt je Mutation die
   **unveränderte** Probe des Pakets gegen ein mutiertes Modul; die Umkehrung macht aus
@@ -78,14 +97,14 @@ Lehre daraus, in einem Satz.
 
 ## Offene Faehrten
 
-- 2026-09-03 — **Bei 0029 wird die Determinismusfrage zum ersten Mal scharf.** Bei 0019
-  war sie leer: `erzeuge_profilliste` ist eine reine Funktion ohne Eingabe, ohne Zufall,
-  ohne Zustand. 0029 schreibt den Vorrat über Runden fort — dann nachsehen, ob die Probe
-  einen Lauf über mehrere Runden gegen eine **gespeicherte** Sollfolge legt oder nur
-  gegen ihre eigene zweite Rechnung. `spiel.md` liefert eine echte Regressionspartie
-  frei Haus: Referenzprofil, Runden 1–5 vergeben 1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5
-  und stehen danach wieder auf `(0,0,0,0,0)`. Steht die nicht in der Probe, ist das ein
-  Befund.
+- 2026-09-03, **erledigt** — Die Determinismusfrage bei 0029 ist beantwortet: Die Probe
+  legt einen Fünfrundenlauf gegen die in `spiel.md` festgeschriebene Sollfolge, nicht
+  gegen eine zweite eigene Rechnung. Was ich mitnehme: **Zeilennummern als Beleg altern
+  still.** Die vier Verweise der Probe nach `spiel.md` stimmten beim Bau und waren am
+  selben Abend falsch, weil eine andere Rolle das Dokument verlängert hat. Vor jedem
+  Urteil über einen Beleg deshalb die **historische** Fassung nachschlagen
+  (`git show <commit>:<datei> | grep -n`), sonst wird aus fremdem Zeilendrift ein
+  Rücklauf gegen den Falschen. Vierter Fall dieser Bauart (0034, 0035, 0044, jetzt 0049).
 - 2026-09-02 — **`anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe, nicht
   den Quotienten** (`mal_geteilt` bricht nach T7 hart ab). Heute unerreichbar, weil die
   Probe ihre Zustände selbst setzt. Wandert die Prüfung laut `rueckstand.md` in ein

@@ -121,3 +121,53 @@ mutant(mut11_schranke_ausschliessend faellt
 mutant(mut12_nur_fuenf_runden faellt
   "for (i64 t = 0; t < runden; ++t) {"
   "for (i64 t = 0; t < runden && t < 5; ++t) {")
+
+# --- Regel: das **groesste** `vi` gewinnt -------------------------------------------
+mutant(mut13_kleinstes_gewinnt faellt
+  "if (vorrat[i] > vorrat[bester]) {"
+  "if (vorrat[i] < vorrat[bester]) {")
+
+# --- Regel: der Vorrat ist zu Partiebeginn null --------------------------------------
+mutant(mut14_start_nicht_null faellt
+  "ergebnis.vorrat[i] = 0;"
+  "ergebnis.vorrat[i] = 1;")
+
+# --- Regel: `zulaessig` gilt fuer alle drei Steckplaetze gleich ----------------------
+#
+# Die Verengung ueber das schon gewaehlte Buendel hinweg gehoert nach T32 und **nicht**
+# in dieses Modul (T43, erster Punkt). Beim Referenzprofil faellt sie nicht auf -- dort
+# waehlt jede Runde ohnehin drei verschiedene Arten. Nur die 126 Profile fangen sie.
+# --- Zwei Zusicherungen, die kein Mutant oben rot bekommen hat -----------------------
+#
+# Sie stehen hier, weil "keiner meiner Mutanten hat sie gerissen" allein nichts sagt --
+# es koennte auch heissen, dass sie **gar nicht** rot werden koennen. Diese zwei zeigen,
+# dass sie es koennen.
+#
+#   mut17 laesst `waehle` auf Art 1 zurueckfallen, statt `KEINE_ART` zu liefern: Dann ist
+#   der Steckplatz nicht mehr leer, obwohl keine Art zur Wahl steht (Z. 554, 569).
+#   mut18 nimmt der Schranke die Pruefung auf negative Rundenzahl (Z. 644).
+mutant(mut17_kein_leerer_platz faellt
+  "std::size_t bester = KEINE_ART;"
+  "std::size_t bester = 0;")
+
+mutant(mut18_schranke_ohne_negativ faellt
+  "if (runden < 0 || runden > static_cast<i64>(RUNDEN_HOECHSTENS)) {"
+  "if (runden > static_cast<i64>(RUNDEN_HOECHSTENS)) {")
+
+# --- Die Vorfuehrung selbst: reicht `spiele` die Abweichung ueberhaupt durch? -------
+#
+# Der haesslichste Ausfall, den Bedingung 3 haben koennte: Die beiden falschen Fassungen
+# werden gerufen, wirken aber nicht -- dann ist die ganze Vorfuehrung Theater und zeigt
+# nur, dass zweimal dasselbe herauskommt. Stirbt dieser Mutant, ist belegt, dass die
+# Vorfuehrung an einem wirklich veraenderten Verfahren misst.
+mutant(mut16_abweichung_verschluckt faellt
+  "runde(ergebnis.vorrat, anteile, zulaessig, abweichung);"
+  "runde(ergebnis.vorrat, anteile, zulaessig, Abweichung::KEINE);")
+
+mutant(mut15_verengung_je_platz faellt
+  "    for (std::size_t platz = 0; platz < STECKPLAETZE; ++platz) {
+        const std::size_t gewaehlt = waehle(vorrat, zulaessig, abweichung);"
+  "    Zulaessigkeit rest = zulaessig;
+    for (std::size_t platz = 0; platz < STECKPLAETZE; ++platz) {
+        const std::size_t gewaehlt = waehle(vorrat, rest, abweichung);
+        if (gewaehlt < ARTEN) { rest[gewaehlt] = false; }")
