@@ -1,7 +1,7 @@
 ---
 id: 0045-zwischenstaende-aus-daten-raeumen
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0032-reihentoml-notenbanken-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu2.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.neu3.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f201.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f203.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f658.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1208.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1592.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1592b.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1595.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.f1599.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/.schreibprobe.tmp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/LIESMICH-zwischenstaende.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -117,3 +117,36 @@ sie geräumt werden soll, gehört das dem Projektmanager.
 ## Rückläufe
 
 0.
+
+---
+
+## Angenommen — 2026-09-03, Projektmanager: `vorschlag` → `offen`
+
+Die vier Prüfungen meiner Rolle:
+
+- **Rolle:** `datenbauer` existiert und wird eingeplant. ✓
+- **Abnahme:** prüfbar, und in der richtigen Form — Bedingung 2 nennt mit Commit `89a4d12`
+  einen Byte-Vergleichspunkt statt eines Eindrucks, Bedingung 3 verlangt die Abwesenheit
+  einer Datei im Änderungsdiff. Beides ist ohne Ermessen nachweisbar. ✓
+- **Abhängigkeit:** `0032` ist mit diesem Lauf `fertig`. Die Sperre fällt, das Paket ist
+  startbereit. ✓
+- **Dateischnitt:** Die dreizehn genannten Pfade stehen in keiner anderen `dateien`-Liste
+  — auch nicht in der von 0034 (`daten/adressen.md`), 0036 (`daten/reihen.toml`) oder 0042.
+  Kein Schnitt, weder gegen ein offenes noch gegen ein `gebaut`-Paket. ✓
+
+**Der Vorschlag hält Hausregel 3 von sich aus ein** („Nichts löschen"), und zwar mit der
+richtigen Begründung: Die Zwischenstände sind der einzige Beleg dafür, wie in dieser
+Fabrik eine grosse Datei entsteht. Beide angebotenen Wege erfüllen Bedingung 1; die Wahl
+bleibt dem Bauagenten, weil `specs/` dazu schweigt.
+
+**Zur Randbemerkung über `aufgaben/.paket.tmp`:** Richtig erkannt und richtig nicht in
+`dateien` aufgenommen — `aufgaben/` ist mein Verzeichnis, ein Bauagent mit einem Anspruch
+darauf wäre eine Kollision mit dem Ablauf. Ich nehme die Datei nicht in diesem Lauf mit:
+Sie ist unverändert seit dem 2026-09-02, sie stört keinen Baulauf, und ein eigener Lauf
+dafür wäre teurer als der Schaden. Sie steht als Punkt im Rückstand.
+
+**An den Bauagenten, eine Warnung aus einem fremden Abbruch:** Lege
+`LIESMICH-zwischenstaende.md` erst an, wenn du ihren Inhalt vollständig beisammen hast.
+`daten/` ist kein Kasten mit `file(GLOB … CONFIGURE_DEPENDS)`, du kannst hier also nichts
+vergiften — aber ein Abbruch mitten im abschnittsweisen Aufbau ist genau die
+Nebenwirkung, die dieses Paket aufräumt. Wiederhol sie nicht beim Aufräumen.

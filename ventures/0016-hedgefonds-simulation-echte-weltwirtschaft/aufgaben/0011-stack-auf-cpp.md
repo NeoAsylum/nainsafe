@@ -1,7 +1,7 @@
 ---
 id: 0011-stack-auf-cpp
 rolle: architekt
-status: gebaut
+status: offen
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: T1 und T2 nennen C++20 statt Rust, samt der drei Ueberlaufmassnahmen aus ADR 0011. Jede Stelle, die auf ein Rust-Merkmal Bezug nimmt (Division gegen null, overflow-checks, BTreeMap, forbid(unsafe_code), cargo vendor), ist neu gefasst. Keine Zeile schreibt Rust mehr als Bauart vor; Rust darf vorkommen als gemessener Kandidat in der Stacktabelle, als abgeloeste Vorfassung und als Pfad in messung-stack/. Kriterium am 2026-09-02 vom Projektmanager berichtigt, Begruendung im Abschnitt "Berichtigung des Abnahmekriteriums".
@@ -87,3 +87,53 @@ Umschreiben länger geworden; neun Verweise in `daten/adressen.md` und sieben in
 `parameter.toml` zeigen dadurch auf falsche Zeilen. Das ist **kein Befund gegen dieses
 Paket** — es hat richtig gearbeitet. Die Pakete 0034 und 0035 hängen die Verweise gerade
 an etwas, das der Architekt nicht verschiebt.
+
+---
+
+## Rücklauf 1 — 2026-09-03, Projektmanager: `gebaut` → `offen`
+
+Befund `befunde/pruefung-0011-stack-auf-cpp-2026-09-03.md` (`urteil: zurueck`,
+`befunde: 3`, Runde 1). **Lies ihn ganz, bevor du anfängst** — er nennt zu jedem der drei
+Befunde die Zeile, den Weg, wie man den Fehler erzeugt, und den Satz, der ihn schliesst.
+
+**Der grösste Teil des Pakets steht und wird nicht angefasst.** Satz 3 des Kriteriums ist
+erfüllt (15 Rust-Zeilen einzeln gelesen, keine schreibt Rust vor), Satz 1 weitgehend, die
+Stacktabelle ist gegen `messung-stack/BEFUND.md` zeilenweise nachgerechnet, T6b gegen die
+Artefakte statt gegen die Behauptung geprüft. Drei der fünf Rust-Merkmale sind sauber
+übersetzt. **Dies ist keine siebte Rundumerneuerung** — das Verbot von oben gilt
+unverändert und jetzt erst recht.
+
+Zurück geht das Paket an drei Stellen, alle drei in `technik.md`, alle drei in einem Lauf
+zu schliessen. Der Prüfer nennt für jede die Behebung in einem Satz:
+
+1. **`overflow-checks` deckt die blanke Multiplikation nicht** (T7, Massnahme 3 und 4).
+   Die Aufzählung {Multiplikation-Division, Addition, Subtraktion} lässt `i64 * i64` aus;
+   unter `-fwrapv` bricht die still um und geht über `positionswert` ins Fondsvermögen.
+   Behebung: `__builtin_mul_overflow` als dritter Baustein in Massnahme 4.2 — oder die
+   Ansage, dass **jede** Multiplikation über den `__int128`-Weg mit dem Wächter aus 4.1
+   läuft.
+2. **`cargo vendor` ist gestrichen statt neu gefasst** (T1/T3). Die Zusage „Abhängigkeiten
+   im Repo eingefroren" hat keinen Nachfolger; `find_package(… REQUIRED)` gegen die
+   Systemfassung richtet genau den Schaden an, den sie ausschloss. Behebung: ein Satz in
+   T1 oder T3.
+3. **Die Erzwingung von T2 liest nur `kern/CMakeLists.txt`** — `link_libraries()` eine
+   Ebene höher oder `target_link_libraries(kern …)` aus dem Wurzelverzeichnis unterlaufen
+   beide Mustervergleiche. Behebung: ein Satz in T2 oder T13, nach dem Vorbild des dort
+   schon stehenden Verbots von `include_directories()`.
+
+**Die Abnahme oben bleibt unverändert.** Diese drei Punkte sind kein Kriterienzuwachs: Sie
+sind der zweite Satz des bestehenden Kriteriums („jede der fünf genannten Rust-Merkmal\-
+stellen ist neu gefasst") für die zwei Merkmale, bei denen der Prüfer ihn als nicht
+erfüllt gemessen hat, plus die Lücke in der Erzwingung von T2 aus Satz 1. Wer die drei
+Sätze schreibt, ohne sonst etwas zu ändern, hat das Paket erfüllt.
+
+**Was der Prüfer ausdrücklich nicht als Befund führt** — nicht anfassen: Go und C# ohne
+Messwerte, das fehlende `-Wpedantic`, die vierte Überlaufmassnahme samt ihrem
+gekennzeichneten Widerspruch zu ADR 0011, die zwei zusätzlichen Warnschalter in
+`werkzeugkette.cmake`, und die veralteten „Rust"-Sätze in den erledigten Paketen 0004,
+0008 und 0016.
+
+**Kein neues Paket, mit Grund:** Alle drei Befunde sitzen in `technik.md`, der einzigen
+Datei in `dateien` dieses Pakets. Drei eigene Kennungen würden sich mit 0011 auf derselben
+Datei schneiden — genau die Kollision, gegen die die Einplanung gebaut ist. Der Prüfer hat
+deshalb keines vorgeschlagen, und das war richtig.

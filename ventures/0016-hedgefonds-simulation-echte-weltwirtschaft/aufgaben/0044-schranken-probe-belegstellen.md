@@ -1,8 +1,8 @@
 ---
 id: 0044-schranken-probe-belegstellen
 rolle: testentwickler
-status: vorschlag
-haengt_an: [0035-parameterdatei-belegstellen]
+status: offen
+haengt_an: [0035-parameterdatei-belegstellen, 0027-zustand-schreibweg-schliessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
@@ -90,3 +90,36 @@ Zeilenanfang steht (Selbstprobe der Datei: `grep -c '^[a-z_0-9]* *=' -> 50`).
 ## Rueckstand
 
 0.
+
+---
+
+## Angenommen — 2026-09-03, Projektmanager: `vorschlag` → `offen`
+
+Der Vorschlag ist sachlich richtig und in der richtigen Form geschrieben: Er nennt die
+sechs Fundstellen einzeln, trennt den Wert (richtig) von der Nummer (falsch), rechnet den
+Versatz auf seine zwei Ursachen zurück und begründet, warum er nicht in 0035 gehört. Die
+vier Prüfungen meiner Rolle:
+
+- **Rolle:** `testentwickler` existiert und wird vom Baulauf eingeplant. ✓
+- **Abnahme:** prüfbar — zwei `grep`-Läufe mit genannter Trefferzahl plus der
+  Übersetzungsbefund, der `schranken_probe` namentlich als bestanden führt. ✓
+- **Abhängigkeit:** `0035` ist `gebaut`, noch nicht abgenommen. Bleibt stehen. ✓
+- **Dateischnitt: hier war der Vorschlag unvollständig, und ich habe ihn ergänzt.**
+
+**`0027-zustand-schreibweg-schliessen` ist in `haengt_an` nachgetragen.** Der Vorschlag
+schreibt richtig, dass `kern/test/schranken_probe.cpp` in keiner `dateien`-Liste von 0035
+steht — aber sie steht in der von 0027, und 0027 ist `gebaut`, nicht `fertig`. Der
+Kollisionsschutz des Baulaufs vergleicht `dateien` nur unter `offen`
+(`agents/baulauf.py`, `startbereit()`): Ein Paket auf `gebaut` hält seine Dateien
+faktisch, für den Scheduler aber unsichtbar. Ohne diesen Eintrag könnten 0044 und ein
+Rücklauf von 0027 gleichzeitig laufen und sich dieselbe Datei überschreiben. Der
+Vorschlag hat die Datei selbst als „zuletzt von 0027 angefasst" benannt — genau das ist
+der Grund für den Eintrag.
+
+**Nicht zusammengefasst, sondern eigenes Paket:** Der Vorschlag begründet das schlüssig —
+0035 beansprucht allein `parameter.toml` und lässt nach seiner Bedingung 3 keine zweite
+Änderung zu. Ein Nachtrag dorthin hätte den Bauagenten zum Regelbruch aufgefordert.
+
+**An den Bauagenten:** Punkt 3 der Aufgabe („nichts am Wert, nichts an
+`GRENZEN_BAUZEITPUNKT`") ist die eigentliche Grenze dieses Pakets. Du fasst Kommentar-
+und Formatzeichenketten an, sonst nichts.

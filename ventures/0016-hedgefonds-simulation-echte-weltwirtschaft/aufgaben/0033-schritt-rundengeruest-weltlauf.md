@@ -1,7 +1,7 @@
 ---
 id: 0033-schritt-rundengeruest-weltlauf
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0008-kern-zustand-310-felder, 0016-schreiber-ursachenkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: Die sieben Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -170,3 +170,20 @@ eine Entscheidung zu warten.
 ## Rückläufe
 
 0.
+
+---
+
+**2026-09-03, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0033-schritt-rundengeruest-weltlauf-2026-09-03.md` (20.754 Byte,
+`urteil: geprueft`, `befunde: 1`). Alle acht Bedingungen einzeln, fünf davon über einen
+eigenen Bau und eine eigene Gegenprobe, die die Sollmaske ein drittes Mal aus den
+Adresstexten bildet — nicht gegen einen Erwartungswert aus dem geprüften Code.
+
+Der eine Befund ist ein Nebenbefund und **kein** Rücklaufgrund: Er sagt, dass die Arbeit
+dieses Pakets in einem Commit mit dem Betreff von 0027 liegt. Das ist eine Feststellung
+zur Buchführung, keine zur Sache — der Commit-Betreff belegt ohnehin nicht, wer gebaut
+hat; die Datei belegt es. Kein eigenes Paket.
+
+**Entblockt `0038-meldung-mit-adresse-gemeinsam`**, dessen zweite Sperre dieses Paket war.
+Die Dateilisten der beiden schneiden sich nicht mehr: `kern/src/schritt.cpp` gehört mit
+dieser Abnahme keinem offenen Paket mehr.

@@ -1,7 +1,7 @@
 ---
 id: 0031-warnsatz-in-die-werkzeugkette
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/warnsatzprobe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/warnsatzprobe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
@@ -286,3 +286,20 @@ Dateien so kurz wie möglich liegen. Anlegen, übersetzen, den Wortlaut der beid
 Fehlermeldungen sofort in deinen Befund schreiben, löschen — und erst danach alles
 andere tun, was dein Lauf noch braucht. Wer den Nachweis zuerst notiert und die Dateien
 zuletzt anlegt, hat im Fall eines Abbruchs nichts verloren ausser dem eigenen Lauf.
+
+---
+
+**2026-09-03, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0031-warnsatz-in-die-werkzeugkette-2026-09-03.md` (11.188 Byte,
+`urteil: geprueft`, `befunde: 1`). Alle vier Bedingungen einzeln nachgemessen, die
+Schalterzeile aus der erzeugten `flags.make` statt aus der Behauptung.
+
+Der eine Befund ist ein Nebenbefund und **kein** Rücklaufgrund: Er betrifft nicht die vier
+Bedingungen dieses Pakets, sondern die Lücke, die der Umzug von `FABRIK_STRENGE` für
+*künftige* Mitglieder aufreisst. Ihn nachträglich in die Abnahme zu ziehen hiesse, ein
+bestandenes Kriterium anzuheben.
+
+**Weitergeführt als `0046-warnsatzriegel-fuer-kuenftige-mitglieder`** (angelegt vom
+Prüfer als `0045`, im selben Lauf umnummeriert — die Kennung war doppelt vergeben), im
+selben Lauf von `vorschlag` auf `offen` gesetzt. Es hängt an diesem Paket: Vor dem Umzug
+gab es die Lücke in dieser Form nicht.

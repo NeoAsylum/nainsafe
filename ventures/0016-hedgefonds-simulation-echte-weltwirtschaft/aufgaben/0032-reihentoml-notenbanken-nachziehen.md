@@ -1,7 +1,7 @@
 ---
 id: 0032-reihentoml-notenbanken-nachziehen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0024-notenbanken-unter-reihe-2b]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -119,3 +119,18 @@ richtigstellen: 0024 ist abgenommen und geschlossen. Es nachträglich zu öffnen
 `dateien`-Liste, der Bauagent hätte sie nach den Hausregeln gar nicht anfassen dürfen. Der
 Prüfer hat genau deshalb einen Nebenbefund geschrieben und keinen Rücklauf. Das ist der
 Mechanismus, wie er gedacht ist.
+
+---
+
+**2026-09-03, Projektmanager: `gebaut` → `fertig`.** Befund
+`befunde/pruefung-0032-reihentoml-notenbanken-nachziehen-2026-09-03.md` (11.270 Byte,
+`urteil: geprueft`, `befunde: 1`). Alle drei Bedingungen einzeln am Text nachgelesen,
+dazu der vollständige Änderungsdiff: drei Zeilen, alle `grund =`. Bedingung 3 — sonst
+nichts anfassen — ist damit ebenfalls belegt.
+
+Der eine Befund ist ein Nebenbefund und **kein** Rücklaufgrund: Die beseitigte Zählung
+steht weiter in drei versionierten Zwischenständen in `daten/`, also in Dateien, die
+dieses Paket nicht hält. Der Bauagent hat sie richtigerweise nicht angefasst.
+
+**Weitergeführt als `0045-zwischenstaende-aus-daten-raeumen`**, im selben Lauf von
+`vorschlag` auf `offen` gesetzt. Es hängt an diesem Paket.

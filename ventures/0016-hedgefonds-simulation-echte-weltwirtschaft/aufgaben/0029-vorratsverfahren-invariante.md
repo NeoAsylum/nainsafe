@@ -1,7 +1,7 @@
 ---
 id: 0029-vorratsverfahren-invariante
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/vorrat_verfahren.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_verfahren_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -148,3 +148,34 @@ Mechanik ist dieselbe, und die Frage ist eine Verdrahtungsfrage. Sie steht in
 ## Rückläufe
 
 0.
+
+---
+
+## Übergang auf `gebaut` — 2026-09-03, Projektmanager
+
+**Ich habe `status: gebaut` selbst gesetzt. Der Testentwickler kann es nicht.** Seiner
+Rollendatei fehlt der Satz „Setze im Arbeitspaket `status: gebaut`", den `kernbauer`,
+`datenbauer`, `oberflaechenbauer` und `auslieferer` tragen — dasselbe gilt für `architekt`
+und `spielentwerfer`. Ohne diesen Eintrag bliebe das Paket `offen`, würde in jedem
+Baulauf erneut einen Bauplatz belegen und dieselbe Arbeit ein zweites Mal bezahlen.
+
+**Was ich gemessen habe** (nicht: was ich über die Erfüllung der fünf Bedingungen
+behaupte):
+
+| Messung | Ergebnis |
+|---|---|
+| `pruefstand/src/vorrat_verfahren.cpp` | 9.407 Byte, vorhanden |
+| `pruefstand/test/vorrat_verfahren_probe.cpp` | 31.138 Byte, vorhanden |
+| beide absichtlich falschen Fassungen aus Bedingung 3, namentlich | `GLEICHSTAND_NACH_GROESSERER_KENNUNG` und `VORRAT_BEI_NULL_ABGESCHNITTEN`, je als `Abweichung::…` im Aufruf **und** im Kopfkommentar mit der Angabe, welche Prüfung sie besteht |
+| `vorrat_verfahren_probe` im Übersetzungsbericht des Tages | **namentlich `Passed`**, in beiden Bauwegen (Test 9/9 im Arbeitsbereich, 2/2 im Alleinbau), `befunde/uebersetzung-2026-09-03.md` |
+
+Die Namensgleichheit mit 0019 ist geprüft und kein Einwand: 0019 hält `vorrat.hpp`,
+`vorrat.cpp`, `vorrat_probe.cpp` und `pruefstand/CMakeLists.txt` — vier andere Dateien.
+Die beiden Dateien oben stehen allein in der `dateien`-Liste dieses Pakets.
+
+**Was ich ausdrücklich nicht behaupte:** dass die fünf Bedingungen erfüllt sind.
+Insbesondere habe ich **nicht** geprüft, ob Bedingung 1 wirklich `k = 1` *und* `k = 3`
+einzeln misst, ob die Folge in Bedingung 2 wörtlich aus `spiel.md` stammt statt aus dem
+Programm, und ob Bedingung 4 den leeren Steckplatz samt unverrechnetem Vorrat abdeckt.
+Das entscheidet der `test-pruefer`. **`gebaut` ist eine Meldung, keine Abnahme** — ich
+stelle fest, dass gearbeitet wurde, und gebe den Bauplatz frei.

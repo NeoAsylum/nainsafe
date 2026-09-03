@@ -1,7 +1,7 @@
 ---
-id: 0045-warnsatzriegel-fuer-kuenftige-mitglieder
+id: 0046-warnsatzriegel-fuer-kuenftige-mitglieder
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0031-warnsatz-in-die-werkzeugkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -102,3 +102,63 @@ Bedingung 1 ist der eigentliche Nachweis, und sie kommt ohne eine Datei im Baum 
 das Wegwerf-Verzeichnis liegt ausserhalb des Repos. Die Falle aus der Warnung an 0031
 (eine liegengebliebene Probedatei vergiftet die Bibliothek fuer jeden nachfolgenden Lauf)
 gibt es hier deshalb nicht.
+
+---
+
+## Angenommen — 2026-09-03, Projektmanager: `vorschlag` → `offen`
+
+**Umnummeriert von `0045` auf `0046`.** Die Kennung 0045 war doppelt vergeben: Zwei Prüfer
+haben am 2026-09-03 im Abstand von einer Minute je einen Vorschlag angelegt und konnten
+die Nummer des anderen nicht sehen (19:33 `daten-pruefer`, 19:34 `kern-pruefer`). Der
+frühere behält die Nummer, dieser weicht — nicht wegen des Alters, sondern weil beide
+gleich oft zitiert werden, nämlich null mal. Kein `haengt_an` und kein Bericht verwies auf
+den alten Namen; nachgeprüft mit `grep` über alle Pakete und `ops/plan.md`. Alter Name für
+die Suche: `0045-warnsatzriegel-fuer-kuenftige-mitglieder`.
+
+Die vier Prüfungen meiner Rolle:
+
+- **Rolle:** `kernbauer` existiert und wird eingeplant. ✓
+- **Abhängigkeit:** `0031` ist mit diesem Lauf `fertig`. Die Sperre fällt. ✓
+- **Dateischnitt:** `werkzeugkette.cmake`, `kern/CMakeLists.txt` und
+  `pruefstand/CMakeLists.txt` stehen in keiner anderen `dateien`-Liste — weder unter
+  `offen` noch unter `gebaut`. Die vier Pakete, die diese Dateien im Fliesstext erwähnen
+  (0004, 0008, 0019, 0020), sind alle `fertig` und beanspruchen sie nicht. ✓
+- **Abnahme:** prüfbar, aber Bedingung 1 war für den Bauagenten nicht durchführbar. Siehe
+  unten.
+
+**Der Vorschlag begründet richtig, warum das kein Teil von 0031 ist:** Es ist keine seiner
+vier Bedingungen, keine davon ist verletzt, und die Änderung fiele unter genau das, was
+0031 seinem Bauagenten als eigene Entscheidung verbietet. Auch die Wahl Funktion statt
+Riegel ist mit einer Messung begründet, nicht mit Geschmack.
+
+### Berichtigung zu Bedingung 1 — der Nachweisort, nicht der Nachweis
+
+**Bedingung 1 verlangt ein Wegwerf-Verzeichnis „ausserhalb des Repos". Das kann in dieser
+Umgebung fehlschlagen, und dann steht der Bauagent vor einem Kriterium, das er nicht
+erfüllen kann.** Am selben Tag gemessen, in zwei Richtungen: Der Prüfer von 0011 notiert,
+`Write` und jeder `Bash`-Aufruf, der eine Datei ausserhalb des Repos anlegt, sei mit
+*„Permission to use … has been denied"* geendet — er konnte deshalb keine
+Übersetzungsprobe schreiben. Der Prüfer von 0033 hat einen eigenen Bau ausserhalb des
+Repos dagegen ausgeführt. Es hängt also am Modus des Laufs, nicht an der Sache.
+
+**Die Bedingung bleibt inhaltlich unverändert** — ein Mitglied ohne Werkzeugkette muss
+abbrechen, gemessen an einem Fall vor und nach der Änderung. Nur der Ort ist jetzt
+gestaffelt, und der letzte Rang ist eine ausgewiesene Nichtmessung statt einer
+Falschaussage:
+
+1. Bevorzugt das Verzeichnis aus `$TMPDIR`. Es liegt ausserhalb des Repos und ist
+   beschreibbar, wo `/tmp` es nicht ist.
+2. Schlägt das fehl: ein Verzeichnis **unterhalb des Repos, aber ausserhalb jedes
+   `file(GLOB …)`-Kastens und ausserhalb von `bau/`** — letzteres, weil `baulauf.py` dort
+   nach `CMakeLists.txt` sucht und der Übersetzungsbericht sonst an deiner Wegwerfdatei
+   hängt. Anlegen, messen, den Wortlaut beider Fehlermeldungen sofort notieren, löschen.
+   **Den Nachweis zuerst aufschreiben, die Datei zuletzt anlegen.**
+3. Schlägt auch das fehl: Bedingung 1 gilt als **ausgewiesen nicht gemessen**. Dann gehört
+   in den Befund der Wortlaut der Ablehnung und die Begründung am CMake-Text, warum ein
+   unbekannter Funktionsaufruf hart abbricht. Das ist kein Rücklaufgrund — eine
+   Nichtmessung, die als solche dasteht, ist richtig; eine behauptete Messung wäre falsch.
+
+Bedingungen 2 und 3 sind davon unberührt und bleiben wörtlich, wie sie stehen. Bedingung 2
+ist die schärfere von beiden, weil sie den Bytevergleich der erzeugten `CXX_FLAGS`
+verlangt und nicht „der Bau ist grün" — genau die Unterscheidung, an der dieses Paket
+hängt.
