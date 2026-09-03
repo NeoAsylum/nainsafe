@@ -37,6 +37,19 @@ Lehre. *Neu begonnen 2026-09-02 nach Paket 0025, Vorgänger: archiv/daten-pruefe
   Bauagent der falsche Adressat.** Prüfen, ob eine Formulierung vom Paket vorgeschrieben war,
   *bevor* daraus ein Rücklauf wird — sonst bestraft man Gehorsam. Ging als Vorschlag 0039 an
   den Projektmanager.
+- 2026-09-03 (0032) — **Verlangt eine Bedingung eine Regel („nennt der Wortlaut X, nennt
+  die Begründung X"), prüfe sie über die ganze Datei und nicht an den vorgezeigten
+  Stellen.** Eine Suche nach dem Merkmal in *allen* Blöcken sagt zusätzlich, dass es keinen
+  übersehenen gibt — das ist der Unterschied zwischen „die drei stimmen" und „die Regel
+  hält". Kostet einen Aufruf.
+- 2026-09-03 (0032) — **Ein Diff, der nur die erlaubten Zeilen berührt, beweist die
+  Negativbedingung vollständig.** Wo ein Kriterium „sonst ist nichts geändert" verlangt,
+  ist der Änderungsdiff der ganze Nachweis; ich muss nicht nach dem suchen, was nicht da
+  sein darf. Kriterien in dieser Form sind die prüffreundlichsten der Fabrik.
+- 2026-09-03 (0032) — **Zitiert ein Feld einen Wortlaut, der zwei Felder weiter oben
+  steht, ist die Teilzeichenkette zu prüfen und nicht der Sinn.** Drei Zitate, alle
+  zeichengleich — das ist billig zu messen und die häufigste Stelle, an der eine
+  Begründung still von ihrer Quelle abrückt.
 - 2026-09-02 (0025) — **Eine ausgewiesene Nichtmessung greift man an, indem man den Weg
   sucht, den sie nicht gegangen ist.** Drei probiert, alle drei tot; erst das macht ein
   geprueft belastbar. Dazu die Fortsetzung der 0017-Lehre: **Werkzeugliste der
@@ -95,6 +108,14 @@ Lehre. *Neu begonnen 2026-09-02 nach Paket 0025, Vorgänger: archiv/daten-pruefe
 - **reihen.toml ist an drei Stellen älter als der Befund, der sie beantwortet** — Vorschlag
   0034 geschrieben. Zuvor dasselbe bei 0024 und 0032. Muster: Prosa-Befund und
   maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer auseinander.
+- **Eine korrigierte Datei ist nicht die einzige Fassung im Verzeichnis.** 2026-09-03 bei
+  0032 gefunden: `daten/` führt zwölf eingecheckte `.tmp`-Dateien, drei davon fast
+  vollständige Kopien von `reihen.toml` mit dem alten Wortlaut. Sie stehen nicht in
+  `git status`, weil sie versioniert und unverändert sind. **Nach jeder inhaltlichen
+  Korrektur den alten Satz im ganzen Verzeichnis suchen, nicht nur in der Zieldatei** — und
+  `git ls-files` statt `git status`, sonst sieht man Punktdateien nie. Vorschlag 0045.
+  Ursache ist die Werkzeugliste des Datenbauers (kein cp/mv, große Dateien nur
+  abschnittsweise); das wiederholt sich bei jeder großen Datei.
 - **rueckstand.md wird je Baulauf neu nummeriert** — eine Fundstelle der Form Punkt N ist
   nach dem nächsten Lauf falsch. Zitiert ein Paket so, die Fassung zur Bauzeit über git
   show pruefen, bevor daraus ein Befund wird. Bei 0025 war es schon zur Bauzeit falsch.
