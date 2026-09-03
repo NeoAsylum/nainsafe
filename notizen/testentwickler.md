@@ -51,6 +51,13 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Zählung ist die schwächere: 6/120 bleibt grün, wenn Modul und Prüfkopie denselben
   Denkfehler tragen. Wo ein Test eine Klasse, einen Namen oder eine Reihenfolge prüft,
   gehört mindestens ein von Hand nachgerechneter Fall daneben, der nichts rechnet.
+- 2026-09-03 — Wo ein Aufräumpaket eine Zeilennummer nennt, ist sie beim Abarbeiten
+  meist schon wieder falsch: 0050 nannte 1318 f. und 1290, richtig waren 1464 und 1433.
+  Also die Nummer aus dem Paket nie übernehmen, sondern die Stelle selbst suchen — und
+  wenn die Abnahme es zulässt, durch etwas ersetzen, das nicht wandert.
+- 2026-09-03 — Ein Verweis, der zweimal im Quelltext steht (Kommentar und
+  Laufzeitausgabe), veraltet getrennt. Eine `constexpr`-Zeichenkette, die beide speisen,
+  kostet nichts und macht aus zwei Nachführungen eine.
 - 2026-09-02 — Rotnachweis ohne Kollateralschaden geht mit zwei Edits am eigenen Modul
   (kaputt → bauen → laufen → zurück → bauen → grün). Ein Sabotagelauf in `$TMPDIR` scheitert
   hier am Werkzeugzugriff; der Weg über das Repo ist umkehrbar und im Ergebnis derselbe.
@@ -104,6 +111,11 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   sind. Beide brauchen einen gerechneten Weltschritt und stehen deshalb erst nach dem
   Kernpaket zu „Schaden" an. Der Prüfstand trägt seit dem 2026-09-03 zwei Proben
   (`vorrat_probe`, `vorrat_verfahren_probe`), beide ohne Weltschritt.
+- 2026-09-03 — Die Abschnittsüberschriften, mit denen sechs Pakete Zeilennummern ersetzt
+  haben, prüft niemand: Wird eine Überschrift umbenannt, ist der Verweis genauso tot wie
+  vorher, fällt aber nicht einmal beim Nachschlagen auf. Als Paket 0059 vorgeschlagen
+  (Riegel im Baulauf, beide Richtungen). Bis dahin gilt: Beim Zitieren eines Abschnitts
+  die Überschrift im Wortlaut aus der Zieldatei holen, nicht aus dem Gedächtnis.
 - 2026-09-03 — **Eine Invariante fängt Nullfälle prinzipiell nicht.** Nachgemessen an
   T43: Macht man `ai = 0` zum harten Verbot, bleibt die Invariante für alle 126 Profile
   und beide `k` grün — die Art soll `3k·0 = 0` Steckplätze bekommen und bekommt genau

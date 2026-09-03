@@ -22,11 +22,11 @@
 //!     Verwechslung dreimal Befund war (T43, letzter Punkt).
 //!   2 **Die Probe des Referenzprofils, zeichengleich.** `(1,1,1,1,1)` vergibt in den
 //!     Runden 1 bis 5 die Arten `1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5`. Dieser
-//!     Erwartungswert steht **woertlich in `spiel.md`** (Zeile 1043 f.) und stammt
-//!     damit nicht aus diesem Programm. Er steht unten zweimal -- als Zeichenkette
-//!     und als Tabelle --, und die Probe prueft die beiden Abschriften zuerst
-//!     gegeneinander: Ein Tippfehler in einer Abschrift faellt dann auf, bevor er
-//!     zum Massstab wird.
+//!     Erwartungswert steht **woertlich in `spiel.md`**, im Abschnitt "Das
+//!     Aktionsprofil und wie es auf Aktionen wirkt", und stammt damit nicht aus
+//!     diesem Programm. Er steht unten zweimal -- als Zeichenkette und als Tabelle
+//!     --, und die Probe prueft die beiden Abschriften zuerst gegeneinander: Ein
+//!     Tippfehler in einer Abschrift faellt dann auf, bevor er zum Massstab wird.
 //!   3 **Die beiden absichtlich falschen Fassungen.** Sie stehen im Kopf
 //!     (`Abweichung`) und sind je eine geaenderte Zeile des Verfahrens. Der Nachweis
 //!     ist **doppelt**, und beide Haelften werden gebraucht:
@@ -123,15 +123,28 @@ void schreibe_vektor(const char* rand, const std::array<i64, ARTEN>& werte)
 // Der Wortlaut aus `spiel.md`, zweimal abgeschrieben
 // ---------------------------------------------------------------------------
 //
-// `spiel.md`, Zeile 1043 f.: "Zur Probe das Referenzprofil: Runden 1 bis 5 vergeben
-// die Arten 1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 und stehen danach wieder auf
-// (0,0,0,0,0)".
+// `spiel.md`, Abschnitt "Das Aktionsprofil und wie es auf Aktionen wirkt": "Zur
+// Probe das Referenzprofil: Runden 1 bis 5 vergeben die Arten
+// 1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 und stehen danach wieder auf (0,0,0,0,0)".
 //
 // Zweimal, weil die beiden Abschriften einander pruefen. Die Zeichenkette ist der
 // Massstab fuer "zeichengleich", die Tabelle sagt zusaetzlich, in **welcher** Runde
 // eine Abweichung zuerst auffaellt -- und eine Probe, die eine Runde benennen soll,
 // braucht die Zerlegung. Waere nur eine da, waere ein Tippfehler darin ein stiller
 // falscher Massstab; so faellt er in Pruefung 2a auf.
+
+/// Die Belegstelle, als **Abschnittsueberschrift** und nicht als Zeilennummer --
+/// hier einmal, damit Kommentar und Laufzeitausgabe nicht getrennt veralten koennen.
+///
+/// Der Grund ist gemessen, nicht befuerchtet: Diese Datei nannte an vier Stellen
+/// eine Zeilennummer aus `spiel.md`, und alle vier waren richtig, als sie
+/// geschrieben wurden. Noch am selben Tag hat ein anderes Paket dort oberhalb rund
+/// 275 Zeilen eingefuegt, und alle vier zeigten daneben; als Paket 0050 sie
+/// aufraeumte, war die Stelle schon ein zweites Mal weitergewandert. Ein Verweis in
+/// eine fremde Datei, den niemand nachfuehren kann, gehoert nicht in einen Test --
+/// eine Ueberschrift dagegen ueberlebt jede Einfuegung oberhalb.
+constexpr const char* BELEGSTELLE =
+    "spiel.md, Abschnitt \"Das Aktionsprofil und wie es auf Aktionen wirkt\"";
 
 constexpr const char* REFERENZFOLGE = "1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5";
 
@@ -145,7 +158,8 @@ constexpr std::array<Rundenfolge, REFERENZRUNDEN> REFERENZTABELLE = {
     Rundenfolge{3, 4, 5},
 };
 
-/// Das Referenzprofil `(1,1,1,1,1)` -- `spiel.md`, Zeile 1015.
+/// Das Referenzprofil `(1,1,1,1,1)` -- `spiel.md`, Abschnitt "Das Aktionsprofil und
+/// wie es auf Aktionen wirkt", derselbe Abschnitt wie die Referenzfolge darueber.
 constexpr Profil REFERENZPROFIL = Profil{1, 1, 1, 1, 1};
 
 // ---------------------------------------------------------------------------
@@ -460,7 +474,11 @@ int main()
 
     const Folgenbefund echt = pruefe_referenzfolge(Abweichung::KEINE);
     std::fprintf(stdout, "  gelaufen                   %s\n", echt.text.data());
-    std::fprintf(stdout, "  spiel.md, Zeile 1043 f.    %s\n", REFERENZFOLGE);
+    std::fprintf(stdout, "  Wortlaut aus spiel.md      %s\n", REFERENZFOLGE);
+    // Die Belegstelle auf eigener Zeile: Sie ist zu lang fuer die Spalte, und der
+    // Leser dieses Berichts soll sie finden koennen, ohne eine Zeilennummer zu
+    // haben, die er ohnehin nachzaehlen muesste.
+    std::fprintf(stdout, "  nachzulesen in             %s\n", BELEGSTELLE);
     schreibe_vektor("Endvorrat nach 5 Runden", echt.endvorrat);
 
     pruefe(besteht_referenzfolge(echt),

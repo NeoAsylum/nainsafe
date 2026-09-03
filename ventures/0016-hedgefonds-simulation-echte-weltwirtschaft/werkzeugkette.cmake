@@ -170,3 +170,156 @@ function(fabrik_warnsatz_anlegen ziel)
 
   target_compile_options(${ziel} PRIVATE ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
 endfunction()
+
+# ---------------------------------------------------------------------------
+# Der Schlussriegel: am Ende zaehlen, an welchem Ziel der Satz fehlt
+# ---------------------------------------------------------------------------
+#
+# Der Riegel eine Ebene weiter oben bindet den **Aufruf**: Wer die Form abschreibt und
+# dabei die Einbindung verliert, spricht etwas Unbekanntes aus und bricht ab. Ein
+# Mitglied, das die Form nie benutzt, spricht nichts Unbekanntes aus und kommt daran
+# vorbei -- es schreibt die kuerzeste `CMakeLists.txt`, die uebersetzt
+# (`cmake_minimum_required`, `add_library`, fertig), der Arbeitsbereich nimmt es auf,
+# sobald sein Verzeichnis existiert, und der Bericht meldet `ergebnis: ok`.
+#
+# Gemessen am 2026-09-03 an genau so einem Mitglied, per `add_subdirectory` in einen
+# Baum gehaengt, der diese Datei einbindet: `cmake` Code 0, `cmake --build` Code 0.
+# Was das Ziel bekommt, haengt daran, wer konfiguriert -- und beide Faelle sind schlecht:
+#
+#   blank konfiguriert        CXX_FLAGS = -std=c++20
+#   unter `baulauf.py`        CXX_FLAGS = -fwrapv -fno-fast-math -O2 -g -DNDEBUG -std=c++20
+#
+# Den Sprachmodus erbt es, weil `CMAKE_CXX_STANDARD` weiter oben in dieser Datei
+# gesetzt wird und Verzeichnisvariablen nach unten durchreichen; die Ueberlaufschalter
+# erbt es nur unter dem Runner, weil der sie von aussen an `CMAKE_CXX_FLAGS` haengt.
+# Was in **beiden** Faellen fehlt, sind die 15 Warnschalter -- und damit `-Werror`,
+# also der ganze Grund, warum der Satz existiert.
+#
+# Baut derselbe Bauagent sein Mitglied allein, ist der Verlust noch groesser: Ohne den
+# `PROJECT_IS_TOP_LEVEL`-Block gilt diese Datei gar nicht, und der Pruefer von Paket
+# 0046 hat dort `CXX_FLAGS = -std=gnu++20` gemessen -- auch der Sprachmodus weg, also
+# genau die Compiler-Erweiterungen, die ADR 0011 ausschliesst.
+#
+# Und `konsole` und `oberflaeche` aus T13 haben keine eigenen Proben, es fehlt also
+# auch das laute "No tests were found!!!", an dem so etwas sonst auffaellt.
+#
+# Warum nicht einfach eine dritte Stelle, an der man den Satz anhaengen kann: Das waere
+# eine dritte Stelle, die man vergessen kann. Dieser Riegel prueft nicht dort, wo etwas
+# getan wird, sondern dort, wo alles getan ist -- er zaehlt am Ende der Konfiguration
+# die Ziele und fragt jedes, ob der Satz daran haengt. Durch Nichtstun entzieht sich ihm
+# niemand, denn Nichtstun ist genau der Fall, den er faengt.
+#
+# Seine Grenze gehoert dazu: Ein Mitglied ohne den `PROJECT_IS_TOP_LEVEL`-Block bindet
+# diese Datei beim **Alleinbau** nicht ein und fuehrt den Riegel deshalb auch nicht aus.
+# Es faellt trotzdem auf, weil `baulauf.py` jedes Manifest **und** den Arbeitsbereich
+# baut und der Arbeitsbereich diese Datei immer einbindet -- der Bericht wird rot, nur
+# an einer anderen Zeile.
+#
+# Was der Riegel absichtlich NICHT hat: eine Ausnahmeliste "diese Ziele duerfen ohne".
+# Das waere die Tuer, durch die der Fehler zurueckkommt. Wird eine Ausnahme noetig, ist
+# das ein ADR und keine Zeile hier.
+
+# Der Sollzustand wird hier festgehalten und nicht erst im Riegel gelesen: Als globale
+# Eigenschaft haengt er an der Datei, die ihn setzt, und nicht am Gueltigkeitsbereich,
+# in dem der Riegel spaeter laeuft. Wird diese Datei aus einem engeren Bereich
+# eingebunden, findet der Riegel den Sollzustand trotzdem -- und faengt dann die Ziele
+# darueber, statt selbst leer auszugehen.
+set_property(GLOBAL PROPERTY FABRIK_SCHLUSSRIEGEL_SATZ
+             ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
+
+function(fabrik_schlussriegel wurzelverzeichnis)
+  get_property(erwartet GLOBAL PROPERTY FABRIK_SCHLUSSRIEGEL_SATZ)
+  if(NOT erwartet)
+    message(FATAL_ERROR
+      "fabrik_schlussriegel: der Sollzustand ist leer. Ein Riegel ohne Sollzustand "
+      "winkt jedes Ziel durch und baut gruen -- das ist schlimmer als kein Riegel.")
+  endif()
+
+  # Nicht jedes Ziel uebersetzt Quelldateien. `INTERFACE_LIBRARY` kann `PRIVATE`
+  # ueberhaupt keine Schalter tragen, `UTILITY` entsteht bei `add_custom_target`,
+  # `ALIAS` ist nur ein zweiter Name. Geprueft wird, was einen Uebersetzeraufruf
+  # erzeugt; an allem anderen waere ein fehlender Warnsatz kein Befund, sondern die
+  # Bauart.
+  set(arten STATIC_LIBRARY SHARED_LIBRARY OBJECT_LIBRARY EXECUTABLE)
+
+  # Iterativ statt rekursiv, mit einer Arbeitsliste: Die Ziele stehen je Verzeichnis,
+  # und `add_subdirectory` schachtelt beliebig tief. Ohne den Abstieg saehe der Riegel
+  # im Arbeitsbereich gar nichts -- dort liegt jedes Ziel eine Ebene tiefer.
+  set(offen "${wurzelverzeichnis}")
+  set(fehlt "")
+  set(gezaehlt 0)
+  while(offen)
+    list(POP_FRONT offen verzeichnis)
+
+    get_property(ziele DIRECTORY "${verzeichnis}" PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(ziel IN LISTS ziele)
+      get_target_property(art ${ziel} TYPE)
+      if(NOT "${art}" IN_LIST arten)
+        continue()
+      endif()
+
+      get_target_property(schalter ${ziel} COMPILE_OPTIONS)
+      if(NOT schalter)
+        set(schalter "")  # `NOTFOUND` ist hier kein Fehler, sondern die leere Menge.
+      endif()
+
+      # Geprueft wird der ganze Satz, nicht ein Kennzeichen daraus: Ein Ziel, an dem
+      # jemand `-Wall` von Hand anhaengt, hat den Satz nicht -- und ein Riegel, der
+      # sich mit einem Schalter zufriedengibt, wuerde genau das durchwinken.
+      set(luecke "")
+      foreach(schalterwert IN LISTS erwartet)
+        if(NOT "${schalterwert}" IN_LIST schalter)
+          list(APPEND luecke "${schalterwert}")
+        endif()
+      endforeach()
+
+      math(EXPR gezaehlt "${gezaehlt} + 1")
+      if(luecke)
+        list(JOIN luecke " " luecketext)
+        # Der Text ist die halbe Massnahme: Ohne Zielnamen und ohne den
+        # auszufuehrenden Aufruf sucht der naechste Bauagent an der falschen Stelle.
+        list(APPEND fehlt
+             "  ${ziel} (${art}) in ${verzeichnis}\n"
+             "      es fehlen: ${luecketext}\n"
+             "      Abhilfe:   fabrik_warnsatz_anlegen(${ziel})  -- hinter `add_library`/`add_executable`\n")
+      endif()
+    endforeach()
+
+    get_property(unter DIRECTORY "${verzeichnis}" PROPERTY SUBDIRECTORIES)
+    list(APPEND offen ${unter})
+  endwhile()
+
+  if(fehlt)
+    list(JOIN fehlt "" fehlttext)
+    message(FATAL_ERROR
+      "Der Warnsatz fehlt an folgenden Zielen -- sie wuerden gruen uebersetzen "
+      "und weniger pruefen:\n"
+      "${fehlttext}"
+      "Jedes uebersetzende Ziel ruft `fabrik_warnsatz_anlegen(<ziel>)` aus "
+      "`werkzeugkette.cmake`; die Datei bindet ein Mitglied beim Alleinbau in seinem "
+      "`PROJECT_IS_TOP_LEVEL`-Block ein.\n"
+      "Ohne den Satz uebersetzt das Ziel gruen und ohne `-Werror`. Blank konfiguriert "
+      "fehlt ihm zusaetzlich `-fwrapv` (ADR 0011, Massnahme 1); allein gebaut ohne den "
+      "`PROJECT_IS_TOP_LEVEL`-Block auch der Sprachmodus -- `gnu++20` statt `c++20`.")
+  endif()
+
+  # Die Zahl steht da, damit der Uebersetzungsbericht den Unterschied zwischen "der
+  # Riegel hat geprueft" und "der Riegel hat nichts gefunden, weil er nichts gesehen
+  # hat" traegt. Ein Riegel, der versehentlich alle Ziele durchwinkt, baut auch gruen.
+  message(STATUS "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, alle mit Warnsatz.")
+endfunction()
+
+# Ans Ende der Konfiguration gehaengt, nicht an diese Stelle: Hier ist noch kein
+# einziges Ziel angelegt. `DEFER` laeuft, wenn das Verzeichnis fertig ist -- beim
+# obersten Verzeichnis also nach allen `add_subdirectory`.
+#
+# Gestellt wird er genau einmal, auch wenn diese Datei mehrfach eingebunden wird (der
+# Arbeitsbereich tut es, und ein allein gebautes Mitglied tut es ebenfalls). Ein
+# zweiter Riegel faende dasselbe und meldete es doppelt.
+get_property(fabrik_riegel_steht GLOBAL PROPERTY FABRIK_SCHLUSSRIEGEL_GESTELLT)
+if(NOT fabrik_riegel_steht)
+  set_property(GLOBAL PROPERTY FABRIK_SCHLUSSRIEGEL_GESTELLT ON)
+  cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}"
+                 CALL fabrik_schlussriegel "${CMAKE_SOURCE_DIR}")
+endif()
+unset(fabrik_riegel_steht)
