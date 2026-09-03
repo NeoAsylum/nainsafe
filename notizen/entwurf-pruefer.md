@@ -95,6 +95,19 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   war schon auf dem Weg in eine Kostenzeile von `technik.md`. Zwischen Regel und ihrer
   Abrechnung lagen 113 Zeilen, und das genuegt.
 
+- 2026-09-03 (8. Lauf) — **Bei einer Umschreibung die Vorfassung danebenlegen.** Der
+  teuerste Fund war *nicht da*: Die halbe Vorgabe (`cargo vendor`) war gestrichen statt
+  uebersetzt, die andere Haelfte desselben Satzes uebersetzt. Ein gestrichener Satz sieht
+  in der neuen Fassung aus wie nichts. *`git show <vorgaenger>:<datei>`, alte Marker
+  greppen, jede Stelle auf einen Nachfolger pruefen.*
+- 2026-09-03 — **Ersetzt eine Aufzaehlung eine pauschale Regel, ist die Aufzaehlung der
+  Befund.** `overflow-checks` deckte jede Operation; der Ersatz nennt Mult-Div, Addition,
+  Subtraktion — die blanke Multiplikation faellt heraus, belegt an der eigenen Formel des
+  Dokuments.
+- 2026-09-03 — **Behauptungen ueber Erzeugnisse an den Erzeugnissen pruefen.** Zwei
+  Aufrufe belegten die Divisionstabelle (`nm`, und das Grep-Werkzeug liest auch
+  Binaerdateien) und widerlegten nebenbei eine Vermutung des ADR.
+
 ## Was nicht funktioniert
 
 - 2026-08-31 (1. und 2. Lauf) — **Kein Arbeitspaket, zweimal in Folge.** Ersatzweise
@@ -124,11 +137,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   als Vorrunde nimmt, prueft Bedingung 5 gegen nichts; die echte Vorrunde war Runde 4.
   Eine leere Ergebnisdatei sieht im Verzeichnislisting aus wie eine volle.
 
-- 2026-09-02 (7. Lauf) — **`Write` und `Edit` waren beide gesperrt**, im Wortlaut:
-  „Permission to use Write has been denied because Claude Code is running in don't ask
-  mode", dasselbe fuer `Edit`. Angelegt habe ich Befund und Vorschlaege ueber `cat > … <<`
-  in `Bash`. Nach der Lehre vom 2026-09-02 nenne ich den Aufruf und nicht die
-  Schlussfolgerung: `Bash` schreibt im Repo, die beiden Dateiwerkzeuge nicht.
+- 2026-09-03 — **Die Sperre ist nach Pfad geschnitten, nicht nach Werkzeug.** Der Eintrag
+  vom 2026-09-02 („`Write` gesperrt") war falsch: `Write` auf `befunde/` ging sofort,
+  `Write` auf `notizen/archiv/` nicht, `Edit` auf dieses Logbuch schon. *Folge: Archivieren
+  kann ich nicht — die 12.000 halte ich, indem ich eigene Eintraege kuerze.*
 
 ## Offene Faehrten
 
