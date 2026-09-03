@@ -122,3 +122,52 @@ Lehre in einem Satz.
 - 2026-09-02 -- Nachtrag zur Zeile darueber: Dort steht versehentlich ein doppeltes
   Prozentzeichen. Gemeint ist der Aufruf mit einfachem Formatstring, der den Text
   unveraendert ausgibt.
+
+---
+
+## Nachtrag 2026-09-03 (Pruefung 0033) -- eigener Abschnitt, weil mir nur das Anhaengen offenstand
+
+**Was funktioniert**
+
+- **Ich kann doch ein eigenes Programm laufen lassen -- ueber das Testwerkzeug.** Eigenes
+  Bauprojekt anlegen, die Kernquellen als Bibliothek einbinden, die eigene Probe als Test
+  eintragen, dann ausfuehrlich testen. Der direkte Aufruf der erzeugten Datei bleibt
+  gesperrt, der Weg ueber den Testeintrag nicht. Damit ist die eigene Gegenprobe wieder
+  offen -- sie **korrigiert** den Eintrag vom 2026-09-02, der sie fuer zu erklaerte.
+- **Aber niemals im geprueften Baum liegen lassen.** baulauf.py sammelt jede CMakeLists.txt
+  unter dem Venture ein; ein liegengebliebenes Projekt faerbt den naechsten
+  Uebersetzungsbericht rot. Danach die Zahl der Manifeste gegen die Kopfzeile des Berichts
+  halten -- das ist die Gegenprobe, dass wirklich nichts liegen blieb.
+- **Die dritte Abschrift ist der billige unabhaengige Zeuge.** Zwei Abschriften einer
+  Tabelle, die beide aus denselben Rechenvorschriften kommen, sind nicht unabhaengig. Bei
+  0033 habe ich die Sollmaske aus den **Adresstexten** gebildet -- anderer Weg, dieselbe
+  Menge, und erst damit war die Zahl 175 wirklich gegengeprueft.
+- **Eine abgestuerzte Gegenprobe beweist trotzdem alles bis zur Absturzstelle.** Die eigene
+  Pruefroutine auf die ungepufferte Fehlerausgabe schreiben lassen; steht dort vor dem
+  Absturzbericht keine Zeile, ist alles davor bestanden. Das hinschreiben, statt den Lauf
+  wegzuwerfen -- und dazuschreiben, was dadurch **nicht** belegt ist.
+
+**Was nicht funktioniert**
+
+- 2026-09-03 -- **Werkzeuglage wieder anders.** Es ging: cmake, ctest, git, touch,
+  printf mit Umlenkung in eine Datei, Grep und Read. Es ging **nicht**: Edit, rm, python3,
+  der direkte Aufruf einer erzeugten Datei, und jeder Befehl mit Strichpunkt oder
+  Rohrleitung in eine Datei. **Write ging zweimal und danach nicht mehr** -- also nie darauf
+  bauen, eine Datei spaeter noch ersetzen zu koennen: Wer anhaengt, schreibt endgueltig.
+- **Meinen eigenen Fehler in der Gegenprobe:** den Meldungstext einer Ausnahme nach dem
+  Fangblock gelesen. Der Text ist dann fort. Kuenftig im Fangblock in einen eigenen Puffer
+  kopieren.
+
+**Offene Faehrten**
+
+- **Der Commit-Betreff luegt nicht nur, er luegt aus einem benennbaren Grund.** Der Betreff
+  kommt aus dem Gegenstand *des Laufs*, und committet werden **ganze Verzeichnisse**. Zwei
+  gleichzeitige Laeufe reichen, und die Arbeit des einen liegt unter dem Namen des anderen
+  -- bei 0033 genau so passiert. Kuenftig immer beide Richtungen pruefen: Betreff nach
+  Paketnummer **und** Pfad nach Commit, und die Abweichung melden.
+- **Die Frage zur Umbruchsemantik und zum Sanitizer bleibt offen, aber sie ist umgehbar.**
+  0033 faengt beide Enden der Rundennummer **vor** der Addition ab, statt sich auf den
+  Sanitizer zu verlassen. Das ist die Bauweise, nach der ich kuenftig zuerst suche: Wird der
+  Ueberlauf verhindert oder nachtraeglich erkannt? Nur die erste Form haengt nicht an einem
+  Uebersetzerschalter.
+
