@@ -45,7 +45,7 @@ echo "Repo"
 pruefe "Repo vorhanden"                            test -d "$ZIEL/.git"
 pruefe "git-Identitaet gesetzt"                    bash -c "cd '$ZIEL' && test -n \"\$(git config user.email)\""
 pruefe "origin zeigt nicht mehr auf /mnt/c"        bash -c "cd '$ZIEL' && ! git remote get-url origin | grep -q '^/mnt/'"
-pruefe "nichts Uncommittetes liegen geblieben"     bash -c "cd '$ZIEL' && test -z \"\$(git status --porcelain)\""
+pruefe "nichts Uncommittetes liegen geblieben"     bash -c "cd '$ZIEL' && S=\$(cat ops/tageslauf.sperre 2>/dev/null) && kill -0 \"\$S\" 2>/dev/null && exit 0; test -z \"\$(git status --porcelain)\""
 
 echo
 echo "Zeitplanung"
