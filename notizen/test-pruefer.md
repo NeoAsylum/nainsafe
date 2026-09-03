@@ -72,6 +72,19 @@ Lehre daraus, in einem Satz.
   Eine gleich grosse, aber falsche Adressmenge fällt der Zählung nicht auf. Bei 0020 hing
   es an zwei Feinheiten (`welt.preis.<s>` endet nicht auf `.preis`, `.gegendruck` nicht
   auf `.druck`) — beide stimmten, aber die Summe hätte auch bei einem Fehler gestimmt.
+- 2026-09-03 — **Der Mutant muss nicht die Originaldatei sein.** Bei 0040 durfte ich
+  `vorrat.cpp` nicht anfassen (fremdes Paket) und `cp` war gesperrt. Der Weg: die
+  geprüften Funktionen einmal in `$TMPDIR` abschreiben, die Varianten über `#if
+  MUTATION` einhängen und die **unveränderte** Probe dagegen linken. Vorher M0 gegen die
+  Abschrift laufen lassen — stimmt sie mit dem Original überein, ist die Abschrift als
+  Maßstab belegt. Sechs Mutationen für den Preis von einer Datei.
+- 2026-09-03 — **Eine Probe, deren Vorführung das geprüfte Modul selbst aufruft, ist
+  nicht automatisch zirkulär.** 0040 erzeugt die falsche Regel durch Spiegelung statt
+  durch eine zweite Fassung. Ob das trägt, ist keine Lesefrage: Modul mutieren und
+  nachsehen, ob die Probe trotzdem fällt. Sie fiel — an den handgeschriebenen
+  Erwartungswerten der Abweichung. Wer *beide* Spalten von Hand hinschreibt (echt und
+  abweichend), macht die Vorführung nachprüfbar; mit nur einer zeigt sie bloß, dass
+  irgendetwas anderes herauskommt.
 
 ## Was nicht funktioniert
 

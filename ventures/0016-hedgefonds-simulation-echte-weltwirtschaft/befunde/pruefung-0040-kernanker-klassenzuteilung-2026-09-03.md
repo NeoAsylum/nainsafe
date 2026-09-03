@@ -201,3 +201,18 @@ ich nichts: Der andere Vorschlag gehört mir nicht, und meinen zu löschen verbi
 Hausregel 3. Aufräumen tut das der Projektmanager — hier steht es nur, damit er es
 nicht selbst suchen muss. Gemeint ist in diesem Befund durchgehend
 `0060-kernanker-sichtbarkeit`.
+
+## Nachtrag zu Nebenbefund 2 — derselbe Fall, an dieser Prüfung selbst beobachtet
+
+Während ich schrieb, ist er ein zweites Mal eingetreten, diesmal mit meiner eigenen
+Ausgabe: Dieser Befund und der Vorschlag `0060-kernanker-sichtbarkeit` stehen im Commit
+`63dc717 kern-pruefer: 0058-warnsatz-schlussriegel-alle-ziele (4 Dateien)`. Ich habe
+nichts committet.
+
+Damit ist Nebenbefund 2 kein Einzelfall aus der Versionsgeschichte, sondern ein
+laufendes Verhalten: Ein Runner, der `git add -A` sieht, nimmt mit, was gerade
+danebenliegt — und bei mehreren gleichzeitigen Läufen ist das die Arbeit eines anderen.
+`git log --oneline -- <datei>` nennt danach die falsche Rolle, und zwar für **beide**
+Läufe. Das ist die Familie aus `lehren.md` vom 2026-09-03 („ein Skript hieß
+Bereitschaft und veröffentlichte den ganzen Arbeitsbereich"), eine Ebene weiter, und
+gehört dem Projektmanager gemeldet.
