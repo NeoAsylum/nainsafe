@@ -1,7 +1,7 @@
 ---
 id: 0038-meldung-mit-adresse-gemeinsam
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0016-schreiber-ursachenkette, 0033-schritt-rundengeruest-weltlauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/meldung.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schreiber.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/meldung_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
@@ -89,6 +89,57 @@ einen und erzeugt fuenf Fassungen.
 4. **`meldung_probe` steht namentlich als `Passed` im Uebersetzungsbericht des Tages** und
    prueft die drei nicht trivialen Stellen: `I64_MIN`, das Abschneiden am Pufferende, und
    eine Adresse ausserhalb der 310.
+
+## GEBAUT am 2026-09-03 — Kernbauer
+
+Angelegt: `kern/include/kern/meldung.hpp`, `kern/test/meldung_probe.cpp`. Geaendert:
+`kern/src/schreiber.cpp` (Klasse entfaellt, Kopf eingebunden), `kern/src/schritt.cpp`
+(neun Abbrueche). Nichts ausserhalb der `dateien`-Liste angefasst.
+
+**Bedingung 1 ist zur Haelfte offen, und das ist der Punkt, den der Pruefer zuerst
+lesen soll.** Der Kopf traegt die Klasse, und in `kern/src/schreiber.cpp` und
+`kern/src/schritt.cpp` gibt es keine zweite. Es gibt aber eine dritte, die das Paket
+nicht kannte: `kern/src/zustand.cpp:879` fuehrt seit Paket 0037 eine eigene Klasse
+`Meldung` fuer den Riegel des Startwertzugangs — derselbe Puffer, dieselben drei
+Methoden, dieselbe Begruendung im Kommentar.
+
+```
+grep -rn "class Meldung" kern/include kern/src
+  kern/include/kern/meldung.hpp:85
+  kern/src/zustand.cpp:879
+```
+
+`kern/src/zustand.cpp` steht nicht in `dateien` und gehoert Paket 0027, das auf
+`gebaut` steht. Der Umzug dieser Fassung liegt deshalb als **Vorschlag 0048** daneben
+und nicht in diesem Lauf.
+
+**Bedingung 2 ist mit einem Byte-Vergleich belegt, nicht behauptet.** Der Vergleichs-
+stand kam aus `git show HEAD:…/kern/src/schreiber.cpp` und wurde mit `g++ -std=c++20
+-fwrapv -Wall -Wextra -Werror` gegen dieselben Proben gebaut; `diff` der beiden
+Protokolle von `schreiber_probe` ist leer. `schritt_probe` bleibt gruen, seine drei
+Wortlautpruefungen (`310`, `spielmodus`, `kein Paket`) treffen dieselbe unveraenderte
+Meldung.
+
+**Bedingung 3:** Neun Abbrueche in `kern/src/schritt.cpp` nennen jetzt eine Adresse in
+Textform plus laufender Nummer — die beiden in `teile_zu`, die in `schritt_2_aktionen`
+und `schritt_6_abrechnung`, der `Keiner`-Fall in `fuehre_schritt_aus`, die beiden der
+Rundenschleife und die beiden der Rundennummer. Die Zuordnungsabbrueche nennen
+zusaetzlich die Schrittnummer aus `spiel.md` samt Namen. Ohne Adresse bleibt allein der
+`spielmodus`-Abbruch: Er hat keine, und sein Wortlaut ist Bedingung 7 von Paket 0033.
+
+**Eine Zahl hat sich geaendert, und sie steht im Kopf begruendet:** Der Puffer fasst 512
+statt 256 Zeichen. Die laengste Meldung aus `schritt.cpp` traegt 172 Zeichen Prosa plus
+Adresse, laufende Nummer und Schrittangabe; bei 256 waere ausgerechnet die abgeschnitten
+worden, die zwei auseinandergelaufene Abschriften erklaeren soll.
+
+**Bedingung 4:** `meldung_probe` laeuft gegen `kern_geprueft` (ASan/UBSan) und prueft
+`I64_MIN` und `I64_MIN + 1` Zeichen fuer Zeichen, das Abschneiden in drei Lagen (Text
+ueber den Puffer hinaus, Zahl mitten in den Ziffern, Anhang an den vollen Puffer) und
+drei Adressen ausserhalb der 310, darunter `KEIN_PLATZ`. Keine Grenze ist abgeschrieben;
+die Laenge kommt aus `meldung::MELDUNG_ZEICHEN_MAX`.
+
+Gemessen am 2026-09-03: `ctest` im Kern 8/8 gruen (`meldung_probe` als Test 2), im
+Arbeitsbereich 10/10, im Pruefstand 2/2.
 
 ## Rueckläufe
 

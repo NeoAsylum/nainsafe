@@ -2,7 +2,15 @@
 //!
 //! Die Erklaerungen stehen im Kopf `include/kern/schreiber.hpp`. Hier steht, was nicht
 //! in einen Kopf gehoert: die beiden Sollmasken aus T38 samt der Nachrechnung ihrer
-//! Groesse, und die Fehlermeldungen, die eine Adresse im Wortlaut tragen.
+//! Groesse.
+//!
+//! **Der Meldungsbau stand bis Paket 0038 ebenfalls hier** und steht seit dem in
+//! `include/kern/meldung.hpp`. Der Grund fuer den Umzug: Die sechs Schrittpakete der
+//! Runde brauchen dieselbe Klasse, jedes einzeln, und eine abgeschriebene
+//! Fehlermeldungsklasse liegt beim zweiten Mal in zwei Fassungen vor, die auseinander-
+//! laufen. Am Verhalten der Abbrueche unten hat der Umzug nichts geaendert; dass er es
+//! nicht getan hat, weist `schreiber_probe` nach, das sie im Wortlaut ins Protokoll
+//! schreibt.
 //!
 //! **Die Maskengroessen sind `static_assert` und keine Behauptung.** Sie laufen beim
 //! Uebersetzen: Ergibt die abgeschriebene Blocktabelle aus T38 nicht 175 Adressen, ist
@@ -14,6 +22,7 @@
 #include <cstdint>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/zustand.hpp"
 
@@ -22,6 +31,11 @@
 namespace kern::schreiber {
 
 namespace {
+
+/// Der Meldungsbau steht seit Paket 0038 in `include/kern/meldung.hpp` -- die Abbrueche
+/// unten nennen ihre Adresse damit, und die sechs Schrittpakete der Runde benutzen
+/// dieselbe Klasse statt einer eigenen Abschrift.
+using meldung::Meldung;
 
 using zustand::Aggregat;
 using zustand::InstrumentFeld;
@@ -162,83 +176,6 @@ constexpr std::size_t ausserhalb_gezaehlt()
 
 static_assert(ausserhalb_gezaehlt() == AUSSERHALB_WELTLAUF,
               "T38: 135 Adressen behalten im Weltlauf ihren Startwert");
-
-// ---------------------------------------------------------------------------
-// Fehlermeldungen mit ausgeschriebener Adresse
-// ---------------------------------------------------------------------------
-//
-// `festkomma::abbruch` nimmt einen Text und wirft ihn als Ausnahme; die Ausnahme legt
-// sich eine eigene Abschrift an, ein Puffer auf dem Stapel reicht also. Gebaut ist er
-// als Feld fester Groesse mit Laengenpruefung bei jedem Zeichen -- die laengste
-// Adresse hat 47 Zeichen, und die Meldung hat Luft.
-
-class Meldung {
-public:
-    void text(const char* zeichenkette)
-    {
-        if (zeichenkette == nullptr) {
-            return;
-        }
-        for (std::size_t i = 0; zeichenkette[i] != '\0'; ++i) {
-            if (laenge_ + 1 >= puffer_.size()) {
-                return;  // abgeschnitten statt uebergelaufen
-            }
-            puffer_[laenge_] = zeichenkette[i];
-            ++laenge_;
-            puffer_[laenge_] = '\0';
-        }
-    }
-
-    void zahl(i64 wert)
-    {
-        std::array<char, 24> ziffern{};
-        std::size_t stellen = 0;
-        const bool negativ = wert < 0;
-        // Der Betrag ueber vorzeichenlose Zahlen, damit auch der kleinste i64 geht.
-        u64 rest = negativ ? (u64{0} - static_cast<u64>(wert)) : static_cast<u64>(wert);
-        if (rest == 0) {
-            ziffern[0] = '0';
-            stellen = 1;
-        }
-        while (rest != 0 && stellen < ziffern.size()) {
-            ziffern[stellen] = static_cast<char>('0' + static_cast<int>(rest % 10));
-            ++stellen;
-            rest /= 10;
-        }
-        if (negativ) {
-            const char minus[2] = {'-', '\0'};
-            text(minus);
-        }
-        while (stellen > 0) {
-            --stellen;
-            const char eine[2] = {ziffern[stellen], '\0'};
-            text(eine);
-        }
-    }
-
-    /// Haengt eine Adresse in ihrer Textform nach T17 an, dazu ihre laufende Nummer aus
-    /// `daten/adressen.md` -- die Textform fuer den Menschen, die Nummer fuer den, der
-    /// im Verzeichnis nachschlaegt.
-    void adresse(Index platz)
-    {
-        if (platz >= FELDER) {
-            text("(Adresse ausserhalb der 310 Felder, Platz ");
-            zahl(static_cast<i64>(platz));
-            text(")");
-            return;
-        }
-        text(zustand::index_zu_adresse(platz));
-        text(" (Nr. ");
-        zahl(static_cast<i64>(platz) + 1);
-        text(")");
-    }
-
-    [[nodiscard]] const char* fertig() const { return puffer_.data(); }
-
-private:
-    std::array<char, 256> puffer_{};
-    std::size_t laenge_ = 0;
-};
 
 }  // namespace
 

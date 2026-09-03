@@ -39,6 +39,7 @@
 #include <cstdint>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/schritt.hpp"
 #include "kern/zustand.hpp"
@@ -48,6 +49,12 @@
 namespace kern::schritt {
 
 namespace {
+
+/// Der Meldungsbau (Paket 0038). Jeder Abbruch dieser Datei nennt damit die Adresse, um
+/// die es geht -- in ihrer Textform nach T17 und mit ihrer laufenden Nummer. Wer eine
+/// auseinandergelaufene Zuordnung sucht, will die Adresse lesen und nicht den Dateinamen
+/// der Tafel, in der sie steht.
+using meldung::Meldung;
 
 using zustand::Aggregat;
 using zustand::FELDER;
@@ -131,6 +138,44 @@ constexpr std::size_t schrittnummer(Rundenschritt welcher)
     return static_cast<std::size_t>(welcher);
 }
 
+/// Der Name eines Schritts fuer die Abbrueche unten.
+///
+/// Die Nummer allein zwingt den Leser einer Fehlermeldung, in `spiel.md` nachzuschlagen,
+/// welcher Schritt die `3` ist. Kein `default`: Ohne ihn meldet `-Wswitch` einen
+/// fehlenden Fall, und mit `-Werror` ist ein siebter Schritt damit ein Bauabbruch statt
+/// einer Meldung, die "Keiner" sagt, wo sie einen Namen nennen sollte.
+constexpr const char* schrittname(Rundenschritt welcher)
+{
+    switch (welcher) {
+        case Rundenschritt::Keiner:
+            return "keiner";
+        case Rundenschritt::Ansicht:
+            return "Ansicht";
+        case Rundenschritt::Aktionen:
+            return "Aktionen";
+        case Rundenschritt::Politik:
+            return "Politik";
+        case Rundenschritt::Wirtschaft:
+            return "Wirtschaft";
+        case Rundenschritt::Reaktion:
+            return "Reaktion";
+        case Rundenschritt::Abrechnung:
+            return "Abrechnung";
+    }
+    return "unbekannt";
+}
+
+/// Haengt einen Schritt als "Nr. Name" an eine Meldung -- die Zahl aus `spiel.md` und
+/// der Name daneben, damit beide Enden derselben Auskunft in derselben Zeile stehen.
+void nenne_schritt(Meldung& meldung, Rundenschritt welcher)
+{
+    meldung.text("Schritt ");
+    meldung.zahl(static_cast<i64>(schrittnummer(welcher)));
+    meldung.text(" (");
+    meldung.text(schrittname(welcher));
+    meldung.text(")");
+}
+
 /// Ob die Liste vollstaendig ist und in der Reihenfolge aus `spiel.md` steht.
 ///
 /// Gebaut als Nachrechnung statt als Sichtpruefung: Wer zwei Eintraege vertauscht, hat
@@ -187,13 +232,30 @@ using Zuordnung = std::array<Rundenschritt, FELDER>;
 /// Blockschleifen ab, die sich sonst als zu kleine Gesamtzahl verstecken wuerde -- und
 /// eine zu kleine Gesamtzahl haette in der Runde unten die Sollmaske verfehlt und
 /// dieselbe Adresse zweimal geschrieben.
+///
+/// Beide Meldungen nennen die Adresse und die Zahl, die nicht aufging. Dass diese Datei
+/// die Zuordnung zur *Uebersetzungszeit* baut, heisst nicht, dass die Meldungen
+/// ueberfluessig waeren: `teile_zu` ist keine `consteval` Funktion, und der Rumpf steht
+/// als Vorlage fuer den Tag, an dem ein Schrittpaket eine Adresse zur Laufzeit zuteilt.
 constexpr void teile_zu(Zuordnung& tafel, Index platz, Rundenschritt welcher)
 {
     if (platz >= FELDER) {
-        festkomma::abbruch("kern::schritt -- Adresse ausserhalb der 310 Felder");
+        Meldung meldung;
+        meldung.text("kern::schritt -- Zuordnung: Adresse ausserhalb der 310 Felder, Platz ");
+        meldung.zahl(static_cast<i64>(platz));
+        meldung.text(" soll an ");
+        nenne_schritt(meldung, welcher);
+        festkomma::abbruch(meldung.fertig());
     }
     if (tafel[platz] != Rundenschritt::Keiner) {
-        festkomma::abbruch("kern::schritt -- diese Adresse gehoert schon einem Schritt");
+        Meldung meldung;
+        meldung.text("kern::schritt -- Zuordnung: ");
+        meldung.adresse(platz);
+        meldung.text(" gehoert schon ");
+        nenne_schritt(meldung, tafel[platz]);
+        meldung.text(" und soll zusaetzlich an ");
+        nenne_schritt(meldung, welcher);
+        festkomma::abbruch(meldung.fertig());
     }
     tafel[platz] = welcher;
 }
@@ -359,10 +421,13 @@ void schritt_2_aktionen(Schreiber& schreiber, const Aktionsbuendel& aktionen, In
 {
     static_cast<void>(schreiber);
     static_cast<void>(aktionen);
-    static_cast<void>(platz);
-    festkomma::abbruch(
+    Meldung meldung;
+    meldung.text(
         "kern::schritt -- Schritt 2 (Aktionen) entfaellt im Modus weltlauf (T38) und hat dort "
-        "keine Adresse; wer hierher kommt, hat Zuordnungstafel und Sollmaske verschoben");
+        "keine Adresse; wer hierher kommt, hat Zuordnungstafel und Sollmaske verschoben. "
+        "Angekommen ist ");
+    meldung.adresse(platz);
+    festkomma::abbruch(meldung.fertig());
 }
 
 /// **Schritt 3 -- Politik.** Nach `spiel.md`: "Anliegender Lobbydruck und Gegenlobby
@@ -409,10 +474,13 @@ void schritt_5_reaktion(Schreiber& schreiber, Index platz) { schreiber.vortrag(p
 void schritt_6_abrechnung(Schreiber& schreiber, Index platz)
 {
     static_cast<void>(schreiber);
-    static_cast<void>(platz);
-    festkomma::abbruch(
+    Meldung meldung;
+    meldung.text(
         "kern::schritt -- Schritt 6 (Abrechnung) entfaellt im Modus weltlauf (T38) und hat dort "
-        "keine Adresse; wer hierher kommt, hat Zuordnungstafel und Sollmaske verschoben");
+        "keine Adresse; wer hierher kommt, hat Zuordnungstafel und Sollmaske verschoben. "
+        "Angekommen ist ");
+    meldung.adresse(platz);
+    festkomma::abbruch(meldung.fertig());
 }
 
 /// Gibt eine Adresse an den Schritt, dem sie gehoert.
@@ -445,10 +513,15 @@ void fuehre_schritt_aus(Rundenschritt welcher, Schreiber& schreiber,
         case Rundenschritt::Keiner:
             break;
     }
-    festkomma::abbruch(
-        "kern::schritt -- diese Adresse steht in der Sollmaske aus T38, gehoert aber keinem der "
-        "sechs Schritte: die Zuordnungstafel in kern/src/schritt.cpp und die Maske in "
-        "kern/src/schreiber.cpp sind zwei Abschriften derselben Tabelle und laufen auseinander");
+    Meldung meldung;
+    meldung.text("kern::schritt -- ");
+    meldung.adresse(platz);
+    meldung.text(" steht in der Sollmaske aus T38, gehoert aber ");
+    nenne_schritt(meldung, welcher);
+    meldung.text(
+        ": die Zuordnungstafel in kern/src/schritt.cpp und die Maske in kern/src/schreiber.cpp "
+        "sind zwei Abschriften derselben Tabelle und laufen auseinander");
+    festkomma::abbruch(meldung.fertig());
 }
 
 }  // namespace
@@ -480,18 +553,26 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen, 
     // geschrieben wird; ein Merker daneben waere ein 311. Feld gewesen (T15).
     const i64 vorrundennummer = vorrunde.lies(zustand::stelle_partie(PartieFeld::Runde));
     if (vorrundennummer < 0) {
-        festkomma::abbruch(
-            "kern::schritt -- partie.runde der Vorrunde ist negativ: eine Runde vor der ersten "
-            "gibt es nicht");
+        Meldung meldung;
+        meldung.text("kern::schritt -- partie.runde der Vorrunde ist ");
+        meldung.zahl(vorrundennummer);
+        meldung.text(" und damit negativ: eine Runde vor der ersten gibt es nicht. Gelesen aus ");
+        meldung.adresse(zustand::stelle_partie(PartieFeld::Runde));
+        festkomma::abbruch(meldung.fertig());
     }
     if (vorrundennummer == festkomma::I64_MAX) {
         // Der Ueberlauf wird verhindert, nicht nachtraeglich erkannt. Mit `-fwrapv`
         // waere `+ 1` hier ein Umbruch ins Negative und damit eine Rundennummer, die der
         // Schreiber als "vor der ersten" abweisen wuerde -- mit einer Meldung, die die
         // Ursache nicht mehr nennt.
-        festkomma::abbruch(
-            "kern::schritt -- partie.runde der Vorrunde ist der groesste int64_t: eine naechste "
-            "Runde laesst sich nicht mehr zaehlen");
+        Meldung meldung;
+        meldung.text("kern::schritt -- partie.runde der Vorrunde ist ");
+        meldung.zahl(vorrundennummer);
+        meldung.text(
+            " und damit der groesste int64_t: eine naechste Runde laesst sich nicht mehr zaehlen. "
+            "Gelesen aus ");
+        meldung.adresse(zustand::stelle_partie(PartieFeld::Runde));
+        festkomma::abbruch(meldung.fertig());
     }
     const i64 diese_runde = vorrundennummer + 1;
 
@@ -511,16 +592,26 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen, 
         // geschrieben, und `Schreiber::rundenende` haette dann zwar abgebrochen, aber
         // ueber die Adresse geklagt statt ueber die Tafel.
         if (in_maske && eigner == Rundenschritt::Keiner) {
-            festkomma::abbruch(
-                "kern::schritt -- eine Adresse der Sollmaske gehoert keinem der sechs Schritte: "
-                "die Zuordnungstafel in kern/src/schritt.cpp und die Maske in "
+            Meldung meldung;
+            meldung.text("kern::schritt -- ");
+            meldung.adresse(platz);
+            meldung.text(" steht in der Sollmaske, gehoert aber ");
+            nenne_schritt(meldung, eigner);
+            meldung.text(
+                ": die Zuordnungstafel in kern/src/schritt.cpp und die Maske in "
                 "kern/src/schreiber.cpp laufen auseinander");
+            festkomma::abbruch(meldung.fertig());
         }
         if (!in_maske && eigner != Rundenschritt::Keiner) {
-            festkomma::abbruch(
-                "kern::schritt -- ein Schritt hat eine Adresse ausserhalb der Sollmaske: die "
-                "Zuordnungstafel in kern/src/schritt.cpp und die Maske in kern/src/schreiber.cpp "
-                "laufen auseinander");
+            Meldung meldung;
+            meldung.text("kern::schritt -- ");
+            nenne_schritt(meldung, eigner);
+            meldung.text(" hat ");
+            meldung.adresse(platz);
+            meldung.text(
+                ", und die liegt ausserhalb der Sollmaske: die Zuordnungstafel in "
+                "kern/src/schritt.cpp und die Maske in kern/src/schreiber.cpp laufen auseinander");
+            festkomma::abbruch(meldung.fertig());
         }
         if (!in_maske) {
             continue;  // T38: was ausserhalb liegt, behaelt seinen Startwert

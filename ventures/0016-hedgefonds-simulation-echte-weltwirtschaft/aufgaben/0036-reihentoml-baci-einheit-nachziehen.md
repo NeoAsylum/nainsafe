@@ -1,7 +1,7 @@
 ---
 id: 0036-reihentoml-baci-einheit-nachziehen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0025-quelleneinheit-pwt-baci, 0032-reihentoml-notenbanken-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

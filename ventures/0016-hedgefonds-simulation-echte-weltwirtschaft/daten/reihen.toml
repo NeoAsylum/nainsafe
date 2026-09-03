@@ -1257,18 +1257,20 @@ t26_folge = ""
 deckung_gemessen = true
 deckung_urteil = "traegt -- HS92 deckt 1995 bis 2024 und bindet in keiner Variante des Deckungsbefunds"
 offen = [
-  "Die Quelleneinheit von BACI ist in keiner der drei Befunddateien gemessen. Der Umrechnungsfaktor steht deshalb als ungemessen und nicht als 1.",
-  "Ob BACI in laufenden oder konstanten Preisen meldet, ist ebenfalls ungemessen. T5 Klasse 2 verlangt 'Tausend USD zu konstanten Preisen des Basisjahrs'.",
+  "Offener Widerspruch zu T5 Klasse 2, Adressat Architekt: BACI meldet laufende Preise, gemessen am 2026-09-02 am Wortlaut der Beschreibungsseite ('in thousands current USD'). T5 Klasse 2 verlangt 'Tausend USD zu konstanten Preisen des Basisjahrs'. Die Modellseite ist damit real, die Sollseite nominal. Das ist keine Rundungsfrage: Reihe 14 traegt 40 Stroeme, T42 rechnet ueber jeden den MAPE gegen die Schwelle 2.000 (= 20 %), T37 fuehrt den Handelsblock unter den sechzehn Pruefgegenstaenden, und ueber das Fenster 1997 bis 2021 misst der Rueckvergleich fuer diesen Block die Preisentwicklung mit. Vier Moeglichkeiten sind aufgezaehlt und keine gewaehlt -- deflationieren, die Klasse aendern, die Vergleichbarkeit aufgeben und benennen, die Quelle wechseln: daten/einheitenbefund-pwt-baci.md, Abschnitt 5. Diese Datei entscheidet nichts davon.",
+  "Versionsvorbehalt zur gemessenen Einheit: Die Beschreibungsseite von BACI nennt keine Versionsnummer. Gemessen ist die Einheit dieser Seite am 2026-09-02, nicht die Einheit der eingebetteten Fassung 202601 im Wortlaut ihrer eigenen Freigabemitteilung -- deren Abruf ist an der PDF-Sperre gescheitert (daten/einheitenbefund-pwt-baci.md, Abschnitt 1 und Abschnitt 7 Nr. 5).",
   "Dass BACI das Jahr 1997 fuehrt, heisst nicht, dass jeder der 40 Stroeme in jedem Jahr eine Zeile hat. BACI meldet je gerichtetem Paar nur beobachtete Stroeme; ein Paar ohne Zeile bedeutet gemessene Null, nicht fehlender Wert. Eine Null ist keine Luecke und darf nicht als gefuellt gekennzeichnet werden, sonst zaehlt der Rueckvergleich echte Nullhandelsjahre aus dem Fehlermass heraus. Zu messen ist das beim Jahrgangsbau an der fertig aggregierten Matrix.",
   "T23 Punkt 10: Je gerichtetem Paar steht genau eine Zahl (BACI meldet den Ausfuhrwert). Ein getrennter Einfuhrwert wuerde die Invariante 'Summe aller Handelsbilanzen = 0' von der Datenqualitaet abhaengig machen statt von der Bauart.",
 ]
 
 [[reihe.umrechnung]]
 schritt = 1
-art = "ungemessen"
-status = "ungemessen"
-begruendung = "Modelleinheit ist Tsd USD (T5 Klasse 2). In welcher Einheit BACI die Werte fuehrt und ob sie laufend oder konstant sind, hat keine der drei Befunddateien gemessen. Ein Faktor 1 waere hier eine Behauptung."
-frage = "In welcher Einheit und zu welchen Preisen meldet BACI 202601 den Wert eines Stroms?"
+art = "keine"
+faktor = 1
+status = "gemessen"
+begruendung = "Quelleneinheit Tsd laufende USD, Modelleinheit Tsd USD (T5 Klasse 2). Die Beschreibungsseite von BACI nennt das Feld v woertlich: 'Value of the trade flow (in thousands current USD)'. Abruf-URL https://www.cepii.fr/DATA_DOWNLOAD/baci/doc/DescriptionBACI.html, abgerufen am 2026-09-02. Beide Seiten rechnen in Tausendern, der Faktor ist 1.000 / 1.000 = 1 -- ausgerechnet und nicht gesetzt. Zur Wortwahl bei art: 'keine' ist das Wort, das diese Datei fuer denselben Fall schon fuehrt (Reihe 5, Quelleneinheit gleich Modelleinheit, faktor 1); 'mal' mit faktor 1 waere rechnerisch gleichbedeutend, behauptete aber eine Rechenrichtung, die eine Eins nicht unterscheidet. Gemessen ist allein die Groessenordnung -- die Preisbasis ist laufend und widerspricht T5 Klasse 2, siehe Feld offen dieser Reihe."
+antwort = "Tausend laufende USD. Die Groessenordnung ist damit die der Modelleinheit, die Preisbasis nicht: laufend statt konstant."
+beleg = "daten/einheitenbefund-pwt-baci.md, Abschnitte 1 und 2 (Paket 0025, abgenommen 2026-09-02 mit befunde/pruefung-0025-quelleneinheit-pwt-baci-2026-09-02.md)"
 
 [[reihe.lizenzbeleg]]
 codes = []
@@ -1389,7 +1391,7 @@ t26_folge = "Kein benannter Fall von T26. Das Urteil ist von Reihe 2 geerbt und 
 deckung_gemessen = false
 deckung_urteil = "nicht gemessen -- keine eigene Reihe. Der Fall H + N = 0 tritt im Pruefjahrgang bei keinem der fuenf Gebiete auf."
 offen = [
-  "H (Aus- plus Einfuhr aus BACI) und N (Wertschoepfung aus WDI) muessen in derselben Einheit stehen, sonst ist der Quotient bedeutungslos. Die Einheit von BACI ist ungemessen (siehe Reihe 14).",
+  "H und N stehen in der Groessenordnung in derselben Einheit, in der Preisbasis nicht -- gemessen am 2026-09-02. H (Aus- plus Einfuhr aus BACI, Reihe 14) steht in Tausend laufenden USD, Faktor nach Tsd USD = 1. N (Wertschoepfung) ist keine eigene Reihe: T23 Punkt 1 bildet sie aus Reihe 1 (BIP) und den auf 10.000 normierten Sektoranteilen der Reihe 2 -- die Einheit von N stammt damit aus Reihe 1 und nicht aus Reihe 2. Reihe 1 steht nach Weltbank NY.GDP.MKTP.KD (Unitofmeasure 'constant 2015 US$') und der Teilung durch 1.000 in Tausend USD zu konstanten Preisen von 2015. Der Quotient ist deshalb nicht bedeutungslos -- die Waehrungseinheit kuerzt sich heraus --, aber er traegt einen Preisanteil: BACI laufend gegen WDI konstant 2015. Unter der Annahme steigender Preise faellt durchgriff fuer Jahre nach 2015 zu hoch und fuer Jahre davor zu niedrig aus, und der Pruefjahrgang laeuft von 1997 bis 2021. Ob das hinnehmbar ist, faellt mit dem Widerspruch bei Reihe 14 und nicht hier -- daten/einheitenbefund-pwt-baci.md, Abschnitt 6.",
   "Kein Befund urteilt ueber die Lizenz dieser abgeleiteten Groesse. Eingetragen ist das schwaechere der beiden Eingabeurteile (Reihe 14 frei, Reihe 2 unklar); dass eine abgeleitete Groesse so erbt, ist eine Uebertragung dieser Datei und keine Messung.",
   "T23 Punkt 5: Der einzige undefinierte Fall ist H + N = 0. Der Jahrgangsbau setzt dann durchgriff = 0 und meldet den Fall im Manifest als Befund. Eine Kappung gibt es nicht und darf es nicht geben.",
 ]
