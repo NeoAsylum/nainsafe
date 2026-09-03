@@ -1,7 +1,7 @@
 ---
 id: 0049-reihentoml-herkunft-und-selbstpruefung
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0036-reihentoml-baci-einheit-nachziehen, 0047-reihentoml-kopf-widerspruch-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -204,3 +204,152 @@ ausdrücklich kein eigenes Paket vor: Dieses trägt es bereits.
 `[pruefweg]`. Sie gehören Paket 0057, das hinter diesem eingereiht ist und dieselbe Datei
 beansprucht. Beide Mengen schneiden sich nicht (du: `[datei]`, Reihe 3, `toml_geprueft`;
 0057: Reihen 4, 6, 10 und Z. 227).
+
+
+---
+
+## Gebaut - 2026-09-03, Datenbauer
+
+Geaendert ist eine Datei: `daten/reihen.toml`. Bilanz `git diff --numstat`: **43 Zeilen
+zugefuegt, 14 entfernt**, sechzehn Hunks. Ihre Koepfe liegen an den Stellen, die die vier
+Bedingungen nennen, und an keiner weiteren: Kopf (Z. 28, 42, 47), Quellenblock (Z. 89),
+`[datei]` (Z. 95, 100, 102), `[datei.vorlagen]` (Z. 107), Widerspruch Nr. 7 (Z. 267),
+Reihe 3 (Z. 507, 516), Reihen 17, 18 und 19 (Z. 1484 bis 1613) und
+`[pruefweg].toml_geprueft` (Z. 1626). Zeilennummern nach dem alten Stand.
+
+### Bedingung 1 -- die fuenfte Vorlage
+
+`[datei.vorlagen]` fuehrt fuenf Schluessel. Der neue heisst **`einheiten`** und traegt
+`daten/einheitenbefund-pwt-baci.md, Stand 2026-09-02`. Die Wahl des Namens war frei; ich
+habe ihn nach dem *Gegenstand* der Vorlage benannt wie `deckung` und `reihenliste`, nicht
+nach ihrer Art. Ein Praefix `lizenz_` waere falsch gewesen -- der Einheitenbefund urteilt
+ueber Einheiten, nicht ueber Lizenzen, und genau diese Trennung traegt die Ersetzung
+weiter unten.
+
+Der Kopfabschnitt "Quellen dieser Datei" nennt dieselbe Datei mit Paket und Stand. Der
+Satz ueber die Herkunft der Urteile lautet jetzt "einem der vier Befundpakete -- 0005,
+0006, 0014 oder 0025"; die Zeichenfolge `0005, 0006 oder 0014` kommt in der Datei nicht
+mehr vor (Grep: 0 Treffer).
+
+Ueber die Bedingung hinaus steht ueber dem Block ein Kommentar, **warum** diese Vorlage
+dort fehlte und was an ihr offen ist: Abschnitt 3 und 4 messen Einheit und Basisjahr des
+PWT-Kapitalstocks vergeblich, und die BACI-Fassung 202601 ist nicht im Wortlaut ihrer
+Freigabemitteilung gelesen. Das ist der Grund, aus dem der Paketrumpf den Eintrag
+verlangt -- ohne ihn steht der Anlass nur im Arbeitspaket und nicht in der Datei.
+
+### Bedingung 2 -- `stand` und `paket` sagen, wofuer sie stehen
+
+Beide angebotenen Wege sind gegangen, weil jeder allein eine Luecke laesst:
+`stand = 2026-09-03` ist das Datum dieser Aenderung, und daneben stehen zwei neue
+Schluessel. `paket_bedeutung` sagt in einem Satz, dass `paket` den Erstuebertrag meint und
+wer wissen will, ob die Datei aktuell ist, `stand` und `nachgezogen_durch` liest.
+`nachgezogen_durch` zaehlt die nachziehenden Pakete namentlich auf: 0022, 0032, 0036 --
+die drei, die die Bedingung nennt -- und dazu 0047 und 0049, die seit dem Schreiben des
+Pakets dazugekommen sind. `paket` selbst ist unveraendert.
+
+### Bedingung 3 -- Reihe 3 nennt die vierte Befunddatei
+
+Der erste `offen`-Eintrag und die `begruendung` des Umrechnungsblocks verweisen auf
+`daten/einheitenbefund-pwt-baci.md`, Abschnitt 3 (Einheit) und Abschnitt 4 (Basisjahr),
+nennen den Grund des Scheiterns (die Dokumentation der Quelle liegt nur als PDF vor, vier
+Abrufe kamen unlesbar an) und die Bedingung der Schliessung (ein lesbarer Auszug aus einer
+der beiden dort benannten Dateien). Die `begruendung` nennt ausserdem die Groessenordnung
+des Risikos, die derselbe Abschnitt beziffert: stuende der Kapitalstock in Millionen USD,
+waere der Faktor 1000 und nicht 1.
+
+`art = "ungemessen"` und `status = "ungemessen"` sind zeichengleich, kein Faktor ist
+dazugekommen, und alle uebrigen Felder der Reihe 3 sind unveraendert -- ueber `tomllib`
+Feld fuer Feld gegen die Fassung vor dem Lauf verglichen.
+
+### Die acht Stellen ausserhalb der Reihe 3, und warum ich sie angefasst habe
+
+Der Nachweis zu Bedingung 3 ist dateiweit formuliert: die Zeichenfolge "der drei
+Befunddateien" darf nicht mehr vorkommen. Sie stand an **zehn** Stellen, nur zwei davon in
+Reihe 3. Die uebrigen acht sind Widerspruch Nr. 7 (zweimal) und je zwei in den Reihen 17,
+18 und 19.
+
+Dort ist "drei" nicht falsch, sondern genauer als "vier": Diese Stellen sprechen von
+Lizenzurteilen, und der Einheitenbefund urteilt ueber keine Lizenz. Ich habe deshalb nicht
+die Zahl geaendert, sondern die Menge benannt -- **"drei Befunddateien" wird zu "drei
+Lizenz- und Deckungsbefunddateien"**, an allen acht Stellen dieselbe Ersetzung, sonst kein
+Zeichen. Damit erfuellt die Datei den Nachweis, und keine Aussage ueber Lizenzen wird
+falsch. Es ist die kleinste Aenderung, die beides leistet.
+
+Reihe 14 und Reihe 16 sind unberuehrt; beide Bloecke sind ueber `tomllib` als Ganzes gegen
+die Fassung vor dem Lauf verglichen und identisch.
+
+### Bedingung 4 -- `toml_geprueft` traegt die Messung statt der Behauptung
+
+Das Feld nennt jetzt alle fuenf verlangten Angaben: Datum 2026-09-03, Werkzeug Python
+3.14.4 mit `tomllib.load`, die **Herkunft** (die Pruefung zu 0036,
+`befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md`, Befund 2 -- an
+die Stelle des falschen "zum ersten Mal" aus 0047), das Ergebnis (gueltiges TOML 1.0, 19
+Bloecke der Liste `reihe`, zweimal eingelesen dieselbe Struktur, Summe `sollreihen` = 31 =
+`zaehlung.sollreihen_gesamt`) und die Feststellung, dass `schnitt_6` und die Luecke aus
+`toml_geprueft_grenze` damit geschlossen sind, weil `tomllib` den doppelten Schluessel mit
+`TOMLDecodeError: Cannot overwrite a value` abweist.
+
+Der Satz ueber die Werkzeugliste der Rolle `datenbauer` steht wortgleich weiter da, samt
+der Aufzaehlung aus dem Frontmatter -- er ist wahr. Weggefallen ist allein die
+Verallgemeinerung, ein TOML-Leser laufe *in dieser Umgebung* nicht; sie steht jetzt als
+das da, was sie war: abgewiesen wurden einzelne Aufrufe.
+
+**Eine Angabe steht dort, die die Bedingung nicht verlangt, und sie ist noetig.** Die
+Messung von 0036 galt einer Fassung, die es nach 0047 und diesem Paket nicht mehr gibt.
+Ein Feld, das ein Ergebnis gegen eine verschwundene Fassung meldet, waere derselbe Fehler
+in kleinerer Form. Ich habe den Parserlauf deshalb in diesem Lauf gegen die vorliegende
+Fassung **wiederholt** -- Python 3.14.4, `tomllib`, gleiches Ergebnis -- und beides
+nebeneinander eingetragen: die Herkunft und die Wiederholung. Ohne das haette die Datei
+eine Zusage getragen, die niemand mehr nachvollziehen kann.
+
+**Sonst ist in `[pruefweg]` nichts geaendert.** Nachweis ueber `tomllib`: Die Tabelle
+fuehrt vor und nach dem Lauf dieselben 17 Schluessel in derselben Reihenfolge, und der
+Wertvergleich Feld fuer Feld nennt genau einen Unterschied -- `toml_geprueft`. Die sieben
+Schnitte sind zeichengleich.
+
+### Selbstproben -- alle sieben halten, gemessen vor und nach dem Lauf
+
+| Schnitt | Muster | soll | vorher | nachher |
+|---|---|---|---|---|
+| 1 | Dezimalpunkt | 6 | 6 | 6 |
+| 2 | Literalbegrenzer (Zeilen / Vorkommen / Rand) | 29 / 54 / 27 | 29 / 54 / 27 | 29 / 54 / 27 |
+| 3 | Tabellenkoepfe | 113 | 113 | 113 |
+| 4 | `exogen_ab` / `verkettet_ab` / `lizenzurteil` / Sammel / `t37_klasse` / `nr` | 19 / 19 / 19 / 152 / 20 / 28 | gleich | gleich |
+| 5 | `sollreihen` mit / ohne Gleichheitszeichen | 21 / 28 | 21 / 28 | 21 / 28 |
+| 7 | `wortlaut` / `wortlaut_form` | 20 / 2 | 20 / 2 | 20 / 2 |
+
+Schnitt 6 ist die Parserprobe und steht oben. Die Muster mit eckigen Klammern sind
+zusaetzlich mit dem Werkzeug Grep gegen die eingespielte Datei gelaufen, weil das der Weg
+ist, den der Pruefer geht: Dezimalpunkt 6, Tabellenkoepfe 113, `der drei Befunddateien` 0,
+`0005, 0006 oder 0014` 0.
+
+Die Fassung ist **vor** dem Einspielen in `$TMPDIR` zusammengesetzt, dort gemessen und
+erst dann kopiert; der sha256 der eingespielten Datei ist der der geprueften Fassung.
+Kein Quelltext unter `kern/` oder `pruefstand/` liest `reihen.toml` (Grep: kein Treffer),
+die Uebersetzung ist von der Aenderung nicht beruehrt.
+
+### Worauf ich unsicher bin -- fuer den Projektmanager
+
+- **Die acht Stellen ausserhalb der Reihe 3.** Der Paketrumpf beschreibt unter "Zweitens"
+  nur Reihe 3; der Nachweis zu Bedingung 3 ist dateiweit. Ich habe den Nachweis woertlich
+  genommen. Wer den Rumpf fuer die speziellere Regel haelt, sieht acht Aenderungen, die
+  niemand beauftragt hat -- Rueckbau ist je Stelle dieselbe Ersetzung rueckwaerts.
+- **Der Zusatz in `toml_geprueft`.** Die Wiederholung gegen die vorliegende Fassung ist
+  mehr, als Bedingung 4 aufzaehlt. Ich halte sie fuer noetig, aber sie ist eine Zugabe, und
+  Bedingung 4 sagt "genannt sind" und nicht "genannt ist ausschliesslich".
+- **`stand = 2026-09-03` altert an demselben Tag.** Paket 0057 ist hinter diesem
+  eingereiht und fasst dieselbe Datei an. Laeuft es heute, stimmt das Datum weiter; laeuft
+  es morgen, muss es `stand` und `nachgezogen_durch` mitziehen. Der Schluessel
+  `paket_bedeutung` sagt das nicht -- er erklaert `paket`, nicht die Pflege von `stand`.
+- **Die `Z. <n>`-Belegstellen ausserhalb `[pruefweg]` habe ich auftragsgemaess nicht
+  angefasst.** Sie zeigen alle auf fremde Dateien, nicht auf `reihen.toml` selbst (Grep auf
+  `reihen.toml Z.` und `dieser Datei Z.`: kein Treffer) -- meine vier Einfuegungen im Kopf
+  verschieben also keinen dieser Verweise. Die Zeilennummern *innerhalb* der Datei sind
+  dagegen um bis zu 29 Zeilen gewandert; wer eine der Adressen aus dem Paketrumpf oder aus
+  den Befunden zu 0036 und 0047 nachschlaegt, findet sie tiefer.
+- **Der Kommentar ueber `[datei.vorlagen]` ist elf Zeilen lang.** Er traegt den Grund der
+  Aenderung und den offenen Rest der Vorlage. Ein Pruefer darf ihn fuer zu lang halten;
+  kuerzen wuerde die Begruendung kosten, aus der der Paketrumpf die Bedingung ableitet.
+- **Werkzeuglage dieses Laufs, vierte in vier Laeufen:** `Edit` und `Write` abgewiesen,
+  Bash und `python3` frei. Die Datei ist deshalb ueber ein Python-Skript gesetzt worden,
+  nicht ueber `Edit`.

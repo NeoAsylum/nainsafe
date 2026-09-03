@@ -199,3 +199,184 @@ durchgehen ließe, wäre wirkungslos, und einer, der zu scharf ist, macht den Be
 Was er **nicht** belegt, ist Bedingung 2: Ein Riegel, der alle Ziele durchwinkt, baut
 ebenfalls grün. Das steht im Vorschlag und bleibt der Grund, warum Bedingung 2 den
 Bytevergleich verlangt und nicht die Farbe des Baus.
+
+---
+
+## Nachweis, Lauf vom 2026-09-03 (Kernbauer)
+
+Geändert ist genau eine Datei: `werkzeugkette.cmake`, angehängt hinter
+`fabrik_warnsatz_anlegen`. Keine `CMakeLists.txt` angefasst — der Riegel hängt am Ende
+der Konfiguration und nicht an den Mitgliedern, deshalb musste er es nicht.
+
+**Nachweisort: Rang 1 der Staffelung.** Alles unter `$TMPDIR` = `/tmp/claude-1000/r58`,
+außerhalb des Repos. Rang 2 und 3 wurden nicht gebraucht. CMake 4.2.3, g++ 15.2.0.
+
+Alle `cmake`-Aufrufe mit der Konfiguration des Runners
+(`-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS=-fwrapv -fno-fast-math`), sonst
+misst man einen anderen Schaltersatz als der Übersetzungsbericht.
+
+### Die Bauform
+
+Ein `cmake_language(DEFER DIRECTORY ${CMAKE_SOURCE_DIR} CALL fabrik_schlussriegel …)`
+beim Einbinden der Datei, **genau einmal** über eine globale Eigenschaft abgesichert —
+der Arbeitsbereich bindet die Datei ein, ein allein gebautes Mitglied ebenfalls, und
+zwei Riegel meldeten dasselbe doppelt. Die Aufzählung läuft iterativ über eine
+Arbeitsliste (`BUILDSYSTEM_TARGETS` je Verzeichnis, `SUBDIRECTORIES` als Nachschub)
+statt rekursiv; das Ergebnis ist dasselbe wie in der Machbarkeitsprobe des Prüfers.
+
+Zwei Abweichungen von der dort gemessenen Skizze, beide bewusst:
+
+- **Der Sollzustand steht in einer globalen Eigenschaft** (`FABRIK_SCHLUSSRIEGEL_SATZ`),
+  gesetzt an der Stelle, an der `FABRIK_STRENGE` definiert ist. Die Skizze las
+  `COMPILE_OPTIONS` gegen `MATCHES "-Werror"` im Gültigkeitsbereich des Riegels. Wird die
+  Datei aus einem engeren Bereich eingebunden, findet der Riegel den Sollzustand so
+  trotzdem — sonst ginge er selbst leer aus und wänke alles durch.
+- **Geprüft wird der ganze Satz, nicht ein Kennzeichen daraus.** Ein Ziel, an dem jemand
+  `-Wall -Wextra -fwrapv` von Hand anhängt, hat den Satz nicht. Gemessen unten.
+
+### Bedingung 1 — ein Ziel ohne Warnsatz bricht die Konfiguration ab
+
+Wegwerf-Baum `/tmp/claude-1000/r58/probe-ohne/`: oberste Ebene bindet
+`werkzeugkette.cmake` ein und hat ein Ziel **mit** dem Aufruf, `add_subdirectory` hängt
+ein Mitglied daneben, dessen `CMakeLists.txt` aus `cmake_minimum_required` und
+`add_library` besteht — kein Block, kein Aufruf. Das ist die Form, in der `konsole` aus
+T13 geschrieben wird.
+
+**Gegenprobe zuerst, am Stand vor der Änderung** (dieselbe Datei, `HEAD`):
+
+```
+-- Configuring done (0.2s)
+CODE=0
+[100%] Built target ohne_satz
+CODE=0
+```
+
+Und die Schalter, die das Ziel dabei bekam — links blank konfiguriert, rechts unter dem
+Runner, beide am Stand vor der Änderung:
+
+```
+blank:            CXX_FLAGS = -std=c++20
+unter baulauf.py: CXX_FLAGS = -fwrapv -fno-fast-math -O2 -g -DNDEBUG -std=c++20
+```
+
+zum Vergleich das Geschwisterziel **mit** dem Aufruf, blank:
+
+```
+CXX_FLAGS = -std=c++20 -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow
+            -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal
+            -Wnon-virtual-dtor -Woverloaded-virtual -Wnull-dereference -Wformat=2
+            -fwrapv -fno-fast-math
+```
+
+**Hier weiche ich vom Wortlaut des Vorschlags ab, und zwar zugunsten der Genauigkeit.**
+Der Vorschlag nennt als Verlust „alle 15 Warnschalter, beide Überlaufschalter und den
+Sprachmodus" und belegt ihn mit `CXX_FLAGS = -std=gnu++20`. Diese Messung des Prüfers ist
+richtig, gehört aber zum Fall *Mitglied allein gebaut, ohne `PROJECT_IS_TOP_LEVEL`-Block*
+— dort gilt `werkzeugkette.cmake` gar nicht. Im Fall, den **dieser** Riegel fängt, gilt
+sie, und der Verlust ist kleiner: Den Sprachmodus erbt das Ziel über
+`CMAKE_CXX_STANDARD`, die Überlaufschalter erbt es unter dem Runner von außen. Was in
+allen drei Fällen fehlt, sind die 15 Warnschalter und damit `-Werror`. Der Meldungstext
+und der Kommentar im Quelltext nennen jetzt beide Fälle getrennt statt zusammengezogen;
+die Sache wird dadurch nicht kleiner, nur nachprüfbar.
+
+**Nach der Änderung, derselbe Baum, Code 1** — Wortlaut vollständig:
+
+```
+CMake Error at …/werkzeugkette.cmake:294 (message):
+  Der Warnsatz fehlt an folgenden Zielen -- sie wuerden gruen uebersetzen und
+  weniger pruefen:
+
+    ohne_satz (STATIC_LIBRARY) in /tmp/claude-1000/r58/probe-ohne/ohne-satz
+        es fehlen: -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow
+        -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal
+        -Wnon-virtual-dtor -Woverloaded-virtual -Wnull-dereference -Wformat=2
+        -fwrapv -fno-fast-math
+        Abhilfe:   fabrik_warnsatz_anlegen(ohne_satz)  -- hinter `add_library`/`add_executable`
+
+  Jedes uebersetzende Ziel ruft `fabrik_warnsatz_anlegen(<ziel>)` aus
+  `werkzeugkette.cmake`; die Datei bindet ein Mitglied beim Alleinbau in
+  seinem `PROJECT_IS_TOP_LEVEL`-Block ein.
+
+  Ohne den Satz uebersetzt das Ziel gruen und ohne `-Werror`.  Blank
+  konfiguriert fehlt ihm zusaetzlich `-fwrapv` (ADR 0011, Massnahme 1);
+  allein gebaut ohne den `PROJECT_IS_TOP_LEVEL`-Block auch der Sprachmodus --
+  `gnu++20` statt `c++20`.
+Call Stack (most recent call first):
+  …/werkzeugkette.cmake:322 (fabrik_schlussriegel)
+  CMakeLists.txt:DEFERRED
+
+-- Configuring incomplete, errors occurred!
+CODE=1
+```
+
+Zielname und auszuführender Aufruf stehen darin, wie der Vorschlag es verlangt.
+
+**Drei weitere Wegwerf-Bäume, weil „irgendetwas wurde rot" kein Nachweis über den
+Riegel ist:**
+
+| Baum | Inhalt | erwartet | gemessen |
+|---|---|---|---|
+| `probe-mit/` | dieselbe Form, **jedes** Ziel mit dem Aufruf | Code 0 | `Warnsatz-Schlussriegel: 2 uebersetzende Ziele geprueft` — Code 0 |
+| `probe-arten/` | ein Ziel mit Satz, dazu `INTERFACE`, `ALIAS`, `add_custom_target`, `enable_testing()` | Code 0, nur 1 gezählt | `… 1 uebersetzende Ziele geprueft` — Code 0 |
+| `probe-teilsatz/` | ein Ziel mit von Hand angehängtem `-Wall -Wextra -fwrapv` | Code 1 | Code 1, `es fehlen: -Werror -Wconversion … -fno-fast-math` |
+
+`probe-arten` ist die Gegenprobe zur Artenliste: Ohne sie wäre nur gemessen, dass der
+Riegel nicht fälschlich anspringt, **weil** es keine solchen Ziele gibt. Im Baum von heute
+gibt es keinen `add_custom_target` — mit dem ersten wäre der Riegel sonst falsch scharf
+geworden.
+
+### Bedingung 2 — die heutigen Ziele bleiben unberührt
+
+Alle `CXX_FLAGS`-Zeilen aus allen erzeugten `flags.make` über die drei Bauwege,
+eingesammelt mit dem Baupfad als Präfix, vorher gegen nachher:
+
+```
+Ziele: 30 | bytegleich: True | Bytes: 11953 11953
+```
+
+30 Ziele, wie der Vorschlag es für den Stand 2026-09-03 nennt. Das Präfix trägt mit:
+Derselbe Bytevergleich belegt zugleich, dass **dieselbe Menge** Ziele entsteht — ein
+Riegel, der ein Ziel verschluckt hätte, ergäbe eine kürzere Datei.
+
+Die Zählung des Riegels stimmt unabhängig davon mit derselben Zahl überein:
+
+```
+Arbeitsbereich  -- Warnsatz-Schlussriegel: 15 uebersetzende Ziele geprueft, alle mit Warnsatz.
+kern allein     -- Warnsatz-Schlussriegel: 10 uebersetzende Ziele geprueft, alle mit Warnsatz.
+pruefstand all. -- Warnsatz-Schlussriegel:  5 uebersetzende Ziele geprueft, alle mit Warnsatz.
+                                            ------
+                                              30
+```
+
+Diese Zeile steht absichtlich im Quelltext: Sie ist das, was den Übersetzungsbericht den
+Unterschied zwischen *„der Riegel hat geprüft"* und *„der Riegel hat nichts gesehen"*
+tragen lässt. Ein Riegel, der alle Ziele durchwinkt, baut grün — die Zahl fällt dann auf
+0 und steht im Bericht.
+
+### Bedingung 3 — beide Kästen gebaut, alle Tests `Passed`
+
+Selbst nachgefahren, in `$TMPDIR` statt in `bau/`; der Übersetzungsbericht des Tages
+entsteht danach fremdgemessen durch `baulauf.py`.
+
+```
+Arbeitsbereich   BAU=0   100% tests passed, 0 tests failed out of 11
+kern allein      BAU=0   100% tests passed, 0 tests failed out of  8
+pruefstand all.  BAU=0   100% tests passed, 0 tests failed out of  3
+```
+
+Das vierte Manifest, `pruefstand/bau/pruefung-0019/CMakeLists.txt`, bindet
+`werkzeugkette.cmake` nicht ein und setzt seine Schalter selbst — der Riegel läuft dort
+nicht. Nachgeprüft statt angenommen: konfiguriert mit Code 0.
+
+### Was der Prüfer nachfahren kann
+
+Die Wegwerf-Bäume liegen unter `$TMPDIR` und sind nach dem Lauf weg. Sie sind aus dem
+Nachweis nachzubauen: vier Bäume, jeder oberste Ebene mit
+`include(<pfad>/werkzeugkette.cmake)`, Inhalt wie in der Tabelle. Für die Gegenprobe zu
+Bedingung 1 kommt der alte Stand aus
+`git show HEAD:…/werkzeugkette.cmake` in eine Wegwerfdatei.
+
+**Nicht abgedeckt, ausdrücklich:** `MODULE_LIBRARY` übersetzt Quelldateien, steht aber
+nicht in der Artenliste des Vorschlags und deshalb auch nicht in der des Riegels. Heute
+gibt es kein solches Ziel; die Vorgabe zu erweitern wäre eine Abweichung von `specs/`
+gewesen. Im Logbuch vermerkt.

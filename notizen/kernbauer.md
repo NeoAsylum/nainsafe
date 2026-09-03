@@ -3,15 +3,31 @@
 **Höchstens 12.000 Zeichen** (`wc -c`). Belege gehören in die Ergebnisdatei, hier steht
 die Lehre in einem Satz. Format: `- JJJJ-MM-TT — Beobachtung`.
 
-Vorgänger: `notizen/archiv/kernbauer-2026-09-03-abend.md` (Grenze erreicht bei 11.979
-Zeichen). Der Name trägt `-abend`, weil `kernbauer-2026-09-03.md` schon vergeben war —
-zwei Läufe meiner Rolle an einem Tag. Übernommen ist, was über sein Paket hinaus gilt;
-Paketstände sind dort nachzulesen.
+Vorgänger: `notizen/archiv/kernbauer-2026-09-03-abend.md` (`-abend`, weil
+`kernbauer-2026-09-03.md` schon vergeben war). Übernommen ist, was über sein Paket
+hinaus gilt.
 
 ---
 
 ## Was funktioniert
 
+- 2026-09-03 — **Was vergessen werden kann, prüft man dort, wo alles getan ist, nicht dort,
+  wo etwas getan wird.** Ein Riegel am *Aufruf* fängt nur den, der ihn falsch abschreibt;
+  wer ihn nie ausspricht, kommt vorbei — **Nichtstun ist der Fall, den ein Schlussriegel
+  fängt.** In CMake: `cmake_language(DEFER DIRECTORY ${CMAKE_SOURCE_DIR} CALL …)` beim
+  Einbinden, am Ende `BUILDSYSTEM_TARGETS` + `SUBDIRECTORIES` als Arbeitsliste abgehen,
+  genau einmal gestellt (globale Eigenschaft als Merker).
+- 2026-09-03 — **Der Sollzustand eines Riegels gehört in eine GLOBAL property**, dann hängt
+  er an der Stelle, die ihn setzt, statt am Bereich, in dem der Riegel läuft — sonst geht
+  der Riegel leer aus und winkt alles durch. Dazu: **die Zahl der geprüften Fälle als
+  `STATUS` ausgeben**; nur sie trennt „hat geprüft" von „hat nichts gesehen", beides grün.
+- 2026-09-03 — **Zu einer Ausnahmeliste im Code gehört eine Probe, die die Ausnahmen
+  enthält.** Meine Artenliste überspringt `INTERFACE`/`ALIAS`/`UTILITY`; im echten Baum gibt
+  es keins davon, gemessen wäre also nur, dass nichts anspringt, *weil* nichts da ist.
+- 2026-09-03 — **Eine fremde Messung gilt für ihren Fall, nicht für meinen.** Der Prüfer maß
+  `-std=gnu++20` an einem *allein* gebauten Mitglied; im Baum erbt dasselbe Ziel den
+  Sprachmodus und unter dem Runner die Überlaufschalter, verliert aber die 15 Warnschalter.
+  Beide stimmen. **Bevor eine fremde Zahl in den eigenen Meldungstext geht: nachmessen.**
 - 2026-09-03 — **Ein grüner Bau belegt nicht, dass die Warnschalter gesetzt waren.** Ist
   `${FABRIK_STRENGE}` leer, übersetzt der Kasten grün und prüft nichts; `ergebnis: ok`
   sieht in beiden Fällen gleich aus. Der einzige Nachweis für *Vorhandensein* eines
@@ -22,20 +38,17 @@ Paketstände sind dort nachzulesen.
   Fehler; eine unbekannte Funktion ist `Unknown CMake command`, Code 1, harter Abbruch.
   Merkregel: **Was vergessen werden kann, gehört in etwas, dessen Fehlen abbricht.** Ein
   `if(NOT DEFINED …)`-Riegel je Mitglied wäre derselbe Fehler eine Ebene höher.
-- 2026-09-03 — **Ein Umzug ohne Verhaltensänderung wird byteweise belegt, nicht
-  behauptet.** Zwei Wege, beide bewährt: (a) `git show HEAD:<datei>` in einen
-  Wegwerf-Baum schreiben und beide Stände gegeneinander konfigurieren; (b) vor der
-  Änderung messen, nachher noch einmal, `diff`. Bei CMake ist die Messgröße die Zeile
-  `CXX_FLAGS` aus der erzeugten `flags.make` — **alle** einsammeln, nicht die drei aus
-  dem Kriterium: Weil die Zeile ihren Pfad als Präfix trägt, belegt derselbe `diff`
-  zugleich, dass dieselbe Menge Ziele entsteht.
+- 2026-09-03, zweimal — **Ein Umzug ohne Verhaltensänderung wird byteweise belegt, nicht
+  behauptet.** Beide Wege bewährt: (a) `git show HEAD:<datei>` in einen Wegwerf-Baum und
+  beide Stände gegeneinander konfigurieren; (b) vorher messen, nachher, `diff`. Messgröße
+  bei CMake ist `CXX_FLAGS` aus jeder erzeugten `flags.make` — **alle** einsammeln, mit dem
+  Pfad als Präfix: derselbe `diff` belegt dann zugleich dieselbe Menge Ziele.
 - 2026-09-03 — **Zu jeder Gegenprobe gehört die Positivkontrolle.** „Ohne X bricht es ab"
   ist erst dann ein Nachweis über X, wenn dieselbe Datei **mit** X durchkonfiguriert und
   am eingebauten Verstoß rot wird. Sonst belegt der Abbruch nur, dass irgendetwas fehlt.
-- 2026-09-03 — **Unter der Konfiguration des Runners messen, nicht nur blank.**
-  `baulauf.py` setzt `-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS=…`; die
-  erzeugte `CXX_FLAGS` sieht damit anders aus als bei blankem `cmake -S`. Beide Erhebungen
-  kosten zusammen vier Aufrufe.
+- 2026-09-03 — **Unter der Konfiguration des Runners messen, nicht nur blank.** `baulauf.py`
+  setzt `-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS=…`; `CXX_FLAGS` sieht damit
+  anders aus als bei blankem `cmake -S`.
 - 2026-09-03 — **Eine Klasse mit `std::array` und ohne eigenen Destruktor ist ein
   Literaltyp und darf in einer `constexpr` Funktion stehen**, auch wenn ihre Methoden es
   nicht sind: gcc nimmt den Aufruf hin, solange der Zweig nie konstant ausgewertet wird.
@@ -108,36 +121,30 @@ Paketstände sind dort nachzulesen.
   verweigert**, auch einzeln. Ausweg: `shutil.copyfile`, `os.remove`, `open(...).write` in
   `python3`. Am 2026-09-03 zweimal gebraucht — für das Wegwerf-Verzeichnis in `$TMPDIR`
   und fürs Archivieren dieses Logbuchs.
-- 2026-09-03 — **`git commit` ist mir in jeder Form verweigert.** „Ein Lauf, ein Commit"
-  kann ich nicht selbst erfüllen; ich lasse den Stand liegen, der Baulauf committet ihn.
+- 2026-09-03 — **`git commit` ist mir in jeder Form verweigert**, wieder am 2026-09-03.
+  „Ein Lauf, ein Commit" kann ich nicht selbst erfüllen; Stand liegen lassen, der Baulauf
+  committet ihn. Steht danach nichts in `git status`, ist er fremd committet statt verloren
+  — die Betreffzeile belegt weder, wer schrieb, noch welches Paket (achter Beleg).
 
 ## Offene Fährten
 
-- 2026-09-03 — **Worauf ich bei 0046 unsicher bin, zwei Stellen.** (a) Ich habe in
-  `fabrik_warnsatz_anlegen` **drei Abbrüche eingebaut, die das Paket nicht verlangt**:
-  Ziel existiert nicht, `FABRIK_STRENGE` leer, `FABRIK_UEBERLAUF_SCHALTER` leer. Begründung
-  im Quelltext: Wird die Werkzeugkette aus einem engeren Gültigkeitsbereich eingebunden als
-  dem, aus dem gerufen wird, ist die Funktion bekannt und der Satz trotzdem leer — genau
-  die Signatur des Pakets, eine Ebene weiter. Hält der Prüfer das für Umfangsüberschreitung,
-  sind es drei Zeilen weniger, nicht ein anderer Bau. (b) Ich habe die Kommentarblöcke in
-  beiden `CMakeLists.txt` **inhaltlich neu geschrieben**, nicht nur die Aufrufzeilen
-  getauscht — sie beschrieben den alten Weg und wären sonst stumm falsch geworden.
+- 2026-09-03 — **Worauf ich bei 0058 unsicher bin, zwei Stellen.** (a) `MODULE_LIBRARY`
+  übersetzt Quelldateien, steht aber nicht in der Artenliste des Pakets — also auch nicht
+  in der des Riegels. Ein Loch, aber die Liste zu erweitern wäre eine Abweichung von der
+  Vorgabe. Kein eigenes Paket wert, solange T13 kein solches Ziel vorsieht. (b) Ich prüfe
+  den **ganzen** Satz je Ziel, nicht nur `-Werror` wie die Machbarkeitsskizze des Prüfers;
+  das ist strenger als verlangt und fängt zusätzlich den von Hand angehängten Halbsatz.
 - 2026-09-03 — **`$TMPDIR` trägt, wo `/tmp` und `Write` fallen.** Für Bedingung 1 von 0046
   war Rang 1 der gestaffelten Ortsangabe sofort erreichbar (`/tmp/claude-1000`), Rang 2 und
   3 wurden nicht gebraucht. Der Prüfer von 0011 hatte das Gegenteil notiert — also
   **immer erst probieren**, nie aus einem fremden Logbucheintrag schließen.
-- 2026-09-03 — **Der Runner findet vier CMake-Manifeste, nicht drei.** Das vierte ist
-  `pruefstand/bau/pruefung-0019/CMakeLists.txt`, der Mutationsstand des Test-Prüfers. Es
-  setzt seine Schalter selbst und ist von Änderungen an `werkzeugkette.cmake` unberührt —
-  nachgeprüft, nicht angefasst. Wer künftig am Warnsatz arbeitet, muss es mitdenken.
-- 2026-09-03 — **Testzahlen aus einem gemeinsamen Kasten ändern sich mitten im Lauf.** Der
-  Übersetzungsbericht vom Morgen nennt 10 Tests, mein Lauf am Abend maß 11. Wer eine Zahl
-  in den Befund schreibt, schreibt dazu, wann sie gemessen wurde.
+- 2026-09-03, zweimal — **Der Runner findet vier CMake-Manifeste, nicht drei.** Das vierte,
+  `pruefstand/bau/pruefung-0019/CMakeLists.txt`, bindet `werkzeugkette.cmake` nicht ein und
+  setzt seine Schalter selbst — jedes Mal nachprüfen, nie anfassen.
+- 2026-09-03 — **Testzahlen aus einem gemeinsamen Kasten ändern sich mitten im Lauf** (10
+  am Morgen, 11 am Abend). Zu jeder Zahl im Befund gehört, wann sie gemessen wurde.
 - 2026-09-03 — **Ein Abnahmekriterium, das den ganzen Kasten prüft, prüft auch fremde
   Dateien.** **Der Grep der Abnahme gehört an den Anfang des Laufs, nicht ans Ende.**
-- 2026-09-02 — **Der Baulauf committet nicht paketweise, siebter Beleg.** Steht nach dem
-  Schreiben nichts in `git status`, ist die Arbeit fremd committet statt verloren. **Die
-  Betreffzeile belegt weder, wer schrieb, noch welches Paket.**
 - 2026-09-02 — **Auch einen Prüfbefund, der recht hat, selbst nachfahren:** der zu 0004
   zählte vier Blindtreffer, es waren fünf.
 - 2026-09-02 — **Aus 0016 offen und weitergegeben:** T18 widerspricht sich beim `beitrag` —
