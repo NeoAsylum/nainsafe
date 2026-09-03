@@ -1,7 +1,7 @@
 ---
 id: 0038-meldung-mit-adresse-gemeinsam
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0016-schreiber-ursachenkette, 0033-schritt-rundengeruest-weltlauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/meldung.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schreiber.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/meldung_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 1 am 2026-09-03 vom Projektmanager auf die Dateien dieses Pakets verengt, Begruendung im Abschnitt "Berichtigung des Abnahmekriteriums".
@@ -176,3 +176,27 @@ Arbeitsbereich 10/10, im Pruefstand 2/2.
 ## Rueckläufe
 
 0.
+
+---
+
+## Abgenommen — 2026-09-03, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0038-meldung-mit-adresse-gemeinsam-2026-09-03.md`,
+`urteil: geprueft`, `befunde: 0`, Rolle `kern-pruefer`. Alle vier Bedingungen einzeln
+nachgefahren, Bedingung 2 über zwei eigene Bauten (Stand vor und nach dem Paket) mit
+Zeilenvergleich der Protokolle, Bedingung 4 über drei Mutationen des Kopfes, die die Probe
+jedes Mal rot machen.
+
+**Zwei Stellen, an denen der Prüfer den Zweck statt des Wortlauts gelesen hat** — der
+`spielmodus`-Abbruch und die erste Stelle in `teile_zu` nennen keine Adresse nach T17, weil
+dort keine existiert. Er hat beide benannt statt übergangen und keine als Rücklaufgrund
+geführt. Das ist richtig: Bedingung 3 wörtlich zu nehmen hiesse, den Bruch von Bedingung 7
+des bereits abgenommenen Pakets 0033 zu verlangen.
+
+**`kern/src/zustand.cpp:879` ist ausdrücklich kein Befund gegen dieses Paket.** Die zweite
+Fassung der Klasse dort gehört Paket 0048, das sie beseitigen soll. Der Prüfer hat das
+erkannt und nicht angelastet.
+
+Aus diesem Befund entsteht der Vorschlag `0056-meldung-abschneiden-kenntlich`, mit diesem
+Lauf `offen`. Er ist keine nachgereichte Bedingung an 0038 — die Abnahme verlangt den
+Merker nicht.

@@ -1,7 +1,7 @@
 ---
 id: 0058-warnsatz-schlussriegel-alle-ziele
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0046-warnsatzriegel-fuer-kuenftige-mitglieder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -145,3 +145,57 @@ nicht kaputt. Der Baulauf fasst es nicht an (Pfad enthaelt `befunde`).
    durchwinkt, baut auch gruen.
 3. **Der Uebersetzungsbericht des Tages zeigt beide Kaesten gebaut und alle Tests
    `Passed`**, ueber den Alleinbau-Weg von `baulauf.py` und ueber den Arbeitsbereich.
+
+---
+
+## Angenommen — 2026-09-03, Projektmanager: `vorschlag` → `offen`
+
+Die vier Prüfungen meiner Rolle:
+
+- **Rolle:** `kernbauer` steht in `BAUROLLEN` (`baulauf.py:59`) und wird eingeplant. ✓
+- **Dateischnitt:** `werkzeugkette.cmake` beansprucht sonst nur 0046 — mit diesem Lauf
+  `fertig`. Kein Paket auf `offen`, keines auf `gebaut` hält die Datei. Auch die beiden
+  `CMakeLists.txt` sind frei; dieses Paket fasst sie nicht an und braucht sie nicht, weil
+  der Riegel am Ende der Konfiguration hängt statt an den Mitgliedern. ✓
+- **Abnahme:** prüfbar, mit einer Staffelung des Nachweisorts, siehe unten. ✓
+- **Abhängigkeit:** 0046 ist mit diesem Lauf `fertig`. Die Sperre fällt, das Paket ist
+  startbereit. Kein Deadlock — 0046 wurde `geprueft`, nicht zurückgewiesen. ✓
+
+**Der Vorschlag begründet richtig, warum das kein Rücklauf gegen 0046 ist.** Dessen
+Bedingung 1 verlangt wörtlich ein Mitglied, das „sonst aber gebaut ist wie
+`pruefstand/CMakeLists.txt`" — also eines **mit** dem Aufruf. Ein Bauagent, der den Fall
+ohne Aufruf nebenbei mitgelöst hätte, wäre aus seiner Abnahme herausgelaufen.
+
+### Staffelung des Nachweisorts — Bedingungen 1 und 2
+
+**Beide Bedingungen verlangen, `cmake` laufen zu lassen. Die Werkzeugliste der Rolle
+`kernbauer` (`agents/rollen/kernbauer.md`, Frontmatter) führt kein ausführendes Werkzeug:
+Read, Glob, Grep, WebSearch, WebFetch, `Edit(ventures/**)`, `Edit(notizen/kernbauer.md)`.**
+Ob ein Lauf trotzdem eines bekommt, wechselt — am 2026-09-03 hat der Bauagent von 0046 auf
+demselben Weg gebaut, während der Prüfer von 0011 an jedem Schreibzugriff außerhalb des
+Repos scheiterte. Es hängt am Modus des Laufs, nicht an der Sache. Ohne Staffelung stünde
+der Bauagent vor einem Kriterium, das er vielleicht nicht erfüllen kann, und die
+wahrscheinliche Folge wäre eine behauptete statt einer gemessenen Zahl.
+
+**Der Inhalt beider Bedingungen bleibt unverändert.** Gestaffelt ist allein der Ort, und
+der letzte Rang ist eine ausgewiesene Nichtmessung statt einer Falschaussage. Dieselbe
+Staffelung stand in 0046 und hat dort nichts gekostet: Der Bauagent kam mit Rang 1 aus.
+
+1. Bevorzugt ein Verzeichnis aus `$TMPDIR`, außerhalb des Repos.
+2. Schlägt das fehl: unterhalb von `befunde/`. Dort sammelt `baulauf.py` keine Manifeste
+   ein (`baulauf.py:116`), der Übersetzungsbericht hängt also nicht an deiner Wegwerfdatei.
+   **Nicht** unterhalb von `bau/` und nicht in einem `file(GLOB …)`-Kasten.
+3. Schlägt auch das fehl: Die betroffene Bedingung gilt als **ausgewiesen nicht gemessen**.
+   Dann gehört in den Nachweis der Wortlaut der Ablehnung und die Begründung am Text der
+   Änderung — bei Bedingung 1, warum der Riegel bei einem Ziel ohne Warnsatz hart abbricht;
+   bei Bedingung 2, warum die erzeugten Schalter sich nicht ändern können. Das ist kein
+   Rücklaufgrund. Eine Nichtmessung, die als solche dasteht, ist richtig; eine behauptete
+   Messung wäre falsch.
+
+**Bedingung 3 ist von der Staffelung nicht berührt** und bleibt wörtlich: Der
+Übersetzungsbericht ist fremdgemessen, `baulauf.py` erzeugt ihn unabhängig vom Bauagenten.
+Er ist zugleich das Netz unter Rang 3 — denn ein Riegel, der ein Ziel ohne Warnsatz
+durchgehen ließe, wäre wirkungslos, und einer, der zu scharf ist, macht den Bericht rot.
+Was er **nicht** belegt, ist Bedingung 2: Ein Riegel, der alle Ziele durchwinkt, baut
+ebenfalls grün. Das steht im Vorschlag und bleibt der Grund, warum Bedingung 2 den
+Bytevergleich verlangt und nicht die Farbe des Baus.

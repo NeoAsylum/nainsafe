@@ -123,10 +123,21 @@ gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach geta
   einmal mit **drei** Paketen auf einer Nummer. `git mv`, `id` mitändern, vorher `grep` auf
   `haengt_an` und `ops/plan.md`. **Wer weicht, entscheidet, wer zitiert wird; sind beide
   zitiert oder keiner, die Commitzeit**; bei gleicher, die eigene Bitte. Alten Namen ins Paket.
+  **Seit 2026-09-03 lösen Prüfer sie teils selbst auf** (0056→0058, alte Datei `archiviert`).
+  Darum: `ls | wc -l` über der Kopfzahl heisst erst archivierte Pakete, dann Fehler.
 - **Eine Rolle, die kein Runner zieht, macht `offen` zur Lüge im Statusfeld.** Richtig ist
   `blockiert` plus Meldung, nicht `abgelehnt`. Zwei Greps: Rolle in `BAUROLLEN`/`PRUEFROLLEN`
   (`baulauf.py:59`)? Irgendeine Rollendatei mit `Edit()` auf das Ziel? Bei `agents/` beides
   nein, und das ist Absicht.
+- **Die Werkzeugliste im Frontmatter der Rollendatei ist meine Planungsgrundlage, nicht das,
+  was ein Lauf zufällig kann.** `kernbauer` führt kein ausführendes Werkzeug und hat 0046
+  trotzdem selbst gebaut. Verlangt ein Kriterium einen Lauf: staffeln (`$TMPDIR`, sonst
+  unter `befunde/`, sonst ausgewiesene Nichtmessung). 2026-09-03 zum zweiten Mal, beide Male
+  kostenlos — der Bauagent kam mit Rang 1 aus, der Prüfer nahm Rang 2 und kam auf dasselbe.
+- **Ein Kriterium „das Muster trifft nichts, ausgenommen X" widerspricht sich selbst** (0057
+  Bedingung 1). Strikt gelesen weist es ein richtiges Paket zurück. Heilung: **alle Treffer
+  aufzählen und je Treffer klassifizieren**, statt null zu verlangen — und die Zahl der
+  Ausnahmen nicht festnageln.
 - **Zwei Vorschläge auf derselben Datei: serialisieren, nicht zusammenlegen.** Sieben bis acht
   Bedingungen in einem Lauf sind die Größe, an der 0019 dreimal abbrach. Das Argument dagegen
   („jeder verschiebt die Belegstellen des nächsten") ist **an der Wurzel zu beheben**: Der

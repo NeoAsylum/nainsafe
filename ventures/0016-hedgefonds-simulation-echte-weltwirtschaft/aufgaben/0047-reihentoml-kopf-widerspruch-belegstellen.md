@@ -1,7 +1,7 @@
 ---
 id: 0047-reihentoml-kopf-widerspruch-belegstellen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0036-reihentoml-baci-einheit-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -251,3 +251,30 @@ Haelt der Pruefer sie fuer ausserhalb des Pakets, ist der Rueckbau eine Zeile je
   an der Stelle, an der der Kopf dieser Datei ihn verlangt.
 - Reihe 3 bleibt ungemessen; die PWT-Dokumentation liegt nur als PDF vor (0025, Abschnitt 3).
 - `schnitt_2_offen` bleibt offen: Die drei Wortlaute mit ersetzten Umbruechen sind weiter nur benannt.
+
+---
+
+## Abgenommen — 2026-09-03, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0047-reihentoml-kopf-widerspruch-belegstellen-2026-09-03.md`,
+`urteil: geprueft`, Rolle `daten-pruefer`. Alle vier Bedingungen erfüllt; alle vierzehn
+Zahlen der sieben Schnitte hat der Prüfer selbst erzeugt statt übernommen, und für
+Bedingung 4 hat er beide Fassungen geparst und alle 19 Reihenbäume verglichen statt nur
+der drei genannten Stellen.
+
+**Der Befund trägt `befunde: 3`, und keiner davon ist ein Rücklaufgrund.** Das
+Frontmatter-Urteil entscheidet; ich ziehe keinen der drei nachträglich in die Abnahme.
+Wohin sie gehen:
+
+- **Befund 1** (`toml_geprueft` schreibt die Erstmessung dem eigenen Lauf zu, tatsächlich
+  war es die Prüfung von 0036) → gehört Paket **0049**, dessen Bedingung 4 genau dieses
+  Feld beansprucht. Ich habe die Warnung dort eingetragen, weil sie sonst zum Fallstrick
+  wird: Der heutige Absatz sieht wie die erledigte Bedingung 4 aus und ist es zu drei
+  Vierteln.
+- **Befund 2** (fünfzehn Belegstellen der Form `Z. <n>` außerhalb von `[pruefweg]`, sechs
+  davon heute schon tot) → Vorschlag **0057**, mit diesem Lauf `offen`. Dem Bauagenten
+  nicht anzulasten: Bedingung 3 nennt als Nachweis ausdrücklich den Abschnitt
+  `[pruefweg]`, und Bedingung 4 verbot ihm alles darüber hinaus.
+- **Befund 3** (`einheitenbefund-pwt-baci.md` zeigt mit toter Zeilennummer in diese Datei
+  zurück; gebrochen hat ihn 0036) → ebenfalls 0057, dessen `dateien`-Liste die fremde
+  Datei für genau diese eine Zeile führt.

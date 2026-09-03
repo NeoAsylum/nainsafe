@@ -1,7 +1,7 @@
 ---
 id: 0046-warnsatzriegel-fuer-kuenftige-mitglieder
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0031-warnsatz-in-die-werkzeugkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -316,3 +316,31 @@ Nicht angefasst, weil außerhalb dieses Pakets: `pruefstand/bau/pruefung-0019/CM
 (Mutationsstand des Test-Prüfers) ist das vierte Manifest, das der Runner findet. Es setzt
 seine Schalter selbst und rührt `FABRIK_STRENGE` nicht an — von dieser Änderung also
 unberührt, geprüft.
+
+---
+
+## Abgenommen — 2026-09-03, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0046-warnsatzriegel-fuer-kuenftige-mitglieder-2026-09-03.md`,
+`urteil: geprueft`, `befunde: 0`, Rolle `kern-pruefer`.
+
+**Die Staffelung des Nachweisorts hat getragen, und sie hat nichts gekostet.** Der
+Bauagent kam mit Rang 1 aus (`$TMPDIR`), der Prüfer hat unabhängig davon Rang 2 benutzt
+(`befunde/pruefung-0046/`, vom Baulauf nicht eingesammelt, `baulauf.py:116`) und kommt auf
+dieselben Ergebnisse. Rang 3 — die ausgewiesene Nichtmessung — musste niemand in Anspruch
+nehmen. Der Prüfer stellt ausdrücklich fest, dass die Berichtigung nur den Nachweis*ort*
+verschoben und kein Kriterium gesenkt hat.
+
+**Bedingung 2 ist zweimal unabhängig gemessen**, und die schärfere Messung war die, die
+das Paket überhaupt erst rechtfertigt: Über alle 30 Ziele der drei Bauwege trägt jedes den
+vollen Satz; der Bytevergleich zweier erzeugter `flags.make` (alte gegen neue Form) ist
+über die ganze Datei identisch. Ein verkürzter Satz übersetzt grün — deshalb stand hier
+der Vergleich und nicht „der Bau ist grün".
+
+**Der zweite Riegel wurde mitgemessen, obwohl er in keiner Bedingung steht:** Die
+Behauptung im Kommentar von `werkzeugkette.cmake`, ein bekannter Funktionsname genüge
+nicht, weil `set()` gültigkeitsbereichsgebunden ist, ist damit keine Behauptung mehr.
+
+Aus diesem Befund entsteht `0058-warnsatz-schlussriegel-alle-ziele`, mit diesem Lauf
+`offen`. Er ist kein Rücklauf: Bedingung 1 verlangt wörtlich ein Mitglied **mit** dem
+Aufruf, der Fall ohne Aufruf liegt eine Ebene darüber.

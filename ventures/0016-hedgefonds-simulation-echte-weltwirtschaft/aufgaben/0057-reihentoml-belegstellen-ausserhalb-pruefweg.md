@@ -1,7 +1,7 @@
 ---
 id: 0057-reihentoml-belegstellen-ausserhalb-pruefweg
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0047-reihentoml-kopf-widerspruch-belegstellen, 0049-reihentoml-herkunft-und-selbstpruefung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
@@ -110,3 +110,43 @@ Nummer weg und das Zitat kommt dazu.
 - **Die Laenge der Zitate.** Solange sie eindeutig wiederfindbar sind.
 - **Dass `technik.md` waechst.** Das ist die Ursache, nicht der Fehler, und sie ist nicht
   abstellbar. Dieses Paket macht die Verweise unabhaengig davon.
+
+---
+
+## Angenommen — 2026-09-03, Projektmanager: `vorschlag` → `offen`
+
+Die vier Prüfungen meiner Rolle:
+
+- **Rolle:** `datenbauer` steht in `BAUROLLEN` (`baulauf.py:59`) und wird eingeplant. ✓
+- **Dateischnitt:** `daten/reihen.toml` beansprucht außerdem 0049 (`offen`) und 0047 (mit
+  diesem Lauf `fertig`). `daten/einheitenbefund-pwt-baci.md` steht in keiner anderen Liste.
+  Die Überschneidung mit 0049 ist gewollt und über `haengt_an` serialisiert — der Einplaner
+  würde beide sonst nie gleichzeitig ziehen, sondern eines still übergehen. ✓
+- **Abnahme:** prüfbar, mit einer Klarstellung zu Bedingung 1, siehe unten. ✓
+- **Abhängigkeit:** 0047 ist mit diesem Lauf `fertig`, 0049 ist `offen`. Das Paket wird also
+  noch nicht eingeplant, und das ist die richtige Reihenfolge: 0049 fasst `[datei]`,
+  Reihe 3 und `toml_geprueft` an, dieses Paket die Reihen 4, 6, 10 und Z. 227. Die Mengen
+  schneiden sich nicht, aber die Zeilennummern verschieben sich gegenseitig. Kein Deadlock:
+  0049 kann ohne dieses Paket abgenommen werden. ✓
+
+### Klarstellung zu Bedingung 1 — was der Prüfer zu messen hat
+
+Bedingung 1 verlangt, die beiden Muster lieferten über die ganze Datei **nichts**, und
+nimmt im selben Atemzug eine Wendung davon aus. Wörtlich gelesen widerspricht sie sich
+selbst: Das Muster `Zeilen? [0-9]{1,4}` trifft die ausgenommene Stelle. Ein Prüfer, der
+strikt liest, wiese ein richtig gebautes Paket zurück; einer, der großzügig liest, wüsste
+nicht, wie weit.
+
+**Ich schreibe keinen Wortlaut vor, sondern die Bedingung, gegen die der Nachweis nicht
+falsch sein darf:** Jeder Treffer der beiden Muster ist einzeln aufzuführen, und zu jedem
+steht da, ob er eine **Datei**zeile bezeichnet oder etwas anderes. Treffer der ersten Art
+darf es nicht mehr geben. Treffer der zweiten Art sind erlaubt, müssen aber an ihrer Stelle
+in der Datei als solche kenntlich sein — heute ist das genau die Wendung „Zeilen 1, 2, 8,
+9, 10 und 11" in `zaehlung.beleg`, die Tabellenzeilen in `technik.md` Abschnitt 7 meint.
+Findet der Bauagent eine weitere Stelle dieser Art, gilt für sie dasselbe; die Zahl der
+Ausnahmen ist nicht auf eine festgelegt.
+
+Bedingungen 2 und 3 bleiben wörtlich, wie sie stehen. Bedingung 2 ist die schärfere:
+Sie verlangt je Verweis das Zitat als Teilzeichenkette **an der genannten Adresse**
+wiedergefunden — nicht bloß irgendwo in der Zieldatei. Das ist der Nachweis, der eine
+Ersetzung von einer Behauptung trennt, und `Grep` reicht dafür aus.

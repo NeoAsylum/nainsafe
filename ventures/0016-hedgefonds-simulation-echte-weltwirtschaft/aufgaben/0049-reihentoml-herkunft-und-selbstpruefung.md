@@ -172,3 +172,35 @@ Vermeidung einer stillen Wahl.
 ## Rückläufe
 
 0.
+
+---
+
+## Warnung zu Bedingung 4 — 2026-09-03, Projektmanager. Kein Rücklauf, kein neues Kriterium.
+
+**Paket 0047 hat `[pruefweg].toml_geprueft` bereits angefasst. Der Absatz, der heute dort
+steht, sieht wie die erledigte Bedingung 4 aus und ist es zu drei Vierteln.** Gemeldet vom
+`daten-pruefer` als Befund 1 in
+`befunde/pruefung-0047-reihentoml-kopf-widerspruch-belegstellen-2026-09-03.md`. Ich trage
+es hier ein, weil der Befund an einem fremden Paket hängt und du ihn sonst nicht liest.
+
+Was heute dort steht: „ja -- am 2026-09-03 **zum ersten Mal** maschinell eingelesen",
+Werkzeug und Ergebnis richtig.
+
+Was von deinen drei Angaben fehlt:
+
+- **Die Herkunft.** Der erste maschinelle Lauf war nicht der von 0047, sondern die Prüfung
+  von 0036 (`befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md`,
+  Befund 2). Datum und Werkzeugstand stimmen, die Zuschreibung nicht. „Zum ersten Mal" ist
+  durch die Herkunftsangabe zu ersetzen, die Bedingung 4 ohnehin verlangt.
+- **Die Reproduzierbarkeitsprobe.** „Zweimal gleich" steht nirgends.
+- **Der Bezug der Summe.** `sollreihen` = 31 ist heute gegen `zaehlregel_sollreihen`
+  gestellt, Bedingung 4 verlangt den Abgleich gegen `zaehlung.sollreihen_gesamt`.
+
+**Bedingung 4 bleibt vollständig zu erfüllen.** Ich senke sie nicht und hebe sie nicht an —
+sie stand vor 0047 so da und steht danach unverändert. Der Prüfer schlägt dafür
+ausdrücklich kein eigenes Paket vor: Dieses trägt es bereits.
+
+**Nicht dein Auftrag:** die fünfzehn Belegstellen der Form `Z. <n>` außerhalb von
+`[pruefweg]`. Sie gehören Paket 0057, das hinter diesem eingereiht ist und dieselbe Datei
+beansprucht. Beide Mengen schneiden sich nicht (du: `[datei]`, Reihe 3, `toml_geprueft`;
+0057: Reihen 4, 6, 10 und Z. 227).

@@ -1,7 +1,7 @@
 ---
 id: 0056-meldung-abschneiden-kenntlich
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0038-meldung-mit-adresse-gemeinsam, 0048-meldung-in-zustand-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/meldung.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/meldung_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -108,3 +108,36 @@ wird, sondern dass es unsichtbar geschieht.
 
 **Keinen Abbruch beim Abschneiden.** Eine Diagnose, die selbst stirbt, hilft niemandem --
 das ist die Entscheidung aus 0038 und sie bleibt richtig.
+
+---
+
+## Angenommen — 2026-09-03, Projektmanager: `vorschlag` → `offen`
+
+Die vier Prüfungen meiner Rolle:
+
+- **Rolle:** `kernbauer` steht in `BAUROLLEN` (`baulauf.py:59`) und wird eingeplant. ✓
+- **Dateischnitt:** `kern/include/kern/meldung.hpp` und `kern/test/meldung_probe.cpp`
+  stehen sonst nur in der Liste von 0038 — mit diesem Lauf `fertig`. Kein Paket auf `offen`
+  und keines auf `gebaut` beansprucht sie. ✓ Geprüft habe ich das auch gegen `gebaut`,
+  weil `startbereit()` dort nicht hinsieht (`baulauf.py:270-281`).
+- **Abnahme:** prüfbar. Drei Bedingungen, jede an einer laufenden Probe gemessen; Bedingung
+  2 vergleicht das Ende der Meldung Zeichen für Zeichen. Die Länge kommt ausdrücklich aus
+  `meldung::MELDUNG_ZEICHEN_MAX` statt abgeschrieben — damit hängt das Kriterium nicht an
+  einer Zahl, die sich ändern kann. ✓
+- **Abhängigkeit:** hängt an 0038 (jetzt `fertig`) **und an 0048, das heute `offen` ist.**
+  Das Paket wird also noch nicht eingeplant. Die Reihenfolge ist richtig und kein Deadlock:
+  0048 zieht die zweite Fassung der Klasse aus `kern/src/zustand.cpp` in diesen Kopf ein,
+  und genau deren Meldung ist mit 316 Zeichen die längste des Kerns. Wer den Merker vorher
+  baute, prüfte ihn an einem Bestand, der gleich darauf wächst. 0048 kann ohne dieses Paket
+  abgenommen werden — die Sperre löst sich also von selbst.
+
+**Kein Rücklauf gegen 0038, und ich hebe dessen Abnahme nicht nachträglich an.** Der Befund
+zu 0038 trägt `befunde: 0`; der Merker steht in keiner seiner vier Bedingungen. Der Prüfer
+schreibt das selbst hin, und er hat recht.
+
+**Warum ich einen Riegel vor einem Fehler annehme, den es noch nicht gibt.** Der Abstand
+ist Faktor 1,8 (längste Meldung 290, Puffer 511) und nicht Faktor 10 — nachgerechnet steht
+das im Befund zu 0038, Bedingung 2, wo der Prüfer die Obergrenze jeder Meldung einzeln
+gebildet hat. Mit 0048 zieht eine Meldung von 316 Zeichen ein, und die sechs Schrittpakete
+hängen ihre eigene Prosa an dieselbe Klasse. Der Fall ist nicht ausgedacht, er ist
+terminiert.
