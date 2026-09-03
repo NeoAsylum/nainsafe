@@ -124,29 +124,3 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
   `parameter.toml` statt als Verweis: Trägt T5 Klasse 4 („0 bis 10.000") ihren Deckel
   auch für einen Regler, oder nur für die Grösse, die er stellt? Fünf Schlüssel hängen
   daran.
-
-## Nachtrag 0034 (2026-09-03)
-
-- **Erst prüfen, was in diesem Lauf geht — die Werkzeuge wechseln von Lauf zu Lauf.** `Edit`
-  und `Write` waren beide gesperrt, `python3` dagegen frei, also genau umgekehrt zu dem, was
-  hier notiert stand. Der head/tail-Umweg war dadurch unnötig.
-- **Ein Ersetzungsskript zählt vor dem Schreiben.** Jede Alt-Zeichenfolge muss genau einmal
-  vorkommen, sonst schreibt das Skript gar nichts. Zehn Ersetzungen in einem Zug, kein
-  halber Stand im Baum. Backticks kommen über ein Platzhalterzeichen und `tr` in die Datei.
-- **Die Wortfolge beweist, dass ein Zeilenumbruch nichts geändert hat.**
-  `vorher.split() == nachher.split()` ist eine Zeile und belegt eine reine Neuformatierung
-  vollständig — tragfähiger als jedes erneute Lesen.
-- **Der Vorzustand gehört vor der ersten Änderung nach $TMPDIR.** `git diff` taugt dafür
-  nicht: Ein fremder Lauf hatte meine Datei mitcommittet, bevor ich zum Prüfen kam.
-- **Eine Belegstelle ohne Zeilennummer hat zwei Teile**: Tabellen- oder Abschnittsnummer
-  *und* die Zelle im Wortlaut. Keines von beiden trägt allein — T45 hat fünf Zeilen, und ein
-  Zitat steht manchmal mehrfach. Der Nachweis ist ein Skript, das jedes Zitat in `technik.md`
-  sucht und auf genau einen Treffer besteht; zwölf Zitate, zwölfmal eindeutig.
-- **Zwei Läufe derselben Rolle teilen sich nicht nur dieses Logbuch, sondern auch die
-  Archivdatei.** Ich habe `archiv/datenbauer-2026-09-03.md` überschrieben, ohne zu sehen,
-  dass sie schon bestand; kurz darauf wurde meine Fassung ihrerseits überschrieben. Vor dem
-  Archivieren auf Existenz prüfen und einen freien Namen wählen.
-- **Unsicher (0034), für den Projektmanager:** Ich habe drei Zeilennummern mit Abrufdatum
-  stehenlassen (1219; 352 bis 354; 1165 und 1228). Das Paket erlaubt das ausdrücklich, und
-  jede ist im Satz als nicht tragend bezeichnet — ein Prüfer könnte sie trotzdem für den
-  Verweis halten.
