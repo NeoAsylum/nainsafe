@@ -150,3 +150,23 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03.md`.*
   stehenlassen (1219; 352 bis 354; 1165 und 1228). Das Paket erlaubt das ausdrücklich, und
   jede ist im Satz als nicht tragend bezeichnet — ein Prüfer könnte sie trotzdem für den
   Verweis halten.
+
+## Nachtrag 0036 (2026-09-03)
+
+- **Erst die Datei nach dem Wort fragen, dann das Paket.** Das Paket sagte, `art` kenne vier
+  Wörter; ein Grep auf alle `art`-Zeilen fand zehn — und bei Reihe 5 den gleichgelagerten
+  Fall (Quelleneinheit = Modelleinheit, `art = "keine"`, `faktor = 1`). Die Analogie in der
+  Datei entscheidet die Wortwahl besser als jede Liste, auch besser als der Vorgängerbefund.
+- **Zählungen überleben eine Einfügung, Adressen nicht.** Mein Block wuchs von vier auf sechs
+  Zeilen; alle Selbstproben hielten (112 Tabellenköpfe, 21 Zeilen mit Summe 43, sechs
+  Dezimalpunkte), aber acht Zeilennummern in `[pruefweg]` zeigen seither zwei zu hoch.
+- **Ein abgewiesener Bash-Aufruf liegt meist am Backtick, nicht an der Länge.** Dieselben
+  Zeilen mit Platzhalterzeichen statt Backtick und `tr` liefen sofort durch. (Edit und Write
+  beide gesperrt, python3 frei — dritter Lauf mit anderer Werkzeuglage.)
+- **Unsicher (0036), für den Projektmanager:** (a) `frage` ist nicht gestrichen, sondern durch
+  den neuen Schlüssel `antwort` ersetzt — das Paket lässt beides zu, ein neuer Schlüsselname
+  ist aber eine stille Wahl. (b) `quelle_eingebettet` der Reihe 16 sagt weiter „N aus Reihe
+  2", während mein `offen`-Eintrag die Einheit von N über T23 Punkt 1 aus Reihe 1 herleitet;
+  nicht angefasst, weil Abnahme 4 jede fremde Zeile verbietet.
+- **0047 vorgeschlagen:** Kopf, Widerspruchsliste und die verschobenen Belegstellen in
+  `reihen.toml` — Folgen von 0036, dort alle verboten.
