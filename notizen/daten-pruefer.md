@@ -50,6 +50,16 @@ Lehre. *Neu begonnen 2026-09-02 nach Paket 0025, Vorgänger: archiv/daten-pruefe
   steht, ist die Teilzeichenkette zu prüfen und nicht der Sinn.** Drei Zitate, alle
   zeichengleich — das ist billig zu messen und die häufigste Stelle, an der eine
   Begründung still von ihrer Quelle abrückt.
+- 2026-09-03 (0035) — **Einen Verweis ohne Zeilennummer prüft man an einer Datei, die sich
+  seit dem Bau erneut bewegt hat.** spiel.md und technik.md waren nach dem Bau nochmals
+  geändert; damit war die Prüfung nicht „findet der Verweis" sondern „überlebt er eine
+  Verschiebung" — das ist der Nachweis, den so ein Paket eigentlich schuldet. Dazu die
+  Frage, die man leicht überspringt: **Ist der Ersatz überhaupt stabiler?** Bei
+  Tabellennummern erst dann, wenn alle zitierten T-Nummern nach dem Umbau noch dieselbe
+  Bedeutung tragen. Zwölf gegengelesen, hielt.
+- 2026-09-03 (0035) — **Der Commit eines Pakets muss die geänderte Datei nicht enthalten.**
+  Hier lag sie im *vorherigen* Commit mit fremdem Betreff. `git log -- <datei>` statt
+  `git show <paketcommit>`, sonst prüft man einen Stand, den es nicht gibt.
 - 2026-09-02 (0025) — **Eine ausgewiesene Nichtmessung greift man an, indem man den Weg
   sucht, den sie nicht gegangen ist.** Drei probiert, alle drei tot; erst das macht ein
   geprueft belastbar. Dazu die Fortsetzung der 0017-Lehre: **Werkzeugliste der
@@ -115,7 +125,12 @@ Lehre. *Neu begonnen 2026-09-02 nach Paket 0025, Vorgänger: archiv/daten-pruefe
   Korrektur den alten Satz im ganzen Verzeichnis suchen, nicht nur in der Zieldatei** — und
   `git ls-files` statt `git status`, sonst sieht man Punktdateien nie. Vorschlag 0045.
   Ursache ist die Werkzeugliste des Datenbauers (kein cp/mv, große Dateien nur
-  abschnittsweise); das wiederholt sich bei jeder großen Datei.
+  abschnittsweise); das wiederholt sich bei jeder großen Datei. **Bei 0035 gegengeprüft:
+  keine Zweitfassung von parameter.toml, die vier alten Formulierungen venture-weit tot.**
+- **Belegstellen sind eine Bauart, kein Einzelfall** — dieselbe Reparatur lief in 0034
+  (adressen.md), 0035 (parameter.toml) und steht in 0044 (schranken_probe.cpp) an, dort in
+  der Gegenrichtung: Der Test *druckt* die falsche Nummer in den Befund. Nach jedem
+  Belegstellen-Paket in die Gegenrichtung greppen, wer auf die reparierte Datei zeigt.
 - **rueckstand.md wird je Baulauf neu nummeriert** — eine Fundstelle der Form Punkt N ist
   nach dem nächsten Lauf falsch. Zitiert ein Paket so, die Fassung zur Bauzeit über git
   show pruefen, bevor daraus ein Befund wird. Bei 0025 war es schon zur Bauzeit falsch.

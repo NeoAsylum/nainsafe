@@ -29,47 +29,50 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 10%] Built target pruefstand
-[ 18%] Built target pruefstand_geprueft
-[ 34%] Built target kern
-[ 52%] Built target kern_geprueft
-[ 68%] Built target schritt_probe
-[ 68%] Built target schranken_probe
-[ 68%] Built target festkomma_probe
-[ 78%] Built target schreiber_probe
-[ 78%] Built target zufall_probe
-[ 86%] Built target vorrat_verfahren_probe
-[ 89%] Built target vorrat_probe
-[ 94%] Built target zustand_probe
-[100%] Built target pruefsumme_probe
+[ 12%] Built target pruefstand_geprueft
+[ 15%] Built target pruefstand
+[ 32%] Built target kern
+[ 50%] Built target kern_geprueft
+[ 60%] Built target zustand_probe
+[ 60%] Built target schranken_probe
+[ 65%] Built target meldung_probe
+[ 85%] Built target pruefsumme_probe
+[ 85%] Built target vorrat_verfahren_probe
+[ 85%] Built target vorrat_probe
+[ 85%] Built target festkomma_probe
+[ 90%] Built target schritt_probe
+[100%] Built target zufall_probe
+[100%] Built target schreiber_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
 
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
-    Start 1: festkomma_probe
-1/9 Test #1: festkomma_probe ..................   Passed    0.01 sec
-    Start 2: pruefsumme_probe
-2/9 Test #2: pruefsumme_probe .................   Passed    0.01 sec
-    Start 3: schranken_probe
-3/9 Test #3: schranken_probe ..................   Passed    0.01 sec
-    Start 4: schreiber_probe
-4/9 Test #4: schreiber_probe ..................   Passed    0.01 sec
-    Start 5: schritt_probe
-5/9 Test #5: schritt_probe ....................   Passed    0.01 sec
-    Start 6: zufall_probe
-6/9 Test #6: zufall_probe .....................   Passed    0.01 sec
-    Start 7: zustand_probe
-7/9 Test #7: zustand_probe ....................   Passed    0.01 sec
-    Start 8: vorrat_probe
-8/9 Test #8: vorrat_probe .....................   Passed    0.01 sec
-    Start 9: vorrat_verfahren_probe
-9/9 Test #9: vorrat_verfahren_probe ...........   Passed    0.01 sec
+      Start  1: festkomma_probe
+ 1/10 Test  #1: festkomma_probe ..................   Passed    0.02 sec
+      Start  2: meldung_probe
+ 2/10 Test  #2: meldung_probe ....................   Passed    0.01 sec
+      Start  3: pruefsumme_probe
+ 3/10 Test  #3: pruefsumme_probe .................   Passed    0.01 sec
+      Start  4: schranken_probe
+ 4/10 Test  #4: schranken_probe ..................   Passed    0.01 sec
+      Start  5: schreiber_probe
+ 5/10 Test  #5: schreiber_probe ..................   Passed    0.01 sec
+      Start  6: schritt_probe
+ 6/10 Test  #6: schritt_probe ....................   Passed    0.01 sec
+      Start  7: zufall_probe
+ 7/10 Test  #7: zufall_probe .....................   Passed    0.01 sec
+      Start  8: zustand_probe
+ 8/10 Test  #8: zustand_probe ....................   Passed    0.02 sec
+      Start  9: vorrat_probe
+ 9/10 Test  #9: vorrat_probe .....................   Passed    0.01 sec
+      Start 10: vorrat_verfahren_probe
+10/10 Test #10: vorrat_verfahren_probe ...........   Passed    0.02 sec
 
-100% tests passed, 0 tests failed out of 9
+100% tests passed, 0 tests failed out of 10
 
-Total Test time (real) =   0.10 sec
+Total Test time (real) =   0.14 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -83,15 +86,16 @@ Total Test time (real) =   0.10 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target kern
-[ 50%] Built target kern_geprueft
-[ 64%] Built target schranken_probe
-[ 64%] Built target pruefsumme_probe
-[ 78%] Built target festkomma_probe
-[ 78%] Built target schritt_probe
-[ 85%] Built target zufall_probe
-[ 92%] Built target schreiber_probe
-[100%] Built target zustand_probe
+[ 46%] Built target kern_geprueft
+[ 46%] Built target kern
+[ 66%] Built target schreiber_probe
+[ 66%] Built target schranken_probe
+[ 66%] Built target meldung_probe
+[ 73%] Built target schritt_probe
+[ 90%] Built target zustand_probe
+[ 90%] Built target pruefsumme_probe
+[ 96%] Built target zufall_probe
+[100%] Built target festkomma_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -99,23 +103,25 @@ Total Test time (real) =   0.10 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
     Start 1: festkomma_probe
-1/7 Test #1: festkomma_probe ..................   Passed    0.01 sec
-    Start 2: pruefsumme_probe
-2/7 Test #2: pruefsumme_probe .................   Passed    0.01 sec
-    Start 3: schranken_probe
-3/7 Test #3: schranken_probe ..................   Passed    0.01 sec
-    Start 4: schreiber_probe
-4/7 Test #4: schreiber_probe ..................   Passed    0.01 sec
-    Start 5: schritt_probe
-5/7 Test #5: schritt_probe ....................   Passed    0.01 sec
-    Start 6: zufall_probe
-6/7 Test #6: zufall_probe .....................   Passed    0.01 sec
-    Start 7: zustand_probe
-7/7 Test #7: zustand_probe ....................   Passed    0.02 sec
+1/8 Test #1: festkomma_probe ..................   Passed    0.01 sec
+    Start 2: meldung_probe
+2/8 Test #2: meldung_probe ....................   Passed    0.01 sec
+    Start 3: pruefsumme_probe
+3/8 Test #3: pruefsumme_probe .................   Passed    0.01 sec
+    Start 4: schranken_probe
+4/8 Test #4: schranken_probe ..................   Passed    0.01 sec
+    Start 5: schreiber_probe
+5/8 Test #5: schreiber_probe ..................   Passed    0.01 sec
+    Start 6: schritt_probe
+6/8 Test #6: schritt_probe ....................   Passed    0.01 sec
+    Start 7: zufall_probe
+7/8 Test #7: zufall_probe .....................   Passed    0.01 sec
+    Start 8: zustand_probe
+8/8 Test #8: zustand_probe ....................   Passed    0.02 sec
 
-100% tests passed, 0 tests failed out of 7
+100% tests passed, 0 tests failed out of 8
 
-Total Test time (real) =   0.09 sec
+Total Test time (real) =   0.10 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -129,8 +135,8 @@ Total Test time (real) =   0.09 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 60%] Built target pruefstand
 [ 60%] Built target pruefstand_geprueft
+[ 60%] Built target pruefstand
 [100%] Built target vorrat_verfahren_probe
 [100%] Built target vorrat_probe
 ```
@@ -160,50 +166,17 @@ Total Test time (real) =   0.02 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  6%] Building CXX object CMakeFiles/kontrolle_unveraendert.dir/mutant.cpp.o
-[  6%] Building CXX object CMakeFiles/mut4_kennung_einsbasiert.dir/mutant.cpp.o
-[  9%] Building CXX object CMakeFiles/kontrolle_unveraendert.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 12%] Building CXX object CMakeFiles/mut2_gleichstand_an_groessere_kennung.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 15%] Building CXX object CMakeFiles/mut5_hebel_und_sichtbarkeit_im_kern.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 18%] Building CXX object CMakeFiles/anker_von_hand.dir/anker.cpp.o
-[ 21%] Building CXX object CMakeFiles/mut3_ordnung_a5_bis_a1.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 24%] Building CXX object CMakeFiles/mut4_kennung_einsbasiert.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 27%] Building CXX object CMakeFiles/mut1_dreiwertiger_kern.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 30%] Building CXX object CMakeFiles/mut8_profil_doppelt_eines_fehlt.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 36%] Building CXX object CMakeFiles/anker_gegen_mut2.dir/anker.cpp.o
-[ 36%] Building CXX object CMakeFiles/mut6_abgelegter_kern_immer_ohne.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 39%] Building CXX object CMakeFiles/mut1_dreiwertiger_kern.dir/mutant.cpp.o
-[ 42%] Building CXX object CMakeFiles/mut8_profil_doppelt_eines_fehlt.dir/mutant.cpp.o
-[ 45%] Building CXX object CMakeFiles/mut7_position_und_lobby_vertauscht.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp.o
-[ 48%] Building CXX object CMakeFiles/anker_von_hand.dir/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/vorrat.cpp.o
-[ 51%] Building CXX object CMakeFiles/mut2_gleichstand_an_groessere_kennung.dir/mutant.cpp.o
-[ 54%] Building CXX object CMakeFiles/mut7_position_und_lobby_vertauscht.dir/mutant.cpp.o
-[ 57%] Building CXX object CMakeFiles/mut5_hebel_und_sichtbarkeit_im_kern.dir/mutant.cpp.o
-[ 63%] Building CXX object CMakeFiles/mut6_abgelegter_kern_immer_ohne.dir/mutant.cpp.o
-[ 63%] Building CXX object CMakeFiles/anker_gegen_mut2.dir/mutant.cpp.o
-[ 66%] Building CXX object CMakeFiles/mut3_ordnung_a5_bis_a1.dir/mutant.cpp.o
-[ 69%] Linking CXX executable mut5_hebel_und_sichtbarkeit_im_kern
-[ 72%] Linking CXX executable mut2_gleichstand_an_groessere_kennung
-[ 75%] Linking CXX executable mut1_dreiwertiger_kern
-[ 78%] Linking CXX executable anker_von_hand
-[ 81%] Linking CXX executable mut8_profil_doppelt_eines_fehlt
-[ 84%] Linking CXX executable mut7_position_und_lobby_vertauscht
-[ 87%] Linking CXX executable mut3_ordnung_a5_bis_a1
-[ 90%] Linking CXX executable kontrolle_unveraendert
-[ 93%] Linking CXX executable mut6_abgelegter_kern_immer_ohne
-[ 93%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 96%] Linking CXX executable anker_gegen_mut2
-[ 96%] Built target mut2_gleichstand_an_groessere_kennung
-[ 96%] Built target anker_von_hand
-[100%] Linking CXX executable mut4_kennung_einsbasiert
-[100%] Built target mut1_dreiwertiger_kern
-[100%] Built target mut6_abgelegter_kern_immer_ohne
-[100%] Built target mut3_ordnung_a5_bis_a1
-[100%] Built target mut7_position_und_lobby_vertauscht
+[ 27%] Built target kontrolle_unveraendert
+[ 27%] Built target mut1_dreiwertiger_kern
+[ 27%] Built target mut6_abgelegter_kern_immer_ohne
+[ 45%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 45%] Built target mut3_ordnung_a5_bis_a1
+[ 72%] Built target anker_von_hand
+[ 72%] Built target mut4_kennung_einsbasiert
+[ 72%] Built target mut2_gleichstand_an_groessere_kennung
+[ 81%] Built target mut7_position_und_lobby_vertauscht
+[ 90%] Built target anker_gegen_mut2
 [100%] Built target mut8_profil_doppelt_eines_fehlt
-[100%] Built target kontrolle_unveraendert
-[100%] Built target anker_gegen_mut2
-[100%] Built target mut4_kennung_einsbasiert
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -235,5 +208,5 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 11
 
-Total Test time (real) =   0.02 sec
+Total Test time (real) =   0.03 sec
 ```
