@@ -1,19 +1,12 @@
 # Logbuch: spielentwerfer
 
-Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
-schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergänzt sie am Ende.
+**Höchstens 12.000 Zeichen** (`wc -c`); bei Erreichen nach
+`notizen/archiv/spielentwerfer-<datum>.md` verschieben und mit dem neu beginnen, was noch
+gilt. Belege gehören in die Ergebnisdatei, hierher nur die Lehre in einem Satz.
 
-**Höchstens 12.000 Zeichen** (`wc -c`). Ist die Grenze erreicht, verschiebst du die
-Datei nach `notizen/archiv/spielentwerfer-<datum>.md` und beginnst neu — mit den Einträgen,
-die noch gelten. Nicht löschen.
-
-Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
-Lehre daraus, in einem Satz.
-
-*Neu begonnen am 2026-09-02 nach dem sechsten Lauf (Paket 0021); die Vorfassung steht
-vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
-`…-2026-09-01.md`. Übernommen ist, was noch führt.*
+*Neu begonnen am 2026-09-02 (Paket 0021); Vorfassungen in
+`archiv/spielentwerfer-2026-09-02.md` und `…-09-01.md`. Am 2026-09-03 an der Grenze gekürzt
+statt verschoben — Grund im letzten Punkt unter „Was nicht funktioniert".*
 
 ---
 
@@ -49,28 +42,22 @@ vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
   Nachbardokuments Symbol für Symbol lesen und je Namen fragen, wo er entsteht.
 - **Eine Größe, die in zwei Skalen gebraucht wird, gehört in die, in der sie entsteht**, und
   die Umrechnung an genau eine Stelle.
-- **Vor jedem neuen Parameter fragen, ob eine vorhandene Zahl dieselbe Wirkung hat.**
-- **Bei mehreren Lesarten zuerst fragen, welche dieselbe *Ordnung* erzeugen** — oft ist nur
-  zwischen zweien zu entscheiden, nicht zwischen dreien.
 - **2026-09-02 — Die Einheit einer Größe entscheidet oft schon, welche Lesart falsch ist.**
   Drei Lesarten für „Schaden" lagen vor; eine fiel, weil die Skalenklasse *zu konstanten
   Preisen* lautet und ihre Kandidatengröße damit real ist — ein Preisinstrument bewegt sie
   gar nicht. **Vor dem Abwägen die Skalentabelle des Architekten lesen: Sie schließt Lesarten
   aus, ohne dass man über Inhalt streiten muss.**
-- **2026-09-02 — „Vorher gegen nachher" braucht keine Schattenadressen, wenn der Schreiber
-  ohnehin zwei Stände führt.** `lies_alt` gegen `lies_neu` ist die Rundengrenze umsonst.
-  **Bevor man neue Adressen verlangt, nachsehen, welche Lesezugriffe der Architekt schon
-  gebaut hat.**
+- **2026-09-02 — Bevor man neue Adressen verlangt, nachsehen, welche Lesezugriffe der
+  Architekt schon gebaut hat.** `lies_alt` gegen `lies_neu` ist die Rundengrenze umsonst.
 - **2026-09-02 — Eine Regel schlägt einen Kalibrierparameter, wenn beide denselben
   Beharrungswert erzeugen.** Zerfallssatz neben Wirkungssatz ist für den Endzustand exakt
   redundant und verschieden nur im Einschwingen. **Prüffrage für jeden neuen Parameter:
   Erzeugt er eine Wirkung, die eine vorhandene Zahl nicht auch erzeugt — oder nur einen
   anderen Weg zu derselben?**
 - **2026-09-03 — Einen Konjunktursockel findet man, indem man die Formel des Nachbarabschnitts
-  *einsetzt* statt sie zu zitieren.** Die Zollzeile las die Preisverschiebung; setzt man die
-  Preisbildungsregel ein, zerfällt der Klammerausdruck in einen Summanden mit Verursacher und
-  einen ohne. **Prüffrage für jede Größe in einer Gegenkraft: Was ist sie, wenn niemand etwas
-  tut?** Hier war die Antwort „die Inflation, mal dem Handelsvolumen".
+  *einsetzt* statt sie zu zitieren.** **Prüffrage für jede Größe in einer Gegenkraft: Was ist
+  sie, wenn niemand etwas tut?** Bei der Zollzeile war es „die Inflation, mal dem
+  Handelsvolumen".
 - **2026-09-03 — Vor jeder Differenz fragen, ob die Skala zwischen den beiden Ständen
   wechseln kann.** Der Sektorpreis wird bei Hyperinflation neu basiert, der Weltpreis nicht;
   `neu − alt` über eine Neubasierung ist der Basiswechsel und nicht die Verschiebung. Der
@@ -80,10 +67,17 @@ vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
   nimmt.** Der Befund bot „ganze Preisverschiebung" oder „nackter Zollstand" an; die
   Zerlegung liest den Stand und behält die Sektorwirkung. **Wo ein Prüfer eine Größe ganz
   oder gar nicht lesen lässt, lohnt die Frage, ob sie sich zerlegen lässt.**
+- **2026-09-03 — „Reihe streichen" ist mehrdeutig, weil eine Reihe mehrere Rollen hat.**
+  Startwert, Politikpfad, Sollreihe: Ein Ausweg streicht meist nur die Sollrolle, die anderen
+  binden weiter. Daran fiel der Ausweg mit dem größten R. **Prüffrage: Welche Rolle streicht
+  er — und welche bleibt?**
+- **2026-09-03 — Bindet eine Größe, die nichts entscheidet, ist die Regel zu weit und nicht
+  die Größe zu kurz.** Zwei Reihen kürzten das Fenster um fünf Stützstellen, beide per
+  Konstruktion fehlerfrei und in keinem Prüfgegenstand. Zu ändern war der Geltungsbereich der
+  Regel, nicht die Zahl. **Prüffrage vor jeder Kürzung: Was entscheidet, was hier bindet?**
 - **2026-09-02 — Kann eine Wirkung nur über eine Adresse abfließen, ist die Adresse das
-  Schlachtfeld und nicht der Geschädigte.** Ein ausländisch verursachter Schaden hatte
-  scheinbar keinen Ort; er hat einen, sobald man fragt, *wo sich die Gegenwehr bilden kann*
-  statt *wem sie gehört*. Das hat sechzehn Adressen gespart und eine Lücke geschlossen.
+  Schlachtfeld und nicht der Geschädigte.** Fragen, *wo sich die Gegenwehr bilden kann*, statt
+  *wem sie gehört* — das hat sechzehn Adressen gespart.
 
 ## Was nicht funktioniert
 
@@ -118,19 +112,26 @@ vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
   hingeschrieben; erst als ich ihn vom Rest trennen musste, fiel es auf. Entschieden habe ich
   ihn selbst, weil die Einheitentabelle nur eine Lesart zulässt — **wenn eine Lücke nur eine
   zulässige Füllung hat, ist sie keine offene Frage, sondern eine vergessene Zeile.**
-- **Websuche: eine in sechs Läufen.** Auslöser ist nicht nur „blockiert mich das", sondern
-  auch „behaupte ich hier etwas über die Außenwelt". Im Lauf 0021 zweimal deshalb einen Satz
-  umgeschrieben, statt zu suchen: Die Behauptung war entbehrlich.
+- **Websuche: eine in acht Läufen.** Auslöser ist nicht nur „blockiert mich das", sondern
+  auch „behaupte ich hier etwas über die Außenwelt". Im Lauf 0054 keine: Jede Zahl stand im
+  Deckungsbefund oder in `reihen.toml`; wo sie fehlte, war das der Befund.
+- **2026-09-03 — Archivieren geht nicht: Der Rolle fehlt das Werkzeug.** Bei 11.569 Zeichen
+  war die Grenze da; `Write` und `cp` sind gesperrt, die Rolle hat nur `Edit(specs/**)` und
+  `Edit(notizen/spielentwerfer.md)`. Also hier gekürzt statt verschoben — das Gestrichene
+  steht in `archiv/spielentwerfer-2026-09-02.md`, verloren ist nichts. **Für den
+  Portfolio-Manager: Die Rolle braucht `Edit(notizen/archiv/**)`.**
 
 ## Offene Faehrten
 
-- **Die dringendste, neu am 2026-09-02: R stimmt nicht mehr, und die Entscheidung ist
-  meine.** Paket `0006` ist `fertig` und misst `R = 19` über 2001–2020; bindend sind die
-  **US-Staatsschuldenquote** (beginnt 2001) und der **US-Leitzins** (endet 2020) — beides
-  Reihen, die ich nie geprüft hatte. Der Deckungsbefund legt drei Auswege mit je einem R
-  daneben (19 / 20 / 24) und weist die Wahl ausdrücklich dem Spielentwerfer zu, weil sie
-  Sollreihen streicht und damit Prüfgegenstände von Maß 4. In `spiel.md` steht der Nachtrag
-  unter *Offene Entwurfsfragen*; **es gibt dafür noch kein Arbeitspaket.**
+- **Erledigt am 2026-09-03 (Paket 0054): R = 20, Fenster 2001–2021.** Die Fährte „R stimmt
+  nicht mehr" ist geschlossen; was daraus hervorging, steht in den nächsten beiden Punkten.
+- **Woher kommt der Leitzinspfad für Deutschland und China?** Die Quelle der Reihenliste
+  führt für beide keinen Wert, in jedem Fenster. Seit dem Wegfall der Sollrolle ist es eine
+  Beschaffungsfrage des Datenbauers und keine Entwurfsfrage — eine Eingabe darf gefüllt
+  werden, eine Sollreihe des Prüfjahrgangs nicht. Zwei Fährten stehen in `spiel.md`.
+- **Trägt ein einheitlicher Zinsbegriff über alle vier Länder?** Als Sollreihe war die
+  Uneinheitlichkeit tödlich, als Eingabe ist sie es nicht — aber ein Pfad auf dem falschen
+  Niveau treibt vier der sechzehn Prüfgegenstände. Am Jahrgangsbau zu sehen.
 - **Ist der aggregierte Zollsatz der Weltbank (WITS-Herkunft, Drittanbieter-Ausnahme)
   verwendbar?** Ist er gesperrt, verliert der Rückvergleich das wichtigste seiner drei
   verankerten Instrumente. Der Entwurf bleibt tragfähig, sein Beleg halbiert sich.

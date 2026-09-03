@@ -7,12 +7,12 @@ siegbedingung: Das Mandat — Fondsvermögen über einer Schwelle UND Einfluss �
 aktionen: 5
 laender: 4 spielbar (USA, China, Deutschland, Brasilien) plus ein nicht spielbares Restwelt-Aggregat
 gueter: 3 Sektoren (Landwirtschaft, Industrie, Dienstleistungen), davon 2 mit Handelszeilen
-takt: 1 Runde = 1 Jahr; R = 24 Runden, Startzustand 1997, Endzustand 2021, 25 Stützstellen
+takt: 1 Runde = 1 Jahr; R = 20 Runden, Startzustand 2001, Endzustand 2021, 21 Stützstellen
 gegenkraefte: 5
-messbar_entscheidungsdichte: Je Runde t = 1…R und je Startwert 30 gezogene Aktionsbündel; jedes ersetzt die Bot-Aktionen der Runde t, danach spielt der Heuristikbot auf dem Referenzprofil (1,1,1,1,1) bis Runde R. Dichte(t, Startwert) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden vom Median dieser 30 abweichen; Dichte(t) = Mittel über die 50 Startwerte. Abnahme = Mittel der Dichte(t) je Partiedrittel (1-8, 9-16, 17-24) jeweils >= 0,4.
-messbar_strategievielfalt: Profil = Fünftelverteilung über die fünf Aktionsarten (126 Profile), Wirkung über das Vorratsverfahren; je Profil Suchbot über 20 Startwerte, Profilergebnis = Median. Profil gewinnt, wenn sein Median <= 24.000 liegt. Strategiekern = die stärkste der drei Familien Position/Beteiligung/Lobby; die 6 Profile ohne jede Familienaktion haben keinen Kern und zählen nicht. Abnahme = alle drei Kerne stellen mindestens einen Gewinner, und das beste Klassenergebnis ist höchstens 25 Prozent besser als das schlechteste der drei.
-messbar_optimumsverschiebung: Frühfenster = Runden 1-8 mit Profil p, Rest mit Referenzprofil; Spätfenster = Runden 17-24 mit Profil p, Rest mit Referenzprofil; je 126 Profile x 20 Startwerte, Median als Profilergebnis, bestes Profil je Fenster nach kleinstem Median (Gleichstand nach Profilkennung). Verschiebung = L1-Abstand der beiden Profilvektoren geteilt durch 5, Werte aus {0; 0,4; …; 2,0}. Schwelle 0,4.
-messbar_rueckvergleich: Startjahrgang 1997, R = 24 Runden im Weltlauf (Fondsteilsystem abgeschaltet), Politikinstrumente exogen auf den historischen Pfaden; 16 Prüfgegenstände aus 23 freien Sollreihen plus Handelsblock, je über 25 Stützstellen ohne Füllung. Schwellen: MAPE 20 Prozent für Niveaureihen, mittlerer absoluter Fehler 300 Basispunkte für Ratenreihen, Richtungstreue 0,6 für alle. Bestanden, wenn höchstens 2 der 16 Prüfgegenstände reißen.
+messbar_entscheidungsdichte: Je Runde t = 1…R und je Startwert 30 gezogene Aktionsbündel; jedes ersetzt die Bot-Aktionen der Runde t, danach spielt der Heuristikbot auf dem Referenzprofil (1,1,1,1,1) bis Runde R. Dichte(t, Startwert) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden vom Median dieser 30 abweichen; Dichte(t) = Mittel über die 50 Startwerte. Abnahme = Mittel der Dichte(t) je Partiedrittel (1-6, 7-13, 14-20) jeweils >= 0,4.
+messbar_strategievielfalt: Profil = Fünftelverteilung über die fünf Aktionsarten (126 Profile), Wirkung über das Vorratsverfahren; je Profil Suchbot über 20 Startwerte, Profilergebnis = Median. Profil gewinnt, wenn sein Median <= 20.000 liegt. Strategiekern = die stärkste der drei Familien Position/Beteiligung/Lobby; die 6 Profile ohne jede Familienaktion haben keinen Kern und zählen nicht. Abnahme = alle drei Kerne stellen mindestens einen Gewinner, und das beste Klassenergebnis ist höchstens 25 Prozent besser als das schlechteste der drei.
+messbar_optimumsverschiebung: Frühfenster = Runden 1-6 mit Profil p, Rest mit Referenzprofil; Spätfenster = Runden 14-20 mit Profil p, Rest mit Referenzprofil; je 126 Profile x 20 Startwerte, Median als Profilergebnis, bestes Profil je Fenster nach kleinstem Median (Gleichstand nach Profilkennung). Verschiebung = L1-Abstand der beiden Profilvektoren geteilt durch 5, Werte aus {0; 0,4; …; 2,0}. Schwelle 0,4.
+messbar_rueckvergleich: Startjahrgang 2001, R = 20 Runden im Weltlauf (Fondsteilsystem abgeschaltet), Politikinstrumente exogen auf den historischen Pfaden; 16 Prüfgegenstände aus 23 freien Sollreihen plus Handelsblock, je über 21 Stützstellen ohne Füllung. Schwellen: MAPE 20 Prozent für Niveaureihen, mittlerer absoluter Fehler 300 Basispunkte für Ratenreihen, Richtungstreue 0,6 für alle. Bestanden, wenn höchstens 2 der 16 Prüfgegenstände reißen.
 ---
 
 # Ein Hedgefonds mit vier Ländern, drei Sektoren und vier Politikhebeln — und jede Zahl, die sich bewegt, sagt warum.
@@ -42,38 +42,175 @@ fehlt", drei unter „Offene Entwurfsfragen" und die Nachziehtabelle. Auch diese
 kommt **ohne neue Zustandsadresse** aus; die Zahl der Lesezugriffe fällt von behaupteten
 120 auf nachgezählte **106**. Die Abarbeitung beider Befunde steht am Ende der Datei.*
 
+*Geändert am **2026-09-03** aus Arbeitspaket `0054-partielaenge-r-entscheiden`. **R ist von
+24 auf 20 gefallen, das Fenster von 1997–2021 auf 2001–2021, die Stützstellenzahl von 25 auf
+21.** Reihe 9 (Leitzins) ist **keine Sollreihe mehr** und behält ihre beiden anderen Rollen;
+die Sollreihenzahl fällt damit von 31 auf **27**. Die 16 Prüfgegenstände von Maß 4 und die
+Toleranz 2 bleiben **unverändert** — die vier gestrichenen Reihen waren nie darunter. Die
+Begründung steht vollständig im Abschnitt **Die Partielänge R**, die Liste der nachzuziehenden
+Stellen unter *Was der Architekt neu rechnen muss*. Dies ist der Fall, für den die
+Ersetzungsregel der fünften Fassung geschrieben war: R ist ersetzt und sonst nichts.*
+
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
 Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
 die Länge des Fensters, in dem jede Sollreihe ohne Füllung belegt ist* — und dann eine
-falsche Zahl eingesetzt. Die Regel bleibt. Die Zahl ist neu, und sie ist diesmal gemessen:
+falsche Zahl eingesetzt. Die dritte Fassung hat die Regel behalten und eine zweite Zahl
+eingesetzt, die an **drei** der 31 Reihen und am Handelsblock gemessen war — den drei
+US-Sektoranteilsreihen und BACI. **Seit dem 2026-09-02 sind alle 31 gemessen**, und beide
+Zahlen waren zu groß.
 
-| Reihe (USA) | belegt | fehlt |
-|---|---|---|
-| `NV.AGR.TOTL.ZS` | 1997–2021 | 1990–1996, 2022–2024 |
-| `NV.IND.TOTL.ZS` | 1997–2021 | 1990–1996, 2022–2024 |
+### Was gemessen ist
 
-(`api.worldbank.org/v2/country/USA/indicator/<code>?date=1990:2024`, eigener Abruf am
-2026-09-01. `NV.SRV.TOTL.ZS` folgt derselben Abgrenzung und damit demselben Fenster.)
+`daten/deckungsbefund-1997.md` (Paket `0006-deckung-pruefjahrgang-1997`, `status: fertig`,
+Abrufe vom 2026-09-01) hat jede der 31 Sollreihen und den Handelsblock einzeln abgerufen.
+Von den 31 tragen 26 das Fenster 1997–2021 vollständig. Fünf nicht, und sie sind zwei
+verschiedene Sorten:
 
-CEPII BACI (HS92) beginnt 1995 und reicht bis 2024
-(`cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37`, abgerufen 2026-08-31). Der
-Schnitt aus beidem ist **1997 bis 2021**, also **25 Stützstellen und R = 24 Runden**.
+| Reihe | Land | Befund | Rolle nach `technik.md` Abschnitt 7 |
+|---|---|---|---|
+| **11** Staatsschuldenquote | USA | beginnt **2001** (IWF WEO) | Start + Soll (**abgeleitet**) |
+| **11** Staatsschuldenquote | BRA | beginnt **2000** | dito |
+| **9** Leitzins | USA | endet **2020** (IWF `MFS_IR/DISR_RT_PT_A_PT`) | Start + Politikpfad + Soll (**gesetzt**) |
+| **9** Leitzins | DEU | **kein einziger Wert** | dito |
+| **9** Leitzins | CHN | **kein einziger Wert** | dito |
 
-**Und die eigentliche Lehre steht nicht in der Zahl, sondern in ihrer Fassung.** Die
-zweite Fassung hat `28` in jede abgeleitete Größe geschrieben — Ergebnisskala,
+Dazu ein Nebenbefund außerhalb der Sollreihen, der hier mitentscheidet: **Reihe 12
+(Haushaltssaldo), der historische Politikpfad des vierten Instruments, beginnt für die USA
+ebenfalls 2001** — zwei unabhängige WEO-Reihen mit demselben Startjahr, im Befund gegen
+sechs bekannte Werte gegengeprüft. Das ist keine Ausleseunsicherheit, sondern die bekannte
+Eigenschaft des WEO, die Finanzstatistik des US-Gesamtstaats erst ab 2001 zu führen.
+
+### Die Entscheidung: R = 20, Fenster 2001–2021, 21 Stützstellen
+
+Der Befund legt drei Auswege mit je einem R daneben — 19, 20 oder 24. **Gewählt ist 20.**
+Die beiden anderen fallen aus je einem Grund, und beide Gründe stehen in der Rollenspalte
+der Reihenliste: Eine Reihe ist hier nicht einfach „da" oder „weg", sie hat bis zu drei
+Rollen — Startwert, Politikpfad, Sollreihe —, und ein Ausweg, der sie streicht, streicht nur
+eine davon.
+
+**2001 ist erzwungen, und nicht von einer Sollreihenregel.** Der Ausweg zu `R = 24` heißt
+im Befund „Reihe 9 und Reihe 11 gestrichen". Streichen kann man aber nur die *Sollrolle*
+einer Reihe, nicht ihre beiden anderen. Reihe 11 ist auch **Start**: `staatsschuld[l]` ist
+eine Zustandsadresse, und ihr Startwert ist die erste Stützstelle dieser Reihe. Reihe 12 ist
+**Politikpfad**: Ohne sie steht das Haushaltsinstrument im Weltlauf auf nichts. Beide Lücken
+sind **Anfangslücken**, und die Füllregel aus T24 lautet „Fortschreibung des letzten
+bekannten Werts" — vor der ersten Stützstelle gibt es keinen. Eine Anfangslücke ist von der
+Regel, die es gibt, nicht füllbar.
+
+**`R = 24` verlangt damit drei Quellenersetzungen, und keine davon ist zu haben.** Einzeln,
+weil sie sich unterscheiden:
+
+| was ersetzt werden müsste | Stand nach dem Deckungsbefund |
+|---|---|
+| Reihe 11 **BRA** 1997–1999 | IWF WEO beginnt 2000, die Weltbank (`GC.DOD.TOTL.GD.ZS`) 2010. **In beiden geprüften Quellen kein Wert.** Das allein erledigt 1997. |
+| Reihe 11 **USA** 1997–2000 | Die Weltbank trägt die USA lückenlos 1997–2021 — aber sie misst die Schuld des **Zentralstaats**, das WEO die des **Gesamtstaats**, und für China und Deutschland trägt sie nichts. Der Ausweg hieße: eine Sollreihe, die je Land aus einer anderen Quelle mit einer anderen Abgrenzung kommt. Das ist genau der Mangel, an dem der Leitzins gerade seine Sollrolle verliert. |
+| Reihe 12 **USA** 1997–2000 | **Nicht gemessen.** Der Befund hat sie als Nebenbefund gefunden, nicht als Auftrag. Sie wäre erst noch zu suchen. |
+
+Die erste Zeile ist bindend: Sie sagt nein, ohne dass die beiden anderen entschieden sein
+müssen. Eine Zahl in dieses Frontmatter zu schreiben, die auf Daten steht, die niemand hat,
+wäre genau der Fehler der zweiten Fassung noch einmal.
+
+**2021 ist nicht erzwungen.** Das Fenster endet nur deshalb 2020, weil der **US-Leitzins**
+dort endet. Diese Reihe war nach `technik.md` T37 **gesetzt**: Im Weltlauf wird das
+Instrument auf den historischen Wert gesetzt, ihr Fehler ist null per Konstruktion, ihre
+Richtungstreue eins, und sie ist keiner der 16 Prüfgegenstände und konnte keiner werden. **Alle
+Reihen, die etwas entscheiden, tragen 2021** — BIP, die zwölf Sektoranteile, die
+Verbraucherpreise, die drei Wechselkurse, der Handelsblock, dazu alle vier Schuldenquoten.
+`R = 19` wirft also die Stützstelle 2021 weg, um eine Reihe zu schützen, die nicht
+durchfallen kann. Und die weggeworfene ist nicht irgendeine: Ein Rückvergleich, der 2020
+endet, prüft den Einbruch und nie die Rückkehr. Sein letzter Übergang ist ein Sturz ohne
+Gegenstück, und die Richtungstreue misst über die schärfste Bewegung des ganzen Fensters
+genau eine Richtung.
+
+**Daraus folgt der Schnitt:** Reihe 9 verliert ihre Sollrolle und behält Start und
+Politikpfad. Die Sollreihen sind damit **27** — Reihe 1 (4), Reihe 2 (12), Reihe 8 (4),
+Reihe 10 (3), Reihe 11 (4) —, und **alle 27 tragen 2001–2021 mit 21 Stützstellen ohne eine
+einzige Füllung.** Das ist das größte Fenster, in dem dieser Satz stimmt.
+
+### Was die drei Auswege Maß 4 kosten — und warum das die Wahl nicht trifft
+
+Weil die Abnahme dieses Pakets es namentlich verlangt, hier für jeden Ausweg die
+Prüfgegenstände statt nur der Sollreihen:
+
+| Ausweg | R | Fenster | Stützstellen | Sollreihen | Prüfgegenstände von Maß 4 |
+|---|---:|---|---:|---:|---|
+| Reihe 9 **und** Reihe 11 aus den Sollreihen — *verworfen, Fenster nicht aus Daten erreichbar* | 24 | 1997–2021 | 25 | 23 | **16**, keiner gestrichen |
+| Reihe 9 für DE/CN ergänzt, alle 31 bleiben Sollreihen — *verworfen, opfert 2021* | 19 | 2001–2020 | 20 | 31 | **16**, keiner gestrichen |
+| **Reihe 9 aus den Sollreihen — gewählt** | **20** | **2001–2021** | **21** | **27** | **16**, keiner gestrichen |
+
+**In allen drei Auswegen sind es sechzehn, und das ist der eigentliche Befund dieses
+Pakets.** Die 16 Prüfgegenstände speisen sich aus Reihe 1, 2, 8, 10 und 14 — BIP je Land
+(4), Sektorstruktur je Land (4), Verbraucherpreise je Land (4), Wechselkurs je Land außer
+USA (3), Handelsblock (1). Reihe 9 und Reihe 11 kommen darin nicht vor und können darin
+nicht vorkommen: Die eine ist Eingabe des Laufs, die andere folgt dem gesetzten
+Haushaltssaldo und hat nur einen endogenen Nenner — das BIP, das schon vier eigene Zähler
+hat. **Genau diese beiden Reihen haben das Fenster gekürzt.** Die Abnahmeregel „höchstens 2
+der 16 reißen" unterscheidet die drei Auswege also nicht, und sie war nie das, was auf dem
+Spiel stand.
+
+Was auf dem Spiel stand, sind zwei andere Dinge, und nach ihnen ist entschieden: **welches
+Fenster aus Daten überhaupt erreichbar ist** (das erledigt 24) und **was eine Stützstelle
+wert ist** (das erledigt 19). Was der Rückvergleich durch den Schnitt verliert, ist deshalb
+auch kein Prüfgegenstand, sondern **Auflösung**: Jeder der sechzehn wird über 21 statt 25
+Stützstellen gemessen, die Richtungstreue über 20 statt 24 Übergänge. Die Schwellen — MAPE
+20 Prozent, 300 Basispunkte, Richtungstreue 0,6 — bleiben unverändert; ob sie über ein
+kürzeres Fenster leichter oder schwerer zu halten sind, ist eine Messung des
+Rückvergleichers und keine Entscheidung von mir.
+
+### Was der Schnitt kostet, einzeln
+
+- **Vier Runden.** Die Partie ist ein Sechstel kürzer als in der fünften Fassung, der
+  Nachtlauf der drei Maße um 17 Prozent billiger (11.519.040 → 9.539.200 Weltschritte).
+- **Der Euro-Beginn 1999 liegt vor dem Fenster.** Damit fällt die einzige Instrumentensperre,
+  die *während* einer Partie zuschnappt: Deutschland hatte ab Runde 3 keinen eigenen
+  Zinshebel mehr, jetzt hat es von Runde 1 an keinen. Die Asymmetrie **zwischen** den vier
+  Ländern bleibt — sie ist das, worauf das Argument in *Welche vier Länder* steht —, der
+  Übergang **innerhalb** der Partie ist weg. Für Maß 3 ist das der Verlust einer von drei
+  benannten Quellen; die beiden anderen, Nachahmer (Gegenkraft 4) und Preisstoß
+  (Gegenkraft 3), sind unberührt, und die Verschiebung war nie auf den Euro gestützt.
+- **Die Wechselkursverkettung `verkettet_ab = 1999` läuft im Prüfjahrgang nie.** Sie bleibt
+  in der Spezifikation, weil die Spieljahrgänge vor 2001 sie brauchen — aber der
+  Prüfjahrgang testet sie nicht mehr mit. Das gehört in jeden Befund, statt als „ein
+  Sonderfall weniger" gebucht zu werden.
+- **Eine gefüllte Stützstelle im Politikpfad.** Der US-Leitzins hat für 2021 keinen Wert.
+  Als Pfad — nicht als Sollreihe — wird er nach T24 fortgeschrieben und mit `gefuellt = 1`
+  gekennzeichnet. Das ist **ein** Eingabejahr für **ein** Land, und es wirkt auf den letzten
+  Übergang der US-Prüfgegenstände. Es wird ausgewiesen, nicht verrechnet.
+
+### Was der Schnitt behält, und eine Zugabe
+
+Im Fenster liegen weiterhin: Chinas WTO-Beitritt (Dezember 2001, wirksam ab Runde 1), die
+Finanzkrise **2008** (Ende Runde 7), der Einbruch **2020** (Ende Runde 19) und die Erholung
+**2021** (Ende Runde 20). Ebenso der negative Euro-Einlagesatz ab 2014, an dem die Schranke
+`aufschlag_min` hängt — siehe *Was ein Korb wert ist*.
+
+Und eine Eigenschaft, die keiner der beiden verworfenen Werte hat: **20 ist ein Vielfaches
+von 5.** Nach dem Vorratsverfahren steht der Vorratsvektor nach je fünf Runden wieder auf
+`(0,0,0,0,0)`. Für jeden Lauf, der eine ganze Partie lang **dasselbe** Profil spielt — das
+sind alle 126 Läufe von Maß 2 und jede Trägerpartie von Maß 1 —, endet die Partie deshalb
+genau auf einem solchen Punkt, und jede Aktionsart hat exakt `12 · ai` der 60 Steckplätze
+bekommen. Bei 24 und bei 19 endet die Partie mitten im Zyklus, und die tatsächliche
+Artenverteilung weicht vom Profil ab, das Maß 2 und Maß 3 als unabhängige Größe führen. Das
+ist kein Hauptgrund; es ist der einzige Punkt, an dem die gewählte Zahl **besser** ist als
+die beiden verworfenen und nicht bloß weniger schlecht. (Für Maß 3 gilt er nicht: Seine
+Fenster sind 6 und 7 Runden lang, der Profilwechsel fällt nicht auf einen Nullpunkt, und die
+Abweichung innerhalb eines Fensters bleibt beschränkt statt null — wie bisher.)
+
+### Und die eigentliche Lehre steht nicht in der Zahl, sondern in ihrer Fassung
+
+Die zweite Fassung hat `28` in jede abgeleitete Größe geschrieben — Ergebnisskala,
 Partiedrittel, Fenstergrenzen, Kostenformeln. Eine einzige falsche Messung machte damit
 zwölf Zahlen falsch. **Deshalb steht in diesem Entwurf jede abgeleitete Größe als Formel
-in R, mit R = 24 eingesetzt.** Misst der Jahrgangsbau an einer Reihe, die ich nicht
-geprüft habe, ein engeres Fenster — die chinesische und die brasilianische Leitzinsreihe
-der neunziger Jahre sind der von `technik.md` T24 selbst benannte Verdachtsfall —, dann
-ist R zu ersetzen und sonst nichts. Kein Paket ist dann zweimal zu bauen.
+in R, mit R = 20 eingesetzt.** Dieser Lauf ist die Probe darauf: Die Messung hat gegenüber
+der fünften Fassung vier Runden gekostet, und der Entwurf hat sich um zwölf Substitutionen
+geändert und um keine Regel. Kein Paket ist zweimal gebaut worden.
 
-Der Zuschnitt kostet vier Runden und gewinnt zwei Dinge. Er schneidet **Brasiliens
-Disinflation 1995–1997** ab, die in der zweiten Fassung als schärfster Punkt des
-Rückvergleichs offenstand. Und er enthält weiterhin jeden Bruch, der etwas prüft: den
-Euro-Beginn 1999 (Ende Runde 2), Chinas WTO-Beitritt 2001 (Ende Runde 4), 2008 (Ende
-Runde 11) und den Einbruch 2020 (Ende Runde 23).
+**Und R kann weiter fallen.** Drei Pfade, an denen der Weltlauf hängt, sind bis heute
+**nicht gemessen**: die Bevölkerungs- und Erwerbstätigenpfade (Reihen 5 und 6) und der
+Zollpfad (Reihe 13, dazu mit offener Lizenzfrage). `daten/reihen.toml` führt sie mit
+`deckung_gemessen = false`. Die Ersetzungsregel gilt für sie genauso: Misst der Jahrgangsbau
+enger, ist R zu ersetzen und sonst nichts.
 
 ## Die Schleife
 
@@ -260,7 +397,7 @@ sämtliche Gegenkräfte weckt.
 
 | Instrument | Datenanker | Bemerkung |
 |---|---|---|
-| Leitzins | ja (IWF IFS) | Für Deutschland **exogen ab 1999**, also ab Runde 3. Diese Asymmetrie ist gewollt, siehe unten. |
+| Leitzins | ja, aber **als Pfad, nicht als Sollreihe** (seit 2026-09-03, siehe *Die Partielänge R*) | Für Deutschland **exogen ab 1999**; das liegt vor dem Fenster 2001–2021, Deutschland hat also über die ganze Partie keinen eigenen Zinshebel. Diese Asymmetrie ist gewollt, siehe unten. |
 | Zollniveau | ja, aber **nur aggregiert je Land** (WDI, mit Vorbehalt) | Kein Zoll je Sektor. Die Sektorwirkung entsteht aus `durchgriff` und den Importanteilen, nicht aus einem erfundenen Sektorzoll. |
 | Haushaltssaldo / Staatsausgabenquote | ja (IWF WEO) | |
 | Kapitalverkehrs- und Finanzmarktregulierung | **nein, reines Modellkonstrukt** | Muss existieren, weil die Aufsicht sonst keinen Angriffspunkt auf den Fonds hat. Ohne Sollreihe; im Rückvergleich fest auf dem Startwert, und das Orakel ist für dieses Instrument blind. |
@@ -503,9 +640,11 @@ EZB senkte ihren Einlagesatz am 2014-06-11 erstmals unter null auf **−0,10 %**
 September 2019 auf **−0,50 %**; negativ blieb er bis 2022
 (`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` und
 `ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html`,
-abgerufen 2026-09-01). Deutschland folgt dem Euroraum ab Runde 3 exogen, also liegt der
-negative Zins **im Prüfjahrgang**. Ob die IFS-Reihe, die der Jahrgang zieht, den Einlagesatz
-oder den Hauptrefinanzierungssatz führt, entscheidet der Jahrgangsbau; die Untergrenze muss
+abgerufen 2026-09-01). Deutschland folgt dem Euroraum über die ganze Partie exogen — der
+Bruch 1999 liegt vor dem Fenster 2001–2021 —, also liegt der negative Zins ab 2014
+**im Prüfjahrgang**, und zwar in dessen Runden 13 bis 20. Ob die Zinsreihe, die der Jahrgang
+zieht, den Einlagesatz oder den Hauptrefinanzierungssatz führt, entscheidet der
+Jahrgangsbau; die Untergrenze muss
 in beiden Fällen unter dem Minimum der Reihe liegen, und `aufschlag` ist damit nicht frei
 wählbar, sondern nach unten gebunden.
 
@@ -608,8 +747,9 @@ der Mechanismus, aus dem Maß 3 überhaupt entstehen kann.
 Die vier sind nach struktureller Verschiedenheit gewählt, nicht nach Bedeutung: **USA**
 (großer Binnenmarkt, Leitwährung, dienstleistungsschwer), **China** (industriestark, hoher
 `durchgriff`, gemanagter Wechselkurs, starker Zollhebel), **Deutschland**
-(Exportüberschuss und **kein eigener Zinshebel ab Runde 3** — die einzige Asymmetrie, die
-einen Aktionsraum schließt und damit einen anderen erzwingt), **Brasilien** (Agrarexport,
+(Exportüberschuss und **kein eigener Zinshebel** — die einzige Asymmetrie, die
+einen Aktionsraum schließt und damit einen anderen erzwingt; seit dem Fensterschnitt auf
+2001 gilt sie von Runde 1 an statt ab Runde 3, siehe *Die Partielänge R*), **Brasilien** (Agrarexport,
 hohe Zinsen, volatile Währung). Vier Länder, die sich gleichen, wären vier Kopien und
 kosteten Strategievielfalt, statt sie zu erzeugen.
 
@@ -630,8 +770,9 @@ Gütersteuern abzüglich Subventionen nicht auf 100 Prozent. Sie werden im Jahrg
 10.000 normiert, die Normierung steht im Manifest, und der Rückvergleich vergleicht
 normiert gegen normiert. Das Modell hat damit keinen Gütersteuerkeil; die Staatseinnahmen
 laufen über den Haushaltssaldo, der ohnehin ein eigenes Instrument ist. Weil die dritte
-Reihe je Land durch die Normierung festliegt, sind von den 31 Sollreihen **27
-unabhängig** — ausgewiesen werden trotzdem alle 31.
+Reihe je Land durch die Normierung festliegt, sind von den 27 Sollreihen **23
+unabhängig** — ausgewiesen werden trotzdem alle 27. (Bis zum 2026-09-03 waren es 31 und 27;
+Reihe 9 ist seither keine Sollreihe mehr, siehe *Die Partielänge R*.)
 
 Zweitens: Brasiliens Erzausfuhr liegt im Modell in Sektor 2, nicht in Sektor 1. „Brasilien
 als Rohstoffexporteur" heißt hier Agrarexporteur. Das ist ein Verlust an Kennzeichnung und
@@ -840,7 +981,7 @@ durch 1.000), `welt.preis.<s>` dagegen nicht — es hängt an keinem Gebiet. Ein
 sondern der Basiswechsel; sie hätte den Gegendruck des betroffenen Landes still auf
 `druck_max` gelegt. Dass eine Differenz das braucht, weiß der Architekt bereits: T42 rechnet
 für den Rückvergleich genau diese Korrektur heraus. Die Schadensvorschrift hatte sie nicht.
-Im Prüfjahrgang 1997 tritt der Fall nie ein — in den Spieljahrgängen vor 1997, die dieser
+Im Prüfjahrgang 2001 tritt der Fall nie ein — in den Spieljahrgängen vor 2001, die dieser
 Entwurf ausdrücklich erhält, schon. **Die neue Fassung differenziert nur den Zollstand
 (Klasse 3, wird nie neu basiert) und liest den Weltpreis als Niveau; T8 kann sie nicht
 treffen.**
@@ -1187,7 +1328,7 @@ statt einer eigenen.
 
 **Und die Mengen bewegen sich über die Partie.** `handelsvolumen`, `schuld` und `bip` sind
 endogene Größen auf einem historischen Pfad, und die vier Brüche, die der Zuschnitt oben
-ausdrücklich im Fenster behalten hat — Euro 1999, WTO-Beitritt 2001, 2008, 2020 —, laufen
+ausdrücklich im Fenster behalten hat — WTO-Beitritt 2001, 2008, 2020, Erholung 2021 —, laufen
 sämtlich über Handel, Staatsschuld oder Ausstoß und damit über genau diese drei Mengen.
 Seit dem 2026-09-03 bewegt sich in der Zollzeile zusätzlich das **Niveau**, an dem die Rate
 ansetzt: `welt.preis.<s>` ist ebenso endogen, und derselbe Zollschritt kostet auf einem
@@ -1199,7 +1340,8 @@ einer Regel. *In welche Richtung und wie stark*, misst der Jahrgangsbau und dana
 Prüfstand; dieser Entwurf behauptet es nicht.
 
 Dazu kommt die Asymmetrie, die schon dasteht und jetzt eine Menge hinter sich hat:
-Deutschland hat ab Runde 3 keinen eigenen Zinshebel. Die Zinszeile ist dort geschlossen,
+Deutschland hat keinen eigenen Zinshebel — seit dem Fensterschnitt auf 2001 über die ganze
+Partie statt ab Runde 3. Die Zinszeile ist dort geschlossen,
 gleich was sie kostete, und der Ausweg führt über ein Instrument mit anderer Menge. Ein
 geschlossener Aktionsraum, der einen anderen erzwingt — dafür ist die Asymmetrie oben
 gewählt worden, und Gegenkraft 5 gibt ihr jetzt einen Preis statt nur eine Sperre.
@@ -1219,17 +1361,17 @@ Alle vier laufen im Selbstspiel ohne Darstellung über dieselbe Zustandsschnitts
 hier steht, ist eine Rechenvorschrift; wo eine Wahl offenbliebe, ist sie hier getroffen.
 Jeder Gleichstand wird nach Aktions- beziehungsweise Profilkennung gebrochen, nie nach
 Auffindereihenfolge. Der Median über eine gerade Anzahl ist der kleinere der beiden
-mittleren Werte. **R = 24.**
+mittleren Werte. **R = 20.**
 
 ### Die Ergebnisgröße einer Partie
 
 Ein `i64` in Milli-Runden, **kleiner ist besser**, streng geordnet und ohne Sammelwert:
 
-| Ausgang | Wert | Bereich bei R = 24 |
+| Ausgang | Wert | Bereich bei R = 20 |
 |---|---|---|
-| Mandat in Runde r erfüllt | `r × 1.000` | 1.000 … 24.000 |
-| R Runden überlebt, Mandat nicht erfüllt | `(R+1) × 1.000 + v + e`, siehe **Der Fehlbetrag** | 25.000 … 28.000 |
-| an einer Todesart in Runde d gestorben | `30.000 + (R + 1 − d) × 1.000` | 31.000 … 54.000 |
+| Mandat in Runde r erfüllt | `r × 1.000` | 1.000 … 20.000 |
+| R Runden überlebt, Mandat nicht erfüllt | `(R+1) × 1.000 + v + e`, siehe **Der Fehlbetrag** | 21.000 … 24.000 |
+| an einer Todesart in Runde d gestorben | `30.000 + (R + 1 − d) × 1.000` | 31.000 … 50.000 |
 
 #### Der Fehlbetrag, und wie „fehlender Einfluss" über die Länder gerechnet wird
 
@@ -1257,7 +1399,7 @@ Bauart in 0 … 100, also ist jeder der beiden Summanden in `e` per Konstruktion
 0 … 1.000 und damit `0 ≤ e ≤ 2.000`; im Band „überlebt" lebt der Fonds, also ist
 `fondsvermoegen > 0` (sonst hätte Todesart 1 in derselben Runde gegriffen) und damit
 `0 ≤ v ≤ 1.000`, wobei 1.000 nur die Rundung erreicht. Daraus folgt
-`0 ≤ v + e ≤ 3.000` und das Band 25.000 … 28.000 — nachgerechnet und nicht verordnet. Die
+`0 ≤ v + e ≤ 3.000` und das Band 21.000 … 24.000 — nachgerechnet und nicht verordnet. Die
 Kappung der dritten Fassung war der Ersatz für eine fehlende Aggregationsregel; mit der
 Regel entfällt sie, und sie war schädlich: Sie hätte jeden Fonds mit weniger als einer
 Schwelle Gesamteinfluss auf denselben Wert 1.000 gelegt — also die untere Hälfte des
@@ -1273,15 +1415,16 @@ bleibt botintern, die Bandprüfung gilt weiter nur für das Partieergebnis.
 `(R+1) × 1.000 + 3.000`, das Todesband beginnt bei `31.000`; disjunkt sind sie genau für
 `R ≤ 26`. Das ist **dieselbe Schranke**, die `technik.md` T40 schon in den Jahrgangsbau
 zieht — sie bleibt unverändert gültig, ist jetzt aber scharf statt großzügig, und das
-breitere Band kostet keine Runde Partielänge. Bei R = 24 sind die unerreichbaren Lücken
-24.001 … 24.999 und **28.001 … 30.999**.
+breitere Band kostet keine Runde Partielänge. Bei R = 20 sind die unerreichbaren Lücken
+20.001 … 20.999 und **24.001 … 30.999**; zwischen dem Ende von „überlebt" und dem Beginn des
+Todesbandes liegen 7.000 Milli-Runden Luft.
 
-**Die Kante aus Befund 10 ist damit geschlossen:** Das Band 1.000 … 24.000 heißt genau
-„Mandat erfüllt", der überlebte Misserfolg beginnt bei 25.000, und kein Wert trägt zwei
+**Die Kante aus Befund 10 ist damit geschlossen:** Das Band 1.000 … 20.000 heißt genau
+„Mandat erfüllt", der überlebte Misserfolg beginnt bei 21.000, und kein Wert trägt zwei
 Bedeutungen. Der frühe Tod ist schlechter als der späte, und zwar um volle Runden — genau
 die Auflösung, die Maß 1 im letzten Partiedrittel braucht. Eine Sammelkappe auf den
 Gesamtwert gibt es **nicht**. Der Bereichstest lautet: ein Ergebnis ausserhalb
-1.000 … 54.000 ist ein harter Fehler.
+1.000 … 50.000 ist ein harter Fehler.
 
 ### Das Aktionsprofil und wie es auf Aktionen wirkt
 
@@ -1314,6 +1457,9 @@ Strategien. Es wird nie gerundet und nie gezogen: **Nach `5k` Runden steht der V
 auf `(0,0,0,0,0)`, und Art `i` hat genau `3k·ai` der `15k` Steckplätze bekommen** — für
 `k = 1` also `3·ai` von fünfzehn nach **fünf** Runden, für `k = 3` `9·ai` von
 fünfundvierzig nach fünfzehn. Zwischen zwei solchen Punkten ist die Abweichung beschränkt.
+**Seit `R = 20` ist das Partieende selbst ein solcher Punkt** (`k = 4`): Ein Lauf, der eine
+ganze Partie lang dasselbe Profil spielt, vergibt `12·ai` der 60 Steckplätze exakt nach
+Profil — siehe *Die Partielänge R*.
 
 Zur Probe das Referenzprofil: Runden 1 bis 5 vergeben die Arten
 1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 und stehen danach wieder auf `(0,0,0,0,0)` — je
@@ -1358,7 +1504,7 @@ und ein Median über mehrere Welten triebe den Abweichungsanteil gegen 1, ohne d
 einzige Entscheidung dichter geworden wäre.
 
 **Abnahme:** Mittel der `Dichte(t)` über jedes Partiedrittel — die Drittel sind
-`1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R`, bei R = 24 also **1-8, 9-16, 17-24** —
+`1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R`, bei R = 20 also **1-6, 7-13, 14-20** —
 jeweils **≥ 0,4**, nicht nur über die ganze Partie. Ein Spiel, das nur in der Mitte lebt,
 fällt hier durch. Fällt es durch, ist „the consequences of choices often feel intangible"
 gerade gemessen worden.
@@ -1367,11 +1513,11 @@ gerade gemessen worden.
 Weltschritte — Maß 1 misst die Entscheidung **der Runde t**, deshalb wird sie mitgerechnet.
 
 ```
-je Startwert:  30 · Σ(R+1−t) für t = 1…R  =  30 · R(R+1)/2  =  30 · 300 =  9.000
-               zuzüglich Trägerpartie R                                 =     24
+je Startwert:  30 · Σ(R+1−t) für t = 1…R  =  30 · R(R+1)/2  =  30 · 210 =  6.300
+               zuzüglich Trägerpartie R                                 =     20
                                                                           ------
-                                                                           9.024
-50 Startwerte:                                                           451.200
+                                                                           6.320
+50 Startwerte:                                                           316.000
 ```
 
 ### Maß 2 — Strategievielfalt
@@ -1379,7 +1525,7 @@ je Startwert:  30 · Σ(R+1−t) für t = 1…R  =  30 · R(R+1)/2  =  30 · 300
 **Eingabe:** alle 126 Profile, je 20 Startwerte, Suchbot.
 
 Das Profilergebnis `E(p)` ist der Median der 20 Partieergebnisse. Ein Profil **gewinnt**,
-wenn `E(p) ≤ R × 1.000 = 24.000` — also genau dann, wenn es im Median im Band „Mandat
+wenn `E(p) ≤ R × 1.000 = 20.000` — also genau dann, wenn es im Median im Band „Mandat
 erfüllt" landet.
 
 Der **Strategiekern** eines Profils ist die Aktionsart mit dem größten Anteil unter den
@@ -1403,17 +1549,17 @@ Der zweite Teil ist der wichtigere — sonst gewinnen drei, aber eines dominiert
 ist derselbe Defekt unter anderem Namen. Das ist die Zahl hinter „trying to implement the
 tiniest socialist policy will always result in bankruptcy".
 
-**Kosten:** eine Suchbotpartie `R × (1 + 60) = 24 × 61 = 1.464`;
-`126 × 20 × 1.464` = **3.689.280 Weltschritte**.
+**Kosten:** eine Suchbotpartie `R × (1 + 60) = 20 × 61 = 1.220`;
+`126 × 20 × 1.220` = **3.074.400 Weltschritte**.
 
 ### Maß 3 — Verschiebung des Optimums
 
 Zwei getrennte Läufe je Profil, jeder über die **volle Partie**, damit keine Runde ohne
 Vorgabe bleibt. Die Fenster sind das erste und das letzte Partiedrittel aus Maß 1:
 
-- **Frühfenster:** Runden 1-8 mit Profil `p`, Runden 9-24 mit dem Referenzprofil.
+- **Frühfenster:** Runden 1-6 mit Profil `p`, Runden 7-20 mit dem Referenzprofil.
   Ergebnis `Efrüh(p)` = Median über 20 Startwerte.
-- **Spätfenster:** Runden 1-16 mit dem Referenzprofil, Runden 17-24 mit Profil `p`.
+- **Spätfenster:** Runden 1-13 mit dem Referenzprofil, Runden 14-20 mit Profil `p`.
   Ergebnis `Espät(p)` = Median über 20 Startwerte.
 
 Der Profilwechsel geschieht am Rundenanfang; der Vorrat des Vorratsverfahrens läuft über
@@ -1432,9 +1578,9 @@ Erzwungen wird die Verschiebung nicht durch Balance, sondern durch Gegenkraft 4 
 Nachahmer grasen jede frühe Position ab, der Preisstoß entwertet Größe. Das ist die Zahl
 hinter „already the richest hedge fund in the game and nothing fun to do".
 
-**Kosten:** `2 × 126 × 20 × 1.464` = **7.378.560 Weltschritte**.
+**Kosten:** `2 × 126 × 20 × 1.220` = **6.148.800 Weltschritte**.
 
-**Summe der drei Maße:** `451.200 + 3.689.280 + 7.378.560` = **11.519.040 Weltschritte**.
+**Summe der drei Maße:** `316.000 + 3.074.400 + 6.148.800` = **9.539.200 Weltschritte**.
 Was der ganze Nachtlauf kostet, steht in `technik.md` Abschnitt 10 und nicht hier — die
 zweite Fassung hat an dieser Stelle eine Zahl genannt, die Vorgaben des Prüfstands
 voraussetzte, die sie selbst nicht machte.
@@ -1467,20 +1613,29 @@ Damit prüft Maß 4 genau, was es prüfen soll: die Übertragung Politik → Wir
 Schritte 3 und 4. Ein Lauf mit erfundener Politik prüfte nur die halbe Maschine; ein Lauf
 mit einem sterbenden Fonds prüfte gar nichts.
 
-**Die 31 Sollreihen** sind BIP je Land (4), Sektoranteile (12, davon 8 unabhängig),
-Verbraucherpreise (4), Leitzins (4), Wechselkurs gegen USD (3), Staatsschuldenquote (4);
-dazu der Handelsblock über 40 Ströme als eigener Block. Jede über 25 Stützstellen ohne
-Füllung. Nach der Klassifikation aus `technik.md` T37 sind die vier Leitzinsreihen
-**gesetzt** (Eingabe des Laufs, Fehler null per Konstruktion) und die vier
-Staatsschuldenquoten **abgeleitet**.
+**Die 27 Sollreihen** sind BIP je Land (4), Sektoranteile (12, davon 8 unabhängig),
+Verbraucherpreise (4), Wechselkurs gegen USD (3), Staatsschuldenquote (4); dazu der
+Handelsblock über 40 Ströme als eigener Block. Jede über 21 Stützstellen ohne Füllung. Nach
+der Klassifikation aus `technik.md` T37 sind die vier Staatsschuldenquoten **abgeleitet**,
+die übrigen 23 **frei**.
+
+**Der Leitzins ist seit dem 2026-09-03 keine Sollreihe.** Die Klasse `gesetzt` ist damit
+leer und entfällt. Der Grund steht in *Die Partielänge R* und ist keiner der Deckung: Eine
+Reihe, die im Weltlauf als Eingabe gesetzt wird, hat den Fehler null per Konstruktion — sie
+kann nicht durchfallen und nichts belegen, und sie hat das Fenster trotzdem um ein Jahr
+gekürzt. **Was an ihre Stelle tritt, ist schärfer und nicht weicher:** Der Leitzins bleibt
+Eingabe (Reihe 9, Rolle Start + Politikpfad), und dass die Maschine ihn unverändert
+wiedergibt, ist eine **Invariante**, keine Schwelle. Weicht der Modellwert an irgendeiner
+Stützstelle vom gesetzten Pfad ab, ist das ein harter Fehler und kein Fehlermaß von 300
+Basispunkten. Ausgewiesen wird er weiterhin.
 
 **Die drei Fehlermaße, je Reihe:**
 
 | Reihen | verglichen wird | Schwelle |
 |---|---|---|
-| BIP (4), Sektoranteile (12), Staatsschuldenquote (4), Handelsströme (40) | das **Niveau** | MAPE über die 25 Stützstellen ≤ 20 % |
-| Verbraucherpreise (4), Wechselkurs (3), Leitzins (4) | die **Jahresänderungsrate** in Basispunkten | mittlerer absoluter Fehler über die 24 Übergänge ≤ 300 bp |
-| alle | die **Richtung** | Anteil der 24 Übergänge mit `sgn(Δmodell) = sgn(Δsoll)` ≥ 0,6 |
+| BIP (4), Sektoranteile (12), Staatsschuldenquote (4), Handelsströme (40) | das **Niveau** | MAPE über die 21 Stützstellen ≤ 20 % |
+| Verbraucherpreise (4), Wechselkurs (3) | die **Jahresänderungsrate** in Basispunkten | mittlerer absoluter Fehler über die 20 Übergänge ≤ 300 bp |
+| alle | die **Richtung** | Anteil der 20 Übergänge mit `sgn(Δmodell) = sgn(Δsoll)` ≥ 0,6 |
 
 Die zweite Zeile ist die Folge von `technik.md` T8: Ein prozentualer Fehler auf einem
 Index, der über zwei Jahrzehnte um eine Größenordnung wandert, misst den Anfang und nicht
@@ -1493,9 +1648,10 @@ unerreichbar, ist das ein Befund über das Modell und kein Anlass, sie zu versch
 Fehlermaße und keine Regel, wie über die Reihen zusammengefasst wird; `technik.md` T37 hat
 daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
 
-1. **Abnahmerelevant sind nur die freien Reihen.** Die vier gesetzten Leitzinsreihen und
-   die vier abgeleiteten Schuldenquoten werden berichtet und entscheiden nichts. Eine
-   Reihe, die per Konstruktion fehlerfrei ist, darf kein Gesamtmaß mildern.
+1. **Abnahmerelevant sind nur die freien Reihen.** Die vier abgeleiteten Schuldenquoten
+   werden berichtet und entscheiden nichts; der Leitzins ist seit dem 2026-09-03 gar keine
+   Sollreihe mehr, sondern Eingabe mit Invariantenprobe. Eine Reihe, die per Konstruktion
+   fehlerfrei ist, darf kein Gesamtmaß mildern.
 2. **Prüfgegenstand ist nicht die Reihe, sondern die Größe.** Es sind sechzehn:
 
    | Prüfgegenstand | Zahl | zusammengefasst aus |
@@ -1512,6 +1668,15 @@ daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
    Toleranz allein aufbrauchen. Als **ein** Zähler geführt, kostet es einen von sechzehn —
    und muss dafür in allen drei Anteilen bestehen.
 
+   **Die Zahl 16 ist durch den Schnitt vom 2026-09-03 unverändert geblieben, und das ist
+   nachgezählt, nicht angenommen.** Gestrichen sind die vier Leitzinsreihen; die Tabelle
+   oben speist sich aus Reihe 1 (BIP), Reihe 2 (Sektoranteile), Reihe 8
+   (Verbraucherpreise), Reihe 10 (Wechselkurs) und Reihe 14 (Handelsblock). Keiner der
+   sechzehn Prüfgegenstände enthält Reihe 9, und keiner könnte sie enthalten: Sie war nach
+   T37 `gesetzt`. **Die Abnahmeregel „höchstens 2 der 16" läuft damit auf derselben
+   Reihenmenge weiter wie vorher, nur über 21 statt 25 Stützstellen.** Verändert hat sich
+   der Nenner der *Sollreihen* (31 → 27), nicht der der *Prüfgegenstände*.
+
 3. **Ein Prüfgegenstand besteht**, wenn er beide für ihn geltenden Schwellen einhält.
 4. **Der Lauf ist bestanden, wenn höchstens zwei der sechzehn Prüfgegenstände reißen.**
    Jeder gerissene wird im Befund einzeln benannt, mit beiden Zahlen. Drei reißende sind
@@ -1522,14 +1687,22 @@ Abschnitt 12) und wird hiermit übernommen, mit seiner Begründung: Einzelne kle
 — Brasilien–China in der Landwirtschaft — schwanken prozentual stark, ohne dass das Modell
 falsch wäre; ein Mittel ginge daran kaputt, eine Je-Strom-Schwelle schneller.
 
-**Kosten:** R = 24 Weltschritte.
+**Kosten:** R = 20 Weltschritte.
 
 **Und die Grenze des Orakels, ausdrücklich.** Ohne Sollreihe sind: **Sektorpreise**
 und **Weltpreise** (Lücke 2 des Datenkurators), **Zustimmung** (Lücke 4), das Instrument
-**Finanzmarktregulierung** und die **Marktrendite**. Dazu kommt im Weltlauf das gesamte
+**Finanzmarktregulierung**, die **Marktrendite** und seit dem 2026-09-03 der **Leitzins**
+— letzterer nicht aus Datenmangel, sondern weil er Eingabe ist und ein gesetzter Wert nichts
+prüft. Dazu kommt im Weltlauf das gesamte
 Fondsteilsystem, das gar nicht läuft. Alle diese Größen sind im Zustand sichtbar, keine ist
 vom Rückvergleich gedeckt. Er prüft die Dynamik der Maschine über den historischen
 Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
+
+**Eine gefüllte Stützstelle, die in jeden Befund gehört.** Der US-Leitzinspfad endet 2020;
+seine einundzwanzigste Stützstelle ist der fortgeschriebene Wert von 2020 und trägt
+`gefuellt = 1`. Sie ist keine Sollstelle, also fällt sie nicht unter T24s Verbot — aber sie
+ist eine **Eingabe**, und der letzte Übergang der US-Prüfgegenstände läuft auf ihr. Der
+Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahrgang.
 
 ### Die drei Klagen und was sie beantwortet
 
@@ -1549,13 +1722,33 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   vierter Sektor „übrige Industrie" hätte keine eigene Quellreihe und müsste als Differenz
   gebildet werden. Vier Sektoren mit einem ungedeckten, drei mit lauter gedeckten: die
   Wahl ist die zweite.
-- **Startjahrgänge vor 1997**, und die Grenze liegt jetzt zwei Jahre später als in der
-  zweiten Fassung. 1995 und früher bleiben als **Spieljahrgänge** möglich und sind der
-  naheliegende Inhalt des Erweiterungsmodells aus der Idee. Sie tragen keinen Handelsblock
-  im Rückvergleich (BACI beginnt 1995) und keine US-Sektorstruktur aus Daten; ein
-  Spieljahrgang vor 1997 übernimmt als US-Startwert die Struktur von 1997 und kennzeichnet
-  sie als gefüllt. Damit sind sie Spiel-, aber keine Prüfjahrgänge. Das gehört ins
-  Kaufangebot geschrieben, nicht in eine Fußnote.
+- **Startjahrgänge vor 2001**, und die Grenze liegt jetzt vier Jahre später als in der
+  fünften Fassung. 2000 und früher bleiben als **Spieljahrgänge** möglich und sind der
+  naheliegende Inhalt des Erweiterungsmodells aus der Idee. Sie tragen keine
+  US-Staatsschuldenquote und keinen US-Haushaltspfad aus Daten (IWF WEO beginnt für die
+  USA 2001), vor 1997 zusätzlich keine US-Sektorstruktur und vor 1995 keinen Handelsblock;
+  ein Spieljahrgang vor 2001 übernimmt die fehlenden US-Startwerte aus dem ersten belegten
+  Jahr und kennzeichnet sie als gefüllt. Damit sind sie Spiel-, aber keine Prüfjahrgänge.
+  Das gehört ins Kaufangebot geschrieben, nicht in eine Fußnote.
+- **Ein Ersatz für den Euro-Übergang, seit dem 2026-09-03 und ausdrücklich.** Mit dem
+  Fenster 2001–2021 fällt die einzige Instrumentensperre weg, die während einer Partie
+  zuschnappte (Deutschland verliert 1999 seinen Zinshebel). Der naheliegende Ausweg wäre,
+  irgendeine andere Sperre auf eine mittlere Runde zu legen — und genau das tue ich nicht:
+  Das wäre ein erzähltes Ereignis, und die stehen zwei Zeilen weiter unten aus gutem Grund
+  auf dieser Liste. Ereignisse entstehen hier aus Schwellen oder aus Daten, nicht aus dem
+  Wunsch nach einem Wendepunkt. Maß 3 muss die Verschiebung ohne diesen Übergang erzeugen;
+  tut es das nicht, ist das ein Befund über die beiden verbliebenen Quellen (Nachahmer,
+  Preisstoß) und kein Anlass, eine Sperre zu erfinden.
+- **Der Wiederaufbau des Fensters 1997–2000 aus einer dritten Quelle.** Die Tabelle in
+  *Die Partielänge R* rechnet ihn durch: Für Brasilien gibt es die Jahre nicht, für die USA
+  gäbe es sie nur um den Preis einer anderen Abgrenzung als für China und Deutschland. Vier
+  Stützstellen sind billiger als eine Sollreihe, die je Land etwas anderes misst.
+- **Eine eigene Füllregel für Politikpfade.** Der Leitzinspfad darf gefüllt werden, die
+  Sollreihen des Prüfjahrgangs nicht — das steht in T24 und genügt. Eine dritte Schwelle
+  („ein Pfad darf zu höchstens x Prozent gefüllt sein") wäre eine Zahl, die niemand messen
+  kann, bevor die Quelle feststeht. Was stattdessen gilt: Jede gefüllte Stützstelle eines
+  Pfades wird im Befund einzeln benannt. Bei 21 Stützstellen ist eine Liste billiger als
+  ein Anteil.
 - **Ein feinerer Warenschlüssel als HS92-Kapitel.** Die Zuordnung 01–24 / 25–97 ist grob
   und ihr Fehler oben benannt. Eine echte HS-nach-ISIC-Konkordanz wäre genauer und kostete
   eine weitere Quelle mit eigener Lizenzfrage — für zwei Modellsektoren steht das nicht
@@ -1659,36 +1852,41 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
   (Verbraucherpreise, IWF-gestützt), Nr. 10 (Wechselkurs) und Nr. 13 (Zoll). Je Reihe ist
   das Feld „Source" im Indikatorendatensatz zu lesen. Vier Abrufe, und die Frage ist
   geschlossen — Aufgabe des Datenbauers, weil sie am Jahrgang hängt und nicht am Entwurf.
-- **Bleibt das Fenster bei 1997–2021?** Geprüft habe ich die drei US-Sektoranteilsreihen
-  (eigener Abruf 2026-09-01) und BACI. Offen bleibt der Verdachtsfall aus `technik.md`
-  T24, die chinesische und die brasilianische **Leitzinsreihe** der neunziger Jahre: Sie
-  stammt nach der Reihenliste aus IWF IFS, und `imf.org` weist den Abruf mit HTTP 403 ab
-  (eigener Versuch 2026-09-01, dasselbe Verhalten, das `daten.md` schon meldet).
+- **Das Fenster ist entschieden und diese Frage geschlossen.** Sie hieß „Bleibt das Fenster
+  bei 1997–2021?" und lautete seit dem 2026-09-02 „19, 20 oder 24?". **Nein, und 20.** Das
+  Fenster ist **2001–2021**, `R = 20`, 21 Stützstellen; entschieden am 2026-09-03 in Paket
+  `0054-partielaenge-r-entscheiden`, begründet im Abschnitt *Die Partielänge R*, nachgezogen
+  in allen vier Maßvorschriften und in der Nachziehtabelle für den Architekten benannt. Der
+  Verdachtsfall aus `technik.md` T24 — die chinesische und die brasilianische Leitzinsreihe
+  der neunziger Jahre — ist damit gegenstandslos: Die neunziger Jahre liegen außerhalb des
+  Fensters, und der Leitzins ist keine Sollreihe mehr.
 
-  **Ein Ersatzbeleg, der die Frage verkleinert, ohne sie zu schließen:** Die nächstliegende
-  frei abrufbare Zinsreihe, `FR.INR.LEND` (Sollzins der Banken, WDI), trägt China lückenlos
-  1995–2023 und Brasilien **1997**–2023 — 1995 und 1996 fehlen
-  (`api.worldbank.org/v2/country/CHN;BRA/indicator/FR.INR.LEND?date=1995:2023`, abgerufen
-  2026-09-01). Der Verdachtsfall zeigt damit genau an derselben Stelle dieselbe Kante wie
-  die US-Sektoranteile, und der Schnitt auf 1997 räumt beide zugleich ab. Das ist ein
-  Indiz, kein Beweis: `FR.INR.LEND` ist eine andere Reihe als der IFS-Leitzins. Zu prüfen
-  bleibt sie beim Jahrgangsbau. **Misst der Jahrgangsbau ein engeres Fenster, ist R zu
-  ersetzen und sonst nichts**; jede abgeleitete Zahl dieses Entwurfs steht als Formel in R
-  daneben.
-
-  **Nachtrag 2026-09-02: Er hat gemessen, und er misst enger.** Paket
-  `0006-deckung-pruefjahrgang-1997` ist `fertig`; nach
-  `daten/deckungsbefund-1997.md` binden zwei Reihen, die dieser Entwurf nicht geprüft hat —
-  die **US-Staatsschuldenquote** beginnt erst 2001, der **US-Leitzins** endet 2020 —, und
-  daraus folgt `R = 19` über dem Fenster 2001–2020. Der Wert gilt erst, wenn die
-  Leitzinslücke für Deutschland und China geschlossen ist; der Befund legt drei Auswege mit
-  je einem R daneben (19, 20 oder 24, je nachdem, ob Reihe 9 und Reihe 11 ergänzt oder
-  gestrichen werden) und weist die Entscheidung ausdrücklich dem Spielentwerfer zu.
-  **Sie ist hier nicht getroffen, weil sie nicht Gegenstand von Paket 0021 ist**, und sie ist
-  kein Federstrich: Sie streicht möglicherweise Sollreihen, also Prüfgegenstände von Maß 4.
-  Bis dahin steht in dieser Datei weiter `R = 24`, und die Ersetzungsregel oben ist genau für
-  diesen Fall geschrieben — R ist zu ersetzen und sonst nichts. **Das braucht ein eigenes
-  Arbeitspaket mit eigener Abnahme.**
+  **Was aus der Entscheidung als neue offene Frage hervorgeht, steht in den nächsten beiden
+  Punkten.** Sie ersetzen die geschlossene, sie sind nicht dasselbe in anderer Form: Die eine
+  betrifft die Beschaffung einer Eingabe, die andere ihre Einheitlichkeit. Keine von beiden
+  hängt mehr an R.
+- **Woher der Leitzinspfad für Deutschland und China kommt.** `IMF.STA/MFS_IR` führt für
+  beide Länder keinen einzigen Wert (Deckungsbefund, Abrufe 2026-09-01), und das gilt für
+  jedes Fenster. Der Pfad wird trotzdem gebraucht: als `leitzins_start[l]`, als exogener
+  Pfad im Weltlauf und als Wertebereich des Instruments im Spielmodus. **Das ist eine
+  Beschaffungsfrage und ein Folgepaket des Datenbauers, keine Entwurfsfrage** — und sie ist
+  seit dem Wegfall der Sollrolle deutlich kleiner: Eine Eingabe darf nach T24 gefüllt und
+  gekennzeichnet werden, eine Sollreihe des Prüfjahrgangs nicht. Zwei Fährten stehen schon in
+  den eigenen Unterlagen und sind hier nur benannt, nicht geprüft: **Eurostat** ist nach
+  `daten.md` Nr. 7 für EU- und EFTA-Länder gewerblich nutzbar und deckt damit die deutsche
+  beziehungsweise die Euroraum-Seite; **`FR.INR.LEND`** (WDI) trägt China nach dem
+  Deckungsbefund 1997–2021 lückenlos, ist aber ein Bankzins und kein Leitzins.
+- **Ob ein einheitlicher Zinsbegriff über die vier Länder erreichbar ist.** Der
+  Deckungsbefund weist nach, dass `DISR_RT_PT_A_PT` je Land etwas anderes misst — für die
+  USA den Diskontsatz des Fed-Diskontfensters, für Brasilien den Rediskontsatz, der nicht die
+  Selic ist. Als *Sollreihe* wäre das ein Fehler, den die Streichung erledigt. Als *Eingabe*
+  bleibt er eine offene Frage, und zwar eine, die auf Prüfgegenstände durchschlägt: Ein
+  brasilianischer Pfad auf dem falschen Niveau treibt Anleihekurs und Zinskanal und damit
+  BIP, Sektorstruktur, Verbraucherpreise und Wechselkurs Brasiliens — vier der sechzehn.
+  **Die Entwurfsvorgabe an das Folgepaket lautet deshalb: ein Begriff für alle vier Länder,
+  und wenn keiner erreichbar ist, dann der je Land plausibelste, ausdrücklich benannt und im
+  Befund des Rückvergleichs mitgeführt.** Zu entscheiden hat das der Datenbauer an den
+  Quellen, nicht ich am Schreibtisch.
 - **Die Zahlenwerte der Schwellen** — Mandatsschwelle, Aufsichtsschwellen, Startkapital,
   Nachahmergeschwindigkeit, Stufenweite einer Position, Anlegerabzugsanteil. Sie gehören
   nicht in diesen Entwurf, weil sie nicht entschieden, sondern **kalibriert** werden: Das
@@ -1769,6 +1967,38 @@ Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
 
 Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
 
+### Neu aus Paket 0054 — R fällt von 24 auf 20, das Fenster auf 2001–2021
+
+`technik.md` habe ich nicht angefasst. **Der größte Teil dieser Liste ist keine Änderung,
+sondern eine Probe:** T40 bildet `R = manifest.stuetzstellen − 1` und leitet alles Weitere
+zur Laufzeit ab, also genügt eine geänderte Zahl im Manifest. Was hier steht, sind die
+Stellen, an denen `technik.md` eine Zahl **ausgeschrieben** hat oder eine Regel auf dem
+Startjahr 1997 steht.
+
+| war (`technik.md`) | ist | betrifft |
+|---|---|---|
+| Beispielspalte „bei R = 24": Bänder 1.000…24.000 / 25.000…28.000 / 31.000…54.000, Drittel 1-8 / 9-16 / 17-24, Gewinnschwelle 24.000, Suchbotpartie 1.464, Maß-1-Kosten 9.024 | **bei R = 20**: 1.000…20.000 / 21.000…24.000 / 31.000…50.000, Drittel **1-6 / 7-13 / 14-20**, Gewinnschwelle **20.000**, Suchbotpartie **1.220**, Maß-1-Kosten **6.320**. Die Formeln daneben sind unverändert richtig | T40, Tabelle abgeleiteter Größen |
+| T24: „jede der **31** Sollreihen … über **25** Stützstellen ohne Füllung" | **27** Sollreihen über **21** Stützstellen. Reihe 9 ist keine Sollreihe mehr und fällt damit aus dem Verbot; ihr Pfad darf gefüllt und gekennzeichnet werden | T24 |
+| T37: drei Klassen, davon `gesetzt` = Leitzins (4) | **zwei Klassen**: `frei` (23) und `abgeleitet` (4). Die Klasse `gesetzt` entfällt, weil ihre einzige Reihe keine Sollreihe mehr ist. **Statt eines Fehlermaßes gilt für den Leitzins eine Invariante:** Modellwert ≠ gesetzter Pfad ist ein harter Fehler | T37 |
+| T42: Ratenreihen sind Verbraucherpreise, Wechselkurs, **Leitzins**; `S` = 25 | Ratenreihen sind Verbraucherpreise und Wechselkurs; `S` = **21**, Übergänge **20** | T42 |
+| Reihenliste Nr. 9, Rolle „Start + Politikpfad + Soll (4, gesetzt)" | **„Start + Politikpfad"**. Die Zeile bleibt sonst unverändert — Dimension, Einheit, Quelle | Abschnitt 7 |
+| T23 Punkt 8: DE-Leitzins `exogen_ab = 1999`, „im Prüfjahrgang also Runde 3"; Wechselkurs `verkettet_ab = 1999` | Beide Bruchjahre liegen **vor** dem Fenster. `exogen_ab_runde = bruchjahr − startjahr + 1` wird für sie **≤ 0**, und dafür braucht die Regel eine Lesart: **`≤ 0` heißt „gilt von Runde 1 an"**, nicht „ungültig" und nicht „nie". Die Felder bleiben, weil die Spieljahrgänge vor 2001 sie brauchen | T23 Punkt 8, T40 |
+| T23 Punkt 5: `leitzins_start[l]` = erste Stützstelle des Politikpfads | unverändert richtig, jetzt der Wert von **2001** | T23 Punkt 5 |
+| Größenordnung „5 Gebiete × **25** Jahre × rund 30 Reihen", Handel `40 × 25 × 8` | **21** Jahre; die Schätzung fällt entsprechend | T23, Schlusssatz |
+| T22/T23: Prüfjahrgang **1997**–2021 | **2001–2021** | überall, wo das Startjahr als Zahl steht |
+
+**Zwei Dinge, die ich nachgerechnet habe, damit du es nicht musst.** Erstens hält die
+Schranke `R ≤ 26` aus T40 mit Abstand: Das Band „überlebt" endet bei 24.000, das Todesband
+beginnt bei 31.000, 7.000 Milli-Runden Luft statt 3.000. Zweitens bleibt der Bereichstest
+`1.000 … R × 1.000 + 30.000` gültig und ergibt jetzt **1.000 … 50.000**.
+
+**Und eine Stelle außerhalb von `technik.md`, die ich nur benennen darf:** `reihen.toml`
+führt Reihe 9 mit `t37_klasse = "gesetzt"` und `rolle_tabelle = "Start + Politikpfad + Soll
+(4, gesetzt)"`. Beides ist ab heute falsch. Die Datei gehört dem Datenbauer; das ist ein
+Folgepaket für ihn, zusammen mit dem Leitzinspfad für Deutschland und China (siehe *Offene
+Entwurfsfragen*). Ebenso benannt und nicht angefasst: `daten/deckungsbefund-1997.md` behält
+seinen Namen und seinen Inhalt — er hat das Fenster 1997 gemessen, und das bleibt richtig.
+
 ### Neu aus Paket 0021 — der Schaden in Gegenkraft 5
 
 Fünf Stellen, keine davon eine Entscheidung. `technik.md` habe ich nicht angefasst; Paket
@@ -1831,10 +2061,26 @@ gefunden, die ich anders setzen würde. Deine Beobachtung 2 zur Tabelle *Größe
 Datenanker* ist oben eingearbeitet — die Tabelle verweist jetzt auf T46, statt eine
 Abschließlichkeit zu behaupten, die sie allein nicht haben kann.
 
+---
+
+**Ab hier steht kein geltender Wert mehr, sondern das Protokoll.** Alle folgenden
+Abschnitte — die erledigten Nachziehtabellen der Fassungen 3 und 4 und die
+Befundabarbeitungen — sind **datierte Nachweise abgeschlossener Läufe**. Die Zahlen darin
+stehen auf dem R, das zum Zeitpunkt ihrer Prüfung galt (`R = 24`, Fenster 1997–2021), und
+sie werden **nicht** nachgezogen. Der Grund ist derselbe, aus dem der Chronist keine alten
+ADRs ändert: Ein Protokoll, das man an den neuen Stand anpasst, belegt nichts mehr — man
+könnte an ihm nicht mehr ablesen, was der Prüfer damals gesehen und der Entwerfer damals
+geantwortet hat. **Wer nach dem geltenden R sucht, liest oberhalb dieser Linie.** Was
+unterhalb steht und was sich seither daran geändert hat, führt die Nachziehtabelle *Neu aus
+Paket 0054* Zeile für Zeile auf.
+
+---
+
 ### Aus Fassung 4 — vom Architekten am 2026-09-01 erledigt
 
 Steht nur noch als Nachweis hier; alle vier sind in `technik.md` Fassung 5 nachgeführt und
-vom Prüfer der Runde 6 einzeln nachgerechnet worden.
+vom Prüfer der Runde 6 einzeln nachgerechnet worden. *Die Zahlen dieses Abschnitts gelten
+für `R = 24`; siehe die Linie darüber.*
 
 | war (`technik.md`) | ist | betrifft |
 |---|---|---|
@@ -1857,7 +2103,10 @@ sie zugesagt hatte.
 
 ### Aus Fassung 3 — vom Architekten am 2026-09-01 erledigt
 
-Steht nur noch als Nachweis hier; nichts davon ist offen.
+Steht nur noch als Nachweis hier; nichts davon ist offen. *Die Zahlen dieses Abschnitts
+gelten für `R = 24`; die Spalte „ist" ist der Stand vom 2026-09-01 und nicht der heutige.
+Was seither an ihre Stelle getreten ist, steht in der Nachziehtabelle **Neu aus Paket
+0054**.*
 
 | war | ist | betrifft |
 |---|---|---|
