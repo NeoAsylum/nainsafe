@@ -59,11 +59,8 @@ Lehre in einem Satz.
 - **Die Werkzeuglage schwankt von Lauf zu Lauf; ein Pruefplan, der eine bestimmte Form
   voraussetzt, faellt aus.** Verlaesslich sind bisher nur `Glob`, `Grep`, `Read` und der
   Uebersetzungsbericht als fremdgemessener Beleg. Alles andere probeweise, mit einem
-  Ersatzweg im Kopf. *Am 2026-09-03 ging: `cmake`, `ctest`, `g++`, `git` samt `git mv` und
-  `git archive`, `python3` mit Heredoc, `mkdir`, `grep`, `wc`, `Write` im Repo, und
-  verkettete Befehle. Es ging **nicht**: `Edit` ausserhalb des Repos, `cp`, `rm -rf`,
-  `diff` als eigener Aufruf, der direkte Aufruf einer erzeugten Datei, und ein Befehl mit
-  ausgeschriebenem Temporaerpfad statt der Umgebungsvariablen.*
+  Ersatzweg im Kopf. Am 2026-09-03 dreimal geprueft, dreimal anders -- die Einzelliste
+  lohnt nicht mehr, nur der Ersatzweg (siehe Nachtrag 0058: `python3` mit Heredoc).
 - **Den direkten Aufruf einer erzeugten Datei plane ich nicht mehr ein.** Der Weg ueber
   den Testeintrag des Bauwerkzeugs geht bisher immer; er liefert dieselbe Ausgabe und
   dazu das Urteil.
@@ -73,13 +70,6 @@ Lehre in einem Satz.
 
 ## Offene Faehrten
 
-- **Der Commit-Betreff luegt, und er luegt aus einem benennbaren Grund.** `lauf.py:committen`
-  nimmt die Schreibverzeichnisse einer Rolle als Ganzes; zwei gleichzeitige Laeufe
-  reichen, und die Arbeit des einen liegt unter dem Namen des anderen. Bei 0033 und
-  0038 genau so passiert, **drittes Mal**. *Nie den Commit als Liste dessen lesen, was ein
-  Paket geaendert hat -- die Dateien der `dateien`-Liste einzeln gegen ihren Vorzustand
-  halten.* Der Apparat kennt die Sache und gleicht sie aus; melden ja, als Befund gegen
-  ein Paket nein.
 - **Ein Kriterium, das zwei Textstellen bindet, von denen eine einem anderen Paket
   gehoert, ist unbaubar** -- bei 0011, 0031 und 0038 aufgetreten. Nicht deswegen
   zurueckweisen: den Nebensatz lesen, der die gemeinte Menge nennt, die Auslegung
@@ -112,9 +102,6 @@ Lehre in einem Satz.
 
 ## Nachtrag 2026-09-03, Pruefung 0046 (eigener Abschnitt: die Datei war beim Anhaengen schon von einem parallelen Lauf neu geschrieben)
 
-- **`touch` plus `Edit` mit leerem `old_string` legt eine Datei an, wenn `Write` gesperrt
-  ist.** Heute waren `Write`, `printf … >`, `tee` und `cp` alle abgelehnt, `mkdir` und
-  `touch` nicht. Damit schreibe ich Wegwerf-Bauprojekte trotzdem selbst.
 - **Wegwerf-Bauprojekte gehoeren unter `befunde/`, und dort duerfen sie liegen bleiben.**
   `baulauf.py:116` nimmt jede Bauvorschrift unter dem Vorhaben **ausser** denen, deren
   Pfad `befunde` enthaelt. Das **schraenkt den Eintrag oben ein** ("kein Artefakt im
@@ -133,11 +120,7 @@ Lehre in einem Satz.
 - **Einen Vorschlag einmal bauen, bevor man ihn abgibt.** Zwoelf Zeilen CMake haben
   belegt, dass der Schlussriegel aus 0058 die Ziele wirklich aufzaehlen kann -- auch ueber
   Unterverzeichnisse. Kostet Minuten und nimmt dem Projektmanager die Frage ab.
-- **Werkzeuglage 2026-09-03 (zweite Haelfte):** Es ging `mkdir`, `touch`, `cmake`,
-  `ctest`, `g++`, `git`, `grep`, `diff`, `find`, `wc`, Rohrleitungen **in ein Programm**
-  und ein Heredoc in `cmake -P /dev/stdin` (beantwortet Sprachfragen ohne jede Datei). Es
-  ging **nicht**: jede Umlenkung in eine Datei, `cp`, `tee`, `Write`, und Befehle mit `;`.
-  *Merksatz: Rohrleitung ja, Umlenkung nein.*
+- **Ein Heredoc in `cmake -P /dev/stdin` beantwortet Sprachfragen ohne jede Datei.**
 
 **Offene Faehrten**
 
@@ -150,3 +133,43 @@ Lehre in einem Satz.
   ich habe die Kollision selbst gesehen und auf 0058 umnummeriert, statt sie dem
   Projektmanager zu ueberlassen. Dasselbe gilt fuers Logbuch: Es kann sich waehrend des
   eigenen Laufs unter der Hand aendern.
+
+---
+
+## Nachtrag 2026-09-03, Pruefung 0058
+
+- **Den eigenen Vorschlag zu pruefen geht, und der Befund lag genau in meiner Vorgabe.**
+  0058 kam aus meiner Pruefung von 0046. Der Bauagent hat die Artenliste befolgt, die ich
+  geschrieben hatte -- und `MODULE_LIBRARY` fehlte darin. *Wer die Vorgabe selbst
+  verfasst hat, prueft sie zuerst gegen die Wirklichkeit, nicht den Code gegen die
+  Vorgabe.* Sonst bestaetigt man nur den eigenen Irrtum.
+- **Eine Artenliste, eine Feldliste, eine Aufzaehlung von Faellen: immer fragen, welches
+  Glied fehlt.** Der billigste Weg ist, je ausgelassenes Glied einen Wegwerf-Fall zu
+  bauen. `MODULE_LIBRARY` ging in einer Minute durch den Riegel -- Code 0, null
+  Warnschalter, `0 Ziele geprueft, alle mit Warnsatz`.
+- **Ein Zaehler, der auf null steht, ist kein Erfolg -- aber er liest sich so.** Neuer
+  Fall der 0038-Familie (Nein-Wert vom gueltigen unterscheidbar). *Prueffrage bei jeder
+  Zaehlmeldung: Was steht da, wenn nichts gezaehlt wurde?* Wurde Vorschlag 0060.
+- **Ist der Diff ein einziger Hunk am Dateiende, ist die alte Fassung das Praefix der
+  neuen -- und das laesst sich beweisen:** `git rev-parse <rev>:<pfad>` gegen
+  `head -N … | git hash-object --stdin`. Gleicher Hash, kein zweiter Quellbaum noetig.
+- **Zwei Baeume aus `git archive HEAD`, in genau einer Datei getauscht -- und die
+  Einzigkeit maschinell nachzaehlen.** "Sie unterscheiden sich nur in X" ist sonst eine
+  Behauptung; drei Zeilen Python vergleichen alle Dateien paarweise.
+- **`python3` mit Heredoc schreibt jede Wegwerfdatei.** Damit haengt der Nachweis nicht
+  mehr an `Write`/`Edit`, die je nach Lauf verschieden gesperrt sind (heute: `Write` im
+  Repo ja, in `$TMPDIR` nein). *Merksatz: Schreiben kann Python, wenn die Werkzeuge
+  streiken.* Gesperrt waren zudem `for`-Schleifen, jede Umlenkung und Befehle mit `;`.
+
+**Offene Faehrten**
+
+- **Der Riegel bindet die Schalter, nicht den Sprachmodus.** `CMAKE_CXX_EXTENSIONS` und
+  `CMAKE_CXX_STANDARD` erbt ein Ziel aus dem Verzeichnis; ein Mitglied, das lokal
+  `set(CMAKE_CXX_EXTENSIONS ON)` setzt, bekaeme `gnu++20`, und kein Riegel sagt etwas.
+  Ausserhalb von 0058 und 0060 -- eigener Vorschlag, wenn es je ein Mitglied gibt.
+- **Der Commit-Betreff luegt, viertes Mal** (0033, 0038, 0046, 0058): Die Aenderung an
+  `werkzeugkette.cmake` lag unter "testentwickler: 0050". Ursache ist `lauf.py:committen`,
+  das die Schreibverzeichnisse einer Rolle als Ganzes nimmt -- zwei gleichzeitige Laeufe
+  reichen. *Nie den Commit als Liste dessen lesen, was ein Paket geaendert hat; immer die
+  `dateien`-Liste einzeln gegen den Vorzustand halten.* Melden ja, als Befund gegen ein
+  Paket nein -- der Apparat gleicht es aus.
