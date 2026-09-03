@@ -83,6 +83,13 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   einmal versuchen**, bevor man sie im Befund unmoeglich nennt. Zweimal in Folge getragen.
 - **Grosse Dateien in Haeppchen schreiben.** Heredoc bis etwa 4.000 Zeichen, dann anhaengen.
   Bei printf kippen Codeticks und Tabellen-Pipes den Aufruf; im gequoteten Heredoc nicht.
+- 2026-09-03 (0053) — **Bei einem reinen Kommentarpaket ist der Vergleich zweier geparster
+  Woerterbuecher der ganze Nachweis der Negativbedingung.** `tomllib` auf `<commit>^` und auf
+  den Baum, `alt == neu` → True: "keine Zahl, keine Klasse, keine Schranke angefasst" in einem
+  Aufruf, unabhaengig vom Diff und von der Zeilenzaehlung.
+- 2026-09-03 (0053) — **Trefferzahl ist nicht Markenzahl.** Der Marken-Regex faengt auch das
+  `**` der Fettschrift; 26 Treffer waren 25 Namen (`regulierung_start` zweimal). Nie die
+  Laenge vergleichen, immer die Namensliste — und sie gegen die Aufzaehlung im Dokument legen.
 - **Der Commit eines Pakets muss die geaenderte Datei nicht enthalten.** Immer
   `git log -- <datei>`, nie `git show <paketcommit>`.
 - **Ein `cd` in Bash bleibt ueber Aufrufe hinweg stehen.** Danach schweigt `git diff -- <pfad>`
@@ -102,6 +109,9 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0047, Vorgaenger: archiv/daten-pruefe
   Ausserhalb standen sechs, die um 280 bis 450 Zeilen daneben lagen. **Nach jedem
   Ersetzungspaket dasselbe Muster ueber die ganze Datei greppen**, nicht nur ueber den Abschnitt
   der Bedingung. Der Nachweis einer Bedingung ist nie die Reichweite des Fehlers.
+  **2026-09-03 (0053): diesmal leer** — der einzige Verdacht war schon geheilt ("Es ist nicht
+  die einzige Kopplung der Datei"). Die Suche kostet einen Grep nach Absolutwoertern
+  (einzig|vollstaendig|ausnahmslos|abschliessend|in keinem) und gehoert trotzdem in jeden Lauf.
 - **Prosa-Befund und maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer
   auseinander** (0024, 0032, 0036, 0049). Wer einen Befund abnimmt, der eine `.toml`
   beantwortet, sollte im selben Zug das Uebertragspaket vorschlagen.

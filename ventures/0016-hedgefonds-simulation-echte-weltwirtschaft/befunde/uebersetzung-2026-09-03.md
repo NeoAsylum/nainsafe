@@ -21,6 +21,7 @@ anderes behauptet, irrt.
 -- Mitglied 'konsole' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
+-- Warnsatz-Schlussriegel: 15 uebersetzende Ziele geprueft, alle mit Warnsatz.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
@@ -29,21 +30,21 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 11%] Built target pruefstand
-[ 14%] Built target pruefstand_geprueft
+[ 21%] Built target pruefstand_geprueft
+[ 21%] Built target pruefstand
+[ 30%] Built target kern
 [ 47%] Built target kern_geprueft
-[ 47%] Built target kern
-[ 57%] Built target vorrat_probe
-[ 57%] Built target vorrat_kernanker_probe
-[ 61%] Built target zufall_probe
-[ 71%] Built target festkomma_probe
-[ 76%] Built target schranken_probe
-[ 76%] Built target pruefsumme_probe
-[ 80%] Built target vorrat_verfahren_probe
-[ 88%] Built target schreiber_probe
-[ 90%] Built target schritt_probe
-[ 95%] Built target meldung_probe
-[100%] Built target zustand_probe
+[ 61%] Built target vorrat_verfahren_probe
+[ 61%] Built target meldung_probe
+[ 61%] Built target schranken_probe
+[ 83%] Built target schritt_probe
+[ 83%] Built target schreiber_probe
+[ 83%] Built target vorrat_probe
+[ 85%] Built target zustand_probe
+[ 85%] Built target festkomma_probe
+[ 90%] Built target zufall_probe
+[ 95%] Built target pruefsumme_probe
+[100%] Built target vorrat_kernanker_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -51,7 +52,7 @@ anderes behauptet, irrt.
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
       Start  1: festkomma_probe
- 1/11 Test  #1: festkomma_probe ..................   Passed    0.03 sec
+ 1/11 Test  #1: festkomma_probe ..................   Passed    0.01 sec
       Start  2: meldung_probe
  2/11 Test  #2: meldung_probe ....................   Passed    0.01 sec
       Start  3: pruefsumme_probe
@@ -75,12 +76,13 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 11
 
-Total Test time (real) =   0.15 sec
+Total Test time (real) =   0.13 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
+-- Warnsatz-Schlussriegel: 10 uebersetzende Ziele geprueft, alle mit Warnsatz.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
@@ -89,16 +91,16 @@ Total Test time (real) =   0.15 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 43%] Built target kern_geprueft
 [ 46%] Built target kern
-[ 86%] Built target meldung_probe
-[ 86%] Built target pruefsumme_probe
-[ 86%] Built target schritt_probe
-[ 86%] Built target zustand_probe
+[ 46%] Built target kern_geprueft
+[ 66%] Built target zufall_probe
+[ 66%] Built target festkomma_probe
+[ 66%] Built target pruefsumme_probe
+[ 73%] Built target meldung_probe
+[ 86%] Built target schranken_probe
 [ 86%] Built target schreiber_probe
-[ 86%] Built target zufall_probe
-[100%] Built target festkomma_probe
-[100%] Built target schranken_probe
+[100%] Built target schritt_probe
+[100%] Built target zustand_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -120,16 +122,17 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
     Start 7: zufall_probe
 7/8 Test #7: zufall_probe .....................   Passed    0.01 sec
     Start 8: zustand_probe
-8/8 Test #8: zustand_probe ....................   Passed    0.02 sec
+8/8 Test #8: zustand_probe ....................   Passed    0.01 sec
 
 100% tests passed, 0 tests failed out of 8
 
-Total Test time (real) =   0.10 sec
+Total Test time (real) =   0.09 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
+-- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/bau
@@ -172,17 +175,17 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 45%] Built target mut1_dreiwertiger_kern
-[ 45%] Built target anker_gegen_mut2
-[ 66%] Built target mut4_kennung_einsbasiert
-[ 66%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 66%] Built target mut3_ordnung_a5_bis_a1
-[ 66%] Built target mut2_gleichstand_an_groessere_kennung
-[ 87%] Built target mut6_abgelegter_kern_immer_ohne
-[ 87%] Built target kontrolle_unveraendert
+[ 48%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 48%] Built target mut6_abgelegter_kern_immer_ohne
+[ 48%] Built target mut1_dreiwertiger_kern
+[ 48%] Built target kontrolle_unveraendert
+[ 54%] Built target mut2_gleichstand_an_groessere_kennung
+[ 54%] Built target mut3_ordnung_a5_bis_a1
+[ 63%] Built target mut4_kennung_einsbasiert
+[ 81%] Built target anker_gegen_mut2
+[ 81%] Built target mut7_position_und_lobby_vertauscht
+[100%] Built target anker_von_hand
 [100%] Built target mut8_profil_doppelt_eines_fehlt
-[ 93%] Built target anker_von_hand
-[100%] Built target mut7_position_und_lobby_vertauscht
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -214,5 +217,5 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 11
 
-Total Test time (real) =   0.03 sec
+Total Test time (real) =   0.02 sec
 ```
