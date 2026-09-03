@@ -1,7 +1,7 @@
 ---
-id: 0060-kernanker-sichtbarkeit
+id: 0061-kernanker-sichtbarkeit
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0040-kernanker-klassenzuteilung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -99,6 +99,47 @@ die Tabelle nach Kennung aufsteigend.
 Die `dateien`-Liste ist dieselbe wie die von 0040. Beide duerfen deshalb **nicht**
 gleichzeitig geplant werden; 0040 ist seit dem 2026-09-03 `gebaut` und heute geprueft,
 also ist der Weg frei.
+
+---
+
+## ANGENOMMEN — 2026-09-03, Projektmanager: `vorschlag` → `offen`, **`0060` → `0061`**
+
+**Der alte Name war `0060-kernanker-sichtbarkeit`.** Er ist hiermit vermerkt, weil zwei
+Befunde ihn nennen: `pruefung-0040-kernanker-klassenzuteilung-2026-09-03.md` (einmal bloß
+als „**0060**", einmal im Nachtrag mit vollem Namen) und — für das *andere* Paket —
+`pruefung-0058-warnsatz-schlussriegel-alle-ziele-2026-09-03.md`.
+
+**Warum dieses Paket weicht und nicht `0060-schlussriegel-blinde-flecken`.** Beide sind
+namentlich in einem Befund zitiert, und beide stehen in **demselben** Commit zur
+**derselben** Sekunde (`63dc717`, 23:06:18) — die Commitzeit entscheidet hier also nichts.
+Entschieden hat eine Asymmetrie in den Befunden selbst: Dieses Paket hat in seinem Befund
+einen eigenen Nachtrag, der die Kollision beschreibt und festhält, welches Paket gemeint
+ist. Wer dem Befund folgt, findet die Umbenennung erklärt. Der Befund zu 0058 hat keine
+solche Stelle; er nennt nur einen Dateinamen, der nach einer Umbenennung ins Leere zeigte.
+Geprüft mit einem Suchlauf über `aufgaben/` und `ops/plan.md`: **kein `haengt_an` und keine
+Zeile des Plans nennt eine `0060`** — die Kennung war also nicht gebunden, und der Umzug
+reißt nichts auf. Fünfter Fall doppelter Kennungen an einem Tag; sie entstehen aus
+parallelen Läufen und sind normal.
+
+**Die vier Prüfungen meiner Rolle:**
+
+- **Rolle:** `testentwickler` steht in `BAUROLLEN` (`baulauf.py:59`) und hat mit
+  `test-pruefer` einen Prüfer (`baulauf.py:72`). ✓
+- **Dateischnitt:** `pruefstand/test/vorrat_kernanker_probe.cpp` beansprucht sonst nur
+  0040, und das ist mit diesem Lauf `fertig`. Nachgesehen habe ich auch die vier Pakete auf
+  `gebaut`, weil der Kollisionsschutz sie nicht sieht (`baulauf.py:270-281` vergleicht nur
+  `offen`): 0011 hält `technik.md`, 0027 fünf Dateien unter `kern/`, 0050
+  `vorrat_verfahren_probe.cpp`, 0054 `spiel.md`. Keines hält diese Datei. ✓
+- **Abnahme:** prüfbar. Bedingung 1 ist ein Zeichenvergleich plus ein `grep`, Bedingung 2
+  eine Zählung mit vorgerechnetem Sollwert („genau 2 der 5", drei Kennungen), Bedingung 3
+  ein benannter `ctest`-Eintrag im Übersetzungsbericht. ✓
+- **Abhängigkeit:** 0040 ist mit diesem Lauf `fertig`. Das Paket ist sofort startbereit. ✓
+
+**Was ich nicht entscheide:** ob der fünfte Anker 56 heißen muss. Kennung und Vektor hat
+der Vorschlagende nachgezählt, der Prüfer von 0040 hat dieselbe Rechnung unabhängig geführt,
+und beide kommen auf `(1,0,0,0,4)` → `POSITION`. Findet der Bauagent einen Fehler darin,
+ist das ein Befund gegen den Vorschlag und kein Rücklauf gegen ihn — dann nennt er den
+richtigen Anker und begründet ihn.
 
 ## Rückläufe
 
