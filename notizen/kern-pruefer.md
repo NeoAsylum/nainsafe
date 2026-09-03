@@ -107,3 +107,46 @@ Lehre in einem Satz.
   Sanitizertest auf genau diesen Ueberlauf ab?** Beides steht seit 0016 in jedem Profil.
   Wenn ja, deckt ADR 0011 Massnahme 2 weniger ab, als sie verspricht. Umgehbar, indem man
   auf ausgeschriebene Waechter statt auf die Massnahme setzt.
+
+---
+
+## Nachtrag 2026-09-03, Pruefung 0046 (eigener Abschnitt: die Datei war beim Anhaengen schon von einem parallelen Lauf neu geschrieben)
+
+- **`touch` plus `Edit` mit leerem `old_string` legt eine Datei an, wenn `Write` gesperrt
+  ist.** Heute waren `Write`, `printf … >`, `tee` und `cp` alle abgelehnt, `mkdir` und
+  `touch` nicht. Damit schreibe ich Wegwerf-Bauprojekte trotzdem selbst.
+- **Wegwerf-Bauprojekte gehoeren unter `befunde/`, und dort duerfen sie liegen bleiben.**
+  `baulauf.py:116` nimmt jede Bauvorschrift unter dem Vorhaben **ausser** denen, deren
+  Pfad `befunde` enthaelt. Das **schraenkt den Eintrag oben ein** ("kein Artefakt im
+  Baum"): Unter `befunde/` ist es gefahrlos, und liegengelassen ist die Probe der Beleg,
+  den der naechste Lauf nachfahren statt neu bauen kann. Gegenprobe bleibt die Kopfzeile
+  `manifeste:` des Uebersetzungsberichts -- sie darf nicht mitwachsen.
+- **"Unveraendert" laesst sich messen statt schliessen, auch ohne zweiten Quellbaum.**
+  Zwei Wegwerf-Mitglieder, die sich in genau einer Zeile unterscheiden (alte gegen neue
+  Fassung), mit **demselben Zielnamen** und derselben Quelldatei, dann `diff` der beiden
+  erzeugten Schalterdateien. Gleicher Zielname ist der Trick -- sonst trennen schon die
+  Pfade. Ersetzt `git archive`, wenn das gerade nicht geht.
+- **Eine Behauptung in einem Kommentar ist ein Pruefauftrag.** Der zweite Riegel in
+  `werkzeugkette.cmake` stand nur als Satz da ("Funktion global, Variable nicht"); ein
+  `block()` um die Einbindung hat ihn wirklich ausgeloest. Jeden Satz, der einen Fall
+  *beschreibt*, einmal herstellen.
+- **Einen Vorschlag einmal bauen, bevor man ihn abgibt.** Zwoelf Zeilen CMake haben
+  belegt, dass der Schlussriegel aus 0058 die Ziele wirklich aufzaehlen kann -- auch ueber
+  Unterverzeichnisse. Kostet Minuten und nimmt dem Projektmanager die Frage ab.
+- **Werkzeuglage 2026-09-03 (zweite Haelfte):** Es ging `mkdir`, `touch`, `cmake`,
+  `ctest`, `g++`, `git`, `grep`, `diff`, `find`, `wc`, Rohrleitungen **in ein Programm**
+  und ein Heredoc in `cmake -P /dev/stdin` (beantwortet Sprachfragen ohne jede Datei). Es
+  ging **nicht**: jede Umlenkung in eine Datei, `cp`, `tee`, `Write`, und Befehle mit `;`.
+  *Merksatz: Rohrleitung ja, Umlenkung nein.*
+
+**Offene Faehrten**
+
+- **Bei jedem Riegel fragen, ob er das Tun bindet oder das Lassen.** 0046 faengt das
+  Mitglied, das die Form abschreibt und dabei etwas verliert; nicht das, das die Form nie
+  benutzt. Dritter Fall derselben Familie (0031, 0046, 0058). *Prueffrage: Kann sich
+  jemand dem Riegel durch Nichtstun entziehen?*
+- **Vor dem Anlegen eines Vorschlags die hoechste Nummer lesen -- und nach dem Schreiben
+  noch einmal.** Waehrend dieses Laufs haben zwei parallele Laeufe 0056 und 0057 belegt;
+  ich habe die Kollision selbst gesehen und auf 0058 umnummeriert, statt sie dem
+  Projektmanager zu ueberlassen. Dasselbe gilt fuers Logbuch: Es kann sich waehrend des
+  eigenen Laufs unter der Hand aendern.

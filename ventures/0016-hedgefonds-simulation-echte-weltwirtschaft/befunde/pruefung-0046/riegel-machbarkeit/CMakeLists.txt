@@ -1,5 +1,5 @@
 # Wegwerf-Probe des Kern-Pruefers, Paket 0046, 2026-09-03 -- MACHBARKEIT des in
-# Paket 0056 vorgeschlagenen Schluss-Riegels.
+# Paket 0058 vorgeschlagenen Schluss-Riegels.
 #
 # Sie baut nichts. Sie beantwortet eine einzige Frage: Kann eine nachgestellte Pruefung
 # am Ende der Konfiguration alle Ziele aufzaehlen und an jedem ablesen, ob der Warnsatz
