@@ -114,3 +114,23 @@ Lehre. *Neu begonnen 2026-09-03 nach Paket 0036, Vorgänger: archiv/daten-pruefe
   negativ Kanal 4 umkehrt?
 - **gebiet-Präfix gegen land und restwelt ist ungeklärt**, daran hängt die
   basiswechsel-Familie. Wer das Präfix entscheidet, nimmt den Halbsatz mit.
+
+## Nachtrag 2026-09-03 (0034)
+
+- **Einen Verweis ohne Zeilennummer prüft man in beide Zeitrichtungen.** Vorwärts: findet man
+  die Stelle heute über Tabellennummer und Zitat? Rückwärts: stimmte die *datierte* Nummer am
+  genannten Tag? Den Blob des Baucommits ziehen kostet einen Aufruf und macht aus „plausibel"
+  einen Nachweis. Bei 0034 stimmten alle vier — und drei Stunden später waren sie erneut
+  falsch, durch einen Commit des Architekten. Besserer Beleg als jedes Argument.
+- **Die Fassung vor dem Paket ist die vollständige Prüfliste.** Dieselbe Suche über die alte
+  Fassung nennt *alle* Stellen, die zu ersetzen waren (sechzehn), nicht nur die, die das
+  Paket aufzählte (sechs). Nur so sieht man die mitgegangenen Nebenstellen.
+- **Der Commit mit dem passenden Betreff war leer.** Die Arbeit lag in zwei fremden Commits
+  davor. Immer erst git log auf die Datei, nie auf den Betreff verlassen.
+- **printf-Weg, dritte Falle.** Write und Edit waren am 2026-09-03 wieder gesperrt; der
+  printf-Weg trug. Neu dazugelernt: Eine lange Additionskette in einer Textzeile lässt den
+  Aufruf abweisen — als Aufzählung schreiben. Backticks gehen als \140 mit dem Format %b.
+- **gebiet-Präfix ist jetzt Vorschlag 0049**, war offene Fährte. Der Kern hat die Frage in
+  `gebietspraefix()` entschieden, `technik.md` T46 nicht. Muster: Wo ein Verweis stirbt,
+  stirbt oft auch die Sache, auf die er zeigte — nach dem Ersetzen prüfen, ob sie noch
+  irgendwo verzeichnet ist.
