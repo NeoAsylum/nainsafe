@@ -49,7 +49,7 @@ pruefe "nichts Uncommittetes liegen geblieben"     bash -c "cd '$ZIEL' && test -
 
 echo
 echo "Zeitplanung"
-pruefe "Tageslauf in der crontab"                  bash -c "crontab -l | grep -q tageslauf.py"
+pruefe "Tageslauf stuendlich in der crontab"       bash -c "crontab -l | grep -q '^0 \* \* \* \* .*tageslauf.py'"
 pruefe "Wochenlauf in der crontab"                 bash -c "crontab -l | grep -q wochenlauf.py"
 pruefe "PATH-Zeile in der crontab"                 bash -c "crontab -l | grep -q '^PATH='"
 
@@ -57,7 +57,10 @@ echo
 echo "Sicherung"
 pruefe "SSH-Schluessel wird von GitHub akzeptiert" bash -c "ssh -o BatchMode=yes -T git@github.com 2>&1 | grep -q 'successfully authenticated'"
 pruefe "Repo ist NICHT oeffentlich lesbar"         bash -c "test \"\$(curl -s -o /dev/null -w '%{http_code}' -m 10 https://api.github.com/repos/NeoAsylum/nainsafe)\" != '200'"
-pruefe "Push-Eintrag in der crontab"               bash -c "crontab -l | grep -q 'git push origin'"
+pruefe "Kein Hilfsskript committet heimlich"    bash -c "! grep -lE '^[^#]*git (add|commit)' '$ZIEL'/einrichtung/*.sh"
+pruefe "Sicherungsskript in der crontab"           bash -c "crontab -l | grep -q sichern.sh"
+pruefe "Sicherungsskript pusht wirklich"           bash -c "grep -q 'git push origin' '$ZIEL/einrichtung/sichern.sh'"
+pruefe "Sicherung juenger als 26 Stunden"          bash -c "test -n \"\$(find /home/adria/sicherung -name 'fabrik-*.bundle' -mmin -1560 -print -quit)\""
 
 echo
 echo "Anmeldung"

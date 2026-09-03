@@ -520,3 +520,20 @@ was erlaubt ist.
   ausgeschrieben zeigte. *Folgerung:* Die Cron-Zeile ruft ein Skript im Repo auf
   (`einrichtung/sichern.sh`), sonst nichts. Dort ist die Logik versioniert, lesbar und
   einmal pruefbar — `sh -n` haette den Fehler nie gefunden, ein Blick in die Datei schon.
+
+- **2026-09-03** — **Ein Skript hiess „Bereitschaft" und veroeffentlichte den ganzen
+  Arbeitsbereich.** `einrichtung/nachtbereitschaft.sh` begann mit `git add -A`, einem
+  `git commit` mit **fest eingebauter** Botschaft und einem `git push`. Die Botschaft
+  stammte vom 2026-08-30 („Ideator liest die Anwaltsvorschlaege zuerst") und war seither
+  eingefroren — ein Einmalskript, das als Diagnose weiterlebte. Als ich es heute zur
+  Kontrolle aufrief, sammelte es meine halbfertige Arbeit ein, committete sie unter dem
+  Betreff einer Aenderung aus der Suchphase und schob sie zu GitHub. Commit `95903a6`
+  traegt deshalb einen Betreff, der nichts mit seinem Inhalt zu tun hat.
+
+  *Folgerung:* Das Skript berichtet jetzt nur noch und nennt Uncommittetes beim Namen,
+  statt es wegzuraeumen. Committen macht der Runner, der die Botschaft aus dem Lauf
+  bildet. `pruefen.sh` hat eine neue Bedingung: **kein Skript unter `einrichtung/` darf
+  `git add` oder `git commit` enthalten.** Und die allgemeine Form, die hier zum dritten
+  Mal auftaucht: **Ein Name, der nach Lesen klingt, muss auch lesen.** Erst
+  `nach-aufraeumen.py`, das importierte statt auszufuehren, dann der Architekt, der aus
+  Verweigerungen einen falschen Schluss zog, jetzt eine „Bereitschaft", die schreibt.
