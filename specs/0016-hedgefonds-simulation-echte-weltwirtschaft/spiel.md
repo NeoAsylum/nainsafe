@@ -153,6 +153,8 @@ ordnen, und das tut er. Er ist exogen und über die Partie konstant; Chinas wach
 Handelsoffenheit bildet das Modell über die Mengen ab, nicht über die Preisübertragung.
 Zwei benannte Vereinfachungen, keine versteckten.
 
+Dienstleistungen haben keine Handelszeile, keinen Weltpreis und nur einen Landespreis.
+
 ### Der Zollkeil ist multiplikativ, und das entscheidet die Skalentabelle
 
 `technik.md` T28 **nennt** den Keil („der Zollkeil je Gebiet auf dem Weltpreis"), ohne ihn
@@ -165,17 +167,16 @@ weltpreis_mit_zoll(l, s) = mal_geteilt( welt.preis.<s>, 10.000 + zollstand(l), 1
 
 **Die additive Lesart ist nicht schlechter begründet, sondern gar nicht bildbar.** Der
 Zollstand steht nach `technik.md` T5 in **Klasse 3** (Basispunkte), der Weltpreis in
-**Klasse 5** (Index, Startjahr 10.000); eine Summe über zwei Klassen kennt T5 nicht, und
-`10.000 + zollstand` ist der einzige Ausdruck, in dem eine Rate als Faktor auftreten darf.
-Inhaltlich ist es dasselbe: Ein aggregierter Zollsatz je Land in Basispunkten ist ein
-Wertzoll, sonst wäre er keine Rate. Beides zeigt in dieselbe Richtung, deshalb ist die
-Festlegung hier eine Klarstellung und keine Wahl.
+**Klasse 5** (Index, Startjahr 10.000). Eine Summe zweier Klassen kennt T5 nicht; eine Rate
+trifft ein Niveau in diesem Modell ausnahmslos als Faktor, wie in
+`schuld = mal_geteilt(bip, staatsschuld, 10.000)`. Inhaltlich sagt dieselbe Wahl dasselbe:
+Ein aggregierter Zollsatz je Land in Basispunkten ist ein Wertzoll, sonst wäre er keine
+Rate. Beides zeigt in dieselbe Richtung, deshalb ist die Festlegung hier eine Klarstellung
+und keine Wahl.
 
-Die Form ist ab jetzt festgelegt, weil eine Rechenvorschrift, die auf eine ungeschriebene
-Formel zeigt, wieder nur ein Adjektiv ist — genau der Mangel, gegen den Paket 0021
-angetreten ist.
-
-Dienstleistungen haben keine Handelszeile, keinen Weltpreis und nur einen Landespreis.
+Sie steht hier und nicht in einer offenen Frage, weil eine Rechenvorschrift, die auf eine
+ungeschriebene Formel zeigt, wieder nur ein Adjektiv ist — genau der Mangel, gegen den
+Paket 0021 angetreten ist.
 
 ### Die Zuordnung der BACI-Warencodes zu den zwei handelbaren Sektoren
 
@@ -793,14 +794,18 @@ weltpreis_mit_zoll_neu − preis_alt
 Der zweite Summand ist genau die Verschiebung, die eingetreten wäre, **wenn der Zollstand
 sich nicht bewegt hätte**. Er ist nach der Preisträgheitsregel oben („der Inlandspreis
 folgt dem Weltpreis mit einem Jahr Verzögerung") von Bauart wegen von null verschieden,
-in jeder Runde, ohne jede Aktion. `preishub_zoll` ist die alte Größe minus diesen zweiten
-Summanden, und sonst ändert sich nichts.
+in jeder Runde, ohne jede Aktion.
+
+**Die alte Größe war der Betrag der Summe, die neue ist der Betrag des ersten Summanden**,
+beide mal `durchgriff/10.000`. Der Unterschied ist also nicht eine Dämpfung, sondern eine
+Streichung: Was wegfällt, ist der Summand ohne Verursacher, und was bleibt, bleibt
+unverändert.
 
 **Was der Sockel wirklich ist: die Inflation, mal dem Handelsvolumen.** `handelsvolumen`
-steht nach T5 Klasse 2 zu konstanten Preisen, `preishub` war ein Nominalindex — das Produkt
-ist die nominale Aufwertung des Handelsstroms und damit ungefähr die jährliche Sektorpreis­-
-steigerung des Landes. Die Zollzeile hat vor dieser Änderung die **Inflation gemessen** und
-sie als Lobbyschaden gebucht.
+steht nach T5 Klasse 2 zu konstanten Preisen, `preishub` war ein Nominalindex — ihr Produkt
+ist die nominale Aufwertung des Handelsstroms und damit im Kern die jährliche
+Sektorpreissteigerung des Landes. Die Zollzeile hat vor dieser Änderung die **Inflation
+gemessen** und sie als Lobbyschaden gebucht.
 
 **Drei Gründe, und der erste allein genügt.**
 
@@ -847,8 +852,8 @@ Sockel ebenfalls. Er scheitert an zwei Stellen.
 
 Erstens macht er die Zeile blind für die Sektorwirkung. `schaden(l, zoll)` wäre dann
 `mal_geteilt(handelsvolumen(l), hub(l,zoll), 10.000)` und hinge nur noch am Land. Der
-Entwurf begründet aber vierhundert Zeilen weiter oben die Ordnung, die `durchgriff`
-herstellt: *„ein Zoll trifft Chinas Industrie über ihren hohen `durchgriff` hart und die
+Entwurf begründet aber im Abschnitt *Was für die Preisbildung gelten muss* die Ordnung, die
+`durchgriff` herstellt: *„ein Zoll trifft Chinas Industrie über ihren hohen `durchgriff` hart und die
 US-Industrie, in der Bau und Versorger dominieren, schwach"*. Unter Weg 2 trifft er beide je
 Einheit Handelsvolumen gleich hart. Das ist derselbe Selbstwiderspruch wie unter 2 oben, nur
 in die andere Richtung.
@@ -875,8 +880,11 @@ mit einer Eigenschaft des Spiels. Ein Maß, das sich so bedienen lässt, misst n
 **Sie kostet nicht:** eine neue Zustandsadresse (`welt.preis.1` und `welt.preis.2` sind die
 Nummern 239 und 240 in `daten/adressen.md`), eine neue Reihe, einen vierten Skalenübergang,
 einen neunten Kanal oder eine zweite Markträumung. Und sie kostet **nichts an Signal**: Der
-Aktionsanteil des Schadens ist Zeichen für Zeichen derselbe wie vorher, nur der Sockel fällt
-weg. Die Zerlegung oben ist exakt, nicht ungefähr.
+Aktionsanteil des Schadens ist derselbe wie vorher, nur der Sockel fällt weg. Die Zerlegung
+oben ist algebraisch exakt und nicht ungefähr; verschieden sind allein die Rundungswege —
+die alte Zeile rundete einmal in den gespeicherten Sektorpreis und einmal in den Schaden,
+die neue zweimal zwischen Weltpreis und Schaden. Ein Unterschied um wenige Indexpunkte, kein
+Unterschied in der Größenordnung.
 
 **Sie kostet:** den Schaden, den ein *fremder* Zoll im Inland anrichtet. Ein deutscher
 Industriesektor, den ein amerikanischer Zollschritt über den Weltpreis trifft, erzeugt in
@@ -1148,8 +1156,9 @@ Schadenszeile ohnehin die einzige ohne Datenanker ist, steht fest auf dem Startw
 Die Eingangsgrößen der Formel — Instrumentenstände, **Weltpreise**, Handelsblock,
 Wertschöpfung, Staatsschuld — stehen sämtlich in der Weltlaufmaske (`technik.md` T38 führt
 die Weltpreise dort mit **ja**); die Sektorpreise, die die Vorfassung noch brauchte, stehen
-seit dem 2026-09-03 gar nicht mehr in der Formel. Die Rechnung *ließe* sich also mitlaufen. Sie zu schreiben würde die Maske brechen, und eine Ausgabe daneben ist
-Sache des Prüfstands und keine Entwurfsfrage.
+seit dem 2026-09-03 gar nicht mehr in der Formel. Die Rechnung *ließe* sich also mitlaufen.
+Sie zu schreiben würde die Maske brechen, und eine Ausgabe daneben ist Sache des Prüfstands
+und keine Entwurfsfrage.
 
 **Die Folge, ausdrücklich benannt: Maß 4 prüft diese Vorschrift nicht.** Geprüft wird sie
 von Maß 2 (bleibt die Familie Lobby innerhalb der 25 Prozent?), von Maß 3 (verschiebt sich
@@ -1177,10 +1186,12 @@ davon abhängt, welchen Sektor er trifft, wäre für Maß 2 die vierte Zeile der
 statt einer eigenen.
 
 **Und die Mengen bewegen sich über die Partie.** `handelsvolumen`, `schuld` und `bip` sind
-endogene Größen auf einem historischen Pfad — seit dem 2026-09-03 kommt in der Zollzeile
-`welt.preis.<s>` als vierte hinzu, ebenfalls endogen —, und die vier Brüche, die der Zuschnitt oben
+endogene Größen auf einem historischen Pfad, und die vier Brüche, die der Zuschnitt oben
 ausdrücklich im Fenster behalten hat — Euro 1999, WTO-Beitritt 2001, 2008, 2020 —, laufen
-sämtlich über Handel, Staatsschuld oder Ausstoß und damit über genau diese drei Mengen. Das
+sämtlich über Handel, Staatsschuld oder Ausstoß und damit über genau diese drei Mengen.
+Seit dem 2026-09-03 bewegt sich in der Zollzeile zusätzlich das **Niveau**, an dem die Rate
+ansetzt: `welt.preis.<s>` ist ebenso endogen, und derselbe Zollschritt kostet auf einem
+teureren Weltmarkt mehr. Das
 billigste Lobbyziel der dritten Runde ist deshalb nicht zwangsläufig das billigste der
 zwanzigsten — eine **dritte** Quelle der Optimumsverschiebung neben Nachahmern (Gegenkraft
 4) und Preisstoß (Gegenkraft 3), und diesmal eine, die aus dem Jahrgang kommt statt aus

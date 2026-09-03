@@ -66,6 +66,20 @@ vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
   redundant und verschieden nur im Einschwingen. **Prüffrage für jeden neuen Parameter:
   Erzeugt er eine Wirkung, die eine vorhandene Zahl nicht auch erzeugt — oder nur einen
   anderen Weg zu derselben?**
+- **2026-09-03 — Einen Konjunktursockel findet man, indem man die Formel des Nachbarabschnitts
+  *einsetzt* statt sie zu zitieren.** Die Zollzeile las die Preisverschiebung; setzt man die
+  Preisbildungsregel ein, zerfällt der Klammerausdruck in einen Summanden mit Verursacher und
+  einen ohne. **Prüffrage für jede Größe in einer Gegenkraft: Was ist sie, wenn niemand etwas
+  tut?** Hier war die Antwort „die Inflation, mal dem Handelsvolumen".
+- **2026-09-03 — Vor jeder Differenz fragen, ob die Skala zwischen den beiden Ständen
+  wechseln kann.** Der Sektorpreis wird bei Hyperinflation neu basiert, der Weltpreis nicht;
+  `neu − alt` über eine Neubasierung ist der Basiswechsel und nicht die Verschiebung. Der
+  Architekt hatte die Korrektur für den Rückvergleich längst, meine Vorschrift nicht. Eine
+  Differenz zweier Größen ist nur dann eine Bewegung, wenn beide dieselbe Basis haben.
+- **2026-09-03 — Zwischen zwei Lesarten liegt oft eine dritte, die aus beiden das Richtige
+  nimmt.** Der Befund bot „ganze Preisverschiebung" oder „nackter Zollstand" an; die
+  Zerlegung liest den Stand und behält die Sektorwirkung. **Wo ein Prüfer eine Größe ganz
+  oder gar nicht lesen lässt, lohnt die Frage, ob sie sich zerlegen lässt.**
 - **2026-09-02 — Kann eine Wirkung nur über eine Adresse abfließen, ist die Adresse das
   Schlachtfeld und nicht der Geschädigte.** Ein ausländisch verursachter Schaden hatte
   scheinbar keinen Ort; er hat einen, sobald man fragt, *wo sich die Gegenwehr bilden kann*
@@ -94,6 +108,16 @@ vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
 - **Meine Kanaltabelle nannte sich abschließend und ließ ausgerechnet den Kanal aus, an dem
   das Genre stirbt.** Eine Kanaltabelle prüft man, indem man jede Aktionsart bis zurück zum
   eigenen Vermögen verfolgt — nicht, indem man die Zustandsgrößen durchgeht.
+- **2026-09-03 — Eine Zahl aus einem Befund gilt für die Fassung, in der der Prüfer sie
+  gerechnet hat.** Er korrigierte 120 auf 112; nach meiner Entscheidung waren es 106. Wer die
+  Korrektur übernimmt, ohne unter der eigenen Änderung neu zu zählen, schreibt die Zahl der
+  alten Fassung fort. **Jede Zählzeile nach der Entscheidung noch einmal von vorn zählen, nie
+  aus dem Befund abschreiben.**
+- **2026-09-03 — Eine Formel, die auf eine ungeschriebene Formel zeigt, ist wieder nur ein
+  Adjektiv.** Der Zollkeil stand seit der zweiten Fassung in der Markträumung und war nirgends
+  hingeschrieben; erst als ich ihn vom Rest trennen musste, fiel es auf. Entschieden habe ich
+  ihn selbst, weil die Einheitentabelle nur eine Lesart zulässt — **wenn eine Lücke nur eine
+  zulässige Füllung hat, ist sie keine offene Frage, sondern eine vergessene Zeile.**
 - **Websuche: eine in sechs Läufen.** Auslöser ist nicht nur „blockiert mich das", sondern
   auch „behaupte ich hier etwas über die Außenwelt". Im Lauf 0021 zweimal deshalb einen Satz
   umgeschrieben, statt zu suchen: Die Behauptung war entbehrlich.
@@ -119,6 +143,13 @@ vollständig in `notizen/archiv/spielentwerfer-2026-09-02.md`, die davor in
   am Verhältnis `druck : gegendruck`. Vorschlag steht in `spiel.md` (dieselbe Halbierung).
   **Lehre daneben: Wer eine Lücke füllt, sollte die spiegelbildliche Größe gleich mitlesen —
   sie hat oft dieselbe.**
+- **2026-09-03, neu aus Paket 0039: Ich habe die Form des Zollkeils in `spiel.md`
+  festgelegt.** T28 nannte ihn, ohne ihn hinzuschreiben. Widerspricht der Architekt, ist es
+  ein Befund gegen den Abschnitt *Der Zollkeil ist multiplikativ* und nicht gegen die
+  Zollzeile — das steht so in der Befundabarbeitung. Zweite Folge desselben Pakets: Die
+  Zollzeile ist um den Sockel kleiner geworden, ihre Menge ist ein Handelsstrom und die der
+  Haushaltszeile das ganze BIP. **Ob ein `gegenlobby_satz` beide trägt, ist damit schärfer
+  gestellt als vorher; nur am Prüfstand zu sehen.**
 - **2026-09-02: Reicht `gegenlobby_satz` als Ganzzahl?** Klasse 9 kennt keine Unterteilung,
   kleinster Wert ist 1 Punkt je 10.000 Tsd USD; Größenordnungsprobe im Entwurf ergibt rund
   10.500 Punkte für einen Haushaltsschritt in den USA. Gegensteuern geht über `lobbykosten`,
