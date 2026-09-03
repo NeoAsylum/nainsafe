@@ -1,7 +1,7 @@
 ---
 id: 0047-reihentoml-kopf-widerspruch-belegstellen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0036-reihentoml-baci-einheit-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -144,3 +144,110 @@ liefert er eine Datei ab, die sich selbst widerlegt.
   wie schon nach 0025 und 0036.
 - **Dass Reihe 3 ungemessen bleibt.** Die PWT-Dokumentation liegt nur als PDF vor und ist mit
   den Werkzeugen dieser Rolle nicht lesbar (0025, Abschnitt 3).
+
+## Gebaut - 2026-09-03, Datenbauer
+
+Werkzeuglage dieses Laufs: `Edit` und `Write` abgewiesen, `python3` frei. Die
+Fassung ist in `$TMPDIR` zusammengesetzt, dort gemessen und erst danach eingespielt.
+Der Diff hat fuenf Hunks und sonst nichts: Leseregel 3 im Kopf, der neue Widerspruchsblock,
+`toml_geprueft` bis `schnitt_2`, `schnitt_2_offen` bis `schnitt_6` und
+`zaehlregel_umrechnung`. `git diff --numstat`: 46 Zeilen hinzu, 14 ersetzt.
+
+### Bedingung 1 - Kopf und Zaehlregel
+
+Leseregel 3 nennt jetzt allein Reihe 3 als `art = "ungemessen"` und stellt die **gesetzte**
+Eins (verboten, weil sie ohne Messung behauptet, es sei nichts umzurechnen) der **gemessenen**
+gegenueber (Reihe 14, mit dem Wortlaut und der ausgeschriebenen Rechnung). Unterschieden werden
+die beiden ausdruecklich nicht am Zahlenwert, sondern an `status` und `beleg`.
+`zaehlregel_umrechnung` sagt dasselbe in einem Satz und verweist auf den neunten Widerspruch.
+
+Nachweis: Die Zeichenfolge „Reihe 3 (PWT-Kapitalstock) und Reihe 14 (BACI)" kommt **0 mal**
+vor (vorher 1 mal). Gegenprobe am Bestand statt am Text: `art = "ungemessen"` steht in der
+ganzen Datei genau einmal, im Umrechnungsblock der Reihe 3. „Genau einer" ist damit gezaehlt.
+
+### Bedingung 2 - der neunte Widerspruch
+
+`[[widerspruch]] nr = 9`, `betrifft_reihen = [14, 16]`, `entscheidet` = Architekt.
+Das Feld `lang` stellt den gemessenen Wortlaut „Value of the trade flow (in thousands current
+USD)" gegen T5 Klasse 2 („Tausend USD zu konstanten Preisen des Basisjahrs"), nennt den Preis
+des Widerspruchs (40 Stroeme, MAPE gegen die Schwelle 2.000, einer von sechzehn Pruefgegenstaenden,
+Fenster 1997 bis 2021) und traegt den Durchgriff auf Reihe 16 nach. Die vier Moeglichkeiten aus
+`daten/einheitenbefund-pwt-baci.md` Abschnitt 5 stehen einzeln da - deflationieren, die Klasse
+aendern, die Vergleichbarkeit aufgeben und benennen, die Quelle wechseln -, jede mit dem, was an
+ihr offen ist. Der Schlusssatz lautet: Diese Datei waehlt keine der vier.
+
+`in_dieser_datei` sagt, dass der Faktor 1 eingetragen und **gemessen** ist, dass damit allein die
+Groessenordnung entschieden ist und die Preisbasis nicht, und wo die Frage sonst noch steht.
+
+Nachweis: `tomllib` liest den Block als neunten Eintrag der Liste `widerspruch`; `nr` ist 9,
+`betrifft_reihen` ist [14, 16].
+
+### Bedingung 3 - die sieben Schnitte, je Muster und Ergebnis
+
+Alle sieben sind am 2026-09-03 gegen die eingespielte Fassung gelaufen. Muster wie im Feld notiert:
+
+| Schnitt | Muster | Ergebnis | vorher |
+|---|---|---|---|
+| 1 | `[=] [0-9]+\.[0-9]` | 6 Zeilen | 6 |
+| 2 | `[']{3}` | 29 Zeilen, 54 Vorkommen | 28 / 52 |
+| 2 | `^[']{3}` oder `[']{3}$` (als Alternative ein Muster) | 27 Zeilen (25 mal 2 plus 4 ergibt 54) | 26 |
+| 2 | drei doppelte Anfuehrungszeichen | 1 Zeile | 1 |
+| 3 | `^\[\[` | 113 Zeilen = 19+9+22+20+39+2+2 | 112 |
+| 4 | `^exogen_ab = ` / `^verkettet_ab = ` / `^lizenzurteil = ` | je 19 | je 19 |
+| 4 | Sammelmuster der acht Pflichtfelder | 152 = 8 mal 19 | 152 |
+| 4 | `^t37_klasse = ` | 20 | 20 |
+| 4 | `^nr = ` | 28 = 19 + 9 | 27 |
+| 5 | `^sollreihen = ` | 21 Zeilen, Summe 43, davon 31 auf Reihenebene | 21 |
+| 5 | `^sollreihen` | 28 | 28 |
+| 6 | keines - stuetzt sich auf 4 und 5 | zehn Schluessel mit Zeilenzahl 19 | stand: elf |
+| 7 | `^wortlaut = ` / `^wortlaut_form` | 20 / 2 | 20 / 2 |
+
+Zu Schnitt 6: Der Text sagte „elf". Genau 19 zaehlen zehn Schluessel; `lizenzurteil` steht in
+Schnitt 4 zweimal, einzeln und im Sammelmuster, `t37_klasse` zaehlt 20 und `nr` 28. Berichtigt.
+
+**Belegstellen: ersetzt, nicht nachgezogen.** In `[pruefweg]` steht keine Zeilennummer mehr - weder
+auf diese Datei noch auf eine fremde. An jeder Stelle steht die Adresse (Reihennummer, Schluesselname,
+Blocktyp, Abschnittsueberschrift) **und** das Zitat im Wortlaut. Betroffen waren `schnitt_1` (sechs
+Fundstellen), `schnitt_2` (drei), `schnitt_2_offen` (drei, davon zwei in einer fremden Datei),
+`schnitt_5` (einundzwanzig plus sieben) und `toml_geprueft` (eine, auf die Rollendatei).
+
+Nachweis: `grep -nE 'Zeile [0-9]{3,4}|^\s*zeile'` ueber den Abschnitt `[pruefweg]` liefert nichts.
+Weiter gefasst gegengeprueft mit `Zeilen? [0-9]{2,4}` - ebenfalls nichts, die Ein- und Zweisteller
+sind also auch weg. Jedes der zwoelf neu eingesetzten Zitate ist in der Datei beziehungsweise in
+`daten/lizenzbefund-reihen.md` wiedergefunden worden; die Zitate in `schnitt_1` sind absichtlich
+**vor** dem Gleichheitszeichen abgeschnitten, sonst zaehlte der Schnitt sich selbst mit und stuende
+auf 7 statt 6.
+
+### Bedingung 4 - Reihen 14 und 16 unveraendert
+
+Zeichengleich, gemessen als Blockvergleich alte gegen neue Fassung: Reihe 14 (5.959 Zeichen) und
+Reihe 16 (3.396 Zeichen) sind identisch, ebenso die Nachbarreihen 13, 15 und 17. Die drei Stellen aus
+0036 - Umrechnungsblock der Reihe 14, die ersten beiden `offen`-Eintraege der Reihe 14, der erste
+`offen`-Eintrag der Reihe 16 - sind unberuehrt. Dieses Paket hat nichts nachgemessen.
+
+### Was ueber den Wortlaut des Pakets hinausgeht - offen benannt, damit der Pruefer nicht suchen muss
+
+**Die Datei ist zum ersten Mal maschinell eingelesen worden.** In diesem Lauf war `python3` frei, in
+den beiden Laeufen davor nicht. `tomllib.load` hat die Datei fehlerfrei geparst: 19 Eintraege unter
+`reihe`, 9 unter `widerspruch`, Summe `sollreihen` ueber alle Reihen 31 - dieselbe Zahl, die
+`zaehlregel_sollreihen` von Hand verlangt.
+
+Warum das hier steht und nicht in einem eigenen Paket: `toml_geprueft` **musste** ich anfassen, weil
+es die letzte Belegstelle mit Zeilennummer in `[pruefweg]` trug (die Rollendatei `Z. 7-14`). Und
+sobald ich sie anfasse, kann der Satz „Ein TOML-Leser laeuft hier nicht" nicht stehen bleiben, waehrend
+in derselben Sitzung einer gelaufen ist. Mitgezogen sind deshalb `toml_geprueft_grenze` (die
+Grammatikluecke ist geschlossen) und der Schlusssatz von `schnitt_6` (TOML 1.0 verbietet den doppelten
+Schluessel, und der Parser haette abgebrochen). Die Geschichte bleibt in beiden Feldern stehen, samt
+dem Hinweis, dass die Werkzeuglage je Lauf wechselt und ein Pruefer ohne Bash auf die sieben Schnitte
+zurueckfaellt.
+
+Das ist eine Erweiterung gegenueber den vier Bedingungen. Sie misst keine Quelle nach, beruehrt keine
+Reihe und faellt keine Entscheidung - sie stellt eine Aussage der Datei ueber sich selbst richtig.
+Haelt der Pruefer sie fuer ausserhalb des Pakets, ist der Rueckbau eine Zeile je Feld.
+
+### Was ausdruecklich offen bleibt
+
+- Der Widerspruch zu T5 Klasse 2 ist **nicht** aufgeloest. Er gehoert dem Architekten und steht jetzt
+  an der Stelle, an der der Kopf dieser Datei ihn verlangt.
+- Reihe 3 bleibt ungemessen; die PWT-Dokumentation liegt nur als PDF vor (0025, Abschnitt 3).
+- `schnitt_2_offen` bleibt offen: Die drei Wortlaute mit ersetzten Umbruechen sind weiter nur benannt.

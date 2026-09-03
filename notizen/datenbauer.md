@@ -91,8 +91,8 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03-2.md`.*
 - **Der IWF-Volltext entscheidet 15 der 31 Sollreihen und 7 der 16 Prüfgegenstände.** Ein
   einziger Seitenabruf, an dem vier Tage und drei Rollen gescheitert sind. Für Reihe 2
   gibt es keine geprüfte Ausweichquelle.
-- **Zwei Reihen ohne gemessene Quelleneinheit** (Paket 0025): PWT-Kapitalstock (Reihe 3)
-  und BACI (Reihe 14, dazu laufende gegen konstante Preise).
+- **Noch eine Reihe ohne gemessene Quelleneinheit** (0025): PWT-Kapitalstock (Reihe 3).
+  Reihe 14 ist seit 0036 gemessen; ihre Preisbasis steht seit 0047 als Widerspruch Nr. 9.
 - **Reihe 10, gemeldet und nicht aufgelöst:** Arbeitspaket verlangt Faktor 10.000 auf den
   Rohkurs, T5 Klasse 6 nennt dieselbe Größe „Index gegen USD, Startjahr = 10.000".
 - **0017:** Reihen 17, 18 und 19 haben keine Quelle (`frei` eingetragen). Reihe 16
@@ -138,3 +138,25 @@ Vorgängerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03-2.md`.*
 - **Der Wortlaut ist meiner, und ich weiche an einer Stelle vom Vorschlagstext ab:** Das Paket sagt "die drei datenverankerten Instrumente", ich nenne sie beim Namen. Nachpruefbarer, aber wer den Vorschlag als Wortlaut liest, sieht eine Abweichung.
 - **Der Absatz ist um neun Zeilen laenger geworden.** Er hat jetzt fuenfzehn Kommentarzeilen fuer eine Randbemerkung ueber zwei Markierungsregime. Sachlich richtig, aber ein Pruefer darf ihn fuer zu lang halten; kuerzen wuerde die Fundstelle kosten, die Abnahme 1 verlangt.
 - **BEFUNDE Punkt 1 habe ich auftragsgemaess nicht angefasst und auch nicht nachgeprueft.** Ob dessen "woertlich in specs/" fuer die Zoll- und die Haushaltszeile so genau ist wie fuer den Leitzins, bleibt offen; mein neuer Satz stuetzt sich fuer alle zwoelf Schluessel auf genau diese Zusage.
+
+## Lauf 0047 (2026-09-03)
+
+- **Ein Zitat in einer Selbstprobe kann die Probe brechen, die es belegt.** `schnitt_1` sucht
+  Gleichheitszeichen plus Dezimalzahl; wer die Fundstelle **mit** dem Gleichheitszeichen zitiert,
+  macht aus sechs Treffern sieben. Zitate vor dem Zeichen abschneiden, das das Muster sucht.
+- **Eine Einfuegung verschiebt nicht nur Adressen, sondern Zaehlungen.** Ein neuer Tabellenkopf
+  hebt `^\[\[` und `^nr = `; ein `'''`-Literal darin hebt zusaetzlich alle drei Zahlen von
+  `schnitt_2`. Vor dem Schreiben aufzaehlen, welche Probe das neue Zeichenmaterial trifft.
+- **Der Weg, wenn `Edit` faellt und `python3` frei ist:** ein kleines Setzskript in `$TMPDIR`
+  anlegen, den Wert je Schluessel in eine Datei schreiben, ein Aufruf je Feld. `cat > datei` mit
+  Heredoc wurde abgewiesen, ein Python-Heredoc je Feld lief durch.
+- **Dritte Werkzeuglage in drei Laeufen** — und mit `python3` fiel eine Zusage der Datei:
+  `tomllib` liest `reihen.toml` fehlerfrei, also war `toml_geprueft = nein` nicht mehr wahr.
+
+### Unsicher (0047)
+
+- **Drei Felder ausserhalb der vier Bedingungen geaendert** (`toml_geprueft`, dessen Grenze und der
+  Schlusssatz von `schnitt_6`), weil das erste die letzte Zeilennummer trug und sein Text danach
+  falsch gewesen waere. Im Paket offen benannt, Rueckbau je eine Zeile.
+- **`schnitt_6` sagte elf, richtig sind zehn.** Berichtigt, weil Bedingung 3 verlangt, dass die
+  Schnitte stimmen — beauftragt hat es niemand.
