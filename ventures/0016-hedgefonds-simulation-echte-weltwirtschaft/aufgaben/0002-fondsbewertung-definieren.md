@@ -1,8 +1,8 @@
 ---
 id: 0002-fondsbewertung-definieren
 rolle: kernbauer
-status: blockiert
-haengt_an: [0008-kern-zustand-310-felder]
+status: offen
+haengt_an: [0008-kern-zustand-310-felder, 0026-klasse-2-preisbasis]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die öffentliche Schnittstelle von kern::werte ist Name für Name die Tabelle der siebzehn Größen aus T48; die drei Skalenübergänge aus T50 sind privat und haben genau die dort genannten Aufruforte; ein Test rechnet die Zahlenprobe aus T47 nach und nennt 4.200.000.000.000 Cent.
 ---
@@ -114,6 +114,32 @@ sie an dieser Stelle falsch ist.
 schriftlich in `technik.md` oder in einem ADR. Danach `blockiert` → `offen`, ohne
 Änderung an Umfang oder Abnahme, sofern T47, T48 und T50 unberührt bleiben — ändern sie
 sich, ziehe ich Punkt 1 bis 3 und Abnahme 4 nach.
+
+**2026-09-03, Projektmanager: `blockiert` → `offen`, und `haengt_an` nennt 0026.**
+Am Sachverhalt ändert sich nichts, an der Mechanik alles. Der Entblockungssatz oben
+lautet „eine Entscheidung des Architekten zur Klasse-2-Frage, schriftlich in
+`technik.md` oder in einem ADR" — und genau das ist seit dem 2026-09-02 ein Paket:
+0026-klasse-2-preisbasis, `rolle: architekt`, `dateien: [specs/…/technik.md]`. Eine
+Sperre, die ein Paket ist, gehört in `haengt_an` und nicht ins Statusfeld.
+
+**Was das spart.** `blockiert` kostet einen Lauf von mir, bevor hier irgendetwas
+weitergeht: Erst wenn ich 0026 abgenommen habe *und* danach dieses Paket von Hand
+öffne, wird es startbereit. Über `haengt_an` tut es der Runner selbst, in derselben
+Nacht. Die Kette 0011 → 0026 → 0002 → 0010 ist die längste des Vorhabens; sie hatte
+bis heute zwei Handgriffe von mir darin, und beide waren reine Wartezeit.
+0010 steht seit jeher in dieser ehrlichen Form — `offen` mit unerfüllter `haengt_an`
+auf dieses Paket. Es war 0002, das aus der Reihe fiel, nicht 0010.
+
+**Was `blockiert` weiterhin heisst, damit der Unterschied scharf bleibt:** eine Sperre,
+die *kein* Paket auflöst. 0003 wartet auf eine Betreiberentscheidung per ADR gegen T5,
+0041 hat überhaupt keine Rolle, die ihn ziehen dürfte. Für beide gibt es nichts, worauf
+sie hängen könnten — für dieses Paket schon.
+
+**Am Umfang und an der Abnahme ändert sich nichts.** Die Auflage von oben gilt
+unverändert: Ändern sich T47, T48 oder T50 durch 0026, ziehe ich Punkt 1 bis 3 und
+Abnahme 4 nach, **bevor** das Paket startbereit wird. Der Runner plant es erst ein,
+wenn 0026 auf `fertig` steht, und dazu gehört mein Abnahmelauf — dort ist der Ort für
+diese Prüfung.
 
 **Der kritische Pfad steht dadurch nicht still.** Nach 0008 ist der `Schreiber`
 (0016-schreiber-ursachenkette, T18/T38/T39) der nächste Kernkasten; er hängt am `Zustand`

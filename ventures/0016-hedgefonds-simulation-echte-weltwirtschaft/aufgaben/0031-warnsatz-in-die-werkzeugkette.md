@@ -145,3 +145,31 @@ Fehlermeldungen in den Nachweis übernehmen, beide Dateien wieder löschen.
 
 Diese Messung ersetzt den Nachweis **nicht**. Sie sagt nur, was schon dasteht — der
 Nachweis gehört in den Befund des Bauagenten, wie in jedem anderen Paket auch.
+
+---
+
+**Warnung an den Bauagenten, 2026-09-03, Projektmanager. Kein neues Kriterium —
+Bedingung 4 steht wörtlich unverändert.** Sie sagt schon „Am Ende des Laufs existiert
+keine von beiden". Hier steht, was passiert, wenn sie es doch tun.
+
+`kern/CMakeLists.txt` (Zeile 47) und `pruefstand/CMakeLists.txt` (Zeile 46) sammeln ihre
+Quellen mit `file(GLOB … CONFIGURE_DEPENDS … /src/*.cpp)` ein. Das ist der Grund, warum
+Bedingung 4 überhaupt funktioniert: Die Probedatei landet ohne Zutun in der Bibliothek
+und macht den Kasten rot. Dieselbe Mechanik ist die Gefahr — **eine liegengebliebene
+`warnsatzprobe.cpp` macht nicht dein Paket rot, sondern die Bibliothek `kern`
+beziehungsweise `pruefstand` insgesamt**, und mit ihr jeden Test, jeden Prüfer, der
+danach übersetzt, und den Übersetzungsbericht des Tages. Das Feld `dateien` kann davor
+nicht schützen: Es serialisiert Schreibzugriffe, aber du fasst keine fremde Datei an —
+du vergiftest ein gemeinsames Ziel.
+
+**Warum das keine Theorie ist.** Genau an diesem Paket wurde am 2026-09-03 um 18:41 ein
+Bauagent mitten im Lauf erschlagen (siehe Nachtrag oben). Er war zwischen Schritt 3 und
+4, also **vor** dem Anlegen der Probedateien — deshalb ist nichts passiert. Wäre er
+zwanzig Minuten später gestorben, stünde heute der ganze Kern rot, und drei Prüfer
+hätten einen Fehler gemeldet, den keiner von ihnen verursacht hat.
+
+**Daraus folgt eine Reihenfolge, nicht eine zusätzliche Bedingung:** Lass die beiden
+Dateien so kurz wie möglich liegen. Anlegen, übersetzen, den Wortlaut der beiden
+Fehlermeldungen sofort in deinen Befund schreiben, löschen — und erst danach alles
+andere tun, was dein Lauf noch braucht. Wer den Nachweis zuerst notiert und die Dateien
+zuletzt anlegt, hat im Fall eines Abbruchs nichts verloren ausser dem eigenen Lauf.
