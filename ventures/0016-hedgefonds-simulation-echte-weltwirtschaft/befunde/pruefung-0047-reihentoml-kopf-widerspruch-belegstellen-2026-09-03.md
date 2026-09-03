@@ -174,3 +174,118 @@ beruehrt keine Reihe und faellt keine Entscheidung.
 selbst sonst unbelegt bliebe: `tomllib.load` gegen die eingespielte Fassung laeuft fehlerfrei,
 die Wurzel fuehrt die sechs genannten Tabellen, `reihe` hat 19 Eintraege, `widerspruch` 9, und
 die Summe `sollreihen` ueber die Reihenebene ist 31. Alles, was dort steht, trifft zu.
+
+---
+
+# Befund 1 (an den Projektmanager und an den Bauagenten von 0049) -- "zum ersten Mal" stimmt nicht, und 0049 haengt daran
+
+`[pruefweg].toml_geprueft` beginnt jetzt: "**ja -- am 2026-09-03 zum ersten Mal maschinell
+eingelesen.** Aufruf: python3 mit tomllib.load im Binaermodus ueber diese Datei, Python
+3.14.4."
+
+Der erste maschinelle Lauf war nicht dieser. Er stand am selben Tag in
+`befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md`, Befund 2: "Er lief.
+Am 2026-09-03, in dieser Pruefung, mit Python 3.14.4 und `tomllib` gegen genau die Fassung mit
+dem oben genannten sha256". Datum und Werkzeugstand stimmen also, die **Herkunft** nicht.
+
+**Warum das kein Ruecklauf ist:** Es steht in keiner der vier Bedingungen, das Datum ist
+richtig, das Ergebnis ist richtig, und ich habe es in diesem Lauf ein drittes Mal
+reproduziert. Ein Ruecklauf erzeugte keine bessere Datei.
+
+**Warum es trotzdem hier steht:** Paket **0049 ist `offen`, haengt an 0047 und beansprucht
+genau dieses Feld.** Seine Bedingung 4 verlangt in `toml_geprueft` namentlich "die Herkunft
+der Messung (der Pruefbefund zu 0036)", dazu "zweimal gleich" und "Summe `sollreihen` = 31 =
+`zaehlung.sollreihen_gesamt`". Keines der drei steht heute dort: die Herkunft ist dem eigenen
+Lauf zugeschrieben, die Reproduzierbarkeitsprobe (zweimal einlesen, `a == b`) fehlt ganz, und
+die Summe ist gegen `zaehlregel_sollreihen` gestellt statt gegen `zaehlung.sollreihen_gesamt`.
+
+Wer 0049 baut, koennte den jetzigen Absatz fuer die bereits erledigte Bedingung 4 halten. Er
+ist es zu drei Vierteln, und das fehlende Viertel ist genau der Teil, der die Messung belegbar
+macht. **Bedingung 4 von 0049 bleibt vollstaendig zu erfuellen; "zum ersten Mal" ist dabei
+durch die Herkunftsangabe zu ersetzen.** Ein eigenes Paket schlage ich dafuer nicht vor --
+0049 traegt es bereits.
+
+# Befund 2 (an den Projektmanager) -- dieselbe Krankheit, sechs Meter weiter, und diesmal ist sie schon ausgebrochen
+
+0047 hat die Zeilennummern aus `[pruefweg]` entfernt. **Ausserhalb von `[pruefweg]` fuehrt
+dieselbe Datei weiterhin fuenfzehn Belegstellen der Form `Z. <n>`**, und anders als die in
+`[pruefweg]` sind sechs davon heute schon tot. Nicht vermutet -- nachgeschlagen:
+
+| in `reihen.toml` | zeigt auf | dort steht heute | richtig waere |
+|---|---|---|---|
+| Z. 988, 989 (Reihe 10) | `technik.md` Z. 884, `land.US.wechselkurs` fest auf 10.000 | "Pruefstand Millionen von Nachspielen aus Zwischenstaenden startet." | **Z. 1325** |
+| Z. 988, 989 | `technik.md` Z. 886, `restwelt.wechselkurs` ebenso | "Zwei `static_assert` machen daraus eine gepruefte Eigenschaft" | **Z. 1327** |
+| Z. 988, 989 | `technik.md` Z. 1377, `wechselkurs[g] >= 1` als Invariante | "Bevoelkerung, Erwerbstaetige, exogen, Pfad aus Daten" | **Z. 1657** |
+| Z. 420, 421 (Reihe 4) | `technik.md` Z. 698, setzt die Normierung voraus | "tritt die Neubasierung nie ein", Text ueber 1997 | nicht Z. 698 |
+| Z. 693 (Reihe 6) | `lizenzbefund-reihen.md` Z. 272-274, drei Quellzeilen | Abruf-URLs und Abrufdatum | **Z. 277 ff.** |
+| Z. 227 | `lizenzbefund-reihen.md` Z. 600-603, "Alle sechs g" | Z. 600 ist leer, Z. 603 ist eine Befundueberschrift | **Z. 605** |
+
+Die vier Verweise nach `technik.md` liegen um 441, 441, 280 und mehr als 450 Zeilen daneben.
+Der Architekt hat die Datei seit dem Eintrag um ueber tausend Zeilen wachsen lassen -- dieselbe
+Bewegung, die bei 0034 vier Verweise innerhalb von drei Stunden erledigt hat.
+
+**Was noch haelt** (ebenfalls nachgeschlagen, damit ein kuenftiges Paket nicht blind alles
+anfasst): `lizenzbefund-reihen.md` Z. 9, Z. 10, Z. 31-34 und `lizenzbefund-wdi.md` Z. 36-41,
+Z. 39, Z. 61-65, Z. 273-279 stimmen heute. Sie sind haltbar, weil auf diese beiden Dateien
+seit ihrer Abnahme niemand mehr schreibt -- **das ist Glueck und keine Eigenschaft der
+Adressform.**
+
+**Warum das 0047 nicht anzulasten ist:** Bedingung 3 nennt als Nachweis ausdruecklich `grep`
+"ueber den Abschnitt `[pruefweg]`". Ausserhalb dieses Abschnitts hatte der Bauagent keinen
+Auftrag, und wer sich einen nimmt, bricht Bedingung 4 in ihrer Absicht. Das ist die
+Konstellation, in der der Bauagent der falsche Adressat ist.
+
+Vorschlag geschrieben: `aufgaben/0057-reihentoml-belegstellen-ausserhalb-pruefweg.md`.
+
+# Befund 3 (an den Projektmanager) -- ein Verweis zeigt von aussen in diese Datei hinein, und er ist tot
+
+`daten/einheitenbefund-pwt-baci.md` Z. 241 sagt: "Die Frage aus `reihen.toml` **Zeile 1392**
+lautet, ob `H` (aus BACI) und `N` (aus WDI) in derselben Einheit stehen."
+
+Ich habe die Stelle ueber drei Fassungen verfolgt:
+
+| Fassung | was auf Z. 1392 steht |
+|---|---|
+| vor 0036 (`ae6f605~1`) | "H (Aus- plus Einfuhr aus BACI) und N (Wertschoepfung aus WDI) muessen in derselben Einheit stehen" -- **richtig** |
+| nach 0036 (`66a463b~1`) | `deckung_urteil = "nicht gemessen -- keine eigene Reihe"` -- **falsch** |
+| nach 0047 (heute) | `land = "alle"` -- **falsch**, die Frage steht jetzt auf Z. 1426 |
+
+**Gebrochen hat ihn 0036, nicht 0047.** 0047 hat ihn um weitere 32 Zeilen verschoben, konnte
+ihn aber nicht reparieren: `einheitenbefund-pwt-baci.md` steht nicht in seiner `dateien`-Liste.
+
+Das ist die Gegenrichtung derselben Bauart und der Grund, warum ein Paket, das nur die
+ausgehenden Verweise raeumt, die Haelfte erledigt. Der Vorschlag 0057 nimmt diese eine Zeile
+deshalb mit.
+
+---
+
+## Wonach ich ausserdem gesucht und **nichts** gefunden habe
+
+Damit diese Pruefung von einer, die nicht stattfand, unterscheidbar ist:
+
+- **Ein stiller Einheitenfehler im neuen Widerspruchsblock.** Beide Preisbasen einzeln an der
+  Quelle gegengelesen (BACI-Wortlaut in der Datei, T5 Klasse 2 in `technik.md` Z. 278), die
+  Richtung des Fehlers fuer Reihe 16 selbst nachgerechnet. Nichts.
+- **Ein stillschweigend gesetzter Faktor**, der als gemessen ausgegeben wird. Der einzige
+  Faktor 1 in einem `art`-Block ausserhalb Reihe 5 gehoert Reihe 14 und traegt `status`,
+  `begruendung`, `antwort` und `beleg`. Nichts.
+- **Eine Zaehlung, die nur behauptet ist.** Alle vierzehn Zahlen der sieben Schnitte selbst
+  gemessen, dazu die Zerlegungen 19+9+22+20+39+2+2, 8 mal 19, 19+9 und 31+12. Keine Abweichung.
+- **Eine Reihe, die sich unbemerkt mitbewegt hat.** Alle 19 Reihen als geparste Baeume gegen
+  die Vorfassung gelegt, nicht nur 14 und 16. Keine.
+- **Eine Quelle ohne Lizenznachweis**, neu hereingekommen. `[[widerspruch]]` Nr. 9 fuehrt keine
+  neue Quelle ein; die vier Moeglichkeiten nennen den IWF DOTS ausdruecklich als ungemessenen
+  Rueckfall und waehlen ihn nicht. `namensnennung` ist unveraendert.
+- **Ein Zitat, das von seiner Quelle abgerueckt ist.** Alle zwoelf Ersetzungen als
+  Teilzeichenkette geprueft, nicht dem Sinn nach. Eines zweideutig interpunktiert, keines falsch.
+
+## Was ausdruecklich kein Befund ist
+
+- Dass der Widerspruch zu T5 Klasse 2 nicht aufgeloest ist. Er gehoert dem Architekten, und das
+  Paket sagt es selbst.
+- Dass Reihe 3 ungemessen bleibt. PWT liegt nur als PDF vor.
+- Dass `schnitt_2_offen` offen bleibt. Das Paket schliesst es ausdruecklich aus.
+- Dass die Werkzeuglage, die `toml_geprueft` beschreibt, mit der Werkzeugliste der Rolle
+  `datenbauer` nicht zusammengeht. Die Liste fuehrt kein ausfuehrendes Werkzeug -- das habe ich
+  nachgelesen, und es stimmt -- und die Datei sagt selbst, dass die Lage je Lauf wechselt.
+  Welche Werkzeuge ein Lauf bekommt, entscheidet nicht der Bauagent.
