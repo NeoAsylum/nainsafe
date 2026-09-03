@@ -93,6 +93,21 @@ def main() -> int:
     if tag and tag[1]:
         print(f"\n  Schwerster Tag: {tag[0]} Läufe, {tag[1]:.2f} $ Gegenwert")
 
+    # Der Spielraum im laufenden Abo-Fenster. Diese Zahl fehlte bis zum 2026-09-03
+    # ueberall, und die Bremse rechnete sie nebenbei falsch -- ueber sieben rollende
+    # Tage statt ab Montag 10:00. Sichtbar war der Fehler dadurch nirgends.
+    from lauf import WOCHENGRENZE_USD, wochenfenster, wochenverbrauch
+    v2 = sqlite3.connect(DB)
+    try:
+        verbraucht = wochenverbrauch(v2)
+    finally:
+        v2.close()
+    rest = WOCHENGRENZE_USD - verbraucht
+    anteil = verbraucht / WOCHENGRENZE_USD if WOCHENGRENZE_USD else 0
+    print(f"\n  Abo-Woche ab {wochenfenster().replace('T', ' ')} UTC (Montag 10:00 Ortszeit)")
+    print(f"    {balken(min(anteil, 1.0))}  {verbraucht:.1f} von {WOCHENGRENZE_USD:.0f} $")
+    print(f"    Spielraum: {rest:.1f} $ — das ist die Zahl, die wirklich bindet.")
+
     print("\n\033[1mWas es kostet\033[0m")
     print("─" * 72)
     pro_tag = ABO_MONAT_EUR / TAGE_IM_MONAT

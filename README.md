@@ -49,11 +49,17 @@ ein Agent braucht, erzeugt stattdessen der Runner und legt sie als Datei hin.
 ## Die Läufe
 
 ```
-03:00 täglich    agents/tageslauf.py    fährt den Nachtlauf, bis das Tagesbudget steht
-07:00 sonntags   agents/wochenlauf.py   Portfolio, Verbesserung, Digest
-alle 30 min      agents/dashboard.py    ops/dashboard.html
-03:30 / 03:45    Push und Bundle
+stündlich        agents/tageslauf.py       fährt den Nachtlauf, bis das Tagesbudget steht
+stündlich        einrichtung/sichern.sh    Push, und ein Bundle je Tag
+07:00 sonntags   agents/wochenlauf.py      Portfolio, Verbesserung, Digest
+alle 30 min      agents/dashboard.py       ops/dashboard.html
 ```
+
+Stündlich, nicht um 03:00: Der Windows-Wirt darf schlafen, und cron holt nichts nach.
+Am 2026-09-03 schlief er von 21:30 bis 15:00 und ein ganzer Fabriktag fiel lautlos aus.
+Ein stündlicher Versuch ist deshalb ein **Nachholmechanismus** und kein höherer Takt:
+`ops/tageslauf.sperre` lässt nur einen zugleich zu, und ist das Tagesbudget erreicht,
+endet der Versuch nach null Durchgängen ohne einen einzigen Agentenaufruf.
 
 `nachtlauf.py` entscheidet selbst, was ansteht: eine Entwurfsrunde, solange der Entwurf
 nicht abgenommen ist — sonst `baulauf.py`, der **Arbeitspakete statt Rollen** fährt.
