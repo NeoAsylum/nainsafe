@@ -1,104 +1,101 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-03 15:10. Erster Bericht nach der Umstellung auf **einmal je Nacht**
-(Betreiber, 2026-09-02 19:46). Abgedeckt: 2026-09-02 19:33 bis 2026-09-03 14:54.
+Stand 2026-09-03 23:55. Abgedeckt: 2026-09-03 15:10 bis 23:43 — der Nachtlauf nach dem
+Ausfall des Wirts und nach acht Betriebs-Commits des Betreibers (18:41–19:08).
 
 ## Wo das Vorhaben steht
 
-**Der Kern rechnet eine Runde:** `schritt.cpp` trägt 26.697 Byte und `schritt_probe` läuft
-grün — von neun Kernkästen ist nur noch `werte.hpp` (78 Byte) ein Platzhalter. **Die
-Vorgabe ist eingeholt** — der Architekt hat 0011 am 2026-09-02 20:05 geliefert, `technik.md`
-schreibt C++20 vor und nennt Rust nur noch als verworfene Alternative; die Divergenz, die
-ich sechs Pläne lang gemeldet habe, ist erledigt. **Aus 32 Paketen sind 43 geworden** (21
-fertig, 7 gebaut, 7 offen, 2 blockiert, 6 Vorschläge), und der Rückstand wächst schneller,
-als er abgearbeitet wird.
+**Aus 43 Paketen sind 61 geworden:** 37 fertig, 14 offen, 6 gebaut, 2 Vorschläge, 2
+blockiert. In achteinhalb Stunden wurden 16 Pakete abgenommen und 18 neue angelegt — der
+Rückstand wächst weiter schneller, als er schrumpft. **Die eine Zahl steht dabei den
+dritten Plan in Folge still.** Der Betreiber hat in derselben Nacht die Wochenbremse
+repariert (sie rechnete gegen die Vorwoche und drosselte die Fabrik um 510 $) und den Takt
+auf stündliches Nachholen umgestellt; beides wirkt, der Durchsatz ist sichtbar gestiegen.
 
 ## Der Engpass
 
-**Die Prüfung. Sieben gebaute Pakete stehen vor vier Prüfplätzen** (`GLEICHZEITIG = 4`,
-`agents/baulauf.py:80`), und der ganze übrige Rückstand hängt hinter ihnen.
+**Vier Pakete mit bestandenem Urteil stehen weiter auf `gebaut` und verstopfen damit die
+gesamte Prüfwarteschlange.**
 
-Der Trockenlauf des nächsten Durchgangs (heute 12:57) zeigt es unmittelbar:
-**vier von vier Prüfplätzen belegt, einer von vier Bauplätzen.** Drei Bauagenten haben
-nichts zu tun. Sechs der sieben offenen Pakete hängen an einem Paket, das `gebaut` ist und
-auf sein Urteil wartet — und **fünf der sechs Vorschläge ebenso.** Der komplette Rückstand
-ist auf eine einzige Warteschlange zusammengelaufen.
+0040, 0049, 0053 und 0058 tragen `urteil: geprueft` — drei davon zweimal, weil sie in
+derselben Nacht ein zweites Mal geprüft wurden. Nur der Projektmanager darf `geprueft` →
+`fertig` ziehen (`agents/rollen/projektmanager.md:95`). Die Urteile fielen 22:58–23:07, er
+lief um 23:18 — und hat in diesem Lauf eine einzige Datei angefasst: ein neues Paket.
 
-Das ist zugleich die teuerste Stelle. `einrichtung/bauleistung.py` (heute gerechnet, seit
-2026-09-01 15:00): 113 Läufe, 604,60 $, davon **40 % Prüfung**. Der `daten-pruefer` allein
-kostet 135,60 $ in 24 Läufen — mehr als jeder Bauagent.
+Die Folge ist nicht bloß Nacharbeit. `reviewbereit()` sortiert nach der Zahl der Rückläufe,
+das am wenigsten geprüfte zuerst (`agents/baulauf.py:264`), und nimmt vier. Die vier haben
+null Rückläufe und belegen damit dauerhaft alle vier Prüfplätze. **0011 und 0027 haben je
+einen Rücklauf und kommen deshalb nie an die Reihe.** 0011 wurde am 20:18 neu geliefert und
+hat seither fünf Durchgänge ohne ein einziges Urteil überstanden; 0027 wartet seit dem
+2026-09-02 21:10, über vierundzwanzig Stunden. *Der Projektmanager schreibt, 0011 „steht im
+Review" — es steht nicht darin; der Trockenlauf von 23:43 nennt die vier anderen.*
+
+An diesen beiden hängt fast der ganze Rückstand: **0011 blockiert sechs der vierzehn
+offenen Pakete** (0026, 0051, 0052, 0043 direkt; 0002 und 0010 darüber), **0027 drei**
+(0044, 0048, 0056). Elf von vierzehn offenen Paketen warten hinter den sechs gebauten.
+Startbereit sind genau zwei.
+
+**Der Ausweg kostet einen Lauf:** Setzt der Projektmanager die vier auf `fertig`, sind 0011
+und 0027 die einzigen in der Schlange und bekommen im nächsten Durchgang ihr Urteil.
 
 ## Was quer liegt
 
-- **Vier Vorschläge, zwei Nummern.** `0039` und `0040` gibt es je zweimal
-  (`0039-parameterdatei-indexbegruendung` / `0039-zollzeile-konjunktursockel`,
-  `0040-kernanker-klassenzuteilung` / `0040-t48-groessen-gegenkraft-5`). Die
-  `haengt_an`-Verweise tragen, weil sie den vollen Namen nennen; meine Vorrangliste und
-  jede mündliche Rede über „0039" trägt nicht mehr. Vier Gewerke haben gleichzeitig
-  vorgeschlagen und keines konnte die Nummer des anderen sehen.
-- **Die Kette zum letzten Kernkasten hängt ganz am Urteil zu 0011:** 0011 (Prüfung) → 0026
-  (Klasse-2-Preisbasis) → 0002 (`werte`) → 0010. 0002 ist ausdrücklich *nicht* wegen eines
-  Fehlers blockiert, sondern weil seine Vorgabe an der Stelle in Revision ist, die es
-  abschreiben soll.
-- **Vorschlag 0041 kann von keinem Gewerk gebaut werden.** Er ändert `agents/baulauf.py`
-  (Zeile 116 findet `CMakeLists.txt` in ignorierten `bau/`-Verzeichnissen — damit hängt der
-  Übersetzungsbericht an unversioniertem Text). Keine der 43 Aufgaben darf `agents/`
-  schreiben. Siebter Fall der vom Betreiber benannten Fehlerklasse, und der erste ohne
-  zuständige Hand.
-- **Die Nacht vom 2026-09-02 steht in keinem Betriebslog** — `ops/nachtlauf.log` endet
-  08:17, die elf Läufe von 19:33 bis 21:23 sind nur über `git log` rekonstruierbar.
-  Unverändert: 18 `.tmp`-Dateien im Repo.
+- **Die Sortierregel hat ihr eigenes Spiegelbild erzeugt.** Sie kam am 2026-09-02, weil
+  0009 und 0015 dreimal zurückkamen und 0023–0025 aushungerten. Jetzt hungert sie aus, was
+  einmal zurückkam. Beide Male dieselbe Lücke: Ein Paket verlässt die Schlange nicht von
+  selbst, sondern nur, wenn sein Urteil nachgezogen wird.
+- **Drei Baurollen fehlt der Satz „Setze `status: gebaut`"** — `architekt`,
+  `spielentwerfer`, `testentwickler` (nachgemessen: 0 Treffer, bei `kernbauer` und
+  `datenbauer` je 1). Der Projektmanager trägt jeden dieser Übergänge von Hand und meldet
+  es als achten Fall der vom Betreiber benannten Fehlerklasse. `agents/rollen/` darf kein
+  Gewerk schreiben.
+- **0041 ist jetzt mir zugewiesen** (`rolle: geschaeftsfuehrer`) und ändert
+  `agents/baulauf.py`. Ich schreibe keinen Code, und `geschaeftsfuehrer` steht nicht in
+  `BAUROLLEN` — der Runner plant es nie ein. Der Befund selbst ist eingetreten: Der heutige
+  Übersetzungsbericht meldet `manifeste: 4`, und das vierte ist
+  `pruefstand/bau/pruefung-0019/CMakeLists.txt`, ein unversioniertes Erzeugnis. **Die elf
+  grünen Tests unter „Der Compiler hat gesprochen" stammen daraus, nicht aus dem Kern.**
+- Unverändert 18 `.tmp`-Dateien im Repo, dazu `aufgaben/.kopf.tmp` und `.paket.tmp` —
+  Schaden vom Projektmanager mit null gemessen, `baulauf.py:215` liest nur `*.md`.
 
 ## Was der Betreiber entscheiden muss
 
-**Die Rohdaten — zum zweiten Mal, mit der Zahl, die mir beim ersten Mal fehlte.**
-`…/daten/` enthält nach elf Bauläufen fünf Textbefunde und `reihen.toml`. Die Datei sagt
-über sich selbst: *„Sie enthaelt keine Datenzeile."* Das stimmt für das ganze Verzeichnis.
+**Wofür die letzten 648,6 $ der Abo-Woche ausgegeben werden.** Verbraucht sind 951,4 von
+1.600 $; das Fenster setzt Montag 2026-09-07 10:00 zurück. Die letzten fünf Stunden kosteten
+330,9 $. Bei der Tagesgrenze von 350 $ (`agents/lauf.py:TAGESGRENZE_USD`, Tageslauf 350) ist
+die Woche **Samstagfrüh leer** — und damit stillgelegt, bevor das Wochenende beginnt.
 
-Was das gekostet hat: `datenbauer` 93,30 $ und `daten-pruefer` 135,60 $ — zusammen
-**228,90 $, also 38 % der gesamten Bauphase, für Arbeit über Daten, die niemand geladen
-hat.** Die Arbeit ist nicht verschwendet — Lizenz-, Deckungs- und Einheitenbefunde
-mussten vor dem Laden entstehen. Aber das Gewerk kann von allein nicht aufhören: Vier der
-sieben offenen und zwei der sechs vorgeschlagenen Pakete sind wieder Datenbau, und der
-nächste Schritt braucht eine Hand, die herunterlädt. Kein Gate — `daten.md` nennt für alle
-vier tragenden Quellen ausdrücklich keine Registrierung und kein Abonnement.
+- **A — laufen lassen wie jetzt.** Zwei volle Nächte, danach zwei Tage Stillstand.
+- **B — Tagesgrenze für den Rest der Woche auf ~180 $.** Die Fabrik läuft bis Montag durch.
 
-- **A — der Runner bekommt einen Ladeschritt.** Einmal Arbeit, danach hat jeder Datenbauer
-  echte Zeilen.
-- **B — der Betreiber lädt die vier Quellen einmal von Hand** nach `…/daten/roh/`.
+**Empfehlung B**, aus einem Grund: Eine Entscheidung, die Sie am Samstag treffen — etwa die
+Rohdaten zu laden —, kann in Fassung A in dieser Woche nicht mehr wirken. Dazu kommt, dass
+mehr Tempo derzeit nicht mehr Fortschritt heißt: In der vergangenen Nacht sind 18 Pakete
+entstanden und 16 abgenommen worden, während die eine Zahl stillstand.
 
-**Weiter Empfehlung B**, eine Viertelstunde: Sie beantwortet die Frage, die A voraussetzt
-— ob die Quellen so aussehen, wie `daten.md` sie beschreibt. *Der Betreiber hat meinen
-Output vom 2026-09-02 gelesen und darauf geantwortet (`45041d7`, 19:46) — aber auf die
-Berichtstaktung, nicht auf diese Frage. Ich behandle sie nicht als abgelehnt, sondern als
-offen.*
-
-**Zweitens, kleiner: die Prüfplätze.** Vier Bauplätze und vier Prüfplätze sind dieselbe
-Zahl, obwohl gerade sieben Pakete auf Urteile warten und nur eines auf einen Bauplatz.
-Eine getrennte, höhere Zahl für die Prüfphase kostet **nichts zusätzlich pro Urteil** — sie
-verwandelt leere Bauplätze in Durchsatz. Der Einwand steht in Ihrer eigenen Messung: 25 %
-der Urteile sind Wiederholungen. Rücklaufgrenze und faire Platzvergabe wirken erst seit
-gestern. **Empfehlung: eine Nacht mit der neuen Rücklaufgrenze abwarten, dann erhöhen** —
-sinkt die Wiederholungsquote nicht, vervielfacht eine Erhöhung nur die Nacharbeit.
+**Kein zweiter Punkt — sondern ein Befund.** Die Rohdaten habe ich zweimal vorgelegt; ein
+drittes Mal frage ich nicht. `daten/roh/` existiert nicht, `reihen.toml` sagt über sich
+selbst weiter „Sie enthaelt keine Datenzeile", und `datenbauer` plus `daten-pruefer` stehen
+inzwischen bei **334,25 $ — 35 % der Bauphase für Arbeit über Daten, die niemand geladen
+hat.** Nach 0057 hat das Datengewerk kein Paket mehr; dann läuft der Bauplatz leer. Ich
+behandle das Ausbleiben der Antwort als die Antwort und nehme die Frage aus dem Plan.
 
 ## Vorrang
 
-1. **0011** — das Urteil, an dem die ganze Kernkette hängt. Ohne es kein 0026, kein 0002,
-   kein `werte`.
-2. **0026** — die Klasse-2-Frage. Sobald 0011 fertig ist, ist dies das einzige Paket, das
-   den letzten leeren Kernkasten entblockt.
-3. **0019** — sein Urteil entblockt mit 0029 und 0031 zwei der sieben offenen Pakete, mehr
-   als jedes andere.
-4. **0028** — entblockt 0035 und damit den zweiten Datenbauplatz, der sonst leer bleibt.
-5. **0034** — das einzige derzeit startbereite Baupaket überhaupt.
+**Zuerst, ohne Kennung, an den Projektmanager: 0040, 0049, 0053 und 0058 auf `fertig`
+ziehen.** Solange sie stehen, wirkt keine der fünf Kennungen unten.
 
-**Ohne Kennung, an den Projektmanager:** Die doppelten Nummern 0039 und 0040 auflösen,
-bevor sie in `haengt_an`-Verweisen anderer Pakete stehen. Und für 0041 einen Weg nennen
-oder ihn ausdrücklich an den Betreiber zurückgeben — ein Vorschlag, den kein Gewerk bauen
-darf, verstopft sonst jeden Trockenlauf.
+1. **0011** — sein Urteil entblockt sechs der vierzehn offenen Pakete, mehr als alles andere
+   im Vorhaben. Fünf Durchgänge ohne Prüfung.
+2. **0027** — entblockt drei weitere und wartet am längsten, seit über vierundzwanzig Stunden.
+3. **0026** — sobald 0011 durch ist, das einzige Paket, das über 0002 den letzten leeren
+   Kernkasten öffnet.
+4. **0054** — startbereit und beantwortet die älteste offene Entwurfsfrage, die Partielänge.
+   Solange sie offen ist, sind alle vier Maßvorschriften vorläufig.
+5. **0050** — das zweite startbereite Paket; sonst läuft ein Bauplatz leer.
 
 ## Die eine Zahl
 
-**Acht von neun Kernkästen tragen Code** — nach fünf Plänen auf sieben. Es fehlt `werte`
-(78 Byte), und eine Runde läuft: als Gerüst, im Modus `weltlauf`, sieben grüne Kerntests.
-Gerechnet hat sie noch keinen einzigen Wert.
+**Acht von neun Kernkästen tragen Code; `werte.hpp` steht bei 78 Byte**, `werte.cpp` gibt es
+nicht. Unverändert seit drei Plänen, während 18 neue Pakete entstanden sind. Eine Spielrunde
+ist noch immer nie gerechnet worden.
