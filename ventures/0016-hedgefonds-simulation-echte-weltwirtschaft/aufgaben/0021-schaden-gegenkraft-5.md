@@ -1,13 +1,28 @@
 ---
 id: 0021-schaden-gegenkraft-5
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die sechs Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # „Schaden" in Gegenkraft 5 bekommt eine Rechenvorschrift
+
+## ABGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`fertig`.** Befund: `befunde/pruefung-0021-schaden-gegenkraft-5-2026-09-02.md`,
+> `urteil: geprueft`, `befunde: 2`, 16.368 Byte (`wc -c`, selbst gemessen). Der
+> entwurf-pruefer hat alle sechs Bedingungen einzeln nachgewiesen — Bedingung 1 durch
+> Einsetzen zweier Zustände, Bedingung 5 durch Herleitung zweier gezogener Adressen —
+> und ausdrücklich keine davon durch Augenschein.
+>
+> Die beiden Befunde daneben reißen keine der sechs Bedingungen und sind je ein eigenes
+> Paket: **0039-zollzeile-konjunktursockel** (die Zollzeile wächst ohne Aktion — dieselbe
+> Datei, dasselbe Gewerk, deshalb `haengt_an` auf dieses Paket) und
+> **0043-t48-groessen-gegenkraft-5** (die fünf abgeleiteten Größen in `technik.md`;
+> vormals als `0040` vorgeschlagen, wegen doppelter Kennung umnummeriert). Beide heute
+> `offen`.
 
 `spiel.md` Zeile 649–653 sagt zu Gegenkraft 5: „Wer etwas durchsetzt, schädigt einen
 anderen Sektor — und dessen Gegenbudget wächst **proportional zum erlittenen Schaden**."

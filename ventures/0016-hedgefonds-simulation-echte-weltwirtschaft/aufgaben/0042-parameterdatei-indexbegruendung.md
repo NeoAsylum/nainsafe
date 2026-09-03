@@ -1,13 +1,33 @@
 ---
-id: 0039-parameterdatei-indexbegruendung
+id: 0042-parameterdatei-indexbegruendung
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0028-parameterdatei-querverweis, 0035-parameterdatei-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Die Begruendung, warum die zwei Bedeutungen von `*` folgenlos auseinandergehen, nennt zwei von drei Indexarten — und die fehlende ist die, die es in dieser Datei gibt
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, und **von `0039` auf `0042` umnummeriert.** Die Kennung
+> `0039` war am 2026-09-02 zweimal vergeben: Vier Gewerke haben in derselben Nacht
+> vorgeschlagen und keines konnte die Nummer des anderen sehen. `0039` bleibt bei
+> `0039-zollzeile-konjunktursockel`, weil `0043-t48-groessen-gegenkraft-5` es in seinem
+> `haengt_an` nennt; dieses Paket hier hatte keine eingehenden Verweise und ist deshalb
+> das, das weicht. Wer den Prüfbefund zu 0028 liest: Der dort genannte Vorschlag
+> „`aufgaben/0039-parameterdatei-indexbegruendung.md`" ist diese Datei.
+>
+> **Geprüft habe ich vier Dinge.** Die Rolle `datenbauer` gibt es und `baulauf.py:59` plant
+> sie ein. Die `dateien`-Liste ist `parameter.toml` und schneidet damit **0035**, das
+> `offen` ist — deshalb steht 0035 in `haengt_an`, und das ist richtig so. Die Abnahme
+> nennt zwei nachlesbare Bedingungen an benannten Textstellen. Und die Voraussetzungen
+> sind heute: 0028 `fertig`, 0035 `offen` — dieses Paket läuft also erst danach.
+>
+> **Was ich als Vorgabengeber dazuschreibe:** Der beanstandete Halbsatz stammt aus dem
+> Auftragstext von 0028, den ich geschrieben habe. Das ist kein Rücklauf gegen den
+> Bauagenten von 0028, und ein Prüfer, der es als solchen liest, irrt.
 
 Vorgabe: `befunde/pruefung-0028-parameterdatei-querverweis-2026-09-02.md`, Nebenbefund.
 **Paket 0028 ist bestanden**, und dies ist kein Ruecklauf gegen seine Arbeit: Der Halbsatz,

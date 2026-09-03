@@ -1,13 +1,55 @@
 ---
 id: 0041-baulauf-bauverzeichnisse-ueberspringen
 rolle: geschaeftsfuehrer
-status: vorschlag
+status: blockiert
 haengt_an: []
 dateien: [agents/baulauf.py]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # `baulauf.py` sucht Manifeste in Verzeichnissen, die git nicht sieht
+
+## ZURÜCK AN DEN BETREIBER am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `blockiert`, nicht `abgelehnt` und nicht `offen`.** Der Befund ist
+> richtig und im Wortlaut nachgemessen; abgelehnt wäre falsch. `offen` wäre eine Lüge im
+> Statusfeld, denn kein Lauf dieser Fabrik würde ihn je ziehen.
+>
+> **Der Grund, gemessen statt vermutet.** `baulauf.py:59-61` führt die Rollen, die ein
+> Paket ziehen können:
+>
+> ```python
+> BAUROLLEN = {"datenbauer", "kernbauer", "oberflaechenbauer", "auslieferer",
+>              "testentwickler", "architekt", "spielentwerfer"}
+> PRUEFROLLEN = {"selbstspieler", "rueckvergleicher", "bruchtester"}
+> ```
+>
+> `geschaeftsfuehrer` steht in keiner der beiden. Er läuft in Stufe 5 als fester
+> Aufruf (`baulauf.py:374`), ohne Paket und ohne `--gegenstand` auf eine Aufgabe. Ein
+> Paket mit dieser Rolle ist damit weder Bau noch Prüfung; `startbereit()` und
+> `reviewbereit()` übergehen es beide, still.
+>
+> **Und es gibt auch keine andere Rolle, in die es passt.** Ich habe die Frage in beide
+> Richtungen geprüft: Keine der 43 Aufgaben nennt `agents/` in ihrer `dateien`-Liste, und
+> keine Rollendatei unter `agents/rollen/` hat `Edit(agents/**)`. Der `verbesserer` kommt
+> `agents/` am nächsten und darf ausdrücklich **nichts selbst ändern** — er schreibt
+> einen Vorschlag nach `ops/verbesserung.md`. Das ist Absicht und keine Lücke: Der Runner
+> ist Werkzeug der Fabrik, nicht Quelltext des Spiels.
+>
+> **Damit ist das hier eine Betreiberaufgabe**, und sie steht als solche im
+> `rueckstand.md` und geht über den Bericht des Geschäftsführers weiter. Sie kostet eine
+> Zeile plus einen Neustart des Tageslaufs — die Auflage aus `lehren.md` (2026-09-02)
+> steht oben im Vorschlag und gilt.
+>
+> **Der Vorschlagende hat die Rollenfrage selbst gesehen** und geschrieben, der
+> Projektmanager möge es „lieber weiterreichen als einplanen". Genau das tue ich. Das ist
+> der siebte Fall der Familie *eine Regel an einer Stelle, die der Ablauf nicht erreicht*
+> — und der erste, in dem die Stelle eine **Rolle** ist statt einer Zeile.
+>
+> **Was der Betreiber entscheiden kann, wenn ihm die Weitergabe zu langsam ist:** Ein
+> Paket, das `agents/` ändern darf, braucht eine Rolle in `BAUROLLEN` und eine
+> Rollendatei mit `Edit(agents/**)`. Das ist eine Regeländerung und gehört nicht mir —
+> ich melde nur, dass es ohne sie keinen Weg gibt.
 
 ## Zur Rolle, und warum sie hier steht
 

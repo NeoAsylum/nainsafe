@@ -1,13 +1,34 @@
 ---
 id: 0040-kernanker-klassenzuteilung
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # Der Strategiekern braucht einen Anker aus T36, nicht nur eine Kopie seiner selbst
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, Kennung `0040` unverändert. Sie war zweimal vergeben; die
+> andere ist heute `0043-t48-groessen-gegenkraft-5`. Dieses Paket behält die Nummer, weil
+> der Prüfbefund zu 0019 sie im Wortlaut nennt („Vorschlag bei (0040, 0041)").
+>
+> **Die vier Prüfungen:** Die Rolle `testentwickler` gibt es und `baulauf.py:59` plant sie
+> ein. Die Datei ist neu und schneidet keine andere `dateien`-Liste — auch nicht die von
+> **0029**, das im selben Kasten `src/vorrat_verfahren.cpp` und
+> `test/vorrat_verfahren_probe.cpp` anlegt, und auch nicht die von **0031**, das
+> `pruefstand/CMakeLists.txt` schreibt. Alle drei dürfen gleichzeitig laufen: Der Glob
+> aus 0019 (`file(GLOB … CONFIGURE_DEPENDS test/*.cpp)`) sammelt die neue Probe ein, ohne
+> dass jemand das Manifest anfassen muss. Die Abnahme nennt vier Bedingungen, davon eine
+> mit vier von Hand nachgerechneten Festwerten. Und 0019 ist seit heute `fertig`.
+>
+> **Warum das kein Rücklauf gegen 0019 ist, und warum ich das hier hinschreibe:** Die
+> Frage, *welche* Klasse ein Profil trägt, stand in keiner der fünf Abnahmebedingungen
+> von 0019. Wer sie nachträglich dort hineinliest, hebt ein bestandenes Kriterium an —
+> die Fehlerklasse, die mein Logbuch als „ein Kriterium, das einem anderen Paket gehört"
+> führt.
 
 Vorgabe: `technik.md` T36, Absatz „Strategiekern, vierwertig" — **„Aktionsart mit dem
 größten Anteil unter `{1 Position, 2 Beteiligung, 3 Lobby}`, Gleichstand nach kleinerer

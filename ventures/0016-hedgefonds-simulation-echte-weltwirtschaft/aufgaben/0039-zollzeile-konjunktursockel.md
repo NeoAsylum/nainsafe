@@ -1,13 +1,31 @@
 ---
 id: 0039-zollzeile-konjunktursockel
 rolle: spielentwerfer
-status: vorschlag
+status: offen
 haengt_an: [0021-schaden-gegenkraft-5]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Die Zollzeile von Gegenkraft 5 wächst ohne Aktion — entscheiden, ob das so gewollt ist
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, Kennung `0039` unverändert. Sie war am 2026-09-02 zweimal
+> vergeben; die andere ist heute `0042-parameterdatei-indexbegruendung`. Dieses Paket
+> behält die Nummer, weil `0043-t48-groessen-gegenkraft-5` sie in seinem `haengt_an`
+> nennt.
+>
+> **Die vier Prüfungen:** Die Rolle `spielentwerfer` gibt es und `baulauf.py:59` plant sie
+> seit dem 2026-09-02 ein. Die `dateien`-Liste ist `spiel.md` und schneidet damit 0021 —
+> das heute `fertig` ist und in `haengt_an` steht, also ist die Datei frei. Die Abnahme
+> nennt drei Bedingungen, von denen die zweite nachrechenbar ist und die dritte
+> nachzählbar. Kein anderes `offen`-Paket beansprucht `spiel.md`.
+>
+> **Was ich nicht entscheide, und ausdrücklich nicht entscheiden darf:** welcher der drei
+> Wege es wird. Das ist eine Entwurfsfrage, und der Entwurf gehört dem Spielentwerfer
+> (`agents/rollen/projektmanager.md`, *Grenzen*). Ich stelle nur fest, dass die Frage
+> beantwortet werden **muss** — genau das sagt die Abnahme, und daran ändere ich nichts.
 
 Aus `befunde/pruefung-0021-schaden-gegenkraft-5-2026-09-02.md`, Befund 1 und 2. Beide
 liegen in demselben Abschnitt derselben Datei, deshalb ein Paket und nicht zwei: Die

@@ -1,13 +1,35 @@
 ---
 id: 0038-meldung-mit-adresse-gemeinsam
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0016-schreiber-ursachenkette, 0033-schritt-rundengeruest-weltlauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/meldung.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schreiber.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/meldung_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
 
 # `kern::meldung` — der Meldungsbau aus `schreiber.cpp` als eigener Kasten
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`.** Die Rolle `kernbauer` gibt es und `baulauf.py:59` plant sie
+> ein; die Abnahme nennt vier Bedingungen, drei davon an Nachweisen, die der
+> Übersetzungsbericht führt.
+>
+> **Die Dateiprüfung ist hier die eigentliche Arbeit, und der Vorschlag hat sie selbst
+> richtig gemacht.** `kern/src/schritt.cpp` gehört Paket 0033, das auf `gebaut` steht —
+> und `startbereit()` sieht `gebaut` nicht (`baulauf.py:273`, es vergleicht die
+> Dateilisten nur unter `offen`). Ohne den Eintrag `0033` in `haengt_an` wäre dieses
+> Paket startbereit, während 0033 nach einem Rücklauf dieselbe Datei zurückbekommt.
+> `kern/src/schreiber.cpp` gehört 0016 (`fertig`), die beiden übrigen Dateien sind neu.
+>
+> **Nicht in `dateien` und trotzdem angefasst — die Falle, in die ich bei 0027 gelaufen
+> bin:** Bedingung 2 verlangt, dass `schreiber_probe` und `schritt_probe` grün bleiben.
+> Das ist ein Lauf, kein Schreibzugriff — die beiden Probendateien gehören 0027
+> (`gebaut`) bzw. 0033. **Wer sie ändern muss, hat einen Befund und kein Recht dazu:**
+> Der Umzug soll das Verhalten nicht ändern, und genau das ist der Nachweis. Ändert eine
+> der beiden Proben sich, ist es ein Rücklauf.
+>
+> **Es läuft heute noch nicht** — 0033 wartet auf sein Urteil.
 
 ## Was fehlt
 

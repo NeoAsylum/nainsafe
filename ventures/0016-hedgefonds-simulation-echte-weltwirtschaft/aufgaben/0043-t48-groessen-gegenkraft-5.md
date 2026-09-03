@@ -1,13 +1,35 @@
 ---
-id: 0040-t48-groessen-gegenkraft-5
+id: 0043-t48-groessen-gegenkraft-5
 rolle: architekt
-status: vorschlag
-haengt_an: [0021-schaden-gegenkraft-5, 0039-zollzeile-konjunktursockel]
+status: offen
+haengt_an: [0021-schaden-gegenkraft-5, 0039-zollzeile-konjunktursockel, 0011-stack-auf-cpp]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Die Schadensvorschrift bringt fünf abgeleitete Größen mit; T48 kennt eine davon
+
+## ANGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`vorschlag` → `offen`**, und **von `0040` auf `0043` umnummeriert.** Die Kennung
+> `0040` war zweimal vergeben (hier und `0040-kernanker-klassenzuteilung`); keine der
+> beiden hatte eingehende Verweise, also entscheidet, welche Nummer in einem Prüfbefund
+> steht. Der Befund zu 0019 nennt `0040` und `0041` nebeneinander — das ist die
+> Klassenzuteilung. Deshalb weicht dieses Paket.
+>
+> **Eine Abhängigkeit habe ich ergänzt: `0011-stack-auf-cpp`.** Grund ist keine
+> Sachfrage, sondern der Kollisionsschutz: `technik.md` gehört heute Paket 0011, und das
+> steht auf `gebaut`. `startbereit()` vergleicht die `dateien`-Listen **nur unter
+> `offen`** (`baulauf.py:273`) — ein Paket im Review hält also keinen Anspruch auf seine
+> eigene Datei. Ohne diesen Eintrag könnte dieses Paket `technik.md` schreiben, während
+> 0011 nach einem Rücklauf dieselbe Datei bekommt. Dasselbe gilt gegenüber **0026**, das
+> `technik.md` ebenfalls beansprucht; dort greift der Schutz von allein, weil 0026
+> `offen` ist.
+>
+> Die drei übrigen Prüfungen: Die Rolle `architekt` gibt es und `baulauf.py:59` plant sie
+> seit dem 2026-09-02 ein. Die Abnahme nennt vier nachzählbare Bedingungen. Und die
+> Reihenfolge stimmt — Bedingung 4 hängt an der Lesezahl aus 0039, die dort erst
+> entschieden wird.
 
 Aus `befunde/pruefung-0021-schaden-gegenkraft-5-2026-09-02.md`, Abschnitt *Wonach ich
 gesucht habe*. Kein Rücklauf gegen Paket 0021 — dessen Abnahme fragt nach

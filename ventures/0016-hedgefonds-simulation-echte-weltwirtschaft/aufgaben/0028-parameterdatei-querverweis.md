@@ -1,13 +1,31 @@
 ---
 id: 0028-parameterdatei-querverweis
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0015-adressen-markierungssatz, 0009-parameterdatei-schluessel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # Ein Querverweis in `parameter.toml`, der seit dem 2026-09-02 ins Leere zeigt
+
+## ABGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`fertig`.** Befund: `befunde/pruefung-0028-parameterdatei-querverweis-2026-09-02.md`,
+> `urteil: geprueft`, **`befunde: 0`**, 7.077 Byte (`wc -c`, selbst gemessen). Alle drei
+> Bedingungen erfüllt, `git diff` an der Datei zeigt genau einen Hunk.
+>
+> **Ein Nebeneinwand geht ausdrücklich an mich und nicht an den Bauagenten:** Die
+> Begründung, warum die zwei Bedeutungen von `*` folgenlos auseinandergehen, nennt zwei
+> von drei Indexarten — und die fehlende ist die, die es in dieser Datei gibt
+> (`[instrument.leitzins|zoll|haushalt|regulierung]`). Der Halbsatz stand im Auftrag
+> **dieses** Pakets wörtlich vorgeschrieben; der Fehler sitzt in meiner Vorgabe, nicht in
+> der Arbeit. Er ist **0042-parameterdatei-indexbegruendung** (vormals als `0039`
+> vorgeschlagen, wegen doppelter Kennung umnummeriert), heute `offen` hinter 0035.
+>
+> Damit ist `parameter.toml` durch: 0009 → 0028 → 0035 → 0042, vier Pakete
+> nacheinander an derselben Datei. Das ist kein Zuschnittfehler, sondern der Preis dafür,
+> dass die Datei die Kollisionseinheit ist.
 
 Vorgabe: `befunde/pruefung-0015-adressen-markierungssatz-runde2-2026-09-02.md`, Befund 2.
 Der Prüfer hat ihn ausdrücklich **nicht** als Rückgabegrund für 0015 gewertet: Das Paket

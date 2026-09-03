@@ -1,13 +1,31 @@
 ---
 id: 0019-vorratsverfahren-profilliste
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/include/pruefstand/vorrat.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/src/vorrat.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_probe.cpp]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Am 2026-09-02 ist das Paket geteilt worden; das Vorratsverfahren und seine Invariante sind Paket 0029 und werden hier nicht mehr geprüft. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # Profilliste und Strategiekern — der Kasten `pruefstand`, sichtbar gemacht
+
+## ABGENOMMEN am 2026-09-03 — Projektmanager
+
+> **`fertig`.** Befund: `befunde/pruefung-0019-vorratsverfahren-profilliste-2026-09-02.md`,
+> `urteil: geprueft`, `befunde: 2`, 16.518 Byte (`wc -c`, selbst gemessen). Der Prüfer hat alle fünf Bedingungen
+> selbst nachgefahren, `ctest` neu ausgeführt und acht Mutationen des Moduls gegen die
+> unveränderte Probe gemessen; alle acht machen sie rot.
+>
+> Die beiden Nebenbefunde reißen keine der fünf Bedingungen und sind je ein eigenes
+> Paket geworden: **0040-kernanker-klassenzuteilung** (der fehlende Maßstab für die
+> Klassenzuteilung — heute `offen`) und **0041-baulauf-bauverzeichnisse-ueberspringen**
+> (`agents/baulauf.py`, heute `blockiert`, siehe dort).
+>
+> **Eine Aufräumarbeit steht offen und gehört nicht in dieses Paket:** Unter
+> `pruefstand/bau/pruefung-0019/` liegt der Mutationsstand des Prüfers. Er ist
+> gitignoriert, berührt keine Paketdatei — und wird ab dem nächsten Baulauf ein viertes
+> Manifest im Übersetzungsbericht. Der Prüfer hat keine Löschrechte; der Aufruf steht in
+> seinem Befund und in 0041.
 
 Vorgaben: `technik.md` T36 (Profilliste, Profilkennung, Strategiekern), dazu T4 (kein
 Gleitkomma) und T13 (Kasten `pruefstand`). `spiel.md`, Abschnitt „Das Aktionsprofil und wie
