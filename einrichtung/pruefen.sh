@@ -69,7 +69,7 @@ pruefe "claude antwortet headless"                 bash -c "cd '$ZIEL' && claude
 echo
 echo "----------------------------------------"
 if [ "$FEHLT" -eq 0 ]; then
-  echo "Alle $OK Bedingungen erfuellt. Der naechste Lauf startet um 03:00."
+  echo "Alle $OK Bedingungen erfuellt. Der naechste Versuch startet zur vollen Stunde."
 else
   echo "$OK erfuellt, $FEHLT offen. Solange etwas offen ist, laeuft nachts"
   echo "moeglicherweise nichts -- und zwar ohne Fehlermeldung."
