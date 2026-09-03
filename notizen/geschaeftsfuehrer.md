@@ -51,6 +51,19 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
   nicht gesehen hat, darf ich nicht als abgelehnt behandeln** — das schreibe ich künftig
   ausdrücklich in den Plan hinein.
 
+- **Der Trockenlauf sagt den Engpass, nicht der Rückstand** (2026-09-03, 11. Lauf).
+  `python3 agents/baulauf.py <v> --trocken` nennt die Platzbelegung je Phase. „4 von 4
+  Prüfplätzen, 1 von 4 Bauplätzen" war der ganze Befund des Laufs — sichtbar in einem
+  Aufruf, unsichtbar in 43 Paketdateien. **Immer zuerst, direkt nach den Statuszahlen.**
+- **`einrichtung/bauleistung.py` (neu, Betreiber 2026-09-02) ist meine Geldquelle.** Läuft
+  in Sekunden, nennt $ je Rolle, die Aufteilung Bau/Prüfung/Steuerung und die
+  Wiederholungsquote der Urteile. Damit wird aus „das Datengewerk läuft leer" ein Satz mit
+  228,90 $ darin. **Jeden Lauf aufrufen** — eine Empfehlung mit Preis wird gelesen.
+- **`GLEICHZEITIG = 4` (`agents/baulauf.py:80`) gilt für Bau *und* Prüfung.** Die Zahl
+  erklärt jede Stauung: Sind mehr Pakete `gebaut` als 4, wartet der Rest, und alles, was an
+  ihnen hängt, wartet mit. `haengt_an` gegen `gebaut`-Status prüfen, nicht nur gegen
+  `fertig` — ein Paket ist auch dann blockiert, wenn seine Abhängigkeit nur ungeprüft ist.
+
 ## Was nicht funktioniert
 
 - **Verwehrte Werkzeuge, nicht erneut versuchen:** `git commit` in jeder Form (`git add`
@@ -58,10 +71,13 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
   `find ... -exec`, `mv`/`cp`/`Write` nach `notizen/archiv/`. Erlaubt: `Read`, `grep`,
   `ls -la`, `head`, `wc`, `find` (ohne `-exec`), einzeilige `git`-Aufrufe,
   `python3 agents/*.py`. Für Codestellen `Read` mit `offset`/`limit` statt `sed`.
-- **`grep -c <wort>` zählt Zeilen, nicht Treffer, und nimmt Prosa mit.** Immer den ganzen
-  Satz greppen (`"status: gebaut"`), nie das Stichwort. (Der Projektmanager meldete
-  8 Rust-„Treffer" in `technik.md`, `grep -c` gibt 6 Zeilen — beides richtig, aber nicht
-  dasselbe. Im Plan sage ich, was ich gemessen habe: Zeilen.)
+- **Ein Stichwort zu zählen misst nie eine Vorgabe.** Ich habe sechs Pläne lang
+  „`technik.md` sagt Rust" mit `grep -c -i rust` belegt. Am 2026-09-03 stand die Zahl bei
+  15 statt 10 — und die Divergenz war *behoben*: Der Architekt hatte C++ eingetragen und
+  Rust als verworfene Alternative **häufiger** erwähnt als vorher. Die Zahl stieg, während
+  der Befund fiel. **Bei jeder Divergenzbehauptung die entscheidende Stelle lesen**
+  (hier: den Satz nach „## 1. Stack"), nie nur zählen. `grep -c` zählt ausserdem Zeilen,
+  nicht Treffer, und nimmt Prosa mit.
 - **Statische Analyse von `baulauf.py` erklärt den Ausfall von 0011/0021 nicht.** Vier
   Läufe daran verbraucht. Nachgewiesen ausgeschlossen: `pakete()` filtert keine Rollen;
   `startbereit()` erreicht 0011 mit leerem `belegt` (0010 fällt vorher an `_haengt`
@@ -78,33 +94,40 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 
 ## Erledigt — nicht erneut aufgreifen
 
-Alle vier am 2026-09-02 im 10. Lauf gefallen, nachdem sie 3–5 Pläne lang gestanden hatten:
-Review-Engpass (3 von 4 Urteilen statt 1 von 4), 0019 (29 Byte → 30.835), „No tests were
-found!!!" (`vorrat_probe … Passed`), Architektendiagnose (Betreiber, 19:13).
-**Die Lehre daraus:** Was ich fünfmal gemeldet habe, fiel nicht an meiner Wiederholung,
-sondern an einer Teilung des Pakets (0019) und an einer Rollendatei (Architekt). *Wenn ein
-Paket dreimal nicht liefert, ist die Größe die Ursache, nicht die Reihenfolge* — und der
-Adressat einer Meldung ist der Projektmanager oder der Betreiber, nie mein eigener Plan.
+10. Lauf (2026-09-02): Review-Engpass, 0019 (29 Byte → 30.835), „No tests were found!!!",
+Architektendiagnose. 11. Lauf (2026-09-03), alle drei nach 5–6 Plänen:
+- **`schritt` hat ein Paket und ist gebaut** — 0033, 26.697 Byte, `schritt_probe` grün.
+- **Der Architekt ist kein Engpass mehr** — 0011 am 2026-09-02 20:05 geliefert.
+- **Die Rust/C++-Divergenz ist weg** — `technik.md` T1 schreibt C++20 vor.
+
+**Die Lehre daraus:** Nichts davon fiel an meiner Wiederholung. Es fiel an einer Teilung
+des Pakets (0019), einer Rollendatei (Architekt) und einem neuen Paket, das der
+Projektmanager nach *einer* Meldung anlegte (`schritt`). *Wenn ein Paket dreimal nicht
+liefert, ist die Größe die Ursache, nicht die Reihenfolge* — und der Adressat einer
+Meldung ist der Projektmanager oder der Betreiber, nie mein eigener Plan. **Einmal sagen,
+an die richtige Hand, wirkt; fünfmal sagen kostet nur meinen Platz im Plan.**
 
 ## Offene Faehrten
 
-- **2026-09-02 (10. Lauf), Engpass: der Architekt.** Eine Rolle, eine Datei, vier Fragen
-  in `technik.md`, das genau einen Bauplatz trägt — 0011, 0026, Wohnort der
-  Zustandsausgabe, Präfix `gebiet.`/`land.`. Solange sie steht, hat `kernbauer` kein
-  startbereites Paket. **Nächster Lauf zuerst:** `git log -- specs/*/technik.md | head -3`.
-  Bewegt sie sich, hat die Rollenänderung von 19:13 getragen; bewegt sie sich nicht, ist
-  es der dritte leere Architektenlauf und ein eigener Befund.
-- **`schritt` hat kein Arbeitspaket** — 32 Pakete, `grep -c schritt` auf die `dateien:`-
-  Zeilen gibt 0. Im Vorrang an den Projektmanager gemeldet. **Prüfen, ob er es anlegt;
-  wenn nicht, im nächsten Plan als offene Bitte wiederholen, aber nur einmal** (siehe
-  oben).
-- **Die Rohdaten sind meine erste eigene Entscheidungsfrage, nicht geerbt** (Plan vom
-  10. Lauf, Empfehlung B: Betreiber lädt vier Quellen von Hand). `daten/` hat null
-  Datenzeilen nach zehn Bauläufen. **Prüfen:** `ls .../daten/roh/`.
+- **2026-09-03 (11. Lauf), Engpass: die Prüfung.** 7 `gebaut` vor 4 Plätzen; 6 von 7
+  offenen und 5 von 6 vorgeschlagenen Paketen hängen an einem ungeprüften. **Nächster Lauf
+  zuerst:** Trockenlauf, Platzbelegung Bau gegen Prüfung. Steht sie wieder bei 1:4, ist
+  meine Empfehlung (getrennte, höhere Prüfzahl) fällig — dann mit der Wiederholungsquote
+  aus `bauleistung.py` als Beleg, sie war 25 %.
+- **Die Rohdaten, zum zweiten Mal vorgelegt** (Empfehlung B: Betreiber lädt vier Quellen
+  nach `…/daten/roh/`). Neu und der Grund, warum sie diesmal trägt: 228,90 $ = 38 % der
+  Bauphase für Datenarbeit ohne eine einzige Datenzeile. **Prüfen:** `ls …/daten/roh/`.
+  **Ein drittes Mal lege ich sie nicht vor** — dann ist sie beantwortet, indem sie
+  liegenbleibt, und das gehört als Befund in den Plan, nicht als Frage.
+- **Doppelte Paketnummern: 0039 und 0040 je zweimal** (2026-09-03). Vier Gewerke haben
+  gleichzeitig vorgeschlagen. `haengt_an` trägt (voller Name), meine Vorrangliste nicht.
+  An den Projektmanager gemeldet. **Prüfen, ob er umnummeriert.**
 - **Die Fehlerklasse, vom Betreiber benannt (`953bbf5`):** eine Regel oder Rolle an einer
   Stelle, die der Ablauf nicht erreicht — es fällt erst auf, wenn etwas **nicht**
-  geschieht. Sechster Fall: `schritt` im Zielbild ohne Paket. Meine Rolle ist die einzige,
-  die ausbleibende Arbeit sehen kann. **Aktiv danach suchen.**
+  geschieht. Siebter Fall (2026-09-03): Vorschlag 0041 ändert `agents/baulauf.py`, und
+  **kein Gewerk darf `agents/` schreiben** — ein Paket ohne zuständige Hand, das jeden
+  Trockenlauf verstopft. Neue Untergattung: nicht nur „Kasten ohne Paket", sondern „Paket
+  ohne Rolle". **Bei jedem Vorschlag prüfen: gibt es eine Rolle, die diese Datei darf?**
 - **Eine Empfehlung zurückzunehmen ist billiger, als sie zum vierten Mal zu wiederholen.**
   `ops/baulauf.log` war richtig, aber der Betreiber hat die Frage von Hand aus dem
   Rückgabetext des Architekten beantwortet. Eine Empfehlung, deren Zweck anders erfüllt
@@ -112,12 +135,16 @@ Adressat einer Meldung ist der Projektmanager oder der Betreiber, nie mein eigen
 - **Ein Prüfer committet den Befund eines anderen mit** (Lauf 269 trug den 0015-Befund).
   Der Runner committet den ganzen Schreibpfad. Nie vom Commit auf den Autor schließen —
   die Datei nennt `pruefer:` im Frontmatter.
-- **`specs/technik.md`: 10 Zeilen Rust/cargo/rustc, 0 Zeilen C++**, unverändert seit
-  2026-09-01 09:17. Die Stelle, an der Gebautes und Vorgabe auseinanderlaufen — meine
-  eigentliche Frage. Jeden Lauf neu messen, sie ist billig. (Der Wert stieg von 6 auf 10,
-  weil ich das Suchmuster erweitert habe, nicht der Text — Messmuster im Plan nennen.)
+- **Ein ganzer Baudurchgang stand in keinem Betriebslog** (2026-09-02 19:33–21:23, elf
+  Läufe). `ops/nachtlauf.log` endet 08:17 — die Abendläufe kamen offenbar direkt aus
+  `baulauf.py`, und nur `nachtlauf.py` schreibt das Log. **Für den Stand reicht `git log`,
+  für einen Störungsfall nicht.** Meine herabgestufte `ops/baulauf.log`-Empfehlung hat
+  damit einen zweiten Beleg — aber erst wieder vorlegen, wenn sie etwas *kostet*.
 - **0003 (Einheiten) ist eine Betreiberfrage, keine Bausache.** Nicht als Rückstand
   zählen, solange es nichts blockiert. Die 170-gegen-121-Lücke ebenso: erst wieder
   aufgreifen, wenn der Kern rechnet.
+- **`werte` (78 Byte) ist der letzte leere Kernkasten**, entblockt über 0011 → 0026 →
+  0002. Die eine Zahl steht bei 8 von 9. Fällt sie nicht bis zum nächsten Lauf, ist die
+  Kette selbst der Befund, nicht `werte`.
 - **`.tmp`-Dateien im Repo: 18** (`git ls-files "*.tmp" | wc -l`, vorher 14). Ab etwa 30
   melden.
