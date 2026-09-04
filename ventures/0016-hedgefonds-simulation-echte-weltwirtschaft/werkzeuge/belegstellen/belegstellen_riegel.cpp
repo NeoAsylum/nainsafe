@@ -180,6 +180,44 @@
 //! gezaehlt und aufgezaehlt, aber nicht bewertet -- eine Zahl, die stumm bliebe, waere
 //! genau die Sorte Riegel, gegen die dieses Paket geschrieben ist.
 //!
+//! ## Die sechs Pakete, einzeln abgehakt -- Stand 2026-09-04
+//!
+//! Gemessen, nicht angenommen: Die Belegstelle jedes der sechs Pakete ist im
+//! Aenderungsverlauf seiner eigenen Datei nachgeschlagen worden. Genannt wird sie hier
+//! ueber ihren Wortlaut und nicht ueber eine Zeilennummer -- eine Nummer neben einem
+//! Dateinamen waere in dieser Datei die Sorte Verweis, die Bedingung 1 verbietet.
+//!
+//!   0034 -- `daten/adressen.md`, im Kopffeld `quellen`. Gefangen; das Ziel ist der
+//!           Abschnitt der Spielvorgabe, der den Zustand beschreibt.
+//!   0035 -- `parameter.toml`, in der Herkunftsbegruendung zu `hebelaufschlag`. Zwei
+//!           Zitate, beide gefangen; das zweite traegt seinen Dateinamen eine Zeile
+//!           oberhalb und faellt damit nur wegen der Absatzlesung an.
+//!   0044 -- `kern/test/schranken_probe.cpp`, im Kommentarblock ueber
+//!           `GRENZEN_BAUZEITPUNKT`. Gefangen. Das ist der Fall aus dem Nachtrag des
+//!           Projektmanagers: Dateiname vier Zeilen ueber der Ueberschrift.
+//!   0050 -- `pruefstand/test/vorrat_verfahren_probe.cpp`. Fuenf Zitate derselben
+//!           Ueberschrift, alle gefangen -- darunter die Marke `BELEGSTELLE`, deren
+//!           Anfuehrungszeichen in der Zeichenkette maskiert sind.
+//!   0057 -- `daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md`. Vier Zitate,
+//!           alle gefangen; drei in der geklammerten Form, die dieses Paket eingefuehrt
+//!           hat, eines mit gemischter Anfuehrung.
+//!   0047 -- `daten/reihen.toml`. **Nicht gefangen** -- siehe unten.
+//!
+//! **Die Luecke, ausgeschrieben statt verschwiegen.** Paket 0047 hat seine
+//! Ueberschriften **ohne Anfuehrung** zitiert. In `reihen.toml` steht dadurch viermal
+//! die Form `<datei>, Abschnitt <Name>`, wo der Name unmittelbar im Satz weiterlaeuft:
+//! einmal auf eine Ueberschrift ("Reihe 1"), einmal auf eine Aufzaehlung ("2b und 2c")
+//! und zweimal auf eine Nummer ("5", "7"). Diese Form faengt der Riegel nicht, und sie
+//! bleibt ungeschuetzt.
+//!
+//! Sie zu fangen hiesse, den Namen bis zum naechsten Satzzeichen zu lesen -- und dann
+//! sind eine Nummer und eine Ueberschrift dieselbe Gestalt. Der Riegel muesste raten,
+//! welche der beiden gemeint ist; wo er falsch raet, wird er rot an einer Stelle, an
+//! der nichts kaputt ist, und wo er zu vorsichtig raet, prueft er wieder nichts. Das
+//! ist eine eigene Entscheidung mit eigenem Nachweis und liegt als Vorschlag daneben
+//! (Paket 0079). Solange sie nicht getroffen ist, steht die Luecke hier -- ein Riegel,
+//! der etwas still uebergeht, sieht aus wie einer, der prueft.
+//!
 //! ## Warum der Riegel seinen eigenen Quelltext mitliest
 //!
 //! Er tut es, und das ist Absicht: Nur so laesst sich der Rotnachweis fuehren, ohne
@@ -533,15 +571,23 @@ constexpr std::array<std::string_view, 3> SCHLUESSEL = {
     "Abschnit\164", "Ueberschrif\164", "\303\234berschrif\164"};
 
 /// Anfuehrung und Schluss, paarweise. Die deutschen Anfuehrungszeichen sind unten und
-/// oben verschieden, und beide oberen kommen im Bestand vor -- deshalb zwei Zeilen mit
-/// demselben Anfang. Die Reihenfolge entscheidet: Genommen wird das erste Paar, dessen
-/// Anfang passt **und** dessen Schluss im selben Absatz steht.
+/// oben verschieden, und im Bestand kommen zu einem Anfang mehrere Schluesse vor --
+/// deshalb mehrere Zeilen mit demselben Anfang. Die Reihenfolge entscheidet: Genommen
+/// wird das erste Paar, dessen Anfang passt **und** dessen Schluss im selben Absatz
+/// steht. Die typografischen Paare stehen deshalb vor dem geraden Schlusszeichen: Ein
+/// gerades Anfuehrungszeichen kommt in einem Satz zu oft vor, um erste Wahl zu sein.
+///
+/// Dass es die gemischte Form ueberhaupt braucht, ist gemessen und nicht vermutet:
+/// `einheitenbefund-pwt-baci.md` oeffnet mit dem tiefen Anfuehrungszeichen und
+/// schliesst mit dem geraden. Ohne die letzten beiden Zeilen unten faende der Riegel
+/// dieses Zitat nicht -- und, schlimmer, meldete es nicht einmal als uebergangen,
+/// denn ohne Schluss ist es fuer ihn gar kein Zitat.
 struct Klammer {
     std::string_view auf;
     std::string_view zu;
 };
 
-constexpr std::array<Klammer, 8> KLAMMERN = {{
+constexpr std::array<Klammer, 11> KLAMMERN = {{
     {"\"", "\""},
     {"\342\200\236", "\342\200\234"},  // U+201E ... U+201C
     {"\342\200\236", "\342\200\235"},  // U+201E ... U+201D
@@ -550,6 +596,13 @@ constexpr std::array<Klammer, 8> KLAMMERN = {{
     {"\342\200\230", "\342\200\231"},  // U+2018 ... U+2019
     {"`", "`"},
     {"*", "*"},
+    {"\342\200\236", "\""},  // U+201E ... gerade
+    {"\342\200\234", "\""},  // U+201C ... gerade
+    // Die Form, die Paket 0057 in `reihen.toml` eingefuehrt hat: "Adresse plus Zitat
+    // im Wortlaut", geklammert statt in Anfuehrung. Sie steht hier, weil 0057 eines
+    // der sechs Pakete ist, um derentwillen dieser Riegel existiert -- ohne diese
+    // Zeile fiele die Haelfte seiner Arbeit durch.
+    {"(Zita\164: ", ")"},
 }};
 
 /// Laenger als das kann eine Ueberschrift nicht sein. Ohne die Schranke greift ein
@@ -990,9 +1043,6 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                     for (std::size_t u = 0; u < liste.size() && !steht_da; ++u) {
                         steht_da = liste[u] == gesucht;
                     }
-                    std::fprintf(stdout, "MESSUNG %s:%zu -> %s :: %s\n",
-                                 anzeigename.c_str(), nummer,
-                                 es->second.anzeige.c_str(), gesucht.c_str());
                     if (steht_da) {
                         ++zaehlwerk.aufgeloest;
                     } else {
