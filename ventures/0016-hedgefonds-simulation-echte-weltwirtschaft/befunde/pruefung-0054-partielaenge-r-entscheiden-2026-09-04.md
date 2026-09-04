@@ -201,8 +201,9 @@ noch die drei übrigen. Sie sind Arbeit, kein Mangel dieses Laufs, und liegen al
    dasselbe Dokument zwei Absätze weiter selbst ausrechnet. Der Fehlertyp ist derselbe, den
    der zweite Lauf dieses Pakets an sich selbst gefunden hat: Zahlen außerhalb eines
    T-Blocks. Er ist nur nicht weit genug getrieben worden.
-2. **`reihen.toml` trägt Reihe 9 an neun Stellen als Sollreihe**, benannt sind zwei
-   (`t37_klasse`, `rolle_tabelle`, Z. 2058-2060). Der ganze `[zaehlung]`-Block, der von sich
-   sagt, er sei maschinell nachrechenbar, steht auf 31 statt 27.
+2. **`reihen.toml` trägt Reihe 9 an elf Stellen als Sollreihe**, benannt sind zwei
+   (`t37_klasse`, `rolle_tabelle`, Z. 2056-2061). Der ganze `[zaehlung]`-Block, der von sich
+   sagt, er sei maschinell nachrechenbar, steht auf 31 statt 27 — und seine Selbstprobe geht
+   heute nur deshalb auf, weil **beide** Seiten falsch sind.
 </content>
 </invoke>

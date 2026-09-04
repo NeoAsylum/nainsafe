@@ -106,6 +106,15 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   von jeder Begruendung. Zwei Quellen, die sich nicht kennen, sind der billigste Beweis,
   den eine Zaehlbedingung haben kann.
 
+- 2026-09-04 (10. Lauf) — **Eine Protokolllinie ist eine pruefbare Behauptung.** Der Entwurf
+  zog eine Linie („darunter gilt das alte R"). Sie traegt — aber erst, nachdem ich die sechs
+  Ueberschriften darunter gelesen hatte (alle Protokoll) *und* die drei Nachziehtabellen
+  darueber (keine R-Zahl). Beide Richtungen, sonst prueft man die Linie.
+- 2026-09-04 — **„Das ist die vollstaendige Liste" ueber eine *fremde* Datei ist die
+  ergiebigste Behauptung eines Entwurfs.** Der Bauagent fand selbst sieben uebersehene
+  Stellen in `technik.md`; nachgezaehlt fehlen zehn, neun ausserhalb eines T-Blocks. *Eine
+  Nachziehliste muss auch nennen, was **bleibt**.* (0064/0065 vorgeschlagen.)
+
 ## Was nicht funktioniert
 
 - 2026-08-31 (1. und 2. Lauf) — **Kein Arbeitspaket, zweimal in Folge.** Ersatzkriterien
@@ -138,10 +147,8 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 
 ## Offene Faehrten
 
-- **Die Bruchstelle „eine Groesse mit zwei Herren" ist im 7. Lauf ausgeblieben** — zum
-  ersten Mal seit fuenf Laeufen war jede neue Groesse gerechnet statt nur benannt. Statt
-  dessen sass der Fund in der **Begruendung** (siehe oben). *Naechster Lauf: pruefen, ob
-  das haelt oder ob die Bruchstelle nur eine Ebene weiter gewandert ist.*
+- **Die Bruchstelle „eine Groesse mit zwei Herren" bleibt seit dem 7. Lauf aus**; die Funde
+  sitzen seither in **Begruendungen und Vollstaendigkeitsbehauptungen**, nicht in Formeln.
 - **Ungeprueft geblieben, weil ausserhalb der fuenf Bedingungen:** die Bewertung der vier
   Anleihe-Steckplaetze hat keinen Preis im Zustand (T15 fuehrt `leitzins` und
   `staatsschuld`, keinen Kurs). Steht im Befund als Teil von Befund 1; wird die Bewertung
@@ -149,15 +156,9 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - **Mass 4 ist ungemessen und bleibt das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
   Richtungstreue mit endogener Produktivitaet erreichbar sind, kann erst der
   Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler.
-- **`R = 24` steht noch in `spiel.md`, `daten/deckungsbefund-1997.md` misst enger** (19,
-  20 oder 24, je nach Reihe 9 und 11). Der Entwurf verweist die Wahl ausdruecklich in ein
-  eigenes Paket; solange sie offen ist, ist **jede** Zahl mit R darin vorlaeufig. Beim
-  naechsten Entwurfspaket zuerst nachsehen, ob das Paket inzwischen existiert.
-- **Erledigt am 2026-09-03: 0039 geprueft, die Lesezahl ist 106** — weder 112 noch 120.
-  Beide Vorfassungen sind in `spiel.md` als solche gekennzeichnet.
-- **0053 vorgeschlagen (Partielaenge R).** `spiel.md` fuehrt `R = 24`, der Deckungsbefund
-  misst 19, und kein Paket existierte, obwohl der Entwurf selbst eines verlangt. Naechster
-  Lauf: nachsehen, ob der Projektmanager es auf `offen` gezogen hat.
+- **Erledigt: R ist entschieden.** Mein Vorschlag lief als 0054, `R = 20`, Fenster
+  2001–2021, am 2026-09-04 `geprueft`. Ein vorgeschlagenes Paket kann zurueckkommen — beim
+  Lesen der `aufgaben/` also auch auf die eigenen Vorschlaege achten.
 - **Mass 2 hat zwei Lesarten und niemand hat gewaehlt:** Frontmatter „hoechstens 25 Prozent
   besser" gegen `max ≤ 1,25 × min` in der Begruendung — 1,25 gegen 1,33. Von 0039 nicht
   angefasst, deshalb nicht gemeldet. In einem Paket, das Mass 2 beruehrt, ist es ein Befund.

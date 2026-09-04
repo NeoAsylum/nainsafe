@@ -1,0 +1,99 @@
+---
+id: 0065-reihentoml-reihe-9-ohne-sollrolle
+rolle: datenbauer
+status: vorschlag
+haengt_an: [0054-partielaenge-r-entscheiden]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+---
+
+# Reihe 9 ist seit dem 2026-09-03 keine Sollreihe — `reihen.toml` führt sie an elf Stellen weiter als eine
+
+Vorschlag des `entwurf-pruefer` vom 2026-09-04, aufgefallen bei der Prüfung von Paket
+`0054-partielaenge-r-entscheiden`.
+
+## Der Sachverhalt
+
+Paket 0054 hat entschieden: **Reihe 9 (Leitzins) verliert ihre Sollrolle und behält Start und
+Politikpfad.** Die Sollreihenzahl fällt damit von 31 auf **27**, die T37-Klasse `gesetzt`
+entfällt ersatzlos, und an ihre Stelle tritt für den Leitzins eine **Invariante** statt eines
+Fehlermaßes (`spiel.md` Z. 133-136 und Z. 1629-1637; Urteil `geprueft` vom 2026-09-04).
+
+Der Spielentwerfer durfte `reihen.toml` nicht anfassen und hat sie deshalb benannt
+(`spiel.md` Z. 2056-2061) — aber nur mit **zwei** Schlüsseln: `t37_klasse` und
+`rolle_tabelle` der Reihe 9. Die Datei führt die alte Lage an **elf** Stellen:
+
+| # | Fundstelle | was dort steht | was daraus wird |
+|---:|---|---|---|
+| 1 | `[zaehlung]` Z. 153 | `sollreihen_gesamt = 31` | **27** |
+| 2 | `[zaehlung]` Z. 155 | `sollreihen_gesetzt = 4` | **0** — die Klasse entfällt |
+| 3 | `[zaehlung]` Z. 158 | `gesetzt_zerlegung = "Reihe 9 (4)"` | leer, mit Grund im Kommentar |
+| 4 | `[zaehlung]` Z. 160 | `probe = "23 + 4 + 4 = 31"` | `"23 + 4 = 27"` |
+| 5 | `[zaehlung]` Z. 161 | `beleg`: „Die **31** Sollreihen verteilen sich auf die Reihen 1, 2, 8, **9**, 10 und 11" | **27**, Reihen 1, 2, 8, 10 und 11 |
+| 6 | `[zaehlung.handelsblock]` Z. 170 | Schlüsselname `in_den_31_enthalten` | der Name trägt die Zahl mit; `in_den_sollreihen_enthalten` löst das dauerhaft |
+| 7 | `[zaehlung.lizenz]` Z. 184, 187, 190 | Kommentar „Lizenzstand der **31** Sollreihen"; `sollreihen_unklar = 24`; `unklar_zerlegung = "Reihe 1 (4) + Reihe 2 (12) + **Reihe 9 (4)** + Reihe 11 (4) = 24"` | 27; **20**; ohne Reihe 9 |
+| 8 | `[zaehlung.lizenz]` Z. 192 | `gegenrechnung`: „frei 0, **unklar 31**, gesperrt 0" | **unklar 27** |
+| 9 | `[[reihe]] nr = 9` Z. 900, 908 | `rolle = ["start", "politikpfad", "soll"]`; `sollreihen = 4` | ohne `"soll"`; **0** |
+| 10 | `[[reihe]] nr = 9` Z. 921 | `offen`: „An ihm haengen **15 der 31** Sollreihen und 7 der 16 Pruefgegenstaende" | neu abzuzählen; die 7 der 16 sind von der Entscheidung **nicht** betroffen (Reihe 9 war keiner der 16) |
+| 11 | `[[widerspruch]] nr = 5` Z. 289 | `entscheidet = "Spielentwerfer -- Reihe streichen oder Quelle ersetzen"` | **entschieden am 2026-09-03**: Sollrolle gestrichen, Quelle für den Pfad bleibt offen und geht an den Datenbauer |
+
+Genannt sind davon Z. 898 und Z. 909 — also der Kopf von Nr. 9, nicht seine Zählfelder und
+keine einzige Stelle im `[zaehlung]`-Block.
+
+**Warum das mehr ist als Buchhaltung:** Der Kommentar über `[zaehlung]` (Z. 147-149) macht
+die Datei zu einer prüfbaren Behauptung — *„Wer diese Datei prueft, addiert `sollreihen` ueber
+alle `[[reihe]]` und vergleicht mit `sollreihen_gesamt`."* Diese Probe geht heute auf, weil
+beide Seiten falsch sind. Zieht jemand nur eine Seite nach, schlägt sie fehl; zieht niemand
+sie nach, bestätigt eine Selbstmessung dauerhaft die alte Lage. Beides ist schlechter als der
+Zustand vor der Selbstmessung, und genau deshalb ist sie eingebaut worden.
+
+## Warum das ein eigenes Paket ist und nicht Teil eines bestehenden
+
+**Erstens ist es die andere Hälfte einer Übergabe.** 0054 durfte `reihen.toml` nur benennen
+(seine Grenzen: „Fällt die Wahl auf einen Weg, der eine Reihe ersetzt, ist das ein Folgepaket
+für ihn — benennen, nicht selbst tun"). Die Benennung ist erfolgt, sie ist unvollständig, und
+vervollständigen kann sie nur, wer die Datei aufmachen darf.
+
+**Zweitens ist es nicht die Beschaffungsfrage, und die beiden dürfen nicht zusammenfallen.**
+`spiel.md` Z. 1871-1890 gibt dem Datenbauer eine zweite, größere Aufgabe: **woher der
+Leitzinspfad für Deutschland und China kommt**, und ob ein einheitlicher Zinsbegriff über
+vier Länder erreichbar ist. Das ist Recherche an Quellen mit offenem Ausgang. Dieses Paket
+hier ist eine Nachziehung mit bekanntem Ziel. Zusammengelegt hinge die kleine, sichere
+Arbeit an der großen, unsicheren — und `[zaehlung]` bliebe so lange falsch, wie die
+Quellensuche dauert.
+
+**Drittens ist es kein Duplikat der laufenden `reihen.toml`-Pakete.** 0049, 0057 und 0062
+betreffen Herkunft, Belegstellen, Selbstmessung und Rückstandsverweise; keines nennt Reihe 9
+oder die Zahl 31 als Gegenstand. Der einzige Berührungspunkt ist `[[widerspruch]] Nr. 5`,
+dessen `entscheidet`-Feld 0062 bereits anfasst — das ist eine Dateikollision und gehört
+serialisiert, nicht zusammengelegt.
+
+## Abnahme
+
+1. **Keine der elf Stellen führt Reihe 9 mehr als Sollreihe**, und der Prüfer zählt es nach
+   statt es zu vergleichen: `sollreihen` über alle `[[reihe]]` addiert ergibt
+   `sollreihen_gesamt`, und `sollreihen_frei + sollreihen_abgeleitet` ergibt dieselbe Zahl.
+   `sollreihen_frei = 23` und `sollreihen_abgeleitet = 4` bleiben **unverändert** — wer sie
+   mitwandern lässt, hat die Entscheidung falsch gelesen.
+2. **Die 16 Prüfgegenstände und die Toleranz 2 in `[zaehlung.pruefgegenstaende]` bleiben
+   unangetastet**, mit einem Satz im Kommentar, warum: Reihe 9 war nach T37 `gesetzt` und
+   kam in keinem der sechzehn vor. Diese Zahl ist die einzige, die der Schnitt nicht bewegt,
+   und ihr Stehenbleiben muss begründet sein statt bloß beobachtbar.
+3. **`[[widerspruch]] Nr. 5` sagt, was entschieden ist und was offen bleibt**: Sollrolle
+   gestrichen (Entscheidung des Spielentwerfers vom 2026-09-03, Paket 0054), Quelle für den
+   **Pfad** weiter offen und beim Datenbauer. Ein Widerspruch, der als „entscheidet:
+   Spielentwerfer" stehen bleibt, nachdem der entschieden hat, ist eine falsche Fährte für
+   den nächsten Lauf.
+
+## Grenzen
+
+- Keine Quellensuche und keine Codeänderung an Reihe 9 — das ist das andere Folgepaket.
+  Reihe 9 behält `quelle_eingebettet`, `codes` und ihre Deckungseinträge unverändert.
+- `deckung_urteil` der Reihe 9 („reisst -- DEU und CHN tragen ... keinen einzigen Wert, USA
+  endet 2020") bleibt wörtlich stehen: Es ist eine Messung und bleibt richtig, auch wenn die
+  Reihe keine Sollreihe mehr ist.
+- `daten/deckungsbefund-1997.md` behält Namen und Inhalt. Er hat das Fenster 1997 gemessen,
+  und das bleibt richtig.
+- Keine Datei außer `reihen.toml`. Widersprüche zu `technik.md` werden gemeldet — dort läuft
+  der Nachzug als eigenes Paket.
+</content>
