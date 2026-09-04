@@ -85,7 +85,7 @@ Lehre in einem Satz.
 - **Meinen eigenen Fehler in der Gegenprobe:** den Meldungstext einer Ausnahme nach dem
   Fangblock gelesen -- der Text ist dann fort. Im Fangblock in einen eigenen Puffer
   kopieren.
-- **Am 2026-09-04 waren `Write` und `Edit` beide gesperrt**, zweimal hintereinander und
+- **`Write` und `Edit` waren am 2026-09-04 in beiden Laeufen gesperrt** (0060 und 0063),
   ohne erkennbaren Grund; `Bash` mit `python3`-Heredoc hat dieselbe Datei im Repo dann
   angelegt. Der Ersatzweg traegt also auch das *Schreiben* des Befunds, nicht nur das
   Messen. Verkettung mit `;` blieb gesperrt, `&&` ging meist -- aber nicht immer, und die
@@ -103,12 +103,19 @@ Lehre in einem Satz.
   Ausuebung.** Ein Riegel im Konstruktor haelt nur, solange niemand das Werkzeug aufhebt.
   Der 0058-Riegel besteht diese Frage: Er liest den **Endzustand** der Konfiguration, also
   faengt er auch den, der den Satz erst nimmt und dann wieder ablegt (gemessen).
-- **Ein Eintrag in einer Optionsliste ist nicht ein Schalter.** *2026-09-04 an 0060, der
-  einzige Befund des Laufs.* Die Sperrliste gegen `-w` und `-Wno-error` vergleicht je
-  Eintrag von `COMPILE_OPTIONS`; CMakes `SHELL:`-Praefix und der Generatorausdruck packen
-  mehrere Schalter in **einen** Eintrag, und beide kamen still durch. *Allgemein: Bei
-  jeder Musterpruefung fragen, ob die Einheit, die ich vergleiche, dieselbe ist wie die,
-  die das Werkzeug am Ende liest.* Wurde Vorschlag 0062.
+- **Die Einheit, die ich vergleiche, ist selten die, die das Werkzeug liest.** Dieselbe
+  Frage hat jetzt dreimal getroffen und wird jedes Mal eine Ebene groesser: Eintrag statt
+  Schalter (0060, wurde 0063 und ist erledigt), dann **Eigenschaft statt Schalterzeile**
+  (0063, wurde 0064): `COMPILE_OPTIONS` ist eine von vier Quellen der Uebersetzerzeile --
+  `COMPILE_FLAGS` am Ziel, dieselben zwei an der Quelldatei und
+  `INTERFACE_COMPILE_OPTIONS` eines `INTERFACE_LIBRARY` kommen alle still vorbei.
+  *Naechste Ebene, ungeprueft: Wer sagt, dass die Schalterdatei die Uebersetzerzeile
+  ist?*
+- **Wer eine Pruefung feiner macht, erzeugt neue Fehlalarme -- stell einen her.**
+  *2026-09-04 an 0063.* Die Zerlegung in Woerter macht aus `-Wa,-w` einen Treffer, obwohl
+  der Schalter nur den Assembler betrifft. Kein Befund (laut statt still, kommt hier nicht
+  vor), aber die Messung gehoert in den Nachweis: Sonst steht dort nur, dass die vier
+  Schalter des Vorhabens sauber bleiben.
 - **Bei jedem Ergebnistyp mit Ja-Nein-Feld und jeder Ausgabe, die abschneiden oder leer
   ausgehen kann, fragen: Ist der Nein-Wert von einem gueltigen unterscheidbar?** Drei
   Faelle in Folge (0038 Meldungslaenge, 0058 Zaehlerstand null, 0058 abgeschalteter Satz).
@@ -141,8 +148,12 @@ Lehre in einem Satz.
   Statusnachzug des Projektmanagers ein Lauf liegt (0058, 2026-09-03). Dann **nicht** die
   erste Pruefung abschreiben: gezielt dort messen, wo Runde 1 "nicht geprueft,
   ausgewiesen" geschrieben hat. Hat hier einen Befund und eine Positivprobe gebracht.
-- **Der Commit-Betreff luegt, sechstes Mal** (0033, 0038, 0046, 0058 zweimal, 0060 --
-  dort lag die Aenderung in einem Commit mit dem Betreff eines *anderen* Pakets). Ursache ist
+- **Der Commit-Betreff luegt, siebtes Mal** (0033, 0038, 0046, 0058 zweimal, 0060, 0063
+  -- der Commit mit dem Betreff des Pakets trug nur das Logbuch des Bauagenten, die
+  Aenderung lag zwei Commits frueher unter fremdem Betreff, und ein dritter hat danach
+  eine Leerzeile nachgeschoben). **Den Vorzustand nie ueber den Betreff suchen, sondern
+  ueber `git log -S '<eine neue Codezeile>' -- <datei>`:** Das nennt den Commit, der die
+  Zeile eingefuehrt hat, und sein Elter ist die Vergleichsfassung. Ursache ist
   `lauf.py:committen`, das die Schreibverzeichnisse einer Rolle als Ganzes nimmt -- zwei
   gleichzeitige Laeufe reichen. *Nie den Commit als Liste dessen lesen, was ein Paket
   geaendert hat; immer die `dateien`-Liste einzeln gegen den Vorzustand halten.*
