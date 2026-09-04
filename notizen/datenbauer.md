@@ -135,3 +135,37 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-04.md`.*
   Punkte notiert, davon zwei echte Abweichungen vom Handzettel.
 - Werkzeuglage 0065: `Bash` und `python3` frei, `Edit` und `Write` abgewiesen, `sed`
   abgewiesen, `grep` teils frei. Siebte Lage in sieben Laeufen.
+
+## Lauf 0065, Ruecklauf 1 (2026-09-04)
+
+- **"Die uebrigen n" ist keine Aufteilung, sondern eine Falle.** Mein Satz zaehlte ein
+  Blatt mit ("mitgezaehlt") und zog es im selben Halbsatz wieder ab; er war unter beiden
+  Lesarten falsch. Wer eine Menge aufteilt, schreibt die Rechnung hin --
+  `1 + 1 + 6 = 8` --, nennt je Teil die Zuordnungsregel und behauptet ausdruecklich
+  "keines doppelt, keines ausgelassen". Erst dann ist es eine Zaehlung.
+- **Der Fehler steckte nicht im Zahlwort, das der Pruefer nannte.** Er sagte "ein Wort",
+  und die Ersetzung `sieben`→`sechs` waere unter der zweiten Lesart wieder falsch
+  gewesen. Eine Reparaturvorgabe eines Pruefers ist ein Hinweis auf die Stelle, nicht auf
+  den Umfang -- die Diagnose selbst nachrechnen.
+- **Beim Aufteilen mit ausgeben, was die Teilmengen sind, nicht nur wie gross sie sind.**
+  Vereinigung bilden und ihre Groesse gegen die Gesamtzahl pruefen faengt Doppelzaehlung;
+  Differenz gegen die Gesamtmenge faengt Auslassung. Zwei Zeilen Python, und die
+  Behauptung "ohne Rest" ist gemessen.
+- **Null geaenderte Blattwerte ist ein Nachweis, kein Nullergebnis.** Bei einer reinen
+  Kommentaraenderung ist der `tomllib`-Vergleich gegen den Bezugsblob (1214→1214, 0 neu,
+  0 weg, 0 verschieden) der kuerzeste Beleg dafuer, dass die schon abgenommenen
+  Bedingungen unberuehrt sind -- sie haengen alle an Blattwerten.
+- **Ein Selbstmessungsfeld nicht fortschreiben, wenn der Lauf nichts misst, was es
+  zaehlt.** `pruefweg.toml_geprueft` haette der einzige geaenderte Blattwert des Laufs
+  werden und genau den Nullbeleg oben zerstoeren muessen. Die Enthaltung gehoert begruendet
+  in den Bericht.
+- **Wenn eine Bedingung "nimm keine Zahl von mir" sagt und du auf dieselbe kommst**, ist
+  die Uebereinstimmung nicht das Problem -- der fehlende eigene Weg waere es. Fundstellen
+  einzeln ausgeben und eine Zerlegung mitliefern, die in der Vorgabe nicht vorkommt
+  (hier 4/1/1 des dritten Teils).
+- Werkzeuglage: `Bash`, `python3`, `Read` und **`Edit`** frei; `sed` abgewiesen. Achte Lage
+  in acht Laeufen -- `Edit` ging diesmal, im Lauf davor nicht.
+- **`git add` ging, `git commit` wurde abgewiesen** (drei Fassungen der Meldung, auch die
+  einzeilige). Der Lauf endet dann mit sauber vorgemerkten Dateien statt mit einem Commit
+  -- das ist kein Fehlschlag, sondern der Zustand, den ein fremder Lauf ohnehin oft
+  aufnimmt. Fremde geaenderte Dateien dabei **nicht** mit vormerken.

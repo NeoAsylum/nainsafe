@@ -141,8 +141,14 @@ enthaelt_datenzeilen = false
 # einheitenbefund-pwt-baci enthalten, ergeben allein
 # reihe.13.umrechnung.0.beleg, den ersten Umrechnungsblock der Reihe 14
 # (die Liste `reihe` zaehlt ab null). Ueberhaupt genannt wird er in
-# **acht** Blattwerten, `datei.vorlagen.einheiten` mitgezaehlt; die
-# uebrigen sieben stehen unter `offen`, `begruendung` und `lang`.
+# **acht** Blattwerten -- dieselbe Zeichenfolge, aber ohne Ruecksicht
+# auf den Schluessel. Diese acht zerfallen ohne Rest in **eins plus
+# eins plus sechs**: der eine `beleg` von eben; der Vorlagenschluessel
+# `datei.vorlagen.einheiten` in der Tabelle unter diesem Kommentar;
+# und sechs weitere, benannt nach dem letzten Pfadteil, der keine
+# Listennummer ist -- viermal `offen`, einmal `begruendung`, einmal
+# `lang`, zusammen sechs. Jeder der acht Blattwerte liegt in genau
+# einem der drei Teile; 1 + 1 + 6 = 8.
 # Zweitens: die zwei Pakete sind aus `nachgezogen_durch` gezaehlt --
 # zwischen 0036, das den Beleg eintrug, und 0049, das diesen Schluessel
 # nachtrug, liegt genau ein weiteres Paket, 0047; die Luecke bestand

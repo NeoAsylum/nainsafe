@@ -1,7 +1,7 @@
 ---
 id: 0065-reihentoml-reihe-9-ohne-sollrolle
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme" plus die vierte im Annahmevermerk vom 2026-09-04; Bedingungen 1 bis 3 sind am 2026-09-04 abgenommen und werden nicht erneut geprueft. Dazu die Bedingungen 5 und 6 im Abschnitt "RUECKLAUF 1 -- 2026-09-04": die genannte Aufteilung summiert sich auf die genannte Gesamtzahl, nach dem letzten Schreiben selbst nachgemessen und mit Bezugsstand belegt.
@@ -427,3 +427,112 @@ sind:
 6. Kein Zahlwort im Kommentar ist aus dieser Paketdatei oder aus dem Prüfbefund
    übernommen. Trifft eine deiner Zahlen zufällig eine dort genannte, sagt der Baubericht,
    woher **deine** stammt.
+
+---
+
+## GEBAUT (Rücklauf 1) — 2026-09-04, Datenbauer
+
+Eine Datei geaendert: `daten/reihen.toml`, **ein** Hunk, **+8/−2**, ausschliesslich im
+Kommentar ueber `[datei.vorlagen]`. Bedingungen 1 bis 3 sind nicht angefasst.
+
+**Bezugsstand dieses Laufs ist der Commit `37cce4d`** (`git ls-tree` dort: Blob
+`6cd55ae5375cbf3b51c084fd573150c2846d3d18` — dieselbe Blobkennung, gegen die der Pruefer
+gemessen hat). Die Datei war beim Aufschlagen unveraendert gegenueber diesem Commit,
+`git status` fuehrte sie nicht. sha256 vorher `281b50d9…`, nachher `75721a6c…`.
+
+### Was ich gezaehlt habe, und wann
+
+Gezaehlt **nach** der Schreibbewegung, wie der Ruecklauf es verlangt: erst der Eingriff,
+dann `tomllib` auf die geschriebene Datei. Der Zaehllauf davor diente nur dazu, den
+Eingriff ueberhaupt formulieren zu koennen; berichtet ist der danach.
+
+Zaehlregel, zeichengenau: Blattwerte des mit `tomllib` eingelesenen Baums, flach gezogen,
+Schluessel als Pfadtupel; genommen wird jeder Blattwert vom Typ `str`, der die
+Zeichenfolge `einheitenbefund-pwt-baci` enthaelt.
+
+| Teil | Zahl | Fundstellen |
+|---|---:|---|
+| Blattwerte mit der Zeichenfolge, **gesamt** | **8** | die acht unten |
+| Teil 1 — letzter Pfadteil ist `beleg` | **1** | `reihe.13.umrechnung.0.beleg` |
+| Teil 2 — der Vorlagenschluessel selbst | **1** | `datei.vorlagen.einheiten` |
+| Teil 3 — die uebrigen | **6** | `reihe.2.offen.0`, `reihe.13.offen.0`, `reihe.13.offen.1`, `reihe.15.offen.0`, `reihe.2.umrechnung.0.begruendung`, `widerspruch.8.lang` |
+
+**Bedingung 5 ist damit maschinell erfuellt und nicht behauptet.** Der Zaehllauf gibt drei
+Saetze aus, die alle zutreffen: `1 + 1 + 6 = 8` gleich der Gesamtzahl; die Vereinigung der
+drei Teile hat acht Elemente, also **keines doppelt**; und kein Blattwert der Gesamtmenge
+faellt aus den drei Teilen heraus, also **keines ausgelassen**. Der dritte Teil zerfaellt
+weiter in **viermal `offen`, einmal `begruendung`, einmal `lang`** — auch das ist gezaehlt
+(nach dem letzten Pfadteil, der keine Listennummer ist; die vier `offen`-Eintraege enden
+auf einen Index, weil `offen` eine Liste ist) und ergibt wieder sechs.
+
+### Was in der Datei jetzt steht
+
+Der Satz teilt nicht mehr in „acht, davon uebrige sieben", sondern nennt die Aufteilung
+als Rechnung: acht zerfallen ohne Rest in **eins plus eins plus sechs**, mit der
+Zuordnungsregel je Teil und dem Schlusssatz `1 + 1 + 6 = 8`. Der Doppelzaehlfehler ist
+damit nicht durch ein anderes Zahlwort ersetzt, sondern durch eine Zerlegung, die man
+nachrechnen kann.
+
+Der Pruefer nennt die Reparatur „ein Wort". Ich habe stattdessen den ganzen Satz ersetzt,
+und der Grund steht in Bedingung 5 selbst: „`sechs`" allein waere unter der Lesart
+„uebrig nach Abzug von `datei.vorlagen.einheiten`" wieder falsch gewesen, weil dann sieben
+uebrig bleiben. Der Fehler lag nicht im Zahlwort, sondern darin, dass „die uebrigen" nicht
+sagt, wovon. Die zwei Zahlwoerter der Bedingung 4 — „genau einmal" als `beleg` und „zwei
+Pakete" Vorlagenluecke — stehen **unveraendert**; ebenso der Absatz „Zweitens" mit der
+Git-Gegenprobe (`ae6f605`, `58908fa`) und der Absatz zum groessten offenen Rest.
+
+### Bedingung 6 — woher meine Zahlen stammen
+
+Aus dem Zaehllauf oben, auf der geschriebenen Datei. Dass **8**, **1**, **1** und **6**
+dieselben Zahlen sind, die der Pruefbefund unter „Die tatsaechliche Aufteilung der acht ist
+1 + 1 + 6" nennt, ist kein Uebertrag: Der Befund gibt sein Zaehlskript aus, ich habe es
+nicht ausgefuehrt, sondern die Regel aus dem **Kommentar** angewandt und die Fundstellen
+einzeln ausgegeben (Tabelle oben) — deshalb steht dort auch die Zerlegung
+**4 / 1 / 1** des dritten Teils, die im Befund nicht vorkommt und die ich als eigene
+Gegenprobe gerechnet habe. Bei acht Fundstellen ist Uebereinstimmung der einzig moegliche
+richtige Ausgang; die Pruefbarkeit haengt an den Fundstellen, nicht an den Zahlen, und die
+liegen einzeln vor.
+
+Kein Zahlwort ist aus dieser Paketdatei uebernommen. Die dort genannten Zahlen der
+Bedingungen 1 bis 3 (27, 0, 20, 11) sind in diesem Lauf nicht angefasst worden.
+
+### Regressionsproben
+
+- **Kein einziger Blattwert hat sich geaendert.** `tomllib` auf Blob `6cd55ae5…` gegen die
+  vorliegende Fassung, Baeume flach gezogen: 1214 → 1214 Blattwerte, **null** neue, **null**
+  weggefallene, **null** verschiedene gemeinsame Werte. Das ist der staerkste Nachweis
+  dafuer, dass die Bedingungen 1 bis 3 unberuehrt sind — sie haengen samt und sonders an
+  Blattwerten.
+- **Die Selbstmessungen aus `[pruefweg]` neu gezaehlt**, jede gegen alt und neu, nach
+  Treffern *und* nach Zeilen: 6 · 54/29 · 27 · 2/1 · 113 · 19 · 19 · 19 · 20 · 28 · 21 ·
+  28 · 20 · 2 — **alle unveraendert**. Insbesondere `schnitt_1` (`[=] [0-9]+\.[0-9]`)
+  bleibt bei 6: das neue `1 + 1 + 6 = 8` traegt keine Dezimalstelle.
+- Die Datei liest mit `tomllib` fehlerfrei ein: 19 `[[reihe]]`, 9 `[[widerspruch]]`, sechs
+  Wurzeltabellen. Zeilenbilanz 1732 → 1738.
+- `git status` fuehrt unter `ventures/` **genau eine** geaenderte Datei.
+
+### Was ich bewusst nicht angefasst habe
+
+`pruefweg.toml_geprueft` schreibe ich **nicht** fort. Das Feld bilanziert Blattwerte gegen
+`4eb20ac`, und diese Bilanz bleibt wahr — dieser Lauf aendert keinen Blattwert. Ein
+Nachtrag haette den einzigen Blattwert des Laufs erzeugt und die Aussage „null
+verschiedene Werte" zerstoert, mit der ich oben Bedingung 1 bis 3 als unberuehrt belege.
+Dass der Kommentar ueber `[datei.vorlagen]` seit jener Bilanz ein zweites Mal geaendert
+wurde, steht hier im Bericht; Kommentare sind keine Blattwerte, und das sagt das Feld
+selbst.
+
+### Woran ich unsicher bin
+
+1. **Der Umfang der Reparatur.** Der Ruecklauf sagt „eine Aenderung an einem Wort", ich
+   habe zwei Zeilen durch acht ersetzt. Begruendung oben; haelt der Pruefer den knapperen
+   Eingriff fuer den richtigen, ist die Ruecknahme mechanisch.
+2. **Die Formel `1 + 1 + 6 = 8` im Kommentar.** Sie macht die Bedingung maschinell
+   pruefbar, aber sie ist die erste Rechnung in einem Kommentar dieser Datei — bisher
+   stehen Rechnungen nur in Blattwerten wie `probe`. Wenn die Datei dafuer eine Konvention
+   hat, habe ich sie nicht gefunden.
+
+### Gemeldet, nicht angefasst — unveraendert gegenueber dem ersten Baubericht
+
+`technik.md` fuehrt Reihe 9 an Z. 1441 und Z. 2112 weiter als Sollreihe der Klasse
+`gesetzt`. Der Widerspruch steht in `reihen.toml` unter Nr. 5 und gehoert dem Architekten;
+Vorschlag `0068` liegt vor.
