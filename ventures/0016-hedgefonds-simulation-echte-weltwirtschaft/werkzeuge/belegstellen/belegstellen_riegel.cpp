@@ -35,6 +35,12 @@
 //! an seiner eigenen Kopfzeile rot -- so wie Bedingung 1 sich selbst faengt, wenn
 //! jemand hier eine Zeilenangabe hinschreibt.
 //!
+//! Ein zweites, ebenso echtes Beispiel, und es traegt das am 2026-09-04 dazugekommene
+//! dritte Schluesselwort: `technik.md`, Absatz "Zwei Adresspaare tragen denselben
+//! Wert, und das braucht eine Regel statt eines Zufalls". Auch dieses Zitat zaehlt
+//! mit, auch es loest auf, und auch es ist der Rothebel fuer das, was es zeigt: Wer
+//! den Wortlaut hier oder dort aendert, macht den Riegel rot.
+//!
 //! ## Bedingung 2: was als Zitat zaehlt
 //!
 //! Gesucht wird **je Absatz, nicht je Zeile**. Ein Absatz ist ein zusammenhaengender
@@ -47,8 +53,12 @@
 //!
 //! Ein Zitat besteht aus drei Teilen, alle im selben Absatz:
 //!
-//!   1. ein Schluesselwort -- das Wort fuer einen Textabschnitt oder das Wort fuer
-//!      eine Ueberschrift, in beiden Schreibweisen (mit Umlaut und ohne);
+//!   1. ein Schluesselwort -- das Wort fuer einen Textabschnitt, das Wort fuer einen
+//!      Textblock innerhalb eines Abschnitts oder das Wort fuer eine Ueberschrift,
+//!      letzteres in beiden Schreibweisen (mit Umlaut und ohne). Das zweite ist am
+//!      2026-09-04 dazugekommen und nicht aus Vollstaendigkeitsdrang: Paket 0034 hat
+//!      zwei seiner drei Belegstellen mit ihm geschrieben, und ohne es blieben sie
+//!      ungefangen -- die Zaehlung stieg dadurch von 21 auf 23;
 //!   2. unmittelbar danach die Ueberschrift **in Anfuehrung**: gerade oder
 //!      typografische Anfuehrungszeichen, einfache Anfuehrungszeichen, Akzente oder
 //!      Sternchen. Ein `\` davor wird uebersprungen, damit ein Zitat in einer
@@ -187,8 +197,20 @@
 //! ueber ihren Wortlaut und nicht ueber eine Zeilennummer -- eine Nummer neben einem
 //! Dateinamen waere in dieser Datei die Sorte Verweis, die Bedingung 1 verbietet.
 //!
-//!   0034 -- `daten/adressen.md`, im Kopffeld `quellen`. Gefangen; das Ziel ist der
-//!           Abschnitt der Spielvorgabe, der den Zustand beschreibt.
+//!   0034 -- `daten/adressen.md`, drei Stellen, alle mit Ziel in `technik.md`. Zwei
+//!           **gefangen**: die Begruendung zur Spalte `Adresse` und die Herleitung zu
+//!           den unmarkierten Geschwisterpaaren zitieren beide denselben fett
+//!           ausgezeichneten Vorspann unter T49, und beide loesen auf. Sie fielen
+//!           erst an, seit das Wort fuer einen Textblock in SCHLUESSEL steht.
+//!           Die dritte -- die Tabellenueberschrift zu T46, im Satz mit "sagt es
+//!           selbst" -- ist **nicht gefangen**; die Form steht unten.
+//!           *Berichtigung vom 2026-09-04:* Bis dahin stand hier das Kopffeld
+//!           `quellen` derselben Datei. Das ist eine echte und gefangene Belegstelle,
+//!           aber sie stammt aus Paket 0004 und nicht aus 0034 -- `git log -S` auf
+//!           den Wortlaut fuehrt zwei Tage daneben, weil die Arbeit eines Pakets hier
+//!           regelmaessig im Commit des naechsten Laufs liegt und dessen Betreff den
+//!           Namen des anderen Pakets traegt. Der Wortlauttreffer gehoert deshalb
+//!           gegen das Datum des gesuchten Pakets gehalten, nicht fuer sich genommen.
 //!   0035 -- `parameter.toml`, in der Herkunftsbegruendung zu `hebelaufschlag`. Zwei
 //!           Zitate, beide gefangen; das zweite traegt seinen Dateinamen eine Zeile
 //!           oberhalb und faellt damit nur wegen der Absatzlesung an.
@@ -217,6 +239,28 @@
 //! ist eine eigene Entscheidung mit eigenem Nachweis und liegt als Vorschlag daneben
 //! (Paket 0079). Solange sie nicht getroffen ist, steht die Luecke hier -- ein Riegel,
 //! der etwas still uebergeht, sieht aus wie einer, der prueft.
+//!
+//! **Die zweite Luecke, aus demselben Grund ausgeschrieben: Das Schluesselwort steht
+//! nicht unmittelbar vor der Anfuehrung.** Die dritte Belegstelle aus Paket 0034 nennt
+//! ihr Schluesselwort, laesst dann aber fuenf Woerter folgen, ehe die Anfuehrung
+//! beginnt -- der Bau ist "die <Schluesselwort> der Tabelle sagt es selbst:", und erst
+//! danach kommt der zitierte Wortlaut. `ueberschrift_hinter` ueberspringt hinter dem
+//! Schluesselwort nur Leerzeichen und einen Gegenschraegstrich; alles andere beendet
+//! den Versuch, und die Stelle zaehlt danach nirgends -- auch nicht als uebergangen.
+//!
+//! An derselben Stelle steht ein zweites, davon unabhaengiges Hindernis: Der
+//! Dokumentname steht dort **rechts** vom Zitat, in der Klammer dahinter, waehrend
+//! dieser Riegel nur nach links sucht. Wer nur eines der beiden loest, fangt die
+//! Stelle immer noch nicht.
+//!
+//! Beides ist keine Zeile, sondern eine Entscheidung mit eigenem Nachweis, und zwar
+//! aus dem Grund, an dem schon 0047 haengt: Wer beliebig viele Woerter zwischen
+//! Schluesselwort und Anfuehrung zulaesst, bindet jede Anfuehrung eines Satzes an das
+//! naechstgelegene Schluesselwort und wird rot, wo nichts kaputt ist; wer zusaetzlich
+//! nach rechts sucht, muss entscheiden, welcher der beiden Nachbarn gewinnt, und hat
+//! dafuer heute kein Mass. Solange die Entscheidung nicht getroffen ist, bleibt diese
+//! Form ungeschuetzt. Sie steht hier, damit die Zahlen unten niemand fuer
+//! Vollstaendigkeit haelt; als Vorschlag liegt sie als Paket 0084 daneben.
 //!
 //! ## Warum der Riegel seinen eigenen Quelltext mitliest
 //!
@@ -567,8 +611,8 @@ void pruefe_datei(const fs::path& pfad, const std::string& anzeigename,
 /// Ein ausgeschriebenes Schluesselwort traegt in einem Zeichenkettenliteral
 /// unmittelbar hinter sich ein Anfuehrungszeichen. Der Riegel faende sich damit in
 /// seinem eigenen Quelltext und suchte eine Ueberschrift, die es nirgends gibt.
-constexpr std::array<std::string_view, 3> SCHLUESSEL = {
-    "Abschnit\164", "Ueberschrif\164", "\303\234berschrif\164"};
+constexpr std::array<std::string_view, 4> SCHLUESSEL = {
+    "Abschnit\164", "Ueberschrif\164", "\303\234berschrif\164", "Absa\164z"};
 
 /// Anfuehrung und Schluss, paarweise. Die deutschen Anfuehrungszeichen sind unten und
 /// oben verschieden, und im Bestand kommen zu einem Anfang mehrere Schluesse vor --
@@ -1020,7 +1064,13 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
             bool netzadresse = false;
             std::string grund;
             if (!naechster_verweis(absatz.text, i, name, netzadresse)) {
-                grund = "kein Dokumentname im Absatz";
+                // Letztes Zeichen maskiert, aus demselben Grund wie in SCHLUESSEL:
+                // Ausgeschrieben stuende hier ein Schluesselwort mit einem
+                // Anfuehrungszeichen unmittelbar dahinter, und der Riegel faende sich
+                // in seinem eigenen Quelltext -- gemessen, er meldete dann eine
+                // uebergangene Fundstelle, deren gesuchter Name die halbe naechste
+                // Anweisung war.
+                grund = "kein Dokumentname im Absa\164z";
             } else if (netzadresse) {
                 grund = "naechstes Ziel ist eine Netzadresse: " + name;
             } else {

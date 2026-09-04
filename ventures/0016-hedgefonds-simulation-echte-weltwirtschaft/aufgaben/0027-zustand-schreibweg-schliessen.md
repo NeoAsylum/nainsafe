@@ -1,7 +1,7 @@
 ---
 id: 0027-zustand-schreibweg-schliessen
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0023-adressfund-fehlerwert, 0016-schreiber-ursachenkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: Die EINE Bedingung im Abschnitt "DRITTER ZUSCHNITT" vom 2026-09-04. Bedingung 2 des zweiten Zuschnitts (Verweis auf `daten/adressen.md` ohne Zeilenbereich) ist erfüllt und wird Erhaltungsbedingung; Bedingung 3 der ersten Liste ist mit 0071 abgenommen und hier nicht zu prüfen; 1, 2, 4 und 5 der ersten Liste sind zweimal belegt und bleiben stehen. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

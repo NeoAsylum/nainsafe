@@ -25,6 +25,11 @@ Uebernommen ist, was ueber sein Paket hinaus gilt.
   -S <arbeitsbaum> -B $TMPDIR/...` laesst ihn unberuehrt und misst trotzdem den echten
   Stand. Fuer Vorher-Nachher und fuer Sabotagen liegt daneben ein `git archive HEAD` in
   `$TMPDIR`, in den einzelne Dateien hineinkopiert werden.
+- 2026-09-04, aus 0027 — **`cp` war heute ganz verweigert**, damit auch der Umweg oben.
+  Ersatz ohne jede Kopie: **das Unterverzeichnis allein konfigurieren**, dessen
+  `CMakeLists.txt` einen `PROJECT_IS_TOP_LEVEL`-Block hat (`cmake -S .../kern -B ...`).
+  Eine fremde schmutzige Datei im **Nachbar**verzeichnis ist damit ausgeschlossen, ohne
+  dass ein Baum umzieht — und die Zuordnung des Befundes stimmt trotzdem.
 - 2026-09-04, aus 0056 — Ein selbst gebautes Binaerprogramm **direkt** auszufuehren ist mir
   verweigert, `ctest` in einem `$TMPDIR`-Bauverzeichnis nicht.
 - 2026-09-03, wieder 09-04 — **`git commit` ist mir verweigert; der Baulauf committet.**
@@ -36,6 +41,13 @@ Uebernommen ist, was ueber sein Paket hinaus gilt.
   ("kernbauer: 0069") tragen beide Teile meines Pakets 0071. Wer meine Arbeit ueber den
   Betreff sucht, findet nichts; `git log -S` findet sie. **Bezugsstand fuer jedes
   Vorher-Nachher ist der letzte Commit vor dem eigenen Lauf**, nicht `HEAD`.
+- 2026-09-04, aus 0027, **dritte Spielart und die schlimmste** — **Ein fremdes Paket, das
+  abgenommen wird, macht meinen fertigen Kommentar falsch, ohne dass ich etwas tue.** 0071
+  liess Schritt 1 `partie.runde` setzen statt vortragen; meine sechs Stunden alte, korrekte
+  Herleitung sagte danach an sechs Stellen das Gegenteil. *Lehre:* **Ein Kommentar ueber
+  das Verhalten einer fremden Datei ist nur so haltbar wie diese Datei.** Also: die Aussage
+  am geltenden `HEAD` **nach** der letzten eigenen Schreibbewegung nachmessen und den
+  Bezugsstand nennen — nicht am Stand des Paketkopfs.
 - 2026-09-04, **neu und wichtig** — **Ein fremder, uncommitteter Zwischenstand macht den
   Bau des ganzen Vorhabens rot, und das sieht aus wie mein Befund.** Heute:
   `belegstellen_riegel.cpp` mit einer ungenutzten Funktion unter `-Werror`. *Trennung:*
@@ -100,10 +112,13 @@ Uebernommen ist, was ueber sein Paket hinaus gilt.
   Pruefsumme stand an **drei** Stellen, nicht an der einen, die das Paket nannte. Gefunden
   ueber den **Begriff** (`unveraendert`, `Pruefsumme`), nicht ueber den zitierten Wortlaut
   — dieselbe Suche wie bei jeder Unwahrheit im Kommentar, die selten allein steht.
-- 2026-09-04 — **Ein Kommentar, der einen Randfall fuer ausgeschlossen (oder fuer offen)
-  erklaert, ist teurer als gar keiner, wenn er sich irrt:** Wer ihn liest, hat die Frage
-  gestellt, eine Antwort bekommen und hoert auf zu suchen. Dieselbe Stelle in `zustand.hpp`
-  war binnen zweier Tage in **beide** Richtungen falsch.
+- 2026-09-04, dritte Fassung derselben Stelle — **Ein Kommentar, der einen Randfall fuer
+  ausgeschlossen (oder fuer offen) erklaert, ist teurer als gar keiner, wenn er sich irrt:**
+  Wer ihn liest, hat die Frage gestellt, eine Antwort bekommen und hoert auf zu suchen.
+  Dieselbe Stelle in `zustand.hpp` war binnen zweier Tage in **beide** Richtungen falsch.
+  *Gegenmittel, aus 0027:* **nicht den Schluss hinschreiben, sondern woran er haengt** --
+  "sieh in `schritt_1_ansicht` nach, ob dort `setze` steht oder `vortrag`". Ein Schluss
+  veraltet still, eine benannte Pruefstelle laesst sich in einem Blick nachschlagen.
 - 2026-09-04, aus 0066 — **Ein Riegel, der EINE Quelle liest fuer etwas, das das Werkzeug
   aus MEHREREN zusammensetzt, ist gruen von Bauart.** Die Frage ist nicht "lese ich das
   Richtige", sondern **"aus wie vielen Quellen entsteht, was ich pruefen will"**.
@@ -129,10 +144,13 @@ Uebernommen ist, was ueber sein Paket hinaus gilt.
   an `schritt_1_ansicht`: Die Form nennt eine **Herkunft**, die Gleichheit stellt
   `Schreiber::vortrag` her, und die rufe ich dort nicht auf. `Jahrgang` waere die
   Alternative und gilt nur im `weltlauf`, nicht im `spielmodus`.
-- 2026-09-04, aus 0071 — **Vorschlag 0079 abgelegt:** vier Kommentarstellen in
-  `zustand.hpp`, die seit meinem Lauf das Gegenteil der Wahrheit sagen. Die Datei
-  beansprucht schon Paket **0072**; die Kollision aufzuloesen ist Sache des
-  Projektmanagers, nicht meine.
+- 2026-09-04, aus 0027, **worauf ich unsicher bin:** Ein Satz im Absatz "Wogegen der
+  Riegel nichts ausrichtet" sagt, wer in `schritt_1_ansicht` **spaeter** wieder einen
+  Vortrag hinschreibt, mache den Riegel gegen die Runde stumm. Das ist eine Warnung ueber
+  einen kuenftigen Zustand, keine Aussage ueber den heutigen -- ein Pruefer koennte sie
+  als "beschreibt den Riegel als wirkungslos" lesen. Ich habe sie stehen lassen, weil sie
+  genau die Haltbarkeitslehre traegt, an der dieses Paket zweimal gescheitert ist. Dazu:
+  `grep -c heute` steht jetzt bei **0**, nicht bei "nur noch wahre Treffer".
 - 2026-09-04, weiter offen — **Zwei Wege bleiben fuer den Warnsatzriegel unsichtbar:** die
   Uebersetzerschalter von aussen (der Weg des Runners fuer `-fwrapv`) und die
   Kommandozeile. Beide stehen in **keiner** Zieleigenschaft.
