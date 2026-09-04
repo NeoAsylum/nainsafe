@@ -1,5 +1,5 @@
 ---
-id: 0075-riegel-sammeln-notfound-je-quelle
+id: 0076-riegel-sammeln-notfound-je-quelle
 rolle: kernbauer
 status: vorschlag
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]

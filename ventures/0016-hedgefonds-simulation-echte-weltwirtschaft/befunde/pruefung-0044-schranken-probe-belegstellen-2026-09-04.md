@@ -159,7 +159,7 @@ Projektmanager.** Bedingung 1 misst die Abwesenheit eines Musters. Sie kann nich
 feststellen, ob das, was an die Stelle der Nummer getreten ist, wahr ist -- und genau
 dort sind beide Befunde entstanden. Ein Kriterium fuer diese Paketsorte muesste den
 **Ersatz** pruefen, nicht nur das Verschwinden der Nummer. Die Arbeit dazu steht in
-Vorschlag `0075-schranken-probe-zwei-falsche-saetze`.
+Vorschlag `0077-schranken-probe-zwei-falsche-saetze`.
 
 ## Eine Messung fuer das schon offene Paket 0067, statt eines zweiten Vorschlags
 

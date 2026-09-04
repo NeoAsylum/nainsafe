@@ -128,8 +128,8 @@ koennen. Er tut es nicht -- `gezaehlt` bleibt 0.
 
 | Baum | gemessen |
 |---|---|
-| `add_compile_options(-w)` vor `add_library` | Code 1 (`COMPILE_OPTIONS an z` -- die Verzeichniseigenschaft erbt ins Ziel) |
-| `set_property(DIRECTORY APPEND PROPERTY COMPILE_OPTIONS -w)` | Code 1, ebenso |
+| `add_compile_options(-w)` vor `add_library` | Code 1 -- **auch am Stand vorher**: die Verzeichniseigenschaft erbt in `COMPILE_OPTIONS` des Ziels, der Weg war nie offen |
+| `set_property(DIRECTORY APPEND PROPERTY COMPILE_OPTIONS -w)` | Code 1, ebenso an beiden Staenden |
 | `COMPILE_FLAGS "-O0 -w"` (zwei Woerter in einem Eintrag) | Code 1, ganzer Eintrag genannt |
 | `-w` an der **zweiten** von zwei Quellen | Code 1, `COMPILE_FLAGS an …/y.cpp` |
 | `-Wno-error=conversion` an der Quelldatei | Code 1 |
@@ -153,6 +153,22 @@ Doppelmeldung geprueft und in Ordnung: `target_compile_options(z PUBLIC -w)` an 
 `STATIC`-Bibliothek erzeugt zwei `gefunden in`-Zeilen (`COMPILE_OPTIONS` und
 `INTERFACE_COMPILE_OPTIONS` desselben Ziels). Das ist eine Fundstelle mehr, kein Ziel
 mehr -- der Bericht bleibt richtig.
+
+## Der Nachbau
+
+Alle 22 Baeume stehen als ein Skript unter `befunde/pruefung-0066/nachbau.py`, mit
+Sollcode je Baum. Es nimmt den zu pruefenden Stand als Argument und holt sich die
+Fassung selbst aus `git`:
+
+```
+python3 befunde/pruefung-0066/nachbau.py             -> 0 Abweichung(en) vom Soll
+python3 befunde/pruefung-0066/nachbau.py '8fff575^'  -> zehn Baeume mit Code 0 statt 1
+```
+
+Die zehn sind `a1_zielflags`, `b1_quellflags`, `b1b_quellopt`, `b2_iface`,
+`e4_zweiworte`, `e5_zweitequelle`, `e8_wnoerrorquelle`, `e10_genexquelle`,
+`f1_targetdir`, `x_unterbaum` -- die Luecke, gegen die dieses Paket geschrieben ist,
+in einer Zahl. Die uebrigen zwoelf urteilen an beiden Staenden gleich.
 
 ## Der eine Befund -- ausserhalb der Abnahme
 
@@ -187,11 +203,17 @@ im Gleichschritt, die Paarung Eintrag/Herkunft bleibt richtig. **Das Urteil blei
 deshalb `geprueft`.**
 
 Warum es trotzdem ein Paket wert ist, steht in
-`aufgaben/0075-riegel-sammeln-notfound-je-quelle.md`. Kurz: Der Waechter existiert
+`aufgaben/0076-riegel-sammeln-notfound-je-quelle.md`. Kurz: Der Waechter existiert
 genau dafuer, Nichtwerte draussen zu halten, und an den zwei Stellen, an denen der
 Nichtwert der **Normalfall** ist, haelt er nicht -- waehrend ein Kommentar daneben das
 Gegenteil behauptet. Ein Kommentar, der einen Randfall abhakt, ist teurer als gar
 keiner, wenn der Randfall der Normalfall ist.
+
+**Zur Kennung des Vorschlags:** angelegt als `0075`, umbenannt auf `0076` -- ein
+paralleler Lauf belegte dieselbe Nummer, waehrend ich schrieb (siebter Fall doppelter
+Kennungen). Der andere Lauf ist inzwischen selbst auf `0077` gewichen; **`0075` ist
+damit unbelegt**. Kein Verweis zeigt darauf, ich lasse die Luecke stehen statt ein
+drittes Mal umzubenennen -- der Projektmanager entscheidet, ob er sie schliesst.
 
 ## Was ich nicht geprueft habe
 

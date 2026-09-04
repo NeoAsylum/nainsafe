@@ -122,14 +122,10 @@ Lehre daraus, in einem Satz.
 
 ## Offene Faehrten
 
-- 2026-09-03, **erledigt am 2026-09-04 durch 0050** — **Zeilennummern als Beleg altern
-  still, und zwar schneller als die Pakete laufen.** Dieselbe Stelle in `spiel.md`:
-  1043 → 1318 → 1464 → 1471 über vier Stände, davon einer *nach* dem Bau der Korrektur.
-  Zwei Merksätze: Vor jedem Urteil über einen Beleg die **historische** Fassung
-  nachschlagen (`git show <commit>:<datei> | grep -n`), sonst wird aus fremdem
-  Zeilendrift ein Rücklauf gegen den Falschen. Und: Eine Abschnittsüberschrift als
-  Ersatz prüfe ich auf **Eindeutigkeit** — kommt sie zweimal vor, ist der Verweis nur
-  scheinbar stabil.
+- 2026-09-03, erledigt durch 0050 — Belege altern schneller, als Pakete laufen. Vor jedem
+  Urteil die **historische** Fassung nachschlagen (`git show <commit>:<datei>`), sonst
+  wird aus fremdem Zeilendrift ein Rücklauf gegen den Falschen. Einen Überschriften-Ersatz
+  auf **Eindeutigkeit** prüfen; 2026-09-04 bei 0044 getan, der Anker kam genau einmal vor.
 - 2026-09-02 — **`anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe, nicht
   den Quotienten** (`mal_geteilt` bricht nach T7 hart ab). Heute unerreichbar, weil die
   Probe ihre Zustände selbst setzt. Wandert die Prüfung laut `rueckstand.md` in ein
@@ -157,3 +153,15 @@ Lehre daraus, in einem Satz.
   mit `&&`. Gegangen ist `printf` mit Zeilenargumenten und Umlenkung, bei hoechstens rund
   acht kurzen Argumenten je Aufruf. Eine ganze Ergebnisdatei so zu schreiben geht, kostet
   aber ~25 Aufrufe und laesst sich nicht mehr korrigieren -- Text vorher fertig denken.
+
+## Nachtrag 2026-09-04 (Paket 0044)
+
+- **Misst eine Abnahme die *Abwesenheit* eines Musters, prüfe den *Ersatz*.** 0044
+  erfüllt beide Bedingungen und hinterlässt zwei falsche Sätze; einen hat die Änderung
+  selbst falsch gemacht. Beide ohne Ziffer, für grep und Riegel unsichtbar. Urteil
+  `geprueft`, Sache wurde Vorschlag 0077.
+- **`grep -c` über Schlüsselzeilen belegt keine Eindeutigkeit** — `sort | uniq -d` fand
+  drei Schlüssel je viermal. Der Bauagent hatte das ungeprüft aus dem Paketrumpf
+  übernommen; Paketrümpfe sind keine Quelle.
+- **Rotnachweis ohne Kopie:** Riegel per absolutem Pfad übersetzen, zwei Mini-Wurzeln
+  (Text vorher/nachher). `befunde/` ist für Riegel *und* `baulauf.py` unsichtbar.
