@@ -32,18 +32,18 @@ anderes behauptet, irrt.
 ```
 [ 14%] Built target pruefstand_geprueft
 [ 14%] Built target pruefstand
-[ 30%] Built target kern_geprueft
+[ 33%] Built target kern_geprueft
 [ 47%] Built target kern
-[ 59%] Built target festkomma_probe
-[ 59%] Built target schranken_probe
-[ 61%] Built target meldung_probe
-[ 76%] Built target vorrat_kernanker_probe
-[ 76%] Built target pruefsumme_probe
-[ 76%] Built target vorrat_probe
-[ 80%] Built target vorrat_verfahren_probe
+[ 57%] Built target vorrat_probe
+[ 57%] Built target vorrat_kernanker_probe
+[ 61%] Built target vorrat_verfahren_probe
+[ 66%] Built target festkomma_probe
+[ 76%] Built target meldung_probe
+[ 76%] Built target schranken_probe
+[ 85%] Built target pruefsumme_probe
+[ 85%] Built target zufall_probe
 [ 90%] Built target schritt_probe
-[ 90%] Built target schreiber_probe
-[ 95%] Built target zufall_probe
+[100%] Built target schreiber_probe
 [100%] Built target zustand_probe
 ```
 
@@ -93,14 +93,14 @@ Total Test time (real) =   0.15 sec
 ```
 [ 46%] Built target kern
 [ 46%] Built target kern_geprueft
-[ 56%] Built target festkomma_probe
-[ 60%] Built target meldung_probe
-[ 73%] Built target schreiber_probe
-[ 73%] Built target zufall_probe
-[ 93%] Built target zustand_probe
-[ 93%] Built target schranken_probe
-[ 93%] Built target pruefsumme_probe
-[100%] Built target schritt_probe
+[ 66%] Built target festkomma_probe
+[ 66%] Built target meldung_probe
+[ 66%] Built target schranken_probe
+[ 80%] Built target zufall_probe
+[ 80%] Built target zustand_probe
+[ 86%] Built target pruefsumme_probe
+[ 93%] Built target schritt_probe
+[100%] Built target schreiber_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -141,10 +141,10 @@ Total Test time (real) =   0.10 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
-[100%] Built target vorrat_kernanker_probe
-[100%] Built target vorrat_probe
+[ 50%] Built target pruefstand
+[ 83%] Built target vorrat_probe
+[ 83%] Built target vorrat_kernanker_probe
 [100%] Built target vorrat_verfahren_probe
 ```
 
@@ -161,7 +161,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =   0.04 sec
+Total Test time (real) =   0.03 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -175,17 +175,17 @@ Total Test time (real) =   0.04 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 12%] Built target mut2_gleichstand_an_groessere_kennung
-[ 18%] Built target mut1_dreiwertiger_kern
-[ 36%] Built target kontrolle_unveraendert
-[ 36%] Built target mut3_ordnung_a5_bis_a1
-[ 45%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 54%] Built target mut8_profil_doppelt_eines_fehlt
-[ 78%] Built target anker_von_hand
-[ 78%] Built target anker_gegen_mut2
-[ 81%] Built target mut4_kennung_einsbasiert
-[100%] Built target mut6_abgelegter_kern_immer_ohne
-[100%] Built target mut7_position_und_lobby_vertauscht
+[  9%] Built target mut3_ordnung_a5_bis_a1
+[ 45%] Built target mut4_kennung_einsbasiert
+[ 45%] Built target kontrolle_unveraendert
+[ 36%] Built target mut1_dreiwertiger_kern
+[ 45%] Built target mut2_gleichstand_an_groessere_kennung
+[ 54%] Built target mut6_abgelegter_kern_immer_ohne
+[ 63%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 72%] Built target anker_von_hand
+[ 90%] Built target mut8_profil_doppelt_eines_fehlt
+[ 90%] Built target mut7_position_und_lobby_vertauscht
+[100%] Built target anker_gegen_mut2
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
