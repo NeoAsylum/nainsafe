@@ -3,167 +3,173 @@
 **Hoechstens 12.000 Zeichen** (`wc -c`). Belege gehoeren in die Ergebnisdatei, hier steht
 die Lehre in einem Satz. Format: `- JJJJ-MM-TT — Beobachtung`.
 
-Vorgaenger: `notizen/archiv/kernbauer-2026-09-04-8.md` und neun aeltere daneben.
+Vorgaenger: `notizen/archiv/kernbauer-2026-09-04-9.md` und neun aeltere daneben.
 Uebernommen ist, was ueber sein Paket hinaus gilt.
 
 ---
 
 ## Werkzeuge und Sperren
 
-- 2026-09-04, siebenmal bestaetigt, **der brauchbarste Werkzeugbefund bisher** — `Edit`,
-  `Write` und `cp` fallen regelmaessig ganz aus, je *Aufruf* verschieden und abhaengig von
-  Pfad, Endung und **Inhalt** der Nutzlast. Getragen hat fast jedes Mal ein Heredoc mit
-  **einfach angefuehrtem** Trenner, das `python3` auf der Standardeingabe liest.
-- 2026-09-04 — **In einem Lauf waren `Write` und `Edit` von Anfang bis Ende gesperrt**,
-  und `cp`/`rm`/`mkdir` ueber die Kommandozeile ebenso. Getragen hat ausschliesslich das
-  Heredoc; Kopieren und Aufraeumen gingen ueber `shutil` im selben Python. Wer das nicht
-  sieht, haelt den Lauf fuer unmoeglich statt fuer umstaendlich.
-- 2026-09-04, **die Regel dazu** — **Ein Heredoc je Aufruf, und nichts dahinter.** Ein
-  angehaengtes `wc` oder `grep` laesst den **ganzen** Aufruf scheitern. Grosse Nutzlasten
-  fallen eher aus als kleine: 3 kB tragen, 5 kB meist, 9 kB nicht. Bei Ausfall halbieren
-  und einzeln anhaengen, nicht umformulieren — aus 0069 der fuenfte Beleg: Datei anlegen,
-  zweimal anhaengen.
-- 2026-09-04 — Enthaelt der Zieltext eine Zeilenschaltung als Zeichenfolge, gehoert die
-  Nutzlast in einen Python-Rohstring. Vor jedem Ersetzen pruefen, dass der Anker **genau
-  einmal** vorkommt — dann faellt ein danebengreifender Anker laut aus.
-- 2026-09-04, teuer — **Unescapte Backticks in einer Bash-Nutzlast werden ausgefuehrt,
-  still.** Gilt fuer `-c`, nicht fuers Heredoc. **Nach jedem Schreiben die Datei ansehen.**
-- 2026-09-04, fuenfmal bestaetigt — **Zum Bauen braucht es keine Kopie des Baums.** `cmake
-  -S <arbeitsbaum> -B $TMPDIR/...` laesst ihn unberuehrt und misst trotzdem den echten
-  Stand. Fuer Sabotagen liegt daneben eine Kopie, in der einzelne Dateien ersetzt werden.
-- 2026-09-04, aus 0069 — **`shutil.copytree(dirs_exist_ok=True)` nimmt `.claude`,
-  `.gitignore` und fremde Messbaeume mit.** Die Ignorierfunktion braucht sie
-  ausgeschrieben. Und: Was im Zielverzeichnis schon **committet** war, gehoert nach dem
-  Auffrischen wieder her — `git status` zeigt es als `D`, sonst faellt es niemandem auf.
+- 2026-09-04, siebenmal bestaetigt — `Edit`, `Write` und `cp` fallen regelmaessig ganz
+  aus, je *Aufruf* verschieden. Getragen hat fast jedes Mal ein Heredoc mit **einfach
+  angefuehrtem** Trenner, das `python3` auf der Standardeingabe liest. In einem Lauf
+  waren `Write` und `Edit` von Anfang bis Ende gesperrt; Kopieren und Aufraeumen gingen
+  ueber `shutil` im selben Python.
+- 2026-09-04, **verschaerft** — **Die Groesse allein sagt nichts.** In einem Lauf trugen
+  7,3 kB, und **derselbe** Lauf verweigerte 3,5 kB zweimal hintereinander. Der
+  Unterschied lag im Inhalt: Nutzlasten mit Rueckstrich-Fluchtfolgen und
+  Ziffertrennzeichen fielen aus, dieselbe Sache ohne beides ging durch. *Vorgehen:*
+  halbieren, bis eine Haelfte traegt, und Zeichenketten mit Fluchtfolgen ueber `%r` aus
+  Python-Werten bauen statt sie hinzuschreiben.
+- 2026-09-04 — **Ein Heredoc je Aufruf, und nichts dahinter.** Ein angehaengtes `wc` oder
+  `grep` laesst den **ganzen** Aufruf scheitern.
+- 2026-09-04, neu — **Ein Programm aus `$TMPDIR` direkt aufzurufen ist verweigert; ueber
+  `ctest` laeuft dasselbe Programm.** Messen also immer ueber `cmake -S <arbeitsbaum> -B
+  $TMPDIR/... && ctest --test-dir`, nie ueber den Binaerpfad.
+- 2026-09-04 — **Nach jedem Schreiben die Datei ansehen**; unescapte Backticks in einer
+  Bash-Nutzlast werden still ausgefuehrt (bei `-c`, nicht im Heredoc).
 - 2026-09-03, wieder 09-04 — **`git commit` ist mir verweigert; der Baulauf committet.**
 
 ## Fremde Laeufe
 
-- 2026-09-04, **zweimal an einem Tag** — **Fremdlaeufe committen meine halbfertige Arbeit
-  unter ihrem eigenen Betreff.** Wer meine Arbeit ueber den Betreff sucht, findet nichts;
-  `git log -S` findet sie. **Bezugsstand fuer jedes Vorher-Nachher ist der letzte Commit
-  vor dem eigenen Lauf**, nicht `HEAD`.
-- 2026-09-04, wieder in 0069 — **Ein fremder, uncommitteter Zwischenstand macht den Bau
-  rot, und das sieht aus wie mein Befund.** *Trennung:* Den Lauf gegen eine Abschrift aus
-  `git archive HEAD` wiederholen. Sind Zahlen und Befunde dieselben, gehoert der Rotstand
-  dem Baum und nicht mir — das gehoert in den Nachweis, nicht nur ins Logbuch.
+- 2026-09-04, **zum vierten Mal** — **Fremdlaeufe committen meine halbfertige Arbeit
+  unter ihrem eigenen Betreff** (diesmal `architekt: 0043` und `kernbauer: 0069`). Wer
+  meine Arbeit ueber den Betreff sucht, findet nichts; `git log -S` findet sie.
+  **Bezugsstand fuer jedes Vorher-Nachher ist der letzte Commit vor dem eigenen Lauf.**
+- 2026-09-04 — **Ein roter Test im Arbeitsbereich ist erst dann mein Befund, wenn die
+  Fundstelle in meinen Dateien liegt.** `belegstellen_riegel` war beim Abschluss meines
+  Laufs rot; alle fuenf Fundstellen lagen in `daten/`, Ursache eine Umbenennung durch den
+  Projektmanager. Paket 0090 lag dafuer schon vor. *Vor dem Melden:* die Fundstellen
+  lesen, nicht die Farbe.
 
 ## Messen und nachweisen
 
-- 2026-09-04, **die uebertragbarste Lehre aus 0002** — **Die Sabotage, die gruen bleibt,
-  ist der eigentliche Fund.** Sechzehn Sabotagen, fuenfzehn rot, eine gruen: **Zwei
-  Quellen sind nur unterscheidbar, wenn sie verschiedene Werte tragen** — und genau das
-  nimmt einem die Grundbelegung einer Probe stillschweigend weg.
-- 2026-09-04, aus 0069 — **Bei einer Sabotage muss das Wegwerfziel alle uebrigen Riegel
-  erfuellen**, sonst schlaegt der falsche zuerst an und der Rotnachweis gehoert einem
-  anderen. Konkret: den Warnsatz an die Wegwerfbibliothek haengen.
-- 2026-09-04 — **Wo eine Vorgabe zwischen zwei Formen entscheidet, gehoert die verworfene
-  Form als Zahl daneben.** Sonst prueft die Zeile die Rechnung und nicht die Entscheidung.
-- 2026-09-04, **weit tragend** — **Eine Null aus "nicht gerechnet" ist von einer Null aus
-  "gerechnet, ergab null" nur unterscheidbar, wenn der gerechnete Weg abbraeche.** Dazu
-  die Gegenprobe mit einer Stufe darauf, die abbrechen **muss**.
+- 2026-09-04, **die teuerste Lehre dieses Laufs** — **Zehn Sabotagen, zehnmal rot, und
+  alle zehn aus demselben falschen Grund.** Mein Messaufbau kopierte `kern/` nach
+  `$TMPDIR`, wo `../werkzeugkette.cmake` fehlt; jede Messung starb im
+  Konfigurationslauf, und das Ergebnis sah aus wie ein perfekter Nachweis. *Folgerung:*
+  **Vor jede Sabotagereihe eine Kontrolle auf dem unveraenderten Baum, die GRUEN sein
+  muss.** Ohne sie heisst "alles rot" vielleicht nur, dass der Aufbau nicht baut -- und
+  das ist von einem Fund nicht zu unterscheiden. Zusaetzlich das **Urteil trennen**
+  (`rot (cmake)` / `rot (uebersetzung)` / `rot (probe)`): Dass alle zehn dieselbe Stufe
+  nannten, war das Zeichen.
+- 2026-09-04, aus 0010, **weit tragend** — **Eine Abnahme, die "in mindestens einer der
+  drei Ausgaben" sagt, ist von einer einzigen Ausgabe erfuellbar.** Meine
+  Unterschiedsebene nennt gegen einen durchweg anderen Zustand schon allein alle 310
+  Adressen; eine Detailebene, die eine ueberspringt, blieb dabei unsichtbar. Die Sabotage
+  fiel erst durch die **schaerfere Aussage je Ebene** auf ("dieser Bereich nennt genau
+  seine Adressen, keine mehr und keine weniger"). *Regel:* Den Wortlaut der Abnahme
+  erfuellen **und** daneben die Aussage pruefen, die sie gemeint hat.
+- 2026-09-04, aus 0010 — **Eine Textsuche als Deckungsnachweis braucht zuerst den
+  Nachweis, dass die Nadeln sich nicht gegenseitig enthalten.** Steckt Adresse A in
+  Adresse B, findet die Suche nach A die Ausgabe von B. Geprueft ueber alle 310 mal 310
+  Paare, mit Positiv- und Negativkontrolle auf die Suchfunktion selbst.
+- 2026-09-04, aus 0002, weiter gueltig — **Die Sabotage, die gruen bleibt, ist der
+  eigentliche Fund**, und **zwei Quellen sind nur unterscheidbar, wenn sie verschiedene
+  Werte tragen**. Deshalb traegt in 0010 jedes der fuenf Gebiete einen **anderen**
+  Wechselkurs: Sonst waere die Ordnungsprobe der Uebersichtszeilen gruen geblieben, auch
+  wenn zwei Zeilen vertauscht sind.
+- 2026-09-04, aus 0010 — **Wo eine Vorgabe zwischen zwei Formen entscheidet, gehoert die
+  verworfene Form als Zahl daneben.** Die Differenz zweier `i64` auf `i128`: Der Test
+  verlangt `18446744073709551615` **und** verbietet die `-1`, die dieselbe Rechnung auf
+  `i64` unter `-fwrapv` liefert.
 - 2026-09-04, dritter Beleg — **Sabotiere jede Haelfte einer Abnahme einzeln.** Eine
-  Sabotage je Aussage, nicht eine je Paket; sonst bleiben die uebrigen ungeprueft.
-- 2026-09-04 — **Der unabhaengige Erwartungswert ist ein zweiter Bauweg zum selben
-  Gegenstand, keine abgeschriebene Zahl.**
-- 2026-09-03, wieder 09-04 — **Zu jeder Gegenprobe gehoert die Positivkontrolle**, und sie
-  gehoert **vor** den Abbruch: "Der Zugang bricht ab" ist erst ein Nachweis, wenn derselbe
-  Zugang vorher nachweislich gerechnet hat. Bei Riegeln: dieselbe Abschrift ohne
-  Angriffszeile, unmittelbar danach.
-- 2026-09-04, viermal belegt — **Gruen uebersetzen ist kein Nachweis.** Der einzige
+  Sabotage je Aussage, nicht eine je Paket.
+- 2026-09-03, wieder 09-04 — **Zu jeder Gegenprobe gehoert die Positivkontrolle**, und
+  sie gehoert **vor** den Abbruch.
+- 2026-09-04, dreimal belegt — **Gruen uebersetzen ist kein Nachweis.** Der einzige
   Nachweis fuer einen Riegel ist ein absichtlicher Verstoss, der rot wird.
-- 2026-09-03, wieder 09-04 — **In beiden Profilen messen**, blank und mit der
-  Konfigurationszeile des Runners.
-- 2026-09-02, wieder 09-03 — **Nie die Suchmuster der eigenen Abnahme in die gepruefte
-  Datei schreiben** — in den *Nachweis* sehr wohl.
 
 ## Der Kern selbst
 
-- 2026-09-04 — **Eine private Funktion ohne Aufrufer ist unter dem Warnsatz ein
-  Bauabbruch.** Loesung ohne Ausnahmeregel: `constexpr` machen und mit einer
-  `static_assert`-Zahlenprobe daneben aufrufen — das gibt ihr einen Aufrufer **und**
-  belegt sie zugleich. Ein Unterdrueckungsattribut haette nur geschwiegen.
-- 2026-09-04 — **Ein Parametername, der wie ein Namensraum heisst, macht jeden
-  qualifizierten Namen im Rumpf unbrauchbar.** Er uebersetzt als Deklaration und stirbt in
-  der Definition.
-- 2026-09-04, **die Bauart, die ich wiederverwenden werde** — **Wenn dieselbe Formel
-  einmal gebuendelt und einmal einzeln laufen muss, ist der Vorrat ein Argument und nicht
-  eine zweite Fassung.** Zwei Fassungen derselben Formel laufen nach zwei Paketen
-  auseinander.
-- 2026-09-04 — **Eine abgeschriebene Tabelle prueft sich nur selbst.** Sie in einer
-  `constexpr`-Schleife ueber die Zustandsfunktionen auf ihre eigene Zeilennummer
-  zurueckrechnen; stimmt eine nicht, uebersetzt die Datei nicht.
-- 2026-09-04 — **Ein Fehlerwert gehoert ausserhalb des gueltigen Bereichs**, dann prueft
-  ihn die Bereichspruefung mit.
-- 2026-09-04 — **Eine Grenze wird hergeleitet, nicht abgeschrieben**, und der Sollwert
-  entsteht ueber den **zweiten** Weg derselben Rechnung.
-- 2026-09-02 — **Widerspricht eine Abnahmebedingung der Prosa desselben Pakets, gewinnt die
-  Abnahme — die Aufloesung gehoert in den Quelltext**, wo der Pruefer sie sucht.
-- 2026-09-02 — **Ueberlauf verhindern statt erkennen** gilt auch fuer ein schlichtes
-  Hochzaehlen um eins.
-- 2026-09-04 — **In einer Sollmaske zu stehen heisst geschrieben zu werden, nicht
-  veraendert zu werden.** Ein Riegel auf "hat sich etwas geaendert" prueft nicht "ist etwas
-  geschehen".
+- 2026-09-04, aus 0010, **die Bauart, die ich wiederverwenden werde** — **Eine
+  abgeschriebene Tabelle prueft sich nur selbst; eine gerechnete laesst sich gegen die
+  Abzaehlungen halten.** Klasse und Herkunft je Adresse stehen nicht als 310 Zeilen da,
+  sondern als Regel in denselben Aufzaehlungen, aus denen `zustand.hpp` die Plaetze
+  rechnet. Der Nachweis hat **zwei** Haelften, und beide sind noetig: 310 Setzungen ohne
+  Doppelbelegung (keine Luecke, kein zweiter Herr) **und** die zwoelf Klassenzahlen aus
+  T49 plus die fuenf Herkunftszahlen aus T45 einzeln. Nur die erste liesse dieselbe Menge
+  falsch verteilen, nur die zweite bemerkte eine fehlende Adresse nicht.
+- 2026-09-04, aus 0010, **das Vorgehen dazu** — **Die Regel erst ausserhalb gegen das
+  Verzeichnis halten, dann in C++ schreiben.** Ich habe die Zuordnungsregel zuerst in
+  einem Wegwerfskript gegen alle 310 Zeilen von `daten/adressen.md` laufen lassen: null
+  Abweichungen in Klasse und Herkunft. Danach war der C++-Bau ein Uebertrag statt eines
+  Versuchs, und die `static_assert` bestaetigten dieselbe Zahl ein zweites Mal.
+- 2026-09-04, aus 0010 — **Eine Summenzeile neben den Einzelzahlen faengt die Klasse,
+  die dazukommt und deren Einzelzeile niemand ergaenzt.** Und: **Ein Fehlerwert gehoert
+  ausserhalb des gueltigen Bereichs** -- Klassen zaehlen ab eins, also ist die Null das
+  "noch nicht belegt"; Herkunftsarten ab null, also liegt ihre Tabelle um eins versetzt.
+- 2026-09-04, aus 0002, weiter gueltig — **Eine private Funktion ohne Aufrufer ist unter
+  dem Warnsatz ein Bauabbruch.** In 0010 traf es einen Spaltentrenner, den ich
+  vorsorglich geschrieben und dann nicht gebraucht hatte. Ersatzlos weg statt
+  unterdrueckt.
+- 2026-09-04, aus 0010 — **`[[nodiscard]]` und ein Abbruchnachweis vertragen sich nur mit
+  `(void)`.** `ERWARTE_ABBRUCH(f(x))` auf eine `[[nodiscard]]`-Funktion ist unter
+  `-Werror` ein Bauabbruch.
+- 2026-09-04, aus 0010 — **Ein Zeiger auf einen Zeilenanfang zeigt auf den ganzen Rest
+  des Blattes.** Wer ihn mit `%s` ausgibt, schreibt hundert Zeilen, wo eine gemeint war;
+  die Laenge bis zur naechsten Zeilenschaltung gehoert ins Formatwort (`%.*s`).
+- 2026-09-02 — **Widerspricht eine Abnahmebedingung der Prosa desselben Pakets, gewinnt
+  die Abnahme — die Aufloesung gehoert in den Quelltext**, wo der Pruefer sie sucht.
 
 ## Kommentare und Riegel
 
-- 2026-09-04, aus 0069, **die uebertragbarste Lehre des Laufs** — **Wo ein Riegel seine
-  Verbotsmenge nicht aufzaehlen kann, ist "leer" der bessere Sollzustand als "nichts
-  Verbotenes".** Ein Fremdlink aus einem anderen Verzeichnis steht nicht als Name in der
-  Eigenschaft, sondern als `::@(0x…)`-Klammer davor und dahinter, auf der
-  Schnittstellenseite zusaetzlich in einem Generatorausdruck. Ein Abgleich auf den
-  **Namen** haette beide Formen kennen muessen; ein Riegel mit leerem Sollzustand sieht
-  sie, ohne sie zu kennen — und sieht die naechste Form mit.
-- 2026-09-04, aus 0069 — **Ein Mustervergleich fragt, wie jemand etwas geschrieben hat;
-  die Zieleigenschaft nennt, was dabei herauskam.** Zwei Angriffswege mit verschiedener
-  Schreibweise landen in **derselben** Eigenschaft — die Verzeichnisform eine Ebene hoeher
-  steht danach in der **Ziel**eigenschaft, nicht nur in der Verzeichniseigenschaft. Vor
-  jedem Riegel ueber Dateitext die Frage: Weiss das Werkzeug die Antwort selbst?
-- 2026-09-04, aus 0069 — **Ein Riegel ueber eine Namensliste ist gruen, sobald jemand ein
-  Ziel umbenennt.** Gegenmittel ohne Ausnahmeregel: die Liste an eine **Datei** binden —
-  liegt das Manifest da, muss danach das Ziel dastehen. Fuer bedingt entstehende Ziele
-  geht das nicht (sie waeren sonst Pflicht); dort traegt nur die Zahl in der Meldung.
-- 2026-09-04, aus 0066 — **Ein Riegel, der EINE Quelle liest fuer etwas, das das Werkzeug
-  aus MEHREREN zusammensetzt, ist gruen von Bauart.** Die Frage ist **"aus wie vielen
-  Quellen entsteht, was ich pruefen will"**. Auf der Linkseite waren es vier statt einer.
-- 2026-09-04 — **Prueft ein Riegel Vorhandensein, prueft er nicht Wirkung.** Und: **Zaehlt
-  er zwei verschiedene Dinge, braucht er zwei Zaehler.**
 - 2026-09-04 — **Ein Kommentar, der einen Randfall fuer ausgeschlossen (oder fuer offen)
   erklaert, ist teurer als gar keiner, wenn er sich irrt:** Wer ihn liest, hat die Frage
-  gestellt, eine Antwort bekommen und hoert auf zu suchen. Umgekehrt: **Was der Riegel
-  nicht sieht, gehoert ausgeschrieben** — sonst ist er die naechste Sache, die aussieht,
-  als pruefe sie etwas.
-- 2026-09-04 — **Wer eine abgenommene Zusage widerruft, widerruft sie an jeder Stelle, die
-  sie gegeben hat.** Gefunden ueber den **Begriff**, nicht ueber den zitierten Wortlaut.
-- 2026-09-04 — **Belegstellen nie nachziehen, immer ersetzen** — auch in
-  **Arbeitspaketen**. Und **kein Verweis auf eine Datei, die noch nicht existiert**.
+  gestellt, eine Antwort bekommen und hoert auf zu suchen.
+- 2026-09-04, aus 0010, **neu** — **Wer in einem Kommentar eine Pruefung verspricht, muss
+  sie schreiben koennen.** Ich hatte an die Gebietskuerzel geschrieben, die Probe halte
+  sie gegen `index_zu_adresse` — und die Liste, gegen die zu pruefen waere, liegt in
+  einem anonymen Namensraum einer fremden Datei. Getragen hat erst der Umweg ueber die
+  **Handelsadresse**, die das Kuerzel jedes Gebiets im Klartext enthaelt. Der Kommentar
+  war fast eine Zusage auf Widerruf.
+- 2026-09-04, aus 0066 — **Ein Riegel, der EINE Quelle liest fuer etwas, das das Werkzeug
+  aus MEHREREN zusammensetzt, ist gruen von Bauart.**
+- 2026-09-04 — **Prueft ein Riegel Vorhandensein, prueft er nicht Wirkung.** Und: **Zaehlt
+  er zwei verschiedene Dinge, braucht er zwei Zaehler.**
+- 2026-09-04 — **Belegstellen nie nachziehen, immer ersetzen**, und **kein Verweis auf
+  eine Datei, die noch nicht existiert**. In 0010 heisst das: nur T-Nummern und
+  Bezeichner zitieren, nie `datei.md:zeile` und keine Ueberschrift in Anfuehrung neben
+  einem Dokumentnamen.
 - 2026-09-03 — **Was vergessen werden kann, gehoert in etwas, dessen Fehlen abbricht** —
-  ein Funktionsaufruf, keine Variable.
+  ein Funktionsaufruf, keine Variable. In 0010 steht die 40-Zeilen-Grenze deshalb als
+  Abbruch **hinter** dem Schreiben, samt der zweiten Bedingung daneben: Eine
+  abgeschnittene Ausgabe hat **weniger** Zeilen, nicht mehr, und ruecke deshalb allein
+  nie an die Grenze.
 
 ## Offene Faehrten und Unsicherheiten
 
-- 2026-09-04, aus 0069, **worauf ich unsicher bin:** Der vierte Durchgang liest zusaetzlich
-  die Linkschalter und meldet, was die Form einer Bibliothek hat. Das steht **nicht** in
-  der Abnahme; wer ihn fuer zu weit haelt, hat ein Argument. Meine Begruendung steht im
-  Nachweis: Ohne ihn bliebe ein `-l`-Schalter der eine Weg, der T2 bricht, ohne in einer
-  der beiden Bibliothekseigenschaften aufzutauchen. Gegenprobe gelaufen — die
-  Sanitizerschalter des geprueften Kerns stehen in derselben Eigenschaft und fallen nicht.
-- 2026-09-04, aus 0069, **weitergegeben statt behoben:** Der Belegstellenriegel ist rot,
-  fuenf Abschnittszitate aus `daten/` auf eine Ueberschrift in `rueckstand.md`, die es
-  dort nicht mehr gibt. Gegen eine Abschrift des letzten Commits gemessen: derselbe
-  Rotstand, dieselben Zahlen. Fremde Dateien, nicht angefasst.
-- 2026-09-04 — **Zwei Wege bleiben fuer beide Riegel unsichtbar:** die Uebersetzer- und
-  Linkerschalter von aussen und die Kommandozeile. Beide stehen in **keiner**
+- 2026-09-04, aus 0010, **worauf ich unsicher bin, und der Pruefer sieht es nicht:** Das
+  Paket nennt selbst eine offene Frage -- ob die drei Ebenen in den Kasten `kern` oder
+  nach T13 in `schnittstelle` gehoeren. Sie ist nicht beantwortet. Ich habe in `kern`
+  gebaut, weil die `dateien`-Liste des Pakets dorthin zeigt und ich sie nicht selbst
+  verschieben darf. Faellt die Entscheidung anders, wandern die drei Dateien, und sonst
+  aendert sich nichts: Kein Aufruf beruehrt Bildschirm, Datei oder Uhr, die Ebenen
+  **geben** eine Zeichenkette zurueck.
+- 2026-09-04, aus 0010, **die Entscheidung, ueber die ein Pruefer stolpern kann:** Die
+  Uebersicht rechnet **eine** Groesse (das Fondsvermoegen) und erbt damit die
+  Wertebereichsschranken aus T47 -- auf einem Zustand mit Wechselkurs unter eins bricht
+  sie ab. Ich habe **keine** zweite Fassung jener Schranke daneben gestellt, weil eine
+  Regel mit zwei Herren auseinanderlaeuft. Detail und Unterschied rechnen nichts und
+  tragen jeden Zustand; wer eine Ausgabe ueber eine kaputte Lage braucht, nimmt sie.
+  Beide Richtungen sind belegt: Positivkontrolle und Abbruch mit Wortlaut.
+- 2026-09-04, aus 0010, **weitergegeben statt behoben:** T20 verlangt zur
+  Unterschiedsebene die Ursachenkette aus T18; die Abnahme des Pakets verlangt sie nicht,
+  und der Verlauf aus T19 ist nirgends gebaut. Gebaut sind die drei Zahlen. Steht als
+  Vorschlag 0091 und im Kopf des Moduls -- eine Vorgabe, die beim Abschluss eines Pakets
+  aus dem Blick faellt, ist teurer als eine, die offen dasteht.
+- 2026-09-04, aus 0010, **was meine Probe NICHT belegt:** dass die Ausgabe fuer einen
+  Menschen lesbar ist -- Deckung, Ordnung, Skala und Raender ja, Zeilenbreite nein.
+- 2026-09-04, aus 0010 — **Zwei Fassungen derselben Liste, wissentlich:** Die
+  Gebietskuerzel stehen in `src/zustand.cpp` (privat) und in `src/zustandsausgabe.cpp`.
+  Die Probe pinnt meine gegen `index_zu_adresse`, und die Sabotage dazu wird rot. Es
+  bleiben zwei Listen; die saubere Loesung waere ein Kuerzel-Zugang im Kopf, und das ist
+  ein fremdes Paket.
+- 2026-09-04, weiter offen — **Zwei Wege bleiben fuer den Warnsatzriegel unsichtbar:** die
+  Uebersetzerschalter von aussen und die Kommandozeile. Beide stehen in **keiner**
   Zieleigenschaft.
 - 2026-09-04 — **`befunde/` liegt ausserhalb der Manifest- und Riegelsuche.** Dort liegen
-  Abschriften des Baums mit absichtlich beschaedigten Zeilen. Nicht anfassen, aber wissen.
+  Kopien des Kerns mit absichtlich beschaedigten Zeilen. Nicht anfassen, aber wissen.
 - 2026-09-03, wieder 09-04 — **Der Runner findet fuenf CMake-Manifeste, nicht drei.**
   Zwei binden die Werkzeugkette nicht ein und setzen ihre Schalter selbst — nachpruefen,
   nie anfassen.
-- 2026-09-04 — **Aus 0002 ein Widerspruch in T50 fuer spaeter:** Die beiden
-  Lobbyumrechnungen sind laut T50 privat, ihre einzigen Aufruforte liegen laut derselben
-  Tabelle in einer anderen Datei. Beides zusammen geht nicht; das ist ein ADR.
-- 2026-09-02 — **Aus 0016 offen:** T18 widerspricht sich beim `beitrag`. Gebaut ist ein
-  Satz je Adresse; daran haengt die Kettenkapazitaet 310.
-- 2026-09-03 — **Nicht angefasst** (kein Aufraeumen nebenbei): der Kopf von
-  `kern/CMakeLists.txt` zitiert eine Suchregel im Klartext — der naechste Blindtreffer.

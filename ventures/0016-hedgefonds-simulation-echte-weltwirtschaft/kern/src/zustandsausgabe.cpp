@@ -137,9 +137,6 @@ bool gehoert_zum_bereich(const char* adresse, const char* bereich) noexcept
 
 namespace {
 
-/// Haengt ` | ` an -- die eine Spaltentrennung dieser Datei.
-void trenner(Uebersichtsblatt& blatt) { blatt.text(" | "); }
-
 /// Haengt `<beschriftung><zahl>` an. Die Beschriftung traegt ihr eigenes Leerzeichen,
 /// damit an der Aufrufstelle steht, wie die Zeile aussieht.
 void feld(Uebersichtsblatt& blatt, const char* beschriftung, i64 wert)
