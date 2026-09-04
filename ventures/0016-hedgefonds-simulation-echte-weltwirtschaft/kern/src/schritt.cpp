@@ -31,8 +31,14 @@
 //! **Und das ist eine Eigenschaft des Rahmens, nicht der Architektur.** Wer Schritt 4
 //! baut, ersetzt den Rumpf von `schritt_4_wirtschaft` durch die Rechnung; die nimmt ihren
 //! Block als Ganzes, weil sie Eingangsgroessen braucht, und dann steigt die Kette nicht
-//! mehr auf. Genau dann soll sie es nicht mehr -- dasselbe gilt fuer die unveraenderte
-//! Pruefsumme. Das Folgepaket zieht beide Aussagen nach.
+//! mehr auf. Genau dann soll sie es nicht mehr, und das Folgepaket zieht die Aussage nach.
+//!
+//! Die zweite Aussage derselben Art -- die unveraenderte Pruefsumme -- ist seit Paket
+//! 0071 widerrufen: Schritt 1 **setzt** `partie.runde` auf die Nummer dieser Runde, statt
+//! sie vorzutragen. Genau eine der 310 Groessen aendert sich damit ueber eine Runde. Der
+//! Grund steht an `schritt_1_ansicht` weiter unten und in einem Satz hier: Ein Zustand,
+//! den eine vollstaendige Runde Feld fuer Feld unveraendert laesst, ist von "keine Runde
+//! gelaufen" durch keinen Vergleich zu unterscheiden.
 
 #include <array>
 #include <cstddef>
@@ -70,6 +76,15 @@ using zustand::SektorGroesse;
 
 using schreiber::Bitfeld;
 using schreiber::Schreiber;
+using schreiber::Ursache;
+
+/// Der Platz von `partie.runde` -- aus der Adressrechnung und nicht als Zahl.
+///
+/// Er kommt an vier Stellen dieser Datei vor: in der Zuordnungstafel, zweimal in den
+/// beiden Randfallabbruechen der Rundennummer und in Schritt 1, der ihn seit Paket 0071
+/// **setzt**. Vier Abschriften desselben Aufrufs waeren vier Stellen, an denen ein
+/// verschobener Partieblock nur drei davon erwischt.
+constexpr Index PLATZ_RUNDE = zustand::stelle_partie(PartieFeld::Runde);
 
 // ---------------------------------------------------------------------------
 // Die festen Reihenfolgen, ueber die iteriert wird (T9)
@@ -265,7 +280,7 @@ constexpr Zuordnung baue_zuordnung()
     Zuordnung tafel{};  // durchgehend `Keiner`
 
     // Schritt 1 -- Ansicht: die drei Partiefelder der Maske.
-    teile_zu(tafel, zustand::stelle_partie(PartieFeld::Runde), Rundenschritt::Ansicht);
+    teile_zu(tafel, PLATZ_RUNDE, Rundenschritt::Ansicht);
     teile_zu(tafel, zustand::stelle_partie(PartieFeld::JahrgangId), Rundenschritt::Ansicht);
     teile_zu(tafel, zustand::stelle_partie(PartieFeld::ParameterPruefsumme),
              Rundenschritt::Ansicht);
@@ -397,13 +412,40 @@ static_assert(zaehle(Rundenschritt::Keiner) == schreiber::AUSSERHALB_WELTLAUF,
 /// T38-Block: `Partie: Runde, Jahrgangskennung, Parametersatz-Pruefsumme` -- 3 Adressen,
 /// in der Maske `weltlauf`.
 ///
-/// **Was hier noch nicht steht:** Der Rahmen traegt `partie.runde` unveraendert vor,
-/// statt sie hochzuzaehlen. Das ist der Zuschnitt von Paket 0033 -- eine Runde, die
-/// weiterzaehlt, aendert die Pruefsumme, und die Unveraendertheit der Pruefsumme ist die
-/// Aussage, an der dieser Rahmen gemessen wird. Die Nummer *dieser* Runde steht
-/// trotzdem an jedem der 175 Ursachensaetze; wer diesen Schritt baut, schreibt sie
-/// zusaetzlich in das Feld.
-void schritt_1_ansicht(Schreiber& schreiber, Index platz) { schreiber.vortrag(platz); }
+/// **Zwei der drei Adressen werden vorgetragen, eine wird gesetzt** (Paket 0071):
+/// `partie.runde` bekommt die Nummer *dieser* Runde, Jahrgangskennung und
+/// Parameterpruefsumme behalten ihre. Bis zum 2026-09-04 wurde auch die Rundennummer
+/// vorgetragen -- der Zuschnitt von Paket 0033, das die unveraenderte Pruefsumme
+/// ausdruecklich "auf Widerruf" ausgewiesen hat. Dies ist der Widerruf, und der Grund
+/// ist kein aesthetischer: Der Startwertriegel aus Paket 0027 erkennt eine gelaufene
+/// Runde daran, dass sich die Zahl auf diesem Platz **geaendert** hat. Solange die Runde
+/// sie vortrug, war ein vollstaendig gerechneter Weltlauf von "keine Runde gelaufen"
+/// durch keinen Vergleich am Zustand zu unterscheiden, und der Riegel schlug gegen die
+/// Runde des Kerns nie an.
+///
+/// **Die Zahl kommt aus dem Schreiber und nicht aus einem zweiten Rechenweg.** Er hat sie
+/// im Konstruktor bekommen und traegt sie ohnehin an jedes der 175 Kettenglieder; sie
+/// hier ein zweites Mal aus der Vorrunde zu rechnen hiesse, dieselbe Zahl an zwei Stellen
+/// zu fuehren -- und zwei Stellen laufen auseinander.
+///
+/// **Warum die Ursache `Vortrag` heisst, obwohl der Wert sich aendert.** Die sechs Formen
+/// aus T18 sind abschliessend, und keine von ihnen heisst "Rundenzaehler"; eine siebte
+/// waere eine Abweichung von `specs/` und braeuchte einen ADR. `Vortrag{adresse}` ist die
+/// einzige der sechs, die eine **Herkunftsadresse** nennt, und die Herkunft stimmt genau:
+/// Die neue Nummer entsteht aus dem alten Wert dieser Adresse und aus nichts sonst. Was
+/// die Form *nicht* aussagt, ist "unveraendert" -- das sagt `Schreiber::vortrag`, die
+/// Abkuerzung, die `alt` als neuen Wert einsetzt. Deshalb steht hier der ausgeschriebene
+/// `setze`-Aufruf und nicht sie. Verzoegerung null und Beitrag 1.000 Promille wie beim
+/// Vortrag: Ursache und Wirkung liegen in derselben Runde, und diese eine Ursache
+/// erklaert die Aenderung vollstaendig.
+void schritt_1_ansicht(Schreiber& schreiber, Index platz)
+{
+    if (platz == PLATZ_RUNDE) {
+        schreiber.setze(platz, schreiber.runde(), Ursache::vortrag(platz), 0, 1000);
+        return;
+    }
+    schreiber.vortrag(platz);
+}
 
 /// **Schritt 2 -- Aktionen.** Nach `spiel.md`: "Der Spieler stellt bis zu drei
 /// Aktionen."
@@ -550,14 +592,16 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen, 
 
     // Die Nummer dieser Runde: die der letzten abgeschlossenen plus eins. Sie steht in
     // `partie.runde`, weil dieses Feld nach T38 in beiden Sollmasken liegt und jede Runde
-    // geschrieben wird; ein Merker daneben waere ein 311. Feld gewesen (T15).
-    const i64 vorrundennummer = vorrunde.lies(zustand::stelle_partie(PartieFeld::Runde));
+    // geschrieben wird; ein Merker daneben waere ein 311. Feld gewesen (T15). Geschrieben
+    // wird sie von Schritt 1, und seit Paket 0071 als Setzung statt als Vortrag -- die
+    // Begruendung steht dort.
+    const i64 vorrundennummer = vorrunde.lies(PLATZ_RUNDE);
     if (vorrundennummer < 0) {
         Meldung meldung;
         meldung.text("kern::schritt -- partie.runde der Vorrunde ist ");
         meldung.zahl(vorrundennummer);
         meldung.text(" und damit negativ: eine Runde vor der ersten gibt es nicht. Gelesen aus ");
-        meldung.adresse(zustand::stelle_partie(PartieFeld::Runde));
+        meldung.adresse(PLATZ_RUNDE);
         festkomma::abbruch(meldung.fertig());
     }
     if (vorrundennummer == festkomma::I64_MAX) {
@@ -571,7 +615,7 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen, 
         meldung.text(
             " und damit der groesste int64_t: eine naechste Runde laesst sich nicht mehr zaehlen. "
             "Gelesen aus ");
-        meldung.adresse(zustand::stelle_partie(PartieFeld::Runde));
+        meldung.adresse(PLATZ_RUNDE);
         festkomma::abbruch(meldung.fertig());
     }
     const i64 diese_runde = vorrundennummer + 1;

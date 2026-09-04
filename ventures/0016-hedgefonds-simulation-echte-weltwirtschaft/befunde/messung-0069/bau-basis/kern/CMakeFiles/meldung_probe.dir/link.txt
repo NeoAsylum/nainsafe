@@ -1,0 +1,1 @@
+/usr/bin/c++ -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/meldung_probe.dir/link.d CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o -o meldung_probe  libkern_geprueft.a

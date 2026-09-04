@@ -1,7 +1,7 @@
 ---
 id: 0077-schranken-probe-zwei-falsche-saetze
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0044-schranken-probe-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

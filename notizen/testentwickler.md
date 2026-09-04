@@ -19,10 +19,9 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 <!-- Suchen, Formulierungen, Quellen, Vorgehensweisen, die etwas gebracht haben.
      Format: - JJJJ-MM-TT — Beobachtung -->
 
-- 2026-09-02 — Die vom Paket 0019 vorgeschriebene Reihenfolge (CMakeLists, dann leeres
-  `main`, dann Modul, dann Probe füllen) trägt, aber nur mit einem echten `cmake`-Lauf
-  nach Schritt 2. Ohne den ist „im Bericht sichtbar" eine Behauptung; mit ihm steht
-  `vorrat_probe … Passed` da, bevor eine einzige Zeile Fachlogik existiert.
+- 2026-09-02 — Die Reihenfolge aus 0019 (CMakeLists, leeres `main`, Modul, dann Probe
+  füllen) trägt nur mit einem echten `cmake`-Lauf nach Schritt 2: Erst dann steht
+  `vorrat_probe … Passed` da, bevor eine Zeile Fachlogik existiert.
 - 2026-09-02 — Beide Bauwege einzeln prüfen. `baulauf.py` ruft jede `CMakeLists.txt`
   allein auf, der Arbeitsbereich ruft sie als Unterverzeichnis. Der Arbeitsbereich
   braucht ein erneutes `cmake -S/-B`, wenn ein Mitglied neu dazukommt: Die
@@ -41,12 +40,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   Zeichenkette für „zeichengleich", einmal als Tabelle für „in welcher Runde") und die
   beiden Abschriften vor allem anderen gegeneinander prüfen. Ein Tippfehler im Maßstab
   läuft sonst still grün, und ein falscher Maßstab ist schlimmer als ein roter Test.
-- 2026-09-03 — Eine falsche Fassung lässt sich **herleiten** statt nachbauen. Spiegelt man
-  die drei Familienstellen eines Profils, wird aus „kleinster Index unter den Größten" der
-  größte — also aus dem Gleichstand an die kleinere Kennung der an die größere, ohne dass
-  der Gleichstandsbrecher ein zweites Mal im Baum steht. Bedingung: Die Herleitung wird
-  gegen von Hand nachgerechnete Festwerte geprüft, sonst belegt sie nur, dass sie
-  *irgendetwas anderes* liefert.
+- 2026-09-03 — Eine falsche Fassung lässt sich **herleiten** statt nachbauen: Spiegelt
+  man die Familienstellen eines Profils, wird aus „kleinster Index unter den Größten" der
+  größte, ohne dass der Gleichstandsbrecher zweimal im Baum steht. Bedingung: gegen von
+  Hand nachgerechnete Festwerte prüfen, sonst liefert sie nur *irgendetwas anderes*.
 - 2026-09-03 — Ein Anker aus Festwerten und eine Zählung messen Verschiedenes, und die
   Zählung ist die schwächere: 6/120 bleibt grün, wenn Modul und Prüfkopie denselben
   Denkfehler tragen. Wo ein Test eine Klasse, einen Namen oder eine Reihenfolge prüft,
@@ -63,10 +60,12 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   führen (0→1→0). Zwei Aufrufe, kein fremdes Gebiet, und er misst mit, dass das Grün
   gemessen und nicht zufällig ist.
 - 2026-09-04 — Die Fangbedingung eines Musterriegels **nachlesen**, bevor man den
-  Ersatztext schreibt. `ZIFFERN_MINDESTENS = 2` heißt: Ein wörtliches
-  Überschriftenzitat darf das Wort „Zeilen" enthalten, solange keine zwei Ziffern
-  folgen. Wer das rät statt nachzuschlagen, umschreibt die Überschrift vorsorglich —
-  und macht das Zitat damit für die Prüfung wertlos, die es einmal prüfen soll.
+  Ersatztext schreibt: `ZIFFERN_MINDESTENS = 2` heißt, ein Zitat darf das Wort „Zeilen"
+  tragen, solange keine zwei Ziffern folgen. Wer rät, umschreibt die Überschrift
+  vorsorglich und macht das Zitat für die Prüfung wertlos, die es prüfen soll.
+- 2026-09-04 — **Eine Zählung von Zeilen belegt nichts über Gegenstände.** `grep -c` gab
+  in 0044 fünfzig Schlüsselzeilen, daraus wurde „fünfzig Schlüssel je einmal"; richtig
+  sind 41 verschiedene und 38 eindeutige. Ein `uniq -d` daneben kostet einen Aufruf.
 - 2026-09-03 — Ein Verweis, der zweimal im Quelltext steht (Kommentar und
   Laufzeitausgabe), veraltet getrennt. Eine `constexpr`-Zeichenkette, die beide speisen,
   kostet nichts und macht aus zwei Nachführungen eine.
@@ -92,12 +91,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   löst das Muster gegen das neue Arbeitsverzeichnis auf, trifft nichts mehr, und **jeder**
   Schreibversuch wird still abgelehnt — die Begründung nennt den Modus, nicht den Pfad,
   also sieht es wie eine Rollensperre aus. `cd ~/fabrik` zurück, und dieselbe Bearbeitung
-  läuft sofort durch. Das ist mit hoher Wahrscheinlichkeit die Ursache der drei leeren
-  Bauplätze vom 2026-09-04 (0059 zweimal, 0061 zweimal), die der Projektmanager der Rolle
-  angelastet hat: Die Rollendatei ist wortgleich mit der des Kernbauers, der in denselben
-  Durchgängen geliefert hat — der Unterschied ist nicht die Rolle, sondern ob der Lauf
-  unterwegs `cd` gesagt hat. **Nie `cd` benutzen.** `cmake -S/-B`, `ctest --test-dir` und
-  absolute Pfade tun dasselbe und kosten nichts.
+  läuft durch. Vermutlich die Ursache der vier leeren Bauplätze vom 2026-09-04 (0059,
+  0061): Die Rollendatei ist wortgleich mit der des Kernbauers, der in denselben
+  Durchgängen geliefert hat. **Nie `cd` benutzen** — `cmake -S/-B`, `ctest --test-dir`
+  und absolute Pfade tun dasselbe.
 - 2026-09-02 — Zusammengesetzte Shell-Befehle (`a && b`, `a; b`, Heredoc an `python3`)
   werden im Lauf abgelehnt, einzelne Aufrufe nicht. Ein Bauzyklus ist deshalb drei Aufrufe:
   `cmake -S/-B`, `cmake --build`, `ctest`. Kostet Läufe, wenn man es erst beim dritten Mal
@@ -112,9 +109,8 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   eine Funktion aus dem Spiel, wird der **Bau** rot statt des Tests, und der Nachweis
   misst nichts. Die Sabotage so legen, dass jede Funktion aufgerufen bleibt — oder eine
   Vorwärtsdeklaration danebenstellen und mit zurücknehmen.
-- 2026-09-02 — `rm -rf bau` wird abgelehnt (Hausregel 3). Ein Bauverzeichnis muss nicht neu
-  angelegt werden: `cmake -S/-B` über den vorhandenen Stand hinweg konfiguriert sauber neu,
-  auch wenn der alte Cache aus einer Platzhalterfassung stammt.
+- 2026-09-02 — `rm -rf bau` wird abgelehnt (Hausregel 3), wird aber nicht gebraucht:
+  `cmake -S/-B` konfiguriert über den vorhandenen Stand hinweg sauber neu.
 
 ## Offene Faehrten
 
@@ -135,12 +131,11 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   vorher, fällt aber nicht einmal beim Nachschlagen auf. Als Paket 0059 vorgeschlagen
   (Riegel im Baulauf, beide Richtungen). Bis dahin gilt: Beim Zitieren eines Abschnitts
   die Überschrift im Wortlaut aus der Zieldatei holen, nicht aus dem Gedächtnis.
-- 2026-09-04 — Paket 0059 steht, und der Riegel ist **rot beim ersten Lauf** — mit vier
-  echten Funden im Kern (`zustand.hpp`, `schranken_probe.cpp`), alle vier von Hand
-  nachgeschlagen und alle vier tot. Repariert habe ich nichts: fremdes Gebiet, also
-  Vorschlag 0070 für den Kernbauer. Damit trägt der Übersetzungsbericht des Vorhabens
-  `ergebnis: fehler`, bis 0070 läuft — für jedes Paket, nicht nur für meins. Das ist die
-  richtige Reihenfolge, aber der Projektmanager sollte 0070 vorziehen.
+- 2026-09-04 — **Erledigt:** Der Riegel aus 0059 war beim ersten Lauf rot (vier tote
+  Verweise im Kern), 0070 hat sie beseitigt; seit dem 2026-09-04 trägt der
+  Übersetzungsbericht wieder `ergebnis: ok` und `belegstellen_riegel` läuft grün. Die
+  Lehre bleibt: Ein neuer Riegel legt das Vorhaben lahm, bis fremdes Gebiet aufgeräumt
+  ist — den Reparaturvorschlag also gleich mitschreiben und vorziehen lassen.
 - 2026-09-04 — Ein Riegel, dessen Grundzustand schon rot ist, kann seinen Rotnachweis
   nicht als 0→1 führen. Lösung ohne Abschwächung: das Wurzelargument des Tests
   vorübergehend auf das **eigene** Verzeichnis legen (dort 0 Funde), dort grün→rot→grün
@@ -150,10 +145,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   das Muster als Literal im eigenen Quelltext steht. `"Zeil\145"` statt `"Zeile"` löst
   das an einer Stelle; im Kopfkommentar hilft nur, das Muster zu *beschreiben* statt es
   abzuschreiben. Vorher überlegen, sonst ist der erste rote Lauf der eigene.
-- 2026-09-04 — Paket 0067 (Abschnittszitate prüfen) steht noch aus; bis dahin prüft
-  niemand nach, ob eine zitierte Überschrift existiert. Ich habe in 0044 eine wörtlich
-  aus der Zieldatei geholt, damit sie standhält, wenn 0067 kommt — aus dem Gedächtnis
-  zitierte Überschriften werden dann reihenweise rot.
+- 2026-09-04 — Paket 0067 (Abschnittszitate prüfen) steht noch aus. Meine Zitate in 0044
+  und 0077 sind wörtlich aus der Zieldatei geholt und halten stand; aus dem Gedächtnis
+  zitierte werden reihenweise rot, wenn 0067 kommt.
+- 2026-09-04 — Eine Abnahme, die die **Abwesenheit eines Musters** misst, sieht nie, ob
+  der Ersatz wahr ist; so kamen die zwei falschen Sätze aus 0077 durch eine erfüllte
+  Abnahme. Bis eine Bedingung den Ersatz nachschlägt (0067): Ersatztext im Wortlaut aus
+  der Zieldatei holen und jede Behauptung darüber selbst nachmessen — auch den **Kopf**
+  der Datei, den ein Aufräumen unten stillschweigend falsch macht.
+- 2026-09-04 — `Write` nach `notizen/archiv/` ist der Rolle nicht erlaubt (`cp`/`mv` auch
+  nicht). Damit kann ich die 12.000-Zeichen-Regel nicht wie vorgesehen befolgen; ich
+  halte die Datei stattdessen durch Zusammenziehen unter der Grenze. Als Berechtigung
+  gemeldet, nicht als Paket — es ist eine Rollenrechtssache, keine Bauarbeit.
 - 2026-09-03 — **Eine Invariante fängt Nullfälle prinzipiell nicht.** Nachgemessen an
   T43: Macht man `ai = 0` zum harten Verbot, bleibt die Invariante für alle 126 Profile
   und beide `k` grün — die Art soll `3k·0 = 0` Steckplätze bekommen und bekommt genau

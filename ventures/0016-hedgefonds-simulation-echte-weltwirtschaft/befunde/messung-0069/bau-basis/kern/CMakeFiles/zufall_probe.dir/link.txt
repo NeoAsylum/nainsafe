@@ -1,0 +1,1 @@
+/usr/bin/c++ -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/zufall_probe.dir/link.d CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o -o zufall_probe  libkern_geprueft.a

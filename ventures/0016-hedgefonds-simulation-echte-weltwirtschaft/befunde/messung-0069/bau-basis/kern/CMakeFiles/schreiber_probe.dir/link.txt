@@ -1,0 +1,1 @@
+/usr/bin/c++ -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/schreiber_probe.dir/link.d CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o -o schreiber_probe  libkern_geprueft.a

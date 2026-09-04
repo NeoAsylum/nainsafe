@@ -1,4 +1,12 @@
-//! Laufende Probe fuer `kern::schritt` -- die acht Bedingungen des Arbeitspakets 0033.
+//! Laufende Probe fuer `kern::schritt` -- die acht Bedingungen des Arbeitspakets 0033,
+//! **Bedingung 6 in der Fassung von Paket 0071**.
+//!
+//! Bedingung 6 von 0033 verlangte die *unveraenderte* Pruefsumme ueber eine Runde. Sie
+//! ist widerrufen -- 0033 hatte sie als "auf Widerruf" ausgewiesen --, und an ihrer
+//! Stelle steht die schaerfere Aussage: **Genau eine der 310 Groessen aendert sich,
+//! naemlich `partie.runde`.** Was die alte Fassung nicht leisten konnte, ist der Grund
+//! des Widerrufs: Ein Zustand, den eine vollstaendige Runde Feld fuer Feld unveraendert
+//! laesst, ist von "keine Runde gelaufen" durch keinen Vergleich zu unterscheiden.
 //!
 //! Die Aufteilung der Sollmaske auf die sechs Schritte ist in `src/schritt.cpp` schon
 //! als `static_assert` bewiesen (3 + 0 + 16 + 152 + 4 + 0 = 175). Diese Probe gibt es
@@ -11,10 +19,13 @@
 //!      mehr zaehlbare sind Wuerfe, und ein Wurf laesst sich nur zur Laufzeit fangen.
 //!      Beim `spielmodus` wird zusaetzlich der **Wortlaut** geprueft: Bedingung 7
 //!      verlangt, dass die Meldung sagt, warum.
-//!   3. **Der unabhaengige Erwartungswert.** Die Pruefsumme ueber die kanonische
-//!      Byteform (T12) ist keine Zahl aus dem eigenen Code, sondern eine Eigenschaft,
-//!      die aus der Bedeutung von `vortrag` folgt: Eine Runde, die nur vortraegt, laesst
-//!      jeden der 310 Werte stehen.
+//!   3. **Der unabhaengige Erwartungswert.** Der Zustand nach der Runde wird nicht gegen
+//!      eine abgeschriebene Zahl gehalten, sondern gegen eine **zweite Bauart desselben
+//!      Zustands**: dieselbe Ausgangslage, ueber `zustand::Startbelegung` gebaut, nur mit
+//!      der Rundennummer dieser Runde. Diese zweite Bauart weiss von `kern::schritt`
+//!      nichts. Die Pruefsummen ueber die kanonische Byteform (T12) stehen daneben und
+//!      werden ausgedruckt -- beide, vorher und nachher, denn der Widerruf oben ist nur
+//!      dann einer, wenn die beiden Zahlen im Wortlaut dastehen.
 //!   4. **Das Testprofil aus ADR 0011, Massnahme 2.** Sie linkt `kern_geprueft`, also
 //!      dieselben Quellen mit den Sanitizern. Ein Sanitizer sieht nur, was wirklich
 //!      laeuft.
@@ -67,6 +78,11 @@ using kern::zustand::Startbelegung;
 using kern::zustand::Zustand;
 
 using u64 = std::uint64_t;
+
+/// Der Platz von `partie.runde` -- die eine Adresse, die eine Runde seit Paket 0071
+/// aendert. Aus der Adressrechnung geholt und nicht als 306 hingeschrieben: Verschoebe
+/// ein spaeteres Paket den Partieblock, prueft diese Datei weiter das richtige Feld.
+constexpr Index PLATZ_RUNDE = kern::zustand::stelle_partie(PartieFeld::Runde);
 
 int fehlgeschlagen = 0;
 
@@ -193,6 +209,11 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
     std::size_t erste_nicht_aufsteigende = KEINS;
     std::size_t erste_ausserhalb_maske = KEINS;
 
+    // Das eine Glied, das seit Paket 0071 einen anderen Wert traegt als vorher. Beides
+    // wird geprueft: dass es da ist, und dass es die richtigen beiden Zahlen nennt.
+    bool rundenglied_gesehen = false;
+    bool rundenglied_zaehlt_hoch = false;
+
     const Bitfeld& maske = sollmaske(Modus::Weltlauf);
     bool voriges_gibt_es = false;
     Index voriges_ziel = 0;
@@ -217,7 +238,16 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
         if (satz.beitrag != 1000 && erster_falscher_beitrag == KEINS) {
             erster_falscher_beitrag = n;
         }
-        if (satz.alt != satz.neu && erste_wertaenderung == KEINS) {
+        if (satz.ziel == PLATZ_RUNDE) {
+            // Das Glied von Schritt 1: `alt` ist die Vorrundennummer, `neu` die dieser
+            // Runde. Die Subtraktion ist hier gefahrlos -- `erwartete_runde` ist
+            // mindestens eins, weil `schritt` eine Rundennummer kleiner eins gar nicht
+            // erst erzeugt.
+            rundenglied_gesehen = true;
+            rundenglied_zaehlt_hoch =
+                satz.alt == erwartete_runde - 1 && satz.neu == erwartete_runde;
+        } else if (satz.alt != satz.neu && erste_wertaenderung == KEINS) {
+            // Alle uebrigen 174 Glieder tragen vor, und ein Vortrag aendert nichts.
             erste_wertaenderung = n;
         }
         if (voriges_gibt_es && satz.ziel <= voriges_ziel && erste_nicht_aufsteigende == KEINS) {
@@ -240,6 +270,8 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
     PRUEFE(erste_wertaenderung == KEINS);
     PRUEFE(erste_nicht_aufsteigende == KEINS);
     PRUEFE(erste_ausserhalb_maske == KEINS);
+    PRUEFE(rundenglied_gesehen);
+    PRUEFE(rundenglied_zaehlt_hoch);
 
     // Und die Gegenrichtung: Jede Adresse der Maske kommt in der Kette vor. Zusammen mit
     // "aufsteigend, paarweise verschieden" und der Laenge 175 ist die Kette damit genau
