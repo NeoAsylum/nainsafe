@@ -1,7 +1,7 @@
 ---
 id: 0065-reihentoml-reihe-9-ohne-sollrolle
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme" plus die vierte im Annahmevermerk vom 2026-09-04.
@@ -139,3 +139,51 @@ den Vorschlag und kein Rücklauf gegen dich — nenne sie und begründe sie.
 ## Rückläufe
 
 0.
+
+---
+
+## GEBAUT — 2026-09-04, Datenbauer
+
+Eine Datei geaendert: `daten/reihen.toml`. **Vergleichsstand fuer jede Zahl dieses
+Berichts ist der Commit `4eb20ac`** (`git ls-tree` dort: Blob
+`7a83aef58053050b77ae502c27b9aba24e97f77d`); die Datei war beim Aufschlagen unveraendert
+gegenueber diesem Commit, `git status` fuehrte sie nicht. sha256 vorher
+`fd3cace0…`, nachher `661b13c4…`.
+
+**Bilanz:** +84/−30 in **18 Hunks**. Alle achtzehn liegen in den Bereichen, die dieses
+Paket nennt: `[datei]` (Z. 119, 130 der Altfassung), `[zaehlung]` samt Untertabellen
+(Z. 153–192), `[[widerspruch]]` Nr. 5 (Z. 288), Reihe 9 (Z. 900–921) und `[pruefweg]`
+(Z. 1662–1676). Kein Hunk ausserhalb.
+
+**Alles maschinell gemessen**, nicht gelesen: `python3`/`tomllib`, beide Baeume flach
+gezogen, Blattschluessel als Pfadtupel; jede Ersetzung mit erwarteter Trefferzahl, die
+bei Abweichung abbricht. Aufgesetzt wurde auf einer Kopie in `$TMPDIR`, gemessen dort,
+erst dann kopiert.
+
+### Die Bilanz der Blattwerte
+
+| gegen `4eb20ac` | gemessen |
+|---|---|
+| Blattwerte Bezugsstand | **1214** |
+| Blattwerte vorliegende Fassung | **1214** |
+| gemeinsame Schluessel | 1212 |
+| neue Schluessel | **2** — `datei.nachgezogen_durch.7`, `zaehlung.handelsblock.in_den_sollreihen_enthalten` |
+| weggefallene Schluessel | **2** — `reihe.8.rolle.2` (der Eintrag `soll` der Reihe 9), `zaehlung.handelsblock.in_den_31_enthalten` |
+| verschiedene gemeinsame Werte | **20** |
+
+Die gleiche Gesamtzahl ist hier eine Falle und deshalb aufgezaehlt statt summiert: zwei
+Schluessel kommen, zwei gehen. Die zwanzig einzeln: `zaehlung.sollreihen_gesamt`,
+`zaehlung.sollreihen_gesetzt`, `zaehlung.gesetzt_zerlegung`, `zaehlung.probe`,
+`zaehlung.beleg`, `zaehlung.lizenz.sollreihen_unklar`,
+`zaehlung.lizenz.unklar_zerlegung`, `zaehlung.lizenz.gegenrechnung`,
+`reihe.8.sollreihen`, `reihe.8.t37_klasse`, `reihe.8.offen.0`, `reihe.8.offen.1`,
+`widerspruch.4.entscheidet`, `widerspruch.4.in_dieser_datei`, `pruefweg.schnitt_5`,
+`pruefweg.zaehlregel_sollreihen`, `pruefweg.zaehlregel_t37`, `pruefweg.handelsblock`,
+`pruefweg.falle`, `pruefweg.toml_geprueft`. Genau diese Bilanz steht auch im Feld
+`pruefweg.toml_geprueft`.
+
+**Kommentare sind keine Blattwerte** und tauchen in dieser Bilanz nicht auf. Fuenf
+Kommentarstellen sind geaendert: ueber `[datei.vorlagen]`, ueber
+`[zaehlung.handelsblock]`, ueber `[zaehlung.pruefgegenstaende]`, neu ueber
+`gesetzt_zerlegung` und neu ueber `sollreihen` im Block der Reihe 9. Das steht auch im
+Feld, weil eine Blattwertbilanz sonst mehr Vollstaendigkeit behauptet, als sie hat.

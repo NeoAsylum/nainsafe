@@ -117,6 +117,7 @@ nachgezogen_durch = [
   "0049-reihentoml-herkunft-und-selbstpruefung",
   "0057-reihentoml-belegstellen-ausserhalb-pruefweg",
   "0062-reihentoml-selbstmessung-und-rueckstandsverweise",
+  "0065-reihentoml-reihe-9-ohne-sollrolle",
 ]
 gegenstand = "Die 19 Reihen der Reihenliste aus technik.md Abschnitt 7"
 reihen = 19
@@ -127,9 +128,29 @@ enthaelt_datenzeilen = false
 # Uebertragung, keine zweite Messung.
 #
 # Der Schluessel `einheiten` ist mit Paket 0049 dazugekommen. Er hat
-# vier Pakete lang gefehlt, obwohl der Einheitenbefund seit Paket 0036
-# viermal als `beleg` in dieser Datei steht -- eine Vorlage, die hier
-# nicht steht, wird nie nachgezogen. Sie traegt den groessten offenen
+# zwei Pakete lang gefehlt -- 0036, das den Beleg eintrug, und 0047 --,
+# obwohl der Einheitenbefund seit Paket 0036 als `beleg` in dieser
+# Datei steht; eine Vorlage, die hier nicht steht, wird nie
+# nachgezogen.
+#
+# Beide Zahlwoerter sind mit Paket 0065 nachgezaehlt; vorher stand hier
+# "vier Pakete" und "viermal als `beleg`", und beides war falsch.
+# Gezaehlt ist so, damit es wiederholbar ist. Erstens: als `beleg`
+# steht der Einheitenbefund **genau einmal** -- Blattwerte, deren
+# Schluessel `beleg` heisst und die die Zeichenfolge
+# einheitenbefund-pwt-baci enthalten, ergeben allein
+# reihe.13.umrechnung.0.beleg, den ersten Umrechnungsblock der Reihe 14
+# (die Liste `reihe` zaehlt ab null). Ueberhaupt genannt wird er in
+# **acht** Blattwerten, `datei.vorlagen.einheiten` mitgezaehlt; die
+# uebrigen sieben stehen unter `offen`, `begruendung` und `lang`.
+# Zweitens: die zwei Pakete sind aus `nachgezogen_durch` gezaehlt --
+# zwischen 0036, das den Beleg eintrug, und 0049, das diesen Schluessel
+# nachtrug, liegt genau ein weiteres Paket, 0047; die Luecke bestand
+# also waehrend 0036 und 0047. Gegengeprueft an den Fassungen dieser
+# Datei im Git: der Beleg steht seit dem Commit ae6f605 (2026-09-03,
+# die Aenderung des Pakets 0036), der Vorlagenschluessel seit 58908fa.
+#
+# Sie traegt den groessten offenen
 # Rest der fuenf: Ihr Abschnitt 3 und ihr Abschnitt 4 messen Einheit
 # und Basisjahr des PWT-Kapitalstocks vergeblich, und ihre Angabe zur
 # BACI-Fassung 202601 ist nicht im Wortlaut der Freigabemitteilung
@@ -150,27 +171,53 @@ einheiten = "ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einh
 ####################################################################
 
 [zaehlung]
-sollreihen_gesamt = 31
+sollreihen_gesamt = 27
 sollreihen_frei = 23
-sollreihen_gesetzt = 4
+sollreihen_gesetzt = 0
 sollreihen_abgeleitet = 4
 frei_zerlegung = "Reihe 1 (4) + Reihe 2 (12) + Reihe 8 (4) + Reihe 10 (3) = 23"
-gesetzt_zerlegung = "Reihe 9 (4)"
+# Die Klasse `gesetzt` ist seit dem 2026-09-03 leer und entfaellt:
+# Reihe 9 (Leitzins) hat mit Paket 0054 ihre Sollrolle verloren und
+# behaelt Start und Politikpfad. Der Grund ist keiner der Deckung --
+# eine Reihe, die im Weltlauf als Eingabe gesetzt wird, hat den Fehler
+# null per Konstruktion, kann nicht durchfallen und hat das Fenster
+# trotzdem um ein Jahr gekuerzt. An ihre Stelle tritt eine Invariante
+# statt eines Fehlermasses. Der Schluessel bleibt mit leerem Wert
+# stehen und faellt nicht weg, damit die Probe drei Summanden behaelt
+# und ein Nachziehen von einem Uebersehen zu unterscheiden ist.
+gesetzt_zerlegung = ""
 abgeleitet_zerlegung = "Reihe 11 (4)"
-probe = "23 + 4 + 4 = 31"
-beleg = "technik.md T37 und Abschnitt 7 (T23 Punkt 2). Die 31 Sollreihen verteilen sich auf die Reihen 1, 2, 8, 9, 10 und 11 -- Reihennummern dieser Datei, keine Dateizeilen."
+probe = "23 + 0 + 4 = 27, kurz 23 + 4 = 27"
+beleg = "technik.md T37 und Abschnitt 7 (T23 Punkt 2), fuer den Schnitt vom 2026-09-03 spiel.md. Die 27 Sollreihen verteilen sich auf die Reihen 1, 2, 8, 10 und 11 -- Reihennummern dieser Datei, keine Dateizeilen. Bis zum 2026-09-03 waren es 31 ueber die Reihen 1, 2, 8, 9, 10 und 11; Reihe 9 hat ihre Sollrolle mit Paket 0054 verloren (spiel.md, Abschnitt zur Partielaenge R und Absatz Der Leitzins ist seit dem 2026-09-03 keine Sollreihe). Der erste Beleg traegt die Zahl 27 damit nur noch zur Haelfte: technik.md ist auf den Schnitt nicht nachgezogen und fuehrt in Abschnitt 7 und in T37 weiter 31 -- siehe [[widerspruch]] Nr. 5."
 
-# Der Handelsblock zaehlt getrennt und **nicht** in den 31. Er ist die
-# einzige Nicht-Sollreihe mit T37-Klasse; das ist so gewollt und kein
-# Fehler der Zaehlung.
+# Der Handelsblock zaehlt getrennt und **nicht** in den Sollreihen. Er
+# ist die einzige Nicht-Sollreihe mit T37-Klasse; das ist so gewollt
+# und kein Fehler der Zaehlung. Der Schluesselname trug bis zum
+# 2026-09-04 die Zahl 31 mit (`in_den_31_enthalten`); er heisst seither
+# `in_den_sollreihen_enthalten` und ueberlebt damit jede weitere
+# Aenderung an der Sollreihenzahl. Reihe 9 ist seit dem 2026-09-03
+# ebenfalls keine Sollreihe mehr, traegt aber auch keine T37-Klasse
+# (`t37_klasse` leer) und ist deshalb kein zweiter Fall.
 [zaehlung.handelsblock]
 reihe = 14
 stroeme = 40
 t37_klasse = "frei"
-in_den_31_enthalten = false
+in_den_sollreihen_enthalten = false
 
 # T37 rechnet nicht in Reihen, sondern in Pruefgegenstaenden. Die Zahl
 # steht hier, weil jede Lizenzfrage ueber sie ihren Preis bekommt.
+#
+# **Dieser Block bleibt vom Schnitt vom 2026-09-03 unberuehrt**, und
+# das ist begruendet und nicht bloss beobachtbar: `gesamt` bleibt 16,
+# `toleranz` bleibt 2. Reihe 9 trug nach T37 die Klasse `gesetzt` und
+# kommt in keinem der sechzehn Pruefgegenstaende vor -- die
+# Aufzaehlung darunter ist abschliessend und fuehrt BIP je Land (4),
+# Sektorstruktur je Land (4), Verbraucherpreise je Land (4),
+# Wechselkurs je Land ausser den USA (3) und den Handelsblock (1). Der
+# Leitzins steht in keiner dieser fuenf Zeilen. 4 + 4 + 4 + 3 + 1 = 16
+# ergibt sich mit und ohne Reihe 9. Es ist die einzige Zahl dieser
+# Datei, die der Schnitt nicht bewegt; wer sie mitwandern laesst, hat
+# die Entscheidung falsch gelesen.
 [zaehlung.pruefgegenstaende]
 gesamt = 16
 bip_je_land = 4
@@ -181,15 +228,18 @@ handelsblock = 1
 toleranz = 2
 beleg = "technik.md T37"
 
-# Lizenzstand der 31 Sollreihen, aus 0005 und 0014 fortgeschrieben.
+# Lizenzstand der 27 Sollreihen, aus 0005 und 0014 fortgeschrieben.
+# Bis zum 2026-09-03 waren es 31; Reihe 9 (4, unklar) ist mit Paket
+# 0054 aus den Sollreihen ausgeschieden. Die sieben freien und die
+# null gesperrten bleiben davon unberuehrt, weil Reihe 9 unklar war.
 [zaehlung.lizenz]
 sollreihen_frei = 7
-sollreihen_unklar = 24
+sollreihen_unklar = 20
 sollreihen_gesperrt = 0
 frei_zerlegung = "Reihe 8 (4) + Reihe 10 (3) = 7, beide aus Paket 0005"
-unklar_zerlegung = "Reihe 1 (4) + Reihe 2 (12) + Reihe 9 (4) + Reihe 11 (4) = 24"
+unklar_zerlegung = "Reihe 1 (4) + Reihe 2 (12) + Reihe 11 (4) = 20"
 beleg = "daten/lizenzbefund-reihen.md, Abschnitt 5"
-gegenrechnung = '''Die sieben freien Sollreihen haengen an der IWF-Erlaubnis, deren Volltext niemand lesen konnte und in deren Definitionssatz nach Abschnitt 3 von lizenzbefund-reihen.md ein Vorbehalt steht. Nimmt man die Regel "Suchauszug genuegt nicht" auch dort ernst, lautet die Zeile: frei 0, unklar 31, gesperrt 0. Beide Zahlen stehen nebeneinander; diese Datei loest den Widerspruch nicht auf (siehe [[widerspruch]] Nr. 1).'''
+gegenrechnung = '''Die sieben freien Sollreihen haengen an der IWF-Erlaubnis, deren Volltext niemand lesen konnte und in deren Definitionssatz nach Abschnitt 3 von lizenzbefund-reihen.md ein Vorbehalt steht. Nimmt man die Regel "Suchauszug genuegt nicht" auch dort ernst, lautet die Zeile: frei 0, unklar 27, gesperrt 0. Beide Zahlen stehen nebeneinander; diese Datei loest den Widerspruch nicht auf (siehe [[widerspruch]] Nr. 1).'''
 
 
 ####################################################################
@@ -285,8 +335,8 @@ nr = 5
 betrifft_reihen = [9]
 kurz = "Die Reihenliste nennt IWF IFS; IFS gibt es nicht mehr"
 lang = '''Der alte IFS-Zugang ist tot (DNS-Fehler), der neue fuehrt keinen Datenfluss namens IFS. Eingebettet wird nach 0006 `IMF.STA/MFS_IR` 9.0.0, Code `DISR_RT_PT_A_PT` (Diskontsatz). Dieser Code misst je Land eine andere Groesse -- fuer die USA den Diskontsatz des Fed-Diskontfensters, fuer Brasilien den Rediskontsatz, der nicht die Selic ist -- und fuehrt Deutschland und China ueberhaupt nicht.'''
-in_dieser_datei = "quelle_eingebettet nennt den Nachfolgefluss, quelle_tabelle den Wortlaut der Reihenliste. Die Deckungsluecke steht in [[reihe.deckung]]."
-entscheidet = "Spielentwerfer -- Reihe streichen oder Quelle ersetzen. Die Sache stand am 2026-09-02 in rueckstand.md unter der Ueberschrift (Zitat: Was der Geschäftsführer entscheiden lassen muss) als eigener Punkt (Zitat: Reihe 9 und R = 19); in der vorliegenden Fassung jener Datei ist sie nicht mehr aufgefuehrt."
+in_dieser_datei = "quelle_eingebettet nennt den Nachfolgefluss, quelle_tabelle den Wortlaut der Reihenliste. Die Deckungsluecke steht in [[reihe.deckung]]. Seit Paket 0065 traegt Reihe 9 rolle = [start, politikpfad] ohne soll, sollreihen = 0 und ein leeres t37_klasse. Nicht mitgezogen ist rolle_tabelle: Das Feld traegt nach Leseregel 4 den Wortlaut der Reihenliste aus technik.md Abschnitt 7, und die Reihenliste sagt dort in Zeile 1441 weiter Start + Politikpfad + Soll (4, gesetzt); ebenso fuehrt die Klassentabelle in T37 die Zeile gesetzt mit dem Leitzins (4). Dieses Feld umzuschreiben hiesse, einen Wortlaut zu behaupten, den die Vorlage nicht traegt -- dann stuende dort Start + Politikpfad und waere von einer echten Uebernahme nicht zu unterscheiden. Der Widerspruch steht deshalb hier statt geglaettet in der Reihe, und er faellt weg, sobald technik.md nachgezogen ist; das ist ein eigenes Paket und gehoert dem Architekten. Fuer den Jahrgangsbau gelten rolle, sollreihen und t37_klasse und nicht rolle_tabelle -- dieselbe Vorfahrt wie in Widerspruch Nr. 2."
+entscheidet = "Teilweise entschieden -- was offen blieb, hat den Adressaten gewechselt. Entschieden am 2026-09-03 vom Spielentwerfer, Paket 0054: Reihe 9 verliert ihre Sollrolle und behaelt Start und Politikpfad; an die Stelle eines Fehlermasses tritt eine Invariante (spiel.md, Absatz Der Leitzins ist seit dem 2026-09-03 keine Sollreihe). Die Reihe ist damit weder gestrichen noch ihre Quelle ersetzt. Offen bleibt die Quelle fuer den Politikpfad: DISR fuehrt Deutschland und China nicht, und ob ein einheitlicher Zinsbegriff ueber die vier Laender erreichbar ist, ist ungemessen. Das entscheidet nach spiel.md, Offene Entwurfsfragen, nicht mehr der Spielentwerfer, sondern der Datenbauer in einem eigenen Paket. Drittens offen und an den Architekten: technik.md fuehrt Reihe 9 in Abschnitt 7 und in T37 weiter als Sollreihe der Klasse gesetzt; siehe in_dieser_datei. Die Sache stand am 2026-09-02 in rueckstand.md unter der Ueberschrift (Zitat: Was der Geschäftsführer entscheiden lassen muss) als eigener Punkt (Zitat: Reihe 9 und R = 19); in der vorliegenden Fassung jener Datei ist sie nicht mehr aufgefuehrt."
 
 [[widerspruch]]
 nr = 6
@@ -897,7 +947,7 @@ modelleinheit = "bp"
 quelle_tabelle = "IWF IFS"
 rolle_tabelle = "Start + Politikpfad + Soll (4, gesetzt)"
 verdacht_tabelle = "nein"
-rolle = ["start", "politikpfad", "soll"]
+rolle = ["start", "politikpfad"]
 datenanker = true
 quelle_eingebettet = "IWF, Datenfluss IMF.STA/MFS_IR 9.0.0"
 quelle_rueckfall = ""
@@ -905,8 +955,12 @@ quellenwahl = "gemessen"
 quellenwahl_grund = "Der alte IFS-Zugang existiert nicht mehr (DNS-Fehler), der neue fuehrt keinen Datenfluss namens IFS. IFS ist in Teiltabellen zerlegt; die Zinsen liegen in IMF.STA/MFS_IR. Gemessen in Paket 0006. Siehe Widerspruch Nr. 5."
 codes = ["DISR_RT_PT_A_PT"]
 code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"
-sollreihen = 4
-t37_klasse = "gesetzt"
+# Reihe 9 ist seit dem 2026-09-03 keine Sollreihe (Paket 0054); die
+# T37-Klasse `gesetzt` entfaellt damit ersatzlos. `rolle_tabelle` oben
+# bleibt der Wortlaut der Reihenliste und ist deshalb nicht mitgezogen
+# -- siehe [[widerspruch]] Nr. 5.
+sollreihen = 0
+t37_klasse = ""
 handelsblock_stroeme = 0
 exogen_ab = 1999
 verkettet_ab = 0
@@ -917,8 +971,8 @@ t26_folge = "Kein benannter Fall von T26. Der allgemeine Satz gilt -- das Progra
 deckung_gemessen = true
 deckung_urteil = "reisst -- DEU und CHN tragen in dieser Quelle keinen einzigen Wert, USA endet 2020"
 offen = [
-  "DISR ist kein einheitlicher Begriff ueber Laender hinweg: fuer die USA der Diskontsatz des Fed-Diskontfensters, fuer Brasilien der Rediskontsatz, und der ist nicht die Selic. Eine Sollreihe, die je Land eine andere Groesse misst, misst im Rueckvergleich je Land etwas anderes. Entwurfsfrage, gehoert dem Spielentwerfer.",
-  "Der IWF-Lizenztext ist nach fuenf Anlaeufen aus drei Rollen ungelesen (HTTP 403). An ihm haengen 15 der 31 Sollreihen und 7 der 16 Pruefgegenstaende.",
+  "DISR ist kein einheitlicher Begriff ueber Laender hinweg: fuer die USA der Diskontsatz des Fed-Diskontfensters, fuer Brasilien der Rediskontsatz, und der ist nicht die Selic. Solange die Reihe eine Sollreihe war, hiess das: Sie misst im Rueckvergleich je Land etwas anderes. Seit dem 2026-09-03 ist sie keine Sollreihe mehr (Paket 0054), und die Frage wandert mit, statt zu verschwinden -- der Pfad wird im Weltlauf gesetzt, also entscheidet der Zinsbegriff, welche Eingabe die Maschine bekommt, und die Invariante prueft die Wiedergabe dieser Eingabe und nicht ihre Bedeutung. Entwurfsseitig ist die Sache entschieden; quellenseitig ist sie offen und liegt nach spiel.md, Offene Entwurfsfragen, beim Datenbauer -- zusammen mit der Beschaffung des Leitzinspfads fuer Deutschland und China, und beides ist ein eigenes Paket.",
+  "Der IWF-Lizenztext ist nach fuenf Anlaeufen aus drei Rollen ungelesen (HTTP 403). An ihm haengen 11 der 27 Sollreihen und 7 der 16 Pruefgegenstaende. Bis zum 2026-09-03 waren es 15 der 31; mit der Sollrolle der Reihe 9 sind vier auf beiden Seiten weggefallen. Die 11 sind Reihe 8 (4) und Reihe 10 (3), die ueber den Drittanbieter IWF an derselben Erlaubnis haengen (siehe [[widerspruch]] Nr. 1), plus Reihe 11 (4) aus IMF.RES/WEO. Die 7 der 16 sind unveraendert: Es sind die vier Verbraucherpreise (Reihe 8) und die drei Wechselkurse (Reihe 10), und Reihe 9 war keiner der sechzehn.",
   "T23 Punkt 5 macht aus der ersten Stuetzstelle dieses Pfads die Jahrgangskonstante leitzins_start[l], vier Werte in Basispunkten. Faellt die Reihe, faellt auch sie.",
   "T51 und T23 Punkt 5: Der Jahrgangsbau rechnet aufschlag_min = 1 minus dem Minimum des Pfads und weist einen Parametersatz mit kleinerem aufschlag zurueck. Welche Reihe eingebettet wird, entscheidet die Schranke mit -- Einlagesatz oder Hauptrefinanzierungssatz geben verschiedene Werte.",
 ]
@@ -1659,7 +1713,7 @@ status = "entfaellt"
 ####################################################################
 
 [pruefweg]
-toml_geprueft = "ja -- am 2026-09-03 maschinell eingelesen. Herkunft der Messung: die Pruefung des Pakets 0036, befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md, Befund 2. Dort ist der Parserlauf zum ersten Mal gelaufen; dieses Feld traegt sein Ergebnis nach und misst nicht selbst. Werkzeug: Python 3.14.4, tomllib.load im Binaermodus ueber diese Datei. Ergebnis: gueltiges TOML 1.0; die Liste reihe hat 19 Eintraege; zweimal eingelesen ergibt dieselbe Struktur, der Vergleich der beiden Einlesungen ist wahr, der Lauf ist insoweit wiederholbar; die Summe des Schluessels sollreihen ueber die 19 Reihenbloecke ist 31 und damit gleich zaehlung.sollreihen_gesamt. Die Wurzel fuehrt sechs Tabellen (datei, namensnennung, pruefweg, reihe, widerspruch, zaehlung), die Liste widerspruch 9 Eintraege. Damit sind schnitt_6 und die von toml_geprueft_grenze beschriebene Grammatikluecke geschlossen: TOML 1.0 verbietet den doppelten Schluessel innerhalb einer Tabelle, tomllib bricht darauf mit TOMLDecodeError: Cannot overwrite a value ab -- an einem Miniaturbeispiel gegengeprueft --, und diese Datei liest fehlerfrei ein, enthaelt also keinen. Dasselbe gilt fuer die beiden anderen Faelle aus toml_geprueft_grenze, ungueltiger Schluesselname und falsch verschachtelte Tabelle. Die Messung von 0036 galt der Fassung vor den Aenderungen der Pakete 0047 und 0049; gegen die hier vorliegende Fassung ist sie am 2026-09-03 im Baulauf des Pakets 0049 mit demselben Werkzeug und demselben Ergebnis wiederholt worden. Zur Werkzeuglage, damit der Stand nicht ueberrascht: Die Werkzeugliste der Rolle datenbauer fuehrt kein Werkzeug, das Code ausfuehrt -- der Schluessel tools im Frontmatter von agents/rollen/datenbauer.md nennt Read, Glob, Grep, WebSearch, WebFetch, Edit(ventures/**) und Edit(notizen/datenbauer.md). Ein Lauf dieser Rolle kann den Parserlauf aus eigener Ausstattung also nicht erzwingen; welche Werkzeuge ein Lauf wirklich bekommt, wechselt von Lauf zu Lauf. Bis zum 2026-09-03 stand hier nein, begruendet damit, ein TOML-Leser laufe in dieser Umgebung nicht und der python3-Aufruf werde abgewiesen. Abgewiesen wurden einzelne Aufrufe; die Verallgemeinerung auf die Umgebung war falsch. Bis zum 2026-09-02 stand hier ausserdem die Behauptung, die Datei sei mit tomllib eingelesen worden; das war zu jenem Zeitpunkt nicht geschehen. Die sieben Schnitte schnitt_1 bis schnitt_7 bleiben unabhaengig davon stehen: Jeder nennt sein Muster und sein Ergebnis, jeder ist mit dem Werkzeug Grep wiederholbar, und jeder ist am 2026-09-03 gegen genau diese Fassung der Datei gelaufen. Nachtrag vom 2026-09-04, Baulauf des Pakets 0057: Dieses Paket hat neun Werte geaendert (zaehlung.beleg, die Felder lang der Widersprueche Nr. 2 und Nr. 4, begruendung und beleg des zweiten Umrechnungsblocks der Reihe 2, wortlaut_form der Reihen 6 und 13, begruendung und beleg des ersten Umrechnungsblocks der Reihe 10). Der Parserlauf und die sieben Schnitte sind danach mit demselben Werkzeug gegen die vorliegende Fassung wiederholt worden, mit unveraenderten Ergebnissen; zusaetzlich sind alte und neue Fassung Schluessel fuer Schluessel verglichen worden -- gleiche Schluesselmenge, 1212 Blattwerte, genau die neun genannten verschieden. Nachtrag vom 2026-09-04, Baulauf des Pakets 0062: Der vorstehende Halbsatz ist in allen drei Angaben falsch. Er bleibt stehen, weil er zeigt, woran dieses Feld zum dritten Mal gescheitert ist -- eine Messung ohne genannten Bezugsstand, geschrieben vor der letzten Aenderung an der Datei, die sie misst. Es gilt die folgende Messung. Bezugsstand ist der Commit 1a4d240, die Fassung vor dem Baulauf des Pakets 0057; verglichen wird gegen die hier vorliegende Fassung, und die Messung ist nach der letzten Schreibbewegung des Pakets 0062 an dieser Datei wiederholt worden. Werkzeug wie oben: tomllib, beide Baeume flach gezogen, Blattschluessel gezaehlt. Der Bezugsstand traegt 1212 Blattwerte, die vorliegende Fassung 1214. Die Schluesselmengen sind also nicht gleich: zwei Schluessel sind neu, datei.nachgezogen_durch.5 und datei.nachgezogen_durch.6 mit den Kennungen der Pakete 0057 und 0062, und keiner ist weggefallen. Von den 1212 gemeinsamen Schluesseln tragen 13 verschiedene Werte: die neun oben genannten, dazu datei.stand und dieses Feld selbst, dazu widerspruch.4.entscheidet und reihe.1.offen.0, die erst das Paket 0062 geaendert hat (Zaehlung ab null, also Widerspruch Nr. 5 und Reihe 2). Der dritte vom Paket 0062 berichtigte Verweis steht in reihe.1.umrechnung.1.beleg und damit schon unter den neun; der vierte steht im Kopfkommentar und ist kein Blattwert."
+toml_geprueft = "ja -- am 2026-09-03 maschinell eingelesen. Herkunft der Messung: die Pruefung des Pakets 0036, befunde/pruefung-0036-reihentoml-baci-einheit-nachziehen-2026-09-03.md, Befund 2. Dort ist der Parserlauf zum ersten Mal gelaufen; dieses Feld traegt sein Ergebnis nach und misst nicht selbst. Werkzeug: Python 3.14.4, tomllib.load im Binaermodus ueber diese Datei. Ergebnis: gueltiges TOML 1.0; die Liste reihe hat 19 Eintraege; zweimal eingelesen ergibt dieselbe Struktur, der Vergleich der beiden Einlesungen ist wahr, der Lauf ist insoweit wiederholbar; die Summe des Schluessels sollreihen ueber die 19 Reihenbloecke ist 31 und damit gleich zaehlung.sollreihen_gesamt. Die Wurzel fuehrt sechs Tabellen (datei, namensnennung, pruefweg, reihe, widerspruch, zaehlung), die Liste widerspruch 9 Eintraege. Damit sind schnitt_6 und die von toml_geprueft_grenze beschriebene Grammatikluecke geschlossen: TOML 1.0 verbietet den doppelten Schluessel innerhalb einer Tabelle, tomllib bricht darauf mit TOMLDecodeError: Cannot overwrite a value ab -- an einem Miniaturbeispiel gegengeprueft --, und diese Datei liest fehlerfrei ein, enthaelt also keinen. Dasselbe gilt fuer die beiden anderen Faelle aus toml_geprueft_grenze, ungueltiger Schluesselname und falsch verschachtelte Tabelle. Die Messung von 0036 galt der Fassung vor den Aenderungen der Pakete 0047 und 0049; gegen die hier vorliegende Fassung ist sie am 2026-09-03 im Baulauf des Pakets 0049 mit demselben Werkzeug und demselben Ergebnis wiederholt worden. Zur Werkzeuglage, damit der Stand nicht ueberrascht: Die Werkzeugliste der Rolle datenbauer fuehrt kein Werkzeug, das Code ausfuehrt -- der Schluessel tools im Frontmatter von agents/rollen/datenbauer.md nennt Read, Glob, Grep, WebSearch, WebFetch, Edit(ventures/**) und Edit(notizen/datenbauer.md). Ein Lauf dieser Rolle kann den Parserlauf aus eigener Ausstattung also nicht erzwingen; welche Werkzeuge ein Lauf wirklich bekommt, wechselt von Lauf zu Lauf. Bis zum 2026-09-03 stand hier nein, begruendet damit, ein TOML-Leser laufe in dieser Umgebung nicht und der python3-Aufruf werde abgewiesen. Abgewiesen wurden einzelne Aufrufe; die Verallgemeinerung auf die Umgebung war falsch. Bis zum 2026-09-02 stand hier ausserdem die Behauptung, die Datei sei mit tomllib eingelesen worden; das war zu jenem Zeitpunkt nicht geschehen. Die sieben Schnitte schnitt_1 bis schnitt_7 bleiben unabhaengig davon stehen: Jeder nennt sein Muster und sein Ergebnis, jeder ist mit dem Werkzeug Grep wiederholbar, und jeder ist am 2026-09-03 gegen genau diese Fassung der Datei gelaufen. Nachtrag vom 2026-09-04, Baulauf des Pakets 0057: Dieses Paket hat neun Werte geaendert (zaehlung.beleg, die Felder lang der Widersprueche Nr. 2 und Nr. 4, begruendung und beleg des zweiten Umrechnungsblocks der Reihe 2, wortlaut_form der Reihen 6 und 13, begruendung und beleg des ersten Umrechnungsblocks der Reihe 10). Der Parserlauf und die sieben Schnitte sind danach mit demselben Werkzeug gegen die vorliegende Fassung wiederholt worden, mit unveraenderten Ergebnissen; zusaetzlich sind alte und neue Fassung Schluessel fuer Schluessel verglichen worden -- gleiche Schluesselmenge, 1212 Blattwerte, genau die neun genannten verschieden. Nachtrag vom 2026-09-04, Baulauf des Pakets 0062: Der vorstehende Halbsatz ist in allen drei Angaben falsch. Er bleibt stehen, weil er zeigt, woran dieses Feld zum dritten Mal gescheitert ist -- eine Messung ohne genannten Bezugsstand, geschrieben vor der letzten Aenderung an der Datei, die sie misst. Es gilt die folgende Messung. Bezugsstand ist der Commit 1a4d240, die Fassung vor dem Baulauf des Pakets 0057; verglichen wird gegen die hier vorliegende Fassung, und die Messung ist nach der letzten Schreibbewegung des Pakets 0062 an dieser Datei wiederholt worden. Werkzeug wie oben: tomllib, beide Baeume flach gezogen, Blattschluessel gezaehlt. Der Bezugsstand traegt 1212 Blattwerte, die vorliegende Fassung 1214. Die Schluesselmengen sind also nicht gleich: zwei Schluessel sind neu, datei.nachgezogen_durch.5 und datei.nachgezogen_durch.6 mit den Kennungen der Pakete 0057 und 0062, und keiner ist weggefallen. Von den 1212 gemeinsamen Schluesseln tragen 13 verschiedene Werte: die neun oben genannten, dazu datei.stand und dieses Feld selbst, dazu widerspruch.4.entscheidet und reihe.1.offen.0, die erst das Paket 0062 geaendert hat (Zaehlung ab null, also Widerspruch Nr. 5 und Reihe 2). Der dritte vom Paket 0062 berichtigte Verweis steht in reihe.1.umrechnung.1.beleg und damit schon unter den neun; der vierte steht im Kopfkommentar und ist kein Blattwert. Nachtrag vom 2026-09-04, Baulauf des Pakets 0065: Bezugsstand ist der Commit 4eb20ac, dessen Fassung dieser Datei mit dem Arbeitsbaum vor dem Lauf zeichengleich war (git hash-object 7a83aef58053050b77ae502c27b9aba24e97f77d); verglichen wird gegen die hier vorliegende Fassung, und die Messung ist nach der letzten Schreibbewegung des Pakets 0065 an dieser Datei wiederholt worden. Werkzeug wie oben: Python 3, tomllib.load im Binaermodus, beide Baeume flach gezogen, Blattschluessel gezaehlt. Ergebnis des Parserlaufs gegen die vorliegende Fassung: gueltiges TOML 1.0; die Liste reihe hat 19 Eintraege, die Liste widerspruch 9, die Wurzel fuehrt sechs Tabellen; die Summe des Schluessels sollreihen ueber die 19 Reihenbloecke ist 27 und damit gleich zaehlung.sollreihen_gesamt. Der Bezugsstand traegt 1214 Blattwerte, die vorliegende Fassung ebenfalls 1214 -- die Zahl ist gleich, die Schluesselmenge nicht: neu sind datei.nachgezogen_durch.7 mit der Kennung dieses Pakets und zaehlung.handelsblock.in_den_sollreihen_enthalten; weggefallen sind reihe.8.rolle.2, der Eintrag soll der Reihe 9 (die Liste reihe zaehlt ab null), und zaehlung.handelsblock.in_den_31_enthalten, der umbenannte Vorgaenger. Von den 1212 gemeinsamen Schluesseln tragen 20 verschiedene Werte: zaehlung.sollreihen_gesamt, zaehlung.sollreihen_gesetzt, zaehlung.gesetzt_zerlegung, zaehlung.probe, zaehlung.beleg, zaehlung.lizenz.sollreihen_unklar, zaehlung.lizenz.unklar_zerlegung, zaehlung.lizenz.gegenrechnung, reihe.8.sollreihen, reihe.8.t37_klasse, reihe.8.offen.0, reihe.8.offen.1, widerspruch.4.entscheidet und widerspruch.4.in_dieser_datei (das ist Widerspruch Nr. 5; die Liste widerspruch zaehlt ab null), pruefweg.schnitt_5, pruefweg.zaehlregel_sollreihen, pruefweg.zaehlregel_t37, pruefweg.handelsblock, pruefweg.falle und dieses Feld selbst. Was diese Bilanz nicht zeigt und deshalb hier steht: Kommentare sind keine Blattwerte. Das Paket hat ausserdem fuenf Kommentarstellen geaendert -- den Kommentar ueber [datei.vorlagen] mit den beiden nachgezaehlten Zahlwoertern, den Kommentar ueber [zaehlung.handelsblock], den Kommentar ueber [zaehlung.pruefgegenstaende], eine neue Begruendung ueber gesetzt_zerlegung in [zaehlung] und einen neuen Kommentar ueber sollreihen im Block der Reihe 9. Nicht geaendert ist datei.stand, weil dort schon 2026-09-04 stand. Die Grep-Zahlen der sieben Schnitte sind nach dem Eingriff neu gezaehlt worden und sind unveraendert, alle dreizehn Muster einzeln; bei schnitt_1 sind zusaetzlich die sechs Trefferkontexte alt gegen neu verglichen worden und sind dieselben -- eine gleiche Zahl aus anderen Stellen waere sonst unbemerkt geblieben. Geaendert hat sich innerhalb von schnitt_5 allein die Aufteilung seiner 21 Zeilen auf die Reihen und ihre Summe, 39 statt 43; dieselbe Nachziehung tragen zaehlregel_sollreihen und falle, und alle drei stehen unter den zwanzig."
 toml_geprueft_grenze = "Was die sieben Schnitte allein nicht leisten: Sie pruefen Form und Zaehlung, nicht die Grammatik von TOML 1.0. Eine Verletzung, die keines der sieben Muster trifft -- etwa ein ungueltiger Schluesselname oder eine falsch verschachtelte Tabelle --, bliebe unentdeckt. Diese Luecke schliesst seit dem 2026-09-03 der Parserlauf aus toml_geprueft, und nur er. Wer diese Datei in einem Lauf ohne ausfuehrbares Werkzeug prueft, hat die Luecke wieder und prueft die Grammatik zuerst, sobald er ein Werkzeug dafuer hat."
 schnitt_1 = "Dezimalpunkt (T4, Leseregel 5). Grep-Muster [=] [0-9]+\\.[0-9], output_mode content. Ergebnis: 6 Treffer. Alle sechs stehen innerhalb einer Zeichenkette und sind deutsche Tausendertrenner (10.000, 1.000); kein blanker Zahlenwert traegt einen Punkt. Die sechs Fundstellen als Adresse plus Zitat, damit sie eine Einfuegung ueberleben -- jedes Zitat ist absichtlich vor dem Gleichheitszeichen abgeschnitten, sonst zaehlte dieser Schnitt sich selbst mit. Erstens [[widerspruch]] Nr. 4, Feld kurz, beginnend mit Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6. Zweitens [[widerspruch]] Nr. 4, Feld lang, beginnend mit Das Arbeitspaket gibt fuer Reihe 10 den Faktor 10.000 vor. Drittens Reihe 4, Feld begruendung ihres Blocks [[reihe.umrechnung]], beginnend mit T5 Klasse 7 (Realindizes): Index, Startjahr. Viertens Reihe 10, erster Eintrag ihres Feldes offen, beginnend mit Der Faktor 10.000 auf den Rohkurs steht gegen T5 Klasse 6. Fuenftens Reihe 15, Feld begruendung ihres Blocks [[reihe.umrechnung]], beginnend mit T5 Klasse 5 (Nominalindizes, darunter Preisniveau): Index, Startjahr. Sechstens Reihe 17, Feld begruendung ihres Blocks [[reihe.umrechnung]], beginnend mit Kein Fremdbestand, keine Quelleneinheit, also keine Umrechnung -- dieser Halbsatz trennt sie von den Reihen 18 und 19, deren begruendung nach Kein Fremdbestand anders weitergeht. Gebrochene Zahlen stehen skaliert mit dem Faktor im Schluesselnamen, siehe umrechnungskurs_dem_je_eur_mal_100000 in Reihe 10."
 schnitt_2 = "Begrenzer der Zeichenketten. Die Muster sind so geschrieben, dass die Zeile, die sie nennt, sie nicht selbst enthaelt -- sonst zaehlte der Schnitt sich mit. Grep-Muster [']{3} zaehlt 29 Zeilen; dasselbe Muster mit -o zaehlt 54 Vorkommen, also eine gerade Zahl und damit paarweise. Grep-Muster ^[']{3}|[']{3}$ zaehlt 27 Zeilen: 25 Zeilen, die ein Literal oeffnen und schliessen, plus die zwei Schlusszeilen der beiden mehrzeiligen Literale. 25 mal 2 plus 4 ergibt 54, die Rechnung geht auf. Bis zum 2026-09-03 lauteten die drei Zahlen 28, 52 und 26; hinzugekommen ist das einzeilige Literal im Feld lang des neunten Widerspruchs. Das Gegenstueck aus drei doppelten Anfuehrungszeichen kommt in genau einer Zeile vor: im Feld wortlaut des Blocks [[reihe.lizenzbeleg]] der Reihe 14, dem Etalab-Text, der mit den Worten Il est garanti au beginnt. Er fuehrt Apostrophe und kann deshalb kein Apostroph-Literal sein. Genau zwei Literale erstrecken sich ueber mehrere Zeilen, beide im Feld wortlaut ihres Blocks [[reihe.lizenzbeleg]]: bei Reihe 6 ueber drei Zeilen, beginnend mit International Labour Organization (ILO), type: estimates based on external database; und bei Reihe 13 ueber fuenf Zeilen, beginnend mit Staff estimates; und endend mit Consolidated Tariff Schedules (CTS), World Trade Organization (WTO)."
@@ -1667,12 +1721,12 @@ schnitt_2_wahl = "Warum diese zwei mehrzeilig stehen und nicht ein Feld wortlaut
 schnitt_2_offen = "Nicht Gegenstand dieses Pakets, hier nur benannt, damit schnitt_2 nicht mehr behauptet, als er zeigt: Drei weitere Wortlaute tragen dieselbe Ersetzung ohne Vermerk, je drei Quellzeilen in einer Zeile. Es sind erstens die Felder wortlaut der Bloecke [[reihe.lizenzbeleg]] von Reihe 1 und von Reihe 2a -- beide beginnen mit Country official statistics, National Statistical Organizations and/or Central Banks -- gegen lizenzbefund-reihen.md, Abschnitt Reihe 1, den Block unter der Zwischenzeile Feld `Source` im Wortlaut. Und zweitens das Feld wortlaut des Blocks von Reihe 2b und 2c, beginnend mit Country official statistics, National Statistical Offices (NSOs), gegen lizenzbefund-reihen.md, Abschnitt 2b und 2c, den Block unter der gleichlautenden Zwischenzeile Feld `Source` im Wortlaut -- dort mit dem Zusatz, dass er bei beiden Codes zeichengleich derselbe ist. Der Pruefbefund zu 0017 nennt allein Reihe 6 und Reihe 13, und das Arbeitspaket 0022 laesst keine vierte Aenderung zu. Wer die drei angleicht, braucht ein eigenes Paket."
 schnitt_3 = "Tabellenkoepfe. Grep-Muster ^\\[\\[ zaehlt 113 Zeilen. Dasselbe Muster nach Typ aufgezaehlt ergibt ebenfalls 113: 19 mal reihe, 9 mal widerspruch, 22 mal reihe.umrechnung, 20 mal reihe.lizenzbeleg, 39 mal reihe.deckung, 2 mal reihe.konkordanz, 2 mal reihe.bruch. Weil beide Zahlen gleich sind, gibt es keinen achten, unbenannten Tabellentyp. Alle Untertabellen folgen ihrem Reihenblock; kein Schluessel steht nach einer Untertabelle wieder auf Reihenebene. Bis zum 2026-09-03 lauteten die Zahlen 112 und 8 mal widerspruch; hinzugekommen ist der neunte Widerspruch, die Preisbasis von Reihe 14 gegen T5 Klasse 2."
 schnitt_4 = "Pflichtfelder je Reihe. Die Muster tragen das Gleichheitszeichen mit, sonst zaehlen sie verwandte Schluessel mit. Grep-Muster ^exogen_ab = zaehlt 19, ^verkettet_ab = zaehlt 19, ^lizenzurteil = zaehlt 19. Das Sammelmuster ^(lizenzurteil|bezeichnung|dimension|modelleinheit|quelle_tabelle|rolle_tabelle|verdacht_tabelle|quelle_eingebettet) = zaehlt 152, also 8 mal 19. Bei 19 Reihenbloecken aus schnitt_3 heisst das: jedes dieser Felder steht genau einmal je Reihe -- keines fehlt, keines steht doppelt. Grep-Muster ^t37_klasse = zaehlt 20: 19 Reihen plus die eine Zeile in zaehlung.handelsblock. Grep-Muster ^nr = zaehlt 28, also 19 Reihen plus 9 Widersprueche; bis zum 2026-09-03 waren es 27 bei acht Widerspruechen."
-schnitt_5 = "Sollreihen. Grep-Muster ^sollreihen = mit output_mode content ergibt 21 Zeilen, und keine Zeilennummer wird dafuer gebraucht: 19 davon stehen auf Reihenebene, genau eine je [[reihe]], und zwei stehen in einer Untertabelle -- die beiden Bloecke [[reihe.lizenzbeleg]] der Reihe 2, mit dem Wert 4 beim Beleg zu 2a und dem Wert 8 beim Beleg zu 2b und 2c; siehe falle. Ohne das Gleichheitszeichen sind es 28, weil dann die sieben Summenschluessel mitzaehlen: die vier in [zaehlung] (sollreihen_gesamt, sollreihen_frei, sollreihen_gesetzt, sollreihen_abgeleitet) und die drei in [zaehlung.lizenz] (sollreihen_frei, sollreihen_unklar, sollreihen_gesperrt). Die 19 auf Reihenebene tragen dreizehn Nullen und sechs Werte, bei den Reihen 1, 2, 8, 9, 10 und 11: 4 plus 12 plus 4 plus 4 plus 3 plus 4 ergibt 31. Die Summe ueber alle 21 Zeilen ist 43 und die Zahl, auf die ein Zeilenzaehler hereinfaellt."
+schnitt_5 = "Sollreihen. Grep-Muster ^sollreihen = mit output_mode content ergibt 21 Zeilen, und keine Zeilennummer wird dafuer gebraucht: 19 davon stehen auf Reihenebene, genau eine je [[reihe]], und zwei stehen in einer Untertabelle -- die beiden Bloecke [[reihe.lizenzbeleg]] der Reihe 2, mit dem Wert 4 beim Beleg zu 2a und dem Wert 8 beim Beleg zu 2b und 2c; siehe falle. Ohne das Gleichheitszeichen sind es 28, weil dann die sieben Summenschluessel mitzaehlen: die vier in [zaehlung] (sollreihen_gesamt, sollreihen_frei, sollreihen_gesetzt, sollreihen_abgeleitet) und die drei in [zaehlung.lizenz] (sollreihen_frei, sollreihen_unklar, sollreihen_gesperrt). Die 19 auf Reihenebene tragen vierzehn Nullen und fuenf Werte, bei den Reihen 1, 2, 8, 10 und 11: 4 plus 12 plus 4 plus 3 plus 4 ergibt 27. Die Summe ueber alle 21 Zeilen ist 39 und die Zahl, auf die ein Zeilenzaehler hereinfaellt. Bis zum 2026-09-03 lauteten diese vier Angaben dreizehn Nullen, sechs Werte mit Reihe 9 dazwischen, 31 und 43; Reihe 9 traegt seither die Null."
 schnitt_6 = "Doppelter Schluessel innerhalb einer Tabelle. Ohne Parser ist das nicht vollstaendig zeigbar; was ohne Parser zeigbar ist, steht in schnitt_4 und schnitt_5: Fuer die zehn Schluessel eines Reihenblocks, die schnitt_4 auf 19 zaehlt, ist die Zeilenzahl genau die Blockzahl 19, und ein zweites Vorkommen innerhalb eines Blocks wuerde sie anheben. Zehn und nicht elf -- der Schluessel lizenzurteil steht in schnitt_4 zweimal, einzeln und im Sammelmuster; bis zum 2026-09-03 stand hier elf. Nicht abgedeckt sind die selteneren Schluessel und die Schluessel der Untertabellen. Seit dem 2026-09-03 ist der Punkt darueber hinaus maschinell erledigt: TOML 1.0 verbietet den doppelten Schluessel, tomllib bricht darauf mit einem Fehler ab, und der Lauf aus toml_geprueft ist fehlerfrei durchgelaufen. Wer die Datei ohne ausfuehrbares Werkzeug prueft, hat nur den ersten Teil."
 schnitt_7 = "Wortlautfelder. Grep-Muster ^wortlaut = zaehlt 20, eines je Lizenzbeleg aus schnitt_3. Vier davon sind leer: die Reihen 16, 17, 18 und 19 ohne eigene Quelle, siehe zaehlregel_lizenz. Grep-Muster ^wortlaut_form zaehlt 2, die beiden mehrzeiligen Wortlaute aus schnitt_2."
-zaehlregel_sollreihen = "Summiere den Schluessel `sollreihen` je [[reihe]] -- also nur auf der obersten Ebene eines Reihenblocks. Ergebnis 31."
-zaehlregel_t37 = "Gruppiere dieselben Werte nach `t37_klasse` der Reihe. Ergebnis frei 23 (Reihen 1, 2, 8, 10 mit 4 + 12 + 4 + 3), gesetzt 4 (Reihe 9), abgeleitet 4 (Reihe 11)."
-handelsblock = "Reihe 14 traegt `t37_klasse = frei` bei `sollreihen = 0` und `handelsblock_stroeme = 40`. Sie ist die einzige Nicht-Sollreihe mit Klasse; das verlangt die Abnahme so."
-falle = '''Ein `grep` auf `^sollreihen = ` findet zwei Zeilen zu viel: Die beiden Belegbloecke [[reihe.lizenzbeleg]] der Reihe 2 fuehren denselben Schluesselnamen fuer die Aufteilung 4 (2a) + 8 (2b und 2c). Ein TOML-Leser verwechselt sie nicht, weil sie in einer Untertabelle stehen; ein Zeilenzaehler schon und kaeme auf 43. Der Name ist beim Nachtragen dieser Zeile nicht mehr aenderbar gewesen, deshalb steht die Falle hier statt in einem Kommentar, den ein Werkzeug ueberliest.'''
+zaehlregel_sollreihen = "Summiere den Schluessel `sollreihen` je [[reihe]] -- also nur auf der obersten Ebene eines Reihenblocks. Ergebnis 27. Bis zum 2026-09-03 waren es 31; Reihe 9 traegt seither 0."
+zaehlregel_t37 = "Gruppiere dieselben Werte nach `t37_klasse` der Reihe. Ergebnis frei 23 (Reihen 1, 2, 8, 10 mit 4 + 12 + 4 + 3), abgeleitet 4 (Reihe 11). Die Klasse `gesetzt` ist seit dem 2026-09-03 leer und entfaellt; Reihe 9 trug sie mit 4 und fuehrt seither ein leeres `t37_klasse` bei `sollreihen = 0`. Ein leeres `t37_klasse` bedeutet keine Klasse und bildet keine Gruppe -- so steht es bei allen dreizehn Reihen ohne T37-Klasse, Reihe 9 seit dem 2026-09-03 mitgezaehlt."
+handelsblock = "Reihe 14 traegt `t37_klasse = frei` bei `sollreihen = 0` und `handelsblock_stroeme = 40`. Sie ist die einzige Nicht-Sollreihe mit Klasse; das verlangt die Abnahme so. Der Satz gilt auch nach dem 2026-09-03 unveraendert: Reihe 9 ist seither ebenfalls eine Nicht-Sollreihe, traegt aber ein leeres `t37_klasse` und ist deshalb kein zweiter Fall."
+falle = '''Ein `grep` auf `^sollreihen = ` findet zwei Zeilen zu viel: Die beiden Belegbloecke [[reihe.lizenzbeleg]] der Reihe 2 fuehren denselben Schluesselnamen fuer die Aufteilung 4 (2a) + 8 (2b und 2c). Ein TOML-Leser verwechselt sie nicht, weil sie in einer Untertabelle stehen; ein Zeilenzaehler schon und kaeme auf 39 (bis zum 2026-09-03: 43). Der Name ist beim Nachtragen dieser Zeile nicht mehr aenderbar gewesen, deshalb steht die Falle hier statt in einem Kommentar, den ein Werkzeug ueberliest.'''
 zaehlregel_umrechnung = "Jede Reihe fuehrt mindestens einen Block [[reihe.umrechnung]]. Genau einer traegt `art = ungemessen` und keinen Faktor: Reihe 3, der PWT-Kapitalstock. Das ist Absicht, siehe Leseregel 3 im Kopf. Reihe 14 (BACI) hat diesen Stand bis Paket 0036 geteilt und traegt seither `art = keine`, `faktor = 1` und `status = gemessen`. Das ist eine gemessene und keine gesetzte Eins -- der Unterschied steht in Leseregel 3, der Beleg in den Feldern `begruendung` und `beleg` des Blocks. Eine gesetzte Eins bleibt verboten. Entschieden ist damit allein die Groessenordnung; die Preisbasis der Reihe 14 ist offen, siehe [[widerspruch]] Nr. 9."
 zaehlregel_lizenz = "Jede Reihe fuehrt `lizenzurteil` aus frei | gesperrt | unklar und mindestens einen Block [[reihe.lizenzbeleg]] mit `wortlaut`, `url` und `abrufdatum`. Leer sind diese drei Felder allein bei den Reihen 16, 17, 18 und 19 -- den vier Reihen ohne eigene Quelle; siehe [[widerspruch]] Nr. 7 und Nr. 8."
