@@ -158,3 +158,18 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04.md` (voll bei Paket 0077).
   Wegwerf-CMake-Projekt in `$TMPDIR` mit `add_executable` plus `add_test` der einzige Weg,
   einen Mutanten ueberhaupt auszufuehren. `add_test` auf eine **vorgebaute** Binaerdatei
   wurde abgelehnt, `add_executable` aus einer Quelle nicht.
+
+## Nachtrag 2026-09-04 (Paket 0067, Runde 2)
+
+- **Ein Paket erkennt man an seiner `dateien`-Liste, nicht am Commit-Betreff -- und das
+  Datum schliesst nur aus.** In Runde 1 habe ich eine Belegstelle "Paket 0004"
+  zugeordnet, weil der Betreff das sagte; die Datei steht in der Liste von 0007.
+  `git log --diff-filter=A` plus Dateiliste der Aufgabe traegt, der Betreff nie.
+- **Eine ausgewiesene Luecke ist nachmessbar.** Das Ziel der Lueckenform in einer Kopie
+  der Vorgaben verdrehen und pruefen, dass der Riegel gruen bleibt *und* die
+  Uebergangenliste zeilengleich ist. Erst das belegt "zaehlt nirgends" statt es zu
+  glauben.
+- **Zahlen im Kopfkommentar sind Zusagen.** "6 der 24 haengen am Vorspann-Fall" mit dem
+  passenden Mutanten nachgestellt -- Datei und Zeile stimmten.
+- **Nach dem Schreiben eigener Dateien den Riegel noch einmal laufen lassen.** Mein
+  Vorschlag unter `aufgaben/` haette die Zaehlung verschieben koennen; tat er nicht.
