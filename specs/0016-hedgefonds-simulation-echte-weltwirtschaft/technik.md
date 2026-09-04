@@ -2,7 +2,8 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16); die Fassung selbst folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md -- ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
+fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17) -- die Fassung selbst folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
+preisbasis: Klasse 2 steht zu konstanten Preisen des Jahres 2015 (gemessen an Reihe 1, WDI "constant 2015 US$"); die 40 BACI-Handelsströme kommen laufend an und werden beim Jahrgangsbau mit einem Weltausfuhrpreisindex aus WDI darauf gebracht -- 0 Rechenschritte je Weltschritt, 0 zusätzliche Sollreihen, T47/T48/T50 unberührt (T53)
 stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake, jede Fremdbibliothek als Quelltext unter fremd/ im Repo eingefroren (find_package und FetchContent verboten); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
 ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, nach Rechenart geschnitten (Verengung, Strichrechnung, Multiplikation ohne Division), weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
 determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
@@ -41,7 +42,7 @@ diesem Lauf nicht berührt. Die Abarbeitungen der ersten vier Prüfungen standen
 Fassungen 2 bis 5 und sind dort je von der nächsten Prüfung unter deren Bedingung 5
 abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
 
-Die Vorgaben sind mit **T1** bis **T52** durchnummeriert. Der Builder weicht von keiner ab,
+Die Vorgaben sind mit **T1** bis **T53** durchnummeriert. Der Builder weicht von keiner ab,
 ohne dass ein ADR sie aufhebt; der Prüfer zitiert die Nummer, statt sie zu umschreiben.
 **Die Nummern behalten über alle Fassungen ihre Bedeutung**, damit alle Prüfungen
 zitierbar bleiben; neue Vorgaben tragen die nächsten freien Nummern und stehen dort, wo sie
@@ -52,9 +53,11 @@ fortlaufend.
 neuen Regeln, sondern die C++-Hälfte einer bestehenden: T2b sagt, was an die Stelle von
 `#![forbid(unsafe_code)]` tritt, T6b schreibt die Divisionsform vor, an der die
 Geschwindigkeitsmessung aus ADR 0011 hing. Ein Buchstabe statt einer neuen Nummer, damit die
-Prüfungen der Runden 1 bis 6 zitierbar bleiben und niemand T2 gegen T53 nachschlagen muss.
-Wirklich neu ist allein **T52** (Plattformunabhängigkeit der Ganzzahlrechnung), und die
-Vorfassung brauchte sie nicht, weil Rust sie geschenkt hatte.
+Prüfungen der Runden 1 bis 6 zitierbar bleiben und niemand T2 gegen T60 nachschlagen muss.
+Wirklich neu war in der Fassung 7 allein **T52** (Plattformunabhängigkeit der
+Ganzzahlrechnung), und die Vorfassung brauchte sie nicht, weil Rust sie geschenkt hatte.
+**T53** ist am 2026-09-04 mit Paket `0026-klasse-2-preisbasis` dazugekommen und steht hinter
+T50, weil sie zu den Skalen gehört und nicht zur Sprache (Abschnitt 17).
 
 **Die teuerste Lehre der Fassung 6, unverändert gültig: Der Abzählschritt aus T45 zählt
 Adressen, und Befund 2 der Runde 6 lag zwischen zweien.** Die gemischten Skalen in
@@ -275,7 +278,7 @@ die Bedeutung steht in dieser Tabelle und nirgends sonst:
 | # | Klasse | Einheit | Beispiel | Bereich |
 |---:|---|---|---|---|
 | 1 | Fondsgeld (Kasse, **Positionswert**, **Beteiligungswert**, Hebel, Anlegerbestand) | US-Cent | 4.200.000.000 = 42 Mio USD | ±9,2·10^16 USD |
-| 2 | Volkswirtschaftliche Beträge (BIP, Wertschöpfung, Kapitalstock, Handelsstrom, **Korbwert**, Marktkorbwert) | Tausend USD zu konstanten Preisen des Basisjahrs | 21.000.000.000 = 21 Bio USD | reichlich |
+| 2 | Volkswirtschaftliche Beträge (BIP, Wertschöpfung, Kapitalstock, Handelsstrom, **Korbwert**, Marktkorbwert) | Tausend USD zu konstanten Preisen **des Jahres 2015**; was in einer anderen Preisbasis ankommt, wird beim Jahrgangsbau nach **T53** darauf gebracht | 21.000.000.000 = 21 Bio USD | reichlich |
 | 3 | Raten (Zins, Inflation, Zoll, Haushaltssaldo, Schuldenquote, Rendite, Überrendite, **`aufschlag`**) | Basispunkte (1 bp = 0,01 %) | 250 = 2,50 % | ±2 Mio % |
 | 4 | Anteile (Sektoranteil, Marktanteil, Einfluss, Zustimmung, **Sichtbarkeit**, **Beteiligungsanteil**, `durchgriff`, **`stufenweite`**) | Zehntausendstel | 10.000 = 100 % | 0 bis 10.000 |
 | 5 | Nominalindizes (Sektorpreise, Weltpreise, Preisniveau, **`anleihekurs`**) | Index, Startjahr = 10.000 | 12.500 = +25 % | > 0, siehe T8 und T50 |
@@ -331,6 +334,20 @@ Klasse Fondsgeld**, und das ist die Entscheidung, an der Befund 2 hing: Eine Stu
 *`stufenweite` Zehntausendstel des Marktes*, an dem der Steckplatz hängt, kein Geldbetrag.
 Damit ist der Anteil, den Gegenkraft 1 und der Preisstoß lesen, dieselbe Zahl wie die, aus
 der der Positionswert entsteht, und der Zustand braucht keine zwanzig Einstandspreise.
+
+**Das Basisjahr der Klasse 2 ist 2015, und es steht seit dieser Fassung als Jahreszahl da
+statt als „das Basisjahr".** Bis zum 2026-09-04 nannte die Zeile ein Basisjahr, ohne eines zu
+nennen; für 56 der 71 Adressen war damit unbestimmt, worauf sie sich bezieht, und ein
+Bauagent hätte es wählen müssen. Gewählt ist **2015**, weil es das einzige in diesem Vorhaben
+**gemessene** Basisjahr ist: Reihe 1 trägt am Weltbank-Endpunkt im Feld `Unitofmeasure` den
+Wortlaut „constant 2015 US$" (zwei Endpunkte, zeichengleich gegengeprüft,
+`daten/einheitenbefund-pwt-baci.md` Abschnitt 6, abgerufen 2026-09-02), und die Wertschöpfung
+aller fünf Gebiete entsteht nach T23 Punkt 1 aus ihr. Ein anderes Basisjahr hätte geheissen,
+die einzige gemessene Reihe umzurechnen, um zwei ungemessene zu treffen.
+
+**Welche Klasse-2-Adresse in welcher Preisbasis ankommt und was mit ihr geschieht, steht in
+T53** — namentlich für die 40 Handelsströme aus BACI, die als einzige gemessen in einer
+**anderen** Basis ankommen.
 
 **Zwischen Fondsskala und volkswirtschaftlicher Skala liegt der Faktor 100.000** (1 Tausend
 USD = 100.000 US-Cent). Wo er überschritten wird, sagt **T50** — und er wird nur in **einer
@@ -432,6 +449,192 @@ T48 stehen im Modul `kern::werte`; `tsd_in_cent` und die beiden Lobbyumrechnunge
 privat. Ein Treffer von `grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` ausserhalb dieses
 einen Moduls ist ein Befund — dieselbe Bauart wie der Gleitkommanachweis aus T4, und ebenso
 mechanisch.
+
+**T53 — Was Klasse 2 für eine Reihe bedeutet, die in laufenden Preisen ankommt: Sie wird beim
+Jahrgangsbau deflationiert, mit einem benannten Deflator aus einer bereits zugelassenen
+Quelle, auf die Basis 2015.** Der Kern sieht davon nichts. Das ist die Entscheidung, auf die
+Paket 0002 seit dem 2026-09-02 wartet.
+
+**Wo jede der 71 Klasse-2-Adressen ankommt, gemessen und abgezählt.** Die Zerlegung ist die aus
+T49 (`4×6 + 6 + 40 Handelsströme + markt.wert`), nach Preisbasis geschnitten statt nach Gebiet:
+
+| Adressen | Zahl | Reihe | Quelle | Preisbasis, wie gemessen | was geschieht |
+|---|---:|---|---|---|---|
+| Wertschöpfung, 5 Gebiete × 3 | 15 | 1 über T23 P1 | WDI `NY.GDP.MKTP.KD` | **konstant, 2015** (gemessen 2026-09-02, zwei Endpunkte) | nichts — sie *ist* die Basis |
+| Sektorkapitalstock, 5 × 3 | 15 | 3 über T23 P1 | PWT 11.0 | **ungemessen** (PDF-Sperre) | **ausgewiesene Nichtentscheidung**, unten |
+| Handelsströme | 40 | 14 | CEPII BACI, Feld `v` | **laufend** (gemessen 2026-09-02, „in thousands current USD") | **Deflator**, unten |
+| `markt.wert` | 1 | 19 | keine, T33 | folgt seinen Eingängen (12 `korbwert` + 4 `anleihewert`) | nichts |
+| **Summe** | **71** | | | | wie T49 |
+
+Nachgerechnet: `15 + 15 + 40 + 1 = 71`, und `15 + 15` ist die `4×6 + 6 = 30` aus T49, nach
+Größe statt nach Gebiet aufgeteilt. **Genau eine Zeile ist gemessen in einer anderen Basis als
+2015**, und sie trägt 40 der 71 Adressen.
+
+**Die Zahl, die entscheidet — der Preisanteil allein reisst die Schwelle.** T42 misst den
+Handelsblock mit dem MAPE gegen die Schwelle 2.000 (= 20 %). Das Modell führt den
+Handelsstrom real (`spiel.md` stützt darauf ausdrücklich die Schadensvorschrift von
+Gegenkraft 5: *„`handelsvolumen` steht nach T5 Klasse 2 zu konstanten Preisen"*), die Sollreihe
+kommt nominal. Wie gross der Fehler ist, den das **allein** erzeugt, war bis heute ungemessen;
+er ist es nicht mehr. Weltausfuhr in laufenden und in konstanten Preisen von 2015, beide von
+der Weltbank, ihr Quotient ist ein USD-Ausfuhrpreisindex mit Basis 2015 = 10.000:
+
+```
+https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.CD   "Exports of goods and services (current US$)"
+https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.KD   "Exports of goods and services (constant 2015 US$)"
+                                                                     beide abgerufen 2026-09-04
+```
+
+| Jahr | 97 | 98 | 99 | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Index | 7.417 | 7.021 | 6.911 | 6.849 | 6.594 | 6.738 | 7.485 | 8.246 | 8.755 | 9.281 | 10.133 | 11.232 | 10.045 |
+
+| Jahr | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Index | 10.682 | 11.989 | 11.840 | 11.798 | 11.592 | **10.000** | 9.570 | 10.022 | 10.553 | 10.254 | 10.158 | 11.549 |
+
+Ein Modell, das die Mengen **fehlerfrei** trifft, startet auf dem BACI-Wert von 1997 und läuft
+real weiter; die Sollreihe läuft mit dem Index. Sein Fehler je Stützstelle ist damit
+`|1 − r(t)| / r(t)` mit `r(t) = Index(t)/Index(1997)`, und das Mittel über die 25 Stützstellen
+des Prüfjahrgangs ist **2.203 Zehntausendstel gegen eine Schwelle von 2.000**. Am rechten Rand
+allein sind es 3.577 (2021: `r = 1,5570`). **Der Prüfgegenstand Handelsblock fällt also durch,
+bevor das Modell einen einzigen Fehler gemacht hat** — die Preisdrift allein verbraucht das
+Fehlerbudget nicht zum Teil, sondern **ganz und mit 10 Prozent Überhang** (2.203 gegen 2.000).
+Für Modellgüte bleibt nichts übrig.
+
+Drei Vorbehalte gehören an dieselbe Stelle wie die Zahl. *Erstens* ist das der
+**Welt**aggregatindex und nicht der Deflator der 40 bilateralen Ströme; er hat die richtige
+Größenordnung und ist gemessen, er ist keine Vorhersage des tatsächlichen MAPE. *Zweitens*
+ist 2.203 der **systematische Anteil**, zu dem der Modellfehler noch hinzukommt, nicht davon
+ab. *Drittens* trägt das Argument auch bei einer kleineren Zahl: Eine Schwelle, die Modellgüte
+messen soll und ihr Budget an eine Preisdrift verliert, die niemand modelliert hat, misst
+etwas anderes als das, wofür sie dasteht.
+
+**Die vier Wege nebeneinander, mit Preis.** Der Preis steht in Rechenschritten je Weltschritt
+und in zusätzlichen Sollreihen, weil das die zwei Größen sind, an denen dieses Vorhaben
+zugrunde gehen kann:
+
+| Weg | Rechenschritte je Weltschritt | zusätzliche Sollreihen | weiterer Preis | Ergebnis |
+|---|---:|---:|---|---|
+| **1 Deflationieren (gewählt)** | **0** | **0** | einmalig 1.040 Umrechnungen je Jahrgangsbau; **+1 Reihe** (Nr. 20, 2 Indikatorcodes, 1 Gebiet, 25 Zahlen), **keine neue Quelle** | Handelsblock bleibt Prüfgegenstand, T47/T48/T50 unberührt |
+| 2 Klasse wechseln | 0 in diesem Dokument | 0 | T5 **+1 Zeile**, T49-Zerlegung neu (71 → 31 + 40), T8 neu abzählen — **und eine Entscheidung in `spiel.md` vom 2026-09-03 wieder auf** | nicht meine Entscheidung, siehe unten |
+| 3 Maß 4 einschränken | 0 | 0 | 16 → **15** Prüfgegenstände bei unveränderter Toleranz 2, also ein *schärferer* Test auf dem Rest; 40 der 71 Adressen ohne jede Prüfung; Kanal 3 ohne historischen Anker | billigster Bau, teuerster Verlust |
+| 4 Quelle wechseln (IWF DOTS) | — | — | **nicht bezifferbar**: T26 lässt DOTS nur für Spieljahrgänge vor 1997 zu, der Prüfjahrgang beginnt 1997, und die Preisbasis von DOTS ist ungemessen (HTTP 403 in fünf Anläufen aus drei Rollen) | tauscht eine gemessene Schwierigkeit gegen eine ungemessene |
+
+**Warum Weg 1 und nicht Weg 3**, obwohl beide im Kern null kosten: Weg 3 heisst nicht
+„einschränken", sondern **streichen**. Bei einem Fehleranteil von 2.203 gegen 2.000 gibt es
+keine Einschränkung, die den Handelsblock noch etwas prüfen liesse — eine eigene Schwelle
+oberhalb von 2.203 wäre eine Schwelle, die jedes Modell besteht. Der Block trägt 40 der 71
+Klasse-2-Adressen und ist der einzige historische Anker von **Kanal 3** (Instrument → Handel →
+Weltpreis → Schaden → Gegendruck), den `spiel.md` unter seinen acht Kanälen führt. Weg 1
+kauft ihn für 25 Zahlen aus einer Quelle, die ohnehin schon eingebunden ist.
+
+**Warum Weg 2 nicht, und das ist kein Preisargument.** `spiel.md` hat am 2026-09-03 den
+Konjunktursockel aus Gegenkraft 5 gestrichen und die Streichung ausdrücklich darauf gestützt,
+dass `handelsvolumen` nach T5 Klasse 2 real ist — der Sockel *war* die Inflation mal dem
+Handelsvolumen. Klasse 2 nominal zu stellen holt ihn zurück. **Was gespielt wird, steht in
+`spiel.md`; ich widerspreche dort nicht.** Weg 2 ist damit nicht teuer, sondern nicht meiner.
+
+**Der Deflator, benannt, mit Quelle und in Ganzzahlen.** Er wird eine Reihe des Jahrgangs, kein
+Programmteil (T23), und keine Sollreihe — er wird gegen nichts verglichen:
+
+```
+preisindex_handel[t] = teile_gerundet( ausfuhr_laufend[t] · 10.000, ausfuhr_konstant[t] )
+
+handel_konstant[a][b][s][t] = mal_geteilt( handel_laufend[a][b][s][t],
+                                           10.000, preisindex_handel[t] )
+```
+
+`ausfuhr_laufend` ist `NE.EXP.GNFS.CD`, `ausfuhr_konstant` ist `NE.EXP.GNFS.KD`, beide für das
+Gebiet `WLD`, beide Weltbank — also **Quelle Nr. 1 aus `daten.md`**, dieselbe Lizenz, dieselbe
+Zitierpflicht, keine fünfte Quelle und kein Fall für den Datenkurator. Beide Rechnungen laufen
+über T6; `ausfuhr_laufend[t] · 10.000` erreicht bei 2,8 · 10^13 USD rund 2,8 · 10^17 und bleibt
+damit im `i64`. Der Faktor 1 aus dem Einheitenbefund bleibt unberührt: Er ist die
+**Größenordnung**, der Deflator ist die **Preisbasis**, und die beiden sind zwei Fragen an
+dieselbe Zeile.
+
+**Ein Selbsttest, der zwei Zeilen kostet und die ganze Zuordnung trägt:**
+`preisindex_handel[2015] = 10.000` **exakt**. Er gilt nicht aus Konvention, sondern weil die
+beiden Reihen im Basisjahr denselben Wert führen (21.272.611.247.725,1 — in beiden Abrufen
+zeichengleich). Weicht er ab, führen die zwei Indikatorcodes **nicht** dieselbe Basis, und der
+Jahrgangsbau bricht ab, statt eine Preisbasis zu behaupten, die er nicht hat. Das ist dieselbe
+Bauart wie die Abzählprüfungen aus T45 und T49: eine Zusage, die sich selbst nachweist.
+
+**Die Umrechnung trifft die Sollreihe und die Startmatrix, und zwar mit demselben Index.** Nach
+T23 Punkt 9 erzeugt **eine** Konkordanz die Handelsstartmatrix, die 40 Sollströme und `H` aus
+Punkt 5; entsprechend deflationiert **ein** Index alle drei. Eine Sollreihe zu deflationieren
+und die Startmatrix nicht wäre der Fehler, den T23 Punkt 9 für die Konkordanz schon
+ausschliesst. Für den Prüfjahrgang ist der Faktor auf das Startjahr
+`10.000 / 7.417 = 1,34825`.
+
+**Reihe 16 (`durchgriff`) ist damit mitentschieden, und sie war die zweite Hälfte des
+Widerspruchs.** `H` kommt nach T23 Punkt 5 aus derselben deflationierten Matrix, `N` aus
+Reihe 1 — beide stehen danach in konstanten Preisen von 2015, und der Quotient trägt keinen
+Preisanteil mehr. **Der Zug hat eine Eigenschaft, die kein anderer Deflatorzuschnitt hätte:**
+Weil *ein* Index auf *alle* 40 Ströme wirkt, wird jedes `H` mit demselben Faktor multipliziert,
+`H/N` also für alle Gebiete und Sektoren mit demselben — und `durchgriff = 10.000 · H/(H+N)`
+ist streng monoton in `H/N`. **Die Ordnung über Länder und Sektoren bleibt damit exakt
+erhalten**, und genau sie ist das Einzige, was `spiel.md` von dieser Größe verlangt
+(*„Sein Zahlenwert hat keine volkswirtschaftliche Bedeutung; er muss Länder und Sektoren
+richtig ordnen"*). Der **Betrag** verschiebt sich, und zwar nach oben: Auf die beiden Fälle,
+die `spiel.md` durchrechnet, wirkt der Faktor 1,34825 als `7.288 → 7.837` und
+`5.464 → 6.189`. Beide Zahlen sind **Nachrechnungen auf `spiel.md`s Beispielwerten aus WDI 1995
+und nicht die Werte des Jahrgangs** — sie zeigen die Größe der Verschiebung, nicht ihr
+Ergebnis. Die Reihenfolge Landwirtschaft vor Industrie hält in beiden Fassungen.
+
+**Ein per-Ausführer-Deflator wäre genauer und ist nicht zu haben — gemessen, nicht vermutet.**
+`NE.EXP.GNFS.KD` liegt für die Volksrepublik China im Fenster 1997–2021 **allein für 2015** vor;
+die übrigen 24 Stützstellen sind `null` (Abruf 2026-09-04, einzeln nachgefragt, weil eine erste
+Sammelabfrage sich selbst widersprach). Für Brasilien, Deutschland und die USA ist die Reihe
+vollständig. Die Wahl des Weltindex ist damit **erzwungen und nicht bevorzugt**, und das gehört
+hierher, weil sie sonst wie Bequemlichkeit aussieht. Was übrig bleibt, ist der Abstand zwischen
+dem Weltindex und den wahren bilateralen Deflatoren; er ist **ungemessen** und die ehrliche
+Restgrösse dieses Wegs. Er ist zweiter Ordnung gegen die 2.203, die der Weg beseitigt — dass er
+klein *ist*, behaupte ich nicht.
+
+**Reihe 3 (PWT-Kapitalstock, 15 Adressen): ausgewiesene Nichtentscheidung.** Weder Einheit noch
+Basisjahr sind gemessen; vier PDF-Abrufe aus drei Verzeichnissen kamen unlesbar an
+(`daten/einheitenbefund-pwt-baci.md` Abschnitte 3 und 4). Ich entscheide hier **nichts**, weil
+jede Wahl geraten wäre, und schreibe stattdessen die drei Teile hin, die die Entscheidung
+tragen:
+
+- **Die fehlende Zahl:** Einheit und Basisjahr der Kapitalstockvariablen in PWT 11.0. Es kostet
+  **einen** lesbaren Auszug aus `pwt110_user_guide_to_data_files.pdf` (Dataverse-Kennung
+  554025) oder aus dem Bezeichnungsblatt von `pwt110.xlsx` (554105).
+- **Der Adressat:** der Datenbauer, und über ihn der Betreiber — die Sperre ist die
+  Werkzeugkette und nicht die Quelle. Es ist die zweite Sperre dieser Art neben dem
+  IWF-Volltext.
+- **Die Folge, und sie ist nach Größe geordnet.** Die **Einheit** ist der schwere Teil: Steht
+  der Kapitalstock in Millionen statt in Tausend USD, ist der Faktor 1.000 und nicht 1 — drei
+  Größenordnungen, still. Das **Basisjahr** ist der leichte: Ein Unterschied zwischen 2015 und
+  2017 oder 2021 verschiebt alle 15 Adressen um **denselben** Faktor in der Größenordnung
+  weniger Prozent. Beides trifft **keine Sollreihe** — Reihe 3 ist nach der Reihenliste `Start`
+  und trägt keinen Prüfgegenstand —, wirkt also nicht auf Maß 4, sondern über `korbwert` auf
+  `marktkorb` und `fondsvermoegen`. Ein gemeinsamer Faktor auf allen 12 Körben kürzt sich in
+  `fonds.marktanteil` heraus und wird bei `startkapital` und `stufenweite` mitkalibriert; **was
+  er nicht tut, ist sich in `marktkorb` herauszukürzen**, denn dort stehen 12 Körbe neben 4
+  `anleihewert`, die aus Reihe 1 kommen und nicht mitwandern. Die Mischung der 16 Marktwerte
+  verschiebt sich also, und mit ihr das Verhältnis von Korb- zu Anleihesteckplätzen.
+- **Solange das offen ist**, bleibt in `daten/reihen.toml` bei Reihe 3 `art = "ungemessen"`
+  richtig, und der Jahrgangsbau darf für sie **keinen** Faktor einsetzen. T24 kennzeichnet
+  Lücken, statt sie zu füllen; das ist hier der Fall.
+
+**Die Folge für Paket 0002, ausgeschrieben, weil es daran hängt: T47, T48 und T50 bleiben
+unberührt.** Kein Wort, keine Formel, keine Zeile in einer ihrer Tabellen ändert sich, und der
+Grund ist eine Eigenschaft des gewählten Wegs und keine Zusage:
+
+- **T47** rechnet ausschliesslich auf Zustandsgrößen. Die Deflationierung liegt in
+  `werkzeuge/aufbereitung` und ist abgeschlossen, bevor der Kern die erste Zahl sieht. `wert`,
+  `korbwert`, `anleihewert`, `waehrungswert`, `markt`, `stufenwert`, `positionswert`,
+  `beteiligung_wert` und `fondsvermoegen` stehen unverändert.
+- **T48** führt `handelsvolumen(l)` als Klasse 2. Das war bisher eine Behauptung und ist jetzt
+  eine Tatsache — die Zeile ändert sich gerade deshalb **nicht**.
+- **T50** zählt drei Skalenübergänge. Ein Deflator ist keiner: Er führt von Klasse 2 nach
+  Klasse 2, und er läuft ausserhalb des Kerns. Es bleiben drei.
+
+**`kern::werte` kann damit unverändert gebaut werden, und Paket 0002 kann unverändert zurück
+auf `offen`.** Seine fünf Leser aus T47 Punkt 3 sehen dieselbe Zahl wie vorher; was sich
+geändert hat, ist, was sie **bedeutet**. Das ist der ganze Zweck dieses Wegs: Die Korrektur
+sitzt an der einzigen Stelle des Vorhabens, an der sie den teuersten Baustein nicht berührt.
 
 **T6 — Genau eine Rundungsregel, `/` auf Zustandsgrößen ist verboten, und der Nenner null
 ist ein harter Fehler.** Alle Divisionen laufen über `teile_gerundet(zaehler, nenner)` mit
@@ -704,7 +907,13 @@ seines Startwerts, werden Index, Wechselkurs und alle nominalen Größen dieses 
 **Welche Größen das sind, ist seit T49 abzählbar und steht deshalb hier statt in einer
 Auslegung: genau fünf je Gebiet** — die drei Sektorpreise, das Preisniveau (Klasse 5) und
 der Wechselkurs (Klasse 6). Sonst nichts. Die volkswirtschaftlichen Beträge stehen nach T5
-Klasse 2 **zu konstanten Preisen des Basisjahrs**, sind also real und laufen nicht mit; die
+Klasse 2 **zu konstanten Preisen des Jahres 2015**, sind also real und laufen nicht mit — und
+sie laufen aus einem **zweiten**, unabhängigen Grund nicht mit, der seit T53 hier stehen kann:
+Klasse 2 ist in konstanten **US-Dollar** ausgedrückt, hat also gar keine Dimension in der
+Landeswährung, die eine Währungsreform des Gastlandes treffen könnte. Für die 40
+Handelsströme gilt das erst, seit T53 sie beim Jahrgangsbau auf dieselbe Basis bringt; vorher
+kamen sie in laufenden Preisen an, und dieser Absatz behauptete für sie eine Eigenschaft, die
+sie nicht hatten. Die
 Produktivität steht in Klasse 7 und darf es nicht (sonst senkte ein brasilianischer
 Basiswechsel die Produktivität um drei Größenordnungen); Raten, Anteile, Personen,
 Lobbypunkte und Zähler haben keine Währungsdimension; das Fondsgeld steht in US-Cent, also
@@ -2579,3 +2788,60 @@ entscheidet nicht der Architekt.
 T2b, T9, den Massnahmen 1 bis 3, den 310 Adressen, den Formeln, den Maßen oder den
 Kostenrechnungen. Der Umfang ist ein Punkt in T7, ein Absatz in T3 mit einem Halbsatz in T1
 und je ein Absatz in T2 und T13 — das ist der Rücklauf und keine achte Fassung.
+
+## 17. Paket `0026-klasse-2-preisbasis` — Umfang, und was ausdrücklich liegen bleibt
+
+**Kein Rücklauf.** Das Paket führt `Rückläufe: 0`, und unter
+`ventures/0016-…/befunde/` liegt keine Prüfung zu diesem Gewerk mit `urteil: zurueck`. Es gibt
+also keinen Befund abzuarbeiten; dieser Abschnitt hält stattdessen den Umfang fest, weil
+Bedingung 5 der Abnahme ihn begrenzt.
+
+**Angefasst sind vier Stellen und sonst keine:** die Klasse-2-Zeile in **T5** samt zwei
+Absätzen dahinter (Basisjahr 2015, Verweis auf T53), die neue Vorgabe **T53** hinter T50, der
+Absatz in **T8**, der die Aufzählung der neu basierten Größen begründet, und dieser Abschnitt.
+Dazu die Zeile `fassung` im Frontmatter, weil sie sonst den Stand der Datei falsch angibt.
+Nicht angefasst: T42, T37, T47, T48, T50, T23, die Reihenliste, die 310 Adressen, die vier
+Maße, die Kostenrechnungen und die Stacktabelle.
+
+**Was hier hingehörte und trotzdem nicht hier steht — die Reihenliste.** T53 nennt eine neue
+Reihe des Jahrgangs, und die Reihenliste in Abschnitt 7 führt sie nicht. Das ist bewusst:
+Bedingung 5 nimmt die offenen Fragen aus `rueckstand.md` Punkt 6 und 7 ausdrücklich aus diesem
+Paket heraus, und eine davon — das `frei` in der Spalte „Rolle" — sitzt in genau dieser
+Tabelle. Zwei Pakete an einer Tabelle sind der Kollisionsfall, den der Zuschnitt vermeiden
+soll. **Die Zeile steht deshalb hier, fertig für das nächste Architektenpaket:**
+
+| Nr | Größe | Dimension | Modelleinheit | Quelle | Rolle | Verdacht |
+|---:|---|---|---|---|---|---|
+| 20 | Ausfuhrpreisindex der Welt, aus `NE.EXP.GNFS.CD` und `NE.EXP.GNFS.KD` | 1 | Zehntausendstel, 2015 = 10.000 | WDI | Umrechnung des Jahrgangs nach T53, **kein Soll** | nein |
+
+Sie ändert die Sätze unter der Tabelle **nicht**: Die 31 Sollreihen bleiben die Zeilen 1, 2, 8,
+9, 10 und 11, der Handelsblock bleibt ein eigener Block, und die vier Größen ohne Datenanker
+bleiben die Zeilen 17, 18, 19 und die Finanzmarktregulierung. Reihe 20 ist eine
+Umrechnungsgröße, keine geprüfte.
+
+**Drei Meldungen, weil sie ausserhalb meines Verzeichnisses liegen.**
+
+1. **An den Projektmanager, zu Paket 0002 (`kern::werte`, Fondsbewertung):** Sein
+   Entblockungssatz verlangte *„eine Entscheidung des Architekten zur Klasse-2-Frage,
+   schriftlich in `technik.md` oder in einem ADR"*. Sie steht in T53. **T47, T48 und T50 sind
+   unberührt** — Umfang und Abnahme von 0002 brauchen keine Änderung, es kann unverändert
+   zurück auf `offen`. Über 0002 hängt 0010 (Zustandsausgabe) mit daran.
+2. **An den Projektmanager, zwei neue Pakete:** die Reihenliste-Zeile 20 oben (Architekt,
+   zusammen mit `rueckstand.md` Punkt 6 und 7, weil dieselbe Tabelle) und der Übertrag nach
+   `daten/reihen.toml` (Datenbauer): Reihe 14 bekommt den Deflatorschritt und verliert den
+   Eintrag im Feld `offen`, der den Widerspruch führt; Reihe 16 bekommt die Antwort, dass
+   `H` und `N` nach T53 dieselbe Preisbasis tragen; Reihe 20 kommt neu hinzu. Reihe 3 bleibt
+   `art = "ungemessen"`.
+3. **An den Datenbauer und über ihn an den Betreiber:** Einheit und Basisjahr des
+   PWT-Kapitalstocks sind weiter ungemessen, und die Sperre ist die Werkzeugkette — vier
+   PDF-Abrufe aus drei Verzeichnissen kamen unlesbar an. Es kostet **einen** lesbaren Auszug
+   aus Dataverse 554025 oder 554105. Die Folge ist in T53 nach Größe geordnet: Die Einheit ist
+   der schwere Teil (Faktor 1 gegen 1.000), das Basisjahr der leichte, und beide treffen keine
+   Sollreihe.
+
+**Was dieses Paket ausdrücklich nicht entschieden hat.** Die Höhe des Schadens in Gegenkraft 5
+gehört `spiel.md` und dem Paket 0021. Ob Reihe 1 auf PWT wechselt, ist in `daten/reihen.toml`
+als `quellenwahl = "offen"` geführt und bleibt es; wechselt sie, wandert mit ihr das gemessene
+Basisjahr, und T53 ist die Stelle, an der das nachzuziehen wäre. Und die Restgrösse des
+gewählten Wegs — der Abstand zwischen dem Weltausfuhrindex und den wahren bilateralen
+Deflatoren der 40 Ströme — ist ungemessen und steht in T53 als solche.
