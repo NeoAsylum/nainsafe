@@ -58,6 +58,14 @@ Architekt neu rechnen muss*, weil die Nachziehtabelle des ersten Laufs sieben St
 vollständige Laufzeitbudget in dessen Abschnitt 10. Keine Zahl dieser Datei ändert sich
 dadurch, keine Zustandsadresse, und `technik.md` ist weiterhin nicht angefasst.*
 
+*Geändert am **2026-09-04** aus Arbeitspaket `0055-zollzeile-vergleichszahl-zustand-b`, nach
+Befund 1 der Prüfung vom 2026-09-03. Betroffen ist **ein** Absatz: die Vergleichszahl im
+Abschnitt **Zwei Zustände, zwei Zahlen**, die eine Größe eines fremden Zustands unter der
+Beschriftung „Zustand B" führte. Sie ist durch die Zahl ersetzt, die aus der Tabelle darüber
+folgt (**8.472.000**), die Tabelle bekommt die eine Eingabezeile dazu, die dafür fehlte, und
+die Abarbeitung steht am Ende der Datei. Keine Entscheidung, keine Zustandsadresse, keine
+Kalibrierzahl und keine der Zahlen von Zustand A ändern sich.*
+
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
 Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
@@ -1068,6 +1076,7 @@ unterscheiden sich in **genau einer** Größe, dem Zollstand.
 | `durchgriff(DE,1)` / `(DE,2)` (Jahrgang) | 7.288 / 5.464 | dieselben |
 | `lies_neu(welt.preis.1)` / `(welt.preis.2)` | 11.000 / 10.400 | dieselben |
 | `…instrument.zoll.stand`, `lies_alt` → `lies_neu` | 380 → 430 bp | 380 → 380 bp |
+| `lies_alt(…sektor.1.preis)` / `(…sektor.2.preis)` — nur die Vorfassung liest ihn | 10.000 / 10.000 | dieselben |
 | `hub(DE, zoll)` | 50 | **0** |
 | `keilhub(DE,1)` / `(DE,2)` | 55 / 52 | 0 / 0 |
 | `preishub_zoll(DE,1)` / `(DE,2)` | 40 / 28 | 0 / 0 |
@@ -1079,12 +1088,35 @@ weg): `11.000 · 50 / 10.000 = 55` glatt; `7.288 · 55 / 10.000 = 40,084 → 40`
 `5.464 · 52 / 10.000 = 28,4128 → 28`; `40.000.000 · 40 / 10.000 = 160.000`;
 `100.000.000 · 28 / 10.000 = 280.000`.
 
+**Die Zeile `lies_alt(…sektor.<s>.preis)` geht in keine Zahl der Spalten darunter ein.** Sie
+steht nur für den Vergleich am Ende dieses Abschnitts: Die geltende Zollzeile liest
+`land.<l>.sektor.<s>.preis` nicht mehr — das ist die Entscheidung —, die Vorfassung las ihn
+als ihre einzige Zustandseingabe. Ihr Wert ist der Startwert der Preisträgheitsregel oben,
+also Runde 1.
+
 **Zustand B ist die Abnahme, und er ist ohne jede Kenntnis der Keilform nachrechenbar.**
 Bewegt sich der Zollstand nicht, ist `hub` null, damit `keilhub` null, damit
 `preishub_zoll` null und damit `schaden(l, zoll)` **exakt null** — für jeden Weltpreis, jede
-Preisträgheit und jedes Handelsvolumen. Zum Vergleich die Zahl der Vorfassung für denselben
-Zustand B, mit den Zahlen des Befunds (Weltpreis 10.400 gegen Vorrundenpreis 10.000,
-Handelsvolumen 1,5·10^9): **32.850.000** statt null.
+Preisträgheit und jedes Handelsvolumen. Zum Vergleich dieselbe Zeile in der **Vorfassung**,
+auf denselben Zustand B angewandt und allein aus den Größen der Tabelle darüber gerechnet,
+mit `mal_geteilt` und der Rundungsregel aus T6:
+
+```
+wmz(DE,1)      = 11.000 · (10.000 + 380) / 10.000              = 11.418
+preishub(DE,1) = |11.418 − 10.000| · 7.288 / 10.000 = 1.033,4384 →  1.033
+Beitrag 1      = 40.000.000 · 1.033 / 10.000                   =  4.132.000
+wmz(DE,2)      = 10.400 · (10.000 + 380) / 10.000 = 10.795,2   → 10.795
+preishub(DE,2) = |10.795 − 10.000| · 5.464 / 10.000 =   434,388 →    434
+Beitrag 2      = 100.000.000 · 434 / 10.000                    =  4.340.000
+                                                     Summe     =  8.472.000
+```
+
+**8.472.000 statt null**, und das ist mehr als das **Neunzehnfache** dessen, was der
+absichtlich gesetzte Zollschritt in Zustand A erzeugt (440.000). Genau diese Größe fällt mit
+der Entscheidung weg, und sie fiel ohne Aktion an, in jeder Runde und für jedes Profil
+gleich. Die einzige Rundung, die man hier anders legen könnte, ist der Zwischenwert
+`10.795,2`; sie entscheidet nichts — ungerundet weitergerechnet ergibt
+`795,2 · 5.464 / 10.000 = 434,49728 → 434`, dieselbe Zahl.
 
 **Damit gilt für alle vier Zeilen derselbe Satz**, und das ist die eigentliche Wirkung
 dieser Entscheidung: *Der Schaden eines Instruments ist genau dann von null verschieden,
@@ -2188,6 +2220,49 @@ Neu hinzugekommen und ohne Vorbild in Fassung 2: das **Vorratsverfahren** (Profi
 Aktionen), die **HS92-Konkordanz** und die Tabelle **Größen ohne Datenanker**. Alle drei
 sind Entwurf, nicht Architektur — sie brauchen von dir nur eine Aufnahme, keine
 Entscheidung.
+
+## Befundabarbeitung — Prüfung 0039 vom 2026-09-03, Paket 0055
+
+Ein Befund, `Schwere: gering`, ausdrücklich kein Rücklaufgrund; das Urteil der Prüfung war
+`geprueft` und bleibt es. Diese Abarbeitung hebt kein bestandenes Kriterium an.
+
+**Befund 1 — die Vergleichszahl 32.850.000 gehört nicht zu Zustand B: behoben, auf dem Weg,
+der die Tabelle stärkt statt sie zu entlasten.** Der Widerspruch ist bestätigt, und ich habe
+ihn an beiden Stellen einzeln nachgemessen statt ihn zu übernehmen: Die Vergleichszahl war
+mit einem Handelsvolumen von 1,5·10^9 gebildet, die Tabelle im selben Abschnitt gibt Zustand B
+zusammen 1,4·10^8. Die Zahl selbst ist richtig, nur für einen anderen Zustand.
+
+**Warum Weg A und nicht Weg B.** Der Prüfer bot beides an: die richtige Zahl einsetzen, oder
+die falsche stehen lassen und ihren Zustand danebenschreiben. Drei Gründe für Weg A, und der
+erste allein genügt:
+
+1. **Der Vergleich soll die Entscheidung messen, nicht illustrieren.** Was der Sockel kostet,
+   zeigt nur ein Vergleich, in dem alte und neue Vorschrift **dieselben** Eingaben sehen. Mit
+   der Zahl eines fremden Zustands vergleicht man zwei Regeln auf zwei Welten; das ist keine
+   Größenordnung, sondern eine Anekdote.
+2. **Die Tabelle ist als Regressionsfall gebaut**, und ein Regressionsfall mit einer Zahl aus
+   einem anderen Zustand daneben ist genau die Falle, gegen die dieses Paket geschrieben ist —
+   Weg B beschriftet sie nur um, statt sie zu räumen.
+3. **Die 32.850.000 geht nirgends verloren.** Sie steht mit ihrem eigenen Zustand im Beispiel
+   der Ursachenkette unter *Warum die Zollzeile nur den Keil misst* und ist dort richtig; eine
+   zweite, umbeschriftete Kopie hätte den Leser an der Stelle, an der er rechnen soll, zwischen
+   zwei Welten wechseln lassen.
+
+Weg A verlangt eine Eingabe, die die Tabelle nicht führte: den Sektorpreis der Vorrunde, den
+allein die Vorfassung liest. Er steht jetzt als eigene Zeile mit dem Startwert 10.000 aus der
+Preisträgheitsregel und ist als das gekennzeichnet, was er ist — die einzige Zeile der
+Tabelle, die in keine Zahl der Spalten darunter eingeht.
+
+**Nachgerechnet, nicht abgeschrieben.** Die 8.472.000 des Prüfers habe ich Schritt für
+Schritt selbst gebildet und bestätige sie; die Rechnung steht im Abschnitt, damit der nächste
+Leser sie nicht glauben muss. Der einzige Freiheitsgrad ist die Rundung des Zwischenwerts
+`10.795,2`, und beide Lesarten führen auf denselben Beitrag — das steht dort ebenfalls.
+
+**Was ich nicht getan habe.** Keine der sieben Größen von Zustand A angefasst, die Null für
+Zustand B ist die Null geblieben, die Entscheidung für Weg 1 und ihre Maß-2-Begründung sind
+unberührt, die Zahl der Lesezugriffe kommt an keiner neuen Stelle vor, und die zweite
+Fundstelle von 32.850.000 in der Ursachenkette ist unverändert. `technik.md`,
+`daten/adressen.md` und die Kalibrierzahlen sind nicht angefasst.
 
 ## Befundabarbeitung — Prüfung 0021 vom 2026-09-02, Paket 0039
 
