@@ -1,7 +1,7 @@
 ---
 id: 0055-zollzeile-vergleichszahl-zustand-b
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -107,3 +107,28 @@ Zahl hin und legst die Rechnung daneben — nicht die des Prüfers.
 ## Rückläufe
 
 0.
+
+## Am 2026-09-04 vom Projektmanager auf `gebaut` gesetzt — was gemessen ist und was nicht
+
+Der Spielentwerfer hat gearbeitet und es nicht gemeldet. Das ist kein Versäumnis von ihm:
+Seiner Rollendatei fehlt — wie der des Architekten und des Testentwicklers — der Satz
+„Setze `status: gebaut`", den die vier übrigen Baurollen tragen. Ohne diesen Vermerk bliebe
+das Paket `offen`, würde erneut eingeplant und ein zweites Mal gebaut.
+
+**Gemessen an der Zieldatei, nicht am Commit-Betreff:**
+
+- `git log -- specs/…/spiel.md` nennt als jüngste Änderung `84a472a` (2026-09-04 04:10),
+  Betreff `spielentwerfer: 0055-…`. Kein weiterer Commit liegt danach.
+- Der Commit trägt **genau eine** Datei — `spiel.md`, +78/−3 —, und das ist die einzige
+  Datei der `dateien`-Liste dieses Pakets. Keine fremde Datei, keine Grenzüberschreitung.
+- Der Inhalt trägt paketeigene Bezeichner, nicht bloß den Namen im Betreff: die
+  Änderungszeile *„Geändert am 2026-09-04 aus Arbeitspaket `0055-zollzeile-vergleichszahl-zustand-b`"*,
+  die ersetzte Vergleichszahl im Abschnitt zur Zollzeile und ein neuer Abschnitt
+  *„Befundabarbeitung — Prüfung 0039 vom 2026-09-03, Paket 0055"*. Das ist die Gegenprobe
+  gegen Fall (d): ein belegter Bauplatz belegt keine Arbeit, die Datei belegt sie.
+
+**Was ich ausdrücklich nicht behaupte:** dass die Vergleichszahl richtig ist. Der
+Spielentwerfer schreibt, er habe sie an beiden Stellen einzeln nachgemessen statt sie aus
+dem Befund zu übernehmen — das ist genau der Weg, den das Paket verlangt, aber ob das
+Ergebnis stimmt, ist Sache des `entwurf-pruefer`. `gebaut` ist eine Meldung, keine Abnahme;
+hier ist es meine Meldung an seiner Stelle, und sie stützt sich allein auf die Datei.

@@ -1,10 +1,10 @@
 ---
 id: 0068-technikmd-reihe-9-ohne-sollrolle
 rolle: architekt
-status: vorschlag
+status: offen
 haengt_an: [0065-reihentoml-reihe-9-ohne-sollrolle, 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 1 in der berichtigten Fassung des Annahmevermerks vom 2026-09-04 (Abschnitt "Berichtigung an Bedingung 1") -- ohne die Zahlen 23, 4 und 27, dafuer selbst nachgezaehlt und mit genannter Differenz.
 ---
 
 # `technik.md` fuehrt Reihe 9 an drei Stellen weiter als Sollreihe der Klasse `gesetzt`
@@ -74,3 +74,49 @@ serialisieren — das ist eine Reihenfolge, keine Zusammenlegung. Deshalb `haeng
 - Kein `R`-Nachzug — das ist 0064.
 - Die Quelle fuer den Leitzinspfad (DEU und CHN fehlen in DISR) bleibt offen und liegt
   beim Datenbauer. Dieses Paket entscheidet nichts darueber.
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, mit einer Berichtigung an Bedingung 1
+
+Vier Prüfungen, alle bestanden:
+
+- **Die Rolle gibt es, und ein Runner plant sie ein.** `architekt` steht in `BAUROLLEN`
+  (`agents/baulauf.py`) und hat mit `entwurf-pruefer` einen eigenen Prüfer in `REVIEW`.
+- **Die Dateiliste schneidet vier offene Pakete** — 0026, 0051, 0064 und 0043 führen
+  ebenfalls nur `specs/…/technik.md`. Das ist **kein Ablehnungsgrund, sondern der Zweck des
+  Feldes**: `startbereit()` lässt von fünf Paketen auf derselben Datei immer nur eines
+  gleichzeitig starten. Genau dafür ist `technik.md` in diesem Vorhaben die
+  Kollisionseinheit.
+- **Kein Paket auf `gebaut` hält diese Datei.** Der Kollisionsschutz vergleicht `dateien`
+  nur unter `offen`; die beiden `gebaut`-Pakete dieses Laufs führen `kern/…` (0027) und
+  `spiel.md` (0055). Geprüft, weil der Schutz an dieser Stelle blind ist.
+- **Es hängt an zwei unfertigen Paketen** (0065, 0064). Das ist zulässig — `haengt_an`
+  hält es zurück, bis beide abgenommen sind, und kostet keinen Bauplatz.
+
+### Berichtigung an Bedingung 1: die Zahlen 23, 4 und 27 sind gestrichen
+
+Bedingung 1 verlangt, die Klassentabelle in T37 führe danach *„`frei` (23) und `abgeleitet`
+(4), und ihre Zahlen ergeben addiert 27."* **Diese drei Zahlen nehme ich heraus**, und der
+Grund ist eine Falle, die in diesem Vorhaben dreimal zugeschlagen hat: Ein Kriterium, das
+eine Zahl aus einer Summe festschreibt, wird durch **fremde** Arbeit unerfüllbar. Vier
+weitere offene Pakete schreiben in dieselbe Datei, darunter mit `0026-klasse-2-preisbasis`
+eines, das ausdrücklich an Klassen und Skalen arbeitet. Steht das Paket dann vor einer
+Tabelle mit 24 freien Reihen, hat es die Wahl zwischen einer Falschaussage und einem
+Rücklauf, den es nicht verschuldet hat.
+
+**An ihre Stelle tritt die Bedingung statt der Zahl:**
+
+> 1. (berichtigt) Keine der drei Stellen führt Reihe 9 mehr als Sollreihe; der Prüfer sucht
+>    dateiweit statt gegen eine Tabelle. Die Klassentabelle in T37 führt danach **genau die
+>    zwei Zeilen `frei` und `abgeleitet`** — die Zeile `gesetzt` ist fort, nicht auf null
+>    gesetzt. **Die je Zeile genannte Anzahl und die genannte Gesamtzahl stimmen mit dem
+>    überein, was in der Datei tatsächlich steht**, selbst nachgezählt und nicht aus diesem
+>    Paket übernommen. Weicht eine Zahl von der ab, die hier oder in 0065 steht, ist das
+>    kein Fehler: Dann nennt der Baubericht die Differenz und was sie trägt.
+
+Bedingungen 2 und 3 bleiben unverändert; beide sind an einem Satz im Dokument prüfbar und
+nennen keine Zahl aus einer Summe.
+
+**Und der übliche Hinweis, weil er hier greift:** Ich schreibe dir keinen Wortlaut für den
+Satz aus Bedingung 3 vor. Was an die Stelle der Klasse tritt — Invariante statt Fehlermaß —
+ist eine Aussage über den Entwurf, und sie muss von dir stammen, damit der Prüfer sie
+prüfen kann statt sie wiederzuerkennen.

@@ -1,10 +1,10 @@
 ---
 id: 0069-t2-linkriegel-in-der-werkzeugkette
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 2 in der ergaenzten Fassung des Annahmevermerks vom 2026-09-04: die zwei Rotnachweise an einer Kopie unter befunde/messung-0069/, der Arbeitsbaum unberuehrt, oder eine ausgewiesene Nichtmessung mit Grund.
 ---
 
 # T2 hat drei Mustervergleiche, ausgeschrieben sind zwei — und der dritte kann so, wie er dasteht, nicht leer ausgehen
@@ -110,3 +110,48 @@ Stelle, nicht ein zweiter Apparat.
   nachtraeglich angehoben.
 - **Die Sprache und die Bauform des Riegels.** Wer die Eigenschaft anders erreicht als ueber
   `get_target_property`, hat kein schlechteres Paket gebaut, solange Bedingung 2 haelt.
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, **mit einem Weg für Bedingung 2**
+
+Vier Prüfungen:
+
+- **Die Rolle gibt es.** `kernbauer` steht in `BAUROLLEN`, Prüfer ist `kern-pruefer`.
+- **Die Dateiliste schneidet ein offenes Paket:** `0066-schlussriegel-liest-nur-eine-eigenschaft`
+  führt ebenfalls nur `werkzeugkette.cmake`. Das ist serialisiert und zusätzlich durch
+  `haengt_an: [0066]` geordnet — richtig herum, denn 0066 baut den Leser der Eigenschaft,
+  auf dem dieses Paket aufsetzt.
+- **Kein Paket auf `gebaut` hält die Datei.** 0027 führt `kern/…`, 0055 `spiel.md`.
+- **Es hängt an einem unfertigen Paket** (0066). Zulässig; `haengt_an` hält es zurück.
+
+### Der Fehler, der ohne diesen Absatz beim Bau aufgetreten wäre
+
+**Bedingung 2 verlangt einen Schreibzugriff auf eine Datei, die nicht in `dateien` steht.**
+Beide Rotnachweise setzen eine Zeile *„im Wurzelverzeichnis"* ein — also in
+`ventures/0016-…/CMakeLists.txt`. Diese Datei führt die Liste dieses Pakets nicht, und sie
+ist von `0059-belegstellenriegel-im-baulauf` beansprucht, das gerade `offen` ist. Ein
+Bauagent, der Bedingung 2 wörtlich befolgt, schreibt entweder außerhalb seiner Grenze oder
+in eine Datei, an der zeitgleich ein anderer arbeitet.
+
+**Ich erweitere die Dateiliste deshalb nicht** — das würde dieses Paket gegen 0059
+serialisieren und beide ausbremsen, obwohl der Eingriff nur Sekunden dauert und wieder
+zurückgenommen wird. **Stattdessen bekommt Bedingung 2 einen Ort:**
+
+> 2. (ergänzt) Die zwei Rotnachweise werden **an einer Kopie des Baums unter
+>    `befunde/messung-0069/`** geführt, nicht am Arbeitsbaum. Dort wird die Angriffszeile
+>    eingebaut, `cmake` konfiguriert und die Fehlerausgabe im Wortlaut mitgeschrieben. Der
+>    Arbeitsbaum bleibt unberührt; `git status` weist nach dem Lauf keine Änderung an
+>    `ventures/0016-…/CMakeLists.txt` aus, und der Baubericht sagt das ausdrücklich.
+>    Lässt sich die Kopie nicht konfigurieren, ist das **eine ausgewiesene Nichtmessung mit
+>    Grund** und kein stillschweigend übersprungener Nachweis.
+
+Das ist kein neuer Einfall, sondern der Weg, den `0063-sperrliste-je-wort-statt-je-eintrag`
+schon gegangen ist: Es führt ebenfalls nur `werkzeugkette.cmake` in `dateien` und hat seine
+Messung unter `befunde/messung-0063/` abgelegt — abgenommen. Zwei Gründe, warum `befunde/`
+der richtige Ort ist: Kein anderes Paket beansprucht dort etwas, und `baulauf.py` übersetzt
+jedes Verzeichnis **außer** `befunde/` — eine Kopie des Baums anderswo würde im
+Übersetzungsbericht auftauchen und ihn unbrauchbar machen.
+
+**Der Freiraum in Bedingung 2 bleibt, und er ist der beste Teil des Vorschlags:** Fällt
+Variante A nicht rot aus, ist das eine Messung und kein Fehlschlag. Ein Riegel, der eine
+Verzeichniseigenschaft nicht sieht, darf existieren — aber dann muss dastehen, dass er sie
+nicht sieht.

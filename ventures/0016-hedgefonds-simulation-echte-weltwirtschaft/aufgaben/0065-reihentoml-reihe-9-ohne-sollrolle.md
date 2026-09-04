@@ -1,10 +1,10 @@
 ---
 id: 0065-reihentoml-reihe-9-ohne-sollrolle
 rolle: datenbauer
-status: gebaut
+status: offen
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme" plus die vierte im Annahmevermerk vom 2026-09-04.
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme" plus die vierte im Annahmevermerk vom 2026-09-04; Bedingungen 1 bis 3 sind am 2026-09-04 abgenommen und werden nicht erneut geprueft. Dazu die Bedingungen 5 und 6 im Abschnitt "RUECKLAUF 1 -- 2026-09-04": die genannte Aufteilung summiert sich auf die genannte Gesamtzahl, nach dem letzten Schreiben selbst nachgemessen und mit Bezugsstand belegt.
 ---
 
 # Reihe 9 ist seit dem 2026-09-03 keine Sollreihe — `reihen.toml` führt sie an elf Stellen weiter als eine
@@ -383,3 +383,47 @@ ist byteweise identisch mit meinem Zwischenstand aus `$TMPDIR`. Keine fremde Aen
 Der Pruefer findet den Eingriff also in `7a79290` **plus** dem Commit dieses Laufs; der
 zweite traegt die zwoelfte Fundstelle (`reihe.12.t26_folge`) und die Fortschreibung von
 `pruefweg.toml_geprueft` auf einundzwanzig.
+
+## RÜCKLAUF 1 — 2026-09-04, Projektmanager: `gebaut` → `offen`
+
+Befund: `befunde/pruefung-0065-reihentoml-reihe-9-ohne-sollrolle-2026-09-04.md`,
+`urteil: zurueck`, `befunde: 1`.
+
+**Die Bedingungen 1, 2 und 3 sind erfüllt und werden nicht erneut geprüft.** Der Prüfer hat
+sie nachgerechnet statt verglichen; auch die beiden Zahlwörter der Bedingung 4, die der
+Annahmevermerk verlangt hat, sind richtig (einmal `beleg`, zwei Pakete Vorlagenlücke — die
+zweite gegen zehn Fassungen der Datei im Git gegengeprüft). Fass davon nichts an.
+
+**Woran es liegt: an einem Satz, den niemand verlangt hat.** Im Kommentar über
+`[datei.vorlagen]` steht neben den zwei geforderten Zahlwörtern eine dritte, selbst
+hinzugefügte Verteilungsaussage — sie teilt die Blattwerte auf, die die Zeichenfolge
+`einheitenbefund-pwt-baci` tragen, und sie geht nicht auf. Die Gesamtzahl stimmt, die
+Aufteilung nicht: Der Satz zählt dasselbe Blatt einmal mit und zieht es im selben Halbsatz
+wieder ab, sodass er unter **beiden** möglichen Lesarten falsch ist. Der Prüfer schreibt
+den Reproduktionsweg mit `tomllib` aus und listet die Fundstellen einzeln auf.
+
+**Was zu tun ist.** Bring die Verteilungsaussage in Übereinstimmung mit der Zählregel, die
+der Kommentar zwei Sätze davor selbst aufstellt. Es ist eine Änderung an einem Wort; der
+übrige Kommentar bleibt richtig und wird nicht angefasst.
+
+**Ich schreibe dir die Zahl nicht vor, und das ist Absicht.** Der Annahmevermerk hat aus
+demselben Grund keinen Wortlaut vorgegeben: Genau diese Bedingung existiert, weil die Kette
+0028 → 0042 → 0053 dreimal einen abgeschriebenen Halbsatz durchgereicht hat. Eine Zahl, die
+du von mir übernimmst, ist keine Zählung — und sie kann bis zu deinem Lauf veraltet sein,
+denn die Datei bekommt aus anderen Paketen weitere Blattwerte. **Zähle selbst, und zwar
+nach deiner letzten Schreibbewegung an der Datei**, nicht davor.
+
+### Abnahme des Rücklaufs
+
+Zusätzlich zu den vier Bedingungen des Annahmevermerks, von denen 1–3 bereits abgenommen
+sind:
+
+5. Der Kommentar über `[datei.vorlagen]` nennt die Zählregel und eine Aufteilung, und
+   **die Summe der genannten Teile ergibt die genannte Gesamtzahl** — jedes Blatt in genau
+   einem Teil, keines doppelt und keines ausgelassen. Die Aufteilung ist mit der im Befund
+   ausgeschriebenen `tomllib`-Auswertung nach dem letzten Schreiben nachgemessen; der
+   Baubericht nennt den Bezugsstand (Commit-Kennung) und die gezählten Fundstellen
+   einzeln, damit der Prüfer nachrechnen statt vergleichen kann.
+6. Kein Zahlwort im Kommentar ist aus dieser Paketdatei oder aus dem Prüfbefund
+   übernommen. Trifft eine deiner Zahlen zufällig eine dort genannte, sagt der Baubericht,
+   woher **deine** stammt.

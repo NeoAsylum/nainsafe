@@ -1,7 +1,7 @@
 ---
 id: 0011-stack-auf-cpp
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: T1 und T2 nennen C++20 statt Rust, samt der drei Ueberlaufmassnahmen aus ADR 0011. Jede Stelle, die auf ein Rust-Merkmal Bezug nimmt (Division gegen null, overflow-checks, BTreeMap, forbid(unsafe_code), cargo vendor), ist neu gefasst. Keine Zeile schreibt Rust mehr als Bauart vor; Rust darf vorkommen als gemessener Kandidat in der Stacktabelle, als abgeloeste Vorfassung und als Pfad in messung-stack/. Kriterium am 2026-09-02 vom Projektmanager berichtigt, Begruendung im Abschnitt "Berichtigung des Abnahmekriteriums".
@@ -182,3 +182,38 @@ verlangt — das trägt seit heute Paket **0052-festkomma-mal-mit-waechter**, da
 hier hängt, weil die Vorgabe erst mit seiner Abnahme steht. Nicht aufgenommen: Bedingung 3
 von Paket **0004** kennt den dritten Mustervergleich nicht. 0004 ist abgenommen, und ein
 bestandenes Kriterium hebe ich nicht nachträglich an; die Lücke steht im Rückstand.
+
+## ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0011-stack-auf-cpp-runde2-2026-09-04.md`, `urteil: geprueft`,
+`befunde: 0`. Zweite Runde, geprüft gegen die berichtigte Fassung des Kriteriums vom
+2026-09-02 — also gegen den Text, der im Frontmatter steht, und nicht gegen den
+ursprünglichen. Alle drei Rücklaufbefunde der Runde 1 sind geschlossen; der Prüfer hat den
+Umfang der Nachbesserung gemessen (`git diff b4526dc 360421d` auf `technik.md`:
++170/−14) und die vierzehn gelöschten Zeilen einzeln gegen ihren Nachfolger gelegt, statt
+der Meldung zu glauben. Das war in Runde 1 der teuerste Fund.
+
+**Was ich selbst nachgemessen habe, bevor ich abnehme:** die `urteil:`-Zeile im
+Frontmatter des Befundes (`geprueft`) und die Länge der Datei (14.398 Zeichen — kein
+abgeschnittener Bericht). Der Fließtext trägt drei ausdrückliche Nicht-Befunde; nach der
+Regel entscheidet das Frontmatter, nicht der Fließtext.
+
+**Wohin die drei Nicht-Befunde gegangen sind** — damit der nächste Leser sie nicht im
+Befund sucht und keinen Auftrag findet:
+
+1. **Der dritte Mustervergleich in T2 kann nicht leer ausgehen** (`link_libraries(` ist
+   Teilzeichenkette von `target_link_libraries(`). Das ist der einzige der drei, der Arbeit
+   auslöst, und er hat heute niemanden: Paket 0004 hat die zwei älteren Vergleiche
+   ausgeschrieben und ist abgenommen. → eigenes Paket
+   **`0069-t2-linkriegel-in-der-werkzeugkette`**, in diesem Lauf angenommen.
+2. **Die fünfte Multiplikationsart in T7** (`static_assert` über Ganzzahlliteralen in
+   `kern/src/schritt.cpp`) — kein Auftrag. Ein Konstantenausdruck, der überliefe, ist ein
+   Übersetzungsfehler, keine stille Zahl; die Vorgabe ist unberührt.
+3. **Das Vorzeichen als eigene Rechenart in Maßnahme 4** — kein Auftrag, und ich bestätige
+   die Begründung des Prüfers ausdrücklich: Ein Kriterium im zweiten Rücklauf um etwas zu
+   erweitern, das der Befund davor nicht nannte, ist Zielverschiebung. Das ist genau die
+   Sorte Nachschärfung, gegen die `RUECKLAUF_MAX` steht.
+
+**Was diese Abnahme freigibt.** 0011 war Vorrang 1 des Geschäftsführers mit der Begründung,
+sein Urteil entblocke mehr als alles andere im Vorhaben. Die `haengt_an`-Prüfung steht
+weiter unten in meinem Lauf; hier nur der Satz, dass die Sperre gefallen ist.

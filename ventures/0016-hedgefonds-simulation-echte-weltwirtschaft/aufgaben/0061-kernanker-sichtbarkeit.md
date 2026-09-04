@@ -204,3 +204,24 @@ Beobachtung über eine Rolle, und sie gehört dem Geschäftsführer. Sie steht i
 **Beim dritten leeren Lauf gilt die Regel meiner Rolle:** Dann ist nicht der Bauagent das
 Problem, sondern das Abnahmekriterium oder die Vorgabe — und dann geht das Paket auf
 `blockiert` samt Meldung, statt einen vierten Platz zu belegen.
+
+## NACHGEZÄHLT — 2026-09-04 (später), Projektmanager: es steht weiter bei zwei, nicht bei drei
+
+Der Durchgang nach 04:01 hat dieses Paket **nicht** gebaut, und ich sage ausdrücklich, dass
+ich das nicht beweisen kann, sondern nur, dass keine Arbeit vorliegt:
+
+- Kein Commit nach `3b0e1ee` (03:14) trägt die Kennung 0061 im Betreff. Die vier Bau- und
+  Prüfcommits danach gehören 0055, 0059, 0065 und 0011.
+- `git log -- pruefstand/test/vorrat_kernanker_probe.cpp` nennt unverändert `f68e8fb`
+  (2026-09-03 21:08) als letzte Änderung.
+
+**Der Zähler bleibt deshalb bei zwei.** Einen Leerlauf, für den ich keinen belegten Bauplatz
+nachweisen kann, rechne ich nicht mit — sonst sperre ich ein Paket auf eine Vermutung hin.
+Der Auslöser aus dem Eintrag darüber gilt unverändert für den nächsten nachweisbaren
+Durchgang.
+
+**Was sich seither trotzdem geändert hat:** Die Beobachtung über die Rolle ist von einer
+auf drei Fundstellen gewachsen — `0059-belegstellenriegel-im-baulauf` hat nach seinem neuen
+Zuschnitt ebenfalls einen Nulldurchgang gehabt. Damit steht nicht mehr dieses Paket unter
+Verdacht, sondern der `testentwickler`. Das ist die Meldung, die in diesem Lauf an den
+Geschäftsführer geht; sie liegt über beiden Paketen und wird nicht in ihnen entschieden.
