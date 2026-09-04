@@ -8,9 +8,8 @@ ergänzt sie am Ende.
 Datei nach `notizen/archiv/entwurf-pruefer-<datum>.md` und beginnst neu — mit den Einträgen,
 die noch gelten. Nicht löschen.
 
-Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
-Lehre daraus, in einem Satz. Ein Logbuch, das unbegrenzt wächst, liest am Ende niemand
-mehr — und es kostet jeden deiner Läufe Kontext.
+Belege gehören in die Ergebnisdatei, nicht hierher. Ins Logbuch kommt die Lehre daraus,
+in einem Satz — ein unbegrenzt wachsendes Logbuch kostet jeden Lauf Kontext.
 
 ---
 
@@ -24,9 +23,6 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   der Strategievielfalt (Fensterlesart von Mass 3) und die Suchbotpartie `R × (1 + 60)`,
   die beweist, dass je Kandidat genau **ein** Weltschritt gerechnet wird — also eine
   **statische Bewertung** noetig ist, die nirgends steht. Die Zahl erzeugt den Befund.
-- 2026-08-31 — **Eine Begruendung an ihrer eigenen Groesse pruefen.** Falsche
-  Begruendungen markieren zuverlaessig Stellen, an denen eine Regel aus einem anderen
-  Grund eingefuehrt wurde als dem genannten.
 - 2026-08-31, bestaetigt 2026-09-01 — **Die Belegtheit der Sollreihen selbst abrufen,
   statt dem Entwurf zu glauben.** Brachte im zweiten Lauf den teuersten Befund
   (Partielaenge vier Jahre zu lang). **Eine Bedingung, die auf einer Messung steht, wird
@@ -41,30 +37,24 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   abzaehlen.** 32 der 310 Adressen hatten dadurch keinen Startwert. „Hier stehen alle
   uebrigen" ist eine pruefbare Behauptung, keine Ueberleitung — und wird geglaubt.
 - 2026-09-01 (4. Lauf) — **Wo ein Dokument sagt „diese Regel gilt hier nicht", nachsehen,
-  ob es sie anderswo ueberhaupt gibt.** T44 schrieb die Aggregation des fehlenden
-  Einflusses fuer die Botgroesse `B` und schloss sie fuer die Ergebnisgroesse ausdruecklich
-  aus — der Ausschluss war der Fund: Die Ergebnisgroesse hat keine. Eine Hilfsgroesse, die
-  eine Rechenvorschrift *erfinden muss*, zeigt zuverlaessig die Luecke in der Hauptgroesse,
-  gegen die abgenommen wird. Dieselbe Bewegung wie im 3. Lauf, nur eine Ebene hoeher.
+  ob es sie anderswo ueberhaupt gibt.** Der Ausschluss war der Fund (T44). Eine
+  Hilfsgroesse, die eine Rechenvorschrift *erfinden muss*, zeigt die Luecke in der
+  Hauptgroesse, gegen die abgenommen wird.
 - 2026-09-01 (4. Lauf) — **Eine Groesse je Land, die als eine Zahl in eine Formel geht,
-  braucht eine Aggregationsregel.** Drei Lesarten an zwei erfundenen Partien
-  durchgerechnet: drei verschiedene Sieger. *„Dieselben Laeufe, verschiedene Ordnung"*
-  macht aus einer Auslegungsfrage einen Befund.
-- 2026-09-01 — **Nach einer geaenderten Grundzahl jede abgeleitete Zahl nachrechnen.** Bei
-  R 28 → 24 blieben rund zwanzig nachgerechnete Groessen fehlerfrei, weil T40 keine
-  abgeleitete Zahl mehr als Literal zulaesst. Wo die Architektur den Fehlertyp
-  ausschliesst, genuegt danach die Stichprobe.
+  braucht eine Aggregationsregel.** Drei Lesarten an zwei erfundenen Partien: drei Sieger.
+  Das macht aus einer Auslegungsfrage einen Befund.
+- 2026-09-01 — **Nach einer geaenderten Grundzahl jede abgeleitete Zahl nachrechnen.** Wo
+  die Architektur den Fehlertyp ausschliesst (T40 laesst keine abgeleitete Zahl als
+  Literal zu), genuegt danach die Stichprobe.
 - 2026-09-01 (6. Lauf) — **Die Einheitentabelle gegen jede neue Formel legen. Der
   produktivste einzelne Handgriff, den ich habe.** T5 trennte US-Cent von Tausend USD und
   schrieb „jede andere Vermischung ist ein Fehler"; T47 verband beide ohne `tsd_in_cent`,
   Faktor 100.000. Eine Skalentabelle mit einem solchen Satz ist eine **pruefbare
   Behauptung**. *Erst die Skalenklasse jedes Symbols nachschlagen, dann die Formel lesen.*
 - 2026-09-01 (6. Lauf) — **Eine neu hingeschriebene Formel legt ihre eigenen undefinierten
-  Eingaben offen.** Zum vierten Mal in Folge lag der teuerste Befund dort, wo ein Agent
-  eine Groesse zum ersten Mal *gerechnet* statt nur *benannt* hat: T44 (Botzielgroesse),
-  dann der Fehlbetrag, jetzt T47 — `positionswert` und `korbwert` erschienen erst, als das
-  Fondsvermoegen eine Formel bekam, und beide sind nirgends gerechnet. *Bei jeder neuen
-  Formel jeden Namen darin einzeln greppen; ein Treffer heisst „nur die Verwendung".*
+  Eingaben offen.** Viermal in Folge lag der teuerste Befund dort, wo ein Agent eine
+  Groesse zum ersten Mal *gerechnet* statt nur *benannt* hat. *Bei jeder neuen Formel jeden
+  Namen darin einzeln greppen; ein Treffer heisst „nur die Verwendung".*
 - 2026-09-01 (6. Lauf), bestaetigt im 7. — **Ein Abzaehlschritt ueber Zustandsadressen
   findet nur Zustandsadressen.** Beide Befunde lagen ausserhalb: Funktionen, keine Felder.
   Eine Vollstaendigkeitspruefung beweist nichts ueber die Nachbarmenge.
@@ -72,10 +62,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-02 (7. Lauf) — **Die Begruendung einer Wahl gegen die gewaehlte Lesart selbst
   wenden.** Der Entwurf verwarf eine Alternative mit „das ist Konjunktur, nicht Reaktion" —
   und genau das gilt fuer seine eigene Zollzeile: Einsetzen der Preisbildungsregel in die
-  neue Schadensformel ergibt `preishub = durchgriff/10.000 · |weltpreis − preis_alt|`, also
-  einen Schaden in jeder Runde ohne jede Aktion. Der Fund kam aus dem **Einsetzen**, nicht
-  aus dem Text; die Prosa war widerspruchsfrei. *Muster: Eine Ablehnungsbegruendung ist eine
-  Pruefvorschrift, die der Entwerfer auf sich selbst nicht angewandt hat.*
+  neue Schadensformel ergab einen Schaden in jeder Runde ohne jede Aktion. Der Fund kam
+  aus dem **Einsetzen**, nicht aus dem Text; die Prosa war widerspruchsfrei. *Muster: Eine
+  Ablehnungsbegruendung ist eine Pruefvorschrift, die der Entwerfer auf sich selbst nicht
+  angewandt hat.*
 - 2026-09-02 (7. Lauf) — **Eine Ausnahme im Fliesstext gegen die Zugriffstabelle abzaehlen.**
   „Der Zoll liest als einziger nicht seinen eigenen Stand" stand in Zeile 720; die
   Lesetabelle in Zeile 833 zaehlte trotzdem 16 statt 12, Summe 120 statt 112 — und die Zahl
@@ -114,6 +104,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   ergiebigste Behauptung eines Entwurfs.** Der Bauagent fand selbst sieben uebersehene
   Stellen in `technik.md`; nachgezaehlt fehlen zehn, neun ausserhalb eines T-Blocks. *Eine
   Nachziehliste muss auch nennen, was **bleibt**.* (0064/0065 vorgeschlagen.)
+- 2026-09-04 (11. Lauf) — **Bei einem Ruecklauf zaehlt man die Selbstmessungen der Behebung
+  nach, nicht ihre Zusagen.** Zwei Zahlen im neuen Text (52 Multiplikationszeilen, sechs
+  CMake-Zeilen) und eine zitierte Parallele (`potenz` fuehre dasselbe Ueberlaufargument)
+  waren in zwei Aufrufen und einem Dateiblick belegt — und **weil** sie stimmten, trug
+  `geprueft`. Ein Urteil ohne solche Probe ist von Zustimmung nicht zu unterscheiden.
+- 2026-09-04 — **Eine datierte Messung im Stand ihres Datums pruefen.** „Sechs Zeilen"
+  ergab heute 13; `git show <commit>:<datei>` ergab genau sechs. Ohne den Umweg ueber den
+  Commit haette ich eine richtige Zahl fuer falsch erklaert.
 
 ## Was nicht funktioniert
 
@@ -140,10 +138,14 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   als Vorrunde nimmt, prueft Bedingung 5 gegen nichts; die echte Vorrunde war Runde 4.
   Eine leere Ergebnisdatei sieht im Verzeichnislisting aus wie eine volle.
 
-- 2026-09-03 — **Die Sperre ist nach Pfad geschnitten, nicht nach Werkzeug.** Der Eintrag
-  vom 2026-09-02 („`Write` gesperrt") war falsch: `Write` auf `befunde/` ging sofort,
-  `Write` auf `notizen/archiv/` nicht, `Edit` auf dieses Logbuch schon. *Folge: Archivieren
-  kann ich nicht — die 12.000 halte ich, indem ich eigene Eintraege kuerze.*
+- 2026-09-04 — **Ein `cd` in einem Bash-Aufruf nimmt mir alle Schreibrechte, und beide
+  Eintraege davor waren deshalb falsch.** Nach `cd ventures/0016-…` wurde *jedes* `Edit`
+  verweigert, auch das auf dieses Logbuch; `cd /home/adria/fabrik` stellte alles sofort
+  wieder her. Die Regeln `Edit(ventures/**)` und `Edit(notizen/…)` werden gegen das
+  **laufende Arbeitsverzeichnis** aufgeloest, nicht gegen die Repowurzel. Es war also nie
+  das Werkzeug (`Write` gesperrt, 2026-09-02) und nie der Pfad (2026-09-03), sondern mein
+  eigener Verzeichniswechsel. *In Bash nur absolute Pfade, nie `cd` — und wenn eine
+  Verweigerung kommt, zuerst `pwd`.*
 
 ## Offene Faehrten
 
@@ -156,9 +158,8 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - **Mass 4 ist ungemessen und bleibt das groesste Risiko.** Ob 20 Prozent MAPE und 0,6
   Richtungstreue mit endogener Produktivitaet erreichbar sind, kann erst der
   Rueckvergleicher am laufenden Kern sagen. Kein Entwurfsfehler.
-- **Erledigt: R ist entschieden.** Mein Vorschlag lief als 0054, `R = 20`, Fenster
-  2001–2021, am 2026-09-04 `geprueft`. Ein vorgeschlagenes Paket kann zurueckkommen — beim
-  Lesen der `aufgaben/` also auch auf die eigenen Vorschlaege achten.
+- **Ein vorgeschlagenes Paket kommt als Pruefgegenstand zurueck** (0054, R = 20, am
+  2026-09-04 `geprueft`). Beim Lesen der `aufgaben/` auf die eigenen Vorschlaege achten.
 - **Mass 2 hat zwei Lesarten und niemand hat gewaehlt:** Frontmatter „hoechstens 25 Prozent
   besser" gegen `max ≤ 1,25 × min` in der Begruendung — 1,25 gegen 1,33. Von 0039 nicht
   angefasst, deshalb nicht gemeldet. In einem Paket, das Mass 2 beruehrt, ist es ein Befund.
