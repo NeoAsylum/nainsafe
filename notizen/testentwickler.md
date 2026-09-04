@@ -54,7 +54,19 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-03 — Wo ein Aufräumpaket eine Zeilennummer nennt, ist sie beim Abarbeiten
   meist schon wieder falsch: 0050 nannte 1318 f. und 1290, richtig waren 1464 und 1433.
   Also die Nummer aus dem Paket nie übernehmen, sondern die Stelle selbst suchen — und
-  wenn die Abnahme es zulässt, durch etwas ersetzen, das nicht wandert.
+  wenn die Abnahme es zulässt, durch etwas ersetzen, das nicht wandert. — **Zum dritten
+  Mal bestätigt 2026-09-04** (0044: Paket nannte 336/237/282, richtig 353/254/299). Die
+  Zahl im Paket ist inzwischen ein zuverlässiges Warnzeichen, kein Hinweis.
+- 2026-09-04 — Beim Aufräumen von Belegstellen ist der Riegel selbst das Messgerät,
+  statt zu behaupten, man habe alle erwischt: je Datei messen, und den Rotnachweis über
+  eine eingefügte und sofort wieder entfernte Belegstelle in der **eigenen** Datei
+  führen (0→1→0). Zwei Aufrufe, kein fremdes Gebiet, und er misst mit, dass das Grün
+  gemessen und nicht zufällig ist.
+- 2026-09-04 — Die Fangbedingung eines Musterriegels **nachlesen**, bevor man den
+  Ersatztext schreibt. `ZIFFERN_MINDESTENS = 2` heißt: Ein wörtliches
+  Überschriftenzitat darf das Wort „Zeilen" enthalten, solange keine zwei Ziffern
+  folgen. Wer das rät statt nachzuschlagen, umschreibt die Überschrift vorsorglich —
+  und macht das Zitat damit für die Prüfung wertlos, die es einmal prüfen soll.
 - 2026-09-03 — Ein Verweis, der zweimal im Quelltext steht (Kommentar und
   Laufzeitausgabe), veraltet getrennt. Eine `constexpr`-Zeichenkette, die beide speisen,
   kostet nichts und macht aus zwei Nachführungen eine.
@@ -104,11 +116,6 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   angelegt werden: `cmake -S/-B` über den vorhandenen Stand hinweg konfiguriert sauber neu,
   auch wenn der alte Cache aus einer Platzhalterfassung stammt.
 
-- 2026-09-02 — Paket 0019 ist grün, und zwar nachgemessen auf **beiden** Bauwegen:
-  `pruefstand/bau` allein (1/1 `vorrat_probe … Passed`) und über den Arbeitsbereich
-  (7/7, `vorrat_probe` als siebter). Beide Anker rechnen von Hand nach: 56 Profile mit
-  `a1=0` (C(8,3)), +15 für `a2=0`, +4 für `a3=0`, +1 für `a4=0` ⇒ `(1,1,1,1,1)` bei 76.
-
 ## Offene Faehrten
 
 <!-- Etwas, das du bemerkt hast, aber diesmal nicht verfolgen konntest. Der naechste
@@ -143,6 +150,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   das Muster als Literal im eigenen Quelltext steht. `"Zeil\145"` statt `"Zeile"` löst
   das an einer Stelle; im Kopfkommentar hilft nur, das Muster zu *beschreiben* statt es
   abzuschreiben. Vorher überlegen, sonst ist der erste rote Lauf der eigene.
+- 2026-09-04 — Paket 0067 (Abschnittszitate prüfen) steht noch aus; bis dahin prüft
+  niemand nach, ob eine zitierte Überschrift existiert. Ich habe in 0044 eine wörtlich
+  aus der Zieldatei geholt, damit sie standhält, wenn 0067 kommt — aus dem Gedächtnis
+  zitierte Überschriften werden dann reihenweise rot.
 - 2026-09-03 — **Eine Invariante fängt Nullfälle prinzipiell nicht.** Nachgemessen an
   T43: Macht man `ai = 0` zum harten Verbot, bleibt die Invariante für alle 126 Profile
   und beide `k` grün — die Art soll `3k·0 = 0` Steckplätze bekommen und bekommt genau

@@ -420,9 +420,16 @@ struct Grenzen {
 /// tragen dort `# PLATZHALTER`; sie werden kalibriert und nicht entworfen, deshalb
 /// steht die Zahl hier als Argument und nicht in der Pruefung.
 ///
-///   parameter.toml Zeile 304: `druck_max  = 1   # PLATZHALTER`   (T5 Klasse 9)
-///   parameter.toml Zeile 205: `stufen_max = 1   # PLATZHALTER`   (T5 Klasse 11, T16)
-///   parameter.toml Zeile 250: `aufschlag  = 51  # PLATZHALTER`   (T5 Klasse 3, T51)
+/// Wiederzufinden sind sie ueber den **Schluesselnamen**, nicht ueber eine Nummer:
+/// Jeder Schluessel der Datei steht genau einmal am Zeilenanfang, `grep -n
+/// '^druck_max' parameter.toml` findet ihn ohne zu zaehlen. Alle drei stehen unter
+/// der Ueberschrift `# GRUPPE A -- die elf Zeilen der Tabelle in T27`. Eine Nummer
+/// stand hier bis zum 2026-09-04 und war dreimal falsch, ohne dass jemand etwas
+/// getan haette (Paket 0044).
+///
+///   parameter.toml, Schluessel `druck_max`:  `druck_max  = 1   # PLATZHALTER`   (T5 Klasse 9)
+///   parameter.toml, Schluessel `stufen_max`: `stufen_max = 1   # PLATZHALTER`   (T5 Klasse 11, T16)
+///   parameter.toml, Schluessel `aufschlag`:  `aufschlag  = 51  # PLATZHALTER`   (T5 Klasse 3, T51)
 inline constexpr Grenzen GRENZEN_BAUZEITPUNKT{1, 1, 51};
 
 // ---------------------------------------------------------------------------
@@ -787,11 +794,11 @@ int main()
     grenzen = &g;
 
     std::fprintf(stdout, "Grenzen aus parameter.toml (Argumente, kein Dateizugriff, T2):\n");
-    std::fprintf(stdout, "  Zeile 304  druck_max  = %lld  # PLATZHALTER\n",
+    std::fprintf(stdout, "  druck_max  = %lld  # PLATZHALTER\n",
                  static_cast<long long>(g.druck_max));
-    std::fprintf(stdout, "  Zeile 205  stufen_max = %lld  # PLATZHALTER\n",
+    std::fprintf(stdout, "  stufen_max = %lld  # PLATZHALTER\n",
                  static_cast<long long>(g.stufen_max));
-    std::fprintf(stdout, "  Zeile 250  aufschlag  = %lld  # PLATZHALTER\n\n",
+    std::fprintf(stdout, "  aufschlag  = %lld  # PLATZHALTER\n\n",
                  static_cast<long long>(g.aufschlag));
 
     // --- Abnahme 2: die Adresszahlen, aus dem Verzeichnis gezaehlt ---------------

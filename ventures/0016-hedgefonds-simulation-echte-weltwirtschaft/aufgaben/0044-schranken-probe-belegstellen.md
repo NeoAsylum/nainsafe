@@ -1,7 +1,7 @@
 ---
 id: 0044-schranken-probe-belegstellen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0035-parameterdatei-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -190,3 +190,61 @@ unerfüllbar. Miss je Datei, nach deiner letzten Schreibbewegung, und nenne den 
 **Der Test darf danach immer noch rot sein.** Ist er es, liegt es an der anderen Hälfte,
 nicht an dir. Bedingung 2 verlangt von dir `schranken_probe` als bestandenen Test — das ist
 der Test deiner Datei, nicht der Riegel.
+
+---
+
+## Gebaut — 2026-09-04, Testentwickler: `offen` → `gebaut`
+
+Sechs Belegstellen ersetzt, nichts sonst angefasst. **Keine Zahl aus diesem Paket
+eingetragen** — die Warnung des Nachtrags war berechtigt: Die im Befund genannten
+336/237/282 stimmten heute schon wieder nicht, die Schlüssel stehen inzwischen auf
+254 (`stufen_max`), 299 (`aufschlag`) und 353 (`druck_max`). Genau deshalb steht jetzt
+der Schlüsselname da und keine Nummer.
+
+**Kommentarblock (vormals Zeilen 423–425):** je Zeile `parameter.toml, Schluessel
+\`druck_max\`:` usw., das Zitat der Schlüsselzeile im Wortlaut und die T-Verweise
+unverändert. Dazu ein Absatz, der das Auffindeverfahren nennt (`grep -n '^druck_max'`)
+und die gemeinsame Überschrift **im Wortlaut aus der Zieldatei geholt**:
+`# GRUPPE A -- die elf Zeilen der Tabelle in T27`. Alle drei Schlüssel liegen darunter.
+Der Riegel schlägt darauf nicht an, weil sein Muster nach `Zeile`/`Zeilen` ein Leerzeichen
+und **mindestens zwei Ziffern** verlangt (`ZIFFERN_MINDESTENS = 2`); auf „Zeilen der"
+folgt keine.
+
+**Die drei `fprintf`-Zeilen:** nur `"Zeile NNN  "` aus dem gedruckten Text gestrichen,
+Formatzeichenkette sonst unverändert. Die Ausgabe bleibt bündig und vergleichbar:
+
+```
+Grenzen aus parameter.toml (Argumente, kein Dateizugriff, T2):
+  druck_max  = 1  # PLATZHALTER
+  stufen_max = 1  # PLATZHALTER
+  aufschlag  = 51  # PLATZHALTER
+```
+
+### Abnahme 1 — erfüllt
+
+`Zeile [0-9]` in `kern/test/schranken_probe.cpp`: **kein Treffer** (vorher sechs).
+`^druck_max\|^stufen_max\|^aufschlag` in `parameter.toml`: **genau drei** Treffer.
+
+### Abnahme 2 — erfüllt
+
+`GRENZEN_BAUZEITPUNKT{1, 1, 51}` unverändert (jetzt Zeile 433 derselben Datei, allein
+durch die sechs Zeilen, die der Erklärabsatz zugefügt hat). `schranken_probe` besteht auf
+**beiden** Bauwegen: `kern/bau` 8/8, Arbeitsbereich `bau` als Test 4 von 12 — dort
+`Passed`, mit allen Rot- und Grünproben aus Abnahme 3 der Datei unverändert.
+
+### Der Riegel, je Datei gemessen
+
+Stand nach meiner letzten Schreibbewegung am 2026-09-04, aus demselben Lauf:
+**`kern/test/schranken_probe.cpp`: null Befunde.** Der verbliebene Befund des Riegels
+liegt in `kern/include/kern/zustand.hpp` und gehört 0027; ich habe ihn nicht angefasst.
+Der Riegel bleibt deshalb rot, und `ctest` über den Arbeitsbereich meldet weiter
+11/12 — das ist die andere Hälfte, nicht meine.
+
+**Rotnachweis, dass dieses Grün gemessen und nicht zufällig ist:** eine Zeile
+`ROTNACHWEIS parameter.toml Zeile 353` in meinen eigenen Kommentar eingefügt → der Riegel
+nennt `kern/test/schranken_probe.cpp:430 -> parameter.toml`; dieselbe Zeile wieder heraus
+→ meine Datei ist wieder ohne Befund. 0 → 1 → 0, ohne fremdes Gebiet anzufassen.
+
+### Rückstand
+
+0.
