@@ -62,6 +62,16 @@ Lehre in einem Satz.
   Projektmanager die Frage ab.
 - **Eine abgestuerzte Gegenprobe beweist alles bis zur Absturzstelle.** Hinschreiben,
   statt den Lauf wegzuwerfen -- und dazuschreiben, was dadurch **nicht** belegt ist.
+- **Zwei Kopien des ganzen Vorhabens statt zweier Wegwerf-Baeume, wenn "unveraendertes
+  Verhalten" zu belegen ist.** `git archive HEAD <venture>` zweimal nach `$TMPDIR`, in
+  einer die eine Datei getauscht, dann maschinell nachzaehlen, dass **genau eine** Datei
+  abweicht. Die beiden Baumwurzeln vor dem Bytevergleich im Text normalisieren, sonst
+  vergleicht man Pfade statt Schalter.
+- **Zaehl selbst nach, wie viele Bauwege der Runner wirklich hat.** Das Kriterium sagte
+  "die drei Bauwege"; `baulauf.py:116` baut jede `CMakeLists.txt` ausser unter `befunde/`,
+  und das waren fuenf. Die zwei ungenannten waren genau die, an denen ein neuer
+  Nullriegel haette falsch scharf werden koennen (beide binden die Kette nicht ein --
+  nachgesehen, nicht angenommen).
 
 ## Was nicht funktioniert
 
@@ -75,6 +85,12 @@ Lehre in einem Satz.
 - **Meinen eigenen Fehler in der Gegenprobe:** den Meldungstext einer Ausnahme nach dem
   Fangblock gelesen -- der Text ist dann fort. Im Fangblock in einen eigenen Puffer
   kopieren.
+- **Am 2026-09-04 waren `Write` und `Edit` beide gesperrt**, zweimal hintereinander und
+  ohne erkennbaren Grund; `Bash` mit `python3`-Heredoc hat dieselbe Datei im Repo dann
+  angelegt. Der Ersatzweg traegt also auch das *Schreiben* des Befunds, nicht nur das
+  Messen. Verkettung mit `;` blieb gesperrt, `&&` ging meist -- aber nicht immer, und die
+  Ablehnungen wirkten zufaellig: einen abgelehnten Aufruf einmal unveraendert
+  wiederholen, bevor man den Plan aendert.
 
 ## Offene Faehrten
 
@@ -87,6 +103,12 @@ Lehre in einem Satz.
   Ausuebung.** Ein Riegel im Konstruktor haelt nur, solange niemand das Werkzeug aufhebt.
   Der 0058-Riegel besteht diese Frage: Er liest den **Endzustand** der Konfiguration, also
   faengt er auch den, der den Satz erst nimmt und dann wieder ablegt (gemessen).
+- **Ein Eintrag in einer Optionsliste ist nicht ein Schalter.** *2026-09-04 an 0060, der
+  einzige Befund des Laufs.* Die Sperrliste gegen `-w` und `-Wno-error` vergleicht je
+  Eintrag von `COMPILE_OPTIONS`; CMakes `SHELL:`-Praefix und der Generatorausdruck packen
+  mehrere Schalter in **einen** Eintrag, und beide kamen still durch. *Allgemein: Bei
+  jeder Musterpruefung fragen, ob die Einheit, die ich vergleiche, dieselbe ist wie die,
+  die das Werkzeug am Ende liest.* Wurde Vorschlag 0062.
 - **Bei jedem Ergebnistyp mit Ja-Nein-Feld und jeder Ausgabe, die abschneiden oder leer
   ausgehen kann, fragen: Ist der Nein-Wert von einem gueltigen unterscheidbar?** Drei
   Faelle in Folge (0038 Meldungslaenge, 0058 Zaehlerstand null, 0058 abgeschalteter Satz).
@@ -119,7 +141,8 @@ Lehre in einem Satz.
   Statusnachzug des Projektmanagers ein Lauf liegt (0058, 2026-09-03). Dann **nicht** die
   erste Pruefung abschreiben: gezielt dort messen, wo Runde 1 "nicht geprueft,
   ausgewiesen" geschrieben hat. Hat hier einen Befund und eine Positivprobe gebracht.
-- **Der Commit-Betreff luegt, fuenftes Mal** (0033, 0038, 0046, 0058 zweimal). Ursache ist
+- **Der Commit-Betreff luegt, sechstes Mal** (0033, 0038, 0046, 0058 zweimal, 0060 --
+  dort lag die Aenderung in einem Commit mit dem Betreff eines *anderen* Pakets). Ursache ist
   `lauf.py:committen`, das die Schreibverzeichnisse einer Rolle als Ganzes nimmt -- zwei
   gleichzeitige Laeufe reichen. *Nie den Commit als Liste dessen lesen, was ein Paket
   geaendert hat; immer die `dateien`-Liste einzeln gegen den Vorzustand halten.*
