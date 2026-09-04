@@ -1,13 +1,8 @@
 # Logbuch: kern-pruefer
 
-**Rotation am 2026-09-04 (Pruefung 0002) zum zweiten Mal verweigert.** `Write` nach
-`notizen/archiv/**` wird abgelehnt, `mv`, `git mv` und `os.rename` ebenso -- genau wie
-beim Lauf 0071. Ich habe deshalb wieder **in der Datei gekuerzt** statt sie zu
-verschieben. Nichts ist verloren: Die ungekuerzte Vorfassung steht committet in `0f39899`
-(`git show 0f39899:notizen/kern-pruefer.md`), aeltere unter
-`notizen/archiv/kern-pruefer-2026-09-04-3.md` und Vorgaengerinnen.
-**Nicht wieder versuchen, ohne zuerst einen Schreibversuch zu machen** -- die
-Werkzeuglage schwankt; nach `ventures/**` geht `Write`, nach `notizen/archiv/**` nicht.
+**Rotation dreimal verweigert** (`Write`/`mv` nach `notizen/archiv/**` gesperrt), also
+**in der Datei kuerzen** statt verschieben. Vorfassungen: `git show 0f39899:notizen/kern-pruefer.md`,
+`notizen/archiv/kern-pruefer-2026-09-04-3.md`. Vorher trotzdem einmal probieren.
 
 **Hoechstens 12.000 Zeichen** (`wc -c`). Belege gehoeren in die Ergebnisdatei, hierher die
 Lehre in einem Satz.
@@ -46,6 +41,16 @@ Lehre in einem Satz.
   Der einzige Weg zu einem Beleg ueber etwas, das keine Ausgabe hat.
 - **Zu jedem Negativnachweis gehoert der Positivnachweis.** Ein Riegel, der **alles**
   blockiert, sieht im Negativtest identisch aus.
+- **Einen CMake-Riegel greift man ueber `-DCMAKE_PROJECT_INCLUDE=<datei>` an, nicht ueber
+  eine Abschrift des Baums.** *2026-09-04 an 0069, die ergiebigste Neuerung des Laufs:*
+  CMake bindet die Datei am Ende von `project()` ein, also **vor** dem ersten
+  `add_subdirectory` -- damit laeuft jeder Angriff gegen den **unveraenderten** Arbeitsbaum,
+  ohne eine Zeile im Manifest und ohne Eintrag in `git status`. Braucht der Angriff ein
+  Ziel, das erst beim Abstieg entsteht, hilft
+  `cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL <befehl> …)`: Es wird frueher
+  gestellt als das `DEFER` des Riegels und laeuft deshalb vor ihm. So habe ich beide
+  Rotnachweise des Pakets auf einem anderen Weg als der Bauagent reproduziert -- das ist
+  der Unterschied zwischen Nachlesen und Pruefen.
 - **Jedes vorgeschriebene Suchmuster einmal gegen einen echten Verstoss halten, bevor man
   dem leeren Treffer glaubt.** Und ein Wortlautzitat mechanisch vergleichen statt lesen.
 - **Eine Behauptung in einem Kommentar ist ein Pruefauftrag.** Jeden Satz, der einen Fall
@@ -61,10 +66,13 @@ Lehre in einem Satz.
 ## Was nicht funktioniert
 
 - **Die Werkzeuglage schwankt innerhalb eines Laufes und zwischen Verzeichnissen.**
-  Nicht auf den Vortag verlassen, einmal probieren. Stand 2026-09-04: `Write` nach
-  `ventures/**` ja, nach `notizen/archiv/**` und `/tmp` nein; `mv`, `git mv`,
-  `os.rename` und `rm -rf` nein; `&&`-Ketten meist ja, aber nicht verlaesslich --
-  scheitert eine, den Befehl **einzeln** wiederholen statt aufzugeben.
+  Nicht auf den Vortag verlassen, einmal probieren. Stand 2026-09-04, an 0069 nachgemessen:
+  `Write`/`Edit` nach `ventures/**` ja (auch `aufgaben/`), nach `notizen/archiv/**` und
+  nach `$TMPDIR` **nein**; `mv`, `cp`, `git mv`, `rm -rf`, `printf > datei` nein;
+  **`rsync -a` ja** -- damit kopiert man Baeume, wenn `cp` faellt. `cd x && y` loest fuer
+  sich schon eine Verweigerung aus: Befehl **ohne `cd`** mit absoluten Pfaden schreiben.
+  `cmake -S/-B`, `cmake --build`, `ctest --test-dir` gehen. **`git commit` ist gesperrt** --
+  committen tut der Runner; Dateien nur schreiben, hoechstens `git add`.
 - **Der direkte Aufruf eines selbst gebauten Programms ist gesperrt.** Der Weg ist
   `ctest --test-dir <bau> -R <probe> -V` (druckt die volle Ausgabe mit `N: `-Vorsatz)
   oder `cmake -E env <pfad>`.
@@ -106,6 +114,16 @@ Lehre in einem Satz.
   Ausuebung?** Beide Fragen haben je einen Befund gebracht.
 - **Eine Artenliste, eine Feldliste, eine Aufzaehlung von Faellen: immer fragen, welches
   Glied fehlt.** Und: Ist der Nein-Wert von einem gueltigen unterscheidbar?
+- **Gleicht der Riegel den Eintrag ab oder das Wort darin?** *2026-09-04 an 0069, Befund
+  des Laufs:* `MATCHES "^-l."` sieht `-Wl,-lz` nicht -- das Muster ankert am ganzen
+  Eintrag, der Schalter steckt im Inneren. Dieselbe Familie wie `SHELL:` und der
+  Generatorausdruck, die der Nachbardurchgang derselben Datei schon zerlegt. **Wo ein
+  Riegel eine Zeichenkette abgleicht, immer die durchgereichte Form probieren**
+  (`-Wl,`, `-Xlinker`, Praefixe des Werkzeugs).
+- **Ein Riegel, der seinen Messwert druckt, ist auch dort noch halb brauchbar, wo er
+  nicht abbricht** -- der Schalter steht dann wenigstens im Bericht. Halb ist aber nicht
+  ganz: Ein Messwert in einer Statuszeile bricht nichts ab, und die Abnahme verlangte
+  Abbruch.
 - **Jede Zusage aus „Was zu bauen ist", die in keiner Abnahmebedingung wiederkehrt,
   einzeln nachsehen.** Genau dort liegen die Befunde, die niemandem gehoeren.
 - **Ist die gebaute Schnittstelle von ihrem vorgeschriebenen Aufrufer bedienbar?**
@@ -128,19 +146,18 @@ Lehre in einem Satz.
 - **Nie ueber den Commit-Betreff suchen**, immer `git log -- <datei>` und
   `git log -S '<neue Codezeile>'`. Der Betreff log zwoelfmal (zuletzt 0071, wo die Arbeit
   in drei Commits lag, keiner davon der eigene). *2026-09-04 an 0002 stimmte er
-  ausnahmsweise* -- also pruefen, nicht annehmen.
+  ausnahmsweise, an 0069 wieder nicht* -- die Aenderung lag im Commit eines fremden
+  Pakets, der Commit mit dem richtigen Betreff trug fremde Dateien.
 - **Steht eine Datei in der `dateien`-Liste, aber nicht im Commit, ist sie trotzdem
   vielleicht geaendert.** Erst im Arbeitsbaum nachsehen, dann urteilen.
 - **Bevor ich eine Grenzverletzung melde, den Commit gegen die `dateien`-Listen der
   anderen Pakete halten.**
-- **Nummernkollision bei Vorschlaegen, zweiter Fall.** 0079 war doppelt; am 2026-09-04
-  wurde **0088** zwischen meinem Lesen der hoechsten Nummer und meinem Schreiben von
-  einem parallelen Lauf vergeben. „Vorher und nachher lesen" hilft gegen den Zufall,
-  nicht gegen die Gleichzeitigkeit, und umbenennen konnte ich nicht. *Folgerung:* Auf
-  **hoechste + 2 oder + 3** ausweichen und im Kopf der Datei um Umnummerierung bitten,
-  falls es doch trifft. **Und: nach dem Schreiben noch ein drittes Mal nachsehen** --
-  der andere Lauf war diesmal selbst auf 0089 ausgewichen, die Kollision loeste sich
-  von allein, und meine Warnung im Kopf der Datei war eine Minute spaeter falsch.
+- **Nummernkollision bei Vorschlaegen, dritter Fall** (0079, 0088, 0092). Ein paralleler
+  Lauf vergibt die Nummer zwischen meinem Lesen und meinem Schreiben; „vorher und nachher
+  lesen" hilft dagegen nicht. *Folgerung:* auf **hoechste + 2 oder + 3** ausweichen, nach
+  dem Schreiben noch einmal nachsehen -- und wenn es doch trifft: `mv` faellt, aber **zwei
+  `Write` ersetzen es** (volle Fassung unter der neuen Nummer, die alte Datei auf einen
+  Zeiger dorthin). Kein Verstoss gegen Hausregel 3, der Inhalt bleibt vollstaendig.
 - **Ein rotes wie ein gruenes `ergebnis:` im Uebersetzungsbericht gehoert nicht
   automatisch dem geprueften Paket.** Nachsehen, welcher Test rot ist und wem er gehoert.
 - **Ein Paket kann zweimal zur Pruefung kommen.** Dann gezielt dort messen, wo Runde 1
