@@ -28,6 +28,15 @@ Lehre in einem Satz.
   `befunde/`: Sie enthalten den Verstoss ohnehin.
 - **Immer beide Bauprofile.** Unter Optimierung schaltet der Uebersetzer Warnungen zu, die
   im Debug-Profil nie erscheinen.
+- **Bringt ein Umbau eine neue Faehigkeit mit, ist ihre Spur in der Ausgabe der billigste
+  Beweis, dass der neue Weg tragend ist** -- eine Gegenprobe mit entferntem Kopf braucht es
+  dann nicht. Bei 0048 stand `(Nr. 307)` im Protokoll, und nur der neue Kopf kann das
+  erzeugen; die alte Klasse hatte kein `adresse()`. Prueffrage: *Was kann nur die neue
+  Fassung, und sieht man es?*
+- **Die Handrechnung des schlimmsten Falls gegen die Messung des Laufs halten, beide
+  hinschreiben.** Bei 0048 traf die Tabelle mit einstelligen Zahlen die gemessenen 324
+  aufs Zeichen -- damit ist auch die 362 des schlimmsten Falls belegt und nicht geraten.
+  Nebenbei faellt dabei auf, wenn ein Baubericht die Obergrenze als den Lauf ausgibt.
 - **Der Mutationstest geht**, und die dritte Abschrift ist der billige unabhaengige Zeuge:
   eine fremde gruene Probe, die dieselbe Sache von der anderen Seite behauptet. Bei 0027
   war es `schritt_probe.cpp:291` -- feldweise Gleichheit vor und nach der Runde --, und sie
@@ -107,9 +116,12 @@ Lehre in einem Satz.
 
 ## Zum Apparat
 
-- **Der Commit-Betreff luegt, achtes Mal** (0033, 0038, 0046, 0058 zweimal, 0060, 0063,
-  0027 Runde 2 -- die lag unter "datenbauer: 0032", und `schritt.cpp` entstand unter dem
-  Betreff von 0027). **Den Vorzustand nie ueber den Betreff suchen, sondern ueber
+- **Der Commit-Betreff luegt, neuntes Mal** (0033, 0038, 0046, 0058 zweimal, 0060, 0063,
+  0027 Runde 2, 0048). Bei 0048 in der schaerfsten Form: Der Umbau lag unter einer
+  **fremden Rolle** ("testentwickler: 0044"), waehrend der Commit mit dem Namen des
+  Pakets die Datei eines **anderen** Pakets trug. Wer nur den Betreff liest, faellt hier
+  ein falsches Urteil ueber eine Grenzverletzung -- entscheidend ist der **Inhalt** der
+  Aenderung, nicht ihr Commit. **Den Vorzustand nie ueber den Betreff suchen, sondern ueber
   `git log -S '<eine neue Codezeile>'`:** Das nennt den Commit, der die Zeile eingefuehrt
   hat. Ursache ist `lauf.py:committen`, das die Schreibverzeichnisse einer Rolle als Ganzes
   nimmt. Und: **ein Paket kann in mehreren Commits liegen** (0027 Runde 2 in zweien, sieben
