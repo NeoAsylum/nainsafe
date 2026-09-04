@@ -37,6 +37,7 @@
 #include <cstdint>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
 #include "kern/pruefsumme.hpp"
 #include "kern/zustand.hpp"
 
@@ -866,65 +867,19 @@ constexpr Index PLATZ_RUNDE = stelle_partie(PartieFeld::Runde);
 static_assert(PLATZ_RUNDE == 306, "daten/adressen.md Nr. 307 ist partie.runde");
 static_assert(PLATZ_RUNDE < FELDER, "der Riegel liegt auf einem Feld des Zustands");
 
-/// Ein Meldungspuffer fester Groesse fuer den Riegel des Startwertzugangs.
+/// Der Meldungsbau steht seit Paket 0038 in `include/kern/meldung.hpp`; bis Paket 0048
+/// fuehrte diese Datei daneben eine zweite Fassung derselben Klasse. Zwei Abschriften
+/// einer Fehlermeldungsklasse laufen auseinander, sobald eine von beiden gepflegt wird
+/// -- und sie liefen schon ein Stueck weit auseinander: `Index` statt `std::size_t`,
+/// kein `laenge()`. Keiner dieser Unterschiede war ein Fehler; dass es sie gab, war
+/// der Grund.
 ///
-/// Zwei Rundennummern gehoeren ausgeschrieben in die Meldung: die, die im Zustand
-/// steht, und die, die der Zugang dort hinterlassen hat. Eine Meldung, die nur den Ort
-/// nennt, laesst offen, ob der Zugang zu alt ist oder der Zustand fremd beschrieben
-/// wurde -- und das ist die einzige Frage, die der Leser an dieser Stelle hat.
-///
-/// Fester Puffer auf dem Stapel, Grenzpruefung an jedem Zeichen, kein wachsender
-/// Behaelter (T15, ADR 0011). Dass die Zeichenkette den Aufruf ueberlebt, besorgt
-/// `festkomma::abbruch` selbst: Sein `std::domain_error` legt sich eine Abschrift an.
-class Meldung {
-public:
-    void text(const char* teil)
-    {
-        for (Index i = 0; teil[i] != '\0'; ++i) {
-            if (laenge_ + 1 >= zeichen_.size()) {
-                return;  // abgeschnitten statt uebergelaufen
-            }
-            zeichen_[laenge_] = teil[i];
-            ++laenge_;
-            zeichen_[laenge_] = '\0';
-        }
-    }
-
-    void zahl(i64 wert)
-    {
-        std::array<char, 24> ziffern{};
-        Index               stellen = 0;
-        const bool          negativ = wert < 0;
-        // Der Betrag ueber vorzeichenlose Zahlen, damit auch der kleinste i64 geht:
-        // `-I64_MIN` gibt es in `i64` nicht, `0 - (u64)I64_MIN` schon.
-        u64 rest = negativ ? (u64{0} - static_cast<u64>(wert)) : static_cast<u64>(wert);
-        if (rest == 0) {
-            ziffern[0] = '0';
-            stellen    = 1;
-        }
-        while (rest > 0 && stellen < ziffern.size()) {
-            ziffern[stellen] = static_cast<char>('0' + (rest % 10));
-            rest /= 10;
-            ++stellen;
-        }
-        if (negativ) {
-            text("-");
-        }
-        // Rueckwaerts ausgeben, je Ziffer eine Zeichenkette aus einem Zeichen -- damit
-        // laeuft auch hier jeder Schreibzugriff durch die Grenzpruefung von `text`.
-        std::array<char, 2> eine{};
-        for (Index i = stellen; i > 0; --i) {
-            eine[0] = ziffern[i - 1];
-            text(eine.data());
-        }
-    }
-
-    [[nodiscard]] const char* fertig() const { return zeichen_.data(); }
-
-private:
-    std::array<char, 512> zeichen_{};
-    Index                 laenge_ = 0;
-};
+/// Warum der Riegel unten ueberhaupt eine Meldung zusammensetzt statt einer festen
+/// Zeichenkette: Zwei Rundennummern gehoeren ausgeschrieben hinein -- die, die im
+/// Zustand steht, und die, die der Zugang dort hinterlassen hat. Eine Meldung, die nur
+/// den Ort nennt, laesst offen, ob der Zugang zu alt ist oder der Zustand fremd
+/// beschrieben wurde, und das ist die einzige Frage, die der Leser hier hat.
+using meldung::Meldung;
 
 }  // namespace
 
@@ -962,7 +917,11 @@ void Startbelegung::setze(Index adresse, i64 wert)
     if (steht_im_zustand != hinterlassene_runde_) {
         Meldung meldung;
         meldung.text("kern::zustand::Startbelegung::setze -- an diesem Zugang ist eine "
-                     "Runde vorbeigelaufen: partie.runde traegt ");
+                     "Runde vorbeigelaufen: ");
+        // Der Ort in derselben Form wie jeder andere Abbruch des Kerns -- Textform nach
+        // T17 und laufende Nummer aus dem Adressverzeichnis -- statt in Prosa.
+        meldung.adresse(PLATZ_RUNDE);
+        meldung.text(" traegt ");
         meldung.zahl(steht_im_zustand);
         meldung.text(", der Zugang hat dort ");
         meldung.zahl(hinterlassene_runde_);

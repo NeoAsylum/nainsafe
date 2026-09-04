@@ -221,7 +221,18 @@ inline constexpr std::size_t MARKTGROESSEN = 2;
 ///
 /// Alle Vorgaben nennen dieselbe Folge, und die Aufzaehlung unten folgt ihr:
 /// T15 ("Kasse, Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil",
-/// `technik.md:477`), `daten/adressen.md` Zeile 255-259 und `spiel.md:212-213`.
+/// `technik.md:477`), in `daten/adressen.md` die fuenf Bezeichner `fonds.kasse`,
+/// `fonds.hebelstand`, `fonds.sichtbarkeit`, `fonds.anlegerbestand` und
+/// `fonds.marktanteil` in genau dieser Folge, und `spiel.md:212-213`.
+///
+/// **Warum hier Bezeichner stehen und kein Zeilenbereich.** Bis zum 2026-09-04 stand
+/// hier einer, und der Belegstellenriegel aus Paket 0059 hat ihn tot gefunden: Er
+/// nannte fuenf Zeilen, in denen inzwischen Handelszeilen stehen (`handel.CN.RW.1`
+/// bis `handel.DE.CN.1`), nicht die fuenf Fondsaggregate -- von Hand nachgeschlagen
+/// und bestaetigt in Paket 0070. Ein Bezeichner wandert nicht: Wer die Adresstabelle
+/// umsortiert, nimmt ihn mit. Nachgezogen wird hier deshalb nie wieder; sechs Pakete
+/// haben das getan, und bei 0050 war die Korrektur falsch, bevor sie jemand ausfuehren
+/// konnte.
 /// Ein Widerspruch zwischen den Vorgaben besteht hier **nicht** -- eine fruehere
 /// Fassung dieses Kommentars behauptete einen und widerlegte sich in ihrem eigenen
 /// Zitat, das `Sichtbarkeit` bereits vor `Anlegerbestand` fuehrte (Befund 1 der
