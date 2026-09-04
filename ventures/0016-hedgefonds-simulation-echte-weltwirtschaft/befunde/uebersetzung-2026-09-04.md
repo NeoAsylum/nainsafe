@@ -21,7 +21,7 @@ anderes behauptet, irrt.
 -- Mitglied 'konsole' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
--- Warnsatz-Schlussriegel: 16 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
+-- Warnsatz-Schlussriegel: 16 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
@@ -30,43 +30,39 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  6%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
-[ 11%] Built target pruefstand
-[ 15%] Built target pruefstand_geprueft
-[ 18%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
-[ 22%] Built target belegstellen_riegel
-[ 25%] Building CXX object kern/CMakeFiles/kern.dir/src/schreiber.cpp.o
+[  6%] Built target pruefstand
+[ 11%] Built target belegstellen_riegel
+[ 20%] Built target pruefstand_geprueft
+[ 20%] Building CXX object kern/CMakeFiles/kern.dir/src/schreiber.cpp.o
+[ 22%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 25%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
 [ 27%] Building CXX object kern/CMakeFiles/kern.dir/src/schritt.cpp.o
-[ 31%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 31%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
 [ 31%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 36%] Built target vorrat_verfahren_probe
 [ 45%] Built target vorrat_kernanker_probe
 [ 45%] Built target vorrat_probe
+[ 45%] Built target vorrat_verfahren_probe
 [ 47%] Linking CXX static library libkern.a
 [ 54%] Built target kern
 [ 56%] Linking CXX static library libkern_geprueft.a
 [ 63%] Built target kern_geprueft
-[ 68%] Linking CXX executable pruefsumme_probe
-[ 68%] Building CXX object kern/CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
-[ 70%] Linking CXX executable festkomma_probe
-[ 72%] Building CXX object kern/CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
-[ 75%] Building CXX object kern/CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
-[ 77%] Building CXX object kern/CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
-[ 79%] Linking CXX executable zufall_probe
-[ 81%] Building CXX object kern/CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
-[ 84%] Built target festkomma_probe
-[ 86%] Built target pruefsumme_probe
-[ 88%] Built target zufall_probe
-[ 90%] Linking CXX executable meldung_probe
-[ 93%] Linking CXX executable schritt_probe
-[ 93%] Built target meldung_probe
-[ 93%] Built target schritt_probe
-[ 95%] Linking CXX executable schreiber_probe
-[ 97%] Linking CXX executable zustand_probe
-[ 97%] Built target schreiber_probe
-[ 97%] Built target zustand_probe
-[100%] Linking CXX executable schranken_probe
-[100%] Built target schranken_probe
+[ 65%] Linking CXX executable pruefsumme_probe
+[ 68%] Linking CXX executable schreiber_probe
+[ 70%] Linking CXX executable zufall_probe
+[ 77%] Building CXX object kern/CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+[ 77%] Linking CXX executable zustand_probe
+[ 77%] Linking CXX executable festkomma_probe
+[ 79%] Linking CXX executable schranken_probe
+[ 81%] Linking CXX executable schritt_probe
+[ 84%] Built target schreiber_probe
+[ 86%] Built target schritt_probe
+[ 88%] Built target schranken_probe
+[ 90%] Built target festkomma_probe
+[ 93%] Built target zustand_probe
+[ 95%] Built target zufall_probe
+[ 97%] Built target pruefsumme_probe
+[100%] Linking CXX executable meldung_probe
+[100%] Built target meldung_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -106,7 +102,7 @@ Total Test time (real) =   0.15 sec
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- Warnsatz-Schlussriegel: 10 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
+-- Warnsatz-Schlussriegel: 10 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
@@ -115,37 +111,33 @@ Total Test time (real) =   0.15 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  3%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
-[  6%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
-[ 10%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 20%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
+[  6%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
+[  6%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
+[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
+[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
 [ 20%] Building CXX object CMakeFiles/kern.dir/src/schreiber.cpp.o
-[ 20%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
+[ 20%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
 [ 23%] Linking CXX static library libkern.a
 [ 33%] Built target kern
 [ 36%] Linking CXX static library libkern_geprueft.a
 [ 46%] Built target kern_geprueft
-[ 50%] Linking CXX executable pruefsumme_probe
-[ 53%] Building CXX object CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
-[ 60%] Linking CXX executable festkomma_probe
-[ 60%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
-[ 63%] Linking CXX executable zufall_probe
-[ 66%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
-[ 70%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
-[ 73%] Building CXX object CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
-[ 80%] Built target festkomma_probe
-[ 80%] Built target zufall_probe
-[ 83%] Built target pruefsumme_probe
-[ 86%] Linking CXX executable meldung_probe
-[ 90%] Linking CXX executable schritt_probe
-[ 90%] Built target meldung_probe
-[ 90%] Built target schritt_probe
-[ 93%] Linking CXX executable schreiber_probe
-[ 93%] Built target schreiber_probe
-[ 96%] Linking CXX executable zustand_probe
-[100%] Linking CXX executable schranken_probe
-[100%] Built target zustand_probe
-[100%] Built target schranken_probe
+[ 50%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+[ 53%] Linking CXX executable festkomma_probe
+[ 56%] Linking CXX executable schranken_probe
+[ 60%] Linking CXX executable pruefsumme_probe
+[ 63%] Linking CXX executable schritt_probe
+[ 66%] Linking CXX executable zufall_probe
+[ 70%] Linking CXX executable zustand_probe
+[ 73%] Linking CXX executable schreiber_probe
+[ 76%] Built target schranken_probe
+[ 83%] Built target schreiber_probe
+[ 83%] Built target festkomma_probe
+[ 86%] Built target pruefsumme_probe
+[ 90%] Built target zufall_probe
+[ 93%] Built target zustand_probe
+[ 96%] Built target schritt_probe
+[100%] Linking CXX executable meldung_probe
+[100%] Built target meldung_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -177,7 +169,7 @@ Total Test time (real) =   0.09 sec
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
+-- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/bau
@@ -188,9 +180,9 @@ Total Test time (real) =   0.09 sec
 ```
 [ 50%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
+[ 83%] Built target vorrat_probe
 [ 83%] Built target vorrat_kernanker_probe
-[ 83%] Built target vorrat_verfahren_probe
-[100%] Built target vorrat_probe
+[100%] Built target vorrat_verfahren_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -220,15 +212,15 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 18%] Built target mut1_dreiwertiger_kern
-[ 18%] Built target mut2_gleichstand_an_groessere_kennung
-[ 54%] Built target kontrolle_unveraendert
-[ 54%] Built target mut4_kennung_einsbasiert
+[ 27%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 27%] Built target mut4_kennung_einsbasiert
+[ 27%] Built target mut2_gleichstand_an_groessere_kennung
+[ 45%] Built target mut3_ordnung_a5_bis_a1
+[ 45%] Built target kontrolle_unveraendert
+[ 63%] Built target mut6_abgelegter_kern_immer_ohne
 [ 63%] Built target mut7_position_und_lobby_vertauscht
-[ 54%] Built target mut3_ordnung_a5_bis_a1
-[ 63%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 81%] Built target mut8_profil_doppelt_eines_fehlt
-[ 81%] Built target mut6_abgelegter_kern_immer_ohne
+[ 72%] Built target mut1_dreiwertiger_kern
+[ 90%] Built target mut8_profil_doppelt_eines_fehlt
 [ 90%] Built target anker_von_hand
 [100%] Built target anker_gegen_mut2
 ```
@@ -268,7 +260,7 @@ Total Test time (real) =   0.03 sec
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
+-- Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
