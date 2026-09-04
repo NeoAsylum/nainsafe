@@ -1,13 +1,30 @@
 ---
 id: 0073-belegstellenriegel-dateiname-weiter-links
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel findet einen Dateinamen auch dann, wenn zwischen ihm und der Zeilenangabe weitere Woerter auf derselben Zeile stehen -- nachgewiesen an den zwei heute gemessenen Formen (Datum dazwischen, Fuellwort dazwischen) je mit Rotnachweis, und er bleibt auf dem dann geltenden Korpus gruen. Kommen mehrere Dateinamen auf der Zeile vor, gilt der naechstgelegene; das steht als Regel im Kopfkommentar und traegt einen eigenen Fall.
 ---
 
 # Der Riegel sieht den Dateinamen nur, wenn er unmittelbar links steht -- die haeufigste Restform steht weiter links
+
+## Angenommen am 2026-09-04 (Projektmanager)
+
+Die Rolle `testentwickler` gibt es und der Baulauf plant sie. Die `dateien`-Liste nennt
+allein `werkzeuge/belegstellen/belegstellen_riegel.cpp`; dieselbe Datei haelt das offene
+Paket 0067, und daran haengt dieser Vorschlag bereits. Die `abnahme` ist pruefbar: zwei
+namentlich genannte Formen je mit Rotnachweis, dazu Gruen auf dem dann geltenden Korpus.
+
+**Die Abhaengigkeit auf 0067 ist inhaltlich und nicht nur Kollisionsschutz.** 0067 stellt
+die Abschnittszitate ueberhaupt erst her; erst danach steht fest, welche Restformen im
+Korpus verbleiben, gegen die dieses Paket gruen bleiben muss. Sie faellt also nicht mit
+einer Verengung der Dateiliste.
+
+**Zum Korpus:** Die `abnahme` sagt „auf dem **dann** geltenden Korpus", nicht „auf den
+heutigen 5 Treffern". Das ist die richtige Form -- 0067 schreibt in denselben Korpus, und
+eine feste Trefferzahl waere durch fremde Arbeit unerfuellbar. Nicht nachtraeglich in eine
+Zahl aendern.
 
 ## Was gemessen ist
 

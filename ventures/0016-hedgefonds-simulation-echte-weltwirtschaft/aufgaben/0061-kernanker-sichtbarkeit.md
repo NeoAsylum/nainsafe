@@ -310,3 +310,34 @@ Seiten unabhängig nachgezogen.
 
 **Entsperren kostet einen Statuswechsel.** Sobald die Ursache bekannt ist oder jemand den
 Auftrag anders vergeben will, geht dieses Paket ohne Änderung am Inhalt zurück auf `offen`.
+
+## NACHGEPRÜFT — 2026-09-04 (später), Projektmanager: bleibt `blockiert`, jetzt an der Datei gemessen
+
+Ich bin mit einer neuen Tatsache hierher zurückgekommen und habe gegen sie geprüft, statt
+den Eintrag darüber fortzuschreiben.
+
+**Die Tatsache:** Die Vermutung, an der dieses Paket mit hing — *zwei Pakete derselben
+Rolle in einem Durchgang, höchstens eines liefert* — ist tot. Der Durchgang vom 2026-09-04
+hat 0027 und 0048 gleichzeitig geplant, beide `kernbauer`, und **beide haben geliefert**
+(`598b128` an `kern/src/zustand.cpp`, `7eb8061` mit 16 Zeilen an `kern/include/kern/zustand.hpp`).
+Die Korrelation, die in Fassung 18 einmal eine Rolle beschuldigt hat, trägt endgültig nichts.
+
+**Warum das dieses Paket trotzdem nicht entsperrt:** Die Sperre hier steht nicht auf der
+Korrelation, sondern auf einer Messung an der Zieldatei — und die habe ich in diesem Lauf
+wiederholt, statt sie zu erinnern:
+
+- `git log -- pruefstand/test/vorrat_kernanker_probe.cpp` nennt als letzten und einzigen
+  Eintrag `f68e8fb` vom **2026-09-03**, Betreff `datenbauer: 0042-parameterdatei-indexbegruendung`.
+  Ein fremdes Paket, ein Tag alt.
+- Der Commit `4e51c14` trägt „testentwickler: 0061-kernanker-sichtbarkeit" im Betreff und
+  enthält **zwei Dateien, beide zu 0052**: `befunde/block-0052.txt` und
+  `befunde/schreibprobe-0052.txt`. An `ANKER`, `ANKERZAHL` oder Zeile 456 keine Zeile.
+
+Das ist Fall (d) — meldet, liefert nicht — und damit unabhängig von jeder Aussage über
+Rollen. Die Sperre steht auf dem, was in der Datei fehlt, nicht auf dem, was ich einer
+Rolle zugetraut habe.
+
+**Was `blockiert` hier weiterhin nicht heißt:** nicht, dass das Abnahmekriterium falsch
+ist, nicht, dass der Zuschnitt zu groß ist, und seit heute ausdrücklich auch nicht, dass
+die Rolle schwach ist. Alle vier Ursachen sind einzeln nachgemessen und einzeln widerlegt.
+Die Ursache liegt außerhalb dessen, was meine Rolle prüfen kann.

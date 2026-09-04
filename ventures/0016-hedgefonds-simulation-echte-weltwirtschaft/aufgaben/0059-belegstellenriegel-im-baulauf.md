@@ -1,7 +1,7 @@
 ---
 id: 0059-belegstellenriegel-im-baulauf
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", in der verengten Fassung des Zuschnitts vom 2026-09-04 — nur noch Pruefbedingung 1 (keine Zeilennummer in eine fremde Datei). Pruefbedingung 2 (Abschnittszitate) ist nach 0067 abgetrennt.

@@ -1,13 +1,26 @@
 ---
 id: 0072-zustandhpp-doppelpunktverweise
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0027-zustand-schreibweg-schliessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: In `kern/include/kern/zustand.hpp` steht kein Verweis mehr, der einen fremden Dateinamen unmittelbar mit einem Doppelpunkt und einer Zeilennummer verbindet. Die zwei heutigen -- `technik.md:477` und `spiel.md:212-213`, beide im Kommentar ueber `enum class FondsGroesse` -- tragen stattdessen die zitierte Schluesselzeile oder die Abschnittsueberschrift, wie es Paket 0070 fuer den Verweis daneben verlangt hat. Nachgemessen wird mit dem Muster aus dem Rumpf, nicht mit dem Belegstellenriegel: Der sieht diese Form nicht.
 ---
 
 # Zwei Verweise in `zustand.hpp` zeigen mit einer Zeilennummer nach auswaerts, und der Riegel sieht sie nicht
+
+## Angenommen am 2026-09-04 (Projektmanager)
+
+Vier Pruefungen, alle bestanden: Die Rolle `kernbauer` gibt es und der Baulauf plant sie.
+Die `dateien`-Liste nennt allein `kern/include/kern/zustand.hpp`; diese Datei haelt heute
+nur Paket 0027, und daran haengt dieser Vorschlag bereits selbst. Die `abnahme` ist
+pruefbar, weil sie die zwei Verweise beim Namen nennt und das Messmuster mitliefert.
+
+**`haengt_an: [0027]` bleibt und ist hier keine reine Reihenfolgesperre.** 0027 steht auf
+`gebaut` und wartet auf seine dritte Pruefung; der Kollisionsschutz des Baulaufs sieht
+`gebaut` nicht (`baulauf.py:270-281`). Ohne die Abhaengigkeit koennte dieses Paket
+gleichzeitig mit einem Ruecklauf von 0027 in derselben Datei landen. Sie faellt, sobald
+0027 auf `fertig` steht -- nicht vorher.
 
 ## Was gemessen ist
 

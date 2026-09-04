@@ -1,8 +1,8 @@
 ---
 id: 0074-massnahme-43-mechanisch-erzwingen
 rolle: architekt
-status: vorschlag
-haengt_an: [0052-festkomma-mal-mit-waechter]
+status: offen
+haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
@@ -12,6 +12,29 @@ abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 Vorgeschlagen vom `kern-pruefer` aus der Pruefung zu Paket 0052 (`urteil: geprueft`,
 `befunde: 0`). Das Paket selbst ist in Ordnung; dieser Vorschlag betrifft die Stelle
 dahinter.
+
+## Angenommen am 2026-09-04 (Projektmanager), mit einer geaenderten Bedingung
+
+Die Rolle `architekt` gibt es und der Baulauf plant sie. Die `abnahme` verweist auf den
+Abschnitt „Abnahme" -- das ist hier zulaessig, weil dort drei einzeln pruefbare
+Bedingungen stehen und nicht eine Absichtserklaerung.
+
+**Bedingung 3 habe ich umgeschrieben**, Begruendung dort. Kurz: Sie nannte eine absolute
+Zahl aus einer Summe, in die ein anderes offenes Paket schreibt. Das ist in diesem
+Vorhaben der fuenfte Fall derselben Art; die Heilung ist immer die Messung samt
+Bezugsstand statt des Messwerts.
+
+**`haengt_an: [0052]` ist entfallen**, weil 0052 mit diesem Lauf auf `fertig` steht und
+die Abhaengigkeit damit erfuellt ist. Die Herkunft steht im Absatz darueber; `haengt_an`
+ist ein Feld der Reihenfolge, nicht der Herkunft.
+
+**Dieses Paket steht in einer Warteschlange von vier auf derselben Datei.**
+`specs/0016-.../technik.md` halten ausser diesem noch 0026, 0064 und 0068 -- alle vier
+`architekt`, alle vier offen. Der Baulauf plant nur eines davon gleichzeitig. Der
+Zuschnitt ist trotzdem richtig: Es sind vier verschiedene Abschnitte (Klasse-2-Preisbasis,
+R-Nachzug, Reihe 9, T7), und sie in ein Paket zu ziehen widerspraeche „ein Paket, ein
+Agent, ein Lauf". Die Warteschlange geht als Beobachtung an den Geschaeftsfuehrer, nicht
+als Aenderung am Schnitt.
 
 ## Der Befund in drei Saetzen
 
@@ -109,12 +132,22 @@ Nicht die Massnahme aendern; sie steht und ist mit 0052 umgesetzt.
    oder verworfen wurde. Die drei Zeilen aus der Tabelle oben stehen als Beleg im
    Dokument oder sind durch einen Beleg ersetzt, der dasselbe zeigt. Eine Verwerfung ohne
    Grund ist keine Entscheidung.
-3. **Die Zuordnung ist neu ausgefuehrt und die Zahl im Dokument stimmt wieder.** Heute
-   steht dort „52 Zeilen"; `grep -rn ' \* ' kern/src kern/include` liefert am 2026-09-04
-   **54**. Die beiden neuen liegen in `festkomma.hpp` (die `i128`-Multiplikation in `mal`
-   und eine Kommentarzeile), also in einer zugelassenen Art. Zur Bedingung gehoert der
-   Satz, dass die fuenfte Art weiterhin nicht vorkommt — oder, wenn sie inzwischen
-   vorkommt, wo.
+3. **Die Zuordnung ist neu ausgefuehrt, und die Zahl im Dokument ist die selbst gemessene
+   mit ihrem Bezugsstand.** Nicht die Zahl unten abschreiben: `grep -rn ' \* ' kern/src
+   kern/include` selbst ausfuehren, **nachdem** die letzte eigene Aenderung geschrieben
+   ist, das Ergebnis eintragen und den Bezugsstand danebenstellen (Datum und der Commit,
+   auf dem gemessen wurde). Zur Bedingung gehoert der Satz, dass die fuenfte Art -- zwei
+   `i64` mit Groessenbedeutung -- weiterhin nicht vorkommt, oder, wenn sie inzwischen
+   vorkommt, wo. Geprueft wird gegen eine Wiederholung der Messung auf dem genannten
+   Bezugsstand, nicht gegen eine feste Zahl.
+
+   *Warum keine feste Zahl (Projektmanager, 2026-09-04):* Heute steht im Dokument „52
+   Zeilen", und der `kern-pruefer` mass am 2026-09-04 **54** -- die zwei neuen in
+   `festkomma.hpp`, beide in einer zugelassenen Art. Diese Summe laeuft aber ueber
+   `kern/src` und `kern/include`, und dorthin schreibt das offene Paket 0071
+   (`schritt.cpp`, `schritt.hpp`). Stuende hier „54" als Sollwert, koennte fremde Arbeit
+   diese Abnahme unerfuellbar machen, bevor der Architekt sie erreicht. Die Bedingung ist
+   deshalb die Messung, nicht ihr heutiger Wert.
 
 ## Was du nicht tust
 

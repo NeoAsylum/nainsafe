@@ -1,7 +1,7 @@
 ---
 id: 0048-meldung-in-zustand-nachziehen
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0038-meldung-mit-adresse-gemeinsam]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
