@@ -1,0 +1,12 @@
+festkomma_probe 1 0.0176178
+meldung_probe 1 0.00946372
+pruefsumme_probe 1 0.00912648
+schranken_probe 1 0.00990213
+schreiber_probe 1 0.0126765
+schritt_probe 1 0.0121763
+zufall_probe 1 0.00994311
+zustand_probe 1 0.014387
+vorrat_kernanker_probe 1 0.0098151
+vorrat_probe 1 0.00902342
+vorrat_verfahren_probe 1 0.0110983
+---

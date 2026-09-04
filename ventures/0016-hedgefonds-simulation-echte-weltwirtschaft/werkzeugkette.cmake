@@ -307,22 +307,62 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       # Einzeln unterdruecken bleibt ausdruecklich erlaubt: `-Wno-conversion` an genau
       # einem Ziel benennt, was nachgesehen wird, und laesst den Rest des Satzes scharf.
       # Ein Pauschalabschalter benennt nichts.
+      # Zerlegt wird vor dem Abgleich, weil ein Eintrag nicht dasselbe ist wie ein
+      # Schalter. `SHELL:-Wno-error -w` ist CMakes dokumentierter Weg, mehrere Schalter
+      # in **einem** Eintrag zu uebergeben, und ein Generatorausdruck -- `$<1:-w>`,
+      # `$<$<CONFIG:Release>:-w>` -- traegt den Schalter im Inneren. Der Uebersetzer
+      # bekommt in allen drei Faellen `-w`; ein Abgleich gegen die ganze Zeichenkette
+      # sieht dagegen einen Eintrag, der auf `S` oder `$` beginnt, findet kein Muster
+      # und meldet Vollzug. Gemessen am 2026-09-04 an derselben Quelle wie oben: alle
+      # drei kamen am Riegel vorbei und uebersetzten ohne eine einzige Diagnose.
+      #
+      # Getrennt wird an `SHELL:` und an den Zeichen `$ < > : ,`. Das Ergebnis dient
+      # allein dem Abgleich und wird nie weitergereicht -- was die Zerlegung an einem
+      # ungewoehnlichen Eintrag zerschlaegt, kostet hoechstens einen Fehlalarm, und der
+      # waere laut statt still. Die Schalter, die hier wirklich vorkommen, erzeugen
+      # keinen: weder `-Wall` noch `-Wno-conversion` noch `-fsanitize=undefined,address`
+      # noch `-fno-sanitize-recover=all` liefert ein Wort, das `^-w$` oder
+      # `^-Wno-error(=.+)?$` trifft.
+      #
+      # Der erste Durchgang bleibt absichtlich beim ganzen Eintrag. Er prueft
+      # **Anwesenheit**, und dort zeigt dieselbe Zerlegung in die andere Richtung: Wer
+      # den Satz je in einem `SHELL:`-Eintrag anlegt, wird vom ersten Durchgang
+      # vermisst und bricht ab. Das ist die harmlose Haelfte des Fehlers -- hier geht
+      # es um Abwesenheit, und die schweigt von selbst.
       set(pauschal "")
+      set(pauschalquelle "")
       foreach(schalterwert IN LISTS schalter)
-        foreach(muster IN LISTS pauschalmuster)
-          if("${schalterwert}" MATCHES "${muster}")
-            list(APPEND pauschal "${schalterwert}")
-          endif()
+        string(REPLACE "SHELL:" " " zerlegt "${schalterwert}")
+        string(REGEX REPLACE "[$<>:,]" " " zerlegt "${zerlegt}")
+        separate_arguments(worte UNIX_COMMAND "${zerlegt}")
+        foreach(wort IN LISTS worte)
+          foreach(muster IN LISTS pauschalmuster)
+            if("${wort}" MATCHES "${muster}")
+              list(APPEND pauschal "${wort}")
+              list(APPEND pauschalquelle "${schalterwert}")
+            endif()
+          endforeach()
         endforeach()
       endforeach()
 
       math(EXPR gezaehlt "${gezaehlt} + 1")
       if(pauschal)
         list(REMOVE_DUPLICATES pauschal)
+        list(REMOVE_DUPLICATES pauschalquelle)
         list(JOIN pauschal " " pauschaltext)
+        list(JOIN pauschalquelle " " quelltext)
         list(APPEND abgeschaltet
              "  ${ziel} (${art}) in ${verzeichnis}\n"
              "      hebt den Satz wieder auf: ${pauschaltext}\n")
+        # Seit die Zerlegung Woerter meldet, ist der genannte Schalter nicht mehr
+        # notwendig die Zeile, die im Manifest steht: Wer `-w` sucht, findet
+        # `$<$<CONFIG:Release>:-w>` nicht. Der Eintrag kommt deshalb dazu -- aber nur,
+        # wenn er sich vom Wort unterscheidet, sonst stuende dieselbe Zeichenkette
+        # zweimal untereinander.
+        if(NOT "${quelltext}" STREQUAL "${pauschaltext}")
+          list(APPEND abgeschaltet
+               "      im Eintrag:               ${quelltext}\n")
+        endif()
       endif()
       if(luecke)
         list(JOIN luecke " " luecketext)

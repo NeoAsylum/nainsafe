@@ -1,0 +1,2 @@
+/usr/bin/ar qc libkern.a CMakeFiles/kern.dir/src/festkomma.cpp.o CMakeFiles/kern.dir/src/pruefsumme.cpp.o CMakeFiles/kern.dir/src/schreiber.cpp.o CMakeFiles/kern.dir/src/schritt.cpp.o CMakeFiles/kern.dir/src/zufall.cpp.o CMakeFiles/kern.dir/src/zustand.cpp.o
+/usr/bin/ranlib libkern.a

@@ -1,0 +1,1 @@
+/usr/bin/c++ -fwrapv -fno-fast-math -O2 -g -DNDEBUG -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/zustand_probe.dir/link.d CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o -o zustand_probe  libkern_geprueft.a
