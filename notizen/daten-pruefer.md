@@ -45,6 +45,12 @@ Lehre. *Neu begonnen 2026-09-04 nach Paket 0057, Vorgaenger: archiv/daten-pruefe
   die Fundstellen des Rumpfs in der **Altfassung** nachzaehlen, nicht seine Tabelle glauben --
   `git show <basis>:<datei>` und die alten Zeichenfolgen zaehlen. So kam auch heraus, dass
   `Z. 884` dreimal stand und der Rumpf nur zwei kannte.
+- **Eine Verteilungsaussage neben einer richtigen Gesamtzahl ist die neue Schwachstelle**
+  (0065). „Acht, davon sieben unter X" -- die Acht stimmte, die Sieben waren sechs, weil der
+  Satz einen Posten zugleich mitzaehlte und abzog. **Immer die Klassen einzeln ausgeben, nie
+  die Restzahl glauben**, und den Satz unter jeder moeglichen Lesart von „die uebrigen"
+  pruefen. Traegt die Bedingung „und die Zahlen stimmen", bindet sie den ganzen Kommentar,
+  nicht nur die genannten Zahlwoerter.
 - **Ein Verweis wird an drei Dingen geprueft:** Existiert die Fundstelle? Steht der zitierte
   Satz dort woertlich? Und -- der Schritt, den man ueberspringt -- stimmt das *Beispiel*, mit
   dem der Verweis seine Aussage traegt?
@@ -116,7 +122,8 @@ Lehre. *Neu begonnen 2026-09-04 nach Paket 0057, Vorgaenger: archiv/daten-pruefe
 - **Der Commit eines Pakets muss die geaenderte Datei nicht enthalten.** Immer
   `git log -- <datei>`, nie `git show <paketcommit>`. 2026-09-04 (0057) wieder: die Aenderung
   lag in `24aa5aa` (`kernbauer: 0060-…`), der 0057-Commit trug nur Logbuch, Paketdatei und zwei
-  Platzhalterdateien eines fremden Pakets.
+  Platzhalterdateien eines fremden Pakets. **Sie kann auch auf zwei Commits liegen** (0065:
+  `7a79290` + `0b378a1`); die Diff-Bilanz im Baubericht misst dann nur den ersten.
 - **Ein `cd` in Bash bleibt ueber Aufrufe hinweg stehen.** Danach schweigt `git diff -- <pfad>`
   einfach. `git -C <wurzel>` ist der sichere Weg.
 - **Zaehlaussagen nie ueber die Trefferzahl** (0053): 26 Markentreffer waren 25 Namen.
@@ -141,9 +148,9 @@ Lehre. *Neu begonnen 2026-09-04 nach Paket 0057, Vorgaenger: archiv/daten-pruefe
 - **PWT bleibt ungemessen** -- Kapitalstockeinheit und Basisjahr. Loest sich erst, wenn der
   Betreiber pwt110.xlsx nach daten/roh/ legt oder den PDF-Pfad freigibt. `art = "ungemessen"`
   bei Reihe 3 steht unveraendert.
-- **Liegengeblieben aus 0049, ohne eigenes Paket:** Der Kommentar ueber `[datei.vorlagen]` sagt
-  „viermal als `beleg`" (es ist eine) und „vier Pakete lang gefehlt" (es sind zwei bis drei).
-  Dem naechsten Paket mitgeben, das den Kopf von reihen.toml oeffnet.
+- **Erledigt (0065):** die zwei Zahlwoerter ueber `[datei.vorlagen]` sind nachgezaehlt -- eine
+  und zwei. Meine Schaetzung „zwei bis drei" war unnoetig unscharf: zehn Git-Fassungen mit
+  `tomllib` einlesen und zaehlen, wann ein Schluessel erscheint, kostet einen Aufruf.
 - **Reihe 10:** Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6, USA gleich, DEU 17.341 gegen
   10.000. Gehoert dem Architekten, offen auch die Rundung vor oder nach Normierung.
 - **Zwei Schranken fuer das Paket, das parameter.toml einliest:** Deckelt T5 Klasse 4 auch
