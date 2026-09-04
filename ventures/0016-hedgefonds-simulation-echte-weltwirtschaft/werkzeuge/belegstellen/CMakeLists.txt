@@ -1,1 +1,1 @@
-PLATZHALTER-0059
+# Der Belegstellenriegel -- Paket 0059.
