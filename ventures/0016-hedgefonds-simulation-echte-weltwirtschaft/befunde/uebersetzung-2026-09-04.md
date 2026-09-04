@@ -30,39 +30,22 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  6%] Built target pruefstand
-[ 11%] Built target belegstellen_riegel
-[ 20%] Built target pruefstand_geprueft
-[ 20%] Building CXX object kern/CMakeFiles/kern.dir/src/schreiber.cpp.o
-[ 22%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
-[ 25%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
-[ 27%] Building CXX object kern/CMakeFiles/kern.dir/src/schritt.cpp.o
-[ 31%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
-[ 31%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 45%] Built target vorrat_kernanker_probe
-[ 45%] Built target vorrat_probe
-[ 45%] Built target vorrat_verfahren_probe
-[ 47%] Linking CXX static library libkern.a
-[ 54%] Built target kern
-[ 56%] Linking CXX static library libkern_geprueft.a
-[ 63%] Built target kern_geprueft
-[ 65%] Linking CXX executable pruefsumme_probe
-[ 68%] Linking CXX executable schreiber_probe
-[ 70%] Linking CXX executable zufall_probe
-[ 77%] Building CXX object kern/CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
-[ 77%] Linking CXX executable zustand_probe
-[ 77%] Linking CXX executable festkomma_probe
-[ 79%] Linking CXX executable schranken_probe
-[ 81%] Linking CXX executable schritt_probe
-[ 84%] Built target schreiber_probe
-[ 86%] Built target schritt_probe
-[ 88%] Built target schranken_probe
-[ 90%] Built target festkomma_probe
-[ 93%] Built target zustand_probe
-[ 95%] Built target zufall_probe
-[ 97%] Built target pruefsumme_probe
-[100%] Linking CXX executable meldung_probe
-[100%] Built target meldung_probe
+[ 20%] Built target pruefstand
+[ 20%] Built target belegstellen_riegel
+[ 29%] Built target kern_geprueft
+[ 34%] Built target pruefstand_geprueft
+[ 50%] Built target kern
+[ 68%] Built target meldung_probe
+[ 68%] Built target pruefsumme_probe
+[ 68%] Built target festkomma_probe
+[ 68%] Built target schritt_probe
+[ 72%] Built target zustand_probe
+[ 77%] Built target schranken_probe
+[ 84%] Built target zufall_probe
+[ 88%] Built target vorrat_kernanker_probe
+[ 90%] Built target vorrat_verfahren_probe
+[ 95%] Built target schreiber_probe
+[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -84,7 +67,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  7: zufall_probe
  7/12 Test  #7: zufall_probe .....................   Passed    0.01 sec
       Start  8: zustand_probe
- 8/12 Test  #8: zustand_probe ....................   Passed    0.01 sec
+ 8/12 Test  #8: zustand_probe ....................   Passed    0.02 sec
       Start  9: vorrat_kernanker_probe
  9/12 Test  #9: vorrat_kernanker_probe ...........   Passed    0.01 sec
       Start 10: vorrat_probe
@@ -92,11 +75,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 11: vorrat_verfahren_probe
 11/12 Test #11: vorrat_verfahren_probe ...........   Passed    0.01 sec
       Start 12: belegstellen_riegel
-12/12 Test #12: belegstellen_riegel ..............   Passed    0.03 sec
+12/12 Test #12: belegstellen_riegel ..............   Passed    0.34 sec
 
 100% tests passed, 0 tests failed out of 12
 
-Total Test time (real) =   0.15 sec
+Total Test time (real) =   0.47 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -111,33 +94,30 @@ Total Test time (real) =   0.15 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  6%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
-[  6%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
-[ 20%] Building CXX object CMakeFiles/kern.dir/src/schreiber.cpp.o
-[ 20%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
-[ 23%] Linking CXX static library libkern.a
-[ 33%] Built target kern
-[ 36%] Linking CXX static library libkern_geprueft.a
+[  3%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
+[  6%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 10%] Linking CXX static library libkern.a
+[ 13%] Linking CXX static library libkern_geprueft.a
+[ 30%] Built target kern
 [ 46%] Built target kern_geprueft
-[ 50%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
-[ 53%] Linking CXX executable festkomma_probe
-[ 56%] Linking CXX executable schranken_probe
-[ 60%] Linking CXX executable pruefsumme_probe
-[ 63%] Linking CXX executable schritt_probe
-[ 66%] Linking CXX executable zufall_probe
-[ 70%] Linking CXX executable zustand_probe
-[ 73%] Linking CXX executable schreiber_probe
-[ 76%] Built target schranken_probe
-[ 83%] Built target schreiber_probe
-[ 83%] Built target festkomma_probe
-[ 86%] Built target pruefsumme_probe
-[ 90%] Built target zufall_probe
-[ 93%] Built target zustand_probe
+[ 50%] Linking CXX executable festkomma_probe
+[ 53%] Linking CXX executable meldung_probe
+[ 60%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+[ 60%] Linking CXX executable schreiber_probe
+[ 63%] Linking CXX executable pruefsumme_probe
+[ 66%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+[ 73%] Linking CXX executable zustand_probe
+[ 73%] Linking CXX executable zufall_probe
+[ 76%] Built target festkomma_probe
+[ 80%] Built target pruefsumme_probe
+[ 86%] Built target meldung_probe
+[ 86%] Built target zufall_probe
+[ 90%] Built target zustand_probe
+[ 93%] Built target schreiber_probe
+[ 96%] Linking CXX executable schritt_probe
 [ 96%] Built target schritt_probe
-[100%] Linking CXX executable meldung_probe
-[100%] Built target meldung_probe
+[100%] Linking CXX executable schranken_probe
+[100%] Built target schranken_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -178,10 +158,10 @@ Total Test time (real) =   0.09 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
+[ 25%] Built target pruefstand_geprueft
 [ 50%] Built target pruefstand
-[ 50%] Built target pruefstand_geprueft
-[ 83%] Built target vorrat_probe
 [ 83%] Built target vorrat_kernanker_probe
+[ 83%] Built target vorrat_probe
 [100%] Built target vorrat_verfahren_probe
 ```
 
@@ -198,7 +178,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =   0.03 sec
+Total Test time (real) =   0.04 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -212,17 +192,17 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 27%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 27%] Built target mut4_kennung_einsbasiert
-[ 27%] Built target mut2_gleichstand_an_groessere_kennung
-[ 45%] Built target mut3_ordnung_a5_bis_a1
-[ 45%] Built target kontrolle_unveraendert
-[ 63%] Built target mut6_abgelegter_kern_immer_ohne
-[ 63%] Built target mut7_position_und_lobby_vertauscht
-[ 72%] Built target mut1_dreiwertiger_kern
-[ 90%] Built target mut8_profil_doppelt_eines_fehlt
-[ 90%] Built target anker_von_hand
-[100%] Built target anker_gegen_mut2
+[ 48%] Built target mut2_gleichstand_an_groessere_kennung
+[ 57%] Built target anker_gegen_mut2
+[ 57%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 42%] Built target mut4_kennung_einsbasiert
+[ 42%] Built target kontrolle_unveraendert
+[ 81%] Built target mut1_dreiwertiger_kern
+[ 81%] Built target mut3_ordnung_a5_bis_a1
+[ 87%] Built target mut7_position_und_lobby_vertauscht
+[ 96%] Built target mut6_abgelegter_kern_immer_ohne
+[ 96%] Built target anker_von_hand
+[100%] Built target mut8_profil_doppelt_eines_fehlt
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -277,9 +257,9 @@ Total Test time (real) =   0.03 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/1 Test #1: belegstellen_riegel ..............   Passed    0.03 sec
+1/1 Test #1: belegstellen_riegel ..............   Passed    0.35 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.03 sec
+Total Test time (real) =   0.35 sec
 ```
