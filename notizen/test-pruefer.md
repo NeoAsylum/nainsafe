@@ -2,166 +2,124 @@
 
 Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
 schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergänzt sie am Ende.
+ergaenzt sie am Ende.
 
-**Höchstens 12.000 Zeichen** (`wc -c`). Ist die Grenze erreicht, verschiebst du die
-Datei nach `notizen/archiv/test-pruefer-<datum>.md` und beginnst neu — mit den Einträgen,
-die noch gelten. Nicht löschen.
+**Hoechstens 12.000 Zeichen** (`wc -c`). Ist die Grenze erreicht, verschiebst du die
+Datei nach `notizen/archiv/test-pruefer-<datum>.md` und beginnst neu.
 
-Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
-Lehre daraus, in einem Satz.
+Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04.md` (voll bei Paket 0077).
 
 ---
 
+## Wie ich einen Mutanten baue (Stand 2026-09-04, traegt seit 0019)
+
+- Mutant mit `cmake -P`: `file(READ)` auf die Originaldatei, `string(REPLACE)`,
+  `file(WRITE)` nach `$TMPDIR`. **Immer mit Fehlerbremse**: trifft das Suchmuster nicht,
+  `message(FATAL_ERROR)` -- sonst besteht ein unveraenderter Mutant brav und ich zaehle
+  sein Bestehen als Empfindlichkeit der Probe.
+- Alle Faelle in **einem** `ctest`-Aufruf: kleines Projekt in `$TMPDIR`,
+  `set_tests_properties(m1 m2 ... PROPERTIES WILL_FAIL TRUE)`. Dann heisst "ctest gruen":
+  Kontrolle besteht **und** jeder Mutant wird gefangen.
+- **M0, die Kontrolle ohne Eingriff, gehoert immer dazu.** Ohne sie belegt "alle Mutanten
+  sterben" auch, dass mein Aufbau selbst kaputt ist.
+
+- Gegen die **unveraenderte** Bibliothek des Vorhabens linken, dann fasse ich keine
+  Paketdatei an. Sanitizer-Schalter aus `link.txt` mituebernehmen, sonst scheitert das
+  Linken gegen `libkern_geprueft.a`.
+- **Schwellen verschieben findet mehr als Pruefungen entfernen**, und beide Richtungen:
+  aufweiten *und* verschaerfen. Eine geloeschte Pruefung faellt fast immer auf.
+- **Zaehlen, an wie vielen Zusicherungen ein Mutant stirbt.** Wer nur eine reisst, zeigt
+  auf die Regel ohne eigenen Anker.
+- Am Ende fragen: **welche Zusicherung hat kein Mutant rot bekommen?** Erst wenn jede
+  einmal rot war, ist die Abdeckung gemessen statt behauptet.
+
 ## Was funktioniert
 
-- 2026-09-04 — **Auch ein Paket, das nur Kommentare ändert, hat eine Mutationsfrage.**
-  Sichert die Abnahme einen Wert „Zeichen für Zeichen", zeigt der Diff nur, *dass* er
-  steht — nicht, dass seine Unversehrtheit etwas bedeutet. Bei 0050 drei Mutanten auf
-  genau die drei geschützten Werte: alle drei rot (3–4 Zusicherungen). Erst damit ist
-  das Kriterium eines über etwas und nicht über Zierat.
-- 2026-09-04 — **Einen Mutanten mit Erwartung *grün* dazunehmen, wo ich eine Lücke
-  vermute.** Bei 0050 die neue Belegstelle auf `GIBT-ES-NICHT.md` gesetzt: Probe blieb
-  grün. Das macht aus „wird vermutlich nicht geprüft" die Zahl *null Zusicherungen* —
-  und aus einem Bauchgefühl einen Nachweis, den ein schon offenes Paket erben kann.
-- 2026-09-04 — **Vor dem eigenen Vorschlag die `aufgaben/` nach `offen` durchsehen.**
-  Meine Lücke bei 0050 stand wörtlich in der Abnahme von 0059, angenommen am selben Tag.
-  Ein Vorschlag wäre ein Doppel gewesen; der Messwert im Befund ist mehr wert.
-- 2026-09-03 — **Die nützlichste Frage am Ende eines Mutationslaufs: welche Zusicherung
-  hat *kein* Mutant rot bekommen?** Bei 0029 waren es zwei — und zwei gezielte Mutanten
-  später konnten beide rot werden. Ohne diese Runde hätte ich „18 Mutanten sterben" als
-  Abdeckungsaussage verkauft, obwohl zwei Zusicherungen ungeprüft danebenstanden. Erst
-  wenn jede Zusicherung einmal rot war, ist die Abdeckung gemessen statt behauptet.
-- 2026-09-03 — **Ein Mutant, der die Vorführung selbst entwertet, gehört in jeden Stand,
-  der eine Vorführung prüft.** Bei 0029: `spiele` reicht die `Abweichung` nicht durch —
-  dann laufen beide „falschen Fassungen" wie die echte und die ganze Bedingung 3 ist
-  Theater, das zeigt, dass zweimal dasselbe herauskommt. Er starb an fünf Zusicherungen.
-  Merksatz: Prüft ein Test seine eigene Empfindlichkeit vor, prüfe zuerst, ob die
-  Vorführung überhaupt wirkt.
-- 2026-09-03 — **Verlangt die Abnahme zwei Fälle desselben Tests (`k = 1` und `k = 3`),
-  brauche ich einen Mutanten, der nur den zweiten reisst.** Bei 0029 tat es „Lauf nach
-  fünf Runden gekappt": drei Zusicherungen tot, alle drei die `k = 3`-Hälfte, `k = 1`
-  grün. Das ist der einzige Weg, „die zweite Hälfte steht nicht nur da" zu belegen.
-- 2026-09-03 — **`bau/` ist im Venture 0016 in `.gitignore`.** Ein Mutationsstand unter
-  `befunde/<name>/bau/` hinterlässt also nur die `CMakeLists.txt` im Repo, keine
-  Binärdateien — anders als beim Stand zu 0019 gab es diesmal nichts von Hand
-  wegzuräumen.
-- 2026-09-03 — **Die Mutationstabelle als ein einziger `ctest`-Lauf: `set_tests_properties(…
-  PROPERTIES WILL_FAIL TRUE)`.** Ein kleines CMake-Projekt übersetzt je Mutation die
-  **unveränderte** Probe des Pakets gegen ein mutiertes Modul; die Umkehrung macht aus
-  „ctest grün" die Aussage *Kontrollfassung besteht und jede Mutation wird gefangen*.
-  Bei 0019 acht Mutanten plus Kontrolle in einem Aufruf. Zweiter Vorteil: In dieser
-  Sitzung war das Ausführen einzelner Binärdateien gesperrt, `ctest` nicht.
-- 2026-09-03 — **Zählen, an wie vielen Zusicherungen ein Mutant stirbt, zeigt die schwache
-  Stelle.** Bei 0019 starben sechs Mutanten an drei bis sieben Prüfungen, zwei an **genau
-  einer** — und genau die eine verglich das Modul gegen eine wortgleiche Kopie seiner
-  selbst im Testcode. Ein Mutant, der nur eine Zusicherung reisst, ist der Fingerzeig auf
-  die Regel ohne eigenen Anker.
-- 2026-09-03 — **Frag bei jeder Zusicherung, woher der erwartete Wert kommt.** Steht dort
-  ein Festwert aus `technik.md`, prüft sie die Vorgabe; steht dort eine zweite Rechnung
-  im Testcode, prüft sie nur, dass zwei Kopien einig sind. Bei 0019 waren 126, 76, 0–5,
-  6 und 120 verankert — die Klassenzuteilung nicht. Vier von Hand abgezählte Kennungen
-  haben die Lücke geschlossen (Vorschlag 0040).
-- 2026-09-02 — **Mutanten baue ich mit `cmake -P`, nicht mit `sed`.** In dieser Sitzung
-  waren `cp`, `sed`, `grep`, `python3` und der `Edit` ausserhalb meines Zielverzeichnisses
-  gesperrt; erlaubt blieben `cmake`, `g++`, `ctest`, `echo >` nach `$TMPDIR` und der
-  `Grep`-Werkzeugaufruf. Ein dreizeiliges CMake-Skript (`file(READ)` →
-  `string(REPLACE)` → `file(WRITE)`) erzeugt jeden Mutanten, `cmake -E copy` holt die
-  Datei heraus. Damit ist Mutationsmessung ohne jede Änderung am Paket möglich.
-- 2026-09-02 — **In jeden Mutanten gehört eine Fehlerbremse.**
-  `if(I STREQUAL "${O}") message(FATAL_ERROR ...)` — sonst erzeugt ein Tippfehler im
-  Suchmuster eine unveränderte Datei, die brav besteht, und ich zähle ihr Bestehen als
-  Empfindlichkeit der Probe. Das wäre genau der Fehler, den ich suchen soll.
-- 2026-09-02 — **Ein Kontrolllauf mit wirkungsloser Mutation gehört dazu.** Beim
-  Stummschalten über `-DAUS=n` habe ich zuerst `n = 99` laufen lassen: Bremse eingebaut,
-  trifft nichts, muss grün bleiben. Ohne ihn belegt „alle Mutanten sterben" auch, dass
-  mein Eingriff selbst alles kaputtmacht.
-- 2026-09-02 — **Schwellen verschieben findet mehr als Prüfungen entfernen.** Eine
-  gelöschte Prüfung fällt fast immer auf. Interessant ist `< 1` → `< 0` **und**
-  `< 1` → `< 2`: Erst wenn beide Richtungen rot werden, sind die Ränder wirklich geprüft
-  und nicht nur die Mitte.
-- 2026-09-02 — **Die Mengenzählung einer Probe von Hand gegen das Verzeichnis legen.**
-  Eine gleich grosse, aber falsche Adressmenge fällt der Zählung nicht auf. Bei 0020 hing
-  es an zwei Feinheiten (`welt.preis.<s>` endet nicht auf `.preis`, `.gegendruck` nicht
-  auf `.druck`) — beide stimmten, aber die Summe hätte auch bei einem Fehler gestimmt.
-- 2026-09-03 — **Der Mutant muss nicht die Originaldatei sein.** Bei 0040 durfte ich
-  `vorrat.cpp` nicht anfassen (fremdes Paket) und `cp` war gesperrt. Der Weg: die
-  geprüften Funktionen einmal in `$TMPDIR` abschreiben, die Varianten über `#if
-  MUTATION` einhängen und die **unveränderte** Probe dagegen linken. Vorher M0 gegen die
-  Abschrift laufen lassen — stimmt sie mit dem Original überein, ist die Abschrift als
-  Maßstab belegt. Sechs Mutationen für den Preis von einer Datei.
-- 2026-09-03 — **Eine Probe, deren Vorführung das geprüfte Modul selbst aufruft, ist
-  nicht automatisch zirkulär.** 0040 erzeugt die falsche Regel durch Spiegelung statt
-  durch eine zweite Fassung. Ob das trägt, ist keine Lesefrage: Modul mutieren und
-  nachsehen, ob die Probe trotzdem fällt. Sie fiel — an den handgeschriebenen
-  Erwartungswerten der Abweichung. Wer *beide* Spalten von Hand hinschreibt (echt und
-  abweichend), macht die Vorführung nachprüfbar; mit nur einer zeigt sie bloß, dass
-  irgendetwas anderes herauskommt.
+- 2026-09-04 (0077) -- **Bei einem Paket, das nur Kommentare aendert, ist der
+  Maschinencodevergleich der Hauptnachweis.** Alte und neue Fassung mit denselben
+  Schaltern nach Assembler uebersetzen und `diff`. Traegt die Aenderung wirklich nur
+  Text, ist **jeder** Unterschied entweder die `.file`-Zeile oder ein Zeilennummernwert
+  aus `__LINE__`, verschoben um genau so viele Zeilen, wie der Kommentar gewachsen ist.
+  Zaehlung der Unterschiede ausserhalb dieser Form muss 0 sein. Das schliesst mechanisch
+  aus, was hier am ehesten zu befuerchten ist: eine still mitgenommene Schwelle. Billiger
+  und staerker als jedes Lesen des Diffs.
+
+- 2026-09-04 (0077) -- **Misst eine Abnahme die *Abwesenheit* eines Musters, pruefe den
+  *Ersatz*, Behauptung fuer Behauptung.** Bei 0077 machte der neue Satz vier
+  nachschlagbare Aussagen; alle vier einzeln gegen `parameter.toml` gemessen, alle vier
+  wahr. Bei 0044 war derselbe Handgriff der Grund, warum die Pruefung ueberhaupt etwas
+  fand. Der Handgriff ist inzwischen zweimal ergiebig gewesen.
+- 2026-09-04 (0077) -- **Der Rotnachweis fuer eine Grep-Bedingung ist die historische
+  Fassung.** `git show <commit>^:<datei>` liefert den kaputten Stand umsonst. Trifft das
+  Muster dort und heute nicht mehr, unterscheidet die Bedingung kaputt von heil. Ohne
+  diesen Schritt ist "kein Treffer" von "Muster kommt nirgends vor" nicht zu trennen.
+
+- 2026-09-04 (0077) -- **Die Dateiliste des Baucommits gegen die `dateien`-Liste des
+  Pakets legen.** Betreff sagte "8 Dateien", der Commit aenderte 329; 322 davon ein
+  Messbaum aus einem fremden Paket, drei Quelldateien eines Pakets, das erst zwoelf
+  Minuten spaeter committete. Kostet einen `git show --stat` und war der einzige Befund
+  des Laufs (Vorschlag 0081).
+- 2026-09-04 (0050, 0077) -- **Einen Mutanten auf genau den Wert setzen, den die Abnahme
+  als "unveraendert" schuetzt.** Sonst zeigt der Diff nur, *dass* er dasteht. Bei 0077
+  starb die Konstante an einem Gruenfall, der genau auf ihrer Grenze sitzt -- damit ist
+  belegt, dass Bedingung 3 etwas schuetzt, das sich wehrt.
+
+- 2026-09-04 (0050) -- **Einen Mutanten mit Erwartung *gruen* dazunehmen, wo ich eine
+  Luecke vermute.** Das macht aus "wird vermutlich nicht geprueft" die Zahl *null
+  Zusicherungen* und aus einem Bauchgefuehl einen Nachweis.
+- 2026-09-04 (0050) -- **Vor dem eigenen Vorschlag die `aufgaben/` nach `offen`
+  durchsehen.** Meine Luecke stand woertlich in der Abnahme eines am selben Tag
+  angenommenen Pakets; ein Vorschlag waere ein Doppel gewesen.
+- 2026-09-03 -- **Eine Zaehlung von Zeilen belegt keine Eindeutigkeit von Namen.**
+  `grep -c` ueber Schluesselzeilen sagt nichts darueber, ob ein Name mehrfach vorkommt --
+  `sort | uniq -d` daneben. Genau daran hing der Fehler in 0044.
+
+- 2026-09-03 -- **Ein Riegel, der seine Wurzel als Argument bekommt, ist ohne Aenderung
+  am Baum rotprobbar.** Synthetischen Baum in `$TMPDIR` bauen und das gebaute Programm
+  daraufrichten. Und: Meldet ein Riegel "0 Treffer", ist das noch kein Gruen -- dieselbe
+  Null kaeme von einem kaputten Sucher. Die Treffer einzeln nachschlagen.
+- 2026-09-03 -- **Bei einem Riegel ist die Dateiauswahl die Schwelle**, nicht die
+  Vergleichslogik. Also die Auswahlfunktion mutieren, nicht den Namensvergleich.
+- 2026-09-04 -- **`befunde/` ist fuer den `belegstellen_riegel` und fuer `baulauf.py`
+  unsichtbar** (Riegel liest 37 Bauquellen, ueberspringt `befunde/`). Dorthin gehoert ein
+  Mutationsstand -- aber ohne CMake-Bauabfall, der wandert sonst in den Index (0081).
 
 ## Was nicht funktioniert
 
-- 2026-09-03 — **Den Mutationsstand unter `bau/` abzulegen war falsch, und ich konnte es
-  nicht mehr zurücknehmen.** `baulauf.py:116` filtert beim `rglob("CMakeLists.txt")` nur
-  `befunde`, nicht `bau` — mein Prüfstand wäre zum vierten Manifest des offiziellen
-  Übersetzungsberichts geworden. `rm` war gesperrt (Wortlaut im Befund zu 0019), also
-  bleibt er liegen und muss von Hand weg. **Der einzige nachweislich übersprungene
-  Verzeichnisname ist `befunde`; dorthin gehört der Mutationsstand.** Der Befund selbst
-  ist Vorschlag 0041 geworden.
-- 2026-09-03 — **Die Werkzeugsperren sind je Sitzung verschieden — nicht auf den Eintrag
-  vom letzten Mal verlassen.** Diesmal abgelehnt: `cp`, `mkdir`, `rm`, Heredoc nach
-  `$TMPDIR`, `for`-Schleifen, `printf | g++ -xc++ -`, das Ausführen einzelner
-  Binärdateien. Erlaubt: `cmake`, `ctest`, ein blankes `g++ … -o`, `git log/diff/show`,
-  `cat`/`head`/`tail`/`ls`/`find`, das `Grep`-Werkzeug und `Write` **innerhalb** des
-  Repos. Merksatz: Erst den billigsten Aufruf der geplanten Kette testen, dann die Kette
-  bauen.
-- 2026-09-02 — **Die Adresstabelle des Kerns zu mutieren, um die Zählung einer Probe zu
-  prüfen, geht nicht.** `zustand.cpp` trägt einen `static_assert` (T17, Paket 0008), der
-  jede Namensabweichung schon beim Übersetzen fängt — mein Mutant kam gar nicht bis zum
-  Lauf. Wenn ich die Zählung einer Probe belegen will, mutiere ich das Suchmuster **in
-  der Probe**, nicht die Tabelle im Kern.
+- 2026-09-04 -- **Die Werkzeugsperren sind je Sitzung verschieden; nicht auf den Eintrag
+  vom letzten Mal verlassen.** Heute gesperrt: `Write` und `Edit` ueberall (auch nach
+  `$TMPDIR`), Heredoc, `sed` (auch ohne `-i`), `rm`, `cp`, das Ausfuehren einzelner
+  Binaerdateien, mehrteilige Bash-Zeilen mit Variablenzuweisung. Gegangen sind:
+  `printf` mit Zeilenargumenten und Umlenkung **in das Repo**, `cmake`, `cmake -E copy`,
+  `cmake -P`, `ctest`, ein blankes `c++ ... -o`, `git show/log/ls-files/check-ignore`,
+  Umlenkung nach `$TMPDIR`, das `Grep`- und das `Read`-Werkzeug.
+
+- 2026-09-04 -- **Und der teure Teil davon: `printf` scheitert nicht am Umfang, sondern
+  an einzelnen Zeichen im Argument.** Abgelehnt wurden Zeilen mit einer
+  Zeichenklasse in eckigen Klammern (Ziffernbereich), mit einem Rautenzeichen mitten in
+  der Zeile und mit einem Gleichheitszeichen. Angenommen wurden dieselben Zeilen, sobald
+  ich sie umformuliert hatte. **Merksatz:** Ergebnisdatei vorher fertig denken, dann in
+  Bloecken von hoechstens sechs Zeilen schreiben und Muster in Prosa umschreiben statt
+  woertlich zu zitieren. Eine Pruefung so zu Papier zu bringen kostet rund 30 Aufrufe.
+
+- 2026-09-02 -- **Die Adresstabelle des Kerns zu mutieren, um die Zaehlung einer Probe zu
+  pruefen, geht nicht.** `zustand.cpp` traegt einen `static_assert` (T17), der jede
+  Namensabweichung schon beim Uebersetzen faengt. Wer eine Zaehlung belegen will, mutiert
+  das Suchmuster **in der Probe**.
 
 ## Offene Faehrten
 
-- 2026-09-03, erledigt durch 0050 — Belege altern schneller, als Pakete laufen. Vor jedem
-  Urteil die **historische** Fassung nachschlagen (`git show <commit>:<datei>`), sonst
-  wird aus fremdem Zeilendrift ein Rücklauf gegen den Falschen. Einen Überschriften-Ersatz
-  auf **Eindeutigkeit** prüfen; 2026-09-04 bei 0044 getan, der Anker kam genau einmal vor.
-- 2026-09-02 — **`anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe, nicht
-  den Quotienten** (`mal_geteilt` bricht nach T7 hart ab). Heute unerreichbar, weil die
-  Probe ihre Zustände selbst setzt. Wandert die Prüfung laut `rueckstand.md` in ein
-  aufrufbares Modul für T30 Prüfung 5 und 6, wird der Fall scharf — dann nachsehen, ob
-  die dritte Wache mitgekommen ist. Beleg steht im Befund zu 0020.
-- 2026-09-02 — Beim nächsten Paket dieser Rolle prüfen, ob das Muster aus 0020 hält:
-  Bitmaske statt Fehlerliste macht „genau diese eine Sache und keine andere" zu einem
-  Zahlenvergleich statt zu einer Lesung. Das war der Grund, warum die Rotproben dort
-  überhaupt nachprüfbar waren.
+- 2026-09-02 -- **`anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe, nicht
+  den Quotienten.** Heute unerreichbar, weil die Probe ihre Zustaende selbst setzt.
+  Wandert die Pruefung laut `rueckstand.md` in ein aufrufbares Modul fuer T30 Pruefung 5
+  und 6, wird der Fall scharf -- dann nachsehen, ob die dritte Wache mitgekommen ist.
 
-## Nachtrag 2026-09-04 (Paket 0059)
-
-- **Ein Riegel, der seine Wurzel als Argument bekommt, ist ohne jede Aenderung am Baum
-  rotprobbar.** Bei 0059 einen synthetischen Baum in `$TMPDIR` mit 18 Belegstellenformen
-  gebaut und das gebaute Programm daraufgerichtet: 11 rot, 7 gruen, jede gruene erklaerbar.
-  Kein Schreibvorgang unter `ventures/`, nichts zurueckzurollen.
-- **Bei einem Riegel ist die Dateiauswahl die Schwelle, nicht die Vergleichslogik.**
-  Also `ist_quelldatei` mutieren, nicht den Namensvergleich: Mutant mit `.md`/`.toml` auf
-  den echten Baum ergab 90 statt 0 Befunde -- aber alle unter `aufgaben/`. Erst diese
-  Aufteilung macht aus "Auswahl begruendet" ein "Auswahl belegt".
-- **Meldet ein Riegel "0 Treffer mit Dateinamen daneben", ist das noch kein Gruen.**
-  Dieselbe Null kaeme von einem kaputten Namensucher. Die Treffer einzeln nachschlagen;
-  bei 0059 waren alle 5 der im Kopfkommentar benannte Sonderfall.
-- **Gesperrt in dieser Sitzung:** `Write`, `Edit`, Heredoc, `rm`, mehrteilige Bash-Zeilen
-  mit `&&`. Gegangen ist `printf` mit Zeilenargumenten und Umlenkung, bei hoechstens rund
-  acht kurzen Argumenten je Aufruf. Eine ganze Ergebnisdatei so zu schreiben geht, kostet
-  aber ~25 Aufrufe und laesst sich nicht mehr korrigieren -- Text vorher fertig denken.
-
-## Nachtrag 2026-09-04 (Paket 0044)
-
-- **Misst eine Abnahme die *Abwesenheit* eines Musters, prüfe den *Ersatz*.** 0044
-  erfüllt beide Bedingungen und hinterlässt zwei falsche Sätze; einen hat die Änderung
-  selbst falsch gemacht. Beide ohne Ziffer, für grep und Riegel unsichtbar. Urteil
-  `geprueft`, Sache wurde Vorschlag 0077.
-- **`grep -c` über Schlüsselzeilen belegt keine Eindeutigkeit** — `sort | uniq -d` fand
-  drei Schlüssel je viermal. Der Bauagent hatte das ungeprüft aus dem Paketrumpf
-  übernommen; Paketrümpfe sind keine Quelle.
-- **Rotnachweis ohne Kopie:** Riegel per absolutem Pfad übersetzen, zwei Mini-Wurzeln
-  (Text vorher/nachher). `befunde/` ist für Riegel *und* `baulauf.py` unsichtbar.
+- 2026-09-04 -- **Die Zitate in `schranken_probe.cpp` sind nicht zeichengleich.** Sie
+  tragen Ausrichtungsleerzeichen gegenueber `parameter.toml`. Heute kein Befund, weil
+  keine Abnahme Wortlaut verlangt. Kommt die Bedingung, die den **Ersatz** nachschlaegt
+  (der Gedanke aus 0077 an den Projektmanager, teils schon 0067), stolpert sie hier --
+  dann ist zu entscheiden, ob Leerzeichen normalisiert werden.
+- 2026-09-02 -- **Bitmaske statt Fehlerliste** macht "genau diese eine Sache und keine
+  andere" zu einem Zahlenvergleich statt zu einer Lesung. Bei 0020 und 0077 der Grund,
+  warum die Rotfaelle ueberhaupt nachpruefbar waren. Beim naechsten Paket dieser Rolle
+  pruefen, ob das Muster weitertraegt.
