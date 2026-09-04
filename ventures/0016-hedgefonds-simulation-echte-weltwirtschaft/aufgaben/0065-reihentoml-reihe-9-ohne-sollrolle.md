@@ -169,15 +169,16 @@ erst dann kopiert.
 | gemeinsame Schluessel | 1212 |
 | neue Schluessel | **2** — `datei.nachgezogen_durch.7`, `zaehlung.handelsblock.in_den_sollreihen_enthalten` |
 | weggefallene Schluessel | **2** — `reihe.8.rolle.2` (der Eintrag `soll` der Reihe 9), `zaehlung.handelsblock.in_den_31_enthalten` |
-| verschiedene gemeinsame Werte | **20** |
+| verschiedene gemeinsame Werte | **21** |
 
 Die gleiche Gesamtzahl ist hier eine Falle und deshalb aufgezaehlt statt summiert: zwei
-Schluessel kommen, zwei gehen. Die zwanzig einzeln: `zaehlung.sollreihen_gesamt`,
+Schluessel kommen, zwei gehen. Die einundzwanzig einzeln: `zaehlung.sollreihen_gesamt`,
 `zaehlung.sollreihen_gesetzt`, `zaehlung.gesetzt_zerlegung`, `zaehlung.probe`,
 `zaehlung.beleg`, `zaehlung.lizenz.sollreihen_unklar`,
 `zaehlung.lizenz.unklar_zerlegung`, `zaehlung.lizenz.gegenrechnung`,
 `reihe.8.sollreihen`, `reihe.8.t37_klasse`, `reihe.8.offen.0`, `reihe.8.offen.1`,
-`widerspruch.4.entscheidet`, `widerspruch.4.in_dieser_datei`, `pruefweg.schnitt_5`,
+`widerspruch.4.entscheidet`, `widerspruch.4.in_dieser_datei`, `reihe.12.t26_folge`,
+`pruefweg.schnitt_5`,
 `pruefweg.zaehlregel_sollreihen`, `pruefweg.zaehlregel_t37`, `pruefweg.handelsblock`,
 `pruefweg.falle`, `pruefweg.toml_geprueft`. Genau diese Bilanz steht auch im Feld
 `pruefweg.toml_geprueft`.
@@ -187,3 +188,198 @@ Kommentarstellen sind geaendert: ueber `[datei.vorlagen]`, ueber
 `[zaehlung.handelsblock]`, ueber `[zaehlung.pruefgegenstaende]`, neu ueber
 `gesetzt_zerlegung` und neu ueber `sollreihen` im Block der Reihe 9. Das steht auch im
 Feld, weil eine Blattwertbilanz sonst mehr Vollstaendigkeit behauptet, als sie hat.
+
+### Bedingung 1 — keine der elf Stellen fuehrt Reihe 9 mehr als Sollreihe
+
+**Erfuellt, und die Probe geht nachgerechnet auf statt verglichen:**
+
+| Rechnung | Ergebnis |
+|---|---|
+| `sollreihen` ueber alle 19 `[[reihe]]` addiert | **27** |
+| `zaehlung.sollreihen_gesamt` | **27** |
+| `sollreihen_frei + sollreihen_abgeleitet` | 23 + 4 = **27** |
+| `sollreihen_frei + sollreihen_gesetzt + sollreihen_abgeleitet` | 23 + 0 + 4 = **27** |
+| `[zaehlung.lizenz]`: frei + unklar + gesperrt | 7 + 20 + 0 = **27** |
+
+`sollreihen_frei = 23` und `sollreihen_abgeleitet = 4` stehen **unveraendert** — sie sind
+nicht unter den zwanzig geaenderten Blattwerten.
+
+Die elf Stellen einzeln, mit der Zeilennummer der **Altfassung** aus der Tabelle des
+Pakets:
+
+| # | Stelle | jetzt |
+|---:|---|---|
+| 1 | `sollreihen_gesamt` | 27 |
+| 2 | `sollreihen_gesetzt` | 0 |
+| 3 | `gesetzt_zerlegung` | `""`, Grund in einem neunzeiligen Kommentar darueber |
+| 4 | `probe` | `"23 + 0 + 4 = 27, kurz 23 + 4 = 27"` |
+| 5 | `zaehlung.beleg` | 27 ueber die Reihen 1, 2, 8, 10 und 11, mit dem Verweis auf 0054 |
+| 6 | Schluesselname | `in_den_sollreihen_enthalten` |
+| 7 | Lizenzkommentar / `sollreihen_unklar` / `unklar_zerlegung` | 27 / **20** / ohne Reihe 9 |
+| 8 | `gegenrechnung` | „frei 0, **unklar 27**, gesperrt 0" |
+| 9 | Reihe 9: `rolle` / `sollreihen` | `["start", "politikpfad"]` / **0** |
+| 10 | Reihe 9, `offen[1]` | „**11 der 27** Sollreihen und 7 der 16 Pruefgegenstaende" |
+| 11 | `[[widerspruch]]` Nr. 5, `entscheidet` | entschieden, siehe Bedingung 3 |
+
+Zu Nr. 4: Das Paket schlaegt `"23 + 4 = 27"` vor. Ich schreibe beide Formen in dasselbe
+Feld — die dreigliedrige, damit die Summanden weiter eins zu eins auf
+`sollreihen_frei`, `sollreihen_gesetzt` und `sollreihen_abgeleitet` zeigen und die Null
+sichtbar ist, und die zweigliedrige im Wortlaut der Abnahme, damit der Pruefer sie findet.
+
+Zu Nr. 10: Die 11 sind nachgezaehlt, nicht abgezogen — Reihe 8 (4) und Reihe 10 (3),
+die nach `[[widerspruch]]` Nr. 1 ueber den Drittanbieter IWF an derselben Erlaubnis
+haengen, plus Reihe 11 (4) aus `IMF.RES/WEO`. Die „7 der 16" bleiben, und das steht jetzt
+im Feld begruendet: es sind die vier Verbraucherpreise und die drei Wechselkurse.
+
+**Ich habe nicht nur die elf gemacht, sondern dateiweit gesucht.** Alle **28** Vorkommen von
+„Reihe 9" in der neuen Fassung (auf 22 Zeilen) einzeln nachgesehen: jedes ist entweder
+historisch mit Datum („bis zum 2026-09-03 …") oder sagt ausdruecklich, dass sie keine
+Sollreihe mehr ist.
+
+### Eine zwoelfte Fundstelle, und sie ist echt
+
+`reihe.12.t26_folge` — das ist **Reihe 13** — sagte: *„Reihe 13 traegt keine der 31
+Sollreihen, der Rueckvergleich verliert also keine Sollreihe …"*. Die Stelle nennt Reihe 9
+nicht und stand deshalb nicht in der Tabelle des Pakets; sie fuehrt die alte Zahl
+trotzdem weiter. Jetzt steht dort „keine der 27 Sollreihen (bis zum 2026-09-03: 31)".
+Gefunden habe ich sie nicht ueber die Tabelle, sondern ueber ein dateiweites `\b31\b`
+— genau die Lehre aus Paket 0049: ein Nachweis, der dateiweit formuliert ist, schlaegt
+die Aufzaehlung, die Stellen nennt.
+
+Die uebrigen sieben Vorkommen von `31` in der neuen Fassung sind geprueft und richtig:
+fuenfmal historisch mit Datum, einmal die Zeichenfolge `in_den_31_enthalten` im Kommentar
+ueber den umbenannten Schluessel, einmal das Datum `2026-08-31`.
+
+### Bedingung 2 — die 16 Pruefgegenstaende und die Toleranz 2
+
+**Erfuellt und begruendet, nicht nur unangetastet.** `zaehlung.pruefgegenstaende` ist in
+der Blattwertbilanz **nicht** unter den einundzwanzig — kein Wert des Blocks hat sich
+bewegt. Der Kommentar darueber sagt jetzt, warum: Reihe 9 trug nach T37 die Klasse
+`gesetzt` und kommt in keinem der sechzehn vor; die Aufzaehlung darunter ist
+abschliessend (BIP 4, Sektorstruktur 4, Verbraucherpreise 4, Wechselkurs ohne USA 3,
+Handelsblock 1), und 4 + 4 + 4 + 3 + 1 = 16 ergibt sich mit und ohne Reihe 9.
+Nachgerechnet: Die fuenf Posten summieren sich auf 16, `gesamt` ist 16, `toleranz` ist 2.
+
+### Bedingung 3 — `[[widerspruch]]` Nr. 5
+
+**Erfuellt.** `entscheidet` heisst jetzt „Teilweise entschieden — was offen blieb, hat den
+Adressaten gewechselt" und trennt drei Dinge: **entschieden** am 2026-09-03 durch den
+Spielentwerfer (Sollrolle gestrichen, Start und Politikpfad bleiben, an die Stelle des
+Fehlermasses tritt eine Invariante); **offen und beim Datenbauer** die Quelle fuer den
+Pfad, weil DISR Deutschland und China nicht fuehrt und ein einheitlicher Zinsbegriff ueber
+vier Laender ungemessen ist; **offen und beim Architekten** der Nachzug von `technik.md`.
+Der alte Verweis auf `rueckstand.md` samt Zitat steht unveraendert dahinter.
+
+### Bedingung 4 — die zwei Zahlwoerter ueber `[datei.vorlagen]`
+
+**Erfuellt. Beide nachgezaehlt, beide waren falsch**, und die Zaehlregel steht jetzt im
+Kommentar, damit sie wiederholbar ist statt geglaubt.
+
+| Angabe | stand da | gezaehlt |
+|---|---|---|
+| wie oft der Einheitenbefund als `beleg` auftritt | viermal | **einmal** |
+| wie viele Pakete lang die Vorlage gefehlt hat | vier | **zwei** |
+
+*Wie gezaehlt:* Als `beleg` gelten Blattwerte, deren letzter Pfadteil `beleg` heisst und
+die die Zeichenfolge `einheitenbefund-pwt-baci` tragen — das ist allein
+`reihe.13.umrechnung.0.beleg`, der erste Umrechnungsblock der **Reihe 14**. Ueberhaupt
+genannt wird der Befund in **acht** Blattwerten (`datei.vorlagen.einheiten` mitgezaehlt);
+die uebrigen sieben stehen unter `offen`, `begruendung` und `lang`. Vermutlich ist die
+Vier daher gekommen — aber das ist meine Vermutung und steht deshalb nicht in der Datei.
+
+Die zwei Pakete sind aus `datei.nachgezogen_durch` gezaehlt: zwischen 0036, das den Beleg
+eintrug, und 0049, das den Vorlagenschluessel nachtrug, liegt genau ein weiteres Paket,
+0047 — die Luecke bestand also waehrend 0036 und 0047. **Unabhaengig gegengeprueft an den
+acht Fassungen dieser Datei im Git**, jede mit `tomllib` eingelesen: der Beleg erscheint
+mit `ae6f605` (2026-09-03, dem Commit, der die Aenderung des Pakets 0036 traegt), der
+Vorlagenschluessel mit `58908fa`. Dazwischen liegt genau eine Fassung. Der Pruefer des
+Pakets 0062 hat „zwei bis drei" geschaetzt; gezaehlt sind es zwei.
+
+### Was ich **nicht** geaendert habe, und warum — die eine Stelle, an der ich vom Handzettel abweiche
+
+`rolle_tabelle` der Reihe 9 traegt weiter woertlich **„Start + Politikpfad + Soll (4,
+gesetzt)"**. Der Spielentwerfer hat in `spiel.md` Z. 2056-2061 *zwei* Schluessel benannt
+und beide „ab heute falsch" genannt: `t37_klasse` **und** `rolle_tabelle`. `t37_klasse`
+habe ich geleert. `rolle_tabelle` nicht, und das ist eine Entscheidung, keine Auslassung:
+
+- **Leseregel 4 im Kopf dieser Datei** definiert `rolle_tabelle` als *woertliche
+  Uebernahme* aus der Tabelle in `technik.md` Abschnitt 7. `technik.md` Z. 1441 sagt
+  dort **unveraendert** „Start + Politikpfad + Soll (4, **gesetzt**)", und T37 fuehrt in
+  seiner Klassentabelle weiter die Zeile `gesetzt` mit dem Leitzins (4). Nachgemessen,
+  nicht angenommen. Ein Feld, dessen Inhalt „was die Vorlage sagt" ist, kann nicht falsch
+  werden, solange die Vorlage das sagt — falsch ist die Vorlage.
+- **Ueberschriebe ich es**, stuende dort „Start + Politikpfad" — zeichengleich mit dem,
+  was die Reihen 12 und 13 als *echte* Uebernahme tragen. Von einer echten Uebernahme
+  waere es nicht mehr zu unterscheiden, und die Spur zum noetigen Nachzug in `technik.md`
+  waere weg. Genau die Sorte Glaettung, die der Kopf dieser Datei verbietet.
+- **Die Grenze des Pakets sagt es selbst:** „Widersprueche zu `technik.md` werden
+  gemeldet — dort laeuft der Nachzug als eigenes Paket." Gemeldet wird in dieser Datei
+  unter `[[widerspruch]]`, und dort steht es jetzt: Nr. 5, Feld `in_dieser_datei`, mit der
+  Vorfahrtregel „fuer den Jahrgangsbau gelten `rolle`, `sollreihen` und `t37_klasse`, nicht
+  `rolle_tabelle`" — dieselbe Vorfahrt, die Widerspruch Nr. 2 fuer `verdacht_tabelle`
+  gegen `lizenzurteil` schon festlegt.
+
+**Kein neuer `[[widerspruch]]`-Block**, obwohl das naheliegend waere: Ein zehnter Eintrag
+haette `schnitt_3` (113 Tabellenkoepfe), `schnitt_4` (`^nr = ` zaehlt 28) und die
+Widerspruchszahl in `toml_geprueft` gleich mitverschoben — drei Selbstmessungen fuer eine
+Sache, die in den bestehenden Block Nr. 5 gehoert, weil sie dieselbe Reihe und dieselbe
+Entscheidung betrifft.
+
+**Ebenfalls unveraendert, wie die Grenzen es verlangen:** `quelle_eingebettet`
+(`IWF, Datenfluss IMF.STA/MFS_IR 9.0.0`), `codes` (`DISR_RT_PT_A_PT`), `deckung_urteil`
+(„reisst — DEU und CHN tragen … keinen einzigen Wert, USA endet 2020") und alle
+`[[reihe.deckung]]`-Bloecke der Reihe 9 — maschinell gegengeprueft, keines davon steht
+unter den einundzwanzig geaenderten Blattwerten. `daten/deckungsbefund-1997.md` ist nicht
+angefasst; die Datei ist die einzige geaenderte des Laufs.
+
+### Regressionsproben, die das Paket nicht verlangt hat
+
+- **Alle fuenfzehn Grep-Muster der sieben Schnitte** aus `[pruefweg]` nach dem Eingriff
+  neu gezaehlt: **jede Zahl unveraendert** (113 Tabellenkoepfe, `^nr = ` 28,
+  `^t37_klasse = ` 20, `^sollreihen = ` 21, `^sollreihen` 28, `^wortlaut = ` 20, 54
+  Apostroph-Dreier und so fort).
+- Bei `schnitt_1` zusaetzlich die **sechs Trefferkontexte** alt gegen neu verglichen und
+  zeichengleich befunden — eine gleiche Zahl aus anderen Stellen waere sonst unbemerkt
+  geblieben.
+- `pruefweg.toml_geprueft`: der alte Feldwert aus `4eb20ac` ist eine **Praefix-
+  Teilzeichenkette** des neuen (4.597 → 7.830 Zeichen, 3.233 angehaengt). **Kein Wort
+  entfernt**, auch nicht die inzwischen ueberholte 31 aus dem ersten Absatz — sie steht
+  jetzt als ueberholt bezeichnet daneben.
+- Die Datei liest vor und nach dem Kopieren mit `tomllib` fehlerfrei ein; 19 `[[reihe]]`,
+  9 `[[widerspruch]]`, sechs Tabellen in der Wurzel.
+
+### Woran ich unsicher bin
+
+1. **Die Fassung von `probe`.** Das Paket schlaegt `"23 + 4 = 27"` vor, ich schreibe
+   beide Formen. Haelt der Pruefer das fuer eine Abweichung statt fuer eine Erfuellung,
+   ist die Ruecknahme ein Einzeiler.
+2. **`rolle_tabelle`** — siehe oben. Ich halte die Begruendung fuer tragfaehig, aber sie
+   steht gegen einen ausdruecklichen Satz des Spielentwerfers, und das ist der Punkt, an
+   dem ein Ruecklauf am wahrscheinlichsten ist.
+3. **Die zwoelfte Fundstelle** habe ich behoben statt nur gemeldet. Der Projektmanager
+   hat gesagt, eine zwoelfte sei „ein Befund gegen den Vorschlag und kein Ruecklauf gegen
+   dich"; er hat nicht gesagt, ob ich sie anfassen soll. Sie liegt in derselben Datei und
+   traegt dieselbe Zahl, deshalb habe ich sie mitgenommen.
+
+### Gemeldet, nicht angefasst
+
+**`technik.md` fuehrt Reihe 9 an zwei Stellen weiter als Sollreihe der Klasse `gesetzt`:**
+Z. 1441 (Reihenliste, Abschnitt 7) und die Klassentabelle in T37, Z. 2112. Solange das so
+steht, sind `reihen.toml` und `technik.md` in Widerspruch — er ist in `reihen.toml` unter
+Nr. 5 benannt und gehoert dem Architekten. Ein eigenes Paket.
+
+### Wo die Aenderung liegt — zum vierten Mal nicht im eigenen Commit
+
+Waehrend dieses Laufs hat ein fremder Lauf (`testentwickler: 0059-belegstellenriegel-im-baulauf`,
+Commit **`7a79290`**) meine Datendatei und diese Paketdatei mitgenommen, bevor der Bericht
+stand — nach 0057, 0062 und dem Vorlauf zu 0065 das vierte Mal. **Der Bericht bleibt
+trotzdem gueltig**, weil jede Zahl darin gegen die Commit-Kennung `4eb20ac` gemessen ist
+und nicht gegen „vorher".
+
+Gegengeprueft, weil ein Fremdcommit mehr angefasst haben kann als die eigene Datei:
+`7a79290` traegt **genau zwei** Dateien, beide meine, und seine Fassung von `reihen.toml`
+ist byteweise identisch mit meinem Zwischenstand aus `$TMPDIR`. Keine fremde Aenderung.
+
+Der Pruefer findet den Eingriff also in `7a79290` **plus** dem Commit dieses Laufs; der
+zweite traegt die zwoelfte Fundstelle (`reihe.12.t26_folge`) und die Fortschreibung von
+`pruefweg.toml_geprueft` auf einundzwanzig.
