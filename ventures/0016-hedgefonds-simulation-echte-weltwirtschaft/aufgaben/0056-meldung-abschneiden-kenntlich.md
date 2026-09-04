@@ -1,7 +1,7 @@
 ---
 id: 0056-meldung-abschneiden-kenntlich
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0038-meldung-mit-adresse-gemeinsam, 0048-meldung-in-zustand-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/meldung.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/meldung_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

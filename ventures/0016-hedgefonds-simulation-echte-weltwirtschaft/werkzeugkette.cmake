@@ -219,6 +219,49 @@ endfunction()
 # Das waere die Tuer, durch die der Fehler zurueckkommt. Wird eine Ausnahme noetig, ist
 # das ein ADR und keine Zeile hier.
 
+# Ein Pauschalabschalter erreicht den Uebersetzer auf mehr Wegen als dem einen, den
+# dieser Riegel bis zum 2026-09-04 gelesen hat. `COMPILE_OPTIONS` des Ziels ist **eine**
+# der Eigenschaften, aus denen CMake die Uebersetzerzeile zusammensetzt. Drei weitere
+# gemessen am 2026-09-04 an derselben Wegwerf-Quelle wie unten (`int f(double d){ int i =
+# d; return i; }`; ohne Abschalter bricht der Bau mit `[-Werror=float-conversion]` ab):
+#
+#   set_target_properties(z PROPERTIES COMPILE_FLAGS "-w")
+#       Riegel Code 0, Bau Code 0, 0 Diagnosen
+#       CXX_FLAGS = -std=c++20 -w -Wall -Wextra -Werror ...
+#   set_source_files_properties(z.cpp PROPERTIES COMPILE_FLAGS "-w")
+#       Riegel Code 0, Bau Code 0, 0 Diagnosen
+#       # Custom flags: CMakeFiles/z.dir/z.cpp.o_FLAGS = -w
+#   add_library(iface INTERFACE); target_compile_options(iface INTERFACE -w);
+#   target_link_libraries(z PRIVATE iface)
+#       Riegel Code 0, Bau Code 0, 0 Diagnosen
+#       CXX_FLAGS = ... -fwrapv -fno-fast-math -w
+#
+# In allen drei Faellen meldete der Riegel wortgleich Vollzug. Das ist dieselbe
+# Fehlerklasse wie beim Eintrag, der kein Schalter ist, nur eine Ebene weiter: Die
+# Eigenschaft ist nicht die Schalterzeile.
+#
+# Gesammelt wird deshalb **jeder Eintrag mit seiner Herkunft** -- zwei Listen im
+# Gleichschritt, weil eine CMake-Liste flach ist und kein Paar traegt. Die Herkunft ist
+# keine Zugabe zur Meldung: Wer `-w` sucht und nur den Zielnamen bekommt, sucht im
+# falschen Manifest, wenn der Schalter an einer einzelnen Quelldatei oder in der
+# Schnittstelle eines gelinkten Ziels haengt.
+#
+# Ein Makro und keine Funktion, weil es in den Gueltigkeitsbereich des Riegels schreiben
+# muss. Eine Funktion bekaeme eigene Kopien von `eintraege` und `herkuenfte`, und der
+# Riegel saehe am Ende eine leere Liste -- also gruen, immer.
+macro(fabrik_riegel_sammeln herkunft listenname)
+  # Nicht `if(${listenname})`: Eine Eigenschaft mit dem Wert `0` waere damit still
+  # verschwunden. Geprueft wird auf genau die zwei Faelle, die "nichts da" heissen --
+  # die leere Zeichenkette und das `-NOTFOUND`, das `get_*_property` fuer eine ungesetzte
+  # Eigenschaft liefert.
+  if(NOT "${${listenname}}" STREQUAL "" AND NOT "${${listenname}}" MATCHES "-NOTFOUND$")
+    foreach(fabrik_eintrag IN LISTS ${listenname})
+      list(APPEND eintraege "${fabrik_eintrag}")
+      list(APPEND herkuenfte "${herkunft}")
+    endforeach()
+  endif()
+endmacro()
+
 # Der Sollzustand wird hier festgehalten und nicht erst im Riegel gelesen: Als globale
 # Eigenschaft haengt er an der Datei, die ihn setzt, und nicht am Gueltigkeitsbereich,
 # in dem der Riegel spaeter laeuft. Wird diese Datei aus einem engeren Bereich
@@ -235,11 +278,16 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       "winkt jedes Ziel durch und baut gruen -- das ist schlimmer als kein Riegel.")
   endif()
 
-  # Nicht jedes Ziel uebersetzt Quelldateien. `INTERFACE_LIBRARY` kann `PRIVATE`
-  # ueberhaupt keine Schalter tragen, `UTILITY` entsteht bei `add_custom_target`,
-  # `ALIAS` ist nur ein zweiter Name. Geprueft wird, was einen Uebersetzeraufruf
-  # erzeugt; an allem anderen waere ein fehlender Warnsatz kein Befund, sondern die
-  # Bauart.
+  # Nicht jedes Ziel uebersetzt Quelldateien. `UTILITY` entsteht bei
+  # `add_custom_target`, `ALIAS` ist nur ein zweiter Name. **Den Warnsatz** verlangt
+  # dieser Riegel nur von den Arten hier; an allem anderen waere sein Fehlen kein
+  # Befund, sondern die Bauart.
+  #
+  # `INTERFACE_LIBRARY` steht bewusst nicht in der Liste und wird trotzdem angesehen --
+  # der Unterschied steht unten an der Verzweigung. Es kann `PRIVATE` ueberhaupt keine
+  # Schalter tragen, ihm den Satz abzuverlangen machte jedes Schnittstellenziel unbaubar;
+  # sein `INTERFACE_COMPILE_OPTIONS` erreicht aber jeden, der es linkt. Anwesenheit und
+  # Abwesenheit brauchen hier verschiedene Schaerfe.
   #
   # `MODULE_LIBRARY` steht seit dem 2026-09-04 mit dabei und fehlte vorher. Es
   # uebersetzt Quelldateien wie die anderen vier, kam aber vollstaendig vorbei --
@@ -266,14 +314,25 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   set(fehlt "")
   set(abgeschaltet "")
   set(gezaehlt 0)
+  set(schnittstellen 0)
   while(offen)
     list(POP_FRONT offen verzeichnis)
 
     get_property(ziele DIRECTORY "${verzeichnis}" PROPERTY BUILDSYSTEM_TARGETS)
     foreach(ziel IN LISTS ziele)
       get_target_property(art ${ziel} TYPE)
+      set(uebersetzt TRUE)
       if(NOT "${art}" IN_LIST arten)
-        continue()
+        # Der dritte gemessene Fall kam genau hier vorbei: Das `-w` stand an einem
+        # `INTERFACE_LIBRARY`, und das bog an dieser Zeile ab. Es bleibt vom Warnsatz
+        # befreit -- `uebersetzt` ist fuer es falsch --, aber seine Schnittstelle wird
+        # gelesen. Zum Vergleich gemessen: Haengt dasselbe `-w` per
+        # `target_compile_options(lib PUBLIC -w)` an einer `STATIC`-Bibliothek, wurde
+        # `lib` schon vorher gefangen. Der Weg entzog sich allein ueber die Zielart.
+        if(NOT "${art}" STREQUAL "INTERFACE_LIBRARY")
+          continue()
+        endif()
+        set(uebersetzt FALSE)
       endif()
 
       get_target_property(schalter ${ziel} COMPILE_OPTIONS)
@@ -284,12 +343,20 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       # Geprueft wird der ganze Satz, nicht ein Kennzeichen daraus: Ein Ziel, an dem
       # jemand `-Wall` von Hand anhaengt, hat den Satz nicht -- und ein Riegel, der
       # sich mit einem Schalter zufriedengibt, wuerde genau das durchwinken.
+      #
+      # Nur fuer uebersetzende Ziele, und `COMPILE_FLAGS` bleibt hier absichtlich
+      # draussen: Der Satz wird von `fabrik_warnsatz_anlegen` in `COMPILE_OPTIONS`
+      # gelegt und nirgendwo sonst. Wer diesen Durchgang auf weitere Eigenschaften
+      # ausdehnte, erlaubte damit einen zweiten Ort, an dem der Satz stehen darf --
+      # also genau die dritte Stelle, die der Absatz ueber dieser Funktion ausschliesst.
       set(luecke "")
-      foreach(schalterwert IN LISTS erwartet)
-        if(NOT "${schalterwert}" IN_LIST schalter)
-          list(APPEND luecke "${schalterwert}")
-        endif()
-      endforeach()
+      if(uebersetzt)
+        foreach(schalterwert IN LISTS erwartet)
+          if(NOT "${schalterwert}" IN_LIST schalter)
+            list(APPEND luecke "${schalterwert}")
+          endif()
+        endforeach()
+      endif()
 
       # Zweiter Durchgang, andere Frage: Der Satz kann dastehen und trotzdem nicht
       # wirken. Wer ihn ordentlich anlegt und danach `-Wno-error` oder `-w` anhaengt,
@@ -330,9 +397,67 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       # den Satz je in einem `SHELL:`-Eintrag anlegt, wird vom ersten Durchgang
       # vermisst und bricht ab. Das ist die harmlose Haelfte des Fehlers -- hier geht
       # es um Abwesenheit, und die schweigt von selbst.
+
+      # Eingesammelt wird, was der Uebersetzer wirklich bekommt, und nicht die eine
+      # Eigenschaft, die am naechsten liegt: `COMPILE_OPTIONS` und `COMPILE_FLAGS` des
+      # Ziels, dieselben beiden an jeder seiner Quelldateien, dazu
+      # `INTERFACE_COMPILE_OPTIONS`. Fuenf statt einer -- die drei gemessenen Umgehungen
+      # stehen im Absatz vor `fabrik_riegel_sammeln`. Jeder Eintrag kommt mit seiner
+      # Herkunft, damit die Meldung unten nicht nur den Schalter nennt, sondern die
+      # Zeile, die umzuschreiben ist.
+      set(eintraege "")
+      set(herkuenfte "")
+      if(uebersetzt)
+        fabrik_riegel_sammeln("COMPILE_OPTIONS an ${ziel}" schalter)
+        get_target_property(zielflags ${ziel} COMPILE_FLAGS)
+        fabrik_riegel_sammeln("COMPILE_FLAGS an ${ziel}" zielflags)
+
+        get_target_property(quellverzeichnis ${ziel} SOURCE_DIR)
+        get_target_property(quellen ${ziel} SOURCES)
+        if(NOT quellen)
+          set(quellen "")  # wie oben: `NOTFOUND` ist die leere Menge, kein Dateiname.
+        endif()
+        foreach(quelle IN LISTS quellen)
+          # Ein Generatorausdruck in `SOURCES` -- `$<TARGET_OBJECTS:x>` -- ist kein
+          # Dateiname, den man nach Eigenschaften fragen kann. Uebergangen statt geraten;
+          # was drinsteckt, wird an seinem eigenen Ziel gefangen.
+          if("${quelle}" MATCHES "[$]<")
+            continue()
+          endif()
+          if(NOT IS_ABSOLUTE "${quelle}")
+            set(quelle "${quellverzeichnis}/${quelle}")
+          endif()
+          # `TARGET_DIRECTORY` ist Pflicht und keine Feinheit: Eigenschaften von
+          # Quelldateien sind verzeichnisgebunden, und dieser Riegel laeuft per `DEFER`
+          # im obersten Verzeichnis. Ohne die Angabe fragte er seinen eigenen Bereich,
+          # bekaeme fuer jede Datei die leere Menge und meldete gruen -- immer.
+          get_source_file_property(quellopt "${quelle}"
+                                   TARGET_DIRECTORY ${ziel} COMPILE_OPTIONS)
+          fabrik_riegel_sammeln("COMPILE_OPTIONS an ${quelle}" quellopt)
+          get_source_file_property(quellflags "${quelle}"
+                                   TARGET_DIRECTORY ${ziel} COMPILE_FLAGS)
+          fabrik_riegel_sammeln("COMPILE_FLAGS an ${quelle}" quellflags)
+        endforeach()
+      endif()
+
+      # Die Schnittstelle gilt fuer beide Zielarten. Gefangen wird der Schalter hier, an
+      # dem Ziel, an dem er geschrieben steht -- nicht bei seinen Verbrauchern. Sonst
+      # meldete derselbe Verstoss so oft, wie ihn jemand linkt, und die Zahl der Befunde
+      # saegte an der Stelle, an der niemand etwas geschrieben hat.
+      get_target_property(schnittstellenschalter ${ziel} INTERFACE_COMPILE_OPTIONS)
+      fabrik_riegel_sammeln("INTERFACE_COMPILE_OPTIONS an ${ziel}" schnittstellenschalter)
+
       set(pauschal "")
       set(pauschalquelle "")
-      foreach(schalterwert IN LISTS schalter)
+      # Ueber den Index statt mit `foreach`, weil zu jedem Eintrag seine Herkunft
+      # gehoert und CMake keine Paare kennt. Beide Listen wachsen nur in
+      # `fabrik_riegel_sammeln` und dort im Gleichschritt.
+      list(LENGTH eintraege eintragszahl)
+      set(lfd 0)
+      while(lfd LESS eintragszahl)
+        list(GET eintraege ${lfd} schalterwert)
+        list(GET herkuenfte ${lfd} herkunft)
+        math(EXPR lfd "${lfd} + 1")
         string(REPLACE "SHELL:" " " zerlegt "${schalterwert}")
         string(REGEX REPLACE "[$<>:,]" " " zerlegt "${zerlegt}")
         separate_arguments(worte UNIX_COMMAND "${zerlegt}")
@@ -340,30 +465,38 @@ function(fabrik_schlussriegel wurzelverzeichnis)
           foreach(muster IN LISTS pauschalmuster)
             if("${wort}" MATCHES "${muster}")
               list(APPEND pauschal "${wort}")
-              list(APPEND pauschalquelle "${schalterwert}")
+              list(APPEND pauschalquelle "${herkunft}:  ${schalterwert}")
             endif()
           endforeach()
         endforeach()
-      endforeach()
+      endwhile()
 
-      math(EXPR gezaehlt "${gezaehlt} + 1")
+      # Zwei Zaehler, weil zwei verschiedene Dinge gezaehlt werden. Ein
+      # Schnittstellenziel unter die "uebersetzenden Ziele" zu mischen machte den Satz
+      # daneben unwahr und die Zahl unvergleichbar mit jeder frueheren Messung.
+      if(uebersetzt)
+        math(EXPR gezaehlt "${gezaehlt} + 1")
+      else()
+        math(EXPR schnittstellen "${schnittstellen} + 1")
+      endif()
       if(pauschal)
         list(REMOVE_DUPLICATES pauschal)
         list(REMOVE_DUPLICATES pauschalquelle)
         list(JOIN pauschal " " pauschaltext)
-        list(JOIN pauschalquelle " " quelltext)
         list(APPEND abgeschaltet
              "  ${ziel} (${art}) in ${verzeichnis}\n"
              "      hebt den Satz wieder auf: ${pauschaltext}\n")
-        # Seit die Zerlegung Woerter meldet, ist der genannte Schalter nicht mehr
-        # notwendig die Zeile, die im Manifest steht: Wer `-w` sucht, findet
-        # `$<$<CONFIG:Release>:-w>` nicht. Der Eintrag kommt deshalb dazu -- aber nur,
-        # wenn er sich vom Wort unterscheidet, sonst stuende dieselbe Zeichenkette
-        # zweimal untereinander.
-        if(NOT "${quelltext}" STREQUAL "${pauschaltext}")
+        # Je Fundstelle eine Zeile, und jede nennt zuerst die Eigenschaft. Zwei Gruende,
+        # beide gemessen: Seit die Zerlegung Woerter meldet, ist der genannte Schalter
+        # nicht mehr notwendig die Zeile im Manifest -- wer `-w` sucht, findet
+        # `$<$<CONFIG:Release>:-w>` nicht. Und seit hier fuenf Eigenschaften einlaufen,
+        # ist auch der Zielname nicht mehr der Ort: `-w` an einer einzelnen Quelldatei
+        # oder in der Schnittstelle eines gelinkten Ziels steht in einer anderen Zeile
+        # als `add_library(${ziel} ...)`.
+        foreach(fundstelle IN LISTS pauschalquelle)
           list(APPEND abgeschaltet
-               "      im Eintrag:               ${quelltext}\n")
-        endif()
+               "      gefunden in:              ${fundstelle}\n")
+        endforeach()
       endif()
       if(luecke)
         list(JOIN luecke " " luecketext)
@@ -397,12 +530,19 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   if(abgeschaltet)
     list(JOIN abgeschaltet "" abgeschaltettext)
     message(FATAL_ERROR
-      "Diese Ziele tragen den Warnsatz und schalten ihn im selben Atemzug wieder ab:\n"
+      "Diese Ziele heben den Warnsatz mit einem Pauschalabschalter wieder auf:\n"
       "${abgeschaltettext}"
       "`-w` und `-Wno-error` heben den ganzen Satz auf, nicht eine Warnung daraus. Das "
       "Ziel uebersetzt damit gruen und ohne jede Diagnose, waehrend jeder erwartete "
       "Schalter ordentlich in `COMPILE_OPTIONS` steht -- der Riegel eine Pruefung weiter "
       "oben sieht deshalb nichts.\n"
+      "Die Zeile `gefunden in` nennt die Eigenschaft und nicht nur das Ziel, denn der "
+      "Abschalter muss dort gar nicht stehen: Er kann an einer einzelnen Quelldatei "
+      "haengen (`set_source_files_properties`), in der aelteren Form `COMPILE_FLAGS` "
+      "oder in `INTERFACE_COMPILE_OPTIONS` eines Ziels, das hier gelinkt wird. Ein "
+      "`INTERFACE_LIBRARY` steht deshalb auch dann in dieser Liste, wenn es selbst "
+      "nichts uebersetzt -- gefangen wird der Schalter, wo er geschrieben steht, und "
+      "nicht bei jedem, der ihn erbt.\n"
       "Wer eine Warnung wirklich nicht loesen kann, unterdrueckt sie einzeln und "
       "benennt sie dabei: `-Wno-conversion` an genau diesem Ziel, mit einem Satz "
       "daneben, warum. Das bleibt zugelassen. Pauschal abgeschaltet wird nichts.")
@@ -420,6 +560,10 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # Ein reines Datenverzeichnis ohne `add_library` waere ein Fehlalarm. Heute bindet nur
   # ein Baum mit Zielen diese Datei ein; wird das je anders, gehoert die Ausnahme
   # begruendet und nicht stillschweigend eingebaut.
+  #
+  # Gezaehlt wird hier allein `gezaehlt`, nicht `schnittstellen`: Ein Baum aus lauter
+  # Schnittstellenzielen uebersetzt keine einzige Zeile, und ein Riegel, den ein solcher
+  # Baum saettigt, waere wieder einer ohne Gegenstand.
   if(gezaehlt EQUAL 0)
     message(FATAL_ERROR
       "fabrik_schlussriegel: kein einziges uebersetzendes Ziel unter "
@@ -435,9 +579,16 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # hat" traegt. Sie bleibt, obwohl der Nullfall darueber jetzt selbst abbricht: Ein
   # Riegel, der aus einem anderen Grund die Haelfte der Ziele durchwinkt, baut ebenfalls
   # gruen, und eine Zahl, die von 15 auf 3 faellt, faellt genau dort auf.
+  #
+  # Die zweite Zahl steht getrennt daneben und wird nicht dazugerechnet. Sonst waere die
+  # erste nicht mehr mit der von gestern vergleichbar, und genau darauf beruht ihr
+  # Nutzen: Am 2026-09-04 waren es 16 im Arbeitsbereich, 10 im Kern und 5 im Pruefstand;
+  # die Differenz von einem traegt `werkzeuge/belegstellen` aus `FABRIK_MITGLIEDER`, das
+  # zu keinem der beiden Alleinbauten gehoert.
   message(STATUS
     "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, "
-    "alle mit Warnsatz und ohne Pauschalabschalter.")
+    "alle mit Warnsatz und ohne Pauschalabschalter; dazu ${schnittstellen} "
+    "Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.")
 endfunction()
 
 # Ans Ende der Konfiguration gehaengt, nicht an diese Stelle: Hier ist noch kein
