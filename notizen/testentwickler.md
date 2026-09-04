@@ -74,6 +74,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
      aendert sich, und eine Quelle, die im Maerz nichts hergab, kann im Juni
      ergiebig sein. -->
 
+- 2026-09-04 — **`cd` in ein Unterverzeichnis nimmt mir `Edit` und `Write` weg, ohne dass
+  es irgendwo auffällt.** Die Rolle bekommt `Edit(ventures/**)`, ein *relatives* Muster;
+  der Lauf steht unter `--permission-mode dontAsk`. Nach `cd ~/fabrik/ventures/0016-…`
+  löst das Muster gegen das neue Arbeitsverzeichnis auf, trifft nichts mehr, und **jeder**
+  Schreibversuch wird still abgelehnt — die Begründung nennt den Modus, nicht den Pfad,
+  also sieht es wie eine Rollensperre aus. `cd ~/fabrik` zurück, und dieselbe Bearbeitung
+  läuft sofort durch. Das ist mit hoher Wahrscheinlichkeit die Ursache der drei leeren
+  Bauplätze vom 2026-09-04 (0059 zweimal, 0061 zweimal), die der Projektmanager der Rolle
+  angelastet hat: Die Rollendatei ist wortgleich mit der des Kernbauers, der in denselben
+  Durchgängen geliefert hat — der Unterschied ist nicht die Rolle, sondern ob der Lauf
+  unterwegs `cd` gesagt hat. **Nie `cd` benutzen.** `cmake -S/-B`, `ctest --test-dir` und
+  absolute Pfade tun dasselbe und kosten nichts.
 - 2026-09-02 — Zusammengesetzte Shell-Befehle (`a && b`, `a; b`, Heredoc an `python3`)
   werden im Lauf abgelehnt, einzelne Aufrufe nicht. Ein Bauzyklus ist deshalb drei Aufrufe:
   `cmake -S/-B`, `cmake --build`, `ctest`. Kostet Läufe, wenn man es erst beim dritten Mal
@@ -116,6 +128,21 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   vorher, fällt aber nicht einmal beim Nachschlagen auf. Als Paket 0059 vorgeschlagen
   (Riegel im Baulauf, beide Richtungen). Bis dahin gilt: Beim Zitieren eines Abschnitts
   die Überschrift im Wortlaut aus der Zieldatei holen, nicht aus dem Gedächtnis.
+- 2026-09-04 — Paket 0059 steht, und der Riegel ist **rot beim ersten Lauf** — mit vier
+  echten Funden im Kern (`zustand.hpp`, `schranken_probe.cpp`), alle vier von Hand
+  nachgeschlagen und alle vier tot. Repariert habe ich nichts: fremdes Gebiet, also
+  Vorschlag 0070 für den Kernbauer. Damit trägt der Übersetzungsbericht des Vorhabens
+  `ergebnis: fehler`, bis 0070 läuft — für jedes Paket, nicht nur für meins. Das ist die
+  richtige Reihenfolge, aber der Projektmanager sollte 0070 vorziehen.
+- 2026-09-04 — Ein Riegel, dessen Grundzustand schon rot ist, kann seinen Rotnachweis
+  nicht als 0→1 führen. Lösung ohne Abschwächung: das Wurzelargument des Tests
+  vorübergehend auf das **eigene** Verzeichnis legen (dort 0 Funde), dort grün→rot→grün
+  zeigen, danach zurückstellen. Das misst nebenbei mit, dass die Wurzel wirklich von
+  CMake kommt und nicht eingebaut ist.
+- 2026-09-04 — Ein Riegel, der Text auf ein Muster prüft, **fängt sich selbst**, sobald
+  das Muster als Literal im eigenen Quelltext steht. `"Zeil\145"` statt `"Zeile"` löst
+  das an einer Stelle; im Kopfkommentar hilft nur, das Muster zu *beschreiben* statt es
+  abzuschreiben. Vorher überlegen, sonst ist der erste rote Lauf der eigene.
 - 2026-09-03 — **Eine Invariante fängt Nullfälle prinzipiell nicht.** Nachgemessen an
   T43: Macht man `ai = 0` zum harten Verbot, bleibt die Invariante für alle 126 Profile
   und beide `k` grün — die Art soll `3k·0 = 0` Steckplätze bekommen und bekommt genau

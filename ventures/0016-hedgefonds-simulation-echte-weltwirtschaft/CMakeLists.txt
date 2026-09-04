@@ -16,6 +16,13 @@
 #   oberflaeche  -> schnittstelle          Binaerprogramm (vertagt, ADR 0010)
 #   werkzeuge/aufbereitung -> daten        einmal je Jahrgang: Rohdaten -> Jahrgang
 #
+# Ein Mitglied steht seit Paket 0059 zusaetzlich hier, und es stammt nicht aus T13:
+# `werkzeuge/belegstellen` haengt an nichts und wird von nichts gelinkt. Es ist ein
+# Riegel ueber den Baum selbst, kein Baustein des Erzeugnisses. Es steht trotzdem in
+# der Liste und nicht daneben, weil die Liste die einzige Stelle ist, an der ein
+# Verzeichnis eingehaengt wird -- ohne Eintrag liefe der Riegel nur beim Alleinbau und
+# fehlte genau im Arbeitsbereichslauf, den der Uebersetzungsbericht oben fuehrt.
+#
 # In diesem Paket bekommt nur `kern` ein Verzeichnis. Die uebrigen legt jeweils ihr
 # eigenes Paket an -- deshalb wird jedes Mitglied hier nur dann eingebunden, wenn es
 # schon existiert. Das ist keine Bequemlichkeit, sondern derselbe Kollisionsschutz
@@ -40,7 +47,8 @@ set(FABRIK_MITGLIEDER
     konsole
     pruefstand
     oberflaeche
-    werkzeuge/aufbereitung)
+    werkzeuge/aufbereitung
+    werkzeuge/belegstellen)
 
 foreach(mitglied IN LISTS FABRIK_MITGLIEDER)
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${mitglied}/CMakeLists.txt)
