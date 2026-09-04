@@ -399,7 +399,8 @@ static_assert(zaehle(Rundenschritt::Keiner) == schreiber::AUSSERHALB_WELTLAUF,
 // **Das ist der Anschlussort fuer die Folgepakete.** Wer Schritt 4 baut, ersetzt den
 // Rumpf von `schritt_4_wirtschaft` und fasst nichts anderes an. Jede der sechs traegt
 // ihren Adressblock aus T38 im Kommentar; jede bekommt heute eine Adresse ihres Blocks
-// und traegt sie unveraendert vor.
+// und traegt sie unveraendert vor -- mit **einer** Ausnahme, `partie.runde` in
+// Schritt 1, die seit Paket 0071 gesetzt wird statt vorgetragen.
 //
 // `vortrag` ist genau dafuer da: "Eine Adresse, die sich nicht aendert, wird trotzdem
 // geschrieben -- *unveraendert* ist eine Aussage und keine Luecke." Verzoegerung null,

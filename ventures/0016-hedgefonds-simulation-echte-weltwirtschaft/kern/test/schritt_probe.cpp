@@ -224,7 +224,10 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
         if (satz.ursache.art() != UrsacheArt::Vortrag && erste_falsche_art == KEINS) {
             erste_falsche_art = n;
         }
-        // Ein Vortrag traegt aus der eigenen Adresse vor -- die Aussage "unveraendert".
+        // Alle 175 Glieder nennen ihre **eigene** Adresse als Herkunft. Bei den 174
+        // vorgetragenen ist das die Aussage "unveraendert"; beim Glied von
+        // `partie.runde` ist es die Aussage "aus dem alten Wert dieser Adresse und aus
+        // nichts sonst" -- die Ursachenform nennt die Herkunft, nicht die Gleichheit.
         if (satz.ursache.art() == UrsacheArt::Vortrag
             && satz.ursache.vortragsadresse() != satz.ziel && erste_falsche_quelle == KEINS) {
             erste_falsche_quelle = n;
