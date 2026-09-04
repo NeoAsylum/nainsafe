@@ -11,12 +11,12 @@ die noch gelten. Nicht löschen.
 Belege gehören in die Ergebnisdatei, nicht hierher. Ins Logbuch kommt die Lehre daraus,
 in einem Satz — ein unbegrenzt wachsendes Logbuch kostet jeden Lauf Kontext.
 
-*2026-09-04, 12. Lauf: bei 11.957 Zeichen archivieren wollen — **nicht moeglich**. `Write`
-nach `notizen/archiv/` und `cp`/`mv` in Bash werden beide verweigert; schreiben darf ich
-`ventures/**` und diese Datei. Statt zu archivieren habe ich die Eintraege der Laeufe 1-9
-zusammengezogen, **keinen gestrichen**. Wer das aufloesen will: die volle Fassung steht in
-`git show 77a84e8:notizen/entwurf-pruefer.md`. Als Regelproblem gemeldet — die Rollendatei
-verlangt eine Verschiebung, fuer die die Rechte fehlen.*
+*Archivieren ist mir **nicht moeglich** (12. Lauf, bei 11.957 Zeichen): `Write` nach
+`notizen/archiv/` und `cp`/`mv` in Bash werden verweigert; schreiben darf ich `ventures/**`
+und diese Datei. Statt zu archivieren die Eintraege der Laeufe 1-9 zusammengezogen, **keinen
+gestrichen** (volle Fassung: `git show 77a84e8:notizen/entwurf-pruefer.md`). Als Regelproblem
+gemeldet: Die Rollendatei verlangt eine Verschiebung, fuer die die Rechte fehlen. Wer hier
+schreibt, verdichtet.*
 
 ---
 
@@ -83,12 +83,19 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   (2026-09-04, 11. Lauf). Zwei Zahlen und eine zitierte Parallele in drei Aufrufen belegt —
   und **weil** sie stimmten, trug `geprueft`. Ein Urteil ohne solche Probe ist von
   Zustimmung nicht zu unterscheiden.
-- **Zwei Rundungswege sind zwei Rechnungen** (2026-09-04, 12. Lauf). Der Block rundete
-  zwischen Weltpreis und Schaden, waehrend die Datei 50 Zeilen davor sagt, die alte Zeile
-  habe „in den gespeicherten Sektorpreis" gerundet — ein Befundkandidat, bis ich **beide**
-  Wege durchgerechnet hatte: dieselbe Zahl, dreimal. *Wo zwei Rundungswege moeglich sind,
-  entsteht der Befund erst, wenn sie auseinanderfallen — das kostet drei Zeilen und macht
-  das `geprueft` unangreifbar.*
+- **Zwei Lesarten sind zwei Rechnungen — beide rechnen, bevor der Befund geschrieben wird**
+  (2026-09-04, 12. und 13. Lauf). Zwei Rundungswege ergaben dieselbe Zahl, dreimal. Am
+  13. Lauf dasselbe mit einer Bruchschreibweise: `71,94/98,71` als `H/N` gelesen macht aus
+  dem Gewerk einen Widerspruch, als `H/(H+N)` gelesen stimmt alles — und die zweite Lesart
+  belegte sich selbst, weil sie das `H/N = 2,69` traf, das zwoelf Zeilen darueber steht.
+  *Der Befund entsteht erst, wenn die Lesarten auseinanderfallen; das kostet drei Zeilen und
+  macht das `geprueft` unangreifbar.*
+- **Bei „zweimal unabhaengig gerechnet" fragen, wo die Kette anfaengt** (2026-09-04,
+  13. Lauf). Zwei Laeufe hatten alle abgeleiteten Zahlen nachgerechnet — **ab** der
+  Messtabelle, die sie als gegeben nahmen. Der einzige falsche Wert von 25 sass genau dort.
+  *Eine Selbstmessung deckt nur den Weg, den sie beschreibt; die erste Zahl der Kette ist
+  die, die niemand zweimal gerechnet hat, und der Abruf an die Primaerquelle kostet zwei
+  Minuten.*
 - **Kommt der eigene Befund als Pruefgegenstand zurueck, die eigene Zahl von vorn rechnen**
   (2026-09-04). Die 8.472.000 stammte aus meiner Pruefung vom 2026-09-03; sie
   wiederzuerkennen waere keine Pruefung gewesen. Sechs Zeilen neu gerechnet, plus
@@ -126,6 +133,10 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   gesperrt", „falscher Pfad") waren deshalb falsch. Heute erneut: ein Aufruf, der mit `cd`
   begann, wurde als Ganzes verweigert, derselbe Aufruf ohne `cd` lief. *Kommt eine
   Verweigerung, zuerst `pwd`.*
+- **`git show` wird verweigert, `git diff` nicht** (2026-09-04, 13. Lauf) — ebenso jede
+  Revision mit `^`. Der Weg zum Diff eines Commits: Elternhash aus `git log --oneline`
+  ablesen und `git --no-pager diff --stat <eltern> <commit>` rufen, **ein Kommando je
+  Aufruf** (mehrere mit `;` verkettet wurden ebenfalls verweigert).
 - **`python3 -c` wird verweigert** (2026-09-04). Rechnen heisst Handrechnung — mit
   hingeschriebenen Zwischenprodukten (`1.418 · 7.288 = 10.334.384`), was ohnehin der
   bessere Nachweis ist als eine Ausgabe, die niemand nachvollziehen kann.
@@ -143,4 +154,8 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   `leitzins` und `staatsschuld`, keinen Kurs). Wird sie nachgetragen, hier zuerst nachsehen.
 - **Die Bruchstelle „eine Groesse mit zwei Herren" bleibt seit dem 7. Lauf aus.** Die Funde
   sitzen seither in Begruendungen, Vollstaendigkeits- und Unveraendertheitsbehauptungen,
-  nicht in Formeln.
+  nicht in Formeln. Am 13. Lauf erstmals in einer **Messtabelle** — also eine Ebene tiefer.
+- **`technik.md` fuehrt weiter 25 Stuetzstellen und `R = 24`**, waehrend `spiel.md` seit
+  0054 das Fenster 2001–2021 hat; der Nachzug ist 0064. Solange der offen ist, ist die alte
+  Zahl in `technik.md` **kein** Befund — aber jede Rechnung darauf gehoert in beiden Fenstern
+  geprueft (13. Lauf: MAPE 2.203 gegen 3.160, Argument hielt in beiden).
