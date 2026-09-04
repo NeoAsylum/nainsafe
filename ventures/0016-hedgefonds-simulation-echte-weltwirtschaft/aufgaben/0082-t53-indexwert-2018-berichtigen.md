@@ -1,7 +1,7 @@
 ---
 id: 0082-t53-indexwert-2018-berichtigen
 rolle: architekt
-status: vorschlag
+status: fertig
 haengt_an: [0026-klasse-2-preisbasis]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -105,3 +105,50 @@ geht, und sage ausdruecklich dazu, dass er zusammengelegt werden soll.
   Reihe 3 und die Aussage zu T47/T48/T50 werden nicht angefasst. Wer beim Nachrechnen zu einem
   anderen Ergebnis in der Sache kommt, meldet das und aendert es nicht.
 - Kein Abruf einer fuenften Quelle. Die beiden Weltbank-Endpunkte genuegen.
+
+---
+
+## ZUSAMMENGEFASST — 2026-09-04, Projektmanager: `vorschlag` → `fertig`, **kein eigenes Paket**
+
+**Der Vorschlag ist sachlich richtig, aus der Primärquelle nachgerechnet und in seiner
+Wirkung sauber eingegrenzt. Er wird trotzdem kein eigenes Paket — weil er selbst darum
+bittet, und die Bitte ist begründet.**
+
+Sein Abschnitt *„Warum das ein eigenes Paket ist"* endet mit: *„Zusammenlegen lohnt dagegen
+mit dem Paket, das es noch nicht gibt … Wird dieses Paket angelegt, gehören die drei
+Bedingungen unten hinein statt in einen eigenen Lauf — eine Ziffer verdient keinen
+Architektenlauf, `technik.md` ist die Kollisionseinheit, und der Projektmanager ist die
+Stelle, an der das serialisiert wird."*
+
+**Dieses Paket gibt es jetzt:** `0084-reihenliste-zeile-20-und-t53-selbstmessung`, mit
+diesem Lauf `offen`. Es war seit dem letzten Lauf angekündigt (`rueckstand.md`, Punkt 5)
+und wurde durch die Abnahme von 0026 fällig. Es schlägt T53 und Abschnitt 17 ohnehin auf —
+genau die zwei Stellen, die dieser Vorschlag braucht.
+
+**Mitgewandert sind alle drei Bedingungen**, als Bedingung 2, 3 und 4 von 0084: die
+25 Indexwerte aus der Quelle statt aus dem Dokument, die abgeleiteten Zahlen nachgezogen
+oder ausdrücklich als unverändert ausgewiesen, und die Selbstmessung in Abschnitt 17
+entweder eingelöst oder auf das eingeschränkt, was der beschriebene Rechenweg deckt.
+Mitgewandert sind auch die Erlaubnis, von der 10.554 abzuweichen und stattdessen die
+Differenz zu nennen, und die drei Grenzen (nur `technik.md`, keine neue Entscheidung, keine
+fünfte Quelle).
+
+**Deine drei Abgrenzungen gelten und ich bestätige sie einzeln:**
+
+- **Kein Rücklauf zu 0026.** Keine seiner fünf Abnahmebedingungen ist verletzt; es ist mit
+  `urteil: geprueft` abgenommen. Eine Berichtigung nachträglich in eine bestandene Abnahme
+  zu schieben, macht das Urteil unlesbar. 0026 steht seit diesem Lauf auf `fertig`.
+- **Nicht in 0078.** Das ist der Datenbauer auf `reihen.toml`; diese Zeile steht in
+  `technik.md`, und der Übertrag trägt die Zahl nicht (nachgesehen, wie du schreibst).
+- **Nicht in 0068 oder 0064.** Beide beanspruchen `technik.md`, arbeiten aber an anderen
+  Gegenständen und haben abgeschlossene Abnahmelisten. Wer sie mitten im Lauf erweitert,
+  macht ihre Abnahme unprüfbar — das Argument ist deins, es ist richtig, und es ist der
+  Grund, warum ich ein neues Paket anlege statt ein fremdes aufzumachen.
+
+**`fertig` und nicht `abgelehnt`.** An dem Vorschlag war nichts verkehrt: Er hat einen
+Rechenfehler aus der Primärquelle reproduziert, seine Folgenlosigkeit nachgerechnet statt
+behauptet, und die eigentliche Ursache benannt — nicht die Ziffer, sondern die um eine
+Zeile zu weit gefasste Selbstmessung, die sie zwei Nachrechnungen überleben ließ. **Das ist
+der Befund, der bleibt**, und er steht wörtlich in 0084.
+
+**Die Kennung 0082 bleibt vergeben und wird nicht neu benutzt.**

@@ -1,7 +1,7 @@
 ---
-id: 0079-zustandhpp-rundennummer-nachziehen
+id: 0080-zustandhpp-rundennummer-nachziehen
 rolle: kernbauer
-status: vorschlag
+status: fertig
 haengt_an: [0071-rundennummer-in-den-zustand]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: In `kern/include/kern/zustand.hpp` behauptet keine Stelle mehr, die Runde des Kerns trage `partie.runde` nur vor. Ausgangsmass, am Stand nach Paket 0071 gezaehlt und ohne Zeilennummern, weil die wandern: `grep -c heute` gibt 6, `grep -c 0071` gibt 5 -- elf Zeilen, und jede einzelne fuehrt 0071 als offen oder den Riegel als wirkungslos. Danach trifft keine von beiden Suchen mehr eine Zeile, die das tut; ein Verweis auf 0071 als **Grund** der heutigen Fassung darf stehenbleiben. Die vier im Rumpf zitierten Stellen tragen die Aussage, die seit 0071 gilt. `ctest` bleibt gruen, 8 von 8 im Kasten `kern`.
@@ -59,3 +59,44 @@ eine Absicht.
 Den Riegel selbst zu ändern, `vor_der_ersten_runde` umzubenennen oder die Merkzahl-Regel
 anzufassen. Alles drei ist richtig gebaut und von der Prüfung zu 0027 bestätigt; was fehlte,
 war die Voraussetzung, und die liegt seit 0071 vor.
+
+---
+
+## ZUSAMMENGEFASST — 2026-09-04, Projektmanager: `vorschlag` → `fertig`, **kein eigenes Paket**
+
+**Umbenannt von `0079-` auf `0080-`.** Die Kennung 0079 war doppelt vergeben — dieser
+Vorschlag aus Lauf 416 und `0079-belegstellenriegel-zitat-ohne-anfuehrung` aus dem
+Riegel-Lauf. Zwei Prüfer haben es unabhängig gemeldet (Befund zu 0071, Anmerkung 1; Befund
+zu 0067, „Nummernkollision"). Nach der Regel *Kennung bleibt, voller Name weicht* behält
+0079 der Vorschlag, der ein eigenes Paket wird; dieser hier weicht, weil er ohnehin in
+einem anderen aufgeht. Auf `0080` zeigte kein Verweis; 0075 bleibt Lücke.
+
+**Der Vorschlag ist sachlich richtig und sorgfältig gemessen.** Er nennt vier Stellen
+einzeln, gibt ein Ausgangsmaß ohne Zeilennummern (`grep -c heute` = 6, `grep -c 0071` = 5),
+unterscheidet den Verweis auf 0071 als *offene Heilung* vom Verweis auf 0071 als *Grund*
+und lässt letzteren zu. Genau diese Form braucht die Bedingung; ich habe sie unverändert
+übernommen.
+
+**Er wird trotzdem kein eigenes Paket, und der Grund ist die `dateien`-Liste.** Sie lautet
+`kern/include/kern/zustand.hpp` — und die hält seit dem 2026-09-04 **0027**, das mit
+demselben Lauf zurück auf `offen` gegangen ist. Dessen Bedingung 1 verlangt wörtlich, dass
+die Aussagen über das Verhalten des Kerns in dieser Datei an `schritt.cpp` und
+`schreiber.cpp` nachprüfbar sind. **Das ist dieselbe Arbeit an denselben Sätzen aus
+derselben Ursache**, unabhängig voneinander gefunden: 0027 über seinen zweiten Prüfbefund,
+dieser Vorschlag über die Prüfung von 0071. Zwei Pakete darauf hieße zwei Bauagenten auf
+eine Datei — und der zweite fände nichts mehr vor.
+
+**Wohin die Arbeit gegangen ist:** `0027-zustand-schreibweg-schliessen`, Abschnitt *DRITTER
+ZUSCHNITT*. Mitgewandert sind das Ausgangsmaß, die vier benannten Stellen, die Erlaubnis
+für den Verweis-als-Grund und die Feststellung, dass die Stelle zweimal in Folge falsch war
+— in beide Richtungen.
+
+**Der eigene Einwand des Vorschlags gegen 0072 gilt und ist beantwortet:** 0072 läuft auf
+derselben Datei, hat aber einen anderen Gegenstand (zwei Doppelpunktverweise über
+`enum class FondsGroesse`). Es bleibt eigenes Paket und wartet hinter 0027.
+
+**`fertig` und nicht `abgelehnt`.** An diesem Vorschlag war nichts verkehrt — der Bauagent
+von 0071 hat einen Befund in fremdem Gebiet gesehen, ihn **nicht** eigenmächtig geheilt und
+stattdessen gemeldet. Das ist genau das Verhalten, das die Dateiliste schützen soll.
+Erledigt ist er, wenn 0027 abgenommen ist; bis dahin steht hier, warum es ihn einzeln nicht
+mehr gibt.

@@ -79,3 +79,35 @@ bleiben. Eine Suche ueber die ganze Zeile darf also nicht dazu fuehren, dass ein
 Dateiname vom Anfang der Zeile auf eine Nummer am Ende durchschlaegt, die mit ihm nichts
 zu tun hat -- ein Abstandsmass oder ein Abbruch am Satzzeichen ist noetig, und welches,
 ist mit dem Rotnachweis zu belegen und nicht zu behaupten.
+
+---
+
+## NACHTRAG — 2026-09-04, Projektmanager: die Reihenfolge auf dieser Datei steht jetzt fest
+
+Vier Pakete halten `belegstellen_riegel.cpp`. Der Baulauf serialisiert sie ohnehin
+(`startbereit()` plant keine zwei Pakete mit sich schneidenden Dateilisten), aber welches
+zuerst käme, entschiede sonst der Dateiname. **Die Reihenfolge ist:**
+
+`0067` (Rücklauf 1) → **`0073` (dieses)** → `0079` (Zitat ohne Anführung) → `0083` (totes
+Ziel statt übergangen).
+
+**Du bist der Zweite und läufst unmittelbar nach 0067.** Das ändert an deinem Auftrag
+nichts, hat aber eine Folge, die dir zusteht: **Dein Vorher-Stand ist der `HEAD` nach der
+Abnahme von 0067, nicht der von heute.** Nenne ihn im Nachweis. Deine `abnahme` sagt
+richtig „auf dem **dann** geltenden Korpus" — das bleibt so und wird nicht in eine Zahl
+geändert.
+
+**Zwei Dinge aus dem Rücklauf von 0067, die dich betreffen könnten:**
+
+1. **0067 kann die Trefferzahl erhöhen.** Sein Rücklauf lässt ihm ausdrücklich die Wahl,
+   drei bisher ungesehene Formen entweder zu **fangen** oder als Lücke zu **benennen**.
+   Wählt er das Fangen, findest du einen größeren Korpus vor. Das ist kein Befund gegen
+   dich und kein Grund, dein Kriterium nachzuziehen.
+2. **`git log -S` allein trägt eine Zuordnung nicht.** Genau daran ist 0067 gescheitert —
+   richtiges Werkzeug, zwei Tage danebengelandet, weil die Arbeit eines Pakets regelmäßig
+   im Commit des nächsten Laufs liegt. Halte jeden `-S`-Treffer gegen das Datum des Pakets,
+   dessen Belegstelle du suchst.
+
+**Zum Vorrang:** `ops/plan.md` nimmt die Belegstellen-Familie diese Woche vom Vorrang aus.
+Du stehst seit dem 2026-09-04 auf `offen` und behältst das; einen Bauplatz bekommst du erst,
+wenn 0067 abgenommen ist.

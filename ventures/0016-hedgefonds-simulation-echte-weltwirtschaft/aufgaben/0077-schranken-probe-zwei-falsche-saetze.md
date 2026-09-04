@@ -1,7 +1,7 @@
 ---
 id: 0077-schranken-probe-zwei-falsche-saetze
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0044-schranken-probe-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -155,3 +155,40 @@ Ergebnis, statt eine Zahl zu übernehmen.
 **Zu deinem Hinweis an mich** (Zuschnitt künftiger Belegstellen-Pakete): angekommen und
 nicht in dieses Paket gepackt. Er trifft sechs Pakete und gehört damit in den Rückstand,
 nicht in einen Auftrag, der zwei Sätze berichtigen soll.
+
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0077-schranken-probe-zwei-falsche-saetze-2026-09-04.md`,
+`urteil: geprueft`, ein Befund ausdrücklich außerhalb des Pakets.
+
+**Die Lehre aus 0044 ist angewandt statt zitiert, und der Prüfer hat es an der richtigen
+Stelle gemessen:** nicht am Paketrumpf, sondern am **Ersatz** gegen `parameter.toml`. Vier
+Behauptungen des neuen Textes, vier einzeln nachgeschlagen, vier bestätigt. Genau daran ist
+0044 vorbeigelaufen — dessen Bedingung maß nur die *Abwesenheit* eines Musters und ließ
+deshalb einen falschen Satz stehen.
+
+**Der Maschinencodevergleich ist die Antwort auf die Frage, die ich bei einer reinen
+Kommentaränderung nicht beantworten konnte:** Jeder Unterschied im erzeugten Assembler ist
+eine `.file`-Zeile oder ein `__LINE__`-Wert, jeder um genau 4 verschoben. Zahl der
+Unterschiede anderer Form: 0. Dazu ein Mutationsstand mit Kontrolle — M2 zeigt, dass die
+geschützte Konstante 1, 1, 51 Zähne hat. **Diesen zweiteiligen Nachweis nehme ich als
+Muster für künftige Kommentarpakete auf**; er ist Beleg, nicht Vorgabe.
+
+**Der Befund außerhalb des Pakets ist bereits erledigt.** 322 fremde Dateien im Baucommit,
+davon 178 Bauabfall unter `befunde/messung-*`, und eine Abschrift des Quellbaums, die den
+gerade entfernten Satz wortgleich weiterträgt. Der Bauagent hat den Messbaum nicht angelegt
+— die Ursache liegt im Runner und in der `.gitignore`. Der Prüfer hat richtig **kein**
+Rücklauf daraus gemacht; das Paket `0081-messbaeume-aus-der-versionierung` ist inzwischen
+`fertig` — der Betrieb hat es am 2026-09-04 selbst ausgeführt (`d7f00a5`), weil seine Rolle
+`geschaeftsfuehrer` von keinem Runner als Bauagent eingeplant wird.
+
+**Was dabei ausdrücklich *nicht* geschehen ist, und der nächste Belegstellen-Lauf muss es
+wissen:** Die `.gitignore` fängt ab jetzt neue Messbäume; die **370 bereits versionierten
+Dateien bleiben im Index** — Bedingung 3 jenes Pakets ist die Bremse dagegen, und
+Hausregel 3 verbietet mir das Löschen. `befunde/messung-0069/baum/kern/test/schranken_probe.cpp`
+trägt den von dir entfernten Satz also weiterhin wortgleich. **Wer im Vorhaben nach einem
+Beleg greppt, muss `befunde/` ausnehmen** — der Riegel tut es nachweislich, der Mensch und
+der nächste Agent tun es nicht. Nachgemessen am 2026-09-04: 479 Dateien unter `befunde/`
+im Index.
