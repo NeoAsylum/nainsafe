@@ -140,6 +140,23 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # 1.270 (84 Prozent von 1.510) und die Tagesgrenze auf 300.
 TAGESGRENZE_USD = 450.0
 
+# Der Betreiber kann die **Tages**grenze fuer einen einzelnen Aufruf anheben:
+#
+#     FABRIK_TAGESGRENZE=600 python3 agents/tageslauf.py --grenze 550
+#
+# Gedacht fuer den bewussten Nachschlag am Abend, wenn die Woche noch Luft hat und der
+# Tag schon voll ist -- der Wirt schlaeft unvorhersehbar, und was heute nicht verbraucht
+# ist, kann morgen an einem Schlaf verfallen. Die Konstante oben bleibt dabei stehen;
+# die crontab faehrt weiter mit dem geeichten Wert.
+#
+# **Die Woche laesst sich so nicht uebersteuern.** WOCHENGRENZE_USD ist die Bremse, die
+# das Kontingent schuetzt; der Tag ist nur Glaettung. Ein Weg, beide anzuheben, waere
+# ein Weg, das Kontingent an einem Abend zu verbrauchen.
+try:
+    TAGESGRENZE_USD = float(os.environ.get("FABRIK_TAGESGRENZE", TAGESGRENZE_USD))
+except ValueError:
+    pass
+
 # Die eigentliche Bremse -- 84 Prozent des am 2026-09-04 gemessenen Kontingents.
 # Gerechnet ueber Anthropics Wochenfenster (Montag 10:00 Ortszeit), siehe
 # `wochenfenster()`; die vorherige Rechnung ueber sieben rollende Tage drosselte gegen
