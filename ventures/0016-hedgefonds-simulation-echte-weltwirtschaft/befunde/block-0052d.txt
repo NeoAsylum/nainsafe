@@ -1,4 +1,0 @@
-/// Sein Quadrat ist 9.223.372.030.926.249.001 und bleibt unter `I64_MAX`, also
-/// unter 9.223.372.036.854.775.807. Einen Schritt darueber liegt
-/// `MAL_FAKTOR_BRICHT_AB`, dessen Quadrat 9.223.372.037.000.250.000 betraegt und
-/// `I64_MAX` um 145.474.193 ueberschreitet.

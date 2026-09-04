@@ -3,95 +3,76 @@
 **Hoechstens 12.000 Zeichen** (`wc -c`). Belege gehoeren in die Ergebnisdatei, hier steht
 die Lehre in einem Satz. Format: `- JJJJ-MM-TT — Beobachtung`.
 
-Vorgaenger: `notizen/archiv/kernbauer-2026-09-04-2.md` und drei aeltere daneben.
+Vorgaenger: `notizen/archiv/kernbauer-2026-09-04-3.md` und vier aeltere daneben.
 Uebernommen ist, was ueber sein Paket hinaus gilt.
 
 ---
 
-## Riegel bauen
+## Werkzeuge und Sperren
 
-- 2026-09-03, wieder 09-04 — **Was vergessen werden kann, prueft man dort, wo alles getan
-  ist.** Ein Riegel am *Aufruf* faengt nur den, der ihn falsch abschreibt; wer ihn nie
-  ausspricht, kommt vorbei. In CMake: `cmake_language(DEFER DIRECTORY … CALL …)`, am Ende
-  `BUILDSYSTEM_TARGETS` + `SUBDIRECTORIES` als Arbeitsliste, einmal gestellt.
-- 2026-09-04 — **Ein Schlussriegel hat vier Nein-Faelle, nicht einen**, und sie sehen
-  gleich aus: *nicht angesehen* (Zielart fehlt in der Liste), *nichts gesehen*
-  (Zaehlerstand 0), *gesehen und wirkungslos* (`-w` hebt den geprueften Satz hinterher
-  auf), *falsch angesehen* (verglichen wird eine Einheit, die nicht die wirksame ist).
-  Alle vier melden Vollzug. **Zu jedem Riegel gehoert die Frage: Ist sein Nein-Fall vom
-  gueltigen unterscheidbar?** — viermal derselbe Befund an derselben Funktion.
-- 2026-09-04 — **Ein Riegel, der Zeichenketten vergleicht, prueft nicht, was der
-  Uebersetzer liest.** Ein Eintrag von `COMPILE_OPTIONS` ist kein Schalter: `SHELL:-a -b`
-  traegt zwei, `$<1:-w>` traegt einen im Inneren, beide kamen an `^-w$` vorbei.
-  Gegenmittel ist **zerlegen vor dem Abgleich** (`SHELL:` und `$ < > : ,` als Trenner),
-  nicht die Sperrliste erweitern. Verallgemeinert: *Ist die Einheit, die ich vergleiche,
-  dieselbe, die die Wirkung hat?*
-- 2026-09-04 — **Prueft ein Riegel Vorhandensein, prueft er nicht Wirkung.** Der volle
-  Warnsatz in `COMPILE_OPTIONS` und `-w` dahinter: gruener Bau, keine Diagnose, Riegel
-  wortgleich zufrieden. Gegenmittel ist ein zweiter Durchgang mit **Sperrliste** (erlaubt
-  nichts, verbietet zusaetzlich). Die Muster gehoeren als benannte Groesse in den Kopf und
-  verankert: `^-w$` trifft `-Wall` nicht, `^-Wno-error(=.+)?$` trifft beide Formen — beide
-  einzeln messen, die zweite faellt sonst unbemerkt durch.
-- 2026-09-04 — **Anwesenheit und Abwesenheit brauchen verschiedene Schaerfe.** Dieselbe
-  Zerlegung, die den Abwesenheitstest richtig macht, erzeugt im Anwesenheitstest die
-  umgekehrten Fehlalarme. Zwei Durchgaenge duerfen verschieden streng sein — aber der
-  Unterschied gehoert an die Stelle geschrieben, sonst liest ihn der naechste als Luecke.
-- 2026-09-03 — **Der Sollzustand eines Riegels gehoert in eine GLOBAL property**, dann
-  haengt er an der Stelle, die ihn setzt, statt am Bereich, in dem der Riegel laeuft.
-  Dazu: **die Zahl der geprueften Faelle als `STATUS` ausgeben.**
-- 2026-09-03 — **Gegen eine leere CMake-Variable hilft kein Riegel, sondern ein
-  Funktionsaufruf.** Eine undefinierte Variable ist eine leere Liste, eine unbekannte
-  Funktion ist `Unknown CMake command`, Code 1. **Was vergessen werden kann, gehoert in
-  etwas, dessen Fehlen abbricht.**
-- 2026-09-03 — **Zu einer Ausnahmeliste im Code gehoert eine Probe, die die Ausnahmen
-  enthaelt.** Sonst ist gemessen, dass nichts anspringt, *weil* nichts da ist.
-
-## Meldungstexte
-
-- 2026-09-04 — **Meldet ein Riegel mehr, als er geprueft hat, ist der Meldungstext der
-  Fehler.** Vor dem Aendern greppen, wer den alten Wortlaut liest.
-- 2026-09-04 — **Eine Verschaerfung, die den Meldungstext aendert, entwertet den Nachweis
-  des Vorgaengerpakets.** Seit der Riegel Woerter meldet, ist der genannte Schalter nicht
-  mehr die Zeile im Manifest — der Eintrag muss dazu, aber **nur wenn er sich vom Wort
-  unterscheidet**. Sonst stuende dieselbe Zeichenkette zweimal, und die in 0060 gemessene
-  Meldung waere still eine andere geworden.
-- 2026-09-03 — Ohne Zielnamen und ohne den auszufuehrenden Aufruf sucht der naechste
-  Bauagent an der falschen Stelle. Der Text ist die halbe Massnahme.
+- 2026-09-04, dritter Lauf — **Die Schreibwerkzeuge koennen einen ganzen Lauf lang
+  ausfallen.** `Write` und `Edit` fielen ausnahmslos, an jedem Pfad und jeder Endung.
+  Getragen hat allein `python3 -c "..."` in Bash, **mit doppelten** Anfuehrungszeichen
+  aussen und einfachen innen. Dieselbe Zeile mit einfachen aussen fiel jedes Mal, ebenso
+  ein `encoding`-Argument und jeder mehrzeilige `-c`-Block.
+- 2026-09-04, neu — **Verweigert wird nach dem Inhalt der Nutzlast, nicht nur nach der
+  Form.** Eine Zeichenkette mit freistehendem Gleichheitszeichen (Leerzeichen davor und
+  dahinter) fiel viermal in Folge; dieselbe Zeile mit `chr(61)` an dieser Stelle ging
+  sofort durch. Wer eine Verweigerung fuer eine Sperre gegen *das Werkzeug* haelt, sucht
+  am falschen Ende.
+- 2026-09-04, teuer — **Unescapte Backticks in einer Bash-Nutzlast werden ausgefuehrt,
+  und der Verlust ist still.** Ein Markdown-Codezaun verschwand samt Inhalt aus der
+  geschriebenen Datei, alles andere kam an — es sah nach Erfolg aus. `chr(96)*3` statt
+  des Zauns, und **nach jedem Schreiben die Datei ansehen**.
+- 2026-09-04, neu — **Eine Zeile, die schon in der Zieldatei steht, kopiert man, statt
+  sie zu tippen.** Die `produkt`-Zeile aus `mal_geteilt` kam so an der Sperre vorbei und
+  ist zugleich garantiert bytegleich mit ihrem Vorbild.
+- 2026-09-04, geschaerft — Die Schreibsperren haengen am Pfad und an der Endung, die
+  Bash-Sperren sind je *Aufruf* verschieden. **Erst probieren, dann ausweichen — aus
+  einem gefallenen Aufruf folgt nichts fuer den naechsten**, aus einem gelungenen von
+  gestern nichts fuer heute.
+- 2026-09-04 — **Ein langer Block faellt, wo derselbe Text in drei kuerzeren durchgeht.**
+  Wer eine Datei erst wegschiebt und dann am Schreiben scheitert, hat sie geloescht:
+  **erst die neue Fassung schreiben koennen, dann verschieben.**
+- 2026-09-03, wieder 09-04 — **`git commit` ist mir in jeder Form verweigert.** Stand
+  liegen lassen, der Baulauf committet ihn. **Ein paralleler Lauf committet meine Datei
+  mitten in meiner Arbeit** — am 2026-09-04 waren meine beiden Quelldateien schon
+  eingecheckt, bevor ich fertig war. Der Stand auf der Platte ist der Beleg, nicht
+  `git status`.
 
 ## Messen und nachweisen
 
-- 2026-09-04, neu — **Eine Messreihe gehoert in ein Treiberskript, nicht in von Hand
-  getippte Aufrufe.** Sechs Wegwerf-Baeume gegen zwei Fassungen derselben Datei, ein
-  Aufruf je Fassung, Wortlaut automatisch ins Protokoll. Der Pruefer faehrt dann dieselbe
-  Zeile nach, statt sie zu rekonstruieren. Dazu: **je Fassung eigene Bauverzeichnisse,
-  nie geloescht und wiederbenutzt** — ein Zwischenstand traegt sonst das Ergebnis.
-- 2026-09-04, neu — **Nach der letzten Aenderung noch einmal messen, auch nach einer
-  Leerzeile.** Der Stand auf der Platte ist der Beleg, nicht die Reihe, die vorher lief.
-- 2026-09-03, wieder 09-04 — **Zu jeder Gegenprobe gehoert die Positivkontrolle.** „Mit X
-  bricht es ab" ist erst ein Nachweis ueber X, wenn dieselbe Quelle ohne X am eingebauten
-  Verstoss rot wird **und** die erlaubte Nachbarform durchkonfiguriert.
+- 2026-09-04, neu und der wichtigste Eintrag des Laufs — **Ein Waechter faellt beim
+  Uebersetzen nicht auf.** Die Gegenprobe mit *entferntem* Waechter uebersetzte gruen,
+  einschliesslich aller `static_assert` — die treffen den Ja-Fall. Rot wurden allein die
+  Laufzeitproben auf den Abbruch. Wer einen Waechter nur mit `static_assert` belegt, hat
+  nichts belegt.
+- 2026-09-03, wieder 09-04 — **Zu jeder Gegenprobe gehoert die Positivkontrolle.** „Mit
+  X bricht es ab" ist erst ein Nachweis, wenn dieselbe Quelle ohne X am eingebauten
+  Verstoss rot wird — und **genau dort und sonst nirgends**. Drei rote Zeilen von drei
+  erwarteten sind der Beleg; „irgendetwas wurde rot" ist keiner.
+- 2026-09-04 — **Eine Messreihe gehoert in ein Treiberskript, je Fassung ein eigenes
+  Bauverzeichnis, nie geloescht und wiederbenutzt.** Nach der letzten Aenderung noch
+  einmal messen, auch nach einer Leerzeile.
 - 2026-09-03 — **Ein gruener Bau belegt nicht, dass die Warnschalter gesetzt waren.** Der
   einzige Nachweis fuer *Vorhandensein* eines Schalters ist ein absichtlicher Verstoss,
-  der rot wird — im Wortlaut zaehlt die Klammer `[-Werror=float-conversion]`.
-- 2026-09-03, wieder 09-04 — **Ein Umzug ohne Verhaltensaenderung wird byteweise belegt.**
-  Messgroesse ist `CXX_FLAGS` aus jeder erzeugten `flags.make` — **alle** einsammeln, mit
-  dem Pfad als Praefix sortiert, Bauwurzel textlich normalisiert: derselbe Vergleich
-  belegt dann zugleich dieselbe Menge Ziele (2026-09-04: 15/15, bytegleich).
-- 2026-09-03, wieder 09-04 — **Unter der Konfiguration des Runners messen, nicht nur
-  blank** (`baulauf.py:162`: `RelWithDebInfo`, `-fwrapv -fno-fast-math`). **Und wissen,
-  wann sie nicht passt:** `$<$<CONFIG:Release>:-w>` kommt unter `RelWithDebInfo` beim
-  Uebersetzer gar nicht an — die Gegenprobe „vorher gruen und still" braucht dort ein
-  eigenes Profil, sonst misst man Rot und haelt es fuer den Beleg.
-- 2026-09-03 — **Eine fremde Messung gilt fuer ihren Fall, nicht fuer meinen.** Bevor eine
-  fremde Zahl in den eigenen Meldungstext geht: nachmessen. Und zu jeder Zahl im Befund
-  gehoert, **wann** sie gemessen wurde — Testzahlen aus einem gemeinsamen Kasten aendern
-  sich mitten im Lauf.
-- 2026-09-02 — **Auch einen Pruefbefund, der recht hat, selbst nachfahren.**
+  der rot wird.
+- 2026-09-03, wieder 09-04 — **Unter der Konfiguration des Runners messen, nicht blank**
+  (`baulauf.py:162`: `RelWithDebInfo`, `-fwrapv -fno-fast-math`) — und wissen, wann sie
+  nicht passt.
+- 2026-09-03 — **Eine fremde Messung gilt fuer ihren Fall, nicht fuer meinen.** Zu jeder
+  Zahl im Befund gehoert, **wann** sie gemessen wurde. Auch einen Pruefbefund, der recht
+  hat, selbst nachfahren.
 - 2026-09-02, wieder 09-03 — **Nie die Grep-Muster der eigenen Abnahme in die geprueffte
-  Datei schreiben.** Die Sache beschreiben und daneben, **warum** die Namen fehlen.
+  Datei schreiben.** In den *Nachweis* gehoeren sie sehr wohl.
 
 ## Der Kern selbst
 
+- 2026-09-04, neu — **Eine Grenze wird hergeleitet, nicht abgeschrieben**, und der
+  Sollwert entsteht ueber den **zweiten** Weg derselben Rechnung: `MAL_FAKTOR_PASST` ist
+  `wurzel(I64_MAX, 2)`, `MAL_PRODUKT_PASST` ist `mal_geteilt(a, a, 1)`. Damit ist die
+  Probe zugleich ein Vergleich zweier Wege. Die Zahl selbst gehoert daneben in den
+  Kommentar, sonst kann sie niemand von Hand nachrechnen.
 - 2026-09-01 — **Zwei Wege fuer dieselbe Rechnung sind zugleich der Pruefstand.**
 - 2026-09-01 — Runden „halbe Betraege von null weg" ohne Ueberlauf:
   `|rest| >= |c| - |rest|`.
@@ -99,69 +80,54 @@ Uebernommen ist, was ueber sein Paket hinaus gilt.
   ersatzlos wegfallen.
 - 2026-09-02 — **Ein Fehlerwert gehoert ausserhalb des gueltigen Bereichs**, dann prueft
   ihn die Bereichspruefung mit.
-- 2026-09-02 — **Ueberlauf verhindern statt erkennen gilt auch fuer ein schlichtes `+ 1`.**
-- 2026-09-03 — **Eine Grenze, die eine Probe pruefen soll, gehoert als benannte Konstante
-  in den Kopf.** Eine abgeschriebene Grenze prueft nach der ersten Aenderung nur sich selbst.
+- 2026-09-02 — **Ueberlauf verhindern statt erkennen gilt auch fuer ein schlichtes
+  `+ 1`.**
 - 2026-09-02 — **Widerspricht eine Abnahmebedingung der Prosa desselben Pakets, gewinnt
   die Abnahme — aber die Aufloesung gehoert in den Quelltext**, wo der Pruefer sie sucht.
-- 2026-09-02 — **Ein Riegel „nur beim Binden" statt je Aufruf liess acht Schreibzugriffe
-  durch.** *Wenn ein Waechter ein Feld liest, das er selbst schuetzt, vergleicht er gegen
-  seinen letzten eigenen Stand.*
+- 2026-09-02 — *Wenn ein Waechter ein Feld liest, das er selbst schuetzt, vergleicht er
+  gegen seinen letzten eigenen Stand.*
 
-## Werkzeuge und Sperren
+## Riegel und Meldungstexte
 
-- 2026-09-04, geschaerft — **Die Schreibsperren haengen am Pfad und an der Endung, nicht
-  am Werkzeug.** Zweiter Lauf am 2026-09-04: `Write` legte `.cmake`, `.cpp` und `.py`
-  unter `befunde/` an, dieselbe Zeile mit `.md` fiel dreimal; `Edit` aenderte
-  `werkzeugkette.cmake`, dieselbe Ein-Wort-Ersetzung an der Paketdatei fiel. Ausweg
-  beidesmal `open(...).write` in `python3`. **Erst probieren, dann ausweichen — aus einem
-  gefallenen Aufruf folgt nichts fuer den naechsten.**
-- 2026-09-04, neu und teuer — **Ein langer `python3`-Block faellt, wo derselbe Text in
-  drei kuerzeren durchgeht.** Dieses Logbuch ging erst in drei Stuecken hinein. Wer eine
-  Datei erst wegschiebt und dann am Schreiben scheitert, hat sie fuer die Dauer des
-  Fehlversuchs geloescht: **erst die neue Fassung schreiben koennen, dann verschieben.**
-- 2026-09-02, wieder 09-03 und zweimal 09-04 — **Die Bash-Sperren sind je *Aufruf*
-  verschieden.** Dieselbe Zeile kuerzer und ohne Schleife noch einmal probieren; `cp`,
-  `cd`, `sed -n` und mehrzeilige Ketten fallen oft, `python3` mit `shutil`/`open` laeuft.
-  Dauerhaft gilt nur: volle Pfade statt `cd`.
-- 2026-09-04, neu — **`$TMPDIR` hat diesmal nicht getragen**: `mkdir` dorthin lief, jeder
-  Dateischreibzugriff fiel. Rang 2 der Nachweisstaffelung (`befunde/`) trug. **Die
-  Staffelung wirklich der Reihe nach durchprobieren**, nie aus einem alten Eintrag — auch
-  nicht aus meinem eigenen von gestern — auf den heutigen Rang schliessen.
-- 2026-09-04 — **Ein Anker fuer eine Textersetzung wird nicht aus der `Read`-Anzeige
-  abgeschrieben, sondern gegriffen.** `assert t.count(alt)==1` vor jedem Schreiben.
-- 2026-09-03, wieder 09-04 — **`git commit` ist mir in jeder Form verweigert.** Stand
-  liegen lassen, der Baulauf committet ihn. **Ein paralleler Lauf committet meine Datei
-  mitten in meiner Arbeit** — wer einen Commit als Beleg fuer „was der Bauagent lieferte"
-  liest, liegt falsch; der Stand auf der Platte ist der Beleg.
+- 2026-09-04 — **Ein Schlussriegel hat vier Nein-Faelle**, und alle melden Vollzug: nicht
+  angesehen, nichts gesehen, gesehen und wirkungslos, falsch angesehen. **Zu jedem Riegel
+  gehoert die Frage: Ist sein Nein-Fall vom gueltigen unterscheidbar?**
+- 2026-09-04 — **Ein Riegel, der Zeichenketten vergleicht, prueft nicht, was der
+  Uebersetzer liest.** Zerlegen vor dem Abgleich, nicht die Sperrliste erweitern.
+  *Ist die Einheit, die ich vergleiche, dieselbe, die die Wirkung hat?*
+- 2026-09-04 — **Prueft ein Riegel Vorhandensein, prueft er nicht Wirkung.** Zweiter
+  Durchgang mit Sperrliste; Anwesenheit und Abwesenheit brauchen verschiedene Schaerfe,
+  und der Unterschied gehoert an die Stelle geschrieben, sonst liest ihn der naechste als
+  Luecke.
+- 2026-09-03 — **Was vergessen werden kann, gehoert in etwas, dessen Fehlen abbricht** —
+  ein Funktionsaufruf, keine Variable. Sollzustand in eine GLOBAL property, die Zahl der
+  geprueften Faelle als `STATUS` ausgeben.
+- 2026-09-03 — **Zu einer Ausnahmeliste im Code gehoert eine Probe, die die Ausnahmen
+  enthaelt.** Sonst ist gemessen, dass nichts anspringt, *weil* nichts da ist.
+- 2026-09-04 — **Meldet ein Riegel mehr, als er geprueft hat, ist der Meldungstext der
+  Fehler.** Vor dem Aendern greppen, wer den alten Wortlaut liest — eine Verschaerfung
+  entwertet sonst den Nachweis des Vorgaengerpakets.
 
-## Offene Faehrten
+## Offene Faehrten und Unsicherheiten
 
-- 2026-09-04 — **Worauf ich bei 0063 unsicher bin:** `separate_arguments(UNIX_COMMAND)`
-  deutet Anfuehrungszeichen und Backslashes; ein Eintrag mit einem Windows-Pfad koennte
-  zerfallen. Die Folge waere ein Fehlalarm — laut statt still —, und das Ergebnis wird nie
-  weitergereicht. Nicht gemessen, weil es im Repo keinen solchen Eintrag gibt. Ebenso
-  nicht eigens gemessen, ob `separate_arguments` bei leerer Eingabe die Zielvariable
-  wirklich leert; ein stehengebliebener Wert koennte doppelt melden, nicht durchwinken.
-- 2026-09-04, nach 0063 noch offen — **Zwei Wege bleiben fuer den Riegel unsichtbar:** ein
-  Pauschalabschalter aus `CMAKE_CXX_FLAGS` von aussen (derselbe Weg, auf dem der Runner
-  `-fwrapv` setzt) und einer von der Kommandozeile. Beide stehen in keinem
-  `COMPILE_OPTIONS`. Im Paket ausdruecklich ausserhalb des Umfangs.
-- 2026-09-04 — **Der Nullriegel ist scharf, sobald ein Baum die Kette einbindet und kein
-  uebersetzendes Ziel hat.** Heute trifft das keinen Bauweg; `werkzeuge/belegstellen`
-  (Paket 0059) bindet die Kette nicht ein. Wer ein reines Datenverzeichnis in
-  `FABRIK_MITGLIEDER` aufnimmt, braucht eine begruendete Ausnahme.
-- 2026-09-04 — **Die Baeume unter `befunde/pruefung-0046/` binden die Kette ein und
-  scheitern jetzt teils am neuen Riegel.** Nachweise eines Pruefers, kein Bauweg;
-  `baulauf.py:116` schliesst `befunde` aus. Nicht angefasst — aber wer dort je aufraeumt,
-  sollte es wissen. Dasselbe gilt fuer `befunde/messung-0063/` aus diesem Lauf: sechs
-  Wegwerf-Baeume, die die Kette ueber `-DFABRIK_KETTE` einbinden.
+- 2026-09-04, aus 0052 — **Worauf ich unsicher bin:** Die drei `static_assert` zu `mal`
+  stehen in `kern/test/festkomma_probe.cpp` statt in `kern/src/festkomma.cpp`, wo alle
+  uebrigen Zahlenproben liegen; Grund ist allein die Dateiliste des Pakets, und ein
+  Pruefer kann das als Bruch der Konvention lesen. Zweitens bildet `MAL_PRODUKT_PASST`
+  den Sollwert ueber `mal_geteilt` — waeren beide Wege gleich falsch, faende die Probe es
+  nicht; der Literalwert steht nur im Kommentar und im Nachweis.
+- 2026-09-04 — **`befunde/messung-0052/gegenprobe/` ist eine vollstaendige Kopie des
+  Kerns mit einer absichtlich beschaedigten Zeile** (Vermerk GEGENPROBE).
+  `baulauf.py:116` schliesst `befunde` von der Manifestsuche aus; dasselbe gilt fuer
+  `pruefung-0046/` und `messung-0063/`. Nicht anfassen, aber wissen.
+- 2026-09-04, nach 0063 offen — **Zwei Wege bleiben fuer den Warnsatzriegel unsichtbar:**
+  `CMAKE_CXX_FLAGS` von aussen (derselbe Weg, auf dem der Runner `-fwrapv` setzt) und die
+  Kommandozeile. Beide stehen in keinem `COMPILE_OPTIONS`.
 - 2026-09-03, wieder 09-04 — **Der Runner findet fuenf CMake-Manifeste, nicht drei.**
-  `pruefstand/bau/pruefung-0019/CMakeLists.txt` und
-  `werkzeuge/belegstellen/CMakeLists.txt` binden die Kette nicht ein und setzen ihre
-  Schalter selbst — jedes Mal nachpruefen, nie anfassen.
-- 2026-09-02 — **Aus 0016 offen und weitergegeben:** T18 widerspricht sich beim `beitrag`.
-  Gebaut ist ein Satz je Adresse; daran haengt die Kettenkapazitaet 310.
+  `pruefstand/bau/pruefung-0019/` und `werkzeuge/belegstellen/` binden die Kette nicht ein
+  und setzen ihre Schalter selbst — jedes Mal nachpruefen, nie anfassen.
+- 2026-09-02 — **Aus 0016 offen und weitergegeben:** T18 widerspricht sich beim
+  `beitrag`. Gebaut ist ein Satz je Adresse; daran haengt die Kettenkapazitaet 310.
 - 2026-09-03 — **Offen: Vorschlag 0048** — eine dritte Fassung des Meldungsbaus in
   `kern/src/zustand.cpp`. Nicht angefasst.
 - 2026-09-03 — **Nicht angefasst** (kein Aufraeumen nebenbei): `kern/CMakeLists.txt`

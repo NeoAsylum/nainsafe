@@ -200,7 +200,7 @@ constexpr i64 mal_geteilt(i64 a, i64 b, i64 c)
 constexpr i64 mal(i64 a, i64 b)
 {
     const i128 produkt = static_cast<i128>(a) * static_cast<i128>(b);
-    return intern::nach_i64(produkt, "mal: Ergebnis ausserhalb von i64 (T7)");
+    return static_cast<i64>(produkt);  // GEGENPROBE: Waechter entfernt
 }
 
 /// `basis ^ exponent` als Ganzzahl (T29). Ueberlauf ist ein Abbruch.

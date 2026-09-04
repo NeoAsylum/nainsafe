@@ -1,7 +1,7 @@
 ---
 id: 0052-festkomma-mal-mit-waechter
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0011-stack-auf-cpp]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/festkomma_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
