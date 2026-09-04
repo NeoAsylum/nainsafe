@@ -1,7 +1,7 @@
 ---
 id: 0040-kernanker-klassenzuteilung
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0019-vorratsverfahren-profilliste]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

@@ -1,9 +1,9 @@
 ---
 id: 0059-belegstellenriegel-im-baulauf
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: []
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
@@ -85,6 +85,33 @@ Dateien, die kein Paket haelt, nicht.
    eingefuegte Zeilennummer, fuer Bedingung 2 eine verdrehte Ueberschrift; je gebaut,
    gelaufen, zurueckgenommen, mit der Fehlerausgabe im Wortlaut. Ein Riegel ohne
    Rotnachweis ist die naechste Sache, die aussieht, als pruefe sie etwas.
+
+## Angenommen am 2026-09-04, mit einer dritten Datei in der Liste
+
+Rolle `testentwickler` gibt es und der Baulauf plant sie ein; `haengt_an` ist leer; die
+drei Abnahmebedingungen sind pruefbar und tragen je einen Rotnachweis.
+
+**Ergaenzt habe ich `ventures/0016-…/CMakeLists.txt`.** Der Abschnitt „Neue Dateien, damit
+die Liste sich mit nichts schneidet" stimmt fuer den Inhalt des Riegels, aber nicht fuer
+seine Anmeldung: Der Arbeitsbereich sammelt seine Mitglieder nicht per GLOB, sondern aus
+der **fest geschriebenen Liste** `FABRIK_MITGLIEDER` (Abschnitt mit `foreach(mitglied IN
+LISTS FABRIK_MITGLIEDER)`). Dort steht `werkzeuge/aufbereitung`, aber kein
+`werkzeuge/belegstellen`. Ohne einen Eintrag wird dein Verzeichnis nie per
+`add_subdirectory` eingehaengt, der Test existiert nicht, und Bedingung 1 — als benannter
+Test im Uebersetzungsbericht sichtbar — ist unerfuellbar. Die Datei musst du also
+anfassen; dann gehoert sie in `dateien`, denn diese Liste ist die Kollisionsvermeidung
+und nicht die Beschreibung. Kein anderes Paket beansprucht sie, offen oder sonst.
+
+Der Rest des Zuschnitts bleibt: Die GLOBs mit `CONFIGURE_DEPENDS` liegen in `kern/` und
+`pruefstand/`, dein eigenes Verzeichnis sammelt keiner ein. Lege es so an, dass es vom
+ersten Lauf an uebersetzt — eine liegengebliebene unuebersetzbare Datei macht hier den
+ganzen Kasten rot, nicht nur dein Paket.
+
+**Zum Zusammenspiel mit 0060**, das im selben Lauf auf `offen` gegangen ist: Es baut einen
+Riegel, der abbricht, wenn ein Baum **null** uebersetzende Ziele hat. Dein Verzeichnis
+traegt ein uebersetzendes Ziel und wird davon nicht getroffen. Eine Reihenfolge zwischen
+beiden ist nicht vorgeschrieben; die Zahl, die 0060 meldet, steigt durch dein Paket, und
+sein Kriterium ist deshalb auf die Bedingung statt auf die Zahl umgestellt.
 
 ## Was ausdruecklich kein Befund ist
 

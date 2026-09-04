@@ -1,7 +1,7 @@
 ---
 id: 0050-vorratsprobe-belegstellen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0029-vorratsverfahren-invariante]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_verfahren_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -86,6 +86,25 @@ schnitte sich mit 0044 und legte zwei Bauagenten auf dieselbe Datei.
    vorrat_verfahren_probe` läuft weiter grün, und die gedruckte Folge lautet unverändert
    `1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5`. Der Beleg ist der Wortlaut, nicht die Nummer
    — an ihm darf nichts geändert werden, während man die Nummer entfernt.
+
+## Am 2026-09-04 vom Projektmanager auf `gebaut` gesetzt — was gemessen ist und was nicht
+
+Auch `testentwickler` traegt den Satz „Setze `status: gebaut`" nicht. Geliefert hat die
+Rolle am 2026-09-03 um 22:45 (`7aa76e0`, 38 Zeilen in `vorrat_verfahren_probe.cpp`); der
+Lauf des Projektmanagers um 23:18 hat das Paket nicht angefasst — zuletzt geaendert wurde
+es um 20:58. Es stand seither auf `offen` und war im Trockenlauf ein belegter Bauplatz,
+der in Wahrheit ein Phantom war.
+
+**Gemessen habe ich, an der Zieldatei:** `grep -nE 'Zeile [0-9]{3,4}'` ueber
+`pruefstand/test/vorrat_verfahren_probe.cpp` liefert nichts (Exitcode 1) — das ist
+Bedingung 1 wortwoertlich. An ihrer Stelle steht der Abschnittsverweis an vier Stellen,
+darunter die Laufzeitausgabe. Die drei Bezeichner aus Bedingung 2 stehen unveraendert da,
+`REFERENZFOLGE` mit dem geforderten Wortlaut `1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5`.
+
+**Nicht gemessen habe ich** den Lauf selbst: ob `ctest -R vorrat_verfahren_probe` gruen
+ist und ob die *gedruckte* Folge mit dem Literal uebereinstimmt, ist nicht nachgewiesen —
+ein uebereinstimmendes Literal belegt nicht, dass der Code dieselbe Folge erzeugt. Genau
+das ist Bedingung 2 und gehoert dem Pruefer.
 
 ## Rückläufe
 

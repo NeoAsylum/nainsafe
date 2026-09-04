@@ -1,7 +1,7 @@
 ---
 id: 0058-warnsatz-schlussriegel-alle-ziele
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0046-warnsatzriegel-fuer-kuenftige-mitglieder]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

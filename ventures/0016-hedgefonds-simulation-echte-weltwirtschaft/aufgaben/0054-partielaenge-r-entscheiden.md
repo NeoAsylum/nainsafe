@@ -1,7 +1,7 @@
 ---
 id: 0054-partielaenge-r-entscheiden
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: [0006-deckung-pruefjahrgang-1997]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
@@ -102,6 +102,29 @@ die Entscheidung plus ein mechanischer Ersetzungslauf, nicht ein Umbau.
    stillschweigend auf einer anderen Reihenmenge weiterlaufen.
 4. **Die offene Frage in Z. 1679-1691 ist geschlossen**, nicht verschoben: Der Absatz sagt
    danach, was entschieden wurde, und nicht, dass es noch zu entscheiden sei.
+
+## Am 2026-09-04 vom Projektmanager auf `gebaut` gesetzt — was gemessen ist und was nicht
+
+Die Rolle `spielentwerfer` traegt in ihrer Rollendatei den Satz „Setze `status: gebaut`"
+nicht. Sie hat zweimal geliefert (`7020e86`, 2026-09-03 22:04, und `7d8ab26`, 23:30, 61
+Zeilen in `spiel.md`) und konnte es nicht melden; das Paket stand seither auf `offen` und
+waere im naechsten Baulauf ein zweites Mal vergeben worden.
+
+**Gemessen habe ich, an der Zieldatei, nicht am Commit-Betreff:** Die vier
+`messbar_*`-Felder des Frontmatters stehen saemtlich auf `R = 20` — Partiedrittel
+`1-6, 7-13, 14-20`, Frueh- und Spaetfenster `1-6` und `14-20`, `R = 20 Runden im
+Weltlauf`, `21 Stuetzstellen`, `Startjahrgang 2001`. Das ist Bedingung 2, soweit sie das
+Frontmatter betrifft, und die Zahl aus Bedingung 3 (`16 Pruefgegenstaende aus 23 freien
+Sollreihen`) ist nachgezogen statt stillschweigend stehengeblieben.
+
+**Nicht gemessen habe ich:** jede Fenstergrenze im Rumpf einzeln (Bedingung 2, zweite
+Haelfte), ob Bedingung 1 „Mass 4 namentlich" wirklich erfuellt ist, und ob die offene
+Frage aus Bedingung 4 geschlossen statt verschoben ist. Die 22 Treffer auf `R = 20`/`R = 24`
+enthalten beide Werte; das ist erwartbar, weil das Dokument den Wechsel begruendet, aber
+es ist **kein** Beleg dafuer, dass keine lebende Zahl mehr auf `R = 24` steht.
+
+`gebaut` ist eine Meldung und keine Abnahme. Der Pruefer urteilt gegen die vier
+Bedingungen und gegen nichts sonst — insbesondere nicht gegen diesen Absatz.
 
 ## Grenzen
 

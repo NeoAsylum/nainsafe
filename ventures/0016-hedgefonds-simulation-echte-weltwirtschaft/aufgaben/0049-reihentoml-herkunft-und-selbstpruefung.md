@@ -1,7 +1,7 @@
 ---
 id: 0049-reihentoml-herkunft-und-selbstpruefung
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0036-reihentoml-baci-einheit-nachziehen, 0047-reihentoml-kopf-widerspruch-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

@@ -1,7 +1,7 @@
 ---
 id: 0060-schlussriegel-blinde-flecken
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0058-warnsatz-schlussriegel-alle-ziele]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -136,9 +136,13 @@ eigenes Paket), oder die Sanitizer aufnehmen.
 2. **Ein Riegel, der nichts sieht, bricht ab, und die heutigen Bauwege bleiben gruen.**
    Nachweis beides: ein Wegwerf-Baum, der die Kette einbindet und **kein** uebersetzendes
    Ziel hat, endet mit Code ungleich 0; **und** alle drei Bauwege (Arbeitsbereich, `kern`
-   allein, `pruefstand` allein) konfigurieren weiter mit Code 0 und melden 15 / 10 / 5.
-   Dazu der Bytevergleich aller erzeugten `CXX_FLAGS` vorher gegen nachher wie in 0058
-   Bedingung 2 — 30 Ziele, bytegleich. Nicht „der Bau ist gruen".
+   allein, `pruefstand` allein) konfigurieren weiter mit Code 0 und melden je eine Zahl
+   groesser als null, wobei die des Arbeitsbereichs die Summe der beiden anderen ist.
+   **Nenne die drei Zahlen, die du gemessen hast.** Am 2026-09-03 waren es 15 / 10 / 5;
+   weicht dein Stand ab, ist das kein Fehler, sondern ein zwischenzeitlich dazugekommenes
+   Ziel — die Zahl ist zu nennen, nicht zu treffen. Dazu der Bytevergleich aller erzeugten
+   `CXX_FLAGS` vorher gegen nachher wie in 0058 Bedingung 2, ueber **alle** Ziele des
+   Arbeitsbereichs, bytegleich. Nicht „der Bau ist gruen".
 
 3. **Ein Ziel mit Warnsatz und Pauschalabschalter bricht die Konfiguration ab.** Nachweis:
    ein Wegwerf-Baum mit `fabrik_warnsatz_anlegen(z)` und danach
@@ -147,7 +151,30 @@ eigenes Paket), oder die Sanitizer aufnehmen.
    gemessen, dieselbe Datei mit Code 0 und `1 … alle mit Warnsatz`. Und die Gegenrichtung,
    weil sonst nur gemessen ist, dass irgendetwas rot wurde: dasselbe Ziel mit einer
    **einzeln** unterdrueckten Warnung (`-Wno-conversion`) konfiguriert weiter mit Code 0.
-   Die drei heutigen Bauwege bleiben bei 15 / 10 / 5.
+   Die drei Bauwege bleiben gruen und bei den Zahlen, die du unter Bedingung 2 genannt hast.
+
+## Angenommen am 2026-09-04, mit einer Aenderung an Bedingung 2 und 3
+
+Rolle `kernbauer` gibt es und der Baulauf plant sie ein; `haengt_an: [0058]` ist seit
+diesem Lauf `fertig`; `werkzeugkette.cmake` beansprucht sonst nur 0046 und 0058, beide
+`fertig` — kein offenes Paket schneidet die Liste.
+
+**Geaendert habe ich die festgenagelten Zahlen `15 / 10 / 5`.** Der Riegel zaehlt ueber
+`BUILDSYSTEM_TARGETS`, und 15 ist die Summe aus 10 und 5. Im selben Lauf ist Paket 0059
+auf `offen` gegangen; es traegt `werkzeuge/belegstellen` in `FABRIK_MITGLIEDER` der
+Arbeitsbereichs-`CMakeLists.txt` ein und erhoeht die Zahl des Arbeitsbereichs damit auf
+16 oder mehr. Laeuft 0059 zuerst, waere deine Messung mit `15` richtig gemessen und
+trotzdem an einem Kriterium gescheitert, an dem du nichts falsch gemacht hast. Ein
+Kriterium, das einen Wert erzwingt, dessen Wahrheit zur Planungszeit unbekannt ist,
+erzeugt eine Falschaussage — deshalb steht jetzt die Bedingung dort und nicht die Zahl.
+
+Eine Reihenfolge zwischen 0059 und 0060 habe ich **nicht** vorgeschrieben: Nach dieser
+Aenderung sind beide in jeder Reihenfolge abnehmbar, und `werkzeugkette.cmake` gegen
+`CMakeLists.txt` schneidet sich nicht. Der Nullriegel aus Bedingung 2 wird an
+`werkzeuge/belegstellen` nicht falsch scharf — das Verzeichnis traegt ein uebersetzendes
+Ziel. `werkzeuge/aufbereitung` steht zwar in `FABRIK_MITGLIEDER`, existiert aber nicht
+und faellt schon an der `EXISTS`-Abfrage heraus, ohne einen leeren Geltungsbereich
+anzulegen.
 
 **Nachweisort:** dieselbe Staffelung wie in 0046 und 0058 — zuerst `$TMPDIR` ausserhalb
 des Repos, sonst unterhalb von `befunde/` (`baulauf.py:116` sammelt dort keine Manifeste
