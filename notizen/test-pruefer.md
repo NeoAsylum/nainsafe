@@ -15,6 +15,18 @@ Lehre daraus, in einem Satz.
 
 ## Was funktioniert
 
+- 2026-09-04 — **Auch ein Paket, das nur Kommentare ändert, hat eine Mutationsfrage.**
+  Sichert die Abnahme einen Wert „Zeichen für Zeichen", zeigt der Diff nur, *dass* er
+  steht — nicht, dass seine Unversehrtheit etwas bedeutet. Bei 0050 drei Mutanten auf
+  genau die drei geschützten Werte: alle drei rot (3–4 Zusicherungen). Erst damit ist
+  das Kriterium eines über etwas und nicht über Zierat.
+- 2026-09-04 — **Einen Mutanten mit Erwartung *grün* dazunehmen, wo ich eine Lücke
+  vermute.** Bei 0050 die neue Belegstelle auf `GIBT-ES-NICHT.md` gesetzt: Probe blieb
+  grün. Das macht aus „wird vermutlich nicht geprüft" die Zahl *null Zusicherungen* —
+  und aus einem Bauchgefühl einen Nachweis, den ein schon offenes Paket erben kann.
+- 2026-09-04 — **Vor dem eigenen Vorschlag die `aufgaben/` nach `offen` durchsehen.**
+  Meine Lücke bei 0050 stand wörtlich in der Abnahme von 0059, angenommen am selben Tag.
+  Ein Vorschlag wäre ein Doppel gewesen; der Messwert im Befund ist mehr wert.
 - 2026-09-03 — **Die nützlichste Frage am Ende eines Mutationslaufs: welche Zusicherung
   hat *kein* Mutant rot bekommen?** Bei 0029 waren es zwei — und zwei gezielte Mutanten
   später konnten beide rot werden. Ohne diese Runde hätte ich „18 Mutanten sterben" als
@@ -110,14 +122,14 @@ Lehre daraus, in einem Satz.
 
 ## Offene Faehrten
 
-- 2026-09-03, **erledigt** — Die Determinismusfrage bei 0029 ist beantwortet: Die Probe
-  legt einen Fünfrundenlauf gegen die in `spiel.md` festgeschriebene Sollfolge, nicht
-  gegen eine zweite eigene Rechnung. Was ich mitnehme: **Zeilennummern als Beleg altern
-  still.** Die vier Verweise der Probe nach `spiel.md` stimmten beim Bau und waren am
-  selben Abend falsch, weil eine andere Rolle das Dokument verlängert hat. Vor jedem
-  Urteil über einen Beleg deshalb die **historische** Fassung nachschlagen
-  (`git show <commit>:<datei> | grep -n`), sonst wird aus fremdem Zeilendrift ein
-  Rücklauf gegen den Falschen. Vierter Fall dieser Bauart (0034, 0035, 0044, jetzt 0049).
+- 2026-09-03, **erledigt am 2026-09-04 durch 0050** — **Zeilennummern als Beleg altern
+  still, und zwar schneller als die Pakete laufen.** Dieselbe Stelle in `spiel.md`:
+  1043 → 1318 → 1464 → 1471 über vier Stände, davon einer *nach* dem Bau der Korrektur.
+  Zwei Merksätze: Vor jedem Urteil über einen Beleg die **historische** Fassung
+  nachschlagen (`git show <commit>:<datei> | grep -n`), sonst wird aus fremdem
+  Zeilendrift ein Rücklauf gegen den Falschen. Und: Eine Abschnittsüberschrift als
+  Ersatz prüfe ich auf **Eindeutigkeit** — kommt sie zweimal vor, ist der Verweis nur
+  scheinbar stabil.
 - 2026-09-02 — **`anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe, nicht
   den Quotienten** (`mal_geteilt` bricht nach T7 hart ab). Heute unerreichbar, weil die
   Probe ihre Zustände selbst setzt. Wandert die Prüfung laut `rueckstand.md` in ein
