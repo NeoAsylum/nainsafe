@@ -109,3 +109,33 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03-3.md`.*
   Einheitenbefund stand vier Pakete lang viermal als `beleg` in der Datei und in keiner
   einzigen Herkunftsangabe. Wer eine fremde Datei als Beleg eintraegt, traegt sie im selben
   Lauf in die Vorlagenliste ein -- sonst faellt es erst einem Pruefer auf, drei Pakete spaeter.
+
+## Lauf 0057 (2026-09-04)
+
+- **Der Parser faengt, was `grep` nicht sieht: ein typografisches Zeichen im Zitat.** Die
+  Zwischenzeile, die ich als Adresse zitieren wollte, endete auf ein *gerades*
+  Anfuehrungszeichen -- in einem TOML-Basisstring bricht das die Datei. Nach jedem
+  Ersetzungsschritt `tomllib`, nicht erst am Schluss.
+- **Ein Zitat muss zeichengleich sein, auch in den Umlauten.** Ich hatte den ersten Beleg
+  transliteriert eingetragen (`traegt` statt `trägt`) -- er waere in der Zieldatei nie
+  gefunden worden. Gegenprobe: jedes Zitat nach dem Eintragen in der *Zieldatei* suchen.
+- **Der starke Nachweis fuer eine Belegstelle ist der abschnittsweise, nicht der dateiweite.**
+  Zieldatei auf den Abschnitt der genannten Adresse zuschneiden (Ueberschrift bis naechste,
+  bei `technik.md` T-Nummer bis T-Nummer, beim Frontmatter zwischen den beiden `---`) und
+  das Zitat nur dort suchen. Genau das trennt eine Ersetzung von einer Behauptung.
+- **Eine erlaubte Ausnahme ist oft nur ein falsches Wort.** Die Wendung, die Bedingung 1
+  ausdruecklich stehen lassen durfte, hiess „Zeilen 1, 2, 8, ..." und meinte Reihennummern.
+  Ein Wort geaendert, und die Trefferliste ist leer statt kommentiert.
+- **Der Paketrumpf zaehlt nicht immer vollstaendig auf.** Er nannte sechs tote Verweise;
+  ein siebter (`technik.md` Z. 884 im Widerspruch Nr. 4) stand woanders und war nicht
+  aufgefuehrt. Die dateiweite Bedingung 1 hat ihn gefangen -- die Aufzaehlung nachmessen,
+  nicht uebernehmen.
+- **Die Schnittzahlen aus `[pruefweg]` sind eine kostenlose Regressionsprobe.** Alle sieben
+  nach dem Eingriff neu gemessen; unveraendert. Bei schnitt_1 zusaetzlich die Trefferkontexte
+  alt gegen neu verglichen -- gleiche Zahl aus anderen Stellen waere sonst unbemerkt geblieben.
+- **Wieder mitcommittet:** Ein fremder Lauf (kernbauer 0060) hat meine beiden Datendateien
+  in seinen Commit gezogen, bevor der Bericht stand. Folge fuers naechste Mal: Den
+  Vergleichsstand als Commit-Kennung im Bericht nennen, nicht als `git diff` ohne Basis --
+  sonst ist die Bilanz beim Lesen nicht mehr reproduzierbar.
+- Werkzeuglage 0057: `Edit` abgewiesen, `Bash` und `python3` frei, `sed` und Bash-Schleifen
+  abgewiesen. Fuenfte Lage in fuenf Laeufen.

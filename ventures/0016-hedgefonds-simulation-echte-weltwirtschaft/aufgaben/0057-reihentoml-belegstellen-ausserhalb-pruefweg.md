@@ -1,7 +1,7 @@
 ---
 id: 0057-reihentoml-belegstellen-ausserhalb-pruefweg
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0047-reihentoml-kopf-widerspruch-belegstellen, 0049-reihentoml-herkunft-und-selbstpruefung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
@@ -150,3 +150,137 @@ Bedingungen 2 und 3 bleiben wörtlich, wie sie stehen. Bedingung 2 ist die schä
 Sie verlangt je Verweis das Zitat als Teilzeichenkette **an der genannten Adresse**
 wiedergefunden — nicht bloß irgendwo in der Zieldatei. Das ist der Nachweis, der eine
 Ersetzung von einer Behauptung trennt, und `Grep` reicht dafür aus.
+
+
+---
+
+## Gebaut — 2026-09-04, Datenbauer
+
+Geaendert sind die zwei Dateien der `dateien`-Liste und keine weitere. Bilanz
+`git diff --numstat 1a4d240`: `daten/reihen.toml` **12 zugefuegt, 11 entfernt**, zehn Hunks;
+`daten/einheitenbefund-pwt-baci.md` **3 zugefuegt, 2 entfernt**, ein Hunk.
+
+**Werkzeuglage dieses Laufs, weil sie das Verfahren bestimmt hat:** `Edit` wurde
+abgewiesen, `Bash` mit `python3` 3.14.4 lief. Gearbeitet ist deshalb auf einer Kopie in
+`$TMPDIR`; jede Ersetzung erwartete genau einen Treffer und waere sonst abgebrochen. Erst
+nach allen Messungen ist die Kopie eingespielt worden. sha256 vorher
+`8d27faa4da0fbfb9c3cf00a21af8059a2c084244dd9963b45d827f4c0671936e`, nachher
+`519099c768c9a215fdb481dacd99bce7fbb2d18f478f2b3419c7799e83d133c2`.
+
+### Bedingung 1 — kein Muster trifft mehr, auch die Ausnahme nicht
+
+Die beiden Muster `Zeilen? [0-9]{1,4}` und `Z\. ?[0-9]` liefern ueber die **ganze** Datei
+**null** Treffer. Die Aufzaehlung, die die Klarstellung des Projektmanagers verlangt, ist
+deshalb leer: Es gibt keinen Treffer der ersten Art (Dateizeile) und keinen der zweiten.
+
+Die eine erlaubte Ausnahme ist nicht stehen geblieben, sondern aufgeloest. `zaehlung.beleg`
+sagte „Die 31 Sollreihen sind die Zeilen 1, 2, 8, 9, 10 und 11" und sagt jetzt „verteilen
+sich auf die **Reihen** 1, 2, 8, 9, 10 und 11 -- Reihennummern dieser Datei, keine
+Dateizeilen". Das ist die genauere Aussage und nicht nur die vorschriftsmaessige: Die Zahlen
+sind die `nr` der Reihenbloecke dieser Datei, nachgerechnet 4 + 12 + 4 + 4 + 3 + 4 = 31, und
+`[pruefweg].schnitt_5` schreibt dieselbe Menge schon heute als „bei den Reihen 1, 2, 8, 9,
+10 und 11". Ein Verweis auf Tabellenzeilen in `technik.md` Abschnitt 7 waere falsch gewesen
+-- Abschnitt 7 fuehrt dort keine Tabelle mit elf Zeilen, sondern die zehn nummerierten
+Punkte von T23. Der belegende Punkt ist T23 Punkt 2 („**Sollreihen** fuer die 31 Reihen aus
+`spiel.md`"), und er steht jetzt in der Adresse.
+
+### Bedingung 2 — elf Verweise, je Adresse, Zitat und Wiederfindung
+
+Elf und nicht zehn: Zu den sechs toten und den vier haltbaren aus dem Paketrumpf kommt der
+Verweis `technik.md Z. 884` im Feld `lang` des Widerspruchs Nr. 4. Er nennt dieselbe tote
+Stelle wie Reihe 10, steht aber woanders und war im Rumpf nicht aufgezaehlt; Bedingung 1
+haette ihn ohnehin erzwungen.
+
+Das **Werkzeug** ist bei allen elf dasselbe und deshalb hier einmal statt elfmal genannt:
+`Grep` zum Wiederfinden, danach eine maschinelle Gegenprobe, die je Zitat die Zieldatei auf
+den Abschnitt der genannten Adresse zuschneidet (Ueberschrift bis naechste Ueberschrift, bei
+`technik.md` T-Nummer bis naechste T-Nummer, bei T23 zusaetzlich der nummerierte Punkt, beim
+Frontmatter der Bereich zwischen den beiden `---`) und das Zitat **nur in diesem Ausschnitt**
+sucht. Alle elf: gefunden. Damit ist gemessen, was Bedingung 2 verlangt -- das Zitat an der
+genannten Adresse, nicht bloss irgendwo in der Datei.
+
+| in `reihen.toml` | vorher | neue Adresse | Zitat |
+|---|---|---|---|
+| `[[widerspruch]]` Nr. 2, `lang` | `lizenzbefund-wdi.md` Z. 36-41 | Abschnitt „Die vier Reihen im Überblick", Tabellenkopf | `\| Nr \| Größe \| Indikatorcode \|` |
+| `[[widerspruch]]` Nr. 2, `lang` | `lizenzbefund-reihen.md` Z. 9 | Frontmatter | `codes_abgerufen_reihen: 6` |
+| `[[widerspruch]]` Nr. 2, `lang` | `lizenzbefund-reihen.md` Z. 31-34 | erster Absatz unter „Kein Fund ist gesperrt" | ``nennen im Feld `Source` mindestens einen`` |
+| `[[widerspruch]]` Nr. 2, `lang` | `lizenzbefund-reihen.md` Z. 10 | Frontmatter | `codes_abgerufen_gegenprobe: 2 (SL.EMP.TOTL.SP.ZS, IQ.CPA.ECON.XQ)` |
+| `[[widerspruch]]` Nr. 2, `lang` | `lizenzbefund-reihen.md` Z. 600-603 **tot** | „Befund 1 — an den Architekten" | `Zusammen mit den vier Reihen aus 0005 ist damit` |
+| `[[widerspruch]]` Nr. 2, `lang` | `lizenzbefund-wdi.md` Z. 39 | Abschnitt „Die vier Reihen im Überblick", Tabellenzeile zu Reihe 7 | `\| 7 \| Beschäftigung je Sektor \|` und `\| ILOEST (ILO) \|` |
+| `[[widerspruch]]` Nr. 4, `lang` | `technik.md` Z. 884 **tot** | T46, Tabellenzeile `land.US.wechselkurs` | `Reihe 10 trägt drei Länder, die USA definitionsgemäß nicht` |
+| Reihe 2, 2. `[[reihe.umrechnung]]`, `begruendung` + `beleg` | `technik.md` Z. 698 **tot** | T23 Punkt 1 (Voraussetzung) und T23 Punkt 7 (Regel) | `zwölf Sektoranteil-Sollreihen aus` bzw. `die drei Sektoranteile je Gebiet und Jahr werden auf 10.000 normiert` |
+| Reihe 6, `wortlaut_form` | `lizenzbefund-reihen.md` Z. 272-274 **tot** | Abschnitt „Reihe 6 — Erwerbstätige", Block unter „Feld `Source` im Wortlaut" | `International Labour Organization (ILO), type: estimates based on external database;` |
+| Reihe 10, 1. `[[reihe.umrechnung]]`, `begruendung` + `beleg` | `technik.md` Z. 884, 886, 1377 **alle drei tot** | T46, Tabellenzeilen `land.US.wechselkurs` und `restwelt.wechselkurs`; T47 | `Reihe 10 trägt drei Länder…`, `Die Restwelt rechnet im Numéraire`, `ist deshalb eine Invariante` |
+| Reihe 13, `wortlaut_form` | `lizenzbefund-wdi.md` Z. 61-65 und Z. 273-279 | Abschnitt „Reihe 13 — Zollniveau, aggregiert" bzw. „Belegführung und ihre Grenze" | `Consolidated Tariff Schedules (CTS), World Trade Organization (WTO)` bzw. `einschließlich der vier Zeilenumbrüche in Reihe 13` |
+
+Die vier haltbaren sind mitersetzt und nicht bestaetigt, wie die Bedingung es verlangt.
+
+**Eine Adressform ist gegen die eigene Absicht gekuerzt worden, und das gehoert genannt.**
+Bei Reihe 13 lautete die Adresse zunaechst „Block unter der Zwischenzeile Feld „Source" im
+Wortlaut". Das Schlusszeichen dieser Zwischenzeile ist in `lizenzbefund-wdi.md` ein
+**gerades** Anfuehrungszeichen, und `wortlaut_form` ist ein TOML-Basisstring -- die Datei
+liess sich nicht mehr einlesen. Die Adresse heisst dort jetzt „Zwischenzeile Feld Source im
+Wortlaut", ohne die typografischen Zeichen. Bei Reihe 6 stand das Problem nicht, weil
+`lizenzbefund-reihen.md` dort Backticks benutzt; die Adresse ist deshalb zeichengleich.
+Aufgefallen ist es nur, weil `tomllib` nach jedem Schritt gelaufen ist -- ein `grep` haette
+diesen Fehler nicht gesehen.
+
+### Bedingung 3 — `einheitenbefund-pwt-baci.md`, genau ein Hunk
+
+`git diff -U0 1a4d240` zeigt einen einzigen Hunkkopf, `@@ -241,2 +241,3 @@`. Die Adresse heisst
+jetzt „Reihe 16, Feld `offen`, erster Eintrag" mit dem Zitat
+`H und N stehen in der Groessenordnung in derselben Einheit`; die Zeilennummer ist weg. Das
+Muster `Zeilen? [0-9]{1,4}|Z\. ?[0-9]` liefert ueber diese Datei ebenfalls null Treffer.
+Sonst ist an ihr nichts geaendert.
+
+### Was ich ueber die drei Bedingungen hinaus geaendert habe — drei Werte, alle in `reihen.toml`
+
+Ich nenne sie, statt sie den Pruefer finden zu lassen:
+
+1. **`[datei].nachgezogen_durch`** bekommt `0057-…` als sechsten Eintrag. Die Datei sagt in
+   `paket_bedeutung` selbst, dass man an `stand` und `nachgezogen_durch` erkennt, ob sie
+   aktuell ist; ohne den Eintrag behauptete sie, zuletzt von 0049 angefasst worden zu sein.
+2. **`[datei].stand`** geht von `2026-09-03` auf `2026-09-04`, das Datum dieser Aenderung.
+3. **`[pruefweg].toml_geprueft`** bekommt einen Nachtrag mit dem heutigen Datum. Der Grund
+   ist die Lehre aus 0049: Eine Messung altert mit der Datei, die sie misst. Das Feld sagte
+   „gegen die hier vorliegende Fassung … wiederholt" und haette nach meinem Eingriff eine
+   Fassung gemeint, die es nicht mehr gibt. Der Nachtrag nennt die neun geaenderten Werte
+   und das wiederholte Ergebnis.
+
+### Gegenprobe: die sieben Schnitte und die Struktur
+
+Alle Zahlen aus `[pruefweg]` sind nach dem Eingriff neu gemessen und **unveraendert**:
+schnitt_1 6 Treffer (und zwar zeichengleich dieselben sechs Stellen wie vorher, im Kontext
+verglichen), schnitt_2 29 / 54 / 27, schnitt_3 113, schnitt_4 19 / 20 / 28 / 152,
+schnitt_5 21 und 28, schnitt_7 20 und 2.
+
+Dazu ein Nachweis, den `grep` nicht liefern kann: Die Fassung vor diesem Lauf (Commit
+`1a4d240`) und die vorliegende sind beide mit `tomllib` eingelesen und **Blatt fuer Blatt**
+verglichen worden. 1.212 gegen 1.213 Blattwerte; **genau ein** Schluessel ist neu
+(`datei.nachgezogen_durch[5]`), keiner ist weggefallen, und **genau elf** Werte sind
+verschieden: `zaehlung.beleg`, die Felder `lang` der Widersprueche Nr. 2 und Nr. 4,
+`begruendung` und `beleg` des zweiten Umrechnungsblocks der Reihe 2, `wortlaut_form` der
+Reihen 6 und 13, `begruendung` und `beleg` des ersten Umrechnungsblocks der Reihe 10 --
+das sind die neun dieses Auftrags -- sowie `datei.stand` und `pruefweg.toml_geprueft` aus
+dem Abschnitt darueber. Kein Reihenblock ausserhalb der Reihen 2, 6, 10 und 13 ist
+beruehrt, kein `[pruefweg]`-Schnitt und keine Zaehlung ausser `zaehlung.beleg`.
+
+**Wo der Pruefer den Diff findet:** Ein fremder Lauf hat die beiden Datendateien
+mitcommittet, bevor ich diesen Bericht schreiben konnte -- Commit `24aa5aa`, Betreff
+`kernbauer: 0060-schlussriegel-blinde-flecken`. Der Inhalt ist unversehrt, aber
+`git status` zeigt ihn nicht mehr. Alle Zahlen dieses Berichts sind gegen `1a4d240`
+gemessen: `git diff 1a4d240 -- ventures/0016-.../daten/`.
+
+### Worauf ich unsicher bin
+
+- **Die Adresse „T23 Punkt 1" fuer den Satz, der die Normierung voraussetzt.** Das Zitat
+  steht dort, aber `technik.md` sagt die Sache an zwei Stellen: Punkt 1 setzt die
+  normierten Anteile in der Bildungsregel voraus, Punkt 7 stellt die Regel auf. Ich habe
+  beide eingetragen. Wer nur eine will, nimmt Punkt 7.
+- **Der Ersatz der erlaubten Ausnahme in `zaehlung.beleg`.** Die Bedingung erlaubt sie
+  ausdruecklich, wenn sie gekennzeichnet ist. Ich habe sie stattdessen aufgeloest, weil
+  „Reihen" die richtigere Bezeichnung ist und die Trefferliste damit leer wird. Wer das als
+  Ueberschreitung liest, hat einen Punkt; die Aussage ist unveraendert.
+- **Der Nachtrag an `toml_geprueft` liegt in einem Feld, das 0049 gehoert.** Ich halte ihn
+  fuer noetig, weil das Feld sonst eine Fassung bezeugt, die nicht mehr existiert. Er ist
+  reiner Zusatz -- kein Wort des alten Textes ist entfernt.
