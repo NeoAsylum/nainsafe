@@ -121,6 +121,19 @@ von 0067 durch `e049837`. Geaendert wurde allein
 `werkzeuge/belegstellen/belegstellen_riegel.cpp`; dazu liegt ein Vorschlag als neues
 Paket 0090 daneben (Begruendung unten).
 
+**Wo der Quelltext dieses Pakets liegt -- bitte nicht suchen, sondern hier lesen:** Er
+steht **nicht** im Commit mit meinem Betreff, sondern in `dffb251` (`architekt:
+0043-t48-groessen-gegenkraft-5`, 40 Dateien, 22:40). Jener Lauf hat den Arbeitsbaum
+pauschal eingesammelt, waehrend dieser hier noch lief, und dabei meine 294 Zeilen an
+`belegstellen_riegel.cpp`, die Datei 0090 und 87 Zeilen dieses Nachtrags mitgenommen.
+Der Inhalt ist unveraendert -- geprueft: Arbeitsbaum und `HEAD` sind an der Quelldatei
+gleich --, nur die Zuordnung ueber den Commit-Betreff ist falsch.
+
+Das ist derselbe Stolperstein, an dem 0067 zwei Tage danebengelandet ist, nur
+andersherum: Dort lag die Arbeit eines Pakets im Commit des naechsten Laufs, hier im
+Commit eines gleichzeitigen. **Wer die Herkunft dieser Zeilen sucht, nehme `git log -S`
+gegen das Datum und nicht gegen den Betreff.**
+
 ### Was gebaut wurde
 
 `dateiname_davor` sucht nicht mehr ueber genau ein Wort, sondern **wortweise nach links
@@ -164,7 +177,7 @@ Alle drei Mutationen sind wieder heraus; `grep MESSUNG` ist leer.
 
 ### Gruen auf dem dann geltenden Korpus
 
-`Bedingung 1: 40 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen
+`Bedingung 1: 42 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen
 daneben.` Die fuenf sind unveraendert die `static_assert`-Zeilen in
 `kern/src/zustand.cpp`; keine von ihnen traegt ein Wort mit zugelassener Endung, weshalb
 die Verbreiterung sie nicht beruehrt. Fall 4 haelt diese Form fest.
@@ -177,8 +190,12 @@ Ausgabe, beide unter `-Werror` und `-fsanitize=undefined,address
 -fno-sanitize-recover=all`. Der Sanitizer laeuft ueber den ganzen Bestand mit -- die
 Rueckwaertsindizierung ist damit nicht nur gedacht, sondern gemessen.
 
-**Bauquellen 39 → 40:** nicht von diesem Paket. Waehrend des Laufs hat ein anderer Agent
-`kern/include/kern/zustandsausgabe.hpp` angelegt und `werkzeugkette.cmake` erweitert.
+**Bauquellen 39 → 42, Zielbestand 141 → 145:** nichts davon von diesem Paket. Waehrend
+des Laufs hat mindestens ein anderer Agent gleichzeitig gearbeitet -- unter anderem sind
+`kern/include/kern/zustandsausgabe.hpp` dazugekommen und `werkzeugkette.cmake` um einen
+T2-Riegel erweitert worden. **Die tragenden Zahlen sind ueber den ganzen Lauf konstant
+geblieben:** 5 Mustertreffer, davon 0 mit Dateinamen; 24 Zitate, 19 aufgeloest, 8
+uebergangen. Wer nachmisst, wird andere Dateizahlen sehen und dieselben Befundzahlen.
 
 ### Was dieser Lauf **nicht** repariert hat
 
