@@ -240,13 +240,31 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # `ALIAS` ist nur ein zweiter Name. Geprueft wird, was einen Uebersetzeraufruf
   # erzeugt; an allem anderen waere ein fehlender Warnsatz kein Befund, sondern die
   # Bauart.
-  set(arten STATIC_LIBRARY SHARED_LIBRARY OBJECT_LIBRARY EXECUTABLE)
+  #
+  # `MODULE_LIBRARY` steht seit dem 2026-09-04 mit dabei und fehlte vorher. Es
+  # uebersetzt Quelldateien wie die anderen vier, kam aber vollstaendig vorbei --
+  # gemessen an einem Baum mit genau einem solchen Ziel und ohne Warnsatz: Der Riegel
+  # meldete `0 uebersetzende Ziele geprueft` und Code 0, das Ziel bekam
+  # `CXX_FLAGS = -std=c++20 -fPIC`, also keinen Warnschalter, kein `-Werror` und blank
+  # konfiguriert auch kein `-fwrapv`. Dieselbe Fehlerklasse, gegen die dieser Riegel
+  # geschrieben ist, nur eine Zielart weiter.
+  set(arten STATIC_LIBRARY SHARED_LIBRARY MODULE_LIBRARY OBJECT_LIBRARY EXECUTABLE)
+
+  # Die Sperrliste gegen Pauschalabschalter, als benannte Groesse statt verstreut in
+  # der Bedingung weiter unten. Sie ist **keine** Ausnahmeliste im Sinne des Absatzes
+  # ueber dieser Funktion: Sie erlaubt nichts, sie verbietet zusaetzlich.
+  #
+  # Muster statt fester Werte, weil `-Wno-error` mit und ohne angehaengte Warnklasse
+  # vorkommt. `^-w$` trifft nur den Schalter selbst, nicht die vielen anderen, die mit
+  # `-w` beginnen.
+  set(pauschalmuster "^-w$" "^-Wno-error(=.+)?$")
 
   # Iterativ statt rekursiv, mit einer Arbeitsliste: Die Ziele stehen je Verzeichnis,
   # und `add_subdirectory` schachtelt beliebig tief. Ohne den Abstieg saehe der Riegel
   # im Arbeitsbereich gar nichts -- dort liegt jedes Ziel eine Ebene tiefer.
   set(offen "${wurzelverzeichnis}")
   set(fehlt "")
+  set(abgeschaltet "")
   set(gezaehlt 0)
   while(offen)
     list(POP_FRONT offen verzeichnis)
@@ -273,7 +291,39 @@ function(fabrik_schlussriegel wurzelverzeichnis)
         endif()
       endforeach()
 
+      # Zweiter Durchgang, andere Frage: Der Satz kann dastehen und trotzdem nicht
+      # wirken. Wer ihn ordentlich anlegt und danach `-Wno-error` oder `-w` anhaengt,
+      # hat jeden erwarteten Schalter in `COMPILE_OPTIONS` -- die Luecke oben bleibt
+      # leer -- und uebersetzt ohne eine einzige Diagnose. Gemessen am 2026-09-04 an
+      # zweimal derselben Quelle mit einer Verengung von `double` auf `int`: mit dem
+      # Satz allein Bauabbruch, `[-Werror=float-conversion]` im Wortlaut; mit dem Satz
+      # plus `-Wno-error -w` gruener Bau und keine Diagnose. Der Riegel sagte in beiden
+      # Faellen wortgleich dasselbe.
+      #
+      # Der zweite Fall ist der wahrscheinliche: Ein Pauschalabschalter ist der
+      # billigste Ausweg aus einer Warnung, die gerade nicht loesbar scheint, und er
+      # sieht harmlos aus, **weil** der Riegel danach Vollzug meldet.
+      #
+      # Einzeln unterdruecken bleibt ausdruecklich erlaubt: `-Wno-conversion` an genau
+      # einem Ziel benennt, was nachgesehen wird, und laesst den Rest des Satzes scharf.
+      # Ein Pauschalabschalter benennt nichts.
+      set(pauschal "")
+      foreach(schalterwert IN LISTS schalter)
+        foreach(muster IN LISTS pauschalmuster)
+          if("${schalterwert}" MATCHES "${muster}")
+            list(APPEND pauschal "${schalterwert}")
+          endif()
+        endforeach()
+      endforeach()
+
       math(EXPR gezaehlt "${gezaehlt} + 1")
+      if(pauschal)
+        list(REMOVE_DUPLICATES pauschal)
+        list(JOIN pauschal " " pauschaltext)
+        list(APPEND abgeschaltet
+             "  ${ziel} (${art}) in ${verzeichnis}\n"
+             "      hebt den Satz wieder auf: ${pauschaltext}\n")
+      endif()
       if(luecke)
         list(JOIN luecke " " luecketext)
         # Der Text ist die halbe Massnahme: Ohne Zielnamen und ohne den
@@ -303,10 +353,50 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       "`PROJECT_IS_TOP_LEVEL`-Block auch der Sprachmodus -- `gnu++20` statt `c++20`.")
   endif()
 
+  if(abgeschaltet)
+    list(JOIN abgeschaltet "" abgeschaltettext)
+    message(FATAL_ERROR
+      "Diese Ziele tragen den Warnsatz und schalten ihn im selben Atemzug wieder ab:\n"
+      "${abgeschaltettext}"
+      "`-w` und `-Wno-error` heben den ganzen Satz auf, nicht eine Warnung daraus. Das "
+      "Ziel uebersetzt damit gruen und ohne jede Diagnose, waehrend jeder erwartete "
+      "Schalter ordentlich in `COMPILE_OPTIONS` steht -- der Riegel eine Pruefung weiter "
+      "oben sieht deshalb nichts.\n"
+      "Wer eine Warnung wirklich nicht loesen kann, unterdrueckt sie einzeln und "
+      "benennt sie dabei: `-Wno-conversion` an genau diesem Ziel, mit einem Satz "
+      "daneben, warum. Das bleibt zugelassen. Pauschal abgeschaltet wird nichts.")
+  endif()
+
+  # Ein Riegel, der nichts gesehen hat, hat nichts geprueft. Bis zum 2026-09-04 meldete
+  # er in dem Fall `0 uebersetzende Ziele geprueft, alle mit Warnsatz` und endete mit
+  # Code 0: Die Zahl trug den Unterschied, der Satz daneben behauptete das Gegenteil,
+  # und im Uebersetzungsbericht steht die leere Zeile an derselben Stelle wie die
+  # gruene. An keinem heutigen Bauweg laeuft er leer; er tut es an dem Tag, an dem eine
+  # Umbenennung, ein verschobener `include` oder ein `DEFER`, das nicht mehr greift,
+  # ihm den Baum entzieht -- also genau dann, wenn niemand hinsieht.
+  #
+  # Die Grenze gehoert dazu: Er darf nur greifen, wo ueberhaupt ein Ziel erwartet wird.
+  # Ein reines Datenverzeichnis ohne `add_library` waere ein Fehlalarm. Heute bindet nur
+  # ein Baum mit Zielen diese Datei ein; wird das je anders, gehoert die Ausnahme
+  # begruendet und nicht stillschweigend eingebaut.
+  if(gezaehlt EQUAL 0)
+    message(FATAL_ERROR
+      "fabrik_schlussriegel: kein einziges uebersetzendes Ziel unter "
+      "'${wurzelverzeichnis}' gesehen. Der Riegel hat damit nichts geprueft -- das ist "
+      "kein gruener Bau, sondern ein Riegel ohne Gegenstand.\n"
+      "Naheliegende Ursachen: Der Baum legt gar kein uebersetzendes Ziel an; das `DEFER` "
+      "haengt an einem anderen Verzeichnis als dem, unter dem die Ziele stehen; oder "
+      "diese Datei wird aus einem Bereich eingebunden, unter dem nichts liegt.")
+  endif()
+
   # Die Zahl steht da, damit der Uebersetzungsbericht den Unterschied zwischen "der
   # Riegel hat geprueft" und "der Riegel hat nichts gefunden, weil er nichts gesehen
-  # hat" traegt. Ein Riegel, der versehentlich alle Ziele durchwinkt, baut auch gruen.
-  message(STATUS "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, alle mit Warnsatz.")
+  # hat" traegt. Sie bleibt, obwohl der Nullfall darueber jetzt selbst abbricht: Ein
+  # Riegel, der aus einem anderen Grund die Haelfte der Ziele durchwinkt, baut ebenfalls
+  # gruen, und eine Zahl, die von 15 auf 3 faellt, faellt genau dort auf.
+  message(STATUS
+    "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, "
+    "alle mit Warnsatz und ohne Pauschalabschalter.")
 endfunction()
 
 # Ans Ende der Konfiguration gehaengt, nicht an diese Stelle: Hier ist noch kein

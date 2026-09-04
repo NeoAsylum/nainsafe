@@ -1,7 +1,7 @@
 ---
 id: 0060-schlussriegel-blinde-flecken
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0058-warnsatz-schlussriegel-alle-ziele]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
