@@ -301,45 +301,176 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
 }
 
 // ---------------------------------------------------------------------------
-// Bedingungen 3, 4 und 6 -- eine Runde laeuft durch, und die Welt steht still
+// Bedingungen 3, 4 und 6 -- eine Runde laeuft durch, und genau ein Feld bewegt sich
 // ---------------------------------------------------------------------------
 
-void probe_eine_runde(i64 vorrundennummer)
+/// Laesst eine Runde laufen und gibt den entstandenen Zustand zurueck.
+Zustand probe_eine_runde(i64 vorrundennummer)
 {
     const Zustand vorher = ausgangslage(vorrundennummer);
     const u64 summe_vorher = summe_von(vorher);
+    const i64 diese_runde = vorrundennummer + 1;
 
     // Bedingung 3: kehrt zurueck, ohne abzubrechen. Der Aufruf selbst ist der Nachweis,
     // dass die Rundenendpruefung aus T38 gehalten hat.
     const Rundenergebnis ergebnis = kern::schritt::schritt(vorher, {}, Modus::Weltlauf);
+    const Zustand& nachher = ergebnis.neuer_zustand;
 
-    // Bedingung 6: die Pruefsumme aendert sich nicht. Zwei Wege zur selben Zahl.
-    const u64 summe_nachher = summe_von(ergebnis.neuer_zustand);
-    PRUEFE(summe_vorher == summe_nachher);
+    // Bedingung 6 in der Fassung von Paket 0071: **genau eine** der 310 Groessen aendert
+    // sich, und es ist `partie.runde`. Gezaehlt wird ueber alle 310, nicht an der einen
+    // erwarteten Stelle nachgesehen -- sonst pruefte die Zeile, was sie annimmt.
+    std::size_t geaenderte = 0;
+    Index erste_geaenderte = FELDER;
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        if (vorher.lies(platz) != nachher.lies(platz)) {
+            ++geaenderte;
+            if (erste_geaenderte == FELDER) {
+                erste_geaenderte = platz;
+            }
+        }
+    }
+    PRUEFE(geaenderte == 1);
+    PRUEFE(erste_geaenderte == PLATZ_RUNDE);
+    PRUEFE(vorher.lies(PLATZ_RUNDE) == vorrundennummer);
+    PRUEFE(nachher.lies(PLATZ_RUNDE) == diese_runde);
+    if (geaenderte != 1) {
+        std::fprintf(stderr, "  %zu Groessen geaendert, erste: %zu (%s)\n", geaenderte,
+                     erste_geaenderte,
+                     erste_geaenderte < FELDER ? kern::zustand::index_zu_adresse(erste_geaenderte)
+                                               : "keine");
+    }
+
+    // Der unabhaengige Erwartungswert: dieselbe Ausgangslage, nur mit der Rundennummer
+    // dieser Runde. Sie entsteht ueber `zustand::Startbelegung` und weiss von
+    // `kern::schritt` nichts -- damit haengt die Aussage nicht an derselben Rechnung,
+    // die sie pruefen soll.
+    const Zustand erwartet = ausgangslage(diese_runde);
+    PRUEFE(nachher == erwartet);
+
+    // Die Pruefsumme faellt jetzt, und das ist die widerrufene Bedingung 6 von 0033.
+    // Beide Zahlen stehen darunter im Wortlaut; ohne sie waere der Widerruf ein stiller.
+    const u64 summe_nachher = summe_von(nachher);
+    PRUEFE(summe_vorher != summe_nachher);
+    PRUEFE(summe_nachher == summe_von(erwartet));
+    // Zwei Wege zu jeder der beiden Zahlen, damit keine an einer einzigen Rechnung haengt.
     PRUEFE(summe_vorher == kern::zustand::pruefsumme_von(vorher));
-    PRUEFE(summe_nachher == kern::zustand::pruefsumme_von(ergebnis.neuer_zustand));
+    PRUEFE(summe_nachher == kern::zustand::pruefsumme_von(nachher));
 
-    // Und dieselbe Aussage feldweise, damit ein Summenzusammenstoss sie nicht traegt.
-    PRUEFE(ergebnis.neuer_zustand == vorher);
-
-    std::printf("  Vorrunde %lld -> Runde %lld: Pruefsumme %016llx vorher, %016llx nachher\n",
-                static_cast<long long>(vorrundennummer),
-                static_cast<long long>(vorrundennummer + 1),
+    std::printf("  Vorrunde %lld -> Runde %lld: Pruefsumme %016llx vorher, %016llx nachher; "
+                "%zu von 310 Groessen geaendert (%s)\n",
+                static_cast<long long>(vorrundennummer), static_cast<long long>(diese_runde),
                 static_cast<unsigned long long>(summe_vorher),
-                static_cast<unsigned long long>(summe_nachher));
+                static_cast<unsigned long long>(summe_nachher), geaenderte,
+                kern::zustand::index_zu_adresse(PLATZ_RUNDE));
 
-    probe_kette(ergebnis.kette_dieser_runde, vorrundennummer + 1);
+    probe_kette(ergebnis.kette_dieser_runde, diese_runde);
     std::printf("  Kette: %zu Glieder (erwartet 175), Runde %lld an jedem Glied\n",
-                ergebnis.kette_dieser_runde.laenge(),
-                static_cast<long long>(vorrundennummer + 1));
+                ergebnis.kette_dieser_runde.laenge(), static_cast<long long>(diese_runde));
+
+    return nachher;
 }
 
 void probe_runden()
 {
     // Runde 1 auf einem Startzustand des Jahrgangs.
-    probe_eine_runde(0);
+    static_cast<void>(probe_eine_runde(0));
+
     // Und am oberen Ende des Zaehlbaren: die letzte Runde, die sich noch zaehlen laesst.
-    probe_eine_runde(kern::festkomma::I64_MAX - 1);
+    const Zustand am_ende = probe_eine_runde(kern::festkomma::I64_MAX - 1);
+
+    // Der Randfall, den Paket 0071 aus dem Vortrag geerbt hat. Solange die Runde die
+    // Nummer vortrug, lief dieser Zustand beliebig oft weiter -- er trug nach der Runde
+    // dieselbe Zahl wie davor. Jetzt traegt er `I64_MAX`, und die naechste Runde bricht
+    // am vorhandenen Riegel ab. Das ist der Unterschied, um den es dem Paket geht: Der
+    // Abbruch kommt **aus dem Zustand**, nicht aus einer Zahl, die die Probe von Hand
+    // hineingeschrieben hat.
+    PRUEFE(am_ende.lies(PLATZ_RUNDE) == kern::festkomma::I64_MAX);
+    bool geworfen = false;
+    try {
+        static_cast<void>(kern::schritt::schritt(am_ende, {}, Modus::Weltlauf));
+    } catch (const std::domain_error& fehler) {
+        geworfen = true;
+        std::printf("  Abbruch wie erwartet (Runde nach der letzten zaehlbaren): %s\n",
+                    fehler.what());
+    }
+    PRUEFE(geworfen);
+}
+
+// ---------------------------------------------------------------------------
+// Paket 0071 -- zwei aufeinanderfolgende Runden, und der Startwertzugang schliesst
+// ---------------------------------------------------------------------------
+//
+// Zwei Aussagen in einer Probe, weil sie an derselben Zahl haengen:
+//
+//   1. `partie.runde` zaehlt ueber zwei Runden 0 auf 1 auf 2 -- nicht nur einmal um eins.
+//   2. Bedingung 3 des Arbeitspakets 0027, zurueckgeholt: Ein Zugang, der vor der ersten
+//      Runde gebunden wurde, bricht danach beim naechsten Schreibzugriff ab, und ein
+//      neuer laesst sich gar nicht mehr binden. Bis zu diesem Paket galt beides nur
+//      gegen eine von Hand gesetzte Rundennummer und nicht gegen die Runde des Kerns.
+//
+// Der Zustand wird zwischen den Runden **in dieselbe Veraenderliche** zurueckgeschrieben.
+// Genau so wuerde eine Rundenschleife es tun, und genau darauf zielt der Riegel: Der
+// Zugang zeigt weiter auf diesen Zustand, seine naechste Setzung waere eine Aenderung
+// ohne Ursachensatz.
+
+void probe_zwei_runden_und_startwertriegel()
+{
+    Zustand welt;
+    Startbelegung zugang{welt};
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        zugang.setze(platz, musterwert(platz));
+    }
+    zugang.setze(PLATZ_RUNDE, 0);
+
+    // Die Positivkontrolle, und sie steht vor den beiden Abbruechen unten: Der Zugang
+    // **hat** geschrieben. Ohne sie zeigten die Abbrueche auch dann dasselbe Bild, wenn
+    // er von Anfang an wirkungslos gewesen waere.
+    PRUEFE(welt.lies(PLATZ_RUNDE) == 0);
+    PRUEFE(welt.lies(0) == musterwert(0));
+    PRUEFE(welt.lies(FELDER - 1) == musterwert(FELDER - 1));
+    PRUEFE(kern::zustand::vor_der_ersten_runde(welt));
+
+    const Rundenergebnis erste = kern::schritt::schritt(welt, {}, Modus::Weltlauf);
+    welt = erste.neuer_zustand;
+    PRUEFE(welt.lies(PLATZ_RUNDE) == 1);
+
+    const Rundenergebnis zweite = kern::schritt::schritt(welt, {}, Modus::Weltlauf);
+    welt = zweite.neuer_zustand;
+    PRUEFE(welt.lies(PLATZ_RUNDE) == 2);
+
+    // Und die Kette sagt dasselbe von der anderen Seite.
+    probe_kette(erste.kette_dieser_runde, 1);
+    probe_kette(zweite.kette_dieser_runde, 2);
+
+    std::printf("  partie.runde ueber zwei Runden: 0 -> %lld -> %lld\n",
+                static_cast<long long>(erste.neuer_zustand.lies(PLATZ_RUNDE)),
+                static_cast<long long>(welt.lies(PLATZ_RUNDE)));
+
+    PRUEFE(!kern::zustand::vor_der_ersten_runde(welt));
+
+    // Haelfte 1: der alte Zugang bricht beim naechsten Schreibzugriff ab.
+    const i64 vorher_an_null = welt.lies(0);
+    bool alter_zugang_bricht_ab = false;
+    try {
+        zugang.setze(0, 4711);
+    } catch (const std::domain_error& fehler) {
+        alter_zugang_bricht_ab = true;
+        std::printf("  Abbruch wie erwartet (Zugang von vor Runde 1): %s\n", fehler.what());
+    }
+    PRUEFE(alter_zugang_bricht_ab);
+    // Ein Abbruch, der vorher noch schreibt, waere keiner.
+    PRUEFE(welt.lies(0) == vorher_an_null);
+
+    // Haelfte 2: ein neuer Zugang bindet nicht mehr.
+    bool neuer_zugang_bindet_nicht = false;
+    try {
+        Startbelegung neuer{welt};
+        static_cast<void>(neuer);
+    } catch (const std::domain_error& fehler) {
+        neuer_zugang_bindet_nicht = true;
+        std::printf("  Abbruch wie erwartet (neuer Zugang nach der Runde): %s\n", fehler.what());
+    }
+    PRUEFE(neuer_zugang_bindet_nicht);
 }
 
 // ---------------------------------------------------------------------------
@@ -431,6 +562,7 @@ int main()
 {
     probe_maskengroesse();
     probe_runden();
+    probe_zwei_runden_und_startwertriegel();
     probe_zweimal_dasselbe();
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
