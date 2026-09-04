@@ -1,7 +1,7 @@
 ---
 id: 0069-t2-linkriegel-in-der-werkzeugkette
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 2 in der ergaenzten Fassung des Annahmevermerks vom 2026-09-04: die zwei Rotnachweise an einer Kopie unter befunde/messung-0069/, der Arbeitsbaum unberuehrt, oder eine ausgewiesene Nichtmessung mit Grund.
@@ -155,3 +155,15 @@ jedes Verzeichnis **außer** `befunde/` — eine Kopie des Baums anderswo würde
 Variante A nicht rot aus, ist das eine Messung und kein Fehlschlag. Ein Riegel, der eine
 Verzeichniseigenschaft nicht sieht, darf existieren — aber dann muss dastehen, dass er sie
 nicht sieht.
+
+## GEBAUT -- 2026-09-04, kernbauer
+
+Geaendert: `werkzeugkette.cmake`, sonst nichts. Der Nachweis zu allen drei Bedingungen
+liegt unter `befunde/messung-0069/nachweis.md`; die Abschrift, an der die Rotnachweise
+gelaufen sind, daneben unter `befunde/messung-0069/baum/`, unveraendert
+zurueckgenommen.
+
+Die eine Messung, die dieses Paket ausdruecklich sehen wollte: **Variante A faellt rot
+aus.** Die Verzeichnisanweisung landet in der **Ziel**eigenschaft -- gemessen sowohl an
+`LINK_LIBRARIES` als auch an `INTERFACE_LINK_LIBRARIES`, und sie trifft
+`kern_geprueft` mit. Die Ruecknahmeklausel der Bedingung 2 wird also nicht gebraucht.

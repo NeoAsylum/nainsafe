@@ -230,3 +230,21 @@ Zwei weitere Eintraege stehen daneben und stammen aus fremden, gleichzeitig lauf
 Paketen (eines unter `aufgaben/`, eines unter `werkzeuge/belegstellen/`). Sie sind
 nicht angefasst worden. Die Abschrift traegt sie in ihrem damaligen Zwischenstand mit,
 weil sie zum Zeitpunkt der Auffrischung so im Baum standen.
+
+## Nachtrag: der Baum ist waehrend des Laufs rot geworden, und zwar nicht durch dieses Paket
+
+Gegen Ende des Laufs bricht der Bau des Arbeitsbaums ab: `kern/src/zustandsausgabe.cpp`,
+`error: expected '}' at end of input`. Die Datei ist unversioniert und stand zu Beginn
+dieses Laufs nicht da; ein fremdes Paket schreibt sie gerade.
+
+Zugeordnet statt vermutet, nach demselben Verfahren wie oben: eine Abschrift des letzten
+Commits, **plus genau die eine Datei dieses Pakets** und sonst nichts, mit der
+Konfigurationszeile des Runners gebaut.
+
+    cmake -S   -> Code 0   (mit der Meldung des Nullabhaengigkeitsriegels)
+    cmake --build -> Code 0
+    ctest      -> 12 von 13 gruen; die dreizehnte ist der Belegstellenriegel oben
+
+Der Bauabbruch gehoert also dem fremden Zwischenstand, nicht dieser Aenderung. Wer den
+Uebersetzungsbericht dieses Tages liest, findet ihn dort womoeglich wieder -- dann ist
+das die Zuordnung dazu.

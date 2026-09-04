@@ -602,3 +602,102 @@ inline constexpr std::size_t ADRESSBLATT_ZEICHEN = (FELDER + 4) * ZEILE_ZEICHEN 
 
 using Uebersichtsblatt = Ausgabe<UEBERSICHT_ZEICHEN>;
 using Adressblatt      = Ausgabe<ADRESSBLATT_ZEICHEN>;
+
+// ---------------------------------------------------------------------------
+// Die Bereiche
+// ---------------------------------------------------------------------------
+
+/// Ein Bereich ist ein **Adressvorspann** nach T17, kein eigener Begriff daneben.
+///
+/// Damit beantwortet dieselbe Regel beide Fragen: die des Arbeitspakets (ein Bereich
+/// vollstaendig) und die von T20, das `land.US`, `fonds`, `land.BR.instrument.zoll`,
+/// `land.CN.sektor.1` und `markt` als adressierbare Einheiten nennt. Eine zweite,
+/// engere Liste von Bereichen daneben waere die Stelle gewesen, an der T20 und dieses
+/// Modul auseinanderlaufen.
+///
+/// Gehoerig ist eine Adresse, wenn der Vorspann zeichengleich vorn steht **und** dort
+/// endet, wo die Adresse einen Punkt hat oder aufhoert. Ohne diese Bedingung waere
+/// `land.U` ein Bereich; mit ihr ist es keiner. Ein leerer Vorspann gehoert zu nichts:
+/// Ein Bereich ohne Namen ist keiner, und "alles" heisst hier nicht "nichts angegeben".
+/// Ein Nullzeiger zaehlt wie der leere Vorspann.
+[[nodiscard]] bool gehoert_zum_bereich(const char* adresse, const char* bereich) noexcept;
+
+/// Wie viele Bereiche die 310 Adressen vollstaendig und ueberschneidungsfrei aufteilen.
+inline constexpr std::size_t BEREICHE = 10;
+
+/// Die zehn Bereiche selbst.
+///
+/// Sie sind **keine** Aufzaehlung zulaessiger Argumente -- `detail` nimmt jeden
+/// Vorspann. Sie sind die Liste, an der sich die Deckung nachweisen laesst: Laeuft ein
+/// Aufrufer sie ab, hat er jede der 310 Adressen genau einmal gesehen. Der Nachweis
+/// steht in `zustandsausgabe_probe` und nicht hier, weil er die Adresstexte braucht und
+/// `index_zu_adresse` keine Uebersetzungszeitfunktion ist.
+///
+/// `fonds` ist der einzige Bereich, dessen Adressen im Zustand nicht zusammenhaengen:
+/// Die zwoelf Nachahmerzaehler liegen vor dem Marktkorb, die fuenf Fondsaggregate
+/// dahinter. Genau deshalb schneidet diese Liste nach dem Namen und nicht nach dem
+/// Platz -- eine Liste aus Indexbereichen haette `fonds` zerreissen muessen und damit
+/// eine zweite Bereichsordnung neben der von T20 eingefuehrt.
+inline constexpr std::array<const char*, BEREICHE> BEREICH_NAME = {
+    "land.US", "land.CN",    "land.DE", "land.BR", "restwelt",
+    "handel",  "welt.preis", "markt",   "fonds",   "partie",
+};
+
+// ---------------------------------------------------------------------------
+// Die drei Ebenen
+// ---------------------------------------------------------------------------
+
+/// **Ebene 1 -- der Gesamtzustand in einem Blick**, hoechstens 40 Zeilen.
+///
+/// Enthaelt, was das Arbeitspaket verlangt: Fondsvermoegen, Einfluss je Land, die vier
+/// Politikinstrumente je Land, die Runde und den Stand gegenueber der Siegbedingung.
+/// Die Grenze von 40 Zeilen ist keine Absicht, sondern gerechnet und geprueft: Der
+/// Puffer traegt genau so viele, und die Funktion bricht ab, wenn sie mehr geschrieben
+/// haette.
+///
+/// **Zum Mandat, damit die Zeile nicht mehr verspricht, als sie halten kann.** Die
+/// Siegbedingung nach `spiel.md` ist zweiteilig -- Fondsvermoegen ueber einer Schwelle
+/// **und** Einfluss ueber einer Schwelle in mindestens zwei Laendern. Beide Schwellen
+/// stehen nach T27 in `parameter.toml` und liegen dem Kern an dieser Stelle nicht vor.
+/// Die Uebersicht zeigt deshalb die beiden gemessenen Haelften und den Mandatsstand aus
+/// dem Zustand, und sie faellt kein Urteil.
+///
+/// **Sie erbt die Wertebereichsschranken aus T47, und das ist Absicht.** Das
+/// Fondsvermoegen entsteht ueber `werte::fondsvermoegen`; auf einem Zustand, dessen
+/// Wechselkurs kleiner als eins ist, bricht diese Rechnung ab, und dieser Aufruf mit
+/// ihr. Hier steht **keine zweite Fassung** jener Schranke daneben -- eine Regel mit
+/// zwei Herren laeuft auseinander, und die zweite Fassung waere die, die niemand
+/// nachfuehrt. Wer eine Ausgabe ueber einen kaputten Zustand braucht, nimmt `detail`
+/// und `diff`: Beide lesen nur ab und rechnen nichts.
+[[nodiscard]] Uebersichtsblatt uebersicht(const zustand::Zustand&  z,
+                                          const werte::Konstanten& konstanten);
+
+/// **Ebene 2 -- ein Bereich vollstaendig.**
+///
+/// Je Adresse des Bereichs eine Zeile mit Wert, Skalenklasse samt Einheit und
+/// Herkunftsart. Wer hier liest, muss nicht raten, ob eine Zahl Cent oder Tausend ist.
+///
+/// Kein Treffer ist kein Fehler: Ein unbekannter Vorspann kommt aus Protokoll,
+/// Testvorlage oder Oberflaeche und bekommt eine Zeile, die genau das sagt -- dieselbe
+/// Haltung wie `adresse_zu_index` gegenueber einer unbekannten Adresse.
+///
+/// Diese Ebene rechnet nichts und bricht deshalb auf keinem Zustand ab.
+[[nodiscard]] Adressblatt detail(const zustand::Zustand& z, const char* bereich);
+
+/// **Ebene 3 -- was sich zwischen zwei Zeitpunkten geaendert hat.**
+///
+/// Je geaenderter Adresse alter Wert, neuer Wert und Differenz, dazu die Skalenklasse,
+/// ohne die die Differenz keine Bedeutung hat. Das ist die Ebene, an der ein Agent
+/// erkennt, **ob eine Aenderung gewirkt hat und wie**.
+///
+/// Die Differenz ist der neue Wert minus dem alten, gerechnet auf `i128`: Sie passt
+/// nicht immer in `i64`, und ein Umlauf waere hier eine wohlgeformte falsche Zahl.
+///
+/// Sind beide Zustaende gleich, sagt das Blatt das ausdruecklich in einer Zeile. Eine
+/// leere Ausgabe und eine, in der nichts zu berichten war, waeren sonst dasselbe
+/// Zeichen fuer zwei verschiedene Lagen.
+///
+/// Diese Ebene rechnet keine Modellgroesse und bricht deshalb auf keinem Zustand ab.
+[[nodiscard]] Adressblatt diff(const zustand::Zustand& vorher, const zustand::Zustand& nachher);
+
+}  // namespace kern::zustandsausgabe
