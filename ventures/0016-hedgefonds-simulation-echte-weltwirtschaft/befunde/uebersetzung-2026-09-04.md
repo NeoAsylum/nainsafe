@@ -4,10 +4,10 @@ venture: 0016-hedgefonds-simulation-echte-weltwirtschaft
 datum: 2026-09-04
 bauart: cmake
 manifeste: 5
-ergebnis: ok
+ergebnis: fehler
 ---
 
-# Der Compiler hat gesprochen: ok
+# Der Compiler hat gesprochen: fehler
 
 Erzeugt vom Baulauf, nicht von einem Modell. Was hier steht, ist keine Einschaetzung
 und keine Meinung -- es ist das Urteil des Uebersetzers. Ein Pruefer, der etwas
@@ -21,7 +21,7 @@ anderes behauptet, irrt.
 -- Mitglied 'konsole' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
--- Warnsatz-Schlussriegel: 15 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
+-- Warnsatz-Schlussriegel: 16 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
@@ -30,53 +30,79 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  7%] Built target pruefstand
-[ 14%] Built target pruefstand_geprueft
-[ 47%] Built target kern_geprueft
-[ 47%] Built target kern
-[ 61%] Built target pruefsumme_probe
-[ 61%] Built target zufall_probe
-[ 61%] Built target festkomma_probe
-[ 66%] Built target vorrat_verfahren_probe
-[ 76%] Built target vorrat_kernanker_probe
-[ 78%] Built target meldung_probe
-[ 88%] Built target vorrat_probe
-[ 90%] Built target schranken_probe
-[ 90%] Built target schritt_probe
-[ 95%] Built target zustand_probe
-[100%] Built target schreiber_probe
+[ 15%] Built target pruefstand_geprueft
+[  9%] Built target belegstellen_riegel
+[ 18%] Built target pruefstand
+[ 34%] Built target kern
+[ 50%] Built target kern_geprueft
+[ 54%] Built target vorrat_kernanker_probe
+[ 59%] Built target schranken_probe
+[ 68%] Built target meldung_probe
+[ 68%] Building CXX object kern/CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+[ 72%] Built target vorrat_probe
+[ 75%] Built target pruefsumme_probe
+[ 79%] Built target zustand_probe
+[ 84%] Built target schreiber_probe
+[ 88%] Built target vorrat_verfahren_probe
+[ 93%] Built target schritt_probe
+[ 97%] Built target zufall_probe
+[100%] Linking CXX executable festkomma_probe
+[100%] Built target festkomma_probe
 ```
 
-## `ctest --test-dir` -- ok (Code 0)
+## `ctest --test-dir` -- FEHLER (Code 8)
 
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
       Start  1: festkomma_probe
- 1/11 Test  #1: festkomma_probe ..................   Passed    0.03 sec
+ 1/12 Test  #1: festkomma_probe ..................   Passed    0.01 sec
       Start  2: meldung_probe
- 2/11 Test  #2: meldung_probe ....................   Passed    0.01 sec
+ 2/12 Test  #2: meldung_probe ....................   Passed    0.01 sec
       Start  3: pruefsumme_probe
- 3/11 Test  #3: pruefsumme_probe .................   Passed    0.01 sec
+ 3/12 Test  #3: pruefsumme_probe .................   Passed    0.01 sec
       Start  4: schranken_probe
- 4/11 Test  #4: schranken_probe ..................   Passed    0.01 sec
+ 4/12 Test  #4: schranken_probe ..................   Passed    0.01 sec
       Start  5: schreiber_probe
- 5/11 Test  #5: schreiber_probe ..................   Passed    0.01 sec
+ 5/12 Test  #5: schreiber_probe ..................   Passed    0.01 sec
       Start  6: schritt_probe
- 6/11 Test  #6: schritt_probe ....................   Passed    0.01 sec
+ 6/12 Test  #6: schritt_probe ....................   Passed    0.01 sec
       Start  7: zufall_probe
- 7/11 Test  #7: zufall_probe .....................   Passed    0.01 sec
+ 7/12 Test  #7: zufall_probe .....................   Passed    0.01 sec
       Start  8: zustand_probe
- 8/11 Test  #8: zustand_probe ....................   Passed    0.02 sec
+ 8/12 Test  #8: zustand_probe ....................   Passed    0.01 sec
       Start  9: vorrat_kernanker_probe
- 9/11 Test  #9: vorrat_kernanker_probe ...........   Passed    0.01 sec
+ 9/12 Test  #9: vorrat_kernanker_probe ...........   Passed    0.01 sec
       Start 10: vorrat_probe
-10/11 Test #10: vorrat_probe .....................   Passed    0.01 sec
+10/12 Test #10: vorrat_probe .....................   Passed    0.01 sec
       Start 11: vorrat_verfahren_probe
-11/11 Test #11: vorrat_verfahren_probe ...........   Passed    0.01 sec
+11/12 Test #11: vorrat_verfahren_probe ...........   Passed    0.01 sec
+      Start 12: belegstellen_riegel
+12/12 Test #12: belegstellen_riegel ..............***Failed    0.03 sec
 
-100% tests passed, 0 tests failed out of 11
+4 Verweis(e) zeigen mit einer Zeilennummer in eine fremde Datei:
+
+  kern/include/kern/zustand.hpp:224  -> daten/adressen.md
+      :477`), `daten/adressen.md` Zeile 255
+  kern/test/schranken_probe.cpp:423  -> parameter.toml
+      ///   parameter.toml Zeile 304
+  kern/test/schranken_probe.cpp:424  -> parameter.toml
+      ///   parameter.toml Zeile 205
+  kern/test/schranken_probe.cpp:425  -> parameter.toml
+      ///   parameter.toml Zeile 250
+
+Eine Zeilennummer in eine fremde Datei wandert, ohne dass jemand etwas tut.
+Sie wird ersetzt -- durch einen Bezeichner, eine Abschnittsueberschrift oder eine
+Schluesselzeile im Wortlaut --, nicht ausgenommen und nicht nachgezogen.
+belegstellen_riegel: 37 Bauquellen gelesen, 12 Zeilenverweise getroffen, davon 4 mit Dateinamen daneben.
+
+
+92% tests passed, 1 tests failed out of 12
 
 Total Test time (real) =   0.15 sec
+
+The following tests FAILED:
+	 12 - belegstellen_riegel (Failed)
+Errors while running CTest
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -91,16 +117,40 @@ Total Test time (real) =   0.15 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 23%] Built target kern_geprueft
-[ 46%] Built target kern
-[ 60%] Built target festkomma_probe
-[ 60%] Built target meldung_probe
-[ 80%] Built target zustand_probe
-[ 80%] Built target schranken_probe
-[ 80%] Built target schritt_probe
-[ 90%] Built target zufall_probe
-[ 93%] Built target pruefsumme_probe
-[100%] Built target schreiber_probe
+[ 10%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
+[ 10%] Building CXX object CMakeFiles/kern.dir/src/schreiber.cpp.o
+[ 10%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
+[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/festkomma.cpp.o
+[ 23%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
+[ 16%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
+[ 23%] Building CXX object CMakeFiles/kern.dir/src/festkomma.cpp.o
+[ 26%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 30%] Linking CXX static library libkern.a
+[ 33%] Linking CXX static library libkern_geprueft.a
+[ 40%] Built target kern
+[ 46%] Built target kern_geprueft
+[ 53%] Building CXX object CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
+[ 53%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+[ 60%] Building CXX object CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+[ 60%] Linking CXX executable pruefsumme_probe
+[ 63%] Linking CXX executable zufall_probe
+[ 66%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+[ 70%] Building CXX object CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+[ 73%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+[ 76%] Built target zufall_probe
+[ 80%] Built target pruefsumme_probe
+[ 83%] Linking CXX executable festkomma_probe
+[ 86%] Linking CXX executable meldung_probe
+[ 86%] Built target festkomma_probe
+[ 86%] Built target meldung_probe
+[ 90%] Linking CXX executable schritt_probe
+[ 90%] Built target schritt_probe
+[ 93%] Linking CXX executable schreiber_probe
+[ 93%] Built target schreiber_probe
+[ 96%] Linking CXX executable zustand_probe
+[100%] Linking CXX executable schranken_probe
+[100%] Built target zustand_probe
+[100%] Built target schranken_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -122,11 +172,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
     Start 7: zufall_probe
 7/8 Test #7: zufall_probe .....................   Passed    0.01 sec
     Start 8: zustand_probe
-8/8 Test #8: zustand_probe ....................   Passed    0.02 sec
+8/8 Test #8: zustand_probe ....................   Passed    0.01 sec
 
 100% tests passed, 0 tests failed out of 8
 
-Total Test time (real) =   0.10 sec
+Total Test time (real) =   0.09 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -141,10 +191,22 @@ Total Test time (real) =   0.10 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand_geprueft
+[ 25%] Building CXX object CMakeFiles/pruefstand_geprueft.dir/src/vorrat.cpp.o
+[ 25%] Building CXX object CMakeFiles/pruefstand_geprueft.dir/src/vorrat_verfahren.cpp.o
+[ 25%] Building CXX object CMakeFiles/pruefstand.dir/src/vorrat.cpp.o
+[ 33%] Building CXX object CMakeFiles/pruefstand.dir/src/vorrat_verfahren.cpp.o
+[ 41%] Linking CXX static library libpruefstand.a
+[ 50%] Linking CXX static library libpruefstand_geprueft.a
 [ 50%] Built target pruefstand
-[ 66%] Built target vorrat_probe
-[100%] Built target vorrat_kernanker_probe
+[ 50%] Built target pruefstand_geprueft
+[ 66%] Building CXX object CMakeFiles/vorrat_kernanker_probe.dir/test/vorrat_kernanker_probe.cpp.o
+[ 66%] Building CXX object CMakeFiles/vorrat_probe.dir/test/vorrat_probe.cpp.o
+[ 75%] Building CXX object CMakeFiles/vorrat_verfahren_probe.dir/test/vorrat_verfahren_probe.cpp.o
+[ 83%] Linking CXX executable vorrat_probe
+[ 91%] Linking CXX executable vorrat_kernanker_probe
+[ 91%] Built target vorrat_probe
+[ 91%] Built target vorrat_kernanker_probe
+[100%] Linking CXX executable vorrat_verfahren_probe
 [100%] Built target vorrat_verfahren_probe
 ```
 
@@ -175,16 +237,16 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 51%] Built target kontrolle_unveraendert
+[ 18%] Built target mut3_ordnung_a5_bis_a1
+[ 18%] Built target mut6_abgelegter_kern_immer_ohne
+[ 27%] Built target mut2_gleichstand_an_groessere_kennung
+[ 36%] Built target mut7_position_und_lobby_vertauscht
+[ 69%] Built target kontrolle_unveraendert
+[ 69%] Built target mut5_hebel_und_sichtbarkeit_im_kern
+[ 72%] Built target mut8_profil_doppelt_eines_fehlt
 [ 69%] Built target mut1_dreiwertiger_kern
-[ 51%] Built target mut2_gleichstand_an_groessere_kennung
-[ 51%] Built target mut5_hebel_und_sichtbarkeit_im_kern
-[ 51%] Built target mut6_abgelegter_kern_immer_ohne
-[ 51%] Built target mut4_kennung_einsbasiert
-[ 69%] Built target mut3_ordnung_a5_bis_a1
-[ 75%] Built target mut7_position_und_lobby_vertauscht
 [ 81%] Built target anker_von_hand
-[ 90%] Built target mut8_profil_doppelt_eines_fehlt
+[ 90%] Built target mut4_kennung_einsbasiert
 [100%] Built target anker_gegen_mut2
 ```
 
@@ -223,38 +285,47 @@ Total Test time (real) =   0.03 sec
 ## `cmake -S` -- ok (Code 0)
 
 ```
+-- Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
-CMake Warning (dev) in CMakeLists.txt:
-  No project() command is present.  The top-level CMakeLists.txt file must
-  contain a literal, direct call to the project() command.  Add a line of
-  code such as
-
-    project(ProjectName)
-
-  near the top of the file, but after cmake_minimum_required().
-
-  CMake is pretending there is a "project(Project)" command on the first
-  line.
-This warning is for project developers.  Use -Wno-dev to suppress it.
-
-CMake Warning (dev) in CMakeLists.txt:
-  cmake_minimum_required() should be called prior to this top-level project()
-  call.  Please see the cmake-commands(7) manual for usage documentation of
-  both commands.
-This warning is for project developers.  Use -Wno-dev to suppress it.
 ```
 
 ## `cmake --build` -- ok (Code 0)
 
 ```
-
+[100%] Built target belegstellen_riegel
 ```
 
-## `ctest --test-dir` -- ok (Code 0)
+## `ctest --test-dir` -- FEHLER (Code 8)
 
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
-No tests were found!!!
+    Start 1: belegstellen_riegel
+1/1 Test #1: belegstellen_riegel ..............***Failed    0.02 sec
+
+4 Verweis(e) zeigen mit einer Zeilennummer in eine fremde Datei:
+
+  kern/include/kern/zustand.hpp:224  -> daten/adressen.md
+      :477`), `daten/adressen.md` Zeile 255
+  kern/test/schranken_probe.cpp:423  -> parameter.toml
+      ///   parameter.toml Zeile 304
+  kern/test/schranken_probe.cpp:424  -> parameter.toml
+      ///   parameter.toml Zeile 205
+  kern/test/schranken_probe.cpp:425  -> parameter.toml
+      ///   parameter.toml Zeile 250
+
+Eine Zeilennummer in eine fremde Datei wandert, ohne dass jemand etwas tut.
+Sie wird ersetzt -- durch einen Bezeichner, eine Abschnittsueberschrift oder eine
+Schluesselzeile im Wortlaut --, nicht ausgenommen und nicht nachgezogen.
+belegstellen_riegel: 37 Bauquellen gelesen, 12 Zeilenverweise getroffen, davon 4 mit Dateinamen daneben.
+
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   0.03 sec
+
+The following tests FAILED:
+	  1 - belegstellen_riegel (Failed)
+Errors while running CTest
 ```
