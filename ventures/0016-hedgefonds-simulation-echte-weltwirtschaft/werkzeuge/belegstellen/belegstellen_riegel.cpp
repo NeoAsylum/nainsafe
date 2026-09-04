@@ -73,7 +73,10 @@
 //! in einer TOML-Datei, die Kommentarform, in der dort Gruppen ueberschrieben sind);
 //! oder eine Zeile, die mit einem fett ausgezeichneten Vorspann beginnt. Der zweite
 //! Fall ist keine Bequemlichkeit: `reihen.toml` zitiert drei solche Vorspaenne, und
-//! ohne sie waere Bedingung 2 fuer zwei der sechs Pakete leer.
+//! ohne sie waere Bedingung 2 fuer zwei der sechs Pakete leer. Gemessen am 2026-09-04
+//! mit einem Mutanten, der diese Form abschaltet: **6 der 24 Zitate fallen**, darunter
+//! beide, die Paket 0034 hinterlassen hat -- sie zeigen auf denselben Vorspann unter
+//! T49 und haetten ohne den zweiten Fall gar kein Ziel.
 //!
 //! Verglichen wird nach dieser Normierung, auf beiden Seiten gleich:
 //!
@@ -260,7 +263,7 @@
 //! nach rechts sucht, muss entscheiden, welcher der beiden Nachbarn gewinnt, und hat
 //! dafuer heute kein Mass. Solange die Entscheidung nicht getroffen ist, bleibt diese
 //! Form ungeschuetzt. Sie steht hier, damit die Zahlen unten niemand fuer
-//! Vollstaendigkeit haelt; als Vorschlag liegt sie als Paket 0084 daneben.
+//! Vollstaendigkeit haelt; als Vorschlag liegt sie als Paket 0086 daneben.
 //!
 //! ## Warum der Riegel seinen eigenen Quelltext mitliest
 //!

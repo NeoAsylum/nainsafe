@@ -140,7 +140,7 @@ wird sie hier ueber den Wortlaut, nicht ueber eine Zeilennummer.
 
 | Paket | Datei | Form der Belegstelle | Ergebnis |
 |---|---|---|---|
-| 0034 | `daten/adressen.md` | im Kopffeld `quellen`, Dateiname und Ueberschrift in gerader Anfuehrung auf derselben Zeile | **gefangen** |
+| 0034 | `daten/adressen.md` | drei Stellen, alle nach `technik.md`: zweimal Schluesselwort *Absatz* mit unmittelbar folgender Anfuehrung, einmal Schluesselwort mit fuenf Woertern Abstand und dem Dateinamen **rechts** vom Zitat | **zwei gefangen, eine nicht** -- siehe *Ruecklauf 1* unten. Die Zeile lautete bis zum Ruecklauf falsch (Kopffeld `quellen`, das aus Paket 0004 stammt) |
 | 0035 | `parameter.toml` | zwei Zitate in der Herkunftsbegruendung zu `hebelaufschlag`; beim zweiten steht der Dateiname eine Zeile hoeher | **gefangen**, beide |
 | 0044 | `kern/test/schranken_probe.cpp` | Ueberschrift in Akzenten, Dateiname **vier Zeilen** darueber | **gefangen** |
 | 0047 | `daten/reihen.toml` | Ueberschrift **ohne Anfuehrung**, viermal | **nicht gefangen** |
@@ -236,3 +236,189 @@ durch. Dieser Fall kommt heute in keiner der 26 Fundstellen vor.
 Rotnachweis ohne fremde Datei fuehren, und die eigene Datei ist damit selbst geprueft.
 Es heisst aber auch: Wer den Abschnitt in `spiel.md` umbenennt, macht diesen Riegel rot.
 Das ist der Zweck, kann aber ueberraschen.
+
+---
+
+# Ruecklauf 1 -- 2026-09-04, zweiter Lauf des Testentwicklers
+
+Der Ruecklauf betrifft **nur Bedingung 4 und nur die Zeile zu 0034**; Bedingungen 1 bis 3
+sind vom Pruefer eigenstaendig nachgemessen und bleiben Erhaltungsbedingung. Alles unten
+ist an diesem Lauf gemessen, nicht aus dem Befund uebernommen.
+
+## Was 0034 wirklich hinterlassen hat -- an der Datumsprobe
+
+Der Befund des Pruefers stimmt: Das Kopffeld `quellen` in `daten/adressen.md` ist eine
+echte und gefangene Belegstelle, aber sie stammt aus Paket 0004 vom 2026-09-01. Selbst
+nachgeschlagen, diesmal mit der Datumsprobe statt mit `git log -S` allein:
+
+```
+$ git show 688e845 --stat
+    kernbauer: 0031-warnsatz-in-die-werkzeugkette (6 Dateien)
+    Date: Thu Sep 3 19:18:38 2026
+ .../daten/adressen.md | 63 ++-
+```
+
+Der Commit traegt den Namen von 0031 und enthaelt die Arbeit von 0034 -- genau das Muster,
+vor dem der Ruecklauf warnt. Im Diff dieses Commits ersetzt 0034 in `adressen.md` drei
+Zeilennummern durch Abschnittsnamen, alle drei mit Ziel in `technik.md`:
+
+| # | Stelle in `adressen.md` | Zitierte Ueberschrift in `technik.md` | Form |
+|---|---|---|---|
+| 1 | Begruendung zur Spalte `Adresse` | T49-Vorspann *Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines Zufalls* | Schluesselwort *Absatz*, Anfuehrung unmittelbar dahinter |
+| 2 | Herleitung zu den unmarkierten Geschwisterpaaren | derselbe Vorspann | dieselbe |
+| 3 | Herleitung zu `land.CN.wechselkurs` | T46-Vorspann *Die elf Adressen, deren Herkunft dieses Dokument ist, abschliessend* | Schluesselwort, dann fuenf Woerter, dann Anfuehrung; Dateiname **rechts** vom Zitat |
+
+Beide Ziele existieren als Vorspann-Ueberschrift im Sinne dieses Riegels; nachgeschlagen
+im heutigen `technik.md`.
+
+## Entscheidung: zwei fangen, eine benennen
+
+Das Arbeitspaket laesst beides zu. Gewaehlt ist die Aufteilung, weil die beiden Formen
+verschieden teuer sind -- die erste kostet ein Wort, die zweite eine Entscheidung mit
+eigenem Nachweis.
+
+### Gefangen: das Schluesselwort fuer einen Textblock
+
+`SCHLUESSEL` kannte nur die Woerter fuer *Abschnitt* und *Ueberschrift*. Aufgenommen ist
+das Wort fuer einen Textblock, in derselben Maskierung wie die anderen drei, damit der
+Riegel sich nicht an seiner eigenen Konstante faengt. Gemessen, unmittelbar vorher und
+nachher, ohne weitere Aenderung:
+
+```
+vorher:   21 Zitate der geprueften Form gefunden, 21 davon aufgeloest, 5 uebergangen
+nachher:  23 Zitate der geprueften Form gefunden, 23 davon aufgeloest, 8 uebergangen
+```
+
+Die zwei neuen Zitate sind die Stellen 1 und 2 der Tabelle oben. Dass es genau diese sind
+und nicht zwei andere, ist unabhaengig belegt -- siehe die Mutantenmessung weiter unten,
+in der beide namentlich fallen (`daten/adressen.md:29`, `daten/adressen.md:556`).
+
+Von den drei zusaetzlich uebergangenen Fundstellen war **eine ein Selbsttreffer dieses
+Riegels**: Die Meldung `kein Dokumentname im Absatz` stand als Zeichenkettenliteral im
+Quelltext, also mit einem Anfuehrungszeichen unmittelbar hinter dem neuen Schluesselwort.
+Der Riegel las das als Zitat und suchte eine Ueberschrift namens
+`; } else if (netzadresse) { grund =`. Behoben durch dieselbe Maskierung wie in
+`SCHLUESSEL`, mit Begruendung an der Stelle. Die zwei uebrigen sind echt und bleiben:
+
+* `daten/einheitenbefund-pwt-baci.md`, Kopffeld `befund_an_betreiber` -- verweist auf einen
+  Textblock **derselben** Datei, traegt also keinen Dokumentnamen. Nachgeschlagen: Der
+  Vorspann existiert dort. Kein verkappter toter Verweis.
+* `pruefstand/test/vorrat_kernanker_probe.cpp`, Kopfkommentar -- nennt als Ziel nur `T36`
+  und keinen Dokumentnamen. Nachgeschlagen: Der Wortlaut steht in `technik.md`, dort
+  allerdings als Aufzaehlungspunkt (`- **...**`) und damit **nicht** als Ueberschriftszeile
+  im Sinne dieses Riegels. Heute folgenlos, weil die Fundstelle ohnehin uebergangen wird;
+  traegt jemand dort einen Dateinamen nach, wird der Riegel zu Unrecht rot. Ausgeschrieben,
+  weil es sonst niemand merkt.
+
+### Benannt statt gefangen: Schluesselwort nicht unmittelbar vor der Anfuehrung
+
+Stelle 3 hat zwei voneinander unabhaengige Hindernisse, und wer nur eines loest, faengt sie
+immer noch nicht:
+
+1. Zwischen Schluesselwort und Anfuehrung stehen fuenf Woerter. `ueberschrift_hinter`
+   ueberspringt dort nur Leerzeichen und einen Gegenschraegstrich.
+2. Der Dokumentname steht **rechts** vom Zitat, in der Klammer dahinter. `naechster_verweis`
+   sucht nur nach links.
+
+Beides zu lockern ist derselbe Fall wie bei 0047: Wer beliebig viele Woerter zulaesst,
+bindet jede Anfuehrung eines Satzes an das naechstgelegene Schluesselwort und wird rot, wo
+nichts kaputt ist; wer zusaetzlich nach rechts sucht, muss entscheiden, welcher der beiden
+Nachbarn gewinnt, und hat dafuer heute kein Mass. Die Form steht deshalb im Kopfkommentar
+ausgeschrieben und liegt als Paket 0086 daneben
+(`aufgaben/0086-belegstellenriegel-schluesselwort-mit-abstand.md`, `status: vorschlag`).
+
+**Sie bleibt ungeschuetzt, und sie bleibt auch ungezaehlt** -- fuer den Riegel ist sie kein
+Zitat, also erscheint sie weder in den Befunden noch in der Uebergangenliste. Das ist die
+unangenehme Haelfte dieser Auskunft und der Grund, warum sie hier steht.
+
+## Der Rotnachweis fuer das neue Schluesselwort
+
+Gefuehrt an der **eigenen** Datei, ohne fremdes Gebiet und ohne Kopie: Der Kopfkommentar
+traegt seit diesem Lauf ein zweites echtes Zitat, diesmal mit dem neuen Schluesselwort und
+mit Ziel im T49-Vorspann. Ein Wort darin verdreht (*Zwei* zu *Drei*), gebaut, gelaufen:
+
+```
+1: 1 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+1:
+1:   zitierend: werkzeuge/belegstellen/belegstellen_riegel.cpp:39
+1:   nachgeschlagen in: specs/technik.md
+1:   gesuchte Ueberschrift: Drei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines Zufalls
+1/1 Test #1: belegstellen_riegel ..............***Failed    1.08 sec
+0% tests passed, 1 tests failed out of 1
+```
+
+Die Meldung nennt zitierende Datei mit Zeile, Zieldatei und gesuchte Ueberschrift.
+Zuruecknahme des einen Wortes, neu gebaut, wieder gruen -- der Endstand unten.
+
+Die andere Richtung (Ueberschrift in `specs/` verdrehen statt Zitat) ist hier nicht
+gefuehrt: `cp` in ein Verzeichnis ausserhalb des Repos ist dieser Rolle nicht erlaubt, und
+`specs/` selbst darf dieses Paket nicht anfassen. Sie ist auch nicht offen -- der Pruefer
+hat sie am unveraenderten Programm mit einer Kopie von `specs/` gefuehrt, und beide
+Richtungen laufen durch denselben Vergleich.
+
+## Gegenprobe: haengen die zwei neuen Zitate wirklich am Vorspann-Fall?
+
+Ein Mutant, der die Vorspann-Form der Ueberschriftserkennung abschaltet (die beiden
+Sternchen im Vergleich durch ein Zeichen ersetzt, das nirgends vorkommt -- so bleibt jede
+Funktion aufgerufen und der Warnsatz schlaegt nicht zu):
+
+```
+6 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+  zitierend: daten/adressen.md:29
+  zitierend: daten/adressen.md:556
+  zitierend: daten/reihen.toml:265
+  zitierend: daten/reihen.toml:992
+  zitierend: daten/reihen.toml:1178
+  zitierend: werkzeuge/belegstellen/belegstellen_riegel.cpp:39
+... 24 Zitate der geprueften Form gefunden, 18 davon aufgeloest
+```
+
+Sechs von 24 fallen, und die ersten beiden sind genau die Stellen 1 und 2 aus der Tabelle
+oben. Damit ist zweierlei belegt: dass die neu gefangenen Zitate die von 0034 sind, und
+dass die Vorspann-Form kein Zierat ist. Mutant zurueckgenommen.
+
+## Endstand
+
+```
+$ cmake --build <ventures/0016-.../bau>
+$ ctest --test-dir <ventures/0016-.../bau>
+12/12 Test #12: belegstellen_riegel ..............   Passed    0.35 sec
+100% tests passed, 0 tests failed out of 12
+
+belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 37 Bauquellen
+gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+belegstellen_riegel, Bedingung 2 (Abschnittszitat): 37 Bauquellen und 11 Datendokumente
+gelesen, 135 Dateien im Zielbestand; 24 Zitate der geprueften Form gefunden, 24 davon
+aufgeloest, 7 Fundstellen uebergangen.
+```
+
+**24 und 24, erste Zahl nicht null.** Bedingung 2 haelt. Der Alleinbau
+(`cmake -S werkzeuge/belegstellen`) ist ebenfalls gruen, 1/1.
+
+## Die sechs Pakete, Stand nach diesem Lauf
+
+| Paket | Ergebnis |
+|---|---|
+| 0034 | zwei von drei Belegstellen **gefangen**, die dritte **ausgewiesene Luecke** (Schluesselwort mit Abstand, Dateiname rechts) -- Paket 0086 |
+| 0035 | **gefangen**, beide |
+| 0044 | **gefangen** |
+| 0047 | **ausgewiesene Luecke** (Ueberschrift ohne Anfuehrung) -- Paket 0079 |
+| 0050 | **gefangen**, alle fuenf |
+| 0057 | **gefangen**, alle vier |
+
+## Worauf ich in diesem Lauf unsicher bin
+
+**Ob die Aufteilung bei 0034 die richtige ist.** Der Ruecklauf laesst beide Wege zu, und
+ich habe den billigeren gefangen und den teureren benannt. Wer findet, ein Paket sei erst
+fertig, wenn alle drei Stellen fangen, hat einen Standpunkt -- ich halte dagegen, dass die
+dritte Form dieselbe Sorte Entscheidung ist wie 0047, und 0047 ist als Luecke bestaetigt
+worden.
+
+**Die Zaehlung ist von 21 auf 24 gestiegen, und drei davon sind neu hinzugekommene
+Uebergangene.** Wer die Zahlen zwischen den beiden Laeufen vergleicht, vergleicht keine
+gleichen Groessen. Das steht hier, damit niemand aus 21 gegen 24 einen Fehler liest.
+
+**Der Kopfkommentar traegt jetzt zwei echte Zitate statt einem.** Jedes ist ein Rothebel,
+und jedes ist auch eine Stelle, an der ein fremdes Aufraeumen in `specs/` diesen Riegel rot
+macht. Das ist gewollt; es verdoppelt aber die Angriffsflaeche dafuer, und beim dritten
+sollte jemand fragen, ob das noch Nachweis ist oder schon Sammeln.

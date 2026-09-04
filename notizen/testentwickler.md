@@ -19,29 +19,22 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 <!-- Suchen, Formulierungen, Quellen, Vorgehensweisen, die etwas gebracht haben.
      Format: - JJJJ-MM-TT — Beobachtung -->
 
-- 2026-09-02 — Die Reihenfolge aus 0019 (CMakeLists, leeres `main`, Modul, dann Probe
-  füllen) trägt nur mit einem echten `cmake`-Lauf nach Schritt 2: Erst dann steht
-  `vorrat_probe … Passed` da, bevor eine Zeile Fachlogik existiert.
-- 2026-09-02 — Beide Bauwege einzeln prüfen: `baulauf.py` ruft jede `CMakeLists.txt`
-  allein, der Arbeitsbereich als Unterverzeichnis. Kommt ein Mitglied neu dazu, braucht
-  der Arbeitsbereich ein erneutes `cmake -S/-B` — `CONFIGURE_DEPENDS` fängt nur neue
-  Quelldateien, kein neues Verzeichnis.
+- 2026-09-02 — Reihenfolge aus 0019 (CMakeLists, leeres `main`, Modul, dann Probe) trägt
+  nur mit echtem `cmake`-Lauf nach Schritt 2: Erst dann steht ein `… Passed` da, bevor
+  eine Zeile Fachlogik existiert. Beide Bauwege einzeln prüfen — `baulauf.py` ruft jede
+  `CMakeLists.txt` auch allein; ein **neues Verzeichnis** braucht ein erneutes
+  `cmake -S/-B`, `CONFIGURE_DEPENDS` fängt nur neue Quelldateien.
 - 2026-09-02 — Die falsche Fassung als *zweiten Aufruf desselben Prüfprädikats* bauen,
-  nicht als eigenen Test. Dann misst die Vorführung nachweislich denselben Maßstab.
-  Konkret: `zaehle_kerne(liste, kernfunktion)` plus `besteht_kernpruefung(befund)`, einmal
-  mit der echten und einmal mit der kaputten Funktion.
+  nicht als eigenen Test — dann misst die Vorführung nachweislich denselben Maßstab.
 - 2026-09-03 — Zwei falsche Fassungen belegen nur dann, dass zwei Bedingungen
   *Verschiedenes* messen, wenn je Fassung **beides** zugesichert wird: was sie fängt und
-  was sie durchlässt. Die Erwartung gehört in den Aufruf, nicht ins Ergebnis — sonst
-  prüft die Vorführung sich selbst.
-- 2026-09-03 — Einen Erwartungswert aus der Vorgabe **zweimal** abschreiben (einmal als
-  Zeichenkette für „zeichengleich", einmal als Tabelle für „in welcher Runde") und die
-  beiden Abschriften vor allem anderen gegeneinander prüfen. Ein Tippfehler im Maßstab
-  läuft sonst still grün, und ein falscher Maßstab ist schlimmer als ein roter Test.
-- 2026-09-03 — Eine falsche Fassung lässt sich **herleiten** statt nachbauen: Spiegelt
-  man die Familienstellen eines Profils, wird aus „kleinster Index unter den Größten" der
-  größte, ohne dass der Gleichstandsbrecher zweimal im Baum steht. Bedingung: gegen von
-  Hand nachgerechnete Festwerte prüfen, sonst liefert sie nur *irgendetwas anderes*.
+  was sie durchlässt. Die Erwartung gehört in den Aufruf, nicht ins Ergebnis.
+- 2026-09-03 — Einen Erwartungswert aus der Vorgabe **zweimal** abschreiben (in zwei
+  Formen) und die Abschriften vor allem anderen gegeneinander prüfen. Ein Tippfehler im
+  Maßstab läuft sonst still grün, und ein falscher Maßstab ist schlimmer als ein Rotlauf.
+- 2026-09-03 — Eine falsche Fassung lässt sich **herleiten** statt nachbauen (Familien-
+  stellen spiegeln), aber nur gegen von Hand nachgerechnete Festwerte — sonst liefert sie
+  nur *irgendetwas anderes*.
 - 2026-09-03 — Ein Anker aus Festwerten und eine Zählung messen Verschiedenes, und die
   Zählung ist die schwächere: 6/120 bleibt grün, wenn Modul und Prüfkopie denselben
   Denkfehler tragen. Wo ein Test eine Klasse, einen Namen oder eine Reihenfolge prüft,
@@ -49,27 +42,24 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-03 — Eine Zeilennummer in einem Aufräumpaket ist beim Abarbeiten meist schon
   falsch (0050: 1318→1464; 0044: 336→353). Dreimal bestätigt; die Zahl im Paket ist ein
   Warnzeichen, kein Hinweis. Stelle selbst suchen und durch etwas ersetzen, das bleibt.
-- 2026-09-04 — Beim Aufräumen von Belegstellen ist der Riegel selbst das Messgerät,
-  statt zu behaupten, man habe alle erwischt: je Datei messen, und den Rotnachweis über
-  eine eingefügte und sofort wieder entfernte Belegstelle in der **eigenen** Datei
-  führen (0→1→0). Zwei Aufrufe, kein fremdes Gebiet, und er misst mit, dass das Grün
-  gemessen und nicht zufällig ist.
+- 2026-09-04 — Beim Aufräumen von Belegstellen ist der Riegel selbst das Messgerät, statt
+  zu behaupten, man habe alle erwischt: je Datei messen, Rotnachweis über eine eingefügte
+  und sofort entfernte Belegstelle in der **eigenen** Datei (0→1→0). Kein fremdes Gebiet.
 - 2026-09-04 — Die Fangbedingung eines Musterriegels **nachlesen**, bevor man den
   Ersatztext schreibt: `ZIFFERN_MINDESTENS = 2` heißt, ein Zitat darf das Wort „Zeilen"
   tragen, solange keine zwei Ziffern folgen. Wer rät, umschreibt die Überschrift
   vorsorglich und macht das Zitat für die Prüfung wertlos, die es prüfen soll.
 - 2026-09-04 — **Eine Zählung von Zeilen belegt nichts über Gegenstände.** `grep -c` gab
   in 0044 fünfzig Schlüsselzeilen, daraus wurde „fünfzig Schlüssel je einmal"; richtig
-  sind 41 verschiedene und 38 eindeutige. Ein `uniq -d` daneben kostet einen Aufruf.
+  sind 41 verschiedene. Ein `uniq -d` daneben kostet einen Aufruf.
 - 2026-09-04 — Ein Riegel über Text liest **je Absatz, nicht je Zeile**. Der Dateiname
   steht regelmäßig Zeilen über der zitierten Überschrift (0044: vier, 0035: eine); eine
   zeilenweise Suche übergeht genau die Pakete, für die sie gebaut ist. Absatz = Block
   gleichen Kommentarkopfs ohne Leerzeile, zusammengezogen — und zu jedem Zeichen die
   Quellzeile mitführen, sonst nennt die Meldung den Absatz statt der Zeile.
 - 2026-09-04 — Sucht man von einem Fundort nach links sein Ziel, gewinnt der
-  **nächstgelegene** Verweis, und darüber hinweg wird nicht gesucht. Gemessen: Ein Zitat
-  aus einer Lizenzseite, deren Netzadresse eine Zeile darüber steht, band sonst an die
-  übernächste Datei und wurde zu Unrecht rot.
+  **nächstgelegene** Verweis; darüber hinweg wird nicht gesucht. Sonst band ein Zitat aus
+  einer Lizenzseite an die übernächste Datei und wurde zu Unrecht rot.
 - 2026-09-04 — Anführungszeichen und Umlaute im Bestand **messen statt raten**: Hier wird
   `„` mit einem geraden `"` geschlossen (ein falsches Paar verliert das Zitat ganz — ohne
   Schluss ist es kein Zitat und taucht nicht mal unter den übergangenen auf), und der
@@ -78,6 +68,18 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-04 — Was ich in den **eigenen** Kopfkommentar schreibe, prüft der eigene Riegel
   mit: Eine Beispieltabelle mit „Zeilen 724" neben einem Dateinamen hätte 0073 eine Falle
   gestellt. Vor jeder Zeile Prosa fragen, was das eigene Muster daraus macht.
+- 2026-09-04 — Ein **neues Schlüsselwort** in einem Textriegel zuerst im eigenen Quelltext
+  greppen: Ein Zeichenkettenliteral, das auf das Wort endet, trägt das Anführungszeichen
+  direkt dahinter — der Riegel fand prompt eine „Überschrift" namens
+  `; } else if (…) { grund =`. Maskieren des letzten Zeichens löst es.
+- 2026-09-04 — **`git log -S` allein trägt keine Paketzuordnung.** Die Arbeit eines Pakets
+  liegt hier regelmäßig im Commit des *nächsten* Laufs, dessen Betreff ein fremdes Paket
+  nennt. Jeden `-S`-Treffer gegen das **Datum** des gesuchten Pakets halten; sonst schreibt
+  man eine fremde Belegstelle dem eigenen Paket zu (in 0067 zwei Tage danebengelandet).
+- 2026-09-04 — Lässt eine Abnahme „fangen **oder** als Lücke benennen" offen, ist die
+  Aufteilung nach Preis richtig: fangen, was ein Wort kostet; benennen, was eine
+  ungemessene Schwelle verlangt. Beides in einem Lauf tauscht eine gemessene Regel gegen
+  eine geratene — und der Rotnachweis fehlt dann für die geratene.
 - 2026-09-03 — Ein Verweis, der zweimal im Quelltext steht (Kommentar und
   Laufzeitausgabe), veraltet getrennt. Eine `constexpr`-Zeichenkette, die beide speisen,
   kostet nichts und macht aus zwei Nachführungen eine.
@@ -95,14 +97,11 @@ mehr — und es kostet jeden deiner Läufe Kontext.
      aendert sich, und eine Quelle, die im Maerz nichts hergab, kann im Juni
      ergiebig sein. -->
 
-- 2026-09-04 — **`cd` in ein Unterverzeichnis nimmt mir `Edit` und `Write` weg, ohne dass
-  es irgendwo auffällt.** Die Rolle bekommt `Edit(ventures/**)`, ein *relatives* Muster;
-  der Lauf steht unter `--permission-mode dontAsk`. Nach `cd ~/fabrik/ventures/0016-…`
-  löst das Muster gegen das neue Arbeitsverzeichnis auf, trifft nichts mehr, und **jeder**
-  Schreibversuch wird still abgelehnt — die Begründung nennt den Modus, nicht den Pfad,
-  also sieht es wie eine Rollensperre aus. Vermutlich die Ursache der vier leeren
-  Bauplätze vom 2026-09-04. **Nie `cd` benutzen** — `cmake -S/-B`, `ctest --test-dir`
-  und absolute Pfade tun dasselbe.
+- 2026-09-04, **zweimal getroffen** — `cd` in ein Unterverzeichnis nimmt mir `Edit` und
+  `Write` still weg: Die Rolle hat `Edit(ventures/**)`, ein *relatives* Muster, das gegen
+  das Arbeitsverzeichnis auflöst. Die Ablehnung nennt den Modus, nicht den Pfad, sieht
+  also wie eine Rollensperre aus. **Nie `cd`** — `cmake -S/-B`, `ctest --test-dir` und
+  absolute Pfade tun dasselbe; ein einzelnes `cd ~/fabrik` heilt es sofort.
 - 2026-09-02 — Zusammengesetzte Shell-Befehle (`a && b`, `a; b`, Heredoc an `python3`)
   werden im Lauf abgelehnt, einzelne Aufrufe nicht. Ein Bauzyklus ist deshalb drei Aufrufe:
   `cmake -S/-B`, `cmake --build`, `ctest`. Kostet Läufe, wenn man es erst beim dritten Mal
@@ -110,9 +109,10 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - 2026-09-03 — `grep` über die Shell wird im Lauf abgelehnt, das Grep-Werkzeug tut
   dasselbe. Die Nachweis-Greps einer Abnahme laufen darüber; kostet einen Aufruf, wenn
   man es erst beim Fehlschlag merkt.
-- 2026-09-03 — `cp` und `Write` nach `$TMPDIR` wurden beide abgelehnt. Der Mutationslauf
-  gegen eine Kopie des Moduls außerhalb des Repos ist damit kein Weg mehr, den ich noch
-  einmal probieren muss; er kostet zwei Aufrufe und endet immer gleich.
+- 2026-09-04, präzisiert — Nach `$TMPDIR` geht **Bauen**, nicht **Kopieren**: `mkdir -p`,
+  `cmake -S <repo> -B $TMPDIR/...`, `cmake --build`, `ctest --test-dir` laufen alle; `cp`
+  und `Write` dorthin werden abgelehnt. Ein Mutationslauf gegen einen kopierten Baum ist
+  damit kein Weg — die Sabotage geht über die **eigene** Datei, gebaut nach `$TMPDIR`.
 - 2026-09-03 — Beim Sabotieren beißt `-Werror=unused-function`: Fällt eine Funktion aus
   dem Spiel, wird der **Bau** rot statt des Tests und der Nachweis misst nichts. Sabotage
   so legen, dass jede Funktion aufgerufen bleibt.
@@ -146,10 +146,8 @@ mehr — und es kostet jeden deiner Läufe Kontext.
   das Muster als Literal im eigenen Quelltext steht. `"Zeil\145"` statt `"Zeile"` löst
   das an einer Stelle; im Kopfkommentar hilft nur, das Muster zu *beschreiben* statt es
   abzuschreiben. Vorher überlegen, sonst ist der erste rote Lauf der eigene.
-- 2026-09-04 — **Erledigt: 0067 steht.** Der Riegel schlägt Abschnittszitate jetzt nach —
-  21 gefunden, 21 aufgelöst, plus 5 ausgewiesen übergangene. Fünf der sechs Pakete sind
-  gefangen; 0047 zitiert **ohne Anführung** und bleibt ungeschützt (als 0079
-  vorgeschlagen). Aus dem Gedächtnis zitierte Überschriften werden ab jetzt rot.
+- 2026-09-04 — **0067 nach Rücklauf 1: 24/24 grün.** Zwei ausgewiesene Lücken bleiben
+  (0079 ohne Anführung, 0086 Schlüsselwort mit Abstand und Dateiname rechts).
 - 2026-09-04 — Eine Abnahme, die die **Abwesenheit eines Musters** misst, sieht nie, ob
   der Ersatz wahr ist; so kamen die zwei falschen Sätze aus 0077 durch. Ersatztext im
   Wortlaut aus der Zieldatei holen und jede Behauptung darüber nachmessen — auch den

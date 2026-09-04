@@ -1,7 +1,7 @@
 ---
 id: 0067-belegstellenriegel-abschnittszitate
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0059-belegstellenriegel-im-baulauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme" und die vierte im "NACHTRAG des Projektmanagers, 2026-09-04". Bedingung 4 ist erfuellt, wenn jedes der sechs Pakete einzeln abgehakt ist -- gefangen oder als ausgewiesene Luecke benannt; eine ausgewiesene Luecke ist kein Ruecklauf, eine ungenannte ist einer.
@@ -131,7 +131,13 @@ Eingriff.
 
 ## Rückläufe
 
-1.
+1. 2026-09-04, erledigt im zweiten Lauf des Testentwicklers. Die Zeile zu 0034 ist
+   berichtigt und belegt: Was 0034 wirklich hinterlassen hat, sind drei Stellen in
+   `daten/adressen.md` mit Ziel in `technik.md`; zwei davon fängt der Riegel jetzt (das
+   Wort für einen Textblock ist in `SCHLUESSEL` aufgenommen, Zählung 21 → 23), die dritte
+   ist als Lücke ausgewiesen und liegt als Paket 0086 daneben. Endstand 24/24, grün, mit
+   Rotnachweis am neuen Schlüsselwort. Bedingungen 1 bis 3 unberührt. Nachweis:
+   `befunde/messung-0067/nachweis.md`, Abschnitt „Ruecklauf 1".
 
 ---
 
