@@ -139,3 +139,21 @@ Lehre daraus, in einem Satz.
   Bitmaske statt Fehlerliste macht „genau diese eine Sache und keine andere" zu einem
   Zahlenvergleich statt zu einer Lesung. Das war der Grund, warum die Rotproben dort
   überhaupt nachprüfbar waren.
+
+## Nachtrag 2026-09-04 (Paket 0059)
+
+- **Ein Riegel, der seine Wurzel als Argument bekommt, ist ohne jede Aenderung am Baum
+  rotprobbar.** Bei 0059 einen synthetischen Baum in `$TMPDIR` mit 18 Belegstellenformen
+  gebaut und das gebaute Programm daraufgerichtet: 11 rot, 7 gruen, jede gruene erklaerbar.
+  Kein Schreibvorgang unter `ventures/`, nichts zurueckzurollen.
+- **Bei einem Riegel ist die Dateiauswahl die Schwelle, nicht die Vergleichslogik.**
+  Also `ist_quelldatei` mutieren, nicht den Namensvergleich: Mutant mit `.md`/`.toml` auf
+  den echten Baum ergab 90 statt 0 Befunde -- aber alle unter `aufgaben/`. Erst diese
+  Aufteilung macht aus "Auswahl begruendet" ein "Auswahl belegt".
+- **Meldet ein Riegel "0 Treffer mit Dateinamen daneben", ist das noch kein Gruen.**
+  Dieselbe Null kaeme von einem kaputten Namensucher. Die Treffer einzeln nachschlagen;
+  bei 0059 waren alle 5 der im Kopfkommentar benannte Sonderfall.
+- **Gesperrt in dieser Sitzung:** `Write`, `Edit`, Heredoc, `rm`, mehrteilige Bash-Zeilen
+  mit `&&`. Gegangen ist `printf` mit Zeilenargumenten und Umlenkung, bei hoechstens rund
+  acht kurzen Argumenten je Aufruf. Eine ganze Ergebnisdatei so zu schreiben geht, kostet
+  aber ~25 Aufrufe und laesst sich nicht mehr korrigieren -- Text vorher fertig denken.
