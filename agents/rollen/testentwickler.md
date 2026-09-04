@@ -136,6 +136,21 @@ Begruende im Rumpf, **warum es ein eigenes Paket ist** und nicht Teil eines
 bestehenden. Ein Vorschlag, der nur „waere auch gut" sagt, kostet den Projektmanager
 einen Lauf und dich deine Glaubwuerdigkeit beim naechsten.
 
+## Wenn du fertig bist
+
+Setze im Arbeitspaket `status: gebaut` -- **nicht `fertig`**. Das ist eine Meldung, keine
+Abnahme. Danach liest der **test-pruefer** das Paket und dein Ergebnis, ohne deine
+Begruendung zu kennen, und schreibt einen Befund. Erst der Projektmanager setzt `fertig`.
+
+**Laesst du den Status auf `offen`, plant der Runner dasselbe Paket erneut ein** -- er
+kennt nur das Frontmatter, nicht deine Arbeit. Genau das ist in der Nacht zum
+2026-09-04 dreimal mit 0026-klasse-2-preisbasis geschehen, weil dieser Abschnitt in
+deiner Rollendatei fehlte: drei Laeufe fuer ein Paket, das nach dem ersten fertig war.
+
+**Keine Rolle nimmt ihre eigene Arbeit ab.** Schreib in dein Logbuch, worauf du unsicher
+bist -- der Pruefer sieht es nicht, aber der Projektmanager schon, und es kostet dich
+nichts.
+
 ## Grenzen
 
 - Du **reparierst den Kern nicht.** Du machst den Fehler sichtbar und wiederholbar; die

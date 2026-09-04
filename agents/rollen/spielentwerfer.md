@@ -140,6 +140,21 @@ Einwand erneut erzeugt, kostet den Betreiber die Zeit zweier Laeufe und findet n
 Neues. Wiederholt sich derselbe Befund ein drittes Mal, liegt es nicht an dir, sondern
 am Abnahmekriterium -- dann sagst du das ausdruecklich.
 
+## Wenn du fertig bist
+
+Setze im Arbeitspaket `status: gebaut` -- **nicht `fertig`**. Das ist eine Meldung, keine
+Abnahme. Danach liest der **entwurf-pruefer** das Paket und dein Ergebnis, ohne deine
+Begruendung zu kennen, und schreibt einen Befund. Erst der Projektmanager setzt `fertig`.
+
+**Laesst du den Status auf `offen`, plant der Runner dasselbe Paket erneut ein** -- er
+kennt nur das Frontmatter, nicht deine Arbeit. Genau das ist in der Nacht zum
+2026-09-04 dreimal mit 0026-klasse-2-preisbasis geschehen, weil dieser Abschnitt in
+deiner Rollendatei fehlte: drei Laeufe fuer ein Paket, das nach dem ersten fertig war.
+
+**Keine Rolle nimmt ihre eigene Arbeit ab.** Schreib in dein Logbuch, worauf du unsicher
+bist -- der Pruefer sieht es nicht, aber der Projektmanager schon, und es kostet dich
+nichts.
+
 ## Grenzen
 
 - Du **entscheidest, statt zu sammeln**. Drei Möglichkeiten aufzuzählen und die Wahl dem

@@ -129,6 +129,31 @@ def main() -> int:
                     f"gehoert `{rolle}` -- diese Rolle plant kein Runner ein, "
                     f"das Paket wird nie laufen")
 
+    # --- Jede Baurolle muss wissen, wie sie ihr Paket abschliesst ---
+    #
+    # Am 2026-09-04 fehlte der Satz "Setze `status: gebaut`" in `architekt`,
+    # `spielentwerfer` und `testentwickler` -- den drei Rollen, die spaeter fuer die
+    # Spieleentwicklung dazukamen. Die Folge ist nicht ein Fehler, sondern eine
+    # Wiederholung: Der Runner liest nur das Frontmatter, sieht `offen` und plant
+    # dasselbe Paket erneut ein. 0026-klasse-2-preisbasis wurde in einer Nacht dreimal
+    # zugewiesen und war ab dem ersten Mal geliefert.
+    #
+    # Der Fehler ist unsichtbar, weil jeder einzelne Lauf gelingt.
+    try:
+        sys.path.insert(0, str(WURZEL / "agents"))
+        from baulauf import BAUROLLEN
+    except Exception as fehler:
+        befunde.append(f"KETTE: BAUROLLEN nicht lesbar ({fehler})")
+        BAUROLLEN = []
+    for r in BAUROLLEN:
+        datei = WURZEL / "agents" / "rollen" / f"{r}.md"
+        if not datei.exists():
+            continue
+        if "status: gebaut" not in datei.read_text(encoding="utf-8"):
+            befunde.append(
+                f"ABSCHLUSS: {r}.md sagt nicht, dass die Rolle `status: gebaut` "
+                f"setzen muss -- der Runner plant ihr Paket dann wieder und wieder ein")
+
     print(f"{len(rollen)} Rollen geprueft.")
     for b in befunde:
         print(f"  BEFUND  {b}")
