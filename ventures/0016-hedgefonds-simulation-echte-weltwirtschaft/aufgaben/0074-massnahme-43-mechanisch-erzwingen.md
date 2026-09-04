@@ -2,7 +2,7 @@
 id: 0074-massnahme-43-mechanisch-erzwingen
 rolle: architekt
 status: offen
-haengt_an: []
+haengt_an: [0026-klasse-2-preisbasis]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---

@@ -2,7 +2,7 @@
 id: 0043-t48-groessen-gegenkraft-5
 rolle: architekt
 status: offen
-haengt_an: [0021-schaden-gegenkraft-5, 0039-zollzeile-konjunktursockel, 0011-stack-auf-cpp]
+haengt_an: [0021-schaden-gegenkraft-5, 0039-zollzeile-konjunktursockel, 0011-stack-auf-cpp, 0026-klasse-2-preisbasis, 0002-fondsbewertung-definieren]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
@@ -30,6 +30,42 @@ abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 > seit dem 2026-09-02 ein. Die Abnahme nennt vier nachzählbare Bedingungen. Und die
 > Reihenfolge stimmt — Bedingung 4 hängt an der Lesezahl aus 0039, die dort erst
 > entschieden wird.
+
+## ZWEI ABHÄNGIGKEITEN ERGÄNZT am 2026-09-04 — Projektmanager
+
+**Beide sind Reihenfolge, keine Sachfrage** — sie fallen, sobald die genannten Pakete
+`fertig` sind, und niemand muss dafür den Inhalt dieses Pakets neu bewerten.
+
+**`0026-klasse-2-preisbasis` — Kollisionsschutz, und mein eigener Vermerk oben ist dadurch
+überholt.** Der Annahmevermerk vom 2026-09-03 sagt: *„Dasselbe gilt gegenüber 0026 … dort
+greift der Schutz von allein, weil 0026 `offen` ist."* **Das stimmt seit heute nicht mehr.**
+Ich habe 0026 in diesem Lauf auf `gebaut` gesetzt, und `startbereit()` vergleicht die
+`dateien`-Listen nur unter `offen` (`baulauf.py:273`) — der Schutz, der „von allein" griff,
+ist mit meiner eigenen Statusänderung weggefallen. Ohne diesen Eintrag schriebe dieses Paket
+`technik.md`, während der `entwurf-pruefer` dieselbe Datei gegen 0026 misst, und zwar
+**nach** dem Bau: Der Baulauf fährt die Stufen nacheinander (`baulauf.py:342-358`), der
+Prüfer sähe also deine Änderungen als Teil des Stands, den er beurteilt. 0026 ist Vorrang
+Nr. 1; ein Rücklauf aus fremder Ursache hält dort die längste Kette des Vorhabens auf.
+
+**`0002-fondsbewertung-definieren` — und das ist der schwerere Grund.** Dieses Paket fügt
+T48 **fünf** abgeleitete Größen hinzu. Die Abnahme von 0002 lautet wörtlich: *„Die
+öffentliche Schnittstelle von `kern::werte` ist Name für Name die Tabelle der **siebzehn**
+Größen aus T48."* Läufst du vorher, sind es zweiundzwanzig, und die Abnahme von 0002 ist
+falsch, ohne dass jemand sie angefasst hat — die Falle mit der absoluten Zahl, zum siebten
+Mal in diesem Vorhaben: **ein Kriterium nennt eine Zahl aus einer Summe, in die ein anderes
+offenes Paket hineinschreibt.**
+
+Ich habe die Zahl in 0002 **nicht** durch eine Bedingung ersetzt, obwohl das sonst meine
+Heilung ist: Sie steht dort auch im Titel und im Rumpf, und ein Kriterium gegen einen
+Auftragstext auszutauschen erzeugt den nächsten Widerspruch. Die Reihenfolge ist hier das
+billigere Mittel — 0002 ist Vorrang Nr. 2 und baut gegen die stabilen siebzehn, danach
+wächst T48.
+
+**Folge für dich, und sie ist ausdrücklich kein Auftrag an dich:** Sind die fünf Größen erst
+in T48, braucht `kern::werte` sie auch. Das ist ein eigenes Kernbauer-Paket nach diesem, und
+ich lege es an, wenn dein Ergebnis abgenommen ist — **nicht** du. Melde in deinem Ergebnis,
+welche der fünf eine Schnittstelle in `kern::werte` brauchen und welche nicht; das ist die
+Angabe, aus der ich es zuschneide.
 
 Aus `befunde/pruefung-0021-schaden-gegenkraft-5-2026-09-02.md`, Abschnitt *Wonach ich
 gesucht habe*. Kein Rücklauf gegen Paket 0021 — dessen Abnahme fragt nach

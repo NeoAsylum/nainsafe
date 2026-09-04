@@ -1,7 +1,7 @@
 ---
 id: 0044-schranken-probe-belegstellen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0035-parameterdatei-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

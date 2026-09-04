@@ -2,7 +2,7 @@
 id: 0051-t46-gebietspraefix-entscheiden
 rolle: architekt
 status: offen
-haengt_an: [0011-stack-auf-cpp]
+haengt_an: [0011-stack-auf-cpp, 0026-klasse-2-preisbasis]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---

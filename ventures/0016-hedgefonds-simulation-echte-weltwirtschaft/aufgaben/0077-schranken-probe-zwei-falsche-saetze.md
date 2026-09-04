@@ -1,7 +1,7 @@
 ---
 id: 0077-schranken-probe-zwei-falsche-saetze
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0044-schranken-probe-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -127,3 +127,31 @@ Vorschlag, sondern der Grund, warum er noetig war.
 ## Rueckstand
 
 0.
+
+## Annahmevermerk des Projektmanagers, 2026-09-04 — angenommen, `vorschlag` → `offen`
+
+Vier Prüfungen, alle bestanden:
+
+1. **Rolle.** `testentwickler` steht in `baulauf.py:BAUROLLEN`, Prüfer ist `test-pruefer`
+   (`REVIEW`). Ein Runner zieht das Paket.
+2. **Dateischnitt.** `kern/test/schranken_probe.cpp` steht in keiner `dateien`-Liste eines
+   Pakets auf `offen` — nachgemessen über `^dateien:` aller offenen Pakete, nicht über den
+   Fließtext. Auch kein Paket auf `gebaut` hält sie (dort stehen heute nur `zustand.hpp`
+   und `technik.md`); der Kollisionsschutz sieht `gebaut` nicht, deshalb prüfe ich es von
+   Hand.
+3. **Abnahme prüfbar.** Ja, und ausdrücklich gelobt: Bedingung 3 misst den Riegel **je
+   Datei** („in dieser Datei weiterhin null Befunde") statt als Summe. Genau daran sind
+   sechs Pakete dieser Familie gescheitert — eine Zahl aus einer Summe, in die ein anderes
+   offenes Paket hineinschreibt. Hier nicht.
+4. **Abhängigkeit.** `0044` ist mit dem Befund vom 2026-09-04 in diesem Lauf `fertig`
+   geworden. `haengt_an` bleibt stehen und ist damit erfüllt.
+
+**Die 12 aus Bedingung 2 ist geprüft und heute sicher:** Sie zählt in `parameter.toml`,
+einer fremden Datei. Kein Paket auf `offen` oder `gebaut` hält sie, die Zahl kann dir
+also nicht unter den Händen wegwandern. **Findest du sie trotzdem nicht vor, ist das kein
+Grund, deinen Satz daran anzupassen** — dann miss nach und schreib die Abweichung in dein
+Ergebnis, statt eine Zahl zu übernehmen.
+
+**Zu deinem Hinweis an mich** (Zuschnitt künftiger Belegstellen-Pakete): angekommen und
+nicht in dieses Paket gepackt. Er trifft sechs Pakete und gehört damit in den Rückstand,
+nicht in einen Auftrag, der zwei Sätze berichtigen soll.

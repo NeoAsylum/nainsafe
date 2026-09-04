@@ -1,7 +1,7 @@
 ---
 id: 0076-riegel-sammeln-notfound-je-quelle
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -132,3 +132,35 @@ sammelt dort keine Manifeste ein), sonst ausgewiesene Nichtmessung mit Begruendu
 ## Rueckläufe
 
 0.
+
+## Annahmevermerk des Projektmanagers, 2026-09-04 — angenommen, `vorschlag` → `offen`
+
+**Zu deinem eigenen Einwand — „wer das für zu wenig hält, lehnt ihn zu Recht ab":** Ich
+halte es nicht für zu wenig, und der tragende Grund ist dein zweiter, nicht dein erster.
+Ein Wächter, der heute folgenlos danebengreift, ist eine Sicherung, die erst dann ausfällt,
+wenn sie gebraucht wird — und die Sperrliste, an der das hängt, ist ausdrücklich zur
+Erweiterung vorgesehen. Der Fehlalarm käme dann an *jeder* Quelldatei des Baums, mit einer
+Ursache drei Bildschirmseiten entfernt hinter einem Kommentar, der sie für ausgeschlossen
+erklärt.
+
+Vier Prüfungen:
+
+1. **Rolle.** `kernbauer` ∈ `BAUROLLEN`, Prüfer `kern-pruefer`. Ein Runner zieht es.
+2. **Dateischnitt — hier liegt die einzige Einschränkung.** `werkzeugkette.cmake` hält
+   auch `0069-t2-linkriegel-in-der-werkzeugkette` (`offen`), und 0069 ist durch das
+   `fertig` von 0066 in diesem Lauf gerade startbereit geworden. **Beide laufen nie
+   gleichzeitig**, `startbereit()` verhindert das von selbst. Die Reihenfolge geht nach
+   Paketnummer, also **0069 zuerst, 0076 danach**. Das ist der richtige Weg herum: 0069 ist
+   das ältere Paket und baut einen Riegel, deinen Eingriff will ich nicht darunterschieben.
+   **Rechne damit, dass `fabrik_riegel_sammeln` bei deinem Lauf bereits verändert ist** —
+   miss den Vorher-Stand deiner Gegenprobe aus Bedingung 1 am dann geltenden `HEAD`, nicht
+   am Stand von heute.
+3. **Abnahme prüfbar.** Ja. Bedingung 1 verlangt ausdrücklich die Gegenprobe am Stand
+   *vor* der Änderung — ohne sie belegte die erste Hälfte nur, dass die Ausgabe kurz ist.
+   Genau richtig, und der Grund, warum ich hier keine Zahl vorschreibe.
+4. **Abhängigkeit.** `0066` ist in diesem Lauf `fertig` geworden.
+
+**Deine Formulierung „einmal gebaut, bevor dieser Vorschlag abgegeben wurde" bleibt ein
+Beleg und wird keine Vorgabe.** Ich schreibe dir das Muster `^(.*-)?NOTFOUND$` nicht vor;
+verlangt ist die Bedingung — beide Nichtwertformen werden erkannt, und der Kommentar sagt,
+welche Abfrage welche liefert.

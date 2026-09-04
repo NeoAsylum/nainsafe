@@ -1,7 +1,7 @@
 ---
 id: 0065-reihentoml-reihe-9-ohne-sollrolle
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme" plus die vierte im Annahmevermerk vom 2026-09-04; Bedingungen 1 bis 3 sind am 2026-09-04 abgenommen und werden nicht erneut geprueft. Dazu die Bedingungen 5 und 6 im Abschnitt "RUECKLAUF 1 -- 2026-09-04": die genannte Aufteilung summiert sich auf die genannte Gesamtzahl, nach dem letzten Schreiben selbst nachgemessen und mit Bezugsstand belegt.

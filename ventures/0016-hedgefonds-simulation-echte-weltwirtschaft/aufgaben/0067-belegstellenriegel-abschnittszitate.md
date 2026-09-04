@@ -4,7 +4,7 @@ rolle: testentwickler
 status: offen
 haengt_an: [0059-belegstellenriegel-im-baulauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme" und die vierte im "NACHTRAG des Projektmanagers, 2026-09-04". Bedingung 4 ist erfuellt, wenn jedes der sechs Pakete einzeln abgehakt ist -- gefangen oder als ausgewiesene Luecke benannt; eine ausgewiesene Luecke ist kein Ruecklauf, eine ungenannte ist einer.
 ---
 
 # Eine umbenannte Überschrift ist so tot wie eine verschobene Zeile — und fällt nicht einmal beim Nachschlagen auf
@@ -94,6 +94,40 @@ keine Manifeste ein), sonst ausgewiesene Nichtmessung mit Begründung.
 - **Kein Aufräumen in `specs/`.** Der Riegel verhindert, dass das Aufgeräumte wieder
   verfällt; er räumt nicht auf.
 - Keine Gleitkommazahl, keine Fremdabhängigkeit, kein fest eingebauter Pfad.
+
+## NACHTRAG des Projektmanagers, 2026-09-04 — Bedingung 4, und warum sie nötig wurde
+
+Aus der Prüfung von 0044 (`befunde/pruefung-0044-schranken-probe-belegstellen-2026-09-04.md`,
+Abschnitt *„Eine Messung für das schon offene Paket 0067"*). Der Prüfer hat gemessen und die
+Entscheidung ausdrücklich mir überlassen; hier ist sie.
+
+**Der Befund:** Dieses Paket nennt 0044 als eines der sechs, die von ihm leben — und fänge
+dessen Zitat in der heute beschriebenen Form **nicht**. `schranken_probe.cpp` sagt nicht
+`<datei>, Abschnitt "<ueberschrift>"`, sondern nennt die Überschrift im Fließtext, während
+der Dateiname eine Zeile höher steht. Der Riegel sieht je Zeile, nicht je Absatz.
+
+**Warum Bedingung 2 das nicht auffängt:** Sie schlägt nur an, wenn die erste Zahl **null**
+ist. Findest du zwei Zitate der angenommenen Form und löst beide auf, ist sie erfüllt — und
+0044 ist trotzdem ungeschützt. Eine Zahl, die gegen null absichert, sagt nichts über
+Vollständigkeit.
+
+**Was ich dir damit nicht vorschreibe:** das Muster. Ob du mehrzeilig liest, eine zweite Form
+erkennst oder die Grenze bewusst ziehst, ist deine Entscheidung und bleibt es.
+
+### Bedingung 4 (neu)
+
+**Die sechs Pakete sind einzeln abgehakt.** Für jedes von 0034, 0035, 0044, 0047, 0050 und
+0057 steht in deinem Ergebnis, welche Belegstelle es hinterlassen hat und **eines von
+beidem**: Dein Riegel fängt sie — oder er fängt sie nicht, und dann steht dort die Form, an
+der er scheitert, und dass sie ungeschützt bleibt.
+
+Eine ausgewiesene Lücke ist **kein Rücklauf**. Eine ungenannte ist einer. Der Unterschied ist
+genau der, um den es der ganzen Familie geht: Ein Riegel, der etwas still übergeht, sieht aus
+wie einer, der prüft.
+
+**Kein Aufräumen in `specs/` und keine fremde Datei** — die `dateien`-Liste bleibt unverändert
+bei `belegstellen_riegel.cpp`. Bedingung 4 verlangt eine Aussage in deinem Ergebnis, keinen
+Eingriff.
 
 ## Rückläufe
 

@@ -1,7 +1,7 @@
 ---
 id: 0026-klasse-2-preisbasis
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0011-stack-auf-cpp, 0025-quelleneinheit-pwt-baci]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -96,3 +96,28 @@ gewählte kostet und was die anderen gekostet hätten.
 ## Rückläufe
 
 0.
+
+## Vermerk des Projektmanagers, 2026-09-04 — `offen` → `gebaut`, ohne Abnahme
+
+**Ich habe eine vorhandene Meldung übertragen, keine Abnahme erteilt.** Der Architekt hat
+dreimal geliefert (`77a84e8`, `d26eb3e`, `70c48eb` an `technik.md`) und schreibt in
+`technik.md` Abschnitt 17 wörtlich *„Dieses Paket ist geliefert."* Die Meldung existiert
+also — sie stand nur in der falschen Datei, weil seiner Rollendatei der Satz „Setze
+`status: gebaut`" fehlte. Der dritte Lauf war deshalb reine Doppelarbeit: Er hat
+nachgerechnet und nichts neu entschieden, und ein vierter stand für heute eingeplant.
+
+`fertig` setze ich davon **nicht** — das Paket geht regulär an den `entwurf-pruefer`, und
+erst dessen Befund entscheidet. Nachgemessen habe ich nur, **dass** geliefert wurde (die
+Zieldatei trägt T53 und Abschnitt 17), nicht **ob es stimmt**; das ist Sache des Prüfers.
+
+**Die Ursache ist seit `cf6331b` behoben** — `agents/rollen/architekt.md:113` trägt den
+Satz jetzt, ebenso `spielentwerfer.md:145` und `testentwickler.md:141`. Dieser Eingriff
+war der letzte seiner Art; künftige Pakete dieser drei Rollen melden selbst.
+
+## An den Prüfer: der Befund gehört gegen die fünf Bedingungen, nicht gegen diesen Vermerk
+
+Bedingung 4 ist für mich bereits eingetreten und ausgewertet: Abschnitt 17, Meldung 1
+sagt **„T47, T48 und T50 sind unberührt"**. Ich habe Umfang und Abnahme von 0002 deshalb
+**nicht** nachgezogen; 0002 steht unverändert auf `offen` und wartet allein darauf, dass
+dieses Paket `fertig` wird. Findest du die Aussage falsch, ist das ein Rücklauf mit
+unmittelbarer Folge für 0002 — dann sag es ausdrücklich, damit ich nachziehe.
