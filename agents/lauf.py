@@ -118,15 +118,33 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 # Tagesgrenze allein laesst sieben volle Tage zu und damit ein Vielfaches des
 # Wochenlimits. Deshalb steht darunter jetzt eine zweite.
 #
-# Nachzueichen am 2026-09-13: Bis dahin ist das Wochenlimit um 50 Prozent erhoeht.
-# Danach sind dieselben 398,8 Dollar rund 31 statt 21 Prozent, und beide Zahlen hier
-# gehoeren auf zwei Drittel gesenkt -- 200 und 1.070.
-TAGESGRENZE_USD = 400.0
+# **Nachgeeicht am 2026-09-04 an einer viel groesseren Stichprobe.** Der Betreiber hat
+# seine Anzeige vorgelesen: Woche 58 Prozent. Die Fabrik hatte im selben Fenster (ab
+# Montag 08:00 UTC) 1.311,3 Dollar Gegenwert verbraucht.
+#
+#     1.311,3 / 0,58  =  rund 2.260 Dollar entsprechen 100 Prozent -- mit dem Bonus.
+#     2.260 / 1,5     =  rund 1.510 Dollar ohne ihn, also ab dem 2026-09-13.
+#
+# Die alte Eichung (398,8 = 21 Prozent, also 1.900) stammte aus einem Fuenftel dieser
+# Stichprobe und lag deshalb zu niedrig. Bei 1.600 hielt die Bremse die Fabrik bei
+# 71 Prozent des Kontingents an und liess 661 Dollar dieser Woche verfallen. Das Abo ist
+# ein Festpreis: Was die Woche nicht verbraucht, ist weg, nicht gespart.
+#
+# Warum 84 Prozent und nicht 95: Die Prozentanzeige ist auf ganze Zahlen gerundet, der
+# Dollarwert hier ist ein modellgerechneter Gegenwert und nicht Anthropics eigene
+# Buchung, und ein Lauf, der mitten in der Arbeit am echten Limit abbricht, kostet mehr
+# als die ungenutzte Reserve. Der Abstand ist der Preis dafuer, dass die Rechnung oben
+# eine Schaetzung bleibt.
+#
+# Nachzueichen am 2026-09-13, wenn der Bonus endet: dann gehoert WOCHENGRENZE_USD auf
+# 1.270 (84 Prozent von 1.510) und die Tagesgrenze auf 300.
+TAGESGRENZE_USD = 450.0
 
-# Die eigentliche Bremse. Gerechnet ueber sieben rollende Tage statt ueber Anthropics
-# Wochenfenster (Montag 10:00): Der genaue Zuschnitt ist zweitrangig, die
-# Groessenordnung nicht.
-WOCHENGRENZE_USD = 1600.0
+# Die eigentliche Bremse -- 84 Prozent des am 2026-09-04 gemessenen Kontingents.
+# Gerechnet ueber Anthropics Wochenfenster (Montag 10:00 Ortszeit), siehe
+# `wochenfenster()`; die vorherige Rechnung ueber sieben rollende Tage drosselte gegen
+# eine Woche, die bereits zurueckgesetzt war.
+WOCHENGRENZE_USD = 1900.0
 
 
 def tagesverbrauch(verbindung) -> float:

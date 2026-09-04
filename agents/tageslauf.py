@@ -30,7 +30,7 @@ import nachtlauf  # noqa: E402
 from lauf import (TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt,  # noqa: E402
                   wochenverbrauch as lauf_wochenverbrauch)
 
-GRENZE = 350.0
+GRENZE = 400.0
 DURCHGAENGE = 12
 
 # Nur ein Tageslauf zugleich. Am 2026-09-03 liefen vier gleichzeitig -- einer aus der
