@@ -1,7 +1,7 @@
 ---
 id: 0027-zustand-schreibweg-schliessen
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0023-adressfund-fehlerwert, 0016-schreiber-ursachenkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: Die zwei Bedingungen im Abschnitt "ZWEITER RÜCKLAUF" vom 2026-09-04. Bedingung 3 der alten Liste ist nach 0071 verlegt und hier ausdrücklich nicht mehr zu prüfen; 1, 2, 4 und 5 sind zweimal belegt und bleiben als Erhaltungsbedingung stehen. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.

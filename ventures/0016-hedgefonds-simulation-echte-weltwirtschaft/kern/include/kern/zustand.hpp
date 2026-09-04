@@ -582,7 +582,10 @@ class Startbelegung {
 public:
     /// Bindet den Zugang an einen Zustand vor seiner ersten Runde.
     ///
-    /// **Harter Fehler, wenn die Partie schon laeuft** -- siehe oben. `explicit`, damit
+    /// **Harter Fehler, wenn `partie.runde` nicht null ist** -- siehe oben. Das ist
+    /// heute nicht dasselbe wie "die Partie laeuft schon": Solange die Runde des Kerns
+    /// das Feld vortraegt, bindet ein Zugang auch nach einer gerechneten Runde noch
+    /// (Paket `0071-rundennummer-in-den-zustand`). `explicit`, damit
     /// aus einem Zustand nirgends beilaeufig ein Schreibrecht wird: Wer schreibt, nennt
     /// diesen Typ und damit seine Absicht.
     explicit Startbelegung(Zustand& ziel);
@@ -608,10 +611,13 @@ public:
     Startbelegung& operator=(const Startbelegung&) = delete;
 
     /// Setzt den Startwert einer Adresse. Zwei harte Fehler, beide ohne Ersatzwert:
-    /// ein Index ausserhalb `0 ... 309`, und ein Zugang, an dem eine Runde
-    /// vorbeigelaufen ist. Die Meldung des zweiten nennt beide Rundennummern
-    /// ausgeschrieben -- die im Zustand und die des Zugangs --, denn der Ort allein
-    /// sagt nicht, ob der Zugang zu alt ist oder der Zustand fremd beschrieben wurde.
+    /// ein Index ausserhalb `0 ... 309`, und ein Zugang, an dem ein fremder
+    /// Schreibzugriff die Zahl auf dem Platz von `partie.runde` geaendert hat -- der
+    /// Fall, den die Meldung "an diesem Zugang ist eine Runde vorbeigelaufen" nennt und
+    /// den die Runde des Kerns heute noch nicht ausloest (siehe oben). Sie nennt beide
+    /// Rundennummern ausgeschrieben -- die im Zustand und die des Zugangs --, denn der
+    /// Ort allein sagt nicht, ob der Zugang zu alt ist oder der Zustand fremd
+    /// beschrieben wurde.
     ///
     /// Es entsteht **kein** Ursachensatz, und das Bitfeld einer Runde sieht diesen Wert
     /// nie. Beides ist gewollt: Ein Startwert hat keine Ursache im Modell -- er ist der
