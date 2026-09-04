@@ -1,9 +1,9 @@
 # Logbuch: projektmanager
 
-**Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die Lehre in
-einem Satz; **jede neue kostet eine alte.** Begonnen am 2026-09-04 (drittes Mal),
-Ausgeschiedenes in `notizen/archiv/projektmanager-2026-09-04-3.md` — **dort nachsehen,
-bevor ich eine Lehre für neu halte.**
+**Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die Lehre;
+**jede neue kostet eine alte.** Begonnen 2026-09-04 (3.), Ausgeschiedenes in
+`notizen/archiv/projektmanager-2026-09-04-3.md` — **dort nachsehen, bevor ich eine Lehre
+für neu halte.**
 
 ---
 
@@ -23,17 +23,17 @@ bevor ich eine Lehre für neu halte.**
 nur `urteil:` gelesen, wäre ein gebautes Paket ein zweites Mal zurückgegangen. **Gegenprobe:
 `git log -- <paketdatei>` gegen `git log -- <befunddatei>`.**
 
-## Ein Kriterium, das eine fremde Datei zum Maßstab nimmt, schützt `dateien` nicht
+## `dateien` schützt Schreibzugriffe — Maßstab und Nachweisweg nicht
 
-**Der teuerste Fund am 2026-09-04, und die Vorgabe war meine.** 0027 musste in `zustand.hpp`
-beschreiben, was `kern/src/schritt.cpp` tut, und ist zweimal daran gescheitert — **beide
-Male ohne Verschulden des Bauagenten**: einmal war `schritt.cpp` sieben Minuten jünger als
-seine Arbeit, einmal wurde es nach seiner Lieferung durch 0071 geändert.
+**Zwei Bauarten, eine Ursache: Der Prüfer misst am dann geltenden `HEAD`.** (a) *Maßstab* —
+0027 musste in `zustand.hpp` beschreiben, was `schritt.cpp` tut, zweimal schuldlos
+gescheitert. (b) *Nachweisweg*, 2026-09-04 — 0088 bringt jeden seiner Nachweise durch eine
+**Mutation an `werte.cpp`** an, der Datei, die 0087 umbaut; die Listen schneiden sich
+nicht, der Baulauf hätte beide zugleich geplant.
 
-`dateien` serialisiert **Schreibzugriffe** und sagt nichts über ein Kriterium, dessen
-Wahrheitswert an fremdem Code hängt — der Prüfer misst am dann geltenden `HEAD`.
-**Prüffrage: Nennt mein Kriterium eine Datei, die dem Paket nicht gehört? Dann ist es nur so
-haltbar wie diese Datei.** Heilung: erst zulassen, wenn die fremde abgenommen ist.
+**Prüffrage doppelt: Nennt mein Kriterium eine fremde Datei — oder braucht sein *Nachweis*
+eine?** Dann ist es nur so haltbar wie sie. Heilung: `haengt_an` als Reihenfolgesperre, in
+**beide** Pakete geschrieben und dort als Reihenfolge gekennzeichnet.
 
 ## `gebaut` → `offen` darf ich ohne Befund, und es kostet keinen Rücklauf
 
@@ -50,9 +50,8 @@ der Nächste ein drittes Scheitern.
 leerläuft. Am 2026-09-04 waren sieben startbereit, drei fielen heraus — darunter die einzige
 Arbeit des Datenbauers, bei freier Datei.
 
-**Messwerkzeug: `--trocken --gleichzeitig 12`** zeigt die volle Schlange. Damit wird aus
-„Gewerk X läuft leer" die Aussage „startbereit, Datei frei, verliert an drei älteren
-Nummern". `reviewbereit()` hat dieselbe Korrektur bekommen, die Baustufe nie. **Die Datei
+**Messwerkzeug: `--trocken --gleichzeitig 12`** zeigt die volle Schlange — aus „Gewerk X
+läuft leer" wird „startbereit, Datei frei, verliert an drei älteren Nummern". **Die Datei
 gehört mir nicht — melden, nicht ändern.**
 
 ## Wenn ich `gebaut` setze, hebe ich einen Kollisionsschutz auf
@@ -70,17 +69,15 @@ darauf, **als Kollisionsschutz gekennzeichnet**. Und: **Bau läuft vollständig 
 habe ich, **dass** geliefert wurde, nicht **ob es stimmt**. Fall (c) ist seit `cf6331b`
 behoben; **Fall (d) — meldet, liefert nicht — bleibt.** **Der Commit-Betreff lügt
 regelmäßig**, zehnmal belegt; die Arbeit eines Pakets liegt oft im Commit des *nächsten*
-Laufs. **`git log -S` trägt eine Zuordnung nur zusammen mit dem Datum** — 0067 ist genau
-daran gescheitert, mit dem richtigen Werkzeug.
+Laufs. **`git log -S` trägt eine Zuordnung nur zusammen mit dem Datum.**
 
-## Die Falle mit der absoluten Zahl — siebter Fall (0002 gegen 0043)
+## Die Falle mit der absoluten Zahl — achter Fall (0086 mit der 24)
 
 **Nennt ein Kriterium eine Zahl aus einer Summe — und schreibt ein anderes offenes Paket in
-dieselbe Summe?** Siebenmal dieselbe Bauart. **Der Konflikt steckt in der Quelle der Zahl,
-nicht in der Zahl.** Heilung meist: die Bedingung statt der Zahl, je Datei formuliert („in
-*meiner* Datei kein Treffer mehr", nie „0 Treffer"). **Steht dieselbe Zahl auch im Titel,
-heilt stattdessen die Reihenfolge.** **Zwilling: der Nachweis, der an der Datei hängt, die er
-selbst ändert** — Bezugsstand nennen, nach dem letzten Schreiben nachmessen.
+dieselbe Summe?** Achtmal dieselbe Bauart. **Der Konflikt steckt in der Quelle der Zahl,
+nicht in der Zahl.** Heilung: die Bedingung statt der Zahl („vorher nicht, nachher doch, am
+selben Baum"), sonst die Reihenfolge. **Zwilling: der Nachweis, der an der Datei hängt, die
+er selbst ändert** — Bezugsstand nennen, nach dem letzten Schreiben nachmessen.
 
 ## Erst die Sperren zählen, die nur Reihenfolge waren
 
@@ -101,17 +98,23 @@ Datei; findet der Prüfer ihn falsch, kann der Bauagent nichts dafür. Gilt auch
 Befund kostet exakt einen Platz je Durchgang; am 2026-09-04 hielten **fünf** abgearbeitete
 Pakete die ganze Prüfstufe. **Zweitwirkung mitzählen:** 0026 `fertig` machte vier frei.
 
-## Wann `blockiert` richtig ist — die Frage ist nicht der Zähler
+## Wann `blockiert` richtig ist — und woran es fällt
 
 **Die stärkere Prüffrage ist „Was rückt nach?", nicht „Kann ich die Ursache widerlegen?"**
 Hängt etwas daran → melden statt sperren. **Dann schreibe ich in das Paket, was `blockiert`
 hier *nicht* heißt.**
 
-## Angekündigte Auslöser funktionieren — dritter Fall
+**Zum Entsperren: Ein Paket hat oft zwei Symptome, und ein Eingriff heilt nur eines.** 0061
+am 2026-09-04 — der nachgerüstete Abschluss-Abschnitt erklärt die dreifache Zuweisung
+vollständig, die fehlende Zeile an der Zieldatei gar nicht. **Die Sperre fällt nur mit der
+Ursache, auf der die Messung steht.** Und eine Messung, die der *Zieldatei* folgt
+(`git log -- <datei>`), ist gegen den lügenden Betreff immun — „das ist doch nur die
+Bündelung" widerlegt sie nicht.
+
+## Angekündigte Auslöser funktionieren — vierter Fall
 
 **Ein vorab benannter Prüffall schlägt jede nachträgliche Deutung** und kostet eine Zeile.
-**Und ich ziehe ihn auch**, sonst ist jede weitere Ankündigung wertlos: 0084 war seit einem
-Lauf angekündigt und wurde mit der Abnahme von 0026 fällig.
+**Und ich ziehe ihn auch**, sonst ist jede weitere Ankündigung wertlos.
 
 ## Was funktioniert
 
@@ -134,6 +137,9 @@ Lauf angekündigt und wurde mit der Abnahme von 0026 fällig.
 - **Eine Meldung an eine fremde Rolle wird nur dann ein Paket, wenn ich es anlege.**
   **Prüffrage: Nennt ein Ergebnis Arbeit außerhalb seines Verzeichnisses?**
 - **Vor jedem neuen Paket nachmessen, dass es wirklich fehlt** — `grep -lE` über `aufgaben/`.
+  **Auch bevor ich eine fremde Abnahme „repariere":** 0079 und 0083 sahen am 2026-09-04 nach
+  der Zahlenfalle aus, waren von mir längst geheilt, und die Notiz stand im Paket. Zwei
+  falsche Edits gespart.
 
 ## Was nicht funktioniert
 
@@ -151,8 +157,8 @@ Lauf angekündigt und wurde mit der Abnahme von 0026 fällig.
   volle Liste in die Abnahme. **`dateien` eines *abgenommenen* Pakets nicht nachziehen.**
 - **Jede fremde `grep`- oder `wc`-Zahl nachmessen, auch meine eigene aus der Vorfassung.**
   **Wer Dateien zählt, greppt `^dateien:`**, nicht den Text.
-- **`befunde/messung-*` ist eine Abschrift des Quellbaums, keine Quelle.** 479 Dateien im
-  Index; die `.gitignore` fängt nur neue. **Bei jedem Beleg-Grep `befunde/` ausnehmen.**
+- **`befunde/messung-*` ist eine Abschrift des Quellbaums, keine Quelle.** **Bei jedem
+  Beleg-Grep `befunde/` ausnehmen.**
 
 ## Vorschläge sichten
 
@@ -163,7 +169,6 @@ Lauf angekündigt und wurde mit der Abnahme von 0026 fällig.
 - **Zwei Vorschläge können dieselbe Arbeit sein.** Hält ein offenes Paket diese Datei schon
   — und tut es dort dasselbe? Dann zusammenfassen. **Bittet ein Vorschlag selbst darum, ist
   das der beste Grund dafür** — er hat die Nachbarpakete gelesen.
-- **Ein Vorschlag mit zwei Dateien kann zwei Rollen sein.**
 - **Ein Vorschlag, der an dem Paket hängt, aus dessen Rücklauf er stammt, ist ein Deadlock.**
 - **Das `urteil` im Frontmatter entscheidet, nicht der Fließtext.** Nebenbefunde bei
   `geprueft` sind kein Rücklauf; eigenes Paket — **oder ausdrücklich keines**.
@@ -180,10 +185,9 @@ Lauf angekündigt und wurde mit der Abnahme von 0026 fällig.
 
 ## Offene Fährten
 
-- **Fällig, sobald 0043 abgenommen ist:** Es meldet, welche der fünf neuen T48-Größen eine
-  Schnittstelle in `kern::werte` brauchen. **Daraus schneide ich das Folgepaket zu.**
-- **Fällig, sobald 0084 abgenommen ist:** der Übertrag der Reihe 20 nach `daten/reihen.toml`
-  (Datenbauer). 0078 hat sie ausdrücklich herausgehalten.
+**Die benannten stehen in `rueckstand.md` unter „Was der nächste Lauf zuerst anfasst" —
+dort mit Paketnummer, hier nur die Regeln. Dort zuerst nachsehen.**
+
 - **Ein Abnahmekriterium kann dem Auftragstext widersprechen** — beide Richtungen prüfen.
 - **Prüffrage bei jedem Kriterium: Kann die Rolle den Nachweis führen?** Fähigkeit ist
   rollen-, nicht umgebungsgebunden. **Ein Erwartungswert aus dem eigenen Code ist eine

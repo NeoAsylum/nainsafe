@@ -1,10 +1,47 @@
 ---
 id: 0087-geprueftes-plus-und-minus-in-festkomma
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0002-fondsbewertung-definieren]
+status: offen
+haengt_an: [0002-fondsbewertung-definieren, 0088-werte-probe-vier-unbelegte-vorgaben]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/festkomma_probe.cpp]
 abnahme: `plus` und `minus` stehen als geprueftes Paar in `festkomma.hpp` neben `mal`, `werte.cpp` hat keine eigene Fassung mehr, und `festkomma_probe` weist beide Abbruchpfade an den Raendern von i64 nach -- je eine Positivkontrolle mit dem groessten noch passenden Wert davor.
+---
+
+# ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, mit einer Reihenfolgesperre
+
+Vier Prüfungen: **Rolle** `kernbauer` steht in `BAUROLLEN`, Prüfer ist der `kern-pruefer`.
+**Dateischnitt** gegen alle `offen` und `gebaut`: `festkomma.hpp`, `werte.cpp` und
+`festkomma_probe.cpp` stehen in keiner anderen Liste — 0002 ist im selben Lauf `fertig`,
+0052 hat `festkomma.hpp` nur historisch beansprucht und ist abgenommen. **Abnahme** ist
+prüfbar: drei benannte Zustände, jeder einzeln nachschlagbar, dazu die Abbruchpfade an den
+Rändern von `i64` mit je einer Positivkontrolle davor. **Abhängigkeit** siehe unten.
+
+Der Vorschlag begründet, warum das kein Schönheitsumbau ist, und die Begründung trägt:
+`festkomma.hpp` ist nach T6 „die einzige Rechenstelle des Kerns". Eine geprüfte Addition
+außerhalb macht daraus einen Satz mit einer Ausnahme, die nur ein Bauagent kennt — und
+`plus`/`minus` haben heute keinen Aufrufer außerhalb ihrer Datei, ihre Abbruchpfade sind
+also unprüfbar. Das ist derselbe Verlauf, den der Kopf von `meldung.hpp` schon einmal
+beschreibt.
+
+## Die Sperre auf 0088 ist Reihenfolge, nicht Inhalt
+
+**`haengt_an` nennt 0088 als Kollisions- und Reihenfolgeschutz, nicht weil dieses Paket
+etwas aus 0088 bräuchte.** Wer den Grund später nachliest, soll ihn nicht für eine
+sachliche Abhängigkeit halten: Der Grund steht vollständig in 0088 unter *REIHENFOLGE*.
+Kurz — die Dateilisten der beiden schneiden sich nicht, der Baulauf würde sie also
+gleichzeitig einplanen, und 0088 bringt seine vier Nachweise durch Mutationen an
+**`kern/src/werte.cpp`** an. Genau die Datei baut dieses Paket um. Liefe beides zusammen,
+scheiterte 0088 an einem Boden, der sich unter ihm bewegt.
+
+**Was das für diesen Lauf bedeutet:** Der Vorher-Stand ist am **dann geltenden `HEAD`** zu
+messen, nicht an `ceebee3`. Die vier neuen Prüfungen aus 0088 stehen dann in
+`werte_probe.cpp` und **bleiben grün** — sie sind der Nachweis, dass der Umzug von `plus`
+und `minus` nichts an den siebzehn Größen verändert hat. Wird eine davon rot, ist das ein
+Befund dieses Pakets und keine Nebenwirkung.
+
+Fällt 0088 aus, ohne `fertig` zu werden, ist dieses Paket ohne Änderung am Inhalt zu
+entsperren — dann fehlt nur das Netz, nicht die Vorgabe.
+
 ---
 
 # Die geprueften Strichrechnungen gehoeren neben `mal`

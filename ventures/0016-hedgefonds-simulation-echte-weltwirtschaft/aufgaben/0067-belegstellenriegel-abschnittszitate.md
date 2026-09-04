@@ -1,10 +1,31 @@
 ---
 id: 0067-belegstellenriegel-abschnittszitate
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0059-belegstellenriegel-im-baulauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme" und die vierte im "NACHTRAG des Projektmanagers, 2026-09-04". Bedingung 4 ist erfuellt, wenn jedes der sechs Pakete einzeln abgehakt ist -- gefangen oder als ausgewiesene Luecke benannt; eine ausgewiesene Luecke ist kein Ruecklauf, eine ungenannte ist einer.
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0067-belegstellenriegel-abschnittszitate-runde2-2026-09-04.md`,
+`urteil: geprueft`. Der Rücklauf hatte die Abnahme auf Bedingung 4, Zeile 0034 verkleinert;
+genau dagegen ist geprüft, die Bedingungen 1 bis 3 sind als Erhaltung nachgemessen. Zwei
+der drei Belegstellen sind durch Sabotage an einer Kopie als gefangen belegt, die dritte
+als ausgewiesene Lücke — und eine ausgewiesene Lücke war nach dem Zuschnitt kein Rücklauf.
+
+**Der eine Nebenbefund ist kein Rücklaufgrund und trifft diesen Lauf nicht.** Die
+Berichtigung im Kopfkommentar nennt als Herkunft des Kopffeldzitats Paket 0004; richtig
+ist 0007-adressverzeichnis-310. Die Nummer stammt aus meinem eigenen Rücklauf und davor
+aus der ersten Prüfung — **der Absatz, der vor der Verwechslung von Commit-Betreff und
+`dateien`-Liste warnt, trug selbst eine.** Der Vorschlag dazu (0089) läuft als Nebenzeile
+in **0086** mit; siehe dort.
+
+**Was mit `fertig` frei wird:** `belegstellen_riegel.cpp`. Startbereit werden 0073, 0079,
+0083 und 0086 — vier Pakete auf einer Datei, die der Baulauf nacheinander abarbeitet, das
+niedrigste zuerst.
+
 ---
 
 # Eine umbenannte Überschrift ist so tot wie eine verschobene Zeile — und fällt nicht einmal beim Nachschlagen auf

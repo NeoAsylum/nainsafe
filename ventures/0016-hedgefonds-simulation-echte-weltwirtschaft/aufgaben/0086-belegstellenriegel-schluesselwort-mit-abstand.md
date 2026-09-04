@@ -1,10 +1,63 @@
 ---
 id: 0086-belegstellenriegel-schluesselwort-mit-abstand
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
-abnahme: Der Riegel faengt die dritte Belegstelle aus Paket 0034 in `daten/adressen.md` -- Schluesselwort mit fuenf Woertern Abstand zur Anfuehrung, Dateiname rechts vom Zitat. Die Zahl der gefundenen Zitate steigt gegenueber 24, keine Fundstelle wird dadurch zu Unrecht rot, und beide Lockerungen sind einzeln mit einem Mutanten belegt: wie viele der Zitate jede von ihnen traegt und wie viele Fundstellen sie neu erzeugt.
+abnahme: Der Riegel faengt die dritte Belegstelle aus Paket 0034 in `daten/adressen.md` -- Schluesselwort mit fuenf Woertern Abstand zur Anfuehrung, Dateiname rechts vom Zitat -- und zwar am selben Baum vorher nachweislich nicht, nachher nachweislich doch. Die Zahl der gefundenen Zitate steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums (nicht gegenueber der Zahl 24: 0073, 0079 und 0083 schreiben in dieselbe Summe und koennen vorher gelaufen sein), keine Fundstelle wird dadurch zu Unrecht rot, und beide Lockerungen sind einzeln mit einem Mutanten belegt: wie viele der Zitate jede von ihnen traegt und wie viele Fundstellen sie neu erzeugt. Dazu die aus 0089 uebernommene Berichtigung: Der Kopfkommentar nennt als Herkunft des Kopffeldzitats in `daten/adressen.md` das Paket 0007-adressverzeichnis-310 statt 0004, und daneben, woran das nachpruefbar ist -- die `dateien`-Liste der Aufgabe, nicht der Betreff des Commits.
+---
+
+# ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, mit zwei Änderungen an der Abnahme
+
+Vier Prüfungen: **Rolle** `testentwickler` steht in `BAUROLLEN`. **Dateischnitt**:
+`belegstellen_riegel.cpp` teilt es mit 0073, 0079 und 0083 — alle drei `offen`, alle drei
+mit niedrigerer Nummer. Das ist **kein Ablehnungsgrund**, der Baulauf serialisiert sie
+(`startbereit()` vergleicht die Dateilisten, `baulauf.py:273`); es heißt nur, dass dieses
+Paket als letztes der vier läuft und deshalb keinen Bauplatz kostet, solange die anderen
+offen sind. **Abhängigkeit** 0067 ist im selben Lauf `fertig`.
+
+**Erste Änderung — die Zahl 24 ist aus der Abnahme heraus.** Sie war der siebte Fall
+derselben Bauart in diesem Vorhaben: ein Kriterium nennt eine Zahl aus einer Summe, und
+drei andere offene Pakete schreiben in dieselbe Summe. Läuft eines von ihnen vorher — und
+mindestens eines wird das —, ist 24 falsch, ohne dass jemand einen Fehler gemacht hätte.
+Der Konflikt steckt in der Herkunft der Zahl, nicht in der Zahl. Geprüft wird ab jetzt die
+**Bedingung**: gemessen am selben Baum, vorher nicht gefangen, nachher gefangen, und die
+Summe steigt gegenüber dem unmittelbar vorhergehenden Stand.
+
+## Zweite Änderung — 0089 läuft hier als Nebenzeile mit
+
+`0089-kopfkommentar-herkunft-0007-statt-0004` ist in dieses Paket zusammengefasst und steht
+selbst auf `fertig` mit Verweis hierher. **Der Vorschlag hat selbst darum gebeten**, und
+das ist der beste Grund dafür, den es gibt: Er hat die Nachbarpakete gelesen, bevor er
+seine eigene Nummer verteidigt hat. Dieselbe Rolle, dieselbe einzige Datei, derselbe
+Kopfkommentar, und dieses Paket ist noch nicht angefangen — ein eigener Lauf für eine
+berichtigte Nummer wäre der teuerste Weg zu einer Zeile.
+
+**Die Sache in einem Satz:** Die *Berichtigung vom 2026-09-04* im Kopfkommentar nennt als
+Herkunft des Kopffeldzitats in `daten/adressen.md` das Paket **0004**. Richtig ist
+**0007-adressverzeichnis-310** — die `dateien`-Liste von 0004 nennt keine Datei unter
+`daten/`, die von 0007 nennt genau diese. Die 0004 stammt aus dem Betreff des Commits
+`a629f73`, und **damit trägt ausgerechnet der Absatz, der vor dieser Verwechslung warnt,
+selbst ein falsches Beispiel.** Ein falsches Beispiel unter einer richtigen Regel ist
+schlechter als keines; deshalb wird es berichtigt und nicht gestrichen. Die vollständige
+Herleitung steht in `aufgaben/0089-kopfkommentar-herkunft-0007-statt-0004.md` und in
+`befunde/pruefung-0067-belegstellenriegel-abschnittszitate-runde2-2026-09-04.md`,
+Abschnitt „Befund 1".
+
+**Grenze der Nebenzeile:** nur der Kopfkommentar. Kein Eingriff in `daten/adressen.md`,
+kein Aufräumen in `specs/`, keine Änderung an Muster, Normierung oder Zählung. Die
+Berichtigung darf die Zahlen des Riegels **nicht** bewegen; die Lockerungen aus diesem
+Paket dürfen es, und nur sie.
+
+## Zum Vorrang, damit der nächste Lauf es nicht neu abwägt
+
+`ops/plan.md` vom 2026-09-04 07:45 sagt: „Nichts aus der Belegstellen-Familie in dieser
+Woche." **Das ist eingehalten, und `offen` widerspricht dem nicht.** Ein Vorschlag hinter
+drei älteren Paketen auf derselben Datei bekommt keinen Bauplatz, den er nicht ohnehin erst
+nach ihnen bekäme — als `offen` kostet er nichts, als `vorschlag` kostet er jeden
+Projektmanagerlauf eine neue Sichtung. Was der Vorrang verbietet, ist das Vorziehen der
+Familie, nicht ihr Ablegen im Rückstand.
+
 ---
 
 # Ein Schluesselwort, das nicht direkt vor der Anfuehrung steht, und ein Dateiname rechts davon

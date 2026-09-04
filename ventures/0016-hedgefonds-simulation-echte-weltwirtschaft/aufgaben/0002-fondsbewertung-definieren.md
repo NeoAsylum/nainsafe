@@ -1,10 +1,44 @@
 ---
 id: 0002-fondsbewertung-definieren
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0008-kern-zustand-310-felder, 0026-klasse-2-preisbasis]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die öffentliche Schnittstelle von kern::werte ist Name für Name die Tabelle der siebzehn Größen aus T48; die drei Skalenübergänge aus T50 sind privat und haben genau die dort genannten Aufruforte; ein Test rechnet die Zahlenprobe aus T47 nach und nennt 4.200.000.000.000 Cent.
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0002-fondsbewertung-definieren-2026-09-04.md`, `urteil: geprueft`.
+Geprüft am Stand `ceebee3`, in beiden Bauprofilen, außerhalb des Arbeitsbaums. Alle sechs
+Abnahmebedingungen einzeln nachgemessen, dazu 23 Sabotagen am fertigen Modul.
+
+**Die drei Nebenbefunde sind hier abgelegt, damit niemand sie zweimal aufnimmt:**
+
+1. **Vier Vorgaben ohne Riegel** (T47/T50, T48 Nr. 15, T33 Punkt 1, T48 Nr. 4). Der Code
+   ist an allen vier Stellen richtig; es fehlt die Probe dahinter. Wird
+   `0088-werte-probe-vier-unbelegte-vorgaben`, angenommen im selben Lauf. Kein Rücklauf:
+   keine der sechs Bedingungen verlangt eine Probe je Vorgabe, und `werte_probe.cpp`
+   gehört ab hier dem Testentwickler.
+2. **Abnahmebedingung 2 ist im Wortlaut nicht erfüllt** — der Mustervergleich
+   `tsd_in_cent\|lobbypunkte_aus` findet drei Treffer außerhalb dieser Datei, alle drei
+   Prosa in Kommentaren aus 0052 und 0077. Die Sache, die T50 sichert, ist gehalten;
+   verletzt ist nur der Nachweis. Der Bauagent hätte sie nur erfüllen können, indem er
+   außerhalb seiner `dateien`-Liste schreibt — **das ist mein Fehler im Kriterium und
+   keiner von ihm.** Die Heilung (T50 auf Aufrufe statt auf Namen) ist eine Änderung an
+   `technik.md`; dort warten bereits fünf Architektenpakete, und ob ein sechstes den
+   Vorrang wert ist, entscheidet der Geschäftsführer. Steht in meinem Bericht, nicht in
+   einem Paket.
+3. **`marktkorb(m, k)` ist für T33 Punkt 3 nicht aufrufbar** — der `Schreiber` gibt keinen
+   `Zustand` mit dem laufenden Stand heraus. Kein Paket: Die Heilung liegt an einer von
+   zwei Stellen, und welche richtig ist, hängt daran, was Schritt 6 sonst braucht. Der
+   Prüfer wollte die Entscheidung nicht raten, und ich rate sie auch nicht. **Wer Schritt 6
+   zuschneidet, liest Befund 3 vor dem ersten Satz.**
+
+**Was mit `fertig` frei wird:** `werte.hpp`, `werte.cpp` und `werte_probe.cpp` sind ab
+jetzt für andere Pakete beanspruchbar — 0087 nimmt `werte.cpp`, 0088 `werte_probe.cpp`.
+Startbereit werden dadurch 0010 (Vorrang 5) und 0043.
+
 ---
 
 # `kern::werte` — die siebzehn abgeleiteten Größen

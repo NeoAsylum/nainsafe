@@ -1,10 +1,47 @@
 ---
 id: 0088-werte-probe-vier-unbelegte-vorgaben
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0002-fondsbewertung-definieren]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Vier neue Pruefungen in `werte_probe.cpp`, je eine zu den vier Vorgaben unten. Der Nachweis ist zweiseitig und wird je Vorgabe einzeln gefahren: Am unveraenderten `kern/src/werte.cpp` laeuft `werte_probe` gruen; mit der je Vorgabe angegebenen Mutation wird sie rot. Eine Pruefung, die auch am mutierten Modul gruen bleibt, zaehlt nicht.
+---
+
+# ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`
+
+Vier Prüfungen, in dieser Reihenfolge: **Rolle** `testentwickler` steht in `BAUROLLEN`
+(`baulauf.py:59`), Prüfer ist der `test-pruefer`. **Dateischnitt** gegen alle `offen` und
+`gebaut`: `kern/test/werte_probe.cpp` steht in keiner anderen Liste, seit 0002 im selben
+Lauf `fertig` ist. **Abnahme** ist zweiseitig und je Vorgabe einzeln zu fahren — grün am
+unveränderten Modul, rot mit der Mutation; eine Prüfung, die auch mutiert grün bleibt,
+zählt nicht. Das ist das stärkste Kriterium, das ein Testpaket haben kann, weil es die
+Prüfung selbst prüft. **Abhängigkeit** 0002 ist erfüllt.
+
+Zur Nummer: 0088 ist eindeutig diese Datei; der parallele Lauf ist auf 0089 ausgewichen.
+Nachgemessen, nichts zu tun.
+
+## REIHENFOLGE — vor `0087-geprueftes-plus-und-minus-in-festkomma`
+
+**Dieses Paket läuft zuerst, und das ist eine Anordnung, keine Empfehlung.** Die
+Dateilisten der beiden schneiden sich **nicht** (`werte_probe.cpp` gegen
+`festkomma.hpp`/`werte.cpp`/`festkomma_probe.cpp`), der Baulauf würde sie also gleichzeitig
+einplanen. Das wäre falsch, aus zwei Gründen:
+
+1. **Jede der vier Mutationen oben wird in `kern/src/werte.cpp` angebracht** — eine Datei,
+   die diesem Paket nicht gehört und die 0087 umbaut. Ein Kriterium ist nur so haltbar wie
+   die fremde Datei, an der es misst; der Prüfer misst am dann geltenden `HEAD`. Läuft 0087
+   gleichzeitig, verschiebt sich der Boden unter den vier Rezepten, und der Bauagent
+   scheitert ohne eigenes Verschulden. Das ist in dieser Fabrik siebenmal passiert.
+2. **Die Reihenfolge ist auch sachlich die richtige.** 0087 verschiebt `plus` und `minus`
+   aus `werte.cpp` heraus — also einen Umbau an einem Modul, das gerade erst abgenommen
+   wurde. Wer das Netz spannt, bevor er umzieht, merkt es, wenn beim Umzug etwas fällt.
+
+Die Sperre steht als `haengt_an` **in 0087**, nicht hier. Dieses Paket wartet auf nichts
+außer 0002.
+
+**Der Bezugsstand für die Zeilennummern im Text unten ist `ceebee3`** (`kernbauer: 0002`).
+Weicht `werte.cpp` beim Bau davon ab, gilt die genannte Funktion, nicht die Zeilennummer.
+
 ---
 
 # Vier Vorgaben aus T47, T48 und T33 lassen sich heute verletzen, ohne dass eine Probe rot wird
