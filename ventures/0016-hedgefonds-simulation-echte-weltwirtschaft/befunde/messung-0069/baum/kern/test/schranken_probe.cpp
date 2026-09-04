@@ -45,9 +45,8 @@
 //! Der Kern liest keine Datei (T2). `druck_max`, `stufen_max` und `aufschlag` stehen
 //! deshalb in `Grenzen` und werden von aussen eingesetzt. Die Werte, die die Probe
 //! einsetzt, sind die des Bauzeitpunkts; Schluesselname und die zitierte
-//! Schluesselzeile stehen bei jedem.
-//! Alle drei tragen dort heute `# PLATZHALTER` -- der Grund, warum die Zahl nicht in
-//! den Code eingebrannt werden darf.
+//! Schluesselzeile stehen bei jedem. Alle drei tragen dort heute `# PLATZHALTER` --
+//! der Grund, warum die Zahl nicht in den Code eingebrannt werden darf.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -422,9 +421,13 @@ struct Grenzen {
 /// steht die Zahl hier als Argument und nicht in der Pruefung.
 ///
 /// Wiederzufinden sind sie ueber den **Schluesselnamen**, nicht ueber eine Nummer:
-/// Jeder Schluessel der Datei steht genau einmal am Zeilenanfang, `grep -n
-/// '^druck_max' parameter.toml` findet ihn ohne zu zaehlen. Alle drei stehen unter
-/// der Ueberschrift `# GRUPPE A -- die elf Zeilen der Tabelle in T27`. Eine Nummer
+/// Diese drei Schluessel stehen je genau einmal am Zeilenanfang, `grep -n
+/// '^druck_max' parameter.toml` findet ihn ohne zu zaehlen. Fuer die Datei als Ganzes
+/// gilt das nicht: Die vier `[instrument.*]`-Tabellen wiederholen ihre Schluessel,
+/// `schrittweite`, `instrument_min` und `instrument_max` stehen dadurch je viermal am
+/// Zeilenanfang. Wer einen anderen Schluessel so sucht, sieht also erst nach, ob er
+/// eindeutig ist. Alle drei stehen unter der Ueberschrift
+/// `# GRUPPE A -- die elf Zeilen der Tabelle in T27`. Eine Nummer
 /// stand hier bis zum 2026-09-04 und war dreimal falsch, ohne dass jemand etwas
 /// getan haette (Paket 0044).
 ///

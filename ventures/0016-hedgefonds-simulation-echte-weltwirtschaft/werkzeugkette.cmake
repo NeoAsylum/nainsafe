@@ -270,6 +270,51 @@ endmacro()
 set_property(GLOBAL PROPERTY FABRIK_SCHLUSSRIEGEL_SATZ
              ${FABRIK_STRENGE} ${FABRIK_UEBERLAUF_SCHALTER})
 
+# ---------------------------------------------------------------------------
+# Die Nullabhaengigkeit aus T2 -- an der Eigenschaft gelesen, nicht am Dateitext
+# ---------------------------------------------------------------------------
+#
+# T2 verlangt vom Kern null Fremdabhaengigkeiten und nennt als mechanischen Nachweis
+# drei Mustervergleiche. Zwei laufen ueber das Manifest des Kerns und stehen in der
+# Abnahme von Paket 0004. Der dritte sollte ueber alle uebrigen Manifeste laufen und
+# dort zwei Schreibweisen suchen -- er stand bis zum 2026-09-04 in keinem Riegel und
+# war damit eine Regel, die niemand ausfuehrt.
+#
+# Er wird hier nicht nachgetragen, sondern ersetzt, und dafuer gibt es zwei Gruende.
+#
+# Der erste ist gemessen: Wer ihn woertlich ausschreibt, baut einen Vergleich, der nie
+# leer ausgehen kann. Seine Nadel fuer die Verzeichnisform steckt als Teilzeichenkette
+# in der Zielform, und beide Probenschleifen -- die im Kern und die im Pruefstand --
+# benutzen die Zielform erlaubterweise. Ein Vergleich mit bekannten Blindtreffern ist
+# kein Ablesen mehr, sondern ein Durchsehen, und der echte Treffer stuende dann zwischen
+# denen, die man gewohnt ist zu ueberspringen.
+#
+# Der zweite ist der wichtigere: Ein Mustervergleich ueber Dateitext raet, welche
+# Schreibweise jemand benutzt hat. Die Zieleigenschaft nennt das Ergebnis. Gemessen am
+# 2026-09-04 an einem Wegwerfbaum, dessen oberstes Verzeichnis die Verzeichnisform vor
+# dem Abstieg ausspricht und dessen Ziel eine Ebene tiefer entsteht:
+#
+#   LINK_LIBRARIES           des Ziels = [fremd]
+#   INTERFACE_LINK_LIBRARIES des Ziels = [fremd]
+#
+# Die Verzeichnisanweisung landet also in der **Ziel**eigenschaft. Ein Riegel, der sie
+# liest, sieht beide Angriffsformen aus der Pruefung von Paket 0011 -- die aus einem
+# fremden Verzeichnis, seit CMake 3.13 erlaubt und ohne eine Zeile im Manifest des
+# Kerns, und die eine Ebene hoeher. Und er sieht Schreibweisen, die es heute noch nicht
+# gibt, denn er fragt nicht nach der Anweisung, sondern nach ihrer Wirkung.
+#
+# Leer ist dabei der Sollzustand, nicht "nichts Fremdes". Die Standardbibliothek steht
+# in keiner dieser Eigenschaften -- sie kommt mit dem Uebersetzer, den diese Datei
+# festnagelt, und der Uebersetzungstreiber haengt sie von sich aus an. Eine
+# Ausnahmeliste "diese Bibliothek darf" gibt es deshalb nicht; sie waere die Tuer, durch
+# die die erste Fremdabhaengigkeit hereinkaeme, und sie waere zugleich unnoetig.
+#
+# Die Namen stehen in einer benannten Liste und nicht verstreut in der Bedingung: Wer
+# den Kern umbenennt oder ihn teilt, hat dann eine Stelle zu aendern -- und der Riegel
+# unten haelt ihn dazu an, statt still leer auszugehen.
+set(FABRIK_NULLABHAENGIG kern kern_geprueft)
+set_property(GLOBAL PROPERTY FABRIK_NULLABHAENGIGE_ZIELE ${FABRIK_NULLABHAENGIG})
+
 function(fabrik_schlussriegel wurzelverzeichnis)
   get_property(erwartet GLOBAL PROPERTY FABRIK_SCHLUSSRIEGEL_SATZ)
   if(NOT erwartet)
@@ -546,6 +591,137 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       "Wer eine Warnung wirklich nicht loesen kann, unterdrueckt sie einzeln und "
       "benennt sie dabei: `-Wno-conversion` an genau diesem Ziel, mit einem Satz "
       "daneben, warum. Das bleibt zugelassen. Pauschal abgeschaltet wird nichts.")
+  endif()
+
+  # ---------------------------------------------------------------------
+  # Zweiter Gegenstand desselben Riegels: die Nullabhaengigkeit aus T2
+  # ---------------------------------------------------------------------
+  #
+  # Nicht in der Schleife oben, sondern daneben, und der Grund ist der Zuschnitt: Die
+  # Schleife fragt jedes Ziel des Baumes nach dem Warnsatz und braucht dafuer den
+  # Abstieg ueber die Verzeichnisse. Hier geht es um eine Handvoll benannter Ziele,
+  # und die Frage nach einem Ziel dieses Namens ist global statt verzeichnisgebunden.
+  # Ein zweiter Durchlauf durch den Baum brauchte es dafuer nicht -- und ein Riegel,
+  # der auf den Abstieg angewiesen waere, ginge leer aus, sobald das Ziel woanders
+  # entsteht als dort, wo man es sucht. Genau das ist die Luecke, die hier zu
+  # schliessen ist.
+  get_property(nullabhaengig GLOBAL PROPERTY FABRIK_NULLABHAENGIGE_ZIELE)
+  if(NOT nullabhaengig)
+    message(FATAL_ERROR
+      "fabrik_schlussriegel: die Liste der nullabhaengigen Ziele ist leer. Dasselbe "
+      "gilt wie fuer den Sollzustand oben -- ein Riegel ohne Gegenstand winkt jedes "
+      "Ziel durch und baut gruen.")
+  endif()
+
+  set(fremdlink "")
+  set(nullgelesen "")
+  set(nullziele "")
+  foreach(nullziel IN LISTS nullabhaengig)
+    if(NOT TARGET ${nullziel})
+      continue()
+    endif()
+    list(APPEND nullziele "${nullziel}")
+
+    # Zwei Eigenschaften und nicht eine: Dieselbe Anweisung legt ihre Angabe je nach
+    # Sichtbarkeit an verschiedenen Stellen ab -- privat nur in der ersten, als
+    # Schnittstelle nur in der zweiten, oeffentlich in beiden. Wer nur die erste liest,
+    # uebersieht die dritte Form vollstaendig. Das ist die Lehre aus Paket 0066 auf der
+    # Linkseite: Die Frage ist nicht, welche Eigenschaft am naechsten liegt, sondern aus
+    # wie vielen das Werkzeug zusammensetzt, was geprueft werden soll.
+    foreach(eigenschaft LINK_LIBRARIES INTERFACE_LINK_LIBRARIES)
+      get_target_property(nullwert ${nullziel} ${eigenschaft})
+      # Wie beim Sammeln oben: `-NOTFOUND` heisst ungesetzt und ist die leere Menge,
+      # nicht der Name einer Bibliothek.
+      if("${nullwert}" MATCHES "-NOTFOUND$")
+        set(nullwert "")
+      endif()
+      list(APPEND nullgelesen "${nullziel}.${eigenschaft}=[${nullwert}]")
+      foreach(eintrag IN LISTS nullwert)
+        list(APPEND fremdlink "  ${nullziel}: ${eigenschaft} nennt ${eintrag}\n")
+      endforeach()
+    endforeach()
+
+    # Die dritte Stelle, an der eine Bibliothek an den Kern kommt, ohne in den beiden
+    # oben aufzutauchen: die Linkerzeile. Fuer CMake ist ein `-l`-Schalter dort keine
+    # Abhaengigkeit, sondern ein Wort; der Uebersetzungstreiber macht trotzdem eine
+    # daraus. Geprueft wird deshalb nicht auf Anwesenheit, sondern auf die Form -- ein
+    # Wort, das mit `-l` beginnt, oder eines, das auf eine Bibliotheksendung endet.
+    #
+    # Die Schalter, die hier heute wirklich stehen, sind die beiden Sanitizerschalter am
+    # geprueften Kern. Beide beginnen mit `-f` und enden auf ein Wort ohne Punkt, treffen
+    # also keines der zwei Muster. Der Nachweis dafuer ist die Zeile in der Meldung
+    # unten: Sie nennt den gelesenen Wert und nicht nur das Urteil.
+    foreach(eigenschaft LINK_OPTIONS INTERFACE_LINK_OPTIONS)
+      get_target_property(nullwert ${nullziel} ${eigenschaft})
+      if("${nullwert}" MATCHES "-NOTFOUND$")
+        set(nullwert "")
+      endif()
+      list(APPEND nullgelesen "${nullziel}.${eigenschaft}=[${nullwert}]")
+      foreach(eintrag IN LISTS nullwert)
+        if("${eintrag}" MATCHES "^-l." OR "${eintrag}" MATCHES "\\.(a|so)$")
+          list(APPEND fremdlink "  ${nullziel}: ${eigenschaft} nennt ${eintrag}\n")
+        endif()
+      endforeach()
+    endforeach()
+  endforeach()
+
+  # Der Riegel darf nicht deshalb gruen sein, weil er sein Ziel nicht gefunden hat. Wird
+  # der Kern umbenannt oder aufgeteilt, meldet ein Riegel ueber eine Namensliste, die
+  # niemand nachgefuehrt hat, genau dasselbe wie einer ueber einen sauberen Baum.
+  #
+  # Gebunden wird das an eine Datei statt an eine Zusage: Liegt unter der Wurzel ein
+  # Kernverzeichnis mit eigenem Manifest, muss danach auch ein Ziel dieses Namens
+  # dastehen. Beim Alleinbau des Kerns ist die Wurzel das Kernverzeichnis selbst, die
+  # Bedingung trifft also nicht -- dort steht das Ziel ohnehin, und die Zahl unten sagt
+  # es.
+  #
+  # Der gepruefte Kern bekommt bewusst keine solche Bindung: Er entsteht nur unter
+  # `FABRIK_SANITIZER`, und ein Riegel, der ihn unbedingt verlangte, machte jeden Bau
+  # ohne Sanitizer unmoeglich -- er waere zu scharf und damit ein Befund gegen sich
+  # selbst. Seine An- oder Abwesenheit steht statt dessen in der Meldung, wo sie
+  # auffaellt, wenn sie sich aendert.
+  if(EXISTS "${wurzelverzeichnis}/kern/CMakeLists.txt" AND NOT TARGET kern)
+    message(FATAL_ERROR
+      "fabrik_schlussriegel: unter '${wurzelverzeichnis}' liegt ein Kernmanifest, aber "
+      "es gibt kein Ziel dieses Namens. Der Nullabhaengigkeitsriegel haette nichts "
+      "gelesen und trotzdem gruen gemeldet -- das ist kein gruener Bau, sondern ein "
+      "Riegel ohne Gegenstand.\n"
+      "Wurde das Ziel umbenannt oder geteilt, gehoert der neue Name in "
+      "`FABRIK_NULLABHAENGIG` in dieser Datei, und zwar in derselben Aenderung.")
+  endif()
+
+  if(fremdlink)
+    list(JOIN fremdlink "" fremdlinktext)
+    message(FATAL_ERROR
+      "T2 verlangt vom Kern null Fremdabhaengigkeiten. Diese Ziele linken etwas:\n"
+      "${fremdlinktext}"
+      "Gelesen wurde die Eigenschaft des Ziels und nicht der Text eines Manifests, und "
+      "das ist der Kern der Sache: Eine Abhaengigkeit muss im Manifest des Kerns gar "
+      "nicht stehen, um an ihm zu haengen. Sie kann eine Ebene hoeher als "
+      "Verzeichnisanweisung stehen und auf jedes danach angelegte Ziel durchschlagen, "
+      "und sie darf seit CMake 3.13 aus einem beliebigen anderen Verzeichnis an den "
+      "Kern gehaengt werden. In beiden Faellen bleibt sein eigenes Manifest unberuehrt "
+      "und ein Mustervergleich darueber leer.\n"
+      "Der Sollzustand ist die leere Eigenschaft. Die Standardbibliothek steht in keiner "
+      "von ihnen -- sie kommt mit dem Uebersetzer, den diese Datei festnagelt.\n"
+      "Braucht der Kern wirklich eine Abhaengigkeit, ist das eine Aenderung an T2 und "
+      "damit ein ADR, keine Zeile hier.")
+  endif()
+
+  # Die Meldung nennt die Eigenschaft und ihren Wert, nicht "keine Auffaelligkeiten".
+  # Zwei Gruende, beide aus frueheren Riegeln dieser Datei: Eine Zahl, die von zwei auf
+  # eins faellt, faellt auf; ein Urteil ohne Messwert tut das nicht. Und ein Riegel, der
+  # nur sein Ergebnis meldet, laesst sich nicht mehr von einem unterscheiden, der seinen
+  # Gegenstand verloren hat.
+  if(nullziele)
+    list(LENGTH nullziele nullzahl)
+    list(JOIN nullgelesen "; " nullgelesentext)
+    message(STATUS
+      "Nullabhaengigkeitsriegel (T2): ${nullzahl} Ziel(e) gelesen -- ${nullgelesentext}")
+  else()
+    message(STATUS
+      "Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG "
+      "(${nullabhaengig}) liegt in diesem Baum -- nichts gelesen.")
   endif()
 
   # Ein Riegel, der nichts gesehen hat, hat nichts geprueft. Bis zum 2026-09-04 meldete

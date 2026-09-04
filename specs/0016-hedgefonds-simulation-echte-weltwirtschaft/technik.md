@@ -2,7 +2,7 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17), dort in drei Läufen -- der zweite hat die Zahlen von T53 nachgerechnet und drei Stellen berichtigt (Umfangsliste in Abschnitt 17, zwei abgeschnittene Zahlen in T53), der dritte hat sie ein zweites Mal unabhängig gerechnet (keine Abweichung) und die Herkunft von N im durchgriff-Absatz von T53 vervollstaendigt (Reihe 1 mal Reihe 2 statt Reihe 1); die Entscheidung selbst ist unverändert; die Fassung folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
+fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17), dort in drei Läufen -- der zweite hat die Zahlen von T53 nachgerechnet und drei Stellen berichtigt (Umfangsliste in Abschnitt 17, zwei abgeschnittene Zahlen in T53), der dritte hat sie ein zweites Mal unabhängig gerechnet (keine Abweichung) und die Herkunft von N im durchgriff-Absatz von T53 vervollstaendigt (Reihe 1 mal Reihe 2 statt Reihe 1); die Entscheidung selbst ist unverändert; die Fassung folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert -- und am 2026-09-04 gegen Paket 0043-t48-groessen-gegenkraft-5 (T48 waechst von 17 auf 22 Groessen, T50 und Abschnitt 12 Punkt 3 sind geschlossen, Abschnitt 10 bekommt die Kostenzeile von Gegenkraft 5; Abschnitt 18)
 preisbasis: Klasse 2 steht zu konstanten Preisen des Jahres 2015 (gemessen an Reihe 1, WDI "constant 2015 US$"); die 40 BACI-Handelsströme kommen laufend an und werden beim Jahrgangsbau mit einem Weltausfuhrpreisindex aus WDI darauf gebracht -- 0 Rechenschritte je Weltschritt, 0 zusätzliche Sollreihen, T47/T48/T50 unberührt (T53)
 stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake, jede Fremdbibliothek als Quelltext unter fremd/ im Repo eingefroren (find_package und FetchContent verboten); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
 ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, nach Rechenart geschnitten (Verengung, Strichrechnung, Multiplikation ohne Division), weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
@@ -14,7 +14,7 @@ partie: R Runden, R ist eine Größe des Jahrgangs; im Prüfjahrgang 1997-2021 i
 fondsvermoegen: Kasse + bewertete Positionen + bewertete Beteiligungen - Hebel, Beteiligungen zum Ausstiegswert; genau eine Funktion im Kern, gelesen von Abrechnung, Mandat, Todesart 1, Invariantentest und B (T47)
 skalen: dreizehn Klassen, zwölf davon mit Zustandsadressen; jede der 310 Adressen trägt genau eine -- 3 Fondsgeld, 71 volkswirtschaftlich, 36 Raten, 22 Anteile, 22 Nominalindizes, 5 Wechselkurs, 5 Realindizes, 25 Personen, 32 Lobbydruck, 4 Instrumentenstufe, 83 Zähler, 2 Kennungen (T49)
 skalenuebergaenge: genau drei, je eine benannte Funktion an genau einem Ort -- tsd_in_cent (Bewertung), lobbypunkte_aus_geld (Aktion 3), lobbypunkte_aus_schaden (Gegenkraft 5); cent_in_tsd hat keinen Aufrufer und gibt es nicht (T50)
-abgeleitet: 17 Funktionen des Zustands im Kern, 3 im Prüfstand, abschliessend aufgezählt; ein Name in einer Formel, der weder Adresse (T15) noch Parameter (T27) noch Jahrgangskonstante (T23) noch abgeleitete Größe ist, ist ein Befund (T48)
+abgeleitet: 22 Funktionen des Zustands im Kern (17 bis zum 2026-09-03, dazu die fünf aus dem Schaden in Gegenkraft 5 und dem Zollkeil), 3 im Prüfstand, abschliessend aufgezählt; ein Name in einer Formel, der weder Adresse (T15) noch Parameter (T27) noch Jahrgangskonstante (T23) noch abgeleitete Größe ist, ist ein Befund (T48)
 suchbot: Zielgröße B nach T44 -- statische Ergebnisprognose des Zwischenzustands, im Zweig "überlebt" formelgleich mit der Ergebnisgröße von spiel.md, ohne freien Parameter
 herkunft: jede der 310 Adressen trägt genau einen Herkunftseintrag aus fünf Arten; 136 Datenanker, 150 Entwurf, 11 Parameter, 2 Manifest, 11 Vorgabe (T45, T46) -- eine Lücke oder ein zweiter Eintrag bricht den Jahrgangsbau ab
 tick_planwert: 10 Mikrosekunden je Weltschritt (Bandbreite 5 bis 30) -- geschätzt, nicht gemessen; es gibt noch keinen Kern
@@ -432,9 +432,21 @@ USD Schaden) und `beteiligungsrabatt` (Zehntausendstel; `rabatt` ist 10.000 ohne
 kleinerer Rabattwert heisst mehr Punkte für dasselbe Geld — das ist der „Bruchteil", den
 `spiel.md` der Aktion 3 mit Beteiligung zusagt. **Der Rabatt sitzt am Preis eines
 Lobbypunkts, nicht an der Punktzahl** — sonst wäre `einfluss`, nach `spiel.md` der Anteil
-des Fonds am gesamten Lobbydruck, über Länder hinweg nicht mehr vergleichbar. *Wie hoch*
-der Schaden eines Sektors ist, bleibt Sache von `spiel.md` und des Bauagenten; T50 legt nur
-fest, in welcher Einheit er ankommt.
+des Fonds am gesamten Lobbydruck, über Länder hinweg nicht mehr vergleichbar.
+
+***Wie hoch* der Schaden eines Sektors ist, hat `spiel.md` am 2026-09-03 entschieden, und
+der Satz, der hier bis zum 2026-09-04 offenliess, ist damit geschlossen.** Er lautete: *„Wie
+hoch der Schaden eines Sektors ist, bleibt Sache von `spiel.md` und des Bauagenten; T50 legt
+nur fest, in welcher Einheit er ankommt."* Die Rückgabe war richtig — hätte ich die Lücke
+gefüllt, hätte Maß 2 meine Wahl gemessen —, und sie ist beantwortet: Der Abschnitt *Der
+Schaden in Gegenkraft 5, als Rechenvorschrift* in `spiel.md` gibt die eine Regel („Verschiebung
+des Preises, den das Instrument setzt, mal der Menge, auf die dieser Preis wirkt") und die
+vier Zeilen dazu. Sie steht als **Nummer 22** in T48; der Bauagent wählt an dieser Stelle
+nichts mehr. Was T50 unverändert festlegt, ist allein die Einheit, in der sie hier ankommt:
+Klasse 2, Tausend USD. Die Skalenprobe dazu führt `spiel.md` selbst — Klasse 2 mal
+Zehntausendstel durch 10.000 ist wieder Klasse 2, in allen vier Zeilen und über beide
+Zwischenschritte der Zollzeile, **also entsteht kein vierter Skalenübergang.** Diese Tabelle
+bleibt bei dreien.
 
 **`cent_in_tsd` gibt es nicht.** Fassung 5 hat die Umkehrfunktion neben `tsd_in_cent`
 genannt; sie hat in diesem Modell **keinen Aufrufer**, und der Grund ist eine Eigenschaft
@@ -1957,32 +1969,98 @@ finden — `korbwert` war nie eine der 310. Diese Tabelle ist die Menge, in der 
 | 8 | `korbbestand(z)` | 2 | siehe unten | T47 |
 | 9 | `bip(l)` | 2 | `Σ über die 3 Sektoren wertschoepfung[l][s]` | hier |
 | 10 | `schuld(l)` | 2 | `mal_geteilt(bip(l), staatsschuld[l], 10.000)` | hier |
-| 11 | `handelsvolumen(l)` | 2 | siehe unten | hier |
+| 11 | `handelsvolumen(l, s)` | 2 | siehe unten; die einstellige Fassung `handelsvolumen(l)` ist ihre Summe über s ∈ {1, 2} | hier |
 | 12 | `anleihekurs(l)` | 5 | siehe unten | hier |
 | 13 | `landespreis(g, s)` | 5 | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | T39 |
 | 14 | `fondsanteil(l, s)` | 4 | `\|stufen(l, s)\| · stufenweite + anteil[l][s]` | hier |
 | 15 | `positionswert(p)` | 1 | `tsd_in_cent(stufen(p) · stufenwert(p))`, 0 bei `stufen = 0` | T47 |
 | 16 | `beteiligung_wert(l, s)` | 1 | Korbanteil abzüglich `ausstiegsabschlag`, dann `tsd_in_cent` | T47 |
 | 17 | `fondsvermoegen(z)` | 1 | Kasse + Positionen + Beteiligungen − Hebel | T47 |
+| 18 | `hub(l, i)` | **die des Instruments**: 3 für Zoll, Leitzins und Haushalt, 10 für die Regulierung | `\|lies_neu(land.<l>.instrument.<i>.stand) − lies_alt(dieselbe Adresse)\|` | hier |
+| 19 | `keilhub(l, s)` | 5 | `mal_geteilt(welt.preis.<s>, hub(l, zoll), 10.000)` | hier |
+| 20 | `preishub_zoll(l, s)` | 5 | `mal_geteilt(keilhub(l, s), durchgriff(l, s), 10.000)` | hier |
+| 21 | `weltpreis_mit_zoll(g, s)` | 5 | `mal_geteilt(welt.preis.<s>, 10.000 + zollstand(g), 10.000)` | T28 |
+| 22 | `schaden(l, i)` | 2 | `mal_geteilt(menge, verschiebung, 10.000)`, vier Zeilen, siehe unten | hier |
+
+**Nummer 18 bis 22 sind am 2026-09-04 mit Paket `0043-t48-groessen-gegenkraft-5`
+dazugekommen**, aus den Paketen 0021 (die Schadensvorschrift) und 0039 (die Zollzeile misst
+nur noch den Keil). Sie sind der Fall, für den T48 gebaut wurde, ein zweites Mal: Der Entwurf
+hat fünf Namen in Formeln eingeführt und seine eigene Nachziehtabelle meldete davon keinen.
+Nummer 21 ist der ältere Fall — T28 **nennt** den Zollkeil („der Zollkeil je Gebiet auf dem
+Weltpreis") und rechnet in seiner Preisformel mit `weltpreis_mit_zoll`, ohne ihn je zu
+bilden; das war folgenlos, solange keine zweite Stelle ihn brauchte, und ist es seit Nummer 19
+nicht mehr.
+
+**Nummer 18 ist die einzige Größe der Tabelle ohne eine einzige Klasse, und das ist kein
+Versehen.** `hub` ist skalen*erhaltend*: Es bildet den Betrag einer Differenz zweier Stände
+**derselben** Adresse, und die Klasse des Ergebnisses ist die der Adresse. T49 gibt den vier
+Instrumentenständen eines Landes nicht dieselbe Klasse — Zoll, Leitzins und Haushalt stehen
+in Basispunkten (3), die Finanzmarktregulierung in Stufen (10). Eine erfundene gemeinsame
+Klasse wäre hier die Fehlerart, gegen die T5 gebaut ist; die richtige Aussage ist die über
+die Abbildung und nicht die über den Wert.
+
+**Nummer 21 gilt für alle fünf Gebiete, und für die Restwelt ist `zollstand` null.** Der
+Grund steht in den Daten und ist keine Wahl: T23 Punkt 5 führt `durchgriff` mit **5 × 2 = 10**
+Werten (Reihenliste Nr. 16), die Restwelt nimmt an der Preisübertragung also teil und braucht
+einen zollbelasteten Weltpreis; Instrumente hat sie nach T15 keine, ein `zollstand(RW)` ist
+deshalb keine Adresse, sondern die Null. Ich entscheide das hier, statt es zurückzugeben, aus
+demselben Grund wie die elf Startwerte in T46: Es ist keine Wahl zwischen zwei sinnvollen
+Zahlen, sondern die einzige Belegung, mit der die Formel über ihren angeschriebenen
+Definitionsbereich („je Gebiet") überhaupt total ist. Hält der Spielentwerfer sie für falsch,
+ist es eine Zeile.
 
 Die vier, die bisher nirgends standen:
 
 ```
-bip(l)            = Σ über die 3 Sektoren  wertschoepfung[l][s]
+bip(l)               = Σ über die 3 Sektoren  wertschoepfung[l][s]
 
-handelsvolumen(l) = Σ über die 4 Gegenüber g und die 2 handelbaren Sektoren s
-                      handel[l][g][s] + handel[g][l][s]
+handelsvolumen(l, s) = Σ über die 4 Gegenüber g   handel[l][g][s] + handel[g][l][s]
+handelsvolumen(l)    = Σ über die 2 handelbaren Sektoren s   handelsvolumen(l, s)
 
-anleihekurs(l)    = teile_gerundet(10.000 · (leitzins_start[l] + aufschlag),
-                                   leitzins[l] + aufschlag)
+anleihekurs(l)       = teile_gerundet(10.000 · (leitzins_start[l] + aufschlag),
+                                      leitzins[l] + aufschlag)
 
-korbbestand(z)    = Σ über die 12 Körbe     mal_geteilt(korbwert(l, s),  fondsanteil(l, s), 10.000)
-                  + Σ über die  4 Anleihen  mal_geteilt(anleihewert(l),  |stufen(p)| · stufenweite, 10.000)
+korbbestand(z)       = Σ über die 12 Körbe     mal_geteilt(korbwert(l, s),  fondsanteil(l, s), 10.000)
+                     + Σ über die  4 Anleihen  mal_geteilt(anleihewert(l),  |stufen(p)| · stufenweite, 10.000)
 ```
+
+**`handelsvolumen` hat seit dem 2026-09-03 zwei Fassungen, und sie sind eine Größe.** Die
+sektorweise ist die gebildete, die einstellige ihre Summe über die beiden handelbaren
+Sektoren — nicht zwei Definitionen desselben Namens, sondern eine Definition und ihre
+Aggregation. Das ist die Bedingung, unter der die Zollzeile von Gegenkraft 5 je Sektor
+rechnen kann, ohne dass Nummer 4 (`waehrungswert(l) = wert(handelsvolumen(l), 10.000, l)`)
+sich ändert: Dort steht weiterhin die einstellige Fassung, und sie bedeutet weiterhin
+dasselbe. Der dritte Sektor kommt in keiner der beiden vor — er hat keine Handelszeile.
 
 `handelsvolumen` liest **beide Richtungen** je Paar; die Zuordnung des dichten
 Gegenüber-Index zum Gebietsindex ist die feste Abbildung aus T9 und steht im Code als
-benannte Tabelle, nicht als Rechnung auf Indizes. Der Nenner von `anleihekurs` ist nach T51
+benannte Tabelle, nicht als Rechnung auf Indizes.
+
+Die fünf aus Gegenkraft 5 und dem Zollkeil, in Rechenreihenfolge:
+
+```
+hub(l, i)            = | lies_neu(land.<l>.instrument.<i>.stand)
+                       − lies_alt(land.<l>.instrument.<i>.stand) |
+
+keilhub(l, s)        = mal_geteilt(welt.preis.<s>, hub(l, zoll), 10.000)
+preishub_zoll(l, s)  = mal_geteilt(keilhub(l, s), durchgriff(l, s), 10.000)
+
+weltpreis_mit_zoll(g, s) = mal_geteilt(welt.preis.<s>, 10.000 + zollstand(g), 10.000)
+
+schaden(l, zoll)        = Σ über s ∈ {1, 2}  mal_geteilt(handelsvolumen(l, s), preishub_zoll(l, s), 10.000)
+schaden(l, leitzins)    = mal_geteilt(schuld(l), hub(l, leitzins),  10.000)
+schaden(l, haushalt)    = mal_geteilt(bip(l),    hub(l, haushalt),  10.000)
+schaden(l, regulierung) = mal_geteilt(bip(l),    hub(l, regulierung) · regulierung_last, 10.000)
+```
+
+**`schaden` ist eine Funktion mit vier Zeilen und nicht vier Funktionen**, weil ihr Ergebnis
+in allen vier Fällen Klasse 2 ist und ihre Stelligkeit dieselbe. Die Summe über die Sektoren
+steht **innerhalb** der Zollzeile; nach aussen gibt auch sie eine Zahl je Land und
+Instrument, und das ist die Zahl, die der dritte Skalenübergang aus T50 entgegennimmt.
+`regulierung_last` ist der Parameterschlüssel aus T27 (Klasse 3, Basispunkte des BIP je
+Regulierungsstufe); das Produkt `hub(l, regulierung) · regulierung_last` ist Stufen mal
+Basispunkte je Stufe, also Klasse 3 — dieselbe Klasse wie die Verschiebung der beiden
+mittleren Zeilen, und deshalb rechnen alle vier über denselben Nenner 10.000. Der Nenner von `anleihekurs` ist nach T51
 nie null und nie negativ. **`fonds.marktanteil` ist keine abgeleitete Größe, sondern eine
 Adresse**, in Schritt 6 geschrieben als `mal_geteilt(korbbestand(z), 10.000, markt.wert)` —
 `spiel.md` schreibt dort `teile_gerundet(korbbestand · 10.000, markt.wert)`; das ist dieselbe
@@ -1994,16 +2072,48 @@ verlassen die Partie nie.
 
 **Die Regel, die daraus folgt, und der mechanische Nachweis dazu.** Ein Name in einer Formel
 dieses Dokuments oder in `spiel.md`, der weder eine Zustandsadresse aus T15 noch ein
-Parameterschlüssel aus T27 noch eine Jahrgangskonstante aus T23 noch eine der siebzehn
-Größen oben ist, **ist ein Befund und keine Bauentscheidung** — das ist der Fall, den
-Befund 1 beschreibt, und der Grund, warum er teuer war: Wählt der Bauagent, misst Maß 2
-seine Wahl. Nachgewiesen wird es wie der Gleitkommaverzicht aus T4: Die siebzehn Namen sind
-die öffentliche Schnittstelle des Moduls `kern::werte` (T13), und die Deklarationen in
-`kern/include/kern/werte.hpp` ausserhalb von `namespace intern` gegen diese Tabelle gelegt
-sind eine Prüfung von zwei Minuten. **Ich habe
+Parameterschlüssel aus T27 noch eine Jahrgangskonstante aus T23 noch eine der
+**zweiundzwanzig** Größen oben ist, **ist ein Befund und keine Bauentscheidung** — das ist
+der Fall, den Befund 1 beschreibt, und der Grund, warum er teuer war: Wählt der Bauagent,
+misst Maß 2 seine Wahl. Nachgewiesen wird es wie der Gleitkommaverzicht aus T4: Die
+zweiundzwanzig Namen sind die öffentliche Schnittstelle des Moduls `kern::werte` (T13), und
+die Deklarationen in `kern/include/kern/werte.hpp` ausserhalb von `namespace intern` gegen
+diese Tabelle gelegt sind eine Prüfung von zwei Minuten. **Ich habe
 sie in diesem Lauf einmal von Hand ausgeführt**, in der einzigen Form, die vor dem Bau
-möglich ist: jede Formel aus `spiel.md` Fassung 5 und aus diesem Dokument Name für Name
-gegen die vier Mengen gelegt. Übrig blieben die vier oben, und sie stehen jetzt da.
+möglich ist: jede Formel aus `spiel.md` und aus diesem Dokument Name für Name gegen die vier
+Mengen gelegt.
+
+**Und diesmal ist die Liste, gegen die geprüft wurde, mit abgedruckt** — das ist die
+Bedingung, unter der die Prüfung ein zweites Mal dasselbe ergibt. Erhoben mit
+`rg -o '\b[a-z][a-z0-9_]{2,}\('` über `spiel.md`, danach jeder Treffer einzeln zugeordnet.
+Übrig blieben die fünf oben; die **zweiundzwanzig Namen in den zehn Zeilen unten** sind
+**keine** abgeleiteten Größen, und warum sie es nicht sind, steht daneben. Wer die Erhebung
+wiederholt, darf genau diese Reste behalten und keinen weiteren:
+
+| Name in `spiel.md` | keine abgeleitete Größe, sondern |
+|---|---|
+| `menge(l, i)`, `verschiebung(l, i)` | **Spaltenüberschriften der Schadenstabelle**, siehe den Absatz unten |
+| `zollstand(g)` | `land.<g>.instrument.zoll.stand` in Funktionsschreibweise; für die Restwelt null (Nr. 21) |
+| `stufen(p)`, `stufen(l, s)` | die Positionsstufe des Steckplatzes, `fonds.position.<l>.<s>` — eine Adresse aus T15, T5 Klasse 11, ebenfalls in Funktionsschreibweise. Sie stand schon vor diesem Paket unregistriert in den Formeln der Nummern 14 und 15; die Erhebung hat sie mitgefunden |
+| `durchgriff(l, s)` | Jahrgangskonstante, T23 Punkt 5, zehn Werte |
+| `welt.preis_start(s)` | Startwert des Jahrgangs, T23; steht nur in einer Kalibrierbedingung |
+| `regulierung_last`, `druck_max`, `stufenweite`, `aufschlag` | Parameterschlüssel, T27 |
+| `lobbypunkte_aus_schaden(tsd)` | dritter Skalenübergang, T50; **privat** in `kern::werte` und deshalb nicht in dieser Tabelle |
+| `gegendruck_neu(l, i)` | der in Schritt 5 geschriebene Wert von `land.<l>.instrument.<i>.gegendruck`, also eine Adresse |
+| `wmz(l, s)`, `preishub(l, s)` | Namen der **verworfenen** Vorfassung der Zollzeile. Sie stehen allein im Gegenbeispiel, mit dem `spiel.md` vorrechnet, was die Entscheidung vom 2026-09-03 beseitigt hat (8.472.000 statt null ohne jede Aktion) — ein Beleg, keine Vorschrift |
+| `mal_geteilt`, `teile_gerundet`, `lies_neu`, `lies_alt`, `min`, `max`, `sgn`, `wurzel` | Rechenwerk und Zugriffsform, T6, T29, T39 |
+
+**`menge` und `verschiebung` bekommen ausdrücklich keine Funktion, und der Grund ist T5
+selbst.** Beide sind in `spiel.md` die Spaltenüberschriften einer Tabelle mit vier Zeilen,
+nicht zwei Größen: `verschiebung` steht für die Zollzeile in Klasse 5 und für die drei
+übrigen in Klasse 3, hat also kein einheitliches Ergebnis, das man deklarieren könnte —
+genau die Eigenschaft, die T5 einer Größe abverlangt. `menge` ist immer Klasse 2, scheitert
+aber an der **Stelligkeit**: In der Zollzeile ist sie `handelsvolumen(l, s)` und damit eine
+Zahl je Sektor, in den drei übrigen `schuld(l)` beziehungsweise `bip(l)` und damit eine je
+Land. Eine gemeinsame Funktion müsste sich entweder eine Klasse oder ein Argument
+ausdenken. **Gebildet wird deshalb `schaden(l, i)`**, und die Fallunterscheidung liegt in
+ihr — dieselbe Bauart wie `markt(p)` (Nr. 5), das die drei Steckplatzarten aus T16 ebenso
+innen unterscheidet, statt drei Namen nach aussen zu geben.
 
 ## 9. Test- und Prüfstandsaufbau
 
@@ -2415,6 +2525,43 @@ Bandbreite 5 bis 30 µs, die der Planwert ohnehin trägt. **Im `weltlauf` fällt
 an**, weil das Fondsteilsystem nach T38 nicht läuft; der Rückvergleich ist von der
 Korrektur nicht berührt. Keine Zeile der Tabelle unten bewegt sich.
 
+**Gegenkraft 5 kostet je Runde 106 Lesezugriffe, 16 Schreibzugriffe und 16 Aufrufe des
+dritten Skalenübergangs, und auch diese Zahl ist gezählt.** Die Aufschlüsselung steht in
+`spiel.md` im Abschnitt *Wo die Regel läuft, und warum Kanal 3 zyklenfrei bleibt*; sie ist
+hier nachgezählt und stimmt überein:
+
+| woher | gelesene Adressen | Zahl |
+|---|---|---:|
+| Schritt 3 | `lies_neu(land.<l>.instrument.<i>.stand)`, 4 Länder × 4 Instrumente | 16 |
+| Schritt 4 | `lies_neu(welt.preis.<s>)`, s ∈ {1, 2} | 2 |
+| Schritt 4 | `lies_neu(handel.<a>.<b>.<s>)`, der ganze Handelsblock | 40 |
+| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, für `bip`, 4 × 3 | 12 |
+| Schritt 4 | `lies_neu(land.<l>.staatsschuld)`, für `schuld` | 4 |
+| Vorrunde | `lies_alt(land.<l>.instrument.<i>.stand)`, für `hub` | 16 |
+| Vorrunde | `lies_alt(land.<l>.instrument.<i>.gegendruck)`, für den Zerfall | 16 |
+| | **Summe** | **106** |
+
+`16 + 2 + 40 + 12 + 4 + 16 + 16 = 106`. **Gezählt sind unterschiedliche Adressen, nicht
+Zugriffsvorgänge**, und an genau einer Zeile macht das einen Unterschied: Der Handelsblock
+steht mit **40** und nicht mit 64. 64 wäre die Zahl der Vorgänge — vier Länder mal zwei
+Sektoren mal acht Strömen je `handelsvolumen(l, s)` —, aber ein Strom zwischen zwei
+spielbaren Ländern geht in zwei davon ein. Die 40 sind der Block vollständig: nach T15
+`Gebiet × Gegenüber × handelbarer Sektor = 5 × 4 × 2`, und die vier `handelsvolumen`
+zusammen berühren jedes geordnete Gebietspaar, weil an jedem Paar mindestens ein spielbares
+Land beteiligt ist. Die 16 Schreibzugriffe sind die sechzehn `gegendruck`-Adressen, die 16
+Aufrufe die des dritten Skalenübergangs aus T50 — je Adresse einer, sämtlich in Schritt 5,
+und das ist zugleich der Nachweis für dessen „genau ein Aufrufort".
+
+**Auf die Tabelle oben wirkt das nicht.** 106 Lesezugriffe und 16 Multiplikationen sind
+gegen die geschätzten 7.500 Ganzzahloperationen eines Weltschritts rund anderthalb Prozent,
+und Gegenkraft 5 lief in dieser Schätzung schon mit; neu ist nicht die Arbeit, sondern dass
+sie abgezählt ist. **Zwei frühere Zahlen sind damit abgelöst**: die 120 der Fassung vom
+2026-09-02 (sie zählte den Zollstand doppelt, obwohl die damalige Zollzeile ihn gar nicht
+las) und die 112 des Prüfbefunds vom 2026-09-02 (richtig gerechnet, aber für die alte
+Zollzeile). Der Weg von der einen zur anderen: `112 + 8 − 16 + 2 = 106` — der Zollstand
+kommt mit `lies_neu` und `lies_alt` hinzu, beide Sektorpreiszeilen fallen ersatzlos weg, die
+zwei Weltpreise treten an ihre Stelle.
+
 **Der Planwert ist unverändert geschätzt und nicht gemessen.** Mein Logbuch verlangt, beim
 nächsten Lauf zuerst den gemessenen `ticks_je_sekunde` zu lesen; es gibt ihn weiterhin
 nicht. Unter `ventures/0016-…/kern/` stehen inzwischen Festkomma, Zufall, Prüfsumme,
@@ -2555,7 +2702,9 @@ Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
   Beide sind je eine Zeile, falls der Spielentwerfer sie anders will.
 
 **Vier Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
-mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
+mir, dem Entwurf zu widersprechen; keine blockiert den Bau). **Punkt 3 ist seit dem
+2026-09-04 erledigt und bleibt durchgestrichen stehen**, weil eine gelöschte Beobachtung
+nicht mehr zeigt, dass die Rückgabe funktioniert hat:
 
 1. Die Ergebnisskala trägt in der 30.000 ein echtes Literal, und das Band „überlebt" stösst
    seit dem Wegfall der Kappung dagegen, sobald `R ≥ 27` — die Schranke ist jetzt scharf
@@ -2570,13 +2719,19 @@ mir, dem Entwurf zu widersprechen; keine blockiert den Bau):
    meine. Solange sie dasteht, gilt die Schreib- und Leseregel aus T49 und die
    Gleichheitsprüfung in T30 Prüfung 2. **Es blockiert nichts; ungeregelt wäre es der
    Fehlertyp „zwei Herren über eine Zahl", geregelt kostet es 64 Byte und einen Test.**
-3. **„Schaden" in Gegenkraft 5 ist eine Größe ohne Rechenvorschrift.** `spiel.md` sagt, das
-   Gegenbudget wachse „proportional zum erlittenen Schaden"; welche Zahl das ist —
-   Preisverschiebung mal Menge, Wertschöpfungsverlust, Bewertungsverlust —, steht nirgends.
-   T50 legt fest, in welcher **Einheit** sie ankommt (volkswirtschaftlich, Tausend USD) und
-   mit welchem Satz sie in Lobbypunkte übergeht; *wie hoch* sie ist, bleibt offen. Das ist
-   dieselbe Art Lücke wie Befund 1 der Runde 6, eine Ebene weiter unten, und ich melde sie
-   als Beobachtung statt sie zu füllen: Fülle ich sie, misst Maß 2 meine Wahl.
+3. **~~„Schaden" in Gegenkraft 5 ist eine Größe ohne Rechenvorschrift.~~ Erledigt am
+   2026-09-03 durch `spiel.md`, nachgetragen hier am 2026-09-04.** Der Punkt hat gefragt,
+   welche der drei Zahlen — Preisverschiebung mal Menge, Wertschöpfungsverlust,
+   Bewertungsverlust — gemeint ist. `spiel.md` hat **die erste** gewählt und die beiden
+   anderen einzeln widerlegt (der Wertschöpfungsverlust ist gegenüber dem Zoll blind, weil
+   Klasse 2 real ist; der Bewertungsverlust buchte Kanal 1 ein zweites Mal in Kanal 3). Die
+   Vorschrift steht im Abschnitt *Der Schaden in Gegenkraft 5, als Rechenvorschrift*, die
+   Größe als Nummer 22 in T48, die Einheit unverändert in T50. **Der Weg über die Rückgabe
+   war der billigere:** Hätte ich die Zahl gefüllt, stünde in Maß 2 meine Wahl, und die
+   Zollzeile hätte den Fehler bekommen, den `spiel.md` am 2026-09-03 an sich selbst gefunden
+   und beseitigt hat — sie maß bis dahin die Inflation und buchte sie als Lobbyschaden.
+   Zurückgegeben und einen Lauf gewartet zu haben, hat hier eine falsche Größe verhindert
+   und keine Zeit gekostet.
 4. **`fonds.sichtbarkeit` ist eine Adresse, Aktion 5 spricht von einer Position.**
    `spiel.md` lässt den Fonds „eine Position öffentlich offenlegen", der Zustand führt aber
    nur **eine** globale Sichtbarkeit und kein Offenlegungsmerkmal je Steckplatz. Ich lese das
@@ -2644,7 +2799,7 @@ hier steht, wo jede gelandet ist:
 
 | aus `spiel.md` Fassung 5 | eingearbeitet in | nachgerechnet oder nachgewiesen |
 |---|---|---|
-| `korbwert`, `positionswert` und fünf weitere Namen werden gebildet | **T47**, aufgezählt in **T48** (neu) | 17 Funktionen im Kern, 3 im Prüfstand; vier (`bip`, `handelsvolumen`, `anleihekurs`, `korbbestand`) standen bis heute nirgends und stehen jetzt in T48 |
+| `korbwert`, `positionswert` und fünf weitere Namen werden gebildet | **T47**, aufgezählt in **T48** (neu) | 17 Funktionen im Kern, 3 im Prüfstand; vier (`bip`, `handelsvolumen`, `anleihekurs`, `korbbestand`) standen bis heute nirgends und stehen jetzt in T48. *Stand dieser Abarbeitung (2026-09-01); seit dem 2026-09-04 sind es 22, siehe Abschnitt 18* |
 | Marktkorb mit Menge und Kurs statt „Modellmarktwerten" | **T33** Punkt 1 bis 4 | `marktkorb(m, k)`, Mengen über `lies_alt`, Kurse über `lies_neu` (T39) |
 | Skalengrenze je Bewertung einmal, am äussersten Aufruf | **T47**, **T5**, **T50** (neu) | `tsd_in_cent` mit genau zwei Aufruforten; `cent_in_tsd` gestrichen, weil ohne Aufrufer |
 | `stufenweite` ist ein Anteil, neuer Schlüssel `aufschlag` | **T5** Klassen 4 und 3, **T27** | elf Parameterschlüssel mit Skalenklasse, davon fünf neu; die 11 Adressen mit Herkunft `Parameter` bleiben 11 |
@@ -2918,3 +3073,85 @@ als `quellenwahl = "offen"` geführt und bleibt es; wechselt sie, wandert mit ih
 Basisjahr, und T53 ist die Stelle, an der das nachzuziehen wäre. Und die Restgrösse des
 gewählten Wegs — der Abstand zwischen dem Weltausfuhrindex und den wahren bilateralen
 Deflatoren der 40 Ströme — ist ungemessen und steht in T53 als solche.
+
+## 18. Paket `0043-t48-groessen-gegenkraft-5` — Umfang und die Meldung an den Projektmanager
+
+Vier Bedingungen, vier Stellen. Geändert sind **T48** (fünf Größen, die sektorweise Fassung
+von Nummer 11, die Restetabelle), **T50** (der offengelassene Satz ist geschlossen),
+**Abschnitt 10** (die Kostenzeile mit ihrer Lesetabelle) und **Abschnitt 12 Punkt 3** (die
+Lücke ist keine mehr). Dazu die Zeile `abgeleitet:` im Frontmatter, die 17 nannte.
+
+**Der Auftrag sprach von fünf Namen, gemeint waren sie am 2026-09-03 — es sind sechs, und
+einer davon ist älter als das Paket.** Der Auftragstext nennt `hub`, `preishub`, `menge`,
+`verschiebung` und `schaden`. Dazwischen ist Paket **0039** gelaufen: `preishub(l, s)` gibt
+es nicht mehr, an seine Stelle sind `keilhub(l, s)` und `preishub_zoll(l, s)` getreten. Aus
+fünf Namen wurden damit sechs, von denen zwei keine Größe wurden (`menge`, `verschiebung`,
+Begründung in T48) und vier eine. Der fünfte Neuzugang, `weltpreis_mit_zoll`, stammt aus
+keinem der beiden Pakete, sondern aus T28 dieses Dokuments: Die Preisformel der Markträumung
+rechnet seit jeher mit ihm, gebildet wurde er nie. Gefunden hat ihn nicht das Lesen der
+Auftragstabelle, sondern die Erhebung über `spiel.md`, die T48 jetzt mit abdruckt — der
+Auftrag hätte ihn nicht gebracht.
+
+**Die Abnahmebedingungen, einzeln:**
+
+1. **Die Namensliste lässt keinen Rest.** Die Erhebung, ihre Zuordnung und die zwölf
+   erlaubten Reste stehen in T48. Zwei Namen darin sind der unangenehme Fall und deshalb
+   ausdrücklich aufgeführt: `wmz` und `preishub` stehen in `spiel.md` noch, aber allein im
+   Gegenbeispiel, mit dem der Entwurf die verworfene Vorfassung vorrechnet. Wer sie für
+   Vorschriften hält, trägt zwei tote Größen nach; wer sie stillschweigend übergeht,
+   hinterlässt dem nächsten Prüfer denselben Zweifel. Sie stehen deshalb in der Restetabelle.
+   **Die Erhebung hat nebenbei eine ältere Lücke gefunden**, die keinem der drei Pakete
+   gehört: `stufen(p)` steht seit Fassung 5 in den Formeln der Nummern 14 und 15, ohne dass
+   T48 je gesagt hätte, was es ist. Es ist eine Adresse in Funktionsschreibweise und steht
+   jetzt als solche in der Restetabelle — ein Beleg dafür, dass die maschinelle Erhebung
+   findet, was das Lesen einer Auftragstabelle nicht findet.
+2. **`handelsvolumen`** steht als Nummer 11 in der sektorweisen Fassung, die einstellige
+   daneben als deren Summe über s ∈ {1, 2}. Nummer 4 (`waehrungswert`) liest weiter die
+   einstellige und ändert sich nicht.
+3. **T50 und Abschnitt 12 Punkt 3** verweisen auf den Abschnitt in `spiel.md`. Der alte Satz
+   steht an beiden Stellen im Wortlaut daneben, damit die Prüfungen, die ihn zitiert haben,
+   zitierbar bleiben.
+4. **Die Kostenzeile** nennt 106 Lesezugriffe, 16 Schreibzugriffe und 16 Aufrufe, mit der
+   Lesetabelle darunter und der Summe ausgeschrieben. Ich habe sie in diesem Lauf
+   nachgezählt statt übernommen; die eine Zeile, die nicht selbsterklärend ist, sind die 40
+   des Handelsblocks, und warum es nicht 64 sind, steht dort.
+
+**An den Projektmanager — welche der neuen Größen eine Schnittstelle in `kern::werte`
+braucht.** Das ist die Angabe, aus der das Folgepaket zugeschnitten wird; es ist nicht meins.
+
+| Größe | Schnittstelle in `kern::werte`? |
+|---|---|
+| `hub(l, i)` (Nr. 18) | **ja**, öffentlich. Argumente Land und Instrument, Ergebnis `i64` |
+| `keilhub(l, s)` (Nr. 19) | **ja**, öffentlich |
+| `preishub_zoll(l, s)` (Nr. 20) | **ja**, öffentlich |
+| `weltpreis_mit_zoll(g, s)` (Nr. 21) | **ja**, öffentlich — und ihr Leser ist die Markträumung (T28), nicht Gegenkraft 5 |
+| `schaden(l, i)` (Nr. 22) | **ja**, öffentlich, mit der Fallunterscheidung über die vier Instrumente innen |
+| `handelsvolumen(l, s)` (Nr. 11) | **Formänderung an einer bestehenden.** Heute steht in `werte.hpp` `handelsvolumen(z, land)`; gebraucht werden beide Stelligkeiten, die einstellige gebildet aus der zweistelligen |
+| `menge(l, i)`, `verschiebung(l, i)` | **nein**, und das ist eine Vorgabe und kein Vergessen. Begründung in T48 |
+| `regulierung_last` | **nein** — Parameterschlüssel nach T27. Er gehört in `parameter.toml` (Datenbauer) und in die Struktur `Konstanten` in `werte.hpp`, wo `gegenlobby_satz` und `lobbykosten` schon stehen |
+
+**Drei Stellen, die dadurch nachziehen und die nicht mir gehören.** Sie sind alle drei
+mechanisch und keine ist eine Frage:
+
+1. **`kern/include/kern/werte.hpp` sagt an drei Stellen „siebzehn"** — in der Kopfzeile
+   (`//! kern::werte -- die siebzehn abgeleiteten Groessen aus T48`), im Absatz über den
+   mechanischen Nachweis („Unten stehen siebzehn") und in der Überschrift des zweiten Blocks.
+   Nach diesem Paket sind es zweiundzwanzig. Das ist Kernbauer-Arbeit, und es ist genau der
+   Nachweis, den T48 vorschreibt: Wer den Kopf gegen die Tabelle legt, findet die fünf
+   fehlenden Deklarationen. **Solange sie fehlen, ist der Nachweis nicht erfüllt** — der Kopf
+   ist damit heute unvollständig und nicht falsch.
+2. **Die Abnahme von Paket 0002** nennt die Zahl siebzehn wörtlich. Sie war zum Zeitpunkt
+   ihrer Erfüllung richtig: 0002 stand am 2026-09-04 auf `fertig`, bevor dieses Paket lief —
+   die Reihenfolge, die der Projektmanager dafür angeordnet hat, hat gehalten. Wer sie später
+   liest, braucht diesen Absatz, sonst sieht die erfüllte Abnahme wie eine verletzte aus.
+3. **`regulierung_last` fehlt in `parameter.toml`.** Folgepaket des Datenbauers, im Auftrag
+   dieses Pakets schon benannt und hier nicht angefasst.
+
+**Worauf ich unsicher bin, und es steht hier statt nur im Logbuch.** Nummer 21 ist die
+einzige Stelle, an der ich etwas entschieden statt gemeldet habe: `zollstand(RW) = 0`. Der
+Weg dorthin ist belegt — zehn `durchgriff`-Werte für fünf Gebiete, keine Instrumente für die
+Restwelt —, aber der Definitionsbereich von `weltpreis_mit_zoll` steht nirgends
+ausgeschrieben, weder in T28 noch in `spiel.md`; ich habe ihn aus dem Wort „je Gebiet" und
+aus der Zahl zehn gelesen. Läuft die Markträumung in Wahrheit nur über die vier spielbaren
+Länder, ist meine Zeile überflüssig und nicht falsch. Das ist die Stelle, an der ich einem
+Prüfer widerspruchslos folgen würde.

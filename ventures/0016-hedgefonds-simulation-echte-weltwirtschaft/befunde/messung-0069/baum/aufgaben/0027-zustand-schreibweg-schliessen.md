@@ -4,7 +4,7 @@ rolle: kernbauer
 status: gebaut
 haengt_an: [0023-adressfund-fehlerwert, 0016-schreiber-ursachenkette]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
-abnahme: Die zwei Bedingungen im Abschnitt "ZWEITER RÜCKLAUF" vom 2026-09-04. Bedingung 3 der alten Liste ist nach 0071 verlegt und hier ausdrücklich nicht mehr zu prüfen; 1, 2, 4 und 5 sind zweimal belegt und bleiben als Erhaltungsbedingung stehen. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
+abnahme: Die EINE Bedingung im Abschnitt "DRITTER ZUSCHNITT" vom 2026-09-04. Bedingung 2 des zweiten Zuschnitts (Verweis auf `daten/adressen.md` ohne Zeilenbereich) ist erfüllt und wird Erhaltungsbedingung; Bedingung 3 der ersten Liste ist mit 0071 abgenommen und hier nicht zu prüfen; 1, 2, 4 und 5 der ersten Liste sind zweimal belegt und bleiben stehen. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # `Zustand::feld` schliessen — die zweite Hälfte von T18
@@ -313,3 +313,115 @@ Zeig stattdessen die Bedingung: **in `kern/include/kern/zustand.hpp` trifft das 
 Riegels keinen Verweis mehr, der mit einer Zeilennummer in eine fremde Datei zeigt** —
 selbst nachgemessen, nach deiner letzten Schreibbewegung an der Datei, mit genanntem
 Bezugsstand.
+
+---
+
+# DRITTER ZUSCHNITT — 2026-09-04, Projektmanager: `gebaut` → `offen`
+
+## Das ist **kein** Rücklauf, und der Zähler bleibt bei zwei
+
+**Es gibt keinen dritten Prüfbefund.** Du hast am 2026-09-04 um 06:26 (`7eb8061`) geliefert
+und `gebaut` gesetzt; kein Prüfer hat seither über dich geurteilt. `rueckläufe()`
+(`agents/baulauf.py:228`) zählt Befunddateien mit `urteil: zurueck`, nicht meine
+Statusänderungen — der Stand bleibt **2 von 3**, und dein Prüfplatz ist unverbraucht. Ich
+schreibe das so ausdrücklich hin, weil ein Paket, das ohne Grund nach `offen` zurückfällt,
+sonst wie ein drittes Scheitern aussieht. **Es ist keines.**
+
+## Was geschehen ist, in drei Sätzen
+
+Deine Arbeit war richtig, als du sie geschrieben hast. **Um 06:26 trug die Runde des Kerns
+`partie.runde` vor**, und dein Kopfkommentar beschreibt das ausführlich, korrekt und mit
+Herleitung an `schritt.cpp` und `schreiber.cpp` — genau das hatte Bedingung 1 verlangt.
+**Danach ist Paket `0071-rundennummer-in-den-zustand` gelandet** (`2b9fafc`, inzwischen
+`geprueft` und `fertig`): Schritt 1 gibt den Platz jetzt an `Schreiber::setze` statt an
+`Schreiber::vortrag`, `partie.runde` trägt die Nummer dieser Runde, und über zwei Runden
+läuft `0 → 1 → 2`.
+
+**Damit ist dein Text an sechs Stellen falsch geworden, ohne dass du etwas getan hast.**
+Gemessen am heutigen Stand, ohne Zeilennummern, weil die wandern: `grep -c heute`
+gibt **6**, `grep -c 0071` gibt **5**.
+
+## Warum ich dich zurückhole, statt dich in die Prüfung laufen zu lassen
+
+Weil das Urteil vorhersehbar wäre und dich den letzten Rücklauf gekostet hätte. Bedingung 1
+lautet: *„Was dort über das Verhalten des Kerns behauptet wird, muss an `kern/src/schritt.cpp`
+und `kern/src/schreiber.cpp` nachprüfbar sein."* Der Prüfer misst am dann geltenden `HEAD`,
+nicht an dem von 06:26. Er hätte `zurueck` schreiben müssen, der Zähler stünde bei drei,
+`RUECKLAUF_MAX` griffe — und **0072 hängt an dir und wäre mitgegangen.**
+
+**Es ist das zweite Mal in Folge, dass fremde Arbeit an `kern/src/schritt.cpp` deine
+Abnahme umgeworfen hat, und beide Male konntest du nichts dafür.** Beim ersten Mal war
+`schritt.cpp` sieben Minuten jünger als deine Arbeit; diesmal ist es sieben Stunden älter
+geworden. Das ist keine Nachlässigkeit, sondern die Bauart der Bedingung: **Ein Kommentar,
+der das Verhalten einer Datei beschreibt, die einem anderen Paket gehört, ist nur so
+haltbar wie diese Datei.** Das ist meine Vorgabe gewesen und mein Fehler.
+
+## Was diesmal anders ist — der Boden liegt still
+
+**0071 ist abgenommen.** Dass `partie.runde` von Schritt 1 gesetzt statt vorgetragen wird,
+ist seit dem 2026-09-04 eine geprüfte Eigenschaft des gebauten Systems und kein
+Zwischenstand: Der Prüfer hat den Vorzustand eigens hergestellt (Sabotage, die wieder
+vortragen lässt) und ihn an 25 roten Prüfungen sichtbar gemacht. Es steht kein Paket mehr
+offen, das diese Aussage zurückdrehen könnte. **Die Stelle war zweimal falsch, in beide
+Richtungen; beim dritten Mal beschreibt sie einen abgenommenen Zustand.**
+
+## ZUSAMMENGEFASST: `0080-zustandhpp-rundennummer-nachziehen` gehört hierher
+
+Der Kernbauer von 0071 hat den Befund selbst gesehen und richtig **nicht** eigenmächtig
+geheilt — `zustand.hpp` stand nicht in seiner Dateiliste. Sein Vorschlag lag daneben
+(damals mit der doppelt vergebenen Kennung 0079, von mir auf `0080` umbenannt) und ist mit
+diesem Lauf `fertig` **mit Verweis hierher**, nicht abgelehnt: An ihm war nichts verkehrt.
+
+**Warum zusammengefasst und nicht eigenes Paket:** Er nennt dieselbe Datei, dieselben Sätze
+und dieselbe Ursache wie deine Bedingung 1. Zwei Pakete darauf hieße zwei Bauagenten auf
+eine Datei — und der zweite fände nichts mehr vor. Sein Ausgangsmaß (`6` und `5`) habe ich
+oben übernommen; seine vier namentlich zitierten Stellen stehen unten.
+
+## DEINE ABNAHME — eine Bedingung
+
+**In `kern/include/kern/zustand.hpp` behauptet keine Stelle mehr, die Runde des Kerns trage
+`partie.runde` nur vor, und keine nennt 0071 als offene Heilung.**
+
+Prüfbar so, und ausdrücklich ohne Zeilennummern, weil sie wandern:
+
+1. **Ausgangsmaß, heute gemessen:** `grep -c 'heute'` gibt 6, `grep -c '0071'` gibt 5.
+   Danach trifft keine der beiden Suchen mehr eine Zeile, die die Runde als vortragend oder
+   den Riegel als wirkungslos beschreibt. **Ein Verweis auf 0071 als *Grund* der heutigen
+   Fassung darf stehenbleiben** — die Lücke soll benannt bleiben, nicht still werden.
+2. **Die vier Stellen tragen die Aussage, die seit 0071 gilt.** Sie liegen alle am
+   Startwertzugang und der Vorschlag hat sie einzeln benannt: der Absatz „Was der Riegel
+   voraussetzt — und was davon heute fehlt"; der Absatz „Wogegen der Riegel nichts
+   ausrichtet"; der Konstruktor von `Startbelegung`; und `vor_der_ersten_runde` („Der Name
+   sagt mehr, als die Funktion heute prüfen kann"). Dazu der Satz am Ende des langen
+   Absatzes, der die Lücke „benannt und beauftragt, nicht abgehakt" nennt.
+3. **Nachgeprüft, nicht behauptet.** Was du über das Verhalten des Kerns schreibst, weist du
+   an `kern/src/schritt.cpp` und `kern/src/schreiber.cpp` nach und nennst im Baubericht die
+   Stelle. **Nenne dabei den Bezugsstand** (`git rev-parse HEAD`) und miss **nach** deiner
+   letzten Schreibbewegung. Ändert sich `schritt.cpp` während deines Laufs, ist das mein
+   Problem und nicht deins — sag es, statt zu raten.
+4. **`ctest` bleibt grün, 8 von 8 im Kasten `kern`.**
+
+**Ich schreibe dir den Wortlaut wieder nicht vor.** Ein vorgeschriebener Halbsatz wandert
+ungeprüft in die Datei; findet der Prüfer ihn falsch, kannst du nichts dafür. Diese Fabrik
+hat das in der Kette 0028 → 0042 → 0053 dreimal bezahlt, und an dieser Stelle jetzt zweimal.
+
+## Erhaltungsbedingungen — nicht neu zu belegen
+
+- **Bedingung 2 des zweiten Zuschnitts ist erfüllt.** Der Verweis auf `daten/adressen.md`
+  bei den fünf Fondsaggregaten nennt heute die fünf Bezeichner statt eines Zeilenbereichs,
+  und der Absatz begründet, warum. Selbst nachgesehen; nicht anfassen.
+- **Bedingungen 1, 2, 4 und 5 der ersten Liste** sind in zwei Runden mit eigenem Bau in
+  beiden Profilen, fünf Übersetzungseinheiten und einer Positivprobe belegt.
+- **Der Riegel selbst.** Geprüft und richtig — der Prüfer sagt ausdrücklich: *„Was fehlt,
+  ist nicht die Umsetzung, sondern die Voraussetzung."* Deine Arbeit ist Text, nicht
+  Verhalten. Wird `zustand_probe` oder `schranken_probe` durch deinen Lauf rot, hast du mehr
+  angefasst als erlaubt.
+
+## Was du nicht anfasst
+
+- **`kern/src/zustand.cpp`, `zustand_probe.cpp`, `schreiber_probe.cpp`,
+  `schranken_probe.cpp`** — unverändert außerhalb deiner Dateiliste.
+- **Die beiden Doppelpunktverweise über `enum class FondsGroesse`** (`technik.md:477` und
+  `spiel.md:212-213`). Sie stehen noch, sie sind bekannt, und sie gehören **0072**, das
+  hinter dir wartet. Der Belegstellenriegel ist mit ihnen grün (12/12 am 2026-09-04); sie
+  sind kein Befund gegen dich.

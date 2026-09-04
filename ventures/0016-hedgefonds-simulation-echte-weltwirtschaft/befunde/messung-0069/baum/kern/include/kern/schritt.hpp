@@ -10,21 +10,30 @@
 //!
 //! Er ist der **Rahmen** der Runde: Signatur, Rueckgabewert, die feste Reihenfolge der
 //! sechs Schritte, die Rundenendpruefung. Er ist **keine gerechnete Welt**. Eine Runde
-//! im `weltlauf` traegt heute jede der 175 Adressen ihrer Sollmaske unveraendert vor;
-//! danach steht dieselbe Welt noch einmal da, mit 175 Ursachensaetzen, die genau das
-//! aussagen. Das ist der Zuschnitt des Arbeitspakets 0033 und keine Unfertigkeit: Die
-//! sechs Schritte der Runde sind sechs eigene Pakete, und dies ist die Buehne, auf der
-//! sie einzeln aufgestellt werden.
+//! im `weltlauf` traegt heute 174 der 175 Adressen ihrer Sollmaske unveraendert vor; die
+//! 175. ist `partie.runde`, und die zaehlt hoch. Danach steht dieselbe Welt noch einmal
+//! da, eine Runde weiter, mit 175 Ursachensaetzen, die genau das aussagen. Das ist der
+//! Zuschnitt des Arbeitspakets 0033 und keine Unfertigkeit: Die sechs Schritte der Runde
+//! sind sechs eigene Pakete, und dies ist die Buehne, auf der sie einzeln aufgestellt
+//! werden.
 //!
-//! Zwei Eigenschaften dieses Rahmens sind deshalb **auf Widerruf**, und beide sind es
-//! mit Absicht:
+//! Eine Eigenschaft dieses Rahmens ist **auf Widerruf**, und sie ist es mit Absicht:
 //!
-//!   * Die Pruefsumme des Zustands aendert sich ueber eine Runde **nicht**. Sie faellt,
-//!     sobald der erste Schritt anfaengt zu rechnen -- und genau dann soll sie fallen.
-//!   * Die Kette liegt in **aufsteigender** Adressfolge. Auch das faellt, sobald ein
-//!     Schritt seinen Block als Ganzes rechnet statt Adresse fuer Adresse.
+//!   * Die Kette liegt in **aufsteigender** Adressfolge. Das faellt, sobald ein Schritt
+//!     seinen Block als Ganzes rechnet statt Adresse fuer Adresse.
 //!
-//! Wer den ersten rechnenden Schritt baut, zieht beide Aussagen in seiner Probe nach.
+//! Wer den ersten rechnenden Schritt baut, zieht diese Aussage in seiner Probe nach.
+//!
+//! **Die zweite ist am 2026-09-04 widerrufen worden, und das gehoert hierher, weil an
+//! ihrer Stelle etwas anderes steht.** Bis dahin hiess es: Die Pruefsumme des Zustands
+//! aendert sich ueber eine Runde nicht. Seit Paket `0071-rundennummer-in-den-zustand`
+//! aendert sie sich, und die Aussage an ihrer Stelle ist schaerfer als die alte: **Genau
+//! eine der 310 Groessen wird ueber eine Runde im `weltlauf` anders, naemlich
+//! `partie.runde`.** Der Widerruf ist keine Nachbesserung an 0033, sondern der Fall, fuer
+//! den es dort "auf Widerruf" hiess: Ein Zustand, den eine vollstaendige Runde Feld fuer
+//! Feld unveraendert laesst, ist von "keine Runde gelaufen" durch keinen Vergleich zu
+//! unterscheiden -- und genau diese Unterscheidung braucht der Startwertriegel aus Paket
+//! 0027, der sonst gegen die Runde des Kerns nie anschlaegt.
 //!
 //! ## Der Modus
 //!
@@ -85,9 +94,11 @@ struct Rundenergebnis {
 /// dasselbe Ergebnis -- das ist Anforderung 1 des Vorhabens, und sie kostet hier nichts.
 ///
 /// `vorrunde` ist der Zustand am Ende der Vorrunde; in Runde 1 der Startzustand des
-/// Jahrgangs. Die Nummer dieser Runde ist `partie.runde` der Vorrunde **plus eins** --
-/// die Nummer der letzten abgeschlossenen Runde steht nach T38 in beiden Sollmasken und
-/// wird jede Runde geschrieben.
+/// Jahrgangs. Die Nummer dieser Runde ist `partie.runde` der Vorrunde **plus eins**, und
+/// sie steht danach im zurueckgegebenen Zustand: Schritt 1 **setzt** das Feld, statt es
+/// vorzutragen (Paket 0071). Nach T38 liegt es in beiden Sollmasken und wird damit jede
+/// Runde geschrieben; seit 0071 wird es auch jede Runde veraendert. `partie.runde` traegt
+/// also die Nummer der letzten abgeschlossenen Runde -- vor der ersten die Null.
 ///
 /// **Harte Fehler, alle ohne Ersatzwert:**
 ///   * `modus == Modus::Spielmodus` -- in diesem Rahmen nicht gebaut, siehe oben.

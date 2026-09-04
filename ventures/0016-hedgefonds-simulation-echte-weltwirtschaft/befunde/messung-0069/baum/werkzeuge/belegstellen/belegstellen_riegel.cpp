@@ -7,21 +7,98 @@
 //! Stunden spaeter standen die Stellen anderswo. Die Korrektur war falsch, bevor sie
 //! jemand ausfuehren konnte.
 //!
-//! ## Was dieses Programm prueft -- und was hier nicht mehr steht
+//! ## Was dieses Programm prueft -- zwei Bedingungen, zwei Pakete
 //!
-//! **Eine Bedingung, nicht zwei.** Der Rumpf von 0059 nennt zwei; beim zweiten
-//! Abbruch am 2026-09-04 hat der Projektmanager sie getrennt. Hier steht die erste:
+//! Der Rumpf von 0059 nennt zwei Bedingungen; beim zweiten Abbruch am 2026-09-04 hat
+//! der Projektmanager sie getrennt. Beide stehen jetzt hier, jede mit ihrem eigenen
+//! Zaehlwerk und ihrer eigenen Meldung:
 //!
-//!   **Keine Zeilennummer in eine fremde Datei.** Wo im Text ein Dateiname steht,
-//!   dem eine Zeilenangabe folgt, ist der Verweis nicht haltbar. Er zeigt heute
-//!   vielleicht richtig; er zeigt morgen woandershin, ohne dass jemand etwas tut.
+//!   **Bedingung 1 -- keine Zeilennummer in eine fremde Datei** (Paket 0059). Wo im
+//!   Text ein Dateiname steht, dem eine Zeilenangabe folgt, ist der Verweis nicht
+//!   haltbar. Er zeigt heute vielleicht richtig; er zeigt morgen woandershin, ohne
+//!   dass jemand etwas tut.
 //!
-//! Die zweite -- **jedes Abschnittszitat existiert wirklich** -- ist Paket 0067 und
-//! kommt in dieselbe Datei zurueck. Sie ist die wichtigere und die aufwendigere: Sie
-//! muss Ueberschriften aus fremden Dateien lesen, waehrend die Bedingung hier ein
-//! Mustertreffer in derselben Zeile ist. Was 0067 hier wieder anlegt, ist eine Marke
-//! fuer das Zitat; sie stand in der Fassung vom 2026-09-04 und ist heraus, weil eine
-//! ungenutzte Konstante unter `-Werror` nicht uebersetzt.
+//!   **Bedingung 2 -- jedes Abschnittszitat existiert wirklich** (Paket 0067). Wo ein
+//!   Text eine Ueberschrift aus einer benannten Datei zitiert, steht in jener Datei
+//!   eine Zeile mit genau dieser Ueberschrift. Sechs Pakete (0034, 0035, 0044, 0047,
+//!   0050, 0057) haben Zeilennummern durch Ueberschriften ersetzt. Die Ersetzung hat
+//!   das Problem verschoben, nicht abgestellt: Eine umbenannte Ueberschrift
+//!   hinterlaesst einen toten Verweis, der beim Lesen richtig aussieht -- und der,
+//!   anders als eine verrutschte Nummer, nicht einmal beim Nachschlagen auffaellt.
+//!
+//! Bedingung 2 ist die aufwendigere: Sie muss Ueberschriften aus fremden Dateien
+//! lesen, waehrend Bedingung 1 ein Mustertreffer in derselben Zeile ist.
+//!
+//! Ein Beispiel, und es ist absichtlich echt statt erfunden: `spiel.md`, Abschnitt
+//! "Die Schleife". Der Satz, den Sie gerade lesen, ist selbst ein Zitat der von
+//! Bedingung 2 geprueften Form. Wer den Abschnitt dort umbenennt, macht diesen Riegel
+//! an seiner eigenen Kopfzeile rot -- so wie Bedingung 1 sich selbst faengt, wenn
+//! jemand hier eine Zeilenangabe hinschreibt.
+//!
+//! Ein zweites, ebenso echtes Beispiel, und es traegt das am 2026-09-04 dazugekommene
+//! dritte Schluesselwort: `technik.md`, Absatz "Zwei Adresspaare tragen denselben
+//! Wert, und das braucht eine Regel statt eines Zufalls". Auch dieses Zitat zaehlt
+//! mit, auch es loest auf, und auch es ist der Rothebel fuer das, was es zeigt: Wer
+//! den Wortlaut hier oder dort aendert, macht den Riegel rot.
+//!
+//! ## Bedingung 2: was als Zitat zaehlt
+//!
+//! Gesucht wird **je Absatz, nicht je Zeile**. Ein Absatz ist ein zusammenhaengender
+//! Block gleichartiger Zeilen -- derselbe Kommentarkopf, keine Leerzeile dazwischen --,
+//! zu einer Zeichenkette zusammengezogen. Das ist der Unterschied zu Bedingung 1 und
+//! er ist gemessen: Die Pruefung von 0044 hat am 2026-09-04 festgestellt, dass die
+//! Belegstelle in `schranken_probe.cpp` ihren Dateinamen vier Zeilen oberhalb der
+//! Ueberschrift traegt. Eine zeilenweise Suche haette genau das Paket uebergangen, das
+//! als Beispiel diente.
+//!
+//! Ein Zitat besteht aus drei Teilen, alle im selben Absatz:
+//!
+//!   1. ein Schluesselwort -- das Wort fuer einen Textabschnitt, das Wort fuer einen
+//!      Textblock innerhalb eines Abschnitts oder das Wort fuer eine Ueberschrift,
+//!      letzteres in beiden Schreibweisen (mit Umlaut und ohne). Das zweite ist am
+//!      2026-09-04 dazugekommen und nicht aus Vollstaendigkeitsdrang: Paket 0034 hat
+//!      zwei seiner drei Belegstellen mit ihm geschrieben, und ohne es blieben sie
+//!      ungefangen -- die Zaehlung stieg dadurch von 21 auf 23;
+//!   2. unmittelbar danach die Ueberschrift **in Anfuehrung**: gerade oder
+//!      typografische Anfuehrungszeichen, einfache Anfuehrungszeichen, Akzente oder
+//!      Sternchen. Ein `\` davor wird uebersprungen, damit ein Zitat in einer
+//!      C++-Zeichenkette (`\"...\"`) mitzaehlt;
+//!   3. **links davon im selben Absatz** ein Dokumentname. Der naechstgelegene, der
+//!      sich im Bestand wiederfindet, gilt als Ziel.
+//!
+//! ## Wie streng "genau diese Ueberschrift" gemeint ist
+//!
+//! Eine **Ueberschriftszeile** in der Zieldatei ist eines von zweien: eine Zeile, die
+//! mit einem oder mehreren Rautenzeichen und einem Leerzeichen beginnt (Markdown und,
+//! in einer TOML-Datei, die Kommentarform, in der dort Gruppen ueberschrieben sind);
+//! oder eine Zeile, die mit einem fett ausgezeichneten Vorspann beginnt. Der zweite
+//! Fall ist keine Bequemlichkeit: `reihen.toml` zitiert drei solche Vorspaenne, und
+//! ohne sie waere Bedingung 2 fuer zwei der sechs Pakete leer. Gemessen am 2026-09-04
+//! mit einem Mutanten, der diese Form abschaltet: **6 der 24 Zitate fallen**, darunter
+//! beide, die Paket 0034 hinterlassen hat -- sie zeigen auf denselben Vorspann unter
+//! T49 und haetten ohne den zweiten Fall gar kein Ziel.
+//!
+//! Verglichen wird nach dieser Normierung, auf beiden Seiten gleich:
+//!
+//!   * Umlaute und Eszett werden umschrieben (`Groesse` und `Größe` sind dasselbe).
+//!     Das ist kein Nachlass, sondern die Lage: Der Quelltext dieses Vorhabens ist
+//!     umlautfrei, die Vorgaben sind es nicht. `parameter.toml` zitiert eine
+//!     Ueberschrift aus `spiel.md`, die im Ziel ein `ö` und ein `ß` traegt.
+//!   * Gedankenstriche werden zu zwei Bindestrichen, typografische Anfuehrungen zu
+//!     geraden.
+//!   * Auszeichnung faellt weg (Sternchen, Unterstrich, Akzent), Leerraum wird
+//!     zusammengezogen -- damit eine ueber zwei Zeilen umgebrochene Ueberschrift
+//!     dieselbe ist wie eine einzeilige.
+//!   * Fuehrende Rautenzeichen faellen weg, damit ein Zitat sie mitfuehren darf.
+//!   * Ein Punkt, Doppelpunkt, Komma oder Semikolon am Ende faellt weg.
+//!   * **Gross- und Kleinschreibung nicht.** Sie umzuschreiben ist im Deutschen eine
+//!     Umbenennung wie jede andere, und ein Riegel, der sie durchgehen laesst, prueft
+//!     die Haelfte des Wortes.
+//!
+//! Was **nicht** geprueft wird: ob die Ueberschrift nur einmal vorkommt, und ob ein
+//! Zusatz im Zitat ("Reihe 9", "Nummer 4", "Tabellenzeile") stimmt. Geprueft wird die
+//! Existenz. Ein Zitat, das auf eine von drei gleichnamigen Stellen zeigt, bleibt
+//! gruen -- die Ueberschrift gibt es ja.
 //!
 //! ## Wie "fremde Datei" gemessen wird
 //!
@@ -59,18 +136,134 @@
 //! eine Ausnahme nach Pfadnamen waere die erste Zeile einer Ausnahmeliste. Beides tut
 //! dieser Riegel nicht.
 //!
-//! Die Datendokumente unter `daten/` und die Parameterdatei sind **nicht** darunter,
-//! und das ist eine benannte Grenze und keine Ausnahmeliste: Auf `reihen.toml` und
-//! `einheitenbefund-pwt-baci.md` laeuft Paket 0057, auf die Parameterdatei liefen
-//! 0035 und 0042. Ein Riegel, der sie heute mitnaehme, koennte erst gruen werden,
-//! nachdem eine inhaltliche Aufraeumarbeit fertig ist -- genau das, was das
-//! Arbeitspaket zu diesem Programm ausschliesst. Die Erweiterung ist eigene Arbeit
-//! und liegt als Vorschlag daneben. Die Grenze steht hier ausgeschrieben, damit
+//! Die Datendokumente unter `daten/` und die Parameterdatei sind fuer **Bedingung 1**
+//! nicht darunter, und das ist eine benannte Grenze und keine Ausnahmeliste: Auf
+//! `reihen.toml` und `einheitenbefund-pwt-baci.md` laeuft Paket 0057, auf die
+//! Parameterdatei liefen 0035 und 0042. Ein Riegel, der sie dort mitnaehme, koennte
+//! erst gruen werden, nachdem eine inhaltliche Aufraeumarbeit fertig ist -- genau das,
+//! was das Arbeitspaket zu diesem Programm ausschliesst. Die Erweiterung ist eigene
+//! Arbeit und liegt als Vorschlag daneben. Die Grenze steht hier ausgeschrieben, damit
 //! niemand die Zahlen unten fuer "alles geprueft" haelt.
 //!
-//! Zu lesen sind sie fuer diese Bedingung ohnehin nie noetig: Sie vergleicht den
-//! Verweis mit nichts, sie verwirft ihn wegen seiner **Bauart**. Ob die Nummer heute
-//! trifft, ist gleichgueltig -- sie traefe nicht aus Bauart, sondern aus Glueck.
+//! Zu lesen sind sie fuer Bedingung 1 ohnehin nie noetig: Sie vergleicht den Verweis
+//! mit nichts, sie verwirft ihn wegen seiner **Bauart**. Ob die Nummer heute trifft,
+//! ist gleichgueltig -- sie traefe nicht aus Bauart, sondern aus Glueck.
+//!
+//! ## Was Bedingung 2 daueber hinaus liest, und warum der Schnitt anders liegt
+//!
+//! Bedingung 2 liest die Bauquellen **und** die Datendokumente: `parameter.toml` und
+//! alles unter `daten/` mit der Endung `.md` oder `.toml`. Der Grund, warum der
+//! Schnitt hier anders liegt als bei Bedingung 1, ist kein Sinneswandel: Vier der
+//! sechs Pakete, um derentwillen dieses Programm existiert, haben ihre Ueberschriften
+//! genau dort hinterlassen -- 0034 in `adressen.md`, 0035 in `parameter.toml`, 0047
+//! und 0057 in `reihen.toml`. Ein Riegel, der sie auslaesst, prueft zwei von sechs.
+//!
+//! Und der Einwand von oben trifft Bedingung 2 nicht: Sie verlangt kein Aufraeumen,
+//! sondern ein Nachschlagen. Ein Zitat dort ist entweder aufloesbar oder es ist tot;
+//! im zweiten Fall ist es ein Befund und kein Rest einer laufenden Arbeit.
+//!
+//! **Was auch Bedingung 2 nicht liest, und warum:**
+//!
+//!   * `aufgaben/` -- ein Arbeitspaket beschreibt den Stand, als es zugeschnitten
+//!     wurde. Es nachzufuehren faelschte es, genau wie bei `befunde/`.
+//!   * Die Vorgaben unter `specs/`. Sie sind **Ziel** jedes zweiten Zitats und werden
+//!     gelesen, aber nur nachgeschlagen: Ein Befund darin liesse sich hier nicht
+//!     beheben, denn das Arbeitspaket zu diesem Programm verbietet das Aufraeumen in
+//!     `specs/` ausdruecklich. Ein Riegel, dessen Rot niemand beheben darf, ist keiner.
+//!
+//! ## Die drei Zahlen von Bedingung 2, und was jede bedeutet
+//!
+//! Gemeldet werden **Zitate gefunden** und **davon aufgeloest**. Sind sie ungleich,
+//! ist der Lauf rot: Jedes Zitat, dessen Ziel im Bestand steht, muss seine
+//! Ueberschrift dort auch finden. Ist die erste Zahl null, bricht der Riegel ab statt
+//! gruen zu melden -- dann stimmt das Muster nicht mehr, denn die sechs Pakete haben
+//! nachweislich Zitate hinterlassen.
+//!
+//! Dazu eine dritte Zahl, und sie ist die ehrliche Haelfte: **uebergangene
+//! Fundstellen**. Zwei Sorten, beide unten einzeln mit Datei und Zeile genannt, damit
+//! keine still bleibt:
+//!
+//!   * *ohne Dokumentnamen im Absatz* -- ein Verweis auf einen Abschnitt derselben
+//!     Datei, oder auf eine Quelle ausserhalb dieses Vorhabens (eine Lizenz, ein RFC).
+//!     Er traegt sein Ziel nicht bei sich; dieser Riegel prueft nur, was das tut.
+//!   * *Ziel ausserhalb des Bestands* -- der naechstgelegene Name gehoert zu keiner
+//!     Datei, die hier gelesen wird (ein Bericht unter `befunde/`, eine Netzadresse).
+//!
+//! Diese Fundstellen sind der ausgeschriebene blinde Fleck von Bedingung 2. Sie werden
+//! gezaehlt und aufgezaehlt, aber nicht bewertet -- eine Zahl, die stumm bliebe, waere
+//! genau die Sorte Riegel, gegen die dieses Paket geschrieben ist.
+//!
+//! ## Die sechs Pakete, einzeln abgehakt -- Stand 2026-09-04
+//!
+//! Gemessen, nicht angenommen: Die Belegstelle jedes der sechs Pakete ist im
+//! Aenderungsverlauf seiner eigenen Datei nachgeschlagen worden. Genannt wird sie hier
+//! ueber ihren Wortlaut und nicht ueber eine Zeilennummer -- eine Nummer neben einem
+//! Dateinamen waere in dieser Datei die Sorte Verweis, die Bedingung 1 verbietet.
+//!
+//!   0034 -- `daten/adressen.md`, drei Stellen, alle mit Ziel in `technik.md`. Zwei
+//!           **gefangen**: die Begruendung zur Spalte `Adresse` und die Herleitung zu
+//!           den unmarkierten Geschwisterpaaren zitieren beide denselben fett
+//!           ausgezeichneten Vorspann unter T49, und beide loesen auf. Sie fielen
+//!           erst an, seit das Wort fuer einen Textblock in SCHLUESSEL steht.
+//!           Die dritte -- die Tabellenueberschrift zu T46, im Satz mit "sagt es
+//!           selbst" -- ist **nicht gefangen**; die Form steht unten.
+//!           *Berichtigung vom 2026-09-04:* Bis dahin stand hier das Kopffeld
+//!           `quellen` derselben Datei. Das ist eine echte und gefangene Belegstelle,
+//!           aber sie stammt aus Paket 0004 und nicht aus 0034 -- `git log -S` auf
+//!           den Wortlaut fuehrt zwei Tage daneben, weil die Arbeit eines Pakets hier
+//!           regelmaessig im Commit des naechsten Laufs liegt und dessen Betreff den
+//!           Namen des anderen Pakets traegt. Der Wortlauttreffer gehoert deshalb
+//!           gegen das Datum des gesuchten Pakets gehalten, nicht fuer sich genommen.
+//!   0035 -- `parameter.toml`, in der Herkunftsbegruendung zu `hebelaufschlag`. Zwei
+//!           Zitate, beide gefangen; das zweite traegt seinen Dateinamen eine Zeile
+//!           oberhalb und faellt damit nur wegen der Absatzlesung an.
+//!   0044 -- `kern/test/schranken_probe.cpp`, im Kommentarblock ueber
+//!           `GRENZEN_BAUZEITPUNKT`. Gefangen. Das ist der Fall aus dem Nachtrag des
+//!           Projektmanagers: Dateiname vier Zeilen ueber der Ueberschrift.
+//!   0050 -- `pruefstand/test/vorrat_verfahren_probe.cpp`. Fuenf Zitate derselben
+//!           Ueberschrift, alle gefangen -- darunter die Marke `BELEGSTELLE`, deren
+//!           Anfuehrungszeichen in der Zeichenkette maskiert sind.
+//!   0057 -- `daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md`. Vier Zitate,
+//!           alle gefangen; drei in der geklammerten Form, die dieses Paket eingefuehrt
+//!           hat, eines mit gemischter Anfuehrung.
+//!   0047 -- `daten/reihen.toml`. **Nicht gefangen** -- siehe unten.
+//!
+//! **Die Luecke, ausgeschrieben statt verschwiegen.** Paket 0047 hat seine
+//! Ueberschriften **ohne Anfuehrung** zitiert. In `reihen.toml` steht dadurch viermal
+//! die Form `<datei>, Abschnitt <Name>`, wo der Name unmittelbar im Satz weiterlaeuft:
+//! einmal auf eine Ueberschrift ("Reihe 1"), einmal auf eine Aufzaehlung ("2b und 2c")
+//! und zweimal auf eine Nummer ("5", "7"). Diese Form faengt der Riegel nicht, und sie
+//! bleibt ungeschuetzt.
+//!
+//! Sie zu fangen hiesse, den Namen bis zum naechsten Satzzeichen zu lesen -- und dann
+//! sind eine Nummer und eine Ueberschrift dieselbe Gestalt. Der Riegel muesste raten,
+//! welche der beiden gemeint ist; wo er falsch raet, wird er rot an einer Stelle, an
+//! der nichts kaputt ist, und wo er zu vorsichtig raet, prueft er wieder nichts. Das
+//! ist eine eigene Entscheidung mit eigenem Nachweis und liegt als Vorschlag daneben
+//! (Paket 0079). Solange sie nicht getroffen ist, steht die Luecke hier -- ein Riegel,
+//! der etwas still uebergeht, sieht aus wie einer, der prueft.
+//!
+//! **Die zweite Luecke, aus demselben Grund ausgeschrieben: Das Schluesselwort steht
+//! nicht unmittelbar vor der Anfuehrung.** Die dritte Belegstelle aus Paket 0034 nennt
+//! ihr Schluesselwort, laesst dann aber fuenf Woerter folgen, ehe die Anfuehrung
+//! beginnt -- der Bau ist "die <Schluesselwort> der Tabelle sagt es selbst:", und erst
+//! danach kommt der zitierte Wortlaut. `ueberschrift_hinter` ueberspringt hinter dem
+//! Schluesselwort nur Leerzeichen und einen Gegenschraegstrich; alles andere beendet
+//! den Versuch, und die Stelle zaehlt danach nirgends -- auch nicht als uebergangen.
+//!
+//! An derselben Stelle steht ein zweites, davon unabhaengiges Hindernis: Der
+//! Dokumentname steht dort **rechts** vom Zitat, in der Klammer dahinter, waehrend
+//! dieser Riegel nur nach links sucht. Wer nur eines der beiden loest, fangt die
+//! Stelle immer noch nicht.
+//!
+//! Beides ist keine Zeile, sondern eine Entscheidung mit eigenem Nachweis, und zwar
+//! aus dem Grund, an dem schon 0047 haengt: Wer beliebig viele Woerter zwischen
+//! Schluesselwort und Anfuehrung zulaesst, bindet jede Anfuehrung eines Satzes an das
+//! naechstgelegene Schluesselwort und wird rot, wo nichts kaputt ist; wer zusaetzlich
+//! nach rechts sucht, muss entscheiden, welcher der beiden Nachbarn gewinnt, und hat
+//! dafuer heute kein Mass. Solange die Entscheidung nicht getroffen ist, bleibt diese
+//! Form ungeschuetzt. Sie steht hier, damit die Zahlen unten niemand fuer
+//! Vollstaendigkeit haelt; als Vorschlag liegt sie als Paket 0086 daneben.
 //!
 //! ## Warum der Riegel seinen eigenen Quelltext mitliest
 //!
@@ -87,11 +280,20 @@
 //!
 //! ## Aufruf
 //!
-//!     belegstellen_riegel <wurzel-des-vorhabens>
+//!     belegstellen_riegel <wurzel-des-vorhabens> [<wurzel-der-vorgaben>]
 //!
 //! Die Wurzel kommt von CMake und steht nicht im Programm. Ein fest eingebauter Pfad
-//! liefe nur auf dem Rechner, auf dem er gebaut wurde. Paket 0067 haengt die Wurzel
-//! der Vorgaben als zweites Argument an; die braucht erst das Abschnittszitat.
+//! liefe nur auf dem Rechner, auf dem er gebaut wurde.
+//!
+//! Die Wurzel der Vorgaben braucht erst Bedingung 2 -- dort liegen die Zieldateien der
+//! meisten Zitate. Sie ist **wahlfrei**, und das ist eine Entscheidung des Pakets 0067
+//! und keine Bequemlichkeit: Die `CMakeLists.txt` daneben gehoert Paket 0059 und steht
+//! nicht in der Dateiliste von 0067. Wird kein zweites Argument uebergeben, wird die
+//! Vorgabenwurzel aus der ersten abgeleitet -- Geschwisterverzeichnis `specs` mit
+//! demselben Vorhabensnamen. Das ist kein eingebauter Pfad: Jeder Teil davon stammt
+//! aus dem Argument, das CMake setzt. Findet sich dort kein Verzeichnis, bricht der
+//! Riegel ab (Code 2), statt jedes Zitat in die Vorgaben als "Ziel ausserhalb des
+//! Bestands" durchzuwinken -- das waere ein gruener Lauf ueber nichts.
 //!
 //! Rueckgabe: 0 kein Befund, 1 Befunde gefunden, 2 Aufruf- oder Lesefehler.
 //!
@@ -103,6 +305,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <map>
 #include <string>
 #include <string_view>
 #include <system_error>
@@ -223,35 +426,74 @@ bool endung_zugelassen(std::string_view wort) {
     return ENDUNGEN.find(gesucht) != std::string_view::npos;
 }
 
-/// Das Wort unmittelbar links von `bis`, ohne schliessende Satzzeichen.
+/// Wo der Satz beginnt, in dem die Stelle `bis` liegt -- die Untergrenze der Suche
+/// nach links. Begruendung im Kopf, dort im vierten Teil.
 ///
-/// Leer, wenn dort keines steht oder es keine zugelassene Endung traegt. Der
-/// Rueckwaertsgang laeuft ueber zwei Laeufe: erst ueber alles, was kein Pfadzeichen
-/// ist (Leerzeichen, Akzent, Doppelpunkt), dann ueber das Wort selbst.
+/// Ohne Anfuehrung genannt und nicht als Zitat: Bedingung 2 dieses Programms faende
+/// eine zitierte Ueberschrift im eigenen Quelltext und fuehrte sie fortan unter den
+/// uebergangenen Fundstellen -- eine Zahl, die Paket 0067 gehoert.
+///
+/// Ein Satzende ist ein Punkt, ein Ausrufe- oder ein Fragezeichen mit Leerraum
+/// dahinter. Der Leerraum ist der tragende Teil der Bedingung und keine Feinheit: Ein
+/// Punkt **ohne** ihn ist regelmaessig die Endung selbst, und ein Satzende mitten in
+/// `technik.md` beendete die Suche vor jedem Fund.
+///
+/// Die Regel ist absichtlich zu streng statt zu nachsichtig: Eine Abkuerzung mit Punkt
+/// beendet den Satz hier ebenfalls. Der Riegel sucht dann kuerzer als noetig und laesst
+/// eine Stelle durch -- das ist die Richtung, in der ein Fehler nichts kaputt macht.
+std::size_t satzanfang_vor(std::string_view zeile, std::size_t bis) {
+    std::size_t anfang = 0;
+    for (std::size_t k = 0; k + 1 < bis; ++k) {
+        const char c = zeile[k];
+        if (c != '.' && c != '!' && c != '?') {
+            continue;
+        }
+        if (zeile[k + 1] == ' ' || zeile[k + 1] == '\t') {
+            anfang = k + 2;
+        }
+    }
+    return anfang;
+}
+
+/// Der **naechstgelegene** Dateiname links von `bis` auf derselben Zeile.
+///
+/// Gesucht wird wortweise nach links bis zum Anfang des Satzes, nicht ueber genau ein
+/// Wort. Der erste Fund gewinnt; ueber ihn hinweg wird nicht weitergesucht. Beides ist
+/// im Kopf begruendet und beides traegt einen Fall in `NAMENSFAELLE`.
+///
+/// Leer, wenn im Satz links kein Wort mit zugelassener Endung steht.
 std::string dateiname_davor(std::string_view zeile, std::size_t bis) {
-    std::size_t ende = bis;
-    while (ende > 0 && !ist_pfadzeichen(zeile[ende - 1])) {
-        --ende;
-    }
-    std::size_t anfang = ende;
-    while (anfang > 0 && ist_pfadzeichen(zeile[anfang - 1])) {
-        --anfang;
-    }
-    if (anfang == ende) {
-        return {};
-    }
+    const std::size_t untergrenze = satzanfang_vor(zeile, bis);
+    std::size_t grenze = bis;
+    while (grenze > untergrenze) {
+        // Erst ueber alles, was kein Pfadzeichen ist (Leerzeichen, Akzent,
+        // Doppelpunkt), dann ueber das Wort selbst.
+        std::size_t ende = grenze;
+        while (ende > untergrenze && !ist_pfadzeichen(zeile[ende - 1])) {
+            --ende;
+        }
+        std::size_t anfang = ende;
+        while (anfang > untergrenze && ist_pfadzeichen(zeile[anfang - 1])) {
+            --anfang;
+        }
+        if (anfang == ende) {
+            return {};
+        }
 
-    std::string_view wort = zeile.substr(anfang, ende - anfang);
+        std::string_view wort = zeile.substr(anfang, ende - anfang);
 
-    // Ein Satzpunkt am Ende gehoert nicht zum Namen: `siehe technik.md.` traegt die
-    // Endung `.md`, nicht `.md.`. Dasselbe fuer den Schraegstrich eines Verzeichnisses.
-    while (!wort.empty() && (wort.back() == '.' || wort.back() == '/')) {
-        wort.remove_suffix(1);
+        // Ein Satzpunkt am Ende gehoert nicht zum Namen: `siehe technik.md.` traegt
+        // die Endung `.md`, nicht `.md.`. Dasselbe fuer den Schraegstrich eines
+        // Verzeichnisses.
+        while (!wort.empty() && (wort.back() == '.' || wort.back() == '/')) {
+            wort.remove_suffix(1);
+        }
+        if (endung_zugelassen(wort)) {
+            return std::string(wort);
+        }
+        grenze = anfang;
     }
-    if (!endung_zugelassen(wort)) {
-        return {};
-    }
-    return std::string(wort);
+    return {};
 }
 
 std::string_view basisname(std::string_view pfad) {
@@ -260,6 +502,126 @@ std::string_view basisname(std::string_view pfad) {
         return pfad;
     }
     return pfad.substr(strich + 1);
+}
+
+/// Was eine Zeile hergibt: wo das Muster traf, wie lang der Treffer ist und welchen
+/// Dateinamen die Zeile links davon nennt.
+struct Zeilenfund {
+    bool getroffen = false;
+    std::size_t anfang = 0;
+    std::size_t laenge = 0;
+    std::string ziel;
+};
+
+/// Der naechste Fund ab `von`. Ein eigener Aufruf und keine Schleife im Leser, damit
+/// der Selbsttest unten **denselben** Weg misst wie der Lauf ueber den Bestand. Eine
+/// zweite, nachgebaute Zerlegung im Test hiesse, zwei Fassungen gegeneinander zu
+/// pruefen, von denen nur eine im Ernstfall laeuft.
+Zeilenfund fund_ab(std::string_view zeile, std::size_t von) {
+    for (std::size_t i = von; i < zeile.size(); ++i) {
+        const std::size_t laenge = musterlaenge(zeile, i);
+        if (laenge == 0) {
+            continue;
+        }
+        return Zeilenfund{true, i, laenge, dateiname_davor(zeile, i)};
+    }
+    return {};
+}
+
+// ---------------------------------------------------------------------------
+// Der Selbsttest zur Suche nach links -- Paket 0073
+// ---------------------------------------------------------------------------
+//
+// Warum als Tabelle im Programm und nicht als zweiter Testfall daneben: Die
+// `CMakeLists.txt` gehoert Paket 0059 und steht nicht in der Dateiliste von 0073.
+// Ein zweites `add_test` waere ein Schreibzugriff auf fremdes Gebiet. Die Tabelle
+// hier laeuft dafuer bei **jedem** Aufruf mit -- ein Weg, der nicht vergessen werden
+// kann, weil er kein eigener Befehl ist.
+//
+// Jede Zeile traegt ihre Herkunft. Vier der acht sind im Bestand gemessen und nicht
+// erfunden; die uebrigen vier halten je eine Entscheidung fest, die sonst niemand
+// nachlesen koennte.
+//
+// **Warum die Musterwoerter maskiert sind.** Der Riegel liest seinen eigenen
+// Quelltext -- eine ausgeschriebene Beispielzeile faende er hier und meldete sich
+// selbst. `\145` ist der Buchstabe `e`, `\132` der Buchstabe `Z`; zur Laufzeit steht
+// das Wort da, im Dateitext nicht. Der Selbsttest prueft deshalb zuerst, dass jeder
+// Fall ueberhaupt noch einen Mustertreffer hergibt: Verrutscht die Maskierung, wird
+// er laut statt still gruen.
+
+struct Namensfall {
+    std::string_view zeile;
+    /// Der Name, den der Riegel finden muss. **Leer heisst: er darf keinen finden** --
+    /// die Haelfte des Maszstabs, ohne die eine Suche nur beweist, dass sie etwas
+    /// findet, und nicht, dass sie das Richtige findet.
+    std::string_view erwartet;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Namensfall, 8> NAMENSFAELLE = {{
+    // --- Die zwei Formen, um derentwillen dieses Paket existiert -------------
+    {"abschliessend (`technik.md`; am 2026-09-03 Zeil\145 1219,", "technik.md",
+     "daten/adressen.md, Satz zur Tabelle T46 -- gemessen 2026-09-04: Datum dazwischen"},
+    {"den Wortlaut der Reihenliste aus technik.md Abschnitt 7, und die Reihenliste "
+     "sagt dort in Zeil\145 1441 weiter",
+     "technik.md",
+     "daten/reihen.toml, Feld in_dieser_datei zu Reihe 9 -- gemessen 2026-09-04: "
+     "acht Fuellwoerter und ein Komma dazwischen"},
+
+    // --- Die Regel bei mehreren Namen ---------------------------------------
+    {"laut daten/adressen.md und spiel.md steht in Zeil\145 88 der Wert", "spiel.md",
+     "gebaut: der naechstgelegene Name gilt, ueber ihn hinweg wird nicht gesucht"},
+
+    // --- Was weiterhin durchgehen muss --------------------------------------
+    {"static_assert(stelle_basiswechsel(Gebiet::RW) == 197);   // Zeil\145 198", "",
+     "kern/src/zustand.cpp -- eine von fuenf Stellen, die gruen bleiben muessen: "
+     "die Nummer meint die Adresstabelle, kein Wort der Zeile ist ein Dateiname"},
+    {"Siehe technik.md. Dort steht in Zeil\145 42 die Erklaerung", "",
+     "gebaut: das Satzende beendet die Suche -- dies ist der Fall, der die Grenze "
+     "misst, und ohne ihn waere sie behauptet"},
+    {"in Zeil\145 42 von technik.md", "",
+     "gebaut: gesucht wird nur nach links. Ein Name rechts vom Treffer bleibt "
+     "ungefangen; das ist eine Luecke und keine Nachsicht"},
+
+    // --- Was die enge Fassung schon konnte und weiter koennen muss ----------
+    {"parameter.toml Zeil\145 304: druck_max = 1 # PLATZHALTER", "parameter.toml",
+     "kern/test/schranken_probe.cpp -- die unmittelbare Form, die schon vor 0073 "
+     "gefangen wurde"},
+    {"sind gegen die Reihenliste und gegen technik.md dort \132. 1306 gehalten",
+     "technik.md",
+     "aufgaben/0006, abgewandelt: die zweite Musterform mit einem Wort dazwischen -- "
+     "die Verbreiterung gilt fuer beide Muster, nicht nur fuer das erste"},
+}};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_namenssuche() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < NAMENSFAELLE.size(); ++k) {
+        const Namensfall& fall = NAMENSFAELLE[k];
+        const Zeilenfund fund = fund_ab(fall.zeile, 0);
+        if (!fund.getroffen) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest %zu: kein Mustertreffer. Der Fall misst damit "
+                         "nichts mehr -- vermutlich ist die Maskierung des Musterworts "
+                         "verrutscht.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (std::string_view(fund.ziel) != fall.erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest %zu: erwartet war %s, gefunden wurde %s.\n"
+                         "      Zeile:    %.*s\n      Herkunft: %.*s\n", k + 1,
+                         fall.erwartet.empty() ? "kein Dateiname"
+                                               : std::string(fall.erwartet).c_str(),
+                         fund.ziel.empty() ? "keiner" : fund.ziel.c_str(),
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
 }
 
 // ---------------------------------------------------------------------------
@@ -272,6 +634,25 @@ bool ist_quelldatei(const fs::path& pfad) {
     }
     const std::string endung = pfad.extension().string();
     return endung == ".cpp" || endung == ".hpp" || endung == ".cmake";
+}
+
+/// Ein Datendokument -- was Bedingung 2 ueber die Bauquellen hinaus liest.
+/// `parameter.toml` und alles unter `daten/`; die Begruendung steht im Kopf.
+bool ist_datendokument(const fs::path& pfad) {
+    const std::string endung = pfad.extension().string();
+    return endung == ".md" || endung == ".toml";
+}
+
+/// Alles, was als **Ziel** eines Zitats nachgeschlagen werden kann. Weiter gefasst
+/// als die beiden oben: Ein Zitat darf auf eine Datei zeigen, die selbst nichts
+/// zitiert. Die Endungsliste ist dieselbe wie bei Bedingung 1, damit es nicht zwei
+/// gibt, die auseinanderlaufen.
+bool ist_zieldatei(const fs::path& pfad) {
+    if (ist_quelldatei(pfad)) {
+        return true;
+    }
+    const std::string name = pfad.filename().string();
+    return endung_zugelassen(name);
 }
 
 bool ist_gesperrt(std::string_view ordner) {
@@ -289,6 +670,10 @@ bool ist_gesperrt(std::string_view ordner) {
 /// Ordner soll gar nicht erst geoeffnet werden.
 std::vector<fs::path> sammle_dateien(const fs::path& wurzel, std::error_code& fehler) {
     std::vector<fs::path> gefunden;
+    // Eingesammelt wird in einem Durchgang alles, was ueberhaupt gelesen werden kann;
+    // welche Bedingung welche Teilmenge bekommt, entscheidet `main` an den Praedikaten
+    // oben. Zwei Durchgaenge ueber denselben Baum waeren zwei Ordnerlisten, die
+    // auseinanderlaufen koennen.
     std::vector<fs::path> offen;
     offen.push_back(wurzel);
 
@@ -308,7 +693,7 @@ std::vector<fs::path> sammle_dateien(const fs::path& wurzel, std::error_code& fe
                 if (!ist_gesperrt(eintrag.filename().string())) {
                     offen.push_back(eintrag);
                 }
-            } else if (fs::is_regular_file(eintrag, art) && ist_quelldatei(eintrag)) {
+            } else if (fs::is_regular_file(eintrag, art) && ist_zieldatei(eintrag)) {
                 gefunden.push_back(eintrag);
             }
             it.increment(fehler);
@@ -359,33 +744,579 @@ void pruefe_datei(const fs::path& pfad, const std::string& anzeigename,
             zeile.pop_back();
         }
         for (std::size_t i = 0; i < zeile.size();) {
-            const std::size_t laenge = musterlaenge(zeile, i);
-            if (laenge == 0) {
-                ++i;
-                continue;
+            const Zeilenfund fund = fund_ab(zeile, i);
+            if (!fund.getroffen) {
+                break;
             }
             ++zaehlwerk.treffer;
 
-            const std::string ziel = dateiname_davor(zeile, i);
-            if (!ziel.empty()) {
+            if (!fund.ziel.empty()) {
                 ++zaehlwerk.mit_dateinamen;
-                if (basisname(ziel) != eigener_name) {
-                    befunde.push_back(
-                        Befund{anzeigename, nummer, ziel, ausschnitt(zeile, i, laenge)});
+                if (basisname(fund.ziel) != eigener_name) {
+                    befunde.push_back(Befund{
+                        anzeigename, nummer, fund.ziel,
+                        ausschnitt(zeile, fund.anfang, fund.laenge)});
                 }
             }
-            i += laenge;
+            i = fund.anfang + fund.laenge;
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 2, Teil 1: was ein Zitat ist
+// ---------------------------------------------------------------------------
+
+/// Die drei Schluesselwoerter, hinter denen eine Ueberschrift stehen darf.
+/// Zusammengesetzt statt ausgeschrieben, aus demselben Grund wie bei Bedingung 1:
+/// Ein ausgeschriebenes Schluesselwort traegt in einem Zeichenkettenliteral
+/// unmittelbar hinter sich ein Anfuehrungszeichen. Der Riegel faende sich damit in
+/// seinem eigenen Quelltext und suchte eine Ueberschrift, die es nirgends gibt.
+constexpr std::array<std::string_view, 4> SCHLUESSEL = {
+    "Abschnit\164", "Ueberschrif\164", "\303\234berschrif\164", "Absa\164z"};
+
+/// Anfuehrung und Schluss, paarweise. Die deutschen Anfuehrungszeichen sind unten und
+/// oben verschieden, und im Bestand kommen zu einem Anfang mehrere Schluesse vor --
+/// deshalb mehrere Zeilen mit demselben Anfang. Die Reihenfolge entscheidet: Genommen
+/// wird das erste Paar, dessen Anfang passt **und** dessen Schluss im selben Absatz
+/// steht. Die typografischen Paare stehen deshalb vor dem geraden Schlusszeichen: Ein
+/// gerades Anfuehrungszeichen kommt in einem Satz zu oft vor, um erste Wahl zu sein.
+///
+/// Dass es die gemischte Form ueberhaupt braucht, ist gemessen und nicht vermutet:
+/// `einheitenbefund-pwt-baci.md` oeffnet mit dem tiefen Anfuehrungszeichen und
+/// schliesst mit dem geraden. Ohne die letzten beiden Zeilen unten faende der Riegel
+/// dieses Zitat nicht -- und, schlimmer, meldete es nicht einmal als uebergangen,
+/// denn ohne Schluss ist es fuer ihn gar kein Zitat.
+struct Klammer {
+    std::string_view auf;
+    std::string_view zu;
+};
+
+constexpr std::array<Klammer, 11> KLAMMERN = {{
+    {"\"", "\""},
+    {"\342\200\236", "\342\200\234"},  // U+201E ... U+201C
+    {"\342\200\236", "\342\200\235"},  // U+201E ... U+201D
+    {"\342\200\234", "\342\200\235"},  // U+201C ... U+201D
+    {"'", "'"},
+    {"\342\200\230", "\342\200\231"},  // U+2018 ... U+2019
+    {"`", "`"},
+    {"*", "*"},
+    {"\342\200\236", "\""},  // U+201E ... gerade
+    {"\342\200\234", "\""},  // U+201C ... gerade
+    // Die Form, die Paket 0057 in `reihen.toml` eingefuehrt hat: "Adresse plus Zitat
+    // im Wortlaut", geklammert statt in Anfuehrung. Sie steht hier, weil 0057 eines
+    // der sechs Pakete ist, um derentwillen dieser Riegel existiert -- ohne diese
+    // Zeile fiele die Haelfte seiner Arbeit durch.
+    {"(Zita\164: ", ")"},
+}};
+
+/// Laenger als das kann eine Ueberschrift nicht sein. Ohne die Schranke greift ein
+/// Anfuehrungszeichen ohne Partner in der Naehe bis ans Absatzende und macht aus einem
+/// halben Satz eine "Ueberschrift".
+constexpr std::size_t UEBERSCHRIFT_HOECHSTENS = 200;
+
+bool ist_wortzeichen(char c) {
+    const unsigned char z = static_cast<unsigned char>(c);
+    return (z >= 'a' && z <= 'z') || (z >= 'A' && z <= 'Z') || (z >= '0' && z <= '9')
+           || z >= 0x80;  // ein Folgebyte gehoert zum Buchstaben davor
+}
+
+/// Die Normierung, auf beiden Seiten des Vergleichs dieselbe. Begruendung im Kopf.
+std::string normiere(std::string_view roh) {
+    std::string umschrieben;
+    for (std::size_t i = 0; i < roh.size();) {
+        const unsigned char c = static_cast<unsigned char>(roh[i]);
+        if (c == 0xC3 && i + 1 < roh.size()) {
+            const unsigned char d = static_cast<unsigned char>(roh[i + 1]);
+            bool getroffen = true;
+            switch (d) {
+                case 0xA4: umschrieben += "ae"; break;
+                case 0xB6: umschrieben += "oe"; break;
+                case 0xBC: umschrieben += "ue"; break;
+                case 0x84: umschrieben += "Ae"; break;
+                case 0x96: umschrieben += "Oe"; break;
+                case 0x9C: umschrieben += "Ue"; break;
+                case 0x9F: umschrieben += "ss"; break;
+                default: getroffen = false; break;
+            }
+            if (getroffen) {
+                i += 2;
+                continue;
+            }
+        }
+        if (c == 0xE2 && i + 2 < roh.size()
+            && static_cast<unsigned char>(roh[i + 1]) == 0x80) {
+            const unsigned char d = static_cast<unsigned char>(roh[i + 2]);
+            if (d == 0x93 || d == 0x94) {  // Halbgeviert- und Geviertstrich
+                umschrieben += "--";
+                i += 3;
+                continue;
+            }
+            if (d == 0x9C || d == 0x9D || d == 0x9E) {
+                umschrieben += '"';
+                i += 3;
+                continue;
+            }
+            if (d == 0x98 || d == 0x99) {
+                umschrieben += '\'';
+                i += 3;
+                continue;
+            }
+        }
+        umschrieben += static_cast<char>(c);
+        ++i;
+    }
+
+    std::string gestrafft;
+    bool luecke = false;
+    for (std::size_t i = 0; i < umschrieben.size(); ++i) {
+        const char c = umschrieben[i];
+        if (c == '*' || c == '_' || c == '`') {
+            continue;
+        }
+        if (c == ' ' || c == '\t') {
+            luecke = !gestrafft.empty();
+            continue;
+        }
+        if (luecke) {
+            gestrafft += ' ';
+            luecke = false;
+        }
+        gestrafft += c;
+    }
+
+    std::size_t vorn = 0;
+    while (vorn < gestrafft.size() && gestrafft[vorn] == '#') {
+        ++vorn;
+    }
+    while (vorn < gestrafft.size() && gestrafft[vorn] == ' ') {
+        ++vorn;
+    }
+    std::string fertig = gestrafft.substr(vorn);
+    while (!fertig.empty()
+           && (fertig.back() == '.' || fertig.back() == ':' || fertig.back() == ','
+               || fertig.back() == ';')) {
+        fertig.pop_back();
+    }
+    return fertig;
+}
+
+/// Ist diese Zeile der Zieldatei eine Ueberschriftszeile? Zwei Formen, beide im Kopf
+/// begruendet: Rautenzeichen am Anfang, oder ein fett ausgezeichneter Vorspann.
+bool ueberschrift_aus_zeile(std::string_view zeile, std::string& text) {
+    std::size_t i = 0;
+    while (i < zeile.size() && (zeile[i] == ' ' || zeile[i] == '\t')) {
+        ++i;
+    }
+    if (i < zeile.size() && zeile[i] == '#') {
+        std::size_t j = i;
+        while (j < zeile.size() && zeile[j] == '#') {
+            ++j;
+        }
+        if (j < zeile.size() && (zeile[j] == ' ' || zeile[j] == '\t')) {
+            text = std::string(zeile.substr(j));
+            return true;
+        }
+        return false;
+    }
+    if (zeile.size() - i >= 5 && zeile.substr(i, 2) == "**") {
+        const std::size_t zu = zeile.find("**", i + 2);
+        if (zu != std::string_view::npos && zu > i + 2) {
+            text = std::string(zeile.substr(i + 2, zu - (i + 2)));
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<std::string> lies_ueberschriften(const fs::path& pfad) {
+    std::vector<std::string> gefunden;
+    std::ifstream strom(pfad);
+    if (!strom) {
+        return gefunden;
+    }
+    std::string zeile;
+    while (std::getline(strom, zeile)) {
+        if (!zeile.empty() && zeile.back() == '\r') {
+            zeile.pop_back();
+        }
+        std::string roh;
+        if (ueberschrift_aus_zeile(zeile, roh)) {
+            std::string normiert = normiere(roh);
+            if (!normiert.empty()) {
+                gefunden.push_back(normiert);
+            }
+        }
+    }
+    return gefunden;
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 2, Teil 2: der Absatz
+// ---------------------------------------------------------------------------
+
+/// Welche Kommentarzeichen am Zeilenanfang abgestreift werden. In einer
+/// Markdown-Datei keine: Dort ist das Rautenzeichen eine Ueberschrift und kein
+/// Kommentar.
+enum class Kopfart { Schraegstrich, Raute, Keine };
+
+Kopfart kopfart(const fs::path& pfad) {
+    if (pfad.filename().string() == "CMakeLists.txt") {
+        return Kopfart::Raute;
+    }
+    const std::string endung = pfad.extension().string();
+    if (endung == ".cpp" || endung == ".hpp") {
+        return Kopfart::Schraegstrich;
+    }
+    if (endung == ".cmake" || endung == ".toml") {
+        return Kopfart::Raute;
+    }
+    return Kopfart::Keine;
+}
+
+/// Ein Absatz: der Wortlaut am Stueck und zu jedem Zeichen die Zeile, aus der es
+/// stammt. Die zweite Liste ist nicht Zierde -- ohne sie nennt die Meldung den Absatz
+/// und nicht die Zeile, und der naechste Leser sucht wieder.
+struct Absatz {
+    std::string text;
+    std::vector<std::size_t> zeile;
+};
+
+/// Trennt eine Zeile in Kommentarkopf und Inhalt. Der Kopf ist zugleich die Kennung
+/// des Absatzes: Ein `///`-Block und ein `//`-Block daneben sind zwei Absaetze und
+/// nicht einer, denn sie beschreiben Verschiedenes.
+void zerlege_zeile(std::string_view zeile, Kopfart art, std::string& kopf,
+                   std::string_view& inhalt) {
+    std::size_t i = 0;
+    while (i < zeile.size() && (zeile[i] == ' ' || zeile[i] == '\t')) {
+        ++i;
+    }
+    std::string_view rest = zeile.substr(i);
+    kopf.clear();
+    if (art == Kopfart::Schraegstrich) {
+        if (rest.size() >= 3 && (rest.substr(0, 3) == "//!" || rest.substr(0, 3) == "///")) {
+            kopf = std::string(rest.substr(0, 3));
+            rest.remove_prefix(3);
+        } else if (rest.size() >= 2 && rest.substr(0, 2) == "//") {
+            kopf = "//";
+            rest.remove_prefix(2);
+        }
+    } else if (art == Kopfart::Raute) {
+        if (!rest.empty() && rest.front() == '#') {
+            kopf = "#";
+            rest.remove_prefix(1);
+        }
+    }
+    while (!rest.empty() && (rest.back() == ' ' || rest.back() == '\t')) {
+        rest.remove_suffix(1);
+    }
+    std::size_t v = 0;
+    while (v < rest.size() && (rest[v] == ' ' || rest[v] == '\t')) {
+        ++v;
+    }
+    rest.remove_prefix(v);
+    inhalt = rest;
+}
+
+std::vector<Absatz> lies_absaetze(const fs::path& pfad) {
+    std::vector<Absatz> absaetze;
+    std::ifstream strom(pfad);
+    if (!strom) {
+        return absaetze;
+    }
+    const Kopfart art = kopfart(pfad);
+
+    std::string zeile;
+    std::size_t nummer = 0;
+    Absatz laufend;
+    std::string letzter_kopf;
+    bool offen = false;
+
+    while (std::getline(strom, zeile)) {
+        ++nummer;
+        if (!zeile.empty() && zeile.back() == '\r') {
+            zeile.pop_back();
+        }
+        std::string kopf;
+        std::string_view inhalt;
+        zerlege_zeile(zeile, art, kopf, inhalt);
+
+        if (offen && (inhalt.empty() || kopf != letzter_kopf)) {
+            absaetze.push_back(laufend);
+            laufend = Absatz{};
+            offen = false;
+        }
+        if (inhalt.empty()) {
+            continue;
+        }
+        if (!offen) {
+            letzter_kopf = kopf;
+            offen = true;
+        } else {
+            laufend.text += ' ';
+            laufend.zeile.push_back(nummer);
+        }
+        for (std::size_t k = 0; k < inhalt.size(); ++k) {
+            laufend.text += inhalt[k];
+            laufend.zeile.push_back(nummer);
+        }
+    }
+    if (offen) {
+        absaetze.push_back(laufend);
+    }
+    return absaetze;
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 2, Teil 3: Ziel suchen und nachschlagen
+// ---------------------------------------------------------------------------
+
+/// Der **naechstgelegene** Verweis links von `bis` im selben Absatz -- und nur er.
+///
+/// Ueber einen Verweis hinweg wird nicht weitergesucht, auch nicht, wenn er sich nicht
+/// aufloesen laesst. Der Grund ist gemessen: In `lizenzbefund-reihen.md` steht ein
+/// Zitat aus einer franzoesischen Lizenzseite, deren Netzadresse eine Zeile darueber
+/// steht; wer ueber sie hinwegliest, findet vier Zeilen weiter oben `daten.md` und
+/// schlaegt eine franzoesische Ueberschrift in einer deutschen Vorgabe nach. Ein Ziel,
+/// das dazwischenliegt, gehoert zum Satz -- die Suche endet dort und meldet das.
+///
+/// `netzadresse` sagt, welcher Sorte der Fund ist. Eine Netzadresse faellt am
+/// doppelten Schraegstrich auf, den ein Pfad dieses Vorhabens nie traegt.
+bool naechster_verweis(std::string_view text, std::size_t bis, std::string& name,
+                       bool& netzadresse) {
+    std::size_t grenze = bis;
+    while (grenze > 0) {
+        std::size_t ende = grenze;
+        while (ende > 0 && !ist_pfadzeichen(text[ende - 1])) {
+            --ende;
+        }
+        if (ende == 0) {
+            return false;
+        }
+        std::size_t anfang = ende;
+        while (anfang > 0 && ist_pfadzeichen(text[anfang - 1])) {
+            --anfang;
+        }
+        std::string_view wort = text.substr(anfang, ende - anfang);
+        while (!wort.empty() && (wort.back() == '.' || wort.back() == '/')) {
+            wort.remove_suffix(1);
+        }
+        if (endung_zugelassen(wort)) {
+            name = std::string(wort);
+            netzadresse = wort.find("//") != std::string_view::npos;
+            return true;
+        }
+        grenze = anfang;
+    }
+    return false;
+}
+
+/// Eine Datei, auf die ein Zitat zeigen kann. `anzahl` traegt, wie oft ihr Basisname
+/// im Bestand vorkommt: Ein mehrdeutiger Name wird nicht geraten.
+struct Ziel {
+    fs::path pfad;
+    std::string anzeige;
+    std::size_t anzahl = 0;
+};
+
+using Zielbestand = std::map<std::string, Ziel>;
+
+void nimm_ziel_auf(Zielbestand& bestand, const fs::path& pfad,
+                   const std::string& anzeige) {
+    const std::string schluessel = pfad.filename().string();
+    Ziel& eintrag = bestand[schluessel];
+    if (eintrag.anzahl == 0) {
+        eintrag.pfad = pfad;
+        eintrag.anzeige = anzeige;
+    }
+    ++eintrag.anzahl;
+}
+
+struct Zitatbefund {
+    std::string datei;
+    std::size_t zeilennummer = 0;
+    std::string ziel;
+    std::string ueberschrift;
+};
+
+struct Uebergangen {
+    std::string datei;
+    std::size_t zeilennummer = 0;
+    std::string grund;
+    std::string ueberschrift;
+};
+
+struct Zitatzaehlwerk {
+    std::size_t zitate = 0;
+    std::size_t aufgeloest = 0;
+};
+
+/// Laenge des Schluesselworts, das bei `i` **beginnt** -- oder 0.
+std::size_t schluessellaenge(std::string_view text, std::size_t i) {
+    if (i > 0 && ist_wortzeichen(text[i - 1])) {
+        return 0;
+    }
+    for (std::size_t k = 0; k < SCHLUESSEL.size(); ++k) {
+        const std::string_view wort = SCHLUESSEL[k];
+        if (text.size() - i >= wort.size() && text.substr(i, wort.size()) == wort) {
+            return wort.size();
+        }
+    }
+    return 0;
+}
+
+/// Liest die Ueberschrift, die bei `i` in Anfuehrung stehen soll. Rueckgabe ist die
+/// Laenge des ganzen Zitatteils ab `i`, oder 0, wenn dort keine Anfuehrung steht.
+std::size_t ueberschrift_hinter(std::string_view text, std::size_t i, std::string& roh) {
+    std::size_t j = i;
+    while (j < text.size() && text[j] == ' ') {
+        ++j;
+    }
+    // Ein Zitat in einer C++-Zeichenkette traegt sein Anfuehrungszeichen maskiert.
+    if (j < text.size() && text[j] == '\\') {
+        ++j;
+    }
+    for (std::size_t k = 0; k < KLAMMERN.size(); ++k) {
+        const Klammer klammer = KLAMMERN[k];
+        if (text.size() - j < klammer.auf.size()
+            || text.substr(j, klammer.auf.size()) != klammer.auf) {
+            continue;
+        }
+        const std::size_t inhalt = j + klammer.auf.size();
+        const std::size_t zu = text.find(klammer.zu, inhalt);
+        if (zu == std::string_view::npos || zu == inhalt
+            || zu - inhalt > UEBERSCHRIFT_HOECHSTENS) {
+            continue;
+        }
+        roh = std::string(text.substr(inhalt, zu - inhalt));
+        while (!roh.empty() && roh.back() == '\\') {
+            roh.pop_back();
+        }
+        return (zu + klammer.zu.size()) - i;
+    }
+    return 0;
+}
+
+void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
+                   const Zielbestand& bestand,
+                   std::map<std::string, std::vector<std::string>>& ueberschriften,
+                   std::vector<Zitatbefund>& befunde,
+                   std::vector<Uebergangen>& uebergangen, Zitatzaehlwerk& zaehlwerk) {
+    const std::vector<Absatz> absaetze = lies_absaetze(pfad);
+    for (std::size_t a = 0; a < absaetze.size(); ++a) {
+        const Absatz& absatz = absaetze[a];
+        for (std::size_t i = 0; i < absatz.text.size();) {
+            const std::size_t schluessel = schluessellaenge(absatz.text, i);
+            if (schluessel == 0) {
+                ++i;
+                continue;
+            }
+            std::string roh;
+            const std::size_t zitatteil =
+                ueberschrift_hinter(absatz.text, i + schluessel, roh);
+            if (zitatteil == 0) {
+                i += schluessel;
+                continue;
+            }
+            const std::size_t nummer = absatz.zeile[i];
+            const std::string gesucht = normiere(roh);
+
+            std::string name;
+            bool netzadresse = false;
+            std::string grund;
+            if (!naechster_verweis(absatz.text, i, name, netzadresse)) {
+                // Letztes Zeichen maskiert, aus demselben Grund wie in SCHLUESSEL:
+                // Ausgeschrieben stuende hier ein Schluesselwort mit einem
+                // Anfuehrungszeichen unmittelbar dahinter, und der Riegel faende sich
+                // in seinem eigenen Quelltext -- gemessen, er meldete dann eine
+                // uebergangene Fundstelle, deren gesuchter Name die halbe naechste
+                // Anweisung war.
+                grund = "kein Dokumentname im Absa\164z";
+            } else if (netzadresse) {
+                grund = "naechstes Ziel ist eine Netzadresse: " + name;
+            } else {
+                const Zielbestand::const_iterator es =
+                    bestand.find(std::string(basisname(name)));
+                if (es == bestand.end()) {
+                    grund = "Ziel ausserhalb des Bestands: " + name;
+                } else if (es->second.anzahl != 1) {
+                    grund = "Zielname mehrdeutig, " + std::to_string(es->second.anzahl)
+                            + " Dateien heissen so: " + name;
+                } else {
+                    ++zaehlwerk.zitate;
+                    const std::string schluesselpfad = es->second.pfad.string();
+                    if (ueberschriften.find(schluesselpfad) == ueberschriften.end()) {
+                        ueberschriften[schluesselpfad] =
+                            lies_ueberschriften(es->second.pfad);
+                    }
+                    const std::vector<std::string>& liste = ueberschriften[schluesselpfad];
+                    bool steht_da = false;
+                    for (std::size_t u = 0; u < liste.size() && !steht_da; ++u) {
+                        steht_da = liste[u] == gesucht;
+                    }
+                    if (steht_da) {
+                        ++zaehlwerk.aufgeloest;
+                    } else {
+                        befunde.push_back(
+                            Zitatbefund{anzeigename, nummer, es->second.anzeige, gesucht});
+                    }
+                }
+            }
+            if (!grund.empty()) {
+                uebergangen.push_back(Uebergangen{anzeigename, nummer, grund, gesucht});
+            }
+            i += schluessel + zitatteil;
         }
     }
 }
 
 }  // namespace
 
+namespace {
+
+/// Der Pfad, wie ihn ein Leser sucht: ohne die Wurzel davor.
+std::string kurzname(const fs::path& pfad, const std::string& wurzeltext,
+                     const std::string& vorsatz) {
+    std::string name = pfad.string();
+    if (name.size() > wurzeltext.size()
+        && name.compare(0, wurzeltext.size(), wurzeltext) == 0) {
+        name.erase(0, wurzeltext.size() + 1);
+    }
+    return vorsatz + name;
+}
+
+/// Liegt diese Datei unter dem genannten Ordner der Wurzel?
+bool liegt_unter(const std::string& kurz, std::string_view ordner) {
+    return kurz.size() > ordner.size() && kurz.compare(0, ordner.size(), ordner) == 0
+           && kurz[ordner.size()] == '/';
+}
+
+}  // namespace
+
 int main(int argc, char** argv) {
-    const std::vector<std::string> argumente(argv, argv + argc);
-    if (argumente.size() != 2) {
+    // Der Selbsttest laeuft vor allem anderen und braucht kein Argument: Stimmt die
+    // Suche nach links nicht, ist jede Zahl weiter unten wertlos -- auch und gerade
+    // eine gruene.
+    const std::size_t fehlgeschlagen = selbsttest_namenssuche();
+    if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
-                     "Aufruf: belegstellen_riegel <wurzel-des-vorhabens>\n"
+                     "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
+                     "nicht wie erwartet\nausgegangen. Der Riegel hat den Bestand gar "
+                     "nicht erst gelesen -- ein Messgeraet,\ndas seine eigenen Faelle "
+                     "verfehlt, misst auch fremde nicht.\n",
+                     fehlgeschlagen, NAMENSFAELLE.size());
+        return 2;
+    }
+    std::fprintf(stdout,
+                 "belegstellen_riegel, Selbsttest der Suche nach links: %zu Faelle, "
+                 "alle wie erwartet.\n",
+                 NAMENSFAELLE.size());
+
+    const std::vector<std::string> argumente(argv, argv + argc);
+    if (argumente.size() != 2 && argumente.size() != 3) {
+        std::fprintf(stderr,
+                     "Aufruf: belegstellen_riegel <wurzel-des-vorhabens> "
+                     "[<wurzel-der-vorgaben>]\n"
                      "Die Wurzel kommt von CMake; ein eingebauter Pfad liefe nur auf "
                      "einem Rechner.\n");
         return 2;
@@ -399,16 +1330,74 @@ int main(int argc, char** argv) {
         return 2;
     }
 
+    // Die Vorgabenwurzel: wahlfrei uebergeben, sonst aus der ersten abgeleitet.
+    // Begruendung im Kopf, Abschnitt zum Aufruf.
+    fs::path vorgaben;
+    if (argumente.size() == 3) {
+        vorgaben = fs::weakly_canonical(fs::path(argumente[2]), fehler);
+    } else {
+        vorgaben = fs::weakly_canonical(
+            wurzel.parent_path().parent_path() / "specs" / wurzel.filename(), fehler);
+    }
+    if (fehler || !fs::is_directory(vorgaben, fehler)) {
+        std::fprintf(stderr,
+                     "belegstellen_riegel: '%s' ist kein Verzeichnis.\n"
+                     "Dort werden die Vorgaben erwartet -- ohne sie liefe jedes Zitat in "
+                     "die Vorgaben als 'Ziel ausserhalb des Bestands' durch, und der "
+                     "Riegel meldete gruen ueber nichts. Zweites Argument setzen, wenn "
+                     "die Vorgaben woanders liegen.\n",
+                     vorgaben.string().c_str());
+        return 2;
+    }
+
     std::error_code lesefehler;
-    const std::vector<fs::path> dateien = sammle_dateien(wurzel, lesefehler);
+    const std::vector<fs::path> gelesen = sammle_dateien(wurzel, lesefehler);
     if (lesefehler) {
         std::fprintf(stderr, "belegstellen_riegel: Lesefehler unter '%s': %s\n",
                      wurzel.string().c_str(), lesefehler.message().c_str());
         return 2;
     }
+    const std::vector<fs::path> gelesen_vorgaben = sammle_dateien(vorgaben, lesefehler);
+    if (lesefehler) {
+        std::fprintf(stderr, "belegstellen_riegel: Lesefehler unter '%s': %s\n",
+                     vorgaben.string().c_str(), lesefehler.message().c_str());
+        return 2;
+    }
+
+    // Drei Mengen aus einem Durchgang. Welche wofuer, steht im Kopf.
+    const std::string wurzeltext = wurzel.string();
+    const std::string vorgabentext = vorgaben.string();
+
+    std::vector<fs::path> bauquellen;
+    std::vector<std::string> bauquellen_namen;
+    std::vector<fs::path> zitierende;
+    std::vector<std::string> zitierende_namen;
+    std::size_t datendokumente = 0;
+    Zielbestand bestand;
+
+    for (std::size_t i = 0; i < gelesen.size(); ++i) {
+        const std::string kurz = kurzname(gelesen[i], wurzeltext, "");
+        nimm_ziel_auf(bestand, gelesen[i], kurz);
+        if (ist_quelldatei(gelesen[i])) {
+            bauquellen.push_back(gelesen[i]);
+            bauquellen_namen.push_back(kurz);
+            zitierende.push_back(gelesen[i]);
+            zitierende_namen.push_back(kurz);
+        } else if (ist_datendokument(gelesen[i]) && !liegt_unter(kurz, "aufgaben")) {
+            zitierende.push_back(gelesen[i]);
+            zitierende_namen.push_back(kurz);
+            ++datendokumente;
+            bauquellen.push_back(gelesen[i]);  // MESSUNG 0073 -- wieder heraus
+            bauquellen_namen.push_back(kurz);  // MESSUNG 0073 -- wieder heraus
+        }
+    }
+    for (std::size_t i = 0; i < gelesen_vorgaben.size(); ++i) {
+        nimm_ziel_auf(bestand, gelesen_vorgaben[i],
+                      kurzname(gelesen_vorgaben[i], vorgabentext, "specs/"));
+    }
 
     // Ein Riegel, der nichts gesehen hat, hat nichts geprueft. Begruendung im Kopf.
-    if (dateien.empty()) {
+    if (bauquellen.empty()) {
         std::fprintf(stderr,
                      "belegstellen_riegel: keine einzige Bauquelle unter '%s' gefunden. "
                      "Der Riegel hat damit nichts geprueft -- das ist kein gruener Lauf, "
@@ -417,42 +1406,113 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    const std::string wurzeltext = wurzel.string();
+    // -----------------------------------------------------------------------
+    // Bedingung 1 -- Paket 0059
+    // -----------------------------------------------------------------------
     std::vector<Befund> befunde;
     Zaehlwerk zaehlwerk;
-    for (std::size_t i = 0; i < dateien.size(); ++i) {
-        std::string anzeigename = dateien[i].string();
-        if (anzeigename.size() > wurzeltext.size()
-            && anzeigename.compare(0, wurzeltext.size(), wurzeltext) == 0) {
-            anzeigename.erase(0, wurzeltext.size() + 1);
-        }
-        pruefe_datei(dateien[i], anzeigename, befunde, zaehlwerk);
+    for (std::size_t i = 0; i < bauquellen.size(); ++i) {
+        pruefe_datei(bauquellen[i], bauquellen_namen[i], befunde, zaehlwerk);
     }
 
     std::fprintf(stdout,
-                 "belegstellen_riegel: %zu Bauquellen gelesen, %zu Zeilenverweise "
-                 "getroffen, davon %zu mit Dateinamen daneben.\n",
-                 dateien.size(), zaehlwerk.treffer, zaehlwerk.mit_dateinamen);
+                 "belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): "
+                 "%zu Bauquellen gelesen, %zu Zeilenverweise getroffen, davon %zu mit "
+                 "Dateinamen daneben.\n",
+                 bauquellen.size(), zaehlwerk.treffer, zaehlwerk.mit_dateinamen);
 
-    if (befunde.empty()) {
+    // -----------------------------------------------------------------------
+    // Bedingung 2 -- Paket 0067
+    // -----------------------------------------------------------------------
+    std::map<std::string, std::vector<std::string>> ueberschriften;
+    std::vector<Zitatbefund> zitatbefunde;
+    std::vector<Uebergangen> uebergangen;
+    Zitatzaehlwerk zitatzaehlwerk;
+    for (std::size_t i = 0; i < zitierende.size(); ++i) {
+        pruefe_zitate(zitierende[i], zitierende_namen[i], bestand, ueberschriften,
+                      zitatbefunde, uebergangen, zitatzaehlwerk);
+    }
+
+    std::fprintf(stdout,
+                 "belegstellen_riegel, Bedingung 2 (Abschnittszitat): %zu Bauquellen und "
+                 "%zu Datendokumente gelesen, %zu Dateien im Zielbestand; %zu Zitate der "
+                 "geprueften Form gefunden, %zu davon aufgeloest, %zu Fundstellen "
+                 "uebergangen.\n",
+                 bauquellen.size(), datendokumente, bestand.size(),
+                 zitatzaehlwerk.zitate, zitatzaehlwerk.aufgeloest, uebergangen.size());
+
+    if (!uebergangen.empty()) {
         std::fprintf(stdout,
-                     "Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei.\n");
+                     "\nUebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. "
+                     "Diese\nFundstellen tragen ihr Ziel nicht bei sich; sie werden "
+                     "gezaehlt und genannt,\naber nicht bewertet:\n\n");
+        for (std::size_t i = 0; i < uebergangen.size(); ++i) {
+            const Uebergangen& u = uebergangen[i];
+            std::fprintf(stdout, "  %s:%zu  (%s)\n      gesucht war: %s\n",
+                         u.datei.c_str(), u.zeilennummer, u.grund.c_str(),
+                         u.ueberschrift.c_str());
+        }
+    }
+
+    // Ein Muster, das nichts mehr trifft, ist kein bestandener Lauf. Die sechs Pakete
+    // 0034, 0035, 0044, 0047, 0050 und 0057 haben nachweislich Zitate hinterlassen.
+    if (zitatzaehlwerk.zitate == 0) {
+        std::fprintf(stderr,
+                     "\nbelegstellen_riegel: kein einziges Abschnittszitat gefunden. Das "
+                     "ist ein Befund\ngegen das Muster und keine bestandene Bedingung -- "
+                     "sechs Pakete haben\nnachweislich welche hinterlassen.\n");
+        return 2;
+    }
+
+    // -----------------------------------------------------------------------
+    // Das Urteil
+    // -----------------------------------------------------------------------
+    if (befunde.empty() && zitatbefunde.empty()) {
+        std::fprintf(stdout,
+                     "\nKein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, "
+                     "und jedes der\n%zu Abschnittszitate findet seine Ueberschrift.\n",
+                     zitatzaehlwerk.aufgeloest);
         return 0;
     }
 
-    std::fprintf(stderr,
-                 "\n%zu Verweis(e) zeigen mit einer Zeilennummer in eine fremde "
-                 "Datei:\n\n",
-                 befunde.size());
-    for (std::size_t i = 0; i < befunde.size(); ++i) {
-        const Befund& b = befunde[i];
-        std::fprintf(stderr, "  %s:%zu  -> %s\n      %s\n", b.datei.c_str(),
-                     b.zeilennummer, b.ziel.c_str(), b.stelle.c_str());
+    if (!befunde.empty()) {
+        std::fprintf(stderr,
+                     "\n%zu Verweis(e) zeigen mit einer Zeilennummer in eine fremde "
+                     "Datei:\n\n",
+                     befunde.size());
+        for (std::size_t i = 0; i < befunde.size(); ++i) {
+            const Befund& b = befunde[i];
+            std::fprintf(stderr, "  %s:%zu  -> %s\n      %s\n", b.datei.c_str(),
+                         b.zeilennummer, b.ziel.c_str(), b.stelle.c_str());
+        }
+        std::fprintf(stderr,
+                     "\nEine Zeilennummer in eine fremde Datei wandert, ohne dass jemand "
+                     "etwas tut.\nSie wird ersetzt -- durch einen Bezeichner, eine "
+                     "Abschnittsueberschrift oder eine\nSchluesselzeile im Wortlaut --, "
+                     "nicht ausgenommen und nicht nachgezogen.\n");
     }
-    std::fprintf(stderr,
-                 "\nEine Zeilennummer in eine fremde Datei wandert, ohne dass jemand "
-                 "etwas tut.\nSie wird ersetzt -- durch einen Bezeichner, eine "
-                 "Abschnittsueberschrift oder eine\nSchluesselzeile im Wortlaut --, "
-                 "nicht ausgenommen und nicht nachgezogen.\n");
+
+    if (!zitatbefunde.empty()) {
+        std::fprintf(stderr,
+                     "\n%zu Abschnittszitat(e) finden ihre Ueberschrift nicht:\n\n",
+                     zitatbefunde.size());
+        for (std::size_t i = 0; i < zitatbefunde.size(); ++i) {
+            const Zitatbefund& z = zitatbefunde[i];
+            // Drei Angaben, und alle drei werden gebraucht: wer zitiert, worin
+            // nachgeschlagen wurde und wonach. Eine Meldung, die nur sagt, ein Verweis
+            // sei tot, zwingt den naechsten Leser zur Suche.
+            std::fprintf(stderr,
+                         "  zitierend: %s:%zu\n  nachgeschlagen in: %s\n"
+                         "  gesuchte Ueberschrift: %s\n\n",
+                         z.datei.c_str(), z.zeilennummer, z.ziel.c_str(),
+                         z.ueberschrift.c_str());
+        }
+        std::fprintf(stderr,
+                     "Entweder ist die Ueberschrift dort umbenannt worden -- dann wird "
+                     "das Zitat\nnachgezogen --, oder sie stand nie so da. Beides wird "
+                     "berichtigt und nicht\nausgenommen. Die Schreibweise ist bis auf "
+                     "Umlautumschrift, Auszeichnung und\nLeerraum wortgleich zu nehmen; "
+                     "Gross- und Kleinschreibung zaehlt.\n");
+    }
     return 1;
 }

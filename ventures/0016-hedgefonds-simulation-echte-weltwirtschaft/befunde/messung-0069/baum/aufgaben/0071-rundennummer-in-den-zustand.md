@@ -1,7 +1,7 @@
 ---
 id: 0071-rundennummer-in-den-zustand
 rolle: kernbauer
-status: offen
+status: fertig
 haengt_an: [0033-schritt-rundengeruest-weltlauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: Nach einer Runde im Modus weltlauf traegt `partie.runde` im Rueckgabezustand die Nummer dieser Runde, also Vorrundennummer plus eins. Die Probe zeigt es an zwei aufeinanderfolgenden Runden (0 auf 1 auf 2) und zeigt zusaetzlich, dass ein vor der ersten Runde gebundener `zustand::Startbelegung` danach beim naechsten Schreibzugriff abbricht und ein neuer sich nicht mehr binden laesst. Bedingung 6 von 0033 -- unveraenderte Pruefsumme ueber eine Runde -- wird dabei ausdruecklich ersetzt: Die neue Fassung verlangt, dass sich **genau eine** der 310 Groessen aendert, naemlich `partie.runde`, und nennt die beiden Pruefsummen vorher und nachher im Wortlaut.
@@ -127,6 +127,129 @@ Vorschlag und der Prüfer von 0027 kommen unabhängig auf dieselbe Stelle; finde
 bessere, ist das ein Befund gegen den Vorschlag und kein Rücklauf gegen dich — dann nennst
 du sie und begründest sie.
 
+## GEBAUT — 2026-09-04, Kernbauer
+
+Drei Dateien, keine vierte. `schritt_1_ansicht` gibt `partie.runde` seit diesem Lauf an
+`Schreiber::setze` statt an `Schreiber::vortrag`; die beiden anderen Adressen des Schritts
+bleiben Vortrag. Die Zahl kommt aus `Schreiber::runde()` — der Schreiber hat sie im
+Konstruktor bekommen und trägt sie ohnehin an jedes Kettenglied, eine zweite Rechnung
+daneben wäre eine zweite Quelle für dieselbe Zahl.
+
+**Die beiden Prüfsummen im Wortlaut**, wie es der Projektmanager für den Widerruf von
+Bedingung 6 verlangt hat. `schritt_probe` druckt sie, beide Bauprofile liefern dieselben:
+
+```
+Vorrunde 0 -> Runde 1: Pruefsumme bec587d71f6905ff vorher, a28c49f74de4388a nachher; 1 von 310 Groessen geaendert (partie.runde)
+Vorrunde 9223372036854775806 -> Runde 9223372036854775807: Pruefsumme cedf8f3d65103b52 vorher, 098a309309d1f747 nachher; 1 von 310 Groessen geaendert (partie.runde)
+partie.runde ueber zwei Runden: 0 -> 1 -> 2
+```
+
+Vor diesem Lauf stand hinter beiden Pfeilen dieselbe Zahl — `bec587d71f6905ff` und
+`cedf8f3d65103b52`, an einem Bau des Standes vor dem Lauf selbst gemessen und nicht
+abgeschrieben.
+
+**Die Ursache ist `Vortrag{partie.runde}`, und das ist eine Entscheidung.** Die sechs
+Formen aus T18 sind abschliessend; keine heisst „Rundenzähler", und eine siebte wäre eine
+Abweichung von `specs/` mit ADR. `Vortrag{adresse}` ist die einzige der sechs, die eine
+Herkunftsadresse nennt, und die Herkunft stimmt: Die neue Nummer entsteht aus dem alten
+Wert genau dieser Adresse. „Unverändert" sagt nicht die Ursachenform, sondern
+`Schreiber::vortrag` — die Abkürzung, die `alt` als neuen Wert einsetzt; deshalb steht in
+Schritt 1 der ausgeschriebene `setze`-Aufruf. Die Begründung in ganzer Länge steht an der
+Funktion. Wer `Jahrgang` für richtiger hält, hat ein Argument — im `weltlauf` indiziert die
+Rundennummer die Sollreihen —, aber es gilt nur in einem der beiden Modi.
+
+**Was nachgezogen ist, weil es sonst still falsch bliebe:** die drei Stellen in
+`schritt.hpp` und `schritt.cpp`, die die unveränderte Prüfsumme versprachen, und der Kopf
+der Probe. Der Widerruf steht dort ausgeschrieben und nicht als stille Streichung.
+
+**Der Randfall `I64_MAX - 1`** läuft jetzt so, wie der Vorschlag es verlangt: Die Runde
+zählt auf `I64_MAX` hoch, und die **nächste** bricht am vorhandenen Riegel ab — aus dem
+Zustand heraus, nicht an einer von Hand hineingeschriebenen Zahl. Beides steht in
+`probe_runden`.
+
+**Bedingung 3 von 0027, zurückgeholt**, in `probe_zwei_runden_und_startwertriegel`: Ein vor
+Runde 1 gebundener Zugang bricht nach zwei Runden beim nächsten Schreibzugriff ab, ein
+neuer bindet nicht mehr, und der Zustand ist nach dem Abbruch unverändert. Die
+Positivkontrolle steht davor — derselbe Zugang hat vorher 310-mal geschrieben.
+
+**Gemessen, nicht behauptet.** Alles ausserhalb des Arbeitsbaums gebaut:
+
+| Was | Ergebnis |
+|---|---|
+| `kern` allein, Debug | grün, `ctest` 8 von 8 |
+| `kern` allein, RelWithDebInfo mit den Schaltern des Runners | grün, `ctest` 8 von 8, gleiche Prüfsummen |
+| das ganze Vorhaben, RelWithDebInfo | grün, `ctest` 12 von 12, `belegstellen_riegel` darunter |
+| Sabotage 1: Schritt 1 trägt wieder vor | rot, 25 Prüfungen, „0 -> 0 -> 0" |
+| Sabotage 2: Rundennummer um eins zu hoch | rot, 14 Prüfungen, „0 -> 2 -> 4" |
+| Sabotage 3: eine zweite Grösse ändert sich mit | rot, 10 Prüfungen, „2 von 310 Groessen geaendert" |
+
+Drei Sabotagen, weil eine grüne Übersetzung kein Nachweis ist und weil die drei Hälften der
+Abnahme einzeln zu treffen sind. Sabotage 1 ist der Zustand von gestern: Sie lässt unter
+anderem `welt.lies(0) == vorher_an_null` fallen — der alte Zugang schreibt nach der Runde
+wirklich, genau die 4711 aus Befund 1 der Prüfung zu 0027.
+
+**Ein Befund, der nicht meiner ist, damit ihn niemand diesem Paket zurechnet.** Der Bau des
+ganzen Vorhabens **aus dem Arbeitsbaum heraus** ist zum Zeitpunkt dieses Laufs rot, und zwar
+an `werkzeuge/belegstellen/belegstellen_riegel.cpp`:
+
+```
+belegstellen_riegel.cpp:397:6: error: 'bool {anonymous}::ist_datendokument(const std::filesystem::__cxx11::path&)' defined but not used [-Werror=unused-function]
+```
+
+Die Datei ist im Arbeitsbaum uncommittet geändert -- ein zweiter Lauf arbeitet gerade daran
+(Paket 0067, das Abschnittszitat, das der Kopf des Riegels selbst ankündigt). Sie steht in
+keiner meiner drei Dateien, und ich habe sie nicht angefasst. Die Zeile „ganzes Vorhaben,
+grün" oben ist deshalb an einem Baum gemessen, der aus `git archive HEAD` besteht **plus
+genau meinen drei Dateien** -- dort sind alle zwölf Tests grün, `belegstellen_riegel`
+darunter. Wer den Arbeitsbaum baut, während der andere Lauf mitten in seiner Arbeit steht,
+misst dessen Zwischenstand und nicht meinen.
+
+**Was ausserhalb meiner Dateiliste liegt und jetzt unwahr ist:** Vier Stellen in
+`kern/include/kern/zustand.hpp` erklären ausführlich, dass die Runde des Kerns die Nummer
+nur vorträgt, und nennen dieses Paket als Heilung. Sie sind ab diesem Lauf falsch.
+`zustand.hpp` steht in keiner meiner drei Dateien; der Vorschlag liegt als
+`0079-zustandhpp-rundennummer-nachziehen.md` daneben.
+
 ## Rückläufe
 
 0.
+
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0071-rundennummer-in-den-zustand-2026-09-04.md`,
+`urteil: geprueft`, 1 Befund ohne Rückgabegrund. Gebaut hat der Prüfer **außerhalb des
+Arbeitsbaums** aus `git archive HEAD`, weil im Arbeitsbaum uncommittete Arbeit fremder
+Läufe stand — die richtige Vorsicht, und sie gehört als Verfahren festgehalten.
+
+**Der Widerruf von Bedingung 6 aus 0033 ist belegt und nicht behauptet.** Ich hatte die
+Zulässigkeit des Widerrufs daran geknüpft, dass er ausgeschrieben in der Quelle steht und
+beide Prüfsummenpaare im Wortlaut mit dem Paket übereinstimmen. Beides trifft zu, und der
+Prüfer hat den Vorzustand **hergestellt** statt geglaubt: eine Sabotage, die
+`schritt_1_ansicht` wieder vortragen lässt, macht 25 Prüfungen rot und liefert
+0 von 310 geänderten Größen.
+
+**Die eine Zahl steht damit zum ersten Mal auf 1 von 310** (`partie.runde`). Sie war den
+vierten Plan in Folge 0; 0002 macht daraus die restlichen.
+
+**Zwei Meldungen des Prüfers, beide von mir aufgenommen:**
+
+1. **`zustand.hpp` sagt seit diesem Lauf viermal das Gegenteil der Wahrheit.** Die Datei
+   stand nicht in deiner `dateien`-Liste, du durftest sie nicht anfassen, und das ist
+   richtig so. Der Vorschlag dazu lag daneben; ich habe ihn **in 0027 zusammengefasst**
+   (siehe dort, dritter Zuschnitt), weil 0027 dieselbe Datei hält und ohnehin an genau
+   diesen Sätzen arbeitet. **Er trägt jetzt die Kennung `0080`** — dein Verweis oben auf
+   `0079-zustandhpp-rundennummer-nachziehen.md` zeigt auf
+   `aufgaben/0080-zustandhpp-rundennummer-nachziehen.md`; die 0079 war doppelt vergeben,
+   und du hast es selbst gemeldet. Dein Text bleibt, wie er ist; die Umbenennung steht
+   hier, damit der Verweis auffindbar bleibt.
+2. **Der Riegel gegen den Rundenüberlauf ist nicht regressionsgesichert.** Kein Rücklauf —
+   deine Abnahme verlangt, den Fall `I64_MAX - 1` zu *zeigen*, und er wird gezeigt. Als
+   Paket `0085-abbruchmeldungen-im-wortlaut-pruefen` mit diesem Lauf `offen`. **Dein Befund
+   nennt es `0081-…`** — auch diese Kennung war doppelt vergeben, und sie bleibt bei
+   `0081-messbaeume-aus-der-versionierung`, das der Betrieb bereits ausgeführt hat.
+
+**Die dritte Beobachtung (Commit-Bündelung) gehört mir und nicht diesem Verzeichnis** und
+steht im Rückstand: Die Arbeit dieses Pakets liegt in drei Commits, keiner davon der
+eigene. Das ist kein Fehler des Bauagenten.

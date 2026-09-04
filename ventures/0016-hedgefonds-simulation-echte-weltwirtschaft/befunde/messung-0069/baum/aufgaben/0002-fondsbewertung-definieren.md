@@ -1,10 +1,44 @@
 ---
 id: 0002-fondsbewertung-definieren
 rolle: kernbauer
-status: offen
+status: fertig
 haengt_an: [0008-kern-zustand-310-felder, 0026-klasse-2-preisbasis]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die öffentliche Schnittstelle von kern::werte ist Name für Name die Tabelle der siebzehn Größen aus T48; die drei Skalenübergänge aus T50 sind privat und haben genau die dort genannten Aufruforte; ein Test rechnet die Zahlenprobe aus T47 nach und nennt 4.200.000.000.000 Cent.
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0002-fondsbewertung-definieren-2026-09-04.md`, `urteil: geprueft`.
+Geprüft am Stand `ceebee3`, in beiden Bauprofilen, außerhalb des Arbeitsbaums. Alle sechs
+Abnahmebedingungen einzeln nachgemessen, dazu 23 Sabotagen am fertigen Modul.
+
+**Die drei Nebenbefunde sind hier abgelegt, damit niemand sie zweimal aufnimmt:**
+
+1. **Vier Vorgaben ohne Riegel** (T47/T50, T48 Nr. 15, T33 Punkt 1, T48 Nr. 4). Der Code
+   ist an allen vier Stellen richtig; es fehlt die Probe dahinter. Wird
+   `0088-werte-probe-vier-unbelegte-vorgaben`, angenommen im selben Lauf. Kein Rücklauf:
+   keine der sechs Bedingungen verlangt eine Probe je Vorgabe, und `werte_probe.cpp`
+   gehört ab hier dem Testentwickler.
+2. **Abnahmebedingung 2 ist im Wortlaut nicht erfüllt** — der Mustervergleich
+   `tsd_in_cent\|lobbypunkte_aus` findet drei Treffer außerhalb dieser Datei, alle drei
+   Prosa in Kommentaren aus 0052 und 0077. Die Sache, die T50 sichert, ist gehalten;
+   verletzt ist nur der Nachweis. Der Bauagent hätte sie nur erfüllen können, indem er
+   außerhalb seiner `dateien`-Liste schreibt — **das ist mein Fehler im Kriterium und
+   keiner von ihm.** Die Heilung (T50 auf Aufrufe statt auf Namen) ist eine Änderung an
+   `technik.md`; dort warten bereits fünf Architektenpakete, und ob ein sechstes den
+   Vorrang wert ist, entscheidet der Geschäftsführer. Steht in meinem Bericht, nicht in
+   einem Paket.
+3. **`marktkorb(m, k)` ist für T33 Punkt 3 nicht aufrufbar** — der `Schreiber` gibt keinen
+   `Zustand` mit dem laufenden Stand heraus. Kein Paket: Die Heilung liegt an einer von
+   zwei Stellen, und welche richtig ist, hängt daran, was Schritt 6 sonst braucht. Der
+   Prüfer wollte die Entscheidung nicht raten, und ich rate sie auch nicht. **Wer Schritt 6
+   zuschneidet, liest Befund 3 vor dem ersten Satz.**
+
+**Was mit `fertig` frei wird:** `werte.hpp`, `werte.cpp` und `werte_probe.cpp` sind ab
+jetzt für andere Pakete beanspruchbar — 0087 nimmt `werte.cpp`, 0088 `werte_probe.cpp`.
+Startbereit werden dadurch 0010 (Vorrang 5) und 0043.
+
 ---
 
 # `kern::werte` — die siebzehn abgeleiteten Größen
@@ -146,6 +180,76 @@ diese Prüfung.
 und nicht an den Werten. 0010 (Zustandsausgabe) hängt an diesem Paket und bleibt
 mittelbar mit blockiert; das ist unvermeidbar und war schon vorher der Fall, weil es auf
 0002 wartet.
+
+**2026-09-04, Kernbauer: `offen` -> `gebaut`.** Gebaut sind die drei Dateien aus der
+Dateiliste. Der Uebersetzer ist gruen in beiden Profilen -- Debug ohne Sanitizer und
+`RelWithDebInfo` mit `-fwrapv -fno-fast-math -fsanitize=undefined,address
+-fno-sanitize-recover=all`, wie ihn der Runner konfiguriert --, und alle dreizehn
+Pruefungen des Arbeitsbereichs laufen durch, darunter die neue `werte_probe`.
+
+**Was der gruene Lauf nicht belegt, und was stattdessen geprueft wurde.** Gruen
+uebersetzen ist kein Nachweis; der Nachweis ist ein absichtlicher Verstoss, der rot
+wird. Sechzehn Sabotagen am fertigen Modul, jede einzeln gebaut und gemessen:
+
+| Sabotage | Ergebnis |
+|---|---|
+| Rundungsreihenfolge auf die genauere Form umgestellt | rot |
+| Abbruch bei `stufen = 0` entfernt | rot |
+| Wertebereichsschranke am Wechselkurs entfernt | rot |
+| Landespreis liest diese Runde statt die Vorrunde | rot |
+| Handelsvolumen zaehlt nur eine Richtung | rot |
+| Marktkorb nimmt die Menge aus den Kursen | Uebersetzung rot |
+| Marktkorb nimmt den Sektorpreis aus den Mengen | rot |
+| Marktkorb nimmt den Wechselkurs aus den Mengen | rot |
+| Fondsanteil ohne Betrag der Stufenzahl | rot |
+| Skalengrenze vor statt nach dem Abschlag | rot |
+| Waehrungen zaehlen im Korbbestand mit | rot |
+| Anleihekurs ohne Aufschlag im Zaehler | rot |
+| Bruttoinlandsprodukt nur ueber zwei Sektoren | rot |
+| Hebelstand addiert statt abgezogen | rot |
+| Staatsschuld als Betrag statt als Quote | rot |
+| Ueberlaufwaechter an der Skalengrenze umgangen | rot |
+
+Die Zeile *Wechselkurs aus den Mengen* war beim ersten Durchgang **gruen** und ist der
+Fund dieses Laufs: Die Probe setzte den Wechselkurs in beiden Zustaenden auf denselben
+Startwert 10.000, womit die Zuordnung nach T33 ungeprueft blieb. Die Probe setzt ihn
+jetzt verschieden; danach ist die Zeile rot.
+
+## Wie die vier greifbaren Abnahmebedingungen ausgegangen sind
+
+1. **Siebzehn Deklarationen, keine mehr und keine weniger.** Der Kopf traegt genau die
+   siebzehn Namen aus T48, in der Reihenfolge seiner Tabelle und mit deren laufender
+   Nummer im Kommentar. Daneben steht ein Typ `Konstanten` -- der Traeger der
+   Kalibrierwerte und der einen Jahrgangskonstante, die die Formeln neben dem Zustand
+   nennen. Er ist keine achtzehnte Groesse; die Bedingung zaehlt nach ihrem eigenen
+   Wortlaut Funktionen ("in Rust waere es `grep -n 'pub fn' werte.rs`"), und ein
+   Datentraeger ist keine. **Das ist die Stelle, an der ich die Bedingung auslege statt
+   sie abzulesen**, und deshalb steht sie hier und nicht nur im Logbuch.
+2. **Die drei Skalenuebergaenge sind privat**, ohne Deklaration im Kopf; die Suche nach
+   ihren Namen findet im rechnenden Code nur `kern/src/werte.cpp`. `tsd_in_cent` hat
+   dort genau die zwei Aufruforte aus T50 -- den aeussersten Aufruf des Positionswerts
+   und den des Beteiligungswerts. **Nicht erfuellt ist der Wortlaut der Bedingung in
+   einem Punkt:** Ausserhalb des Moduls stehen drei weitere Treffer, alle in **Prosa**
+   und keiner ein Aufruf -- einer im Kommentar zu `mal` in `kern/include/kern/festkomma.hpp`
+   (aus Paket 0052), zwei in Kommentaren in `kern/test/schranken_probe.cpp` (aus Paket
+   0020). Beide Dateien stehen nicht in meiner Dateiliste; ich habe sie nicht angefasst.
+3. **Die Umkehrung gibt es nicht.** Die Suche nach ihrem Namen ueber den ganzen Kern
+   liefert null Treffer.
+4. **Die Zahlenprobe aus T47 steht mit ausgeschriebenem Erwartungswert in der Probe:**
+   Korb 21.000.000.000 Tausend USD, Anteil 20, Ausstiegsabschlag 0, innen 42.000.000
+   Tausend USD, danach **4.200.000.000.000** US-Cent. Der innere Wert entsteht in der
+   Probe ueber den zweiten Weg -- die Anteilsrechnung des Festkommawerks --, nicht durch
+   Abschreiben aus dem Modul.
+
+Kein Gleitkomma, keine Fremdabhaengigkeit, keine Division ausser ueber das
+Festkommawerk. Eine blanke Multiplikation zweier Groessen nach T5 kommt in
+`kern/src/werte.cpp` nicht vor; jede laeuft ueber `festkomma::mal` oder
+`festkomma::mal_geteilt`.
+
+**Ein Vorschlag ist dabei entstanden:** `0087-geprueftes-plus-und-minus-in-festkomma`.
+Die Strichrechnung aus T7 Massnahme 4.2 gab es im Kern bis heute nicht, weil es keine
+Groesse gab, die addiert wurde; mit diesem Modul gibt es sie. Sie steht jetzt privat in
+`werte.cpp` und gehoert neben `mal`.
 
 ---
 

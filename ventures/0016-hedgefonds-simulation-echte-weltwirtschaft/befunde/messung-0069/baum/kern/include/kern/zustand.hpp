@@ -513,30 +513,32 @@ static_assert(sizeof(Zustand) == FELDER * sizeof(i64),
 /// einem Merker daneben: Ein Zustand ist 2.480 Byte, und ein 311. Feld haette T15
 /// gerissen.
 ///
-/// **Was der Riegel voraussetzt -- und was davon heute fehlt.** Er greift genau dann
+/// **Was der Riegel voraussetzt -- und dass der Kern es tut.** Er greift genau dann
 /// gegen eine gelaufene Runde, wenn diese `partie.runde` auf ihre eigene Nummer
-/// **setzt**. Der Kern tut das heute **nicht**, und das ist nachpruefbar: Der Platz von
-/// `partie.runde` gehoert nach der Zuordnungstafel zu Schritt 1 der Runde, Schritt 1 ist
-/// der Vortrag (`kern/src/schritt.cpp`, `schritt_1_ansicht` besteht aus dem Aufruf
-/// `schreiber.vortrag(platz)`), und der Vortrag legt den Wert der Vorrunde zurueck
-/// (`kern/src/schreiber.cpp`, `Schreiber::vortrag` reicht `alt_.lies(adresse)` an
-/// `setze` weiter) -- **denselben** Wert. Die Nummer dieser Runde, Vorrundennummer plus
-/// eins, geht allein an den `Schreiber` und steht in den Ursachensaetzen; in den Zustand
-/// kommt sie nicht.
+/// **setzt**. Der Kern tut das, und die Herleitung laeuft ueber drei Stellen, die sich
+/// einzeln nachlesen lassen: In `kern/src/schritt.cpp` liest die Rundenfunktion
+/// `schritt` die Nummer der Vorrunde vom Platz von `partie.runde`, zaehlt eins dazu und
+/// gibt das Ergebnis dem `Schreiber` mit; `schritt_1_ansicht` reicht genau diesen einen
+/// Platz **nicht** an `vortrag` weiter, sondern an `setze`, mit `schreiber.runde()` als
+/// Wert. In `kern/src/schreiber.cpp` legt `Schreiber::setze` den Wert ueber `lege_ab` in
+/// den Zustand. Nach einer vollstaendigen Runde traegt der Platz also eine um genau eins
+/// groessere Zahl als davor, und der Riegel unten schlaegt gegen einen Zugang an, an dem
+/// sie vorbeigelaufen ist.
 ///
-/// Dass das Feld in beiden Sollmasken aus T38 steht, hilft dagegen nichts, und der
-/// Fehlschluss ist der Grund, warum dieser Absatz so ausfuehrlich ist: **In einer
-/// Sollmaske zu stehen heisst geschrieben zu werden, nicht veraendert zu werden.** Nach
-/// einer vollstaendigen Runde im Modus `weltlauf` steht auf dem Platz also weiterhin
-/// dieselbe Zahl wie davor.
+/// **Nachgeprueft wird das an Schritt 1 und nicht an der Sollmaske**, und dieser Satz
+/// ist der teuerste dieses Kopfes: **In einer Sollmaske zu stehen heisst geschrieben zu
+/// werden, nicht veraendert zu werden.** `partie.runde` stand auch dann in beiden Masken
+/// aus T38, als jede Runde denselben Wert zurueckschrieb; die Maske hat sich nicht
+/// geaendert, `schritt_1_ansicht` hat es. Wer die Aussage oben pruefen will, sieht
+/// deshalb dort nach, ob `setze` steht oder `vortrag`.
 ///
-/// **Die Luecke ist benannt und beauftragt, nicht abgehakt:** Paket
-/// `0071-rundennummer-in-den-zustand` laesst Schritt 1 die Rundennummer setzen statt sie
-/// vorzutragen. Erst damit wird aus der Regel unten eine Eigenschaft des gebauten
-/// Systems. Bis dahin haelt sie gegen jeden fremden Schreibzugriff, der die Zahl
-/// **aendert**, und gegen die Runde des Kerns nicht. Wer diesen Kopf liest und den Fall
-/// fuer erledigt haelt, hat ihn verpasst -- deshalb steht es hier und nicht nur im
-/// Pruefbefund zu diesem Paket vom 2026-09-04.
+/// **Warum dieser Absatz so ausfuehrlich ist:** Bis zum 2026-09-04 trug die Runde den
+/// Wert der Vorrunde vor, und der Riegel unten schlug gegen sie nie an -- ein
+/// vollstaendig gerechneter Weltlauf war von "keine Runde gelaufen" durch keinen
+/// Vergleich am Zustand zu unterscheiden. Paket `0071-rundennummer-in-den-zustand` hat
+/// das geaendert und ist abgenommen; damit ist die Regel unten eine Eigenschaft des
+/// gebauten Systems und keine Zusage auf Widerruf mehr. Der Verweis steht hier als
+/// **Grund** der heutigen Fassung, nicht als offene Heilung.
 ///
 /// **Und er wird bei jedem `setze` gefragt, nicht nur beim Binden.** Die Regel in einem
 /// Satz: *Ein Zugang schreibt, solange `partie.runde` genau die Zahl traegt, die er
@@ -555,17 +557,20 @@ static_assert(sizeof(Zustand) == FELDER * sizeof(i64),
 /// **Wogegen der Riegel nichts ausrichtet, damit es niemand suchen muss:** Er
 /// vergleicht eine Zahl und keine Herkunft. Ein fremder Schreibzugriff, der auf
 /// `partie.runde` genau die Zahl zuruecklaesst, die schon dort stand, bleibt ihm
-/// verborgen. **Die Runde des Kerns ist heute genau ein solcher Schreibzugriff:** Sie
-/// traegt den Wert der Vorrunde vor, statt ihre eigene Nummer einzutragen -- die
-/// Herleitung an `schritt.cpp` und `schreiber.cpp` steht oben, die Heilung ist Paket
-/// `0071-rundennummer-in-den-zustand`. Der Riegel faengt bis dahin den fremden
-/// Schreibzugriff, der die Zahl **aendert**, und sonst keinen.
+/// verborgen. Die Runde des Kerns ist keiner davon -- sie erhoeht die Zahl um eins
+/// (Herleitung oben) --, aber das ist eine Eigenschaft von `schritt_1_ansicht` und
+/// keine des Riegels. Wer dort spaeter wieder einen Vortrag hinschreibt, macht den
+/// Riegel gegen die Runde stumm, ohne eine Zeile dieser Datei anzufassen. Genau deshalb
+/// steht die Herleitung oben ausgeschrieben statt in einem Nebensatz.
 ///
-/// Eine fruehere Fassung dieses Absatzes behauptete das Gegenteil und erklaerte den Fall
-/// damit ausdruecklich fuer ausgeschlossen. Sie war falsch, und sie war teurer als gar
-/// kein Kommentar: Wer sie las, hatte die Frage gestellt, eine Antwort bekommen und
-/// hoerte auf zu suchen. Gefunden hat es die Pruefung dieses Pakets am 2026-09-04, mit
-/// einer ausgefuehrten Runde statt mit einer von Hand gesetzten Rundennummer.
+/// **Dieser Absatz war binnen zweier Tage in beide Richtungen falsch**, und das ist die
+/// Lehre, die ihn traegt: Erst erklaerte er den Fall ausdruecklich fuer ausgeschlossen,
+/// dann -- nach dem Pruefbefund vom 2026-09-04, der ihn mit einer ausgefuehrten Runde
+/// statt mit einer von Hand gesetzten Rundennummer widerlegte -- fuer offen, und
+/// inzwischen ist er geschlossen. **Ein Kommentar, der einen Randfall fuer erledigt oder
+/// fuer offen erklaert, ist teurer als gar keiner, wenn er sich irrt:** Wer ihn liest,
+/// hat die Frage gestellt, eine Antwort bekommen und hoert auf zu suchen. Wer diese
+/// Datei aendert, ohne den Kern zu lesen, schreibt hier die dritte falsche Fassung.
 ///
 /// **Warum das mehr ist als Ordnungsliebe.** Der Schreiber nimmt den Vorrundenzustand
 /// unveraenderlich entgegen und rechnet auf zwei eigenen Abschriften; das Ergebnis holt
@@ -574,20 +579,21 @@ static_assert(sizeof(Zustand) == FELDER * sizeof(i64),
 /// zurueck -- danach stuende der Zugang immer noch da. Seine naechste Setzung waere
 /// eine Aenderung ohne Ursachensatz, ohne Kettenglied und ohne Maskenpruefung, und die
 /// Diff-Ebene aus T20 zeigte sie als Aenderung ohne Ursache. Genau die **soll** die
-/// Regel oben verhindern -- und sie tut es, sobald die Runde `partie.runde` setzt statt
-/// sie vorzutragen (Paket `0071-rundennummer-in-den-zustand`). Solange sie vortraegt,
-/// traegt der einmal gebundene Zugang ueber die Runde hinweg weiter; das ist der Grund,
-/// warum die Luecke oben ausgeschrieben steht statt in einem Nebensatz.
+/// Regel oben verhindern, und genau die verhindert sie: Die Runde erhoeht `partie.runde`
+/// um eins, die Merkzahl des Zugangs stimmt danach nicht mehr, und seine naechste
+/// Setzung bricht ab -- statt still zu landen.
 class Startbelegung {
 public:
     /// Bindet den Zugang an einen Zustand vor seiner ersten Runde.
     ///
-    /// **Harter Fehler, wenn `partie.runde` nicht null ist** -- siehe oben. Das ist
-    /// heute nicht dasselbe wie "die Partie laeuft schon": Solange die Runde des Kerns
-    /// das Feld vortraegt, bindet ein Zugang auch nach einer gerechneten Runde noch
-    /// (Paket `0071-rundennummer-in-den-zustand`). `explicit`, damit
-    /// aus einem Zustand nirgends beilaeufig ein Schreibrecht wird: Wer schreibt, nennt
-    /// diesen Typ und damit seine Absicht.
+    /// **Harter Fehler, wenn `partie.runde` nicht null ist** -- siehe oben. Nach einer
+    /// gerechneten Runde ist das der Fall: Sie traegt dort ihre eigene Nummer ein, also
+    /// mindestens die Eins, und ein Zugang bindet auf diesen Zustand nicht mehr. Die
+    /// Bedingung bleibt trotzdem die schwaechere von beiden -- sie fragt nach der Null
+    /// und nicht danach, ob gerechnet wurde; ein Zustand, auf dem nie eine Runde lief,
+    /// dessen Startbelegung aber eine andere Nummer gesetzt hat, wird ebenso abgewiesen.
+    /// `explicit`, damit aus einem Zustand nirgends beilaeufig ein Schreibrecht wird:
+    /// Wer schreibt, nennt diesen Typ und damit seine Absicht.
     explicit Startbelegung(Zustand& ziel);
 
     /// **Kein Zugang auf einen Zustand ohne Namen.** Ein Zugang zeigt auf einen
@@ -614,7 +620,7 @@ public:
     /// ein Index ausserhalb `0 ... 309`, und ein Zugang, an dem ein fremder
     /// Schreibzugriff die Zahl auf dem Platz von `partie.runde` geaendert hat -- der
     /// Fall, den die Meldung "an diesem Zugang ist eine Runde vorbeigelaufen" nennt und
-    /// den die Runde des Kerns heute noch nicht ausloest (siehe oben). Sie nennt beide
+    /// den eine Runde des Kerns ausloest (Herleitung oben). Sie nennt beide
     /// Rundennummern ausgeschrieben -- die im Zustand und die des Zugangs --, denn der
     /// Ort allein sagt nicht, ob der Zugang zu alt ist oder der Zustand fremd
     /// beschrieben wurde.
@@ -639,11 +645,12 @@ private:
 /// Ob `partie.runde` dieses Zustands null ist -- die Frage, die `Startbelegung` beim
 /// Binden stellt.
 ///
-/// **Der Name sagt mehr, als die Funktion heute pruefen kann, und das gehoert
-/// hierher.** Solange die Runde des Kerns dieses Feld vortraegt, statt es zu setzen
-/// (Herleitung oben, Heilung in Paket `0071-rundennummer-in-den-zustand`), antwortet
-/// sie auch nach einer vollstaendig gerechneten Runde mit `true`. Sie ist damit keine
-/// Auskunft darueber, ob schon gerechnet wurde, sondern genau die Auskunft, die der
+/// **Der Name trifft die Funktion in der einen Richtung und nicht in der anderen, und
+/// das gehoert hierher.** Nach einer vollstaendig gerechneten Runde antwortet sie
+/// `false` -- die Runde setzt dieses Feld auf ihre eigene Nummer (Herleitung oben), und
+/// so weit deckt der Name. Umgekehrt deckt er nicht: `false` heisst nicht "es wurde
+/// gerechnet", sondern nur "hier steht nicht null", und diese Zahl kann auch eine
+/// Startbelegung hinterlassen haben. Sie ist damit genau die Auskunft, die der
 /// Konstruktor von `Startbelegung` verlangt -- nicht mehr.
 ///
 /// Sie steht hier, damit ein Aufrufer sie stellen kann, statt sie am Abbruch zu

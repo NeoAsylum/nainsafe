@@ -341,3 +341,42 @@ Rolle zugetraut habe.
 ist, nicht, dass der Zuschnitt zu groß ist, und seit heute ausdrücklich auch nicht, dass
 die Rolle schwach ist. Alle vier Ursachen sind einzeln nachgemessen und einzeln widerlegt.
 Die Ursache liegt außerhalb dessen, was meine Rolle prüfen kann.
+
+## GEPRÜFT GEGEN EINE NEUE TATSACHE — 2026-09-04 22:20, Projektmanager: bleibt `blockiert`
+
+Der Betreiber hat um 18:17 (`cf6331b`) in `agents/rollen/testentwickler.md` einen Abschnitt
+*„Wenn du fertig bist"* ergänzt. Seine Begründung: Der Rolle fehlte die Anweisung
+`status: gebaut` **von Anfang an** — sie kam später dazu, als die Fabrik auf
+Spieleentwicklung umgestellt wurde, und hat den Abschnitt nie bekommen. Das war während
+**aller drei** Leerläufe dieses Pakets so.
+
+**Das ist eine echte, datierte Ursache außerhalb meiner Rolle — und sie entsperrt trotzdem
+nicht.** Ich schreibe auf, warum, weil die Versuchung groß ist und der Eintrag oben ein
+Entsperren ausdrücklich für den Fall angekündigt hat, dass „die Ursache bekannt ist".
+
+Dieses Paket hatte **zwei** Symptome, und der Eingriff heilt nur eines:
+
+| Symptom | erklärt durch `cf6331b`? |
+|---|---|
+| dreimal derselbe Bauplatz, Status blieb `offen` | **ja, vollständig.** Der Runner liest nur das Frontmatter. |
+| keine Zeile an `pruefstand/test/vorrat_kernanker_probe.cpp` | **nein.** Ein fehlender Abschluss-Abschnitt verhindert keinen Dateischreibvorgang. |
+
+Die Sperre steht auf dem zweiten, nicht auf dem ersten (siehe den Eintrag darüber: „an der
+Datei gemessen"). Sie fällt also nicht mit dem Eingriff.
+
+**Und die naheliegende Rettung trägt auch nicht.** Man könnte sagen: `4e51c14` enthält nur
+fremde Dateien, und das ist doch bloß die bekannte Bündelung — die Arbeit eines Laufs
+liegt hier regelmäßig im Commit des nächsten, der Betreff lügt zehnfach belegt. Stimmt,
+**aber die Messung, auf der die Sperre steht, ist gegen genau diesen Fehler immun**: Sie
+folgt der Zieldatei (`git log -- pruefstand/test/vorrat_kernanker_probe.cpp`), nicht dem
+Betreff. Der letzte und einzige Eintrag dort bleibt `f68e8fb` vom 2026-09-03 aus einem
+fremden Paket. Wäre die Arbeit in irgendeinen späteren Commit gerutscht, stünde sie dort.
+
+**Was dieses Paket entsperrt, in einem Satz:** ein Nachweis, dass ein Lauf dieser Rolle an
+*dieser* Datei überhaupt schreiben kann — oder ein anderer Auftragnehmer. Bis dahin kostet
+ein Versuch einen von vier Bauplätzen, und dieses Vorhaben hat davon in dieser Woche
+weniger als je zuvor.
+
+**Angekündigter Auslöser für meinen nächsten Lauf:** Liefert der `testentwickler` nach dem
+2026-09-04 18:17 an irgendeiner Datei unter `pruefstand/`, ist das der fehlende Nachweis,
+und dieses Paket geht ohne Änderung am Inhalt auf `offen`. Ich ziehe ihn selbst.

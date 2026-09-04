@@ -122,6 +122,56 @@
 //! Ziel bei sich tragen. Die Zahl unten sagt deshalb beides: wie viele Muster
 //! getroffen haben und wie viele davon einen Dateinamen trugen.
 //!
+//! ## Wie weit nach links gesucht wird -- Paket 0073
+//!
+//! Bis zum 2026-09-04 sah der Riegel den Dateinamen nur, wenn er **unmittelbar** links
+//! stand: ein Lauf Nicht-Pfadzeichen, dann genau ein Wort. Stand dazwischen noch etwas,
+//! galt der Verweis als "ohne Dateinamen" -- und ein Verweis ohne Dateinamen ist kein
+//! Befund. Das war keine gedachte Luecke: Auf einem Baum von 50 Dateien und 12
+//! Mustertreffern fand die enge Fassung **null** Verweise mit Dateinamen, die breite
+//! **zwei**, und beide zwei sind echt. Es sind genau die Formen, die die sechs
+//! Aufraeumpakete hinterlassen, wenn sie zur Haelfte greifen -- der Abschnitt ist
+//! nachgetragen, die Nummer steht noch da. Ihr Wortlaut steht in `NAMENSFAELLE`, den
+//! ersten beiden Zeilen; hier steht er nicht, weil eine abgeschriebene Beispielzeile
+//! sich in diesem Kommentar selbst faenge.
+//!
+//! **Die Regel: es gilt der naechstgelegene Name.** Gesucht wird wortweise nach links;
+//! das erste Wort mit zugelassener Endung gewinnt, und ueber es hinweg wird nicht
+//! weitergesucht. Stehen zwei Namen auf der Zeile, ist der naeher am Treffer gemeint --
+//! derselbe Grundsatz, nach dem `naechster_verweis` fuer Bedingung 2 arbeitet, und aus
+//! demselben Grund: Wer darueber hinwegliest, bindet eine Zahl an eine Datei, die im
+//! Satz gar nicht gemeint war.
+//!
+//! **Wo die Suche endet -- und warum es kein Abstand in Zeichen ist.** Sie endet am
+//! Anfang des Satzes, in dem der Treffer steht. Ein Abstandsmass waere die naheliegende
+//! Alternative gewesen, und es ist verworfen worden, weil sich seine Zahl hier nicht
+//! messen laesst: Die beiden echten Formen liegen 17 und 47 Zeichen vom Namen entfernt.
+//! Jede Schranke ueber 47 waere geraten, und eine geratene Schwelle in einem Messgeraet
+//! ist schlimmer als eine weite Suche -- man traut ihr, ohne dass jemand sie geprueft
+//! hat. Der Satz dagegen ist eine Grenze mit Bedeutung: Ein Verweis und sein Ziel
+//! stehen im selben Satz. Ein Abbruch am Komma oder Semikolon schied aus, und auch das
+//! ist gemessen und nicht geschmeckt -- die eine echte Form traegt ein Semikolon
+//! zwischen Namen und Nummer, die andere ein Komma. Beide waeren damit wieder
+//! durchgefallen.
+//!
+//! Dass die Suche breit ist, kostet auf dem gemessenen Baum nichts: 12 Treffer, zwei
+//! Funde, kein falscher. Bliebe es dabei nicht, waere das ein Befund und keine
+//! Einladung, die Schwelle nachzuziehen.
+//!
+//! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
+//!
+//! Acht Faelle in `NAMENSFAELLE` halten fest, was die Suche nach links finden **und
+//! was sie durchlassen** muss; sie laufen vor jedem Lesen des Bestands, und ein
+//! verfehlter Fall bricht den Lauf mit Code 2 ab. Die Haelfte davon sind Faelle mit
+//! erwarteter Leermeldung -- die fuenf Stellen in `kern/src/zustand.cpp`, die ein
+//! Rechenergebnis und keinen Dateiverweis tragen, ein Name jenseits des Satzendes und
+//! ein Name rechts vom Treffer. Ohne sie wiese der Test nur nach, dass die Suche
+//! *etwas* findet, und nicht, dass sie das Richtige findet.
+//!
+//! Nachgewiesen ist er: Auf die enge Fassung von vorher zurueckgestellt, fallen genau
+//! die vier Faelle, die die Verbreiterung verlangt (1, 2, 3 und 8), und die vier
+//! anderen bleiben gruen.
+//!
 //! ## Was der Riegel liest, und warum genau das
 //!
 //! Gelesen werden die **Bauquellen** des Vorhabens: Rumpf- und Kopfdateien, die
@@ -426,35 +476,74 @@ bool endung_zugelassen(std::string_view wort) {
     return ENDUNGEN.find(gesucht) != std::string_view::npos;
 }
 
-/// Das Wort unmittelbar links von `bis`, ohne schliessende Satzzeichen.
+/// Wo der Satz beginnt, in dem die Stelle `bis` liegt -- die Untergrenze der Suche
+/// nach links. Begruendung im Kopf, dort im vierten Teil.
 ///
-/// Leer, wenn dort keines steht oder es keine zugelassene Endung traegt. Der
-/// Rueckwaertsgang laeuft ueber zwei Laeufe: erst ueber alles, was kein Pfadzeichen
-/// ist (Leerzeichen, Akzent, Doppelpunkt), dann ueber das Wort selbst.
+/// Ohne Anfuehrung genannt und nicht als Zitat: Bedingung 2 dieses Programms faende
+/// eine zitierte Ueberschrift im eigenen Quelltext und fuehrte sie fortan unter den
+/// uebergangenen Fundstellen -- eine Zahl, die Paket 0067 gehoert.
+///
+/// Ein Satzende ist ein Punkt, ein Ausrufe- oder ein Fragezeichen mit Leerraum
+/// dahinter. Der Leerraum ist der tragende Teil der Bedingung und keine Feinheit: Ein
+/// Punkt **ohne** ihn ist regelmaessig die Endung selbst, und ein Satzende mitten in
+/// `technik.md` beendete die Suche vor jedem Fund.
+///
+/// Die Regel ist absichtlich zu streng statt zu nachsichtig: Eine Abkuerzung mit Punkt
+/// beendet den Satz hier ebenfalls. Der Riegel sucht dann kuerzer als noetig und laesst
+/// eine Stelle durch -- das ist die Richtung, in der ein Fehler nichts kaputt macht.
+std::size_t satzanfang_vor(std::string_view zeile, std::size_t bis) {
+    std::size_t anfang = 0;
+    for (std::size_t k = 0; k + 1 < bis; ++k) {
+        const char c = zeile[k];
+        if (c != '.' && c != '!' && c != '?') {
+            continue;
+        }
+        if (zeile[k + 1] == ' ' || zeile[k + 1] == '\t') {
+            anfang = k + 2;
+        }
+    }
+    return anfang;
+}
+
+/// Der **naechstgelegene** Dateiname links von `bis` auf derselben Zeile.
+///
+/// Gesucht wird wortweise nach links bis zum Anfang des Satzes, nicht ueber genau ein
+/// Wort. Der erste Fund gewinnt; ueber ihn hinweg wird nicht weitergesucht. Beides ist
+/// im Kopf begruendet und beides traegt einen Fall in `NAMENSFAELLE`.
+///
+/// Leer, wenn im Satz links kein Wort mit zugelassener Endung steht.
 std::string dateiname_davor(std::string_view zeile, std::size_t bis) {
-    std::size_t ende = bis;
-    while (ende > 0 && !ist_pfadzeichen(zeile[ende - 1])) {
-        --ende;
-    }
-    std::size_t anfang = ende;
-    while (anfang > 0 && ist_pfadzeichen(zeile[anfang - 1])) {
-        --anfang;
-    }
-    if (anfang == ende) {
-        return {};
-    }
+    const std::size_t untergrenze = satzanfang_vor(zeile, bis);
+    std::size_t grenze = bis;
+    while (grenze > untergrenze) {
+        // Erst ueber alles, was kein Pfadzeichen ist (Leerzeichen, Akzent,
+        // Doppelpunkt), dann ueber das Wort selbst.
+        std::size_t ende = grenze;
+        while (ende > untergrenze && !ist_pfadzeichen(zeile[ende - 1])) {
+            --ende;
+        }
+        std::size_t anfang = ende;
+        while (anfang > untergrenze && ist_pfadzeichen(zeile[anfang - 1])) {
+            --anfang;
+        }
+        if (anfang == ende) {
+            return {};
+        }
 
-    std::string_view wort = zeile.substr(anfang, ende - anfang);
+        std::string_view wort = zeile.substr(anfang, ende - anfang);
 
-    // Ein Satzpunkt am Ende gehoert nicht zum Namen: `siehe technik.md.` traegt die
-    // Endung `.md`, nicht `.md.`. Dasselbe fuer den Schraegstrich eines Verzeichnisses.
-    while (!wort.empty() && (wort.back() == '.' || wort.back() == '/')) {
-        wort.remove_suffix(1);
+        // Ein Satzpunkt am Ende gehoert nicht zum Namen: `siehe technik.md.` traegt
+        // die Endung `.md`, nicht `.md.`. Dasselbe fuer den Schraegstrich eines
+        // Verzeichnisses.
+        while (!wort.empty() && (wort.back() == '.' || wort.back() == '/')) {
+            wort.remove_suffix(1);
+        }
+        if (endung_zugelassen(wort)) {
+            return std::string(wort);
+        }
+        grenze = anfang;
     }
-    if (!endung_zugelassen(wort)) {
-        return {};
-    }
-    return std::string(wort);
+    return {};
 }
 
 std::string_view basisname(std::string_view pfad) {
@@ -463,6 +552,126 @@ std::string_view basisname(std::string_view pfad) {
         return pfad;
     }
     return pfad.substr(strich + 1);
+}
+
+/// Was eine Zeile hergibt: wo das Muster traf, wie lang der Treffer ist und welchen
+/// Dateinamen die Zeile links davon nennt.
+struct Zeilenfund {
+    bool getroffen = false;
+    std::size_t anfang = 0;
+    std::size_t laenge = 0;
+    std::string ziel;
+};
+
+/// Der naechste Fund ab `von`. Ein eigener Aufruf und keine Schleife im Leser, damit
+/// der Selbsttest unten **denselben** Weg misst wie der Lauf ueber den Bestand. Eine
+/// zweite, nachgebaute Zerlegung im Test hiesse, zwei Fassungen gegeneinander zu
+/// pruefen, von denen nur eine im Ernstfall laeuft.
+Zeilenfund fund_ab(std::string_view zeile, std::size_t von) {
+    for (std::size_t i = von; i < zeile.size(); ++i) {
+        const std::size_t laenge = musterlaenge(zeile, i);
+        if (laenge == 0) {
+            continue;
+        }
+        return Zeilenfund{true, i, laenge, dateiname_davor(zeile, i)};
+    }
+    return {};
+}
+
+// ---------------------------------------------------------------------------
+// Der Selbsttest zur Suche nach links -- Paket 0073
+// ---------------------------------------------------------------------------
+//
+// Warum als Tabelle im Programm und nicht als zweiter Testfall daneben: Die
+// `CMakeLists.txt` gehoert Paket 0059 und steht nicht in der Dateiliste von 0073.
+// Ein zweites `add_test` waere ein Schreibzugriff auf fremdes Gebiet. Die Tabelle
+// hier laeuft dafuer bei **jedem** Aufruf mit -- ein Weg, der nicht vergessen werden
+// kann, weil er kein eigener Befehl ist.
+//
+// Jede Zeile traegt ihre Herkunft. Vier der acht sind im Bestand gemessen und nicht
+// erfunden; die uebrigen vier halten je eine Entscheidung fest, die sonst niemand
+// nachlesen koennte.
+//
+// **Warum die Musterwoerter maskiert sind.** Der Riegel liest seinen eigenen
+// Quelltext -- eine ausgeschriebene Beispielzeile faende er hier und meldete sich
+// selbst. `\145` ist der Buchstabe `e`, `\132` der Buchstabe `Z`; zur Laufzeit steht
+// das Wort da, im Dateitext nicht. Der Selbsttest prueft deshalb zuerst, dass jeder
+// Fall ueberhaupt noch einen Mustertreffer hergibt: Verrutscht die Maskierung, wird
+// er laut statt still gruen.
+
+struct Namensfall {
+    std::string_view zeile;
+    /// Der Name, den der Riegel finden muss. **Leer heisst: er darf keinen finden** --
+    /// die Haelfte des Maszstabs, ohne die eine Suche nur beweist, dass sie etwas
+    /// findet, und nicht, dass sie das Richtige findet.
+    std::string_view erwartet;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Namensfall, 8> NAMENSFAELLE = {{
+    // --- Die zwei Formen, um derentwillen dieses Paket existiert -------------
+    {"abschliessend (`technik.md`; am 2026-09-03 Zeil\145 1219,", "technik.md",
+     "daten/adressen.md, Satz zur Tabelle T46 -- gemessen 2026-09-04: Datum dazwischen"},
+    {"den Wortlaut der Reihenliste aus technik.md Abschnitt 7, und die Reihenliste "
+     "sagt dort in Zeil\145 1441 weiter",
+     "technik.md",
+     "daten/reihen.toml, Feld in_dieser_datei zu Reihe 9 -- gemessen 2026-09-04: "
+     "acht Fuellwoerter und ein Komma dazwischen"},
+
+    // --- Die Regel bei mehreren Namen ---------------------------------------
+    {"laut daten/adressen.md und spiel.md steht in Zeil\145 88 der Wert", "spiel.md",
+     "gebaut: der naechstgelegene Name gilt, ueber ihn hinweg wird nicht gesucht"},
+
+    // --- Was weiterhin durchgehen muss --------------------------------------
+    {"static_assert(stelle_basiswechsel(Gebiet::RW) == 197);   // Zeil\145 198", "",
+     "kern/src/zustand.cpp -- eine von fuenf Stellen, die gruen bleiben muessen: "
+     "die Nummer meint die Adresstabelle, kein Wort der Zeile ist ein Dateiname"},
+    {"Siehe technik.md. Dort steht in Zeil\145 42 die Erklaerung", "",
+     "gebaut: das Satzende beendet die Suche -- dies ist der Fall, der die Grenze "
+     "misst, und ohne ihn waere sie behauptet"},
+    {"in Zeil\145 42 von technik.md", "",
+     "gebaut: gesucht wird nur nach links. Ein Name rechts vom Treffer bleibt "
+     "ungefangen; das ist eine Luecke und keine Nachsicht"},
+
+    // --- Was die enge Fassung schon konnte und weiter koennen muss ----------
+    {"parameter.toml Zeil\145 304: druck_max = 1 # PLATZHALTER", "parameter.toml",
+     "kern/test/schranken_probe.cpp -- die unmittelbare Form, die schon vor 0073 "
+     "gefangen wurde"},
+    {"sind gegen die Reihenliste und gegen technik.md dort \132. 1306 gehalten",
+     "technik.md",
+     "aufgaben/0006, abgewandelt: die zweite Musterform mit einem Wort dazwischen -- "
+     "die Verbreiterung gilt fuer beide Muster, nicht nur fuer das erste"},
+}};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_namenssuche() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < NAMENSFAELLE.size(); ++k) {
+        const Namensfall& fall = NAMENSFAELLE[k];
+        const Zeilenfund fund = fund_ab(fall.zeile, 0);
+        if (!fund.getroffen) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest %zu: kein Mustertreffer. Der Fall misst damit "
+                         "nichts mehr -- vermutlich ist die Maskierung des Musterworts "
+                         "verrutscht.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (std::string_view(fund.ziel) != fall.erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest %zu: erwartet war %s, gefunden wurde %s.\n"
+                         "      Zeile:    %.*s\n      Herkunft: %.*s\n", k + 1,
+                         fall.erwartet.empty() ? "kein Dateiname"
+                                               : std::string(fall.erwartet).c_str(),
+                         fund.ziel.empty() ? "keiner" : fund.ziel.c_str(),
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
 }
 
 // ---------------------------------------------------------------------------
@@ -585,22 +794,21 @@ void pruefe_datei(const fs::path& pfad, const std::string& anzeigename,
             zeile.pop_back();
         }
         for (std::size_t i = 0; i < zeile.size();) {
-            const std::size_t laenge = musterlaenge(zeile, i);
-            if (laenge == 0) {
-                ++i;
-                continue;
+            const Zeilenfund fund = fund_ab(zeile, i);
+            if (!fund.getroffen) {
+                break;
             }
             ++zaehlwerk.treffer;
 
-            const std::string ziel = dateiname_davor(zeile, i);
-            if (!ziel.empty()) {
+            if (!fund.ziel.empty()) {
                 ++zaehlwerk.mit_dateinamen;
-                if (basisname(ziel) != eigener_name) {
-                    befunde.push_back(
-                        Befund{anzeigename, nummer, ziel, ausschnitt(zeile, i, laenge)});
+                if (basisname(fund.ziel) != eigener_name) {
+                    befunde.push_back(Befund{
+                        anzeigename, nummer, fund.ziel,
+                        ausschnitt(zeile, fund.anfang, fund.laenge)});
                 }
             }
-            i += laenge;
+            i = fund.anfang + fund.laenge;
         }
     }
 }
@@ -1136,6 +1344,24 @@ bool liegt_unter(const std::string& kurz, std::string_view ordner) {
 }  // namespace
 
 int main(int argc, char** argv) {
+    // Der Selbsttest laeuft vor allem anderen und braucht kein Argument: Stimmt die
+    // Suche nach links nicht, ist jede Zahl weiter unten wertlos -- auch und gerade
+    // eine gruene.
+    const std::size_t fehlgeschlagen = selbsttest_namenssuche();
+    if (fehlgeschlagen > 0) {
+        std::fprintf(stderr,
+                     "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
+                     "nicht wie erwartet\nausgegangen. Der Riegel hat den Bestand gar "
+                     "nicht erst gelesen -- ein Messgeraet,\ndas seine eigenen Faelle "
+                     "verfehlt, misst auch fremde nicht.\n",
+                     fehlgeschlagen, NAMENSFAELLE.size());
+        return 2;
+    }
+    std::fprintf(stdout,
+                 "belegstellen_riegel, Selbsttest der Suche nach links: %zu Faelle, "
+                 "alle wie erwartet.\n",
+                 NAMENSFAELLE.size());
+
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {
         std::fprintf(stderr,

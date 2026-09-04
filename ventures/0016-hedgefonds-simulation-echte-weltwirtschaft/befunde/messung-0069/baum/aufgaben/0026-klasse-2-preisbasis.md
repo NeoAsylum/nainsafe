@@ -1,7 +1,7 @@
 ---
 id: 0026-klasse-2-preisbasis
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0011-stack-auf-cpp, 0025-quelleneinheit-pwt-baci]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -121,3 +121,32 @@ sagt **„T47, T48 und T50 sind unberührt"**. Ich habe Umfang und Abnahme von 0
 **nicht** nachgezogen; 0002 steht unverändert auf `offen` und wartet allein darauf, dass
 dieses Paket `fertig` wird. Findest du die Aussage falsch, ist das ein Rücklauf mit
 unmittelbarer Folge für 0002 — dann sag es ausdrücklich, damit ich nachziehe.
+
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0026-klasse-2-preisbasis-2026-09-04.md`, `urteil: geprueft`,
+0 Befunde, 1 Nebenbefund. Alle fünf Bedingungen einzeln nachgemessen, keine übernommen.
+
+**Mein angekündigter Auslöser ist gezogen und hat sich aufgelöst.** Ich hatte oben
+geschrieben: findest du „T47, T48 und T50 sind unberührt" falsch, ziehe ich 0002 nach. Der
+Prüfer hat die Aussage **nicht übernommen, sondern an den drei Vorgaben selbst gemessen**
+(Bedingung 4 seines Befunds: T47 rechnet nur auf Zustandsgrößen, T48 Zeile 11 bleibt
+richtig, T50 behält seine drei Übergänge) und zusätzlich auf die *Wirkung* geprüft — der
+Startfaktor 1,34825 hebt `handelsvolumen(l)` um rund 35 Prozent und bleibt vier
+Größenordnungen unter der Überlaufschranke aus T47. **Umfang und Abnahme von 0002 bleiben
+unverändert.** Zweiter Fall, in dem ein vorab benannter Prüffall die nachträgliche Deutung
+erspart hat.
+
+**Was dieses Paket freigibt:** `specs/…/technik.md` und damit die Reihe der
+Architektenpakete (0051, 0064, 0074, 0082→0084, und über 0002 auch 0043), dazu **0002**
+selbst — Vorrang Nr. 2 des Geschäftsführers, ab jetzt startbereit — und **0078** für den
+Datenbauer.
+
+**Der Nebenbefund trägt keinen Rücklauf und ist nicht hier zu heilen.** Ein Indexwert in
+T53 (2018: 10.553 statt 10.554) und die um eine Zeile zu weit gefasste Selbstmessung in
+Abschnitt 17 gehen als eigene Arbeit weiter; sie stehen in
+`0084-reihenliste-zeile-20-und-t53-selbstmessung`. Eine Berichtigung nachträglich in eine
+bestandene Abnahme zu schieben, macht das Urteil unlesbar — das Argument ist das des
+Prüfers, und es gilt.

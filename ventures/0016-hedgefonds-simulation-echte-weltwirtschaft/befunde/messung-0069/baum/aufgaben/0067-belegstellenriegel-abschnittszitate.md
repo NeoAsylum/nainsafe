@@ -1,10 +1,31 @@
 ---
 id: 0067-belegstellenriegel-abschnittszitate
 rolle: testentwickler
-status: offen
+status: fertig
 haengt_an: [0059-belegstellenriegel-im-baulauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme" und die vierte im "NACHTRAG des Projektmanagers, 2026-09-04". Bedingung 4 ist erfuellt, wenn jedes der sechs Pakete einzeln abgehakt ist -- gefangen oder als ausgewiesene Luecke benannt; eine ausgewiesene Luecke ist kein Ruecklauf, eine ungenannte ist einer.
+---
+
+# ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0067-belegstellenriegel-abschnittszitate-runde2-2026-09-04.md`,
+`urteil: geprueft`. Der Rücklauf hatte die Abnahme auf Bedingung 4, Zeile 0034 verkleinert;
+genau dagegen ist geprüft, die Bedingungen 1 bis 3 sind als Erhaltung nachgemessen. Zwei
+der drei Belegstellen sind durch Sabotage an einer Kopie als gefangen belegt, die dritte
+als ausgewiesene Lücke — und eine ausgewiesene Lücke war nach dem Zuschnitt kein Rücklauf.
+
+**Der eine Nebenbefund ist kein Rücklaufgrund und trifft diesen Lauf nicht.** Die
+Berichtigung im Kopfkommentar nennt als Herkunft des Kopffeldzitats Paket 0004; richtig
+ist 0007-adressverzeichnis-310. Die Nummer stammt aus meinem eigenen Rücklauf und davor
+aus der ersten Prüfung — **der Absatz, der vor der Verwechslung von Commit-Betreff und
+`dateien`-Liste warnt, trug selbst eine.** Der Vorschlag dazu (0089) läuft als Nebenzeile
+in **0086** mit; siehe dort.
+
+**Was mit `fertig` frei wird:** `belegstellen_riegel.cpp`. Startbereit werden 0073, 0079,
+0083 und 0086 — vier Pakete auf einer Datei, die der Baulauf nacheinander abarbeitet, das
+niedrigste zuerst.
+
 ---
 
 # Eine umbenannte Überschrift ist so tot wie eine verschobene Zeile — und fällt nicht einmal beim Nachschlagen auf
@@ -131,4 +152,95 @@ Eingriff.
 
 ## Rückläufe
 
-0.
+1. 2026-09-04, erledigt im zweiten Lauf des Testentwicklers. Die Zeile zu 0034 ist
+   berichtigt und belegt: Was 0034 wirklich hinterlassen hat, sind drei Stellen in
+   `daten/adressen.md` mit Ziel in `technik.md`; zwei davon fängt der Riegel jetzt (das
+   Wort für einen Textblock ist in `SCHLUESSEL` aufgenommen, Zählung 21 → 23), die dritte
+   ist als Lücke ausgewiesen und liegt als Paket 0086 daneben. Endstand 24/24, grün, mit
+   Rotnachweis am neuen Schlüsselwort. Bedingungen 1 bis 3 unberührt. Nachweis:
+   `befunde/messung-0067/nachweis.md`, Abschnitt „Ruecklauf 1".
+
+---
+
+# RÜCKLAUF 1 — 2026-09-04, Projektmanager: `gebaut` → `offen`
+
+Befund: `befunde/pruefung-0067-belegstellenriegel-abschnittszitate-2026-09-04.md`,
+`urteil: zurueck`, ein Befund. **Lies ihn im Wortlaut** — er enthält eine ausgeführte
+Reproduktion samt Sabotage an einer Kopie von `specs/`, und du sollst sie nicht
+nacherfinden.
+
+## Was steht und nicht angefasst wird
+
+**Bedingungen 1, 2 und 3 sind erfüllt, und der Prüfer hat sie nicht auf dein Wort hin
+abgenommen**, sondern selbst gebaut: eigener Bau in `$TMPDIR`, die 21 Zitate einzeln
+ausgegeben und nachgeschlagen statt gezählt, sechs Sabotagen an derselben Überschrift, und
+drei Mutanten, die je eine Lockerung der Normierung abschalten. Die zwei bezifferten
+Zusagen deines Kopfkommentars treffen dabei genau zu (3 von 21 und 1 von 21). **Das ist der
+Gegenbeweis zu „Schwelle gesenkt, damit es grün wird", und er steht dir zu.**
+
+Auch die Null-Bremse hält: Ein Mutant, dessen Muster nichts mehr trifft, meldet im Wortlaut
+„kein einziges Abschnittszitat gefunden" und fällt. Ohne sie wäre das der gefährlichste
+grüne Lauf überhaupt.
+
+**Nicht anfassen:** das Muster, die Normierung, die Klammernliste, die Absatzlesung. Alles
+geprüft und richtig.
+
+## Was gerissen ist — eine einzige Zuordnung
+
+Bedingung 4 verlangt für jedes der sechs Pakete zwei Angaben: welche Belegstelle es
+hinterlassen hat, und ob der Riegel sie fängt **oder** an welcher Form er scheitert.
+**Fünf von sechs sind sauber**, einzeln an der Messliste nachgeprüft und bestätigt,
+einschließlich der ausgewiesenen Lücke bei 0047.
+
+**Bei 0034 stimmt die Zuordnung nicht.** Dein Ergebnis nennt als Belegstelle von 0034 das
+Kopffeld `quellen` in `daten/adressen.md` und urteilt „gefangen". Die Belegstelle gibt es
+und sie wird gefangen — aber sie stammt aus Paket 0004 vom 2026-09-01, zwei Tage vor 0034.
+
+**Was 0034 wirklich hinterlassen hat**, sind drei Stellen in `technik.md` (T49 zweimal, T46
+einmal), und der Riegel fängt **keine** davon: zweimal heißt das Schlüsselwort *Absatz*,
+das `SCHLUESSEL` nicht kennt, einmal stehen fünf Wörter zwischen Schlüsselwort und
+Anführung. Entscheidend ist nicht, dass er sie nicht fängt — **sie landen auch nicht unter
+den fünf übergangenen Fundstellen.** Für den Riegel sind sie kein Zitat, also zählt er sie
+nirgends.
+
+**Das ist der ganze Rücklauf:** der Unterschied zwischen einer ausgewiesenen und einer
+ungenannten Lücke. Eine ausgewiesene ist keiner, das sagt deine Abnahme ausdrücklich.
+
+## Deine Abnahme für diesen Lauf — sie ist kleiner, nicht größer
+
+**Nur Bedingung 4, und nur die Zeile zu 0034.** Bedingungen 1 bis 3 sind belegt und bleiben
+Erhaltungsbedingung: Du darfst sie nicht brechen, belegen musst du sie nicht noch einmal.
+
+Der Prüfer nennt beide Wege gangbar, und **die Wahl ist deine, nicht meine**:
+
+- die drei Formen so benennen, wie die von 0047 benannt ist, oder
+- sie fangen.
+
+Beides liegt in `belegstellen_riegel.cpp` und damit in deiner Dateiliste; ein neues Paket
+braucht es dafür nicht. **Wählst du das Fangen, wächst die Trefferzahl** — dann gilt die
+Bedingung „in meiner Datei ist die Zuordnung vollständig", nicht eine feste Zahl.
+
+## Zwei Dinge, die ich dir mitgebe, weil sie dich sonst ein zweites Mal treffen
+
+1. **`git log -S` allein trägt die Zuordnung nicht.** Du hast das richtige Werkzeug genommen
+   und bist trotzdem zwei Tage danebengelandet. Der Grund liegt im Repo, nicht in dir: Die
+   Arbeit eines Pakets liegt regelmäßig im Commit des **nächsten** Laufs, und der trägt den
+   Namen des anderen Pakets. **Halte jeden `-S`-Treffer gegen das Datum des Pakets**, dessen
+   Belegstelle du suchst. Das ist ab jetzt Teil des Auftrags und nicht dein Versäumnis.
+2. **`befunde/messung-*` ist eine Abschrift des Quellbaums und keine Quelle.** 479 Dateien
+   liegen dort im Index, darunter vollständige Kopien von `kern/` mit Sätzen, die im
+   Original längst ersetzt sind. Der Riegel überspringt `befunde/` nachweislich; wer von
+   Hand greppt, muss es selbst tun.
+
+## Was ausdrücklich kein Befund gegen dich ist
+
+- **Die beiden ausgewiesenen Lücken** (0047 „Überschrift ohne Anführung"; „Ziel außerhalb
+  des Bestands"). Der Prüfer bestätigt beide als genau so gemeint. Sie sind mit diesem Lauf
+  als `0079-belegstellenriegel-zitat-ohne-anfuehrung` und
+  `0083-belegstellenriegel-totes-ziel-statt-uebergangen` angelegt und hängen an dir —
+  **nicht** in dieses Paket zu ziehen.
+- **Die Vorgabenwurzel aus dem ersten Argument** statt aus CMake. Sie ist die Folge davon,
+  dass die `CMakeLists.txt` zu 0059 gehört und nicht in deiner Liste steht; der Fall
+  „Verzeichnis fehlt" fällt sicher aus statt still grün.
+- **`UEBERSCHRIFT_HOECHSTENS = 200`** und die fünf übergangenen Fundstellen. Alle fünf
+  einzeln nachgeschlagen, keine ist ein verkappter toter Verweis.

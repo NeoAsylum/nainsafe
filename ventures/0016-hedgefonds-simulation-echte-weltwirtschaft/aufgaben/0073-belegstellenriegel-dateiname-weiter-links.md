@@ -1,7 +1,7 @@
 ---
 id: 0073-belegstellenriegel-dateiname-weiter-links
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel findet einen Dateinamen auch dann, wenn zwischen ihm und der Zeilenangabe weitere Woerter auf derselben Zeile stehen -- nachgewiesen an den zwei heute gemessenen Formen (Datum dazwischen, Fuellwort dazwischen) je mit Rotnachweis, und er bleibt auf dem dann geltenden Korpus gruen. Kommen mehrere Dateinamen auf der Zeile vor, gilt der naechstgelegene; das steht als Regel im Kopfkommentar und traegt einen eigenen Fall.
@@ -111,3 +111,88 @@ geändert.
 **Zum Vorrang:** `ops/plan.md` nimmt die Belegstellen-Familie diese Woche vom Vorrang aus.
 Du stehst seit dem 2026-09-04 auf `offen` und behältst das; einen Bauplatz bekommst du erst,
 wenn 0067 abgenommen ist.
+
+---
+
+## AUSGEFUEHRT — 2026-09-04, Testentwickler
+
+**Vorher-Stand:** `HEAD` = `81853b8` (`projektmanager`, 9 Dateien), also nach der Abnahme
+von 0067 durch `e049837`. Geaendert wurde allein
+`werkzeuge/belegstellen/belegstellen_riegel.cpp`; dazu liegt ein Vorschlag als neues
+Paket 0090 daneben (Begruendung unten).
+
+### Was gebaut wurde
+
+`dateiname_davor` sucht nicht mehr ueber genau ein Wort, sondern **wortweise nach links
+bis zum Satzanfang**; der naechstgelegene Name mit zugelassener Endung gewinnt, ueber
+ihn hinweg wird nicht weitergesucht. Neu dafuer ist `satzanfang_vor`. Die Regel steht im
+Kopfkommentar unter *Wie weit nach links gesucht wird*.
+
+Dazu acht Faelle in `NAMENSFAELLE`, die bei **jedem** Aufruf vor dem Lesen des Bestands
+laufen; ein verfehlter Fall bricht mit Code 2 ab. Sie stehen im Programm und nicht als
+zweites `add_test`, weil die `CMakeLists.txt` daneben Paket 0059 gehoert und nicht in
+der Dateiliste dieses Pakets steht.
+
+### Warum die Grenze das Satzende ist und kein Abstand in Zeichen
+
+Beides gemessen, nicht geschmeckt:
+
+* **Abbruch am Satzzeichen scheidet aus.** Form 1 traegt ein Semikolon zwischen Namen
+  und Nummer (`(technik.md; am 2026-09-03 …`), Form 2 ein Komma (`… Abschnitt 7, und
+  die Reihenliste …`). Ein Abbruch am Komma oder Semikolon liesse **beide** Formen
+  wieder durchfallen -- also genau die zwei, um derentwillen das Paket existiert.
+* **Ein Abstandsmass hat hier keine messbare Zahl.** Die zwei echten Formen liegen 17
+  und 47 Zeichen vom Namen entfernt. Jede Schranke oberhalb von 47 waere geraten, und
+  eine geratene Schwelle in einem Messgeraet ist schlimmer als eine weite Suche.
+* **Der Satz ist eine Grenze mit Bedeutung** und traegt Fall 5 als eigenen Nachweis.
+
+### Die Rotnachweise, alle drei gefuehrt
+
+1. **Enge Fassung wiederhergestellt** (Rueckgabe nach dem ersten Wort): Faelle 1, 2, 3
+   und 8 fallen, die vier ohne erwarteten Fund bleiben gruen. Das ist der Rotnachweis
+   fuer beide benannten Formen **und** fuer die Naechstgelegenheitsregel, je einzeln.
+2. **Satzgrenze abgeschaltet** (`satzanfang_vor` gibt immer 0): **nur** Fall 5 faellt.
+   Damit ist belegt, dass die Grenze traegt und nicht Zierde ist.
+3. **Am Bestand gemessen, mit einem Mutanten, der die Datendokumente auch fuer
+   Bedingung 1 liest** -- so, wie es der Rumpf dieses Pakets beschreibt. Auf **50
+   Dateien mit 12 Mustertreffern**: enge Fassung **0** Verweise mit Dateinamen, breite
+   Fassung **2** -- `daten/adressen.md:541` und `daten/reihen.toml:344`, also genau die
+   beiden lebenden Formen und **kein falscher Fund**. Das ist zugleich die Messung, die
+   gegen ein Abstandsmass spricht: Die weite Suche kostet auf dem gemessenen Baum nichts.
+
+Alle drei Mutationen sind wieder heraus; `grep MESSUNG` ist leer.
+
+### Gruen auf dem dann geltenden Korpus
+
+`Bedingung 1: 40 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen
+daneben.` Die fuenf sind unveraendert die `static_assert`-Zeilen in
+`kern/src/zustand.cpp`; keine von ihnen traegt ein Wort mit zugelassener Endung, weshalb
+die Verbreiterung sie nicht beruehrt. Fall 4 haelt diese Form fest.
+
+Bedingung 2 ist von der Aenderung unberuehrt: 24 Zitate, 19 aufgeloest, 8 uebergangene
+Fundstellen -- dieselben Zahlen wie vor dem Lauf.
+
+Beide Bauwege geprueft (allein und ueber den Arbeitsbereich), beide mit identischer
+Ausgabe, beide unter `-Werror` und `-fsanitize=undefined,address
+-fno-sanitize-recover=all`. Der Sanitizer laeuft ueber den ganzen Bestand mit -- die
+Rueckwaertsindizierung ist damit nicht nur gedacht, sondern gemessen.
+
+**Bauquellen 39 → 40:** nicht von diesem Paket. Waehrend des Laufs hat ein anderer Agent
+`kern/include/kern/zustandsausgabe.hpp` angelegt und `werkzeugkette.cmake` erweitert.
+
+### Was dieser Lauf **nicht** repariert hat
+
+Der Riegel war schon im Vorher-Stand rot, und zwar an Bedingung 2: Fuenf Zitate in
+`daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md` zeigen auf eine Ueberschrift,
+die Commit `81853b8` aus `rueckstand.md` entfernt hat. Das ist fremdes Gebiet und nicht
+meine Dateiliste; es liegt als Vorschlag **0090** daneben. Der Uebersetzungsbericht vom
+2026-09-04 fuehrt den Riegel noch gruen, weil er um 21:52 entstand und der Commit um
+22:26 kam -- der naechste Nachtlauf wird rot, und zwar zu Recht.
+
+### Worauf ich unsicher bin
+
+Die Satzgrenze bricht auch an einer Abkuerzung mit Punkt ab (`z. B.`). Das ist die
+vorsichtige Richtung -- der Riegel sucht dann kuerzer und laesst durch --, aber es ist
+eine ungemessene Annahme: Im heutigen Bestand kommt kein Fall vor, an dem es etwas
+kostet. Wenn spaeter eine Restform daran haengen bleibt, ist das der erste Ort zum
+Nachsehen.
