@@ -1,4 +1,0 @@
-vorrat_kernanker_probe 1 0.0093951
-vorrat_probe 1 0.0090446
-vorrat_verfahren_probe 1 0.0113222
----

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libpruefstand_geprueft.a CMakeFiles/pruefstand_geprueft.dir/src/vorrat.cpp.o CMakeFiles/pruefstand_geprueft.dir/src/vorrat_verfahren.cpp.o
-/usr/bin/ranlib libpruefstand_geprueft.a

@@ -1,1 +1,0 @@
-/usr/bin/c++ -fwrapv -fno-fast-math -O2 -g -DNDEBUG -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/schritt_probe.dir/link.d CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o -o schritt_probe  libkern_geprueft.a

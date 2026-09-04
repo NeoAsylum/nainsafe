@@ -1,9 +1,0 @@
-festkomma_probe 1 0.0104542
-meldung_probe 1 0.00930839
-pruefsumme_probe 1 0.00947415
-schranken_probe 1 0.00983263
-schreiber_probe 1 0.0121453
-schritt_probe 1 0.0123638
-zufall_probe 1 0.0102432
-zustand_probe 1 0.014278
----

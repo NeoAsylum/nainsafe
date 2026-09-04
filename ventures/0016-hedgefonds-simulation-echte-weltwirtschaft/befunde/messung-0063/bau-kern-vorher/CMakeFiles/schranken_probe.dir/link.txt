@@ -1,1 +1,0 @@
-/usr/bin/c++ -fwrapv -fno-fast-math -O2 -g -DNDEBUG -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/schranken_probe.dir/link.d CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o -o schranken_probe  libkern_geprueft.a

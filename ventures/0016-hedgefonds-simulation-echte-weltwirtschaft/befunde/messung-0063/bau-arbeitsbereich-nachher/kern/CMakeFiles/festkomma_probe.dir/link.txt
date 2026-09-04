@@ -1,1 +1,0 @@
-/usr/bin/c++ -fwrapv -fno-fast-math -O2 -g -DNDEBUG -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/festkomma_probe.dir/link.d CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o -o festkomma_probe  libkern_geprueft.a

@@ -1,7 +1,7 @@
 ---
 id: 0063-sperrliste-je-wort-statt-je-eintrag
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0060-schlussriegel-blinde-flecken]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

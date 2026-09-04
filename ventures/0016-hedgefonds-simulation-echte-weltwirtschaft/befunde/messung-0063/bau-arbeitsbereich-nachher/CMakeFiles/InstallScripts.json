@@ -1,9 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0063/bau-arbeitsbereich-nachher/cmake_install.cmake",
-		"/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0063/bau-arbeitsbereich-nachher/kern/cmake_install.cmake",
-		"/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0063/bau-arbeitsbereich-nachher/pruefstand/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

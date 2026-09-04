@@ -94,8 +94,12 @@ konstante Preise, Preisindizes oder ein Basisjahr nennt. Ergebnis: **nichts davo
 auf der Seite.** Ein Basisjahr fehlt also nicht, weil ich es uebersehen haette, sondern
 weil die Quelle keines fuehrt — was zu „current" passt und die Messung stuetzt.
 
-Damit ist die schwerste offene Sache des Vorhabens (`rueckstand.md` Punkt 3) nicht
-entschieden, aber zum ersten Mal **entscheidbar gestellt**. Die Folge steht in
+Damit ist die schwerste offene Sache des Vorhabens nicht entschieden, aber zum ersten
+Mal **entscheidbar gestellt**. Gemeint ist die Frage, ob T5 Klasse 2 laufende oder
+konstante Preise misst; sie stand am 2026-09-02 in `rueckstand.md` unter der
+Ueberschrift „Was der Geschäftsführer entscheiden lassen muss" als eigener Punkt
+(Wortlaut: „Klasse 2 misst zweierlei — laufende und konstante Preise") und ist in der
+vorliegenden Fassung jener Datei nicht mehr aufgefuehrt. Die Folge steht in
 Abschnitt 5.
 
 ## 3. PWT-Kapitalstock (Reihe 3) — nicht gemessen

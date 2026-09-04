@@ -1,7 +1,7 @@
 ---
 id: 0062-reihentoml-selbstmessung-und-rueckstandsverweise
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0057-reihentoml-belegstellen-ausserhalb-pruefweg]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
@@ -145,3 +145,161 @@ Treffer des Musters über beide Dateien. Die alte Punktnummer im Ersatztext aufz
 („war Punkt 9") trifft das Muster und macht deine eigene Abnahme rot. Sie ist auch nichts
 wert: Genau dass die Nummer nichts bezeichnet, ist der Grund für dieses Paket. Nenne die
 Sache und das Zitat, nicht die tote Nummer.
+
+---
+
+## GEBAUT — 2026-09-04, Datenbauer
+
+Zwei Dateien geaendert, `daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md`.
+Vergleichsstand fuer jede Zahl dieses Berichts ist der Commit **`24aa5aa`** (der letzte,
+der `reihen.toml` traegt; beide Dateien waren beim Aufschlagen unveraendert gegenueber
+diesem Commit, `git status` zeigte sie nicht). Der Bezugsstand
+der Selbstmessung im Feld ist ein anderer und heisst **`1a4d240`** — so verlangt es
+Bedingung 1, und so steht es im Feld.
+
+**Bilanz:** `reihen.toml` +12/−6 in sechs Hunks (Z. 37, 113, 283, 431, 451, 1656 der
+Altfassung), `einheitenbefund-pwt-baci.md` +6/−2 in **genau einem** Hunk (Z. 97).
+
+### Bedingung 1 — die drei Zahlen im Nachtrag
+
+Gemessen mit `tomllib` (Python 3), beide Baeume flach gezogen, Blattschluessel als
+Pfadtupel. Die Messung ist **nach** der letzten Schreibbewegung an der Datei wiederholt
+worden — die letzte Schreibbewegung war die Reparatur des Kopfkommentars, danach lief der
+Vergleich erneut. Es gilt die wiederholte.
+
+| gegen `1a4d240` | gemessen |
+|---|---|
+| Blattwerte Bezugsstand | **1212** |
+| Blattwerte vorliegende Fassung | **1214** |
+| gemeinsame Schluessel | 1212 |
+| neue Schluessel | **2** — `datei.nachgezogen_durch.5`, `datei.nachgezogen_durch.6` |
+| weggefallene Schluessel | 0 |
+| verschiedene gemeinsame Werte | **13** |
+
+Die dreizehn einzeln: `datei.stand`, `zaehlung.beleg`, `widerspruch.1.lang`,
+`widerspruch.3.lang`, `widerspruch.4.entscheidet`, `reihe.1.offen.0`,
+`reihe.1.umrechnung.1.begruendung`, `reihe.1.umrechnung.1.beleg`,
+`reihe.5.lizenzbeleg.0.wortlaut_form`, `reihe.9.umrechnung.0.begruendung`,
+`reihe.9.umrechnung.0.beleg`, `reihe.12.lizenzbeleg.0.wortlaut_form`,
+`pruefweg.toml_geprueft`. Genau diese Zahlen und genau diese Aufzaehlung stehen jetzt im
+Feld — die Aufzaehlung, nicht nur die Summe, weil eine Summe aufgehen kann und trotzdem
+falsch ist.
+
+**Kein Wort des vorher dort stehenden Textes ist entfernt.** Maschinell nachgewiesen: der
+alte Feldwert aus `24aa5aa` ist eine **Praefix-Teilzeichenkette** des neuen
+(3.225 gegen 4.597 Zeichen, 1.372 angehaengt). Der falsche Halbsatz bleibt darin stehen und
+ist als falsch bezeichnet, statt getilgt zu sein — er ist der Beleg dafuer, woran dieses
+Feld dreimal gescheitert ist.
+
+### Bedingung 2 — die fuenf toten Verweise
+
+`rueckstand\.md[^\n]{0,40}Punkt ?[0-9]` liefert ueber beide Dateien **0 Treffer** (mit
+`Grep` und unabhaengig davon mit `re` gegen den Dateiinhalt). `rueckstand.md` kommt
+weiterhin viermal in `reihen.toml` und einmal in `einheitenbefund-pwt-baci.md` vor — die
+Adressen sind ersetzt, nicht entfernt.
+
+Alle fuenf zeigen auf Sachen, die in der **vorliegenden** Fassung von `rueckstand.md`
+(Fassung 16, Stand 2026-09-03) **nicht mehr aufgefuehrt** sind. Deshalb tragen alle fuenf
+dieselbe zweiteilige Adresse: die Ueberschrift, die die Neunummerierung ueberlebt hat, plus
+die Sache — und den ausdruecklichen Satz, dass sie dort nicht mehr steht.
+
+| Stelle | neue Adresse | Zitat |
+|---|---|---|
+| `reihen.toml` Kopfkommentar, Leseregel 1 | Ueberschrift + „eine von zwei Entwurfsfragen aus den Befunden der Vornacht", nicht mehr aufgefuehrt | Ueberschrift |
+| `[[widerspruch]]` Nr. 5, `entscheidet` | Ueberschrift + eigener Punkt „Reihe 9 und R = 19", nicht mehr aufgefuehrt | Ueberschrift, dazu der historische Punkttitel |
+| Reihe 2, `offen[0]` | Ueberschrift + „eine von zwei Entwurfsfragen aus den Befunden der Vornacht", nicht mehr aufgefuehrt | Ueberschrift |
+| Reihe 2, zweiter `[[reihe.umrechnung]]`, `beleg` | Ueberschrift, nicht mehr aufgefuehrt | Ueberschrift |
+| `einheitenbefund-pwt-baci.md` Abschnitt 2 | Ueberschrift + Punkttitel „Klasse 2 misst zweierlei — laufende und konstante Preise", nicht mehr aufgefuehrt | Ueberschrift, dazu der historische Punkttitel |
+
+**Das Zitat, als Teilzeichenkette wiedergefunden.** „Was der Geschäftsführer entscheiden
+lassen muss" steht **einmal** in der vorliegenden `rueckstand.md` und jetzt **viermal** in
+`reihen.toml` und **einmal** in `einheitenbefund-pwt-baci.md` — jedes Vorkommen
+zeichengleich, mit `ä` und `ü`, ungebrochen auf einer Zeile.
+
+Der letzte Punkt kostete einen Anlauf: Im Kopfkommentar lag das Zitat zuerst ueber zwei
+Zeilen, und der Kommentarpraefix `#    ` steht mitten drin — die Zeichenkette war damit
+**nicht** wiederauffindbar. Umbrochen, danach gefunden. Dieselbe Sorte Fehler wie das
+transliterierte Zitat aus Paket 0057, nur mit einem anderen Zeichen.
+
+**Gegenprobe zur Behauptung „nicht mehr aufgefuehrt":** In der vorliegenden
+`rueckstand.md` kommen `Reihe 9 und R = 19`, `Entwurfsfragen aus den Befunden der
+Vornacht`, `Klasse 2 misst zweierlei`, `T37-Klasse` und `Rundungsstelle` **je null Mal**
+vor. Und die historischen Wortlaute stehen dort, wo ich sie datiere: `30e5073` (Stand beim
+Eintrag der vier Verweise in `reihen.toml`) traegt „Reihe 9 und R = 19", „Zwei
+Entwurfsfragen aus den Befunden der Vornacht" und „Rundet Reihe 2 vor oder nach der
+Normierung?" je einmal; `d27f02f` (Stand beim Eintrag des Verweises im Einheitenbefund)
+traegt „Klasse 2 misst zweierlei — laufende und konstante Preise" einmal.
+
+### Bedingung 3 — sonst nichts geaendert
+
+Blattvergleich `24aa5aa` gegen die vorliegende Fassung: 1213 gegen 1214 Blattwerte, **ein**
+neuer Schluessel (`datei.nachgezogen_durch.6`), keiner weggefallen, **vier** verschiedene
+gemeinsame Werte:
+
+- `pruefweg.toml_geprueft`
+- `widerspruch.4.entscheidet`
+- `reihe.1.offen.0`
+- `reihe.1.umrechnung.1.beleg`
+
+Das ist die erlaubte Liste, und sie ist kleiner als erlaubt: `datei.stand` steht bereits auf
+`2026-09-04` und ist deshalb **nicht** angefasst worden.
+
+**Die sieben Schnitte aus `[pruefweg]`, neu gemessen, alle unveraendert:** schnitt_1 6
+Treffer (und dieselben sechs Fundstellen wie aufgezaehlt, Kontexte nachgesehen); schnitt_2
+29 Zeilen / 54 Vorkommen / 27; schnitt_3 113, aufgeteilt 19+9+22+20+39+2+2 = 113; schnitt_4
+19/19/19, Sammelmuster 152, `^t37_klasse = ` 20, `^nr = ` 28; schnitt_5 21 gegen 28 und
+Summe 43; schnitt_6 — `tomllib` liest die Datei fehlerfrei, also kein doppelter Schluessel;
+schnitt_7 20 und 2.
+
+`einheitenbefund-pwt-baci.md`: ein Hunk, +6/−2, Hunkkopf `@@ -97,2 +97,6 @@` — betroffen
+sind allein die beiden Zeilen 97 und 98 der Altfassung, die dritte Zeile des Absatzes
+(`Abschnitt 5.`) steht unveraendert als Kontext.
+
+### Ein Befund gegen den Paketrumpf, der die Abnahme nicht beruehrt
+
+**Die Spalte „gemeint war" der Verweistabelle ist beim fuenften Eintrag falsch.** Sie sagt
+fuer `einheitenbefund-pwt-baci.md`: „die fehlenden Rohdaten". Der Satz dort lautet aber
+„Damit ist die schwerste offene Sache des Vorhabens … nicht entschieden, aber zum ersten
+Mal **entscheidbar gestellt**. Die Folge steht in Abschnitt 5" — er steht in Abschnitt 2
+(*Preisbasis BACI — gemessen: laufende Preise*), und Abschnitt 5 heisst *Die Folge fuer T5
+Klasse 2*. Gemeint ist die Klasse-2-Frage, nicht die Rohdatenlage.
+
+**Und der Verweis war schon bei seiner Eintragung falsch nummeriert.** Zum Stand `d27f02f`
+war die Klasse-2-Frage Punkt **4**, nicht Punkt 3; Punkt 3 war damals „Ein TOML-Parser
+gehört in den Runner". Der Verweis hat also nie auf das gezeigt, was er meinte — er ist
+nicht durch eine Neunummerierung tot geworden, sondern tot geboren. Fuer die Reparatur
+aendert das nichts (die Sache ist heute so oder so nicht mehr aufgefuehrt), fuer die
+Diagnose schon: Eine Nummer ist auch im Moment des Schreibens nicht zuverlaessig.
+
+Ich habe die Sache eingetragen, die der Satz meint, nicht die, die der Paketrumpf nennt.
+Waere es umgekehrt richtig, ist es eine Zeile.
+
+**Kleiner, ohne Folge:** Bedingung 3 spricht von „den vier Feldern mit
+`rueckstand.md`-Verweis" in `reihen.toml`. Drei davon sind Blattwerte; der vierte steht im
+Kopfkommentar und taucht in keinem Blattvergleich auf. Die Liste stimmt als Aufzaehlung der
+Stellen, nicht als Aufzaehlung der Blattwerte — deshalb sind es oben vier Unterschiede und
+nicht fuenf.
+
+### Worauf ich unsicher bin
+
+- **Ob der Nachtrag die Zahlen des Pakets 0057 oder die des vorliegenden Standes nennen
+  soll.** Bedingung 1 verlangt beides zugleich — „die drei Zahlen, die herauskommen" und
+  „nach der letzten Schreibbewegung wiederholt". Beides geht nur, wenn die Messung gegen
+  den vorliegenden Stand laeuft, und damit zaehlt sie meine eigenen zwei Aenderungen mit
+  (13 statt 11 Unterschiede, 1214 statt 1213 Blattwerte). Ich habe das ausgeschrieben,
+  statt es zu verstecken: Der Nachtrag sagt, welche neun von 0057 stammen und welche zwei
+  von 0062. Wer die reine 0057-Bilanz will, misst `1a4d240` gegen `24aa5aa` — dann sind es
+  1213, ein neuer Schluessel und elf Unterschiede.
+- **Dass ich den falschen Halbsatz habe stehen lassen.** Bedingung 1 sagt „kein Wort
+  entfernt", der Rumpf sagt „auf die gemessenen Zahlen bringen". Ich habe die strengere
+  Lesart gewaehlt und den falschen Satz als falsch bezeichnet, statt ihn zu ersetzen. Das
+  macht das Feld laenger; der Rumpf schliesst Laenge ausdruecklich als Befund aus.
+- **Die Eintragung in `datei.nachgezogen_durch`.** Sie ist von Bedingung 3 erlaubt, aber
+  nirgends verlangt. Ich halte sie fuer noetig, weil `paket_bedeutung` genau dieses Feld
+  als den Ort benennt, an dem steht, wer die Datei nachgezogen hat — 0057 hat sich
+  eingetragen, und eine Luecke waere hier schlimmer als eine Zeile zu viel.
+- **`reihe.1.umrechnung.1.beleg` traegt jetzt zwei Adressformen nebeneinander** — die
+  `technik.md`-Belege mit „T23 Punkt 7" und den `rueckstand.md`-Verweis ohne Nummer. Das
+  liest sich uneinheitlich. Es ist Absicht: Die T-Nummern von `technik.md` werden nicht je
+  Baulauf neu vergeben, die Punkte von `rueckstand.md` schon. Wer die Einheitlichkeit
+  hoeher gewichtet, hat einen Punkt.

@@ -307,6 +307,7 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       # Einzeln unterdruecken bleibt ausdruecklich erlaubt: `-Wno-conversion` an genau
       # einem Ziel benennt, was nachgesehen wird, und laesst den Rest des Satzes scharf.
       # Ein Pauschalabschalter benennt nichts.
+
       # Zerlegt wird vor dem Abgleich, weil ein Eintrag nicht dasselbe ist wie ein
       # Schalter. `SHELL:-Wno-error -w` ist CMakes dokumentierter Weg, mehrere Schalter
       # in **einem** Eintrag zu uebergeben, und ein Generatorausdruck -- `$<1:-w>`,

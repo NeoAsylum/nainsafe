@@ -1,1 +1,0 @@
-/usr/bin/c++ -fwrapv -fno-fast-math -O2 -g -DNDEBUG -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/vorrat_kernanker_probe.dir/link.d CMakeFiles/vorrat_kernanker_probe.dir/test/vorrat_kernanker_probe.cpp.o -o vorrat_kernanker_probe  libpruefstand_geprueft.a
