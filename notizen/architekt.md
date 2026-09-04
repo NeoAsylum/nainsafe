@@ -1,21 +1,24 @@
 # Logbuch: architekt
 
-Private Arbeitsnotizen dieser Rolle. Regeln dazu stehen in `CLAUDE.md`: höchstens 12.000
-Zeichen, Lehre statt Beleg, bei Erreichen der Grenze archivieren.
-
 *Neu begonnen am 2026-09-01; Vorfassung in `notizen/archiv/architekt-2026-09-01.md`.*
 
-*Dreimal an der Grenze (11.583 / 11.962 / 11.913), **dreimal wurde das Archivieren
-verweigert** — jedes Mal `Edit` auf `notizen/archiv/architekt-<datum>.md`. Am 2026-09-04 sind
-im selben Lauf fünf `Edit` auf `specs/…/technik.md` durchgegangen: gesperrt ist der **Pfad**,
-nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in `git log -p`.
-**An den Betreiber: Diese Rolle braucht Schreibrecht auf `notizen/archiv/`.***
+*Viermal an der Grenze (11.583 / 11.962 / 11.913 / 11.973), **viermal wurde das Archivieren
+verweigert** — jedes Mal `Edit` auf `notizen/archiv/architekt-<datum>.md`, zuletzt am
+2026-09-04. In denselben Läufen sind `Edit` auf `specs/…/technik.md` durchgegangen: gesperrt
+ist der **Pfad**, nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in
+`git log -p`. **An den Betreiber: Diese Rolle braucht Schreibrecht auf `notizen/archiv/`.***
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-04, **die Lehre dieses Laufs** — **„Nicht gemessen" aus einem fremden Befund ist
+- 2026-09-04, **die Lehre dieses Laufs** — **Der `status` eines Pakets sagt, wer ihn zuletzt
+  gesetzt hat, nicht, was im Repo steht.** 0026 stand auf `offen` und war seit vier Stunden
+  geliefert; die Rollendatei `architekt` hat keinen Satz „Setze `status: gebaut`", also blieb
+  die Lieferung unsichtbar und der Projektmanager plante sie erneut ein. **Erster Griff jedes
+  Laufs: `git log --oneline -- <meine Zieldatei>`**, vor dem Lesen der Vorgaben. Sonst schreibe
+  ich eine Entscheidung zum zweiten Mal, statt sie nachzurechnen.
+- 2026-09-04 — **„Nicht gemessen" aus einem fremden Befund ist
   eine Aussage über dessen Werkzeuge, nicht über die Welt.** Paket 0026 war darauf gefasst,
   dass ich offenlassen muss: Der Einheitenbefund sagte, *keine* der vier Quellen sei auf einen
   Deflator gemessen. **Zwei WebFetch auf einen Endpunkt, den dieselbe Rolle zwei Tage vorher
@@ -38,9 +41,8 @@ nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in `git 
   abschaltet (seit GCC 8). Zwei Minuten Websuche. Prüffrage für jeden ADR: *Welcher Satz darin
   ist eine Tatsache, und habe ich sie nachgesehen?*
 - 2026-09-02 — **Trägt eine Messung ein Urteil, lies das Erzeugnis statt der Zusammenfassung.**
-  ADR 0011 erklärt die 947 ns mit fehlendem `__int128`; der Quelltext benutzt ihn. `objdump`
-  zeigt den wahren Unterschied — `__divmodti4` gegen `__udivti3`. Aus einer Vermutung wurde
-  T6b. **Welches Erzeugnis liegt herum, das die Frage direkt beantwortet?**
+  ADR 0011 erklärte 947 ns mit fehlendem `__int128`; `objdump` zeigte den wahren Grund und
+  machte aus der Vermutung T6b. **Welches Erzeugnis liegt herum, das die Frage beantwortet?**
 - 2026-09-03 — **Eine Aufzählung von Rechenarten muss eine Partition sein, sonst ist sie eine
   Liste mit Loch.** T7 Massnahme 4 liess die blanke `i64`-Multiplikation zwischen ihren
   Punkten liegen. **Wo ich Operationen aufzähle, schneide ich nach der Rechenart und frage,
@@ -54,9 +56,9 @@ nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in `git 
 - 2026-09-01, dritter Lauf — **Eine Prüfvorschrift, die ich schreibe, führe ich im selben Lauf
   einmal von Hand aus** — sonst prüfe ich die Zusage und nicht die Sache. Gegen T45 fielen elf
   Adressen ohne Eintrag heraus; der Prüfer hatte die Bedingung zuvor für erfüllt erklärt.
-- 2026-09-01, Läufe drei und vier — **Unabhängige Aufteilungen derselben Menge nebeneinander
-  legen.** Die 310 Adressen sind dreifach aufgeteilt (T15, T45, T49); jede neue Aufteilung
-  fand Lücken. Eine Zahl, die nur einmal berechnet wird, ist unbelegt, auch wenn sie stimmt.
+- 2026-09-01 — **Unabhängige Aufteilungen derselben Menge nebeneinander legen.** Die 310
+  Adressen sind dreifach aufgeteilt (T15, T45, T49); jede neue fand Lücken. Eine Zahl, die nur
+  einmal berechnet wird, ist unbelegt, auch wenn sie stimmt.
 - 2026-09-01 — **Eine fehlende Vorgabe aus dem Entwurf *ableiten* statt sie zu erfinden.** Die
   Zielgröße des Suchbots entstand als Rechnung auf `spiel.md`; ohne freien Parameter fällt der
   Einwand „das Maß misst die Wahl des Bauagenten" weg. Der Spielentwerfer hat daraufhin seine
@@ -65,12 +67,16 @@ nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in `git 
   in meinem auslösen.** Wer nur die eigenen abarbeitet, liefert eine Fassung, die zum neuen
   Entwurf nicht mehr passt.
 - 2026-08-31 — **Jede Summe in einer Tabelle bekommt eine Nachrechnungszeile im Fließtext.**
-- 2026-08-31 — **Den Kastenschnitt so legen, dass er zugleich der Kollisionsschnitt für
-  Arbeitspakete ist.** Kostet nichts und spart dem Projektmanager einen Schritt.
 
 ## Was nicht funktioniert
 
-- 2026-09-04, **neu und beinahe teuer** — **Bevor ich einen Widerspruch in einem fremden
+- 2026-09-04, **an mir selbst gefunden** — **Eine Rundungsregel, die ich für den Code
+  vorschreibe, gilt auch für die Zahlen in meinem eigenen Fließtext.** T53 nannte 3.577 und
+  1,5570, wo 3.577,80 und 1,55710 stehen — zweimal abgeschnitten statt gerundet, in einem
+  Dokument, dessen T6 genau das verbietet. Das Argument hing an keiner der beiden Stellen, die
+  Glaubwürdigkeit der übrigen Zahlen schon. **Nachrechnen heisst auch: meine eigene
+  Rundungsvorschrift auf meine eigenen Zahlen anwenden.**
+- 2026-09-04, **beinahe teuer** — **Bevor ich einen Widerspruch in einem fremden
   Gewerk melde, rechne ich *beide* seiner Zahlen nach.** `spiel.md` schreibt
   `71,94/98,71 → 7.288`, und das sieht nach der alten Formel `H/N` aus statt nach
   `10.000·H/(H+N)` zwei Zeilen darüber — ich hatte den Befund schon halb formuliert. Die
@@ -92,13 +98,6 @@ nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in `git 
   machen.** T8 sagte „alle nominalen Größen dieses Landes"; es sind genau fünf Adressen je
   Gebiet. Der Bauagent hätte raten müssen, und die Produktivität wäre der wahrscheinliche
   Fehlgriff gewesen.
-- 2026-09-01, dritter Lauf — **Eine Eintragsart mit „derzeit allein X" beschreiben.** Ein
-  „derzeit allein" behauptet eine Vollständigkeit, die niemand geprüft hat, und liest sich wie
-  ein Befund. Aufzählungen gehören in eine eigene Tabelle mit Summe, nie in einen Nebensatz.
-- 2026-09-01 — **Eine Formulierung, die eine fehlende Vorgabe wie eine vorhandene aussehen
-  lässt.** „Bewertet durch ein Nachspiel von einem Zug" beschrieb einen *Vorgang* statt einer
-  *Zielgröße*; drei Fassungen lang hat es niemand als Lücke gelesen. Wo etwas verglichen wird,
-  muss das Verglichene ein Substantiv mit Rechenvorschrift sein, kein Verb.
 - 2026-08-31, zweiter Lauf — **Keine Zahl in den Text, die ich nicht in diesem Lauf
   ausgerechnet habe**, auch keine aus meiner eigenen Vorfassung. Drei falsche Zahlen hatten
   dieselbe Ursache: übernommen statt nachgerechnet.
@@ -136,11 +135,10 @@ nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in `git 
   anordnet** (Spielstand speichert Zustand statt Aktionsfolge; T22 gilt unverändert). Ich habe
   daraus T52 gemacht statt den ADR zu deuten. Zuerst nachsehen, ob der Betreiber den Wechsel
   angeordnet hat; dann wird T52 billiger, aber nicht überflüssig.
-- 2026-08-31, Zahlen berichtigt am 2026-09-01 — **Ob der Prüfjahrgang baubar ist, ist eine
-  Behauptung.** 1997–2021, 25 Stützstellen, R = 24, 31 Sollreihen und 40 Ströme ohne Füllung.
-  Verdachtsfall bleibt die chinesische und brasilianische Leitzinsreihe (IWF IFS, HTTP 403).
-  Die wahrscheinlichste Stelle, an der das Vorhaben an Daten scheitert — er kann *kippen*,
-  nicht nur verzögern.
+- 2026-08-31, berichtigt 2026-09-01 — **Ob der Prüfjahrgang baubar ist, ist eine Behauptung.**
+  1997–2021, 25 Stützstellen, R = 24, 31 Sollreihen, 40 Ströme ohne Füllung; Verdachtsfall
+  bleibt die chinesische und brasilianische Leitzinsreihe (IWF IFS, HTTP 403). Die
+  wahrscheinlichste Stelle, an der das Vorhaben an Daten *kippt*, nicht nur verzögert.
 - 2026-08-31, für R = 24 neu gerechnet am 2026-09-01 — **Ob ein Suchbot mit Tiefe 1 für Maß 2
   stark genug ist, ist ungeprüft.** Tiefe 2 kostet Maß 2 und 3 zusammen 664 Mio Schritte, rund
   14 Minuten auf acht Kernen — meine ältere Notiz („sprengt den Nachtlauf") war falsch. Ist

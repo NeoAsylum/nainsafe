@@ -2,7 +2,7 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17) -- die Fassung selbst folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
+fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17), dort in zwei Läufen -- der zweite hat die Zahlen von T53 nachgerechnet und drei Stellen berichtigt (Umfangsliste in Abschnitt 17, zwei abgeschnittene Zahlen in T53), die Entscheidung selbst ist unverändert; die Fassung folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
 preisbasis: Klasse 2 steht zu konstanten Preisen des Jahres 2015 (gemessen an Reihe 1, WDI "constant 2015 US$"); die 40 BACI-Handelsströme kommen laufend an und werden beim Jahrgangsbau mit einem Weltausfuhrpreisindex aus WDI darauf gebracht -- 0 Rechenschritte je Weltschritt, 0 zusätzliche Sollreihen, T47/T48/T50 unberührt (T53)
 stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake, jede Fremdbibliothek als Quelltext unter fremd/ im Repo eingefroren (find_package und FetchContent verboten); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
 ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, nach Rechenart geschnitten (Verengung, Strichrechnung, Multiplikation ohne Division), weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
@@ -496,7 +496,7 @@ Ein Modell, das die Mengen **fehlerfrei** trifft, startet auf dem BACI-Wert von 
 real weiter; die Sollreihe läuft mit dem Index. Sein Fehler je Stützstelle ist damit
 `|1 − r(t)| / r(t)` mit `r(t) = Index(t)/Index(1997)`, und das Mittel über die 25 Stützstellen
 des Prüfjahrgangs ist **2.203 Zehntausendstel gegen eine Schwelle von 2.000**. Am rechten Rand
-allein sind es 3.577 (2021: `r = 1,5570`). **Der Prüfgegenstand Handelsblock fällt also durch,
+allein sind es 3.578 (2021: `r = 1,5571`). **Der Prüfgegenstand Handelsblock fällt also durch,
 bevor das Modell einen einzigen Fehler gemacht hat** — die Preisdrift allein verbraucht das
 Fehlerbudget nicht zum Teil, sondern **ganz und mit 10 Prozent Überhang** (2.203 gegen 2.000).
 Für Modellgüte bleibt nichts übrig.
@@ -2796,10 +2796,44 @@ und je ein Absatz in T2 und T13 — das ist der Rücklauf und keine achte Fassun
 also keinen Befund abzuarbeiten; dieser Abschnitt hält stattdessen den Umfang fest, weil
 Bedingung 5 der Abnahme ihn begrenzt.
 
-**Angefasst sind vier Stellen und sonst keine:** die Klasse-2-Zeile in **T5** samt zwei
-Absätzen dahinter (Basisjahr 2015, Verweis auf T53), die neue Vorgabe **T53** hinter T50, der
-Absatz in **T8**, der die Aufzählung der neu basierten Größen begründet, und dieser Abschnitt.
-Dazu die Zeile `fassung` im Frontmatter, weil sie sonst den Stand der Datei falsch angibt.
+**Zwei Läufe, ein Paket.** Der erste Lauf (2026-09-04 05:24, Commit `77a84e8`) hat die
+Entscheidung geliefert; der zweite (2026-09-04, derselbe Tag) hat sie nachgerechnet und drei
+Zahlen berichtigt. Der Grund für den zweiten Lauf liegt nicht am Gewerk: Das Paket stand nach
+der Lieferung weiter auf `status: offen` und wurde deshalb erneut eingeplant
+(`rueckstand.md`, „Was der Geschäftsführer entscheiden lassen muss", Punkt 2 — der fehlende
+Satz „Setze `status: gebaut`" in der Rollendatei `architekt`). **Was der zweite Lauf inhaltlich
+geändert hat, steht unten unter „Berichtigt"; die Entscheidung selbst ist unverändert.**
+
+**Angefasst sind sechs Stellen und sonst keine.** Die Liste ist gegen die Hunks von
+`git show 77a84e8 -- specs/0016-…/technik.md` abgezählt und nicht aus dem Gedächtnis
+geschrieben — eine Umfangsangabe, die den eigenen Diff nicht deckt, verfehlt genau die
+Bedingung, die sie belegen soll:
+
+1. die Klasse-2-Zeile in **T5** samt zwei Absätzen dahinter (Basisjahr 2015, Verweis auf T53),
+2. die neue Vorgabe **T53** hinter T50,
+3. der Absatz in **T8**, der die Aufzählung der neu basierten Größen begründet,
+4. dieser Abschnitt,
+5. der **Vorspann** vor Abschnitt 1: „T1 bis T52" wird zu „T1 bis T53"; der Satz über die
+   Buchstabennummern nannte als Beispiel für eine noch freie Nummer T53 und nennt jetzt T60,
+   weil T53 vergeben ist; ein Absatz ordnet T53 ein. Diese Stelle ist **erzwungen**, nicht
+   gewählt: Ein Vorspann, der die Vorgaben bei T52 enden lässt, widerspricht der Vorgabe, die
+   vier Abschnitte weiter steht,
+6. das **Frontmatter**: die Zeile `fassung`, weil sie sonst den Stand der Datei falsch angibt,
+   und der neue Schlüssel `preisbasis`, weil die Kopfzeilen die tragenden Festlegungen führen
+   und die Preisbasis seit T53 eine davon ist.
+
+**Berichtigt im zweiten Lauf, ohne die Entscheidung zu berühren:** Der erste Lauf zählte die
+Stellen 5 und 6 nicht auf und schrieb „vier Stellen und sonst keine" über eine Liste von sechs.
+Dazu zwei Zahlen in T53, die abgeschnitten statt gerundet waren und damit gegen die einzige
+Rundungsregel dieses Dokuments (T6) verstiessen: der Fehler am rechten Rand ist 3.577,80 und
+steht jetzt als **3.578** statt als 3.577, und `r(2021) = 11.549/7.417 = 1,55710` steht jetzt
+als **1,5571** statt als 1,5570. Der Kopfwert **2.203** (exakt 2.202,98) war richtig gerundet
+und ist unverändert; das Argument hängt an keiner der beiden berichtigten Zahlen, die Schwelle
+liegt bei 2.000 und der Kopfwert darüber. Alle Zahlen aus T53 sind im zweiten Lauf neu gerechnet worden — die 25 Stützstellen des
+Index, der MAPE, der Startfaktor 10.000/7.417 = 1,34825, die beiden `durchgriff`-Fälle
+(7.288 → 7.837 und 5.464 → 6.189), die Summe 15 + 15 + 40 + 1 = 71 und der `i64`-Kopfraum
+(2,8 · 10^17 gegen 9,2 · 10^18) — und reproduzieren bis auf die zwei genannten Stellen.
+
 Nicht angefasst: T42, T37, T47, T48, T50, T23, die Reihenliste, die 310 Adressen, die vier
 Maße, die Kostenrechnungen und die Stacktabelle.
 
