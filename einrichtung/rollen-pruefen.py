@@ -13,6 +13,7 @@ eine Rolle, die sich selbst anders nannte als ihre Datei.
 from __future__ import annotations
 
 import sys
+from fnmatch import fnmatch
 from pathlib import Path
 
 WURZEL = Path(__file__).resolve().parent.parent
@@ -149,10 +150,28 @@ def main() -> int:
         datei = WURZEL / "agents" / "rollen" / f"{r}.md"
         if not datei.exists():
             continue
-        if "status: gebaut" not in datei.read_text(encoding="utf-8"):
+        text = datei.read_text(encoding="utf-8")
+        if "status: gebaut" not in text:
             befunde.append(
                 f"ABSCHLUSS: {r}.md sagt nicht, dass die Rolle `status: gebaut` "
                 f"setzen muss -- der Runner plant ihr Paket dann wieder und wieder ein")
+            continue
+
+        # Die Pflicht braucht das passende Recht. Am 2026-09-04 hat der Betreiber die
+        # Pflicht ergaenzt und das Recht vergessen: `architekt` und `spielentwerfer`
+        # durften nur `specs/**` schreiben, Arbeitspakete liegen aber unter
+        # `ventures/<id>/aufgaben/`. Der Architekt meldete daraufhin drei verweigerte
+        # Edit-Aufrufe und kam leer zurueck -- eine Regel an einer Stelle, die der
+        # Ablauf nicht erfuellen kann.
+        kopf_r, _ = frontmatter(text)
+        ziel = "ventures/beispiel/aufgaben/0001-beispiel.md"
+        muster = [w[5:-1] for w in (kopf_r.get("tools") or [])
+                  if isinstance(w, str) and w.startswith("Edit(") and w.endswith(")")]
+        if not any(fnmatch(ziel, m.replace("**", "*")) for m in muster):
+            befunde.append(
+                f"RECHT: {r}.md verlangt `status: gebaut`, hat aber kein Edit-Recht "
+                f"auf `ventures/**/aufgaben/**` -- die Rolle kann ihre eigene Pflicht "
+                f"nicht erfuellen. Erlaubt sind: {muster or 'nichts'}")
 
     print(f"{len(rollen)} Rollen geprueft.")
     for b in befunde:
