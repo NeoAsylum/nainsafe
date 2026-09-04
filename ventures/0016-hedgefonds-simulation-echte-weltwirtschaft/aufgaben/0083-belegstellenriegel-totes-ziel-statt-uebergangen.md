@@ -49,3 +49,19 @@ Drei Gruende, und keiner davon ist "waere auch gut".
    Anfuehrung, 0073 den Dateinamen weiter links -- beide auf der **Fund**-Seite. Dieser
    Vorschlag sitzt auf der **Ziel**-Seite und beruehrt die anderen zwei nicht.
 
+## Was der Zuschnitt offen laesst
+
+- **Ob die Untergrenze eine Zahl im Quelltext ist oder aus der Bestandsgroesse folgt.**
+  Eine Zahl altert und muss gepflegt werden; eine abgeleitete Schranke kann mitwandern
+  und dabei genau das verdecken, was sie fangen soll. Beides ist vertretbar, die Wahl
+  gehoert begruendet in den Kopfkommentar.
+- **Ob `aufgaben/` wie `befunde/` behandelt wird.** Beide werden heute nicht gelesen, aber
+  aus verschiedenen Gruenden.
+
+## Grenzen
+
+- Nur `belegstellen_riegel.cpp`. Kein Aufraeumen in `specs/`, keine fremde Datei.
+- Kein fest eingebauter Pfad, keine Fremdabhaengigkeit, keine Gleitkommazahl.
+- **Die fuenf heute uebergangenen Fundstellen bleiben uebergangen.** Wer sie rot macht,
+  hat die Trennung falsch gezogen -- sie sind nachgeschlagen und keine ist ein toter
+  Verweis.

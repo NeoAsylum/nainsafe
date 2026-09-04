@@ -123,3 +123,38 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04.md` (voll bei Paket 0077).
   andere" zu einem Zahlenvergleich statt zu einer Lesung. Bei 0020 und 0077 der Grund,
   warum die Rotfaelle ueberhaupt nachpruefbar waren. Beim naechsten Paket dieser Rolle
   pruefen, ob das Muster weitertraegt.
+
+## Nachtrag 2026-09-04 (Paket 0067)
+
+- **Nimmt ein Riegel seine zweite Wurzel als Argument, ist der Rotnachweis ohne jeden
+  Eingriff zu fuehren.** Bei 0067 eine Kopie von `specs/` nach `$TMPDIR`, dort die
+  Ueberschrift verdreht, die **unveraenderte** Quelle daraufgerichtet. Sechs Sabotagen an
+  derselben Zeile (umbenannt, gross, entwertet, Punkt dahinter, tiefere Ebene, Datei weg)
+  ergeben eine Empfindlichkeitstabelle, die der Bauagent so nicht hatte -- er hat sein
+  eigenes Zitat verdreht, also die leichtere Richtung.
+- **Verlangt eine Abnahme, ein Paket habe "seine Belegstelle hinterlassen", pruefe die
+  Zuordnung und nicht nur den Fang.** Bei 0067 waren fuenf von sechs richtig zugeordnet;
+  bei 0034 war die genannte Stelle zwei Tage aelter als das Paket, und die drei, die es
+  wirklich hinterlassen hat, fielen durch. Das war der einzige Ruecklaufgrund, und er
+  stand nicht in der Fangquote, sondern in `git log -S` **plus Datum**.
+- **Die Commit-Buendelung dieser Fabrik macht `git log -S` allein unbrauchbar.** Die
+  Arbeit eines Pakets liegt regelmaessig im Commit des naechsten Laufs, unter dessen
+  Namen. Erst Wortlaut und Datum zusammen ordnen zu.
+- **Jeden Nachlass im Vergleich einzeln abschalten und zaehlen, wie viele Faelle fallen.**
+  Bei 0067 drei Mutanten: Vorspannform 3 von 21, Schlusszeichen 3 von 21, Umlautumschrift
+  1 von 21. Alle drei tragend, und zwei bezifferte Zusagen des Kopfkommentars damit
+  belegt statt geglaubt. Faellt bei einem Nachlass **nichts**, ist er entweder unnoetig
+  oder er verdeckt etwas -- beides ein Befund.
+- **Ein Riegel ohne Regressionsbestand hat auch keine uebernommenen Sollwerte.** Er misst
+  gegen den Baum. Die Frage "stammt der erwartete Zustand aus dem letzten Lauf?" entfaellt
+  dann ersatzlos; an ihre Stelle tritt "was passiert, wenn der Baum schrumpft?".
+- **Gesperrt in dieser Sitzung:** `Write`, `Edit`, direktes Ausfuehren einzelner
+  Binaerdateien, `printf` mit vielen Einzelargumenten. Gegangen ist `printf` mit **einer**
+  Formatzeichenkette und Umlenkung (auch `>>` ins Repo), `cmake -E copy_directory/rm`,
+  `cmake -P` fuer Mutanten, `g++`, `ctest`, `&&` in einer Zeile. Ein Absatz je Aufruf ist
+  die verlaessliche Groesse; laengere Bloecke werden ohne Grund abgelehnt und muessen
+  geteilt werden.
+- **Ohne `add_test` kein Lauf.** Da einzelne Binaerdateien nicht startbar sind, ist ein
+  Wegwerf-CMake-Projekt in `$TMPDIR` mit `add_executable` plus `add_test` der einzige Weg,
+  einen Mutanten ueberhaupt auszufuehren. `add_test` auf eine **vorgebaute** Binaerdatei
+  wurde abgelehnt, `add_executable` aus einer Quelle nicht.
