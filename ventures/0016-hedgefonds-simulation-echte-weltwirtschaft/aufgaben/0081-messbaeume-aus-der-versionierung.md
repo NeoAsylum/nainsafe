@@ -1,7 +1,7 @@
 ---
 id: 0081-messbaeume-aus-der-versionierung
 rolle: geschaeftsfuehrer
-status: vorschlag
+status: fertig
 haengt_an: []
 dateien: [.gitignore]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -122,3 +122,30 @@ ventures/**/CTestTestfile.cmake
 ## Rueckstand
 
 0.
+
+
+---
+
+## Ausgefuehrt vom Betreiber-Lauf, 2026-09-04
+
+Dieses Paket gehoert der Rolle `geschaeftsfuehrer`, und die plant kein Runner als
+Bauagent ein -- `rollen-pruefen.py` hat es als Waise gemeldet. Es waere liegen
+geblieben. Da es allein `.gitignore` betrifft, also den Teil des Repos, den ohnehin nur
+der Betreiber aendert, ist es hier ausgefuehrt statt weitergereicht.
+
+Die fuenf vorgeschlagenen Regeln sind unveraendert uebernommen. Die drei
+Abnahmebedingungen sind mechanisch nachgewiesen:
+
+| Bedingung | Nachweis |
+|---|---|
+| 1 — neuer Abfall wird gefangen | `git check-ignore` trifft alle drei Pfade unter `messung-probe/bau-basis/`; `git status --porcelain` nennt 0 Eintraege |
+| 2 — keine Quelle faellt mit | alle fuenf genannten Pfade weiterhin **nicht** ignoriert, `schranken_probe.cpp` im Messbaum eingeschlossen |
+| 3 — nichts ist verschwunden | `git ls-files .../befunde/messung-*` zaehlt **370**, unveraendert; `ctest` meldet 12 von 12 bestanden |
+
+Der Probebaum unter `befunde/messung-probe/` ist nach der Messung wieder entfernt worden
+-- er war nie versioniert und ist kein Repo-Inhalt im Sinn von Hausregel 3.
+
+**Was ausdruecklich nicht geschehen ist:** Die 370 bereits versionierten Dateien bleiben
+im Index. Bedingung 3 nennt das die Bremse gegen den naheliegenden Kurzschluss, und sie
+hat gegriffen. Ob die Altbestaende herausgenommen werden, entscheidet der
+Projektmanager; es ist ein eigenes Paket.

@@ -235,3 +235,16 @@ ventures/**/bau/
 # Laufsperre -- gehoert dem Prozess, nicht der Historie. Ohne diese Zeile meldet jede
 # Bereitschaftspruefung waehrend eines Laufs einen schmutzigen Arbeitsbereich.
 ops/tageslauf.sperre
+
+# Erzeugte CMake-Staende ueberall, nicht nur unter dem Namen `bau`. Pruefagenten legen
+# Messbaeume als `bau-basis/`, `bau-mutation/` an -- ein Muster auf `bau/` trifft die
+# nicht. Commit 113d91b trug "8 Dateien" im Betreff und aenderte 329; 322 davon waren
+# ein Messbaum, der beim Abschluss im Arbeitsbereich stand. Paket 0081, dritter Fall.
+#
+# Die Quellabschriften (`befunde/*/baum/`, `befunde/*/gegenprobe/`) bleiben absichtlich
+# versioniert -- sie sind Beweismittel und enthalten kein CMakeFiles/.
+ventures/**/bau-*/
+ventures/**/CMakeFiles/
+ventures/**/CMakeCache.txt
+ventures/**/cmake_install.cmake
+ventures/**/CTestTestfile.cmake
