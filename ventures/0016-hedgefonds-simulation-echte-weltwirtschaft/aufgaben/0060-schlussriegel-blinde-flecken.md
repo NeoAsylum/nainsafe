@@ -180,3 +180,126 @@ anzulegen.
 des Repos, sonst unterhalb von `befunde/` (`baulauf.py:116` sammelt dort keine Manifeste
 ein), sonst ausgewiesene Nichtmessung mit Begruendung am Text der Aenderung. Am
 2026-09-03 kam ich mit Rang 1 aus.
+
+---
+
+## Nachweis (Kernbauer, 2026-09-04)
+
+Werkzeugkette g++ 15.2.0 / cmake 4.2.3. Wegwerf-Baeume unter
+`$TMPDIR/riegel0060` — Rang 1 der Staffelung, wie am 2026-09-03; Rang 2 und 3 wurden
+nicht gebraucht. Die drei Bauwege sind wie der Runner konfiguriert
+(`-DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_FLAGS=-fwrapv -fno-fast-math`), die
+Wegwerf-Baeume blank. Jeder Baum bindet `werkzeugkette.cmake` in seiner obersten
+`CMakeLists.txt` ein; „vorher" und „nachher" sind **dieselbe** Datei vor und nach dieser
+Aenderung, in getrennten Bauverzeichnissen.
+
+Geaendert sind drei Stellen in `fabrik_schlussriegel`: `MODULE_LIBRARY` in der
+Artenliste, ein zweiter Durchgang ueber `COMPILE_OPTIONS` gegen die Sperrliste
+`^-w$` / `^-Wno-error(=.+)?$`, und ein `if(gezaehlt EQUAL 0)` vor der Erfolgsmeldung.
+Die Erfolgsmeldung heisst jetzt „… alle mit Warnsatz und ohne Pauschalabschalter" —
+sie behauptet damit, was sie geprueft hat. Kein Skript und kein Manifest im Repo greift
+auf den alten Wortlaut zu (nachgesehen, einzige Fundstelle war die `message`-Zeile
+selbst).
+
+### Bedingung 1 — `MODULE_LIBRARY` ohne Warnsatz bricht ab
+
+Baum `probe-modul`: `add_library(x MODULE q.cpp)`, kein `fabrik_warnsatz_anlegen`.
+
+```
+vorher    CODE=0   -- Warnsatz-Schlussriegel: 0 uebersetzende Ziele geprueft, alle mit Warnsatz.
+nachher   CODE=1   x (MODULE_LIBRARY) in /tmp/claude-1000/riegel0060/probe-modul
+                       es fehlen: -Wall -Wextra -Werror … -fwrapv -fno-fast-math   (alle 17)
+                       Abhilfe:   fabrik_warnsatz_anlegen(x)
+```
+
+Die Gegenprobe „vorher" ist der Punkt: Ohne sie belegte die zweite Zeile nur, dass
+irgendetwas rot wurde. Vorher kam dasselbe Ziel vollstaendig durch — und trug blank
+konfiguriert `CXX_FLAGS = -std=c++20 -fPIC`, also keinen einzigen Warnschalter.
+
+### Bedingung 2 — der Nullriegel, und die drei Bauwege bleiben gruen
+
+Baum `probe-leer`: bindet die Kette ein, legt kein Ziel an.
+
+```
+vorher    CODE=0   -- Warnsatz-Schlussriegel: 0 uebersetzende Ziele geprueft, alle mit Warnsatz.
+nachher   CODE=1   fabrik_schlussriegel: kein einziges uebersetzendes Ziel unter
+                   '/tmp/claude-1000/riegel0060/probe-leer' gesehen. Der Riegel hat damit
+                   nichts geprueft -- das ist kein gruener Bau, sondern ein Riegel ohne Gegenstand.
+```
+
+Die drei Bauwege, **nachher** gemessen, jeder mit Code 0:
+
+```
+Arbeitsbereich  -- Warnsatz-Schlussriegel: 15 uebersetzende Ziele geprueft, …
+kern allein     -- Warnsatz-Schlussriegel: 10 uebersetzende Ziele geprueft, …
+pruefstand all. -- Warnsatz-Schlussriegel:  5 uebersetzende Ziele geprueft, …
+                                            ------
+                                              15 = 10 + 5
+```
+
+Die Zahlen sind dieselben wie am 2026-09-03; Paket 0059 ist zum Zeitpunkt dieser Messung
+noch nicht eingetragen (`FABRIK_MITGLIEDER` in der Arbeitsbereichs-`CMakeLists.txt` nennt
+`werkzeuge/belegstellen` nicht). Laeuft es danach, steigt die erste Zahl, und die Summe
+stimmt weiter — die Bedingung verlangt die Zahl, nicht ihren Wert.
+
+**Bytevergleich aller `CXX_FLAGS` des Arbeitsbereichs, vorher gegen nachher:** je
+**15** `flags.make`, mit dem Pfad als Praefix sortiert, `vorher == nachher` → **True**.
+Also dieselbe Menge Ziele und an jedem dieselbe Schalterzeile. Nicht „der Bau ist gruen":
+`cmake --build --parallel` Code 0 und `ctest` 11/11 `Passed` stehen zusaetzlich, sie
+belegen aber nur, dass nichts kaputtging.
+
+Das vierte Manifest, `pruefstand/bau/pruefung-0019/CMakeLists.txt`, bindet die Kette
+nicht ein und laeuft deshalb nicht in den Nullriegel. Nachgeprueft statt angenommen:
+konfiguriert mit Code 0, ohne Riegelzeile. Die Baeume unter `befunde/pruefung-0046/`
+binden sie zwar ein, werden vom Runner aber nicht gebaut (`baulauf.py:116` schliesst
+`befunde` aus) — nachgelesen, nicht angenommen.
+
+### Bedingung 3 — Warnsatz plus Pauschalabschalter bricht ab
+
+Viermal dieselbe Quelle, `int f(double d){ int i = d; return i; }`, je ein eigener Baum
+(eine Probe, die den gemeinsamen Bau vergiftet, wird einzeln angelegt):
+
+```
+Baum                Zusatz am Ziel               vorher                     nachher
+probe-nurwarnsatz   (nichts)                     CODE=0, BAUCODE=2          CODE=0
+                    -> error: conversion from 'double' to 'int' [-Werror=float-conversion]
+probe-pauschal      -Wno-error -w                CODE=0, BAUCODE=0          CODE=1
+                    Riegel vorher: „1 … alle mit Warnsatz", keine Diagnose
+probe-klassenweise  -Wno-error=float-conversion  (nicht gemessen)           CODE=1
+probe-einzeln       -Wno-conversion              CODE=0                     CODE=0
+```
+
+Meldung im Fall `probe-pauschal`, nachher — sie nennt den Schalter:
+
+```
+z (STATIC_LIBRARY) in /tmp/claude-1000/riegel0060/probe-pauschal
+    hebt den Satz wieder auf: -Wno-error -w
+```
+
+und im Fall `probe-klassenweise` `-Wno-error=float-conversion`, also die dritte Form der
+Sperrliste. Die drei Zeilen zusammen sind erst der Nachweis: `probe-nurwarnsatz` zeigt,
+dass die Quelle wirklich verstoesst (sonst belegte der gruene Bau von `probe-pauschal`
+nichts), `probe-pauschal` zeigt den stillen Ausfall vorher, `probe-einzeln` zeigt, dass
+die Gegenrichtung offen bleibt — eine einzeln benannte Unterdrueckung konfiguriert weiter
+mit Code 0.
+
+Die 15 Warnschalter selbst treffen die Sperrliste nicht: `^-w$` ist verankert und
+kleingeschrieben, `-Wall` und `-Wno-conversion` fallen nicht darunter. Der Arbeitsbereich
+mit 15 Zielen und vollem Satz laeuft mit Code 0 durch — das ist zugleich die Messung
+dafuer.
+
+### Was der Pruefer nachfahren kann
+
+Die Wegwerf-Baeume liegen unter `$TMPDIR` und sind nach dem Lauf weg. Nachzubauen sind
+sie aus der Tabelle: sechs Baeume, jeder oberste Ebene
+`cmake_minimum_required(VERSION 3.20)`, `project(probe CXX)`,
+`include(<pfad>/werkzeugkette.cmake)`, dann der Inhalt aus der jeweiligen Zeile. Der
+Stand „vorher" kommt aus `git show HEAD:…/werkzeugkette.cmake` in eine Wegwerfdatei,
+deren Pfad die Baeume dann einbinden.
+
+**Nicht abgedeckt, ausdruecklich:** Der Riegel liest `COMPILE_OPTIONS` als Liste von
+Zeichenketten. Ein Pauschalabschalter, der in einem Generatorausdruck steckt
+(`$<$<CONFIG:Release>:-w>`), oder einer, der ueber `CMAKE_CXX_FLAGS` von aussen kommt —
+so wie der Runner `-fwrapv` setzt —, steht nicht in `COMPILE_OPTIONS` und wird nicht
+gesehen. Heute gibt es beides im Repo nicht; die Sperrliste zu erweitern waere ein
+eigener Befund.

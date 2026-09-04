@@ -238,8 +238,9 @@ die Schwelle, gegen die geprueft wird.
 
 ## 6. Reihe 16 (`durchgriff`) — mitbeantwortet
 
-Die Frage aus `reihen.toml` Zeile 1392 lautet, ob `H` (aus BACI) und `N` (aus WDI) in
-derselben Einheit stehen. **Antwort: in der Groessenordnung ja, in der Preisbasis
+Die Frage aus `reihen.toml` — Reihe 16, Feld `offen`, erster Eintrag, beginnend mit
+`H und N stehen in der Groessenordnung in derselben Einheit` — lautet, ob `H` (aus BACI)
+und `N` (aus WDI) in derselben Einheit stehen. **Antwort: in der Groessenordnung ja, in der Preisbasis
 nein.**
 
 **Die BACI-Seite (`H`):** „in thousands current USD", Faktor nach Tsd USD = 1
