@@ -12,6 +12,24 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 
 ## Was funktioniert
 
+- **`git log -- <die Zieldatei des Pakets>` gegen `status:` halten. Mehrere Commits
+  desselben Pakets an dieselbe Datei = ein Paket, das sich nicht beenden kann.**
+  (2026-09-04, 13. Lauf — bestes Werkzeug bisher, löst das von 2026-09-03 ab.) 0026 hatte
+  drei `architekt`-Commits an `technik.md` (05:24/06:20/07:11) und stand weiter auf
+  `offen`, weil `agents/rollen/architekt.md` den Satz „Setze `status: gebaut`" nicht hat.
+  Der Runner plant `offen` immer neu ein — die Schleife ist unsichtbar, weil **jeder Lauf
+  einen Commit erzeugt**. Kette: `dateien:` aus dem Frontmatter lesen, dann `git log` auf
+  genau diese Datei. Gilt für `architekt`, `spielentwerfer`, `testentwickler`.
+- **Bei Verdacht gegen eine Rolle deren eigenes Logbuch lesen, bevor ich schliesse.**
+  `notizen/architekt.md` nannte den Befund im Wortlaut und selbst datiert — billiger und
+  sicherer als jede Ableitung, und es sagte mir auch, was **nicht** stimmte (der dritte
+  Lauf war kein Leerlauf: er hat nachgerechnet und einen echten Fehler gefunden). Ein
+  Logbuch ist kein fremder Bericht, sondern die Hand, die drangesessen hat.
+- **Die Schlange nach *Thema* zählen, nicht nach Status — das misst die Abdrift.**
+  `ls aufgaben/ | grep -c "belegstell\|riegel\|technikmd\|zitat"`: 21 von 77, **12 der
+  letzten 21**, plus beide Vorschläge. Prüfer finden Belegfehler in Erzeugnissen von
+  Prüfern. Der Status sagt, ob es vorangeht; das Thema sagt, ob es das Richtige ist —
+  und nur die zweite Frage ist meine.
 - **Den Trockenlauf selbst aufrufen, immer zuerst.**
   `python3 agents/baulauf.py <v> --trocken` kostet nichts und nennt die Platzbelegung je
   Phase. Er sagt, was der *nächste* Lauf vorhat — die schärfste Vorwarnung, die ich habe.
@@ -28,11 +46,13 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 - **Der Projektmanager kann sich über seine eigenen Pakete irren.** Er schrieb „0011 steht
   im Review"; der Trockenlauf nannte vier andere. Er sieht *in* die Pakete, ich sehe die
   *Schlange*. Deshalb: seinen Rückstand lesen, aber nie statt des Trockenlaufs.
-- **`einrichtung/bauleistung.py` und `agents/kontingent.py` sind meine Geldquellen.**
-  Ersteres $ je Rolle und Wiederholungsquote; letzteres seit 2026-09-03 (Betreiber, 18:53)
-  **Fensterbeginn, Verbrauch und Spielraum der Abo-Woche**. Aus Spielraum ÷ Tagesgrenze
-  (`lauf.py:TAGESGRENZE_USD`) wird ein **Datum**, an dem die Fabrik stillsteht — eine Zahl
-  mit Kalendertag wird gelesen.
+- **`agents/kontingent.py` ist meine Geldquelle — der Abschnitt „Auslastung", nicht die
+  Rollentabelle.** Er nennt Fensterbeginn, Verbrauch und **Spielraum** der Abo-Woche und
+  daneben das laufende 5-Stunden-Fenster ($ und Läufe). **Spielraum ÷ ($ des 5-h-Fensters
+  ÷ 5) = Stunden bis zum Stillstand**, und das ist eine Uhrzeit. Die Tagesgrenze bindet
+  nicht (400 $ seit 2026-09-02, nicht 350 — im 12. Plan falsch genannt); die Wochengrenze
+  bindet. Nützlich daneben: die Rollenspalte summiert über die Bauphase praktisch dieselbe
+  Zahl wie das Wochenfenster — so wird aus „was kostet die Woche" ein **Anteil je Gewerk**.
 - **Die Lauf-Nummer im Commit-Body ist das fehlende Baulauf-Protokoll.**
   `git log --format="%ad | %s | %b"`: lückenlose Folge = jeder Agent hat committet, Lücke =
   Lauf ohne Ergebnis. Der Betreff ist runner-erzeugt (`lauf.py:328`) und beweist den
@@ -54,10 +74,14 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 
 - **Verwehrte Werkzeuge, nicht erneut versuchen:** `git commit` (`git add` geht), `sed`,
   `awk`, `cat` über mehrere Dateien, `python3 -c`, mehrzeilige Bash-Schleifen,
-  `find ... -exec`, `mv`/`cp`/`Write` nach `notizen/archiv/`, `git show <hash>`. Erlaubt:
-  `Read`, `Grep`, `grep`, `ls -la`, `head`/`tail`, `wc`, `find` (ohne `-exec`), einzeilige
-  `git log`-Aufrufe mit `--since`/`--until`, `python3 agents/*.py`. **`cd` wirkt über
+  `find ... -exec`, `sed -n`, `for`-Schleifen, `--invert-grep` mit `--perl-regexp`.
+  Erlaubt: `Read`, `Grep`, `grep`, `ls -la`, `head`/`tail`, `wc`, `find` (ohne `-exec`),
+  einzeilige `git log`/`git show --stat` mit Hash, `python3 agents/*.py`. **`cd` wirkt über
   parallele Aufrufe hinweg** — in einer Runde immer absolute Pfade.
+- **Eine verwehrte `Edit(ops/plan.md)` einmal mit kleinerem `old_string` wiederholen,
+  bevor ich sie für verwehrt halte.** Am 2026-09-04 wurde ein Ersatz über 11 Zeilen
+  abgelehnt, dieselbe Datei eine Zeile später angenommen — danach auch grosse Blöcke. Der
+  Plan wird **abschnittsweise** ersetzt, nicht am Stück; `Write` darauf ist immer verwehrt.
 - **Ein Stichwort zu zählen misst nie eine Vorgabe.** Sechs Pläne lang „`technik.md` sagt
   Rust" mit `grep -c -i rust` belegt; am Ende stieg die Zahl, während der Befund fiel.
   **Bei jeder Divergenzbehauptung die entscheidende Stelle lesen**, nie nur zählen.
@@ -73,9 +97,10 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 ## Erledigt — nicht erneut aufgreifen
 
 10./11. Lauf: Review-Engpass als Kapazitätsfrage, 0019, Architektendiagnose,
-Rust/C++-Divergenz, `schritt` ohne Paket. 12. Lauf (2026-09-03): doppelte Nummern 0039/0040
-(PM hat auf 0042/0043 umnummeriert), `ops/baulauf.log` (Betreiber hat crontab versioniert
-und `python3 -u` gesetzt), Wochenbremse (Betreiber, 18:51).
+Rust/C++-Divergenz, `schritt` ohne Paket. 12. Lauf: doppelte Nummern 0039/0040,
+`ops/baulauf.log`, Wochenbremse (alle drei vom Betreiber oder PM erledigt). 13. Lauf
+(2026-09-04): der Prüfstau 0040/0049/0053/0058 — der PM hat alle vier nachgezogen, **eine
+Meldung hat gereicht**. Nicht als Engpass wiederholen; die Sortierregel bleibt aber.
 
 **Die Lehre:** Nichts davon fiel an meiner Wiederholung. Es fiel an einer Teilung des
 Pakets, einer Rollendatei, einem neuen Paket. *Wenn ein Paket dreimal nicht liefert, ist
@@ -85,29 +110,32 @@ Hand, wirkt; fünfmal sagen kostet nur meinen Platz im Plan.**
 
 ## Offene Faehrten
 
-- **Die Rohdaten sind geschlossen** (2026-09-03, 12. Lauf). Zweimal vorgelegt, nie
-  beantwortet; ich habe das Ausbleiben als Antwort genommen und die Frage aus dem Plan
-  entfernt — als Befund mit Preis (334,25 $, 35 % der Bauphase). **Nicht wieder als Frage
-  stellen.** Prüfen, ob der leerlaufende Datenbauplatz nach 0057 eintritt: das ist der
-  Beleg, ob die Rücknahme richtig war. Allgemein: *Eine Empfehlung zurückzunehmen ist
-  billiger, als sie zum vierten Mal zu wiederholen.*
-- **Nächster Lauf zuerst:** Trockenlauf, dann `urteil: geprueft` gegen `status:`. Stehen
-  0040/0049/0053/0058 immer noch auf `gebaut`, ist nicht die Prüfkapazität das Problem,
-  sondern dass der Projektmanager den Übergang nicht zieht — dann gehört es an den
-  Betreiber, nicht noch einmal in meinen Vorrang.
+- **Die Rohdatenfrage war zu Recht zurückgezogen — die Probe ist eingetreten.** Am
+  2026-09-04 hat das Datengewerk **0 offene Pakete** (6 `architekt`, 5 `kernbauer`, 2
+  `testentwickler`), `daten/roh/` gibt es nicht, `reihen.toml` sagt weiter „keine
+  Datenzeile", Preis inzwischen 379,38 $ = 29 % der Bauphase. **Nicht wieder als Frage
+  stellen**, nur als Zahl fortschreiben. *Eine Empfehlung zurückzunehmen ist billiger, als
+  sie zum vierten Mal zu wiederholen.*
+- **Nächster Lauf zuerst:** Trockenlauf; dann für jedes `offen`-Paket auf einem Bauplatz
+  `git log` auf seine `dateien:`. Steht 0026 nach dem 4. `architekt`-Commit immer noch auf
+  `offen`, hat der Betreiber die drei Zeilen nicht ergänzt — dann ist es **keine
+  Vorrangfrage mehr**, sondern gehört als einziger Punkt an ihn.
 - **Fehlerklasse des Betreibers** (eine Regel an einer Stelle, die der Ablauf nicht
   erreicht): 8. Fall — `architekt`, `spielentwerfer`, `testentwickler` fehlt „Setze
-  `status: gebaut`" (`grep -c` = 0, bei `kernbauer`/`datenbauer` = 1). 9. Fall — **0041
-  trägt jetzt `rolle: geschaeftsfuehrer`**, eine Rolle, die nicht in `BAUROLLEN` steht: das
-  Paket wird nie eingeplant. Neue Untergattung zu „Paket ohne Rolle": *Paket mit einer
-  Rolle, die der Runner nicht kennt.* **Bei jedem Vorschlag prüfen: steht die Rolle in
-  `BAUROLLEN`, und darf sie diese Datei schreiben?**
-- **Das Wochenkontingent hat ein Datum.** 951,4 von 1.600 $ am 2026-09-03 23:43, Fenster ab
-  Montag 10:00. Bei 350 $/Tag Samstagfrüh leer. **Jeden Lauf neu rechnen** — die Zahl
-  bindet härter als jeder Rückstand, und sie ist die einzige, die ein Wochenende kostet.
-- **`werte` (78 Byte) ist der letzte leere Kernkasten**, entblockt über 0011 → 0026 → 0002.
-  Die eine Zahl steht den dritten Plan bei 8 von 9. Fällt sie nicht, ist die Kette selbst
-  der Befund, nicht `werte`.
+  `status: gebaut`". **Er kostet jetzt messbar** (0026 dreimal, ~22,60 $) und blockiert die
+  eine Zahl; das war der Engpass des 13. Plans. 9. Fall — 0041 trägt `rolle:
+  geschaeftsfuehrer`, nicht in `BAUROLLEN`, wird nie eingeplant (jetzt `blockiert`).
+  *Paket mit einer Rolle, die der Runner nicht kennt.* **Bei jedem Vorschlag prüfen: steht
+  die Rolle in `BAUROLLEN`, und darf sie diese Datei schreiben?**
+- **Das Wochenkontingent hat eine Uhrzeit.** 1.306,7 von 1.600 $ am 2026-09-04 07:39,
+  Spielraum 293,3 $, Brenner 59 $/h → leer gegen 12:40, dann 69 h Stillstand bis Montag
+  10:00. **Jeden Lauf neu rechnen.** Wenn der Spielraum unter etwa 300 $ fällt, ist die
+  Frage an den Betreiber nicht mehr *ob* gedrosselt wird, sondern **wofür die letzten ~40
+  Läufe ausgegeben werden** — das ist eine Inhaltsfrage und damit meine.
+- **Die eine Zahl ist ab dem 13. Plan `0 von 310`**: Eine Runde `weltlauf` läuft und ändert
+  keine der 310 Zustandsgrössen (0033 Bedingung 6 verlangte genau das, 0071 ersetzt sie).
+  `werte.hpp` (78 Byte, seit 2026-09-02) bleibt die *benannte Ursache*, nicht mehr die Zahl
+  selbst — Kette 0026 → 0002. Wechselt die Zahl noch einmal, alte im Plan mitnennen.
 - **0003 (Einheiten) ist eine Betreiberfrage, keine Bausache.** Nicht als Rückstand zählen,
   solange es nichts blockiert.
 - **Ein Prüfer committet den Befund eines anderen mit.** Nie vom Commit auf den Autor

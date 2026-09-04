@@ -1,101 +1,100 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-03 23:55. Abgedeckt: 2026-09-03 15:10 bis 23:43 — der Nachtlauf nach dem
-Ausfall des Wirts und nach acht Betriebs-Commits des Betreibers (18:41–19:08).
+Stand 2026-09-04 07:45. Abgedeckt: 2026-09-03 23:55 bis 07:39 — der Nachtlauf seit dem
+letzten Plan. Kein Betreiber-Commit seit 2026-09-03 19:08; der letzte Plan ist ungelesen.
 
 ## Wo das Vorhaben steht
 
-**Aus 43 Paketen sind 61 geworden:** 37 fertig, 14 offen, 6 gebaut, 2 Vorschläge, 2
-blockiert. In achteinhalb Stunden wurden 16 Pakete abgenommen und 18 neue angelegt — der
-Rückstand wächst weiter schneller, als er schrumpft. **Die eine Zahl steht dabei den
-dritten Plan in Folge still.** Der Betreiber hat in derselben Nacht die Wochenbremse
-repariert (sie rechnete gegen die Vorwoche und drosselte die Fabrik um 510 $) und den Takt
-auf stündliches Nachholen umgestellt; beides wirkt, der Durchsatz ist sichtbar gestiegen.
+**Der Prüfstau von gestern ist weg, und der Kern rechnet zum ersten Mal echt.** Aus 61
+Paketen sind 77 geworden: 53 fertig, 13 offen, 5 gebaut, 2 Vorschläge, 3 blockiert; der
+Projektmanager hat die vier hängenden Urteile nachgezogen. Der Übersetzungsbericht von
+07:19 meldet 12 grüne Tests im Hauptmanifest und 8 im Kern — die stammen diesmal wirklich
+aus dem Kern, anders als die elf von gestern. **Bezahlt ist das mit der ganzen Woche:**
+1.306,7 von 1.600 $ verbraucht, und das ist zugleich die Summe der gesamten Bauphase.
 
 ## Der Engpass
 
-**Vier Pakete mit bestandenem Urteil stehen weiter auf `gebaut` und verstopfen damit die
-gesamte Prüfwarteschlange.**
+**Drei Baurollen können ihr eigenes Paket nicht beenden — und eine davon hält das Tor zur
+einen Zahl.**
 
-0040, 0049, 0053 und 0058 tragen `urteil: geprueft` — drei davon zweimal, weil sie in
-derselben Nacht ein zweites Mal geprüft wurden. Nur der Projektmanager darf `geprueft` →
-`fertig` ziehen (`agents/rollen/projektmanager.md:95`). Die Urteile fielen 22:58–23:07, er
-lief um 23:18 — und hat in diesem Lauf eine einzige Datei angefasst: ein neues Paket.
+`agents/rollen/architekt.md`, `spielentwerfer.md` und `testentwickler.md` enthalten den
+Satz „Setze `status: gebaut`" nicht (nachgemessen: je 0 Treffer; `kernbauer` und
+`datenbauer` je 1). Das ist der 8. Fall der vom Betreiber benannten Fehlerklasse,
+unverändert seit dem letzten Plan. Neu ist, was er kostet.
 
-Die Folge ist nicht bloß Nacharbeit. `reviewbereit()` sortiert nach der Zahl der Rückläufe,
-das am wenigsten geprüfte zuerst (`agents/baulauf.py:264`), und nimmt vier. Die vier haben
-null Rückläufe und belegen damit dauerhaft alle vier Prüfplätze. **0011 und 0027 haben je
-einen Rücklauf und kommen deshalb nie an die Reihe.** 0011 wurde am 20:18 neu geliefert und
-hat seither fünf Durchgänge ohne ein einziges Urteil überstanden; 0027 wartet seit dem
-2026-09-02 21:10, über vierundzwanzig Stunden. *Der Projektmanager schreibt, 0011 „steht im
-Review" — es steht nicht darin; der Trockenlauf von 23:43 nennt die vier anderen.*
+**0026-klasse-2-preisbasis wurde heute Nacht dreimal zugewiesen** — 05:24, 06:20, 07:11,
+jedes Mal `architekt`, jedes Mal ein Commit an `technik.md`. Der Architekt schreibt es
+selbst in sein Logbuch: *„0026 wurde dreimal zugewiesen und war ab dem ersten Mal
+geliefert"*. Der Runner sieht `offen` und plant erneut ein. Fair ist zu sagen, dass der
+dritte Lauf nicht leer war — er hat nachgerechnet statt neu zu schreiben und dabei einen
+echten Fehler gefunden. Bezahlt sind trotzdem drei Läufe (~22,60 $) für ein Paket.
 
-An diesen beiden hängt fast der ganze Rückstand: **0011 blockiert sechs der vierzehn
-offenen Pakete** (0026, 0051, 0052, 0043 direkt; 0002 und 0010 darüber), **0027 drei**
-(0044, 0048, 0056). Elf von vierzehn offenen Paketen warten hinter den sechs gebauten.
-Startbereit sind genau zwei.
-
-**Der Ausweg kostet einen Lauf:** Setzt der Projektmanager die vier auf `fertig`, sind 0011
-und 0027 die einzigen in der Schlange und bekommen im nächsten Durchgang ihr Urteil.
+**Warum ausgerechnet dieses:** `0002-fondsbewertung-definieren` hängt an 0008 (fertig) und
+0026, sonst an nichts. 0026 ist geliefert. Zwischen dem Vorhaben und seiner einen Zahl
+steht damit **ein fehlender Satz in einer Rollendatei**, sonst nichts.
 
 ## Was quer liegt
 
-- **Die Sortierregel hat ihr eigenes Spiegelbild erzeugt.** Sie kam am 2026-09-02, weil
-  0009 und 0015 dreimal zurückkamen und 0023–0025 aushungerten. Jetzt hungert sie aus, was
-  einmal zurückkam. Beide Male dieselbe Lücke: Ein Paket verlässt die Schlange nicht von
-  selbst, sondern nur, wenn sein Urteil nachgezogen wird.
-- **Drei Baurollen fehlt der Satz „Setze `status: gebaut`"** — `architekt`,
-  `spielentwerfer`, `testentwickler` (nachgemessen: 0 Treffer, bei `kernbauer` und
-  `datenbauer` je 1). Der Projektmanager trägt jeden dieser Übergänge von Hand und meldet
-  es als achten Fall der vom Betreiber benannten Fehlerklasse. `agents/rollen/` darf kein
-  Gewerk schreiben.
-- **0041 ist jetzt mir zugewiesen** (`rolle: geschaeftsfuehrer`) und ändert
-  `agents/baulauf.py`. Ich schreibe keinen Code, und `geschaeftsfuehrer` steht nicht in
-  `BAUROLLEN` — der Runner plant es nie ein. Der Befund selbst ist eingetreten: Der heutige
-  Übersetzungsbericht meldet `manifeste: 4`, und das vierte ist
-  `pruefstand/bau/pruefung-0019/CMakeLists.txt`, ein unversioniertes Erzeugnis. **Die elf
-  grünen Tests unter „Der Compiler hat gesprochen" stammen daraus, nicht aus dem Kern.**
-- Unverändert 18 `.tmp`-Dateien im Repo, dazu `aufgaben/.kopf.tmp` und `.paket.tmp` —
-  Schaden vom Projektmanager mit null gemessen, `baulauf.py:215` liest nur `*.md`.
+- **Die Fabrik schreibt inzwischen überwiegend über sich selbst.** 21 der 77 Pakete
+  betreffen Belegstellen, Riegel und Formfehler in `technik.md` — **12 der letzten 21**,
+  und **beide** Vorschläge (0076: `-NOTFOUND` in der Werkzeugkette; 0077: zwei
+  Kommentarsätze, von denen 0044 einen selbst falsch gemacht hat). Prüfer finden
+  Belegfehler in den Erzeugnissen von Prüfern. Das ist eine geschlossene Schleife, und sie
+  frisst gerade den Rest der Woche.
+- **Das Datengewerk ist leergelaufen — wie im letzten Plan vorhergesagt.** Von 13 offenen
+  Paketen sind 6 `architekt`, 5 `kernbauer`, 2 `testentwickler`, **0 `datenbauer`**.
+  `daten/roh/` gibt es nicht, `reihen.toml` (115 kB, 113 Einträge) sagt in Zeile 18 weiter
+  über sich selbst „**Sie enthaelt keine Datenzeile**". Preis: 379,38 $ für `datenbauer`
+  und `daten-pruefer` — **29 % der gesamten Bauphase** für Arbeit über Daten, die niemand
+  geladen hat. Ich stelle die Frage nicht neu; der Beleg steht jetzt fest.
+- **Die Sortierregel hungert dasselbe Paket zum zweiten Mal in zwölf Stunden aus.** 0027
+  kam 05:53 zurück, wurde 06:26 neu gebaut und hat nun **zwei** Rückläufe; die vier
+  Prüfplätze halten 0044, 0056, 0066 (je 0) und 0065 (1). `reviewbereit()`
+  (`agents/baulauf.py:264`) sortiert Unbeprüfte nach vorn. Das ist kein Einzelfall mehr,
+  sondern die Bauart der Regel.
+- **Fünf Mitglieder des Bauwerks gibt es nicht.** `cmake -S` meldet `daten`,
+  `schnittstelle`, `konsole`, `oberflaeche` und `werkzeuge/aufbereitung` als „noch nicht
+  gebaut" — gebaut sind `kern`, `pruefstand` und `werkzeuge/belegstellen`. Von
+  35 im Bericht gezählten Tests stammen 11 weiter aus `pruefstand/bau/pruefung-0019/`,
+  einem unversionierten Verzeichnis. 0041, das genau das abstellen würde, steht auf
+  `blockiert` und trägt `rolle: geschaeftsfuehrer` — eine Rolle, die nicht in `BAUROLLEN`
+  steht und die keinen Code schreibt. Es wird nie eingeplant.
 
 ## Was der Betreiber entscheiden muss
 
-**Wofür die letzten 648,6 $ der Abo-Woche ausgegeben werden.** Verbraucht sind 951,4 von
-1.600 $; das Fenster setzt Montag 2026-09-07 10:00 zurück. Die letzten fünf Stunden kosteten
-330,9 $. Bei der Tagesgrenze von 350 $ (`agents/lauf.py:TAGESGRENZE_USD`, Tageslauf 350) ist
-die Woche **Samstagfrüh leer** — und damit stillgelegt, bevor das Wochenende beginnt.
+**Wofür die letzten rund 44 Läufe der Woche ausgegeben werden.** Spielraum 293,3 $; die
+letzten fünf Stunden kosteten 294,06 $ bei 44 Läufen. Bei diesem Tempo ist die Woche
+**heute gegen 12:40 leer**, danach steht die Fabrik **69 Stunden** bis Montag 10:00.
+Drosseln verlängert das nicht sinnvoll — 293,3 $ auf 69 Stunden wären 4 $ die Stunde, also
+weniger als ein Lauf. Die Woche ist so oder so vorbei; zu entscheiden ist der Inhalt.
 
-- **A — laufen lassen wie jetzt.** Zwei volle Nächte, danach zwei Tage Stillstand.
-- **B — Tagesgrenze für den Rest der Woche auf ~180 $.** Die Fabrik läuft bis Montag durch.
+- **A — laufen lassen.** Nach der Zusammensetzung der Schlange geht rund die Hälfte der
+  letzten Läufe in Belegstellen, Riegel und `technik.md`-Formfehler.
+- **B — vor dem nächsten Lauf drei Zeilen ergänzen** („Setze `status: gebaut`" in
+  `architekt.md`, `spielentwerfer.md`, `testentwickler.md`) und die Restwoche auf den
+  Vorrang unten beschränken; 0076 und 0077 diese Woche nicht anlegen.
 
-**Empfehlung B**, aus einem Grund: Eine Entscheidung, die Sie am Samstag treffen — etwa die
-Rohdaten zu laden —, kann in Fassung A in dieser Woche nicht mehr wirken. Dazu kommt, dass
-mehr Tempo derzeit nicht mehr Fortschritt heißt: In der vergangenen Nacht sind 18 Pakete
-entstanden und 16 abgenommen worden, während die eine Zahl stillstand.
-
-**Kein zweiter Punkt — sondern ein Befund.** Die Rohdaten habe ich zweimal vorgelegt; ein
-drittes Mal frage ich nicht. `daten/roh/` existiert nicht, `reihen.toml` sagt über sich
-selbst weiter „Sie enthaelt keine Datenzeile", und `datenbauer` plus `daten-pruefer` stehen
-inzwischen bei **334,25 $ — 35 % der Bauphase für Arbeit über Daten, die niemand geladen
-hat.** Nach 0057 hat das Datengewerk kein Paket mehr; dann läuft der Bauplatz leer. Ich
-behandle das Ausbleiben der Antwort als die Antwort und nehme die Frage aus dem Plan.
+**Empfehlung B.** Die drei Zeilen kosten keinen Lauf und ändern die Ausbeute jedes
+folgenden. Ohne sie wird 0026 ein viertes Mal zugewiesen, und die eine Zahl steht auch am
+Montag noch. Anzumerken ist, dass die Empfehlung des letzten Plans nicht abgelehnt wurde —
+sie ist ungelesen: seit 2026-09-03 19:08 gibt es keinen Betreiber-Commit.
 
 ## Vorrang
 
-**Zuerst, ohne Kennung, an den Projektmanager: 0040, 0049, 0053 und 0058 auf `fertig`
-ziehen.** Solange sie stehen, wirkt keine der fünf Kennungen unten.
+1. **0026** — nichts mehr zu bauen, nur abzuschließen. Danach ist 0002 startbereit. Das ist
+   der kürzeste Weg zur einen Zahl, den es je gab.
+2. **0002** — die eine Zahl selbst: `werte.hpp`, `werte.cpp`, `werte_probe.cpp`.
+3. **0071** — ohne die Rundennummer im Zustand ändert eine Runde weiterhin nichts.
+4. **0027** — zum zweiten Mal ausgehungert, zwei Rückläufe, schließt T18 ab. Es braucht
+   einen Prüfplatz, den ihm die Sortierung von selbst nicht gibt.
+5. **0010** — die Zustandsausgabe macht das Ergebnis von 0002 zum ersten Mal sichtbar.
 
-1. **0011** — sein Urteil entblockt sechs der vierzehn offenen Pakete, mehr als alles andere
-   im Vorhaben. Fünf Durchgänge ohne Prüfung.
-2. **0027** — entblockt drei weitere und wartet am längsten, seit über vierundzwanzig Stunden.
-3. **0026** — sobald 0011 durch ist, das einzige Paket, das über 0002 den letzten leeren
-   Kernkasten öffnet.
-4. **0054** — startbereit und beantwortet die älteste offene Entwurfsfrage, die Partielänge.
-   Solange sie offen ist, sind alle vier Maßvorschriften vorläufig.
-5. **0050** — das zweite startbereite Paket; sonst läuft ein Bauplatz leer.
+Nichts aus der Belegstellen-Familie in dieser Woche.
 
 ## Die eine Zahl
 
-**Acht von neun Kernkästen tragen Code; `werte.hpp` steht bei 78 Byte**, `werte.cpp` gibt es
-nicht. Unverändert seit drei Plänen, während 18 neue Pakete entstanden sind. Eine Spielrunde
-ist noch immer nie gerechnet worden.
+**0 von 310.** Eine Runde im Modus `weltlauf` läuft heute durch, und danach hat sich keine
+der 310 Größen des Zustands geändert — Bedingung 6 von 0033 verlangte ausdrücklich die
+*unveränderte* Prüfsumme über eine Runde, und 0071 ist das Paket, das sie ersetzt. Die
+benannte Ursache: **`werte.hpp` steht bei 78 Byte**, `werte.cpp` gibt es nicht — unverändert
+seit dem 2026-09-02 03:15 und damit den vierten Plan in Folge.
