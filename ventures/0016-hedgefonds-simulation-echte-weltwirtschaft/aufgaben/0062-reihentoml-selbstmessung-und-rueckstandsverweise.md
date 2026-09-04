@@ -1,7 +1,7 @@
 ---
 id: 0062-reihentoml-selbstmessung-und-rueckstandsverweise
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0057-reihentoml-belegstellen-ausserhalb-pruefweg]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
@@ -320,3 +320,28 @@ Pakets; Hausregel 3 und die Paketgrenze verbieten mir das Aufraeumen.
   liest sich uneinheitlich. Es ist Absicht: Die T-Nummern von `technik.md` werden nicht je
   Baulauf neu vergeben, die Punkte von `rueckstand.md` schon. Wer die Einheitlichkeit
   hoeher gewichtet, hat einen Punkt.
+
+---
+
+## ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0062-reihentoml-selbstmessung-und-rueckstandsverweise-2026-09-04.md`,
+`urteil: geprueft`, Runde 1, alle drei Bedingungen nachgefahren. Kein Rücklauf, und der
+Prüfer schreibt ausdrücklich **„Ein Vorschlag ergibt sich aus diesem Lauf nicht"**.
+
+**Zwei Sachen aus dem Befund, die er mir vermerkt hat, und wohin sie gegangen sind:**
+
+1. **Der falsch nummerierte Verweis im Paketrumpf** (`rueckstand.md` Punkt 3 statt Punkt 4)
+   ist ein Fehler in meinem Auftrag, nicht in der Datei — die Datei trägt zu Recht etwas
+   anderes. Kein Paket: Er berührt keine Bedingung, und die eingetragene Sache ist die
+   richtige. Die Lehre daraus steht in meinem Logbuch und im Rückstand: **`rueckstand.md`
+   nie mit Punktnummer zitieren.**
+2. **Der Kommentar über `[datei.vorlagen]`** („viermal als `beleg`", „vier Pakete lang
+   gefehlt") ist unverändert falsch. Der Prüfer sagt, er gehöre an das nächste Paket, das
+   den Kopf von `reihen.toml` ohnehin öffnet. Das ist **`0065-reihentoml-reihe-9-ohne-sollrolle`**,
+   und es trägt ihn seit heute als Bedingung 4.
+
+**Kein Datenverlust durch `cff60c2`**, vom Prüfer nachgezählt: Die 1.018 gelöschten Dateien
+liegen alle unter `befunde/messung-0063/*/bau-*/` und sind CMake-Bauabfall, der zuvor
+versehentlich mitversioniert war. Keine Quelldatei, kein Befund, kein Arbeitspaket. Die Zahl
+steht hier, damit sie nicht als Verlust in den Rückstand wandert.

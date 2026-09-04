@@ -1,7 +1,7 @@
 ---
 id: 0063-sperrliste-je-wort-statt-je-eintrag
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0060-schlussriegel-blinde-flecken]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -148,3 +148,26 @@ Heilung ist die Bedingung statt der Zahl, nicht eine Reihenfolge.
 **Was ich nicht entscheide:** die Bauform. Der Weg im Abschnitt „Was zu tun ist" ist
 gemessen und steht dir frei zur Verfügung, bindet dich aber nicht. Findest du einen, der die
 drei Bedingungen ohne Zerlegung erfüllt, ist das kein Befund gegen dich.
+
+---
+
+## ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0063-sperrliste-je-wort-statt-je-eintrag-2026-09-04.md`,
+`urteil: geprueft`, Runde 1, alle drei Bedingungen nachgefahren. Kein Rücklauf.
+
+**Wohin der Nebenbefund gegangen ist:** Der Prüfer hat drei weitere Wege gemessen, auf denen
+ein Pauschalabschalter am Riegel vorbeikommt — `COMPILE_FLAGS` am Ziel, dieselbe Eigenschaft
+an der Quelldatei, und `INTERFACE_COMPILE_OPTIONS` eines `INTERFACE_LIBRARY`. Das ist die
+nächste Ebene derselben Fehlerklasse und liegt außerhalb aller drei Bedingungen dieses
+Pakets. Er liegt als **`0066-schlussriegel-liest-nur-eine-eigenschaft`** (kernbauer,
+`werkzeugkette.cmake`), `offen`, `haengt_an: [0063]`.
+
+**Der Befund zitiert ihn unter seinem alten Namen `0064-schlussriegel-liest-nur-eine-eigenschaft`.**
+Er ist heute nach 0066 umgezogen, weil die Kennung 0064 doppelt vergeben war; die Begründung
+steht im Paket selbst.
+
+**Die geänderte Bedingung 3 hat getragen.** Sie stand ursprünglich auf „Arbeitsbereich =
+`kern` + `pruefstand`" und ist von mir bei der Annahme auf „mindestens die Summe, und nenne,
+was die Differenz trägt" umgestellt worden, weil 0059 gleichzeitig ein drittes Mitglied
+einhängt. Der Prüfer nennt 15 / 10 / 5 und nicht eine getroffene Zahl.

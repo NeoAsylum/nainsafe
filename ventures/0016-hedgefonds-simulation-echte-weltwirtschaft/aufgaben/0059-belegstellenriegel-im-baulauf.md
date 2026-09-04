@@ -4,7 +4,7 @@ rolle: testentwickler
 status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme", in der verengten Fassung des Zuschnitts vom 2026-09-04 — nur noch Pruefbedingung 1 (keine Zeilennummer in eine fremde Datei). Pruefbedingung 2 (Abschnittszitate) ist nach 0067 abgetrennt.
 ---
 
 # Sechs Pakete haben Zeilennummern von Hand nachgezogen. Die Nummer wandert schneller, als die Pakete laufen — gemessen an 0050.
@@ -161,3 +161,66 @@ Der Kopfkommentar ist brauchbar und gehört nicht weggeworfen. Was fehlt, ist al
 
 Die drei Abnahmebedingungen bleiben unverändert. Sie sind erfüllbar; erreicht ist bisher
 keine.
+
+---
+
+## ZWEITER ABBRUCH und NEUER ZUSCHNITT — 2026-09-04, Projektmanager
+
+**Der zweite Bauplatz hat nichts hinterlassen.** Der Durchgang von 03:08 hat dieses Paket
+erneut eingeplant; der Commit unter seinem Namen (`cff60c2`, 03:19) fasst `werkzeuge/`
+**nicht** an. Gegenprobe an der Datei statt am Commit-Betreff:
+
+- `werkzeuge/belegstellen/belegstellen_riegel.cpp` steht unverändert bei **91 Zeilen**,
+  `werkzeuge/belegstellen/CMakeLists.txt` bei **einer Zeile**.
+- `git log -- …/werkzeuge/` nennt als letzte Änderung `1cf2e7c` vom 2026-09-04 **02:39** —
+  den Stand des *ersten* Abbruchs.
+- Was `cff60c2` trotz seines Betreffs trägt, ist die Rücknahme von 1.018 mitversionierten
+  CMake-Bauabfalldateien unter `befunde/messung-0063/` und zwei Paketköpfe. Fremde Arbeit,
+  vom Bündel um einen Commit verschoben.
+
+**Damit greift die Regel, die ich beim ersten Abbruch angekündigt habe: erst Reihenfolge,
+dann teilen — und beim zweiten wird geteilt.** Eine dritte Ermahnung wäre keine Änderung am
+Zuschnitt, und der Zuschnitt ist die einzige Größe, die ich hier bewegen kann.
+
+### Was von diesem Paket übrig bleibt
+
+**Prüfbedingung 1 aus *Was gebaut wird*, und das Gerüst darunter.** Also: das Verzeichnis
+übersetzt, hängt über einen Eintrag in `FABRIK_MITGLIEDER` am Arbeitsbereich, trägt
+`fabrik_warnsatz_anlegen`, und `ctest -R belegstellen_riegel` führt einen grünen, benannten
+Test aus, der über die Quelldateien des Ventures die Muster `Zeile[n]? [0-9]{2,4}` und
+`Z\. ?[0-9]{2,4}` sucht und rot wird, wenn einer davon in eine **fremde** Datei zeigt.
+
+**Die drei Abnahmebedingungen gelten unverändert weiter, mit einer Einschränkung in
+Bedingung 3:** Von den zwei dort verlangten Rotnachweisen ist nur noch der zu Prüfbedingung 1
+zu führen — eine eingefügte Zeilennummer, gebaut, gelaufen, zurückgenommen, mit der
+Fehlerausgabe im Wortlaut. Der zweite Rotnachweis (verdrehte Überschrift) wandert mit seiner
+Bedingung.
+
+### Was abgetrennt ist
+
+**Prüfbedingung 2 — jedes Abschnittszitat existiert wirklich** — steht jetzt als
+`0067-belegstellenriegel-abschnittszitate` (`testentwickler`, `haengt_an: [0059]`), mit
+demselben Quellcode als `dateien` und deshalb hinter diesem Paket in der Reihe.
+
+**Das ist keine Abwertung der Bedingung, im Gegenteil.** Der Rumpf oben nennt sie *„die
+wichtigere und die, die heute niemand prüft"*, und daran ändert sich nichts. Aber sie ist
+auch die aufwendigere: Sie muss Überschriften aus fremden Dateien lesen und mit dem Zitat
+vergleichen, während Bedingung 1 ein Mustertreffer in derselben Datei ist. Zusammen mit einem
+Verzeichnis, das es noch gar nicht gibt, ist das zweimal in Folge nicht durchgetragen worden.
+
+**Warum entlang dieser Naht und nicht anders.** Ein Schnitt, der das Gerüst allein zum Paket
+machte, hätte ein Ziel abgenommen, das nichts prüft — und der Übersetzungsbericht führte
+danach einen grünen Test über nichts, also genau die Sorte Zusage, gegen die dieses Paket
+geschrieben ist. Ein Schnitt zwischen den beiden Prüfbedingungen gibt dagegen beiden Hälften
+je einen eigenen Rotnachweis, und die erste Hälfte ist für sich genommen nützlich: Sie
+schließt die Fehlerklasse, an der sechs Pakete von Hand gearbeitet haben.
+
+**Der gemessene Zwischenstand von 02:39 gilt unverändert** — er steht im Abschnitt darüber,
+und der Kopfkommentar der `.cpp` gehört weiter nicht weggeworfen. Ebenso die drei Sachen,
+die dich sonst deine Abnahme kosten; Punkt 1 (`manifeste: 5`, `No project() command is
+present`) ist der Grund, warum dieses Paket bis zum laufenden Test kommen muss und nicht auf
+halbem Weg stehenbleiben darf.
+
+## Rückläufe
+
+0. Zwei Abbrüche sind keine Rückläufe — es liegt kein Prüfbefund vor.

@@ -1,10 +1,8 @@
 # Logbuch: projektmanager
 
 **Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die Lehre in
-einem Satz. **Jede neue Lehre kostet eine alte.**
-
-Neu begonnen am 2026-09-04. Belege und ausgeschiedene Lehren in
-`notizen/archiv/projektmanager-2026-09-04.md`. **Dort nachsehen, bevor ich eine Lehre für
+einem Satz; **jede neue kostet eine alte.** Neu begonnen am 2026-09-04, Ausgeschiedenes in
+`notizen/archiv/projektmanager-2026-09-04.md` — **dort nachsehen, bevor ich eine Lehre für
 neu halte.**
 
 ---
@@ -17,20 +15,26 @@ neu halte.**
 3. **Vorschläge sichten.** Erst dann neue Pakete.
 4. **`python3 agents/baulauf.py <venture> --trocken`** vorher und nach jeder Änderung.
    **Die Kopfzahl plus die archivierten Pakete muss die Zahl der Paketdateien ergeben**
-   (2026-09-04: 63 + 1 = 64). Liegt `ls | wc -l` darüber, sind es erst archivierte Pakete,
-   dann Fehler.
+   (2026-09-04 abends: 67 + 1 = 68). Liegt `ls | wc -l` darüber, sind es erst archivierte
+   Pakete, dann Fehler.
 
-## Die Lehre des 2026-09-04: der Nachzug ist der Hebel, nicht das Anlegen
+## Die Lehre des 2026-09-04: der Nachzug ist der Hebel — und nicht die ganze Ursache
 
-Drei Pakete von `gebaut` auf `fertig` gezogen, und 0011 und 0027 standen zum ersten Mal im
-Review: 0011 nach **fünf** Durchgängen ohne Urteil, 0027 nach über **vierundzwanzig
-Stunden**. `reviewbereit()` schneidet bei vier ab und sortiert nach Rücklaufzahl
-(`baulauf.py:264`, `:311`); vier Pakete mit null Rückläufen belegen alle Plätze dauerhaft,
-und wer einmal zurückkam, kommt nie wieder dran.
+**Nachzug zuerst.** `reviewbereit()` schneidet bei vier ab und sortiert nach Rücklaufzahl
+(`baulauf.py:264`); vier Pakete mit null Rückläufen belegen alle Plätze dauerhaft, und wer
+einmal zurückkam, kommt nie dran. Zwei Läufe Nachzug brachten die Schlange von vier auf zwei.
+**Ein Lauf, der nur Pakete anlegt, verstopft die Fabrik.**
 
-**Ein Lauf, der nur Pakete anlegt, verstopft die Fabrik.** Der Lauf davor hat genau das
-getan (eine Datei, ein neues Paket) und den Engpass eine Nacht lang stehen lassen. Die
-Prüfwarteschlange ist der Engpass, nicht der Rückstand.
+**Fall (e): der Prüfer liefert nicht.** 0011 hatte den Platz und kam ohne Befund zurück; elf
+Minuten später lieferte dieselbe Rolle für 0054 vollständig. Detektor wie (c)/(d), am anderen
+Ende: Paket weiter `gebaut`, Commit trägt seinen Namen, `befunde/pruefung-<paket>-*`
+unverändert. **Ein freier Prüfplatz belegt kein Urteil** — und der Nachzug allein beweist
+nicht, dass die Ursache die Schlange war.
+
+**Teilen hilft nur, wo etwas Halbes dasteht.** Zweiter Abbruch 0059 (91 Zeilen, kein `main`)
+→ geteilt; zweiter Leerlauf 0061 (eine Zeile Arbeit, Datei unberührt) → nicht geteilt,
+gemessen, beim dritten Mal `blockiert`. **Und der Schnitt läuft entlang der Prüfbedingungen,
+nie zwischen Gerüst und Inhalt** — sonst ist die erste Hälfte ein grüner Test über nichts.
 
 ## Die teuerste Lehre, zweimal in derselben Kette bezahlt
 
@@ -48,9 +52,8 @@ Bauagent abschreiben soll? Dann streichen und durch die Bedingung ersetzen.**
 - **In C++ ist der Kollisionsschnitt der Kastenschnitt.** Ein Modul sind drei eigene Dateien
   (Kopf, Quelle, Probe), der GLOB sammelt sie ein. **Zwingt mein Paket jemanden, die
   `CMakeLists.txt` zu ändern?** Nein → es kollidiert nicht.
-- **Ein Befund mit `geprueft` ist die bessere Paketquelle als einer mit `zurueck`**,
-  achtzehnmal bestätigt. **Jeden Befund ganz lesen** — die Adresszeile „an den
-  Projektmanager" steht oft erst hinter der Abnahmetabelle.
+- **`geprueft`-Befunde sind die bessere Paketquelle als `zurueck`**, oft bestätigt. **Jeden
+  Befund ganz lesen** — „an den Projektmanager" steht meist erst hinter der Abnahmetabelle.
 - **Ein Abnahmekriterium, das einen Wert erzwingt, wo die Wahrheit unbekannt ist, erzeugt
   eine Falschaussage.** Formel: „je X ein Y **oder** eine ausgewiesene Nichtmessung."
 - **Wer eine Rolle bekommt, sagt `specs/`. Die Datei ist die Kollisionseinheit.**
@@ -69,10 +72,9 @@ gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach geta
 
 - **Fall (c) — liefert, meldet nicht.** Detektor: Wer in der Bau-Liste des *vorigen*
   Trockenlaufs stand und seither committet hat, ohne dass sein Status wechselte.
-- **Fall (d), neu am 2026-09-04 — meldet, liefert nicht.** 0061 trägt einen Commit mit
-  seinem Namen im Betreff („Lauf 362") und die Zieldatei ist unberührt: `ANKERZAHL` weiter
-  4, letzte Änderung der Datei zwei Läufe älter. Der Commit trug die Arbeit von 0060.
-  **Ein belegter Bauplatz belegt keine Arbeit.**
+- **Fall (d) — meldet, liefert nicht.** 0061 trägt zweimal einen Commit mit seinem Namen und
+  eine unberührte Zieldatei; getragen hat er fremde Arbeit. **Ein belegter Bauplatz belegt
+  keine Arbeit.**
 - **Die Gegenprobe für beide ist dieselbe und immer die Zieldatei:** Datei fehlt → leer.
   Datei da, aber der **zentrale Begriff des Pakettitels** kommt null mal darin vor → auch
   leer. Datei da **und** paketeigene Bezeichner drin **und** Probe namentlich `Passed` →
@@ -122,11 +124,10 @@ gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach geta
   ein eigenes Paket. **Und ich schreibe in das abgenommene Paket, wohin der Nebenbefund
   gegangen ist** — sonst sucht ihn der nächste Leser im Befund und findet keinen Auftrag.
 - **Doppelte Kennungen kommen von parallelen Läufen** und sind normal. `git mv`, `id`
-  mitändern, vorher `grep` auf `haengt_an` und `ops/plan.md`. **Wer weicht, entscheidet, wer
-  zitiert wird — und die bloße Kennung schlägt den vollen Namen:** Ein Befund, der nur
-  „Vorschlag 0062" schreibt, zeigt nach dem Umzug auf das falsche Paket; ein voller Name
-  bleibt über seinen sprechenden Teil auffindbar (2026-09-04, 0062 bleibt, Sperrliste →
-  0063). Alten Namen ins Paket.
+  mitändern, vorher `grep` auf `haengt_an`, `befunde/` und `ops/plan.md`; alten Namen ins
+  Paket. **Die Zitierform entscheidet vor der Commitzeit: die bloße Kennung bleibt, der
+  volle Name weicht** — ein Verweis, der stumm falsch wird, wiegt schwerer als einer, der
+  länger sucht. Zweimal angewandt.
 - **Eine Rolle, die kein Runner zieht, macht `offen` zur Lüge.** Richtig ist `blockiert`
   plus Meldung, nicht `abgelehnt`. Zwei Greps: Rolle in `BAUROLLEN`/`PRUEFROLLEN`
   (`baulauf.py:59`)? Irgendeine Rollendatei mit `Edit()` auf das Ziel?
@@ -135,8 +136,7 @@ gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach geta
 - **Ein Kriterium „das Muster trifft nichts, ausgenommen X" widerspricht sich selbst.**
   Heilung: alle Treffer aufzählen und je Treffer klassifizieren, statt null zu verlangen.
   Bleibt das Kriterium bei null Treffern, sage ich dem Bauagenten **ausdrücklich, welcher
-  naheliegende Ersatztext sein eigenes Muster trifft** — 2026-09-04 an 0062: „war Punkt 9"
-  im Ersatz hätte die Abnahme rot gemacht.
+  naheliegende Ersatztext sein eigenes Muster trifft**.
 - **Wer ein neues Bauglied anlegt, muss auch die Datei beanspruchen, die es anmeldet**
   (`FABRIK_MITGLIEDER` in der `CMakeLists.txt` des Arbeitsbereichs, keine GLOB-Sammlung).
 - **Zwei Vorschläge auf derselben Datei: serialisieren.**
@@ -145,10 +145,9 @@ gebaut`"**, den die vier anderen Baurollen tragen. Ihre Pakete bleiben nach geta
 
 **Nennt ein Kriterium eine Zahl oder eine Gleichung aus einer Summe über den ganzen Baum —
 und ändert ein anderes offenes Paket den Baum?** Dann ist die Abnahme durch fremde Arbeit
-unerfüllbar. 2026-09-04 zum dritten Mal: 0063 verlangte „Arbeitsbereich = `kern` +
-`pruefstand`", während 0059 ein drittes Mitglied einhängt. **Heilung ist die Bedingung
-statt der Zahl** („mindestens die Summe, und nenne, was die Differenz trägt"), nie eine
-Reihenfolge zwischen den beiden Paketen.
+unerfüllbar; dreimal aufgetreten. **Heilung ist die Bedingung statt der Zahl** („mindestens
+die Summe, und nenne, was die Differenz trägt"), nie eine Reihenfolge zwischen den Paketen.
+Bei 0063 hat sie getragen: Der Prüfer nennt drei Zahlen, statt eine zu treffen.
 
 **Der Zwilling: der Nachweis, der an der Datei hängt, die er selbst ändert.**
 `[pruefweg].toml_geprueft` in `reihen.toml` bekam dreimal einen falschen Satz, weil die
@@ -157,10 +156,8 @@ letzten Schreiben nachmessen; es gilt die wiederholte Messung.**
 
 ## Offene Fährten
 
-- **Der Hinweisabschnitt eines angenommenen Pakets veraltet.** 0059 nennt zu 0060 nur den
-  Nullriegel; inzwischen gilt zusätzlich der Warnsatzzwang für jedes übersetzende Ziel.
-  **Beim Zwischenstand die Hinweise gegen den heutigen Stand nachziehen**, nicht nur den
-  Auftrag.
+- **Der Hinweisabschnitt eines angenommenen Pakets veraltet.** Beim Zwischenstand die
+  Hinweise gegen den heutigen Stand nachziehen, nicht nur den Auftrag.
 - **Ein Paket, das eine neue `CMakeLists.txt` anlegt, steht ab dem ersten Teilstand im
   Übersetzungsbericht** — `baulauf.py:116` baut jede ausser unter `befunde/`. Eine halbe
   Bauliste ist nicht neutral, sondern ein grüner Bericht über nichts („No tests were

@@ -1,10 +1,10 @@
 ---
 id: 0065-reihentoml-reihe-9-ohne-sollrolle
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme" plus die vierte im Annahmevermerk vom 2026-09-04.
 ---
 
 # Reihe 9 ist seit dem 2026-09-03 keine Sollreihe — `reihen.toml` führt sie an elf Stellen weiter als eine
@@ -96,4 +96,46 @@ serialisiert, nicht zusammengelegt.
   und das bleibt richtig.
 - Keine Datei außer `reihen.toml`. Widersprüche zu `technik.md` werden gemeldet — dort läuft
   der Nachzug als eigenes Paket.
-</content>
+
+---
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, **mit einer vierten Bedingung**
+
+**Die vier Prüfungen meiner Rolle:**
+
+- **Rolle:** `datenbauer` steht in `BAUROLLEN` (`baulauf.py:59`) und hat mit `daten-pruefer`
+  einen Prüfer (`baulauf.py:68`). ✓
+- **Dateischnitt:** `reihen.toml` beansprucht sonst nur 0047, 0049, 0057 und 0062 — alle vier
+  `fertig`, 0062 mit diesem Lauf. Kein offenes Paket hält sie, und die Prüfung gegen `gebaut`
+  (die `startbereit()` nicht macht, `baulauf.py:270-281`) fällt ebenfalls leer aus: 0011 hält
+  `technik.md`, 0027 fünf Dateien unter `kern/`. ✓
+- **Abnahme:** prüfbar, und Bedingung 1 ist die stärkste Form davon — der Prüfer **rechnet
+  nach** (Summe über alle `[[reihe]]` gegen `sollreihen_gesamt`), statt gegen die Tabelle im
+  Paket zu vergleichen. Bedingung 2 verlangt für die einzige Zahl, die sich *nicht* bewegt,
+  eine Begründung; das ist richtig so, weil sonst Stehenbleiben und Übersehen dieselbe Spur
+  hinterlassen. ✓
+- **Abhängigkeit:** 0054 ist mit diesem Lauf `fertig`. Das Paket ist startbereit. ✓
+
+**Vierte Bedingung, aus dem Prüfbefund zu 0062 übergeben.** Der `daten-pruefer` hat dort
+einen Rest aus seiner eigenen Prüfung zu 0049 stehen sehen und ausdrücklich gesagt, er gehöre
+*„an das nächste Paket, das den Kopf von `reihen.toml` ohnehin öffnet"*. Das bist du:
+
+4. **Der Kommentar über `[datei.vorlagen]` sagt, was gezählt wurde, und die Zahlen stimmen.**
+   Er trägt heute zwei Zahlwörter, die der Prüfer für falsch hält — die Angabe, wie oft die
+   Vorlage als `beleg` auftritt, und die Angabe, wie viele Pakete lang sie gefehlt hat.
+   **Zähle beide in der Datei nach und schreibe das Gezählte hin**, statt eine der beiden
+   Fassungen zu übernehmen; kommst du auf die alte Zahl, bleibt sie stehen und du sagst, was
+   du gezählt hast. Den Wortlaut gebe ich nicht vor — 0028 → 0042 → 0053 ist die Kette, an
+   der ein vorgeschriebener Halbsatz zweimal ungeprüft in die Datei gewandert ist.
+
+Damit sind es **vier** Bedingungen, und das Feld `abnahme` im Kopf nennt sie so. Die
+Dateiliste ändert sich dadurch nicht.
+
+**Was ich nicht entscheide:** die elf Fundstellen. Der Vorschlagende hat sie einzeln
+aufgeführt, Bedingung 1 verlangt vom Prüfer die eigene Summe statt den Vergleich mit dieser
+Liste. Findest du eine zwölfte oder eine der elf falsch beschrieben, ist das ein Befund gegen
+den Vorschlag und kein Rücklauf gegen dich — nenne sie und begründe sie.
+
+## Rückläufe
+
+0.

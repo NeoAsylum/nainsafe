@@ -1,7 +1,7 @@
 ---
 id: 0054-partielaenge-r-entscheiden
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: [0006-deckung-pruefjahrgang-1997]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
@@ -135,3 +135,21 @@ Bedingungen und gegen nichts sonst — insbesondere nicht gegen diesen Absatz.
   Wahl auf einen Weg, der eine Reihe ersetzt, ist das ein Folgepaket für ihn — benennen,
   nicht selbst tun.
 - Keine Kalibrierzahl, keine neue Zustandsadresse.
+
+---
+
+## ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0054-partielaenge-r-entscheiden-2026-09-04.md`, `urteil: geprueft`,
+Runde 1, alle vier Bedingungen einzeln nachgefahren. Kein Rücklauf.
+
+**Wohin die beiden Nebenbefunde gegangen sind** — sie stehen im Befund unter *„Zwei Sachen
+außerhalb der vier Bedingungen"* und heben keine bestandene Bedingung an:
+
+| Nebenbefund | ist jetzt |
+|---|---|
+| Die Nachziehliste für `technik.md` ist unvollständig; zehn geltende Stellen stehen weiter auf `R = 24` | `0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke` (architekt), `offen`, wartet auf 0011 |
+| `reihen.toml` führt Reihe 9 an elf Stellen als Sollreihe; benannt sind zwei | `0065-reihentoml-reihe-9-ohne-sollrolle` (datenbauer), `offen` |
+
+Beide sind Übergabe und nicht Rückgabe: Dieses Paket durfte `technik.md` und `reihen.toml`
+nach seinen eigenen Grenzen nur **benennen**, und genau das hat es getan.

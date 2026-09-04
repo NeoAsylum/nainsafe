@@ -1,8 +1,8 @@
 ---
 id: 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke
 rolle: architekt
-status: vorschlag
-haengt_an: [0054-partielaenge-r-entscheiden]
+status: offen
+haengt_an: [0054-partielaenge-r-entscheiden, 0011-stack-auf-cpp]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
@@ -94,4 +94,52 @@ hinzu, keine Zustandsadresse.
 - Keine Kalibrierzahl, keine neue Zustandsadresse, keine neue T-Nummer.
 - Die beiden Zeitspalten in Abschnitt 10 folgen aus der ersten Spalte und `tick_planwert`.
   Der `ticks_je_sekunde`, den es weiterhin nicht gibt, wird auch hier nicht erfunden.
-</content>
+
+---
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, **mit 0011 in `haengt_an`**
+
+**Die Kennung bleibt 0064**, obwohl sie an diesem Tag doppelt vergeben war. Das andere Paket
+ist nach `0066-schlussriegel-liest-nur-eine-eigenschaft` umgezogen; die Begründung steht
+dort. Kurz: `pruefung-0054-partielaenge-r-entscheiden-2026-09-04.md` nennt **dieses** Paket
+nur als „`aufgaben/0064-…`", also über die bloße Kennung, und ein solcher Verweis wird beim
+Umzug stumm falsch statt bloß länger auffindbar.
+
+**Die vier Prüfungen meiner Rolle:**
+
+- **Rolle:** `architekt` steht in `BAUROLLEN` (`baulauf.py:59`) und hat mit `entwurf-pruefer`
+  einen Prüfer (`baulauf.py:73`). ✓
+- **Abnahme:** prüfbar. Bedingung 1 ist eine Nachrechnung aus `R = 20` je Stelle, Bedingung 2
+  eine Fundstellenliste zu zehn genannten Zahlwerten **einschließlich der Stellen, die
+  bleiben, mit Grund**, Bedingung 3 ein Formvergleich gegen `spiel.md`. ✓
+- **Abhängigkeit:** 0054 ist mit diesem Lauf `fertig`. ✓
+- **Dateischnitt: hier lag die eine Sache, die ich geändert habe.** ↓
+
+**Ich habe `0011-stack-auf-cpp` in `haengt_an` aufgenommen, und das ist kein Zweifel am
+Vorschlag.** Sein Abschnitt *„Warum das ein eigenes Paket ist"* prüft die Kollision gegen die
+**offenen** Pakete und hat recht: 0026, 0043 und 0051 halten `technik.md`, haben aber eine
+andere Sache zum Gegenstand, und `startbereit()` serialisiert sie ohnehin
+(`baulauf.py:277-279`). Übersehen ist der andere Fall: **0011 hält dieselbe Datei und steht
+auf `gebaut`, und der Kollisionsschutz sieht `gebaut` nicht** — er vergleicht `dateien` nur
+unter `offen` (`baulauf.py:270-281`).
+
+Das ist hier nicht theoretisch. 0011 hat aus seinem ersten Prüfbefund (2026-09-03, `urteil:
+zurueck`) drei Befunde offen, und der Prüfer schreibt dazu: *„Alle drei Befunde sitzen in
+`technik.md` … Ein eigenes Paket würde sich mit 0011 auf derselben Datei schneiden."* Fällt
+das ausstehende Urteil erneut auf `zurueck`, schreibt der Architekt in derselben Datei, in
+der dieses Paket zehn Zahlen ersetzt. Über `haengt_an` löst der Runner das von selbst, und
+zwar in beide Richtungen: Wird 0011 abgenommen, ist dieses Paket im selben Lauf startbereit.
+
+**Warum `haengt_an` und nicht `blockiert`:** Eine Sperre, die ein Paket auflöst, gehört in
+`haengt_an`. `blockiert` ist für das, was kein Paket auflösen kann — im Vorhaben derzeit nur
+0003 (Betreiberentscheidung) und 0041 (fehlende Rolle).
+
+**Was ich nicht entscheide:** die zehn Zielwerte. Der Vorschlagende hat jeden einzeln
+nachgerechnet und die Rechenwege hingeschrieben; Bedingung 1 verlangt vom Prüfer, sie aus
+`R = 20` **neu** zu rechnen statt gegen die Spalte zu vergleichen. Findet der Bauagent einen
+Fehler darin, ist das ein Befund gegen den Vorschlag und kein Rücklauf gegen ihn — dann
+nennt er den richtigen Wert und begründet ihn.
+
+## Rückläufe
+
+0.

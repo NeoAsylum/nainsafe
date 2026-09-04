@@ -1,203 +1,239 @@
 # Rückstand — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-03, spätabends. Fassung 16, geschrieben vom Projektmanager. Diese Datei sagt,
-welche Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer entscheiden
-lassen muss.
+Stand 2026-09-04, früh. Fassung 17, geschrieben vom Projektmanager. Diese Datei sagt, welche
+Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer entscheiden lassen
+muss.
 
-**Ein kurzer Lauf mit einem klaren Ergebnis.** Drei Prüfbefunde, alle drei `geprueft`, alle
-drei in Runde 1 und keiner mit einem Rücklauf. Dazu eine Lieferung ohne Meldung, zwei
-Vorschläge mit derselben Kennung und ein Paket, das aus einem Nebenbefund entsteht. Der
-Rückstand wächst um drei Pakete und verliert keines.
+**Der Engpass, den der Plan vom 2026-09-03 beschreibt, ist aufgelöst.** Die Prüfwarteschlange
+enthält ab jetzt genau zwei Pakete, und es sind die beiden Vorrangkennungen des
+Geschäftsführers: 0011 und 0027. Drei Abnahmen, drei angenommene Vorschläge, ein Paket
+geteilt, ein Paket umnummeriert. Vier Bauplätze belegt, zum ersten Mal seit drei Fassungen
+mit **einem Paket in Reserve**.
 
-## Was dieser Lauf getan hat
+Und ein Befund, der die Ursachenlage verschiebt: **0011 hat in der Nacht einen Prüfplatz
+bekommen und ist leer zurückgekommen.**
 
-**Drei Abnahmen.** 0039 (Zollzeile Konjunktursockel), 0042 (Parameterdatei
-Indexbegründung) und 0045 (Zwischenstände räumen) stehen auf `fertig`, jedes mit
-`urteil: geprueft`, jedes in Runde 1. Zwei der drei Befunde tragen einen Nebenbefund, und
-beide sind ausdrücklich an mich adressiert, nicht an den Bauagenten.
+## 0011 lag nicht nur an der Warteschlange
 
-**Ein Übergang, den ich selbst getragen habe.** 0040 hat geliefert und konnte es nicht
-melden. Achter Fall derselben Sorte.
+Der Plan des Geschäftsführers sagt, vier Pakete mit bestandenem Urteil verstopften die
+Prüfwarteschlange und 0011 komme deshalb nie an die Reihe. Das stimmte, und ein Vorlauf hat
+es behoben — 0040, 0049, 0053 und 0058 stehen auf `fertig`. **0011 stand danach im Review und
+hat trotzdem kein Urteil.**
 
-**Zwei Vorschläge, zwei Annahmen, einer umnummeriert.** Beide waren sachlich richtig.
+Gemessen, nicht vermutet:
 
-**Ein neues Paket aus einem Nebenbefund,** 0055, weil eine Tabelle, die als Regressionsfall
-gebaut ist, zwei Zahlen zu einem Zustand führt.
+- Der Trockenlauf beim Aufschlagen nennt für das Review vier Pakete: 0054, 0062, 0063 und
+  **0011**. Der Platz war also da.
+- Commit `19256c0` (03:33) trägt „entwurf-pruefer: 0011-stack-auf-cpp" im Betreff und ändert
+  **keine Befunddatei** — er enthält zwölf Rechtebits und den neu erzeugten
+  Übersetzungsbericht, sonst nichts.
+- `befunde/` enthält für 0011 unverändert genau eine Prüfung, `…-2026-09-03.md`,
+  `urteil: zurueck`, committet am 2026-09-03 **19:42**. Der Architekt hat danach neu
+  geliefert (`360421d`, 20:18), womit dieser Befund abgearbeitet ist.
+- Elf Minuten nach dem leeren Lauf hat **dieselbe Rolle** für 0054 einen vollständigen Befund
+  abgeliefert (`47c6862`, 03:44). Es liegt also nicht an der Rolle als solcher.
 
-## Die zwei Nebenbefunde gehören mir, nicht den Bauagenten
+**Die Folge für die Planung ist trotzdem dieselbe wie im Plan des Geschäftsführers**, deshalb
+steht sie hier und nicht als Einwand: Die Schlange ist jetzt zwei Pakete lang, 0011 und 0027
+haben je einen Platz sicher, und beide sind Vorrang 1 und 2.
 
-Das ist der Inhalt dieses Laufs, und es ist zweimal derselbe Fehler.
+## Drei von acht Agentenplätzen kamen leer zurück
 
-**0042.** Der Satz, den der Prüfer widerlegt, stand in *Was zu tun ist*, Punkt 2 **wörtlich
-vorgeschrieben**. Der Bauagent hat geliefert, was mein Auftrag verlangte, und hätte den
-Fehler innerhalb seines Pakets gar nicht abstellen können, ohne von seinem Auftrag
-abzuweichen. Ein Rücklauf hätte keine bessere Datei erzeugt, sondern eine zweite Runde
-desselben Satzes. Der Prüfer schreibt das selbst hin und urteilt trotzdem `geprueft` — genau
-richtig.
+Der Durchgang von 03:08 hatte vier Bau- und vier Prüfplätze. Geliefert haben fünf.
 
-**Und es ist die zweite Stufe derselben Kette.** 0042 ist aus einem wörtlich
-vorgeschriebenen Halbsatz der Prüfung zu 0028 entstanden; dieser Halbsatz ist jetzt wieder
-einer geworden. Die Regel dagegen steht ab heute in meinem Logbuch und im Nachfolgepaket:
-**An einer Stelle, die eine Begründung formuliert, schreibe ich die Prüfbedingung vor und
-nicht den Wortlaut.** Der Vorschlagende hat das von sich aus so gebaut („Der Wortlaut ist
-deine Entscheidung, nicht die dieses Auftrags"); ich habe nichts daran geändert.
+| Stufe | Paket | Rolle | Ergebnis |
+|---|---|---|---|
+| Bau | 0059 | testentwickler | **leer** — zweiter Abbruch |
+| Bau | 0061 | testentwickler | **leer** — zweiter Lauf ohne eine Zeile |
+| Bau | 0062 | datenbauer | geliefert, heute abgenommen |
+| Bau | 0063 | kernbauer | geliefert, heute abgenommen |
+| Review | 0011 | entwurf-pruefer | **leer** — kein Befund |
+| Review | 0054 | entwurf-pruefer | Befund, `geprueft` |
+| Review | 0062 | daten-pruefer | Befund, `geprueft` |
+| Review | 0063 | kern-pruefer | Befund, `geprueft` |
 
-**0039.** Hier liegt der Fehler nicht in meiner Vorgabe, sondern in der gebauten Datei — die
-Vergleichszahl 32.850.000 ist richtig gerechnet und falsch beschriftet. Der Prüfer stuft ihn
-als „Schwere: gering, kein Rücklaufgrund" ein, weil er keine der drei Abnahmebedingungen
-berührt. **Das `urteil` im Frontmatter entscheidet, nicht der Fließtext:** Ein Nebenbefund
-bei `geprueft` hebt kein bestandenes Kriterium an. Er wird deshalb gebaut, aber als eigenes
-Paket 0055 und nicht als Rücklauf.
+**Beide leeren Bauplätze hielt `testentwickler`**, und es waren die einzigen zwei, die diese
+Rolle in dem Durchgang hatte. `kernbauer` und `datenbauer` haben im selben Durchgang beide
+geliefert, und beide Ergebnisse sind heute in Runde 1 abgenommen worden.
 
-**Ich habe den Widerspruch selbst nachgemessen, statt ihn zu übernehmen.** Die Tabelle
-*Zwei Zustände, zwei Zahlen* gibt Zustand B ein Handelsvolumen von 40.000.000 / 100.000.000,
-zusammen 1,4·10^8; der Vergleichssatz drei Absätze darunter rechnet mit 1,5·10^9. Zehneinhalb
-mal so groß, beide Stellen im selben Abschnitt. Der Befund trägt.
+Ich melde das als Beobachtung über eine Rolle, nicht als Befund gegen ein Paket. Was ich
+selbst tun kann, habe ich getan: 0059 ist geteilt, 0061 ist gemessen und bleibt unverändert
+(siehe unten). Ob dahinter mehr steckt, sieht der Geschäftsführer über die Gewerke hinweg
+und ich nicht.
 
-## 0040 — geliefert, konnte es nicht melden
+## 0059 geteilt, 0061 nicht — und warum das kein Widerspruch ist
 
-Achter Fall: `architekt`, `spielentwerfer` und `testentwickler` fehlt in ihrer Rollendatei
-der Satz „Setze `status: gebaut`", den die vier anderen Baurollen tragen. Das Paket wäre
-`offen` geblieben und hätte in der nächsten Nacht einen Bauplatz für Arbeit belegt, die
-getan ist — und hätte kein Urteil bekommen, denn der Prüfplatz hängt an `gebaut`.
+Beide sind zum zweiten Mal ohne Ergebnis geblieben, beide gehören `testentwickler`, und ich
+behandle sie verschieden. Der Unterschied ist, **was dasteht**.
 
-**Gemessen an der Zieldatei, nicht am Statusfeld.** `pruefstand/test/vorrat_kernanker_probe.cpp`
-existiert mit 467 Zeilen, trägt 14-mal paketeigene Bezeichner, und
-`befunde/uebersetzung-2026-09-03.md` führt `vorrat_kernanker_probe` **namentlich** als
-`Passed` (Test 9 von 11). Das ist der strengere der beiden Wege — bei Code setze ich `gebaut`
-nur, wenn der Übersetzungsbericht die Probe namentlich als bestanden führt.
+**0059 hat ein halbes Erzeugnis hinterlassen.** `belegstellen_riegel.cpp` steht bei 91 Zeilen,
+davon rund 80 Kopfkommentar, ohne `main`; die `CMakeLists.txt` des Verzeichnisses hat eine
+Kommentarzeile; `FABRIK_MITGLIEDER` kennt das Verzeichnis nicht. Der Stand ist seit dem
+**ersten** Abbruch (02:39) unverändert — der zweite Bauplatz hat `werkzeuge/` nicht angefasst.
+Das ist die Lage, für die meine Regel „erst Reihenfolge, dann teilen" den zweiten Abbruch als
+Auslöser nennt, und die Reihenfolge habe ich beim ersten Mal schon geschrieben.
 
-**Was der grüne Lauf nicht belegt**, und was deshalb im Paket steht: keine der vier
-Abnahmebedingungen. Grün heißt „die Zahlen passen zueinander", nicht „sie sind richtig".
-Ob die Anker Festwerte sind und nicht Rechenergebnisse, prüft der `test-pruefer`.
+Geteilt habe ich entlang der beiden Prüfbedingungen, nicht zwischen Gerüst und Inhalt:
 
-## Die zwei Vorschläge
+- **0059** behält Prüfbedingung 1 (keine Zeilennummer in eine fremde Datei) samt Gerüst,
+  Anmeldung und ihrem Rotnachweis.
+- **0067** bekommt Prüfbedingung 2 (jedes Abschnittszitat existiert wirklich) samt ihrem
+  Rotnachweis, `haengt_an: [0059]`, dieselbe Quelldatei.
+
+Ein Schnitt zwischen Gerüst und Inhalt hätte ein Ziel abnehmbar gemacht, das nichts prüft —
+und der Übersetzungsbericht führte danach einen grünen Test über nichts, also genau die Sorte
+Zusage, gegen die 0059 überhaupt geschrieben ist.
+
+**0061 hat nichts hinterlassen, und es gibt nichts zu schneiden.** Die Zieldatei trägt weiter
+`ANKERZAHL = 4` und ist seit dem 2026-09-03 21:08 unberührt; die ganze Arbeit ist eine Zeile
+in einer `constexpr`-Tabelle plus zwei nachgezogene Zählungen. Ein Paket, das kleiner ist als
+jedes andere im Rückstand, wird durch Teilen nicht baubarer. Es bleibt unverändert `offen`,
+mit dem zweiten Zwischenstand im Paket. **Beim dritten leeren Lauf geht es auf `blockiert`** —
+dann ist nach der Regel meiner Rolle nicht der Bauagent das Problem, sondern die Vorgabe.
+
+## Die drei Vorschläge
 
 | | Rolle | Entscheidung |
 |---|---|---|
-| 0053 Indexbegründung Regulierungsfall | datenbauer | `offen`, Kennung behalten |
-| 0054 Partielänge R entscheiden (war 0053) | spielentwerfer | `offen`, umnummeriert |
+| 0064 `technik.md`-Nachzug außerhalb der T-Blöcke | architekt | `offen`, Kennung behalten, **0011 in `haengt_an`** |
+| 0065 `reihen.toml`, Reihe 9 ohne Sollrolle | datenbauer | `offen`, **vierte Bedingung ergänzt** |
+| 0066 Schlussriegel liest nur eine Eigenschaft (war 0064) | kernbauer | `offen`, umnummeriert |
 
-**Die doppelte `0053` ist aufgelöst.** Vierter Fall an einem Tag; sie entstehen aus
-parallelen Läufen und sind normal. Diesmal war **beides** zitiert — jeder Vorschlag steht
-namentlich in dem Befund, aus dem er stammt —, also entschied die Commitzeit: `f2a9893`
-(21:20) gegen `e3fa560` (21:23), drei Minuten. Kein `haengt_an` und keine Zeile in
-`ops/plan.md` nennt eine 0053; der Suchlauf über das Repo ergab genau sechs Fundstellen, die
-beiden Paketköpfe, die beiden Befunde und zwei Logbucheinträge. Der Umzug reißt nichts auf.
-Alter Name steht im Paket.
+Alle drei sind sachlich richtig, alle drei nennen eine Rolle, die es gibt und die ein Runner
+einplant, alle drei tragen prüfbare Bedingungen. Geändert habe ich an zweien etwas, und beide
+Änderungen betreffen nicht die Sache, sondern die Einplanbarkeit.
 
-**0054 und 0055 wollen dieselbe Datei, und ich habe sie nicht zusammengelegt.** 0054
-entscheidet die Partielänge, 0055 berichtigt eine Beschriftung in der Zollzeile — die beiden
-haben sachlich nichts miteinander zu tun, und keiner verschiebt die Belegstellen des
-anderen. 0055 hat 0054 in `haengt_an` und läuft dahinter. Zusammengelegt wären es sieben
-Bedingungen in einem Lauf; das ist der Zuschnitt, an dem 0019 dreimal abgebrochen ist.
+**Die doppelte `0064` ist aufgelöst, und diesmal nicht über die Commitzeit.** Sechster Fall;
+sie entstehen aus parallelen Läufen und sind normal. Die Commitzeit hätte für den
+Schlussriegel gesprochen (03:39 gegen 03:44), sie entscheidet aber erst nachrangig.
+Entschieden hat die **Form der Zitate**: `pruefung-0063` nennt den Schlussriegel mit vollem
+Namen — er bleibt über seinen sprechenden Teil auffindbar. `pruefung-0054` nennt den
+`technik.md`-Nachzug nur als „`aufgaben/0064-…`", also über die bloße Kennung; zöge der um,
+zeigte diese Zeile **stumm auf das falsche Paket**. Ein Verweis, der falsch wird, wiegt
+schwerer als einer, der länger sucht. Suchlauf über `aufgaben/`, `befunde/` und `ops/plan.md`:
+kein `haengt_an` und keine Zeile des Plans nennt eine 0064, 0066 oder 0067. Alte Namen stehen
+in den Paketen.
+
+**0064 wartet auf 0011, und das hat der Vorschlagende nicht sehen können.** Er hat die
+Kollision gegen die offenen Pakete geprüft und recht behalten — 0026, 0043 und 0051 halten
+`technik.md`, haben aber anderes zum Gegenstand, und `startbereit()` serialisiert sie ohnehin.
+Der andere Fall fehlt: **0011 hält dieselbe Datei und steht auf `gebaut`, und der
+Kollisionsschutz sieht `gebaut` nicht** (`baulauf.py:270-281` vergleicht `dateien` nur unter
+`offen`). Das ist hier nicht theoretisch — der offene Rücklauf von 0011 hat drei Befunde, und
+alle drei sitzen in `technik.md`; der Prüfer schreibt selbst, ein eigenes Paket würde sich
+dort mit 0011 schneiden. Über `haengt_an` löst der Runner es in beide Richtungen: Wird 0011
+abgenommen, ist 0064 im selben Lauf startbereit.
+
+**0065 hat eine vierte Bedingung bekommen, und sie ist eine Übergabe.** Der `daten-pruefer`
+hat im Befund zu 0062 einen Rest aus seiner eigenen Prüfung zu 0049 stehen sehen — zwei
+Zahlwörter im Kommentar über `[datei.vorlagen]` — und ausdrücklich gesagt, er gehöre an das
+nächste Paket, das den Kopf von `reihen.toml` ohnehin öffnet. Das ist 0065. Den **Wortlaut**
+gebe ich nicht vor, sondern die Bedingung: nachzählen und das Gezählte hinschreiben. Die
+Kette 0028 → 0042 → 0053 ist der Grund; dort ist ein vorgeschriebener Halbsatz zweimal
+ungeprüft in eine Datei gewandert.
 
 ## Gemessen, nicht angenommen
 
 | | vorher | nachher |
 |---|---|---|
-| vorschlag | 2 | **0** |
-| offen | 12 | 14 |
-| gebaut | 7 | 5 |
-| fertig | 31 | **34** |
+| vorschlag | 3 | **0** |
+| offen | 12 | 16 |
+| gebaut | 5 | **2** |
+| fertig | 44 | **47** |
 | blockiert | 2 | 2 |
-| Bauplätze belegt | **3 von 4** | **4 von 4** |
-| Prüfplätze belegt | 4 von 4 | 4 von 4 |
+| Bauplätze belegt | **2 von 4** | **4 von 4**, dazu 1 in Reserve |
+| Prüfplätze belegt | 4 von 4, davon 3 schon geurteilt | **2 von 4**, beide ohne Urteil |
 
-55 Paketdateien, und die Kopfzeile des Trockenlaufs geht auf (14 + 5 + 34 + 2 = 55).
+68 Paketdateien, und die Kopfzeile des Trockenlaufs geht auf: 16 + 2 + 47 + 2 = 67, plus das
+eine archivierte Paket (`0056-warnsatz-schlussriegel-alle-ziele`, Dublette von 0058) = 68.
 
-**Der leere Bauplatz war der Kern dieses Laufs, und die Rechnung dazu ist knapp.** Beim
-Aufschlagen waren drei Pakete startbereit, davon eines (0040) in Wahrheit schon gebaut — es
-wäre also ein zweites Mal bezahlt worden und hätte nur zwei echte Plätze gefüllt. Die beiden
-angenommenen Vorschläge sind beide **sofort** startbereit: 0053 hängt an 0042, 0054 an 0006,
-beide seit heute bzw. seit dem 2026-09-02 `fertig`, und beide Dateilisten (`parameter.toml`,
-`spiel.md`) schneiden weder ein `offen`- noch ein `gebaut`-Paket. Erst damit sind es vier.
+**Die Prüfplätze sind der Punkt, an dem „weniger" besser ist.** Vorher standen vier Pakete in
+der Schlange, drei davon mit fertigem Urteil, das nur nicht nachgezogen war — die Stufe hätte
+drei ihrer vier Plätze für ein zweites Urteil über dieselbe Sache ausgegeben. Jetzt stehen
+genau die zwei darin, die wirklich eines brauchen.
 
-**Diesmal ohne Reserve.** Genau vier Pakete sind startbereit, und wenn ein Bauagent
-scheitert, bleibt der Platz leer. Ich habe keines künstlich nachgelegt: Alle neun wartenden
-Pakete warten auf eine echte Abhängigkeit, und ein Paket zu erfinden, das nicht aus `specs/`
-folgt, ist mir verboten. Der Weg zu Reserve führt über Abnahmen, nicht über Umsortieren —
-zum fünften Mal derselbe Beleg.
-
-**0027 fällt aus dem Review, und das kostet.** `reviewbereit()` sortiert nach der Zahl
-bisheriger Urteile und schneidet bei vier ab (`baulauf.py:311`). Fünf Pakete stehen auf
-`gebaut`; 0038, 0040 und 0046 haben null Rückläufe, 0011 und 0027 je einen, und bei
-Gleichstand entscheidet die Kennung. 0027 ist damit das fünfte. **An ihm hängen 0044 und
-0048** — es rückt in der übernächsten Nacht von selbst nach, sobald eines der vier ein
-Urteil hat.
+**Und zum ersten Mal seit drei Fassungen gibt es Reserve.** Fünf Pakete sind startbereit, vier
+Plätze gibt es: 0055 (spielentwerfer), 0059 (testentwickler), 0061 (testentwickler), 0065
+(datenbauer) laufen, 0066 (kernbauer) wartet. Erreicht ist das über Abnahmen, nicht über
+Umsortieren — zum sechsten Mal derselbe Beleg.
 
 ## Der Rückstand
 
-**Im Bau (4):** 0047 reihen.toml Kopf/Widerspruch (datenbauer), 0050 Vorratsprobe
-Belegstellen (testentwickler), 0053 Indexbegründung Regulierungsfall (datenbauer), 0054
-Partielänge R entscheiden (spielentwerfer).
+**Im Bau (4):** 0055 Zollzeile Vergleichszahl (spielentwerfer), 0059 Belegstellenriegel
+(testentwickler), 0061 Kernanker-Sichtbarkeit (testentwickler), 0065 reihen.toml Reihe 9
+(datenbauer).
 
-**Im Review (4):** 0038 Meldung mit Adresse (kern-pruefer), 0040 Kernanker-Klassenzuteilung
-(test-pruefer), 0046 Warnsatzriegel (kern-pruefer), 0011 Stack auf C++ (entwurf-pruefer,
-**Vorrang 1**).
+**Im Review (2):** 0011 Stack auf C++ (entwurf-pruefer, **Vorrang 1**), 0027 Zustand
+Schreibweg schließen (kern-pruefer, **Vorrang 2**).
 
-**Startbereit in Reserve (0).** Siehe oben.
+**Startbereit in Reserve (1):** 0066 Schlussriegel liest nur eine Eigenschaft (kernbauer).
 
-**Wartend auf ein laufendes Paket (10):** 0026 (an 0011), 0002 (an 0026), 0010 (an 0002),
-0043 (an 0011), 0044 (an 0027), 0048 (an 0038 und 0027), 0049 (an 0047), 0051 (an 0011),
-0052 (an 0011), 0055 (an 0054).
+**Wartend auf ein laufendes Paket (11), und sie hängen an genau drei Kennungen:**
+
+- **an 0011 (7):** 0026, 0043, 0051, 0052, 0064 direkt; 0002 über 0026; 0010 über 0002.
+- **an 0027 (3):** 0044, 0048 direkt; 0056 über 0048.
+- **an 0059 (1):** 0067.
 
 **Blockiert (2):** 0003 (Einheiten im Typ, braucht einen ADR gegen T5), 0041 (`baulauf.py`,
-keine zuständige Rolle). Beide zu Recht: Für keines gibt es ein Paket, auf das es hängen
-könnte.
+keine zuständige Rolle). Beide unverändert und beide zu Recht: Für keines gibt es ein Paket,
+auf das es hängen könnte. Beide liegen beim Betreiber, 0041 seit dem 2026-09-03 zum zweiten
+Mal; ein dritter Durchgang bringt nichts Neues, und ich frage nicht erneut.
 
-**0043 ist heute ein Glied kürzer geworden.** Es hing an 0021, 0039 und 0011; mit der
-Abnahme von 0039 wartet es nur noch auf 0011.
-
-**Die Kette zu `werte` ist unverändert vier Glieder lang** — 0011 → 0026 → 0002 → 0010.
-An 0011 hängen **fünf** Pakete (0026, 0043, 0051, 0052 und über 0026 auch 0002). Es ist die
-einzige Kennung des Vorhabens, an der so viel hängt, und es steht zum zweiten Mal im Review.
+**Die Kette zu `werte` ist unverändert vier Glieder lang** — 0011 → 0026 → 0002 → 0010. An
+0011 hängen jetzt **sieben** Pakete statt fünf; es ist mit Abstand die teuerste Kennung des
+Vorhabens, und es steht seit gestern Abend zum zweiten Mal ohne Urteil im Review.
 
 ## Zum Vorrang des Geschäftsführers
 
-Seine fünf Kennungen waren 0011, 0026, 0019, 0028, 0034. **Vier davon sind erledigt** — 0019,
-0028 und 0034 stehen auf `fertig`, 0011 steht im Review. **Keine Abweichung zu begründen:**
-0026, sein Punkt 2, wartet unverändert auf 0011, und genau das sagt sein eigener Text. Von
-seinen fünf ist keines startbereit, deshalb gehen die vier Bauplätze an Pakete, die er nicht
-genannt hat.
+Seine Liste war: vorab ohne Kennung 0040, 0049, 0053 und 0058 auf `fertig` ziehen, dann 0011,
+0027, 0026, 0054, 0050. **Keine Abweichung zu begründen.**
 
-**Die Vorrangliste ist damit abgearbeitet und für den nächsten Lauf leer.** Sie braucht eine
-neue.
+- **Der Vorabauftrag ist erledigt.** Die vier stehen auf `fertig`; ein Vorlauf dieser Nacht
+  hat sie gezogen.
+- **0011 und 0027** sind seit diesem Lauf die einzigen zwei in der Prüfschlange und bekommen
+  im nächsten Durchgang je ein Urteil. Der Ausweg, den er beschreibt, hat gewirkt — mit der
+  Einschränkung oben, dass 0011 seinen Platz schon einmal hatte und leer zurückkam.
+- **0026** wartet unverändert auf 0011, und genau das sagt sein eigener Text.
+- **0054** ist heute abgenommen, Runde 1, alle vier Bedingungen. Es beantwortet die älteste
+  offene Entwurfsfrage: Eine Partie ist **20 Runden** lang, Fenster 2001–2021.
+- **0050** ist abgenommen, Runde 1.
 
-**Seine beiden Aufträge ohne Kennung sind erledigt.** Die doppelten Nummern sind aufgelöst,
-und 0041 ist am heutigen Vormittag zum zweiten Mal an den Betreiber zurückgegeben worden —
-mit einem eingetretenen statt einem erwarteten Schaden. Ein dritter Durchgang bringt nichts
-Neues; die Sache liegt beim Betreiber.
+**Die Vorrangliste ist damit bis auf 0011, 0027 und 0026 abgearbeitet und braucht eine neue.**
 
 ## Was der Geschäftsführer entscheiden lassen muss
 
-1. **Die Rohdaten, und die Frist ist abgelaufen.** `daten/` enthält weiter keine Datenzeile —
-   sechs Dateien plus das neue Verzeichnis `zwischenstaende/`, davon fünf Befunde und ein
-   Katalog. Nach 0047, 0049 und 0053 hat der Datenbauer ohne geladene Quellen **nichts mehr
-   zu tun**; das sind drei Pakete, also etwa eine Nacht bei zwei Datenbauplätzen. Das ist
-   eines weniger als in der letzten Fassung, weil 0042 und 0045 heute abgenommen wurden.
-   Unverändert Empfehlung B: Der Betreiber lädt die vier Quellen einmal von Hand. **Das ist
-   der Punkt, der als nächster einen Bauplatz leerlaufen lässt**, und er ist der einzige auf
-   dieser Liste, der Geld oder Betreiberzeit kostet.
-2. **Den drei Rollendateien fehlt der Satz „Setze `status: gebaut`".** Achter Fall, wieder
-   von Hand getragen. Er kostet keinen Bauplatz mehr, seit ich ihn jeden Lauf prüfe — aber er
-   kostet jeden Lauf diese Prüfung, und heute hätte er ohne sie einen der vier Bauplätze mit
-   fertiger Arbeit belegt.
-3. **Zwei Punktdateien liegen im Aufgabenverzeichnis:** `aufgaben/.kopf.tmp` und
-   `aufgaben/.paket.tmp`. **Akuter Schaden null**, gemessen: `baulauf.py:215` liest
-   `ordner.glob("*.md")`, die beiden werden nicht gelesen, und die Kopfzeile des Trockenlaufs
-   zählt genau die 55 `.md`-Dateien. Löschen darf ich nicht (Hausregel 3). Ich melde sie, weil
-   sie zur selben Familie gehören wie 0041 — Erzeugnis, das im Quellverzeichnis liegen
-   bleibt.
+1. **Der leere Prüflauf über 0011 ist der teuerste Einzelposten dieses Vorhabens.** An der
+   Kennung hängen sieben Pakete, also fast der halbe Rückstand, und die Prüfung ist jetzt
+   zweimal ohne Urteil geblieben — einmal, weil sie nicht an die Reihe kam, einmal mit
+   Platz. Das ist kein Fall für einen Zuschnitt und keiner für ein Abnahmekriterium; ich habe
+   beides geprüft und nichts gefunden, was ich ändern könnte. Wiederholt es sich im nächsten
+   Durchgang, ist es die Rolle oder der Lauf und gehört zum Betreiber.
+2. **`testentwickler` hat in einem Durchgang zwei von zwei Bauplätzen leer gelassen**, während
+   `kernbauer` und `datenbauer` im selben Durchgang lieferten und heute abgenommen sind. Ich
+   habe getan, was in meiner Reichweite liegt (0059 geteilt, 0061 gemessen und unverändert
+   gelassen), und melde den Rest.
+3. **Der `datenbauer` hat nach 0065 kein Paket mehr.** Das ist die Folge der Sache, die der
+   Geschäftsführer am 2026-09-03 aus dem Plan genommen hat, und ich stelle sie deshalb als
+   Tatsache hin und nicht als Frage: `daten/roh/` gibt es nicht, `reihen.toml` sagt über sich
+   selbst weiter, sie enthalte keine Datenzeile, und ohne geladene Quellen entsteht aus
+   `specs/` kein weiteres Datenpaket, das ich anlegen dürfte.
+4. **Kleinkram, unverändert und ohne Schaden:** `aufgaben/.kopf.tmp` und `aufgaben/.paket.tmp`
+   liegen weiter im Aufgabenverzeichnis (`baulauf.py:215` liest `*.md`, die Kopfzahl geht
+   auf), dazu die `.tmp`-Dateien im Baum. Löschen darf ich nicht, Hausregel 3.
+5. **Neu und klein: Werkzeugmarkup landet in Ergebnisdateien.** Drei Dateien dieser Nacht
+   endeten auf einer Zeile `</content>` beziehungsweise `</invoke>` — die beiden Vorschläge
+   (in meinem Verzeichnis, von mir berichtigt) und
+   `befunde/pruefung-0054-partielaenge-r-entscheiden-2026-09-04.md`, die dem `entwurf-pruefer`
+   gehört und die ich deshalb nur melde. Der Befund selbst ist davon unberührt; die Zeilen
+   stehen hinter seinem letzten Absatz.
 
 ## Die eine Zahl
 
 **Acht von neun Kernkästen tragen Code; `werte.hpp` steht weiter bei 78 Byte**, und
-`werte.cpp` gibt es nicht.
+`werte.cpp` gibt es nicht. Eine Spielrunde ist noch immer nie gerechnet worden.
 
-Eine Spielrunde ist noch immer nie gerechnet worden. Was sich in diesem Lauf bewegt hat, ist
-nicht die Zahl und diesmal auch nicht der Weg zu ihr — 0011 steht seit dem Vorlauf im Review
-und hat dort noch kein Urteil. Bewegt hat sich der **Entwurf**: Die Zollzeile misst seit
-heute nur noch den Keil, und mit 0054 ist zum ersten Mal ein Paket offen, das die älteste
-unbeantwortete Frage des Entwurfs beantwortet — wie lang eine Partie ist. Solange sie offen
-ist, sind alle vier Maßvorschriften vorläufig und der Selbstspieler kann keine davon messen.
+Bewegt hat sich in diesem Lauf nicht die Zahl, sondern **der Weg zu ihr, und zwar messbar**:
+0011 → 0026 → 0002 → 0010 ist unverändert vier Glieder lang, aber die Prüfschlange davor ist
+von vier Paketen auf zwei geschrumpft, und beide sind Glieder dieser Kette oder ihres
+Nachbarn. Es gibt seit diesem Lauf keinen Grund mehr, aus dem 0011 nicht im nächsten
+Durchgang ein Urteil bekäme — außer dem, den Punkt 1 oben beschreibt.

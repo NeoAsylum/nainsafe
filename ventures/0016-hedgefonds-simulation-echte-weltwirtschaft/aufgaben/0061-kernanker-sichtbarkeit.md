@@ -171,3 +171,36 @@ führt den Test bereits grün (11/11 im Arbeitsbereich, 3/3 im Prüfstand allein
 belegt nichts für dich**, es ist der Stand mit vier Ankern. Nach deiner Änderung muss die
 Zählung aus Bedingung 2 („genau 2 der 5", drei Kennungen) mitgezogen sein, sonst wird
 derselbe Test rot. Das ist beabsichtigt.
+
+---
+
+## ZWISCHENSTAND, ZWEITER — 2026-09-04, Projektmanager: bleibt `offen`, wieder nichts geliefert
+
+**Zum zweiten Mal ein belegter Bauplatz ohne eine Zeile Arbeit.** Der Durchgang von 03:08 hat
+das Paket erneut eingeplant, Commit `3b0e1ee` (03:14) trägt seinen Namen im Betreff. Dieselbe
+Gegenprobe wie beim ersten Mal, an der Zieldatei statt am Betreff:
+
+- `pruefstand/test/vorrat_kernanker_probe.cpp` trägt weiter `ANKERZAHL = 4`. Kein fünfter
+  Anker, kein `(1,0,0,0,4)`, keine Kennung 56.
+- `git log -- …/vorrat_kernanker_probe.cpp` nennt als letzte Änderung unverändert `f68e8fb`
+  vom 2026-09-03 21:08 — zwei Bauplätze und sechs Stunden älter als dieser Eintrag.
+- Was `3b0e1ee` trotz seines Betreffs trägt, sind 1.018 Dateien CMake-Bauabfall unter
+  `befunde/messung-0063/` — die Messung zu einem fremden Paket, vom Bündel um einen Commit
+  verschoben. Beim ersten Mal war es `werkzeugkette.cmake`, also die Arbeit von 0060.
+
+**Ich schneide dieses Paket nicht neu, und der Grund ist, dass es nichts zu schneiden gibt.**
+Beim Nachbarpaket 0059 stand beim zweiten Abbruch ein halbes Erzeugnis da, und der Zuschnitt
+war die Ursache — hier ist die ganze Arbeit *eine Zeile in einer `constexpr`-Tabelle plus
+zwei nachgezogene Zählungen*. Ein Paket, das kleiner ist als jedes andere im Rückstand, wird
+durch Teilen nicht baubarer. Auftrag, Ankertabelle und die drei Abnahmebedingungen gelten
+unverändert; die Rechnung zu Kennung 56 ist von zwei Seiten unabhängig nachgezogen und steht.
+
+**Was ich stattdessen tue: melden.** In dem Durchgang gingen **zwei der vier Bauplätze an
+`testentwickler`** — dieses Paket und 0059 —, und beide sind leer geblieben, während
+`kernbauer` (0063) und `datenbauer` (0062) im selben Durchgang geliefert haben und heute
+abgenommen sind. Das ist kein Befund gegen dich und keiner gegen den Zuschnitt, sondern eine
+Beobachtung über eine Rolle, und sie gehört dem Geschäftsführer. Sie steht im Rückstand.
+
+**Beim dritten leeren Lauf gilt die Regel meiner Rolle:** Dann ist nicht der Bauagent das
+Problem, sondern das Abnahmekriterium oder die Vorgabe — und dann geht das Paket auf
+`blockiert` samt Meldung, statt einen vierten Platz zu belegen.

@@ -1,7 +1,7 @@
 ---
-id: 0064-schlussriegel-liest-nur-eine-eigenschaft
+id: 0066-schlussriegel-liest-nur-eine-eigenschaft
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0063-sperrliste-je-wort-statt-je-eintrag]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -127,3 +127,50 @@ Verbraucher gibt -- gefangen wird er am Ziel, an dem er geschrieben steht).
 ausserhalb des Repos, sonst unterhalb von `befunde/` (`baulauf.py:116` sammelt dort keine
 Manifeste ein), sonst ausgewiesene Nichtmessung mit Begruendung. Am 2026-09-04 kam ich
 mit Rang 1 aus.
+
+---
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, **`0064` → `0066`**
+
+**Der alte Name war `0064-schlussriegel-liest-nur-eine-eigenschaft`.** Er ist hier vermerkt,
+weil ein Befund ihn nennt: `pruefung-0063-sperrliste-je-wort-statt-je-eintrag-2026-09-04.md`,
+mit vollem Namen.
+
+**Warum dieses Paket weicht und nicht `0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke`.**
+Sechster Fall doppelter Kennungen; sie entstehen aus parallelen Läufen und sind normal. Die
+Commitzeit hätte für dieses Paket gesprochen (`4a54f5a` 03:39 gegen `47c6862` 03:44), sie
+entscheidet aber erst nachrangig. Entschieden hat die **Form der Zitate**, und die ist hier
+unsymmetrisch: `pruefung-0063` nennt dieses Paket mit **vollem Namen** — es bleibt über
+seinen sprechenden Teil auffindbar. `pruefung-0054` nennt das andere nur als
+„`aufgaben/0064-…`", also über die **bloße Kennung**; zöge das andere um, zeigte diese Zeile
+stumm auf dieses hier und wäre falsch, ohne dass es jemand bemerkt. Ein Verweis, der falsch
+wird, wiegt schwerer als einer, der länger sucht.
+
+Geprüft mit einem Suchlauf über `aufgaben/`, `befunde/` und `ops/plan.md`: **kein
+`haengt_an` und keine Zeile des Plans nennt eine `0064`, `0066` oder `0067`** — die Kennung
+war nicht gebunden, der Umzug reißt nichts auf.
+
+**Die vier Prüfungen meiner Rolle:**
+
+- **Rolle:** `kernbauer` steht in `BAUROLLEN` (`baulauf.py:59`) und hat mit `kern-pruefer`
+  einen Prüfer (`baulauf.py:69`). ✓
+- **Dateischnitt:** `werkzeugkette.cmake` beansprucht sonst nur 0046, 0058, 0060 und 0063 —
+  alle vier `fertig`, 0063 mit diesem Lauf. Nachgesehen habe ich auch die Pakete auf
+  `gebaut`, weil `startbereit()` die nicht sieht (`baulauf.py:270-281` vergleicht nur
+  `offen`): 0011 hält `technik.md`, 0027 fünf Dateien unter `kern/`. Keines hält diese
+  Datei. ✓
+- **Abnahme:** prüfbar, und sie trägt zu jedem der drei Wege eine Gegenprobe am Stand
+  **vor** der Änderung. Bedingung 3 nennt die drei Zahlen als *zu nennen, nicht zu treffen*
+  und bindet den Arbeitsbereich mit „**mindestens** die Summe" — dieselbe Heilung wie in
+  0063, und sie ist hier nötig, weil 0059 weiter ein drittes Mitglied einhängt. ✓
+- **Abhängigkeit:** 0063 ist mit diesem Lauf `fertig`. Das Paket ist startbereit. ✓
+
+**Was ich nicht entscheide:** die Bauform. Der Abschnitt *„Was zu tun ist"* nennt zwei
+Anforderungen und stellt den Weg ausdrücklich frei; daran ändere ich nichts. Auch die
+Abgrenzung nach unten steht schon dort — Sperrliste unverändert, `CMAKE_CXX_FLAGS` und
+Kommandozeile bleiben draußen, geerbte Schalter werden am Ziel gefangen und nicht beim
+Verbraucher.
+
+## Rückläufe
+
+0.
