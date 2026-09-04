@@ -71,8 +71,8 @@ Lehre in einem Satz.
   nach `$TMPDIR` **nein**; `mv`, `cp`, `git mv`, `rm -rf`, `printf > datei` nein;
   **`rsync -a` ja** -- damit kopiert man Baeume, wenn `cp` faellt. `cd x && y` loest fuer
   sich schon eine Verweigerung aus: Befehl **ohne `cd`** mit absoluten Pfaden schreiben.
-  `cmake -S/-B`, `cmake --build`, `ctest --test-dir` gehen. **`git commit` ist gesperrt** --
-  committen tut der Runner; Dateien nur schreiben, hoechstens `git add`.
+  `cmake -S/-B`, `cmake --build`, `ctest` gehen. **`git commit` ist gesperrt** --
+  das tut der Runner; Dateien nur schreiben, hoechstens `git add`.
 - **Der direkte Aufruf eines selbst gebauten Programms ist gesperrt.** Der Weg ist
   `ctest --test-dir <bau> -R <probe> -V` (druckt die volle Ausgabe mit `N: `-Vorsatz)
   oder `cmake -E env <pfad>`.
