@@ -144,3 +144,30 @@ richtigen Anker und begründet ihn.
 ## Rückläufe
 
 0.
+
+---
+
+## ZWISCHENSTAND — 2026-09-04, Projektmanager: bleibt `offen`, nichts geliefert
+
+Der Baulauf der Nacht hat für dieses Paket einen Platz belegt (Commit `1a4d240`, 02:22,
+„Lauf 362"), und die Zieldatei ist **unberührt**. Gegenprobe an der Datei selbst, nicht am
+Commit-Betreff:
+
+- `pruefstand/test/vorrat_kernanker_probe.cpp` trägt weiter `ANKERZAHL = 4`. Kein fünfter
+  Anker, kein `(1,0,0,0,4)`, keine Kennung 56.
+- `git log -- …/vorrat_kernanker_probe.cpp` nennt als letzte Änderung `f68e8fb` vom
+  2026-09-03 21:08 — also den Stand vor diesem Lauf.
+- Was Commit `1a4d240` trotz seines Betreffs trägt, ist `werkzeugkette.cmake`, und das ist
+  die Arbeit von Paket 0060. Zwei Prüfer haben dieselbe Verwechslung unabhängig
+  festgestellt.
+
+Das Paket ist damit **weder gebaut noch zurückgewiesen**, sondern ungelaufen. Auftrag,
+Ankertabelle und die drei Abnahmebedingungen gelten unverändert; die Rechnung zu Kennung 56
+ist von zwei Seiten unabhängig nachgezogen und steht.
+
+**Ein Hinweis, der seit der Annahme dazugekommen ist:** Bedingung 3 verlangt
+`vorrat_kernanker_probe` mit `Passed` im Übersetzungsbericht. Der Bericht vom 2026-09-04
+führt den Test bereits grün (11/11 im Arbeitsbereich, 3/3 im Prüfstand allein) — **das
+belegt nichts für dich**, es ist der Stand mit vier Ankern. Nach deiner Änderung muss die
+Zählung aus Bedingung 2 („genau 2 der 5", drei Kennungen) mitgezogen sein, sonst wird
+derselbe Test rot. Das ist beabsichtigt.

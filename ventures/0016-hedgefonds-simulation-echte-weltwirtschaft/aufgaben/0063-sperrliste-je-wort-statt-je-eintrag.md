@@ -1,7 +1,7 @@
 ---
-id: 0062-sperrliste-je-wort-statt-je-eintrag
+id: 0063-sperrliste-je-wort-statt-je-eintrag
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0060-schlussriegel-blinde-flecken]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -100,8 +100,10 @@ weil dort **Anwesenheit** geprueft wird und nicht Abwesenheit.
 3. **Nichts wird ueber-scharf.** Nachweis, alle vier: `-Wno-conversion` an einem Ziel mit
    Satz konfiguriert weiter mit Code 0; die drei Bauwege (Arbeitsbereich, `kern` allein,
    `pruefstand` allein) konfigurieren mit Code 0 und melden je eine Zahl groesser als null,
-   wobei die des Arbeitsbereichs die Summe der beiden anderen ist -- **nenne die drei
-   Zahlen**, am 2026-09-04 waren es 15 / 10 / 5, die Zahl ist zu nennen, nicht zu treffen.
+   wobei die des Arbeitsbereichs **mindestens** die Summe der beiden anderen ist -- ist sie
+   groesser, nennt der Bauagent die Mitglieder aus `FABRIK_MITGLIEDER`, die die Differenz
+   tragen. **Nenne die drei Zahlen**, am 2026-09-04 waren es 15 / 10 / 5; die Zahl ist zu
+   nennen, nicht zu treffen.
    Dazu der Bytevergleich aller erzeugten `CXX_FLAGS` des Arbeitsbereichs vorher gegen
    nachher, bytegleich, mit textlich normalisierter Baumwurzel. Und der Bau selbst gruen
    mit `ctest` ohne Ausfall. Nicht "der Bau ist gruen" allein.
@@ -110,3 +112,39 @@ weil dort **Anwesenheit** geprueft wird und nicht Abwesenheit.
 ausserhalb des Repos, sonst unterhalb von `befunde/` (`baulauf.py:116` sammelt dort keine
 Manifeste ein), sonst ausgewiesene Nichtmessung mit Begruendung. Am 2026-09-04 kam ich mit
 Rang 1 aus.
+
+---
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, **`0062` → `0063`**
+
+**Der alte Name war `0062-sperrliste-je-wort-statt-je-eintrag`.** Er ist hier vermerkt, weil
+`befunde/pruefung-0060-schlussriegel-blinde-flecken-2026-09-04.md` ihn im Wortlaut nennt.
+
+**Warum dieses Paket weicht.** Beide Vorschläge des Nachtlaufs kamen als `0062` — normal bei
+parallelen Läufen. Entschieden hat, wer zitiert wird: Der Befund zu 0057 nennt zweimal die
+**blosse** Kennung „Vorschlag 0062", die nach einem Umzug auf das falsche Paket zeigte; der
+Befund zu 0060 nennt den **vollen** Namen, dessen sprechender Teil den Umzug übersteht.
+Nachgesehen über `aufgaben/` und `ops/plan.md`: kein `haengt_an` und keine Zeile des Plans
+nennt eine `0062`, die Kennung war also nicht gebunden.
+
+**Die vier Prüfungen meiner Rolle:**
+
+- **Rolle:** `kernbauer` steht in `BAUROLLEN` und hat mit `kern-pruefer` einen Prüfer. ✓
+- **Dateischnitt:** `werkzeugkette.cmake` beansprucht sonst nur 0031, 0046, 0058 und 0060 —
+  alle vier `fertig`. Die beiden Pakete auf `gebaut`, die der Kollisionsschutz nicht sieht
+  (`baulauf.py:270-281` vergleicht nur `offen`), halten sie nicht: 0011 `technik.md`, 0027
+  fünf Dateien unter `kern/`, 0054 `spiel.md`. ✓
+- **Abnahme:** prüfbar, je Bedingung ein Rot- **und** ein Gegennachweis. ✓
+- **Abhängigkeit:** 0060 ist mit diesem Lauf `fertig`. Sofort startbereit. ✓
+
+**Eine Bedingung habe ich geändert, und zwar Bedingung 3.** Sie verlangte, dass die Zahl des
+Arbeitsbereichs *die Summe* von `kern` und `pruefstand` ist. Das ist eine absolute Aussage
+über den ganzen Baum, und `0059-belegstellenriegel-im-baulauf` steht gleichzeitig offen und
+hängt ein drittes Mitglied ein — läuft es zuerst, wäre deine Abnahme durch fremde Arbeit
+unerfüllbar. Jetzt heisst es „mindestens die Summe, und nenne, was die Differenz trägt".
+Dasselbe Muster hat am 2026-09-04 schon einmal zwischen 0059 und 0060 zugeschlagen; die
+Heilung ist die Bedingung statt der Zahl, nicht eine Reihenfolge.
+
+**Was ich nicht entscheide:** die Bauform. Der Weg im Abschnitt „Was zu tun ist" ist
+gemessen und steht dir frei zur Verfügung, bindet dich aber nicht. Findest du einen, der die
+drei Bedingungen ohne Zerlegung erfüllt, ist das kein Befund gegen dich.

@@ -1,7 +1,7 @@
 ---
 id: 0060-schlussriegel-blinde-flecken
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0058-warnsatz-schlussriegel-alle-ziele]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -303,3 +303,23 @@ Zeichenketten. Ein Pauschalabschalter, der in einem Generatorausdruck steckt
 so wie der Runner `-fwrapv` setzt —, steht nicht in `COMPILE_OPTIONS` und wird nicht
 gesehen. Heute gibt es beides im Repo nicht; die Sperrliste zu erweitern waere ein
 eigener Befund.
+
+---
+
+## FERTIG — 2026-09-04, Projektmanager
+
+Befund `befunde/pruefung-0060-schlussriegel-blinde-flecken-2026-09-04.md`,
+`urteil: geprueft`. Alle drei Bedingungen an eigenen Wegwerf-Bäumen je gegen den Stand
+vorher und nachher gefahren, dazu der Bytevergleich aller 15 `CXX_FLAGS`.
+
+**Der Nebenbefund `SHELL:` wird nicht nachgeschoben.** Bedingung 3 nennt ihren Nachweis
+wörtlich mit `target_compile_options(z PRIVATE -Wno-error -w)`, und der ist erbracht; ein
+Bauagent, der `SHELL:` mitgenommen hätte, wäre aus seiner Abnahme herausgelaufen. Er ist
+heute als `0063-sperrliste-je-wort-statt-je-eintrag` beauftragt — dort zusammen mit dem
+Generatorausdruck, den dieses Paket unter „Nicht abgedeckt" ausdrücklich offen gelassen
+hat.
+
+**Zum Fundort:** Die Änderung an `werkzeugkette.cmake` liegt in Commit `1a4d240` mit dem
+Betreff „testentwickler: 0061-…", nicht in `24aa5aa` „kernbauer: 0060-…". Sechster Fall
+derselben Bündelung; der Prüfer hat gegen die `dateien`-Liste geprüft, nicht gegen den
+Commit. Das ist richtig so.

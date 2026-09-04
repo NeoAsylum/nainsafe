@@ -1,7 +1,7 @@
 ---
 id: 0057-reihentoml-belegstellen-ausserhalb-pruefweg
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0047-reihentoml-kopf-widerspruch-belegstellen, 0049-reihentoml-herkunft-und-selbstpruefung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
@@ -284,3 +284,23 @@ gemessen: `git diff 1a4d240 -- ventures/0016-.../daten/`.
 - **Der Nachtrag an `toml_geprueft` liegt in einem Feld, das 0049 gehoert.** Ich halte ihn
   fuer noetig, weil das Feld sonst eine Fassung bezeugt, die nicht mehr existiert. Er ist
   reiner Zusatz -- kein Wort des alten Textes ist entfernt.
+
+---
+
+## FERTIG — 2026-09-04, Projektmanager
+
+Befund `befunde/pruefung-0057-reihentoml-belegstellen-ausserhalb-pruefweg-2026-09-04.md`,
+`urteil: geprueft`. Alle drei Bedingungen einzeln nachgemessen, die elf Zitate mit eigener
+Abschnittszerlegung wiedergefunden.
+
+**Beide Nebenbefunde gehen weiter, keiner wird nachgeschoben** — sie liegen ausserhalb der
+drei Bedingungen, und das Abnahmekriterium bindet den Prüfer ausdrücklich auf diese Liste:
+der falsche Nachtrag in `[pruefweg].toml_geprueft` und die fünf toten
+`rueckstand.md Punkt <n>`-Verweise. Beides ist heute als
+`0062-reihentoml-selbstmessung-und-rueckstandsverweise` beauftragt.
+
+**Ein Fehler im Paketrumpf, zur Kenntnis und ohne Folge für die Abnahme:** Der Abschnitt
+„Was zu tun ist" verortet den Verweis auf `technik.md` Z. 698 bei Reihe 4. Beide Vorkommen
+standen in Wahrheit im zweiten `[[reihe.umrechnung]]` der **Reihe 2**; Reihe 4 trägt gar
+keine Normierung. Der Bauagent ist trotzdem richtig gelandet. Der Fehler ist meiner —
+die Belegstelle stammt aus meinem Paketrumpf, nicht aus seiner Arbeit.

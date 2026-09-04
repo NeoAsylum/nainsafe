@@ -1,7 +1,7 @@
 ---
 id: 0062-reihentoml-selbstmessung-und-rueckstandsverweise
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0057-reihentoml-belegstellen-ausserhalb-pruefweg]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Pruefer urteilt gegen diese Liste und gegen nichts sonst.
@@ -75,7 +75,11 @@ waere die falsche Reparatur -- sie waere nach dem naechsten Baulauf wieder falsc
    Nachweis: Der Bauagent laedt Alt- und Neufassung mit `tomllib`, zieht beide Baeume flach
    und nennt Schluesselzahl, Zahl der neuen Schluessel und Zahl der verschiedenen Werte. Die
    drei Zahlen im Feld stimmen mit dieser Messung ueberein. Kein Wort des vorher dort
-   stehenden Textes ist entfernt.
+   stehenden Textes ist entfernt. **Der Nachtrag nennt den Stand, gegen den gemessen wurde**
+   (Commit-Kennung), und die Messung wird **nach** der letzten Schreibbewegung an der Datei
+   wiederholt -- es gilt die wiederholte. Ohne das misst die Zahl eine Fassung, die es beim
+   Schreiben noch gab und beim Lesen nicht mehr; genau daran sind die drei frueheren
+   Nachtraege in diesem Feld gescheitert.
 2. **`rueckstand.md Punkt <n>` kommt in `reihen.toml` und in `einheitenbefund-pwt-baci.md`
    nicht mehr vor.** Nachweis: Das Muster `rueckstand\.md[^\n]{0,40}Punkt ?[0-9]` liefert
    ueber beide Dateien nichts. Fuer jeden der fuenf nennt der Bauagent die neue Adresse und
@@ -111,3 +115,33 @@ seine eigene Teilung erhoben hat.
   sie ist nicht abstellbar. Dieses Paket macht die Verweise unabhaengig davon.
 - **Die Laenge des Nachtrags in `toml_geprueft`.** Gefordert ist die richtige Zahl, nicht die
   kuerzere Formulierung.
+
+---
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`
+
+**Die vier Prüfungen meiner Rolle:**
+
+- **Rolle:** `datenbauer` steht in `BAUROLLEN` und hat mit `daten-pruefer` einen Prüfer. ✓
+- **Dateischnitt:** `daten/reihen.toml` beanspruchen sonst 0017, 0022, 0032, 0036, 0047,
+  0049 und 0057, `daten/einheitenbefund-pwt-baci.md` zusätzlich 0025 — alle `fertig`, 0057
+  mit diesem Lauf. Die drei Pakete auf `gebaut`, die der Kollisionsschutz nicht sieht
+  (`baulauf.py:270-281` vergleicht nur `offen`), halten keine der beiden: 0011 `technik.md`,
+  0027 fünf Dateien unter `kern/`, 0054 `spiel.md`. Der Prüfer hat dieselbe Gegenprobe
+  unabhängig geführt. ✓
+- **Abnahme:** prüfbar. Bedingung 1 ist eine Messung mit `tomllib`, Bedingung 2 ein Muster
+  ohne Treffer plus fünf einzeln benannte Ersatzadressen, Bedingung 3 ein Blattvergleich mit
+  geschlossener Liste der erlaubten Unterschiede. ✓
+- **Abhängigkeit:** 0057 ist mit diesem Lauf `fertig`. Sofort startbereit. ✓
+
+**Eine Bedingung habe ich geschärft, und zwar Bedingung 1.** Sie verlangte drei Zahlen aus
+einer Messung an einer Datei, die derselbe Lauf verändert — und ein Feld, das seine eigene
+Messung bezeugt, ist genau die Stelle, an der das dreimal schiefging. Ergänzt sind deshalb
+der Bezugsstand und die Wiederholung nach dem letzten Schreiben. Das ist keine neue Arbeit,
+sondern die Reihenfolge, in der die bereits verlangte Arbeit stimmt.
+
+**Zur Warnung, ohne eine fünfte Bedingung daraus zu machen:** Bedingung 2 verlangt **null**
+Treffer des Musters über beide Dateien. Die alte Punktnummer im Ersatztext aufzubewahren
+(„war Punkt 9") trifft das Muster und macht deine eigene Abnahme rot. Sie ist auch nichts
+wert: Genau dass die Nummer nichts bezeichnet, ist der Grund für dieses Paket. Nenne die
+Sache und das Zitat, nicht die tote Nummer.

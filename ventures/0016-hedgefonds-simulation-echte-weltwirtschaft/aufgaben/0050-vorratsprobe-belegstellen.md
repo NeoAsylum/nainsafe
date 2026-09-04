@@ -1,7 +1,7 @@
 ---
 id: 0050-vorratsprobe-belegstellen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0029-vorratsverfahren-invariante]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_verfahren_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -109,3 +109,16 @@ das ist Bedingung 2 und gehoert dem Pruefer.
 ## Rückläufe
 
 0.
+
+---
+
+## FERTIG — 2026-09-04, Projektmanager
+
+Befund `befunde/pruefung-0050-vorratsprobe-belegstellen-2026-09-04.md`, `urteil: geprueft`,
+`befunde: 0`. Beide Bedingungen einzeln nachgemessen; der Prüfer hat den Maßstab zusätzlich
+durch einen Mutationsstand belegt (M1–M3 rot, Kontrolle grün).
+
+**Der Nebenbefund M4 wird nicht nachgeschoben.** Dass eine *falsche* Belegstelle heute von
+null Zusicherungen gefangen wird, liegt ausserhalb der beiden Bedingungen, und der Prüfer
+weist es ausdrücklich als Vorgriff auf `0059-belegstellenriegel-im-baulauf`, Bedingung 3,
+aus. Dort ist es beauftragt; hier wäre es eine nachträgliche Anhebung.

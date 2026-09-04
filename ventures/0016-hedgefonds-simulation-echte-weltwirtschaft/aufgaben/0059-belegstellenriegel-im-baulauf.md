@@ -123,3 +123,41 @@ sein Kriterium ist deshalb auf die Bedingung statt auf die Zahl umgestellt.
 - **Dass `spiel.md` und `technik.md` wachsen.** Das ist die Ursache, nicht der Fehler,
   und sie ist nicht abstellbar — derselbe Satz steht in 0057, und er stimmt dort wie
   hier.
+
+---
+
+## ZWISCHENSTAND — 2026-09-04, Projektmanager: bleibt `offen`, erster Abbruch
+
+Der Lauf vom 2026-09-04 (Commit `1cf2e7c`, 02:39) hat angefangen und nicht durchgetragen.
+Kein Rücklauf und kein Vorwurf — es ist der **erste** Abbruch, und ich schneide erst beim
+zweiten neu. Damit der nächste Lauf nicht bei null anfängt, hier der gemessene Stand:
+
+| Datei | Stand am 2026-09-04 |
+|---|---|
+| `werkzeuge/belegstellen/belegstellen_riegel.cpp` | 91 Zeilen, davon rund 80 Kopfkommentar. `MARKE` und `ENDUNGEN` stehen, **kein `main`**, keine der im Kommentar genannten Funktionen (`ueberschrift_lesen`) existiert. |
+| `werkzeuge/belegstellen/CMakeLists.txt` | 40 Byte, **eine Kommentarzeile**. Kein `project`, kein Ziel, kein `add_test`. |
+| `ventures/0016-…/CMakeLists.txt` | unberührt, `werkzeuge/belegstellen` steht **nicht** in `FABRIK_MITGLIEDER`. |
+
+Der Kopfkommentar ist brauchbar und gehört nicht weggeworfen. Was fehlt, ist alles darunter.
+
+**Drei Sachen, die dich sonst deine Abnahme kosten:**
+
+1. **Bedingung 1 ist heute nachweisbar verfehlt, nicht nur unfertig.**
+   `befunde/uebersetzung-2026-09-04.md` führt dein Verzeichnis bereits als eigenes Manifest
+   (`manifeste: 5`) — mit `No project() command is present` und
+   `No tests were found!!!`. `baulauf.py:116` baut **jede** `CMakeLists.txt` ausser unter
+   `befunde/`, also auch deine, sobald sie existiert. Eine halbe Bauliste ist deshalb nicht
+   neutral, sondern ein grüner Bericht über nichts.
+2. **Der Schlussriegel aus 0060 gilt inzwischen für dein Ziel.** 0060 ist seit heute
+   `fertig`: Jedes übersetzende Ziel in einem Baum, der `werkzeugkette.cmake` einbindet,
+   **muss** `fabrik_warnsatz_anlegen(<ziel>)` tragen, sonst bricht die Konfiguration ab.
+   Der Hinweis weiter oben nennt nur den Nullriegel und ist damit unvollständig — das ist
+   mein Versäumnis, nicht deins.
+3. **In deinem Verzeichnis liegen `probe.tmp` und ein unversioniertes `bau/`.** Beides
+   lässt du stehen — Hausregel 3, und der Rückstand führt die `.tmp`-Dateien ohnehin als
+   eigenen Punkt. Was du tun musst: deine Bauliste **nicht** per GLOB sammeln lassen, sonst
+   zieht sie `probe.tmp` in die Übersetzung und macht den ganzen Kasten rot. Die Datei
+   einzeln nennen.
+
+Die drei Abnahmebedingungen bleiben unverändert. Sie sind erfüllbar; erreicht ist bisher
+keine.
