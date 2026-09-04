@@ -2,7 +2,7 @@
 id: 0048-meldung-in-zustand-nachziehen
 rolle: kernbauer
 status: offen
-haengt_an: [0038-meldung-mit-adresse-gemeinsam, 0027-zustand-schreibweg-schliessen]
+haengt_an: [0038-meldung-mit-adresse-gemeinsam]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
@@ -104,3 +104,35 @@ derselben Form.
 ## Rueckläufe
 
 0.
+
+---
+
+## ENTSPERRT — 2026-09-04, Projektmanager: **`0027` aus `haengt_an` gestrichen**
+
+Der Annahmevermerk oben nennt den Grund für die Sperre wörtlich: `kern/src/zustand.cpp`
+stand in der `dateien`-Liste von **0027**, und 0027 stand auf `gebaut` — für den
+Kollisionsschutz unsichtbar (`startbereit()` vergleicht `dateien` nur unter `offen`). Es
+war eine reine Reihenfolgesperre, keine des Inhalts; dein Auftrag hat nie auf einem
+Ergebnis von 0027 aufgesetzt.
+
+**Die Sperre ist gegenstandslos geworden.** 0027 ist heute nach seinem zweiten Rücklauf
+auf `offen` zurückgegangen, und ich habe seine `dateien`-Liste dabei von fünf Dateien auf
+**eine** verengt: `kern/include/kern/zustand.hpp`. `kern/src/zustand.cpp` steht nicht mehr
+darin, und dem Bauagenten von 0027 ist ausdrücklich verboten, sie anzufassen — mit deinem
+Paket als genanntem Grund.
+
+**Der Kreis, den der Annahmevermerk beschreibt, ist damit aufgegangen, und zwar auf dem
+kürzeren Weg als vorgesehen.** Dort stand: „0038 kann geprüft werden, danach 0027, danach
+läuft dieses Paket." 0038 ist `fertig`; auf 0027 wartest du nicht mehr. **Du bist
+startbereit**, und `kern/src/zustand.cpp` hält kein anderes Paket, offen oder gebaut.
+
+**Was dadurch nicht anders wird:** deine drei Abnahmebedingungen, die Grenze auf deine eine
+Datei und die Stelle, die das Paket selbst als die nicht-mechanische benennt
+(`meldung.hpp` → `zustand.hpp` → `index_zu_adresse`). Sie ist geprüft zu haben, nicht
+vermutet — das war die Bedingung bei der Annahme und bleibt es.
+
+**Ein Hinweis, der seither dazugekommen ist:** `kern/include/kern/zustand.hpp` gehört bis
+auf Weiteres 0027 und liegt **nicht** in deiner Liste. Zeigt sich beim Umbau, dass du auch
+dort etwas ändern musst, ist das kein Freibrief — dann meldest du es, und ich entscheide
+über die Reihenfolge. Ein Bauagent, der nebenbei in einer fremden Datei aufräumt, macht
+eine fremde Abnahme unerfüllbar.

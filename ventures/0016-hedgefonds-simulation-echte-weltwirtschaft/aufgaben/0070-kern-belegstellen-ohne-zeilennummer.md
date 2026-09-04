@@ -1,7 +1,7 @@
 ---
 id: 0070-kern-belegstellen-ohne-zeilennummer
 rolle: kernbauer
-status: vorschlag
+status: fertig
 haengt_an: [0059-belegstellenriegel-im-baulauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die vier in "Was gemessen ist" aufgezaehlten Verweise tragen keine Zeilennummer mehr, sondern eine Schluesselzeile im Wortlaut. `ctest -R belegstellen_riegel` ist danach gruen und meldet 12 getroffene Zeilenverweise, davon 0 mit Dateinamen daneben.
@@ -61,3 +61,65 @@ werden.
 `ergebnis: fehler` -- fuer **jedes** Paket, nicht nur fuer dieses. Das ist die richtige
 Reihenfolge (ein Riegel, der Rot meldet, tut seine Arbeit), aber es ist auch der Grund,
 warum das hier nicht liegenbleiben sollte.
+
+---
+
+## ZUSAMMENGEFASST — 2026-09-04, Projektmanager: `vorschlag` → `fertig`, **kein eigenes Paket**
+
+**Der Vorschlag ist sachlich richtig, vollständig gemessen und dringend. Er wird trotzdem
+kein eigenes Paket, sondern auf zwei bestehende verteilt** — und der Grund ist die
+`dateien`-Liste, an der ein Vorschlag sich prüft, nicht der Befund.
+
+### Die zwei Kollisionen, an denen er als eigenes Paket gescheitert wäre
+
+Die Liste lautet `kern/include/kern/zustand.hpp` und `kern/test/schranken_probe.cpp`.
+**Beide sind vergeben, und zwar an Pakete, die dieselbe Arbeit schon tragen:**
+
+| Datei | hält sie | und will dort was |
+|---|---|---|
+| `kern/include/kern/zustand.hpp` | **0027**, mit diesem Lauf `offen` nach dem zweiten Rücklauf | zwei Begründungsstellen berichtigen — auch eine Textkorrektur an derselben Datei |
+| `kern/test/schranken_probe.cpp` | **0044-schranken-probe-belegstellen**, seit dem 2026-09-03 `offen` | **genau diese drei `parameter.toml`-Verweise**, mit demselben Ergebnis: ersetzen statt nachziehen |
+
+Die zweite Zeile ist der eigentliche Punkt. **0044 und die schranken-Hälfte dieses
+Vorschlags sind dieselbe Arbeit**, unabhängig voneinander gefunden: 0044 beim Abarbeiten
+von 0035 durch Nachschlagen von Hand, dieser Vorschlag durch den Riegel aus 0059. Sie
+nennen dieselben drei Schlüssel (`druck_max`, `stufen_max`, `aufschlag`), denselben Block
+`GRENZEN_BAUZEITPUNKT` und dieselbe Heilung. Zwei Pakete darauf anzusetzen hieße, zwei
+Bauagenten auf eine Datei zu schicken — genau das, was die Liste verhindern soll.
+
+### Und die Rollen gehen ohnehin auseinander
+
+Dieser Vorschlag trägt `rolle: kernbauer` für beide Dateien. `kern/test/schranken_probe.cpp`
+ist aber eine Probe: Sie wurde von **0020** angelegt und von **0044** beansprucht, beide
+`testentwickler`. Der Schnitt zwischen den zwei Hälften ist also kein Zugeständnis an die
+Mechanik, sondern der Schnitt, den das Gewerk ohnehin verlangt — eine Hälfte Kern, eine
+Hälfte Probe.
+
+### Wohin die Arbeit gegangen ist
+
+- **`zustand.hpp`, die fünf Fondsaggregate → `0027-zustand-schreibweg-schliessen`,
+  Bedingung 2 des neuen Zuschnitts.** Wortlaut dort; die Heilung ist wie hier verlangt
+  „fünf Adressbezeichner statt Zeilenbereich", nicht die nachgezogene Nummer.
+- **`schranken_probe.cpp`, die drei `parameter.toml`-Verweise → `0044-schranken-probe-belegstellen`,
+  Abschnitt „NACHTRAG".** Dessen Auftrag hat die Heilung schon; der Nachtrag bringt die
+  Messung des Riegels dazu, die 0044 selbst nicht haben konnte.
+
+### Was ausdrücklich mitgewandert ist und was hier bleibt
+
+**Mitgewandert:** die Anweisung *„nicht die Nummern nachziehen"* mit ihrer Begründung
+(0050 — die Korrektur war falsch, bevor sie jemand ausführen konnte), und die Warnung, dass
+die Trefferzahl 4 durch fremde Arbeit sinkt und deshalb in keinem Abnahmekriterium stehen
+darf. Beide Pakete prüfen ab jetzt **je Datei**, nicht gegen die Summe.
+
+**Hier geblieben, weil es kein Auftrag ist:** die Feststellung, dass die sechs
+Zeilenendkommentare in `kern/src/zustand.cpp` neben den `static_assert`-Stichproben **kein**
+Befund sind. Sie tragen keinen Dateinamen, die `static_assert` rechnet die Nummer nach, und
+der Riegel lässt sie zu Recht durch. **Sie sollen so bleiben** — das steht hier, damit ein
+späterer Aufräumlauf sie nicht für vergessene Arbeit hält. `kern/src/zustand.cpp` gehört
+mit diesem Lauf 0048.
+
+**Der Vorschlag geht auf `fertig` und nicht auf `abgelehnt`.** Abgelehnt wäre falsch: An
+ihm war nichts verkehrt, er hat vier tote Verweise von Hand nachgeschlagen und alle vier
+bestätigt, und er ist der erste Ertrag des Riegels aus 0059. Erledigt ist er, wenn 0027 und
+0044 abgenommen sind — bis dahin ist diese Datei der Ort, an dem steht, warum es ihn
+einzeln nicht mehr gibt.

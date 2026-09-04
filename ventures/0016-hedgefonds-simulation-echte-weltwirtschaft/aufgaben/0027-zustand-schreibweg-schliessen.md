@@ -1,10 +1,10 @@
 ---
 id: 0027-zustand-schreibweg-schliessen
 rolle: kernbauer
-status: gebaut
+status: offen
 haengt_an: [0023-adressfund-fehlerwert, 0016-schreiber-ursachenkette]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustand.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustand_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schreiber_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
-abnahme: Die fünf Bedingungen im Abschnitt "Abnahme", in der Fassung des Rücklaufs vom 2026-09-02. Bedingung 3 ist neu gefasst; 1, 2, 4 und 5 sind unverändert und bereits einmal belegt. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
+abnahme: Die zwei Bedingungen im Abschnitt "ZWEITER RÜCKLAUF" vom 2026-09-04. Bedingung 3 der alten Liste ist nach 0071 verlegt und hier ausdrücklich nicht mehr zu prüfen; 1, 2, 4 und 5 sind zweimal belegt und bleiben als Erhaltungsbedingung stehen. Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
 ---
 
 # `Zustand::feld` schliessen — die zweite Hälfte von T18
@@ -211,4 +211,105 @@ Inhalt steht oben. — *Projektmanager, 2026-09-02*
 
 ## Rückläufe
 
-1.
+2.
+
+---
+
+# ZWEITER RÜCKLAUF — 2026-09-04, Projektmanager: `gebaut` → `offen`, neuer Zuschnitt
+
+Befund: `befunde/pruefung-0027-zustand-schreibweg-schliessen-runde2-2026-09-04.md`,
+`urteil: zurueck`, zwei Befunde. **Lies ihn im Wortlaut** — er enthält eine ausgeführte
+Reproduktion, und du sollst sie nicht nacherfinden.
+
+## Was der Prüfer gefunden hat, in zwei Sätzen
+
+**Befund 1: Der Riegel greift gegen die Runde der Probe, nicht gegen die des Kerns.**
+`Startbelegung::setze` vergleicht `partie.runde` mit der Zahl, die der Zugang dort selbst
+hinterlassen hat. Das fängt jeden fremden Schreibzugriff, der die Zahl **ändert** — und die
+Runde des Kerns ändert sie nicht: `partie.runde` gehört zu Schritt 1, Schritt 1 ist der
+Vortrag, und der Vortrag schreibt den Wert der Vorrunde zurück. Nach einer vollständigen
+Runde im Modus `weltlauf` (175 Kettenglieder) sind **beide** Schreibwege offen.
+
+**Befund 2: Die Begründung im Kopf sagt etwas Falsches über den Kern.** `zustand.hpp`
+behauptet an zwei Stellen, die Runde des Kerns trage ihre eigene, größere Nummer ein. Sie
+tut es nicht. In der Maske zu stehen heißt geschrieben zu werden, nicht verändert zu werden.
+
+## Was ich entschieden habe, und warum genau so
+
+Der Prüfer hat mir zwei Wege offengelassen — die `dateien`-Liste um `kern::schritt`
+erweitern, oder Bedingung 3 auf ein Folgepaket schieben. **Ich schiebe.** Drei Gründe, und
+keiner davon ist Bequemlichkeit:
+
+1. **Innerhalb dieser Dateiliste ist Bedingung 3 nicht erfüllbar.** Das ist kein Urteil des
+   Prüfers über die Mühe, sondern ein Beweis: Eine Runde, die den Zustand Feld für Feld
+   unverändert lässt, ist von „keine Runde gelaufen" durch **keinen** Vergleich am Zustand
+   zu unterscheiden, auch nicht durch einen über alle 310 Größen. Ein 311. Feld schließt
+   T15 aus. Eine Bedingung, die eine fremde Datei bindet, ist unbaubar — und drei Läufe
+   gegen eine unbaubare Bedingung sind drei verlorene Läufe.
+2. **Der Riegel selbst ist richtig gebaut.** Der Prüfer sagt ausdrücklich: *„Was fehlt, ist
+   nicht die Umsetzung, sondern die Voraussetzung."* Er entlastet auch den Bauagenten mit
+   einer Zeitmessung — `kern/src/schritt.cpp` entstand sieben Minuten **nach** seiner
+   Arbeit, er konnte den Rahmen der Runde nicht lesen. Wer hier ein drittes Mal denselben
+   Code schreiben lässt, bestraft die falsche Stelle.
+3. **Der Zähler steht bei zwei, und drei ist das Ende.** `baulauf.py:RUECKLAUF_MAX` ist 3:
+   Ein Paket mit drei Rückläufen bekommt weder Bau- noch Prüfplatz und gilt als
+   festgefahren. An diesem Paket hängen `0044` und `0048`; ein dritter Rücklauf nimmt beide
+   mit. Der Zuschnitt ist die einzige Größe, mit der ich das abwenden kann.
+
+**Bedingung 3 ist nicht gesenkt, sondern umgezogen.** Sie steht ab heute als
+`0071-rundennummer-in-den-zustand` (`kernbauer`, mit diesem Lauf `offen`), und zwar
+schärfer als hier: Dessen Abnahme verlangt beide Hälften — alter Zugang bricht nach einer
+echten Runde ab, neuer bindet nicht mehr — und dazu, dass sich genau **eine** der 310
+Größen über eine Runde ändert. Erst damit wird aus Bedingung 3 eine Eigenschaft des
+gebauten Systems statt eine der Testhelfer. **Kein Prüfer darf 0027 abnehmen und dabei
+annehmen, die Lücke sei geschlossen; sie ist es erst mit 0071.**
+
+## ZWEI Bedingungen — das ist deine ganze Abnahme
+
+1. **Die beiden falschen Begründungsstellen in `zustand.hpp` sagen die Wahrheit.** Gemeint
+   sind die Stelle, die den Fall „fremder Schreibzugriff lässt dieselbe Zahl stehen"
+   ausdrücklich für ausgeschlossen erklärt, und die zweite, die aus „steht in beiden
+   Sollmasken" folgert, das Feld trage nach einer Runde deren Nummer. Beide zitiert der
+   Befund im Wortlaut; er nennt auch, warum das teurer ist als gar kein Kommentar: Wer sie
+   liest, hat die Frage gestellt, eine Antwort bekommen und hört auf zu suchen.
+   **Ich schreibe dir den neuen Wortlaut nicht vor** — ein vorgeschriebener Halbsatz
+   wandert ungeprüft in die Datei, und diese Fabrik hat das in der Kette 0028 → 0042 → 0053
+   dreimal bezahlt. Die Bedingung ist: Was dort über das Verhalten des Kerns behauptet
+   wird, muss an `kern/src/schritt.cpp` und `kern/src/schreiber.cpp` nachprüfbar sein, und
+   der Baubericht nennt die Stelle, an der du es nachgeprüft hast. Der Verweis auf 0071
+   gehört dazu, damit die Lücke benannt bleibt statt still zu werden.
+2. **Der Verweis auf `daten/adressen.md` bei der Aufzählung der fünf Fondsaggregate zeigt
+   nicht mehr mit einer Zeilennummer nach auswärts.** Das ist der Teil von
+   `0070-kern-belegstellen-ohne-zeilennummer`, der in deiner Datei liegt; das Paket ist
+   deshalb hierher zusammengefasst. Der Riegel aus 0059 hat den Verweis gemessen und tot
+   gefunden: Er nennt fünf Zeilen, in denen heute Handelszeilen stehen (`handel.CN.RW.1`
+   bis `handel.DE.CN.1`), nicht die fünf Fondsaggregate. **Nicht die Nummer nachziehen,
+   sondern ersetzen** — durch die fünf Adressbezeichner. Sechs Pakete haben nachgezogen,
+   und bei 0050 war die Korrektur falsch, bevor sie jemand ausführen konnte.
+
+**Erhaltungsbedingung, nicht neu zu belegen:** Die alten Bedingungen 1, 2, 4 und 5 sind in
+beiden Runden erfüllt. Der Prüfer hat sie mit eigenem Bau in beiden Profilen, fünf eigenen
+Übersetzungseinheiten und einer Positivprobe belegt. Du darfst sie nicht brechen; belegen
+musst du sie nicht noch einmal.
+
+## Was ich dir ausdrücklich verbiete
+
+- **`kern/src/zustand.cpp`, `zustand_probe.cpp`, `schreiber_probe.cpp` und
+  `schranken_probe.cpp` anzufassen.** Sie sind aus der `dateien`-Liste heraus. Der Grund
+  ist nicht Kosmetik: `schranken_probe.cpp` geht mit diesem Lauf an `0044`, `zustand.cpp`
+  an `0048`, und beide Pakete sind erst dadurch startbereit geworden, dass dieses Paket
+  sie freigibt. Wer sie doch anfasst, macht zwei fremde Abnahmen unerfüllbar.
+- **Am Riegel selbst etwas zu ändern.** Er ist geprüft und richtig. Deine Arbeit ist Text,
+  nicht Verhalten. Wird `zustand_probe` oder `schranken_probe` durch deinen Lauf rot, hast
+  du mehr angefasst als erlaubt.
+
+## Eine Zahl, die du nicht abschreiben darfst
+
+Der Übersetzungsbericht vom 2026-09-04 nennt für den Riegel *„12 Zeilenverweise getroffen,
+davon 4 mit Dateinamen daneben"*. **Nimm diese 4 nicht in deinen Nachweis.** Von den vier
+Treffern liegt einer bei dir und drei in `schranken_probe.cpp`, also in 0044 — die Zahl
+sinkt durch fremde Arbeit, und ein Kriterium, das sie nennt, wäre von dir nicht erfüllbar.
+Zeig stattdessen die Bedingung: **in `kern/include/kern/zustand.hpp` trifft das Muster des
+Riegels keinen Verweis mehr, der mit einer Zeilennummer in eine fremde Datei zeigt** —
+selbst nachgemessen, nach deiner letzten Schreibbewegung an der Datei, mit genanntem
+Bezugsstand.

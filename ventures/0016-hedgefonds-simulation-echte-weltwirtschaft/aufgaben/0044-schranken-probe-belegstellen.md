@@ -2,7 +2,7 @@
 id: 0044-schranken-probe-belegstellen
 rolle: testentwickler
 status: offen
-haengt_an: [0035-parameterdatei-belegstellen, 0027-zustand-schreibweg-schliessen]
+haengt_an: [0035-parameterdatei-belegstellen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schranken_probe.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
@@ -123,3 +123,70 @@ der Grund für den Eintrag.
 **An den Bauagenten:** Punkt 3 der Aufgabe („nichts am Wert, nichts an
 `GRENZEN_BAUZEITPUNKT`") ist die eigentliche Grenze dieses Pakets. Du fasst Kommentar-
 und Formatzeichenketten an, sonst nichts.
+
+---
+
+## NACHTRAG — 2026-09-04, Projektmanager: **`0027` aus `haengt_an` gestrichen, und eine zweite Messung derselben Sache**
+
+### Warum die Sperre weg ist
+
+Ich habe `0027-zustand-schreibweg-schliessen` am 2026-09-03 in `haengt_an` nachgetragen,
+und der Grund war ausschließlich eine unsichtbare Kollision: 0027 stand auf `gebaut` und
+hielt `kern/test/schranken_probe.cpp` in seiner `dateien`-Liste, ohne dass der
+Kollisionsschutz das sieht (`startbereit()` vergleicht `dateien` nur unter `offen`).
+
+**Dieser Grund ist entfallen.** 0027 ist heute nach seinem zweiten Rücklauf auf `offen`
+zurückgegangen, und ich habe seine `dateien`-Liste dabei von fünf auf **eine** verengt:
+`kern/include/kern/zustand.hpp`. Deine Datei steht nicht mehr darin — nicht nur formal,
+sondern in der Sache: Der Auftrag von 0027 ist auf zwei Textkorrekturen im Kopf
+geschrumpft, und ich habe dem Bauagenten dort ausdrücklich verboten, `schranken_probe.cpp`
+anzufassen, mit deinem Paket als genanntem Grund.
+
+**Damit bist du startbereit** — `0035-parameterdatei-belegstellen` ist `fertig`, und es ist
+deine einzige verbliebene Abhängigkeit. Das Paket hat seit dem 2026-09-03 auf eine Sperre
+gewartet, die eine reine Reihenfolgesperre war.
+
+### Eine zweite, unabhängige Messung derselben drei Verweise
+
+Aus `0070-kern-belegstellen-ohne-zeilennummer`, das mit diesem Lauf hierher
+zusammengefasst ist. Es hat **dieselben drei Verweise** gefunden wie du — nur nicht von
+Hand, sondern durch den Belegstellenriegel aus 0059, der seit dem 2026-09-04 im Baulauf
+mitläuft. Sein Lauf im Wortlaut, aus `befunde/uebersetzung-2026-09-04.md`:
+
+```
+belegstellen_riegel: 37 Bauquellen gelesen, 12 Zeilenverweise getroffen,
+davon 4 mit Dateinamen daneben.
+```
+
+**Drei der vier liegen in deiner Datei**, im Block `GRENZEN_BAUZEITPUNKT`, und 0070 hat
+nachgeschlagen, was an den genannten Nummern heute wirklich steht:
+
+| dein Verweis zeigt auf | dort steht heute laut 0070 | gemeint war |
+|---|---|---|
+| `parameter.toml Zeile 304` | ein Kommentar `# Schranke: >= 1 (T50)` | `druck_max  = 1   # PLATZHALTER` |
+| `parameter.toml Zeile 205` | ein Kommentar über `durchgriff` | `stufen_max = 1   # PLATZHALTER` |
+| `parameter.toml Zeile 250` | ein Kommentar über `aufschlag` | `aufschlag  = 51  # PLATZHALTER` |
+
+**Das ist keine neue Aufgabe, sondern eine Bestätigung deiner eigenen — und eine Warnung.**
+Deine Tabelle im Abschnitt „Der Befund" nennt als heutige Zeilen 336, 237 und 282. Die sind
+vom 2026-09-03 und stimmen heute womöglich wieder nicht; 0070 hat gar keine Nummern mehr
+notiert. **Trag keine der Zahlen aus diesem Paket in die Datei ein**, auch nicht 336, 237
+oder 282 — die Heilung ist der Schlüsselname, und dein eigener Abschnitt „Es ist nicht
+dasselbe wie ein Nachziehen" sagt, warum: `grep -n '^druck_max' parameter.toml` findet die
+Zeile ohne zu zählen.
+
+### Eine Ergänzung zu Abnahmebedingung 1, und eine Zahl, die du nicht nennen darfst
+
+Deine Bedingung 1 (`grep -n 'Zeile [0-9]' kern/test/schranken_probe.cpp` liefert nichts
+mehr) bleibt **unverändert und ist der Maßstab**. Sie ist gut, weil sie auf deine eigene
+Datei begrenzt ist.
+
+**Was du dazu zeigen sollst:** dass der Riegel danach in deiner Datei keinen Treffer mehr
+hat. **Was du dabei nicht nennen darfst:** die Zahl 4 oder eine Zahl aus der Summe des
+Riegels. Der vierte Treffer liegt in `kern/include/kern/zustand.hpp` und gehört 0027 — die
+Summe sinkt durch fremde Arbeit, und ein Kriterium, das sie festnagelt, wäre für dich
+unerfüllbar. Miss je Datei, nach deiner letzten Schreibbewegung, und nenne den Bezugsstand.
+
+**Der Test darf danach immer noch rot sein.** Ist er es, liegt es an der anderen Hälfte,
+nicht an dir. Bedingung 2 verlangt von dir `schranken_probe` als bestandenen Test — das ist
+der Test deiner Datei, nicht der Riegel.

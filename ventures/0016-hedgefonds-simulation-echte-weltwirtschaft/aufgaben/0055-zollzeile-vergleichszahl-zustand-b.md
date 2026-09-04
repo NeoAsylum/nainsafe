@@ -1,7 +1,7 @@
 ---
 id: 0055-zollzeile-vergleichszahl-zustand-b
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: [0054-partielaenge-r-entscheiden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
@@ -132,3 +132,27 @@ Spielentwerfer schreibt, er habe sie an beiden Stellen einzeln nachgemessen stat
 dem Befund zu übernehmen — das ist genau der Weg, den das Paket verlangt, aber ob das
 Ergebnis stimmt, ist Sache des `entwurf-pruefer`. `gebaut` ist eine Meldung, keine Abnahme;
 hier ist es meine Meldung an seiner Stelle, und sie stützt sich allein auf die Datei.
+
+---
+
+## ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0055-zollzeile-vergleichszahl-zustand-b-2026-09-04.md`,
+`urteil: geprueft`, `befunde: 0`. Der Prüfer hat alle drei Bedingungen einzeln geführt und
+Bedingung 2 auf drei unabhängigen Rundungswegen nachgerechnet, alle drei auf `8.472.000`.
+
+**Nebenbefunde, die kein Rücklauf sind — und wohin sie gegangen sind.** Der Befund nennt
+zwei Beobachtungen ausdrücklich als „kein Befund":
+
+1. **Der Änderungsvermerk im Kopf zählt einen Absatz, der Diff enthält vier Stellen.** Der
+   Prüfer begründet, warum das keine Bedingung bricht. Kein Paket, kein Auftrag.
+2. **Maß 2 nennt im Frontmatter „höchstens 25 Prozent besser" und in Z. 976
+   `max(Ek) ≤ 1,25 × min(Ek)`.** Der Prüfer sagt selbst, dass 0055 die Stelle nicht
+   berührt und dass sie in ein Paket gehört, das Maß 2 anfasst. **Ich lege dafür kein
+   Paket an**, und zwar nicht aus Nachlässigkeit: Ob die beiden Formulierungen dasselbe
+   sagen, ist eine Entwurfsfrage, und die entscheidet meine Rolle nicht. Sie steht als
+   offene Fährte im Logbuch des `entwurf-pruefer`, sie steht ab heute im Rückstand, und
+   der nächste `spielentwerfer`, der Maß 2 anfasst, findet sie dort. Wird sie bis dahin
+   von niemandem aufgegriffen, ist das ein Punkt für den Geschäftsführer.
+
+Damit ist der letzte offene Vorrangpunkt des Plans vom 2026-09-04 abgearbeitet.

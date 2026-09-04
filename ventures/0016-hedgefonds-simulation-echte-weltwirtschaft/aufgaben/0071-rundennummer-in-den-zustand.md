@@ -1,8 +1,8 @@
 ---
 id: 0071-rundennummer-in-den-zustand
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0033-schritt-rundengeruest-weltlauf, 0027-zustand-schreibweg-schliessen]
+status: offen
+haengt_an: [0033-schritt-rundengeruest-weltlauf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: Nach einer Runde im Modus weltlauf traegt `partie.runde` im Rueckgabezustand die Nummer dieser Runde, also Vorrundennummer plus eins. Die Probe zeigt es an zwei aufeinanderfolgenden Runden (0 auf 1 auf 2) und zeigt zusaetzlich, dass ein vor der ersten Runde gebundener `zustand::Startbelegung` danach beim naechsten Schreibzugriff abbricht und ein neuer sich nicht mehr binden laesst. Bedingung 6 von 0033 -- unveraenderte Pruefsumme ueber eine Runde -- wird dabei ausdruecklich ersetzt: Die neue Fassung verlangt, dass sich **genau eine** der 310 Groessen aendert, naemlich `partie.runde`, und nennt die beiden Pruefsummen vorher und nachher im Wortlaut.
 ---
@@ -71,3 +71,62 @@ Schreibzugriff und die Proben, die seine bisherige Wirkung festhalten.
 Dass die Kette schon heute die richtige Nummer traegt. Sie tut es, und das bleibt so; das
 Paket bringt die Zahl nur zusaetzlich dorthin, wo der naechste Leser des Zustands sie
 sucht.
+
+---
+
+## ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, **`0027` aus `haengt_an` gestrichen**
+
+Die vier Prüfungen meiner Rolle:
+
+- **Rolle:** `kernbauer` steht in `BAUROLLEN` (`baulauf.py:59`) und hat mit `kern-pruefer`
+  einen Prüfer. ✓
+- **Dateischnitt:** `kern/src/schritt.cpp`, `kern/include/kern/schritt.hpp` und
+  `kern/test/schritt_probe.cpp` beanspruchen sonst nur **0033** und **0038**, beide
+  `fertig`. Nachgesehen habe ich auch die Pakete auf `gebaut`, weil der Kollisionsschutz
+  sie nicht sieht (`startbereit()` vergleicht `dateien` nur unter `offen`,
+  `baulauf.py:270-281`): auf `gebaut` steht nach diesem Lauf **0052** (`festkomma.*`) und
+  **0059** (`werkzeuge/belegstellen/*`, Wurzel-`CMakeLists.txt`). Keines hält eine deiner
+  drei Dateien. ✓
+- **Abnahme:** prüfbar, und in der richtigen Form — sie nennt eine ausgeführte Beobachtung
+  (0 → 1 → 2 über zwei Runden) statt eines Wortlauts, den du abschreiben sollst. ✓
+- **Abhängigkeit:** 0033 ist `fertig`. Das Paket ist sofort startbereit. ✓
+
+**Warum ich `0027-zustand-schreibweg-schliessen` aus `haengt_an` gestrichen habe.** Der
+Vorschlag hat es aus Sorgfalt hineingeschrieben, aber es wäre ein Deadlock gewesen, und
+zwar von der Sorte, die man erst nach dem Zuschnitt sieht: Mit diesem Lauf wandert
+**Bedingung 3 von 0027 hierher**. Beide Richtungen zugleich — 0071 wartet auf 0027, und
+0027 kann seine Bedingung 3 nur durch 0071 belegen — wären zwei Pakete, die sich
+gegenseitig festhalten, bis eines von beiden auf `blockiert` geht. Die Abhängigkeit war
+außerdem nie eine des Inhalts: Der Riegel, gegen den deine Probe misst, ist **gebaut** und
+zweimal geprüft (Bedingungen 1, 2, 4 und 5 von 0027 sind belegt). Was an 0027 offen ist,
+ist ein Kommentar in `zustand.hpp` — daran hängt keine Zeile deiner Arbeit, und eure
+Dateilisten schneiden sich nicht.
+
+**Damit trägst du eine Bedingung, die ein anderes Paket abgegeben hat, und das steht auch
+dort.** Die Verlegung ist in 0027 im Abschnitt „ZWEITER RÜCKLAUF" begründet; der Prüfer von
+0027 hat beide Wege ausdrücklich mir überlassen und diesen Vorschlag als den zweiten
+benannt. Wenn du an der Sache scheiterst, ist das ein Befund gegen die Verlegung und gehört
+gemeldet — nicht still zurück nach 0027 geschoben.
+
+**Zwei Dinge, die dich sonst deine Abnahme kosten:**
+
+1. **Du widerrufst eine abgenommene Bedingung eines fertigen Pakets.** Bedingung 6 von 0033
+   verlangt die *unveränderte* Prüfsumme über eine Runde, und `schritt_probe.cpp:286-291`
+   sichert das heute feldweise. Deine Abnahme ersetzt sie durch „genau eine der 310 Größen
+   ändert sich". Das ist zulässig, weil `schritt.hpp` die Eigenschaft selbst „auf Widerruf"
+   ausweist — aber es ist zulässig **nur, wenn du beide Prüfsummen im Wortlaut nennst** und
+   die Stelle in `schritt.hpp` mitziehst, die das alte Versprechen gibt. Ein stiller
+   Widerruf ist ein Rücklauf.
+2. **Der Randfall Vorrundennummer gleich `I64_MAX` minus eins** in `probe_runden` läuft
+   heute durch. Mit der Setzung trägt der Zustand danach `I64_MAX`, und die nächste Runde
+   bricht am vorhandenen Riegel ab. Der Vorschlag sagt richtig: Das ist so gewollt und
+   gehört gezeigt, nicht umgangen.
+
+**Was ich nicht entscheide:** ob Schritt 1 der richtige Ort für die Setzung ist. Der
+Vorschlag und der Prüfer von 0027 kommen unabhängig auf dieselbe Stelle; findest du eine
+bessere, ist das ein Befund gegen den Vorschlag und kein Rücklauf gegen dich — dann nennst
+du sie und begründest sie.
+
+## Rückläufe
+
+0.

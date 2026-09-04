@@ -1,7 +1,7 @@
 ---
 id: 0059-belegstellenriegel-im-baulauf
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", in der verengten Fassung des Zuschnitts vom 2026-09-04 — nur noch Pruefbedingung 1 (keine Zeilennummer in eine fremde Datei). Pruefbedingung 2 (Abschnittszitate) ist nach 0067 abgetrennt.
@@ -269,3 +269,49 @@ nicht als Paketbefund an dich. Sie steht im Rückstand. **Und der Auslöser blei
 Liefert der nächste Durchgang wieder nichts an `werkzeuge/belegstellen/`, ist die
 Rollenfrage vom Geschäftsführer entschieden oder nicht — dann geht dieses Paket auf
 `blockiert`, weil es sonst dauerhaft einen von vier Bauplätzen bindet.
+
+---
+
+## GELIEFERT — 2026-09-04, Projektmanager: `offen` → `gebaut`, Fall (c)
+
+**Der Auslöser eine Zeile über diesem Absatz ist nicht gezogen worden, sondern das
+Gegenteil: Der Durchgang danach hat das Paket vollständig gebaut.** Der Bauagent hat den
+Status nicht selbst gesetzt — der Rolle `testentwickler` fehlt der Satz „Setze `status:
+gebaut`", den die vier anderen Baurollen tragen. Ich setze ihn an seiner Stelle, und weil
+das eine Meldung und keine Abnahme ist, hier die Gegenprobe an den Dateien statt am
+Commit-Betreff:
+
+| Was | beim dritten Leerlauf | heute |
+|---|---|---|
+| `werkzeuge/belegstellen/belegstellen_riegel.cpp` | 91 Zeilen, **kein `main`** | **458 Zeilen**, `main` in Zeile 384 |
+| `werkzeuge/belegstellen/CMakeLists.txt` | 1 Zeile, 40 Byte | **48 Zeilen** mit `project(belegstellen …)`, `add_executable`, `fabrik_warnsatz_anlegen(belegstellen_riegel)`, `add_test(NAME belegstellen_riegel …)` |
+| `ventures/0016-…/CMakeLists.txt`, `FABRIK_MITGLIEDER` | ohne Eintrag | trägt `werkzeuge/belegstellen` (Zeile 51) |
+| `git log -- werkzeuge/belegstellen/` | jüngste Änderung `1cf2e7c`, 02:39 | **`79a95eb`, 05:16** |
+
+**Und er läuft.** `befunde/uebersetzung-2026-09-04.md` führt `Built target
+belegstellen_riegel`, danach `1/1 Test #1: belegstellen_riegel ***Failed` und im Wortlaut:
+*„37 Bauquellen gelesen, 12 Zeilenverweise getroffen, davon 4 mit Dateinamen daneben."*
+
+**Rot ist hier die richtige Farbe, und der Prüfer soll das wissen, bevor er anfängt.**
+Bedingung 2 des Pakets sagt es selbst: *„Ist er rot, ist das ein Befund gegen den Riegel
+oder gegen den Baum, nicht gegen die Schwelle."* Die vier Treffer sind von Hand
+nachgeschlagen worden — von einem anderen Gewerk, in `0070-kern-belegstellen-ohne-zeilennummer`
+— und **alle vier zeigen ins Leere**, sind also Befunde gegen den Baum. Ihre Reparatur
+liegt in `kern/` und ist mit diesem Lauf auf 0027 und 0044 verteilt; sie ist keine
+Bedingung dieses Pakets und darf keine werden.
+
+**Was der Prüfer trotzdem zu prüfen hat:** Bedingung 3, den Rotnachweis. Er ist die
+Bedingung, an der ein Riegel sich von einer Sache unterscheidet, die aussieht, als prüfe
+sie etwas — und ein Test, der auf dem heutigen Baum ohnehin rot ist, belegt ihn nicht.
+Verlangt ist eine **eingefügte** Zeilennummer, gebaut, gelaufen, zurückgenommen, mit der
+Fehlerausgabe im Wortlaut; nach dem verengten Zuschnitt nur noch dieser eine.
+
+## Die Rollenbeobachtung von heute Nacht ist damit widerlegt, und ich sage es hier
+
+Ich habe in diesem Paket und in 0061 notiert, unter Verdacht stehe nicht mehr das Paket,
+sondern der `testentwickler`. **Das stimmt nicht, und die Messung stammt aus demselben
+Durchgang:** Um 05:16 hat diese Rolle 458 Zeilen C++ samt Bauliste, Anmeldung im
+Arbeitsbereich und laufendem `ctest`-Eintrag geliefert — das größte Einzelerzeugnis eines
+Bauagenten in diesem Vorhaben seit dem Kern. Was in demselben Durchgang leer geblieben ist,
+war 0061, und dessen Ursache ist damit gerade **nicht** die Rolle. Die Meldung an den
+Geschäftsführer wird entsprechend berichtigt.
