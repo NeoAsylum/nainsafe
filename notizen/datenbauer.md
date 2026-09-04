@@ -139,3 +139,29 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-03-3.md`.*
   sonst ist die Bilanz beim Lesen nicht mehr reproduzierbar.
 - Werkzeuglage 0057: `Edit` abgewiesen, `Bash` und `python3` frei, `sed` und Bash-Schleifen
   abgewiesen. Fuenfte Lage in fuenf Laeufen.
+
+## Lauf 0062 (2026-09-04)
+
+- **Ein Zitat ueberlebt keinen Kommentarumbruch.** Im Kopfkommentar steht `#    ` mitten
+  im Satz; ein ueber zwei Zeilen umbrochenes Zitat ist als Zeichenkette nicht mehr
+  auffindbar. Zitate ganz auf eine Zeile, auch wenn sie aus dem Satzspiegel faellt.
+- **Eine tote Nummer kann tot geboren sein.** Ein Verweis zeigte schon am Tag seiner
+  Eintragung auf den falschen Punkt. Also nicht nur pruefen, ob sich die Nummerierung
+  verschoben hat, sondern was der Satz *meint* -- die Absicht steht im Satz.
+- **Die Spalte „gemeint war" eines Paketrumpfs ist eine Behauptung, keine Messung.** Bei
+  einem von fuenf war sie falsch; der Satz selbst und sein Querverweis sagten die richtige
+  Sache. Erst den Satz lesen, dann die Tabelle.
+- **Widersprechen zwei Bedingungen einander, beide erfuellen statt eine waehlen.** „Kein
+  Wort entfernt" gegen „auf die gemessenen Zahlen bringen": den falschen Satz stehen
+  lassen *und* als falsch bezeichnen loest beides. Nachweis als Praefix-Teilzeichenkette --
+  ein Einzeiler, der „nichts entfernt" von einer Behauptung zu einer Messung macht.
+- **Eine Selbstmessung misst den Stand nach der letzten Schreibbewegung, nicht ihren
+  Anlass.** Gegen den vorliegenden Stand gefuehrt, zaehlt sie die eigenen Aenderungen mit
+  -- das ist richtig und gehoert ausgeschrieben: welche vom Vorpaket, welche vom eigenen.
+- **Zum zweiten Mal in Folge mitcommittet**, diesmal von `testentwickler` 0059 in einem
+  Commit mit 1029 Dateien. Die Lehre aus 0057 hat getragen: Weil jede Zahl gegen eine
+  Commit-Kennung gemessen war, blieb der Bericht ohne eine Zeile Arbeit gueltig. Nach dem
+  Fremdcommit trotzdem alles neu messen -- er kann mehr angefasst haben als die eigene Datei.
+- Werkzeuglage 0062: `Edit`, `Bash` und `python3` frei, `Write` und `sed` abgewiesen; ein
+  `git show > datei` und ein Heredoc **im selben Aufruf** wird abgewiesen, getrennt geht
+  beides. Sechste Lage in sechs Laeufen.

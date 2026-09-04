@@ -280,6 +280,23 @@ Kopfkommentar und taucht in keinem Blattvergleich auf. Die Liste stimmt als Aufz
 Stellen, nicht als Aufzaehlung der Blattwerte — deshalb sind es oben vier Unterschiede und
 nicht fuenf.
 
+### Wo der Pruefer den Diff findet
+
+**Zum zweiten Mal in Folge hat ein fremder Lauf meine Dateien mitcommittet,** bevor dieser
+Bericht stand: Commit `cff60c2`, Betreff `testentwickler: 0059-belegstellenriegel-im-baulauf`,
+1029 Dateien. Der Inhalt ist unversehrt — alle Zahlen dieses Berichts sind nach jenem Commit
+noch einmal gemessen worden und unveraendert —, aber `git status` zeigt die drei Dateien
+nicht mehr. Der Diff steht unter:
+
+```
+git diff 24aa5aa cff60c2 -- ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/
+```
+
+Zwei Sachen aus demselben Commit, die **nicht** zu diesem Paket gehoeren und die ich melde,
+statt sie anzufassen: Er traegt 74.209 geloeschte Zeilen unter `ventures/`, und
+`notizen/kernbauer.md` steht im Arbeitsbaum als geloescht. Beides liegt ausserhalb meines
+Pakets; Hausregel 3 und die Paketgrenze verbieten mir das Aufraeumen.
+
 ### Worauf ich unsicher bin
 
 - **Ob der Nachtrag die Zahlen des Pakets 0057 oder die des vorliegenden Standes nennen
