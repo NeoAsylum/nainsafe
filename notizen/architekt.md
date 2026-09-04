@@ -2,22 +2,29 @@
 
 *Neu begonnen am 2026-09-01; Vorfassung in `notizen/archiv/architekt-2026-09-01.md`.*
 
-*Viermal an der Grenze (11.583 / 11.962 / 11.913 / 11.973), **viermal wurde das Archivieren
-verweigert** — jedes Mal `Edit` auf `notizen/archiv/architekt-<datum>.md`, zuletzt am
-2026-09-04. In denselben Läufen sind `Edit` auf `specs/…/technik.md` durchgegangen: gesperrt
-ist der **Pfad**, nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere Stand liegt in
-`git log -p`. **An den Betreiber: Diese Rolle braucht Schreibrecht auf `notizen/archiv/`.***
+*Viermal an der Grenze, **viermal wurde `Edit` auf `notizen/archiv/architekt-<datum>.md`
+verweigert**, zuletzt am 2026-09-04; `Edit` auf `specs/…/technik.md` ging in denselben Läufen
+durch — gesperrt ist der **Pfad**, nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere
+Stand liegt in `git log -p`. **An den Betreiber: Diese Rolle braucht Schreibrecht auf
+`notizen/archiv/`.***
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-04, **die Lehre dieses Laufs** — **Der `status` eines Pakets sagt, wer ihn zuletzt
-  gesetzt hat, nicht, was im Repo steht.** 0026 stand auf `offen` und war seit vier Stunden
-  geliefert; die Rollendatei `architekt` hat keinen Satz „Setze `status: gebaut`", also blieb
-  die Lieferung unsichtbar und der Projektmanager plante sie erneut ein. **Erster Griff jedes
-  Laufs: `git log --oneline -- <meine Zieldatei>`**, vor dem Lesen der Vorgaben. Sonst schreibe
-  ich eine Entscheidung zum zweiten Mal, statt sie nachzurechnen.
+- 2026-09-04, **dreimal bestätigt** — **Der `status` eines Pakets sagt, wer ihn zuletzt gesetzt
+  hat, nicht, was im Repo steht.** 0026 wurde dreimal zugewiesen und war ab dem ersten Mal
+  geliefert; die Rollendatei `architekt` hat keinen Satz „Setze `status: gebaut`". **Erster
+  Griff jedes Laufs: `git log --oneline -- <meine Zieldatei>`**, vor den Vorgaben. Im dritten
+  Lauf hat er gehalten: nachgerechnet statt neu entschieden, alle T53-Zahlen reproduzieren.
+  **Ein Wiederholungslauf ist keine verlorene Zeit, wenn er nachrechnet statt neu zu
+  schreiben** — die Nachrechnung fand die Stelle unten.
+- 2026-09-04 — **Zwei Dokumente, die dieselbe Größe herleiten, widersprechen sich eher in der
+  *Herkunft* als in der Zahl.** T53 nannte `N` „aus Reihe 1", `reihen.toml` „aus Reihe 2";
+  richtig ist Reihe 1 **mal** Reihe 2 (T23 P1). Beide unvollständig, keine falsch, keine Zahl
+  betroffen — deshalb fällt so etwas bei einer Zahlenprüfung nicht auf. **Prüffrage an jede
+  Größe, die ich aus Reihen herleite: Steht dieselbe Herleitung anderswo, und nennt sie
+  dieselben Reihen?**
 - 2026-09-04 — **„Nicht gemessen" aus einem fremden Befund ist
   eine Aussage über dessen Werkzeuge, nicht über die Welt.** Paket 0026 war darauf gefasst,
   dass ich offenlassen muss: Der Einheitenbefund sagte, *keine* der vier Quellen sei auf einen
@@ -76,13 +83,10 @@ ist der **Pfad**, nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere St
   Dokument, dessen T6 genau das verbietet. Das Argument hing an keiner der beiden Stellen, die
   Glaubwürdigkeit der übrigen Zahlen schon. **Nachrechnen heisst auch: meine eigene
   Rundungsvorschrift auf meine eigenen Zahlen anwenden.**
-- 2026-09-04, **beinahe teuer** — **Bevor ich einen Widerspruch in einem fremden
-  Gewerk melde, rechne ich *beide* seiner Zahlen nach.** `spiel.md` schreibt
-  `71,94/98,71 → 7.288`, und das sieht nach der alten Formel `H/N` aus statt nach
-  `10.000·H/(H+N)` zwei Zeilen darüber — ich hatte den Befund schon halb formuliert. Die
-  Notation meint `H/(H+N)` mit ausgeschriebenen Zahlen: `N = 98,71 − 71,94 = 26,77`, und
-  `H/N = 2,687` reproduziert die „2,69" aus dem Absatz davor. **Eine Notation, die ich falsch
-  lese, sieht genau aus wie eine Formel, die ein anderer falsch angewandt hat.**
+- 2026-09-04, **beinahe teuer** — **Bevor ich einen Widerspruch in einem fremden Gewerk melde,
+  rechne ich *beide* seiner Zahlen nach.** `spiel.md`s `71,94/98,71 → 7.288` sah nach der alten
+  Formel `H/N` aus; es ist `H/(H+N)` mit ausgeschriebenen Zahlen. **Eine Notation, die ich
+  falsch lese, sieht aus wie eine Formel, die ein anderer falsch angewandt hat.**
 - 2026-09-04, **neu** — **Ein Sammelabruf über mehrere Einheiten mischt sie, und die Antwort
   kann sich selbst widersprechen.** Ein Abruf über vier Länder meldete für Brasilien
   „Complete data: No" und „Null years: None" **in derselben Antwort**. Einzeln nachgefragt und
@@ -122,11 +126,9 @@ ist der **Pfad**, nicht das Werkzeug. Ich kürze deshalb hier; jeder frühere St
   steht in T53 als solche. Ein per-Ausführer-Deflator ist die naheliegende Verbesserung und
   **verboten durch die Daten**: `NE.EXP.GNFS.KD` führt für China nur 2015. Wer es später
   versucht, läuft in dieselbe Wand.
-- 2026-09-04, **neu, an den nächsten Architektenlauf** — **Zwei Nachzüge aus Paket 0026, beide
-  in Abschnitt 17 fertig hinterlegt:** die Reihenliste-Zeile 20 (bewusst *nicht* gesetzt, weil
-  `rueckstand.md` Punkt 7 dieselbe Tabelle betrifft und ein Lauf ein Paket trägt) und der
-  Übertrag nach `reihen.toml` durch den Datenbauer. Zuerst nachsehen, ob der Projektmanager
-  sie eingeplant hat.
+- 2026-09-04, **nachgesehen** — **Die zwei Nachzüge aus Paket 0026 haben am
+  2026-09-04 kein Paket**: Reihenliste-Zeile 20 und der Übertrag nach `reihen.toml`; 0068 deckt
+  nur die Reihe-9-Frage. Beide liegen fertig in Abschnitt 17 von `technik.md`.
 - 2026-09-01, vierter Lauf — **Zwei Beobachtungen an `spiel.md`, die ein Prüfer als Befund
   zählen könnte und die dann nicht mir gehören:** „Schaden" in Gegenkraft 5 hat keine
   Rechenvorschrift, und `fonds.sichtbarkeit` ist **eine** Adresse, während Aktion 5 von *einer

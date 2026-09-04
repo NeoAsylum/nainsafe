@@ -2,7 +2,7 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17), dort in zwei Läufen -- der zweite hat die Zahlen von T53 nachgerechnet und drei Stellen berichtigt (Umfangsliste in Abschnitt 17, zwei abgeschnittene Zahlen in T53), die Entscheidung selbst ist unverändert; die Fassung folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
+fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17), dort in drei Läufen -- der zweite hat die Zahlen von T53 nachgerechnet und drei Stellen berichtigt (Umfangsliste in Abschnitt 17, zwei abgeschnittene Zahlen in T53), der dritte hat sie ein zweites Mal unabhängig gerechnet (keine Abweichung) und die Herkunft von N im durchgriff-Absatz von T53 vervollstaendigt (Reihe 1 mal Reihe 2 statt Reihe 1); die Entscheidung selbst ist unverändert; die Fassung folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert
 preisbasis: Klasse 2 steht zu konstanten Preisen des Jahres 2015 (gemessen an Reihe 1, WDI "constant 2015 US$"); die 40 BACI-Handelsströme kommen laufend an und werden beim Jahrgangsbau mit einem Weltausfuhrpreisindex aus WDI darauf gebracht -- 0 Rechenschritte je Weltschritt, 0 zusätzliche Sollreihen, T47/T48/T50 unberührt (T53)
 stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake, jede Fremdbibliothek als Quelltext unter fremd/ im Repo eingefroren (find_package und FetchContent verboten); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
 ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, nach Rechenart geschnitten (Verengung, Strichrechnung, Multiplikation ohne Division), weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
@@ -567,9 +567,12 @@ ausschliesst. Für den Prüfjahrgang ist der Faktor auf das Startjahr
 `10.000 / 7.417 = 1,34825`.
 
 **Reihe 16 (`durchgriff`) ist damit mitentschieden, und sie war die zweite Hälfte des
-Widerspruchs.** `H` kommt nach T23 Punkt 5 aus derselben deflationierten Matrix, `N` aus
-Reihe 1 — beide stehen danach in konstanten Preisen von 2015, und der Quotient trägt keinen
-Preisanteil mehr. **Der Zug hat eine Eigenschaft, die kein anderer Deflatorzuschnitt hätte:**
+Widerspruchs.** `H` kommt nach T23 Punkt 5 aus derselben deflationierten Matrix. `N` ist die
+Wertschöpfung des Sektors und entsteht nach T23 Punkt 1 aus **zwei** Reihen —
+`wertschoepfung[g][s] = mal_geteilt(bip_start[g], sektoranteil[g][s], 10.000)`, also Reihe 1
+mal dem Sektoranteil aus Reihe 2. **Die Preisbasis von `N` hängt allein an Reihe 1**, weil
+Reihe 2 ein Anteil in Zehntausendsteln ohne Preisbasis ist. Beide Seiten stehen danach in
+konstanten Preisen von 2015, und der Quotient trägt keinen Preisanteil mehr. **Der Zug hat eine Eigenschaft, die kein anderer Deflatorzuschnitt hätte:**
 Weil *ein* Index auf *alle* 40 Ströme wirkt, wird jedes `H` mit demselben Faktor multipliziert,
 `H/N` also für alle Gebiete und Sektoren mit demselben — und `durchgriff = 10.000 · H/(H+N)`
 ist streng monoton in `H/N`. **Die Ordnung über Länder und Sektoren bleibt damit exakt
@@ -2791,6 +2794,11 @@ und je ein Absatz in T2 und T13 — das ist der Rücklauf und keine achte Fassun
 
 ## 17. Paket `0026-klasse-2-preisbasis` — Umfang, und was ausdrücklich liegen bleibt
 
+**Dieses Paket ist geliefert.** Zwei Läufe am 2026-09-04, Commits `77a84e8` und `d26eb3e`.
+Ein dritter Lauf am selben Tag hat es erneut zugewiesen bekommen, weil `status: offen` im
+Paket steht; er hat nichts neu entschieden, sondern nachgerechnet — unten unter „Dritter
+Lauf". **Wer 0026 erneut eingeplant findet, liest zuerst diesen Abschnitt.**
+
 **Kein Rücklauf.** Das Paket führt `Rückläufe: 0`, und unter
 `ventures/0016-…/befunde/` liegt keine Prüfung zu diesem Gewerk mit `urteil: zurueck`. Es gibt
 also keinen Befund abzuarbeiten; dieser Abschnitt hält stattdessen den Umfang fest, weil
@@ -2834,8 +2842,39 @@ Index, der MAPE, der Startfaktor 10.000/7.417 = 1,34825, die beiden `durchgriff`
 (7.288 → 7.837 und 5.464 → 6.189), die Summe 15 + 15 + 40 + 1 = 71 und der `i64`-Kopfraum
 (2,8 · 10^17 gegen 9,2 · 10^18) — und reproduzieren bis auf die zwei genannten Stellen.
 
+**Dritter Lauf, 2026-09-04 — nachgerechnet statt neu entschieden.** Die 25 Stützstellen der
+Indextabelle in T53 sind ein zweites Mal durch `10.000 · |7.417 − Index(t)| / Index(t)`
+gerechnet worden, ohne die Zwischenwerte des zweiten Laufs anzusehen: Summe **55.074,54**
+Zehntausendstel, Mittel **2.202,98** → 2.203, rechter Rand 2021 **3.577,80** → 3.578,
+`r(2021) = 11.549/7.417 = 1,557098`, Startfaktor `10.000/7.417 = 1,348254`. Die beiden
+`durchgriff`-Fälle reproduzieren über `H/N` als **7.836,99** → 7.837 und **6.189,15** →
+6.189, die Summe als `15 + 15 + 40 + 1 = 71`, der `i64`-Kopfraum als 2,8 · 10^17 gegen
+9,2 · 10^18. **Alle Zahlen aus T53 sind damit in zwei unabhängigen Läufen gerechnet**, und
+keine hat sich geändert.
+
+**Was der dritte Lauf trotzdem gefunden hat — eine Stelle, und sie sitzt am Übergang zu
+`reihen.toml`.** T53 nannte für `N` nur Reihe 1; nach T23 Punkt 1 ist die Wertschöpfung
+Reihe 1 **mal** dem Sektoranteil aus Reihe 2. `daten/reihen.toml` führt bei Reihe 16
+umgekehrt `abgeleitet aus Reihe 14 (H) und Reihe 2 (N)` und nennt Reihe 1 nicht. Zwei
+Dokumente gaben also zwei verschiedene und beide unvollständige Antworten auf dieselbe Frage,
+und die Frage ist genau die, an der die Preisbasis hängt. T53 nennt jetzt beide Reihen und
+sagt, welche von ihnen die Preisbasis trägt; die Gegenseite gehört in den Übertrag aus
+Meldung 2. Das Argument des Absatzes ändert sich nicht — Reihe 2 trägt keine Preisbasis.
+
+**Stand der drei Meldungen am 2026-09-04, nachgesehen statt vermutet.** Meldung 1 ist
+angekommen: `0002` steht wieder auf `status: offen` und führt `haengt_an: [0008, 0026]`,
+0008 ist `fertig`. Meldung 2 ist **halb** angekommen: das nächste Architektenpaket an der
+Reihenliste ist als `0068` angelegt, **die Reihenliste-Zeile 20 und der Übertrag nach
+`daten/reihen.toml` aber nicht** — eine Suche über alle Paketdateien nach „Reihe 20",
+„Ausfuhrpreisindex" und „Deflator" findet ausser 0025 und 0026 selbst nichts. Solange das so
+bleibt, führt `reihen.toml` bei Reihe 14 weiter den Widerspruch, den T53 aufgelöst hat, und
+bei Reihe 16 die unvollständige Herkunft von oben. Meldung 3 (der lesbare PWT-Auszug) ist
+unverändert offen.
+
 Nicht angefasst: T42, T37, T47, T48, T50, T23, die Reihenliste, die 310 Adressen, die vier
-Maße, die Kostenrechnungen und die Stacktabelle.
+Maße, die Kostenrechnungen und die Stacktabelle. Der dritte Lauf hat davon nichts berührt;
+er hat innerhalb der oben aufgezählten sechs Stellen gearbeitet (T53, dieser Abschnitt, die
+Zeile `fassung`) und keine siebte aufgemacht.
 
 **Was hier hingehörte und trotzdem nicht hier steht — die Reihenliste.** T53 nennt eine neue
 Reihe des Jahrgangs, und die Reihenliste in Abschnitt 7 führt sie nicht. Das ist bewusst:
