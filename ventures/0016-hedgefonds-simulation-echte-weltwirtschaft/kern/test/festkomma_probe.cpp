@@ -29,10 +29,38 @@ namespace {
 using kern::festkomma::i64;
 using kern::festkomma::I64_MAX;
 using kern::festkomma::I64_MIN;
+using kern::festkomma::mal;
 using kern::festkomma::mal_geteilt;
 using kern::festkomma::potenz;
 using kern::festkomma::teile_gerundet;
 using kern::festkomma::wurzel;
+
+/// Die beiden Wertepaare, an denen Paket 0052 den Waechter von `mal` misst -- als
+/// benannte Groessen, weil eine abgeschriebene Grenze nach der ersten Aenderung nur
+/// noch sich selbst prueft.
+///
+/// `MAL_FAKTOR_PASST` ist die abgerundete Quadratwurzel von `I64_MAX`; sein Quadrat
+/// ist damit das groesste Produkt zweier gleicher Faktoren, das noch in `i64` passt.
+/// Das sind 9.223.372.030.926.249.001 gegen `I64_MAX` mit
+/// 9.223.372.036.854.775.807. Einen Schritt darueber liegt
+/// `MAL_FAKTOR_BRICHT_AB`, dessen Quadrat 9.223.372.037.000.250.000 betraegt und
+/// `I64_MAX` um 145.474.193 ueberschreitet.
+constexpr i64 MAL_FAKTOR_PASST     = wurzel(I64_MAX, 2);
+constexpr i64 MAL_FAKTOR_BRICHT_AB = MAL_FAKTOR_PASST + 1;
+constexpr i64 MAL_PRODUKT_PASST    = mal_geteilt(MAL_FAKTOR_PASST, MAL_FAKTOR_PASST, 1);
+
+// Der zweite Weg ist zugleich der Pruefstand: `MAL_PRODUKT_PASST` entsteht ueber
+// `mal_geteilt` mit Nenner 1, also ueber die Regel, die `src/festkomma.cpp` schon
+// an eigenen Zahlen festnagelt. Stimmt `mal` damit ueberein, stimmen beide Wege.
+//
+// Sie stehen ausnahmsweise hier statt in `src/festkomma.cpp`, wo die uebrigen
+// Zahlenproben liegen: Paket 0052 nennt in seiner Dateiliste den Kopf und diese
+// Probe, und eine Datei ausserhalb der Liste gehoert einem anderen Paket.
+static_assert(MAL_PRODUKT_PASST <= I64_MAX, "das groesste passende Produkt passt noch");
+static_assert(mal(MAL_FAKTOR_PASST, MAL_FAKTOR_PASST) == MAL_PRODUKT_PASST,
+              "beide Wege liefern dasselbe -- schon beim Uebersetzen");
+static_assert(mal(-MAL_FAKTOR_PASST, MAL_FAKTOR_PASST) == -MAL_PRODUKT_PASST,
+              "und mit umgekehrtem Vorzeichen zeichengleich zurueck");
 
 int fehlgeschlagen = 0;
 
@@ -131,6 +159,34 @@ int main()
     ERWARTE_ABBRUCH(wurzel(undurchsichtig(-1), 2));
     ERWARTE_ABBRUCH(wurzel(undurchsichtig(4), 0));
     ERWARTE_ABBRUCH(wurzel(undurchsichtig(4), 33));
+
+    // --- Blanke Multiplikation ueber i128 (T7, Massnahme 4, Punkt 3) -----------
+    //
+    // Das groesste noch passende Produkt kommt zeichengleich zurueck, in beide
+    // Richtungen -- ein Waechter, der nur die obere Grenze kennt, waere die Haelfte.
+    PRUEFE(mal(undurchsichtig( MAL_FAKTOR_PASST), undurchsichtig(MAL_FAKTOR_PASST))
+           ==  MAL_PRODUKT_PASST);
+    PRUEFE(mal(undurchsichtig(-MAL_FAKTOR_PASST), undurchsichtig(MAL_FAKTOR_PASST))
+           == -MAL_PRODUKT_PASST);
+    PRUEFE(mal(undurchsichtig(I64_MAX), undurchsichtig(1)) == I64_MAX);
+    PRUEFE(mal(undurchsichtig(I64_MIN), undurchsichtig(1)) == I64_MIN);
+    PRUEFE(mal(undurchsichtig(0), undurchsichtig(I64_MIN)) == 0);
+
+    // Zwei Wege fuer dieselbe Rechnung, diesmal zur Laufzeit und unter den
+    // Sanitizern: `mal(a, b)` und `mal_geteilt(a, b, 1)` muessen uebereinstimmen.
+    PRUEFE(mal(undurchsichtig(MAL_FAKTOR_PASST), undurchsichtig(MAL_FAKTOR_PASST))
+           == mal_geteilt(undurchsichtig(MAL_FAKTOR_PASST),
+                          undurchsichtig(MAL_FAKTOR_PASST), undurchsichtig(1)));
+
+    // Der Abbruchfall: Einen Schritt ueber der Grenze ist das Quadrat
+    // 9.223.372.037.000.250.000, und es nimmt denselben Weg wie Massnahme 4.1 --
+    // `intern::nach_i64` wirft `std::domain_error`. Kein gekappter Wert, kein
+    // stiller Umbruch unter `-fwrapv`.
+    ERWARTE_ABBRUCH(mal(undurchsichtig(MAL_FAKTOR_BRICHT_AB),
+                        undurchsichtig(MAL_FAKTOR_BRICHT_AB)));
+    ERWARTE_ABBRUCH(mal(undurchsichtig(-MAL_FAKTOR_BRICHT_AB),
+                        undurchsichtig(MAL_FAKTOR_BRICHT_AB)));
+    ERWARTE_ABBRUCH(mal(undurchsichtig(I64_MIN), undurchsichtig(-1)));
 
     if (fehlgeschlagen == 0) {
         std::fprintf(stdout, "kern::festkomma -- alle Proben bestanden.\n");

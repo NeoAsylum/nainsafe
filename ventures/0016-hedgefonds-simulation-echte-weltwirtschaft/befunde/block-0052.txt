@@ -34,3 +34,7 @@
 /// braucht; die Umkehrung waere, es dort zu vergessen.
 constexpr i64 mal(i64 a, i64 b)
 {
+    const i128 produkt = static_cast<i128>(a) * static_cast<i128>(b);
+    return intern::nach_i64(produkt, "mal: Ergebnis ausserhalb von i64 (T7)");
+}
+
