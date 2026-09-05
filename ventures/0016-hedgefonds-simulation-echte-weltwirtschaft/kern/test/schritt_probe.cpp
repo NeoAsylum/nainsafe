@@ -17,8 +17,13 @@
 //!      Maskenadresse fehlt oder eine ausserhalb beruehrt wurde.
 //!   2. **Die Abbrueche.** Der `spielmodus`, die negative Rundennummer und die nicht
 //!      mehr zaehlbare sind Wuerfe, und ein Wurf laesst sich nur zur Laufzeit fangen.
-//!      Beim `spielmodus` wird zusaetzlich der **Wortlaut** geprueft: Bedingung 7
-//!      verlangt, dass die Meldung sagt, warum.
+//!      Seit Paket 0085 fragt **jede** dieser Stellen nicht nur, *dass* geworfen wurde,
+//!      sondern *welcher Riegel* -- an Textstuecken der Meldung, die ihn eindeutig
+//!      machen. Der Grund ist die doppelt gehaltene Schranke: Faellt der Riegel in
+//!      `kern/src/schritt.cpp` weg, bricht der `Schreiber` die Runde weiterhin ab, nur
+//!      mit einer Meldung, die die Ursache nicht mehr nennt. Ein blosses "es hat
+//!      geworfen" bliebe dabei gruen. Beim `spielmodus` kommt Bedingung 7 dazu: Die
+//!      Meldung muss sagen, warum.
 //!   3. **Der unabhaengige Erwartungswert.** Der Zustand nach der Runde wird nicht gegen
 //!      eine abgeschriebene Zahl gehalten, sondern gegen eine **zweite Bauart desselben
 //!      Zustands**: dieselbe Ausgangslage, ueber `zustand::Startbelegung` gebaut, nur mit
@@ -113,6 +118,83 @@ bool enthaelt(const char* heuhaufen, const char* nadel)
     return false;
 }
 
+/// Die Textstuecke, an denen eine Abbruchmeldung ihren Riegel zu erkennen gibt.
+using Kennzeichen = std::span<const char* const>;
+
+/// Fuehrt `tun` aus und sichert zu, dass **dieser** Riegel abgebrochen hat -- nicht
+/// irgendeiner (Paket 0085).
+///
+/// Der Unterschied zu einem blossen `PRUEFE(geworfen)` ist der Grund des Pakets: Die
+/// Schranke gegen die nicht mehr zaehlbare Runde wird doppelt gehalten. Der aeussere
+/// Riegel in `kern/src/schritt.cpp` nennt die Ursache; der innere im
+/// `Schreiber`-Konstruktor sieht nur noch die negative Rundennummer, die der Umbruch
+/// unter `-fwrapv` hinterlassen hat. Streicht jemand den aeusseren, wirft der innere
+/// weiter -- eine Probe, die nur nach dem Wurf fragt, bleibt gruen, und der Riegel ist
+/// unbemerkt weg. Dieselbe Falle steht bei `Startbelegung`, wo Binden und Setzen zwei
+/// verschiedene Riegel sind, die beide `kern::zustand::Startbelegung` im Namen tragen.
+///
+/// **Nicht der ganze Wortlaut, sondern Stuecke.** Ein Volltextvergleich ginge bei jeder
+/// Umformulierung rot und erzoege dazu, die erwartete Zeichenkette nachzuziehen statt
+/// hinzusehen. Verlangt wird, was den Riegel eindeutig macht und eine Umformulierung des
+/// Restes ueberlebt.
+///
+/// Der Fehlerfall druckt **beide** Zeichenketten, die erwartete und die angekommene:
+/// Ein "falsche Meldung" ohne Wortlaut kostet den naechsten Lauf einen eigenen Bau, nur
+/// um zu sehen, was denn nun ankam.
+template <typename Aufgabe>
+void bricht_ab_mit(const char* was, Kennzeichen kennzeichen, int zeile, Aufgabe tun)
+{
+    // Ohne Kennzeichen prueft der Aufruf wieder nur, *dass* geworfen wurde -- also genau
+    // das, was dieses Paket abschafft. Er faellt lieber auf, als still zu verwaessern.
+    if (kennzeichen.empty()) {
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- kein Kennzeichen genannt; so prueft "
+                     "die Stelle nur, dass ueberhaupt geworfen wurde\n",
+                     zeile, was);
+        ++fehlgeschlagen;
+    }
+
+    // Alles am Wortlaut geschieht **innerhalb** des Fangblocks: `what()` zeigt in die
+    // Ausnahme, und die ist hinter der schliessenden Klammer fort.
+    try {
+        tun();
+    } catch (const std::domain_error& fehler) {
+        const char* const angekommen = fehler.what();
+        const char* fehlendes = nullptr;
+        for (const char* const stueck : kennzeichen) {
+            if (!enthaelt(angekommen, stueck)) {
+                fehlendes = stueck;
+                break;
+            }
+        }
+        if (fehlendes == nullptr) {
+            std::printf("  Abbruch wie erwartet (%s): %s\n", was, angekommen);
+            return;
+        }
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- es hat abgebrochen, aber der falsche "
+                     "Riegel.\n  erwartetes Textstueck: \"%s\"\n  angekommene Meldung:   "
+                     "\"%s\"\n",
+                     zeile, was, fehlendes, angekommen);
+        ++fehlgeschlagen;
+        return;
+    } catch (...) {
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- abgebrochen, aber nicht mit "
+                     "std::domain_error; zu einem Wortlaut kommt die Probe so nicht\n",
+                     zeile, was);
+        ++fehlgeschlagen;
+        return;
+    }
+
+    std::fprintf(stderr,
+                 "FEHLGESCHLAGEN Zeile %d: %s -- kein Abbruch.\n  erwartet war eine "
+                 "Meldung mit: \"%s\"\n  angekommen ist:         (nichts, der Aufruf kam "
+                 "durch)\n",
+                 zeile, was, kennzeichen.empty() ? "(keins genannt)" : kennzeichen[0]);
+    ++fehlgeschlagen;
+}
+
 /// Die Pruefsumme des Zustands ueber die kanonische Byteform (T12) -- der unabhaengige
 /// Erwartungswert aus Bedingung 6.
 ///
@@ -168,6 +250,12 @@ Zustand ausgangslage(i64 rundennummer)
 }  // namespace
 
 #define PRUEFE(ausdruck) pruefe((ausdruck), #ausdruck, __LINE__)
+
+/// Reicht die Zeile der **Aufrufstelle** an `bricht_ab_mit` durch -- sonst naennte jede
+/// Fehlermeldung die eine Zeile in der Vorlage. Variadisch, damit das Komma in einem
+/// mehrzeiligen Lambda den Praeprozessor nicht in zwei Argumente teilt.
+#define BRICHT_AB_MIT(was, kennzeichen, ...) \
+    bricht_ab_mit((was), (kennzeichen), __LINE__, __VA_ARGS__)
 
 namespace {
 
@@ -388,15 +476,15 @@ void probe_runden()
     // Abbruch kommt **aus dem Zustand**, nicht aus einer Zahl, die die Probe von Hand
     // hineingeschrieben hat.
     PRUEFE(am_ende.lies(PLATZ_RUNDE) == kern::festkomma::I64_MAX);
-    bool geworfen = false;
-    try {
+
+    // Und **welcher** Riegel (Paket 0085): "groesste int64_t" steht nur in dem, der die
+    // naechste Runde vorher verweigert. Der Fangnetzriegel im `Schreiber` spraeche
+    // stattdessen von einer Runde vor der ersten -- er saehe nur die Zahl, die der
+    // Umbruch hinterlassen hat, und nicht ihren Grund.
+    const std::array<const char*, 2> nach_der_letzten = {{"kern::schritt", "groesste int64_t"}};
+    BRICHT_AB_MIT("Runde nach der letzten zaehlbaren", nach_der_letzten, [&] {
         static_cast<void>(kern::schritt::schritt(am_ende, {}, Modus::Weltlauf));
-    } catch (const std::domain_error& fehler) {
-        geworfen = true;
-        std::printf("  Abbruch wie erwartet (Runde nach der letzten zaehlbaren): %s\n",
-                    fehler.what());
-    }
-    PRUEFE(geworfen);
+    });
 }
 
 // ---------------------------------------------------------------------------
@@ -452,28 +540,25 @@ void probe_zwei_runden_und_startwertriegel()
     PRUEFE(!kern::zustand::vor_der_ersten_runde(welt));
 
     // Haelfte 1: der alte Zugang bricht beim naechsten Schreibzugriff ab.
+    //
+    // Beide Haelften kommen aus `Startbelegung`, und der Klassenname allein unterschiede
+    // sie nicht -- er steht in beiden Meldungen. Das zweite Textstueck trennt sie: Hier
+    // ist eine Runde **vorbeigelaufen**, unten laeuft die Partie **schon**. Ohne die
+    // Trennung sagte ein gruener Lauf nur, dass irgendwo in `Startbelegung` etwas flog.
     const i64 vorher_an_null = welt.lies(0);
-    bool alter_zugang_bricht_ab = false;
-    try {
-        zugang.setze(0, 4711);
-    } catch (const std::domain_error& fehler) {
-        alter_zugang_bricht_ab = true;
-        std::printf("  Abbruch wie erwartet (Zugang von vor Runde 1): %s\n", fehler.what());
-    }
-    PRUEFE(alter_zugang_bricht_ab);
+    const std::array<const char*, 2> alter_zugang = {
+        {"kern::zustand::Startbelegung::setze", "eine Runde vorbeigelaufen"}};
+    BRICHT_AB_MIT("Zugang von vor Runde 1", alter_zugang, [&] { zugang.setze(0, 4711); });
     // Ein Abbruch, der vorher noch schreibt, waere keiner.
     PRUEFE(welt.lies(0) == vorher_an_null);
 
     // Haelfte 2: ein neuer Zugang bindet nicht mehr.
-    bool neuer_zugang_bindet_nicht = false;
-    try {
+    const std::array<const char*, 2> neuer_zugang = {
+        {"kern::zustand::Startbelegung", "die Partie laeuft schon"}};
+    BRICHT_AB_MIT("neuer Zugang nach der Runde", neuer_zugang, [&] {
         Startbelegung neuer{welt};
         static_cast<void>(neuer);
-    } catch (const std::domain_error& fehler) {
-        neuer_zugang_bindet_nicht = true;
-        std::printf("  Abbruch wie erwartet (neuer Zugang nach der Runde): %s\n", fehler.what());
-    }
-    PRUEFE(neuer_zugang_bindet_nicht);
+    });
 }
 
 // ---------------------------------------------------------------------------
@@ -513,25 +598,15 @@ void probe_spielmodus_bricht_ab()
 {
     const Zustand welt = ausgangslage(3);
 
-    bool geworfen = false;
-    bool nennt_alle_310 = false;
-    bool nennt_den_modus = false;
-    bool nennt_die_fehlenden_pakete = false;
-
-    try {
+    // Die drei hinteren Stuecke sind Bedingung 7 und standen hier schon: alle 310
+    // Adressen, der Modus beim Namen, die zwei Schritte ohne Paket. Vorn steht seit
+    // Paket 0085 der Kasten, der geworfen hat -- er kennzeichnet den Riegel, waehrend die
+    // drei anderen sagen, dass die Meldung ihren Grund nennt.
+    const std::array<const char*, 4> kennzeichen = {
+        {"kern::schritt", "spielmodus", "310", "kein Paket"}};
+    BRICHT_AB_MIT("Modus spielmodus", kennzeichen, [&] {
         static_cast<void>(kern::schritt::schritt(welt, {}, Modus::Spielmodus));
-    } catch (const std::domain_error& fehler) {
-        geworfen = true;
-        std::fprintf(stdout, "  Abbruch wie erwartet: %s\n", fehler.what());
-        nennt_alle_310 = enthaelt(fehler.what(), "310");
-        nennt_den_modus = enthaelt(fehler.what(), "spielmodus");
-        nennt_die_fehlenden_pakete = enthaelt(fehler.what(), "kein Paket");
-    }
-
-    PRUEFE(geworfen);
-    PRUEFE(nennt_alle_310);
-    PRUEFE(nennt_den_modus);
-    PRUEFE(nennt_die_fehlenden_pakete);
+    });
 }
 
 // ---------------------------------------------------------------------------
@@ -543,19 +618,34 @@ void probe_spielmodus_bricht_ab()
 // `-fwrapv` ein Umbruch ins Negative -- also eine Rundennummer, die der `Schreiber`
 // abwiese, mit einer Meldung, die die Ursache nicht mehr nennt.
 
+/// Eine Rundennummer und der Riegel, der an ihr anschlagen muss.
+///
+/// Die Erwartung haengt am Fall und nicht an der Schleife, weil die drei Nummern **nicht**
+/// an derselben Schranke sterben: Die beiden negativen faengt der Riegel gegen die Runde
+/// vor der ersten, `I64_MAX` der gegen die nicht mehr zaehlbare. Eine Schleife mit einer
+/// gemeinsamen Erwartung koennte den Unterschied nicht sehen -- und genau ihn will das
+/// Paket festhalten.
+struct Rundenfall {
+    i64 nummer;
+    const char* was;
+    std::array<const char*, 2> kennzeichen;
+};
+
 void probe_rundennummer()
 {
-    for (const i64 nummer : {i64{-1}, kern::festkomma::I64_MIN, kern::festkomma::I64_MAX}) {
-        const Zustand welt = ausgangslage(nummer);
-        bool geworfen = false;
-        try {
+    const std::array<Rundenfall, 3> faelle = {{
+        {i64{-1}, "partie.runde = -1", {{"kern::schritt", "damit negativ"}}},
+        {kern::festkomma::I64_MIN, "partie.runde = kleinster int64_t",
+         {{"kern::schritt", "damit negativ"}}},
+        {kern::festkomma::I64_MAX, "partie.runde = groesster int64_t",
+         {{"kern::schritt", "groesste int64_t"}}},
+    }};
+
+    for (const Rundenfall& fall : faelle) {
+        const Zustand welt = ausgangslage(fall.nummer);
+        BRICHT_AB_MIT(fall.was, fall.kennzeichen, [&] {
             static_cast<void>(kern::schritt::schritt(welt, {}, Modus::Weltlauf));
-        } catch (const std::domain_error& fehler) {
-            geworfen = true;
-            std::fprintf(stdout, "  Abbruch wie erwartet (partie.runde = %lld): %s\n",
-                         static_cast<long long>(nummer), fehler.what());
-        }
-        pruefe(geworfen, "partie.runde ausserhalb des Zaehlbaren bricht ab", __LINE__);
+        });
     }
 }
 

@@ -1,5 +1,10 @@
 # Logbuch: architekt
 
+*Lauf 0051 am 2026-09-05: `Edit` auf `specs/…/technik.md` zweimal verweigert, Wortlaut
+„Permission to use Edit has been denied because Claude Code is running in don't ask mode".
+Kein Pfadgrund in `.claude/settings.json` — dort steht als einziges `Edit`-Verbot
+`Edit(//**/.git/**)`.*
+
 *Neu begonnen am 2026-09-04 an der 12.000-Zeichen-Grenze; Vorstand in
 `git show HEAD~1:notizen/architekt.md`.*
 

@@ -1181,6 +1181,76 @@ Diese Adressen erscheinen im Protokoll, in der Kette, in den Testvorlagen und in
 Oberfläche. Sie sind Teil der Schnittstellenversion: Wer eine umbenennt, macht den
 Regressionsbestand ungültig und braucht einen ADR.
 
+**T17b — Der Adressbaum hat keinen Knoten `gebiet`, und `gebiet.<G>.` ist eine
+Sammelschreibweise dieses Dokuments.** Vier Stellen benutzen ein Präfix `gebiet.…`, wo eine
+Aussage für alle fünf Gebiete zugleich gilt. Es ist **keine Adresse**: Es erscheint in keinem
+Protokoll, in keiner Kette, in keiner Testvorlage und in keiner Oberfläche, und ein
+`detail gebiet.US` gibt es nach T20 nicht. Aufgelöst wird es so, und die Auflösung ist
+vollständig:
+
+| `<G>` steht für | aufgelöstes Präfix | Adressen |
+|---|---|---:|
+| eines der vier spielbaren Länder | `land.US.`, `land.CN.`, `land.DE.`, `land.BR.` | 4 × 44 = 176 |
+| die Restwelt | `restwelt.` — ohne Kürzel, weder `gebiet.RW.` noch `land.RW.` | 22 |
+| **zusammen** | | **198** |
+
+Die 198 sind dieselbe Zahl wie die Gebietsspalte der Nachrechnung zu T15
+(`4 × 44 + 22 = 198` für die Gebiete). Die Schreibung des Platzhalters folgt der Regel, die
+dieses Dokument für `land.<L>.` gegen `land.<l>.` schon benutzt: **Grossbuchstabe** heisst
+„ein beliebiges Gebiet" im Fliesstext, **Kleinbuchstabe** heisst „der Wert dieses
+Funktionsarguments" (T48, `landespreis(g, s)`). Aufgelöst wird in beiden Fällen gleich.
+
+**Warum diese Richtung und nicht die umgekehrte** — vier Gründe, jeder für sich tragend:
+
+1. **T17 zählt die Adressform selbst auf** und schreibt `land.DE.sektor.2.preis` und
+   `land.BR.instrument.zoll.stand`; ein Knoten `gebiet` kommt dort nicht vor. T20 nennt für
+   `detail` ebenso `land.US` und `land.CN.sektor.1`.
+2. **T45 widerspräche T46 innerhalb desselben Abschnitts.** Die Zeile `Vorgabe(T-Nummer)`
+   führt als Beispiel wörtlich „`restwelt.basiswechsel` → 0 (T8)" — eine der elf Adressen,
+   auf die T46 wenige Absätze später abschliessend zeigt. Eine der beiden Stellen müsste
+   falsch sein, und keine ist es.
+3. **Die Restwelt trägt im Präfix kein Kürzel.** `RW` kommt allein in den 40 Handelsadressen
+   vor (`handel.RW.US.1`), dort als Bestandteil zwischen zwei Punkten und nicht als
+   Blockpräfix. Ein `gebiet.RW.` gäbe der Restwelt eine zweite Schreibweise, ohne eine Regel
+   zu vereinfachen.
+4. **Der Preis wären nicht fünf Adressen, sondern 198.** `basiswechsel` ist nach T15 ein Feld
+   des Gebietsblocks wie `leitzins` und `preisniveau` auch. Wer es `gebiet.US.basiswechsel`
+   nennt, muss `gebiet.US.leitzins` mitnennen — sonst trägt ein und derselbe Block zwei
+   Präfixe. Zu Ende geführt benennt die Gegenrichtung 198 der 310 Adressen um, macht damit
+   nach T17 den Regressionsbestand ungültig und braucht einen ADR. Der Gewinn wäre null:
+   dieselben Größen unter anderen Namen.
+
+**Die beiden Folgen, beide nachgesehen und beide passend — kein „vermutlich".**
+`daten/adressen.md` führt die fünf `basiswechsel`-Zeilen als `land.US.basiswechsel`,
+`land.CN.basiswechsel`, `land.DE.basiswechsel`, `land.BR.basiswechsel` und
+`restwelt.basiswechsel`, laufende Nummern 44, 88, 132, 176 und 198. Das ist genau die
+Auflösung der T46-Zeile; das Verzeichnis bleibt **unverändert**, und auch seine Markierungen
+hängen nicht daran — es rechnet unter *Was hier offen bleibt und hier nicht entschieden wird*
+selbst vor, dass beide denkbaren Antworten dieselben Marken ergeben. Was dort nachzutragen
+bleibt, ist allein die Antwort selbst; das ist Arbeit am Verzeichnis und gehört in ein
+eigenes Paket. `gebietspraefix()` in `kern/src/zustand.cpp` hängt für die vier spielbaren
+Länder `land.`, das Gebietskürzel und einen Punkt an und für die Restwelt `restwelt.`; der
+Kommentar über der Funktion sagt es wörtlich. Das ist die maschinelle Fassung dieser Regel —
+**passend, keine Änderung am Kern und kein ADR.**
+
+**Die vier Fundstellen, abschliessend.** Jede wird von der Regel aufgelöst, keine ist eine
+Ausnahme:
+
+| Stelle | Form | löst auf zu |
+|---|---|---|
+| **T28**, Absatz zur Preismischung, „mit `landespreis` = … nach T39" | `lies_alt(gebiet.<G>.sektor.<s>.preis)` | 15 Adressen — 5 Gebiete × 3 Sektorpreise |
+| **T39**, letzter Absatz, „Damit hat `landespreis` seinen Ort" | `lies_alt(gebiet.<G>.sektor.<s>.preis)` | dieselben 15 |
+| **T46**, erste Tabellenzeile | `gebiet.<G>.basiswechsel`, alle fünf Gebiete | 5 Adressen — laufende Nummern 44, 88, 132, 176, 198 |
+| **T48**, Nummer 13, `landespreis(g, s)` | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | dieselben 15, `g` als Argument |
+
+Die 15 sind an `daten/adressen.md` abgezählt und nicht gerechnet: Die laufenden Nummern 4, 8,
+12, 48, 52, 56, 92, 96, 100, 136, 140, 144, 180, 184 und 188 tragen einen Sektorpreis.
+
+**Zwei der vier Stellen schrieben bis zu dieser Fassung `gebiet.sektor.preis`** — ohne
+Platzhalter, also ohne zu sagen, welches Gebiet und welcher Sektor gemeint ist. Sie tragen
+ihn jetzt. Die Adressmenge bleibt 310 und die Tabelle in T46 Zeile für Zeile, wie sie war:
+Diese Festlegung ändert keine Adresse, sondern sagt, was eine Schreibweise bedeutet.
+
 **T18 — Die Kette wird erzeugt, nicht rekonstruiert — und jede Größe der Sollmaske wird je
 Runde genau einmal geschrieben.** Die Felder von `Zustand` sind ausserhalb des Kerns nicht
 schreibbar; innerhalb schreibt niemand direkt, sondern über
@@ -1227,8 +1297,8 @@ Abbruch ist die Zyklenfreiheit der Rundenreihenfolge kein Versprechen mehr, sond
 Eigenschaft, die jeder Lauf nachweist — auch der beim Käufer.
 
 Damit hat `landespreis` seinen Ort: In der Markträumung (T28) ist er
-`lies_alt(gebiet.sektor.preis)`. In Runde 1 ist das der Startwert des Jahrgangs, nach
-`spiel.md` der Index 10.000.
+`lies_alt(gebiet.<G>.sektor.<s>.preis)`, Präfix nach T17b. In Runde 1 ist das der Startwert
+des Jahrgangs, nach `spiel.md` der Index 10.000.
 
 **T38 — Der Modus ist eine Eigenschaft des Laufs, nicht des Zustands — und er bringt eine
 Sollmaske mit.** Das ist die Behebung von Befund 2 auf der Architekturseite.
@@ -1551,6 +1621,14 @@ hier mit Startwert, Grund und Regel im Lauf:
 | `restwelt.wechselkurs` | 1 | 10.000 | Ebenso ungelesen, aber mit anderem Startwert: Die Restwelt rechnet im Numéraire, und ein Kurs eines Währungsaggregats gegen den Dollar hat keine Bedeutung. 10.000 statt 0, damit eine versehentliche Verwendung nicht durch null teilt, sondern die Zahl unverändert lässt |
 | `restwelt.inflation` | 1 | 0 | Reihe 8 (Verbraucherpreise) trägt vier Länder, die Restwelt nicht. Im Lauf ist die Größe endogen wie überall — Jahresrate von `restwelt.preisniveau`, das Reihe 15 verankert. Nur ihr Startwert hat keine Quelle |
 
+**Die erste Zeile nennt fünf Adressen und keine Schreibweise.** `gebiet.<G>.` ist die
+Sammelschreibweise aus **T17b** und löst hier zu `land.US.basiswechsel`,
+`land.CN.basiswechsel`, `land.DE.basiswechsel`, `land.BR.basiswechsel` und
+`restwelt.basiswechsel` auf — laufende Nummern 44, 88, 132, 176 und 198 in
+`daten/adressen.md`. Das ist keine Ausnahme von T17, sondern seine Anwendung: Fünf Zeilen
+einzeln aufzuführen, wo sie sich nur im Gebiet unterscheiden, bläht die Tabelle und sagt
+nichts mehr.
+
 **Zwei Auflagen, ohne die die vier Restweltadressen eine stille Annahme wären.** Erstens:
 Auf sie ist **ausser dem Vortrag selbst kein Lesezugriff zulässig**. Der `Schreiber` führt
 sie in einer Liste `nur_vortrag`; ein `lies_alt` oder `lies_neu` darauf aus einer anderen
@@ -1742,8 +1820,8 @@ preis = teile_gerundet(weltpreis_mit_zoll · durchgriff
                        + landespreis · (10.000 − durchgriff),  10.000)
 ```
 
-mit `landespreis = lies_alt(gebiet.sektor.preis)` nach T39, in Runde 1 also dem Startwert
-10.000. Angebot und Nachfrage werden auf diesem Preis gebildet.
+mit `landespreis = lies_alt(gebiet.<G>.sektor.<s>.preis)` nach T39, Präfix nach T17b, in
+Runde 1 also dem Startwert 10.000. Angebot und Nachfrage werden auf diesem Preis gebildet.
 
 **Damit ist die Zulässigkeit der Halbierung belegt statt behauptet** — und das ist die
 Behebung von Befund 6, nicht nur seine Beantwortung. Beide Gewichte sind nichtnegativ

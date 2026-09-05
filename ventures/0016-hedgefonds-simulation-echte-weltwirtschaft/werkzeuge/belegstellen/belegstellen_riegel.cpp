@@ -178,13 +178,21 @@
 //! die vier Faelle, die die Verbreiterung verlangt (1, 2, 3 und 8), und die vier
 //! anderen bleiben gruen.
 //!
+//! Zwei weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
+//! mit: `ZITATFAELLE` zur Form ohne Anfuehrung (Paket 0079) und `ZIELFAELLE` zur Frage,
+//! wo eine genannte Zieldatei liegt (Paket 0083). Beide halten vor allem den **roten**
+//! Fall fest, den der Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der
+//! Riegel koennte dort also nur zeigen, dass er gruen wird.
+//!
 //! ## Was der Riegel liest, und warum genau das
 //!
 //! Gelesen werden die **Bauquellen** des Vorhabens: Rumpf- und Kopfdateien, die
 //! Bausteuerung und jede Bauliste. Ausgenommen sind die Verzeichnisse `bau` (vom
 //! Uebersetzer erzeugt) und `befunde` (Berichte -- eine Zeilennummer darin ist ein
 //! *Messwert vom Tag der Messung*, kein Verweis; sie soll gerade nicht nachgefuehrt
-//! werden, sonst faelschte man einen Bericht).
+//! werden, sonst faelschte man einen Bericht). Von beiden werden seit Paket 0083 die
+//! **Dateinamen** eingesammelt, nicht ihr Inhalt -- der eigene Teil weiter unten sagt,
+//! wofuer.
 //!
 //! Der Schnitt bei `bau` kostet etwas, und das gehoert dazugesagt: Unter
 //! `pruefstand/bau/pruefung-0019/` liegen Quelldateien, die keine Erzeugnisse sind.
@@ -236,14 +244,19 @@
 //! nachweislich Zitate hinterlassen.
 //!
 //! Dazu eine dritte Zahl, und sie ist die ehrliche Haelfte: **uebergangene
-//! Fundstellen**. Fuenf Sorten, alle unten einzeln mit Datei und Zeile genannt, damit
+//! Fundstellen**. Sechs Sorten, alle unten einzeln mit Datei und Zeile genannt, damit
 //! keine still bleibt:
 //!
 //!   * *ohne Dokumentnamen im Absatz* -- ein Verweis auf einen Abschnitt derselben
 //!     Datei, oder auf eine Quelle ausserhalb dieses Vorhabens (eine Lizenz, ein RFC).
 //!     Er traegt sein Ziel nicht bei sich; dieser Riegel prueft nur, was das tut.
-//!   * *Ziel ausserhalb des Bestands* -- der naechstgelegene Name gehoert zu keiner
-//!     Datei, die hier gelesen wird (ein Bericht unter `befunde/`, eine Netzadresse).
+//!   * *Ziel in einem mit Absicht ungelesenen Ordner* -- der naechstgelegene Name
+//!     gehoert zu einer Datei, die es gibt, die dieser Riegel aber nicht liest (ein
+//!     Bericht unter `befunde/`, ein Erzeugnis unter `bau/`). Paket 0083 hat diese
+//!     Sorte von der naechsten getrennt; der eigene Teil weiter unten sagt, warum.
+//!   * *Ziel ausserhalb beider Wurzeln* -- der Name spricht seinen Ort selbst aus:
+//!     ein unbedingter Pfad, ein Aufstieg mit zwei Punkten. Dazu die Netzadresse, die
+//!     ihre eigene Meldung hat.
 //!   * *Gliederungsziffer statt Ueberschrift* -- Paket 0079, oben begruendet. Die
 //!     groesste der fuenf Gruppen und die harmloseste: Eine Nummer traegt keinen
 //!     Wortlaut, an dem sich etwas nachschlagen liesse.
@@ -366,6 +379,70 @@
 //! Form ungeschuetzt. Sie steht hier, damit die Zahlen unten niemand fuer
 //! Vollstaendigkeit haelt; als Vorschlag liegt sie als Paket 0086 daneben.
 //!
+//! ## Das tote Ziel -- Paket 0083
+//!
+//! Bis zum 2026-09-05 trug die Sorte "Ziel ausserhalb des Bestands" zwei Faelle, die
+//! nichts miteinander zu tun haben. Der eine ist ein Verweis auf einen Pruefbericht
+//! unter `befunde/` -- richtig uebergangen, denn dieser Ordner wird mit Absicht nicht
+//! gelesen. Der andere ist ein Name, den es nirgends gibt -- also genau der tote
+//! Verweis, gegen den dieser Riegel geschrieben ist. Beide waren gruen.
+//!
+//! **Was daran gefaehrlich ist, ist gemessen und nicht befuerchtet.** Am 2026-09-04 ist
+//! der Riegel gegen eine Kopie der Vorgaben ohne `spiel.md` gelaufen: Statt 21 Zitaten
+//! wurden 9 geprueft, zwoelf wanderten von einer Sekunde auf die andere unter die
+//! uebergangenen Fundstellen, die beiden gemeldeten Zahlen blieben gleich, und der Test
+//! bestand. Ein Riegel, dessen Abdeckung um die Haelfte fallen kann, ohne dass er es
+//! sagt, macht jeden gruenen Lauf wertlos -- auch die der anderen Bedingungen.
+//!
+//! **Die Trennung.** Steht der naechstgelegene Name nicht im Bestand, wird gefragt, wo
+//! er sonst liegt. Drei Antworten, und nur die letzte ist ein Befund:
+//!
+//!   1. Der Name **spricht seinen Ort selbst aus** -- er beginnt mit einem
+//!      Schraegstrich oder steigt mit zwei Punkten aus der Wurzel heraus. Uebergangen.
+//!   2. Es **gibt** eine Datei dieses Namens, aber in einem mit Absicht ungelesenen
+//!      Ordner. Uebergangen, und die Meldung nennt den Namen.
+//!   3. Es gibt sie **nirgends** unter beiden Wurzeln. Befund, Lauf rot.
+//!
+//! Fuer den zweiten Fall sammelt der Riegel seit diesem Paket die **Namen** unter
+//! `bau/` und `befunde/` mit ein -- nicht ihren Inhalt. Der Unterschied traegt die
+//! ganze Trennung: "Es gibt sie dort" und "es gibt sie nirgends" sind zwei Zustaende,
+//! und ohne die Namensliste sind sie fuer den Riegel derselbe. Gelesen wird aus diesen
+//! Ordnern weiterhin keine einzige Datei; eine Zeilennummer in einem Bericht bleibt ein
+//! Messwert vom Tag der Messung, und eine Ueberschrift daraus wird nirgends
+//! nachgeschlagen. Versteckte Ordner (`.git`, `.claude`) bleiben ganz aussen vor, und
+//! zwar aus einem anderen Grund: Dort liegt Maschinerie, kein Dokument, das ein Zitat
+//! nennen koennte -- und der Baum unter `.git` ist der groesste des Vorhabens.
+//!
+//! **Die Frage nach `aufgaben/`, die der Zuschnitt offen laesst, und meine Antwort:
+//! nein, dieser Ordner wird nicht wie `befunde/` behandelt.** Der Grund ist nicht
+//! Bequemlichkeit, sondern dass die beiden auf verschiedenen Seiten stehen. Ungelesen
+//! ist `aufgaben/` nur als **zitierende** Menge -- ein Arbeitspaket beschreibt den
+//! Stand, als es zugeschnitten wurde, und seine Verweise nachzufuehren faelschte es.
+//! Als **Ziel** steht es heute im Bestand und wird nachgeschlagen. Es dort
+//! herauszunehmen hiesse, Zitate, die heute aufloesen, kuenftig zu uebergehen -- eine
+//! stille Verkleinerung der Abdeckung, also genau das, wogegen dieses Paket
+//! geschrieben ist. Wer die Ordnerliste `UNGELESENE_ORDNER` erweitert, nimmt Ziele aus
+//! dem Bestand und muss diese Rechnung aufmachen.
+//!
+//! **Was die Trennung kostet, ausgeschrieben.** Sie gilt fuer beide Zitatformen, auch
+//! fuer die ohne Anfuehrung aus Paket 0079. Dort ist die Fundstelle mit einem
+//! Wahrscheinlichkeitsurteil gefunden, und bisher hat das Nachschlagen des Ziels sie
+//! stillschweigend bestaetigt: Was nirgends hinzeigte, verschwand unter den
+//! uebergangenen Fundstellen. Kuenftig wird es rot. Das ist die richtige Richtung --
+//! ein Absatz, der einen Dateinamen nennt, den es nicht gibt, ist auch dann ein Befund,
+//! wenn das Zitat daneben keines war -- aber es ist eine neue Quelle von Rot, und sie
+//! gehoert benannt, bevor sie jemanden ueberrascht. Am 2026-09-05 gibt es im ganzen
+//! Bestand **eine** Fundstelle dieser Sorte, und sie faellt unter den zweiten Fall.
+//!
+//! ## Die Untergrenze -- Paket 0083, zweiter Teil
+//!
+//! Die Trennung oben faengt den Rueckgang auf der **Zielseite**: Faellt eine Zieldatei
+//! weg, wird der Lauf rot. Sie faengt nicht den Rueckgang auf der **Fundseite** -- hoert
+//! eine Menge zitierender Dateien auf, gelesen zu werden, entsteht kein Befund, die
+//! beiden Zahlen bleiben gleich und nur ihre Hoehe faellt. Dagegen steht eine
+//! Untergrenze im Quelltext; ihre Zahl, ihre Herkunft und was sie ausdruecklich **nicht**
+//! faengt, stehen bei `AUFGELOEST_MINDESTENS`.
+//!
 //! ## Warum der Riegel seinen eigenen Quelltext mitliest
 //!
 //! Er tut es, und das ist Absicht: Nur so laesst sich der Rotnachweis fuehren, ohne
@@ -396,7 +473,10 @@
 //! Riegel ab (Code 2), statt jedes Zitat in die Vorgaben als "Ziel ausserhalb des
 //! Bestands" durchzuwinken -- das waere ein gruener Lauf ueber nichts.
 //!
-//! Rueckgabe: 0 kein Befund, 1 Befunde gefunden, 2 Aufruf- oder Lesefehler.
+//! Rueckgabe: 0 kein Befund, 1 Befunde gefunden, 2 der Riegel selbst taugt nicht --
+//! Aufruf- oder Lesefehler, ein verfehlter Fall des Selbsttests, kein einziges
+//! gefundenes Zitat oder eine unterschrittene Untergrenze. Die Trennung ist die
+//! zwischen "im Gemessenen steckt ein Fehler" und "das Messgeraet misst nicht".
 //!
 //! Vorgaben: T4 (kein Gleitkomma -- hier trivial, es wird nichts gerechnet),
 //! ADR 0011 (C++20, g++). Kein Zeiger, kein rohes Feld, jeder Zugriff ueber Index.
@@ -407,6 +487,7 @@
 #include <filesystem>
 #include <fstream>
 #include <map>
+#include <set>
 #include <string>
 #include <string_view>
 #include <system_error>
@@ -426,8 +507,11 @@ namespace fs = std::filesystem;
 /// Vorhabens.
 constexpr std::string_view ENDUNGEN = ".md.toml.cpp.hpp.txt.cmake.py.rs.";
 
-/// Verzeichnisnamen, die nicht betreten werden. Begruendung im Kopf.
-constexpr std::array<std::string_view, 2> GESPERRTE_ORDNER = {"bau", "befunde"};
+/// Verzeichnisnamen, deren **Inhalt** nicht gelesen wird. Ihre Dateinamen werden seit
+/// Paket 0083 trotzdem eingesammelt -- der Unterschied zwischen "gibt es dort" und "gibt
+/// es nirgends" ist genau die Trennung, um derentwillen dieses Paket existiert.
+/// Begruendung im Kopf.
+constexpr std::array<std::string_view, 2> UNGELESENE_ORDNER = {"bau", "befunde"};
 
 /// Die Zeichen, aus denen ein Dateiname bestehen darf. Absichtlich ohne Akzent- und
 /// Anfuehrungszeichen: Ein Verweis steht regelmaessig zwischen Akzenten, und die
@@ -759,46 +843,75 @@ bool ist_zieldatei(const fs::path& pfad) {
     return endung_zugelassen(name);
 }
 
-bool ist_gesperrt(std::string_view ordner) {
-    for (std::size_t i = 0; i < GESPERRTE_ORDNER.size(); ++i) {
-        if (ordner == GESPERRTE_ORDNER[i]) {
+bool ist_ungelesener_ordner(std::string_view ordner) {
+    for (std::size_t i = 0; i < UNGELESENE_ORDNER.size(); ++i) {
+        if (ordner == UNGELESENE_ORDNER[i]) {
             return true;
         }
     }
-    // Versteckte Ordner (`.git`, `.claude`) sind keine Bauquellen.
+    return false;
+}
+
+/// Versteckte Ordner (`.git`, `.claude`). Sie werden gar nicht erst betreten, und das
+/// ist seit Paket 0083 ein anderer Fall als der oben: Dort liegt Maschinerie und kein
+/// Dokument, das ein Zitat nennen koennte. Ein Pruefbericht wird zitiert, ein
+/// Git-Objekt nicht -- deshalb lohnt es nicht, ihre Namen fuer die Ortsfrage
+/// mitzufuehren, und der Baum unter `.git` ist der groesste des Vorhabens.
+bool ist_maschinerie(std::string_view ordner) {
     return !ordner.empty() && ordner.front() == '.';
 }
 
+/// Wo eine Datei liegt, deren Inhalt niemand liest -- eingesammelt werden nur die
+/// Basisnamen. Mehr braucht die Frage nicht, die sie beantworten: ob es einen Ort
+/// dieses Namens ueberhaupt gibt.
+using Namensmenge = std::set<std::string>;
+
 /// Absteigend, mit eigener Arbeitsliste statt `recursive_directory_iterator`: Dessen
-/// `disable_recursion_pending` haengt am Zustand des Iterators, und ein gesperrter
-/// Ordner soll gar nicht erst geoeffnet werden.
-std::vector<fs::path> sammle_dateien(const fs::path& wurzel, std::error_code& fehler) {
+/// `disable_recursion_pending` haengt am Zustand des Iterators, und ein Ordner voller
+/// Maschinerie soll gar nicht erst geoeffnet werden.
+///
+/// Zwei Ausgaben aus einem Durchgang: die Dateien, die gelesen werden duerfen, und die
+/// Namen derer, die in einem mit Absicht ungelesenen Ordner liegen. Zwei Durchgaenge
+/// ueber denselben Baum waeren zwei Ordnerlisten, die auseinanderlaufen koennen.
+std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Namensmenge& ungelesene,
+                                     std::error_code& fehler) {
     std::vector<fs::path> gefunden;
     // Eingesammelt wird in einem Durchgang alles, was ueberhaupt gelesen werden kann;
     // welche Bedingung welche Teilmenge bekommt, entscheidet `main` an den Praedikaten
-    // oben. Zwei Durchgaenge ueber denselben Baum waeren zwei Ordnerlisten, die
-    // auseinanderlaufen koennen.
-    std::vector<fs::path> offen;
-    offen.push_back(wurzel);
+    // oben.
+    struct Auftrag {
+        fs::path pfad;
+        bool ungelesen;
+    };
+    std::vector<Auftrag> offen;
+    offen.push_back(Auftrag{wurzel, false});
 
     while (!offen.empty()) {
-        const fs::path verzeichnis = offen.back();
+        const Auftrag auftrag = offen.back();
         offen.pop_back();
 
-        fs::directory_iterator it(verzeichnis, fehler);
+        fs::directory_iterator it(auftrag.pfad, fehler);
         if (fehler) {
             return gefunden;
         }
         const fs::directory_iterator ende;
         while (it != ende) {
             const fs::path eintrag = it->path();
+            const std::string name = eintrag.filename().string();
             std::error_code art;
             if (fs::is_directory(eintrag, art)) {
-                if (!ist_gesperrt(eintrag.filename().string())) {
-                    offen.push_back(eintrag);
+                if (!ist_maschinerie(name)) {
+                    // Einmal ungelesen, immer ungelesen: Ein Unterordner von `befunde`
+                    // wird nicht dadurch lesbar, dass er anders heisst.
+                    offen.push_back(
+                        Auftrag{eintrag, auftrag.ungelesen || ist_ungelesener_ordner(name)});
                 }
             } else if (fs::is_regular_file(eintrag, art) && ist_zieldatei(eintrag)) {
-                gefunden.push_back(eintrag);
+                if (auftrag.ungelesen) {
+                    ungelesene.insert(name);
+                } else {
+                    gefunden.push_back(eintrag);
+                }
             }
             it.increment(fehler);
             if (fehler) {
@@ -1236,6 +1349,154 @@ void nimm_ziel_auf(Zielbestand& bestand, const fs::path& pfad,
     ++eintrag.anzahl;
 }
 
+// ---------------------------------------------------------------------------
+// Bedingung 2, Teil 2b: wo das genannte Ziel liegt -- Paket 0083
+// ---------------------------------------------------------------------------
+
+/// Nennt der Name selbst einen Ort ausserhalb beider Wurzeln?
+///
+/// Gefragt wird an der **Gestalt des Namens**, nicht am Dateisystem, und das ist der
+/// tragende Teil: Ein Name, der nicht im Bestand steht, ist entweder ein Verweis nach
+/// draussen oder ein toter -- und nur der Name selbst kann sagen, welches von beiden.
+/// Ein fuehrender Schraegstrich und ein Aufstieg mit zwei Punkten sind die beiden
+/// Formen, in denen ein Pfad das ausspricht. Die dritte, die Netzadresse, faengt
+/// `naechster_verweis` schon vorher an ihrem doppelten Schraegstrich ab.
+bool nennt_ort_ausserhalb(std::string_view name) {
+    if (!name.empty() && name.front() == '/') {
+        return true;
+    }
+    if (name.size() >= 3 && name.substr(0, 3) == "../") {
+        return true;
+    }
+    return name.find("/../") != std::string_view::npos;
+}
+
+/// Wo die genannte Zieldatei liegt. Die Sorte "nicht im Bestand" zerfaellt seit Paket
+/// 0083 in drei, und nur die letzte ist ein Befund.
+enum class Zielart {
+    Gelesen,     ///< im Bestand -- es wird nachgeschlagen
+    Ausserhalb,  ///< der Name nennt selbst einen Ort ausserhalb beider Wurzeln
+    Ungelesen,   ///< es gibt die Datei, aber in einem mit Absicht ungelesenen Ordner
+    Tot          ///< kein Ort unter beiden Wurzeln traegt diesen Namen -- Befund
+};
+
+/// Die ganze Entscheidung an einer Stelle, damit der Selbsttest unten **denselben** Weg
+/// misst wie der Lauf ueber den Bestand -- dieselbe Ueberlegung wie bei `fund_ab` und
+/// `namensart`.
+///
+/// Die Reihenfolge entscheidet und ist keine Geschmackssache: Der Bestand zuerst, denn
+/// eine Datei, die gelesen wird, ist gelesen, auch wenn eine gleichnamige unter
+/// `befunde` liegt. Dann der Name, der seinen Ort selbst ausspricht. Erst danach die
+/// Frage, ob es ihn irgendwo gibt.
+Zielart zielart(std::string_view name, bool im_bestand, const Namensmenge& ungelesene) {
+    if (im_bestand) {
+        return Zielart::Gelesen;
+    }
+    if (nennt_ort_ausserhalb(name)) {
+        return Zielart::Ausserhalb;
+    }
+    if (ungelesene.find(std::string(basisname(name))) != ungelesene.end()) {
+        return Zielart::Ungelesen;
+    }
+    return Zielart::Tot;
+}
+
+// ---------------------------------------------------------------------------
+// Der Selbsttest zur Ortsfrage -- Paket 0083
+// ---------------------------------------------------------------------------
+//
+// Warum eine Tabelle im Programm und kein zweiter Testfall daneben: dieselbe Lage wie
+// bei `NAMENSFAELLE` und `ZITATFAELLE`. Die `CMakeLists.txt` gehoert Paket 0059 und
+// steht nicht in der Dateiliste dieses Pakets.
+//
+// **Was sie prueft, was der Bestand nicht hergibt: den roten Fall.** Der Bestand traegt
+// am 2026-09-05 genau **eine** Fundstelle dieser Sorte, und sie ist keine tote -- der
+// Riegel kann dort also nur zeigen, dass er gruen bleibt. Die Faelle 3 und 4 unten
+// halten die Gegenprobe fest.
+
+struct Zielfall {
+    std::string_view name;
+    /// Steht der Name im gelesenen Bestand?
+    bool im_bestand;
+    /// Basisnamen in den mit Absicht ungelesenen Ordnern, durch `|` getrennt.
+    std::string_view ungelesene;
+    Zielart erwartet;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Zielfall, 8> ZIELFAELLE = {{
+    // --- Was gelesen wird, bleibt gelesen ------------------------------------
+    {"daten/adressen.md", true, "", Zielart::Gelesen,
+     "der Regelfall: 38 der 38 aufgeloesten Zitate gehen hier durch"},
+    {"adressen.md", true, "adressen.md", Zielart::Gelesen,
+     "gebaut: derselbe Name liegt zugleich in einem ungelesenen Ordner. Der Bestand "
+     "gewinnt -- sonst uebergeht der Riegel, was er lesen darf"},
+
+    // --- Die eine echte Fundstelle dieser Sorte, und ihre Gegenprobe ---------
+    {"befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", false,
+     "pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", Zielart::Ungelesen,
+     "parameter.toml -- die einzige Fundstelle dieser Sorte im Bestand, gemessen "
+     "2026-09-05. Sie muss uebergangen bleiben"},
+    {"befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", false, "",
+     Zielart::Tot,
+     "dieselbe Stelle, den Bericht weggedacht: Ohne einen Ort dieses Namens ist der "
+     "Verweis tot. Erst diese Zeile zeigt, dass die Ordnerliste entscheidet und nicht "
+     "der Vorsatz im Pfad"},
+
+    // --- Der erfundene Name --------------------------------------------------
+    {"spiel-gibt-es-nicht.md", false, "spiel.md|technik.md", Zielart::Tot,
+     "gebaut: der Rotfall dieses Pakets. Ein aehnlicher Name im Bestand rettet ihn "
+     "nicht -- verglichen wird der ganze Basisname"},
+
+    // --- Was seinen Ort selbst ausspricht ------------------------------------
+    {"/usr/share/doc/lizenz.md", false, "", Zielart::Ausserhalb,
+     "gebaut: ein unbedingter Pfad. Er nennt einen Ort, den keine der beiden Wurzeln "
+     "enthaelt -- kein Befund, sondern ein Verweis nach draussen"},
+    {"../../CLAUDE.md", false, "", Zielart::Ausserhalb,
+     "gebaut: der Aufstieg aus der Wurzel heraus, die zweite Form derselben Sache"},
+    {"werkzeuge/../daten/gibt-es-nicht.md", false, "", Zielart::Ausserhalb,
+     "gebaut: der Aufstieg steht mitten im Pfad. Ein solcher Name kommt hier nur an, "
+     "wenn sein Basisname nicht im Bestand steht; er faellt dann nach draussen statt in "
+     "die Befunde -- die nachsichtige Richtung, in der ein Fehler einen ungeprueften "
+     "Verweis kostet und kein falsches Rot"},
+}};
+
+Namensmenge zerlege_namen(std::string_view spalte) {
+    Namensmenge menge;
+    std::string laufend;
+    for (std::size_t z = 0; z <= spalte.size(); ++z) {
+        if (z == spalte.size() || spalte[z] == '|') {
+            if (!laufend.empty()) {
+                menge.insert(laufend);
+            }
+            laufend.clear();
+        } else {
+            laufend += spalte[z];
+        }
+    }
+    return menge;
+}
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_zielart() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < ZIELFAELLE.size(); ++k) {
+        const Zielfall& fall = ZIELFAELLE[k];
+        const Zielart art =
+            zielart(fall.name, fall.im_bestand, zerlege_namen(fall.ungelesene));
+        if (art != fall.erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Zielfall %zu: die Art ist %d, erwartet war %d.\n"
+                         "      Name:     %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(art), static_cast<int>(fall.erwartet),
+                         static_cast<int>(fall.name.size()), fall.name.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
+}
+
 struct Zitatbefund {
     std::string datei;
     std::size_t zeilennummer = 0;
@@ -1261,6 +1522,30 @@ struct Zitatzaehlwerk {
     /// waeren Hunderte --, aber sie bleiben nicht stumm.
     std::size_t ohne_ziel = 0;
 };
+
+/// Wie viele Zitate mindestens aufloesen muessen -- Paket 0083.
+///
+/// **Eine Zahl im Quelltext und keine aus der Bestandsgroesse abgeleitete Schranke.**
+/// Der Grund ist der gemessene Fall selbst: Faellt eine Vorgabendatei weg, faellt die
+/// Zahl der aufgeloesten Zitate um die Haelfte, waehrend der Bestand um **eine** Datei
+/// schrumpft. Eine Schranke, die am Bestand haengt, wandert dabei um ein Hundertstel
+/// mit und verdeckt genau das, was sie fangen soll. Der Preis der festen Zahl ist, dass
+/// sie gepflegt werden muss; er wird laut bezahlt -- ein roter Lauf mit Begruendung --
+/// und nicht still.
+///
+/// **Woher die Zahl kommt.** Sie ist gezaehlt und nicht gegriffen: Es sind die
+/// aufgeloesten Zitate der sechs Pakete, um derentwillen dieser Riegel existiert, wie
+/// sie oben einzeln abgehakt sind -- 0034 zwei, 0035 zwei, 0044 eines, 0047 zwei
+/// (die beiden anderen sind Gliederungsziffern), 0050 fuenf, 0057 vier. Unterschreitet
+/// der Lauf sie, deckt der Riegel seinen eigenen Anlass nicht mehr ab.
+///
+/// **Was sie deshalb nicht faengt, ausgeschrieben:** einen Rueckgang von heute 38 auf
+/// 17. Das ist Absicht und kein Versehen. Eine Schranke dicht unter dem Tagesstand
+/// wuerde bei jeder rechtmaessig entfernten Belegstelle rot und beim naechsten Lauf
+/// nachgezogen -- eine Schwelle, die man nachzieht, misst nichts mehr. Der
+/// Rueckgang **auf der Zielseite** haengt ohnehin nicht an dieser Zahl: Ein
+/// weggefallenes Ziel ist seit diesem Paket ein Befund und kein stiller Abgang.
+constexpr std::size_t AUFGELOEST_MINDESTENS = 16;
 
 /// Laenge des Schluesselworts, das bei `i` **beginnt** -- oder 0.
 std::size_t schluessellaenge(std::string_view text, std::size_t i) {
@@ -1657,9 +1942,10 @@ std::size_t selbsttest_ohne_anfuehrung() {
 }
 
 void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
-                   const Zielbestand& bestand,
+                   const Zielbestand& bestand, const Namensmenge& ungelesene,
                    std::map<std::string, std::vector<std::string>>& ueberschriften,
                    std::vector<Zitatbefund>& befunde,
+                   std::vector<Zitatbefund>& tote_ziele,
                    std::vector<Uebergangen>& uebergangen, Zitatzaehlwerk& zaehlwerk) {
     const std::vector<Absatz> absaetze = lies_absaetze(pfad);
     // Die eigenen Ueberschriften, erst gelesen, wenn eine Fundstelle ohne Anfuehrung
@@ -1716,8 +2002,22 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
             } else {
                 const Zielbestand::const_iterator es =
                     bestand.find(std::string(basisname(name)));
-                if (es == bestand.end()) {
-                    grund = "Ziel ausserhalb des Bestands: " + name;
+                const Zielart ort = zielart(name, es != bestand.end(), ungelesene);
+                if (ort == Zielart::Ausserhalb) {
+                    grund = "Ziel ausserhalb beider Wurzeln: " + name;
+                } else if (ort == Zielart::Ungelesen) {
+                    grund = "Ziel in einem mit Absicht ungelesenen Ordner: " + name;
+                } else if (ort == Zielart::Tot) {
+                    // Der Befund, um dessentwillen Paket 0083 existiert: Es gibt unter
+                    // keiner der beiden Wurzeln einen Ort dieses Namens. Gezaehlt wird
+                    // die Stelle als Zitat, aber nicht als aufgeloest -- so bleibt der
+                    // Satz wahr, dass ungleiche Zahlen einen roten Lauf bedeuten.
+                    ++zaehlwerk.zitate;
+                    if (ohne_anfuehrung) {
+                        ++zaehlwerk.ohne_anfuehrung;
+                    }
+                    tote_ziele.push_back(
+                        Zitatbefund{anzeigename, nummer, name, gesucht});
                 } else if (es->second.anzahl != 1) {
                     grund = "Zielname mehrdeutig, " + std::to_string(es->second.anzahl)
                             + " Dateien heissen so: " + name;
@@ -1803,21 +2103,23 @@ int main(int argc, char** argv) {
     // Der Selbsttest laeuft vor allem anderen und braucht kein Argument: Stimmt die
     // Suche nach links nicht, ist jede Zahl weiter unten wertlos -- auch und gerade
     // eine gruene.
-    const std::size_t fehlgeschlagen =
-        selbsttest_namenssuche() + selbsttest_ohne_anfuehrung();
+    const std::size_t fehlgeschlagen = selbsttest_namenssuche()
+                                       + selbsttest_ohne_anfuehrung()
+                                       + selbsttest_zielart();
     if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
                      "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
                      "nicht wie erwartet\nausgegangen. Der Riegel hat den Bestand gar "
                      "nicht erst gelesen -- ein Messgeraet,\ndas seine eigenen Faelle "
                      "verfehlt, misst auch fremde nicht.\n",
-                     fehlgeschlagen, NAMENSFAELLE.size() + ZITATFAELLE.size());
+                     fehlgeschlagen,
+                     NAMENSFAELLE.size() + ZITATFAELLE.size() + ZIELFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
-                 "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links und "
-                 "%zu zur Form\nohne Anfuehrung, alle wie erwartet.\n",
-                 NAMENSFAELLE.size(), ZITATFAELLE.size());
+                 "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links, %zu "
+                 "zur Form\nohne Anfuehrung und %zu zur Ortsfrage, alle wie erwartet.\n",
+                 NAMENSFAELLE.size(), ZITATFAELLE.size(), ZIELFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {
@@ -1858,13 +2160,18 @@ int main(int argc, char** argv) {
     }
 
     std::error_code lesefehler;
-    const std::vector<fs::path> gelesen = sammle_dateien(wurzel, lesefehler);
+    // Die Namen aus den ungelesenen Ordnern beider Wurzeln in **einer** Menge: Die
+    // Frage, die sie beantworten, kennt keine Wurzel -- sie lautet, ob es einen Ort
+    // dieses Namens ueberhaupt gibt.
+    Namensmenge ungelesene;
+    const std::vector<fs::path> gelesen = sammle_dateien(wurzel, ungelesene, lesefehler);
     if (lesefehler) {
         std::fprintf(stderr, "belegstellen_riegel: Lesefehler unter '%s': %s\n",
                      wurzel.string().c_str(), lesefehler.message().c_str());
         return 2;
     }
-    const std::vector<fs::path> gelesen_vorgaben = sammle_dateien(vorgaben, lesefehler);
+    const std::vector<fs::path> gelesen_vorgaben =
+        sammle_dateien(vorgaben, ungelesene, lesefehler);
     if (lesefehler) {
         std::fprintf(stderr, "belegstellen_riegel: Lesefehler unter '%s': %s\n",
                      vorgaben.string().c_str(), lesefehler.message().c_str());
@@ -1931,24 +2238,27 @@ int main(int argc, char** argv) {
     // -----------------------------------------------------------------------
     std::map<std::string, std::vector<std::string>> ueberschriften;
     std::vector<Zitatbefund> zitatbefunde;
+    std::vector<Zitatbefund> tote_ziele;
     std::vector<Uebergangen> uebergangen;
     Zitatzaehlwerk zitatzaehlwerk;
     for (std::size_t i = 0; i < zitierende.size(); ++i) {
-        pruefe_zitate(zitierende[i], zitierende_namen[i], bestand, ueberschriften,
-                      zitatbefunde, uebergangen, zitatzaehlwerk);
+        pruefe_zitate(zitierende[i], zitierende_namen[i], bestand, ungelesene,
+                      ueberschriften, zitatbefunde, tote_ziele, uebergangen,
+                      zitatzaehlwerk);
     }
 
     std::fprintf(stdout,
                  "belegstellen_riegel, Bedingung 2 (Abschnittszitat): %zu Bauquellen und "
-                 "%zu Datendokumente gelesen, %zu Dateien im Zielbestand; %zu Zitate der "
-                 "geprueften Form gefunden, %zu davon aufgeloest, %zu Fundstellen "
-                 "uebergangen.\n"
+                 "%zu Datendokumente gelesen, %zu Dateien im Zielbestand, %zu Namen in "
+                 "ungelesenen Ordnern; %zu Zitate der geprueften Form gefunden, %zu "
+                 "davon aufgeloest (Untergrenze %zu), %zu Fundstellen uebergangen.\n"
                  "Davon ohne Anfuehrung: %zu Zitate; weitere %zu Fundstellen ohne "
                  "Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind "
                  "deshalb keine Zitate.\n",
-                 bauquellen.size(), datendokumente, bestand.size(),
-                 zitatzaehlwerk.zitate, zitatzaehlwerk.aufgeloest, uebergangen.size(),
-                 zitatzaehlwerk.ohne_anfuehrung, zitatzaehlwerk.ohne_ziel);
+                 bauquellen.size(), datendokumente, bestand.size(), ungelesene.size(),
+                 zitatzaehlwerk.zitate, zitatzaehlwerk.aufgeloest, AUFGELOEST_MINDESTENS,
+                 uebergangen.size(), zitatzaehlwerk.ohne_anfuehrung,
+                 zitatzaehlwerk.ohne_ziel);
 
     if (!uebergangen.empty()) {
         std::fprintf(stdout,
@@ -1973,13 +2283,33 @@ int main(int argc, char** argv) {
         return 2;
     }
 
+    // Die zweite Haelfte derselben Vorsorge -- Paket 0083. Null ist der auffaellige
+    // Fall; der gefaehrliche ist der Rueckgang, der die Zahlen gleich laesst. Faellt
+    // die Menge der zitierenden Dateien weg statt der Ziele, entsteht kein einziger
+    // Befund und der Lauf bliebe gruen ueber der Haelfte seines Gegenstands.
+    if (zitatzaehlwerk.aufgeloest < AUFGELOEST_MINDESTENS) {
+        std::fprintf(stderr,
+                     "\nbelegstellen_riegel: nur %zu Zitate haben aufgeloest, die "
+                     "Untergrenze im Quelltext\nsteht bei %zu. Das ist ein Befund gegen "
+                     "die Abdeckung und keine bestandene\nBedingung: Die Zahl ist die "
+                     "Summe der Belegstellen der sechs Pakete, um\nderentwillen dieser "
+                     "Riegel existiert. Entweder wird eine Menge nicht mehr\ngelesen, "
+                     "die gelesen werden sollte -- dann ist das die Ursache --, oder die "
+                     "sechs\nPakete sind rechtmaessig aufgeraeumt worden. Nur im zweiten "
+                     "Fall wird die\nUntergrenze gesenkt, und zwar mit Begruendung an "
+                     "ihrer Stelle.\n",
+                     zitatzaehlwerk.aufgeloest, AUFGELOEST_MINDESTENS);
+        return 2;
+    }
+
     // -----------------------------------------------------------------------
     // Das Urteil
     // -----------------------------------------------------------------------
-    if (befunde.empty() && zitatbefunde.empty()) {
+    if (befunde.empty() && zitatbefunde.empty() && tote_ziele.empty()) {
         std::fprintf(stdout,
                      "\nKein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, "
-                     "und jedes der\n%zu Abschnittszitate findet seine Ueberschrift.\n",
+                     "und jedes der\n%zu Abschnittszitate findet seine Zieldatei und "
+                     "darin seine Ueberschrift.\n",
                      zitatzaehlwerk.aufgeloest);
         return 0;
     }
@@ -1999,6 +2329,30 @@ int main(int argc, char** argv) {
                      "etwas tut.\nSie wird ersetzt -- durch einen Bezeichner, eine "
                      "Abschnittsueberschrift oder eine\nSchluesselzeile im Wortlaut --, "
                      "nicht ausgenommen und nicht nachgezogen.\n");
+    }
+
+    if (!tote_ziele.empty()) {
+        std::fprintf(stderr,
+                     "\n%zu Abschnittszitat(e) nennen eine Zieldatei, die es unter "
+                     "keiner der beiden\nWurzeln gibt:\n\n",
+                     tote_ziele.size());
+        for (std::size_t i = 0; i < tote_ziele.size(); ++i) {
+            const Zitatbefund& z = tote_ziele[i];
+            std::fprintf(stderr,
+                         "  zitierend: %s:%zu\n  genannte Zieldatei: %s\n"
+                         "  gesuchter Wortlaut: %s\n\n",
+                         z.datei.c_str(), z.zeilennummer, z.ziel.c_str(),
+                         z.ueberschrift.c_str());
+        }
+        std::fprintf(stderr,
+                     "Diese Sorte ist bis Paket 0083 unter den uebergangenen "
+                     "Fundstellen gelandet und\nblieb damit gruen. Sie ist keine: Ein "
+                     "Ziel, das es nicht gibt, ist der tote\nVerweis, gegen den dieser "
+                     "Riegel geschrieben ist. Entweder ist die Datei\numbenannt oder "
+                     "verschoben worden -- dann wird der Verweis nachgezogen --, oder\n"
+                     "sie hiess nie so. Liegt sie mit Absicht in einem ungelesenen "
+                     "Ordner, steht sie\nnicht hier, sondern oben unter den "
+                     "uebergangenen Fundstellen.\n");
     }
 
     if (!zitatbefunde.empty()) {

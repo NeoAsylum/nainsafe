@@ -1,7 +1,7 @@
 ---
 id: 0085-abbruchmeldungen-im-wortlaut-pruefen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0071-rundennummer-in-den-zustand]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: In `schritt_probe` prueft jede Stelle, die einen Abbruch erwartet, nicht nur **dass** geworfen wurde, sondern **welcher** Riegel geworfen hat -- an einem Textstueck der Meldung, das den Riegel eindeutig kennzeichnet. Der Nachweis ist eine ausgefuehrte Sabotage: Streicht man den Block `if (vorrundennummer == festkomma::I64_MAX)` in `kern/src/schritt.cpp`, wird `schritt_probe` rot; die rote Zeile nennt die erwartete und die tatsaechlich angekommene Meldung. Heute bleibt die Probe unter derselben Sabotage gruen.
@@ -131,3 +131,32 @@ Dass `schritt.cpp` den Riegel doppelt haelt -- einmal in `schritt`, einmal im
 `Schreiber`-Konstruktor. Die Doppelung ist gewollt und in `schritt.cpp:609-612` begruendet:
 Der aeussere nennt die Ursache, der innere ist der Fangnetz-Riegel. Dieses Paket macht die
 Doppelung pruefbar, es baut sie nicht ab.
+
+## Gebaut am 2026-09-05 (testentwickler)
+
+Nachweis: `befunde/messung-0085/nachweis.md`. Bezugsstand `dd94ab9`.
+
+**Gezaehlt: fuenf Stellen im Quelltext, sieben ausgefuehrte Erwartungen** -- weder vier
+noch sechs. Der Unterschied zur Sechs ist `probe_rundennummer`: eine Schleife ueber drei
+Nummern, also eine Stelle und drei Faelle. Alle fuenf gehen jetzt ueber denselben Aufruf
+`BRICHT_AB_MIT`, alle sieben pruefen den Wortlaut.
+
+**Drei Sabotagen ausgefuehrt und zurueckgenommen**, jede rot mit erwarteter und
+angekommener Meldung in der roten Zeile: (1) der vom Paket verlangte Griff nach
+`if (vorrundennummer == festkomma::I64_MAX)` -- genau zwei der sieben Faelle fallen, die
+uebrigen fuenf bleiben gruen; (2) der Nachbarriegel `if (vorrundennummer < 0)`, der zeigt,
+dass die Erwartung je Fall und nicht je Schleife gilt; (3) die vertauschten Textstuecke der
+beiden `Startbelegung`-Haelften, die beide aus demselben Kasten werfen. `kern/src/schritt.cpp`
+geht unveraendert aus dem Lauf hervor (nach jeder Ruecknahme `git diff` leer geprueft).
+
+**Worauf ich unsicher bin, zwei Punkte:**
+
+1. Die drei Bedingung-7-Stuecke beim `spielmodus` (`spielmodus`, `310`, `kein Paket`) habe
+   ich unveraendert uebernommen und nur um `kern::schritt` ergaenzt. Sie sind damit die
+   einzige Stelle, deren Kennzeichen ich nicht selbst gewaehlt habe -- ob `310` als
+   Textstueck den Riegel wirklich kennzeichnet oder nur zufaellig haelt, habe ich nicht
+   gemessen. Sie abzuschwaechen war nicht erlaubt, sie zu ersetzen nicht verlangt.
+2. Der Belegstellenriegel hat diese Datei in meinem Lauf **nicht gelesen**: Er stand
+   waehrend des ganzen Laufs in einem nicht uebersetzenden Zwischenstand eines fremden,
+   gleichzeitig laufenden Pakets. Neue Belegstellen habe ich keine gesetzt und
+   Zeilennummern nennt die Datei keine -- gemessen ist es aber nicht.
