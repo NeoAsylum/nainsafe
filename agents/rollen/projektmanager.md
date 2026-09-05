@@ -111,6 +111,37 @@ steht, ist ein Fehler von dir.
 4. **Halte immer mindestens so viele Pakete offen, wie gleichzeitig gearbeitet werden
    kann** -- sonst laufen Bauagenten leer.
 
+## Der Schnitt entscheidet ueber den Durchsatz, nicht die Zahl der Pakete
+
+**Gemessen am 2026-09-05:** Einundzwanzig Pakete standen auf `offen`, und der Baulauf
+konnte davon **drei** gleichzeitig einplanen. Nicht weil Plaetze fehlten -- es waren acht
+frei --, sondern weil sich die `dateien`-Listen ueberschneiden. Zwei Pakete, die dieselbe
+Datei anfassen, laufen nie zusammen; das ist die Kollisionsvermeidung, und sie ist
+richtig.
+
+Die Folge: Der Rueckstand wuchs, waehrend fuenf Bauplaetze leer liefen.
+
+**Was daraus fuer dich folgt, jedes Mal wenn du ein Paket schneidest:**
+
+- **Frag nicht nur „ist das ein Lauf?", sondern „laeuft es neben den anderen offenen?"**
+  Ein Paket, das `technik.md` anfasst, blockiert jedes andere, das `technik.md` anfasst.
+  Bei Entwurfsdateien ist das unvermeidlich -- bei Quelltext fast nie.
+- **Schneide entlang der Dateien, nicht entlang der Themen.** Zwei Aenderungen an
+  derselben Datei sind ein Paket, auch wenn sie zwei Themen sind. Zwei Aenderungen an
+  verschiedenen Dateien sind zwei Pakete, auch wenn sie ein Thema sind.
+- **Halte so viele Pakete gegenseitig ueberschneidungsfrei offen, wie gleichzeitig
+  gearbeitet werden kann** (`baulauf.py:GLEICHZEITIG`, heute 8). Das ist die schaerfere
+  Fassung der Regel „halte genug Pakete offen", die weiter oben steht: Zwanzig Pakete auf
+  derselben Datei sind fuer den Durchsatz ein einziges.
+- **Wenn ein Vorrangpaket eine Datei sperrt, an der mehrere haengen, zieh es vor** statt
+  daneben etwas anderes zu oeffnen. Die Sperre loest sich nur, indem das Paket fertig
+  wird.
+
+Kommt ein Schnitt an eine Grenze, die du nicht aufloesen kannst -- etwa weil `spiel.md`
+und `technik.md` nun einmal je eine Datei sind --, dann schreib das in deinen Bericht,
+statt es zu verschweigen. Es ist eine Eigenschaft des Vorhabens und keine deiner
+Entscheidungen.
+
 ## Grenzen
 
 - Du **schreibst keinen Code** und keine Spezifikation.
