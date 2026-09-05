@@ -1,7 +1,7 @@
 ---
 id: 0108-endungsfalle-quellenliste-und-linkriegel
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0104-zielzahlen-je-profil-statt-tripel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -212,3 +212,69 @@ kam ich mit Rang 1 aus.
 ## Rueckläufe
 
 0.
+
+## Meldung des Kernbauers, 2026-09-05
+
+**`status: gebaut`.** Geaendert sind genau die drei Stellen; der Nichtwertvergleich
+laeuft an allen dreien ueber `fabrik_nichtwert_leeren`, also ueber dieselbe benannte
+Regel, die Paket 0103 angelegt hat. Kein zweiter Vergleich daneben. Der Zuschnitt ist
+nachgewiesen und nicht beteuert: `diff` gegen die eingefrorene Fassung nennt ausserhalb
+der Kommentare **neun** entfernte und **drei** neue Zeilen, und keine andere Stelle.
+
+**Der Punkt, den ein Pruefer sonst falsch liest:** Diese Aenderung lag beim Beginn
+dieses Laufs schon in `HEAD` -- ein Fremdlauf hatte sie unter seinem eigenen Betreff
+committet (`0333b81`, "projektmanager: ... (18 Dateien)"). `git status` zeigt sie darum
+nicht an. Der Vergleichsstand ist deshalb die **Kopie**
+`befunde/messung-0108/werkzeugkette-vorher.cmake` (md5 `5505cf7704b164d9ce44fda58f7895ca`),
+und die ist zeichengleich mit `werkzeugkette.cmake` aus `4ee0f79`, dem letzten Commit
+vor der Aenderung. Beide Pruefsummen stehen im Kopf des Messskripts.
+
+### Die drei Abnahmebedingungen, je mit dem Lauf, der sie belegt
+
+**1 und 2** -- `python3 befunde/messung-0108/endungsfalle.py`, acht Wegwerf-Baeume, jeder
+an **beiden** Staenden gefahren, `0 Abweichung(en) vom Soll`. Darin: `q1_notfound`
+vorher Code 0 / nachher Code 1 mit `COMPILE_FLAGS an .../z.cpp:  -w`; der Kontrollbaum
+`q2_harmlos` vorher wie nachher Code 1; die Gegenprobe `q3_sauber` (Fallenname, aber
+kein `-w`) an beiden Staenden Code 0 -- die Aenderung wirkt also nicht dadurch, dass sie
+alles faengt. Fuer Bedingung 2: `l1_notfound` vorher Code 0 / nachher Code 1 mit
+`kern: LINK_OPTIONS nennt -lfremd`, `l3_rpath_ohne_fremd` an beiden Staenden Code 0,
+aber die Meldung wechselt von `kern.LINK_OPTIONS=[]` auf
+`kern.LINK_OPTIONS=[-Wl,-rpath,/x-NOTFOUND]`, und `l4_leer` zeigt daneben, dass eine
+wirklich leere Eigenschaft weiter `[]` meldet. Damit ist "leer" von "geleert"
+unterschieden und nicht bloss verschoben.
+
+**3** -- in zwei Laeufen, weil ein Wegwerf-Baum die zweite Haelfte gar nicht beantworten
+kann:
+
+- `python3 befunde/pruefung-0066/nachbau.py` -- 22 Baeume, `0 Abweichung(en) vom Soll`,
+  die Zeilen `gefunden in` und `es fehlen` im Wortlaut wie vorher.
+- `python3 befunde/messung-0108/bauwege-isoliert.py 0333b81` -- sechs Kombinationen aus
+  Bauweg und Profil, an zwei Baeumen, die sich in genau einer Datei unterscheiden.
+  Konfigurations-, Bau- und `ctest`-Code sowie die Zahl uebersetzender Ziele sind in
+  jeder Zeile vorher gleich nachher: 20 / 12 / 5 mit `ON`, 18 / 11 / 4 mit `OFF`.
+  `0 Abweichung(en)`.
+- `python3 befunde/messung-0076/bauwege.py nachher --gegen HEAD` -- dieselben sechs
+  Kombinationen am Baum **im Repo**: ueberall `konfig=0 bau=0 ctest=0`, jede Zielzahl
+  gleich dem Stand davor, `0 Abweichung(en)`.
+
+**Warum es zwei Laeufe sind, und nicht einer zu viel:** Der isolierte Baum liegt per
+`git archive` ausserhalb des Repos und hat kein `specs/`. Der Test `belegstellen_riegel`
+faellt dort aus (`'/tmp/.../specs/rein' ist kein Verzeichnis`), also meldet der Bauweg
+`arbeitsbereich` `ctest=8` -- an **beiden** Staenden gleich. Das Skript zaehlt darum nur
+noch geaenderte Urteile und markiert nicht durchweg gruene Zeilen mit `(!)`; die
+Forderung "jeder Code 0" traegt der Lauf am Baum im Repo. Beides steht im Kopf von
+`bauwege-isoliert.py`.
+
+**Worauf ich unsicher bin, fuer den Projektmanager:**
+
+1. Bedingung 3 verlangt die Zielzahlen "gegen den eigenen Stand davor". Zwischen
+   `4ee0f79` und `0333b81` ist durch ein **fremdes** Paket ein Ziel dazugekommen (16
+   statt 15 ctest-Eintraege im Arbeitsbereich, 20/18 statt 19/17 uebersetzende Ziele).
+   Ich habe den Vergleich deshalb im isolierten Baum gefahren, wo die Umgebung fest ist
+   und nur meine Datei wechselt. Wer stattdessen zwei Commits vergleicht, misst das
+   fremde Ziel mit.
+2. Waehrend meines Laufs hat ein Fremdlauf auf `74e1464` committet. `werkzeugkette.cmake`
+   ist davon unberuehrt (md5 `08aa087bb845c17d1e12e65679243513` vor und nach der
+   Messreihe), andere `befunde/`-Verzeichnisse haben sich bewegt.
+3. Der Ausschlusssatz in Paket **0103**, der Befund 2 fuer richtig erklaerte, steht
+   dort noch. Er ist jetzt gegenstandslos, aber das Streichen ist nicht mein Paket.

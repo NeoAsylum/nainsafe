@@ -10,6 +10,7 @@ Aufruf: python3 vergleich.py <mitschnitt> <nummer-links> <nummer-rechts>
 
 import re
 import sys
+from collections import Counter
 
 
 def teile(pfad):
@@ -35,14 +36,18 @@ def main():
     print("zeichengleich:", gleich)
     if gleich:
         return 0
-    # Die Selbsttestzeile darf abweichen: Sie zaehlt die Faelle im Programm, und dieses
-    # Paket legt welche dazu. Alles andere ist eine Abweichung am Gegenstand.
-    nur_links = [z for z in links if z not in rechts]
-    nur_rechts = [z for z in rechts if z not in links]
-    for z in nur_links:
-        print("  nur links :", z)
-    for z in nur_rechts:
-        print("  nur rechts:", z)
+    # Verglichen wird als **Mehrfachmenge** und nicht mit `in`. Der gedruckte Wortlaut
+    # einer Fundstelle ist nicht schluesselfaehig: "gesucht war: 7" steht sechzehnmal da.
+    # Ein Vergleich, der ihn dedupliziert, uebersieht genau die Aenderung, um die es
+    # hier geht -- eine Zeile, die von drei auf zwei Vorkommen faellt.
+    fehlt = Counter(links) - Counter(rechts)
+    dazu = Counter(rechts) - Counter(links)
+    for z, n in sorted(fehlt.items()):
+        print("  nur links  (%dx):" % n, z)
+    for z, n in sorted(dazu.items()):
+        print("  nur rechts (%dx):" % n, z)
+    print("Zeilen nur links :", sum(fehlt.values()))
+    print("Zeilen nur rechts:", sum(dazu.values()))
     return 0
 
 

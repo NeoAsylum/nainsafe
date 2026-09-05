@@ -1,0 +1,1104 @@
+UpdateCTestConfiguration  from :/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/DartConfiguration.tcl
+Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+      Start  1: riegel_vorher_auf_baum
+
+1: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_vorher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+1: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+1: Test timeout computed to be: 10000000
+1: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 9 zur Form
+1: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+1: und 5 zur Satzgrenze nach links, alle wie erwartet.
+1: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+1: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 36 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+1: Davon ohne Anfuehrung: 14 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+1: 
+1: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+1: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+1: aber nicht bewertet:
+1: 
+1:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+1:       gesucht war: 18 vererbt sich sonst
+1:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+1:       gesucht war: WIE DER PRUEFER ZAEHLT
+1:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+1:       gesucht war: 12 sagen dasselbe
+1:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3
+1:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+1:       gesucht war: 4
+1:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 stehen in
+1:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 und Abschnitt 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+1:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+1:       gesucht war: 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+1:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 und in T37 weiter 31 -- siehe
+1:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+1:       gesucht war: 5
+1:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+1:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3
+1:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3
+1:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+1:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+1:       gesucht war: 5
+1:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+1:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3
+1:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+1:       gesucht war: 4
+1:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3 fuer die Einheit
+1:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+1:       gesucht war: 4 fuer das Basisjahr
+1:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+1:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+1:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+1:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 fuehrt sie nicht
+1:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
+1:       gesucht war: 17
+1:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 fuehrt sie nicht
+1:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+1:       gesucht war: 1 und Abschnitt 7 Nr
+1:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 Nr
+1:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+1:       gesucht war: 6
+1:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7
+1:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+1:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+1:       gesucht war: 7 als Modelleinheit
+1:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+1:       gesucht war: Was Reihe 2 als Ganzes kostet
+1:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+1:       gesucht war: Was Reihe 2 als Ganzes kostet
+1:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+1:       gesucht war: 4 dieses Befundes
+1:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+1:       gesucht war: Droits de propriété intellectuelle
+1:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+1:       gesucht war: Woran es haengt
+1:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+1:       gesucht war: [dependencies]
+1:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+1:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+1:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+1:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+1:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+1:       gesucht war: Strategiekern, vierwertig
+1: 
+1: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+1: 36 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+ 1/11 Test  #1: riegel_vorher_auf_baum .............   Passed    0.23 sec
+test 2
+      Start  2: riegel_nachher_auf_baum
+
+2: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_nachher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+2: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+2: Test timeout computed to be: 10000000
+2: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+2: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+2: und 5 zur Satzgrenze nach links, alle wie erwartet.
+2: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+2: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 36 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+2: Davon ohne Anfuehrung: 14 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+2: 
+2: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+2: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+2: aber nicht bewertet:
+2: 
+2:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+2:       gesucht war: 18 vererbt sich sonst
+2:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+2:       gesucht war: WIE DER PRUEFER ZAEHLT
+2:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+2:       gesucht war: 12 sagen dasselbe
+2:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3
+2:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+2:       gesucht war: 4
+2:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 und Abschnitt 17
+2:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+2:       gesucht war: 17
+2:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 und in T37 weiter 31 -- siehe
+2:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+2:       gesucht war: 5
+2:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+2:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3
+2:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3
+2:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+2:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+2:       gesucht war: 5
+2:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+2:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3
+2:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+2:       gesucht war: 4
+2:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3 fuer die Einheit
+2:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+2:       gesucht war: 4 fuer das Basisjahr
+2:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+2:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+2:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+2:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 fuehrt sie nicht
+2:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
+2:       gesucht war: 17
+2:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 fuehrt sie nicht
+2:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+2:       gesucht war: 1 und Abschnitt 7 Nr
+2:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 Nr
+2:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+2:       gesucht war: 6
+2:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7
+2:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+2:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+2:       gesucht war: 7 als Modelleinheit
+2:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+2:       gesucht war: Was Reihe 2 als Ganzes kostet
+2:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+2:       gesucht war: Was Reihe 2 als Ganzes kostet
+2:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+2:       gesucht war: 4 dieses Befundes
+2:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+2:       gesucht war: Droits de propriété intellectuelle
+2:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+2:       gesucht war: Woran es haengt
+2:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+2:       gesucht war: [dependencies]
+2:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+2:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+2:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+2:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+2:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+2:       gesucht war: Strategiekern, vierwertig
+2: 
+2: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+2: 36 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+ 2/11 Test  #2: riegel_nachher_auf_baum ............   Passed    0.23 sec
+test 3
+      Start  3: riegel_vorher_auf_baum_gut
+
+3: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_vorher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_gut/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_gut/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+3: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+3: Test timeout computed to be: 10000000
+3: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 9 zur Form
+3: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+3: und 5 zur Satzgrenze nach links, alle wie erwartet.
+3: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+3: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+3: Davon ohne Anfuehrung: 15 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+3: 
+3: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+3: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+3: aber nicht bewertet:
+3: 
+3:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+3:       gesucht war: 18 vererbt sich sonst
+3:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+3:       gesucht war: WIE DER PRUEFER ZAEHLT
+3:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+3:       gesucht war: 12 sagen dasselbe
+3:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3
+3:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+3:       gesucht war: 4
+3:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 stehen in
+3:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 und Abschnitt 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+3:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+3:       gesucht war: 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+3:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 und in T37 weiter 31 -- siehe
+3:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+3:       gesucht war: 5
+3:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+3:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3
+3:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3
+3:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+3:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+3:       gesucht war: 5
+3:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+3:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3
+3:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+3:       gesucht war: 4
+3:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3 fuer die Einheit
+3:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+3:       gesucht war: 4 fuer das Basisjahr
+3:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+3:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+3:       gesucht war: 3 und 5 -- der IWF-Volltext i
+3: 1 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+3: 
+3:   zitierend: rueckstand.md:224
+3:   nachgeschlagen in: daten/lizenzbefund-reihen.md
+3:   gesuchte Ueberschrift: Reihe 1 und wird dort nicht bestritten
+3: 
+3: Entweder ist die Ueberschrift dort umbenannt worden -- dann wird das Zitat
+3: nachgezogen --, oder sie stand nie so da. Beides wird berichtigt und nicht
+3: ausgenommen. Die Schreibweise ist bis auf Umlautumschrift, Auszeichnung und
+3: Leerraum wortgleich zu nehmen; Gross- und Kleinschreibung zaehlt.
+3: st ungelesen
+3:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 fuehrt sie nicht
+3:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
+3:       gesucht war: 17
+3:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 fuehrt sie nicht
+3:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+3:       gesucht war: 1 und Abschnitt 7 Nr
+3:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 Nr
+3:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+3:       gesucht war: 6
+3:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7
+3:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+3:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+3:       gesucht war: 7 als Modelleinheit
+3:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+3:       gesucht war: Was Reihe 2 als Ganzes kostet
+3:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+3:       gesucht war: Was Reihe 2 als Ganzes kostet
+3:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+3:       gesucht war: 4 dieses Befundes
+3:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+3:       gesucht war: Droits de propriété intellectuelle
+3:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+3:       gesucht war: Woran es haengt
+3:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+3:       gesucht war: [dependencies]
+3:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+3:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+3:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+3:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+3:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+3:       gesucht war: Strategiekern, vierwertig
+ 3/11 Test  #3: riegel_vorher_auf_baum_gut .........   Passed    0.23 sec
+test 4
+      Start  4: riegel_nachher_auf_baum_gut
+
+4: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_nachher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_gut/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_gut/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+4: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+4: Test timeout computed to be: 10000000
+4: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+4: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+4: und 5 zur Satzgrenze nach links, alle wie erwartet.
+4: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+4: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+4: Davon ohne Anfuehrung: 15 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+4: 
+4: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+4: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+4: aber nicht bewertet:
+4: 
+4:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+4:       gesucht war: 18 vererbt sich sonst
+4:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+4:       gesucht war: WIE DER PRUEFER ZAEHLT
+4:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+4:       gesucht war: 12 sagen dasselbe
+4:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3
+4:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+4:       gesucht war: 4
+4:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 und Abschnitt 17
+4:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+4:       gesucht war: 17
+4:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 und in T37 weiter 31 -- siehe
+4:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+4:       gesucht war: 5
+4:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+4:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3
+4:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3
+4:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+4:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+4:       gesucht war: 5
+4:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+4:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3
+4:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+4:       gesucht war: 4
+4:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3 fuer die Einheit
+4:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+4:       gesucht war: 4 fuer das Basisjahr
+4:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+4:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+4:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+4:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 fuehrt sie nicht
+4:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
+4:       gesucht war: 17
+4:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 fuehrt sie nicht
+4:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+4:       gesucht war: 1 und Abschnitt 7 Nr
+4:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 Nr
+4:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+4:       gesucht war: 6
+4:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7
+4:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+4:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+4:       gesucht war: 7 als Modelleinheit
+4:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+4:       gesucht war: Was Reihe 2 als Ganzes kostet
+4:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+4:       gesucht war: Was Reihe 2 als Ganzes kostet
+4:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+4:       gesucht war: 4 dieses Befundes
+4:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+4:       gesucht war: Droits de propriété intellectuelle
+4:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+4:       gesucht war: Woran es haengt
+4:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+4:       gesucht war: [dependencies]
+4:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+4:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+4:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+4:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+4:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+4:       gesucht war: Strategiekern, vierwertig
+4: 
+4: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+4: 37 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+ 4/11 Test  #4: riegel_nachher_auf_baum_gut ........   Passed    0.23 sec
+test 5
+      Start  5: riegel_vorher_auf_baum_tot
+
+5: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_vorher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_tot/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_tot/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+5: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+5: Test timeout computed to be: 10000000
+5: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 9 zur Form
+5: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+5: und 5 zur Satzgrenze nach links, alle wie erwartet.
+5: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+5: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+5: Davon ohne Anfuehrung: 15 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+5: 
+5: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+5: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+5: aber nicht bewertet:
+5: 
+5:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+5:       gesucht war: 18 vererbt sich sonst
+5:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+5:       gesucht war: WIE DER PRUEFER ZAEHLT
+5:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+5:       gesucht war: 12 sagen dasselbe
+5:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3
+5:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+5:       gesucht war: 4
+5:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 stehen in
+5:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 und Abschnitt 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+5:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+5:       gesucht war: 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+5:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 und in T37 weiter 31 -- siehe
+5:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+5:       gesucht war: 5
+5:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+5:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3
+5:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3
+5:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+5:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+5:       gesucht war: 5
+5:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+5:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3
+5:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+5:       gesucht war: 4
+5:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3 fuer die Einheit
+5:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+5:       gesucht war: 4 fuer das Basisjahr
+5:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+5:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+5:       gesucht war: 3 und 5 -- der IWF-Volltext i
+5: 1 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+5: 
+5:   zitierend: rueckstand.md:224
+5:   nachgeschlagen in: daten/lizenzbefund-reihen.md
+5:   gesuchte Ueberschrift: Reihe 99 und wird dort nicht bestritten
+5: 
+5: Entweder ist die Ueberschrift dort umbenannt worden -- dann wird das Zitat
+5: nachgezogen --, oder sie stand nie so da. Beides wird berichtigt und nicht
+5: ausgenommen. Die Schreibweise ist bis auf Umlautumschrift, Auszeichnung und
+5: Leerraum wortgleich zu nehmen; Gross- und Kleinschreibung zaehlt.
+5: st ungelesen
+5:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 fuehrt sie nicht
+5:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
+5:       gesucht war: 17
+5:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 fuehrt sie nicht
+5:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+5:       gesucht war: 1 und Abschnitt 7 Nr
+5:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 Nr
+5:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+5:       gesucht war: 6
+5:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7
+5:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+5:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+5:       gesucht war: 7 als Modelleinheit
+5:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+5:       gesucht war: Was Reihe 2 als Ganzes kostet
+5:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+5:       gesucht war: Was Reihe 2 als Ganzes kostet
+5:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+5:       gesucht war: 4 dieses Befundes
+5:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+5:       gesucht war: Droits de propriété intellectuelle
+5:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+5:       gesucht war: Woran es haengt
+5:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+5:       gesucht war: [dependencies]
+5:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+5:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+5:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+5:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+5:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+5:       gesucht war: Strategiekern, vierwertig
+ 5/11 Test  #5: riegel_vorher_auf_baum_tot .........   Passed    0.23 sec
+test 6
+      Start  6: riegel_nachher_auf_baum_tot
+
+6: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_nachher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_tot/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum_tot/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+6: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+6: Test timeout computed to be: 10000000
+6: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+6: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+6: und 5 zur Satzgrenze nach links, alle wie erwartet.
+6: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+6: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+6: Davon ohne Anfuehrung: 15 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+6: 
+6: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+6: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+6: aber nicht bewertet:
+6: 
+6:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+6:       gesucht war: 18 vererbt sich sonst
+6:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+6:       gesucht war: WIE DER PRUEFER ZAEHLT
+6:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+6:       gesucht war: 12 sagen dasselbe
+6:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3
+6:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+6:       gesucht war: 4
+6:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 und Abschnitt 17
+6:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+6:       gesucht war: 17
+6:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 und in T37 weiter 31 -- siehe
+6:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+6:       gesucht war: 5
+6:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+6:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3
+6:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3
+6:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+6:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+6:       gesucht war: 5
+6:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+6:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3
+6:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+6:       gesucht war: 4
+6:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3 fuer die Einheit
+6:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+6:       gesucht war: 4 fuer das Basisjahr
+6:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+6:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+6:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+6:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 fuehrt sie nicht
+6:   daten/reihen.toml:1401  (Gliederungs
+6: 1 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+6: 
+6:   zitierend: rueckstand.md:224
+6:   nachgeschlagen in: daten/lizenzbefund-reihen.md
+6:   gesuchte Ueberschrift: Reihe 99
+6: 
+6: Entweder ist die Ueberschrift dort umbenannt worden -- dann wird das Zitat
+6: nachgezogen --, oder sie stand nie so da. Beides wird berichtigt und nicht
+6: ausgenommen. Die Schreibweise ist bis auf Umlautumschrift, Auszeichnung und
+6: Leerraum wortgleich zu nehmen; Gross- und Kleinschreibung zaehlt.
+6: ziffer statt Ueberschrift: 17)
+6:       gesucht war: 17
+6:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 fuehrt sie nicht
+6:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+6:       gesucht war: 1 und Abschnitt 7 Nr
+6:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 Nr
+6:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+6:       gesucht war: 6
+6:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7
+6:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+6:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+6:       gesucht war: 7 als Modelleinheit
+6:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+6:       gesucht war: Was Reihe 2 als Ganzes kostet
+6:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+6:       gesucht war: Was Reihe 2 als Ganzes kostet
+6:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+6:       gesucht war: 4 dieses Befundes
+6:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+6:       gesucht war: Droits de propriété intellectuelle
+6:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+6:       gesucht war: Woran es haengt
+6:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+6:       gesucht war: [dependencies]
+6:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+6:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+6:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+6:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+6:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+6:       gesucht war: Strategiekern, vierwertig
+ 6/11 Test  #6: riegel_nachher_auf_baum_tot ........   Passed    0.23 sec
+test 7
+      Start  7: rueckgabewerte
+
+7: Test command: /usr/bin/sh "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/rueckgabewerte.sh" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_vorher" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_nachher" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105"
+7: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+7: Test timeout computed to be: 10000000
+7: baum: vorher 0, nachher 0
+7: baum_gut: vorher 1, nachher 0
+7: baum_tot: vorher 1, nachher 1
+ 7/11 Test  #7: rueckgabewerte .....................   Passed    1.35 sec
+test 8
+      Start  8: mutant_ohne_grenze_selbsttest
+
+8: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_mutant_ohne_grenze "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+8: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+8: Test timeout computed to be: 10000000
+8: Zitatfall 10: der abgegrenzte Name ist 'Reihe 1 und wird dort nicht bestritten', erwartet war 'Reihe 1'.
+8:       Herkunft: der Fall, um dessentwillen dieses Paket existiert -- gemessen am 2026-09-05 als roter Lauf an einer angehaengten Belegstelle in `rueckstand.md`. Ohne die Regel lautet der gesuchte Name 'Reihe 1 und wird dort nicht bestritten' und die Stelle wird ein Befund, an dem nichts kaputt ist
+8: Zitatfall 11: der abgegrenzte Name ist 'Reihe 1 und wird dort nicht bestritten', erwartet war 'Reihe 1'.
+8:       Herkunft: dieselben zwei Zeilen, Ueberschrift umbenannt: **die Lockerung laesst keine tote Belegstelle durch.** Sie kuerzt den Namen, sie verzeiht ihn nicht -- was die Zieldatei nicht fuehrt, bleibt ein Befund
+8: Zitatfall 13: der abgegrenzte Name ist 'Reihe 2 Erwerbstaetige', erwartet war 'Reihe 2'.
+8:       Herkunft: gebaut: **der Preis der Regel, ausgeschrieben.** Der abgegrenzte Name ist nur noch der Teil bis zum Umbruch, und er loest auf, obwohl die zweite Zeile etwas anderes nennt. Je frueher der Umbruch, desto kuerzer der gepruefte Anfang. Die Richtung ist gewaehlt und nicht uebersehen: Der Wortlaut bis zum Umbruch ist der einzige, von dem feststeht, dass er zum Zitat gehoert
+8: 
+8: belegstellen_riegel: 3 von 51 Faellen des Selbsttests sind nicht wie erwartet
+8: ausgegangen. Der Riegel hat den Bestand gar nicht erst gelesen -- ein Messgeraet,
+8: das seine eigenen Faelle verfehlt, misst auch fremde nicht.
+ 8/11 Test  #8: mutant_ohne_grenze_selbsttest ......   Passed    0.00 sec
+test 9
+      Start  9: mutant_grenze_am_wort_selbsttest
+
+9: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_mutant_grenze_am_wort "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+9: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+9: Test timeout computed to be: 10000000
+9: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+9: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+9: und 5 zur Satzgrenze nach links, alle wie erwartet.
+9: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+9: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 36 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+9: Davon ohne Anfuehrung: 14 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+9: 
+9: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+9: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+9: aber nicht bewertet:
+9: 
+9:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+9:       gesucht war: 18 vererbt sich sonst
+9:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+9:       gesucht war: WIE DER PRUEFER ZAEHLT
+9:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+9:       gesucht war: 12 sagen dasselbe
+9:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3
+9:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+9:       gesucht war: 4
+9:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 und Abschnitt 17
+9:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+9:       gesucht war: 17
+9:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 und in T37 weiter 31 -- siehe
+9:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
+9:       gesucht war: 5
+9:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+9:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3
+9:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3
+9:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+9:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
+9:       gesucht war: 5
+9:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+9:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3
+9:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
+9:       gesucht war: 4
+9:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3 fuer die Einheit
+9:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
+9:       gesucht war: 4 fuer das Basisjahr
+9:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+9:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
+9:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+9:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 fuehrt sie nicht
+9:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
+9:       gesucht war: 17
+9:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 fuehrt sie nicht
+9:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
+9:       gesucht war: 1 und Abschnitt 7 Nr
+9:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 Nr
+9:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
+9:       gesucht war: 6
+9:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7
+9:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+9:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+9:       gesucht war: 7 als Modelleinheit
+9:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+9:       gesucht war: Was Reihe 2 als Ganzes kostet
+9:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+9:       gesucht war: Was Reihe 2 als Ganzes kostet
+9:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+9:       gesucht war: 4 dieses Befundes
+9:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+9:       gesucht war: Droits de propriété intellectuelle
+9:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+9:       gesucht war: Woran es haengt
+9:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+9:       gesucht war: [dependencies]
+9:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+9:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+9:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+9:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+9:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+9:       gesucht war: Strategiekern, vierwertig
+9: 
+9: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+9: 36 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+ 9/11 Test  #9: mutant_grenze_am_wort_selbsttest ...***Failed    0.22 sec
+test 10
+      Start 10: riegel_vorher_auf_arbeitsbaum
+
+10: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_vorher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/../../specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+10: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+10: Test timeout computed to be: 10000000
+10: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 9 zur Form
+10: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+10: und 5 zur Satzgrenze nach links, alle wie erwartet.
+10: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 47 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+10: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 47 Bauquellen und 13 Datendokumente gelesen, 198 Dateien im Zielbestand, 21206 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+10: Davon ohne Anfuehrung: 15 Zitate; weitere 57 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+10: 
+10: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+10: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+10: aber nicht bewertet:
+10: 
+10:   rueckstand.md:255  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+10:       gesucht war: 18 vererbt sich sonst
+10:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+10:       gesucht war: WIE DER PRUEFER ZAEHLT
+10:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+10:       gesucht war: 12 sagen dasselbe
+10:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3
+10:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+10:       gesucht war: 4
+10:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 stehen in
+10:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 und Abschnitt 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+10:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+10:       gesucht war: 17 specs/0016-.../daten.md Quellen und Lizenzen daten/deckungsbefund-1997.md
+10:   daten/reihen.toml:135  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:251  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:283  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:283  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 und in T37 weiter 31 -- siehe
+10:   daten/reihen.toml:333  (Gliederungsziffer statt Ueberschrift: 5)
+10:       gesucht war: 5
+10:   daten/reihen.toml:334  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+10:   daten/reihen.toml:376  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3
+10:   daten/reihen.toml:383  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3
+10:   daten/reihen.toml:430  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:431  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+10:   daten/reihen.toml:461  (Gliederungsziffer statt Ueberschrift: 5)
+10:       gesucht war: 5
+10:   daten/reihen.toml:462  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+10:   daten/reihen.toml:566  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/reihen.toml:685  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3
+10:   daten/reihen.toml:685  (Gliederungsziffer statt Ueberschrift: 4)
+10:       gesucht war: 4
+10:   daten/reihen.toml:694  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3 fuer die Einheit
+10:   daten/reihen.toml:694  (Gliederungsziffer statt Ueberschrift: 4)
+10:       gesucht war: 4 fuer das Basisjahr
+10:   daten/reihen.toml:1001  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+10:   daten/reihen.toml:1199  (Gliederungsziffer statt Ueberschrift: 3)
+10:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+10:   daten/reihen.toml:1475  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 fuehrt sie nicht
+10:   daten/reihen.toml:1475  (Gliederungsziffer statt Ueberschrift: 17)
+10:       gesucht war: 17
+10:   daten/reihen.toml:1475  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 fuehrt sie nicht
+10:   daten/reihen.toml:1476  (Gliederungsziffer statt Ueberschrift: 1)
+10:       gesucht war: 1 und Abschnitt 7 Nr
+10:   daten/reihen.toml:1476  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 Nr
+10:   daten/reihen.toml:1632  (Gliederungsziffer statt Ueberschrift: 6)
+10:       gesucht war: 6
+10:   daten/reihen.toml:1688  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7
+10:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+10:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+10:       gesucht war: 7 als Modelleinheit
+10:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+10:       gesucht war: Was Reihe 2 als Ganzes kostet
+10:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+10:       gesucht war: Was Reihe 2 als Ganzes kostet
+10:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+10:       gesucht war: 4 dieses Befundes
+10:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+10:       gesucht war: Droits de propriété intellectuelle
+10:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+10:       gesucht war: Woran es haengt
+10:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+10:       gesucht war: [dependencies]
+10:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+10:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+10:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+10:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+10:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+10:       gesucht war: Strategiekern, vierwertig
+10: 
+10: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+10: 37 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+10/11 Test #10: riegel_vorher_auf_arbeitsbaum ......   Passed    0.84 sec
+test 11
+      Start 11: riegel_nachher_auf_arbeitsbaum
+
+11: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_nachher "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/../../specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
+11: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
+11: Test timeout computed to be: 10000000
+11: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+11: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+11: und 5 zur Satzgrenze nach links, alle wie erwartet.
+11: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 47 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+11: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 47 Bauquellen und 13 Datendokumente gelesen, 198 Dateien im Zielbestand, 21206 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+11: Davon ohne Anfuehrung: 15 Zitate; weitere 57 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+11: 
+11: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
+11: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
+11: aber nicht bewertet:
+11: 
+11:   rueckstand.md:255  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
+11:       gesucht war: 18 vererbt sich sonst
+11:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
+11:       gesucht war: WIE DER PRUEFER ZAEHLT
+11:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
+11:       gesucht war: 12 sagen dasselbe
+11:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3
+11:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
+11:       gesucht war: 4
+11:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 und Abschnitt 17
+11:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
+11:       gesucht war: 17
+11:   daten/reihen.toml:135  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:251  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:283  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:283  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 und in T37 weiter 31 -- siehe
+11:   daten/reihen.toml:333  (Gliederungsziffer statt Ueberschrift: 5)
+11:       gesucht war: 5
+11:   daten/reihen.toml:334  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
+11:   daten/reihen.toml:376  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3
+11:   daten/reihen.toml:383  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3
+11:   daten/reihen.toml:430  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:431  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
+11:   daten/reihen.toml:461  (Gliederungsziffer statt Ueberschrift: 5)
+11:       gesucht war: 5
+11:   daten/reihen.toml:462  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
+11:   daten/reihen.toml:566  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/reihen.toml:685  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3
+11:   daten/reihen.toml:685  (Gliederungsziffer statt Ueberschrift: 4)
+11:       gesucht war: 4
+11:   daten/reihen.toml:694  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3 fuer die Einheit
+11:   daten/reihen.toml:694  (Gliederungsziffer statt Ueberschrift: 4)
+11:       gesucht war: 4 fuer das Basisjahr
+11:   daten/reihen.toml:1001  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+11:   daten/reihen.toml:1199  (Gliederungsziffer statt Ueberschrift: 3)
+11:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
+11:   daten/reihen.toml:1475  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 fuehrt sie nicht
+11:   daten/reihen.toml:1475  (Gliederungsziffer statt Ueberschrift: 17)
+11:       gesucht war: 17
+11:   daten/reihen.toml:1475  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 fuehrt sie nicht
+11:   daten/reihen.toml:1476  (Gliederungsziffer statt Ueberschrift: 1)
+11:       gesucht war: 1 und Abschnitt 7 Nr
+11:   daten/reihen.toml:1476  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 Nr
+11:   daten/reihen.toml:1632  (Gliederungsziffer statt Ueberschrift: 6)
+11:       gesucht war: 6
+11:   daten/reihen.toml:1688  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7
+11:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
+11:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
+11:       gesucht war: 7 als Modelleinheit
+11:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
+11:       gesucht war: Was Reihe 2 als Ganzes kostet
+11:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
+11:       gesucht war: Was Reihe 2 als Ganzes kostet
+11:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
+11:       gesucht war: 4 dieses Befundes
+11:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
+11:       gesucht war: Droits de propriété intellectuelle
+11:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
+11:       gesucht war: Woran es haengt
+11:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
+11:       gesucht war: [dependencies]
+11:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
+11:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
+11:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
+11:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
+11:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
+11:       gesucht war: Strategiekern, vierwertig
+11: 
+11: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+11: 37 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+11/11 Test #11: riegel_nachher_auf_arbeitsbaum .....   Passed    0.84 sec
+
+91% tests passed, 1 tests failed out of 11
+
+Total Test time (real) =   4.63 sec
+
+The following tests FAILED:
+	  9 - mutant_grenze_am_wort_selbsttest (Failed)
+Errors while running CTest
+Output from these tests are in: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/Testing/Temporary/LastTest.log
+Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.

@@ -1,0 +1,109 @@
+
+[B1] Unveraendert + neuer Riegel, Testprofil -- muss gruen bleiben
+      Fassung nachher, -DFABRIK_SANITIZER=ON, Zulage: keine
+      cmake -S  -> Code 0
+      > -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) und 10 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Detecting CXX compile features
+      | -- Detecting CXX compile features - done
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) und 10 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+      | -- Warnsatz-Schlussriegel: 12 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
+      | -- Configuring done (0.2s)
+      | -- Generating done (0.0s)
+      | -- Build files have been written to: /tmp/claude-1000/tmp056tyfpq/bau
+      cmake --build -> Code 0
+      ctest     -> Code 0
+      | 100% tests passed, 0 tests failed out of 10
+      | Total Test time (real) =   0.36 sec
+
+[B2] Unveraendert + neuer Riegel, Freigabeprofil -- muss gruen bleiben
+      Fassung nachher, -DFABRIK_SANITIZER=OFF, Zulage: keine
+      cmake -S  -> Code 0
+      > -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) und 10 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Detecting CXX compile features
+      | -- Detecting CXX compile features - done
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) und 10 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Nullabhaengigkeitsriegel (T2): 1 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]
+      | -- Warnsatz-Schlussriegel: 11 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
+      | -- Configuring done (0.2s)
+      | -- Generating done (0.0s)
+      | -- Build files have been written to: /tmp/claude-1000/tmpnrmo1wd1/bau
+      cmake --build -> Code 0
+      ctest     -> Code 0
+      | 100% tests passed, 0 tests failed out of 10
+      | Total Test time (real) =   0.08 sec
+
+[B3] Probe ohne Sperre + alter Riegel -- Kontrolle, muss gruen sein
+      Fassung vorher, -DFABRIK_SANITIZER=ON, Zulage: ('test/luecke_ohne_sperre_probe.cpp', 'luecke_ohne_sperre_probe.cpp')
+      cmake -S  -> Code 0
+      > -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Detecting CXX compile features
+      | -- Detecting CXX compile features - done
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+      | -- Warnsatz-Schlussriegel: 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
+      | -- Configuring done (0.2s)
+      | -- Generating done (0.0s)
+      | -- Build files have been written to: /tmp/claude-1000/tmpvetucfw4/bau
+      cmake --build -> Code 0
+      ctest     -> Code 0
+      | 100% tests passed, 0 tests failed out of 11
+      | Total Test time (real) =   0.41 sec
+
+[B4] Probe ohne Sperre + neuer Riegel -- muss beim Konfigurieren abbrechen
+      Fassung nachher, -DFABRIK_SANITIZER=ON, Zulage: ('test/luecke_ohne_sperre_probe.cpp', 'luecke_ohne_sperre_probe.cpp')
+      cmake -S  -> Code 1
+      > Sperrebindungsriegel (T4, T7 Massnahme 4.2):
+      | CMake Error at CMakeLists.txt:150 (message):
+      |   Sperrebindungsriegel (T4, T7 Massnahme 4.2):
+      |   'test/luecke_ohne_sperre_probe.cpp' bindet "kern/sperre.hpp" nicht.  In
+      |   dieser Uebersetzungseinheit gilt damit weder die Gleitkommasperre noch die
+      |   Sperre der Ueberlaufbausteine -- die Datei wird trotzdem gebaut: unter
+      |   `src/` in `kern` und `kern_geprueft`, unter `test/` als eigenes Programm
+      |   auf denselben Werten.  Die fehlende Zeile gehoert ans Ende des
+      |   Include-Blocks.
+
+[B5] Probe mit Sperre nicht zuletzt + alter Riegel -- Kontrolle, gruen
+      Fassung vorher, -DFABRIK_SANITIZER=ON, Zulage: ('test/luecke_reihenfolge_probe.cpp', 'luecke_reihenfolge_probe.cpp')
+      cmake -S  -> Code 0
+      > -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Detecting CXX compile features
+      | -- Detecting CXX compile features - done
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+      | -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+      | -- Warnsatz-Schlussriegel: 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
+      | -- Configuring done (0.2s)
+      | -- Generating done (0.0s)
+      | -- Build files have been written to: /tmp/claude-1000/tmp2x3oev2g/bau
+      cmake --build -> Code 0
+      ctest     -> Code 0
+      | 100% tests passed, 0 tests failed out of 11
+      | Total Test time (real) =   0.36 sec
+
+[B6] Probe mit Sperre nicht zuletzt + neuer Riegel -- muss abbrechen
+      Fassung nachher, -DFABRIK_SANITIZER=ON, Zulage: ('test/luecke_reihenfolge_probe.cpp', 'luecke_reihenfolge_probe.cpp')
+      cmake -S  -> Code 1
+      > Sperrebindungsriegel (T4, T7 Massnahme 4.2):
+      | -- Detecting CXX compile features - done
+      | -- Configuring incomplete, errors occurred!
+      | CMake Error at CMakeLists.txt:163 (message):
+      |   Sperrebindungsriegel (T4, T7 Massnahme 4.2):
+      |   'test/luecke_reihenfolge_probe.cpp' bindet "kern/sperre.hpp", aber nicht
+      |   als letzten `#include` -- zuletzt steht dort `#include
+      |   "kern/festkomma.hpp"`.  Die Vergiftung gilt erst ab ihrer Zeile; was danach
+      |   eingebunden wird, ist ungesperrt.
+
+[B7] Quelle ohne Sperre + neuer Riegel -- die erste Haelfte haelt weiter
+      Fassung nachher, -DFABRIK_SANITIZER=ON, Zulage: ('src/luecke_quelle.cpp', 'luecke_quelle.cpp')
+      cmake -S  -> Code 1
+      > Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/luecke_quelle.cpp' bindet
+      | -- Configuring incomplete, errors occurred!
+      | CMake Error at CMakeLists.txt:150 (message):
+      |   Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/luecke_quelle.cpp' bindet
+      |   "kern/sperre.hpp" nicht.  In dieser Uebersetzungseinheit gilt damit weder
+      |   die Gleitkommasperre noch die Sperre der Ueberlaufbausteine -- die Datei
+      |   wird trotzdem gebaut: unter `src/` in `kern` und `kern_geprueft`, unter
+      |   `test/` als eigenes Programm auf denselben Werten.  Die fehlende Zeile
+      |   gehoert ans Ende des Include-Blocks.
+
+Abweichungen: 0

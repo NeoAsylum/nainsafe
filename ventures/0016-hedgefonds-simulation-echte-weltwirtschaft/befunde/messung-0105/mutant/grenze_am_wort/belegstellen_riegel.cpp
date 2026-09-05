@@ -475,13 +475,6 @@
 //! Fundstellen auf beiden Seiten, und die Aufzaehlung der uebergangenen Stellen ist
 //! zeichengleich. Sie greift nur dort, wo vorher ein Umbruch mitgelesen wurde.
 //!
-//! **Dass die vier Faelle die Regel wirklich decken, ist mit zwei Mutanten gemessen**
-//! und nicht behauptet -- je Haelfte der Regel einer, und kein Fall reisst bei beiden:
-//! Faellt die Zeilengrenze ganz weg, reissen drei der vier (3 von 51 Faellen des ganzen
-//! Selbsttests); haengt sie an der Zeile des Schluesselworts statt an der des Namens,
-//! reisst allein der vierte (1 von 51). Die 47 Faelle der anderen vier Tabellen bleiben
-//! in beiden Laeufen gruen.
-//!
 //! ## Das Schluesselwort mit Abstand, der Name rechts -- Paket 0086
 //!
 //! Die dritte Belegstelle aus Paket 0034 nennt ihr Schluesselwort, laesst dann aber
@@ -2268,7 +2261,7 @@ std::size_t name_ohne_anfuehrung(const Absatz& absatz, std::size_t i, std::strin
     if (j == i || j >= text.size() || !ist_namensanfang(text, j)) {
         return 0;
     }
-    const std::size_t heimatzeile = absatz.zeile_bei(j);
+    const std::size_t heimatzeile = absatz.zeile_bei(i - 1);
     std::size_t ende = j;
     while (ende < text.size() && ende - j < UEBERSCHRIFT_HOECHSTENS
            && absatz.zeile_bei(ende) == heimatzeile && !ist_namensende(text, ende)) {
@@ -2821,24 +2814,9 @@ constexpr std::array<Zitatfall, 13> ZITATFAELLE = {{
 
     // --- Der Zeilenumbruch -- Paket 0105 ---------------------------------------
     //
-    // Die vier Faelle unten sind die einzigen der Tabelle mit einem `\n`. Sie messen
-    // **zwei** Haelften der Regel, und das ist am 2026-09-05 mit zwei Mutanten
-    // getrennt gemessen worden -- kein Fall reisst bei beiden:
-    //
-    //   Faellt die Zeilengrenze ganz weg, reissen die Faelle 1, 2 und 4 dieser Gruppe
-    //   an der Namensspalte (3 von 51 des ganzen Selbsttests). Fall 4 ist der, der
-    //   den Preis der Regel ausschreibt -- er misst sie damit mit und laeuft nicht
-    //   bloss mit.
-    //
-    //   Haengt die Grenze an der Zeile des Schluesselworts statt an der des Namens,
-    //   reisst allein Fall 3 (1 von 51), und zwar mit leerer Namensspalte: Die Stelle
-    //   ist dann gar keine Fundstelle mehr.
-    //
-    // Beim ersten Anlauf griff der zweite Mutant daneben und lief gruen durch. Der
-    // Grund steht in `haenge_zeile_an` und gehoert hierher, weil er die Tabelle
-    // erklaert: Das Leerzeichen, zu dem der Umbruch wird, traegt bereits die Nummer
-    // der **neuen** Zeile. Wer an der Stelle unmittelbar hinter dem Schluesselwort
-    // fragt, fragt deshalb schon die Zeile des Namens.
+    // Die vier Faelle unten sind die einzigen der Tabelle mit einem `\n`. Ohne die
+    // Regel "der Name endet, wo seine Zeile endet" reissen die ersten drei an der
+    // Namensspalte; der vierte schreibt den Preis der Regel aus und bleibt gruen.
     {"lizenzbefund-reihen.md, \101bschnitt Reihe 1\n"
      "und wird dort nicht bestritten",
      "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",

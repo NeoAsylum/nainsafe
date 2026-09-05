@@ -21,7 +21,7 @@ nachher="$2"
 wurzel="$3"
 
 erwartet_vorher="0 1 1"
-erwartet_nachher="0 0 0"
+erwartet_nachher="0 0 1"
 
 gemessen_vorher=""
 gemessen_nachher=""

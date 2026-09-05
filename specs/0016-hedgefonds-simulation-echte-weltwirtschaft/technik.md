@@ -3267,3 +3267,205 @@ ausgeschrieben, weder in T28 noch in `spiel.md`; ich habe ihn aus dem Wort „je
 aus der Zahl zehn gelesen. Läuft die Markträumung in Wahrheit nur über die vier spielbaren
 Länder, ist meine Zeile überflüssig und nicht falsch. Das ist die Stelle, an der ich einem
 Prüfer widerspruchslos folgen würde.
+
+## 19. Die Länderzahl als Parameter — Paket `0116`
+
+**Was hier entschieden wird und was nicht.** Über die Zahl der Länder entscheidet dieser
+Abschnitt **nichts**. `L = 4` bleibt, und die Begründung dafür steht in `spiel.md`; sie steht
+nicht zur Disposition. Entschieden wird allein, ob ein weiteres Land später ein **Vorgang mit
+bekannten Schritten** ist oder ein Umbau mit offenem Ende. Dazu gehören drei Dinge: die Formel
+hinter jeder heute ausgeschriebenen Zahl (T54, T55), die Frage, wo die Identität eines Landes
+wohnt (T56), und die Liste dessen, was **nicht** mitwächst (T57).
+
+**Der Kern ist an dieser Stelle weiter als dieses Dokument.** `LAENDER`, `GEBIETE`,
+`SEKTOREN`, `INSTRUMENTE` und `SEKTOREN_HANDELBAR` sind je eine `constexpr` in
+`kern/include/kern/zustand.hpp`; die Blockanfänge werden daraus **gerechnet**
+(`BASIS_RESTWELT = LAENDER * LAND_FELDER`) und von einer Kette aus `static_assert` gegen die
+Gruppentabelle in T15 gehalten. Auch `daten/reihen.toml` führt je Reihe eine `dimension` und
+schreibt sie als `"4 + RW"`, also als Größe und nicht als Konstante. Was fehlt, ist die
+Gegenrichtung: In `specs/` stehen die abgeleiteten Zahlen als **Literale**, und nirgends steht
+an einer Stelle, aus welcher Formel welche entsteht. Wer ein Land hinzufügt, muss sie heute
+einzeln nachrechnen und in Prosa nachziehen. Genau das behebt T55.
+
+### T54 — Drei Formgrössen, und alles andere folgt daraus
+
+| Zeichen | Bedeutung | heute | Konstante im Kern |
+|---|---|---:|---|
+| `L` | spielbare Länder | 4 | `LAENDER` |
+| `S` | Sektoren | 3 | `SEKTOREN` |
+| `I` | Politikinstrumente | 4 | `INSTRUMENTE` |
+
+Zwei weitere Größen sind **abgeleitet und keine eigene Wahl**: Die Zahl der Gebiete ist
+`L + 1` — die Restwelt ist immer genau eine, wie viele Länder auch modelliert werden —, und
+die Zahl der handelbaren Sektoren steht in den Formeln unten als `S − 1`.
+
+**Zu `S − 1` gehört eine Warnung, und sie ist keine Förmlichkeit.** Der Kern führt
+`SEKTOREN_HANDELBAR` als **eigene** Konstante, nicht als Rechenausdruck. Dass sie bei `S = 3`
+denselben Wert hat wie `S − 1`, ist eine Tatsache über die heutige Sektorliste und keine
+Regel: Wer einen vierten Sektor einführt, entscheidet dessen Handelbarkeit selbst und setzt
+dann die Konstante ein, wo hier `S − 1` steht. **Für die Länderzahl, um die es in diesem
+Abschnitt geht, ist der Unterschied ohne Folge** — die Zahl der handelbaren Sektoren hängt
+nicht von `L` ab.
+
+### T55 — Die Ableitungskette
+
+Jede Zeile nennt ihre Fundstelle in diesem Dokument, damit die Formel gegen die Stelle gelegt
+werden kann, die die Zahl heute ausschreibt.
+
+| Größe | Formel in `L`, `S`, `I` | `L=4` | `L=9` | Fundstelle |
+|---|---|---:|---:|---|
+| Felder je spielbarem Land | `4S + 4I + 16` | 44 | 44 | T15 |
+| Felder der Restwelt | `4S + 10` | 22 | 22 | T15 |
+| Gebietsblock zusammen | `L(4S+4I+16) + 4S + 10` | 198 | 418 | T15, T17b |
+| Handelsströme | `(L+1)·L·(S−1)` | **40** | 180 | T15, „Handel" |
+| Weltpreise | `S − 1` | 2 | 2 | T15 |
+| Nachahmerzähler | `L·S` | 12 | 27 | T15 |
+| Positionssteckplätze | `L·(S+2)` | **20** | 45 | T16 |
+| Beteiligungen | `2·L·S` | 24 | 54 | T15, Aktion 2 |
+| von `L` unberührter Rest | `5S + 23` | 38 | 38 | T57 |
+| **Zustand gesamt** | `L(4S+4I+16) + (L+1)L(S−1) + L(S+2) + 3LS + 5S + 23` | **310** | **740** | T15 |
+| Sollmaske `weltlauf`, je Land | `4S + I + 11` | 27 | 27 | T38 |
+| **Sollmaske `weltlauf`** | `L(4S+I+11) + (4S+10) + (L+1)L(S−1) + (S−1) + 3` | **175** | 450 | T38 |
+| **ausserhalb der Sollmaske** | `L(3I+5) + L(S+2) + 3LS + 11` | **135** | 290 | T38 |
+| Sollreihen | `L·(S+4) − 1` | **27** | 62 | Reihenliste zu T23, `reihen.toml` |
+
+**Nachrechnung im Fliesstext, jede Zahl einmal von Hand eingesetzt.** Je Land
+`4·3 + 4·4 + 16 = 44`, Restwelt `4·3 + 10 = 22`, zusammen `4·44 + 22 = 198`. Handel
+`5·4·2 = 40`, Weltpreise `2`, Nachahmer `4·3 = 12`, Marktkorb `2` — die Welt also `56`.
+Steckplätze `4·5 = 20`, Beteiligungen `2·4·3 = 24`, Fondsaggregat und Überrendite `5 + 3 = 8`
+— der Fonds also `52`. Partie `4`. Summe `198 + 56 + 52 + 4 = 310`, dieselbe Zerlegung wie in
+T15. Sollmaske `4·27 + 22 + 40 + 2 + 3 = 175`, ausserhalb `4·17 + 20 + 24 + 12 + 11 = 135`,
+und beide zusammen wieder die Adressenzahl aus T15. Sollreihen `4·7 − 1 = 27`.
+
+**Warum die Spalte `L = 9` danebensteht, obwohl dieser Abschnitt keine Länderzahl ändert.**
+Sie ist keine Festlegung, sondern die einzige Probe, die etwas beweist. Heute gilt `L = I = 4`
+— und deshalb ist jede Verwechslung von `L` und `I` bei den heutigen Werten **unsichtbar**:
+`4S + 4I + 16` und `4S + 4L + 16` liefern beide 44. Erst bei `L ≠ I` fallen die beiden Formeln
+auseinander. Die Werte der Spalte sind gegen eine **unabhängig** entstandene Rechnung gelegt,
+die der Betreiber am 2026-09-05 in Paket `0118-fuenf-weitere-laender-auswaehlen` aufgeschrieben
+hat: Länderblock 396, Handel 180, Nachahmer 27, Steckplätze 45, Beteiligungen 54, fester Rest
+38, Zustand 740, Sollreihen 62. Alle acht Zahlen stimmen mit den Formeln überein. Das ist die
+Gegenrechnung, die eine einmal gerechnete Zahl nicht hat.
+
+**Zwei Zahlenpaare sehen bei `L = 4` gleich aus und sind es nicht.** Beide sind genau die
+Sorte Falle, gegen die diese Tabelle geschrieben ist:
+
+- **40 gegen 40.** Die 40 Handelsströme wachsen mit `(L+1)·L·(S−1)`; die **40
+  Halbierungsschritte** der Markträumung aus T28 sind eine Genauigkeitsvorgabe und wachsen mit
+  gar nichts. Wer beide für dieselbe Größe hält, macht aus einer Länderänderung eine Änderung
+  am Lösungsverfahren.
+- **27 gegen 27.** Die 27 Sollreihen wachsen mit `L(S+4) − 1`, die 27 Maskenadressen je Land
+  aus T38 mit `4S + I + 11` — also gar nicht mit `L`. Bei `L = 9` stehen 62 gegen unverändert
+  27.
+
+**Woher die 27 Sollreihen kommen, und warum die Reihenliste 31 nennt.** Gezählt wird an
+`daten/reihen.toml`, Stand 2026-09-05: `sollreihen_gesamt = 27`, aufgeteilt auf Reihe 1 (BIP,
+`L`), Reihe 2 (Sektoranteile, `L·S`), Reihe 8 (Verbraucherpreise, `L`), Reihe 10 (Wechselkurs,
+`L − 1`, weil der US-Dollar der Numéraire ist) und Reihe 11 (Staatsschuldenquote, `L`). Das
+ergibt `L(S+4) − 1`. Der Fliesstext unter der Reihenliste in Abschnitt 7 nennt weiterhin 31 und
+zählt Reihe 9 (Leitzins) mit vier Sollreihen mit; die Reihe hat ihre Sollrolle in Paket `0054`
+verloren (`sollreihen = 0`, leere `t37_klasse`), und die Prosa ist nicht mitgezogen worden.
+**Das ist kein Widerspruch zu dieser Formel, sondern die offene Arbeit von Paket
+`0068-technikmd-reihe-9-ohne-sollrolle`**, das hinter diesem Paket in derselben Datei steht.
+Ich fasse die Stelle nicht an; sie gehört ihm.
+
+### T56 — Die Identität eines Landes bleibt eine namentliche Aufzählung
+
+**Gewählt ist die erste der beiden Möglichkeiten: `Gebiet` und `Steckplatz` bleiben
+namentliche Aufzählungen.** Sie werden **nicht** durch einen blanken Index plus Kürzeltabelle
+ersetzt. Die eine Stelle, an der ein Land eingetragen wird, ist
+**`kern/include/kern/zustand.hpp`**.
+
+Vier Gründe, nachgemessen am 2026-09-05 und nicht vermutet:
+
+1. **Die Aufzählung *ist* schon der Index.** `enum class Gebiet : std::uint8_t` trägt die Werte
+   0 bis 4, die Adressarithmetik rechnet ausschliesslich mit `LAENDER` und `GEBIETE`, und die
+   Kürzeltabelle existiert bereits: `GEBIET_KUERZEL` in `kern/src/zustand.cpp`. Es stehen also
+   nicht zwei Verfahren zur Wahl, sondern ein Index **mit** Namensschicht gegen denselben Index
+   **ohne** sie. Der Umbau brächte keine Rechnung in Ordnung, die heute falsch wäre.
+2. **Ein falscher Index ist ein gültiger Wert, ein falscher Name nicht.** `Steckplatz{37}`
+   übersetzt; `Steckplatz::Anleihe_BX` nicht. Dieses Vorhaben fängt seine Fehler mechanisch ab
+   — `static_assert` auf die Blockgrenzen, Sollmaske je Runde, Bitfeld gegen den zweiten
+   Schreibzugriff. Eine Prüfung zur Übersetzungszeit gegen eine zur Laufzeit zu tauschen, läuft
+   dieser Bauart entgegen.
+3. **Die Namen tragen die Proben.** Gezählt in `kern/`: `Gebiet::<Kürzel>` steht auf 42 Zeilen
+   Quelltext (`werte.cpp` 25, `schritt.cpp` 6, `schreiber.cpp` 5, `zustand.cpp` 5,
+   `zustandsausgabe.hpp` 1) und auf **141** Zeilen in den Proben (`werte_probe.cpp` 109,
+   `schreiber_probe.cpp` 22, `zustand_probe.cpp` 9, `zustandsausgabe_probe.cpp` 1). Der
+   Schwerpunkt liegt bei den Proben, und dort ist der Name die Aussage: `Gebiet::DE` sagt, was
+   geprüft wird, `Gebiet{2}` sagt es nicht. Ein Umbau ersetzte 183 lesbare Zeilen durch 183
+   nachschlagepflichtige, ohne eine Zahl zu bewegen.
+4. **T17 macht die Adresse zum Bestandteil der Schnittstellenversion.** `fonds.position.CN.1`
+   und `handel.DE.CN.1` tragen das Kürzel im Text. Die Identität eines Landes ist damit ohnehin
+   schon namentlich; eine Aufzählung, deren Namen den Adressen folgen, ist die Fassung
+   derselben Sache, die der Übersetzer prüfen kann.
+
+**Der Preis dieser Wahl, ausgeschrieben, weil er real ist.** Bei `L = 5` bekommt
+`enum class Steckplatz` fünf weitere Werte (`Sektor_XX_1` bis `_3`, `Waehrung_XX`,
+`Anleihe_XX`), und weil die Plätze nach Art gruppiert sind, verschieben sich die
+Ordnungszahlen der Währungs- und Anleiheplätze. Das ist Handarbeit, und Handarbeit driftet.
+
+**Dagegen steht die Regel, die diese Wahl überhaupt erst tragfähig macht: Die Formel bewacht
+die Aufzählung.** In `zustand.hpp` gehört je ein `static_assert` gegen T55 neben die betroffene
+Konstante — `STECKPLAETZE == LAENDER * (SEKTOREN + 2)`,
+`LAND_FELDER == 4 * SEKTOREN + 4 * INSTRUMENTE + 16`, `RESTWELT_FELDER == 4 * SEKTOREN + 10`,
+und `STECKPLATZ_WAEHRUNG_ERSTER` sowie `STECKPLATZ_ANLEIHE_ERSTER` gegen `LAENDER * SEKTOREN`
+beziehungsweise `LAENDER * (SEKTOREN + 1)`. Ein vergessener Eintrag bricht dann die
+Übersetzung, statt eine Adresse still zu verschieben. **Ohne diese Zusicherungen wäre die Wahl
+falsch** — sie sind der Grund, warum eine handgeführte Liste hier zulässig bleibt.
+
+**Damit „die eine Stelle" wörtlich stimmt, muss eine Zeile umziehen.** `GEBIET_KUERZEL` steht
+heute in `kern/src/zustand.cpp`, die Aufzählung in `kern/include/kern/zustand.hpp` — ein Land
+hinzuzufügen berührt also zwei Dateien. Die Tabelle gehört als `constexpr std::array` neben
+die Aufzählung in den Kopf, mit `static_assert(GEBIET_KUERZEL.size() == GEBIETE)`. Danach ist
+der vollständige Vorgang für ein weiteres Land im Kern: ein Wert in `Gebiet` vor `RW`, `RW` um
+eins höher, `LAENDER` um eins höher, ein Kürzel in `GEBIET_KUERZEL`, `S + 2` Werte in
+`Steckplatz` — alles in einer Datei, alles von `static_assert` bewacht. Die Datenarbeit, die
+daneben anfällt, steht in `0141-pruefliste-fuenftes-land` und ist der grössere Posten.
+
+Beides — die Zusicherungen und der Umzug — ist **Entwurf, nicht Ausführung**, und braucht je
+ein Kernbauer-Paket. Ich schreibe keinen Code.
+
+### T57 — Was bei `L = 5` gleich bleibt
+
+Von den Zustandsadressen sind **38 von `L` unberührt** (`5S + 23`, bei `S = 3` also 38) — und
+das ist dieselbe Zahl, die Paket `0118` unabhängig als „fest" ausweist:
+
+| bleibt gleich | Zahl | warum |
+|---|---:|---|
+| Restwelt-Block | `4S + 10` = 22 | Die Restwelt ist definitionsgemäss **eine**: die Welt abzüglich der Modellländer. Ein weiteres Land verkleinert ihren Inhalt, nicht ihre Adressenzahl |
+| Fondsaggregat | 5 | Kasse, Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil sind Eigenschaften des Fonds, nicht der Landkarte |
+| Überrendite | 3 | drei Runden Gedächtnis, an die Todesbedingung gebunden |
+| Marktkorb | 2 | ein Korb, ein Wert, eine Rendite — unabhängig davon, worüber er gebildet wird |
+| Weltpreise | `S − 1` = 2 | je handelbarem Sektor einer, nicht je Land |
+| Partie | 4 | Runde, Jahrgangskennung, Parametersatz-Prüfsumme, Mandatsstand |
+
+Ausserhalb des Zustands bleibt ebenfalls unverändert, und hier liegt der eigentliche Punkt:
+**die Todesarten**, die **drei Aktionen je Runde**, die **Partielänge `R`**, die dreizehn
+Skalenklassen aus T5, die fünf Herkunftsarten aus T45, die 40 Halbierungsschritte aus T28 und
+die vier Maße aus `agentenbau.md`. Sie sind an Spielbalance, Skalenordnung oder Messverfahren
+gebunden — an keiner Stelle an die Ländergeometrie. Ein Land mehr ist für sie kein Ereignis.
+
+**Eine Berichtigung gehört hierher, und sie betrifft die Steckplätze.** Der Auftragstext zu
+`0116` nennt die zwanzig Steckplätze unter dem, was *nicht* mitwächst. Nach T15 und T16 sind
+sie `L·(S+2)` — `L·S` Land×Sektor, `L` Währung, `L` Anleihe —, also **geometrisch und
+wachsend**; und der Betreiber hat am 2026-09-05 in `0118` ausdrücklich „Weg A" gewählt: Die
+Steckplätze wachsen mit `L`, bei `L = 9` auf 45. Beide Aussagen stammen vom selben Tag; die
+jüngere sticht. **Was an den Steckplätzen wirklich nicht mitwächst, ist die Zahl der Aktionen
+je Runde** — und genau daraus entsteht die Frage nach der Entscheidungsdichte, die `0118` zu
+beantworten hat. Die Adressenzahl ist Geometrie, die Knappheit ist Balance; dieser Abschnitt
+trennt beides und entscheidet nur das Erste.
+
+Gleiches in halb: **der Fondsblock wächst zur Hälfte mit.** Von seinen 52 Adressen sind 8
+`L`-frei (Aggregat 5, Überrendite 3), 44 sind Geometrie (Steckplätze `L(S+2)`, Beteiligungen
+`2LS`). „Der Fondsblock wächst nicht" wäre für die kleinere Hälfte richtig und für die
+grössere falsch.
+
+### Was dieser Abschnitt nicht angefasst hat
+
+Nichts. Er ist **ausschliesslich beschreibend**: Er trägt keine Zahl in einem bestehenden
+Abschnitt nach, ändert keine Tabelle, keinen `static_assert` und keine Zeile Quelltext. Die
+Formeln sind gegen die bestehenden Stellen gelegt und stimmen mit ihnen überein; die eine
+Abweichung — 27 gegen 31 bei den Sollreihen — ist oben benannt und gehört Paket `0068`. Die
+Länderzahl selbst, die Auswahl eines weiteren Landes und der Umbau des Kerns sind eigene
+Pakete und hier nicht entschieden.

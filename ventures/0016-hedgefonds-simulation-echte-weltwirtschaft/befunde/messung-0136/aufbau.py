@@ -73,6 +73,34 @@ def kopieren(ziel):
         shutil.rmtree(ziel)
     shutil.copytree(WURZEL, ziel,
                     ignore=shutil.ignore_patterns("bau"), symlinks=True)
+    specs_spiegeln(ziel)
+
+
+def specs_spiegeln(baum):
+    """Die Vorgaben dorthin legen, wo der Belegstellenriegel des Wegwerf-Baums sucht.
+
+    Der Riegel schlaegt die Vorgaben ueber den Ort des Vorhabens nach --
+    `<vorhaben>/../../specs/<name des vorhabens>` -- und **bricht ab**, wenn dort kein
+    Verzeichnis liegt. Das ist richtig so: Ohne die Vorgaben liefe jedes Zitat in sie
+    als "Ziel ausserhalb des Bestands" durch, und der Riegel meldete gruen ueber nichts.
+
+    Fuer einen kopierten Baum heisst es aber, dass er an einem Ort steht, an dem der
+    Riegel nichts findet. Gemessen am 2026-09-05 ohne diesen Spiegel: Der Bauweg
+    `arbeitsbereich` des Vergleichsbaums meldete `ctest code=8`, eine verfehlte Probe
+    (`belegstellen_riegel`), Wortlaut
+    `'.../bau/specs/vorher' ist kein Verzeichnis` -- ein roter Vergleichsstand aus einem
+    Grund, der mit dem gemessenen Unterschied nichts zu tun hat. Ein Vorlauf, der aus
+    fremdem Grund rot ist, meldet jede Aenderung als gefangen (Logbuch des
+    Testentwicklers, 2026-09-05).
+    """
+    quelle = WURZEL.parents[1] / "specs" / WURZEL.name
+    ziel = baum.parents[1] / "specs" / baum.name
+    if not quelle.is_dir():
+        raise SystemExit("Die Vorgaben des Vorhabens fehlen: " + str(quelle))
+    if ziel.exists():
+        shutil.rmtree(ziel)
+    ziel.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(quelle, ziel, symlinks=True)
 
 
 def git_fassung(commit, datei):

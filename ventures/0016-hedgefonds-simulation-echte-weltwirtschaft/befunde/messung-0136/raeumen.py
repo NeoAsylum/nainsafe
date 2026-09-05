@@ -24,9 +24,13 @@ from aufbau import ABLAGE
 
 
 def main():
-    vorhanden = ABLAGE.exists()
-    shutil.rmtree(ABLAGE, ignore_errors=True)
-    print(("abgeraeumt: " if vorhanden else "war nicht da: ") + str(ABLAGE))
+    # Zwei Orte, weil `aufbau.py` an zwei Orten anlegt: die Baeume selbst und der
+    # Spiegel der Vorgaben daneben, den der Belegstellenriegel jedes Wegwerf-Baums
+    # sucht. Der Spiegel liegt eine Ebene hoeher und bliebe sonst stehen.
+    for pfad in (ABLAGE, ABLAGE.parent / "specs"):
+        vorhanden = pfad.exists()
+        shutil.rmtree(pfad, ignore_errors=True)
+        print(("abgeraeumt:   " if vorhanden else "war nicht da: ") + str(pfad))
     frei = shutil.disk_usage(str(ABLAGE.parent.parent))
     print("frei unter " + str(ABLAGE.parent.parent) + ": "
           + str(frei.free // (1024 * 1024)) + " MB von "

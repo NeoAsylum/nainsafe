@@ -49,7 +49,30 @@ Das Argument waehlt allein die Umgebung. Nimm einen Commit, dessen uebriger Baum
 gruen uebersetzt -- sonst ist das Rot des Bauwegs `arbeitsbereich` an beiden Staenden
 dasselbe und sagt ueber diese Aenderung nichts.
 
-Rueckgabe 0 heisst: kein Unterschied zwischen den Staenden, und jeder Code 0.
+Was dieser Baum nicht beantworten kann, ausgeschrieben
+------------------------------------------------------
+
+Der Bauweg `arbeitsbereich` faehrt hier **nie** mit `ctest`-Code 0, und das liegt an
+der Messanordnung und nicht an der Aenderung. `git archive` legt den Vorhabensbaum
+ausserhalb des Repos ab; der Test `belegstellen_riegel` sucht dort `specs/` und findet
+es nicht. Gemessen am 2026-09-05 aus `HEAD` (`0333b81`), Profil `FABRIK_SANITIZER=ON`:
+
+    14/16 Test #14: belegstellen_riegel ..............***Failed
+    belegstellen_riegel: '/tmp/.../specs/rein' ist kein Verzeichnis.
+    94% tests passed, 1 tests failed out of 16
+
+Der Ausfall trifft `vorher` und `nachher` gleich, also bleibt die Aussage dieses
+Skripts unberuehrt: Es fragt, ob sich ein Urteil **aendert**. Gezaehlt wird darum nur
+das; eine Zeile, die nicht durchweg gruen ist, bekommt `(!)` und einen eigenen Zaehler.
+
+Die andere Haelfte der Abnahme -- alle sechs Kombinationen mit Konfigurations-, Bau-
+und `ctest`-Code 0 -- gehoert deshalb an den Baum im Repo und wird dort gemessen:
+`python3 befunde/messung-0076/bauwege.py nachher --gegen HEAD`. Jenes Skript legt nur
+den **Bauordner** nach `$TMPDIR` und laesst die Quelle liegen, also findet
+`belegstellen_riegel` sein `specs/`. Am 2026-09-05 meldete es fuer alle sechs
+Kombinationen `konfig=0 bau=0 ctest=0` und `0 Abweichung(en)`.
+
+Rueckgabe 0 heisst: kein Urteil hat sich zwischen den zwei Staenden geaendert.
 """
 
 import os
@@ -167,6 +190,7 @@ def main():
     print("")
 
     fehler = 0
+    hinweise = 0
     for wert in PROFILE:
         for name, unter in WEGE.items():
             ergebnisse = {}
@@ -178,9 +202,18 @@ def main():
             v, n = ergebnisse["vorher"], ergebnisse["nachher"]
             gleich = all(v[s] == n[s] for s in ("konfig", "ziele", "bau", "ctest"))
             alles_gruen = all(n[s] == 0 for s in ("konfig", "bau", "ctest"))
-            if not gleich or not alles_gruen:
+            # Gezaehlt wird allein die **Aenderung** des Urteils, und das ist die Frage
+            # dieses Skripts. Nicht-gruen wird daneben gemeldet, aber nicht gezaehlt:
+            # Der Bauweg `arbeitsbereich` kann in diesem Wegwerf-Baum gar nicht gruen
+            # sein -- die Begruendung steht im Kopf dieser Datei. Ein Messgeraet, das
+            # aus einem strukturellen Grund immer rot meldet, gewoehnt seine Leser
+            # daran, die Zahl zu ueberspringen; dann faellt die echte Abweichung nicht
+            # mehr auf.
+            if not gleich:
                 fehler += 1
-            print(("!! " if (not gleich or not alles_gruen) else "   ")
+            if not alles_gruen:
+                hinweise += 1
+            print(("!! " if not gleich else ("(!)" if not alles_gruen else "   "))
                   + ("FABRIK_SANITIZER=" + wert).ljust(24) + name.ljust(16))
             for stand in ("vorher", "nachher"):
                 e = ergebnisse[stand]
@@ -191,7 +224,11 @@ def main():
                     print("                 " + t)
 
     print("")
-    print(str(fehler) + " Abweichung(en). Ablage: " + str(ablage))
+    print(str(fehler) + " Abweichung(en) -- also Zeilen, deren Urteil sich zwischen den "
+          "zwei Staenden geaendert hat.")
+    print(str(hinweise) + " Zeile(n) nicht durchweg gruen (mit `(!)` markiert); der "
+          "bekannte Fall steht im Kopf dieser Datei.")
+    print("Ablage: " + str(ablage))
     return 1 if fehler else 0
 
 

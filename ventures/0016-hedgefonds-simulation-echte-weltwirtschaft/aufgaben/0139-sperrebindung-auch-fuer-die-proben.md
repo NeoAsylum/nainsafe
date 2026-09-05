@@ -1,7 +1,7 @@
 ---
 id: 0139-sperrebindung-auch-fuer-die-proben
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Der Sperrebindungsriegel deckt zusaetzlich `kern/test/*.cpp` mit denselben zwei Bedingungen und derselben Meldungsform; die Abbruchmeldung nennt den Dateinamen mitsamt seinem Verzeichnis, sodass eine Probe von einer Bibliotheksquelle zu unterscheiden ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert, baut und testet gruen in beiden Profilen; ein Baum mit einer zusaetzlichen Probe unter `kern/test` ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Probe, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Die Statusmeldung nennt beide Zahlen getrennt -- Quellen und Proben --, damit ein Riegel, der eine der beiden Mengen leer laesst, nicht wie einer aussieht, der beide prueft.
@@ -108,3 +108,30 @@ genannt wird, gilt der Dateiname, nicht die Ziffer.
 Paket, war zum Zeitpunkt des Vorschlags richtig und ist es nach dem Statusnachzug
 weiterhin. Ich habe sie nicht uebernommen, sondern ueber die `dateien`-Listen aller
 offenen Pakete neu erhoben.
+
+## Vermerk des Kernbauers, 2026-09-05 -- `status: gebaut`
+
+Geaendert wurde genau eine Datei, `kern/CMakeLists.txt`, und in ihr fuenf Stellen: der
+Sammler `KERN_PROBEN` wandert vor den Riegel (und wird dort nicht ein zweites Mal
+angelegt), `CMAKE_CONFIGURE_DEPENDS` nimmt ihn mit auf, die Schleife laeuft ueber beide
+Listen, die erste Abbruchmeldung ist so umformuliert, dass sie fuer Quelle **und** Probe
+stimmt, und die Statusmeldung nennt beide Zahlen getrennt. Eine Schleife, keine zweite
+-- die Bedingungen sind fuer beide Mengen dieselben, und zwei Schleifen koennten
+auseinanderlaufen.
+
+Der Dateiname steht schon vorher als Pfad ab `kern/` in der Meldung
+(`file(RELATIVE_PATH ...)`), traegt also sein Verzeichnis. Gemessen:
+`'test/luecke_ohne_sperre_probe.cpp'` gegen `'src/luecke_quelle.cpp'`.
+
+**Nachweis:** `befunde/messung-0139/` -- ein Aufruf, sieben Baeume, `Abweichungen: 0`.
+Drei verlangt die Abnahme; die vier weiteren sind das zweite Profil, die beiden
+Kontrollbaeume gegen die alte Fassung (derselbe Verstoss muss dort **gruen** sein, sonst
+beweist das Rot nichts) und die Gegenprobe auf der Seite der Bibliotheksquellen.
+`liesmich.md` nennt die Tabelle, `lauf.txt` den Wortlaut.
+
+**Worauf ich unsicher bin,** fuer den Projektmanager: Die Abnahme verlangt "dieselbe
+Meldungsform". Ich habe sie woertlich genommen -- **eine** Meldung fuer beide Mengen --
+und dafuer den einen Satzteil geaendert, der nur fuer `src/` stimmte. Wer die Abnahme
+so liest, dass der alte Wortlaut fuer Quellen unangetastet bleiben und eine zweite
+Meldung fuer Proben danebentreten soll, bekaeme ein anderes Ergebnis. Zwei Meldungen
+haetten aber zwei Stellen, die auseinanderlaufen koennen.

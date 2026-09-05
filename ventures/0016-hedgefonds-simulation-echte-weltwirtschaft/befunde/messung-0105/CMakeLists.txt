@@ -33,7 +33,21 @@ add_executable(riegel_vorher
 add_executable(riegel_nachher
   ${MESS_ARBEITSBAUM}/werkzeuge/belegstellen/belegstellen_riegel.cpp)
 
-foreach(ziel riegel_vorher riegel_nachher)
+# Die zwei Mutanten: derselbe Stand wie `riegel_nachher`, je eine Zeile entschaerft.
+# Angelegt von `mutiere.py`, das abbricht, wenn der erwartete Wortlaut nicht genau
+# einmal vorkommt. Sie messen, was `riegel_vorher` nicht messen kann: ob die vier neuen
+# Faelle in `ZITATFAELLE` die Regel wirklich decken oder nur mitlaufen.
+#
+# Warum zwei: Die Regel hat zwei Haelften -- dass es eine Zeilengrenze gibt, und dass
+# sie an der Zeile des Namens haengt. Je Haelfte reissen **andere** Faelle; genau das
+# belegt, dass die Tabelle Verschiedenes misst und nicht einmal pauschal rot wird.
+add_executable(riegel_mutant_ohne_grenze
+  ${MESS_WURZEL}/mutant/ohne_grenze/belegstellen_riegel.cpp)
+add_executable(riegel_mutant_grenze_am_wort
+  ${MESS_WURZEL}/mutant/grenze_am_wort/belegstellen_riegel.cpp)
+
+foreach(ziel riegel_vorher riegel_nachher
+             riegel_mutant_ohne_grenze riegel_mutant_grenze_am_wort)
   target_compile_options(${ziel} PRIVATE -Wall -Wextra -fwrapv)
 endforeach()
 
@@ -70,6 +84,22 @@ add_test(NAME rueckgabewerte
 # Baeume oben sind der eingefrorene Stand aus `bezugsstand.txt`; hier laufen beide
 # Fassungen **im selben Aufruf** ueber den Baum, den der Baulauf sieht. Nur so ist der
 # Vergleich gegen einen Bestand haltbar, an dem fremde Laeufe gleichzeitig schreiben.
+# Die Selbsttests der Mutanten. Sie laufen vor jedem Lesen des Bestands und brechen mit
+# Code 2 ab; welcher Baum uebergeben wird, ist deshalb gleichgueltig. Rot ist hier das
+# erwartete Ergebnis -- gruen hiesse, dass die Tabelle die Regel gar nicht misst.
+#
+# `WILL_FAIL` sagt nur "ungleich 0". **Welche** Faelle reissen, steht im Mitschnitt und
+# im Ergebnisbericht: `ohne_grenze` nimmt die Faelle 10, 11 und 13, `grenze_am_wort`
+# nimmt Fall 12 -- kein Fall reisst bei beiden, und die 47 Faelle der anderen vier
+# Tabellen bleiben in beiden Laeufen gruen.
+foreach(mutant ohne_grenze grenze_am_wort)
+  add_test(NAME mutant_${mutant}_selbsttest
+           COMMAND riegel_mutant_${mutant}
+                   ${MESS_WURZEL}/baum/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
+                   ${MESS_WURZEL}/baum/specs/0016-hedgefonds-simulation-echte-weltwirtschaft)
+  set_tests_properties(mutant_${mutant}_selbsttest PROPERTIES WILL_FAIL TRUE)
+endforeach()
+
 foreach(ziel riegel_vorher riegel_nachher)
   add_test(NAME ${ziel}_auf_arbeitsbaum
            COMMAND ${ziel}

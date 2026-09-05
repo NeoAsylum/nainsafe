@@ -84,14 +84,24 @@ def fahre(baum: dict) -> list:
         bau = wurzel / "bau"
         code, ausgabe = lauf(["cmake", "-S", str(ziel), "-B", str(bau), schalter])
         print("      cmake -S  -> Code %d" % code)
-        print(marken(ausgabe))
+        # Die Zeile des Riegels ausdruecklich mitdrucken -- sie ist der Gegenstand
+        # dieser Messung. Bei den Abbruechen faellt darunter die erste Zeile der
+        # Fehlermeldung, und die traegt den Dateinamen samt Verzeichnis.
+        for zeile in ausgabe.splitlines():
+            if "Sperrebindungsriegel" in zeile:
+                print("      > " + zeile.strip())
+        print(marken(ausgabe, 8))
 
         if not baum["gruen"]:
             if code == 0:
                 abweichungen.append("%s: konfiguriert mit Code 0, erwartet war Abbruch"
                                     % baum["nummer"])
+            # CMake bricht eine lange Abbruchmeldung selbst um und rueckt ein; ein
+            # Suchstueck, das ueber die Umbruchstelle laeuft, faende sich sonst nicht.
+            # Deshalb wird auf beiden Seiten jeder Zwischenraum eingeebnet.
+            flache = " ".join(ausgabe.split())
             for stueck in baum["enthaelt"]:
-                if stueck not in ausgabe:
+                if " ".join(stueck.split()) not in flache:
                     abweichungen.append("%s: Abbruchmeldung ohne %r"
                                         % (baum["nummer"], stueck))
             return abweichungen
@@ -100,8 +110,15 @@ def fahre(baum: dict) -> list:
             abweichungen.append("%s: Konfigurieren mit Code %d, erwartet war gruen"
                                 % (baum["nummer"], code))
             return abweichungen
-        abweichungen += ["%s: %s" % (baum["nummer"], m)
-                         for m in zaehlung_pruefen(ziel, ausgabe)]
+        # Die getrennte Zaehlung gibt es erst in der Fassung dieses Pakets. Dass die
+        # alte Fassung sie **nicht** kennt, gehoert mitgeprueft: Es ist der Beleg, dass
+        # die Kontrollbaeume wirklich gegen den alten Riegel laufen.
+        if baum["fassung"] == "nachher":
+            abweichungen += ["%s: %s" % (baum["nummer"], m)
+                             for m in zaehlung_pruefen(ziel, ausgabe)]
+        elif "Probe(n) geprueft" in ausgabe:
+            abweichungen.append("%s: die alte Fassung meldet bereits Proben -- dieser "
+                                "Kontrollbaum belegt nichts" % baum["nummer"])
 
         code, gebaut = lauf(["cmake", "--build", str(bau)])
         print("      cmake --build -> Code %d" % code)
