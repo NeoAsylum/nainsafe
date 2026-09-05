@@ -413,6 +413,64 @@ def schreibpfade(werkzeuge: list[str]) -> list[str]:
     return pfade
 
 
+def commitpfade(gegenstand: str | None, rolle: str, breit: list[str]) -> list[str]:
+    """Die Pfade, die **dieser** Lauf committen darf -- eng, wenn es ein Paket ist.
+
+    Bis zum 2026-09-05 bekam `committen` die Schreibpfade der **Rolle**
+    (`schreibpfade(werkzeuge)`). Fuer `kernbauer` und `testentwickler` ist das
+    `ventures/**`, also faktisch das ganze Vorhaben: Zwei Kernbauer an verschiedenen
+    Paketen teilten sich denselben Commit-Pfad, und wer zuerst fertig wurde, nahm die
+    Arbeit des anderen unter seinem Betreff mit. Nachgewiesen vom kern-pruefer an
+    `9e46cfa` (Betreff `architekt: 0051`, acht Dateien aus drei Paketen und zwei Rollen)
+    und `2de4de7` (Betreff `kernbauer: 0072`, von 0072 nichts darin). Pakete 0121, 0131.
+
+    Eng heisst hier vier Dinge und **nicht** mehr:
+
+    - die `dateien`-Liste des Pakets -- die Koernigkeit, in der der Baulauf ohnehin
+      schon Kollisionen vermeidet;
+    - die Paketdatei selbst, damit der Agent seinen Status melden kann;
+    - sein eigenes Logbuch;
+    - Befunde und Messbaeume, die **seinen** Paketnamen tragen.
+
+    Ausdruecklich **nicht** das ganze `befunde/`-Verzeichnis: Dort schreiben mehrere
+    Pruefer gleichzeitig, und es mitzunehmen waere genau der Fehler, der hier behoben
+    wird.
+
+    Faellt irgendetwas davon aus -- kein Paket zu diesem Gegenstand, kein lesbares
+    Frontmatter --, gibt die Funktion die breiten Rollenpfade zurueck. Der schlechteste
+    Fall ist damit das Verhalten von gestern und nicht ein verlorener Commit.
+    """
+    if not gegenstand:
+        return breit
+    treffer = sorted(WURZEL.glob(f"ventures/*/aufgaben/{gegenstand}.md"))
+    if not treffer:
+        return breit
+    datei = treffer[0]
+    try:
+        kopf, _ = frontmatter(datei.read_text(encoding="utf-8"))
+    except OSError:
+        return breit
+
+    eng = [str(datei.relative_to(WURZEL))]
+    # Wortgleich zu baulauf.py:240.  liefert  als **Zeichenkette**
+    # ("[a/b.md, c/d.md]"), nicht als Liste -- wer darueber iteriert, bekommt einzelne
+    # Buchstaben. Genau das ist mir am 2026-09-05 beim ersten Versuch passiert, und der
+    # Pfadfilter darunter hat es stillschweigend verdeckt: Der Commit haette Paketdatei
+    # und Logbuch getragen und die eigentliche Arbeit im Arbeitsbaum gelassen.
+    for d in {s.strip() for s in
+              str(kopf.get('dateien', '')).strip('[]').split(',') if s.strip()}:
+        eng.append(d)
+    eng.append(f"notizen/{rolle}.md")
+
+    befunde = datei.parent.parent / "befunde"
+    for spur in sorted(befunde.glob(f"*{gegenstand}*")):
+        eng.append(str(spur.relative_to(WURZEL)))
+
+    # Nie mehr als die Rolle ueberhaupt schreiben darf.
+    erlaubt = [e for e in eng if any(e == b or e.startswith(b + "/") for b in breit)]
+    return erlaubt or breit
+
+
 def frisch_geschrieben(pfade: list[str], seit: float) -> int:
     """Wie viele Dateien in den Schreibpfaden nach `seit` veraendert wurden.
 
@@ -660,7 +718,8 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         print(f"  Fehlgeschlagen (Code {fertig.returncode}): {antwort[:200]}")
         return fertig.returncode
 
-    pfade = schreibpfade(werkzeuge)
+    breit = schreibpfade(werkzeuge)
+    pfade = commitpfade(gegenstand, rolle, breit)
     commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id, pfade)
     tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
 
@@ -668,7 +727,7 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
     # Laeufen hat ein anderer Agent die Dateien schon mitgenommen.
     mitgenommen = 0
     if not anzahl and not commit_fehler:
-        mitgenommen = frisch_geschrieben(pfade, begonnen)
+        mitgenommen = frisch_geschrieben(breit, begonnen)
 
     if commit_fehler:
         journal_ende(verbindung, lauf_id, "fehler", nutzung, None,

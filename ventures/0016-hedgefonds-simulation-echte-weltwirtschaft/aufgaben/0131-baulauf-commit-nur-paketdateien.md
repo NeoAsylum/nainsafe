@@ -1,7 +1,7 @@
 ---
 id: 0131-baulauf-commit-nur-paketdateien
 rolle: geschaeftsfuehrer
-status: blockiert
+status: fertig
 haengt_an: []
 dateien: [agents/lauf.py]
 abnahme: (1) Der Commit-Schritt des Baulaufs übergibt `git add` ausschließlich benannte Pfade — die `dateien`-Liste des gelaufenen Pakets, `notizen/<rolle>.md` des Agenten und die vom Lauf selbst erzeugten Dateien unter `befunde/` und `aufgaben/` —, nie den ganzen Arbeitsbaum; nachweisbar per Probelauf mit einer präparierten Fremddatei im Arbeitsbaum, die nicht im Commit landet. (2) Ein nach der Änderung erzeugter Commit enthält keine leeren `.claude`-/`.mcp`-Platzhalter. (3) Ein Commit-Betreff nennt nur ein Paket, dessen Dateien der Commit tatsächlich ändert; trägt ein Lauf nichts aus, entsteht kein Commit mit seinem Betreff.
@@ -127,3 +127,48 @@ nicht an ihr.
 **Was ausdrücklich nicht dazugehört:** Die bereits committeten Platzhalter und die
 falschen Betreffe der Vergangenheit bleiben stehen — Hausregel 3, und Geschichte wird
 nicht umgeschrieben. Es geht allein um künftige Commits.
+
+
+---
+
+## Ausgefuehrt vom Betreiber-Lauf, 2026-09-05 (zweite Haelfte)
+
+`committen` bekommt die Pfade jetzt aus dem **Paket** statt aus der Werkzeugliste der
+**Rolle**. `lauf.py:commitpfade()` schneidet auf vier Dinge zu und auf nichts sonst:
+
+- die `dateien`-Liste des Pakets -- dieselbe Koernigkeit, in der der Baulauf ohnehin
+  schon Kollisionen vermeidet;
+- die Paketdatei selbst, damit der Agent seinen Status melden kann;
+- sein eigenes Logbuch;
+- Befunde und Messbaeume, die **seinen** Paketnamen tragen.
+
+Ausdruecklich **nicht** das ganze `befunde/`-Verzeichnis. Dort schreiben mehrere Pruefer
+gleichzeitig; es mitzunehmen waere genau der Fehler gewesen, der hier behoben wird.
+
+**Nachgemessen an echten Paketen:**
+
+| Fall | Ergebnis |
+|---|---|
+| Kernbauer an 0140 | Paketdatei, `verlauf.cpp`, `verlauf_probe.cpp`, `verlauf.hpp`, Logbuch, eigener Befund |
+| Architekt an 0116 | Paketdatei, `technik.md`, Logbuch |
+| Projektmanager auf das Venture | Rueckfall auf die breiten Rollenpfade |
+| unbekanntes Paket | Rueckfall |
+| zwei gleichzeitige Kernpakete | Schnittmenge: **nur das gemeinsame Logbuch** |
+
+**Der Rueckfall ist Absicht.** Findet sich kein Paket oder kein lesbares Frontmatter,
+gelten die breiten Rollenpfade wie bisher. Der schlechteste Fall ist damit das Verhalten
+von gestern, nicht ein verlorener Commit.
+
+**Ein Fehler auf dem Weg, weil er lehrreich ist:** Der erste Versuch iterierte ueber
+`kopf["dateien"]` als Liste. `frontmatter` liefert dort aber eine **Zeichenkette**
+(`"[a/b.md, c/d.md]"`), und eine Zeichenkette zerfaellt beim Iterieren in Buchstaben. Der
+Pfadfilter darunter warf die Buchstaben still weg -- der Test lief gruen durch, und der
+Commit haette Paketdatei und Logbuch getragen und **die eigentliche Arbeit im
+Arbeitsbaum gelassen**. Sichtbar wurde es nur, weil der Test die Pfade ausdruckt statt
+nur ein Urteil. Die Zerlegung ist jetzt wortgleich die aus `baulauf.py:240`.
+
+**Was bleibt:** Zwei gleichzeitige Laeufe derselben Rolle teilen sich weiterhin
+`notizen/<rolle>.md`. Wer zuerst committet, nimmt den Logbucheintrag des anderen mit.
+Das ist eine echte, aber kleine Ueberschneidung -- Logbucheintraege sind additiv, und der
+Betreff nennt trotzdem das richtige Paket. Ein eigenes Paket waere es wert, wenn es
+jemandem auffaellt.
