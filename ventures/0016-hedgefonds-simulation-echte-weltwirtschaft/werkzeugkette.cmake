@@ -673,10 +673,52 @@ function(fabrik_schlussriegel wurzelverzeichnis)
     # daraus. Geprueft wird deshalb nicht auf Anwesenheit, sondern auf die Form -- ein
     # Wort, das mit `-l` beginnt, oder eines, das auf eine Bibliotheksendung endet.
     #
+    # Abgeglichen wird der Eintrag **und** jedes Wort, in das er zerfaellt. Der Grund ist
+    # die durchgereichte Form: Ein Uebersetzungstreiber nimmt einen Linkerschalter als
+    # `-Wl,<schalter>` entgegen und gibt ihn getrennt weiter. Der Eintrag `-Wl,-lz`
+    # beginnt damit auf `-W` und endet auf `z`; die zwei Muster greifen am Anfang
+    # beziehungsweise am Ende des **ganzen** Eintrags, also traf keines. Gemessen am
+    # 2026-09-05 am Stand davor, die Angriffszeile ueber `CMAKE_PROJECT_INCLUDE`
+    # eingehaengt: Der gelesene Wert in der Meldung unten nannte `-Wl,-lz`, das Urteil
+    # war Code 0, und auf der Linkerzeile jeder Probe stand der Schalter trotzdem.
+    #
+    # `INTERFACE` und nicht `PRIVATE` ist dabei die wirksame Form und keine Feinheit:
+    # `kern` ist eine statische Bibliothek und wird selbst nie gelinkt. Ein Linkschalter
+    # an ihr wirkt allein ueber die Schnittstelle -- und landet dann bei jedem, der sie
+    # linkt.
+    #
+    # Zerlegt wird mit derselben benannten Folge wie im Durchgang gegen
+    # Pauschalabschalter weiter oben in dieser Datei: `SHELL:` weg, die Zeichen
+    # `$ < > : ,` zu Leerraum, dann `separate_arguments`. Sie steht dort schon dafuer,
+    # dass ein Eintrag nicht mit einem Schalter verwechselt wird; eine zweite Fassung
+    # derselben Regel danebenzustellen waere der Anfang zweier Wahrheiten. `-Wl,-lz`
+    # zerfaellt daran in `-Wl` und `-lz`, und `^-l.` trifft. Ein Generatorausdruck wie
+    # `$<1:-lz>` faellt in denselben Weg.
+    #
+    # Der ganze Eintrag bleibt zusaetzlich im Abgleich, und das ist keine Doppelung,
+    # sondern die Zusicherung, dass die Zerlegung nur finden kann und nie verlieren:
+    # `separate_arguments` loest Anfuehrung und Fluchtzeichen auf, und was sie an einem
+    # ungewoehnlichen Eintrag zerschluege, faenge sonst niemand mehr. Getroffen wird je
+    # Eintrag hoechstens einmal. Gemeldet wird der Eintrag im Wortlaut samt dem Wort, das
+    # ihn ueberfuehrt hat -- seit der Zerlegung ist das genannte Wort nicht mehr
+    # notwendig das, was im Manifest steht, und ohne es waere die Meldung eine Behauptung
+    # ueber einen Eintrag, dem man nichts ansieht.
+    #
+    # **Was dieser Durchgang auch mit der Zerlegung nicht sieht, ausgeschrieben:** Die
+    # Endungen `.a` und `.so` sind eine Aufzaehlung und keine Regel. Eine dritte Endung
+    # -- `.dylib` auf macOS, eine mitversionierte `.so.1` -- traegt keines der beiden
+    # Muster, und ein voller Pfad auf so eine Datei kaeme durch. Dasselbe gilt fuer `-l`
+    # in getrennter Schreibweise: `-Wl,-l,z` zerfaellt in `-Wl`, `-l` und `z`, und `^-l.`
+    # verlangt ein Zeichen hinter dem `l`. Beides ist um nichts gedachter, als die
+    # durchgereichte Form es bis zum 2026-09-05 war; es steht hier, damit die gruene
+    # Meldung unten niemand fuer ein Urteil ueber alle Wege haelt.
+    #
     # Die Schalter, die hier heute wirklich stehen, sind die beiden Sanitizerschalter am
-    # geprueften Kern. Beide beginnen mit `-f` und enden auf ein Wort ohne Punkt, treffen
-    # also keines der zwei Muster. Der Nachweis dafuer ist die Zeile in der Meldung
-    # unten: Sie nennt den gelesenen Wert und nicht nur das Urteil.
+    # geprueften Kern. Auch nach der Zerlegung trifft keiner:
+    # `-fsanitize=undefined,address` zerfaellt in `-fsanitize=undefined` und `address`,
+    # `-fno-sanitize-recover=all` bleibt ein Wort; keines beginnt auf `-l`, keines endet
+    # auf eine der zwei Endungen. Der Nachweis dafuer ist die Zeile in der Meldung unten:
+    # Sie nennt den gelesenen Wert und nicht nur das Urteil.
     foreach(eigenschaft LINK_OPTIONS INTERFACE_LINK_OPTIONS)
       get_target_property(nullwert ${nullziel} ${eigenschaft})
       if("${nullwert}" MATCHES "-NOTFOUND$")
@@ -684,8 +726,24 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       endif()
       list(APPEND nullgelesen "${nullziel}.${eigenschaft}=[${nullwert}]")
       foreach(eintrag IN LISTS nullwert)
-        if("${eintrag}" MATCHES "^-l." OR "${eintrag}" MATCHES "\\.(a|so)$")
-          list(APPEND fremdlink "  ${nullziel}: ${eigenschaft} nennt ${eintrag}\n")
+        string(REPLACE "SHELL:" " " zerlegt "${eintrag}")
+        string(REGEX REPLACE "[$<>:,]" " " zerlegt "${zerlegt}")
+        separate_arguments(worte UNIX_COMMAND "${zerlegt}")
+        # Der ganze Eintrag vor seinen Woertern: So bleibt jeder Fund der engen Fassung
+        # ein Fund, gleich was die Zerlegung mit ihm anstellt.
+        list(INSERT worte 0 "${eintrag}")
+        set(getroffen FALSE)
+        set(fundwort "")
+        foreach(wort IN LISTS worte)
+          if("${wort}" MATCHES "^-l." OR "${wort}" MATCHES "\\.(a|so)$")
+            set(getroffen TRUE)
+            set(fundwort "${wort}")
+            break()
+          endif()
+        endforeach()
+        if(getroffen)
+          list(APPEND fremdlink
+               "  ${nullziel}: ${eigenschaft} nennt ${eintrag} (Fundwort: ${fundwort})\n")
         endif()
       endforeach()
     endforeach()

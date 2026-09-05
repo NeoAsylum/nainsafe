@@ -1,7 +1,7 @@
 ---
 id: 0094-linkschalterform-durchgereichtes-l
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0069-t2-linkriegel-in-der-werkzeugkette, 0076-riegel-sammeln-notfound-je-quelle]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -148,3 +148,123 @@ die Entscheidung des Projektmanagers, nicht meine.
    derselben Eigenschaft. Sie duerfen nach der Zerlegung kein Muster treffen — sonst ist
    der Riegel zu scharf und der Arbeitsbaum rot. Nachweis: derselbe Baum ohne
    Angriffszeile, Code 0, mit dem gelesenen Wert in der Meldung.
+
+---
+
+# Nachweis -- Kernbauer, 2026-09-05
+
+**Bezugsstand:** Commit `564d4b8` (`projektmanager: 0016-hedgefonds-simulation-echte-
+weltwirtschaft (12 Dateien)`), ausgepackt mit `git archive HEAD ventures specs` nach
+`$TMPDIR`. Geaendert habe ich allein `werkzeugkette.cmake`; jede Angriffszeile ist ueber
+`-DCMAKE_PROJECT_INCLUDE` eingehaengt, der Arbeitsbaum bleibt sonst unberuehrt. Was hier
+steht, ist der Vorher-Stand von 0103.
+
+`specs/` gehoert mit ausgepackt. Ohne das Verzeichnis bricht der `belegstellen_riegel`
+aus einem ganz anderen Grund ab, und der Vorher-Stand waere rot ohne Aussage.
+
+## Bedingung 1 -- der Riegel faellt rot aus
+
+Angriff: `befunde/pruefung-0069/angriff-c-linkerzeile.cmake`, also
+`target_link_options(kern INTERFACE "-Wl,-lz")`.
+
+**Vorher** -- Code 0. Der Riegel liest den Schalter und meldet trotzdem Vollzug:
+
+```
+-- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[];
+   kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[];
+   kern.INTERFACE_LINK_OPTIONS=[-Wl,-lz]; ...
+-- Configuring done
+   -> Code 0
+```
+
+**Nachher** -- Code 1, im Wortlaut:
+
+```
+CMake Error at werkzeugkette.cmake:779 (message):
+  T2 verlangt vom Kern null Fremdabhaengigkeiten.  Diese Ziele linken etwas:
+
+    kern: INTERFACE_LINK_OPTIONS nennt -Wl,-lz (Fundwort: -lz)
+   -> Code 1
+```
+
+Die Abnahme nennt **beide** Ziele, deshalb dieselbe Zeile an `kern_geprueft` gemessen --
+dort steht der unerlaubte Schalter neben den zwei erlaubten, und der Riegel findet ihn
+neben ihnen statt statt ihrer:
+
+```
+kern_geprueft: INTERFACE_LINK_OPTIONS nennt -Wl,-lz (Fundwort: -lz)   -> Code 1
+```
+
+Drei weitere Formen, alle am geaenderten Baum, alle rot:
+
+| Eintrag | Urteil | Fundwort |
+|---|---|---|
+| `-lz` | Code 1 | `-lz` |
+| `/usr/lib/libz.so` | Code 1 | `/usr/lib/libz.so` |
+| `$<1:-lz>` | Code 1 | `-lz` |
+| `-Wl,-l,z` | **Code 0** | -- |
+
+Die letzte Zeile ist kein Versehen. `-Wl,-l,z` zerfaellt in `-Wl`, `-l` und `z`, und
+`^-l.` verlangt ein Zeichen hinter dem `l`. Die Luecke steht ab jetzt im Kommentar der
+Datei, zusammen mit der Endungsliste, die `.dylib` und `.so.1` nicht kennt. Sie ist
+gemessen und nicht vermutet.
+
+## Bedingung 2 -- die Sanitizerschalter bleiben gruen
+
+Derselbe Baum ohne Angriffszeile, Code 0, mit dem gelesenen Wert in der Meldung:
+
+```
+-- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[];
+   kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[];
+   kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[];
+   kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all];
+   kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+-- Warnsatz-Schlussriegel: 18 uebersetzende Ziele geprueft, ...
+   -> Code 0
+```
+
+Nach der Zerlegung zerfaellt `-fsanitize=undefined,address` in `-fsanitize=undefined`
+und `address`; `-fno-sanitize-recover=all` bleibt ein Wort. Keines beginnt auf `-l`,
+keines endet auf `.a` oder `.so`.
+
+## Positivkontrolle -- jede Haelfte einzeln sabotiert
+
+Gruen zu uebersetzen ist kein Nachweis. Beide neuen Zeilen sind deshalb einzeln aus einer
+Kopie entfernt worden, und zwar die **letzte** ihrer Art in der Datei -- die Zerlegung
+steht auch im Durchgang gegen Pauschalabschalter, und wer beide entfernt, misst den
+falschen Riegel.
+
+| Baum | `-Wl,-lz` | `-l:z` |
+|---|---|---|
+| unveraendert | ROT | ROT |
+| ohne `separate_arguments` (Zeile 731) | **gruen** | ROT |
+| ohne `list(INSERT worte 0 ...)` (Zeile 734) | ROT | **gruen** |
+
+Damit traegt jede Zeile eine eigene Haelfte, und keine ist Beiwerk. `-l:z` ist der Fall,
+an dem der ganze Eintrag trifft und keines seiner Woerter -- er ist der Grund, warum der
+Eintrag zusaetzlich im Abgleich bleibt, und ohne ihn waere diese Zeile eine unbelegte
+Vorsichtsmassnahme.
+
+## Was sonst gemessen wurde
+
+- **Die unveraenderte Haelfte des Riegels.** `angriff-a.cmake` (`link_libraries(m)`) und
+  `angriff-b.cmake` (`target_link_libraries(kern PRIVATE m)`) liefern vorher und nachher
+  wortgleich dieselben Befunde ueber `LINK_LIBRARIES` und `INTERFACE_LINK_LIBRARIES`.
+- **Der volle Testlauf**, vorher und nachher am selben Baumstand: 13 von 14 gruen, in
+  beiden Faellen derselbe rote Test.
+- **Der rote Test ist nicht meiner.** `belegstellen_riegel` faellt an
+  `pruefstand/test/vorrat_kernanker_probe.cpp`, Fundstelle ohne Dokumentnamen -- eine
+  fremde Datei, schon im Uebersetzungsbericht vom 2026-09-05 rot. Seine Zahlen sind
+  vorher und nachher gleich: Bedingung 1 mit 5 Zeilenverweisen und 0 mit Dateinamen
+  daneben, Bedingung 2 mit 36 Zitaten und 35 aufgeloesten. Mein neuer Kommentar hat
+  also weder einen Zeilenverweis noch ein Zitat hinzugefuegt.
+
+## Worauf ich unsicher bin
+
+Die Meldung nennt jetzt zusaetzlich das Fundwort. Die Abnahme verlangt das nicht; sie
+verlangt die Fehlerausgabe im Wortlaut. Ich halte es fuer noetig, weil seit der Zerlegung
+nicht mehr der genannte Eintrag das Muster trifft, sondern ein Wort darin -- bei
+`$<1:-lz>` sieht man dem Eintrag nichts an. Ein strenger Pruefer kann es als Beiwerk
+lesen. Kein Test und kein Dokument im Arbeitsbaum zitiert den alten Wortlaut dieser
+Zeile; nachgesehen mit einer Mustersuche ueber alle Quellen ausserhalb von `bau/` und
+`befunde/`.

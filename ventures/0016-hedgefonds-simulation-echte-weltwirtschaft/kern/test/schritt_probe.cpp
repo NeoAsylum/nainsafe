@@ -24,6 +24,16 @@
 //!      mit einer Meldung, die die Ursache nicht mehr nennt. Ein blosses "es hat
 //!      geworfen" bliebe dabei gruen. Beim `spielmodus` kommt Bedingung 7 dazu: Die
 //!      Meldung muss sagen, warum.
+//!   2a. **Dass die Kennzeichen kennzeichnen** (Paket 0107). Dass ein Textstueck seinen
+//!      Riegel eindeutig macht, war bis dahin eine Lesung -- ein Mensch hat es beim
+//!      Hinschreiben entschieden, und nichts hat die Entscheidung nachgehalten. Wer eine
+//!      Liste auf ein Allerweltsstueck verkuerzt, bekam von der Werkzeugkette gruenes
+//!      Licht. Seither ist es eine Messung: Alle Abbruchstellen legen ihre angekommene
+//!      Meldung nebeneinander, und jede Liste muss auf **jede** Meldung ihres eigenen
+//!      Riegels passen und auf **keine** eines fremden. Beide Haelften werden gebraucht;
+//!      die erste schliesst den Ausweg, einen fremden Riegel einfach zum eigenen zu
+//!      erklaeren. Verglichen werden nur Dinge, die im selben Lauf entstehen -- kein
+//!      Wortlaut wandert in diese Datei, die Warnung gegen den Volltextvergleich bleibt.
 //!   3. **Der unabhaengige Erwartungswert.** Der Zustand nach der Runde wird nicht gegen
 //!      eine abgeschriebene Zahl gehalten, sondern gegen eine **zweite Bauart desselben
 //!      Zustands**: dieselbe Ausgangslage, ueber `zustand::Startbelegung` gebaut, nur mit
@@ -121,6 +131,143 @@ bool enthaelt(const char* heuhaufen, const char* nadel)
 /// Die Textstuecke, an denen eine Abbruchmeldung ihren Riegel zu erkennen gibt.
 using Kennzeichen = std::span<const char* const>;
 
+/// Die Riegel, gegen die diese Probe abbricht -- einer je Schranke, nicht einer je
+/// Aufrufstelle.
+///
+/// Der Unterschied traegt die Eindeutigkeitszusicherung weiter unten. Zwei Stellen
+/// koennen denselben Riegel meinen: Die Runde nach der letzten zaehlbaren und der dritte
+/// Fall der Rundennummernprobe schlagen beide an der oberen Schranke an und bekommen
+/// zeichengleiche Meldungen; die beiden negativen Rundennummern unterscheiden sich nur in
+/// der Zahl. Ohne eine Kennung je Riegel meldete die Zusicherung genau diese Paare sofort
+/// als Verletzung -- ein falscher Fund am ersten Tag.
+enum class Riegel : std::size_t {
+    ObereRundenschranke,  ///< in `kern::schritt`: die Vorrunde traegt den groessten int64_t
+    RundeVorDerErsten,    ///< in `kern::schritt`: die Vorrundennummer ist negativ
+    StartwertSetzen,      ///< in `kern::zustand`: an diesem Zugang lief eine Runde vorbei
+    StartwertBinden,      ///< in `kern::zustand`: die Partie laeuft schon
+    Spielmodus,           ///< in `kern::schritt`: der Modus ist in diesem Rahmen nicht gebaut
+    Anzahl,
+};
+
+constexpr std::array<Riegel, 5> ALLE_RIEGEL = {Riegel::ObereRundenschranke,
+                                               Riegel::RundeVorDerErsten,
+                                               Riegel::StartwertSetzen,
+                                               Riegel::StartwertBinden, Riegel::Spielmodus};
+
+// Kommt ein Riegel dazu und niemand traegt ihn hier nach, faellt es beim Uebersetzen auf
+// und nicht erst daran, dass die Vollzaehligkeitspruefung unten ihn nie sucht.
+static_assert(ALLE_RIEGEL.size() == static_cast<std::size_t>(Riegel::Anzahl));
+
+const char* riegelname(Riegel welcher)
+{
+    switch (welcher) {
+    case Riegel::ObereRundenschranke:
+        return "obere Rundenschranke";
+    case Riegel::RundeVorDerErsten:
+        return "Runde vor der ersten";
+    case Riegel::StartwertSetzen:
+        return "Startwert setzen nach der Runde";
+    case Riegel::StartwertBinden:
+        return "Startwertzugang binden nach der Runde";
+    case Riegel::Spielmodus:
+        return "Modus spielmodus nicht gebaut";
+    case Riegel::Anzahl:
+        break;
+    }
+    return "(kein Riegel)";
+}
+
+/// Was von einem Abbruch uebrig bleibt, nachdem der Fangblock zu ist.
+///
+/// Die Meldung wird **abgeschrieben** und nicht gemerkt: `what()` zeigt in die Ausnahme,
+/// und die ist hinter der schliessenden Klammer fort. Die Kennzeichen dagegen sind
+/// Zeichenkettenliterale mit statischer Lebensdauer -- von ihnen genuegen die Zeiger; nur
+/// das Feld, in dem sie an der Aufrufstelle stehen, stirbt mit ihrer Funktion.
+constexpr std::size_t MELDUNGEN_MAX = 16;
+constexpr std::size_t MELDUNG_ZEICHEN = 512;
+constexpr std::size_t KENNZEICHEN_MAX = 8;
+
+struct Angekommen {
+    Riegel riegel = Riegel::Anzahl;
+    const char* was = nullptr;
+    int zeile = 0;
+    std::size_t anzahl = 0;
+    std::array<const char*, KENNZEICHEN_MAX> kennzeichen{};
+    std::array<char, MELDUNG_ZEICHEN> meldung{};
+};
+
+std::array<Angekommen, MELDUNGEN_MAX> angekommene{};
+std::size_t angekommene_anzahl = 0;
+
+/// Schreibt `quelle` nach `ziel` ab. Rueckgabe `false` heisst **abgeschnitten** -- eine
+/// halbe Meldung koennte ein fremdes Kennzeichen verlieren und die Zusicherung unten
+/// still schwaechen, also ist das ein Fehlschlag und keine Nebensache.
+bool schreibe_ab(std::array<char, MELDUNG_ZEICHEN>& ziel, const char* quelle)
+{
+    std::size_t i = 0;
+    while (quelle[i] != '\0' && i + 1 < ziel.size()) {
+        ziel[i] = quelle[i];
+        ++i;
+    }
+    ziel[i] = '\0';
+    return quelle[i] == '\0';
+}
+
+/// Legt eine angekommene Meldung fuer die Eindeutigkeitspruefung ab.
+void merke_meldung(Riegel welcher, const char* was, int zeile, Kennzeichen kennzeichen,
+                   const char* angekommen)
+{
+    if (angekommene_anzahl >= angekommene.size()) {
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- mehr als %zu Abbruchmeldungen; die "
+                     "Eindeutigkeitspruefung saehe die uebrigen nicht\n",
+                     zeile, was, angekommene.size());
+        ++fehlgeschlagen;
+        return;
+    }
+    if (kennzeichen.size() > KENNZEICHEN_MAX) {
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- %zu Kennzeichen, abgelegt werden "
+                     "hoechstens %zu\n",
+                     zeile, was, kennzeichen.size(), KENNZEICHEN_MAX);
+        ++fehlgeschlagen;
+        return;
+    }
+
+    Angekommen& eintrag = angekommene[angekommene_anzahl];
+    eintrag.riegel = welcher;
+    eintrag.was = was;
+    eintrag.zeile = zeile;
+    eintrag.anzahl = kennzeichen.size();
+    for (std::size_t k = 0; k < kennzeichen.size(); ++k) {
+        eintrag.kennzeichen[k] = kennzeichen[k];
+    }
+    if (!schreibe_ab(eintrag.meldung, angekommen)) {
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- die Meldung ist laenger als %zu "
+                     "Zeichen und wurde abgeschnitten\n",
+                     zeile, was, MELDUNG_ZEICHEN - 1);
+        ++fehlgeschlagen;
+    }
+    ++angekommene_anzahl;
+}
+
+/// Ob **alle** Stuecke des Eintrags in `text` vorkommen -- dieselbe Frage, die
+/// `bricht_ab_mit` an der eigenen Meldung stellt, hier an einer fremden.
+///
+/// Eine leere Liste passt auf jeden Text. Das ist gewollt und harmlos: Der leere Fall
+/// faellt schon an der Aufrufstelle auf, und ihn hier zusaetzlich durchzulassen ergaebe
+/// nur eine zweite Meldung ueber dieselbe Sache.
+bool liste_passt(const Angekommen& eintrag, const char* text)
+{
+    for (std::size_t k = 0; k < eintrag.anzahl; ++k) {
+        if (!enthaelt(text, eintrag.kennzeichen[k])) {
+            return false;
+        }
+    }
+    return true;
+}
+
 /// Fuehrt `tun` aus und sichert zu, dass **dieser** Riegel abgebrochen hat -- nicht
 /// irgendeiner (Paket 0085).
 ///
@@ -141,8 +288,13 @@ using Kennzeichen = std::span<const char* const>;
 /// Der Fehlerfall druckt **beide** Zeichenketten, die erwartete und die angekommene:
 /// Ein "falsche Meldung" ohne Wortlaut kostet den naechsten Lauf einen eigenen Bau, nur
 /// um zu sehen, was denn nun ankam.
+/// **Die Kennung des Riegels ist ein eigenes Argument** und nicht aus den Kennzeichen
+/// erschlossen. Sie zu erschliessen ginge im Kreis: Ob zwei Stellen denselben Riegel
+/// meinen, waere dann eine Aussage ueber genau die Textstuecke, deren Trennschaerfe die
+/// Zusicherung erst nachweisen soll.
 template <typename Aufgabe>
-void bricht_ab_mit(const char* was, Kennzeichen kennzeichen, int zeile, Aufgabe tun)
+void bricht_ab_mit(const char* was, Riegel welcher, Kennzeichen kennzeichen, int zeile,
+                   Aufgabe tun)
 {
     // Ohne Kennzeichen prueft der Aufruf wieder nur, *dass* geworfen wurde -- also genau
     // das, was dieses Paket abschafft. Er faellt lieber auf, als still zu verwaessern.
@@ -160,6 +312,13 @@ void bricht_ab_mit(const char* was, Kennzeichen kennzeichen, int zeile, Aufgabe 
         tun();
     } catch (const std::domain_error& fehler) {
         const char* const angekommen = fehler.what();
+
+        // Abschreiben, bevor irgendetwas urteilt: Auch eine Stelle, die gleich als
+        // "falscher Riegel" rot wird, liefert eine Meldung, gegen die die anderen Listen
+        // gehalten werden. Die Zusicherung soll nicht davon abhaengen, ob der Rest dieser
+        // Stelle gerade in Ordnung ist.
+        merke_meldung(welcher, was, zeile, kennzeichen, angekommen);
+
         const char* fehlendes = nullptr;
         for (const char* const stueck : kennzeichen) {
             if (!enthaelt(angekommen, stueck)) {
@@ -254,8 +413,8 @@ Zustand ausgangslage(i64 rundennummer)
 /// Reicht die Zeile der **Aufrufstelle** an `bricht_ab_mit` durch -- sonst naennte jede
 /// Fehlermeldung die eine Zeile in der Vorlage. Variadisch, damit das Komma in einem
 /// mehrzeiligen Lambda den Praeprozessor nicht in zwei Argumente teilt.
-#define BRICHT_AB_MIT(was, kennzeichen, ...) \
-    bricht_ab_mit((was), (kennzeichen), __LINE__, __VA_ARGS__)
+#define BRICHT_AB_MIT(was, riegel, kennzeichen, ...) \
+    bricht_ab_mit((was), (riegel), (kennzeichen), __LINE__, __VA_ARGS__)
 
 namespace {
 
@@ -482,7 +641,8 @@ void probe_runden()
     // stattdessen von einer Runde vor der ersten -- er saehe nur die Zahl, die der
     // Umbruch hinterlassen hat, und nicht ihren Grund.
     const std::array<const char*, 2> nach_der_letzten = {{"kern::schritt", "groesste int64_t"}};
-    BRICHT_AB_MIT("Runde nach der letzten zaehlbaren", nach_der_letzten, [&] {
+    BRICHT_AB_MIT("Runde nach der letzten zaehlbaren", Riegel::ObereRundenschranke,
+                  nach_der_letzten, [&] {
         static_cast<void>(kern::schritt::schritt(am_ende, {}, Modus::Weltlauf));
     });
 }
@@ -548,14 +708,15 @@ void probe_zwei_runden_und_startwertriegel()
     const i64 vorher_an_null = welt.lies(0);
     const std::array<const char*, 2> alter_zugang = {
         {"kern::zustand::Startbelegung::setze", "eine Runde vorbeigelaufen"}};
-    BRICHT_AB_MIT("Zugang von vor Runde 1", alter_zugang, [&] { zugang.setze(0, 4711); });
+    BRICHT_AB_MIT("Zugang von vor Runde 1", Riegel::StartwertSetzen, alter_zugang,
+                  [&] { zugang.setze(0, 4711); });
     // Ein Abbruch, der vorher noch schreibt, waere keiner.
     PRUEFE(welt.lies(0) == vorher_an_null);
 
     // Haelfte 2: ein neuer Zugang bindet nicht mehr.
     const std::array<const char*, 2> neuer_zugang = {
         {"kern::zustand::Startbelegung", "die Partie laeuft schon"}};
-    BRICHT_AB_MIT("neuer Zugang nach der Runde", neuer_zugang, [&] {
+    BRICHT_AB_MIT("neuer Zugang nach der Runde", Riegel::StartwertBinden, neuer_zugang, [&] {
         Startbelegung neuer{welt};
         static_cast<void>(neuer);
     });
@@ -604,7 +765,7 @@ void probe_spielmodus_bricht_ab()
     // drei anderen sagen, dass die Meldung ihren Grund nennt.
     const std::array<const char*, 4> kennzeichen = {
         {"kern::schritt", "spielmodus", "310", "kein Paket"}};
-    BRICHT_AB_MIT("Modus spielmodus", kennzeichen, [&] {
+    BRICHT_AB_MIT("Modus spielmodus", Riegel::Spielmodus, kennzeichen, [&] {
         static_cast<void>(kern::schritt::schritt(welt, {}, Modus::Spielmodus));
     });
 }
@@ -625,28 +786,139 @@ void probe_spielmodus_bricht_ab()
 /// vor der ersten, `I64_MAX` der gegen die nicht mehr zaehlbare. Eine Schleife mit einer
 /// gemeinsamen Erwartung koennte den Unterschied nicht sehen -- und genau ihn will das
 /// Paket festhalten.
+/// Der Riegel steht am Fall und nicht an der Schleife, aus demselben Grund wie die
+/// Kennzeichen: Die ersten beiden Faelle sterben an einer anderen Schranke als der dritte.
+/// Der dritte teilt sich seine Schranke mit der Probe der Runde nach der letzten
+/// zaehlbaren -- deshalb tragen beide dieselbe Kennung, und die Eindeutigkeitspruefung
+/// haelt sie auseinander, ohne sie gegeneinander zu stellen.
 struct Rundenfall {
     i64 nummer;
     const char* was;
+    Riegel riegel;
     std::array<const char*, 2> kennzeichen;
 };
 
 void probe_rundennummer()
 {
     const std::array<Rundenfall, 3> faelle = {{
-        {i64{-1}, "partie.runde = -1", {{"kern::schritt", "damit negativ"}}},
-        {kern::festkomma::I64_MIN, "partie.runde = kleinster int64_t",
+        {i64{-1}, "partie.runde = -1", Riegel::RundeVorDerErsten,
          {{"kern::schritt", "damit negativ"}}},
+        {kern::festkomma::I64_MIN, "partie.runde = kleinster int64_t",
+         Riegel::RundeVorDerErsten, {{"kern::schritt", "damit negativ"}}},
         {kern::festkomma::I64_MAX, "partie.runde = groesster int64_t",
-         {{"kern::schritt", "groesste int64_t"}}},
+         Riegel::ObereRundenschranke, {{"kern::schritt", "groesste int64_t"}}},
     }};
 
     for (const Rundenfall& fall : faelle) {
         const Zustand welt = ausgangslage(fall.nummer);
-        BRICHT_AB_MIT(fall.was, fall.kennzeichen, [&] {
+        BRICHT_AB_MIT(fall.was, fall.riegel, fall.kennzeichen, [&] {
             static_cast<void>(kern::schritt::schritt(welt, {}, Modus::Weltlauf));
         });
     }
+}
+
+// ---------------------------------------------------------------------------
+// Paket 0107 -- die Kennzeichen kennzeichnen wirklich
+// ---------------------------------------------------------------------------
+//
+// Diese Probe laeuft **zuletzt** und nicht in `bricht_ab_mit`. Der Grund ist keine
+// Vorliebe: Sie vergleicht jede Liste gegen jede Meldung, also kann sie erst anfangen,
+// wenn alle Meldungen da sind. Waere sie in der Vorlage, saehe die erste Stelle nur sich
+// selbst und die letzte alles -- eine Zusicherung, deren Schaerfe von der Reihenfolge
+// abhaengt, ist keine.
+//
+// Die Aussage in einem Satz: **Die Liste einer Stelle passt genau auf die Meldungen ihres
+// eigenen Riegels.** Zwei Haelften, und beide werden gebraucht.
+//
+//   *Passt auf keine fremde.* Das ist die Haelfte, um die es dem Paket geht. Verkuerzt
+//   jemand eine Liste auf ein Allerweltsstueck, passt sie sofort auch auf fremde
+//   Meldungen und die Zeile wird rot, ohne dass an der Quelle etwas geaendert wurde.
+//
+//   *Passt auf jede eigene.* Ohne sie gaebe es einen bequemen Ausweg: Wer die verkuerzte
+//   Liste behalten will, erklaert ihren Riegel kurzerhand zu dem, mit dem sie
+//   kollidiert -- und die erste Haelfte schweigt, weil nur noch fremde Paare geprueft
+//   werden. Diese Haelfte macht daraus einen Tausch statt eines Auswegs: Die Liste muesste
+//   dann auch die Meldung des angeeigneten Riegels treffen, und genau das tut ein
+//   Allerweltsstueck aus einem anderen Kasten nicht.
+//
+// Der naheliegende Riegel waere "mindestens zwei Textstuecke je Liste" gewesen. Er taugt
+// nichts: Zwei nichtssagende Stuecke bestehen ihn.
+
+void probe_kennzeichen_eindeutig()
+{
+    // Zuerst die Vollzaehligkeit. Ohne sie hoehlt jede geloeschte Abbruchstelle die
+    // Zusicherung still aus -- eine Meldung, die nicht ankommt, widerspricht keiner Liste,
+    // und die Probe bliebe gruen und saegte weniger.
+    for (const Riegel welcher : ALLE_RIEGEL) {
+        bool gesehen = false;
+        for (std::size_t i = 0; i < angekommene_anzahl && !gesehen; ++i) {
+            gesehen = angekommene[i].riegel == welcher;
+        }
+        if (!gesehen) {
+            std::fprintf(stderr,
+                         "FEHLGESCHLAGEN: zum Riegel \"%s\" ist in diesem Lauf keine "
+                         "Meldung angekommen; seine Eindeutigkeit ist ungeprueft\n",
+                         riegelname(welcher));
+            ++fehlgeschlagen;
+        }
+    }
+
+    std::size_t fremde_paare = 0;
+    std::size_t eigene_paare = 0;
+    std::size_t verletzungen = 0;
+
+    for (std::size_t i = 0; i < angekommene_anzahl; ++i) {
+        const Angekommen& liste = angekommene[i];
+        for (std::size_t j = 0; j < angekommene_anzahl; ++j) {
+            if (i == j) {
+                continue;
+            }
+            const Angekommen& andere = angekommene[j];
+            const bool derselbe_riegel = liste.riegel == andere.riegel;
+            const bool passt = liste_passt(liste, andere.meldung.data());
+
+            if (derselbe_riegel) {
+                ++eigene_paare;
+                if (!passt) {
+                    std::fprintf(stderr,
+                                 "FEHLGESCHLAGEN Zeile %d: %s -- diese Stelle und \"%s\" "
+                                 "nennen beide den Riegel \"%s\", aber die Liste der ersten "
+                                 "passt nicht auf die Meldung der zweiten. Entweder sind es "
+                                 "zwei Riegel und nicht einer, oder die Liste greift zu eng."
+                                 "\n  fremde Meldung: \"%s\"\n",
+                                 liste.zeile, liste.was, andere.was, riegelname(liste.riegel),
+                                 andere.meldung.data());
+                    ++fehlgeschlagen;
+                    ++verletzungen;
+                }
+                continue;
+            }
+
+            ++fremde_paare;
+            if (passt) {
+                std::fprintf(stderr,
+                             "FEHLGESCHLAGEN Zeile %d: %s -- die Kennzeichenliste dieser "
+                             "Stelle kennzeichnet nicht: Sie passt auch auf die Meldung des "
+                             "Riegels \"%s\" (Stelle \"%s\").\n  fremde Meldung: \"%s\"\n",
+                             liste.zeile, liste.was, riegelname(andere.riegel), andere.was,
+                             andere.meldung.data());
+                ++fehlgeschlagen;
+                ++verletzungen;
+            }
+        }
+    }
+
+    // Zwei Zaehlungen, die nicht null sein duerfen. Eine Schleife ueber null Paare laeuft
+    // gruen durch und misst nichts; das ist genau der Zustand, den dieses Paket abschafft,
+    // und er darf nicht durch eine spaetere Umstellung zurueckkommen.
+    PRUEFE(fremde_paare > 0);
+    PRUEFE(eigene_paare > 0);
+    PRUEFE(verletzungen == 0);
+
+    std::printf("  Kennzeichen: %zu Meldungen aus %zu Riegeln, %zu fremde und %zu eigene "
+                "Paare geprueft, %zu Verletzung(en)\n",
+                angekommene_anzahl, ALLE_RIEGEL.size(), fremde_paare, eigene_paare,
+                verletzungen);
 }
 
 }  // namespace
@@ -659,6 +931,9 @@ int main()
     probe_zweimal_dasselbe();
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
+
+    // Zuletzt, denn sie liest ein, was die fuenf Aufrufstellen oben hinterlassen haben.
+    probe_kennzeichen_eindeutig();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

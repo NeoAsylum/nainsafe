@@ -1,7 +1,7 @@
 ---
 id: 0061-kernanker-sichtbarkeit
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0040-kernanker-klassenzuteilung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -212,6 +212,119 @@ richtigen Anker und begründet ihn.
 ## Rückläufe
 
 0.
+
+---
+
+# GEBAUT — 2026-09-05, Testentwickler
+
+Der vierte Bauplatz hat geliefert. Die Gegenprobe, die der Projektmanager oben verlangt
+hat, an der Zieldatei statt am Commit-Betreff: `ANKERZAHL` steht auf **5**, die
+Ankertabelle trägt `{56, Profil{1, 0, 0, 0, 4}, POSITION, POSITION, …}` an dritter
+Stelle, und die Zählung in der Vorführung nennt „genau 2 der 5" mit drei durchgelassenen
+Kennungen.
+
+## Kennung 56 zuerst nachgemessen, nicht übernommen
+
+Drei Seiten hatten `(1,0,0,0,4)` unabhängig nachgezählt; ich habe es trotzdem gegen die
+**erzeugte Liste** gehalten, bevor ich die Zeile geschrieben habe. Ausgabe der
+Vorabmessung:
+
+```
+Kennung  20  (0,0,5,0,0)  kern=3
+Kennung  44  (0,2,2,1,0)  kern=2
+Kennung  56  (1,0,0,0,4)  kern=1
+Kennung  60  (1,0,0,4,0)  kern=1
+Kennung  76  (1,1,1,1,1)  kern=1
+```
+
+`kern=1` ist `POSITION`. Vektor und Klasse stimmen mit der Vorgabe überein.
+
+## Die Lücke ist geschlossen, und das ist gemessen
+
+Die Mutation, gegen die das Paket geschrieben ist — Familie `{a1, a2, a3, a5}`,
+Sichtbarkeit zählt mit, Hebel nicht mehr —, gegen **beide** Fassungen der Probe
+gefahren, gegen denselben mutierten Kern:
+
+| Fassung der Probe | Ergebnis |
+|---|---|
+| Stand aus `HEAD`, vier Anker | `bestanden -- 0 Pruefung(en) fehlgeschlagen` |
+| Stand nach diesem Paket, fünf Anker | `GESCHEITERT -- 4 Pruefung(en) fehlgeschlagen`, alle vier an **Kennung 56** |
+
+Die vier roten Zusicherungen: `Kennung 56 traegt abgelegt die Klasse Position
+(gefunden: Lobby)`, dieselbe für den gerechneten Kern, und die beiden Sammelurteile.
+Die Anker 20, 44, 60 und 76 bleiben unter der Mutation grün — der neue Anker ist also
+der einzige, der sie fängt, und er fängt sie aus dem richtigen Grund.
+
+**Zwei Fehlversuche am Mutanten, die ich nenne, weil sie das Ergebnis fast verfälscht
+hätten.** In den ersten beiden Fassungen bildete der Mutant den Gewinner `a5` auf Index 2
+ab, *bevor* die Nullprüfung lief — einmal vor der eigenen, einmal vor der originalen, die
+weiter unten stehen bleibt. Beide Male lieferte er für `(1,0,0,0,4)` nicht `LOBBY`,
+sondern `OHNE`, machte also **mehr** Profile kernlos statt weniger und war damit eine
+andere Mutation als die beschriebene. Die Probe war beide Male rot — aus dem falschen
+Grund. Erst die dritte Fassung gibt die Klasse direkt zurück und lässt die Nullprüfung
+unberührt.
+
+## Der Rotnachweis zu Bedingung 2 ist gefahren
+
+Bedingung 2 sagt vorher, dass die bloße Tabellenerweiterung die Probe rot macht. Gefahren
+und bestätigt — mit erweiterter Tabelle und unveränderten Zählungen:
+
+```
+FEHLGESCHLAGEN Zeile 478: gefangen wird sie von Kennung 44 und Kennung 76
+GESCHEITERT -- 1 Pruefung(en) fehlgeschlagen
+```
+
+**Eine Berichtigung an der Vorhersage, weil sie den Mechanismus falsch benennt.** Rot wird
+nicht die Zahl `2`, sondern der **Index**: `abweichende == 2` bleibt wahr, weil 56 die
+Abweichung durchlässt und die Zahl der Fänger bei zwei bleibt. Gerissen ist
+`weicht_ab[3]`, das nach dem Einschub nicht mehr auf 76, sondern auf 60 zeigt. Aus
+„genau 2 der 4" wird also der Sache nach „genau 2 der **5**" — die Zahl 2 steht, der
+Nenner wandert.
+
+**Daraus eine Härtung, die über den Auftrag hinausgeht und die ich benenne, damit der
+Prüfer sie bewerten kann:** Die beiden indexbasierten Zusicherungen führen jetzt die
+erwartete Kennung in derselben Bedingung mit (`ANKER[1].kennung == 44 && …`). Grund ist
+genau der eben gemessene Fall — ein Einschub verrückt Indizes, und ohne diese Bindung
+kann eine verrutschte Zusicherung still am falschen Anker grün bleiben. Sie senkt keine
+Schwelle, sie hängt eine zusätzliche daneben. Die beiden gedruckten Zahlen („%zu Anker",
+„von %zu Ankern") lesen jetzt `ANKERZAHL`, statt eine 4 fest zu tragen.
+
+## Abnahme, Stück für Stück
+
+1. **Fünfter Anker als Festwert, einzeln geprüft.** ✓ Die Ausgabe nennt zu Kennung 56
+   Vektor, gefundene und erwartete Klasse in allen drei Prüfungen. Kein zweites
+   `strategiekern`: `grep -c 'anteile\['` zeigt keinen Vergleich zweier Anteile
+   gegeneinander — die einzigen Zugriffe stehen in `schreibe_anker` (Druck) und in der
+   Spiegelung `Profil{anteile[2], anteile[1], anteile[0], anteile[3], anteile[4]}`, beide
+   unverändert aus 0040.
+2. **Zählungen nachgezogen.** ✓ „genau 2 der 5", gefangen von 44 und 76, durchgelassen von
+   **drei** Kennungen: 20, 56, 60. Die Liste der Durchgelassenen druckt alle drei.
+3. **Der Übersetzungslauf führt sie aus.** ✓ Beide Bauwege einzeln, wie es die
+   `CMakeLists.txt` verlangt:
+   - Prüfstand allein: `3/3` grün, darunter `vorrat_kernanker_probe … Passed`.
+   - Arbeitsbereich: `vorrat_kernanker_probe … Passed` (Test 11 von 14).
+
+   Kein Gleitkomma, keine Fremdabhängigkeit, keine veränderliche Ablage außerhalb einer
+   Funktion außer dem Fehlerzähler — alle drei unverändert gegenüber 0040, mein Einschub
+   ist `constexpr`.
+
+## Ein Befund außerhalb meines Pakets
+
+`ctest` über den Arbeitsbereich ist **13 von 14** grün; rot ist `belegstellen_riegel`, und
+das gehört nicht zu diesem Paket. Der einzige tödliche Befund lautet: `daten/nachmessung-zinsreihen-2026-09-05.md:6`
+zitiert in `deckungsbefund-1997.md` einen Abschnitt „Die Reihenliste nennt IWF IFS", und
+dort ist dieser Wortlaut kein Abschnittstitel, sondern **Fließtext** (Zeile 140). Beide
+Dateien sind committet — die zitierende stammt aus `a6c55e0` („Betreiber: Nachmessung
+Reihe 9") —, der Riegel war also schon vor diesem Lauf rot. Meine Datei erscheint in der
+Riegelausgabe nur einmal, in der ausdrücklich **nicht bewerteten** Liste, an Zeile 3, die
+ich nicht angefasst habe. Ich repariere das nicht (fremdes Paket) und melde es hier.
+
+## Worauf ich unsicher bin
+
+Die Kennungsbindung in den beiden Zusicherungen ist eine Härtung, die im Auftrag nicht
+steht. Hält der Prüfer sie für eine unzulässige Erweiterung, lässt sie sich streichen,
+ohne dass eine der drei Abnahmebedingungen fällt — die Zusicherungen bleiben dann so
+scharf wie zuvor, nur ohne den Schutz gegen den nächsten Einschub.
 
 ---
 

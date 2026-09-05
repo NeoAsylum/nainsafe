@@ -14,9 +14,17 @@
 //! deshalb an nur einer einzigen Zusicherung, und stuende der Gleichstandsbrecher in
 //! Modul *und* Kopie gleich falsch, liefe die Probe gruen.
 //!
-//! Diese Probe ist der fehlende **unabhaengige Massstab**: vier von Hand
+//! Diese Probe ist der fehlende **unabhaengige Massstab**: fuenf von Hand
 //! nachgerechnete Profile mit hingeschriebener Klasse. Kein Vergleich gegen eine
 //! zweite Rechnung, sondern gegen T36 im Wortlaut.
+//!
+//! Der Satz aus T36 schliesst **zwei** Arten aus, und beide brauchen einen Anker.
+//! Paket 0040 hat den fuer den Hebel gesetzt (Kennung 60); Paket 0061 hat den fuer
+//! die Sichtbarkeit nachgezogen (Kennung 56). Warum das noetig war, ist gemessen und
+//! nicht vermutet: Eine Mutation des Moduls, die die Familie auf `{a1, a2, a3, a5}`
+//! setzt -- Sichtbarkeit zaehlt mit, Hebel nicht mehr --, lief gegen die Ankertabelle
+//! mit ihren ersten vier Eintraegen vollstaendig gruen durch. Kein Anker stellte die
+//! Frage, ob `a5` gewinnen darf.
 //!
 //! ## Was hier ausdruecklich NICHT geprueft wird
 //!
@@ -28,11 +36,11 @@
 //!
 //! ## Die drei Pruefungen
 //!
-//!   1 **Die vier Anker gegen den abgelegten Kern.** Je Anker beides: dass
+//!   1 **Die fuenf Anker gegen den abgelegten Kern.** Je Anker beides: dass
 //!     `liste[k].anteile` der von Hand abgezaehlte Vektor ist und dass
 //!     `liste[k].kern` die von Hand nachgerechnete Klasse ist. Ohne die erste Haelfte
 //!     pruefte man die Klasse eines Profils, das man nicht identifiziert hat.
-//!   2 **Dieselben vier Anker gegen den frisch gerechneten Kern.** T36 verlangt, dass
+//!   2 **Dieselben fuenf Anker gegen den frisch gerechneten Kern.** T36 verlangt, dass
 //!     der Kern einmal je Profil gerechnet und mit der Liste abgelegt wird; hier
 //!     steht, dass "abgelegt" und "gerechnet" dieselbe Klasse nennen -- und beide die
 //!     hingeschriebene.
@@ -40,7 +48,7 @@
 //!     an die *groessere* Kennung. Dieselbe Ankerpruefung urteilt ueber sie und
 //!     **verwirft** sie, mit Kennung und Vektor des ersten Ankers, an dem es
 //!     auffaellt. Und die andere Haelfte des Nachweises, die genauso hierher gehoert:
-//!     **zwei der vier Anker fangen sie nicht**, und das steht in der Ausgabe.
+//!     **drei der fuenf Anker fangen sie nicht**, und das steht in der Ausgabe.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -83,7 +91,7 @@ const char* kernname(Strategiekern kern)
 }
 
 // ---------------------------------------------------------------------------
-// Die vier Anker -- von Hand abgezaehlt, von Hand nachgerechnet
+// Die fuenf Anker -- von Hand abgezaehlt, von Hand nachgerechnet
 // ---------------------------------------------------------------------------
 //
 // Die Kennung ist der Index in der lexikographisch aufsteigenden Liste (T36), die
@@ -98,6 +106,11 @@ const char* kernname(Strategiekern kern)
 // `a1 = 0` endet bei 55 (C(8,3) = 56 Vektoren), also faengt `a1 = 1` bei 56 an:
 // (1,0,0,0,4)..(1,0,0,4,0) sind 56..60. Und 76 ist das Referenzprofil (1,1,1,1,1),
 // dieselbe Zahl, die Paket 0019 an zwei Stellen festnagelt.
+//
+// 56 und 60 sind das Paar zum zweiten Halbsatz von T36. Sie tragen dieselbe Familie
+// (1,0,0) und denselben Kern POSITION, unterscheiden sich aber darin, **wo** die 4
+// steht: bei 60 auf dem Hebel, bei 56 auf der Sichtbarkeit. Fehlt einer von beiden,
+// bleibt die entsprechende Art unbewacht -- der Fall, den Paket 0061 gemessen hat.
 
 struct Anker {
     /// Der Index in der Profilliste (T36), nullbasiert.
@@ -114,13 +127,15 @@ struct Anker {
     const char* nagelt_fest;
 };
 
-inline constexpr std::size_t ANKERZAHL = 4;
+inline constexpr std::size_t ANKERZAHL = 5;
 
 constexpr std::array<Anker, ANKERZAHL> ANKER = {{
     {20, Profil{0, 0, 5, 0, 0}, Strategiekern::LOBBY, Strategiekern::LOBBY,
      "Zuteilung ohne Gleichstand: Index 2 -> Kennung 3"},
     {44, Profil{0, 2, 2, 1, 0}, Strategiekern::BETEILIGUNG, Strategiekern::LOBBY,
      "Gleichstand Beteiligung(2) gegen Lobby(3) -> die kleinere"},
+    {56, Profil{1, 0, 0, 0, 4}, Strategiekern::POSITION, Strategiekern::POSITION,
+     "Sichtbarkeit ist mit 4 der groesste Anteil und geht NICHT ein"},
     {60, Profil{1, 0, 0, 4, 0}, Strategiekern::POSITION, Strategiekern::POSITION,
      "Hebel ist mit 4 der groesste Anteil und geht NICHT ein"},
     {76, Profil{1, 1, 1, 1, 1}, Strategiekern::POSITION, Strategiekern::LOBBY,
@@ -128,7 +143,7 @@ constexpr std::array<Anker, ANKERZAHL> ANKER = {{
 }};
 
 /// Die Indexpruefung an der Grenze (ADR 0011), hier als Beweis statt als Abfrage:
-/// Die vier Kennungen sind Festwerte, also laesst sich zur Uebersetzungszeit
+/// Die fuenf Kennungen sind Festwerte, also laesst sich zur Uebersetzungszeit
 /// entscheiden, ob sie in die Liste zeigen. Ein Zugriff, den der Uebersetzer schon
 /// abgelehnt haette, kann zur Laufzeit nicht danebengreifen.
 constexpr bool anker_kennungen_im_bereich()
@@ -169,7 +184,7 @@ void schreibe_anker(const char* rand, const Anker& anker,
 // nachweisbar, dass die Vorfuehrung **denselben** Massstab benutzt und nicht einen
 // milderen.
 
-/// Die vier an den Ankern gefundenen Klassen, in der Reihenfolge der Ankertabelle.
+/// Die fuenf an den Ankern gefundenen Klassen, in der Reihenfolge der Ankertabelle.
 using Klassenfund = std::array<Strategiekern, ANKERZAHL>;
 
 struct Ankerbefund {
@@ -177,7 +192,7 @@ struct Ankerbefund {
     bool vektoren_heil = true;
     /// Die erste Kennung, an der der Vektor nicht stimmt. `-1` heisst: keine.
     i64 vektorverstoss = -1;
-    /// Alle vier Klassen sind die von Hand nachgerechneten.
+    /// Alle fuenf Klassen sind die von Hand nachgerechneten.
     bool klassen_heil = true;
     /// Die erste Kennung, an der die Klasse abweicht. `-1` heisst: keine.
     i64 erster_klassenverstoss = -1;
@@ -219,8 +234,8 @@ Ankerbefund pruefe_anker(const Profilliste& liste, const Klassenfund& gefunden)
     return befund;
 }
 
-/// Die Ankerpruefung als ein Urteil. Bestanden heisst: alle vier Profile sind die,
-/// die sie sein sollen, und alle vier tragen die Klasse aus T36.
+/// Die Ankerpruefung als ein Urteil. Bestanden heisst: alle fuenf Profile sind die,
+/// die sie sein sollen, und alle fuenf tragen die Klasse aus T36.
 bool besteht_ankerpruefung(const Ankerbefund& befund)
 {
     return befund.vektoren_heil && befund.klassen_heil;
@@ -307,10 +322,11 @@ int main()
     const Profilliste liste = pruefstand::vorrat::erzeuge_profilliste();
 
     // -----------------------------------------------------------------------
-    // Pruefung 1 -- die vier Anker gegen den abgelegten Kern
+    // Pruefung 1 -- die fuenf Anker gegen den abgelegten Kern
     // -----------------------------------------------------------------------
     std::fprintf(stdout, "Kernanker (T36) -- welche Klasse ein Profil traegt\n");
-    std::fprintf(stdout, "  vier Anker, Kennung und Klasse von Hand nachgerechnet\n\n");
+    std::fprintf(stdout, "  %zu Anker, Kennung und Klasse von Hand nachgerechnet\n\n",
+                 ANKERZAHL);
 
     std::fprintf(stdout, "Pruefung 1: der abgelegte Kern (liste[k].kern)\n");
 
@@ -340,7 +356,7 @@ int main()
     }
 
     pruefe(befund_abgelegt.vektoren_heil,
-           "alle vier Anker zeigen auf das Profil, das sie meinen", __LINE__);
+           "alle fuenf Anker zeigen auf das Profil, das sie meinen", __LINE__);
     pruefe(besteht_ankerpruefung(befund_abgelegt),
            "der abgelegte Kern besteht die Ankerpruefung", __LINE__);
 
@@ -389,7 +405,7 @@ int main()
     const Ankerbefund befund_abweichend = pruefe_anker(liste, abweichend);
 
     // Erst der Nachweis, dass die Abweichung wirklich die benannte ist und nicht
-    // irgendeine andere: Ihre vier Klassen sind die von Hand nachgerechneten der
+    // irgendeine andere: Ihre fuenf Klassen sind die von Hand nachgerechneten der
     // Regel "Gleichstand an die groessere Kennung".
     for (std::size_t i = 0; i < ANKERZAHL; ++i) {
         const Anker& anker = ANKER[i];
@@ -438,12 +454,16 @@ int main()
     }
 
     // **Und was diese Abweichung ausdruecklich NICHT ausloest**, weil ein Test auch
-    // sagen muss, was er durchlaesst: Zwei der vier Anker haben gar keinen
+    // sagen muss, was er durchlaesst: Drei der fuenf Anker haben gar keinen
     // Gleichstand unter den Familienstellen -- 20 hat mit `a3 = 5` einen eindeutig
-    // groessten, 60 mit `a1 = 1` ebenso. Ein Gleichstandsbrecher kommt dort nie zum
-    // Zug. Waeren nur diese beiden in der Liste, liefe die Abweichung gruen durch;
+    // groessten, 56 und 60 mit `a1 = 1` ebenso. Ein Gleichstandsbrecher kommt dort nie
+    // zum Zug. Waeren nur diese drei in der Liste, liefe die Abweichung gruen durch;
     // gefangen wird sie allein von 44 und 76.
-    std::fprintf(stdout, "\n  von 4 Ankern fangen die Abweichung: %d\n",
+    //
+    // Das ist zugleich die Grenze der beiden Ausschluss-Anker 56 und 60: Sie bewachen
+    // den zweiten Halbsatz von T36 und sagen ueber den Gleichstandsbrecher nichts.
+    // Genau deshalb steht ihr Durchlassen hier zugesichert und nicht nur gedruckt.
+    std::fprintf(stdout, "\n  von %zu Ankern fangen die Abweichung: %d\n", ANKERZAHL,
                  befund_abweichend.abweichende);
     std::fprintf(stdout, "  durchgelassen (kein Gleichstand im Profil):\n");
     for (std::size_t i = 0; i < ANKERZAHL; ++i) {
@@ -453,11 +473,21 @@ int main()
     }
 
     pruefe(befund_abweichend.abweichende == 2,
-           "genau 2 der 4 Anker fangen die Abweichung", __LINE__);
-    pruefe(befund_abweichend.weicht_ab[1] && befund_abweichend.weicht_ab[3],
+           "genau 2 der 5 Anker fangen die Abweichung", __LINE__);
+
+    // Die beiden folgenden Zusicherungen greifen ueber den Tabellenindex, die
+    // Ankertabelle ist aber sortiert und waechst -- Paket 0061 hat 56 vor 60
+    // eingeschoben und damit zwei Indizes verrueckt. Deshalb steht die Kennung in
+    // derselben Bedingung wie der Index: Verrutscht die Tabelle noch einmal, wird die
+    // Probe rot, statt still den falschen Anker zu pruefen.
+    pruefe(ANKER[1].kennung == 44 && ANKER[4].kennung == 76 &&
+               befund_abweichend.weicht_ab[1] && befund_abweichend.weicht_ab[4],
            "gefangen wird sie von Kennung 44 und Kennung 76", __LINE__);
-    pruefe(!befund_abweichend.weicht_ab[0] && !befund_abweichend.weicht_ab[2],
-           "Kennung 20 und Kennung 60 lassen sie durch -- sie haben keinen Gleichstand",
+    pruefe(ANKER[0].kennung == 20 && ANKER[2].kennung == 56 &&
+               ANKER[3].kennung == 60 && !befund_abweichend.weicht_ab[0] &&
+               !befund_abweichend.weicht_ab[2] && !befund_abweichend.weicht_ab[3],
+           "Kennung 20, Kennung 56 und Kennung 60 lassen sie durch -- sie haben "
+           "keinen Gleichstand",
            __LINE__);
 
     // -----------------------------------------------------------------------

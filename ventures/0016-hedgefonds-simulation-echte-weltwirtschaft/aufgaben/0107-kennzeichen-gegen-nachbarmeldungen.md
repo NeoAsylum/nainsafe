@@ -1,7 +1,7 @@
 ---
 id: 0107-kennzeichen-gegen-nachbarmeldungen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0085-abbruchmeldungen-im-wortlaut-pruefen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: In `schritt_probe` ist die **Eindeutigkeit** jeder Kennzeichenliste eine laufende Zusicherung statt einer Lesung. Der Lauf sammelt die angekommenen Meldungen aller Abbruchstellen und sichert zu, dass keine Kennzeichenliste auf die Meldung eines **anderen** Riegels passt; zwei Stellen, die denselben Riegel pruefen, gelten dabei als eine (heute Zeile 485 und der dritte Fall in `probe_rundennummer`). Der Nachweis sind zwei ausgefuehrte Sabotagen. Erstens die Abschwaechung: Verkuerzt man die `spielmodus`-Liste auf `{"kern::schritt"}`, wird `schritt_probe` rot, **ohne** dass an der Quelle etwas geaendert wird -- die rote Zeile nennt die Stelle und die fremde Meldung, auf die ihre Liste ebenfalls passt. Zweitens die Gegenprobe: Am unveraenderten Auslieferstand bleibt der Lauf gruen, und die fuenf heutigen Listen bleiben unveraendert -- die neue Zusicherung ist kein Anlass, ein Textstueck nachzuziehen.
@@ -116,3 +116,47 @@ in `notizen/lehren.md` unter dem 2026-09-02 und 2026-09-03 steht: eine Pruefung,
 gruenes Licht gibt, ohne hingesehen zu haben. `nach-aufraeumen.py` hat importiert statt
 auszufuehren; `schritt_probe` fragte bis 0085, ob geworfen wurde, statt von wem; und
 heute fragt niemand, ob das Kennzeichen ueberhaupt kennzeichnet.
+
+## Gebaut am 2026-09-05 (testentwickler)
+
+Nachweis: `befunde/messung-0107/nachweis.md`. Bezugsstand `564d4b8`. Geaendert wurde
+**eine** Datei, `kern/test/schritt_probe.cpp` -- die `dateien`-Liste dieses Pakets.
+
+**Die Zusicherung hat zwei Haelften, und die zweite war nicht gefordert.** Gefordert war
+"keine Liste passt auf die Meldung eines anderen Riegels". Allein gebaut haette sie einen
+bequemen Ausweg gelassen: Wer eine verkuerzte Liste behalten will, erklaert ihren Riegel
+zu dem, mit dem sie kollidiert. Deshalb sichert der Lauf auch die Gegenrichtung zu -- jede
+Liste passt auf **jede** Meldung ihres eigenen Riegels. Das macht aus dem Ausweg einen
+Tausch, der mehr kostet als er einbringt (Mutant m2). Wer das fuer eine Ueberdehnung der
+Abnahme haelt, soll es sagen; es ist die einzige Stelle, an der ich ueber den Wortlaut
+hinausgegangen bin.
+
+**Sechs Mutanten, jede Teilregel einmal rot.** Die vom Paket verlangte Abschwaechung (m1,
+`spielmodus`-Liste auf `{"kern::schritt"}`) macht den Lauf rot, ohne dass an der Quelle
+etwas geaendert wird; die rote Zeile nennt die Stelle und die fremde Meldung im Wortlaut.
+Die Gegenprobe am unveraenderten Stand ist gruen. **Die fuenf heutigen Listen sind
+unveraendert** -- nachgemessen durch Vergleich aller Zeichenkettengruppen gegen `564d4b8`,
+nicht angenommen.
+
+**Nebenbefund: die offene Unsicherheit aus 0085 ist beantwortet.** Dort stand, `310` sei
+als Textstueck nicht gemessen. Es ist gegen die sechs fremden Meldungen dieses Laufs
+trennscharf -- und neben `spielmodus` und `kein Paket` redundant. Der Praefix
+`kern::schritt` ist in jeder Liste das schwaechste Stueck (in vier von sechs fremden
+Meldungen). Tabelle im Nachweis; sie ist eine Beobachtung, keine neue Zusicherung.
+
+**Worauf ich unsicher bin, drei Punkte:**
+
+1. Die Riegelkennung ist ein Argument der Aufrufstelle und wird von Hand gesetzt. Sie ist
+   damit die Stelle, an der ein kuenftiger Lauf die Zusicherung schwaechen kann, ohne dass
+   ein Test es sieht -- naemlich wenn er zwei wirklich verschiedene Riegel unter eine
+   Kennung legt und **beide** Listen so weit fasst, dass sie beide Meldungen treffen.
+   Haelfte 2 verteuert das erheblich, aber sie schliesst es nicht aus. Etwas Besseres ist
+   mir nicht eingefallen: Die Kennung aus den Kennzeichen zu erschliessen ginge im Kreis.
+2. Die beiden Paarzaehlungen (`fremde_paare > 0`, `eigene_paare > 0`) habe ich **nicht
+   isoliert** rot bekommen -- jeder Eingriff, der sie anschlagen laesst, laesst zugleich
+   einen Riegel unvertreten. Sie sind ein Rueckhalt gegen eine spaetere Umstellung, keine
+   eigenstaendige Messung. Ausgeschrieben, statt als Zierde stehenzubleiben.
+3. Der `belegstellen_riegel` ist im Gesamtbaum rot, an einem Abschnittszitat in
+   `daten/nachmessung-zinsreihen-2026-09-05.md`. Das ist nicht meine Datei und nicht mein
+   Paket; `schritt_probe.cpp` kommt in seiner Ausgabe null Mal vor (nachgezaehlt). Ich
+   habe es gemeldet und nicht behoben.
