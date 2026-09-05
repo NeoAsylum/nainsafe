@@ -75,6 +75,13 @@ Baubaums binden (`link.txt` gibt die Zeile her, das Original weglassen).
   `const` und gibt es kein `setze`, kann das Modul keine Schleife schliessen.
 - **Immer beide Bauprofile** (`-DFABRIK_SANITIZER=ON|OFF`). Bei Determinismus ist der
   Profilvergleich selbst der Nachweis.
+- **Die CMake-File-API ist die unabhaengige Zweitzaehlung zu jeder Riegel-Zahl.** Vor dem
+  Konfigurieren `.cmake/api/v1/query/codemodel-v2` im Baubaum anlegen, danach die Antwort
+  lesen. Sie kennt den Riegel nicht und liefert **Namen** statt Summen: *0104:* aus "die
+  Differenz ist 2" wurde `{belegstellen_riegel, mutationstreiber}`.
+- **Nennt eine Zahl ihren Bezugsstand, dort messen -- nicht an `HEAD`.** Sonst prueft man
+  eine andere Behauptung als die geschriebene. Auch die historische Nebenzahl ("gestern
+  war es 1") hat einen Stand: den letzten Commit jenes Tages (0104).
 - **Zu jedem Negativnachweis gehoert der Positivnachweis.** Ein Riegel, der **alles**
   blockiert, sieht im Negativtest identisch aus.
 - **Eine Behauptung in einem Kommentar ist ein Pruefauftrag**, ebenso ein Ausschluss in
@@ -120,6 +127,10 @@ Baubaums binden (`link.txt` gibt die Zeile her, das Original weglassen).
 - **Zwei Pakete, die einzeln richtig sind, koennen zusammen falsch sein.**
 - **Ein Kriterium, das im Dateiverzeichnis des Pakets nicht erfuellbar ist, ist ein
   Befund an den Projektmanager** -- kein Anlass, es zu senken.
+- **Erfuellt die Stelle, an der eine Regel steht, die Regel selbst?** *0104:* Der neue
+  Kommentar setzt "eine Zahl ohne ihr Profil ist keine Messung" -- die Meldung darunter
+  nennt ihr Profil nicht. Eine frisch geschriebene Regel ist der Pruefauftrag fuer ihre
+  eigene Nachbarschaft; der Befund ist dann kein `zurueck`, sondern ein Vorschlag.
 - **Zeigt die Ausgabe die eigene Schaerfe des Riegels?** *0103:* Vier stumpfe Faelle
   melden zeichengleich dieselbe gruene Zeile wie der scharfe Lauf. Prueffrage: Welche
   Zahl faellt, wenn der Riegel aufhoert zu greifen?
