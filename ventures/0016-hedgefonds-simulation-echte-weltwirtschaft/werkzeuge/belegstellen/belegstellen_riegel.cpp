@@ -366,6 +366,39 @@
 //!     etwas habe dort unter einer bestimmten Ueberschrift gestanden und sei heute nicht
 //!     mehr aufgefuehrt -- eine Aussage **ueber** ein Zitat und keines.
 //!
+//! ## Die Satzgrenze nach links -- Paket 0079, zweiter Teil
+//!
+//! Die drei Grenzen oben genuegen nicht, und das ist gemessen: Am 2026-09-05 wurde der
+//! Riegel rot an einem Satz in `rueckstand.md`, in dem etwas "einen \101bsa\164z
+//! Rechtfertigung und sechs zusaetzliche Baulaeufe gekostet" hat. Das Schluesselwort
+//! steht da, der Name dahinter beginnt gross -- im Deutschen tut das jedes Hauptwort --,
+//! und der naechstgelegene Dokumentname im Absatz stand **zwei Saetze weiter oben** und
+//! handelte von etwas anderem. Der Riegel schlug einen halben Nebensatz als Ueberschrift
+//! nach und meldete einen Befund an einer Stelle, an der nichts kaputt ist.
+//!
+//! **Die Regel dagegen ist keine neue, sondern die, die hier schon zweimal steht: Ein
+//! Verweis und sein Ziel stehen im selben Satz.** Bedingung 1 sucht so nach links
+//! (`satzanfang_vor`), Paket 0086 sucht so nach rechts (`satzende_nach`). Fuer die Form
+//! **ohne** Anfuehrung gilt sie ab jetzt auch nach links. Der Grund steht schon im
+//! zweiten Spiegelstrich oben und wird hier nur zu Ende gedacht: Die Anfuehrung ist die
+//! Ankuendigung "hier wird zitiert"; fehlt sie, ist der Dokumentname die einzige, die
+//! bleibt -- und eine Ankuendigung zwei Saetze weiter oben kuendigt nichts an.
+//!
+//! **Fuer die Form mit Anfuehrung aendert sich nichts.** Sie sucht weiter ueber den
+//! ganzen Absatz, und das muss sie: Der Fall aus Paket 0067 -- `schranken_probe.cpp`,
+//! Dateiname vier Zeilen ueber der Ueberschrift -- ist die gemessene Fassung und faellt
+//! sonst. Ein Fall in `SATZFAELLE` haelt genau das fest; wer die Schranke unbedingt
+//! macht, macht ihn rot.
+//!
+//! **Was sie kostet, gemessen am 2026-09-05 auf demselben Baum:** Von den 56
+//! uebergangenen Fundstellen verlieren **neun** ihr Ziel und zaehlen fortan unter den
+//! Fundstellen ohne Dokumentnamen (44 auf 53). Alle neun sind Gliederungsziffern und
+//! trugen ohnehin keinen Wortlaut; **kein einziges aufgeloestes Zitat geht verloren**,
+//! und die Zahl der Zitate bleibt, was sie ohne den falschen Befund war. Die Richtung
+//! des Fehlers ist dieselbe wie bei `satzanfang_vor` und aus demselben Grund gewaehlt:
+//! Zu streng laesst eine Stelle als "ohne Ziel" durch, zu nachsichtig bindet sie an die
+//! falsche Datei. Nur das zweite macht etwas kaputt.
+//!
 //! ## Das Schluesselwort mit Abstand, der Name rechts -- Paket 0086
 //!
 //! Die dritte Belegstelle aus Paket 0034 nennt ihr Schluesselwort, laesst dann aber
@@ -1381,6 +1414,19 @@ std::vector<Absatz> lies_absaetze(const fs::path& pfad) {
 // Bedingung 2, Teil 3: Ziel suchen und nachschlagen
 // ---------------------------------------------------------------------------
 
+/// Wo die Suche nach links endet -- die ganze Entscheidung an einer Stelle.
+///
+/// Sie steht als eigene Funktion da und nicht als Bedingung in der Leseschleife, damit
+/// der Selbsttest **denselben** Weg misst, den der Lauf ueber den Bestand nimmt;
+/// dieselbe Ueberlegung wie bei `fund_ab`, `zielart` und `namensart`.
+///
+/// Null heisst: der ganze Absatz. Das ist die von Paket 0067 gemessene Fassung und
+/// bleibt es fuer die Form **mit** Anfuehrung.
+std::size_t suchuntergrenze(std::string_view text, std::size_t bis,
+                            bool ohne_anfuehrung) {
+    return ohne_anfuehrung ? satzanfang_vor(text, bis) : 0;
+}
+
 /// Der **naechstgelegene** Verweis links von `bis` im selben Absatz -- und nur er.
 ///
 /// Ueber einen Verweis hinweg wird nicht weitergesucht, auch nicht, wenn er sich nicht
@@ -1392,19 +1438,23 @@ std::vector<Absatz> lies_absaetze(const fs::path& pfad) {
 ///
 /// `netzadresse` sagt, welcher Sorte der Fund ist. Eine Netzadresse faellt am
 /// doppelten Schraegstrich auf, den ein Pfad dieses Vorhabens nie traegt.
-bool naechster_verweis(std::string_view text, std::size_t bis, std::string& name,
-                       bool& netzadresse) {
+///
+/// **`untergrenze` sagt, wo die Suche aufhoert.** Null heisst: der ganze Absatz, wie
+/// Paket 0067 es gemessen hat. Die Form ohne Anfuehrung reicht stattdessen den
+/// Satzanfang herein; warum, steht im Kopf unter der Satzgrenze nach links.
+bool naechster_verweis(std::string_view text, std::size_t bis, std::size_t untergrenze,
+                       std::string& name, bool& netzadresse) {
     std::size_t grenze = bis;
-    while (grenze > 0) {
+    while (grenze > untergrenze) {
         std::size_t ende = grenze;
-        while (ende > 0 && !ist_pfadzeichen(text[ende - 1])) {
+        while (ende > untergrenze && !ist_pfadzeichen(text[ende - 1])) {
             --ende;
         }
-        if (ende == 0) {
+        if (ende == untergrenze) {
             return false;
         }
         std::size_t anfang = ende;
-        while (anfang > 0 && ist_pfadzeichen(text[anfang - 1])) {
+        while (anfang > untergrenze && ist_pfadzeichen(text[anfang - 1])) {
             --anfang;
         }
         std::string_view wort = text.substr(anfang, ende - anfang);
@@ -2094,6 +2144,174 @@ std::size_t selbsttest_abstand() {
     return falsch;
 }
 
+// ---------------------------------------------------------------------------
+// Der Selbsttest zur Satzgrenze nach links -- Paket 0079, zweiter Teil
+// ---------------------------------------------------------------------------
+//
+// Warum als Tabelle im Programm und nicht als zweiter Testfall daneben: dieselbe
+// Begruendung wie bei den vier Tabellen davor -- die `CMakeLists.txt` gehoert Paket
+// 0059 und steht nicht in der Dateiliste dieses Pakets.
+//
+// **Was sie festhaelt, ist die Gegenprobe zu sich selbst.** Jeder Fall sagt zweierlei:
+// was die Suche mit der Schranke findet und was sie ohne sie faende. Ein Fall, dessen
+// beide Spalten gleich lauten, misst die Schranke nicht -- er misst, dass sie nichts
+// wegnimmt, und auch das gehoert dazu. Zwei der fuenf Faelle unten lauten verschieden;
+// sie sind es, die rot werden, wenn jemand die Schranke herausnimmt oder sie auf die
+// Form mit Anfuehrung ausdehnt.
+//
+// Die Schluesselwoerter sind maskiert (`\101` ist `A`, `\164` ist `t`), aus demselben
+// Grund wie in den Tabellen davor.
+
+struct Satzfall {
+    std::string_view zeile;
+    /// Nimmt diese Stelle den Weg ohne Anfuehrung? Davon haengt die Schranke ab, und
+    /// deshalb wird sie gemessen und nicht angenommen.
+    bool ohne_anfuehrung;
+    /// Der Dokumentname, den die Suche auf dem Weg findet, den der Lauf nimmt.
+    /// **Leer heisst: keiner** -- die Haelfte, ohne die der Fall nur zeigte, dass die
+    /// Suche etwas findet.
+    std::string_view gebunden;
+    /// Der Dokumentname, den dieselbe Suche ueber den ganzen Absatz faende. Lautet er
+    /// anders als oben, ist dieser Fall ein Rothebel fuer die Schranke.
+    std::string_view ungebunden;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Satzfall, 5> SATZFAELLE = {{
+    // --- Der Fall, um dessentwillen die Schranke da ist -----------------------
+    {"`werkzeugkette.cmake` haelt seit dem 2026-09-04 die Messung. Die Zahl ist von "
+     "dort gewandert -- sie hat einen \101bsa\164z Rechtfertigung und sechs "
+     "zusaetzliche Baulaeufe gekostet",
+     true, "", "werkzeugkette.cmake",
+     "rueckstand.md, Abnitt zur Zielzahl -- gemessen am 2026-09-05, und zwar als roter "
+     "Lauf: Der Dokumentname steht zwei Saetze weiter oben und hat mit dem Wort hier "
+     "nichts zu tun. Ohne die Schranke wird diese Stelle ein Befund an einem Satz, an "
+     "dem nichts kaputt ist"},
+
+    // --- Der Regelfall, den die Schranke nicht anruehrt -----------------------
+    {"daten/lizenzbefund-reihen.md, \101bschni\164\164 Reihe 1, den Block unter der "
+     "Zwischenzeile",
+     true, "daten/lizenzbefund-reihen.md", "daten/lizenzbefund-reihen.md",
+     "daten/reihen.toml, Feld schnitt_2_offen -- Paket 0047. Name und Wort stehen im "
+     "selben Satz; das ist die Lage, in der die Form ohne Anfuehrung ueberhaupt "
+     "vorkommt"},
+
+    // --- Dass die Schranke nur den neuen Weg bindet ---------------------------
+    {"Der Bau steht in `schranken_probe.cpp` und wird dort gerechnet. Der "
+     "\101bschni\164\164 \342\200\236Die Schleife\342\200\234 sagt, wie oft",
+     false, "schranken_probe.cpp", "schranken_probe.cpp",
+     "gebaut nach kern/test/schranken_probe.cpp, dem Fall aus Paket 0067: Dateiname "
+     "vier Zeilen ueber der Anfuehrung. Mit Anfuehrung gilt der ganze Absatz weiter -- "
+     "wer die Schranke unbedingt macht, macht diesen Fall rot und nimmt Paket 0067 "
+     "seine gemessene Fassung"},
+
+    // --- Was die Schranke kostet, ausgeschrieben ------------------------------
+    {"Nachzulesen ist das alles in `spiel.md`. \101bschni\164\164 Die Schleife sagt "
+     "es dann genauer",
+     true, "", "spiel.md",
+     "gebaut: der Preis der Schranke. Steht der Name im Satz davor, bleibt die Stelle "
+     "ohne Ziel -- gezaehlt, aber nicht bewertet. Die Richtung ist gewollt und dieselbe "
+     "wie bei `satzanfang_vor`: zu streng laesst eine Stelle durch, zu nachsichtig "
+     "bindet sie an die falsche Datei"},
+
+    // --- Die erwartete Leermeldung -------------------------------------------
+    {"Hier steht ueberhaupt kein Dokumentname, und dann folgt \101bsa\164z Sieben mit "
+     "seinem Namen",
+     true, "", "",
+     "gebaut: ohne diesen Fall waeren die zwei leeren Spalten oben auch dann gruen, "
+     "wenn die Suche gar nichts mehr faende"},
+}};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+///
+/// Gemessen wird derselbe Weg, den der Lauf ueber den Bestand nimmt: erst das
+/// Schluesselwort, dann die beiden unmittelbaren Zitatformen, dann `suchuntergrenze`
+/// und `naechster_verweis`. Die Form mit Wortabstand bleibt aussen vor -- sie kann den
+/// Weg ohne Anfuehrung nicht auswaehlen und aendert an der Schranke nichts.
+std::size_t selbsttest_satzgrenze() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < SATZFAELLE.size(); ++k) {
+        const Satzfall& fall = SATZFAELLE[k];
+
+        std::size_t i = 0;
+        std::size_t schluessel = 0;
+        while (i < fall.zeile.size()) {
+            schluessel = schluessellaenge(fall.zeile, i);
+            if (schluessel != 0) {
+                break;
+            }
+            ++i;
+        }
+        if (schluessel == 0) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Satzgrenze %zu: kein Schluesselwort. Der Fall "
+                         "misst damit nichts mehr -- vermutlich ist die Maskierung "
+                         "verrutscht.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+
+        std::string roh;
+        bool ohne = false;
+        if (ueberschrift_hinter(fall.zeile, i + schluessel, roh) == 0) {
+            ohne = name_ohne_anfuehrung(fall.zeile, i + schluessel, roh) != 0;
+        }
+        if (ohne != fall.ohne_anfuehrung) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Satzgrenze %zu: der Weg ohne Anfuehrung war %s, "
+                         "genommen wurde er %s.\n      Zeile:    %.*s\n"
+                         "      Herkunft: %.*s\n", k + 1,
+                         fall.ohne_anfuehrung ? "erwartet" : "nicht erwartet",
+                         ohne ? "doch" : "nicht",
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+
+        std::string name;
+        bool netzadresse = false;
+        const bool hat = naechster_verweis(fall.zeile, i,
+                                           suchuntergrenze(fall.zeile, i, ohne), name,
+                                           netzadresse);
+        const std::string_view gebunden =
+            hat ? std::string_view(name) : std::string_view{};
+        if (gebunden != fall.gebunden) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Satzgrenze %zu: gebunden erwartet war %s, gefunden "
+                         "wurde %s.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1,
+                         fall.gebunden.empty() ? "kein Dateiname"
+                                               : std::string(fall.gebunden).c_str(),
+                         hat ? name.c_str() : "keiner",
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+
+        std::string weit;
+        const bool hat_weit = naechster_verweis(fall.zeile, i, 0, weit, netzadresse);
+        const std::string_view ungebunden =
+            hat_weit ? std::string_view(weit) : std::string_view{};
+        if (ungebunden != fall.ungebunden) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Satzgrenze %zu: ungebunden erwartet war %s, "
+                         "gefunden wurde %s.\n      Zeile:    %.*s\n"
+                         "      Herkunft: %.*s\n", k + 1,
+                         fall.ungebunden.empty() ? "kein Dateiname"
+                                                 : std::string(fall.ungebunden).c_str(),
+                         hat_weit ? weit.c_str() : "keiner",
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
+}
+
 /// Das erste Wort einer normierten Zeichenkette.
 std::string_view erstes_wort(std::string_view text) {
     const std::size_t raum = text.find(' ');
@@ -2408,7 +2626,15 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
             std::string name;
             bool netzadresse = false;
             std::string grund;
-            bool gefunden = naechster_verweis(absatz.text, i, name, netzadresse);
+            // Ohne Anfuehrung endet die Suche nach links am Satzanfang, mit ihr nicht.
+            // Der Grund steht im Kopf und ist derselbe wie bei der Suche nach rechts:
+            // Die Anfuehrung ist die Ankuendigung "hier wird zitiert"; fehlt sie, ist
+            // der Dokumentname die einzige, die bleibt -- und eine Ankuendigung zwei
+            // Saetze weiter oben kuendigt nichts an.
+            const std::size_t untergrenze =
+                suchuntergrenze(absatz.text, i, ohne_anfuehrung);
+            bool gefunden =
+                naechster_verweis(absatz.text, i, untergrenze, name, netzadresse);
             if (!gefunden && !ohne_anfuehrung) {
                 // Paket 0086: der Dokumentname rechts vom Zitat. Nur als Rueckfall,
                 // damit die gemessene Linksregel den Vorrang behaelt.
@@ -2542,7 +2768,8 @@ int main(int argc, char** argv) {
     const std::size_t fehlgeschlagen = selbsttest_namenssuche()
                                        + selbsttest_ohne_anfuehrung()
                                        + selbsttest_zielart()
-                                       + selbsttest_abstand();
+                                       + selbsttest_abstand()
+                                       + selbsttest_satzgrenze();
     if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
                      "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
@@ -2551,15 +2778,16 @@ int main(int argc, char** argv) {
                      "verfehlt, misst auch fremde nicht.\n",
                      fehlgeschlagen,
                      NAMENSFAELLE.size() + ZITATFAELLE.size() + ZIELFAELLE.size()
-                         + ABSTANDSFAELLE.size());
+                         + ABSTANDSFAELLE.size() + SATZFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
                  "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links, %zu "
-                 "zur Form\nohne Anfuehrung, %zu zur Ortsfrage und %zu zum Wortabstand "
-                 "samt Suche nach rechts,\nalle wie erwartet.\n",
+                 "zur Form\nohne Anfuehrung, %zu zur Ortsfrage, %zu zum Wortabstand samt "
+                 "Suche nach rechts\nund %zu zur Satzgrenze nach links, alle wie "
+                 "erwartet.\n",
                  NAMENSFAELLE.size(), ZITATFAELLE.size(), ZIELFAELLE.size(),
-                 ABSTANDSFAELLE.size());
+                 ABSTANDSFAELLE.size(), SATZFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {

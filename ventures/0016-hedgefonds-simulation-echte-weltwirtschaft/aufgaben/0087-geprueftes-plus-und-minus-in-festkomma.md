@@ -1,7 +1,7 @@
 ---
 id: 0087-geprueftes-plus-und-minus-in-festkomma
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0002-fondsbewertung-definieren, 0088-werte-probe-vier-unbelegte-vorgaben]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/festkomma_probe.cpp]
 abnahme: `plus` und `minus` stehen als geprueftes Paar in `festkomma.hpp` neben `mal`, `werte.cpp` hat keine eigene Fassung mehr, und `festkomma_probe` weist beide Abbruchpfade an den Raendern von i64 nach -- je eine Positivkontrolle mit dem groessten noch passenden Wert davor.
@@ -108,3 +108,77 @@ belegbare Folgen des heutigen Zustands:
 Eine gepruefte Fassung fuer `+=` in Schleifen oder ein eigener Summentyp. T7 nennt
 zwei Bausteine und keine Bibliothek; alles darueber hinaus waere Entwurf und braeuchte
 einen ADR.
+
+---
+
+# GEBAUT -- 2026-09-05, Kernbauer
+
+## Was steht
+
+`plus` und `minus` stehen in `festkomma.hpp` zwischen `mal_geteilt` und `mal`, also
+4.2 vor 4.3, beide `constexpr` und beide ueber die Ueberlaufbausteine mit Abbruch
+statt Kappung. `werte.cpp` hat keine eigene Fassung mehr, sondern zwei
+`using`-Zeilen; `betrag` bleibt dort, wie das Paket es vorschreibt. Die zwoelf
+Aufrufe in `marktkorb`, `korbbestand`, `bip`, `handelsvolumen`, `anleihekurs`,
+`fondsanteil`, `beteiligung_wert_aus` und `fondsvermoegen` sind unveraendert -- sie
+sehen dieselben Namen, nur aus einem anderen Namensraum.
+
+Die Abbruchmeldungen heissen jetzt `plus: Summe ...` und `minus: Differenz ...` nach
+der Form der uebrigen Meldungen dieser Datei. Kein Test und kein Dokument hat den
+alten Wortlaut zitiert; nachgesehen mit einer Mustersuche ueber `kern/` ausserhalb
+von `bau/` und `befunde/`.
+
+## Die Nachweise, und was sie kosten wuerden, wenn sie fehlten
+
+Kontrolle zuerst: Der unveraenderte Baum ist gruen. Arbeitsbereich 14 von 14,
+`kern` allein 10 von 10 mit `FABRIK_SANITIZER=ON` **und** `=OFF` -- die Zahl ist je
+Profil verschieden, deshalb steht sie hier mit dem Profil daneben.
+
+Danach sieben Mutationen an `festkomma.hpp`, jede einzeln, jede auf einem eigenen
+Wegwerfbaum. Das Urteil ist getrennt nach der Stufe, an der es rot wurde:
+
+| Mutation | Urteil |
+|---|---|
+| unveraendert (Kontrolle) | gruen |
+| `plus` ohne Waechter | rot (Probe), 2 Zeilen -- beide Abbruchnachweise von `plus` |
+| `minus` ohne Waechter | rot (Probe), 2 Zeilen -- beide Abbruchnachweise von `minus` |
+| `plus` bricht immer ab | rot (Uebersetzung) -- ein blinder Abbruch macht die Funktion nicht mehr konstant auswertbar |
+| `minus` als `plus(a, -b)` gebaut | rot (Uebersetzung) -- der `static_assert` auf `minus(-1, I64_MIN)` |
+| `minus` meldet den Wortlaut von `plus` | rot (Probe), 2 Zeilen |
+| `plus` bricht einen Schritt zu frueh ab | rot (Uebersetzung) -- die Positivkontrolle als `static_assert` |
+| dieselbe Mutation, `static_assert` stillgelegt | rot (Probe) -- der Lauf bricht mit `plus: Summe ausserhalb von i64 (T7)` ab |
+
+Die letzten beiden gehoeren zusammen und pruefen dieselbe Haelfte der Abnahme von
+zwei Seiten: Ein Waechter, der den groessten noch passenden Wert ablehnt, faellt
+beim Uebersetzen auf -- und wenn jemand die Uebersetzungsprobe entfernte, faellt er
+beim Laufen auf. Die Positivkontrolle ist damit kein Zierat.
+
+Die zweitletzte Zeile der Tabelle ist der Grund fuer `ABBRUCH_MELDET`: `erwarte_abbruch`
+belegt nur, **dass** geworfen wurde. Beide Riegel liegen im selben Kopf und werfen
+dieselbe Klasse; ohne Wortlautvergleich bliebe die Probe gruen, wenn sie
+zusammenfielen. Die Textsuche hat ihre eigene Negativkontrolle: Der Abbruch von `mal`
+wird von keiner der beiden Nadeln gefangen, und die beiden Nadeln enthalten einander
+nicht.
+
+## Wo keine Messung unterscheidet, und das gehoert hingeschrieben
+
+Die zweite Bedingung der Abnahme -- `werte.cpp` hat keine eigene Fassung mehr -- ist
+eine Aussage ueber die **Gestalt** des Quelltexts und nicht ueber sein Verhalten.
+Keine der sieben Mutationen unterscheidet sie: Wer die alten Fassungen wieder in den
+anonymen Namensraum legte, bekaeme einen gruenen Baum. Sie ist beim Lesen zu pruefen,
+und genau deswegen habe ich sie nicht als gemessen ausgegeben. Ein Riegel dafuer
+waere ein eigenes Paket -- meine Dateiliste nennt keine `CMakeLists.txt`.
+
+## Was 0088 dazu sagt
+
+Die vier Pruefungen aus 0088 stehen in `werte_probe` und sind gruen geblieben, in
+beiden Profilen. Das ist ihr Zweck an dieser Stelle: Sie sind der Nachweis, dass der
+Umzug an den siebzehn Groessen nichts geaendert hat.
+
+## Kein Befund von mir, aber gemessen
+
+Der `belegstellen_riegel` war beim Zwischenstand rot -- ein Zitat in `rueckstand.md`,
+das in `werkzeugkette.cmake` nichts findet. Gegenprobe auf zwei Baeumen aus demselben
+`HEAD`, einer mit und einer ohne meine drei Dateien: **35 Zitate gefunden, 34
+aufgeloest, 56 Fundstellen uebergangen -- Zahl fuer Zahl gleich**, dieselbe eine rote
+Fundstelle in beiden. Beim Schlusslauf war er ohne mein Zutun wieder gruen.
