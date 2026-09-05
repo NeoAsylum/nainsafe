@@ -67,3 +67,20 @@ gefrorene Kopie: die 325 Zeilen der Datei, die weder leer noch Kommentar sind, s
 vorher und nachher byteweise dieselben. Ein Bau kann sich dadurch nicht aendern -- und
 tut es auch nicht: Arbeitsbereich `--build` und `ctest` in beiden Profilen Code 0,
 14 von 14 Tests, darunter `belegstellen_riegel`, der den neuen Kommentartext mitliest.
+
+## Kontrolle am Ende des Laufs
+
+Waehrend dieses Laufs haben Fremdlaeufe im selben Baum gearbeitet -- `git status` zeigt
+zum Schluss unter anderem `pruefstand/CMakeLists.txt`,
+`werkzeuge/belegstellen/belegstellen_riegel.cpp` und `befunde/pruefung-0066/nachbau.py`
+als geaendert. Genau dagegen war die gefrorene Kopie da.
+
+Eine Kontrollmessung zum Schluss ergibt trotzdem dieselben sechs Zahlen: **19 / 12 / 5**
+unter `ON`, **17 / 11 / 4** unter `OFF`. Der Kommentartext steht unveraendert im Baum,
+die ersetzte Zeile `Am 2026-09-04 waren es 16 im Arbeitsbereich ...` kommt in der Datei
+nicht mehr vor.
+
+Und falls diese Zahlen morgen andere sind: Der Kommentar behauptet sie ausdruecklich
+**fuer den Stand `8a2c381` am 2026-09-05** und fuer kein anderes. Eine spaetere Messung
+widerlegt ihn dadurch nicht -- das ist der ganze Unterschied zwischen einer Messung und
+einem Sollwert, und der Grund fuer dieses Paket.

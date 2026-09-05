@@ -1741,7 +1741,7 @@ struct Zielfall {
     std::string_view herkunft;
 };
 
-constexpr std::array<Zielfall, 16> ZIELFAELLE = {{
+constexpr std::array<Zielfall, 17> ZIELFAELLE = {{
     // --- Was gelesen wird, bleibt gelesen ------------------------------------
     {"daten/adressen.md", true, "", Zielart::Gelesen,
      "der Regelfall: alle aufgeloesten Zitate gehen hier durch"},
@@ -1901,12 +1901,21 @@ struct Zitatzaehlwerk {
 /// (die beiden anderen sind Gliederungsziffern), 0050 fuenf, 0057 vier. Unterschreitet
 /// der Lauf sie, deckt der Riegel seinen eigenen Anlass nicht mehr ab.
 ///
-/// **Was sie deshalb nicht faengt, ausgeschrieben:** einen Rueckgang von heute 38 auf
+/// **Was sie deshalb nicht faengt, ausgeschrieben:** einen Rueckgang von heute 36 auf
 /// 17. Das ist Absicht und kein Versehen. Eine Schranke dicht unter dem Tagesstand
 /// wuerde bei jeder rechtmaessig entfernten Belegstelle rot und beim naechsten Lauf
 /// nachgezogen -- eine Schwelle, die man nachzieht, misst nichts mehr. Der
 /// Rueckgang **auf der Zielseite** haengt ohnehin nicht an dieser Zahl: Ein
 /// weggefallenes Ziel ist seit diesem Paket ein Befund und kein stiller Abgang.
+///
+/// **Dass die Zahl hier bleibt, ist seit dem 2026-09-05 gemessen und nicht behauptet.**
+/// Der Ruecklauf jenes Tages hat zu Recht angemerkt, dass beide Haelften des Netzes
+/// denselben Einbruch durchliessen: Vorgaben ohne `spiel.md` gaben 24 aufgeloeste
+/// Zitate, und 24 steht ueber 16. Gefangen wird dieser Einbruch seither von der
+/// Ortsfrage und nicht von der Untergrenze -- derselbe Eingriff gibt heute 15 tote
+/// Ziele und einen roten Lauf. Die Untergrenze deckt weiter allein die Fundseite ab,
+/// wofuer sie da ist; sie hochzuziehen, damit sie die Zielseite mit abdeckte, hiesse
+/// eine Schwelle zu pflegen, fuer die es einen Riegel gibt.
 constexpr std::size_t AUFGELOEST_MINDESTENS = 16;
 
 /// Laenge des Schluesselworts, das bei `i` **beginnt** -- oder 0.
@@ -3185,9 +3194,16 @@ int main(int argc, char** argv) {
                      "Ziel, das es nicht gibt, ist der tote\nVerweis, gegen den dieser "
                      "Riegel geschrieben ist. Entweder ist die Datei\numbenannt oder "
                      "verschoben worden -- dann wird der Verweis nachgezogen --, oder\n"
-                     "sie hiess nie so. Liegt sie mit Absicht in einem ungelesenen "
-                     "Ordner, steht sie\nnicht hier, sondern oben unter den "
-                     "uebergangenen Fundstellen.\n");
+                     "sie hiess nie so.\n\nLiegt sie mit Absicht in einem ungelesenen "
+                     "Ordner (`bau/`, `befunde/`), gehoert\ndieser Ordner in den "
+                     "Verweis: Seit dem 2026-09-05 wird die Ortsfrage an dem Ort\n"
+                     "entschieden, auf den der Verweis zeigt, und nicht daran, ob "
+                     "irgendwo eine Datei\ndesselben Namens liegt. Die ungelesenen "
+                     "Ordner tragen Abschriften des Quellbaums;\nwer nach dem blossen "
+                     "Namen fragt, bekommt dort fast immer ein Ja und uebergeht\ngenau "
+                     "den toten Verweis, den er sucht. Ein Zitat, dem nur der Vorsatz "
+                     "fehlt, wird\nalso um zwei Woerter ergaenzt und steht danach oben "
+                     "unter den uebergangenen\nFundstellen.\n");
     }
 
     if (!zitatbefunde.empty()) {
