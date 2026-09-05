@@ -321,6 +321,54 @@ macro(fabrik_riegel_sammeln herkunft listenname)
   endif()
 endmacro()
 
+# Die Zerlegung eines Schalterwerts in Woerter -- einmal benannt, weil zwei Riegel sie
+# brauchen: der Durchgang gegen Pauschalabschalter im Warnsatz-Schlussriegel und der
+# Nullabhaengigkeitsdurchgang (T2) ueber die Linkschalter weiter unten. Bis zum
+# 2026-09-06 stand sie an beiden Stellen Zeichen fuer Zeichen abgeschrieben; der
+# Kommentar der zweiten Stelle nannte eine zweite Fassung derselben Regel selbst den
+# Anfang zweier Wahrheiten und beschrieb damit den eigenen Zustand.
+#
+# Drei Schritte, und jeder faengt eine Schreibweise, unter der ein Schalter sonst
+# unsichtbar bliebe:
+#
+#   1. `SHELL:` faellt weg. Das Praefix ist CMakes Marke gegen das Zusammenfassen von
+#      Schaltern und gehoert nicht zum Schalter selbst.
+#   2. Die Zeichen `$ < > : ,` werden zu Leerraum. Damit zerfaellt ein
+#      Generatorausdruck -- `$<$<CONFIG:Release>:-w>` -- in seine Bestandteile und ein
+#      durchgereichter Linkerschalter -- `-Wl,-lz` -- in `-Wl` und `-lz`.
+#   3. `separate_arguments` trennt am Leerraum und loest dabei Anfuehrung und
+#      Fluchtzeichen auf.
+#
+# **Die Trennzeichenklasse ist eine Aufzaehlung und keine Regel**, und das ist der
+# Grund, warum sie an genau einer Stelle stehen muss. Wer sie erweitert -- etwa um `=`
+# fuer `-Wl,--library=z` --, aendert sie hier fuer beide Durchgaenge. Solange sie
+# zweimal dastand, aenderte er die Stelle, an der er gerade misst, waehrend die andere
+# stehen blieb: Beide Stellen haben eigene Tests, und beide waeren gruen geblieben.
+#
+# Die Zerlegung kann Woerter erzeugen, die kein Schalter mehr sind: `-Wl,-l,z`
+# zerfaellt in `-Wl`, `-l` und `z`. Was ein Aufrufer daraus macht, entscheidet er --
+# die Muster stehen bei ihm und nicht hier. Ebenso, ob er den ungeteilten Eintrag
+# zusaetzlich abgleicht; die Zerlegung gibt ihn nicht zurueck.
+#
+# Uebergeben wird der **Name** der Eingabevariablen und nicht ihr Wert. Das ist keine
+# Geschmacksfrage, sondern gemessen (`befunde/messung-0124/uebergabeform.py`, elf
+# Eingaben gegen die eingebaute Abschrift): Ein Makro ersetzt seine Parameter als Text,
+# und dieser Text wird danach erneut gelesen. Am Eintrag `-DPFAD=a\b` bricht die
+# Wertform deshalb schon beim Konfigurieren ab (`Invalid character escape`), waehrend
+# die Abschrift ihn zerlegt; die Namensform bildet die Abschrift an allen elf Eingaben
+# ab. Denselben Weg geht `fabrik_nichtwert_leeren` weiter oben, dort aus dem
+# verwandten Grund, dass der Name selbst im Vergleich vorkommt.
+#
+# Ein Makro und keine Funktion, aus demselben Grund wie bei den beiden darueber: Die
+# Wortliste muss im Gueltigkeitsbereich des Aufrufers entstehen. `fabrik_zerlegt`
+# bleibt als Zwischenwert dort stehen -- das Praefix haelt ihn von den
+# Schleifenvariablen der Riegel fern.
+macro(fabrik_schalter_zerlegen wortliste eingabename)
+  string(REPLACE "SHELL:" " " fabrik_zerlegt "${${eingabename}}")
+  string(REGEX REPLACE "[$<>:,]" " " fabrik_zerlegt "${fabrik_zerlegt}")
+  separate_arguments(${wortliste} UNIX_COMMAND "${fabrik_zerlegt}")
+endmacro()
+
 # Der Sollzustand wird hier festgehalten und nicht erst im Riegel gelesen: Als globale
 # Eigenschaft haengt er an der Datei, die ihn setzt, und nicht am Gueltigkeitsbereich,
 # in dem der Riegel spaeter laeuft. Wird diese Datei aus einem engeren Bereich
@@ -593,9 +641,7 @@ function(fabrik_schlussriegel wurzelverzeichnis)
         list(GET eintraege ${lfd} schalterwert)
         list(GET herkuenfte ${lfd} herkunft)
         math(EXPR lfd "${lfd} + 1")
-        string(REPLACE "SHELL:" " " zerlegt "${schalterwert}")
-        string(REGEX REPLACE "[$<>:,]" " " zerlegt "${zerlegt}")
-        separate_arguments(worte UNIX_COMMAND "${zerlegt}")
+        fabrik_schalter_zerlegen(worte schalterwert)
         foreach(wort IN LISTS worte)
           foreach(muster IN LISTS pauschalmuster)
             if("${wort}" MATCHES "${muster}")
@@ -759,13 +805,13 @@ function(fabrik_schlussriegel wurzelverzeichnis)
     # an ihr wirkt allein ueber die Schnittstelle -- und landet dann bei jedem, der sie
     # linkt.
     #
-    # Zerlegt wird mit derselben benannten Folge wie im Durchgang gegen
-    # Pauschalabschalter weiter oben in dieser Datei: `SHELL:` weg, die Zeichen
-    # `$ < > : ,` zu Leerraum, dann `separate_arguments`. Sie steht dort schon dafuer,
-    # dass ein Eintrag nicht mit einem Schalter verwechselt wird; eine zweite Fassung
-    # derselben Regel danebenzustellen waere der Anfang zweier Wahrheiten. `-Wl,-lz`
-    # zerfaellt daran in `-Wl` und `-lz`, und `^-l.` trifft. Ein Generatorausdruck wie
-    # `$<1:-lz>` faellt in denselben Weg.
+    # Zerlegt wird mit `fabrik_schalter_zerlegen` -- der benannten Folge weiter oben
+    # in dieser Datei, gemeinsam mit dem Durchgang gegen Pauschalabschalter. Was sie
+    # tut und was ihre Trennzeichenklasse nicht sieht, steht dort und nicht hier;
+    # bis zum 2026-09-06 stand sie an beiden Stellen abgeschrieben statt aufgerufen.
+    # Hier zaehlt allein ihre Wirkung auf die zwei Muster unten: `-Wl,-lz` zerfaellt
+    # in `-Wl` und `-lz`, und `^-l.` trifft. Ein Generatorausdruck wie `$<1:-lz>`
+    # faellt in denselben Weg.
     #
     # Der ganze Eintrag bleibt zusaetzlich im Abgleich, und das ist keine Doppelung,
     # sondern die Zusicherung, dass die Zerlegung nur finden kann und nie verlieren:
@@ -818,9 +864,7 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       fabrik_nichtwert_leeren(nullwert)
       list(APPEND nullgelesen "${nullziel}.${eigenschaft}=[${nullwert}]")
       foreach(eintrag IN LISTS nullwert)
-        string(REPLACE "SHELL:" " " zerlegt "${eintrag}")
-        string(REGEX REPLACE "[$<>:,]" " " zerlegt "${zerlegt}")
-        separate_arguments(worte UNIX_COMMAND "${zerlegt}")
+        fabrik_schalter_zerlegen(worte eintrag)
         # Der ganze Eintrag vor seinen Woertern: So bleibt jeder Fund der engen Fassung
         # ein Fund, gleich was die Zerlegung mit ihm anstellt.
         list(INSERT worte 0 "${eintrag}")

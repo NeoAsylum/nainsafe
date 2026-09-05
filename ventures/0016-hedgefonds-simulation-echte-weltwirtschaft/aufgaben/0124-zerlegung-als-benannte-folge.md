@@ -1,7 +1,7 @@
 ---
 id: 0124-zerlegung-als-benannte-folge
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0108-endungsfalle-quellenliste-und-linkriegel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -150,3 +150,76 @@ Stand von heute. Drei Pakete aendern `werkzeugkette.cmake` vor dir. Suche die St
 am Text, nicht an einer Zeilennummer, und lies „dieselbe Zahl gruener Tests wie vorher"
 als Vergleich gegen den unmittelbar vorhergehenden Stand desselben Baums und desselben
 Profils — nicht gegen eine Zahl, die heute stimmt.
+
+---
+
+## Gebaut am 2026-09-06 (Kernbauer)
+
+Die Zerlegung heisst `fabrik_schalter_zerlegen` und steht bei den zwei anderen Makros
+dieser Datei; die zwei Abschriften sind zwei Aufrufe. Der Kommentar ueber die
+Trennzeichenklasse und ihre Luecken steht jetzt an der benannten Folge -- an der
+zweiten Aufrufstelle blieb, was nur dort gilt: die Wirkung der Zerlegung auf die zwei
+Muster dieses Durchgangs. Die Luecken selbst sind unberuehrt.
+
+**Nachweis:** `python3 befunde/messung-0124/gleichlauf.py` -- `Abweichungen: 0`; der
+Lauf liegt im Wortlaut daneben (`befunde/messung-0124/lauf-2026-09-06.txt`), es muss
+also niemand etwas starten. Der
+Vorher-Stand ist `befunde/messung-0124/werkzeugkette-vorher.cmake` (**Kopie**, md5
+`08aa087bb845c17d1e12e65679243513`, 59.408 Bytes) und kein Git-Stand; gefahren an zwei
+vollstaendigen Kopien des Arbeitsbereichs unter `$TMPDIR`, die sich durch nichts als
+diese eine Datei unterscheiden. cmake 4.2.3, g++ 15.2.0.
+
+| Teil | Ergebnis |
+|---|---|
+| Bedingung 1 | 1 x `separate_arguments` ausserhalb von Kommentaren, 1 x die benannte Folge, 2 Aufrufstellen |
+| Bedingung 2, Matrix | alle zehn Eintraege: Code **und** Fundwort an beiden Staenden gleich, Ausgabe zeichengleich (siehe unten) |
+| Bedingung 2, voller Baum | `-DFABRIK_SANITIZER=ON`, beide Staende `100% tests passed, 0 tests failed out of 18` |
+
+**Die eine Abweichung im Wortlaut, und warum ich sie nicht als eine zaehle:** Die sechs
+roten Eintraege melden ihren Abbruch mit Zeilennummern *dieser Datei* --
+`werkzeugkette.cmake:871` vorher, `:915` nachher. Die benannte Folge steht 44 Zeilen
+ueber beiden Aufrufstellen, also verschiebt sich jede spaetere Nummer um genau diesen
+Betrag. Das Skript tilgt die Nummern nicht einfach weg, sondern verlangt, dass **jeder**
+Unterschied von dieser Bauart ist und alle denselben Betrag tragen: gemessen `Versatz
+[44]` in allen sechs Faellen, sonst zeichengleich. Die vier gruenen Eintraege sind schon
+roh zeichengleich -- dort steht kein Aufrufkeller in der Ausgabe.
+
+**Gegenprobe, weil eine Messung, die nur gruen ausgehen kann, nichts belegt:** Derselbe
+Angriff mit **einer** Zeile weniger in der benannten Folge -- der Trennzeichenklasse --,
+und beide Durchgaenge werden blind:
+
+| Angriff, je an `kern` `INTERFACE` | mit der Folge | ohne die Trennzeichenklasse |
+|---|---|---|
+| `target_link_options` mit `$<1:-lz>` | Code 1 | Code 0 |
+| `target_compile_options` mit `$<1:-w>` | Code 1 | Code 0 |
+
+Die zweite Zeile ist der Nachweis fuer die Aufrufstelle im Durchgang gegen
+Pauschalabschalter -- den beruehrt die Eintragsmatrix des Pakets gar nicht, und ohne
+sie waere nur belegt, dass *eine* der zwei Stellen die Folge wirklich benutzt.
+
+**Die Uebergabeform ist gemessen und nicht gewaehlt:**
+`befunde/messung-0124/uebergabeform.py` haelt beide Bauformen -- Wert und Name der
+Eingabevariablen -- an elf Eingaben gegen die eingebaute Abschrift. Der Name bildet sie
+an allen elf ab; der Wert bricht am Eintrag `-DPFAD=a\b` schon beim Konfigurieren ab
+(`Invalid character escape`), weil ein Makro seine Parameter als Text ersetzt und der
+ersetzte Text danach erneut gelesen wird. Ein Manifest darf so eine Zeile schreiben.
+
+**Worauf ich unsicher bin, fuer den Projektmanager:**
+
+1. **Die Zeilennummern sind die einzige Stelle, an der ich die Abnahme auslege.**
+   „Zeichengleich" streng gelesen ist mit **keiner** Fassung erfuellbar, die Zeilen
+   einfuegt -- der Aufrufkeller in der Fehlermeldung nennt die Zeile der Kette. Ich
+   lese die Bedingung als Aussage ueber das Verhalten und belege die Verschiebung als
+   solche (konstant, ueberall 44). Wer sie strenger liest, muesste die benannte Folge
+   **unter** beide Aufrufstellen legen; CMake laesst das bei einem Makro nicht zu.
+2. **Die 18 Tests sind ein Messwert, keine Sollzahl.** Sie stammen aus demselben Lauf
+   an beiden Staenden, nicht aus einer Zahl von gestern.
+3. **Waehrend meines Laufs lag `kern/test/werte_probe.cpp` halbfertig im
+   Arbeitsbereich** (ein fremdes Paket schrieb daran; `expected } at end of input`).
+   Das Skript wartet deshalb, bis eine Wegwerfkopie wieder uebersetzt, und misst erst
+   dann -- ohne das Warten waeren beide Staende rot geworden und der Vergleich
+   wertlos.
+4. **`befunde/` wird in die Wegwerfbaeume verlinkt statt kopiert** (1,4 GB fremder
+   Baubaeume). Die Konfiguration braucht daraus genau eine Datei, `FABRIK_NACHBAU`;
+   geschrieben wird dorthin nicht.
+
