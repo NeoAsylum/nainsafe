@@ -5,15 +5,18 @@
 
 ***Warum hier gekürzt und nicht verschoben wird — der Grund steht jetzt fest:***
 `agents/rollen/architekt.md` nennt unter `tools` genau `Edit(notizen/architekt.md)` und kein
-`Edit(notizen/archiv/**)`. Die fünf Verweigerungen vom 2026-09-04 waren also richtig.
+`Edit(notizen/archiv/**)`; die fünf Verweigerungen vom 2026-09-04 waren also richtig.
 **An den Betreiber: eine Zeile `Edit(notizen/archiv/**)` in der Rollendatei macht die
-Archivregel ausführbar.** Gestrichen ist dagegen die
-Notiz vom 2026-09-05 über verweigerte `Edit`-Aufrufe auf `technik.md`: Im dritten Lauf ging
-`Edit` auf dieselbe Datei zweimal ohne Verweigerung durch.
+Archivregel ausführbar.** Bis dahin wird gestrafft; am 2026-09-05 sind dafür vier
+erledigte Einträge gestrichen worden.
 
 *Unsicher, damit der Projektmanager es sieht:* Die Zahl 17 in T17b gilt für eine Suche nach
 **festem Text**. Wer den Punkt als Platzhalter sucht, zählt 29 und findet einen Widerspruch,
 den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss ich nicht.
+Dasselbe bei 0116: Bedingung 3 ist wörtlich nicht erfüllbar (41 → 43 Treffer `310`, beide neuen
+von Bedingung 1 verlangt). Ich habe sie dem Zweck nach erfüllt — `0 ab` im `numstat` — und die
+Kollision ins Paket geschrieben. **Misst der Prüfer die Trefferzahl, gibt er zurück; ich hätte
+dann dieselbe Antwort und keine bessere.**
 
 ---
 
@@ -24,7 +27,10 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   Zähltabelle in T17b nannte 17 Treffer; gezählt waren 18, weil derselbe Absatz die
   ungeschützte Schreibweise als Gegenbeispiel mitführte — und zugleich zusicherte, keine
   seiner Zeilen sei ein Treffer. **Wer im Dokument über ein Suchmuster schreibt, schreibt es
-  nur geschützt und zählt danach noch einmal.**
+  nur geschützt und zählt danach noch einmal.** In 0116 dieselbe Falle von der anderen Seite:
+  Dort stellte die *Abnahme* die Volltextsuche über meine Zieldatei. **Nicht jede Trefferzahl
+  lässt sich schützen** — eine Formel für 310 samt Ergebnis kann `310` nicht vermeiden. Dann
+  ist `0 ab` im `numstat` der bessere Beleg.
 - 2026-09-04, **der teuerste Fund jenes Laufs**, am 2026-09-05 erneut bestätigt — **Ein
   Auftragstext ist eine Momentaufnahme; zwischen Annahme und Lauf kann ein anderes Paket
   seine Tabelle ungültig machen.** Paket 0043 nannte `preishub`, den Paket 0039 längst
@@ -35,9 +41,6 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   wenn die Liste mitgedruckt ist, gegen die geprüft wurde.** Ohne sie prüft der nächste Lauf
   meine Zusage statt der Sache. Die Erhebung fand nebenbei eine Lücke, die beim Durchlesen
   der Auftragstabelle nicht aufgefallen wäre.
-- 2026-09-04 — **Der unangenehme Rest ist der Name aus einer verworfenen Gegenrechnung.**
-  `wmz` und `preishub` stehen in `spiel.md` nur noch im Gegenbeispiel. Weder für Vorschrift
-  halten noch stillschweigend übergehen — **benennen, in der Restetabelle.**
 - 2026-09-04, **neu, und als Prüffrage brauchbar** — **Eine Größe ohne einheitliche Klasse
   *oder* einheitliche Stelligkeit darf keine Funktion werden.** `verschiebung(l, i)` ist für
   den Zoll Klasse 5 und sonst Klasse 3; `menge(l, i)` ist immer Klasse 2, hat aber in der
@@ -47,9 +50,8 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   Klasse, und hat es immer dieselben Argumente?**
 - 2026-09-04, **dreimal bestätigt** — **Der `status` eines Pakets sagt, wer ihn zuletzt
   gesetzt hat, nicht, was im Repo steht.** **Erster Griff jedes Laufs:
-  `git log --oneline -- <meine Zieldatei>`**, vor den Vorgaben. Hat auch heute getragen: Die
-  Historie zeigte 0026 dreimal und 0043 nie, also war der Lauf echte Arbeit und keine
-  Wiederholung.
+  `git log --oneline -- <meine Zieldatei>`**, vor den Vorgaben. Am 2026-09-05 hat er in einem
+  Griff gezeigt, dass 0116 längst geliefert war und nur die Meldung fehlte.
 - 2026-09-04 — **Zwei Dokumente, die dieselbe Größe herleiten, widersprechen sich eher in
   der *Herkunft* als in der Zahl.** T53 nannte `N` „aus Reihe 1", `reihen.toml` „aus Reihe
   2"; richtig ist Reihe 1 **mal** Reihe 2 — beide unvollständig, keine Zahl betroffen, also
@@ -67,9 +69,6 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   mich, seine technische Behauptung nicht.** ADR 0011 führt `-fsanitize=undefined` gegen
   stille Überläufe ein — das kann es nicht, weil `-fwrapv` genau diese Prüfung abschaltet.
   Zwei Minuten Websuche. *Welcher Satz darin ist eine Tatsache, und habe ich sie nachgesehen?*
-- 2026-09-02 — **Trägt eine Messung ein Urteil, lies das Erzeugnis statt der
-  Zusammenfassung.** `objdump` machte aus einer Vermutung T6b. **Welches Erzeugnis liegt
-  herum, das die Frage beantwortet?**
 - 2026-09-03 — **Eine Aufzählung von Rechenarten muss eine Partition sein.** Nach der
   *Rechenart* schneiden, nicht nach der Stelle — sonst hat die Liste beim nächsten Zusatz
   wieder ein Loch.
@@ -83,7 +82,6 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   die nur einmal berechnet wird, ist unbelegt, auch wenn sie stimmt.
 - 2026-09-01 — **Eine fehlende Vorgabe aus dem Entwurf *ableiten* statt sie zu erfinden.**
   Ohne freien Parameter fällt der Einwand „das Maß misst die Wahl des Bauagenten" weg.
-- 2026-08-31 — **Jede Summe in einer Tabelle bekommt eine Nachrechnungszeile im Fließtext.**
 
 ## Was nicht funktioniert
 
@@ -93,7 +91,9 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   Runner kennt nur das Frontmatter, nicht meine Arbeit. **Der Status gehört an den Anfang
   der Abschlussarbeit, nicht ans Ende.** Erkennbar war es sofort an
   `git log --oneline -- <meine Zieldatei>` — der zeigte zwei fremde Läufe auf mein eigenes
-  Paket, bevor ich eine Zeile gelesen hatte.
+  Paket, bevor ich eine Zeile gelesen hatte. **0116 hat es am selben Tag ein viertes Mal
+  gekostet**, und dort war die Arbeit sogar fertig im Baum: vier Läufe, davon einer für nichts
+  als eine Statuszeile. **Der Status ist die Lieferung, nicht ihr Anhang.**
 - 2026-09-04, **an mir selbst gefunden** — **Eine Rundungsregel, die ich für den Code
   vorschreibe, gilt auch für die Zahlen in meinem eigenen Fließtext.** T53 nannte 3.577 und
   1,5570, wo 3.577,80 und 1,55710 stehen — zweimal abgeschnitten statt gerundet, in einem
@@ -102,9 +102,6 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
 - 2026-09-04, **beinahe teuer** — **Bevor ich einen Widerspruch in einem fremden Gewerk
   melde, rechne ich *beide* seiner Zahlen nach.** **Eine Notation, die ich falsch lese,
   sieht aus wie eine Formel, die ein anderer falsch angewandt hat.**
-- 2026-09-04 — **Ein Sammelabruf über mehrere Einheiten mischt sie, und die Antwort kann
-  sich selbst widersprechen.** **Wenn eine Abfrage etwas entscheidet: eine Einheit je Abruf,
-  und „transkribiere" statt „fasse zusammen".**
 - 2026-09-03 — **Beim Übersetzen einer Vorgabe in eine andere Sprache überlebt nur die
   Hälfte, die ein Gegenstück hat.** `cargo vendor` fiel lautlos weg, weil CMake keinen
   Befehl gleichen Namens hat, und „gestrichen" sah aus wie „übersetzt". **Jeden übersetzten
@@ -117,9 +114,13 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
 - 2026-08-31 — **Der Planwert von 10 µs je Weltschritt ist geschätzt, nicht gemessen**, und
   die `i128`-Divisionen können ihn um das Drei- bis Fünffache verfehlen. Über 50 µs muss die
   Markträumung anders gebaut werden als über 40 Halbierungsschritte.
-- 2026-09-02, am 2026-09-03 bestätigt — **Ein Abnahmekriterium kann mit dem Rest seines
-  eigenen Pakets unvereinbar sein, und dann erfülle ich den Zweck und sage es.** Still
-  gehalten, wäre die Kandidatentabelle aus 0011 weggefallen.
+- 2026-09-02, am 2026-09-03 und 2026-09-05 bestätigt — **Ein Abnahmekriterium kann mit dem
+  Rest seines eigenen Pakets unvereinbar sein, und dann erfülle ich den Zweck und sage es.**
+  Still gehalten, wäre die Kandidatentabelle aus 0011 weggefallen. In 0116 verlangte
+  Bedingung 1 die Formel für 310 samt Ergebnis und Bedingung 3, die Trefferzahl von `310`
+  dürfe sich nicht ändern — **zwei Bedingungen desselben Pakets, die einander ausschliessen.**
+  Nicht die schwächere heimlich erfüllen: beide messen, die Kollision hinschreiben, dem Prüfer
+  das schärfere Maß nennen.
 
 ## Offene Fährten
 
@@ -142,10 +143,6 @@ den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss 
   beseitigt den gemeinsamen Preisdrift, nicht die Streuung zwischen den Strömen. Ein
   per-Ausführer-Deflator ist die naheliegende Verbesserung und **verboten durch die Daten**:
   `NE.EXP.GNFS.KD` führt für China nur 2015. Wer es später versucht, läuft in dieselbe Wand.
-- 2026-09-02 — **ADR 0011 stützt sein erstes Argument auf einen Wechsel, den es nicht
-  anordnet** (Spielstand speichert Zustand statt Aktionsfolge; T22 gilt unverändert). Ich
-  habe daraus T52 gemacht statt den ADR zu deuten. Zuerst nachsehen, ob der Betreiber den
-  Wechsel angeordnet hat.
 - 2026-08-31, berichtigt 2026-09-01 — **Ob der Prüfjahrgang baubar ist, ist eine
   Behauptung.** 1997–2021, 25 Stützstellen, 40 Ströme ohne Füllung; Verdachtsfall bleibt die
   chinesische und brasilianische Leitzinsreihe (IWF IFS, HTTP 403). Die wahrscheinlichste

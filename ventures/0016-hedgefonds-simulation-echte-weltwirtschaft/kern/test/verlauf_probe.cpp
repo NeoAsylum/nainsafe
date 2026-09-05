@@ -13,7 +13,10 @@
 //!   2. **Die Aufnahmekapazitaet je Runde.** Genau an der Grenze laeuft es durch, eines
 //!      darueber bricht ab, und die Meldung nennt die Runde und die Kapazitaet.
 //!   3. **Die Kapazitaet ueber die Partie.** Dieselbe Zweiseitigkeit fuer die zweite
-//!      Schranke: die letzte zulaessige Runde laeuft durch, die naechste bricht ab.
+//!      Schranke: die letzte zulaessige Runde laeuft durch, die naechste bricht ab. Die
+//!      Schranke ist seit Paket 0144 die Wand aus T40 und nicht mehr die Partielaenge --
+//!      Bedingung 1 laeuft deshalb ueber eine volle Partie der laengsten nach T40
+//!      zulaessigen Laenge, und nicht mehr ueber vier Runden.
 //!   4. **Die Ordnung und die Griffe daneben.** Rundennummern unter eins, nicht
 //!      aufsteigende Runden, ein Glied ohne begonnene Runde, ein Platz ausserhalb, eine
 //!      Runde, die der Verlauf nicht traegt.
@@ -33,8 +36,8 @@
 //! des Verlaufs wegfiele und die innere der Kette an ihre Stelle traete.
 //!
 //! **Das Testprofil aus ADR 0011, Massnahme 2** gilt hier besonders: Ein Verlauf traegt
-//! zwanzig Ketten zu je 310 Ursachensaetzen, und jeder Griff daneben waere ohne den
-//! Adressen-Sanitizer eine gruene Probe.
+//! `RUNDEN_KAPAZITAET` Ketten zu je 310 Ursachensaetzen, und jeder Griff daneben waere
+//! ohne den Adressen-Sanitizer eine gruene Probe.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -67,6 +70,7 @@ using kern::schreiber::sollmaskengroesse;
 using kern::schritt::Rundenergebnis;
 
 using kern::verlauf::GLIEDER_JE_RUNDE;
+using kern::verlauf::PARTIELAENGE_HOECHSTENS;
 using kern::verlauf::RUNDEN_KAPAZITAET;
 using kern::verlauf::Verlauf;
 
@@ -220,10 +224,15 @@ Zustand ausgangslage(i64 rundennummer)
 // Bedingung 1 -- der Verlauf gibt heraus, was er aufgenommen hat
 // ---------------------------------------------------------------------------
 
-/// Wie viele Runden die Partie dieser Probe laeuft. Die Abnahme verlangt mindestens
-/// drei; vier laufen, weil damit auch die vorletzte Runde eine Nachfolgerin hat und ein
-/// Verlauf, der um eine Runde verrutscht, an mehr als einer Stelle auffaellt.
-constexpr std::size_t PARTIERUNDEN = 4;
+/// Wie viele Runden die Partie dieser Probe laeuft: die laengste Partielaenge, die T40
+/// zulaesst.
+///
+/// **Das ist der tragende Teil der Abnahme von Paket 0144.** Vier Runden liefen auch
+/// gruen, als der Verlauf bei zwanzig abbrach -- ein Nachweis, der nur bis zwanzig
+/// zaehlt, ist von einem, der die Wand erreicht, nicht zu unterscheiden. Die Zahl kommt
+/// aus dem Kopf des Kastens und steht hier nicht abgeschrieben: Verschiebt T40 seine
+/// Wand, laeuft diese Probe von selbst bis dorthin mit.
+constexpr std::size_t PARTIERUNDEN = PARTIELAENGE_HOECHSTENS;
 
 void probe_partie()
 {
@@ -478,6 +487,12 @@ void probe_ordnung()
 
 int main()
 {
+    // Die gemessenen Groessen zuerst -- der Nachweis zu Bedingung 3 liest sie hier ab,
+    // statt sie in einem zweiten Bau zu ermitteln.
+    std::printf("Groessen: sizeof(Verlauf) %zu, sizeof(Kette) %zu, RUNDEN_KAPAZITAET %zu, "
+                "PARTIELAENGE_HOECHSTENS %zu\n",
+                sizeof(Verlauf), sizeof(Kette), RUNDEN_KAPAZITAET,
+                PARTIELAENGE_HOECHSTENS);
     std::printf("Bedingung 1 -- die Partie und ihre Ketten:\n");
     probe_partie();
     std::printf("Bedingung 2 -- die Aufnahmekapazitaet je Runde:\n");
