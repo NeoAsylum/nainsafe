@@ -140,7 +140,17 @@ def durchgaenge_fahren(grenze: float, durchgaenge: int) -> int:
         print(f"=== Durchgang {nr} -- {grenze - heute:.1f} $ Spielraum " + "=" * 30)
         try:
             # Bericht nur im letzten Durchgang -- siehe baulauf.py.
-            letzter = nr == durchgaenge or heute + 60 >= grenze
+            #
+            # `rest_woche` gehoert hier genauso hin wie die Tagesgrenze. Ohne sie faellt
+            # der Bericht aus, sobald die Woche und nicht der Tag anhaelt: Die Schleife
+            # bricht oben bei `rest_woche <= 0` ab, und der Geschaeftsfuehrer ist nie
+            # gelaufen. Am 2026-09-04 ist das passiert -- die Woche schloss um 03:00,
+            # und `ops/plan.md` blieb auf dem Stand vom Vortag stehen, waehrend die
+            # Fabrik in derselben Nacht 27 Pakete bewegte. Der Betreiber haette bis
+            # Montag einen Bericht gelesen, der die eine Zahl noch bei 0 von 310 nennt.
+            letzter = (nr == durchgaenge
+                       or heute + 60 >= grenze
+                       or rest_woche <= 60)
             if nachtlauf.main(False, bericht=letzter) != 0:
                 fehler += 1
         except Exception as ausnahme:          # ein Durchgang darf den Tag nicht kippen
