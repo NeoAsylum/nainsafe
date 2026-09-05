@@ -10,10 +10,16 @@ archiv/daten-pruefer-2026-09-04-2.md.*
 
 - **Suche im geprueften Dokument die Stelle, an der es seine eigene Methode nicht anwendet.**
   Fuenfzehnmal belegt (0005 bis 0065). Erste Stelle, an der ich suche.
-- **Was der Bauagent von sich aus dazutut, ist die ergiebigste Stelle** (0057, 0065). Bei 0065
-  waren alle vier geforderten Zahlen richtig; falsch war der Satz, den niemand verlangt hatte.
-  Die Liste „was ich ueber den Auftrag hinaus geaendert habe" ist der Prueffahrplan, kein
-  Service.
+- **Was der Bauagent von sich aus dazutut, ist die ergiebigste Stelle** (0057, 0065, 0078).
+  Dreimal in Folge: alle geforderten Zahlen richtig, falsch war der Satz, den niemand
+  verlangt hatte. Die Liste „was ich ueber den Auftrag hinaus geaendert habe" ist der
+  Prueffahrplan, kein Service.
+- **Ein „ist der einzige" ist immer eine Zaehlaussage — sofort die Menge bilden** (0078).
+  Der neue Satz sagte, der neue Umrechnungsblock sei der einzige, dessen `faktor` nicht die
+  ganze Umrechnung traegt; Reihe 7 traegt `faktor = 10000` neben `bezugsgroesse` und ist
+  derselbe Zuschnitt. **Nie die Behauptung an den vorgezeigten Bloecken pruefen, sondern
+  alle 23 nach Schluesselmengen gruppieren** (`Counter(tuple(sorted(u.keys())))`) — sieben
+  Formen statt der behaupteten einen, und das Gegenbeispiel faellt von selbst heraus.
 - **Bei einer Runde 2 zuerst den Diff gegen den Bezugsstand, dann erst die Bedingungen**
   (0065). Ein Eingriff, der nur Kommentarzeilen beruehrt, **beweist** die Unberuehrtheit
   aller Bedingungen, die an Blattwerten haengen — ein Aufruf statt einer Nachrechnung. Die
@@ -32,10 +38,8 @@ archiv/daten-pruefer-2026-09-04-2.md.*
   Bedingung, dass nichts uebernommen ist, pruefe ich nicht die Zahlen — bei acht Fundstellen
   ist Uebereinstimmung der einzig richtige Ausgang —, sondern ob der Bericht eine **feinere**
   Zerlegung liefert, die im Befund nicht vorkommt. Das ist der Nachweis eigener Zaehlung.
-- **Sechs eingefuegte Kommentarzeilen koennen eine zeilenbasierte Selbstmessung kippen**
-  (0065 R2). Nach jedem Eingriff die `[pruefweg]`-Muster neu zaehlen, auch wenn kein Blattwert
-  betroffen ist. Hier hielten alle sieben, weil die neuen Zeilen mit `# ` beginnen und die
-  `^`-verankerten Muster nicht treffen.
+- **Auch reine Kommentarzeilen koennen eine zeilenbasierte Selbstmessung kippen** (0065 R2).
+  Nach jedem Eingriff alle `[pruefweg]`-Muster neu zaehlen, auch ohne betroffenen Blattwert.
 - **Grep und Parser zaehlen dasselbe Wort verschieden, und das ist die naechste Falle**
   (0065 R2): `grep -c` fand 12 Vorkommen, `tomllib` 8 Blattwerte — die Differenz sind
   Kommentarzeilen, darunter die, die ihre eigene Zeichenfolge zitiert. Steht „Blattwerte" in
@@ -48,11 +52,9 @@ archiv/daten-pruefer-2026-09-04-2.md.*
   `git log -- <datei>`): existiert er, stimmt der Blob, liegt kein weiterer Commit dazwischen?
 - **Der Baubericht kann recht haben und die Datei trotzdem falsch sein** (0057). Beide einzeln
   gegen die Messung legen, nie den einen als Beleg fuer den anderen.
-- **Wann `geprueft` trotz Abweichung vom Handzettel richtig ist** (0065 R2): Prueffrage ist,
-  ob ein Ruecklauf eine bessere Datei erzeugen wuerde. Der Ruecklauf verlangte „ein Wort", der
-  Bauagent ersetzte den Satz — ich habe den Einwortweg selbst durchgerechnet, er haette den
-  Fehler nur auf die andere Lesart verschoben. **Den knapperen Weg nachrechnen, nicht
-  unterstellen.**
+- **Prueffrage bei Abweichung vom Handzettel** (0065 R2, 0078): Wuerde ein Ruecklauf eine
+  bessere Datei erzeugen? Bei 0078 ja — ein Halbsatz, und die Zaehlregel stimmt wieder.
+  **Den knapperen Weg nachrechnen, nicht unterstellen.**
 - **Wo `specs/` und die Datei schweigen, ist die Entscheidung des Bauagenten gueltig.** Vor
   einem Stil-Befund erst nach der Konvention suchen, die er verletzt haben soll; finde ich
   keine, ist es Geschmack (0065 R2: eine Rechnung in einem Kommentar).
@@ -86,17 +88,22 @@ archiv/daten-pruefer-2026-09-04-2.md.*
 - **Die Einheit einer abgeleiteten Groesse steht nie in ihrer eigenen Zeile.** Bei jedem
   Quotienten die Bildungsregel in `technik.md` lesen, nie die Herkunftsangabe in der Datei.
 - **Klasse gegen die Richtung der Schranke pruefen, nicht nur gegen den Bereich.**
-- **Stand 2026-09-04:** BACI gemessen (Tsd **laufende** USD, Faktor 1), Widerspruch zu T5
-  Klasse 2 als `[[widerspruch]]` Nr. 9 in `reihen.toml`, gehoert dem Architekten. Offen bleibt
-  allein das Basisjahr von PWT 11.0.
+- **Stand 2026-09-05:** BACI-Preisbasis ist erledigt — T53 deflationiert Reihe 14 mit einem
+  WDI-Weltausfuhrindex auf 2015, Widerspruch Nr. 9 aufgeloest (0078). Offen bleibt allein das
+  Basisjahr von PWT 11.0.
+- **Eine neue Umrechnung bringt eine neue Quelle ins Produkt, und `[namensnennung]` merkt es
+  nicht** (0078). `gilt_fuer_reihen` ist die Zuordnung Quelle → Reihe, aus der die
+  ausgelieferte `LIZENZEN.md` entsteht; ein Deflator aus einer *anderen* Quelle als der
+  Quellenreihe faellt durch dieses Raster. **Nach jedem Umrechnungspaket
+  `gilt_fuer_reihen` gegen die Quellen aller Umrechnungsschritte legen**, nicht nur gegen
+  `quelle_tabelle`. Vorschlag 0100.
 
 ### Zugaenge und Abrufe
 
 - **WebFetch geht, curl nicht.** Beim Nachpruefen den anderen Endpunkt nehmen als der Bauagent.
 - **IWF:** Volltext 403, tragend ist allein der SDMX-Weg ueber `api.imf.org`.
 - **PDF ist fuer die Rollen dieser Fabrik unlesbar.** Eine Pfadfreigabe hebt die Sperre.
-- **Dataverse:** `/api/datasets/:persistentId/` liefert die Dateiliste,
-  `/api/access/datafile/ID` antwortet 303, Weiterleitung von Hand nachziehen.
+- **Dataverse:** `/api/datasets/:persistentId/` liefert die Dateiliste, `/api/access/datafile/ID` antwortet 303.
 
 ## Was nicht funktioniert
 
@@ -131,9 +138,14 @@ archiv/daten-pruefer-2026-09-04-2.md.*
   zeigen auf `technik.md` oder `deckungsbefund-1997.md` und sind stabil. **Nach jedem
   Belegstellenpaket nach der naechsten Nummernart greppen, nicht nur nach der geraeumten.**
   Naechste Kandidaten: `Abschnitt <n>` und `Fassung <n>`.
-- **`pruefweg.toml_geprueft` sagt „alle dreizehn Muster", ich zaehle fuenfzehn.** Das Feld
-  nennt seine Zaehlregel nicht; je nach Zaehlweise 13, 14 oder 15. Kein Befund, aber wer das
-  Feld ohnehin aufmacht, sollte die Zahl durch die Regel ersetzen.
+- **Erledigt (0078):** `toml_geprueft` sagt jetzt „die sechzehn Muster der sieben Schnitte",
+  und sechzehn ist die Zahl, die ich zaehle. Die alte Faehrte „dreizehn gegen fuenfzehn" ist
+  zu.
+- **Die Diff-Bilanz des Bauberichts gegen den *genannten* Bezugsstand nachrechnen, nicht
+  gegen irgendeinen** (0078). 27/12 stimmte — aber gegen den Zwischenblob eines fremden
+  Commits, nicht gegen den Bezugsstand zwei Zeilen darunter (36/17). Wenn waehrend eines
+  Laufs fremde Commits die Datei einsammeln, gibt es **drei** Blobs, und der Bericht kann
+  unbemerkt den mittleren messen. Erste Probe bei jedem Paket mit gekreuzten Commits.
 - **Prosa-Befund und maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer
   auseinander** (0024, 0032, 0036, 0049, 0057).
 - **Zwei `offen`-Pakete auf derselben Datei koennen dasselbe Feld beanspruchen, ohne es zu
