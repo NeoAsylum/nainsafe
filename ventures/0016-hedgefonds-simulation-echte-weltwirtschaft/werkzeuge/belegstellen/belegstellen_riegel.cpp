@@ -178,10 +178,11 @@
 //! die vier Faelle, die die Verbreiterung verlangt (1, 2, 3 und 8), und die vier
 //! anderen bleiben gruen.
 //!
-//! Zwei weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
-//! mit: `ZITATFAELLE` zur Form ohne Anfuehrung (Paket 0079) und `ZIELFAELLE` zur Frage,
-//! wo eine genannte Zieldatei liegt (Paket 0083). Beide halten vor allem den **roten**
-//! Fall fest, den der Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der
+//! Drei weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
+//! mit: `ZITATFAELLE` zur Form ohne Anfuehrung (Paket 0079), `ZIELFAELLE` zur Frage, wo
+//! eine genannte Zieldatei liegt (Paket 0083), und `ABSTANDSFAELLE` zum Wortabstand
+//! samt Suche nach rechts (Paket 0086). Alle drei halten vor allem den **roten** Fall
+//! fest, den der Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der
 //! Riegel koennte dort also nur zeigen, dass er gruen wird.
 //!
 //! ## Was der Riegel liest, und warum genau das
@@ -277,20 +278,28 @@
 //! ueber ihren Wortlaut und nicht ueber eine Zeilennummer -- eine Nummer neben einem
 //! Dateinamen waere in dieser Datei die Sorte Verweis, die Bedingung 1 verbietet.
 //!
-//!   0034 -- `daten/adressen.md`, drei Stellen, alle mit Ziel in `technik.md`. Zwei
-//!           **gefangen**: die Begruendung zur Spalte `Adresse` und die Herleitung zu
-//!           den unmarkierten Geschwisterpaaren zitieren beide denselben fett
-//!           ausgezeichneten Vorspann unter T49, und beide loesen auf. Sie fielen
-//!           erst an, seit das Wort fuer einen Textblock in SCHLUESSEL steht.
-//!           Die dritte -- die Tabellenueberschrift zu T46, im Satz mit "sagt es
-//!           selbst" -- ist **nicht gefangen**; die Form steht unten.
-//!           *Berichtigung vom 2026-09-04:* Bis dahin stand hier das Kopffeld
-//!           `quellen` derselben Datei. Das ist eine echte und gefangene Belegstelle,
-//!           aber sie stammt aus Paket 0004 und nicht aus 0034 -- `git log -S` auf
-//!           den Wortlaut fuehrt zwei Tage daneben, weil die Arbeit eines Pakets hier
-//!           regelmaessig im Commit des naechsten Laufs liegt und dessen Betreff den
-//!           Namen des anderen Pakets traegt. Der Wortlauttreffer gehoert deshalb
-//!           gegen das Datum des gesuchten Pakets gehalten, nicht fuer sich genommen.
+//!   0034 -- `daten/adressen.md`, drei Stellen, alle mit Ziel in `technik.md`, seit dem
+//!           2026-09-05 **alle drei gefangen**. Zwei davon seit dem 2026-09-04: die
+//!           Begruendung zur Spalte `Adresse` und die Herleitung zu den unmarkierten
+//!           Geschwisterpaaren zitieren beide denselben fett ausgezeichneten Vorspann
+//!           unter T49, und beide loesen auf. Sie fielen erst an, seit das Wort fuer
+//!           einen Textblock in SCHLUESSEL steht. Die dritte -- die
+//!           Tabellenueberschrift zu T46, im Satz mit "sagt es selbst" -- braucht die
+//!           beiden Lockerungen aus Paket 0086; die Form steht unten.
+//!           *Berichtigung vom 2026-09-04, selbst berichtigt am 2026-09-05:* Bis dahin
+//!           stand hier das Kopffeld `quellen` derselben Datei. Das ist eine echte und
+//!           gefangene Belegstelle, aber sie stammt aus **Paket 0007-adressverzeichnis-310**
+//!           und nicht aus 0034. Bis zum 2026-09-05 stand hier als Herkunft 0004 --
+//!           und damit trug ausgerechnet der Absatz, der vor dieser Verwechslung warnt,
+//!           selbst ein falsches Beispiel. Woran es nachpruefbar ist: an der
+//!           `dateien`-Liste des Arbeitspakets, nicht am Betreff des Commits. Die von
+//!           0004 nennt keine Datei unter `daten/`, die von 0007 nennt genau diese.
+//!           Die 0004 stammte aus dem Betreff des Commits `a629f73`, und genau das ist
+//!           der Fehler, vor dem der Absatz warnt: `git log -S` auf den Wortlaut fuehrt
+//!           zwei Tage daneben, weil die Arbeit eines Pakets hier regelmaessig im
+//!           Commit des naechsten Laufs liegt und dessen Betreff den Namen des anderen
+//!           Pakets traegt. Der Wortlauttreffer gehoert deshalb gegen das Datum des
+//!           gesuchten Pakets gehalten, nicht fuer sich genommen.
 //!   0035 -- `parameter.toml`, in der Herkunftsbegruendung zu `hebelaufschlag`. Zwei
 //!           Zitate, beide gefangen; das zweite traegt seinen Dateinamen eine Zeile
 //!           oberhalb und faellt damit nur wegen der Absatzlesung an.
@@ -357,27 +366,65 @@
 //!     etwas habe dort unter einer bestimmten Ueberschrift gestanden und sei heute nicht
 //!     mehr aufgefuehrt -- eine Aussage **ueber** ein Zitat und keines.
 //!
-//! **Die zweite Luecke, aus demselben Grund ausgeschrieben: Das Schluesselwort steht
-//! nicht unmittelbar vor der Anfuehrung.** Die dritte Belegstelle aus Paket 0034 nennt
-//! ihr Schluesselwort, laesst dann aber fuenf Woerter folgen, ehe die Anfuehrung
-//! beginnt -- der Bau ist "die <Schluesselwort> der Tabelle sagt es selbst:", und erst
-//! danach kommt der zitierte Wortlaut. `ueberschrift_hinter` ueberspringt hinter dem
-//! Schluesselwort nur Leerzeichen und einen Gegenschraegstrich; alles andere beendet
-//! den Versuch, und die Stelle zaehlt danach nirgends -- auch nicht als uebergangen.
+//! ## Das Schluesselwort mit Abstand, der Name rechts -- Paket 0086
 //!
-//! An derselben Stelle steht ein zweites, davon unabhaengiges Hindernis: Der
-//! Dokumentname steht dort **rechts** vom Zitat, in der Klammer dahinter, waehrend
-//! dieser Riegel nur nach links sucht. Wer nur eines der beiden loest, fangt die
-//! Stelle immer noch nicht.
+//! Die dritte Belegstelle aus Paket 0034 nennt ihr Schluesselwort, laesst dann aber
+//! **fuenf Woerter** folgen, ehe die Anfuehrung beginnt -- der Bau ist "die
+//! <Schluesselwort> der Tabelle sagt es selbst:", und erst danach kommt der zitierte
+//! Wortlaut. Und ihr Dokumentname steht **rechts** vom Zitat, in der Klammer dahinter.
+//! Bis zum 2026-09-05 fiel sie an beidem durch und zaehlte nirgends, auch nicht als
+//! uebergangen. Seither faengt der Riegel sie.
 //!
-//! Beides ist keine Zeile, sondern eine Entscheidung mit eigenem Nachweis, und zwar
-//! aus dem Grund, an dem schon 0047 haengt: Wer beliebig viele Woerter zwischen
-//! Schluesselwort und Anfuehrung zulaesst, bindet jede Anfuehrung eines Satzes an das
-//! naechstgelegene Schluesselwort und wird rot, wo nichts kaputt ist; wer zusaetzlich
-//! nach rechts sucht, muss entscheiden, welcher der beiden Nachbarn gewinnt, und hat
-//! dafuer heute kein Mass. Solange die Entscheidung nicht getroffen ist, bleibt diese
-//! Form ungeschuetzt. Sie steht hier, damit die Zahlen unten niemand fuer
-//! Vollstaendigkeit haelt; als Vorschlag liegt sie als Paket 0086 daneben.
+//! **Dass keine der beiden Lockerungen allein genuegt, ist gemessen und nicht
+//! nachgesprochen.** Am selben Baum, am 2026-09-05, je ein Mutant:
+//!
+//!     Fassung                   Zitate  aufgeloest  uebergangen
+//!     keine von beiden              33          33           58
+//!     nur der Wortabstand           33          33           59
+//!     nur die Suche nach rechts     33          33           58
+//!     beide                         34          34           58
+//!
+//! Der Wortabstand macht die Stelle **sichtbar** -- sie wandert unter die uebergangenen
+//! Fundstellen, weil ihr Absatz links keinen Dokumentnamen nennt. Die Suche nach rechts
+//! macht sie **aufloesbar**. Allein traegt keine ein einziges Zitat; die Rechtssuche
+//! allein aendert nicht eine Zahl, und das ist zugleich der Beleg, dass sie keine
+//! vorhandene Zuordnung umhaengt. Zusammen sind es genau ein Zitat mehr und keine
+//! Fundstelle mehr.
+//!
+//! **Drei Riegel halten die Lockerung eng, und jeder hat seinen eigenen Nachweis.**
+//! Ohne sie wird der Riegel rot, wo nichts kaputt ist -- der Einwand, an dem schon 0047
+//! haengt, gilt unveraendert:
+//!
+//!   1. *Nur ankuendigende Anfuehrungszeichen.* Mit Abstand zaehlen die typografischen
+//!      Anfuehrungen und die geklammerte Form, nicht Gegenstrich, Sternchen, einfaches
+//!      oder gerades Anfuehrungszeichen. Gemessen: ohne diese Trennung faengt der Riegel
+//!      **fuenf Stellen in seinem eigenen Quelltext, alle falsch** -- 38 Zitate, nur 33
+//!      aufgeloest, 70 statt 58 Fundstellen. Begruendung bei `Klammer::kuendigt_an`.
+//!   2. *Das Satzende.* Es beendet die Suche, dieselbe Regel wie bei der Suche nach
+//!      links. Nachgewiesen an Fall 3 in `ABSTANDSFAELLE`.
+//!   3. *Ein zweites Schluesselwort.* Die Anfuehrung gehoert dem naeheren. Der Bestand
+//!      misst diesen Riegel heute **nicht** -- er fuehrt keine Stelle dieser Bauart --,
+//!      Fall 5 in `ABSTANDSFAELLE` baut sie eigens.
+//!
+//! **Die Schwelle fuenf ist gemessen.** Bei vier bleibt die Stelle ungefangen (58
+//! Fundstellen wie ohne die Lockerung), bei fuenf faellt sie an (59); sechs und acht
+//! aendern gegenueber fuenf nichts mehr -- der Bestand fuehrt zwischen fuenf und acht
+//! Woertern keine weitere Form. Gewaehlt ist deshalb der kleinste Wert, der die
+//! gemessene Stelle traegt, und nicht der groesste, der noch nichts kaputt macht.
+//!
+//! **Wer gewinnt, wenn links und rechts ein Name steht: der linke.** Die Frage ist
+//! nicht offen gelassen, sondern zugunsten des Gemessenen entschieden -- die Linksregel
+//! traegt einen Nachweis (das franzoesische Zitat in `lizenzbefund-reihen.md`), die
+//! Rechtssuche keinen. Sie laeuft deshalb nur, wenn links nichts steht, und nur fuer
+//! die Form **mit** Anfuehrung: ohne sie hat das Zitat keinen bestimmten rechten Rand.
+//! Ihre Grenze ist das Satzende, und auch das ist gemessen -- ohne sie bindet eine
+//! bisher uebergangene Fundstelle einen weit entfernten Dateinamen an sich und wird zu
+//! Unrecht rot (34 Zitate, 33 aufgeloest).
+//!
+//! **Was weiterhin ungefangen bleibt, damit die Zahlen unten niemand fuer
+//! Vollstaendigkeit haelt:** ein Dokumentname rechts vom Zitat jenseits des Satzendes;
+//! ein Name rechts bei der Form ohne Anfuehrung; und eine Anfuehrung, die mehr als
+//! fuenf Woerter hinter ihrem Schluesselwort steht.
 //!
 //! ## Das tote Ziel -- Paket 0083
 //!
@@ -739,9 +786,18 @@ Zeilenfund fund_ab(std::string_view zeile, std::size_t von) {
 // hier laeuft dafuer bei **jedem** Aufruf mit -- ein Weg, der nicht vergessen werden
 // kann, weil er kein eigener Befehl ist.
 //
-// Jede Zeile traegt ihre Herkunft. Vier der acht sind im Bestand gemessen und nicht
-// erfunden; die uebrigen vier halten je eine Entscheidung fest, die sonst niemand
-// nachlesen koennte.
+// Jede Zeile traegt ihre Herkunft. **Drei der acht** sind im Bestand gemessen und nicht
+// erfunden -- die Faelle 1, 2 und 4; ihre genannte Stelle traegt den Wortlaut heute
+// wirklich, am 2026-09-05 einzeln nachgeschlagen. Vier halten je eine Entscheidung
+// fest, die sonst niemand nachlesen koennte, und der achte ist aus einem echten
+// Arbeitspaket abgewandelt.
+//
+// **Der achte Herkunftshinweis ist historisch, und das steht dort auch.** Bis zum
+// 2026-09-05 sagte dieser Kopf "vier der acht", und Fall 7 nannte dafuer eine Datei,
+// die seinen Wortlaut seit dem 2026-09-04 nicht mehr traegt. Die Zahl war damit
+// richtig gezaehlt und falsch belegt. Berichtigt ist beides zusammen: die Zahl **und**
+// die Angabe daneben -- nur die Zahl zu senken haette sie richtig gemacht und die
+// Adresse weiter falsch gelassen.
 //
 // **Warum die Musterwoerter maskiert sind.** Der Riegel liest seinen eigenen
 // Quelltext -- eine ausgeschriebene Beispielzeile faende er hier und meldete sich
@@ -789,8 +845,12 @@ constexpr std::array<Namensfall, 8> NAMENSFAELLE = {{
 
     // --- Was die enge Fassung schon konnte und weiter koennen muss ----------
     {"parameter.toml Zeil\145 304: druck_max = 1 # PLATZHALTER", "parameter.toml",
-     "kern/test/schranken_probe.cpp -- die unmittelbare Form, die schon vor 0073 "
-     "gefangen wurde"},
+     "**historisch** -- die unmittelbare Form, die schon vor 0073 gefangen wurde. Sie "
+     "stand in kern/test/schranken_probe.cpp und steht dort seit dem Commit 9bb7492 "
+     "(Paket 0044, 2026-09-04) nicht mehr: Sechs Belegstellen dieser Bauart sind dort "
+     "durch den Schluesselnamen ersetzt worden. Im gelesenen Baum ist der Wortlaut "
+     "heute nirgends nachzuschlagen; der Fall selbst bleibt echt und unangetastet, "
+     "falsch war allein die Adresse, unter der man ihn suchen wuerde"},
     {"sind gegen die Reihenliste und gegen technik.md dort \132. 1306 gehalten",
      "technik.md",
      "aufgaben/0006, abgewandelt: die zweite Musterform mit einem Wort dazwischen -- "
@@ -1865,6 +1925,175 @@ std::size_t name_ohne_anfuehrung(std::string_view text, std::size_t i, std::stri
     return ende - i;
 }
 
+// ---------------------------------------------------------------------------
+// Der Selbsttest zum Wortabstand und zur Suche nach rechts -- Paket 0086
+// ---------------------------------------------------------------------------
+//
+// Warum als Tabelle im Programm und nicht als zweiter Testfall daneben: dieselbe
+// Begruendung wie bei den drei Tabellen davor -- die `CMakeLists.txt` gehoert Paket
+// 0059 und steht nicht in der Dateiliste dieses Pakets.
+//
+// **Diese Tabelle traegt mehr als die anderen**, und das ist kein Ehrgeiz, sondern die
+// Lage: Von den drei Riegeln, die diese Lockerung eingrenzen, sind zwei am Bestand
+// gemessen (die Trennung der Zitatmarken kostet ohne sie fuenf falsche Befunde, die
+// Satzgrenze rechts einen), der dritte aber **nicht** -- der Bestand fuehrt heute keine
+// Stelle mit zwei Schluesselwoertern vor einer Anfuehrung. Fall 5 baut sie. Ohne ihn
+// waere jener Riegel eine Behauptung.
+//
+// Das Schluesselwort ist in jeder Zeile maskiert (`\101` ist `A`, `\164` ist `t`), aus
+// demselben Grund wie in den Tabellen davor: Zur Laufzeit steht das Wort da, im
+// Dateitext nicht -- sonst faende der Riegel diese Faelle beim Lesen des eigenen
+// Quelltexts und meldete sich selbst. Der Selbsttest prueft deshalb zuerst, dass jede
+// Zeile ueberhaupt noch ein Schluesselwort hergibt.
+
+struct Abstandsfall {
+    std::string_view zeile;
+    /// Die Ueberschrift, die mit Abstand hinter dem Schluesselwort gefunden werden
+    /// muss. **Leer heisst: keine** -- ohne diese Haelfte wiese die Tabelle nur nach,
+    /// dass die Lockerung *etwas* faengt, und nicht, dass sie das Richtige faengt.
+    std::string_view erwartet;
+    /// Der Dokumentname rechts vom Zitat. Nur geprueft, wenn oben eine Ueberschrift
+    /// erwartet wird; leer heisst auch hier: es darf keiner gefunden werden.
+    std::string_view rechts;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Abstandsfall, 8> ABSTANDSFAELLE = {{
+    // --- Die Form, um derentwillen dieses Paket existiert ---------------------
+    {"T46 zaehlt seine elf Vorgabeadressen abschliessend auf -- die \303\234berschrif\164"
+     " der Tabelle sagt es selbst: \342\200\236T46 -- Die elf Adressen, deren Herkunft "
+     "dieses Dokument ist, abschliessend\342\200\234 (`technik.md`; am 2026-09-03,",
+     "T46 -- Die elf Adressen, deren Herkunft dieses Dokument ist, abschliessend",
+     "technik.md",
+     "daten/adressen.md, Herleitung zu land.CN.wechselkurs -- die dritte Belegstelle aus "
+     "Paket 0034, gemessen 2026-09-05. Fuenf Woerter Abstand, Dokumentname rechts: beide "
+     "Lockerungen zusammen, und keine allein reicht"},
+
+    // --- Wo die Schwelle endet -----------------------------------------------
+    // Die Wortzahlen sind nachgezaehlt und nicht geschaetzt: Beide Faelle sind beim
+    // Rotnachweis am 2026-09-05 zuerst **nicht** rot geworden, weil die gezaehlte Zahl
+    // nicht die gebaute war -- der eine hatte acht Woerter statt sechs, den anderen
+    // stoppte die Wortzahl statt des Satzendes. Ein Fall, der aus dem falschen Grund
+    // gruen ist, misst die Regel nicht, die sein Text behauptet.
+    {"die \303\234berschrif\164 der Tabelle sagt es hier selbst: "
+     "\342\200\236Ein Wort zu weit\342\200\234 (`technik.md`)", "", "",
+     "gebaut: sechs Woerter dazwischen (der, Tabelle, sagt, es, hier, selbst:). Der "
+     "Fall, der die Schwelle misst -- ohne ihn waere sie behauptet und nicht gewaehlt"},
+    {"die \303\234berschrif\164 der Tabelle. Dann folgt \342\200\236Ein neuer "
+     "Satz\342\200\234 (`technik.md`)", "", "",
+     "gebaut: das Satzende faellt auf das zweite Wort und beendet die Suche, waehrend "
+     "die Anfuehrung im vierten noch innerhalb der fuenf laege. Dieselbe Regel wie bei "
+     "der Suche nach links und aus demselben Grund"},
+
+    // --- Was nur bei Abstand null durchgeht ----------------------------------
+    {"eine \303\234berschrif\164 aus `spiel.md`, die im Ziel ein Eszett traegt", "", "",
+     "werkzeuge/belegstellen/belegstellen_riegel.cpp, Kopfkommentar -- gemessen "
+     "2026-09-05: Ohne die Trennung der Zitatmarken faengt sich der Riegel hier selbst. "
+     "Der Gegenstrich zeichnet Code aus und kuendigt kein Zitat an"},
+
+    // --- Der Riegel, den der Bestand nicht hergibt ---------------------------
+    {"laut \303\234berschrif\164 steht der \101bschni\164\164 \342\200\236Die "
+     "Schleife\342\200\234 in `spiel.md`", "", "",
+     "gebaut: zwei Schluesselwoerter vor einer Anfuehrung. Sie gehoert dem naeheren -- "
+     "das ferne nimmt sie ihm sonst weg und ruecke die Leseschleife ueber es hinweg. "
+     "Der einzige der drei Riegel, den der Bestand am 2026-09-05 nicht misst"},
+
+    // --- Die Suche nach rechts, einzeln --------------------------------------
+    {"laut \101bschni\164\164 mit dem Titel \342\200\236Die Schleife\342\200\234 "
+     "und dann noch etwas Text. Aber `spiel.md` steht im naechsten Satz",
+     "Die Schleife", "",
+     "gebaut: der Name steht rechts, aber hinter dem Satzende. Der Fall, der die "
+     "Satzgrenze der Rechtssuche misst -- ohne sie wird eine Fundstelle im Bestand zu "
+     "Unrecht rot, gemessen 2026-09-05"},
+    {"laut \101bschni\164\164 mit dem Titel \342\200\236Die Schleife\342\200\234, "
+     "nachzulesen in `spiel.md` und sonst nirgends",
+     "Die Schleife", "spiel.md",
+     "gebaut: der Regelfall der Rechtssuche -- Name im selben Satz, hinter dem Zitat"},
+    {"laut \101bschni\164\164 mit dem Titel \342\200\236Die Schleife\342\200\234, "
+     "und dahinter steht ueberhaupt kein Dokumentname mehr",
+     "Die Schleife", "",
+     "gebaut: rechts steht nichts. Die erwartete Leermeldung, ohne die der Fall "
+     "darueber nur zeigte, dass die Suche etwas findet"},
+}};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+///
+/// Gemessen wird derselbe Weg, den der Lauf ueber den Bestand nimmt: erst das
+/// Schluesselwort mit `schluessellaenge`, dann `ueberschrift_mit_abstand`, dann
+/// `verweis_rechts` hinter dem Zitatteil. Ein im Test nachgebauter Weg pruefte zwei
+/// Fassungen, von denen nur eine laeuft.
+std::size_t selbsttest_abstand() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < ABSTANDSFAELLE.size(); ++k) {
+        const Abstandsfall& fall = ABSTANDSFAELLE[k];
+
+        std::size_t i = 0;
+        std::size_t schluessel = 0;
+        while (i < fall.zeile.size()) {
+            schluessel = schluessellaenge(fall.zeile, i);
+            if (schluessel != 0) {
+                break;
+            }
+            ++i;
+        }
+        if (schluessel == 0) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Abstand %zu: kein Schluesselwort. Der Fall misst "
+                         "damit nichts mehr -- vermutlich ist die Maskierung "
+                         "verrutscht.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+
+        std::string roh;
+        const std::size_t zitatteil =
+            ueberschrift_mit_abstand(fall.zeile, i + schluessel, roh);
+        const std::string_view gefunden =
+            zitatteil == 0 ? std::string_view{} : std::string_view(roh);
+        if (gefunden != fall.erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Abstand %zu: erwartet war %s, gefunden wurde %s.\n"
+                         "      Zeile:    %.*s\n      Herkunft: %.*s\n", k + 1,
+                         // Kein ausgeschriebenes Schluesselwort in dieser Meldung: Es
+                         // traegt hier unmittelbar ein Anfuehrungszeichen hinter sich,
+                         // und der Riegel faende sich damit in seinem eigenen
+                         // Quelltext -- gemessen 2026-09-05, er meldete eine
+                         // uebergangene Fundstelle, deren gesuchter Name die halbe
+                         // naechste Anweisung war.
+                         fall.erwartet.empty() ? "keinen Wortlaut"
+                                               : std::string(fall.erwartet).c_str(),
+                         zitatteil == 0 ? "keine" : roh.c_str(),
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (zitatteil == 0) {
+            continue;  // ohne Zitat gibt es rechts nichts nachzuschlagen
+        }
+
+        std::string name;
+        bool netzadresse = false;
+        const bool hat =
+            verweis_rechts(fall.zeile, i + schluessel + zitatteil, name, netzadresse);
+        const std::string_view rechts = hat ? std::string_view(name) : std::string_view{};
+        if (rechts != fall.rechts) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Selbsttest Abstand %zu: rechts erwartet war %s, gefunden "
+                         "wurde %s.\n      Zeile:    %.*s\n      Herkunft: %.*s\n", k + 1,
+                         fall.rechts.empty() ? "kein Dateiname"
+                                             : std::string(fall.rechts).c_str(),
+                         hat ? name.c_str() : "keiner",
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
+}
+
 /// Das erste Wort einer normierten Zeichenkette.
 std::string_view erstes_wort(std::string_view text) {
     const std::size_t raum = text.find(' ');
@@ -2312,7 +2541,8 @@ int main(int argc, char** argv) {
     // eine gruene.
     const std::size_t fehlgeschlagen = selbsttest_namenssuche()
                                        + selbsttest_ohne_anfuehrung()
-                                       + selbsttest_zielart();
+                                       + selbsttest_zielart()
+                                       + selbsttest_abstand();
     if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
                      "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
@@ -2320,13 +2550,16 @@ int main(int argc, char** argv) {
                      "nicht erst gelesen -- ein Messgeraet,\ndas seine eigenen Faelle "
                      "verfehlt, misst auch fremde nicht.\n",
                      fehlgeschlagen,
-                     NAMENSFAELLE.size() + ZITATFAELLE.size() + ZIELFAELLE.size());
+                     NAMENSFAELLE.size() + ZITATFAELLE.size() + ZIELFAELLE.size()
+                         + ABSTANDSFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
                  "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links, %zu "
-                 "zur Form\nohne Anfuehrung und %zu zur Ortsfrage, alle wie erwartet.\n",
-                 NAMENSFAELLE.size(), ZITATFAELLE.size(), ZIELFAELLE.size());
+                 "zur Form\nohne Anfuehrung, %zu zur Ortsfrage und %zu zum Wortabstand "
+                 "samt Suche nach rechts,\nalle wie erwartet.\n",
+                 NAMENSFAELLE.size(), ZITATFAELLE.size(), ZIELFAELLE.size(),
+                 ABSTANDSFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {
