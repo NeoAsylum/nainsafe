@@ -438,9 +438,27 @@ def committen(rolle: str, gegenstand: str | None, lauf_id: int,
 
     # Auch der Commit selbst wartet auf die Sperre. Zwei Agenten, die im selben
     # Moment fertig werden, sind bei hoher Auslastung der Regelfall, kein Ausnahmefall.
+    # **Die Pfadangabe gehoert an den Commit, nicht nur an das `git add`.** Bis zum
+    # 2026-09-05 stand hier ein `git commit` ohne `--`, und damit committete der Lauf den
+    # **ganzen Index** -- auch das, was ein gleichzeitig laufender Agent Sekunden vorher
+    # hineingelegt und noch nicht committet hatte. Die Zusicherung im Docstring oben hielt
+    # die naechste Anweisung nicht.
+    #
+    # Bewiesen vom kern-pruefer am 2026-09-05 an zwei Commits (Paket 0121): `9e46cfa`
+    # traegt den Betreff `architekt: 0051`, enthaelt acht Dateien aus **drei** Paketen und
+    # **zwei** Rollen -- darunter vier unter `kern/`, die die Werkzeugliste des Architekten
+    # gar nicht abdeckt. Sie koennen nicht aus seinem `git add` stammen, nur aus dem Index.
+    # Umgekehrt enthaelt `2de4de7` mit dem Betreff `kernbauer: 0072` von 0072 nichts.
+    #
+    # Die Folgen sind keine Kosmetik: `git log -- <datei>` nennt das falsche Paket, und ein
+    # `git revert` auf ein Urteil `zurueck` nimmt fremde Pakete mit.
+    #
+    # Mit `--` gilt: Was nicht in `pfade` liegt, bleibt im Index liegen und gehoert dem
+    # Lauf, der es hineingelegt hat.
     for versuch in range(SPERRE_VERSUCHE):
         fertig = subprocess.run(
-            ["git", "commit", "-q", "-m", betreff, "-m", f"Lauf {lauf_id}"],
+            ["git", "commit", "-q", "-m", betreff, "-m", f"Lauf {lauf_id}",
+             "--", *pfade],
             cwd=WURZEL, capture_output=True, text=True,
             encoding="utf-8", errors="replace",
         )

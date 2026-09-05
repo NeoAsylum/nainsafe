@@ -1,7 +1,7 @@
 ---
 id: 0121-commit-schnitt-folgt-nicht-dem-paket
 rolle: projektmanager
-status: vorschlag
+status: blockiert
 haengt_an: []
 dateien: [agents/lauf.py]
 abnahme: `committen` in `agents/lauf.py` bindet den Commit an die Pfade des Laufs statt an den gesamten Index -- `git commit` wird mit Pfadangabe aufgerufen. Nachgewiesen an einem Lauf, bei dem ein zweiter Agent gleichzeitig etwas ausserhalb dieser Pfade in den Index gelegt hat: Der entstehende Commit enthaelt diese fremde Datei nicht. Zusaetzlich gilt fuer jeden Commit mit einem Paket im Betreff: Jede Datei aus der `dateien`-Liste dieses Pakets, die der Lauf geaendert hat, liegt in ihm, und keine Datei aus der `dateien`-Liste eines anderen Pakets liegt darin.
@@ -117,3 +117,45 @@ kein Bauagent dieses Vorhabens darf dort schreiben. Der Vorschlag geht deshalb a
 Projektmanager mit der Erwartung, dass er ihn an den Betreiber weiterreicht, nicht an
 einen Baulauf. Ich habe ihn hier abgelegt, weil er mir bei der Arbeit an diesem Vorhaben
 aufgefallen ist und ein Logbucheintrag ihn niemandem vorgelegt haette.
+
+
+---
+
+## Halb ausgefuehrt vom Betreiber-Lauf, 2026-09-05
+
+Das Paket gehoert der Rolle `projektmanager`, und die plant kein Runner als Bauagent
+ein -- `rollen-pruefen.py` hat es als Waise gemeldet, wie zuvor 0041. Es betrifft
+`agents/lauf.py`, das keine Rollendatei schreiben darf. Also Betreiberarbeit.
+
+**Getan ist die zweite, schwerere Haelfte des Befunds:** `git commit` bekommt jetzt
+dieselbe Pfadangabe wie das `git add` zwei Zeilen darueber. Damit committet ein Lauf
+nicht mehr den ganzen Index.
+
+Nachgestellt in einem Wegwerf-Repo, genau nach der Abnahmebedingung -- ein zweiter Agent
+legt etwas ausserhalb der Pfade in den Index:
+
+| | Dateien im entstehenden Commit |
+|---|---|
+| ohne Pfadangabe | `meins/a.txt` **und** `fremd/b.txt` |
+| mit `-- meins` | nur `meins/a.txt`; `fremd/b.txt` bleibt gestaged liegen |
+
+Verloren geht dabei nichts: Was ausgeschlossen wird, bleibt im Index und gehoert dem
+Lauf, der es hineingelegt hat.
+
+**Offen bleibt die erste Haelfte:** `pfade` kommt weiterhin aus `schreibpfade(werkzeuge)`,
+also aus der Werkzeugliste der **Rolle**, nicht aus der `dateien`-Liste des **Pakets**.
+Zwei Kernbauer teilen sich damit weiterhin denselben Commit-Pfad `ventures/**`. Der
+Schaden ist nach dieser Aenderung kleiner -- ein Agent nimmt nur noch mit, was er selbst
+geschrieben hat --, aber der Betreff kann weiterhin ein Paket nennen, dessen Dateien
+teilweise woanders liegen.
+
+**Warum nicht gleich mit erledigt:** Die `dateien`-Liste allein reicht als Commit-Pfad
+nicht. Ein Bauagent schreibt zusaetzlich sein Logbuch (`notizen/<rolle>.md`) und die
+Paketdatei selbst (`aufgaben/<id>.md`), und beide stehen dort nicht drin. Der richtige
+Schnitt ist `dateien` **plus** diese zwei, und das ist eine Aenderung an der Aufrufstelle
+(`agents/lauf.py:602`), die bei laufender Fabrik einen eigenen, ruhigen Lauf verdient.
+Der zweite Teil der Abnahmebedingung -- „keine Datei aus der `dateien`-Liste eines
+anderen Pakets liegt darin" -- ist damit noch nicht erfuellt.
+
+`blockiert` statt `vorschlag`, aus demselben Grund wie bei 0041: `offen` waere eine Luege
+im Statusfeld, weil kein Lauf dieser Fabrik das Paket je zoege.
