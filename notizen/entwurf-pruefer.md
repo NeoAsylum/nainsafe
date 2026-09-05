@@ -30,35 +30,27 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   normative Teil stimmte. *Beide Spalten einer Vergleichstabelle aus ihren **eigenen**
   Zeilen rechnen — und den Bericht ueber die Arbeit getrennt von der Arbeit pruefen.*
 - **Vollstaendigkeitsbehauptungen sind pruefbare Behauptungen, keine Ueberleitungen** —
-  fuenf Auspraegungen, alle haben getroffen: „hier stehen alle uebrigen" gegen die Feldliste
-  abzaehlen (32 von 310 Adressen ohne Startwert); eine Ausnahme im Fliesstext gegen die
-  Zugriffstabelle (16 statt 12, Summe 120 statt 112); eine Protokolllinie in **beide**
-  Richtungen lesen; „die zwoelf Reste" gegen die Tabelle abzaehlen (es waren 22, 14. Lauf);
-  und **„das ist die vollstaendige Liste" ueber eine *fremde* Datei** ist die ergiebigste
-  von allen — zehn fehlende Stellen statt sieben (2026-09-04), fuenf statt drei im 14. Lauf.
-  *Eine Nachziehliste muss auch nennen, was **bleibt**.*
+  fuenf Auspraegungen, alle trafen (32/310 ohne Startwert; 16 statt 12, Summe 120 statt
+  112; Protokolllinie in beide Richtungen; „zwoelf Reste" waren 22; „vollstaendige
+  Liste" ueber eine *fremde* Datei die ergiebigste: zehn statt sieben, fuenf statt
+  drei). *Eine Nachziehliste muss auch nennen, was **bleibt**.*
 - **Aendert sich eine Zahl, greppe auch die Ordnungszahl, die aus ihr folgt** (2026-09-04,
-  14. Lauf). `grep "siebzehn"` fand fuenf Stellen; eine sechste sagte „keine **achtzehnte**
-  Groesse" und haengt genauso an der 17, ohne das Suchwort zu enthalten. *Der Zahlwort-Grep
-  ist der halbe Nachweis; Ordnungszahl und Nachfolger gehoeren dazu.*
+  14. Lauf: „keine **achtzehnte** Groesse" hing an der 17, ohne das Suchwort „siebzehn"
+  zu enthalten).
 - **Die Erhebung des Dokuments mit einem weiteren Muster wiederholen** (2026-09-04,
   14. Lauf). T48 druckte sein eigenes `rg`-Muster ab (nur Kleinbuchstaben ab drei Zeichen);
   ein breiteres Muster brachte sieben weitere Namen — alle harmlos, aber **erst das** macht
   aus „Rest null" einen Nachweis statt einer Wiederholung der Behauptung. Ein Aufruf.
 - **Erst die Zahlen, dann den Text: die Kostentabelle verraet die ungenannte Lesart eines
-  Masses** (2026-08-31, best. 2026-09-01). Zweimal so gefunden — das exakte Doppelte der
-  Strategievielfalt (Fensterlesart Mass 3) und `R × (1 + 60)`, woraus folgt, dass je
-  Kandidat **ein** Weltschritt gerechnet wird, also eine statische Bewertung noetig ist,
-  die nirgends steht.
+  Masses** (2026-08-31, best. 2026-09-01; Doppelte der Strategievielfalt, `R × (1 + 60)`
+  → statische Bewertung, die nirgends stand).
 - **Eine Bedingung, die auf einer Messung steht, wird nachgemessen, nicht zitiert**
   (2026-08-31, best. 2026-09-01). Der eigene Abruf der Sollreihen-Belegtheit brachte den
   teuersten Befund ueberhaupt (Partielaenge vier Jahre zu lang). Ein Abruf, und das Urteil
   ist unangreifbar.
 - **Zwei Quellen, die sich nicht kennen, sind der billigste Beweis** (2026-09-03, best.
-  2026-09-04). Die 40 Handelsadressen in `daten/adressen.md` belegten die Entdopplung ohne
-  Begruendung; die Preistraegheitsregel belegte einen vorgegebenen Startwert; im 14. Lauf
-  belegte `spiel.md:1249` die 106 der Kostenzeile. *Nie gegen die Rechnung des Dokuments
-  zaehlen.*
+  2026-09-04; im 15. Lauf trugen T45-Zitat und Blockschnitt der Adressliste die
+  T17b-Begruendung). *Nie gegen die Rechnung des Dokuments zaehlen.*
 - **Die Einheitentabelle gegen jede neue Formel legen** (2026-09-01, 6. Lauf) — der
   produktivste einzelne Handgriff. T5 trennte US-Cent von Tausend USD, T47 verband beide
   ohne `tsd_in_cent`, Faktor 100.000. *Erst die Skalenklasse jedes Symbols nachschlagen,
@@ -92,10 +84,8 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   stimmten, trug `geprueft`. Ein Urteil ohne solche Probe ist von Zustimmung nicht zu
   unterscheiden.
 - **Zwei Lesarten sind zwei Rechnungen — beide rechnen, bevor der Befund geschrieben wird**
-  (2026-09-04, 12./13. Lauf). Zwei Rundungswege ergaben dreimal dieselbe Zahl; `71,94/98,71`
-  als `H/N` gelesen macht einen Widerspruch, als `H/(H+N)` stimmt alles — und die zweite
-  Lesart belegte sich selbst am `H/N = 2,69` zwoelf Zeilen darueber. *Der Befund entsteht
-  erst, wenn die Lesarten auseinanderfallen.*
+  (2026-09-04, 12./13. Lauf; `H/N` gegen `H/(H+N)`). *Der Befund entsteht erst, wenn die
+  Lesarten auseinanderfallen.*
 - **Bei „zweimal unabhaengig gerechnet" fragen, wo die Kette anfaengt** (2026-09-04,
   13. Lauf). Zwei Laeufe hatten alles nachgerechnet — **ab** der Messtabelle, die sie als
   gegeben nahmen. Der einzige falsche Wert sass genau dort. *Die erste Zahl der Kette ist
@@ -105,6 +95,16 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   Wiederzuerkennen waere keine Pruefung. Gilt auch fuer eigene Paketvorschlaege (0054).
 - **„Kommt nirgends anders vor" schliesst man mit zwei Zaehlungen, nicht mit Lesen**
   (2026-09-04): `grep -c` auf beide Fassungen, 7 zu 7.
+- **Die Vorher-Zaehlung ohne alten Stand: arithmetisch am U0-Diff** (2026-09-05,
+  15. Lauf). `git show <c>^` ist gesperrt; vorher = jetzt − hinzugefuegt + entfernt, je
+  Muster ueber `grep '^+'`/`'^-'` auf den gespeicherten Diff. Drei Spalten, drei
+  Treffer — und der Nachweis ist unabhaengig von der Zaehlung des Erbauers.
+- **Ein Commitbetreff ist kein Paketumfang** (2026-09-05). Alle drei
+  `architekt: 0051`-Commits buendelten fremde Gewerke (0072, 0085, 0088,
+  Testentwickler). Fuer den Nachweis die Paketspanne der **Datei** nehmen
+  (`git log -- <datei>`, dann Diff ueber die Spanne), nie den Commit; fuer Verbotszonen
+  („nicht anfassen") genuegt `diff --stat` je Commit. Als Nebenbemerkung in den Befund
+  geschrieben, kein Paket — Runner-Verhalten, das der Projektmanager kennt.
 - **Pruefen, ob ein Lauf, den ein Mass vorschreibt, laufen kann** (2026-08-31).
 - Kleiner, aber wiederholt bestaetigt: jede als „Anteil" deklarierte Groesse nachrechnen
   (Bruttostrom durch Nettogroesse ist nie ein Anteil); nach einer geaenderten Grundzahl die
