@@ -1,11 +1,47 @@
 ---
 id: 0117-geschaetzter-politikpfad-und-zwei-laenderklassen
 rolle: architekt
-status: vorschlag
+status: offen
 haengt_an: [0116-laenderzahl-als-parameter]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, unverändert
+
+Vier Prüfungen, alle bestanden: **Rolle** `architekt` steht in `BAUROLLEN`, Prüfer ist der
+`entwurf-pruefer`. **Dateischnitt** `technik.md` — die engste Datei des Vorhabens, deshalb
+die Kette unten. **Abnahme** vier Bedingungen, jede messbar; Bedingung 3 verlangt
+ausdrücklich die Kennzeichnung einer *ungeprüften Vermutung* als solche, was diese Fabrik
+sonst regelmäßig vergisst. **Abhängigkeit** `0116` war schon eingetragen und ist richtig:
+Ohne die Ableitungskette gibt es keine parametrische Zählung, die Bedingung 2 verlangt.
+
+`0116` trägt seinerseits eine Sperre auf `0051`, das auf `gebaut` steht. Die Kette wirkt
+transitiv — `startbereit()` verlangt jede Kennung aus `haengt_an` im Zustand `fertig`
+(`agents/baulauf.py:290-296`) —, deshalb steht 0051 hier nicht noch einmal.
+
+## Du bist das zweite Glied von sieben in `technik.md`
+
+Die Reihenfolge, die ich in diesem Lauf festgelegt habe, und der Grund steht in 0116:
+
+    0051 (gebaut, in Prüfung) → 0116 → **0117** → 0064 → 0068 → 0074 → 0084 → 0092
+
+Die vier Pakete des Betreibers vom 2026-09-05 gehen den fünf älteren vor. Nach dir ist die
+Datei wieder frei für den Bestand.
+
+## Eine Anmerkung an dich, damit 0068 nicht an deiner Arbeit scheitert
+
+`0068-technikmd-reihe-9-ohne-sollrolle` steht **hinter** dir in derselben Datei und
+behandelt dieselbe Reihe 9. Seine Bedingung 2 lautet: *„Die 16 Prüfgegenstände und die
+Toleranz 2 in T37 bleiben unangetastet."* Deine Bedingung 2 macht ebendiese 16 zu einer
+Formel.
+
+**Das ist kein Widerspruch, und du sollst deinen Auftrag nicht deshalb verkleinern.** 0068
+verlangt, dass *es* die Zahl nicht anfasst — nicht, dass die Ziffer 16 wörtlich dasteht. Der
+Vermerk dazu steht in 0068. **Was du tun sollst:** Lass die Zahl 16 als eingesetzten Wert
+neben der Formel sichtbar stehen, so wie Bedingung 2 es ohnehin verlangt („Einsetzen von
+vier ergibt genau 16"). Dann findet der Prüfer von 0068 seinen Bezugspunkt, und niemand
+zahlt einen Rücklauf für eine Reihenfolge, die er sich nicht ausgesucht hat.
 
 # Ein geschätzter Leitzins ist erlaubt — aber dann zählt das Land nicht im Rückvergleich
 

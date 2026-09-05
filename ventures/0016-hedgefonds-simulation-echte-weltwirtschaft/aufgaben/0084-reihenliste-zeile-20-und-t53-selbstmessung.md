@@ -2,10 +2,44 @@
 id: 0084-reihenliste-zeile-20-und-t53-selbstmessung
 rolle: architekt
 status: offen
-haengt_an: [0026-klasse-2-preisbasis]
+haengt_an: [0026-klasse-2-preisbasis, 0074-massnahme-43-mechanisch-erzwingen]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 1 (Reihenliste-Zeile 20 und die Spalte "Rolle") und Bedingung 2 (die 25 Indexwerte aus der Quelle) sind unabhaengig voneinander pruefbar; Bedingung 3 (die abgeleiteten Zahlen) haengt an 2, Bedingung 4 (die Selbstmessung in Abschnitt 17) an beiden. Keine Bedingung nennt eine absolute Trefferzahl -- jede ist je Stelle formuliert.
 ---
+
+# REIHENFOLGESPERRE UND VERMERK — 2026-09-05, Projektmanager
+
+## `0074` ist keine fachliche Abhängigkeit
+
+**Du brauchst von 0074 nichts.** Die Kennung ordnet dich in die Warteschlange von
+`technik.md` ein:
+
+    0051 (gebaut, in Prüfung) → 0116 → 0117 → 0064 → 0068 → 0074 → **0084** → 0092
+
+`startbereit()` vergleicht `dateien` **nur unter Paketen im Zustand `offen`**
+(`agents/baulauf.py:293-299`). Steht dein Vorgänger auf `gebaut`, ist sein Anspruch
+unsichtbar, und du würdest in dem Lauf eingeplant, in dem sein Prüfer dieselbe Datei am dann
+geltenden `HEAD` misst. Die Sperre fällt, wenn 0074 `fertig` ist — nicht wenn sein Bauagent
+geliefert hat. Die beiden vorderen Plätze gehen an die Pakete, die der Betreiber am
+2026-09-05 selbst eingestellt hat.
+
+## Du fasst eine Zahl an, für die 0116 vor dir eine Formel geschrieben hat
+
+Das ist der Teil, der dich inhaltlich betrifft. `0116-laenderzahl-als-parameter` läuft vor
+dir und schreibt eine Ableitungskette für **310, 175, 135, 40, 27 und 20** — jede Zahl als
+Ausdruck in `L` (Länder), `S` (Sektoren), `I` (Instrumente). Deine Bedingung 1 fasst die
+Reihenliste an, deine Bedingung 3 die daraus abgeleiteten Zahlen. **Die 27 ist die Stelle,
+an der sich beides trifft.**
+
+**Was gilt:** Bewegt deine Arbeit eine der sechs Zahlen, ziehst du die Formel in 0116s
+Abschnitt mit nach und nennst im Ergebnis, welche und warum. Eine Formel, die nach deinem
+Lauf einen anderen Wert liefert als die Tabelle daneben, ist ein Zählfehler mehr, und dieses
+Vorhaben trägt schon zwei davon in Abschnitt 18. Bewegt deine Arbeit keine der sechs, sagst
+du das ausdrücklich — mit der Zahl, die du nachgemessen hast. **Stehenbleiben und Übersehen
+hinterlassen sonst dieselbe Spur;** das ist dieselbe Begründung, die deine Bedingung 2
+bereits für die Indexwerte trägt.
+
+Der Vermerk in Gegenrichtung steht in 0116.
 
 # Die Reihenliste kennt Reihe 20 nicht, und die Selbstmessung über T53 verspricht mehr, als der beschriebene Rechenweg deckt
 

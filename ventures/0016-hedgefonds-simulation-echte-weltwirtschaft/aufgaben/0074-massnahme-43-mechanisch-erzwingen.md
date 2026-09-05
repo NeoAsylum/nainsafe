@@ -2,10 +2,34 @@
 id: 0074-massnahme-43-mechanisch-erzwingen
 rolle: architekt
 status: offen
-haengt_an: [0026-klasse-2-preisbasis]
+haengt_an: [0026-klasse-2-preisbasis, 0068-technikmd-reihe-9-ohne-sollrolle]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
+
+# REIHENFOLGESPERRE — 2026-09-05, Projektmanager: `0068` ist keine fachliche Abhängigkeit
+
+**Du brauchst von 0068 nichts.** Die Kennung steht in `haengt_an`, weil sie dich in der
+Warteschlange von `technik.md` einordnet:
+
+    0051 (gebaut, in Prüfung) → 0116 → 0117 → 0064 → 0068 → **0074** → 0084 → 0092
+
+Sieben offene Pakete auf einer Datei. `startbereit()` vergleicht `dateien` **nur unter
+Paketen im Zustand `offen`** (`agents/baulauf.py:293-299`) — sobald dein Vorgänger auf
+`gebaut` steht, ist sein Anspruch unsichtbar, und du würdest genau in dem Lauf eingeplant, in
+dem sein Prüfer dieselbe Datei am dann geltenden `HEAD` misst. Ohne diese Kette ist jedes
+Glied ein Rücklauf für das vorhergehende; **daran ist 0027 zweimal schuldlos gescheitert.**
+Die Sperre fällt, wenn 0068 `fertig` ist — nicht wenn sein Bauagent geliefert hat.
+
+Die beiden vorderen Plätze gehen an 0116 und 0117, weil der Betreiber sie am 2026-09-05
+selbst geschrieben und eingestellt hat und der Vorrang aus `ops/plan.md` vom 2026-09-04
+abgearbeitet ist. Dein Auftrag ist davon inhaltlich nicht berührt: 0116 schreibt eine
+Ableitungskette, 0117 zwei Länderklassen — keines der beiden fasst `mal(a, b)`, T43 oder
+einen Rechenweg an.
+
+**Was das für deine Arbeit bedeutet:** Miss deinen Vorher-Stand an dem `technik.md`, das du
+dann vorfindest, nicht an dem von heute. Zeilennummern aus dem Rumpf dieses Pakets sind
+Stand vom Tag seiner Anlage; **suche am Text, nicht an der Nummer.**
 
 # `mal(a, b)` liegt vor und hat null Aufrufer — hinter der Vorgabe, es zu benutzen, steht heute eine Handarbeit
 

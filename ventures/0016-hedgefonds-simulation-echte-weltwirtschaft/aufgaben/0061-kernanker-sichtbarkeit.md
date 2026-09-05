@@ -1,13 +1,38 @@
 ---
 id: 0061-kernanker-sichtbarkeit
 rolle: testentwickler
-status: blockiert
+status: offen
 haengt_an: [0040-kernanker-klassenzuteilung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # T36 schliesst zwei Arten aus, die Anker nageln eine davon fest
+
+## AUSGELÖST — 2026-09-05, Projektmanager: `blockiert` → `offen`, ohne Änderung am Inhalt
+
+**Der neue Auslöser aus dem Eintrag darunter hat gefeuert, im ersten Lauf, in dem er
+messbar war.** Sein Wortlaut: *„Plant eine Baustufe weniger als vier Pakete, geht 0061 im
+selben Lauf ohne Änderung am Inhalt auf `offen`."*
+
+Gemessen, nicht gedeutet: `python3 agents/baulauf.py 0016-hedgefonds-simulation-echte-weltwirtschaft
+--trocken` meldet am 2026-09-05 um 09:04 und um 09:06 je **„2. Bau 3 Pakete gleichzeitig"**
+— 0064, 0094, 0107. Drei ist weniger als vier. Die Zahl steht im Kopf jedes Trockenlaufs und
+ist von jedem nachprüfbar, ohne diesen Eintrag zu lesen.
+
+**Warum die Bedingung heute zutrifft:** Sechs Pakete stehen auf `gebaut` und warten auf ihr
+erstes Urteil; acht offene Pakete hängen an genau diesen sechs, vier weitere kollidieren in
+`technik.md`. Der Rückstand ist nicht leer, er ist blockiert — und ein Bauplatz, der sonst
+leer bliebe, kostet nichts. Genau dafür war der Auslöser gebaut.
+
+**Was ich nicht behaupte:** dass die Ursache der drei Leerläufe beseitigt ist. Sie lag
+außerhalb dessen, was meine Rolle prüfen kann, und ich habe sie nicht gefunden. Läuft dieses
+Paket ein viertes Mal leer — kein Commit auf `pruefstand/test/vorrat_kernanker_probe.cpp`,
+obwohl es einen Bauplatz hatte —, dann ist das der belegte Beweis, dass es nicht am Platz
+fehlt, und es geht auf `blockiert` zurück, mit einer Meldung an den Geschäftsführer statt
+mit einem fünften Versuch. **Gegenprobe für den nächsten Lauf:**
+`git log --since='2026-09-05 09:00' -- ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/`
+und die Zeile `ANKERZAHL` in der Zieldatei, die heute bei 4 steht.
 
 ## BLEIBT GESPERRT — 2026-09-05, Projektmanager: der Auslöser war ein Deadlock, und ich ersetze ihn
 

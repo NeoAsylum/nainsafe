@@ -1,11 +1,57 @@
 ---
 id: 0118-fuenf-weitere-laender-auswaehlen
 rolle: spielentwerfer
-status: vorschlag
+status: offen
 haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0119-welt-in-drei-schichten]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
-abnahme: Die fünf Bedingungen im Abschnitt "Abnahme".
+abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Bedingung 3 rechnet auf der Steckplatzzahl, die nach 0119 gilt, gegen die 20 von heute — nicht auf den 45 aus der Ländergeometrie allein; siehe den Annahmevermerk.
 ---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Berichtigung an Bedingung 3
+
+Vier Prüfungen: **Rolle** `spielentwerfer` steht in `BAUROLLEN`, Prüfer ist der
+`entwurf-pruefer`. **Dateischnitt** `spiel.md`, geteilt nur mit 0119, und das steht in
+`haengt_an` — die Kette ist richtig. **Abhängigkeit** 0117 und 0119; über 0117 hängt dieses
+Paket transitiv auch an 0116 und 0051. Es ist damit das **letzte** der vier Pakete des
+Betreibers und läuft frühestens, wenn die drei anderen abgenommen sind. **Abnahme** fünf
+Bedingungen — vier davon messbar wie sie dastehen, eine nicht. Die eine korrigiere ich.
+
+## Bedingung 3 rechnet auf einer Zahl, die dieses Paket nicht mehr vorfindet
+
+Bedingung 3 verlangt, *„wie viele der 45 Plätze ein Spieler über die volle Partielänge
+erreichen kann"*. Die 45 sind die Steckplätze bei `L = 9` **aus der Ländergeometrie allein**.
+Dieses Paket hängt aber an 0119, und 0119 führt die Börsenplätze ein und kommt auf **75**
+handelbare Plätze. Es sagt das selbst und ausdrücklich:
+
+> Der Betreiber hat am 2026-09-05 entschieden, dass die Steckplätze mitwachsen (Weg A in
+> Paket 0118). Die Rechnung dazu gehört dorthin und muss **beide** Zuwächse tragen, nicht
+> nur die 45 aus den Ländern.
+
+**Beide Pakete stammen vom selben Tag und vom selben Autor; 0119 ist das jüngere und weiß
+von diesem hier.** Es ist keine Meinungsverschiedenheit, sondern ein Halbsatz, der beim
+Schreiben des zweiten Pakets im ersten stehen geblieben ist. Bliebe er stehen, hätte der
+Bauagent die Wahl zwischen einer Zahl, die seine Bedingung nennt, und einer, die sein
+Vorgängerpaket in dieselbe Datei geschrieben hat — und beide Antworten wären begründbar.
+Genau diese Sorte Kriterium hat hier schon dreimal eine erbrachte Leistung durchfallen
+lassen.
+
+**Was ab jetzt gilt — die Bedingung, nicht der Wortlaut:** Bedingung 3 ist erfüllt, wenn die
+Deckungsrechnung auf der Steckplatzzahl steht, die nach 0119 **tatsächlich in `spiel.md`
+festgelegt ist**, gegen die 20 von heute gerechnet. Lies sie dort nach, statt eine Zahl aus
+diesem Absatz zu übernehmen — 0119 wird vor dir gebaut und geprüft, und wenn sein Prüfer die
+Größenordnung verschiebt, gilt seine. Alles andere an Bedingung 3 bleibt Wort für Wort:
+gegen die 20 von heute, und **genau eine** empfohlene Stellschraube, falls die Deckung unter
+das fällt, was die vier Maße tragen.
+
+**Was ich nicht geändert habe:** Die Tabelle aus Bedingung 4 bleibt, wie sie ist. Ihre
+`Zustand gesamt 740` ist die Ländersumme und richtig; die Gesamtzahl des Zustands nach den
+drei Schichten ist 890 und gehört 0119. Schreib beim Übertragen dazu, welche der beiden
+Zahlen die Tabelle meint — zwei unkommentierte Summen in einem Dokument sind der Anfang des
+nächsten Zählfehlers.
+
+**An den Betreiber:** Wenn du das anders willst — wenn die 45 gemeint waren und die
+Börsenplätze nicht in die Deckungsrechnung gehören —, ist das eine Zeile hier, und sie
+sticht diesen Vermerk.
 
 # Fünf weitere Länder — welche, warum, und in welcher Klasse
 

@@ -2,10 +2,44 @@
 id: 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke
 rolle: architekt
 status: offen
-haengt_an: [0054-partielaenge-r-entscheiden, 0011-stack-auf-cpp, 0026-klasse-2-preisbasis]
+haengt_an: [0054-partielaenge-r-entscheiden, 0011-stack-auf-cpp, 0026-klasse-2-preisbasis, 0117-geschaetzter-politikpfad-und-zwei-laenderklassen]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
+
+# REIHENFOLGESPERRE — 2026-09-05, Projektmanager: `0117` ist keine fachliche Abhängigkeit
+
+**Du brauchst von 0117 nichts.** Die Kennung steht in `haengt_an`, weil sie die
+Reihenfolge in `technik.md` festlegt, und aus zwei Gründen.
+
+**Erstens, und das ist der teure:** `0051-t46-gebietspraefix-entscheiden` steht auf `gebaut`
+und wird geprüft. Seine Bedingung 1 verlangt, dass *„der Prüfer die Fundstellen vor und nach
+der Regel zählt"*, seine Bedingung 3 den **Änderungsdiff von `technik.md`**. Die Baustufe
+läuft vollständig vor der Prüfstufe (`agents/baulauf.py:365` gegen `:377`), und
+`startbereit()` sieht den Dateianspruch eines Pakets auf `gebaut` nicht mehr — es vergleicht
+`dateien` nur unter `offen` (`:293-299`). Ohne diese Sperre wärst du in genau dem Lauf
+eingeplant worden, in dem 0051 gemessen wird, und hättest ihm mit deinem eigenen, korrekt
+erledigten Auftrag den Nachweis zerschlagen. **Ein zweiter Durchgang über jede Zahl des
+Dokuments ist die denkbar größte Störung dieser beiden Bedingungen.** Daran ist 0027 zweimal
+schuldlos gescheitert; hier ist es vorher gefangen.
+
+**Zweitens:** Der Betreiber hat am 2026-09-05 vier Pakete selbst geschrieben und
+eingestellt (0116, 0117, 0118, 0119); der Vorrang in `ops/plan.md` stammt vom 2026-09-04 und
+ist vollständig abgearbeitet. 0116 und 0117 gehen dir deshalb vor. Die Reihenfolge in dieser
+Datei lautet:
+
+    0051 (gebaut, in Prüfung) → 0116 → 0117 → **0064** → 0068 → 0074 → 0084 → 0092
+
+Du bist das erste Paket des Bestands nach den beiden. Die Sperre fällt, wenn 0117 `fertig`
+ist — nicht wenn sein Bauagent geliefert hat.
+
+**Was das für deine Arbeit bedeutet:** Du misst deinen Vorher-Stand an dem `technik.md`, das
+du dann vorfindest, nicht an dem von heute. 0116 schreibt eine Ableitungskette für die
+Zahlen 310, 175, 135, 40, 27 und 20, 0117 macht die 16 Prüfgegenstände parametrisch. **Keine
+davon steht in deiner Liste** — deine zehn sind aus `R` gebildet (24, 25, 1.464, 9.024,
+18.024, 87.864, 11.519.040, 11.783.264, 31, 1997). Die beiden Aufträge überschneiden sich in
+keiner Zahl; sollte sich das beim Lesen anders darstellen, ist das ein Befund und gehört
+gemeldet, nicht aufgelöst.
 
 # Zehn geltende Zahlen in `technik.md` stehen weiter auf `R = 24`, und die Nachziehliste nennt keine davon
 

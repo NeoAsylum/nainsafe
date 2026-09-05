@@ -80,11 +80,15 @@ Folge: *Wer später läuft, misst seinen Vorher-Stand am dann geltenden `HEAD`.*
 **Dazu gehört, jede Zahl und jede Zeilennummer im Rumpf als Stand-von-heute zu kennzeichnen
 und die Suche am Text statt an der Nummer anzuweisen.**
 
-**Die Kette kostet Kapazität und muss gemessen werden, nicht vermutet:**
-`--trocken --gleichzeitig 14` zeigt, wie viele startbereit sind. Am 2026-09-05: sechs
-startbereit, vier Plätze, **die zwei Verlierer gehörten zu Gewerken mit Platz** — kein
-Gewerk lief aus Sortierungsgründen leer. Erstmals seit vier Fassungen. Die Ketten dünnen die
-Kandidaten selbst aus.
+**Die Kette behaupten reicht nicht — sie steht im Frontmatter oder gar nicht.** Fassung 25
+hat eine Kette auf `technik.md` beschrieben, die in drei von fünf Paketen im `haengt_an`
+fehlte. Sie hielt, solange alle `offen` waren, und wäre gebrochen, sobald das erste auf
+`gebaut` steht. **Vor jedem Bericht `grep '^haengt_an:'` gegen die eigene Vorfassung.**
+
+**Der Engpass ist die Datei, nicht der Zuschnitt.** Zwei kleinere Pakete auf derselben Datei
+ergeben zwei Pakete und einen Platz. **Die Messung, die das entscheidet:** je Paket ohne
+Platz fragen, ob eine Abhängigkeit oder nur der Dateischnitt es hält. Nur die zweite Sorte
+gewinnt durch Zerlegen — am 2026-09-05 vier von 22, alle auf `technik.md`.
 
 ## Die Zahlenfalle hat jetzt eine allgemeine Regel
 
@@ -136,18 +140,16 @@ Anführungszeichen zum Abschreiben wandert ungeprüft in die Datei.
 - **Nebenbefunde bei `geprueft` sind kein Rücklauf** — eigenes Paket, oder ausdrücklich
   keines. **`geprueft`-Befunde sind die bessere Paketquelle als `zurueck`.**
 
-## Angekündigte Auslöser — und die Falle darin
+## Angekündigte Auslöser — zwei Fallen, beide bezahlt
 
-**Ein vorab benannter Prüffall schlägt jede nachträgliche Deutung** und kostet eine Zeile.
-**Und ich ziehe ihn auch.**
+**Ein vorab benannter Prüffall schlägt jede nachträgliche Deutung, und ich ziehe ihn auch.**
 
-**Aber: Kann außer dem gesperrten Paket überhaupt jemand das Ereignis auslösen?** Der
-Auslöser zu 0061 wartete auf eine Lieferung unter `pruefstand/` — und **kein anderes Paket
-beansprucht dort eine Datei.** Er wartete auf die Wirkung seiner eigenen Ursache. Zwei Läufe
-lang habe ich „gezogen, nicht ausgelöst" gemeldet, als wäre das ein Messergebnis.
-
-**Ein tauglicher Auslöser hängt an einer Zahl, die ohne mein Zutun entsteht** — etwa: *plant
-eine Baustufe weniger als vier Pakete*. Sie steht im Kopf jedes `--trocken`-Laufs.
+1. **Kann außer dem gesperrten Paket jemand das Ereignis auslösen?** Der erste Auslöser zu
+   0061 wartete auf eine Lieferung unter `pruefstand/` — dort beansprucht kein anderes Paket
+   eine Datei. Er wartete auf die Wirkung seiner eigenen Ursache.
+2. **Keine ausgeschriebene Zahl.** Der zweite hing an *weniger als vier Pakete* und hat am
+   2026-09-05 gefeuert — nur war `GLEICHZEITIG` inzwischen von 4 auf 8 gegangen. Gegen die
+   Grenze messen, nicht gegen eine Zahl. **Dieselbe Regel wie für jede `abnahme`.**
 
 ## Wann `blockiert` richtig ist
 
@@ -180,12 +182,14 @@ kein Rücklauf ist.**
 **Die benannten stehen in `rueckstand.md` unter „Was der nächste Lauf zuerst anfasst" —
 dort zuerst nachsehen.**
 
-- **Der Vorrang in `ops/plan.md` ist seit dem 2026-09-05 vollständig abgearbeitet.** Ohne
-  neuen ordne ich nach Dienstalter, und das ist keine Priorisierung. **Nachfragen, nicht
-  ersatzweise selbst priorisieren.**
-- **Sechs Architektenpakete auf `technik.md`** sind die härteste Zahl im Rückstand: zwölf
-  Durchgänge für Arbeit, die sich in keinem Absatz überschneidet. Die Datei zu zerlegen wäre
-  eine Entwurfsentscheidung — melden, nicht tun.
+- **Schreibt der Betreiber selbst Pakete, ist das der Vorrang.** Vier an einem Tag
+  (2026-09-05) schlagen eine abgearbeitete Liste in `ops/plan.md`. Ich habe sie an die
+  Spitze ihrer Datei gestellt und **die Auslegung als Auslegung gemeldet** — das ist der
+  Weg, nicht ersatzweises Sortieren nach Dienstalter.
+- **Ein `gebaut`-Paket schützt seine Datei nicht.** Bau läuft ganz vor Review
+  (`baulauf.py:365` gegen `:377`), `startbereit()` sieht nur `offen` (`:293-299`). **Vor
+  jedem Lauf: Steht ein `gebaut` auf einer Datei, die ein `offen` beansprucht?** Am
+  2026-09-05 hätte 0064 den Nachweis von 0051 zerschlagen — erstmals vorher gefangen.
 - **Prüffrage bei jedem Kriterium: Kann die Rolle den Nachweis führen?** Fähigkeit ist
   rollen-, nicht umgebungsgebunden. **Ein Erwartungswert aus dem eigenen Code ist eine
   Wiederholung, kein Nachweis.**

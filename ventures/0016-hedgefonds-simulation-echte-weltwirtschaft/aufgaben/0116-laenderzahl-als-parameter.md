@@ -1,11 +1,66 @@
 ---
 id: 0116-laenderzahl-als-parameter
 rolle: architekt
-status: vorschlag
-haengt_an: []
+status: offen
+haengt_an: [0051-t46-gebietspraefix-entscheiden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Sperre und einem Vorrang
+
+Vier Prüfungen: **Rolle** `architekt` steht in `BAUROLLEN`, Prüfer ist der
+`entwurf-pruefer`. **Abnahme** vier Bedingungen, jede an `technik.md` oder am `git diff`
+messbar; Bedingung 1 nennt zwar sechs ausgeschriebene Zahlen, verlangt sie aber als
+*Ergebnis einer Formel bei `L = 4`*, nicht als Trefferzahl aus einer Summe — die Regel, an
+der hier zehn Kriterien gescheitert sind, ist nicht berührt. **Abhängigkeit** war keine
+angegeben; ich trage eine ein. **Dateischnitt** ist der Grund für beides:
+
+## `haengt_an: [0051]` ist eine Reihenfolgesperre, keine fachliche Abhängigkeit
+
+Dieses Paket braucht von 0051 **nichts**. Die Sperre schützt 0051, nicht dieses Paket.
+
+`0051-t46-gebietspraefix-entscheiden` steht auf `gebaut` und bekommt in diesem Durchgang
+seinen Prüfplatz. Die Baustufe läuft vollständig **vor** der Prüfstufe
+(`agents/baulauf.py:365` gegen `:377`) — wer in diesem Lauf `technik.md` anfasst, verändert
+den Baum, an dem 0051 unmittelbar danach gemessen wird. Und 0051 wird an genau dieser Datei
+gemessen: Bedingung 1 verlangt, *„der Prüfer zählt die Fundstellen vor und nach der Regel"*,
+Bedingung 3 den **Änderungsdiff von `technik.md`**. Beide Nachweise sind wertlos, sobald ein
+zweites Paket im selben Lauf dieselbe Datei umschreibt.
+
+`startbereit()` fängt das nicht: Es vergleicht `dateien` nur unter den Paketen im Zustand
+`offen` (`agents/baulauf.py:293-299`). Ein Paket auf `gebaut` ist unsichtbar, sein Anspruch
+auf die Datei zählt nicht mehr. **Daran ist 0027 zweimal schuldlos gescheitert**, und es ist
+der teuerste wiederkehrende Fehler dieses Rückstands. Die Sperre fällt, sobald 0051
+`fertig` ist — nicht wenn sein Bauagent geliefert hat.
+
+## Warum dieses Paket vor fünf älteren steht
+
+`technik.md` ist die engste Stelle des ganzen Vorhabens: **sieben offene Pakete auf einer
+Datei**, die strikt nacheinander laufen. `startbereit()` gibt den Platz an die kleinste
+Kennung, also der Reihe nach an 0064, 0068, 0074, 0084, 0092 — dieses Paket käme als
+sechstes, in rund sechs Durchgängen, und 0117 als siebtes.
+
+Das wäre falsch. Der Betreiber hat 0116, 0117, 0118 und 0119 am 2026-09-05 **selbst
+geschrieben und selbst eingestellt**; der Vorrang aus `ops/plan.md` stammt vom 2026-09-04
+und ist vollständig abgearbeitet. Vier eigene Pakete an einem Tag sind die deutlichste
+Vorrangaussage, die dieser Rückstand kennt. Dieses hier ist ihr Tor: 0117 hängt daran, 0118
+hängt an 0117, und ohne die Ableitungskette bleibt „ein Land hinzufügen" das, was das Paket
+beschreibt — ein Umbau mit offenem Ende.
+
+Die fünf älteren rücken deshalb hinter 0117. Sie verlieren zwei Durchgänge, keiner von
+ihnen trägt eine Abhängigkeit eines anderen Pakets, und keiner steht auf dem Weg zu einer
+Zahl, nach der jemand gefragt hat. **Der Vermerk steht in jedem der fünf**, damit niemand
+die Reihenfolge für einen Zufall der Nummerierung hält.
+
+## Eine Anmerkung zu Bedingung 1, gemessen und nicht vermutet
+
+Zwei der sechs Zahlen können sich noch bewegen: **27** (Sollreihen) und **20** (Steckplätze).
+`0084-reihenliste-zeile-20-und-t53-selbstmessung` steht hinter dir in derselben Datei und
+fasst die Reihenliste an; 0118 und 0119 heben die Steckplätze auf 45 beziehungsweise 75.
+**Das ist kein Widerspruch, sondern der Grund für dieses Paket:** Schreib die Formel so, dass
+die Zahl aus ihr folgt, und nicht die Formel so, dass sie die Zahl trifft. Wer nach dir die
+Zahl ändert, muss dann nur den Parameter ändern. Der Vermerk dazu steht auch in 0084.
 
 # Ein Land hinzufügen soll ein Vorgang sein, kein Umbau
 

@@ -4,8 +4,32 @@ rolle: architekt
 status: offen
 haengt_an: [0065-reihentoml-reihe-9-ohne-sollrolle, 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 1 in der berichtigten Fassung des Annahmevermerks vom 2026-09-04 (Abschnitt "Berichtigung an Bedingung 1") -- ohne die Zahlen 23, 4 und 27, dafuer selbst nachgezaehlt und mit genannter Differenz.
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 1 in der berichtigten Fassung des Annahmevermerks vom 2026-09-04 (Abschnitt "Berichtigung an Bedingung 1") -- ohne die Zahlen 23, 4 und 27, dafuer selbst nachgezaehlt und mit genannter Differenz. Bedingung 2 heisst "dieses Paket fasst die Zahl nicht an", nicht "die Ziffer 16 steht woertlich da"; siehe den Vermerk vom 2026-09-05.
 ---
+
+# VERMERK — 2026-09-05, Projektmanager: die 16 wird vor dir zu einer Formel
+
+Deine Bedingung 2 lautet: *„Die 16 Prüfgegenstände und die Toleranz 2 in T37 bleiben
+unangetastet."* Sie stand da, als die 16 eine Ziffer war.
+
+`0117-geschaetzter-politikpfad-und-zwei-laenderklassen` läuft **vor** dir in derselben Datei
+und macht ebendiese Zahl parametrisch — seine Bedingung 2 verlangt „eine Formel in der Zahl
+der Rückvergleichsländer; Einsetzen von vier ergibt genau 16". Der Betreiber hat 0117 am
+2026-09-05 selbst eingestellt.
+
+**Die Bedingung ist damit nicht hinfällig, sondern nur missverständlich geworden.** Sie
+verlangt eine *Unterlassung*: dass **du** die Zahl und die Toleranz nicht anfasst. Gemessen
+wird gegen den Stand, den du bei Beginn vorfindest, nicht gegen die Fassung von heute. Steht
+dort dann eine Formel mit der eingesetzten 16 daneben, ist das der Bezugspunkt — und der
+Satz aus deiner Bedingung, *warum* sie unangetastet bleibt (Reihe 9 trug die Klasse
+`gesetzt` und kam in keinem der sechzehn vor), gilt unverändert und ist weiter zu schreiben.
+
+**An den Prüfer:** Ein Bericht, der Bedingung 2 daran scheitern lässt, dass die Ziffer 16
+nicht mehr allein dasteht, misst die Arbeit von 0117 und nicht die dieses Pakets. Der
+Vermerk in Gegenrichtung steht in 0117.
+
+**Zur Reihenfolge:** `0051 (gebaut) → 0116 → 0117 → 0064 → 0068 → 0074 → 0084 → 0092`. Dein
+`haengt_an` nennt 0064 und trägt die Kette damit transitiv; es musste nicht geändert werden.
 
 # `technik.md` fuehrt Reihe 9 an drei Stellen weiter als Sollreihe der Klasse `gesetzt`
 

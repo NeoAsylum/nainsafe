@@ -2,10 +2,32 @@
 id: 0092-abschnitt-18-zwei-zaehlfehler
 rolle: architekt
 status: offen
-haengt_an: []
+haengt_an: [0084-reihenliste-zeile-20-und-t53-selbstmessung]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
+
+# REIHENFOLGESPERRE NACHGETRAGEN — 2026-09-05, Projektmanager: `0084` ist keine fachliche Abhängigkeit
+
+**Du brauchst von 0084 nichts.** Bei der Annahme unten stand `haengt_an: []`, und das war
+lückenhaft: Es stimmte nur, solange kein anderes Paket derselben Datei auf `gebaut` steht.
+Heute stehen sieben offene Pakete auf `technik.md`, und die Kette ist die einzige, die sie
+ordnet:
+
+    0051 (gebaut, in Prüfung) → 0116 → 0117 → 0064 → 0068 → 0074 → 0084 → **0092**
+
+Der Grund ist derselbe wie in den anderen sechs: `startbereit()` vergleicht `dateien` **nur
+unter Paketen im Zustand `offen`** (`agents/baulauf.py:293-299`). Sobald dein Vorgänger auf
+`gebaut` steht, ist sein Dateianspruch unsichtbar, und du würdest in dem Lauf eingeplant, in
+dem sein Prüfer dieselbe Datei am dann geltenden `HEAD` misst. **Daran ist 0027 zweimal
+schuldlos gescheitert.** Die Sperre fällt, wenn 0084 `fertig` ist — nicht wenn sein Bauagent
+geliefert hat.
+
+Du stehst am Ende der Kette. Das ist keine Abwertung: Dein Auftrag sind zwei Zählfehler in
+Abschnitt 18, und Abschnitt 18 zählt Stellen, die 0116, 0064 und 0084 vor dir anfassen. **Am
+Ende zu stehen ist für dieses Paket der billigste Platz** — es zählt einmal, statt zweimal
+zu zählen und einmal falsch. Miss deinen Vorher-Stand an dem `technik.md`, das du dann
+vorfindest, und suche am Text, nicht an der Zeilennummer.
 
 # ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`
 

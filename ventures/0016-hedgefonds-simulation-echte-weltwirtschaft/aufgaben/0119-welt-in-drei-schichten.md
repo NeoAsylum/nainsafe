@@ -1,11 +1,41 @@
 ---
 id: 0119-welt-in-drei-schichten
 rolle: spielentwerfer
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme".
 ---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, und es baut sofort
+
+Vier Prüfungen, in dieser Reihenfolge:
+
+1. **Rolle.** `spielentwerfer` steht in `BAUROLLEN` (`agents/baulauf.py:59-60`), und
+   `REVIEW` nennt ihm den `entwurf-pruefer` (Zeile 74). Ein Runner zieht das Paket. Das
+   ist die Prüfung, an der schon drei Vorschläge dieser Fabrik gescheitert sind
+   (`builder`, `geschaeftsfuehrer`, `projektmanager`) — hier trägt sie.
+2. **Dateischnitt.** `spiel.md` ist **frei.** Nachgemessen über `^dateien:` aller 115
+   Paketdateien: außer diesem beansprucht sie nur 0118 (hängt daran) sowie 0001, 0021,
+   0039, 0054 und 0055 — die fünf stehen alle auf `fertig`. Kein `offen`, kein `gebaut`.
+3. **Abnahme.** Fünf Bedingungen, jede an einem Text oder einem `git diff` messbar.
+   Bedingung 5 grenzt den Schreibzugriff selbst ein und deckt sich mit `dateien`.
+4. **Abhängigkeit.** Keine. Nichts, worauf es wartet, steht aus.
+
+**Es geht deshalb noch in diesem Durchgang in den Bau** — als einziges der vier Pakete des
+Betreibers, und als einziger Zugang zu einem Gewerk, das sonst leer liefe.
+
+**Zwei Anmerkungen, die dem Bauagenten Arbeit sparen, ohne den Auftrag zu ändern:**
+
+- **Zu 0117 gibt es keine Reihenfolgesperre, und das ist Absicht.** Bedingung 4 stützt sich
+  auf dessen Ergebnis (*„Börsenplätze sind nach Paket 0117 Spielländer"*), aber der Satz,
+  den sie braucht, steht in diesem Paket. Der Nachweis verlangt keinen Blick in
+  `technik.md`, und Bedingung 5 verbietet ihn ausdrücklich. Eine Sperre würde einen ganzen
+  Durchgang kosten und nichts sichern. **Schreib den Verweis auf 0117 als Verweis hin, nicht
+  als nachgemessene Tatsache** — 0117 ist heute noch nicht gebaut.
+- **Die 890 aus deiner Tabelle sind die Zahl, die gilt**, nicht die 740 aus 0118. 0118 hängt
+  an diesem Paket, läuft also später und trägt den Ländergrundbau; die Schichtensumme ist
+  deine. Steht sie in `spiel.md`, ist sie der Bezugspunkt für alles Weitere.
 
 # Die Welt hat drei Schichten, und der Entwurf kennt nur eine
 
