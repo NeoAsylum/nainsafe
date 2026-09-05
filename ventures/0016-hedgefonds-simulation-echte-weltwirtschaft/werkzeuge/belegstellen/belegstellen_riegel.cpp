@@ -350,7 +350,7 @@
 //! nummeriert dann nicht mit ihr. Zwei Faelle in `ZITATFAELLE` halten genau das fest,
 //! je einer fuer die Ueberschrift und einer fuer die Aufzaehlung.
 //!
-//! **Drei Grenzen, ausgeschrieben, weil sie still waeren.**
+//! **Vier Grenzen, ausgeschrieben, weil sie still waeren.**
 //!
 //!   * *Kleinschreibung.* Ein Name ohne Anfuehrung beginnt mit einem Grossbuchstaben
 //!     oder einer Ziffer. Folgt dem Schluesselwort ein Verhaeltniswort, ist es kein
@@ -366,6 +366,11 @@
 //!     Gemessen und nicht vorsorglich: `rueckstand.md` sagt an einer Stelle sinngemaess,
 //!     etwas habe dort unter einer bestimmten Ueberschrift gestanden und sei heute nicht
 //!     mehr aufgefuehrt -- eine Aussage **ueber** ein Zitat und keines.
+//!   * *Das Zeilenende.* Der Name endet spaetestens dort, wo seine Zeile endet --
+//!     Paket 0105. Ohne diese vierte Grenze laeuft er ueber den Umbruch in den naechsten
+//!     Halbsatz hinein, denn der Absatzbau macht aus dem Umbruch ein Leerzeichen wie
+//!     jedes andere. Sie hat einen Preis, und er steht unten in einem eigenen Abschnitt
+//!     ausgeschrieben.
 //!
 //! ## Die Satzgrenze nach links -- Paket 0079, zweiter Teil
 //!
@@ -417,6 +422,58 @@
 //! `suchuntergrenze`, nicht die Aufrufstelle. Wer dort die Null von Hand einsetzt, laesst
 //! den Selbsttest gruen -- gemessen. Der Bestand faengt es: Genau dieser Mutant wird am
 //! 2026-09-05 rot an `rueckstand.md`. Beides zusammen deckt die Regel, keines allein.
+//!
+//! ## Der Name am Zeilenende -- Paket 0105
+//!
+//! Die Form **ohne** Anfuehrung hat eine Grenze, die die Form mit Anfuehrung nicht hat:
+//! Ihren Namen begrenzt kein Zeichen, das jemand eigens hinschreibt, sondern erst das
+//! naechste Satzzeichen. Gesucht wird aber **je Absatz**, und ein Absatz ist ein Block
+//! gleichartiger Zeilen, zu einer Zeichenkette zusammengezogen -- der Umbruch wird darin
+//! zu einem Leerzeichen wie jedes andere. Steht am Zeilenende kein Satzzeichen, laeuft
+//! der Name in die naechste Zeile hinein, und der Riegel schlaegt einen halben Nebensatz
+//! als Ueberschrift nach.
+//!
+//! **Gemessen und nicht gedacht.** Eine richtige Belegstelle in `rueckstand.md`, deren
+//! Satz nach dem Namen umbricht, macht die Fassung von vorher rot und nennt als gesuchte
+//! Ueberschrift den Namen samt der Fortsetzung. Richtet man dieselbe Fassung auf die
+//! Wurzel des Repos, kommen fuenf Stellen dieser Art dazu; sie liegen heute in
+//! `aufgaben/` und damit ausserhalb des Pruefwegs. Der Fehler ist mit Paket 0079
+//! entstanden und war dort in keiner Bedingung genannt.
+//!
+//! **Die Regel: der Name endet spaetestens dort, wo seine Zeile endet.** Entschieden
+//! wird an einer benannten Eigenschaft und nicht an einer Liste von Faellen -- gefragt
+//! wird `Absatz::zeile_bei`, dieselbe Herkunftsliste, aus der auch die Meldung ihre
+//! Nummer nimmt. Sie ist damit die einzige Stelle, an der der Umbruch im
+//! zusammengezogenen Wortlaut ueberhaupt noch zu sehen ist.
+//!
+//! **Die Grenze ist die Zeile des Namens, nicht die des Schluesselworts.** Steht das
+//! Wort am Zeilenende und der Name darunter, ist der Name trotzdem einer. Wer die Grenze
+//! am Schluesselwort festmacht, findet dort gar keine Fundstelle mehr -- ein eigener
+//! Fall in `ZITATFAELLE` haelt genau das fest.
+//!
+//! **Warum nicht der andere Weg.** Den Namen zu kuerzen, solange er sich nicht
+//! nachschlagen laesst, faenge auch die im Zitat umgebrochene Ueberschrift -- macht aber
+//! aus dem Vergleich eine Suche und braucht dafuer eine Untergrenze in Zeichen. Eine
+//! geratene Schwelle in einem Messgeraet ist genau das, was dieser Kopf bei der Suche
+//! nach links schon einmal verworfen hat, und hier laesst sie sich noch weniger messen:
+//! Je kuerzer der gepruefte Anfang, desto mehr Umbenennungen ueberleben ihn.
+//!
+//! **Was die Regel kostet, ausgeschrieben.** Eine Ueberschrift, die im Zitat ueber zwei
+//! Zeilen umgebrochen ist, wird nur noch bis zum Umbruch geprueft. Sie loest weiter auf,
+//! denn verglichen wird ohnehin der Anfang -- aber der gepruefte Teil ist kuerzer, und
+//! eine Umbenennung hinter dem Umbruch faellt nicht mehr auf. Die Richtung ist gewaehlt
+//! und nicht uebersehen: Der Wortlaut bis zum Umbruch ist der einzige, von dem feststeht,
+//! dass er zum Zitat gehoert. Ein vierter Fall in `ZITATFAELLE` schreibt diesen Preis aus.
+//!
+//! **Was sie nicht lockert -- und dort sitzt die Gefahr.** Sie kuerzt den Namen, sie
+//! verzeiht ihn nicht: Was die Zieldatei nicht fuehrt, bleibt ein Befund. Gemessen an
+//! derselben Stelle mit einer Ueberschrift, die es nicht gibt -- vorher rot, nachher rot,
+//! und die Meldung nennt jetzt den gekuerzten Namen statt des halben Nebensatzes.
+//!
+//! **Was sie auf dem Bestand kostet: nichts.** Derselbe Baum, dieselbe Stunde, einmal
+//! ohne und einmal mit der Regel -- 36 Zitate, 36 aufgeloest, 47 uebergangene
+//! Fundstellen auf beiden Seiten, und die Aufzaehlung der uebergangenen Stellen ist
+//! zeichengleich. Sie greift nur dort, wo vorher ein Umbruch mitgelesen wurde.
 //!
 //! ## Das Schluesselwort mit Abstand, der Name rechts -- Paket 0086
 //!
@@ -1387,7 +1444,7 @@ Kopfart kopfart(const fs::path& pfad) {
 /// Seit Paket 0105 traegt sie eine zweite Aufgabe: Sie ist die **einzige** Stelle, an
 /// der ein Zeilenumbruch im zusammengezogenen Wortlaut noch zu sehen ist. Im Text ist
 /// er ein Leerzeichen wie jedes andere; in dieser Liste ist er der Sprung von einer
-/// Nummer zur naechsten. Begruendung im Kopf, Abschnit\164 zum Zeilenumbruch.
+/// Nummer zur naechsten. Begruendung im Kopf, Abschnit\164 "Der Name am Zeilenende".
 struct Absatz {
     std::string text;
     std::vector<std::size_t> zeile;

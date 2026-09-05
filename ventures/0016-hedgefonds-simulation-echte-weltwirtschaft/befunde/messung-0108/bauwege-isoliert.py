@@ -14,10 +14,24 @@ gehoerte nicht zu dieser Aenderung.
 
 Dieses Skript trennt beides. Es packt den Vorhabensbaum mit `git archive` aus einem
 Commit aus -- also **ohne** die fremden Halbstaende --, legt ihn zweimal hin und
-tauscht in der zweiten Kopie allein `werkzeugkette.cmake` gegen die Fassung im
-Arbeitsbereich. Danach faehrt es beide Baeume ueber dieselben sechs Kombinationen aus
-Bauweg und Profil und vergleicht Konfigurations-, Bau- und `ctest`-Code sowie die Zahl
-uebersetzender Ziele.
+setzt in **beide** Kopien `werkzeugkette.cmake` ausdruecklich: in `vorher` die
+eingefrorene Fassung `befunde/messung-0108/werkzeugkette-vorher.cmake`, in `nachher`
+die aus dem Arbeitsbereich. Danach faehrt es beide Baeume ueber dieselben sechs
+Kombinationen aus Bauweg und Profil und vergleicht Konfigurations-, Bau- und
+`ctest`-Code sowie die Zahl uebersetzender Ziele.
+
+**Warum beide Kopien gesetzt werden und nicht nur die zweite** (geaendert am
+2026-09-05, nachdem die Aenderung committet war): Bis dahin nahm `vorher` die Fassung
+aus dem Commit. Sobald die Aenderung in `HEAD` steht, ist das dieselbe Datei wie im
+Arbeitsbereich -- die zwei Baeume sind gleich, und die Messung sagt nichts mehr. Wer
+stattdessen einen aelteren Commit waehlt, um an die alte Fassung zu kommen, nimmt
+dessen ganzen uebrigen Baum mit, und der kann aus fremdem Grund rot sein.
+Gemessen am 2026-09-05: aus `4ee0f79` ausgepackt uebersetzte der Bauweg
+`arbeitsbereich` in beiden Profilen nicht --
+`werkzeuge/belegstellen/belegstellen_riegel.cpp:1824: too many initializers for
+'std::__array_traits<...>'`, an beiden Staenden dieselbe Zeile. Ab hier ist der
+Commit allein die **Umgebung**; welche zwei Fassungen verglichen werden, haengt nicht
+mehr an ihm.
 
 Zwei Aussagen kommen dabei heraus, und beide werden gebraucht:
 
@@ -28,8 +42,12 @@ Zwei Aussagen kommen dabei heraus, und beide werden gebraucht:
 
 Aufruf aus WSL heraus:
 
-    python3 befunde/messung-0108/bauwege-isoliert.py            # gegen HEAD
-    python3 befunde/messung-0108/bauwege-isoliert.py 456aefa
+    python3 befunde/messung-0108/bauwege-isoliert.py            # Umgebung aus HEAD
+    python3 befunde/messung-0108/bauwege-isoliert.py 456aefa    # Umgebung aus 456aefa
+
+Das Argument waehlt allein die Umgebung. Nimm einen Commit, dessen uebriger Baum
+gruen uebersetzt -- sonst ist das Rot des Bauwegs `arbeitsbereich` an beiden Staenden
+dasselbe und sagt ueber diese Aenderung nichts.
 
 Rueckgabe 0 heisst: kein Unterschied zwischen den Staenden, und jeder Code 0.
 """
@@ -44,6 +62,10 @@ from io import BytesIO
 from pathlib import Path
 
 WURZEL = Path(__file__).resolve().parents[2]
+# Die zwei verglichenen Fassungen stehen hier und kommen nicht aus dem Commit -- die
+# Begruendung steht oben im Kopf dieser Datei.
+KETTE_NACHHER = WURZEL / "werkzeugkette.cmake"
+KETTE_VORHER = Path(__file__).resolve().parent / "werkzeugkette-vorher.cmake"
 WEGE = {"arbeitsbereich": ".", "kern": "kern", "pruefstand": "pruefstand"}
 PROFILE = ("ON", "OFF")
 ZIELZAHL = re.compile(r"(\d+) uebersetzende Ziele")
@@ -127,8 +149,11 @@ def main():
         baeume[stand] = b
     # Genau eine Datei unterscheidet die beiden Baeume. Nachgewiesen und nicht beteuert:
     # die Liste der Unterschiede wird unten gedruckt.
-    (baeume["nachher"] / "werkzeugkette.cmake").write_bytes(
-        (WURZEL / "werkzeugkette.cmake").read_bytes())
+    for stand, kette in (("vorher", KETTE_VORHER), ("nachher", KETTE_NACHHER)):
+        if not kette.is_file():
+            print("FEHLT: " + str(kette))
+            return 2
+        (baeume[stand] / "werkzeugkette.cmake").write_bytes(kette.read_bytes())
     r = subprocess.run(["diff", "-rq", str(baeume["vorher"]), str(baeume["nachher"])],
                        capture_output=True, text=True)
     unterschiede = [t for t in r.stdout.splitlines() if t.strip()]

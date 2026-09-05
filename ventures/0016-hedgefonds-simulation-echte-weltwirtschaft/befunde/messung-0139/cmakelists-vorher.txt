@@ -51,14 +51,6 @@ endif()
 file(GLOB KERN_QUELLEN CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB KERN_KOEPFE  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/kern/*.hpp)
 
-# Die Proben werden seit Paket 0139 hier eingesammelt und nicht erst unten bei den
-# Testzielen: Der Sperrebindungsriegel darunter prueft sie mit denselben zwei
-# Bedingungen wie die Bibliotheksquellen, und er steht vor den `add_library`-Aufrufen.
-# Es bleibt bei **einem** Sammler fuer die Proben -- zwei Aufrufe auf dasselbe Muster
-# koennten auseinanderlaufen, und dann pruefte der Riegel eine andere Menge, als
-# gebaut wird.
-file(GLOB KERN_PROBEN  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
-
 # ---------------------------------------------------------------------------
 # Der Sperrebindungsriegel (Paket 0134)
 # ---------------------------------------------------------------------------
@@ -76,8 +68,8 @@ file(GLOB KERN_PROBEN  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 # als Nachweis, und ein `grep` in einem Kommentar laeuft nur, wenn ihn jemand liest und
 # tippt.
 #
-# Der Riegel gehoert genau hierhin, weil die Sammler darueber die Luecke aufmachen:
-# Sie lesen Quellen und Proben ein, statt sie aufzuzaehlen. Das ist gewollt
+# Der Riegel gehoert genau hierhin, weil die beiden Zeilen darueber die Luecke
+# aufmachen: Der Sammler liest die Quellen ein, statt sie aufzuzaehlen. Das ist gewollt
 # -- jedes spaetere Kernpaket bringt seine Datei mit und muss keine Bauliste anfassen.
 # Der Preis ist, dass eine Quelle **ohne** die Sperre ebenso ohne jeden Eingriff in
 # beide Bibliotheken kommt. Gemessen im Vorschlag zu diesem Paket: eine zugelegte
@@ -96,19 +88,9 @@ file(GLOB KERN_PROBEN  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 #
 # **Was er nicht sieht**, damit es niemand fuer geprueft haelt: Er liest Zeilen, er
 # verarbeitet nicht vor. Eine `#include`-Zeile innerhalb eines `/* */`-Blocks oder
-# hinter einem `#if 0` zaehlt er mit.
-#
-# Seit Paket 0139 deckt er **beide** Mengen, `src/*.cpp` und `test/*.cpp`, mit
-# denselben zwei Bedingungen und derselben Meldung. Unterschieden werden die beiden
-# nur am Namen: Die Meldung nennt den Pfad ab `kern/`, also `src/...` oder `test/...`.
-#
-# Warum die Proben dazugehoeren, obwohl sie keine Uebersetzungseinheit der beiden
-# Bibliotheken sind: Sie sind die teurere Haelfte, nicht die billigere. Was eine
-# Bibliotheksquelle falsch rechnet, faellt an einer Probe auf. Was eine **Probe**
-# falsch rechnet, faellt an nichts auf -- sie ist die Stelle, die den Sollwert nennt.
-# Eine Probe, die ihren Erwartungswert auf `double` ausrechnet oder eine eigene
-# Fassung der Strichrechnung mitbringt, uebersetzt gruen und deckt von da an genau die
-# Abweichung zu, gegen die sie geschrieben wurde.
+# hinter einem `#if 0` zaehlt er mit. Und er deckt `src/`, nicht `test/` -- die Proben
+# sind keine Uebersetzungseinheiten der beiden Bibliotheken, und die Abnahme dieses
+# Pakets verlangt sie nicht.
 set(KERN_SPERRKOPF "kern/sperre.hpp")
 string(REPLACE "." "\\." KERN_SPERRKOPF_MUSTER "${KERN_SPERRKOPF}")
 set(KERN_SPERRKOPF_MUSTER "[\"<]${KERN_SPERRKOPF_MUSTER}[\">]")
@@ -116,18 +98,12 @@ set(KERN_SPERRKOPF_MUSTER "[\"<]${KERN_SPERRKOPF_MUSTER}[\">]")
 # `CONFIGURE_DEPENDS` am Sammler oben bemerkt nur neue und verschwundene Dateien. Wer
 # die Include-Zeile aus einer **vorhandenen** Quelle entfernt, aendert die Dateiliste
 # nicht; ohne die folgende Zeile liefe der naechste Bau ohne neuen Konfigurationslauf
-# und damit ohne diesen Riegel. Sie gilt fuer beide Mengen.
-set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
-             ${KERN_QUELLEN} ${KERN_PROBEN})
+# und damit ohne diesen Riegel.
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${KERN_QUELLEN})
 
-foreach(datei IN LISTS KERN_QUELLEN KERN_PROBEN)
-  file(READ "${datei}" fabrik_inhalt)
-
-  # Der Kurzname wird gegen `kern/` gebildet und traegt damit sein Verzeichnis:
-  # `src/festkomma.cpp` gegen `test/festkomma_probe.cpp`. Das ist der einzige
-  # Unterschied, den die Meldungen zwischen den beiden Mengen machen -- und er
-  # genuegt, weil die Bedingung fuer beide dieselbe ist.
-  file(RELATIVE_PATH fabrik_kurzname "${CMAKE_CURRENT_SOURCE_DIR}" "${datei}")
+foreach(quelle IN LISTS KERN_QUELLEN)
+  file(READ "${quelle}" fabrik_inhalt)
+  file(RELATIVE_PATH fabrik_kurzname "${CMAKE_CURRENT_SOURCE_DIR}" "${quelle}")
 
   # Gesucht wird die Include-**Anweisung**, nicht die Zeile: vom Zeilenanfang bis zur
   # schliessenden Klammer des Kopfnamens. Ein Zeilenkommentar dahinter -- jede
@@ -150,10 +126,9 @@ foreach(datei IN LISTS KERN_QUELLEN KERN_PROBEN)
     message(FATAL_ERROR
       "Sperrebindungsriegel (T4, T7 Massnahme 4.2): '${fabrik_kurzname}' bindet "
       "\"${KERN_SPERRKOPF}\" nicht. In dieser Uebersetzungseinheit gilt damit weder "
-      "die Gleitkommasperre noch die Sperre der Ueberlaufbausteine -- die Datei wird "
-      "trotzdem gebaut: unter `src/` in `kern` und `kern_geprueft`, unter `test/` als "
-      "eigenes Programm auf denselben Werten. Die fehlende Zeile gehoert ans Ende des "
-      "Include-Blocks.")
+      "die Gleitkommasperre noch die Sperre der Ueberlaufbausteine -- die Quelle wird "
+      "trotzdem in `kern` und `kern_geprueft` uebersetzt. Die fehlende Zeile gehoert "
+      "ans Ende des Include-Blocks.")
   endif()
 
   math(EXPR fabrik_letzter "${fabrik_anzahl} - 1")
@@ -168,18 +143,12 @@ foreach(datei IN LISTS KERN_QUELLEN KERN_PROBEN)
   endif()
 endforeach()
 
-# Die beiden Zahlen stehen in der Meldung und in keiner Abnahme: Sie sind eine Messung
-# mit Verfallsdatum, die mit jeder neuen Kernquelle und jeder neuen Probe steigt.
-#
-# **Getrennt** genannt, und das ist keine Kosmetik: Eine Summe verschweigt, wenn eine
-# der beiden Mengen leer bleibt. Ein Riegel, dem der zweite Sammler abhanden kaeme,
-# meldete dann weiter eine plausible Zahl und saehe aus wie einer, der beides prueft.
-list(LENGTH KERN_QUELLEN fabrik_anzahl_quellen)
-list(LENGTH KERN_PROBEN  fabrik_anzahl_proben)
+# Die Zahl steht in der Meldung und in keiner Abnahme: Sie ist eine Messung mit
+# Verfallsdatum, die mit jeder neuen Kernquelle steigt.
+list(LENGTH KERN_QUELLEN fabrik_anzahl)
 message(STATUS
-  "Sperrebindungsriegel (T4, T7 Massnahme 4.2): ${fabrik_anzahl_quellen} Kernquelle(n) "
-  "und ${fabrik_anzahl_proben} Probe(n) geprueft, jede bindet "
-  "\"${KERN_SPERRKOPF}\" als letzten #include.")
+  "Sperrebindungsriegel (T4, T7 Massnahme 4.2): ${fabrik_anzahl} Kernquelle(n) "
+  "geprueft, jede bindet \"${KERN_SPERRKOPF}\" als letzten #include.")
 
 add_library(kern STATIC ${KERN_QUELLEN} ${KERN_KOEPFE})
 target_include_directories(kern PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
@@ -212,9 +181,8 @@ endif()
 
 # Jede Datei unter `test/` wird ein eigenes Programm und ein eigener CTest-Eintrag --
 # wieder aus Kollisionsgruenden: Ein spaeteres Paket legt seine Probe daneben, statt
-# eine gemeinsame Datei zu erweitern. `KERN_PROBEN` steht seit Paket 0139 weiter oben,
-# beim Sammler der Quellen: Der Sperrebindungsriegel braucht die Liste vor den
-# Bibliotheken, und gebaut wird genau die Menge, die er geprueft hat.
+# eine gemeinsame Datei zu erweitern.
+file(GLOB KERN_PROBEN CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 
 foreach(probe IN LISTS KERN_PROBEN)
   get_filename_component(name ${probe} NAME_WE)

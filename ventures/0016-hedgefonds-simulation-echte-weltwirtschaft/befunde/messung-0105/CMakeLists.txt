@@ -57,3 +57,22 @@ endforeach()
 set_tests_properties(riegel_vorher_auf_baum_gut PROPERTIES WILL_FAIL TRUE)
 set_tests_properties(riegel_vorher_auf_baum_tot PROPERTIES WILL_FAIL TRUE)
 set_tests_properties(riegel_nachher_auf_baum_tot PROPERTIES WILL_FAIL TRUE)
+
+# Die Rueckgabewerte im Wortlaut. `WILL_FAIL` oben beweist nur "ungleich 0", und der
+# Riegel unterscheidet 1 (Befund am Bestand) von 2 (gerissener Selbsttest). Ohne diesen
+# Eintrag koennte ein kaputtes Programm als gefangener Fehler durchgehen.
+add_test(NAME rueckgabewerte
+         COMMAND sh ${MESS_WURZEL}/rueckgabewerte.sh
+                 $<TARGET_FILE:riegel_vorher> $<TARGET_FILE:riegel_nachher>
+                 ${MESS_WURZEL})
+
+# Der Arbeitsbaum von heute -- der "dann geltende Korpus" aus der Abnahme. Die drei
+# Baeume oben sind der eingefrorene Stand aus `bezugsstand.txt`; hier laufen beide
+# Fassungen **im selben Aufruf** ueber den Baum, den der Baulauf sieht. Nur so ist der
+# Vergleich gegen einen Bestand haltbar, an dem fremde Laeufe gleichzeitig schreiben.
+foreach(ziel riegel_vorher riegel_nachher)
+  add_test(NAME ${ziel}_auf_arbeitsbaum
+           COMMAND ${ziel}
+                   ${MESS_ARBEITSBAUM}
+                   ${MESS_ARBEITSBAUM}/../../specs/0016-hedgefonds-simulation-echte-weltwirtschaft)
+endforeach()

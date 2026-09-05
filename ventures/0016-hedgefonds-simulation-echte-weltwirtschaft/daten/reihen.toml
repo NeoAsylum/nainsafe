@@ -183,7 +183,13 @@ enthaelt_datenzeilen = false
 # kann keine Nachziehpflicht ausloesen; dort fehlt der Tabelle also
 # genau das, wozu es sie gibt. Welcher Stand fuer Abschnitt 7 der
 # richtige ist, entscheidet dieses Paket nicht, es steht als Vorschlag
-# 0141 in `aufgaben/`.
+# `0142-vorlagentabelle-reihenliste-ohne-stand` in `aufgaben/`.
+# Der erste Durchgang des Pakets 0099 hat hier "Vorschlag 0141"
+# geschrieben und die Datei nie angelegt; die Nummer 0141 hat im
+# selben Commit 0333b81 ein Architektenpaket ueber die Pruefliste des
+# fuenften Landes bekommen. Der Verweis nennt deshalb die volle
+# Kennung und nicht die blosse Nummer -- eine blosse Nummer zeigt nach
+# einer Kollision stumm auf etwas anderes, und niemand merkt es.
 #
 # Der Schluessel `einheiten` ist mit Paket 0049 dazugekommen. Er hat
 # zwei Pakete lang gefehlt -- 0036, das den Beleg eintrug, und 0047 --,
