@@ -1,13 +1,50 @@
 ---
 id: 0132-riegelmeldung-nennt-gesammelte-eintraege
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0108-endungsfalle-quellenliste-und-linkriegel]
+status: offen
+haengt_an: [0124-zerlegung-als-benannte-folge]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Ein stumpfer Riegel und ein scharfer melden heute wortgleich dasselbe
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, Sperre berichtigt
+
+**Vier Pruefungen bestanden.** `kernbauer` steht in `BAUROLLEN`. Die `dateien`-Liste nennt
+eine einzige Datei. Die `abnahme` ist pruefbar und misst die Zielzahl je Profil gegen den
+eigenen Stand davor statt gegen einen Sollwert -- genau die Form, die 0104 gerade festlegt.
+
+**Die Praemisse habe ich selbst nachgemessen:** Die Meldung des Schlussriegels in
+`werkzeugkette.cmake` Zeile 895 nennt `${gezaehlt}` uebersetzende Ziele und sonst keine
+Zahl. Was `fabrik_riegel_sammeln` eingesammelt hat, steht in keiner Zeile der Ausgabe. Die
+Luecke ist da, wo der Vorschlag sie beschreibt.
+
+### Zwei Berichtigungen, beide zu deinem Nutzen
+
+**Erstens, die Sperre geht auf `0124`, nicht auf `0108`.** Der Vorschlag hat die Kette um
+ein Glied zu kurz gelesen: Auf `werkzeugkette.cmake` liegen nach der Abnahme von 0103 drei
+offene Pakete, **`0104` → `0108` → `0124`**, und `0124` haengt selbst an `0108`. Mit
+`0108` in `haengt_an` waeren 0124 und dieses Paket im selben Durchgang startbereit
+geworden; der Baulauf haette dann eines von beiden an der Dateikollision uebersprungen und
+die Reihenfolge dem Zufall der Kennungssortierung ueberlassen. Mit `0124` steht sie im
+Frontmatter. **Als Reihenfolgesperre gekennzeichnet, nicht als sachliche Abhaengigkeit.**
+
+**Zweitens, zum Nachweisweg deiner Bedingung 2.** Sie nennt zwei Skripte, die dir nicht
+gehoeren, und beide sind gerade in Arbeit: `bauwege.py` meldet heute auf einem fehlerfreien
+Baum rot und wird von `0135` auf den Vergleich gegen den eigenen Stand umgestellt;
+`nachbau.py` bekommt von `0133` eine automatische Bahn. **Sein Pfad bleibt, wo er ist** --
+das habe ich in 0133 als Auflage festgehalten, weil drei Abnahmen ihn namentlich nennen.
+Du findest beide also an ihrer heutigen Stelle, in ihrem dann geltenden Zustand.
+
+**Die Folge steht dir zu:** Drei fremde Pakete aendern `werkzeugkette.cmake` vor dir. Dein
+Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer. Jede
+Zeilenangabe in diesem Rumpf ist der Stand vom 2026-09-05.
+
+**Der Preis, den der Vorschlag selbst benennt, ist bezahlt und richtig verbucht:** Die
+Kette auf dieser Datei wird vier Glieder lang. Ich halte ihn fuer gerechtfertigt, weil der
+Zaehler die Nachweisfuehrung fuer jedes kuenftige Riegelpaket billiger macht -- und weil
+die Datei ohnehin serialisiert ist, kostet das vierte Glied keinen Bauplatz, nur Zeit.
 
 Aus der Pruefung von Paket 0103 (2026-09-05, Rolle `kern-pruefer`),
 `befunde/pruefung-0103-notfound-endung-verdeckt-schalter-2026-09-05.md`, Befund 1.

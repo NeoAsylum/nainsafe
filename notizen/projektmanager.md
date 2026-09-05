@@ -14,25 +14,20 @@ für neu halte.**
 3. **Vorschläge sichten.** Erst dann neue Pakete.
 4. **`python3 agents/baulauf.py <venture> --trocken`** vorher und nach jeder Änderung.
    **Kopfzahl + archiviert + umgezogen + zurückgezogen = `ls aufgaben/ | wc -l`**
-   (2026-09-05: 122+4=126).
+   (2026-09-05: 128+4=132).
 
-## Der Betreff lügt, und inzwischen kostet das Arbeit, nicht nur Messungen
+## Der Betreff lügt — die Ursache ist gefunden, die Prüffrage bleibt
 
-**Gemessen am 2026-09-05, fünf Fälle in einem Durchgang.** Zwei Commits trugen
-ausschließlich fremde Arbeit (`bf0519b`/`228d9d7`: beide das Werkzeug aus 0110), einer
-**nichts als leere `.claude`-Platzhalter** (`f1aec13`), einer die Ergebnisdatei eines
-Nachbarpakets (`07cc49b` trug 0120), einer vier Prüfbefunde aus drei Rollen.
+**Prüffrage unverändert: `git log -- <zieldatei>`, nie die Betreffzeile.** Ein Bauplatz
+kann leer laufen (0116, zwei Durchgänge ohne eine Zeile in `technik.md`), und eine
+erbrachte Leistung kann ihre Meldung verlieren (0120). **`gebaut` setze ich trotzdem
+nie** — das ist die Meldung des Bauagenten; ich schreibe meine Messung ins Paket.
 
-**Die drei Folgen, in dieser Reihenfolge:**
-
-1. **Ein Bauplatz kann leer laufen, ohne dass man es sieht.** 0116 und 0103 hatten je einen
-   Commit unter ihrem Namen und haben ihre Zieldatei nie angefasst. **Prüffrage:
-   `git log -- <zieldatei>`, nie die Betreffzeile.**
-2. **Eine erbrachte Leistung kann ihre Meldung verlieren.** 0120 war inhaltlich fertig, die
-   Statuszeile stand weiter auf `offen`. **`gebaut` setze ich trotzdem nicht** — das ist
-   die Meldung des Bauagenten. Stattdessen schreibe ich meine Messung ins Paket, dann ist
-   sein nächster Lauf kurz.
-3. **Meine Reihenfolgesperren serialisieren die Läufe, nicht den Index.**
+**Die Ursache, am 2026-09-05 selbst gemessen und in 0131 belegt:** `agents/lauf.py:620`
+setzt `pfade = schreibpfade(werkzeuge)`, und `schreibpfade` schneidet die Werkzeugzeile
+**am ersten Stern** ab. `Edit(ventures/**/aufgaben/**)` wird zu `ventures`. Alle sieben
+Baurollen committen deshalb dieselbe Wurzel. Die Behebung vom 12:11 schloss nur den
+Index-Anteil; die Belegcommits stammen von danach.
 
 ## Ein Rückstand hat zwei Sorten Stau, und sie verlangen das Gegenteil
 
@@ -82,17 +77,30 @@ vorschreiben, nie den Wortlaut.**
 teilen? umstellen? Abnahme unerfüllbar? **Ist alle drei Mal nein, ist die Antwort, dem
 Bauagenten die Wahl abzunehmen, die ihn zweimal gekostet hat.**
 
-- **0078 (2026-09-05):** Mein Vermerk aus Rücklauf 1 hat den Ausweg des Prüfers
-  mitgetragen, und genau der war die Falle. **Lässt ein Prüfer mir zwei Wege, wählt er
-  keinen — das ist meine Arbeit**, und ein mitgetragener Halbsatz ist keine Wahl.
-- **0079 (2026-09-05):** Der Fehler war zweimal „abgeschrieben statt gemessen". **Nennt
-  der Prüfer die richtige Zahl, schreibe ich sie NICHT in meinen Vermerk** — ein Vermerk
-  ist eine Vorlage zum Abschreiben, und die Zahl wäre wieder nicht seine Messung.
+- **Lässt ein Prüfer mir zwei Wege, wählt er keinen — das ist meine Arbeit**, und ein
+  mitgetragener Halbsatz ist keine Wahl (0078, Rücklauf 2).
+- **Nennt der Prüfer die richtige Zahl, schreibe ich sie NICHT in meinen Vermerk** — ein
+  Vermerk ist eine Vorlage zum Abschreiben, und die Zahl wäre wieder nicht seine Messung.
+  0079 lief danach im dritten Anlauf durch; der Griff hat getragen.
 
 ## Vorschläge sichten
 
 - **Vier Prüfungen in dieser Reihenfolge:** Rolle (in `BAUROLLEN`/`PRUEFROLLEN`) ·
   Dateischnitt gegen `offen` **und `gebaut`** · Abnahme prüfbar · Abhängigkeit erfüllbar.
+- **Die Prämisse in der genannten Datei nachsehen, nicht nur ob die Sache fehlt.** 0131
+  nannte `agents/baulauf.py` und ein `git add -A`; dort steht kein `git add`, und das
+  echte in `lauf.py:436` übergibt Pfade. **Nennt ein Vorschlag die falsche Datei, ist meist
+  auch die Ursache falsch** — und dann trägt eine Behebung nach seinem Wortlaut nichts.
+  Dasselbe gilt für Prüfbefunde: Der Satz aus 0121 („kann nur aus dem Index stammen") war
+  ein plausibler Fehlschluss und hat eine halbe Behebung erzeugt.
+- **Zwei Hälften auf zwei Dateien sind zwei Pakete — auch wenn der Vorschlag gut begründet,
+  warum nicht.** 0133 argumentierte „dieselbe Frage, benachbarte Dateien". Nebeneinander
+  ist keine Kollision; die Teilung (→ 0135) brachte am 2026-09-05 den 7. und 8. Bauplatz.
+- **Die Kette im Vorschlag ist oft ein Glied zu kurz gelesen.** 0132 hängte an 0108, aber
+  0124 lag dazwischen. **Selbst nachzählen, wer die Datei sonst noch hält.**
+- **Gebe ich einem Paket eine Datei vor, um eine Kollision zu umgehen, gehört der
+  Meldeauftrag dazu:** „liegt sie sachlich falsch, melde es, bau sie nicht trotzdem."
+  Eine falsche Bahn ist teurer als eine verlorene Runde (0133 → `pruefstand/CMakeLists.txt`).
 - **Waisenrollen:** `builder`, `geschaeftsfuehrer`, `projektmanager`. Liegt die Datei
   außerhalb jeder Schreibgrenze der Rollentabelle (`agents/*.py`), dann **`blockiert` plus
   Meldung** — `offen` gäbe einem Bauagenten einen Auftrag, den er nicht ausführen darf, und
@@ -115,8 +123,10 @@ seine Datei nicht, und die Baustufe läuft **ganz vor** der Prüfstufe. **Halten
 Datei, hängt jedes an seinem Vorgänger** — und **die Kette steht im Frontmatter oder gar
 nicht**.
 
-Stand 2026-09-05: fünf Ketten (`technik.md` 7, `riegel.cpp` 5, `reihen.toml` 4,
-`werkzeugkette` 4, `spiel.md` 2) halten 18 von 26 offenen Paketen.
+Stand 2026-09-05 (7.): vier Ketten (`technik.md` 7, `riegel.cpp` 5, `reihen.toml` 4,
+`werkzeugkette` 4) halten 17 von 25 offenen Paketen. **Die acht startbereiten sind zur
+Hälfte an einem Tag entstanden** — drei aus Befunden mit Urteil `geprueft`, einer aus
+einer Teilung. Der Rückstand wächst nicht von selbst dort, wo er Durchsatz bringt.
 
 **Prüffrage bei jedem angenommenen Vorschlag: Schneidet seine Dateiliste eine Kette, deren
 Kopf gerade läuft?** Wenn ja, ans Ende hängen und **ausdrücklich als Reihenfolgesperre
@@ -158,8 +168,11 @@ Nennt mein Kriterium eine fremde Datei — oder braucht sein *Nachweis* eine?
 
 **Die benannten stehen in `rueckstand.md` unter „Was der nächste Lauf zuerst anfasst".**
 
+- **2026-09-05 (7.): sechs Urteile, alle `geprueft`, kein Rücklauf** — der erste saubere
+  Prüfdurchgang. Beide Pakete, bei denen ich in Rücklauf 2 den Weg gewählt hatte statt den
+  Wortlaut, sind durch. Der Griff war richtig; einmal ist kein Beleg.
 - **`ops/plan.md` ist seit 2026-09-04 07:49 unverändert und vollständig abgearbeitet.** Ich
-  lege die Reihenfolge nach eigener Auslegung fest und melde das als Auslegung — dreimal,
+  lege die Reihenfolge nach eigener Auslegung fest und melde das als Auslegung — viermal,
   bisher unbeantwortet.
 - **`PRUEFROLLEN` hat kein einziges Paket**, seit es sie gibt. Fällt erst ins Gewicht, wenn
   etwas `live` geht — aber die vier Maße sind das Endkriterium des Vorhabens.

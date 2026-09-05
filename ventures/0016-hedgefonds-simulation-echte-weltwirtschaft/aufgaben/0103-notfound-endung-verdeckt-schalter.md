@@ -1,7 +1,7 @@
 ---
 id: 0103-notfound-endung-verdeckt-schalter
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0076-riegel-sammeln-notfound-je-quelle, 0094-linkschalterform-durchgereichtes-l]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

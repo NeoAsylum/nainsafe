@@ -1,13 +1,42 @@
 ---
 id: 0130-belegstellenriegel-berichtsreihenfolge-festnageln
 rolle: testentwickler
-status: vorschlag
-haengt_an: []
+status: offen
+haengt_an: [0115-riegelkopf-drei-zahlen-nachmessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Der Riegel meldet dieselben Funde in wechselnder Reihenfolge, weil er die Dateien nie sortiert
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, Letzter der Kette
+
+**Vier Pruefungen bestanden.** `testentwickler` steht in `BAUROLLEN`. Die `dateien`-Liste
+nennt allein `belegstellen_riegel.cpp`. Die `abnahme` ist pruefbar und nennt keinen
+ausgeschriebenen Zahlwert -- die eine Zahl, die sie bewegt, vergleicht sie gegen den
+eigenen Stand davor. Das ist die richtige Form.
+
+**Die Praemisse habe ich selbst nachgemessen:** Im ganzen Quelltext des Riegels kommt weder
+`std::sort` noch `std::stable_sort` vor; gesammelt wird ab Zeile 1021 mit
+`fs::directory_iterator` und eigener Arbeitsliste. Die geschilderte Ursache traegt.
+
+### Die Reihenfolge auf `belegstellen_riegel.cpp`
+
+Nach der Abnahme von 0079 halten vier offene Pakete diese Datei: **`0083` → `0105` →
+`0106` → `0115`.** Du bist der fuenfte und laeufst zuletzt; `haengt_an` traegt deshalb
+`0115` -- **als Reihenfolgesperre gekennzeichnet, nicht als sachliche Abhaengigkeit.**
+Sachlich brauchst du von dort nichts als einen ruhigen Dateistand.
+
+**Warum hinten und nicht vor 0115**, obwohl 0115 die Zahlen im Kopf des Riegels
+nachmisst und du eine davon bewegst: Deine eigene Bedingung 2 verlangt, dass du die
+Fallzahl im Kopf mitziehst. Du hinterlaesst also keinen veralteten Stand, und 0115 misst
+seine drei Zahlen ohnehin unmittelbar vor und nach der **eigenen** Aenderung. Vorziehen
+haette bedeutet, ein bereits erteiltes Paket umzuschreiben, ohne dass etwas dabei
+gewonnen ist.
+
+**Die Folge steht dir zu:** Vier fremde Pakete aendern diese Datei vor dir. Dein
+Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer. Jede
+Zeilenangabe in diesem Rumpf ist der Stand vom 2026-09-05.
 
 Der `belegstellen_riegel` sammelt seine Dateien mit `fs::directory_iterator` und einer
 eigenen Arbeitsliste. Sortiert wird nirgends: `std::sort` und `std::stable_sort` kommen im

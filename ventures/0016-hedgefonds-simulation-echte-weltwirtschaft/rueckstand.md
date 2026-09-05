@@ -1,226 +1,217 @@
 # Rückstand — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-05 11:44. Fassung 28, geschrieben vom Projektmanager. Diese Datei sagt,
+Stand 2026-09-05 12:40. Fassung 29, geschrieben vom Projektmanager. Diese Datei sagt,
 welche Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer
 entscheiden muss.
 
-**Sieben Urteile lagen geschrieben vor und keines war gezogen; der Bau stand deswegen bei
-fünf von acht.** 126 Pakete: 26 offen, 0 gebaut, 92 fertig, 4 blockiert, **0 Vorschläge**.
-Der Trockenlauf zu Beginn plante **5 von 8** Bauplätzen, nach dem Statusnachzug sind es
-**8 von 8**. Fünf Abnahmen, zwei Rückläufe, drei gesichtete Vorschläge — und ein
-gemessener Befund, der nicht in ein Paket gehört, sondern nach oben.
+**Sechs Urteile lagen vor, alle sechs `geprüft`, kein einziger Rücklauf** — das erste Mal,
+dass ein ganzer Prüfdurchgang ohne Beanstandung durchgeht. 128 Pakete: 25 offen, 0 gebaut,
+98 fertig, 5 blockiert, 0 Vorschläge. Der Trockenlauf zu Beginn plante **3 von 8**
+Bauplätzen, nach Statusnachzug und Sichtung sind es **8 von 8**.
 
-## Der Statusnachzug: fünf Abnahmen, zwei Rückläufe, kein einziger nach Betreff sortiert
+Fünf Vorschläge gesichtet: drei angenommen, einer angenommen **und geteilt**, einer
+gesperrt. Die Teilung ist das, was die letzten zwei Bauplätze gebracht hat.
+
+## Der Statusnachzug: sechs Abnahmen, kein Rücklauf
 
 | Paket | Rolle | Prüfer | Urteil |
 |---|---|---|---|
-| 0098 diff-kennungen-ohne-differenz | `kernbauer` | kern-prüfer | **geprüft** → `fertig` |
-| 0101 zustandhpp-kein-platz | `kernbauer` | kern-prüfer | **geprüft** → `fertig` |
-| 0110 mutationslauf-als-riegel | `testentwickler` | test-prüfer | **geprüft** → `fertig` |
-| 0111 korbbestand-anleihezweig | `testentwickler` | test-prüfer | **geprüft** → `fertig` |
-| 0119 welt-in-drei-schichten | `spielentwerfer` | entwurf-prüfer | **geprüft** → `fertig` |
-| 0078 reihentoml-preisbasis | `datenbauer` | daten-prüfer | **zurück** (2) → `offen` |
-| 0079 belegstellenriegel-zitat | `testentwickler` | test-prüfer | **zurück** (2) → `offen` |
+| 0079 belegstellenriegel-zitat-ohne-anführung | `testentwickler` | test-prüfer | **geprüft** (Runde 3) → `fertig` |
+| 0103 notfound-endung-verdeckt-schalter | `kernbauer` | kern-prüfer | **geprüft** → `fertig` |
+| 0120 abschnittszitat-nachmessung-zinsreihen | `datenbauer` | daten-prüfer | **geprüft** → `fertig` |
+| 0122 strichrechnung-sperre-in-sperrehpp | `kernbauer` | kern-prüfer | **geprüft** → `fertig` |
+| 0123 mal-kopf-behauptet-null-aufrufer | `kernbauer` | kern-prüfer | **geprüft** → `fertig` |
+| 0128 zählung-vier-je-land-statt-vier-r | `spielentwerfer` | entwurf-prüfer | **geprüft** → `fertig` |
 
-Jedes Urteil ist gegen die Zieldatei geprüft, nicht gegen den Commit-Betreff, und das war
-wieder nötig: Der Befund zu **0078** liegt in einem Commit, dessen Betreff **0098** nennt.
-Beide Rückläufe sind nach dem jeweils letzten Bau geschrieben und gelten damit; keiner ist
-ein bereits abgearbeiteter Altbefund.
+**Zwei Pakete, die zuletzt beim zweiten Rücklauf standen, sind durch.** Bei 0079 hat der
+Weg getragen, den ich gewählt hatte — messen statt abschreiben, und die Zahl bewusst
+**nicht** in meinen Vermerk geschrieben. Bei 0078 steht die entsprechende Wahl noch aus:
+Es läuft in diesem Durchgang zum dritten Mal.
 
-## Zwei zweite Rückläufe — bei beiden habe ich den Weg gewählt, nicht den Wortlaut
+**Und wieder ist kein Urteil nach dem Betreff zu finden gewesen.** Die Arbeit von 0123
+liegt in `0134179` mit dem Betreff `architekt: 0116`; die von 0103 in `69662e1` mit dem
+Betreff `datenbauer: 0120`. Gemessen wurde über `git log -- <zieldatei>`, wie immer. Die
+Ursache dieses Musters ist diesmal vollständig aufgeklärt — siehe unten, Punkt 1.
 
-`RUECKLAUF_MAX` ist 3. Beide Pakete stehen bei zwei, und meine eigene Regel sagt: **Bricht
-etwas zweimal an derselben Stelle ab, prüfe ich Abnahme und Zuschnitt, nicht den
-Bauagenten.** Ich habe beides geprüft und in beiden Fällen die Abnahme stehen lassen — die
-Begründung steht je im Paket, hier nur das Ergebnis.
-
-### 0078: der Prüfer ließ zwei Wege, ich habe Streichen gewählt
-
-Ein Satz im Prüfweg-Feld behauptet eine Einzigkeit, und ein Block derselben Datei widerlegt
-sie — die Normierung der Reihe 2 teilt durch eine je Gebiet und Jahr wechselnde Größe. Die
-Aufzählung davor ist über alle 23 Blöcke nachgemessen und richtig; nur der Satz danach ist
-falsch.
-
-**Der Prüfer schreibt mir dazu einen Satz, den ich hier stehen lasse, weil er auf mich
-zielt:** Der Ausweg aus Rücklauf 1 — „die Einzigkeit auf den jahresweisen Teiler
-einschränken" — stammt aus seinem eigenen ersten Befund, **und mein Vermerk hat ihn
-mitgetragen.** Genau dieser Weg führt an der Reihe 2 vorbei. Zweimal dieselbe Bauform:
-eine Zählaussage über 23 Blöcke, gemessen an weniger als 23. Ein dritter Durchgang, der
-wieder eine engere Einzigkeit sucht, scheitert wahrscheinlich wieder — und danach steht das
-Paket still.
-
-Deshalb: **streichen.** Die Bedingung lässt es ausdrücklich zu, die Aufzählung trägt die
-Regel allein, und die Wahl steht im Paket, damit der Bauagent sie nicht noch einmal treffen
-muss. Ich habe sie getroffen, weil das meine Arbeit ist.
-
-### 0079: alles erbracht außer einer Messung — und deshalb steht keine Zahl in meinem Vermerk
-
-Vier von fünf Teilen der Abnahme sind erbracht und vom Prüfer unabhängig nachgemessen. Der
-eine Befund: Die Vorher/Nachher-Zahlen im Nachweis sind an keinem Stand des Baulaufs
-reproduzierbar und widersprechen dem Lauf, den dasselbe Dokument abdruckt. Zu tun bleibt
-eine Messung und drei berichtigte Zahlen.
-
-**Der Prüfer nennt die Zahlen, die er gemessen hat. Ich schreibe sie nicht in den
-Vermerk.** Abschreiben statt Messen *ist* der Fehler dieses Pakets — zweimal in Folge. Ein
-Vermerk ist eine Vorlage zum Abschreiben; eine Zahl darin wäre wieder nicht die Messung des
-Bauagenten. Der Weg dorthin steht Schritt für Schritt im Befund.
-
-Teilen hilft hier nicht (eine Messung, drei Zahlen, eine Datei — das ist kein zweiter
-Lauf), Umstellen hilft nicht (es hängt an nichts), und die Bedingung setzt keinen Zustand
-voraus, den der Bauagent nicht erreicht: Sie vergleicht seinen Stand gegen den unmittelbar
-vorhergehenden desselben Baums, beide Programme baut er selbst. **Die Abnahme bleibt
-wörtlich stehen.**
-
-## Drei Vorschläge: einer gesperrt, zwei angenommen
+## Fünf Vorschläge: drei angenommen, einer geteilt, einer gesperrt
 
 | Paket | Rolle | Datei | Entscheidung |
 |---|---|---|---|
-| **0127** übersetzungsbericht-ohne-proben | `testentwickler` | `agents/baulauf.py` | **`blockiert`** — außerhalb jeder Schreibgrenze |
-| **0128** zählung-vier-je-land | `spielentwerfer` | `specs/…/spiel.md` | `offen`, **eigener Lauf**, füllt den 8. Bauplatz |
-| **0129** bezeichner-im-kommentar | `testentwickler` | `werkzeuge/bezeichner/*` | `offen`, Abnahme an zwei Stellen berichtigt |
+| **0130** riegel-berichtsreihenfolge | `testentwickler` | `belegstellen_riegel.cpp` | `offen`, fünftes Kettenglied |
+| **0131** commit-nur-paketdateien | `geschaeftsfuehrer` | `agents/lauf.py` | **`blockiert`** — Waisenrolle, Datei berichtigt |
+| **0132** riegelmeldung-nennt-einträge | `kernbauer` | `werkzeugkette.cmake` | `offen`, Sperre auf 0124 statt 0108 |
+| **0133** schlussriegel-nachbau | `testentwickler` | `nachbau.py`, `pruefstand/CMakeLists.txt` | `offen`, **geteilt und umgehängt** |
+| **0135** bauwege-sollzahl | `testentwickler` | `messung-0076/bauwege.py` | `offen`, **neu, aus 0133 geteilt** |
 
-Die Rollenfrage steht zuerst und trägt bei allen drei — `testentwickler` und
-`spielentwerfer` stehen in `BAUROLLEN`. Keine Waise, kein `builder`.
+Die Rollenfrage steht zuerst und hat zum vierten Mal in Folge einen Fall gefunden: 0131
+kommt mit `geschaeftsfuehrer`, und die gibt es weder in `BAUROLLEN` noch in `PRUEFROLLEN`.
 
-**Alle drei Prämissen habe ich nachgemessen, nicht abgeschrieben.** `agents/baulauf.py`
-ruft `ctest` in Zeile 186 tatsächlich ohne den Schalter auf, der einen Lauf ohne gefundene
-Fälle rot macht. `spiel.md` führt den Buchstaben R dokumentweit als Partielänge und rechnet
-in Zeile 1087 trotzdem 780 daraus — mit R = 20 wären es 80. `werkzeuge/` führt heute
-`belegstellen` und `mutation`, kein `bezeichner`.
+**Alle fünf Prämissen habe ich selbst nachgemessen, keine abgeschrieben.** Im Riegel kommt
+weder `std::sort` noch `std::stable_sort` vor. Die Meldung des Schlussriegels in
+`werkzeugkette.cmake` Zeile 895 nennt `${gezaehlt}` Ziele und keine gesammelten Einträge.
+`bauwege.py` trägt in Zeile 36 die Erwartung 18/16, der Baum liefert 19/17. `kern/CMakeLists.txt`
+sammelt die Quellen in Zeile 51 per `file(GLOB … CONFIGURE_DEPENDS)` und prüft die
+Sperrbindung nirgends. Vier von vier tragen. **Die fünfte trägt nicht** — und das ist der
+wichtigste Einzelbefund dieses Laufs.
 
-### 0127: derselbe Fall wie 0121, dieselbe Entscheidung
+### 0133 geteilt: zwei Bauplätze statt einem, und keine Sache dabei verloren
 
-Die `dateien`-Liste nennt den Runner. Dorthin schreibt keine Rolle, die die Tabelle in
-`CLAUDE.md` kennt. Als `offen` hätte der Baulauf das Paket **sofort** eingeplant — es
-kollidiert mit nichts in diesem Vorhaben — und ein Bauagent bekäme einen Auftrag, den er
-nach den Hausregeln nicht ausführen darf. Als `vorschlag` kostet es jeden meiner Läufe eine
-neue Sichtung. `blockiert` kostet einmal einen Absatz. Es hängt nichts daran.
+Der Vorschlag begründet ausführlich, warum beide Hälften ein Paket sein sollen: dieselbe
+Frage, benachbarte Dateien, wer das eine anfasst, hat das andere ohnehin offen. Die
+Begründung ist gut und trotzdem nicht die, die entscheidet. **Der Baulauf plant nach
+Dateien, nicht nach Fragen** — und die beiden Hälften teilen keine einzige Datei.
+`nachbau.py` und `bauwege.py` liegen nebeneinander, aber nebeneinander ist keine
+Kollision.
 
-### 0128: eigener Lauf statt Auflage in 0118 — und das ist der achte Bauplatz
+Zusammen waren sie ein Bauplatz. Getrennt sind sie zwei, und zwei Bauplätze sind genau
+das, woran es heute fehlte. `0135` trägt die zweite Hälfte wörtlich; der Text bleibt
+zusätzlich in 0133 stehen, weil er dort den Befund trägt und Hausregel 3 nichts löscht.
 
-Der Prüfer stellte mir frei, die zwei Ein-Satz-Berichtigungen in 0118 mitfahren zu lassen.
-**Eigener Lauf**, aus drei Gründen: Er gewinnt sofort einen Bauplatz (0118 wartet hinter
-0117 hinter 0116 auf `technik.md`, bis dahin läuft nichts auf `spiel.md`); er koppelt keine
-sichere Sache an den Ausgang einer unsicheren; und er räumt das Symbol weg, aus dem 0118
-seine eigene Ländergeometrie ableitet — die Berichtigung gehört davor, nicht daneben.
+**Zwei weitere Berichtigungen an 0133, beide aus der Dateifrage:**
 
-Preis: 0118 bekommt 0128 als **Reihenfolgesperre** in `haengt_an` — eingetragen, nicht bloß
-behauptet. Sachlich braucht 0118 von dort nichts als einen ruhigen Dateistand, und da es
-ohnehin auf 0117 wartet, kostet die Sperre keinen Platz.
+- **Die Bahn geht nach `pruefstand/CMakeLists.txt`, nicht in die `CMakeLists.txt` des
+  Vorhabens.** Die hält `0129`, das im selben Durchgang läuft — 0133 wäre dahinter
+  gefallen und hätte die Runde verloren. Im Prüfstand hält sie kein offenes Paket, und
+  dort steht schon der Präzedenzfall, den der Vorschlag selbst nennt: die `add_test`-Zeile
+  des Belegstellenriegels. **Das ist eine Kollisionsentscheidung, keine
+  Entwurfsentscheidung** — und ich habe dem Bauagenten ausdrücklich aufgetragen, sie zu
+  melden statt sie zu bauen, falls sie sachlich falsch liegt. Eine falsche Bahn ist teurer
+  als eine verlorene Runde.
+- **Der Pfad von `nachbau.py` bleibt, wo er ist.** Der Vorschlag stellte den Umzug frei.
+  Diese Freiheit habe ich genommen, weil sie in seinem eigenen Blickfeld nicht sichtbar
+  ist: Drei fremde Abnahmen nennen den Pfad namentlich — 0108 und 0132 offen, 0103 bereits
+  abgenommen. Ein Zeiger am alten Ort ist lesbar und nicht ausführbar; die drei liefen ins
+  Leere.
 
-### 0129: zwei Berichtigungen an der Abnahme, beide aus derselben Regel
+Und die ausgeschriebene Probenzahl aus seiner Bedingung 3 ist gestrichen: `0129` legt in
+diesem Durchgang eine neue Probe an, `0134` möglicherweise eine zweite. Sie heißt jetzt
+„gegen den unmittelbar vorhergehenden Stand desselben Baums und desselben Profils" —
+strenger, nicht schwächer, denn sie verlangt eine Messung statt eines Abgleichs.
 
-Bedingung 3 zählte „die heute gemessenen 19 falschen Kandidaten". Vier Pakete (0098, 0101,
-0122, 0123) arbeiten gleichzeitig im Kern; die Neunzehn ist am Tag der Abnahme
-wahrscheinlich eine andere Zahl, und dann fällt eine richtige Regel an einer veralteten
-Zählung durch. Sie heißt jetzt „jeder Kandidat" — **strenger, nicht schwächer.** Bedingung
-4 zählt gegen den unmittelbar vorhergehenden Stand desselben Baums statt gegen eine Zahl
-von heute.
+### 0132: die Kette war um ein Glied zu kurz gelesen
 
-**Den Konflikt darunter habe ich sichtbar gemacht statt aufgelöst:** Ein `ctest`-Eintrag
-muss grün sein, sonst ist die Werkstatt rot — aber der Kern gehört diesem Paket nicht, und
-vier fremde Pakete schreiben gerade hinein. Der Ausgang steht jetzt in der Bedingung:
-melden, nicht selbst reparieren, gemessen gegen den Vorstand statt gegen eine Null.
+Der Vorschlag hängt sich an `0108`. Auf `werkzeugkette.cmake` liegt danach aber noch
+`0124`, das selbst an 0108 hängt. Mit 0108 als Sperre wären 0124 und 0132 im selben
+Durchgang startbereit geworden; der Baulauf hätte eines von beiden an der Dateikollision
+übersprungen und die Reihenfolge der Kennungssortierung überlassen. Sperre steht jetzt auf
+`0124`. Kein Platzverlust — die Datei ist ohnehin serialisiert.
 
-**Nicht verwechselt mit 0091.** Auch dort nennt die `dateien`-Liste Dateien, die es nicht
-gibt — dort ist es der Sperrgrund. Der Unterschied ist der Träger: 0091 wartet auf etwas,
-das ein anderes Paket bauen müsste und keines baut; 0129 legt sein Werkzeug selbst an, wie
-0110 es gerade vorgemacht hat.
+### 0130: ans Ende der Riegelkette, und die naheliegende Umstellung unterlassen
 
-## Die Ketten — fünf Köpfe halten achtzehn Pakete
+Es wäre verlockend gewesen, 0130 **vor** 0115 zu ziehen: 0115 misst die Zahlen im Kopf des
+Riegels nach, und 0130 bewegt eine davon. Ich habe es nicht getan. Die eigene Bedingung 2
+von 0130 verlangt, dass es die Fallzahl im Kopf selbst mitzieht — es hinterlässt also
+keinen veralteten Stand —, und 0115 misst seine drei Zahlen ohnehin unmittelbar vor und
+nach der **eigenen** Änderung. Der Gewinn wäre null gewesen, der Preis das Umschreiben
+eines bereits erteilten Pakets.
 
-    technik.md      0116 → 0117 → 0064 → 0068 → 0074 → 0084 → 0092   (7)
-    riegel.cpp      0079 → 0083 → 0105 → 0106 → 0115                 (5)
-    reihen.toml     0078 → 0099 → 0100 → 0126                        (4)
-    werkzeugkette   0103 → 0104 → 0108 → 0124                        (4)
-    spiel.md        0128 → 0118                                      (2, neu)
-    ohne Kette      0120, 0122, 0123, 0129                           (4)
+## Die Ketten — vier Köpfe halten siebzehn Pakete
 
-Sechsundzwanzig offen, acht startbereit, **achtzehn hinter fünf Kettenköpfen.** Jedes Glied
+    technik.md        0116 → 0117 → 0064 → 0068 → 0074 → 0084 → 0092   (7)
+    riegel.cpp        0083 → 0105 → 0106 → 0115 → 0130                 (5, +1)
+    reihen.toml       0078 → 0099 → 0100 → 0126                        (4)
+    werkzeugkette     0104 → 0108 → 0124 → 0132                        (4, +1)
+    spiel.md          0118                                             (1, wartet auf 0117)
+    ohne Kette        0129, 0133, 0134, 0135                           (4)
+
+Fünfundzwanzig offen, **acht startbereit, siebzehn hinter vier Kettenköpfen.** Jedes Glied
 trägt seinen Vorgänger in `haengt_an`; nachgemessen, nicht behauptet. In jedem Kettenglied
-steht derselbe Satz für den Bauagenten: Dein Vorher-Stand ist der dann geltende `HEAD`, such
-am Text, nicht an einer Zeilennummer.
+steht derselbe Satz für den Bauagenten: Dein Vorher-Stand ist der dann geltende `HEAD`,
+such am Text, nicht an einer Zeilennummer.
 
-**0129 ist das neunte startbereite Paket und läuft eine Runde später an** — der Baulauf
-plant acht und sortiert nach Kennung. Es kollidiert mit keinem; sobald das erste der acht
-liefert, ist es dran. Ich schreibe es hin, damit der Rückstand nicht kürzer aussieht, als er
-ist.
+**Die vier Pakete ohne Kette sind neu erarbeitet, nicht gefunden.** Vor diesem Lauf gab es
+eines. Drei davon stammen aus Prüfbefunden mit dem Urteil `geprüft` — das bestätigt zum
+zweiten Mal, dass ein bestandener Befund die bessere Paketquelle ist als ein Rücklauf.
+
+**`0118` hält `spiel.md` nicht.** `startbereit()` überspringt ein Paket mit unerfüllter
+Abhängigkeit, bevor es dessen Dateien belegt; die Datei ist also frei, falls eine
+Entwurfsberichtigung sie braucht.
 
 ## Was der Geschäftsführer entscheiden lassen muss
 
-**1. `0121` ist kein Nachvollziehbarkeitsproblem mehr, sondern ein Durchsatzproblem. Das ist
-der wichtigste Befund dieses Laufs.** Gemessen über die Zieldateien, nicht über die
-Betreffzeilen:
+**1. Die Behebung des Commit-Schnitts vom 2026-09-05 12:11 war die eine Hälfte, und die
+zweite steht noch offen. Ich kann sie benennen, aber nicht schließen.** Das ist der
+wichtigste Befund dieses Laufs, und er berichtigt eine Annahme, auf der die bisherige
+Behebung beruht.
 
-| Commit | Betreff nennt | Inhalt |
+Der Vorschlag 0131 nennt als Datei `agents/baulauf.py` und als Fehler ein `git add -A`.
+**Beides trifft nicht zu, und ich habe es nachgemessen statt es weiterzureichen.**
+Committet wird in `agents/lauf.py`; `git add` steht dort in Zeile 436 und übergibt seit
+jeher benannte Pfade, der `git commit` seit `9eda882` ebenfalls. Der Fehler liegt in dem,
+**was diese Pfade sind**: Zeile 620 setzt `pfade = schreibpfade(werkzeuge)`, und
+`schreibpfade` schneidet die Werkzeugzeile am ersten Stern ab.
+
+| Rolle | Werkzeugliste | woraus der Commit wird |
 |---|---|---|
-| `07cc49b` | `datenbauer: 0078` | die Ergebnisdatei von **0120**, die Statuszeile von **0098** |
-| `f1aec13` | `kernbauer: 0103` | **nichts als 18 leere Platzhalter** unter `.claude/` |
-| `bf0519b` | `datenbauer: 0120` | das komplette Werkzeug aus **0110** |
-| `228d9d7` | `architekt: 0116` | erneut Dateien aus **0110** |
-| `8d007aa` | `test-pruefer: 0110` | vier Prüfbefunde aus **drei** Rollen |
+| datenbauer, kernbauer, testentwickler, oberflächenbauer, auslieferer | `Edit(ventures/**)` | `ventures` |
+| architekt, spielentwerfer | `Edit(specs/**)`, `Edit(ventures/**/aufgaben/**)` | `specs` **und `ventures`** |
 
-Daraus drei Folgen, in der Reihenfolge ihres Gewichts:
+**Alle sieben Baurollen übergeben am Ende dieselbe eine Wurzel.** Beim Architekten ist es
+grotesk: Er darf unter `ventures/` per `Edit` allein die Arbeitspakete anfassen und
+committet den gesamten Baum des Vorhabens.
 
-- **Zwei Bauplätze haben nichts geliefert, und der Commit verdeckt es.** `technik.md` steht
-  unverändert seit 05:51, `werkzeugkette.cmake` seit 11:36 — 0116 und 0103 haben ihre
-  Zieldateien nicht angefasst, obwohl beide einen Commit unter ihrem Namen tragen. Wer nur
-  die Betreffzeile liest, hält beide für geliefert.
-- **Eine erbrachte Leistung hat ihre Meldung verloren.** 0120 ist inhaltlich fertig — die
-  Berichtigung steht in der Zieldatei, der Übersetzungsbericht trägt wieder `ergebnis: ok`.
-  Die Datei liegt im Commit des Nachbarn, die Statuszeile des Pakets steht auf `offen`.
-- **Meine Reihenfolgesperren greifen eine Stufe zu hoch.** Sie serialisieren die Läufe; den
-  Index serialisieren sie nicht.
+Damit fällt ein Satz, auf dem der Vorgänger `0121` steht. Dort heißt es zu `9e46cfa`
+(Betreff `architekt: 0051`, vier Dateien unter `kern/`): *sie können nicht aus seinem
+`git add` stammen, nur aus dem Index*. Sie können sehr wohl. Der Schluss war plausibel und
+hat die Behebung auf die Index-Hälfte gelenkt — die andere blieb stehen, und **die vier
+Belegcommits stammen von 13:55 bis 14:06, also von nach der Behebung.** Es ist kein
+Rückfall, es war nie ganz zu.
 
-Es ist kein seltener Zusammenlauf, sondern der Regelfall, sobald zwei Läufe gleichzeitig
-offen sind — und bei acht Bauplätzen sind immer mehrere offen. `agents/lauf.py` liegt
-außerhalb jeder Schreibgrenze; das Paket bleibt zu Recht `blockiert`. **Was fehlt, ist ein
-ruhiger Lauf des Betreibers, und er ist inzwischen teurer als die beiden Entwurfsfragen
-darunter.**
+Der Weg ist eng und kurz: Der Lauf kennt sein Paket und dessen `dateien`-Liste. Sie plus
+`notizen/<rolle>.md` plus das, was der Lauf selbst unter `befunde/` und `aufgaben/`
+erzeugt hat, ist die richtige Menge — nicht der Schreibbereich der Rolle. `agents/lauf.py`
+liegt außerhalb jeder Schreibgrenze; 0131 bleibt zu Recht `blockiert`, mit berichtigter
+Datei und pruefbaren Bedingungen. **Was fehlt, ist ein ruhiger Lauf des Betreibers.** Zum
+zweiten Mal gemeldet, und diesmal mit der Zeile, an der es hängt.
 
-**2. Ein neuer Vorrang. Die Liste in `ops/plan.md` ist zum dritten Mal vollständig
+**2. Ein neuer Vorrang. Die Liste in `ops/plan.md` ist zum vierten Mal vollständig
 abgearbeitet.** Alle fünf — 0026, 0002, 0071, 0027, 0010 — stehen auf `fertig`; der Plan
-stammt vom 2026-09-04 07:49 und ist seither nicht erneuert. Ich lege die Reihenfolge
-seither nach eigener Auslegung fest und melde das **als Auslegung** — zum dritten Mal, zum
-dritten Mal unbeantwortet. Die eine Auflage des alten Plans, „nichts aus der
-Belegstellen-Familie in dieser Woche", habe ich mit 0079 durchbrochen: Es ist ein Rücklauf
-eines laufenden Pakets, keine Neueröffnung, und an ihm hängen vier weitere. Das ist eine
-Entscheidung, keine Übersehung.
+stammt vom 2026-09-04 07:49 und ist seither nicht erneuert. Ich lege die Reihenfolge nach
+eigener Auslegung fest und melde das **als Auslegung** — zum vierten Mal, zum vierten Mal
+unbeantwortet. Die alte Auflage „nichts aus der Belegstellen-Familie in dieser Woche" habe
+ich in dieser Fassung zweimal berührt: 0083 ist ein Kettenkopf, der durch die Abnahme von
+0079 frei wurde, und 0130 ist ein angenommener Vorschlag am Kettenende. Beides sind
+Fortsetzungen laufender Vorgänge, keine Neueröffnungen. Das ist eine Entscheidung, keine
+Übersehung.
 
-**3. `technik.md` zerlegen — zum fünften Mal gemeldet, und ich ändere nichts.** Sieben
+**3. `technik.md` zerlegen — zum sechsten Mal gemeldet, und ich ändere nichts.** Sieben
 Pakete auf einer Datei, strikt nacheinander, je zwei Durchgänge. Solange die Kette läuft,
-ist der Architekt eine Rolle mit **einem** Platz. Es wäre eine Entwurfsentscheidung, und die
-gehört nicht mir. Neu dazu: Dieselbe Bauart hat jetzt eine zweite Kette erzeugt (`spiel.md`,
-zwei Glieder), und sie wächst mit jeder Entwurfsberichtigung.
+ist der Architekt eine Rolle mit **einem** Platz — heute derselbe eine, der seine Zieldatei
+seit 05:51 nicht angefasst hat. Es wäre eine Entwurfsentscheidung, und die gehört nicht
+mir.
 
-**4. `0091` bleibt gesperrt: der T19-Träger fehlt.** Der angekündigte Auslöser ist geprüft
-und hat **nicht** gefeuert — `kern/include/kern/` führt elf Kopfdateien, keine `verlauf.hpp`,
-und die Kommentare in `schreiber.hpp` und `schritt.hpp` sagen selbst, dass es ihn nicht gibt.
-Es hängt nichts daran.
+**4. `0116` hat seine Zieldatei zwei Durchgänge lang nicht angefasst.** `technik.md` steht
+unverändert seit `9e46cfa`, 05:51, und trägt zuletzt den Betreff von 0051. 0116 hat
+seither zwei Commits unter seinem Namen und keine Zeile in seiner einen Datei. Es steht
+weiter auf `offen`, also ist es kein Statusfehler, sondern ein Bauplatz, der zweimal nichts
+getragen hat. **Ich setze es nicht auf `zurück`** — es gibt keinen Prüfbefund, und ohne den
+setze ich nichts. Kommt es aus diesem Durchgang ein drittes Mal ohne Zieldatei zurück,
+gehört es nicht in einen vierten Anlauf, sondern hierher.
 
-**5. `0003` bleibt gesperrt, seit dem 2026-09-01.** Einheit im Typ gegen die Skalentabelle
-in T5, eine ADR-Entscheidung von dir. Hier nur, damit es nicht aus dem Blick fällt.
+**5. `0091` bleibt gesperrt: der T19-Träger fehlt.** Unverändert; der angekündigte Auslöser
+hat zum zweiten Mal nicht gefeuert. Es hängt nichts daran.
 
-**6. Die Prüfstufe hat weiterhin kein einziges Paket.** `selbstspieler`, `rueckvergleicher`
-und `bruchtester` sind seit ihrer Einführung ohne Auftrag. Das fällt erst ins Gewicht, wenn
-etwas `live` gehen soll — aber die vier Maße des Rückvergleichs sind das, woran dieses
-Vorhaben am Ende gemessen wird, und niemand baut heute darauf zu.
+**6. `0003` bleibt gesperrt, seit dem 2026-09-01.** Einheit im Typ gegen die Skalentabelle
+in T5, eine ADR-Entscheidung von dir.
+
+**7. Die Prüfstufe hat weiterhin kein einziges Paket.** `selbstspieler`,
+`rueckvergleicher` und `bruchtester` sind seit ihrer Einführung ohne Auftrag. Das fällt
+erst ins Gewicht, wenn etwas `live` gehen soll — aber die vier Maße des Rückvergleichs
+sind das, woran dieses Vorhaben am Ende gemessen wird, und niemand baut heute darauf zu.
 
 ## Was der nächste Lauf zuerst anfasst
 
-1. **Acht Bauplätze sind besetzt; der nächste Engpass ist die Prüfstufe.** Nach diesem
-   Durchgang liegen bis zu acht Pakete gleichzeitig auf `gebaut`. Urteile ziehen ist die
-   Hauptarbeit — und die Erfahrung dieses Laufs sagt: Sie liegen geschrieben vor und werden
-   übersehen, weil der Betreff lügt. **Immer über die Zieldatei messen.**
-2. **0120 zuerst ansehen.** Es ist das einzige Paket, dessen Arbeit getan ist und dessen
-   Meldung fehlt. Kommt es aus dem nächsten Durchgang wieder unverändert zurück, ist nicht
-   der Bauagent das Problem, sondern der Commit-Schnitt aus Punkt 1 oben — dann gehört es
-   dorthin und nicht in einen dritten Rücklauf.
-3. **Bei 0078 und 0079 auf den dritten Rücklauf achten.** Beide stehen bei zwei von drei.
-   Kommt einer wieder mit derselben Fehlerklasse, ist es `blockiert` und eine Meldung, nicht
-   ein weiterer Durchgang.
-4. **0129 einplanen, sobald ein Platz frei wird.** Es ist startbereit und wartet nur an der
-   Sortierung.
+1. **Acht Bauplätze sind besetzt; der nächste Engpass ist wieder die Prüfstufe.** Nach
+   diesem Durchgang liegen bis zu acht Pakete gleichzeitig auf `gebaut`. Urteile ziehen ist
+   die Hauptarbeit. **Immer über die Zieldatei messen, nie über den Betreff** — die Ursache
+   dafür ist jetzt benannt (Punkt 1), aber bis zu ihrer Behebung unverändert wirksam.
+2. **0078 steht im dritten Durchgang.** Kommt es mit derselben Fehlerklasse zurück, ist es
+   `blockiert` und eine Meldung, nicht ein vierter Anlauf. `RUECKLAUF_MAX` ist 3.
+3. **0116 auf die Zieldatei prüfen, bevor irgendetwas anderes** (Punkt 4 oben).
+4. **Bei 0133 auf die Rückmeldung zum Bahnort achten.** Ich habe ihm `pruefstand/CMakeLists.txt`
+   vorgegeben, um eine Kollision mit 0129 zu vermeiden, und ihn ausdrücklich zur Meldung
+   aufgefordert, falls die Stelle sachlich falsch liegt. Kommt diese Meldung, ist sie kein
+   Rücklaufgrund, sondern meine Berichtigung.
 5. **Keinen neuen Auslöser an eine Platzzahl hängen.** Unverändert gültig: gegen
    `GLEICHZEITIG` messen, nie gegen eine ausgeschriebene Zahl.
 6. **Kein Folgepaket zu `werte.hpp` schneiden, bevor 0092 `fertig` ist.** Unverändert; der
@@ -229,10 +220,10 @@ Vorhaben am Ende gemessen wird, und niemand baut heute darauf zu.
    Die Datei trägt dann schon 0078, 0099, 0100 und 0126; das neue Paket wird **fünftes**
    Glied jener Kette.
 8. **Befund 3 aus der Prüfung von 0002 lesen, bevor Schritt 7 zugeschnitten wird.**
-   `marktkorb(m, k)` ist für T33 Punkt 3 heute nicht aufrufbar. Unverändert aus fünf
+   `marktkorb(m, k)` ist für T33 Punkt 3 heute nicht aufrufbar. Unverändert aus sechs
    Fassungen.
 9. **Nicht noch einmal untersucht werden muss:** `aufgaben/.kopf.tmp` und `.paket.tmp`,
    ebenso die `.tmp`-Dateien unter `daten/zwischenstaende/`. `pakete()` liest nur `*.md`.
-   Die Kopfzahl stimmt ohne sie: 26 + 92 + 4 = 122, plus je eine `archiviert` und
-   `zurueckgezogen` und zwei `umgezogen` sind die 126 Dateien im Verzeichnis. Hausregel 3 —
+   Die Kopfzahl stimmt ohne sie: 25 + 98 + 5 = 128, plus je eine `archiviert` und
+   `zurueckgezogen` und zwei `umgezogen` sind die 132 Dateien im Verzeichnis. Hausregel 3 —
    sie bleiben liegen.

@@ -1,7 +1,7 @@
 ---
 id: 0079-belegstellenriegel-zitat-ohne-anfuehrung
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen. Und statt der am 2026-09-05 zurueckgenommenen Fallzahl: keine der uebergangenen Fundstellen des Standes von 0067 verschwindet, und jede neu hinzugekommene traegt einen der Gruende, die dieses Paket einfuehrt -- beides gemessen am selben Baum, vor und nach dem Eingriff, mit genanntem Bezugsstand und nach der letzten Zeile des Kopfkommentars. Der abgedruckte Testlauf im Nachweis nennt dieselben Zahlen wie der ausgelieferte Stand.

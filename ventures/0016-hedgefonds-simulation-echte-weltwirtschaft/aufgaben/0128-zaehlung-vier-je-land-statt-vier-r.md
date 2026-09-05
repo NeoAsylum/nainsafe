@@ -1,7 +1,7 @@
 ---
 id: 0128-zaehlung-vier-je-land-statt-vier-r
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: (1) Die Zählung in „Verworfen; alle 195 Länder der Welt" (heute Z. 1087) nennt nicht mehr `4 · R`, sondern `4 · L` oder „vier je Rückvergleichsland"; ein Grep nach „4 · R" über spiel.md liefert null Treffer. (2) Der Änderungsvermerk vom 2026-09-05 (heute Z. 70-79) zählt die Einträge unter „Was bewusst fehlt" richtig (sieben: einer ergänzt, sechs neu) und nennt auch den Absatz unter „Der Zustand" (heute Z. 400-405). (3) git diff zeigt Änderungen ausschließlich in spiel.md; keine Zahl außerhalb der beiden Stellen ändert sich.

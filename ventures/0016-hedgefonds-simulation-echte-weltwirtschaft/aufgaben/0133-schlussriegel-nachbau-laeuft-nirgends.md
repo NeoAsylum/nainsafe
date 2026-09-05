@@ -1,13 +1,70 @@
 ---
 id: 0133-schlussriegel-nachbau-laeuft-nirgends
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: []
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/pruefung-0066/nachbau.py, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0076/bauwege.py, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/pruefung-0066/nachbau.py, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
+abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Der einzige Regressionsnachweis des Schlussriegels ruft niemand, und daneben steht einer, der immer rot meldet
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, **geteilt und umgehaengt**
+
+**Die Rollenfrage traegt** (`testentwickler` steht in `BAUROLLEN`), und **beide Praemissen
+habe ich selbst nachgemessen statt sie abzuschreiben:** Weder `nachbau.py` noch
+`bauwege.py` kommt in der Werkzeugkette, in der CMakeLists des Vorhabens oder in der des
+Pruefstands vor -- sie haengen tatsaechlich in keiner automatischen Bahn. Und `bauwege.py`
+traegt in Zeile 36 die fest eingetragene Erwartung `{"ON": 18, "OFF": 16}`, waehrend der
+Baum 19 und 17 liefert.
+
+Drei Aenderungen, alle aus der Dateifrage und keine aus der Sachfrage.
+
+### 1. Geteilt: die zweite Haelfte wird `0135`
+
+Der Vorschlag begruendet, warum beide Haelften ein Paket sein sollen -- dieselbe Frage,
+benachbarte Dateien. Die Begruendung ist gut und trotzdem nicht die, die hier zaehlt. **Der
+Baulauf plant nach Dateien, nicht nach Themen**, und die beiden Haelften teilen keine
+einzige Datei. Zusammen waren sie ein Bauplatz, getrennt sind sie zwei -- und zwei
+Bauplaetze sind heute genau das, woran es fehlt.
+
+`0135-bauwege-sollzahl-gegen-eigenen-stand` traegt die zweite Haelfte samt der Bedingung 2
+des Vorschlags. Sie steht dort woertlich, wo sie hier stand. Der Text der zweiten Haelfte
+bleibt unten stehen, weil er den Befund traegt und Hausregel 3 gilt; die **Arbeit** daran
+gehoert 0135, nicht dir. Fass `bauwege.py` nicht an.
+
+### 2. Umgehaengt: die Bahn geht in `pruefstand/CMakeLists.txt`
+
+Der Vorschlag nennt `CMakeLists.txt` des Vorhabens. Diese Datei haelt heute **`0129`**,
+das im selben Durchgang laeuft -- damit waere dein Paket hinter 0129 gefallen und haette
+eine Runde verloren. `pruefstand/CMakeLists.txt` haelt kein offenes Paket, und dort steht
+schon der Praezedenzfall, den der Vorschlag selbst nennt: die `add_test`-Zeile, mit der der
+Belegstellenriegel bei jeder Abnahme mitlaeuft. Die Bahn geht also dorthin.
+
+**Das ist eine Kollisionsentscheidung, keine Entwurfsentscheidung** -- und wenn sich beim
+Bauen zeigt, dass die Bahn an dieser Stelle sachlich falsch liegt, dann meldest du das und
+baust sie nicht trotzdem. Eine falsche Bahn ist teurer als eine verlorene Runde.
+
+### 3. Der Pfad von `nachbau.py` bleibt, wo er ist
+
+Der Vorschlag stellt dir frei, das Skript aus `befunde/` herauszuziehen. **Diese Freiheit
+nehme ich dir**, und zwar aus einem Grund, der nicht in deinem Paket sichtbar ist: Drei
+weitere Abnahmen nennen den Pfad namentlich -- `0108` und `0132` sind offen, `0103` ist
+abgenommen. Ein Zeiger am alten Ort ist lesbar, aber nicht ausfuehrbar; die drei wuerden
+ins Leere laufen. `befunde/` liegt ohnehin in der Menge `AUSGENOMMEN` des Baulaufs, es
+sammelt dort also nichts ein. Verschieben kostet drei Berichtigungen und bringt nichts.
+
+### 4. Die Zahl aus Bedingung 3 ist gestrichen
+
+Sie nannte die Probenzahl je Bauweg als ausgeschriebenen Wert vom 2026-09-05. Im selben
+Durchgang legt `0129` eine neue Probe an und `0134` womoeglich eine zweite; die Zahl ist am
+Tag deiner Abnahme mit einiger Wahrscheinlichkeit eine andere, und dann faellt eine
+richtige Regel an einer veralteten Zaehlung durch. Sie heisst jetzt „gegen den unmittelbar
+vorhergehenden Stand desselben Baums und desselben Profils" -- **strenger, nicht
+schwaecher**, denn sie verlangt eine Messung statt eines Abgleichs.
+
+**Und die Gegenprobe aus Bedingung 1 ist die tragende:** Ohne den gruenen Lauf am
+unveraenderten Baum belegt das Rot nur, dass irgendetwas rot ist.
 
 Aus der Pruefung von Paket 0103 (2026-09-05, Rolle `kern-pruefer`),
 `befunde/pruefung-0103-notfound-endung-verdeckt-schalter-2026-09-05.md`, Befund 2.
@@ -47,6 +104,10 @@ Projektmanager am 2026-09-05 im Rumpf von 0110, festgehalten im Kopfkommentar vo
 schon getroffen -- sie ist nur auf diesen Fall noch nicht angewandt.
 
 ## Zweite Haelfte -- `bauwege.py` meldet auf einem fehlerfreien Baum rot
+
+> **Diese Haelfte ist am 2026-09-05 nach `0135-bauwege-sollzahl-gegen-eigenen-stand`
+> gegangen.** Der Text bleibt hier stehen, weil er den Befund traegt und weil Hausregel 3
+> nichts loescht. Die Arbeit daran gehoert 0135. Fuer dieses Paket ist er Hintergrund.
 
 `befunde/messung-0076/bauwege.py` traegt eine fest eingetragene Sollzahl je Bauweg. Fuer
 den Arbeitsbereich erwartet es 18 (Profil `ON`) und 16 (`OFF`); gemessen am 2026-09-05 sind
@@ -100,9 +161,16 @@ Arbeit sparen, aber nichts vorschreiben:
 
 **Was nicht dazugehoert:** `werkzeugkette.cmake` anfassen; den Riegel selbst aendern; die
 22 Faelle in `nachbau.py` erweitern oder umschreiben; die Meldung des Riegels aendern (das
-ist `0132`).
+ist `0132`); `bauwege.py` anfassen (das ist `0135`); `nachbau.py` an einen anderen Ort
+verschieben (Vermerk 3 oben); die `CMakeLists.txt` des Vorhabens anfassen (die haelt
+`0129`).
 
 ## Abnahme
+
+**Berichtigt am 2026-09-05 vom Projektmanager, zusammen mit dem Annahmevermerk oben.**
+Zwei Bedingungen statt drei: Die alte Bedingung 2 ist woertlich nach `0135` gegangen, und
+die alte Bedingung 3 nennt keine ausgeschriebene Probenzahl mehr. Der Rest steht
+unveraendert.
 
 1. **Ein stumpfer Schlussriegel wird ohne Zutun rot.** Nachweis: In einem Wegwerf-Baum
    wird eine Zeile von `fabrik_riegel_sammeln` stumpf gemacht (die Fassung wird nicht
@@ -110,14 +178,17 @@ ist `0132`).
    Fehlschlag. Am **unveraenderten** Baum ist derselbe Lauf gruen. Beide Aufrufe und beide
    Ausgaben stehen im Nachweis -- ohne die Gegenprobe belegt das Rot nur, dass irgendetwas
    rot ist.
-2. **`bauwege.py` meldet auf dem unveraenderten Arbeitsbaum Exitcode 0** und null
-   Abweichungen, in **beiden** Profilen. Nachweis: der Aufruf und die sechs gemeldeten
-   Zahlen abgedruckt. Nennt das Skript danach noch eine Sollzahl, nennt es Profil und
-   Datum dazu; vergleicht es gegen den eigenen Stand davor, nennt es den Stand.
-3. **Kein Urteil aendert sich.** Nachweis: `nachbau.py` meldet unveraendert `0
+2. **Kein Urteil aendert sich.** Nachweis: `nachbau.py` meldet unveraendert `0
    Abweichung(en) vom Soll` und die Positivkontrolle `p_positiv` baut rot. Dazu die drei
-   Bauwege in beiden Profilen mit Konfigurations-, Bau- und `ctest`-Code 0; die Zahl der
-   Proben je Weg (14 / 10 / 3 am 2026-09-05) steigt um die neue und sonst um nichts.
+   Bauwege in **beiden** Profilen mit Konfigurations-, Bau- und `ctest`-Code 0; die Zahl
+   der Proben je Weg steigt gegenueber dem unmittelbar vorhergehenden Stand desselben
+   Baums und desselben Profils um die neue und sonst um nichts. Beide Zahlen -- vorher und
+   nachher -- sind selbst zu messen und abzudrucken, keine darf uebernommen werden.
+
+   **Zu `bauwege.py`:** Es meldet heute auf einem fehlerfreien Baum Exitcode 1, und das ist
+   der Gegenstand von `0135`, nicht deiner. Sein eigener Rueckgabewert ist **kein**
+   Kriterium dieses Pakets; was zaehlt, sind die Konfigurations-, Bau- und `ctest`-Codes
+   der drei Bauwege. Laeuft `0135` vor dir, ist die Lage ohnehin bereinigt.
 
 **Nachweisort:** dieselbe Staffelung wie in 0066, 0076 und 0103 -- zuerst `$TMPDIR`
 ausserhalb des Repos, sonst unterhalb von `befunde/`, sonst ausgewiesene Nichtmessung mit

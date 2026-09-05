@@ -1,7 +1,7 @@
 ---
 id: 0120-abschnittszitat-nachmessung-zinsreihen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/nachmessung-zinsreihen-2026-09-05.md]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

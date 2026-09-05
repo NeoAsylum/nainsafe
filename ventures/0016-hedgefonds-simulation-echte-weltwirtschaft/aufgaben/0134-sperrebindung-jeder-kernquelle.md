@@ -1,13 +1,31 @@
 ---
 id: 0134-sperrebindung-jeder-kernquelle
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Das Konfigurieren des Kerns bricht ab, sobald eine Quelle unter `kern/src` den Kopf `kern/sperre.hpp` nicht bindet oder ihn nicht als letzten `#include` bindet; die Abbruchmeldung nennt den Dateinamen und sagt, welche der beiden Bedingungen verletzt ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert und laeuft in beiden Profilen gruen; ein Baum mit einer zusaetzlichen Quelle ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Quelle, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Der erste Baum ist nicht wegzulassen -- ein Riegel, der alles verbietet, sieht im Negativtest identisch aus.
 ---
 
 # Beide Rechensperren des Kerns haengen an einer Regel, die nichts haelt
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, ohne Sperre
+
+**Vier Pruefungen bestanden.** `kernbauer` steht in `BAUROLLEN`, der Runner plant sie ein.
+Die `dateien`-Liste nennt eine einzige Datei, und kein offenes Paket haelt sie -- selbst
+nachgemessen ueber die `dateien`-Listen aller Pakete, nicht aus dem Vorschlag uebernommen.
+Die `abnahme` ist pruefbar, nennt drei einzeln zu fahrende Baeume und keinen
+ausgeschriebenen Zahlwert. `haengt_an` bleibt leer, also laeuft es sofort.
+
+**Die Praemisse habe ich selbst nachgemessen und nicht abgeschrieben:** `kern/CMakeLists.txt`
+liest die Kernquellen in Zeile 51 mit `file(GLOB ... CONFIGURE_DEPENDS src/*.cpp)` ein und
+uebergibt sie in Zeile 54 und 72 unveraendert an beide Bibliotheken. Eine Pruefung auf die
+Bindung von `kern/sperre.hpp` steht nirgends in der Datei. Der geschilderte Weg in die
+Bibliothek ist damit offen, wie beschrieben.
+
+**Der Positivbaum ist die tragende Bedingung, nicht das Beiwerk.** Ein Riegel, der alles
+verbietet, besteht beide Negativbaeume und faellt nur am ersten auf. Wer ihn weglaesst, hat
+nichts nachgewiesen.
 
 **Vorgeschlagen am 2026-09-05 vom `kern-pruefer` aus der Pruefung zu Paket 0122
 (`urteil: geprueft`, `befunde: 0`).** Das Paket ist in Ordnung. Dieser Vorschlag
