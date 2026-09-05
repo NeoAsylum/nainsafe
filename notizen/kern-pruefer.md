@@ -149,3 +149,32 @@ weglassen). Lehren daraus:
 - **Ein dritter Pruefungslauf am selben Paket ist keine Doppelarbeit, wenn die ersten
   beiden Vorschlaege hinterlassen haben.** Dateiname
   `pruefung-<kennung>-runde<n>-<datum>.md`.
+
+## 2026-09-05, 0101 -- ein Paket, das nur einen Kommentar aendert
+
+- **Bei einer reinen Kommentaraenderung ist der Gegenstand die Behauptung.** Jede
+  Zusicherung des neuen Textes einzeln gegen den Baum halten, Name fuer Name, Ort fuer
+  Ort. Regressionsfreiheit ist bei null geaenderten Codezeilen strukturell gegeben; die
+  Abnahme trotzdem fahren.
+- **Einen privaten Riegel erreicht man ueber den Aufrufer, der ausdruecklich auf eine
+  eigene Pruefung verzichtet.** `Schreiber::setze` prueft die Adresse selbst und beweist
+  darum nur sich; `Startbelegung::setze` verweist auf den rohen Schreibzugriff und macht
+  dessen Riegel ausfuehrbar. **Prueffrage: welcher Aufrufer prueft *nicht* selbst?**
+- **Der Meldungstext trennt die Riegel.** Drei Funktionen mit derselben Schranke: Ohne
+  Wortlautprobe belegt ein Wurf nur, dass irgendetwas flog.
+- **Waere meine eigene Messung an dem Fehler blind, den sie sucht?** Der Bezeichner-
+  Sweep ueber alle Kommentare des Kerns (5.343 Zeilen, 19 Kandidaten, alle falsch
+  positiv) haette 0101 **nicht** gefunden: Der tote Name stand in einer Codezeile -- in
+  `requires { &Z::schreibe; }`, der Zusicherung, dass es ihn *nicht* gibt. Eine
+  Mengenpruefung haelt eine negative Zusicherung fuer eine Deklaration. Daraus wurde
+  `0129-bezeichner-im-kommentar-loest-auf`.
+- **Vor dem Schnitt der `dateien` zaehlen, wie viele offene Pakete die Datei schon
+  halten.** Vier auf `belegstellen_riegel.cpp` -- das entschied zwischen "dritte
+  Bedingung dort" und "eigenes Werkzeug", nicht der Geschmack.
+- **Der eigene Vorschlag muss selbst durch den Belegstellenriegel.** Keine Zeilenangabe
+  in eine fremde Datei, jedes Abschnittszitat aufloesbar. Die gebaute Binaerdatei laeuft
+  gegen den **Arbeitsbaum**, mit Vorhabenwurzel und Vorgabenwurzel als Argumenten --
+  vorher laufen lassen, nicht hinterher.
+- **Sperre heute umgekehrt zur Notiz oben:** `Write` durchgehend abgelehnt, auch ins
+  Repo; `python3 - <<'PY'` frei. Fuer einen Rueckgabecode `subprocess.run` in Python --
+  `; echo $?` faellt als Kette durch.
