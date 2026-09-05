@@ -58,3 +58,31 @@ den nur der Betreiber kontrollieren kann.
 Er hält die VM nicht am Leben, er weckt sie nur stündlich. Zwischen zwei Weckrufen kann
 bis zu eine Stunde Arbeit ausfallen. Wer das nicht will, muss den Energiesparmodus des
 Wirts ändern — das ist eine Entscheidung des Betreibers, keine der Fabrik.
+
+
+## Die VM bleibt jetzt an
+
+Seit dem 2026-09-05 gibt es  (Kopie:
+). Drei Einstellungen, gemessen statt geraten:
+
+| Schluessel | Wert | warum |
+|---|---|---|
+|  |  | Die VM schaltet sich nicht mehr selbst ab |
+|  |  | statt der voreingestellten Haelfte des Wirts (16 von 32 GB) |
+|  |  | von zwoelf; vier bleiben fuer Windows |
+
+Nachgemessen nach dem Neustart: 9 GB in der VM, 8 Kerne, keine Warnung.
+
+ stand zunaechst dabei und ist wieder heraus: WSL 2.7.13 kennt
+den Schluessel nicht und warnt bei **jedem** Aufruf -- eine Warnung, die man nach dem
+dritten Mal ueberliest und die dann die naechste echte verdeckt.
+
+**Aenderungen an  wirken erst nach **, und das beendet jeden
+laufenden Agenten. Ein guter Zeitpunkt ist zwischen zwei Durchgaengen; wie viele gerade
+arbeiten, sagt:
+
+    sqlite3 state.db "SELECT count(*) FROM lauf WHERE ergebnis = 'laeuft'"
+
+**Was der Anker weiterhin abdeckt:** Nach einem Windows-Neustart laeuft die VM nicht von
+selbst an -- sie startet erst, wenn etwas  aufruft. Das tut die stuendliche
+Aufgabe. Bis zu eine Stunde kann dabei vergehen.
