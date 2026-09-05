@@ -5,7 +5,8 @@ erstellt: 2026-09-01
 schleife: Der Spieler stellt je Runde bis zu drei Aktionen aus fünf Arten, die Welt rechnet ein Jahr weiter, und jede Zahländerung trägt die Kette ihrer Ursachen mit sich.
 siegbedingung: Das Mandat — Fondsvermögen über einer Schwelle UND Einfluss über einer Schwelle in mindestens zwei Ländern — erreicht innerhalb von R Runden, ohne vorher an einer der drei Todesarten zu sterben. Ergebnis ist die Rundenzahl bis zur Erfüllung.
 aktionen: 5
-laender: 4 spielbar (USA, China, Deutschland, Brasilien) plus ein nicht spielbares Restwelt-Aggregat
+laender: Schicht 1 — 4 Politikländer (USA, China, Deutschland, Brasilien), nach Paket 0118 neun; Schicht 3 — ein nicht spielbares Restwelt-Aggregat. Schicht 2 siehe boersenplaetze.
+boersenplaetze: Schicht 2, B = 3·(L+1) — je Gebiet ein Platz je Leitsektor. Bei L = 9 sind das 30 Plätze zu je vier Feldern plus einem Positionssteckplatz, also 150 Adressen; Zustand 890, handelbare Plätze 75. Handelbar, nicht beeinflussbar, ohne Handelszeile, ohne Sollreihe.
 gueter: 3 Sektoren (Landwirtschaft, Industrie, Dienstleistungen), davon 2 mit Handelszeilen
 takt: 1 Runde = 1 Jahr; R = 20 Runden, Startzustand 2001, Endzustand 2021, 21 Stützstellen
 gegenkraefte: 5
@@ -65,6 +66,17 @@ Beschriftung „Zustand B" führte. Sie ist durch die Zahl ersetzt, die aus der 
 folgt (**8.472.000**), die Tabelle bekommt die eine Eingabezeile dazu, die dafür fehlte, und
 die Abarbeitung steht am Ende der Datei. Keine Entscheidung, keine Zustandsadresse, keine
 Kalibrierzahl und keine der Zahlen von Zustand A ändern sich.*
+
+*Geändert am **2026-09-05** aus Arbeitspaket `0119-welt-in-drei-schichten`, nach einem Einwand
+des Betreibers vom selben Tag: Ein Hedgefonds, der nur in vier Ländern etwas halten kann, ist
+kein globaler Hedgefonds. Neu ist der Abschnitt **Die drei Schichten der Welt** mit der
+zweiten Schicht, den **Börsenplätzen**; dazu ein Halbsatz in Aktion 1, ein Absatz unter
+*Warum die Größe des Zustands keine Verteidigung ist*, acht Zeilen unter „Was bewusst fehlt",
+fünf unter „Offene Entwurfsfragen" und ein Block unter „Was der Architekt neu rechnen muss".
+**Keine Zahl der bestehenden vier Länder, keine Sollreihe, kein Prüfgegenstand und kein
+Fehlermaß ändert sich**; die Bezugszahl des Zustands bleibt bis 0116 und 0118 die **310**, und
+die Schichtensumme **890** gilt für den Stand nach beiden. Die zweite Schicht kostet **zwei**
+neue Schlüssel in `parameter.toml` und **keinen neunten Rückkopplungskanal**.*
 
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
@@ -353,8 +365,9 @@ gegen aggregiert, so wie bei den auf 10.000 normierten Sektoranteilen auch.
 Fünf Arten. Jede ist diskret, keine hat einen Zeitpunkt innerhalb der Runde. Die
 Kennungen 1 bis 5 sind zugleich die Gleichstandsordnung aller Maße.
 
-1. **Position.** Long oder short auf ein Land×Sektor, auf eine Währung oder auf die
-   Staatsanleihe eines Landes. In festen Stufen, sofort wirksam, jederzeit auflösbar.
+1. **Position.** Long oder short auf ein Land×Sektor, auf eine Währung, auf die
+   Staatsanleihe eines Landes oder — seit dem 2026-09-05 — auf einen **Börsenplatz**
+   (siehe *Die drei Schichten der Welt*). In festen Stufen, sofort wirksam, jederzeit auflösbar.
    Der Ein- und Ausstieg bewegt den Preis gegen den Fonds, und zwar umso stärker, je
    größer sein Anteil an diesem Markt ist.
 2. **Beteiligung.** Ein dauerhafter Anteil an einem Land×Sektor. Sie ist illiquide — der
@@ -383,6 +396,13 @@ Optimumsverschiebung, die Maß 3 verlangt.
 
 **310** ganzzahlige Größen; die Aufstellung Zeile für Zeile steht in `technik.md` T15 und
 ist dort nachgerechnet. Die Zahl selbst ist keine Verteidigung — siehe unten.
+
+**Diese 310 sind der Stand von heute und bleiben die Bezugszahl, bis Paket 0116 die
+Adressarithmetik parametrisch geschrieben und Paket 0118 die fünf weiteren Länder gewählt
+hat.** Was dieser Abschnitt beschreibt, ist die erste von drei Schichten; die zweite
+(Börsenplätze) und die Rechnung, die auf **890** führt, stehen unter *Die drei Schichten der
+Welt*. Zwei unkommentierte Summen in einem Dokument sind der Anfang des nächsten Zählfehlers,
+deshalb steht an jeder von beiden, welchen Stand sie meint.
 
 **Je Land** (vier Länder): drei Sektoren mit Wertschöpfung, Kapitalstock, Beschäftigung
 und Preis; Bevölkerung und Erwerbstätige; Produktivität; Preisniveau und Inflation;
@@ -745,6 +765,25 @@ Er ist Kanal 3 in seinem Preisglied, ausgeschrieben. Seine Dämpfung ist der Ant
 für Dienstleistungen mit `durchgriff = 0` ist er eine reine Fortschreibung ohne
 Verstärkung.
 
+**Die zweite Schicht bringt keinen neunten Kanal, und das ist nachgegangen und nicht
+behauptet** (siehe *Die drei Schichten der Welt*). Vier Wege führen in sie hinein, und jeder
+ist ein vorhandener Kanal mit einem anderen Kurs an der Stelle des Sektorpreises:
+`sektorpreis → index → Bewertung → Vermögen → Lobby → Instrument → sektorpreis` ist **Kanal 8**
+— dieselbe Auskunft, die für die Anleihe schon dasteht, ein drittes Mal;
+`leitzins → zins[b] → index → …` ist derselbe Kanal in seiner Zinsvariante, um die Halbierung
+länger verzögert; `Überrendite → nachahmer[b] → index → Überrendite` ist **Kanal 6**;
+`Vermögen → Hebel → Positionsgröße → Preisstoß → index → Vermögen` ist **Kanal 4**, und
+`index → markt.wert → Überrendite → Anlegerbestand → …` ist **Kanal 7**. **Was wächst, ist die
+Verzweigung und nicht die Zahl der Kanäle:** Über `weltzins` erreicht ein Zinsschritt in einem
+Land alle dreißig Plätze statt nur die drei seines Ankers. Die Dämpfung dieses breiteren Wegs
+ist ausrechenbar und klein — ein Schritt auf `leitzins[A]` geht mit dem Kapitalstockgewicht
+von `A` in `weltzins` ein, dort mit `1/2` in `zielzins(b)` eines fremden Ankers und dann noch
+einmal mit `1/2` in die Halbierung, bei neun Ländern etwa gleicher Größe also mit rund
+`1/(4·9) ≈ 2,8 Prozent` in der ersten Runde. **Und die Schicht ist ein Blatt:** Keine Größe der
+Politikland- oder der Restweltschicht liest ein Feld eines Börsenplatzes. Das ist mechanisch
+prüfbar und die eigentliche Verteidigung — ein Blatt kann keinen Kreis schließen, den es nicht
+selbst durchläuft.
+
 **Das ist die Verteidigung, und sie ist prüfbar**, anders als eine Feldzahl: Der
 Bruchtester bekommt die Auflage, das Modell **200 Runden ohne Spieler** laufen zu lassen;
 verlässt dabei eine Größe ihren Wertebereich, gibt es einen Kanal mehr, und der ist ein
@@ -801,6 +840,380 @@ Zustand ablesbar, samt ihrer Herkunft und ihrer Schwelle.** Der Aufsichtszähler
 sichtbar, der Nachahmerzähler ist sichtbar, das Gegenlobbybudget ist sichtbar. Das ist die
 direkte Antwort auf „the wealthy automatically hate me 100 % no matter what": Feindschaft
 hat hier immer einen Zähler, einen Grund und einen Abstand zur nächsten Schwelle.
+
+## Die drei Schichten der Welt
+
+Bis zum 2026-09-05 hatte dieser Entwurf **zwei Achsen zu einer verschmolzen**: wo der Spieler
+Politik verschieben kann, und wo sein Fonds etwas halten kann. Beides war `L = 4`. Damit sah
+„mehr Welt" aus wie „mehr Länder zum vollen Preis" — und ein Hedgefonds, der nur in vier
+Ländern etwas halten kann, ist kein globaler Hedgefonds, gleichgültig wie gut das Makromodell
+darunter rechnet. Ein echter Fonds kauft japanische Aktien, ohne die Bank of Japan zu
+bestechen.
+
+**Die beiden Achsen werden getrennt.** Die Welt hat ab hier drei Schichten.
+
+### Die drei Schichten, mit ihren Feldern und ihren Rechten
+
+| Schicht | Einheiten | Felder je Einheit | handelbar | beeinflussbar | im Rückvergleich | Handelszeile |
+|---|---:|---:|---|---|---|---|
+| **1 Politikland** | 4, nach 0118 neun | **58** = 44 + 5 Steckplätze + 6 Beteiligungsfelder + 3 Nachahmerzähler, dazu seine Handelszeilen | ja | **ja** | **ja**, als Rückvergleichsland | ja |
+| **2 Börsenplatz** | `B = 3·(L+1)`, bei `L = 9` **30** | **4** + 1 Steckplatz | **ja** | **nein** | **nein** | **nein** |
+| **3 Restwelt** | 1 | Sektor- und Aggregatgrößen, keine Instrumente | nein | nein | nur im Handelsblock | ja |
+
+**Warum es Schicht 1 gibt:** Sie ist der einzige Ort, an dem eine Wirkungskette *beginnt* —
+ohne Politikinstrumente gäbe es nichts zu lobbyieren und nichts, dessen Folge man erklären
+könnte. Sie ist teuer, tief und deshalb knapp.
+
+**Warum es Schicht 2 gibt:** Damit das investierbare Universum wachsen kann, ohne dass die
+Handelsmatrix mitwächst. Ein Börsenplatz ist ein **Finanzpreis, keine Volkswirtschaft** — er
+hat keine Sektoren, keinen Kapitalstock, keine Beschäftigung, keine Staatsfinanzen und keine
+Handelszeile. Genau daran hängt der Unterschied zwischen 890 und 87.788 Feldern.
+
+**Warum es Schicht 3 gibt:** Sie schließt den Kreislauf. Ohne sie wäre die Summe der
+Handelsbilanzen zwangsläufig null, was gegen die echten Daten falsch ist. Neu ab hier ist nur,
+dass die Restwelt **Ankergebiet dreier Börsenplätze** wird — sie selbst bleibt unhandelbar und
+ohne Instrumente, aber der Fonds kann über diese drei Plätze eine Sache halten, die **kein
+Instrument der Welt bewegt**. Das ist die einzige Anlage im Modell, bei der Lobbyismus
+prinzipiell nicht hilft, und sie ist deshalb der Prüfstein für die Frage, ob Einfluss überhaupt
+etwas wert ist.
+
+### Was ein Börsenplatz trägt — vier Felder, jedes mit seinem Grund
+
+Ein Feld, das keinen Grund hat, ist eine Adresse zuviel. Deshalb steht je Feld dabei, was
+ohne es kaputtginge.
+
+| Feld | Klasse | Startwert | Warum es eine Adresse ist und keine Funktion |
+|---|---|---|---|
+| `index[b]` | 5 (Index) | 10.000 | Der Platz braucht ein **eigenes Gedächtnis**, sonst ist er in jeder Runde eine Momentaufnahme der Sektorpreise seines Ankers — und zwei Plätze mit ähnlichem Anker liefen für immer im Gleichschritt. Ohne dieses Feld ist die Schicht Dekoration. |
+| `wechselkurs[b]` | 5 (Index) | 10.000 | **Ohne ihn ist ein Börsenplatz eine Linearkombination vorhandener Steckplätze** — aus den drei Sektorkörben seines Ankers und dessen Währung. Dieses Feld und das nächste sind die beiden, die den Platz aus dem Aufspann des Bestehenden herausholen. |
+| `zins[b]` | 3 (Basispunkte) | `zielzins(b)` des Startjahrs | Der **Diskontkanal**, den kein Land×Sektor-Korb hat: Ein Korb ist Menge mal Sektorpreis, ein Platz ist zusätzlich abgezinst. Ohne ihn trennt keine Zinsbewegung Platz und Korb. |
+| `nachahmer[b]` | ganzzahlig, gedeckelt | 0 | **Gegenkraft 4 muss die neue Schicht erreichen.** Ohne diesen Zähler wären 30 Plätze ein Versteck vor genau der Gegenkraft, die Maß 3 trägt — und die Schicht machte das Spiel leichter statt reicher. |
+
+Dazu **ein Positionssteckplatz je Platz** — „handelbar" heißt genau das und nicht mehr. Also
+**fünf Adressen je Börsenplatz**.
+
+**Was ein Börsenplatz ausdrücklich nicht trägt:** keine Politikinstrumente, keinen Druck,
+keinen Gegendruck, keine Restverzögerung, keine Zustimmung, keinen Aufsichtszähler, keinen
+Einfluss, keine Beteiligung, keine Handelszeile, keine Sollreihe. Die Beteiligung fehlt nicht
+aus Sparsamkeit: Sie ist nach *Die Aktionen* der einzige Weg zu billigem Lobbying, und ein
+Platz, an dem man sich beteiligen könnte, wäre beeinflussbar und damit kein Platz mehr,
+sondern ein billiges Land.
+
+### Woran ein Börsenplatz hängt, und was ihn eigenständig macht
+
+Ein Index, der sich unabhängig von allem bewegt, ist Dekoration; einer, der nur mitläuft, ist
+eine Kopie. Hier ist die Kopplung, als Rechenvorschrift und nicht als Adjektiv.
+
+**Jahrgangskonstanten je Platz `b`** (keine Zustandsadressen, wie `durchgriff` und
+`leitzins_start` auch):
+
+```
+gebiet[b]           ∈ {1…L, Restwelt}        — das Ankergebiet
+leitsektor[b]       ∈ {1, 2, 3}              — der Sektor, auf den der Platz gekippt ist
+sektorgewicht[b][s] = normiert auf 10.000 aus sektoranteil[gebiet[b]][s],
+                      der Anteil des leitsektor[b] mit (10.000 + kippung) gewichtet
+tiefe[b]            = mal_geteilt( Σ_s mal_geteilt(kapitalstock[gebiet[b]][s],
+                                                   sektorgewicht[b][s], 10.000),
+                                   platzanteil, 10.000 )        — im Startjahr gebildet
+zins_start[b]       = zielzins(b) des Startjahrs
+```
+
+**Funktionen des Zustands** (ebenfalls keine Adressen, wie `anleihekurs` und `landespreis`):
+
+```
+weltzins      = teile_gerundet( Σ_{l=1..L} kapitalstock[l] · leitzins[l],
+                                Σ_{l=1..L} kapitalstock[l] )
+
+zielzins(b)   = teile_gerundet( leitzins[gebiet[b]] + weltzins, 2 )   für ein Politikland
+              = weltzins                                             für die Restwelt
+
+zielkurs(b)   = teile_gerundet( wechselkurs[gebiet[b]] + 10.000, 2 )   für ein Politikland
+              = 10.000                                                für die Restwelt
+
+leitkurs(b)   = Σ_s mal_geteilt( sektorpreis[gebiet[b]][s], sektorgewicht[b][s], 10.000 )
+
+zinsfaktor(b) = teile_gerundet( 10.000 · (zins_start[b] + aufschlag), zins[b] + aufschlag )
+
+boersenwert(b) = wert( tiefe[b], index[b], b )
+               = mal_geteilt( tiefe[b], index[b], wechselkurs[b] )
+```
+
+**Zwei Sonderfälle der Restwelt, beide aus demselben Grund.** Sie hat keinen Leitzins und
+keinen Wechselkurs — sie trägt keine Politikinstrumente, und ihre Aggregatgrößen sind ein
+Residuum. Ihre drei Plätze zinsen deshalb mit dem `weltzins` ab und notieren im **Numéraire**
+(`zielkurs = 10.000`). Das ist keine Verlegenheitslösung, sondern die richtige Lesart: Ein
+Korb, der den Rest der Welt abbildet, hat keine eigene Währung, gegen die man ihn stellen
+könnte. **Keine der beiden Formeln liest damit eine Restweltadresse, deren Existenz dieser
+Entwurf nicht belegen kann.**
+
+**Die Schreibregel, je Platz genau einmal je Runde**, in Schritt 4 (Wirtschaft) — außer
+`nachahmer[b]`, der wie jeder Nachahmerzähler in Schritt 5 geschrieben wird:
+
+```
+zins[b]        ← teile_gerundet( zins[b]        + zielzins(b), 2 )
+wechselkurs[b] ← teile_gerundet( wechselkurs[b] + zielkurs(b), 2 )
+index[b]       ← teile_gerundet( mal_geteilt(leitkurs(b), zinsfaktor(b), 10.000)
+                                 + index[b], 2 )
+                 danach der Nachahmer- und der Stoßaufschlag nach denselben Regeln wie
+                 beim Land×Sektor-Korb, mit nachahmer[b] und boersenwert(b) an der Stelle
+                 von nachahmer[l][s] und korbwert(l,s)
+```
+
+**Die fünf Einflüsse, aufgezählt statt umschrieben.** Woran der Preis eines Platzes hängt:
+
+1. **Die Sektorpreise seines Ankergebiets**, gewichtet mit `sektorgewicht[b]`. Das ist der
+   Durchgriff des Handels: Ein Zollschritt in irgendeinem Politikland bewegt über die
+   Markträumung den Weltpreis, der Weltpreis über `durchgriff` die Sektorpreise des Ankers,
+   und die den Platz. Die Kette, die das Spiel verkauft, reicht damit bis in die zweite
+   Schicht.
+2. **Der Leitzins seines Ankergebiets**, zur Hälfte.
+3. **Der Weltzins**, zur anderen Hälfte — der kapitalstockgewichtete Mittelwert aller
+   `L` Leitzinsen. Ein Zinsschritt in Land A erreicht damit **jeden** Platz, auch die mit
+   Anker B.
+4. **Der Wechselkurs seines Ankergebiets**, zur Hälfte; die andere Hälfte ist der Numéraire.
+5. **Der Andrang** — Nachahmer und der eigene Preisstoß des Fonds.
+
+**Und was ihn eigenständig macht, sind drei Dinge, alle drei aus Regeln und keines aus einem
+Zahlenwert:**
+
+- **Die Trägheit.** `index[b]`, `zins[b]` und `wechselkurs[b]` gehen je Runde nur **halb** auf
+  ihr Ziel zu. Ein Platz, der hochgelaufen ist, bleibt oben, auch wenn die Fundamentaldaten
+  seines Ankers schon zurückgefallen sind. Das ist dieselbe Preisträgheit, mit der
+  `landespreis` begründet ist, dreimal angewandt.
+- **Die Mischung.** Ein Korb ist ein Sektor, ein Platz ist alle drei mit einem Schwerpunkt.
+  Über Plätze zu streuen ist deshalb etwas anderes, als über Körbe zu streuen — und über
+  Plätze **verschiedener Anker** zu streuen ist wieder etwas anderes, weil der dritte Einfluss
+  oben — der `weltzins` — sie trotzdem zur Hälfte koppelt. **Vollständig diversifizieren kann man nicht, gar nicht
+  diversifizieren aber auch nicht.** Genau deshalb ist Diversifikation hier eine
+  Entscheidung und kein Etikett.
+- **Die halbe Bindung an den Numéraire.** Im Beharrungswert liegt die Abweichung eines
+  Platzkurses von 10.000 bei genau der Hälfte der Abweichung seiner Ankerwährung — er schwankt
+  halb so weit. Der Platz ist damit die **ruhige** Art, ein Land zu halten —
+  und die Währung des Landes bleibt die laute. Zwei Steckplätze, dieselbe These, verschiedenes
+  Risiko.
+
+**Vier Proben, die ohne Rechnung aufgehen und die der Jahrgangsbau mechanisch prüfen kann:**
+
+1. **Im Startjahr steht die ganze Schicht auf ihrem Fixpunkt.** Alle Sektorpreise starten bei
+   10.000, also ist `leitkurs(b) = 10.000`; `zins[b] = zins_start[b] = zielzins(b)`, also ist
+   `zinsfaktor(b) = 10.000`; alle Wechselkurse starten bei 10.000, also ist
+   `zielkurs(b) = 10.000`. Alle drei Halbierungen bilden ihren eigenen Wert ab, und
+   `index[b] = 10.000` ist die Startbedingung, nicht eine gesetzte Zahl.
+2. **Der Nenner von `zinsfaktor` wird nie null.** `zins[b]` ist ein wiederholtes Mittel aus
+   Werten, die alle nicht unter der Leitzins-Untergrenze `1 − aufschlag` liegen — und die
+   steht schon im Entwurf, wegen `anleihekurs`. Also ist `zins[b] + aufschlag ≥ 1`. **Die
+   Schicht braucht keine neue Schranke**, sie erbt die vorhandene.
+3. **Der Nenner von `boersenwert` wird nie null.** `wechselkurs[b]` ist ein wiederholtes
+   Mittel zweier strikt positiver Zahlen und damit strikt positiv — dasselbe Argument wie für
+   `wechselkurs[l]`.
+4. **`index[b]` läuft nicht weg.** Es ist ein Mittel aus einem Fundamentalwert und sich
+   selbst, liegt also stets zwischen dem laufenden Minimum und Maximum des Fundamentalwerts.
+   Der reine Trägheitsanteil eines Stoßes klingt mit `(1/2)^k` ab: nach fünf Runden sind
+   **3 Prozent** übrig.
+
+**Zwei neue Schlüssel in `parameter.toml`, und keiner mehr:** `kippung` (wie stark ein Platz
+auf seinen Leitsektor gekippt ist) und `platzanteil` (welcher Anteil des Ankerkapitalstocks
+die Tiefe eines Platzes ist). `aufschlag` wird **wiederverwendet**, nicht verdoppelt — ein
+zweiter Aufschlag erzeugte keine Wirkung, die der erste nicht auch erzeugt.
+
+**Warum diese beiden Zahlen Parameter sind und die drei Halbierungen Literale:** Ein Maß liest
+sie. `kippung` setzt den Abstand zwischen den drei Plätzen eines Ankers, und genau den misst
+Maß 2; `platzanteil` setzt, wie groß der Fonds auf einem Platz werden kann, und das misst
+Maß 3 über den Preisstoß. Die Halbierungen liest kein Maß — sie zu kalibrieren gäbe der Suche
+drei Achsen, deren Wirkung `kippung` und `platzanteil` ohnehin erzeugen.
+
+### Wie viele Plätze — und warum die Zahl eine Formel ist
+
+**`B = 3 · (L + 1)`.** Je Gebiet — die `L` Politikländer und die Restwelt — ein Platz je
+Leitsektor. Bei `L = 9` sind das **30**.
+
+Die Zahl ist keine Wahl, sondern eine Abzählung, und das ist ihr Vorzug: Ein Platz **ist**
+das Paar `(Gebiet, Leitsektor)`. Jede Kombination kommt genau einmal vor, keine zweimal.
+
+- **Weniger — etwa ein Platz je Gebiet, `B = L + 1 = 10`** — ließe den Leitsektor
+  unausgedrückt. Der Platz wäre dann die nach Sektoranteilen gewichtete Mischung seines
+  Ankers und sonst nichts, also näher an einer Kopie, als dieser Entwurf verträgt.
+- **Mehr — etwa zwei Plätze je Zelle, `B = 6·(L+1) = 60`** — unterschiede den zweiten Platz
+  einer Zelle vom ersten nur noch durch Zahlenwerte, nicht durch die Art. „Zwanzig Indizes,
+  die dasselbe tun, sind ein Index", und es kostete 300 Adressen statt 150.
+- **30 liegt im Band 20–40**, das das Arbeitspaket vorgibt, und trifft es nicht zufällig,
+  sondern weil `3·(L+1)` bei den neun Ländern aus 0118 dort landet.
+
+**Was daraus folgt und was ausdrücklich nicht.** Die Formel legt die **Zahl** und den
+**Zuschnitt** der Plätze fest — 30 Zellen, jede mit Ankergebiet und Leitsektor. Welcher
+Börsenplatz namentlich in welcher Zelle sitzt, legt sie **nicht** fest; das ist ein eigenes
+Paket und hängt an der Datenlage. Dieser Abschnitt ist dessen Pflichtenheft: 30 Zellen, je
+ein Name, und je Zelle die Probe, ob der gewählte Platz den Leitsektor seiner Zelle
+tatsächlich trägt.
+
+**Und die Formel ist der Grund, warum die Schicht 0116 nicht im Weg steht:** Sie ist in `L`
+geschrieben, nicht in einer Ziffer. Setzt 0116 die Adressarithmetik parametrisch, kommt
+`5·B = 15·(L+1)` als ein weiterer Summand hinzu, und `L = 4` ergäbe 75, `L = 9` ergibt 150.
+
+### Was die Schicht kostet, und die drei verworfenen Wege
+
+Gerechnet aus den Konstanten in `kern/zustand.hpp`; die Formel reproduziert für `L = 4` exakt
+die heutigen 310 und für `L = 9` die 740 aus Paket 0118.
+
+| Weg | Politikländer | Börsenplätze | Zustand | handelbare Plätze | Handelsströme |
+|---|---:|---:|---:|---:|---:|
+| heute | 4 | 0 | **310** | 20 | 40 |
+| nur mehr Länder (0118) | 9 | 0 | 740 | 45 | 180 |
+| **drei Schichten — gewählt** | 9 | **30** | **890** | **75** | **180** |
+| die 30 Plätze als Länder — verworfen | 39 | 0 | 5.420 | 195 | **3.120** |
+| alle Länder der Welt — verworfen | 195 | 0 | **87.788** | 975 | **76.440** |
+
+**Der Sprengsatz ist die Handelsmatrix.** Sie wächst mit `G·(G−1)·2` über `G = L + 1`
+Gebiete:
+
+| Politikländer | Handelsströme |
+|---:|---:|
+| 4 | 40 |
+| 9 | 180 |
+| 30 | 1.860 |
+| 39 | 3.120 |
+| 195 | **76.440** |
+
+**Die entscheidende Zahl steht nicht in der Summe, sondern im Verhältnis.** Ein zusätzliches
+Politikland kostet am Rand `44 + 40 + 3 + 5 + 6 = 98` Felder für **fünf** handelbare
+Steckplätze, also rund **20 Felder je handelbarem Platz**. Ein Börsenplatz kostet **fünf**
+Felder für **einen** Steckplatz. **Der Platz ist je handelbarem Steckplatz rund viermal
+billiger als das Land** — und das ist die ganze Begründung der Schicht, in einer Zahl.
+
+**Verworfen: alle 195 Länder der Welt.** Nicht „später", sondern ein anderes Produkt.
+**87.788 Zustandsfelder, 76.440 Handelsströme und 195 × 19 = 3.705 lizenzgeprüfte
+Datenreihen** — Paket 0118 rechnet 19 Reihen und 2 Lizenzstellen je zusätzlichem Land, das
+sind hier 390 Lizenzstellen. Zum Vergleich: Dieser Entwurf führt heute 27 Sollreihen. Der
+Rückvergleich hätte nach der Zählung `4 · R` **780** Prüfgegenstände statt sechzehn (dieselbe
+Formel, die für vier Länder 16 ergibt), die Markträumung liefe über 76.440 Ströme statt 40,
+und das
+Laufzeitbudget der drei Selbstspielmaße — heute 9.539.200 Weltschritte — wüchse mit ihnen.
+Wer die Frage erneut stellt, findet hier die Antwort, statt sie neu zu rechnen.
+
+**Verworfen: die 30 Plätze als vollwertige Länder.** 5.420 Felder statt 890, 3.120
+Handelsströme statt 180, und 30 × 19 zusätzliche Datenreihen — für dieselben 30 handelbaren
+Steckplätze. Man bekäme dafür, dass man die Plätze auch beeinflussen könnte; genau das soll
+man aber nicht, siehe unten.
+
+**Verworfen: ein Börsenplatz mit Handelszeile.** Er wäre dann keine zweite Schicht, sondern
+ein billiges Land — und die Matrix wüchse mit `G²`, also genau der Größe, wegen der die
+Schicht überhaupt existiert.
+
+### Warum die Plätze handelbar sind und nicht beeinflussbar
+
+Das ist keine Sparmaßnahme, sondern die Aussage der Schicht.
+
+**Ein Börsenplatz füttert keinen Aufsichtszähler.** Gegenkraft 1 liest globale Sichtbarkeit
+mal lokalen Fußabdruck, und der Fußabdruck ist Einfluss mal Positionsanteil am Sektor. Auf
+einem Platz hat der Fonds keinen Einfluss und steht in keinem Sektor eines Landes; sein
+Bestand dort geht in keinen Zähler ein. **Die zweite Schicht ist der Ort, an dem der Fonds
+groß werden kann, ohne beobachtet zu werden.**
+
+**Und genau deshalb kann er dort nie gewinnen.** Das Mandat hat zwei Hälften — Vermögen
+**und** Einfluss in mindestens zwei Ländern. Börsenplätze liefern die erste und **null** von
+der zweiten. Sie sind damit dieselbe Art Gegenstand wie die Staatsanleihe, von der schon
+dasteht: *„Eine Zinswette ist ein Weg, Kapital aufzubauen, und nie ein Weg, das Spiel zu
+gewinnen."* Die zweite Schicht ist der zweite solche Weg, dreißigmal so breit.
+
+**Der Fonds kann die Plätze trotzdem bewegen — nur nicht bei ihnen.** Er lobbyiert den
+Leitzins eines Ankers und trifft dessen drei Plätze über `zielzins` und alle dreißig über
+`weltzins`; er lobbyiert einen Zoll und trifft über Weltpreis und `durchgriff` die Sektorpreise
+seines Ankers und damit dessen `leitkurs`. **Wirkung ja, Zugriff nein** — das ist eine
+schärfere Aussage als „unbeeinflussbar" und die interessantere.
+
+### Die Gegenkräfte auf der neuen Schicht
+
+Die fünf Gegenkräfte bleiben fünf. Was sich ändert, ist ihre Reichweite, und die gehört einzeln
+hingeschrieben, weil eine neue Fläche ohne Gegenkraft der schnellste Weg zurück zu der
+Rückkopplung ist, die dieses Genre tötet.
+
+| Gegenkraft | erreicht die zweite Schicht? | wie |
+|---|---|---|
+| 1 Aufsicht | **nein, und das ist entschieden** | Kein Einfluss, kein Fußabdruck, kein Zähler. Der Preis dafür ist das Mandat. |
+| 2 Politische Gegenreaktion | mittelbar | Über den Anker: Ein Regierungswechsel stellt dessen Instrumente zurück, das bewegt `leitkurs` und `zielzins`. |
+| 3 Marktenge | **ja, und stärker als in Schicht 1** | Siehe unten. |
+| 4 Nachahmer | **ja** | `nachahmer[b]`, dieselbe Regel wie beim Korb. |
+| 5 Gegenlobby | nein | Ein Platz hat kein Instrument, an dem sich Gegendruck bilden könnte — dasselbe Argument wie bei der Restwelt. |
+
+**Gegenkraft 3 ist die, die mit dem Erfolg wächst, und sie wächst auf der neuen Schicht
+schneller.** Zwei Mechanismen, beide ohne neue Regel:
+
+- **Plätze sind flacher als Länder.** `tiefe[b]` ist ein Anteil `platzanteil` des
+  Ankerkapitalstocks, also kleiner als jeder Land×Sektor-Korb desselben Gebiets. Der Preisstoß
+  aus Aktion 1 wächst mit dem Anteil des Fonds am Markt — auf einem flacheren Markt ist
+  derselbe Betrag ein größerer Anteil. **Die Schicht, auf der man unbeobachtet groß werden
+  kann, ist zugleich die, auf der die eigene Größe am schnellsten wehtut.**
+- **Der Marktkorb wird breiter.** Die Marktrendite aus Gegenkraft 3 ist die wertgewichtete
+  Rendite **aller handelbaren** Körbe und Anleihen; die dreißig Plätze gehören dazu, sonst
+  wäre ein handelbarer Gegenstand außerhalb des Vergleichsmaßstabs eine geschenkte
+  Überrendite. Die Latte, über die der Fonds springen muss, steigt also mit der Schicht — und
+  „breit mitlaufen" wird noch weniger tragfähig, als es war.
+
+**Zwei Gegenkräfte greifen damit auf der neuen Schicht, beide wachsen mit dem Erfolg, und eine
+greift ausdrücklich nicht.** Das ist die ehrliche Bilanz; sie steht so hier, damit der
+Bruchtester weiß, wo er zu suchen hat.
+
+### Was die Schicht für die vier Maße bedeutet
+
+**Maß 1 — Entscheidungsdichte.** Die handelbaren Steckplätze steigen von 20 auf **75**: 45 aus
+der Ländergeometrie bei `L = 9` und 30 aus dieser Schicht. Die Aktionszahl bleibt bei drei je
+Runde — der Betreiber hat am 2026-09-05 Weg A gewählt, die Steckplätze wachsen mit. **Die
+Rechnung, wie die Entscheidungsdichte dabei erhalten bleibt, gehört in Paket 0118, und sie muss
+beide Zuwächse tragen, nicht nur die 45 aus den Ländern.** Die Zahl, auf der sie zu rechnen
+hat, ist die 75 aus diesem Abschnitt, gegen die 20 von heute. Was hier dazugehört und dort
+nicht wiederholt werden muss: Maß 1 zieht je Runde 30 Bündel aus der Liste der **zulässigen
+Aktionen**, und diese Liste wächst mit den Steckplätzen. Die offene Frage *„Wie fein der
+Aktionsraum sein darf"* war bisher empirisch am Prototyp zu klären; mit 75 Plätzen ist sie
+**bindend**, und ihre Prüfform steht schon da — `Dichte(t)` bei `K = 30` gegen `K = 60`.
+
+**Maß 2 — Strategievielfalt.** Die 126 Profile bleiben 126: Ein Börsenplatz ist ein Ziel
+innerhalb der Familie 1 (Position), keine sechste Aktionsart und keine vierte Familie. Die
+Schicht vergrößert also die Auswahl **einer** der drei Familien, und das ist der Einwand, den
+man dagegen erheben muss. **Er trägt nicht, und der Grund ist die Bauart und nicht die
+Kalibrierung:** Plätze liefern kein Gramm Einfluss, und die zweite Hälfte des Mandats verlangt
+Einfluss in zwei Ländern. Familie 1 bekommt damit eine höhere Decke für **Kapital** und
+keinen Zentimeter mehr für den **Sieg**. Was die Schicht dagegen wirklich verschiebt, ist die
+zweite Abnahmehälfte `max(Ek) ≤ 1,25 · min(Ek)` — sie ist ab hier die scharfe Bedingung, und
+sie ist der Ort, an dem eine zu große `platzanteil`-Kalibrierung sichtbar wird.
+
+**Maß 3 — Verschiebung des Optimums.** Hier gewinnt der Entwurf am meisten, und zwar an einer
+Stelle, an der er seit dem 2026-09-03 offen ausgewiesen schwach war. Mit dem Fenster 2001–2021
+ist der Euro-Übergang weggefallen, die einzige Sperre, die während einer Partie zuschnappte;
+seither trugen Maß 3 **zwei** Quellen, Nachahmer und Preisstoß, und dieser Entwurf hat
+ausdrücklich hingeschrieben, dass ein Scheitern daran ein Befund über diese beiden wäre. **Die
+zweite Schicht ist die dritte Quelle, und sie kommt aus einer Regel statt aus einer Zahl:** Am
+Partieanfang hat der Fonds keinen Einfluss, also ist der unbeobachtete, flache, breite
+Platzmarkt der effiziente Weg, Kapital aufzubauen; gegen Partieende bindet die zweite
+Mandatshälfte, und Kapital muss in Beteiligungen und Lobbydruck **in Politikländern**
+umgeschichtet werden — wo es sofort Aufsicht und Gegenlobby weckt. Das ist eine überprüfbare
+**Vorhersage** und keine Absichtserklärung: Das Frühfensteroptimum `p*` sollte Gewicht auf
+Aktionsart 1 tragen, das Spätfensteroptimum `q*` auf 2 und 3. Trifft sie nicht ein, ist das
+ein Befund über diesen Abschnitt.
+
+**Maß 4 — Rückvergleich.** Er ändert sich **nicht**, und zwar in keiner seiner Zahlen.
+Börsenplätze sind nach Paket 0117 **Spielländer** — *als Verweis geschrieben, nicht als
+nachgemessene Tatsache: 0117 ist heute noch nicht gebaut.* Sie zählen damit nicht in den
+sechzehn Prüfgegenständen, und die Schärfe des Rückvergleichs sinkt nicht: Er läuft weiter über
+dieselben 23 freien Sollreihen und denselben Handelsblock aus 40 Strömen, denn ein Platz hat
+keine Handelszeile. Dazu tritt eine Eigenschaft, die stärker ist als die Klassenzuordnung und
+sie unabhängig davon trägt: **Die Schicht ist ein reines Blatt.** Kein Feld der ersten oder
+dritten Schicht liest ein Feld eines Börsenplatzes; gelesen werden Platzfelder ausschließlich
+vom Fondsteilsystem. Da dieses im `weltlauf` nicht läuft, wird die zweite Schicht dort **gar
+nicht gerechnet** — ihre vier Felder je Platz behalten ihre Startwerte, so wie der Fondsblock
+und die Nachahmerzähler es schon tun. Der Weltlauf kostet nach dieser Schicht keinen
+Weltschritt mehr als vorher, und die Menge der je Modus geschriebenen Adressen bleibt fest.
+Der Preis dieser Sauberkeit gehört dazu und steht unter *Die Grenze des Orakels*: Für die
+zweite Schicht ist das Orakel vollständig blind. Es gibt zu ihr auch nichts, wogegen es prüfen
+könnte — einen Weltaktienindex unter freier Lizenz gibt es nicht, das steht schon unter *Was
+bewusst fehlt*, und `daten.md` führt keine einzige Kursreihe.
+
+### Die drei Klagen, auf dieser Schicht gelesen
+
+| Klage aus den Rezensionen | was die zweite Schicht dazu beiträgt |
+|---|---|
+| „the consequences of choices often feel intangible" | Die Kopplung ist eine Formel, die der Spieler in der Kette nachlesen kann: Zollschritt → Weltpreis → `durchgriff` → Sektorpreis des Ankers → `leitkurs` → `index[b]`. Eine Handlung in einem Land bewegt sichtbar einen Preis dreißig Steckplätze weiter — und weil `weltzins` alle Plätze erreicht, hat ein Zinsschritt eine Wirkung, die man **weltweit** ablesen kann, ohne dass irgendetwas erzählt würde. |
+| „trying to implement the tiniest socialist policy will always result in bankruptcy" | Auf jedem Platz ist long und short dieselbe Formel mit umgekehrtem Vorzeichen. Die Schicht bringt keine politische Richtung mit; sie kann in keiner Richtung allein gewinnen, weil sie null Einfluss liefert. Sie verbreitert damit die Familie Position, ohne eine politische Linie zu belohnen. |
+| „no dramatic setbacks", „broad as an ocean, but deep as a puddle" | Die Schicht ist genau die Breite, die die Klage vermisst — und sie ist mit einer Falle versehen, statt gratis zu sein: Wer auf den flachen Plätzen groß wird, bewegt den Preis gegen sich, sammelt Nachahmer und hebt zugleich die Latte des Marktkorbs, an der sein Anlegerbestand hängt. Der Rückschlag ist mechanisch und im Zustand ablesbar, wie jeder andere hier auch. |
 
 ## Die Gegenkraefte
 
@@ -1756,6 +2169,39 @@ Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahr
 - **Mehr als vier Länder und drei Sektoren.** Die Idee nannte zwölf und sechs. Zwölf Länder
   vervierfachen die Rückkopplungswege ohne ein Maß zu verbessern; sechs Sektoren gibt es
   unter freier Lizenz nicht, und aus drei aufgeteilte wären ein Konstrukt ohne Sollreihe.
+  **Am 2026-09-05 eingeordnet, nicht gestrichen:** Der Satz galt und gilt für
+  *Politikländer* — der Betreiber hat neun entschieden (Paket 0118), und das ist die Zahl,
+  gegen die er ab jetzt zu lesen ist. Für das *investierbare Universum* ist er seit
+  Paket 0119 gegenstandslos: Es wächst über die zweite Schicht, die keine
+  Rückkopplungswege hinzufügt, weil sie keine Handelszeile hat.
+- **Alle 195 Länder der Welt.** Das ist kein „später", sondern ein anderes Produkt, und die
+  Zahlen stehen unter *Was die Schicht kostet*: **87.788 Zustandsfelder, 76.440 Handelsströme,
+  3.705 lizenzgeprüfte Datenreihen** und 780 Prüfgegenstände statt sechzehn. Verworfen am
+  2026-09-05.
+- **Ein Börsenplatz mit Handelszeile, Politikinstrumenten oder Beteiligung.** Jedes einzelne
+  davon macht ihn zu einem billigen Land: Die Handelszeile bringt die `G²`-Matrix zurück
+  (3.120 Ströme statt 180), die Instrumente machen ihn beeinflussbar und heben damit die
+  Trennung auf, um derentwillen die Schicht existiert, und die Beteiligung wäre der Weg zu
+  billigem Lobbying an einem Ort, an dem es kein Lobbying gibt.
+- **Ein Aufsichtszähler auf der zweiten Schicht.** Der Fonds kann dort unbeobachtet groß
+  werden. Das ist ausdrücklich gewollt und teuer bezahlt: Die Schicht liefert null Einfluss
+  und kann die zweite Mandatshälfte nie erfüllen. Ein halber Zähler („Sichtbarkeit ja,
+  Einfluss nein") wäre eine Regel, die nichts entscheidet, weil der Fußabdruck den Einfluss
+  als Faktor trägt und damit ohnehin null bliebe.
+- **Ein Regulierungskanal auf `zins[b]`.** Naheliegend wäre, dass die Finanzmarktregulierung
+  des Ankers Kapital vertreibt und den Platzzins hebt — ein dritter Hebel in die zweite
+  Schicht hinein. Er kostete einen weiteren Kalibrierschlüssel, und zwei Hebel dorthin gibt
+  es schon (Leitzins über `zielzins` und `weltzins`, Zoll über `leitkurs`). Fällt Maß 3 an zu
+  wenig Zugriff auf die Schicht, ist dieser Kanal der erste Nachschlag.
+- **Eine gemessene Marktkapitalisierung je Börsenplatz.** `tiefe[b]` wird aus dem
+  Kapitalstock des Ankers und den Sektorgewichten gebildet, mal `platzanteil`. Eine echte
+  Kapitalisierungsreihe wäre die richtigere Größe, hinge aber an einer weiteren Quelle mit
+  eigener Lizenzfrage — und die Ordnung, auf die es ankommt (großer Anker, tiefer Platz),
+  liefert die abgeleitete Größe auch.
+- **Ein eigener Trägheitsparameter für die zweite Schicht.** `index`, `zins` und
+  `wechselkurs` eines Platzes gehen je Runde genau **halb** auf ihr Ziel zu. Drei
+  kalibrierbare Gewichte gäben der Suche drei Achsen, deren Wirkung `kippung` und
+  `platzanteil` ohnehin erzeugen — und kein Maß liest die Halbierung.
 - **Das verarbeitende Gewerbe als eigener Sektor.** Es wäre die interessantere Gliederung
   und ist als WDI-Reihe sogar vorhanden — aber nur als Teilmenge der Industrie. Ein
   vierter Sektor „übrige Industrie" hätte keine eigene Quellreihe und müsste als Differenz
@@ -1997,6 +2443,35 @@ Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahr
   für mehrere Runden, Gegenkraft 5 legt in derselben Runde Gegendruck auf alle vier
   Instrumente. Zwei Strafen aus einer Ursache; ob daraus eine Sackgasse wird, misst Maß 2
   und nicht dieser Entwurf.
+- **Ob `platzanteil` einen zulässigen Bereich hat.** Neu am 2026-09-05 und die schärfste
+  Bedingung, die aus der zweiten Schicht folgt. Zu groß, und die Plätze sind tief genug, dass
+  Familie 1 dort ungestört Kapital aufbaut — dann fällt die zweite Abnahmehälfte von Maß 2
+  (`max(Ek) ≤ 1,25 · min(Ek)`), weil Position die anderen beiden Familien abhängt. Zu klein,
+  und eine Stufe auf einem Platz ist entweder unbezahlbar oder bewegt den Preis so stark, dass
+  die Schicht unbenutzbar ist — dann ist sie Dekoration und Maß 3 verliert seine dritte
+  Quelle wieder. Beides ist am Prüfstand sichtbar, beides ist ein Befund über den
+  Parametersatz — es sei denn, es gibt keinen zulässigen. Dann ist es der Entwurf.
+- **Ob `kippung` die drei Plätze eines Ankers wirklich unterscheidet.** Sie sind per
+  Konstruktion verschieden, aber ob der Unterschied groß genug ist, dass ein Suchbot ihn
+  nutzt, ist eine Messung. Die Prüfform: Erreichen im Frühfenster von Maß 3 Profile mit
+  Schwerpunkt auf verschiedenen Leitsektoren dasselbe Ergebnis, sind die drei Plätze eines
+  Ankers ein Platz. Die Zahl ist Kalibrierung, die Form steht.
+- **Ob `3·(L+1)` die Länderwahl aus 0118 überlebt.** Die Formel setzt voraus, dass jedes
+  Gebiet drei unterscheidbare Leitsektoren trägt. Für ein Land, dessen Sektorstruktur stark
+  von einem Sektor beherrscht wird, liegen die drei Plätze nach der `kippung`-Regel eng
+  beieinander. Zu sehen ist das erst an den fünf gewählten Ländern; der Ausweg wäre nicht eine
+  andere Formel, sondern eine andere `kippung`.
+- **Woher die Sektorgewichte der drei Restwelt-Plätze kommen.** Sie folgen der gleichen Regel
+  aus `sektoranteil[Restwelt][s]` des Startjahrs. Die Restwelt entsteht im Jahrgang als
+  Residuum, und ob ihre Sektoranteile dabei sauber anfallen, weiß der Jahrgangsbau und nicht
+  ich. Fällt die Größe nicht an, ist der Ausweg der kapitalstockgewichtete Mittelwert der
+  `L` Länderanteile — eine Regel, keine erfundene Zahl.
+- **Ob es doch eine einbettbare Kursreihe gibt.** Die Schicht ist ohne jede Sollreihe
+  entworfen, weil `daten.md` keine führt und dieser Entwurf schon festhält, dass es keinen
+  Weltaktienindex unter freier Lizenz gibt. Fände der Datenbauer eine Indexreihe unter
+  tragfähiger Lizenz, wären die betroffenen Plätze **Rückvergleichsländer** statt Spielländer,
+  und Maß 4 gewönne Prüfgegenstände hinzu, statt keine zu verlieren. Der Entwurf hängt nicht
+  daran — er gewönne nur. Zu prüfen vom Datenbauer, nicht von mir.
 - **Ob die Schwellen von Maß 4 mit endogener Produktivität überhaupt erreichbar sind.**
   Unverändert das größte ungemessene Risiko des Vorhabens. Es ist keine Entwurfsfrage
   mehr, sondern eine Messung des Rückvergleichers am laufenden Kern — die Abnahmeregel
@@ -2005,6 +2480,30 @@ Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahr
 ## Was der Architekt neu rechnen muss
 
 Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
+
+### Neu aus Paket 0119 — die zweite Schicht, 150 Adressen und zwei Parameter
+
+`technik.md` habe ich nicht angefasst, und keine Zahl darin ist heute falsch: Die zweite
+Schicht kommt zusammen mit den neun Ländern aus 0118, und bis 0116 die Adressarithmetik
+parametrisch geschrieben hat, gilt weiter `L = 4` und 310. Was danach nachzuziehen ist:
+
+| Stelle | was zu tun ist |
+|---|---|
+| **T15** (Adressaufstellung) | Ein sechster Block `boersenplatz`: `5 · B` Adressen mit `B = 3·(L+1)`, also 150 bei `L = 9`. Vier Felder je Platz (`index`, `wechselkurs`, `zins`, `nachahmer`) plus ein Positionssteckplatz. Gesamt 890. |
+| **T16** (Steckplätze) | Die Steckplatzliste bekommt eine vierte Art. `3·L` Land×Sektor + `L` Währung + `L` Anleihe + `B` Börsenplatz = 75 bei `L = 9`. Die Regel „Steckplatz Währung USA bleibt leer" hat auf der neuen Art keine Entsprechung — jeder Platz ist besetzbar. |
+| **T5** (Skalenklassen) | `index[b]` und `wechselkurs[b]` in Klasse 5, `zins[b]` in Klasse 3, `nachahmer[b]` ganzzahlig mit Obergrenze wie `nachahmer[l][s]`. `tiefe[b]` steht in der volkswirtschaftlichen Skala, `boersenwert(b)` ebenfalls — die Skalengrenze zum Fondsgeld liegt wie gehabt zwischen `stufenwert` und `positionswert`. |
+| **T27** (`parameter.toml`) | Zwei neue Schlüssel: `kippung` und `platzanteil`. `aufschlag` wird wiederverwendet. |
+| **T33** (Marktkorb) | Der eingefrorene Mengenkorb bekommt einen dritten Summanden: `B` Plätze mit Menge `tiefe[b]` und Kurs `index[b]`. Bei `L = 9` sind das 27 Körbe, 9 Anleihen und 30 Plätze. Währungen bleiben draußen, Plätze nicht — sie tragen eine Kapitalisierung. |
+| **T47** (`marktanteil`) | Dritter Summand in `korbbestand`, gebildet aus `boersenwert(b)` und `|stufen| · stufenweite`; ohne Beteiligungsanteil, weil es auf Plätzen keine Beteiligung gibt. |
+| **T39** (Kursregeln ohne Adresse) | `weltzins`, `zielzins(b)`, `zielkurs(b)`, `leitkurs(b)`, `zinsfaktor(b)` und `boersenwert(b)` sind Funktionen des Zustands, keine Adressen — dieselbe Bauart wie `anleihekurs` und `landespreis`. |
+| **Nachahmer- und Stoßregel** | **Die einzige Stelle, an der dieser Abschnitt auf eine fremde Formel zeigt, statt sie hinzuschreiben.** Der Aufschlag auf `index[b]` soll derselbe sein wie der auf einen Land×Sektor-Korb, mit `nachahmer[b]` an der Stelle von `nachahmer[l][s]` und `boersenwert(b)` an der von `korbwert(l,s)`. Liest die vorhandene Regel jedoch `kapitalstock[l][s]` unmittelbar statt über den Korbwert, trägt die Übertragung nicht, und dann ist das ein Befund gegen diese Zeile — nicht gegen die Schicht. Der Architekt sagt, welcher der beiden Fälle vorliegt. |
+| **T37 / die 16 Prüfgegenstände** | **Unverändert.** Börsenplätze sind Spielländer (Verweis auf Paket 0117, dort zu setzen), tragen keine Sollreihe und keine Handelszeile. Der Handelsblock bleibt bei `G·(G−1)·2` über die **Gebiete**, nicht über die Plätze. |
+| **Modus `weltlauf`** | Die zweite Schicht wird **nicht gerechnet**; ihre `5·B` Adressen behalten ihre Startwerte, wie der Fondsblock und die Nachahmerzähler. Die Menge der je Modus geschriebenen Adressen ist damit weiterhin fest und wächst im Weltlauf nicht. Der Weltlauf kostet unverändert `R` Weltschritte. |
+| **Schranke am Leitzins** | Bleibt, wie sie ist (`leitzins ≥ 1 − aufschlag`), und deckt `zins[b]` mit ab: `zins[b]` ist ein wiederholtes Mittel von Werten oberhalb dieser Schranke. **Keine zweite Schranke nötig.** |
+| **Laufzeitbudget (Abschnitt 10)** | Je Weltschritt kommen `B` Plätze zu je drei Halbierungen und einer Bewertung hinzu. Keine Iteration, keine Suche, keine Handelszeile — der Zuwachs ist linear in `B` und trifft nur die drei Selbstspielmaße, nicht den Weltlauf. |
+
+**Der Abzählschritt aus T45 geht mit dem neuen Block auf**, weil jede der `5·B` Adressen
+ihren Herkunftseintrag in der Feldtabelle unter *Was ein Börsenplatz trägt* hat.
 
 ### Neu aus Paket 0054 — R fällt von 24 auf 20, das Fenster auf 2001–2021
 
