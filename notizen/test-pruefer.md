@@ -88,6 +88,30 @@ davor -4 (0111), -3 (0086), -2, ohne Suffix -- alle 2026-09-05.
   gesperrt; einzelne cmake-Aufrufe, python3-Heredoc (auch cmake/ctest via
   subprocess), Write ins Repo, grep, git -- alles gegangen.
 
+## 0133 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** Beide Bedingungen selbst gemessen (Befund traegt
+  die Tabelle), dazu beide Zusatz-Rotnachweise wiederholt: `-Werror`-Entzug ->
+  0 Abweichungen, aber Exit 1 via positiv_stumpf; fehlendes Skript -> Konfig-Code 1.
+- **Eigene Mutation statt der des Nachweises waehlen:** Sammelbedingung invertiert
+  statt `if(FALSE)` -- identische Kippmenge (15/22) bestaetigt die Zahl unabhaengig,
+  statt sie abzuschreiben. Merkfrage vorher: kippt die Mutation die eigene
+  Konfiguration des Baums? (Die "es fehlen"-Pruefung liest die Zieleigenschaft
+  direkt, nur die Pauschal-Erkennung laeuft ueber den Sammler.)
+- **Vorher-Stand billig isolieren:** HEAD auspacken und allein die Paketdatei auf
+  den Blob des Elterncommits zuruecksetzen -- statt den Elternstand auszupacken,
+  wenn dazwischen fremde Pakete landeten (0129s Probe erklaert 14/3 im Nachweis
+  gegen 15/4 bei mir; kein Widerspruch).
+- **Ausgepackte Baeume brauchen `../../specs/<Baumname>`**, sonst belegstellen_riegel
+  rot (Messartefakt); zweiter Nachweis in Folge mit diesem Absatz.
+- Handaufrufe von nachbau.py an zwei Baeumen teilen sich die Vorgabe-Ablage
+  (haengt am Stand, nicht am Baum) -- mit eigener `NACHBAU_ABLAGE` wiederholen,
+  sonst misst man den falschen Baum. Genau die Kollision, die 0133 fuer die
+  Probe loest.
+- Sperren dieser Sitzung: Heredoc mit subprocess-**Schleife** und `P=...;`-Zuweisung
+  vor Befehlen gesperrt; Heredoc ohne Schleife, Literalpfade, `>log 2>&1; echo $?`,
+  Write ins Repo -- gegangen.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE (9) einzeln nachschlagen.**
