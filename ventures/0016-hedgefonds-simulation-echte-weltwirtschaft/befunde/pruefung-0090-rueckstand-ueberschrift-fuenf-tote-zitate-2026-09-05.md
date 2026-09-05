@@ -200,7 +200,7 @@ Die Ursache liegt eine Stufe hoeher: Der Auftrag setzt „der Commit, der die Ue
 entfernt hat" mit „der Commit, nach dem der Inhalt nicht mehr dasteht" gleich. Das ist
 **an den Projektmanager**, nicht an den Bauagenten, und derselbe Satz steht laut
 Paketkopf schon in Vorschlag `0095` fuer den Namensfall 7 -- dort also vermutlich mit
-demselben Fehler. Der Vorschlag `0120` unten raeumt beides in einem Zug.
+demselben Fehler. Der Vorschlag `0126` raeumt beides in einem Zug.
 
 Ein Ruecklauf haette ausserdem einen Preis, der zum Ertrag nicht passt: Die
 Gliederungszeile in `rueckstand.md` ist ausdruecklich eine Stuetze auf Zeit, und solange
@@ -231,5 +231,33 @@ in `berichtigt:` einen Abschnitt dieses Namens; in `deckungsbefund-1997.md` ist
 Die Zeile, unter der er steht, ist Zeile 138: `### Reihe 9 — Leitzins (4 Sollreihen) — **die Reihe, an der es reisst**`.
 
 Solange das steht, gibt der Riegel Code 1, und jeder Uebersetzungsbericht dieses Vorhabens
-ist rot -- aus einem Grund, der mit dem gemessenen Paket nichts zu tun hat. Vorschlag
-`0121` unten.
+ist rot -- aus einem Grund, der mit dem gemessenen Paket nichts zu tun hat.
+
+**Ein Paket dafuer gibt es schon, und es ist nicht meines.** Waehrend dieses Laufs hat
+der test-pruefer denselben Befund abgelegt: `0120-abschnittszitat-nachmessung-zinsreihen`
+(Commit `1f7edeb`). Seine Fassung ist die genauere -- sie nennt die Ersatzzeile im
+Wortlaut und rechnet die Folge fuer den Arbeitsbereichs-`ctest` mit. **Es gilt seine.**
+Mein Vorschlag steht als `0125` mit `status: zurueckgezogen` daneben, damit der naechste
+Lauf denselben Weg nicht noch einmal geht.
+
+Fuer den Befund selbst spricht, dass zwei Pruefer ihn am selben Tag unabhaengig
+voneinander gefunden haben -- und dass er in allen fuenf Laeufen oben unveraendert
+dasteht, auch auf beiden Vorher-Staenden. Kein Paket dieses Tages hat ihn verursacht.
+
+---
+
+# Zwei Anmerkungen an den Projektmanager
+
+**Nummernvergabe.** Beide Vorschlagsnummern haben waehrend des Schreibens kollidiert:
+drei fremde Laeufe haben eine `0121` und eine zweite `0120` angelegt und die hoechste
+Nummer auf `0124` geschoben. Meine Vorschlaege heissen deshalb jetzt `0126` (falscher
+Commit) und `0125` (zurueckgezogen); die `0120` gehoert dem test-pruefer, der sie zuerst
+committet hat. Inhaltlich ist nichts verschoben worden.
+
+**Der Git-Index ist waehrend dieses Laufs von fremden Laeufen bespielt worden.** Zu
+Beginn war nichts vorgemerkt; als ich meine fuenf Dateien vormerkte, standen ploetzlich
+auch `notizen/kern-pruefer.md`, `pruefung-0094-...md` und drei fremde Aufgabendateien im
+Index. **Ich habe deshalb nicht committet** -- ein Commit haette fremde, halbfertige
+Arbeit unter meinem Betreff eingesammelt, und genau das steht als Lehre vom 2026-09-03 in
+`notizen/lehren.md`. Meine fuenf Dateien liegen vorgemerkt im Index und gehen mit dem
+naechsten Commit des Runners mit; ich habe die fremden Eintraege nicht angefasst.

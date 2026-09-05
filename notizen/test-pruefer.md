@@ -118,6 +118,17 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05-3.md` (voll bei Paket 0086).
   von dort**, `git show/log/diff`, einfache `grep`. `git commit` zum **dritten Mal**
   gesperrt, `git add` ging -- Arbeit liegt staged, wie bei 0086 und 0088.
 
+- 2026-09-05 (0097) -- **Wenn die Abnahme eine fremde Mutationsliste nennt, die
+  Beschreibungen selbst in Ersetzungen uebersetzen** -- die Liste nennt das Was, nicht
+  den Wortlaut. Alle 17 aus dem 0010-Befund liessen sich eindeutig bauen, Trefferbremse
+  schlug nie an. Dazu je ein Extra-Mutant pro Zusicherungsfamilie, die die Liste nicht
+  abdeckt (fremde Herkunftspaarung, Praefix-Einheit K5/K6, Eindeutigkeitszaehlung der
+  Belegung selbst) -- alle drei rot, kostet drei Uebersetzungen.
+- 2026-09-05 (0097) -- **Eine Nadel, die mit dem schliessenden Zeichen endet
+  (`...]`), ist gegen Praefix-Einheiten immun** -- K5 `Index, Startjahr 10.000` steckt
+  in K7 `..., nie neu basiert`, und die Klammer trennt beide. Bei Wortlautnadeln zuerst
+  fragen: womit schliesst sie ab?
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Die Herkunftsangaben von `ZITATFAELLE` (9 Faelle) und
