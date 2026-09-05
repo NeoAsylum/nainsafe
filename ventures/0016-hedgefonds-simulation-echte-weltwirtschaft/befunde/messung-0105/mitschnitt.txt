@@ -235,7 +235,7 @@ test 2
 2: 
 2: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
 2: 36 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
- 2/11 Test  #2: riegel_nachher_auf_baum ............   Passed    0.23 sec
+ 2/11 Test  #2: riegel_nachher_auf_baum ............   Passed    0.22 sec
 test 3
       Start  3: riegel_vorher_auf_baum_gut
 
@@ -358,7 +358,7 @@ test 3
 3:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
 3:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
 3:       gesucht war: Strategiekern, vierwertig
- 3/11 Test  #3: riegel_vorher_auf_baum_gut .........   Passed    0.23 sec
+ 3/11 Test  #3: riegel_vorher_auf_baum_gut .........   Passed    0.22 sec
 test 4
       Start  4: riegel_nachher_auf_baum_gut
 
@@ -473,7 +473,7 @@ test 4
 4: 
 4: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
 4: 37 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
- 4/11 Test  #4: riegel_nachher_auf_baum_gut ........   Passed    0.23 sec
+ 4/11 Test  #4: riegel_nachher_auf_baum_gut ........   Passed    0.22 sec
 test 5
       Start  5: riegel_vorher_auf_baum_tot
 
@@ -753,115 +753,13 @@ test 9
 9: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/riegel_mutant_grenze_am_wort "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft" "/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/baum/specs/0016-hedgefonds-simulation-echte-weltwirtschaft"
 9: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau
 9: Test timeout computed to be: 10000000
-9: belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
-9: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
-9: und 5 zur Satzgrenze nach links, alle wie erwartet.
-9: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 46 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
-9: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 46 Bauquellen und 13 Datendokumente gelesen, 196 Dateien im Zielbestand, 452 Pfade in ungelesenen Ordnern; 36 Zitate der geprueften Form gefunden, 36 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
-9: Davon ohne Anfuehrung: 14 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+9: Zitatfall 12: der abgegrenzte Name ist '', erwartet war 'Reihe 1'.
+9:       Herkunft: gebaut: das Schluesselwort am Zeilenende, der Name darunter. Die Grenze ist die Zeile des **Namens** und nicht die des Schluesselworts -- wer sie am Schluesselwort festmacht, findet hier gar keine Fundstelle mehr und macht diesen Fall rot
 9: 
-9: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
-9: Fundstellen tragen ihr Ziel nicht bei sich; sie werden gezaehlt und genannt,
-9: aber nicht bewertet:
-9: 
-9:   rueckstand.md:205  (Zieldatei fuehrt keine Ueberschrift: kern/include/kern/werte.hpp)
-9:       gesucht war: 18 vererbt sich sonst
-9:   parameter.toml:11  (Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md)
-9:       gesucht war: WIE DER PRUEFER ZAEHLT
-9:   parameter.toml:71  (Gliederungsziffer statt Ueberschrift: 12)
-9:       gesucht war: 12 sagen dasselbe
-9:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:63  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3
-9:   daten/reihen.toml:64  (Gliederungsziffer statt Ueberschrift: 4)
-9:       gesucht war: 4
-9:   daten/reihen.toml:94  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 und Abschnitt 17
-9:   daten/reihen.toml:108  (Gliederungsziffer statt Ueberschrift: 17)
-9:       gesucht war: 17
-9:   daten/reihen.toml:134  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:178  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:209  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 und in T37 weiter 31 -- siehe
-9:   daten/reihen.toml:259  (Gliederungsziffer statt Ueberschrift: 5)
-9:       gesucht war: 5
-9:   daten/reihen.toml:260  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3 von lizenzbefund-reihen.md ein Vorbehalt steht
-9:   daten/reihen.toml:302  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3
-9:   daten/reihen.toml:309  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3
-9:   daten/reihen.toml:356  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:357  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 und in T37 weiter als Sollreihe der Klasse gesetzt
-9:   daten/reihen.toml:387  (Gliederungsziffer statt Ueberschrift: 5)
-9:       gesucht war: 5
-9:   daten/reihen.toml:388  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 die Umrechnungsreihe des Deflators noch nicht fuehrt
-9:   daten/reihen.toml:492  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3
-9:   daten/reihen.toml:611  (Gliederungsziffer statt Ueberschrift: 4)
-9:       gesucht war: 4
-9:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3 fuer die Einheit
-9:   daten/reihen.toml:620  (Gliederungsziffer statt Ueberschrift: 4)
-9:       gesucht war: 4 fuer das Basisjahr
-9:   daten/reihen.toml:927  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
-9:   daten/reihen.toml:1125  (Gliederungsziffer statt Ueberschrift: 3)
-9:       gesucht war: 3 und 5 -- der IWF-Volltext ist ungelesen
-9:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 fuehrt sie nicht
-9:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 17)
-9:       gesucht war: 17
-9:   daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 fuehrt sie nicht
-9:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 1)
-9:       gesucht war: 1 und Abschnitt 7 Nr
-9:   daten/reihen.toml:1402  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 Nr
-9:   daten/reihen.toml:1558  (Gliederungsziffer statt Ueberschrift: 6)
-9:       gesucht war: 6
-9:   daten/reihen.toml:1614  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7
-9:   daten/deckungsbefund-1997.md:79  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 tatsaechlich eingebettet wird -- nicht ein Naeherungswert
-9:   daten/lizenzbefund-wdi.md:152  (Gliederungsziffer statt Ueberschrift: 7)
-9:       gesucht war: 7 als Modelleinheit
-9:   daten/lizenzbefund-reihen.md:164  (kein Dokumentname im Absatz)
-9:       gesucht war: Was Reihe 2 als Ganzes kostet
-9:   daten/lizenzbefund-reihen.md:202  (kein Dokumentname im Absatz)
-9:       gesucht war: Was Reihe 2 als Ganzes kostet
-9:   daten/lizenzbefund-reihen.md:283  (Gliederungsziffer statt Ueberschrift: 4)
-9:       gesucht war: 4 dieses Befundes
-9:   daten/lizenzbefund-reihen.md:364  (naechstes Ziel ist eine Netzadresse: //raw.githubusercontent.com/etalab/licence-ouverte/master/LO.md)
-9:       gesucht war: Droits de propriété intellectuelle
-9:   daten/einheitenbefund-pwt-baci.md:20  (kein Dokumentname im Absatz)
-9:       gesucht war: Woran es haengt
-9:   kern/CMakeLists.txt:3  (kein Dokumentname im Absatz)
-9:       gesucht war: [dependencies]
-9:   werkzeuge/belegstellen/belegstellen_riegel.cpp:262  (kein Dokumentname im Absatz)
-9:       gesucht war: -- Paket 0079, oben begruendet. Die groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen Wortlaut, an dem sich etwas nachschlagen liesse
-9:   werkzeuge/belegstellen/belegstellen_riegel.cpp:265  (kein Dokumentname im Absatz)
-9:       gesucht war: -- ein Formelzeichen oder ein Platzhalter, ebenfalls oben begruendet
-9:   pruefstand/test/vorrat_kernanker_probe.cpp:3  (kein Dokumentname im Absatz)
-9:       gesucht war: Strategiekern, vierwertig
-9: 
-9: Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
-9: 36 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
- 9/11 Test  #9: mutant_grenze_am_wort_selbsttest ...***Failed    0.22 sec
+9: belegstellen_riegel: 1 von 51 Faellen des Selbsttests sind nicht wie erwartet
+9: ausgegangen. Der Riegel hat den Bestand gar nicht erst gelesen -- ein Messgeraet,
+9: das seine eigenen Faelle verfehlt, misst auch fremde nicht.
+ 9/11 Test  #9: mutant_grenze_am_wort_selbsttest ...   Passed    0.00 sec
 test 10
       Start 10: riegel_vorher_auf_arbeitsbaum
 
@@ -872,7 +770,7 @@ test 10
 10: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
 10: und 5 zur Satzgrenze nach links, alle wie erwartet.
 10: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 47 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
-10: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 47 Bauquellen und 13 Datendokumente gelesen, 198 Dateien im Zielbestand, 21206 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+10: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 47 Bauquellen und 13 Datendokumente gelesen, 198 Dateien im Zielbestand, 21207 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
 10: Davon ohne Anfuehrung: 15 Zitate; weitere 57 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
 10: 
 10: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
@@ -987,7 +885,7 @@ test 11
 11: ohne Anfuehrung, 17 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
 11: und 5 zur Satzgrenze nach links, alle wie erwartet.
 11: belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 47 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
-11: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 47 Bauquellen und 13 Datendokumente gelesen, 198 Dateien im Zielbestand, 21206 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+11: belegstellen_riegel, Bedingung 2 (Abschnittszitat): 47 Bauquellen und 13 Datendokumente gelesen, 198 Dateien im Zielbestand, 21207 Pfade in ungelesenen Ordnern; 37 Zitate der geprueften Form gefunden, 37 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
 11: Davon ohne Anfuehrung: 15 Zitate; weitere 57 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
 11: 
 11: Uebergangen -- der ausgeschriebene blinde Fleck von Bedingung 2. Diese
@@ -1093,12 +991,6 @@ test 11
 11: 37 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
 11/11 Test #11: riegel_nachher_auf_arbeitsbaum .....   Passed    0.84 sec
 
-91% tests passed, 1 tests failed out of 11
+100% tests passed, 0 tests failed out of 11
 
-Total Test time (real) =   4.63 sec
-
-The following tests FAILED:
-	  9 - mutant_grenze_am_wort_selbsttest (Failed)
-Errors while running CTest
-Output from these tests are in: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0105/bau/Testing/Temporary/LastTest.log
-Use "--rerun-failed --output-on-failure" to re-run the failed cases verbosely.
+Total Test time (real) =   4.39 sec

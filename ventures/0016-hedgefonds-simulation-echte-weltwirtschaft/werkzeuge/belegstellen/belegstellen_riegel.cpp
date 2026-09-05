@@ -479,7 +479,7 @@
 //! und nicht behauptet -- je Haelfte der Regel einer, und kein Fall reisst bei beiden:
 //! Faellt die Zeilengrenze ganz weg, reissen drei der vier (3 von 51 Faellen des ganzen
 //! Selbsttests); haengt sie an der Zeile des Schluesselworts statt an der des Namens,
-//! reisst allein der vierte (1 von 51). Die 47 Faelle der anderen vier Tabellen bleiben
+//! reisst allein der uebrige (1 von 51). Die 47 Faelle der anderen vier Tabellen bleiben
 //! in beiden Laeufen gruen.
 //!
 //! ## Das Schluesselwort mit Abstand, der Name rechts -- Paket 0086

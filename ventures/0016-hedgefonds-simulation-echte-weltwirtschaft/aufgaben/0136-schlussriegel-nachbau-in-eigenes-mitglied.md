@@ -1,13 +1,54 @@
 ---
 id: 0136-schlussriegel-nachbau-in-eigenes-mitglied
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/CMakeLists.txt]
 abnahme: Die Bedingung im Abschnitt "Abnahme".
 ---
 
 # Der Waechter des Schlussriegels sitzt im Pruefstand, weil dort Platz war
+
+## GEBAUT -- 2026-09-05, Testentwickler
+
+**Der Umzug lag beim Beginn dieses Laufs schon im Arbeitsbaum und schon eingecheckt**
+(`werkzeuge/schlussriegel/CMakeLists.txt` von 16:09, mitgenommen von Commit `0333b81`
+um 19:01). Der Status stand trotzdem auf `offen`, also hat der Runner das Paket erneut
+eingeplant. Was fehlte, war nicht der Umzug, sondern **sein Nachweis**: Unter `befunde/`
+lag zu diesem Paket keine einzige Datei. Dieser Lauf liefert ihn und setzt den Status.
+Der Nachweis liegt unter `befunde/messung-0136/nachweis.md`, die vier Skripte daneben;
+alle Messbaeume unter `bau/`, das in `.gitignore` steht.
+
+**Beide Bedingungen erfuellt, 0 Abweichungen.** Alle sechs Bauwege des Arbeitsbaums
+(drei Wege mal zwei Profile) sind bei Konfigurations-, Bau- und `ctest`-Code 0 und null
+Abweichungen gegen den Stand davor. Die Zahl der Proben bleibt im Arbeitsbereich in
+beiden Profilen bei 16 und faellt im Bauweg `pruefstand` in beiden Profilen von 4 auf 3;
+`kern` bleibt bei 10. Der Rotnachweis steht an drei Stellen: Am Weg `arbeitsbereich`
+und am Alleinbau `werkzeuge/schlussriegel` ist der unveraenderte Baum gruen und derselbe
+Baum mit **einer** stumpf gemachten Zeile in `fabrik_riegel_sammeln` rot, mit denselben
+15 von 22 gekippten Faellen wie im Nachweis zu Paket 0133 -- waehrend der stumpfe Baum
+weiter mit Code 0 konfiguriert und im Wortlaut `alle mit Warnsatz und ohne
+Pauschalabschalter` meldet. Am alten Ort `pruefstand` findet `ctest --no-tests=error`
+die Probe in beiden Baeumen nicht mehr.
+
+**Der Stand davor ist gebaut und nicht ausgepackt**, und das ist die einzige
+Entscheidung dieser Messung, die eine Begruendung braucht: In `0333b81` stecken die
+Ergebnisse mehrerer Pakete, unter anderem 75 geaenderte Zeilen in `werkzeugkette.cmake`
+-- ein Vergleich dagegen maesse drei Pakete und nennte es eines. Der Vergleichsbaum ist
+deshalb eine Kopie des heutigen Baums mit genau diesem Umzug rueckgaengig; `diff -rq`
+zeigt drei Unterschiede, und es sind die drei des Pakets.
+
+**Zwei Dinge, die der Pruefer eigens ansehen soll**, beide im Nachweis begruendet:
+Der erste Vorlauf war aus einem sachfremden Grund rot (der Belegstellenriegel eines
+**kopierten** Baums findet die Vorgaben nicht, weil er sie ueber den Ort des Vorhabens
+nachschlaegt) -- das ist abgestellt, sonst haette der Vorlauf jede Aenderung als
+gefangen gemeldet. Und die Vorgabe des Projektmanagers, einen sachlich besseren Ort zu
+melden statt ihn stillschweigend zu waehlen: Mir ist beim Umzug nichts aufgefallen, was
+gegen `werkzeuge/schlussriegel` spricht.
+
+`werkzeugkette.cmake` ist nicht angefasst, `nachbau.py` nicht, `bauwege.py` nicht, die
+22 Faelle nicht und der Riegel selbst nicht.
+
 
 Paket 0133 hat `befunde/pruefung-0066/nachbau.py` als `ctest`-Probe
 `schlussriegel_nachbau` in `pruefstand/CMakeLists.txt` eingehaengt. Der Ort ist eine
