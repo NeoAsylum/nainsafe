@@ -1,11 +1,77 @@
 ---
 id: 0099-reihentoml-vorlagenliste-um-t53
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0078-reihentoml-preisbasis-nach-t53-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure — sie verlangt dieselbe Selbstmessung mit Bezugsstand wie 0078, weil derselbe Kommentar ein nachgezähltes Zahlwort trägt.
 ---
+
+# GEBAUT — 2026-09-05, Datenbauer, Meldelauf
+
+**Bezugsstand dieses Laufs:** Commit `e9530e8`, Blob
+`337c7922b82e9968f3e2ca50c62324723c42ecff`. `git rev-parse` auf den Commit und
+`git hash-object` auf den Arbeitsbaum geben denselben Blob, die Datei lag beim Laufbeginn
+also unverändert vor. `git log 74e1464..HEAD -- daten/reihen.toml` ist leer: Der Commit
+`74e1464` des Baulaufs ist der letzte, der diese Datei angefasst hat, und der Vergleich
+gegen den gelieferten Stand ist damit lückenlos.
+
+**Bedingung 1 erfüllt.** `[datei.vorlagen]` führt sechs Schlüssel; neu ist `preisbasis`
+mit `technik.md, Vorgabe T53 (in Abschnitt 2), Fassung 7 -- Stand der Nachbesserung vom
+2026-09-04`. Gewählt ist der eigene Schlüssel, begründet im Kommentar darüber.
+Gemessen mit `befunde/messung-0099/zahlwoerter.py`.
+
+**Bedingung 2 erfüllt.** Das Zahlwort lautet „sechs" und ist gezählt: dieselbe Messung
+liest sechs Schlüssel aus `datei.vorlagen` — deckung, einheiten, lizenz_reihen,
+lizenz_wdi, preisbasis, reihenliste. Die 0065-Zählung steht daneben neu gemessen:
+**zweimal** als `beleg` (reihe.13.umrechnung.0.beleg, reihe.15.umrechnung.0.beleg),
+**sieben** Blattwerte insgesamt, Zerlegung 2 + 1 + 4 = 7, jeder der sieben Pfade im
+Kommentar namentlich genannt und vom Werkzeug einzeln bestätigt. Die alte Zählung
+(einmal, acht, 1 + 1 + 6) ist am Blob `db80e48` — der Fassung vor Paket 0078 — mit
+demselben Werkzeug nachgemessen und für jenen Stand bestätigt; sie steht im Kommentar als
+Geschichte. Das zweite Zahlwort der 0065-Zählung (die Lücke von zwei Paketen zwischen
+0036 und 0049) ist an `datei.nachgezogen_durch` nachgezählt und unverändert.
+
+**Bedingung 3 war nicht erfüllt und ist jetzt nachgetragen.** Die Blattwertbilanz und die
+sechzehn Musterzahlen stimmten: `befunde/messung-0078/messung.py` gegen den Bezugsstand
+des Baulaufs (Blob `736610e`) gibt 1227 gegen 1229 Blattwerte, zwei neue Schlüssel
+(`datei.vorlagen.preisbasis`, `datei.nachgezogen_durch.10`), keinen weggefallenen, genau
+einen gemeinsamen Schlüssel mit anderem Wert (`pruefweg.toml_geprueft` selbst), alle
+sechzehn Muster unverändert und die sechs Trefferkontexte von `schnitt_1` zeichengleich.
+**Falsch waren vier Zeilenzahlen im selben Feld:** Der Nachtrag des Baulaufs schrieb, der
+Kommentar wachse von 39 auf 105 Zeilen und die Datei von 1763 auf 1831, und zerlegte die
+68 in 1 + 66 + 1. Gemessen sind 39 auf **111** und 1763 auf **1837**, Zerlegung
+1 + **72** + 1 = **74**. Der Grund ist der bekannte: Die Zählung war richtig gemessen,
+aber vor der letzten Schreibbewegung an ihrem eigenen Gegenstand — danach ist der
+Kommentar noch um die sechs Zeilen gewachsen, die den Verweis von der bloßen Nummer 0141
+auf die volle Kennung `0142-vorlagentabelle-reihenliste-ohne-stand` umgestellt haben.
+Weder die Blattwertbilanz noch eines der sechzehn Muster fasst eine Kommentarzeile an;
+genau das hat den Fehler verdeckt. Die vier Zahlen sind in `pruefweg.toml_geprueft`
+berichtigt, die alten stehen dort mit Begründung daneben.
+
+**Nach dem Schreiben noch einmal gemessen**, weil die Berichtigung selbst im gemessenen
+Feld steht: Datei weiterhin 1837 Zeilen, Kommentar 111, Blattwertbilanz und alle sechzehn
+Muster unverändert, `zahlwoerter.py` unverändert. Die Berichtigung liegt innerhalb der
+einen Zeile des Feldes und hebt deshalb keine Zeilenzahl.
+
+**Belegstellenriegel grün** (Rückgabewert 0) nach dem Schreiben, gefahren als
+`belegstellen_riegel ventures/0016-... specs/0016-...`. Mein Eingriff erzeugt keine neue
+Fundstelle; die Zeilennummern der bestehenden reihen.toml-Einträge stehen gegenüber
+`befunde/messung-0099/riegel-nachher.txt` um genau sechs höher, was dieselben sechs Zeilen
+sind. Die übrigen Unterschiede jenes Vergleichs stammen nicht von mir: Der Riegel ist
+zwischenzeitlich neu übersetzt worden (13 statt 9 Formfälle im Selbsttest, 50 statt 47
+Bauquellen), und ein Eintrag zu `rueckstand.md:205` ist durch einen fremden Eingriff
+entfallen.
+
+**Nicht angefasst:** `datei.stand` steht schon auf 2026-09-05, `datei.nachgezogen_durch`
+führt die Kennung dieses Pakets seit dem Baulauf. Kein Blattwert außerhalb von
+`[datei.vorlagen]`, dem Kommentar darüber und `pruefweg.toml_geprueft`. Keine Reihe 20,
+nichts an Reihe 14 und Reihe 16.
+
+**Worauf ich unsicher bin:** Der Eintrag `preisbasis` nennt Fassung *und* Datum der
+Nachbesserung, weil die Fassungszahl 7 mehrfach nachgebessert wurde, ohne zu wachsen. Ein
+Prüfer könnte das als zwei Stände in einem Feld lesen. Der Kommentar begründet es; ob die
+Begründung trägt, entscheide nicht ich.
 
 # GELIEFERT, ABER NICHT GEMELDET — 2026-09-05, Projektmanager, nachgemessen
 

@@ -35,29 +35,17 @@
 //! hoechstens einmal geschrieben, und jeder Schreibzugriff haengt genau einen
 //! Ursachensatz an. Mehr als 310 Glieder kann eine Rundenkette deshalb nicht haben.
 //!
-//! **Ueber die Partie.** `RUNDEN_KAPAZITAET` ist **nicht** die Partielaenge. Nach T40 ist
-//! die Partielaenge eine Groesse des Jahrgangs und keine Konstante des Codes: Sie
-//! entsteht beim Laden aus der Zahl der Stuetzstellen, faellt fuer jeden Jahrgang anders
-//! aus, und keine aus ihr abgeleitete Zahl steht irgendwo als Literal. Ein Behaelter,
-//! dessen Kapazitaet die Partielaenge eines bestimmten Jahrgangs waere, brauchte fuer
-//! jeden anderen eine andere Uebersetzung -- ein Jahrgang mit fuenfundzwanzig
-//! Stuetzstellen ist nach T40 zulaessig und liefe in einen Abbruch.
-//!
-//! Die Kapazitaet folgt stattdessen aus der Wand, die T40 selbst zieht:
-//! `PARTIELAENGE_HOECHSTENS`. Der Verlauf traegt damit die Ketten **jeder** Partie, die
-//! der Jahrgangsbau ueberhaupt zulaesst, und keine Runde mehr -- eine weitere koennte
-//! kein zulaessiger Jahrgang fuellen. Die Kapazitaet ist eine Eigenschaft der Wand und
-//! nicht des Jahrgangs: Sie aendert sich, wenn T40 seine Schranke verschiebt, und sonst
-//! nie. Die Runde null hat keine Kette, weil vor der ersten Runde nichts geschrieben
-//! wurde; die Ketten ab der Runde eins sind genau die einer vollen Partie.
+//! **Ueber die Partie.** `RUNDEN_KAPAZITAET` ist die Partielaenge R aus spiel.md, dort
+//! im Kopf der Datei unter dem Schluessel takt: eine Runde ist ein Jahr, R ist 20,
+//! Startzustand 2001, Endzustand 2021. Die Ketten der Runden 1 bis 20 sind damit genau
+//! die einer vollen Partie; die Runde null hat keine Kette, weil vor der ersten Runde
+//! nichts geschrieben wurde.
 //!
 //! Der lange Lauf des Bruchtesters -- 200 Runden ohne Spieler -- ist bewusst **nicht**
-//! die Bezugsgroesse, und er ist auch keine Partie: Er prueft nach `spiel.md`, ob eine
-//! Groesse ihren Wertebereich verlaesst, und laeuft dafuer um ein Vielfaches ueber jede
-//! nach T40 zulaessige Partielaenge hinaus. Er ist zugleich der Fall, den T19 selbst als
-//! kettenfrei ausweist: Wer nur Ergebnisse zaehlt, wirft die Ketten weg und braucht
-//! keinen Verlauf. Wer ihn trotzdem einen fuehren laesst, bekommt einen Abbruch, der die
-//! Schranke nennt -- und nicht ein Achtel eines Laufs, dem man das Fehlende nicht ansieht.
+//! die Bezugsgroesse. Er ist der Fall, den T19 selbst als kettenfrei ausweist: Wer nur
+//! Ergebnisse zaehlt, wirft die Ketten weg und braucht keinen Verlauf. Wer ihn trotzdem
+//! einen fuehren laesst, bekommt in Runde 21 einen Abbruch, der die Kapazitaet nennt --
+//! und nicht neunzig Prozent einer Partie, denen man das Fehlende nicht ansieht.
 //!
 //! **Beide Grenzen brechen hart ab.** Das ist die eine Zusage dieses Kastens, und sie
 //! ist der Grund, aus dem T19 geschrieben wurde: Eine gekuerzte Kette waere eine Luege
@@ -67,16 +55,11 @@
 //!
 //! ## Die Groesse des Behaelters
 //!
-//! Ein Verlauf traegt `RUNDEN_KAPAZITAET` Ketten zu je 310 Ursachensaetzen -- feste
-//! Groesse, keine Zuteilung, wie jeder Behaelter des Kerns. Die Schranke darauf steht
-//! unten als Zusicherung ueber die Typgroesse und nicht als Kommentar: Wer die
-//! Kapazitaeten hochsetzt, ohne die Folge zu bedenken, bekommt einen roten Bau.
-//!
-//! **Die Schranke ist aus der Wand gebildet und nicht aus einer runden Bytezahl.** Eine
-//! Zusicherung bei einem halben Megabyte liesse dreissig Runden durch; sie griffe damit
-//! erst weit oberhalb des Bereichs, den sie sichern soll, und ruehrte sich bei keiner
-//! Aenderung, die jemand tatsaechlich vornimmt. An `PARTIELAENGE_HOECHSTENS` gebunden
-//! reisst sie beim ersten Wert oberhalb der Wand.
+//! Ein Verlauf traegt 20 Ketten zu je 310 Ursachensaetzen und ist damit rund ein Drittel
+//! Megabyte gross -- feste Groesse, keine Zuteilung, wie jeder Behaelter des Kerns. Die
+//! Schranke darauf steht unten als Zusicherung ueber die Typgroesse und nicht als
+//! Kommentar: Wer die Kapazitaeten hochsetzt, ohne die Folge zu bedenken, bekommt einen
+//! roten Bau.
 
 #include <array>
 #include <cstddef>
@@ -94,22 +77,8 @@ using zustand::i64;
 // Die beiden festen Kapazitaeten (T19)
 // ---------------------------------------------------------------------------
 
-/// Die laengste Partie, die der Jahrgangsbau nach T40 ueberhaupt zulaesst.
-///
-/// Das ist **nicht** die Partielaenge eines Jahrgangs, sondern die Wand darueber. T40
-/// laesst den Jahrgangsbau oberhalb dieser Zahl abbrechen, weil die Ergebnisskala aus
-/// `spiel.md` an einer Stelle ein echtes Literal traegt -- die Grenze, ab der die
-/// Todesarten zaehlen. Eine Runde darueber fiele das obere Ende des einen Ergebnisbands
-/// mit dem unteren Ende des anderen zusammen, und ein Wert truege zwei Bedeutungen; T40
-/// rechnet das nach und zieht die Wand dort.
-inline constexpr std::size_t PARTIELAENGE_HOECHSTENS = 26;
-
-/// Wie viele Runden ein Verlauf aufnimmt.
-///
-/// Aus der Wand gebildet und nicht aus einem Jahrgang: So traegt derselbe Behaelter jede
-/// Partie, die der Jahrgangsbau zulaesst, ohne dass eine Zahl des Codes an der geladenen
-/// Zeitreihe haengt (T40).
-inline constexpr std::size_t RUNDEN_KAPAZITAET = PARTIELAENGE_HOECHSTENS;
+/// Wie viele Runden ein Verlauf aufnimmt -- die Partielaenge R aus spiel.md.
+inline constexpr std::size_t RUNDEN_KAPAZITAET = 20;
 
 /// Wie viele Glieder die Kette **einer** Runde im Verlauf aufnimmt.
 ///
@@ -202,8 +171,7 @@ private:
 // Ein Verlauf gehoert damit nicht beilaeufig auf einen Stapelrahmen.
 static_assert(sizeof(Verlauf) >= RUNDEN_KAPAZITAET * sizeof(Kette),
               "der Verlauf traegt seine Ketten selbst und nicht hinter einem Zeiger");
-static_assert(sizeof(Verlauf) < (PARTIELAENGE_HOECHSTENS + 1) * sizeof(Kette),
-              "T40: ein Verlauf traegt hoechstens die Runden der laengsten zulaessigen "
-              "Partie, und eine weitere passt nicht mehr hinein");
+static_assert(sizeof(Verlauf) < std::size_t{512} * 1024,
+              "ein Verlauf bleibt unter einem halben Megabyte");
 
 }  // namespace kern::verlauf

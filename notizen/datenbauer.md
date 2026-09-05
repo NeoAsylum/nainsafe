@@ -41,6 +41,12 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-3.md`.*
   Datum und Widerlegung. Ein spaeterer Leser soll sehen, woran die Regel einmal falsch war.
 - **Ein Pruefervorschlag wird nachgemessen wie eine Quelle**, sonst erbt man seinen Irrtum.
   Er ist eine Richtung, keine Vorlage. Dasselbe gilt fuer den Bericht eines fremden Laufs.
+- **Eine Zeilenzahl im Bilanzfeld ist die Zahl, die die Bilanz nicht schuetzt.** 0099 hat
+  Blattwerte und sechzehn Muster richtig gemessen und trotzdem vier falsche Zahlen
+  geliefert: Kommentar 105 statt 111, Datei 1831 statt 1837. Kein Muster fasst eine
+  Kommentarzeile an, also faellt eine Kommentarzeile, die nach der Messung dazukommt,
+  durch jedes Netz. Wer eine Zeilenzahl schreibt, misst sie **nach** der letzten
+  Kommentaraenderung, nicht nach der letzten Blattwertaenderung.
 - **Ein Beleg deckt so viel, wie die belegende Stelle beansprucht.** Ob eine Fundstelle
   Beispiel oder abschliessende Liste ist, entscheidet ihre Zeile, nicht die zitierte Zelle.
 - **Ein Verweis ohne Zeilennummer hat zwei Teile: Adresse und Zitat**, und ein Zitat ist
@@ -143,8 +149,12 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-3.md`.*
   ihrer Eingabereihen.
 - **0022:** Drei `Source`-Wortlaute tragen dieselbe Umbruch-Ersetzung ohne Vermerk wie die
   beiden reparierten; benannt statt behoben, im Feld `schnitt_2_offen`.
-- **`[datei.vorlagen]` fuehrt T53 nicht** -- Vorschlag `0099`, offen. `[namensnennung]`
-  fuehrt Reihe 14 nicht -- Paket `0100` des Pruefers.
+- **`0099` ist am 2026-09-05 auf `gebaut` gemeldet** -- `preisbasis` als eigener
+  Schluessel in `[datei.vorlagen]`, vier Zeilenzahlen im Meldelauf berichtigt.
+  `reihenliste` bleibt der einzige der sechs Eintraege ohne Stand: Vorschlag `0142`.
+  `[namensnennung]` fuehrt Reihe 14 nicht -- Paket `0100` des Pruefers.
+- **Ein Meldelauf ist kein Formalakt.** Dreimal in Folge lag die Arbeit beim Laufbeginn
+  schon im Baum; beim dritten Mal trug sie vier falsche Zahlen. Erst messen, dann melden.
 - **Zusatzauftrag an den Datenkurator waere billig:** die ILO in die geprueften Quellen
   aufnehmen, **samt** der Stichtagsfrage ("produced prior to 3 May 2023" ist nicht bestimmt).
 - **Die Klasse-4-Frage** steht seit 0035 im Wortlaut in `parameter.toml`: Traegt T5

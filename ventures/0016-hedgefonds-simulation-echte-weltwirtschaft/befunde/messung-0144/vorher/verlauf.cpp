@@ -71,8 +71,7 @@ void Verlauf::beginne_runde(i64 runde)
         Meldung meldung;
         meldung.text("kern::verlauf -- der Verlauf ist voll: er nimmt ");
         meldung.zahl(static_cast<i64>(RUNDEN_KAPAZITAET));
-        meldung.text(" Runden auf -- so viele, wie die laengste nach T40 zulaessige "
-                     "Partie hat --, und die Runde ");
+        meldung.text(" Runden auf, und die Runde ");
         meldung.zahl(runde);
         meldung.text(" waere die naechste. Eine stille Kuerzung gibt es nicht (T19).");
         festkomma::abbruch(meldung.fertig());
@@ -145,8 +144,8 @@ const Kette& Verlauf::kette(std::size_t nummer) const
 const Kette& Verlauf::kette_der_runde(i64 runde) const
 {
     // Aufsteigend gesucht (T9), nicht ueber eine streuende Menge: Der Verlauf traegt
-    // hoechstens `RUNDEN_KAPAZITAET` Runden, und eine feste Reihenfolge ist hier
-    // billiger als jede Beschleunigung, die eine zweite Datenhaltung braechte.
+    // hoechstens zwanzig Runden, und eine feste Reihenfolge ist hier billiger als jede
+    // Beschleunigung, die eine zweite Datenhaltung braechte.
     for (std::size_t platz = 0; platz < runden_; ++platz) {
         if (nummer_[platz] == runde) {
             return kette_[platz];
