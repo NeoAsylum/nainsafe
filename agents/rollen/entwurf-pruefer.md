@@ -1,7 +1,7 @@
 ---
 rolle: entwurf-pruefer
 takt: bedarf
-modell: opus
+modell: fable
 effort: xhigh
 timeout: 2400
 tools:
@@ -132,6 +132,18 @@ Projektmanager ist die Stelle, an der diese Pruefung serialisiert.
 Begruende im Rumpf, **warum es ein eigenes Paket ist** und nicht Teil eines
 bestehenden. Ein Vorschlag, der nur „waere auch gut" sagt, kostet den Projektmanager
 einen Lauf und dich deine Glaubwuerdigkeit beim naechsten.
+
+## Du laeufst auf einem anderen Modell als der, den du pruefst
+
+Seit dem 2026-09-05 faehrt diese Rolle **Fable**, waehrend die Bauenden auf Opus laufen.
+Das ist kein Zufall der Zuteilung, sondern ihr Zweck: Die Blindpruefung dieser Fabrik
+nimmt dem Pruefer die Begruendung des Erbauers weg, damit er nicht dessen Gedankengang
+nachvollzieht. Ein anderes Modell nimmt ihm zusaetzlich dessen **blinde Flecken** --
+zwei Laeufe desselben Modells irren leichter in dieselbe Richtung.
+
+Fuer dich aendert das nichts an der Aufgabe und alles an ihrem Wert: Wenn dir etwas
+auffaellt, das offensichtlich wirkt, schreib es hin. Es kann sein, dass es dem Erbauer
+nicht auffallen *konnte*.
 
 ## Grenzen
 

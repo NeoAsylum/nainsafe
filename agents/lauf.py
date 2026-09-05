@@ -138,7 +138,28 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 #
 # Nachzueichen am 2026-09-13, wenn der Bonus endet: dann gehoert WOCHENGRENZE_USD auf
 # 1.270 (84 Prozent von 1.510) und die Tagesgrenze auf 300.
-TAGESGRENZE_USD = 450.0
+# **Am 2026-09-05 aufgeloest: Die Eichung war gegen den falschen Tarif gerechnet.**
+# Der Betreiber las am 2026-09-04 abends 58 Prozent der Woche ab, am 2026-09-05 mittags
+# 15 -- bei einem Fenster, das erst montags zuruecksetzt. Verbrauch kann nicht sinken.
+# Die Ursache nennt der Betreiber selbst: Das Abo ist von Max 5x auf Max 20x gewechselt,
+# und die Anzeige brauchte, bis sie das neue Limit fuehrte. 58 / 15 = 3,9 -- der Faktor
+# vier, den der Tarifwechsel bedeutet. Beide Messungen sind richtig, nur gegen
+# verschiedene Nenner.
+#
+# Daraus: 1.906 Dollar Gegenwert sind 15 Prozent, das Wochenkontingent liegt bei rund
+# **12.700**. Die bisherigen 1.900 waren also 15 Prozent davon -- die Fabrik stand am
+# 2026-09-05 ab 03:00 still, obwohl fuenf Sechstel der Woche offen lagen.
+#
+# `claude --help` kennt keinen Unterbefehl, der den Kontostand ausgibt; der wahre Wert
+# ist aus der Fabrik heraus **nicht lesbar** (geprueft 2026-09-05). Der Dollarwert hier
+# bleibt ein modellgerechneter Naeherungswert und keine Messung. **Deshalb rationiert
+# diese Bremse nicht mehr, sie verhindert nur noch den Weglauf** -- einen Fehler, der die
+# Fabrik in einer Nacht durch das ganze Kontingent traegt. Die Grenze zieht Anthropic
+# selbst; die einzige verlaessliche Anzeige ist die des Betreibers.
+#
+# Zu niedrig ist nicht die sichere Seite. Das Abo ist ein Festpreis: Ein nicht genutzter
+# Durchgang spart nichts, er verschenkt.
+TAGESGRENZE_USD = 4000.0
 
 # Der Betreiber kann die **Tages**grenze fuer einen einzelnen Aufruf anheben:
 #
@@ -161,7 +182,7 @@ except ValueError:
 # Gerechnet ueber Anthropics Wochenfenster (Montag 10:00 Ortszeit), siehe
 # `wochenfenster()`; die vorherige Rechnung ueber sieben rollende Tage drosselte gegen
 # eine Woche, die bereits zurueckgesetzt war.
-WOCHENGRENZE_USD = 1900.0
+WOCHENGRENZE_USD = 12000.0
 
 
 def tagesverbrauch(verbindung) -> float:

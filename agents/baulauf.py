@@ -77,7 +77,13 @@ REVIEW = {
 # Zwei Pakete, die dieselbe Datei anfassen, duerfen nicht gleichzeitig laufen. Das ist
 # der Grund fuer das Feld `dateien` im Paket -- ohne diese Pruefung ueberschreiben sich
 # zwei Bauagenten, und der Verlust faellt erst Tage spaeter auf.
-GLEICHZEITIG = 4
+# Am 2026-09-05 von 4 auf 8 angehoben. Der Grund ist nicht das Kontingent -- das ist
+# seit dem Tarifwechsel auf Max 20x reichlich --, sondern dass die Pruefseite bei vier
+# Plaetzen anstand, waehrend gebaute Pakete warteten. Die Bauseite gewinnt dadurch
+# **nichts**: Sie ist bei drei kollisionsbegrenzt, weil sich die Dateilisten der offenen
+# Pakete ueberschneiden. Wer den Bau beschleunigen will, braucht kleiner geschnittene
+# Pakete, keine groessere Zahl hier.
+GLEICHZEITIG = 8
 
 # Wie oft ein Paket zurueckgehen darf, bevor nicht mehr der Bauagent das Problem ist,
 # sondern sein Abnahmekriterium. Dieselbe Bremse wie konzeptlauf.py:RUECKLAUF_MAX --
