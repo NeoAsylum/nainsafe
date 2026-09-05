@@ -1,14 +1,14 @@
 Messstand 0106 -- Anker am Urteilsschritt
 Vergleichsstand: 5605c54
-Arbeitsbaum:     4ff788d
+Arbeitsbaum:     e34ab65
 Schalter:        -std=c++20 -fwrapv -fno-fast-math -O2
 
 [vorher] Rueckgabe 0
     belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
-    belegstellen_riegel, Bedingung 2 (Abschnittszitat): 53 Bauquellen und 13 Datendokumente gelesen, 208 Dateien im Zielbestand, 15591 Pfade in ungelesenen Ordnern; 40 Zitate der geprueften Form gefunden, 40 davon aufgeloest (Untergrenze 16), 46 Fundstellen uebergangen.
+    belegstellen_riegel, Bedingung 2 (Abschnittszitat): 53 Bauquellen und 13 Datendokumente gelesen, 209 Dateien im Zielbestand, 15591 Pfade in ungelesenen Ordnern; 40 Zitate der geprueften Form gefunden, 40 davon aufgeloest (Untergrenze 16), 46 Fundstellen uebergangen.
 [nachher] Rueckgabe 0
     belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
-    belegstellen_riegel, Bedingung 2 (Abschnittszitat): 53 Bauquellen und 13 Datendokumente gelesen, 208 Dateien im Zielbestand, 15591 Pfade in ungelesenen Ordnern; 40 Zitate der geprueften Form gefunden, 40 davon aufgeloest (Untergrenze 16), 46 Fundstellen uebergangen.
+    belegstellen_riegel, Bedingung 2 (Abschnittszitat): 53 Bauquellen und 13 Datendokumente gelesen, 209 Dateien im Zielbestand, 15591 Pfade in ungelesenen Ordnern; 40 Zitate der geprueften Form gefunden, 40 davon aufgeloest (Untergrenze 16), 46 Fundstellen uebergangen.
 
 GLEICH: beide Fassungen melden zeichengleich dieselbe Zahlenzeile.
 
