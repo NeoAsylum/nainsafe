@@ -203,18 +203,18 @@ Uebernommen ist der Vorschlag im Wortlaut, einschliesslich  und .
 
 **Der Befund war groesser als angenommen.** Das Paket rechnete mit einem Phantom-Manifest
 ( statt ). Gemessen am 2026-09-05: **13 vorher, 4 nachher -- neun
-Phantome.** Das Vorhaben hatte unter  und  zwei
+Phantome.** Das Vorhaben hatte unter `bau/kp0010/quelle/` und `bau/kp0027r3/quelle/` zwei
 vollstaendige Schattenkopien seiner selbst; der offizielle Uebersetzungsbericht hat sie
 gebaut und ihre Tests unter eigenem Namen gefuehrt.
 
-Die vier verbleibenden sind die versionierten: Arbeitsbereich, , ,
-.
+Die vier verbleibenden sind die versionierten: Arbeitsbereich, `kern`, `pruefstand`,
+`werkzeuge/belegstellen`.
 
 **Bedingung 3 ist ohne Zutun erfuellt:** Es laeuft gerade kein Tageslauf -- die
 Wochenbremse hat ihn um 03:00 angehalten. Der naechste Cron-Aufruf importiert die neue
 Fassung.
 
-**Nicht getan:** die Aufraeumarbeit am Ende des Pakets. 
+**Nicht getan:** die Aufraeumarbeit am Ende des Pakets. `pruefstand/bau/pruefung-0019/`
 bleibt liegen. Mit dem erweiterten Filter ist es harmlos, und Hausregel 3 spricht
 dagegen, etwas zu loeschen, das ein Pruefergebnis belegt -- auch wenn es unversioniert
 ist. Wer es doch raeumen will, tut es als eigene Entscheidung.
