@@ -419,9 +419,17 @@ Commits zeichengleich, `git status` nannte die Datei nicht. Der Endstand des Arb
 trägt `cf492e2cd8ff865067173e1c63af0115d5f1cd5a`. Alle Zahlen unten sind gegen den
 Bezugsblob gemessen.
 
-Zum ersten Mal seit fünf Runden hat kein fremder Commit während des Laufs in diese Datei
-gegriffen. Sollte das bis zum Commit noch geschehen, gilt weiter: der vollständige
-Vergleich ist `git diff 3ad2996 cf492e2`.
+**Und dann doch, zum sechsten Mal in Folge:** Noch während dieses Laufs hat der fremde
+Commit **`c30acc5`** (`testentwickler: 0111-korbbestand-anleihezweig-betrag-der-stufen`)
+`reihen.toml`, diese Ergebnisdatei und die beiden Messskripte mitgenommen — `git status`
+nennt sie am Ende meines Laufs nicht mehr. Nachgesehen statt vermutet: `git ls-tree HEAD`
+gibt für `reihen.toml` den Blob `cf492e2`, also **genau meinen Endstand**; verloren ist
+nichts, und die Messung ist nach jenem Commit ein drittes Mal gegen `3ad2996` gelaufen und
+gibt Zeichen für Zeichen dieselben Zahlen wie unten.
+
+Die Folge für den Prüfer: `git show c30acc5` zeigt meine Änderung vermischt mit einem
+fremden Lauf. **Der vollständige und einzige saubere Vergleich ist
+`git diff 3ad2996 cf492e2`** — dafür steht der Bezugsstand in der Abnahmebedingung.
 
 ### Der tragende Befund — die Einzigkeitsbehauptung
 

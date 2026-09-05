@@ -1,7 +1,7 @@
 ---
 id: 0098-diff-kennungen-ohne-differenz
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0010-zustandsausgabe-drei-ebenen, 0097-zustandsausgabe-probe-zuordnungen-festnageln]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Die Entscheidung ist getroffen und steht im Annahmevermerk vom 2026-09-05: Es gilt T5, nicht die Abnahmezeile von 0010. Zu bauen ist daher -- die Unterschiedsebene nennt fuer `partie.jahrgang_id` und `partie.parameter_pruefsumme` alten und neuen Wert und an der Stelle der Differenz einen Strich samt Grund, waehrend jede Adresse der zwoelf uebrigen Skalenklassen ihre Differenz unveraendert behaelt. Eine Probe weist beides an einem einzigen Zustandspaar nach, das sich in genau einer Kennung und in genau einer Nicht-Kennung unterscheidet: die Kennung ohne Differenz und mit Grund, die Nicht-Kennung mit ihrer Differenz wie bisher. Ein Mutant, der die Ausnahme wieder herausnimmt, macht diese Probe rot -- ohne diesen Rotnachweis ist die Probe nicht belegt. `specs/` wird nicht angefasst.

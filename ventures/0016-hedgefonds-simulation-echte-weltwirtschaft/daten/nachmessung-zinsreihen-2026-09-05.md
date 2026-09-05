@@ -3,7 +3,7 @@ typ: nachmessung
 gegenstand: Reihe 9 (Leitzins), Datenfluss IMF.STA/MFS_IR
 datum: 2026-09-05
 durch: Betreiber-Lauf
-berichtigt: deckungsbefund-1997.md, Abschnitt "Die Reihenliste nennt IWF IFS"
+berichtigt: deckungsbefund-1997.md, Abschnitt "Reihe 9 — Leitzins (4 Sollreihen) — die Reihe, an der es reißt"
 ---
 
 # Deutschland trägt sehr wohl Jahresreihen in `MFS_IR` — nur nicht die gewählte
