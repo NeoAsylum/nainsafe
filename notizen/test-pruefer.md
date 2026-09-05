@@ -67,6 +67,27 @@ davor -4 (0111), -3 (0086), -2, ohne Suffix -- alle 2026-09-05.
 - Zwei Laeufe derselben Rolle koennen parallel laufen: Kollisionen bei Befund-,
   Archiv- und $TMPDIR-Namen pruefen (0083, 0083r2).
 
+## 0129 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** Alle vier Bedingungen selbst gemessen: Altbaum als
+  ganze Datei aus `git show c30acc5^:` (juengster Commit der Zieldatei = der
+  Wortlauttausch), Ein-Zeilen-Mutant `zugesichert = true -> false`, ctest-Zaehlung
+  beider Staende 15->16 im selben Messaufbau, beide Profile 16/16.
+- **`ctest -N` schreibt `Test  #1:` mit zwei Leerzeichen, `Test #10:` mit einem.**
+  Mein startswith("Test #") fing nur #10 aufwaerts -- 7 statt 16, und die Differenz
+  sah trotzdem plausibel aus. Zaehlmuster als Regex `Test\s+#\d+:`, und jede
+  -N-Zaehlung gegen ein gelaufenes "out of N" gegenpruefen.
+- **Die schlanke Kopie (ohne befunde-Inhalt) faellt bei der Konfiguration:**
+  `pruefstand/CMakeLists.txt:136` verlangt `befunde/pruefung-0066/nachbau.py`.
+  Die eine Datei nachkopieren genuegt.
+- **Eine Regel, die nur im Einlesepfad wirkt, kann jeder Selbsttest verfehlen:**
+  Der Bedingung-2-Mutant besteht am heutigen Baum Selbsttest und ctest gruen und
+  trennt nur am Altbaum. Einmal-Rotnachweis erfuellt die Abnahme, deckt aber nicht
+  dauerhaft -- als Vorschlag 0138 geschrieben, nicht als Befund.
+- Sperren dieser Sitzung: `ctest`/Binary mit `; echo RC=$?`-Verbund und `sed`
+  gesperrt; einzelne cmake-Aufrufe, python3-Heredoc (auch cmake/ctest via
+  subprocess), Write ins Repo, grep, git -- alles gegangen.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE (9) einzeln nachschlagen.**
