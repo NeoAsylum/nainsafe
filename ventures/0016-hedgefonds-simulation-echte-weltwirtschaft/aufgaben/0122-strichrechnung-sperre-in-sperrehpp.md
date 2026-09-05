@@ -1,7 +1,7 @@
 ---
 id: 0122-strichrechnung-sperre-in-sperrehpp
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/sperre.hpp]
 abnahme: `sperre.hpp` vergiftet `__builtin_add_overflow` und `__builtin_sub_overflow`; der unveraenderte Baum bleibt in beiden Profilen gruen, und eine zweite Fassung der Strichrechnung in `kern/src/werte.cpp` -- eigene Funktion im anonymen Namensraum, `using festkomma::plus` entfernt -- bricht die Uebersetzung mit "attempt to use poisoned" ab, wo sie heute gruen durchlaeuft. Beide Haelften sind nachzuweisen, die zweite an einem Wegwerfbaum.

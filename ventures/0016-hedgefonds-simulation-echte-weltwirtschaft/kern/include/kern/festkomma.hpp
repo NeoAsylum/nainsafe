@@ -251,10 +251,25 @@ constexpr i64 minus(i64 a, i64 b)
 /// liegen dem Betrag nach unter 2^63, das Produkt also unter 2^126. Abbrechen kann
 /// allein die Verengung am Ende -- und sie bricht ab, statt zu kappen.
 ///
-/// **Heute ohne Aufrufer, und das ist kein Versehen.** Die fuenfte Rechenart aus T7
-/// -- zwei `i64` mit Groessenbedeutung nach T5 -- kommt noch nicht vor, weil
-/// `kern::werte` nicht gebaut ist. Das Werkzeug liegt vor der ersten Stelle, die es
-/// braucht; die Umkehrung waere, es dort zu vergessen.
+/// **Heute mit fuenf Aufrufern, und alle fuenf stehen in `kern::werte`.** Selbst
+/// gemessen am 2026-09-05 auf dem Stand `f6731fe`, mit einem Mustervergleich ueber
+/// `kern/`, `pruefstand/` und `werkzeuge/` ausserhalb von `bau/` und `befunde/`. In
+/// `pruefstand/` und `werkzeuge/` steht kein Aufruf; die Aufrufe in `festkomma_probe`
+/// sind nicht mitgezaehlt, weil sie diese Funktion pruefen, statt sie zu benutzen.
+///
+/// Welche Rechenarten dort ueber sie laufen: `tsd_in_cent` vervielfacht blank mit der
+/// Skalenzahl aus T5 -- der Fall, den die Begruendung oben schon nennt;
+/// `lobbypunkte_aus_geld` bildet aus `lobbykosten` und `rabatt` den Nenner eines
+/// `mal_geteilt`; `positionswert_aus` vervielfacht die Stufenzahl mit dem Stufenwert;
+/// `korbbestand` und `fondsanteil` vervielfachen den Betrag der Stufenzahl mit
+/// `stufenweite`. Die letzten drei sind die fuenfte Rechenart aus T7 in Reinform --
+/// zwei `i64` mit Groessenbedeutung nach T5 --, die ersten beiden zeigen, dass 4.3
+/// auch dort greift, wo ein Faktor eine Skalen- oder Kalibrierzahl ist.
+///
+/// **Dass die Funktion hier steht und nicht bei ihrem ersten Aufrufer, haengt nicht
+/// an dieser Zahl.** Der Grund ist T6 und derselbe, den die Strichrechnung oben
+/// ausfuehrt: Diese Datei ist die einzige Rechenstelle des Kerns. Waere die Zahl
+/// wieder null, stuende die Funktion aus demselben Grund weiter hier.
 constexpr i64 mal(i64 a, i64 b)
 {
     const i128 produkt = static_cast<i128>(a) * static_cast<i128>(b);

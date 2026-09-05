@@ -1,7 +1,7 @@
 ---
 id: 0079-belegstellenriegel-zitat-ohne-anfuehrung
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen. Und statt der am 2026-09-05 zurueckgenommenen Fallzahl: keine der uebergangenen Fundstellen des Standes von 0067 verschwindet, und jede neu hinzugekommene traegt einen der Gruende, die dieses Paket einfuehrt -- beides gemessen am selben Baum, vor und nach dem Eingriff, mit genanntem Bezugsstand und nach der letzten Zeile des Kopfkommentars. Der abgedruckte Testlauf im Nachweis nennt dieselben Zahlen wie der ausgelieferte Stand.
@@ -209,10 +209,12 @@ vorhersehbar war.
 
 1. **Die zwei Bedingungen sind am eigenen Stand belegt.** Der Stand von 0067 meldet auf
    dem heutigen Baum neun übergangene Fundstellen; alle neun stehen auch im
-   ausgelieferten Stand, verschwunden ist keine. Von den 46 übergangenen Fundstellen des
-   ausgelieferten Standes sind 37 neu, und alle 37 tragen einen der beiden Gründe, die
-   dieses Paket eingeführt hat (36 × *Gliederungsziffer statt Ueberschrift*, 1 ×
+   ausgelieferten Stand, verschwunden ist keine. Von den 47 übergangenen Fundstellen des
+   ausgelieferten Standes sind 38 neu, und alle 38 tragen einen der beiden Gründe, die
+   dieses Paket eingeführt hat (37 × *Gliederungsziffer statt Ueberschrift*, 1 ×
    *Zieldatei fuehrt keine Ueberschrift*). Beide Tabellen stehen im Nachweis.
+   — *In Rücklauf 2 berichtigt:* Hier standen 46, 37 und 36. Warum die drei Zahlen falsch
+   waren und welche Fundstelle in ihnen fehlte, steht im GEBAUT-Absatz zu Rücklauf 2.
 2. **Der Nachweis ist berichtigt.** Der abgedruckte Lauf ist nach der letzten Zeile des
    Kopfkommentars gefahren und nennt dieselben Zahlen wie der ausgelieferte Stand: 35
    Zitate, 35 aufgelöst, 47 übergangen. Gegengeprüft über beide Bauwege (Alleinbau und
@@ -318,3 +320,68 @@ Abnahme bleibt daher wörtlich stehen.**
 
 **Vorher-Stand:** der dann geltende `HEAD`. Such die Stellen am Text, nicht an einer
 Zeilennummer.
+
+## Gebaut am 2026-09-05, Rücklauf 2 (testentwickler)
+
+Vorher-`HEAD`: `fabbf2f`. **An `belegstellen_riegel.cpp` ist nichts geändert worden** —
+der ausgelieferte Stand ist unverändert der von `f8c8598`, und damit bleibt alles
+stehen, was der Prüfer an ihm unabhängig nachgemessen hat. Geändert ist allein
+`befunde/messung-0079/nachweis.md` und dieser Vermerk. Der Kopfkommentar war zum
+Zeitpunkt der Messung fertig, weil er in diesem Lauf gar nicht angefasst wurde; die
+Bedingung *nach der letzten Zeile des Kopfkommentars* ist damit nicht knapp, sondern
+trivial erfüllt.
+
+**Die drei Zahlen sind neu gemessen, und der Vergleich läuft jetzt an zwei Bäumen.** Der
+Grund für den zweiten: Die alte Messung hing an einem einzelnen, driftenden Arbeitsbereich.
+Beide Bäume sind mit `git archive` ausgepackt, beide Programme laufen an beiden, und der
+Stand A liegt **außerhalb** des gemessenen Baums — der Riegel liest seinen eigenen
+Quelltext als Bauquelle mit, ein zweites Programm im Baum hätte den Baum verändert.
+
+| Baum | A | C | verschwunden | neu | *Gliederungsziffer* | *Zieldatei fuehrt keine Ueberschrift* |
+|---|---|---|---|---|---|---|
+| `f8c8598` (Baucommit von Rücklauf 1) | 9 | **47** | **0** | **38** | **37** | **1** |
+| `fabbf2f` (`HEAD` dieses Laufs) | 9 | **47** | **0** | **38** | **37** | **1** |
+
+Beide Bedingungen halten also: **keine** übergangene Fundstelle des Standes von 0067
+verschwindet, und **jede** der 38 neuen trägt einen der beiden Gründe, die dieses Paket
+eingeführt hat. Kein dritter Grund kommt unter ihnen vor. Die Drift zwischen den beiden
+Bäumen hebt die Zitatzahl von 35 auf 36 und lässt die drei Zahlen des Vergleichs
+unberührt — die Bedingung redet über den Unterschied zweier Programme, nicht über den
+Korpus.
+
+**Die 38. neue Fundstelle, die in der alten Zählung fehlte, ist benannt** — und sie ist
+keine übersehene Stelle, sondern eine, die sich nicht unterscheiden lässt:
+
+```
+  daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+      gesucht war: 7 fuehrt sie nicht
+```
+
+Diese zwei Zeilen stehen in der Aufzählung **zweimal, Zeichen für Zeichen gleich**. Zeile
+1401 nennt das Schlüsselwort mit derselben Ziffer zweimal: einmal im eigenen Satz und
+einmal im wörtlichen Zitat aus `technik.md`, das denselben Satz wiederholt. Es ist das
+einzige solche Paar im ganzen Lauf — 47 Einträge, 46 verschiedene Textpaare.
+
+**Damit ist der alte Fehler nicht eingeräumt, sondern reproduziert.** Liest man die
+gedruckte Liste als Menge verschiedener *Texte* statt als Folge von *Einträgen*, fällt
+genau dieser eine weg, und man bekommt an beiden Bäumen exakt die drei Zahlen, die bis
+eben im Nachweis standen: 46, 37, 36. Die Lehre ist keine über Sorgfalt, sondern eine
+über das Messgerät: **Der gedruckte Wortlaut ist nicht schlüsselfähig.** Verglichen wird
+über `datei:zeile` als Mehrfachmenge, dedupliziert wird nichts.
+
+Der Nachweis führt den Weg in vier Schritten aus, so dass der Vergleich ohne den
+Arbeitsbereich nachzufahren ist; Schritt 3 nennt die eine Stelle, an der er schiefgeht.
+
+**Nebenbei mitgemessen und nicht behauptet:** Der ausgelieferte Stand ist an `f8c8598`
+zeichengleich mit dem abgedruckten Lauf (35/35/47, 42 Bauquellen, 11 Datendokumente, 166
+im Zielbestand) und an `fabbf2f` weiter grün (36/36/**47**, Rückgabewert 0). *Namen in
+ungelesenen Ordnern* steht in den ausgepackten Bäumen bei 286 bzw. 303 statt 380, weil
+`bau/` nicht in git liegt — dass die 47 davon unberührt bleiben, belegt nebenbei die
+Behauptung des Nachweises, keine Fundstelle hänge an dieser Zahl.
+
+**Worauf ich unsicher bin, für den Projektmanager und nicht für den Prüfer:** Ob ich den
+alten Zählweg im Nachweis so ausführlich hätte festhalten sollen. Ich habe es getan, weil
+die Fehlerklasse zweimal in Folge dasselbe Paket zurückgeworfen hat und die Ursache
+diesmal *keine* Nachlässigkeit ist, sondern eine Eigenschaft der Ausgabe, die jeden
+trifft, der sie noch einmal auszählt — auch den Prüfer. Wer das für Ballast hält, streicht
+den Abschnitt; die drei Zahlen stehen unabhängig davon.

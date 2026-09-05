@@ -273,25 +273,85 @@ Der Stand A meldet **9** uebergangene Fundstellen. Alle neun stehen auch in C:
 | `werkzeuge/belegstellen/belegstellen_riegel.cpp:262` | kein Dokumentname im Absatz | ja |
 | `werkzeuge/belegstellen/belegstellen_riegel.cpp:265` | kein Dokumentname im Absatz | ja |
 
-**Verschwunden: null.** Der Grund ist derselbe, den der Pruefer schon genannt hat, und er
-ist hier nachgerechnet: Keine der neun traegt die Form ohne Anfuehrung, dieses Paket kann
-sie also gar nicht beruehren. Zwei von ihnen (`belegstellen_riegel.cpp:262` und `:265`)
-sind Zeilen aus dem Kopfkommentar dieses Pakets und in A nur deshalb schon da, weil A auf
-**dem heutigen Baum** gefahren ist -- der Stand von 0067 selbst kannte sie nicht. Das ist
-kein Fehler der Messung, sondern ihr Sinn: Verglichen werden zwei Programme an einem
-Baum, nicht zwei Baeume.
+**Verschwunden: null**, an beiden Baeumen. Der Grund ist derselbe, den der Pruefer schon
+genannt hat, und er ist hier nachgerechnet: Keine der neun traegt die Form ohne
+Anfuehrung, dieses Paket kann sie also gar nicht beruehren. Zwei von ihnen
+(`belegstellen_riegel.cpp:262` und `:265`) sind Zeilen aus dem Kopfkommentar dieses
+Pakets und in A nur deshalb schon da, weil A auf **dem gemessenen Baum** gefahren ist --
+der Stand von 0067 selbst kannte sie nicht. Das ist kein Fehler der Messung, sondern ihr
+Sinn: Verglichen werden zwei Programme an einem Baum, nicht zwei Baeume.
+
+**Eine der neun wechselt in C den Grund, ohne zu verschwinden:** `parameter.toml:11`
+heisst in A *Ziel ausserhalb des Bestands* und in C *Ziel in einem mit Absicht
+ungelesenen Ordner*. Das ist die Arbeit von Paket 0083 und nicht dieses Pakets; die
+Fundstelle ist dieselbe, gezaehlt wird sie hier wie dort. Sie steht hier, weil ein
+Vergleich, der nur Gruende zaehlt, sie faelschlich als verschwunden und neu buchte.
 
 ### b) Jede neu hinzugekommene traegt einen Grund dieses Pakets
 
-C meldet **46** uebergangene Fundstellen, davon **37 neu** gegenueber A:
+C meldet **47** uebergangene Fundstellen, davon **38 neu** gegenueber A:
 
 | Anzahl | Grund | eingefuehrt von |
 |---|---|---|
-| 36 | *Gliederungsziffer statt Ueberschrift* | Paket 0079 (`namensart`, `Namensart::Ziffer`) |
+| 37 | *Gliederungsziffer statt Ueberschrift* | Paket 0079 (`namensart`, `Namensart::Ziffer`) |
 | 1 | *Zieldatei fuehrt keine Ueberschrift* | Paket 0079 (`namensart`, `Namensart::Ohne_Gliederung`) |
 
 Andere Gruende kommen unter den neuen nicht vor. Beide sind Ergebnisse derselben
-Funktion, die dieses Paket eingefuehrt hat; keiner von ihnen existiert im Stand A.
+Funktion, die dieses Paket eingefuehrt hat; keiner von ihnen existiert im Stand A. Die
+eine Fundstelle der zweiten Sorte ist `rueckstand.md` (Baum 2: Zeile 227, Baum 1: Zeile
+269 -- eine fremde Einfuegung dazwischen hat sie verschoben), gesucht war *18 vererbt
+sich sonst*, nachgeschlagen in `kern/include/kern/werte.hpp`.
+
+#### Die 38. neue Fundstelle -- die, die in der alten Zaehlung fehlte
+
+Sie ist keine andere Stelle, sondern **die zweite von zwei Zeilenpaaren, die der Riegel
+Zeichen fuer Zeichen gleich ausgibt**:
+
+```
+  daten/reihen.toml:1401  (Gliederungsziffer statt Ueberschrift: 7)
+      gesucht war: 7 fuehrt sie nicht
+```
+
+Zeile 1401 nennt das Schluesselwort mit derselben Ziffer **zweimal** -- einmal im
+eigenen Satz (*die Reihenliste in technik.md Abschnitt 7 fuehrt sie nicht*) und einmal
+im woertlichen Zitat aus `technik.md`, das denselben Satz wiederholt. Zwei Fundstellen,
+ein Wortlaut. Es ist das **einzige** solche Paar in der ganzen Aufzaehlung: 47 Eintraege,
+46 verschiedene Textpaare.
+
+**Damit ist der alte Zaehlfehler nicht vermutet, sondern nachgerechnet.** Wer die
+gedruckte Liste als Menge *verschiedener Texte* liest statt als Folge von Eintraegen,
+verliert genau diesen einen -- und bekommt, an beiden Baeumen, genau die drei Zahlen,
+die hier bis zum Ruecklauf 2 standen:
+
+| gelesen als | C | neu | davon Gliederungsziffer |
+|---|---|---|---|
+| Folge von Eintraegen (richtig) | **47** | **38** | **37** |
+| Menge verschiedener Texte (der alte Fehler) | 46 | 37 | 36 |
+
+Die Lehre daraus ist keine ueber Sorgfalt, sondern eine ueber das Messgeraet: **Der
+gedruckte Wortlaut ist nicht schluesselfaehig.** Zwei Fundstellen derselben Zeile
+koennen denselben Text tragen; nur ihre Reihenfolge im Lauf trennt sie. Wer diesen
+Vergleich noch einmal fahren muss, zaehlt Eintraege und dedupliziert nichts.
+
+#### So faehrt man den Vergleich nach
+
+Vier Schritte, keiner davon braucht den Arbeitsbereich:
+
+1. `git archive <commit> ventures/0016-... specs/0016-...` nach einem leeren Ordner
+   auspacken -- das ist der Baum. `<commit>` ist `f8c8598` oder `fabbf2f`.
+2. **C:** `cmake -S <baum>/ventures/0016-.../werkzeuge/belegstellen -B <bauC>`, bauen,
+   `ctest -R belegstellen_riegel -V --no-tests=error`. Der Alleinbauweg setzt ueber
+   `PROJECT_IS_TOP_LEVEL` die Werkzeugkette samt Sanitizern; die Wurzel setzt CMake.
+3. **A:** `belegstellen_riegel.cpp` und `werkzeugkette.cmake` aus `489aafb` in einen
+   Ordner **ausserhalb** des Baums, daneben eine `CMakeLists.txt`, deren `add_test` die
+   zwei Argumente `<baum>/ventures/0016-...` und `<baum>/specs/0016-...` uebergibt. Das
+   zweite Argument ist seit 0067 wahlfrei und hier noetig, weil die Ableitung als
+   Geschwisterverzeichnis vom Ort des Programms ausgeht und A nicht im Baum liegt.
+4. Beide Aufzaehlungen ueber `datei:zeile` als Mehrfachmenge vergleichen. Erwartung:
+   A 9, C 47, verschwunden 0, neu 38.
+
+Schritt 3 ist der, an dem es schiefgehen kann: Baut man A **im** Baum, liest der Riegel
+den zweiten Quelltext als Bauquelle mit, und A und C messen verschiedene Baeume.
 
 ## Was der Pruefer schon bestaetigt hat und hier nur wiederholt wird
 

@@ -71,7 +71,9 @@ Kalibrierzahl und keine der Zahlen von Zustand A ändern sich.*
 des Betreibers vom selben Tag: Ein Hedgefonds, der nur in vier Ländern etwas halten kann, ist
 kein globaler Hedgefonds. Neu ist der Abschnitt **Die drei Schichten der Welt** mit der
 zweiten Schicht, den **Börsenplätzen**; dazu ein Halbsatz in Aktion 1, ein Absatz unter
-*Warum die Größe des Zustands keine Verteidigung ist*, acht Zeilen unter „Was bewusst fehlt",
+*Der Zustand* (welchen Stand die 310 meint), ein Absatz unter *Warum die Größe des Zustands
+keine Verteidigung ist*, **sieben** Einträge unter „Was bewusst fehlt" — sechs neue und der
+erste, „Mehr als vier Länder und drei Sektoren", ergänzt statt gestrichen —,
 fünf unter „Offene Entwurfsfragen" und ein Block unter „Was der Architekt neu rechnen muss".
 **Keine Zahl der bestehenden vier Länder, keine Sollreihe, kein Prüfgegenstand und kein
 Fehlermaß ändert sich**; die Bezugszahl des Zustands bleibt bis 0116 und 0118 die **310**, und
@@ -1084,7 +1086,8 @@ billiger als das Land** — und das ist die ganze Begründung der Schicht, in ei
 **87.788 Zustandsfelder, 76.440 Handelsströme und 195 × 19 = 3.705 lizenzgeprüfte
 Datenreihen** — Paket 0118 rechnet 19 Reihen und 2 Lizenzstellen je zusätzlichem Land, das
 sind hier 390 Lizenzstellen. Zum Vergleich: Dieser Entwurf führt heute 27 Sollreihen. Der
-Rückvergleich hätte nach der Zählung `4 · R` **780** Prüfgegenstände statt sechzehn (dieselbe
+Rückvergleich hätte nach der Zählung `4 · L` — vier Prüfgegenstände je Rückvergleichsland —
+**780** statt sechzehn (dieselbe
 Formel, die für vier Länder 16 ergibt), die Markträumung liefe über 76.440 Ströme statt 40,
 und das
 Laufzeitbudget der drei Selbstspielmaße — heute 9.539.200 Weltschritte — wüchse mit ihnen.
