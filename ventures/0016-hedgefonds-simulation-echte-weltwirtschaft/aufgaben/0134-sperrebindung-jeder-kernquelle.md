@@ -1,13 +1,39 @@
 ---
 id: 0134-sperrebindung-jeder-kernquelle
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Das Konfigurieren des Kerns bricht ab, sobald eine Quelle unter `kern/src` den Kopf `kern/sperre.hpp` nicht bindet oder ihn nicht als letzten `#include` bindet; die Abbruchmeldung nennt den Dateinamen und sagt, welche der beiden Bedingungen verletzt ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert und laeuft in beiden Profilen gruen; ein Baum mit einer zusaetzlichen Quelle ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Quelle, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Der erste Baum ist nicht wegzulassen -- ein Riegel, der alles verbietet, sieht im Negativtest identisch aus.
 ---
 
 # Beide Rechensperren des Kerns haengen an einer Regel, die nichts haelt
+
+## GEBAUT -- 2026-09-05, kernbauer
+
+Der Riegel steht in `kern/CMakeLists.txt` zwischen dem Quellensammler und
+`add_library(kern ...)`. 99 Zeilen hinzugefuegt, 0 entfernt -- die alte Datei ist Zeile
+fuer Zeile erhalten, verglichen gegen eine Kopie des Standes vor dem Lauf und nicht
+gegen `HEAD` (ein Fremdlauf hat die Aenderung unter Commit `3840367` mitgenommen).
+
+Nachweis: `befunde/messung-0134/` -- `bindungsriegel.py` faehrt die Baeume,
+`lauf-2026-09-05.txt` ist die Ausgabe im Wortlaut (Exitcode 0, 0 Abweichungen),
+`nachweis.md` ordnet sie den Abnahmebedingungen zu. Kurz:
+
+- **Baum 1** unveraendert mit Riegel: `kern` allein und Arbeitsbereich, je
+  `FABRIK_SANITIZER=ON` und `OFF` -- vier Laeufe, alle Schritte Code 0.
+- **Baum 3** Quelle ohne die Zeile: `cmake -S` Code 1, Meldung nennt Datei und Bedingung.
+- **Baum 5** Zeile nicht zuletzt: `cmake -S` Code 1, Meldung nennt Datei, die andere
+  Bedingung und den tatsaechlichen Schluss.
+- **Baum 2 und 4** dieselben Verstoesse ohne Riegel: beide gruen. Ohne sie wirkte die
+  Aenderung womoeglich dadurch, dass sie alles faengt.
+- **Baum 6 und 7** Include-Zeile aus einer *vorhandenen* Quelle entfernt, danach nur
+  `cmake --build`: ohne `CMAKE_CONFIGURE_DEPENDS` gruen, mit ihm Abbruch.
+
+Entschieden und im Kommentar begruendet: Der Riegel deckt `kern/src`, nicht
+`kern/test` -- die kleinere Fassung, die die Abnahme verlangt. Ein zweites Vorkommen
+des Kopfes weiter oben faengt er nicht ab; `#pragma once` macht es folgenlos, und die
+Reihenfolgebedingung haelt trotzdem.
 
 ## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, ohne Sperre
 

@@ -33,10 +33,7 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
 - 2026-09-05 (0133) — **Driftet der Arbeitsbaum, misst man an `git archive HEAD` plus
   einer Auflage genau der eigenen Dateien** — und **druckt `diff -rq` beider Bäume ab**;
   sonst ist jede Vorher/Nachher-Tabelle nur eine Behauptung. Im ausgepackten Baum sucht
-  der Belegstellenriegel `<baum>/../../specs/<name>`; ein `os.symlink` genügt. **Aber**
-  (0083): Hängt das Verhalten an *erzeugten* Verzeichnissen, misst der ausgepackte Baum
-  das Falsche — dann den **alten** Stand außerhalb bauen und ihm die Wurzeln als
-  Argumente geben (0079). Und: **ein
+  der Belegstellenriegel `<baum>/../../specs/<name>`; ein `os.symlink` genügt. Und: **ein
   Vorgabepfad, der am *Stand* hängt statt am *Baum*, bricht, sobald das Werkzeug in
   Wegwerf-Bäumen läuft** — über eine Umgebungsvariable in den Baubaum zeigen.
 
@@ -58,9 +55,15 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
   **eigene Kopie außerhalb** übersetzen — entweder im Baubaum mit den Schaltern aus
   `flags.make` des Ziels und `-iquote <quelldir>`, oder (einfacher) als eigenes
   CMake-Projekt in `$TMPDIR`. `git status` bleibt vor/nach zeichengleich.
+- 2026-09-05 (0110) — **Eine Katalogmarke braucht ein eigenes Wort.** Ein Format, in dem
+  man nicht gliedern darf, wird umgangen.
 - 2026-09-05 (0079, 0083) — **Der gedruckte Wortlaut einer Fundstelle ist nicht
   schlüsselfähig**: Zwei können zeichengleich sein. Listen als **Mehrfachmenge**
   vergleichen, nie deduplizieren — so belegt man auch „keine übergangene Stelle wurde rot".
+- 2026-09-05 (0079) — **Zwei Programmstände vergleicht man an einem ausgepackten Baum**
+  (`git archive`), nicht am driftenden Arbeitsbereich; den **alten** Stand außerhalb des
+  Baums bauen und ihm die Wurzeln als Argumente geben. **Aber** (0083): Hängt das
+  Verhalten an *erzeugten* Verzeichnissen, misst der ausgepackte Baum das Falsche.
 - 2026-09-05 (0107) — **Eine Zusicherung über *Namen* braucht eine Kennung, die nicht aus
   den Namen kommt** — als **eigenes Argument** an die Aufrufstelle. Und: **zu „X
   kollidiert mit keinem Fremden" gehört „X trifft jedes Eigene"** — **Frage vor jedem
@@ -76,13 +79,17 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
   alter Commit** — sonst misst man drei Pakete und nennt es eines (0061: denselben
   Mutanten gegen *beide* Fassungen, auf **eine** Zieldatei begrenzt). Und: **nachmessen,
   *welche* Zusicherung reißt** — bei 0061 blieb die Zahl wahr, gerissen ist der Index.
-- 2026-09-05 — **Erst im eigenen Programm suchen, dann eine Regel erfinden** (der
-  Textriegel brauchte die **Satzgrenze**, und die stand dort schon zweimal). Ebenso:
-  **einen von Hand abgezählten Index gegen die *erzeugten* Daten halten** und die
-  erwartete Kennung **in dieselbe Bedingung** binden.
+- 2026-09-05 — **Einen von Hand abgezählten Index gegen die *erzeugten* Daten halten**;
+  erwartete Kennung **in dieselbe Bedingung** binden — sonst prüft der nächste Einschub
+  den falschen Eintrag.
+- 2026-09-05 — **Ein Textriegel darf sich im Deutschen nicht auf Großschreibung
+  verlassen** — tragend war die **Satzgrenze**, und die stand im Programm schon zweimal:
+  **erst im eigenen Programm suchen, dann eine Regel erfinden.**
 - 2026-09-05 — **Der wertvollste Rotnachweis zeigt eine *Lücke*** (Mutant grün im
   Selbsttest, gefangen nur vom Korpus) **oder dass ein Fall aus dem *falschen Grund* grün
   war** — erst rot, dann zählt er.
+- 2026-09-05, 0111 wieder — **Die gleichförmige Grundbelegung ist die Ursache stumpfer
+  Proben:** Erst ein Wert **abseits** des Startwerts trennt zwei Formen.
 - 2026-09-05 — **Ein eigener Kommentar kann einen fremden Riegel rot machen.** Der
   `belegstellen_riegel` liest **jede** Bauquelle: Belege über die Überschrift, nie über
   eine Zeilennummer; ein Gliederungswort vor einer Anführung bindet den nächsten
@@ -90,30 +97,39 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
   Datendokument). Gegenbeleg: *die eigene Datei steht in seiner Ausgabe nicht.*
 - 2026-09-05, **viermal** — **Ein Mutant scheitert gern aus dem falschen Grund, und die
   Probe sieht trotzdem rot aus.** Immer prüfen, ob die rote Zeile die *gemeinte* ist.
+- 2026-09-05 — **„Es hat geworfen" prüft fast nie das, was es soll:** Das Kennzeichen ist
+  **zweiteilig** — Kasten **und** Ursache, nie der Volltext.
 - 2026-09-05 — **Trennt eine Abnahme zwei Sorten, muss die trennende Eigenschaft
   woandersher kommen als aus dem Namen.** Erwartung an den *Fall* hängen, nicht an die
   Schleife. (0083 wieder, an der Ortsfrage — es ist der häufigste Rückgabegrund.)
 - 2026-09-04, 2026-09-05 — **Eine Schwelle, deren Zahl sich nicht messen lässt, gehört
-  nicht ins Messgerät** — **Herkunft, keine Marge**, und der **kleinste** Wert; nie als
-  *einzige* Sicherung. Die **Falltabelle im Programm** trägt Fälle, die der Korpus nicht
-  hergibt; liest das Werkzeug seinen **eigenen** Quelltext, muss das Musterwort maskiert
-  sein (`Zeil\145`).
-- 2026-09-04, seither zehnmal — **Ein Rotnachweis je Teilregel.** **0083: je Teilregel
-  *andere* Fälle reißen zu lassen belegt, dass sie Verschiedenes messen** — reißen
-  überall dieselben, sind es zwei Namen für eine Regel; reißt bei einer *nichts*, ist das
-  ein Befund gegen die Regel (dort: zwei Prüfungen, die einander ausschließen, haben
-  keine Reihenfolge) — **oder** es braucht den Satz, dass der Korpus sie nicht misst.
+  nicht ins Messgerät** — **Herkunft, keine Marge**, und der **kleinste** Wert. Sie darf
+  aber nicht die *einzige* Sicherung sein: Der Einbruch, der zwischen Herkunft und
+  Tagesstand liegt, geht durch (0083 — dort fängt ihn die Zielseite).
+- 2026-09-04, seither dreimal — Die **Falltabelle im Programm** ist der Weg zu dauerhaften
+  Fällen, die der Korpus nicht hergibt. Liest das Werkzeug seinen **eigenen** Quelltext,
+  muss das Musterwort maskiert sein (`Zeil\145`).
+- 2026-09-04, seither zehnmal — **Ein Rotnachweis je Teilregel**, auch für Lockerungen,
+  die je allein nichts tragen. Eine Grenze, deren Abschalten nichts ändert, ist Zierde —
+  **oder** braucht den ausgeschriebenen Satz, dass der Korpus sie nicht misst (0107).
+  **0083: je Teilregel *andere* Fälle reißen zu lassen ist der Beleg, dass sie
+  Verschiedenes messen** — reißen überall dieselben, sind es zwei Namen für eine Regel;
+  reißt bei einer *nichts*, ist das ein Befund gegen die Regel (dort: zwei Prüfungen, die
+  einander ausschließen, haben keine Reihenfolge).
 - 2026-09-04, seither siebenmal — Die Entscheidung, die der Test misst, als **eigenen
   Aufruf** herausziehen; sonst prüft man zwei Fassungen, von denen nur eine läuft.
+- 2026-09-04, 2026-09-05 — Beim Aufräumen von Belegstellen ist der Riegel selbst das
+  Messgerät. Muster *beschreiben*, nicht abschreiben.
 - 2026-09-04 — **`git log -S` allein trägt keine Paketzuordnung**: Die Arbeit eines Pakets
-  liegt oft im Commit des *nächsten* Laufs, bei 0133 im Commit einer **fremden Rolle**;
-  Herkunft an der `dateien`-Liste prüfen. Eine Zeilennummer in einer Abnahme ist beim
-  Abarbeiten meist schon falsch — am **Text** suchen, den Bezugsstand nennen.
+  liegt oft im Commit des *nächsten* Laufs. Herkunft an der `dateien`-Liste prüfen. Eine
+  Zeilennummer in einer Abnahme ist beim Abarbeiten meist schon falsch (0111: 598 → 583).
+  Am **Text** suchen, den Bezugsstand nennen.
 - 2026-09-05 — **Der Rotnachweis belegt die Zahl erst über die Gegenzahl:** je Vorgabe
-  `== soll` und `!= gegenzahl`; `1013` steckt in `10137`. **Eine im Paket genannte
-  Mutation ist selten die einzige ihrer Art** — Vorkommen zählen, bei ≠ 1 abbrechen. Und:
-  **reißen *nur* die gemeinten Zusicherungen, ist das eine zweite Aussage gratis** — rote
-  Zeilen **vollständig** abschreiben, nicht nur ihre Zahl.
+  `== soll` und `!= gegenzahl`; `1013` steckt in `10137`.
+  Und: **eine im Paket genannte Mutation ist selten die einzige ihrer Art** —
+  der Treiber zählt die Vorkommen und bricht bei ≠ 1 ab (0110/0111). Und: **reißen *nur*
+  die gemeinten Zusicherungen, ist das eine zweite Aussage gratis** — rote Zeilen deshalb
+  **vollständig** abschreiben, nicht nur ihre Zahl.
 - 2026-09-02, 2026-09-05 bestätigt — **Beide Bauwege einzeln prüfen**: `baulauf.py` ruft
   jede `CMakeLists.txt` auch allein; neue Verzeichnisse brauchen ein erneutes `cmake -S/-B`.
 
@@ -154,12 +170,7 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
   des Jahres 2015".** Die Entscheidung liegt zwischen zwei Dokumenten, nicht bei mir.
 - 2026-09-04, 2026-09-05 **sechsmal** — **Der Korpus driftet während des eigenen Laufs**,
   auch dieses Logbuch: `Write` schlug mit „modified since read" fehl, gezielte `Edit`s
-  gingen durch. **Größe am Ende messen.** — 2026-09-05 (0083): Zwei Läufe derselben Rolle
-  schrieben gleichzeitig; **Zusammenziehen gegen einen parallel wachsenden Stand ist ein
-  Rennen, das man nicht gewinnt** (12.1k → 14.9k in vier Edits). Abzug nach
-  `archiv/testentwickler-2026-09-05-4.md` gelegt, Neuanfang dem laufenden 0133-Lauf
-  überlassen, statt seine frischen Einträge zu überschreiben. **Wer zusammenzieht, muss
-  vorher wissen, ob er allein in der Datei ist.**
+  gingen durch. **Größe am Ende messen.**
 - 2026-09-05 — **Ein Übersetzungsbericht gilt nur für den gelesenen Stand**; ein
   gemeldeter Bruch ist oft ein Nachbarpaket mitten in der Arbeit.
 - 2026-09-05, dreimal — **Jede Zahl in einer Abnahme ist ein Messwert von ihrem
