@@ -2,7 +2,7 @@
 id: 0118-fuenf-weitere-laender-auswaehlen
 rolle: spielentwerfer
 status: vorschlag
-haengt_an: [0116-laenderzahl-als-parameter, 0117-geschaetzter-politikpfad-und-zwei-laenderklassen]
+haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme".
 ---
@@ -55,14 +55,29 @@ Aktionen ist die Wahl eng; bei 45 ist sie es nicht mehr im selben Maß. Der Zust
 kommentiert die Zwanzig ausdrücklich als feste Größe: *„Es gibt keine Liste, in die etwas
 aufgenommen oder aus der etwas entfernt würde."*
 
-**Entscheide zwischen zwei Wegen und begründe:**
+**Der Betreiber hat am 2026-09-05 Weg A gewählt: die Steckplätze wachsen mit `L`,
+von 20 auf 45.** Die Wahl steht nicht mehr offen. Was offen ist, ist die Folge daraus,
+und sie ist deine Aufgabe:
 
-- **A — Steckplätze wachsen mit `L`.** Einfach, gleichförmig, und die Aktionsknappheit
-  verschiebt sich: Drei Aktionen auf 45 Plätze sind ein anderes Spiel als drei auf 20.
-  Wenn du diesen Weg wählst, sag, wie die Entscheidungsdichte erhalten bleibt.
-- **B — Steckplätze bleiben gedeckelt.** Der Fonds kann nur in einer Teilmenge der Länder
-  Positionen halten; welche, ist selbst eine Entscheidung des Spielers. Das erhält die
-  Knappheit und fügt eine Wahl hinzu — kostet aber eine neue Mechanik.
+> Drei Aktionen je Runde auf 45 Plätzen sind ein anderes Spiel als drei auf 20.
+> **Sag, wie die Entscheidungsdichte erhalten bleibt.**
+
+`spiel.md` nennt die Knappheit unter *Die härteste Vorgabe* als Quelle der
+Entscheidungsdichte — *„wer alles tun kann, wählt nicht"*. Bei 45 Plätzen und
+unveränderten drei Aktionen sinkt der Anteil des Spielfelds, den ein Spieler je Runde
+berühren kann, von 15 auf 7 Prozent. Das kann richtig sein: Ein grösseres Brett bei
+gleicher Zugzahl macht die Wahl **wichtiger**, nicht beliebiger. Es kann aber auch
+bedeuten, dass eine Partie über R Runden das Feld nicht mehr abdeckt.
+
+**Rechne es aus, statt es zu behaupten.** Wie viele der 45 Plätze kann ein Spieler über
+die volle Partielänge überhaupt erreichen, und wie verhält sich das zu den 20 von heute?
+Fällt die Deckung unter das, was die vier Masse tragen, benenne die Stellschraube, die
+du empfiehlst — Aktionszahl, Partielänge oder Zusammenfassung von Plätzen — **und
+empfiehl genau eine.** Der Betreiber entscheidet, du legst vor.
+
+Verworfen ist damit **B** (gedeckelte Steckplätze mit Auswahlmechanik); die Begründung
+für die Verwerfung ist die Entscheidung des Betreibers, nicht eine fachliche, und das
+gehört so hingeschrieben.
 
 ## Wonach die fünf zu wählen sind
 
@@ -92,9 +107,10 @@ anfassen. Die Adressarithmetik ist 0116, die Klassen sind 0117.
    noch keines der vier heutigen trägt, in einem Satz je Land.
 2. **Jedem ist eine Klasse zugeordnet** (Rückvergleichsland oder Spielland) mit der
    Bedingung, unter der es die Klasse wechseln würde.
-3. **Die Steckplatzfrage ist entschieden** — A oder B, mit Begründung. Bei A steht dabei,
-   wie die Entscheidungsdichte aus *Die härteste Vorgabe* erhalten bleibt; bei B, welche
-   Mechanik die Auswahl trägt.
+3. **Die Folge aus Weg A ist gerechnet, nicht behauptet.** Der Abschnitt nennt, wie
+   viele der 45 Plätze ein Spieler über die volle Partielänge erreichen kann, gegen die
+   20 von heute gerechnet, und benennt genau eine empfohlene Stellschraube, falls die
+   Deckung unter das fällt, was die vier Masse tragen.
 4. **Die Tabelle oben steht in `spiel.md`** mit den Werten für `L = 9`, und der Abschnitt
    *Was bewusst fehlt* ist auf die neue Zahl nachgezogen — die alte Aussage über zwölf
    Länder bleibt stehen und wird nicht gelöscht, sondern eingeordnet.

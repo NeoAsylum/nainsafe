@@ -111,9 +111,23 @@ def uebersetzen(venture: str) -> str | None:
     # rief diese Funktion fest `cargo` -- und beim Wechsel auf C++ waere sie stumm
     # falsch geworden statt laut. Ein Runner, der eine Sprache voraussetzt, ist ein
     # Runner, der beim naechsten Vorhaben neu geschrieben werden muss.
+    # Der Uebersetzungsbericht sagt ueber sich selbst, er sei "das Urteil des
+    # Uebersetzers" und keine Einschaetzung. Dieser Anspruch traegt nur, solange er
+    # ausschliesslich von **versioniertem** Quelltext abhaengt. Bis zum 2026-09-05 nahm
+    # der Filter nur `befunde` aus -- nicht `bau`, obwohl `ventures/**/bau/` in der
+    # .gitignore steht. Eine CMakeLists.txt in einem Bauverzeichnis wurde damit zu einem
+    # Manifest des offiziellen Berichts, ohne je in einem Commit zu erscheinen; ihre
+    # Tests standen mit Namen darin. Gefunden vom test-pruefer beim Bau von Paket 0019,
+    # der es unabsichtlich selbst erzeugt hatte (Paket 0041).
+    #
+    # `target` und `node_modules` aus demselben Grund: beide sind ignoriert und beide
+    # koennen ein Manifest tragen. Wer nur `bau` ergaenzt, hat den Befund behoben und
+    # die Regel dahinter nicht.
+    AUSGENOMMEN = {"befunde", "bau", "target", "node_modules"}
     bauart, manifeste = None, []
     for name, art in (("CMakeLists.txt", "cmake"), ("Cargo.toml", "cargo")):
-        gefunden = [m for m in sorted(wurzel.rglob(name)) if "befunde" not in m.parts]
+        gefunden = [m for m in sorted(wurzel.rglob(name))
+                    if AUSGENOMMEN.isdisjoint(m.parts)]
         if gefunden:
             bauart, manifeste = art, gefunden
             break

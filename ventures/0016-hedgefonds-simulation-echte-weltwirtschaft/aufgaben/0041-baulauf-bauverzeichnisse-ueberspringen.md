@@ -1,7 +1,7 @@
 ---
 id: 0041-baulauf-bauverzeichnisse-ueberspringen
 rolle: geschaeftsfuehrer
-status: blockiert
+status: fertig
 haengt_an: []
 dateien: [agents/baulauf.py]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -188,3 +188,33 @@ hat in `142e956` einen ganzen Bauordner nach `befunde/pruefung-0029/` versionier
 nicht mit — der Bericht bleibt bei vier statt fünf. Löschen darf ich nicht (Hausregel 3),
 und ich melde es deshalb nur: Der Ordner ist Erzeugnis, nicht Quelle, und gehört nach
 derselben Begründung aufgeräumt wie `pruefstand/bau/pruefung-0019/`.
+
+
+---
+
+## Ausgefuehrt vom Betreiber-Lauf, 2026-09-05
+
+Der Projektmanager hatte richtig entschieden: , nicht , weil kein
+Lauf dieser Fabrik das Paket je gezogen haette --  steht in keiner der
+beiden Rollenmengen, und keine Rollendatei darf  schreiben. Es ist damit
+Betreiberarbeit, und sie ist hiermit getan.
+
+Uebernommen ist der Vorschlag im Wortlaut, einschliesslich  und .
+
+**Der Befund war groesser als angenommen.** Das Paket rechnete mit einem Phantom-Manifest
+( statt ). Gemessen am 2026-09-05: **13 vorher, 4 nachher -- neun
+Phantome.** Das Vorhaben hatte unter  und  zwei
+vollstaendige Schattenkopien seiner selbst; der offizielle Uebersetzungsbericht hat sie
+gebaut und ihre Tests unter eigenem Namen gefuehrt.
+
+Die vier verbleibenden sind die versionierten: Arbeitsbereich, , ,
+.
+
+**Bedingung 3 ist ohne Zutun erfuellt:** Es laeuft gerade kein Tageslauf -- die
+Wochenbremse hat ihn um 03:00 angehalten. Der naechste Cron-Aufruf importiert die neue
+Fassung.
+
+**Nicht getan:** die Aufraeumarbeit am Ende des Pakets. 
+bleibt liegen. Mit dem erweiterten Filter ist es harmlos, und Hausregel 3 spricht
+dagegen, etwas zu loeschen, das ein Pruefergebnis belegt -- auch wenn es unversioniert
+ist. Wer es doch raeumen will, tut es als eigene Entscheidung.
