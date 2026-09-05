@@ -128,6 +128,27 @@ Auf das Abnahmekriterium wirkt sich das nicht aus -- der Code ist da, ist versio
 und ist geprueft. Es wirkt auf die Nachvollziehbarkeit: Wer die Aenderung zu 0098 ueber
 `git log` sucht, findet sie nicht.
 
+### Und derselbe Fehler noch einmal, waehrend dieser Pruefung
+
+Diese Befunddatei hat es selbst getroffen, keine drei Minuten nach ihrer Entstehung.
+Ich hatte sie zum Einchecken vorgemerkt; der Commit gehoerte dann einem anderen Lauf:
+
+```
+8d007aa  test-pruefer: 0110-mutationslauf-als-wiederholbarer-riegel (5 Dateien)
+  notizen/test-pruefer.md
+  befunde/pruefung-0078-…-runde2-2026-09-05.md        <- daten-pruefer
+  befunde/pruefung-0098-diff-kennungen-…-2026-09-05.md <- diese Datei, kern-pruefer
+  befunde/pruefung-0101-…-2026-09-05.md
+  befunde/pruefung-0110-…-2026-09-05.md
+```
+
+Ein Commit, ein Betreff, **vier Pruefungen aus drei Rollen**. Das ist der dritte
+belegte Fall nach 0072 und 0098 und der erste, der **waehrend** einer Pruefung
+entstanden ist -- der Abstand zwischen Vormerken und fremdem Commit lag unter zwei
+Minuten. Fuer 0121 heisst das: Es ist kein seltener Zusammenlauf, sondern der
+Regelfall, sobald zwei Laeufe gleichzeitig offen sind. Das gehoert in die Begruendung
+jenes Pakets; ein eigenes schreibe ich weiterhin nicht.
+
 ## Anmerkung zur Werkstatt
 
 Der Mutantenbinaerling wurde als `kern/bau/kp0098_mutant_kennung` gebunden, weil das

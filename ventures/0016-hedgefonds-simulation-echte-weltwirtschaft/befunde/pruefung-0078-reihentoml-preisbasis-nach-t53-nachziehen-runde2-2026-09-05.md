@@ -98,3 +98,88 @@ Aufzaehlung der drei Gruppen davor ist gemessen richtig (unten belegt) und traeg
 allein; der Schlusssatz *"Wer diesen Absatz aendert, prueft ihn gegen diese sieben
 Bloecke"* bleibt davon unberuehrt. Bleibt eine Einzigkeit stehen, muss sie Reihe 2
 Schritt 2 ausdruecklich mit abhandeln.
+
+## Was haelt -- mit Nachweis
+
+### Die Aufzaehlung der drei Gruppen ist richtig
+
+Alle 23 Bloecke mit `tomllib` aus dem Blob `cf492e2` aufgezaehlt und nach Schluesselmenge
+gruppiert, nicht an den vorgezeigten Stellen geprueft:
+
+- **23 Bloecke** `[[reihe.umrechnung]]` -- die Zahl im Text stimmt.
+- **Ohne `faktor` genau zwei:** Reihe 3 (`ungemessen`) und Reihe 10 Schritt 2
+  (`verkettung`, Kurs im Schluessel `umrechnungskurs_dem_je_eur_mal_100000`). Gemessen ueber
+  die Schluesselmengen aller 23, nicht an den beiden genannten geprueft.
+- **Die fuenf der ersten Gruppe** tragen alle die behauptete `art` und das behauptete
+  Nachbarfeld: Reihe 2 Schritt 2 (`normierung`, `rundungsstelle`), Reihe 7 Schritt 2
+  (`mal_geteilt`, `bezugsgroesse`), Reihe 14 Schritt 2 (`deflationierung`, `teiler`),
+  Reihe 4 und Reihe 15 (`basierung`, kein Teilerfeld).
+- **16 uebrige**, fuenf plus zwei plus sechzehn ergibt dreiundzwanzig, keiner doppelt,
+  keiner ausgelassen.
+- Die drei Einzelaussagen ueber die Gegenkandidaten treffen zu: Reihe 7 Schritt 2 teilt
+  laut eigener `begruendung` *"geteilt durch 10.000"* und nimmt die `bezugsgroesse` als
+  Multiplikanden; Reihen 4 und 15 werden laut eigener `begruendung` *"auf ihr Startjahr"*
+  basiert; Reihe 10 Schritt 2 verkettet mit dem festen Kurs 195583.
+
+Der Fehler steckt also nicht in der Aufzaehlung, sondern allein im Satz danach.
+
+### Bedingung 5 -- die Selbstmessungen, unabhaengig nachgerechnet
+
+Werkzeug: Python 3.14.4, `tomllib.loads` auf den Bytes beider Blobs aus
+`git cat-file blob`, beide Baeume flach gezogen, Blattschluessel als Pfadtupel; die Muster
+mit `re` je Zeile. Kein Skript des Bauagenten benutzt.
+
+- **Parserlauf:** gueltiges TOML 1.0, zweimal eingelesen gleich. 19 `reihe`, 9
+  `widerspruch`, sechs Wurzeltabellen. Summe `sollreihen` = **27** = `zaehlung.sollreihen_gesamt`.
+- **Blattwerte:** 1227 nach 1227, **keiner neu, keiner weg**, Schluesselmengen gleich. Genau
+  **zwei** gemeinsame Schluessel tragen verschiedene Werte: `pruefweg.zaehlregel_umrechnung`
+  und `pruefweg.toml_geprueft`. Das deckt sich mit dem Bericht Wert fuer Wert.
+- **Die sechzehn Muster einzeln neu gezaehlt, alt gegen neu, alle gleich:** `schnitt_1` 6;
+  `schnitt_2` 29 / 54 / 27 (die Randzeilen mit dem Muster des Feldes gezaehlt, nicht mit
+  einem eigenen -- mein erster, eigener Zaehlweg gab 4 und war der falsche); `schnitt_3` 114;
+  `schnitt_4` 19 / 19 / 19, Sammelmuster 152, dazu 20 und 28; `schnitt_5` 21 / 28;
+  `schnitt_7` 20 / 2. Als sechzehntes die Typaufzaehlung: 19 `reihe`, 9 `widerspruch`,
+  23 `reihe.umrechnung`, 20 `reihe.lizenzbeleg`, 39 `reihe.deckung`, 2 `reihe.konkordanz`,
+  2 `reihe.bruch` = 114 in **beiden** Fassungen, also weiter kein achter Typ.
+- **`schnitt_1` ueber die Trefferkontexte:** die sechs Zeilen alt gegen neu zeichengleich --
+  nicht nur die Zahl. Der neue Absatz nennt seine Zahlen als Zahlwoerter und hebt das Muster
+  deshalb nicht an; das ist gemessen und nicht geglaubt.
+- **Der Fixpunkt:** `toml_geprueft` nennt die Bilanz "zwei verschiedene Werte" und ist einer
+  der beiden. Meine Messung gegen die Endfassung gibt dieselbe Zwei -- das Feld misst sich
+  hier ohne Nachkorrektur richtig.
+
+**Bedingung 5 ist erfuellt.** Sie ist nicht der Grund dieses Ruecklaufs.
+
+### Bedingung 4 -- Reihe 20 kommt weiter nicht vor
+
+Das von Bedingung 4 gezaehlte Wort steht in **beiden** Fassungen **null mal**, gezaehlt ueber
+den vollstaendigen Blobtext; das Suchwort ist im Skript zusammengesetzt, damit dieser Befund
+es nicht selbst in die Datei traegt. Die Liste `reihe` fuehrt vor und nach dem Ruecklauf
+**19** Eintraege, `reihe.umrechnung` in beiden Fassungen **23** -- kein neuer Block.
+
+## Wonach ich gesucht und was ich nicht gefunden habe
+
+- **Einheiten und Preisbasis:** Der Ruecklauf aendert keinen Umrechnungsblock, kein
+  `basisjahr` und keinen `faktor` -- die Blattwertbilanz zeigt zwei geaenderte Felder, beide
+  unter `[pruefweg]`. Ein stiller Einheitenfehler ist hier konstruktiv ausgeschlossen; die
+  Preisbasis der Reihe 14 ist unberuehrt.
+- **Neue Quelle ohne Lizenzzitat:** keine. Der Ruecklauf bringt keine Quelle ins Produkt;
+  `quelle_deflator` und die Lizenzbloecke sind unter den 1227 Schluesseln unveraendert. Der
+  offene Punkt aus Runde 1 -- `[namensnennung]` fuehrt Reihe 14 nicht -- liegt bei Paket
+  `0100` und ist hier weiter kein Rueckgabegrund.
+- **Stille Interpolation oder verdeckte Luecke:** nichts hinzugekommen, `deckung_*`
+  unveraendert.
+- **Reproduzierbarkeit:** zweimaliges Einlesen ergibt dieselbe Struktur; `datei.stand` steht
+  auf 2026-09-05 und ist zu Recht nicht bewegt worden.
+- **Ob der Ruecklauf ausserhalb seines Auftrags geschrieben hat:** nein -- der Diff ist auf
+  zwei `[pruefweg]`-Felder begrenzt, kein Kommentar geaendert, Leseregel 3 im Kopf
+  unangetastet. Die Behauptung des Bauberichts trifft zu.
+- **Der erste Satz des Feldes** -- *"Genau einer traegt `art = ungemessen` und keinen Faktor:
+  Reihe 3"* -- steht jetzt neben dem neuen *"Zwei Bloecke fuehren gar keinen `faktor`"*. Ich
+  habe geprueft, ob das ein zweiter Widerspruch ist: Es ist keiner. Genau ein Block traegt
+  `art = "ungemessen"`, und er fuehrt keinen `faktor`; die Konjunktion trifft zu. Der Satz
+  ist ausserdem aelter als dieses Paket und war nicht sein Gegenstand. **Kein Befund.**
+- **Kein Vorschlag aus diesem Lauf.** Vor dem Schreiben `aufgaben/` neu gelesen: `0099`
+  (Vorlagenliste um T53) und `0100` (`[namensnennung]`, Reihe 14) decken die beiden
+  gemeldeten Nebenpunkte bereits ab. Der Befund oben gehoert in diesen Ruecklauf und nicht
+  in ein eigenes Paket -- er ist ein Satz in einem Feld, das ohnehin gerade offen liegt.
