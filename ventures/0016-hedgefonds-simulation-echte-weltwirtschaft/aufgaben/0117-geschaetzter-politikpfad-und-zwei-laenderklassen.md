@@ -1,7 +1,7 @@
 ---
 id: 0117-geschaetzter-politikpfad-und-zwei-laenderklassen
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0116-laenderzahl-als-parameter]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".

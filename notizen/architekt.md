@@ -1,77 +1,81 @@
 # Logbuch: architekt
 
 *Neu begonnen am 2026-09-04 an der 12.000-Zeichen-Grenze; Vorstand in
-`git show HEAD~1:notizen/architekt.md`.*
+`git show 4ff788d:notizen/architekt.md`. **Archivieren kann ich nicht:**
+`agents/rollen/architekt.md` nennt `Edit(notizen/architekt.md)` und kein
+`Edit(notizen/archiv/**)`. **An den Betreiber: eine Zeile in der Rollendatei macht die
+Archivregel ausführbar.** Bis dahin wird gestrafft — nie gestrichen ohne Ersatz.*
 
-***Warum hier gekürzt und nicht verschoben wird — der Grund steht jetzt fest:***
-`agents/rollen/architekt.md` nennt unter `tools` genau `Edit(notizen/architekt.md)` und kein
-`Edit(notizen/archiv/**)`; die fünf Verweigerungen vom 2026-09-04 waren also richtig.
-**An den Betreiber: eine Zeile `Edit(notizen/archiv/**)` in der Rollendatei macht die
-Archivregel ausführbar.** Bis dahin wird gestrafft; am 2026-09-05 sind dafür vier
-erledigte Einträge gestrichen worden.
-
-*Unsicher, damit der Projektmanager es sieht:* Die Zahl 17 in T17b gilt für eine Suche nach
-**festem Text**. Wer den Punkt als Platzhalter sucht, zählt 29 und findet einen Widerspruch,
-den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss ich nicht.
-Dasselbe bei 0116: Bedingung 3 ist wörtlich nicht erfüllbar (41 → 43 Treffer `310`, beide neuen
-von Bedingung 1 verlangt). Ich habe sie dem Zweck nach erfüllt — `0 ab` im `numstat` — und die
-Kollision ins Paket geschrieben. **Misst der Prüfer die Trefferzahl, gibt er zurück; ich hätte
-dann dieselbe Antwort und keine bessere.**
+*Unsicher aus 0117, damit der Projektmanager es sieht:* (1) Ich habe die Ausnahme des
+Spiellands **verschärft** — der Auftrag wollte sie in der Auswertung, ich lege sie in den Lauf,
+weil sie sonst undicht ist. Das ist mehr, als die Abnahme verlangt; hält der Prüfer es für
+Übergriff, ist die Begründung in T58 und nicht in meinem Kopf. (2) Der Preis dafür — der
+Restweltrest je Modus, also 38 Adressen mit zwei Werten — ist von mir hergeleitet und nirgends
+gegengerechnet. (3) Die Sollreihensperre in T61 Regel 4 zwingt allen 19 Reihen einen
+Pflichtblock auf, um einer Sperre Zähne zu geben; das ist die teuerste Zeile des Abschnitts,
+und ich würde einem Prüfer folgen, der sie für unverhältnismässig hält.
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-05, **an mir selbst gefunden und der Grund dieses dritten Laufs** — **Ein Absatz,
-  der eine Volltextsuche bilanziert, ist selbst Teil des durchsuchten Textes.** Meine
-  Zähltabelle in T17b nannte 17 Treffer; gezählt waren 18, weil derselbe Absatz die
-  ungeschützte Schreibweise als Gegenbeispiel mitführte — und zugleich zusicherte, keine
-  seiner Zeilen sei ein Treffer. **Wer im Dokument über ein Suchmuster schreibt, schreibt es
-  nur geschützt und zählt danach noch einmal.** In 0116 dieselbe Falle von der anderen Seite:
-  Dort stellte die *Abnahme* die Volltextsuche über meine Zieldatei. **Nicht jede Trefferzahl
-  lässt sich schützen** — eine Formel für 310 samt Ergebnis kann `310` nicht vermeiden. Dann
-  ist `0 ab` im `numstat` der bessere Beleg.
+- 2026-09-06, **der wertvollste Fund dieses Laufs** — **In einem gekoppelten Modell ist eine
+  Ausnahme, die in der Auswertung sitzt, keine Ausnahme.** Der Auftrag zu 0117 wollte, dass die
+  Größen eines Spiellands „in kein Fehlermaß eingehen". Das genügt nicht: Sein Leitzins bewegt
+  über Handel und Weltpreise das BIP der *anderen* Länder, und das sind Prüfgegenstände.
+  **Prüffrage an jede Ausnahme: Über welchen Weg wirkt das, was ich ausschliesse, trotzdem?**
+  Die Behebung war billig, weil das Dokument den Mechanismus schon hatte — die Sollmaske, mit
+  der der Fonds im Weltlauf nicht gerechnet statt abgefangen wird. **Erst im Bestand nach dem
+  Mechanismus suchen, dann einen erfinden.**
+- 2026-09-06 — **Eine Maske deckt die Schreibseite; die Leseseite deckt nur eine Probe.**
+  „Keine Adresse ausserhalb der Maske berührt" fängt keinen Lesezugriff. Der billige Nachweis
+  ist ein zweiter Lauf mit absurden Werten auf den ausgeschlossenen Adressen und der Forderung
+  auf Bitgleichheit. *Bei jeder Zusicherung fragen, welche Hälfte des Zugriffs sie nicht sieht.*
+- 2026-09-06, **die Bestätigung, die am meisten gespart hat** — **Der Auftrag sagt, wonach zu
+  suchen ist, nicht was zu finden ist** (dritte Bestätigung). 0117 rahmte den fehlenden
+  Leitzins als Frage künftiger Länder; `reihen.toml` sagt, er reisst schon für zwei der
+  heutigen vier. Daraus wurde eine Sperre statt einer Vorsorge. Zweiter Fall im selben Lauf:
+  „aus dem WDI, also CC BY 4.0" — acht eingebettete WDI-Reihen, fünfmal `unklar`, einmal
+  **`gesperrt`**. **Eine Lizenz gilt dem Code, nicht dem Katalog.**
+- 2026-09-06, **neu und gegen meinen Reflex** — **Es gibt Abnahmen, die das Nichtsuchen
+  verlangen.** Bedingung 3 wollte Stufe 2 als *ungeprüfte Vermutung* gekennzeichnet; hätte ich
+  sie nachgesehen, wäre sie keine mehr. Websuche ist ein Werkzeug gegen Blockaden, nicht gegen
+  Unbehagen.
+- 2026-09-05, an mir selbst gefunden — **Ein Absatz, der eine Volltextsuche bilanziert, ist
+  selbst Teil des durchsuchten Textes** (T17b nannte 17, gezählt waren 18). Wer im Dokument
+  über ein Suchmuster schreibt, schreibt es nur geschützt und zählt danach neu. **Nicht jede
+  Trefferzahl lässt sich schützen** — eine Formel für 310 samt Ergebnis kann `310` nicht
+  vermeiden. Dann ist `0 ab` im `numstat` der bessere Beleg, und ein reiner Anhang der beste.
 - 2026-09-04, **der teuerste Fund jenes Laufs**, am 2026-09-05 erneut bestätigt — **Ein
   Auftragstext ist eine Momentaufnahme; zwischen Annahme und Lauf kann ein anderes Paket
   seine Tabelle ungültig machen.** Paket 0043 nannte `preishub`, den Paket 0039 längst
   gestrichen hatte; Paket 0051 beschrieb einen Widerspruch, den zwei Läufe vor mir schon
   aufgelöst hatten. **Die Lage immer aus der Quelle neu erheben, nie aus dem Auftrag
   übernehmen** — der Auftrag sagt, *wonach* zu suchen ist, nicht *was* zu finden ist.
-- 2026-09-04 — **Eine Abnahme „der Prüfer darf keinen Rest behalten" ist nur wiederholbar,
-  wenn die Liste mitgedruckt ist, gegen die geprüft wurde.** Ohne sie prüft der nächste Lauf
-  meine Zusage statt der Sache. Die Erhebung fand nebenbei eine Lücke, die beim Durchlesen
-  der Auftragstabelle nicht aufgefallen wäre.
+- 2026-09-04 — **Eine Abnahme „der Prüfer darf keinen Rest behalten" ist nur wiederholbar, wenn
+  die Liste mitgedruckt ist, gegen die geprüft wurde** — sonst prüft der nächste Lauf meine
+  Zusage statt der Sache.
 - 2026-09-04, **neu, und als Prüffrage brauchbar** — **Eine Größe ohne einheitliche Klasse
   *oder* einheitliche Stelligkeit darf keine Funktion werden.** `verschiebung(l, i)` ist für
-  den Zoll Klasse 5 und sonst Klasse 3; `menge(l, i)` ist immer Klasse 2, hat aber in der
-  Zollzeile ein Sektorargument mehr. Beide bleiben deshalb Spaltenüberschriften, gebildet
-  wird `schaden(l, i)` mit der Fallunterscheidung innen — dieselbe Bauart wie `markt(p)`.
-  **Prüffrage an jeden Namen, den ich zur Funktion machen will: Hat sein Ergebnis eine
-  Klasse, und hat es immer dieselben Argumente?**
+  den Zoll Klasse 5 und sonst Klasse 3; beide bleiben deshalb Spaltenüberschriften, gebildet
+  wird `schaden(l, i)` mit der Fallunterscheidung innen. **Prüffrage an jeden Namen, den ich
+  zur Funktion machen will: Hat sein Ergebnis eine Klasse, und immer dieselben Argumente?**
 - 2026-09-04, **dreimal bestätigt** — **Der `status` eines Pakets sagt, wer ihn zuletzt
   gesetzt hat, nicht, was im Repo steht.** **Erster Griff jedes Laufs:
   `git log --oneline -- <meine Zieldatei>`**, vor den Vorgaben. Am 2026-09-05 hat er in einem
   Griff gezeigt, dass 0116 längst geliefert war und nur die Meldung fehlte.
-- 2026-09-04 — **Zwei Dokumente, die dieselbe Größe herleiten, widersprechen sich eher in
-  der *Herkunft* als in der Zahl.** T53 nannte `N` „aus Reihe 1", `reihen.toml` „aus Reihe
-  2"; richtig ist Reihe 1 **mal** Reihe 2 — beide unvollständig, keine Zahl betroffen, also
-  bei einer Zahlenprüfung unsichtbar.
 - 2026-09-04 — **„Nicht gemessen" aus einem fremden Befund ist eine Aussage über dessen
   Werkzeuge, nicht über die Welt.** Zwei `WebFetch` auf eine JSON-Schnittstelle lieferten,
   was ein Einheitenbefund für unauffindbar erklärt hatte; die PDF-Sperre galt für PDF.
   **Bevor ich „bleibt offen" schreibe: Fehlt die Zahl an *meinen* Werkzeugen auch?**
 - 2026-09-01, vierter Lauf — **Ein Befund ist eine Stichprobe aus einer Fehlerklasse; die
-  Klasse abzuzählen kostet einen Lauf und findet den Rest.** T5 gegen alle 310 Adressen
-  gelegt: 69 ohne Skalenklasse. Zweite Hälfte: **Eine Abzählregel deckt nur die Menge, über
-  die sie zählt** — T45 zählt Adressen und konnte eine fehlende *Funktion* nicht finden.
-  Prüffrage: *Worüber zählt sie nicht?*
+  Klasse abzuzählen kostet einen Lauf und findet den Rest** (T5 gegen alle 310 Adressen: 69
+  ohne Klasse). Und: **eine Abzählregel deckt nur die Menge, über die sie zählt.** Prüffrage:
+  *Worüber zählt sie nicht?*
 - 2026-09-02 — **Ein ADR trägt eine Entscheidung, keinen Beweis. Die Entscheidung bindet
   mich, seine technische Behauptung nicht.** ADR 0011 führt `-fsanitize=undefined` gegen
   stille Überläufe ein — das kann es nicht, weil `-fwrapv` genau diese Prüfung abschaltet.
   Zwei Minuten Websuche. *Welcher Satz darin ist eine Tatsache, und habe ich sie nachgesehen?*
-- 2026-09-03 — **Eine Aufzählung von Rechenarten muss eine Partition sein.** Nach der
-  *Rechenart* schneiden, nicht nach der Stelle — sonst hat die Liste beim nächsten Zusatz
-  wieder ein Loch.
 - 2026-09-03 — **Eine Grep-Vorschrift einmal gegen den echten Baum laufen lassen, bevor sie
   im Dokument steht.** Mein erster Regex für „blanke Multiplikation" traf 40 Zeilen
   `const char*`. Ohne Probelauf steht dort eine Vorschrift, die beim ersten Gebrauch
@@ -85,15 +89,12 @@ dann dieselbe Antwort und keine bessere.**
 
 ## Was nicht funktioniert
 
-- 2026-09-05, **zweimal hintereinander und teuer** — **Ich habe den Status meines eigenen
-  Pakets nicht gesetzt, und der Runner hat es zweimal neu eingeplant.** 0051 lief am
-  2026-09-05 dreimal (`ce59b8b`, `a127600`, dieser), weil `status: offen` stehen blieb; der
-  Runner kennt nur das Frontmatter, nicht meine Arbeit. **Der Status gehört an den Anfang
-  der Abschlussarbeit, nicht ans Ende.** Erkennbar war es sofort an
-  `git log --oneline -- <meine Zieldatei>` — der zeigte zwei fremde Läufe auf mein eigenes
-  Paket, bevor ich eine Zeile gelesen hatte. **0116 hat es am selben Tag ein viertes Mal
-  gekostet**, und dort war die Arbeit sogar fertig im Baum: vier Läufe, davon einer für nichts
-  als eine Statuszeile. **Der Status ist die Lieferung, nicht ihr Anhang.**
+- 2026-09-05, **viermal an einem Tag und teuer**, seither abgestellt — **Ein nicht gesetzter
+  Status lässt den Runner dasselbe Paket erneut einplanen.** 0051 lief dreimal, 0116 ein
+  viertes Mal für nichts als eine Zeile; der Runner kennt nur das Frontmatter, nicht meine
+  Arbeit. **Der Status ist die Lieferung, nicht ihr Anhang.** Erkennbar sofort an
+  `git log --oneline -- <meine Zieldatei>`: fremde Läufe auf mein eigenes Paket, bevor ich eine
+  Zeile gelesen habe.
 - 2026-09-04, **an mir selbst gefunden** — **Eine Rundungsregel, die ich für den Code
   vorschreibe, gilt auch für die Zahlen in meinem eigenen Fließtext.** T53 nannte 3.577 und
   1,5570, wo 3.577,80 und 1,55710 stehen — zweimal abgeschnitten statt gerundet, in einem
@@ -106,21 +107,16 @@ dann dieselbe Antwort und keine bessere.**
   Hälfte, die ein Gegenstück hat.** `cargo vendor` fiel lautlos weg, weil CMake keinen
   Befehl gleichen Namens hat, und „gestrichen" sah aus wie „übersetzt". **Jeden übersetzten
   Satz vorher in seine Zusagen zerlegen und jede einzeln quittieren.**
-- 2026-09-01, vierter Lauf — **Eine Vorgabe, die eine *Menge* nennt, ohne sie abzählbar zu
-  machen.** T8 sagte „alle nominalen Größen dieses Landes"; es sind genau fünf Adressen je
-  Gebiet. Der Bauagent hätte raten müssen.
 - 2026-08-31, zweiter Lauf — **Keine Zahl in den Text, die ich nicht in diesem Lauf
   ausgerechnet habe**, auch keine aus meiner eigenen Vorfassung.
 - 2026-08-31 — **Der Planwert von 10 µs je Weltschritt ist geschätzt, nicht gemessen**, und
   die `i128`-Divisionen können ihn um das Drei- bis Fünffache verfehlen. Über 50 µs muss die
   Markträumung anders gebaut werden als über 40 Halbierungsschritte.
-- 2026-09-02, am 2026-09-03 und 2026-09-05 bestätigt — **Ein Abnahmekriterium kann mit dem
-  Rest seines eigenen Pakets unvereinbar sein, und dann erfülle ich den Zweck und sage es.**
-  Still gehalten, wäre die Kandidatentabelle aus 0011 weggefallen. In 0116 verlangte
-  Bedingung 1 die Formel für 310 samt Ergebnis und Bedingung 3, die Trefferzahl von `310`
-  dürfe sich nicht ändern — **zwei Bedingungen desselben Pakets, die einander ausschliessen.**
-  Nicht die schwächere heimlich erfüllen: beide messen, die Kollision hinschreiben, dem Prüfer
-  das schärfere Maß nennen.
+- 2026-09-02, **am 2026-09-05 vom Prüfer bestätigt** (0116 wurde `geprueft`, die Kollision ging
+  als Befund an den PM) — **Ein Abnahmekriterium kann mit dem Rest seines eigenen Pakets
+  unvereinbar sein; dann erfülle ich den Zweck und sage es.** Nicht die schwächere Bedingung
+  heimlich erfüllen: beide messen, die Kollision hinschreiben, das schärfere Maß nennen. In
+  0117 wieder eingetreten (Bedingung 4 „nur technik.md" gegen Statuszeile und Pflichtlogbuch).
 
 ## Offene Fährten
 

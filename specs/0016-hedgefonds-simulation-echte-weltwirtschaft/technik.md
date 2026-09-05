@@ -3469,3 +3469,363 @@ Formeln sind gegen die bestehenden Stellen gelegt und stimmen mit ihnen überein
 Abweichung — 27 gegen 31 bei den Sollreihen — ist oben benannt und gehört Paket `0068`. Die
 Länderzahl selbst, die Auswahl eines weiteren Landes und der Umbau des Kerns sind eigene
 Pakete und hier nicht entschieden.
+
+## 20. Zwei Länderklassen und der geschätzte Politikpfad — Paket `0117`
+
+**Was hier entschieden wird und was nicht.** Dieser Abschnitt wählt **kein** Land aus, sucht
+**keine** Zinsreihe, ändert **keine** Zeile des Kerns und fasst die heutigen vier Länder nicht
+an. Entschieden wird dreierlei: was die beiden Klassen sind und wie sich die Ausnahme von den
+Prüfgegenständen **mechanisch** halten lässt (T58); wie die sechzehn Prüfgegenstände
+parametrisch zu zählen sind (T59); und in welcher Reihenfolge ein fehlender Politikpfad zu
+ersetzen ist, samt der Kennzeichnung, die eine Schätzung als Schätzung erkennbar hält (T60,
+T61).
+
+**Der Anlass steht in den Daten und nicht in der Zukunft.** `daten/reihen.toml` führt Reihe 9
+(Leitzins) mit `deckung_urteil = "reisst -- DEU und CHN tragen in dieser Quelle keinen
+einzigen Wert, USA endet 2020"`. Die Frage nach dem geschätzten Politikpfad ist damit keine
+Vorsorge für ein künftiges fünftes Land, sondern eine offene Frage an zwei der heutigen vier —
+und genau deshalb braucht sie eine Regel, die nicht von Fall zu Fall entschieden wird.
+
+### T58 — Die beiden Klassen, und was „ausgenommen" mechanisch heisst
+
+| Klasse | Politikpfad | Datenreihen | im `weltlauf` | in den Prüfgegenständen |
+|---|---|---|---|---|
+| **Rückvergleichsland** | aus gemessener oder abgeleiteter Quelle (T60 Stufe 1–3) | alle aus gemessener Quelle | läuft, innerhalb der Sollmaske | **ja** — BIP, Sektorstruktur, Preise, Wechselkurs zählen |
+| **Spielland** | darf geschätzt sein (T60 Stufe 4) | für den `spielmodus`, nicht für den Rückvergleich | **stillgelegt**, vollständig ausserhalb der Sollmaske | **nein** — keine seiner Größen geht in ein Fehlermaß ein |
+
+**Die heutigen vier Länder — USA, China, Deutschland, Brasilien — sind Rückvergleichsländer**,
+alle vier, und dieser Abschnitt ändert daran nichts. Ihre sechzehn Prüfgegenstände nach T37
+bleiben, was sie sind.
+
+**Warum die blosse Ausnahme von den Fehlermaßen nicht genügt — das ist der eine Befund dieses
+Abschnitts.** Der Auftrag beschreibt die Ausnahme als Eigenschaft der *Auswertung*: das BIP
+des Spiellands geht in kein Fehlermaß ein. Das reicht nicht. Das Modell ist gekoppelt: Schritt
+4 rechnet aus dem Politikpfad BIP, Preise und Wechselkurs, die Markträumung bildet daraus
+Weltpreise, und die Weltpreise stehen im BIP **jedes anderen Gebiets**. Ein Spielland, das mit
+einem erfundenen Leitzins endogen mitrechnet, verschiebt damit das BIP von Deutschland — einen
+Prüfgegenstand — ohne je selbst gemessen zu werden. `spiel.md` hat den Satz dafür schon:
+*„Ein Lauf mit erfundener Politik prüfte nur die halbe Maschine."* Die Ausnahme muss deshalb
+im **Lauf** sitzen, nicht in der Auswertung.
+
+Drei Wege, an den Kriterien dieses Vorhabens gemessen:
+
+| | **A Stilllegung** (gewählt) | **B exogene Führung** | **C blosse Maskierung** |
+|---|---|---|---|
+| Was das Spielland im `weltlauf` tut | nichts; seine Adressen liegen ausserhalb der Sollmaske | es läuft mit, aber jede seiner Größen kommt je Runde aus gemessenen Daten | es rechnet endogen mit dem geschätzten Pfad |
+| Wirkt der geschätzte Pfad auf einen Prüfgegenstand? | nein | nein, solange **jede** seiner übrigen Reihen gemessen ist | **ja**, über Handel und Weltpreise |
+| Womit ist das belegt? | zweiseitige Maskenprüfung je Runde (T38) und eine Giftprobe | Reihe für Reihe nachgesehen, je Jahrgang neu | gar nicht |
+| Datenkosten je Spielland | Startwerte und der geschätzte Pfad, beides nur für den `spielmodus` | Stützstellen für BIP, Sektoranteile, Preise, Kurs — fast ein Rückvergleichsland | wie B |
+| Kosten am Jahrgang | der Restweltrest wird je Modus einmal gebildet | einmal | einmal |
+| gespeicherte Rückvergleichsergebnisse | bleiben gültig | verfallen bei jedem neuen Spielland | verfallen ebenso |
+| was der Rückvergleich gewinnt | nichts | ein gemessenes Gebiet mehr im Handelsblock | nichts |
+
+**Gewählt ist A**, und der Grund ist die dritte Zeile: Nur dort ist die Ausnahme eine Prüfung
+und kein Argument. B ist fachlich nicht schlechter — es macht den Rückvergleich sogar
+genauer —, aber es kostet je Spielland fast die Datenarbeit eines Rückvergleichslands und
+entwertet bei jedem Zuwachs die gespeicherten Ergebnisse des Rückvergleichs, also das
+teuerste Gut dieses Vorhabens. C ist der Weg, den der Auftragstext wörtlich beschreibt, und
+er ist undicht.
+
+**Vier Festlegungen, mehr braucht A nicht:**
+
+1. **Ein Ort für die Menge.** `aktive_gebiete(modus)` liefert im `spielmodus` alle Gebiete, im
+   `weltlauf` die Rückvergleichsländer und die Restwelt. **Jede** Schleife über Gebiete —
+   Markträumung, Handel, Preisübertragung, Invariantenprüfung, Zustandsausgabe — läuft über
+   diese eine Menge. Ein zweiter Ort, an dem die Menge gebildet wird, ist ein Fehler derselben
+   Familie wie die doppelte Konkordanz aus T23 Punkt 9.
+2. **Ausserhalb der Maske, nicht per Vortrag.** Im `weltlauf` liegen alle Adressen eines
+   Spiellands und alle Handelszeilen, an denen es beteiligt ist, **ausserhalb** der Sollmaske
+   aus T38. Sie behalten ihren Startwert und werden nicht geschrieben — dieselbe Bauart, mit
+   der der Fondsblock im `weltlauf` schon heute nicht gerechnet wird statt abgefangen zu
+   werden. Der zweiseitige Maskentest macht daraus je Runde einen harten Fehler: Wer schreibt,
+   fliegt auf.
+3. **Der Restweltrest bekommt einen Modus.** T23 Punkt 10 bildet die Restwelt heute als
+   „Weltreihe minus die vier Länder" und ihre Handelszeilen als „Gesamtein- und -ausfuhr minus
+   die Ströme zu den drei anderen". Mit zwei Klassen lautet die Regel: im `weltlauf` minus die
+   **Rückvergleichsländer**, im `spielmodus` minus **alle Politikländer**. Damit tragen der
+   Restweltblock (`4S + 10`, also 22) und die Restwelt-Handelszeilen (`2·L_R·(S−1)`, bei
+   `L_R = 4` also 16) je Jahrgang zwei Werte, zusammen 38 Adressen; die Handelszeilen zwischen
+   Restwelt und Spielland gibt es nur im `spielmodus`. **Ohne diesen zweiten Rest schrumpft die
+   Welt des `weltlauf` um die Masse des Spiellands** — `handel.DE.RW.*` verlöre den Anteil, der
+   heute nach dorthin geht —, und der Handelsblock ist ein Prüfgegenstand. Die Datenseite
+   verschöbe dann genau das, was Festlegung 2 auf der Rechenseite schützt.
+4. **Die Giftprobe, weil die Maske nur die Schreibseite deckt.** „Keine Adresse ausserhalb der
+   Maske berührt" fängt den Schreibzugriff; eine Regel, die eine Spiellandadresse nur **liest**,
+   bleibt unsichtbar. Der Prüfstand fährt deshalb je Jahrgang einen `weltlauf` zweimal: einmal
+   gewöhnlich, einmal mit allen Spiellandadressen auf einem absurden Wert (Wertebereichsrand
+   nach T5/T49). **Beide Läufe müssen in allen Maskenadressen bitgleich sein.** Weicht eine ab,
+   liest eine Regel, was sie nicht lesen darf. Kosten: ein zusätzlicher Lauf über `R`
+   Weltschritte je Jahrgang, also nichts gegen die drei Selbstspielmaße.
+
+**Der Wechsel der Klasse ist eine Richtung und ein Vorgang.** Wird der Politikpfad eines
+Spiellands später gemessen (T60 Stufe 1) oder ohne freien Parameter abgeleitet (Stufe 2), wird
+es ein Rückvergleichsland: `L_R` wächst um eins, die Prüfgegenstände um vier, seine Reihen
+kommen in die Sollmaske, und die gespeicherten Rückvergleichsergebnisse werden **einmal** neu
+gebildet, weil sich der Restweltrest ändert. Die Gegenrichtung — ein Rückvergleichsland wird
+Spielland — ist kein Datenvorgang, siehe T60.
+
+### T59 — Die Zählung, parametrisch in der Zahl der Rückvergleichsländer
+
+`L_R` ist die Zahl der Rückvergleichsländer, `L_S` die der Spielländer, und
+`L = L_R + L_S` ist die Länderzahl aus T54. `n` ist 1, wenn das Numéraireland (heute die USA)
+ein Rückvergleichsland ist, sonst 0; heute ist `n = 1`.
+
+| Größe | Formel | heute (`L_R = 4`) | `L_R = 4`, `L_S = 5` | `L_R = 9` | Fundstelle |
+|---|---|---:|---:|---:|---|
+| BIP je Land | `L_R` | 4 | 4 | 9 | T37, Reihe 1 |
+| Sektorstruktur je Land | `L_R` | 4 | 4 | 9 | T37, Reihe 2 |
+| Verbraucherpreise je Land | `L_R` | 4 | 4 | 9 | T37, Reihe 8 |
+| Wechselkurs je Land ausser dem Numéraire | `L_R − n` | 3 | 3 | 8 | T37, Reihe 10 |
+| Handelsblock | `1` | 1 | 1 | 1 | T37, Reihe 14 |
+| **Prüfgegenstände** | `3·L_R + (L_R − n) + 1` | **16** | **16** | **36** | T37 |
+| Ströme im Handelsblock | `(L_R+1)·L_R·(S−1)` | 40 | 40 | 180 | Reihe 14, `handelsblock_stroeme` |
+| freie Sollreihen | `L_R(S+3) − n` | 23 | 23 | 53 | `zaehlregel_t37` |
+| abgeleitete Sollreihen | `L_R` | 4 | 4 | 9 | Reihe 11 |
+| **Sollreihen** | `L_R(S+4) − n` | **27** | **27** | **62** | T55, `sollreihen_gesamt` |
+| **Sollmaske `weltlauf`** | `L_R(4S+I+11) + (4S+10) + (L_R+1)L_R(S−1) + (S−1) + 3` | **175** | **175** | **450** | T38, T55 |
+
+**Nachrechnung im Fliesstext, jede Zahl in diesem Lauf einmal von Hand eingesetzt.**
+Prüfgegenstände heute `3·4 + (4−1) + 1 = 12 + 3 + 1 = 16`, bei neun Rückvergleichsländern
+`3·9 + 8 + 1 = 27 + 8 + 1 = 36`. Ströme `5·4·2 = 40` und `10·9·2 = 180`. Freie Sollreihen
+`4·6 − 1 = 23` und `9·6 − 1 = 53`, abgeleitete 4 und 9, zusammen `4·7 − 1 = 27` und
+`9·7 − 1 = 62`. Sollmaske `4·27 + 22 + 40 + 2 + 3 = 175` und `9·27 + 22 + 180 + 2 + 3 = 450`.
+
+**Ein zusätzliches Spielland lässt jede Zeile dieser Tabelle unverändert**, weil in keiner
+Formel `L_S` vorkommt — das ist die Spalte `L_R = 4, L_S = 5` gegen die Spalte `heute`, Zeile
+für Zeile dieselbe Zahl. Sie ändert sich erst, wenn `L_R` sich ändert; deshalb steht die
+Spalte `L_R = 9` daneben, in der jede Zeile wandert, die wandern soll.
+Der Auftragstext sagt an einer Stelle „Ein Spielland ändert die Zahl, nicht
+die Struktur"; die Abnahmebedingung desselben Pakets verlangt das Gegenteil und ist die
+schärfere Aussage. Die Formel entscheidet den Punkt: Die Zahl hängt an `L_R`, ein Spielland
+erhöht `L`.
+
+**Die Kurzform `4·L_R` ist richtig und darf trotzdem nicht die bindende sein.** Bei `n = 1`
+heben sich die `−1` des Numéraires und die `+1` des Handelsblocks auf, und `16 = 4·4`,
+`36 = 4·9`. Die beiden Terme haben aber nichts miteinander zu tun: Würde je handelbarem Sektor
+ein Handelsblock geführt statt einem insgesamt, oder wäre das Numéraireland ein Spielland,
+fiele die Aufhebung weg. Zweiter Fall, durchgerechnet: `L_R = 3` ohne die USA ergäbe
+`3·3 + 3 + 1 = 13`, nicht 12. Das ist dieselbe Falle wie „40 gegen 40" und „27 gegen 27" in
+T55, nur eine Ebene höher.
+
+**In T55 wechseln genau drei Zeilen von `L` auf `L_R`, und keine weitere.** „Sollreihen" wird
+`L_R(S+4) − n`. „Sollmaske `weltlauf`" wird die Formel aus der Tabelle oben. „Ausserhalb der
+Sollmaske" ist keine Formel in einer Variablen mehr, sondern die Differenz *Zustand gesamt
+(in `L`)* minus *Sollmaske (in `L_R`)*. Alle übrigen Zeilen zählen **Geometrie** und bleiben
+bei `L`: Ein Spielland belegt seinen vollen Länderblock, seine Handelszeilen, seine
+Steckplätze, Beteiligungen und Nachahmerzähler — es ist im Zustand ein Land wie jedes andere.
+Auch „Sollmaske `weltlauf`, je Land" bleibt unberührt, weil es eine Größe je Land ist und
+keine Klasse kennt. Bei `L_S = 0` gehen alle drei Zeilen in ihre heutige Fassung über; das ist
+die Verträglichkeitsprobe.
+
+**Die Klassentrennung spart Prüfaufwand und Daten, keine Adressen.** Bei `L = 9` mit fünf
+Spielländern bleibt der Zustand bei den 740 aus T55, die Maske bei 175 — also liegen 565
+Adressen ausserhalb statt der 290 bei neun Rückvergleichsländern. Die 275 Adressen Unterschied
+zerfallen in `5 × 27 = 135` Maskenadressen der fünf Spielländer und `180 − 40 = 140`
+Handelsströme, zusammen 275; zwei Wege, dieselbe Zahl. Was ein Land im Zustand kostet, steht
+in `spiel.md`: 58 Felder je Politikland zuzüglich seiner Handelszeilen, unabhängig von der
+Klasse.
+
+**Zwei Gegenrechnungen, die diese Formeln nicht kennen.** `spiel.md` zählt für den Fall aller
+195 Länder „`4 · L` — vier Prüfgegenstände je Rückvergleichsland" und kommt auf 780; einsetzen
+von 195 in die Formel oben ergibt `3·195 + 194 + 1 = 780`. Und das Arbeitspaket
+`0118-fuenf-weitere-laender-auswaehlen` stellt vom 2026-09-05 unabhängig beide Klassenwahlen
+nebeneinander: neun Rückvergleichsländer ergäben 62 Sollreihen und 36 Prüfgegenstände, vier
+plus fünf Spielländer 27 und 16. Alle vier Zahlen stimmen mit den Formeln überein.
+
+**Was die Zählung nicht enthält.** `S` und `I` kommen in der Prüfgegenstandsformel nicht vor.
+Ein vierter Sektor erzeugt keinen neuen Prüfgegenstand — er macht den Prüfgegenstand
+*Sektorstruktur* schwerer, weil nach T37 alle Anteilsreihen des Landes bestehen müssen. Ein
+fünftes Instrument erzeugt gar keinen. Das ist der Unterschied zu T55, wo `S` und `I` in fast
+jeder Zeile stehen, und er ist der Grund, warum diese Tabelle eine eigene ist und keine
+weitere Zeile in T55.
+
+**Rechenzeit.** Die Klassentrennung verbilligt den Prüfstand nicht. Maß 4 ist **ein** Lauf
+über `R` Weltschritte je Jahrgang, jetzt über `L_R + 1` statt `L + 1` Gebiete; das Budget des
+Prüfstands tragen die Selbstspielmaße 1 bis 3, und die laufen im `spielmodus` über alle `L`.
+Was billiger wird, ist die Datenbeschaffung und die Zahl der Reihen, die je Jahrgang
+lizenzgeprüft sein müssen — nicht die Nacht.
+
+### T60 — Die Rangfolge für einen fehlenden Politikpfad
+
+Geraten wird zuletzt. Die Stufen sind in dieser Reihenfolge zu versuchen, und die erreichte
+Stufe entscheidet die Klasse des Landes:
+
+| Stufe | Was versucht wird | Klasse | Herleitung im Klartext |
+|---:|---|---|---|
+| **1** | ein anderer Code **derselben schon geklärten Quelle für dieselbe Größe** | Rückvergleichsland | nein; `codes` und `code_herkunft` genügen |
+| **2** | eine **abgeleitete** Reihe aus einer bereits lizenzgeklärten Quelle | Rückvergleichsland | **ja**, nachrechenbar |
+| **3** | **kein eigener Pfad**, weil das Land keinen geldpolitischen Hebel hat | Rückvergleichsland | **ja**: welche Union, ab welchem Jahr |
+| **4** | ein **geschätzter** Pfad | **Spielland** | **ja**, mit jedem freien Parameter benannt |
+
+**Stufe 1 verlangt dieselbe Größe, und das ist keine Förmlichkeit.** Der heutige Code
+`DISR_RT_PT_A_PT` ist nach `reihen.toml` eine Wahl aus Paket 0006
+(`code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"`), keine Notwendigkeit — ein
+anderer Code desselben Datenflusses ist deshalb der erste Griff. Ein Code, der **etwas anderes
+misst**, ist aber nicht Stufe 1, sondern bestenfalls Eingang einer Ableitung nach Stufe 2.
+Ohne diesen Zusatz liesse sich jede Ersatzgröße zur Stufe 1 erklären, und die Rangfolge wäre
+wirkungslos. Der Fall liegt vor: `daten/nachmessung-zinsreihen-2026-09-05.md` nennt für
+Deutschland `S13BOND_RT_PT_A_PT` (Rendite von Staatsanleihen, 1957–2017) und stellt die Frage
+ausdrücklich an diesen Abschnitt. **Die Antwort ist nein.** Eine Staatsanleiherendite ist ein
+Marktpreis; Reihe 9 speist in Schritt 3 einen Politikpfad, und ein Instrument, das der Markt
+setzt, ist keines. Als **Eingang einer Ableitung** nach Stufe 2 bleibt die Reihe brauchbar —
+dann aber mit Herleitung, mit der Lücke 2018–2021 im Fenster und unter der Schranke des
+nächsten Absatzes.
+
+**Die Grenze zwischen Stufe 2 und Stufe 4, damit Stufe 2 keine Hintertür wird.** Eine
+**Ableitung** enthält keinen Parameter, der am Ergebnis des Modells angepasst wird; eine
+**Schätzung** enthält einen. Wer einen Aufschlag wählt, weil das BIP damit besser trifft, hat
+nicht abgeleitet, sondern das Modell an sich selbst geeicht — und der Rückvergleich misst dann
+diese Wahl. Die Regel ist maschinell prüfbar, weil die Kennzeichnung nach T61 die Zahl der
+freien Parameter mitführt: `> 0` schliesst Stufe 2 aus.
+
+**Dieses Dokument zieht dieselbe Grenze schon einmal, und zwar an genau dieser Größe.** T27
+hält fest: `leitzins_start[l]` steht **nicht** in `parameter.toml`, sondern im Jahrgang —
+*„keine Kalibriergröße, sondern eine Messung"*. Der naheliegende Weg von einer
+Anleiherendite zu einem Leitzins liefe über `aufschlag`, und `aufschlag` ist eine
+Kalibriergröße: Klasse 3, aus `parameter.toml`, in T27 als *„Abstand Leitzins ↔
+Anleiherendite"* geführt und vom Nachtlauf über tausend Parametersätze variiert. Ein so
+gebildeter Pfad ist deshalb nicht nur „geschätzt" — er ist **im Kreis geschätzt**: T23 Punkt 5
+rechnet `aufschlag_min = 1 − min(leitzins_pfad)`, der Pfad käme aber aus `aufschlag`. **Eine
+Ableitung, die über einen Parametersatzschlüssel führt, ist keine.**
+
+**Stufe 2 ist eine ungeprüfte Vermutung und keine Quelle.** Als Kandidaten stehen im Raum die
+WDI-Zinsreihen `FR.INR.RINR`, `FR.INR.LEND` und `FR.INR.DPST`. Sie sind **keine Leitzinsen**,
+und **nichts an ihnen ist geprüft**: nicht die Deckung, nicht die Länderliste, nicht die
+Drittanbieterlage. Ich habe sie in diesem Lauf ausdrücklich **nicht** nachgesehen — Zinsreihen
+zu suchen gehört nach dem Auftrag nicht zu diesem Paket. Ein Punkt lässt sich ohne Suche
+schärfen, und er wiegt schwerer als die Vermutung selbst: **Die Annahme „aus dem WDI, also
+CC BY 4.0" sagt über eine einzelne Reihe nichts.** In `reihen.toml` sind acht Reihen aus dem
+WDI eingebettet (1, 2, 5, 6, 7, 8, 10, 13), alle acht mit
+`lizenz_beleg_typ = "feld_source"` — entschieden wird am Feld `Source` des Codes, nicht am
+Katalog. Das Ergebnis für diese acht: fünfmal `unklar` (1, 2, 5, 6, 7), zweimal `frei`
+(8, 10) und **einmal `gesperrt`** — Reihe 13, das Zollniveau, und damit ausgerechnet einer
+der drei Politikpfade. Wer Stufe 2 über das WDI geht, hat die Lizenzfrage nicht abgekürzt,
+sondern nur verschoben.
+
+**Stufe 3 ist eine Antwort und keine Lücke — aber sie liefert eine Zahl.** Für ein Land ohne
+eigenen geldpolitischen Hebel ist „kein eigener Pfad" richtig; Deutschland trägt das nach
+`spiel.md` ausdrücklich als Entwurfsmerkmal, und `reihen.toml` führt es bereits mit
+`exogen_ab = 1999` und dem Bruch „Euroraum -- Deutschland folgt ab 1999 exogen der gemeinsamen
+Geldpolitik". **Was fehlt, ist die Urheberschaft, nicht der Wert:** Schritt 3 braucht weiter
+eine Zahl, und das ist der Satz der Union. Stufe 3 heisst deshalb genau: Stufe 1 und 2 werden
+**auf die Union** angewandt statt auf das Land. Trägt die Union einen gemessenen Satz, bleibt
+das Land Rückvergleichsland; muss der Satz der Union geschätzt werden, fällt das Land auf
+Stufe 4. Ein vollständig fremdwährungsgebundenes Land, dessen Instrument über das ganze
+Fenster konstant ist, ist ebenfalls Stufe 3 — eine Konstante ist eine gemessene Tatsache.
+
+**Stufe 4 macht das Land zum Spielland**, mit hinterlegter Herleitung nach T61 und mit der
+Stilllegung nach T58.
+
+**Der erste Anwendungsfall sind nicht künftige Länder, sondern China und Deutschland.** Für
+Deutschland ist der erste Griff Stufe 1 auf die Union — ob derselbe Datenfluss ein Gebiet für
+den Euroraum führt, ist ungeprüft und die billigste offene Frage dieses Themas. Für China
+liefert `CHN.*.A` im Fenster nach der Nachmessung vom 2026-09-05 **null** jährliche Reihen;
+Stufe 1 scheitert dort innerhalb `MFS_IR`, Stufe 3 trifft nicht zu, und es bleibt Stufe 2.
+
+**Deshalb eine Sperre, und sie ist der Grund, warum diese Regel überhaupt eine braucht.**
+**Kein Datenpaket macht eines der vier heutigen Länder zum Spielland.** Scheitern die Stufen 1
+bis 3 für China oder Deutschland, ist das kein Befund über eine Reihe, sondern eine
+Entscheidung über die Grundlage des Rückvergleichs: `L_R` fiele von 4 auf 3, die
+Prüfgegenstände von 16 auf `3·3 + 3 + 1 = 13`, die Sollreihen von 27 auf `3·7 − 1 = 20`, und
+Maß 4 würde an einer anderen Welt gemessen als bisher. Das gehört dem Betreiber, nicht dem
+Jahrgangsbau. Der Jahrgangsbau **bricht ab** (T61), statt die Klasse still umzuschreiben.
+
+**Und die Umkehrung gilt auch:** Eine Sollreihe trägt ausschliesslich Stufe 1. Wer für eine
+Sollreihe eine Ableitung oder eine Schätzung braucht, hat keine Sollreihe mehr, sondern eine
+Schätzung, die wie eine Messung aussieht — der eine Fall, der schlimmer ist als eine fehlende
+Reihe. Die Kennzeichnungspflicht in T61 ist für die Politikpfade eine Buchführung; für die
+Sollreihen ist sie ein Verbot.
+
+### T61 — Die Kennzeichnung in `reihen.toml`
+
+**Das Feld, das eine geschätzte Reihe trägt, heisst `stufe` und steht in einem neuen Block
+`[[reihe.herkunft]]`.** Über die Klasse eines Landes entscheiden allein die drei Reihen mit
+`politikpfad` in `rolle` — Reihe 9 (Leitzins), Reihe 12 (Haushaltssaldo) und Reihe 13
+(Zollniveau); das vierte Instrument, die Finanzmarktregulierung, hat keine Reihe, sein Wert
+kommt nach T45 aus `parameter.toml`. Der Block ist trotzdem für **jede** Reihe Pflicht, und
+Regel 1 sagt warum.
+
+```toml
+[[reihe.herkunft]]
+land            = "CHN"      # Kürzel wie in [[reihe.deckung]]
+stufe           = 2          # 1…4 nach T60; das Feld, das eine Schaetzung kenntlich macht
+quelle          = "WDI, FR.INR.LEND"
+abrufdatum      = "2026-09-06"
+freie_parameter = 0          # > 0 ist nach T60 keine Ableitung, sondern eine Schaetzung
+herleitung      = """
+Pflicht ab Stufe 2. Klartext, so vollstaendig, dass die Reihe daraus
+nachgerechnet werden kann: Eingangsreihen, Rechenweg, Fenster, Luecken.
+"""
+```
+
+**Fünf Regeln, alle mechanisch:**
+
+1. **Keine Reihe ohne Herkunft.** Die drei Politikpfadreihen tragen je Land genau einen
+   Block — sie haben alle `dimension = "4"`, das sind bei `L = 4` also `3 × 4 = 12`. Jede der
+   übrigen sechzehn Reihen trägt genau einen Block mit `land = "alle"`, wie es
+   `[[reihe.deckung]]` schon kennt; zusammen **28**. Fehlt einer, **bricht der Jahrgangsbau
+   ab** — dieselbe Bauart wie die Herkunftstabelle aus T45, und aus demselben Grund: Ein
+   stillschweigendes „gemessen" für ein fehlendes Feld wäre genau die Lüge, gegen die diese
+   Regel geschrieben ist. Ein freiwilliges Feld hätte sie nicht verhindert, sondern erzeugt.
+2. **Herleitungspflicht.** `stufe ≥ 2` ohne nichtleere `herleitung` bricht ab.
+3. **Parametersperre.** `stufe = 2` mit `freie_parameter > 0` bricht ab (T60).
+4. **Sollreihensperre.** Eine Reihe mit `soll` in `rolle` und `stufe ≥ 2` bricht ab. Erst
+   Regel 1 gibt dieser Sperre Zähne: Ohne den Pflichtblock je Reihe wäre sie nur wirksam
+   gegen den, der seine Schätzung freiwillig einträgt.
+5. **Doppelte Buchführung über die Klasse.** Das Manifest des Jahrgangs führt
+   `rueckvergleichslaender = [...]` ausgeschrieben. Aus `reihen.toml` folgt dieselbe Menge
+   abgeleitet: Ein Land ist genau dann Spielland, wenn **irgendeine** seiner drei
+   Politikpfadreihen `stufe = 4` trägt. **Stimmen beide nicht überein, bricht der Jahrgangsbau
+   ab.** Die Ableitung allein wäre die bequemere Bauart und die falsche: Sie liesse eine
+   Zeile in einer Datenreihe die Grundlage des Rückvergleichs verschieben, ohne dass es
+   irgendwo aufschlägt. Die Sperre aus T60 ist genau diese Prüfung.
+
+Die Klasse steht damit an einer Stelle geschrieben und an einer zweiten gerechnet, und der
+Bau hält an, wo sie auseinandergehen — dieselbe Bauart wie der zweite Schreibzugriff in T39
+und das Fondsvermögen in T47.
+
+### Was dieser Abschnitt nicht angefasst hat, und was offen bleibt
+
+**Nicht angefasst.** T37 behält seine sechzehn Prüfgegenstände, seine Toleranz 2 und seine
+Klassentabelle Wort für Wort; die Formel steht hier und nicht dort, damit
+`0068-technikmd-reihe-9-ohne-sollrolle` seinen Bezugspunkt unverändert vorfindet. Dass die
+Zeile `gesetzt` in der Klassentabelle von T37 seit Paket 0054 leer ist, ist bekannt und
+gehört ebenfalls 0068. Abschnitt 7, T55 und die Zahlen 310 und 740 bleiben stehen: Der
+Zustandsumfang ist durch die drei Schichten in `spiel.md` gerade in Bewegung und gehört
+0118/0119, und dieser Abschnitt braucht ihn nicht — seine Formeln zählen Prüfgegenstände und
+Sollreihen, nicht Adressen. `reihen.toml` ist **nicht** geändert; T61 beschreibt einen Block,
+den ein Datenpaket einträgt.
+
+**Drei Meldungen an den Projektmanager, weil sie fremden Gewerken gehören.** Erstens:
+`spiel.md` führt in der Tabelle der drei Schichten für Schicht 1 in der Spalte *im
+Rückvergleich* „ja, als Rückvergleichsland" ohne Ausnahme. Mit den beiden Klassen wird daraus
+„ja, **wenn** Rückvergleichsland". Das ist eine Zeile in `spiel.md` und nicht meine.
+Zweitens: T58 Festlegung 3 (Restweltrest je Modus) und Festlegung 4 (Giftprobe) sind Entwurf
+und brauchen je ein Paket — Jahrgangsbau und Prüfstand —, sobald das erste Spielland
+tatsächlich eingetragen wird. Vorher wäre es Code auf Vorrat.
+
+**Drittens, und es ist ein Nachzug, den ich sehenden Auges liegen lasse:** Der Vorspann vor
+Abschnitt 1 sagt „Die Vorgaben sind mit **T1** bis **T53** durchnummeriert". Richtig wäre seit
+Paket 0116 T57 und nach diesem Abschnitt **T61**; die nächste freie Nummer ist T62. Derselbe
+Vorspann und Abschnitt 17 führen ausserdem **T60** als Beispiel für eine *noch freie* Nummer —
+sie ist es ab hier nicht mehr. **Ich fasse beide Stellen nicht an, und zwar nicht aus
+Vorsicht:** Die Arbeitspakete `0082` und `0084` binden ihre Abnahme ausdrücklich darauf, dass
+„der Vorspann unberührt bleibt — er ist mit 0026 abgenommen". Wer ihn nachzieht, nimmt zwei
+laufenden Paketen ihr Abnahmekriterium weg. Das ist ein eigenes Paket, und es sollte nach 0082
+und 0084 laufen.
+
+**Eine Kollision der Abnahme mit sich selbst, offen benannt.** Bedingung 4 verlangt, `git diff`
+zeige Änderungen ausschliesslich in `technik.md`. Der Lauf ändert zwei weitere Dateien, beide
+durch Regeln erzwungen, die über diesem Paket stehen: die Statuszeile im Arbeitspaket (ohne
+sie plant der Runner dasselbe Paket erneut ein) und das Logbuch der Rolle (CLAUDE.md). Der
+Zweck der Bedingung — keine Zahl ausserhalb `technik.md` bewegt sich, kein zweites Gewerk wird
+angefasst — ist erfüllt; die schärfere Messung dafür ist, dass dieser Abschnitt ein reiner
+Anhang ist und **keine** Zeile des Bestands entfernt oder ändert.
+
+**Welche Festlegung jetzt fallen musste und welche vertagt ist.** Jetzt fallen musste die
+Wahl zwischen A, B und C: Sie entscheidet, ob die Ausnahme im Lauf oder in der Auswertung
+sitzt, und das lässt sich nicht nachrüsten, ohne jeden gespeicherten Rückvergleich zu
+entwerten. Ebenso die Kennzeichnung, weil eine ungekennzeichnete Schätzung rückwirkend nicht
+mehr von einer Messung zu unterscheiden ist. Vertagt sind die Wahl der Länder (0118), die
+Wahl der Codes und das Schätzverfahren selbst — jedes davon ist eine Datenfrage, und keine
+davon ändert etwas an diesen drei Vorgaben.
