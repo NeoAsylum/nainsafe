@@ -252,9 +252,35 @@ endfunction()
 macro(fabrik_riegel_sammeln herkunft listenname)
   # Nicht `if(${listenname})`: Eine Eigenschaft mit dem Wert `0` waere damit still
   # verschwunden. Geprueft wird auf genau die zwei Faelle, die "nichts da" heissen --
-  # die leere Zeichenkette und das `-NOTFOUND`, das `get_*_property` fuer eine ungesetzte
+  # die leere Zeichenkette und den Nichtwert, den `get_*_property` fuer eine ungesetzte
   # Eigenschaft liefert.
-  if(NOT "${${listenname}}" STREQUAL "" AND NOT "${${listenname}}" MATCHES "-NOTFOUND$")
+  #
+  # Diesen Nichtwert gibt es in **zwei** Schreibweisen, und welche kommt, haengt an der
+  # Abfrage. Gemessen am 2026-09-04 mit CMake 4.2.3 an einem Ziel mit einer Quelle und
+  # ohne jede Eigenschaft:
+  #
+  #   get_target_property(a ziel COMPILE_FLAGS)                    a=[a-NOTFOUND]
+  #   get_target_property(e ziel INTERFACE_COMPILE_OPTIONS)        e=[e-NOTFOUND]
+  #   get_source_file_property(quellopt q.cpp ... COMPILE_OPTIONS) quellopt=[NOTFOUND]
+  #   get_source_file_property(quellflg q.cpp ... COMPILE_FLAGS)   quellflg=[NOTFOUND]
+  #
+  # `get_target_property` setzt `<variablenname>-NOTFOUND`, `get_source_file_property`
+  # das blanke `NOTFOUND` -- ohne Bindestrich und ohne Namen davor. Ein Muster, das den
+  # Bindestrich verlangt, laesst die zweite Form durch, und die zweite Form ist hier der
+  # **Normalfall**: Beide Quelldateiabfragen stehen unten in der Schleife ueber
+  # `SOURCES`, also liefert jede Uebersetzungseinheit ohne eigene Schalter zwei
+  # Scheineintraege. Genau das tat diese Zeile bis zum 2026-09-05; gemessen an einem
+  # Ziel mit einer Quelle endete `eintraege` auf `...;-fwrapv;-fno-fast-math;NOTFOUND;
+  # NOTFOUND`. Folgenlos war es nur, weil kein Muster der Sperrliste unten auf ein
+  # blankes Wort passt -- ein Waechter, der danebengreift, und nicht ein falscher Bau.
+  #
+  # Das Muster bildet deshalb CMakes eigene Regel fuer den falschen Konstantenwert ab --
+  # `NOTFOUND` oder auf `-NOTFOUND` endend --, statt eine der beiden Abfragearten zu
+  # bevorzugen. Verankert an **beiden** Enden, weil der Nichtwert immer der ganze Wert
+  # ist: Eine gesetzte Eigenschaft, deren letzter Listeneintrag zufaellig so hiesse,
+  # traegt einen Schalter und ist keine leere Menge.
+  if(NOT "${${listenname}}" STREQUAL ""
+     AND NOT "${${listenname}}" MATCHES "^(.*-)?NOTFOUND$")
     foreach(fabrik_eintrag IN LISTS ${listenname})
       list(APPEND eintraege "${fabrik_eintrag}")
       list(APPEND herkuenfte "${herkunft}")
