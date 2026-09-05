@@ -1,13 +1,64 @@
 ---
 id: 0140-verlauf-sammelt-die-rundenketten
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 2 ist die tragende -- ein Verlauf, der die ueberzaehlige Kette wegwirft und trotzdem Code 0 meldet, ist genau der Fehler, gegen den T19 geschrieben ist, und erfuellt sie nicht.
 ---
 
 # T19 nennt einen Traeger namens `Verlauf`, und es gibt ihn nicht
+
+## GEBAUT -- 2026-09-05, Kernbauer
+
+Drei Dateien angelegt, keine andere angefasst. Der Nachweis steht unter
+`befunde/messung-0140/`: `nachweis.py` faehrt sechs Baeume in einem Aufruf und endet mit
+`Abweichungen: 0`, `bericht.md` ist seine Ausgabe samt dem Wortlaut beider
+Abbruchmeldungen.
+
+**Bedingung 1 erfuellt.** Vier Runden ueber `kern::schritt::schritt`, je 175 Glieder,
+je zeichengleich. Verglichen wird Glied fuer Glied ueber alle sieben Felder aus T18.
+Die Zuordnung haengt nicht an der Buchhaltung der Probe: Jeder Ursachensatz traegt nach
+T18 seine eigene Rundennummer, und die Probe zaehlt je Runde die fremden Glieder (null).
+Dazu die Gegenprobe, ohne die "zeichengleich" nichts hiesse -- die Ketten zweier Runden
+sind nachweislich **nicht** gleich, sonst waere jede beliebige Zuordnung zeichengleich.
+
+**Bedingung 2 erfuellt, beide Seiten abgedruckt.** An der Grenze: Runde 7 nimmt 310
+Glieder auf, null davon abweichend, kein Abbruch. Eines darueber:
+`kern::verlauf -- die Kette der Runde 7 ist voll: die Aufnahmekapazitaet je Runde
+betraegt 310 Glieder (T19). Ein weiteres Glied waere eine stille Kuerzung.` Danach steht
+die Kette unveraendert bei 310 -- der Abbruch ist keine halbe Aufnahme. Die erwarteten
+Textstuecke werden mit demselben Meldungsbau erzeugt, den der Kasten benutzt, statt
+abgeschrieben.
+
+Dazu die Gegenprobe, die die doppelt gehaltene Schranke auseinanderhaelt: Die Meldung
+darf `kern::schreiber` **nicht** nennen. `kern::schreiber::Kette` traegt dieselbe Grenze
+und bricht ebenfalls ab, kennt aber keine Rundennummer; ohne diese Zeile bliebe die
+Probe gruen, wenn die aeussere Pruefung wegfiele und die innere an ihre Stelle traete.
+
+Dieselbe Zweiseitigkeit noch einmal fuer die zweite Schranke: 20 Runden laufen durch,
+die 21. bricht ab und nennt die 20.
+
+**Bedingung 3 erfuellt.** `zustand.hpp` und `zustand.cpp` sind nicht angefasst (letzte
+Aenderung `c30acc5`, ein fremdes Paket). Die Ausgabe von `schritt_probe`, `zustand_probe`
+und `zustandsausgabe_probe` -- darin die Pruefsummen der Partie -- ist zwischen dem Baum
+ohne und dem Baum mit den drei Dateien in beiden Profilen zeichengleich. Der Bezugsstand
+steht im Kopf von `bericht.md`.
+
+**Bedingung 4 erfuellt.** Sechs Bauwege, alle Code 0: der Alleinbau des Kerns je Profil
+ohne und mit den neuen Dateien, dazu der Arbeitsbereich je Profil. Die ctest-Eintraege
+des Alleinbaus steigen in beiden Profilen von 10 auf 11 -- um die eine Probe dieses
+Pakets und um nichts sonst. Im Arbeitsbereich sind es in beiden Profilen 17, und dort
+laufen auch der Belegstellen- und der Bezeichnerriegel ueber die neuen Dateien.
+
+**Worauf ich unsicher bin, damit es der Projektmanager sieht:** Die Rundenkapazitaet 20
+ist die Partielaenge R aus spiel.md, und sie ist die einzige Entscheidung dieses Laufs,
+die mehr ist als Umsetzung. Wer den Verlauf ueber eine laengere Reihe fuehrt -- etwa den
+200-Runden-Lauf des Bruchtesters --, bekommt in Runde 21 einen Abbruch. Ich halte das
+fuer richtig, weil T19 fuer diesen Lauf ausdruecklich sagt, dass die Ketten wegzuwerfen
+sind; die Begruendung steht im Kopf des Kastens. Faellt die Entscheidung anders, ist es
+eine Zeile -- der Preis ist Speicher: 20 Runden sind rund ein Drittel Megabyte, 200
+waeren dreieinhalb.
 
 ## Der gemessene Sachverhalt
 
