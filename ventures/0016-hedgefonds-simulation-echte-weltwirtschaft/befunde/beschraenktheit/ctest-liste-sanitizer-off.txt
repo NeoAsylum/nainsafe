@@ -1,0 +1,21 @@
+Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/beschraenktheit/bau-sanitizer-off
+  Test  #1: aktion_probe
+  Test  #2: festkomma_probe
+  Test  #3: meldung_probe
+  Test  #4: pruefsumme_probe
+  Test  #5: schranken_probe
+  Test  #6: schreiber_probe
+  Test  #7: schritt_probe
+  Test  #8: verlauf_probe
+  Test  #9: werte_probe
+  Test #10: zufall_probe
+  Test #11: zustand_probe
+  Test #12: zustandsausgabe_probe
+  Test #13: vorrat_kernanker_probe
+  Test #14: vorrat_probe
+  Test #15: vorrat_verfahren_probe
+  Test #16: belegstellen_riegel
+  Test #17: bezeichner_riegel
+  Test #18: schlussriegel_nachbau
+
+Total Tests: 18

@@ -1,0 +1,1233 @@
+Ausgangslage: null (frischer Zustand)
+Runden:       200, Modus weltlauf, ohne Spieler
+Grenzen aus parameter.toml (Argumente, kein Dateizugriff, T2): druck_max=1 stufen_max=1 aufschlag=51
+Adressmengen  ist:  wechselkurs=5 nominalindex=22 produktivitaet=5 leitzinsstand=4 marktwert=1 druck=32 anteil=12 stufe=20 paar_leitzins=4 paar_haushalt=4 sektorgruppen=5 vollstaendig=1
+Adressmengen soll:  wechselkurs=5 nominalindex=22 produktivitaet=5 leitzinsstand=4 marktwert=1 druck=32 anteil=12 stufe=20 paar_leitzins=4 paar_haushalt=4 sektorgruppen=5 vollstaendig=1
+
+Runde   0: Startbelegung                                                               Maske  535  Pruefsumme 01d663224c4054e5
+   START  Runde 0: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   START  Runde 0: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   START  Runde 0: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   START  Runde 0: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   START  Runde 0: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   1: partie.runde=  1  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme fc7db03ba94a1464
+   BEFUND Runde 1: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 1: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 1: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 1: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 1: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   2: partie.runde=  2  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0c87c8ef922cd5e7
+   BEFUND Runde 2: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 2: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 2: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 2: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 2: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   3: partie.runde=  3  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 072f1608ef369566
+   BEFUND Runde 3: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 3: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 3: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 3: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 3: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   4: partie.runde=  4  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme ec739787c06752e1
+   BEFUND Runde 4: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 4: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 4: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 4: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 4: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   5: partie.runde=  5  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e71ae4a11d711260
+   BEFUND Runde 5: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 5: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 5: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 5: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 5: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   6: partie.runde=  6  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f724fd550653d3e3
+   BEFUND Runde 6: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 6: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 6: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 6: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 6: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   7: partie.runde=  7  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f1cc4a6e635d9362
+   BEFUND Runde 7: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 7: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 7: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 7: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 7: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   8: partie.runde=  8  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2c9bfa5763f258ed
+   BEFUND Runde 8: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 8: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 8: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 8: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 8: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde   9: partie.runde=  9  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 27434770c0fc186c
+   BEFUND Runde 9: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 9: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 9: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 9: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 9: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  10: partie.runde= 10  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 374d6024a9ded9ef
+   BEFUND Runde 10: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 10: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 10: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 10: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 10: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  11: partie.runde= 11  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 31f4ad3e06e8996e
+   BEFUND Runde 11: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 11: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 11: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 11: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 11: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  12: partie.runde= 12  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 17392ebcd81956e9
+   BEFUND Runde 12: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 12: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 12: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 12: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 12: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  13: partie.runde= 13  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 11e07bd635231668
+   BEFUND Runde 13: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 13: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 13: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 13: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 13: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  14: partie.runde= 14  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 21ea948a1e05d7eb
+   BEFUND Runde 14: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 14: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 14: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 14: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 14: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  15: partie.runde= 15  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 1c91e1a37b0f976a
+   BEFUND Runde 15: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 15: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 15: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 15: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 15: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  16: partie.runde= 16  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5761918c7ba45cf5
+   BEFUND Runde 16: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 16: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 16: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 16: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 16: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  17: partie.runde= 17  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5208dea5d8ae1c74
+   BEFUND Runde 17: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 17: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 17: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 17: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 17: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  18: partie.runde= 18  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 6212f759c190ddf7
+   BEFUND Runde 18: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 18: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 18: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 18: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 18: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  19: partie.runde= 19  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5cba44731e9a9d76
+   BEFUND Runde 19: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 19: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 19: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 19: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 19: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  20: partie.runde= 20  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 41fec5f1efcb5af1
+   BEFUND Runde 20: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 20: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 20: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 20: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 20: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  21: partie.runde= 21  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 3ca6130b4cd51a70
+   BEFUND Runde 21: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 21: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 21: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 21: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 21: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  22: partie.runde= 22  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4cb02bbf35b7dbf3
+   BEFUND Runde 22: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 22: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 22: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 22: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 22: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  23: partie.runde= 23  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 475778d892c19b72
+   BEFUND Runde 23: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 23: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 23: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 23: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 23: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  24: partie.runde= 24  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 822728c1935660fd
+   BEFUND Runde 24: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 24: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 24: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 24: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 24: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  25: partie.runde= 25  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7cce75daf060207c
+   BEFUND Runde 25: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 25: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 25: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 25: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 25: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  26: partie.runde= 26  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 8cd88e8ed942e1ff
+   BEFUND Runde 26: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 26: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 26: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 26: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 26: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  27: partie.runde= 27  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 877fdba8364ca17e
+   BEFUND Runde 27: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 27: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 27: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 27: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 27: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  28: partie.runde= 28  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 6cc45d27077d5ef9
+   BEFUND Runde 28: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 28: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 28: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 28: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 28: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  29: partie.runde= 29  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 676baa4064871e78
+   BEFUND Runde 29: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 29: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 29: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 29: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 29: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  30: partie.runde= 30  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7775c2f44d69dffb
+   BEFUND Runde 30: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 30: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 30: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 30: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 30: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  31: partie.runde= 31  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 721d100daa739f7a
+   BEFUND Runde 31: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 31: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 31: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 31: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 31: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  32: partie.runde= 32  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 56c0064ded7844c5
+   BEFUND Runde 32: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 32: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 32: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 32: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 32: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  33: partie.runde= 33  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 516753674a820444
+   BEFUND Runde 33: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 33: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 33: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 33: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 33: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  34: partie.runde= 34  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 61716c1b3364c5c7
+   BEFUND Runde 34: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 34: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 34: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 34: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 34: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  35: partie.runde= 35  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5c18b934906e8546
+   BEFUND Runde 35: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 35: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 35: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 35: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 35: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  36: partie.runde= 36  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 415d3ab3619f42c1
+   BEFUND Runde 36: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 36: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 36: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 36: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 36: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  37: partie.runde= 37  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 3c0487ccbea90240
+   BEFUND Runde 37: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 37: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 37: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 37: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 37: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  38: partie.runde= 38  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4c0ea080a78bc3c3
+   BEFUND Runde 38: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 38: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 38: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 38: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 38: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  39: partie.runde= 39  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 46b5ed9a04958342
+   BEFUND Runde 39: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 39: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 39: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 39: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 39: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  40: partie.runde= 40  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 81859d83052a48cd
+   BEFUND Runde 40: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 40: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 40: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 40: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 40: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  41: partie.runde= 41  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7c2cea9c6234084c
+   BEFUND Runde 41: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 41: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 41: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 41: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 41: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  42: partie.runde= 42  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 8c3703504b16c9cf
+   BEFUND Runde 42: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 42: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 42: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 42: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 42: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  43: partie.runde= 43  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 86de5069a820894e
+   BEFUND Runde 43: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 43: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 43: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 43: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 43: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  44: partie.runde= 44  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 6c22d1e8795146c9
+   BEFUND Runde 44: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 44: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 44: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 44: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 44: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  45: partie.runde= 45  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 66ca1f01d65b0648
+   BEFUND Runde 45: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 45: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 45: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 45: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 45: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  46: partie.runde= 46  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 76d437b5bf3dc7cb
+   BEFUND Runde 46: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 46: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 46: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 46: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 46: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  47: partie.runde= 47  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 717b84cf1c47874a
+   BEFUND Runde 47: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 47: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 47: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 47: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 47: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  48: partie.runde= 48  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme ac4b34b81cdc4cd5
+   BEFUND Runde 48: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 48: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 48: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 48: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 48: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  49: partie.runde= 49  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme a6f281d179e60c54
+   BEFUND Runde 49: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 49: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 49: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 49: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 49: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  50: partie.runde= 50  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme b6fc9a8562c8cdd7
+   BEFUND Runde 50: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 50: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 50: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 50: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 50: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  51: partie.runde= 51  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme b1a3e79ebfd28d56
+   BEFUND Runde 51: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 51: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 51: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 51: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 51: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  52: partie.runde= 52  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 96e8691d91034ad1
+   BEFUND Runde 52: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 52: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 52: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 52: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 52: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  53: partie.runde= 53  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 918fb636ee0d0a50
+   BEFUND Runde 53: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 53: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 53: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 53: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 53: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  54: partie.runde= 54  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme a199ceead6efcbd3
+   BEFUND Runde 54: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 54: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 54: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 54: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 54: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  55: partie.runde= 55  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 9c411c0433f98b52
+   BEFUND Runde 55: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 55: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 55: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 55: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 55: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  56: partie.runde= 56  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme d710cbed348e50dd
+   BEFUND Runde 56: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 56: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 56: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 56: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 56: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  57: partie.runde= 57  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme d1b819069198105c
+   BEFUND Runde 57: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 57: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 57: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 57: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 57: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  58: partie.runde= 58  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e1c231ba7a7ad1df
+   BEFUND Runde 58: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 58: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 58: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 58: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 58: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  59: partie.runde= 59  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme dc697ed3d784915e
+   BEFUND Runde 59: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 59: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 59: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 59: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 59: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  60: partie.runde= 60  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme c1ae0052a8b54ed9
+   BEFUND Runde 60: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 60: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 60: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 60: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 60: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  61: partie.runde= 61  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme bc554d6c05bf0e58
+   BEFUND Runde 61: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 61: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 61: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 61: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 61: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  62: partie.runde= 62  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme cc5f661feea1cfdb
+   BEFUND Runde 62: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 62: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 62: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 62: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 62: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  63: partie.runde= 63  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme c706b3394bab8f5a
+   BEFUND Runde 63: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 63: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 63: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 63: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 63: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  64: partie.runde= 64  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme aba9a9798eb034a5
+   BEFUND Runde 64: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 64: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 64: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 64: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 64: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  65: partie.runde= 65  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme a650f692ebb9f424
+   BEFUND Runde 65: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 65: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 65: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 65: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 65: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  66: partie.runde= 66  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme b65b0f46d49cb5a7
+   BEFUND Runde 66: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 66: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 66: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 66: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 66: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  67: partie.runde= 67  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme b1025c6031a67526
+   BEFUND Runde 67: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 67: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 67: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 67: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 67: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  68: partie.runde= 68  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 9646dddf02d732a1
+   BEFUND Runde 68: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 68: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 68: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 68: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 68: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  69: partie.runde= 69  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 90ee2af85fe0f220
+   BEFUND Runde 69: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 69: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 69: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 69: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 69: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  70: partie.runde= 70  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme a0f843ac48c3b3a3
+   BEFUND Runde 70: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 70: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 70: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 70: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 70: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  71: partie.runde= 71  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 9b9f90c5a5cd7322
+   BEFUND Runde 71: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 71: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 71: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 71: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 71: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  72: partie.runde= 72  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme d66f40aea66238ad
+   BEFUND Runde 72: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 72: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 72: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 72: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 72: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  73: partie.runde= 73  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme d1168dc8036bf82c
+   BEFUND Runde 73: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 73: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 73: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 73: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 73: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  74: partie.runde= 74  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e120a67bec4eb9af
+   BEFUND Runde 74: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 74: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 74: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 74: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 74: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  75: partie.runde= 75  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme dbc7f3954958792e
+   BEFUND Runde 75: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 75: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 75: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 75: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 75: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  76: partie.runde= 76  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme c10c75141a8936a9
+   BEFUND Runde 76: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 76: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 76: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 76: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 76: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  77: partie.runde= 77  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme bbb3c22d7792f628
+   BEFUND Runde 77: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 77: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 77: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 77: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 77: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  78: partie.runde= 78  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme cbbddae16075b7ab
+   BEFUND Runde 78: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 78: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 78: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 78: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 78: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  79: partie.runde= 79  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme c66527fabd7f772a
+   BEFUND Runde 79: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 79: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 79: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 79: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 79: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  80: partie.runde= 80  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0134d7e3be143cb5
+   BEFUND Runde 80: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 80: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 80: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 80: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 80: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  81: partie.runde= 81  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme fbdc24fd1b1dfc34
+   BEFUND Runde 81: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 81: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 81: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 81: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 81: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  82: partie.runde= 82  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0be63db10400bdb7
+   BEFUND Runde 82: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 82: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 82: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 82: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 82: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  83: partie.runde= 83  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 068d8aca610a7d36
+   BEFUND Runde 83: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 83: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 83: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 83: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 83: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  84: partie.runde= 84  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme ebd20c49323b3ab1
+   BEFUND Runde 84: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 84: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 84: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 84: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 84: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  85: partie.runde= 85  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e67959628f44fa30
+   BEFUND Runde 85: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 85: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 85: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 85: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 85: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  86: partie.runde= 86  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f68372167827bbb3
+   BEFUND Runde 86: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 86: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 86: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 86: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 86: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  87: partie.runde= 87  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f12abf2fd5317b32
+   BEFUND Runde 87: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 87: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 87: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 87: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 87: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  88: partie.runde= 88  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2bfa6f18d5c640bd
+   BEFUND Runde 88: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 88: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 88: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 88: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 88: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  89: partie.runde= 89  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 26a1bc3232d0003c
+   BEFUND Runde 89: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 89: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 89: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 89: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 89: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  90: partie.runde= 90  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 36abd4e61bb2c1bf
+   BEFUND Runde 90: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 90: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 90: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 90: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 90: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  91: partie.runde= 91  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 315321ff78bc813e
+   BEFUND Runde 91: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 91: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 91: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 91: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 91: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  92: partie.runde= 92  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 1697a37e49ed3eb9
+   BEFUND Runde 92: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 92: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 92: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 92: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 92: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  93: partie.runde= 93  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 113ef097a6f6fe38
+   BEFUND Runde 93: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 93: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 93: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 93: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 93: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  94: partie.runde= 94  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2149094b8fd9bfbb
+   BEFUND Runde 94: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 94: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 94: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 94: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 94: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  95: partie.runde= 95  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 1bf05664ece37f3a
+   BEFUND Runde 95: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 95: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 95: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 95: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 95: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  96: partie.runde= 96  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 00934ca52fe82485
+   BEFUND Runde 96: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 96: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 96: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 96: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 96: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  97: partie.runde= 97  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme fb3a99be8cf1e404
+   BEFUND Runde 97: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 97: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 97: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 97: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 97: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  98: partie.runde= 98  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0b44b27275d4a587
+   BEFUND Runde 98: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 98: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 98: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 98: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 98: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde  99: partie.runde= 99  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 05ebff8bd2de6506
+   BEFUND Runde 99: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 99: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 99: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 99: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 99: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 100: partie.runde=100  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme eb30810aa40f2281
+   BEFUND Runde 100: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 100: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 100: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 100: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 100: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 101: partie.runde=101  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e5d7ce240118e200
+   BEFUND Runde 101: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 101: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 101: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 101: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 101: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 102: partie.runde=102  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f5e1e6d7e9fba383
+   BEFUND Runde 102: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 102: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 102: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 102: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 102: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 103: partie.runde=103  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f08933f147056302
+   BEFUND Runde 103: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 103: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 103: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 103: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 103: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 104: partie.runde=104  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2b58e3da479a288d
+   BEFUND Runde 104: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 104: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 104: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 104: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 104: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 105: partie.runde=105  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 260030f3a4a3e80c
+   BEFUND Runde 105: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 105: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 105: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 105: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 105: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 106: partie.runde=106  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 360a49a78d86a98f
+   BEFUND Runde 106: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 106: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 106: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 106: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 106: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 107: partie.runde=107  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 30b196c0ea90690e
+   BEFUND Runde 107: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 107: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 107: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 107: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 107: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 108: partie.runde=108  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 15f6183fbbc12689
+   BEFUND Runde 108: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 108: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 108: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 108: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 108: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 109: partie.runde=109  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 109d655918cae608
+   BEFUND Runde 109: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 109: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 109: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 109: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 109: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 110: partie.runde=110  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 20a77e0d01ada78b
+   BEFUND Runde 110: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 110: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 110: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 110: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 110: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 111: partie.runde=111  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 1b4ecb265eb7670a
+   BEFUND Runde 111: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 111: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 111: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 111: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 111: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 112: partie.runde=112  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 561e7b0f5f4c2c95
+   BEFUND Runde 112: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 112: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 112: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 112: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 112: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 113: partie.runde=113  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 50c5c828bc55ec14
+   BEFUND Runde 113: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 113: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 113: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 113: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 113: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 114: partie.runde=114  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 60cfe0dca538ad97
+   BEFUND Runde 114: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 114: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 114: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 114: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 114: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 115: partie.runde=115  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5b772df602426d16
+   BEFUND Runde 115: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 115: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 115: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 115: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 115: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 116: partie.runde=116  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 40bbaf74d3732a91
+   BEFUND Runde 116: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 116: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 116: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 116: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 116: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 117: partie.runde=117  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 3b62fc8e307cea10
+   BEFUND Runde 117: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 117: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 117: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 117: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 117: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 118: partie.runde=118  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4b6d1542195fab93
+   BEFUND Runde 118: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 118: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 118: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 118: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 118: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 119: partie.runde=119  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4614625b76696b12
+   BEFUND Runde 119: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 119: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 119: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 119: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 119: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 120: partie.runde=120  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 80e4124476fe309d
+   BEFUND Runde 120: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 120: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 120: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 120: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 120: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 121: partie.runde=121  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7b8b5f5dd407f01c
+   BEFUND Runde 121: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 121: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 121: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 121: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 121: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 122: partie.runde=122  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 8b957811bceab19f
+   BEFUND Runde 122: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 122: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 122: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 122: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 122: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 123: partie.runde=123  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 863cc52b19f4711e
+   BEFUND Runde 123: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 123: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 123: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 123: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 123: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 124: partie.runde=124  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 6b8146a9eb252e99
+   BEFUND Runde 124: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 124: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 124: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 124: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 124: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 125: partie.runde=125  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 662893c3482eee18
+   BEFUND Runde 125: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 125: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 125: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 125: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 125: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 126: partie.runde=126  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7632ac773111af9b
+   BEFUND Runde 126: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 126: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 126: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 126: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 126: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 127: partie.runde=127  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 70d9f9908e1b6f1a
+   BEFUND Runde 127: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 127: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 127: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 127: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 127: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 128: partie.runde=128  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme ae2fd673c7609565
+   BEFUND Runde 128: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 128: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 128: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 128: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 128: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 129: partie.runde=129  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme a8d7238d246a54e4
+   BEFUND Runde 129: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 129: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 129: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 129: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 129: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 130: partie.runde=130  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme b8e13c410d4d1667
+   BEFUND Runde 130: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 130: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 130: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 130: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 130: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 131: partie.runde=131  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme b388895a6a56d5e6
+   BEFUND Runde 131: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 131: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 131: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 131: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 131: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 132: partie.runde=132  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 98cd0ad93b879361
+   BEFUND Runde 132: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 132: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 132: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 132: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 132: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 133: partie.runde=133  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 937457f2989152e0
+   BEFUND Runde 133: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 133: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 133: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 133: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 133: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 134: partie.runde=134  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme a37e70a681741463
+   BEFUND Runde 134: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 134: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 134: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 134: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 134: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 135: partie.runde=135  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 9e25bdbfde7dd3e2
+   BEFUND Runde 135: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 135: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 135: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 135: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 135: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 136: partie.runde=136  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme d8f56da8df12996d
+   BEFUND Runde 136: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 136: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 136: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 136: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 136: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 137: partie.runde=137  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme d39cbac23c1c58ec
+   BEFUND Runde 137: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 137: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 137: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 137: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 137: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 138: partie.runde=138  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e3a6d37624ff1a6f
+   BEFUND Runde 138: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 138: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 138: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 138: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 138: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 139: partie.runde=139  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme de4e208f8208d9ee
+   BEFUND Runde 139: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 139: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 139: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 139: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 139: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 140: partie.runde=140  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme c392a20e53399769
+   BEFUND Runde 140: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 140: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 140: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 140: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 140: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 141: partie.runde=141  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme be39ef27b04356e8
+   BEFUND Runde 141: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 141: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 141: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 141: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 141: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 142: partie.runde=142  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme ce4407db9926186b
+   BEFUND Runde 142: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 142: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 142: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 142: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 142: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 143: partie.runde=143  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme c8eb54f4f62fd7ea
+   BEFUND Runde 143: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 143: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 143: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 143: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 143: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 144: partie.runde=144  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 03bb04ddf6c49d75
+   BEFUND Runde 144: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 144: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 144: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 144: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 144: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 145: partie.runde=145  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme fe6251f753ce5cf4
+   BEFUND Runde 145: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 145: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 145: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 145: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 145: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 146: partie.runde=146  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0e6c6aab3cb11e77
+   BEFUND Runde 146: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 146: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 146: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 146: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 146: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 147: partie.runde=147  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0913b7c499baddf6
+   BEFUND Runde 147: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 147: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 147: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 147: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 147: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 148: partie.runde=148  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme ee5839436aeb9b71
+   BEFUND Runde 148: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 148: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 148: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 148: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 148: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 149: partie.runde=149  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e8ff865cc7f55af0
+   BEFUND Runde 149: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 149: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 149: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 149: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 149: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 150: partie.runde=150  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f9099f10b0d81c73
+   BEFUND Runde 150: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 150: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 150: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 150: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 150: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 151: partie.runde=151  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f3b0ec2a0de1dbf2
+   BEFUND Runde 151: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 151: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 151: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 151: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 151: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 152: partie.runde=152  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2e809c130e76a17d
+   BEFUND Runde 152: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 152: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 152: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 152: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 152: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 153: partie.runde=153  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2927e92c6b8060fc
+   BEFUND Runde 153: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 153: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 153: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 153: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 153: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 154: partie.runde=154  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 393201e05463227f
+   BEFUND Runde 154: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 154: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 154: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 154: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 154: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 155: partie.runde=155  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 33d94ef9b16ce1fe
+   BEFUND Runde 155: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 155: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 155: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 155: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 155: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 156: partie.runde=156  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 191dd078829d9f79
+   BEFUND Runde 156: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 156: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 156: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 156: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 156: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 157: partie.runde=157  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 13c51d91dfa75ef8
+   BEFUND Runde 157: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 157: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 157: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 157: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 157: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 158: partie.runde=158  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 23cf3645c88a207b
+   BEFUND Runde 158: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 158: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 158: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 158: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 158: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 159: partie.runde=159  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 1e76835f2593dffa
+   BEFUND Runde 159: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 159: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 159: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 159: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 159: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 160: partie.runde=160  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0319799f68988545
+   BEFUND Runde 160: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 160: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 160: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 160: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 160: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 161: partie.runde=161  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme fdc0c6b8c5a244c4
+   BEFUND Runde 161: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 161: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 161: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 161: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 161: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 162: partie.runde=162  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 0dcadf6cae850647
+   BEFUND Runde 162: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 162: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 162: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 162: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 162: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 163: partie.runde=163  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 08722c860b8ec5c6
+   BEFUND Runde 163: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 163: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 163: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 163: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 163: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 164: partie.runde=164  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme edb6ae04dcbf8341
+   BEFUND Runde 164: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 164: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 164: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 164: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 164: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 165: partie.runde=165  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme e85dfb1e39c942c0
+   BEFUND Runde 165: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 165: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 165: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 165: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 165: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 166: partie.runde=166  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f86813d222ac0443
+   BEFUND Runde 166: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 166: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 166: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 166: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 166: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 167: partie.runde=167  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme f30f60eb7fb5c3c2
+   BEFUND Runde 167: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 167: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 167: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 167: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 167: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 168: partie.runde=168  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 2ddf10d4804a894d
+   BEFUND Runde 168: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 168: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 168: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 168: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 168: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 169: partie.runde=169  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 28865deddd5448cc
+   BEFUND Runde 169: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 169: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 169: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 169: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 169: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 170: partie.runde=170  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 389076a1c6370a4f
+   BEFUND Runde 170: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 170: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 170: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 170: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 170: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 171: partie.runde=171  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 3337c3bb2340c9ce
+   BEFUND Runde 171: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 171: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 171: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 171: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 171: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 172: partie.runde=172  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 187c4539f4718749
+   BEFUND Runde 172: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 172: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 172: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 172: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 172: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 173: partie.runde=173  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 13239253517b46c8
+   BEFUND Runde 173: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 173: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 173: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 173: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 173: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 174: partie.runde=174  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 232dab073a5e084b
+   BEFUND Runde 174: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 174: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 174: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 174: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 174: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 175: partie.runde=175  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 1dd4f8209767c7ca
+   BEFUND Runde 175: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 175: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 175: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 175: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 175: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 176: partie.runde=176  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 58a4a80997fc8d55
+   BEFUND Runde 176: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 176: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 176: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 176: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 176: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 177: partie.runde=177  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 534bf522f5064cd4
+   BEFUND Runde 177: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 177: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 177: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 177: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 177: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 178: partie.runde=178  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 63560dd6dde90e57
+   BEFUND Runde 178: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 178: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 178: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 178: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 178: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 179: partie.runde=179  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5dfd5af03af2cdd6
+   BEFUND Runde 179: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 179: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 179: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 179: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 179: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 180: partie.runde=180  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4341dc6f0c238b51
+   BEFUND Runde 180: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 180: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 180: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 180: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 180: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 181: partie.runde=181  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 3de92988692d4ad0
+   BEFUND Runde 181: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 181: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 181: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 181: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 181: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 182: partie.runde=182  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4df3423c52100c53
+   BEFUND Runde 182: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 182: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 182: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 182: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 182: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 183: partie.runde=183  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 489a8f55af19cbd2
+   BEFUND Runde 183: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 183: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 183: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 183: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 183: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 184: partie.runde=184  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 836a3f3eafae915d
+   BEFUND Runde 184: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 184: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 184: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 184: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 184: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 185: partie.runde=185  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7e118c580cb850dc
+   BEFUND Runde 185: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 185: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 185: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 185: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 185: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 186: partie.runde=186  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 8e1ba50bf59b125f
+   BEFUND Runde 186: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 186: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 186: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 186: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 186: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 187: partie.runde=187  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 88c2f22552a4d1de
+   BEFUND Runde 187: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 187: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 187: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 187: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 187: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 188: partie.runde=188  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 6e0773a423d58f59
+   BEFUND Runde 188: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 188: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 188: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 188: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 188: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 189: partie.runde=189  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 68aec0bd80df4ed8
+   BEFUND Runde 189: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 189: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 189: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 189: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 189: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 190: partie.runde=190  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 78b8d97169c2105b
+   BEFUND Runde 190: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 190: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 190: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 190: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 190: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 191: partie.runde=191  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 7360268ac6cbcfda
+   BEFUND Runde 191: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 191: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 191: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 191: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 191: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 192: partie.runde=192  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 58031ccb09d07525
+   BEFUND Runde 192: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 192: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 192: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 192: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 192: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 193: partie.runde=193  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 52aa69e466da34a4
+   BEFUND Runde 193: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 193: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 193: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 193: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 193: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 194: partie.runde=194  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 62b482984fbcf627
+   BEFUND Runde 194: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 194: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 194: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 194: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 194: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 195: partie.runde=195  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 5d5bcfb1acc6b5a6
+   BEFUND Runde 195: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 195: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 195: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 195: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 195: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 196: partie.runde=196  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 42a051307df77321
+   BEFUND Runde 196: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 196: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 196: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 196: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 196: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 197: partie.runde=197  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 3d479e49db0132a0
+   BEFUND Runde 197: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 197: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 197: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 197: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 197: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 198: partie.runde=198  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 4d51b6fdc3e3f423
+   BEFUND Runde 198: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 198: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 198: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 198: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 198: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 199: partie.runde=199  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 47f9041720edb3a2
+   BEFUND Runde 199: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 199: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 199: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 199: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 199: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+Runde 200: partie.runde=200  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske  535  Pruefsumme 82c8b4002182792d
+   BEFUND Runde 200: Schranke 1  wechselkurs >= 1 -- erste Adresse land.US.wechselkurs (Platz 18), Wert 0
+   BEFUND Runde 200: Schranke 2  Nominalindex > 0 -- erste Adresse land.US.sektor.1.preis (Platz 3), Wert 0
+   BEFUND Runde 200: Schranke 3  produktivitaet > 0 -- erste Adresse land.US.produktivitaet (Platz 14), Wert 0
+   BEFUND Runde 200: Schranke 5  0 < markt.wert < 9,2e13 -- erste Adresse markt.wert (Platz 252), Wert 0
+   BEFUND Runde 200: Sektoranteile  Summe 10.000, keiner ausserhalb -- erste Adresse land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+
+Die eine Zahl, Feld fuer Feld gezaehlt (Zustand::lies ueber alle 310 Plaetze):
+  ueber EINE Runde   gegenueber der Startbelegung: 1 von 310
+  ueber 200 Runden  gegenueber der Startbelegung: 1 von 310
+
+Welche Adressen sich unterscheiden (Start -> Ende):
+  Platz 306  partie.runde                                        0 -> 200
+
+Je Sache eine Aussage ueber den ganzen Lauf:
+  GERISSEN   Schranke 1  wechselkurs >= 1 -- zuerst in Runde 0, land.US.wechselkurs (Platz 18), Wert 0
+  GERISSEN   Schranke 2  Nominalindex > 0 -- zuerst in Runde 0, land.US.sektor.1.preis (Platz 3), Wert 0
+  GERISSEN   Schranke 3  produktivitaet > 0 -- zuerst in Runde 0, land.US.produktivitaet (Platz 14), Wert 0
+  GEHALTEN   Schranke 4  leitzins + aufschlag >= 1
+  GERISSEN   Schranke 5  0 < markt.wert < 9,2e13 -- zuerst in Runde 0, markt.wert (Platz 252), Wert 0
+  GEHALTEN   Schranke 6  0 <= druck <= druck_max
+  GEHALTEN   Schranke 7  Anteil 0..10.000, |Stufe| <= max
+  GEHALTEN   Gleichheit 1  leitzins = instrument.stand
+  GEHALTEN   Gleichheit 2  saldo = instrument.stand
+  GERISSEN   Sektoranteile  Summe 10.000, keiner ausserhalb -- zuerst in Runde 0, land.US.sektor.1.wertschoepfung (Platz 0), Wert 0
+
+Lauf ueber 200 Runden vollstaendig. Rueckgabewert 0.
