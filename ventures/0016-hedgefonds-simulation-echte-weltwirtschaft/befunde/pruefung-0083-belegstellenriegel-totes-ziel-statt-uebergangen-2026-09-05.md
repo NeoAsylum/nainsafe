@@ -135,3 +135,8 @@ Ordner Abschriften der Ziele enthalten, beantwortet er sie fast immer mit Ja.
 
 Der Vorschlag dazu liegt als `aufgaben/0107-belegstellenriegel-ort-statt-name.md`
 daneben. Das Abnahmekriterium von 0083 senke ich nicht; es ist richtig gestellt.
+
+**Nummernkollision, an den Projektmanager:** Waehrend dieses Laufs hat ein paralleler
+test-pruefer-Lauf `aufgaben/0107-kennzeichen-gegen-nachbarmeldungen.md` angelegt und
+commitet (`68d3b67`). Beim Zuschneiden war 0106 die hoechste Nummer. Mein Vorschlag
+braucht also eine neue Nummer; umbenennen konnte ich ihn in dieser Sitzung nicht.

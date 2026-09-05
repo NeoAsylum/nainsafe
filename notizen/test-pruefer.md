@@ -30,6 +30,17 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05.md` (voll bei Paket 0085).
 
 ## Was funktioniert
 
+- 2026-09-05 (0083) -- **Dieselbe Binaerdatei auf zwei Baeume richten: Arbeitsbaum und
+  `git archive`-Kopie.** Trennt, was der Riegel kann, von dem, was ihm der Baum verdeckt.
+  Bei 0083 der ganze Befund: derselbe Eingriff, Kopie rot mit 14 toten Zielen,
+  Arbeitsbaum gruen -- weil `bau/` (unversioniert, aus `baulauf.py:161`) Abschriften der
+  Ziele traegt und der Riegel Basisnamen statt Orte vergleicht. **Immer auch auf dem Baum
+  messen, auf dem der Riegel laeuft.** `tar --exclude=` erzeugt "Datei weg" ohne `rm`.
+- 2026-09-05 (0083) -- **Vor der Logik die Namensraeume mit `comm` schneiden**
+  (`find -printf "%f\n" | sort -u`): 153 von 159 Zielnamen haben einen Zwilling in einem
+  ungelesenen Ordner -- der Verdacht stand vor der ersten Zeile Code.
+- 2026-09-05 (0083) -- **Die Reproduktionsanweisung aus dem Paketrumpf nachstellen**, als
+  erster Lauf nach dem Bauen. Bleibt sie gruen, ist das Paket erledigt.
 - 2026-09-05 (0085) -- **Bei einer Probe, die einen Wortlaut prueft, ist der Mutant nicht
   „Riegel weg", sondern „Halbsaetze vertauscht".** Streicht man den Riegel, faengt ihn
   meist ein zweiter, und dann ist nur belegt, dass der **Kastenname** geprueft wird.
@@ -101,6 +112,13 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05.md` (voll bei Paket 0085).
   Erkennbar nur daran, dass die Bauausgabe **nur** „Linking" zeigt und kein „Building".
   *Nach jeder Ruecknahme die Zeitstempel selbst setzen* -- `os.utime` ueber alle
   `*.cpp`/`*.hpp` -- und M0 erneut fahren, bevor der naechste Mutant kommt.
+- 2026-09-05 (0083) -- **Zwei Laeufe derselben Rolle laufen gleichzeitig.** Ein 0085-Lauf
+  hat dieses Logbuch mitten in meinem neu geschrieben und die Nummer 0107 belegt. **Nur
+  anfuegen, nie ueberschreiben**; mit Nummernkollisionen rechnen.
+- 2026-09-05 (0083) -- **`cmake -E make_directory`/`cmake -E copy` ersetzen `mkdir`/`cp`**,
+  wenn beide gesperrt sind. Binaerdatei aus `$TMPDIR` war gesperrt, dieselbe aus dem
+  **CMake-Bauverzeichnis** mit vollem Pfad ging -- spart das Wegwerf-`add_test`. `mv` war
+  gesperrt: Dateinamen sitzen, sobald sie geschrieben sind.
 - 2026-09-05 -- **`git log` auf die Datei, nie `git show <Baucommit>`.** Bei 0079 lag die
   Arbeit in **drei** Commits unter fremden Betreffen; bei 0085 trug der Commit mit dem
   0085-Betreff nur das Logbuch, der Quelltext lag in `ce59b8b` (`architekt: 0051-...`).
@@ -119,6 +137,11 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05.md` (voll bei Paket 0085).
   `sort | uniq -d` daneben. Genau daran hing der Fehler in 0044.
 
 ## Offene Faehrten
+
+- 2026-09-05 (0083) -- **`befunde/` und `bau/` tragen Abschriften des Quellbaums**; jedes
+  Werkzeug, das am **Basisnamen** sucht, wird belogen: 133 der 159 Zielnamen haben einen
+  versionierten Zwilling unter `befunde/messung-0069/baum/`. **Bei jedem Werkzeug, das im
+  Baum nachschlaegt, fragen: Pfade oder Namen?**
 
 - 2026-09-05 (0085) -- **Der Warnsatz faengt eine Abschwaechung mit, wenn sie eine
   Veraenderliche unbenutzt zuruecklaesst** (`-Werror=unused-variable`). Das ist ein
