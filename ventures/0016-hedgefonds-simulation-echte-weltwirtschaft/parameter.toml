@@ -788,6 +788,126 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 
 
 # ---------------------------------------------------------------------
+# GRUPPE D -- Parameterschluessel aus T27, die nach Fassung 3 dieser
+# Datei dazugekommen sind
+#
+# **Warum eine eigene Gruppe und nicht Gruppe A.** `regulierung_last`
+# ist ein Schluessel *aus* T27 -- technik.md T48 sagt woertlich, er sei
+# "der Parameterschluessel aus T27" --, steht aber weder in der
+# elfzeiligen Tabelle von T27 (das ist Gruppe A) noch in dessen
+# Fliesstext (Gruppen B, B2 und C). Eingefuehrt hat ihn die
+# Schadensvorschrift der Gegenkraft 5 in T48. Ihn in eine der vier
+# bestehenden Gruppen zu schieben hiesse, deren Herkunftsangabe falsch
+# zu machen.
+#
+# **Er muss vor den `[instrument.*]`-Tabellen stehen.** Nicht aus
+# Ordnungsliebe: Ein blanker Schluessel nach einem Tabellenkopf gehoert
+# in TOML zu dieser Tabelle. Hinter `[instrument.regulierung]` waere aus
+# `regulierung_last` still `instrument.regulierung.regulierung_last`.
+#
+# **Was der Kopf dieser Datei damit nicht mehr trifft** (Paket 0150,
+# 2026-09-06): Der Abschnitt "WIE DER PRUEFER ZAEHLT" nennt 50
+# Schluessel, davon 46 mit der Marke PLATZHALTER und 4 mit FEST; BEFUNDE
+# Punkt 1 nennt "25 der 50 Namen" als gebildet. Mit dieser Gruppe sind
+# es **51 Schluessel, 47 PLATZHALTER, 4 FEST**; gebildet bleiben 25,
+# woertlich zitiert steigen von 25 auf 26. Die drei Zahlen im Kopf sind
+# ueberholt und werden hier **nicht** nachgezogen -- das Arbeitspaket
+# 0150 verlangt ausserhalb dieses Blocks null geaenderte Zeilen, und
+# eine Zahl in einem fremden Absatz zu berichtigen waere genau die
+# Nebenbeiarbeit, die es ausschliesst. Der Nachzug ist als eigenes Paket
+# vorgeschlagen (`aufgaben/0153-parametertoml-bilanz-nachziehen.md`).
+# Wer nachzaehlt, zaehlt bis dahin gegen 51/47/4 und nicht gegen den
+# Kopf.
+# ---------------------------------------------------------------------
+
+# Klasse 3 (Raten, Basispunkte). Lastsatz der Finanzmarktregulierung --
+# Basispunkte des BIP je Regulierungsstufe. Klasse und Einheit stehen
+# woertlich in technik.md T48, im Absatz unter dem Formelblock zur
+# Schadenstabelle: "ist der Parameterschluessel aus T27 (Klasse 3,
+# Basispunkte des BIP je Regulierungsstufe)". Umlautfrei suchbar:
+# "(Klasse 3, Basispunkte des BIP je". Dieselbe Klasse und dieselbe
+# Einheit nennt spiel.md in seiner Nachziehtabelle ("neuer Schluessel
+# **`regulierung_last`**, Klasse 3, Basispunkte des BIP je
+# Regulierungsstufe, kalibriert wie `gegenlobby_satz`").
+# Die Formel, in der er vorkommt -- technik.md T48, vierte Zeile des
+# Formelblocks unter "aus Gegenkraft 5 und dem Zollkeil, in
+# Rechenreihenfolge" (dort Zeile 2165, abgerufen 2026-09-06);
+# zeichengleich uebernommen, damit sie auffindbar bleibt:
+#   schaden(l, regulierung) = mal_geteilt(bip(l),    hub(l, regulierung) · regulierung_last, 10.000)
+# Das Produkt `hub(l, regulierung) · regulierung_last` ist Stufen mal
+# Basispunkte je Stufe (T5 Klasse 10 mal Klasse 3); spiel.md schreibt
+# die Klassenspalte derselben Tabellenzeile als "10 × 3".
+# Schranke: >= 0.
+#   **Aus der eigenen Klasse folgt hier nichts** -- technik.md T5,
+#   Tabellenzeile "| 3 |", Spalte "Bereich": "±2 Mio %", symmetrisch um
+#   null. Dieselbe Lage wie bei `hebelaufschlag`, und der Grund, warum
+#   ein blankes ">= 0 aus der Klasse" hier keine Quelle haette.
+#   Die Null kommt aus der Zielklasse des Ergebnisses: `hub(l, i)` ist
+#   nach T48 Nr. 18 ein Betrag (`|lies_neu(...) - lies_alt(...)|`) und
+#   `bip(l)` nach T48 Nr. 9 eine Summe von Wertschoepfungen -- das
+#   Vorzeichen des Schadens traegt also allein `regulierung_last`. Einen
+#   negativen Schaden uebersetzt T50 Uebergang 3
+#   (`lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz,
+#   10.000)`) in negativen Gegendruck, und der liegt ausserhalb der
+#   Klasse 9 ("0 ... druck_max", T5). Gegenkraft 5 liefe dann verkehrt
+#   herum: Eine Bewegung der Regulierung senkte den Gegendruck, den sie
+#   ausloest.
+#   **Eine obere Schranke nennt specs/ nicht.** Nachgesehen am
+#   2026-09-06 an allen zehn Fundstellen des Namens (technik.md sechs,
+#   spiel.md vier); keine nennt eine. Wirksam begrenzt ist wie bei
+#   `gegenlobby_satz` nicht der Schluessel, sondern sein Ergebnis -- der
+#   Gegendruck ist durch `druck_max` gekappt (T5 Klasse 9, BEFUNDE
+#   Punkt 5b), hier eine Rechenstufe weiter entfernt, weil erst der
+#   Schaden und dann der Uebergang dazwischenliegen. Eine erfundene
+#   Obergrenze waere schlimmer als diese benannte Luecke.
+#   **Die Ueberlaufgrenze aus T6 ist nicht beruehrt** -- nachgerechnet,
+#   nicht angenommen, weil sie sonst eine stille Obergrenze waere: Das
+#   blanke Produkt `hub · regulierung_last` laeuft nach T7 Massnahme 3
+#   ueber `mal(a, b)` mit i128-Zwischenwert und `intern::nach_i64`, das
+#   umschliessende `mal_geteilt` nach T6 ebenso. Ein Ueberlauf bricht
+#   dort ab, statt still umzubrechen. Die Schwelle liegt ausserdem weit
+#   oberhalb jeder Rate: Der Schaden ist Klasse 2 und damit `i64`; mit
+#   `bip(l)` in der Groessenordnung des T5-Beispiels (21.000.000.000
+#   Tausend USD) verliesse `mal_geteilt(bip, hub · last, 10.000)` den
+#   `i64`-Bereich erst bei `hub · regulierung_last` ueber rund
+#   4,4·10^12. Das ist eine Folgerung dieser Datei aus T5, T6 und T7 und
+#   **keine Schranke dieses Schluessels**; sie steht hier, weil das
+#   Arbeitspaket 0150 verlangt, die Frage zu beantworten statt eine Zahl
+#   zu waehlen, die sie zufaellig einhaelt.
+# Platzhalter: 0 nach Regel A (untere Schranke ist 0). Er ist
+#   **wirkungslos, nicht aktiv** im Sinne des Kopfabschnitts: Er
+#   schaltet die vierte Zeile der Schadenstabelle ab und loest nichts
+#   aus. Ein gekoppeltes Paar hat dieser Schluessel nicht -- er kommt in
+#   keiner der acht Bedingungen aus BEFUNDE Punkt 5a vor und braucht
+#   dort auch keine neunte, weil seine Schranke keinen zweiten
+#   Schluessel nennt.
+# Kalibriert: Selbstspieler, wie `gegenlobby_satz` -- so sagt es die
+#   Nachziehtabelle von spiel.md woertlich, und spiel.md fuehrt ihn
+#   unter "Offene Entwurfsfragen": "Sein Wert wird kalibriert, nicht
+#   entworfen; im Weltlauf ist er ohne Wirkung, weil das Instrument dort
+#   feststeht." Daraus folgt, welcher Pruefstand ihn ueberhaupt sehen
+#   kann: nicht der Rueckvergleich (Mass 4), sondern allein die
+#   Partiemasse -- Folgerung dieser Datei aus dem zitierten Halbsatz,
+#   keine Vorgabe aus specs/.
+# Scheitert daran: Bei 0 traegt die vierte Zeile der Schadenstabelle
+#   null. Eine Bewegung der Finanzmarktregulierung erzeugt dann keinen
+#   Schaden und damit keinen Gegendruck, obwohl sie das einzige
+#   Instrument ist, das Gegenkraft 1 ohne Zutun des Fonds gegen ihn
+#   bewegt (spiel.md Gegenkraft 1, erste Aufsichtsschwelle); Gegenkraft 5
+#   antwortete auf drei Instrumente statt auf vier. Zu gross -- schon
+#   eine einzelne Stufe erzeugt mehr Gegendruck, als `druck_max` traegt,
+#   der Gegendruck steht ab der ersten Regulierungsbewegung an seiner
+#   Kappung, Einfluss (der Anteil des Fonds am gesamten Lobbydruck) wird
+#   zu einer groben Stufenfunktion, und Aktion 3 ist gegen dieses
+#   Instrument tot -- dieselbe Ausfallart wie bei `gegenlobby_satz`.
+# Keine `*`-Marke: Der Name steht woertlich in specs/, an zehn Stellen
+#   in zwei Dateien (technik.md sechs, spiel.md vier, gezaehlt am
+#   2026-09-06). Die 25 gebildeten Namen aus BEFUNDE Punkt 1 bleiben
+#   also 25.
+regulierung_last = 0  # PLATZHALTER
+
+
+# ---------------------------------------------------------------------
 # GRUPPE A, Fortsetzung -- die Instrumente nach T51
 #
 # Feste Reihenfolge nach T9: leitzins, zoll, haushalt, regulierung.

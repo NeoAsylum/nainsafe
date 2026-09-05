@@ -1,7 +1,7 @@
 ---
 id: 0150-parametertoml-regulierung-last
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0043-t48-groessen-gegenkraft-5]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: `parameter.toml` traegt den Schluessel `regulierung_last` mit demselben Kommentarkopf, den die Nachbarschluessel tragen -- Klasse nach T5, die Formel, in der er vorkommt, mit T-Verweis, die Schranke mit Begruendung, die Zeile `Kalibriert:` und die Zeile `Scheitert daran:` in beide Richtungen. Der Wert traegt die Marke `PLATZHALTER` wie `lobbykosten`, solange niemand kalibriert hat. Mechanisch nachpruefbar: Eine Suche nach `regulierung_last` in `parameter.toml` findet genau eine Zuweisungszeile; die Klassenangabe im Kommentar ist wortgleich mit der in `technik.md` Zeile 2212 (`Klasse 3`); die im Kommentar zitierte Formel ist zeichengleich mit `technik.md` Zeile 2165. Ausserhalb des neuen Blocks null geaenderte und null entfernte Zeilen.
