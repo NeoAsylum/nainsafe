@@ -252,10 +252,10 @@
 //!   * *ohne Dokumentnamen im Absatz* -- ein Verweis auf einen Abschnitt derselben
 //!     Datei, oder auf eine Quelle ausserhalb dieses Vorhabens (eine Lizenz, ein RFC).
 //!     Er traegt sein Ziel nicht bei sich; dieser Riegel prueft nur, was das tut.
-//!   * *Ziel in einem mit Absicht ungelesenen Ordner* -- der naechstgelegene Name
-//!     gehoert zu einer Datei, die es gibt, die dieser Riegel aber nicht liest (ein
-//!     Bericht unter `befunde/`, ein Erzeugnis unter `bau/`). Paket 0083 hat diese
-//!     Sorte von der naechsten getrennt; der eigene Teil weiter unten sagt, warum.
+//!   * *Ziel in einem mit Absicht ungelesenen Ordner* -- der naechstgelegene Name zeigt
+//!     selbst in einen Ordner, den dieser Riegel nicht liest (`befunde/`, `bau/`), und
+//!     dort liegt unter dem genannten Pfad auch eine Datei. Paket 0083 hat diese Sorte
+//!     von der naechsten getrennt; der eigene Teil weiter unten sagt, warum.
 //!   * *Ziel ausserhalb beider Wurzeln* -- der Name spricht seinen Ort selbst aus:
 //!     ein unbedingter Pfad, ein Aufstieg mit zwei Punkten. Dazu die Netzadresse, die
 //!     ihre eigene Meldung hat.
@@ -498,19 +498,52 @@
 //!
 //!   1. Der Name **spricht seinen Ort selbst aus** -- er beginnt mit einem
 //!      Schraegstrich oder steigt mit zwei Punkten aus der Wurzel heraus. Uebergangen.
-//!   2. Es **gibt** eine Datei dieses Namens, aber in einem mit Absicht ungelesenen
-//!      Ordner. Uebergangen, und die Meldung nennt den Namen.
-//!   3. Es gibt sie **nirgends** unter beiden Wurzeln. Befund, Lauf rot.
+//!   2. Der Name **zeigt in einen mit Absicht ungelesenen Ordner**, und unter dem
+//!      genannten Pfad liegt dort auch eine Datei. Uebergangen, Meldung nennt den Namen.
+//!   3. Sonst. Befund, Lauf rot.
 //!
-//! Fuer den zweiten Fall sammelt der Riegel seit diesem Paket die **Namen** unter
-//! `bau/` und `befunde/` mit ein -- nicht ihren Inhalt. Der Unterschied traegt die
-//! ganze Trennung: "Es gibt sie dort" und "es gibt sie nirgends" sind zwei Zustaende,
-//! und ohne die Namensliste sind sie fuer den Riegel derselbe. Gelesen wird aus diesen
-//! Ordnern weiterhin keine einzige Datei; eine Zeilennummer in einem Bericht bleibt ein
-//! Messwert vom Tag der Messung, und eine Ueberschrift daraus wird nirgends
-//! nachgeschlagen. Versteckte Ordner (`.git`, `.claude`) bleiben ganz aussen vor, und
-//! zwar aus einem anderen Grund: Dort liegt Maschinerie, kein Dokument, das ein Zitat
-//! nennen koennte -- und der Baum unter `.git` ist der groesste des Vorhabens.
+//! ### Die Ortsfrage wird am Ort entschieden, nicht am Namen -- Ruecklauf 2026-09-05
+//!
+//! Die erste Fassung dieser Trennung hat Fall 2 anders gestellt, naemlich als
+//! *"traegt irgendwo unter beiden Wurzeln eine Datei diesen Basisnamen?"*. Sie ist
+//! daran gescheitert, und der Grund ist der Bestand selbst: `bau/kp0010/quelle/` und
+//! `bau/kp0027r3/quelle/` tragen vollstaendige Abschriften des Quellbaums samt der
+//! Vorgaben, `befunde/messung-0069/baum/` eine weitere. Ein Name, den es nicht mehr
+//! gibt, hat dort fast immer noch einen Zwilling -- **153 von 159 Namen des
+//! Zielbestands**, gemessen am 2026-09-04. Die Namensfrage beantwortete sich damit
+//! fast immer mit Ja, und der tote Verweis kam als uebergangener durch.
+//!
+//! Das war kein Randfall, sondern der Regelfall des Betriebs: `bau/` legt der Baulauf
+//! selbst an, und geprueft wird **nach** dem Bauen. Der Rotnachweis der ersten Fassung
+//! trug nur auf einer Kopie ohne Bauverzeichnis -- also auf einem Baum, auf dem der
+//! Riegel nie laeuft. Gemessen mit derselben Binaerdatei, Vorgaben ohne `spiel.md`:
+//! Arbeitsbaum mit `bau/` gruen und null tote Ziele, versionierte Kopie ohne `bau/`
+//! rot und vierzehn.
+//!
+//! Seither lautet Fall 2 als **Ortsfrage**: Nennt der Verweis selbst einen ungelesenen
+//! Ordner als einen seiner Pfadteile, und liegt unter diesem Pfad dort auch eine Datei?
+//! Beides zusammen, und beides ist noetig. Der Ort allein hiesse, jeden erfundenen
+//! Namen mit dem Vorsatz `befunde/` zu uebergehen; die Datei allein ist die Namensfrage
+//! von eben. Eingesammelt werden dafuer die **Pfade** unter `bau/` und `befunde/` statt
+//! der blossen Namen -- eine laengere Liste, die dafuer die gestellte Frage beantwortet.
+//!
+//! **Und der Preis, ausgeschrieben: Ein Verweis, der seinen Ordner nicht bei sich
+//! traegt, gilt als tot.** Nennt ein Zitat blosses `pruefung-0009-....md` ohne den
+//! Vorsatz `befunde/`, wird der Lauf rot, obwohl die Datei dort liegt. Das ist die
+//! strenge der beiden Richtungen, und sie ist mit Absicht gewaehlt: Die nachsichtige
+//! kostet genau die Abdeckung, um derentwillen dieses Paket angelegt wurde -- jeder
+//! Name mit einem Zwilling unter `bau/` waere wieder unfaengbar. Der Preis der strengen
+//! ist ein Zitat, das seinen Vorsatz ergaenzen muss, also eine Berichtigung von zwei
+//! Woertern. Er wird ausserdem laut bezahlt: Die Meldung nennt den genannten Namen und
+//! sagt, dass es ihn unter keiner der beiden Wurzeln gibt. Am 2026-09-05 traegt der
+//! Bestand **eine** Fundstelle des zweiten Falls, und sie nennt ihren Ordner mit.
+//!
+//! Gelesen wird aus diesen Ordnern weiterhin keine einzige Datei; eine Zeilennummer in
+//! einem Bericht bleibt ein Messwert vom Tag der Messung, und eine Gliederungsmarke
+//! daraus wird nirgends nachgeschlagen. Versteckte Ordner (`.git`, `.claude`) bleiben
+//! ganz aussen vor, und zwar aus einem anderen Grund: Dort liegt Maschinerie, kein
+//! Dokument, das ein Zitat nennen koennte -- und der Baum unter `.git` ist der groesste
+//! des Vorhabens.
 //!
 //! **Die Frage nach `aufgaben/`, die der Zuschnitt offen laesst, und meine Antwort:
 //! nein, dieser Ordner wird nicht wie `befunde/` behandelt.** Der Grund ist nicht
@@ -989,19 +1022,25 @@ bool ist_maschinerie(std::string_view ordner) {
     return !ordner.empty() && ordner.front() == '.';
 }
 
-/// Wo eine Datei liegt, deren Inhalt niemand liest -- eingesammelt werden nur die
-/// Basisnamen. Mehr braucht die Frage nicht, die sie beantworten: ob es einen Ort
-/// dieses Namens ueberhaupt gibt.
-using Namensmenge = std::set<std::string>;
+/// Wo eine Datei liegt, deren Inhalt niemand liest -- eingesammelt wird ihr **Pfad**
+/// unterhalb der Wurzel, mit Schraegstrichen und ohne die Wurzel davor.
+///
+/// Bis zum Ruecklauf vom 2026-09-05 stand hier der blosse Basisname, und genau daran ist
+/// die erste Fassung dieses Pakets gescheitert: Die ungelesenen Ordner tragen
+/// vollstaendige Abschriften des Quellbaums, also hat fast jeder Name dort einen
+/// Zwilling. Ein Basisname beantwortet die Frage "gibt es diesen Namen irgendwo"; die
+/// Frage, die gestellt ist, lautet "zeigt dieser Verweis dorthin". Die Begruendung im
+/// Kopf, der Teil zur Ortsfrage.
+using Ortsmenge = std::set<std::string>;
 
 /// Absteigend, mit eigener Arbeitsliste statt `recursive_directory_iterator`: Dessen
 /// `disable_recursion_pending` haengt am Zustand des Iterators, und ein Ordner voller
 /// Maschinerie soll gar nicht erst geoeffnet werden.
 ///
 /// Zwei Ausgaben aus einem Durchgang: die Dateien, die gelesen werden duerfen, und die
-/// Namen derer, die in einem mit Absicht ungelesenen Ordner liegen. Zwei Durchgaenge
+/// Pfade derer, die in einem mit Absicht ungelesenen Ordner liegen. Zwei Durchgaenge
 /// ueber denselben Baum waeren zwei Ordnerlisten, die auseinanderlaufen koennen.
-std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Namensmenge& ungelesene,
+std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Ortsmenge& ungelesene,
                                      std::error_code& fehler) {
     std::vector<fs::path> gefunden;
     // Eingesammelt wird in einem Durchgang alles, was ueberhaupt gelesen werden kann;
@@ -1036,7 +1075,12 @@ std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Namensmenge& ungele
                 }
             } else if (fs::is_regular_file(eintrag, art) && ist_zieldatei(eintrag)) {
                 if (auftrag.ungelesen) {
-                    ungelesene.insert(name);
+                    // Der Pfad unter der Wurzel, mit Schraegstrichen. `lexically_relative`
+                    // und nicht ein Abschneiden der Wurzel als Zeichenkette: Der Baum
+                    // wird von einem kanonisierten Pfad aus abgestiegen, aber die
+                    // Trennzeichen sollen aus **einer** Stelle kommen.
+                    ungelesene.insert(
+                        eintrag.lexically_relative(wurzel).generic_string());
                 } else {
                     gefunden.push_back(eintrag);
                 }
@@ -1585,13 +1629,63 @@ bool nennt_ort_ausserhalb(std::string_view name) {
     return name.find("/../") != std::string_view::npos;
 }
 
+/// Nennt der Name einen mit Absicht ungelesenen Ordner als einen seiner Pfadteile?
+///
+/// Gefragt wird -- wie bei `nennt_ort_ausserhalb` -- an der **Gestalt des Namens** und
+/// nicht am Dateisystem. Das ist die Haelfte der Ortsfrage, die der Ruecklauf vom
+/// 2026-09-05 verlangt: Ein Verweis zeigt nur dann in einen ungelesenen Ordner, wenn er
+/// ihn ausspricht.
+///
+/// Ein Pfadteil zaehlt nur, wenn er **ganz** so heisst und ein Schraegstrich folgt.
+/// `unbefunde/x.md` und `befunde.md` nennen deshalb keinen: Das eine traegt den Namen
+/// als Endstueck eines laengeren Teils, das andere als Datei.
+bool nennt_ungelesenen_ordner(std::string_view name) {
+    std::size_t anfang = 0;
+    for (std::size_t i = 0; i < name.size(); ++i) {
+        if (name[i] != '/') {
+            continue;
+        }
+        if (ist_ungelesener_ordner(name.substr(anfang, i - anfang))) {
+            return true;
+        }
+        anfang = i + 1;
+    }
+    return false;
+}
+
+/// Liegt unter einem der eingesammelten Pfade eine Datei, die dieser Name meint?
+///
+/// Getroffen wird, wenn der genannte Pfad einer der eingesammelten **ist** oder dessen
+/// Endstueck an einer Pfadgrenze. Das Endstueck ist noetig, weil ein Zitat den Weg von
+/// der Wurzel nicht mitschreiben muss; die Pfadgrenze ist noetig, damit `ten/x.md` nicht
+/// in `daten/x.md` trifft.
+///
+/// Eine lineare Suche und kein Index: Hierher kommt nur, wer die Frage oben schon mit Ja
+/// beantwortet hat, und das sind je Lauf einstellig viele Namen.
+bool liegt_in_ungelesenem_ordner(std::string_view name, const Ortsmenge& ungelesene) {
+    for (Ortsmenge::const_iterator it = ungelesene.begin(); it != ungelesene.end(); ++it) {
+        const std::string& ort = *it;
+        if (ort.size() < name.size()) {
+            continue;
+        }
+        const std::size_t versatz = ort.size() - name.size();
+        if (ort.compare(versatz, name.size(), name) != 0) {
+            continue;
+        }
+        if (versatz == 0 || ort[versatz - 1] == '/') {
+            return true;
+        }
+    }
+    return false;
+}
+
 /// Wo die genannte Zieldatei liegt. Die Sorte "nicht im Bestand" zerfaellt seit Paket
 /// 0083 in drei, und nur die letzte ist ein Befund.
 enum class Zielart {
     Gelesen,     ///< im Bestand -- es wird nachgeschlagen
     Ausserhalb,  ///< der Name nennt selbst einen Ort ausserhalb beider Wurzeln
-    Ungelesen,   ///< es gibt die Datei, aber in einem mit Absicht ungelesenen Ordner
-    Tot          ///< kein Ort unter beiden Wurzeln traegt diesen Namen -- Befund
+    Ungelesen,   ///< der Name zeigt in einen ungelesenen Ordner, und dort liegt er auch
+    Tot          ///< keiner der drei Faelle -- Befund
 };
 
 /// Die ganze Entscheidung an einer Stelle, damit der Selbsttest unten **denselben** Weg
@@ -1601,15 +1695,18 @@ enum class Zielart {
 /// Die Reihenfolge entscheidet und ist keine Geschmackssache: Der Bestand zuerst, denn
 /// eine Datei, die gelesen wird, ist gelesen, auch wenn eine gleichnamige unter
 /// `befunde` liegt. Dann der Name, der seinen Ort selbst ausspricht. Erst danach die
-/// Frage, ob es ihn irgendwo gibt.
-Zielart zielart(std::string_view name, bool im_bestand, const Namensmenge& ungelesene) {
+/// Ortsfrage -- und die ist seit dem Ruecklauf vom 2026-09-05 **zweiteilig**: Der Name
+/// muss den ungelesenen Ordner nennen, und unter dem genannten Pfad muss dort auch eine
+/// Datei liegen. Ein Name, der seinen Ordner nicht bei sich traegt, ist tot; der Preis
+/// dieser Richtung steht im Kopf.
+Zielart zielart(std::string_view name, bool im_bestand, const Ortsmenge& ungelesene) {
     if (im_bestand) {
         return Zielart::Gelesen;
     }
     if (nennt_ort_ausserhalb(name)) {
         return Zielart::Ausserhalb;
     }
-    if (ungelesene.find(std::string(basisname(name))) != ungelesene.end()) {
+    if (nennt_ungelesenen_ordner(name) && liegt_in_ungelesenem_ordner(name, ungelesene)) {
         return Zielart::Ungelesen;
     }
     return Zielart::Tot;
@@ -1627,40 +1724,85 @@ Zielart zielart(std::string_view name, bool im_bestand, const Namensmenge& ungel
 // am 2026-09-05 genau **eine** Fundstelle dieser Sorte, und sie ist keine tote -- der
 // Riegel kann dort also nur zeigen, dass er gruen bleibt. Die Faelle 3 und 4 unten
 // halten die Gegenprobe fest.
+//
+// **Seit dem Ruecklauf vom 2026-09-05 traegt die Spalte Pfade und keine Namen mehr.**
+// Die fuenf Faelle ab dem sechsten sind die, an denen die erste Fassung gruen blieb: Sie
+// alle nennen einen Namen, den es unter `bau/` oder `befunde/` als Zwilling gibt, und
+// alle bis auf zwei muessen trotzdem tot sein.
 
 struct Zielfall {
     std::string_view name;
     /// Steht der Name im gelesenen Bestand?
     bool im_bestand;
-    /// Basisnamen in den mit Absicht ungelesenen Ordnern, durch `|` getrennt.
+    /// Pfade unterhalb der Wurzel, die in mit Absicht ungelesenen Ordnern liegen,
+    /// durch `|` getrennt.
     std::string_view ungelesene;
     Zielart erwartet;
     std::string_view herkunft;
 };
 
-constexpr std::array<Zielfall, 8> ZIELFAELLE = {{
+constexpr std::array<Zielfall, 16> ZIELFAELLE = {{
     // --- Was gelesen wird, bleibt gelesen ------------------------------------
     {"daten/adressen.md", true, "", Zielart::Gelesen,
-     "der Regelfall: 38 der 38 aufgeloesten Zitate gehen hier durch"},
-    {"adressen.md", true, "adressen.md", Zielart::Gelesen,
+     "der Regelfall: alle aufgeloesten Zitate gehen hier durch"},
+    {"adressen.md", true, "befunde/messung-0069/baum/daten/adressen.md",
+     Zielart::Gelesen,
      "gebaut: derselbe Name liegt zugleich in einem ungelesenen Ordner. Der Bestand "
      "gewinnt -- sonst uebergeht der Riegel, was er lesen darf"},
 
     // --- Die eine echte Fundstelle dieser Sorte, und ihre Gegenprobe ---------
     {"befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", false,
-     "pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", Zielart::Ungelesen,
+     "befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md",
+     Zielart::Ungelesen,
      "parameter.toml -- die einzige Fundstelle dieser Sorte im Bestand, gemessen "
      "2026-09-05. Sie muss uebergangen bleiben"},
     {"befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", false, "",
      Zielart::Tot,
-     "dieselbe Stelle, den Bericht weggedacht: Ohne einen Ort dieses Namens ist der "
-     "Verweis tot. Erst diese Zeile zeigt, dass die Ordnerliste entscheidet und nicht "
-     "der Vorsatz im Pfad"},
+     "dieselbe Stelle, den Bericht weggedacht: Der Ordner allein traegt nichts. Wer "
+     "nur den Vorsatz prueft, uebergeht jeden erfundenen Namen mit diesem Vorsatz"},
 
     // --- Der erfundene Name --------------------------------------------------
-    {"spiel-gibt-es-nicht.md", false, "spiel.md|technik.md", Zielart::Tot,
-     "gebaut: der Rotfall dieses Pakets. Ein aehnlicher Name im Bestand rettet ihn "
-     "nicht -- verglichen wird der ganze Basisname"},
+    {"spiel-gibt-es-nicht.md", false,
+     "bau/kp0010/quelle/specs/0016-hedgefonds/spiel.md|bau/kp0010/quelle/technik.md",
+     Zielart::Tot,
+     "gebaut: der Rotfall dieses Pakets. Ein aehnlicher Name im ungelesenen Ordner "
+     "rettet ihn nicht"},
+
+    // --- Der Ruecklauf vom 2026-09-05: der Ort entscheidet, nicht der Name ---
+    {"spiel.md", false, "bau/kp0010/quelle/specs/0016-hedgefonds/spiel.md",
+     Zielart::Tot,
+     "gemessen: der Vorgang, an dem die erste Fassung gescheitert ist. Faellt spiel.md "
+     "aus den Vorgaben, findet der Riegel den Namen unter bau/ wieder. Der Verweis "
+     "zeigt nicht dorthin -- er ist tot"},
+    {"specs/0016-hedgefonds/spiel.md", false,
+     "bau/kp0010/quelle/specs/0016-hedgefonds/spiel.md", Zielart::Tot,
+     "gemessen an daten/adressen.md: derselbe Vorgang mit einem laengeren Verweis. Er "
+     "ist das Endstueck eines ungelesenen Pfades und nennt trotzdem keinen ungelesenen "
+     "Ordner -- das Endstueck allein genuegt nicht"},
+    {"bau/kp0010/quelle/specs/0016-hedgefonds/spiel.md", false,
+     "bau/kp0010/quelle/specs/0016-hedgefonds/spiel.md", Zielart::Ungelesen,
+     "gebaut: die Gegenrichtung derselben zwei Zeilen. Wer den Ordner mitschreibt, "
+     "wird uebergangen -- sonst waere die Trennung nur eine strengere Sperre"},
+    {"befunde/gibt-es-nicht-2026-09-05.md", false,
+     "befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md",
+     Zielart::Tot,
+     "gebaut: der Ordner stimmt, die Datei liegt dort nicht. Die zweite Haelfte der "
+     "Ortsfrage -- ohne sie deckt der Vorsatz befunde/ jeden toten Verweis zu"},
+    {"unbefunde/spiel.md", false, "unbefunde/spiel.md", Zielart::Tot,
+     "gebaut: ein Ordner, dessen Name auf den ungelesenen endet. Ein Pfadteil zaehlt "
+     "nur, wenn er ganz so heisst"},
+    {"befunde/x.md", false, "daten/unbefunde/x.md", Zielart::Tot,
+     "gebaut: derselbe Griff auf der anderen Seite. Der genannte Pfad ist ein "
+     "Endstueck des liegenden, aber nicht an einer Pfadgrenze -- ohne diese Pruefung "
+     "traefe ten/x.md in daten/x.md"},
+    {"befunde.md", false, "befunde.md", Zielart::Tot,
+     "gebaut: der ungelesene Ordnername als Datei. Ohne folgenden Schraegstrich ist er "
+     "kein Ordner"},
+    {"daten/reihen.toml", false, "bau/kp0027r3/quelle/daten/reihen.toml", Zielart::Tot,
+     "gebaut, und die Anwartschaft aus der Pruefung: 153 von 159 Namen des "
+     "Zielbestands haben unter bau/ oder befunde/ einen Zwilling. Sobald ein "
+     "geprueftes Zitat auf eine vorhabenseigene Datei zeigt, haengt alles an dieser "
+     "Zeile"},
 
     // --- Was seinen Ort selbst ausspricht ------------------------------------
     {"/usr/share/doc/lizenz.md", false, "", Zielart::Ausserhalb,
@@ -1673,10 +1815,16 @@ constexpr std::array<Zielfall, 8> ZIELFAELLE = {{
      "wenn sein Basisname nicht im Bestand steht; er faellt dann nach draussen statt in "
      "die Befunde -- die nachsichtige Richtung, in der ein Fehler einen ungeprueften "
      "Verweis kostet und kein falsches Rot"},
+    {"../befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", false,
+     "befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md",
+     Zielart::Ausserhalb,
+     "gebaut: derselbe Bericht, aus der Wurzel heraus genannt. Er nennt einen "
+     "ungelesenen Ordner und liegt dort auch -- diese Zeile haelt fest, dass der "
+     "Aufstieg trotzdem vorgeht, sonst entschiede die Reihenfolge zufaellig"},
 }};
 
-Namensmenge zerlege_namen(std::string_view spalte) {
-    Namensmenge menge;
+Ortsmenge zerlege_orte(std::string_view spalte) {
+    Ortsmenge menge;
     std::string laufend;
     for (std::size_t z = 0; z <= spalte.size(); ++z) {
         if (z == spalte.size() || spalte[z] == '|') {
@@ -1697,7 +1845,7 @@ std::size_t selbsttest_zielart() {
     for (std::size_t k = 0; k < ZIELFAELLE.size(); ++k) {
         const Zielfall& fall = ZIELFAELLE[k];
         const Zielart art =
-            zielart(fall.name, fall.im_bestand, zerlege_namen(fall.ungelesene));
+            zielart(fall.name, fall.im_bestand, zerlege_orte(fall.ungelesene));
         if (art != fall.erwartet) {
             ++falsch;
             std::fprintf(stderr,
@@ -2601,7 +2749,7 @@ std::size_t selbsttest_ohne_anfuehrung() {
 }
 
 void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
-                   const Zielbestand& bestand, const Namensmenge& ungelesene,
+                   const Zielbestand& bestand, const Ortsmenge& ungelesene,
                    std::map<std::string, std::vector<std::string>>& ueberschriften,
                    std::vector<Zitatbefund>& befunde,
                    std::vector<Zitatbefund>& tote_ziele,
@@ -2847,10 +2995,10 @@ int main(int argc, char** argv) {
     }
 
     std::error_code lesefehler;
-    // Die Namen aus den ungelesenen Ordnern beider Wurzeln in **einer** Menge: Die
-    // Frage, die sie beantworten, kennt keine Wurzel -- sie lautet, ob es einen Ort
-    // dieses Namens ueberhaupt gibt.
-    Namensmenge ungelesene;
+    // Die Pfade aus den ungelesenen Ordnern beider Wurzeln in **einer** Menge: Die
+    // Frage, die sie beantworten, kennt keine Wurzel -- ein Zitat schreibt den Weg von
+    // der Wurzel nicht mit, und welche der beiden gemeint war, steht nirgends.
+    Ortsmenge ungelesene;
     const std::vector<fs::path> gelesen = sammle_dateien(wurzel, ungelesene, lesefehler);
     if (lesefehler) {
         std::fprintf(stderr, "belegstellen_riegel: Lesefehler unter '%s': %s\n",
@@ -2936,7 +3084,7 @@ int main(int argc, char** argv) {
 
     std::fprintf(stdout,
                  "belegstellen_riegel, Bedingung 2 (Abschnittszitat): %zu Bauquellen und "
-                 "%zu Datendokumente gelesen, %zu Dateien im Zielbestand, %zu Namen in "
+                 "%zu Datendokumente gelesen, %zu Dateien im Zielbestand, %zu Pfade in "
                  "ungelesenen Ordnern; %zu Zitate der geprueften Form gefunden, %zu "
                  "davon aufgeloest (Untergrenze %zu), %zu Fundstellen uebergangen.\n"
                  "Davon ohne Anfuehrung: %zu Zitate; weitere %zu Fundstellen ohne "

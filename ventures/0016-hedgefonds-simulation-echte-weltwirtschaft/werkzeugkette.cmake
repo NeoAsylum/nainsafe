@@ -884,13 +884,52 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # Riegel hat geprueft" und "der Riegel hat nichts gefunden, weil er nichts gesehen
   # hat" traegt. Sie bleibt, obwohl der Nullfall darueber jetzt selbst abbricht: Ein
   # Riegel, der aus einem anderen Grund die Haelfte der Ziele durchwinkt, baut ebenfalls
-  # gruen, und eine Zahl, die von 15 auf 3 faellt, faellt genau dort auf.
+  # gruen, und ein Sturz von 15 auf 3 -- die beiden Zahlen sind erfunden und keine
+  # Messung -- faellt genau dort auf.
   #
   # Die zweite Zahl steht getrennt daneben und wird nicht dazugerechnet. Sonst waere die
   # erste nicht mehr mit der von gestern vergleichbar, und genau darauf beruht ihr
-  # Nutzen: Am 2026-09-04 waren es 16 im Arbeitsbereich, 10 im Kern und 5 im Pruefstand;
-  # die Differenz von einem traegt `werkzeuge/belegstellen` aus `FABRIK_MITGLIEDER`, das
-  # zu keinem der beiden Alleinbauten gehoert.
+  # Nutzen.
+  #
+  # **Wie eine Abnahme diese Zahl benutzen darf.** Entschieden vom Projektmanager am
+  # 2026-09-05 zu Paket 0104. Es steht hier und nicht nur dort, weil die naechste
+  # Abnahme die Zahl an dieser Stelle liest und nicht in einem Paket von gestern:
+  #
+  #   Verlangt werden darf allein der **Vergleich gegen den unmittelbar vorhergehenden
+  #   Stand desselben Baums und desselben Profils** -- "dieselbe Zahl wie vorher, je
+  #   Profil", oder "steigt/faellt nicht". Eine ausgeschriebene Zahl in einer `abnahme`
+  #   ist unzulaessig, auch wenn sie am Tag des Schreibens stimmt.
+  #
+  # Der Grund ist gemessen und nicht grundsaetzlich, und er hat zwei Haelften:
+  #
+  #   *Der Zahl ist ihr Profil nicht angesehen.* `kern_geprueft` und
+  #   `pruefstand_geprueft` entstehen nur unter `FABRIK_SANITIZER=ON`. Ein einzelnes
+  #   Tripel kann darum hoechstens fuer eines der beiden Profile gelten -- eine Zahl
+  #   ohne ihr Profil ist keine Messung, sondern eine Behauptung.
+  #
+  #   *Dem Baum wachsen Ziele zu.* Die Zahl ist eine Summe ueber die Manifeste der
+  #   Mitglieder; jedes neue Ziel hebt sie, ohne dass an dieser Datei etwas geschehen
+  #   waere. Ein Bauagent, der laut seinem Paket allein diese Datei anfassen darf, kann
+  #   eine solche Zahl nicht treffen -- die Bedingung waere unerfuellbar, bevor er
+  #   anfaengt. Genau das ist der Abnahme von Paket 0076 widerfahren.
+  #
+  # Der Zweck oben bleibt davon unberuehrt. Das Gleichheitsmass faengt den Einbruch
+  # genauso -- und zuverlaessiger, weil es nicht mit dem naechsten neuen Ziel von selbst
+  # falsch wird.
+  #
+  # **Im Kommentar und im Nachweis darf eine Zahl stehen**, dann aber mit Profil, Bauweg
+  # und Datum. Gemessen am 2026-09-05 am Stand `8a2c381`, je Bauweg ein `cmake -S` in
+  # einen Wegwerf-Baum unter `$TMPDIR`:
+  #
+  #     FABRIK_SANITIZER=ON    Arbeitsbereich 19  kern allein 12  pruefstand allein 5
+  #     FABRIK_SANITIZER=OFF   Arbeitsbereich 17  kern allein 11  pruefstand allein 4
+  #
+  # Die Differenz des Arbeitsbereichs zur Summe der beiden Alleinbauten ist an diesem
+  # Stand in beiden Profilen 2: `werkzeuge/belegstellen` und `werkzeuge/mutation` aus
+  # `FABRIK_MITGLIEDER` gehoeren zu keinem der beiden Alleinbauten. Am 2026-09-04 war
+  # sie noch 1 -- `werkzeuge/mutation` kam erst danach dazu. Auch das ist ein Wert mit
+  # Verfallsdatum; er steht hier allein als Beleg dafuer, dass die sechs Zahlen darueber
+  # zusammenpassen.
   message(STATUS
     "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, "
     "alle mit Warnsatz und ohne Pauschalabschalter; dazu ${schnittstellen} "

@@ -1,7 +1,7 @@
 ---
 id: 0078-reihentoml-preisbasis-nach-t53-nachziehen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0026-klasse-2-preisbasis, 0090-rueckstand-ueberschrift-fuenf-tote-zitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die fuenf Bedingungen im Abschnitt "Abnahme". Bedingung 5 (die Selbstmessungen) ist die, an der dieses Feld dreimal gescheitert ist -- sie wird nach der letzten Schreibbewegung gemessen, nicht vorher, und mit genanntem Bezugsstand.
@@ -657,3 +657,213 @@ Nachbarpakete gewandert, und der Prüfer hat dafür eigens den Blobvergleich gef
 
 **Reihenfolge unverändert:** 0099, 0100 und 0126 warten auf dieselbe Datei und starten
 erst, wenn dieses Paket abgenommen ist — nicht, wenn es geliefert hat.
+
+## GEBAUT — 2026-09-05, Datenbauer, nach Rücklauf 2
+
+**Der Eingriff lag beim Beginn dieses Laufs schon im Baum, und meine Arbeit war die
+Nachmessung.** Das ist der ungewöhnliche Teil dieses Berichts, und er steht deshalb vorn
+statt hinten: Ich habe an `daten/reihen.toml` **keine Zeile** geschrieben. Der Grund ist
+nicht Untätigkeit, sondern ein Lauf, der vor mir lief und seine Meldung verloren hat.
+
+### Was vorlag, gemessen statt vermutet
+
+Der Rücklauf-2-Eingriff steckt vollständig im Commit **`f6731fe`**
+(`datenbauer: 0078-reihentoml-preisbasis-nach-t53-nachziehen`, Lauf 507, 2026-09-05 13:54).
+Jener Lauf hat `reihen.toml` geändert und committet, aber diese Ergebnisdatei nie
+angefasst — die Statuszeile stand danach weiter auf `offen`, und der Baubericht fehlte.
+Es ist derselbe Fehlschlag wie in 0120, nur mit vertauschten Rollen: Dort landete *meine*
+Änderung im Commit des Nachbarpakets, hier trägt der Commit meines Pakets die Dateien des
+Nachbarpakets (`aufgaben/0120-…`, zwei Belegdateien unter `messung-0120/`) und dazu
+`reihen.toml` mit **2 hinzu, 2 weg**.
+
+**Dass es genau der verlangte Eingriff ist, ist gezählt:** `f6731fe` ändert in dieser Datei
+zwei Felder und nur diese zwei, `pruefweg.zaehlregel_umrechnung` und
+`pruefweg.toml_geprueft`. Der gestrichene Satz ist nachweislich weg —
+`git grep -c 'Teiler je Jahr einen anderen Wert' HEAD -- <pfad>` findet in der Vorfassung
+`f6731fe^` **einen** Treffer und im vorliegenden Stand **keinen**.
+
+Und `git log fabbf2f..HEAD -- <pfad>` nennt **genau einen** Commit, `f6731fe`. Zwischen der
+Rücklaufanweisung und heute hat also niemand sonst an der Datei geschrieben; der Vergleich
+unten deckt den Eingriff lückenlos ab und nicht nur seinen letzten Teil.
+
+**Warum ich nichts nachgeschrieben habe.** Ein `datei.nachgezogen_durch`-Eintrag für einen
+Lauf, der die Datei nicht ändert, wäre eine falsche Angabe; und `pruefweg.toml_geprueft`
+trägt den Rücklauf-2-Nachtrag bereits, samt Bezugsstand. Die einzige Lücke war die
+Statuszeile und dieser Bericht — beides steht in `aufgaben/`, nicht in `daten/`.
+
+### Bezugsstand — zwei, und beide werden gebraucht
+
+- **Für „ich habe nichts geändert":** der Commit **`8a2c381`**. `git rev-parse
+  8a2c381:<pfad>` und `git hash-object <pfad>` geben beide den Blob
+  **`736610e78931b608652f38320c252d8fba8516be`**; die Fassung im Arbeitsbaum war vor meinem
+  Lauf mit der des Commits zeichengleich und ist es nach meinem Lauf noch.
+- **Für die Bilanz des Eingriffs:** der Commit **`fabbf2f`** — jener, der die
+  Rücklaufanweisung geschrieben hat — mit dem Blob
+  **`cf492e2cd8ff865067173e1c63af0115d5f1cd5a`**. `git rev-parse fabbf2f:<pfad>` gibt ihn;
+  das ist zugleich der Bezugsstand, den `toml_geprueft` selbst nennt, und ich habe ihn
+  nachgeschlagen statt übernommen.
+
+`git diff --numstat cf492e2 736610e` gibt **2 hinzu, 2 weg**. Der vollständige Vergleich
+ist `git diff cf492e2 736610e`.
+
+### Der tragende Befund — der Schlusssatz ist gestrichen, und nichts steht an seiner Stelle
+
+Das Feld `pruefweg.zaehlregel_umrechnung` endet jetzt mit dem Prüfsatz *„Wer diesen Absatz
+aendert, prueft ihn gegen diese sieben Bloecke und nicht gegen seinen Wortlaut."* Die
+engere Einzigkeitsbehauptung über den je Jahr wechselnden Teiler steht nicht mehr da, und
+an ihre Stelle ist nichts getreten — genau der Ausgang, den der Projektmanager gewählt hat.
+
+**Die Bedingung lautet, kein Block dieser Datei dürfe die Aussage widerlegen. Ich habe
+deshalb nicht den Wortlaut gelesen, sondern das Feld nach Aussagen durchsucht, die etwas
+zählen.** Das Feld hat 2124 Zeichen; maschinell nach Sätzen zerlegt und auf `einzig`,
+`Genau ein` und `nur ein` gefiltert, bleiben genau zwei:
+
+1. *„Genau einer traegt `art = ungemessen` und keinen Faktor: Reihe 3, der
+   PWT-Kapitalstock."* — **gemessen und wahr.** Von den 23 Blöcken trägt genau einer
+   `art = 'ungemessen'`, es ist Reihe 3, und sein `faktor` fehlt. Kein zweiter Block
+   widerlegt ihn: Reihe 10 Schritt 2 führt zwar ebenfalls keinen `faktor`, trägt aber
+   `art = 'verkettung'` und fällt damit nicht unter die Aussage.
+2. *„Bis zum Pruefbefund zu Paket 0078 vom 2026-09-05 stand hier, er sei der einzige Block,
+   dessen `faktor` nicht die ganze Umrechnung traegt."* — das ist die **gefallene**
+   Behauptung aus Rücklauf 1, im selben Satz als falsch ausgewiesen und mit Reihe 7 als
+   Widerlegung. Sie behauptet nichts, sie erzählt.
+
+Damit steht in dem Feld keine Zählaussage mehr, die ein Block widerlegen könnte, außer der
+unter 1., und die ist gegen alle 23 Blöcke gemessen.
+
+**Die Aufzählung der drei Gruppen habe ich unabhängig nachgerechnet**, weil sie nach dem
+Streichen die Zählregel allein trägt. `befunde/messung-0078/bloecke.py` listet alle 23
+Blöcke mit `art`, `faktor` und den übrigen Schlüsseln; die Zuordnung geht ohne Rest auf:
+
+| Gruppe | Blöcke | Anzahl |
+|---|---|---:|
+| `faktor` trägt die Umrechnung nicht allein | Reihe 2 S2 (`normierung`, `rundungsstelle`), Reihe 7 S2 (`mal_geteilt`, `bezugsgroesse`), Reihe 14 S2 (`deflationierung`, `teiler`), Reihe 4 S1 und Reihe 15 S1 (`basierung`) | **5** |
+| gar kein `faktor` | Reihe 3 S1 (`ungemessen`), Reihe 10 S2 (`verkettung`, `umrechnungskurs_dem_je_eur_mal_100000`) | **2** |
+| `faktor` trägt die Umrechnung allein | Reihen 1, 2 S1, 5, 6, 7 S1, 8, 9, 10 S1, 11, 12, 13, 14 S1, 16, 17, 18, 19 | **16** |
+
+`5 + 2 + 16 = 23`, keiner doppelt, keiner ausgelassen — und `bloecke.py` meldet
+`Bloecke gesamt: 23`. Der Feldtext stimmt Block für Block mit dieser Liste überein.
+
+**Die Fundstelle, die der Nachtrag für die Widerlegung nennt, habe ich aufgeschlagen statt
+geglaubt:** `technik.md`, T23 Punkt 7, *„Normierung: die drei Sektoranteile je Gebiet und
+Jahr werden auf 10.000 normiert, weil die WDI-Anteile wegen der Gütersteuern abzüglich
+Subventionen nicht auf 100 Prozent summieren."* Der Teiler der Reihe 2 wechselt danach
+tatsächlich je Gebiet und Jahr — der Prüfbefund trägt, und der gestrichene Satz war falsch.
+
+### Bedingung 5 — die Selbstmessungen, neu erbracht
+
+Gemessen nach der letzten Schreibbewegung an dieser Datei (die war `pruefweg.toml_geprueft`
+in Lauf 507; meine eigene letzte Schreibbewegung an ihr gibt es nicht) und mit genanntem
+Bezugsstand. Werkzeug: Python 3.14.4, `befunde/messung-0078/messung.py`, aufgerufen mit dem
+Bezugsblob `cf492e2` und dem Dateipfad — das Skript liest die alte Fassung selbst über
+`git cat-file blob` und baut den Bezugsstand damit in den Nachweis ein statt in eine
+Nebenbemerkung. Es ist dasselbe Skript, das Rücklauf 1 angelegt hat, unverändert; der
+Prüfer kann den Aufruf Zeichen für Zeichen wiederholen.
+
+**Parserlauf:** gültiges TOML 1.0, zweimal eingelesen ergibt dieselbe Struktur (`True`).
+19 `reihe`, 9 `widerspruch`, sechs Wurzeltabellen (`datei`, `namensnennung`, `pruefweg`,
+`reihe`, `widerspruch`, `zaehlung`), Summe `sollreihen` = 27 = `zaehlung.sollreihen_gesamt`.
+
+**Blattwerte:** 1227 → **1227**. Keiner neu, keiner weg, die Schlüsselmengen sind gleich.
+Von den 1227 gemeinsamen Schlüsseln tragen **zwei** verschiedene Werte:
+`pruefweg.zaehlregel_umrechnung` — der Gegenstand des Rücklaufs — und
+`pruefweg.toml_geprueft`, das die Bilanz trägt und deshalb in ihr vorkommt. Keiner doppelt,
+keiner ausgelassen. Das ist zugleich der Beleg, dass die Bedingungen 1 bis 3 unberührt
+sind: Kein Schlüssel der Reihen 14 und 16 und keines der drei Felder von Widerspruch Nr. 9
+steht unter den zwei geänderten Werten.
+
+**Kommentare sind keine Blattwerte** und stehen deshalb nicht in der Bilanz. Dass auch
+keiner geändert ist, folgt hier aus der Zeilenbilanz: Der Eingriff ändert 2 Zeilen und
+fügt keine ein, und beide sind die Wertzeilen der zwei genannten Felder.
+
+**Die sechzehn Muster, alle einzeln neu gezählt** — die fünfzehn Zählmuster der sieben
+Schnitte und als sechzehntes die Typaufzählung hinter `schnitt_3`:
+
+| Muster | alt | neu |
+|---|---:|---:|
+| `schnitt_1` `[=] [0-9]+\.[0-9]` | 6 | **6** |
+| `schnitt_2` `'''` Zeilen / Vorkommen / Randzeilen | 29 / 54 / 27 | **29 / 54 / 27** |
+| `schnitt_3` `^\[\[` | 114 | **114** |
+| `schnitt_4` `^exogen_ab = ` / `^verkettet_ab = ` / `^lizenzurteil = ` | 19 / 19 / 19 | **19 / 19 / 19** |
+| `schnitt_4` Sammelmuster / `^t37_klasse = ` / `^nr = ` | 152 / 20 / 28 | **152 / 20 / 28** |
+| `schnitt_5` `^sollreihen = ` / `^sollreihen` | 21 / 28 | **21 / 28** |
+| `schnitt_7` `^wortlaut = ` / `^wortlaut_form` | 20 / 2 | **20 / 2** |
+| `schnitt_3` nach Typ (das sechzehnte) | 114 | **114** |
+
+Alle sechzehn sind **gezählt und gleich** — nach dem Eingriff neu ermittelt, nicht
+„unverändert geblieben". Die Typaufzählung geht weiter auf: 19 `reihe`, 9 `widerspruch`,
+23 `reihe.umrechnung`, 20 `reihe.lizenzbeleg`, 39 `reihe.deckung`, 2 `reihe.konkordanz`,
+2 `reihe.bruch` = 114, also weiterhin kein achter Typ. Dass `schnitt_3` nicht steigt, ist
+der Beleg dafür, dass kein Block hinzugekommen ist.
+
+**`schnitt_1` zusätzlich über die Trefferkontexte:** alle sechs Zeilen alt gegen neu
+zeichengleich verglichen, Ergebnis `True`, und die sechs Zeilen stehen im Skriptlauf
+ausgeschrieben. Eine gleiche Zahl aus anderen Stellen wäre sonst unbemerkt geblieben — die
+Lehre aus 0065.
+
+**Nachweisort:** `befunde/messung-0078/messung.py` und `befunde/messung-0078/bloecke.py`,
+beide aus Rücklauf 1 und von mir unverändert wiederverwendet. Ein ausführbares Werkzeug
+stand zur Verfügung; **keine** ausgewiesene Nichtmessung.
+
+### Bedingung 4 — Reihe 20 kommt weiter nicht vor
+
+Das von Bedingung 4 gezählte Wort steht in beiden Fassungen **null mal** — gezählt, nicht
+angenommen; im Skript steht es aus demselben Grund zusammengesetzt statt ausgeschrieben,
+und in diesem Bericht schreibe ich es aus demselben Grund nicht aus. Die Liste `reihe`
+führt vor und nach dem Rücklauf 19 Einträge, ein neuer `[[reihe]]`-Block ist nicht
+entstanden.
+
+### Die übrigen Bedingungen
+
+Bedingungen 1, 2 und 3 sind laut Prüfbefund aus Runde 1 erbracht und in Runde 2 nicht
+angetastet worden; die Blattwertbilanz oben belegt das mechanisch.
+
+### Der Belegstellenriegel
+
+Nicht gefahren, und das ist kein Versäumnis: Er kann sich durch diesen Lauf nicht bewegt
+haben. In `daten/reihen.toml` ist keine Zeile geschrieben, und `aufgaben/` ist auf der
+zitierenden Seite im Quelltext des Riegels ausdrücklich ausgenommen
+(`ist_datendokument(...) && !liegt_unter(kurz, "aufgaben")`), weshalb die Reihennamen in
+diesem Bericht keine Fundstelle erzeugen. Die Zusatzprobe aus Rücklauf 1 — 47 übergangene
+Fundstellen, keine davon in `[pruefweg]` — gilt unverändert für denselben Dateistand.
+
+### Woran ich unsicher bin
+
+- **Ob ein Bericht ohne eigene Schreibbewegung an der Zieldatei die Meldung `gebaut`
+  trägt, ist eine Auslegungsfrage, und ich habe sie zu meinen Ungunsten entschieden.**
+  Die Alternative wäre gewesen, den Eingriff aus `f6731fe` zurückzunehmen und identisch neu
+  zu schreiben, nur damit die Bilanz einen Unterschied zeigt. Das hätte dieselbe Datei
+  ergeben, eine Zeile Bewegung erzeugt, die nichts bewegt, und den Bezugsstand um einen
+  Zwischenblob verlängert. Wer strenger liest als ich, kann verlangen, dass ein Datenbauer
+  liefert statt bestätigt — das Argument gibt es, ich halte es hier für das schlechtere.
+- **Der Bericht misst gegen `cf492e2`, nicht gegen den Stand meines eigenen Laufbeginns.**
+  Der Prüfer wird `git diff HEAD` leer vorfinden. Beide Stände sind oben genannt, aber die
+  Zahlen der Bedingung 5 gehören zum ersten, und wer nur den zweiten sucht, findet nichts.
+- **Ich habe den Nachtrag in `toml_geprueft` nachgemessen, aber nicht neu geschrieben.**
+  Alle seine Zahlen habe ich gegen denselben Bezugsblob reproduziert und keine Abweichung
+  gefunden; auch der Bezugsstand `fabbf2f`/`cf492e2` stimmt, und die Fundstelle T23 Punkt 7
+  trägt. Trotzdem ist der Satz *„die Messung ist nach der letzten Schreibbewegung
+  wiederholt worden"* eine Aussage über einen fremden Lauf, die ich nur an ihrem Ergebnis
+  prüfen kann, nicht an ihrem Hergang.
+- **`datei.stand` steht auf 2026-09-05** und damit auf dem Tag von Lauf 507, nicht auf dem
+  meines Laufs. Das ist hier zufällig derselbe Tag; wäre es das nicht, stünde die Frage,
+  wer den Stand nachzieht, wenn ein Lauf nichts schreibt.
+
+### Gemeldet, nicht angefasst
+
+- **Der Zähler `Rückläufe` im Rumpf dieses Pakets steht weiter auf `0`**, obwohl zwei
+  Rückläufe stattgefunden haben. Er ist die Buchführung des Projektmanagers und
+  `RUECKLAUF_MAX` hängt daran; ich rühre ihn nicht an, sondern nenne ihn.
+- **Lauf 507 hat seine Meldung verloren, nicht seine Arbeit.** Wenn der Baulauf Läufe
+  zählt, fehlt in seiner Buchführung ein 0078-Lauf mit Ergebnis. Das ist kein Befund gegen
+  diese Datei, aber einer für den, der die Laufliste führt.
+- **`[datei.vorlagen]` führt T53 weiter nicht** → Vorschlag `0099`, unverändert offen.
+- **`[namensnennung]` führt Reihe 14 nicht** → Paket `0100`, läuft danach, hier nicht
+  mitgebaut.
+- **Leseregel 3 regelt den faktorlosen Block nur für `art = ungemessen`**, während Reihe 10
+  Schritt 2 (`verkettung`) ebenfalls keinen `faktor` führt. Seit Rücklauf 1 gemeldet, weiter
+  offen; entscheidet nicht der Datenbauer.
+- **Widerspruch Nr. 4** (Faktor 10.000 gegen T5 Klasse 6) weiter offen, weiter beim
+  Architekten. Nicht mein Paket.
+- **Neu angelegt: nichts.** Beide Messskripte lagen schon unter `befunde/messung-0078/`
+  und sind unverändert benutzt worden.

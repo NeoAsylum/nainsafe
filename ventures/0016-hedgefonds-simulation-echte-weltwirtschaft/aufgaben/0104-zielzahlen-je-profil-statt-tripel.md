@@ -1,7 +1,7 @@
 ---
 id: 0104-zielzahlen-je-profil-statt-tripel
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0103-notfound-endung-verdeckt-schalter]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Nur noch Bedingung 2 im Abschnitt "Abnahme" -- Bedingung 1 (die Entscheidung) ist am 2026-09-05 vom Projektmanager getroffen und steht im Abschnitt "Die Entscheidung". Der Kommentar in `werkzeugkette.cmake` widerspricht danach keiner Messung mehr und schreibt das Verfahren aus, nach dem kuenftige Abnahmen die Zielzahl benutzen duerfen. Nachweis: die drei Bauwege in beiden Profilen konfiguriert, die sechs gemeldeten Zahlen aufgeschrieben, und keine davon steht im Widerspruch zu dem, was im Kommentar behauptet wird. Nennt der Kommentar danach Zahlen, nennt er auch das Profil und das Datum.
@@ -145,3 +145,26 @@ wollen; die Abnahme von 0076 nachtraeglich umschreiben (sie ist erbracht und gep
 ## Rueckläufe
 
 0.
+
+## Gebaut am 2026-09-05 (Kernbauer)
+
+Bezugsstand `8a2c381`; `werkzeugkette.cmake` dort unveraendert und vor der ersten
+Aenderung nach `$TMPDIR` gefroren.
+
+Der Kommentar bei `message(STATUS ...)` in `werkzeugkette.cmake` schreibt jetzt das
+Gleichheitsmass aus -- am Ort der Zahl selbst, wo die naechste Abnahme es liest -- und
+nennt beide Haelften der Begruendung (Profilabhaengigkeit, wachsender Baum). Wo er
+Zahlen nennt, nennt er Profil, Bauweg und Datum. Die beiden Beispielzahlen 15 und 3 sind
+als erfunden gekennzeichnet.
+
+**Nachgemessen, nicht abgeschrieben.** Am Bezugsstand sind es **19 / 12 / 5** unter
+`FABRIK_SANITIZER=ON` und **17 / 11 / 4** unter `OFF` -- je ein Ziel mehr im
+Arbeitsbereich als am 2026-09-05 im Paket notiert, weil `werkzeuge/mutation` seither
+`mutationstreiber` beitraegt. Zweimal unabhaengig gemessen (eigener Lauf und
+`befunde/messung-0076/bauwege.py`), vorher wie nachher identisch, alle sechs Code 0.
+
+Die Aenderung ist ausschliesslich Kommentar: 47 geaenderte Zeilen, keine ausserhalb
+eines `#`; die 325 Codezeilen sind vorher und nachher byteweise dieselben.
+Arbeitsbereich `--build` und `ctest` in beiden Profilen gruen, 14 von 14 Tests.
+
+Nachweis: `befunde/messung-0104/bericht.md`.
