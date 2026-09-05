@@ -30,6 +30,27 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04-2.md` (voll bei Paket 0073).
 
 ## Was funktioniert
 
+- 2026-09-05 (0079) -- **Der Mutant, der die Rollentrennung dieser Pruefung ausmacht:
+  die Zuweisung des Urteils durch eine Konstante ersetzen** (`steht_da = true`). Er
+  trennt "die Bausteine sind geprueft" von "das Urteil ist geprueft". Bei 0079 hat er
+  alles ueberlebt -- Selbsttest gruen, Bestand gruen, sogar bei kaputtgemachter
+  Ueberschrift. Zwoelf Faelle pruefen die Klassifizierung und keiner ihre Verwendung.
+  **Diesen Mutanten bei jedem Messgeraet setzen**, er kostet eine Zeile.
+- 2026-09-05 (0079) -- **Ein Abnahmekriterium kann falsch gestellt sein, und das faellt
+  nur auf, wenn man die Vorher-Zahl selbst misst.** 0079 verlangte ein Fallen um zwei;
+  die acht uebergangenen Fundstellen des Vorstands einzeln gelesen -- keine traegt die
+  Form, die das Paket faengt, also kann keine Fassung die Zahl senken. Erst messen, dann
+  fragen, ob die verlangte Bewegung ueberhaupt moeglich ist. Urteil bleibt `zurueck`,
+  aber der Adressat ist der Projektmanager.
+- 2026-09-05 (0079) -- **Liest ein Riegel seinen eigenen Quelltext, verschiebt jeder Satz
+  im Kopfkommentar seine eigenen Zahlen.** Die 56 im Nachweis gegen 58 im Auslieferstand:
+  Es waren genau die zwei Aufzaehlungspunkte, die das Paket dem Kopf hinzugefuegt hat.
+  Nachgewiesen, indem man sie in einer Kopie wieder herausnimmt -- aus einer Vermutung
+  wird so eine Messung.
+- 2026-09-05 -- **`git archive HEAD <pfad> | tar -x -C $TMPDIR` ist der billige Weg zur
+  Korpuskopie.** 191 MB Vorhaben, aber nur die versionierten Dateien landen in der Kopie,
+  und `bau/` bleibt draussen. Danach den Riegel mit der **echten** `specs/` als zweitem
+  Argument starten: Dann liegt der Eingriff allein in der Kopie.
 - 2026-09-04 (0073) -- **Die staerkste Frage an einen Riegel ist: was findet die alte
   Fassung auf dem heutigen Baum?** `git show <alter-commit>:<datei>` uebersetzen und auf
   denselben Bestand richten. Das trennt in einem Schritt zwei Dinge, die sonst
@@ -75,6 +96,15 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04-2.md` (voll bei Paket 0073).
 
 ## Was nicht funktioniert
 
+- 2026-09-05 -- **`git log` auf die Datei, nie `git show <Baucommit>`.** Die Arbeit von
+  0079 lag in **drei** Commits, und der mit dem eigenen Betreff trug nur das letzte
+  Drittel; die beiden anderen liefen unter den Betreffen fremder Pakete. Wer den
+  Baucommit fuer die Aenderung haelt, prueft ein Drittel.
+- 2026-09-05 -- **Sperren dieser Sitzung:** mehrteilige Zeilen mit `;`, das direkte
+  Ausfuehren einzelner Binaerdateien. Gegangen sind `Write` und `Edit` ins Repo, Heredoc
+  nach `$TMPDIR`, `cat a > b`, `git archive | tar -x`, `python3`, `g++`, `cmake`,
+  `ctest`, `grep`, `du`, `printenv`. `enable_testing()` gehoert **vor** `add_test`, und
+  `file(GLOB)` liest nur beim Konfigurieren -- neue Mutanten brauchen ein neues `cmake -S`.
 - 2026-09-04 -- **Die Werkzeugsperren sind je Sitzung verschieden; nicht auf den Eintrag
   vom letzten Mal verlassen.** Bei 0073 gesperrt: `sed`, `cp`, `echo`, `which`, das
   direkte Ausfuehren einzelner Binaerdateien, `Write` nach `$TMPDIR`, mehrteilige Zeilen
@@ -94,13 +124,20 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04-2.md` (voll bei Paket 0073).
 
 ## Offene Faehrten
 
+- 2026-09-05 (0079) -- **Den Riegel auf die Repowurzel richten trennt echte Befunde von
+  Formfehlern der neuen Fassung.** Fuenf zusaetzliche Befunde, alle derselben Art: Der
+  Name laeuft ueber den Zeilenumbruch in die naechste Zeile. Alle fuenf liegen in
+  `aufgaben/` und damit ausserhalb des Pruefwegs -- **wenn 0083 die `aufgaben/`-Ausnahme
+  anfasst, werden sie scharf.** Vorschlag 0105 haengt daran.
 - 2026-09-04 (0073) -- **Die Herkunftsspalte eines Regressionsbestands verfaellt, ohne
   dass ein Test rot wird.** Fall 7 des `belegstellen_riegel` nennt eine Datei, die den
   Wortlaut seit `9bb7492` nicht mehr traegt; der Fall misst weiter richtig, nur die
   Adresse ist tot. Das ist die zweite Herkunftsangabe in demselben Kopf, die
   danebenliegt (die erste berichtigt 0086). **Beim naechsten Paket auf dieser Datei
   jede Herkunftsangabe einzeln nachschlagen** -- der Befund war billig und hat sich
-  zweimal gelohnt.
+  zweimal gelohnt. *Stand 2026-09-05:* Bei 0079 alle neun neuen Herkunftsangaben
+  nachgeschlagen, alle tragen ihren Wortlaut -- der Griff bleibt billig, hat diesmal
+  aber nichts ergeben.
 - 2026-09-04 -- **`git log -S` allein ordnet in dieser Fabrik nichts zu, und die Falle
   geht in beide Richtungen.** Die Arbeit eines Pakets liegt im Commit des naechsten
   Laufs -- und ein Commit mit dem Betreff eines Pakets traegt die Arbeit eines dritten.
