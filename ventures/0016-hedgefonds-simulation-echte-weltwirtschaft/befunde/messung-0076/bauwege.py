@@ -48,14 +48,20 @@ ausgefallenes Mass, das gruen meldet, ist genau der Fehler, gegen den diese Fass
 geschrieben ist. Deshalb gibt es keinen Schalter, der den Vergleich abschaltet.
 
 Zahlen, die hier trotzdem stehen duerfen, tragen Bauweg, Profil, Datum und Stand
-(Paket 0104). Gemessen am 2026-09-05 am Stand `3840367`, mit dieser Fassung, in
+(Paket 0104). Gemessen am 2026-09-05 am Stand `497bcbc`, mit dieser Fassung, in
 Wegwerf-Baeumen unter `$TMPDIR`:
 
-    FABRIK_SANITIZER=ON    Arbeitsbereich 19  kern allein 12  pruefstand allein 5
-    FABRIK_SANITIZER=OFF   Arbeitsbereich 17  kern allein 11  pruefstand allein 4
+    FABRIK_SANITIZER=ON    Arbeitsbereich 20  kern allein 12  pruefstand allein 5
+    FABRIK_SANITIZER=OFF   Arbeitsbereich 18  kern allein 11  pruefstand allein 4
 
 Das ist ein Messwert von diesem Tag und keine Vorgabe. Wer ihn in eine Abnahme
 schreibt, hat die Regel aus 0104 wieder gebrochen.
+
+Wie schnell er verfaellt, ist an diesem Paket selbst zu sehen und nicht geschaetzt:
+Waehrend seines Baulaufs, innerhalb einer knappen Stunde, stieg der Arbeitsbereich von
+19 auf 20 (ON) und von 17 auf 18 (OFF) -- Paket 0083 legte nebenher ein uebersetzendes
+Ziel an. Eine feste Zahl im Quelltext waere zwischen zwei Laeufen desselben Laufs
+falsch geworden; das Gleichheitsmass hat beide Male gestimmt.
 """
 
 import argparse
