@@ -1,0 +1,129 @@
+==============================================================================
+1  unveraendert, MIT Riegel -- kern allein, FABRIK_SANITIZER=ON
+   erwartet: gruen
+   cmake -S       Code 0
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 10
+   ERGEBNIS: wie erwartet
+==============================================================================
+1  unveraendert, MIT Riegel -- Arbeitsbereich, FABRIK_SANITIZER=ON
+   erwartet: gruen
+   cmake -S       Code 0
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 16
+   ERGEBNIS: wie erwartet
+==============================================================================
+1  unveraendert, MIT Riegel -- kern allein, FABRIK_SANITIZER=OFF
+   erwartet: gruen
+   cmake -S       Code 0
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 10
+   ERGEBNIS: wie erwartet
+==============================================================================
+1  unveraendert, MIT Riegel -- Arbeitsbereich, FABRIK_SANITIZER=OFF
+   erwartet: gruen
+   cmake -S       Code 0
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 16
+   ERGEBNIS: wie erwartet
+==============================================================================
+2  luecke.cpp ohne jede Bindung, OHNE Riegel -- kern allein, FABRIK_SANITIZER=ON
+   erwartet: gruen
+   cmake -S       Code 0
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 10
+   ERGEBNIS: wie erwartet
+==============================================================================
+3  luecke.cpp ohne jede Bindung, MIT Riegel -- kern allein, FABRIK_SANITIZER=ON
+   erwartet: abbruch
+   cmake -S       Code 1
+      | Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/luecke.cpp' bindet
+      > -- The CXX compiler identification is GNU 15.2.0
+      > -- Detecting CXX compiler ABI info
+      > -- Detecting CXX compiler ABI info - done
+      > -- Check for working CXX compiler: /usr/bin/c++ - skipped
+      > -- Detecting CXX compile features
+      > -- Detecting CXX compile features - done
+      > -- Configuring incomplete, errors occurred!
+      > CMake Error at CMakeLists.txt:126 (message):
+      >   Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/luecke.cpp' bindet
+      >   "kern/sperre.hpp" nicht.  In dieser Uebersetzungseinheit gilt damit weder
+      >   die Gleitkommasperre noch die Sperre der Ueberlaufbausteine -- die Quelle
+      >   wird trotzdem in `kern` und `kern_geprueft` uebersetzt.  Die fehlende Zeile
+      >   gehoert ans Ende des Include-Blocks.
+   ERGEBNIS: wie erwartet
+==============================================================================
+4  luecke.cpp Bindung nicht zuletzt, OHNE Riegel -- kern allein, FABRIK_SANITIZER=ON
+   erwartet: gruen
+   cmake -S       Code 0
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 10
+   ERGEBNIS: wie erwartet
+==============================================================================
+5  luecke.cpp Bindung nicht zuletzt, MIT Riegel -- kern allein, FABRIK_SANITIZER=ON
+   erwartet: abbruch
+   cmake -S       Code 1
+      | Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/luecke.cpp' bindet
+      > -- The CXX compiler identification is GNU 15.2.0
+      > -- Detecting CXX compiler ABI info
+      > -- Detecting CXX compiler ABI info - done
+      > -- Check for working CXX compiler: /usr/bin/c++ - skipped
+      > -- Detecting CXX compile features
+      > -- Detecting CXX compile features - done
+      > -- Configuring incomplete, errors occurred!
+      > CMake Error at CMakeLists.txt:138 (message):
+      >   Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/luecke.cpp' bindet
+      >   "kern/sperre.hpp", aber nicht als letzten `#include` -- zuletzt steht dort
+      >   `#include <cstdint>`.  Die Vergiftung gilt erst ab ihrer Zeile; was danach
+      >   eingebunden wird, ist ungesperrt.
+   ERGEBNIS: wie erwartet
+==============================================================================
+6a Include-Zeile aus vorhandener Quelle entfernt, OHNE Riegel -- Vorbau, FABRIK_SANITIZER=ON
+   erwartet: gruen
+   cmake -S       Code 0
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 10
+   ERGEBNIS: wie erwartet
+==============================================================================
+6b Include-Zeile aus vorhandener Quelle entfernt, OHNE Riegel -- nur `cmake --build` nach dem Eingriff
+   erwartet: ein schritt gruen
+   cmake --build  Code 0
+   ERGEBNIS: wie erwartet
+==============================================================================
+7a Include-Zeile aus vorhandener Quelle entfernt, MIT Riegel -- Vorbau, FABRIK_SANITIZER=ON
+   erwartet: gruen
+   cmake -S       Code 0
+      | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 8 Kernquelle(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+   cmake --build  Code 0
+   ctest          Code 0
+      | 100% tests passed, 0 tests failed out of 10
+   ERGEBNIS: wie erwartet
+==============================================================================
+7b Include-Zeile aus vorhandener Quelle entfernt, MIT Riegel -- nur `cmake --build` nach dem Eingriff
+   erwartet: abbruch
+   cmake --build  Code 2
+      | Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/werte.cpp' bindet
+      > -- Configuring incomplete, errors occurred!
+      > CMake Error at CMakeLists.txt:126 (message):
+      >   Sperrebindungsriegel (T4, T7 Massnahme 4.2): 'src/werte.cpp' bindet
+      >   "kern/sperre.hpp" nicht.  In dieser Uebersetzungseinheit gilt damit weder
+      >   die Gleitkommasperre noch die Sperre der Ueberlaufbausteine -- die Quelle
+      >   wird trotzdem in `kern` und `kern_geprueft` uebersetzt.  Die fehlende Zeile
+      >   gehoert ans Ende des Include-Blocks.
+      > 
+      > 
+      > gmake: *** [Makefile:829: cmake_check_build_system] Error 1
+   ERGEBNIS: wie erwartet
+==============================================================================
+Abweichungen: 0

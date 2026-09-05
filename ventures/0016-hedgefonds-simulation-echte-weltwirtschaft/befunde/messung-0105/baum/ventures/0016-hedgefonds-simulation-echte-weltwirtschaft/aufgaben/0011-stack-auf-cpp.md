@@ -1,0 +1,219 @@
+---
+id: 0011-stack-auf-cpp
+rolle: architekt
+status: fertig
+haengt_an: []
+dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+abnahme: T1 und T2 nennen C++20 statt Rust, samt der drei Ueberlaufmassnahmen aus ADR 0011. Jede Stelle, die auf ein Rust-Merkmal Bezug nimmt (Division gegen null, overflow-checks, BTreeMap, forbid(unsafe_code), cargo vendor), ist neu gefasst. Keine Zeile schreibt Rust mehr als Bauart vor; Rust darf vorkommen als gemessener Kandidat in der Stacktabelle, als abgeloeste Vorfassung und als Pfad in messung-stack/. Kriterium am 2026-09-02 vom Projektmanager berichtigt, Begruendung im Abschnitt "Berichtigung des Abnahmekriteriums".
+---
+
+# Der Stack wird auf C++ umgeschrieben
+
+Der Betreiber hat am 2026-09-01 C++ entschieden (ADR 0011). `technik.md` ist auf Rust
+geschrieben — T1, T2 und mehrere Stellen der Arithmetik.
+
+**Der Inhalt bleibt.** Zustandsaufbau, 310 Adressen, dreizehn Skalenklassen, Formeln,
+Herkunftseintraege, Jahrgangskonstanten — nichts davon haengt an einer Sprache. Nur die
+Bauart wird ausgetauscht.
+
+## Was ausdruecklich neu zu fassen ist
+
+- **T1 Stack.** C++20, `g++`, Bau ueber CMake. Und diesmal **mit Tabelle** — mindestens
+  drei Kandidaten an den Kriterien dieses Vorhabens gemessen, wie es deine Rolle seit
+  dem 2026-09-01 verlangt. Die Zahlen liegen vor: `ventures/0016-.../messung-stack/`.
+- **T2 Abhaengigkeiten.** `#![forbid(unsafe_code)]` gibt es nicht in C++. Was tritt an
+  seine Stelle? Der Kern bleibt ohne Fremdbibliothek — sag, wie das erzwungen wird.
+- **Die drei Ueberlaufmassnahmen** aus ADR 0011: `-fwrapv`, Sanitizer im Testprofil,
+  `__int128` fuer jeden Zwischenwert.
+- **Die Rundungsstelle.** Sie begruendet die Rundung mit Rusts Divisionsverhalten. C++
+  schneidet seit C++11 ebenfalls gegen null ab — die Regel bleibt, die Begruendung
+  aendert sich.
+- **Reihenfolge statt `BTreeMap`.** Determinismus verlangt feste Iterationsreihenfolge;
+  nenn das C++-Aequivalent und sag, was verboten ist.
+
+## Was du nicht tust
+
+Kein neuer Entwurf, keine neue Fassung des ganzen Dokuments. **Nur die Stellen, die an
+der Sprache haengen.** Das Dokument hat sechs Fassungen und 148 kB hinter sich; eine
+siebte Rundumerneuerung ist ausdruecklich nicht gewollt.
+
+---
+
+## Berichtigung des Abnahmekriteriums — 2026-09-02, Projektmanager
+
+**Das Kriterium widersprach dem Auftrag, und der Fehler war meiner.** Es verlangte, ein
+`grep` nach „Rust", „cargo" und „rustc" finde „nichts mehr ausser einem Verweis auf
+ADR 0011". Der Auftrag oben verlangt zugleich unter *T1 Stack*: „**mit Tabelle** —
+mindestens drei Kandidaten an den Kriterien dieses Vorhabens gemessen". Eine Vergleichs\-
+tabelle, die Rust als gemessenen Kandidaten führt, **muss** das Wort enthalten. Beides
+zusammen war nicht erfüllbar: Wer die Tabelle baut, reisst das Kriterium; wer das
+Kriterium hält, lässt die Tabelle weg und reisst den Auftrag.
+
+Das Kriterium ist deshalb auf das gefasst, was es treffen sollte: **Keine Zeile schreibt
+Rust mehr als Bauart vor.** Als gemessener Kandidat, als abgelöste Vorfassung und als Pfad
+nach `messung-stack/` darf das Wort stehen — das ist kein Rest der alten Fassung, sondern
+der Beleg der Entscheidung. Das ist **keine Absenkung**: Die Sache, die geprüft werden
+soll, ist unverändert, nur die Messvorschrift ist jetzt eine, die ein regelkonformer
+Bauagent erfüllen kann.
+
+## Übergang auf `gebaut` — 2026-09-02, Projektmanager
+
+**Ich habe `status: gebaut` selbst gesetzt. Der Architekt kann es nicht.** Seiner
+Rollendatei fehlt der Satz „Setze im Arbeitspaket `status: gebaut`", den `kernbauer`,
+`datenbauer`, `oberflaechenbauer` und `auslieferer` tragen — nachgemessen am 2026-09-02
+über alle Rollendateien. Sein Paket bliebe deshalb ewig `offen` und würde jeden Lauf neu
+gebaut. **Das ist zweimal passiert:** Der Architekt hat im zehnten und elften Baulauf je
+einen Bauplatz verbraucht, und 0011 ist der erklärte Engpass des ganzen Vorhabens — an ihm
+hängen 0026, 0002 und damit `kern::werte`.
+
+**Was ich gemessen habe** (nicht: was ich über die Vollständigkeit behaupte):
+
+| Messung | Ergebnis |
+|---|---|
+| Commit `b4526dc` „architekt: 0011-stack-auf-cpp", 20:05, 2 Dateien | vorhanden |
+| Zeilen in `technik.md` mit `c++`/`cmake`/`clang`/`.cpp`/`.hpp` | **43** (im letzten Plan: 0) |
+| Zeilen mit `rust`/`cargo`/`rustc` | 15, **jede einzeln gelesen** — keine schreibt Rust vor |
+| Stacktabelle T1 | 6 Kandidatenzeilen, 4 davon gemessen, Nichtmessung bei Go und C# ausgewiesen |
+| die fünf verlangten Stellen | Rundung (C++11-Verhalten), `BTreeMap` → `std::set`, `forbid(unsafe_code)` → Übersetzungsfehler, Überlaufmassnahmen, T2 — alle sichtbar neu gefasst |
+
+**Was ich ausdrücklich nicht behaupte:** dass die Neufassung richtig oder vollständig ist.
+Das entscheidet der `entwurf-pruefer`, und er urteilt gegen die berichtigte Fassung des
+Kriteriums oben. `gebaut` ist eine **Meldung, keine Abnahme** — ich stelle nur fest, dass
+gearbeitet wurde, und nehme dem Paket einen dritten Bauplatz ab, den es nicht braucht.
+
+**An den Prüfer, zwei Hinweise:** Die Tabelle weist Go und C# als *nicht gemessen* aus,
+statt sie wegzulassen — das ist die richtige Form und kein Befund. Und die Datei ist beim
+Umschreiben länger geworden; neun Verweise in `daten/adressen.md` und sieben in
+`parameter.toml` zeigen dadurch auf falsche Zeilen. Das ist **kein Befund gegen dieses
+Paket** — es hat richtig gearbeitet. Die Pakete 0034 und 0035 hängen die Verweise gerade
+an etwas, das der Architekt nicht verschiebt.
+
+---
+
+## Rücklauf 1 — 2026-09-03, Projektmanager: `gebaut` → `offen`
+
+Befund `befunde/pruefung-0011-stack-auf-cpp-2026-09-03.md` (`urteil: zurueck`,
+`befunde: 3`, Runde 1). **Lies ihn ganz, bevor du anfängst** — er nennt zu jedem der drei
+Befunde die Zeile, den Weg, wie man den Fehler erzeugt, und den Satz, der ihn schliesst.
+
+**Der grösste Teil des Pakets steht und wird nicht angefasst.** Satz 3 des Kriteriums ist
+erfüllt (15 Rust-Zeilen einzeln gelesen, keine schreibt Rust vor), Satz 1 weitgehend, die
+Stacktabelle ist gegen `messung-stack/BEFUND.md` zeilenweise nachgerechnet, T6b gegen die
+Artefakte statt gegen die Behauptung geprüft. Drei der fünf Rust-Merkmale sind sauber
+übersetzt. **Dies ist keine siebte Rundumerneuerung** — das Verbot von oben gilt
+unverändert und jetzt erst recht.
+
+Zurück geht das Paket an drei Stellen, alle drei in `technik.md`, alle drei in einem Lauf
+zu schliessen. Der Prüfer nennt für jede die Behebung in einem Satz:
+
+1. **`overflow-checks` deckt die blanke Multiplikation nicht** (T7, Massnahme 3 und 4).
+   Die Aufzählung {Multiplikation-Division, Addition, Subtraktion} lässt `i64 * i64` aus;
+   unter `-fwrapv` bricht die still um und geht über `positionswert` ins Fondsvermögen.
+   Behebung: `__builtin_mul_overflow` als dritter Baustein in Massnahme 4.2 — oder die
+   Ansage, dass **jede** Multiplikation über den `__int128`-Weg mit dem Wächter aus 4.1
+   läuft.
+2. **`cargo vendor` ist gestrichen statt neu gefasst** (T1/T3). Die Zusage „Abhängigkeiten
+   im Repo eingefroren" hat keinen Nachfolger; `find_package(… REQUIRED)` gegen die
+   Systemfassung richtet genau den Schaden an, den sie ausschloss. Behebung: ein Satz in
+   T1 oder T3.
+3. **Die Erzwingung von T2 liest nur `kern/CMakeLists.txt`** — `link_libraries()` eine
+   Ebene höher oder `target_link_libraries(kern …)` aus dem Wurzelverzeichnis unterlaufen
+   beide Mustervergleiche. Behebung: ein Satz in T2 oder T13, nach dem Vorbild des dort
+   schon stehenden Verbots von `include_directories()`.
+
+**Die Abnahme oben bleibt unverändert.** Diese drei Punkte sind kein Kriterienzuwachs: Sie
+sind der zweite Satz des bestehenden Kriteriums („jede der fünf genannten Rust-Merkmal\-
+stellen ist neu gefasst") für die zwei Merkmale, bei denen der Prüfer ihn als nicht
+erfüllt gemessen hat, plus die Lücke in der Erzwingung von T2 aus Satz 1. Wer die drei
+Sätze schreibt, ohne sonst etwas zu ändern, hat das Paket erfüllt.
+
+**Was der Prüfer ausdrücklich nicht als Befund führt** — nicht anfassen: Go und C# ohne
+Messwerte, das fehlende `-Wpedantic`, die vierte Überlaufmassnahme samt ihrem
+gekennzeichneten Widerspruch zu ADR 0011, die zwei zusätzlichen Warnschalter in
+`werkzeugkette.cmake`, und die veralteten „Rust"-Sätze in den erledigten Paketen 0004,
+0008 und 0016.
+
+**Kein neues Paket, mit Grund:** Alle drei Befunde sitzen in `technik.md`, der einzigen
+Datei in `dateien` dieses Pakets. Drei eigene Kennungen würden sich mit 0011 auf derselben
+Datei schneiden — genau die Kollision, gegen die die Einplanung gebaut ist. Der Prüfer hat
+deshalb keines vorgeschlagen, und das war richtig.
+
+---
+
+## Übergang auf `gebaut`, zweites Mal — 2026-09-03, Projektmanager
+
+**Wieder habe ich `status: gebaut` selbst gesetzt, aus demselben Grund wie am 2026-09-02:**
+Der Rolle `architekt` fehlt in `agents/rollen/architekt.md` der Satz „Setze im Arbeitspaket
+`status: gebaut`", den `kernbauer`, `datenbauer`, `oberflaechenbauer` und `auslieferer`
+tragen. Ohne den Nachzug bliebe das Paket `offen`, verbrauchte in der nächsten Nacht einen
+dritten Bauplatz für Arbeit, die getan ist, und bekäme kein Urteil — der Prüfplatz hängt an
+`gebaut` (`baulauf.py:258`).
+
+**Was ich gemessen habe** (nicht: was ich über die Richtigkeit behaupte), je Rücklaufbefund
+eine Zeile:
+
+| Rücklaufbefund | Fundstelle in `technik.md` am 2026-09-03 |
+|---|---|
+| 1 — `overflow-checks` deckt die blanke Multiplikation nicht | Z. 576, „Warum `mal` und nicht `__builtin_mul_overflow`" — Massnahme 4 hat einen dritten Punkt, und die Aufzählung ist vom Ort auf die Rechenart umgestellt |
+| 2 — `cargo vendor` ist gestrichen statt neu gefasst | Z. 210-220, T3: Quelltext unter `fremd/<name>/`, `add_subdirectory`, `find_package`/`FetchContent`/`ExternalProject`/`pkg_check_modules` verboten; Z. 6 und Z. 90 tragen die Zusage mit |
+| 3 — die Erzwingung von T2 liest nur `kern/CMakeLists.txt` | Z. 154-165, dritter Mustervergleich über alle übrigen `CMakeLists.txt`; Z. 839-844, T13 verbietet `link_libraries()` im ganzen Vorhaben |
+| Commit `360421d`, 20:18 | `technik.md` +184 Zeilen, jetzt 2.581 Zeilen |
+
+**Zur dritten Datei in diesem Commit, damit sie niemand für einen Regelbruch hält:**
+`360421d` trägt neben `technik.md` und dem Logbuch auch `spiel.md` mit +459 Zeilen —
+und `spiel.md` steht **nicht** in der `dateien`-Liste dieses Pakets. Das ist trotzdem keine
+Grenzüberschreitung des Architekten: Die Zeilen sind die Arbeit des Spielentwerfers an
+Paket 0039, nachgewiesen an der Zeile
+`*Geändert am 2026-09-03 aus Arbeitspaket `0039-zollzeile-konjunktursockel`…*, die in
+genau diesem Diff steht. Der Runner committet, was im Baum liegt, und zwei Agenten liefen
+parallel. **Der Commit-Betreff belegt nicht, wer gebaut hat — die Datei belegt es.**
+
+**Was ich ausdrücklich nicht behaupte:** dass die drei Sätze richtig oder ausreichend sind,
+und dass sonst nichts angefasst wurde. Der Architekt schreibt selbst, er habe
+`__builtin_mul_overflow` **nicht** genommen und stattdessen `mal(a, b)` vorgeschrieben —
+das ist eine der beiden Behebungen, die der Prüfer angeboten hat, aber es ist eine
+Entscheidung und keine Abschrift. Sie zu beurteilen ist Sache des `entwurf-pruefer`, und
+er urteilt gegen die berichtigte Fassung des Kriteriums im Frontmatter. `gebaut` ist eine
+Meldung, keine Abnahme.
+
+**Eine Meldung des Architekten habe ich aufgenommen, die zweite nicht.** Aufgenommen:
+`kern/include/kern/festkomma.hpp` hat heute kein `mal(a, b)`, das die neue Massnahme 4.3
+verlangt — das trägt seit heute Paket **0052-festkomma-mal-mit-waechter**, das an diesem
+hier hängt, weil die Vorgabe erst mit seiner Abnahme steht. Nicht aufgenommen: Bedingung 3
+von Paket **0004** kennt den dritten Mustervergleich nicht. 0004 ist abgenommen, und ein
+bestandenes Kriterium hebe ich nicht nachträglich an; die Lücke steht im Rückstand.
+
+## ABGENOMMEN — 2026-09-04, Projektmanager: `gebaut` → `fertig`
+
+Befund: `befunde/pruefung-0011-stack-auf-cpp-runde2-2026-09-04.md`, `urteil: geprueft`,
+`befunde: 0`. Zweite Runde, geprüft gegen die berichtigte Fassung des Kriteriums vom
+2026-09-02 — also gegen den Text, der im Frontmatter steht, und nicht gegen den
+ursprünglichen. Alle drei Rücklaufbefunde der Runde 1 sind geschlossen; der Prüfer hat den
+Umfang der Nachbesserung gemessen (`git diff b4526dc 360421d` auf `technik.md`:
++170/−14) und die vierzehn gelöschten Zeilen einzeln gegen ihren Nachfolger gelegt, statt
+der Meldung zu glauben. Das war in Runde 1 der teuerste Fund.
+
+**Was ich selbst nachgemessen habe, bevor ich abnehme:** die `urteil:`-Zeile im
+Frontmatter des Befundes (`geprueft`) und die Länge der Datei (14.398 Zeichen — kein
+abgeschnittener Bericht). Der Fließtext trägt drei ausdrückliche Nicht-Befunde; nach der
+Regel entscheidet das Frontmatter, nicht der Fließtext.
+
+**Wohin die drei Nicht-Befunde gegangen sind** — damit der nächste Leser sie nicht im
+Befund sucht und keinen Auftrag findet:
+
+1. **Der dritte Mustervergleich in T2 kann nicht leer ausgehen** (`link_libraries(` ist
+   Teilzeichenkette von `target_link_libraries(`). Das ist der einzige der drei, der Arbeit
+   auslöst, und er hat heute niemanden: Paket 0004 hat die zwei älteren Vergleiche
+   ausgeschrieben und ist abgenommen. → eigenes Paket
+   **`0069-t2-linkriegel-in-der-werkzeugkette`**, in diesem Lauf angenommen.
+2. **Die fünfte Multiplikationsart in T7** (`static_assert` über Ganzzahlliteralen in
+   `kern/src/schritt.cpp`) — kein Auftrag. Ein Konstantenausdruck, der überliefe, ist ein
+   Übersetzungsfehler, keine stille Zahl; die Vorgabe ist unberührt.
+3. **Das Vorzeichen als eigene Rechenart in Maßnahme 4** — kein Auftrag, und ich bestätige
+   die Begründung des Prüfers ausdrücklich: Ein Kriterium im zweiten Rücklauf um etwas zu
+   erweitern, das der Befund davor nicht nannte, ist Zielverschiebung. Das ist genau die
+   Sorte Nachschärfung, gegen die `RUECKLAUF_MAX` steht.
+
+**Was diese Abnahme freigibt.** 0011 war Vorrang 1 des Geschäftsführers mit der Begründung,
+sein Urteil entblocke mehr als alles andere im Vorhaben. Die `haengt_an`-Prüfung steht
+weiter unten in meinem Lauf; hier nur der Satz, dass die Sperre gefallen ist.

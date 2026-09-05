@@ -531,9 +531,27 @@ function(fabrik_schlussriegel wurzelverzeichnis)
 
         get_target_property(quellverzeichnis ${ziel} SOURCE_DIR)
         get_target_property(quellen ${ziel} SOURCES)
-        if(NOT quellen)
-          set(quellen "")  # wie oben: `NOTFOUND` ist die leere Menge, kein Dateiname.
-        endif()
+        # `NOTFOUND` ist die leere Menge und kein Dateiname -- aber nur, wenn es der
+        # **ganze** Wert ist. Bis zum 2026-09-05 stand hier `if(NOT quellen)`, und das
+        # folgt CMakes Wahrheitsregel statt der Frage des Riegels: Eine Quellenliste,
+        # deren letzter Eintrag auf `-NOTFOUND` endet, galt damit als leer. Die Schleife
+        # darunter lief dann null Mal, und **keine einzige** Quelldateieigenschaft wurde
+        # mehr gelesen -- auch nicht an den unauffaelligen Dateien. Eine Quelldatei mit
+        # ungluecklichem Namen blendete also den ganzen Durchgang aus.
+        #
+        # Gemessen am 2026-09-05 mit CMake 4.2.3 an zwei Baeumen, die sich durch nichts
+        # als den Namen einer zweiten Quelldatei unterscheiden
+        # (`befunde/messung-0108/endungsfalle.py`, `q1_notfound` gegen `q2_harmlos`):
+        # Mit `y-NOTFOUND` konfigurierte der Baum Code 0 und meldete `alle mit Warnsatz
+        # und ohne Pauschalabschalter`; mit `y-HARMLOS` brach derselbe Baum mit Code 1
+        # ab und nannte `COMPILE_FLAGS an .../z.cpp:  -w`. Das `-w` stand in beiden
+        # Faellen an derselben Stelle.
+        #
+        # `fabrik_nichtwert_leeren` ist dieselbe benannte Regel wie beim Sammeln oben --
+        # sie vergleicht auf Gleichheit mit den zwei Nichtwerten statt auf eine Endung.
+        # Eine zweite Fassung derselben Regel danebenzustellen waere der Anfang zweier
+        # Wahrheiten; die Messung zu den zwei Schreibweisen steht ueber jenem Makro.
+        fabrik_nichtwert_leeren(quellen)
         foreach(quelle IN LISTS quellen)
           # Ein Generatorausdruck in `SOURCES` -- `$<TARGET_OBJECTS:x>` -- ist kein
           # Dateiname, den man nach Eigenschaften fragen kann. Uebergangen statt geraten;
@@ -702,11 +720,19 @@ function(fabrik_schlussriegel wurzelverzeichnis)
     # wie vielen das Werkzeug zusammensetzt, was geprueft werden soll.
     foreach(eigenschaft LINK_LIBRARIES INTERFACE_LINK_LIBRARIES)
       get_target_property(nullwert ${nullziel} ${eigenschaft})
-      # Wie beim Sammeln oben: `-NOTFOUND` heisst ungesetzt und ist die leere Menge,
-      # nicht der Name einer Bibliothek.
-      if("${nullwert}" MATCHES "-NOTFOUND$")
-        set(nullwert "")
-      endif()
+      # Dieselbe benannte Regel wie beim Sammeln oben: `NOTFOUND` heisst ungesetzt und
+      # ist die leere Menge, nicht der Name einer Bibliothek -- aber nur, wenn es der
+      # **ganze** Wert ist. Bis zum 2026-09-05 stand hier ein Endungsvergleich
+      # (`MATCHES "-NOTFOUND$"`), und der beantwortet die Frage nach der **Form** des
+      # Nichtwerts statt der Frage dieses Riegels, ob die Eigenschaft etwas traegt. Eine
+      # gesetzte Eigenschaft, deren letzter Eintrag auf `-NOTFOUND` endet, wurde damit
+      # vollstaendig verworfen -- und mit ihr die Fremdabhaengigkeit davor.
+      #
+      # Der gelesene Wert und der beurteilte Wert sind ab hier derselbe, und das ist die
+      # Zusicherung hinter der Meldungszeile darunter: Geleert wird nur noch, was exakt
+      # der Nichtwert ist, also ist `=[]` in der Meldung wieder eine wirklich leere
+      # Eigenschaft und nicht eine geleerte. Vorher waren beide nicht zu unterscheiden.
+      fabrik_nichtwert_leeren(nullwert)
       list(APPEND nullgelesen "${nullziel}.${eigenschaft}=[${nullwert}]")
       foreach(eintrag IN LISTS nullwert)
         list(APPEND fremdlink "  ${nullziel}: ${eigenschaft} nennt ${eintrag}\n")
@@ -765,11 +791,31 @@ function(fabrik_schlussriegel wurzelverzeichnis)
     # `-fno-sanitize-recover=all` bleibt ein Wort; keines beginnt auf `-l`, keines endet
     # auf eine der zwei Endungen. Der Nachweis dafuer ist die Zeile in der Meldung unten:
     # Sie nennt den gelesenen Wert und nicht nur das Urteil.
+    #
+    # Dieser Satz stimmt erst seit Paket 0108 (2026-09-05). Bis dahin druckte die Zeile
+    # den **geleerten** Wert, und geleert wurde nach der Endung -- ein `-Wl,-rpath,`
+    # auf einen Pfad, der auf `-NOTFOUND` endet, verschwand mitsamt allem, was daneben
+    # stand. Der Riegel, der einen Messwert statt eines Urteils melden sollte, meldete
+    # dort das Urteil. Gemessen am 2026-09-05 mit CMake 4.2.3
+    # (`befunde/messung-0108/endungsfalle.py`, Baum `l3_rpath_ohne_fremd`):
+    # `target_link_options(kern PRIVATE -Wl,-rpath,/x-NOTFOUND)` meldete am Stand davor
+    # `kern.LINK_OPTIONS=[]` und ist damit von einer wirklich leeren Eigenschaft nicht
+    # zu unterscheiden gewesen; heute meldet derselbe Baum
+    # `kern.LINK_OPTIONS=[-Wl,-rpath,/x-NOTFOUND]`, beide Male mit Code 0.
     foreach(eigenschaft LINK_OPTIONS INTERFACE_LINK_OPTIONS)
       get_target_property(nullwert ${nullziel} ${eigenschaft})
-      if("${nullwert}" MATCHES "-NOTFOUND$")
-        set(nullwert "")
-      endif()
+      # Wie im Durchgang ueber die zwei Bibliothekseigenschaften darueber, und hier war
+      # der Endungsvergleich am teuersten: `LINK_OPTIONS` wird von CMake nicht nach
+      # `INTERFACE_LINK_OPTIONS` gespiegelt, also gab es keine zweite Eigenschaft, an
+      # der derselbe Verstoss noch aufgefallen waere. Gemessen am 2026-09-05 mit CMake
+      # 4.2.3 an zwei Baeumen, die sich durch nichts als die letzten neun Zeichen eines
+      # Linkschalters unterscheiden (`befunde/messung-0108/endungsfalle.py`,
+      # `l1_notfound` gegen `l2_klar`): `target_link_options(kern PRIVATE -lfremd
+      # -Wl,-rpath,/x-NOTFOUND)` konfigurierte Code 0 und meldete
+      # `kern.LINK_OPTIONS=[]`, mit `/x` statt `/x-NOTFOUND` brach derselbe Baum mit
+      # Code 1 ab und nannte `kern: LINK_OPTIONS nennt -lfremd`. Das `-lfremd` stand in
+      # beiden Faellen in der Eigenschaft.
+      fabrik_nichtwert_leeren(nullwert)
       list(APPEND nullgelesen "${nullziel}.${eigenschaft}=[${nullwert}]")
       foreach(eintrag IN LISTS nullwert)
         string(REPLACE "SHELL:" " " zerlegt "${eintrag}")
@@ -843,6 +889,13 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # eins faellt, faellt auf; ein Urteil ohne Messwert tut das nicht. Und ein Riegel, der
   # nur sein Ergebnis meldet, laesst sich nicht mehr von einem unterscheiden, der seinen
   # Gegenstand verloren hat.
+  #
+  # "Ihren Wert" heisst seit Paket 0108: den Wert, ueber den oben geurteilt wurde. Bis
+  # zum 2026-09-05 war das nicht dasselbe -- `nullgelesen` bekam den nach einer Endung
+  # geleerten Wert, also stand `=[]` sowohl fuer eine leere Eigenschaft als auch fuer
+  # eine verworfene. Beides ist heute unterscheidbar, weil oben nur noch geleert wird,
+  # was exakt der Nichtwert ist. Die Messung dazu steht ueber dem Durchgang der
+  # Linkschalter.
   if(nullziele)
     list(LENGTH nullziele nullzahl)
     list(JOIN nullgelesen "; " nullgelesentext)

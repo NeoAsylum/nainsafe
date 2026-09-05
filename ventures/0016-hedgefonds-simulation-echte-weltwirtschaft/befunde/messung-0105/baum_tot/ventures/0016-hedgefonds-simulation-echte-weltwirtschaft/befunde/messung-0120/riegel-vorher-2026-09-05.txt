@@ -1,0 +1,31 @@
+Lauf: dasselbe Binaerprogramm wie im Nachher-Lauf (ein einziges Mal uebersetzt).
+Aufruf: <binaer> /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
+Bezugsstand: derselbe Arbeitsbaum bei fabbf2f, allein Zeile 6 der Nachmessung
+             zurueckgesetzt. Blob danach 214f9cd97ac0edf5f870e9f52a0f2935f4914c46
+             -- bitgleich mit a6c55e0:<pfad>, gemessen ueber git rev-parse.
+Rueckgabewert: 1
+
+belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 9 zur Form
+ohne Anfuehrung, 8 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+und 5 zur Satzgrenze nach links, alle wie erwartet.
+belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 44 Bauquellen gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
+belegstellen_riegel, Bedingung 2 (Abschnittszitat): 44 Bauquellen und 13 Datendokumente gelesen, 184 Dateien im Zielbestand, 430 Namen in ungelesenen Ordnern; 36 Zitate der geprueften Form gefunden, 35 davon aufgeloest (Untergrenze 16), 47 Fundstellen uebergangen.
+Davon ohne Anfuehrung: 14 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
+
+[47 uebergangene Fundstellen -- hier gekuerzt, im Nachher-Lauf dieselben]
+
+1 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+
+  zitierend: daten/nachmessung-zinsreihen-2026-09-05.md:6
+  nachgeschlagen in: daten/deckungsbefund-1997.md
+  gesuchte Ueberschrift: Die Reihenliste nennt IWF IFS
+
+Entweder ist die Ueberschrift dort umbenannt worden -- dann wird das Zitat
+nachgezogen --, oder sie stand nie so da. Beides wird berichtigt und nicht
+ausgenommen.
+
+---
+
+Nach dem Lauf wurde Zeile 6 wieder berichtigt; der Blob ist erneut
+3c097db4e1385217b506825d3bea88cf99499969, und `git status --porcelain` ueber
+ventures/0016-.../ war danach leer. Der Rueckbau hat nichts hinterlassen.

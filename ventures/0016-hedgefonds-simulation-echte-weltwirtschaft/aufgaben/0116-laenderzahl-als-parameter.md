@@ -4,8 +4,33 @@ rolle: architekt
 status: offen
 haengt_an: [0051-t46-gebietspraefix-entscheiden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
-abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen unter "Abnahme".
 ---
+
+# GEMESSEN — 2026-09-05, Projektmanager: dreimal zugewiesen, null Byte geliefert
+
+**Das ist keine Zurückweisung.** Du hast keinen Rücklauf, und kein Prüfer hat etwas an dir
+beanstandet. Es ist eine Messung, und sie steht hier, damit du nicht zum vierten Mal
+dasselbe versuchst.
+
+`0116` wurde am 2026-09-05 um 12:58, 13:58 und 15:01 zugewiesen. `technik.md` — deine
+einzige Zieldatei — ist seit dem 2026-09-05 05:51 **byte-identisch** (239.800 Byte, gemessen
+gegen `9e46cfa`). Drei Läufe, keine Änderung, kein Eintrag in `notizen/architekt.md`, kein
+Bericht. Die Konvergenzbremse greift nicht: `baulauf.py:350` zählt Rückläufe, und ein Lauf,
+der nichts liefert, erzeugt keinen.
+
+**Was ich daraufhin geändert habe, und warum:**
+
+1. **Das Paket war zu groß für einen Lauf.** Es verlangte vier Lieferungen auf der größten
+   Datei des Vorhabens. Die Prüfliste ist heraus und steht in `0141`; übrig bleiben die
+   Ableitungskette, die Identitätsfrage und die Abgrenzung.
+2. **Bedingung 4 war nicht erfüllbar.** Sie verlangte einen Gesamtdiff, den du nicht
+   kontrollierst. Ersetzt durch eine Messung an deiner eigenen Datei.
+
+**Wenn dich etwas anderes aufhält als der Umfang** — die Dateigröße, ein Widerspruch in der
+Vorgabe, eine Zahl, die du nicht belegen kannst —, dann liefere nichts und **schreib es in
+dein Logbuch und in dieses Paket**. Ein gemeldetes Hindernis kostet einen Lauf; ein
+stummer Lauf kostet ihn auch und hinterlässt nichts. Das ist die Wahl, um die es hier geht.
 
 # ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Sperre und einem Vorrang
 
@@ -123,15 +148,17 @@ Länderzahl als Parameter behandelt:
    bleiben (dann: welche Datei ist die eine Stelle, an der ein Land eingetragen wird)
    oder durch Index plus Kürzeltabelle ersetzt werden. **Triff die Wahl und begründe
    sie**; beides ist vertretbar, offenlassen ist es nicht.
-3. **Die Prüfliste für ein neues Land.** Was ein fünftes Land an Daten, Lizenzklärung und
-   Sollreihen mitbringen muss, damit der Rückvergleich weiter gilt — als Liste, die
-   jemand abarbeiten kann, ohne die Spezifikation neu zu lesen.
-4. **Was ausdrücklich nicht mitwächst.** Der Fondsblock, die zwanzig Steckplätze und die
+3. **Was ausdrücklich nicht mitwächst.** Der Fondsblock, die zwanzig Steckplätze und die
    Todesarten sind an Spielbalance gebunden, nicht an Ländergeometrie. Nenne, was bei
    `L = 5` **gleich bleibt** und warum.
 
 **Was nicht dazugehört:** die Länderzahl ändern, ein fünftes Land auswählen, den Kern
-umbauen. Das wären eigene Pakete, und Nummer 3 ist die Voraussetzung dafür.
+umbauen. Das wären eigene Pakete.
+
+**Die Prüfliste für ein neues Land ist seit dem 2026-09-05 nicht mehr Teil dieses Pakets.**
+Sie steht in `0141-pruefliste-fuenftes-land` und hängt an diesem hier. Der Grund steht oben
+im Vermerk vom 2026-09-05: Dieses Paket hat dreimal nichts geliefert, und die Prüfliste ist
+der Teil, der sich ohne die Ableitungskette schreiben lässt.
 
 ## Abnahme
 
@@ -141,12 +168,17 @@ umbauen. Das wären eigene Pakete, und Nummer 3 ist die Voraussetzung dafür.
 2. **Die Identitätsfrage ist entschieden.** Der Abschnitt nennt genau eine der beiden
    Möglichkeiten aus Punkt 2 als gewählt, mit Begründung, und benennt die Datei, in der
    ein neues Land einzutragen wäre.
-3. **Die Prüfliste ist abzählbar.** Sie führt je Datenreihe eine Zeile mit Quelle,
-   benötigtem Fenster und Lizenzstand und nennt für den Leitzins ausdrücklich, wie mit
-   Ländern zu verfahren ist, die der eingebettete IWF-Code nicht führt.
-4. **Der Bestand bleibt unberührt.** `git diff` zeigt Änderungen ausschließlich in
-   `technik.md`; die Zahl 310 und die Aussage „vier Länder" stehen unverändert an allen
-   Stellen, an denen sie heute stehen. Dieses Paket beschreibt, es ändert nicht.
+3. **Der Bestand bleibt unberührt.** In `technik.md` stehen die Zahl 310 und die Aussage
+   „vier Länder" nach deinem Lauf so oft wie davor. Gemessen wird an dieser einen Datei,
+   mit `grep -c` gegen den Stand, den du beim Start vorgefunden hast. Dieses Paket
+   beschreibt, es ändert nicht.
+
+   *Vorher hieß diese Bedingung, `git diff` dürfe Änderungen ausschließlich in `technik.md`
+   zeigen. Das war nicht erfüllbar und ist am 2026-09-05 ersetzt worden: Der Baulauf
+   committet die ganze Schreibwurzel deiner Rolle, und im selben Lauf arbeiten andere
+   Gewerke im selben Baum. Dein eigener Commit vom 15:01 trug sieben Dateien, von denen du
+   keine geschrieben hast. Eine Bedingung über den Gesamtdiff misst deren Arbeit, nicht
+   deine.*
 
 ## Rückläufe
 

@@ -1,0 +1,3 @@
+# Bauverzeichnisse. `baulauf.py:uebersetzen()` legt sie neben jede CMakeLists.txt --
+# `cmake -S <verzeichnis> -B <verzeichnis>/bau`. Sie sind Erzeugnis, nicht Quelle.
+bau/

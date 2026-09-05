@@ -1,0 +1,5 @@
+Fehlgriff des Kern-Pruefers am 2026-09-03: Diese Datei entstand mit einem Namen, unter
+dem `cmake -S` sie nie findet (`cmake` sucht ein Verzeichnis mit einer Datei namens
+`CMakeLists.txt`). Sie steht noch da, weil Hausregel 3 nichts loeschen laesst.
+
+Die gemeinte Probe liegt in `enger-gueltigkeitsbereich/CMakeLists.txt`.

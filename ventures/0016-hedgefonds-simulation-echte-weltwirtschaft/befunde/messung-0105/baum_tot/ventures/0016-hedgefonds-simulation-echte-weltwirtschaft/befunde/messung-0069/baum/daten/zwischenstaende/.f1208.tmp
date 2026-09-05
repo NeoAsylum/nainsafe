@@ -1,0 +1,6 @@
+wortlaut = '''Staff estimates;
+World Integrated Trade Solution system (WITS), World Bank (WB);
+Trade Analysis and Information System (TRAINS), UN Conference on Trade and Development (UNCTAD);
+Integrated Data Base (IDB), World Trade Organization (WTO);
+Consolidated Tariff Schedules (CTS), World Trade Organization (WTO)'''
+wortlaut_form = "mehrzeilig, zeichengleich zur Quelle: die vier Zeilenumbrueche des Feldes Source stehen als echte Umbrueche und nicht als '; '. Quelle: lizenzbefund-wdi.md Z. 61-65 (fuenf Zeilen). Genau diese vier Umbrueche fuehrt lizenzbefund-wdi.md Z. 273-279 als Echtheitsnachweis: sie stehen im Rohtext als JSON-Escapes (u000a) und belegen, dass die zwei unabhaengigen Abrufe zeichengleich waren. Ein Wortlaut mit ersetzten Umbruechen findet gegen die Schnittstelle keinen Treffer, und der spaetere Leser weiss dann nicht, ob die Reihe sich geaendert hat oder ob nur die Leerzeichen anders sind. Bis zum 2026-09-02 standen sie hier als Leerzeichen, ohne Vermerk. Warum das der gewaehlte Weg ist und nicht ein Feld wortlaut_normalisiert: siehe [pruefweg].schnitt_2."

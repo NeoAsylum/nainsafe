@@ -90,82 +90,15 @@ foreach(probe IN LISTS PRUEFSTAND_PROBEN)
   add_test(NAME ${name} COMMAND ${name})
 endforeach()
 
-# ---------------------------------------------------------------------------
-# Der Waechter des Warnsatz-Schlussriegels -- Paket 0133
-# ---------------------------------------------------------------------------
+# Hier stand vom 2026-09-05 an einen Lauf lang der Waechter des Warnsatz-Schlussriegels
+# aus Paket 0133 -- die `ctest`-Probe `schlussriegel_nachbau` auf
+# `befunde/pruefung-0066/nachbau.py`. Paket 0136 hat sie nach
+# `werkzeuge/schlussriegel/CMakeLists.txt` gezogen, und der Grund steht dort
+# ausgeschrieben. In einem Satz: Sie misst den **Baum** und nicht das Erzeugnis, dieser
+# Kasten ist nach T13 das Gestell fuer Mass 1 bis 3 und den Selbstspieler, und der Ort
+# war von Anfang an als Kollisionsentscheidung des Projektmanagers gekennzeichnet und
+# nicht als Entwurfsentscheidung.
 #
-# Der Schlussriegel aus `werkzeugkette.cmake` laeuft bei **jeder** Konfiguration mit,
-# und trotzdem hatte er bis zum 2026-09-05 keinen Regressionsnachweis. Der Grund steht
-# im Kopf des Skripts unten: Im echten Baum steht nirgends ein `-w`. Ein Riegel, der
-# nur ueber fehlerfreie Baeume faehrt, kann Fehlalarm zeigen und sonst nichts -- seine
-# eigene Stumpfheit sieht er nie. Wer die Pruefung im Riegel abschaltet, bekommt einen
-# gruenen Baum und keine Meldung.
-#
-# `befunde/pruefung-0066/nachbau.py` schliesst diese Luecke: 22 Wegwerf-Baeume unter
-# einer eigenen Ablage, jeder mit einem anderen Weg, den Warnsatz auszuhebeln, dazu
-# die Positivkontrolle `p_positiv`, die ohne Abschalter rot bauen **muss**. Er hing
-# aber in keinem `add_test`, in keinem Ziel und in keinem Baulauf. Gelaufen ist er nur,
-# weil einzelne Abnahmen ihn namentlich nannten -- ein Waechter, dessen Aufruf in
-# fremder Prosa steht, ist beim uebernaechsten Paket fort.
-#
-# **Warum die Bahn hier liegt und nicht unter `werkzeuge/`.** Sachlich gehoerte sie
-# dorthin: Der Nachbau misst den **Baum**, nicht das Erzeugnis, und der
-# Belegstellenriegel loest dieselbe Frage seit Paket 0059 ueber ein eigenes Mitglied.
-# Ein eigenes Mitglied muss aber in `FABRIK_MITGLIEDER` der `CMakeLists.txt` des
-# Vorhabens eingetragen werden, und die haelt am 2026-09-05 ein anderes offenes Paket.
-# Die Wahl ist damit eine Kollisionsentscheidung (Paket 0133, Vermerk 2) und keine
-# Aussage darueber, dass der Nachbau zum Pruefstand gehoerte. Sie kostet nichts als
-# den Ort: Die Probe haengt an keinem Ziel dieses Kastens, linkt nichts und wird von
-# nichts gelinkt. Zieht sie spaeter jemand nach `werkzeuge/`, bleibt der Aufruf
-# derselbe.
-#
-# **Der Preis, gemessen statt geschaetzt:** 4,5 Sekunden kalt fuer alle 22 Baeume
-# (2026-09-05). Damit liegt der Nachbau auf der billigen Seite der Grenze, die der
-# Projektmanager im Rumpf von Paket 0110 gezogen und im Kopf der `CMakeLists.txt` des
-# Vorhabens festgehalten hat: Der Belegstellenriegel haengt als `add_test` in `ctest`
-# und laeuft bei jeder Abnahme mit, der Mutationslauf ausdruecklich nicht, weil ein
-# einziger Fall dort Uebersetzen, Binden und einen Probenlauf kostet.
-get_filename_component(FABRIK_VORHABEN ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
-set(FABRIK_NACHBAU ${FABRIK_VORHABEN}/befunde/pruefung-0066/nachbau.py)
-
-# Kein `if(EXISTS ... ) add_test() endif()`. Genau diese Bauform ist der Fehler, gegen
-# den dieses Paket geschrieben ist: Sie laesst den Waechter still verschwinden, sobald
-# jemand die Datei verschiebt, und meldet danach eine gruene Abnahme ueber einen Baum
-# ohne Waechter. Fehlt die Datei, bricht die Konfiguration ab und sagt, was zu tun ist.
-if(NOT EXISTS ${FABRIK_NACHBAU})
-  message(FATAL_ERROR
-          "Der Regressionsnachweis des Schlussriegels fehlt: ${FABRIK_NACHBAU}\n"
-          "Er ist der einzige Nachweis, dass der Riegel in `werkzeugkette.cmake` noch "
-          "prueft, statt nur zu laufen. Ist er absichtlich umgezogen, gehoert der neue "
-          "Pfad hierher -- nicht diese Bedingung entfernt.")
-endif()
-
-# Derselbe Gedanke einen Schritt weiter: Wird kein Deuter gefunden, wird `python3`
-# trotzdem eingetragen. Dann meldet `ctest` die Probe rot ("Unable to find executable"),
-# statt dass sie lautlos aus der Liste faellt. Ein uebersprungener Waechter sieht im
-# Bericht aus wie ein bestandener.
-find_package(Python3 QUIET COMPONENTS Interpreter)
-if(Python3_Interpreter_FOUND)
-  set(FABRIK_PYTHON ${Python3_EXECUTABLE})
-else()
-  set(FABRIK_PYTHON python3)
-  message(WARNING "Kein Python3 gefunden -- die Probe `schlussriegel_nachbau` faellt "
-                  "auf `python3` aus dem Suchpfad zurueck und wird rot, wenn es das "
-                  "nicht gibt.")
-endif()
-
-add_test(NAME schlussriegel_nachbau COMMAND ${FABRIK_PYTHON} ${FABRIK_NACHBAU})
-
-# `NACHBAU_ABLAGE` zeigt in den Baubaum und nicht nach `$TMPDIR`. Der Vorgabepfad des
-# Skripts haengt allein am Stand (`nachbau0066-HEAD`), also am selben Ort fuer jeden
-# Baum -- zwei Baeume nacheinander, wie sie jede Gegenprobe fahrt, liefen einander in
-# die Ablage. Unter dem Baubaum ist sie je Baum und je Profil eine eigene und
-# verschwindet mit ihm. `bau/` ist in `.gitignore` und in `UNGELESENE_ORDNER` des
-# Belegstellenriegels, die 22 Wegwerf-Manifeste stoeren dort also niemanden.
-#
-# Die Zeitgrenze ist keine Schaetzung nach oben, sondern das Vielfache des gemessenen
-# Werts: 4,5 Sekunden kalt, 600 Sekunden Grenze. Sie soll nicht knapp sein, sie soll
-# verhindern, dass ein haengendes `cmake` den Nachtlauf blockiert.
-set_tests_properties(schlussriegel_nachbau PROPERTIES
-                     TIMEOUT 600
-                     ENVIRONMENT "NACHBAU_ABLAGE=${CMAKE_CURRENT_BINARY_DIR}/nachbau0066")
+# Der Hinweis bleibt stehen, weil er sonst nur noch aus einem Commit-Betreff hervorginge:
+# Wer den Waechter hier sucht -- drei Abnahmen aus dem 0133er Umfeld nennen ihn --,
+# findet an dieser Stelle, wohin er gegangen ist. Das Skript selbst ist nicht umgezogen.

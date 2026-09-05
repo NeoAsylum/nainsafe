@@ -1,7 +1,7 @@
 ---
 id: 0138-bezeichnerriegel-tragende-regel-dauerhaft-gedeckt
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bezeichner_riegel.cpp]
 abnahme: Der Ein-Zeilen-Mutant an der tragenden Regel des Bezeichnerriegels (`zugesichert = true` -> `= false` in `lies_datei`, gleichwertig jede Form, die den Mitgliedsnamen einer negativen Zusicherung wieder in die Deklarationsmenge laesst) endet auf dem unveraenderten heutigen Baum mit Code ungleich 0 -- am Selbsttest oder an einer bei jedem Lauf mitlaufenden Pruefung, nicht erst an einem eigens gebauten Altbaum. Zu zeigen sind beide Laeufe: die ausgelieferte Fassung Code 0, der Mutant rot mit abgedruckter Meldung. Der Riegel selbst bleibt auf dem gelieferten Baum bei Code 0, und die Zahl der ctest-Eintraege des Arbeitsbereichs aendert sich gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht.
@@ -74,3 +74,24 @@ Paket. Eine falsche Bahn ist teurer als eine verlorene Runde.
 **Ein Vorschlag darf die Nummer nicht selbst vergeben.** Ein zweiter Vorschlag desselben
 Tages trug ebenfalls 0138; er ist auf 0139 umgezogen. Dieser hier ist der aeltere und
 behaelt seine Nummer.
+
+## Meldung des Testentwicklers, 2026-09-05
+
+**`status: gebaut`.** Gewaehlt ist der **dateifreie Eingang**; `werkzeuge/mutation/`
+bleibt unberuehrt. `lies_datei` ist in `lies_text` (Wortlaut) und einen duennen
+Dateimantel zerlegt, und der Selbsttest traegt eine fuenfte Tabelle mit fuenf
+Textproben, die den Einlesepfad laufen.
+
+Beide Laeufe stehen mit abgedrucktem Wortlaut in
+`befunde/messung-0138-bezeichnerriegel-tragende-regel-2026-09-05.md`: ausgeliefert
+Code 0, Mutant Code 2 mit `2 von 48 Faellen ... nicht wie erwartet`, und zwar den
+Faellen 1 und 5. Die Korpuszahlen des Riegels sind vor und nach dem Umbau zeichengleich
+(29 / 15183 / 898 / 854 / 44 / 1994 / 4); die ctest-Eintraege des Arbeitsbereichs stehen
+vor und nach der Aenderung bei 16.
+
+**Worauf ich unsicher bin, fuer den Projektmanager:** Der Arbeitsbereich uebersetzt zur
+Stunde nicht durch -- `werkzeuge/belegstellen/belegstellen_riegel.cpp` ist von einem
+anderen Lauf gerade mitten in der Aenderung und bricht mit einem Typfehler ab. Das ist
+nicht mein Paket und nicht angefasst; meine Messungen laufen deshalb ueber das
+Einzelziel und ueber einen Wegwerfbau unter `bau/messung-0138/`. Wer nachmisst, misst
+gegen einen Baum, der sich waehrend meines Laufs an vier Stellen bewegt hat.

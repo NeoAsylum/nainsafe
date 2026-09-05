@@ -1,0 +1,41 @@
+# Der Rotnachweis zu Paket 0129 -- Wegwerfbaum unter bau/, nicht ausgeliefert.
+#
+# Sechs Ziele auf einer Quelle: die ausgelieferte Fassung und fuenf Mutanten, in denen
+# je eine Regel abgeschaltet ist. Die Tests laufen gegen zwei Wurzeln -- den heutigen
+# Baum und die Kopie mit dem Wortlaut vor Paket 0101.
+
+cmake_minimum_required(VERSION 3.22)
+project(kp0129_nachweis LANGUAGES CXX)
+
+include(${CMAKE_CURRENT_LIST_DIR}/../../../werkzeugkette.cmake)
+enable_testing()
+
+set(VORHABEN ${CMAKE_CURRENT_LIST_DIR}/../../..)
+set(ALTBAUM  ${CMAKE_CURRENT_LIST_DIR}/../altbaum)
+set(MUTANTEN ${CMAKE_CURRENT_LIST_DIR}/..)
+
+add_executable(riegel_echt ${VORHABEN}/werkzeuge/bezeichner/bezeichner_riegel.cpp)
+fabrik_warnsatz_anlegen(riegel_echt)
+
+foreach(fall bedingung2 zerlegung form zusicherung regeln)
+  add_executable(riegel_${fall} ${MUTANTEN}/mutant_${fall}.cpp)
+  fabrik_warnsatz_anlegen(riegel_${fall})
+endforeach()
+
+# Der Vorlauf: die ausgelieferte Fassung muss auf beiden Wurzeln das tun, was das Paket
+# behauptet -- auf dem heutigen Baum gruen, auf der Kopie mit dem alten Wortlaut rot.
+add_test(NAME echt_heute COMMAND riegel_echt ${VORHABEN})
+add_test(NAME echt_altbaum COMMAND riegel_echt ${ALTBAUM})
+set_tests_properties(echt_altbaum PROPERTIES WILL_FAIL TRUE)
+
+# Bedingung 2, erste Haelfte: ohne die Regel bleibt derselbe Altbaum gruen.
+add_test(NAME ohne_bedingung2_altbaum COMMAND riegel_bedingung2 ${ALTBAUM})
+
+# Die vier uebrigen Mutanten treffen je eine Falltabelle des Selbsttests. Sie muessen
+# schon am eigenen Selbsttest scheitern, also auf jeder Wurzel.
+add_test(NAME mutant_zerlegung COMMAND riegel_zerlegung ${VORHABEN})
+add_test(NAME mutant_form COMMAND riegel_form ${VORHABEN})
+add_test(NAME mutant_zusicherung COMMAND riegel_zusicherung ${VORHABEN})
+add_test(NAME mutant_regeln COMMAND riegel_regeln ${VORHABEN})
+set_tests_properties(mutant_zerlegung mutant_form mutant_zusicherung mutant_regeln
+                     PROPERTIES WILL_FAIL TRUE)

@@ -1,22 +1,24 @@
 # Rückstand — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-05 13:55. Fassung 30, geschrieben vom Projektmanager. Diese Datei sagt,
+Stand 2026-09-05 16:56. Fassung 31, geschrieben vom Projektmanager. Diese Datei sagt,
 welche Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer
 entscheiden muss.
 
-**Sieben Urteile lagen vor, alle sieben `geprüft`, kein einziger Rücklauf** — zum zweiten
-Mal in Folge ein ganzer Prüfdurchgang ohne Beanstandung. 133 Pakete: 24 offen, 0 gebaut,
+**Dieser Lauf hatte nichts zu ziehen und nichts zu sichten.** Alle sieben Urteile des
+Vortagsdurchgangs waren bereits verarbeitet, kein Vorschlag lag offen. Das ist neu: Bisher
+kam jeder freie Bauplatz aus einem ungezogenen Urteil. 134 Pakete: 24 offen, 1 gebaut,
 105 fertig, 4 blockiert, 0 Vorschläge.
 
-**Der Trockenlauf zu Beginn plante 1 von 8 Bauplätzen** — der schlechteste Stand, den
-diese Datei je verzeichnet hat. Nach dem Statusnachzug waren es 4, nach der Sichtung der
-Vorschläge 7, nach dem letzten Schnitt **8 von 8**. Kein einziger dieser Plätze ist durch
-mehr Pakete entstanden; sie waren alle schon da und hingen an Urteilen, die niemand
-gezogen hatte.
+**Der Trockenlauf plante 7 von 8 Bauplätzen — vorher wie nachher.** Der achte Platz ist
+nicht durch Versäumnis leer, sondern durch Struktur, und das ist der Befund dieses Laufs:
+**Alle 17 nicht eingeplanten Pakete hängen an einer Abhängigkeit, kein einziges am
+Dateischnitt.** Nachgezählt, Paket für Paket. Der Rückstand ist keine Menge von 24 Posten,
+sondern **fünf Ketten, deren Kopf jeweils schon läuft**. Zerlegen gewinnt hier nichts;
+ein achter Platz entstünde nur aus einem Paket auf einer bisher unberührten Datei.
 
-Vier Vorschläge gesichtet, **alle vier angenommen**, einer davon umnummeriert. Dazu ein
-neu geschnittenes Paket und eine gelöste Sperre — beides zusammen der erste Auftrag seit
-Tagen, der am Erzeugnis selbst arbeitet und nicht an den Werkzeugen darüber.
+**Die Arbeit dieses Laufs ging deshalb ganz an 0116** — das Paket, das die vorige Fassung
+unter „Was der nächste Lauf zuerst anfasst" als Erstes zu prüfen aufgab. Das Ergebnis
+steht unten und ist der schwerste Einzelbefund seit Tagen.
 
 ## Der Statusnachzug: sieben Abnahmen, kein Rücklauf
 
@@ -134,6 +136,51 @@ Von den vierundzwanzig offenen Paketen arbeitet genau **eines** am Erzeugnis: 01
 übrigen dreiundzwanzig arbeiten an Entwurfstext, an der Werkzeugkette, an Riegeln und an
 der Reihendatei. Bis heute waren es null.
 
+## 0116: dreimal zugewiesen, null Byte geliefert — und keine Bremse sieht es
+
+Die vorige Fassung gab auf, 0116 über seine Zieldatei zu prüfen. Das Ergebnis:
+
+- **Dreimal zugewiesen** am 2026-09-05 (12:58, 13:58, 15:01), jedes Mal `architekt`.
+- **`technik.md` ist byte-identisch** zum Stand vom 05:51 — 239.800 Byte, gemessen gegen
+  `9e46cfa`. Kein einziges Zeichen aus drei Läufen.
+- **0 Rückläufe. Kein Eintrag in `notizen/architekt.md`.** Das Paket wird nirgends erwähnt.
+
+**Die Lücke, und sie ist allgemein:** `baulauf.py:350` bremst nach `RUECKLAUF_MAX`
+Rückläufen. Ein Lauf, der *nichts* liefert, erzeugt keinen Rücklauf. **Ein stummes Paket
+kann deshalb unbegrenzt oft zugewiesen werden**, und jede Zuweisung kostet. Es ist derselbe
+Fall wie 0026 am 2026-09-04 (dreimal zugewiesen, rund 22,60 $) — nur ist er dort über die
+Rollendatei erklärt worden, und diese Erklärung trägt heute nicht mehr: **der Satz „Setze
+`status: gebaut`" steht inzwischen in allen fünf Baurollen** (je 1 Treffer, nachgemessen).
+Die Ursache von damals ist behoben, das Verhalten ist geblieben.
+
+**Was ich getan habe — und wo ich von meiner eigenen Vorgabe abgewichen bin.** Die vorige
+Fassung schrieb, beim fünften Durchgang gehöre 0116 „hierher und nicht in einen Bauplatz".
+Ich habe es trotzdem im Bauplatz gelassen, aus einem Grund, den ich damals nicht gesehen
+hatte: **An 0116 hängen sieben Pakete in gerader Kette** (0117 → 0064 → 0068 → 0074 → 0084
+→ 0092, dazu 0118). `blockiert` hätte nicht ein Paket angehalten, sondern acht. Der Kopf
+muss ankommen, nicht stillgelegt werden.
+
+Stattdessen zwei Eingriffe, beide innerhalb dessen, was ein nie gebautes Paket erlaubt:
+
+1. **Verkleinert.** 0116 verlangte vier Lieferungen auf der größten Datei des Vorhabens.
+   Die Prüfliste für ein fünftes Land ist heraus und steht als **0141** in der Kette;
+   geschnitten an der Naht, die 0116 selbst benennt — seine Nummer 3 trug 0118, seine
+   Nummern 1 und 2 tragen 0117.
+2. **Eine unerfüllbare Bedingung ersetzt.** Bedingung 4 verlangte, `git diff` zeige
+   Änderungen ausschließlich in `technik.md`. Das kann kein Bauagent leisten: Der Baulauf
+   committet die ganze Schreibwurzel der Rolle, und im selben Durchgang arbeiten andere
+   Gewerke im selben Baum. **0116s eigener Commit vom 15:01 trug sieben Dateien, von denen
+   der Architekt keine geschrieben hat.** Ersetzt durch eine Messung an der eigenen Datei.
+
+Dazu steht im Paket ein Meldeauftrag: Hält den Bauagenten etwas anderes auf als der Umfang,
+liefert er nichts und schreibt es hinein. **Ein gemeldetes Hindernis kostet einen Lauf; ein
+stummer Lauf kostet ihn auch und hinterlässt nichts.**
+
+**Was zu entscheiden ist:** Liefert 0116 im vierten Anlauf wieder nichts, ist der Umfang
+nicht die Ursache. Dann ist es keine Paketfrage mehr, sondern die Frage, ob ein Gewerk auf
+einer 240-kB-Datei überhaupt arbeiten kann — und die gehört dem Entwurf, nicht mir.
+**Acht der 24 offenen Pakete liegen auf dieser einen Datei.**
+
 ## Was der Geschäftsführer entscheiden lassen muss
 
 **1. Ein neuer Vorrang. Die Liste in `ops/plan.md` ist zum fünften Mal vollständig
@@ -191,9 +238,12 @@ Zusammen mit Punkt 2 ist das die eigentliche Frage dieses Laufs.
    Bedingung 2 ist die, an der es scheitern wird, wenn es scheitert: Ein Verlauf, der die
    überzählige Kette still wegwirft, sieht von einem richtigen nicht zu unterscheiden aus,
    solange nur einseitig gemessen wird.
-3. **0116 auf die Zieldatei prüfen, bevor irgendetwas anderes** (Punkt 5 oben). Vier
-   Durchgänge ohne eine Zeile sind die Grenze; beim fünften gehört es hierher und nicht in
-   einen Bauplatz.
+3. **0116 wieder über die Zieldatei prüfen — es ist im vierten Anlauf.** Der Griff steht
+   oben: `git log -- technik.md` und die Bytezahl gegen `9e46cfa` (239.800). Ändert sich
+   nichts, ist der Umfang widerlegt, und es gehört dem Geschäftsführer statt einem fünften
+   Anlauf. Dasselbe für 0141, sobald es startbereit ist.
+   **Diesen Griff bei jedem Paket mit langer Standzeit anwenden, nicht nur bei 0116** — die
+   Rücklaufbremse sieht einen stummen Lauf nicht, und die Betreffzeile lügt.
 4. **Bei 0136 auf die Rückmeldung zum Bahnort achten.** Es räumt meine eigene
    Kollisionsentscheidung aus 0133 auf und darf dabei `werkzeugkette.cmake` nicht anfassen.
    Meldet es, dass der neue Ort auch falsch liegt, ist das kein Rücklaufgrund, sondern

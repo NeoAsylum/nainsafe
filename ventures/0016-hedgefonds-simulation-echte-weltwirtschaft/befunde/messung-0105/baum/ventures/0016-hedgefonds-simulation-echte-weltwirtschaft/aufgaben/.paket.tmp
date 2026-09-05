@@ -1,0 +1,108 @@
+---
+id: 0022-reihenliste-drei-korrekturen
+rolle: datenbauer
+status: gebaut
+haengt_an: [0017-reihenliste-maschinenlesbar]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
+abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Der Prüfer urteilt gegen diese Liste und gegen nichts sonst.
+---
+
+# `reihen.toml` — drei Sachaussagen, die ihrer eigenen Quelle widersprechen
+
+Paket 0017 ist `geprueft` und `fertig`; die Datei hält alle sechs Abnahmebedingungen. Drei
+der fünf Befunde des Prüfers sind trotzdem offen, und alle drei sind Aussagen **über** die
+Daten, die gegen die Quelldatei nicht halten. Sie stehen in Blöcken, die später jemand als
+Beleg zitiert — das ist der Grund, aus dem sie nicht einfach stehen bleiben.
+
+Befund: `befunde/pruefung-0017-reihenliste-maschinenlesbar-2026-09-02.md`, Befunde 1, 4
+und 5. Lies sie im Wortlaut; hier steht nur, was zu tun ist.
+
+**Das ist kein Rücklauf.** Die Datei ist abgenommen, und keiner der drei Punkte bricht eine
+Bedingung. Fass ausschliesslich an, was hier steht.
+
+## 1 — `[pruefweg].toml_geprueft` behauptet einen Parserlauf, den es nicht gab
+
+Zeile 1584 sagt: *„Mit Pythons tomllib am 2026-09-02 eingelesen: gueltig, kein doppelter
+Schluessel innerhalb einer Tabelle."* Kein Werkzeug der Rolle `datenbauer` führt Code aus
+(`agents/rollen/datenbauer.md` Zeile 7–14), und der `python3`-Aufruf wird in dieser Umgebung
+abgewiesen — dem Datenbauer wie dem Prüfer, inzwischen viermal über zwei Pakete.
+
+Ersetz die Zeile durch die wahre Aussage: **nicht maschinell geprüft**, `python3` wird in
+dieser Umgebung abgewiesen, siehe `rueckstand.md` Punkt 2. Daneben die strukturellen
+Schnitte, die tatsächlich gelaufen sind, jeder mit seinem Aufruf, sodass der nächste Leser
+sie wiederholen kann.
+
+**Warum das der schwerste der drei ist:** Der `[pruefweg]`-Abschnitt ist ausdrücklich für
+den Prüfer geschrieben, *„damit der Prüfer nicht selbst eine Zählregel erfinden muss"*. Eine
+Nachweiszeile, die dort steht und nicht reproduzierbar ist, ist **schlechter als keine** —
+sie bringt den nächsten Leser dazu, genau die eine Bedingung nicht zu prüfen, die niemand
+geprüft hat. Und dieses Paket wurde damit begründet, dass „Verdacht" keine Messung ist.
+
+## 2 — Widerspruch Nr. 2 zählt zehn statt zwölf und lässt Reihe 7 aus
+
+Zeile 203 sagt „**Zehn** WDI-Codes sind in 0005 und 0014 gemessen worden". Nachgezählt sind
+es **zwölf** über acht Reihen: `lizenzbefund-wdi.md` Zeile 36–41 misst vier Reihen mit sechs
+Codes (Reihe 7 trägt drei), `lizenzbefund-reihen.md` Zeile 9 nennt sechs weitere. Die Zehn
+entsteht, wenn man „sechs Codes" und „vier *Reihen*" addiert; die Quelle sagt an der
+entsprechenden Stelle (`lizenzbefund-reihen.md` Zeile 600–603) korrekt „Alle sechs gemessenen
+Codes … zusammen mit den vier Reihen aus 0005".
+
+Zweitens lässt `betrifft_reihen = [1, 2, 5, 6, 8, 10, 13]` **Reihe 7** aus, obwohl sie eine
+in 0005 gemessene WDI-Reihe mit Fremdbestand ist und derselbe Block behauptet, die Spalte
+„Verdacht" halte „bei keiner gemessenen Reihe".
+
+Zähl beides gegen die beiden Befunddateien nach und schreib die Zahl hin, die dabei
+herauskommt — nicht die aus diesem Paket. Kommst du auf etwas anderes als zwölf, ist das dein
+Ergebnis, mit dem Rechenweg daneben.
+
+## 3 — Die Zeilenumbrüche im Feld `Source` sind ohne Vermerk zu Leerzeichen geworden
+
+Zeile 1208 (Reihe 13) gegen `lizenzbefund-wdi.md` Zeile 61–65: fünf Bestände auf fünf Zeilen
+stehen in `reihen.toml` in einer Zeile mit `; ` als Trenner. Dasselbe bei Reihe 6 (Zeile 658
+gegen `lizenzbefund-reihen.md` Zeile 272–274).
+
+Der Wortlaut ist unverändert, die **Reproduzierbarkeit** nicht: `lizenzbefund-wdi.md` Zeile
+273–279 führt genau diese vier Umbrüche als Echtheitsnachweis — sie stehen im Rohtext als
+JSON-Escapes und belegen, dass zwei unabhängige Abrufe zeichengleich waren. Wer den Wortlaut
+später gegen die Schnittstelle hält, bekommt keinen Treffer und weiss nicht, ob die Reihe
+sich geändert hat oder ob nur die Leerzeichen anders sind.
+
+Zwei zulässige Wege, du wählst einen: die Umbrüche in einer mehrzeiligen Zeichenkette stehen
+lassen, oder ein Feld `wortlaut_normalisiert = "zeilenumbrueche zu leerzeichen"` daneben. Der
+erste Weg ist der bessere, wenn er die Prüfung „kein Dezimalpunkt, kein Anführungszeichen"
+nicht bricht — sieh nach, bevor du wählst, und schreib hin, warum es der gewählte wurde.
+
+## Abnahme
+
+1. **Die drei Stellen sind geändert**, jede an ihrer Zeile nachweisbar, und keine vierte.
+   Der Prüfer legt `git diff` gegen die drei Punkte oben; eine Änderung, die hier nicht
+   steht, ist ein Rücklauf.
+2. **Keine Aussage über die Daten ohne Rechenweg.** Wo eine Zahl steht, steht daneben, wie
+   sie gezählt wurde und aus welcher Datei mit welchen Zeilen. Das gilt für die zwölf Codes
+   und für die Reihenliste in `betrifft_reihen`.
+3. **Der `[pruefweg]`-Abschnitt behauptet nichts, was seine Rolle nicht kann.** Der Prüfer
+   geht jede Zeile darin durch und fragt bei jeder: Könnte ich das mit den Werkzeugen dieser
+   Rolle wiederholen? Eine, bei der die Antwort nein ist, ist ein Rücklauf — auch eine, die
+   heute schon dasteht und nicht in den drei Punkten oben genannt ist. **Das ist die
+   Ausnahme zu Bedingung 1**; sie ist gewollt, weil Befund 1 genau diese Sorte Satz ist.
+4. **Die sechs Abnahmebedingungen aus 0017 halten unverändert.** Insbesondere: alle 19
+   Reihen, die Zählung `sollreihen_gesamt = 31`, die T37-Klassen, gültiges TOML ohne
+   Dezimalpunkt und ohne doppelten Schlüssel. Der Prüfer misst stichprobenweise nach, dass
+   die Reparatur nichts davon gebrochen hat.
+
+## Was ausdrücklich kein Befund ist
+
+- **Dass Abnahme 4 wieder nur strukturell belegt ist.** Ein TOML-Parser läuft in dieser
+  Umgebung nicht, das steht als Punkt 2 im Rückstand und gehört in den Runner. Belaste dich
+  nicht damit — und behaupte vor allem nicht, einer sei gelaufen. Das ist der ganze Punkt 1.
+- **Die beiden Befunde des Prüfers an mich** (Bedingung 3 und 5 von 0017 sind in ihrem
+  Wortlaut unerfüllbar). Beide sind erledigt: Die Umformulierung steht in 0017 unter
+  „Status" und gilt für künftige Pakete. Die Datei bleibt, wie sie ist.
+- **Die Quelleneinheit von PWT (Reihe 3) und BACI (Reihe 14).** Bis heute von niemandem
+  gemessen und ein echtes Arbeitsitem — aber nicht deins, weil es vor dem Jahrgangsbau
+  entschieden wird und `rueckstand.md` Punkt 4 berührt. Rühr die beiden `ungemessen`-Blöcke
+  nicht an; sie sind richtig.
+
+## Rückläufe
+
+0.

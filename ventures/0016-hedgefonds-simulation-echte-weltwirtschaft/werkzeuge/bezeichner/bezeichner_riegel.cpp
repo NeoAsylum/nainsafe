@@ -57,9 +57,15 @@
 //! Sonderfall: Beim Aufbau der Deklarationsmenge wird der Mitgliedsname innerhalb
 //! einer solchen Anforderung uebersprungen, alles andere nicht.
 //!
-//! Der Nachweis, dass die Regel etwas leistet, steht nicht hier, sondern in der
-//! Abnahme des Pakets: derselbe Baum mit dem Wortlaut vor Paket 0101, einmal ohne und
-//! einmal mit der Regel. Ohne sie bleibt der Riegel gruen, mit ihr wird er rot.
+//! Der Nachweis, dass die Regel etwas leistet, war zunaechst eine Einmalmessung der
+//! Abnahme von Paket 0129: derselbe Baum mit dem Wortlaut vor Paket 0101, einmal ohne
+//! und einmal mit der Regel. Ohne sie bleibt der Riegel gruen, mit ihr wird er rot.
+//!
+//! Eine Einmalmessung deckt die Regel nicht. Paket 0138 hat das nachgemessen: Wer die
+//! Ausnahme hier abschaltet, kam am heutigen Baum durch den gesamten Selbsttest und den
+//! Baumlauf gruen, weil der Bestand keinen toten Namen in Zusicherungsform mehr traegt.
+//! Seither traegt der Selbsttest eine fuenfte Tabelle, die den Einlesepfad an
+//! Textproben laufen laesst -- **sie** ist die mitlaufende Deckung dieser Regel.
 //!
 //! ## Die Ausnahmen sind Regeln, keine Namensliste
 //!
@@ -122,7 +128,7 @@
 //!
 //! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
 //!
-//! Vier Falltabellen im Programm, zusammen mit ihren Gegenproben. Sie laufen vor dem
+//! Fuenf Falltabellen im Programm, zusammen mit ihren Gegenproben. Sie laufen vor dem
 //! ersten Lesen des Bestands; ein verfehlter Fall bricht mit Code 2 ab, ehe eine Zahl
 //! entsteht. Der Grund ist derselbe wie beim Belegstellenriegel: Stimmt die Zerlegung
 //! nicht, ist jede Zahl weiter unten wertlos -- auch und gerade eine gruene.
@@ -132,6 +138,11 @@
 //! ist der erste der Regeltabelle -- der Wortlaut aus Paket 0101, der ein Befund sein
 //! muss, direkt neben dem Wortlaut am rohen Schreibzugriff, der keiner sein darf.
 //! Beide nennen denselben Namen.
+//!
+//! Vier der Tabellen messen je einen Baustein fuer sich. Die fuenfte misst als einzige
+//! ihr Zusammenspiel: Sie schickt Textproben durch den Einlesepfad und prueft, was
+//! danach in der Deklarationsmenge steht und wie derselbe Kandidat ausgeht, den `main`
+//! spaeter beurteilt.
 //!
 //! ## Aufruf und Rueckgabe
 //!
@@ -152,8 +163,10 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <iterator>
 #include <map>
 #include <set>
+#include <sstream>
 #include <string>
 #include <string_view>
 #include <system_error>
@@ -1052,18 +1065,21 @@ bool hat_inhalt(const std::string& text) {
     return false;
 }
 
-/// Liest eine Kernquelle: fuellt die Deklarationsmenge, den Codetext und die
-/// Kandidatenliste.
+/// Liest den **Wortlaut** einer Kernquelle: fuellt die Deklarationsmenge, den Codetext
+/// und die Kandidatenliste.
 ///
 /// Ein **Block** ist ein Lauf aufeinanderfolgender Zeilen mit nicht leerem
 /// Kommentarteil. Eine Trennzeile ohne Text beendet ihn. Das ist dieselbe Einheit, in
 /// der ein Kommentar geschrieben wird, und sie ist der Bezug der Regeln 10 und 13.
-void lies_datei(const fs::path& pfad, const std::string& anzeigename, Bestand& bestand,
-                std::vector<Kandidat>& kandidaten, Zaehlwerk& z) {
-    std::ifstream strom(pfad);
-    if (!strom) {
-        return;
-    }
+///
+/// Der Eingang nimmt Text und keinen Pfad, damit der Selbsttest ihn erreicht. Solange
+/// hier nur echte Dateien ankamen, war die tragende Regel dieses Riegels von keiner
+/// mitlaufenden Pruefung gedeckt: `zusicherungen` fuer sich und die Regeln an einem
+/// handgefuellten Bestand sind gemessen, ihre **Kopplung** an dieser Stelle war es
+/// nicht.
+void lies_text(std::string_view inhalt, const std::string& anzeigename, Bestand& bestand,
+               std::vector<Kandidat>& kandidaten, Zaehlwerk& z) {
+    std::istringstream strom{std::string(inhalt)};
     ++z.dateien;
 
     std::vector<std::string> blockzeilen;
@@ -1164,6 +1180,20 @@ void lies_datei(const fs::path& pfad, const std::string& anzeigename, Bestand& b
     blockschluss();
 }
 
+/// Holt den Wortlaut einer Kernquelle vom Dateisystem und reicht ihn weiter. Eine nicht
+/// lesbare Datei zaehlt nicht mit -- das war schon so, als das Oeffnen und das Lesen
+/// noch dieselbe Funktion waren.
+void lies_datei(const fs::path& pfad, const std::string& anzeigename, Bestand& bestand,
+                std::vector<Kandidat>& kandidaten, Zaehlwerk& z) {
+    std::ifstream strom(pfad);
+    if (!strom) {
+        return;
+    }
+    const std::string inhalt((std::istreambuf_iterator<char>(strom)),
+                             std::istreambuf_iterator<char>());
+    lies_text(inhalt, anzeigename, bestand, kandidaten, z);
+}
+
 /// Namensraeume und Verbunde des Kerns -- der Bestand der Regel `fremder_behaelter`.
 /// Gelesen wird der Codeteil, damit ein Wort aus einem Kommentar nicht zum Namensraum
 /// wird.
@@ -1198,6 +1228,117 @@ void sammle_behaelter(std::string_view code, Namensmenge& ziel) {
             }
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// Der Selbsttest des Einlesepfads -- die tragende Regel, mitlaufend gedeckt
+// ---------------------------------------------------------------------------
+
+/// Eine erfundene Kernquelle samt dem, was aus ihr folgen muss.
+///
+/// Die drei Tabellen darueber messen Bausteine: `zerlege`, `zusicherungen` und `regel`
+/// je fuer sich. Die tragende Regel dieses Riegels ist aber keiner der drei, sondern
+/// ihre **Kopplung** im Einlesepfad -- der Mitgliedsname einer negativen Zusicherung
+/// wird beim Fuellen der Deklarationsmenge uebersprungen. Diese Tabelle ist die einzige
+/// Pruefung, die dort hinreicht.
+struct Einlesefall {
+    std::string_view quelle;   ///< der Wortlaut, Zeile fuer Zeile
+    std::string_view name;     ///< der Name, ueber den entschieden wird
+    std::string_view mitname;  ///< ein zweiter Name, der deklariert sein muss
+    bool deklariert;           ///< steht `name` nach dem Einlesen in der Menge?
+    std::size_t zusicherungen;
+    std::size_t kandidaten;
+    std::string_view ausgang;  ///< "aufgeloest", "befund" oder der Name der Regel
+};
+
+/// Fuenf Proben. Die erste und die fuenfte sind der Gegenstand, die uebrigen drei die
+/// Gegenprobe -- sie halten fest, was die Ausnahme **nicht** tun darf.
+///
+///   1. Der Name kommt im Code ausschliesslich als Mitglied einer negativen Zusicherung
+///      vor. Er darf nicht deklariert sein, und der Kommentar, der ihn nennt, ist ein
+///      Befund. Das ist der Fall aus Paket 0101.
+///   2. Derselbe Name als gewoehnliche Deklaration, ohne Zusicherung: deklariert.
+///   3. Beides in einer Quelle. Die Regel ueberspringt die **Fundstelle**, nicht den
+///      Namen -- eine Nennung sonstwo im Code macht ihn deklariert.
+///   4. Eine Anforderung mit Parameterliste ist keine Zusicherung dieser Art. Faenge der
+///      Mustervergleich sie mit, striche er einen Namen aus der Menge, den es gibt.
+///   5. Der Nachlass bleibt Nachlass: nicht deklariert, aber von Regel 11 gedeckt.
+///
+/// Der Vorspann (`Z`) muss in jeder Probe deklariert bleiben; uebersprungen wird allein
+/// der letzte Namensteil.
+constexpr std::array<Einlesefall, 5> EINLESEFAELLE = {{
+    {R"PROBE(struct Z { void lies(); };
+constexpr bool hat = requires { &Z::schreibe; };
+//! Der Zustand kennt `schreibe` als Feldzugriff.
+)PROBE",
+     "schreibe", "Z", false, 1, 1, "befund"},
+    {R"PROBE(struct Z { void schreibe(); };
+//! Der Zustand kennt `schreibe` als Feldzugriff.
+)PROBE",
+     "schreibe", "Z", true, 0, 1, "aufgeloest"},
+    {R"PROBE(struct Z { void schreibe(); };
+constexpr bool hat = requires { &Z::schreibe; };
+//! Der Zustand kennt `schreibe` als Feldzugriff.
+)PROBE",
+     "schreibe", "Z", true, 1, 1, "aufgeloest"},
+    {R"PROBE(constexpr bool nimmt = requires(ZweckTyp zweck) { ableitung(zweck); };
+//! Der Aufruf `ableitung` bleibt eine Anforderung.
+)PROBE",
+     "ableitung", "ZweckTyp", true, 0, 1, "aufgeloest"},
+    {R"PROBE(struct Z { void lies(); };
+constexpr bool hat = requires { &Z::schreibe; };
+//! Das Feld heisst nicht mehr `schreibe`.
+)PROBE",
+     "schreibe", "Z", false, 1, 1, "abgelegter_name"},
+}};
+
+/// Laeuft je Probe genau die Kette, die `main` fuer eine Kernquelle laeuft: einlesen,
+/// Behaelter aus dem Codetext sammeln, und je Kandidat dieselbe Entscheidung -- erst die
+/// Deklarationsmenge, dann die Regeln. Die vergifteten Namen bleiben aussen vor; sie
+/// koennen nur entschuldigen, und keine Probe braucht das.
+std::size_t selbsttest_einlesen() {
+    std::size_t falsch = 0;
+    for (std::size_t i = 0; i < EINLESEFAELLE.size(); ++i) {
+        const Einlesefall& fall = EINLESEFAELLE[i];
+        Bestand b;
+        std::vector<Kandidat> kandidaten;
+        Zaehlwerk z;
+        lies_text(fall.quelle, "probe.hpp", b, kandidaten, z);
+        sammle_behaelter(b.codetext, b.behaelter);
+
+        const std::string name(fall.name);
+        const bool steht = b.deklariert.count(name) > 0;
+        std::string ausgang = "<kein Kandidat>";
+        for (std::size_t j = 0; j < kandidaten.size(); ++j) {
+            if (kandidaten[j].letzt != name) {
+                continue;
+            }
+            ausgang = steht ? std::string("aufgeloest")
+                            : std::string(regel(kandidaten[j], b));
+            if (ausgang.empty()) {
+                ausgang = "befund";
+            }
+            break;
+        }
+        const bool mit =
+            fall.mitname.empty() || b.deklariert.count(std::string(fall.mitname)) > 0;
+
+        if (steht != fall.deklariert || z.zusicherungen != fall.zusicherungen
+            || z.kandidaten != fall.kandidaten || ausgang != fall.ausgang || !mit) {
+            std::fprintf(stderr,
+                         "Selbsttest Einlesepfad, Fall %zu verfehlt.\n  Name '%s': "
+                         "deklariert %d erwartet %d\n  Zusicherungen %zu erwartet %zu; "
+                         "Kandidaten %zu erwartet %zu\n  Ausgang '%s' erwartet '%s'\n"
+                         "  Mitname '%s' deklariert %d erwartet 1\n",
+                         i + 1, name.c_str(), steht ? 1 : 0, fall.deklariert ? 1 : 0,
+                         z.zusicherungen, fall.zusicherungen, z.kandidaten,
+                         fall.kandidaten, ausgang.c_str(),
+                         std::string(fall.ausgang).c_str(),
+                         std::string(fall.mitname).c_str(), mit ? 1 : 0);
+            ++falsch;
+        }
+    }
+    return falsch;
 }
 
 /// Die Namen aus den Vergiftungszeilen des Kerns. Sie werden gelesen und nicht
@@ -1356,9 +1497,11 @@ int main(int argc, char** argv) {
     // Der Selbsttest laeuft vor allem anderen und braucht kein Argument. Stimmt die
     // Zerlegung oder eine der Regeln nicht, ist jede Zahl weiter unten wertlos.
     const std::size_t fehlgeschlagen = selbsttest_zerlegung() + selbsttest_zusicherung()
-                                       + selbsttest_form() + selbsttest_regeln();
+                                       + selbsttest_form() + selbsttest_regeln()
+                                       + selbsttest_einlesen();
     const std::size_t faelle = ZERLEGEFAELLE.size() + ZUSICHERUNGSFAELLE.size()
-                               + FORMFAELLE.size() + REGELFAELLE.size();
+                               + FORMFAELLE.size() + REGELFAELLE.size()
+                               + EINLESEFAELLE.size();
     if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
                      "\nbezeichner_riegel: %zu von %zu Faellen des Selbsttests sind nicht "
@@ -1370,10 +1513,10 @@ int main(int argc, char** argv) {
     }
     std::fprintf(stdout,
                  "bezeichner_riegel, Selbsttest: %zu Faelle zur Zerlegung, %zu zur "
-                 "negativen\nZusicherung, %zu zur Form eines Kandidaten und %zu zu den "
-                 "Regeln, alle wie erwartet.\n",
+                 "negativen\nZusicherung, %zu zur Form eines Kandidaten, %zu zu den "
+                 "Regeln und %zu zum Einlesepfad,\nalle wie erwartet.\n",
                  ZERLEGEFAELLE.size(), ZUSICHERUNGSFAELLE.size(), FORMFAELLE.size(),
-                 REGELFAELLE.size());
+                 REGELFAELLE.size(), EINLESEFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2) {

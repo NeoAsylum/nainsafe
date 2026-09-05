@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+project(wegwerf CXX)
+include("${FABRIK_KETTE}")
+add_library(z STATIC ../z.cpp)
+fabrik_warnsatz_anlegen(z)
+target_compile_options(z PRIVATE "$<1:-w>")

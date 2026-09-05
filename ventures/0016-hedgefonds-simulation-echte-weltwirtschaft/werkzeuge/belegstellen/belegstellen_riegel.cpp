@@ -1383,10 +1383,42 @@ Kopfart kopfart(const fs::path& pfad) {
 /// Ein Absatz: der Wortlaut am Stueck und zu jedem Zeichen die Zeile, aus der es
 /// stammt. Die zweite Liste ist nicht Zierde -- ohne sie nennt die Meldung den Absatz
 /// und nicht die Zeile, und der naechste Leser sucht wieder.
+///
+/// Seit Paket 0105 traegt sie eine zweite Aufgabe: Sie ist die **einzige** Stelle, an
+/// der ein Zeilenumbruch im zusammengezogenen Wortlaut noch zu sehen ist. Im Text ist
+/// er ein Leerzeichen wie jedes andere; in dieser Liste ist er der Sprung von einer
+/// Nummer zur naechsten. Begruendung im Kopf, Abschnit\164 zum Zeilenumbruch.
 struct Absatz {
     std::string text;
     std::vector<std::size_t> zeile;
+
+    /// Aus welcher Zeile stammt das Zeichen an `k`? Die Liste ist genauso lang wie der
+    /// Wortlaut -- `haenge_zeile_an` fuellt beide im selben Schritt. Der Index wird
+    /// trotzdem geprueft, wie an jeder Grenze dieses Programms; wo die Liste nichts
+    /// sagt, lautet die Antwort `0` fuer jedes Zeichen, und dann liegt alles in
+    /// derselben Zeile.
+    std::size_t zeile_bei(std::size_t k) const {
+        return k < zeile.size() ? zeile[k] : 0;
+    }
 };
+
+/// Haengt den Inhalt einer Zeile an einen laufenden Absatz. Der Umbruch wird zu **einem**
+/// Leerzeichen, und dieses Leerzeichen traegt bereits die Nummer der **neuen** Zeile --
+/// daran endet ein Name ohne Anfuehrung.
+///
+/// Sie steht als eigener Aufruf da, damit der Selbsttest denselben Absatz baut, den der
+/// Lauf ueber den Bestand liest. Eine zweite, nachgebaute Zusammenziehung im Test misst
+/// eine Fassung, die nirgends laeuft.
+void haenge_zeile_an(Absatz& absatz, std::string_view inhalt, std::size_t nummer) {
+    if (!absatz.text.empty()) {
+        absatz.text += ' ';
+        absatz.zeile.push_back(nummer);
+    }
+    for (std::size_t k = 0; k < inhalt.size(); ++k) {
+        absatz.text += inhalt[k];
+        absatz.zeile.push_back(nummer);
+    }
+}
 
 /// Trennt eine Zeile in Kommentarkopf und Inhalt. Der Kopf ist zugleich die Kennung
 /// des Absatzes: Ein `///`-Block und ein `//`-Block daneben sind zwei Absaetze und
@@ -1458,19 +1490,40 @@ std::vector<Absatz> lies_absaetze(const fs::path& pfad) {
         if (!offen) {
             letzter_kopf = kopf;
             offen = true;
-        } else {
-            laufend.text += ' ';
-            laufend.zeile.push_back(nummer);
         }
-        for (std::size_t k = 0; k < inhalt.size(); ++k) {
-            laufend.text += inhalt[k];
-            laufend.zeile.push_back(nummer);
-        }
+        haenge_zeile_an(laufend, inhalt, nummer);
     }
     if (offen) {
         absaetze.push_back(laufend);
     }
     return absaetze;
+}
+
+/// Der Absatz zu einem Fall der Selbsttesttabellen. Ein `\n` im Fall ist ein
+/// Zeilenumbruch; alles andere geht denselben Weg wie eine gelesene Datei -- erst
+/// `zerlege_zeile`, dann `haenge_zeile_an`.
+///
+/// Ein Fall ohne `\n` ergibt genau seinen eigenen Wortlaut in einer einzigen Zeile. Die
+/// Tabellen, die es vor Paket 0105 schon gab, messen deshalb unveraendert weiter.
+Absatz absatz_aus_fall(std::string_view fall) {
+    Absatz absatz;
+    std::size_t nummer = 0;
+    std::size_t anfang = 0;
+    while (anfang <= fall.size()) {
+        std::size_t ende = fall.find('\n', anfang);
+        if (ende == std::string_view::npos) {
+            ende = fall.size();
+        }
+        ++nummer;
+        std::string kopf;
+        std::string_view inhalt;
+        zerlege_zeile(fall.substr(anfang, ende - anfang), Kopfart::Keine, kopf, inhalt);
+        if (!inhalt.empty()) {
+            haenge_zeile_an(absatz, inhalt, nummer);
+        }
+        anfang = ende + 1;
+    }
+    return absatz;
 }
 
 // ---------------------------------------------------------------------------
@@ -2138,7 +2191,12 @@ bool ist_namensanfang(std::string_view text, std::size_t i) {
 /// Ohne es faenden sich die zusammengesetzten Woerter mit, die dieser Quelltext selbst
 /// in Menge fuehrt -- und der Riegel suchte dann eine Ueberschrift hinter der eigenen
 /// Wortmitte.
-std::size_t name_ohne_anfuehrung(std::string_view text, std::size_t i, std::string& roh) {
+///
+/// **Der Name endet spaetestens dort, wo seine Zeile endet** -- Paket 0105. Die Grenze
+/// ist die Zeile des ersten Zeichens des Namens und nicht die des Schluesselworts: Steht
+/// das Wort am Zeilenende und der Name darunter, ist der Name trotzdem einer.
+std::size_t name_ohne_anfuehrung(const Absatz& absatz, std::size_t i, std::string& roh) {
+    const std::string_view text = absatz.text;
     std::size_t j = i;
     while (j < text.size() && text[j] == ' ') {
         ++j;
@@ -2146,9 +2204,10 @@ std::size_t name_ohne_anfuehrung(std::string_view text, std::size_t i, std::stri
     if (j == i || j >= text.size() || !ist_namensanfang(text, j)) {
         return 0;
     }
+    const std::size_t heimatzeile = absatz.zeile_bei(j);
     std::size_t ende = j;
     while (ende < text.size() && ende - j < UEBERSCHRIFT_HOECHSTENS
-           && !ist_namensende(text, ende)) {
+           && absatz.zeile_bei(ende) == heimatzeile && !ist_namensende(text, ende)) {
         ++ende;
     }
     while (ende > j && (text[ende - 1] == ' ' || text[ende - 1] == '\t')) {
@@ -2418,11 +2477,16 @@ std::size_t selbsttest_satzgrenze() {
     std::size_t falsch = 0;
     for (std::size_t k = 0; k < SATZFAELLE.size(); ++k) {
         const Satzfall& fall = SATZFAELLE[k];
+        // Derselbe Weg wie im Ernstfall, seit Paket 0105 auch beim Zusammenziehen: Der
+        // Absatz wird gebaut und nicht nachgebaut. Ein Fall ohne `\n` ergibt genau
+        // seinen eigenen Wortlaut, die fuenf Faelle unten messen also unveraendert.
+        const Absatz absatz = absatz_aus_fall(fall.zeile);
+        const std::string_view zeile = absatz.text;
 
         std::size_t i = 0;
         std::size_t schluessel = 0;
-        while (i < fall.zeile.size()) {
-            schluessel = schluessellaenge(fall.zeile, i);
+        while (i < zeile.size()) {
+            schluessel = schluessellaenge(zeile, i);
             if (schluessel != 0) {
                 break;
             }
@@ -2441,8 +2505,8 @@ std::size_t selbsttest_satzgrenze() {
 
         std::string roh;
         bool ohne = false;
-        if (ueberschrift_hinter(fall.zeile, i + schluessel, roh) == 0) {
-            ohne = name_ohne_anfuehrung(fall.zeile, i + schluessel, roh) != 0;
+        if (ueberschrift_hinter(zeile, i + schluessel, roh) == 0) {
+            ohne = name_ohne_anfuehrung(absatz, i + schluessel, roh) != 0;
         }
         if (ohne != fall.ohne_anfuehrung) {
             ++falsch;
@@ -2459,9 +2523,8 @@ std::size_t selbsttest_satzgrenze() {
 
         std::string name;
         bool netzadresse = false;
-        const bool hat = naechster_verweis(fall.zeile, i,
-                                           suchuntergrenze(fall.zeile, i, ohne), name,
-                                           netzadresse);
+        const bool hat = naechster_verweis(zeile, i, suchuntergrenze(zeile, i, ohne),
+                                           name, netzadresse);
         const std::string_view gebunden =
             hat ? std::string_view(name) : std::string_view{};
         if (gebunden != fall.gebunden) {
@@ -2479,7 +2542,7 @@ std::size_t selbsttest_satzgrenze() {
         }
 
         std::string weit;
-        const bool hat_weit = naechster_verweis(fall.zeile, i, 0, weit, netzadresse);
+        const bool hat_weit = naechster_verweis(zeile, i, 0, weit, netzadresse);
         const std::string_view ungebunden =
             hat_weit ? std::string_view(weit) : std::string_view{};
         if (ungebunden != fall.ungebunden) {
@@ -2623,6 +2686,9 @@ Namensart namensart(const std::string& gesucht,
 // in einer Zahl mit, die sie messen soll.
 
 struct Zitatfall {
+    /// Der Wortlaut des Falls. Ein `\n` darin ist ein **Zeilenumbruch** und kein
+    /// Leerzeichen -- Paket 0105. Zusammengezogen wird er von `absatz_aus_fall`, also
+    /// von demselben Aufruf, den der Lauf ueber den Bestand benutzt.
     std::string_view zeile;
     /// Die Ueberschriften der Zieldatei, durch `|` getrennt.
     std::string_view ueberschriften;
@@ -2635,7 +2701,7 @@ struct Zitatfall {
     std::string_view herkunft;
 };
 
-constexpr std::array<Zitatfall, 9> ZITATFAELLE = {{
+constexpr std::array<Zitatfall, 13> ZITATFAELLE = {{
     // --- Die zwei Ueberschriften aus Paket 0047, im Wortlaut ------------------
     {"lizenzbefund-reihen.md, \101bschnitt Reihe 1, den Block unter der Zwischenzeile",
      "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
@@ -2688,6 +2754,42 @@ constexpr std::array<Zitatfall, 9> ZITATFAELLE = {{
      Namensart::Tot, "",
      "daten/reihen.toml, Feld beleg zu zaehlung.soll: ein Kleinbuchstabe hinter dem "
      "Schluesselwort -- laufender Satz, kein Zitat"},
+
+    // --- Der Zeilenumbruch -- Paket 0105 ---------------------------------------
+    //
+    // Die vier Faelle unten sind die einzigen der Tabelle mit einem `\n`. Ohne die
+    // Regel "der Name endet, wo seine Zeile endet" reissen die ersten drei an der
+    // Namensspalte; der vierte schreibt den Preis der Regel aus und bleibt gruen.
+    {"lizenzbefund-reihen.md, \101bschnitt Reihe 1\n"
+     "und wird dort nicht bestritten",
+     "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     "", Namensart::Ueberschrift, "Reihe 1",
+     "der Fall, um dessentwillen dieses Paket existiert -- gemessen am 2026-09-05 als "
+     "roter Lauf an einer angehaengten Belegstelle in `rueckstand.md`. Ohne die Regel "
+     "lautet der gesuchte Name 'Reihe 1 und wird dort nicht bestritten' und die Stelle "
+     "wird ein Befund, an dem nichts kaputt ist"},
+    {"lizenzbefund-reihen.md, \101bschnitt Reihe 1\n"
+     "und wird dort nicht bestritten",
+     "Reihe 1a - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     "", Namensart::Tot, "Reihe 1",
+     "dieselben zwei Zeilen, Ueberschrift umbenannt: **die Lockerung laesst keine tote "
+     "Belegstelle durch.** Sie kuerzt den Namen, sie verzeiht ihn nicht -- was die "
+     "Zieldatei nicht fuehrt, bleibt ein Befund"},
+    {"lizenzbefund-reihen.md, \101bschnitt\n"
+     "Reihe 1, der Block unter der Zwischenzeile",
+     "Reihe 1 - BIP, konstante Preise - unklar", "", Namensart::Ueberschrift, "Reihe 1",
+     "gebaut: das Schluesselwort am Zeilenende, der Name darunter. Die Grenze ist die "
+     "Zeile des **Namens** und nicht die des Schluesselworts -- wer sie am Schluesselwort "
+     "festmacht, findet hier gar keine Fundstelle mehr und macht diesen Fall rot"},
+    {"lizenzbefund-reihen.md, \101bschnitt Reihe 2\n"
+     "Erwerbstaetige",
+     "Reihe 2 - Wertschoepfungsanteil je Sektor|Reihe 6 - Erwerbstaetige", "",
+     Namensart::Ueberschrift, "Reihe 2",
+     "gebaut: **der Preis der Regel, ausgeschrieben.** Der abgegrenzte Name ist nur noch "
+     "der Teil bis zum Umbruch, und er loest auf, obwohl die zweite Zeile etwas anderes "
+     "nennt. Je frueher der Umbruch, desto kuerzer der gepruefte Anfang. Die Richtung ist "
+     "gewaehlt und nicht uebersehen: Der Wortlaut bis zum Umbruch ist der einzige, von "
+     "dem feststeht, dass er zum Zitat gehoert"},
 }};
 
 /// Die Ueberschriftenliste eines Falls, normiert wie beim Lesen einer echten Datei.
@@ -2714,12 +2816,15 @@ std::size_t selbsttest_ohne_anfuehrung() {
     std::size_t falsch = 0;
     for (std::size_t k = 0; k < ZITATFAELLE.size(); ++k) {
         const Zitatfall& fall = ZITATFAELLE[k];
+        // Der Absatz wird gebaut wie im Ernstfall -- Paket 0105. Ein `\n` im Fall ist
+        // ein Zeilenumbruch; ohne ihn steht hier genau der Wortlaut des Falls.
+        const Absatz absatz = absatz_aus_fall(fall.zeile);
         // Das Schluesselwort wird gesucht wie im Ernstfall und nicht abgezaehlt: Sonst
         // pruefte der Fall eine Stelle, die `schluessellaenge` gar nicht findet.
         std::size_t hinter = 0;
         bool gefunden = false;
-        for (std::size_t i = 0; i < fall.zeile.size() && !gefunden; ++i) {
-            const std::size_t laenge = schluessellaenge(fall.zeile, i);
+        for (std::size_t i = 0; i < absatz.text.size() && !gefunden; ++i) {
+            const std::size_t laenge = schluessellaenge(absatz.text, i);
             if (laenge > 0) {
                 hinter = i + laenge;
                 gefunden = true;
@@ -2727,7 +2832,7 @@ std::size_t selbsttest_ohne_anfuehrung() {
         }
         std::string roh;
         std::string gesucht;
-        if (gefunden && name_ohne_anfuehrung(fall.zeile, hinter, roh) > 0) {
+        if (gefunden && name_ohne_anfuehrung(absatz, hinter, roh) > 0) {
             gesucht = normiere(roh);
         }
         if (!gefunden) {
@@ -2792,7 +2897,7 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                 // Paket 0079: die Form ohne Anfuehrung. Weitergerueckt wird danach nur
                 // ueber das Schluesselwort und nicht ueber den Namen -- steht im Namen
                 // ein zweites Schluesselwort, soll es seine eigene Fundstelle bleiben.
-                if (name_ohne_anfuehrung(absatz.text, i + schluessel, roh) == 0) {
+                if (name_ohne_anfuehrung(absatz, i + schluessel, roh) == 0) {
                     // Paket 0086: erst jetzt, wenn beide unmittelbaren Formen nichts
                     // hergeben, wird die Anfuehrung mit Wortabstand gesucht. Die
                     // Reihenfolge ist die ganze Vertraeglichkeit dieser Lockerung.
