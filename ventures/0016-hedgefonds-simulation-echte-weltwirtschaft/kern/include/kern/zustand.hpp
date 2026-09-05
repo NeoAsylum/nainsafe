@@ -219,20 +219,29 @@ inline constexpr std::size_t MARKTGROESSEN = 2;
 
 /// Die fuenf Fondsaggregate, in der Reihenfolge aus `daten/adressen.md`.
 ///
-/// Alle Vorgaben nennen dieselbe Folge, und die Aufzaehlung unten folgt ihr:
-/// T15 ("Kasse, Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil",
-/// `technik.md:477`), in `daten/adressen.md` die fuenf Bezeichner `fonds.kasse`,
-/// `fonds.hebelstand`, `fonds.sichtbarkeit`, `fonds.anlegerbestand` und
-/// `fonds.marktanteil` in genau dieser Folge, und `spiel.md:212-213`.
+/// Alle Vorgaben nennen dieselbe Folge, und die Aufzaehlung unten folgt ihr: In
+/// `technik.md` zaehlt T15 sie im Wortlaut auf -- "Kasse, Hebelstand, Sichtbarkeit,
+/// Anlegerbestand, Marktanteil" --, in `daten/adressen.md` stehen die fuenf Bezeichner
+/// `fonds.kasse`, `fonds.hebelstand`, `fonds.sichtbarkeit`, `fonds.anlegerbestand` und
+/// `fonds.marktanteil` in genau dieser Folge, und in `spiel.md` traegt sie der Absatz
+/// "Der Fonds".
 ///
-/// **Warum hier Bezeichner stehen und kein Zeilenbereich.** Bis zum 2026-09-04 stand
-/// hier einer, und der Belegstellenriegel aus Paket 0059 hat ihn tot gefunden: Er
-/// nannte fuenf Zeilen, in denen inzwischen Handelszeilen stehen (`handel.CN.RW.1`
-/// bis `handel.DE.CN.1`), nicht die fuenf Fondsaggregate -- von Hand nachgeschlagen
-/// und bestaetigt in Paket 0070. Ein Bezeichner wandert nicht: Wer die Adresstabelle
-/// umsortiert, nimmt ihn mit. Nachgezogen wird hier deshalb nie wieder; sechs Pakete
-/// haben das getan, und bei 0050 war die Korrektur falsch, bevor sie jemand ausfuehren
-/// konnte.
+/// **Warum hier Bezeichner und Wortlaut stehen und keine Nummern.** Bis zum
+/// 2026-09-04 stand hier ein Zeilenbereich in `daten/adressen.md`, und der
+/// Belegstellenriegel aus Paket 0059 hat ihn tot gefunden: Er nannte fuenf Zeilen, in
+/// denen inzwischen Handelszeilen stehen (`handel.CN.RW.1` bis `handel.DE.CN.1`),
+/// nicht die fuenf Fondsaggregate -- von Hand nachgeschlagen und bestaetigt in
+/// Paket 0070. Ein Bezeichner wandert nicht: Wer die Adresstabelle umsortiert, nimmt
+/// ihn mit. Nachgezogen wird hier deshalb nie wieder; sechs Pakete haben das getan,
+/// und bei 0050 war die Korrektur falsch, bevor sie jemand ausfuehren konnte.
+///
+/// **Die zwei Verweise auf `technik.md` und auf `spiel.md` trugen bis zum 2026-09-05
+/// dieselbe Krankheit in der zweiten Schreibweise** -- Dateiname, Doppelpunkt, Nummer
+/// --, und beide zeigten schon daneben (Paket 0072). Der Riegel hat sie nicht
+/// gemeldet: Er sucht das Wort fuer eine Zeile oder ein `Z` mit Punkt und laeuft an
+/// der Doppelpunktform vorbei. Ersetzt sind sie durch das, was ohne Nachziehen haelt
+/// -- den zitierten Wortlaut der Aufzaehlung dort und den Namen des Absatzes, den
+/// Bedingung 2 des Riegels gegen die Zieldatei nachschlaegt.
 ///
 /// Ein Widerspruch zwischen den Vorgaben besteht hier **nicht** -- eine fruehere
 /// Fassung dieses Kommentars behauptete einen und widerlegte sich in ihrem eigenen

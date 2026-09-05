@@ -9,21 +9,25 @@
 //!      Gegenueber je Gebiet aus T9. T48 verlangt fuer die zweite ausdruecklich eine
 //!      Tabelle statt einer Rechnung auf Indizes.
 //!   3. **Die geprueften Rechenarten aus T7 Massnahme 4**, soweit sie hier entstehen:
-//!      Strichrechnung ueber die Ueberlaufbausteine des Uebersetzers (4.2) und jede
-//!      blanke Multiplikation ueber `festkomma::mal` (4.3).
+//!      keine mehr in eigener Fassung. Jede Strichrechnung laeuft ueber
+//!      `festkomma::plus` und `festkomma::minus` (4.2), jede blanke Multiplikation
+//!      ueber `festkomma::mal` (4.3).
 //!
-//! ## Warum hier ueberhaupt Strichrechnung steht
+//! ## Wo die Strichrechnung steht, und warum nicht mehr hier
 //!
 //! T7 Massnahme 4.2 verlangt fuer Additionen und Subtraktionen auf `i64` die
-//! Ueberlaufbausteine des Uebersetzers. Der Kern hatte bis zu diesem Paket keine
+//! Ueberlaufbausteine des Uebersetzers. Der Kern hatte bis zu diesem Modul keine
 //! Strichrechnung auf Groessen nach T5 -- `fondsvermoegen` ist die erste, und mit ihr
 //! `bip`, `handelsvolumen`, `fondsanteil`, `korbbestand` und `marktkorb`. `plus` und
-//! `minus` stehen deshalb hier und nicht in `festkomma.hpp`: Jene Datei gehoert nicht
-//! zur Dateiliste dieses Pakets, und ein Bauagent, der ausserhalb seines Pakets
-//! schreibt, kollidiert mit dem, der gerade daran arbeitet. Dass sie dorthin gehoeren,
-//! sobald ein zweites Modul sie braucht, steht als eigener Vorschlag unter
-//! `aufgaben/` -- gesucht wird er ueber den Bezeichner `plus` neben `festkomma`, nicht
-//! ueber eine Nummer.
+//! `minus` entstanden deshalb zunaechst hier, im anonymen Namensraum dieser Quelle;
+//! seit dem Umzug stehen sie in `festkomma.hpp` neben `mal`, und diese Datei hat
+//! keine eigene Fassung mehr. Der Grund steht dort ausgeschrieben und in einem Satz:
+//! Jene Datei ist nach T6 die einzige Rechenstelle des Kerns, und eine gepruefte
+//! Addition ausserhalb macht daraus einen Satz mit einer Ausnahme.
+//!
+//! **Was hier bleibt, ist `betrag`**, und das ist keine halbe Sache: Es ist keine der
+//! drei Rechenarten aus T7, sondern eine Vorzeichenregel. Wo sie hingehoert,
+//! entscheidet das erste Modul, das sie ein zweites Mal braucht -- nicht dieses.
 //!
 //! ## Die Zahlenproben stehen als `static_assert`
 //!
@@ -50,6 +54,8 @@ namespace kern::werte {
 
 using festkomma::mal;
 using festkomma::mal_geteilt;
+using festkomma::minus;
+using festkomma::plus;
 
 using zustand::Aggregat;
 using zustand::BeteiligungsFeld;
@@ -70,33 +76,8 @@ using zustand::STECKPLAETZE;
 namespace {
 
 // ---------------------------------------------------------------------------
-// T7 Massnahme 4.2 -- Strichrechnung, die nicht still umbricht
+// T7 Massnahme 4 -- die Vorzeichenregel, die keine der drei Rechenarten ist
 // ---------------------------------------------------------------------------
-
-/// `a + b` auf `i64`, Ueberlauf ist ein Abbruch (T7 Massnahme 4.2).
-///
-/// `__builtin_add_overflow` rechnet in unendlicher Genauigkeit und meldet, ob das
-/// Ergebnis in den Zieltyp passt. `-fwrapv` beruehrt den Baustein nicht: Er loest kein
-/// undefiniertes Verhalten aus, sondern fragt eines ab. Genau deshalb ist er hier
-/// noetig -- Massnahme 1 macht den Umbruch **definiert** und damit still.
-constexpr i64 plus(i64 a, i64 b)
-{
-    i64 ergebnis = 0;
-    if (__builtin_add_overflow(a, b, &ergebnis)) {
-        festkomma::abbruch("kern::werte::plus -- Summe ausserhalb von i64 (T7)");
-    }
-    return ergebnis;
-}
-
-/// `a - b` auf `i64`, Ueberlauf ist ein Abbruch (T7 Massnahme 4.2).
-constexpr i64 minus(i64 a, i64 b)
-{
-    i64 ergebnis = 0;
-    if (__builtin_sub_overflow(a, b, &ergebnis)) {
-        festkomma::abbruch("kern::werte::minus -- Differenz ausserhalb von i64 (T7)");
-    }
-    return ergebnis;
-}
 
 /// Der Betrag einer `i64`.
 ///
@@ -113,8 +94,12 @@ constexpr i64 betrag(i64 zahl)
     return zahl < 0 ? -zahl : zahl;
 }
 
-static_assert(plus(3, 4) == 7 && minus(3, 4) == -1);
 static_assert(betrag(-7) == 7 && betrag(7) == 7 && betrag(0) == 0);
+
+// Die Zahlenproben von `plus` und `minus` sind mit ihnen umgezogen und stehen in
+// `festkomma_probe`, zusammen mit den beiden Abbruchpfaden. Hier stuende sonst eine
+// zweite, kleinere Fassung derselben Pruefung -- und die waere genau die Verdopplung,
+// derentwegen der Umzug stattgefunden hat.
 
 // ---------------------------------------------------------------------------
 // T50 -- die drei Skalenuebergaenge, privat

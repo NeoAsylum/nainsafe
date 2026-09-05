@@ -1,7 +1,7 @@
 ---
 id: 0051-t46-gebietspraefix-entscheiden
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0011-stack-auf-cpp, 0026-klasse-2-preisbasis]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
@@ -106,6 +106,38 @@ Die Adressmenge bleibt 310 — dieses Paket entscheidet eine Schreibweise, keine
 `offen` und alle drei beim Architekten. Dieses Paket schneidet sich mit allen dreien und ist
 nicht parallel planbar. Da 0011 die Datei ohnehin auf C++ umschreibt, ist die Stelle danach
 die billigste — deshalb steht 0011 in `haengt_an`.
+
+## Bearbeitungsvermerk — Architekt, 2026-09-05
+
+**Dieses Paket ist in drei Läufen bearbeitet worden, und die ersten beiden haben den Status
+nicht gesetzt.** `ce59b8b` (Lauf 452, 03:43) hat **T17b** angelegt — die Festlegung, die
+Begründung, die Folgen und die Fundstellentabelle. `a127600` (Lauf 460, 04:25) hat die
+Zähltabelle vorher/nachher ergänzt. Beide ließen `status: offen` stehen, also plante der
+Runner dasselbe Paket erneut ein; dieser dritte Lauf ist die Folge. Der Prüfer sieht die
+Arbeit deshalb an drei Commits, nicht an einem.
+
+**Was der dritte Lauf gefunden und geändert hat, ist eine Zeile.** Die Zähltabelle nannte
+für die loseste Form `17`; gezählt waren `18`. Der Absatz, der die Zählung erklärt, führte
+die ungeschützte Schreibweise selbst als Gegenbeispiel mit und war damit der achtzehnte
+Treffer — während derselbe Absatz zusicherte, keine seiner Zeilen sei ein Treffer. Der Satz
+nennt sie nicht mehr, die Zusicherung stimmt jetzt, und die Aufteilung `10 + 7 = 17` geht
+auf. Nachgezählt am 2026-09-05: `gebiet\.` 17, `gebiet\.<G>\.` 8, `gebiet\.<g>\.` 2; vorher
+4, 1, 1 (`git show ce59b8b^`).
+
+**Die drei Abnahmebedingungen, je mit Nachweis:**
+
+1. **Festgelegt in T17b**, mit vier Gründen. Alle 17 Fundstellen sind aufgelöst: 10 tragen
+   einen Platzhalter (5 in T17b selbst, je einer in T28, T39, T48, zwei in T46), 7 sind
+   Gegenbeispiele innerhalb der Begründung. **Keine Ausnahme.**
+2. **Beide Folgen nachgesehen, keine „vermutlich".** `daten/adressen.md` führt die fünf
+   Adressen bereits in der aufgelösten Schreibweise (laufende Nummern 44, 88, 132, 176, 198
+   — nachgezählt) und bleibt unverändert; `gebietspraefix()` in `kern/src/zustand.cpp`
+   hängt `land.` samt Gebietskürzel und Punkt beziehungsweise `restwelt.` an — der
+   Kommentar darüber sagt es wörtlich („`land.US.` fuer die vier spielbaren Laender,
+   `restwelt.` fuer die Restwelt"). **Passend**, kein ADR, keine Änderung am Kern.
+3. **Adressmenge 310 und T46 unverändert.** Der Änderungsdiff dieses Laufs liegt
+   vollständig im T17b-Absatz „Die Zählung vor und nach der Regel"; die T46-Tabelle ist
+   nicht berührt.
 
 ## Rückläufe
 

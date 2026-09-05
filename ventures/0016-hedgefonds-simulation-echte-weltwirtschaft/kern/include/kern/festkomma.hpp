@@ -163,6 +163,64 @@ constexpr i64 mal_geteilt(i64 a, i64 b, i64 c)
                             "mal_geteilt: Ergebnis ausserhalb von i64 (T7)");
 }
 
+/// `a + b` auf `i64` ueber den Ueberlaufbaustein des Uebersetzers
+/// (T7, Massnahme 4, Punkt 2). Ueberlauf ist ein Abbruch, kein Umbruch.
+///
+/// **Die Vorgabe im Wortlaut**, aus `technik.md`, Anforderung **T7**, Massnahme 4,
+/// Punkt 2. Zitiert statt zusammengefasst, weil dort zugleich steht, warum Massnahme 1
+/// diesen Baustein nicht entwertet:
+///
+/// > „Was nicht über `__int128` läuft -- Additionen und Subtraktionen auf `i64` --,
+/// > benutzt `__builtin_add_overflow` und `__builtin_sub_overflow`. Sie rechnen in
+/// > unendlicher Genauigkeit und melden, ob das Ergebnis in den Zieltyp passt;
+/// > `-fwrapv` berührt sie nicht, weil sie kein undefiniertes Verhalten auslösen,
+/// > sondern eines abfragen.“
+///
+/// **Warum nicht `nach_i64(i128(a) + i128(b))`.** Der Weg waere richtig und faenge
+/// dieselben Faelle. T7 schneidet die geprueften Rechenarten aber nach der Rechenart
+/// und nennt fuer die Strichrechnung ausdruecklich diese beiden Bausteine; eine
+/// zweite Bauart fuer dieselbe Vorgabe braeuchte einen ADR und keinen besseren Grund.
+///
+/// **Warum die Strichrechnung hier steht und nicht bei ihrem ersten Aufrufer.**
+/// Denselben Grund fuehrt T7 schon fuer `mal`: Diese Datei ist nach T6 die einzige
+/// Rechenstelle des Kerns. Eine gepruefte Addition ausserhalb macht daraus einen Satz
+/// mit einer Ausnahme, die nur der Bauagent des betroffenen Moduls kennt -- und das
+/// naechste Modul schreibt dann seine eigene Fassung. Bei einer Ueberlaufpruefung
+/// heisst das: Ein Modul bricht ab, das andere bricht um. Dazu kommt der Nachweis:
+/// Eine Fassung im anonymen Namensraum einer Quelle hat keinen Aufrufer ausserhalb
+/// ihrer Datei, und damit sind ihre beiden Abbruchpfade unpruefbar. `festkomma_probe`
+/// nagelt sie hier mit derselben Bauart fest, mit der sie den Waechter von `mal`
+/// schon festnagelt.
+///
+/// **Warum die Ausgabegroesse ein Ausgabeargument des Bausteins ist und kein
+/// Rueckgabewert.** `__builtin_add_overflow` liefert den Ueberlaufbefund zurueck und
+/// legt die Summe ab; der abgelegte Wert ist im Ueberlauffall der umgebrochene, und
+/// genau ihn gibt diese Funktion nie heraus. Der Abbruch steht davor.
+constexpr i64 plus(i64 a, i64 b)
+{
+    i64 ergebnis = 0;
+    if (__builtin_add_overflow(a, b, &ergebnis)) {
+        abbruch("plus: Summe ausserhalb von i64 (T7)");
+    }
+    return ergebnis;
+}
+
+/// `a - b` auf `i64`, derselbe Baustein und derselbe Abbruch wie bei `plus`
+/// (T7, Massnahme 4, Punkt 2).
+///
+/// Eigenstaendig und nicht als `plus(a, -b)` gebaut, und das ist kein Geschmack:
+/// `-b` ist fuer `b == I64_MIN` selbst der Ueberlauf, den diese Funktion faengt.
+/// Die Umschreibung braeche also genau dort ab, wo `minus(0, I64_MIN)` abbrechen
+/// soll, aber auch dort, wo `minus(-1, I64_MIN)` ein gueltiges Ergebnis hat.
+constexpr i64 minus(i64 a, i64 b)
+{
+    i64 ergebnis = 0;
+    if (__builtin_sub_overflow(a, b, &ergebnis)) {
+        abbruch("minus: Differenz ausserhalb von i64 (T7)");
+    }
+    return ergebnis;
+}
+
 /// `a * b` ohne folgende Division -- derselbe Zwischentyp, derselbe Waechter
 /// (T7, Massnahme 4, Punkt 3).
 ///

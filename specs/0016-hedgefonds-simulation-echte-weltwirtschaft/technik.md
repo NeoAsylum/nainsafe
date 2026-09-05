@@ -1253,15 +1253,23 @@ Diese Festlegung ändert keine Adresse, sondern sagt, was eine Schreibweise bede
 
 **Die Zählung vor und nach der Regel, damit sie niemand nachrechnen muss** — denn „vier
 Stellen" oben und der Befund einer Volltextsuche sind nicht dieselbe Zahl, und ohne diesen
-Absatz muss die Differenz jeder Leser selbst auflösen. Die drei Suchmuster sind hier
-**escapt** geschrieben (`gebiet\.` statt `gebiet.`); dadurch ist keine Zeile dieses Absatzes
-selbst ein Treffer, und die Zahlen gelten für das Dokument einschliesslich seiner selbst.
+Absatz muss die Differenz jeder Leser selbst auflösen. **Gezählt wird als fester Text, nicht
+als Ausdruck** (`grep -oF`; der Punkt ist ein Punkt und kein Platzhalter), und die drei
+Muster stehen in der Tabelle mit **geschütztem** Punkt (`gebiet\.`). Beides zusammen sorgt
+dafür, dass keine Zeile dieses Absatzes selbst ein Treffer ist: Er nennt die ungeschützte
+Form nirgends, auch nicht als Gegenbeispiel. Die Zahlen der Spalte „jetzt" gelten deshalb
+für das Dokument einschliesslich seiner selbst.
 
 | Muster | vor dieser Festlegung | jetzt |
 |---|---:|---:|
 | `gebiet\.<G>\.` | 1 | 8 |
 | `gebiet\.<g>\.` | 1 | 2 |
 | `gebiet\.` — die loseste Form, alles zusammen | 4 | 17 |
+
+**Die 17 ist am 2026-09-05 nachgezählt und stand in der Fassung `a127600` um eins zu
+niedrig.** Dieser Absatz führte die ungeschützte Form damals als Gegenbeispiel mit („statt
+…") und war damit selbst der achtzehnte Treffer, den die Tabelle nicht mitzählte. Er nennt
+sie nicht mehr; gezählt sind jetzt 17, und die Aufteilung darunter geht auf.
 
 **Vorher vier, und es waren genau die vier T-Nummern der Tabelle oben:** T39 und T28 in der
 Kurzform ohne Platzhalter, T46 als `<G>`-Zeile, T48 als `<g>`-Formel. Nachzusehen in der

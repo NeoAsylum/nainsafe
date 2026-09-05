@@ -19,6 +19,7 @@
 
 #include <cstdio>
 #include <stdexcept>
+#include <string_view>
 
 #include "kern/festkomma.hpp"
 
@@ -31,6 +32,8 @@ using kern::festkomma::I64_MAX;
 using kern::festkomma::I64_MIN;
 using kern::festkomma::mal;
 using kern::festkomma::mal_geteilt;
+using kern::festkomma::minus;
+using kern::festkomma::plus;
 using kern::festkomma::potenz;
 using kern::festkomma::teile_gerundet;
 using kern::festkomma::wurzel;
@@ -61,6 +64,42 @@ static_assert(mal(MAL_FAKTOR_PASST, MAL_FAKTOR_PASST) == MAL_PRODUKT_PASST,
               "beide Wege liefern dasselbe -- schon beim Uebersetzen");
 static_assert(mal(-MAL_FAKTOR_PASST, MAL_FAKTOR_PASST) == -MAL_PRODUKT_PASST,
               "und mit umgekehrtem Vorzeichen zeichengleich zurueck");
+
+/// Die beiden Raender der Strichrechnung (T7, Massnahme 4, Punkt 2) -- hergeleitet
+/// aus `I64_MAX` und `I64_MIN` und nicht abgeschrieben, aus demselben Grund wie bei
+/// den `MAL_`-Groessen darueber.
+///
+/// `SUMMAND_PASST_OBEN` ist der groesste Wert, zu dem sich 1 noch addieren laesst:
+/// Das Ergebnis ist genau `I64_MAX`. Einen Schritt darueber liegt `I64_MAX` selbst,
+/// und `plus(I64_MAX, 1)` ist damit der erste Aufruf, der abbrechen muss. Nach unten
+/// dieselbe Bauart: `SUMMAND_PASST_UNTEN` ist der kleinste Wert, von dem sich 1 noch
+/// abziehen laesst, und `minus(I64_MIN, 1)` der erste Aufruf darunter.
+constexpr i64 SUMMAND_PASST_OBEN  = I64_MAX - 1;
+constexpr i64 SUMMAND_PASST_UNTEN = I64_MIN + 1;
+
+// Die Positivkontrollen, schon beim Uebersetzen: An beiden Raendern kommt der
+// groesste noch passende Wert heraus, und zwar ueber jede der beiden Rechenarten.
+// Damit ist ein Waechter ausgeschlossen, der aus lauter Vorsicht schon vor der
+// Grenze abbricht -- die haeufigere Sorte Fehler als die um eins zu spaete.
+static_assert(plus(SUMMAND_PASST_OBEN, 1) == I64_MAX,
+              "der groesste noch passende Summand fuehrt genau auf I64_MAX");
+static_assert(plus(SUMMAND_PASST_UNTEN, -1) == I64_MIN,
+              "und nach unten genau auf I64_MIN");
+static_assert(minus(SUMMAND_PASST_OBEN, -1) == I64_MAX,
+              "dieselben beiden Raender ueber die Subtraktion");
+static_assert(minus(SUMMAND_PASST_UNTEN, 1) == I64_MIN,
+              "und auch hier nach unten");
+
+// Der zweite Weg als Pruefstand, wie bei `mal` und `mal_geteilt`: Wo `-b` selbst
+// darstellbar ist, muessen `plus(a, b)` und `minus(a, -b)` uebereinstimmen.
+static_assert(plus(SUMMAND_PASST_OBEN, 1) == minus(SUMMAND_PASST_OBEN, -1),
+              "beide Wege liefern denselben Rand");
+
+// Und der eine Fall, in dem sie es nicht muessen: `-I64_MIN` ist selbst der
+// Ueberlauf. `minus(-1, I64_MIN)` hat trotzdem ein gueltiges Ergebnis, naemlich
+// I64_MAX -- eine Subtraktion, die als `plus(a, -b)` gebaut waere, braeche hier ab.
+static_assert(minus(-1, I64_MIN) == I64_MAX,
+              "die Subtraktion ist eigenstaendig gebaut, nicht als plus(a, -b)");
 
 int fehlgeschlagen = 0;
 
@@ -93,11 +132,34 @@ void erwarte_abbruch(Aufruf aufruf, const char* text, int zeile)
     ++fehlgeschlagen;
 }
 
+/// Faengt den Abbruch eines Aufrufs und sagt, ob seine Meldung `nadel` enthaelt.
+///
+/// **Warum nicht `erwarte_abbruch` genuegt.** Jener Waechter belegt, **dass**
+/// geworfen wurde, nicht **welcher** Riegel geworfen hat. `plus` und `minus` liegen
+/// im selben Kopf und werfen dieselbe Klasse; ein Nachweis, der sie nicht
+/// auseinanderhaelt, bliebe gruen, wenn beide Abbruchpfade in denselben Zweig
+/// zusammenfielen.
+///
+/// Bleibt der Abbruch aus, ist die Antwort `false` -- ein ausbleibender Abbruch darf
+/// keine Pruefung erfuellen, die einen erwartet.
+template <typename Aufruf>
+bool abbruchmeldung_enthaelt(Aufruf aufruf, std::string_view nadel)
+{
+    try {
+        aufruf();
+    } catch (const std::domain_error& fehler) {
+        return std::string_view{fehler.what()}.find(nadel) != std::string_view::npos;
+    }
+    return false;
+}
+
 }  // namespace
 
 #define PRUEFE(ausdruck)     pruefe((ausdruck), #ausdruck, __LINE__)
 #define ERWARTE_ABBRUCH(ausdruck) \
     erwarte_abbruch([] { static_cast<void>(ausdruck); }, #ausdruck, __LINE__)
+#define ABBRUCH_MELDET(ausdruck, nadel) \
+    abbruchmeldung_enthaelt([] { static_cast<void>(ausdruck); }, (nadel))
 
 int main()
 {
@@ -187,6 +249,55 @@ int main()
     ERWARTE_ABBRUCH(mal(undurchsichtig(-MAL_FAKTOR_BRICHT_AB),
                         undurchsichtig(MAL_FAKTOR_BRICHT_AB)));
     ERWARTE_ABBRUCH(mal(undurchsichtig(I64_MIN), undurchsichtig(-1)));
+
+    // --- Strichrechnung ueber die Ueberlaufbausteine (T7, Massnahme 4, Punkt 2) ---
+    //
+    // Erst die Positivkontrollen, dann die Abbrueche -- in dieser Reihenfolge, weil
+    // ein Abbruchnachweis ohne Kontrolle davor auch von einer Funktion erfuellt
+    // wuerde, die immer abbricht.
+    PRUEFE(plus(undurchsichtig(3), undurchsichtig(4)) == 7);
+    PRUEFE(minus(undurchsichtig(3), undurchsichtig(4)) == -1);
+
+    // Die groessten noch passenden Werte, beide Raender, beide Rechenarten. Zur
+    // Laufzeit und damit unter den Sanitizern -- der `static_assert` oben prueft
+    // dieselben vier Werte beim Uebersetzen, wo kein Sanitizer mitliest.
+    PRUEFE(plus(undurchsichtig(SUMMAND_PASST_OBEN),  undurchsichtig( 1)) == I64_MAX);
+    PRUEFE(plus(undurchsichtig(SUMMAND_PASST_UNTEN), undurchsichtig(-1)) == I64_MIN);
+    PRUEFE(minus(undurchsichtig(SUMMAND_PASST_OBEN),  undurchsichtig(-1)) == I64_MAX);
+    PRUEFE(minus(undurchsichtig(SUMMAND_PASST_UNTEN), undurchsichtig( 1)) == I64_MIN);
+
+    // Die ganze Spanne in einem Schritt, ohne dass etwas hinausfaellt.
+    PRUEFE(plus(undurchsichtig(I64_MAX), undurchsichtig(I64_MIN)) == -1);
+    PRUEFE(minus(undurchsichtig(-1), undurchsichtig(I64_MIN)) == I64_MAX);
+
+    // Die beiden Abbruchpfade, je einen Schritt ueber den Kontrollen darueber. Die
+    // Nadel nennt den Riegel, nicht bloss die Klasse des Wurfs: "plus: Summe" und
+    // "minus: Differenz" enthalten einander nicht, also unterscheidet die Suche die
+    // beiden wirklich.
+    PRUEFE(ABBRUCH_MELDET(plus(undurchsichtig(I64_MAX), undurchsichtig(1)),
+                          "plus: Summe"));
+    PRUEFE(ABBRUCH_MELDET(plus(undurchsichtig(I64_MIN), undurchsichtig(-1)),
+                          "plus: Summe"));
+    PRUEFE(ABBRUCH_MELDET(minus(undurchsichtig(I64_MAX), undurchsichtig(-1)),
+                          "minus: Differenz"));
+    PRUEFE(ABBRUCH_MELDET(minus(undurchsichtig(I64_MIN), undurchsichtig(1)),
+                          "minus: Differenz"));
+
+    // Negativkontrolle auf die Textsuche selbst, sonst waere sie ein Ritual: Der
+    // Waechter von `mal` bricht nachweislich ab -- drei Zeilen weiter oben steht es
+    // --, seine Meldung nennt aber weder den einen noch den anderen Riegel. Eine
+    // wirkungslose Suche liesse beide Zeilen hier durchgehen.
+    PRUEFE(!ABBRUCH_MELDET(mal(undurchsichtig(MAL_FAKTOR_BRICHT_AB),
+                               undurchsichtig(MAL_FAKTOR_BRICHT_AB)),
+                           "plus: Summe"));
+    PRUEFE(!ABBRUCH_MELDET(mal(undurchsichtig(MAL_FAKTOR_BRICHT_AB),
+                               undurchsichtig(MAL_FAKTOR_BRICHT_AB)),
+                           "minus: Differenz"));
+
+    // Und die zweite Haelfte derselben Kontrolle: Bleibt der Abbruch ganz aus, ist
+    // die Antwort `false` und nicht etwa `true`, weil nichts widersprochen hat.
+    PRUEFE(!ABBRUCH_MELDET(plus(undurchsichtig(SUMMAND_PASST_OBEN), undurchsichtig(1)),
+                           "plus: Summe"));
 
     if (fehlgeschlagen == 0) {
         std::fprintf(stdout, "kern::festkomma -- alle Proben bestanden.\n");

@@ -1,46 +1,43 @@
 # Logbuch: architekt
 
-*Lauf 0051 am 2026-09-05: `Edit` auf `specs/…/technik.md` zweimal verweigert, Wortlaut
-„Permission to use Edit has been denied because Claude Code is running in don't ask mode".
-Kein Pfadgrund in `.claude/settings.json` — dort steht als einziges `Edit`-Verbot
-`Edit(//**/.git/**)`.*
-
 *Neu begonnen am 2026-09-04 an der 12.000-Zeichen-Grenze; Vorstand in
 `git show HEAD~1:notizen/architekt.md`.*
 
-***`Edit` auf `notizen/archiv/architekt-2026-09-04.md` wurde zum fünften Mal verweigert*** —
-im selben Lauf, in dem `Edit` auf `specs/…/technik.md` durchging. Gesperrt ist der **Pfad**,
-nicht das Werkzeug; ich kürze deshalb hier statt zu verschieben. **An den Betreiber: Diese
-Rolle braucht Schreibrecht auf `notizen/archiv/`, sonst ist die Archivregel aus CLAUDE.md
-für sie nicht ausführbar.**
+***Warum hier gekürzt und nicht verschoben wird — der Grund steht jetzt fest:***
+`agents/rollen/architekt.md` nennt unter `tools` genau `Edit(notizen/architekt.md)` und kein
+`Edit(notizen/archiv/**)`. Die fünf Verweigerungen vom 2026-09-04 waren also richtig.
+**An den Betreiber: eine Zeile `Edit(notizen/archiv/**)` in der Rollendatei macht die
+Archivregel ausführbar.** Gestrichen ist dagegen die
+Notiz vom 2026-09-05 über verweigerte `Edit`-Aufrufe auf `technik.md`: Im dritten Lauf ging
+`Edit` auf dieselbe Datei zweimal ohne Verweigerung durch.
+
+*Unsicher, damit der Projektmanager es sieht:* Die Zahl 17 in T17b gilt für eine Suche nach
+**festem Text**. Wer den Punkt als Platzhalter sucht, zählt 29 und findet einen Widerspruch,
+den es nicht gibt. Der Absatz sagt das jetzt; ob es der Prüfer so liest, weiss ich nicht.
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-04, **neu und der teuerste Fund dieses Laufs** — **Ein Auftragstext ist eine
-  Momentaufnahme, und zwischen Annahme und Lauf kann ein anderes Paket seine Tabelle
-  ungültig machen.** Paket 0043 nannte fünf Namen, darunter `preishub`; Paket 0039 hatte den
-  am 2026-09-03 gestrichen und durch `keilhub` und `preishub_zoll` ersetzt. Wer die
-  Auftragstabelle abarbeitet, trägt eine tote Größe nach und übersieht zwei lebende.
-  **Regel: Die Liste immer aus der Quelle neu erheben, nie aus dem Auftrag übernehmen** — der
-  Auftrag sagt, *wonach* zu suchen ist, nicht *was* zu finden ist. Nebenbefund: Die Erhebung
-  fand mit `weltpreis_mit_zoll` eine sechste Größe, die aus keinem der beiden Pakete stammt,
-  sondern seit jeher in meinem eigenen T28 stand und nie gebildet wurde.
-- 2026-09-04, **neu** — **Eine Abnahme „der Prüfer darf keinen Rest behalten" ist nur
-  wiederholbar, wenn die Liste mitgedruckt ist, gegen die geprüft wurde.** Ich habe die
-  Namen mit `rg -o '\b[a-z][a-z0-9_]{2,}\('` erhoben und jeden Treffer einzeln zugeordnet;
-  in T48 stehen jetzt die erlaubten Reste mit Begründung. Ohne die Liste prüft der
-  nächste Lauf wieder meine Zusage statt der Sache. **Und die Erhebung hat sich sofort
-  bezahlt gemacht:** Sie fand mit `stufen(p)` eine Lücke, die seit Fassung 5 in den Formeln
-  der T48-Nummern 14 und 15 stand und keinem der drei Pakete gehörte. Beim Durchlesen der
-  Auftragstabelle wäre sie nicht aufgefallen.
-- 2026-09-04, **neu** — **Der unangenehme Rest ist der Name aus einer verworfenen
-  Gegenrechnung.** `wmz` und `preishub` stehen in `spiel.md` noch, aber allein im
-  Gegenbeispiel, mit dem der Entwurf vorrechnet, was er beseitigt hat. Sie für Vorschriften
-  zu halten trägt zwei tote Größen nach; sie stillschweigend zu übergehen hinterlässt dem
-  nächsten Prüfer denselben Zweifel. **Beides falsch — sie gehören benannt in die
-  Restetabelle.**
+- 2026-09-05, **an mir selbst gefunden und der Grund dieses dritten Laufs** — **Ein Absatz,
+  der eine Volltextsuche bilanziert, ist selbst Teil des durchsuchten Textes.** Meine
+  Zähltabelle in T17b nannte 17 Treffer; gezählt waren 18, weil derselbe Absatz die
+  ungeschützte Schreibweise als Gegenbeispiel mitführte — und zugleich zusicherte, keine
+  seiner Zeilen sei ein Treffer. **Wer im Dokument über ein Suchmuster schreibt, schreibt es
+  nur geschützt und zählt danach noch einmal.**
+- 2026-09-04, **der teuerste Fund jenes Laufs**, am 2026-09-05 erneut bestätigt — **Ein
+  Auftragstext ist eine Momentaufnahme; zwischen Annahme und Lauf kann ein anderes Paket
+  seine Tabelle ungültig machen.** Paket 0043 nannte `preishub`, den Paket 0039 längst
+  gestrichen hatte; Paket 0051 beschrieb einen Widerspruch, den zwei Läufe vor mir schon
+  aufgelöst hatten. **Die Lage immer aus der Quelle neu erheben, nie aus dem Auftrag
+  übernehmen** — der Auftrag sagt, *wonach* zu suchen ist, nicht *was* zu finden ist.
+- 2026-09-04 — **Eine Abnahme „der Prüfer darf keinen Rest behalten" ist nur wiederholbar,
+  wenn die Liste mitgedruckt ist, gegen die geprüft wurde.** Ohne sie prüft der nächste Lauf
+  meine Zusage statt der Sache. Die Erhebung fand nebenbei eine Lücke, die beim Durchlesen
+  der Auftragstabelle nicht aufgefallen wäre.
+- 2026-09-04 — **Der unangenehme Rest ist der Name aus einer verworfenen Gegenrechnung.**
+  `wmz` und `preishub` stehen in `spiel.md` nur noch im Gegenbeispiel. Weder für Vorschrift
+  halten noch stillschweigend übergehen — **benennen, in der Restetabelle.**
 - 2026-09-04, **neu, und als Prüffrage brauchbar** — **Eine Größe ohne einheitliche Klasse
   *oder* einheitliche Stelligkeit darf keine Funktion werden.** `verschiebung(l, i)` ist für
   den Zoll Klasse 5 und sonst Klasse 3; `menge(l, i)` ist immer Klasse 2, hat aber in der
@@ -55,8 +52,8 @@ für sie nicht ausführbar.**
   Wiederholung.
 - 2026-09-04 — **Zwei Dokumente, die dieselbe Größe herleiten, widersprechen sich eher in
   der *Herkunft* als in der Zahl.** T53 nannte `N` „aus Reihe 1", `reihen.toml` „aus Reihe
-  2"; richtig ist Reihe 1 **mal** Reihe 2. Beide unvollständig, keine falsch, keine Zahl
-  betroffen — deshalb fällt so etwas bei einer Zahlenprüfung nicht auf.
+  2"; richtig ist Reihe 1 **mal** Reihe 2 — beide unvollständig, keine Zahl betroffen, also
+  bei einer Zahlenprüfung unsichtbar.
 - 2026-09-04 — **„Nicht gemessen" aus einem fremden Befund ist eine Aussage über dessen
   Werkzeuge, nicht über die Welt.** Zwei `WebFetch` auf eine JSON-Schnittstelle lieferten,
   was ein Einheitenbefund für unauffindbar erklärt hatte; die PDF-Sperre galt für PDF.
@@ -73,9 +70,9 @@ für sie nicht ausführbar.**
 - 2026-09-02 — **Trägt eine Messung ein Urteil, lies das Erzeugnis statt der
   Zusammenfassung.** `objdump` machte aus einer Vermutung T6b. **Welches Erzeugnis liegt
   herum, das die Frage beantwortet?**
-- 2026-09-03 — **Eine Aufzählung von Rechenarten muss eine Partition sein, sonst ist sie
-  eine Liste mit Loch.** **Nach der *Rechenart* schneiden, nicht nach der Stelle** — nach
-  der Stelle geschnitten wird die Liste beim nächsten Zusatz wieder unvollständig.
+- 2026-09-03 — **Eine Aufzählung von Rechenarten muss eine Partition sein.** Nach der
+  *Rechenart* schneiden, nicht nach der Stelle — sonst hat die Liste beim nächsten Zusatz
+  wieder ein Loch.
 - 2026-09-03 — **Eine Grep-Vorschrift einmal gegen den echten Baum laufen lassen, bevor sie
   im Dokument steht.** Mein erster Regex für „blanke Multiplikation" traf 40 Zeilen
   `const char*`. Ohne Probelauf steht dort eine Vorschrift, die beim ersten Gebrauch
@@ -86,12 +83,17 @@ für sie nicht ausführbar.**
   die nur einmal berechnet wird, ist unbelegt, auch wenn sie stimmt.
 - 2026-09-01 — **Eine fehlende Vorgabe aus dem Entwurf *ableiten* statt sie zu erfinden.**
   Ohne freien Parameter fällt der Einwand „das Maß misst die Wahl des Bauagenten" weg.
-- 2026-08-31, zweiter Lauf — **Die Prüfbefunde des *anderen* Gewerks daraufhin lesen, was
-  sie in meinem auslösen.**
 - 2026-08-31 — **Jede Summe in einer Tabelle bekommt eine Nachrechnungszeile im Fließtext.**
 
 ## Was nicht funktioniert
 
+- 2026-09-05, **zweimal hintereinander und teuer** — **Ich habe den Status meines eigenen
+  Pakets nicht gesetzt, und der Runner hat es zweimal neu eingeplant.** 0051 lief am
+  2026-09-05 dreimal (`ce59b8b`, `a127600`, dieser), weil `status: offen` stehen blieb; der
+  Runner kennt nur das Frontmatter, nicht meine Arbeit. **Der Status gehört an den Anfang
+  der Abschlussarbeit, nicht ans Ende.** Erkennbar war es sofort an
+  `git log --oneline -- <meine Zieldatei>` — der zeigte zwei fremde Läufe auf mein eigenes
+  Paket, bevor ich eine Zeile gelesen hatte.
 - 2026-09-04, **an mir selbst gefunden** — **Eine Rundungsregel, die ich für den Code
   vorschreibe, gilt auch für die Zahlen in meinem eigenen Fließtext.** T53 nannte 3.577 und
   1,5570, wo 3.577,80 und 1,55710 stehen — zweimal abgeschnitten statt gerundet, in einem
@@ -128,19 +130,14 @@ für sie nicht ausführbar.**
   ihn aus „je Gebiet" und aus der Zahl zehn gelesen. Läuft die Markträumung nur über die
   vier spielbaren Länder, ist die Zeile überflüssig und nicht falsch. **Hier würde ich einem
   Prüfer widerspruchslos folgen**; es steht auch in Abschnitt 18.
-- 2026-09-04, **neu** — **`werte.hpp` sagt an drei Stellen „siebzehn" und muss auf
-  zweiundzwanzig.** Kernbauer-Arbeit, in Abschnitt 18 gemeldet. Bis dahin ist der
-  mechanische Nachweis aus T48 **nicht erfüllt** — der Kopf ist unvollständig, nicht falsch.
-  Nachsehen, ob der Projektmanager das Paket geschnitten hat.
+- 2026-09-04, **am 2026-09-05 nachgemessen und offen**: `kern/include/kern/werte.hpp` sagt
+  an **fünf** Stellen „siebzehn" und muss auf zweiundzwanzig. Kernbauer-Arbeit, in
+  Abschnitt 18 gemeldet. Bis dahin ist der mechanische Nachweis aus T48 **nicht erfüllt** —
+  der Kopf ist unvollständig, nicht falsch.
 - **Lehre aus fünf geschlossenen Fährten:** Eine Stelle, die zwei Dokumenten gehört,
   schliesst sich nicht durch eine bessere Formulierung, sondern erst, wenn beide Gewerke im
-  selben Zyklus laufen — und der andere zuerst. **Am 2026-09-04 zum zweiten Mal bestätigt:**
-  „Schaden in Gegenkraft 5" stand seit dem 2026-09-01 als Beobachtung in Abschnitt 12 und
-  war nach zwei Läufen des Spielentwerfers (0021, 0039) in einem einzigen meiner Läufe zu
-  schliessen. **Zurückgeben hat hier nichts gekostet und eine falsche Größe verhindert:**
-  Hätte ich die Zahl selbst gefüllt, stünde in Maß 2 meine Wahl — und ich hätte die
-  Inflation als Lobbyschaden gebucht, genau den Fehler, den `spiel.md` am 2026-09-03 an sich
-  selbst gefunden hat.
+  selben Zyklus laufen — und der andere zuerst. **Zurückgeben kostet dabei nichts:** Hätte
+  ich die offene Zahl in Gegenkraft 5 selbst gefüllt, stünde in Maß 2 meine Wahl.
 - 2026-09-04 — **Der Weltausfuhrindex ist nicht der Deflator der 40 bilateralen Ströme.** Er
   beseitigt den gemeinsamen Preisdrift, nicht die Streuung zwischen den Strömen. Ein
   per-Ausführer-Deflator ist die naheliegende Verbesserung und **verboten durch die Daten**:
