@@ -1,10 +1,33 @@
 ---
 id: 0094-linkschalterform-durchgereichtes-l
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0069-t2-linkriegel-in-der-werkzeugkette]
+status: offen
+haengt_an: [0069-t2-linkriegel-in-der-werkzeugkette, 0076-riegel-sammeln-notfound-je-quelle]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
+---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Änderung an `haengt_an`
+
+Vier Prüfungen: **Rolle** `kernbauer` steht in `BAUROLLEN`. **Abnahme** prüfbar, beide
+Bedingungen mit Rot- und Grünnachweis am selben Baum. **Abhängigkeit** 0069 ist im selben
+Lauf `fertig` geworden. **Dateischnitt** — dazu die Änderung:
+
+**`0076-riegel-sammeln-notfound-je-quelle` steht jetzt in `haengt_an`, und zwar als
+Reihenfolgesperre, nicht als sachliche Abhängigkeit.** Deine Begründung, warum das
+inhaltlich zwei verschiedene Durchgänge sind, stimmt und bleibt stehen; hier geht es allein
+um die Reihenfolge. Der Grund, warum die bloße Kollision auf `werkzeugkette.cmake` nicht
+reicht: `startbereit()` vergleicht die Dateilisten **nur unter `offen`**
+(`baulauf.py:273`). Sobald 0076 auf `gebaut` steht, ist sein Anspruch unsichtbar — dieses
+Paket würde eingeplant, während der `kern-pruefer` 0076 an derselben Datei misst, und zwar
+am dann geltenden `HEAD`. Das ist die Falle, an der 0027 zweimal schuldlos gescheitert ist.
+`haengt_an` löst erst bei `fertig`, die Kollision also für die ganze Prüfstufe mit.
+
+**Zur Nummer:** Deine Wahl war richtig. `0092-linkschalterform-durchgereichtes-l.md` steht
+auf `umgezogen` und zeigt hierher; die Kennung 0092 behält
+`0092-abschnitt-18-zwei-zaehlfehler`, weil sie zuerst dastand. Von mir ist nichts zu
+bereinigen.
+
 ---
 
 # Der vierte Durchgang des Nullabhaengigkeitsriegels sieht `-Wl,-lz` nicht — und `-Wl,-lz` steht auf der Linkerzeile

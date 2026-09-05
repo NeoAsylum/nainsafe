@@ -1,7 +1,7 @@
 ---
 id: 0069-t2-linkriegel-in-der-werkzeugkette
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 2 in der ergaenzten Fassung des Annahmevermerks vom 2026-09-04: die zwei Rotnachweise an einer Kopie unter befunde/messung-0069/, der Arbeitsbaum unberuehrt, oder eine ausgewiesene Nichtmessung mit Grund.

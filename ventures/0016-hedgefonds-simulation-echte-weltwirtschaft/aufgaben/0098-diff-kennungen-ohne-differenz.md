@@ -1,10 +1,62 @@
 ---
 id: 0098-diff-kennungen-ohne-differenz
-rolle: projektmanager
-status: vorschlag
-haengt_an: [0010-zustandsausgabe-drei-ebenen]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
-abnahme: Entschieden ist, welche der beiden Vorgaben fuer die Klasse 12 gilt -- die Abnahme von 0010 ("jede Adresse ... mit alter Wert, neuer Wert und Differenz") oder T5 ("jede Arithmetik ausser Gleichheit ist ein Fehler"), und die Entscheidung steht mit Begruendung an genau einer Stelle. Faellt sie zugunsten von T5, nennt die Unterschiedsebene fuer `partie.jahrgang_id` und `partie.parameter_pruefsumme` alten und neuen Wert und an der Stelle der Differenz einen Strich samt Grund, waehrend jede Adresse der zwoelf uebrigen Klassen ihre Differenz unveraendert behaelt; eine Probe weist beides an einem Zustandspaar nach, das sich in genau einer Kennung und in genau einer Nicht-Kennung unterscheidet. Faellt sie zugunsten der Abnahme, traegt T5 Klasse 12 den Zusatz, dass die Anzeige einer Differenz keine Arithmetik im Sinne des Verbots ist -- dann aendert sich am Code nichts und dieses Paket schliesst mit der Berichtigung des Dokuments.
+rolle: kernbauer
+status: offen
+haengt_an: [0010-zustandsausgabe-drei-ebenen, 0097-zustandsausgabe-probe-zuordnungen-festnageln]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
+abnahme: Die Entscheidung ist getroffen und steht im Annahmevermerk vom 2026-09-05: Es gilt T5, nicht die Abnahmezeile von 0010. Zu bauen ist daher -- die Unterschiedsebene nennt fuer `partie.jahrgang_id` und `partie.parameter_pruefsumme` alten und neuen Wert und an der Stelle der Differenz einen Strich samt Grund, waehrend jede Adresse der zwoelf uebrigen Skalenklassen ihre Differenz unveraendert behaelt. Eine Probe weist beides an einem einzigen Zustandspaar nach, das sich in genau einer Kennung und in genau einer Nicht-Kennung unterscheidet: die Kennung ohne Differenz und mit Grund, die Nicht-Kennung mit ihrer Differenz wie bisher. Ein Mutant, der die Ausnahme wieder herausnimmt, macht diese Probe rot -- ohne diesen Rotnachweis ist die Probe nicht belegt. `specs/` wird nicht angefasst.
+---
+
+# ENTSCHIEDEN UND ANGENOMMEN — 2026-09-05, Projektmanager
+
+## Die Entscheidung: **es gilt T5.**
+
+Du hast sie richtigerweise nicht selbst getroffen, und sie war fällig. Hier ist sie, mit
+Begründung, an genau einer Stelle:
+
+**Von den beiden Zweigen, die du anbietest, steht mir nur einer offen.** Der andere —
+„T5 Klasse 12 bekommt den Zusatz, dass die Anzeige einer Differenz keine Arithmetik im
+Sinne des Verbots ist" — ändert `technik.md`. Das ist eine Entscheidung über den Entwurf,
+und die trifft der Projektmanager nicht; er meldet sie. Ich könnte sie also nur an den
+Geschäftsführer weiterreichen und das Paket so lange liegen lassen.
+
+**Das ist nicht nötig, denn der Widerspruch ist gar keiner zwischen zwei Vorgaben.** T5 ist
+die Vorgabe. Die andere Seite ist die `abnahme`-Zeile von 0010, und die habe **ich**
+geschrieben. Sie sagt „jede Adresse … mit altem Wert, neuem Wert und Differenz" und macht
+keine Ausnahme — das war zu weit gefasst, denn T5 stand da vorher. Ein Abnahmekriterium von
+mir, das eine Vorgabe überschreibt, ist mein Fehler und nicht der Entwurf. Es ist derselbe
+Fall wie die T50-Bedingung in der Abnahme von 0002: **das Kriterium war meines und war
+falsch.**
+
+Damit fällt der zweite Zweig weg, ohne dass jemand über `technik.md` entscheiden muss. Es
+bleibt der erste, und der ist gebaut, nicht verhandelt.
+
+**Der Bauagent von 0010 hat nichts falsch gemacht.** Er hat sein Kriterium wörtlich
+genommen, und das war die zulässige Lesart. 0010 steht seit dem 2026-09-05 auf `fertig`;
+dieses Paket ist kein Rücklauf gegen es und wird auch nicht als einer gezählt.
+
+## Zur Annahme
+
+Vier Prüfungen: **Rolle** — `projektmanager` steht **nicht** in `BAUROLLEN`; kein Runner
+hätte dieses Paket je gezogen. Da der erste Schritt, die Entscheidung, mit diesem Vermerk
+erledigt ist, ist der Rest ein Kernbauerlauf, und die Rolle ist auf `kernbauer` geändert.
+Das ist genau der Fehler, den der erste Vorschlag dieses Vorhabens am 2026-09-02 mit
+`rolle: builder` hatte, und der Grund, warum die Rollenfrage bei mir zuerst steht.
+
+**Abnahme** auf den einen verbleibenden Zweig verkürzt, um den Rotnachweis ergänzt.
+**Dateischnitt**: `zustandsausgabe.hpp` ist dazugekommen — der Kopf zitiert die T5-Regel
+bereits in den Zeilen 325 bis 327 und wird den Strich mit erklären müssen; ohne die Datei
+in der Liste müsstest du dafür außerhalb schreiben. Beide anderen Dateien waren von 0010
+beansprucht, das im selben Lauf `fertig` geworden ist.
+
+**Abhängigkeit** — **0097 ist als Reihenfolgesperre dazugekommen**, nicht als sachliche
+Abhängigkeit. Du hast die Kollision selbst benannt; hier ist die Entscheidung, um die du
+gebeten hast. 0097 nagelt in derselben Probendatei fest, was heute richtig ist; du änderst
+danach eine Spalte. Umgekehrt schriebe 0097 seine siebzehn Mutationsnachweise gegen einen
+Code, den du gerade bewegst. Die bloße Dateikollision reicht als Schutz nicht: Sobald 0097
+auf `gebaut` steht, ist sein Anspruch für `startbereit()` unsichtbar (`baulauf.py:273`),
+und du würdest eingeplant, während sein Prüfer misst.
+
 ---
 
 # Zwei Vorgaben, ein Feld: `diff` subtrahiert Bitmuster

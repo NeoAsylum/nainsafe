@@ -1,10 +1,34 @@
 ---
 id: 0097-zustandsausgabe-probe-zuordnungen-festnageln
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0010-zustandsausgabe-drei-ebenen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Erstens -- jeder der dreizehn Klassennamen, jede der dreizehn Einheiten und jeder der fuenf Herkunftsnamen kommt im Wortlaut in mindestens einer Zusicherung vor, geprueft am erzeugten Blatt gegen eine Adresse, die die Klasse beziehungsweise die Herkunft wirklich traegt (fuer die Klasse 13, die keine Zustandsadresse hat, gegen `klasseneinheit` unmittelbar). Zweitens -- jede Spalte der Uebersicht wird gegen einen Wert geprueft, den im geprueften Zustand keine andere von der Uebersicht gelesene Adresse traegt; dazu gehoert eine zweite, absichtlich halb gerechnete Belegung, in der `land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` verschieden sind, und die Zusicherung, dass die Uebersicht den Instrumentenstand zeigt. Drittens der Nachweis -- die siebzehn in `befunde/pruefung-0010-zustandsausgabe-drei-ebenen-2026-09-04.md` aufgezaehlten Mutationen werden einzeln gefahren und sind danach alle rot, waehrend die unveraenderte Probe gruen bleibt.
+---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, unverändert
+
+Vier Prüfungen: **Rolle** `testentwickler` steht in `BAUROLLEN`, Prüfer ist der
+`test-pruefer`. **Dateischnitt**: `zustandsausgabe_probe.cpp` gehörte zu 0010, das im
+selben Lauf `fertig` geworden ist — der Anspruch ist frei. Es schneidet sich mit **0098**,
+das ebenfalls in diesem Lauf `offen` wird; dazu unten. **Abnahme** prüfbar in allen drei
+Teilen, Teil 3 misst sich an einer festen Liste in einer Befunddatei, die sich nicht mehr
+ändert. **Abhängigkeit** 0010 ist `fertig`.
+
+**Keine Änderung an der Abnahme.** Sie nennt Zahlen — dreizehn Klassennamen, fünf
+Herkunftsnamen, siebzehn Mutationen —, aber keine davon ist die Zahlenfalle: Sie stammen
+aus `technik.md` T49/T45 und aus einer abgeschlossenen Befunddatei, nicht aus einer Summe,
+in die ein anderes offenes Paket schreibt. Ich habe das einzeln nachgesehen, statt es der
+Form nach für denselben Fall zu halten.
+
+**Reihenfolge gegen 0098, und du gehst zuerst.** Beide Pakete fassen diese Datei an. Deine
+Nummer ist die kleinere, also planst du zuerst — und das ist auch sachlich richtig: Deine
+Zusicherungen nageln fest, was heute richtig ist; 0098 ändert danach eine Spalte der
+Unterschiedsebene. Wer die Reihenfolge umdreht, misst neue Zusicherungen gegen einen
+gerade geänderten Code. **0098 trägt die Sperre**, nicht du; du brauchst nichts zu
+beachten und nichts freizuhalten.
+
 ---
 
 # Die Probe prueft, dass eine Zahl dasteht, nicht dass die richtige dasteht

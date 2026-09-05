@@ -1,10 +1,49 @@
 ---
 id: 0091-diff-ursachenkette-nach-t20
 rolle: kernbauer
-status: vorschlag
+status: blockiert
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 abnahme: Zu einem Unterschied ueber mehr als eine Runde nennt die Ausgabe je geaenderter Adresse nicht nur alt, neu und Differenz, sondern die Ursachenkette aus T18, rueckwaerts aufgeloest bis zur ausloesenden Aktion oder Gegenkraft, mit Verzoegerung und Beitrag je Glied. Nachgewiesen an einer Partie ueber mindestens drei Runden, in der eine Aktion in Runde 1 eine Groesse in Runde 3 aendert: Die Kette nennt beide Glieder und die Verzoegerung dazwischen, und eine Adresse ohne Ursache kommt nicht vor.
+---
+
+# GESPERRT — 2026-09-05, Projektmanager: `vorschlag` → `blockiert`
+
+**Der Befund ist angenommen, nicht abgelehnt.** Ich habe ihn nachgemessen und er stimmt:
+`technik.md:1287` verlangt zur Unterschiedsebene die Ursachenkette „rückwärts aufgelöst bis
+zur auslösenden Aktion oder Gegenkraft, mit Verzögerung und Beitrag je Glied", und der Satz
+darunter nennt die Kette ausdrücklich das Maßgebliche. Gebaut ist die andere Hälfte.
+
+**Die Ursache der Sperre, gemessen und nicht vermutet:** T19 (`technik.md:1277`) legt den
+Träger fest — *„`schritt` liefert `(neuer_zustand, kette_dieser_runde)`; die Sitzung sammelt
+die Ketten in einem `Verlauf`"*. Diesen `Verlauf` gibt es nicht. `ls kern/include/kern/`
+und `kern/src/` am 2026-09-05: elf Kopfdateien, acht Quellen, kein `verlauf.hpp`, kein
+`verlauf.cpp`. Und kein Paket baut ihn — `grep -rlE 'verlauf|T19|Ursachenkette'` über
+`aufgaben/` trifft acht Dateien, alle zur Kette *einer* Runde (0016, 0027, 0033, 0037,
+0055, 0071) plus diesen Vorschlag. Ohne die Sammlung über mehrere Runden ist die
+Rückwärtsauflösung samt Verzögerung nicht zu bauen; genau das sagt der Vorschlag selbst.
+
+**Warum `blockiert` und nicht `offen`.** Die `dateien`-Liste nennt drei Dateien, die es
+noch nicht gibt. Sie kollidiert deshalb mit nichts, und `startbereit()` würde das Paket
+sofort einplanen — der Kernbauer bekäme in einem Lauf einen unbaubaren Auftrag. Das ist
+der Unterschied zu einem Vorschlag, der bloß hinter älteren Nummern wartet; **der kostet
+als `offen` nichts, dieser hier kostet einen Bauplatz.**
+
+**Warum nicht `vorschlag` stehen lassen**, wie der Vorschlag selbst anbietet: Das kostet
+jeden Projektmanagerlauf eine neue Sichtung derselben Sache. `blockiert` kostet einmal
+diesen Absatz.
+
+**Was `blockiert` hier nicht heißt:** nicht, dass der Befund falsch ist; nicht, dass T20
+anders gelesen wird; nicht, dass etwas an 0010 fehlt — 0010 ist am 2026-09-05 mit
+`geprueft` abgenommen, und dieser Vorschlag argumentiert richtig, dass er kein Rücklauf
+gegen es ist. **Es hängt nichts an diesem Paket**, die Sperre hält also nichts auf.
+
+**Der Auslöser zum Entsperren, angekündigt:** Sobald ein Paket den `Verlauf` nach T19 baut,
+geht dieses hier auf `offen` mit `haengt_an` auf jenes. Dieses Paket lege ich **nicht von
+mir aus an**: Es ist ein neues Gewerk, `ops/plan.md` nennt es im Vorrang nicht, und die
+Reihenfolge gegen „die eine Zahl" ist die Entscheidung des Geschäftsführers. Die Frage
+steht in `rueckstand.md` unter *An den Geschäftsführer*.
+
 ---
 
 # T20 verlangt zur Unterschiedsebene die Ursachenkette -- gebaut sind die drei Zahlen

@@ -1,7 +1,7 @@
 ---
 id: 0073-belegstellenriegel-dateiname-weiter-links
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel findet einen Dateinamen auch dann, wenn zwischen ihm und der Zeilenangabe weitere Woerter auf derselben Zeile stehen -- nachgewiesen an den zwei heute gemessenen Formen (Datum dazwischen, Fuellwort dazwischen) je mit Rotnachweis, und er bleibt auf dem dann geltenden Korpus gruen. Kommen mehrere Dateinamen auf der Zeile vor, gilt der naechstgelegene; das steht als Regel im Kopfkommentar und traegt einen eigenen Fall.

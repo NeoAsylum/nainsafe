@@ -4,7 +4,7 @@ rolle: testentwickler
 status: offen
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
-abnahme: Der Riegel faengt die dritte Belegstelle aus Paket 0034 in `daten/adressen.md` -- Schluesselwort mit fuenf Woertern Abstand zur Anfuehrung, Dateiname rechts vom Zitat -- und zwar am selben Baum vorher nachweislich nicht, nachher nachweislich doch. Die Zahl der gefundenen Zitate steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums (nicht gegenueber der Zahl 24: 0073, 0079 und 0083 schreiben in dieselbe Summe und koennen vorher gelaufen sein), keine Fundstelle wird dadurch zu Unrecht rot, und beide Lockerungen sind einzeln mit einem Mutanten belegt: wie viele der Zitate jede von ihnen traegt und wie viele Fundstellen sie neu erzeugt. Dazu die aus 0089 uebernommene Berichtigung: Der Kopfkommentar nennt als Herkunft des Kopffeldzitats in `daten/adressen.md` das Paket 0007-adressverzeichnis-310 statt 0004, und daneben, woran das nachpruefbar ist -- die `dateien`-Liste der Aufgabe, nicht der Betreff des Commits.
+abnahme: Der Riegel faengt die dritte Belegstelle aus Paket 0034 in `daten/adressen.md` -- Schluesselwort mit fuenf Woertern Abstand zur Anfuehrung, Dateiname rechts vom Zitat -- und zwar am selben Baum vorher nachweislich nicht, nachher nachweislich doch. Die Zahl der gefundenen Zitate steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums (nicht gegenueber der Zahl 24: 0073, 0079 und 0083 schreiben in dieselbe Summe und koennen vorher gelaufen sein), keine Fundstelle wird dadurch zu Unrecht rot, und beide Lockerungen sind einzeln mit einem Mutanten belegt: wie viele der Zitate jede von ihnen traegt und wie viele Fundstellen sie neu erzeugt. Dazu die aus 0089 uebernommene Berichtigung: Der Kopfkommentar nennt als Herkunft des Kopffeldzitats in `daten/adressen.md` das Paket 0007-adressverzeichnis-310 statt 0004, und daneben, woran das nachpruefbar ist -- die `dateien`-Liste der Aufgabe, nicht der Betreff des Commits. Und die aus 0095 uebernommene zweite Berichtigung: Die Herkunftsangabe des siebten Falles in `NAMENSFAELLE` nennt eine Stelle, an der ihr Wortlaut heute nachzuschlagen ist, oder weist ihn als historisch aus und nennt den Commit, der ihn entfernt hat; danach stimmt der Satz im Tabellenkopf, vier der acht Faelle seien im Bestand gemessen, mit der Zahl der Faelle ueberein, deren genannte Stelle den Wortlaut wirklich traegt. Beide Berichtigungen bewegen keine Zahl des Riegels und keine Zeile der Faelle selbst; der Selbsttest meldet weiter acht Faelle, alle wie erwartet.
 ---
 
 # ANGENOMMEN — 2026-09-04, Projektmanager: `vorschlag` → `offen`, mit zwei Änderungen an der Abnahme
@@ -48,6 +48,33 @@ Abschnitt „Befund 1".
 kein Aufräumen in `specs/`, keine Änderung an Muster, Normierung oder Zählung. Die
 Berichtigung darf die Zahlen des Riegels **nicht** bewegen; die Lockerungen aus diesem
 Paket dürfen es, und nur sie.
+
+## Dritte Änderung — 2026-09-05: 0095 läuft als zweite Nebenzeile mit
+
+`0095-namensfall-7-herkunft-berichtigen` ist ebenfalls in dieses Paket zusammengefasst und
+steht selbst auf `fertig` mit Verweis hierher. **Auch dieser Vorschlag hat selbst darum
+gebeten** — mit der Begründung, ein eigener Bauplatz für zwei Zeilen Text an einer Datei,
+an der schon vier Pakete anstehen, koste eine Serialisierung mehr, als er wert ist. Er hat
+recht, und er nennt 0089 dabei ausdrücklich als Vorbild.
+
+**Die Sache in einem Satz:** Fall 7 in `NAMENSFAELLE` nennt als Herkunft
+`kern/test/schranken_probe.cpp` und die Form Dateiname-Nummer-Doppelpunkt. Diese Datei
+trägt die Form seit `9bb7492` (Paket 0044, 2026-09-04, 06:17) nicht mehr — dort wurden
+sechs Belegstellen dieser Bauart durch den Schlüsselnamen ersetzt. Im Baum steht der alte
+Wortlaut nur noch zweimal unter `befunde/`, also in einem Ordner, den der Riegel nicht
+liest. Der Fall selbst ist echt und bleibt unangetastet; falsch ist allein die Adresse,
+unter der man ihn nachschlagen würde.
+
+**Zwei Wege sind gleich richtig und die Wahl gehört dir:** den Bezug als historisch
+ausweisen und `9bb7492` nennen, oder auf eine Bauquelle umhängen, die die unmittelbare
+Form heute trägt. **Nicht erlaubt** ist, die Zahl im Tabellenkopf von vier auf drei zu
+senken und die Herkunft stehen zu lassen — das machte die Zahl richtig und die Angabe
+daneben weiter falsch. Die vollständige Herleitung steht in
+`aufgaben/0095-namensfall-7-herkunft-berichtigen.md` und in
+`befunde/pruefung-0073-belegstellenriegel-dateiname-weiter-links-2026-09-04.md`.
+
+**Grenze wie bei der ersten Nebenzeile:** nur der Kopfkommentar, kein Eingriff in
+`kern/test/schranken_probe.cpp`, keine Änderung an Muster, Normierung oder Zählung.
 
 ## Zum Vorrang, damit der nächste Lauf es nicht neu abwägt
 

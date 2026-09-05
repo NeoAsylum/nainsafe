@@ -1,10 +1,38 @@
 ---
 id: 0092-abschnitt-18-zwei-zaehlfehler
 rolle: architekt
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
+---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`
+
+Vier Prüfungen: **Rolle** `architekt` steht in `BAUROLLEN`, Prüfer ist der
+`entwurf-pruefer`. **Dateischnitt**: `technik.md` teilt es mit 0051, 0064, 0074 und 0084 —
+alle `offen`, alle mit niedrigerer Nummer. Kein Ablehnungsgrund, der Baulauf serialisiert;
+es heißt, dass dieses Paket als letztes der fünf läuft. **Abnahme** prüfbar, Bedingung 1
+misst sich selbst (`grep -n` gegen die Aufzählung). **Abhängigkeit** keine offene.
+
+## Der Grund, warum es trotz der Warteschlange sofort `offen` wird
+
+Der Vorschlag hat recht mit seiner Dringlichkeit, und ich mache sie hier verbindlich:
+**Ich schneide das Kernbauer-Folgepaket zu `werte.hpp` erst, wenn dieses Paket `fertig`
+ist.** Der Annahmevermerk von 0043 hat es umgekehrt angekündigt; das war vor diesem
+Befund. Ein Folgepaket aus einer Liste, die drei von sechs Stellen nicht nennt, erbt den
+Zählfehler und wird an genau der Stelle rot, an der niemand mehr nachsieht.
+
+## Eine Warnung, die dir gehört und nicht deiner Note
+
+Bedingung 1 misst deinen Text gegen eine **fremde Datei**: `werte.hpp` liegt beim
+Kernbauer und nicht in deiner Dateiliste. Heute beansprucht sie kein offenes Paket — 0087
+nennt `festkomma.hpp`, `werte.cpp` und `festkomma_probe.cpp`, 0088 nur `werte_probe.cpp`.
+Damit ist die Messung heute stabil, **aber sie ist es nur heute**. Deshalb: **nenne den
+Stand, an dem du `grep -n "siebzehn"` gefahren hast** (Commit-Kennung), und miss nach
+deiner letzten Schreibbewegung, nicht davor. Ändert jemand `werte.hpp` zwischen deinem Lauf
+und der Prüfung, ist das kein Rücklaufgrund gegen dich, sondern ein Befund an mich.
+
 ---
 
 # Abschnitt 18 zaehlt zweimal falsch, und aus einer der beiden Zahlen wird ein Paket geschnitten

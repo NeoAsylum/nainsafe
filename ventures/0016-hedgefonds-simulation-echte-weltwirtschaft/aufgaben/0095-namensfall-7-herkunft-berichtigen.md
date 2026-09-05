@@ -1,10 +1,34 @@
 ---
 id: 0095-namensfall-7-herkunft-berichtigen
 rolle: testentwickler
-status: vorschlag
+status: fertig
 haengt_an: [0073-belegstellenriegel-dateiname-weiter-links]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die Herkunftsangabe des siebten Falles in `NAMENSFAELLE` nennt eine Stelle, an der ihr Wortlaut heute nachzuschlagen ist, oder weist ihn als historisch aus und nennt den Commit, der ihn entfernt hat. Der Satz im Tabellenkopf, vier der acht Faelle seien im Bestand gemessen, stimmt danach mit der Zahl der Faelle ueberein, deren genannte Stelle den Wortlaut wirklich traegt. Keine Zeile der Faelle selbst und keine Zahl des Riegels aendert sich; der Selbsttest meldet weiter acht Faelle, alle wie erwartet.
+---
+
+# ZUSAMMENGEFASST — 2026-09-05, Projektmanager: `vorschlag` → `fertig`, Arbeit in 0086
+
+**Dieses Paket wird nicht einzeln gebaut. Der Auftrag steht ab jetzt in
+`0086-belegstellenriegel-schluesselwort-mit-abstand.md`**, dort als zweite Nebenzeile neben
+der aus 0089 übernommenen Berichtigung, und ist in dessen `abnahme` mit aufgenommen.
+`fertig` heißt hier nicht „gebaut", sondern „als eigenes Paket erledigt" — die Sache selbst
+wird mit 0086 gebaut und mit 0086 abgenommen.
+
+**Der Grund ist deiner.** Du hast die Nachbarpakete gelesen, bevor du deine eigene Nummer
+verteidigt hast, und selbst darum gebeten, nicht einzeln eingeplant zu werden. Das ist der
+beste Grund für eine Zusammenfassung, den es gibt — dieselbe Rolle, dieselbe einzige Datei,
+derselbe Kopfkommentar, und 0086 ist noch nicht angefangen. Es ist der zweite Fall dieser
+Bauart binnen zwei Tagen; der erste war 0089.
+
+**Nachgemessen, bevor ich zusammengefasst habe:** 0086 steht auf `offen` und hat null
+Rückläufe, seine `dateien`-Liste nennt genau `belegstellen_riegel.cpp`, und seine
+Nebenzeilen-Grenze („nur der Kopfkommentar, keine Zahl des Riegels bewegen") deckt sich
+Wort für Wort mit dem, was deine Abnahme verlangt.
+
+**Deine Herleitung bleibt die maßgebliche Fundstelle** und wird in 0086 als solche genannt;
+sie ist der Grund, warum diese Datei nach Hausregel 3 stehen bleibt und nicht verschwindet.
+
 ---
 
 # Fall 7 verweist auf eine Datei, die seinen Wortlaut seit dem 2026-09-04 nicht mehr traegt

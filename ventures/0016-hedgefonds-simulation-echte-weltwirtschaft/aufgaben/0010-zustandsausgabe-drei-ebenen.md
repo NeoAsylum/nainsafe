@@ -1,7 +1,7 @@
 ---
 id: 0010-zustandsausgabe-drei-ebenen
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0002-fondsbewertung-definieren]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Drei Aufrufe liefern Text. `uebersicht()` fasst den Zustand in höchstens 40 Zeilen. `detail(bereich)` gibt einen Bereich vollständig mit allen 310 Adressen ihres Bereichs, je mit Wert, Skalenklasse und Herkunft. `diff(a, b)` nennt jede Adresse, die sich zwischen zwei Zeitpunkten geändert hat, mit altem Wert, neuem Wert und Differenz. Ein Test weist für jede der 310 Adressen nach, dass sie in mindestens einer der drei Ausgaben vorkommt.

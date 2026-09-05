@@ -1,7 +1,7 @@
 ---
 id: 0043-t48-groessen-gegenkraft-5
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0021-schaden-gegenkraft-5, 0039-zollzeile-konjunktursockel, 0011-stack-auf-cpp, 0026-klasse-2-preisbasis, 0002-fondsbewertung-definieren]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
