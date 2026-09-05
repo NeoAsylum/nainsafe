@@ -219,6 +219,13 @@ aufgeloest, wieder Rueckgabewert 0, und die Zahl der Namen in ungelesenen Ordner
 von 430 auf 432 — das sind genau meine zwei Belegdateien unter `befunde/messung-0120/`.
 Die fremde Aenderung kippt das Ergebnis dieses Pakets also nicht; wenn sie es spaeter
 doch taete, waere das ein neuer Fremdfehler und Bedingung 2 traegt dafuer ihren
-Vorbehalt.
+Vorbehalt. Sie betrifft `[pruefweg].toml_geprueft` und keine Reihe.
+
+**Wo meine Dateien liegen, falls der Betreff verwirrt:** Derselbe Nachbarlauf hat sie
+mit eingesammelt. Commit `f6731fe` traegt den Betreff `datenbauer:
+0078-reihentoml-preisbasis-nach-t53-nachziehen` und enthaelt neben seinem eigenen
+`reihen.toml` diesen Vermerk samt Statuszeile und die beiden Belegdateien unter
+`befunde/messung-0120/`. Das ist der achte Lauf in Folge mit dieser Ueberschneidung und
+kein Eingriff in mein Paket.
 
 `status: gebaut`. Die Abnahme setzt der Projektmanager, nicht ich.
