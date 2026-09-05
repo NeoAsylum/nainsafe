@@ -1,7 +1,7 @@
 ---
 id: 0079-belegstellenriegel-zitat-ohne-anfuehrung
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen, und die Zahl der uebergangenen Fundstellen faellt gegenueber dem Stand von 0067 um genau zwei.
@@ -118,3 +118,31 @@ Weg findet, braucht sie nicht.
   beide fassen verschiedene Stellen an --, aber gleichzeitig geht nicht.
 - **Kein Aufraeumen in `daten/` und keins in `specs/`.**
 - Keine Gleitkommazahl, keine Fremdabhaengigkeit, kein fest eingebauter Pfad.
+
+## Gebaut am 2026-09-05 (testentwickler)
+
+Vorher-`HEAD`: `489aafb`. Geaendert wurde genau die eine Datei aus der Liste. Die
+Messung steht in `befunde/messung-0079/nachweis.md`, mit Uebersetzer und Testlauf im
+Wortlaut.
+
+**Die benannte Eigenschaft ist der Punkt hinter der Gliederungsziffer**, und sie
+entscheidet zweimal: Er gilt nicht als Wortgrenze (deshalb steht eine blosse Ziffer an
+keinem Ueberschriftenanfang), und er ist der Nachweis, dass die Zieldatei ueberhaupt
+nummeriert (deshalb ist eine Ziffer am Zitatanfang nur dann eine Nummer, wenn die Ziel-
+oder die zitierende Datei mit ihr nummeriert). Der zweite Teil ist die Antwort auf den
+Einwand aus dem Rumpf: **Eine gerade umbenannte Ueberschrift wird ein Befund und faellt
+nicht in die uebergangenen Fundstellen zurueck** -- auch dann nicht, wenn ihr Zitat mit
+einer Ziffer beginnt.
+
+Die vier Stellen aus 0047 gehen wie verlangt aus: die zwei Nummern uebergangen und
+namentlich gezaehlt, die zwei Ueberschriften nachgeschlagen und aufgeloest, je mit
+Rotnachweis ueber die eigene Datei.
+
+**Eine Bedingung der Abnahme ist nicht erfuellt, und zwar nachweislich nicht
+erfuellbar:** „die Zahl der uebergangenen Fundstellen faellt gegenueber dem Stand von
+0067 um genau zwei". Sie steigt um 48. Der Grund und die Gegenrechnung stehen im
+Nachweis unter *Was ausdruecklich nicht erreicht ist*; kurz: `reihen.toml` traegt die
+Form nicht viermal -- allein 33 der 48 neu uebergangenen Fundstellen liegen dort --,
+und keine der acht uebergangenen Fundstellen aus 0067 traegt sie ueberhaupt. Ein Fallen
+ist auf diesem Korpus in keiner Fassung dieses Pakets moeglich. Der Riegel ist dafuer
+nicht abgeschwaecht worden.

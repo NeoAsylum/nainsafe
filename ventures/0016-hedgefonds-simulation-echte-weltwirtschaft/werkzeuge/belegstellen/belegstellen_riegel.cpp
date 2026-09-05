@@ -66,6 +66,12 @@
 //!   3. **links davon im selben Absatz** ein Dokumentname. Der naechstgelegene, der
 //!      sich im Bestand wiederfindet, gilt als Ziel.
 //!
+//! Teil 2 hat seit Paket 0079 eine zweite Gestalt: **kein Anfuehrungszeichen, sondern
+//! ein Name, der im Satz weiterlaeuft.** Er wird nicht wortgleich verlangt, sondern
+//! muss am Anfang einer Ueberschrift der Zieldatei stehen; wo er endet und wie er sich
+//! von einer blossen Gliederungsziffer trennt, steht weiter unten in einem eigenen
+//! Abschnitt.
+//!
 //! ## Wie streng "genau diese Ueberschrift" gemeint ist
 //!
 //! Eine **Ueberschriftszeile** in der Zieldatei ist eines von zweien: eine Zeile, die
@@ -230,7 +236,7 @@
 //! nachweislich Zitate hinterlassen.
 //!
 //! Dazu eine dritte Zahl, und sie ist die ehrliche Haelfte: **uebergangene
-//! Fundstellen**. Zwei Sorten, beide unten einzeln mit Datei und Zeile genannt, damit
+//! Fundstellen**. Fuenf Sorten, alle unten einzeln mit Datei und Zeile genannt, damit
 //! keine still bleibt:
 //!
 //!   * *ohne Dokumentnamen im Absatz* -- ein Verweis auf einen Abschnitt derselben
@@ -238,6 +244,14 @@
 //!     Er traegt sein Ziel nicht bei sich; dieser Riegel prueft nur, was das tut.
 //!   * *Ziel ausserhalb des Bestands* -- der naechstgelegene Name gehoert zu keiner
 //!     Datei, die hier gelesen wird (ein Bericht unter `befunde/`, eine Netzadresse).
+//!   * *Gliederungsziffer statt Ueberschrift* -- Paket 0079, oben begruendet. Die
+//!     groesste der fuenf Gruppen und die harmloseste: Eine Nummer traegt keinen
+//!     Wortlaut, an dem sich etwas nachschlagen liesse.
+//!   * *einzelnes Zeichen statt Ueberschrift* -- ein Formelzeichen oder ein
+//!     Platzhalter, ebenfalls oben begruendet.
+//!   * *Zieldatei fuehrt keine Ueberschrift* -- der naechstgelegene Name gehoert zu
+//!     einer Quell- oder Kopfdatei ohne jede Gliederung. Sie kann ein Zitat weder
+//!     bestaetigen noch widerlegen; ein Rot dort waere ein Rot gegen den Riegel.
 //!
 //! Diese Fundstellen sind der ausgeschriebene blinde Fleck von Bedingung 2. Sie werden
 //! gezaehlt und aufgezaehlt, aber nicht bewertet -- eine Zahl, die stumm bliebe, waere
@@ -276,22 +290,59 @@
 //!   0057 -- `daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md`. Vier Zitate,
 //!           alle gefangen; drei in der geklammerten Form, die dieses Paket eingefuehrt
 //!           hat, eines mit gemischter Anfuehrung.
-//!   0047 -- `daten/reihen.toml`. **Nicht gefangen** -- siehe unten.
+//!   0047 -- `daten/reihen.toml`. **Gefangen seit Paket 0079** -- der naechste
+//!           Abschnitt beschreibt, woran.
 //!
-//! **Die Luecke, ausgeschrieben statt verschwiegen.** Paket 0047 hat seine
-//! Ueberschriften **ohne Anfuehrung** zitiert. In `reihen.toml` steht dadurch viermal
-//! die Form `<datei>, Abschnitt <Name>`, wo der Name unmittelbar im Satz weiterlaeuft:
-//! einmal auf eine Ueberschrift ("Reihe 1"), einmal auf eine Aufzaehlung ("2b und 2c")
-//! und zweimal auf eine Nummer ("5", "7"). Diese Form faengt der Riegel nicht, und sie
-//! bleibt ungeschuetzt.
+//! ## Die Ueberschrift ohne Anfuehrung -- Paket 0079
 //!
-//! Sie zu fangen hiesse, den Namen bis zum naechsten Satzzeichen zu lesen -- und dann
-//! sind eine Nummer und eine Ueberschrift dieselbe Gestalt. Der Riegel muesste raten,
-//! welche der beiden gemeint ist; wo er falsch raet, wird er rot an einer Stelle, an
-//! der nichts kaputt ist, und wo er zu vorsichtig raet, prueft er wieder nichts. Das
-//! ist eine eigene Entscheidung mit eigenem Nachweis und liegt als Vorschlag daneben
-//! (Paket 0079). Solange sie nicht getroffen ist, steht die Luecke hier -- ein Riegel,
-//! der etwas still uebergeht, sieht aus wie einer, der prueft.
+//! Paket 0047 hat seine Ueberschriften **ohne jede Anfuehrung** zitiert. In
+//! `reihen.toml` steht dadurch viermal die Form `<datei>, <Schluesselwort> <Name>`, wo
+//! der Name unmittelbar im Satz weiterlaeuft: einmal auf eine Ueberschrift ("Reihe 1"),
+//! einmal auf eine Aufzaehlung ("2b und 2c") und zweimal auf eine blosse Nummer ("5",
+//! "7"). Bis zum 2026-09-04 hat der Riegel diese vier still uebergangen. Sie zu fangen
+//! heisst, den Namen bis zum naechsten Satzzeichen zu lesen -- und dann haben eine
+//! Nummer und eine Ueberschrift dieselbe Gestalt.
+//!
+//! **Die Entscheidung faellt an einem einzigen Zeichen: dem Punkt hinter der
+//! Gliederungsziffer.** Eine Datei, die ihre Abschnitte nummeriert, schreibt die Nummer
+//! mit einem Punkt in die Ueberschrift und dahinter den Namen -- die Zusammenfassung
+//! von `lizenzbefund-reihen.md` traegt so die Fuenf, der Datenteil von `technik.md` die
+//! Sieben. Wer eine solche Ziffer zitiert, nennt die Nummer und nicht den Wortlaut.
+//! Dieser eine Punkt entscheidet zweimal:
+//!
+//!   1. **Er ist keine Wortgrenze.** Ein Zitat gilt als aufgeloest, wenn es am Anfang
+//!      einer Ueberschrift der Zieldatei steht; wo dort ein Punkt folgt, steht es das
+//!      nicht. Die blosse Fuenf faellt damit durch, waehrend die Reihe mit ihrer Nummer
+//!      und die Aufzaehlung mit ihrem "und" durchkommen -- beide sind Wortlaut.
+//!   2. **Er ist der Nachweis, dass ueberhaupt nummeriert wird.** Eine Ziffer am Anfang
+//!      eines Zitats gilt nur dann als Nummer, wenn die Zieldatei -- oder die
+//!      zitierende, denn ein Verweis auf einen eigenen Abschnitt traegt links den
+//!      falschen Nachbarn -- eine Ueberschrift mit genau dieser Ziffer und einem Punkt
+//!      fuehrt, oder wenn das Zitat aus nichts als ihr besteht.
+//!
+//! Der zweite Teil ist der wichtigere, und er ist die Antwort auf den Einwand, an dem
+//! dieses Paket haengt: **Eine gerade umbenannte Ueberschrift sieht nicht aus wie eine
+//! Nummer.** Sie faellt nicht in die uebergangenen Fundstellen zurueck, sondern wird
+//! ein Befund -- auch dann, wenn ihr Zitat mit einer Ziffer beginnt, denn die Zieldatei
+//! nummeriert dann nicht mit ihr. Zwei Faelle in `ZITATFAELLE` halten genau das fest,
+//! je einer fuer die Ueberschrift und einer fuer die Aufzaehlung.
+//!
+//! **Drei Grenzen, ausgeschrieben, weil sie still waeren.**
+//!
+//!   * *Kleinschreibung.* Ein Name ohne Anfuehrung beginnt mit einem Grossbuchstaben
+//!     oder einer Ziffer. Folgt dem Schluesselwort ein Verhaeltniswort, ist es kein
+//!     Zitat, sondern ein Satz -- die Stelle wird gar nicht erst gezaehlt. Ohne diese
+//!     Grenze wuerde jeder laufende Satz, der das Wort fuehrt, an einer Gliederung
+//!     nachgeschlagen.
+//!   * *Ohne Dokumentnamen kein Zitat.* Die Anfuehrung ist die Ankuendigung "hier wird
+//!     zitiert"; fehlt sie, bleibt der Dokumentname die einzige. Fundstellen ohne
+//!     beides zaehlt der Riegel, aber er nennt sie nicht einzeln -- es waeren Dutzende,
+//!     und keine von ihnen traegt ein Ziel.
+//!   * *Ein einzelnes Zeichen.* Steht hinter dem Schluesselwort ein einzelner
+//!     Buchstabe, ist es in diesem Vorhaben ein Formelzeichen oder ein Platzhalter.
+//!     Gemessen und nicht vorsorglich: `rueckstand.md` sagt an einer Stelle sinngemaess,
+//!     etwas habe dort unter einer bestimmten Ueberschrift gestanden und sei heute nicht
+//!     mehr aufgefuehrt -- eine Aussage **ueber** ein Zitat und keines.
 //!
 //! **Die zweite Luecke, aus demselben Grund ausgeschrieben: Das Schluesselwort steht
 //! nicht unmittelbar vor der Anfuehrung.** Die dritte Belegstelle aus Paket 0034 nennt
@@ -1409,7 +1460,8 @@ enum class Namensart {
 /// Selbsttest unten **denselben** Weg misst wie der Lauf ueber den Bestand -- dieselbe
 /// Ueberlegung wie bei `fund_ab` und aus demselben Grund.
 Namensart namensart(const std::string& gesucht,
-                    const std::vector<std::string>& ueberschriften) {
+                    const std::vector<std::string>& ueberschriften,
+                    const std::vector<std::string>& eigene) {
     // Eine Zieldatei ohne jede Ueberschrift kann ein Zitat weder bestaetigen noch
     // widerlegen. Das ist kein gedachter Fall: `rueckstand.md` verweist an einer Stelle
     // auf einen eigenen Abschnitt, und der naechstgelegene Dokumentname im Absatz ist
@@ -1423,10 +1475,15 @@ Namensart namensart(const std::string& gesucht,
             return Namensart::Ueberschrift;
         }
     }
+    // Die zitierende Datei zaehlt bei der Ziffer mit, und das ist gemessen: In
+    // `einheitenbefund-pwt-baci.md` steht ein Verweis auf einen **eigenen** Abschnitt,
+    // waehrend der naechstgelegene Dokumentname im Absatz eine fremde Datei nennt. Wer
+    // nur die Zieldatei fragt, wird dort rot an einem Verweis, der stimmt.
     const std::string_view kopfwort = erstes_wort(gesucht);
     if (ist_ziffernwort(kopfwort)
         && (kopfwort.size() == gesucht.size()
-            || fuehrt_gliederungsziffer(kopfwort, ueberschriften))) {
+            || fuehrt_gliederungsziffer(kopfwort, ueberschriften)
+            || fuehrt_gliederungsziffer(kopfwort, eigene))) {
         return Namensart::Ziffer;
     }
     if (kopfwort.size() == 1 && !ist_ziffer(kopfwort.front())) {
@@ -1458,54 +1515,88 @@ struct Zitatfall {
     std::string_view zeile;
     /// Die Ueberschriften der Zieldatei, durch `|` getrennt.
     std::string_view ueberschriften;
+    /// Die Ueberschriften der **zitierenden** Datei, ebenso getrennt. Meist leer; sie
+    /// traegt nur den Fall, in dem der naechstgelegene Name nicht das Ziel ist.
+    std::string_view eigene;
     Namensart erwartet;
     /// Leer heisst: die Stelle ist gar keine Fundstelle (`name_ohne_anfuehrung` gibt 0).
     std::string_view erwarteter_name;
     std::string_view herkunft;
 };
 
-constexpr std::array<Zitatfall, 7> ZITATFAELLE = {{
+constexpr std::array<Zitatfall, 9> ZITATFAELLE = {{
     // --- Die zwei Ueberschriften aus Paket 0047, im Wortlaut ------------------
     {"lizenzbefund-reihen.md, \101bschnitt Reihe 1, den Block unter der Zwischenzeile",
      "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
-     Namensart::Ueberschrift, "Reihe 1",
+     "", Namensart::Ueberschrift, "Reihe 1",
      "daten/reihen.toml, Feld schnitt_2_offen -- Paket 0047"},
     {"lizenzbefund-reihen.md, \101bschnitt Reihe 1, den Block unter der Zwischenzeile",
      "Reihe 1a - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
-     Namensart::Tot, "Reihe 1",
+     "", Namensart::Tot, "Reihe 1",
      "dieselbe Zeile, Ueberschrift umbenannt: der Name faellt nicht in die uebergangenen "
      "Fundstellen zurueck, sondern wird ein Befund -- und er bleibt es, obwohl eine "
      "andere Ueberschrift mit demselben ersten Wort beginnt"},
     {"lizenzbefund-reihen.md, \101bschnitt 2b und 2c, den Block unter der Zwischenzeile",
      "2b und 2c - NV.IND.TOTL.ZS und NV.SRV.TOTL.ZS|2a - NV.AGR.TOTL.ZS",
-     Namensart::Ueberschrift, "2b und 2c",
+     "", Namensart::Ueberschrift, "2b und 2c",
      "daten/reihen.toml, Feld schnitt_2_offen -- Paket 0047: eine Aufzaehlung, die mit "
      "einer Ziffer beginnt und trotzdem ein Name ist"},
     {"lizenzbefund-reihen.md, \101bschnitt 2b und 2c, den Block unter der Zwischenzeile",
      "2b, 2c und 2d - NV.IND.TOTL.ZS und NV.SRV.TOTL.ZS|2a - NV.AGR.TOTL.ZS",
-     Namensart::Tot, "2b und 2c",
+     "", Namensart::Tot, "2b und 2c",
      "dieselbe Zeile, Ueberschrift umbenannt -- Befund und nicht Ziffer, obwohl der Name "
-     "mit einer Ziffer beginnt"},
+     "mit einer Ziffer beginnt: die Zieldatei nummeriert nicht mit ihr"},
 
     // --- Die zwei Nummern aus Paket 0047 --------------------------------------
     {"daten/lizenzbefund-reihen.md, \101bschnitt 5\"", "5. Zusammenfassung|Reihe 1 - BIP",
-     Namensart::Ziffer, "5",
+     "", Namensart::Ziffer, "5",
      "daten/reihen.toml, Feld beleg unter zaehlung.lizenz -- Paket 0047. Der Punkt "
      "hinter der Fuenf ist die ganze Unterscheidung: ohne ihn waere sie ein Name"},
     {"daten/lizenzbefund-reihen.md, \101bschnitt 3 und 5 -- der IWF-Volltext ist "
      "ungelesen, der Suchauszug",
-     "3. Die vier Nicht-WDI-Quellen|5. Zusammenfassung", Namensart::Ziffer, "3 und 5 -- "
-     "der IWF-Volltext ist ungelesen",
+     "3. Die vier Nicht-WDI-Quellen|5. Zusammenfassung", "", Namensart::Ziffer,
+     "3 und 5 -- der IWF-Volltext ist ungelesen",
      "daten/reihen.toml, Feld bestritten_durch: zwei Nummern in einem Satz. Der Name "
      "reicht bis zum Komma und steht an keinem Ueberschriftenanfang -- die Ziffer davor "
      "entscheidet, nicht die Laenge"},
 
+    // --- Was uebergangen wird, obwohl es aussieht wie ein toter Name -----------
+    {"reihen.toml Schritt 1, \101bschnitt 6 an die Stelle der Frage",
+     "1. BACI-Handelswert|Reihe 14", "6. Reihe 16 -- mitbeantwortet",
+     Namensart::Ziffer, "6 an die Stelle der Frage",
+     "daten/einheitenbefund-pwt-baci.md: ein Verweis auf einen **eigenen** Abschnitt, "
+     "waehrend der naechstgelegene Name eine fremde Datei nennt. Ohne die dritte Spalte "
+     "waere das ein Befund an einer Stelle, die stimmt"},
+    {"werte.hpp und was daraus folgt, \101bschnitt 18 nennt drei von sechs Stellen", "",
+     "", Namensart::Ohne_Gliederung, "18 nennt drei von sechs Stellen",
+     "rueckstand.md: die Zieldatei ist eine Kopfdatei und fuehrt keine einzige "
+     "Ueberschrift -- sie kann das Zitat weder bestaetigen noch widerlegen"},
+
     // --- Was gar keine Fundstelle ist ------------------------------------------
-    {"spiel.md, \101bschnitt zur Partielaenge R und was daraus folgt", "Die Schleife",
+    {"spiel.md, \101bschnitt zur Partielaenge R und was daraus folgt", "Die Schleife", "",
      Namensart::Tot, "",
      "daten/reihen.toml, Feld beleg zu zaehlung.soll: ein Kleinbuchstabe hinter dem "
      "Schluesselwort -- laufender Satz, kein Zitat"},
 }};
+
+/// Die Ueberschriftenliste eines Falls, normiert wie beim Lesen einer echten Datei.
+/// Leere Stuecke fallen heraus -- eine leere Spalte heisst "keine Ueberschrift".
+std::vector<std::string> zerlege_liste(std::string_view spalte) {
+    std::vector<std::string> liste;
+    std::string laufend;
+    for (std::size_t z = 0; z <= spalte.size(); ++z) {
+        if (z == spalte.size() || spalte[z] == '|') {
+            const std::string fertig = normiere(laufend);
+            if (!fertig.empty()) {
+                liste.push_back(fertig);
+            }
+            laufend.clear();
+        } else {
+            laufend += spalte[z];
+        }
+    }
+    return liste;
+}
 
 /// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
 std::size_t selbsttest_ohne_anfuehrung() {
@@ -1550,17 +1641,8 @@ std::size_t selbsttest_ohne_anfuehrung() {
         if (gesucht.empty()) {
             continue;  // keine Fundstelle -- die Art wird gar nicht erst gefragt
         }
-        std::vector<std::string> liste;
-        std::string laufend;
-        for (std::size_t z = 0; z <= fall.ueberschriften.size(); ++z) {
-            if (z == fall.ueberschriften.size() || fall.ueberschriften[z] == '|') {
-                liste.push_back(normiere(laufend));
-                laufend.clear();
-            } else {
-                laufend += fall.ueberschriften[z];
-            }
-        }
-        const Namensart art = namensart(gesucht, liste);
+        const Namensart art = namensart(gesucht, zerlege_liste(fall.ueberschriften),
+                                        zerlege_liste(fall.eigene));
         if (art != fall.erwartet) {
             ++falsch;
             std::fprintf(stderr,
@@ -1580,6 +1662,9 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                    std::vector<Zitatbefund>& befunde,
                    std::vector<Uebergangen>& uebergangen, Zitatzaehlwerk& zaehlwerk) {
     const std::vector<Absatz> absaetze = lies_absaetze(pfad);
+    // Die eigenen Ueberschriften, erst gelesen, wenn eine Fundstelle ohne Anfuehrung
+    // danach fragt. Begruendung in `namensart`.
+    std::vector<std::string> eigene_ueberschriften;
     for (std::size_t a = 0; a < absaetze.size(); ++a) {
         const Absatz& absatz = absaetze[a];
         for (std::size_t i = 0; i < absatz.text.size();) {
@@ -1648,7 +1733,11 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                     // ab -- er muss am Anfang einer ihrer Ueberschriften stehen.
                     bool steht_da = false;
                     if (ohne_anfuehrung) {
-                        const Namensart art = namensart(gesucht, liste);
+                        if (eigene_ueberschriften.empty()) {
+                            eigene_ueberschriften = lies_ueberschriften(pfad);
+                        }
+                        const Namensart art =
+                            namensart(gesucht, liste, eigene_ueberschriften);
                         if (art == Namensart::Ziffer) {
                             grund = "Gliederungsziffer statt Ueberschrift: "
                                     + std::string(erstes_wort(gesucht));
