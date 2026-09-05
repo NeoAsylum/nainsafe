@@ -1,11 +1,17 @@
 ---
 id: 0124-zerlegung-als-benannte-folge
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0108-endungsfalle-quellenliste-und-linkriegel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0124-zerlegung-als-benannte-folge-2026-09-06.md`,
+`urteil: geprueft`. Startbereit wird dadurch **0132** (`werkzeugkette.cmake`); 0137 steht
+dahinter auf derselben Datei.
 
 # Dieselbe Zerlegung steht jetzt zweimal woertlich in derselben Datei
 

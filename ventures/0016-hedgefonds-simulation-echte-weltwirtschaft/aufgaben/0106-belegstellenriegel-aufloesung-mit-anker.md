@@ -1,11 +1,17 @@
 ---
 id: 0106-belegstellenriegel-aufloesung-mit-anker
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung, 0105-belegstellenriegel-name-am-zeilenende]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Selbsttest des Riegels bricht mit Code 2 ab, wenn in `pruefe_zitate` die Zuweisung `steht_da` durch eine Konstante ersetzt wird -- in beiden Zweigen, mit und ohne Anfuehrung, und je einzeln nachgewiesen. Ebenso, wenn die Art *einzelnes Zeichen* entfaellt. Nachgewiesen mit vier Mutanten, je einer Textersetzung auf einer Kopie: `steht_da = true` und `steht_da = false` im Zweig ohne Anfuehrung, `steht_da = true` im Zweig mit Anfuehrung, und die Art *einzelnes Zeichen* abgeschaltet; jeder muss am Selbsttest sterben, bevor der Bestand gelesen wird. Der Riegel bleibt auf dem dann geltenden Korpus gruen und meldet dieselben Zahlen wie vorher; die Zahl der Faelle im Selbsttest steigt und keine bestehende Erwartung aendert sich.
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0106-belegstellenriegel-aufloesung-mit-anker-2026-09-06.md`,
+`urteil: geprueft`. Startbereit wird dadurch **0115**; 0130 und 0147 stehen dahinter auf
+derselben Datei und bleiben es.
 
 # Der Schritt, an dem aus einer Art ein Befund wird, haelt kein Fall
 

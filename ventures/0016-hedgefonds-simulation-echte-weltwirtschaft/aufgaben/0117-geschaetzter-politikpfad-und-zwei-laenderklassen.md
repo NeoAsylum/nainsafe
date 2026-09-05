@@ -1,11 +1,21 @@
 ---
 id: 0117-geschaetzter-politikpfad-und-zwei-laenderklassen
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0116-laenderzahl-als-parameter]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme".
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0117-geschaetzter-politikpfad-und-zwei-laenderklassen-2026-09-06.md`,
+`urteil: geprueft`. Aus Befund 1 desselben Prüfers ist **0154** geworden (Sperrzahl in
+T60: zwölf statt dreizehn); es steht seit heute auf `offen`, hinter 0141 in der
+`technik.md`-Reihe.
+
+Startbereit wird durch dieses `fertig` **0141**. **0118** (`spiel.md`) hängt zusätzlich an
+0141 und wird erst danach frei — 0119 und 0128 sind fertig.
 
 # ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, unverändert
 

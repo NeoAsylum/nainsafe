@@ -1,0 +1,25 @@
+1. Der Bestand, beide Bauprofile
+  [ok ] FABRIK_SANITIZER=ON: uebersetzt und ctest gruen (12 Proben)
+  [ok ] FABRIK_SANITIZER=OFF: uebersetzt und ctest gruen (12 Proben)
+
+2. Beisst die Probe? Jede Mutation dreht genau eine Entscheidung um
+  [ok ] betrag-weg: Nr. 18 gibt die blanke Differenz statt ihres Betrags -> ctest rot
+  [ok ] zweimal-alt: Nr. 18 liest zweimal die Vorrunde statt beider Lesearten (T39) -> ctest rot
+  [ok ] kein-ueberlaufwaechter: Nr. 18 meldet den Rand des Wertebereichs unter fremdem Namen -> ctest rot
+  [ok ] klasse-einheitlich: die Klasse von Nr. 18 haengt nicht mehr am Instrument (T48) -> uebersetzt nicht
+  [ok ] kein-instrumentriegel: Nr. 18 laesst das unbekannte Instrument den Zustand melden -> ctest rot
+  [ok ] weltpreis-vorrunde: Nr. 19 liest den Weltpreis der Vorrunde statt dieser Runde -> ctest rot
+  [ok ] eine-rundung: Nr. 20 rundet einmal statt zweimal -- die zusammengezogene Form -> ctest rot
+  [ok ] durchgriff-erste-zeile: Nr. 20 liest den Durchgriff immer aus der ersten Zeile -> ctest rot
+  [ok ] keilhub-ohne-landriegel: Nr. 19 laesst die Restwelt eine Ebene tiefer melden -> ctest rot
+  [ok ] preishub-ohne-eigenen-riegel: Nr. 20 meldet ihre Raender unter dem Namen von Nr. 19 -> ctest rot
+
+3. Die drei Riegel am Arbeitsbaum
+  [ok ] belegstellen_riegel: Code 0
+  [ok ] bezeichner_riegel: Code 0
+  [ok ] Sperrebindungsriegel: Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+
+4. Die drei Zahlwoerter in werte.hpp bleiben unberuehrt
+  [ok ] werte.hpp nennt 'siebzehn' 5-mal (erwartet 5, Stand vor dem Paket -- die Zahl wird erst mit 0152 richtig)
+
+Abweichungen: 0

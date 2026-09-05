@@ -1,11 +1,18 @@
 ---
 id: 0151-werte-die-drei-hubgroessen
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0043-t48-groessen-gegenkraft-5]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme".
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0151-werte-die-drei-hubgroessen-2026-09-06.md`,
+`urteil: geprueft`. Startbereit wird dadurch **0152**. Befund 2 des Prüfers ist zu
+**0155** geworden (der Kopf von `Konstanten` zählt eine Jahrgangskonstante, es sind seit
+diesem Paket zwei); 0155 steht auf `offen` hinter 0152 auf derselben Datei.
 
 # T48 Nr. 18 bis 20 -- `hub`, `keilhub`, `preishub_zoll` in `kern::werte`
 

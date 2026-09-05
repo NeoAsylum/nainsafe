@@ -1,11 +1,21 @@
 ---
 id: 0144-rundenkapazitaet-des-verlaufs-nicht-an-r
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0140-verlauf-sammelt-die-rundenketten]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- ein Verlauf, der eine Partie mit einer nach T40 zulaessigen Partielaenge nicht bis zur letzten Runde aufnimmt, erfuellt sie nicht.
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0144-rundenkapazitaet-des-verlaufs-nicht-an-r-2026-09-06.md`,
+`urteil: geprueft`. Startbereit wird dadurch **0091**.
+
+Der Befund hat einen eigenen Punkt hinterlassen: Die Umstellung auf eine aus der Wand
+gebildete Schranke hat die **absolute** Speichergrenze ersatzlos entfernt. Daraus ist
+**0159** geworden (`offen`, hinter 0091 auf `verlauf.hpp`). Das ist kein Rücklauf auf
+dieses Paket — seine Abnahme war die Wandbindung, und die ist erfüllt.
 
 # ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, und 0091 rueckt dahinter
 

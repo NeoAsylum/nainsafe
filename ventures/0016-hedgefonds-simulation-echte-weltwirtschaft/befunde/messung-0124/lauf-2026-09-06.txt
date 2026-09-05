@@ -1,0 +1,26 @@
+Bedingung 1
+    separate_arguments(${wortliste} UNIX_COMMAND "${fabrik_zerlegt}")
+    macro(fabrik_schalter_zerlegen wortliste eingabename)
+    fabrik_schalter_zerlegen(worte schalterwert)
+    fabrik_schalter_zerlegen(worte eintrag)
+    1 x separate_arguments (soll 1), 1 x die benannte Folge (soll 1), 2 Aufrufstellen (soll 2)
+Bedingung 2a -- Eintragsmatrix, je an kern INTERFACE
+    -Wl,-lz              code=1/1 (soll 1)  zeichengleich=False (bis auf Kettenzeilen: True, Versatz [44])  Fundwort -lz=True
+    -l:z                 code=1/1 (soll 1)  zeichengleich=False (bis auf Kettenzeilen: True, Versatz [44])  Fundwort -l:z=True
+    SHELL:-Wl,-lz        code=1/1 (soll 1)  zeichengleich=False (bis auf Kettenzeilen: True, Versatz [44])  Fundwort -lz=True
+    $<1:-lz>             code=1/1 (soll 1)  zeichengleich=False (bis auf Kettenzeilen: True, Versatz [44])  Fundwort -lz=True
+    -Wl,-lz,-lssl        code=1/1 (soll 1)  zeichengleich=False (bis auf Kettenzeilen: True, Versatz [44])  Fundwort -lz=True
+    /usr/lib/libz.so     code=1/1 (soll 1)  zeichengleich=False (bis auf Kettenzeilen: True, Versatz [44])
+    -Wl,-l,z             code=0/0 (soll 0)  zeichengleich=True (bis auf Kettenzeilen: True, Versatz [])
+    /usr/lib/libz.so.1   code=0/0 (soll 0)  zeichengleich=True (bis auf Kettenzeilen: True, Versatz [])
+    -Wl,-z,now           code=0/0 (soll 0)  zeichengleich=True (bis auf Kettenzeilen: True, Versatz [])
+    ,,,                  code=0/0 (soll 0)  zeichengleich=True (bis auf Kettenzeilen: True, Versatz [])
+Gegenprobe -- dieselben Angriffe ohne die Trennzeichenklasse
+    nullabhaengigkeit   $<1:-lz>   heil=1 (soll 1)  ohne Trennzeichenklasse=0 (soll 0)
+    pauschalabschalter  $<1:-w>    heil=1 (soll 1)  ohne Trennzeichenklasse=0 (soll 0)
+    Fremdbaum uebersetzt nach 0 Wartezyklen.
+Bedingung 2b -- unveraenderter Baum, FABRIK_SANITIZER=ON
+    vorher: ctest Code 0 -- 100% tests passed, 0 tests failed out of 18
+    nachher: ctest Code 0 -- 100% tests passed, 0 tests failed out of 18
+
+Abweichungen: 0

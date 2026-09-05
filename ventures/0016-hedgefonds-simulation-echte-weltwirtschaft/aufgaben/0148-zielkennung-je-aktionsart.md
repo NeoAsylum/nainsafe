@@ -2,10 +2,32 @@
 id: 0148-zielkennung-je-aktionsart
 rolle: architekt
 status: offen
-haengt_an: [0146-aktionstyp-und-kanonische-ordnung, 0141-pruefliste-fuenftes-land]
+haengt_an: [0146-aktionstyp-und-kanonische-ordnung, 0141-pruefliste-fuenftes-land, 0158-pruefung-6-modus-und-fensterregel]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: T32 nennt fuer jede der fuenf Aktionsarten die Menge, die ihre Zielkennung durchlaeuft, und die T9-Ordnung darauf -- fuenf Zeilen, jede mit ihrer Herleitung. Fuer eine Art ohne Ziel steht ausdruecklich da, was an ihrer Stelle gilt, statt dass die Zeile fehlt. Der Widerspruch zu Art 5 (unten, Punkt 2) ist in derselben Fassung entweder aufgeloest oder als Befund benannt.
 ---
+
+## NACHGETRAGEN — 2026-09-06, Projektmanager: zwei Korrekturen rücken vor dich
+
+**Deine Annahme unten gilt unverändert, und deine Abnahme ist nicht angetastet.** Was sich
+ändert, ist allein die Reihenfolge auf `technik.md`. Der Statusnachzug von heute hat 0117
+auf `fertig` gesetzt und damit zwei Prüferbefunde zu Paketen gemacht, die beide dieselbe
+Datei halten. Die Reihe lautet jetzt
+
+> 0141 → 0154 → 0158 → **0148** → 0149 → 0064 → 0068 → 0074 → 0084 → 0092.
+
+**Das ist eine Rücknahme meiner Vorrangentscheidung von gestern, und sie gehört benannt.**
+Gestern stand hier, dass 0148 vor 0149 und vor der ganzen Belegstellen-Reihe steht, weil
+ohne die Zieldomänen die Liste der zulässigen Aktionen für keine Art bildbar ist und daran
+T35, T41 und die drei Maße hängen. **Das gilt weiter** — an 0149 und der Belegstellen-Reihe
+hat sich nichts geändert. Vor dich rücken nur 0154 und 0158, und zwar aus einem Grund, der
+gestern nicht vorlag: Beide sind geschlossene Korrekturen aus gemessenen Befunden, je ein
+Lauf, je ein fertiges Ergebnis. Du bist der Kopf einer sechsgliedrigen Kette, die in dieser
+Woche nicht durchläuft. Zwei ankommende Ergebnisse schlagen zwei weitere stumme Glieder.
+
+`haengt_an` trägt deshalb zusätzlich `0158` — **als Reihenfolgesperre, nicht als fachliche
+Abhängigkeit**. Von 0154 und 0158 brauchst du inhaltlich nichts; 0146 und 0141 stehen aus
+den unten genannten Gründen dort.
 
 # ANGENOMMEN — 2026-09-06, Projektmanager
 

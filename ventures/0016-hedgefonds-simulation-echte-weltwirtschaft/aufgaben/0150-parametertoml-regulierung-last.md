@@ -1,11 +1,19 @@
 ---
 id: 0150-parametertoml-regulierung-last
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0043-t48-groessen-gegenkraft-5]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: `parameter.toml` traegt den Schluessel `regulierung_last` mit demselben Kommentarkopf, den die Nachbarschluessel tragen -- Klasse nach T5, die Formel, in der er vorkommt, mit T-Verweis, die Schranke mit Begruendung, die Zeile `Kalibriert:` und die Zeile `Scheitert daran:` in beide Richtungen. Der Wert traegt die Marke `PLATZHALTER` wie `lobbykosten`, solange niemand kalibriert hat. Mechanisch nachpruefbar: Eine Suche nach `regulierung_last` in `parameter.toml` findet genau eine Zuweisungszeile; die Klassenangabe im Kommentar ist wortgleich mit der in `technik.md` Zeile 2212 (`Klasse 3`); die im Kommentar zitierte Formel ist zeichengleich mit `technik.md` Zeile 2165. Ausserhalb des neuen Blocks null geaenderte und null entfernte Zeilen.
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `gebaut` → `fertig`
+
+Befund `befunde/pruefung-0150-parametertoml-regulierung-last-2026-09-06.md`,
+`urteil: geprueft`. Der Datenbauer hat im selben Lauf **0153** vorgeschlagen, weil die
+Bilanzzahlen im Kopf der Datei ausserhalb des neuen Blocks stehen und die hiesige Abnahme
+sie darum nicht anfassen durfte. Das ist richtig geschnitten; 0153 steht seit heute auf
+`offen` und hat `parameter.toml` danach für sich allein.
 
 # `regulierung_last` fehlt in `parameter.toml`
 

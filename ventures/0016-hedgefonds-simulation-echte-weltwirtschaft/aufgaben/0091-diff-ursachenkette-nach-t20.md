@@ -2,10 +2,30 @@
 id: 0091-diff-ursachenkette-nach-t20
 rolle: kernbauer
 status: offen
-haengt_an: [0144-rundenkapazitaet-des-verlaufs-nicht-an-r]
+haengt_an: [0144-rundenkapazitaet-des-verlaufs-nicht-an-r, 0156-verlaufgroesse-auch-absolut-beschraenkt]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Zu einem Unterschied ueber mehr als eine Runde nennt die Ausgabe je geaenderter Adresse nicht nur alt, neu und Differenz, sondern die Ursachenkette aus T18, rueckwaerts aufgeloest bis zur ausloesenden Aktion oder Gegenkraft, mit Verzoegerung und Beitrag je Glied. Nachgewiesen an einer Partie ueber mindestens drei Runden, in der eine Aktion in Runde 1 eine Groesse in Runde 3 aendert: Die Kette nennt beide Glieder und die Verzoegerung dazwischen, und eine Adresse ohne Ursache kommt nicht vor.
 ---
+
+## UMGEHAENGT — 2026-09-06, Projektmanager: 0144 ist gefallen, 0156 tritt davor
+
+**Wieder keine Zurückweisung.** `0144` steht seit heute auf `fertig` (Befund
+`befunde/pruefung-0144-...-2026-09-06.md`, `urteil: geprueft`); diese Sperre ist gelöst.
+
+An ihre Stelle tritt **`0156-verlaufgroesse-auch-absolut-beschraenkt`**, wieder als
+**Reihenfolgesperre, nicht als fachliche Abhängigkeit** — du brauchst von 0156 inhaltlich
+nichts. 0156 hält `kern/include/kern/verlauf.hpp`, das auch in deiner Dateiliste steht;
+zwei Pakete auf einer Datei laufen nie nebeneinander, und wer zuerst geht, entscheide ich.
+
+**Warum 0156 vor dir:** Seine Abnahme verlangt, dass zwei zu weit gehende Sätze im Kopf
+von `verlauf.hpp` (heute Zeile 72/73 und 202) wieder mit den Zusicherungen übereinstimmen.
+Du fasst denselben Kopf an. Läufst du zuerst, zeigen diese Stellen ins Leere und der
+nächste Bauagent sucht eine Vorgabe, die es nicht mehr gibt. Umgekehrt entsteht kein
+Schaden. 0156 ändert zwei Zeilen und einen Absatz, du bist ein Gewerk — die Sperre kostet
+dich einen Lauf Wartezeit, nicht mehr.
+
+**Dein Vorher-Stand ist der dann geltende `HEAD`**, also die Fassung *nach* 0156. Such am
+Text, nicht an der Zeilennummer.
 
 # UMGEHAENGT — 2026-09-05, Projektmanager: du wartest jetzt auf 0144, nicht mehr auf 0140
 
