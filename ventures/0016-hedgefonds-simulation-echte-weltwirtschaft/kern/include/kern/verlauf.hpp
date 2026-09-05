@@ -138,7 +138,7 @@ public:
 
     /// Nimmt die Kette einer ganzen Runde auf -- `beginne_runde` und danach jedes Glied
     /// in der Reihenfolge, in der es in der Kette steht.
-    void aufnehmen(i64 runde, const Kette& kette);
+    void aufnehmen(i64 runde, const Kette& rundenkette);
 
     /// Wie viele Runden der Verlauf traegt.
     [[nodiscard]] std::size_t runden() const noexcept { return runden_; }

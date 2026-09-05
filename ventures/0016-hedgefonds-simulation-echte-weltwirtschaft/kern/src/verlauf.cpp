@@ -42,3 +42,130 @@ namespace {
 
 using meldung::Meldung;
 
+}  // namespace
+
+void Verlauf::beginne_runde(i64 runde)
+{
+    if (runde < 1) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- eine Runde vor der ersten gibt es nicht; angeboten "
+                     "war die Runde ");
+        meldung.zahl(runde);
+        meldung.text(". Rundennummern beginnen bei eins.");
+        festkomma::abbruch(meldung.fertig());
+    }
+
+    if (runden_ > 0 && runde <= nummer_[runden_ - 1]) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- die Runden werden aufsteigend gesammelt (T9); "
+                     "angeboten war die Runde ");
+        meldung.zahl(runde);
+        meldung.text(", zuletzt begonnen ist die Runde ");
+        meldung.zahl(nummer_[runden_ - 1]);
+        meldung.text(". Dieselbe Runde ein zweites Mal verloere eine der beiden Ketten.");
+        festkomma::abbruch(meldung.fertig());
+    }
+
+    if (runden_ >= RUNDEN_KAPAZITAET) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- der Verlauf ist voll: er nimmt ");
+        meldung.zahl(static_cast<i64>(RUNDEN_KAPAZITAET));
+        meldung.text(" Runden auf, und die Runde ");
+        meldung.zahl(runde);
+        meldung.text(" waere die naechste. Eine stille Kuerzung gibt es nicht (T19).");
+        festkomma::abbruch(meldung.fertig());
+    }
+
+    // Die frische Kette an den Platz: Sie beginnt leer, unabhaengig davon, was der
+    // Platz vorher getragen hat.
+    kette_[runden_] = Kette{};
+    nummer_[runden_] = runde;
+    ++runden_;
+}
+
+void Verlauf::anhaengen(const Ursachensatz& satz)
+{
+    if (runden_ == 0) {
+        festkomma::abbruch("kern::verlauf -- es ist keine Runde begonnen; ein Glied ohne "
+                           "Runde gehoert in keine Kette");
+    }
+
+    Kette& laufende = kette_[runden_ - 1];
+    if (laufende.laenge() >= GLIEDER_JE_RUNDE) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- die Kette der Runde ");
+        meldung.zahl(nummer_[runden_ - 1]);
+        meldung.text(" ist voll: die Aufnahmekapazitaet je Runde betraegt ");
+        meldung.zahl(static_cast<i64>(GLIEDER_JE_RUNDE));
+        meldung.text(" Glieder (T19). Ein weiteres Glied waere eine stille Kuerzung.");
+        festkomma::abbruch(meldung.fertig());
+    }
+
+    laufende.anhaengen(satz);
+}
+
+void Verlauf::aufnehmen(i64 runde, const Kette& rundenkette)
+{
+    beginne_runde(runde);
+    for (std::size_t glied = 0; glied < rundenkette.laenge(); ++glied) {
+        anhaengen(rundenkette.eintrag(glied));
+    }
+}
+
+i64 Verlauf::rundennummer(std::size_t nummer) const
+{
+    if (nummer >= runden_) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- Platz ");
+        meldung.zahl(static_cast<i64>(nummer));
+        meldung.text(" ausserhalb des Verlaufs; er traegt ");
+        meldung.zahl(static_cast<i64>(runden_));
+        meldung.text(" Runde(n).");
+        festkomma::abbruch(meldung.fertig());
+    }
+    return nummer_[nummer];
+}
+
+const Kette& Verlauf::kette(std::size_t nummer) const
+{
+    if (nummer >= runden_) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- Platz ");
+        meldung.zahl(static_cast<i64>(nummer));
+        meldung.text(" ausserhalb des Verlaufs; er traegt ");
+        meldung.zahl(static_cast<i64>(runden_));
+        meldung.text(" Runde(n).");
+        festkomma::abbruch(meldung.fertig());
+    }
+    return kette_[nummer];
+}
+
+const Kette& Verlauf::kette_der_runde(i64 runde) const
+{
+    // Aufsteigend gesucht (T9), nicht ueber eine streuende Menge: Der Verlauf traegt
+    // hoechstens zwanzig Runden, und eine feste Reihenfolge ist hier billiger als jede
+    // Beschleunigung, die eine zweite Datenhaltung braechte.
+    for (std::size_t platz = 0; platz < runden_; ++platz) {
+        if (nummer_[platz] == runde) {
+            return kette_[platz];
+        }
+    }
+
+    Meldung meldung;
+    meldung.text("kern::verlauf -- zur Runde ");
+    meldung.zahl(runde);
+    meldung.text(" traegt der Verlauf keine Kette. Eine leere Kette an ihrer Stelle "
+                 "saehe aus wie eine Runde ohne Schreibzugriffe.");
+    festkomma::abbruch(meldung.fertig());
+}
+
+std::size_t Verlauf::glieder() const noexcept
+{
+    std::size_t summe = 0;
+    for (std::size_t platz = 0; platz < runden_; ++platz) {
+        summe += kette_[platz].laenge();
+    }
+    return summe;
+}
+
+}  // namespace kern::verlauf
