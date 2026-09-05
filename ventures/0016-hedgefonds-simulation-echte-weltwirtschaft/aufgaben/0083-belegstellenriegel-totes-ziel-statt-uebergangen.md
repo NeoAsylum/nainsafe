@@ -1,7 +1,7 @@
 ---
 id: 0083-belegstellenriegel-totes-ziel-statt-uebergangen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel trennt die heutige Sorte "Ziel ausserhalb des Bestands" in zwei. Nennt ein Zitat eine Datei, die in einem bewusst ungelesenen Ordner liegt (`befunde/`, `aufgaben/`) oder ausserhalb beider Wurzeln, bleibt sie uebergangen wie heute. Nennt es eine Datei, die es unter keiner der beiden Wurzeln gibt, ist das ein Befund und der Lauf rot. Nachgewiesen mit Rotnachweis an einem Zitat auf einen erfundenen Dateinamen und mit Gruennachweis an den fuenf heute uebergangenen Fundstellen, die alle uebergangen bleiben muessen. Zusaetzlich meldet der Riegel die Zahl der aufgeloesten Zitate gegen eine im Quelltext stehende Untergrenze und wird rot, wenn sie unterschritten wird.
