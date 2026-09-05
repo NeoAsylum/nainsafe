@@ -121,3 +121,79 @@ nicht gegen eine ausgeschriebene Zahl. Seit dem Baulauf sind Ziele dazugekommen.
 Die Meldung des Nullabhaengigkeitsriegels im echten Arbeitsbereich ist vorher wie
 nachher **zeichengleich** -- vier Eigenschaften je Ziel, `kern` durchweg leer,
 `kern_geprueft` mit den zwei Sanitizerschaltern in beiden Optionslisten.
+
+## Punkt 4 -- sagen die Kommentare, was gemessen ist
+
+Jede pruefbare Zusicherung der vier neuen Kommentarbloecke einzeln gegen den Baum
+gehalten. Alle halten:
+
+1. `q1_notfound` gegen `q2_harmlos`, Code 0 gegen Code 1 am Stand davor -- nachgemessen.
+2. `l1_notfound` gegen `l2_klar`, Code 0 gegen Code 1 am Stand davor -- nachgemessen.
+   Zwei Baeume, die sich durch nichts als die letzten neun Zeichen eines Linkschalters
+   unterscheiden: der Nichtwertanhang ist genau neun Zeichen lang.
+3. `LINK_OPTIONS` wird von CMake nicht nach `INTERFACE_LINK_OPTIONS` gespiegelt -- an
+   `l1` belegt: die eine Eigenschaft traegt, die andere meldet leer.
+4. `l3_rpath_ohne_fremd` meldete vorher leer, heute den Schalter im Wortlaut, beide Male
+   Code 0 -- nachgemessen.
+
+Die zwei Verweise, die das Paket ausdruecklich nennt, sind eingeloest: Der Verweis bei
+der Quellenliste und der beim Linkriegel nennen jetzt dieselbe benannte Regel wie beim
+Sammeln oben, und das stimmt -- alle drei Stellen rufen `fabrik_nichtwert_leeren`, ein
+zweiter Vergleich steht nirgends daneben. Die zitierten Baumnamen (`q1_notfound`,
+`q2_harmlos`, `l1_notfound`, `l2_klar`, `l3_rpath_ohne_fremd`) stehen alle in
+`befunde/messung-0108/endungsfalle.py`; die Datei ist versioniert und laeuft mit
+`0 Abweichung(en) vom Soll`, Rueckgabe 0.
+
+## Wonach ich gesucht und nichts gefunden habe
+
+- **Eine vierte Stelle derselben Wurzel.** Jede Eigenschaftsabfrage der Datei
+  durchgezaehlt: `COMPILE_OPTIONS` am Ziel, `COMPILE_FLAGS` am Ziel und an der
+  Quelldatei, `COMPILE_OPTIONS` an der Quelldatei, `INTERFACE_COMPILE_OPTIONS`,
+  `SOURCES` und die vier Linkeigenschaften laufen alle -- direkt oder ueber
+  `fabrik_riegel_sammeln` -- durch dasselbe Makro. Die uebrigen Abfragen (`TYPE`,
+  `SOURCE_DIR`, die Abfragen auf globale und Verzeichniseigenschaften) kennen den
+  Nichtwert nicht. Kein Rest.
+- **Ein Fehlalarm, den die Aenderung neu erzeugt.** Der Riegel wird schaerfer, nie
+  weicher: Was frueher geleert wurde, ist eine **echte Obermenge** dessen, was heute
+  geleert wird -- Endungsvergleich gegen Gleichheit mit einem der zwei Nichtwerte. Er
+  kann darum nichts verlieren, was er vorher fing; das deckt auch, was ich nicht einzeln
+  gemessen habe. Die Messung ist Bestaetigung: `q3`, `l4` und die sechs gruenen Bauwege.
+- **Determinismus.** Die Aenderung ersetzt einen Mustervergleich durch zwei
+  Zeichenkettenvergleiche -- kein Gleitkomma, keine ungeordnete Menge, keine Zeit, keine
+  Adresse. In beiden Profilen und an beiden Baeumen sind die Riegelzeilen zeichengleich.
+- **Ueberschreitung des Zuschnitts.** Sperrliste, Eigenschaftenliste, Warnsatzmeldung
+  und Zielzahlen sind unberuehrt. Ausserhalb der Kommentare stehen neun entfernte gegen
+  drei neue Zeilen, und keine andere Stelle.
+
+## Zwei Belege fuer den Projektmanager, kein eigenes Paket
+
+1. **Der Ausschlusssatz in `0103` steht noch und ist jetzt widerlegt.** Dort steht unter
+   "Was nicht dazugehoert", die zwei Endungstests der Nullabhaengigkeitspruefung laesen
+   nur Zieleigenschaften und seien dort richtig. Meine Messungen oben widerlegen das an
+   vier Eigenschaften. Der Bauagent hat den Punkt selbst gemeldet; dies ist der zweite
+   Beleg und gehoert deshalb in diesen Befund und nicht in ein zweites Paket. Nach dem
+   Muster der Berichtigungen in `0108` waere die Behandlung ein datierter
+   Berichtigungsabsatz an Ort und Stelle, kein Streichen (Hausregel 3).
+2. **Der Ablageort der Messbaeume traegt nicht mehr.** Das Wegwerfverzeichnis ist auf
+   dieser Maschine ein tmpfs von 7,8 GB und stand zu Beginn dieser Pruefung bei
+   **100 Prozent** belegt; die Wegwerf-Baeume aller frueheren Laeufe liegen noch dort,
+   und wegraeumen darf sie kein Agent (Hausregel 3). Das erste Auspacken eines
+   Vergleichsbaums brach mit "No space left on device" mitten im Lauf ab, und auch die
+   Ausgabe des Werkzeugs selbst scheiterte daran. **Laut, nicht still** -- eine falsche
+   gruene oder rote Messung habe ich dadurch nicht gesehen, und deshalb schreibe ich
+   dafuer kein Paket, das eine stille Fehlmessung behaupten wuerde. Der Ausweg war Rang 2
+   der Staffelung: Alle Vollbaum-Messungen liegen unter `befunde/bau-pruefung-0108/`
+   (durch das Muster fuer Messbaeume nicht versioniert, auf der 951-GB-Platte), und das
+   Wegwerfverzeichnis war fuer die aufgerufenen Fremdskripte dorthin gesetzt. Ob Rang 1
+   der Staffelung kuenftig `befunde/bau-*/` statt des tmpfs heisst, entscheidet der
+   Projektmanager -- oder, weil es alle Vorhaben betrifft, der Verbesserer.
+
+## Nachweisort
+
+- Vollbaum-Messungen und Protokolle: `befunde/bau-pruefung-0108/` mit `repo-vorher/`,
+  `repo-nachher/`, dem Treiber `bauwege.py`, `bauwege-vorher.log`, `bauwege-nachher.log`,
+  `wk-vorher.cmake`, `tmp-vorher/`, `tmp-nachher/`, `tmp-endungsfalle/`.
+- Die elf Wegwerf-Baeume zu Bedingung 1 und 2 und das erzeugende Skript liegen im
+  Wegwerfverzeichnis unter `pruef-0108/` (`messung.py`, `wk-vorher.cmake`,
+  `wk-nachher.cmake`), also ausserhalb des Repos und nicht dauerhaft. Das Skript erzeugt
+  seinen Vergleichsstand aus dem Text von `HEAD` und ist ohne diese Ablage wiederholbar.
