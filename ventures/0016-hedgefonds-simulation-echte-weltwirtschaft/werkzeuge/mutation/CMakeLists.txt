@@ -81,6 +81,15 @@ endif()
 #
 # `USES_TERMINAL` gibt ihm die Ausgabe ungepuffert -- ein Lauf ueber Minuten, dessen
 # Zwischenstand erst am Ende erscheint, sieht bis dahin wie ein Haenger aus.
+#
+# Was diese Entscheidung kostet, gemessen und nicht befuerchtet: Beim Alleinbau meldet
+# `ctest` hier `No tests were found!!!` und gibt trotzdem Code 0 zurueck; der
+# Uebersetzungsbericht fuehrt dieses Verzeichnis damit als `ok`. Das ist dieselbe Zeile,
+# an der der Belegstellenriegel am 2026-09-04 einen echten Fehler verdeckt hat -- dort
+# fehlte der `PROJECT_IS_TOP_LEVEL`-Block, hier ist die Testlosigkeit gewollt. Der
+# Unterschied steht deshalb hier ausgeschrieben, damit ein Pruefer die gleiche Zeile
+# nicht fuer denselben Fehler haelt: Dieses Verzeichnis hat einen Riegel, er heisst
+# `mutationslauf`, und er wird gerufen und nicht angemeldet.
 add_custom_target(mutationslauf
   COMMAND mutationstreiber
           ${FABRIK_VORHABEN_WURZEL}

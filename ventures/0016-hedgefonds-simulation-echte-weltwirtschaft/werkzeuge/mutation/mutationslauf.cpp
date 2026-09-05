@@ -887,7 +887,13 @@ std::string erste_rote_zeile(const fs::path& protokoll)
     std::string letzte;
     for (const std::string& zeile : zeilen_zerlegen(*text)) {
         for (const std::string_view marke : ABBRUCHMARKEN) {
-            if (zeile.find(marke) != std::string::npos) return zeile;
+            const std::size_t stelle = zeile.find(marke);
+            // Ab der Marke und nicht ab dem Zeilenanfang: Die Probe schreibt ihren
+            // Fortschritt nach `stdout` und ihre Abbruchmeldung nach `stderr`, und
+            // beides landet in derselben Datei. Wo der Fortschritt ohne Zeilenumbruch
+            // endet, klebt ein Reststueck davor -- gemessen an M20 und Z02 beim ersten
+            // gruenen Lauf.
+            if (stelle != std::string::npos) return zeile.substr(stelle);
         }
         if (!kappen(zeile).empty()) letzte = zeile;
     }
@@ -907,10 +913,22 @@ int bauen(const Umgebung& umgebung, const std::string& ziel, const fs::path& pro
                        protokoll);
 }
 
+/// Die Probe fahren -- ueber `ctest` und nicht ueber den Pfad des Binaerprogramms.
+///
+/// Der Grund: Das Programm liegt je nach Mitglied woanders, und seine Aufrufzeile steht
+/// in der Testanmeldung. Wer den Pfad raet, raet auch die Argumente.
+///
+/// `--no-tests=error` ist der wichtigere Teil dieser Zeile und wurde beim Bau
+/// **gemessen**, nicht vermutet. Ohne den Schalter gibt `ctest` mit einem Muster, auf
+/// das kein Fall passt, Code 0 zurueck -- ein vertippter Probenname liefe damit als
+/// gruen durch, und zwar zuerst im Vorlauf, der genau das ausschliessen soll. Ein
+/// gruener Bericht ueber nichts ist die gefaehrlichste Rueckmeldung, die dieses
+/// Vorhaben kennt; sie steht in `notizen/lehren.md` dreimal.
 int pruefen(const Umgebung& umgebung, const std::string& probe, const fs::path& protokoll)
 {
     return schalenlauf("ctest --test-dir " + schutz(umgebung.baubaum.string()) + " -R "
-                           + schutz("^" + probe + "$") + " --output-on-failure",
+                           + schutz("^" + probe + "$")
+                           + " --no-tests=error --output-on-failure",
                        protokoll);
 }
 

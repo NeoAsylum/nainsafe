@@ -7,9 +7,14 @@ rot, sobald eine Probe aufhoert zu messen, was sie gemessen hat.
 
 ## Das Format
 
-Ein Fall beginnt mit einer Zeile aus zwei Rautenzeichen, danach die Kennung und eine
-Beschreibung. Es folgen die Felder, um vier Leerzeichen eingerueckt, und zwei
-Textbloecke zwischen Tildenzaeunen.
+Ein Fall beginnt mit einer Zeile aus zwei Rautenzeichen und dem Wort `Fall`, danach die
+Kennung und eine Beschreibung. Es folgen die Felder, um vier Leerzeichen eingerueckt,
+und zwei Textbloecke zwischen Tildenzaeunen.
+
+Das Wort ist Pflicht und keine Zierde: Ohne es waere jede Gliederung dieses Dokuments
+ein Fall. Beim ersten Lauf las der Treiber die beiden Prosakopfzeilen hier als Faelle
+mit den Kennungen `Das` und `Woher` -- laut, immerhin, aber ein Format, in dem man
+nicht mehr gliedern darf, ist ein Format, das man umgeht.
 
 | Feld | Bedeutung |
 |---|---|
@@ -41,7 +46,7 @@ Rotnachweis waeren sie Zierde.
 
 ---
 
-## M15 -- die Klassennamen 7 und 8 sind getauscht
+## Fall M15 -- die Klassennamen 7 und 8 sind getauscht
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -56,7 +61,7 @@ Rotnachweis waeren sie Zierde.
 "Personen", "Realindex",
 ~~~
 
-## M16 -- die Klasseneinheiten 8 und 9 sind getauscht
+## Fall M16 -- die Klasseneinheiten 8 und 9 sind getauscht
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -73,7 +78,7 @@ Rotnachweis waeren sie Zierde.
     "Personen",
 ~~~
 
-## M17 -- die Herkunftsnamen 0 und 1 sind getauscht
+## Fall M17 -- die Herkunftsnamen 0 und 1 sind getauscht
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -88,7 +93,7 @@ Rotnachweis waeren sie Zierde.
     "Entwurf", "Datenanker", "Parameter", "Manifest", "Vorgabe",
 ~~~
 
-## M18 -- die Einheit der Klasse 2 wird zu einem Stueckzaehler
+## Fall M18 -- die Einheit der Klasse 2 wird zu einem Stueckzaehler
 
 Der teuerste der siebzehn Faelle. Klasse 2 ist die groesste ueberhaupt -- 71 von 310
 Adressen, jede Wertschoepfung, jeder Kapitalstock, jeder Handelsstrom, der Marktkorb.
@@ -108,7 +113,7 @@ schrieb danach fuer alle 71, ihre Zahl sei ein Stueckzaehler statt eines Betrags
     "Stueck bzw. Runden",
 ~~~
 
-## M19 -- die Spalte Zoll liest den Haushaltsstand
+## Fall M19 -- die Spalte Zoll liest den Haushaltsstand
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -125,7 +130,7 @@ schrieb danach fuer alle 71, ihre Zahl sei ein Stueckzaehler statt eines Betrags
                                                                   InstrumentFeld::Stand)));
 ~~~
 
-## M20 -- die Spalte Zins liest das Aggregat statt des Instrumentenstands
+## Fall M20 -- die Spalte Zins liest das Aggregat statt des Instrumentenstands
 
 Der Fall, um dessentwillen Paket 0097 eine zweite, absichtlich halb gerechnete Belegung
 gebaut hat. In der Grundbelegung tragen beide Adressen dieselbe Zahl, und dann ist diese
@@ -146,7 +151,7 @@ verlorengegangen.
         feld(blatt, " | Zins ", z.lies(zustand::stelle_aggregat(gebiet, Aggregat::Leitzins)));
 ~~~
 
-## M21 -- die Spalte Regulierung faellt weg
+## Fall M21 -- die Spalte Regulierung faellt weg
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -163,7 +168,7 @@ verlorengegangen.
         blatt.text(" | Regulierung -");
 ~~~
 
-## N02 -- die Spalte BIP liest fuer jedes Gebiet das der USA
+## Fall N02 -- die Spalte BIP liest fuer jedes Gebiet das der USA
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -178,7 +183,7 @@ verlorengegangen.
     feld(blatt, " | BIP ", werte::bip(z, Gebiet::US));
 ~~~
 
-## N03 -- die Spalte Zustimmung faellt weg
+## Fall N03 -- die Spalte Zustimmung faellt weg
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -194,7 +199,7 @@ verlorengegangen.
         blatt.text(" | Zustimmung -");
 ~~~
 
-## N04 -- die Spalte Aufsicht liest den Einfluss
+## Fall N04 -- die Spalte Aufsicht liest den Einfluss
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -209,7 +214,7 @@ verlorengegangen.
              z.lies(zustand::stelle_politisch(gebiet, PolitischeGroesse::Einfluss)));
 ~~~
 
-## N05 -- eine der drei Ueberrenditen faellt weg
+## Fall N05 -- eine der drei Ueberrenditen faellt weg
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -224,7 +229,7 @@ verlorengegangen.
     for (std::size_t n = 1; n < UEBERRENDITE_RUNDEN; ++n) {
 ~~~
 
-## N06 -- der Korbwert liest die Marktrendite
+## Fall N06 -- der Korbwert liest die Marktrendite
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -239,7 +244,7 @@ verlorengegangen.
     feld(blatt, "Markt | Korbwert ", z.lies(zustand::stelle_markt(MarktGroesse::Rendite)));
 ~~~
 
-## N07 -- die Kasse liest den Hebelstand
+## Fall N07 -- die Kasse liest den Hebelstand
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -254,7 +259,7 @@ verlorengegangen.
     feld(blatt, " | Kasse ", z.lies(zustand::stelle_fonds(FondsGroesse::Hebelstand)));
 ~~~
 
-## N08 -- der Jahrgang liest den Mandatsstand
+## Fall N08 -- der Jahrgang liest den Mandatsstand
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -269,7 +274,7 @@ verlorengegangen.
     feld(blatt, " | Jahrgang ", z.lies(zustand::stelle_partie(PartieFeld::Mandatsstand)));
 ~~~
 
-## N09 -- die gedruckte Sektornummer der Weltpreise ist um eins verschoben
+## Fall N09 -- die gedruckte Sektornummer der Weltpreise ist um eins verschoben
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -284,7 +289,7 @@ verlorengegangen.
         blatt.zahl(static_cast<i64>(s) + 1);
 ~~~
 
-## N10 -- die Einheit der Klasse 13 ist verstellt
+## Fall N10 -- die Einheit der Klasse 13 ist verstellt
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -299,7 +304,7 @@ verlorengegangen.
     "Milli-Stunden",
 ~~~
 
-## N11 -- die Kopfzeile der Detailebene ist eine andere
+## Fall N11 -- die Kopfzeile der Detailebene ist eine andere
 
     quelle:  kern/src/zustandsausgabe.cpp
     objekt:  kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
@@ -314,7 +319,7 @@ verlorengegangen.
     blatt.text("Detailebene -- Bereich ");
 ~~~
 
-## Z01 -- die Kopfzeile der Uebersichtsebene ist eine andere
+## Fall Z01 -- die Kopfzeile der Uebersichtsebene ist eine andere
 
 Nicht aus den siebzehn. Die Zusicherung auf diese Kopfzeile ist in Paket 0097 neu
 dazugekommen und braucht ihren eigenen Rotnachweis.
@@ -332,7 +337,7 @@ dazugekommen und braucht ihren eigenen Rotnachweis.
     blatt.text("Uebersichtsebene -- jede Zahl in der Skala ihrer Klasse, "
 ~~~
 
-## Z02 -- die Kopfzeile der Unterschiedsebene ist eine andere
+## Fall Z02 -- die Kopfzeile der Unterschiedsebene ist eine andere
 
 Wie `Z01`: neu in Paket 0097, deshalb hier.
 
