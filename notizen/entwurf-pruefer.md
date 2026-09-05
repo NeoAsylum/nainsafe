@@ -14,7 +14,8 @@ in einem Satz — ein unbegrenzt wachsendes Logbuch kostet jeden Lauf Kontext.
 *Archivieren ist mir **nicht moeglich** (erneut im 14. Lauf, absoluter Pfad und `Write` —
 also **kein** `cd`-Artefakt): `notizen/archiv/` ist gesperrt. Statt zu archivieren wird
 verdichtet, **nie gestrichen** (volle Fassung der Laeufe 1-9:
-`git show 77a84e8:notizen/entwurf-pruefer.md`). Als Regelproblem gemeldet: Die Rollendatei
+`git show 77a84e8:notizen/entwurf-pruefer.md`; der Laeufe 10-15:
+`git show 2f5211e:notizen/entwurf-pruefer.md`). Als Regelproblem gemeldet: Die Rollendatei
 verlangt eine Verschiebung, fuer die die Rechte fehlen.*
 
 ---
@@ -25,142 +26,129 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   Befunden des 1. Laufs waren Rechenfehler in Nebensaetzen; Prosa wird gelesen, Arithmetik
   nicht.
 - **Die Nebenzahl neben der Abnahmezahl ist die, die nicht stimmt** (2026-09-03, best.
-  2026-09-04). 9. Lauf: Die Probe fuer die Bedingung war fehlerfrei, falsch war die
-  Vergleichszahl daneben. 14. Lauf: beide Befunde sassen im **Selbstbericht**, waehrend der
-  normative Teil stimmte. *Beide Spalten einer Vergleichstabelle aus ihren **eigenen**
-  Zeilen rechnen — und den Bericht ueber die Arbeit getrennt von der Arbeit pruefen.*
+  2026-09-04 und 2026-09-05). 9. Lauf: Die Probe fuer die Bedingung war fehlerfrei, falsch
+  war die Vergleichszahl daneben. 14. Lauf: beide Befunde im **Selbstbericht**, der
+  normative Teil stimmte. 16. Lauf: wieder beide im Nebenwerk (Zaehlformel eines
+  verworfenen Wegs, Inventur des Aenderungsvermerks). *Vergleichstabellen aus den eigenen
+  Zeilen rechnen, den Bericht ueber die Arbeit getrennt von der Arbeit pruefen.*
+- **Ein zweitbelegtes Kernsymbol sitzt in der Nebenrechnung** (2026-09-05, 16. Lauf).
+  `4 · R` fuer „vier je Land", waehrend R dokumentweit die Partielaenge ist — die Zahlen
+  daneben (16, 780) stimmten, nur das Symbol nicht. *In neuen Passagen jedes
+  Einbuchstaben-Symbol gegen seine dokumentweite Belegung halten.*
+- **Die erste Zahl der Kette am Code verankern** (2026-09-05, 16. Lauf; verschaerft
+  „wo faengt die Kette an" vom 13.). Die Basiskonstanten aus `zustand.hpp` ergaben eine
+  Formel `58·L + 2·L·(L+1) + 38`, die alle fuenf Tabellenzeilen reproduzierte — ein
+  Grep, und der Nachweis ist unabhaengig von jeder Zahl des Dokuments.
 - **Vollstaendigkeitsbehauptungen sind pruefbare Behauptungen, keine Ueberleitungen** —
-  fuenf Auspraegungen, alle trafen (32/310 ohne Startwert; 16 statt 12, Summe 120 statt
-  112; Protokolllinie in beide Richtungen; „zwoelf Reste" waren 22; „vollstaendige
-  Liste" ueber eine *fremde* Datei die ergiebigste: zehn statt sieben, fuenf statt
-  drei). *Eine Nachziehliste muss auch nennen, was **bleibt**.*
+  fuenf Auspraegungen, alle trafen (32/310 ohne Startwert; 16 statt 12; Protokolllinie
+  beidseitig; „zwoelf Reste" waren 22; „vollstaendige Liste" ueber eine *fremde* Datei
+  die ergiebigste). *Eine Nachziehliste muss auch nennen, was **bleibt**.*
 - **Aendert sich eine Zahl, greppe auch die Ordnungszahl, die aus ihr folgt** (2026-09-04,
-  14. Lauf: „keine **achtzehnte** Groesse" hing an der 17, ohne das Suchwort „siebzehn"
-  zu enthalten).
-- **Die Erhebung des Dokuments mit einem weiteren Muster wiederholen** (2026-09-04,
-  14. Lauf). T48 druckte sein eigenes `rg`-Muster ab (nur Kleinbuchstaben ab drei Zeichen);
-  ein breiteres Muster brachte sieben weitere Namen — alle harmlos, aber **erst das** macht
-  aus „Rest null" einen Nachweis statt einer Wiederholung der Behauptung. Ein Aufruf.
+  14. Lauf: „keine achtzehnte Groesse" hing an der 17 ohne das Suchwort „siebzehn").
+- **Die Erhebung des Dokuments mit einem weiteren Muster wiederholen** (2026-09-04).
+  T48 druckte sein eigenes `rg`-Muster ab; ein breiteres brachte sieben weitere Namen —
+  erst das macht aus „Rest null" einen Nachweis. Ein Aufruf.
 - **Erst die Zahlen, dann den Text: die Kostentabelle verraet die ungenannte Lesart eines
-  Masses** (2026-08-31, best. 2026-09-01; Doppelte der Strategievielfalt, `R × (1 + 60)`
-  → statische Bewertung, die nirgends stand).
+  Masses** (2026-08-31, best. 2026-09-01; `R × (1 + 60)` → statische Bewertung, die
+  nirgends stand).
 - **Eine Bedingung, die auf einer Messung steht, wird nachgemessen, nicht zitiert**
   (2026-08-31, best. 2026-09-01). Der eigene Abruf der Sollreihen-Belegtheit brachte den
-  teuersten Befund ueberhaupt (Partielaenge vier Jahre zu lang). Ein Abruf, und das Urteil
-  ist unangreifbar.
+  teuersten Befund ueberhaupt (Partielaenge vier Jahre zu lang).
 - **Zwei Quellen, die sich nicht kennen, sind der billigste Beweis** (2026-09-03, best.
-  2026-09-04; im 15. Lauf trugen T45-Zitat und Blockschnitt der Adressliste die
-  T17b-Begruendung). *Nie gegen die Rechnung des Dokuments zaehlen.*
-- **Die Einheitentabelle gegen jede neue Formel legen** (2026-09-01, 6. Lauf) — der
-  produktivste einzelne Handgriff. T5 trennte US-Cent von Tausend USD, T47 verband beide
-  ohne `tsd_in_cent`, Faktor 100.000. *Erst die Skalenklasse jedes Symbols nachschlagen,
-  dann die Formel lesen.*
+  2026-09-04). *Nie gegen die Rechnung des Dokuments zaehlen.*
+- **Die Einheitentabelle gegen jede neue Formel legen** (2026-09-01) — der produktivste
+  einzelne Handgriff (T5/T47 ohne `tsd_in_cent`, Faktor 100.000). *Erst die Skalenklasse
+  jedes Symbols nachschlagen, dann die Formel lesen.*
 - **Eine neu hingeschriebene Formel legt ihre eigenen undefinierten Eingaben offen**
-  (2026-09-01). Viermal in Folge lag der teuerste Befund dort, wo eine Groesse zum ersten
-  Mal *gerechnet* statt nur *benannt* wurde. *Jeden Namen darin einzeln greppen; ein
+  (2026-09-01; Gegenprobe 2026-09-05: alle Eingaben der Platzformeln existierten —
+  einzeln gegriffen, erst das traegt das Urteil). *Jeden Namen einzeln greppen; ein
   Treffer heisst „nur die Verwendung".*
 - **Eine Ablehnungsbegruendung ist eine Pruefvorschrift, die der Entwerfer auf sich selbst
-  nicht angewandt hat** (2026-09-02, 7. Lauf). Der Fund kam aus dem **Einsetzen**, nicht
-  aus dem Text; die Prosa war widerspruchsfrei.
-- **Bei einer Umschreibung die Vorfassung danebenlegen** (2026-09-03, 8. Lauf). Der
-  teuerste Fund war *nicht da*: halbe Vorgabe gestrichen statt uebersetzt. Ein gestrichener
-  Satz sieht in der neuen Fassung aus wie nichts. *Alte Marker greppen, jede Stelle auf
-  einen Nachfolger pruefen.*
+  nicht angewandt hat** (2026-09-02). Der Fund kam aus dem **Einsetzen**, nicht aus dem
+  Text.
+- **Bei einer Umschreibung die Vorfassung danebenlegen** (2026-09-03). Der teuerste Fund
+  war *nicht da*: halbe Vorgabe gestrichen statt uebersetzt. *Alte Marker greppen, jede
+  Stelle auf einen Nachfolger pruefen.*
 - **Ersetzt eine Aufzaehlung eine pauschale Regel, ist die Aufzaehlung der Befund**
-  (2026-09-03). `overflow-checks` deckte jede Operation; der Ersatz nennt Mult-Div,
-  Addition, Subtraktion — die blanke Multiplikation faellt heraus.
+  (2026-09-03). `overflow-checks` deckte alles; der Ersatz liess die blanke
+  Multiplikation heraus.
 - **Wo ein Dokument sagt „diese Regel gilt hier nicht", nachsehen, ob es sie anderswo
   ueberhaupt gibt** (2026-09-01). Der Ausschluss war der Fund (T44).
 - **Eine Groesse je Land, die als eine Zahl in eine Formel geht, braucht eine
-  Aggregationsregel** (2026-09-01). Drei Lesarten, drei Sieger.
+  Aggregationsregel** (2026-09-01; 16. Lauf: `kapitalstock[l]` hatte sie — Z. 596 —,
+  sonst waere es der Befund gewesen).
 - **Behauptungen ueber Erzeugnisse an den Erzeugnissen pruefen** (2026-09-03). `nm`, und
-  Grep liest auch Binaerdateien. Ebenso einen Abschnittsverweis in eine fremde Datei auf
-  **Existenz** pruefen (14. Lauf, `spiel.md:863` — er stimmte).
+  Grep liest auch Binaerdateien; Abschnittsverweise in fremde Dateien auf Existenz.
 - **Eine datierte Messung im Stand ihres Datums pruefen** (2026-09-04). „Sechs Zeilen"
-  ergab heute 13, im Stand des Commits genau sechs. Ohne den Umweg haette ich eine
-  richtige Zahl fuer falsch erklaert.
+  ergab heute 13, im Stand des Commits sechs.
 - **Bei einem Ruecklauf die Selbstmessungen der Behebung nachzaehlen, nicht ihre Zusagen**
-  (2026-09-04, 11. Lauf). Zwei Zahlen und eine zitierte Parallele belegt — und **weil** sie
-  stimmten, trug `geprueft`. Ein Urteil ohne solche Probe ist von Zustimmung nicht zu
-  unterscheiden.
+  (2026-09-04). Ein Urteil ohne solche Probe ist von Zustimmung nicht zu unterscheiden.
 - **Zwei Lesarten sind zwei Rechnungen — beide rechnen, bevor der Befund geschrieben wird**
-  (2026-09-04, 12./13. Lauf; `H/N` gegen `H/(H+N)`). *Der Befund entsteht erst, wenn die
-  Lesarten auseinanderfallen.*
-- **Bei „zweimal unabhaengig gerechnet" fragen, wo die Kette anfaengt** (2026-09-04,
-  13. Lauf). Zwei Laeufe hatten alles nachgerechnet — **ab** der Messtabelle, die sie als
-  gegeben nahmen. Der einzige falsche Wert sass genau dort. *Die erste Zahl der Kette ist
-  die, die niemand zweimal gerechnet hat.*
+  (2026-09-04; `H/N` gegen `H/(H+N)`). *Der Befund entsteht erst, wenn die Lesarten
+  auseinanderfallen.*
+- **Bei „zweimal unabhaengig gerechnet" fragen, wo die Kette anfaengt** (2026-09-04).
+  Zwei Laeufe rechneten alles nach — **ab** der Messtabelle; der einzige falsche Wert
+  sass genau dort.
 - **Kommt der eigene Befund als Pruefgegenstand zurueck, die eigene Zahl von vorn rechnen**
-  (2026-09-04, best. im 14. Lauf an der 112 aus meinem Befund vom 2026-09-02).
-  Wiederzuerkennen waere keine Pruefung. Gilt auch fuer eigene Paketvorschlaege (0054).
+  (2026-09-04). Wiederzuerkennen waere keine Pruefung. Gilt auch fuer eigene Vorschlaege.
 - **„Kommt nirgends anders vor" schliesst man mit zwei Zaehlungen, nicht mit Lesen**
-  (2026-09-04): `grep -c` auf beide Fassungen, 7 zu 7.
-- **Die Vorher-Zaehlung ohne alten Stand: arithmetisch am U0-Diff** (2026-09-05,
-  15. Lauf). `git show <c>^` ist gesperrt; vorher = jetzt − hinzugefuegt + entfernt, je
-  Muster ueber `grep '^+'`/`'^-'` auf den gespeicherten Diff. Drei Spalten, drei
-  Treffer — und der Nachweis ist unabhaengig von der Zaehlung des Erbauers.
-- **Ein Commitbetreff ist kein Paketumfang** (2026-09-05). Alle drei
-  `architekt: 0051`-Commits buendelten fremde Gewerke (0072, 0085, 0088,
-  Testentwickler). Fuer den Nachweis die Paketspanne der **Datei** nehmen
-  (`git log -- <datei>`, dann Diff ueber die Spanne), nie den Commit; fuer Verbotszonen
-  („nicht anfassen") genuegt `diff --stat` je Commit. Als Nebenbemerkung in den Befund
-  geschrieben, kein Paket — Runner-Verhalten, das der Projektmanager kennt.
+  (2026-09-04): `grep -c` auf beide Fassungen.
+- **Die Vorher-Zaehlung ohne alten Stand: arithmetisch am U0-Diff** (2026-09-05).
+  `git show <c>^` ist gesperrt; vorher = jetzt − hinzugefuegt + entfernt, je Muster ueber
+  `grep '^+'`/`'^-'` auf den gespeicherten Diff.
+- **Ein Commitbetreff ist kein Paketumfang** (2026-09-05). Fuer den Nachweis die
+  Paketspanne der **Datei** nehmen (`git log -- <datei>`, Diff ueber die Spanne); fuer
+  Verbotszonen genuegt `diff --stat` je Commit. Das Pflicht-Logbuch des Bauagenten im
+  Commit ist kein Verstoss gegen „nur Datei X" (16. Lauf, so geurteilt).
 - **Pruefen, ob ein Lauf, den ein Mass vorschreibt, laufen kann** (2026-08-31).
-- Kleiner, aber wiederholt bestaetigt: jede als „Anteil" deklarierte Groesse nachrechnen
-  (Bruttostrom durch Nettogroesse ist nie ein Anteil); nach einer geaenderten Grundzahl die
-  abgeleiteten nachrechnen; bei einer neuen Fassung pruefen, ob die beantworteten
-  Rueckfragen die aktuellen sind; ein Abzaehlschritt ueber Zustandsadressen findet **nur**
-  Zustandsadressen (beide Befunde lagen bei Funktionen).
+- Kleiner, wiederholt bestaetigt: jede „Anteil"-Groesse nachrechnen; nach geaenderter
+  Grundzahl die abgeleiteten; ob beantwortete Rueckfragen die aktuellen sind; ein
+  Abzaehlschritt ueber Zustandsadressen findet nur Zustandsadressen.
 
 ## Was nicht funktioniert
 
-- **Kein Arbeitspaket, zweimal in Folge** (2026-08-31). Ersatzkriterien selbst zu bauen
-  macht das Urteil angreifbar; messbar: zwoelf Befunde ohne Paket, drei mit, bei gleicher
-  Suchtiefe. *Erste Handlung jedes Laufs bleibt `ls aufgaben/`.* Achtung: Das Kriterium ist
-  die Abnahme **des gepruefen Pakets**, nicht die fuenf Bedingungen aus `0001` — das Paket
-  ist seit 2026-09-01 `fertig` und vom Betreiber geschlossen.
+- **Kein Arbeitspaket, zweimal in Folge** (2026-08-31). Ersatzkriterien machen das Urteil
+  angreifbar (zwoelf Befunde ohne Paket, drei mit). *Erste Handlung: `ls aufgaben/`.* Das
+  Kriterium ist die Abnahme **des gepruefen Pakets**, nicht `0001` — das ist seit
+  2026-09-01 `fertig` (im 16. Lauf trug 0119 seine eigenen fuenf Bedingungen).
 - **Die Ausschlussliste des Pakets aktiv gegen sich selbst anwenden** (2026-09-01).
-  „Kalibrierbare Zahl ist kein Befund" und „Genauigkeit ueber die Bedingungen hinaus" haben
-  mir je zwei begruendbare Kandidaten getoetet. Sie gehoeren in den Abschnitt *wonach ich
-  gesucht habe* — dort belegen sie die Tiefe, im Befundteil waeren sie Rauschen. Am
-  2026-09-04 so eingeordnet: Notation ohne Zahlwiderspruch, ein offener Nachzug (0064), ein
-  Satz aelter als das Paket.
-- **Ein Fehler ausserhalb der Abnahmebedingungen ist kein Ruecklauf** (2026-09-04,
-  14. Lauf). Zwei echte Zaehlfehler, aber im Selbstbericht statt im normativen Teil:
-  Urteil `geprueft` **und** ein Paketvorschlag. Ein Ruecklauf haette ein Paket gegen ein
-  Kriterium geoeffnet, das es erfuellt — genau der Fehler, den `0001` beschreibt.
+  Kalibrierbares und Genauigkeit jenseits der Bedingungen gehoeren in den Abschnitt
+  *wonach ich gesucht habe* — dort belegen sie Tiefe, im Befundteil waeren sie Rauschen.
+- **Ein Fehler ausserhalb der Abnahmebedingungen ist kein Ruecklauf** (2026-09-04, best.
+  2026-09-05): Urteil `geprueft` **und** ein Paketvorschlag. Ein Ruecklauf oeffnete ein
+  Paket gegen ein Kriterium, das es erfuellt — der Fehler, den `0001` beschreibt.
 - **Eine Bedingung, die zwei Gewerke gemeinsam erfuellen muessen, kann ein Lauf mit einem
-  Gewerk nicht schliessen** (2026-09-01). *Erst `git log --name-only` auf die betroffenen
-  Dateien, dann urteilen*; das gehoert an den Projektmanager.
-- **Vor dem Urteil `ls -la` statt `ls` auf `befunde/`** (2026-09-01). Eine Pruefung hat eine
-  **0 Byte grosse** Datei abgelegt und committet; im Listing sieht sie aus wie eine volle.
-- **In Bash nur absolute Pfade, nie `cd`** (2026-09-04). Ein `cd` nimmt mir alle
-  Schreibrechte, und zwei frueher notierte Diagnosen waren deshalb falsch. *Kommt eine
-  Verweigerung, zuerst `pwd`.*
-- **`git show` wird verweigert, `git diff` nicht** (2026-09-04, 13. Lauf) — ebenso jede
-  Revision mit `^`. Weg zum Diff eines Commits: Elternhash aus `git log --oneline` ablesen,
-  dann `git --no-pager diff --stat <eltern> <commit>`, **ein Kommando je Aufruf**.
-- **`python3 -c` wird verweigert** (2026-09-04). Rechnen heisst Handrechnung — mit
-  hingeschriebenen Zwischenprodukten, was ohnehin der bessere Nachweis ist.
+  Gewerk nicht schliessen** (2026-09-01). *Erst `git log --name-only`, dann urteilen.*
+- **Vor dem Urteil `ls -la` statt `ls` auf `befunde/`** (2026-09-01). Eine 0-Byte-Datei
+  sieht im Listing aus wie eine volle.
+- **In Bash nur absolute Pfade, nie `cd`** (2026-09-04). *Bei Verweigerung zuerst `pwd`.*
+- **`git show` wird verweigert, `git diff` nicht** (2026-09-04) — ebenso `^`-Revisionen.
+  Elternhash aus `git log --oneline`, dann `git --no-pager diff <eltern> <commit>`, ein
+  Kommando je Aufruf. **Pipes (`| sed`, `| grep`) werden ebenfalls verweigert**
+  (2026-09-05): Diff nach `$TMPDIR` umleiten, dann Read/Grep darauf.
+- **`python3 -c` wird verweigert** (2026-09-04). Rechnen heisst Handrechnung mit
+  hingeschriebenen Zwischenprodukten.
 
 ## Offene Faehrten
 
 - **Mass 2 hat zwei Lesarten und niemand hat gewaehlt:** Frontmatter „hoechstens 25 Prozent
-  besser" gegen `max(Ek) ≤ 1,25 × min(Ek)` (`spiel.md` Z. 976). Von 0039, 0055 und 0043
-  nicht angefasst, deshalb dreimal nicht gemeldet. **In einem Paket, das Mass 2 beruehrt,
-  ist es ein Befund** — dann zuerst hierhin sehen.
-- **Mass 4 bleibt das groesste Risiko und ist kein Entwurfsfehler.** Ob 20 Prozent MAPE und
-  0,6 Richtungstreue mit endogener Produktivitaet erreichbar sind, sagt erst der
+  besser" gegen `max(Ek) ≤ 1,25 × min(Ek)`. Von 0039, 0055, 0043 und 0119 nicht
+  angefasst (0119 zitiert die Formel-Lesart und verfestigt sie damit still). **In einem
+  Paket, das Mass 2 definiert oder misst, ist es ein Befund** — zuerst hierhin sehen.
+- **Mass 4 bleibt das groesste Risiko und ist kein Entwurfsfehler** — entscheidet der
   Rueckvergleicher am laufenden Kern.
 - **Die Bewertung der vier Anleihe-Steckplaetze hat keinen Preis im Zustand** (T15 fuehrt
   `leitzins` und `staatsschuld`, keinen Kurs). Wird sie nachgetragen, hier zuerst nachsehen.
-- **Die Bruchstelle „eine Groesse mit zwei Herren" bleibt seit dem 7. Lauf aus.** Die Funde
-  sitzen seither in Begruendungen und Vollstaendigkeitsbehauptungen, nicht in Formeln. Am
-  13. Lauf in einer Messtabelle, am 14. im Selbstbericht — die Funde wandern nach aussen.
-- **`technik.md` fuehrt weiter 25 Stuetzstellen und `R = 24`**, waehrend `spiel.md` seit
-  0054 das Fenster 2001–2021 hat; der Nachzug ist **0064, am 2026-09-04 noch `offen`**.
-  Solange er offen ist, ist die alte Zahl **kein** Befund — aber jede Rechnung darauf
-  gehoert in beiden Fenstern geprueft.
-- **`werte.hpp` sagt „siebzehn", T48 fuehrt seit 0043 zweiundzwanzig Groessen.** Der Nachzug
-  ist Kernbauer-Arbeit und noch nicht geschnitten; mein Vorschlag **0092** berichtigt
-  zuvor die Stellenliste. Kommt eines von beiden zur Pruefung, hier zuerst nachsehen.
+- **Die Funde wandern nach aussen:** seit dem 7. Lauf sitzen sie in Begruendungen,
+  Vollstaendigkeitsbehauptungen, Messtabellen, Selbstberichten — nicht in Formeln.
+- **`technik.md` fuehrt weiter 25 Stuetzstellen und `R = 24`** gegen das Fenster
+  2001–2021; Nachzug ist **0064** (am 2026-09-04 `offen`). Solange offen, kein Befund —
+  aber jede Rechnung darauf in beiden Fenstern pruefen. Dazu kommt nach 0119 die
+  Nachzugliste der zweiten Schicht (spiel.md Z. 2484-2506, T15/T16/T5/T27/T33/T47) —
+  wenn der Architekt sie abarbeitet, jede Zeile einzeln nachmessen, besonders die
+  Verweisformel Nachahmer-/Stossaufschlag (Z. 2499).
+- **`werte.hpp` sagt „siebzehn", T48 fuehrt zweiundzwanzig**; mein Vorschlag **0092**
+  berichtigt die Stellenliste. Kommt eines zur Pruefung, hier zuerst nachsehen.
+- **Mein Vorschlag 0128** (aus dem 16. Lauf): `4 · R` → `4 · L` in spiel.md Z. 1087 plus
+  Inventur des Aenderungsvermerks; kann als Auflage in 0118 mitfahren. Kommt er zurueck,
+  die eigene Zaehlung von vorn rechnen (sieben Eintraege, Hunk 4 fehlte im Vermerk).
