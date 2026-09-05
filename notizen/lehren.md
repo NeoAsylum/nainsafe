@@ -563,3 +563,30 @@ was erlaubt ist.
   Zustand. Die Fabrik hatte für „ein Lauf ging schief" eine Behandlung — weiterlaufen, die
   anderen Agenten haben damit nichts zu tun — und für „es geht gerade gar nichts" keine.
   Beides sieht an der Rückgabe gleich aus.
+
+- **2026-09-05** — **Der Wecker stand im Schlafzimmer.** Der stündliche Tageslauf steht in
+  der crontab *innerhalb* von WSL. Fährt die VM herunter, kann cron sich nicht selbst
+  wecken — der ganze Nachholmechanismus vom 2026-09-03 hat einen blinden Fleck genau
+  dort, wo er am nötigsten wäre. Gegen 20:20 ist die VM verschwunden; beim nächsten
+  Zugriff meldete `uptime` **0 Minuten**, ein Lauf hing seit 20:02 auf `laeuft`, und die
+  Fabrik hatte 74 Minuten nichts getan.
+
+  **Das Vorzeichen habe ich abgetan.** Um 20:16 scheiterte ein Aufruf mit
+  `Wsl/0x8007000e` („nicht genügend Speicherressourcen"). Ich habe nachgesehen, 15 GB
+  frei *innerhalb* von WSL gefunden und dem Betreiber geschrieben, das sei „die
+  Windows-Seite, nicht die Fabrik" — richtig gemessen, falsch geschlossen. Der Druck auf
+  der Windows-Seite war die Ursache, nicht ein Nebenumstand. *Eine Fehlermeldung, deren
+  Ursache man außerhalb des eigenen Systems verortet, ist nicht erledigt, sondern
+  unzuständig abgelegt.*
+
+  *Folgerung:* `einrichtung/fabrik-anker.cmd`, aufgerufen von der Windows-Aufgabenplanung,
+  stündlich. `wsl.exe` startet die VM, falls sie aus ist. Den Takt gibt es damit zweimal —
+  in der crontab und in der Aufgabenplanung —, und das ist Absicht: Der eine läuft,
+  solange die VM lebt, der andere weckt sie. Beide prallen an derselben Sperre ab, was
+  end-to-end nachgewiesen ist (`LastTaskResult 0`, im Protokoll „Ein Tageslauf laeuft
+  bereits").
+
+  **Die Grenze der Lösung gehört dazu:** Der Anker hält die VM nicht am Leben, er weckt
+  sie nur stündlich. Bis zu eine Stunde Arbeit kann weiter ausfallen. Und `pruefen.sh`
+  kann ihn **nicht** mitprüfen — es läuft in WSL, `/mnt/c` ist abgeklemmt. Die
+  Aufgabenplanung ist der einzige Teil des Takts, den nur der Betreiber kontrollieren kann.
