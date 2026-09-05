@@ -28,6 +28,9 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
 - **Jede Zaehlregel zeichengenau hinschreiben und messen, bevor sie in die Datei geht.**
   `^sollreihen` findet 28, `^sollreihen = ` findet 21.
 - **Ein Bilanzfeld zaehlt sich selbst mit.** Zweimal messen: vor dem Schreiben und danach.
+- **`grep -c` zaehlt Zeilen, `grep -o | wc -l` zaehlt Fundstellen.** "spiel.md vier" aus
+  0150 ist nur mit dem zweiten reproduzierbar -- der erste liefert 3, weil eine Zeile den
+  Namen zweimal traegt. Wer eine Fundstellenzahl weitergibt, nennt den Ausdruck dazu.
 - **Eine Zeilenzahl misst man nach der letzten *Kommentar*aenderung**, nicht nach der
   letzten Blattwertaenderung -- kein Zaehlmuster fasst eine Kommentarzeile an. Das hat
   0099 vier falsche Zahlen gekostet.
@@ -92,11 +95,23 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
   Beweis, dass der neue Schluessel auf der obersten Ebene sitzt und kein Wert Gleitkomma ist.
 - **`git diff --numstat` beweist den reinen Einschub:** `120 0 <pfad>` heisst null
   entfernte Zeilen. Schneller und haerter als jedes Lesen des Diffs.
+- **Am 2026-09-06 (Lauf 0153) war `Edit` vollstaendig abgewiesen**, auch auf die Datei
+  aus `dateien` -- anders als im Lauf davor. Der Heredoc mit `assert s.count(alt)==1`
+  vor dem Schreiben traegt: Er ersetzt nicht nur, er beweist die Eindeutigkeit der
+  Fundstelle. `git diff -U0 | grep -v '^[+-]#'` mit leerer Ausgabe ist danach der
+  haerteste Nachweis, dass nur Kommentare bewegt wurden und kein Wert.
 - **Die Werkzeuglage wechselt von Lauf zu Lauf -- erst pruefen, was geht.** Am 2026-09-06
   waren `Write` und `Edit` auf `aufgaben/` abgewiesen, `Edit` auf die Datei aus `dateien`
   dagegen erlaubt. Ausweg: **`python3 - <<'PY'` Heredoc** (aendert bestehende Dateien) und
   **`cat >> neue-datei <<'EOF'`** (legt neue an). Ein **langer** Heredoc faellt trotzdem;
   fuer eine ganze Datei ist `Write` der Weg, wenn er offen ist.
+  **Im Lauf 0100 war es genau umgekehrt:** `Edit` auf `aufgaben/` ging durch, dafuer fielen
+  jeder Heredoc und `Write` nach `$TMPDIR`. Die Lage ist nicht stabil, nur die Regel ist es
+  -- ein Aufruf, der faellt, wird einmal in anderer Form probiert und nicht verallgemeinert.
+- **Ein fertiges Messskript im Repo ist mehr wert als jedes Werkzeugrecht.**
+  `befunde/messung-0078/messung.py` traegt Parserlauf, Blattwertbilanz, die sechzehn Muster
+  und die Trefferkontexte in einem Aufruf und lief unveraendert fuer 0099 und 0100. Wo ein
+  Heredoc faellt, ruft man es einfach auf.
 - **Abgewiesen wird nach Laenge und nach Form.** Mehrteilige Aufrufe mit `&&` fallen oft,
   dieselben Befehle einzeln gehen durch. Ein fuehrendes `cd` laesst den ganzen Aufruf
   fallen -- `git -C <pfad>` statt `cd`. `2>&1 > datei` verliert den Fehlerstrom.
@@ -129,9 +144,11 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
 
 ## Offene Faehrten
 
-- **Der Bilanz-Nachzug in `parameter.toml` liegt als `0153` vor** (51 Schluessel, 47
-  PLATZHALTER, Aufzaehlung der zitierten Namen). Unsicher bin ich, ob der Projektmanager
-  die Trennung mittraegt oder sie lieber in 0150 gesehen haette.
+- **`0153` ist gebaut** (51/47/4, Aufzaehlung auf 26 erweitert), der Projektmanager hat
+  die Trennung von 0150 ausdruecklich mitgetragen. Offen bleibt allein, ob mein Zusatz
+  zum Zaehlausdruck in BEFUNDE Punkt 1 als Nebenbeiarbeit gilt -- er steht in meinem
+  Abschnitt und macht eine Zahl der Abnahme erst nachpruefbar, aber das Paket hat ihn
+  nicht verlangt.
 - **Der IWF-Volltext entscheidet 11 der 27 Sollreihen und 7 der 16 Pruefgegenstaende.**
   Ein einziger Seitenabruf, an dem vier Tage und drei Rollen gescheitert sind. Betreiber.
 - **Reihe 3 (PWT-Kapitalstock) bleibt die einzige ungemessene Quelleneinheit.** Haengt an

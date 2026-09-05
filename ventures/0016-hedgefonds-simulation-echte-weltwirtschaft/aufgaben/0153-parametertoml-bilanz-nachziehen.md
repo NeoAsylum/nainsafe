@@ -1,7 +1,7 @@
 ---
 id: 0153-parametertoml-bilanz-nachziehen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0150-parametertoml-regulierung-last]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: Der Abschnitt "WIE DER PRUEFER ZAEHLT" und BEFUNDE Punkt 1 nennen dieselben Zahlen, die die dort vorgeschriebenen Ausdruecke auf der Datei liefern. Mechanisch nachpruefbar: `grep -c '^[a-z_0-9]* *=.*PLATZHALTER'` und `grep -c '^[a-z_0-9]* *=.*FEST (T51)'` ergeben genau die beiden Zahlen, die im Kopf danebenstehen; die Gruppensumme im Kopf ergibt die Zahl der Blattschluessel, die `tomllib` in der Datei findet; die Aufzaehlung der woertlich belegten Namen unter BEFUNDE Punkt 1 enthaelt `regulierung_last` und ihre Zahl stimmt mit der Laenge der Aufzaehlung ueberein. Der Vermerk im Kopf der Gruppe D, der auf dieses Paket verweist, ist danach durch den erreichten Stand ersetzt, nicht geloescht.

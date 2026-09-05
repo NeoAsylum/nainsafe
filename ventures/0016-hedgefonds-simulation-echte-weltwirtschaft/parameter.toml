@@ -151,20 +151,34 @@
 #   Gruppe B, Fliesstext in T27 .................... 12
 #   Gruppe B2, "Verzoegerungen" aus T27 ............  4
 #   Gruppe C, "Elastizitaeten" aus T27 ............. 12
+#   Gruppe D, aus T27 nach Fassung 3 dazu ..........  1
 #                                                   ---
-#                                                    50 Schluessel
+#                                                    51 Schluessel
 #
-#   Davon 46 Schluesselzeilen mit der Marke PLATZHALTER und 4 mit der
+#   **Die sechste Zeile ist am 2026-09-06 dazugekommen** (Paket 0150,
+#   nachgezogen von Paket 0153): `regulierung_last`, bis heute der
+#   einzige Schluessel der Gruppe D. Bis dahin standen hier fuenf Zeilen
+#   und die Summe 50; die alte Zahl war nicht falsch, sondern ist
+#   ueberholt. Die Gruppe selbst und ihre Begruendung stehen unten unter
+#   "GRUPPE D".
+#
+#   Davon 47 Schluesselzeilen mit der Marke PLATZHALTER und 4 mit der
 #   Marke FEST (T51). Nachgezaehlt wird mit einem Ausdruck, der **nur
 #   Schluesselzeilen** trifft -- ein Kommentar beginnt mit `#` und faellt
 #   dadurch heraus:
-#     grep -c '^[a-z_0-9]* *=.*PLATZHALTER'  -> 46
+#     grep -c '^[a-z_0-9]* *=.*PLATZHALTER'  -> 47
 #     grep -c '^[a-z_0-9]* *=.*FEST (T51)'   -> 4
+#   Die Gruppensumme oben ist dieselbe Zahl von der anderen Seite:
+#   47 + 4 = 51, und ebenso viele Blattschluessel liest `tomllib` aus
+#   dieser Datei. Beide Proben sind am 2026-09-06 **nach** der letzten
+#   Kommentaraenderung dieses Laufs gefahren worden und nicht nach der
+#   letzten Schluesselaenderung: Kein Zaehlmuster hier fasst eine
+#   Kommentarzeile an, eine Selbstmessung verschieben kann sie trotzdem.
 #   Der unverankerte Aufruf, der bis Fassung 2 hier stand, zaehlte diese
-#   Kopfzeilen mit und lieferte 47 und 5 statt 46 und 4 (Ruecklauf 2,
-#   Befund 3). Die beiden Zahlen waren richtig, der vorgeschriebene
-#   Pruefweg nicht -- eine Selbstprobe, die sich selbst mitzaehlt, ist
-#   keine.
+#   Kopfzeilen mit und lieferte 47 und 5 statt der damals richtigen 46
+#   und 4 (Ruecklauf 2, Befund 3). Die Zahlen der Datei waren richtig,
+#   der vorgeschriebene Pruefweg nicht -- eine Selbstprobe, die sich
+#   selbst mitzaehlt, ist keine.
 #
 # **Ein `*` hinter einem Schluesselnamen im Kommentar heisst: Der Name
 # steht in keinem Dokument woertlich und ist nach dem Muster der
@@ -194,8 +208,10 @@
 # keine Marke: Hier gilt die Regel dieser Datei, und nach ihr bleiben
 # `schrittweite`, `instrument_min` und `instrument_max` unter
 # `[instrument.regulierung]` unmarkiert.
-# 25 der 50 Namen sind so gebildet; sie stehen einzeln
-# unter BEFUNDE am Dateiende.
+# 25 der 51 Namen sind so gebildet; sie stehen einzeln
+# unter BEFUNDE am Dateiende. Der Nenner ist am 2026-09-06 von 50 auf 51
+# gestiegen, der Zaehler nicht: Der hinzugekommene `regulierung_last`
+# steht woertlich in specs/ und ist deshalb keiner der gebildeten Namen.
 #
 # ---------------------------------------------------------------------
 # WAS HIER BEWUSST NICHT STEHT
@@ -805,19 +821,23 @@ innerjahresausschlag_faktor = 0  # PLATZHALTER
 # in TOML zu dieser Tabelle. Hinter `[instrument.regulierung]` waere aus
 # `regulierung_last` still `instrument.regulierung.regulierung_last`.
 #
-# **Was der Kopf dieser Datei damit nicht mehr trifft** (Paket 0150,
-# 2026-09-06): Der Abschnitt "WIE DER PRUEFER ZAEHLT" nennt 50
-# Schluessel, davon 46 mit der Marke PLATZHALTER und 4 mit FEST; BEFUNDE
-# Punkt 1 nennt "25 der 50 Namen" als gebildet. Mit dieser Gruppe sind
-# es **51 Schluessel, 47 PLATZHALTER, 4 FEST**; gebildet bleiben 25,
-# woertlich zitiert steigen von 25 auf 26. Die drei Zahlen im Kopf sind
-# ueberholt und werden hier **nicht** nachgezogen -- das Arbeitspaket
-# 0150 verlangt ausserhalb dieses Blocks null geaenderte Zeilen, und
-# eine Zahl in einem fremden Absatz zu berichtigen waere genau die
-# Nebenbeiarbeit, die es ausschliesst. Der Nachzug ist als eigenes Paket
-# vorgeschlagen (`aufgaben/0153-parametertoml-bilanz-nachziehen.md`).
-# Wer nachzaehlt, zaehlt bis dahin gegen 51/47/4 und nicht gegen den
-# Kopf.
+# **Der Kopf dieser Datei ist nachgezogen** (Paket 0153, 2026-09-06).
+# An dieser Stelle stand zwischen den Paketen 0150 und 0153 der Vermerk,
+# dass er es noch nicht sei; er ist durch den erreichten Stand ersetzt.
+#
+# Was 0150 hier hinterliess und 0153 berichtigt hat, damit der Weg
+# nachvollziehbar bleibt: Der Abschnitt "WIE DER PRUEFER ZAEHLT" nannte
+# 50 Schluessel und eine Gruppentabelle ohne diese Gruppe, BEFUNDE
+# Punkt 1 "25 der 50 Namen". Seit dieser Gruppe sind es **51
+# Schluessel**; gebildet bleiben 25, woertlich belegt sind seither 26
+# statt 25. 0150 durfte die Zahlen nicht selbst anfassen -- sein
+# Abnahmekriterium verlangt ausserhalb dieses Blocks null geaenderte
+# Zeilen, und die Bilanzzahlen stehen ausserhalb. Deshalb der Schnitt in
+# zwei Pakete und nicht die Nebenbeikorrektur.
+#
+# **Wer nachzaehlt, zaehlt gegen den Kopf** -- er und die Datei nennen
+# seit 0153 dieselben Zahlen, und die dort vorgeschriebenen Ausdruecke
+# liefern sie.
 # ---------------------------------------------------------------------
 
 # Klasse 3 (Raten, Basispunkte). Lastsatz der Finanzmarktregulierung --
@@ -1065,12 +1085,24 @@ instrument_max = 1  # FEST (T51), muss `regulierung_stufen` gleichen
 # =====================================================================
 # BEFUNDE -- was ein Pruefer wissen muss, bevor er zaehlt
 #
-# 1. **25 der 50 Namen sind gebildet, nicht zitiert.** Woertlich in
-#    specs/ stehen: stufenweite, stufen_max, ausstiegsabschlag,
+# 1. **25 der 51 Namen sind gebildet, nicht zitiert.** Woertlich in
+#    specs/ stehen diese 26: stufenweite, stufen_max, ausstiegsabschlag,
 #    zwangsabschlag, aufschlag, lobbykosten, beteiligungsrabatt,
 #    gegenlobby_satz, druck_max, regulierung_stufen, schwelle_v,
-#    schwelle_e, startkapital sowie schrittweite / instrument_min /
-#    instrument_max in den vier Instrumententabellen (12 Schluessel).
+#    schwelle_e, startkapital, regulierung_last sowie schrittweite /
+#    instrument_min / instrument_max in den vier Instrumententabellen
+#    (12 Schluessel). Vierzehn einzeln genannte und zwoelf aus den
+#    Instrumententabellen, zusammen 26; mit den 25 gebildeten sind es
+#    die 51 Blattschluessel dieser Datei.
+#    **`regulierung_last` ist am 2026-09-06 dazugekommen** (Gruppe D,
+#    Paket 0150; Bilanz nachgezogen mit Paket 0153). Er traegt keine
+#    `*`-Marke, weil sein Name an zehn Stellen in specs/ woertlich steht
+#    -- technik.md sechs, spiel.md vier, gezaehlt am 2026-09-06 mit
+#    `grep -o <name> <datei> | wc -l`. Der Ausdruck gehoert dazu: `grep
+#    -c` zaehlt Zeilen statt Fundstellen und liefert fuer spiel.md
+#    deshalb 3 statt 4, weil eine Zeile den Namen zweimal traegt. Er hebt
+#    also den Nenner dieses Punktes, nicht seinen Zaehler; bis dahin
+#    stand hier "25 der 50 Namen" und die Aufzaehlung ohne ihn.
 #    Gebildet sind die uebrigen 25: startzustimmung, regulierung_start
 #    (beide schon in Paket 0007 so gebildet und dort markiert),
 #    aufsicht_schwelle_1/_2/_3, aufsicht_max, nachahmer_tempo,
