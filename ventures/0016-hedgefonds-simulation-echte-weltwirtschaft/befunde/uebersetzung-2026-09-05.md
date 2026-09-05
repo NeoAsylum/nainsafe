@@ -31,36 +31,63 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  9%] Built target belegstellen_riegel
-[  9%] Built target pruefstand
-[ 18%] Built target mutationstreiber
-[ 18%] Built target pruefstand_geprueft
-[ 20%] Building CXX object kern/CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
-[ 37%] Built target kern_geprueft
-[ 44%] Built target vorrat_kernanker_probe
-[ 44%] Built target vorrat_probe
-[ 46%] Linking CXX executable festkomma_probe
-[ 48%] Linking CXX executable schreiber_probe
-[ 50%] Linking CXX executable schritt_probe
-[ 51%] Linking CXX executable schranken_probe
+[  7%] Built target mutationstreiber
+[  7%] Built target belegstellen_riegel
+[ 12%] Built target pruefstand_geprueft
+[ 20%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/festkomma.cpp.o
+[ 22%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/pruefsumme.cpp.o
+[ 22%] Built target pruefstand
+[ 24%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
+[ 27%] Building CXX object kern/CMakeFiles/kern.dir/src/pruefsumme.cpp.o
+[ 27%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
+[ 31%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
+[ 31%] Building CXX object kern/CMakeFiles/kern.dir/src/festkomma.cpp.o
+[ 35%] Building CXX object kern/CMakeFiles/kern.dir/src/schritt.cpp.o
+[ 35%] Building CXX object kern/CMakeFiles/kern.dir/src/werte.cpp.o
+[ 37%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
+[ 38%] Building CXX object kern/CMakeFiles/kern.dir/src/schreiber.cpp.o
+[ 40%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 42%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zufall.cpp.o
+[ 44%] Building CXX object kern/CMakeFiles/kern.dir/src/zufall.cpp.o
+[ 46%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
+[ 48%] Building CXX object kern/CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
+[ 51%] Built target vorrat_probe
 [ 55%] Built target vorrat_verfahren_probe
-[ 57%] Linking CXX executable meldung_probe
-[ 59%] Linking CXX executable werte_probe
-[ 61%] Linking CXX executable pruefsumme_probe
-[ 62%] Linking CXX executable zufall_probe
-[ 64%] Linking CXX executable zustand_probe
-[ 68%] Built target zustandsausgabe_probe
-[ 70%] Built target festkomma_probe
-[ 72%] Built target pruefsumme_probe
-[ 74%] Built target zufall_probe
-[ 75%] Built target schritt_probe
-[ 77%] Built target werte_probe
-[ 79%] Built target schranken_probe
-[ 81%] Built target schreiber_probe
-[ 83%] Built target zustand_probe
-[ 85%] Built target meldung_probe
-[ 87%] Linking CXX static library libkern.a
-[100%] Built target kern
+[ 59%] Built target vorrat_kernanker_probe
+[ 61%] Linking CXX static library libkern.a
+[ 62%] Linking CXX static library libkern_geprueft.a
+[ 62%] Built target kern
+[ 62%] Built target kern_geprueft
+[ 70%] Building CXX object kern/CMakeFiles/pruefsumme_probe.dir/test/pruefsumme_probe.cpp.o
+[ 70%] Building CXX object kern/CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+[ 70%] Building CXX object kern/CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
+[ 74%] Building CXX object kern/CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+[ 74%] Building CXX object kern/CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+[ 74%] Building CXX object kern/CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
+[ 75%] Building CXX object kern/CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+[ 77%] Building CXX object kern/CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+[ 79%] Building CXX object kern/CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
+[ 81%] Building CXX object kern/CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+[ 83%] Linking CXX executable pruefsumme_probe
+[ 85%] Linking CXX executable meldung_probe
+[ 85%] Built target pruefsumme_probe
+[ 87%] Linking CXX executable zufall_probe
+[ 87%] Built target meldung_probe
+[ 88%] Linking CXX executable werte_probe
+[ 90%] Linking CXX executable festkomma_probe
+[ 90%] Built target zufall_probe
+[ 90%] Built target festkomma_probe
+[ 90%] Built target werte_probe
+[ 92%] Linking CXX executable schreiber_probe
+[ 94%] Linking CXX executable schritt_probe
+[ 94%] Built target schreiber_probe
+[ 96%] Linking CXX executable zustand_probe
+[ 96%] Built target schritt_probe
+[ 98%] Linking CXX executable schranken_probe
+[ 98%] Built target zustand_probe
+[ 98%] Built target schranken_probe
+[100%] Linking CXX executable zustandsausgabe_probe
+[100%] Built target zustandsausgabe_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -98,7 +125,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 14
 
-Total Test time (real) =   1.00 sec
+Total Test time (real) =   1.01 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -114,44 +141,53 @@ Total Test time (real) =   1.00 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  2%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern.dir/src/schreiber.cpp.o
-[ 15%] Building CXX object CMakeFiles/kern.dir/src/werte.cpp.o
-[ 18%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
-[ 23%] Building CXX object CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
-[ 23%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
-[ 26%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
-[ 28%] Linking CXX static library libkern.a
-[ 36%] Built target kern
-[ 39%] Linking CXX static library libkern_geprueft.a
+[  5%] Building CXX object CMakeFiles/kern.dir/src/festkomma.cpp.o
+[  5%] Building CXX object CMakeFiles/kern.dir/src/pruefsumme.cpp.o
+[  7%] Building CXX object CMakeFiles/kern_geprueft.dir/src/festkomma.cpp.o
+[ 10%] Building CXX object CMakeFiles/kern.dir/src/schreiber.cpp.o
+[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/pruefsumme.cpp.o
+[ 15%] Building CXX object CMakeFiles/kern.dir/src/zufall.cpp.o
+[ 26%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
+[ 26%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 26%] Building CXX object CMakeFiles/kern.dir/src/werte.cpp.o
+[ 28%] Building CXX object CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
+[ 28%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
+[ 36%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
+[ 36%] Building CXX object CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
+[ 36%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zufall.cpp.o
+[ 39%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
+[ 42%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
+[ 44%] Linking CXX static library libkern_geprueft.a
+[ 47%] Linking CXX static library libkern.a
 [ 47%] Built target kern_geprueft
-[ 55%] Linking CXX executable pruefsumme_probe
-[ 55%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
-[ 55%] Linking CXX executable festkomma_probe
-[ 57%] Building CXX object CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
-[ 68%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
-[ 68%] Building CXX object CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
-[ 68%] Linking CXX executable zufall_probe
-[ 68%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
-[ 71%] Building CXX object CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+[ 52%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+[ 52%] Building CXX object CMakeFiles/pruefsumme_probe.dir/test/pruefsumme_probe.cpp.o
+[ 55%] Building CXX object CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
+[ 57%] Building CXX object CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+[ 60%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+[ 73%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
 [ 73%] Building CXX object CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
-[ 76%] Built target pruefsumme_probe
-[ 78%] Built target zufall_probe
-[ 81%] Built target festkomma_probe
-[ 84%] Linking CXX executable meldung_probe
-[ 84%] Built target meldung_probe
+[ 73%] Building CXX object CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+[ 73%] Building CXX object CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+[ 73%] Building CXX object CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
+[ 73%] Built target kern
+[ 76%] Linking CXX executable pruefsumme_probe
+[ 78%] Linking CXX executable meldung_probe
+[ 78%] Built target pruefsumme_probe
+[ 78%] Built target meldung_probe
+[ 81%] Linking CXX executable zufall_probe
+[ 84%] Linking CXX executable festkomma_probe
 [ 86%] Linking CXX executable werte_probe
 [ 86%] Built target werte_probe
+[ 86%] Built target festkomma_probe
+[ 86%] Built target zufall_probe
 [ 89%] Linking CXX executable schreiber_probe
 [ 89%] Built target schreiber_probe
-[ 92%] Linking CXX executable schritt_probe
-[ 94%] Linking CXX executable zustand_probe
+[ 92%] Linking CXX executable zustand_probe
+[ 94%] Linking CXX executable schritt_probe
 [ 97%] Linking CXX executable schranken_probe
-[ 97%] Built target schritt_probe
 [ 97%] Built target zustand_probe
+[ 97%] Built target schritt_probe
 [ 97%] Built target schranken_probe
 [100%] Linking CXX executable zustandsausgabe_probe
 [100%] Built target zustandsausgabe_probe
@@ -184,7 +220,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 10
 
-Total Test time (real) =   0.18 sec
+Total Test time (real) =   0.19 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -200,11 +236,11 @@ Total Test time (real) =   0.18 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
-[100%] Built target vorrat_probe
-[100%] Built target vorrat_kernanker_probe
+[ 50%] Built target pruefstand
+[ 66%] Built target vorrat_kernanker_probe
 [100%] Built target vorrat_verfahren_probe
+[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -248,7 +284,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.80 sec
+Total Test time (real) =   0.79 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
