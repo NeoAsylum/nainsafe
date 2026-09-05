@@ -1,13 +1,40 @@
 ---
 id: 0103-notfound-endung-verdeckt-schalter
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0076-riegel-sammeln-notfound-je-quelle]
+status: offen
+haengt_an: [0076-riegel-sammeln-notfound-je-quelle, 0094-linkschalterform-durchgereichtes-l]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Eine Eigenschaft, die auf `-NOTFOUND` endet, gilt als leer -- auch wenn ein `-w` darin steht
+
+## Angenommen am 2026-09-05 (Projektmanager), mit zwei Berichtigungen und einer Reihenfolge
+
+**Vier Prüfungen bestanden.** `kernbauer` steht in `BAUROLLEN` (`baulauf.py:59`), und der
+Baulauf plant die Rolle ein. Die `dateien`-Liste nennt allein `werkzeugkette.cmake`. Die
+`abnahme` ist prüfbar und nennt Rot- **und** Grünnachweis, je an einem ausgeschriebenen
+Wegwerf-Baum. Die Abhängigkeit auf 0076 ist inhaltlich erfüllt — 0076 ist am 2026-09-05
+nach drei Prüfungen abgenommen.
+
+**Zwei Sätze im Rumpf sind berichtigt**, aus Paket `0113` und vor deinem ersten Lauf: der
+über den Test je Eintrag und der über die freie Wahl zu Zeile 409-412. Beide standen als
+Empfehlung da und hätten dich an deiner eigenen Abnahme scheitern lassen — gemessen, nicht
+vermutet. Sie stehen unter *Was zu tun ist* mit der Messung daneben. **Das ist der Grund,
+warum du hier nicht bei null Rückläufen anfängst und trotzdem bei null stehst.**
+
+### Die Reihenfolge auf `werkzeugkette.cmake`
+
+Vier Pakete halten diese eine Datei: **`0094` → `0103` (dieses) → `0104` → `0108`.** Der
+Baulauf serialisiert sie nur, solange alle auf `offen` stehen; sobald das vordere auf
+`gebaut` geht, ist sein Anspruch für `startbereit()` unsichtbar (`baulauf.py:273`), und das
+hintere würde eingeplant, während der Prüfer des vorderen an derselben Datei am dann
+geltenden `HEAD` misst. Daran ist 0027 zweimal schuldlos gescheitert. Deshalb steht `0094`
+in `haengt_an` — **als Kollisionsschutz gekennzeichnet, nicht als sachliche Abhängigkeit.**
+
+**Die Folge steht dir zu:** Du misst deinen Vorher-Stand am *dann* geltenden `HEAD`. 0094
+ändert vor dir dieselbe Datei; nenne deinen Bezugsstand im Nachweis und miss die
+Gegenprobe an ihm, nicht an einer heute notierten Zahl.
 
 Aus der Pruefung von Paket 0076 (2026-09-05, Rolle `kern-pruefer`),
 `befunde/pruefung-0076-riegel-sammeln-notfound-je-quelle-2026-09-05.md`, Befund 1 und 2.
@@ -84,10 +111,35 @@ Die Bauform steht frei. Verlangt ist:
 
 1. Ein Wert, der **nur** aus dem Nichtwert besteht, gilt weiter als leere Menge.
 2. Ein Wert, der **ausser** dem Nichtwert noch etwas traegt, wird nicht mehr
-   weggeworfen. Der naheliegende Weg ist, je Listeneintrag statt ueber die
-   zusammengefuegte Zeichenkette zu entscheiden -- die Schleife darunter laeuft ohnehin
-   ueber die Eintraege. Ob Zeile 409-412 dieselbe Behandlung bekommt oder ihre
-   Sonderbehandlung ganz verliert, entscheidet der Bauagent.
+   weggeworfen.
+
+   **Berichtigt am 2026-09-05 (Projektmanager, aus Paket 0113).** Hier stand als
+   „naheliegender Weg", je Listeneintrag statt ueber die zusammengefuegte Zeichenkette zu
+   entscheiden. **Dieser Weg erfuellt Abnahmebedingung 1 dieses Pakets nicht** -- gemessen
+   mit CMake 4.2.3 am Stand `HEAD`, an genau dem Wegwerf-Baum, den Bedingung 1 nennt:
+   `HEAD` Code 0, je Listeneintrag Code 0 (unveraendert), Nichtwert exakt statt als Endung
+   Code 1. Der Grund ist die Form der Eigenschaft, nicht ihr Wert: `COMPILE_FLAGS` ist eine
+   **Zeichenkette mit Leerzeichen, keine CMake-Liste**. Von den fuenf eingesammelten
+   Eigenschaften sind zwei Zeichenketten (`COMPILE_FLAGS` am Ziel und an der Quelldatei)
+   und drei Listen; bei den zwei Zeichenketten ist „je Listeneintrag" wortgleich dasselbe
+   wie „ueber die zusammengefuegte Zeichenkette", weil der ganze Wert der eine Eintrag ist
+   -- und er endet auf `-NOTFOUND`. Die 22 Wegwerf-Baeume fangen es nicht: keiner setzt
+   einen Nichtwert in eine Zeichenketteneigenschaft, alle 40 Markenzeilen bleiben
+   zeichengleich. **Die Bauform steht damit wieder wirklich frei; verlangt ist die
+   Bedingung, nicht dieser Weg.**
+
+   Ebenso berichtigt: Hier stand, ob Zeile 409-412 dieselbe Behandlung bekommt oder ihre
+   Sonderbehandlung ganz verliert, entscheide der Bauagent. **Diese Wahl gibt es nicht** --
+   `if(NOT schalter)` leert `schalter`, bevor der Satzvergleich laeuft; an beiden Baeumen
+   der Abnahmebedingung 2 melden `HEAD`, die Fassung mit dem Test je Eintrag und der exakte
+   Nichtwert alle drei `Code 1 es fehlen:`, solange Zeile 409-412 unveraendert bleibt. **Ohne eine
+   Aenderung an dieser Stelle ist Abnahmebedingung 2 nicht erfuellbar.** Die Freiheit ist
+   von der eigenen Abnahme des Pakets schon verbraucht.
+
+   **Kein Weg ist vorgeschrieben, auch nicht der gemessene.** Dass `STREQUAL "NOTFOUND"`
+   bzw. `STREQUAL "${listenname}-NOTFOUND"` Bedingung 1 erfuellt, alle 22 Wegwerf-Baeume
+   zeichengleich laesst und den Arbeitsbereich auf drei Bauwegen in beiden Profilen mit
+   Code 0 konfiguriert, ist ein Beleg, dass die Aufgabe loesbar ist -- mehr nicht.
 3. Der Kommentar sagt danach, was gemessen ist, und nicht, was der Anker leisten
    soll. Der Satz ueber den letzten Listeneintrag faellt oder wird richtig.
 

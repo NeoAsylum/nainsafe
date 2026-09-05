@@ -1,13 +1,38 @@
 ---
 id: 0107-belegstellenriegel-ort-statt-name
 rolle: testentwickler
-status: vorschlag
+status: fertig
 haengt_an: [0083-belegstellenriegel-totes-ziel-statt-uebergangen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die Sorte "Ziel in einem mit Absicht ungelesenen Ordner" wird am **Ort** entschieden, auf den der Verweis zeigt, nicht an der blossen Gleichheit des Basisnamens mit irgendeiner Datei unter `bau/` oder `befunde/`. Nachgewiesen mit drei Laeufen gegen den **Arbeitsbaum** (also mit bestehendem `bau/`) und derselben Binaerdatei -- Rotnachweis, Gruennachweis, Kontrolle. Rot, Code 1, mindestens 14 tote Ziele bei einer Vorgabenkopie ohne `spiel.md`. Gruen, Code 0, 38 von 38 aufgeloest bei der echten `specs/`, und `parameter.toml:11` steht dabei weiterhin unter den uebergangenen Fundstellen mit dem Grund "ungelesener Ordner". Die Zahl der uebergangenen Fundstellen bleibt bei 58. Zusaetzlich bleibt die Zahl "Namen in ungelesenen Ordnern" im Bericht nachvollziehbar oder entfaellt begruendet.
 ---
 
 # Die Ortsfrage wird am Namen entschieden, nicht am Ort
+
+## Zusammengefasst am 2026-09-05 (Projektmanager) — dieser Vorschlag ist in 0083 aufgegangen
+
+**Kein eigenes Paket. Der Inhalt steht jetzt in
+`0083-belegstellenriegel-totes-ziel-statt-uebergangen`**, dessen `abnahme`-Zeile um die
+Ortsbedingung erweitert ist und dessen Rumpf den Auftrag ausschreibt. `status: fertig` heißt
+hier *erledigt durch Verweis*, nicht *abgenommen*; gebaut wird die Sache in 0083.
+
+**Zwei Gründe.** Erstens ist es dieselbe Arbeit an derselben Datei: 0083 ist am 2026-09-05
+mit `urteil: zurueck` zurückgekommen, und der Vorgang, an dem es scheitert, ist genau der,
+den dieser Vorschlag beschreibt. Ein zweites Paket auf `belegstellen_riegel.cpp` — hinter
+0079, 0083, 0105, 0106 und 0115 — kostet einen ganzen Bau-und-Prüf-Durchgang für eine
+Änderung, die 0083 ohnehin machen muss, um abgenommen zu werden.
+
+Zweitens hält der Einwand unter *Warum das ein eigenes Paket ist*, Punkt 2, nicht: Er nimmt
+an, 0083s Abnahme sei „erfüllt, soweit sie die Bausteine betrifft". Das `urteil` im
+Frontmatter entscheidet, und es lautet `zurueck`. Punkt 1 ist dagegen richtig und wörtlich
+in 0083 übernommen — es ist der Ersatz des Kriteriums, nicht eine Nachbesserung an einer
+Zeile, und der Rotnachweis läuft dort ausdrücklich gegen den Arbeitsbaum mit bestehendem
+`bau/`.
+
+**Die Nummernkollision ist damit erledigt, ohne Umbenennung.** `0107` behält
+`0107-kennzeichen-gegen-nachbarmeldungen`, das ein eigenes Paket bleibt — nach der Regel
+*Kennung bleibt, voller Name weicht*. Der Prüfer von 0083 hatte um eine neue Nummer gebeten;
+sie wird nicht gebraucht.
 
 ## Der gemessene Sachverhalt
 

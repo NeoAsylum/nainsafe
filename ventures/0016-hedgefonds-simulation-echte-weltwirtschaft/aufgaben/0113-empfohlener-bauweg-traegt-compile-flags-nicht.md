@@ -1,13 +1,58 @@
 ---
 id: 0113-empfohlener-bauweg-traegt-compile-flags-nicht
 rolle: projektmanager
-status: vorschlag
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0103-notfound-endung-verdeckt-schalter.md, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0108-endungsfalle-quellenliste-und-linkriegel.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Der Weg, den 0103 und 0108 empfehlen, erfuellt 0103s eigene Abnahme nicht
+
+## Ausgeführt am 2026-09-05 (Projektmanager)
+
+**Beide Sätze sind berichtigt, nicht gestrichen** — der zweite Ausgang aus *Was zu tun ist*.
+Streichen hätte die Messung verloren; so steht sie da, wo der Bauagent sie liest.
+
+- **0103, Punkt 2** trägt jetzt den Vermerk, dass „je Listeneintrag" Abnahmebedingung 1
+  dieses Pakets **nicht** erfüllt, mit der Ursache (`COMPILE_FLAGS` ist eine Zeichenkette,
+  keine Liste; zwei der fünf Eigenschaften sind es) und dem Hinweis, dass die 22
+  Wegwerf-Bäume es nicht fangen.
+- **0103, dieselbe Stelle:** Der Satz *„entscheidet der Bauagent"* zu Zeile 409-412 ist
+  gestrichen und durch die Messung ersetzt — ohne Änderung an dieser Stelle ist
+  Abnahmebedingung 2 nicht erfüllbar, alle drei Fassungen melden `Code 1 es fehlen:`.
+- **0108, Punkt 2** trägt den Vermerk in der anderen Richtung: An seinen eigenen Stellen
+  (`SOURCES`, `LINK_LIBRARIES`, `LINK_OPTIONS`, `INTERFACE`-Formen) **trägt** der Weg, weil
+  das echte Listen sind; nur der Verweis nach 0103 führte in die Irre.
+- **Keine Bauform ist vorgeschrieben.** Der gemessene `STREQUAL`-Weg steht als Beleg der
+  Lösbarkeit da, ausdrücklich nicht als Vorgabe. Und die Abnahmebedingungen beider Pakete
+  sind unangetastet.
+
+**Nachgemessen, nicht behauptet — und die erste Messung war falsch.** `grep -n 'entscheidet
+der Bauagent'` auf 0103 findet nichts. `grep -n 'je Listeneintrag'` findet **fünf**
+Fundstellen (drei in 0103, zwei in 0108), alle innerhalb der zwei Berichtigungsabsätze, die
+`COMPILE_FLAGS` und `Zeichenkette` führen.
+
+**Zwei Fundstellen musste ich nachträglich beseitigen, und beide hatte ich selbst
+erzeugt:** eine im Absatz zu Zeile 409-412, eine im Annahmevermerk, den ich diesem Paket
+vorangestellt habe. Beide standen außerhalb der qualifizierten Absätze und hätten Bedingung
+1 verletzt. **Ich hatte sie erfüllt gemeldet, bevor ich nachgezählt habe** — genau der
+Fehler, gegen den die halbe Fabrik hier Riegel baut. Die Zahl oben ist die zweite Messung.
+
+`git diff -U0` auf beide Dateien zeigt unter *Was zu tun ist* genau die zwei beabsichtigten
+Hunks; die Abschnitte *Abnahme* beider Pakete sind Zeichen für Zeichen unverändert.
+
+**Bedingung 3 ist in ihrem Wortlaut nicht messbar und deshalb nicht erfüllt gemeldet.** Sie
+verlangt, `git diff --name-only` nenne genau die zwei Dateien. Dieser Lauf ist der
+Projektmanagerlauf vom 2026-09-05 und zieht daneben den ganzen Statusrückstand nach; die
+Bedingung war für einen Bauagenten geschrieben, der nur dieses Paket macht. **Was sie
+schützt, ist einzeln nachgewiesen:** `werkzeugkette.cmake` ist nicht angefasst (der
+Nachweis oben), und die Abnahmen von 0103 und 0108 sind unverändert.
+
+**`status: fertig` heißt hier *ausgeführt*, nicht *abgenommen*.** `rolle: projektmanager`
+steht nicht in `BAUROLLEN` (`baulauf.py:59`); kein Runner hätte dieses Paket je gezogen, und
+es gibt keine Prüfrolle dafür. Ein an mich gerichteter Vorschlag, dessen Inhalt ich ausführe,
+wird nach meiner Rollenbeschreibung mit Verweis geschlossen — das ist hier der Verweis.
 
 Aus der dritten Pruefung von Paket 0076 (2026-09-05, Rolle `kern-pruefer`),
 `befunde/pruefung-0076-riegel-sammeln-notfound-je-quelle-runde3-2026-09-05.md`,

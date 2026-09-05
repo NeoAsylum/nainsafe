@@ -1,13 +1,34 @@
 ---
 id: 0107-kennzeichen-gegen-nachbarmeldungen
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0085-abbruchmeldungen-im-wortlaut-pruefen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: In `schritt_probe` ist die **Eindeutigkeit** jeder Kennzeichenliste eine laufende Zusicherung statt einer Lesung. Der Lauf sammelt die angekommenen Meldungen aller Abbruchstellen und sichert zu, dass keine Kennzeichenliste auf die Meldung eines **anderen** Riegels passt; zwei Stellen, die denselben Riegel pruefen, gelten dabei als eine (heute Zeile 485 und der dritte Fall in `probe_rundennummer`). Der Nachweis sind zwei ausgefuehrte Sabotagen. Erstens die Abschwaechung: Verkuerzt man die `spielmodus`-Liste auf `{"kern::schritt"}`, wird `schritt_probe` rot, **ohne** dass an der Quelle etwas geaendert wird -- die rote Zeile nennt die Stelle und die fremde Meldung, auf die ihre Liste ebenfalls passt. Zweitens die Gegenprobe: Am unveraenderten Auslieferstand bleibt der Lauf gruen, und die fuenf heutigen Listen bleiben unveraendert -- die neue Zusicherung ist kein Anlass, ein Textstueck nachzuziehen.
 ---
 
 # Die Eindeutigkeit der Kennzeichen ist geprueft, aber nicht gesichert
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, unverändert
+
+**Vier Prüfungen bestanden.** `testentwickler` steht in `BAUROLLEN` (`baulauf.py:59`). Die
+`dateien`-Liste nennt allein `kern/test/schritt_probe.cpp` — **diese Datei hält heute kein
+anderes offenes Paket**, du bist unabhängig von jeder Kette. Die `abnahme` nennt zwei
+ausgeführte Sabotagen, Abschwächung **und** Gegenprobe, und sagt ausdrücklich, dass die
+neue Zusicherung kein Anlass ist, ein Textstück nachzuziehen. Die Abhängigkeit auf 0085 ist
+inhaltlich und **im selben Lauf erfüllt worden**: 0085 ist am 2026-09-05 mit `urteil:
+geprueft` und 0 Befunden abgenommen.
+
+**Die Kennung `0107` bleibt bei diesem Paket.** Sie war doppelt vergeben — ein paralleler
+Prüferlauf hat `0107-belegstellenriegel-ort-statt-name` unter derselben Nummer angelegt.
+Jener Vorschlag ist in `0083` aufgegangen und braucht keine eigene Nummer mehr; nach der
+Regel *Kennung bleibt, voller Name weicht* behält sie, wer ein eigenes Paket wird. **Es ist
+keine Datei umbenannt worden**, und `haengt_an`-Verweise auf `0107` gibt es keine
+(nachgemessen, nicht angenommen).
+
+**Die Zeilennummer 485 in deiner `abnahme` ist der Stand vom 2026-09-05.** Sie ist dort nur
+als Fundhilfe genannt; die Bedingung ist, dass zwei Stellen, die denselben Riegel prüfen,
+als eine gelten — such sie am Riegel, nicht an der Nummer.
 
 Vorschlag des Test-Pruefers vom 2026-09-05, gemessen bei der Pruefung von 0085
 (`befunde/pruefung-0085-abbruchmeldungen-im-wortlaut-pruefen-2026-09-05.md`, Mutant M8).

@@ -1,7 +1,7 @@
 ---
 id: 0088-werte-probe-vier-unbelegte-vorgaben
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0002-fondsbewertung-definieren]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Vier neue Pruefungen in `werte_probe.cpp`, je eine zu den vier Vorgaben unten. Der Nachweis ist zweiseitig und wird je Vorgabe einzeln gefahren: Am unveraenderten `kern/src/werte.cpp` laeuft `werte_probe` gruen; mit der je Vorgabe angegebenen Mutation wird sie rot. Eine Pruefung, die auch am mutierten Modul gruen bleibt, zaehlt nicht.

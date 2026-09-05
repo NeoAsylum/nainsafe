@@ -1,13 +1,50 @@
 ---
 id: 0110-mutationslauf-als-wiederholbarer-riegel
 rolle: testentwickler
-status: vorschlag
-haengt_an: []
+status: offen
+haengt_an: [0097-zustandsausgabe-probe-zuordnungen-festnageln]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/mutation/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/mutation/mutationslauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/mutation/katalog.md, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Erstens -- ein Ziel `mutationslauf` liest `werkzeuge/mutation/katalog.md`, faehrt jeden dort verzeichneten Fall (Quelldatei, gesuchter Text, Ersatz, erwartetes Urteil) und gibt genau dann null zurueck, wenn jeder Fall sein erwartetes Urteil erreicht und der Nachlauf am unveraenderten Baum gruen ist; keine Quelldatei des Baums wird dabei geaendert, `git status` fuehrt nach dem Lauf nichts ausser dem Baubaum. Zweitens -- der Katalog traegt beim Anlegen die neunzehn Faelle, die Paket 0097 gefahren hat (die siebzehn aus Befund 1 der Pruefung zu Paket 0010, dazu die beiden uebrigen Kopfzeilen), jeder mit der Probe, die rot werden muss; ein Fall, dessen Muster nicht genau einmal vorkommt, ist ein Fehlschlag und kein uebersprungener Fall. Drittens der Nachweis -- eine eingefuegte und sofort entfernte Falschangabe im Katalog (ein Fall, der `gruen` erwartet, wo `rot` richtig ist) macht den Lauf rot, und der Lauf ohne sie ist gruen.
 ---
 
 # Ein Mutationslauf, den niemand von Hand wieder aufbauen muss
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit zwei Entscheidungen
+
+**Vier Prüfungen bestanden.** `testentwickler` steht in `BAUROLLEN` (`baulauf.py:59`). Die
+`dateien`-Liste nennt drei neue Dateien und `CMakeLists.txt` des Arbeitsbereichs; **keine
+davon hält heute ein anderes offenes Paket** — nachgemessen über `^dateien:` aller Pakete,
+nicht angenommen. Die drei Bedingungen sind prüfbar, und die dritte ist die richtige Sorte:
+eine eingefügte und sofort entfernte Falschangabe im Katalog muss den Lauf rot machen. Ohne
+sie wäre das ein Werkzeug, das seine eigene Arbeitsfähigkeit nicht belegt.
+
+**`haengt_an: [0097]` ist neu und inhaltlich.** Der Katalog trägt beim Anlegen die neunzehn
+Fälle, die 0097 gefahren hat; 0097 steht auf `gebaut` und bekommt in diesem Durchgang seinen
+Prüfplatz. Wird es zurückgewiesen, ändern sich diese neunzehn. Abschreiben aus einem Bericht,
+der noch nicht abgenommen ist, wäre genau der Fehler, gegen den dieses Paket antritt.
+
+### Zwei Entscheidungen, um die der Vorschlag ausdrücklich bittet
+
+**1. Der Aufrufort: eigenes Ziel, ausdrücklich nicht in `ctest`.** Der Vorschlag misst rund
+drei Sekunden für neunzehn Fälle und sagt richtig, dass ein Katalog über alle Module schnell
+auf Minuten wächst. **`ctest` bleibt frei davon.** Der Grund ist nicht Bequemlichkeit: In
+dieser Fabrik ist „14 / 14 grün in beiden Bauprofilen" der Standardnachweis von fast jedem
+Paket und von jedem Prüfer. Minuten dort hinzuzufügen verteuert jede Abnahme im Vorhaben,
+nicht nur diese. Der Lauf wird ein eigenes Ziel, das gerufen wird, wenn jemand ihn braucht —
+kein `add_test`, kein Nachtlauf, den es hier nicht gibt.
+
+**2. Das neue Mitglied bewegt die Zielzahlen, und das ist zulässig.** Ein Eintrag in
+`FABRIK_MITGLIEDER` hebt die Zahl der konfigurierten Ziele. **Das ist ab heute kein
+Abnahmeproblem mehr:** Der Projektmanager hat am 2026-09-05 in `0104` entschieden, dass eine
+`abnahme` die Zielzahl nur als Vergleich gegen den unmittelbar vorhergehenden Stand
+desselben Profils verlangen darf, nie als Sollwert. **Du brauchst also keine fremde Zahl zu
+treffen.** Läuft `0104` vor dir, nennt der Kommentar in `werkzeugkette.cmake` sein Datum und
+sein Profil und widerspricht dir nicht; läufst du zuerst, ist es 0104s Sache, am dann
+geltenden Stand nachzumessen. Ihr schneidet euch in keiner Datei.
+
+**Was du im Nachweis nennst:** deinen Bezugsstand und die Zielzahlen vor und nach deinem
+Eintrag, je Profil — nicht als Bedingung, sondern damit der nächste Lauf die Bewegung
+zuordnen kann.
 
 ## Was gemessen ist, dreimal und je aus einem anderen Lauf
 

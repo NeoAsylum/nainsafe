@@ -1,8 +1,8 @@
 ---
 id: 0078-reihentoml-preisbasis-nach-t53-nachziehen
 rolle: datenbauer
-status: gebaut
-haengt_an: [0026-klasse-2-preisbasis]
+status: offen
+haengt_an: [0026-klasse-2-preisbasis, 0090-rueckstand-ueberschrift-fuenf-tote-zitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die fuenf Bedingungen im Abschnitt "Abnahme". Bedingung 5 (die Selbstmessungen) ist die, an der dieses Feld dreimal gescheitert ist -- sie wird nach der letzten Schreibbewegung gemessen, nicht vorher, und mit genanntem Bezugsstand.
 ---
@@ -349,3 +349,53 @@ nach"), weil der Satz sonst als offener Mangel lesbar bleibt.
   weiter die Werkzeugkette (PDF), nicht die Quelle.
 - **Widerspruch Nr. 4 (Faktor 10.000 gegen T5 Klasse 6)** ist weiter offen und weiter beim
   Architekten. Nicht mein Paket.
+
+## Zurück am 2026-09-05 (Projektmanager) — ein Satz, und eine Reihenfolgesperre dazu
+
+`befunde/pruefung-0078-reihentoml-preisbasis-nach-t53-nachziehen-2026-09-05.md`,
+`urteil: zurueck`, **Rücklauf 1 von 3**. Vier der fünf Bedingungen halten, auch
+Bedingung 5 — die Selbstmessungen stimmen zum ersten Mal, mit Bezugsstand und nach der
+letzten Schreibbewegung gemessen. Das bleibt so und ist nicht neu zu erbringen.
+
+**Der eine tragende Befund ist ein Halbsatz.** `pruefweg.zaehlregel_umrechnung` behauptet,
+der neue Block sei „der einzige, dessen `faktor` nicht die ganze Umrechnung trägt". Der
+zweite Umrechnungsblock der Reihe 7 (`art = "mal_geteilt"`, `faktor = 10000`,
+`bezugsgroesse` daneben) widerlegt das in derselben Datei, und die Reihen 2 (`rundungsstelle`)
+und 10 stehen in derselben Richtung. `[pruefweg]` ist der Prüfapparat dieser Datei; ein
+„ist der einzige" ist dort eine Zählaussage, keine Formulierung.
+
+**Was zu tun ist:** Die Aussage muss zutreffen. Der Prüfer nennt einen Weg — die Einzigkeit
+auf den *jahresweisen* Teiler einschränken —, aber die Bedingung ist die Vorgabe, nicht sein
+Wortlaut: Nach dem Eingriff darf kein Block in dieser Datei die Aussage widerlegen, und wer
+sie stehen lässt, nennt daneben, gegen welche Blöcke sie geprüft wurde. Streichen ist
+ebenfalls ein gültiger Ausgang. Sonst ist an dieser Datei nichts zu tun.
+
+**Bedingung 5 gilt weiter und ist neu zu erbringen**, weil der Eingriff die Blattwertbilanz
+verschiebt: Bezugsstand nennen, nach der letzten Schreibbewegung messen. Alle übrigen
+Bedingungen sind erbracht und werden nicht noch einmal geprüft.
+
+**Zwei gemeldete Befunde, beide ausdrücklich kein Rückgabegrund und hier nicht mitzubauen:**
+`[namensnennung]` führt Reihe 14 nicht (→ Paket `0100`, eigenes Paket, dieselbe Datei,
+läuft danach); und die Diff-Bilanz des Bauberichts misst gegen den Zwischenblob statt gegen
+den genannten Bezugsstand — eine falsch beschriftete Zahl im Bericht, keine unterschlagene
+Änderung. Wer den Bericht neu schreibt, nimmt sie mit.
+
+### Die Reihenfolgesperre auf 0090 ist Kollisionsschutz, keine sachliche Abhängigkeit
+
+`haengt_an` trägt seit heute zusätzlich `0090-rueckstand-ueberschrift-fuenf-tote-zitate`.
+**Der Grund ist rein technisch, und er ist gemessen, nicht befürchtet:** 0090 steht auf
+`gebaut` und bekommt in diesem Durchgang seinen Prüfplatz; `startbereit()` vergleicht
+`dateien` aber nur unter `offen` (`baulauf.py:273`), sein Anspruch auf `daten/reihen.toml`
+ist also unsichtbar. Der Baulauf läuft vollständig vor der Prüfstufe (`baulauf.py:342-358`) —
+ohne Sperre schriebe dieses Paket in `reihen.toml`, und der Prüfer von 0090 misst danach am
+selben Arbeitsbaum.
+
+**Warum das hier nicht theoretisch ist:** 0090s Abnahme verlangt, dass die Zahl der
+übergangenen Fundstellen „gegenüber dem unmittelbar vorhergehenden Stand desselben Baums
+nicht steigt". Der oben verlangte Satz nennt zwangsläufig Reihen beim Namen — und
+`Reihe 7`, `Reihe 2` sind genau die Form, die der Belegstellenriegel als Abschnittszitat
+gegen `daten/lizenzbefund-reihen.md` auflöst (siehe Befund zu 0079, 2026-09-05). Ein
+Halbsatz hier bewegt die Zahl, an der 0090 gemessen wird.
+
+**Sobald 0090 `fertig` ist, fällt die Sperre.** Sie sagt nichts über den Inhalt dieses
+Pakets und ist kein Rücklaufgrund.

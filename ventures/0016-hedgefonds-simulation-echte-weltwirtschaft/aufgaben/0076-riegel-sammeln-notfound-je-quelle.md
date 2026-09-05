@@ -1,7 +1,7 @@
 ---
 id: 0076-riegel-sammeln-notfound-je-quelle
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

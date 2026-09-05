@@ -9,6 +9,21 @@ abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 
 # ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Änderung an `haengt_an`
 
+## Nachtrag 2026-09-05, zweiter Lauf: 0076 ist fertig, und du bist der Kopf einer Kette
+
+**Beide Abhängigkeiten sind erfüllt** — 0076 ist nach drei Prüfungen abgenommen. Dieses
+Paket ist startbereit und braucht nichts mehr.
+
+**Es halten jetzt vier Pakete `werkzeugkette.cmake`: `0094` (dieses) → `0103` → `0104` →
+`0108`.** Du läufst zuerst und hast damit als einziges keinen fremden Vorher-Stand zu
+berücksichtigen. Die drei hinter dir tragen ihren jeweiligen Vorgänger in `haengt_an`, **als
+Kollisionsschutz gekennzeichnet, nicht als sachliche Abhängigkeit** — `startbereit()`
+vergleicht `dateien` nur unter `offen` (`baulauf.py:273`), und sobald du auf `gebaut` gehst,
+wäre dein Anspruch sonst unsichtbar, während dein Prüfer an derselben Datei misst.
+
+**Für dich folgt daraus nur eines:** Nenne im Nachweis den Stand, gegen den du misst. Was du
+hinterlässt, ist der Vorher-Stand von 0103.
+
 Vier Prüfungen: **Rolle** `kernbauer` steht in `BAUROLLEN`. **Abnahme** prüfbar, beide
 Bedingungen mit Rot- und Grünnachweis am selben Baum. **Abhängigkeit** 0069 ist im selben
 Lauf `fertig` geworden. **Dateischnitt** — dazu die Änderung:

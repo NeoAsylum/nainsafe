@@ -1,13 +1,46 @@
 ---
 id: 0105-belegstellenriegel-name-am-zeilenende
 rolle: testentwickler
-status: vorschlag
-haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung]
+status: offen
+haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung, 0083-belegstellenriegel-totes-ziel-statt-uebergangen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Eine richtige Belegstelle der Form ohne Anfuehrung, die am Zeilenende steht und deren Satz in der naechsten Zeile weiterlaeuft, macht den Riegel nicht mehr rot. Entschieden wird an einer benannten Eigenschaft, nicht an einer Liste, und die Entscheidung steht im Kopfkommentar unter den ausgeschriebenen Grenzen. Nachgewiesen mit drei Nachweisen an einer Kopie des Vorhabens: erstens rot vorher und gruen nachher an der zwei Zeilen langen Stelle aus dem Rumpf unten; zweitens weiterhin rot, wenn dieselbe Stelle eine Ueberschrift nennt, die es nicht gibt (die Lockerung darf keine tote Belegstelle durchlassen); drittens unveraendert 38 Zitate, 38 aufgeloest auf dem dann geltenden Korpus -- keines der heute aufgeloesten Zitate faellt dadurch weg oder in die uebergangenen Fundstellen.
 ---
 
 # Der Name laeuft ueber den Zeilenumbruch weiter -- und wird rot, wo nichts kaputt ist
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, Dritter der Kette
+
+**Vier Prüfungen bestanden.** `testentwickler` steht in `BAUROLLEN` (`baulauf.py:59`). Die
+`dateien`-Liste nennt allein `belegstellen_riegel.cpp`. Die `abnahme` ist prüfbar und nennt
+drei Nachweise, darunter ausdrücklich die Gegenprobe, dass die Lockerung **keine tote
+Belegstelle** durchlässt — das ist die richtige Stelle, weil genau dort die Gefahr sitzt.
+Die Abhängigkeit auf 0079 ist inhaltlich: Der Fehler ist mit 0079 entstanden.
+
+**Es ist eine Regression, keine Altlast, und heute noch nicht scharf.** Der Prüfer hat
+gemessen: Richtet man den ausgelieferten Riegel auf die Wurzel des Repos, kommen fünf
+Befunde dazu, und alle fünf sind von dieser Art. Sie liegen heute außerhalb des Prüfwegs,
+weil `aufgaben/` dort ausgenommen ist — **dieselbe Zeile in `daten/` oder `rueckstand.md`
+wäre ein roter Lauf.** Es ist also eine Falle, die scharf wird, sobald jemand eine richtige
+Belegstelle in eine gelesene Datei schreibt und der Name über den Umbruch läuft.
+
+### Die Reihenfolge auf `belegstellen_riegel.cpp`
+
+Fünf Pakete halten diese eine Datei: **`0079` → `0083` → `0105` (dieses) → `0106` →
+`0115`.** Der Baulauf serialisiert nur unter `offen` (`baulauf.py:273`); jedes Glied trägt
+deshalb seinen Vorgänger in `haengt_an`, **als Kollisionsschutz gekennzeichnet, nicht als
+sachliche Abhängigkeit**, soweit es das nicht ohnehin ist.
+
+**Was du wissen musst, ohne es zu bauen:** `0106` kommt unmittelbar nach dir und setzt einen
+Anker genau an den Schritt, den du lockerst — `steht_da` in `pruefe_zitate`. Heute überlebt
+dort der Mutant `steht_da = true` alles. **Deine Lockerung ist damit ungeschützt, solange
+0106 nicht gebaut ist; das ist ein Grund für Sorgfalt, kein Auftrag.** Bau ihn nicht mit,
+sonst trägt ein Paket zwei Abnahmen.
+
+**Die Folge steht dir zu:** Zwei fremde Pakete ändern vor dir dieselbe Datei. Die 38 Zitate
+deiner dritten Bedingung sind der Stand vom 2026-09-05 — deine `abnahme` sagt richtig „auf
+dem dann geltenden Korpus". **Nenne deinen Bezugsstand und miss unmittelbar vor und nach
+deinem Eingriff am selben Baum**, nicht gegen eine hier notierte Zahl.
 
 Vorschlag des Test-Pruefers vom 2026-09-05, gemessen bei der Pruefung von 0079
 (`befunde/pruefung-0079-belegstellenriegel-zitat-ohne-anfuehrung-2026-09-05.md`,

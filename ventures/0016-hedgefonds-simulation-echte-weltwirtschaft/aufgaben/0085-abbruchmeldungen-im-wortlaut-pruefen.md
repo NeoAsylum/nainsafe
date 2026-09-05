@@ -1,7 +1,7 @@
 ---
 id: 0085-abbruchmeldungen-im-wortlaut-pruefen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0071-rundennummer-in-den-zustand]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: In `schritt_probe` prueft jede Stelle, die einen Abbruch erwartet, nicht nur **dass** geworfen wurde, sondern **welcher** Riegel geworfen hat -- an einem Textstueck der Meldung, das den Riegel eindeutig kennzeichnet. Der Nachweis ist eine ausgefuehrte Sabotage: Streicht man den Block `if (vorrundennummer == festkomma::I64_MAX)` in `kern/src/schritt.cpp`, wird `schritt_probe` rot; die rote Zeile nennt die erwartete und die tatsaechlich angekommene Meldung. Heute bleibt die Probe unter derselben Sabotage gruen.

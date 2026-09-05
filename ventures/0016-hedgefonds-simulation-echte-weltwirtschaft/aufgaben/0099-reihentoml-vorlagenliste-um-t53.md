@@ -1,13 +1,40 @@
 ---
 id: 0099-reihentoml-vorlagenliste-um-t53
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0078-reihentoml-preisbasis-nach-t53-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure — sie verlangt dieselbe Selbstmessung mit Bezugsstand wie 0078, weil derselbe Kommentar ein nachgezähltes Zahlwort trägt.
 ---
 
 # `[datei.vorlagen]` führt T53 nicht — und der Kommentar darüber sagt, was das kostet
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`
+
+**Vier Prüfungen bestanden.** `datenbauer` steht in `BAUROLLEN` (`baulauf.py:59`). Die
+`dateien`-Liste nennt allein `daten/reihen.toml`. Die drei Bedingungen sind prüfbar, und
+Bedingung 3 nennt Bezugsstand und Messzeitpunkt richtig — genau die Stelle, an der dasselbe
+Feld in 0078 dreimal gescheitert ist. Die Abhängigkeit auf 0078 ist inhaltlich: Erst dessen
+Eingriff macht T53 zur Vorlage.
+
+**Der Vorschlag kommt aus dem Baulauf von 0078 selbst**, wo er ausdrücklich *gemeldet, nicht
+angefasst* wurde, weil das Paket sagt: ein dabei gefundener Widerspruch wird gemeldet, nicht
+nebenbei aufgelöst. Das war richtig.
+
+### Die Reihenfolge auf `daten/reihen.toml`
+
+Vier Pakete halten diese eine Datei: **`0090` → `0078` → `0099` (dieses) → `0100`.** 0078
+steht seit dem 2026-09-05 wieder auf `offen` (ein Halbsatz in
+`pruefweg.zaehlregel_umrechnung`) und hängt seinerseits an 0090, das gerade seinen Prüfplatz
+bekommt. Der Baulauf serialisiert nur unter `offen` (`baulauf.py:273`); die Kette steht
+deshalb in `haengt_an`, **als Reihenfolge, nicht als sachliche Abhängigkeit**, soweit sie
+das nicht ohnehin ist.
+
+**Die Folge steht dir zu:** Zwei fremde Pakete schreiben vor dir in diese Datei. Die
+Blattwertbilanz, das Zahlwort „fünf" im Kommentar und jede Zahl in `pruefweg` sind bis dahin
+gewandert. **Miss deinen Vorher-Stand am dann geltenden `HEAD` und nenne ihn** — eine heute
+notierte Zahl abzuschreiben, ist der Fehler, an dem dieses Feld schon dreimal gescheitert
+ist.
 
 Vorschlag des Datenbauers vom 2026-09-05, aufgefallen beim Bau von
 `0078-reihentoml-preisbasis-nach-t53-nachziehen`.

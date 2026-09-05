@@ -1,13 +1,49 @@
 ---
 id: 0106-belegstellenriegel-aufloesung-mit-anker
 rolle: testentwickler
-status: vorschlag
-haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung]
+status: offen
+haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung, 0105-belegstellenriegel-name-am-zeilenende]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Selbsttest des Riegels bricht mit Code 2 ab, wenn in `pruefe_zitate` die Zuweisung `steht_da` durch eine Konstante ersetzt wird -- in beiden Zweigen, mit und ohne Anfuehrung, und je einzeln nachgewiesen. Ebenso, wenn die Art *einzelnes Zeichen* entfaellt. Nachgewiesen mit vier Mutanten, je einer Textersetzung auf einer Kopie: `steht_da = true` und `steht_da = false` im Zweig ohne Anfuehrung, `steht_da = true` im Zweig mit Anfuehrung, und die Art *einzelnes Zeichen* abgeschaltet; jeder muss am Selbsttest sterben, bevor der Bestand gelesen wird. Der Riegel bleibt auf dem dann geltenden Korpus gruen und meldet dieselben Zahlen wie vorher; die Zahl der Faelle im Selbsttest steigt und keine bestehende Erwartung aendert sich.
 ---
 
 # Der Schritt, an dem aus einer Art ein Befund wird, haelt kein Fall
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, Vierter der Kette
+
+**Vier Prüfungen bestanden.** `testentwickler` steht in `BAUROLLEN`. Die `dateien`-Liste
+nennt allein `belegstellen_riegel.cpp`. Die `abnahme` nennt vier Mutanten mit ihrer
+Textersetzung und verlangt, dass jeder **am Selbsttest stirbt, bevor der Bestand gelesen
+wird** — prüfbar, und die richtige Stelle, weil ein Anker am Bestand ein wandernder Anker
+ist. Die Abhängigkeit auf 0079 ist inhaltlich.
+
+**Der Befund ist gemessen und nicht klein:** Ersetzt man in `pruefe_zitate` im Zweig ohne
+Anführung `steht_da = art == Namensart::Ueberschrift` durch `steht_da = true`, bleibt der
+Selbsttest vollständig grün (17 von 17) **und** der Riegel meldet auf einer Kopie mit
+umbenannter Überschrift weiter Code 0 — der Mutant überlebt alles. Derselbe Mutant im Zweig
+**mit** Anführung überlebt ebenfalls. **Die Lücke ist nicht mit 0079 entstanden, sondern mit
+0067; 0079 verdoppelt sie.** Das ist der Schritt, an dem aus einer Art ein Befund wird —
+also die Stelle, um derentwillen der Riegel existiert.
+
+Dazu die kleinere Hälfte: Die Art *einzelnes Zeichen* hat als einzige der fünf keinen Fall
+in `ZITATFAELLE`. Schaltet man sie ab, wird der Riegel rot — aber erst am Bestand, an einer
+einzigen Stelle in `rueckstand.md`. Wird dieser Satz umformuliert, ist die Regel unbemerkt
+ungeprüft.
+
+### Die Reihenfolge auf `belegstellen_riegel.cpp`
+
+Fünf Pakete halten diese eine Datei: **`0079` → `0083` → `0105` → `0106` (dieses) →
+`0115`.** Jedes Glied trägt seinen Vorgänger in `haengt_an`, **als Kollisionsschutz
+gekennzeichnet, nicht als sachliche Abhängigkeit**, weil `startbereit()` `dateien` nur unter
+`offen` vergleicht (`baulauf.py:273`).
+
+**Was du wissen musst:** `0105` läuft unmittelbar vor dir und **lockert genau den Zweig, den
+du verankerst** — die Auflösung ohne Anführung. Dein Mutant `steht_da = true` muss also am
+*dann* geltenden Stand sterben, nicht am heutigen, und die vier Mutanten sind gegen den
+Quelltext zu setzen, den du vorfindest. **Nenne deinen Bezugsstand.** Wenn 0105 die
+Verzweigung umbaut, ist die Textersetzung aus deiner `abnahme` sinngemäß zu treffen, nicht
+buchstäblich — die Bedingung ist, dass der Auflösungsschritt einen Anker bekommt, nicht,
+dass eine bestimmte Zeichenfolge dasteht.
 
 Vorschlag des Test-Pruefers vom 2026-09-05, gemessen bei der Pruefung von 0079
 (`befunde/pruefung-0079-belegstellenriegel-zitat-ohne-anfuehrung-2026-09-05.md`,

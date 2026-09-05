@@ -1,13 +1,45 @@
 ---
 id: 0111-korbbestand-anleihezweig-betrag-der-stufen
 rolle: testentwickler
-status: vorschlag
-haengt_an: []
+status: offen
+haengt_an: [0087-geprueftes-plus-und-minus-in-festkomma]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Eine neue Pruefung in `werte_probe.cpp` zum Anleihezweig von `korbbestand` (T48 Nr. 8, `technik.md:2128`). Der Nachweis ist zweiseitig: Am unveraenderten `kern/src/werte.cpp` laeuft `werte_probe` gruen; ersetzt man in `werte.cpp:598` `mal(betrag(stufen), konst.stufenweite)` durch `mal(stufen, konst.stufenweite)`, wird sie rot. Die Pruefung belegt einen Anleihesteckplatz mit **negativer** Stufenzahl und schreibt den erwarteten Beitrag als Zahl aus, dazu die verworfene Form als **andere** Zahl. Eine Pruefung, die auch am mutierten Modul gruen bleibt, zaehlt nicht.
 ---
 
 # Der Anleihezweig von `korbbestand` nimmt den Betrag der Stufenzahl -- und das laesst sich heute verletzen
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Reihenfolgesperre
+
+**Vier Prüfungen bestanden.** `testentwickler` steht in `BAUROLLEN` (`baulauf.py:59`). Die
+`dateien`-Liste nennt allein `kern/test/werte_probe.cpp`; 0088 hat diese Datei zuletzt
+gehalten und ist am 2026-09-05 abgenommen. Die `abnahme` ist zweiseitig, nennt die Mutation
+im Wortlaut und verlangt zwei **verschiedene** Zahlen für die richtige und die verworfene
+Form — eine Prüfung, die auch am mutierten Modul grün bleibt, zählt nicht. Das ist die Form,
+die 0088 durch zwei Prüfungen getragen hat.
+
+### `haengt_an: [0087]` — Reihenfolgesperre, nicht sachliche Abhängigkeit
+
+**Der Dateischnitt ist leer, und trotzdem musst du hinter 0087 laufen.** Der Grund ist der
+**Nachweisweg**, nicht der Schreibzugriff: Deine Abnahme bringt ihre rote Hälfte durch eine
+Mutation an `kern/src/werte.cpp` an — und genau diese Datei baut das offene Paket `0087`
+(*geprüftes Plus und Minus in Festkomma*) um. Die `dateien`-Listen schneiden sich nicht, der
+Baulauf hätte euch also **gleichzeitig eingeplant**, und dein Prüfer misst am dann geltenden
+`HEAD`.
+
+**Das ist in dieser Fabrik die bekannteste Falle, und sie hat schon einmal genau hier
+zugeschlagen:** 0088 stand vor demselben Problem mit demselben `werte.cpp`. Diesmal steht
+die Sperre vorher da.
+
+**Was daraus für dich folgt:** `werte.cpp:598` ist der Stand vom 2026-09-05. Nach 0087 wird
+die Zeile gewandert sein, und die Festkomma-Operation darin kann anders geschrieben sein.
+**Suche die Stelle am Text `mal(betrag(stufen), konst.stufenweite)`, nicht an der Nummer**,
+und wenn 0087 die Form geändert hat, triff die Mutation sinngemäß: Die Bedingung ist, dass
+der Betrag der Stufenzahl entfällt, nicht dass eine bestimmte Zeichenfolge ersetzt wird.
+Nenne deinen Bezugsstand.
+
+**Sobald 0087 `fertig` ist, fällt die Sperre.** Sie sagt nichts über den Inhalt dieses
+Pakets und ist kein Rücklaufgrund.
 
 Vorgeschlagen vom `test-pruefer` aus der Pruefung zu Paket
 `0088-werte-probe-vier-unbelegte-vorgaben` (`urteil: geprueft`). **Das Paket selbst ist in

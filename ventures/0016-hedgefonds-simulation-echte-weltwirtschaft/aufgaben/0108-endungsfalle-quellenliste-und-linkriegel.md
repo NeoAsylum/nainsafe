@@ -1,13 +1,35 @@
 ---
 id: 0108-endungsfalle-quellenliste-und-linkriegel
 rolle: kernbauer
-status: vorschlag
-haengt_an: []
+status: offen
+haengt_an: [0104-zielzahlen-je-profil-statt-tripel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Dieselbe Endungsfalle an zwei Stellen mehr -- eine davon nimmt 0103 ausdruecklich aus
+
+## Angenommen am 2026-09-05 (Projektmanager), als Letztes der Kette auf `werkzeugkette.cmake`
+
+**Vier Prüfungen bestanden.** `kernbauer` steht in `BAUROLLEN`, die `dateien`-Liste nennt
+allein `werkzeugkette.cmake`, die drei Bedingungen der `abnahme` sind je an einem Baum
+prüfbar, und es hängt an nichts Unerfülltem.
+
+**Punkt 2 ist berichtigt**, aus Paket `0113` und vor deinem ersten Lauf. Der Verweis auf den
+in 0103 empfohlenen Weg führte in die Irre — nicht für deine Stellen, sondern für die
+dortigen. Die Messung steht daneben.
+
+### Die Reihenfolge auf `werkzeugkette.cmake`
+
+Vier Pakete halten diese eine Datei: **`0094` → `0103` → `0104` → `0108` (dieses).** Du
+läufst zuletzt. Der Baulauf serialisiert nur unter `offen` (`baulauf.py:273`), deshalb trägt
+jedes Glied seinen Vorgänger in `haengt_an` — **als Kollisionsschutz gekennzeichnet, nicht
+als sachliche Abhängigkeit.** Dieses Paket hängt an `0104`.
+
+**Die Folge steht dir zu, und sie ist hier am größten:** Drei fremde Pakete ändern diese
+Datei vor dir. Jede Zeilennummer in diesem Rumpf (488, 661, 682, 489, 659) ist der Stand vom
+2026-09-05 und wird bis dahin gewandert sein. **Suche die Stellen am Text, nicht an der
+Nummer, und nenne deinen Bezugsstand.**
 
 Aus der zweiten Pruefung von Paket 0076 (2026-09-05, Rolle `kern-pruefer`),
 `befunde/pruefung-0076-riegel-sammeln-notfound-je-quelle-runde2-2026-09-05.md`,
@@ -129,9 +151,20 @@ Die Bauform steht frei. Verlangt ist:
    nicht mehr als leer behandelt. Ein Wert, der **nur** aus dem Nichtwert besteht, gilt
    weiter als leere Menge.
 2. **Zeile 661 und 682:** Dasselbe fuer die vier Eigenschaften des
-   Nullabhaengigkeitsriegels. Der naheliegende Weg ist an allen drei Stellen derselbe wie
-   in 0103 -- je Listeneintrag entscheiden statt ueber die zusammengefuegte Zeichenkette;
-   die Schleifen darunter laufen ohnehin ueber die Eintraege.
+   Nullabhaengigkeitsriegels.
+
+   **Berichtigt am 2026-09-05 (Projektmanager, aus Paket 0113).** Hier stand, der
+   naheliegende Weg sei an allen drei Stellen derselbe wie in 0103 -- je Listeneintrag
+   entscheiden statt ueber die zusammengefuegte Zeichenkette. **An den Stellen dieses
+   Pakets traegt er**, weil `SOURCES`, `LINK_LIBRARIES`, `LINK_OPTIONS` und ihre
+   `INTERFACE`-Formen echte CMake-Listen sind. **An den zwei Stellen von 0103 traegt er
+   nicht**, und der Verweis fuehrte dorthin: `COMPILE_FLAGS` am Ziel und an der Quelldatei
+   ist eine Zeichenkette mit Leerzeichen, ihr ganzer Wert ist der eine Eintrag, und dieser
+   endet auf `-NOTFOUND`. Gemessen mit CMake 4.2.3 an 0103s eigener Abnahmebedingung 1:
+   `HEAD` Code 0, je Listeneintrag Code 0 (unveraendert), Nichtwert exakt Code 1. Der Satz
+   in 0103 ist dort berichtigt. **Wer beide Pakete nacheinander baut, uebernimmt ihn nicht
+   mehr ungeprueft in die andere Richtung.** Die Bauform steht auch hier frei; verlangt ist
+   die Bedingung.
 3. **Die Meldung des Nullabhaengigkeitsriegels nennt den gelesenen Wert, nicht den
    geleerten.** Was `nullgelesen` ausgibt, muss der Wert sein, ueber den geurteilt wurde.
    Das ist keine Erweiterung der Meldung um einen Zaehler, sondern die Berichtigung einer

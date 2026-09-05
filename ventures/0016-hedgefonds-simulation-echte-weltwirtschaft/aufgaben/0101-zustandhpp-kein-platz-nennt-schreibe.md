@@ -1,13 +1,38 @@
 ---
 id: 0101-zustandhpp-kein-platz-nennt-schreibe
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0027-zustand-schreibweg-schliessen]
+status: offen
+haengt_an: [0027-zustand-schreibweg-schliessen, 0072-zustandhpp-doppelpunktverweise]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: Der Kommentar an `KEIN_PLATZ` in `kern/include/kern/zustand.hpp` nennt keinen Namen mehr, den `Zustand` nicht traegt. Mechanisch: `grep -n 'schreibe' kern/include/kern/zustand.hpp` trifft danach keine Zeile mehr, die eine Zustandsfunktion dieses Namens behauptet; die drei genannten Funktionen pruefen `index >= FELDER` nachweislich (`zustand.hpp:439`, `zustand.hpp:465`, `zustand.cpp:816`), und `ctest` bleibt gruen.
 ---
 
 # `KEIN_PLATZ` beruft sich auf `Zustand::schreibe` -- die Funktion gibt es seit 0027 nicht mehr
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Ergänzung an `haengt_an`
+
+**Vier Prüfungen bestanden.** `kernbauer` steht in `BAUROLLEN` (`baulauf.py:59`). Die
+`dateien`-Liste nennt allein `kern/include/kern/zustand.hpp`. Die `abnahme` ist mechanisch
+formuliert und nennt den Grep, mit dem sie fällt. Die Abhängigkeit auf 0027 ist inhaltlich
+und **im selben Lauf erfüllt worden**: 0027 ist am 2026-09-05 mit `urteil: geprueft`,
+0 Befunden und einer eigenen Laufprobe abgenommen — das ist der Commit, der `Zustand::schreibe`
+entfernt hat und diesen Vorschlag überhaupt erst richtig macht.
+
+### Die Reihenfolge auf `zustand.hpp`
+
+Zwei Pakete halten diese Datei: **`0072` → `0101` (dieses).** `haengt_an` trägt deshalb seit
+heute zusätzlich `0072` — **als Kollisionsschutz gekennzeichnet, nicht als sachliche
+Abhängigkeit.** Der Grund: `startbereit()` vergleicht `dateien` nur unter `offen`
+(`baulauf.py:273`); sobald 0072 auf `gebaut` steht, wäre sein Anspruch unsichtbar, und dieses
+Paket liefe, während der Prüfer von 0072 an derselben Datei am dann geltenden `HEAD` misst.
+**An genau dieser Bauart ist 0027 zweimal schuldlos gescheitert** — und 0072 ist das Paket,
+das mit 0027 gerade erst frei geworden ist.
+
+**Die Folge steht dir zu:** 0072 räumt vor dir die Doppelpunktverweise in derselben Datei
+auf. Die drei Zeilennummern in deiner `abnahme` (`zustand.hpp:439`, `zustand.hpp:465`,
+`zustand.cpp:816`) sind der Stand vom 2026-09-05. **Suche die drei Funktionen am Namen, nicht
+an der Nummer** — die Bedingung ist, dass sie `index >= FELDER` nachweislich prüfen, nicht,
+dass sie in einer bestimmten Zeile stehen. Nenne deinen Bezugsstand.
 
 ## Der Fund
 

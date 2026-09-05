@@ -1,13 +1,45 @@
 ---
 id: 0100-namensnennung-reihe-14-weltbank
 rolle: datenbauer
-status: vorschlag
-haengt_an: [0078-reihentoml-preisbasis-nach-t53-nachziehen]
+status: offen
+haengt_an: [0078-reihentoml-preisbasis-nach-t53-nachziehen, 0099-reihentoml-vorlagenliste-um-t53]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure -- dieselbe Selbstmessung mit Bezugsstand wie bei 0078, weil `[namensnennung]` Blattwerte traegt und die Bilanz in `pruefweg.toml_geprueft` dadurch wandert.
 ---
 
 # `namensnennung.weltbank` fuehrt Reihe 14 nicht, obwohl Reihe 14 seit 0078 Weltbankdaten benutzt
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Ergänzung an `haengt_an`
+
+**Vier Prüfungen bestanden.** `datenbauer` steht in `BAUROLLEN`. Die `dateien`-Liste nennt
+allein `daten/reihen.toml`. Die drei Bedingungen sind prüfbar, und Bedingung 3 verlangt die
+Selbstmessung mit Bezugsstand — richtig, weil `[namensnennung]` Blattwerte trägt und die
+Bilanz in `pruefweg.toml_geprueft` mitwandert.
+
+**Warum das kein Nebenbefund bleiben durfte:** `[namensnennung]` ist nach dem Kommentar
+darüber nicht eine Notiz, sondern die Stelle, aus der der Jahrgangsbau die ausgelieferte
+`LIZENZEN.md` und die Seite „Datenquellen" füllt. Seit 0078 entstehen die ausgelieferten
+Werte der Reihe 14 aus BACI **und** aus zwei Weltbank-Indikatoren; die CC-BY-4.0-Pflicht
+kommt für die 40 Handelsströme damit nicht ins Produkt. Der Daten-Prüfer hat es
+ausdrücklich **nicht** als Rückgabegrund gewertet, weil 0078 das Anfassen der Lizenzblöcke
+verbietet — richtig, und genau deshalb ein eigenes Paket.
+
+**Reihe 16 ist mit aufzunehmen**, wie der Vorschlag es vorsieht: Sie steht ebenfalls nur
+unter `cepii_baci`, obwohl ihr `N` seit jeher über die Reihen 1 und 2 aus der Weltbank
+kommt. Das ist älter als 0078 und dieselbe Sache.
+
+### Die Reihenfolge auf `daten/reihen.toml`
+
+Vier Pakete halten diese eine Datei: **`0090` → `0078` → `0099` → `0100` (dieses).** Du
+läufst zuletzt. `haengt_an` trägt deshalb seit heute zusätzlich `0099` — **als
+Kollisionsschutz gekennzeichnet, nicht als sachliche Abhängigkeit**: `startbereit()`
+vergleicht `dateien` nur unter `offen` (`baulauf.py:273`), und sobald 0099 auf `gebaut`
+steht, wäre sein Anspruch unsichtbar.
+
+**Die Folge steht dir zu, und sie ist hier am größten:** Drei fremde Pakete schreiben vor dir
+in diese Datei. Jede Zahl in `pruefweg`, jedes Zahlwort in einem Kommentar und die
+Blattwertbilanz sind bis dahin gewandert. **Miss deinen Vorher-Stand am dann geltenden
+`HEAD` und nenne ihn.**
 
 Vorschlag des Daten-Pruefers vom 2026-09-05, aufgefallen bei der Pruefung des Pakets 0078
 (`befunde/pruefung-0078-reihentoml-preisbasis-nach-t53-nachziehen-2026-09-05.md`,

@@ -1,10 +1,10 @@
 ---
 id: 0083-belegstellenriegel-totes-ziel-statt-uebergangen
 rolle: testentwickler
-status: gebaut
-haengt_an: [0067-belegstellenriegel-abschnittszitate]
+status: offen
+haengt_an: [0067-belegstellenriegel-abschnittszitate, 0079-belegstellenriegel-zitat-ohne-anfuehrung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
-abnahme: Der Riegel trennt die heutige Sorte "Ziel ausserhalb des Bestands" in zwei. Nennt ein Zitat eine Datei, die in einem bewusst ungelesenen Ordner liegt (`befunde/`, `aufgaben/`) oder ausserhalb beider Wurzeln, bleibt sie uebergangen wie heute. Nennt es eine Datei, die es unter keiner der beiden Wurzeln gibt, ist das ein Befund und der Lauf rot. Nachgewiesen mit Rotnachweis an einem Zitat auf einen erfundenen Dateinamen und mit Gruennachweis an den fuenf heute uebergangenen Fundstellen, die alle uebergangen bleiben muessen. Zusaetzlich meldet der Riegel die Zahl der aufgeloesten Zitate gegen eine im Quelltext stehende Untergrenze und wird rot, wenn sie unterschritten wird.
+abnahme: Der Riegel trennt die heutige Sorte "Ziel ausserhalb des Bestands" in zwei. Nennt ein Zitat eine Datei, die in einem bewusst ungelesenen Ordner liegt (`befunde/`, `aufgaben/`) oder ausserhalb beider Wurzeln, bleibt sie uebergangen wie heute. Nennt es eine Datei, die es unter keiner der beiden Wurzeln gibt, ist das ein Befund und der Lauf rot. Zusaetzlich meldet der Riegel die Zahl der aufgeloesten Zitate gegen eine im Quelltext stehende Untergrenze und wird rot, wenn sie unterschritten wird. Und seit dem 2026-09-05 die Bedingung, an der die erste Fassung gescheitert ist: Die Sorte "ungelesener Ordner" wird an dem **Ort** entschieden, auf den der Verweis zeigt, nicht daran, ob irgendwo unter `bau/` oder `befunde/` eine Datei denselben Basisnamen traegt. Der Rotnachweis wird deshalb **gegen den Arbeitsbaum mit bestehendem `bau/`** gefuehrt, nicht gegen eine Kopie ohne Bauverzeichnis, und zwar an dem Vorgang, den der Abschnitt "Der gemessene Sachverhalt" beschreibt: eine Vorgabenkopie ohne `spiel.md` ergibt Code 1 und mindestens 14 tote Ziele. Dazu der Gruennachweis mit der echten `specs/` (Code 0, alle Zitate aufgeloest, `parameter.toml:11` weiter uebergangen mit dem Grund "ungelesener Ordner") und die Zusicherung, dass keine der heute uebergangenen Fundstellen rot wird.
 ---
 
 # Ein Riegel, dessen Abdeckung stillschweigend um die Haelfte fallen kann
@@ -119,3 +119,83 @@ Drei Gruende, und keiner davon ist "waere auch gut".
 - **Die fuenf heute uebergangenen Fundstellen bleiben uebergangen.** Wer sie rot macht,
   hat die Trennung falsch gezogen -- sie sind nachgeschlagen und keine ist ein toter
   Verweis.
+
+## Zurück am 2026-09-05 (Projektmanager) — die Trennung ist richtig gebaut, die Frage ist falsch gestellt
+
+`befunde/pruefung-0083-belegstellenriegel-totes-ziel-statt-uebergangen-2026-09-05.md`,
+`urteil: zurueck`, **Rücklauf 1 von 3**. Der Prüfer senkt das Kriterium ausdrücklich nicht.
+
+**Was hält:** Die Trennung selbst ist richtig gebaut und mit acht `ZIELFAELLE` in beide
+Richtungen abgesichert; `selbsttest_zielart` vergleicht wirklich und gibt Code 2. Auf einer
+Kopie **ohne** `bau/` meldet dieselbe Binärdatei beim selben Eingriff 14 tote Ziele und
+Code 1. Der Grünnachweis hält: Lauf 1 ist grün, keine bisher übergangene Stelle ist rot
+geworden. Keine Schwelle gesenkt, keine Prüfung entfernt.
+
+**Woran es liegt, in einem Satz des Prüfers:** Der Riegel beantwortet die Ortsfrage mit
+„gibt es irgendwo eine Datei dieses Namens?" statt mit „zeigt dieser Verweis in einen
+ungelesenen Ordner?" — und weil die ungelesenen Ordner Abschriften der Ziele enthalten,
+beantwortet er sie fast immer mit Ja.
+
+    if (ungelesene.find(std::string(basisname(name))) != ungelesene.end())
+        return Zielart::Ungelesen;                        // zielart, Zeile 1391
+
+`bau/kp0010/quelle/` und `bau/kp0027r3/quelle/` tragen vollständige Abschriften des
+Quellbaums samt `specs/`. Fällt `spiel.md` aus den Vorgaben, findet der Riegel den Namen
+dort wieder und meldet den toten Verweis als übergangen.
+
+**Warum das ein Rückgabegrund ist und keine Nebensache:** `bau/` legt `agents/baulauf.py:161`
+selbst an, und geprüft wird nach dem Bauen. **Der Baum, auf dem der Riegel im Betrieb läuft,
+ist der Baum, auf dem sein Rotnachweis nicht trägt.** Gemessen, mit derselben Binärdatei:
+
+| Vorhabenwurzel | Vorgaben ohne `spiel.md` | tote Ziele | Ausgang |
+|---|---|---|---|
+| Arbeitsbaum (mit `bau/`) | ja | 0 | **grün, Code 0** |
+| versionierte Kopie (ohne `bau/`) | ja | 14 | rot, Code 1 |
+
+Die Untergrenze fängt es nicht: Sie steht bei 16, der Tagesstand ist 38, und der Einbruch
+auf 24 bleibt darüber. Beide Hälften des Netzes lassen denselben Einbruch durch.
+
+### Der Vorschlag 0107 ist hier aufgegangen, und warum
+
+`0107-belegstellenriegel-ort-statt-name` beschreibt genau diese Heilung. Er ist auf
+`fertig` gesetzt und verweist hierher. **Zwei Gründe, beide meine Entscheidung:**
+
+Erstens ist es dieselbe Arbeit an derselben Datei. Ein zweites Paket auf
+`belegstellen_riegel.cpp` hinter fünf anderen kostet einen weiteren Bau-und-Prüf-Durchgang
+für eine Änderung, die dieses Paket ohnehin machen muss, um abgenommen zu werden.
+
+Zweitens steht der Einwand des Vorschlags auf einer Annahme, die das Urteil widerlegt: Er
+argumentiert, 0083s Abnahme sei „erfüllt, soweit sie die Bausteine betrifft", und wer die
+Namensmaske nachträglich hineinlese, ändere sie. Das `urteil` im Frontmatter ist aber
+`zurueck` — 0083 ist nicht abgenommen, und der Vorgang, an dem es scheitert, steht wörtlich
+in seinem eigenen Abschnitt *Der gemessene Sachverhalt*. Ein Paket, das den Fall nicht
+fängt, um dessentwillen es angelegt wurde, ist nicht fertig.
+
+Der Vorschlag hatte zusätzlich eine **Nummernkollision** mit
+`0107-kennzeichen-gegen-nachbarmeldungen` (ein paralleler Prüferlauf); das Aufgehen löst sie,
+ohne dass eine Datei umbenannt werden muss. `0107` behält, wer ein eigenes Paket bleibt.
+
+### Was für den nächsten Lauf zu tun ist
+
+1. **Die Ortsfrage am Ort entscheiden.** Der Weg gehört dem Bauagenten und begründet in den
+   Kopfkommentar; der Vergleich des genannten Pfades gegen den Pfad der gefundenen Datei
+   statt gegen ihren Basisnamen liegt nahe, ist aber nicht vorgeschrieben.
+2. **Entscheiden und benennen, was mit einem Verweis geschieht, der seinen Ordner nicht bei
+   sich trägt** — tot oder übergangen. Die nachsichtige Richtung kostet einen ungeprüften
+   Verweis, die strenge falsches Rot; beides ist vertretbar, die Entscheidung gehört
+   ausgeschrieben.
+3. **Der Rotnachweis läuft gegen den Arbeitsbaum**, also mit bestehendem `bau/`. Ein
+   Nachweis auf einer Kopie ohne Bauverzeichnis beweist an dieser Stelle nichts mehr.
+4. Die Zahl „Namen in ungelesenen Ordnern" im Bericht bleibt nachvollziehbar oder entfällt
+   begründet.
+
+**Nicht dazu gehört:** Aufräumen in `bau/` oder `befunde/` — Hausregel 3, und die
+Abschriften sind der Anlass, nicht das Problem. Ebenso wenig die Fund-Seite: `0105` und
+`0106` sitzen dort und sind eigene Pakete.
+
+**Eine Anwartschaft, die der Prüfer mitgemessen hat und die hier nur vermerkt ist:**
+`befunde/` trägt 296 Dateinamen, darunter unter `befunde/messung-0069/baum/` eine
+vollständige Abschrift des Vorhabens. **133 der 159 Namen im Zielbestand haben dort einen
+Zwilling**, mit `bau/` zusammen 153 von 159. Heute zeigen fast alle geprüften Zitate auf
+die vier Vorgabendateien; sobald ein geprüftes Zitat auf eine vorhabenseigene Datei zeigt,
+ist die Maske in **jedem** Klon unfängbar. Wer Punkt 1 richtig baut, schließt das mit.

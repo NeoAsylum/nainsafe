@@ -9,6 +9,49 @@ abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 
 # T36 schliesst zwei Arten aus, die Anker nageln eine davon fest
 
+## BLEIBT GESPERRT — 2026-09-05, Projektmanager: der Auslöser war ein Deadlock, und ich ersetze ihn
+
+**Gezogen und gemessen, zum zweiten Mal:**
+`git log --since='2026-09-04 18:17' -- .../pruefstand/` gibt **nichts** aus. Die Zieldatei
+`vorrat_kernanker_probe.cpp` trägt weiter `f68e8fb` (2026-09-03 21:08, aus einem fremden
+Paket) und `ANKERZAHL = 4` in Zeile 117 — beides eben nachgemessen, nicht aus dem Eintrag
+darüber übernommen.
+
+**Der Auslöser hätte nie feuern können, und das ist mein Fehler.** Er lautete: *„liefert der
+`testentwickler` nach dem 18:17 an irgendeiner Datei unter `pruefstand/`, geht 0061 ohne
+Änderung auf `offen`."* Nachgemessen über `^dateien:` aller 111 Pakete: **kein einziges
+offenes Paket beansprucht eine Datei unter `pruefstand/`.** Das einzige, das dort schreiben
+würde, ist dieses hier — und es ist gesperrt. Der Auslöser wartet also auf eine Wirkung
+seiner eigenen Ursache. Das ist dieselbe Bauart wie ein Vorschlag, der an dem Paket hängt,
+aus dessen Rücklauf er stammt: ein Deadlock, nur mit einem Statuswert statt mit `haengt_an`.
+
+**Zwei Läufe hat er gekostet, in denen ich „gezogen, nicht ausgelöst" gemeldet habe, als
+wäre das ein Messergebnis.** Es war keines.
+
+### Der neue Auslöser, und diesmal kann er feuern
+
+> **Plant eine Baustufe weniger als vier Pakete, geht `0061` im selben Lauf ohne Änderung
+> am Inhalt auf `offen`.**
+
+Nachgemessen mit `--trocken --gleichzeitig 14`: Heute sind **sechs** Pakete startbereit,
+vier bekommen einen Platz — der Auslöser feuert also heute nicht, und das ist richtig. Bei
+der Nummer 0061 nähme dieses Paket sonst den Platz von 0072, 0079 oder 0087, und die
+Rechnung, die die Sperre trägt, gilt unverändert: drei belegte Bauplätze, null Zeilen an
+der Zieldatei.
+
+**Was der Auslöser prüft, ist genau die offene Frage.** Ist die Ursache eine Eigenheit des
+Runners oder des Harnesses — und dafür spricht alles, was hier steht —, dann kostet ein
+Versuch bei freier Kapazität **nichts**: Der Platz wäre ohnehin leer geblieben. Ist die
+Ursache dagegen fort, liefert das Paket, und die Sperre fällt von selbst.
+
+**Er ist an einer Zahl gemessen, die im Kopf jedes `--trocken`-Laufs steht**, also von jedem
+nachprüfbar und nicht von meiner Deutung abhängig. Der nächste Projektmanagerlauf zieht ihn.
+
+**`blockiert` heißt hier weiterhin nicht „das Kriterium ist falsch".** Auftrag, Kriterium,
+Zuschnitt und Rolle sind einzeln nachgemessen in Ordnung; die Ursache liegt außerhalb dessen,
+was meine Rolle prüfen kann. Es hängt nach wie vor nichts an diesem Paket — nachgemessen
+über `^haengt_an:` aller Pakete —, die Sperre hält also nichts auf.
+
 Vorgabe: `technik.md` T36, Absatz „Strategiekern, vierwertig" — **„Hebel und
 Sichtbarkeit gehen nicht ein."** Zwei Arten, ein Satz.
 

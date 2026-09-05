@@ -1,13 +1,39 @@
 ---
 id: 0115-riegelkopf-drei-zahlen-nachmessen
 rolle: testentwickler
-status: vorschlag
-haengt_an: [0086-belegstellenriegel-schluesselwort-mit-abstand]
+status: offen
+haengt_an: [0086-belegstellenriegel-schluesselwort-mit-abstand, 0106-belegstellenriegel-aufloesung-mit-anker]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Drei Angaben im Kopfkommentar von `belegstellen_riegel.cpp` stimmen mit dem Stand ueberein, an dem sie stehen, und jede ist am Auslieferungsstand nachgemessen statt uebernommen. Erstens -- die Zahl der Selbsttreffer unter der Mutation `ohne-marken` und die Zahl der Zitate daneben nennen, was der Mutant am jetzigen Quelltext wirklich liefert; wer sie schreibt, nennt daneben, dass die sechste Stelle im Absatz des Kopfkommentars selbst steht, und macht damit aus dem Fehler das Beispiel. Zweitens -- die Zahlen zur Mutation `rechts-ohne-satzgrenze` gehen gegen ihren eigenen Ausgangsstand auf: Zitate plus uebergangene Fundstellen sind vorher und nachher dieselbe Summe. Drittens -- der Absatz ueber `NAMENSFAELLE` nennt den Fall, der als historisch ausgewiesen ist, mit seiner richtigen Nummer; der Satz widerspricht dem Satz davor nicht mehr. Nachgewiesen wird jede der drei mit dem Aufruf, der sie erzeugt hat, im Rumpf abgedruckt; und der Riegel meldet danach unveraendert dieselben drei Zahlen von Bedingung 2 wie davor, gemessen unmittelbar vor und nach der Aenderung am selben Baum -- eine Berichtigung im Kommentar, die eine Zahl des Riegels bewegt, ist ein Fehlschlag.
 ---
 
 # Drei Zahlen im Kopf des Riegels, gegen den Stand gehalten, an dem sie stehen
+
+## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, Letzter der Kette
+
+**Vier Prüfungen bestanden.** `testentwickler` steht in `BAUROLLEN`. Die `dateien`-Liste
+nennt allein `belegstellen_riegel.cpp`. Die `abnahme` ist prüfbar und trägt eine Bedingung,
+die ich mir merken will: *„eine Berichtigung im Kommentar, die eine Zahl des Riegels bewegt,
+ist ein Fehlschlag"* — gemessen unmittelbar vor und nach der Änderung am selben Baum. Das
+ist die richtige Form. Die Abhängigkeit auf 0086 ist inhaltlich und **im selben Lauf erfüllt
+worden**: 0086 ist am 2026-09-05 abgenommen.
+
+### Die Reihenfolge auf `belegstellen_riegel.cpp`
+
+Fünf Pakete halten diese eine Datei: **`0079` → `0083` → `0105` → `0106` → `0115`
+(dieses).** Du läufst zuletzt. `haengt_an` trägt deshalb zusätzlich `0106` — **als
+Kollisionsschutz gekennzeichnet, nicht als sachliche Abhängigkeit**; `startbereit()`
+vergleicht `dateien` nur unter `offen` (`baulauf.py:273`).
+
+**Die Folge steht dir zu, und sie trifft dich härter als die anderen, weil dein Gegenstand
+Zahlen sind.** Vier fremde Pakete ändern vor dir dieselbe Datei, und drei davon bewegen
+genau die Summen, über die dein Kopfkommentar spricht. **Jede Zahl in diesem Rumpf ist der
+Stand vom 2026-09-05 und ist nachzumessen, nicht abzuschreiben** — das ist ohnehin der
+Gegenstand deines Pakets. Nenne deinen Bezugsstand.
+
+**Der Riegel liest seinen eigenen Quelltext mit.** Zwei mit Sternchen ausgezeichnete Zeilen
+im Kopfkommentar sind zwei neue Fundstellen; daran ist der Nachweis von 0079 gescheitert
+(56 statt 58). **Miss nach der letzten Zeile deines Kommentars, nicht davor.**
 
 Vorschlag aus der Pruefung von `0086-belegstellenriegel-schluesselwort-mit-abstand`,
 2026-09-05. Die vollstaendigen Nachweise stehen in

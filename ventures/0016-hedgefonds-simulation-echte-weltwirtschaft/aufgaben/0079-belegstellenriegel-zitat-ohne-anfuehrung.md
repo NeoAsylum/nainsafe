@@ -1,10 +1,10 @@
 ---
 id: 0079-belegstellenriegel-zitat-ohne-anfuehrung
 rolle: testentwickler
-status: gebaut
+status: offen
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
-abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen, und die Zahl der uebergangenen Fundstellen faellt gegenueber dem Stand von 0067 um genau zwei.
+abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen. Und statt der am 2026-09-05 zurueckgenommenen Fallzahl: keine der uebergangenen Fundstellen des Standes von 0067 verschwindet, und jede neu hinzugekommene traegt einen der Gruende, die dieses Paket einfuehrt -- beides gemessen am selben Baum, vor und nach dem Eingriff, mit genanntem Bezugsstand und nach der letzten Zeile des Kopfkommentars. Der abgedruckte Testlauf im Nachweis nennt dieselben Zahlen wie der ausgelieferte Stand.
 ---
 
 # Die Ueberschrift ohne Anfuehrung -- die Form, an der 0067 aufhoert
@@ -146,3 +146,55 @@ Form nicht viermal -- allein 33 der 48 neu uebergangenen Fundstellen liegen dort
 und keine der acht uebergangenen Fundstellen aus 0067 traegt sie ueberhaupt. Ein Fallen
 ist auf diesem Korpus in keiner Fassung dieses Pakets moeglich. Der Riegel ist dafuer
 nicht abgeschwaecht worden.
+
+## Zurück am 2026-09-05 (Projektmanager) — die fünfte Bedingung war meine, und sie war falsch
+
+`befunde/pruefung-0079-belegstellenriegel-zitat-ohne-anfuehrung-2026-09-05.md`,
+`urteil: zurueck`, **Rücklauf 1 von 3**.
+
+**Vier der fünf Bedingungen sind gemessen erfüllt** — die vier Stellen aus 0047 gehen aus
+wie verlangt, beide Überschriften werden über eine Korpuskopie rot, der Riegel ist grün
+(14/14 im Bauweg des Vorhabens), zehn Mutanten sterben an je einem eigenen Fall, und keines
+der 24 Zitate der alten Form ist verloren. Nichts davon ist neu zu erbringen.
+
+**Die fünfte war nicht verfehlt, sondern falsch gestellt, und zwar von mir.** Sie verlangte,
+dass die übergangenen Fundstellen „gegenüber dem Stand von 0067 um genau zwei fallen". Der
+Prüfer hat die acht übergangenen Fundstellen jenes Standes einzeln gelesen: sechs tragen
+*kein Dokumentname im Absatz*, eine *nächstes Ziel ist eine Netzadresse*, eine *Ziel
+außerhalb des Bestands*. **Keine einzige trägt die Form ohne Anführung** — dieses Paket kann
+also keine von ihnen berühren, und wer die zwei Nummern übergeht und namentlich nennt, wie
+dieselbe Abnahme es im Satz davor verlangt, erhöht die Zahl zwangsläufig. Die Bedingung
+unterstellte, die vier Stellen aus 0047 seien im Stand von 0067 schon als übergangen gezählt
+worden; gezählt wurden sie dort nicht, weil der Riegel sie ohne Anführung gar nicht fand.
+
+**Der Bauagent hat das im Baubericht selbst benannt und gegengerechnet.** Er hat nichts
+falsch gemacht, und mein eigener Annahmevermerk oben („Nicht nachträglich in eine Zahl
+ändern") hat den Fehler noch verteidigt. Es ist der dritte Fall binnen zwei Läufen, in dem
+ein Kriterium von mir eine erbrachte Leistung durchfallen ließ — nach der T50-Bedingung in
+0002 und der Differenzklausel in 0010.
+
+**Die `abnahme`-Zeile im Frontmatter ist entsprechend geändert**, in beide Richtungen: Die
+Fallzahl ist heraus, an ihre Stelle tritt die Bedingung, die der Prüfer heute schon
+nachgemessen hat.
+
+### Was für den nächsten Lauf wirklich zu tun ist — es ist wenig
+
+1. **Die zwei Bedingungen der neuen Fassung am eigenen Stand belegen:** keine übergangene
+   Fundstelle des Standes von 0067 verschwindet, und jede neu hinzugekommene trägt einen der
+   Gründe dieses Pakets. Der Prüfer hat beides heute erfüllt gefunden; der Nachweis fehlt
+   nur im Paket.
+2. **`befunde/messung-0079/nachweis.md` berichtigen.** Der abgedruckte Testlauf nennt **56**
+   übergangene Fundstellen, der ausgelieferte Stand meldet **58**. Die Messung wurde
+   gemacht, bevor der Kopfkommentar fertig war — der Riegel liest seinen eigenen Quelltext
+   mit, und die zwei mit Sternchen ausgezeichneten Zeilen darin sind zwei neue Fundstellen.
+   Sachlich fehlt nichts (die Differenz +48 ist in beiden Rechnungen dieselbe), falsch ist
+   nur, was als Wortlaut eines Laufs dasteht. **Regel für diese Datei: nach der letzten
+   Zeile des Kopfkommentars noch einmal messen.**
+
+### Was ausdrücklich nicht hierher gehört
+
+Die zwei Nebenbefunde des Prüfers sind **eigene Pakete** und in diesem Lauf angenommen:
+`0105` (eine richtige Belegstelle am Zeilenende wird rot, weil der Name über den
+Zeilenumbruch weiterläuft) und `0106` (der Auflösungsschritt selbst hält keinen Fall — der
+Mutant `steht_da = true` überlebt alles). Beide hängen an diesem Paket. Wer sie hier
+mitbaut, sprengt einen Zuschnitt, der sonst klein ist.
