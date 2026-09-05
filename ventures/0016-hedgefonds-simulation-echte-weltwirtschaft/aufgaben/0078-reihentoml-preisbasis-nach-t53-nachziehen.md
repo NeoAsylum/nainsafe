@@ -1,7 +1,7 @@
 ---
 id: 0078-reihentoml-preisbasis-nach-t53-nachziehen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0026-klasse-2-preisbasis, 0090-rueckstand-ueberschrift-fuenf-tote-zitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die fuenf Bedingungen im Abschnitt "Abnahme". Bedingung 5 (die Selbstmessungen) ist die, an der dieses Feld dreimal gescheitert ist -- sie wird nach der letzten Schreibbewegung gemessen, nicht vorher, und mit genanntem Bezugsstand.

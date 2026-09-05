@@ -1,13 +1,43 @@
 ---
 id: 0091-diff-ursachenkette-nach-t20
 rolle: kernbauer
-status: blockiert
-haengt_an: []
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
+status: offen
+haengt_an: [0140-verlauf-sammelt-die-rundenketten]
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Zu einem Unterschied ueber mehr als eine Runde nennt die Ausgabe je geaenderter Adresse nicht nur alt, neu und Differenz, sondern die Ursachenkette aus T18, rueckwaerts aufgeloest bis zur ausloesenden Aktion oder Gegenkraft, mit Verzoegerung und Beitrag je Glied. Nachgewiesen an einer Partie ueber mindestens drei Runden, in der eine Aktion in Runde 1 eine Groesse in Runde 3 aendert: Die Kette nennt beide Glieder und die Verzoegerung dazwischen, und eine Adresse ohne Ursache kommt nicht vor.
 ---
 
-# GESPERRT — 2026-09-05, Projektmanager: `vorschlag` → `blockiert`
+# ENTSPERRT — 2026-09-05, Projektmanager: `blockiert` → `offen`
+
+**Der angekündigte Auslöser ist eingetreten, und ich habe ihn selbst gezogen.** Weiter
+unten steht mein Satz vom selben Tag: sobald ein Paket den `Verlauf` nach T19 baut, geht
+dieses hier auf `offen` mit `haengt_an` auf jenes. Das Paket ist
+**0140-verlauf-sammelt-die-rundenketten**, es steht auf `offen`, und die Abhängigkeit ist
+im Frontmatter eingetragen. Bis 0140 abgenommen ist, plant `startbereit()` dieses hier
+nicht ein — es kostet also keinen Bauplatz, und der Bauagent bekommt keinen unbaubaren
+Auftrag. Genau das war der Grund für `blockiert`, und er ist damit erledigt.
+
+**Die Begründung, die ich unten gegen das Anlegen von 0140 gegeben hatte, trägt nicht
+mehr.** Sie stützte sich darauf, dass `ops/plan.md` das Gewerk im Vorrang nicht nennt und
+die Reihenfolge gegen die eine Zahl dem Geschäftsführer zusteht. Alle fünf Kennungen jenes
+Vorrangs stehen am 2026-09-05 auf `fertig`, die eine Zahl (0002) darunter. Es gibt keine
+Reihenfolge mehr, der ich hier ausweichen müsste.
+
+**Korrektur an der `dateien`-Liste, und sie geht gegen meine eigene frühere Fassung.**
+Sie nannte nur die drei `verlauf`-Dateien. Die Abnahme dieses Pakets verlangt aber, dass
+**die Ausgabe** je geänderter Adresse die Kette nennt — und die Ausgabe steht in
+`kern/src/zustandsausgabe.cpp`, wie dieses Paket weiter unten selbst schreibt: sie brauche
+je Adresse eine zweite Zeile. Ein Feld, das die Datei nicht nennt, die das Kriterium
+zwangsläufig anfasst, schützt sie nicht — derselbe Fehler, der in 0003 einmal mit einer
+`.rs`-Endung dastand. Die drei Ausgabedateien sind jetzt aufgenommen. **Am Kriterium
+ändert das nichts**; es ist nie gebaut worden, und ich schreibe es nicht um, sondern lasse
+das Feld nachziehen, was es immer schon abdecken musste.
+
+**Was weiter gilt:** Es hängt nichts an diesem Paket, und es ist kein Rücklauf gegen 0010.
+
+---
+
+# Die Sperre vom 2026-09-05 und ihre Begründung — aufgehoben, aber lesbar behalten
 
 **Der Befund ist angenommen, nicht abgelehnt.** Ich habe ihn nachgemessen und er stimmt:
 `technik.md:1287` verlangt zur Unterschiedsebene die Ursachenkette „rückwärts aufgelöst bis

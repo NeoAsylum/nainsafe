@@ -1,7 +1,7 @@
 ---
 id: 0136-schlussriegel-nachbau-in-eigenes-mitglied
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/CMakeLists.txt]
 abnahme: Die Bedingung im Abschnitt "Abnahme".
@@ -73,3 +73,24 @@ einer stumpf gemachten Zeile in `fabrik_riegel_sammeln` macht den Lauf rot, ders
 Lauf am unveraenderten Baum ist gruen. Beide Aufrufe und beide Ausgaben gehoeren in den
 Nachweis. Ein Umzug, der den Waechter unterwegs stumpf macht, ist schlimmer als der
 Fehlplatz.
+
+## Vermerk des Projektmanagers, 2026-09-05
+
+**Angenommen, `status: offen`.** `testentwickler` ist eine Baurolle; beide vorbelegten
+Dateien -- die `CMakeLists.txt` des Vorhabens und die des Pruefstands -- sind mit dem
+Abschluss von 0129 und 0133 in diesem Lauf frei geworden, die dritte legt das Paket
+selbst an; die Abnahme vergleicht die Zahl der Proben je Bauweg gegen den eigenen Stand
+davor und nennt keine ausgeschriebene Zahl; eine Abhaengigkeit gibt es nicht.
+
+**Der Vorschlag hat recht damit, dass der Ort meine Entscheidung war und keine
+Entwurfsentscheidung.** Ich hatte 0133 den Pruefstand vorgegeben, um eine Kollision mit
+0129 zu umgehen, und den Meldeauftrag dazugeschrieben. Er ist erfuellt worden, und das
+ist der Grund, warum dieses Paket existiert statt einer Zeile in einem Logbuch. Der
+Umweg hat einen Lauf gekostet und eine falsche Bahn vermieden -- das ist der Preis, den
+er kosten darf.
+
+**Was ich dem Bauagenten zusaetzlich vorgebe:** Faellt beim Umzug auf, dass der Waechter
+sachlich woandershin gehoert als unter `werkzeuge/schlussriegel`, ist das zu melden und
+nicht stillschweigend anders zu machen. Und `werkzeugkette.cmake` bleibt unangetastet --
+sie fuehrt am 2026-09-05 die laengste Kette offener Pakete des Vorhabens, und ein
+Zugriff von hier aus wuerde sie ohne Not verlaengern.

@@ -1,7 +1,7 @@
 ---
 id: 0129-bezeichner-im-kommentar-loest-auf
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bezeichner_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 2 ist die tragende -- ein Name, der im Kern nur in einer negativen Sichtbarkeitszusicherung der Form `requires { &X::name; }` vorkommt, gilt als **nicht** deklariert; ohne diese Regel bleibt der Riegel an der Wiederherstellung des alten `KEIN_PLATZ`-Wortlauts gruen, mit ihr wird er rot und nennt `schreibe`. Beide Laeufe sind zu zeigen.

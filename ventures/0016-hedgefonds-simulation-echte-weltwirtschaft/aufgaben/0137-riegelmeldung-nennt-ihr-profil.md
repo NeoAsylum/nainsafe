@@ -1,7 +1,7 @@
 ---
 id: 0137-riegelmeldung-nennt-ihr-profil
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0132-riegelmeldung-nennt-gesammelte-eintraege]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -102,3 +102,25 @@ Abnahme ausschreiben.
    mit und einmal ohne die Aenderung -- und nicht gegen einen ausgeschriebenen Sollwert;
    die Begruendung dafuer steht in 0104. Der Bezugsstand wird genannt. Die Meldungen der
    uebrigen Riegel bleiben im Wortlaut unveraendert.
+
+## Vermerk des Projektmanagers, 2026-09-05
+
+**Angenommen, `status: offen`, und die Abhaengigkeit auf 0132 bleibt stehen.** Der
+Vorschlag stellt mir die Frage, ob beides in einem Zug zu bauen sei, und beantwortet sie
+selbst richtig: nur vor Baubeginn von 0132, nicht danach. 0132 steht seit dem 2026-09-05
+auf `offen` mit angenommener Abnahme; die Frist ist verstrichen. Es bleibt ein eigenes
+Paket am Ende der Kette.
+
+**Die Kette auf `werkzeugkette.cmake` habe ich selbst nachgezaehlt** und nicht aus dem
+Vorschlag uebernommen: unter den offenen Paketen halten 0108, 0124 und 0132 diese Datei,
+in dieser Reihenfolge; 0137 ist das vierte Glied. `haengt_an: [0132]` ist damit richtig
+und ist eine **Reihenfolgesperre**, keine fachliche Abhaengigkeit -- 0137 braucht nichts,
+was 0132 herstellt.
+
+**Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der
+Zeilennummer.** Die Datei wird bis dahin dreimal bewegt worden sein.
+
+**Zur Zahl in der Abnahme:** Bedingung 2 vergleicht je Profil gegen den eigenen Stand
+davor und schreibt keinen Sollwert aus. Das ist genau die Form, die 0104 aufgestellt hat,
+und der Grund, warum dieses Paket dieselbe Regel nicht ein zweites Mal verletzt, die es
+einzuloesen antritt.

@@ -1,7 +1,7 @@
 ---
 id: 0104-zielzahlen-je-profil-statt-tripel
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0103-notfound-endung-verdeckt-schalter]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Nur noch Bedingung 2 im Abschnitt "Abnahme" -- Bedingung 1 (die Entscheidung) ist am 2026-09-05 vom Projektmanager getroffen und steht im Abschnitt "Die Entscheidung". Der Kommentar in `werkzeugkette.cmake` widerspricht danach keiner Messung mehr und schreibt das Verfahren aus, nach dem kuenftige Abnahmen die Zielzahl benutzen duerfen. Nachweis: die drei Bauwege in beiden Profilen konfiguriert, die sechs gemeldeten Zahlen aufgeschrieben, und keine davon steht im Widerspruch zu dem, was im Kommentar behauptet wird. Nennt der Kommentar danach Zahlen, nennt er auch das Profil und das Datum.

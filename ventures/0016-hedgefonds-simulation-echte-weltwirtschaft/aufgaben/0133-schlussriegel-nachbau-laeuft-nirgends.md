@@ -1,7 +1,7 @@
 ---
 id: 0133-schlussriegel-nachbau-laeuft-nirgends
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/pruefung-0066/nachbau.py, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

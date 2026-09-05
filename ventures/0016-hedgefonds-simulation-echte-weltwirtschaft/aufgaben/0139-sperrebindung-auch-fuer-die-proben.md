@@ -1,7 +1,7 @@
 ---
-id: 0138-sperrebindung-auch-fuer-die-proben
+id: 0139-sperrebindung-auch-fuer-die-proben
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Der Sperrebindungsriegel deckt zusaetzlich `kern/test/*.cpp` mit denselben zwei Bedingungen und derselben Meldungsform; die Abbruchmeldung nennt den Dateinamen mitsamt seinem Verzeichnis, sodass eine Probe von einer Bibliotheksquelle zu unterscheiden ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert, baut und testet gruen in beiden Profilen; ein Baum mit einer zusaetzlichen Probe unter `kern/test` ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Probe, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Die Statusmeldung nennt beide Zahlen getrennt -- Quellen und Proben --, damit ein Riegel, der eine der beiden Mengen leer laesst, nicht wie einer aussieht, der beide prueft.
@@ -91,3 +91,20 @@ Grenze; er bekommt nur eine zweite Menge Dateien. Ob die beiden Bedingungen fuer
 Proben in derselben Schleife oder in einer zweiten geprueft werden, entscheidet der
 Bauagent -- die Abnahme verlangt nur, dass die Statusmeldung beide Zahlen getrennt
 nennt.
+
+## Vermerk des Projektmanagers, 2026-09-05
+
+**Angenommen, `status: offen`.** Die vier Pruefungen halten: `kernbauer` ist eine
+Baurolle und wird eingeplant; `kern/CMakeLists.txt` haelt seit dem Abschluss von 0134
+in diesem Lauf kein anderes Paket mehr; die Abnahme nennt drei Baeume und keine
+ausgeschriebene Zielzahl; eine Abhaengigkeit gibt es nicht.
+
+**Die Nummer ist von 0138 auf 0139 gewechselt.** Zwei Pruefer haben am 2026-09-05
+unabhaengig voneinander 0138 vergeben. Der aeltere der beiden Vorschlaege behaelt die
+Nummer; dieser hier ist der juengere und wurde umgezogen. Wo dieses Paket anderswo
+genannt wird, gilt der Dateiname, nicht die Ziffer.
+
+**Zur Nachmessung im Vorschlag:** Die Aussage, `kern/CMakeLists.txt` halte kein offenes
+Paket, war zum Zeitpunkt des Vorschlags richtig und ist es nach dem Statusnachzug
+weiterhin. Ich habe sie nicht uebernommen, sondern ueber die `dateien`-Listen aller
+offenen Pakete neu erhoben.

@@ -1,7 +1,7 @@
 ---
 id: 0138-bezeichnerriegel-tragende-regel-dauerhaft-gedeckt
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bezeichner_riegel.cpp]
 abnahme: Der Ein-Zeilen-Mutant an der tragenden Regel des Bezeichnerriegels (`zugesichert = true` -> `= false` in `lies_datei`, gleichwertig jede Form, die den Mitgliedsnamen einer negativen Zusicherung wieder in die Deklarationsmenge laesst) endet auf dem unveraenderten heutigen Baum mit Code ungleich 0 -- am Selbsttest oder an einer bei jedem Lauf mitlaufenden Pruefung, nicht erst an einem eigens gebauten Altbaum. Zu zeigen sind beide Laeufe: die ausgelieferte Fassung Code 0, der Mutant rot mit abgedruckter Meldung. Der Riegel selbst bleibt auf dem gelieferten Baum bei Code 0, und die Zahl der ctest-Eintraege des Arbeitsbereichs aendert sich gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht.
@@ -54,3 +54,23 @@ Vorhabens, in `bezeichner_riegel.cpp` die Zeile
 den heutigen Baum: Code 0, "alle wie erwartet" im Selbsttest. (Die Form
 `if (!zugesichert)` -> `if (true)` stirbt stattdessen an
 `-Werror=unused-but-set-variable` und misst die Werkzeugkette, nicht den Test.)
+
+## Vermerk des Projektmanagers, 2026-09-05
+
+**Angenommen, `status: offen`.** `testentwickler` ist eine Baurolle;
+`bezeichner_riegel.cpp` ist mit dem Abschluss von 0129 in diesem Lauf frei geworden und
+wird von keinem anderen offenen Paket beansprucht; die Abnahme verlangt zwei Laeufe mit
+abgedruckter Meldung und vergleicht die Zahl der ctest-Eintraege gegen den eigenen Stand
+davor statt gegen einen ausgeschriebenen Sollwert; eine Abhaengigkeit gibt es nicht.
+
+**Zur Wahl des Wegs.** Der Vorschlag laesst dem Bauagenten zwei: ein dateifreier Eingang
+in `lies_datei` oder ein Katalogfall des Mutationslaufs. Ich nehme ihm die Wahl nicht ab,
+weil ihn hier noch kein Ruecklauf gekostet hat -- aber die Kollisionsgrenze steht fest:
+**Dieses Paket haelt nur `bezeichner_riegel.cpp`.** Fuehrt der Katalogweg dazu, dass eine
+Datei unter `werkzeuge/mutation/` mitgeaendert werden muesste, ist das nicht zu tun,
+sondern zu melden -- dann ist der dateifreie Eingang der Weg, oder es braucht ein zweites
+Paket. Eine falsche Bahn ist teurer als eine verlorene Runde.
+
+**Ein Vorschlag darf die Nummer nicht selbst vergeben.** Ein zweiter Vorschlag desselben
+Tages trug ebenfalls 0138; er ist auf 0139 umgezogen. Dieser hier ist der aeltere und
+behaelt seine Nummer.

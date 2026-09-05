@@ -1,7 +1,7 @@
 ---
 id: 0134-sperrebindung-jeder-kernquelle
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Das Konfigurieren des Kerns bricht ab, sobald eine Quelle unter `kern/src` den Kopf `kern/sperre.hpp` nicht bindet oder ihn nicht als letzten `#include` bindet; die Abbruchmeldung nennt den Dateinamen und sagt, welche der beiden Bedingungen verletzt ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert und laeuft in beiden Profilen gruen; ein Baum mit einer zusaetzlichen Quelle ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Quelle, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Der erste Baum ist nicht wegzulassen -- ein Riegel, der alles verbietet, sieht im Negativtest identisch aus.
