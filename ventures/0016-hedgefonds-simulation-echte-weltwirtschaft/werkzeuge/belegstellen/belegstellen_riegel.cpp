@@ -612,7 +612,10 @@ constexpr std::array<Namensfall, 8> NAMENSFAELLE = {{
     // --- Die zwei Formen, um derentwillen dieses Paket existiert -------------
     {"abschliessend (`technik.md`; am 2026-09-03 Zeil\145 1219,", "technik.md",
      "daten/adressen.md, Satz zur Tabelle T46 -- gemessen 2026-09-04: Datum dazwischen"},
-    {"den Wortlaut der Reihenliste aus technik.md Abschnitt 7, und die Reihenliste "
+    // Das `A` maskiert, damit dieser Fall nicht selbst zur Fundstelle von Bedingung 2
+    // wird: Seit Paket 0079 faengt sie die Form ohne Anfuehrung, und ein Dateiname
+    // steht hier unmittelbar links. Zur Laufzeit steht das Wort da, im Dateitext nicht.
+    {"den Wortlaut der Reihenliste aus technik.md \101bschnitt 7, und die Reihenliste "
      "sagt dort in Zeil\145 1441 weiter",
      "technik.md",
      "daten/reihen.toml, Feld in_dieser_datei zu Reihe 9 -- gemessen 2026-09-04: "
@@ -1199,6 +1202,13 @@ struct Uebergangen {
 struct Zitatzaehlwerk {
     std::size_t zitate = 0;
     std::size_t aufgeloest = 0;
+    /// Wie viele der Zitate ohne Anfuehrung standen -- Paket 0079. Eine eigene Zahl,
+    /// damit sich die neue Form von der alten trennen laesst, ohne sie zu zaehlen.
+    std::size_t ohne_anfuehrung = 0;
+    /// Wie viele Fundstellen ohne Anfuehrung gar kein Zitat waren, weil ihr Absatz
+    /// keinen Dokumentnamen nennt. Sie stehen nicht in der Aufzaehlung unten -- es
+    /// waeren Hunderte --, aber sie bleiben nicht stumm.
+    std::size_t ohne_ziel = 0;
 };
 
 /// Laenge des Schluesselworts, das bei `i` **beginnt** -- oder 0.
@@ -1247,6 +1257,127 @@ std::size_t ueberschrift_hinter(std::string_view text, std::size_t i, std::strin
     return 0;
 }
 
+// ---------------------------------------------------------------------------
+// Bedingung 2, Teil 1b: der Name ohne Anfuehrung -- Paket 0079
+// ---------------------------------------------------------------------------
+
+/// Zeichen, an dem ein Name ohne Anfuehrung spaetestens endet. Der Halbgeviert- und
+/// der Geviertstrich stehen bewusst **nicht** darunter: Die Zieldateien fuehren sie
+/// mitten in ihren Ueberschriften, und wer an ihnen abbraeche, schnitte den Namen vor
+/// seinem Ende ab.
+///
+/// Ein Punkt zaehlt nur mit Leerraum dahinter -- dieselbe Regel wie bei der Suche nach
+/// links und aus demselben Grund: Ein Punkt ohne ihn steht regelmaessig in einer
+/// Jahreszahl, einer Fassungsnummer oder einer Endung.
+bool ist_namensende(std::string_view text, std::size_t i) {
+    const unsigned char c = static_cast<unsigned char>(text[i]);
+    if (c == ',' || c == ';' || c == ':' || c == '(' || c == ')' || c == '['
+        || c == ']' || c == '"' || c == '\'' || c == '`' || c == '!' || c == '?'
+        || c == '|' || c == '\\') {
+        return true;
+    }
+    if (c == '.') {
+        return i + 1 >= text.size() || text[i + 1] == ' ' || text[i + 1] == '\t';
+    }
+    // Die typografischen Anfuehrungszeichen (U+2018, U+2019, U+201C bis U+201E).
+    // Der Gedankenstrich (U+2013, U+2014) teilt ihr erstes Byte und faellt hier
+    // absichtlich nicht darunter.
+    if (c == 0xE2 && i + 2 < text.size()
+        && static_cast<unsigned char>(text[i + 1]) == 0x80) {
+        const unsigned char d = static_cast<unsigned char>(text[i + 2]);
+        return d == 0x98 || d == 0x99 || d == 0x9C || d == 0x9D || d == 0x9E;
+    }
+    return false;
+}
+
+/// Beginnt hier ein Name? Ein Grossbuchstabe oder eine Ziffer. Das ist die
+/// Eigenschaft, an der sich ein zitierter Name vom laufenden Satz trennt: Eine
+/// Ueberschrift dieses Vorhabens beginnt mit dem einen oder dem anderen, ein
+/// Verhaeltniswort im Satz mit keinem von beiden.
+bool ist_namensanfang(std::string_view text, std::size_t i) {
+    const unsigned char c = static_cast<unsigned char>(text[i]);
+    if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9')) {
+        return true;
+    }
+    if (c == 0xC3 && i + 1 < text.size()) {
+        const unsigned char d = static_cast<unsigned char>(text[i + 1]);
+        return d == 0x84 || d == 0x96 || d == 0x9C;  // die drei grossen Umlaute
+    }
+    return false;
+}
+
+/// Der Name ohne Anfuehrung hinter dem Schluesselwort. Rueckgabe ist die Laenge des
+/// ganzen Teils ab `i` samt der Leerzeichen davor, oder 0, wenn dort keiner steht.
+///
+/// **Mindestens ein Leerzeichen** ist Bedingung, und es traegt mehr, als es aussieht:
+/// Ohne es faenden sich die zusammengesetzten Woerter mit, die dieser Quelltext selbst
+/// in Menge fuehrt -- und der Riegel suchte dann eine Ueberschrift hinter der eigenen
+/// Wortmitte.
+std::size_t name_ohne_anfuehrung(std::string_view text, std::size_t i, std::string& roh) {
+    std::size_t j = i;
+    while (j < text.size() && text[j] == ' ') {
+        ++j;
+    }
+    if (j == i || j >= text.size() || !ist_namensanfang(text, j)) {
+        return 0;
+    }
+    std::size_t ende = j;
+    while (ende < text.size() && ende - j < UEBERSCHRIFT_HOECHSTENS
+           && !ist_namensende(text, ende)) {
+        ++ende;
+    }
+    while (ende > j && (text[ende - 1] == ' ' || text[ende - 1] == '\t')) {
+        --ende;
+    }
+    if (ende == j) {
+        return 0;
+    }
+    roh = std::string(text.substr(j, ende - j));
+    return ende - i;
+}
+
+/// Das erste Wort einer normierten Zeichenkette.
+std::string_view erstes_wort(std::string_view text) {
+    const std::size_t raum = text.find(' ');
+    return raum == std::string_view::npos ? text : text.substr(0, raum);
+}
+
+/// Ein Wort aus Ziffern mit hoechstens einem Buchstaben dahinter -- die Gestalt einer
+/// Gliederungsziffer.
+bool ist_ziffernwort(std::string_view wort) {
+    if (wort.empty() || !ist_ziffer(wort.front())) {
+        return false;
+    }
+    std::size_t k = 0;
+    while (k < wort.size() && ist_ziffer(wort[k])) {
+        ++k;
+    }
+    if (k == wort.size()) {
+        return true;
+    }
+    return k + 1 == wort.size() && ist_wortzeichen(wort[k]);
+}
+
+/// Steht `kandidat` am Anfang von `ueberschrift`, und endet er dort an einer
+/// Wortgrenze?
+///
+/// **Der Punkt gilt nicht als Wortgrenze.** An diesem einen Zeichen haengt die ganze
+/// Unterscheidung zwischen einer Gliederungsziffer und einem Namen; die Begruendung
+/// steht im Kopf.
+bool ist_wortpraefix(const std::string& ueberschrift, const std::string& kandidat) {
+    if (kandidat.empty() || ueberschrift.size() < kandidat.size()) {
+        return false;
+    }
+    if (ueberschrift.compare(0, kandidat.size(), kandidat) != 0) {
+        return false;
+    }
+    if (ueberschrift.size() == kandidat.size()) {
+        return true;
+    }
+    const char n = ueberschrift[kandidat.size()];
+    return n != '.' && !ist_wortzeichen(n);
+}
+
 void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                    const Zielbestand& bestand,
                    std::map<std::string, std::vector<std::string>>& ueberschriften,
@@ -1262,11 +1393,18 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                 continue;
             }
             std::string roh;
-            const std::size_t zitatteil =
-                ueberschrift_hinter(absatz.text, i + schluessel, roh);
+            bool ohne_anfuehrung = false;
+            std::size_t zitatteil = ueberschrift_hinter(absatz.text, i + schluessel, roh);
             if (zitatteil == 0) {
-                i += schluessel;
-                continue;
+                // Paket 0079: die Form ohne Anfuehrung. Weitergerueckt wird danach nur
+                // ueber das Schluesselwort und nicht ueber den Namen -- steht im Namen
+                // ein zweites Schluesselwort, soll es seine eigene Fundstelle bleiben.
+                if (name_ohne_anfuehrung(absatz.text, i + schluessel, roh) == 0) {
+                    i += schluessel;
+                    continue;
+                }
+                ohne_anfuehrung = true;
+                zitatteil = 0;
             }
             const std::size_t nummer = absatz.zeile[i];
             const std::string gesucht = normiere(roh);
@@ -1275,6 +1413,16 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
             bool netzadresse = false;
             std::string grund;
             if (!naechster_verweis(absatz.text, i, name, netzadresse)) {
+                if (ohne_anfuehrung) {
+                    // Ohne Anfuehrung **und** ohne Dokumentnamen ist die Stelle kein
+                    // Zitat, sondern ein Satz. Die Anfuehrung ist die Ankuendigung
+                    // "hier wird zitiert"; fehlt sie, ist der Dokumentname die einzige,
+                    // die bleibt. Gezaehlt wird sie trotzdem, damit die Grenze eine
+                    // Zahl hat.
+                    ++zaehlwerk.ohne_ziel;
+                    i += schluessel;
+                    continue;
+                }
                 // Letztes Zeichen maskiert, aus demselben Grund wie in SCHLUESSEL:
                 // Ausgeschrieben stuende hier ein Schluesselwort mit einem
                 // Anfuehrungszeichen unmittelbar dahinter, und der Riegel faende sich
@@ -1293,22 +1441,47 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                     grund = "Zielname mehrdeutig, " + std::to_string(es->second.anzahl)
                             + " Dateien heissen so: " + name;
                 } else {
-                    ++zaehlwerk.zitate;
                     const std::string schluesselpfad = es->second.pfad.string();
                     if (ueberschriften.find(schluesselpfad) == ueberschriften.end()) {
                         ueberschriften[schluesselpfad] =
                             lies_ueberschriften(es->second.pfad);
                     }
                     const std::vector<std::string>& liste = ueberschriften[schluesselpfad];
+                    // Mit Anfuehrung ist der Name abgegrenzt und wird wortgleich
+                    // verlangt; ohne sie ist er es nicht, und die Zieldatei grenzt ihn
+                    // ab -- er muss am Anfang einer ihrer Ueberschriften stehen.
                     bool steht_da = false;
                     for (std::size_t u = 0; u < liste.size() && !steht_da; ++u) {
-                        steht_da = liste[u] == gesucht;
+                        steht_da = ohne_anfuehrung ? ist_wortpraefix(liste[u], gesucht)
+                                                   : liste[u] == gesucht;
                     }
-                    if (steht_da) {
-                        ++zaehlwerk.aufgeloest;
+                    const std::string_view kopfwort = erstes_wort(gesucht);
+                    if (!steht_da && ohne_anfuehrung && ist_ziffernwort(kopfwort)) {
+                        // Kein Ueberschriftenanfang und eine Gliederungsziffer davor:
+                        // Das Zitat nennt die Nummer und nicht den Namen. Es traegt
+                        // keinen Wortlaut, an dem sich etwas nachschlagen liesse.
+                        grund = "Gliederungsziffer statt Ueberschrift: "
+                                + std::string(kopfwort);
+                    } else if (!steht_da && ohne_anfuehrung && kopfwort.size() == 1) {
+                        // Ein einzelnes Zeichen ist in diesem Vorhaben ein Formelzeichen
+                        // oder ein Platzhalter, keine Ueberschrift. Gemessen und nicht
+                        // vorsorglich: `rueckstand.md` sagt an einer Stelle sinngemaess
+                        // "stand dort unter der <Schluesselwort> X und ist heute nicht
+                        // mehr aufgefuehrt" -- eine Aussage **ueber** ein Zitat, kein
+                        // Zitat. Sie steht hier statt in der Zaehlung der Zitate.
+                        grund = "einzelnes Zeichen statt Ueberschrift: "
+                                + std::string(kopfwort);
                     } else {
-                        befunde.push_back(
-                            Zitatbefund{anzeigename, nummer, es->second.anzeige, gesucht});
+                        ++zaehlwerk.zitate;
+                        if (ohne_anfuehrung) {
+                            ++zaehlwerk.ohne_anfuehrung;
+                        }
+                        if (steht_da) {
+                            ++zaehlwerk.aufgeloest;
+                        } else {
+                            befunde.push_back(Zitatbefund{anzeigename, nummer,
+                                                          es->second.anzeige, gesucht});
+                        }
                     }
                 }
             }
@@ -1485,9 +1658,13 @@ int main(int argc, char** argv) {
                  "belegstellen_riegel, Bedingung 2 (Abschnittszitat): %zu Bauquellen und "
                  "%zu Datendokumente gelesen, %zu Dateien im Zielbestand; %zu Zitate der "
                  "geprueften Form gefunden, %zu davon aufgeloest, %zu Fundstellen "
-                 "uebergangen.\n",
+                 "uebergangen.\n"
+                 "Davon ohne Anfuehrung: %zu Zitate; weitere %zu Fundstellen ohne "
+                 "Anfuehrung nennen in ihrem Absatz keinen Dokumentnamen und sind "
+                 "deshalb keine Zitate.\n",
                  bauquellen.size(), datendokumente, bestand.size(),
-                 zitatzaehlwerk.zitate, zitatzaehlwerk.aufgeloest, uebergangen.size());
+                 zitatzaehlwerk.zitate, zitatzaehlwerk.aufgeloest, uebergangen.size(),
+                 zitatzaehlwerk.ohne_anfuehrung, zitatzaehlwerk.ohne_ziel);
 
     if (!uebergangen.empty()) {
         std::fprintf(stdout,

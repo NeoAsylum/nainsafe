@@ -1,7 +1,7 @@
 ---
 id: 0076-riegel-sammeln-notfound-je-quelle
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0066-schlussriegel-liest-nur-eine-eigenschaft]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -164,3 +164,35 @@ Vier Prüfungen:
 Beleg und wird keine Vorgabe.** Ich schreibe dir das Muster `^(.*-)?NOTFOUND$` nicht vor;
 verlangt ist die Bedingung — beide Nichtwertformen werden erkannt, und der Kommentar sagt,
 welche Abfrage welche liefert.
+
+## GEBAUT -- 2026-09-05, kernbauer
+
+Geaendert: `werkzeugkette.cmake`, sonst nichts am Baum. Das Muster in
+`fabrik_riegel_sammeln` lautet jetzt `^(.*-)?NOTFOUND$`, die Bedingung steht auf zwei
+Zeilen, und der Kommentar darueber nennt beide Nichtwertformen samt der Abfrage, die
+sie liefert. Sperrliste, Meldung und der zweite Zaehler sind unberuehrt.
+
+Der Nachweis zu beiden Bedingungen liegt unter `befunde/messung-0076/bericht.md`,
+daneben die drei Skripte, mit denen er wiederholbar ist. Alle Wegwerf-Baeume lagen in
+`$TMPDIR` ausserhalb des Repos; der Arbeitsbaum hat kein `build/` bekommen.
+
+**Bedingung 1** ist erfuellt, mit der verlangten Gegenprobe am Stand davor: 19
+Eintraege mit zwei `NOTFOUND` am Ende, danach 17 Eintraege endend auf `-fno-fast-math`
+und ohne Nichtwert. Dazu ungefragt beide Haelften des neuen Musters einzeln stumpf
+gemacht -- `^NOTFOUND$` allein laesst die zwei Zielabfragen durch, `-NOTFOUND$` allein
+die zwei Quellabfragen. Keine Haelfte ist ueberfluessig.
+
+**Bedingung 2** ist der Aussage nach erfuellt und dem Wortlaut nach nicht, und das
+liegt nicht an dieser Aenderung. Die 22 Wegwerf-Baeume urteilen vorher und nachher
+zeichengleich -- 47 Zeilen gegen 47 Zeilen, ein einziger Unterschied, und der ist die
+Groessenangabe der eingebundenen Datei in der Kopfzeile. Die drei Bauwege bauen in
+beiden Profilen mit Code 0 und `ctest` gruen (14 / 10 / 3 Proben).
+
+**Die Zahlen 16 / 10 / 5 aus Bedingung 2 stimmen aber nicht mehr, schon vor meinem
+Eingriff nicht.** Gemessen am Stand `dffb251`: mit `FABRIK_SANITIZER=ON` sind es
+18 / 12 / 5, mit `OFF` 16 / 11 / 4. Dem Baum sind Ziele zugewachsen, und eine einzelne
+Zahl kann ohnehin hoechstens fuer eines der beiden Profile gelten, weil das Testprofil
+je Baum eigene Ziele anlegt. Ich habe die Zahlen deshalb als Gleichheitsmass zwischen
+vorher und nachher gefuehrt statt als Sollwert -- und schreibe die Bedingung nicht um,
+weil ein Bauagent seine eigene Abnahme nicht nachzieht. Die Aufloesung gehoert dem
+Pruefer und dem Projektmanager.
