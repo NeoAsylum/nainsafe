@@ -92,10 +92,34 @@ davor `-3` (0086), `-2`, und ohne Suffix, alle 2026-09-05.
   `-Werror` statt am Selbsttest: `(void)param;` in den Ersatz schreiben (bestaetigt
   0107).
 
+## 0079 Runde 3 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** Ruecklauf 2 aenderte nur die Messschrift; der
+  Riegel ist seit `f8c8598` diff-leer. Teil 4 komplett selbst nachgemessen: beide
+  Staende (A aus `489aafb` in Hilfsstruktur, C je Baum), beide Baeume per
+  `git archive`, Vergleich als `datei:zeile`-Mehrfachmenge -- 9/47/0/38 (37+1),
+  identisch an beiden Baeumen und mit dem berichtigten Nachweis.
+- **Eine behauptete Fehler-Reproduktion selbst nachrechnen lohnt:** dedupliziert
+  gelesen ergab exakt die drei alten falschen Zahlen (46/37/36). Erst mit voller
+  Tupel-Mengendifferenz gerechnet (ergab 38 statt 37) -- der alte Zaehler verglich
+  weiter ueber `datei:zeile`, dedupliziert wurde nur die gedruckte Liste. Die
+  Lesart der Reproduktion muss die des Fehlers sein, nicht die eigene.
+- Ein Commit mit dem Paket-Betreff kann **nur Sandbox-Symlinks** tragen (7a4183b,
+  alle numstat 0/0); die Inhalte lagen komplett in fremden Betreffs davor.
+  `git show --numstat` + python-Filter stat awk (awk war gesperrt).
+- Randnotiz-Kategorie bewaehrt: sachlich falsche Detailangabe im Nachweis
+  (gesucht-war-Wortlaut galt nur an Baum 2), die keine Abnahmebedingung beruehrt --
+  als "ohne Urteilswirkung" benannt statt verschwiegen oder zum Befund gemacht.
+- Sperren dieser Sitzung: Verbund mit `&&`+`||`+Umleitung und awk-Pipe gesperrt;
+  python3-Heredoc (auch fuer cmake-Bauten via subprocess), Write ins Repo, grep,
+  git, Binary-Direktaufruf gegen den Arbeitsbereich (lesend) -- alles gegangen.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von `ZITATFAELLE` (9) und `ZIELFAELLE` (8)
-  noch nie einzeln nachgeschlagen.** Beim naechsten Riegelpaket dran.
+  noch nie einzeln nachgeschlagen.** Beim naechsten Riegelpaket dran. (In 0079
+  Runde 3 erneut verschoben -- dort war nur die Messschrift strittig; 0083/0105/
+  0106/0115 kommen auf dieselbe Datei.)
 - 2026-09-05 (0086) -- **Der Riegel rueckt nach einem Treffer um den ganzen Zitatteil
   weiter** und kann ein Schluesselwort im zitierten Wortlaut ueberspringen. Bei der
   naechsten Lockerung nachsehen.
