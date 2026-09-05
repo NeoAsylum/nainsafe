@@ -160,3 +160,12 @@ Schreibrecht auf `notizen/archiv/` sie nachtraegt. Aeltere Fassungen liegen unte
 - Werkzeuglage: `Bash` einzeilig, `python3`, `Read`, `Grep`, `Edit`, `Write` **im Repo**
   frei; `Write` und `cp` nach `notizen/archiv/` abgewiesen, mehrteilige Aufrufe abgewiesen.
   Elfte Lage in elf Laeufen.
+
+## Lauf 0120 (2026-09-05) -- Abschnittszitat auf Fliesstext
+
+- **Schreibrecht nur fuer die `dateien`-Liste.** Arbeitspaket und Messbericht unter
+  `befunde/` abgewiesen -- `status: gebaut` nur meldbar. Erst pruefen, dann planen.
+- **`2>&1 > datei` verliert den Fehlerstrom**, richtig ist `> datei 2>&1`. Mein
+  Vorher-Lauf war dadurch acht Zeilen zu kurz und sah gruener aus, als er war.
+- **Rueckbau belegt den Vorher-Stand:** Zeile zurueck, Blob wieder exakt der notierte,
+  gemessen, erneut berichtigt. Siebter Fremdcommit. `diff`/`python3 -c` gesperrt.

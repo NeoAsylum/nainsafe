@@ -16,12 +16,21 @@
 #   oberflaeche  -> schnittstelle          Binaerprogramm (vertagt, ADR 0010)
 #   werkzeuge/aufbereitung -> daten        einmal je Jahrgang: Rohdaten -> Jahrgang
 #
-# Ein Mitglied steht seit Paket 0059 zusaetzlich hier, und es stammt nicht aus T13:
-# `werkzeuge/belegstellen` haengt an nichts und wird von nichts gelinkt. Es ist ein
-# Riegel ueber den Baum selbst, kein Baustein des Erzeugnisses. Es steht trotzdem in
-# der Liste und nicht daneben, weil die Liste die einzige Stelle ist, an der ein
-# Verzeichnis eingehaengt wird -- ohne Eintrag liefe der Riegel nur beim Alleinbau und
-# fehlte genau im Arbeitsbereichslauf, den der Uebersetzungsbericht oben fuehrt.
+# Zwei Mitglieder stehen zusaetzlich hier und stammen nicht aus T13:
+# `werkzeuge/belegstellen` seit Paket 0059 und `werkzeuge/mutation` seit Paket 0110.
+# Beide haengen an nichts und werden von nichts gelinkt. Sie sind Riegel ueber den Baum
+# selbst, keine Bausteine des Erzeugnisses. Sie stehen trotzdem in der Liste und nicht
+# daneben, weil die Liste die einzige Stelle ist, an der ein Verzeichnis eingehaengt
+# wird -- ohne Eintrag liefe ein solcher Riegel nur beim Alleinbau und fehlte genau im
+# Arbeitsbereichslauf, den der Uebersetzungsbericht oben fuehrt.
+#
+# Der Unterschied zwischen den beiden ist der Aufrufort. Der Belegstellenriegel haengt
+# als `add_test` in `ctest` und laeuft damit bei jeder Abnahme mit. Der Mutationslauf
+# tut das ausdruecklich nicht: Ein Fall kostet Uebersetzen, Binden und einen Probenlauf,
+# und ein Katalog ueber alle Module waechst schnell auf Minuten. Er ist ein eigenes
+# Ziel, das gerufen wird, wenn jemand es braucht -- entschieden vom Projektmanager am
+# 2026-09-05 im Rumpf des Pakets 0110. Sein Eintrag hier hebt deshalb die Zahl der
+# konfigurierten Ziele, nicht die Zahl der Proben.
 #
 # In diesem Paket bekommt nur `kern` ein Verzeichnis. Die uebrigen legt jeweils ihr
 # eigenes Paket an -- deshalb wird jedes Mitglied hier nur dann eingebunden, wenn es
@@ -48,7 +57,8 @@ set(FABRIK_MITGLIEDER
     pruefstand
     oberflaeche
     werkzeuge/aufbereitung
-    werkzeuge/belegstellen)
+    werkzeuge/belegstellen
+    werkzeuge/mutation)
 
 foreach(mitglied IN LISTS FABRIK_MITGLIEDER)
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${mitglied}/CMakeLists.txt)
