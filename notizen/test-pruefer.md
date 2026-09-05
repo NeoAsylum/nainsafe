@@ -95,3 +95,26 @@ davor `-3` (0086), `-2`, und ohne Suffix, alle 2026-09-05.
 - 2026-09-02 -- `anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe, nicht
   den Quotienten; wandert die Pruefung in ein aufrufbares Modul fuer T30, wird der
   Fall scharf.
+
+## 0110 (2026-09-05, Fable-Lauf)
+
+- **Es gibt jetzt einen stehenden Mutationslauf:** `cmake --build bau --target
+  mutationslauf` faehrt den Katalog `werkzeuge/mutation/katalog.md`; der Treiber
+  `bau/werkzeuge/mutation/mutationstreiber <wurzel> <bau> <katalog> [kennung ...]`
+  nimmt **jede** Katalogdatei und eine Fallauswahl. Kuenftige Riegelpruefungen an
+  `zustandsausgabe` brauchen keinen Handmutanten mehr -- Falschangaben und
+  Trefferbremse habe ich an einer $TMPDIR-Kopie des Katalogs nachgestellt, Paketdatei
+  unberuehrt. Einzelfall kostet ~10 s statt des vollen Laufs.
+- **Urteil geprueft, 0 Befunde.** Nachaenderung `228d9d7` haertet (Fallkopf-Wort,
+  --no-tests=error, Fehlzeile ab Marke), schwaecht nichts. `git status` vor/nach
+  zeichengleich; Exitcodes 0/1/1 direkt gemessen.
+- **Offene Faehrte:** `urteil: bau` des Treibers ist nie gefahren (kein Katalogfall,
+  Selbsttest deckt nur den Leser). Beim naechsten Katalogpaket einen
+  static_assert-Fall aus Pruefung 0010 einbringen.
+- Vorschlag **0127** geschrieben (Baulauf meldet Mitglied ohne gefundene Proben als
+  `ok`; pauschales --no-tests=error waere wegen des absichtlich probenfreien
+  `werkzeuge/mutation` falsch).
+- Sperren dieser Sitzung: `Write`-Tool und Verbund-`for`-Schleife gesperrt;
+  python3-Heredoc, `printf`-frei nicht gebraucht, `cmake/ctest/git/grep`,
+  Binaerdatei im Repo-Baubaum ausfuehren -- alles gegangen. `git log` je Datei hat
+  wieder getragen: 0110-Quelltext lag unter fremden Betreffs (bf0519b, 228d9d7).
