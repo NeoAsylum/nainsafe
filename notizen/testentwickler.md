@@ -20,10 +20,9 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre.
 - 2026-09-05 — **Ein Test auf „es hat geworfen" prüft fast nie das, was er soll.** 0085:
   Der Kern hält dieselbe Schranke doppelt; fällt der äußere Riegel weg, wirft der innere
   weiter, und die Probe blieb grün. Das Kennzeichen, das trägt, ist **zweiteilig**: der
-  Kasten, der wirft, **und** die Ursache. Der Kastenname allein reicht nicht, wo zwei
-  Riegel in derselben Klasse sitzen; die Ursache allein nicht, wo der Nachbarriegel
-  denselben Halbsatz wortgleich führt. Nie den Volltext — der geht bei jeder
-  Umformulierung rot und erzieht zum Nachziehen statt zum Hinsehen.
+  Kasten **und** die Ursache. Der Kastenname allein reicht nicht, wo zwei Riegel in
+  derselben Klasse sitzen; die Ursache allein nicht, wo der Nachbar denselben Halbsatz
+  führt. Nie den Volltext — der geht bei jeder Umformulierung rot.
 - 2026-09-05 — **`what()` zeigt in die Ausnahme, und die ist hinter der schließenden
   Klammer fort.** Jeder Vergleich am Wortlaut gehört *in* den Fangblock. Ein `const char*`
   daraus mitzunehmen ist ein Zeiger auf Freigegebenes und läuft trotzdem meist grün.
@@ -37,10 +36,6 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre.
   fremdes Gebiet, ohne Bau des Kerns.
 - 2026-09-05 — Ein leeres Erwartungsfeld (Liste ohne Kennzeichen) ist der bequeme Weg
   zurück zur zahnlosen Prüfung. Als **Fehlschlag** zählen, nicht als Sonderfall.
-- 2026-09-05 — Verlangt eine Abnahme die Sabotage einer **fremden** Datei, ist sie
-  erlaubt: ausführen, zurücknehmen, danach `git diff --stat` auf die Datei leer prüfen und
-  das im Nachweis sagen. Vorher im Frontmatter der offenen Pakete nachsehen, dass sie
-  keinem gehört.
 - 2026-09-05 — **Fremde Quelldateien stehen mitten im Lauf in einem nicht übersetzenden
   Zwischenstand** (0085: zwei Dateien `M` aus parallelen Läufen). Kein Befund. `--target`
   je Ziel bauen und `ctest -E` die fremden ausschließen, statt den Gesamtbau zu melden.
@@ -62,10 +57,8 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre.
   Fassungen gegeneinander, von denen nur eine läuft.
 - 2026-09-04 — Wird eine Regel breiter, den Preis am **größten erreichbaren Korpus**
   messen statt sie sicher zu nennen. Mutation danach heraus, `grep` als Kontrolle.
-- 2026-09-02 — Reihenfolge aus 0019 (CMakeLists, leeres `main`, Modul, dann Probe) trägt
-  nur mit echtem `cmake`-Lauf nach Schritt 2. **Beide Bauwege einzeln prüfen** —
-  `baulauf.py` ruft jede `CMakeLists.txt` auch allein; ein **neues Verzeichnis** braucht
-  ein erneutes `cmake -S/-B`.
+- 2026-09-02 — **Beide Bauwege einzeln prüfen**: `baulauf.py` ruft jede `CMakeLists.txt`
+  auch allein, und ein **neues Verzeichnis** braucht ein erneutes `cmake -S/-B`.
 - 2026-09-03 — Zwei falsche Fassungen belegen nur dann, dass zwei Bedingungen
   *Verschiedenes* messen, wenn je Fassung **beides** zugesichert wird: was sie fängt und
   was sie durchlässt. Mindestens die Hälfte der Fälle einer Tabelle mit **erwarteter
@@ -94,8 +87,6 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre.
 - 2026-09-04 — **`git log -S` allein trägt keine Paketzuordnung.** Die Arbeit eines Pakets
   liegt hier regelmäßig im Commit des *nächsten* Laufs. Jeden `-S`-Treffer gegen das
   **Datum** des gesuchten Pakets halten.
-- 2026-09-04 — Lässt eine Abnahme „fangen **oder** als Lücke benennen" offen: fangen, was
-  ein Wort kostet; benennen, was eine ungemessene Schwelle verlangt.
 - 2026-09-02 — Rotnachweis ohne Kollateralschaden: zwei Edits am eigenen Modul
   (kaputt → bauen → laufen → zurück → grün). Die falsche Fassung als *zweiten Aufruf
   desselben Prüfprädikats* bauen — dann misst die Vorführung denselben Maßstab.
@@ -134,6 +125,8 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre.
   aufgerufen bleibt (ein `return` oder ein `false &&` mitten hinein geht durch).
 - 2026-09-02 — `rm -rf bau` wird abgelehnt (Hausregel 3) und nicht gebraucht: `cmake
   -S/-B` konfiguriert über den vorhandenen Stand hinweg neu.
+- 2026-09-05 — **`git commit` wurde abgelehnt**, in beiden Formen (`-F -` und mehrfach
+  `-m`); `git add` läuft. Am Ende also **stagen und melden**, nicht am Befehl feilen.
 
 ## Offene Faehrten
 
