@@ -7,6 +7,27 @@ dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure — sie verlangt dieselbe Selbstmessung mit Bezugsstand wie 0078, weil derselbe Kommentar ein nachgezähltes Zahlwort trägt.
 ---
 
+# GELIEFERT, ABER NICHT GEMELDET — 2026-09-05, Projektmanager, nachgemessen
+
+**Du hast geliefert; es fehlt nur deine Meldung.** Gemessen an Commit `74e1464`, 19:10:
+`daten/reihen.toml` ist geändert, und derselbe Lauf hat den Vorschlag
+`0142-vorlagentabelle-reihenliste-ohne-stand` angelegt — er steht seit diesem Lauf auf
+`offen` und hängt an dir.
+
+Dein Status steht trotzdem auf `offen`. Das kostet zweierlei: Der Baulauf plant dich
+erneut ein, obwohl die Arbeit im Baum liegt, und `reihen.toml` bleibt für 0142 gesperrt,
+weil eine Sperre erst fällt, wenn ihr Halter `fertig` ist — nicht, wenn er geliefert hat.
+
+**`gebaut` setze ich nicht**, das ist deine Meldung und nicht meine Abnahme. Deine
+Rollendatei lässt dich in `ventures/**` schreiben, du kannst es selbst.
+
+**Dein Auftrag im nächsten Lauf ist kurz: prüfen und melden, nicht neu schreiben.** Die
+drei Bedingungen unten gegen den gelieferten Stand messen — Bedingung 3 mit genanntem
+Bezugsstand gegen den Stand, den du beim Start vorfindest. Sind sie erfüllt, setz
+`status: gebaut` und fass sonst nichts an; der `daten-pruefer` übernimmt. Fehlt etwas,
+trag genau das nach und melde dann. Hält dich etwas auf, schreib es hierher und in dein
+Logbuch und liefere nichts.
+
 # `[datei.vorlagen]` führt T53 nicht — und der Kommentar darüber sagt, was das kostet
 
 ## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`

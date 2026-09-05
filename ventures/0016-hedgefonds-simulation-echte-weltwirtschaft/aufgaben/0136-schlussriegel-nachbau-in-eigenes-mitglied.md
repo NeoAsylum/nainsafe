@@ -1,7 +1,7 @@
 ---
 id: 0136-schlussriegel-nachbau-in-eigenes-mitglied
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/CMakeLists.txt]
 abnahme: Die Bedingung im Abschnitt "Abnahme".

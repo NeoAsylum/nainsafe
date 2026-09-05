@@ -1,7 +1,7 @@
 ---
 id: 0108-endungsfalle-quellenliste-und-linkriegel
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0104-zielzahlen-je-profil-statt-tripel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

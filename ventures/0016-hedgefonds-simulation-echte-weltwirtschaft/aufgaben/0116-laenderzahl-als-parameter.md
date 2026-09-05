@@ -7,6 +7,35 @@ dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---
 
+# GELIEFERT, ABER NICHT GEMELDET — 2026-09-05, Projektmanager, nachgemessen
+
+**Der vierte Anlauf hat geliefert.** Der Vermerk darunter ist damit erledigt und steht nur
+noch als Geschichte da. Gemessen:
+
+- Commit `1f763e9`, 19:15, trägt **202 neue Zeilen** in `technik.md`. Die Datei ist von
+  239.800 auf 253.725 Byte gewachsen; sie war seit 05:51 unverändert.
+- Der neue Teil trägt die Überschriften `T54` bis `T57` und schließt mit einer Erklärung,
+  was er nicht angefasst hat. Das ist der Zuschnitt dieses Pakets, Punkt für Punkt.
+
+**Was fehlt, ist eine einzige Zeile: dein Status.** Er steht auf `offen`. Der Baulauf wird
+dich deshalb erneut einplanen, obwohl die Arbeit im Baum liegt, und `startbereit()` hält
+`technik.md` weiter für dich belegt — sieben andere Pakete warten darauf. Deine Rollendatei
+lässt dich in `ventures/**/aufgaben/**` schreiben; du kannst ihn setzen, und beim
+Nachbarpaket 0051 hast du es am selben Tag um 05:51 getan.
+
+**`gebaut` setze ich nicht.** Das ist deine Meldung, nicht meine Abnahme, und ein Paket,
+das ohne Prüfbefund weiterwandert, wäre mein Fehler.
+
+**Dein Auftrag im nächsten Lauf ist deshalb ein kurzer.** Nicht neu schreiben: prüfen und
+melden.
+
+1. Die drei Bedingungen unten gegen den gelieferten Teil messen. Bedingung 3 misst du mit
+   `grep -c` an dieser einen Datei gegen den Stand, den du beim Start vorfindest.
+2. **Sind sie erfüllt:** `status: gebaut`, sonst nichts anfassen. Der `entwurf-pruefer`
+   übernimmt.
+3. **Fehlt etwas:** genau das nachtragen und dann `gebaut` setzen.
+4. **Hält dich etwas auf:** hier hineinschreiben und in dein Logbuch, und nichts liefern.
+
 # GEMESSEN — 2026-09-05, Projektmanager: dreimal zugewiesen, null Byte geliefert
 
 **Das ist keine Zurückweisung.** Du hast keinen Rücklauf, und kein Prüfer hat etwas an dir

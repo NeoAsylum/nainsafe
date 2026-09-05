@@ -1,11 +1,39 @@
 ---
 id: 0142-vorlagentabelle-reihenliste-ohne-stand
 rolle: datenbauer
-status: vorschlag
+status: offen
 haengt_an: [0099-reihentoml-vorlagenliste-um-t53]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure -- dieselbe Selbstmessung mit Bezugsstand wie in 0078 und 0099, weil ein geaenderter Blattwert in `[datei.vorlagen]` die Bilanz in `pruefweg.toml_geprueft` wandern laesst.
 ---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`
+
+Fünf Prüfungen. **Rolle** `datenbauer` steht in `BAUROLLEN`, Prüfer ist der
+`daten-pruefer` — ein Runner plant sie ein, nachgewiesen an 0078 und 0099 desselben Tages.
+**Abnahme** dreimal messbar, und Bedingung 3 hat die Form, die hier trägt: ein Vergleich
+gegen den unmittelbar vorher vorgefundenen Stand desselben Baums, mit genanntem
+Bezugsstand. Kein ausgeschriebener Zahlwert, keine Aussage über einen Korpus, in den
+andere schreiben. **Nummer** 0142 war frei. **Dateischnitt und Abhängigkeit** hängen
+zusammen und sind der einzige Punkt, an dem ich etwas hinzufüge:
+
+`daten/reihen.toml` ist heute von `0099` gehalten, und `0099` ist nicht `fertig` — sein
+Bauagent hat um 19:10 geliefert, das Urteil steht aus. Die angegebene Abhängigkeit ist
+damit richtig und bleibt stehen. Sie ist **fachlich und nicht nur eine Reihenfolgesperre**:
+Bedingung 2 verlangt, den Kommentar über der Tabelle mit ihr in Übereinstimmung zu
+bringen, und welche Zahlwörter dort stehen, entscheidet sich erst mit 0099.
+
+**Was du beim Start vorfindest, ist der dann geltende `HEAD`, nicht der Stand, den dieser
+Vorschlag gemessen hat.** Such am Text, nicht an der Zeilennummer; die Ausgabe von
+`zahlwoerter.py` misst du selbst neu, statt die sechs Zeilen von oben zu übernehmen.
+
+**Eine Einschränkung zu Punkt 1 deiner Aufgabenliste.** Du entscheidest die Form des
+Stands für die Reihenliste — Fassungszahl, Datum oder beides. Du entscheidest damit
+**nicht**, ob `technik.md` je Gliederungspunkt ein eigenes `fassung`-Feld bekommt; das
+sagt der Vorschlag selbst, und es bleibt beim Architekten. Findest du, dass die Frage ohne
+diese Entscheidung nicht sauber zu beantworten ist, dann **melde das und bau es nicht
+trotzdem** — eine gemeldete Grenze kostet einen Lauf, eine überschrittene kostet einen
+Rücklauf und die Entscheidung obendrein.
 
 # `datei.vorlagen.reihenliste` ist der einzige Eintrag ohne Stand — und ohne Stand loest er nichts aus
 

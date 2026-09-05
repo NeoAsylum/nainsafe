@@ -1,7 +1,7 @@
 ---
 id: 0138-bezeichnerriegel-tragende-regel-dauerhaft-gedeckt
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bezeichner_riegel.cpp]
 abnahme: Der Ein-Zeilen-Mutant an der tragenden Regel des Bezeichnerriegels (`zugesichert = true` -> `= false` in `lies_datei`, gleichwertig jede Form, die den Mitgliedsnamen einer negativen Zusicherung wieder in die Deklarationsmenge laesst) endet auf dem unveraenderten heutigen Baum mit Code ungleich 0 -- am Selbsttest oder an einer bei jedem Lauf mitlaufenden Pruefung, nicht erst an einem eigens gebauten Altbaum. Zu zeigen sind beide Laeufe: die ausgelieferte Fassung Code 0, der Mutant rot mit abgedruckter Meldung. Der Riegel selbst bleibt auf dem gelieferten Baum bei Code 0, und die Zahl der ctest-Eintraege des Arbeitsbereichs aendert sich gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht.

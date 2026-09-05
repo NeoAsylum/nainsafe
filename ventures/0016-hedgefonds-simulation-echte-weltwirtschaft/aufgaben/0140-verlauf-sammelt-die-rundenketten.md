@@ -1,7 +1,7 @@
 ---
 id: 0140-verlauf-sammelt-die-rundenketten
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 2 ist die tragende -- ein Verlauf, der die ueberzaehlige Kette wegwirft und trotzdem Code 0 meldet, ist genau der Fehler, gegen den T19 geschrieben ist, und erfuellt sie nicht.

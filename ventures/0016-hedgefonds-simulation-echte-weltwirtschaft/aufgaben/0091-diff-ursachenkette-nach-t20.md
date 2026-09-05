@@ -2,10 +2,29 @@
 id: 0091-diff-ursachenkette-nach-t20
 rolle: kernbauer
 status: offen
-haengt_an: [0140-verlauf-sammelt-die-rundenketten]
+haengt_an: [0144-rundenkapazitaet-des-verlaufs-nicht-an-r]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Zu einem Unterschied ueber mehr als eine Runde nennt die Ausgabe je geaenderter Adresse nicht nur alt, neu und Differenz, sondern die Ursachenkette aus T18, rueckwaerts aufgeloest bis zur ausloesenden Aktion oder Gegenkraft, mit Verzoegerung und Beitrag je Glied. Nachgewiesen an einer Partie ueber mindestens drei Runden, in der eine Aktion in Runde 1 eine Groesse in Runde 3 aendert: Die Kette nennt beide Glieder und die Verzoegerung dazwischen, und eine Adresse ohne Ursache kommt nicht vor.
 ---
+
+# UMGEHAENGT — 2026-09-05, Projektmanager: du wartest jetzt auf 0144, nicht mehr auf 0140
+
+**Das ist keine Zurückweisung und kein Rücklauf.** 0140 ist `fertig`, deine alte
+Abhängigkeit ist gefallen. An ihre Stelle tritt
+`0144-rundenkapazitaet-des-verlaufs-nicht-an-r`, und zwar als **Reihenfolgesperre, nicht
+als fachliche Abhängigkeit**: Du brauchst von 0144 keinen Baustein.
+
+Der Grund, in einem Satz: `kern/include/kern/verlauf.hpp` führt heute eine Kapazität über
+die ganze Partie, die mit der Partielänge R begründet ist; 0144 nimmt sie zurück, und wer
+die Rückwärtsauflösung vorher auf zwanzig Plätze baut, schreibt dieselbe Bindung ein
+zweites Mal hin. Gemessen und belegt ist das im Prüfbefund zu 0140 vom 2026-09-05.
+
+Deine Dateiliste — sechs Dateien, darunter alle drei von 0144 — hätte ohnehin keinen
+gleichzeitigen Lauf zugelassen. Es geht hier nur darum, welches der beiden zuerst geht,
+und 0144 ändert wenig, während du ein Gewerk bist.
+
+**Dein Vorher-Stand ist der dann geltende `HEAD`**, nicht der Stand, an dem dieses Paket
+geschrieben wurde. Such am Text, nicht an der Zeilennummer.
 
 # ENTSPERRT — 2026-09-05, Projektmanager: `blockiert` → `offen`
 

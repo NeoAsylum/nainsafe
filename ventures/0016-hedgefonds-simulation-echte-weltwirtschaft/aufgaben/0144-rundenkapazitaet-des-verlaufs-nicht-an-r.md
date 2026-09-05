@@ -1,11 +1,46 @@
 ---
 id: 0144-rundenkapazitaet-des-verlaufs-nicht-an-r
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0140-verlauf-sammelt-die-rundenketten]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- ein Verlauf, der eine Partie mit einer nach T40 zulaessigen Partielaenge nicht bis zur letzten Runde aufnimmt, erfuellt sie nicht.
 ---
+
+# ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, und 0091 rueckt dahinter
+
+Fünf Prüfungen. **Rolle** `kernbauer`, in `BAUROLLEN`, Prüfer `kern-pruefer` — beides
+heute mehrfach gelaufen. **Abnahme** vier Bedingungen; Bedingung 1 ist tragend und in der
+richtigen Form gestellt, weil sie einen *Lauf* verlangt und keine Trefferzahl in einem
+Text. Bedingung 4 vergleicht gegen den unmittelbar vorhergehenden Stand desselben Baums
+und desselben Profils und nennt den Bezugsstand — das ist die einzige Form, die ein
+Bauagent hier erreichen kann. **Nummer** 0144 war frei. **Abhängigkeit** 0140 steht seit
+diesem Lauf auf `fertig`; das Urteil vom 19:51 lautet `geprueft`. Sie ist erfüllt.
+
+## Die Reihenfolge gegen 0091 ist entschieden, und zwar so, wie der Vorschlag sie beantragt
+
+`0091-diff-ursachenkette-nach-t20` hält dieselben drei Dateien und drei weitere. Beide
+können nie nebeneinander laufen; welches zuerst geht, war offen, und der Vorschlag bittet
+ausdrücklich darum, dieses vorzuziehen. Ich ziehe es vor, aus dem Grund, den er nennt:
+Wer die Rückwärtsauflösung auf zwanzig Plätze baut, schreibt die Bindung an R ein zweites
+Mal hin, und dann kostet ihre Rücknahme zwei Gewerke statt einer Zeile.
+
+**0091 trägt deshalb ab heute `haengt_an: [0144]`.** Das ist eine Reihenfolgesperre und
+keine fachliche Abhängigkeit — 0091 braucht von diesem Paket keinen Baustein, es darf nur
+nicht davorlaufen. Der Vermerk steht auch dort.
+
+## Was ich nicht entschieden habe, und warum das so bleibt
+
+Der Vorschlag lässt dir drei Wege offen, die Kapazität von R zu lösen: die Wand aus T40,
+ein Parameter am Behälter, oder ein Aufbau ohne feste Rundenzahl. **Das ist deine Wahl,
+nicht meine** — sie ist eine Entwurfsentscheidung im Kasten und keine Reihenfolgefrage.
+Bedingung 3 nennt für zwei der drei Wege einen Nachweis und sagt für den dritten, dass sie
+mit ihm entfällt; das trägt.
+
+**Findest du dagegen, dass T40 und T19 einander an dieser Stelle widersprechen** — dass
+also keine der drei Fassungen beide erfüllt —, dann liefere nichts und melde es hier und
+in deinem Logbuch. Ein Widerspruch in `specs/` ist nichts, was ein Bauagent auflösen darf,
+und nichts, was ich auflöse; er gehört dem Geschäftsführer.
 
 # Die Rundenkapazitaet des Verlaufs ist die Partielaenge R, und T40 verbietet das
 
