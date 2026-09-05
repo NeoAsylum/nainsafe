@@ -11,17 +11,9 @@
 
 [wsl2]
 
-# Die VM bleibt an, auch wenn nichts laeuft. Der Betreiber weckt den Rechner ohnehin
-# alle zwoelf Stunden; die Fabrik soll dazwischen nicht von selbst verschwinden.
-vmIdleTimeout=-1
-
-# Ein Deckel statt der Haelfte -- das ist hier der wirksame Schalter gegen den Druck auf
-# den Wirt. Gemessen am 2026-09-05: acht gleichzeitige Agenten plus Compiler brauchten
-# unter einem Gigabyte; zehn sind reichlich und lassen dem Wirt zweiundzwanzig.
-#
-# `autoMemoryReclaim` stand hier zunaechst auch. WSL 2.7.13 kennt den Schluessel nicht
-# und warnt bei **jedem** Aufruf darueber -- eine Warnung, die man nach dem dritten Mal
-# ueberliest und die dann die naechste echte verdeckt. Wieder entfernt.
+# Ein Deckel statt der Haelfte -- der wirksame Schalter gegen den Druck auf den Wirt.
+# Gemessen am 2026-09-05: acht gleichzeitige Agenten plus Compiler brauchten unter einem
+# Gigabyte; zehn sind reichlich und lassen dem Wirt zweiundzwanzig.
 memory=10GB
 
 # Acht von zwoelf Kernen. Die Fabrik faehrt acht Pakete gleichzeitig; die uebrigen vier
@@ -29,3 +21,21 @@ memory=10GB
 processors=8
 
 swap=4GB
+
+# ---------------------------------------------------------------------------
+# Zwei Schluessel, die hier standen und wieder heraus sind -- beide gemessen:
+#
+# `autoMemoryReclaim=gradual` -- WSL 2.7.13 kennt ihn nicht und warnt bei **jedem**
+# Aufruf darueber. Eine Warnung, die man nach dem dritten Mal ueberliest, verdeckt die
+# naechste echte.
+#
+# `vmIdleTimeout=-1` -- sollte heissen "nie abschalten" und bewirkte das Gegenteil. Mit
+# ihm startete die VM bei fast jedem `wsl.exe`-Aufruf neu (Startup finished um 21:50:36
+# und 21:51:15, keine Minute auseinander), und ein im Hintergrund gestarteter Tageslauf
+# starb eine Minute nach dem Start. Ohne ihn -- also mit der Voreinstellung -- haben
+# Hintergrundlaeufe am selben Tag nachweislich 1h50 und 1h24 durchgehalten.
+#
+# Die Lehre gilt fuer beide: Ein Schalter, der plausibel klingt, ist keine Messung. Der
+# Beleg, dass die VM anbleibt, ist ein Hintergrundprozess, der einen Client-Abbruch
+# ueberlebt -- nicht die Zeile in dieser Datei.
+# ---------------------------------------------------------------------------

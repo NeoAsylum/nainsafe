@@ -1,14 +1,10 @@
-# Der Takt der Fabrik.
-#
-# Diese Datei ist die Vorlage, `crontab -l` ist der Ist-Zustand. `pruefen.sh` vergleicht
-# beide; weichen sie ab, ist entweder die Vorlage nicht eingespielt oder jemand hat live
-# editiert. Einspielen:  crontab einrichtung/crontab
-#
-# Bis zum 2026-09-03 stand der Takt ausschliesslich in der crontab des Benutzers, also
-# nirgends versioniert -- ausgerechnet der Teil, an dem an diesem Tag ein ganzer
-# Fabriktag verlorenging.
-
 PATH=/home/adria/.cargo/bin:/home/adria/.local/bin:/usr/local/bin:/usr/bin:/bin
+
+# Haelt die VM wach. WSL2 faehrt sie herunter, wenn sie leer laeuft -- zwischen zwei
+# Tageslaeufen, bei erreichtem Budget oder geschlossenem Sitzungsfenster stehen sonst nur
+# systemd und cron. Am 2026-09-05 ist die VM zweimal verschwunden und hat die Fabrik
+# mitgenommen. Kostet nichts: sleep infinity belegt keinen Kern.
+@reboot /home/adria/fabrik/einrichtung/anker-prozess.sh
 
 # Stuendlich statt einmal um 03:00. Grund: Am 2026-09-03 schlief der Windows-Wirt von
 # 21:30 bis 15:00 durch, die WSL-VM war eingefroren, und cron holt nichts nach -- ein
@@ -18,8 +14,12 @@ PATH=/home/adria/.cargo/bin:/home/adria/.local/bin:/usr/local/bin:/usr/bin:/bin
 #
 # `python3 -u`, weil Python seine Ausgabe sonst puffert: Das Protokoll blieb waehrend
 # des ganzen Laufs leer und fuellte sich erst am Ende. Wer mitten im Lauf nachsieht, ob
-# etwas geschieht, sah nichts -- und "niemand merkt, dass nichts passiert" war heute
-# der eigentliche Fehler.
+# etwas geschieht, sah nichts -- und "niemand merkt, dass nichts passiert" war der
+# eigentliche Fehler.
+#
+# Denselben Takt gibt es ein zweites Mal in der Windows-Aufgabenplanung
+# (einrichtung/ANKER.md). Das ist Absicht: Dieser hier laeuft, solange die VM lebt, der
+# andere weckt sie. Beide prallen an derselben Sperre ab.
 0 * * * * cd /home/adria/fabrik && /usr/bin/python3 -u agents/tageslauf.py >> ops/nachtlauf.log 2>&1
 
 0 7 * * 0 cd /home/adria/fabrik && /usr/bin/python3 -u agents/wochenlauf.py >> ops/wochenlauf.log 2>&1
