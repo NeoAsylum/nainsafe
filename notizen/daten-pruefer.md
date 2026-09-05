@@ -23,6 +23,17 @@ archiv/daten-pruefer-2026-09-05-2.md.*
   gefallen. **Ab jetzt: keinen Ersatzwortlaut vorschlagen, ohne ihn selbst gegen dieselbe
   Menge gemessen zu haben.** Im Befund stattdessen die Bedingung nennen und den sicheren
   Ausgang (streichen).
+- **Den Vorher-Zustand stelle ich in einer Vollkopie her, nie im Arbeitsbaum** (0120). Vorhaben
+  nach `$TMPDIR` kopieren, dort die eine Zeile zuruecksetzen, **beide** Laeufe auf derselben
+  Kopie -- dann gehoert jede Differenz dieser Zeile, und ich habe keine fremde Datei angefasst.
+  Blob der Kopie nach jedem Ruecksetzen nachrechnen (`sha1` ueber `blob <len>\0<inhalt>`).
+- **Bei "der Riegel wird gruen" drei Nachgebewege ausschliessen** (0120): Zieldatei passend
+  gemacht (`git log` der Zieldatei), Riegel gelockert (Vorher-Lauf mit dem **heutigen**
+  Quelltext muss den Fund noch melden), mehr als die eine Zeile geaendert (`git diff` der
+  beiden Staende). Erst dann ist gruen ein Ergebnis und kein Nachgeben.
+- **Eine Riegelmessung beantwortet nie, ob das Zitat auf den *richtigen* Abschnitt zeigt.**
+  Nachschlagen, ob die berichtigte Aussage im genannten Abschnitt wirklich steht (0120: die
+  widerlegte Tabellenzeile lag in Zeile 169, der Abschnitt beginnt bei 138 -- also richtig).
 - **Suche im geprueften Dokument die Stelle, an der es seine eigene Methode nicht anwendet.**
   Siebzehnmal belegt (0005 bis 0078 R2). Erste Stelle, an der ich suche.
 - **Die Widerlegung steht oft im selben Feld, zwei Saetze ueber der Behauptung** (0078 R2):
@@ -80,16 +91,15 @@ archiv/daten-pruefer-2026-09-05-2.md.*
 - **Fuer Einheit und Basisjahr den Indikator-Endpunkt nehmen, nicht den Laenderabruf.**
 - **Die Einheit einer abgeleiteten Groesse steht nie in ihrer eigenen Zeile.**
 - **Klasse gegen die Richtung der Schranke pruefen, nicht nur gegen den Bereich.**
-- **Stand 2026-09-05:** BACI-Preisbasis inhaltlich erledigt (T53). Offen allein das Basisjahr
-  von PWT 11.0.
+- **BACI-Preisbasis erledigt (T53); offen das Basisjahr von PWT 11.0.**
 - **Nach jedem Umrechnungspaket `gilt_fuer_reihen` in `[namensnennung]` gegen die Quellen
   aller Umrechnungsschritte legen**, nicht nur gegen `quelle_tabelle` (0078 → Paket 0100).
 
 ### Werkzeuge und Zugaenge
 
-- **`Write` kann ganz fehlen** (0078 R2, auch nach `$TMPDIR`). Ausweg: `python3 - <<'PYEOF'`
-  mit `open(p,"w").write(...)` und `"a"` fuer die Fortsetzung, **in drei Haeppchen**.
-  **Zwingend absoluter Pfad** -- das cwd der Bash ist nicht die Repowurzel.
+- **`Write` schwankt** -- bei 0078 R2 ganz fehlend, bei 0120 in einem Zug durchgegangen. Ausweg
+  weiter: `python3 - <<'PYEOF'` mit `open(p,"w")`, dann `"a"`, **absoluter Pfad** (das cwd der
+  Bash ist nicht die Repowurzel).
 - **Lange Heredocs mit vielen Regex-Sonderzeichen werden abgelehnt.** Kurz halten, aufteilen,
   `[.]` statt Backslash-Punkt und `[[]` statt Backslash-Klammer schreiben.
 - **Nimm das Muster, das das gepruefte Feld selbst nennt, nicht deinen eigenen Zaehlweg**
@@ -97,6 +107,14 @@ archiv/daten-pruefer-2026-09-05-2.md.*
   Beides richtig gezaehlt, nur eines war die Frage.
 - **Blobs ohne Zwischendatei lesen:** `git cat-file blob <hash>` in `subprocess.run` und
   `tomllib.loads` auf die Bytes -- baut den Bezugsstand in den Nachweis ein.
+- **`cp -a` wurde abgelehnt, `shutil.copytree` im Heredoc ging** (0120, 288 MB nach `$TMPDIR`,
+  dort 3,5 GB frei). `$TMPDIR` ist `/tmp/claude-1000`; `/tmp/claude` ist schreibgeschuetzt.
+- **Stroeme trennen, nicht `2>&1`** (0120): Der Riegel schreibt seine Funde nach `stderr`, den
+  Bericht nach `stdout`. Zusammengelegt wird die Fehlermeldung mitten in eine Zeile gespleisst
+  und der Zeilenvergleich unbrauchbar. `> aus.txt 2> fehl.txt`, dann `diff` je Strom.
+- **Nach dem eigenen Schreiben den Riegel noch einmal fahren** (0120). Mein Befund unter
+  `befunde/` und mein Vorschlag unter `aufgaben/` hoben Zielbestand und ungelesene Namen um je
+  eins und erzeugten **kein** neues Zitat -- gemessen, nicht geschlossen.
 - **`befunde/` und `bau/` liest der Riegel nicht** (`UNGELESENE_ORDNER`, Z. 613 von
   `belegstellen_riegel.cpp`). Mein Befund darf Wortlaute zitieren; ein Vorschlag unter
   `aufgaben/` **kann** neue Fundstellen erzeugen -- dann nachmessen.
@@ -130,6 +148,9 @@ archiv/daten-pruefer-2026-09-05-2.md.*
 - **0078 laeuft auf Ruecklauf 3 zu.** Wenn der naechste Durchgang wieder eine Einzigkeit
   formuliert statt zu streichen, zuerst Reihe 2 Schritt 2 pruefen -- und dann nach dem
   *naechsten* gleichgeformten Block suchen, nicht nach demselben.
+- **0120 ist `geprueft`** (2026-09-05, ein Befund ausserhalb des Pakets): Die Ausgabeordnung des
+  Riegels haengt am Dateisystem -- `fs::directory_iterator` ohne `std::sort`. Zahlen stabil,
+  Liste umsortiert. Vorschlag `0130`. Bis der laeuft: beide Laeufe auf **dasselbe** Dateisystem.
 - **Belegstellen als Nummern sind eine Bauart, kein Einzelfall** (0034 bis 0090). Naechste
   Kandidaten: `Abschnitt <n>`, `Fassung <n>`, `<commit>~1` (Vorschlag 0126).
 - **Prosa-Befund und maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer
