@@ -62,7 +62,8 @@ void Verlauf::beginne_runde(i64 runde)
         meldung.zahl(runde);
         meldung.text(", zuletzt begonnen ist die Runde ");
         meldung.zahl(nummer_[runden_ - 1]);
-        meldung.text(". Dieselbe Runde ein zweites Mal verloere eine der beiden Ketten.");
+        meldung.text(". Eine Runde, die nicht groesser ist, koennte nur auf Kosten "
+                     "einer schon aufgenommenen Kette dazukommen.");
         festkomma::abbruch(meldung.fertig());
     }
 

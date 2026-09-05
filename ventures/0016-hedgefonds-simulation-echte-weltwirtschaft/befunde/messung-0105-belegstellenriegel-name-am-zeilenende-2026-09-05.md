@@ -183,10 +183,15 @@ Erwartung fuer die Fassung nachher, und er wurde rot mit
 
 ## Beide Bauwege
 
-* `cmake -S ventures/0016-... -B .../bau` → `ctest`: **16 von 16 gruen**, auch nach der
-  fremden Drift von `0333b81` auf `4bbd069`.
+* `cmake -S ventures/0016-... -B .../bau` → `ctest`: **16 von 16 gruen**, gemessen nach
+  der fremden Drift von `0333b81` auf `4bbd069`.
 * `cmake -S werkzeuge/belegstellen -B .../bau/einzeln-0105` → `ctest`: **1 von 1 gruen**.
   Der Baulauf ruft jede `CMakeLists.txt` auch allein.
+* **Beim letzten Durchgang war der Arbeitsbaum als Ganzes rot, und zwar aus fremdem
+  Grund:** `kern/test/verlauf_probe.cpp` uebersetzt zur Stunde nicht (`expected '}' at
+  end of input`, dazu zwei `-Werror=unused-function`). Ein fremder Lauf steht mitten in
+  Paket `0140-verlauf-sammelt-die-rundenketten`. Nicht angefasst. Mein Ziel und der
+  Einzelweg sind danach erneut gemessen und beide gruen; der Messstand ebenso, 11 von 11.
 
 Kein neues Uebersetzungsziel, kein neuer `ctest`-Eintrag im Erzeugnis: Geaendert ist im
 Vorhaben genau eine Datei, `werkzeuge/belegstellen/belegstellen_riegel.cpp`, und daran
