@@ -1,7 +1,10 @@
 # Messung zu Paket 0079 -- die Ueberschrift ohne Anfuehrung
 
-Datum: 2026-09-05, Ruecklauf 1. Rolle: testentwickler. Geaenderte Datei: genau eine,
+Datum: 2026-09-05, Ruecklauf 1, **Abschnitt "Die zwei Bedingungen der neuen Abnahme"
+neu gemessen in Ruecklauf 2**. Rolle: testentwickler. Geaenderte Datei: genau eine,
 `werkzeuge/belegstellen/belegstellen_riegel.cpp` -- die einzige aus der `dateien`-Liste.
+**In Ruecklauf 2 ist an ihr nichts geaendert worden**; berichtigt ist allein diese
+Messschrift.
 
 **Diese Datei ersetzt die Fassung vom selben Tag vollstaendig.** Sie war an einer Stelle
 falsch, und der Projektmanager hat sie zu Recht beanstandet: Der abgedruckte Testlauf
@@ -10,6 +13,14 @@ war, bevor der Kopfkommentar fertig war -- der Riegel liest seinen eigenen Quell
 und zwei neue Zeilen darin sind zwei neue Fundstellen. **Die Regel fuer diese Datei
 lautet seither: nach der letzten Zeile des Kopfkommentars noch einmal messen.** Genau so
 ist der Lauf unten entstanden.
+
+**Und ein zweites Mal war sie falsch, an derselben Sorte Zahl.** Der Vergleich A gegen C
+weiter unten nannte 46 uebergangene Fundstellen, 37 neue, 36 Gliederungsziffern -- der
+abgedruckte Lauf im selben Dokument nannte 47. Der Pruefer hat den Widerspruch gefunden
+(`befunde/pruefung-0079-belegstellenriegel-zitat-ohne-anfuehrung-runde2-2026-09-05.md`).
+Die drei Zahlen sind unten berichtigt, der Zaehlfehler ist reproduziert und benannt, und
+der Vergleich ist neu gefahren -- an **zwei** Baeumen, damit er nicht wieder an einem
+einzelnen haengt.
 
 ## Die Bezugsstaende, damit jede Zahl eine Herkunft hat
 
@@ -22,7 +33,7 @@ notierte gerechnet ist wertlos.
 |---|---|---|
 | **A** | `489aafb` -- der Stand nach 0067 und 0073 | der Bezugsstand des Pakets |
 | **B** | `fb586db` -- die erste Fassung dieses Pakets | nur zur Geschichte; sie traegt 0083 und 0086 noch nicht |
-| **C** | der Arbeitsbereich | **der ausgelieferte Stand** |
+| **C** | der Arbeitsbereich, ausgeliefert als `f8c8598` und seither unveraendert | **der ausgelieferte Stand** |
 | **M1** | C, an der Aufrufstelle ohne die Satzgrenze | die saubere Gegenprobe zu C |
 
 **B taugt nicht als Vergleich fuer den Eingriff dieses Ruecklaufs**, und das gehoert
@@ -30,6 +41,23 @@ gesagt, statt es unter den Tisch fallen zu lassen: Zwischen B und C liegen die P
 0083 und 0086, die denselben Riegel anfassen. Wer C gegen B rechnet, misst drei Pakete
 und nennt es eines. Die Gegenprobe zur Satzgrenze ist deshalb **M1** -- derselbe Stand,
 dieselbe Zeile, nur ohne die Schranke.
+
+**Der Vergleich A gegen C ist in Ruecklauf 2 an zwei ausgepackten Baeumen neu gefahren**,
+nicht am Arbeitsbereich. Der Grund steht in der offenen Faehrte, an der dieses Paket
+schon einmal gescheitert ist: Der Arbeitsbereich driftet waehrend des eigenen Laufs, und
+`bau/` liegt nicht in git. Ein ausgepackter Baum ist eine Zahl, die der Pruefer
+nachfahren kann.
+
+| Marke | Baum | wie hergestellt |
+|---|---|---|
+| **Baum 1** | `f8c8598` -- der Baum des Baucommits von Ruecklauf 1 | `git archive f8c8598 ventures/0016-... specs/0016-...` |
+| **Baum 2** | `fabbf2f` -- `HEAD` beim Beginn dieses Laufs | `git archive fabbf2f ventures/0016-... specs/0016-...` |
+
+Beide Programme laufen an beiden Baeumen. **A liegt dabei ausserhalb des gemessenen
+Baums** und bekommt Wurzel und Vorgabenwurzel als die zwei Argumente, die `CMakeLists.txt`
+dem Stand C setzt. Das ist keine Bequemlichkeit, sondern notwendig: Der Riegel liest
+**seinen eigenen Quelltext** als Bauquelle mit: Legte man A neben C in den Baum, waere der
+Baum nicht mehr derselbe, und der Vergleich maesse sich selbst.
 
 ## Der ausgelieferte Lauf, im Wortlaut
 
@@ -70,6 +98,17 @@ Gemessen ist das und nicht behauptet: Waehrend dieses Laufs sind zwei fremde Com
 (`2de4de7`, `5133001`) in den Baum gekommen. **Alle drei gemessenen Zahlen und alle
 Mutantenurteile unten sind danach unveraendert** -- 35 Zitate, 35 aufgeloest, 47
 uebergangen, Rueckgabewert 0. Bewegt hat sich allein diese eine, von 379 auf 380.
+
+**Nachgefahren in Ruecklauf 2**, weil ein Lauf, den man nicht wiederholen kann, kein
+Nachweis ist. An **Baum 1** meldet der ausgelieferte Stand zeichengleich dieselben Zahlen
+wie oben: 42 Bauquellen, 11 Datendokumente, 166 Dateien im Zielbestand, 35 Zitate, 35
+aufgeloest, **47 uebergangen**, Rueckgabewert 0. Nur *Namen in ungelesenen Ordnern* steht
+bei 286 statt 380 -- `bau/` liegt nicht in git und fehlt im ausgepackten Baum. Dass der
+Lauf trotzdem gruen bleibt und dieselben 47 nennt, ist der Beleg dafuer, dass keine
+Fundstelle an dieser Zahl haengt. An **Baum 2** ist der Korpus weitergedriftet (44
+Bauquellen, 13 Datendokumente, 184 im Zielbestand, 303 Namen): 36 Zitate, 36 aufgeloest,
+**wieder 47 uebergangen**, Rueckgabewert 0. Der Riegel bleibt also auch auf dem heute
+geltenden Korpus gruen.
 
 ## Der Befund dieses Ruecklaufs: der Riegel war rot, und zwar an seiner eigenen Lockerung
 
@@ -203,7 +242,20 @@ jede Ueberschrift jeder Zieldatei umbenennt, faellt vorher an der Untergrenze au
 
 ## Die zwei Bedingungen der neuen Abnahme, gemessen
 
-Beide am selben Baum, A gegen C.
+Beide am selben Baum, A gegen C -- **in Ruecklauf 2 neu gefahren, und zwar an beiden
+Baeumen.** Das Ergebnis ist an beiden dasselbe, Eintrag fuer Eintrag:
+
+| Baum | A | C | verschwunden | neu | davon *Gliederungsziffer* | davon *Zieldatei fuehrt keine Ueberschrift* |
+|---|---|---|---|---|---|---|
+| **1** (`f8c8598`) | 9 | **47** | **0** | **38** | **37** | **1** |
+| **2** (`fabbf2f`) | 9 | **47** | **0** | **38** | **37** | **1** |
+
+Dass die Drift zwischen den beiden Baeumen die drei Zahlen des Vergleichs *nicht*
+bewegt, obwohl sie die Zitatzahl von 35 auf 36 hebt, ist der Grund, beide zu fahren:
+Die Bedingung redet ueber den Unterschied zweier Programme, nicht ueber den Korpus.
+
+Verglichen wird ueber `datei:zeile` als **Mehrfachmenge**, nicht als Menge. Warum das
+kein Formalismus ist, steht unter b).
 
 ### a) Keine uebergangene Fundstelle des Standes von 0067 verschwindet
 

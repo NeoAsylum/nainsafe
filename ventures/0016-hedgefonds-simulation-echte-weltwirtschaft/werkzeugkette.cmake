@@ -246,41 +246,74 @@ endfunction()
 # falschen Manifest, wenn der Schalter an einer einzelnen Quelldatei oder in der
 # Schnittstelle eines gelinkten Ziels haengt.
 #
+# ---------------------------------------------------------------------------
+# Der Nichtwert ist der ganze Wert, nie eine Endung
+# ---------------------------------------------------------------------------
+#
+# `get_target_property` und `get_source_file_property` melden eine ungesetzte
+# Eigenschaft nicht als leere Zeichenkette, sondern als Nichtwert. Den gibt es in
+# **zwei** Schreibweisen, und welche kommt, haengt an der Abfrage. Gemessen am
+# 2026-09-04 mit CMake 4.2.3 an einem Ziel mit einer Quelle und ohne jede Eigenschaft:
+#
+#   get_target_property(a ziel COMPILE_FLAGS)                    a=[a-NOTFOUND]
+#   get_target_property(e ziel INTERFACE_COMPILE_OPTIONS)        e=[e-NOTFOUND]
+#   get_source_file_property(quellopt q.cpp ... COMPILE_OPTIONS) quellopt=[NOTFOUND]
+#   get_source_file_property(quellflg q.cpp ... COMPILE_FLAGS)   quellflg=[NOTFOUND]
+#
+# `get_target_property` setzt `<variablenname>-NOTFOUND`, `get_source_file_property`
+# das blanke `NOTFOUND` -- ohne Bindestrich und ohne Namen davor. Wer nur die erste
+# Form kennt, laesst die zweite durch, und die zweite ist der **Normalfall**: Beide
+# Quelldateiabfragen stehen unten in der Schleife ueber `SOURCES`, also liefert jede
+# Uebersetzungseinheit ohne eigene Schalter zwei Scheineintraege. Bis zum 2026-09-05
+# war das so; gemessen an einem Ziel mit einer Quelle endete `eintraege` auf
+# `...;-fwrapv;-fno-fast-math;NOTFOUND;NOTFOUND`. Folgenlos war es nur, weil kein
+# Muster der Sperrliste unten auf ein blankes Wort passt -- ein Waechter, der
+# danebengreift, und nicht ein falscher Bau.
+#
+# **Verglichen wird auf Gleichheit, nicht auf eine Endung**, und das ist der ganze
+# Gegenstand von Paket 0103. CMakes eigene Wahrheitsregel nennt jede Zeichenkette
+# falsch, die auf `-NOTFOUND` endet. Fuer `if()` ist das richtig; hier ist es die
+# falsche Frage. Gefragt ist nicht, ob CMake den Wert wahr nennt, sondern ob die
+# Eigenschaft Schalter traegt -- und eine Eigenschaft, die ausser dem Nichtwert noch
+# etwas anderes traegt, traegt welche. Gemessen am 2026-09-05 mit CMake 4.2.3 an einem
+# Wegwerf-Baum mit `int f(double d){ int i = d; return i; }`, `add_library(z STATIC
+# z.cpp)` und `fabrik_warnsatz_anlegen(z)`:
+#
+#   set_source_files_properties(z.cpp PROPERTIES COMPILE_FLAGS "-w -DPFAD=x-NOTFOUND")
+#
+# Mit dem Endungsvergleich verwarf `fabrik_riegel_sammeln` die **ganze** Eigenschaft:
+# Konfiguration Code 0, Meldung `alle mit Warnsatz und ohne Pauschalabschalter`, Bau
+# Code 0 mit **null Diagnosen** -- waehrend `-w` auf der Uebersetzerzeile stand.
+# Dieselbe Zeile ohne die Endung (`"-w -DPFAD=x"`) brach ab. Mit dem Gleichheits-
+# vergleich hier bricht auch die erste ab und nennt `COMPILE_FLAGS an .../z.cpp: -w`;
+# die Positivkontrolle -- dieselbe Quelle ohne `-w` -- baut weiterhin rot.
+#
+# Der zu vergleichende Name kommt aus dem Argument und steht nirgends als
+# Textkonstante: Ein Makro ersetzt `${variablenname}` durch den uebergebenen Namen,
+# also vergleicht die zweite Zeile gegen `<eben diesen Namen>-NOTFOUND`. Wer die
+# Variable am Aufrufort umbenennt, bekommt den richtigen Vergleich mit; eine
+# hingeschriebene Zeichenkette liefe von da an still ins Leere.
+#
+# Ein Makro und keine Funktion, aus demselben Grund wie unten: Es schreibt in den
+# Gueltigkeitsbereich seines Aufrufers.
+macro(fabrik_nichtwert_leeren variablenname)
+  if("${${variablenname}}" STREQUAL "NOTFOUND"
+     OR "${${variablenname}}" STREQUAL "${variablenname}-NOTFOUND")
+    set(${variablenname} "")
+  endif()
+endmacro()
+
 # Ein Makro und keine Funktion, weil es in den Gueltigkeitsbereich des Riegels schreiben
 # muss. Eine Funktion bekaeme eigene Kopien von `eintraege` und `herkuenfte`, und der
 # Riegel saehe am Ende eine leere Liste -- also gruen, immer.
 macro(fabrik_riegel_sammeln herkunft listenname)
   # Nicht `if(${listenname})`: Eine Eigenschaft mit dem Wert `0` waere damit still
-  # verschwunden. Geprueft wird auf genau die zwei Faelle, die "nichts da" heissen --
-  # die leere Zeichenkette und den Nichtwert, den `get_*_property` fuer eine ungesetzte
-  # Eigenschaft liefert.
-  #
-  # Diesen Nichtwert gibt es in **zwei** Schreibweisen, und welche kommt, haengt an der
-  # Abfrage. Gemessen am 2026-09-04 mit CMake 4.2.3 an einem Ziel mit einer Quelle und
-  # ohne jede Eigenschaft:
-  #
-  #   get_target_property(a ziel COMPILE_FLAGS)                    a=[a-NOTFOUND]
-  #   get_target_property(e ziel INTERFACE_COMPILE_OPTIONS)        e=[e-NOTFOUND]
-  #   get_source_file_property(quellopt q.cpp ... COMPILE_OPTIONS) quellopt=[NOTFOUND]
-  #   get_source_file_property(quellflg q.cpp ... COMPILE_FLAGS)   quellflg=[NOTFOUND]
-  #
-  # `get_target_property` setzt `<variablenname>-NOTFOUND`, `get_source_file_property`
-  # das blanke `NOTFOUND` -- ohne Bindestrich und ohne Namen davor. Ein Muster, das den
-  # Bindestrich verlangt, laesst die zweite Form durch, und die zweite Form ist hier der
-  # **Normalfall**: Beide Quelldateiabfragen stehen unten in der Schleife ueber
-  # `SOURCES`, also liefert jede Uebersetzungseinheit ohne eigene Schalter zwei
-  # Scheineintraege. Genau das tat diese Zeile bis zum 2026-09-05; gemessen an einem
-  # Ziel mit einer Quelle endete `eintraege` auf `...;-fwrapv;-fno-fast-math;NOTFOUND;
-  # NOTFOUND`. Folgenlos war es nur, weil kein Muster der Sperrliste unten auf ein
-  # blankes Wort passt -- ein Waechter, der danebengreift, und nicht ein falscher Bau.
-  #
-  # Das Muster bildet deshalb CMakes eigene Regel fuer den falschen Konstantenwert ab --
-  # `NOTFOUND` oder auf `-NOTFOUND` endend --, statt eine der beiden Abfragearten zu
-  # bevorzugen. Verankert an **beiden** Enden, weil der Nichtwert immer der ganze Wert
-  # ist: Eine gesetzte Eigenschaft, deren letzter Listeneintrag zufaellig so hiesse,
-  # traegt einen Schalter und ist keine leere Menge.
-  if(NOT "${${listenname}}" STREQUAL ""
-     AND NOT "${${listenname}}" MATCHES "^(.*-)?NOTFOUND$")
+  # verschwunden, und eine, deren Wert auf `-NOTFOUND` endet, ebenfalls.
+  # `fabrik_nichtwert_leeren` macht aus genau den zwei Nichtwerten die leere
+  # Zeichenkette und laesst jeden anderen Wert unangetastet; geprueft wird danach nur
+  # noch auf leer. Die Messung dazu steht ueber jenem Makro.
+  fabrik_nichtwert_leeren(${listenname})
+  if(NOT "${${listenname}}" STREQUAL "")
     foreach(fabrik_eintrag IN LISTS ${listenname})
       list(APPEND eintraege "${fabrik_eintrag}")
       list(APPEND herkuenfte "${herkunft}")
@@ -407,9 +440,22 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       endif()
 
       get_target_property(schalter ${ziel} COMPILE_OPTIONS)
-      if(NOT schalter)
-        set(schalter "")  # `NOTFOUND` ist hier kein Fehler, sondern die leere Menge.
-      endif()
+      # `NOTFOUND` ist hier kein Fehler, sondern die leere Menge -- aber nur, wenn es
+      # der **ganze** Wert ist. Bis zum 2026-09-05 stand hier `if(NOT schalter)`, und
+      # das folgt CMakes Wahrheitsregel: Es leerte auch eine gesetzte Eigenschaft,
+      # deren Wert bloss auf `-NOTFOUND` endet. Dieselbe Ursache wie oben bei
+      # `fabrik_riegel_sammeln`, hier aber **laut** statt still. Gemessen am 2026-09-05
+      # mit CMake 4.2.3 an einem Baum mit `fabrik_warnsatz_anlegen(z)` und
+      # `target_compile_options(z PRIVATE -DPFAD=x-NOTFOUND)`: Konfiguration Code 1 mit
+      # `es fehlen: -Wall -Wextra -Werror ... -fno-fast-math`, also alle 17 Schalter
+      # angeblich fort -- eine Zeile, nachdem `fabrik_warnsatz_anlegen(z)` sie angelegt
+      # hatte. Mit `-DPFAD=x` konfigurierte derselbe Baum Code 0.
+      #
+      # Die Zeile darf den Fehlalarm nicht dadurch abstellen, dass sie die Endung ganz
+      # uebergeht: Steht `-w` daneben (`target_compile_options(z PRIVATE -w
+      # -DPFAD=x-NOTFOUND)`), muss der Riegel weiter abbrechen und
+      # `COMPILE_OPTIONS an z` nennen. Auch das ist gemessen.
+      fabrik_nichtwert_leeren(schalter)
 
       # Geprueft wird der ganze Satz, nicht ein Kennzeichen daraus: Ein Ziel, an dem
       # jemand `-Wall` von Hand anhaengt, hat den Satz nicht -- und ein Riegel, der
