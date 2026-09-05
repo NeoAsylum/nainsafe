@@ -100,14 +100,34 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05-3.md` (voll bei Paket 0086).
 - 2026-09-03 -- **Eine Zaehlung von Zeilen belegt keine Eindeutigkeit von Namen.**
   `sort | uniq -d` daneben.
 
+## Was funktioniert (Fortsetzung)
+
+- 2026-09-05 (0061) -- **Die alte Fassung der Probe gegen den Mutanten des Pakets
+  fahren.** `git show <alt>:pfad` plus derselbe Mutant belegt in einem Lauf, dass die
+  Luecke vor dem Paket offen war (alt gruen) und der Einschub der einzige Faenger ist
+  (neu rot). Ohne diese Gegenprobe misst man nur, dass der neue Test irgendwas faengt.
+- 2026-09-05 (0061) -- **Einen im Paket angekuendigten Rotnachweis selbst fahren, nicht
+  glauben.** Hier bestaetigte er unabhaengig die Berichtigung des Bauagenten: Bei der
+  blossen Tabellenerweiterung reisst der Index (`weicht_ab[3]` zeigt auf den falschen
+  Anker), nicht die Zaehlzusicherung. Wortlaut der Abnahme und Mechanismus des Rots
+  koennen auseinanderfallen, ohne dass die Abnahme faellt.
+- 2026-09-05 (0061) -- Sperren dieser Sitzung: `bwrap`-Fehler der Sandbox war
+  **transient** (erster Aufruf rot, danach alles gruen); `dangerouslyDisableSandbox`
+  ganz gesperrt; verweigert wurden Verbundbefehle mit `while read` und `sed` auf
+  Repo-Dateien; gegangen sind python3-Heredoc, `c++` nach `$TMPDIR` **samt Ausfuehren
+  von dort**, `git show/log/diff`, einfache `grep`. `git commit` zum **dritten Mal**
+  gesperrt, `git add` ging -- Arbeit liegt staged, wie bei 0086 und 0088.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Die Herkunftsangaben von `ZITATFAELLE` (9 Faelle) und
   `ZIELFAELLE` (8) sind noch nie einzeln nachgeschlagen worden.** `NAMENSFAELLE` und
   `ABSTANDSFAELLE` stimmen seit heute. Beim naechsten Riegelpaket dran.
 - 2026-09-05 (0086) -- **Vorschlag 0115** (drei falsche Zahlen im Kopf des Riegels)
-  wartet auf den Projektmanager; **0111** (`korbbestand`-Anleihezweig) seit 0088. Beim
-  naechsten Lauf nachsehen, ob sie gelaufen sind.
+  und **0111** (`korbbestand`-Anleihezweig): am 2026-09-05 (Lauf 0061) beide vom
+  Projektmanager angenommen, Status `offen`, noch nicht gebaut. Neu dazu mein
+  **0120** (Abschnittszitat `nachmessung-zinsreihen`, macht den Arbeitsbereichs-`ctest`
+  wieder 14/14) -- wartet auf den Projektmanager.
 - 2026-09-05 (0086) -- **Der Riegel rueckt nach einem Treffer um den ganzen Zitatteil
   weiter** und kann dabei ein Schluesselwort **im zitierten Wortlaut** ueberspringen. Am
   Bestand kostet das heute nichts; die naechste Lockerung sollte nachsehen.
