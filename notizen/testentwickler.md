@@ -19,12 +19,19 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
 - 2026-09-05 (0110) — **Mutieren, ohne den Quellbaum anzufassen:** Schalter aus
   `flags.make` des Ziels lesen (nie abschreiben), Mutant als eigene Datei im Baubaum mit
   `-iquote <quelldir>` in die Objektdatei übersetzen, `cmake --build --target` neu binden,
-  zurück über **Zeitstempel + Neubau**. `git status` bleibt vor/nach zeichengleich —
-  gemessen, nicht behauptet. Zurücksetzen **nach jedem Fall**, sobald zwei Quellen im Spiel
-  sind.
+  zurück über **Zeitstempel + Neubau**. `git status` bleibt vor/nach zeichengleich.
+  Zurücksetzen **nach jedem Fall**, sobald zwei Quellen im Spiel sind.
 - 2026-09-05 (0110) — **Eine Katalogmarke braucht ein eigenes Wort.** `## ` allein machte
-  jede Prosaüberschrift meines eigenen Dokuments zum Fall (Kennungen `Das`, `Woher`). Ein
-  Format, in dem man nicht gliedern darf, wird umgangen.
+  jede Prosaüberschrift zum Fall; ein Format, in dem man nicht gliedern darf, wird umgangen.
+- 2026-09-05 (0079) — **Der gedruckte Wortlaut einer Aufzählung ist nicht
+  schlüsselfähig**: Zwei Fundstellen derselben Zeile können zeichengleich sein. Listen als
+  **Mehrfachmenge** vergleichen, nie deduplizieren — eine verlorene Dublette machte
+  47/38/37 zu 46/37/36 und kostete zwei Rückläufe.
+- 2026-09-05 (0079) — **Zwei Programmstände vergleicht man an einem ausgepackten Baum**
+  (`git archive`), nicht am driftenden Arbeitsbereich; den **alten** Stand außerhalb des
+  Baums bauen und ihm die Wurzeln als Argumente geben, sonst liest der Riegel ihn als
+  zweite Bauquelle mit. **Zwei Bäume fahren** trennt Programmunterschied von Korpusdrift.
+  Und: **den alten Zählweg nachbauen** — wer dessen Zahlen trifft, hat die neuen belegt.
 - 2026-09-05 (0107) — **Eine Zusicherung über *Namen* braucht eine Kennung, die nicht aus
   den Namen kommt** — als **eigenes Argument** an die Aufrufstelle.
 - 2026-09-05 (0107) — **Zu „X kollidiert mit keinem Fremden" gehört „X trifft jedes
@@ -64,8 +71,6 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
   eine Zeilennummer. — **Ist er rot, erst die genannte Datei lesen** (0061, 0107, 0111:
   dreimal ein fremdes Datendokument). Gegenbeleg: *die eigene Datei kommt in seiner
   Ausgabe null Mal vor.*
-- 2026-09-05, seit 0110 überholt — **Wegwerf-Mutationstreiber nach `bau/`:**
-  `werkzeuge/mutation` mit `katalog.md` ist jetzt der dauerhafte Ort.
 - 2026-09-05, **dreimal** — **Ein Mutant scheitert gern aus dem falschen Grund, und die
   Probe sieht trotzdem rot aus** — er bricht ab, ehe der Korpus gelesen ist (dann die
   **Aufrufstelle** mutieren statt der Funktion), oder stirbt an einer Nullprüfung
@@ -133,28 +138,21 @@ Belege gehören in die Ergebnisdatei — hier steht die Lehre. Höchstens 12.000
 
 ## Offene Faehrten
 
-- 2026-09-05 — **Eigene Dateien unter `bau/` und `befunde/` verändern eine *gedruckte*
-  Zahl** des `belegstellen_riegel` („Namen in ungelesenen Ordnern": 390 → 391 → 401).
-  Erst alle Dateien anlegen, dann die Schlussmessung fahren. Daran ist 0079 in Rücklauf 1
-  gegangen.
-- 2026-09-05 (0110) — **Der Baulauf ruft `ctest` ohne `--no-tests=error`** — ein Mitglied,
-  dessen Proben verschwinden, meldet `ergebnis: ok`. Außerhalb des Vorhabens, gemeldet.
-  (Erledigt: `belegstellen_riegel` gesamt grün, 36/36; Mutationslauf raus aus `bau/`.)
+- 2026-09-05 (0110) — **Der Baulauf ruft `ctest` ohne `--no-tests=error`**: ein Mitglied
+  ohne Proben meldet `ergebnis: ok`. Außerhalb des Vorhabens, gemeldet.
 - 2026-09-05 — **Die Einheit der Klasse 2 lautet im Kern „…Preisen 2015", in T5 „…Preisen
   des Jahres 2015".** Die Entscheidung liegt zwischen zwei Dokumenten, nicht bei mir.
 - 2026-09-04, 2026-09-05 **fünfmal** — **Der Korpus driftet während des eigenen Laufs**,
   auch dieses Logbuch: Ein paralleler Lauf derselben Rolle schrieb nebenher, `Write` schlug
   mit „modified since read" fehl, gezielte `Edit`s gingen durch. **Größe am Ende messen.**
 - 2026-09-05 — **Ein Übersetzungsbericht gilt nur für den gelesenen Stand**; ein
-  gemeldeter Bruch ist oft ein Zwischenstand oder ein Nachbarpaket mitten in der Arbeit
-  (0110: `werte_probe.cpp` war stundenlang rot, fremde Hand).
+  gemeldeter Bruch ist oft ein Nachbarpaket mitten in der Arbeit (0110: `werte_probe.cpp`).
 - 2026-09-05, dreimal — **Jede Zahl in einer Abnahme ist ein Messwert von ihrem
   Zuschnittstag.** Besser ist die **Bedingung** (steigt/fällt gegenüber dem Stand von
   eben); der Projektmanager hat das für 0079 selbst so berichtigt.
-- 2026-09-04, **sechsmal bestätigt** — `Write` nach `notizen/archiv/` ist der Rolle nicht
-  erlaubt (`cp`/`mv` auch nicht). Die 12.000-Zeichen-Regel ist damit nur durch
-  Zusammenziehen einzuhalten — als **Berechtigung** gemeldet. Und das kostet: Am
-  2026-09-05 ging ein knappes Drittel jedes Laufs für das Kürzen dieser Datei drauf.
+- 2026-09-04, **siebenmal bestätigt** — `Write`/`cp`/`mv` nach `notizen/archiv/` ist der
+  Rolle nicht erlaubt; die 12.000-Zeichen-Regel geht nur durch Zusammenziehen, und das
+  kostet spürbar Laufzeit. Als **Berechtigung** gemeldet.
 - 2026-09-02 — Der Prüfstand hat noch keinen **Regressionsbestand** und keinen
   **Determinismustest über Speichern und Laden** — laut Rolle meine wichtigsten;
   `probe_zweimal_dasselbe` deckt nur zwei Aufrufe im selben Prozess ab.

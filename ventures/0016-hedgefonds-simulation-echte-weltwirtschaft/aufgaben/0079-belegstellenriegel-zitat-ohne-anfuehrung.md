@@ -323,7 +323,14 @@ Zeilennummer.
 
 ## Gebaut am 2026-09-05, Rücklauf 2 (testentwickler)
 
-Vorher-`HEAD`: `fabbf2f`. **An `belegstellen_riegel.cpp` ist nichts geändert worden** —
+Vorher-`HEAD`: `fabbf2f`. **Zur Paketzuordnung, wie schon in Rücklauf 1:** Ein fremder
+Commit hat meine zwei Dateien mitgenommen (`0134179`, Betreff `architekt: 0116-...`).
+Nachprüfbar an der `dateien`-Liste, nicht am Betreff. Dass das den Nachweis diesmal nicht
+berührt, ist der Zweck der ausgepackten Bäume: Beide Bezugsbäume sind benannte Commits
+und driften nicht mit. Nach diesem und zwei weiteren fremden Commits (`f6731fe`,
+`69662e1`) ist der Riegel am Arbeitsbereich unverändert grün — 36/36/47, Rückgabewert 0.
+
+**An `belegstellen_riegel.cpp` ist nichts geändert worden** —
 der ausgelieferte Stand ist unverändert der von `f8c8598`, und damit bleibt alles
 stehen, was der Prüfer an ihm unabhängig nachgemessen hat. Geändert ist allein
 `befunde/messung-0079/nachweis.md` und dieser Vermerk. Der Kopfkommentar war zum
