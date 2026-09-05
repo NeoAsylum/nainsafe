@@ -394,14 +394,29 @@
 //! sonst. Ein Fall in `SATZFAELLE` haelt genau das fest; wer die Schranke unbedingt
 //! macht, macht ihn rot.
 //!
-//! **Was sie kostet, gemessen am 2026-09-05 auf demselben Baum:** Von den 56
-//! uebergangenen Fundstellen verlieren **neun** ihr Ziel und zaehlen fortan unter den
-//! Fundstellen ohne Dokumentnamen (44 auf 53). Alle neun sind Gliederungsziffern und
-//! trugen ohnehin keinen Wortlaut; **kein einziges aufgeloestes Zitat geht verloren**,
-//! und die Zahl der Zitate bleibt, was sie ohne den falschen Befund war. Die Richtung
+//! **Was sie kostet, gemessen am 2026-09-05** -- derselbe Stand, derselbe Baum, einmal
+//! mit und einmal ohne die Schranke an der Aufrufstelle:
+//!
+//! | | ohne Schranke | mit Schranke |
+//! |---|---|---|
+//! | Zitate | 36 | 35 |
+//! | davon aufgeloest | 35 | 35 |
+//! | uebergangene Fundstellen | 56 | 47 |
+//! | Fundstellen ohne Dokumentnamen | 44 | 54 |
+//! | Befunde | 1 (falsch) | 0 |
+//!
+//! **Kein einziges aufgeloestes Zitat geht verloren** -- 35 bleiben 35. Was faellt, ist
+//! der falsche Befund und neun uebergangene Fundstellen; alle neun sind
+//! Gliederungsziffern und trugen ohnehin keinen Wortlaut. Sie verschwinden nicht,
+//! sondern wechseln die Zahl: 44 plus neun plus der Befund sind die 54. Die Richtung
 //! des Fehlers ist dieselbe wie bei `satzanfang_vor` und aus demselben Grund gewaehlt:
 //! Zu streng laesst eine Stelle als "ohne Ziel" durch, zu nachsichtig bindet sie an die
 //! falsche Datei. Nur das zweite macht etwas kaputt.
+//!
+//! **Was die Tabelle `SATZFAELLE` nicht abdeckt, und was es stattdessen tut.** Sie misst
+//! `suchuntergrenze`, nicht die Aufrufstelle. Wer dort die Null von Hand einsetzt, laesst
+//! den Selbsttest gruen -- gemessen. Der Bestand faengt es: Genau dieser Mutant wird am
+//! 2026-09-05 rot an `rueckstand.md`. Beides zusammen deckt die Regel, keines allein.
 //!
 //! ## Das Schluesselwort mit Abstand, der Name rechts -- Paket 0086
 //!

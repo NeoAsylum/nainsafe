@@ -1,125 +1,262 @@
 # Messung zu Paket 0079 -- die Ueberschrift ohne Anfuehrung
 
-Datum: 2026-09-05. Rolle: testentwickler. Geaenderte Datei: genau eine,
-`werkzeuge/belegstellen/belegstellen_riegel.cpp`.
+Datum: 2026-09-05, Ruecklauf 1. Rolle: testentwickler. Geaenderte Datei: genau eine,
+`werkzeuge/belegstellen/belegstellen_riegel.cpp` -- die einzige aus der `dateien`-Liste.
 
-**Vorher-Stand.** `HEAD` beim Beginn dieses Laufs: `489aafb`. Das ist der Stand nach
-0073, wie das Arbeitspaket es verlangt -- nicht der Stand vom Tag der Zuschneidung.
+**Diese Datei ersetzt die Fassung vom selben Tag vollstaendig.** Sie war an einer Stelle
+falsch, und der Projektmanager hat sie zu Recht beanstandet: Der abgedruckte Testlauf
+nannte 56 uebergangene Fundstellen, der ausgelieferte Stand meldete 58. Gemessen worden
+war, bevor der Kopfkommentar fertig war -- der Riegel liest seinen eigenen Quelltext mit,
+und zwei neue Zeilen darin sind zwei neue Fundstellen. **Die Regel fuer diese Datei
+lautet seither: nach der letzten Zeile des Kopfkommentars noch einmal messen.** Genau so
+ist der Lauf unten entstanden.
 
-## Was gemessen wurde -- Uebersetzer und Testlauf im Wortlaut
+## Die Bezugsstaende, damit jede Zahl eine Herkunft hat
+
+Alle Laeufe unten sind **hintereinander weg am selben Baum** gefahren, dem
+Arbeitsbereich vom 2026-09-05 nach Commit `609c538`. Das ist keine Umstaendlichkeit: Der
+Korpus dieses Vorhabens driftet waehrend eines Laufs, und eine Zahl gegen eine frueher
+notierte gerechnet ist wertlos.
+
+| Marke | Stand des Riegels | wozu |
+|---|---|---|
+| **A** | `489aafb` -- der Stand nach 0067 und 0073 | der Bezugsstand des Pakets |
+| **B** | `fb586db` -- die erste Fassung dieses Pakets | nur zur Geschichte; sie traegt 0083 und 0086 noch nicht |
+| **C** | der Arbeitsbereich | **der ausgelieferte Stand** |
+| **M1** | C, an der Aufrufstelle ohne die Satzgrenze | die saubere Gegenprobe zu C |
+
+**B taugt nicht als Vergleich fuer den Eingriff dieses Ruecklaufs**, und das gehoert
+gesagt, statt es unter den Tisch fallen zu lassen: Zwischen B und C liegen die Pakete
+0083 und 0086, die denselben Riegel anfassen. Wer C gegen B rechnet, misst drei Pakete
+und nennt es eines. Die Gegenprobe zur Satzgrenze ist deshalb **M1** -- derselbe Stand,
+dieselbe Zeile, nur ohne die Schranke.
+
+## Der ausgelieferte Lauf, im Wortlaut
 
 Gebaut mit dem Alleinbauweg (`cmake -S werkzeuge/belegstellen -B <bau>`), also mit
 `werkzeugkette.cmake` und damit mit `-std=c++20 -fwrapv -Werror` und
-`-fsanitize=undefined,address`. Kein Gleitkommatyp im Quelltext (`grep` auf `float`,
-`double`, `long double`: null Treffer).
+`-fsanitize=undefined,address`. Kein Gleitkommatyp im Quelltext (`float`, `double`,
+`long double`: null Treffer).
 
 ```
-belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links und 9 zur Form
-ohne Anfuehrung, alle wie erwartet.
+belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 9 zur Form
+ohne Anfuehrung, 8 zur Ortsfrage, 8 zum Wortabstand samt Suche nach rechts
+und 5 zur Satzgrenze nach links, alle wie erwartet.
 belegstellen_riegel, Bedingung 1 (Zeilennummer in eine fremde Datei): 42 Bauquellen
 gelesen, 5 Zeilenverweise getroffen, davon 0 mit Dateinamen daneben.
 belegstellen_riegel, Bedingung 2 (Abschnittszitat): 42 Bauquellen und 11
-Datendokumente gelesen, 153 Dateien im Zielbestand; 38 Zitate der geprueften Form
-gefunden, 38 davon aufgeloest, 56 Fundstellen uebergangen.
-Davon ohne Anfuehrung: 14 Zitate; weitere 40 Fundstellen ohne Anfuehrung nennen in
+Datendokumente gelesen, 166 Dateien im Zielbestand, 380 Namen in ungelesenen
+Ordnern; 35 Zitate der geprueften Form gefunden, 35 davon aufgeloest (Untergrenze
+16), 47 Fundstellen uebergangen.
+Davon ohne Anfuehrung: 14 Zitate; weitere 54 Fundstellen ohne Anfuehrung nennen in
 ihrem Absatz keinen Dokumentnamen und sind deshalb keine Zitate.
 
+[98 Zeilen Aufzaehlung der uebergangenen Fundstellen]
+
 Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
-38 Abschnittszitate findet seine Ueberschrift.
+35 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
 
 100% tests passed, 0 tests failed out of 1
 ```
 
-Gegen den Stand von 0067 (`24 Zitate, 24 aufgeloest, 8 uebergangen`) also:
-**+14 Zitate, +14 aufgeloest, +48 uebergangene Fundstellen.**
+**Eine der Zahlen ist nicht stabil, und das ist keine Schwaeche des Laufs, sondern eine
+Eigenschaft des Riegels:** *380 Namen in ungelesenen Ordnern* zaehlt, was zur Laufzeit
+unter `bau/` und `befunde/` liegt. Ein frisch geraeumter Baum nennt dort weniger, ein
+Baum mit Messdateien mehr. Die Zahl geht in keine der drei gemessenen Groessen ein -- sie
+entscheidet nur, ob ein Ziel als *ungelesen* oder als *tot* gilt, und keine der
+Fundstellen unten haengt daran.
+
+Gemessen ist das und nicht behauptet: Waehrend dieses Laufs sind zwei fremde Commits
+(`2de4de7`, `5133001`) in den Baum gekommen. **Alle drei gemessenen Zahlen und alle
+Mutantenurteile unten sind danach unveraendert** -- 35 Zitate, 35 aufgeloest, 47
+uebergangen, Rueckgabewert 0. Bewegt hat sich allein diese eine, von 379 auf 380.
+
+## Der Befund dieses Ruecklaufs: der Riegel war rot, und zwar an seiner eigenen Lockerung
+
+Beim ersten Messen dieses Laufs meldete der ausgelieferte Stand **einen Befund**:
+
+```
+1 Abschnittszitat(e) finden ihre Ueberschrift nicht:
+
+  zitierend: rueckstand.md:131
+  nachgeschlagen in: werkzeugkette.cmake
+  gesuchte Ueberschrift: Rechtfertigung und sechs zusaetzliche Baulaeufe gekostet
+                         und nichts gesichert
+```
+
+Der Satz dort lautet sinngemaess, die Zahl habe *einen Absatz Rechtfertigung und sechs
+zusaetzliche Baulaeufe gekostet*. Das Schluesselwort steht da, der Name dahinter beginnt
+gross -- im Deutschen tut das jedes Hauptwort --, und der naechstgelegene Dokumentname im
+Absatz stand **zwei Saetze weiter oben** und handelte von etwas anderem. Der Riegel schlug
+einen halben Nebensatz als Ueberschrift nach.
+
+**Das ist ein Fehler dieses Pakets und nicht des Textes.** `rueckstand.md` steht in keiner
+Dateiliste, und wer die Datei umschreibt, damit der Riegel gruen wird, hat den Riegel
+geprueft und nicht die Datei -- derselbe Satz, mit dem der Rumpf dieses Pakets es fuer
+`reihen.toml` schon ablehnt. Die drei im Kopf ausgeschriebenen Grenzen der Form ohne
+Anfuehrung genuegen nicht; die Kleinschreibungsgrenze traegt im Deutschen weniger, als sie
+zu tragen scheint.
+
+### Die Regel dagegen ist keine neue
+
+**Ein Verweis und sein Ziel stehen im selben Satz.** Bedingung 1 sucht so nach links
+(`satzanfang_vor`, im Kopf begruendet), Paket 0086 sucht so nach rechts
+(`satzende_nach`). Fuer die Form **ohne** Anfuehrung gilt sie jetzt auch nach links. Der
+Grund steht im Kopf schon seit der ersten Fassung und wird nur zu Ende gedacht: Die
+Anfuehrung ist die Ankuendigung "hier wird zitiert"; fehlt sie, ist der Dokumentname die
+einzige, die bleibt -- und eine Ankuendigung zwei Saetze weiter oben kuendigt nichts an.
+
+Fuer die Form **mit** Anfuehrung aendert sich nichts. Sie sucht weiter ueber den ganzen
+Absatz, weil der von Paket 0067 gemessene Fall (`schranken_probe.cpp`, Dateiname vier
+Zeilen ueber der Ueberschrift) es verlangt.
+
+### Was die Schranke kostet -- C gegen M1, derselbe Stand, derselbe Baum
+
+|  | M1, ohne Schranke | C, mit Schranke |
+|---|---|---|
+| Zitate | 36 | **35** |
+| davon aufgeloest | 35 | **35** |
+| uebergangene Fundstellen | 56 | **47** |
+| Fundstellen ohne Dokumentnamen | 44 | **54** |
+| Befunde | **1** (falsch) | **0** |
+| Rueckgabewert | 1 | **0** |
+
+**Kein einziges aufgeloestes Zitat geht verloren** -- 35 bleiben 35. Was faellt, ist der
+falsche Befund und neun uebergangene Fundstellen. Alle neun sind Gliederungsziffern und
+trugen ohnehin keinen Wortlaut; sie verschwinden nicht, sondern wechseln die Zahl:
+44 + 9 + 1 = 54. Es sind acht Stellen in `daten/einheitenbefund-pwt-baci.md` (Zeilen 77,
+105, 127, 306, 315, 366, 371, 374) und eine in `daten/reihen.toml` (Zeile 611); an allen
+neun stand der Dokumentname im Satz davor, die Bindung war also von Anfang an die
+falsche.
+
+**Der Riegel ist dafuer nicht abgeschwaecht worden.** Verengt wurde allein die Lockerung,
+die dieses Paket selbst eingefuehrt hat, und zwar mit der Regel, die im selben Programm
+schon zweimal steht. Die Richtung des Fehlers ist die gewollte und dieselbe wie bei
+`satzanfang_vor`: Zu streng laesst eine Stelle als "ohne Ziel" durch, zu nachsichtig
+bindet sie an die falsche Datei.
+
+### Drei Rotnachweise fuer die Schranke
+
+Jeder Mutant ist am ausgelieferten Stand gebaut, jeweils eine Aenderung, danach
+zurueckgestellt.
+
+| Mutant | was er abschaltet | Ergebnis |
+|---|---|---|
+| **M1** | die Schranke an der Aufrufstelle | Selbsttest gruen, **Bestand rot**: `rueckstand.md:131`, Code 1 |
+| **M2** | `suchuntergrenze` gibt immer 0 | **`SATZFAELLE` 1 und 4 rot**, Code 2 |
+| **M3** | `suchuntergrenze` gibt immer den Satzanfang | **`SATZFAELLE` 3 rot**, Code 2 |
+
+Im Wortlaut:
+
+```
+M2: Selbsttest Satzgrenze 1: gebunden erwartet war kein Dateiname,
+                             gefunden wurde werkzeugkette.cmake.
+    Selbsttest Satzgrenze 4: gebunden erwartet war kein Dateiname,
+                             gefunden wurde spiel.md.
+M3: Selbsttest Satzgrenze 3: gebunden erwartet war schranken_probe.cpp,
+                             gefunden wurde keiner.
+```
+
+**M1 ist der wichtigste der drei, weil er zeigt, was die Tabelle *nicht* deckt.**
+`SATZFAELLE` misst `suchuntergrenze`; wer an der Aufrufstelle die Null von Hand einsetzt,
+laesst den Selbsttest gruen. Gefangen wird das vom Bestand, und heute faengt er es
+wirklich. Beides zusammen deckt die Regel, keines allein -- und das steht so auch im Kopf
+des Riegels, damit niemand die Tabelle fuer mehr haelt, als sie ist.
 
 ## Die vier Stellen aus Paket 0047, einzeln abgehakt
 
-Alle vier tragen die Form `<datei>, <Schluesselwort> <Name>` in `daten/reihen.toml`.
-Die Zeilennummern sind die des Laufs und stehen hier als Messwert, nicht als Verweis.
+Genannt ueber Feld und Wortlaut; die Zeilennummern sind Messwerte vom 2026-09-05 und
+stehen nur zur Auffindbarkeit dabei.
 
-| Stelle | Name | Urteil des Riegels |
+| Stelle | zitierter Name | Urteil des Riegels |
 |---|---|---|
-| `reihen.toml:172`, Feld `reihenliste` | Sieben | uebergangen, *Gliederungsziffer statt Ueberschrift* |
-| `reihen.toml:253`, Feld `beleg` unter `zaehlung.lizenz` | Fuenf | uebergangen, *Gliederungsziffer statt Ueberschrift* |
-| `reihen.toml:1746`, Feld `schnitt_2_offen` | die Reihe mit ihrer Nummer | nachgeschlagen in `daten/lizenzbefund-reihen.md`, **aufgeloest** |
-| `reihen.toml:1746`, Feld `schnitt_2_offen` | die Aufzaehlung der zwei Buchstabenreihen | nachgeschlagen in `daten/lizenzbefund-reihen.md`, **aufgeloest** |
+| `reihen.toml`, Feld `beleg` unter `zaehlung.lizenz` (Z. 259) | `5` | **uebergangen**, *Gliederungsziffer statt Ueberschrift: 5*, namentlich genannt |
+| `reihen.toml`, Feld `beleg` unter den Reihen Nr. 3 und Nr. 4 (Z. 302, 309) | `3` | **uebergangen**, *Gliederungsziffer statt Ueberschrift: 3*, namentlich genannt |
+| `reihen.toml`, Feld `schnitt_2_offen` (Z. 1752) | `Reihe 1` | nachgeschlagen in `daten/lizenzbefund-reihen.md`, **aufgeloest** |
+| `reihen.toml`, Feld `schnitt_2_offen` (Z. 1752) | `2b und 2c` | nachgeschlagen in `daten/lizenzbefund-reihen.md`, **aufgeloest** |
 
 Die zwei Nummern stehen im Lauf oben namentlich in der Aufzaehlung der uebergangenen
-Fundstellen. Die zwei Namen stehen dort **nicht** -- sie sind Zitate und aufgeloest.
+Fundstellen, die zwei Namen stehen dort **nicht** -- sie sind Zitate und aufgeloest.
 
-## Der Rotnachweis fuer die zweite Gruppe
-
-Gefuehrt ueber die **eigene** Datei und ohne eine fremde anzufassen: `lies_ueberschriften`
-bekam einen Vorsatz vor jede gelesene Ueberschrift -- das ist genau der Fall
-"jemand hat die Ueberschrift umbenannt", nur an einer Stelle, die zu diesem Paket
-gehoert. Danach zurueckgestellt und neu gebaut.
-
-Der Lauf mit dem Vorsatz meldet unter anderem:
+**Rotnachweis fuer die zweite Gruppe.** Gefuehrt ueber die eigene Datei und ohne eine
+fremde anzufassen: `lies_ueberschriften` bekam einen Vorsatz vor jede Ueberschrift, die
+sie aus `lizenzbefund-reihen.md` liest -- das ist genau der Fall "jemand hat die
+Ueberschrift umbenannt". Der Lauf meldet dann:
 
 ```
-  zitierend: daten/reihen.toml:1746
+  zitierend: daten/reihen.toml:1752
   nachgeschlagen in: daten/lizenzbefund-reihen.md
   gesuchte Ueberschrift: Reihe 1
 
-  zitierend: daten/reihen.toml:1746
+  zitierend: daten/reihen.toml:1752
   nachgeschlagen in: daten/lizenzbefund-reihen.md
   gesuchte Ueberschrift: 2b und 2c
 ```
 
-Beide werden also wirklich nachgeschlagen, und beide werden rot, wenn ihr Ziel
-umbenannt wird -- die zweite auch dann, obwohl ihr Name mit einer Ziffer beginnt.
+Rueckgabewert 1. Beide werden also wirklich nachgeschlagen, und beide werden rot, wenn
+ihr Ziel umbenannt wird -- die zweite auch dann, obwohl ihr Name mit einer Ziffer beginnt.
 Nach dem Zuruecknehmen: wieder gruen, dieselben Zahlen wie oben.
 
-**Zweiter Rotnachweis, dieselbe Sache am kleinen Maszstab.** In `ist_wortpraefix`
-wurde die Wortgrenze abgeschaltet (nur noch Gleichheit). Dann fallen die Faelle 1 und 3
-in `ZITATFAELLE` mit `die Art ist 4, erwartet war 0` -- der Riegel bricht mit Code 2 ab,
-bevor er den Bestand liest. Auch das zurueckgestellt.
+Dass die Mutation **auf eine Datei eingegrenzt** ist, hat einen gemessenen Grund: Wer
+jede Ueberschrift jeder Zieldatei umbenennt, faellt vorher an der Untergrenze aus Paket
+0083 (`0 aufgeloeste Zitate, Untergrenze 16`, Code 2) und liest die Befundliste nie.
 
-## Die Selbsttesttabelle, und warum sie noetig ist
+## Die zwei Bedingungen der neuen Abnahme, gemessen
 
-Auf dem heutigen Korpus loest **jedes** Zitat ohne Anfuehrung auf. Der Bestand kann
-deshalb nur zeigen, dass der Riegel gruen wird, nie dass er rot werden kann. Die neun
-Faelle in `ZITATFAELLE` halten die Gegenprobe fest; vier von ihnen haben eine Erwartung,
-die **nicht** "aufgeloest" lautet, und zwei erwarten ausdruecklich einen Befund.
+Beide am selben Baum, A gegen C.
 
-Zwei der neun sind waehrend dieses Laufs rot geworden und haben je einen echten Fehler
-gezeigt, bevor er in den Bestand kam:
+### a) Keine uebergangene Fundstelle des Standes von 0067 verschwindet
 
-* Fall 4 (die Aufzaehlung, umbenannt) fiel als *Ziffer* statt als *Befund* aus. Das war
-  die Restluecke der ersten Fassung: Ein Name, der mit einer Ziffer beginnt, sah nach
-  einer Nummer aus, auch wenn die Zieldatei gar nicht mit ihr nummeriert. Behoben durch
-  `fuehrt_gliederungsziffer`.
-* Fall 7 (der Verweis auf einen eigenen Abschnitt) fiel als *Befund* aus. Ursache: Der
-  naechstgelegene Dokumentname im Absatz ist eine fremde Datei. Behoben, indem bei der
-  Ziffer auch die zitierende Datei gefragt wird.
+Der Stand A meldet **9** uebergangene Fundstellen. Alle neun stehen auch in C:
 
-## Was ausdruecklich nicht erreicht ist
+| Fundstelle | Grund in A | in C |
+|---|---|---|
+| `daten/einheitenbefund-pwt-baci.md:20` | kein Dokumentname im Absatz | ja |
+| `daten/lizenzbefund-reihen.md:164` | kein Dokumentname im Absatz | ja |
+| `daten/lizenzbefund-reihen.md:202` | kein Dokumentname im Absatz | ja |
+| `daten/lizenzbefund-reihen.md:364` | naechstes Ziel ist eine Netzadresse | ja |
+| `kern/CMakeLists.txt:3` | kein Dokumentname im Absatz | ja |
+| `parameter.toml:11` | Ziel ausserhalb des Bestands | ja |
+| `pruefstand/test/vorrat_kernanker_probe.cpp:3` | kein Dokumentname im Absatz | ja |
+| `werkzeuge/belegstellen/belegstellen_riegel.cpp:262` | kein Dokumentname im Absatz | ja |
+| `werkzeuge/belegstellen/belegstellen_riegel.cpp:265` | kein Dokumentname im Absatz | ja |
 
-**Die Abnahme verlangt, die Zahl der uebergangenen Fundstellen falle "um genau zwei".
-Das ist auf diesem Korpus nicht erfuellbar, und zwar in beide Richtungen.**
+**Verschwunden: null.** Der Grund ist derselbe, den der Pruefer schon genannt hat, und er
+ist hier nachgerechnet: Keine der neun traegt die Form ohne Anfuehrung, dieses Paket kann
+sie also gar nicht beruehren. Zwei von ihnen (`belegstellen_riegel.cpp:262` und `:265`)
+sind Zeilen aus dem Kopfkommentar dieses Pakets und in A nur deshalb schon da, weil A auf
+**dem heutigen Baum** gefahren ist -- der Stand von 0067 selbst kannte sie nicht. Das ist
+kein Fehler der Messung, sondern ihr Sinn: Verglichen werden zwei Programme an einem
+Baum, nicht zwei Baeume.
 
-Der Grund ist gemessen: Das Arbeitspaket sagt, `reihen.toml` trage die Form
-"viermal". Sie steht dort oefter. Gezaehlt am Lauf oben: **48** neu uebergangene
-Fundstellen ueber den ganzen Bestand (56 minus die 8 aus 0067), davon **33** allein in
-`reihen.toml`; dazu 14 aufgeloeste Zitate der neuen Form. Wer jede Gliederungsziffer
-uebergeht und namentlich nennt -- und genau das verlangt die Abnahme fuer die zwei
-Nummern aus 0047 --, bekommt zwangslaeufig mehr als zwei zusaetzliche Zeilen; wer
-weniger bekaeme, uebersaehe welche.
+### b) Jede neu hinzugekommene traegt einen Grund dieses Pakets
 
-Ein Fallen der Zahl waere ausserdem nur moeglich, wenn dieses Paket bestehende
-uebergangene Fundstellen aufloeste. Von den acht aus 0067 traegt keine einzige die Form
-ohne Anfuehrung -- sie haengen an fehlenden Dokumentnamen, an einer Netzadresse und an
-einem Ziel unter `befunde/`. Keine von ihnen kann dieses Paket beruehren.
+C meldet **46** uebergangene Fundstellen, davon **37 neu** gegenueber A:
 
-Die Zahl ist deshalb nicht getroffen worden, und sie ist auch nicht durch eine
-Abschwaechung des Riegels getroffen worden. Der Satz davor -- zwei Nummern uebergangen
-und gezaehlt, zwei Ueberschriften nachgeschlagen und aufgeloest, je mit Rotnachweis --
-ist erfuellt. Der Widerspruch gehoert dem Projektmanager.
+| Anzahl | Grund | eingefuehrt von |
+|---|---|---|
+| 36 | *Gliederungsziffer statt Ueberschrift* | Paket 0079 (`namensart`, `Namensart::Ziffer`) |
+| 1 | *Zieldatei fuehrt keine Ueberschrift* | Paket 0079 (`namensart`, `Namensart::Ohne_Gliederung`) |
 
-## Drei benannte Grenzen
+Andere Gruende kommen unter den neuen nicht vor. Beide sind Ergebnisse derselben
+Funktion, die dieses Paket eingefuehrt hat; keiner von ihnen existiert im Stand A.
 
-Sie stehen im Kopf des Riegels ausgeschrieben und hier nur als Liste, damit der Pruefer
-sie nicht suchen muss: Kleinschreibung hinter dem Schluesselwort (kein Zitat, nicht
-gezaehlt in der Aufzaehlung, aber in einer eigenen Zahl), fehlender Dokumentname
-(dasselbe), und ein einzelner Buchstabe als Name (uebergangen und namentlich genannt).
+## Was der Pruefer schon bestaetigt hat und hier nur wiederholt wird
+
+Aus `befunde/pruefung-0079-...-2026-09-05.md`: die vier Stellen aus 0047 gehen aus wie
+verlangt, beide Ueberschriften werden ueber eine Korpuskopie rot, zehn Mutanten sterben
+an je einem eigenen Fall, und keines der 24 Zitate der alten Form ist verloren. Die
+Zahlen oben sind neu gefahren; das Urteil ist dasselbe.
+
+## Was in diesem Lauf offen bleibt
+
+* **Der Preis der Schranke ist eine Entscheidung und keine Rechnung.** Steht der
+  Dokumentname im Satz **vor** dem Schluesselwort, bleibt die Fundstelle ohne Ziel --
+  gezaehlt, aber nicht bewertet. Auf dem heutigen Korpus kostet das neun Gliederungsziffern
+  und kein Zitat. Waechst dort einmal ein echtes Zitat dieser Bauart, faengt der Riegel es
+  nicht. Fall 4 in `SATZFAELLE` haelt genau diesen Preis fest, damit er nicht still ist.
+* **Die Pakete 0105 und 0106** sind vom Projektmanager als eigene Pakete angenommen und in
+  diesem Lauf nicht angefasst.
+* **Eine Zahl im Kopfkommentar ist berichtigt worden:** "die groesste der *fuenf* Gruppen"
+  hiess seit Paket 0083 richtig "der *sechs* Gruppen". Es sind sechs Sorten, und die Liste
+  drei Absaetze darueber nennt sie auch so.

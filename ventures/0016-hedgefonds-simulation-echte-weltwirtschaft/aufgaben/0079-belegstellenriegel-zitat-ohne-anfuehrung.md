@@ -1,7 +1,7 @@
 ---
 id: 0079-belegstellenriegel-zitat-ohne-anfuehrung
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen. Und statt der am 2026-09-05 zurueckgenommenen Fallzahl: keine der uebergangenen Fundstellen des Standes von 0067 verschwindet, und jede neu hinzugekommene traegt einen der Gruende, die dieses Paket einfuehrt -- beides gemessen am selben Baum, vor und nach dem Eingriff, mit genanntem Bezugsstand und nach der letzten Zeile des Kopfkommentars. Der abgedruckte Testlauf im Nachweis nennt dieselben Zahlen wie der ausgelieferte Stand.
@@ -190,6 +190,66 @@ nachgemessen hat.
    Sachlich fehlt nichts (die Differenz +48 ist in beiden Rechnungen dieselbe), falsch ist
    nur, was als Wortlaut eines Laufs dasteht. **Regel für diese Datei: nach der letzten
    Zeile des Kopfkommentars noch einmal messen.**
+
+## Gebaut am 2026-09-05, Rücklauf 1 (testentwickler)
+
+Vorher-`HEAD`: `609c538`. Geändert wurde wieder genau die eine Datei aus der Liste. Die
+Messung steht in `befunde/messung-0079/nachweis.md` und ersetzt die dortige Fassung
+vollständig.
+
+**Zur Paketzuordnung, damit sie später nachvollziehbar bleibt:** Während dieses Laufs
+haben zwei fremde Commits (`2de4de7`, `5133001`, beide `kernbauer`) meinen halbfertigen
+Stand von `belegstellen_riegel.cpp` mitgenommen. Die Arbeit dieses Pakets liegt dadurch
+über drei Commits verteilt, von denen zwei einen fremden Betreff tragen — nachprüfbar an
+der `dateien`-Liste, nicht am Betreff. Die Schlussmessung ist **nach** beiden gefahren;
+alle drei gemessenen Zahlen sind über sie hinweg unverändert.
+
+**Die zwei verlangten Punkte sind erledigt** — und dazu kam ein dritter, der nicht
+vorhersehbar war.
+
+1. **Die zwei Bedingungen sind am eigenen Stand belegt.** Der Stand von 0067 meldet auf
+   dem heutigen Baum neun übergangene Fundstellen; alle neun stehen auch im
+   ausgelieferten Stand, verschwunden ist keine. Von den 46 übergangenen Fundstellen des
+   ausgelieferten Standes sind 37 neu, und alle 37 tragen einen der beiden Gründe, die
+   dieses Paket eingeführt hat (36 × *Gliederungsziffer statt Ueberschrift*, 1 ×
+   *Zieldatei fuehrt keine Ueberschrift*). Beide Tabellen stehen im Nachweis.
+2. **Der Nachweis ist berichtigt.** Der abgedruckte Lauf ist nach der letzten Zeile des
+   Kopfkommentars gefahren und nennt dieselben Zahlen wie der ausgelieferte Stand: 35
+   Zitate, 35 aufgelöst, 47 übergangen. Gegengeprüft über beide Bauwege (Alleinbau und
+   Arbeitsbereich, dort 14/14).
+
+**Der dritte Punkt: der ausgelieferte Stand war rot.** Nicht durch fremde Arbeit, sondern
+an der Lockerung dieses Pakets. `rueckstand.md` hat seit dem 2026-09-05 den Satz, die Zahl
+habe „einen Absatz Rechtfertigung und sechs zusätzliche Bauläufe gekostet". Schlüsselwort,
+großgeschriebener Name dahinter — im Deutschen jedes Hauptwort — und als nächstgelegener
+Dokumentname einer aus dem **übernächsten Satz davor**. Der Riegel schlug einen halben
+Nebensatz als Überschrift nach und meldete einen Befund an einem Satz, an dem nichts kaputt
+ist. Die Kleinschreibungsgrenze aus dem Kopfkommentar trägt weniger, als sie zu tragen
+scheint.
+
+Behoben mit der Regel, die im selben Programm schon zweimal steht: **Ein Verweis und sein
+Ziel stehen im selben Satz.** Für die Form **ohne** Anführung endet die Suche nach links
+jetzt am Satzanfang, für die Form **mit** Anführung ändert sich nichts — der von 0067
+gemessene Fall (`schranken_probe.cpp`, Dateiname vier Zeilen über der Überschrift) bleibt
+gefangen. Gemessen am selben Stand mit und ohne die Schranke: **kein einziges aufgelöstes
+Zitat geht verloren** (35 bleiben 35), es fallen der falsche Befund und neun übergangene
+Fundstellen, die alle Gliederungsziffern ohne Wortlaut waren und ihren Dokumentnamen im
+Satz davor hatten. Der Riegel ist dafür nicht abgeschwächt worden; verengt wurde allein
+die Lockerung, die dieses Paket selbst eingeführt hat.
+
+Dazu eine neue Selbsttesttabelle `SATZFAELLE` (fünf Fälle, jeder mit beiden Hälften: was
+die Suche mit der Schranke findet und was sie ohne sie fände) und drei Rotnachweise. Der
+wichtigste ist der, der eine **Lücke** zeigt: Die Tabelle misst `suchuntergrenze`, nicht
+die Aufrufstelle — wer dort die Null von Hand einsetzt, lässt den Selbsttest grün, und
+gefangen wird es allein vom Bestand. Das steht so im Kopfkommentar, damit niemand die
+Tabelle für mehr hält, als sie ist.
+
+**Worauf ich unsicher bin, für den Projektmanager und nicht für den Prüfer:** Ob die
+Satzgrenze in den Zuschnitt dieses Pakets gehört oder ein eigenes verdient hätte. Ich habe
+sie hier gebaut, weil die `abnahme` „bleibt auf dem dann geltenden Korpus grün" verlangt
+und der Fehler von dieser Lockerung stammt — ein eigenes Paket hätte den Riegel bis dahin
+rot gelassen. Die Datei ist dieselbe, die Regel ist die des Pakets zu Ende gedacht, aber
+der Umfang ist größer, als der Rücklauf angekündigt hat.
 
 ### Was ausdrücklich nicht hierher gehört
 
