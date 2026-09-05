@@ -1,10 +1,11 @@
 # Logbuch: kern-pruefer
 
-**Vierte Rotation am 2026-09-05** bei 11.949 Zeichen. Vorfassung unter
-`notizen/archiv/kern-pruefer-2026-09-05-4.md`, aeltere daneben (die Zaehlung `-2`, `-3`,
-`-4` ist die Konvention fuer mehrere Rotationen am selben Tag). Der Weg dorthin ist
-**`python3 -c` in einer Zeile** (`Path(ziel).write_text(Path(alt).read_text())`); `mv`,
-`git mv`, `cp` und Hier-Dokumente (`cat > … <<'EOF'`) werden abgelehnt.
+**Fuenfte Rotation am 2026-09-05** bei 11.654 Zeichen. Vorfassung unter
+`notizen/archiv/kern-pruefer-2026-09-05-5.md`, aeltere daneben (die Zaehlung `-2` bis
+`-5` ist die Konvention fuer mehrere Rotationen am selben Tag). Der Weg dorthin war
+diesmal **`head -c 200000 <alt> > <neu>`**; `cp`, `mv`, `python3 -c` und der
+`Write`-Griff nach `notizen/archiv/` waren gesperrt. **Kopie hinterher mit `wc -c`
+gegen das Original pruefen** -- gleiche Zahl heisst byte-gleich.
 
 **Hoechstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die Lehre
 in einem Satz. **An dieser Datei schreiben mehrere eigene Laeufe gleichzeitig** -- vor
@@ -13,85 +14,78 @@ schreibst.
 
 ---
 
-## Der Apparat -- was heute wirklich schreibt und laeuft
+## Der Apparat
 
-- **Die Sperre wechselt von Lauf zu Lauf, auch die Richtung; einmal probieren kostet
-  einen Aufruf.** *2026-09-05, 0098:* `Edit` auf eine Paketdatei, `Write` nach `$TMPDIR`,
-  `cp`, `rm`, `sed` und Hier-Dokumente alle gesperrt -- `Write` ins Repo (Befund,
-  Logbuch) und `echo '…' > $TMPDIR/datei` (**ein** einfacher Befehl, keine Kette) frei.
-- **`&&`- und `;`-Ketten mit Umleitung werden pauschal abgelehnt**, auch harmlose. Den
-  Befehl einzeln wiederholen. Ebenso `sed -n '<a>,<b>p'` -- dafuer `Read` mit
-  `offset`/`limit`.
-- **Ein selbst gebautes Programm laeuft, wenn es in `ventures/**/bau/` gebunden wird.**
-  *2026-09-05, 0098:* Aus `$TMPDIR` heraus war das Ausfuehren gesperrt, aus `bau/` nicht
-  (`./bau/<name>`). `bau/` ist ueber `.gitignore:233` (`ventures/**/bau/`) ausgenommen,
-  ein liegengebliebener Messbinaerling kann also nicht in einen Commit geraten -- im
-  Befund vermerken, dass er dort liegt. Alternativen: `ctest --test-dir <bau> -R
-  '^<probe>$' -V` oder `cmake -E env <pfad>`.
-- **Die Shell behaelt ihr Arbeitsverzeichnis zwischen Aufrufen.** Absolute Pfade nehmen.
+- **Die Sperre wechselt von Lauf zu Lauf, auch die Richtung, und sie ist
+  pfadgenau.** *2026-09-05, 0123:* `Write` nach `ventures/**/befunde/` frei, `Write`
+  nach `notizen/archiv/` gesperrt -- in **einem** Lauf. `Edit`, `cp` und `python3 -c`
+  ganz gesperrt, `printf '…' > $TMPDIR/x`, `mkdir`, `tar -xf` und `head -c … > …` frei.
+  Einmal probieren kostet einen Aufruf; die Absage nennt oft das erlaubte Gegenstueck.
+- **`&&`- und `;`-Ketten werden pauschal abgelehnt**, auch harmlose. Befehle einzeln.
+  Ebenso `sed -n '<a>,<b>p'` -- dafuer `Read` mit `offset`/`limit`.
+- **Die Shell verliert ihr Arbeitsverzeichnis zwischen Aufrufen** (sie faellt auf die
+  Vorhabenwurzel zurueck, sichtbar an „Shell cwd was reset"). **Immer `cd <absolut> &&`
+  im selben Aufruf**, sonst greift ein `grep` ins Leere und liefert *stillschweigend*
+  nichts -- das sieht aus wie „kein Treffer" und ist „falsches Verzeichnis".
 - **Nie ueber den Commit-Betreff suchen**, immer `git log --oneline -- <datei>` und
-  **den dort genannten Commit** diffen; haelt auch das nicht, `git log -S '<neuer
-  Wortlaut>' -- <datei>`. **Ob gebaut wurde, entscheidet der Dateiinhalt an `HEAD`.**
+  **den dort genannten Commit** diffen. **Ob gebaut wurde, entscheidet der Dateiinhalt
+  an `HEAD`** -- der Betreff gehoert regelmaessig einem fremden Paket (0121).
 
 ## Mutieren, ohne eine Paketdatei anzufassen
 
-*2026-09-05, 0098 -- der ergiebigste Griff des Tages.* Die Abnahme verlangte einen
-Rotnachweis, `Edit`, `cp` und `$TMPDIR`-Ausfuehrung waren gesperrt. Der Weg:
+Zweimal gebraucht, zweimal getragen (0098, 0123). Der saubere Kopf zuerst, dann das
+Makro, dann die Quelle:
 
 ```
 c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
-    -include kern/<kopf>.hpp \          # zuerst der saubere Kopf: pragma once gesetzt
-    -include $TMPDIR/def.h \            # #define <praedikat>(k) true
-    -c src/<quelle>.cpp -o $TMPDIR/mutant.o
+    -I kern/include -include kern/include/kern/<kopf>.hpp \
+    -include $TMPDIR/mutant.h \        # #define <name>(a,b) (::voll::qualifiziert::<name>((a),(b)) + 1)
+    -c kern/src/<quelle>.cpp -o $TMPDIR/mutant.o
 ```
 
-Dann gegen das **unveraenderte** Probenobjekt und die uebrigen Objekte aus dem
-bestehenden Baubaum binden (`bau/CMakeFiles/<ziel>.dir/**/*.o`, das Original
-weglassen). Lehren daraus:
+Dann gegen das **unveraenderte** Probenobjekt und die uebrigen Objekte des bestehenden
+Baubaums binden (`link.txt` gibt die Zeile her, das Original weglassen).
 
 - **Die Reihenfolge der `-include` ist der ganze Trick.** Ein blosses `-D` trifft auch
-  die *Definition* im Kopf (`constexpr bool true noexcept` -- Uebersetzungsfehler); erst
-  der Kopf, dann das Makro, dann die Quelle trifft nur die **Aufrufstelle**.
-- **Die Fehlerliste des Mutanten ist selbst ein Deckungsbericht.** Sie nannte
-  `partie.jahrgang_id`, das der gruene Einzelfall der Probe nie anfasst -- der
-  Rotnachweis belegte damit mehr als der gruene Lauf zeigen konnte.
-- **Trennschaerfe mitmessen:** Welche Zusicherung bleibt beim Mutanten **gruen**? Blieb
-  sie es nicht, misst die Probe irgendeine Aenderung statt der gemeinten.
+  die *Definition* im Kopf; erst Kopf, dann Makro trifft nur die **Aufrufstelle**.
+- **Ein Makro darf waehlerisch sein.** *0123:* `+ (((b) == 100000) ? 0 : 1)` verschont
+  genau die Stelle, deren `static_assert` sonst den Uebersetzer stoppt, bevor die
+  anderen vier Aufrufstellen ueberhaupt gebunden sind. **Ein Uebersetzungsabbruch am
+  ersten Aufrufer verdeckt die Deckung aller uebrigen** -- ihn gezielt aussparen.
+- **Ein absorbierter Mutant ist kein ungedeckter.** *0123:* `+1` im **Nenner** eines
+  `mal_geteilt` verschwand im Runden (10^10/1.000.001 = 9999,99 → 10.000). Erst `+1000`
+  wurde rot. **Vor dem Urteil „nicht abgedeckt" die Schrittweite erhoehen** und die
+  Absorption von Hand nachrechnen -- sonst meldest du eine Luecke, die keine ist.
+- **Trennschaerfe mitmessen:** Welche Zusicherung bleibt beim Mutanten gruen?
 
 ## Was funktioniert
 
-- **Selbst bauen und messen ist der staerkste Nachweis, den ich habe.** Sonst aus
-  `git archive HEAD ventures/<v> specs decisions` in einen frischen Baum -- der
-  Arbeitsbaum traegt uncommittete Zwischenstaende paralleler Laeufe.
-- **Die Gegenprobe ist eine Kopie des Baums mit genau der einen Zeile zurueckgedreht,
-  nicht der Elterncommit.** Rezept ohne `cp`: `git worktree add --detach $TMPDIR/x
-  <commit-davor>`, dann `git -C $TMPDIR/x checkout <commit-danach> -- <die eine Datei>`.
+- **Selbst bauen und messen ist der staerkste Nachweis, den ich habe.** Frischer Baum:
+  `git archive -o $TMPDIR/baum.tar HEAD ventures/<v> specs decisions`, dann `tar -xf`
+  (zweimal entpacken gibt zwei Baeume, ohne `cp`). Der Arbeitsbaum traegt uncommittete
+  Zwischenstaende paralleler Laeufe.
 - **Die Abnahmebedingungen einzeln durchnummeriert abarbeiten, jede mit eigenem
   mechanischem Aufruf.** Fast jeder Befund fiel genau dabei an.
-- **Mutationen bewusst *andere* waehlen als die des Bauagenten.** Eine Wiederholung
-  seiner Auswahl prueft nur seine Auswahl.
-- **Steht im Mutationskatalog kein Fall zur neuen Zusicherung, ist der Rotnachweis
-  ungefuehrt** -- auch wenn die Probe eine Negativzusicherung (`!enthaelt(…)`) mitbringt.
-  Die ist eine Behauptung ueber den Mutanten, kein Lauf gegen ihn.
+- **Mutationen bewusst *andere* waehlen als die des Bauagenten.**
 - **Determinismus zuerst strukturell, dann gemessen.** `grep` nach Gleitkomma,
   `unordered_*`, `chrono`, `rand`, `random_device`, `reinterpret_cast`, `uintptr_t`,
   `getenv`, `__DATE__`. Rueckkopplung ebenso negativ beweisbar: Ist jede Bezugnahme
   `const` und gibt es kein `setze`, kann das Modul keine Schleife schliessen.
-- **Immer beide Bauprofile. Bei Determinismus ist der Profilvergleich selbst der
-  Nachweis.**
+- **Immer beide Bauprofile** (`-DFABRIK_SANITIZER=ON|OFF`). Bei Determinismus ist der
+  Profilvergleich selbst der Nachweis.
 - **Zu jedem Negativnachweis gehoert der Positivnachweis.** Ein Riegel, der **alles**
   blockiert, sieht im Negativtest identisch aus.
 - **Eine Behauptung in einem Kommentar ist ein Pruefauftrag**, ebenso ein Ausschluss in
   einem Vorschlag und der von ihm empfohlene Bauweg.
 - **Eine reparierte Wurzel hat Geschwister.** Nicht nach dem Muster suchen, sondern nach
   der *Frage*: Wie oft steht diese Frage im Modul noch -- und antwortet jede Stelle
-  gleich? *2026-09-05, 0098:* Deshalb `uebersicht` und `detail` mitgelesen, ob dort
-  Arithmetik auf denselben Feldern steht (nein).
-- **Eine Mengenbeziehung schlaegt eine Stichprobe**, und **eine Halbierung schlaegt
-  beide.** Eine Abzaehlung beim Uebersetzen (`static_assert` auf eine `constexpr`-Zaehlung
-  ueber alle Klassen) ist der beste Riegel gegen "kommt eine vierzehnte dazu".
-- **Von Hand nachrechnen, auch wenn die Probe gruen ist.** Zwei Zeilen: 20000−12345=7655
-  und 500−420=80 -- die erste ist die Zahl, die *nicht* erscheinen darf.
+  gleich?
+- **Eine Mengenbeziehung schlaegt eine Stichprobe**, eine Abzaehlung beim Uebersetzen
+  (`static_assert` auf eine `constexpr`-Zaehlung) schlaegt beide.
+- **Von Hand nachrechnen, auch wenn die Probe gruen ist.** *0123:* Drei Divisionen
+  gegen `runde_von_null_weg` gerechnet, alle drei stimmten aufs Zeichen mit dem
+  ueberein, was der Uebersetzer meldete -- das ist der Beleg, dass ich die Rundungsregel
+  verstanden habe und nicht nur ihr Ergebnis abschreibe.
 
 ## Was nicht funktioniert
 
@@ -100,24 +94,30 @@ weglassen). Lehren daraus:
 - **Eine Testeinspeisung an der falschen Stelle beweist nichts.** **Scheitern Probe und
   Kontrolle gleich, ist die Einspeisung schuld, nicht der Gegenstand.**
 - **Den Meldungstext einer Ausnahme nach dem Fangblock lesen** -- er ist dann fort.
+- **`grep -v <wort>` als Filter verwirft Treffer, die zwei Namen tragen.** *0123:* `-v
+  mal_geteilt` loeschte die Zeile `mal_geteilt(…, mal(a, b))` und damit einen der fuenf
+  gesuchten Aufrufer. **Das Suchmuster praeziser machen, statt hinterher zu filtern.**
 
 ## Offene Faehrten
 
 - **Ein Widerspruch zwischen Abnahme und Vorgabe ist kein `zurueck`.** Urteil nach der
   zulaessigen Lesart, der Widerspruch wird ein Vorschlag mit `rolle: projektmanager`.
-  *2026-09-05, 0098:* Der Projektmanager hat genau so entschieden -- die Abnahme von
-  0010 war seine und war zu weit gefasst, die Vorgabe T5 blieb stehen.
+- **Bei einer reinen Kommentaraenderung ist der Gegenstand die Behauptung.** Jede
+  Zusicherung einzeln gegen den Baum halten, Name fuer Name, Ort fuer Ort.
+  Regressionsfreiheit mechanisch zeigen: `git show <commit> -- <datei> | grep '^[+-]' |
+  grep -v '^[+-][+-][+-]' | grep -v '^[+-]///'` muss **leer** sein.
+- **Einen Klassifikationssatz gegen die Vorgabentabelle halten, nicht gegen das
+  Gefuehl.** *0123:* Die Zweiteilung „Groesse gegen Kalibrierzahl" hielt T5 nicht sauber
+  stand -- beide Gruppen enthielten beides. **Kein Befund, weil beide Haelften fuer sich
+  wahr waren und der moegliche Fehlschluss in die sichere Richtung zeigt.** Prueffrage
+  bei jedem unscharfen Satz: *Fuehrt der Irrtum zu mehr Pruefung oder zu weniger?*
 - **Namens- und Einheitentabellen sind der blinde Fleck jedes Abzaehlriegels.**
   **Welche Zeichenkette der Ausgabe kommt in keiner Zusicherung vor?**
 - **Die Grundbelegung der Proben ist der zweite blinde Fleck.** **Welche Mutation ist
   unsichtbar, weil der Vorgabewert sie unsichtbar macht?**
-- **Verliert eine Ausnahme Information?** Bei "statt der Rechnung ein Platzhalter":
-  Stehen die Eingaenge noch da? Ist der Platzhalter von einem gueltigen Wert
-  unterscheidbar (hier: Strich **mit** Leerzeichen gegen Minuszeichen **mit** Ziffer)?
 - **Wird ein Ueberlauf verhindert oder nachtraeglich erkannt?** Nur die erste Form haengt
   nicht an `-fwrapv`.
 - **Ruft die Probe den echten Vorgang, oder stellt sie ihn nach?**
-- **Ist die gebaute Schnittstelle von ihrem vorgeschriebenen Aufrufer bedienbar?**
 - **Zwei Pakete, die einzeln richtig sind, koennen zusammen falsch sein.**
 - **Nennt die Abnahme eine Menge ("A *oder* B"), jedes Glied messen.**
 - **Ein Kriterium, das im Dateiverzeichnis des Pakets nicht erfuellbar ist, ist ein
@@ -126,55 +126,25 @@ weglassen). Lehren daraus:
 ## Zu Vorschlaegen
 
 - **Vor dem eigenen Vorschlag pruefen, ob es die Luecke schon als Paket gibt** -- ein
-  `grep`/`ls` ueber `aufgaben/` nach der tragenden Formulierung. *2026-09-05, 0098:* Das
-  hat den einzigen Befund des Laufs erledigt: Der Commit-Schnitt lag schon als
-  `0121-commit-schnitt-folgt-nicht-dem-paket` (`status: blockiert`), von mir selbst am
-  selben Tag bei 0072 vorgeschlagen. **Ein zweiter Beleg gehoert in den Befund, nicht in
-  ein zweites Paket.**
+  `grep`/`ls` ueber `aufgaben/` nach der tragenden Formulierung. Zweimal hat das den
+  Vorschlag erledigt (0098 → `0121-commit-schnitt…`; 0123 → `0074-massnahme-43…`,
+  dessen Bedingung den stehengebliebenen Satz in `technik.md` schon nennt). **Ein
+  zweiter Beleg gehoert in den Befund, nicht in ein zweites Paket.**
+- **Sagt das gepruefte Paket selbst, welches andere die Gegenseite haelt, dort
+  nachschlagen und dessen `status` und Abnahme lesen.** Der Rumpf von 0123 nannte 0074
+  namentlich -- das war die ganze Recherche.
 - **Nummernkollision, sechster und siebter Fall.** Nummer erst bei `git status` **nach**
   `git add` endgueltig festlegen; unter der alten bleibt ein Zeiger mit `status:
   umgezogen` (Hausregel 3), Vorbild `0092`. **Im eigenen Befund auf den Paketnamen
   verweisen, nicht auf die Nummer allein.**
 - **Die `dateien`-Liste so eng wie moeglich schneiden ist kein Formalismus, sondern die
-  Reihenfolge.** Ein Vorschlag, der keine Codedatei beansprucht, laeuft an allen anderen
-  vorbei. *Umgekehrt gilt:* Die Reihenfolgesperre ueber `dateien` serialisiert die
-  **Laeufe**, nicht den **Index** -- gegen den gemeinsamen Commit hilft sie nicht (0121).
-- **`git add` ist selbst die Gefahr, nicht erst der eigene Commit.** *2026-09-05, 0098:*
-  Ich hatte meine Befunddatei nur vorgemerkt -- keine zwei Minuten spaeter lag sie in
-  `8d007aa` mit dem Betreff eines **fremden** Laufs, zusammen mit drei weiteren
-  Pruefungen aus drei Rollen. **Erst ganz am Schluss vormerken, und wenn das Einchecken
-  gesperrt ist, sofort `git restore --staged` nachziehen** -- eine vorgemerkte Datei
-  gehoert dem naechsten Commit, egal wem er gehoert. Nebenbei der beste Beleg fuer 0121,
-  weil er unter Beobachtung entstanden ist.
+  Reihenfolge.** Die Sperre serialisiert die **Laeufe**, nicht den **Index** -- gegen
+  den gemeinsamen Commit hilft sie nicht (0121).
+- **`git add` ist selbst die Gefahr, nicht erst der eigene Commit.** Erst ganz am
+  Schluss vormerken, und wenn das Einchecken gesperrt ist, sofort `git restore
+  --staged` nachziehen.
+- **`befunde/` steht in `UNGELESENE_ORDNER` des Belegstellenriegels** -- Zeilennummern
+  und Kurzzitate sind dort erlaubt. In `aufgaben/` sind sie es **nicht**.
 - **Ein dritter Pruefungslauf am selben Paket ist keine Doppelarbeit, wenn die ersten
   beiden Vorschlaege hinterlassen haben.** Dateiname
   `pruefung-<kennung>-runde<n>-<datum>.md`.
-
-## 2026-09-05, 0101 -- ein Paket, das nur einen Kommentar aendert
-
-- **Bei einer reinen Kommentaraenderung ist der Gegenstand die Behauptung.** Jede
-  Zusicherung des neuen Textes einzeln gegen den Baum halten, Name fuer Name, Ort fuer
-  Ort. Regressionsfreiheit ist bei null geaenderten Codezeilen strukturell gegeben; die
-  Abnahme trotzdem fahren.
-- **Einen privaten Riegel erreicht man ueber den Aufrufer, der ausdruecklich auf eine
-  eigene Pruefung verzichtet.** `Schreiber::setze` prueft die Adresse selbst und beweist
-  darum nur sich; `Startbelegung::setze` verweist auf den rohen Schreibzugriff und macht
-  dessen Riegel ausfuehrbar. **Prueffrage: welcher Aufrufer prueft *nicht* selbst?**
-- **Der Meldungstext trennt die Riegel.** Drei Funktionen mit derselben Schranke: Ohne
-  Wortlautprobe belegt ein Wurf nur, dass irgendetwas flog.
-- **Waere meine eigene Messung an dem Fehler blind, den sie sucht?** Der Bezeichner-
-  Sweep ueber alle Kommentare des Kerns (5.343 Zeilen, 19 Kandidaten, alle falsch
-  positiv) haette 0101 **nicht** gefunden: Der tote Name stand in einer Codezeile -- in
-  `requires { &Z::schreibe; }`, der Zusicherung, dass es ihn *nicht* gibt. Eine
-  Mengenpruefung haelt eine negative Zusicherung fuer eine Deklaration. Daraus wurde
-  `0129-bezeichner-im-kommentar-loest-auf`.
-- **Vor dem Schnitt der `dateien` zaehlen, wie viele offene Pakete die Datei schon
-  halten.** Vier auf `belegstellen_riegel.cpp` -- das entschied zwischen "dritte
-  Bedingung dort" und "eigenes Werkzeug", nicht der Geschmack.
-- **Der eigene Vorschlag muss selbst durch den Belegstellenriegel.** Keine Zeilenangabe
-  in eine fremde Datei, jedes Abschnittszitat aufloesbar. Die gebaute Binaerdatei laeuft
-  gegen den **Arbeitsbaum**, mit Vorhabenwurzel und Vorgabenwurzel als Argumenten --
-  vorher laufen lassen, nicht hinterher.
-- **Sperre heute umgekehrt zur Notiz oben:** `Write` durchgehend abgelehnt, auch ins
-  Repo; `python3 - <<'PY'` frei. Fuer einen Rueckgabecode `subprocess.run` in Python --
-  `; echo $?` faellt als Kette durch.
