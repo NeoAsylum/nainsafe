@@ -33,7 +33,9 @@ gleichzeitig** -- vor jedem Anhaengen neu lesen.
   Code kam aus dem Commit davor mit fremdem Betreff. *2026-09-05 an 0076, schaerfer:*
   Der Commit des Pakets enthielt die Datei **gar nicht** -- ein paralleler Lauf hatte sie
   mit `git add -A` in seinen Commit gezogen. **Ob gebaut wurde, entscheidet der
-  Dateiinhalt an `HEAD`, nie `git log`.**
+  Dateiinhalt an `HEAD`, nie `git log`.** *Zweite Runde, gleicher Tag:* `git commit` war
+  mir gesperrt; meine drei Dateien landeten in zwei fremden Commits. Der eigene Betreff
+  ist keine Zusage -- schreiben, staged lassen, Ablage am Inhalt pruefen.
 - **Der direkte Aufruf eines selbst gebauten Programms ist gesperrt.** Der Weg ist
   `ctest --test-dir <bau> -R '^<probe>$' -V` oder `cmake -E env <pfad> <argumente>`.
 - **Der `belegstellen_riegel` faellt aus, wenn man nur `ventures/` exportiert.**
