@@ -389,8 +389,9 @@ void belege_tragfaehig(Zustand& z)
 // lagen `M15`, `M16`, `M18`, `M17` und `N10` der Pruefung von 0010, funf Mutationen,
 // die eine richtige Zahl an eine falsche Beschriftung haengen und dabei gruen blieben.
 //
-// Quelle ist die Tabelle T5 (`specs/.../technik.md`, Zeile 278 bis 292) in der
-// Umschrift, die der Kern fuehrt: ohne die erlaeuternden Klammern der Tabelle, mit
+// Quelle ist die Tabelle unter "T5 -- Jede Groessenklasse hat eine deklarierte Skala"
+// samt der Zerlegung aus T49, in der Umschrift, die der Kern fuehrt: ohne die
+// erlaeuternden Klammern der Tabelle, mit
 // Umlautumschrift (`Stueck`) und ohne das Gleichheitszeichen vor dem Startjahr. Die
 // dreizehnte Klasse traegt nach T49 keine Zustandsadresse und wird deshalb als
 // einzige unmittelbar an `klassenname` und `klasseneinheit` geprueft.
