@@ -114,6 +114,24 @@ davor `-3` (0086), `-2`, und ohne Suffix, alle 2026-09-05.
   python3-Heredoc (auch fuer cmake-Bauten via subprocess), Write ins Repo, grep,
   git, Binary-Direktaufruf gegen den Arbeitsbereich (lesend) -- alles gegangen.
 
+## 0135 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** `bauwege.py` misst jetzt gegen den eigenen Stand
+  davor (HEAD via `git archive` oder `stand.json`). Beide Seiten selbst: Arbeitsbaum
+  0 Abweichungen/RW 0; eigener Mutant mit **anderem Mittel** als der Bauagent
+  (Mitglied aus `FABRIK_MITGLIEDER` statt Probendatei) -- Zielzahl 19!=20 / 17!=18,
+  RW 1. Baum ohne Git + Vorgabe-HEAD: Messfehler zaehlt als Abweichung, kein
+  Gruenschalter.
+- **Mitglied-entfernen ist der billigste Zielzahl-Mutant** (kein CMake-Wissen ueber
+  Probendateien noetig), reisst aber den `belegstellen_riegel` mit; wer nur das
+  Gleichheitsmass sehen will, nimmt eine Probendatei unter `pruefstand/test/`
+  (file-GLOB legt je Datei ein Ziel an -- so der Bauagent).
+- Fuer Skripte mit Vergleichslauf: `--gegen-datei` auf die stand.json des sauberen
+  Laufs ist der richtige Mutantenvergleich; Vorgabe-HEAD ist fuer committete
+  Aenderungen absichtlich blind.
+- Sperren dieser Sitzung: `sed` im Verbund gesperrt; python3-Heredoc, Write ins
+  Repo, grep/git/cmake/ctest, Hintergrundlaeufe -- alles gegangen.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von `ZITATFAELLE` (9) und `ZIELFAELLE` (8)
