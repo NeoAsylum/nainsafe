@@ -1,7 +1,7 @@
 ---
 id: 0105-belegstellenriegel-name-am-zeilenende
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung, 0083-belegstellenriegel-totes-ziel-statt-uebergangen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Eine richtige Belegstelle der Form ohne Anfuehrung, die am Zeilenende steht und deren Satz in der naechsten Zeile weiterlaeuft, macht den Riegel nicht mehr rot. Entschieden wird an einer benannten Eigenschaft, nicht an einer Liste, und die Entscheidung steht im Kopfkommentar unter den ausgeschriebenen Grenzen. Nachgewiesen mit drei Nachweisen an einer Kopie des Vorhabens: erstens rot vorher und gruen nachher an der zwei Zeilen langen Stelle aus dem Rumpf unten; zweitens weiterhin rot, wenn dieselbe Stelle eine Ueberschrift nennt, die es nicht gibt (die Lockerung darf keine tote Belegstelle durchlassen); drittens unveraendert 38 Zitate, 38 aufgeloest auf dem dann geltenden Korpus -- keines der heute aufgeloesten Zitate faellt dadurch weg oder in die uebergangenen Fundstellen.
