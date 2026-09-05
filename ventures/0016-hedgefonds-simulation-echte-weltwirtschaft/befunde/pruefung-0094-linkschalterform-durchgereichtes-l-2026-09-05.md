@@ -143,4 +143,8 @@ Mal nicht als Neuigkeit erscheint.
 
 ## Vorschlag
 
-Ein eigenes Paket: `0120-zerlegung-als-benannte-folge`. Begruendung dort.
+`aufgaben/0124-zerlegung-als-benannte-folge.md`, `status: vorschlag`. Die Zerlegung aus
+0094 steht jetzt zeichengleich an zwei Stellen derselben Datei (532-534 und 729-731), und
+drei weitere Pakete auf `werkzeugkette.cmake` stehen in der Warteschlange. Kein Befund
+gegen 0094 -- die Wiederverwendung war die richtige Entscheidung; benannt ist sie nur
+noch nicht. Begruendung und Abnahme dort.

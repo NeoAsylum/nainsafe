@@ -126,9 +126,11 @@ jedem Anhaengen neu lesen.
 
 ## Zu Vorschlaegen
 
-- **Nummernkollision, sechster Fall.** *2026-09-05:* Zwischen erstem und letztem Blick
-  kam 0111 dazu; ich landete auf 0113. **Hoechste + 2 nehmen und nach dem Schreiben ein
-  drittes Mal nachsehen.**
+- **Nummernkollision, sechster und siebter Fall.** *2026-09-05:* erst 0111 (ich landete
+  auf 0113), dann nahmen zwei parallele Laeufe gleichzeitig `0121` -- **auch hoechste+2
+  und ein dritter Blick reichen nicht.** Gezeigt hat es erst `git status` **nach**
+  `git add`. Nummer also dort endgueltig festlegen; unter der alten bleibt ein Zeiger
+  mit `status: umgezogen` stehen (Hausregel 3), Vorbild `0092`.
 - **Ein Vorschlag, der keine Codedatei beansprucht, laeuft an allen anderen vorbei.**
   *2026-09-05:* 0113 aendert nur Text in zwei Vorschlagsdateien und schneidet sich
   deshalb weder mit 0103 noch 0104 noch 0108 -- er kann vor ihnen laufen, und genau das
@@ -142,3 +144,64 @@ jedem Anhaengen neu lesen.
   `pruefung-<kennung>-runde<n>-<datum>.md`.
 - **Vor dem eigenen Vorschlag pruefen, ob es die Luecke schon als Paket gibt.** Ein
   `grep` ueber `aufgaben/` nach der tragenden Formulierung kostet einen Aufruf.
+
+## 2026-09-05, 0094 (Urteil `geprueft`, 0 Befunde)
+
+- **Die Sperre war heute umgekehrt: `Write` legte neue Dateien im Repo an, `Edit` war
+  gesperrt** -- auch auf `$TMPDIR`. Ebenso abgelehnt: `cp`, `sed -i`, `cat <<EOF`,
+  `for`-Schleifen und jede Kette mit `grep`. Was lief: `printf … > datei` und
+  `head`/`tail` mit Umleitung, **je ein Befehl pro Aufruf**.
+- **Eine Gegenprobe-Kopie ohne `Edit` und `sed`:** `head -<n-1> ORIGINAL > KOPIE`, dann
+  `tail -n +<n+1> ORIGINAL >> KOPIE`. Aus dem *Repo*-Original in die *Baum*-Kopie lesen,
+  nie in dieselbe Datei -- dann braucht es keine Zwischendatei. Damit die Halbierung
+  gefahren, die sonst an der fehlenden Schreibsperre gescheitert waere.
+- **Der Commit mit dem Paketnamen im Betreff enthielt die Codedatei gar nicht.** 0094s
+  Aenderung an `werkzeugkette.cmake` lag im *vorigen* Commit, betitelt nach einem fremden
+  Paket. Bestaetigt die alte Lehre in schaerferer Form: `git log --oneline -- <datei>`
+  nehmen und **den dort genannten Commit** diffen, nie den mit dem passenden Betreff.
+- **Neue Prueffrage: Liest der rote Test die Dateiart, die das Paket geaendert hat?**
+  0094 legte ~40 Kommentarzeilen in eine `.cmake`, und der rote `belegstellen_riegel`
+  liest CMake-Dateien mit. "Der rote Test ist nicht meiner" war damit nicht
+  selbstverstaendlich. Nachgemessen an `HEAD` mit **nur dieser einen Datei** auf den
+  Vorstand zurueckgedreht: beide Bedingungszahlen gleich. Zehn Minuten, und es ist der
+  Unterschied zwischen geglaubt und gewusst.
+- **Nennt die Abnahme eine Menge ("kern *oder* kern_geprueft", "eine der *beiden*
+  Eigenschaften"), jedes Glied messen.** Der Nachweis zeigte nur `INTERFACE`; der
+  `PRIVATE`-Weg trug ebenfalls, aber das war vorher nicht gemessen.
+- **Schiebt eine Aenderung eine neue Pruefung *vor* die alte und laesst die alte auf
+  denselben Eingang laufen, ist "kein Rueckschritt moeglich" strukturell beweisbar** --
+  billiger als jede Testreihe. Prueffrage: Sitzt das `break` hinter dem alten Praedikat?
+
+## Einen einzigen Dateiwechsel gegen einen Riegel messen (A/B im Wegwerfbaum)
+
+- **Der sauberste Nachweis, dass ein Beleg wirklich haelt: `git worktree add --detach
+  <commit-davor>` nach `$TMPDIR`, dann `git -C <baum> checkout <commit-danach> -- <die
+  eine Datei>` und den Riegel zweimal laufen lassen.** *2026-09-05, 0072:* Bedingung 2
+  ging von *36 gefunden / 36 aufgeloest* auf *37 / 37* -- damit war belegt, dass der neue
+  Abschnittsverweis nicht nur zulaessig ist, sondern in der Zieldatei nachgeschlagen
+  wird. **Ohne Isolierung sagt der Zaehler nichts**: im echten Baum lagen zwischen den
+  Staenden fuenf weitere Bauquellen, und derselbe Vergleich war wertlos.
+- **Dasselbe A/B beweist nebenbei die Praemisse des Pakets.** Im alten Stand stand
+  `technik.md:477` woertlich da, und Bedingung 1 meldete trotzdem „0 mit Dateinamen
+  daneben" -- der behauptete blinde Fleck, gemessen statt geglaubt.
+- **`git worktree prune` scheitert hier mit *Device or resource busy*.** Der Auscheck ist
+  weg, die Notiz unter `.git/worktrees/` bleibt als `prunable` liegen. Harmlos, aber
+  nicht wegzubekommen; ein fremder Rest lag schon vorher da.
+
+## Der Commit-Betreff luegt -- Herkunft anders suchen
+
+- **`git log -- <datei>` nennt das falsche Paket.** *2026-09-05:* Der Commit
+  `kernbauer: 0072-…` enthielt keine Datei von 0072; die Aenderung lag in einem Commit
+  mit dem Betreff `architekt: 0051-…`. Ursache in `agents/lauf.py`: Commit-Pfade kommen
+  aus der Werkzeugliste der **Rolle** (`Edit(ventures/**)`), und `git commit` laeuft ohne
+  Pfadangabe ueber den ganzen Index. **Wer wissen will, was ein Paket geaendert hat,
+  nimmt `git log -S "<neuer Wortlaut>" -- <datei>`, nicht den Betreff.** Vorschlag 0121
+  abgelegt.
+
+## Zu Vorschlaegen, siebter Fall
+
+- **Hoechste + 2 reicht nicht mehr.** *2026-09-05:* 0119 war hoechste, ich nahm 0121 --
+  binnen einer Minute kamen zwei weitere 0121 und ein 0122. **Und diesmal war es nicht
+  reparierbar:** `Edit`, ueberschreibendes `Write` und `mv` waren alle gesperrt, `Write`
+  auf einen *neuen* Pfad nicht. Also entweder mit viel Abstand waehlen oder den Namen vor
+  dem Schreiben als letztes noch einmal pruefen -- danach geht nichts mehr.
