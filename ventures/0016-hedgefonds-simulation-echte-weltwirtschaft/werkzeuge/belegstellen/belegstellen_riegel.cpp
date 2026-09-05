@@ -178,12 +178,13 @@
 //! die vier Faelle, die die Verbreiterung verlangt (1, 2, 3 und 8), und die vier
 //! anderen bleiben gruen.
 //!
-//! Drei weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
+//! Vier weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
 //! mit: `ZITATFAELLE` zur Form ohne Anfuehrung (Paket 0079), `ZIELFAELLE` zur Frage, wo
-//! eine genannte Zieldatei liegt (Paket 0083), und `ABSTANDSFAELLE` zum Wortabstand
-//! samt Suche nach rechts (Paket 0086). Alle drei halten vor allem den **roten** Fall
-//! fest, den der Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der
-//! Riegel koennte dort also nur zeigen, dass er gruen wird.
+//! eine genannte Zieldatei liegt (Paket 0083), `ABSTANDSFAELLE` zum Wortabstand samt
+//! Suche nach rechts (Paket 0086) und `SATZFAELLE` zur Satzgrenze nach links (Paket
+//! 0079, zweiter Teil). Alle vier halten vor allem den **roten** Fall fest, den der
+//! Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der Riegel koennte
+//! dort also nur zeigen, dass er gruen wird.
 //!
 //! ## Was der Riegel liest, und warum genau das
 //!
@@ -259,7 +260,7 @@
 //!     ein unbedingter Pfad, ein Aufstieg mit zwei Punkten. Dazu die Netzadresse, die
 //!     ihre eigene Meldung hat.
 //!   * *Gliederungsziffer statt Ueberschrift* -- Paket 0079, oben begruendet. Die
-//!     groesste der fuenf Gruppen und die harmloseste: Eine Nummer traegt keinen
+//!     groesste der sechs Gruppen und die harmloseste: Eine Nummer traegt keinen
 //!     Wortlaut, an dem sich etwas nachschlagen liesse.
 //!   * *einzelnes Zeichen statt Ueberschrift* -- ein Formelzeichen oder ein
 //!     Platzhalter, ebenfalls oben begruendet.
@@ -370,7 +371,10 @@
 //!
 //! Die drei Grenzen oben genuegen nicht, und das ist gemessen: Am 2026-09-05 wurde der
 //! Riegel rot an einem Satz in `rueckstand.md`, in dem etwas "einen \101bsa\164z
-//! Rechtfertigung und sechs zusaetzliche Baulaeufe gekostet" hat. Das Schluesselwort
+//! Rechtfertigung und sechs zusaetzliche Baulaeufe gekostet" hat -- das Schluesselwort
+//! ist hier maskiert (`\101` ist `A`, `\164` ist `t`), weil dieser Absatz sonst genau
+//! die Stelle waere, von der er handelt, und den Riegel an sich selbst rot machte. Das
+//! Schluesselwort
 //! steht da, der Name dahinter beginnt gross -- im Deutschen tut das jedes Hauptwort --,
 //! und der naechstgelegene Dokumentname im Absatz stand **zwei Saetze weiter oben** und
 //! handelte von etwas anderem. Der Riegel schlug einen halben Nebensatz als Ueberschrift
