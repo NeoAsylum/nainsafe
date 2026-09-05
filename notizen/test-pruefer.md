@@ -133,6 +133,27 @@ davor -4 (0111), -3 (0086), -2, ohne Suffix -- alle 2026-09-05.
   einzelne cmake/ctest-Aufrufe, `> log 2>&1` als Teil eines ctest-Aufrufs,
   python3-Heredoc (subprocess, shutil), grep/ls/df/wc-Verbund -- gegangen.
 
+## 0136 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** Beide Bedingungen selbst gemessen: alt-Baum =
+  heutiger Baum mit den drei Paketdateien auf `0333b81^` (Blob-Ruecksetzung, Lehre
+  0133 traegt); 17/17 Arbeitsbereich, 4->3 Pruefstand, eigener Mutant (Invertierung
+  statt `if(FALSE)` des Nachweises) kippt dieselben 15/22 -- unabhaengige Bestaetigung.
+- **gcc schreibt Assembler-Zwischendateien nach `$TMPDIR`.** Volles tmpfs macht
+  Bauwege mitten im Lauf rot (ENOSPC) und kippte am Waechter-Alleinbau genau die
+  soll-0-Faelle: 5 Schein-Abweichungen, die wie ein echter Befund aussahen. Erst die
+  Stoerquelle pruefen, dann dem Rot glauben; Unterprozessen `TMPDIR` auf die Platte
+  legen (env), nicht nur die eigene Ablage.
+- Messbaeume unter `ventures/<id>/bau/<eigener-name>/` statt $TMPDIR: gitignoriert,
+  `baulauf.py` nimmt `bau` von der Manifestsuche aus (Zeile 132), 952G frei. Baeume
+  am Ende entfernen, Skripte+Protokolle liegen lassen (Befund verweist darauf).
+- Zahlen des GEBAUT-Absatzes duerfen vom eigenen Stand abweichen, wenn der Korpus
+  driftet: seine 16/10 vs. meine 17/11 = Verlaufs-Probe aus 0140, die nach seinem
+  Messstand `74e1464` landete. Erst Commits datieren, dann Widerspruch rufen.
+- Sperren dieser Sitzung: `rm -rf`, `cd`/`&&`-Verbund, `grep|sed`-Pipe gesperrt;
+  Write+`python3 <skript>` (auch rmtree im Repo-bau), einzelne git/ctest/cmake-Aufrufe,
+  Hintergrundlauf gingen.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE (9) einzeln nachschlagen.**
