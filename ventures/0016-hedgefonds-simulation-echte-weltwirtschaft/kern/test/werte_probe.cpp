@@ -873,6 +873,94 @@ void probe_waehrungswert_fester_kurs()
     PRUEFE(waehrungswert(z, Gebiet::DE) == 400'000);
 }
 
+// ---------------------------------------------------------------------------
+// 5. T48 Nr. 8 -- der Anleihezweig von `korbbestand` nimmt den BETRAG der Stufenzahl
+// ---------------------------------------------------------------------------
+//
+// Mutation, gegen die diese Pruefung gerichtet ist: in `korbbestand` im Anleihezweig
+// `mal(betrag(stufen), konst.stufenweite)` durch `mal(stufen, konst.stufenweite)`
+// ersetzen -- also den Betrag streichen.
+//
+// `technik.md` schreibt fuer Nr. 8 die Betragsstriche aus:
+//
+//     + Sigma ueber die 4 Anleihen  mal_geteilt(anleihewert(l), |stufen(p)| * stufenweite, 10.000)
+//
+// Es ist derselbe Unterschied wie zwischen Nr. 14 und Nr. 15, den
+// `probe_positionswert_traegt_das_vorzeichen` oben belegt: Der Korbbestand misst, wie
+// viel Markt ein Fonds bewegt, nicht wie viel er besitzt. Ein grosser Short bewegt so
+// viel Markt wie ein grosser Long -- deshalb der Betrag; das Vorzeichen steht in Nr. 15.
+//
+// Unsichtbar bleibt die Mutation, weil `probe_fondsanteil_und_korbbestand` den einzigen
+// belegten Anleihesteckplatz auf **`3`** setzt: Bei einer positiven Stufenzahl sind
+// `betrag(stufen)` und `stufen` dieselbe Rechnung. Gebraucht wird eine **negative**
+// Stufenzahl und der erwartete Beitrag als ausgeschriebene Zahl.
+//
+// Wirkung, falls verletzt: Der Anleihebestand eines Fonds mit Short-Positionen in
+// Staatsanleihen ginge negativ ein, statt seinen Betrag beizutragen -- hier 400.000
+// Unterschied auf einer einzigen Anleihe. `korbbestand` traegt den `fonds.marktanteil`,
+// also Mass 3; ein Fonds mit genug Anleihe-Shorts bekaeme einen negativen Marktanteil.
+
+void probe_korbbestand_nimmt_den_betrag()
+{
+    Rohling r;
+
+    // Allein Deutschland traegt bei: Wertschoepfung 2.000.000 bei einer Schuldenquote
+    // von 10.000 Basispunkten, also 100 Prozent. Anleihekurs und Wechselkurs stehen auf
+    // 10.000, damit `anleihewert` genau die Schuld ist.
+    r.lege(stelle_sektorgroesse(Gebiet::DE, Sektor::Industrie, SektorGroesse::Wertschoepfung),
+           2'000'000);
+    r.lege(stelle_aggregat(Gebiet::DE, Aggregat::Staatsschuld), 10'000);
+
+    Konstanten konst = K_GRUND;
+    konst.stufenweite = 250;
+
+    const Steckplatz platz = steckplatz_anleihe(Gebiet::DE);
+    const Zustand&   z     = r;
+
+    // Positivkontrolle 1: die eine Anleihe traegt einen Wert, die drei anderen nicht.
+    PRUEFE(anleihewert(z, konst, Gebiet::DE) == 2'000'000);
+    PRUEFE(anleihewert(z, konst, Gebiet::US) == 0);
+    PRUEFE(anleihewert(z, konst, Gebiet::CN) == 0);
+    PRUEFE(anleihewert(z, konst, Gebiet::BR) == 0);
+
+    // Positivkontrolle 2: Der Steckplatz ist noch leer, die zwoelf Koerbe sind es auch.
+    // Damit ist jede Zahl unten **ganz** der Beitrag dieser einen Anleihe und nicht zum
+    // Teil ein Rest aus dem Korbzweig.
+    PRUEFE(korbbestand(z, konst) == 0);
+
+    // Vier Stufen **short** auf der deutschen Staatsanleihe.
+    r.lege(stelle_position(platz), -4);
+
+    // Die Aussage, ausgeschrieben:
+    //   mal_geteilt(2.000.000, |-4| * 250, 10.000) = mal_geteilt(2.000.000, 1.000, 10.000)
+    //                                              = +200.000
+    PRUEFE(korbbestand(z, konst) == 200'000);
+
+    // Und die verworfene Form als **andere** Zahl: ohne den Betrag stuende hier
+    //   mal_geteilt(2.000.000, -4 * 250, 10.000) = -200.000
+    PRUEFE(korbbestand(z, konst) != -200'000);
+
+    // Dass die Stufenzahl im Zustand wirklich negativ ist -- und nicht irgendwo vorher
+    // schon zum Betrag geworden -- zeigt derselbe Steckplatz durch Nr. 15: Der
+    // Positionswert traegt das Vorzeichen, der Korbbestand nicht. Beide lesen dieselbe
+    // Stelle desselben Zustands.
+    //   Stufenwert: mal_geteilt(2.000.000, 250, 10.000) = 50.000 Tausend USD
+    //   Positionswert: -4 * 50.000 = -200.000 Tausend USD -> -2 * 10^10 US-Cent
+    PRUEFE(stufenwert(z, konst, platz) == 50'000);
+    PRUEFE(positionswert(z, konst, platz) == -20'000'000'000);
+
+    // Die Gegenprobe zum Betrag selbst: dieselbe Stufenzahl **long** ergibt denselben
+    // Beitrag. Ohne diese Zeile bliebe offen, ob die 200.000 oben aus dem Betrag stammen
+    // oder aus einer zufaellig passenden Rechnung mit dem Vorzeichen.
+    r.lege(stelle_position(platz), 4);
+    PRUEFE(korbbestand(z, konst) == 200'000);
+
+    // Und zurueck auf null: Ohne Position traegt die Anleihe nichts bei. Das schliesst
+    // die Lesart aus, der Beitrag haenge allein am Anleihewert.
+    r.lege(stelle_position(platz), 0);
+    PRUEFE(korbbestand(z, konst) == 0);
+}
+
 }  // namespace
 
 int main()
@@ -895,6 +983,9 @@ int main()
     probe_positionswert_traegt_das_vorzeichen();
     probe_marktkorb_ohne_waehrungen();
     probe_waehrungswert_fester_kurs();
+
+    // Paket 0111 -- die fuenfte Stelle derselben Familie: der Anleihezweig von Nr. 8.
+    probe_korbbestand_nimmt_den_betrag();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

@@ -34,9 +34,12 @@
 //! **Die Ursachenkette.** T20 verlangt zum Unterschied zweier Zeitpunkte auch die Kette
 //! aus T18, rueckwaerts aufgeloest. Sie steht nicht im Zustand, sondern nach T19 neben
 //! ihm, und ein Verlauf ueber mehrere Runden ist noch nicht gebaut. Der Unterschied
-//! sagt *was*; das *warum* kommt dazu, sobald es einen Traeger dafuer gibt. Das
-//! Arbeitspaket verlangt fuer diesen Lauf die drei Zahlen -- alter Wert, neuer Wert,
-//! Differenz --, und mehr ist hier nicht gebaut.
+//! sagt *was*; das *warum* kommt dazu, sobald es einen Traeger dafuer gibt. Es sind die
+//! drei Angaben -- alter Wert, neuer Wert, Differenz --, und mehr ist hier nicht gebaut.
+//!
+//! Die dritte davon ist auf zwei der 310 Adressen **keine Zahl**, sondern ein Strich
+//! mit seinem Grund: T5 erklaert auf den Kennungen jede Arithmetik ausser der
+//! Gleichheit zum Fehler. Die Herleitung steht bei `differenz_hat_bedeutung`.
 //!
 //! **Farben, Rahmen, Ausrichtung.** Das ist die Sicht und nicht das Modell.
 
@@ -325,6 +328,11 @@ struct Zuordnung {
     // Die beiden Kennungen sind die einzigen Adressen, auf denen nach T5 jede
     // Arithmetik ausser der Gleichheit ein Fehler ist. Sie stehen hier mit ihrer Klasse,
     // damit das in der Ausgabe abzulesen ist, statt in einem Dokument zu stehen.
+    //
+    // Abgelesen wird es an genau einer Stelle: `diff` fragt `differenz_hat_bedeutung`
+    // und setzt auf diesen beiden Adressen einen Strich mit Grund an die Stelle der
+    // Differenz. Wer hier eine dritte Adresse auf `Kennung` legt, bekommt die Ausnahme
+    // damit mit -- und wer eine dieser beiden umtraegt, verliert sie.
     setze(stelle_partie(PartieFeld::Runde), Skalenklasse::Zaehler, Herkunftsart::Entwurf);
     setze(stelle_partie(PartieFeld::JahrgangId), Skalenklasse::Kennung,
           Herkunftsart::Manifest);
@@ -440,6 +448,54 @@ static_assert(adressen_der_herkunft(Herkunftsart::Datenanker)
     }
     return static_cast<Herkunftsart>(ZUORDNUNG.herkunft[platz] - 1U);
 }
+
+// ---------------------------------------------------------------------------
+// T5, Klasse 12 -- wo eine Differenz keine ist
+// ---------------------------------------------------------------------------
+//
+// Auf den Kennungen ist nach T5 jede Arithmetik ausser der Gleichheit ein Fehler, und
+// der Grund steht in der Vorgabe daneben: Eine Pruefsumme, die versehentlich in eine
+// Summe geraet, erzeugt eine Zahl, die keine Pruefung bemerkt, weil sie in keinem
+// Wertebereich liegt. Die Unterschiedsebene subtrahiert -- auf genau diesen zwei der
+// 310 Adressen darf sie es also nicht.
+//
+// **Was sie stattdessen tut, ist nicht Weglassen.** Alter und neuer Wert stehen wie
+// ueberall sonst; nur an der Stelle der Differenz steht ein Strich mit seinem Grund.
+// Die beiden verworfenen Wege, damit niemand sie fuer ungeprueft haelt: Eine
+// weggelassene Zeile waere fuer den Selbstspieler dasselbe Zeichen wie -- hat sich
+// nicht geaendert --, und eine ausgerechnete Zahl waere ein Ausschlag, der keiner ist.
+// `4611686018427387904` minus `-6917529027641081856` ergibt `11529215046068469760`;
+// die Zahl ist wohlgeformt, gross und bedeutet nichts.
+
+/// Ob eine Differenz auf dieser Klasse ueberhaupt etwas bedeutet.
+///
+/// Die Frage steht hier und nicht als `if` an der Aufrufstelle, damit sie beim
+/// Uebersetzen abzaehlbar ist: Kommt eine vierzehnte Klasse dazu, muss jemand
+/// entscheiden, auf welcher Seite sie steht, statt sie stillschweigend rechnen zu
+/// lassen. Die Zusicherung darunter zaehlt nach, dass es bei einer Ausnahme bleibt.
+[[nodiscard]] constexpr bool differenz_hat_bedeutung(Skalenklasse klasse) noexcept
+{
+    return klasse != Skalenklasse::Kennung;
+}
+
+/// Wie viele der dreizehn Klassen keine Differenz tragen -- gezaehlt statt behauptet.
+[[nodiscard]] constexpr std::size_t klassen_ohne_differenz() noexcept
+{
+    std::size_t anzahl = 0;
+    for (std::size_t nummer = 1; nummer <= SKALENKLASSEN; ++nummer) {
+        if (!differenz_hat_bedeutung(static_cast<Skalenklasse>(nummer))) {
+            ++anzahl;
+        }
+    }
+    return anzahl;
+}
+
+static_assert(klassen_ohne_differenz() == 1,
+              "T5: allein Klasse 12 traegt Bitmuster ohne Groessenbedeutung");
+static_assert(!differenz_hat_bedeutung(Skalenklasse::Kennung),
+              "T5 Klasse 12: die Ausnahme gilt fuer die Kennungen");
+static_assert(differenz_hat_bedeutung(Skalenklasse::Zaehler),
+              "T5 Klasse 11: die Runde ist eine Zahl und ihre Differenz auch");
 
 /// Der Name einer Klasse, so wie T5 sie nennt.
 [[nodiscard]] const char* klassenname(Skalenklasse klasse);
@@ -692,6 +748,13 @@ inline constexpr std::array<const char*, BEREICHE> BEREICH_NAME = {
 ///
 /// Die Differenz ist der neue Wert minus dem alten, gerechnet auf `i128`: Sie passt
 /// nicht immer in `i64`, und ein Umlauf waere hier eine wohlgeformte falsche Zahl.
+///
+/// **Auf den beiden Kennungen steht dort keine Zahl**, sondern
+/// `Differenz -  (T5: auf einer Kennung nur Gleichheit)`. Der Strich traegt ein
+/// Leerzeichen hinter sich und ist damit von einem Minuszeichen zu unterscheiden, hinter
+/// dem eine Ziffer steht -- die Ebene liest nach T20 auch eine Maschine. Alter und neuer
+/// Wert stehen unveraendert daneben, und jede Adresse der zwoelf uebrigen Klassen behaelt
+/// ihre gerechnete Differenz. Warum das so ist, steht bei `differenz_hat_bedeutung`.
 ///
 /// Sind beide Zustaende gleich, sagt das Blatt das ausdruecklich in einer Zeile. Eine
 /// leere Ausgabe und eine, in der nichts zu berichten war, waeren sonst dasselbe

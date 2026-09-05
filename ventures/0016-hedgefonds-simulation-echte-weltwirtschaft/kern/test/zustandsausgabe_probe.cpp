@@ -2,7 +2,7 @@
 //!
 //! Der Kopf des Moduls weist beim **Uebersetzen** nach, dass jede der 310 Adressen
 //! genau eine Skalenklasse und genau eine Herkunftsart hat und dass die zwoelf Zahlen
-//! aus T49 und die fuenf aus T45 aufgehen. Diese Probe gibt es fuer acht Dinge, die
+//! aus T49 und die fuenf aus T45 aufgehen. Diese Probe gibt es fuer neun Dinge, die
 //! ein `static_assert` nicht kann:
 //!
 //!   1. **Die Abnahmebedingung im Wortlaut.** Sie verlangt den Nachweis, dass jede der
@@ -40,6 +40,13 @@
 //!      und fuer das eine Paar, das in einem gueltigen Zustand gleich sein **muss**
 //!      (Leitzins: Aggregat und Instrumentenstand, T49), steht die halb gerechnete
 //!      Runde daneben.
+//!   9. **Die Ausnahme der Kennungen** (Abschnitt 8b, Paket 0098). T5 erklaert auf den
+//!      beiden Kennungen jede Arithmetik ausser der Gleichheit zum Fehler; die
+//!      Unterschiedsebene setzt dort einen Strich mit Grund an die Stelle der Differenz.
+//!      Welche der beiden Formen eine Adresse traegt, steht in keinem `static_assert`,
+//!      weil es eine Aussage ueber erzeugten Text ist. Geprueft ist sie an dem einen
+//!      Zustandspaar, das die Abnahme verlangt, und danach an je einem eigenen Paar fuer
+//!      jede der 310 Adressen.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -1300,6 +1307,101 @@ int main()
                              "Puffer %zu.\n",
                      alles.zeilen(), alles.laenge(),
                      kern::zustandsausgabe::ADRESSBLATT_ZEICHEN);
+    }
+
+    // -----------------------------------------------------------------------
+    // 8b. Die Kennungen: ein Strich statt einer Differenz (T5, Klasse 12)
+    // -----------------------------------------------------------------------
+    //
+    // T5 nennt die beiden Kennungen Bitmuster ohne Groessenbedeutung und erklaert auf
+    // ihnen jede Arithmetik ausser der Gleichheit zum Fehler. Eine ausgerechnete
+    // Differenz waere dort genau die Sorte Zahl, vor der die Vorgabe warnt: wohlgeformt,
+    // gross und ohne Bedeutung. Gemessen am 2026-09-04 stand in der Ausgabe
+    // -- partie.parameter_pruefsumme ... Differenz 11529215046068469760 -- und dieselbe
+    // Zeile sagte an ihrem Ende, die Zahl habe keine Groessenbedeutung.
+    //
+    // Der Wortlaut steht hier ein zweites Mal und nicht als Bezugnahme auf die Konstante
+    // im Modul. Wer STRICH_STATT_DIFFERENZ gegen sich selbst haelt, prueft nichts.
+    //
+    // **Zuerst das eine Zustandspaar, das die Abnahme verlangt.** Es unterscheidet sich
+    // in genau zwei Adressen -- einer Kennung und einer Nicht-Kennung --, damit beide
+    // Haelften in derselben Ausgabe stehen: Die Ausnahme greift, und sie greift nur dort.
+    {
+        Zustand nach = tragfaehig;
+        startwert(nach, kern::zustand::stelle_partie(PartieFeld::ParameterPruefsumme),
+                  20000);
+        startwert(nach, kern::zustand::stelle_fonds(FondsGroesse::Marktanteil), 500);
+
+        const auto blatt = diff(tragfaehig, nach);
+        PRUEFE(enthaelt(blatt.fertig(), "2 von 310 Adressen geaendert."));
+
+        // Die Kennung: alter und neuer Wert wie ueberall, an der Stelle der Differenz
+        // der Strich mit seinem Grund.
+        PRUEFE(enthaelt(blatt.fertig(),
+                        "partie.parameter_pruefsumme  alt 12345  neu 20000  "
+                        "Differenz -  (T5: auf einer Kennung nur Gleichheit)  "
+                        "[K12 Kennung, Bitmuster ohne Groessenbedeutung]"));
+
+        // Und die Nicht-Kennung derselben Ausgabe: ihre Differenz ist unveraendert die
+        // gerechnete. Ohne diese Haelfte belegte die obere nur, dass irgendetwas anders
+        // geworden ist.
+        PRUEFE(enthaelt(blatt.fertig(),
+                        "fonds.marktanteil  alt 420  neu 500  Differenz 80  "
+                        "[K4 Anteile, Zehntausendstel]"));
+
+        // Der Rotnachweis in einer Zeile: 20000 minus 12345 ist 7655, und genau diese
+        // Zahl darf nirgends stehen. Ein Mutant, der die Ausnahme herausnimmt, schreibt
+        // sie hin.
+        PRUEFE(!enthaelt(blatt.fertig(), "Differenz 7655"));
+
+        schreibe_zeile("Kennung ohne Differenz",
+                       zeile_ab(blatt.fertig(), "partie.parameter_pruefsumme"));
+        schreibe_zeile("Nicht-Kennung daneben",
+                       zeile_ab(blatt.fertig(), "fonds.marktanteil"));
+    }
+
+    // **Und dieselbe Frage ueber alle 310 Adressen einzeln.** Das Paar oben zeigt die
+    // Ausnahme an einer Kennung und ihr Ausbleiben an einer Nicht-Kennung; die Abnahme
+    // verlangt es aber fuer **jede** Adresse der zwoelf uebrigen Klassen. Also je Adresse
+    // ein eigenes Paar, das sich nur in ihr unterscheidet, und je Paar die Frage, welche
+    // der beiden Formen in der Differenzspalte steht. Die Erwartung kommt dabei aus der
+    // Skalenklasse und nicht aus einer Adressliste in dieser Datei.
+    {
+        std::size_t abweichungen = 0;
+        std::size_t kennungen    = 0;
+        for (Index platz = 0; platz < FELDER; ++platz) {
+            Zustand nach = tragfaehig;
+            startwert(nach, platz, tragfaehig.lies(platz) + 1);
+            const auto blatt   = diff(tragfaehig, nach);
+            const bool kennung = skalenklasse_von(platz) == Skalenklasse::Kennung;
+            if (kennung) {
+                ++kennungen;
+            }
+
+            // Die Spalte endet am Anfang der Klassenangabe. Ohne dieses Ende faende
+            // -- Differenz 1 -- sich auch in -- Differenz 18 --.
+            Ausgabe<128> nadel;
+            nadel.text("  Differenz ");
+            if (kennung) {
+                nadel.text("-  (T5: auf einer Kennung nur Gleichheit)");
+            } else {
+                nadel.zahl(1);
+            }
+            nadel.text("  [K");
+
+            if (!enthaelt(blatt.fertig(), nadel.fertig())
+                || !enthaelt(blatt.fertig(), "1 von 310 Adressen geaendert.")) {
+                ++abweichungen;
+                std::fprintf(stderr, "Differenzspalte falsch: %s erwartet %s\n",
+                             kern::zustand::index_zu_adresse(platz), nadel.fertig());
+            }
+        }
+        PRUEFE(abweichungen == 0);
+        PRUEFE(kennungen == 2);
+        std::fprintf(stdout,
+                     "Differenzspalte: %zu von %zu Adressen tragen die gerechnete "
+                     "Differenz, %zu den Strich.\n",
+                     FELDER - kennungen, FELDER, kennungen);
     }
 
     // -----------------------------------------------------------------------

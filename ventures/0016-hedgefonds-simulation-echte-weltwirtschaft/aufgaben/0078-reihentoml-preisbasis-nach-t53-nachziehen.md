@@ -1,7 +1,7 @@
 ---
 id: 0078-reihentoml-preisbasis-nach-t53-nachziehen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0026-klasse-2-preisbasis, 0090-rueckstand-ueberschrift-fuenf-tote-zitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die fuenf Bedingungen im Abschnitt "Abnahme". Bedingung 5 (die Selbstmessungen) ist die, an der dieses Feld dreimal gescheitert ist -- sie wird nach der letzten Schreibbewegung gemessen, nicht vorher, und mit genanntem Bezugsstand.
@@ -399,3 +399,196 @@ Halbsatz hier bewegt die Zahl, an der 0090 gemessen wird.
 
 **Sobald 0090 `fertig` ist, fällt die Sperre.** Sie sagt nichts über den Inhalt dieses
 Pakets und ist kein Rücklaufgrund.
+
+## GEBAUT — 2026-09-05, Datenbauer, nach Rücklauf 1
+
+Die Sperre ist gefallen: `aufgaben/0090-rueckstand-ueberschrift-fuenf-tote-zitate.md` trägt
+`status: fertig`, nachgesehen und nicht angenommen. Geändert ist **eine** Datei,
+`daten/reihen.toml`, und in ihr **zwei** Blattwerte. Bilanz gegen den Bezugsstand, diesmal
+gegen den genannten Stand gemessen und nicht gegen einen Zwischenblob (Befund 3 der
+Prüfung): `git diff --numstat HEAD` gibt **2 hinzu, 2 weg**, `git diff -U0 HEAD` zählt
+**2 Hunks**. Beide Zeilen sind lange Einzeilenfelder; der Eingriff fügt keine Zeile ein,
+weshalb sich keine Zeilennummer der Datei verschiebt.
+
+### Bezugsstand
+
+Bezugsstand ist der Commit **`f71017c`**. Vor der ersten Schreibbewegung gemessen:
+`git ls-tree f71017c <pfad>` und `git hash-object <pfad>` geben beide den Blob
+`3ad2996765697f2426ee7bb01e608e7989710356` — die Fassung im Arbeitsbaum war mit der des
+Commits zeichengleich, `git status` nannte die Datei nicht. Der Endstand des Arbeitsbaums
+trägt `cf492e2cd8ff865067173e1c63af0115d5f1cd5a`. Alle Zahlen unten sind gegen den
+Bezugsblob gemessen.
+
+Zum ersten Mal seit fünf Runden hat kein fremder Commit während des Laufs in diese Datei
+gegriffen. Sollte das bis zum Commit noch geschehen, gilt weiter: der vollständige
+Vergleich ist `git diff 3ad2996 cf492e2`.
+
+### Der tragende Befund — die Einzigkeitsbehauptung
+
+Der letzte Absatz von `pruefweg.zaehlregel_umrechnung` lautete:
+
+> „Dieser zweite Block ist der einzige, dessen `faktor` nicht die ganze Umrechnung
+> traegt: Er nennt den Zaehlerfaktor 10.000, und der jahresweise Teiler steht daneben im
+> Feld `teiler`."
+
+Der Befund trägt, und ich habe ihn nachgemessen statt geglaubt. Alle 23 Blöcke
+`[[reihe.umrechnung]]` mit `tomllib` aufgezählt (Skript unten), Ergebnis in drei Gruppen,
+**aufgezählt statt summiert**:
+
+| Gruppe | Blöcke | warum |
+|---|---|---|
+| `faktor` trägt die Umrechnung **nicht** allein | Reihe 2 Schritt 2 (`normierung`, `rundungsstelle`), Reihe 7 Schritt 2 (`mal_geteilt`, `bezugsgroesse`), Reihe 14 Schritt 2 (`deflationierung`, `teiler`), Reihe 4 und Reihe 15 (`basierung`, Teiler ist der Wert des Startjahrs und steht in keinem Feld) | **5** |
+| gar kein `faktor` | Reihe 3 (`ungemessen`), Reihe 10 Schritt 2 (`verkettung`, Kurs im Schlüssel `umrechnungskurs_dem_je_eur_mal_100000`) | **2** |
+| `faktor` trägt die Umrechnung allein | die übrigen | **16** |
+
+`5 + 2 + 16 = 23`, keiner doppelt, keiner ausgelassen. Reihe 7 Schritt 2 widerlegt den Satz
+also, und Reihe 2 sowie die beiden `basierung`-Blöcke stehen in derselben Richtung — genau
+wie der Prüfer schreibt.
+
+**Ich habe nicht gestrichen, sondern die Aufzählung an die Stelle gesetzt** — und dazu die
+eine Aussage, die nach der Messung wirklich zutrifft: Der Block der Reihe 14 ist der
+einzige, **dessen Teiler je Jahr einen anderen Wert trägt**. Gegen dieselben 23 Blöcke
+geprüft, und die drei Gegenkandidaten stehen im Feld daneben: Die Teiler der Reihen 4 und 15
+sind der Wert des Startjahrs und stehen über alle Jahre fest; Reihe 10 verkettet mit einem
+festen Kurs; und Reihe 7 teilt durch die Konstante in ihrem eigenen `faktor` und nimmt die
+je Gebiet und Jahr wechselnde Größe als **Multiplikanden**, nicht als Teiler.
+
+**Warum nicht die Formulierung des Prüfers.** Er schlägt vor, die Einzigkeit „auf den
+*jahresweisen* Teiler einzuschränken". Das ist die richtige Richtung, aber sein eigener
+Befund nennt `bezugsgroesse` der Reihe 7 „eine je Gebiet und Jahr wechselnde Groesse" — wer
+nur „jahresweise" schreibt, ohne Teiler von Multiplikand zu trennen, baut denselben Fehler
+kleiner nach. Die Trennung steht deshalb im Feld.
+
+**Der alte Satz bleibt als Geschichte stehen**, wie dieses Feld es sonst auch tut: „Bis zum
+Pruefbefund zu Paket 0078 vom 2026-09-05 stand hier, er sei der einzige Block, dessen
+`faktor` nicht die ganze Umrechnung traegt. Das war falsch — Reihe 7 widerlegt es in dieser
+Datei." Ein späterer Leser soll sehen, woran die Regel einmal falsch war.
+
+Und zuletzt ein Satz für den nächsten, der daran geht: *„Wer diesen Absatz aendert, prueft
+ihn gegen diese sieben Bloecke und nicht gegen seinen Wortlaut."*
+
+### Bedingung 5 — die Selbstmessungen, neu erbracht
+
+Gemessen **nach** der letzten Schreibbewegung, mit genanntem Bezugsstand. Werkzeug: Python
+3.14.4, `tomllib` auf beiden Fassungen (die alte über `git cat-file blob` in den Speicher,
+ohne Zwischendatei), beide Bäume flach gezogen, Blattschlüssel als Pfadtupel verglichen;
+die Muster mit `re` je Zeile, dieselbe Semantik wie `Grep`.
+
+**Nachweisort:** `befunde/messung-0078/messung.py` und `befunde/messung-0078/bloecke.py`.
+`$TMPDIR` war nicht nötig — das Skript liest den Bezugsblob selbst aus git, was zugleich
+den Bezugsstand in den Nachweis einbaut statt in eine Nebenbemerkung. Der Prüfer kann beide
+Skripte mit Blobkennung und Dateipfad wiederholen. Ein ausführbares Werkzeug stand zur
+Verfügung; **keine** ausgewiesene Nichtmessung.
+
+**Parserlauf:** gültiges TOML 1.0, zweimal eingelesen ergibt dieselbe Struktur. 19 `reihe`,
+9 `widerspruch`, sechs Wurzeltabellen, Summe `sollreihen` = 27 = `zaehlung.sollreihen_gesamt`.
+
+**Blattwerte:** 1227 → **1227**. Keiner neu, keiner weg, die Schlüsselmengen sind gleich.
+Von den 1227 gemeinsamen Schlüsseln tragen **zwei** verschiedene Werte:
+`pruefweg.zaehlregel_umrechnung` — der Gegenstand dieses Rücklaufs — und
+`pruefweg.toml_geprueft` selbst, das die Bilanz trägt und deshalb in ihr vorkommt. Keiner
+doppelt, keiner ausgelassen.
+
+**Der Fixpunkt ist diesmal von vornherein mitgezählt.** Die Messung ist zweimal gelaufen:
+vor dem Schreiben von `toml_geprueft` (ein verschiedener Blattwert) und danach (zwei). Die
+Zahl im Feld ist die zweite, also die, die das Feld einschließt, das sie trägt. Das ist die
+Lehre aus dem ersten Durchgang, hier vorweggenommen statt nachträglich korrigiert.
+
+**Kommentare sind keine Blattwerte** und stehen deshalb nicht in der Bilanz — dieser
+Rücklauf hat **keinen einzigen** geändert. Insbesondere bleibt Leseregel 3 im Kopf
+unangetastet: Sie sagt nichts über Einzigkeit, sondern nur, was ein Block mit
+`art = "ungemessen"` trägt.
+
+**Die sechzehn Muster, alle einzeln neu gezählt** — die fünfzehn Zählmuster der sieben
+Schnitte und als sechzehntes die Typaufzählung hinter `schnitt_3`:
+
+| Muster | alt | neu |
+|---|---:|---:|
+| `schnitt_1` `[=] [0-9]+\.[0-9]` | 6 | **6** |
+| `schnitt_2` `'''` Zeilen / Vorkommen / Randzeilen | 29 / 54 / 27 | **29 / 54 / 27** |
+| `schnitt_3` `^\[\[` | 114 | **114** |
+| `schnitt_4` `^exogen_ab = ` / `^verkettet_ab = ` / `^lizenzurteil = ` | 19 / 19 / 19 | **19 / 19 / 19** |
+| `schnitt_4` Sammelmuster / `^t37_klasse = ` / `^nr = ` | 152 / 20 / 28 | **152 / 20 / 28** |
+| `schnitt_5` `^sollreihen = ` / `^sollreihen` | 21 / 28 | **21 / 28** |
+| `schnitt_7` `^wortlaut = ` / `^wortlaut_form` | 20 / 2 | **20 / 2** |
+| `schnitt_3` nach Typ (das sechzehnte) | 114 | **114** |
+
+Alle sechzehn sind **gezählt und gleich** — nicht „unverändert geblieben", sondern nach dem
+Eingriff neu ermittelt. Die Typaufzählung geht weiter auf: 19 `reihe`, 9 `widerspruch`,
+23 `reihe.umrechnung`, 20 `reihe.lizenzbeleg`, 39 `reihe.deckung`, 2 `reihe.konkordanz`,
+2 `reihe.bruch` = 114, also weiterhin kein achter Typ. Dass `schnitt_3` diesmal **nicht**
+steigt, ist der Beleg dafür, dass kein Block hinzugekommen ist — der Eingriff ist reiner
+Text in zwei bestehenden Feldern.
+
+**`schnitt_1` zusätzlich über die Trefferkontexte:** alle sechs Zeilen alt gegen neu
+zeichengleich verglichen, Ergebnis wahr, und die sechs Zeilen stehen im Skriptlauf
+ausgeschrieben. Der neue Absatz enthält bewusst **kein** „10.000" hinter einem
+Gleichheitszeichen — er nennt Zahlen als Zahlwörter (`Fuenf plus zwei plus sechzehn ergibt
+dreiundzwanzig`), damit er dieses Zählmuster nicht selbst anhebt. Dieselbe Falle wie bei
+T53s Selbsttest im ersten Durchgang.
+
+### Bedingung 4 — Reihe 20 kommt weiter nicht vor
+
+Das von Bedingung 4 gezählte Wort steht in beiden Fassungen **null mal** — gezählt, nicht
+angenommen; im Skript steht es aus demselben Grund zusammengesetzt statt ausgeschrieben. Die
+Liste `reihe` führt vor und nach dem Rücklauf 19 Einträge.
+
+### Die übrigen Bedingungen
+
+Bedingungen 1, 2 und 3 sind laut Prüfbefund erbracht und werden nicht neu geprüft. Die
+Blattwertbilanz belegt zugleich, dass ich sie nicht berührt habe: Keiner der Schlüssel der
+Reihen 14 und 16 und keines der drei Felder von Widerspruch Nr. 9 steht unter den zwei
+geänderten Werten.
+
+### Zusatzprobe, die niemand verlangt hat
+
+`werkzeuge/belegstellen/bau/belegstellen_riegel` gegen beide Wurzeln laufen lassen, weil der
+neue Absatz Reihen beim Namen nennt und genau diese Form der Riegel als Abschnittszitat
+auflöst. Ergebnis: Bedingung 2 meldet 35 von 36 Zitaten aufgelöst (Untergrenze 16) und
+**47 übergangene Fundstellen** — und **keine einzige** davon liegt in `reihen.toml`
+unterhalb von Zeile 1614, also keine im Abschnitt `[pruefweg]`. Der Eingriff hat die Zahl
+nicht bewegt; weil er keine Zeile einfügt, verschiebt er auch keine der gemeldeten
+Zeilennummern. Das ist die Sorge, aus der die Reihenfolgesperre auf 0090 entstand, und sie
+ist damit gegenstandslos geworden.
+
+### Woran ich unsicher bin
+
+- **Der Absatz ist länger geworden, nicht kürzer.** Der Prüfer nennt „eine Zeile" als Weg
+  zurück; ich habe eine Aufzählung von sieben Blöcken plus die Rechnung darüber
+  geschrieben. Mein Grund steht in meinem Logbuch als Regel: Nie eine Einzigartigkeit
+  behaupten, sondern die Liste hinschreiben — ein kurzer Satz an dieser Stelle wäre wieder
+  nur so lange richtig, bis jemand einen Block hinzufügt. Wer Kürze höher gewichtet, hat
+  ein Argument; `[pruefweg]` ist aber der Prüfapparat und nicht der Fließtext dieser Datei.
+- **„Der einzige, dessen Teiler je Jahr einen anderen Wert trägt" ist wieder eine
+  Einzigkeitsbehauptung**, nur eine engere. Sie ist gegen alle 23 Blöcke gemessen und nennt
+  ihre drei nächsten Gegenkandidaten im selben Satz — aber sie hat dieselbe Bauform wie die,
+  die gerade gefallen ist, und ein neuer Block könnte sie erneut fällen. Deshalb steht der
+  Prüfsatz daneben, gegen welche Blöcke sie geprüft wurde. Streichen wäre der sichere Weg
+  gewesen und hätte den Leser der 23 Blöcke ohne Regel gelassen.
+- **Die Gruppeneinteilung ist meine, nicht die der Datei.** „Trägt der `faktor` die
+  Umrechnung allein?" ist eine Frage, die kein Feld dieser Datei stellt. Bei Reihe 2 hängt
+  die Antwort daran, dass eine Normierung die drei Sektoranteile braucht; wer sie anders
+  liest, käme auf vier statt fünf in der ersten Gruppe. Die Zuordnungsregel steht im Feld,
+  damit der Streit an ihr geführt werden kann und nicht an der Zahl.
+
+### Gemeldet, nicht angefasst
+
+- **Reihe 10 Schritt 2 führt keinen `faktor` und trägt `art = "verkettung"`, nicht
+  `"ungemessen"`.** Mein eigener Baubericht des ersten Durchgangs behauptet, Leseregel 3
+  lasse einen faktorlosen Block „allein für `art = ungemessen`" zu — das war meine
+  Auslegung, nicht ihr Wortlaut, und dieser Block widerlegt sie in derselben Datei. Für die
+  jetzt gewählte Feldaufteilung ändert das nichts (`faktor = 10000` ist der Zählerfaktor und
+  ausgerechnet, nicht gesetzt), aber die **Begründung**, mit der ich die Alternative „kein
+  `faktor`" im ersten Durchgang verworfen habe, trägt schwächer als dort behauptet. Der Satz
+  steht seit diesem Rücklauf so nicht mehr in der Datei; er stand ohnehin nur im Bericht.
+  Ob Leseregel 3 den Fall der Reihe 10 mitregeln sollte, entscheidet nicht der Datenbauer —
+  gemeldet, nicht aufgelöst.
+- **`[datei.vorlagen]` führt T53 weiter nicht** → Vorschlag `0099`, unverändert offen.
+- **`[namensnennung]` führt Reihe 14 nicht** → Paket `0100` des Prüfers, läuft danach, hier
+  nicht mitgebaut.
+- **Widerspruch Nr. 4** (Faktor 10.000 gegen T5 Klasse 6) weiter offen, weiter beim
+  Architekten. Nicht mein Paket.
+- **Neu angelegt außer der Ergebnisdatei:** nur die beiden Messskripte unter
+  `befunde/messung-0078/`. Sie stehen nicht in der `dateien`-Liste des Pakets, folgen aber
+  der Staffelung des Nachweisorts („sonst unterhalb von `befunde/`") und dem Weg, den 0090
+  vorgemacht hat.

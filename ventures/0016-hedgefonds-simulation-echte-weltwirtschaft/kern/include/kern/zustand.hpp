@@ -674,9 +674,17 @@ private:
 /// Der Platz, den es nicht gibt -- der Fehlerwert jeder Adresssuche.
 ///
 /// Er liegt ausserhalb `0 ... 309` und ist damit **kein** Feld des Zustands. Das ist
-/// der ganze Zweck: `lies`, `schreibe` und `index_zu_adresse` pruefen `index >=
+/// der ganze Zweck: `lies`, `lege_ab` und `index_zu_adresse` pruefen `index >=
 /// FELDER` ohnehin, also wird aus einer nicht ausgewerteten Fehlanzeige ein Abbruch
 /// statt eines Zugriffs auf ein fremdes Feld.
+///
+/// **Alle drei Namen sind die heutigen, und zwei davon traegt `Zustand` selbst.**
+/// `lies` und `lege_ab` stehen oben an der Klasse, `index_zu_adresse` weiter unten
+/// in diesem Kopf und ausgeschrieben in `zustand.cpp`. Der mittlere hiess bis zu
+/// seiner Umbenennung anders, und dieser Satz nannte ihn noch lange danach so --
+/// eine Zusicherung ueber eine Funktion, die es nicht mehr gab. Wer einen der drei
+/// umbenennt, benennt ihn hier mit um; die Probe ist der Mustervergleich ueber
+/// `kern/`, auf den sich die Umbenennung oben ausdruecklich beruft.
 inline constexpr Index KEIN_PLATZ = FELDER;
 
 static_assert(KEIN_PLATZ >= FELDER,

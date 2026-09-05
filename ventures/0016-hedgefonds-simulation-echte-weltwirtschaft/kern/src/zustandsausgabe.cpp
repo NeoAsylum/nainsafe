@@ -282,6 +282,17 @@ void klassenangabe(Adressblatt& blatt, Index platz)
     blatt.text("]");
 }
 
+/// Was an der Stelle der Differenz steht, wo T5 keine zulaesst.
+///
+/// Ein Strich, **dahinter ein Leerzeichen**, dann der Grund. Das Leerzeichen ist der
+/// ganze Unterschied zu einem Minuszeichen: Hinter dem steht eine Ziffer, hinter diesem
+/// nicht, und die Ebene liest nach T20 auch eine Maschine. Der Grund steht in der Zeile
+/// und nicht in einem Dokument -- wer die Ausgabe liest, hat dort nichts nachzuschlagen.
+///
+/// Die Klassenangabe am Zeilenende nennt gleich danach `[K12 Kennung, Bitmuster ohne
+/// Groessenbedeutung]`; beides zusammen sagt, was fehlt und warum.
+constexpr const char* STRICH_STATT_DIFFERENZ = "-  (T5: auf einer Kennung nur Gleichheit)";
+
 /// Haengt die Schlusszeile `<gezaehlt> von 310 Adressen <was>.` an.
 ///
 /// Sie steht unter jedem Adressblatt, auch unter einem leeren, und das ist der ganze
@@ -358,10 +369,18 @@ Adressblatt diff(const zustand::Zustand& vorher, const zustand::Zustand& nachher
         blatt.text("  neu ");
         blatt.zahl(neu);
         blatt.text("  Differenz ");
-        // Auf `i128`, weil der Abstand zweier `i64` keine `i64` ist (ADR 0011,
-        // Massnahme 3). Unter `-fwrapv` waere der Umlauf definiert und die Zahl
-        // wohlgeformt falsch -- die Sorte Wert, die keine Pruefung bemerkt.
-        blatt.zahl(static_cast<i128>(neu) - static_cast<i128>(alt));
+        if (differenz_hat_bedeutung(skalenklasse_von(platz))) {
+            // Auf `i128`, weil der Abstand zweier `i64` keine `i64` ist (ADR 0011,
+            // Massnahme 3). Unter `-fwrapv` waere der Umlauf definiert und die Zahl
+            // wohlgeformt falsch -- die Sorte Wert, die keine Pruefung bemerkt.
+            blatt.zahl(static_cast<i128>(neu) - static_cast<i128>(alt));
+        } else {
+            // T5, Klasse 12: Hier ist die Subtraktion selbst der Fehler, nicht ihr
+            // Ergebnisbereich. Die Ausnahme haengt an der Klasse und nicht an einer
+            // Adressliste in dieser Datei -- eine zweite Liste waere die, die niemand
+            // nachfuehrt.
+            blatt.text(STRICH_STATT_DIFFERENZ);
+        }
         klassenangabe(blatt, platz);
         blatt.zeilenende();
     }

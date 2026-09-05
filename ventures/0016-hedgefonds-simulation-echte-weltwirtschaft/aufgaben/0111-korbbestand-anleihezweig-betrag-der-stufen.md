@@ -1,13 +1,57 @@
 ---
 id: 0111-korbbestand-anleihezweig-betrag-der-stufen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0087-geprueftes-plus-und-minus-in-festkomma]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Eine neue Pruefung in `werte_probe.cpp` zum Anleihezweig von `korbbestand` (T48 Nr. 8, `technik.md:2128`). Der Nachweis ist zweiseitig: Am unveraenderten `kern/src/werte.cpp` laeuft `werte_probe` gruen; ersetzt man in `werte.cpp:598` `mal(betrag(stufen), konst.stufenweite)` durch `mal(stufen, konst.stufenweite)`, wird sie rot. Die Pruefung belegt einen Anleihesteckplatz mit **negativer** Stufenzahl und schreibt den erwarteten Beitrag als Zahl aus, dazu die verworfene Form als **andere** Zahl. Eine Pruefung, die auch am mutierten Modul gruen bleibt, zaehlt nicht.
 ---
 
 # Der Anleihezweig von `korbbestand` nimmt den Betrag der Stufenzahl -- und das laesst sich heute verletzen
+
+## GEBAUT — 2026-09-05, testentwickler
+
+**Bezugsstand: `f71017c`**, mit `0087` bereits `fertig`. Die Reihenfolgesperre ist damit
+gefallen, und sie hat getragen: Die Stelle ist von `werte.cpp:598` nach **`:583`**
+gewandert. Die Form selbst ist unveraendert — `mal(betrag(stufen), konst.stufenweite)` —,
+gefunden wurde sie am Text, nicht an der Nummer.
+
+Neu: `probe_korbbestand_nimmt_den_betrag` in `werte_probe.cpp`, aufgerufen aus `main`.
+
+**Gruene Haelfte** — am unveraenderten `werte.cpp`: `werte_probe` besteht. Im Gesamtlauf
+13 von 14 Proben gruen; die eine rote ist `belegstellen_riegel` und war es vor diesem Lauf
+schon (siehe unten).
+
+**Rote Haelfte** — `mal(betrag(stufen), konst.stufenweite)` an `:583` durch
+`mal(stufen, konst.stufenweite)` ersetzt, Bau Code 0, Probe Code 1:
+
+```
+FEHLGESCHLAGEN Zeile 937: korbbestand(z, konst) == 200'000
+FEHLGESCHLAGEN Zeile 941: korbbestand(z, konst) != -200'000
+2 Pruefung(en) fehlgeschlagen
+```
+
+Genau die zwei Zusicherungen der Abnahme reissen, und **nur** sie: Die verbindliche Form
+steht als `+200'000` da, die verworfene als `-200'000`, und beide Zahlen sind
+verschieden. Die uebrigen Zeilen der Probe bleiben auch am mutierten Modul gruen — sie
+sind Positivkontrollen und nicht das Unterscheidungsmerkmal, was der Rotnachweis damit
+gleich mitzeigt.
+
+**Die zweite Stelle derselben Form blieb dabei stehen.** `mal(betrag(stufen),
+konst.stufenweite)` kommt in `werte.cpp` **zweimal** vor — im Anleihezweig (Nr. 8) und in
+`fondsanteil` (`:666`, Nr. 14). Getroffen wurde allein die erste, abgegrenzt ueber den
+Schwanz `, 10'000));`; das Skript zaehlt beide Vorkommen nach und bricht ab, wenn die
+Mutation die Nachbarstelle mitnaehme. Sonst haette der Nachweis zwei Vorgaben auf einmal
+gemessen und eine davon gutgeschrieben.
+
+`kern/src/werte.cpp` ist unveraendert — der Mutationslauf stellt den Originalstand im
+`finally`-Zweig wieder her, `git status` auf die Datei ist leer.
+
+**Nicht von mir und vor diesem Lauf schon rot:** `belegstellen_riegel` bricht an einem
+Abschnittszitat in `daten/nachmessung-zinsreihen-2026-09-05.md:6` ab, das seine
+Ueberschrift in `daten/deckungsbefund-1997.md` nicht findet — fremdes Paket, dieselbe
+Stelle, die schon der Uebersetzungsbericht vom 2026-09-05 nennt. Gegenbeleg, dass es nicht
+an mir liegt: `werte_probe` kommt in der Ausgabe des Riegels **null Mal** vor.
 
 ## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, mit einer Reihenfolgesperre
 
