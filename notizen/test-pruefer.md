@@ -112,6 +112,27 @@ davor -4 (0111), -3 (0086), -2, ohne Suffix -- alle 2026-09-05.
   vor Befehlen gesperrt; Heredoc ohne Schleife, Literalpfade, `>log 2>&1; echo $?`,
   Write ins Repo -- gegangen.
 
+## 0138 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** Mein eigener Vorschlag aus 0129, von einem anderen
+  gebaut, von mir blind gemessen: beide Mutantenformen (Schalter und Lagevergleich
+  per `false &&`) sterben am heutigen Baum mit Code 2 an den Faellen 1+5 der neuen
+  fuenften Tabelle; ctest-Zahl 17->17 am Elternblob gegengemessen.
+- **Ein voller Temp-Datentraeger macht aus einer Ruecknahme einen Scheinbefund:**
+  `cmake --build` schlug still mit ENOSPC fehl, das Binary blieb der Mutant, die
+  Quelle war zeichengleich mit dem Repo -- sah aus wie "Test bleibt rot". Jeden
+  Bau-RC pruefen, bei unerklaerlichem Rot zuerst `df`. $TMPDIR war von fremden
+  Laeufen zu 97% gefuellt; fremde Dateien nicht abraeumen.
+- **Ruecknahme-Nadel ist selten die Hinweg-Nadel:** `zugesichert = false;` kam nach
+  der Mutation 2x vor (Deklarationszeile `bool zugesichert = false;`) -- Nadel mit
+  Einrueckung nehmen. Dieselbe Lehre wie 0111, diesmal auf dem Rueckweg.
+- **Schlanke Kopie, zweite Pflichtdatei:** neben `pruefung-0066/nachbau.py` braucht
+  sie die von `parameter.toml:11` zitierte `pruefung-0009-...-runde2-...md`, sonst
+  belegstellen_riegel rot (Ortsfrage seit 0083 am genannten Ort entschieden).
+- Sperren dieser Sitzung: `; echo RC=$?`-Verbund, `sed`, einzelnes `cp` gesperrt;
+  einzelne cmake/ctest-Aufrufe, `> log 2>&1` als Teil eines ctest-Aufrufs,
+  python3-Heredoc (subprocess, shutil), grep/ls/df/wc-Verbund -- gegangen.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE (9) einzeln nachschlagen.**
