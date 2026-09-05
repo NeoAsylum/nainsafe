@@ -178,6 +178,186 @@ ausserhalb des Repos, sonst unterhalb von `befunde/` (`baulauf.py:116` sammelt d
 keine Manifeste ein), sonst ausgewiesene Nichtmessung mit Begruendung. Am 2026-09-05
 kam ich mit Rang 1 aus.
 
+## Nachweis (Kernbauer, 2026-09-05)
+
+**Bezugsstand:** `fabbf2f` (`projektmanager: 0016-... (15 Dateien)`), der letzte Commit
+vor meinem Lauf. `werkzeugkette.cmake` war beim Beginn unveraendert gegenueber diesem
+Stand (`git status` leer fuer die Datei), 49.961 Bytes; nach der Aenderung 52.868. `0094`
+stand bereits auf `fertig`, seine Aenderung ist also im Bezugsstand enthalten -- die
+Reihenfolge aus dem Paketkopf ist eingehalten.
+
+Damit ein fremder Lauf mir den Bezugsstand nicht unter den Fuessen wegcommittet (mein
+Logbuch zaehlt sieben solche Faelle), habe ich die Ausgangsfassung **vor** der ersten
+Aenderung nach `$TMPDIR/kette-vorher.cmake` eingefroren und byteweise gegen den Baum
+geprueft. Alle Vorher-Zahlen unten sind gegen diese eingefrorene Kopie gemessen, nicht
+gegen einen bewegten `HEAD`.
+
+**Nachweisort Rang 1:** alles unter `$TMPDIR` (`/tmp/claude-1000`), ausserhalb des Repos.
+Kein Wegwerf-Manifest im Arbeitsbaum, kein `build/` im Repo.
+
+**Nachgemessen nach Abschluss, und es ist eingetreten:** Ein Fremdlauf hat meine
+Aenderung mitten im Lauf unter seinem eigenen Betreff committet -- `69662e1`
+(`datenbauer: 0120-abschnittszitat-nachmessung-zinsreihen`). Das ist der zehnte Fall
+dieser Art in meinem Logbuch und kein Fehler dieses Pakets, aber der Pruefer muss es
+wissen, weil der Betreff nichts mit 0103 zu tun hat. Der Arbeitsbaum ist mit `HEAD`
+deckungsgleich (`git diff HEAD` leer fuer die Datei), und `fabrik_nichtwert_leeren`
+steht in `HEAD`. **Der Stand vor meiner Aenderung ist damit `69662e1^`**, zu finden mit
+
+    git log -S fabrik_nichtwert_leeren -- .../werkzeugkette.cmake
+
+Genau deshalb sind alle Vorher-Zahlen gegen die eingefrorene Kopie gemessen und nicht
+gegen `HEAD~1` -- diese Nummer waere heute falsch.
+
+### Was geaendert ist
+
+Zwei Stellen, eine gemeinsame Ursache, und deshalb **eine** gemeinsame Behandlung:
+
+1. Neues Makro `fabrik_nichtwert_leeren(variablenname)` -- es macht aus genau den zwei
+   Nichtwerten (`NOTFOUND` und `<variablenname>-NOTFOUND`) die leere Zeichenkette und
+   laesst jeden anderen Wert unangetastet. Verglichen wird auf **Gleichheit**, nie auf
+   eine Endung.
+2. `fabrik_riegel_sammeln` ruft es auf und prueft danach nur noch auf leer. Der
+   Endungsvergleich `MATCHES "^(.*-)?NOTFOUND$"` ist fort.
+3. Die Stelle `if(NOT schalter)` hinter `get_target_property(schalter ${ziel}
+   COMPILE_OPTIONS)` ruft dasselbe Makro.
+
+**Warum ein Makro statt zweimal derselben Bedingung:** Der zu vergleichende Name kommt
+aus dem Argument und steht nirgends als Textkonstante. Eine hingeschriebene Zeichenkette
+`"schalter-NOTFOUND"` liefe still ins Leere, sobald jemand die Variable am Aufrufort
+umbenennt -- genau die Sorte Fehler, gegen die dieses Paket geschrieben ist.
+
+### Abnahmebedingung 1 -- der getarnte Schalter wird gefangen
+
+Baum `b1_getarnt_quellflags`, wortgleich der erste Wegwerf-Baum aus dem Paketrumpf.
+
+| | Konfiguration | Meldung |
+|---|---|---|
+| **vorher** | **Code 0** | `alle mit Warnsatz und ohne Pauschalabschalter` |
+| **nachher** | **Code 1** | `hebt den Satz wieder auf: -w` / `gefunden in: COMPILE_FLAGS an .../z.cpp:  -w -DPFAD=x-NOTFOUND` |
+
+Die Gegenprobe ist gefahren, nicht behauptet: Am eingefrorenen Vorher-Stand baut derselbe
+Baum mit **Code 0 und null Diagnosen** durch -- der stille Schaden, den das Paket
+beschreibt, ist reproduziert.
+
+Die Abnahme verlangt in `gefunden in` die Eigenschaft **und** das Wort `-w`. Beides steht
+da: die Eigenschaft in der `gefunden in`-Zeile, das Wort in der Zeile darueber. Genannt
+wird als Eintrag der ganze Wert `-w -DPFAD=x-NOTFOUND`, weil `COMPILE_FLAGS` eine
+Zeichenkette ist; das Fundwort `-w` nennt die Zeile `hebt den Satz wieder auf`.
+
+**Positivkontrolle:** Dieselbe Quelle ohne jeden Abschalter konfiguriert mit Code 0 und
+**baut rot** (Code 2, `error: conversion from 'double' to 'int' ... [-Werror=float-conversion]`).
+Ohne sie belegte kein gruener Bau oben irgendetwas.
+
+### Abnahmebedingung 2 -- kein Fehlalarm mehr, und keiner neu
+
+| Baum | vorher | nachher |
+|---|---|---|
+| `target_compile_options(z PRIVATE -DPFAD=x-NOTFOUND)` | Code 1, `es fehlen: -Wall ... -fno-fast-math` | **Code 0** |
+| `target_compile_options(z PRIVATE -w -DPFAD=x-NOTFOUND)` | Code 1, aber `es fehlen: ...` | **Code 1**, `gefunden in: COMPILE_OPTIONS an z:  -w` |
+
+Die zweite Zeile ist die wichtigere und der Konfigurationscode allein unterscheidet sie
+nicht: Vorher war sie rot aus dem **falschen** Grund (Fehlalarm, alle 17 Schalter
+angeblich fort), nachher rot aus dem **richtigen** (der Pauschalabschalter). Die Endung
+entschaerft den Schalter also nicht.
+
+Dazu die Kontrolle gegen eine Behebung, die einfach alles faengt: dieselbe Quelldateizeile
+**ohne** die Endung (`"-w -DPFAD=x"`) bricht vorher wie nachher mit Code 1 ab.
+
+### Abnahmebedingung 3 -- kein Urteil aendert sich
+
+**22 Wegwerf-Baeume, `befunde/pruefung-0066/nachbau.py`:** `0 Abweichung(en) vom Soll`,
+Positivkontrolle baut rot mit einer Diagnose.
+
+Zusaetzlich **maschinell** verglichen statt nach Augenschein: Alle 22 Baeume je gegen die
+eingefrorene Vorher-Fassung und gegen die neue gefahren, Konfigurationscode und die
+Zeilen `gefunden in` / `es fehlen` im Wortlaut gegenuebergestellt (Ablagepfade
+normalisiert, sie sind nicht der Gegenstand) -- **22 Baeume verglichen, 0 Unterschied(e).**
+
+**Drei Bauwege in beiden Profilen, `befunde/messung-0076/bauwege.py`:**
+
+| | `FABRIK_SANITIZER=ON` | `OFF` |
+|---|---|---|
+| Arbeitsbereich | 19 | 17 |
+| `kern` allein | 12 | 11 |
+| `pruefstand` allein | 5 | 4 |
+
+Konfiguration, Bau und `ctest` je **Code 0**; 14 / 10 / 3 Tests gruen. Die Zielzahlen sind
+**vorher und nachher identisch** -- ebenfalls maschinell verglichen: 18 Protokolle
+(3 Wege x 2 Profile x konfig/bau/ctest), 0 Unterschiede in den Markenzeilen.
+
+**Eine veraltete Sollzahl, die nicht meine ist.** `bauwege.py` meldet `2 Abweichung(en)`
+und Exitcode 1. Beide betreffen den Arbeitsbereich und sind eine gealterte Zahl im Skript,
+kein Befund: Es erwartet fest 18/16, gemessen sind 19/17 -- **vorher wie nachher gleich**.
+Der Baum hat seit dem 2026-09-05 ein uebersetzendes Ziel dazubekommen. Die Abnahme
+verlangt ausdruecklich den Vergleich gegen den eigenen Stand davor und nicht gegen einen
+festen Sollwert (Begruendung in 0104), und so ist gemessen. `bauwege.py` gehoert nicht zu
+meinen Dateien; ich habe die Zahl dort nicht nachgezogen.
+
+### Nachfahrbar gelassen
+
+`befunde/messung-0103/endungsfalle.py` -- die vier Baeume dieser Abnahme mit Sollspalte
+je Lage, gegen den Arbeitsbaum oder gegen einen Git-Stand. Dieselbe Bauform wie
+`messung-0076/bauwege.py` und `pruefung-0066/nachbau.py`, und es benutzt deren Geruest,
+statt die Mechanik ein drittes Mal zu schreiben. Der Stand davor ist der letzte Commit
+ohne `fabrik_nichtwert_leeren`:
+
+    git log -S fabrik_nichtwert_leeren -- .../werkzeugkette.cmake
+
+Das ist eine Datei ausserhalb meiner `dateien`-Liste. Sie liegt in einem neuen
+Verzeichnis, schneidet sich also mit keinem Anspruch eines anderen Pakets, und
+`baulauf.py:116` sammelt unter `befunde/` keine Manifeste ein. Ich habe sie angelegt,
+weil `bauwege.py` und `nachbau.py` genau dafuer den Praezedenzfall setzen und weil der
+Pruefer sonst vier Baeume von Hand nachbauen muesste.
+
+## Was ich nicht angefasst habe, obwohl es dieselbe Ursache ist
+
+**Die Quellenliste (`if(NOT quellen)`).** Ich habe sie gemessen, weil ich einen Vorschlag
+schreiben wollte -- und der Fehler ist **erreichbar**: Ein Ziel mit einer zweiten
+Quelldatei namens `y-NOTFOUND` laesst den Riegel Code 0 und `alle mit Warnsatz und ohne
+Pauschalabschalter` melden, waehrend `-w` an `z.cpp` haengt. Mit derselben Datei als
+`y-HARMLOS` bricht er mit Code 1 ab und nennt `gefunden in: COMPILE_FLAGS an .../z.cpp: -w`.
+Der Name der Datei ist der einzige Unterschied. Das ist schlimmer als meine beiden Faelle,
+weil es die ganze Quelldateischleife ausblendet, nicht eine Eigenschaft.
+
+**Keinen Vorschlag geschrieben:** Paket `0108` hat genau diesen Befund schon, mit genau
+diesen zwei Baeumen, und nennt in seinem Punkt 4 auch den Kommentar. Ein zweites Paket
+waere ein Doppel.
+
+**Und die Warnung, die daraus folgt:** Der Kommentar an dieser Zeile lautet weiter
+`# wie oben: NOTFOUND ist die leere Menge, kein Dateiname`. Der Satz selbst bleibt wahr,
+aber sein Verweis „wie oben" behauptet ab jetzt eine Gleichbehandlung, die es nicht mehr
+gibt -- oben wird auf Gleichheit verglichen, hier gilt weiter CMakes Wahrheitsregel.
+0108 hat das vorhergesagt (sein Befund 1, letzter Satz) und beansprucht die Zeile. Ich
+lasse sie stehen: Sie liegt ausserhalb meines Pakets, und zwei Agenten an derselben Datei
+sind genau das, was die Serialisierung verhindern soll.
+
+**Die zwei `-NOTFOUND$`-Tests in der Nullabhaengigkeitspruefung** sind unberuehrt, wie das
+Paket es verlangt -- nachgesehen, sie stehen unveraendert da (heute Zeile 707 und 770).
+
+## Worauf ich unsicher bin
+
+**Erstens: Ich habe eine Abstraktion eingefuehrt, wo das Paket zwei Bedingungen verlangt.**
+Die Bauform steht frei, und ein Makro an einer Stelle mehr als noetig ist eine
+Entscheidung, keine Vorgabe. Mein Grund steht oben (der Variablenname als Textkonstante
+waere die naechste stumpfe Stelle), aber ein strenger Pruefer kann verlangen, dass zwei
+getrennte Bedingungen dagestanden haetten. Gemessen ist beides gleich: 22 Baeume
+zeichengleich, alle vier Abnahmebaeume wie verlangt.
+
+**Zweitens: Das neue Makro ist an genau zwei Aufrufstellen belegt, nicht an allen
+denkbaren.** `fabrik_riegel_sammeln` reicht ihm fuenf verschiedene Eigenschaften herein
+(`COMPILE_OPTIONS` und `COMPILE_FLAGS` je am Ziel und an der Quelldatei, dazu
+`INTERFACE_COMPILE_OPTIONS`), und beide Nichtwertformen kommen dabei wirklich vor -- das
+ist durch die 22 Baeume abgedeckt. Ein Fall, den ich **nicht** gemessen habe: eine
+Eigenschaft, deren echter Wert zufaellig genau `NOTFOUND` lautet. Sie gilt weiter als
+leer, vorher wie nachher; das ist unveraendertes Verhalten, aber es ist keine Messung.
+
+**Drittens: `fabrik_nichtwert_leeren` veraendert die Variable seines Aufrufers.** In
+`fabrik_riegel_sammeln` heisst das, dass `zielflags`, `quellopt`, `quellflags` und
+`schnittstellenschalter` nach dem Aufruf geleert sein koennen. Nachgesehen: Keine dieser
+Variablen wird danach noch gelesen, und `schalter` ist an seiner eigenen Stelle schon
+normalisiert, bevor es eingesammelt wird. Ein Makro mit Seitenwirkung ist trotzdem eine
+Stelle, an der ein spaeterer Leser stolpern kann.
+
 ## Rueckläufe
 
 0.

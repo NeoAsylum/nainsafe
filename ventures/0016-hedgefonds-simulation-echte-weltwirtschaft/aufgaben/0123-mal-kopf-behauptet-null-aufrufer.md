@@ -1,7 +1,7 @@
 ---
 id: 0123-mal-kopf-behauptet-null-aufrufer
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp]
 abnahme: Der Absatz "Heute ohne Aufrufer" im Kopf von `mal` sagt den heutigen Stand -- dass `mal` Aufrufer in `kern::werte` hat und welche Rechenarten dort ueber ihn laufen -- und behauptet nicht mehr, `kern::werte` sei nicht gebaut. Die Zahl der Aufrufer ist selbst gemessen und mit ihrem Bezugsstand (Datum und Commit) genannt, nicht aus diesem Vorschlag abgeschrieben. Der Baum bleibt in beiden Profilen gruen.
