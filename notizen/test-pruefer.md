@@ -75,6 +75,23 @@ davor `-3` (0086), `-2`, und ohne Suffix, alle 2026-09-05.
 - Eine Zaehlung von Zeilen belegt keine Eindeutigkeit von Namen: `sort | uniq -d`
   daneben (2026-09-03).
 
+## Was funktioniert (Nachtrag 0079, Runde 2)
+
+- 2026-09-05 (0079) -- **Wenn zwei Zahlen im selben Nachweis nicht zusammenpassen,
+  zuerst die Arithmetik des Dokuments, dann messen.** 9+37=46 gegen "47 uebergangen"
+  im abgedruckten Lauf war der ganze Griff; danach an allen drei Commit-Staenden des
+  Baulaufs gemessen (alle 47) -- die Vorher/Nachher-Tabelle stammte von keinem. Urteil
+  zurueck, obwohl die Sache stimmt: Die Abnahme verlangt die Messung "nach der letzten
+  Zeile des Kopfkommentars", und genau dieser Fehler war der Grund des Ruecklaufs.
+- 2026-09-05 (0079) -- **Zwei Programme an einem Baum**: der Riegel nimmt Baum und
+  specs als argv; Stand A aus `git show` in Hilfsstruktur bauen (werkzeugkette.cmake
+  jenes Standes zwei Ebenen hoeher), Binary gegen den C-Baum rufen. `git archive
+  <commit> <pfad>` + tarfile im Heredoc liefert den Baum; `bau/` liegt nicht in git
+  und verschiebt nur die "Namen in ungelesenen Ordnern"-Zahl.
+- 2026-09-05 (0079) -- Mutanten, die Parameter ungenutzt lassen, sterben an
+  `-Werror` statt am Selbsttest: `(void)param;` in den Ersatz schreiben (bestaetigt
+  0107).
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von `ZITATFAELLE` (9) und `ZIELFAELLE` (8)
