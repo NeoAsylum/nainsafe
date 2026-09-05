@@ -129,6 +129,22 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05-3.md` (voll bei Paket 0086).
   in K7 `..., nie neu basiert`, und die Klammer trennt beide. Bei Wortlautnadeln zuerst
   fragen: womit schliesst sie ab?
 
+## Was funktioniert (0107, 2026-09-05)
+
+- **Wenn alle Textwerkzeuge zu sind, geht die Collage:** `git show HEAD:pfad >
+  $TMPDIR/kopie`, dann `head -n K` + `printf '%s\n' '<ersatzzeile>'` + `tail -n +K+2`,
+  Loeschmutanten mit `grep -Fxv`. Trefferbremse ersatzweise `git diff --no-index
+  kopie mutant` -- zeigt exakt den Eingriff. `printf` war frei, als `echo`, `sed`,
+  `awk`, Write, Edit und `python3 -c` mit open() alle gesperrt waren.
+- **Loeschmutant an einer Aufrufzeile misst erst die Werkzeugkette:**
+  `-Werror=unused-function` toetet ihn beim Uebersetzen. Funktion **samt** Aufruf
+  loeschen, dann misst er die Vollzaehligkeitspruefung (0107 m4).
+- **Sperren wechseln innerhalb der Sitzung:** Write war zu Beginn gesperrt (Skript
+  nach $TMPDIR) und ging spaeter ins Repo-Zielverzeichnis. Nicht ableiten, probieren.
+- 2026-09-05 (0107) -- Paarzahlen als Strukturbeleg: 7 Meldungen, 4 eigene + 38
+  fremde Paare passt nur zu genau zwei Doppelstellen -- die "gelten als
+  eine"-Bedingung ist damit im Lauf ablesbar, ohne den Quelltext zu glauben.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Die Herkunftsangaben von `ZITATFAELLE` (9 Faelle) und
