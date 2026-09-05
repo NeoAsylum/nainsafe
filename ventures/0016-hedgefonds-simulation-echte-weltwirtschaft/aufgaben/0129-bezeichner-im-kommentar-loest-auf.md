@@ -1,10 +1,51 @@
 ---
 id: 0129-bezeichner-im-kommentar-loest-auf
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bezeichner_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 2 ist die tragende -- ein Name, der im Kern nur in einer negativen Sichtbarkeitszusicherung der Form `requires { &X::name; }` vorkommt, gilt als **nicht** deklariert; ohne diese Regel bleibt der Riegel an der Wiederherstellung des alten `KEIN_PLATZ`-Wortlauts gruen, mit ihr wird er rot und nennt `schreibe`. Beide Laeufe sind zu zeigen.
+---
+
+# GEBAUT — 2026-09-05, Testentwickler
+
+Zwei neue Quelldateien unter `werkzeuge/bezeichner`, ein Mitglied mehr im
+Arbeitsbereich. Alle vier Bedingungen gemessen; der Nachweis liegt unter
+`befunde/messung-0129/nachweis.md` und traegt jeden Lauf im Wortlaut.
+
+**Bedingung 1.** Alleinbau und Arbeitsbereichslauf je Code 0. Der Bericht nennt die drei
+verlangten Zahlen: 5.682 gelesene Kommentarzeilen, 898 gepruefte Bezeichner, 44
+uebergangene Fundstellen -- jede einzeln mit Namen, Regel, Datei und Zeile, dazu die
+Summe je Regel.
+
+**Bedingung 2, die tragende.** Zwei Laeufe auf **demselben** Baum -- einer Kopie des
+heutigen Vorhabens mit dem Wortlaut vor Paket 0101. Ohne die Regel: Code 0, kein Befund.
+Mit ihr: Code 1, und die Meldung nennt `schreibe` samt Datei und Zeile. Der Unterschied
+zwischen beiden Programmen ist eine Zeile.
+
+**Bedingung 3.** Jede der 44 Fundstellen faellt unter eine von vierzehn benannten
+Regeln; keine Liste einzelner Namen. Die Bestaende werden gelesen und nicht
+abgeschrieben -- die vergifteten Namen aus den Vergiftungszeilen des Kerns, die
+Schluessel aus der Kalibrierdatei, die Ziele aus den Bauskripten, die Namensraeume aus
+dem Codetext.
+
+**Bedingung 4.** Beide Bauprofile gruen, 16 von 16 Proben. Gezaehlt gegen den
+unmittelbar vorhergehenden Stand desselben Baums -- eine Kopie ohne das neue Mitglied,
+15 Eintraege --, nicht gegen die 14 aus dem Uebersetzungsbericht des Tages: Paket 0133
+hat seither `schlussriegel_nachbau` dazugelegt.
+
+**Kein fremder Befund.** Der Riegel liefert auf dem gelieferten Baum null Funde. Der in
+der Abnahme vorgesehene Ausgang -- ein anderes Paket legt mir einen toten Bezeichner in
+den Kern -- ist nicht eingetreten.
+
+**Worauf ich unsicher bin, damit es nicht der Pruefer suchen muss.** Die vierzehnte
+Regel (`fremdwort`) ist die schwaechste: Sie laesst einen einteiligen Namen durch, von
+dem im Codetext des Kerns keine Spur mehr steht. Der Name aus Paket 0101 ist nur
+deshalb sichtbar, weil die negative Zusicherung ihn im Code stehen laesst. Das ist im
+Kopf der Quelle ausgeschrieben und jede Fundstelle wird gedruckt -- aber es heisst, dass
+dieser Riegel nicht „alle toten Namen" prueft, sondern die mit einer Spur. Ob das der
+richtige Schnitt ist, entscheide ich nicht allein.
+
 ---
 
 # Ein Bezeichner in einem Kommentar wird von nichts geprueft -- und die naheliegende Pruefung waere an 0101 blind gewesen

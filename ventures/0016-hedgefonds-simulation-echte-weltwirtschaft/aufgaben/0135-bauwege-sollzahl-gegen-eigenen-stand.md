@@ -1,7 +1,7 @@
 ---
 id: 0135-bauwege-sollzahl-gegen-eigenen-stand
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0076/bauwege.py]
 abnahme: `bauwege.py` meldet auf dem unveraenderten Arbeitsbaum in beiden Profilen Rueckgabewert 0 und null Abweichungen; Aufruf und alle gemeldeten Zahlen sind abgedruckt. Nennt das Skript danach noch eine feste Sollzahl, nennt es Profil und Datum dazu; vergleicht es gegen den eigenen Stand davor, nennt es diesen Stand. Zweiseitig: An einem Wegwerf-Baum, in dem ein uebersetzendes Ziel entfernt oder hinzugefuegt ist, meldet dasselbe Skript weiterhin eine Abweichung und einen Rueckgabewert ungleich 0 -- ein Werkzeug, das nach der Aenderung immer gruen meldet, hat den Fehler nur umgedreht.

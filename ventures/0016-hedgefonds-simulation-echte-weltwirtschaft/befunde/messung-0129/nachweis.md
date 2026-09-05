@@ -7,13 +7,23 @@ datum: 2026-09-05
 
 # Nachweis zu Paket 0129 -- der Bezeichnerriegel
 
-Alle Zahlen stammen aus ausgefuehrten Laeufen; die Werkzeuge des Nachweises liegen
-unter `bau/kp0129/` und sind Wegwerfstuecke, keine Auslieferung. Die Wegwerfstuecke
-sind: `altbaum.py` (Kopie des Vorhabens mit dem Wortlaut vor Paket 0101),
-`vorstand.py` (Kopie ohne das neue Mitglied), `mutant.py` samt `mutanten.sh` (fuenf
-Mutanten der ausgelieferten Quelle) und `nachweis/CMakeLists.txt` (der Baum, der sie
-faehrt). `entwurf.py` ist die Entwurfsfassung, an der der Regelsatz vor dem Schreiben
-des C++ gemessen wurde.
+Alle Zahlen stammen aus ausgefuehrten Laeufen. Die Werkzeuge des Nachweises sind
+Wegwerfstuecke und keine Auslieferung; gelaufen sind sie unter `bau/kp0129/`, und weil
+`bau/` von der Versionsverwaltung ausgenommen ist, liegt neben dieser Datei eine Kopie
+jedes einzelnen:
+
+* `altbaum.py` -- Kopie des Vorhabens mit dem Wortlaut vor Paket 0101;
+* `vorstand.py` -- Kopie ohne das neue Mitglied, fuer die Zaehlung in Bedingung 4;
+* `mutant.py` samt `mutanten.sh` -- die fuenf Mutanten der ausgelieferten Quelle;
+* `nachweis-CMakeLists.txt` -- der Baum, der die sechs Programme baut und die sieben
+  Laeufe faehrt (im Arbeitsordner hiess die Datei `nachweis/CMakeLists.txt`);
+* `entwurf.py` -- die Entwurfsfassung in `python3`, an der der Regelsatz vor dem
+  Schreiben des C++ gemessen wurde;
+* `uebernehmen.py` -- der Schritt, der diese Kopien angelegt hat.
+
+Zum Nachfahren: `mutanten.sh <wurzel> <arbeitsordner>`, dann
+`nachweis-CMakeLists.txt` als `CMakeLists.txt` in einen Ordner unterhalb des
+Arbeitsordners legen und `cmake`/`--build`/`ctest` darauf rufen.
 
 ## Bedingung 1 -- der Riegel laeuft, ist ein `ctest`-Eintrag und nennt drei Zahlen
 
