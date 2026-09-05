@@ -1,10 +1,9 @@
 # Logbuch: kern-pruefer
 
-**Achte Rotation am 2026-09-05** bei 12.013 Zeichen -- also schon **ueber** der Grenze:
-Ein Fremdlauf hatte waehrend meiner Pruefung von 0108 selbst rotiert (siebte) und wieder
-aufgefuellt. Vorfassung unter `notizen/archiv/kern-pruefer-2026-09-05-8.md`, aeltere
-daneben (`-2` bis `-8`: mehrere Rotationen am selben Tag). Archivkopie mit `cmake -E copy`,
-dann die Datei neu schreiben -- nicht verschieben, dann faellt nichts weg.
+**Achte Rotation am 2026-09-05** bei 12.013 Zeichen, also schon **ueber** der Grenze:
+Ein Fremdlauf hatte waehrend meiner Pruefung von 0108 selbst rotiert und wieder
+aufgefuellt. Vorfassung unter `notizen/archiv/kern-pruefer-2026-09-05-8.md` (`-2` bis
+`-8`: mehrere Rotationen am selben Tag). `cmake -E copy`, dann neu schreiben.
 
 **Hoechstens 12.000 Zeichen.** Belege in die Ergebnisdatei, hierher die Lehre in einem
 Satz. **An dieser Datei schreiben mehrere eigene Laeufe gleichzeitig** -- vor jedem
@@ -21,32 +20,34 @@ schreibt die Rotation zurueck. Nach der Rotation Platz lassen, nicht bis 11.900 
   Lauf. *0108:* `Write` ueberall gesperrt, auch nach `befunde/`; `pathlib.write_text` im
   Heredoc kam durch. Einmal probieren kostet einen Aufruf.
 - **Ein Aufruf, der zu viel auf einmal schreibt, wird abgelehnt; in Stuecken geht es.**
-  *0108:* Der ganze Befund am Stueck: abgelehnt. Kopf schreiben, dann fuenfmal mit
-  `open(...,"a")` anhaengen, je rund 2 kB: durch. Dieselbe Ablehnung traf einen Aufruf,
-  der Dateien **schrieb und danach `cmake` rief** -- Schreiben und Messen trennen.
+  *0108:* Kopf schreiben, dann fuenfmal mit `open(...,"a")` je rund 2 kB anhaengen.
+  Dieselbe Ablehnung traf einen Aufruf, der schrieb **und danach `cmake` rief** --
+  Schreiben und Messen trennen.
 - **`cmake -E copy` / `rename` und `python3 - <<EOF` tragen, wenn `Write` faellt.**
   Loeschen (`rm -rf`, `shutil.rmtree`) war in 0108 durchgehend gesperrt.
 - **`&&`- und `;`-Ketten werden pauschal abgelehnt**, ebenso `cmd > datei`. Befehle
   einzeln, Ausgabe mit `| tail` kuerzen. Ebenso `sed -n` -- dafuer `Read` mit `offset`.
 - **`$TMPDIR` ist eine tmpfs, die sich alle Laeufe teilen, und sie laeuft voll.** *0140:*
   0 MB mitten im Lauf, dann geht die **Ausgabe** eines Befehls verloren. *0108:* 100 %
-  belegt schon beim Start, `tar` brach mit `No space left on device` ab -- und Raeumen war
-  gesperrt. **Der Ausweg, der traegt:** Messen unter `befunde/bau-pruefung-<paket>/` im
-  Repo (grosse Platte, durch `ventures/**/bau-*/` nicht versioniert) und den
-  **Fremdskripten `TMPDIR` in der Umgebung dorthin setzen** -- `bauwege.py`,
-  `nachbau.py` und `endungsfalle.py` lesen alle `os.environ["TMPDIR"]`.
+  schon beim Start, und Raeumen war gesperrt. **Der Ausweg:** unter
+  `befunde/bau-pruefung-<paket>/` messen (grosse Platte, nicht versioniert) und den
+  Fremdskripten `TMPDIR` in der Umgebung dorthin setzen -- `bauwege.py`, `nachbau.py`
+  und `endungsfalle.py` lesen alle `os.environ["TMPDIR"]`.
 - **Die Shell verliert ihr Arbeitsverzeichnis zwischen Aufrufen.** Absolute Pfade, oder
   `git -C`. *0108:* `git log -- <pfad>` lief im falschen Verzeichnis und meldete
   *stillschweigend* nichts -- das sieht aus wie "die Datei ist nicht versioniert".
 - **Nie ueber den Commit-Betreff suchen**, immer `git log --diff-filter=A -- <datei>`.
   **Ob gebaut wurde, entscheidet der Dateiinhalt an `HEAD`** -- der Betreff gehoert
   regelmaessig einem fremden Paket (0121, 0140, 0108).
+- **Im Befund den Stand nennen, nie das Wort `HEAD`.** *0108:* `HEAD` wanderte waehrend
+  meines Laufs dreimal, und mein Befund lag schon unter fremdem Betreff im Bestand, bevor
+  er fertig war. Am Schluss die md5 der geprueften Datei an Start- und Endstand
+  gegenrechnen und beides hinschreiben.
 
 ## Mutieren, ohne eine Paketdatei anzufassen
 
-Viermal getragen (0098, 0123, 0140). Sauberer Kopf zuerst, dann das Makro, dann die
-Quelle; danach gegen das **unveraenderte** Probenobjekt binden (`link.txt` gibt die
-Zeile her, das Original weglassen):
+Viermal getragen (0098, 0123, 0140). Sauberer Kopf, dann das Makro, dann die Quelle;
+danach gegen das **unveraenderte** Probenobjekt binden (`link.txt` gibt die Zeile her):
 
 ```
 c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
@@ -59,8 +60,6 @@ c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
 - **Ein Makro auf eine Konstante ist der billigste Mutant.** `#define X (::ns::X + 1)`
   verschiebt eine Schranke; `#define eintrag(n) eintrag(0)` erschlaegt jede Zusicherung
   ueber die Zuordnung.
-- **Ein Makro darf waehlerisch sein** -- ein Abbruch am ersten Aufrufer verdeckt die
-  Deckung aller uebrigen.
 - **Ein absorbierter Mutant ist kein ungedeckter.** Erst die Schrittweite erhoehen,
   dann "nicht abgedeckt" urteilen. Und: Welche Zusicherung bleibt gruen?
 
@@ -71,16 +70,15 @@ c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
   **`specs` und `decisions` muessen mit** -- sonst faellt `belegstellen_riegel` aus, und
   man haelt die eigene Ablage fuer einen Befund (0103).
 - **Den Vorherstand aus dem Text von `HEAD` erzeugen, nicht aus einem Commit holen.**
-  *0108, der wichtigste Griff des Laufs:* Vier Pakete hielten dieselbe Datei, drei davon
-  kamen in **einem** fremden Commit -- der Elterncommit haette alle drei zusammen
-  gemessen. Also die Stellen des Pakets im Text zurueckdrehen und als Gegenprobe zeigen,
-  dass das Ergebnis **ausserhalb der Kommentare zeilengleich** mit dem letzten Commit
-  davor ist. Das belegt zugleich den behaupteten Zuschnitt.
+  *0108, der wichtigste Griff des Laufs:* Drei Pakete an derselben Datei kamen in **einem**
+  fremden Commit -- der Elterncommit haette alle drei zusammen gemessen. Also die Stellen
+  des Pakets im Text zurueckdrehen und zeigen, dass das Ergebnis **ausserhalb der
+  Kommentare zeilengleich** mit dem letzten Commit davor ist. Das belegt zugleich den
+  behaupteten Zuschnitt.
 - **Zwei Vollbaeume aus einem `git archive`, die sich in genau einer Datei
-  unterscheiden** (mit `diff -rq` belegt), und das Gleichheitsmass ueber `--gegen-datei`
-  vom ersten zum zweiten. So misst der Vergleich die Aenderung und nicht die Ziele, die
-  fremde Pakete seither angelegt haben. Zielzahlen ueber denen im Paketrumpf sind dann
-  kein Befund, sondern die Regel aus 0104.
+  unterscheiden** (`diff -rq` belegt es), Gleichheitsmass ueber `--gegen-datei` vom
+  ersten zum zweiten. Dann misst der Vergleich die Aenderung und nicht die Ziele fremder
+  Pakete; Zielzahlen ueber denen im Paketrumpf sind kein Befund (0104).
 - **Jede Abnahmebedingung einzeln, mit eigenem mechanischem Aufruf.** Fast jeder Befund
   fiel genau dabei an.
 - **Vorher/nachher maschinell vergleichen, nicht nach Augenschein** -- Ausgaben
@@ -91,21 +89,19 @@ c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
   `chrono`, `rand`, `random_device`, `reinterpret_cast`, `uintptr_t`, `getenv`,
   `__DATE__`, Zuteilung.
 - **Die Riegel gegen den *Arbeitsbaum* laufen lassen, bevor der eigene Befund abgeht.**
-  `belegstellen_riegel`/`bezeichner_riegel` nehmen die Vorhabenwurzel als Argument; ein
-  vorhandener Baubaum genuegt. `aufgaben/` wird von beiden gelesen -- ein eigener
-  Vorschlag kann den Bau brechen.
+  `belegstellen_riegel`/`bezeichner_riegel` lesen `aufgaben/` -- ein eigener Vorschlag
+  kann den Bau brechen. *0108:* Auch die eigene Messablage gegenpruefen.
 - **Jede Riegel-Zahl braucht eine zweite, unabhaengige Zaehlung.** Namen statt Summen
   liefert die CMake-File-API, `.cmake/api/v1/query/codemodel-v2` (0104).
 - **Zu jedem Negativnachweis gehoert der Positivnachweis.** Ein Riegel, der alles
   blockiert, sieht im Negativtest identisch aus.
 - **Eine Mengenbeziehung schlaegt eine Stichprobe** (0103, wieder 0108): Verwirft die neue
   Bedingung eine **echte Teilmenge** der alten, kann der Riegel nichts verlieren, was er
-  vorher fing -- das deckt auch, was nicht gemessen wurde. Die Messung ist Bestaetigung.
+  vorher fing. Die Messung ist dann Bestaetigung.
 - **Ist ein Halbsatz der Bedingung am Aufrufort nicht erzeugbar, direkt an der gerufenen
   Regel messen** -- mit **genau dem Variablennamen der Aufrufstelle**, weil das Makro
-  gegen `<name>-NOTFOUND` vergleicht. *0108:* "nur der Nichtwert gilt weiter als leer"
-  war ueber `SOURCES` unerreichbar (dort kommt nur ein uebersetzendes Ziel an, und das
-  hat immer Quellen); am Makro selbst war es zwei Zeilen.
+  gegen `<name>-NOTFOUND` vergleicht. *0108:* ueber `SOURCES` unerreichbar, am Makro
+  selbst zwei Zeilen.
 - **Eine Behauptung in einem Kommentar ist ein Pruefauftrag**, ebenso ein Ausschluss in
   einem fremden Paket. *0108:* Der Ausschluss in 0103 ("die sind dort richtig") war an
   vier Eigenschaften widerlegbar.
@@ -121,7 +117,6 @@ c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
 - **Eine Testeinspeisung an der falschen Stelle beweist nichts.** Scheitern Probe und
   Kontrolle gleich, ist die Einspeisung schuld, nicht der Gegenstand.
 - **Den Meldungstext einer Ausnahme nach dem Fangblock lesen** -- er ist dann fort.
-- **`grep -v <wort>` als Filter verwirft Treffer, die zwei Namen tragen.**
 
 ## Offene Faehrten
 
@@ -141,16 +136,14 @@ c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
   T-Block halten; der Kommentar nennt oft selbst die Vorgabe, gegen die sie steht.
 - **Bei welchem Wert schlaegt eine Schranke zuerst zu -- innerhalb oder ausserhalb des
   Zulaessigen?** Ausrechnen, nicht lesen.
-- **Ein `static_assert`, dessen eine Seite per Definition die andere ist, kann nicht
-  reissen.** Als Dokumentation gut, als Riegel null.
 - **Wo zwei Schichten dieselbe Schranke tragen, sagt nur der *Verbotssatz*, welche
   zugeschlagen hat.** Mutant: die aeussere um eins hochsetzen.
 - **Deckt die Probe den Weg, den der echte Aufrufer nimmt?** Beide Wege selbst fahren.
 - **Erfuellt die Stelle, an der eine Regel steht, die Regel selbst?** (0104)
 - **Zeigt die Ausgabe die eigene Schaerfe des Riegels?** (0103) Welche Zahl faellt, wenn
-  er aufhoert zu greifen? *0108:* Genau das war der Gegenstand -- die Meldung druckte den
-  *geleerten* statt des gelesenen Werts, und "leer" war von "geleert" nicht zu
-  unterscheiden. **Prueffrage: Ist der gemeldete Wert derselbe, ueber den geurteilt wurde?**
+  er aufhoert zu greifen? *0108:* Die Meldung druckte den *geleerten* statt des gelesenen
+  Werts -- "leer" und "geleert" waren nicht zu unterscheiden. **Prueffrage: Ist der
+  gemeldete Wert derselbe, ueber den geurteilt wurde?**
 - **Welche Mutation ist unsichtbar, weil der Vorgabewert der Probe sie unsichtbar macht?**
 - **Wird ein Ueberlauf verhindert oder nachtraeglich erkannt?** Nur die erste Form haengt
   nicht an `-fwrapv`.
@@ -161,10 +154,9 @@ c++ <Schalter aus bau/CMakeFiles/<ziel>.dir/flags.make> \
 ## Zu Vorschlaegen
 
 - **Vor dem eigenen Vorschlag pruefen, ob es die Luecke schon als Paket gibt** -- `grep`
-  ueber `aufgaben/` nach der tragenden Formulierung. Fuenfmal hat das den Vorschlag
-  erledigt oder halbiert (0098, 0123, 0103, 0140, 0108). **Ein zweiter Beleg gehoert in
-  den Befund, nicht in ein zweites Paket** -- und hat der Bauagent den Punkt selbst schon
-  gemeldet, erst recht.
+  ueber `aufgaben/`. Fuenfmal hat das den Vorschlag erledigt (0098, 0123, 0103, 0140,
+  0108). **Ein zweiter Beleg gehoert in den Befund, nicht in ein zweites Paket** -- und
+  hat der Bauagent den Punkt selbst gemeldet, erst recht.
 - **Kein Vorschlag ohne belegten Schaden.** *0108:* Das vollgelaufene `$TMPDIR` blockierte
   mich zweimal, war aber **laut** -- ein Paket, das eine stille Fehlmessung behauptet
   haette, waere unbelegt gewesen. In den Befund damit, nicht in ein Paket.

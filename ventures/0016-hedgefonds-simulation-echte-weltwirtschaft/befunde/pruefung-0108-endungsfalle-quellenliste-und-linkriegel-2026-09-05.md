@@ -12,7 +12,7 @@ befunde: 0
 
 ## Gegenstand und Bezugsstand
 
-Geprueft ist der Inhalt von `werkzeugkette.cmake` an `HEAD` = `c19e388`
+Geprueft ist der Inhalt von `werkzeugkette.cmake` am Stand `c19e388`
 (md5 `08aa087bb845c17d1e12e65679243513`). Der Vergleichsstand ist derselbe Baum mit
 **genau den drei Stellen dieses Pakets** zurueckgedreht. Er ist nicht aus dem Repo
 kopiert, sondern aus dem Text von `HEAD` erzeugt: die drei Aufrufe von
@@ -197,3 +197,17 @@ zweiter Vergleich steht nirgends daneben. Die zitierten Baumnamen (`q1_notfound`
   Wegwerfverzeichnis unter `pruef-0108/` (`messung.py`, `wk-vorher.cmake`,
   `wk-nachher.cmake`), also ausserhalb des Repos und nicht dauerhaft. Das Skript erzeugt
   seinen Vergleichsstand aus dem Text von `HEAD` und ist ohne diese Ablage wiederholbar.
+
+## Nachtrag, noch am 2026-09-05
+
+Waehrend dieser Pruefung haben Fremdlaeufe dreimal committet; `HEAD` stand beim Start auf
+`c19e388` und beim Abschluss auf `bd9af5c`, und diese Datei war dabei schon unter einem
+fremden Betreff mitcommittet, bevor ich sie fertig hatte. **`werkzeugkette.cmake` ist
+davon unberuehrt** -- md5 `08aa087bb845c17d1e12e65679243513` an `c19e388`, an `bd9af5c`
+und im Arbeitsbaum. Das Urteil oben gilt also unveraendert; deshalb steht ueberall der
+Stand und nicht das Wort `HEAD`.
+
+Der Arbeitsbaum ist nach allen Messungen dieser Pruefung nachgefahren worden --
+Konfiguration, Bau und `ctest` mit `FABRIK_SANITIZER=ON`: Code 0, `100% tests passed,
+0 tests failed out of 17`. Die Messablage unter `befunde/bau-pruefung-0108/` stoert
+weder `belegstellen_riegel` noch `bezeichner_riegel`.
