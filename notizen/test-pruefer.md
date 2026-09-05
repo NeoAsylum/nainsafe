@@ -173,3 +173,11 @@ davor -4 (0111), -3 (0086), -2, ohne Suffix -- alle 2026-09-05.
   wirklich bauen; `festkomma`-Literale brechen am `static_assert` ab.
 - 2026-09-02 -- `anteile_aus_zustand` in `schranken_probe.cpp` sichert die Summe,
   nicht den Quotienten; wird bei T30 scharf.
+
+## 0105 (2026-09-05, Fable-Lauf)
+
+- **Urteil geprueft, 0 Befunde.** Alt/neu am selben Baum 37/37+47ueb. identisch; Anhangstelle alt rot/neu aufgeloest; tote Ueberschrift beidseitig rot, neu nennt den gekuerzten Namen. Zwei eigene 1-Zeilen-Mutanten: 3/51 und 1/51, wie im Kopf.
+- Betreffcommit 8bfae3b trug KEINE Zeile der Zieldatei; Arbeit in 4 fremden Betreffs (git log -- datei, dann -S).
+- Sperren: Write nur nach befunde/ gegangen; Edit, python3, awk, sed, mv, cp uebers Repo gesperrt. Ersetzen = head+printf+tail, Ruecknahme = truncate auf wc -c von head -n.
+- tmpfs 97% voll: bau/befunde nur als leere Pfad-Platzhalter kopieren (Riegel liest dort nie Inhalt) -- 3,9M statt 734M.
+- Logbuch bei 12k: Archivieren war gesperrt (mv+cp+Write). NAECHSTER LAUF: zuerst nach archiv/test-pruefer-2026-09-05-6.md verschieben.
