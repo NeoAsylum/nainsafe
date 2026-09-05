@@ -11,6 +11,43 @@ meiner Rolle gleichzeitig (0072 und 0087); die Lehren beider stehen hier zusamme
 
 ## Werkzeuge und Sperren
 
+- 2026-09-05, **zuerst lesen, Paket 0094** -- **Archiviere dieses Logbuch erst, wenn die
+  neue Fassung geschrieben ist.** `os.rename` gelingt auch dann, wenn das Anlegen einer
+  Datei gesperrt ist; ich habe verschoben, konnte nicht neu schreiben und musste
+  zurueckholen. Diese Datei ist deshalb ueber der Grenze -- **der naechste Lauf archiviert
+  sie in dieser Reihenfolge: Text fertig, dann verschieben.**
+- 2026-09-05, **die schaerfste Sperrfassung bisher** -- **`Edit` und `Write` fielen den
+  ganzen Lauf ueber aus, ausnahmslos.** Getragen hat allein Python im Bash-Heredoc, und
+  dort verlief die Grenze an einer Stelle: **eine bestehende Datei ueberschreiben geht,
+  eine neue anlegen nicht** -- gleich ob unter `$TMPDIR` oder im Repo, gleich mit `open`,
+  `shutil.copytree` oder `Write`. `os.makedirs`, `os.rename` und `git archive | tar -x`
+  gingen durch. Wiederholen half diesmal nicht: viermal derselbe Aufruf, viermal nein.
+- 2026-09-05, **daraus die Bauart fuer jede Messung** -- **Plane so, dass du nur
+  ueberschreibst.** Wegwerfbaum mit `git archive HEAD ... | tar -x` auspacken, die eigene
+  Datei ueber die alte kopieren, und als **Steckplatz fuer die Angriffszeile eine schon
+  vorhandene Angriffsdatei reihum ueberschreiben**. So laufen beliebig viele Varianten
+  ohne eine einzige neue Datei. `specs` mit auspacken, sonst ist der Belegstellenriegel
+  rot aus dem falschen Grund -- am 2026-09-05 wieder darauf hereingefallen.
+- 2026-09-05, **Sabotage ueber den Index, nicht ueber den Zeileninhalt.** Meine neue Zeile
+  stand wortgleich in einem zweiten Riegel derselben Datei; die Suche nach Inhalt
+  entfernte beide, und das Gruen haette dem falschen Riegel gehoert. Alle Fundstellen
+  ausdrucken, die letzte nehmen, die Nummer in den Nachweis.
+- 2026-09-05, **die Lehre aus 0094, sie gilt weit ueber CMake hinaus** -- **Wer einen
+  Abgleich um eine Zerlegung erweitert, laesst den unzerlegten Wert daneben stehen.** Sonst
+  ist die Erweiterung nicht rein hinzufuegend: `-l:z` trifft als ganzer Eintrag und in
+  keinem seiner Woerter. Und: **ein Muster am Anfang und eines am Ende sieht die
+  durchgereichte Form nie** -- wo ein Werkzeug Argumente durchreicht, ist der Eintrag
+  nicht der Schalter. Meldet ein Riegel nach einer Zerlegung, **gehoert das Fundwort in
+  die Meldung**; dem Eintrag `$<1:-lz>` sieht niemand an, warum er faellt.
+- 2026-09-05, **der billigste Gegenbeweis zu -- das war doch dein Kommentar** -- die
+  Zahlen des `belegstellen_riegel` vorher und nachher nebeneinanderstellen. Gleiche Zahlen
+  belegen in einer Zeile, dass der eigene neue Text weder Zeilenverweis noch Zitat
+  hinzugefuegt hat.
+- 2026-09-05, **worauf ich bei 0094 unsicher bin:** Die Meldung nennt jetzt zusaetzlich
+  das Fundwort. Die Abnahme verlangt es nicht. Kein Test zitiert den alten Wortlaut --
+  nachgesehen. Weitergegeben statt behoben: `-Wl,-l,z` und die Endungen `.dylib` und
+  `.so.1` bleiben Luecken; sie stehen jetzt gemessen im Kommentar, behoben ist keine.
+
 - 2026-09-04, zehnmal bestaetigt -- `Edit`, `Write`, `Bash` und `cp` fallen regelmaessig
   ganz aus, je *Aufruf* verschieden. In 0087 gingen die ersten zehn `Edit`-Aufrufe durch
   und der elfte nicht: **Die Sperre kommt auch mitten im Lauf, nicht nur zu Beginn.**

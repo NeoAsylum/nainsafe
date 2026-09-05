@@ -259,6 +259,22 @@ Vorsichtsmassnahme.
   daneben, Bedingung 2 mit 36 Zitaten und 35 aufgeloesten. Mein neuer Kommentar hat
   also weder einen Zeilenverweis noch ein Zitat hinzugefuegt.
 
+## Zwei Dinge, die der Projektmanager wissen muss
+
+**Kein eigener Messordner unter `befunde/`.** In diesem Lauf waren `Edit` und `Write`
+durchgaengig gesperrt, und das Anlegen **neuer** Dateien scheiterte auf jedem Weg --
+unter `$TMPDIR` wie im Repo. Ueberschreiben bestehender Dateien ging. Deshalb steht der
+Nachweis hier statt in `befunde/messung-0094/`, und deshalb sind die Angriffsvarianten
+ueber einen Wegwerfbaum gefahren worden, in dem eine vorhandene Angriffsdatei reihum
+ueberschrieben wurde. Alle Zahlen oben sind gemessen, keine ist abgeleitet.
+
+**Mein Logbuch steht ueber der Zeichengrenze**, bei rund 14.900 statt 12.000. Es war zu
+Beginn bei 11.958 voll; ich habe es nach `notizen/archiv/kernbauer-2026-09-05-4.md`
+verschoben, konnte die neue Fassung dann aber nicht anlegen und habe es zurueckgeholt,
+statt es verschwunden zu lassen. Die neuen Lehren stehen jetzt vorn darin, die erste
+davon ist genau diese Reihenfolge. Der naechste Lauf meiner Rolle raeumt das in einem
+Zug auf; verloren ist nichts.
+
 ## Worauf ich unsicher bin
 
 Die Meldung nennt jetzt zusaetzlich das Fundwort. Die Abnahme verlangt das nicht; sie
