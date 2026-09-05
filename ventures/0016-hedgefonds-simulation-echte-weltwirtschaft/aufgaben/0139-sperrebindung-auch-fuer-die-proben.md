@@ -1,7 +1,7 @@
 ---
 id: 0139-sperrebindung-auch-fuer-die-proben
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
 abnahme: Der Sperrebindungsriegel deckt zusaetzlich `kern/test/*.cpp` mit denselben zwei Bedingungen und derselben Meldungsform; die Abbruchmeldung nennt den Dateinamen mitsamt seinem Verzeichnis, sodass eine Probe von einer Bibliotheksquelle zu unterscheiden ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert, baut und testet gruen in beiden Profilen; ein Baum mit einer zusaetzlichen Probe unter `kern/test` ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Probe, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Die Statusmeldung nennt beide Zahlen getrennt -- Quellen und Proben --, damit ein Riegel, der eine der beiden Mengen leer laesst, nicht wie einer aussieht, der beide prueft.

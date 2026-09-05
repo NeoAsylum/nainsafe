@@ -16,14 +16,14 @@ anderes behauptet, irrt.
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 9 Kernquelle(n) und 11 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+-- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
 -- Mitglied 'daten' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'schnittstelle' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'konsole' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
 -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
--- Warnsatz-Schlussriegel: 21 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
+-- Warnsatz-Schlussriegel: 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
 -- Configuring done (0.1s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
@@ -32,95 +32,82 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 10%] Built target pruefstand_geprueft
-[ 10%] Built target pruefstand
-[ 13%] Built target mutationstreiber
-[ 16%] Built target bezeichner_riegel
-[ 18%] Building CXX object kern/CMakeFiles/kern.dir/src/verlauf.cpp.o
-[ 20%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/verlauf.cpp.o
-[ 23%] Built target belegstellen_riegel
-[ 33%] Built target vorrat_probe
-[ 33%] Built target vorrat_verfahren_probe
-[ 33%] Built target vorrat_kernanker_probe
-[ 35%] Linking CXX static library libkern.a
-[ 48%] Built target kern
-[ 50%] Linking CXX static library libkern_geprueft.a
-[ 63%] Built target kern_geprueft
-[ 70%] Linking CXX executable schreiber_probe
-[ 70%] Linking CXX executable zustand_probe
-[ 70%] Linking CXX executable meldung_probe
-[ 70%] Linking CXX executable festkomma_probe
-[ 71%] Linking CXX executable zufall_probe
-[ 76%] Linking CXX executable schranken_probe
-[ 76%] Linking CXX executable pruefsumme_probe
-[ 76%] Linking CXX executable werte_probe
-[ 78%] Linking CXX executable schritt_probe
-[ 80%] Building CXX object kern/CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
-[ 81%] Linking CXX executable zustandsausgabe_probe
-[ 83%] Built target zufall_probe
-[ 85%] Built target festkomma_probe
-[ 86%] Built target schreiber_probe
-[ 88%] Built target werte_probe
-[ 90%] Built target schritt_probe
-[ 91%] Built target meldung_probe
-[ 93%] Built target pruefsumme_probe
-[ 95%] Built target zustand_probe
-[ 96%] Built target schranken_probe
-[ 98%] Built target zustandsausgabe_probe
-[100%] Linking CXX executable verlauf_probe
-[100%] Built target verlauf_probe
+[  3%] Built target mutationstreiber
+[ 18%] Built target pruefstand
+[ 18%] Built target belegstellen_riegel
+[ 23%] Built target pruefstand_geprueft
+[ 32%] Built target kern
+[ 35%] Built target bezeichner_riegel
+[ 53%] Built target kern_geprueft
+[ 56%] Built target pruefsumme_probe
+[ 60%] Built target festkomma_probe
+[ 62%] Built target vorrat_verfahren_probe
+[ 65%] Built target vorrat_probe
+[ 68%] Built target vorrat_kernanker_probe
+[ 71%] Built target aktion_probe
+[ 75%] Built target schreiber_probe
+[ 78%] Built target meldung_probe
+[ 81%] Built target schranken_probe
+[ 84%] Built target verlauf_probe
+[ 87%] Built target werte_probe
+[ 90%] Built target zufall_probe
+[ 93%] Built target zustand_probe
+[ 96%] Built target schritt_probe
+[100%] Built target zustandsausgabe_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
 
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
-      Start  1: festkomma_probe
- 1/17 Test  #1: festkomma_probe ..................   Passed    0.01 sec
-      Start  2: meldung_probe
- 2/17 Test  #2: meldung_probe ....................   Passed    0.01 sec
-      Start  3: pruefsumme_probe
- 3/17 Test  #3: pruefsumme_probe .................   Passed    0.01 sec
-      Start  4: schranken_probe
- 4/17 Test  #4: schranken_probe ..................   Passed    0.01 sec
-      Start  5: schreiber_probe
- 5/17 Test  #5: schreiber_probe ..................   Passed    0.01 sec
-      Start  6: schritt_probe
- 6/17 Test  #6: schritt_probe ....................   Passed    0.01 sec
-      Start  7: verlauf_probe
- 7/17 Test  #7: verlauf_probe ....................   Passed    0.01 sec
-      Start  8: werte_probe
- 8/17 Test  #8: werte_probe ......................   Passed    0.01 sec
-      Start  9: zufall_probe
- 9/17 Test  #9: zufall_probe .....................   Passed    0.01 sec
-      Start 10: zustand_probe
-10/17 Test #10: zustand_probe ....................   Passed    0.01 sec
-      Start 11: zustandsausgabe_probe
-11/17 Test #11: zustandsausgabe_probe ............   Passed    0.08 sec
-      Start 12: vorrat_kernanker_probe
-12/17 Test #12: vorrat_kernanker_probe ...........   Passed    0.01 sec
-      Start 13: vorrat_probe
-13/17 Test #13: vorrat_probe .....................   Passed    0.01 sec
-      Start 14: vorrat_verfahren_probe
-14/17 Test #14: vorrat_verfahren_probe ...........   Passed    0.01 sec
-      Start 15: belegstellen_riegel
-15/17 Test #15: belegstellen_riegel ..............   Passed    1.23 sec
-      Start 16: bezeichner_riegel
-16/17 Test #16: bezeichner_riegel ................   Passed    0.30 sec
-      Start 17: schlussriegel_nachbau
-17/17 Test #17: schlussriegel_nachbau ............   Passed    0.44 sec
+      Start  1: aktion_probe
+ 1/18 Test  #1: aktion_probe .....................   Passed    0.01 sec
+      Start  2: festkomma_probe
+ 2/18 Test  #2: festkomma_probe ..................   Passed    0.01 sec
+      Start  3: meldung_probe
+ 3/18 Test  #3: meldung_probe ....................   Passed    0.01 sec
+      Start  4: pruefsumme_probe
+ 4/18 Test  #4: pruefsumme_probe .................   Passed    0.01 sec
+      Start  5: schranken_probe
+ 5/18 Test  #5: schranken_probe ..................   Passed    0.01 sec
+      Start  6: schreiber_probe
+ 6/18 Test  #6: schreiber_probe ..................   Passed    0.01 sec
+      Start  7: schritt_probe
+ 7/18 Test  #7: schritt_probe ....................   Passed    0.01 sec
+      Start  8: verlauf_probe
+ 8/18 Test  #8: verlauf_probe ....................   Passed    0.02 sec
+      Start  9: werte_probe
+ 9/18 Test  #9: werte_probe ......................   Passed    0.01 sec
+      Start 10: zufall_probe
+10/18 Test #10: zufall_probe .....................   Passed    0.01 sec
+      Start 11: zustand_probe
+11/18 Test #11: zustand_probe ....................   Passed    0.01 sec
+      Start 12: zustandsausgabe_probe
+12/18 Test #12: zustandsausgabe_probe ............   Passed    0.08 sec
+      Start 13: vorrat_kernanker_probe
+13/18 Test #13: vorrat_kernanker_probe ...........   Passed    0.01 sec
+      Start 14: vorrat_probe
+14/18 Test #14: vorrat_probe .....................   Passed    0.01 sec
+      Start 15: vorrat_verfahren_probe
+15/18 Test #15: vorrat_verfahren_probe ...........   Passed    0.01 sec
+      Start 16: belegstellen_riegel
+16/18 Test #16: belegstellen_riegel ..............   Passed    3.13 sec
+      Start 17: bezeichner_riegel
+17/18 Test #17: bezeichner_riegel ................   Passed    0.31 sec
+      Start 18: schlussriegel_nachbau
+18/18 Test #18: schlussriegel_nachbau ............   Passed    0.42 sec
 
-100% tests passed, 0 tests failed out of 17
+100% tests passed, 0 tests failed out of 18
 
-Total Test time (real) =   2.19 sec
+Total Test time (real) =   4.11 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 9 Kernquelle(n) und 11 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+-- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
 -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
--- Warnsatz-Schlussriegel: 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
+-- Warnsatz-Schlussriegel: 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
@@ -129,67 +116,54 @@ Total Test time (real) =   2.19 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  4%] Building CXX object CMakeFiles/kern.dir/src/verlauf.cpp.o
-[  4%] Building CXX object CMakeFiles/kern_geprueft.dir/src/verlauf.cpp.o
-[  7%] Linking CXX static library libkern.a
-[ 26%] Built target kern
-[ 28%] Linking CXX static library libkern_geprueft.a
+[ 47%] Built target kern
 [ 47%] Built target kern_geprueft
-[ 57%] Linking CXX executable schritt_probe
-[ 57%] Building CXX object CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
-[ 57%] Linking CXX executable meldung_probe
-[ 57%] Linking CXX executable schranken_probe
-[ 59%] Linking CXX executable festkomma_probe
-[ 64%] Linking CXX executable werte_probe
-[ 64%] Linking CXX executable schreiber_probe
-[ 69%] Linking CXX executable pruefsumme_probe
-[ 69%] Linking CXX executable zustandsausgabe_probe
-[ 71%] Linking CXX executable zufall_probe
-[ 73%] Linking CXX executable zustand_probe
-[ 76%] Built target zufall_probe
-[ 80%] Built target pruefsumme_probe
-[ 80%] Built target zustand_probe
-[ 83%] Built target schranken_probe
-[ 85%] Built target festkomma_probe
-[ 88%] Built target schreiber_probe
-[ 90%] Built target meldung_probe
-[ 92%] Built target werte_probe
+[ 56%] Built target meldung_probe
+[ 56%] Built target schreiber_probe
+[ 60%] Built target schranken_probe
+[ 65%] Built target festkomma_probe
+[ 69%] Built target verlauf_probe
+[ 73%] Built target aktion_probe
+[ 78%] Built target zufall_probe
+[ 82%] Built target pruefsumme_probe
+[ 86%] Built target werte_probe
+[ 91%] Built target schritt_probe
 [ 95%] Built target zustandsausgabe_probe
-[ 97%] Built target schritt_probe
-[100%] Linking CXX executable verlauf_probe
-[100%] Built target verlauf_probe
+[100%] Built target zustand_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
 
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
-      Start  1: festkomma_probe
- 1/11 Test  #1: festkomma_probe ..................   Passed    0.01 sec
-      Start  2: meldung_probe
- 2/11 Test  #2: meldung_probe ....................   Passed    0.01 sec
-      Start  3: pruefsumme_probe
- 3/11 Test  #3: pruefsumme_probe .................   Passed    0.01 sec
-      Start  4: schranken_probe
- 4/11 Test  #4: schranken_probe ..................   Passed    0.01 sec
-      Start  5: schreiber_probe
- 5/11 Test  #5: schreiber_probe ..................   Passed    0.01 sec
-      Start  6: schritt_probe
- 6/11 Test  #6: schritt_probe ....................   Passed    0.01 sec
-      Start  7: verlauf_probe
- 7/11 Test  #7: verlauf_probe ....................   Passed    0.01 sec
-      Start  8: werte_probe
- 8/11 Test  #8: werte_probe ......................   Passed    0.01 sec
-      Start  9: zufall_probe
- 9/11 Test  #9: zufall_probe .....................   Passed    0.01 sec
-      Start 10: zustand_probe
-10/11 Test #10: zustand_probe ....................   Passed    0.01 sec
-      Start 11: zustandsausgabe_probe
-11/11 Test #11: zustandsausgabe_probe ............   Passed    0.08 sec
+      Start  1: aktion_probe
+ 1/12 Test  #1: aktion_probe .....................   Passed    0.01 sec
+      Start  2: festkomma_probe
+ 2/12 Test  #2: festkomma_probe ..................   Passed    0.01 sec
+      Start  3: meldung_probe
+ 3/12 Test  #3: meldung_probe ....................   Passed    0.01 sec
+      Start  4: pruefsumme_probe
+ 4/12 Test  #4: pruefsumme_probe .................   Passed    0.01 sec
+      Start  5: schranken_probe
+ 5/12 Test  #5: schranken_probe ..................   Passed    0.01 sec
+      Start  6: schreiber_probe
+ 6/12 Test  #6: schreiber_probe ..................   Passed    0.01 sec
+      Start  7: schritt_probe
+ 7/12 Test  #7: schritt_probe ....................   Passed    0.01 sec
+      Start  8: verlauf_probe
+ 8/12 Test  #8: verlauf_probe ....................   Passed    0.02 sec
+      Start  9: werte_probe
+ 9/12 Test  #9: werte_probe ......................   Passed    0.01 sec
+      Start 10: zufall_probe
+10/12 Test #10: zufall_probe .....................   Passed    0.01 sec
+      Start 11: zustand_probe
+11/12 Test #11: zustand_probe ....................   Passed    0.01 sec
+      Start 12: zustandsausgabe_probe
+12/12 Test #12: zustandsausgabe_probe ............   Passed    0.08 sec
 
-100% tests passed, 0 tests failed out of 11
+100% tests passed, 0 tests failed out of 12
 
-Total Test time (real) =   0.20 sec
+Total Test time (real) =   0.21 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -205,10 +179,10 @@ Total Test time (real) =   0.20 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand
+[ 25%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
-[ 83%] Built target vorrat_kernanker_probe
-[ 83%] Built target vorrat_probe
+[ 66%] Built target vorrat_kernanker_probe
+[ 91%] Built target vorrat_probe
 [100%] Built target vorrat_verfahren_probe
 ```
 
@@ -241,8 +215,6 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Building CXX object CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
-[100%] Linking CXX executable belegstellen_riegel
 [100%] Built target belegstellen_riegel
 ```
 
@@ -251,11 +223,11 @@ Total Test time (real) =   0.03 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/1 Test #1: belegstellen_riegel ..............   Passed    1.27 sec
+1/1 Test #1: belegstellen_riegel ..............   Passed    3.09 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   1.27 sec
+Total Test time (real) =   3.09 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -279,11 +251,11 @@ Total Test time (real) =   1.27 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
     Start 1: bezeichner_riegel
-1/1 Test #1: bezeichner_riegel ................   Passed    0.30 sec
+1/1 Test #1: bezeichner_riegel ................   Passed    0.31 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.30 sec
+Total Test time (real) =   0.31 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -328,9 +300,9 @@ No tests were found!!!
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/bau
     Start 1: schlussriegel_nachbau
-1/1 Test #1: schlussriegel_nachbau ............   Passed    0.47 sec
+1/1 Test #1: schlussriegel_nachbau ............   Passed    0.42 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.47 sec
+Total Test time (real) =   0.42 sec
 ```

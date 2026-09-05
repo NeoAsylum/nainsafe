@@ -2,7 +2,7 @@
 id: 0141-pruefliste-fuenftes-land
 rolle: architekt
 status: offen
-haengt_an: [0116-laenderzahl-als-parameter]
+haengt_an: [0116-laenderzahl-als-parameter, 0117-geschaetzter-politikpfad-und-zwei-laenderklassen]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die zwei Bedingungen unter "Abnahme".
 ---

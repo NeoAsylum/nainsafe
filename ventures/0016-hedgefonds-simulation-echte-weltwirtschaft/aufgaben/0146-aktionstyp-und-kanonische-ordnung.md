@@ -1,7 +1,7 @@
 ---
 id: 0146-aktionstyp-und-kanonische-ordnung
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/aktion.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/aktion.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/aktion_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 2 ist die tragende -- eine Ordnung, die sich als Nebenwirkung der Erzeugungsschleife ergibt statt als benannte Eigenschaft des Typs, erfuellt sie nicht, auch wenn die Probe gruen ist.

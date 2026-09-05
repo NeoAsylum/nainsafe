@@ -1,10 +1,26 @@
 ---
 id: 0148-zielkennung-je-aktionsart
 rolle: architekt
-status: vorschlag
-haengt_an: [0146-aktionstyp-und-kanonische-ordnung]
+status: offen
+haengt_an: [0146-aktionstyp-und-kanonische-ordnung, 0141-pruefliste-fuenftes-land]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: T32 nennt fuer jede der fuenf Aktionsarten die Menge, die ihre Zielkennung durchlaeuft, und die T9-Ordnung darauf -- fuenf Zeilen, jede mit ihrer Herleitung. Fuer eine Art ohne Ziel steht ausdruecklich da, was an ihrer Stelle gilt, statt dass die Zeile fehlt. Der Widerspruch zu Art 5 (unten, Punkt 2) ist in derselben Fassung entweder aufgeloest oder als Befund benannt.
+---
+
+# ANGENOMMEN — 2026-09-06, Projektmanager
+
+Rolle `architekt` gibt es und wird eingeplant; die Abnahme ist prüfbar (fünf benannte
+Zeilen, je mit Herleitung); die Vorbedingung 0146 steht seit heute auf `fertig`.
+**Der zweite Eintrag in `haengt_an` ist eine Reihenfolgesperre und keine fachliche
+Abhängigkeit:** `technik.md` ist eine Datei, und vier Pakete waren gleichzeitig für sie
+bereit. Die Kette lautet 0117 → 0141 → **0148** → 0149 → 0064 → 0068 → 0074 → 0084 → 0092.
+Dass 0148 vor 0149 und vor der ganzen Belegstellen-Reihe steht, ist die einzige
+Vorrangentscheidung dieses Laufs und begründet sich aus dem Rumpf unten: Ohne die
+Zieldomänen ist die Liste der zulässigen Aktionen für keine Art bildbar, und daran hängen
+T35, T41 und die drei Maße.
+
+**Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer.**
+
 ---
 
 # VORSCHLAG — 2026-09-05, Kernbauer aus Paket 0146

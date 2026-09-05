@@ -1,7 +1,7 @@
 ---
 id: 0116-laenderzahl-als-parameter
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0051-t46-gebietspraefix-entscheiden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen unter "Abnahme".

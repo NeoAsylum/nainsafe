@@ -1,7 +1,7 @@
 ---
 id: 0099-reihentoml-vorlagenliste-um-t53
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0078-reihentoml-preisbasis-nach-t53-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure — sie verlangt dieselbe Selbstmessung mit Bezugsstand wie 0078, weil derselbe Kommentar ein nachgezähltes Zahlwort trägt.
