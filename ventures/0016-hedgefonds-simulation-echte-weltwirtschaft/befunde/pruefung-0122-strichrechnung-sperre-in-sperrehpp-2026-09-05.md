@@ -12,7 +12,7 @@ befunde: 0
 
 Null Befunde gegen das Paket. Zwei Beobachtungen liegen **ausserhalb** seines
 Dateiverzeichnisses und stehen unten unter ihrer eigenen Ueberschrift; die zweite ist
-als Paket `0131-sperrebindung-jeder-kernquelle` vorgeschlagen.
+als Paket `0134-sperrebindung-jeder-kernquelle` vorgeschlagen.
 
 ## Der gepruefte Stand
 
@@ -141,7 +141,16 @@ Aenderung an `werkzeugkette.cmake`, die dem Thema der leeren Fundmeldung gehoert
 nicht diesem Paket. Der Commit unter dem Betreff von 0122 enthaelt dafuer zwei fremde
 Logbuecher und zwei fremde Paketdateien. Das ist genau der Sachverhalt, den
 `0121-commit-schnitt-folgt-nicht-dem-paket` beschreibt und der dort `blockiert` steht;
-ein zweiter Beleg gehoert dorthin und nicht in ein zweites Paket. Fuer die Pruefung
+die Abhilfe liegt seit demselben Tag als `0131-baulauf-commit-nur-paketdateien`
+daneben. Ein zweiter Beleg gehoert in einen dieser beiden Vorgaenge und nicht in
+ein drittes Paket.
+
+Waehrend ich diesen Befund schrieb, ist er selbst zum dritten Beleg geworden: Ein
+parallel laufender Commit mit dem Betreff eines **anderen** Pakets meiner eigenen
+Rolle hat die Datei **halbfertig** eingecheckt. Das ist die schaerfere Form des
+Sachverhalts -- nicht nur ein falscher Betreff, sondern ein Commit, der einen
+Zwischenstand eines fremden, noch laufenden Vorgangs festhaelt. Die Bedingung 1 des
+Vorschlags 0131, `git add` nur auf benannte Pfade, haette genau das verhindert. Fuer die Pruefung
 selbst folgt daraus nur die Vorsichtsregel, die ohnehin gilt: Ob gebaut wurde,
 entscheidet der Dateiinhalt an `HEAD`, nie der Betreff.
 
@@ -164,7 +173,7 @@ sie.
 Das ist kein Befund gegen 0122 -- die Luecke ist aelter als das Paket und liegt
 ausserhalb seiner einen Datei. Aber 0122 macht sie teurer, weil ab jetzt zwei Vorgaben
 an derselben ungeprueften Regel haengen statt einer. Der Vorschlag steht als
-`0131-sperrebindung-jeder-kernquelle`.
+`0134-sperrebindung-jeder-kernquelle`.
 
 ## Wonach ich ausserdem gesucht und nichts gefunden habe
 

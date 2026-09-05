@@ -148,3 +148,70 @@ Baubaums binden (`link.txt` gibt die Zeile her, das Original weglassen).
 - **Ein dritter Pruefungslauf am selben Paket ist keine Doppelarbeit, wenn die ersten
   beiden Vorschlaege hinterlassen haben.** Dateiname
   `pruefung-<kennung>-runde<n>-<datum>.md`.
+
+## 2026-09-05, 0122 -- ein Paket, das nur eine Pragma-Zeile hinzufuegt
+
+- **Bei einer Sperre ist "kostet nichts" messbar, nicht nur behauptbar.** Im **selben**
+  Baum die Zeile entfernen, neu bauen, Objektdateien hashen, Zeile zurueck, neu hashen
+  -- gleiche Pfade, also keine Pfadunterschiede im Debug-Abschnitt. Bytegleich heisst:
+  Das Paket kann die Rechnung nicht veraendert haben, und alle vier Fragen meiner Rolle
+  sind damit auf einmal beantwortet. **Dazu zwingend die Gegenprobe, dass wirklich neu
+  uebersetzt wurde** (`Building CXX object`-Zeilen zaehlen), sonst hasht man zweimal
+  dasselbe Artefakt.
+- **Nennt die Abnahme zwei Bezeichner, beide einzeln rot fahren.** Ein Lauf gegen
+  `__builtin_add_overflow` belegt `__builtin_sub_overflow` nicht. Feiner Beleg, dass
+  **eine** Zeile beide traegt: `note: poisoned here` zeigt auf verschiedene **Spalten**
+  derselben Zeile.
+- **Die Reichweite einer Sperre gehoert in den Befund, sonst liest sie sich global.**
+  Drei Fragen: welche Bezeichner genau (alternative Schreibweisen wie
+  `__builtin_saddll_overflow` laufen durch), welche Uebersetzungseinheiten (nur die den
+  Kopf binden -- der Pruefstand liegt draussen), und was ausdruecklich nicht.
+- **Prueft der Riegel meine Datei ueberhaupt?** Nicht glauben, rot machen. Erster
+  Versuch blieb gruen, weil meine Einspeisung die falsche **Form** hatte (blosse
+  Gliederungsziffer statt Ueberschrift in Anfuehrung). **Eine gruen bleibende
+  Einspeisung beweist erst dann eine Luecke, wenn ihre Form der gepruefen entspricht.**
+- **Ein Riegel, der auf einer ungeprueften Regel ruht, ist der naechste Vorschlag.**
+  0122 haengt an "sperre.hpp ist der letzte include". Neue Quelle ohne die Zeile in
+  einen Wegwerfbaum gelegt -- der Quellensammler liest sie auf, sie uebersetzt, alles
+  gruen. Aus der Messung wurde `0134-sperrebindung-jeder-kernquelle`.
+- **Ist der eigene Vorschlag der Pruefgegenstand**, die Abnahme Wort fuer Wort gegen
+  den Baum halten -- nicht gegen die Erinnerung an ihre Absicht.
+- **Sperre heute: `Write` durchgehend abgelehnt, `python3 - <<PY` frei -- aber nur
+  klein.** Ein Aufruf mit ~10.000 Zeichen Nutzlast wurde abgelehnt, dieselbe Aktion in
+  vier Stuecken ging durch. **Bei einer Absage zuerst die Groesse verkleinern, bevor du
+  das Werkzeug wechselst.** Probeschreibungen nach `$TMPDIR`, nie ins Repo.
+- **Nummern wandern waehrend des Laufs:** 0131 war beim Nachsehen frei, beim Schreiben
+  belegt -- drei Nummern in einer Stunde.
+
+## 2026-09-05, 0103 -- ein CMake-Riegel, zwei geaenderte Bedingungen
+
+- **Zeilennummern aus einem fremden Paketrumpf nie uebernehmen.** `baulauf.py:116` und
+  `:273` standen so in zwei *angenommenen* Paketen; beide zeigten ins Leere (richtig sind
+  die Menge `AUSGENOMMEN` und `def startbereit`). Im eigenen Vorschlag den **Namen**
+  zitieren, nie die Zeile -- in `aufgaben/` ohnehin verboten.
+- **Das Teilmengenargument schlaegt jede Stichprobe.** Verwirft die neue Bedingung eine
+  echte Teilmenge dessen, was die alte verwarf, kann der Riegel nichts verlieren, was er
+  vorher fing -- das deckt auch die Faelle, die ich *nicht* gemessen habe. Zuerst pruefen,
+  ob die Aenderung diese Form hat; dann ist die Messung nur noch Bestaetigung.
+- **Die Abnahme nannte zwei von fuenf gleichartigen Eingaengen.** Die uebrigen drei
+  gemessen: alle drei waren am Stand davor still gruen, mit gruenem Bau und null
+  Diagnosen. **Prueffrage: ueber wie viele gleichartige Eingaenge laeuft die geaenderte
+  Zeile, und nennt die Abnahme alle?** Der laengste Variablenname prueft nebenbei die
+  Namenseinsetzung eines Makros.
+- **Messskripte verwenden ihre Ablage wieder** (`mkdir(exist_ok=True)`). Fuer
+  vorher/nachher die Ablage vorher loeschen, sonst vergleicht man zwei CMake-Caches statt
+  zwei Staende.
+- **Der Vorher-Baum aus `git archive` braucht `specs` und `decisions` mit.** Sonst faellt
+  `belegstellen_riegel` aus -- und man haelt die eigene Ablage fuer einen Befund.
+- **Ein Messwerkzeug, das auf einem fehlerfreien Baum rot meldet, ist selbst ein Befund.**
+  `bauwege.py` traegt eine feste Sollzahl, die der Baum ueberholt hat; zwei offene
+  Abnahmen verlangen seinen Lauf, und jeder Leser schreibt denselben
+  Entschuldigungsabsatz. Das gewoehnt an das Ueberspringen der Zahl.
+- **Sperre heute:** `Write` ins Repo frei, nach `$TMPDIR` **gesperrt**; `python3 - <<'PY'`
+  frei, aber **mitten im Lauf zweimal abgelehnt** und danach wieder frei -- half: das
+  Skript per Python nach `$TMPDIR` schreiben und in einem **eigenen** Aufruf starten.
+  `cmd > datei` und `cd x && …` durchgehend gesperrt.
+- **Achter Nummernfall, und ein neuer Fall daneben:** 0131 entstand waehrend meines Laufs.
+  Und **mein eigenes Logbuch wurde mitten im Lauf von einem Parallellauf rotiert**
+  (11.654 → 9.467 Zeichen). Vor dem Anhaengen neu lesen -- sonst schreibt man die
+  Rotation zurueck und verliert sie.

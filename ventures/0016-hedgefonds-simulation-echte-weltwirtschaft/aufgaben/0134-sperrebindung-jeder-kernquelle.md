@@ -1,0 +1,101 @@
+---
+id: 0134-sperrebindung-jeder-kernquelle
+rolle: kernbauer
+status: vorschlag
+haengt_an: []
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
+abnahme: Das Konfigurieren des Kerns bricht ab, sobald eine Quelle unter `kern/src` den Kopf `kern/sperre.hpp` nicht bindet oder ihn nicht als letzten `#include` bindet; die Abbruchmeldung nennt den Dateinamen und sagt, welche der beiden Bedingungen verletzt ist. Drei Baeume, jeder einzeln zu fahren: der unveraenderte Baum konfiguriert und laeuft in beiden Profilen gruen; ein Baum mit einer zusaetzlichen Quelle ohne die Include-Zeile bricht beim Konfigurieren ab; ein Baum mit einer zusaetzlichen Quelle, die die Zeile traegt, aber nicht an letzter Stelle, bricht ebenso ab. Der erste Baum ist nicht wegzulassen -- ein Riegel, der alles verbietet, sieht im Negativtest identisch aus.
+---
+
+# Beide Rechensperren des Kerns haengen an einer Regel, die nichts haelt
+
+**Vorgeschlagen am 2026-09-05 vom `kern-pruefer` aus der Pruefung zu Paket 0122
+(`urteil: geprueft`, `befunde: 0`).** Das Paket ist in Ordnung. Dieser Vorschlag
+betrifft die Voraussetzung, auf die es sich stuetzt.
+
+## Der Sachverhalt
+
+`sperre.hpp` wirkt ab der Zeile, an der es eingebunden wird, bis zum Ende der
+Uebersetzungseinheit. Daraus folgt die Einbauregel: Der Kopf ist der **letzte**
+`#include` jeder Kernquelle. Der Kopftext nennt sie seit 0122 ausdruecklich den ganzen
+Trick, und das ist nicht uebertrieben -- sie ist der Grund, warum die Sperre ohne
+Ausnahmeliste auskommt. `festkomma.hpp` darf die vergifteten Bausteine benutzen, weil
+es fertig gelesen ist, bevor die Vergiftung gilt.
+
+Gehalten wird diese Regel von nichts. Im Kopf steht ein Suchbefehl als Nachweis, und
+ein Suchbefehl in einem Kommentar laeuft nur, wenn ihn jemand liest und tippt.
+
+## Gemessen, nicht behauptet
+
+Ein Baum aus dem geprueften `HEAD` bekommt eine neue Datei `kern/src/luecke.cpp`. Sie
+bindet `kern/sperre.hpp` **nicht** und enthaelt beides, was der Kern verbietet: eine
+Rechnung auf `double` (gegen T4) und eine eigene Fassung der Strichrechnung mit
+`__builtin_add_overflow` (gegen T7 Massnahme 4.2).
+
+Ergebnis: Der Quellensammler des Kerns liest sie auf, sie wird in `kern` **und** in
+`kern_geprueft` uebersetzt, und der Lauf ist gruen -- jede Probe bestanden, Profil
+`ON`. Beide Sperren greifen an ihr nicht, weil sie fuer diese Uebersetzungseinheit
+schlicht nicht existieren.
+
+Der Sammler ist dabei kein Nebenumstand, sondern die halbe Ursache: Er liest die
+Quellen ein, statt sie aufzuzaehlen, und das mit Nachschau bei jedem Bau. Eine neue
+Kernquelle kommt also ohne jeden Eingriff in eine Bauliste in die Bibliothek -- was
+gewollt ist, damit kein spaeteres Paket die Bauliste anfassen muss. Der Preis ist, dass
+auch eine Quelle **ohne** die Sperre ohne jeden Eingriff hineinkommt.
+
+## Warum das jetzt faellt und nicht spaeter
+
+Bis zum 2026-09-05 hing an der Regel **eine** Vorgabe, T4. Seit 0122 haengen **zwei**
+daran, T4 und T7 Massnahme 4.2. Die Kosten eines Verstosses sind bei der zweiten
+hoeher: Gleitkomma im Kern faellt frueher oder spaeter an einer abweichenden Zahl auf,
+eine zweite Fassung der Strichrechnung dagegen rechnet meistens richtig -- und bricht
+im Ueberlauffall unter `-fwrapv` **still** um, statt abzubrechen. Das ist der
+Unterschied zwischen einem roten Lauf und einem falschen Ergebnis in Runde 400, und
+0122 fuehrt ihn in seiner eigenen Begruendung als Grund an, warum es die Sperre gibt.
+
+Heute ist der billige Tag: Alle Quellen unter `kern/src` und alle Proben unter
+`kern/test` halten die Regel bereits, jede bindet den Kopf genau einmal und an letzter
+Stelle. Der Riegel wird also sofort gruen und muss nichts aufraeumen. Nach der ersten
+Quelle, die die Regel bricht, ist es Nachfuehrung -- derselbe Verlauf, den die
+Belegstellen (0059 nach sechs Paketen Handnachfuehrung) und der Warnsatz (0046, 0058,
+0060) im Repo schon vorgezeichnet haben.
+
+## Die Bauform
+
+Eine Pruefschleife beim Konfigurieren, in derselben Datei, in der die Quellen
+eingesammelt werden -- also unmittelbar neben der Stelle, die das Problem erzeugt. Fuer
+jede eingesammelte Quelle: Datei lesen, die Include-Zeilen heraussuchen, pruefen, dass
+die Zeile mit `kern/sperre.hpp` genau einmal vorkommt und die letzte davon ist.
+Andernfalls abbrechen und den Dateinamen nennen.
+
+Zwei Gruende, warum die Pruefung dorthin gehoert und nicht in den Belegstellenriegel:
+Sie braucht keine Uebersetzung und kein eigenes Binaerprogramm, und sie schlaegt zu,
+**bevor** gebaut wird statt danach. Dazu ein praktischer: Auf
+`werkzeuge/belegstellen/belegstellen_riegel.cpp` liegen heute sieben offene Pakete, auf
+`kern/CMakeLists.txt` keines.
+
+Ob der Riegel auch die Proben unter `kern/test` erfassen soll, entscheidet der
+Bauagent. Sie halten die Regel heute ebenso, und die Abnahme verlangt sie nicht -- ein
+Riegel, der nur die Bibliotheksquellen deckt, ist die kleinere und ausreichende
+Fassung. Wer beide nimmt, nimmt mehr, aber nicht weniger.
+
+## Warum ein eigenes Paket
+
+Nicht Teil von 0122: Dessen Dateiliste nennt genau eine Datei, `kern/sperre.hpp`, und
+sein Abnahmekriterium ist erfuellt. Die Luecke liegt in `kern/CMakeLists.txt` und ist
+aelter als das Paket -- sie stammt aus der Zeit von T4 und war bis zum 2026-09-05
+billiger.
+
+Nicht Teil von 0074: Das ist ein Architektenpaket auf `technik.md` mit dem
+ausdruecklichen Satz, dass kein Code entsteht, und es behandelt Massnahme 4.3, die
+Operatorfrage. Hier geht es um keine Rechenart, sondern um die Bindung eines Kopfes.
+
+Nicht Teil eines Belegstellenpakets: Die Regel ist keine Belegstelle. Sie ist eine
+Bedingung an die Uebersetzungseinheit, und ihr Bruch ist kein toter Verweis, sondern
+eine ausgeschaltete Sperre.
+
+## Was ausdruecklich nicht dazugehoert
+
+Keine Erweiterung der vergifteten Bezeichnerliste, kein Anfassen von `sperre.hpp`,
+keine Sperre fuer Operatoren. Der Riegel prueft, **dass** der Kopf gebunden ist, und
+sagt nichts darueber, **was** er sperrt.

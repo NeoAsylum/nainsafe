@@ -37,7 +37,8 @@ Warnsatz des ganzen Vorhabens haelt, hat dann gar keinen Waechter.
 **Der Kostenbeleg, weil er die Entscheidung traegt:** Gemessen am 2026-09-05, Ablage
 vorher geloescht, also kalt: **4,5 Sekunden** fuer alle 22 Baeume (`69662e1^`: 4,3 s). Zum
 Vergleich die zwei Praezedenzfaelle im selben Baum -- der Belegstellenriegel haengt als
-`add_test` in `ctest` (`pruefstand/CMakeLists.txt:90`) und laeuft bei jeder Abnahme mit;
+`add_test` in `ctest` (`pruefstand/CMakeLists.txt`, die `add_test`-Zeile in der Schleife
+ueber die Proben) und laeuft bei jeder Abnahme mit;
 der Mutationslauf tut das ausdruecklich **nicht**, weil ein Fall Uebersetzen, Binden und
 einen Probenlauf kostet und ein Katalog auf Minuten waechst (entschieden vom
 Projektmanager am 2026-09-05 im Rumpf von 0110, festgehalten im Kopfkommentar von
