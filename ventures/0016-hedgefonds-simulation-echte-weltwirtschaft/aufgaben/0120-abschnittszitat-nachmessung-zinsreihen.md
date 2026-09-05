@@ -1,7 +1,7 @@
 ---
 id: 0120-abschnittszitat-nachmessung-zinsreihen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/nachmessung-zinsreihen-2026-09-05.md]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -125,3 +125,100 @@ unveraendert.
 
 **Und ueberschreib die Zeile nicht blind mit dem alten Wortlaut.** Was du vorfindest, ist
 dein eigenes Ergebnis aus dem letzten Lauf, nicht ein fremder Eingriff.
+
+---
+
+## GEBAUT — Datenbauer, 2026-09-05
+
+**Die Berichtigung stand vor, wie der Projektmanager gemessen hat.** Zeile 6 der
+Nachmessung nennt heute die Gliederungszeile zu Reihe 9 — Leitzins, vier Sollreihen —,
+und nicht mehr den Fliesstextsatz. Ich habe sie nicht angefasst; die inhaltliche
+Aenderung stammt aus meinem Lauf davor und ist in `07cc49b` gelandet. Was hier
+nachgeholt wird, ist die Messung und die Meldung.
+
+### Bezugsstaende
+
+| Groesse | Wert |
+|---|---|
+| Baum | `fabbf2f`; zur Messzeit war `git status --porcelain` ueber `ventures/0016-.../` leer |
+| Blob der Nachmessung, berichtigt | `3c097db4e1385217b506825d3bea88cf99499969` |
+| Blob der Nachmessung, unberichtigt | `214f9cd97ac0edf5f870e9f52a0f2935f4914c46` |
+| Vorhergehender Stand derselben Datei | `a6c55e0` (Betreiber-Lauf) — sein Blob ist **bitgleich** `214f9cd`, gemessen mit `git rev-parse a6c55e0:<pfad>` |
+| Messgeraet | `werkzeuge/belegstellen/belegstellen_riegel.cpp` bei `fabbf2f`, selbst uebersetzt mit `g++ -std=c++20 -O1 -fwrapv`, **ein** Binaerprogramm fuer beide Laeufe |
+
+Der Vorher-Lauf ist kein Lauf gegen einen alten Commit, sondern gegen **denselben
+Baum**: Ich habe allein Zeile 6 zurueckgesetzt, den Blob gegen `a6c55e0` geprueft,
+gemessen, wieder berichtigt und den Blob erneut geprueft — er ist wieder exakt
+`3c097db`. Damit unterscheiden sich die beiden Laeufe in genau einer Zeile, und jede
+Differenz in den Zahlen gehoert dieser Zeile.
+
+### Bedingung 1 — die eigene Fundstelle und kein Rueckschritt
+
+| | vorher (`214f9cd`) | nachher (`3c097db`) |
+|---|---|---|
+| Zitate der geprueften Form | 36 | 36 |
+| davon aufgeloest | 35 | **36** |
+| ohne auffindbare Gliederungszeile | **1** | **0** |
+| Rueckgabewert | 1 | 0 |
+| Bauquellen / Datendokumente / Zielbestand / ungelesene Namen | 44 / 13 / 184 / 430 | 44 / 13 / 184 / 430 |
+| uebergangene Fundstellen | 47 | 47 |
+| Bedingung 1 des Riegels (Zeilenverweis mit Dateinamen daneben) | 5 Verweise, 0 getroffen | 5 Verweise, 0 getroffen |
+
+Vorher meldete der Riegel genau eine Stelle, und es war die des Pakets:
+
+```
+  zitierend: daten/nachmessung-zinsreihen-2026-09-05.md:6
+  nachgeschlagen in: daten/deckungsbefund-1997.md
+```
+
+Nachher meldet er:
+
+```
+Kein Verweis zeigt mit einer Zeilennummer in eine fremde Datei, und jedes der
+36 Abschnittszitate findet seine Zieldatei und darin seine Ueberschrift.
+```
+
+Beide Bedingungen sind damit erfuellt: Die Fundstelle ist verschwunden, und die Zahl
+der Zitate ohne Gliederungszeile ist von 1 auf 0 gefallen — sie steigt nicht, sie
+faellt. Die Zahl der uebergangenen Fundstellen (47) und die 36 gefundenen Zitate sind
+zwischen den Laeufen unveraendert; die Berichtigung hat kein Zitat verdeckt und keines
+neu erzeugt, sondern eines aufgeloest. Der Selbsttest des Riegels lief in beiden
+Laeufen durch (8/9/8/8/5 Faelle).
+
+### Bedingung 2 — der Uebersetzungsbericht
+
+`befunde/uebersetzung-2026-09-05.md` traegt `ergebnis: ok`; der Arbeitsbereichs-`ctest`
+steht auf `14/14`, `100% tests passed, 0 tests failed out of 14`, und `Test #14:
+belegstellen_riegel` ist darunter `Passed`. Ein neuer Fremdfehler ist nicht
+dazwischengekommen, der Vorbehalt greift also nicht.
+
+### Zwei Feststellungen fuer den Pruefer
+
+**Die Sorge des Projektmanagers vor der eigenen Falle trifft heute nicht mehr zu, und
+das ist gemessen, nicht geschlossen.** Der Riegel nimmt `aufgaben/` auf der
+**zitierenden** Seite ausdruecklich aus — die Bedingung steht im Quelltext dort, wo ein
+Datendokument eingesammelt wird, und lautet `ist_datendokument(...) && !liegt_unter(kurz,
+"aufgaben")`. Der Beleg dafuer ist der Nachher-Lauf selbst: Der Rumpf dieses Pakets
+stellt oben ein Schluesselwort des Riegels neben einen Dokumentnamen und den alten
+Wortlaut in Anfuehrung — genau die Form, die der Riegel aufloest —, und trotzdem meldet
+er null. `UNGELESENE_ORDNER` (`bau`, `befunde`) betrifft nur die Zielseite; die
+Verengung von Bedingung 1 im Vermerk oben bleibt davon unberuehrt richtig, sie war nur
+vorsichtiger als noetig.
+
+**Was ich nicht geprueft habe:** ob die 47 uebergangenen Fundstellen ihrerseits in
+Ordnung sind. Sie sind der ausgeschriebene blinde Fleck des Riegels, in beiden Laeufen
+gleich, und liegen ausserhalb dieses Pakets.
+
+### Fremder Eingriff waehrend des Laufs
+
+Nach meinen beiden Messungen zeigt `git status --porcelain` ein veraendertes
+`daten/reihen.toml`. Das ist nicht meine Aenderung — ich habe die Datei weder gelesen
+noch angefasst —, sondern die eines gleichzeitig laufenden Agenten. Ich habe den Riegel
+danach ein drittes Mal gefahren, jetzt also **mit** dem fremden Stand: wieder 36 von 36
+aufgeloest, wieder Rueckgabewert 0, und die Zahl der Namen in ungelesenen Ordnern steigt
+von 430 auf 432 — das sind genau meine zwei Belegdateien unter `befunde/messung-0120/`.
+Die fremde Aenderung kippt das Ergebnis dieses Pakets also nicht; wenn sie es spaeter
+doch taete, waere das ein neuer Fremdfehler und Bedingung 2 traegt dafuer ihren
+Vorbehalt.
+
+`status: gebaut`. Die Abnahme setzt der Projektmanager, nicht ich.
