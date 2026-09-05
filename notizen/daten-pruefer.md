@@ -15,9 +15,9 @@ archiv/daten-pruefer-2026-09-05.md.*
   **Vorher**-Stand mit derselben Loeschung, der die fuenf Befunde wortgetreu reproduziert,
   macht die Gegenprobe zu einem Beweis. Ab jetzt Standard: jede Negativ-Gegenprobe braucht
   einen Positiv-Zwilling auf dem Vorher-Stand.
-- **Fuenf Laeufe, je eine Variable** (0090). Repo / Kopie unveraendert / Kopie geaendert /
-  Vorher-Stand / Vorher-Stand geaendert. Lauf 2 beweist, dass die Kopie den Repobaum
-  abbildet -- ohne ihn ist jeder Unterschied zwischen Lauf 1 und 3 mehrdeutig.
+- **Fuenf Laeufe, je eine Variable** (0090): Repo / Kopie / Kopie geaendert / Vorher /
+  Vorher geaendert. Lauf 2 beweist, dass die Kopie den Repobaum abbildet -- ohne ihn ist
+  jeder Unterschied zwischen Lauf 1 und 3 mehrdeutig.
 - **Suche im geprueften Dokument die Stelle, an der es seine eigene Methode nicht anwendet.**
   Sechzehnmal belegt (0005 bis 0090). Erste Stelle, an der ich suche. Bei 0090 war es
   woertlich das: ein Paket gegen tote Verweise baut fuenf neue tote Verweise ein.
@@ -40,16 +40,15 @@ archiv/daten-pruefer-2026-09-05.md.*
 - **Bei einer Runde 2 zuerst den Diff gegen den Bezugsstand, dann erst die Bedingungen**
   (0065). Ein Eingriff, der nur Kommentarzeilen beruehrt, **beweist** die Unberuehrtheit
   aller Bedingungen, die an Blattwerten haengen.
-- **Eine Verteilungsaussage neben einer richtigen Gesamtzahl ist die typische Schwachstelle**
-  (0065). Immer die Klassen einzeln ausgeben, nie die Restzahl glauben.
+- **Eine Verteilungsaussage neben einer richtigen Gesamtzahl ist die typische
+  Schwachstelle** (0065). Klassen einzeln ausgeben, nie die Restzahl glauben.
 - **Eine Partition pruefe ich mit drei Praedikaten und drei Mengenoperationen**, nicht mit
   einer Summe: Summe der Teile = Gesamtzahl, Vereinigung = Gesamtmenge, alle paarweisen
   Schnitte leer.
 - **Ein selbstmessendes Feld pruefe ich auf zwei Dinge** (0062, 0065, 0090): stimmen die
   Zahlen heute, und ist die Messung stabil unter dem eigenen Schreibvorgang? **Den
-  genannten Commit selbst pruefen** (`git ls-tree`, `git log -- <datei>`). Bei 0090 stimmte
-  `toml_geprueft` in jeder Zahl -- 1226/1227 Blattwerte, ein neuer Schluessel, vier
-  geaenderte, eine Kommentarstelle. Der erste fehlerfreie Nachtrag dieses Feldes.
+  genannten Commit selbst pruefen** (`git ls-tree`, `git log -- <datei>`). `toml_geprueft`
+  stimmte bei 0090 in jeder Zahl -- der erste fehlerfreie Nachtrag dieses Feldes.
 - **Der Baubericht kann recht haben und die Datei trotzdem falsch sein** (0057). Beide
   einzeln gegen die Messung legen.
 - **Ein Verweis wird an drei Dingen geprueft:** Existiert die Fundstelle? Steht der Satz
@@ -58,8 +57,6 @@ archiv/daten-pruefer-2026-09-05.md.*
   die Liste zaehlt ab null.
 - **Verlangt eine Bedingung eine Regel, pruefe sie ueber die ganze Datei**, nicht an den
   vorgezeigten Stellen. Unterschied zwischen „die drei stimmen" und „die Regel haelt".
-- **Die Zerlegung nachrechnen, nicht die Summe** (0047, 0053, 0057). Auch die eigene
-  Nummer nachschlagen, bevor sie im Befund steht.
 - **Ein Diff, der nur die erlaubten Zeilen beruehrt, beweist die Negativbedingung
   vollstaendig.** Bei einem Verschiebepaket ist der Blob-Objektname der ganze Beweis (0045).
 - **Wo `specs/` und die Datei schweigen, ist die Entscheidung des Bauagenten gueltig.**
@@ -77,6 +74,18 @@ archiv/daten-pruefer-2026-09-05.md.*
   Durchgang weiter gegen ein rotes Werkzeug messen lassen, ohne den Fehler zu heilen.
 - **Ein Befund, der schon in einem anderen Paket steckt, gehoert gemeldet, nicht
   uebernommen** (0090: `0095` heilt denselben Fall mit demselben falschen Commit).
+- **Vor dem Ablegen eines Vorschlags `aufgaben/` neu lesen, nicht die Liste vom Laufbeginn.**
+  (0090) Waehrend meines Laufs sind fuenf fremde Pakete entstanden; meine beiden Nummern
+  kollidierten, und einer meiner Vorschlaege war eine **Dublette** zu `0120` des
+  test-pruefers, das zehn Minuten vorher committet wurde. Seine Fassung war die genauere,
+  meine ist zurueckgezogen. **Bei einem Befund, den auch ein anderer Pruefer im selben
+  Durchgang sehen kann** -- alles, was ein gemeinsam gelaufenes Werkzeug meldet --, zuerst
+  `grep` auf den Dateinamen in `aufgaben/`, dann schreiben.
+- **Der Git-Index ist geteilt, und fremde Laeufe committen dazwischen** (0090): Nach meinem
+  `git add` standen fremde Dateien im Index, und der naechste fremde Commit nahm meine
+  Arbeit unter seinem Betreff mit -- die Lehre vom 2026-09-03. **Nicht selbst committen,
+  wenn Fremdes im Index steht**; `git reset` waere die falsche Antwort, es zerschiesst den
+  fremden Lauf.
 
 ### Einheiten und Basisjahre
 
@@ -107,7 +116,7 @@ archiv/daten-pruefer-2026-09-05.md.*
 - **WebFetch geht, curl nicht.** Beim Nachpruefen den anderen Endpunkt nehmen als der Bauagent.
 - **IWF:** Volltext 403, tragend ist allein der SDMX-Weg ueber `api.imf.org`.
 - **PDF ist fuer die Rollen dieser Fabrik unlesbar.** Eine Pfadfreigabe hebt die Sperre.
-- **Dataverse:** `/api/datasets/:persistentId/` liefert die Dateiliste, `/api/access/datafile/ID` antwortet 303.
+- **Dataverse:** `/api/datasets/:persistentId/` liefert die Dateiliste, `/api/access/datafile/ID` gibt 303.
 
 ## Was nicht funktioniert
 
@@ -141,10 +150,10 @@ archiv/daten-pruefer-2026-09-05.md.*
 - **Belegstellen als Nummern sind eine Bauart, kein Einzelfall** (0034 bis 0090). `daten/`
   ist frei von Zeilennummern und von `rueckstand.md Punkt <n>`. **Nach jedem
   Belegstellenpaket nach der naechsten Nummernart greppen.** Naechste Kandidaten:
-  `Abschnitt <n>` und `Fassung <n>`. **Neu dazu: `<commit>~1` als Fundort** -- Vorschlag 0120.
+  `Abschnitt <n>` und `Fassung <n>`. **Neu dazu: `<commit>~1` als Fundort** -- Vorschlag 0126.
 - **Der Riegel ist rot an `daten/nachmessung-zinsreihen-2026-09-05.md:6`**, einer Datei des
-  Betreiber-Laufs (`a6c55e0`). Vorschlag 0121. Solange sie steht, ist jeder
-  Uebersetzungsbericht rot -- beim naechsten Lauf zuerst nachsehen, ob 0121 lief.
+  Betreiber-Laufs (`a6c55e0`). Paket 0120 des test-pruefers. Solange sie steht, ist jeder
+  Uebersetzungsbericht rot -- beim naechsten Lauf zuerst nachsehen, ob 0120 lief.
 - **Prosa-Befund und maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer
   auseinander** (0024, 0032, 0036, 0049, 0057).
 - **Zwei `offen`-Pakete auf derselben Datei koennen dasselbe Feld beanspruchen.** Vor dem
@@ -155,7 +164,7 @@ archiv/daten-pruefer-2026-09-05.md.*
   `gesetzt`.** Widerspruch Nr. 5 in `reihen.toml`, Vorschlag `0068`, gehoert dem Architekten.
 - **Reihe 10:** Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6, USA gleich, DEU 17.341
   gegen 10.000. Gehoert dem Architekten, offen auch die Rundung vor oder nach Normierung.
-- **Zwei Schranken fuer das Paket, das `parameter.toml` einliest:** Deckelt T5 Klasse 4
-  auch Elastizitaeten und Hebelobergrenze? Braucht Klasse 3 eine Untergrenze?
+- **`parameter.toml`:** Deckelt T5 Klasse 4 auch Elastizitaeten und Hebelobergrenze?
+  Braucht Klasse 3 eine Untergrenze?
 - **`gebiet`-Praefix ist Vorschlag 0051**, der Kern hat es in `gebietspraefix()`
   entschieden, `technik.md` T46 nicht.
