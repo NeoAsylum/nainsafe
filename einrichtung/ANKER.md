@@ -84,5 +84,5 @@ arbeiten, sagt:
     sqlite3 state.db "SELECT count(*) FROM lauf WHERE ergebnis = 'laeuft'"
 
 **Was der Anker weiterhin abdeckt:** Nach einem Windows-Neustart laeuft die VM nicht von
-selbst an -- sie startet erst, wenn etwas  aufruft. Das tut die stuendliche
+selbst an -- sie startet erst, wenn etwas `wsl.exe` aufruft. Das tut die stuendliche
 Aufgabe. Bis zu eine Stunde kann dabei vergehen.

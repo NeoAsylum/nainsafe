@@ -1,0 +1,31 @@
+# Konfiguration der WSL2-VM, die die Agentenfabrik traegt.
+#
+# Angelegt am 2026-09-05, nachdem die VM gegen 20:20 verschwunden war und die Fabrik
+# 74 Minuten stillstand. Vorzeichen war ein `Wsl/0x8007000e` ("nicht genuegend
+# Speicherressourcen") vier Minuten zuvor -- der Druck lag auf der Windows-Seite.
+#
+# systemd laeuft in der Distro, die VM hatte also durchgehend Prozesse. Es war kein
+# Leerlauf-Abschalten, sondern Speicherdruck: WSL nahm sich voreingestellt die Haelfte
+# des Wirtsspeichers (16 von 32 GB) und gab sie nicht zurueck, auch wenn die Fabrik nur
+# ein Gigabyte brauchte.
+
+[wsl2]
+
+# Die VM bleibt an, auch wenn nichts laeuft. Der Betreiber weckt den Rechner ohnehin
+# alle zwoelf Stunden; die Fabrik soll dazwischen nicht von selbst verschwinden.
+vmIdleTimeout=-1
+
+# Ein Deckel statt der Haelfte -- das ist hier der wirksame Schalter gegen den Druck auf
+# den Wirt. Gemessen am 2026-09-05: acht gleichzeitige Agenten plus Compiler brauchten
+# unter einem Gigabyte; zehn sind reichlich und lassen dem Wirt zweiundzwanzig.
+#
+# `autoMemoryReclaim` stand hier zunaechst auch. WSL 2.7.13 kennt den Schluessel nicht
+# und warnt bei **jedem** Aufruf darueber -- eine Warnung, die man nach dem dritten Mal
+# ueberliest und die dann die naechste echte verdeckt. Wieder entfernt.
+memory=10GB
+
+# Acht von zwoelf Kernen. Die Fabrik faehrt acht Pakete gleichzeitig; die uebrigen vier
+# bleiben fuer Windows, damit der Rechner unter Vollast bedienbar bleibt.
+processors=8
+
+swap=4GB
