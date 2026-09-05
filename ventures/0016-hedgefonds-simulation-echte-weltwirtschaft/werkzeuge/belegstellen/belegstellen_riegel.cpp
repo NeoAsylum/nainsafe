@@ -1023,24 +1023,41 @@ constexpr std::array<std::string_view, 4> SCHLUESSEL = {
 struct Klammer {
     std::string_view auf;
     std::string_view zu;
+    /// Kuendigt dieses Anfangszeichen fuer sich genommen ein Zitat an? -- Paket 0086.
+    ///
+    /// Nur diese Paare gelten, wenn das Schluesselwort **nicht** unmittelbar vor der
+    /// Anfuehrung steht. Der Grund ist die Arbeitsteilung zwischen den beiden Teilen
+    /// eines Zitats: Bei Abstand null kuendigt das Schluesselwort selbst an, was folgt,
+    /// und dann darf das Zeichen mehrdeutig sein. Mit Woertern dazwischen ist das
+    /// Zeichen die einzige Ankuendigung, die bleibt -- und die vier ausgenommenen
+    /// tragen in diesem Baum ueberwiegend eine andere Aufgabe: der Gegenstrich und das
+    /// Sternchen zeichnen Code und Kursives aus, das gerade Anfuehrungszeichen eroeffnet
+    /// jede Zeichenkette dieser Uebersetzungseinheit, das einfache steht im Genitiv.
+    ///
+    /// **Gemessen und nicht befuerchtet:** Ohne diese Trennung faengt der Riegel fuenf
+    /// Stellen in seinem eigenen Quelltext, alle falsch -- eine im Kopfkommentar
+    /// (`spiel.md` im Gegenstrich, ein Wort hinter dem Schluesselwort) und vier in
+    /// `ZITATFAELLE`, wo hinter `Namensart::Ueberschrift` ein Komma und danach ein
+    /// Zeichenkettenliteral steht. Die Zahlen stehen im Kopf.
+    bool kuendigt_an;
 };
 
 constexpr std::array<Klammer, 11> KLAMMERN = {{
-    {"\"", "\""},
-    {"\342\200\236", "\342\200\234"},  // U+201E ... U+201C
-    {"\342\200\236", "\342\200\235"},  // U+201E ... U+201D
-    {"\342\200\234", "\342\200\235"},  // U+201C ... U+201D
-    {"'", "'"},
-    {"\342\200\230", "\342\200\231"},  // U+2018 ... U+2019
-    {"`", "`"},
-    {"*", "*"},
-    {"\342\200\236", "\""},  // U+201E ... gerade
-    {"\342\200\234", "\""},  // U+201C ... gerade
+    {"\"", "\"", false},
+    {"\342\200\236", "\342\200\234", true},  // U+201E ... U+201C
+    {"\342\200\236", "\342\200\235", true},  // U+201E ... U+201D
+    {"\342\200\234", "\342\200\235", true},  // U+201C ... U+201D
+    {"'", "'", false},
+    {"\342\200\230", "\342\200\231", true},  // U+2018 ... U+2019
+    {"`", "`", false},
+    {"*", "*", false},
+    {"\342\200\236", "\"", true},  // U+201E ... gerade
+    {"\342\200\234", "\"", true},  // U+201C ... gerade
     // Die Form, die Paket 0057 in `reihen.toml` eingefuehrt hat: "Adresse plus Zitat
     // im Wortlaut", geklammert statt in Anfuehrung. Sie steht hier, weil 0057 eines
     // der sechs Pakete ist, um derentwillen dieser Riegel existiert -- ohne diese
     // Zeile fiele die Haelfte seiner Arbeit durch.
-    {"(Zita\164: ", ")"},
+    {"(Zita\164: ", ")", true},
 }};
 
 /// Laenger als das kann eine Ueberschrift nicht sein. Ohne die Schranke greift ein
@@ -1634,12 +1651,16 @@ std::size_t schluessellaenge(std::string_view text, std::size_t i) {
 ///
 /// Eigener Aufruf seit Paket 0086: Die Stelle, an der gesucht wird, ist seither nicht
 /// mehr nur die eine unmittelbar hinter dem Schluesselwort.
-std::size_t klammer_ab(std::string_view text, std::size_t j, std::string& roh) {
+std::size_t klammer_ab(std::string_view text, std::size_t j, std::string& roh,
+                       bool nur_ankuendigende) {
     if (j >= text.size()) {
         return std::string_view::npos;
     }
     for (std::size_t k = 0; k < KLAMMERN.size(); ++k) {
         const Klammer klammer = KLAMMERN[k];
+        if (nur_ankuendigende && !klammer.kuendigt_an) {
+            continue;
+        }
         if (text.size() - j < klammer.auf.size()
             || text.substr(j, klammer.auf.size()) != klammer.auf) {
             continue;
@@ -1675,7 +1696,7 @@ std::size_t hinter_leerraum(std::string_view text, std::size_t i) {
 /// Liest die Ueberschrift, die bei `i` in Anfuehrung stehen soll. Rueckgabe ist die
 /// Laenge des ganzen Zitatteils ab `i`, oder 0, wenn dort keine Anfuehrung steht.
 std::size_t ueberschrift_hinter(std::string_view text, std::size_t i, std::string& roh) {
-    const std::size_t ende = klammer_ab(text, hinter_leerraum(text, i), roh);
+    const std::size_t ende = klammer_ab(text, hinter_leerraum(text, i), roh, false);
     return ende == std::string_view::npos ? 0 : ende - i;
 }
 
@@ -1717,6 +1738,21 @@ bool schliesst_satz(std::string_view text, std::size_t anfang, std::size_t ende)
 /// links, und spaetestens nach der genannten Zahl Woerter. Beides zusammen ist die
 /// Antwort auf den Einwand, an dem diese Lockerung haengt: Wer beliebig weit sucht,
 /// bindet jede Anfuehrung eines Absatzes an das naechstgelegene Schluesselwort.
+///
+/// **Und sie endet an einem zweiten Schluesselwort.** Steht zwischen dem Schluesselwort
+/// und der Anfuehrung ein weiteres, gehoert die Anfuehrung dem naeheren -- derselbe
+/// Grundsatz, nach dem die Suche nach Namen arbeitet, und aus demselben Grund. Der
+/// Schaden ohne ihn ist doppelt: Das ferne Schluesselwort naehme dem nahen die
+/// Anfuehrung weg **und** ruecke die Leseschleife ueber es hinweg (`i` springt um den
+/// ganzen Zitatteil), so dass das nahe gar nicht mehr an die Reihe kaeme. Diese
+/// Lockerung verloere damit Zitate, statt welche zu gewinnen.
+///
+/// **Was daran gemessen ist und was nicht, ausgeschrieben.** Auf dem Bestand vom
+/// 2026-09-05 aendert sein Abschalten **nichts** -- 33 Zitate, 59 Fundstellen, mit und
+/// ohne. Der Bestand fuehrt heute keine Stelle dieser Bauart. Nachgewiesen ist der
+/// Riegel deshalb nicht am Bestand, sondern an Fall 5 in `ABSTANDSFAELLE`, der die Form
+/// eigens baut; ohne ihn waere er Zierde. Er steht hier trotzdem, weil die Lockerung
+/// selbst die Bauart erst moeglich macht, die er faengt.
 std::size_t ueberschrift_mit_abstand(std::string_view text, std::size_t i,
                                      std::string& roh) {
     std::size_t j = i;
@@ -1736,8 +1772,13 @@ std::size_t ueberschrift_mit_abstand(std::string_view text, std::size_t i,
         if (schliesst_satz(text, anfang, ende)) {
             return 0;
         }
+        for (std::size_t k = anfang; k < ende; ++k) {
+            if (schluessellaenge(text, k) != 0) {
+                return 0;
+            }
+        }
         j = ende;
-        const std::size_t schluss = klammer_ab(text, hinter_leerraum(text, j), roh);
+        const std::size_t schluss = klammer_ab(text, hinter_leerraum(text, j), roh, true);
         if (schluss != std::string_view::npos) {
             return schluss - i;
         }

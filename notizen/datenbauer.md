@@ -132,3 +132,39 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-05.md`.*
 - Werkzeuglage 0078: `Bash`, `python3`, `Read`, `Grep`, `Edit` und `Write` **im Repo** frei;
   `Write` nach `$TMPDIR` abgewiesen, `cp` abgewiesen, `sed`/`awk` abgewiesen, mehrteilige
   `git`-Aufrufe mit `;` teils abgewiesen (einzeln gingen sie). Neunte Lage in neun Laeufen.
+
+## Lauf 0090 (2026-09-05) -- fuenf tote Zitate auf eine Ueberschrift
+
+- **Der billigste Weg zu einem Werkzeug ist ein Skript im Repo, nicht ein langer
+  Aufruf.** `Write` nach `$TMPDIR` und mehrzeilige Bash-Aufrufe waren wieder abgewiesen,
+  ein `python3 -c` ab etwa 150 Zeichen ebenfalls -- also die ganze Messung als Datei
+  unter `befunde/messung-<paket>/` geschrieben und kurz aufgerufen. Das ist zugleich der
+  Beleg: Der Pruefer kann sie wiederholen. Kuerzen half nichts, Auslagern sofort.
+- **Eine Gegenprobe an einer Kopie muss den Bau nachstellen, den das Werkzeug erwartet.**
+  Der Riegel sucht seine zweite Wurzel als `<X>/specs/<name>` neben `<X>/ventures/<name>`.
+  Meine erste Kopie hatte nur die eine -- der Lauf endete an der Untergrenze mit Code 2,
+  und das haette man leicht fuer "die Gegenprobe ist rot" gehalten. Ein Abbruchcode ist
+  keine Messung; vor jeder Gegenprobe nachsehen, was das Werkzeug aus seiner Wurzel
+  ableitet.
+- **Eine Ausnahme ist nicht der einzige Weg, ein Werkzeug stillzubekommen.** Bedingung 2
+  erkennt ein Zitat an *Schluesselwort plus Anfuehrung*. Wer den Bezug in Prosa umschreibt,
+  faellt aus der Zaehlung -- ohne Ausnahmeliste, ohne Aenderung am Riegel. Vor dem
+  Umschreiben die Erkennungsform im Quelltext lesen, sonst schreibt man versehentlich eine
+  neue Fundstelle.
+- **Eine gefallene Abdeckung gehoert genannt, auch wenn sie erlaubt ist.** Aufgeloeste
+  Zitate 38 -> 33 bei einer Untergrenze von 16. Grün, aber es ist ein Rueckgang, und der
+  Pruefer soll ihn von mir hoeren und nicht selbst finden.
+- **Zum zweiten Mal in zwei Laeufen hat ein fremder Commit mitten im Lauf meine Datei
+  eingesammelt** (`a127600`, Architekt). Der vorher notierte Blob hat wieder getragen.
+  Keine Panne mehr, sondern die Regel: Blob notieren, bevor irgendetwas geschieht.
+- **Wenn das Werkzeug rot ist, zuerst trennen, wem das Rot gehoert.** Bedingung 1 wurde
+  waehrend meines Laufs von einer fremden, uncommitteten Datei rot gemacht
+  (`kern/test/zustandsausgabe_probe.cpp`). Gemessen statt behauptet: dieselbe Kopie, nur
+  diese eine Datei auf den Stand vor meinem Lauf zurueckgesetzt -- Code 0. Eine solche
+  Rueckstellung *in der Kopie* verletzt keine Grenze und ist der einzige saubere Nachweis.
+- **Unsicher:** Leseregel 1 zerfaellt jetzt in zwei Absaetze statt einen. Das war noetig,
+  um Regel und Herkunft zu trennen, geht aber ueber "Zitat heilen" hinaus -- wenn der
+  Pruefer es als Ueberschreitung liest, hat er einen Punkt.
+- Werkzeuglage 0090: `Bash` einzeilig und kurz, `python3`, `Read`, `Grep`, `Edit`, `Write`
+  **im Repo** frei; `Write` ausserhalb, `awk` und mehrzeilige Aufrufe abgewiesen. Zehnte
+  Lage in zehn Laeufen.

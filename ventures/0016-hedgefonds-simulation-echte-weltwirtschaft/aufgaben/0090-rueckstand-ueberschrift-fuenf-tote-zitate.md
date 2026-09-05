@@ -1,7 +1,7 @@
 ---
 id: 0090-rueckstand-ueberschrift-fuenf-tote-zitate
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Keine der fuenf Fundstellen in `daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md` haengt danach noch daran, dass eine bestimmte Ueberschrift in `rueckstand.md` heute existiert. Jede traegt entweder den gemeinten Wortlaut selbst oder weist ihren Bezug ausdruecklich als historisch aus und nennt den Commit, der die Ueberschrift entfernt hat. Nachweis in zwei Teilen, beide am selben Baum und nach der letzten Schreibbewegung an den beiden Dateien: erstens meldet `belegstellen_riegel` zu Bedingung 2 keine dieser fuenf Fundstellen mehr; zweitens die Gegenprobe an einer Kopie ausserhalb des Repos, in der die Ueberschrift aus `rueckstand.md` geloescht ist -- auch dort bleibt Bedingung 2 zu diesen fuenf Stellen still. Die Zahl der uebergangenen Fundstellen steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht (nicht gegenueber einer in diesem Paket genannten Zahl).
