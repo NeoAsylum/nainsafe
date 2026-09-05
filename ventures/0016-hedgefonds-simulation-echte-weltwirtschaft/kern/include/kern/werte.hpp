@@ -109,6 +109,25 @@ struct Konstanten {
     /// Nur die vier spielbaren Laender haben einen Politikpfad; die Restwelt hat
     /// keinen und bekommt deshalb auch keinen Anleihekurs.
     std::array<zustand::i64, zustand::LAENDER> leitzins_start{};
+
+    /// Der Preisdurchgriff je Gebiet und handelbarem Sektor -- T5 Klasse 4
+    /// (Zehntausendstel), zehn Werte.
+    ///
+    /// **Die zweite Jahrgangskonstante dieses Traegers**, aus demselben Grund wie
+    /// `leitzins_start` und auf demselben Weg: Sie ist nach T23 Punkt 5 eine Groesse
+    /// des Jahrgangs und steht deshalb nicht in `parameter.toml` -- die Datei nimmt
+    /// sie dort ausdruecklich aus --, und weil der Kern keine Datei liest (T2), kommt
+    /// sie als Argument herein.
+    ///
+    /// **Sie ist keine Zustandsadresse.** Der Zustand fuehrt sie nicht und soll sie
+    /// nicht fuehren; sie ist ueber die Partie fest.
+    ///
+    /// Alle fuenf Gebiete und nicht nur die vier Laender: Die Restwelt nimmt an der
+    /// Preisuebertragung teil, und die Reihe traegt deshalb `5 x 2` Werte. Von den
+    /// vier Landeszeilen liest `preishub_zoll`; die Restweltzeile gehoert der
+    /// Marktraeumung.
+    std::array<std::array<zustand::i64, zustand::SEKTOREN_HANDELBAR>, zustand::GEBIETE>
+        durchgriff{};
 };
 
 // ---------------------------------------------------------------------------
@@ -293,5 +312,65 @@ struct Konstanten {
 /// nicht zwei" eine Eigenschaft des Codes ist und nicht ein Satz.
 [[nodiscard]] zustand::i64 fondsvermoegen(const zustand::Zustand& z,
                                           const Konstanten& konst);
+
+/// **T48 Nr. 18** -- `hub(l, i) = |lies_neu(land.<l>.instrument.<i>.stand) -
+/// lies_alt(land.<l>.instrument.<i>.stand)|`.
+///
+/// **Die einzige Groesse der Tabelle ohne eine einzige Klasse, und das ist kein
+/// Versehen.** `hub` ist skalenerhaltend: Es bildet den Betrag einer Differenz zweier
+/// Staende **derselben** Adresse, und die Klasse des Ergebnisses ist die der Adresse.
+/// T48 schreibt sie je Instrument -- Klasse 3 fuer Zoll, Leitzins und Haushalt
+/// (Basispunkte), Klasse 10 fuer die Regulierung (Stufen). Eine erfundene gemeinsame
+/// Klasse waere hier die Fehlerart, gegen die T5 gebaut ist; die Zuordnung steht
+/// deshalb als Fallunterscheidung in `src/werte.cpp`, und ein Instrument ausserhalb
+/// der vier bekommt keine Klasse geschenkt, sondern bricht ab.
+///
+/// **Der Schreiber und nicht ein Zustand**, aus demselben Grund wie bei
+/// `landespreis`: `lies_neu` und `lies_alt` sind nach T39 zwei verschiedene Zugriffe,
+/// und an einem blanken Zustand liesse sich der Unterschied gar nicht ausdruecken.
+/// Wer den Stand dieser Runde liest, bevor er geschrieben ist, bekommt keinen stillen
+/// Rueckgriff auf die Vorrunde, sondern einen Abbruch.
+///
+/// **Der Betrag steht ueber der Differenz und nicht neben ihr.** Ist die Differenz
+/// genau der kleinste `i64`, hat sie keinen darstellbaren Betrag; dann bricht diese
+/// Funktion ab, statt aus einem Hub still eine negative Zahl zu machen (T6, T7).
+[[nodiscard]] zustand::i64 hub(const schreiber::Schreiber& rundenschreiber,
+                               zustand::Gebiet land, zustand::Instrument instrument);
+
+/// **T48 Nr. 19** -- `keilhub(l, s) = mal_geteilt(welt.preis.<s>, hub(l, zoll),
+/// 10.000)`. T5 Klasse 5.
+///
+/// Der Zollkeil auf dem Weltpreis, gemessen als Verschiebung in Indexpunkten: Klasse 5
+/// mal Klasse 3 durch 10.000 ist wieder Klasse 5. Der Weltpreis liefert allein das
+/// **Niveau**, an dem eine Rate in Basispunkten zu einer Verschiebung in Indexpunkten
+/// wird; wen es getroffen hat, unterscheidet `hub` und nicht er.
+///
+/// **Der Weltpreis dieser Runde.** `spiel.md` schreibt ihn als `lies_neu` -- die
+/// Marktraeumung setzt ihn in Schritt 4, die fuenfte Gegenkraft liest ihn in
+/// Schritt 5. Die Ordnung bleibt damit zyklenfrei, und wo sie es einmal nicht ist,
+/// bricht der Zugriff nach T39 ab, statt auf die Vorrunde zurueckzugreifen.
+///
+/// **Nur die vier spielbaren Laender und nur die zwei handelbaren Sektoren.** Die
+/// Restwelt hat kein Politikinstrument und damit keinen Hub; der dritte Sektor hat
+/// keinen Weltpreis. Beides bricht hier ab und nicht erst eine Ebene tiefer.
+[[nodiscard]] zustand::i64 keilhub(const schreiber::Schreiber& rundenschreiber,
+                                   zustand::Gebiet land, zustand::Sektor sektor);
+
+/// **T48 Nr. 20** -- `preishub_zoll(l, s) = mal_geteilt(keilhub(l, s),
+/// durchgriff(l, s), 10.000)`. T5 Klasse 5.
+///
+/// Der Teil der Preisverschiebung, den der Zollschritt verursacht hat -- und damit die
+/// Verschiebung, mit der die Zollzeile der fuenften Gegenkraft rechnet. Der Rest der
+/// Preisbewegung ist Konjunktur und hat keinen Verursacher. `durchgriff` kommt aus
+/// `Konstanten` und ist eine Groesse des Jahrgangs, keine Zustandsadresse.
+///
+/// **Zwei Rundungen und nicht eine, und das ist die Vorgabe.** Die Formel schachtelt
+/// diese Groesse ueber Nr. 19, und jede der beiden Stufen rundet nach T6 auf halbe
+/// Betraege von null weg. Die zusammengezogene Form mit einer einzigen Rundung ist
+/// genauer und ergibt eine **andere** Zahl -- dieselbe Lage wie bei `positionswert`,
+/// und wie dort braucht sie einen ADR und keinen besseren Grund.
+[[nodiscard]] zustand::i64 preishub_zoll(const schreiber::Schreiber& rundenschreiber,
+                                         const Konstanten& konst, zustand::Gebiet land,
+                                         zustand::Sektor sektor);
 
 }  // namespace kern::werte

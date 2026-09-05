@@ -1,7 +1,7 @@
 ---
 id: 0151-werte-die-drei-hubgroessen
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0043-t48-groessen-gegenkraft-5]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme".

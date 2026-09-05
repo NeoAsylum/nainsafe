@@ -35,6 +35,7 @@
 #include <stdexcept>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/werte.hpp"
 #include "kern/zustand.hpp"
@@ -43,7 +44,12 @@
 
 namespace {
 
+using kern::festkomma::I64_MAX;
+using kern::festkomma::I64_MIN;
+using kern::festkomma::mal;
 using kern::festkomma::mal_geteilt;
+
+using kern::meldung::Meldung;
 
 using kern::schreiber::Modus;
 using kern::schreiber::Schreiber;
@@ -55,6 +61,8 @@ using kern::zustand::FondsGroesse;
 using kern::zustand::Gebiet;
 using kern::zustand::i64;
 using kern::zustand::Index;
+using kern::zustand::Instrument;
+using kern::zustand::InstrumentFeld;
 using kern::zustand::Sektor;
 using kern::zustand::SektorGroesse;
 using kern::zustand::Startbelegung;
@@ -71,7 +79,9 @@ using kern::zustand::stelle_beteiligung;
 using kern::zustand::stelle_fonds;
 using kern::zustand::stelle_handel;
 using kern::zustand::stelle_position;
+using kern::zustand::stelle_instrument;
 using kern::zustand::stelle_sektorgroesse;
+using kern::zustand::stelle_weltpreis;
 using kern::zustand::steckplatz_anleihe;
 using kern::zustand::steckplatz_sektor;
 using kern::zustand::steckplatz_waehrung;
@@ -138,6 +148,71 @@ private:
     Startbelegung zugang_{zustand_};
 };
 
+/// Ob `nadel` in `heuhaufen` vorkommt -- ohne `<cstring>`, das nach der Sperre keine
+/// Kernquelle mehr einbinden darf.
+bool enthaelt(const char* heuhaufen, const char* nadel)
+{
+    for (std::size_t i = 0; heuhaufen[i] != '\0'; ++i) {
+        std::size_t j = 0;
+        while (nadel[j] != '\0' && heuhaufen[i + j] == nadel[j]) {
+            ++j;
+        }
+        if (nadel[j] == '\0') {
+            return true;
+        }
+    }
+    return nadel[0] == '\0';
+}
+
+/// Der Wortlaut des zuletzt gefangenen Abbruchs. Er wird abgeschrieben, weil `what()`
+/// in die Ausnahme zeigt und die hinter dem Fangblock fort ist.
+std::array<char, kern::meldung::PUFFER_ZEICHEN> letzte_meldung{};
+
+void schreibe_ab(const char* quelle)
+{
+    std::size_t n = 0;
+    while (quelle[n] != '\0' && n + 1 < letzte_meldung.size()) {
+        letzte_meldung[n] = quelle[n];
+        ++n;
+    }
+    letzte_meldung[n] = '\0';
+}
+
+/// Fuehrt `tun` aus und sagt, ob es mit einem Abbruch des Kerns geendet hat. Der
+/// Wortlaut steht danach in `letzte_meldung` und wird an der Aufrufstelle geprueft.
+///
+/// Eine Ausnahme anderer Art gilt **nicht** als Abbruch: Der Kern wirft nach T7 genau
+/// einen Typ, und eine Stelle, die etwas anderes wirft, soll auffallen.
+template <typename Aufgabe>
+bool hat_abgebrochen(Aufgabe tun)
+{
+    letzte_meldung[0] = '\0';
+    try {
+        tun();
+    } catch (const std::domain_error& fehler) {
+        schreibe_ab(fehler.what());
+        return true;
+    } catch (...) {
+        schreibe_ab("(abgebrochen, aber nicht mit std::domain_error)");
+        return false;
+    }
+    return false;
+}
+
+/// Der erwartete Ausschnitt einer Abbruchmeldung: ein Textstueck und die Zahl dahinter,
+/// mit demselben Meldungsbau erzeugt, den der Kern selbst benutzt.
+///
+/// Erzeugt und nicht abgeschrieben: Eine abgeschriebene Erwartung kann von der Ausgabe
+/// abweichen, ohne dass es jemand merkt. Und der Vorspann gehoert dazu -- eine blosse
+/// Zahl steht in einer Meldung schnell auch in einer Vorgabenummer.
+Meldung erwarteter_ausschnitt(const char* vorspann, i64 wert)
+{
+    Meldung text;
+    text.text(vorspann);
+    text.zahl(wert);
+    return text;
+}
+
 }  // namespace
 
 #define PRUEFE(ausdruck) pruefe((ausdruck), #ausdruck, __LINE__)
@@ -153,12 +228,15 @@ using kern::werte::bip;
 using kern::werte::fondsanteil;
 using kern::werte::fondsvermoegen;
 using kern::werte::handelsvolumen;
+using kern::werte::hub;
+using kern::werte::keilhub;
 using kern::werte::korbbestand;
 using kern::werte::korbwert;
 using kern::werte::landespreis;
 using kern::werte::markt;
 using kern::werte::marktkorb;
 using kern::werte::positionswert;
+using kern::werte::preishub_zoll;
 using kern::werte::schuld;
 using kern::werte::stufenwert;
 using kern::werte::waehrungswert;
@@ -961,6 +1039,341 @@ void probe_korbbestand_nimmt_den_betrag()
     PRUEFE(korbbestand(z, konst) == 0);
 }
 
+// ---------------------------------------------------------------------------
+// T48 Nr. 18 bis 20 -- Hub, Zollkeilhub und Preishub des Zolls (Paket 0151)
+// ---------------------------------------------------------------------------
+
+/// Der Konstantensatz der Zollkeilproben.
+///
+/// Jede der zehn Durchgriffszellen traegt einen **anderen** Wert; die beiden aus
+/// `spiel.md` stehen in der Zeile von Deutschland, damit die Zahlenprobe dort
+/// nachrechenbar bleibt und ein vertauschter Index anderswo eine andere Zahl ergibt.
+/// Die Zeile von China traegt 3.000 und dient der Rundungsprobe.
+constexpr Konstanten K_ZOLL{
+    /* stufenweite       */ 1,
+    /* ausstiegsabschlag */ 0,
+    /* aufschlag         */ 51,
+    /* lobbykosten       */ 100,
+    /* gegenlobby_satz   */ 3,
+    /* leitzins_start    */ {{0, 0, 0, 0}},
+    /* durchgriff        */ {{
+        /* US */ {{1'000, 2'000}},
+        /* CN */ {{3'000, 4'000}},
+        /* DE */ {{7'288, 5'464}},
+        /* BR */ {{6'000, 8'000}},
+        /* RW */ {{9'000, 1'500}},
+    }},
+};
+
+/// Die Adresse des Zollstands eines Landes -- in jeder Probe unten dieselbe Zeile.
+Index zollstand(Gebiet land) { return stelle_instrument(land, Instrument::Zoll, InstrumentFeld::Stand); }
+
+/// T48 Nr. 18 -- der Hub ist der **Betrag** der Differenz zweier Lesearten.
+void probe_hub_ist_der_betrag_der_differenz()
+{
+    const Index stand = zollstand(Gebiet::DE);
+
+    // Der Zollschritt aus `spiel.md`, Zustand A: 380 auf 430 Basispunkte.
+    {
+        Rohling r;
+        r.lege(stand, 380);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, 430, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 50);
+    }
+
+    // Derselbe Schritt rueckwaerts: 430 auf 380. Die Differenz ist -50, der Hub 50.
+    // Das ist der Fall, der den Betrag von der blanken Differenz trennt -- ohne ihn
+    // stuende hier -50, und wer ein Instrument zurueckdreht, bekaeme eine Gutschrift
+    // statt eines Schadens.
+    {
+        Rohling r;
+        r.lege(stand, 430);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, 380, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 50);
+    }
+
+    // Der Stand wird geschrieben, aber unveraendert -- nach T18 ist "unveraendert"
+    // eine Aussage und keine Luecke. Der Hub ist dann null, und daran haengt der Satz
+    // aus `spiel.md`: Bewegt sich das Instrument nicht, ist der Schaden exakt null.
+    {
+        Rohling r;
+        r.lege(stand, 380);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.vortrag(stand);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 0);
+    }
+
+    // Die Gegenprobe zu beiden Lesearten: Der Hub liest wirklich zwei verschiedene
+    // Staende. Waere er `lies_neu` allein, stuende hier 380; waere er `lies_alt`
+    // allein, 335.
+    {
+        Rohling r;
+        r.lege(stand, 335);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, 380, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 45);
+    }
+
+    // Jedes der vier Instrumente hat seine eigene Adresse, und der Hub trifft die des
+    // Arguments. Die Regulierung steht dabei nach T48 in Stufen und nicht in
+    // Basispunkten -- gerechnet wird trotzdem dieselbe Differenz, weil `hub`
+    // skalenerhaltend ist.
+    {
+        const Index regel = stelle_instrument(Gebiet::DE, Instrument::Regulierung,
+                                              InstrumentFeld::Stand);
+        Rohling r;
+        r.lege(stand, 380);
+        r.lege(regel, 2);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, 430, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        s.setze(regel, 5, Ursache::instrument(Gebiet::DE, Instrument::Regulierung), 0, 1'000);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 50);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Regulierung) == 3);
+    }
+}
+
+/// T48 Nr. 18 -- die beiden Raender, die nicht die Ueberlaufgrenze sind.
+void probe_hub_raender()
+{
+    const Index stand = zollstand(Gebiet::DE);
+
+    Rohling r;
+    r.lege(stand, 380);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    s.setze(stand, 430, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+
+    // Positivkontrolle voran: Derselbe Aufruf rechnet mit einem der vier Instrumente.
+    PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 50);
+
+    // Ein Instrument ausserhalb der vier hat nach T48 keine Klasse und damit keinen
+    // Hub. Die Meldung nennt die Groesse und die Kennung, ueber die geurteilt wurde --
+    // und sie kommt aus diesem Modul und nicht aus dem Zustand.
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(hub(s, Gebiet::DE, static_cast<Instrument>(9))); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    PRUEFE(enthaelt(letzte_meldung.data(),
+                    erwarteter_ausschnitt("Instrumentenkennung ", 9).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+
+    // Die Restwelt hat nach T15 keine Politikinstrumente.
+    PRUEFE(hat_abgebrochen([&] { static_cast<void>(hub(s, Gebiet::RW, Instrument::Zoll)); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 4).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+}
+
+/// T48 Nr. 18 -- der Rand des Wertebereichs, und der Wert davor, der nicht abbricht.
+void probe_hub_an_der_ueberlaufgrenze()
+{
+    const Index stand = zollstand(Gebiet::DE);
+
+    // Der Rand selbst rechnet: Aus 0 und I64_MAX wird die Differenz -I64_MAX, und
+    // deren Betrag ist noch darstellbar. Ohne diese Zeile bestuende die Bedingung
+    // darunter auch gegen eine Fassung, die schon eine Stelle frueher abbricht.
+    {
+        Rohling r;
+        r.lege(stand, I64_MAX);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, 0, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == I64_MAX);
+    }
+
+    // Einen Schritt weiter: -1 minus I64_MAX ist genau I64_MIN, die eine Differenz
+    // ohne darstellbaren Betrag. Ohne den Waechter ergaebe die Vorzeichenumkehr unter
+    // -fwrapv wieder I64_MIN -- ein negativer Hub, den keine Pruefung dahinter
+    // bemerkte.
+    {
+        Rohling r;
+        r.lege(stand, I64_MAX);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, -1, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        PRUEFE(hat_abgebrochen(
+            [&] { static_cast<void>(hub(s, Gebiet::DE, Instrument::Zoll)); }));
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("die Differenz ", I64_MIN).fertig()));
+    }
+
+    // Und der Fall daneben, der schon in der Strichrechnung stirbt: I64_MAX minus -1
+    // passt nicht mehr in i64. Der Abbruch kommt dann aus `minus` und nennt es auch --
+    // die beiden Waechter greifen an verschiedenen Stellen und ersetzen einander nicht.
+    {
+        Rohling r;
+        r.lege(stand, -1);
+        const Zustand& z = r;
+        Schreiber s{z, Modus::Spielmodus, 1};
+        s.setze(stand, I64_MAX, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+        PRUEFE(hat_abgebrochen(
+            [&] { static_cast<void>(hub(s, Gebiet::DE, Instrument::Zoll)); }));
+        PRUEFE(enthaelt(letzte_meldung.data(), "minus"));
+        PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    }
+}
+
+/// T48 Nr. 19 und 20 -- die Zahlenprobe aus `spiel.md`, Zustand A.
+void probe_zollkeil_zahlenprobe()
+{
+    const Index weltpreis1 = stelle_weltpreis(Sektor::Landwirtschaft);
+    const Index weltpreis2 = stelle_weltpreis(Sektor::Industrie);
+
+    Rohling r;
+    r.lege(zollstand(Gebiet::DE), 380);
+    r.lege(zollstand(Gebiet::US), 380);
+    // Die Weltpreise der **Vorrunde** stehen bewusst woanders als die dieser Runde:
+    // Waere Nr. 19 auf `lies_alt` gebaut, stuenden unten 45 und 50 statt 55 und 52.
+    r.lege(weltpreis1, 9'000);
+    r.lege(weltpreis2, 10'000);
+
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    s.setze(zollstand(Gebiet::DE), 430, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+    s.setze(zollstand(Gebiet::US), 430, Ursache::instrument(Gebiet::US, Instrument::Zoll), 0, 1'000);
+    s.setze(weltpreis1, 11'000, Ursache::marktraeumung(Sektor::Landwirtschaft), 0, 1'000);
+    s.setze(weltpreis2, 10'400, Ursache::marktraeumung(Sektor::Industrie), 0, 1'000);
+
+    // Von Hand nachgerechnet, mit der Rundungsregel aus T6:
+    //   hub(DE, Zoll)         = |430 - 380|                        =     50
+    //   keilhub(DE, 1)        = 11.000 * 50 / 10.000               =     55   glatt
+    //   keilhub(DE, 2)        = 10.400 * 50 / 10.000               =     52   glatt
+    //   preishub_zoll(DE, 1)  =  7.288 * 55 / 10.000 =  40,084     =     40
+    //   preishub_zoll(DE, 2)  =  5.464 * 52 / 10.000 =  28,4128    =     28
+    PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 50);
+    PRUEFE(keilhub(s, Gebiet::DE, Sektor::Landwirtschaft) == 55);
+    PRUEFE(keilhub(s, Gebiet::DE, Sektor::Industrie) == 52);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Landwirtschaft) == 40);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Industrie) == 28);
+
+    // Der Durchgriff kommt aus der Zeile des Landes und der Spalte des Sektors. Die
+    // Vereinigten Staaten haben denselben Zollschritt und denselben Weltpreis, aber
+    // einen anderen Durchgriff -- und deshalb andere Zahlen. Ohne diese beiden Zeilen
+    // bestuende die Probe auch gegen einen vertauschten Index.
+    //   preishub_zoll(US, 1)  =  1.000 * 55 / 10.000 =   5,5       =      6
+    //   preishub_zoll(US, 2)  =  2.000 * 52 / 10.000 =  10,4       =     10
+    PRUEFE(keilhub(s, Gebiet::US, Sektor::Landwirtschaft) == 55);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::US, Sektor::Landwirtschaft) == 6);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::US, Sektor::Industrie) == 10);
+}
+
+/// T48 Nr. 19 und 20 -- die Schachtelung rundet zweimal, und das ist eine andere Zahl.
+void probe_zollkeil_rundet_zweimal()
+{
+    const Index stand = zollstand(Gebiet::CN);
+    const Index weltpreis1 = stelle_weltpreis(Sektor::Landwirtschaft);
+
+    Rohling r;
+    r.lege(stand, 380);
+    r.lege(weltpreis1, 11'500);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    s.setze(stand, 384, Ursache::instrument(Gebiet::CN, Instrument::Zoll), 0, 1'000);
+    s.vortrag(weltpreis1);
+
+    PRUEFE(hub(s, Gebiet::CN, Instrument::Zoll) == 4);
+
+    // Erste Rundung: 11.500 * 4 / 10.000 ist 4,6. Die Regel aus T6 rundet auf halbe
+    // Betraege von null weg und macht daraus 5; wer abschneidet, bekommt 4. Die zweite
+    // Zeile ist die abschneidende Fassung als Zahl.
+    PRUEFE(keilhub(s, Gebiet::CN, Sektor::Landwirtschaft) == 5);
+    PRUEFE(mal(11'500, 4) / 10'000 == 4);
+
+    // Zweite Rundung, und die eigentliche Aussage: Die Vorgabe schachtelt Nr. 20 ueber
+    // Nr. 19, also wird zweimal gerundet -- 3.000 * 5 / 10.000 ist 1,5 und wird 2. Die
+    // zusammengezogene Form mit einer einzigen Rundung rechnet 11.500 * 4 * 3.000
+    // durch 10^8, also 1,38, und wird 1. Zwei Zahlen, und die Vorgabe nennt die erste.
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::CN, Sektor::Landwirtschaft) == 2);
+    PRUEFE(mal_geteilt(mal(11'500, 4), 3'000, 100'000'000) == 1);
+}
+
+/// T48 Nr. 18 bis 20 -- Zustand B aus `spiel.md`: ohne Aktion exakt null.
+void probe_zollkeil_ohne_aktion_ist_null()
+{
+    const Index stand = zollstand(Gebiet::DE);
+    const Index weltpreis1 = stelle_weltpreis(Sektor::Landwirtschaft);
+    const Index weltpreis2 = stelle_weltpreis(Sektor::Industrie);
+
+    Rohling r;
+    r.lege(stand, 380);
+    r.lege(weltpreis1, 9'000);
+    r.lege(weltpreis2, 10'000);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    s.vortrag(stand);  // der Zollstand bewegt sich nicht
+    s.setze(weltpreis1, 11'000, Ursache::marktraeumung(Sektor::Landwirtschaft), 0, 1'000);
+    s.setze(weltpreis2, 10'400, Ursache::marktraeumung(Sektor::Industrie), 0, 1'000);
+
+    // Die Gegenprobe voran: Die Weltpreise stehen wirklich da und haben sich sogar
+    // bewegt. Ohne sie bestuende die Bedingung darunter auch gegen einen Zustand, in
+    // dem gar nichts geschrieben ist -- und sie ist gerade die Aussage, dass ein
+    // bewegter Weltpreis **ohne** Zollschritt nichts erzeugt.
+    PRUEFE(s.lies_neu(weltpreis1) == 11'000 && s.lies_alt(weltpreis1) == 9'000);
+
+    PRUEFE(hub(s, Gebiet::DE, Instrument::Zoll) == 0);
+    PRUEFE(keilhub(s, Gebiet::DE, Sektor::Landwirtschaft) == 0);
+    PRUEFE(keilhub(s, Gebiet::DE, Sektor::Industrie) == 0);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Landwirtschaft) == 0);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Industrie) == 0);
+}
+
+/// T48 Nr. 19 und 20 -- die Raender, jeder unter dem Namen seiner eigenen Groesse.
+void probe_zollkeil_raender()
+{
+    const Index weltpreis1 = stelle_weltpreis(Sektor::Landwirtschaft);
+
+    Rohling r;
+    r.lege(zollstand(Gebiet::DE), 380);
+    r.lege(weltpreis1, 11'000);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    s.setze(zollstand(Gebiet::DE), 430, Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+    s.vortrag(weltpreis1);
+
+    // Positivkontrolle voran: Beide Groessen rechnen an dieser Stelle.
+    PRUEFE(keilhub(s, Gebiet::DE, Sektor::Landwirtschaft) == 55);
+    PRUEFE(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Landwirtschaft) == 40);
+
+    // Die Restwelt hat kein Politikinstrument und damit keinen Keil. Die Meldung nennt
+    // `keilhub` und **nicht** `hub` -- sonst suchte der Leser eine Ebene zu tief.
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(keilhub(s, Gebiet::RW, Sektor::Landwirtschaft)); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 4).fertig()));
+
+    // Der dritte Sektor traegt keinen Weltpreis, und die Null liegt ausserhalb der
+    // drei -- die Sektoren zaehlen ab eins. Beides faellt in dieselbe Bedingung.
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(keilhub(s, Gebiet::DE, Sektor::Dienstleistungen)); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(keilhub(s, Gebiet::DE, static_cast<Sektor>(0))); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 0).fertig()));
+
+    // Dieselben beiden Raender an Nr. 20 -- und dort nennt die Meldung ihren eigenen
+    // Namen und nicht den der Groesse, die sie darunter aufruft.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(preishub_zoll(s, K_ZOLL, Gebiet::RW, Sektor::Landwirtschaft));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::preishub_zoll"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Dienstleistungen));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::preishub_zoll"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
+}
+
 }  // namespace
 
 int main()
@@ -986,6 +1399,15 @@ int main()
 
     // Paket 0111 -- die fuenfte Stelle derselben Familie: der Anleihezweig von Nr. 8.
     probe_korbbestand_nimmt_den_betrag();
+
+    // Paket 0151 -- T48 Nr. 18 bis 20, die drei Hubgroessen.
+    probe_hub_ist_der_betrag_der_differenz();
+    probe_hub_raender();
+    probe_hub_an_der_ueberlaufgrenze();
+    probe_zollkeil_zahlenprobe();
+    probe_zollkeil_rundet_zweimal();
+    probe_zollkeil_ohne_aktion_ist_null();
+    probe_zollkeil_raender();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

@@ -45,12 +45,15 @@
 #include <cstdint>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/zustand.hpp"
 
 #include "kern/sperre.hpp"  // T4: ab hier ist Gleitkomma ein Uebersetzungsfehler
 
 namespace kern::werte {
+
+using meldung::Meldung;
 
 using festkomma::mal;
 using festkomma::mal_geteilt;
@@ -62,6 +65,9 @@ using zustand::BeteiligungsFeld;
 using zustand::FondsGroesse;
 using zustand::Gebiet;
 using zustand::i64;
+using zustand::Index;
+using zustand::Instrument;
+using zustand::InstrumentFeld;
 using zustand::Sektor;
 using zustand::SektorGroesse;
 using zustand::Steckplatz;
@@ -378,6 +384,85 @@ std::size_t land_nummer(Gebiet land)
     }
     return nummer;
 }
+
+/// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
+/// in der die Pruefung ausloest.
+///
+/// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
+/// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
+/// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
+/// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
+/// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
+/// Schritt, den die Meldung ihm abnehmen soll.
+void pruefe_landessektor(const char* groesse, Gebiet land, Sektor sektor)
+{
+    const std::size_t g = static_cast<std::size_t>(land);
+    if (g >= LAENDER) {
+        Meldung text;
+        text.text(groesse);
+        text.text(" -- das Gebiet ");
+        text.zahl(static_cast<i64>(g));
+        text.text(" ist kein spielbares Land; ohne Politikinstrument gibt es keinen "
+                  "Zollhub und damit keinen Keil (T15, T48).");
+        festkomma::abbruch(text.fertig());
+    }
+
+    // Die Sektoren zaehlen ab eins wie ihre Adresse; handelbar sind die ersten
+    // `SEKTOREN_HANDELBAR`. Die Pruefung faengt beide Faelle in einer Bedingung -- den
+    // Sektor ausserhalb der drei und den dritten, der keinen Weltpreis hat.
+    const std::size_t s = static_cast<std::size_t>(sektor);
+    if (s < 1 || s > SEKTOREN_HANDELBAR) {
+        Meldung text;
+        text.text(groesse);
+        text.text(" -- der Sektor ");
+        text.zahl(static_cast<i64>(s));
+        text.text(" traegt keinen Weltpreis; den Zollkeil gibt es nur fuer die "
+                  "handelbaren Sektoren (T15, T48).");
+        festkomma::abbruch(text.fertig());
+    }
+}
+
+// ---------------------------------------------------------------------------
+// T48 Nr. 18 -- die Klasse haengt am Instrument und nicht am Namen der Groesse
+// ---------------------------------------------------------------------------
+//
+// `hub` ist die einzige Groesse der Tabelle aus T48, der dort keine Klasse zugeordnet
+// ist, sondern eine Abbildung: T49 gibt den vier Instrumentenstaenden eines Landes
+// nicht dieselbe. Sie steht hier als Fallunterscheidung ueber die Aufzaehlung und
+// nicht als Rechnung auf der Instrumentennummer -- wer ein Instrument einschoebe,
+// verschoebe sonst stillschweigend jede Klasse dahinter, und in der Zeile saehe man
+// es nicht.
+
+/// Die Skalenklasse nach T5, in der `hub` fuer dieses Instrument sein Ergebnis
+/// zurueckgibt: 3 fuer Zoll, Leitzins und Haushalt, 10 fuer die Regulierung.
+///
+/// Der Abbruchzweig ist zugleich die Bereichspruefung von `hub`: Was keine Klasse hat,
+/// hat auch keinen Hub. Er steht hier und nicht bei `stelle_instrument`, weil die
+/// Meldung die Groesse nennen muss, in der sie ausloest.
+constexpr std::size_t hubklasse(Instrument instrument)
+{
+    switch (instrument) {
+    case Instrument::Leitzins:
+    case Instrument::Zoll:
+    case Instrument::Haushalt:
+        return 3;  // Basispunkte
+    case Instrument::Regulierung:
+        return 10;  // Regulierungsstufen
+    }
+
+    Meldung text;
+    text.text("kern::werte::hub -- zur Instrumentenkennung ");
+    text.zahl(static_cast<i64>(static_cast<std::uint8_t>(instrument)));
+    text.text(" gibt es keines der vier Politikinstrumente und damit keine Skalenklasse; "
+              "ein Hub ohne Klasse waere eine Zahl ohne Einheit (T48, T49, T5).");
+    festkomma::abbruch(text.fertig());
+}
+
+static_assert(hubklasse(Instrument::Zoll) == 3, "T48: der Zollstand steht in Basispunkten");
+static_assert(hubklasse(Instrument::Leitzins) == 3, "T48: der Leitzins steht in Basispunkten");
+static_assert(hubklasse(Instrument::Haushalt) == 3, "T48: der Haushalt steht in Basispunkten");
+static_assert(hubklasse(Instrument::Regulierung) == 10,
+              "T48: die Finanzmarktregulierung steht in Stufen und nicht in Basispunkten");
 
 const Platzbeschreibung& platzbeschreibung(Steckplatz platz)
 {
@@ -703,6 +788,84 @@ i64 fondsvermoegen(const Zustand& z, const Konstanten& konst)
     }
 
     return minus(summe, z.lies(zustand::stelle_fonds(FondsGroesse::Hebelstand)));
+}
+
+// --- Nr. 18 --------------------------------------------------------------
+i64 hub(const schreiber::Schreiber& rundenschreiber, Gebiet land, Instrument instrument)
+{
+    // Die Klasse des Ergebnisses haengt am Instrument (T48). Ihr Wert wird hier von
+    // niemandem gebraucht -- gebraucht wird ihr Abbruchzweig, und der ist die
+    // Bereichspruefung dieser Funktion. Sich stattdessen auf `stelle_instrument` zu
+    // verlassen hiesse, den Fehler unter fremdem Namen zu melden.
+    static_cast<void>(hubklasse(instrument));
+
+    const std::size_t g = static_cast<std::size_t>(land);
+    if (g >= LAENDER) {
+        Meldung text;
+        text.text("kern::werte::hub -- das Gebiet ");
+        text.zahl(static_cast<i64>(g));
+        text.text(" hat keine Politikinstrumente; einen Hub gibt es nur bei den vier "
+                  "spielbaren Laendern (T15).");
+        festkomma::abbruch(text.fertig());
+    }
+
+    const Index stand = zustand::stelle_instrument(land, instrument, InstrumentFeld::Stand);
+
+    // T39: zwei verschiedene Zugriffe auf dieselbe Adresse, und der falsche stirbt
+    // sofort. Der Stand dieser Runde muss geschrieben sein -- ein stiller Rueckgriff
+    // auf die Vorrunde machte den Hub von der Reihenfolge der sechs Schritte abhaengig.
+    const i64 jetzt  = rundenschreiber.lies_neu(stand);
+    const i64 vorher = rundenschreiber.lies_alt(stand);
+
+    // Die Strichrechnung ueber den Ueberlaufbaustein (T7 Massnahme 4.2).
+    const i64 unterschied = minus(jetzt, vorher);
+
+    if (unterschied == festkomma::I64_MIN) {
+        Meldung text;
+        text.text("kern::werte::hub -- die Differenz ");
+        text.zahl(unterschied);
+        text.text(" hat keinen in i64 darstellbaren Betrag; mit -fwrapv ergaebe die "
+                  "Vorzeichenumkehr wieder dieselbe negative Zahl, und aus einem Hub "
+                  "wuerde still ein Vorzeichenfehler (T6, T7).");
+        festkomma::abbruch(text.fertig());
+    }
+
+    return betrag(unterschied);
+}
+
+// --- Nr. 19 --------------------------------------------------------------
+i64 keilhub(const schreiber::Schreiber& rundenschreiber, Gebiet land, Sektor sektor)
+{
+    pruefe_landessektor("kern::werte::keilhub", land, sektor);
+
+    // Der Weltpreis **dieser** Runde: `spiel.md` schreibt ihn als `lies_neu`. Die
+    // Marktraeumung setzt ihn in Schritt 4, gelesen wird er in Schritt 5.
+    const i64 weltpreis = rundenschreiber.lies_neu(zustand::stelle_weltpreis(sektor));
+
+    // T48 Nr. 19, Zeichen fuer Zeichen. Die 10.000 ist die Ratenskala aus T5 Klasse 3:
+    // Der Weltpreis gibt das Niveau, der Hub die Rate, das Ergebnis ist wieder ein
+    // Index (Klasse 5).
+    return mal_geteilt(weltpreis, hub(rundenschreiber, land, Instrument::Zoll), 10'000);
+}
+
+// --- Nr. 20 --------------------------------------------------------------
+i64 preishub_zoll(const schreiber::Schreiber& rundenschreiber, const Konstanten& konst,
+                  Gebiet land, Sektor sektor)
+{
+    // Vor `keilhub` und mit dem eigenen Namen: Beide Grenzen sind hier dieselben, aber
+    // ein Aufrufer dieser Groesse soll ihren Namen in der Meldung lesen.
+    pruefe_landessektor("kern::werte::preishub_zoll", land, sektor);
+
+    // `durchgriff` ist die Jahrgangskonstante aus T23 Punkt 5 und keine Adresse. Beide
+    // Indizes deckt die Pruefung darueber: Das Land liegt unter `LAENDER` und damit
+    // unter `GEBIETE`, der Sektorversatz unter `SEKTOREN_HANDELBAR`.
+    const i64 durchgriff =
+        konst.durchgriff[static_cast<std::size_t>(land)][zustand::sektor_index(sektor)];
+
+    // T48 Nr. 20, Zeichen fuer Zeichen -- geschachtelt ueber Nr. 19 und damit zweimal
+    // gerundet. Die zusammengezogene Form ergaebe eine andere Zahl und braeuchte einen
+    // ADR.
+    return mal_geteilt(keilhub(rundenschreiber, land, sektor), durchgriff, 10'000);
 }
 
 }  // namespace kern::werte
