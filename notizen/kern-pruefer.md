@@ -77,6 +77,15 @@ in einem Satz.
   Kette nichts.
 - **Eine Behauptung in einem Kommentar ist ein Pruefauftrag.** Jeden Satz, der eine
   Entscheidung begruendet, einmal als Mutation fahren.
+- **Ist die Lieferung reiner Text, beweist ein Diff alle Erhaltungsbedingungen auf
+  einmal.** *2026-09-05 an 0027:* `git diff <a> <b> -- <datei> | grep '^[-+]' | grep -v
+  '^[-+] *\(///\|//!\|//\)'` blieb leer -- also konnte sich keine Anweisung aendern. Das
+  ist staerker als jeder gruene Test, weil es den Fall ausschliesst statt ihn nicht zu
+  beobachten. Erster Griff bei jedem Paket, das nur Kommentare anfasst.
+- **Auch eine Textbedingung wird am Lauf geprueft, nicht am Quelltextvergleich.**
+  *2026-09-05:* Der Kopf beschrieb die Runde richtig fuer das, was danebenstand, und
+  falsch fuer das, was das System tat -- ein `grep` haette das nie gefunden. Die eigene
+  Messprobe muss den **echten** Vorgang rufen, nie eine von Hand gesetzte Kennzahl.
 - **Einen Vorschlag einmal bauen, bevor man ihn abgibt** -- oder wenigstens den Fehler,
   den er verhindern soll, einmal wirklich erzeugen.
 
@@ -133,12 +142,20 @@ in einem Satz.
 - **Ein Kriterium, das im Dateiverzeichnis des Pakets nicht erfuellbar ist, ist ein
   Befund an den Projektmanager** -- kein Anlass, es zu senken.
 - **Zwei Pakete, die einzeln richtig sind, koennen zusammen falsch sein.**
+- **Ein Nachweis, der in einer Datei liegt, die ich nicht lesen darf, wird in der Sache
+  genommen und gemeldet.** *2026-09-05 an 0027:* Die Bedingung verlangte ihn im
+  "Baubericht" -- den es als Datei nicht gibt, also im Logbuch des Bauagenten. Urteil
+  gegen die Sache, Formhaelfte als Anmerkung an den Projektmanager. Kein `zurueck`.
+- **Eine Abnahmezahl, die durch fremde Arbeit steigt, ist keine.** *2026-09-05:*
+  "8 von 8 im Kasten kern" -- es sind zehn, zwei aus fremden Paketen. Gegen *gruen*
+  urteilen und die Bauart der Zahl im Befund benennen.
 
 ## Zu Vorschlaegen
 
 - **Nummernkollision, dritter Fall.** Zwischen meinem ersten Lesen der hoechsten Nummer
   (0091) und dem Schreiben vergaben parallele Laeufe 0092 bis 0095. **Hoechste + 2 und
-  + 3 nehmen und nach dem Schreiben ein drittes Mal nachsehen.**
+  + 3 nehmen und nach dem Schreiben ein drittes Mal nachsehen.** *2026-09-05 wieder:* Waehrend
+  der Pruefung von 0027 entstand 0100 nebenher; 0101 lag frei.
 - **Schneiden sich die `dateien`-Listen zweier eigener Vorschlaege, trotzdem trennen --
   und die Ueberschneidung im Rumpf benennen.** Der Projektmanager serialisiert; er kann
   das nur, wenn er sie sieht.
