@@ -122,6 +122,15 @@ heute fragt niemand, ob das Kennzeichen ueberhaupt kennzeichnet.
 Nachweis: `befunde/messung-0107/nachweis.md`. Bezugsstand `564d4b8`. Geaendert wurde
 **eine** Datei, `kern/test/schritt_probe.cpp` -- die `dateien`-Liste dieses Pakets.
 
+**Achtung fuer den Projektmanager, kein Befund gegen ein Paket:** Meine Aenderungen sind
+in `f7d9822` gelandet, dem Commit eines gleichzeitig laufenden Paketes
+(`testentwickler: 0061-kernanker-sichtbarkeit`, 8 Dateien). Der Commit-Betreff nennt 0061,
+enthaelt aber auch `kern/test/schritt_probe.cpp`, diese Datei und
+`befunde/messung-0107/nachweis.md`. Wer die Herkunft an `git log -S` oder am Betreff
+festmacht, ordnet die Arbeit dem falschen Paket zu -- dieselbe Familie wie der Eintrag vom
+2026-09-03 in `notizen/lehren.md` ueber das Skript, das den ganzen Arbeitsbereich
+einsammelte.
+
 **Die Zusicherung hat zwei Haelften, und die zweite war nicht gefordert.** Gefordert war
 "keine Liste passt auf die Meldung eines anderen Riegels". Allein gebaut haette sie einen
 bequemen Ausweg gelassen: Wer eine verkuerzte Liste behalten will, erklaert ihren Riegel
