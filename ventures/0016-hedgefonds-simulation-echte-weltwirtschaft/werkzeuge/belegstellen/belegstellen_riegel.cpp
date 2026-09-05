@@ -1378,6 +1378,202 @@ bool ist_wortpraefix(const std::string& ueberschrift, const std::string& kandida
     return n != '.' && !ist_wortzeichen(n);
 }
 
+/// Fuehrt die Zieldatei eine Ueberschrift, die mit genau dieser Ziffer und einem Punkt
+/// beginnt? Das ist die zweite Haelfte derselben Eigenschaft, an der oben schon der
+/// Wortpraefix haengt: Der Punkt zeigt an, dass diese Datei ihre Abschnitte ueberhaupt
+/// nummeriert. Ohne ihn ist eine Ziffer am Anfang eines Zitats keine Nummer, sondern der
+/// Anfang eines Namens -- und ein Name, der nicht aufgeht, ist ein Befund.
+bool fuehrt_gliederungsziffer(std::string_view ziffer,
+                              const std::vector<std::string>& ueberschriften) {
+    for (std::size_t u = 0; u < ueberschriften.size(); ++u) {
+        const std::string& ueberschrift = ueberschriften[u];
+        if (ueberschrift.size() > ziffer.size()
+            && ueberschrift.compare(0, ziffer.size(), ziffer) == 0
+            && ueberschrift[ziffer.size()] == '.') {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Was ein Name ohne Anfuehrung ist, wenn die Ueberschriften der Zieldatei vorliegen.
+enum class Namensart {
+    Ueberschrift,   ///< steht am Anfang einer Ueberschrift -- aufgeloest
+    Ziffer,         ///< eine Gliederungsziffer -- uebergangen, ohne Wortlaut
+    Einzelzeichen,  ///< ein Formelzeichen oder ein Platzhalter -- uebergangen
+    Ohne_Gliederung,///< die Zieldatei fuehrt keine Ueberschrift -- uebergangen
+    Tot             ///< ein Name, den die Zieldatei nicht fuehrt -- Befund
+};
+
+/// Die ganze Entscheidung an einer Stelle. Sie steht als eigene Funktion da, damit der
+/// Selbsttest unten **denselben** Weg misst wie der Lauf ueber den Bestand -- dieselbe
+/// Ueberlegung wie bei `fund_ab` und aus demselben Grund.
+Namensart namensart(const std::string& gesucht,
+                    const std::vector<std::string>& ueberschriften) {
+    // Eine Zieldatei ohne jede Ueberschrift kann ein Zitat weder bestaetigen noch
+    // widerlegen. Das ist kein gedachter Fall: `rueckstand.md` verweist an einer Stelle
+    // auf einen eigenen Abschnitt, und der naechstgelegene Dokumentname im Absatz ist
+    // eine Kopfdatei des Kerns. Der Riegel wuerde dort rot an einer Sache, die nicht
+    // kaputt ist -- er uebergeht sie und nennt den Grund.
+    if (ueberschriften.empty()) {
+        return Namensart::Ohne_Gliederung;
+    }
+    for (std::size_t u = 0; u < ueberschriften.size(); ++u) {
+        if (ist_wortpraefix(ueberschriften[u], gesucht)) {
+            return Namensart::Ueberschrift;
+        }
+    }
+    const std::string_view kopfwort = erstes_wort(gesucht);
+    if (ist_ziffernwort(kopfwort)
+        && (kopfwort.size() == gesucht.size()
+            || fuehrt_gliederungsziffer(kopfwort, ueberschriften))) {
+        return Namensart::Ziffer;
+    }
+    if (kopfwort.size() == 1 && !ist_ziffer(kopfwort.front())) {
+        return Namensart::Einzelzeichen;
+    }
+    return Namensart::Tot;
+}
+
+// ---------------------------------------------------------------------------
+// Der Selbsttest zur Form ohne Anfuehrung -- Paket 0079
+// ---------------------------------------------------------------------------
+//
+// Warum eine Tabelle im Programm und kein zweiter Testfall daneben: dieselbe Lage wie
+// bei `NAMENSFAELLE`. Die `CMakeLists.txt` gehoert Paket 0059 und steht nicht in der
+// Dateiliste dieses Pakets.
+//
+// **Was sie prueft, was der Bestand nicht hergibt: den roten Fall.** Auf dem Korpus
+// dieses Vorhabens loest jedes Zitat ohne Anfuehrung auf -- der Riegel kann dort also
+// nur zeigen, dass er gruen wird. Zeile 2 und Zeile 4 unten halten die Gegenprobe: Wird
+// die Ueberschrift in der Zieldatei umbenannt, faellt der Name **nicht** in die
+// uebergangenen Fundstellen zurueck, sondern wird ein Befund. Genau das ist die Antwort
+// auf den Einwand aus dem Kopf.
+//
+// Die Schluesselwoerter sind maskiert (`\101` ist der Buchstabe `A`): Ohne die Maskierung
+// waeren diese Zeilen selbst Fundstellen im eigenen Quelltext, und die Tabelle zaehlte
+// in einer Zahl mit, die sie messen soll.
+
+struct Zitatfall {
+    std::string_view zeile;
+    /// Die Ueberschriften der Zieldatei, durch `|` getrennt.
+    std::string_view ueberschriften;
+    Namensart erwartet;
+    /// Leer heisst: die Stelle ist gar keine Fundstelle (`name_ohne_anfuehrung` gibt 0).
+    std::string_view erwarteter_name;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Zitatfall, 7> ZITATFAELLE = {{
+    // --- Die zwei Ueberschriften aus Paket 0047, im Wortlaut ------------------
+    {"lizenzbefund-reihen.md, \101bschnitt Reihe 1, den Block unter der Zwischenzeile",
+     "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     Namensart::Ueberschrift, "Reihe 1",
+     "daten/reihen.toml, Feld schnitt_2_offen -- Paket 0047"},
+    {"lizenzbefund-reihen.md, \101bschnitt Reihe 1, den Block unter der Zwischenzeile",
+     "Reihe 1a - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     Namensart::Tot, "Reihe 1",
+     "dieselbe Zeile, Ueberschrift umbenannt: der Name faellt nicht in die uebergangenen "
+     "Fundstellen zurueck, sondern wird ein Befund -- und er bleibt es, obwohl eine "
+     "andere Ueberschrift mit demselben ersten Wort beginnt"},
+    {"lizenzbefund-reihen.md, \101bschnitt 2b und 2c, den Block unter der Zwischenzeile",
+     "2b und 2c - NV.IND.TOTL.ZS und NV.SRV.TOTL.ZS|2a - NV.AGR.TOTL.ZS",
+     Namensart::Ueberschrift, "2b und 2c",
+     "daten/reihen.toml, Feld schnitt_2_offen -- Paket 0047: eine Aufzaehlung, die mit "
+     "einer Ziffer beginnt und trotzdem ein Name ist"},
+    {"lizenzbefund-reihen.md, \101bschnitt 2b und 2c, den Block unter der Zwischenzeile",
+     "2b, 2c und 2d - NV.IND.TOTL.ZS und NV.SRV.TOTL.ZS|2a - NV.AGR.TOTL.ZS",
+     Namensart::Tot, "2b und 2c",
+     "dieselbe Zeile, Ueberschrift umbenannt -- Befund und nicht Ziffer, obwohl der Name "
+     "mit einer Ziffer beginnt"},
+
+    // --- Die zwei Nummern aus Paket 0047 --------------------------------------
+    {"daten/lizenzbefund-reihen.md, \101bschnitt 5\"", "5. Zusammenfassung|Reihe 1 - BIP",
+     Namensart::Ziffer, "5",
+     "daten/reihen.toml, Feld beleg unter zaehlung.lizenz -- Paket 0047. Der Punkt "
+     "hinter der Fuenf ist die ganze Unterscheidung: ohne ihn waere sie ein Name"},
+    {"daten/lizenzbefund-reihen.md, \101bschnitt 3 und 5 -- der IWF-Volltext ist "
+     "ungelesen, der Suchauszug",
+     "3. Die vier Nicht-WDI-Quellen|5. Zusammenfassung", Namensart::Ziffer, "3 und 5 -- "
+     "der IWF-Volltext ist ungelesen",
+     "daten/reihen.toml, Feld bestritten_durch: zwei Nummern in einem Satz. Der Name "
+     "reicht bis zum Komma und steht an keinem Ueberschriftenanfang -- die Ziffer davor "
+     "entscheidet, nicht die Laenge"},
+
+    // --- Was gar keine Fundstelle ist ------------------------------------------
+    {"spiel.md, \101bschnitt zur Partielaenge R und was daraus folgt", "Die Schleife",
+     Namensart::Tot, "",
+     "daten/reihen.toml, Feld beleg zu zaehlung.soll: ein Kleinbuchstabe hinter dem "
+     "Schluesselwort -- laufender Satz, kein Zitat"},
+}};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_ohne_anfuehrung() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < ZITATFAELLE.size(); ++k) {
+        const Zitatfall& fall = ZITATFAELLE[k];
+        // Das Schluesselwort wird gesucht wie im Ernstfall und nicht abgezaehlt: Sonst
+        // pruefte der Fall eine Stelle, die `schluessellaenge` gar nicht findet.
+        std::size_t hinter = 0;
+        bool gefunden = false;
+        for (std::size_t i = 0; i < fall.zeile.size() && !gefunden; ++i) {
+            const std::size_t laenge = schluessellaenge(fall.zeile, i);
+            if (laenge > 0) {
+                hinter = i + laenge;
+                gefunden = true;
+            }
+        }
+        std::string roh;
+        std::string gesucht;
+        if (gefunden && name_ohne_anfuehrung(fall.zeile, hinter, roh) > 0) {
+            gesucht = normiere(roh);
+        }
+        if (!gefunden) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Zitatfall %zu: kein Schluesselwort getroffen -- vermutlich ist "
+                         "die Maskierung verrutscht.\n      Zeile: %.*s\n",
+                         k + 1, static_cast<int>(fall.zeile.size()), fall.zeile.data());
+            continue;
+        }
+        if (gesucht != std::string(fall.erwarteter_name)) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Zitatfall %zu: der abgegrenzte Name ist '%s', erwartet war "
+                         "'%.*s'.\n      Herkunft: %.*s\n",
+                         k + 1, gesucht.c_str(),
+                         static_cast<int>(fall.erwarteter_name.size()),
+                         fall.erwarteter_name.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (gesucht.empty()) {
+            continue;  // keine Fundstelle -- die Art wird gar nicht erst gefragt
+        }
+        std::vector<std::string> liste;
+        std::string laufend;
+        for (std::size_t z = 0; z <= fall.ueberschriften.size(); ++z) {
+            if (z == fall.ueberschriften.size() || fall.ueberschriften[z] == '|') {
+                liste.push_back(normiere(laufend));
+                laufend.clear();
+            } else {
+                laufend += fall.ueberschriften[z];
+            }
+        }
+        const Namensart art = namensart(gesucht, liste);
+        if (art != fall.erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Zitatfall %zu: die Art ist %d, erwartet war %d.\n"
+                         "      Name:     %s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(art), static_cast<int>(fall.erwartet),
+                         gesucht.c_str(), static_cast<int>(fall.herkunft.size()),
+                         fall.herkunft.data());
+        }
+    }
+    return falsch;
+}
+
 void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                    const Zielbestand& bestand,
                    std::map<std::string, std::vector<std::string>>& ueberschriften,
@@ -1451,27 +1647,25 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                     // verlangt; ohne sie ist er es nicht, und die Zieldatei grenzt ihn
                     // ab -- er muss am Anfang einer ihrer Ueberschriften stehen.
                     bool steht_da = false;
-                    for (std::size_t u = 0; u < liste.size() && !steht_da; ++u) {
-                        steht_da = ohne_anfuehrung ? ist_wortpraefix(liste[u], gesucht)
-                                                   : liste[u] == gesucht;
-                    }
-                    const std::string_view kopfwort = erstes_wort(gesucht);
-                    if (!steht_da && ohne_anfuehrung && ist_ziffernwort(kopfwort)) {
-                        // Kein Ueberschriftenanfang und eine Gliederungsziffer davor:
-                        // Das Zitat nennt die Nummer und nicht den Namen. Es traegt
-                        // keinen Wortlaut, an dem sich etwas nachschlagen liesse.
-                        grund = "Gliederungsziffer statt Ueberschrift: "
-                                + std::string(kopfwort);
-                    } else if (!steht_da && ohne_anfuehrung && kopfwort.size() == 1) {
-                        // Ein einzelnes Zeichen ist in diesem Vorhaben ein Formelzeichen
-                        // oder ein Platzhalter, keine Ueberschrift. Gemessen und nicht
-                        // vorsorglich: `rueckstand.md` sagt an einer Stelle sinngemaess
-                        // "stand dort unter der <Schluesselwort> X und ist heute nicht
-                        // mehr aufgefuehrt" -- eine Aussage **ueber** ein Zitat, kein
-                        // Zitat. Sie steht hier statt in der Zaehlung der Zitate.
-                        grund = "einzelnes Zeichen statt Ueberschrift: "
-                                + std::string(kopfwort);
+                    if (ohne_anfuehrung) {
+                        const Namensart art = namensart(gesucht, liste);
+                        if (art == Namensart::Ziffer) {
+                            grund = "Gliederungsziffer statt Ueberschrift: "
+                                    + std::string(erstes_wort(gesucht));
+                        } else if (art == Namensart::Einzelzeichen) {
+                            grund = "einzelnes Zeichen statt Ueberschrift: "
+                                    + std::string(erstes_wort(gesucht));
+                        } else if (art == Namensart::Ohne_Gliederung) {
+                            grund = "Zieldatei fuehrt keine Ueberschrift: "
+                                    + es->second.anzeige;
+                        }
+                        steht_da = art == Namensart::Ueberschrift;
                     } else {
+                        for (std::size_t u = 0; u < liste.size() && !steht_da; ++u) {
+                            steht_da = liste[u] == gesucht;
+                        }
+                    }
+                    if (grund.empty()) {
                         ++zaehlwerk.zitate;
                         if (ohne_anfuehrung) {
                             ++zaehlwerk.ohne_anfuehrung;
@@ -1520,20 +1714,21 @@ int main(int argc, char** argv) {
     // Der Selbsttest laeuft vor allem anderen und braucht kein Argument: Stimmt die
     // Suche nach links nicht, ist jede Zahl weiter unten wertlos -- auch und gerade
     // eine gruene.
-    const std::size_t fehlgeschlagen = selbsttest_namenssuche();
+    const std::size_t fehlgeschlagen =
+        selbsttest_namenssuche() + selbsttest_ohne_anfuehrung();
     if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
                      "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
                      "nicht wie erwartet\nausgegangen. Der Riegel hat den Bestand gar "
                      "nicht erst gelesen -- ein Messgeraet,\ndas seine eigenen Faelle "
                      "verfehlt, misst auch fremde nicht.\n",
-                     fehlgeschlagen, NAMENSFAELLE.size());
+                     fehlgeschlagen, NAMENSFAELLE.size() + ZITATFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
-                 "belegstellen_riegel, Selbsttest der Suche nach links: %zu Faelle, "
-                 "alle wie erwartet.\n",
-                 NAMENSFAELLE.size());
+                 "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links und "
+                 "%zu zur Form\nohne Anfuehrung, alle wie erwartet.\n",
+                 NAMENSFAELLE.size(), ZITATFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {

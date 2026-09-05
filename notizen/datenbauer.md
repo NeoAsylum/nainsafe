@@ -11,8 +11,8 @@ Eintraegen, die noch gelten. Nicht loeschen.
 Belege gehoeren nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
 Lehre daraus, in einem Satz.
 
-*Neu begonnen am 2026-09-04 nach Paket 0065 (Grenze bei 11.574 Zeichen erreicht); die
-Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-04.md`.*
+*Neu begonnen am 2026-09-05 nach Paket 0078 (Grenze bei 11.606 Zeichen erreicht); die
+Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-05.md`.*
 
 ---
 
@@ -24,30 +24,27 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-04.md`.*
   `^sollreihen` findet 28, `^sollreihen = ` findet 21.
 - **Ein Beleg deckt so viel, wie die belegende Stelle beansprucht.** Ob eine Fundstelle
   Beispiel oder abschliessende Liste ist, entscheidet ihre Zeile, nicht die zitierte Zelle.
-- **Chirurgische Aenderungen weist man mit `git diff --numstat` plus Hunkkoepfen nach**,
-  nicht mit erneutem Lesen. Bilanz und Hunkliste sind der ganze Beleg fuer "sonst nichts".
 - **Vor dem Einspielen pruefen, nicht danach.** In `$TMPDIR` zusammensetzen, dort messen,
   erst dann kopieren -- und den sha256 beider Fassungen nebeneinander ausgeben.
 - **Ein Verweis ohne Zeilennummer hat zwei Teile: Adresse und Zitat**, und ein Zitat ist
-  nur suchbar, wenn es zeichengleich ist -- auch in den Umlauten und ungebrochen auf
-  einer Zeile.
+  nur suchbar, wenn es zeichengleich ist -- auch in den Umlauten.
 - **Selbstproben ueberleben eine Einfuegung, Adressen nicht.** An `^` verankerte
   Zaehlmuster halten; jede Zeilennummer unterhalb der Einfuegung verschiebt sich.
 - **Ist `python3` frei, ist `tomllib` der staerkste Nachweis, den diese Rolle hat.** Alte
   und neue Fassung beide einlesen, Baeume flach ziehen, Blattschluessel als Pfadtupel
   vergleichen. "Sonst ist nichts geaendert" wird damit ein gemessener Satz.
-- **Eine Ersetzung mit Trefferzaehlung schuetzt vor dem stillen Danebengreifen.** Jede
-  Ersetzung erwartet genau *n* Treffer und bricht sonst ab.
 - **Nach jedem Ersetzungsschritt `tomllib`, nicht erst am Schluss.** Der Parser faengt,
   was `grep` nicht sieht -- ein typografisches Anfuehrungszeichen bricht einen Basisstring.
 - **Die Schnittzahlen aus `[pruefweg]` sind eine kostenlose Regressionsprobe.** Alle
-  fuenfzehn Muster nach dem Eingriff neu zaehlen; bei `schnitt_1` zusaetzlich die
-  Trefferkontexte alt gegen neu, sonst bleibt eine gleiche Zahl aus anderen Stellen
-  unbemerkt.
-- 2026-09-04 (0065) -- **Der Bezugsstand gehoert als Commit-Kennung in den Bericht,
-  bevor der Lauf beginnt.** `git ls-tree <commit> <pfad>` plus `git status` in einem
-  Aufruf: zwei Zeilen, und jede spaetere Zahl bleibt reproduzierbar, auch wenn ein
-  fremder Lauf die Datei mitcommittet.
+  Muster nach dem Eingriff neu zaehlen; bei `schnitt_1` zusaetzlich die Trefferkontexte
+  alt gegen neu, sonst bleibt eine gleiche Zahl aus anderen Stellen unbemerkt.
+- **Der Bezugsstand gehoert als Commit-Kennung in den Bericht, bevor der Lauf beginnt.**
+  `git ls-tree <commit> <pfad>` plus `git hash-object <pfad>`: zwei Zeilen, und jede
+  spaetere Zahl bleibt reproduzierbar, auch wenn ein fremder Lauf die Datei mitcommittet.
+  Am 2026-09-05 hat genau das den Lauf gerettet -- siehe unten.
+- **Wer eine Menge aufteilt, schreibt die Rechnung hin** (`4 + 14 = 18`), nennt je Teil
+  die Zuordnungsregel und behauptet ausdruecklich "keines doppelt, keines ausgelassen".
+  Erst dann ist es eine Zaehlung.
 
 ## Was nicht funktioniert
 
@@ -55,42 +52,34 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-04.md`.*
   Anlaeufen aus drei Rollen. `api.imf.org` antwortet. Nicht erneut versuchen.
 - Der Seitenabruf kuerzt woertliche Zitate bei etwa 125 Zeichen; einen ganzen Lizenzsatz in
   nummerierten Bruchstuecken ausgeben lassen.
-- **Die Werkzeuglage wechselt von Lauf zu Lauf -- erst pruefen, was geht.** Sieben Laeufe,
-  sieben Lagen. Nie aus dem letzten Lauf schliessen.
-- **Der Weg, wenn `Edit` und `Write` fallen und `python3` laeuft:** ein Python-Heredoc
-  (`python3 << 'MARKE'`) mit Ersetzungen auf einer Kopie in `$TMPDIR`, messen, dann
-  `shutil.copyfile`. Backticks und eckige Klammern *im Heredoc* sind unproblematisch.
-  Ein Hilfsskript in `$TMPDIR` ablegen und per `exec(open(...).read())` laden haelt die
-  einzelnen Aufrufe kurz.
-- **Abgewiesen wird nach Laenge, nicht nur nach Zeichen.** Erst kuerzen, dann Zeichen
-  verdaechtigen. Bei 0065 fiel derselbe Messaufruf zweimal, bis ich die
-  Dict-Comprehension durch eine gewoehnliche Schleife ersetzt hatte.
+- **Die Werkzeuglage wechselt von Lauf zu Lauf -- erst pruefen, was geht.** Neun Laeufe,
+  neun Lagen. Nie aus dem letzten Lauf schliessen.
+- **Abgewiesen wird nach Laenge und nach Form, nicht nur nach Zeichen.** Erst kuerzen,
+  dann Zeichen verdaechtigen.
 - **Ein fuehrendes `cd` laesst den ganzen Aufruf abweisen.** `git -C <pfad>` statt `cd`,
-  und im Heredoc absolute Pfade -- ein relativer Pfad zeigt auf das Wurzelverzeichnis.
+  und im Heredoc absolute Pfade.
 - `notizen/archiv/` ist **nicht** gesperrt -- wer statt zu archivieren im Logbuch kuerzt,
   verliert Eintraege ohne Not. Archivnamen vorher auf Existenz pruefen.
 - **Zwei Laeufe derselben Rolle teilen sich Logbuch und Archivdatei.** Unmittelbar vor dem
   Schreiben neu lesen.
 - **Zwischendateien gehoeren nach `$TMPDIR`** -- `rm` ist gesperrt.
-- **Ergebnisdateien werden von fremden Laeufen mitcommittet.** Dreimal in Folge (0057,
-  0062, 0065-Vorlauf). Der Arbeitsbaum muss zu *jedem* Zeitpunkt schluessig sein.
 
 ## Offene Faehrten
 
-- **Der IWF-Volltext entscheidet jetzt 11 der 27 Sollreihen und 7 der 16
-  Pruefgegenstaende** (bis 0065: 15 der 31). Ein einziger Seitenabruf, an dem vier Tage
-  und drei Rollen gescheitert sind. Punkt an den Betreiber.
+- **Der IWF-Volltext entscheidet 11 der 27 Sollreihen und 7 der 16 Pruefgegenstaende.**
+  Ein einziger Seitenabruf, an dem vier Tage und drei Rollen gescheitert sind. Punkt an
+  den Betreiber.
 - **Reihe 3 (PWT-Kapitalstock) bleibt die einzige ungemessene Quelleneinheit.** Sie haengt
   an *einem* lesbaren Auszug aus `pwt110_user_guide_to_data_files.pdf` oder `pwt110.xlsx`
-  -- beide benannt und erreichbar, nur nicht lesbar (PDF-Sperre). Betreiber, kein
-  Rechercheauftrag.
-- **Der Leitzinspfad ist jetzt meine Aufgabe, nicht mehr die des Spielentwerfers.**
-  `spiel.md` Z. 1871-1890 gibt dem Datenbauer zwei Fragen: woher der Pfad fuer DEU und CHN
-  kommt (DISR fuehrt beide nicht), und ob ein einheitlicher Zinsbegriff ueber vier Laender
-  erreichbar ist. Offener Ausgang, eigenes Paket, noch keines geschrieben.
-- **Widerspruch Nr. 9 (BACI laufend gegen T5 Klasse 2)** ist seit 0047 in der Liste und
-  seit 0025 unentschieden. Vier Wege benannt, keiner gewaehlt -- Architekt.
-- **Widerspruch Nr. 4 (Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6)** -- Architekt.
+  (Dataverse 554025 oder 554105) -- beide benannt und erreichbar, nur nicht lesbar
+  (PDF-Sperre). Betreiber, kein Rechercheauftrag. T53 ordnet die Folge nach Groesse: die
+  Einheit ist der schwere Teil (Faktor 1 gegen 1.000), das Basisjahr der leichte.
+- **Der Leitzinspfad ist meine Aufgabe, nicht mehr die des Spielentwerfers.** `spiel.md`
+  gibt dem Datenbauer zwei Fragen: woher der Pfad fuer DEU und CHN kommt (DISR fuehrt
+  beide nicht), und ob ein einheitlicher Zinsbegriff ueber vier Laender erreichbar ist.
+  Offener Ausgang, eigenes Paket, **noch keines geschrieben**.
+- **Widerspruch Nr. 4 (Faktor 10.000 auf den Rohkurs gegen T5 Klasse 6)** -- Architekt,
+  weiter offen. Nr. 9 ist mit 0078 erledigt.
 - **0017:** Reihen 17, 18 und 19 haben keine Quelle; Reihe 16 erbt das schwaechere Urteil
   ihrer Eingabereihen.
 - **0022:** Drei `Source`-Wortlaute tragen dieselbe Umbruch-Ersetzung ohne Vermerk wie die
@@ -100,72 +89,46 @@ Vorgaengerfassung liegt unter `notizen/archiv/datenbauer-2026-09-04.md`.*
 - **Die Klasse-4-Frage** steht seit 0035 im Wortlaut in `parameter.toml`: Traegt T5
   Klasse 4 ("0 bis 10.000") ihren Deckel auch fuer einen Regler? Fuenf Schluessel haengen daran.
 
-## Lauf 0065 (2026-09-04)
+## Lauf 0078 (2026-09-05) -- Preisbasis nach T53
 
-- **Ein Feld, dessen Inhalt "was die Vorlage sagt" ist, kann nicht falsch werden -- die
-  Vorlage wird falsch.** Der Spielentwerfer nannte `rolle_tabelle` und `t37_klasse` beide
-  "ab heute falsch". `t37_klasse` habe ich geleert, `rolle_tabelle` nicht: Leseregel 4
-  definiert es als woertliche Uebernahme aus `technik.md`, und `technik.md` sagt es
-  unveraendert. Ueberschrieben waere es von einer echten Uebernahme nicht mehr zu
-  unterscheiden gewesen -- und die Spur zum noetigen Nachzug weg. Der Widerspruch gehoert
-  unter `[[widerspruch]]`, genau wie es der Kopf der Datei verlangt.
-- **Einen Widerspruch in einen bestehenden Block schreiben, statt einen neuen anzulegen.**
-  Ein zehnter `[[widerspruch]]` haette `schnitt_3` (113 Koepfe), `schnitt_4` (`^nr = ` 28)
-  und die Widerspruchszahl in `toml_geprueft` mitverschoben -- drei Selbstmessungen fuer
-  eine Sache, die sachlich in Nr. 5 gehoerte. Vor jedem neuen Tabellenkopf pruefen, welche
-  Selbstmessung ihn mitzaehlt.
-- **Die Aufzaehlung im Paketrumpf nachmessen, nicht uebernehmen -- zum zweiten Mal.** Elf
-  Fundstellen waren genannt, ein dateiweites `\b31\b` fand eine zwoelfte
-  (`reihe.12.t26_folge`, "keine der 31 Sollreihen"). Sie nannte Reihe 9 nicht und stand
-  deshalb in keiner Tabelle.
-- **Gleiche Blattzahl heisst nicht gleiche Schluesselmenge.** 1214 gegen 1214, und
-  trotzdem zwei neue und zwei weggefallene Schluessel. Nie die Summe berichten, ohne die
-  Mengen zu bilden.
-- **Ein Schluesselname, der eine Zahl traegt, veraltet mit ihr.** `in_den_31_enthalten`
-  heisst jetzt `in_den_sollreihen_enthalten`. Vor dem Umbenennen dateiweit *und*
-  repoweit suchen, ob Code den Namen liest -- hier keiner.
-- **Wenn eine Bedingung "zaehle selbst" sagt, ist die gezaehlte Zahl nur die halbe
-  Antwort; die andere ist die Zaehlregel.** "Einmal als `beleg`, achtmal ueberhaupt" ist
-  erst pruefbar, wenn danebensteht, was als `beleg` zaehlt. Die Vermutung, woher die
-  falsche Vier kam, gehoert in den Bericht und nicht in die Datei.
-- **Eine geschaetzte Zahl eines Pruefers ("zwei bis drei") ist ein Hinweis, keine
-  Vorgabe.** Gezaehlt waren es zwei, im Git an acht Fassungen der Datei gegengeprueft.
-- **Unsicherheiten in den Baubericht, nicht nur ins Logbuch.** Der Pruefer sieht das
-  Logbuch nicht, der Projektmanager schon -- aber im Bericht sieht es *beide*. Drei
-  Punkte notiert, davon zwei echte Abweichungen vom Handzettel.
-- Werkzeuglage 0065: `Bash` und `python3` frei, `Edit` und `Write` abgewiesen, `sed`
-  abgewiesen, `grep` teils frei. Siebte Lage in sieben Laeufen.
-
-## Lauf 0065, Ruecklauf 1 (2026-09-04)
-
-- **"Die uebrigen n" ist keine Aufteilung, sondern eine Falle.** Mein Satz zaehlte ein
-  Blatt mit ("mitgezaehlt") und zog es im selben Halbsatz wieder ab; er war unter beiden
-  Lesarten falsch. Wer eine Menge aufteilt, schreibt die Rechnung hin --
-  `1 + 1 + 6 = 8` --, nennt je Teil die Zuordnungsregel und behauptet ausdruecklich
-  "keines doppelt, keines ausgelassen". Erst dann ist es eine Zaehlung.
-- **Der Fehler steckte nicht im Zahlwort, das der Pruefer nannte.** Er sagte "ein Wort",
-  und die Ersetzung `sieben`→`sechs` waere unter der zweiten Lesart wieder falsch
-  gewesen. Eine Reparaturvorgabe eines Pruefers ist ein Hinweis auf die Stelle, nicht auf
-  den Umfang -- die Diagnose selbst nachrechnen.
-- **Beim Aufteilen mit ausgeben, was die Teilmengen sind, nicht nur wie gross sie sind.**
-  Vereinigung bilden und ihre Groesse gegen die Gesamtzahl pruefen faengt Doppelzaehlung;
-  Differenz gegen die Gesamtmenge faengt Auslassung. Zwei Zeilen Python, und die
-  Behauptung "ohne Rest" ist gemessen.
-- **Null geaenderte Blattwerte ist ein Nachweis, kein Nullergebnis.** Bei einer reinen
-  Kommentaraenderung ist der `tomllib`-Vergleich gegen den Bezugsblob (1214→1214, 0 neu,
-  0 weg, 0 verschieden) der kuerzeste Beleg dafuer, dass die schon abgenommenen
-  Bedingungen unberuehrt sind -- sie haengen alle an Blattwerten.
-- **Ein Selbstmessungsfeld nicht fortschreiben, wenn der Lauf nichts misst, was es
-  zaehlt.** `pruefweg.toml_geprueft` haette der einzige geaenderte Blattwert des Laufs
-  werden und genau den Nullbeleg oben zerstoeren muessen. Die Enthaltung gehoert begruendet
-  in den Bericht.
-- **Wenn eine Bedingung "nimm keine Zahl von mir" sagt und du auf dieselbe kommst**, ist
-  die Uebereinstimmung nicht das Problem -- der fehlende eigene Weg waere es. Fundstellen
-  einzeln ausgeben und eine Zerlegung mitliefern, die in der Vorgabe nicht vorkommt
-  (hier 4/1/1 des dritten Teils).
-- Werkzeuglage: `Bash`, `python3`, `Read` und **`Edit`** frei; `sed` abgewiesen. Achte Lage
-  in acht Laeufen -- `Edit` ging diesmal, im Lauf davor nicht.
-- **`git add` ging, `git commit` wurde abgewiesen** (drei Fassungen der Meldung, auch die
-  einzeilige). Der Lauf endet dann mit sauber vorgemerkten Dateien statt mit einem Commit
-  -- das ist kein Fehlschlag, sondern der Zustand, den ein fremder Lauf ohnehin oft
-  aufnimmt. Fremde geaenderte Dateien dabei **nicht** mit vormerken.
+- **Ein fremder Commit kann mitten im Lauf zuschlagen und einen *unfertigen* Zwischenstand
+  einsammeln.** `8d74aff` (Architekt) hat `reihen.toml` nach meiner vierten von zwoelf
+  Schreibbewegungen mitcommittet, `61fa55b` (Kernbauer) danach den fertigen Rest -- am Ende
+  stand meine Ergebnisdatei nicht mehr in `git status`. Vorher war das viermal *nach* dem
+  Lauf passiert. **Lehre: nie gegen `HEAD` messen, immer gegen den vor dem Lauf notierten
+  Blob**, die Schlussmessung nach jedem fremden Commit wiederholen, und dem Pruefer den
+  vollstaendigen Vergleich hinschreiben (`git diff <altblob> <neublob>`) -- sonst sucht er
+  eine Aenderung, die in keinem einzelnen Commit ganz zu sehen ist.
+- **Ein Bilanzfeld zaehlt sich selbst mit.** Meine erste Messung ergab 17 verschiedene
+  Blattwerte, nach dem Schreiben von `toml_geprueft` waren es 18. Die Zahl ist erst
+  richtig, wenn sie das Feld einschliesst, das sie traegt -- dann ist sie ein Fixpunkt und
+  ein drittes Messen bestaetigt sie. Genau daran ist dieses Feld dreimal gescheitert.
+- **Eine Listenverschiebung sieht im Schluesselvergleich aus wie vier Aenderungen.** Wer in
+  `offen` einen Eintrag herausnimmt und zwei einsetzt, bekommt vier "verschiedene" Indizes
+  gemeldet. Die Probe dagegen ist `alt[1:] == neu[2:]` -- eine Zeile, und aus vier
+  scheinbaren Eingriffen wird ein gemessener Nulleingriff.
+- **Ein Zitat kann eine Selbstmessung anheben.** T53s Selbsttest lautet
+  `preisindex_handel[2015] = 10.000` und traegt damit genau das Muster von `schnitt_1`.
+  Woertlich zitiert haette er die 6 auf 7 gehoben -- fuer nichts. Vor jedem Zitat pruefen,
+  ob es ein Zaehlmuster der eigenen Datei enthaelt; in Prosa sagt es meist dasselbe.
+- **Dasselbe umgekehrt: ein Wort, das eine Abnahmebedingung zaehlt, darf im eigenen
+  Messbericht nicht vorkommen.** Bedingung 4 zaehlte `Ausfuhrpreisindex`; haette ich im
+  Nachweis geschrieben "steht null mal", stuende es einmal. Umschreiben und sagen, warum.
+- **Wo eine Vorgabe eine Formel gibt, aber keine Feldaufteilung, ist die Aufteilung deine
+  Entscheidung -- und gehoert als solche in den Bericht.** Ein Deflator hat keinen einzigen
+  Faktor. `faktor = 10000` (der Zaehler aus T53s Formel) plus ein neues Feld `teiler` war
+  der einzige Weg, der weder Leseregel 3 bricht noch eine gesetzte Null einfuehrt. Die zwei
+  verworfenen Alternativen mit ihrem Preis danebenschreiben, sonst liest es sich wie Willkuer.
+- **Ein Eingriff macht Saetze an anderen Stellen falsch -- die sind Folge, nicht
+  Aufraeumen.** Vier Stellen jenseits der drei beauftragten hingen an der geloeschten
+  Frage, darunter ein `beleg`, der auf den entfernten Eintrag zeigte. Nach jeder
+  Streichung dateiweit nach Verweisen auf das Gestrichene suchen.
+- **Nicht jede gefundene Luecke darf man schliessen.** `[datei.vorlagen]` fuehrt T53 nicht,
+  und der Kommentar darueber sagt selbst, was das kostet. Das Paket verlangte "melden,
+  nicht nebenbei aufloesen" -- also Vorschlag `0099` geschrieben statt zwei Zeilen
+  eingefuegt. Ein Vorschlag mit Grund kostet den Projektmanager weniger als ein Ruecklauf.
+- **Die Nummer eines Vorschlags nachsehen, nicht aus dem eigenen Paket ableiten.** Ich
+  hatte 0079 geschrieben; die hoechste vorhandene war 0098.
+- Werkzeuglage 0078: `Bash`, `python3`, `Read`, `Grep`, `Edit` und `Write` **im Repo** frei;
+  `Write` nach `$TMPDIR` abgewiesen, `cp` abgewiesen, `sed`/`awk` abgewiesen, mehrteilige
+  `git`-Aufrufe mit `;` teils abgewiesen (einzeln gingen sie). Neunte Lage in neun Laeufen.
