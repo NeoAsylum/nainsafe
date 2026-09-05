@@ -1,7 +1,7 @@
 ---
 id: 0107-kennzeichen-gegen-nachbarmeldungen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0085-abbruchmeldungen-im-wortlaut-pruefen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: In `schritt_probe` ist die **Eindeutigkeit** jeder Kennzeichenliste eine laufende Zusicherung statt einer Lesung. Der Lauf sammelt die angekommenen Meldungen aller Abbruchstellen und sichert zu, dass keine Kennzeichenliste auf die Meldung eines **anderen** Riegels passt; zwei Stellen, die denselben Riegel pruefen, gelten dabei als eine (heute Zeile 485 und der dritte Fall in `probe_rundennummer`). Der Nachweis sind zwei ausgefuehrte Sabotagen. Erstens die Abschwaechung: Verkuerzt man die `spielmodus`-Liste auf `{"kern::schritt"}`, wird `schritt_probe` rot, **ohne** dass an der Quelle etwas geaendert wird -- die rote Zeile nennt die Stelle und die fremde Meldung, auf die ihre Liste ebenfalls passt. Zweitens die Gegenprobe: Am unveraenderten Auslieferstand bleibt der Lauf gruen, und die fuenf heutigen Listen bleiben unveraendert -- die neue Zusicherung ist kein Anlass, ein Textstueck nachzuziehen.

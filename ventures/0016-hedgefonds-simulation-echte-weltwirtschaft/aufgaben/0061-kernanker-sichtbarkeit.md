@@ -1,7 +1,7 @@
 ---
 id: 0061-kernanker-sichtbarkeit
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0040-kernanker-klassenzuteilung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/test/vorrat_kernanker_probe.cpp]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".

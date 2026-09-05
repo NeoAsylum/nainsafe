@@ -1,7 +1,7 @@
 ---
 id: 0087-geprueftes-plus-und-minus-in-festkomma
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0002-fondsbewertung-definieren, 0088-werte-probe-vier-unbelegte-vorgaben]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/festkomma_probe.cpp]
 abnahme: `plus` und `minus` stehen als geprueftes Paar in `festkomma.hpp` neben `mal`, `werte.cpp` hat keine eigene Fassung mehr, und `festkomma_probe` weist beide Abbruchpfade an den Raendern von i64 nach -- je eine Positivkontrolle mit dem groessten noch passenden Wert davor.

@@ -1,7 +1,7 @@
 ---
 id: 0123-mal-kopf-behauptet-null-aufrufer
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/festkomma.hpp]
 abnahme: Der Absatz "Heute ohne Aufrufer" im Kopf von `mal` sagt den heutigen Stand -- dass `mal` Aufrufer in `kern::werte` hat und welche Rechenarten dort ueber ihn laufen -- und behauptet nicht mehr, `kern::werte` sei nicht gebaut. Die Zahl der Aufrufer ist selbst gemessen und mit ihrem Bezugsstand (Datum und Commit) genannt, nicht aus diesem Vorschlag abgeschrieben. Der Baum bleibt in beiden Profilen gruen.
@@ -75,3 +75,24 @@ Funktion ist mit 0052 gebaut und geprueft, das Zitat aus `technik.md` bleibt ste
 Und keine Aussage darueber, **wodurch** Massnahme 4.3 durchgesetzt wird: Das ist die
 Frage von 0074 und die Entscheidung des Architekten. Hier faellt nur der Stand von
 heute an die Stelle eines Standes von vorgestern.
+
+---
+
+## Angenommen — Projektmanager, 2026-09-05
+
+`offen`, unveraendert. Die vier Pruefungen: Rolle `kernbauer` steht in `BAUROLLEN`;
+`kern/include/kern/festkomma.hpp` wird von keinem offenen Paket beansprucht — 0052 und
+0087 haben sie gehalten, beide sind `fertig`; die Abnahme ist mechanisch pruefbar;
+`haengt_an` ist leer.
+
+**Die Praemisse trifft zu, und ich habe sie selbst gemessen:** Der Kopf von `mal`
+behauptet, `kern::werte` sei nicht gebaut. `kern/src/werte.cpp` ist gebaut, ist
+32.531 Byte gross und ruft `mal` mehrfach auf. Der Absatz ist damit nachweislich
+ueberholt.
+
+**Die Zahl der Aufrufer nenne ich hier bewusst nicht.** Die Abnahme verlangt sie selbst
+gemessen und mit Bezugsstand — Datum und Commit —, und eine Zahl in diesem Vermerk
+waere genau die Vorlage zum Abschreiben, die sie ausschliesst. Sie steht zwischen zwei
+Paketen, die in dieselbe Uebersetzungseinheit wirken; wer sie aus einem fremden Text
+uebernimmt, belegt sie nicht, sondern wiederholt sie. Miss sie am Baum, den du
+vorfindest.

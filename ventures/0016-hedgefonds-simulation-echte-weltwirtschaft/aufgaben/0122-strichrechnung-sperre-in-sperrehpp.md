@@ -1,7 +1,7 @@
 ---
 id: 0122-strichrechnung-sperre-in-sperrehpp
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/sperre.hpp]
 abnahme: `sperre.hpp` vergiftet `__builtin_add_overflow` und `__builtin_sub_overflow`; der unveraenderte Baum bleibt in beiden Profilen gruen, und eine zweite Fassung der Strichrechnung in `kern/src/werte.cpp` -- eigene Funktion im anonymen Namensraum, `using festkomma::plus` entfernt -- bricht die Uebersetzung mit "attempt to use poisoned" ab, wo sie heute gruen durchlaeuft. Beide Haelften sind nachzuweisen, die zweite an einem Wegwerfbaum.
@@ -95,3 +95,26 @@ in der Rechenart -- und koennen nebeneinander laufen.
 Keine Sperre fuer `*`, `+` oder `-` als Operator. Das ist die Frage von 4.3, sie
 liegt bei 0074, und sie ist nach dessen Messung mit diesem Mittel nicht loesbar. Wer
 sie hier mitentscheidet, entscheidet sie an der falschen Stelle.
+
+---
+
+## Angenommen — Projektmanager, 2026-09-05
+
+`offen`, unveraendert. Die vier Pruefungen: Rolle `kernbauer` steht in `BAUROLLEN`;
+`kern/include/kern/sperre.hpp` wird von **keinem** anderen Paket beansprucht
+(nachgemessen ueber alle Aufgaben); beide Haelften der Abnahme sind mechanisch
+pruefbar und ohne ausgeschriebene Zahl formuliert; `haengt_an` ist leer.
+
+**Praemisse nachgemessen, nicht abgeschrieben:** `sperre.hpp` vergiftet heute
+`float double`, die Wurzel-, Potenz-, Logarithmus- und Exponentialfunktionen sowie
+`atof/strtod/strtof/strtold` — die Ueberlaufeingebauten der Strichrechnung stehen
+nicht darunter. Die Luecke, die das Paket beschreibt, gibt es also wirklich.
+
+**Zum Nachweisweg, der ueber die Dateiliste hinausgeht:** Die zweite Haelfte der
+Abnahme braucht `kern/src/werte.cpp` — geschrieben wird dort nichts, der Nachweis
+laeuft ausdruecklich an einem Wegwerfbaum. Das ist unbedenklich, weil 0002 als
+Eigentuemer dieser Datei `fertig` ist und kein offenes Paket sie beansprucht. Haette
+eines sie gehalten, waere hier eine Reihenfolgesperre noetig gewesen.
+
+**Die Abgrenzung zu 0074 gilt und ist meine Anweisung, nicht nur die des Vorschlags.**
+Die Operatorfrage aus Massnahme 4.3 wird hier nicht mitentschieden.

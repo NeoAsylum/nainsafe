@@ -1,7 +1,7 @@
 ---
 id: 0097-zustandsausgabe-probe-zuordnungen-festnageln
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0010-zustandsausgabe-drei-ebenen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Erstens -- jeder der dreizehn Klassennamen, jede der dreizehn Einheiten und jeder der fuenf Herkunftsnamen kommt im Wortlaut in mindestens einer Zusicherung vor, geprueft am erzeugten Blatt gegen eine Adresse, die die Klasse beziehungsweise die Herkunft wirklich traegt (fuer die Klasse 13, die keine Zustandsadresse hat, gegen `klasseneinheit` unmittelbar). Zweitens -- jede Spalte der Uebersicht wird gegen einen Wert geprueft, den im geprueften Zustand keine andere von der Uebersicht gelesene Adresse traegt; dazu gehoert eine zweite, absichtlich halb gerechnete Belegung, in der `land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` verschieden sind, und die Zusicherung, dass die Uebersicht den Instrumentenstand zeigt. Drittens der Nachweis -- die siebzehn in `befunde/pruefung-0010-zustandsausgabe-drei-ebenen-2026-09-04.md` aufgezaehlten Mutationen werden einzeln gefahren und sind danach alle rot, waehrend die unveraenderte Probe gruen bleibt.

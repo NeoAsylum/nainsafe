@@ -1,7 +1,7 @@
 ---
 id: 0094-linkschalterform-durchgereichtes-l
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0069-t2-linkriegel-in-der-werkzeugkette, 0076-riegel-sammeln-notfound-je-quelle]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

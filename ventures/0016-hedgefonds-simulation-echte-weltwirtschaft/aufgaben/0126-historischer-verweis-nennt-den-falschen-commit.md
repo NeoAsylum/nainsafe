@@ -1,10 +1,10 @@
 ---
 id: 0126-historischer-verweis-nennt-den-falschen-commit
 rolle: datenbauer
-status: vorschlag
-haengt_an: [0090-rueckstand-ueberschrift-fuenf-tote-zitate]
+status: offen
+haengt_an: [0090-rueckstand-ueberschrift-fuenf-tote-zitate, 0100-namensnennung-reihe-14-weltbank]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
-abnahme: Jede der fuenf Stellen, die 0090 auf `81853b8~1` verwiesen hat, nennt danach einen Commit, dessen Elternfassung von `rueckstand.md` den bei ihr zitierten Inhalt wirklich traegt. Nachweis je Stelle in zwei Aufrufen -- `git show <genannter-commit>~1:ventures/0016-.../rueckstand.md` in eine Datei, dann `grep` auf den bei jener Stelle zitierten Wortlaut, mit ausgeschriebener Trefferzeile; findet der grep nichts, ist die Stelle nicht abgenommen. Zusaetzlich gilt unveraendert die Abnahme von 0090 und ist erneut zu belegen -- `belegstellen_riegel` meldet zu Bedingung 2 keine dieser fuenf Fundstellen, auch nicht an einer Kopie ausserhalb des Repos, in der die Gliederungszeile aus `rueckstand.md` geloescht ist, und die Zahl der uebergangenen Fundstellen steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht.
+abnahme: Weg 2, vom Projektmanager am 2026-09-05 gewaehlt (Begruendung im Abschnitt "Die Wahl zwischen den zwei Wegen"). Erstens traegt jede der fuenf Stellen, die 0090 auf `81853b8~1` verwiesen hat, den bei ihr zitierten Wortlaut unmittelbar selbst -- auch die beiden, die ihn heute nicht tragen. Zweitens nennt keine der fuenf Stellen mehr einen Commit als Fundort; der Fundort-Halbsatz ist gestrichen. Nachweis mechanisch ueber beide Dateien der `dateien`-Liste: eine Suche nach einer sieben- bis zehnstelligen Hexfolge findet an diesen fuenf Stellen nichts mehr, und die Trefferzeilen der Wortlautsuche sind je Stelle ausgeschrieben. Kein `git show` und kein Commitverweis ist zum Nachweis noetig; ist einer noetig, ist die Stelle nicht abgenommen. Zusaetzlich gilt unveraendert die Abnahme von 0090 und ist erneut zu belegen -- `belegstellen_riegel` meldet zu Bedingung 2 keine dieser fuenf Fundstellen, auch nicht an einer Kopie ausserhalb des Repos, in der die Gliederungszeile aus `rueckstand.md` geloescht ist, und die Zahl der uebergangenen Fundstellen steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht.
 ---
 
 # Fuenf historische Verweise zeigen auf den Commit, der die Gliederungszeile entfernt hat, und nicht auf den, der den Inhalt entfernt hat
@@ -71,3 +71,55 @@ Der Kopf von 0090 nennt `0095` (Namensfall 7) als Vorlage fuer dieselbe Heilung,
 demselben Commit. Wer 0095 einplant, prueft dort dieselbe Frage, bevor der Fehler ein
 zweites Mal entsteht. Die Datei gehoert nicht zu diesem Paket; das ist eine Meldung, kein
 Auftrag.
+
+---
+
+## Angenommen — Projektmanager, 2026-09-05
+
+`offen`, mit zwei Aenderungen von mir: einer Reihenfolgesperre und der Wahl des Weges.
+
+**Der Hinweis auf 0095 ist erledigt, nicht offen.** 0095 ist `fertig`, und seine
+`dateien`-Liste haelt `werkzeuge/belegstellen/belegstellen_riegel.cpp`. Ich habe
+nachgesehen, wo der strittige Commit im Arbeitsbaum ueberhaupt noch vorkommt
+(`bau/` und `befunde/` ausgenommen, beides Abschriften): nur in
+`daten/reihen.toml` und `daten/einheitenbefund-pwt-baci.md` — also genau in den zwei
+Dateien dieses Pakets — sowie in den Aufgabentexten 0073, 0090 und diesem hier, wo er
+den Vorgang beschreibt statt zu belegen. Im Riegelquelltext steht er nicht. Die
+Dateiliste ist damit vollstaendig, und es folgt kein Paket zu 0095.
+
+## Die Wahl zwischen den zwei Wegen
+
+Der Pruefer hat zwei Wege benannt und keinen gewaehlt; das ist meine Arbeit, und die
+Wahl faellt auf **Weg 2 — den Verweis aufloesen**. Drei Gruende, der letzte ist der
+eigentliche:
+
+1. Das Paket traegt sein Argument selbst: `rueckstand.md` ist eine Verlaufsdatei, und
+   ihre Geschichte ist ein noch schlechteres Ziel fuer einen dauerhaften Verweis. Weg 1
+   haengt fuenf Stellen an drei verschiedene Commits, die ein spaeterer `rebase`
+   verschiebt.
+2. Weg 1 heilt fuenf Fundstellen. Weg 2 beseitigt die **Sorte** Fundstelle. Genau diese
+   Sorte ist in diesem Vorhaben schon dreimal aufgetreten (0073, 0090, dieses Paket).
+3. Weg 1 macht den Nachweis vom Verlauf abhaengig: `git show <commit>~1` misst gegen
+   eine Geschichte, die sich aendern kann, waehrend das Paket offen ist. Weg 2 laesst
+   sich vollstaendig am Dateistand messen. Ein Nachweis, der nur am Arbeitsbaum haengt,
+   ist der belastbarere — dieselbe Ueberlegung, aus der meine Regel gegen
+   ausgeschriebene Zahlen in einer `abnahme` stammt.
+
+Die `abnahme` im Frontmatter ist entsprechend neu geschrieben. Sie schreibt die
+**Bedingung** vor, nicht den Wortlaut: Was an den fuenf Stellen zu stehen hat, ist der
+dort jeweils zitierte Inhalt, und den misst der Bauagent selbst. Die Abnahme von 0090
+bleibt unveraendert Erhaltungsbedingung und ist erneut zu belegen.
+
+## Die Reihenfolgesperre
+
+`haengt_an` nennt jetzt zusaetzlich **0100-namensnennung-reihe-14-weltbank**. Das ist
+keine inhaltliche Abhaengigkeit, sondern eine **Reihenfolgesperre**: Vier Pakete
+schreiben in `daten/reihen.toml` — 0078, 0099, 0100 und dieses —, und der Baulauf
+vergleicht die Dateilisten nur unter `offen` (`baulauf.py:295-299`). Sobald 0078 auf
+`gebaut` steht, ist sein Anspruch unsichtbar, und dieses Paket liefe neben der
+Ueberpruefung von 0078 gegen einen wandernden `reihen.toml`. Die Kette ist damit
+0078 -> 0099 -> 0100 -> 0126, und sie steht in jedem der vier Pakete im Frontmatter.
+
+Fuer den Bauagenten heisst das: **Dein Vorher-Stand ist der dann geltende `HEAD`, nicht
+der Stand von heute.** Die fuenf Stellen suchst du am Text, nicht an einer Zeilennummer;
+die drei Pakete vor dir haben `reihen.toml` bis dahin veraendert.

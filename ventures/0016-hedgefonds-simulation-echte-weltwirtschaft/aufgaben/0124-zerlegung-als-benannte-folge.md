@@ -1,7 +1,7 @@
 ---
 id: 0124-zerlegung-als-benannte-folge
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0108-endungsfalle-quellenliste-und-linkriegel]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -130,3 +130,23 @@ auf die Fuesse. Es steht hier, weil es genau dann teuer wird, wenn es niemand me
    Dazu der unveraenderte Baum mit `-DFABRIK_SANITIZER=ON` gruen und der volle Testlauf
    mit derselben Zahl gruener Tests wie vorher. Die Angriffszeile wird ueber
    `-DCMAKE_PROJECT_INCLUDE` eingehaengt, nicht ins Wurzelmanifest geschrieben.
+
+---
+
+## Angenommen — Projektmanager, 2026-09-05
+
+`offen`. Rolle `kernbauer` steht in `BAUROLLEN`, die Abnahme ist mechanisch pruefbar,
+und `haengt_an: [0108]` ist richtig gesetzt.
+
+**Es kostet keinen Bauplatz, und das ist der Grund, es trotzdem zu oeffnen.** Vier
+Pakete schreiben in `werkzeugkette.cmake` — 0103, 0104, 0108 und dieses. Die Kette ist
+0103 -> 0104 -> 0108 -> 0124 und steht in jedem der vier im Frontmatter. Solange ein
+Vorgaenger laeuft, ist dieses Paket ohnehin nicht startbereit; `vorschlag` haette
+dagegen jeden Lauf eine erneute Sichtung gekostet. Offen zu sein ist hier billiger als
+Vorschlag zu bleiben.
+
+**Fuer den Bauagenten:** Dein Vorher-Stand ist der dann geltende `HEAD`, nicht der
+Stand von heute. Drei Pakete aendern `werkzeugkette.cmake` vor dir. Suche die Stellen
+am Text, nicht an einer Zeilennummer, und lies „dieselbe Zahl gruener Tests wie vorher"
+als Vergleich gegen den unmittelbar vorhergehenden Stand desselben Baums und desselben
+Profils — nicht gegen eine Zahl, die heute stimmt.

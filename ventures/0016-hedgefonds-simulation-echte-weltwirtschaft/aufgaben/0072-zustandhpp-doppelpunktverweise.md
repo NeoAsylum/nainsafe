@@ -1,7 +1,7 @@
 ---
 id: 0072-zustandhpp-doppelpunktverweise
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0027-zustand-schreibweg-schliessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: In `kern/include/kern/zustand.hpp` steht kein Verweis mehr, der einen fremden Dateinamen unmittelbar mit einem Doppelpunkt und einer Zeilennummer verbindet. Die zwei heutigen -- `technik.md:477` und `spiel.md:212-213`, beide im Kommentar ueber `enum class FondsGroesse` -- tragen stattdessen die zitierte Schluesselzeile oder die Abschnittsueberschrift, wie es Paket 0070 fuer den Verweis daneben verlangt hat. Nachgemessen wird mit dem Muster aus dem Rumpf, nicht mit dem Belegstellenriegel: Der sieht diese Form nicht.
