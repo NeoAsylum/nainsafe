@@ -91,7 +91,7 @@ using schreiber::Ursachensatz;
 using zustand::i64;
 
 // ---------------------------------------------------------------------------
-// Die beiden festen Kapazitaeten (T19)
+// Die beiden festen Kapazitaeten (T19) und die Wand, aus der die zweite folgt (T40)
 // ---------------------------------------------------------------------------
 
 /// Die laengste Partie, die der Jahrgangsbau nach T40 ueberhaupt zulaesst.

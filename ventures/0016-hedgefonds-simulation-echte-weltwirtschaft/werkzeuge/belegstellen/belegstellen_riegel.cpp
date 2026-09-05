@@ -178,13 +178,23 @@
 //! die vier Faelle, die die Verbreiterung verlangt (1, 2, 3 und 8), und die vier
 //! anderen bleiben gruen.
 //!
-//! Vier weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
+//! Fuenf weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
 //! mit: `ZITATFAELLE` zur Form ohne Anfuehrung (Paket 0079), `ZIELFAELLE` zur Frage, wo
 //! eine genannte Zieldatei liegt (Paket 0083), `ABSTANDSFAELLE` zum Wortabstand samt
-//! Suche nach rechts (Paket 0086) und `SATZFAELLE` zur Satzgrenze nach links (Paket
-//! 0079, zweiter Teil). Alle vier halten vor allem den **roten** Fall fest, den der
+//! Suche nach rechts (Paket 0086), `SATZFAELLE` zur Satzgrenze nach links (Paket 0079,
+//! zweiter Teil) und `URTEILSFAELLE` zu dem Schritt, an dem aus einer Art ein Urteil
+//! wird (Paket 0106). Die ersten vier halten vor allem den **roten** Fall fest, den der
 //! Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der Riegel koennte
 //! dort also nur zeigen, dass er gruen wird.
+//!
+//! Die fuenfte haelt etwas anderes, und sie schliesst den juengsten blinden Fleck
+//! dieses Programms: **die Verdrahtung statt des Bausteins.** Die vier aelteren rufen
+//! ihren Baustein unmittelbar auf; keine von ihnen kam an den Schritt heran, der aus
+//! einer Art ein Urteil macht, weil der einen Gegenstand auf der Platte brauchte. Bis
+//! zum 2026-09-05 liess er sich deshalb auf "immer aufgeloest" festnageln, ohne dass
+//! ein Fall riss und ohne dass der Lauf ueber den Bestand rot wurde -- auch nicht auf
+//! einer Kopie mit umbenannter Zielzeile. Seit Paket 0106 steht er als eigener Aufruf
+//! da und hat sechs Faelle, und jeder einzelne ist einmal rot gemessen worden.
 //!
 //! ## Was der Riegel liest, und warum genau das
 //!
@@ -2731,6 +2741,84 @@ Namensart namensart(const std::string& gesucht,
 }
 
 // ---------------------------------------------------------------------------
+// Der Schritt, an dem aus einer Art ein Urteil wird -- Paket 0106
+// ---------------------------------------------------------------------------
+//
+// **Warum das eine eigene Funktion ist.** Bis zum 2026-09-05 stand dieser Schritt
+// mitten in `pruefe_zitate`, und er war der einzige des Programms, den kein Fall hielt.
+// Die Tabellen weiter unten rufen `namensart` unmittelbar auf und messen damit den
+// Baustein -- welche Art ein Name hat --, nie die Verdrahtung, die daraus ein Urteil
+// macht. Gemessen hiess das: `steht_da` liess sich durch `true` ersetzen, in beiden
+// Zweigen, und weder der Selbsttest noch der Lauf ueber den Bestand wurde rot -- auch
+// nicht auf einer Kopie mit umbenannter Zielzeile. Ein Riegel, dessen Urteilsschritt
+// kein Test haelt, sieht in jedem Lauf aus wie einer, der prueft.
+//
+// Herausgezogen ist der Schritt messbar, **ohne dass der Selbsttest eine Datei
+// braucht**: Was er wissen muss, sind zwei Listen und ein Name. Der Lauf ueber den
+// Bestand ruft dieselbe Funktion -- ein im Test nachgebauter Urteilsschritt maesse eine
+// Fassung, die nirgends laeuft.
+
+/// Was aus einer Fundstelle wird, deren Zieldatei feststeht.
+struct Zitaturteil {
+    /// Der gesuchte Name steht in der Zieldatei. Nur gefragt, wenn `grund` leer ist.
+    bool steht_da = false;
+    /// Nicht leer: die Stelle wird uebergangen und zaehlt gar nicht erst als Zitat.
+    std::string grund;
+};
+
+/// Die drei Ausgaenge, die `pruefe_zitate` aus einem Urteil zieht.
+enum class Zitatausgang {
+    Aufgeloest,   ///< zaehlt als Zitat und als aufgeloest
+    Befund,       ///< zaehlt als Zitat und kommt in die Befundliste
+    Uebergangen   ///< zaehlt gar nicht als Zitat, kommt in die Aufzaehlung der Gruende
+};
+
+/// Der Ausgang zu einem Urteil. Eine eigene Funktion aus demselben Grund wie
+/// `namensart`: Der Lauf ueber den Bestand und der Selbsttest benutzen **denselben**
+/// Aufruf.
+///
+/// Die Reihenfolge ist die ganze Aussage. Ist ein Grund gesetzt, hat `steht_da` keine
+/// Wirkung mehr -- deshalb fragt der Selbsttest nach dem Ausgang und nicht nach
+/// `steht_da` fuer sich.
+Zitatausgang ausgang(const Zitaturteil& urteil) {
+    if (!urteil.grund.empty()) {
+        return Zitatausgang::Uebergangen;
+    }
+    return urteil.steht_da ? Zitatausgang::Aufgeloest : Zitatausgang::Befund;
+}
+
+/// Aus der Art wird ein Urteil: aufgeloest, Befund oder uebergangen mit Grund.
+///
+/// Mit Anfuehrung ist der Name abgegrenzt und wird wortgleich verlangt; ohne sie ist
+/// er es nicht, und die Zieldatei grenzt ihn ab -- er muss am Anfang einer ihrer
+/// Ueberschriften stehen. `zielanzeige` ist die Zieldatei, wie sie ein Leser sucht;
+/// sie steht nur in einem der drei Gruende.
+Zitaturteil beurteile_zitat(bool ohne_anfuehrung, const std::string& gesucht,
+                            const std::vector<std::string>& liste,
+                            const std::vector<std::string>& eigene,
+                            const std::string& zielanzeige) {
+    Zitaturteil urteil;
+    if (ohne_anfuehrung) {
+        const Namensart art = namensart(gesucht, liste, eigene);
+        if (art == Namensart::Ziffer) {
+            urteil.grund = "Gliederungsziffer statt Ueberschrift: "
+                           + std::string(erstes_wort(gesucht));
+        } else if (art == Namensart::Einzelzeichen) {
+            urteil.grund = "einzelnes Zeichen statt Ueberschrift: "
+                           + std::string(erstes_wort(gesucht));
+        } else if (art == Namensart::Ohne_Gliederung) {
+            urteil.grund = "Zieldatei fuehrt keine Ueberschrift: " + zielanzeige;
+        }
+        urteil.steht_da = art == Namensart::Ueberschrift;
+    } else {
+        for (std::size_t u = 0; u < liste.size() && !urteil.steht_da; ++u) {
+            urteil.steht_da = liste[u] == gesucht;
+        }
+    }
+    return urteil;
+}
+
+// ---------------------------------------------------------------------------
 // Der Selbsttest zur Form ohne Anfuehrung -- Paket 0079
 // ---------------------------------------------------------------------------
 //
@@ -2951,6 +3039,159 @@ std::size_t selbsttest_ohne_anfuehrung() {
     return falsch;
 }
 
+// ---------------------------------------------------------------------------
+// Der Selbsttest zum Urteilsschritt -- Paket 0106
+// ---------------------------------------------------------------------------
+//
+// **Was diese Tabelle prueft, was keine andere prueft: die Verdrahtung.** `ZITATFAELLE`
+// oben ruft `namensart` unmittelbar auf und misst, welche Art ein Name hat; hier wird
+// gemessen, was `beurteile_zitat` daraus macht. Zwischen beidem lag bis zum 2026-09-05
+// nichts -- der Grund steht bei der Funktion.
+//
+// **Gemessen wird der Ausgang und nicht `steht_da` fuer sich.** Ist ein Grund gesetzt,
+// zaehlt die Stelle gar nicht erst als Zitat, und `steht_da` hat dann keine Wirkung
+// mehr. Eine Erwartung an einen wirkungslosen Wert liesse Mutanten an Faellen sterben,
+// die sie gar nicht treffen -- das waere eine Messung, die nichts misst.
+//
+// **Je Zweig zwei Faelle, und beide Richtungen.** Ein Mutant, der immer aufloest
+// (`steht_da = true`), und einer, der nie aufloest (`steht_da = false`), muessen an
+// **verschiedenen** Faellen sterben; sonst belegt ihr Sterben nur, dass die Tabelle als
+// Ganzes reisst.
+//
+// **Warum die Gliederungsziffer keinen Fall bekommt und die beiden anderen Gruende
+// schon.** Am 2026-09-05 im Lauf ueber den Bestand gezaehlt: 37 uebergangene
+// Fundstellen tragen den Ziffergrund, **null** den Grund fuer das einzelne Zeichen und
+// **null** den fuer eine Zieldatei ohne jede Gliederung. Die Ziffer ist am Bestand
+// gehalten -- faellt ihr Zweig weg, wird der Lauf an 37 Stellen rot. Die beiden anderen
+// sind es nicht mehr, und bei einem von ihnen ist auch belegt, wodurch: Der Satz in
+// `rueckstand.md`, an dem die Regel zum einzelnen Zeichen hing, ist umformuliert
+// worden. Genau der Vorgang, den ein wandernder Anker beschreibt.
+//
+// Die Schluesselwoerter sind maskiert wie ueberall sonst in dieser Datei (`\125` ist
+// der Buchstabe `U`): Ohne die Maskierung waeren die erwarteten Gruende unten selbst
+// Fundstellen im eigenen Quelltext.
+
+struct Urteilsfall {
+    /// Stand die Fundstelle ohne Anfuehrung da? Das ist die Weiche.
+    bool ohne_anfuehrung;
+    /// Der abgegrenzte Name, so wie ihn `pruefe_zitate` uebergibt.
+    std::string_view gesucht;
+    /// Die Ueberschriften der Zieldatei, durch `|` getrennt.
+    std::string_view ueberschriften;
+    /// Die Ueberschriften der **zitierenden** Datei, ebenso getrennt.
+    std::string_view eigene;
+    /// Die Zieldatei, wie sie ein Leser sucht. Steht nur in einem der Gruende.
+    std::string_view zielanzeige;
+    Zitatausgang erwartet;
+    /// Leer, wenn die Stelle nicht uebergangen wird.
+    std::string_view erwarteter_grund;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Urteilsfall, 6> URTEILSFAELLE = {{
+    // --- Ohne Anfuehrung: aus der Art wird ein Urteil --------------------------
+    {true, "Reihe 1",
+     "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     "", "daten/lizenzbefund-reihen.md", Zitatausgang::Aufgeloest, "",
+     "derselbe Wortlaut wie Zitatfall 1, eine Ebene hoeher gemessen: Die Art ist 'steht "
+     "am Anfang', und der Lauf muss daraus 'aufgeloest' machen. Wer den Schritt auf "
+     "'nicht aufgeloest' festnagelt, macht aus jeder gefangenen Belegstelle des "
+     "Bestands einen Befund"},
+    {true, "Reihe 1",
+     "Reihe 1a - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     "", "daten/lizenzbefund-reihen.md", Zitatausgang::Befund, "",
+     "dieselbe Zeile, Zieltitel umbenannt -- der Fall, um dessentwillen dieses Paket "
+     "existiert. Wer den Schritt auf 'aufgeloest' festnagelt, laesst diese tote "
+     "Belegstelle durch und bleibt trotzdem gruen: am 2026-09-05 gemessen, im "
+     "Selbsttest und im Lauf ueber eine Kopie des Bestands"},
+
+    // --- Mit Anfuehrung: der Name wird wortgleich verlangt ---------------------
+    {false, "Reihe 1 - BIP, konstante Preise - unklar",
+     "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     "", "daten/lizenzbefund-reihen.md", Zitatausgang::Aufgeloest, "",
+     "die aeltere Form, seit Paket 0067: wortgleich in der Liste, also aufgeloest"},
+    {false, "Reihe 1",
+     "Reihe 1 - BIP, konstante Preise - unklar|Reihe 2 - Wertschoepfungsanteil je Sektor",
+     "", "daten/lizenzbefund-reihen.md", Zitatausgang::Befund, "",
+     "gleicher Name und gleiche Liste wie im ersten Fall, nur mit Anfuehrung: **Hier "
+     "ist der Anfang zu wenig.** Der Fall haelt die beiden Zweige auseinander -- "
+     "gleicher Eingang, verschiedener Ausgang -- und er ist der einzige, an dem ein "
+     "'immer aufgeloest' im Zweig mit Anfuehrung stirbt"},
+
+    // --- Die beiden Gruende, die der Bestand nicht mehr traegt -----------------
+    {true, "X und ist in der vorliegenden Fassung jener Datei",
+     "Rueckstand - 0016-hedgefonds-simulation-echte-weltwirtschaft|Die Ketten: sechs "
+     "Dateigruppen, und jede Sperre ist echt",
+     "", "rueckstand.md", Zitatausgang::Uebergangen,
+     "einzelnes Zeichen statt \125eberschrift: X",
+     "der Wortlaut, an dem diese Regel entstand: 'Die Sache stand am 2026-09-02 in "
+     "rueckstand.md unter dem Titel X und ist in der vorliegenden Fassung jener Datei "
+     "nicht mehr aufgefuehrt' -- eine Aussage ueber ein Zitat und keines. Der Satz ist "
+     "seither umformuliert, und am 2026-09-05 traegt keine einzige uebergangene "
+     "Fundstelle des Bestands diesen Grund mehr"},
+    {true, "18 nennt drei von sechs Stellen", "", "", "kern/include/kern/werte.hpp",
+     Zitatausgang::Uebergangen,
+     "Zieldatei fuehrt keine \125eberschrift: kern/include/kern/werte.hpp",
+     "derselbe Wortlaut wie Zitatfall 8: Die Zieldatei ist eine Kopfdatei ohne jede "
+     "Gliederung und kann ein Zitat weder bestaetigen noch widerlegen. Faellt dieser "
+     "Zweig weg, wird aus einer uebergangenen Fundstelle ein Befund -- und ein Rot "
+     "dort waere ein Rot gegen den Riegel"},
+}};
+
+/// Die drei Ausgaenge im Klartext, in der Reihenfolge von `Zitatausgang`.
+constexpr std::array<std::string_view, 3> AUSGANGSNAMEN = {"aufgeloest", "Befund",
+                                                           "uebergangen"};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_urteil() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < URTEILSFAELLE.size(); ++k) {
+        const Urteilsfall& fall = URTEILSFAELLE[k];
+        const Zitaturteil urteil =
+            beurteile_zitat(fall.ohne_anfuehrung, normiere(fall.gesucht),
+                            zerlege_liste(fall.ueberschriften),
+                            zerlege_liste(fall.eigene), std::string(fall.zielanzeige));
+        const std::size_t gemessen = static_cast<std::size_t>(ausgang(urteil));
+        const std::size_t erwartet = static_cast<std::size_t>(fall.erwartet);
+        // Beide Werte stammen aus `Zitatausgang` und liegen damit unter der Groesse
+        // der Namensliste. Geprueft wird es trotzdem: Waechst die Aufzaehlung einmal
+        // und die Liste nicht mit, ist das hier ein roter Fall und kein Ueberlauf.
+        if (gemessen >= AUSGANGSNAMEN.size() || erwartet >= AUSGANGSNAMEN.size()) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Urteilsfall %zu: unbekannter Ausgang %zu (erwartet %zu) -- "
+                         "AUSGANGSNAMEN passt nicht mehr zu Zitatausgang.\n",
+                         k + 1, gemessen, erwartet);
+            continue;
+        }
+        if (gemessen != erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Urteilsfall %zu: der Ausgang ist '%.*s', erwartet war "
+                         "'%.*s'.\n      Name:     %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(AUSGANGSNAMEN[gemessen].size()),
+                         AUSGANGSNAMEN[gemessen].data(),
+                         static_cast<int>(AUSGANGSNAMEN[erwartet].size()),
+                         AUSGANGSNAMEN[erwartet].data(),
+                         static_cast<int>(fall.gesucht.size()), fall.gesucht.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (urteil.grund != std::string(fall.erwarteter_grund)) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Urteilsfall %zu: der Grund ist '%s', erwartet war '%.*s'.\n"
+                         "      Name:     %.*s\n      Herkunft: %.*s\n",
+                         k + 1, urteil.grund.c_str(),
+                         static_cast<int>(fall.erwarteter_grund.size()),
+                         fall.erwarteter_grund.data(),
+                         static_cast<int>(fall.gesucht.size()), fall.gesucht.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
+}
+
 void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                    const Zielbestand& bestand, const Ortsmenge& ungelesene,
                    std::map<std::string, std::vector<std::string>>& ueberschriften,
@@ -3060,38 +3301,24 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                             lies_ueberschriften(es->second.pfad);
                     }
                     const std::vector<std::string>& liste = ueberschriften[schluesselpfad];
-                    // Mit Anfuehrung ist der Name abgegrenzt und wird wortgleich
-                    // verlangt; ohne sie ist er es nicht, und die Zieldatei grenzt ihn
-                    // ab -- er muss am Anfang einer ihrer Ueberschriften stehen.
-                    bool steht_da = false;
-                    if (ohne_anfuehrung) {
-                        if (eigene_ueberschriften.empty()) {
-                            eigene_ueberschriften = lies_ueberschriften(pfad);
-                        }
-                        const Namensart art =
-                            namensart(gesucht, liste, eigene_ueberschriften);
-                        if (art == Namensart::Ziffer) {
-                            grund = "Gliederungsziffer statt Ueberschrift: "
-                                    + std::string(erstes_wort(gesucht));
-                        } else if (art == Namensart::Einzelzeichen) {
-                            grund = "einzelnes Zeichen statt Ueberschrift: "
-                                    + std::string(erstes_wort(gesucht));
-                        } else if (art == Namensart::Ohne_Gliederung) {
-                            grund = "Zieldatei fuehrt keine Ueberschrift: "
-                                    + es->second.anzeige;
-                        }
-                        steht_da = art == Namensart::Ueberschrift;
-                    } else {
-                        for (std::size_t u = 0; u < liste.size() && !steht_da; ++u) {
-                            steht_da = liste[u] == gesucht;
-                        }
+                    // Die eigenen Ueberschriften erst hier, und nur ohne Anfuehrung --
+                    // dieselbe Bedingung und dieselbe Stelle wie vor Paket 0106.
+                    if (ohne_anfuehrung && eigene_ueberschriften.empty()) {
+                        eigene_ueberschriften = lies_ueberschriften(pfad);
                     }
-                    if (grund.empty()) {
+                    // Der Urteilsschritt steht seit Paket 0106 als eigener Aufruf da,
+                    // damit `URTEILSFAELLE` ihn halten kann. Begruendung dort.
+                    const Zitaturteil urteil =
+                        beurteile_zitat(ohne_anfuehrung, gesucht, liste,
+                                        eigene_ueberschriften, es->second.anzeige);
+                    grund = urteil.grund;
+                    const Zitatausgang wie = ausgang(urteil);
+                    if (wie != Zitatausgang::Uebergangen) {
                         ++zaehlwerk.zitate;
                         if (ohne_anfuehrung) {
                             ++zaehlwerk.ohne_anfuehrung;
                         }
-                        if (steht_da) {
+                        if (wie == Zitatausgang::Aufgeloest) {
                             ++zaehlwerk.aufgeloest;
                         } else {
                             befunde.push_back(Zitatbefund{anzeigename, nummer,
@@ -3137,6 +3364,7 @@ int main(int argc, char** argv) {
     // eine gruene.
     const std::size_t fehlgeschlagen = selbsttest_namenssuche()
                                        + selbsttest_ohne_anfuehrung()
+                                       + selbsttest_urteil()
                                        + selbsttest_zielart()
                                        + selbsttest_abstand()
                                        + selbsttest_satzgrenze();
@@ -3147,17 +3375,18 @@ int main(int argc, char** argv) {
                      "nicht erst gelesen -- ein Messgeraet,\ndas seine eigenen Faelle "
                      "verfehlt, misst auch fremde nicht.\n",
                      fehlgeschlagen,
-                     NAMENSFAELLE.size() + ZITATFAELLE.size() + ZIELFAELLE.size()
-                         + ABSTANDSFAELLE.size() + SATZFAELLE.size());
+                     NAMENSFAELLE.size() + ZITATFAELLE.size() + URTEILSFAELLE.size()
+                         + ZIELFAELLE.size() + ABSTANDSFAELLE.size()
+                         + SATZFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
                  "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links, %zu "
-                 "zur Form\nohne Anfuehrung, %zu zur Ortsfrage, %zu zum Wortabstand samt "
-                 "Suche nach rechts\nund %zu zur Satzgrenze nach links, alle wie "
-                 "erwartet.\n",
-                 NAMENSFAELLE.size(), ZITATFAELLE.size(), ZIELFAELLE.size(),
-                 ABSTANDSFAELLE.size(), SATZFAELLE.size());
+                 "zur Form\nohne Anfuehrung, %zu zum Urteilsschritt, %zu zur Ortsfrage, "
+                 "%zu zum Wortabstand samt\nSuche nach rechts und %zu zur Satzgrenze "
+                 "nach links, alle wie erwartet.\n",
+                 NAMENSFAELLE.size(), ZITATFAELLE.size(), URTEILSFAELLE.size(),
+                 ZIELFAELLE.size(), ABSTANDSFAELLE.size(), SATZFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {

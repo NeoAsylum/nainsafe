@@ -1,7 +1,7 @@
 ---
 id: 0144-rundenkapazitaet-des-verlaufs-nicht-an-r
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0140-verlauf-sammelt-die-rundenketten]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- ein Verlauf, der eine Partie mit einer nach T40 zulaessigen Partielaenge nicht bis zur letzten Runde aufnimmt, erfuellt sie nicht.
@@ -136,3 +136,69 @@ Auslegung, sondern ein T-Block.
    ctest-Eintraege bleibt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums
    und desselben Profils gleich oder steigt um die Proben, die dieses Paket anlegt; der
    Bezugsstand wird genannt.
+
+# GEBAUT -- 2026-09-05, Kernbauer
+
+Nachweis: `befunde/messung-0144/nachweis.py`, Bericht `befunde/messung-0144/bericht.md`,
+Ergebnis **Abweichungen: 0**. Der Vorher-Stand liegt als Kopie in
+`befunde/messung-0144/vorher/`; HEAD taugt nicht als Bezug, weil Fremdlaeufe waehrend des
+Laufs committen.
+
+## Der gewaehlte Weg von den dreien: die Wand aus T40
+
+`RUNDEN_KAPAZITAET` ist nicht mehr die Partielaenge, sondern folgt aus
+`PARTIELAENGE_HOECHSTENS` -- der Schranke, ab der T40 den Jahrgangsbau abbrechen laesst
+(hoechstens sechsundzwanzig, dort nachgerechnet an der Kollision der Ergebnisbaender).
+Damit traegt derselbe Behaelter jede Partie, die der Jahrgangsbau ueberhaupt zulaesst,
+und keine Zahl des Codes haengt an der geladenen Zeitreihe.
+
+**Die beiden anderen Wege habe ich verworfen, und zwar nicht nach Geschmack.** Ein
+Aufbau ohne feste Rundenzahl braucht Speicherzuteilung; im ganzen Kern steht keine
+einzige, und eine hier waere eine Abweichung von `specs/`, die ein ADR braucht. Ein
+Parameter am Behaelter waere ein Schablonenparameter -- er stuende in jeder Signatur, die
+0091 und die Sitzung schreiben, und veraenderte die Schnittstelle fuer alle, um dieselbe
+Zahl an einer anderen Stelle wieder hinzuschreiben.
+
+**T40 und T19 widersprechen einander an dieser Stelle nicht.** T19 verlangt eine feste
+Aufnahmekapazitaet **je Runde** -- die bleibt unveraendert aus `kern::schreiber` abgeleitet
+-- und verbietet die stille Kuerzung. Beides ist mit einer Kapazitaet ueber die Partie
+vereinbar, solange sie nicht aus R stammt und ihr Erreichen hart abbricht.
+
+## Die vier Bedingungen
+
+1. **Erfuellt.** `verlauf_probe` laeuft eine Partie ueber sechsundzwanzig Runden ueber
+   `kern::schritt::schritt` und druckt je Runde Rundennummer und Gliederzahl ab (je 175).
+   Die Zahl kommt aus `PARTIELAENGE_HOECHSTENS`, steht also nicht abgeschrieben da.
+   **Der Beleg, dass der Lauf nicht leer ist:** Der Wegwerfbaum `kapazitaet-20` bindet die
+   Kapazitaet wieder an R, uebersetzt gruen -- und `verlauf_probe` wird rot mit "der
+   Verlauf ist voll". Vier Runden waeren auch mit der alten Kapazitaet gruen gelaufen.
+2. **Erfuellt.** Mechanisch geprueft und im Bericht abgedruckt: einzige Zahlkonstante im
+   Kopf ist `PARTIELAENGE_HOECHSTENS`, aus T40 begruendet; `RUNDEN_KAPAZITAET` ist keine
+   Zahl mehr. Die obere Schranke bleibt und bricht hart ab -- zweiseitig nachgewiesen,
+   beide Laeufe im Wortlaut, die Meldung nennt die Schranke und `kern::verlauf` und nennt
+   `kern::schreiber` nicht.
+3. **Erfuellt.** Gemessen: `sizeof(Verlauf)` = 451.784 Byte, `sizeof(Kette)` = 17.368. Die
+   Zusicherung haengt jetzt an `PARTIELAENGE_HOECHSTENS + 1` statt an einem halben
+   Megabyte und reisst beim **ersten** Wert oberhalb der Wand: Baum `kapazitaet-27` wird
+   rot. Der Kontrollbaum `alte-schranke-27` zeigt denselben Verstoss mit der alten
+   Bytezahl **gruen** -- sie griff erst bei einunddreissig, also fuer keinen erreichbaren
+   Fall.
+4. **Erfuellt.** Konfigurieren, Bauen und `ctest` je Code 0, mit `FABRIK_SANITIZER=ON` und
+   `OFF`, im Alleinbau des Kerns und im Arbeitsbereich. Bezugsstand ist der Baum mit den
+   Dateien aus `vorher/`: ctest-Eintraege 12 vorher, 12 nachher (das Paket legt keine
+   Probe an); Arbeitsbereich 18. Die Ausgabe der drei rechnenden Proben ist vorher und
+   nachher zeichengleich.
+
+## Zwei Dinge fuer den Projektmanager, nicht fuer den Pruefer
+
+**Worauf ich unsicher bin:** Der 200-Runden-Lauf des Bruchtesters bricht weiter ab, wenn
+ihn jemand einen Verlauf fuehren laesst -- jetzt in Runde 27 statt 21. Ich halte das fuer
+richtig, weil T19 diesen Lauf als kettenfrei ausweist und er nach `spiel.md` Wertebereiche
+prueft statt eine Partie zu spielen. Die Abnahme verlangt es nicht; es ist eine
+Entscheidung.
+
+**Zweimal lagen halbfertige Fremddateien im Kern**, waehrend ich gemessen habe
+(`werkzeuge/belegstellen/belegstellen_riegel.cpp`, dann `kern/test/aktion_probe.cpp` mit
+offener Klammer). Beide gehoeren nicht zu diesem Paket, beide haben sich von selbst
+erledigt. `befunde/messung-0144/warte_und_messe.py` wartet deshalb, bis der Baum
+uebersetzt, und startet den Nachweis erst dann -- sonst misst er den fremden Lauf.

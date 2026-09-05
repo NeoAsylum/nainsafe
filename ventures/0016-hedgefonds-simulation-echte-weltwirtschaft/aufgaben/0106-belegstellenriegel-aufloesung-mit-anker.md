@@ -1,7 +1,7 @@
 ---
 id: 0106-belegstellenriegel-aufloesung-mit-anker
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0079-belegstellenriegel-zitat-ohne-anfuehrung, 0105-belegstellenriegel-name-am-zeilenende]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Selbsttest des Riegels bricht mit Code 2 ab, wenn in `pruefe_zitate` die Zuweisung `steht_da` durch eine Konstante ersetzt wird -- in beiden Zweigen, mit und ohne Anfuehrung, und je einzeln nachgewiesen. Ebenso, wenn die Art *einzelnes Zeichen* entfaellt. Nachgewiesen mit vier Mutanten, je einer Textersetzung auf einer Kopie: `steht_da = true` und `steht_da = false` im Zweig ohne Anfuehrung, `steht_da = true` im Zweig mit Anfuehrung, und die Art *einzelnes Zeichen* abgeschaltet; jeder muss am Selbsttest sterben, bevor der Bestand gelesen wird. Der Riegel bleibt auf dem dann geltenden Korpus gruen und meldet dieselben Zahlen wie vorher; die Zahl der Faelle im Selbsttest steigt und keine bestehende Erwartung aendert sich.
@@ -104,3 +104,71 @@ unter jeder Untergrenze durch.
   geht nicht.
 * Keine bestehende Erwartung aendern und keine Schwelle senken, damit etwas gruen wird.
 * Keine Gleitkommazahl, keine Fremdabhaengigkeit, kein fest eingebauter Pfad.
+
+## GEBAUT — 2026-09-05, testentwickler
+
+**Bezugsstand: `5605c54`**, der letzte Commit auf `belegstellen_riegel.cpp` vor diesem
+Lauf. Zwischen ihm und HEAD hat kein fremder Commit die Datei angefasst (`git log
+5605c54..HEAD --` auf den Pfad: leer), also ist er zugleich der Stand, den `0105`
+hinterlassen hat. Der Arbeitsbaum wanderte waehrend des Laufs von `5605c54` auf
+`4ff788d` — an anderen Dateien.
+
+**Der Zuschnitt: der Urteilsschritt als eigener Aufruf.** Der Block in `pruefe_zitate`
+ist unveraendert nach `beurteile_zitat(ohne_anfuehrung, gesucht, liste, eigene,
+zielanzeige)` gewandert; `pruefe_zitate` ruft ihn und `ausgang()`, also **denselben**
+Weg, den der Selbsttest misst. Damit braucht der Test keinen Gegenstand auf der Platte
+und keine Datei unter `pruefstand/` — die zweite der beiden im Vorschlag genannten
+Moeglichkeiten entfaellt. Gemessen wird der **Ausgang** (aufgeloest / Befund /
+uebergangen) und nicht `steht_da` fuer sich: Ist ein Grund gesetzt, hat `steht_da`
+keine Wirkung mehr, und eine Erwartung an einen wirkungslosen Wert liesse Mutanten an
+Faellen sterben, die sie nicht treffen.
+
+**`URTEILSFAELLE`, sechs Faelle.** Selbsttest 51 → 57 Faelle. Keine bestehende Erwartung
+geaendert: Die 34 geloeschten Zeilen des Diffs sind ausschliesslich der verschobene
+Block und die beiden Summenzeilen in `main`.
+
+**Sieben Mutanten, alle gestorben — `befunde/messung-0106/protokoll.txt`.** Jeder ist
+eine Textersetzung auf einer Kopie ausserhalb des Quellbaums; das Skript bricht ab, wenn
+der Wortlaut nicht genau einmal vorkommt.
+
+| Mutant | Rueckgabe | gerissen |
+|---|---|---|
+| M1 `steht_da = true`, Zweig ohne Anfuehrung | 2 | Urteilsfall 2 |
+| M2 `steht_da = false`, Zweig ohne Anfuehrung | 2 | Urteilsfall 1 |
+| M3 `steht_da = true`, Zweig mit Anfuehrung | 2 | Urteilsfall 4 |
+| M4 Art *einzelnes Zeichen* entfaellt in `beurteile_zitat` | 2 | Urteilsfall 5 |
+| M5 Art *einzelnes Zeichen* entfaellt in `namensart` | 2 | Urteilsfall 5 |
+| M6 `steht_da = false`, Zweig mit Anfuehrung | 2 | Urteilsfall 3 |
+| M7 Art *ohne Gliederung* entfaellt | 2 | Urteilsfall 6 |
+
+Die vier aus der Abnahme sind M1, M2, M3 und M4; M5 nimmt die zweite Lesart von „die Art
+entfaellt" mit. M6 und M7 stehen nicht in der Abnahme, sondern in der Rollenregel: Ein
+Test, der nie fehlschlaegt, prueft nichts — ohne sie waeren die Faelle 3 und 6 nie rot
+gewesen. **Jeder Mutant stirbt am Selbsttest, bevor der Bestand gelesen wird** (im
+Protokoll die Spalte „Bestand gelesen: False"), und **keiner reisst eine der fuenf
+aelteren Tabellen** — das Skript prueft beides und gibt sonst 1 zurueck.
+
+**Der Riegel bleibt gruen und meldet dieselben Zahlen.** Belegt nicht durch zwei
+getrennte Laeufe, sondern durch **einen**: Der Messstand uebersetzt die Fassung von
+`5605c54` und die neue nebeneinander und laesst beide im selben Aufruf ueber denselben
+Arbeitsbaum laufen. Ihre Zahlenzeile ist zeichengleich — *53 Bauquellen, 208 Dateien im
+Zielbestand, 40 Zitate, 40 aufgeloest, 46 uebergangen*. Zwei getrennte Laeufe haetten
+hier die Drift mitgemessen: Waehrend des Laufs sind `kern/{include/kern,src}/aktion.*`
+dazugekommen, und der Bestand ging dabei von 37 auf 40 Zitate — **nicht** durch dieses
+Paket. Beide Bauwege einzeln gruen (Arbeitsbereich und `cmake -S werkzeuge/belegstellen`
+allein).
+
+**Ein Nebenbefund, gemessen, und er widerspricht dem Vorschlag.** Der Vorschlag sagt,
+die Art *einzelnes Zeichen* sei „am Bestand, an einer einzigen Stelle in
+`rueckstand.md`" gehalten. Am 2026-09-05 stimmt das nicht mehr: Von den 46 uebergangenen
+Fundstellen tragen **37** den Ziffergrund und **null** den Grund fuer das einzelne
+Zeichen oder den fuer eine Zieldatei ohne Gliederung. Der Satz, an dem die Regel hing,
+ist umformuliert worden — genau der Vorgang, den der Vorschlag vorhergesagt hat, nur
+schon eingetreten. Deshalb hat auch *ohne Gliederung* einen Fall bekommen, die
+Gliederungsziffer dagegen nicht: Sie ist am Bestand 37-fach gehalten. Der Grund steht im
+Quelltext, damit ihn niemand spaeter als Luecke „repariert".
+
+**Worauf ich unsicher bin.** Die Zahl 37 im Kopfkommentar von `URTEILSFAELLE` ist ein
+Messwert vom 2026-09-05 und keine Bedingung — driftet der Bestand, veraltet der Satz,
+ohne dass etwas rot wird. Ich habe sie stehenlassen, weil sie eine *Begruendung* traegt
+und keine Schwelle ist; wer das anders sieht, hat einen Punkt.

@@ -1,0 +1,51 @@
+Messstand 0106 -- Anker am Urteilsschritt
+Vergleichsstand: 5605c54
+Arbeitsbaum:     4ff788d
+Schalter:        -std=c++20 -fwrapv -fno-fast-math -O2
+
+[vorher] Rueckgabe 0
+    belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+    belegstellen_riegel, Bedingung 2 (Abschnittszitat): 53 Bauquellen und 13 Datendokumente gelesen, 208 Dateien im Zielbestand, 15591 Pfade in ungelesenen Ordnern; 40 Zitate der geprueften Form gefunden, 40 davon aufgeloest (Untergrenze 16), 46 Fundstellen uebergangen.
+[nachher] Rueckgabe 0
+    belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+    belegstellen_riegel, Bedingung 2 (Abschnittszitat): 53 Bauquellen und 13 Datendokumente gelesen, 208 Dateien im Zielbestand, 15591 Pfade in ungelesenen Ordnern; 40 Zitate der geprueften Form gefunden, 40 davon aufgeloest (Untergrenze 16), 46 Fundstellen uebergangen.
+
+GLEICH: beide Fassungen melden zeichengleich dieselbe Zahlenzeile.
+
+OK  M1-ohne-anfuehrung-immer -- Zweig ohne Anfuehrung: steht_da = true
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 2'] (erwartet ['Urteilsfall 2'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+OK  M2-ohne-anfuehrung-nie -- Zweig ohne Anfuehrung: steht_da = false
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 1'] (erwartet ['Urteilsfall 1'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+OK  M3-mit-anfuehrung-immer -- Zweig mit Anfuehrung: steht_da = true
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 4'] (erwartet ['Urteilsfall 4'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+OK  M4-einzelzeichen-verdrahtung -- die Art einzelnes Zeichen entfaellt in beurteile_zitat
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 5'] (erwartet ['Urteilsfall 5'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+OK  M6-mit-anfuehrung-nie -- Zweig mit Anfuehrung: steht_da = false
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 3'] (erwartet ['Urteilsfall 3'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+OK  M7-ohne-gliederung-verdrahtung -- die Art ohne Gliederung entfaellt in beurteile_zitat
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 6'] (erwartet ['Urteilsfall 6'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+OK  M5-einzelzeichen-art -- die Art einzelnes Zeichen entfaellt in namensart
+      Rueckgabe 2 (erwartet 2)
+      gerissen: ['Urteilsfall 5'] (erwartet ['Urteilsfall 5'])
+      fremde Tabellen gerissen: [] (erwartet [])
+      Bestand gelesen: False (erwartet False)
+
+Messstand 0106: alles wie erwartet.
