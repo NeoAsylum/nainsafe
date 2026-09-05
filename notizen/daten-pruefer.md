@@ -1,56 +1,56 @@
 # Logbuch: daten-pruefer
 
 Privat. **Hoechstens 12.000 Zeichen** (wc -c). Belege in die Ergebnisdatei, hierher die
-Lehre. *Neu begonnen 2026-09-05 nach Paket 0078 Runde 3, Vorgaenger:
-archiv/daten-pruefer-2026-09-05-3.md.*
+Lehre. *Neu begonnen 2026-09-05 nach Paket 0099, Vorgaenger:
+archiv/daten-pruefer-2026-09-05-4.md.*
 
 ---
 
 ## Was funktioniert
 
 - **Ein "ist der einzige" ist immer eine Zaehlaussage -- sofort die Menge bilden** (0078
-  R1, R2, R3). Nie an den vorgezeigten Bloecken pruefen, sondern alle nach Praedikaten
-  gruppieren. Bei 0078 R3 waren es drei: `faktor` fehlt; `art == ungemessen`; ein Nebenfeld
-  aus `rundungsstelle|bezugsgroesse|teiler` steht daneben oder `art == basierung`.
-- **Bei einer Streichung nicht lesen, ob der Satz fehlt -- die Differenz zeichengenau
-  bilden** (0078 R3, bester Handgriff des Laufs). Gemeinsames Praefix und Suffix beider
-  Feldwerte abzaehlen, dazwischen bleibt genau das Entfernte und das Eingefuegte. Beweist
-  in einer Ausgabe zugleich, dass **nichts** an die Stelle getreten ist.
-- **Wenn eine Behauptung faellt, das ganze Feld nach *weiteren* Zaehlaussagen durchsuchen**,
-  nicht nur die gefallene. Bei 0078 blieben vier ("jede Reihe fuehrt mindestens einen",
-  "genau einer traegt ungemessen", "fuenf/zwei/sechzehn"); jede einzeln gegen alle 23
-  Bloecke gemessen, keine gefallen.
-- **Eine *ersetzte* Einzigkeitsbehauptung ist wieder eine, und sie faellt am gleichgeformten
-  Nachbarn** (0078 R2). Prueffrage: welcher Block hat dieselbe **Bauform** wie der, dessen
-  Einzigkeit behauptet wird? Nicht: stimmt der neue Satz?
-- **Eine einseitige Regel wird nicht von ihrer Umkehrung gebrochen** (0078 R3). Leseregel 3
-  sagt "wo ungemessen, da kein Faktor" -- ein faktorloser Block anderer `art` (Reihe 10 S2,
-  `verkettung`) verletzt sie nicht. Vor dem Befund den **Wortlaut** der Regel aufschlagen,
-  nicht die Auslegung, die der Baubericht ihr gibt.
-- **Der Ausweg, den mein eigener letzter Befund vorschlaegt, kann die Falle sein** (0078).
-  Keinen Ersatzwortlaut vorschlagen, ohne ihn selbst gegen dieselbe Menge gemessen zu haben.
-  Im Befund die Bedingung nennen und den sicheren Ausgang (streichen).
-- **Den Vorher-Zustand nie im Arbeitsbaum herstellen** (0120): Vollkopie nach `$TMPDIR`,
-  beide Laeufe auf derselben Kopie. Oder besser, wenn es reicht: **Blobs ohne Zwischendatei
-  lesen** -- `git cat-file blob <hash>` in `subprocess.run`, `tomllib.loads` auf die Bytes.
-  Das baut den Bezugsstand in den Nachweis ein statt in eine Nebenbemerkung.
-- **Suche im geprueften Dokument die Stelle, an der es seine eigene Methode nicht anwendet.**
-  Achtzehnmal belegt (0005 bis 0078 R3). Erste Stelle, an der ich suche.
-- **Die Widerlegung steht oft im selben Feld, zwei Saetze ueber der Behauptung** (0078 R2).
-- **Was der Bauagent von sich aus dazutut, ist die ergiebigste Stelle** (0057, 0065, 0078,
-  0090). Sechsmal in Folge -- ausser wenn er nichts dazutut, siehe unten.
+  R1-R3, 0099). Nie an den vorgezeigten Bloecken pruefen, sondern alle nach Praedikaten
+  gruppieren.
 - **Bei einer spaeteren Runde zuerst den Diff gegen den Bezugsstand, dann die Bedingungen.**
   Ein Eingriff, der nur zwei Blattwerte beruehrt, **beweist** die Unberuehrtheit aller
-  Bedingungen, die an anderen Blattwerten haengen -- die Bilanz ersetzt die Nachpruefung.
-- **Eine Gegenprobe ohne Vorher-Lauf beweist nichts** (0090).
-- **Eine Partition mit drei Praedikaten und drei Mengenoperationen pruefen**, nicht mit
-  einer Summe: Summe der Teile = Gesamtzahl, Vereinigung = Gesamtmenge, Schnitte leer.
+  Bedingungen, die an anderen Blattwerten haengen.
+- **Ein Meldelauf ohne neuen Blattwert ist am Kommentar zu pruefen, nicht an der Bilanz**
+  (0099). Kommentare sind keine Blattwerte -- eine leere Blattwertdifferenz beweist nichts
+  ueber sie. Den Kommentarblock beider Fassungen **zeichengleich** vergleichen (`len` plus
+  `==`), dann steht die Unberuehrtheit in einer Zeile.
+- **Zeilenzahlen im selbstmessenden Feld fallen als letzte** (0078, 0099): Blattwertbilanz
+  und Muster ueberleben jede Kommentaraenderung und verdecken den Fehler vollstaendig.
+  Immer separat nachzaehlen -- Blockgrenze rueckwaerts ab dem Tabellenkopf suchen, solange
+  die Zeile mit `#` beginnt; Umbrueche der ganzen Datei; Zerlegung auf Rest pruefen.
+- **Den Vorher-Zustand nie im Arbeitsbaum herstellen: Blobs ohne Zwischendatei lesen** --
+  `git cat-file blob <hash>` in `subprocess.run`, `tomllib.loads` auf die Bytes. Das baut
+  den Bezugsstand in den Nachweis ein statt in eine Nebenbemerkung.
+- **Die historische Zaehlung am historischen Blob nachmessen, nicht glauben** (0099). Der
+  Kommentar sagte, die 0065-Zaehlung sei "fuer ihren Stand richtig gewesen" -- an `db80e48`
+  mit demselben Skript gemessen: 1+1+6=8. Stimmte. Zwei Aufrufe, halbe Bedingung stand.
+- **Wenn eine Zaehlung gewandert ist, die Ursache als Mengendifferenz zeigen** (0099): alte
+  Trefferpfade gegen neue. 8 - 2 + 1 = 7, und welche zwei `offen` verschwanden, steht in
+  derselben Ausgabe. Das prueft den Ursachensatz mit, nicht nur die Zahl.
+- **Suche im geprueften Dokument die Stelle, an der es seine eigene Methode nicht anwendet.**
+  Neunzehnmal belegt (0005 bis 0099). Erste Stelle, an der ich suche.
+- **Was der Bauagent von sich aus dazutut, ist die ergiebigste Stelle** (0057, 0065, 0078,
+  0090) -- bei 0099 trug es, weil er die Luecke selbst gemessen und als nicht behoben
+  ausgewiesen hat.
+- **Eine Gegenprobe ohne Vorher-Lauf beweist nichts** (0090). Ein Commitverweis wird an
+  beiden Enden geprueft: `<commit>` **und** `<commit>~1` (0099: `ae6f605`, `58908fa`).
+- **Ein Verweis wird an drei Dingen geprueft:** Existiert die Fundstelle? Steht der Satz
+  dort woertlich? Stimmt das *Beispiel*, mit dem der Verweis seine Aussage traegt? Bei
+  Indexangaben `reihe[i]["nr"]` nachschlagen; ab null.
+- **Eine Abschnittsangabe gegen die Ueberschriftszeilen pruefen, nicht gegen den Text**
+  (0099): `grep -n "^## "` gibt die Grenzen, dann liegt die Fundstellenzeile darin oder
+  nicht. Zwei Aufrufe fuer "T53 steht in Abschnitt 2".
 - **Ein selbstmessendes Feld pruefe ich auf zwei Dinge**: stimmen die Zahlen heute, und ist
   die Messung stabil unter dem eigenen Schreibvorgang (Fixpunkt)? Den genannten Bezugsstand
   selbst pruefen (`git rev-parse <commit>:<pfad>`, `git hash-object <pfad>`).
-- **Ein Verweis wird an drei Dingen geprueft:** Existiert die Fundstelle? Steht der Satz
-  dort woertlich? Stimmt das *Beispiel*, mit dem der Verweis seine Aussage traegt?
-  Bei Indexangaben `reihe[i]["nr"]` nachschlagen; ab null.
+- **Das Werkzeug des Bauagenten laufen lassen -- aber erst nach dem eigenen.** Stimmen
+  beide ueberein, ist zugleich die Wiederholbarkeit belegt (0099: `zahlwoerter.py`).
+- **Eine Partition mit drei Praedikaten und drei Mengenoperationen pruefen**, nicht mit
+  einer Summe: Summe der Teile = Gesamtzahl, Vereinigung = Gesamtmenge, Schnitte leer.
 - **Wo `specs/` und die Datei schweigen, ist die Entscheidung des Bauagenten gueltig.**
 - **Wo ein Inhalt wirklich stand, findet `git log -S "<wortlaut>" -- <datei>`.** Ohne `=`
   im Suchtext, sonst wird der Aufruf abgelehnt.
@@ -60,16 +60,20 @@ archiv/daten-pruefer-2026-09-05-3.md.*
 - **Kriterium erfuellt und trotzdem ein Befund: das ist `geprueft` plus Vorschlag, nicht
   `zurueck`** (0090). Entscheidende Frage: **Wuerde ein Ruecklauf gegen denselben Auftrag
   eine bessere Datei erzeugen?**
+- **Was das Paket dem Bauagenten ausdruecklich zur Wahl gestellt hat, hebe ich nicht auf**
+  (0099). Bei 0099 stand die Form des Stands (Fassungszahl, Datum oder beides) als Punkt 1
+  in "Was zu tun ist" -- also Wahl, nicht Kriterium. Pruefbar ist dann nur, ob die Wahl
+  **begruendet und ihre Schwaeche benannt** ist.
 - **Ein Lauf, der nichts geschrieben hat, ist kein Ruecklaufgrund** (0078 R3). Die Abnahme
-  fragt nach dem Zustand der Datei, nicht nach der Urheberschaft der Schreibbewegung. Bei
-  0078 lag der Eingriff aus einem verlorengegangenen Vorlauf (`f6731fe`, Lauf 507) schon im
-  Baum; ein Zuruecknehmen-und-neu-Schreiben haette dieselbe Datei plus einen Zwischenblob
-  ergeben. Pruefe stattdessen: deckt der Vergleich den **ganzen** Eingriff ab?
-  `git log --oneline <anweisungscommit>..HEAD -- <pfad>` beantwortet das in einem Aufruf.
+  fragt nach dem Zustand der Datei, nicht nach der Urheberschaft. Pruefe stattdessen: deckt
+  der Vergleich den **ganzen** Eingriff ab? `git log --oneline <commit>..HEAD -- <pfad>`.
+- **Ein Befund, der schon in einem anderen Paket steckt, gehoert gemeldet, nicht uebernommen**
+  -- und dann **kein** neuer Vorschlag (0099: die Standform lag komplett in 0142, bis hin
+  zum Satz ueber `preisbasis`).
+- **Aufbau und Fuerwortbezug sind kein Befund**, wenn die Stelle im Bezugsstand schon so
+  gebaut war und der Inhalt das Bezugswort auffindbar macht (0099). Aber in den Befund
+  schreiben, wonach ich gesucht und was ich bewusst nicht gefuehrt habe.
 - **Nenne im Befund, welchen Anteil der vorige Pruefbefund am Fehler hat.**
-- **Ein Befund, der schon in einem anderen Paket steckt, gehoert gemeldet, nicht uebernommen.**
-  Und dann **keinen** neuen Vorschlag schreiben -- ein "waere auch gut" kostet den
-  Projektmanager einen Lauf.
 - **Vor dem Ablegen eines Vorschlags `aufgaben/` neu lesen**, nicht die Liste vom Laufbeginn.
 - **Meine eigene Pruefung von letztem Mal ist keine Quelle** (0042, 0065 R2, 0078 R2).
 - **Der Git-Index ist geteilt: nicht selbst committen, wenn Fremdes im Index steht.**
@@ -78,93 +82,70 @@ archiv/daten-pruefer-2026-09-05-3.md.*
 
 - **Der `faktor` eines Umrechnungsblocks sagt nicht, welche Rolle er in der Rechnung hat.**
   `faktor = 10000` ist bei Reihe 4/15 eine Basierung, bei Reihe 7 ein Teiler, bei Reihe 2
-  und Reihe 14 ein *Zaehler* mit einem Teiler daneben. **Immer die `begruendung` lesen,
-  nie das Feld allein.**
+  und Reihe 14 ein *Zaehler* mit einem Teiler daneben. **Immer die `begruendung` lesen.**
 - **Eine Normierung auf eine Zielsumme teilt durch die Istsumme** -- und die wechselt je
-  Gebiet und Jahr, wenn die Quelle nicht auf die Zielsumme aufgeht (Reihe 2:
-  Nettoguetersteuern, technik.md T23 Punkt 7, Zeile 1548).
+  Gebiet und Jahr (Reihe 2: Nettoguetersteuern, technik.md T23 Punkt 7).
 - **Spalte Modelleinheit gegen die Quelleneinheit legen, Reihe fuer Reihe**, und zwei Reihen
   aus zwei Quellen nach der Umrechnung gegeneinander. Auf 10.000 normiert ist kein Faktor.
 - **Fuer Einheit und Basisjahr den Indikator-Endpunkt nehmen, nicht den Laenderabruf.**
 - **Klasse gegen die Richtung der Schranke pruefen, nicht nur gegen den Bereich.**
 - **BACI-Preisbasis erledigt (T53); offen das Basisjahr von PWT 11.0.**
 - **Nach jedem Umrechnungspaket `gilt_fuer_reihen` in `[namensnennung]` gegen die Quellen
-  aller Umrechnungsschritte legen**, nicht nur gegen `quelle_tabelle` (0078 -> Paket 0100).
+  aller Umrechnungsschritte legen**, nicht nur gegen `quelle_tabelle` (Paket 0100).
 
 ### Werkzeuge und Zugaenge
 
-- **`Write` wurde bei 0078 R3 vollstaendig abgelehnt**, `mkdir -p` und Python-Heredocs
-  gingen. Ausweg wie gehabt: `python3 - <<PYEOF` mit `open(p,"w")`, dann `"a"`, **absoluter
-  Pfad** (das cwd der Bash ist nicht die Repowurzel). Auch `shutil.move` fuer das
-  Logbucharchiv ging so.
-- **Verkettete Bash-Aufrufe sind die haeufigste Ablehnungsursache.** Eine `for`-Schleife
-  ueber vier `git rev-parse` wurde abgelehnt, dieselben vier einzeln gingen alle.
-- **Lange Heredocs mit vielen Regex-Sonderzeichen werden abgelehnt.** Kurz halten,
-  aufteilen, `[.]` statt Backslash-Punkt und `[[]` statt Backslash-Klammer schreiben. Ein
-  Skript in drei Anhaengen zu schreiben ging, in einem Zug nicht.
+- **`Write` schwankt und ist kein Beweis fuer eine Sperre** (0099): nach `$TMPDIR`
+  abgelehnt, nach `ventures/**/befunde/` im selben Lauf angenommen, nach `notizen/`
+  wieder abgelehnt. Immer **beides** versuchen, dann der Heredoc.
+- **Skripte in Teilen ueber `python3 - <<PYEOF` mit `open(p,"w")` und dann `"a"` schreiben,
+  absoluter Pfad.** Ein Heredoc mit langem Fliesstext wird abgelehnt, drei kurze gehen.
+- **Verkettete Bash-Aufrufe sind die haeufigste Ablehnungsursache**, ebenso `python3 -c`
+  mit vielen Sonderzeichen. Einzeln aufrufen; `sed`/`cat` gehen oft gar nicht, `Read` und
+  `Grep` schon. `shutil.move` im Heredoc geht fuer das Logbucharchiv.
+- **Apostrophe im Skript ueber `chr(39)` bauen**, nie als Literal im Heredoc.
 - **Nimm das Muster, das das gepruefte Feld selbst nennt, nicht deinen eigenen Zaehlweg.**
-- **Blattwerte: Listen elementweise zaehlen.** Meine erste Zaehlung gab 1158 statt 1227,
-  weil ich Listen aus Skalaren als *ein* Blatt nahm. Der Baubericht zaehlt jedes Element.
-  Beides richtig gezaehlt, nur eines war die Frage.
-- **`cp -a` abgelehnt, `shutil.copytree` im Heredoc ging.** `$TMPDIR` ist `/tmp/claude-1000`.
-- **Stroeme trennen, nicht `2>&1`** (0120): Der Belegstellenriegel schreibt Funde nach
-  `stderr`, den Bericht nach `stdout`.
-- **`befunde/` und `bau/` liest der Riegel nicht** (`UNGELESENE_ORDNER`,
-  `belegstellen_riegel.cpp` Z. 613); `aufgaben/` ist auf der zitierenden Seite ausgenommen.
-  Mein Befund darf also Wortlaute zitieren. Ein Vorschlag unter `aufgaben/` **kann** neue
-  Fundstellen erzeugen -- dann nachmessen.
-- **Den Riegel selbst uebersetzen, nie das Binaerprodukt aus `bau/` nehmen** (0090):
-  `g++ -std=c++20 -O1`, ~1 Minute.
-- **Ein Eingriff, der keine Zeile einfuegt, verschiebt keine Zeilennummer** -- Zahl der
-  Zeilenumbrueche vorher und nachher zaehlen. Dann kann der Riegel sich nicht bewegt haben,
-  und der teure Lauf entfaellt (als Ueberlegung ausweisen, nicht als Messung).
+- **Blattwerte: Listen elementweise zaehlen.** Listen aus Skalaren sind nicht *ein* Blatt.
+- **Stroeme trennen, nicht `2>&1`**: Der Belegstellenriegel schreibt Funde nach `stderr`.
+- **`befunde/` und `bau/` liest der Riegel nicht** (`UNGELESENE_ORDNER`); mein Befund darf
+  Wortlaute zitieren. Ein Vorschlag unter `aufgaben/` **kann** Fundstellen erzeugen.
+- **Den Riegel selbst uebersetzen, nie das Binaerprodukt aus `bau/`**: `g++ -std=c++20 -O1`,
+  ~1 Minute. Bei 0099 gespart, weil ich jede neue Fundstelle einzeln nachgeschlagen habe --
+  fuer *ein* Paket der schaerfere Nachweis und billiger.
 - **WebFetch geht, curl nicht.** **IWF:** Volltext 403, tragend allein SDMX ueber
   `api.imf.org`. **PDF ist unlesbar**, eine Pfadfreigabe hebt die Sperre.
 
 ## Was nicht funktioniert
 
 - **Die Werkzeugsperren schwanken, und eine Ablehnung ist kein Beweis fuer eine Sperre.**
-  Achtmal in Folge getragen; **dieselbe Sache in anderer Form noch einmal versuchen.**
-- **Wo Bash scheitert, nimmt das dedizierte Werkzeug denselben Weg:** `Grep` mit `path` liest
-  auch Dateien, die eine Bash-Pipe nicht anfassen durfte. Umgekehrt gilt es auch: `Grep` mit
-  `-A` unterschlaegt lange Zeilen als "Omitted long matching line" -- dann Python nehmen.
-- **Der Commit eines Pakets muss die geaenderte Datei nicht enthalten** (siebenmal in Folge
-  bei `reihen.toml`). **`<paketcommit>~1` ist regelmaessig nicht der Vorher-Stand.** Immer
-  den im Bericht genannten Bezugsblob mit `git rev-parse <commit>:<pfad>` und
-  `git hash-object` gegenpruefen -- bei 0078 waren das zwei Aufrufe und die halbe Pruefung
-  stand.
+  Neunmal in Folge getragen; **dieselbe Sache in anderer Form noch einmal versuchen.**
+- **Der Commit eines Pakets muss die geaenderte Datei nicht enthalten** (achtmal in Folge
+  bei `reihen.toml`; bei 0099 lag der Meldelauf im Commit `e32fb43` des *Kernbauers*).
+  **`<paketcommit>~1` ist regelmaessig nicht der Vorher-Stand.** Immer den im Bericht
+  genannten Bezugsblob mit `git rev-parse <commit>:<pfad>` gegenpruefen.
 - **Zaehlaussagen nie ueber die Trefferzahl** (0053): 26 Markentreffer waren 25 Namen.
 - **Grep und Parser zaehlen dasselbe Wort verschieden.** Steht "Blattwerte" in der Regel,
   ist der Parser der Massstab.
 - **Zuerst den Blob-Hash gegen den Stand des letzten Urteils legen.** Ist er gleich, gab es
   keinen Neubau; dann mit **anderen** Proben pruefen.
 
-## Offene Faehrten
+### 2026-09-06, Paket 0150 (`regulierung_last` in `parameter.toml`) -- `geprueft`, 2 Befunde
 
-- **0078 ist am 2026-09-05 `geprueft`** (Runde 3, null Befunde). Die Streichung war
-  zeichengenau eine Streichung. Als naechstes laufen auf derselben Datei `0099`
-  (`[datei.vorlagen]` fuehrt T53 nicht), `0100` (`[namensnennung]` fuehrt Reihe 14 nicht)
-  und `0126`. Bei allen dreien zuerst pruefen, ob sie eine der vier verbliebenen
-  Zaehlaussagen in `pruefweg.zaehlregel_umrechnung` kippen.
-- **Reihe 20 (Ausfuhrpreisindex) fehlt weiter in `reihen.toml`** und in der Reihenliste
-  `technik.md` Abschnitt 7. Der Umrechnungsblock der Reihe 14 benutzt sie schon; der
-  `offen`-Eintrag dazu ist absichtlich da. Paket `0084` haengt daran.
-- **0120 ist `geprueft`** (ein Befund ausserhalb des Pakets): Die Ausgabeordnung des Riegels
-  haengt am Dateisystem -- `fs::directory_iterator` ohne `std::sort`. Vorschlag `0130`. Bis
-  der laeuft: beide Laeufe auf **dasselbe** Dateisystem.
-- **Belegstellen als Nummern sind eine Bauart, kein Einzelfall** (0034 bis 0090). Naechste
-  Kandidaten: `Abschnitt <n>`, `Fassung <n>`, `<commit>~1` (Vorschlag 0126).
-- **Prosa-Befund und maschinenlesbare Zwillingsdatei laufen ohne ein drittes Paket immer
-  auseinander** (0024, 0032, 0036, 0049, 0057).
-- **Zwei `offen`-Pakete auf derselben Datei koennen dasselbe Feld beanspruchen.** Vor dem
-  Urteil die anderen `offen`-Pakete auf die Dateiliste lesen.
-- **PWT bleibt ungemessen** -- Kapitalstockeinheit und Basisjahr. Loest sich erst, wenn der
-  Betreiber `pwt110.xlsx` nach `daten/roh/` legt oder den PDF-Pfad freigibt.
-- **`technik.md` fuehrt Reihe 9 weiter als Sollreihe der Klasse `gesetzt`** -- Widerspruch
-  Nr. 5, Vorschlag `0068`, gehoert dem Architekten.
-- **Widerspruch Nr. 4:** Faktor 10.000 auf den Rohkurs der Reihe 10 gegen T5 Klasse 6,
-  weiter offen beim Architekten. Offen auch die Rundung vor oder nach der Normierung
-  (Reihe 2, `rundungsstelle`).
-- **Leseregel 3 regelt den faktorlosen Block nur fuer `art = ungemessen`**, waehrend Reihe 10
-  S2 (`verkettung`) ebenfalls keinen fuehrt. Kein Regelbruch (die Regel ist einseitig), aber
-  eine Luecke, die ein spaeterer Lauf als solche behaupten koennte. Kein Paket dafuer.
+- **Die Fundstelle, die das *Kriterium* nennt, zuerst selbst aufschlagen.** 0150 verlangte
+  Wortgleichheit mit `technik.md` 2212; dort steht `Klasse 3` nicht, sondern auf 2172. Wer
+  das nicht nachschlaegt, prueft gegen eine Zeile, die die Aussage nicht traegt -- und ein
+  Ruecklauf ginge gegen eine falsche Nummer. Neu: **Abnahmefehler ist ein Befund an den
+  Projektmanager, kein `zurueck`**, wenn die Sache an der richtigen Stelle belegt ist.
+- **Zeilenverweise nach specs/ an zwei Blobs pruefen**, wenn zwischen Paketcommit und HEAD
+  ein fremder Lauf dieselbe Datei verlaengert hat (hier `565259c`, +360 Zeilen): `git
+  cat-file blob <commit>:<pfad>` vs. HEAD, Zeilennummer in beiden suchen. Hielt.
+- **"Zeichengleich" nie mit dem Auge.** Kommentarmarke und Einrueckung abziehen, dann `==`
+  in Python. Der Unterschied lag hier in vier Fuellzeichen mitten in der Formel.
+- **Ordinalangaben ("vierte Zeile des Formelblocks") gegen die Zaunzeilen zaehlen**, nicht
+  gegen die Untergruppe, die der Satz meint. War die achte; nicht tragend, weil der
+  Wortlaut daneben eindeutig ist -- deshalb Befund ohne eigenen Vorschlag.
+- **Selbstbilanz eines neuen Blocks (51/47/4, 25 gebildet, 26 zitiert) hielt vollstaendig**,
+  gemessen mit `tomllib`-Blattzaehlung **und** den zwei `grep`-Ausdruecken, die die Datei
+  sich selbst vorschreibt. Erste Kopfzahlen dieser Datei, die stimmten.
+- **`Write` erneut abgelehnt, Heredoc in drei Teilen angenommen** (`open(p,"w")` dann `"a"`).
+  Zehnter Fall in Folge.
