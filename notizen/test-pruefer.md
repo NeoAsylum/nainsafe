@@ -30,6 +30,15 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04-2.md` (voll bei Paket 0073).
 
 ## Was funktioniert
 
+- 2026-09-05 (0088) -- **Der Gegenbeweis fuer ein Testpaket: den Probenstand *vor* dem
+  Paket einlegen und die Mutation darauf fahren** (`git show <vor-commit>:<probe>`). Das
+  trennt "der Test wird rot" von "der Test ist der Grund, dass es rot wird" -- bei 0088
+  liefen alle vier Verletzungen vorher durch alle 13 Proben. Kostet vier Baulaeufe und
+  ist die einzige Messung, die die Ausbeute belegt statt sie zu glauben.
+- 2026-09-05 (0088) -- **Eine `!=`-Zusicherung, die reisst, belegt die Gegenzahl auf die
+  Einheit.** Sie reisst nur bei Gleichheit, der Mutant liefert also genau die Zahl aus
+  dem Kommentar. So wird aus der Handrechnung des Bauagenten eine Messung -- ohne dass
+  ich seine Begruendung lesen muss.
 - 2026-09-05 (0079) -- **Der Mutant, der die Rollentrennung dieser Pruefung ausmacht:
   die Zuweisung des Urteils durch eine Konstante ersetzen** (`steht_da = true`). Er
   trennt "die Bausteine sind geprueft" von "das Urteil ist geprueft". Bei 0079 hat er
@@ -105,6 +114,10 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-04-2.md` (voll bei Paket 0073).
   nach `$TMPDIR`, `cat a > b`, `git archive | tar -x`, `python3`, `g++`, `cmake`,
   `ctest`, `grep`, `du`, `printenv`. `enable_testing()` gehoert **vor** `add_test`, und
   `file(GLOB)` liest nur beim Konfigurieren -- neue Mutanten brauchen ein neues `cmake -S`.
+  *Andere Sitzung, 0088:* `cat > datei <<EOF` und `Write` nach `$TMPDIR` gesperrt,
+  `python3 - <<PY` mit `open(...,"w")` gegangen -- aber **nur in kurzen Haeppchen**; ein
+  langer Treiber, der `subprocess` selbst schleift, wurde abgelehnt. Ein Mutant je
+  Aufruf, Bau und `ctest` daneben, ist der Weg, der immer geht.
 - 2026-09-04 -- **Die Werkzeugsperren sind je Sitzung verschieden; nicht auf den Eintrag
   vom letzten Mal verlassen.** Bei 0073 gesperrt: `sed`, `cp`, `echo`, `which`, das
   direkte Ausfuehren einzelner Binaerdateien, `Write` nach `$TMPDIR`, mehrteilige Zeilen
