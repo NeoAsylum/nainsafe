@@ -96,10 +96,12 @@ weil die Quelle keines fuehrt — was zu „current" passt und die Messung stuet
 
 Damit ist die schwerste offene Sache des Vorhabens nicht entschieden, aber zum ersten
 Mal **entscheidbar gestellt**. Gemeint ist die Frage, ob T5 Klasse 2 laufende oder
-konstante Preise misst; sie stand am 2026-09-02 in `rueckstand.md` unter der
-Ueberschrift „Was der Geschäftsführer entscheiden lassen muss" als eigener Punkt
-(Wortlaut: „Klasse 2 misst zweierlei — laufende und konstante Preise") und ist in der
-vorliegenden Fassung jener Datei nicht mehr aufgefuehrt. Die Folge steht in
+konstante Preise misst; sie stand am 2026-09-02 in `rueckstand.md` als eigener Punkt
+mit dem Wortlaut „Klasse 2 misst zweierlei — laufende und konstante Preise". Dieser
+Verweis ist ausdruecklich ein historischer und haengt an keinem lebenden Wortlaut jener
+Datei: Die Gliederungszeile, unter der jener Punkt dort stand, hat der Commit `81853b8`
+(projektmanager, 2026-09-04) entfernt, nachzulesen ist er deshalb in `81853b8~1`, und
+in der vorliegenden Fassung ist er nicht mehr aufgefuehrt. Die Folge steht in
 Abschnitt 5.
 
 ## 3. PWT-Kapitalstock (Reihe 3) — nicht gemessen

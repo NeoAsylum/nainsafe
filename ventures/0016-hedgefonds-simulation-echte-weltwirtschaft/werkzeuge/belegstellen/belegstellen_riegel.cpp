@@ -640,6 +640,22 @@ std::size_t satzanfang_vor(std::string_view zeile, std::size_t bis) {
     return anfang;
 }
 
+/// Wo der Satz endet, in dem die Stelle `ab` liegt -- die Obergrenze der Suche nach
+/// rechts (Paket 0086). Spiegelbild von `satzanfang_vor`, mit derselben Regel und
+/// derselben Begruendung: Ein Verweis und sein Ziel stehen im selben Satz.
+std::size_t satzende_nach(std::string_view text, std::size_t ab) {
+    for (std::size_t k = ab; k + 1 < text.size(); ++k) {
+        const char c = text[k];
+        if (c != '.' && c != '!' && c != '?') {
+            continue;
+        }
+        if (text[k + 1] == ' ' || text[k + 1] == '\t') {
+            return k + 1;
+        }
+    }
+    return text.size();
+}
+
 /// Der **naechstgelegene** Dateiname links von `bis` auf derselben Zeile.
 ///
 /// Gesucht wird wortweise nach links bis zum Anfang des Satzes, nicht ueber genau ein
@@ -1328,6 +1344,58 @@ bool naechster_verweis(std::string_view text, std::size_t bis, std::string& name
     return false;
 }
 
+/// Der naechstgelegene Verweis **rechts** von `ab`, bis zum Ende des Satzes -- Paket
+/// 0086. Rueckgabe und Bedeutung von `netzadresse` wie bei `naechster_verweis`.
+///
+/// **Wer gewinnt, wenn links und rechts ein Name steht: der linke.** Das ist die
+/// Entscheidung, an der diese Lockerung haengt, und sie faellt so herum, weil die
+/// Linksregel gemessen ist und diese hier nicht: Ohne sie band der Riegel ein
+/// franzoesisches Zitat in `lizenzbefund-reihen.md` an die falsche Datei. Die Suche
+/// nach rechts laeuft deshalb **nur, wenn links nichts steht** -- sie kann keine
+/// vorhandene Zuordnung umhaengen, sondern nur eine fehlende ergaenzen. Damit ist die
+/// Frage nach dem Vorrang nicht offen gelassen, sondern zugunsten des Gemessenen
+/// beantwortet.
+///
+/// **Warum nur bis zum Satzende, waehrend die Suche nach links den ganzen Absatz
+/// nimmt.** Nach links steht der Name **vor** der Ankuendigung und gehoert erkennbar zu
+/// ihr; nach rechts steht hinter dem Zitat der weiterlaufende Text, und ohne Grenze
+/// finge jede Anfuehrung den naechsten Dateinamen des Absatzes ein, gleich wie weit weg
+/// er steht und wovon er handelt. Was die weitere Fassung kostet, ist gemessen und im
+/// Kopf genannt.
+///
+/// **Und nur fuer die Form mit Anfuehrung.** Ohne sie hat das Zitat keinen bestimmten
+/// rechten Rand -- der Name laeuft im Satz weiter, und wo er endet, ist geraten. Eine
+/// Suche, die dort ansetzt, suchte im Zitat selbst.
+bool verweis_rechts(std::string_view text, std::size_t ab, std::string& name,
+                    bool& netzadresse) {
+    const std::size_t obergrenze = satzende_nach(text, ab);
+    std::size_t grenze = ab;
+    while (grenze < obergrenze) {
+        std::size_t anfang = grenze;
+        while (anfang < obergrenze && !ist_pfadzeichen(text[anfang])) {
+            ++anfang;
+        }
+        std::size_t ende = anfang;
+        while (ende < obergrenze && ist_pfadzeichen(text[ende])) {
+            ++ende;
+        }
+        if (anfang == ende) {
+            return false;
+        }
+        std::string_view wort = text.substr(anfang, ende - anfang);
+        while (!wort.empty() && (wort.back() == '.' || wort.back() == '/')) {
+            wort.remove_suffix(1);
+        }
+        if (endung_zugelassen(wort)) {
+            name = std::string(wort);
+            netzadresse = wort.find("//") != std::string_view::npos;
+            return true;
+        }
+        grenze = ende;
+    }
+    return false;
+}
+
 /// Eine Datei, auf die ein Zitat zeigen kann. `anzahl` traegt, wie oft ihr Basisname
 /// im Bestand vorkommt: Ein mehrdeutiger Name wird nicht geraten.
 struct Ziel {
@@ -1561,16 +1629,14 @@ std::size_t schluessellaenge(std::string_view text, std::size_t i) {
     return 0;
 }
 
-/// Liest die Ueberschrift, die bei `i` in Anfuehrung stehen soll. Rueckgabe ist die
-/// Laenge des ganzen Zitatteils ab `i`, oder 0, wenn dort keine Anfuehrung steht.
-std::size_t ueberschrift_hinter(std::string_view text, std::size_t i, std::string& roh) {
-    std::size_t j = i;
-    while (j < text.size() && text[j] == ' ') {
-        ++j;
-    }
-    // Ein Zitat in einer C++-Zeichenkette traegt sein Anfuehrungszeichen maskiert.
-    if (j < text.size() && text[j] == '\\') {
-        ++j;
+/// Die Anfuehrung, die **bei `j`** beginnt, samt ihrem Inhalt. Rueckgabe ist die Stelle
+/// hinter dem Schlusszeichen, oder `npos`, wenn dort keine Anfuehrung steht.
+///
+/// Eigener Aufruf seit Paket 0086: Die Stelle, an der gesucht wird, ist seither nicht
+/// mehr nur die eine unmittelbar hinter dem Schluesselwort.
+std::size_t klammer_ab(std::string_view text, std::size_t j, std::string& roh) {
+    if (j >= text.size()) {
+        return std::string_view::npos;
     }
     for (std::size_t k = 0; k < KLAMMERN.size(); ++k) {
         const Klammer klammer = KLAMMERN[k];
@@ -1588,7 +1654,93 @@ std::size_t ueberschrift_hinter(std::string_view text, std::size_t i, std::strin
         while (!roh.empty() && roh.back() == '\\') {
             roh.pop_back();
         }
-        return (zu + klammer.zu.size()) - i;
+        return zu + klammer.zu.size();
+    }
+    return std::string_view::npos;
+}
+
+/// Wo die Anfuehrungssuche hinter `i` ansetzt: ueber Leerzeichen hinweg und ueber einen
+/// Gegenschraegstrich, mit dem eine C++-Zeichenkette ihr Anfuehrungszeichen maskiert.
+std::size_t hinter_leerraum(std::string_view text, std::size_t i) {
+    std::size_t j = i;
+    while (j < text.size() && text[j] == ' ') {
+        ++j;
+    }
+    if (j < text.size() && text[j] == '\\') {
+        ++j;
+    }
+    return j;
+}
+
+/// Liest die Ueberschrift, die bei `i` in Anfuehrung stehen soll. Rueckgabe ist die
+/// Laenge des ganzen Zitatteils ab `i`, oder 0, wenn dort keine Anfuehrung steht.
+std::size_t ueberschrift_hinter(std::string_view text, std::size_t i, std::string& roh) {
+    const std::size_t ende = klammer_ab(text, hinter_leerraum(text, i), roh);
+    return ende == std::string_view::npos ? 0 : ende - i;
+}
+
+/// Wie viele Woerter zwischen dem Schluesselwort und der Anfuehrung stehen duerfen --
+/// Paket 0086.
+///
+/// **Die Zahl ist gemessen und nicht gegriffen.** Sie ist der Abstand der einen Form,
+/// um derentwillen dieses Paket existiert: Die dritte Belegstelle aus Paket 0034 in
+/// `daten/adressen.md` nennt ihr Schluesselwort und laesst fuenf Woerter folgen, ehe die
+/// Anfuehrung beginnt. Was jeder Schritt von null bis acht traegt und kostet, steht im
+/// Kopf; gewaehlt ist der kleinste Wert, der die gemessene Form fangt, und nicht der
+/// groesste, der noch nichts kaputt macht -- eine Schwelle mit Luft nach oben ist eine
+/// geratene.
+constexpr std::size_t WORTABSTAND_HOECHSTENS = 5;
+
+/// Endet das Wort, das bei `ende` aufhoert, den Satz? Dieselbe Regel wie in
+/// `satzanfang_vor`: Punkt, Ausrufe- oder Fragezeichen mit Leerraum dahinter.
+bool schliesst_satz(std::string_view text, std::size_t anfang, std::size_t ende) {
+    if (ende <= anfang) {
+        return false;
+    }
+    const char c = text[ende - 1];
+    if (c != '.' && c != '!' && c != '?') {
+        return false;
+    }
+    return ende >= text.size() || text[ende] == ' ' || text[ende] == '\t';
+}
+
+/// Die Ueberschrift, die **ein bis `WORTABSTAND_HOECHSTENS` Woerter** hinter `i` in
+/// Anfuehrung steht -- Paket 0086. Rueckgabe wie bei `ueberschrift_hinter`.
+///
+/// **Warum ein eigener Aufruf und nicht eine Schleife in jenem.** Der Abstand null ist
+/// die sichere Form: Dort kuendigt das Schluesselwort die Anfuehrung unmittelbar an.
+/// Erst wenn weder sie noch der Name ohne Anfuehrung dort steht, wird weiter gesucht --
+/// so aendert diese Lockerung keine einzige Fundstelle, die der Riegel vorher schon
+/// eingeordnet hat, sondern nur solche, die er gar nicht sah.
+///
+/// **Wo die Suche endet.** Am Satzende, gemessen an derselben Regel wie die Suche nach
+/// links, und spaetestens nach der genannten Zahl Woerter. Beides zusammen ist die
+/// Antwort auf den Einwand, an dem diese Lockerung haengt: Wer beliebig weit sucht,
+/// bindet jede Anfuehrung eines Absatzes an das naechstgelegene Schluesselwort.
+std::size_t ueberschrift_mit_abstand(std::string_view text, std::size_t i,
+                                     std::string& roh) {
+    std::size_t j = i;
+    for (std::size_t woerter = 0; woerter < WORTABSTAND_HOECHSTENS; ++woerter) {
+        // Ein Wort ueberspringen: erst der Leerraum davor, dann das Wort selbst.
+        std::size_t anfang = j;
+        while (anfang < text.size() && (text[anfang] == ' ' || text[anfang] == '\t')) {
+            ++anfang;
+        }
+        std::size_t ende = anfang;
+        while (ende < text.size() && text[ende] != ' ' && text[ende] != '\t') {
+            ++ende;
+        }
+        if (ende == anfang) {
+            return 0;  // nichts mehr da
+        }
+        if (schliesst_satz(text, anfang, ende)) {
+            return 0;
+        }
+        j = ende;
+        const std::size_t schluss = klammer_ab(text, hinter_leerraum(text, j), roh);
+        if (schluss != std::string_view::npos) {
+            return schluss - i;
+        }
     }
     return 0;
 }
@@ -1967,11 +2119,18 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                 // ueber das Schluesselwort und nicht ueber den Namen -- steht im Namen
                 // ein zweites Schluesselwort, soll es seine eigene Fundstelle bleiben.
                 if (name_ohne_anfuehrung(absatz.text, i + schluessel, roh) == 0) {
-                    i += schluessel;
-                    continue;
+                    // Paket 0086: erst jetzt, wenn beide unmittelbaren Formen nichts
+                    // hergeben, wird die Anfuehrung mit Wortabstand gesucht. Die
+                    // Reihenfolge ist die ganze Vertraeglichkeit dieser Lockerung.
+                    zitatteil = ueberschrift_mit_abstand(absatz.text, i + schluessel, roh);
+                    if (zitatteil == 0) {
+                        i += schluessel;
+                        continue;
+                    }
+                } else {
+                    ohne_anfuehrung = true;
+                    zitatteil = 0;
                 }
-                ohne_anfuehrung = true;
-                zitatteil = 0;
             }
             const std::size_t nummer = absatz.zeile[i];
             const std::string gesucht = normiere(roh);
@@ -1979,7 +2138,14 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
             std::string name;
             bool netzadresse = false;
             std::string grund;
-            if (!naechster_verweis(absatz.text, i, name, netzadresse)) {
+            bool gefunden = naechster_verweis(absatz.text, i, name, netzadresse);
+            if (!gefunden && !ohne_anfuehrung) {
+                // Paket 0086: der Dokumentname rechts vom Zitat. Nur als Rueckfall,
+                // damit die gemessene Linksregel den Vorrang behaelt.
+                gefunden = verweis_rechts(absatz.text, i + schluessel + zitatteil, name,
+                                          netzadresse);
+            }
+            if (!gefunden) {
                 if (ohne_anfuehrung) {
                     // Ohne Anfuehrung **und** ohne Dokumentnamen ist die Stelle kein
                     // Zitat, sondern ein Satz. Die Anfuehrung ist die Ankuendigung

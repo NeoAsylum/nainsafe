@@ -1251,6 +1251,32 @@ Platzhalter, also ohne zu sagen, welches Gebiet und welcher Sektor gemeint ist. 
 ihn jetzt. Die Adressmenge bleibt 310 und die Tabelle in T46 Zeile für Zeile, wie sie war:
 Diese Festlegung ändert keine Adresse, sondern sagt, was eine Schreibweise bedeutet.
 
+**Die Zählung vor und nach der Regel, damit sie niemand nachrechnen muss** — denn „vier
+Stellen" oben und der Befund einer Volltextsuche sind nicht dieselbe Zahl, und ohne diesen
+Absatz muss die Differenz jeder Leser selbst auflösen. Die drei Suchmuster sind hier
+**escapt** geschrieben (`gebiet\.` statt `gebiet.`); dadurch ist keine Zeile dieses Absatzes
+selbst ein Treffer, und die Zahlen gelten für das Dokument einschliesslich seiner selbst.
+
+| Muster | vor dieser Festlegung | jetzt |
+|---|---:|---:|
+| `gebiet\.<G>\.` | 1 | 8 |
+| `gebiet\.<g>\.` | 1 | 2 |
+| `gebiet\.` — die loseste Form, alles zusammen | 4 | 17 |
+
+**Vorher vier, und es waren genau die vier T-Nummern der Tabelle oben:** T39 und T28 in der
+Kurzform ohne Platzhalter, T46 als `<G>`-Zeile, T48 als `<g>`-Formel. Nachzusehen in der
+Fassung vor dieser Festlegung, `git show ce59b8b^:specs/0016-…/technik.md`.
+
+**Nachher siebzehn, und keine davon ist eine fünfte Stelle.** Zehn tragen einen
+Platzhalter: **fünf** stehen in T17b selbst (die Überschrift und die vier Zeilen der
+Fundstellentabelle), die anderen **fünf** verteilen sich auf dieselben vier T-Nummern wie
+vorher — T46 trägt zwei, die Tabellenzeile und den Absatz, der von dort auf diese Regel
+zeigt. Die restlichen **sieben** stehen sämtlich in T17b und sind **Gegenbeispiele, keine
+Verwendungen**: dreimal `gebiet\.US` und zweimal `gebiet\.RW\.` in der Begründung, warum es
+diese Adressen nicht gibt, einmal `gebiet\.sektor` als Zitat der alten Kurzform und einmal
+`gebiet\.` mit Auslassungszeichen im Einleitungssatz. `4 → 17`, davon `13`
+neu: `5 + 1` in T17b und T46 mit Platzhalter, `7` als Gegenbeispiel. **Keine Ausnahme.**
+
 **T18 — Die Kette wird erzeugt, nicht rekonstruiert — und jede Größe der Sollmaske wird je
 Runde genau einmal geschrieben.** Die Felder von `Zustand` sind ausserhalb des Kerns nicht
 schreibbar; innerhalb schreibt niemand direkt, sondern über

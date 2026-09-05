@@ -34,13 +34,18 @@
 #
 # 1. `rolle_tabelle` und `t37_klasse` sind zwei verschiedene Dinge. Das
 #    Wort `frei` in der Spalte "Rolle" der Reihenliste ist die
-#    T37-Klasse und **kein Lizenzurteil**. Die Warnung davor stand am
-#    2026-09-02 in `rueckstand.md` unter der Ueberschrift
-#    (Zitat: Was der Geschäftsführer entscheiden lassen muss)
-#    als eine von zwei Entwurfsfragen aus den Befunden der Vornacht;
-#    in der vorliegenden Fassung jener Datei ist sie nicht mehr
-#    aufgefuehrt. Das Lizenzurteil steht in `lizenzurteil` und
-#    nirgends sonst.
+#    T37-Klasse und **kein Lizenzurteil**. Das Lizenzurteil steht in
+#    `lizenzurteil` und nirgends sonst.
+#
+#    Herkunft dieser Warnung, und der Verweis darauf ist ausdruecklich
+#    ein historischer: Sie stand am 2026-09-02 in `rueckstand.md` als
+#    eine von zwei Entwurfsfragen aus den Befunden der Vornacht. Die
+#    Gliederungszeile, unter der sie dort stand, hat der Commit
+#    `81853b8` (projektmanager, 2026-09-04) aus jener Datei entfernt.
+#    Nachzulesen ist die Stelle deshalb in `81853b8~1` und nicht in der
+#    vorliegenden Fassung; ein Verweis auf einen lebenden Wortlaut in
+#    `rueckstand.md` ist hier nicht gemeint und war es seit dem
+#    2026-09-04 auch nicht mehr.
 # 2. `exogen_ab` und `verkettet_ab` sind Jahreszahlen. **0 heisst
 #    leer.** Ein Jahrgang dieses Vorhabens beginnt fruehestens 1950
 #    (PWT); eine 0 kann keine Jahreszahl sein. Die Umrechnung in eine
@@ -348,7 +353,7 @@ betrifft_reihen = [9]
 kurz = "Die Reihenliste nennt IWF IFS; IFS gibt es nicht mehr"
 lang = '''Der alte IFS-Zugang ist tot (DNS-Fehler), der neue fuehrt keinen Datenfluss namens IFS. Eingebettet wird nach 0006 `IMF.STA/MFS_IR` 9.0.0, Code `DISR_RT_PT_A_PT` (Diskontsatz). Dieser Code misst je Land eine andere Groesse -- fuer die USA den Diskontsatz des Fed-Diskontfensters, fuer Brasilien den Rediskontsatz, der nicht die Selic ist -- und fuehrt Deutschland und China ueberhaupt nicht.'''
 in_dieser_datei = "quelle_eingebettet nennt den Nachfolgefluss, quelle_tabelle den Wortlaut der Reihenliste. Die Deckungsluecke steht in [[reihe.deckung]]. Seit Paket 0065 traegt Reihe 9 rolle = [start, politikpfad] ohne soll, sollreihen = 0 und ein leeres t37_klasse. Nicht mitgezogen ist rolle_tabelle: Das Feld traegt nach Leseregel 4 den Wortlaut der Reihenliste aus technik.md Abschnitt 7, und die Reihenliste sagt dort in Zeile 1441 weiter Start + Politikpfad + Soll (4, gesetzt); ebenso fuehrt die Klassentabelle in T37 die Zeile gesetzt mit dem Leitzins (4). Dieses Feld umzuschreiben hiesse, einen Wortlaut zu behaupten, den die Vorlage nicht traegt -- dann stuende dort Start + Politikpfad und waere von einer echten Uebernahme nicht zu unterscheiden. Der Widerspruch steht deshalb hier statt geglaettet in der Reihe, und er faellt weg, sobald technik.md nachgezogen ist; das ist ein eigenes Paket und gehoert dem Architekten. Fuer den Jahrgangsbau gelten rolle, sollreihen und t37_klasse und nicht rolle_tabelle -- dieselbe Vorfahrt wie in Widerspruch Nr. 2."
-entscheidet = "Teilweise entschieden -- was offen blieb, hat den Adressaten gewechselt. Entschieden am 2026-09-03 vom Spielentwerfer, Paket 0054: Reihe 9 verliert ihre Sollrolle und behaelt Start und Politikpfad; an die Stelle eines Fehlermasses tritt eine Invariante (spiel.md, Absatz Der Leitzins ist seit dem 2026-09-03 keine Sollreihe). Die Reihe ist damit weder gestrichen noch ihre Quelle ersetzt. Offen bleibt die Quelle fuer den Politikpfad: DISR fuehrt Deutschland und China nicht, und ob ein einheitlicher Zinsbegriff ueber die vier Laender erreichbar ist, ist ungemessen. Das entscheidet nach spiel.md, Offene Entwurfsfragen, nicht mehr der Spielentwerfer, sondern der Datenbauer in einem eigenen Paket. Drittens offen und an den Architekten: technik.md fuehrt Reihe 9 in Abschnitt 7 und in T37 weiter als Sollreihe der Klasse gesetzt; siehe in_dieser_datei. Die Sache stand am 2026-09-02 in rueckstand.md unter der Ueberschrift (Zitat: Was der Geschäftsführer entscheiden lassen muss) als eigener Punkt (Zitat: Reihe 9 und R = 19); in der vorliegenden Fassung jener Datei ist sie nicht mehr aufgefuehrt."
+entscheidet = "Teilweise entschieden -- was offen blieb, hat den Adressaten gewechselt. Entschieden am 2026-09-03 vom Spielentwerfer, Paket 0054: Reihe 9 verliert ihre Sollrolle und behaelt Start und Politikpfad; an die Stelle eines Fehlermasses tritt eine Invariante (spiel.md, Absatz Der Leitzins ist seit dem 2026-09-03 keine Sollreihe). Die Reihe ist damit weder gestrichen noch ihre Quelle ersetzt. Offen bleibt die Quelle fuer den Politikpfad: DISR fuehrt Deutschland und China nicht, und ob ein einheitlicher Zinsbegriff ueber die vier Laender erreichbar ist, ist ungemessen. Das entscheidet nach spiel.md, Offene Entwurfsfragen, nicht mehr der Spielentwerfer, sondern der Datenbauer in einem eigenen Paket. Drittens offen und an den Architekten: technik.md fuehrt Reihe 9 in Abschnitt 7 und in T37 weiter als Sollreihe der Klasse gesetzt; siehe in_dieser_datei. Die Sache stand am 2026-09-02 in rueckstand.md als eigener Punkt mit dem Wortlaut 'Reihe 9 und R = 19'. Dieser Verweis ist ausdruecklich ein historischer und haengt an keinem lebenden Wortlaut jener Datei: Die Gliederungszeile, unter der jener Punkt dort stand, hat der Commit 81853b8 (projektmanager, 2026-09-04) entfernt, nachzulesen ist er deshalb in 81853b8~1, und in der vorliegenden Fassung ist er nicht mehr aufgefuehrt."
 
 [[widerspruch]]
 nr = 6
@@ -496,7 +501,7 @@ t26_folge = "Kein benannter Fall von T26 und keine geprueffte Ausweichquelle (Be
 deckung_gemessen = true
 deckung_urteil = "traegt 1997-2021 vollstaendig, alle zwoelf"
 offen = [
-  "Rundet Reihe 2 vor oder nach der Normierung? Die Rundungsstelle ist eine Entwurfsfrage mit Folgen fuer den Determinismus und stand am 2026-09-02 in rueckstand.md unter der Ueberschrift (Zitat: Was der Geschäftsführer entscheiden lassen muss) als eine von zwei Entwurfsfragen aus den Befunden der Vornacht; in der vorliegenden Fassung jener Datei ist sie nicht mehr aufgefuehrt.",
+  "Rundet Reihe 2 vor oder nach der Normierung? Die Rundungsstelle ist eine Entwurfsfrage mit Folgen fuer den Determinismus und stand am 2026-09-02 in rueckstand.md als eine von zwei Entwurfsfragen aus den Befunden der Vornacht. Dieser Verweis ist ausdruecklich ein historischer und haengt an keinem lebenden Wortlaut jener Datei: Die Gliederungszeile, unter der die Frage dort stand, hat der Commit 81853b8 (projektmanager, 2026-09-04) entfernt, nachzulesen ist sie deshalb in 81853b8~1, und in der vorliegenden Fassung ist sie nicht mehr aufgefuehrt.",
   "Die Normierung ist kein Rundungsdetail: Die drei WDI-Anteile summieren sich nicht auf 100 (der Rest sind Nettoguetersteuern), sie verschiebt jeden der zwoelf Werte.",
   "Der Ausweg '100 % minus IND minus SRV' traegt nicht -- er schoebe die gesamte Differenz zum BIP in den kleinsten Sektor (fuer ein Modelland 1,0322 % gemessen).",
 ]
@@ -516,7 +521,7 @@ faktor = 10000
 status = "vorgegeben"
 rundungsstelle = "offen"
 begruendung = "T23 Punkt 7: Die drei Sektoranteile je Gebiet und Jahr werden auf 10.000 normiert. Verfahren und der je Gebiet und Jahr abgeschnittene Rest stehen im Manifest; der Rueckvergleich vergleicht normiert gegen normiert. technik.md T23 Punkt 1 setzt die Normierung voraus -- dort beginnt eine Zeile mit zwölf Sektoranteil-Sollreihen aus."
-beleg = "technik.md T23 Punkt 7 (Zitat: die drei Sektoranteile je Gebiet und Jahr werden auf 10.000 normiert) und T23 Punkt 1 (Zitat: zwölf Sektoranteil-Sollreihen aus); die offene Rundungsstelle stand am 2026-09-02 in rueckstand.md unter der Ueberschrift (Zitat: Was der Geschäftsführer entscheiden lassen muss) und ist in der vorliegenden Fassung jener Datei nicht mehr aufgefuehrt"
+beleg = "technik.md T23 Punkt 7 (Zitat: die drei Sektoranteile je Gebiet und Jahr werden auf 10.000 normiert) und T23 Punkt 1 (Zitat: zwölf Sektoranteil-Sollreihen aus); die offene Rundungsstelle stand am 2026-09-02 in rueckstand.md. Dieser Verweis ist ausdruecklich ein historischer und haengt an keinem lebenden Wortlaut jener Datei: Die Gliederungszeile, unter der die Rundungsstelle dort stand, hat der Commit 81853b8 (projektmanager, 2026-09-04) entfernt, nachzulesen ist sie deshalb in 81853b8~1, und in der vorliegenden Fassung ist sie nicht mehr aufgefuehrt"
 
 [[reihe.lizenzbeleg]]
 codes = ["NV.AGR.TOTL.ZS"]
