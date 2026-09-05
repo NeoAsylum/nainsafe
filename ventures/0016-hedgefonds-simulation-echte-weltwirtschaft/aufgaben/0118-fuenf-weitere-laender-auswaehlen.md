@@ -2,7 +2,7 @@
 id: 0118-fuenf-weitere-laender-auswaehlen
 rolle: spielentwerfer
 status: vorschlag
-haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen]
+haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0119-welt-in-drei-schichten]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme".
 ---
