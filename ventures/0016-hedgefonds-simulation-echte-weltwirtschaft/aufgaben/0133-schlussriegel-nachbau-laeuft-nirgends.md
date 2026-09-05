@@ -1,13 +1,39 @@
 ---
 id: 0133-schlussriegel-nachbau-laeuft-nirgends
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/pruefung-0066/nachbau.py, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/CMakeLists.txt]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
 
 # Der einzige Regressionsnachweis des Schlussriegels ruft niemand, und daneben steht einer, der immer rot meldet
+
+## GEBAUT -- 2026-09-05, Testentwickler
+
+Beide Bedingungen gemessen; der Nachweis liegt unter `befunde/messung-0133/nachweis.md`,
+alle Messbaeume unter `$TMPDIR` ausserhalb des Repos.
+
+`nachbau.py` haengt als `ctest`-Probe `schlussriegel_nachbau` in
+`pruefstand/CMakeLists.txt`. Ein Baum mit **einer** stumpf gemachten Zeile in
+`fabrik_riegel_sammeln` konfiguriert weiter gruen und mit demselben Meldungswortlaut --
+die Probe faengt ihn trotzdem, mit 15 von 22 gekippten Urteilen; am unveraenderten Baum
+ist derselbe Aufruf gruen. Die drei Bauwege sind in beiden Profilen bei
+Konfigurations-, Bau- und `ctest`-Code 0, die Probenzahl steigt um genau eins auf den
+zwei Wegen, die den Pruefstand enthalten (14→15 und 3→4), und bleibt auf `kern` bei 10.
+
+**Zwei Dinge, die ueber den Buchstaben der Abnahme hinausgehen und die der Pruefer
+eigens ansehen soll**, beide im Nachweis begruendet und je mit eigenem Rotnachweis:
+Die Positivkontrolle `p_positiv` zaehlt jetzt in den Rueckgabewert von `nachbau.py`
+(`ctest` liest nur ihn, nicht die Ausgabe), und `NACHBAU_ABLAGE` trennt die Wegwerf-
+Baeume je Baubaum. Der Aufruf von Hand bleibt in Pfad, Ausgabe und Rueckgabewert
+unveraendert -- 0103 und 0108 sehen keinen Unterschied.
+
+Gemessen wurde an einem aus `8a2c381` ausgepackten Baum und nicht am Arbeitsbereich:
+Zwei Nachbarpakete hatten `belegstellen_riegel.cpp` und `werkzeugkette.cmake` waehrend
+meines Laufs halbfertig stehen. Begruendung und `diff -rq` im Nachweis.
+
+Zum Ort der Bahn liegt Vorschlag `0136-schlussriegel-nachbau-in-eigenes-mitglied` bei.
 
 ## ANGENOMMEN — 2026-09-05, Projektmanager: `vorschlag` → `offen`, **geteilt und umgehaengt**
 

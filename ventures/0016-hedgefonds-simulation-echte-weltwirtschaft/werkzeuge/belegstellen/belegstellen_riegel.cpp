@@ -1699,6 +1699,12 @@ enum class Zielart {
 /// muss den ungelesenen Ordner nennen, und unter dem genannten Pfad muss dort auch eine
 /// Datei liegen. Ein Name, der seinen Ordner nicht bei sich traegt, ist tot; der Preis
 /// dieser Richtung steht im Kopf.
+///
+/// **Von den vier Entscheidungen hier sind drei gemessen und eine nicht.** Faellt einer
+/// der beiden Teile der Ortsfrage weg oder die Pfadgrenze in `liegt_in_...`, reissen
+/// Faelle der Tabelle unten -- je Teil andere. Der **Vorrang des Aufstiegs** vor der
+/// Ortsfrage reisst nichts, und der Grund steht beim letzten Fall der Tabelle: Die
+/// beiden koennen nicht zugleich zutreffen.
 Zielart zielart(std::string_view name, bool im_bestand, const Ortsmenge& ungelesene) {
     if (im_bestand) {
         return Zielart::Gelesen;
@@ -1818,9 +1824,13 @@ constexpr std::array<Zielfall, 17> ZIELFAELLE = {{
     {"../befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md", false,
      "befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md",
      Zielart::Ausserhalb,
-     "gebaut: derselbe Bericht, aus der Wurzel heraus genannt. Er nennt einen "
-     "ungelesenen Ordner und liegt dort auch -- diese Zeile haelt fest, dass der "
-     "Aufstieg trotzdem vorgeht, sonst entschiede die Reihenfolge zufaellig"},
+     "gebaut: derselbe Bericht, aus der Wurzel heraus genannt. Er faellt nach draussen. "
+     "Dass die Reihenfolge der beiden Pruefungen das entscheidet, ist ausdruecklich "
+     "NICHT gemessen -- vertauscht man sie, aendert sich kein Fall und kein Lauf. Beide "
+     "koennen nicht zugleich zutreffen: Ein eingesammelter Pfad beginnt nie mit einem "
+     "Schraegstrich und traegt nie zwei Punkte, also findet ein Name, der seinen Ort "
+     "nach draussen ausspricht, dort nie eine Datei. Die Reihenfolge ist Ordnung und "
+     "keine Regel; diese Zeile haelt den Ausgang fest, nicht ihren Grund"},
 }};
 
 Ortsmenge zerlege_orte(std::string_view spalte) {

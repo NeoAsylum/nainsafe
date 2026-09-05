@@ -51,6 +51,105 @@ endif()
 file(GLOB KERN_QUELLEN CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 file(GLOB KERN_KOEPFE  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/kern/*.hpp)
 
+# ---------------------------------------------------------------------------
+# Der Sperrebindungsriegel (Paket 0134)
+# ---------------------------------------------------------------------------
+#
+# `include/kern/sperre.hpp` vergiftet das Gleitkomma (T4) und die beiden
+# Ueberlaufbausteine (T7, Massnahme 4, Punkt 2). Ein `#pragma GCC poison` wirkt ab der
+# Zeile, an der es steht, bis zum Ende der Uebersetzungseinheit -- beide Sperren gelten
+# also genau fuer die Quellen, die den Kopf binden, und dort erst ab seiner Zeile.
+# Daraus die Einbauregel, die im Kopf selbst begruendet ist: Er ist der **letzte**
+# `#include` jeder Kernquelle. Sie ist der Grund, warum die Sperre ohne Ausnahmeliste
+# auskommt -- `festkomma.hpp` darf die vergifteten Bausteine benutzen, weil es fertig
+# gelesen ist, bevor die Vergiftung gilt.
+#
+# Gehalten wurde diese Regel bis zum 2026-09-05 von nichts. Im Kopf steht ein `grep`
+# als Nachweis, und ein `grep` in einem Kommentar laeuft nur, wenn ihn jemand liest und
+# tippt.
+#
+# Der Riegel gehoert genau hierhin, weil die beiden Zeilen darueber die Luecke
+# aufmachen: Der Sammler liest die Quellen ein, statt sie aufzuzaehlen. Das ist gewollt
+# -- jedes spaetere Kernpaket bringt seine Datei mit und muss keine Bauliste anfassen.
+# Der Preis ist, dass eine Quelle **ohne** die Sperre ebenso ohne jeden Eingriff in
+# beide Bibliotheken kommt. Gemessen im Vorschlag zu diesem Paket: eine zugelegte
+# `src/luecke.cpp` mit einer Rechnung auf `double` und einer eigenen Fassung der
+# Strichrechnung wird in `kern` **und** in `kern_geprueft` uebersetzt und laeuft gruen
+# durch jede Probe.
+#
+# Warum beim Konfigurieren und nicht im Belegstellenriegel: Die Pruefung braucht keine
+# Uebersetzung und kein eigenes Binaerprogramm, und sie schlaegt zu, **bevor** gebaut
+# wird, statt danach.
+#
+# Zwei Bedingungen, und genau die halten die beiden Abbruchmeldungen auseinander: Der
+# Kopf ist gebunden, und er ist als letzter gebunden. Ein zweites Vorkommen weiter oben
+# faengt der Riegel nicht ab -- `#pragma once` macht es folgenlos, und die zweite
+# Bedingung haelt die Reihenfolge trotzdem.
+#
+# **Was er nicht sieht**, damit es niemand fuer geprueft haelt: Er liest Zeilen, er
+# verarbeitet nicht vor. Eine `#include`-Zeile innerhalb eines `/* */`-Blocks oder
+# hinter einem `#if 0` zaehlt er mit. Und er deckt `src/`, nicht `test/` -- die Proben
+# sind keine Uebersetzungseinheiten der beiden Bibliotheken, und die Abnahme dieses
+# Pakets verlangt sie nicht.
+set(KERN_SPERRKOPF "kern/sperre.hpp")
+string(REPLACE "." "\\." KERN_SPERRKOPF_MUSTER "${KERN_SPERRKOPF}")
+set(KERN_SPERRKOPF_MUSTER "[\"<]${KERN_SPERRKOPF_MUSTER}[\">]")
+
+# `CONFIGURE_DEPENDS` am Sammler oben bemerkt nur neue und verschwundene Dateien. Wer
+# die Include-Zeile aus einer **vorhandenen** Quelle entfernt, aendert die Dateiliste
+# nicht; ohne die folgende Zeile liefe der naechste Bau ohne neuen Konfigurationslauf
+# und damit ohne diesen Riegel.
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS ${KERN_QUELLEN})
+
+foreach(quelle IN LISTS KERN_QUELLEN)
+  file(READ "${quelle}" fabrik_inhalt)
+  file(RELATIVE_PATH fabrik_kurzname "${CMAKE_CURRENT_SOURCE_DIR}" "${quelle}")
+
+  # Gesucht wird die Include-**Anweisung**, nicht die Zeile: vom Zeilenanfang bis zur
+  # schliessenden Klammer des Kopfnamens. Ein Zeilenkommentar dahinter -- jede
+  # Kernquelle hat einen -- bleibt damit draussen, und mit ihm jedes Semikolon, das
+  # sonst die CMake-Liste unter dem Ergebnis zerteilen wuerde. Die vorangestellte
+  # Zeilenschaltung faengt den Fall, dass schon die erste Zeile der Datei ein
+  # `#include` ist.
+  string(REGEX MATCHALL "\n[ \t]*#[ \t]*include[ \t]*[\"<][^\"<>\n]*[\">]"
+         fabrik_bindungen "\n${fabrik_inhalt}")
+
+  list(LENGTH fabrik_bindungen fabrik_anzahl)
+  set(fabrik_treffer 0)
+  foreach(bindung IN LISTS fabrik_bindungen)
+    if("${bindung}" MATCHES "${KERN_SPERRKOPF_MUSTER}")
+      math(EXPR fabrik_treffer "${fabrik_treffer} + 1")
+    endif()
+  endforeach()
+
+  if(fabrik_treffer EQUAL 0)
+    message(FATAL_ERROR
+      "Sperrebindungsriegel (T4, T7 Massnahme 4.2): '${fabrik_kurzname}' bindet "
+      "\"${KERN_SPERRKOPF}\" nicht. In dieser Uebersetzungseinheit gilt damit weder "
+      "die Gleitkommasperre noch die Sperre der Ueberlaufbausteine -- die Quelle wird "
+      "trotzdem in `kern` und `kern_geprueft` uebersetzt. Die fehlende Zeile gehoert "
+      "ans Ende des Include-Blocks.")
+  endif()
+
+  math(EXPR fabrik_letzter "${fabrik_anzahl} - 1")
+  list(GET fabrik_bindungen ${fabrik_letzter} fabrik_schluss)
+  string(STRIP "${fabrik_schluss}" fabrik_schluss)
+  if(NOT "${fabrik_schluss}" MATCHES "${KERN_SPERRKOPF_MUSTER}")
+    message(FATAL_ERROR
+      "Sperrebindungsriegel (T4, T7 Massnahme 4.2): '${fabrik_kurzname}' bindet "
+      "\"${KERN_SPERRKOPF}\", aber nicht als letzten `#include` -- zuletzt steht "
+      "dort `${fabrik_schluss}`. Die Vergiftung gilt erst ab ihrer Zeile; was danach "
+      "eingebunden wird, ist ungesperrt.")
+  endif()
+endforeach()
+
+# Die Zahl steht in der Meldung und in keiner Abnahme: Sie ist eine Messung mit
+# Verfallsdatum, die mit jeder neuen Kernquelle steigt.
+list(LENGTH KERN_QUELLEN fabrik_anzahl)
+message(STATUS
+  "Sperrebindungsriegel (T4, T7 Massnahme 4.2): ${fabrik_anzahl} Kernquelle(n) "
+  "geprueft, jede bindet \"${KERN_SPERRKOPF}\" als letzten #include.")
+
 add_library(kern STATIC ${KERN_QUELLEN} ${KERN_KOEPFE})
 target_include_directories(kern PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_compile_features(kern PUBLIC cxx_std_20)

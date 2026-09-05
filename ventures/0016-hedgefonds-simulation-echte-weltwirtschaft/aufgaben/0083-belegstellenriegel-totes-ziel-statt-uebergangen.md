@@ -1,7 +1,7 @@
 ---
 id: 0083-belegstellenriegel-totes-ziel-statt-uebergangen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0067-belegstellenriegel-abschnittszitate, 0079-belegstellenriegel-zitat-ohne-anfuehrung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel trennt die heutige Sorte "Ziel ausserhalb des Bestands" in zwei. Nennt ein Zitat eine Datei, die in einem bewusst ungelesenen Ordner liegt (`befunde/`, `aufgaben/`) oder ausserhalb beider Wurzeln, bleibt sie uebergangen wie heute. Nennt es eine Datei, die es unter keiner der beiden Wurzeln gibt, ist das ein Befund und der Lauf rot. Zusaetzlich meldet der Riegel die Zahl der aufgeloesten Zitate gegen eine im Quelltext stehende Untergrenze und wird rot, wenn sie unterschritten wird. Und seit dem 2026-09-05 die Bedingung, an der die erste Fassung gescheitert ist: Die Sorte "ungelesener Ordner" wird an dem **Ort** entschieden, auf den der Verweis zeigt, nicht daran, ob irgendwo unter `bau/` oder `befunde/` eine Datei denselben Basisnamen traegt. Der Rotnachweis wird deshalb **gegen den Arbeitsbaum mit bestehendem `bau/`** gefuehrt, nicht gegen eine Kopie ohne Bauverzeichnis, und zwar an dem Vorgang, den der Abschnitt "Der gemessene Sachverhalt" beschreibt: eine Vorgabenkopie ohne `spiel.md` ergibt Code 1 und mindestens 14 tote Ziele. Dazu der Gruennachweis mit der echten `specs/` (Code 0, alle Zitate aufgeloest, `parameter.toml:11` weiter uebergangen mit dem Grund "ungelesener Ordner") und die Zusicherung, dass keine der heute uebergangenen Fundstellen rot wird.
