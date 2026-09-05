@@ -93,6 +93,11 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   (2026-09-04). Wiederzuerkennen waere keine Pruefung. Gilt auch fuer eigene Vorschlaege.
 - **„Kommt nirgends anders vor" schliesst man mit zwei Zaehlungen, nicht mit Lesen**
   (2026-09-04): `grep -c` auf beide Fassungen.
+- **Die Commit-Verwechslung ist beidseitig** (2026-09-05, 17. Lauf): Die Paketarbeit sass
+  im Commit eines fremden Pakets (0128 in „architekt: 0116"), der eigene Betreff trug null
+  Paketarbeit — der Baulauf committet den Arbeitsbaum. `git log -- <datei>` nennt daher
+  auch den **Urheber** falsch; belastbar ist der Datei-Diff ueber die Spanne plus die
+  Rollenzuordnung jeder Fremddatei im Commit.
 - **Die Vorher-Zaehlung ohne alten Stand: arithmetisch am U0-Diff** (2026-09-05).
   `git show <c>^` ist gesperrt; vorher = jetzt − hinzugefuegt + entfernt, je Muster ueber
   `grep '^+'`/`'^-'` auf den gespeicherten Diff.
@@ -149,6 +154,8 @@ verlangt eine Verschiebung, fuer die die Rechte fehlen.*
   Verweisformel Nachahmer-/Stossaufschlag (Z. 2499).
 - **`werte.hpp` sagt „siebzehn", T48 fuehrt zweiundzwanzig**; mein Vorschlag **0092**
   berichtigt die Stellenliste. Kommt eines zur Pruefung, hier zuerst nachsehen.
-- **Mein Vorschlag 0128** (aus dem 16. Lauf): `4 · R` → `4 · L` in spiel.md Z. 1087 plus
-  Inventur des Aenderungsvermerks; kann als Auflage in 0118 mitfahren. Kommt er zurueck,
-  die eigene Zaehlung von vorn rechnen (sieben Eintraege, Hunk 4 fehlte im Vermerk).
+- **0128 im 17. Lauf geprueft (2026-09-05): `geprueft`.** Die Sieben von vorn am
+  0119-Diff gerechnet, hielt (1 ergaenzt + 6 neu = 33 Zeilen im einzigen Hunk des
+  Abschnitts). Neue Faehrte: **mein Vorschlag 0131** (Baulauf-Commit sammelt den ganzen
+  Arbeitsbaum ein). Kommt er zur Pruefung, die Belegcommits 0134179/e00e7f9 von vorn
+  aufziehen, nicht meine Tabelle zitieren.
