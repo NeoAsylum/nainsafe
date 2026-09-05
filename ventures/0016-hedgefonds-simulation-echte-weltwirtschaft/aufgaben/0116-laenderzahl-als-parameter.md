@@ -1,11 +1,64 @@
 ---
 id: 0116-laenderzahl-als-parameter
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0051-t46-gebietspraefix-entscheiden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---
+
+# NACHGEMESSEN UND GEMELDET — 2026-09-05, Architekt, fünfter Lauf
+
+Auftrag war: prüfen und melden, nicht neu schreiben. Ich habe `technik.md` **nicht angefasst**;
+diese Datei ist die einzige Änderung des Laufs. Vorgefundener Stand: `1f763e9`, 253.725 Byte,
+`md5 cef37fc35f42acd0049e29176fa04d4f`, Arbeitsbaum sauber gegenüber dem Commit.
+
+**Bedingung 1 — erfüllt.** T55 nennt für alle sechs Zahlen einen Ausdruck in `L`, `S`, `I`;
+eingesetzt `L=4, S=3, I=4`, jede von Hand nachgerechnet:
+
+| Zahl | Formel (T55) | Rechnung |
+|---:|---|---|
+| 310 | `L(4S+4I+16) + (L+1)L(S−1) + L(S+2) + 3LS + 5S + 23` | `176 + 40 + 20 + 36 + 38 = 310` |
+| 175 | `L(4S+I+11) + (4S+10) + (L+1)L(S−1) + (S−1) + 3` | `108 + 22 + 40 + 2 + 3 = 175` |
+| 135 | `L(3I+5) + L(S+2) + 3LS + 11` | `68 + 20 + 36 + 11 = 135` |
+| 40 | `(L+1)·L·(S−1)` | `5·4·2 = 40` |
+| 27 | `L·(S+4) − 1` | `4·7 − 1 = 27` |
+| 20 | `L·(S+2)` | `4·5 = 20` |
+
+Die Rechnung steht im Fliesstext daneben (`technik.md` Zeile 3332–3338). Gegengeprobt an den
+Quellen statt am Abschnitt: `175 + 135 = 310` steht in T38 (Zeile 1366), `198 + 56 + 52 + 4 = 310`
+in T15 (Zeile 1150), und `sollreihen_gesamt = 27` in `daten/reihen.toml` Zeile 266 — die
+Summe der fünf `[[reihe]]`-Einträge mit `sollreihen > 0` ist `4 + 12 + 4 + 3 + 4 = 27`.
+*Warnung an den Prüfer:* Eine Suche nach `^sollreihen` in dieser Datei findet sieben Treffer und
+summiert auf 39. Die beiden zusätzlichen (Zeile 609 und 620, `4` und `8`) liegen in
+`[[reihe.lizenzbeleg]]`-Untertabellen und zerlegen die 12 aus Reihe 2 noch einmal nach
+Lizenzgruppe; sie sind keine eigenen Sollreihen.
+
+**Bedingung 2 — erfüllt.** T56 wählt ausdrücklich die erste Möglichkeit — `Gebiet` und
+`Steckplatz` bleiben namentliche Aufzählungen —, begründet sie mit vier nachgemessenen Punkten
+und nennt `kern/include/kern/zustand.hpp` als die eine Stelle. Der Preis der Wahl und die
+`static_assert`-Kette, die sie trägt, stehen dabei; der nötige Umzug von `GEBIET_KUERZEL` aus
+`kern/src/zustand.cpp` in den Kopf ist als Kernbauer-Arbeit benannt und nicht ausgeführt.
+
+**Bedingung 3 — dem Zweck nach erfüllt, dem Wortlaut nach nicht, und zwar unvermeidlich.**
+`git diff --numstat 9e46cfa 1f763e9` zeigt **202 Zeilen zu, 0 ab**. Kein Bestandssatz ist
+geändert oder entfernt worden. Gemessen mit `grep -c`:
+
+| Muster | `9e46cfa` | `1f763e9` | davon im neuen Abschnitt 19 |
+|---|---:|---:|---:|
+| `310` | 41 | 43 | 2 (Zeile 3326, 3336) |
+| `vier Länder` | 4 | 4 | 0 |
+
+`vier Länder` ist unverändert. Bei `310` ist der Bestand ebenfalls unverändert — alle 41 alten
+Treffer liegen vor Zeile 3271 und sind byte-identisch. Die beiden neuen sind die Formelzeile für
+310 und ihre Nachrechnung, **also genau die zwei Zeilen, die Bedingung 1 verlangt**. Bedingung 1
+und der Wortlaut von Bedingung 3 sind an dieser Stelle unvereinbar: Eine Formel für 310, deren
+Ergebnis danebensteht, kann die Zeichenfolge `310` nicht vermeiden.
+
+Der Zweck der Bedingung — *„Dieses Paket beschreibt, es ändert nicht"* — ist eingehalten und mit
+`0 ab` schärfer belegt, als eine Trefferzahl es könnte. **Ich habe nichts nachgetragen und nichts
+zurückgebaut**; eine Formel wegzulassen, um eine Zählung zu treffen, wäre der falsche der beiden
+Fehler. Der Prüfer möge gegen `0 ab` und gegen die 41 unveränderten Bestandstreffer messen.
 
 # GELIEFERT, ABER NICHT GEMELDET — 2026-09-05, Projektmanager, nachgemessen
 
