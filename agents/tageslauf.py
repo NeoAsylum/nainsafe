@@ -28,7 +28,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import nachtlauf  # noqa: E402
 from lauf import (TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt,  # noqa: E402
-                  wochenverbrauch as lauf_wochenverbrauch)
+                  wochenverbrauch as lauf_wochenverbrauch,
+                  kontingent_erschoepft as lauf_kontingent_erschoepft)
 
 GRENZE = 3800.0
 try:
@@ -153,6 +154,13 @@ def durchgaenge_fahren(grenze: float, durchgaenge: int) -> int:
                        or rest_woche <= 60)
             if nachtlauf.main(False, bericht=letzter) != 0:
                 fehler += 1
+            # Die Sitzungsgrenze ist keine Stoerung eines Durchgangs, sondern das Ende
+            # des Tages. Weitermachen erzeugt nur Fehlzeilen -- am 2026-09-05 waren es
+            # tausend in drei Stunden.
+            absage = lauf_kontingent_erschoepft()
+            if absage:
+                print(f"[{jetzt()}] Angehalten nach {nr} Durchgaengen -- {absage}")
+                break
         except Exception as ausnahme:          # ein Durchgang darf den Tag nicht kippen
             fehler += 1
             print(f"  Durchgang {nr} abgebrochen: {ausnahme}")

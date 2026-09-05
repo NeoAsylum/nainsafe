@@ -85,6 +85,33 @@ NIE = [
     "Edit(/decisions/**)",
 ]
 
+# ------------------------------------------------- Die dritte Grenze: die Sitzung
+#
+# Anthropic zieht **drei** Grenzen, nicht zwei: Tag, Woche -- und ein rollendes
+# Fuenf-Stunden-Fenster ("session limit"). Die Fabrik kannte bis zum 2026-09-05 nur die
+# ersten beiden, und das hat an diesem Tag drei Stunden gekostet: Um 16:01 riss das
+# Sitzungsfenster, und weil niemand abbrach, lief die Kette weiter und erzeugte
+# **1.041 Fehllaeufe** -- jeder scheiterte in Sekunden, jeder schrieb eine Journalzeile,
+# und alle vierzig Durchgaenge des Tageslaufs waren verbraucht, ohne dass ein einziges
+# Paket vorankam.
+#
+# Die Sitzungsgrenze laesst sich nicht vorausberechnen: Sie zaehlt in Tokens ueber ein
+# rollendes Fenster, und der wahre Stand ist von aussen nicht lesbar (geprueft am
+# 2026-09-05, `claude --help` kennt keinen Unterbefehl dafuer). Also wird sie nicht
+# vorhergesagt, sondern **erkannt** -- am Wortlaut der Absage -- und ab dann bricht die
+# Kette ab, statt es weiter zu versuchen.
+#
+# Der stuendliche Cron-Versuch ist die richtige Wiederholung dafuer: Er kostet nichts,
+# solange die Sperre steht, und faengt von selbst wieder an, sobald das Fenster offen ist.
+KONTINGENT_ENDE = 3
+_kontingent_ende: str | None = None
+
+
+def kontingent_erschoepft() -> str | None:
+    """Die Absage im Wortlaut, sobald ein Lauf sie einmal gesehen hat -- sonst None."""
+    return _kontingent_ende
+
+
 ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 
 # ---------------------------------------------------------------- Notbremse
@@ -508,6 +535,7 @@ def pruefe_umgebung() -> None:
 
 
 def lauf(rolle: str, gegenstand: str | None = None) -> int:
+    global _kontingent_ende
     datei = ROLLEN / f"{rolle}.md"
     if not datei.exists():
         sys.exit(f"Unbekannte Rolle: {rolle} (erwartet {datei})")
@@ -533,6 +561,12 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         "--allowedTools", *werkzeuge,
         "--disallowedTools", *NIE,
     ]
+
+    # Hat ein Lauf dieser Kette die Absage schon gesehen, faengt keiner mehr an. Ohne
+    # diese vier Zeilen entstanden am 2026-09-05 tausend Journalzeilen in drei Stunden.
+    if _kontingent_ende:
+        print(f"  Uebersprungen -- Kontingent erschoepft: {_kontingent_ende}")
+        return KONTINGENT_ENDE
 
     verbindung = db()
 
@@ -613,6 +647,15 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         antwort = (fertig.stdout or fertig.stderr or "")[:500]
 
     if fertig.returncode != 0:
+        # "You've hit your session limit - resets 6:20pm" und Verwandte. Der Wortlaut
+        # ist die einzige Quelle; die Grenze selbst ist nicht abfragbar.
+        if re.search(r"hit your .{0,24}limit", antwort, re.I):
+            _kontingent_ende = antwort.strip().splitlines()[0][:160]
+            journal_ende(verbindung, lauf_id, "abgebrochen", nutzung, None, antwort)
+            print(f"  KONTINGENT ERSCHOEPFT: {_kontingent_ende}")
+            print("  Die Kette haelt an. Der stuendliche Versuch nimmt sie wieder auf,")
+            print("  sobald das Fenster offen ist -- er kostet nichts, solange es zu ist.")
+            return KONTINGENT_ENDE
         journal_ende(verbindung, lauf_id, "fehler", nutzung, None, antwort)
         print(f"  Fehlgeschlagen (Code {fertig.returncode}): {antwort[:200]}")
         return fertig.returncode

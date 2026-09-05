@@ -537,3 +537,29 @@ was erlaubt ist.
   Mal auftaucht: **Ein Name, der nach Lesen klingt, muss auch lesen.** Erst
   `nach-aufraeumen.py`, das importierte statt auszufuehren, dann der Architekt, der aus
   Verweigerungen einen falschen Schluss zog, jetzt eine „Bereitschaft", die schreibt.
+
+- **2026-09-05** — **Es gibt drei Grenzen, und die Fabrik kannte zwei.** Anthropic zieht
+  Tag, Woche **und** ein rollendes Fünf-Stunden-Fenster („session limit"). Am 2026-09-05
+  um 16:01 riss das Sitzungsfenster. Weil niemand die Absage als *Ende* las, lief die
+  Kette weiter: **1.041 Fehlläufe in drei Stunden**, jeder in Sekunden gescheitert, jeder
+  mit einer Journalzeile, und alle vierzig Durchgänge des Tageslaufs verbraucht, ohne dass
+  ein einziges Paket vorankam. Kosten: 30 Dollar und ein halber Samstag.
+
+  Bitter daran ist der Zusammenhang mit dem Vortag: Ich hatte die Tages- und Wochenbremse
+  vervierfacht, weil sie zu eng standen — und damit die Fabrik erst in die Reichweite der
+  Grenze gebracht, die ich nicht kannte. **Eine Bremse zu lösen heißt, die nächste zu
+  suchen.**
+
+  *Folgerung:* Die Sitzungsgrenze lässt sich nicht vorausberechnen — sie zählt Tokens über
+  ein rollendes Fenster, und der Stand ist von außen nicht lesbar. Also wird sie nicht
+  vorhergesagt, sondern **erkannt**: `lauf.py` liest den Wortlaut der Absage
+  (`hit your … limit`), setzt eine Sperre, und **kein weiterer Lauf startet** — Rückgabe
+  nach vier Millisekunden statt nach einem Aufruf. Der Tageslauf bricht die Schleife ab.
+  Der stündliche Cron-Versuch ist die richtige Wiederholung: Er kostet nichts, solange
+  das Fenster zu ist, und fängt von selbst wieder an, sobald es offen ist.
+
+  **Die allgemeine Form, und sie ist die eigentliche Lehre:** Eine Fehlermeldung, die
+  *jeder* weitere Versuch identisch erzeugen wird, ist kein Fehlschlag, sondern ein
+  Zustand. Die Fabrik hatte für „ein Lauf ging schief" eine Behandlung — weiterlaufen, die
+  anderen Agenten haben damit nichts zu tun — und für „es geht gerade gar nichts" keine.
+  Beides sieht an der Rückgabe gleich aus.
