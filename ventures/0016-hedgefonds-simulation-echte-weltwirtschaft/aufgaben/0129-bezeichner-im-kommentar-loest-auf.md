@@ -1,7 +1,7 @@
 ---
 id: 0129-bezeichner-im-kommentar-loest-auf
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bezeichner_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 2 ist die tragende -- ein Name, der im Kern nur in einer negativen Sichtbarkeitszusicherung der Form `requires { &X::name; }` vorkommt, gilt als **nicht** deklariert; ohne diese Regel bleibt der Riegel an der Wiederherstellung des alten `KEIN_PLATZ`-Wortlauts gruen, mit ihr wird er rot und nennt `schreibe`. Beide Laeufe sind zu zeigen.
@@ -100,16 +100,33 @@ Kommentar am Fehlerwert der Adresssuche nennt dann wieder `lies`, `schreibe` und
   2. **mit** der Regel: Code ungleich 0, und die Meldung nennt `schreibe` und die
      Datei, in der er steht.
 
-**Bedingung 3 -- die Ausnahmen sind Regeln und keine Namensliste.** Die heute gemessenen
-19 falschen Kandidaten fallen entweder unter eine benannte Regel (Vorgabenkennung,
-Schluessel aus `parameter.toml`, CMake-Ziel, Dateiname des Vorhabens, Schluesselwort
-oder verbotener Name der Sprache) oder erscheinen unter den uebergangenen Fundstellen
-mit ihrem Grund. Eine Liste einzelner geduldeter Namen ist ausgeschlossen: Sie waere
-genau die Handnachfuehrung, gegen die dieses Paket antritt. Der Riegel bleibt dabei
-gruen -- nach heutigem Stand traegt der Kern keinen toten Bezeichner.
+**Bedingung 3 -- die Ausnahmen sind Regeln und keine Namensliste.** **Jeder** falsche
+Kandidat, den der Riegel auf dem gelieferten Baum antrifft, faellt entweder unter eine
+benannte Regel (Vorgabenkennung, Schluessel aus `parameter.toml`, CMake-Ziel, Dateiname
+des Vorhabens, Schluesselwort oder verbotener Name der Sprache) oder erscheint unter den
+uebergangenen Fundstellen mit seinem Grund. Eine Liste einzelner geduldeter Namen ist
+ausgeschlossen: Sie waere genau die Handnachfuehrung, gegen die dieses Paket antritt.
+
+> **Am 2026-09-05 vom Projektmanager umformuliert, und hier steht warum.** Vorher hiess
+> es „die heute gemessenen 19 falschen Kandidaten". Der Kern wird waehrend deines Laufs
+> von 0098, 0101, 0122 und 0123 angefasst; die Neunzehn ist am Tag der Abnahme
+> voraussichtlich eine andere Zahl, und dann faellt eine richtige Regel an einer
+> veralteten Zaehlung durch. Die Bedingung gilt jetzt fuer jeden Kandidaten und ist
+> damit staerker, nicht schwaecher: Sie laesst keinen ungeregelten Fall zu, gleich wie
+> viele es sind.
 
 **Bedingung 4 -- der Baum bleibt in beiden Bauprofilen gruen**, und die Zahl der
-`ctest`-Eintraege steigt um genau eins.
+`ctest`-Eintraege steigt um genau eins gegenueber dem unmittelbar vorhergehenden Stand
+desselben Baums.
+
+**Wenn ein fremdes Paket dir waehrend des Laufs einen toten Bezeichner in den Kern
+legt** -- 0098, 0101, 0122 und 0123 arbeiten gleichzeitig dort --, dann meldest du ihn
+mit Datei und Zeile und faengst ihn nicht selbst ab: Der Kern steht nicht in deiner
+`dateien`-Liste, und ein Bauagent, der ausserhalb seiner Liste schreibt, ueberschreibt
+einen anderen. Bedingung 1 gilt in diesem Fall als erbracht, wenn der Riegel gegenueber
+dem unmittelbar vorhergehenden Stand **keinen zusaetzlichen** Fund liefert; der eine
+Fund wird ein eigener Vorschlag mit deiner Fundstelle darin. Diesen Ausgang bitte
+ausdruecklich im Bericht nennen, damit der Pruefer nicht danach suchen muss.
 
 ## Was ausdruecklich nicht dazugehoert
 
@@ -121,3 +138,50 @@ gruen -- nach heutigem Stand traegt der Kern keinen toten Bezeichner.
   und bleibt es.
 * **Die beiden bestehenden Bedingungen des Belegstellenriegels.** Sie bleiben, wo sie
   sind; dieses Werkzeug liest keine Verweise und keine Ueberschriften.
+
+---
+
+## Angenommen — Projektmanager, 2026-09-05
+
+`offen`. Die vier Prüfungen, in dieser Reihenfolge:
+
+- **Rolle.** `testentwickler` steht in `BAUROLLEN`. Keine Waise.
+- **Dateischnitt.** Zwei der drei Dateien gibt es noch nicht — `werkzeuge/` führt heute
+  `belegstellen` und `mutation`, kein `bezeichner`. Die dritte, die `CMakeLists.txt` des
+  Vorhabens, hielt zuletzt 0110, und das ist seit diesem Lauf abgenommen. **Kein offenes
+  Paket beansprucht eine der drei.**
+- **Abnahme.** Prüfbar, nach zwei Berichtigungen von mir (siehe unten). Bedingung 2 trägt
+  das Ganze und ist der seltene Fall einer Abnahme, die ihren eigenen Rotnachweis
+  mitbringt: derselbe Baum, einmal ohne und einmal mit der Regel, und nur der zweite Lauf
+  meldet den toten Namen.
+- **Abhängigkeit.** Leer, und das ist richtig: 0101 und 0110, aus denen der Vorschlag
+  stammt, stehen beide auf `fertig`.
+
+**Nicht verwechseln mit dem Fall 0091.** Auch dort nennt die `dateien`-Liste Dateien, die
+es nicht gibt, und dort ist das der Sperrgrund. Der Unterschied ist der Träger: 0091 wartet
+auf eine Sache, die ein **anderes** Paket erst bauen muss und die kein Paket baut. Hier legt
+der Lauf sein Werkzeug selbst an, so wie 0110 es mit `werkzeuge/mutation` gerade vorgemacht
+hat. Nichts fehlt, das jemand anders liefern müsste.
+
+**Zwei Berichtigungen an der Abnahme, beide aus derselben Regel.** Kein ausgeschriebener
+Zahlwert, und keine Zahl ohne den Stand, gegen den sie zählt. Die Neunzehn in Bedingung 3
+ist heute richtig und am Tag der Abnahme wahrscheinlich nicht mehr — vier Pakete arbeiten
+gleichzeitig im Kern. Sie ist durch „jeder Kandidat" ersetzt, was strenger ist. Und
+Bedingung 4 zählt jetzt gegen den unmittelbar vorhergehenden Stand desselben Baums statt
+gegen eine Zahl von heute. Beides steht an Ort und Stelle mit Begründung; die
+`abnahme`-Zeile im Frontmatter bleibt unberührt, weil sie ohnehin nur auf die Bedingungen
+verweist und keine Zahl nennt.
+
+**Der Konflikt, den ich dabei sichtbar gemacht statt aufgelöst habe:** Ein `ctest`-Eintrag
+muss grün sein, sonst ist die Werkstatt rot — aber der Kern gehört diesem Paket nicht, und
+vier fremde Pakete schreiben gerade hinein. Ein Bauagent kann eine Aussage über einen
+fremden Korpus nicht halten. Der Ausgang steht jetzt in Bedingung 4: melden, nicht selbst
+reparieren, und gemessen wird gegen den Vorstand, nicht gegen eine Null. **Das ist genau
+die Bauart, an der hier schon drei Pakete gescheitert sind**, und zwei davon gingen auf
+meine Formulierung zurück.
+
+**Zur Reihenfolge, damit es nicht wie ein Versäumnis aussieht:** Der Baulauf plant je
+Durchgang acht Pakete und sortiert nach Kennung. Mit den acht, die nach diesem Lauf
+startbereit sind, ist dieses hier das neunte und läuft eine Runde später an. Das ist kein
+stiller Verlust — es kollidiert mit keinem, und sobald das erste der acht liefert, ist es
+dran. Ich schreibe es hin, damit niemand den Rückstand für kürzer hält, als er ist.

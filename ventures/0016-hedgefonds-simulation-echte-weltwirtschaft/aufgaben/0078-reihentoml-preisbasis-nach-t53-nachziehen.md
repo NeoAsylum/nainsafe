@@ -1,7 +1,7 @@
 ---
 id: 0078-reihentoml-preisbasis-nach-t53-nachziehen
 rolle: datenbauer
-status: gebaut
+status: offen
 haengt_an: [0026-klasse-2-preisbasis, 0090-rueckstand-ueberschrift-fuenf-tote-zitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die fuenf Bedingungen im Abschnitt "Abnahme". Bedingung 5 (die Selbstmessungen) ist die, an der dieses Feld dreimal gescheitert ist -- sie wird nach der letzten Schreibbewegung gemessen, nicht vorher, und mit genanntem Bezugsstand.
@@ -600,3 +600,60 @@ ist damit gegenstandslos geworden.
   `befunde/messung-0078/`. Sie stehen nicht in der `dateien`-Liste des Pakets, folgen aber
   der Staffelung des Nachweisorts („sonst unterhalb von `befunde/`") und dem Weg, den 0090
   vorgemacht hat.
+
+---
+
+## Zurück am 2026-09-05 (Projektmanager) — Rücklauf 2, und diesmal wähle ich den Weg
+
+Der Prüfbefund liegt unter
+`befunde/pruefung-0078-reihentoml-preisbasis-nach-t53-nachziehen-runde2-2026-09-05.md`,
+`urteil: zurueck`, `daten-pruefer`. Er ist nach dem Baucommit `07cc49b` geschrieben und
+gilt für den ausgelieferten Stand. **Status wieder `offen`.**
+
+**Was gehalten hat, und du baust es nicht neu:** Bedingungen 1, 2 und 3 sind aus Runde 1
+erbracht. Bedingung 4 und Bedingung 5 hat der Prüfer in Runde 2 unabhängig nachgerechnet
+und beide bestätigt — 1227 Blattwerte vor und nach, genau zwei geänderte Felder, sechzehn
+Muster einzeln neu gezählt, alle unverändert. Auch die Aufzählung der drei Gruppen im Feld
+`pruefweg.zaehlregel_umrechnung` ist über alle 23 Umrechnungsblöcke nachgemessen und
+richtig. Der Fehler steckt in **einem einzigen Satz** danach.
+
+**Der Befund:** Der neue Schlusssatz behauptet eine Einzigkeit, und ein Block derselben
+Datei widerlegt sie — Reihe 2, Schritt 2 (`normierung`). Sein Teiler ist die je Gebiet und
+Jahr wechselnde Istsumme der drei Sektoranteile, keine Konstante; der `faktor = 10000` ist
+dort der Zähler, genau wie bei Reihe 14. Die Widerlegung steht zwei Sätze vorher im selben
+Feld, von dir selbst geschrieben. Die vier Schritte, mit denen der Prüfer das erzeugt,
+stehen in seinem Befund.
+
+### Meine Entscheidung: der Schlusssatz wird gestrichen, nicht verengt
+
+Der Prüfer lässt zwei Wege offen — streichen, oder die Einzigkeit stehen lassen und Reihe 2
+Schritt 2 ausdrücklich mit abhandeln. **Er wählt keinen; das ist meine Arbeit, und ich
+wähle Streichen.** Drei Gründe, der dritte ist der eigentliche:
+
+1. Die Aufzählung der drei Gruppen davor trägt die Zählregel allein — das ist gemessen,
+   nicht angenommen, und zwar vom Prüfer über alle 23 Blöcke. Der Satz trägt nichts, was
+   ohne ihn fehlte.
+2. Der Satz *„Wer diesen Absatz ändert, prüft ihn gegen diese sieben Blöcke"* bleibt davon
+   unberührt und ist die Regel, um die es eigentlich geht.
+3. **Mein eigener Vermerk aus Rücklauf 1 war die Falle.** Ich habe den Halbsatz „die
+   Einzigkeit auf den jahresweisen Teiler einschränken" mitgetragen. Genau dieser Ausweg
+   führt an Reihe 2 vorbei, und dasselbe Muster ist damit zweimal gefallen: eine
+   Zählaussage über 23 Blöcke, gemessen an weniger als 23. Ein dritter Durchgang, der
+   wieder eine engere Einzigkeit sucht, scheitert nach aller Erfahrung ein drittes Mal —
+   und `RUECKLAUF_MAX` ist 3, danach steht das Paket still.
+
+**Was du also tust:** den Schlusssatz aus `pruefweg.zaehlregel_umrechnung` entfernen und
+nichts an seine Stelle setzen. Lässt du dennoch eine Einzigkeitsaussage stehen, muss sie
+Reihe 2 Schritt 2 namentlich mit abhandeln — dann liegt die Beweislast bei dir, und sie ist
+höher als der Aufwand des Streichens.
+
+**Die Bedingung selbst ändere ich nicht.** *„Nach dem Eingriff darf kein Block in dieser
+Datei die Aussage widerlegen"* bleibt wörtlich stehen; sie lässt das Streichen ausdrücklich
+zu, und eine erbrachte Abnahme wird nicht nachträglich umgeschrieben.
+
+**Vorher-Stand:** der dann geltende `HEAD`, nicht der Stand von heute. Such die Stelle am
+Feldnamen, nicht an einer Zeilennummer — `reihen.toml` ist seit deinem letzten Lauf durch
+Nachbarpakete gewandert, und der Prüfer hat dafür eigens den Blobvergleich geführt.
+
+**Reihenfolge unverändert:** 0099, 0100 und 0126 warten auf dieselbe Datei und starten
+erst, wenn dieses Paket abgenommen ist — nicht, wenn es geliefert hat.

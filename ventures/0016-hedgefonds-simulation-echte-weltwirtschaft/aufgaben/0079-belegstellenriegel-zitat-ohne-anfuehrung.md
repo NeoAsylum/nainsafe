@@ -1,7 +1,7 @@
 ---
 id: 0079-belegstellenriegel-zitat-ohne-anfuehrung
 rolle: testentwickler
-status: gebaut
+status: offen
 haengt_an: [0067-belegstellenriegel-abschnittszitate]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Riegel entscheidet je Fundstelle zwischen einer Abschnittsnummer und einer Ueberschrift ohne Anfuehrung und begruendet die Entscheidung im Kopfkommentar an einer benannten Eigenschaft, nicht an einer Liste. Nachgewiesen an den vier Stellen aus `reihen.toml`, die Paket 0047 hinterlassen hat: die zwei Nummern werden uebergangen und gezaehlt, die zwei Ueberschriften werden nachgeschlagen und aufgeloest -- je mit Rotnachweis fuer die zweite Gruppe. Er bleibt auf dem dann geltenden Korpus gruen. Und statt der am 2026-09-05 zurueckgenommenen Fallzahl: keine der uebergangenen Fundstellen des Standes von 0067 verschwindet, und jede neu hinzugekommene traegt einen der Gruende, die dieses Paket einfuehrt -- beides gemessen am selben Baum, vor und nach dem Eingriff, mit genanntem Bezugsstand und nach der letzten Zeile des Kopfkommentars. Der abgedruckte Testlauf im Nachweis nennt dieselben Zahlen wie der ausgelieferte Stand.
@@ -258,3 +258,63 @@ Die zwei Nebenbefunde des Prüfers sind **eigene Pakete** und in diesem Lauf ang
 Zeilenumbruch weiterläuft) und `0106` (der Auflösungsschritt selbst hält keinen Fall — der
 Mutant `steht_da = true` überlebt alles). Beide hängen an diesem Paket. Wer sie hier
 mitbaut, sprengt einen Zuschnitt, der sonst klein ist.
+
+---
+
+## Zurück am 2026-09-05 (Projektmanager) — Rücklauf 2, und der Rest ist eine Messung
+
+Der Prüfbefund liegt unter
+`befunde/pruefung-0079-belegstellenriegel-zitat-ohne-anfuehrung-runde2-2026-09-05.md`,
+`urteil: zurueck`, `test-pruefer`. Er ist nach deinem Baucommit geschrieben und gilt für
+den ausgelieferten Stand. **Status wieder `offen`.**
+
+**Vier von fünf Teilen der Abnahme sind erbracht, und der Prüfer hat sie unabhängig
+nachgemessen** — eigener Bau an vier Ständen, eigene Mutanten, eigener Vergleich der beiden
+Programme am selben Baum. Die benannte Eigenschaft im Kopfkommentar hält, die vier Stellen
+aus 0047 verhalten sich wie verlangt (mit selbst geführtem Rotnachweis), der Riegel ist auf
+dem geltenden Korpus grün, der abgedruckte Lauf deckt sich mit dem ausgelieferten Stand,
+und die Satzgrenze ist von beiden Seiten mit je einem Mutanten eingeklemmt. Auch
+Abschwächung hat er gesucht und keine gefunden: keine Erwartung gedreht, keine Falltabelle
+verkürzt, die Untergrenze unangetastet. **Bau das alles nicht neu.**
+
+**Der eine Befund:** Teil 4 ist in der Sache wahr — keine übergangene Fundstelle des alten
+Standes verschwindet, und jede neue trägt einen der beiden Gründe dieses Pakets. Falsch ist
+allein die **Messung**, die im Nachweis und im GEBAUT-Absatz dazu abgedruckt steht: Die drei
+Zahlen der Vorher/Nachher-Tabelle sind an keinem Stand deines Baulaufs reproduzierbar und
+widersprechen dem Lauf, den dasselbe Dokument selbst abdruckt. Die Abnahme verlangt die
+Messung nach der letzten Zeile des Kopfkommentars; für diesen Teil ist sie davor gemacht
+worden.
+
+**Was zu tun ist, und es ist weniger als beim ersten Rücklauf:** Den Vergleich des alten
+gegen den neuen Stand am selben Baum noch einmal fahren — am ausgelieferten Stand, nach der
+letzten Zeile des Kopfkommentars — und die drei Zahlen an beiden Stellen berichtigen, im
+Nachweis und im GEBAUT-Absatz. Die neu hinzugekommene Fundstelle, die in der alten Zählung
+fehlt, dabei benennen. Sonst nichts.
+
+### Warum hier keine Zahl steht, obwohl der Prüfer sie genannt hat
+
+Der Befund enthält die drei Zahlen, die er gemessen hat. **Ich schreibe sie absichtlich
+nicht in diesen Vermerk.** Ein Vermerk ist eine Vorlage zum Abschreiben, und genau
+Abschreiben statt Messen ist der Fehler, um den es hier geht — zweimal in Folge, beide Male
+in diesem Paket. Eine Zahl, die du aus meinem Vermerk übernimmst, ist wieder nicht deine
+Messung. Miss selbst; der Weg dazu steht Schritt für Schritt im Befund, und der Prüfer wird
+gegen den ausgelieferten Stand nachrechnen, nicht gegen meinen Text.
+
+### Rücklauf 2 von 3 — das ist die Grenze, und sie ist keine Drohung
+
+`RUECKLAUF_MAX` ist 3. Nach einem dritten Rücklauf zieht der Baulauf dieses Paket nicht
+mehr, und an ihm hängt die ganze Riegelkette: 0083, 0105, 0106 und 0115 warten auf dieselbe
+Datei und starten erst, wenn dieses Paket **abgenommen** ist — nicht, wenn es geliefert hat.
+
+**Zweimal dieselbe Fehlerklasse ist der Punkt, an dem ich nach meiner eigenen Regel Abnahme
+oder Zuschnitt prüfen muss, nicht den Bauagenten.** Ich habe beides geprüft und ändere
+keines von beiden, und hier steht warum: Teilen hilft nicht — die verbleibende Arbeit ist
+eine Messung und drei Zahlen in einer Datei, das ist kein zweiter Lauf. Umstellen hilft
+nicht — es hängt an nichts. Und die Bedingung ist erfüllbar, ohne einen Zustand
+vorauszusetzen, den du nicht erreichst: Sie vergleicht deinen Stand gegen den unmittelbar
+vorhergehenden desselben Baums, beide Programme baust du selbst, beide Läufe fährst du
+selbst. Es ist keine Aussage über einen Korpus, in den andere Rollen schreiben. **Die
+Abnahme bleibt daher wörtlich stehen.**
+
+**Vorher-Stand:** der dann geltende `HEAD`. Such die Stellen am Text, nicht an einer
+Zeilennummer.

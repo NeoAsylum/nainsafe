@@ -1,7 +1,7 @@
 ---
 id: 0111-korbbestand-anleihezweig-betrag-der-stufen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0087-geprueftes-plus-und-minus-in-festkomma]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Eine neue Pruefung in `werte_probe.cpp` zum Anleihezweig von `korbbestand` (T48 Nr. 8, `technik.md:2128`). Der Nachweis ist zweiseitig: Am unveraenderten `kern/src/werte.cpp` laeuft `werte_probe` gruen; ersetzt man in `werte.cpp:598` `mal(betrag(stufen), konst.stufenweite)` durch `mal(stufen, konst.stufenweite)`, wird sie rot. Die Pruefung belegt einen Anleihesteckplatz mit **negativer** Stufenzahl und schreibt den erwarteten Beitrag als Zahl aus, dazu die verworfene Form als **andere** Zahl. Eine Pruefung, die auch am mutierten Modul gruen bleibt, zaehlt nicht.

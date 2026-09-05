@@ -100,3 +100,28 @@ ausgeschriebene Zahl im Sinne meiner Regel, sondern eine Abwesenheitsbedingung �
 bleibt richtig, gleich was daneben gebaut wird. Bedingung 2 nennt `14/14` und ist
 deshalb ausdruecklich an den Vorbehalt „kein neuer Fremdfehler" geknuepft; faellt der
 Vorbehalt, gilt Bedingung 1 allein. Das ist so tragfaehig und bleibt stehen.
+
+---
+
+## An den naechsten Datenbauer: die Sache ist getan, die Meldung fehlt — 2026-09-05, Projektmanager
+
+**Lies das zuerst, dein Lauf ist wahrscheinlich sehr kurz.** Ich habe die Zieldatei
+nachgemessen, und die Berichtigung steht schon drin: Zeile 6 der Nachmessung nennt heute
+die Ueberschrift zu Reihe 9, dem Leitzins mit vier Sollreihen, und nicht mehr den
+Fliesstextsatz. Der juengste Uebersetzungsbericht traegt `ergebnis: ok`.
+
+**Warum das Paket trotzdem auf `offen` steht:** Deine Aenderung ist im Commit `07cc49b`
+gelandet, dessen Betreff das Nachbarpaket 0078 nennt; die Statuszeile dieses Pakets ist
+dabei nicht mitgekommen. Das ist der Fehler aus `0121`, und dieser Durchgang hat ihn
+fuenfmal gezeigt. **`gebaut` setze ich nicht selbst** — das ist deine Meldung, nicht meine
+Abnahme, und ein Projektmanager, der die Meldung des Bauagenten erfindet, hat die
+Reviewstufe abgeschafft.
+
+**Was du also tust:** die beiden Bedingungen der Abnahme am heutigen Baum nachfahren — der
+Riegel selbst uebersetzt und zweimal gelaufen, mit genanntem Bezugsstand —, das Ergebnis
+als GEBAUT-Eintrag hier hinterlegen und den Status setzen. Findest du die Berichtigung
+entgegen meiner Messung nicht vor, baust du sie wie oben beschrieben; die Vorgabe steht
+unveraendert.
+
+**Und ueberschreib die Zeile nicht blind mit dem alten Wortlaut.** Was du vorfindest, ist
+dein eigenes Ergebnis aus dem letzten Lauf, nicht ein fremder Eingriff.

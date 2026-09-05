@@ -2,7 +2,7 @@
 id: 0118-fuenf-weitere-laender-auswaehlen
 rolle: spielentwerfer
 status: offen
-haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0119-welt-in-drei-schichten]
+haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0119-welt-in-drei-schichten, 0128-zaehlung-vier-je-land-statt-vier-r]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Bedingung 3 rechnet auf der Steckplatzzahl, die nach 0119 gilt, gegen die 20 von heute — nicht auf den 45 aus der Ländergeometrie allein; siehe den Annahmevermerk.
 ---
@@ -163,6 +163,26 @@ anfassen. Die Adressarithmetik ist 0116, die Klassen sind 0117.
 5. **`git diff` zeigt Änderungen ausschließlich in `spiel.md`.** Keine Zahl in
    `technik.md`, `reihen.toml` oder im Kern wird angefasst; die 310 bleiben stehen, bis
    0116 die Ableitungskette geschrieben hat.
+
+## Reihenfolgesperre auf 0128 — Kollisionsschutz, keine sachliche Abhängigkeit
+
+**Ergänzt am 2026-09-05 vom Projektmanager.** `0128` berichtigt zwei Sätze in derselben
+Datei: die Zählung der verworfenen 195-Länder-Welt nennt den Buchstaben der Partielänge,
+wo die Zahl der Rückvergleichsländer gemeint ist. Beides sind Ein-Satz-Änderungen, beides
+steht in `spiel.md`.
+
+**Was du von dort brauchst: nichts** — außer einem ruhigen Dateistand. Die Sperre steht
+im Frontmatter, damit zwei Läufe nicht gleichzeitig auf dieselbe Datei schreiben; sie ist
+kein fachliches Vorher. **Sie kostet dich keinen Bauplatz:** Dieses Paket wartet ohnehin
+auf 0117, und 0128 ist bis dahin längst durch.
+
+**Was sie dir erspart:** 0128 räumt genau das Symbol weg, aus dem Bedingung 3 hier ihre
+Ländergeometrie ableitet. Läuft es danach, rechnest du auf einer Stelle, die schon
+berichtigt ist — statt den Fehler in deine eigene Rechnung zu übernehmen.
+
+**Dein Vorher-Stand** ist der dann geltende `HEAD`. Such am Text, nicht an einer
+Zeilennummer: `spiel.md` ist heute schon durch 0119 gewandert und wandert durch 0128 ein
+zweites Mal.
 
 ## Rückläufe
 

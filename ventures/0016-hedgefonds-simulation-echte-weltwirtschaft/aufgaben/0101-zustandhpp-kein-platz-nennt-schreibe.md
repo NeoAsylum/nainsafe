@@ -1,7 +1,7 @@
 ---
 id: 0101-zustandhpp-kein-platz-nennt-schreibe
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0027-zustand-schreibweg-schliessen, 0072-zustandhpp-doppelpunktverweise]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp]
 abnahme: Der Kommentar an `KEIN_PLATZ` in `kern/include/kern/zustand.hpp` nennt keinen Namen mehr, den `Zustand` nicht traegt. Mechanisch: `grep -n 'schreibe' kern/include/kern/zustand.hpp` trifft danach keine Zeile mehr, die eine Zustandsfunktion dieses Namens behauptet; die drei genannten Funktionen pruefen `index >= FELDER` nachweislich (`zustand.hpp:439`, `zustand.hpp:465`, `zustand.cpp:816`), und `ctest` bleibt gruen.

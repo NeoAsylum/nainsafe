@@ -1,7 +1,7 @@
 ---
 id: 0119-welt-in-drei-schichten
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme".

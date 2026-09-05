@@ -159,3 +159,44 @@ anderen Pakets liegt darin" -- ist damit noch nicht erfuellt.
 
 `blockiert` statt `vorschlag`, aus demselben Grund wie bei 0041: `offen` waere eine Luege
 im Statusfeld, weil kein Lauf dieser Fabrik das Paket je zoege.
+
+---
+
+## Nachtrag 2026-09-05, Projektmanager: aus einem Nachvollziehbarkeitsproblem ist ein Durchsatzproblem geworden
+
+Der Befund war bisher: Wer eine Aenderung ueber `git log` sucht, findet sie unter dem
+falschen Betreff. Das kostete Messungen, keine Arbeit. **Der Baudurchgang vom 2026-09-05
+zeigt die naechste Stufe.** Alles unten ist ueber die Zieldatei gemessen, nicht ueber den
+Betreff.
+
+| Commit | Betreff nennt | Was wirklich drin liegt |
+|---|---|---|
+| `07cc49b` 12:45 | `datenbauer: 0078` | die Ergebnisdatei von **0120**, die Statuszeile von **0098**, dazu die eigene Paketdatei |
+| `f1aec13` 12:43 | `kernbauer: 0103` | **nichts als 18 leere Platzhalter** unter `.claude/`; kein Quelltext, kein Logbuch |
+| `bf0519b` 12:50 | `datenbauer: 0120` | das komplette Werkzeug aus **0110** (Katalog, Quelle, zwei `CMakeLists.txt`) |
+| `228d9d7` 12:58 | `architekt: 0116` | erneut Dateien aus **0110**, sonst nichts |
+| `8d007aa` 13:16 | `test-pruefer: 0110` | **vier Pruefbefunde aus drei Rollen** (siehe den Befund zu 0098) |
+
+**Die drei Folgen, in der Reihenfolge ihres Gewichts:**
+
+1. **Zwei Bauplaetze haben nichts geliefert, und der Commit verdeckt es.** `technik.md`
+   steht unveraendert seit 05:51, `werkzeugkette.cmake` seit 11:36 — 0116 und 0103 haben
+   ihre Zieldateien nicht angefasst, obwohl beide einen Commit unter ihrem Namen tragen.
+   Wer nur die Betreffzeile liest, haelt beide fuer geliefert.
+2. **Eine erbrachte Leistung hat ihre Meldung verloren.** 0120 ist inhaltlich fertig — die
+   Zeile 6 der Nachmessung nennt heute die richtige Ueberschrift, und der
+   Uebersetzungsbericht steht wieder auf `ok`. Die Datei liegt im Commit des Nachbarn, die
+   Statuszeile des Pakets steht weiter auf `offen`. Die Arbeit ist da, die Meldung darueber
+   ist verlorengegangen.
+3. **Die Reihenfolgesperren des Projektmanagers greifen eine Stufe zu hoch.** Sie
+   serialisieren die *Laeufe*; der Index wird davon nicht serialisiert. Genau das hat der
+   Pruefer zu 0098 gemessen.
+
+**Fuer die Begruendung dieses Pakets heisst das:** Es ist kein seltener Zusammenlauf,
+sondern der Regelfall, sobald zwei Laeufe gleichzeitig offen sind — und bei acht Bauplaetzen
+sind immer mehrere offen. Der erste Teil der Abnahmebedingung ist damit nicht mehr nur eine
+Frage der Nachvollziehbarkeit.
+
+**Am Status aendert das nichts.** `agents/lauf.py` liegt ausserhalb jeder Schreibgrenze, die
+die Rollentabelle vergibt; das Paket bleibt `blockiert`. Was sich aendert, ist die
+Dringlichkeit, und die steht in `rueckstand.md` beim Geschaeftsfuehrer.
