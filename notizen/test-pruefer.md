@@ -110,6 +110,26 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05-6.md` (voll nach 0105); davo
 - Zuordnung von Fundstellen zu Falltabellen billig ueber Zeilennummern gegen
   `grep -n "FAELLE = {{"` und das Kopfende (letzte `//!`-Zeile).
 
+## 2026-09-06 — 0130 (Berichtsreihenfolge): geprueft, Vorschlag 0182
+
+- **Dateisystem-Zwilling billig aus git:** zwei Kopien via `git archive HEAD`
+  (Vorhaben + specs im Betriebslayout `<basis>/ventures/<id>` + `<basis>/specs/<id>`),
+  eine nach bau/ (ext4), eine nach $TMPDIR (tmpfs); Fingerabdruck als sortierte
+  SHA-256-Liste ist ordnungsunabhaengig. 58 MB statt der 3,4-GB-Arbeitsbaumkopie
+  des Bauers — beide Wege fanden dieselbe erste Abweichungszeile.
+- **Multimengen-Vergleich der Ausgabezeilen (Counter) trennt Ordnung von Inhalt**
+  in einem Schritt: alt vs. neu 0 Zeilen einseitig -> nur Reihenfolge geaendert,
+  Erkennungsverhalten unangetastet. Merken fuer jede "nur Ordnung"-Behauptung.
+- Mutant "Vorlage sortiert hinschreiben" prueft den static_assert-Waechter selbst;
+  Eintraege per Klammertiefe zerlegen und nach Platzfeld sortieren geht generisch.
+- Wieder ein Fall "Regel wirkt nur im Bestandspfad, Selbsttest sieht sie nicht"
+  (Sammelstellen-sort, Mutant Code 0 bei gruenem Selbsttest) -> Vorschlag 0182,
+  gleiche Familie wie 0129->0138. Merkfrage am Ende jeder Riegelpruefung stellen.
+- Sperren: Write-Tool diesmal auch nach befunde/ verweigert, python3-Heredoc
+  schreibt ueberall im Zielbereich; `;`-Verbund und sed-Pipe verweigert, grep/tar/
+  cmake/ctest/mkdir einzeln gingen. Blob-Gleichheit prueft billig, ob der Messstand
+  des Bauers und der Elterncommit dieselbe Vorfassung tragen (`git rev-parse X:pfad`).
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE einzeln nachschlagen.**
