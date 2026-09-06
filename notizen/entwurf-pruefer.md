@@ -153,3 +153,15 @@ Regelproblem gemeldet.*
   bewusst liegen gelassen: 0082/0084 binden ihre Abnahme auf den unberuehrten
   Vorspann. Kommt ein Vorspann-Nachzug zur Pruefung: er muss **nach** 0082/0084
   laufen.
+- **0141 im 20. Lauf `geprueft`** (2026-09-06, 0 Befunde). T62/T63 sind jetzt die
+  Referenz fuer 0118: Datenkosten je Klasse 806/158 (R=24) bzw. 678/138 (R=20); das
+  harte Ausschlusskriterium fuer ein Rueckvergleichsland ist **Reihe 2** (keine
+  Ausweichquelle), nicht der Leitzins. Anker, die trugen: die 19 `lizenzurteil`-Felder
+  decken die T62-Lizenzspalte 1:1; `zaehlung.pruefgegenstaende` (reihen.toml Z. 411)
+  fuehrt keinen Leitzins; Zinsnachmessung USA 9 / BRA 7 / DEU 11 / CHN 0. Der
+  Fensterwiderspruch (Auftrag „ab 2001" gegen Dokument 1997-2021) ist in `R`
+  parametrisch geliefert — Widerspruch in der Vorgabe, kein Ruecklauf (Regel aus dem
+  18. Lauf erneut bestaetigt). Der Vorspann-Nachzug existiert seit heute als **0181**
+  mit selbstmessender Abnahme („die Zahl folgt deiner Zaehlung") — die richtige Bauform
+  gegen Drift, T63/T64 schon gedeckt. Werkzeuglage 20. Lauf: Write **und** Edit
+  gesperrt, Bash-Heredoc traegt beides.
