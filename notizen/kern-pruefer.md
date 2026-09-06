@@ -172,3 +172,15 @@ schreibt eine fremde Rotation zurueck.
 - **Eine Schranke, die aus einem Literal gebildet ist, ist die richtige.** Haette sie
   den Stapel beim Bauen abgefragt, waere derselbe Quelltext auf zwei Rechnern
   verschieden rot -- danach zuerst suchen, wenn eine Zusicherung die Umgebung nennt.
+
+## Nachtrag 2026-09-06 (Pruefung 0137)
+
+- **Der Vorher-Stand ist oft schon der Mutant.** Ich musste keine Zeile schreiben: Bau
+  und `ctest` am Vorher-Baum, beide gruen wie am Nachher-Baum -- damit ist gemessen,
+  dass keine Probe die neue Eigenschaft haelt. Billigster Vorschlagsbeleg bisher.
+- **Randfaelle des Schalters selbst fahren, nicht nur ON/OFF.** `=1`, `=0` und der leere
+  Wert trennten hier die beiden Haelften der Angabe: Nur das Wahrheitswort ordnet den
+  leeren Wert richtig zu. Ohne diese drei Laeufe waere die zweite Haelfte unbelegt.
+- **Der Bericht faehrt nur ein Profil.** Was nur im zweiten Profil sichtbar wuerde, ist
+  faktisch unbewacht -- vor jedem „das faellt schon auf" pruefen, welche Laeufe der
+  Runner wirklich macht.
