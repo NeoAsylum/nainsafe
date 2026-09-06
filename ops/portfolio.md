@@ -1,87 +1,114 @@
 # Portfolio
 
-Stand 2026-08-30, geschrieben vom Portfolio-Manager. Zweiter Lauf dieser Rolle.
+Stand 2026-09-06, geschrieben vom Portfolio-Manager. Dritter Lauf dieser Rolle, der erste
+seit der Umstellung auf den Bau.
 
 ## Lage in einem Satz
 
-Null Kandidaten, null aktive Vorhaben, **keine Gate-Vorlage** — aber anders als am
-2026-08-29 ist der Engpass jetzt vermessen statt vermutet: Die Öffnung des Suchraums hat
-die Mengenseite von G7 tatsächlich gelöst, und alle drei ersten englischsprachigen
-Segmente sind trotzdem gestorben, keines an der Größe.
+Ein Vorhaben, kein Kandidat, keine Gate-Vorlage — und der Befund der Woche ist nicht der
+Verbrauch, sondern die **Zusammensetzung**: Die Fabrik baut den Prüfapparat einer
+Simulation, die noch nicht rechnet.
 
 ## Aktiv
 
-Nichts in `erkundung`, `bau` oder `live`. **WIP 0 von 3**, kein Stopp-Vorschlag. Es fehlt
-weiterhin nicht der Platz, sondern der Kandidat.
+**WIP 1 von 3**, null in `bau`. `0016-hedgefonds-simulation-echte-weltwirtschaft` steht
+seit dem 2026-08-31 auf `erkundung`. Kein Stopp-Vorschlag: Es gibt nichts zu verdrängen.
+
+Der Status ist formal richtig und faktisch überholt — gebaut wird seit fünf Tagen. Der
+Übergang `erkundung` → `bau` ist Gate 2, und Gate 2 ist bewusst ausgelassen: Ökonom,
+Vertriebsplaner, Compliance-Prüfer, Urlaubstester, Antrags-Vorbereiter und Konzept-Judge
+liegen seit dem 2026-08-31 im Archiv (`konzeptlauf.py:44-47`). Ich melde es, ich ändere es
+nicht — den Status setzt allein der Betreiber.
+
+**Stand des Vorhabens:** 176 Arbeitspakete, davon 139 fertig, 19 offen, 8 gebaut, 4
+blockiert. 18 grüne Tests, `cmake`, `--build` und `ctest` alle Code 0. Der Engpass des
+letzten Plans vom 2026-09-04 ist weg: `werte.hpp` (damals 78 Byte) steht bei 29 kB,
+`werte.cpp` existiert mit 47 kB.
 
 ## Diese Woche gestorben
 
-**Keine Idee** — es gab keine zu töten. Seit dem 2026-08-29 ist kein Entwurf entstanden;
-der Ideator lief zweimal leer, der Fit-Filter zweimal. Alle 15 Ideen stehen auf
-`abgelehnt` (12) oder `widerlegt` (3), alle drei Angriffsordner sind ausgewertet.
+**Keine Idee** — es gibt keine zu töten. Gestorben ist eine **Annahme über das Grün**.
 
-Gestorben ist stattdessen eine **Annahme**: dass der größere Markt das Problem löst.
-Fünf neue Signale des 2026-08-30, jedes von seinem eigenen Verfasser erledigt.
+Drei Rollen melden unabhängig dieselbe Sache. Der Bruchtester: der 200-Runden-Lauf ist
+grün, „weil nichts rechnet" — `schritt_3` bis `schritt_5` sind je ein
+`schreiber.vortrag(platz)`. Der Projektmanager: „Kein Paket baut einen rechnenden Rumpf für
+`schritt_2`…`schritt_6`", deshalb steht 0157 auf `blockiert`, und daran hängen die drei
+Maße. Der Geschäftsführer führt dieselbe Sache als *die eine Zahl*: **0 von 310** — eine
+Runde `weltlauf` läuft durch und ändert keine der 310 Zustandsgrößen.
 
-| Segment (englischsprachig) | Betriebe | Preis | woran es starb |
-|---|---:|---:|---|
-| Fahrschulen (US/UK/IE/AU) | 76.537 | 17,50 € | 57 Produkte in der Kategorie; Preisboden 0 € |
-| Tanz-, Kampfsport-, Musikstudios | bis 134.000 | 15 € | Preisboden 0 €, refinanziert über 4,99 % auf den Beitragseinzug |
-| Tierarztpraxen | 43.500 | 85 € | Preis trägt (`traegt_5000: knapp`) — 30 Anbieter, sechs Vergleichsportale |
+Daneben stehen 18 grüne Tests und **41 der 176 Arbeitspakete (23 %) über Belegstellen,
+Riegel und Zitate** — den Apparat, mit dem die Fabrik ihre eigenen Dokumente prüft. Der
+Geschäftsführer maß am 2026-09-04 einen vergleichbaren Anteil (21 von 77). *Die
+Berichtigung gehört dazu:* Der Anteil **wächst nicht**, er ist seit zwei Tagen konstant bei
+knapp einem Viertel. Er ist damit kein Ausreißer, sondern der größte Einzelposten der
+Schlange.
 
-Dazu zwei rote Recherchen: **Delighted** (Stichtag beim Erfassen 61 Tage vorbei) und
-**AMLR** (der Kreis der Verpflichteten *schrumpft* ab dem 10.07.2027).
+## Was der Betreiber entscheiden muss — eine Sache, fünf Minuten
 
-Der Befund dahinter, von zwei Logbüchern unabhängig belegt und jetzt in `lehren.md`:
-**Der Preisboden null ist im englischsprachigen Raum ein Geschäftsmodell, keine Wohltat.**
-Wo wiederkehrend Geld vom Endkunden durch die Software fließt, verschenkt der Wettbewerber
-das Abo und lebt vom Zahlungsstrom — den die Fabrik nach Hausregel 2 nicht anfassen kann.
+**Wofür die nächste Woche gebaut wird.** `ops/plan.md` ist seit dem 2026-09-04
+abgearbeitet, alle fünf Vorrangkennungen stehen auf `fertig`; der Projektmanager meldet das
+zum zwölften Mal. Ohne Vorrang schneidet er nach `specs/` — und `specs/` ist zu 555 kB
+Prosa gewachsen (`technik.md` 298 kB, `spiel.md` 257 kB), aus der sich der Prüfapparat
+selbst nachschafft.
 
-## Was wartet
+Das ist **kein** Vorwurf an die vergangene Woche: Der Betreiber hat sie in die Mechanik
+gesteckt — Sitzungsgrenze erkannt, WSL-Anker gebaut, Commit an das Paket gebunden, zuletzt
+am 2026-09-05 um 22:13. Ohne diese sieben Eingriffe liefe die Fabrik heute nicht. Die
+Klempnerei ist damit erledigt; was fehlt, ist eine Inhaltsangabe.
 
-Kein Kandidat, keine unverbrauchte Anwaltsempfehlung. Drei Fährten mit Datum:
+**Mein Vorschlag für die fünf Kennungen:** der rechnende Rumpf für `schritt_2` bis
+`schritt_6`, in dieser Reihenfolge und sonst nichts. Er entblockt 0157, macht die drei Maße
+überhaupt erst messbar und ist die einzige Arbeit, die aus „0 von 310" eine Zahl macht.
+Nichts aus der Belegstellen-Familie in dieser Woche. Der Vorrang gehört dem
+Geschäftsführer; ich sage nur, dass seine Liste leer ist.
 
-- **PPWR-Mehrwegquote** — Wiedervorlage Juli 2027, wenn der Durchführungsrechtsakt vorliegt.
-- **§ 60b GEG**, Heizungsprüfung ab sechs Einheiten, Frist 30.09.2027; Pflichtiger ist der
-  Eigentümer. Achtung: als reine Fristenliste ist das die G6-Falle von 0003.
-- **Vermittlungsmarktplatz für Asbestaufträge** (aus dem Dachdeckerprofil, nach G9
-  ausdrücklich erlaubt) — bislang nur vermutet, ohne Beleg keine Idee.
+## Drei Meldungen — Regeln ändert nur der Betreiber
 
-## Vier Meldungen an den Betreiber
+1. **Die Archivregel aus `CLAUDE.md` ist für keine Rolle ausführbar.** Nachgemessen:
+   **keine** der 31 Rollendateien unter `agents/rollen/` nennt `Edit(notizen/archiv/**)`;
+   erlaubt ist je nur `Edit(notizen/<rolle>.md)`. Fünf Logbücher melden die Verweigerung
+   schriftlich (Architekt, Geschäftsführer, Markt-Analyst, Projektmanager, Spielentwerfer),
+   und alle fünf tun daraufhin genau das, wovor `CLAUDE.md` warnt: Sie ziehen zusammen,
+   statt zu streichen. Ich bin beim Kürzen von `lehren.md` in dieselbe Wand gelaufen.
+   Zweite Hälfte desselben Befunds: Wo es doch gelingt, landet die Datei **außerhalb des
+   Commit-Pfadfilters** (`lauf.py:470`, `committen`) — **21 der 124 archivierten Logbücher
+   sind nicht in git**, sie liegen nur im Arbeitsbaum. *Kosten der Behebung: eine Zeile je
+   Rollendatei.* Der Architekt schlägt genau das vor. Warum es sechs Rollen trotzdem
+   gelungen ist, kann ich nicht erklären — `.claude/settings.local.json` ist für mich nicht
+   lesbar.
 
-Regeln ändert nur der Betreiber, deshalb stehen diese Punkte hier und nicht in den Lehren.
+2. **Wiedervorlage 2026-09-13, sonst verfällt sie.** Das Wochenkontingent von rund
+   12.700 $ Gegenwert wurde gemessen, solange der Bonus lief. Endet er, bremst
+   `WOCHENGRENZE_USD = 12000` gar nicht mehr. Die alte Nacheichungsnotiz zu diesem Datum
+   wurde am 2026-09-05 aufgelöst, ohne dass eine neue an ihre Stelle trat. Von innen ist
+   der Kontostand nicht lesbar; es genügt, an dem Tag einmal die Anzeige vorzulesen.
 
-1. **Der Zuschnitt der Scouts, nicht ihre Zahl.** So formuliert es der Ideator wörtlich.
-   Die Zahlen dazu: `signals/regulation` 19 Signale → **null** überlebende Ideen.
-   `signals/market` 14 Signale → **eine** Idee (0008), tot an G3. Die Marktprofile
-   18 Stück → vier Ideen, alle aus *einem* Profil (Dachdecker), alle tot. Nur die
-   Marktprofile haben je Ideen erzeugt. Zugleich kosten Rechercheur und Markt-Analyst
-   zusammen 161 von 225 Mio. Tokens der Woche — **72 %**. *Mein Vorschlag:* Regel-Scout
-   und Markt-Scout aussetzen oder neu zuschneiden, das Kontingent in Marktprofile
-   umlenken. Zur Fairness: Der Apparat funktioniert. Er hat 15 Produkte verhindert, die
-   niemand gekauft hätte — er ist nur auf Quellen gerichtet, die nachweislich nichts
-   hergeben.
-2. **Ausstiegssignale mit weniger als etwa 90 Tagen Restfrist** sind für diese Fabrik
-   konstruktionsbedingt unerreichbar (Publisher 33 Tage, Office 2021 46, Delighted
-   bereits vorbei). Vorschlag des Rechercheurs, den ich teile. Als *Vorgehen* steht er
-   ab heute in `lehren.md`; ob er als Regel nach `quellen.yml` gehört, entscheidet der
-   Betreiber.
-3. **Das Promille in G7 wird angewendet, wo die Regel es nicht verlangt.** G7 sagt: „Ein
-   Prozent ist optimistisch, ein Promille realistisch, *wenn kein Vertriebskanal belegt
-   ist*." Alle drei neuen Marktprofile benennen einen Kanal — zweimal wörtlich „Kanal
-   vorhanden" — und rechnen trotzdem mit einem Promille. Diese Woche folgenlos, weil alle
-   drei ohnehin an der Besetzung starben. Künftig entscheidet der Faktor still über jedes
-   Profil: Bei einem Promille braucht ein 20-€-Produkt 250.000 Betriebe, bei einem Prozent
-   25.000. Der Markt-Analyst rechnet die härtere Variante, ohne dass die Regel es verlangt.
-4. **Offen aus dem 2026-08-29:** Ein Angriffsbefund kann einen Score entwerten, den
-   niemand nachzieht (der Fit-Filter darf nur `entwurf` anfassen), und `widerlegt` kennt
-   kein Wiedervorlagedatum — 0012 hängt an einem Verordnungstext, 0009 an einem
-   Wettbewerberpreis.
+3. **Die eine Geschäftszahl des Vorhabens sieht sich niemand mehr an.** 170 nötige Käufer
+   im Monat gegen 121 erreichbare — Faktor 1,4. Die Lehre vom 2026-08-31 wies das Schließen
+   dieser Lücke dem Ökonomen und dem Vertriebsplaner zu und Gate 2 als Kontrollpunkt; alle
+   drei wurden am selben Tag archiviert. Ich habe die Lehre entsprechend berichtigt. Zur
+   Fairness dieselbe Größe von der anderen Seite: 121 ist die Untergrenze unter den
+   härtesten Annahmen aus G7, bei einem Prozent derselben Basis wären es 1.208. Es ist eine
+   offene Arbeit, keine Absage — sie hat nur seit sechs Tagen keinen Adressaten.
 
-## Empfehlung für die nächste Woche
+## Was ich an den Lehren geändert habe
 
-Zweiter Lauf ohne Gate, und keines erzwungen: Ohne Kandidat wäre eine Vorlage nicht
-schwach, sondern frei erfunden. Die nächste Woche entscheidet sich weiterhin vorn — aber
-die Fabrik weiß jetzt, wonach sie vorn suchen muss: **erst den Preisboden, dann die
-Segmentgröße.** Das kehrt die bisherige Reihenfolge um, steht seit heute in `lehren.md`
-und kostet einen Abruf statt eines ganzen Profillaufs.
+`notizen/lehren.md` von 42.578 auf 25.645 Zeichen. Nichts war älter als 60 Tage; gestrichen
+wurde nach einem anderen Maß. Zwei Drittel der Datei waren an Rollen gerichtet, die seit
+dem 2026-08-31 nicht mehr laufen — und wurden trotzdem von jeder Baurolle in jedem der
+1.531 Läufe dieser Woche mitgelesen. Der Volltext steht in
+`git show 9103e36:notizen/lehren.md`, der tragende Satz jeder gestrichenen Lehre in elf
+Zeilen unter „Aus der Suchphase". Gelöscht ist nichts.
+
+Neu eingetragen, weil je mehrfach unabhängig belegt: **„Eine Prüfung, deren Gegenstand sich
+nicht bewegen kann, ist grün und wertlos"** (drei Quellen) und **„Nie `cd` — es nimmt das
+Arbeitsverzeichnis mit, und danach stirbt jeder `Edit`"** (drei Logbücher, vier verlorene
+`Edit` an einem Tag). Berichtigt: der Kern ist **C++**, nicht Rust (ADR 0011 ersetzt 0010,
+entschieden durch vier Agenten in vier Sprachen mit identischer Prüfsumme — die Fabrik hat
+den Vergleich gebaut, statt ihn zu führen), und die 70 % Fehlläufe der Woche sind zu
+97 % die drei Stunden vom 2026-09-05; die normale Rate sind 28 auf sechs Tage.
+
+## Keine Gate-Vorlage, und keine erzwungen
+
+Es gibt keinen Kandidaten — es gibt keine Ideen mehr außer 0016, und die steht jenseits von
+Gate 1. Eine Vorlage wäre diese Woche nicht schwach, sondern frei erfunden.

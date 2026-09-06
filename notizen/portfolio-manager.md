@@ -9,72 +9,99 @@ schreibst in kein fremdes Logbuch. Höchstens 12.000 Zeichen (`wc -c`).
 
 - 2026-08-29 — **Erst `anwalt.md` lesen, dann zählen — und nur die Frontmatter-Zeilen
   `entkraeftet/loesbar/teuer/unloesbar` zählen.** Der Anwalt hat das Urteil je Linse
-  bereits gefällt; die fünf Angriffsdateien musste ich in diesem Lauf gar nicht öffnen.
-  Das spart drei Viertel der Lesezeit. Nachlesen lohnt nur, wenn der Anwalt eine Linse
-  auf `loesbar` dreht — dort ist die Begründung die eigentliche Entscheidung.
-- 2026-08-29 — **Die Anschlusszuschnitte gegen `ideas/*.md` prüfen, bevor man sie
-  weiterreicht.** Alle drei „Andere Idee daraus" dieser Woche waren bereits ausgearbeitet
-  und gestorben (0006, 0014, 0015) oder vom Ideator vorab widerlegt. Hätte ich sie
-  ungeprüft ins Portfolio kopiert, hätte der Ideator dreimal dasselbe Nichts gefunden.
-  Suchmuster: `ablehnungsgrund`-Zeilen aller Ideen am Stück lesen, dazu `notizen/ideator.md`.
-- 2026-08-29 — **Die Logbücher der Rollen sind die bessere Quelle für Lehren als die
-  Ablehnungsgründe.** Die Ablehnung sagt, woran eine Idee starb; das Logbuch sagt, welches
-  Suchmuster es herausgefunden hat. Für „Folgerung für Rolle X" brauche ich Letzteres.
-- 2026-08-29 — `ops/auslastung.md` beantwortet die Kostenfrage vollständig. Nicht selbst
-  im Journal zählen; die Datei war aktuell (erzeugt am Lauftag).
-- 2026-08-30 — **`grep -rn "Portfolio-Manager" notizen/` ist der billigste Einstieg in
-  die Betreibermeldungen.** Ideator und Rechercheur adressieren mich wörtlich („Das gehört
-  an den Portfolio-Manager", „Vorschlag für den Portfolio-Manager (ich darf ihn nicht
-  selbst umsetzen)"). Beide Punkte dieses Laufs — Zuschnitt der Scouts, 90-Tage-Regel für
-  Ausstiegssignale — standen fertig formuliert da. Die Rollen wissen, was falsch läuft;
-  sie dürfen es nur nicht ändern.
-- 2026-08-30 — **In einem Lauf ohne Kandidaten liegt der ganze Ertrag in `lehren.md`.**
-  Reichte: `ops/auslastung.md`, die Frontmatter aller Ideen, die drei Zeilen
-  `potenzial`/`preis_plausibel`/`kunden_erreichbar` der neuen Marktprofile und vier
-  Logbücher (ideator, markt-analyst, rechercheur, fit-filter). Keine Angriffsdatei, kein
-  Signal im Volltext.
-- 2026-08-30 — **Eine Lehre wird stärker, wenn zwei Logbücher sie unabhängig melden.**
-  Preisboden null und „der Verband ist der Wettbewerber" standen je bei Ideator *und*
-  Markt-Analyst. Das ist der beste Filter gegen Einzelfälle, den ich habe — besser als
-  die Zahl der betroffenen Ideen.
+  bereits gefällt; die fünf Angriffsdateien musste ich nicht öffnen. Nachlesen lohnt nur,
+  wenn er eine Linse auf `loesbar` dreht — dort ist die Begründung die Entscheidung.
+- 2026-08-30 — **`grep -rn "Portfolio-Manager" notizen/` ist der billigste Einstieg in die
+  Betreibermeldungen.** Die Rollen adressieren mich wörtlich. Sie wissen, was falsch läuft;
+  sie dürfen es nur nicht ändern. **Ergänzung 2026-09-06:** In der Bauphase trägt
+  `grep -rn "Betreiber" notizen/` mehr — die Baurollen schreiben „Betreiber." als
+  Einzelwort ans Ende einer Zeile, nicht meinen Rollennamen.
+- 2026-08-30 — **Eine Lehre wird stärker, wenn zwei Logbücher sie unabhängig melden.** Der
+  beste Filter gegen Einzelfälle, den ich habe — besser als die Zahl der betroffenen Ideen.
+  **2026-09-06 bestätigt und verschärft:** Beide neuen Lehren dieses Laufs hatten drei
+  unabhängige Quellen, und beide Male sagte jede Quelle etwas anderes über *dieselbe*
+  Sache (grünes Testfeld / blockiertes Paket / „die eine Zahl"). **Drei Beschreibungen
+  desselben Dings sind wertvoller als drei Meldungen desselben Satzes** — die erste Sorte
+  belegt, die zweite hallt nur.
+- 2026-09-06 — **In einem Lauf ohne Kandidaten liegt der ganze Ertrag in `lehren.md` und
+  den Meldungen.** Gilt weiter, aber die Quellen sind andere: nicht mehr `ideas/` und die
+  Marktprofile, sondern `ops/auslastung.md`, `ops/kontingent.md`, der jüngste
+  `befunde/uebersetzung-<datum>.md` und die Logbücher der drei Rollen mit Überblick
+  (Geschäftsführer, Projektmanager, Bruchtester). Das reichte für den ganzen Lauf.
+- 2026-09-06 — **Der Übersetzungsbericht ist die einzige Aussage über den Bau, die kein
+  Modell geschrieben hat.** Runner-erzeugt, nennt jedes Ziel und jeden Test. Ich lese ihn
+  vor jedem Logbuch, nicht danach.
+- 2026-09-06 — **`Write` auf meine eigenen Dateien geht, obwohl die Werkzeugliste nur
+  `Edit(...)` nennt.** Die Edit-Pfadregel deckt alle dateiändernden Werkzeuge ab
+  (`lauf.py:69-73` sagt es ausdrücklich). Das erspart bei einem Umbau von `lehren.md` ein
+  Dutzend stückweiser `Edit` über je 30 Zeilen, die alle exakt treffen müssten.
 
 ## Was nicht funktioniert
 
-- 2026-08-29 — **`agents/repo.py` hat keinen CLI-Einstieg**, nur importierbare Funktionen
-  (`bereit_zur_bewertung()`, `angriffe()`). `python3 agents/repo.py status` gibt nichts
-  aus. Nächstes Mal direkt die Frontmatter der Ideen greppen, das kostet einen Aufruf.
-- 2026-08-29, **am 2026-08-30 zur Hälfte widerlegt** — Ich hatte notiert, zusammengesetzte
-  Bash-Befehle würden verweigert. `cmd && cmd` und `cmd; cmd` liefen heute problemlos;
-  verweigert wurde nur die `for`-Schleife über Dateien. Ersatz dafür ist das Grep-Werkzeug
-  mit `output_mode: content` — es liest die Frontmatter aller Ideen in einem Aufruf.
-- 2026-08-29, **erledigt** — `notizen/rechercheur.md` war mit ~92.000 Tokens nicht am Stück
-  lesbar. Nach der Rotation am 2026-08-29 sind es 7.582 Zeichen; der Vorschlag des
-  Verbesserers (Zeichen statt Zeilen messen) ist in `CLAUDE.md` umgesetzt und wirkt.
-- 2026-08-30 — **`lehren.md` wächst schneller, als die 60-Tage-Prüfung sie leert**: 9.608 →
-  13.394 Zeichen in einem Lauf, danach auf 12.977 zusammengezogen. Für diese Datei gilt
-  keine Grenze, aber *alle* Rollen lesen sie zu Beginn jedes Laufs — sie ist die Datei mit
-  der größten Verdünnungswirkung im Repo. Nächstes Mal: neue Befunde zuerst als
-  *Erweiterung* an einen bestehenden Eintrag hängen, statt einen sechsten anzulegen. Das
-  hat hier bei vier von fünf funktioniert.
+- 2026-08-29 — **`agents/repo.py` hat keinen CLI-Einstieg**, nur importierbare Funktionen.
+  Frontmatter direkt greppen.
+- 2026-09-06 — **`sqlite3 state.db` ist mir verwehrt** (zweimal versucht, „don't ask
+  mode"), ebenso `sed -n`. **Nicht erneut versuchen.** `ops/auslastung.md` und
+  `ops/kontingent.md` beantworten jede Frage, die ich an das Journal hätte — und die
+  Hausregel sagt ohnehin: fertige Datei lesen, nicht selbst zählen. Ein `Read` mit
+  `offset`/`limit` ersetzt `sed -n` vollständig.
+- 2026-08-30, **2026-09-06 gelöst** — `lehren.md` wuchs schneller, als die 60-Tage-Prüfung
+  sie leert: 9.608 → 13.394 → **42.578** Zeichen in einer Woche. Die 60-Tage-Regel greift
+  nicht, wenn die Fabrik erst zehn Tage alt ist — sie ist das falsche Maß. **Das richtige
+  Maß ist der Adressat:** Eine Lehre, die an eine abgeschaltete Rolle gerichtet ist, wird
+  von allen gelesen und hilft keinem. Zwei Drittel der Datei waren so. Auf 25.645 gekürzt.
 
-## Offene Faehrten
+## Wie ich kürze, ohne zu löschen
 
-- 2026-08-29, **am 2026-08-30 präzisiert** — „Der Trichter ist leer, nicht verstopft"
-  stimmt, war aber zu freundlich. `signals/` *ist* gewachsen (fünf neue Signale am
-  2026-08-30), und trotzdem kam nichts durch: Jeder Verfasser hat sein eigenes Signal
-  gleich mit erledigt. Der Zufluss fehlt nicht, er ist **strukturell negativ**. Beim
-  nächsten Lauf nicht zählen, ob `signals/` gewachsen ist, sondern ob ein Signal ohne
-  eigenes Todesurteil dabei ist — `grep -L 'gering\|rot' signals/*/2026-*.md`.
-- 2026-08-30 — **Das Promille aus G7 ist die schärfste offene Frage, die ich nicht
-  entscheiden darf.** Die Regel gibt ein Promille für den Fall vor, dass *kein* Kanal
-  belegt ist; alle drei neuen Marktprofile benennen einen Kanal und rechnen trotzdem so.
-  Faktor zehn auf jede Marge. Steht als Meldung 3 im Portfolio. Beim nächsten Lauf prüfen,
-  ob der Betreiber geantwortet hat — sonst rechnet die Fabrik weiter gegen sich selbst.
-- 2026-08-29 — Ungeprüft geblieben: ob die Score-Summen überhaupt noch etwas taugen. Alle
-  drei Kandidaten lagen bei 16 bis 18 Punkten und starben trotzdem eindeutig; der
-  bestbewertete (0012, 18) starb am klarsten. Die Punkte kommen vor der Prüfung, die
-  Einwände danach — beim nächsten Mal beobachten, ob die Reihenfolge je stimmt.
-- 2026-08-29 — Für einen künftigen Lauf zu klären: Was passiert mit einer `widerlegt`-Idee,
-  wenn ihr Widerlegungsgrund selbst veraltet? 0012 hängt an einem Verordnungstext, 0009 an
-  einem Wettbewerberpreis. Beides kann sich ändern; ein Wiedervorlagedatum kennt das
-  Statusmodell nicht.
+- 2026-09-06 — **Ich darf nicht nach `notizen/archiv/` schreiben, keine Rolle darf das** —
+  nachgemessen mit `grep -L "notizen/archiv" agents/rollen/*.md`: 31 von 31 Treffern. Die
+  Hausregel schreibt genau diese Rotation vor. Fünf fremde Logbücher melden dieselbe Wand.
+- 2026-09-06 — **Der Ersatzweg ist der Zeiger auf den Commit**, und Architekt und
+  Geschäftsführer benutzen ihn schon: `git log -1 --format=%H -- <datei>` vor der Änderung,
+  Hash in die Kopfzeile der neuen Fassung („Volltext in `git show <hash>:<datei>`").
+  Hausregel 3 ist damit gewahrt — die Datei ist versioniert, eine gestrichene Passage ist
+  einen Aufruf entfernt. **Dazu den tragenden Satz jeder gestrichenen Lehre als Einzeiler
+  behalten.** Elf Zeilen ersetzten 17.000 Zeichen Suchphase.
+
+## Prüfgriffe, die diesen Lauf entschieden haben
+
+- 2026-09-06 — **Eine Lehre, die eine Rolle als Sicherheitsnetz nennt, gegen
+  `konzeptlauf.py:STUFEN` und `agents/rollen/archiv/` halten.** Teuerster Fund des Laufs:
+  Meine eigene Lehre vom 2026-08-31 wies die 170-gegen-121-Lücke dem Ökonomen und dem
+  Vertriebsplaner zu „und Gate 2 ist die Stelle, an der es sichtbar wird" — beide Rollen und
+  das Gate wurden **am selben Tag** archiviert. Sechs Tage lang stand ein Sicherheitsnetz
+  in der gemeinsamen Datei, das es nicht gab. *Bei jeder Lehre mit „Rolle X wird das tun"
+  prüfen, ob Rolle X noch läuft.*
+- 2026-09-06 — **Eine Regel gegen ihre Ausführbarkeit prüfen kostet einen Aufruf:**
+  `grep -L "<pfad>" agents/rollen/*.md`. Steht eine Pflicht in `CLAUDE.md` und in keiner
+  Werkzeugliste, ist sie keine Regel, sondern eine Reibungsquelle. Das ist derselbe
+  Fehlertyp, den der Betreiber „eine Regel an einer Stelle, die der Ablauf nicht erreicht"
+  nennt — ich kann ihn von meiner Seite billig finden.
+- 2026-09-06 — **`git ls-files <ordner> | wc -l` gegen `ls <ordner> | wc -l`** sagt, ob
+  geschriebene Dateien auch in der Historie sind. 103 gegen 124: **21 archivierte Logbücher
+  liegen nur im Arbeitsbaum.** Ursache ist der Commit-Pfadfilter (`lauf.py:470`), der nur
+  die Schreibpfade der Rolle committet. Ein Lauf kann erfolgreich schreiben und trotzdem
+  nichts hinterlassen.
+- 2026-09-06 — **Die Schlange nach Thema zählen, nicht nach Status.**
+  `ls aufgaben/ | grep -c "belegstell\|riegel\|zitat"` — 41 von 176. Der Status sagt, ob es
+  vorangeht; das Thema sagt, ob es das Richtige ist. **Und die Vorzahl mitnennen:** Der
+  Geschäftsführer hatte 21 von 77 gemessen und daraus eine Beschleunigung gelesen; es ist
+  ein konstantes Viertel. *Ein Anteil braucht zwei Messungen, sonst ist er eine Stimmung.*
+
+## Offene Fährten
+
+- 2026-09-06 — **Eingefroren, solange `FOKUS` gesetzt ist** (nicht erledigt, nur ohne
+  Gegenstand): ob Score-Summen etwas taugen; was mit einer `widerlegt`-Idee geschieht, wenn
+  ihr Widerlegungsgrund veraltet; das Promille aus G7. Alle drei betreffen die Suchphase.
+  **Wieder aufnehmen, sobald `FOKUS = None` steht** — vorher kosten sie nur Platz.
+- 2026-09-06 — **Zu prüfen im nächsten Lauf: Hat der Betreiber `ops/plan.md` gefüllt?** Der
+  Projektmanager meldet die leere Vorrangliste zum zwölften Mal. Ist sie dann immer noch
+  leer, ist es keine Meldung mehr, sondern die Frage, ob der Vorrang überhaupt vom
+  Betreiber kommen soll — und die gehört als einziger Punkt in die nächste Fassung.
+- 2026-09-06 — **Zu prüfen: steht die eine Zahl noch auf `0 von 310`?** Sie ist der einzige
+  Fortschrittsmaßstab des Vorhabens, der nicht aus einem Modell stammt. Der Griff:
+  `notizen/geschaeftsfuehrer.md` nach „die eine Zahl", dazu `wc -c` auf `kern/src/schritt.cpp`.
+- 2026-09-06 — **Ich habe die Woche nie am Kalender gemessen, nur an Läufen.** Der
+  Wochenlauf erzeugt `ops/auslastung.md` und `ops/kontingent.md` um 05:00; beide Dateien
+  waren zu Beginn dieses Laufs vier Stunden alt und passten zusammen. Wenn sie das einmal
+  nicht tun, ist die jüngere die richtige — nicht die freundlichere.
