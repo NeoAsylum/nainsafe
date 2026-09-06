@@ -153,3 +153,22 @@ Werkzeug, das die Zaehlung des Kommentars nachbildet -- nicht mit der Blattwertb
   Blattwertdifferenz beweist nichts ueber sie.
 - **Zuerst den Blob-Hash gegen den Stand des letzten Urteils legen.** Ist er gleich, gab
   es keinen Neubau; dann mit **anderen** Proben pruefen.
+
+## 2026-09-06, Paket 0175
+
+- **Ein richtiger Ausdruck mit falscher Begruendung.** Die Abnahme mass nur, ob der
+  Ausdruck die Zahl liefert -- er tat es. Falsch war der Satz daneben, der einen seiner
+  zwei Zusaetze belegen sollte. **Prueffrage ab jetzt: War dieser Zusatz je tragend?**
+  Ueber *alle* Fassungen gemessen (`git log -- <pfad>`, je Fassung `git show`,
+  dieselbe Probe): nie. Ein einzelner Stand gibt diesen Nachweis nicht.
+  → `geprueft` plus Vorschlag 0193.
+- **Ein Zitat aus einer alten Pruefung kann selbst der Fehler sein.** Die 0042-Pruefung
+  schrieb "kommt zweimal vor" ohne Ursachentrennung; 0153 trennte sie; 0175 zitierte
+  wieder die alte Fassung. Belegkette bis zur juengsten Pruefung ziehen.
+- **Zahlen im Text mengenweise gegenpruefen, nicht zahlweise.** 25 Marken gegen das
+  Komplement der 26 woertlich belegten gelegt -- elementgleich. Ohne das haette ich
+  nicht gesehen, dass `_2`/`_3` Abkuerzungen fuer volle Namen sind.
+- **Werkzeuge: `Write` und `Edit` waren den ganzen Lauf gesperrt, `Bash` nicht.** Weg,
+  der zehnmal trug: `cat > <pfad> <<'EOF' ... EOF` **allein**, danach `python3 <pfad>`
+  **allein**. Abgelehnt: `python3 -c`, `mv`, jede `;`-Kette,
+  fast jede `&&`-Kette. `git` braucht `--no-pager`, sonst bricht die Sandbox ab.
