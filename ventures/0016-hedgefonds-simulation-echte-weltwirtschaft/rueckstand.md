@@ -1,193 +1,93 @@
 # Rückstand — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-05 20:05. Fassung 32, geschrieben vom Projektmanager. Diese Datei sagt,
+Stand 2026-09-06 03:07. Fassung 33, geschrieben vom Projektmanager. Diese Datei sagt,
 welche Pakete es gibt, warum in dieser Reihenfolge, und was der Geschäftsführer
 entscheiden muss.
 
-**139 Pakete: 23 offen, 1 gebaut, 110 fertig, 1 abgelehnt, 4 blockiert.** Dazu vier
-Dateien außerhalb der Zählung (archiviert, zweimal umgezogen, zurückgezogen); die Summe
-stimmt gegen `ls aufgaben/ | wc -l` = 143.
+**170 Dateien, 169 mit Frontmatter: 22 offen, 8 gebaut, 130 fertig, 1 abgelehnt,
+4 blockiert.** Dazu vier außerhalb der Zählung (archiviert, zweimal umgezogen,
+zurückgezogen) und eine Verweisdatei ohne Frontmatter, die absichtlich in keiner
+Statuszählung mitläuft — daher 170 gegen 169.
 
-**Der Trockenlauf ging von 5 auf 6 Bauplätze und von 0 auf 1 in der Prüfstufe.** Beide
-Gewinne kamen aus **Nachmessen, nicht aus Zerlegen** — der eine, weil eine Abhängigkeit
-falsch war, der andere, weil eine Dateigruppe noch unberührt ist. Das ist der Befund
-dieses Laufs, und er hat eine unbequeme Hälfte: Die falsche Abhängigkeit hatte ich im
-letzten Lauf selbst gesetzt.
+**Der Befund dieses Laufs ist eine Korrektur an meiner eigenen Berichterstattung, und sie
+geht zugunsten der Fabrik.** Der Trockenlauf zeigt 2 von 8 Bauplätzen belegt. Das habe ich
+in früheren Fassungen als Auslastung der ganzen Fabrik gelesen. Das war falsch.
 
-## Der Statusnachzug: nichts zu ziehen, und diesmal aus einem anderen Grund
+## Bau, Review und Prüfung haben je ein eigenes Budget — und Review ist heute voll
 
-Fünf Pakete wurden seit der letzten Fassung geprüft — 0105, 0108, 0136, 0138, 0140 —, alle
-fünf mit `urteil: geprueft`. **Zu ziehen war keines: Die Prüfer haben den Status selbst auf
-`fertig` gesetzt.**
+`agents/baulauf.py` schneidet in Zeile 362, 375 und 381 **drei** Listen unabhängig
+voneinander auf `gleichzeitig` zu. Die drei Stufen teilen sich keinen Topf. Heute laufen
+deshalb nicht 2 Agenten, sondern **elf**: 2 im Bau, **8 im Review**, 1 in der Prüfstufe.
 
-Das Ergebnis ist in allen fünf Fällen richtig; ich habe die Befunde einzeln nachgesehen und
-hätte genauso entschieden. Der Weg ist es nicht. `agents/baulauf.py` hält in seinem eigenen
-Kopf fest, dass der Bauagent `gebaut` setzt und **nur der Projektmanager `fertig`**. Die
-Trennung ist keine Rangordnung, sondern die einzige Stelle, an der ein Paket ohne Befund
-auffällt. Wenn der Prüfer beides tut, fällt sie weg — und mein Statusnachzug, der bisher
-die ergiebigste Quelle freier Bauplätze war, läuft künftig regelmäßig leer.
+**Die Reviewstufe steht exakt am Anschlag: 8 Pakete auf `gebaut`, 8 Plätze.** Sie ist der
+Engpass dieses Laufs, nicht mein Zuschnitt. Mehr offene Baupakete hätten heute nichts
+gebracht — sie hätten in eine Stufe geliefert, die schon voll ist.
 
-**Zu tun ist dagegen nichts von mir:** Die Prüferrollendateien sagen zu `fertig` gar nichts,
-also ist es keine widersprüchliche Vorgabe, sondern eine fehlende. Sie liegen unter
-`agents/rollen/` und damit außerhalb meiner Schreibgrenze. Gemeldet, Punkt 5 unten.
+## Der Statusnachzug war leer, und diesmal aus dem harmlosesten der drei Gründe
 
-**0139 steht weiter auf `gebaut` und ist korrekt eingeplant.** Ein Prüfbefund fehlt; der
-Commit vom 19:48, der seinen Namen trägt, enthält den Befund zu **0136**. Der Baulauf plant
-0139 deshalb erneut zur Prüfung ein, und das ist die richtige Selbstheilung. Kein Eingriff.
+Zu keinem der acht `gebaut`-Pakete gibt es einen Prüfbefund. **Die Prüfer sind nicht
+säumig, sie laufen gerade** — alle acht sitzen in genau den acht Reviewplätzen oben. Der
+Nachzug dieses Laufs ist damit nicht verschleppt, sondern noch nicht fällig; die Ernte
+fällt im nächsten Lauf an.
 
-## Die falsche Abhängigkeit war meine eigene
+Das ist ausdrücklich **nicht** der Fall aus Fassung 32, in der die Prüfer den Status selbst
+auf `fertig` gesetzt hatten. Diesmal hat niemand etwas übersprungen.
 
-**0145 hing an 0144, und die Begründung dafür stammte von mir.** Sie lautete: Solange die
-Rundenkapazität des Verlaufs bei zwanzig steht, endet ein Lauf über zweihundert Runden in
-der einundzwanzigsten. **Das gilt nur für einen Lauf, der die Ketten mitschreibt — und
-genau das darf 0145 nicht tun.** Nachgemessen an drei Stellen:
+## Kein Schnitt öffnet heute einen Bauplatz — nachgemessen, nicht vermutet
 
-- `kern/include/kern/verlauf.hpp` nennt den langen Lauf des Bruchtesters in seinem eigenen
-  Kopfkommentar (Zeile 44–47) ausdrücklich „bewusst **nicht** die Bezugsgroesse" und den
-  Fall, „den T19 selbst als kettenfrei ausweist: Wer nur Ergebnisse zaehlt, wirft die
-  Ketten weg und braucht keinen Verlauf."
-- `kern/include/kern/schritt.hpp` gibt je Runde ein `Rundenergebnis` mit frischer
-  Rundenkette zurück. Die Zwanzig sitzt im Sammelbehälter über die Partie, nicht in der
-  Rundenkette; deren eigene Grenze sind 310 Glieder.
-- Weder `kern/src/schritt.cpp` noch `schritt.hpp` erwähnen `verlauf` überhaupt. Ein
-  `Verlauf` entsteht nur, wenn der Aufrufer einen anlegt.
+Die 22 offenen Pakete verteilen sich auf **acht Dateibahnen**, und zwei Pakete auf einer
+Datei laufen nie gleichzeitig. Je Bahn steht genau ein Paket vorn:
 
-Die Abhängigkeit ist gestrichen, die Berichtigung steht im Paket. **0144 bleibt unberührt
-und richtig** — es behebt einen echten Fehler am Verlauf, es war nur nicht die
-Voraussetzung von 0145.
+| Bahn | Kopf | Zustand |
+|---|---|---|
+| `daten/reihen.toml` | 0142 | **läuft** |
+| `parameter.toml` | 0175 | **läuft** |
+| `befunde/beschraenktheit/` | 0178 | **läuft** (Prüfstufe) |
+| `specs/…/technik.md` | 0154 | wartet auf 0141 |
+| `specs/…/spiel.md` | 0118 | wartet auf 0141 |
+| `werkzeuge/belegstellen/…cpp` | 0147 | wartet auf 0130 |
+| `kern/include/kern/verlauf.hpp` | 0172-verlaufskopf | wartet auf 0091 |
+| `werkzeuge/zahlwort/` | 0180 | wartet auf 0155 |
 
-**Die Lehre, und sie ist unangenehmer als der Fall:** Fremde Abhängigkeiten prüfe ich seit
-Wochen gegen die genannte Datei. Meine eigenen nicht — und meine liest kein Prüfer. Diese
-eine Zeile hat die Prüfstufe einen ganzen Durchgang lang leer gehalten, obwohl sie ein
-eigenes Platzkontingent hat und keinem Bauagenten etwas wegnimmt.
+**Alle fünf wartenden warten auf ein Paket, das in diesem Moment im Review sitzt.** Ich
+habe geprüft, ob die Abhängigkeiten echt sind oder nur behauptet — bei **vier von fünf**
+liegt der Vorgänger auf **derselben Datei** (0141 und 0154 auf `technik.md`, 0130 und 0147
+auf demselben Riegel, 0091 und 0172 auf `verlauf.hpp`). Dort hielte die Dateisperre die
+Bahn auch dann, wenn ich das `haengt_an` striche. Nur 0180 hängt dateiübergreifend an
+0155, und dort ist die Abhängigkeit inhaltlich zwingend.
 
-## Die Ketten: sechs Dateigruppen, und jede Sperre ist echt
+**Ergebnis: Es gibt heute keine Umstellung, die einen sechsten Bauplatz öffnet.** Das ist
+eine Eigenschaft des Vorhabens — dreizehn Pakete auf einer Entwurfsdatei —, keine
+Entscheidung von mir.
 
-Der Rückstand ist keine Menge von 23 Posten, sondern sechs Gruppen, die je eine Datei
-halten:
+## Was ich getan habe
 
-| Datei | offene Pakete | Kopf läuft |
-|---|---:|---|
-| `specs/…/technik.md` | 8 | 0116 |
-| `daten/reihen.toml` | 4 | 0099 |
-| `werkzeuge/belegstellen/belegstellen_riegel.cpp` | 3 | 0106 |
-| `werkzeugkette.cmake` | 3 | 0124 |
-| `kern/…/verlauf.*` | 2 | 0144 |
-| `specs/…/spiel.md` | 1 | — (0118 hängt an technik.md) |
+- **0180 angenommen** (`vorschlag` → `offen`), ein Zahlwortriegel für `werte.hpp` vom
+  Kernbauer. Die fünf Prüfungen bestanden: Rolle `testentwickler` bildet auf `test-pruefer`
+  ab, also bekommt es einen Befund; kein anderes Paket nennt heute die Wurzel-`CMakeLists.txt`;
+  die drei Bedingungen sind am Quelltext messbar. Es eröffnet eine achte Dateibahn.
+- **0181 angelegt**, den Nachzug des Vorspanns von `technik.md`. Das ist kein erfundenes
+  Paket: Der Architekt hat es in `technik.md` selbst beauftragt und die Reihenfolge
+  mitgeliefert. Nachgemessen und noch offen — die Datei nennt in Zeile 45 den Bereich
+  T1 bis T53, vergeben ist bis T61.
 
-**Diesmal habe ich nicht nur gezählt, sondern die Sperren gemessen:** je Paket die
-`dateien`-Liste gegen die seines Vorgängers. **17 von 18 blockierten Paketen sind
-dateigleich mit ihrem Vorgänger** — ihre Abhängigkeit ist die Dateisperre als Reihenfolge,
-also richtig und durch Auflösen nicht zu gewinnen. Das achtzehnte war 0145, siehe oben.
+## Was der Geschäftsführer entscheiden muss
 
-**Damit ist gesagt, was Zerlegen hier leisten kann: nichts.** Ein zusätzlicher Bauplatz
-entsteht nur aus einem Paket auf einer bisher unberührten Datei.
+**Erstens: `technik.md` zerlegen. Zum dreizehnten Mal, und der Preis ist jetzt bezifferbar.**
+Dreizehn der 22 offenen Pakete stehen auf dieser einen Datei, in einer Kette von zehn
+Gliedern: 0154 → 0158 → 0148 → 0149 → 0177 → 0064 → 0068 → 0074 → 0084 → 0181. Bei einem
+Glied je Lauf läuft das letzte in keiner Woche durch, die absehbar ist. Ich habe 0181
+sehenden Auges ans Ende gehängt, weil ein vergessener Auftrag teurer ist als ein wartendes
+Paket — aber das ist Schadensbegrenzung, keine Lösung. **Der Schnitt liegt in der Datei,
+nicht in meinen Paketen**, und über den Entwurf entscheide ich nicht.
 
-## Das neue Paket: 0146, und warum ich es schneiden durfte
+**Zweitens: `ops/plan.md` ist abgearbeitet.** Alle fünf Vorrangkennungen (0026, 0002, 0071,
+0027, 0010) stehen auf `fertig`; der Plan trägt den Stand 2026-09-04. **Elfte Meldung.** Ich
+schneide seither nach `specs/`, wie mein Logbuch es für einen leeren Vorrang vorsieht, und
+melde die Rücknahme hiermit erneut ausdrücklich.
 
-**Genau das ist 0146** — `kern::aktion`, der Aktionstyp und die kanonische Ordnung aus T32,
-auf drei neuen Dateien (Kopf, Quelle, Probe). Es hat den freien Bauplatz sofort gefüllt.
-
-**Die Erlaubnis kommt aus dem leeren Vorrang.** Alle fünf Kennungen aus `ops/plan.md` —
-0026, 0002, 0071, 0027, 0010 — stehen auf `fertig`, einzeln nachgesehen; die Datei ist seit
-2026-09-04 07:49 unverändert. Ein abgearbeiteter Vorrang ist kein Vorrang. **Ich nehme
-damit eine eigene frühere Zurückhaltung ausdrücklich zurück** und melde das, statt es
-stillschweigend zu tun.
-
-**Erfunden ist es nicht, und das ist nachprüfbar.** T32 steht in `technik.md` als eigene,
-durchnummerierte Vorgabe. **Vier Pakete haben ihn ausdrücklich ausgespart** — 0019, 0029
-und 0033 nennen ihn beim Namen —, und `kern/include/kern/schritt.hpp` trägt heute einen
-leeren `Aktionsbuendel` mit dem Vermerk, T32 sei unbeauftragt. Eine viermal gemeldete Lücke
-ist keine übersehene.
-
-**Was daran hängt, ist der Grund für die Wahl.** Die Pflichtentabelle unter T30 führt acht
-Prüfungen. Drei davon sind ohne Aktionstyp nicht baubar: der Bruchlauf mit zehntausend
-Partien (braucht den Zufallsbot), die drei Maße (Selbstspieler) und alles, was den
-Spielmodus braucht — `kern::schritt` bricht dort hart ab, weil es nichts anderes tun kann.
-**T32 ist der tiefste einzelne Riegel im Vorhaben.**
-
-Die Voraussetzungen sind gemessen, nicht vermutet: `werte::fondsanteil` und `werte::stufen`
-sind gebaut; `kern/CMakeLists.txt` sammelt Quellen per `file(GLOB … CONFIGURE_DEPENDS)`,
-das Paket fasst also kein Manifest an; der Sperrebindungsriegel deckt seit 0139 auch
-`test/*.cpp` und bricht die Konfiguration hart ab, wenn die neue Datei `kern/sperre.hpp`
-nicht als letzte bindet — die Abnahme kann sich darauf stützen.
-
-**Ich habe die zweite Hälfte von T32 bewusst nicht mitgeschnitten.** `buendel_zulaessig`
-liegt auf denselben drei Dateien, wäre also ohnehin ein Kettenglied, und seine Form hängt
-davon ab, welchen Typ 0146 hinterlässt. Das Paket hat den Auftrag, sie zu berichten.
-
-## 0116 hat geliefert — Punkt 5 der letzten Fassung ist erledigt
-
-**Der vierte Anlauf war nicht stumm.** Commit `1f763e9` vom 19:15 trägt 202 neue Zeilen in
-`technik.md`; die Datei ist von 239.800 auf 253.725 Byte gewachsen und war seit 05:51
-unverändert. Der neue Teil trägt T54 bis T57.
-
-**Nicht der Umfang war die Ursache der drei stummen Läufe, sondern der Vermerk im Paket** —
-die vorige Fassung hatte das genau umgekehrt vermutet, und die Vermutung ist widerlegt. Was
-weiterhin fehlt, ist die Statuszeile: 0116 steht auf `offen`, obwohl die Arbeit im Baum
-liegt. **`gebaut` setze ich nicht** — das ist die Meldung des Bauagenten, und ein Paket, das
-ohne Prüfbefund weiterwandert, wäre mein Fehler. Der Auftrag steht im Paket.
-
-## Was der Geschäftsführer entscheiden lassen muss
-
-**1. Ein neuer Vorrang. Die Liste in `ops/plan.md` ist zum sechsten Mal vollständig
-abgearbeitet.** Alle fünf stehen auf `fertig`, der Plan stammt vom 2026-09-04 07:49. **Zum
-sechsten Mal gemeldet, zum sechsten Mal unbeantwortet.** Ich habe diesmal nach eigener
-Auslegung ein Paket in neuem Gebiet geschnitten (0146). Die Begründung ist der leere
-Vorrang; wer ihn füllt, nimmt mir diese Auslegung wieder ab.
-
-**2. Fünf Mitglieder des Erzeugnisses sind ungebaut, und jedes wäre ein Bauplatz.**
-`cmake -S` meldet sie bei jedem Lauf: `daten`, `schnittstelle`, `konsole`, `oberflaeche`,
-`werkzeuge/aufbereitung`. Jedes ist eine unberührte Dateigruppe und damit genau das, woran
-es dem Rückstand fehlt. **Welches zuerst, ist eine Vorrangfrage und gehört dir** — ich habe
-heute eines aufgemacht und mache absichtlich kein zweites.
-
-**3. Die Fabrik baut weiter überwiegend an sich selbst.** Von 23 offenen Paketen arbeiten
-jetzt 4 am Erzeugnis (0144, 0145, 0146 und, mittelbar, 0099) statt 1. Die Ursache aus der
-letzten Fassung gilt unverändert: Nur die Arbeit an Riegeln schafft sich selbst nach, weil
-jede Prüfung eines Riegels einen Befund über einen Riegel erzeugt.
-
-**4. Die Behebung des Commit-Schnitts steht weiter offen.** `agents/lauf.py` Zeile 620
-setzt `pfade = schreibpfade(werkzeuge)`, und `schreibpfade` schneidet die Werkzeugzeile am
-ersten Stern ab — alle sieben Baurollen committen dieselbe Wurzel. Die Datei liegt außerhalb
-jeder Schreibgrenze; 0131 und 0121 bleiben zu Recht `blockiert`. **Zum vierten Mal gemeldet.**
-
-**5. Prüfer setzen `fertig`, obwohl der Ablauf es mir vorbehält.** Fünf Fälle heute, alle
-mit richtigem Ergebnis. Zu entscheiden ist, was gilt: Entweder die Prüferrollendateien
-bekommen den fehlenden Satz „setze den Status nicht selbst", oder der Ablauf wird an die
-gelebte Praxis angeglichen und meine Abnahmestufe entfällt. **Beides ist vertretbar,
-schweigend beides nebeneinander nicht** — heute hängt an der Stufe, dass ein Paket ohne
-Befund auffällt.
-
-**6. `0003` bleibt gesperrt, seit dem 2026-09-01.** Einheit im Typ gegen die Skalentabelle
-in T5, eine ADR-Entscheidung von dir. Unverändert.
-
-**7. `technik.md` zerlegen — zum achten Mal gemeldet, und ich ändere nichts.** Acht Pakete
-auf einer Datei, strikt nacheinander. Solange die Kette läuft, ist der Architekt eine Rolle
-mit **einem** Platz. Es wäre eine Entwurfsentscheidung, und die gehört nicht mir.
-
-**8. Neu: `technik.md` verweist auf diese Datei über Punktnummern.** An drei Stellen —
-Zeile 3078, 3148 und 3170 — steht „`rueckstand.md` Punkt 2" beziehungsweise „Punkt 6 und
-7". **Diese Verweise altern mit jeder Fassung**, weil die Liste in jedem Lauf neu numeriert
-wird; sie zeigten schon vor diesem Lauf nicht mehr auf das Gemeinte. Ich habe 6 und 7
-absichtlich auf ihren Gegenständen gelassen, um die Drift nicht zu vergrößern, aber das ist
-ein Notbehelf. Ein Verweis auf eine Nummer in einer Datei, die sich wöchentlich neu
-numeriert, hält nicht.
-
-## Was der nächste Lauf zuerst anfasst
-
-1. **0145 ist das erste Paket der Prüfstufe, seit es sie gibt.** Es misst zweihundert
-   Runden ohne Spieler gegen die sieben Wertebereichsschranken — **und liefert nebenbei die
-   eine Zahl, nach der `ops/plan.md` über vier Fassungen gefragt hat**: wie viele der 310
-   Zustandsgrößen sich über eine Runde ändern. Der letzte Stand nennt 0 von 310 und begründet
-   es mit einer 78 Byte großen `werte.hpp`; die steht heute bei 17.036 Byte. **Ob die Zahl
-   sich bewegt hat, hat seither niemand gemessen.** Kommt der Befund, gehört er zuerst gelesen.
-2. **0146 ist neu und in unberührtem Gebiet.** Erster Griff: `git log -- kern/src/aktion.cpp`
-   und die Bytezahl, nicht der Commit-Betreff. Meldet es ein Hindernis statt zu liefern, ist
-   das ein gutes Ergebnis — dann steht im Paket, welcher Begriff aus T32 fehlt.
-3. **0116 auf die Statuszeile prüfen, nicht auf den Inhalt.** Der Inhalt ist geliefert und
-   nachgemessen. Steht es nach dem nächsten Durchgang immer noch auf `offen`, ist nicht mehr
-   das Paket die Ursache, sondern die Rollendatei `architekt` — dieselbe fehlende Zeile, die
-   `technik.md` bei Zeile 3078 schon einmal einen ganzen Zweitlauf gekostet hat.
-4. **Urteile ziehen bleibt die Hauptarbeit** — soweit die Prüfer sie mir lassen (Punkt 5).
-   **Immer über die Zieldatei messen, nie über den Betreff.**
+**Drittens, zur Kenntnis, nicht zur Entscheidung:** Die vier blockierten Pakete bleiben
+blockiert, und zwar zu Recht. 0003 widerspricht T5 und braucht einen ADR des Betreibers;
+0157 hat kein Paket, an das es hängen könnte, weil kein Paket einen rechnenden Rumpf für
+`schritt_2` bis `schritt_6` baut; 0127 und 0176 liegen mit `agents/baulauf.py` und
+`.gitignore` außerhalb jeder Schreibgrenze der Baurollen.

@@ -1,0 +1,187 @@
+Lauf zu Paket 0155-werte-konstantenkopf-zwei-jahrgangskonstanten
+Datum: 2026-09-06. Bezugsstand: b2829c8 (einmal gelesen, ueberall zitiert).
+Beide Baubaeume frisch aus dem Leeren, ausserhalb des Arbeitsbaums.
+
+Die zwei geaenderten Dateien unter ops/ standen zu Beginn dieses Laufs schon
+geaendert im Arbeitsbaum (fremder Lauf) und gehoeren nicht zu diesem Paket.
+
+Belegstellen- und Bezeichnerriegel sind ctest Nr. 16 und 17; der
+Sperrebindungsriegel laeuft beim Konfigurieren und steht in dessen Block.
+
+=== git diff --numstat (ganzes Repo) ===
+$ git --no-pager diff --numstat
+26	134	notizen/kernbauer.md
+23	19	ops/auslastung.md
+14	14	ops/dashboard.html
+229	0	specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md
+1	1	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0137-riegelmeldung-nennt-ihr-profil.md
+23	2	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0141-pruefliste-fuenftes-land.md
+1	1	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0155-werte-konstantenkopf-zwei-jahrgangskonstanten.md
+8	3	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md
+18	10	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml
+144	6	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp
+7	2	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp
+242	10	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp
+39	1	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake
+Code: 0
+
+=== git diff -U1 -- kern/include/kern/werte.hpp ===
+$ git --no-pager diff -U1 -- kern/include/kern/werte.hpp
+diff --git a/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp b/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp
+index 9ade23b..4f47f52 100644
+--- a/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp
++++ b/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp
+@@ -72,4 +72,9 @@ namespace kern::werte {
+ 
+-/// Die Kalibrierwerte und die eine Jahrgangskonstante, die in den Formeln aus T47 und
+-/// T48 neben den Zustandsadressen vorkommen.
++/// Die Kalibrierwerte und die zwei Jahrgangskonstanten, die in den Formeln aus T47
++/// und T48 neben den Zustandsadressen vorkommen.
++///
++/// **Die zwei sind `leitzins_start` und `durchgriff`**, beide nach T23 Punkt 5 eine
++/// Groesse des Jahrgangs; warum sie deshalb nicht in `parameter.toml` stehen, sagt
++/// der Kommentar an den beiden Feldern und nicht dieser hier. Die uebrigen sechs
++/// Felder sind Parameterschluessel nach T27.
+ ///
+Code: 0
+
+=== nachweis.py -- Zaehlung an beiden Staenden ===
+$ python3 befunde/messung-0155/nachweis.py
+--- befunde/messung-0155/werte.hpp.vorher
+    Felder in `Konstanten`:      8
+    davon Jahrgang (T23 Pkt. 5): 2 -> ['leitzins_start', 'durchgriff']
+    davon Schluessel (T27):      6 -> ['stufenweite', 'ausstiegsabschlag', 'aufschlag', 'lobbykosten', 'gegenlobby_satz', 'regulierung_last']
+    Stellen mit dem Wort:
+      15: keine Zahlbehauptung: //! eine Zustandsadresse noch ein Parameterschluessel noch eine Jahrgangskonstante noch
+      73: nennt eine (1), gezaehlt 2 -- ABWEICHUNG: /// Die Kalibrierwerte und die eine Jahrgangskonstante, die in den Formeln aus T47 und
+      134: Ordnungszahl zweite (2) <= 2: /// **Die zweite Jahrgangskonstante dieses Traegers**, aus demselben Grund wie
+    Abweichungen: 1
+--- kern/include/kern/werte.hpp
+    Felder in `Konstanten`:      8
+    davon Jahrgang (T23 Pkt. 5): 2 -> ['leitzins_start', 'durchgriff']
+    davon Schluessel (T27):      6 -> ['stufenweite', 'ausstiegsabschlag', 'aufschlag', 'lobbykosten', 'gegenlobby_satz', 'regulierung_last']
+    Stellen mit dem Wort:
+      15: keine Zahlbehauptung: //! eine Zustandsadresse noch ein Parameterschluessel noch eine Jahrgangskonstante noch
+      73: nennt zwei (2), gezaehlt 2: /// Die Kalibrierwerte und die zwei Jahrgangskonstanten, die in den Formeln aus T47
+      139: Ordnungszahl zweite (2) <= 2: /// **Die zweite Jahrgangskonstante dieses Traegers**, aus demselben Grund wie
+    Abweichungen: 0
+
+  befunde/messung-0155/werte.hpp.vorher:73 nennt 1, gezaehlt sind 2
+
+vorher 1 (erwartet 1), nachher 0 (erwartet 0)
+Abweichungen: 0
+Code: 0
+
+=== Konfigurieren, Profil FABRIK_SANITIZER=OFF -- die Riegel ===
+-- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+-- Nullabhaengigkeitsriegel (T2): 1 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 20 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 340 Schaltereintraege.
+Code: 0
+
+=== cmake --build, Profil OFF (Schluss) ===
+$ cmake --build /tmp/claude-1000/p0155b-off -j4
+[100%] Linking CXX executable zustandsausgabe_probe
+[100%] Built target zustandsausgabe_probe
+Code: 0
+
+=== ctest, Profil FABRIK_SANITIZER=OFF ===
+$ ctest --output-on-failure
+Test project /tmp/claude-1000/p0155b-off
+      Start  1: aktion_probe
+ 1/18 Test  #1: aktion_probe .....................   Passed    0.00 sec
+      Start  2: festkomma_probe
+ 2/18 Test  #2: festkomma_probe ..................   Passed    0.00 sec
+      Start  3: meldung_probe
+ 3/18 Test  #3: meldung_probe ....................   Passed    0.00 sec
+      Start  4: pruefsumme_probe
+ 4/18 Test  #4: pruefsumme_probe .................   Passed    0.00 sec
+      Start  5: schranken_probe
+ 5/18 Test  #5: schranken_probe ..................   Passed    0.00 sec
+      Start  6: schreiber_probe
+ 6/18 Test  #6: schreiber_probe ..................   Passed    0.00 sec
+      Start  7: schritt_probe
+ 7/18 Test  #7: schritt_probe ....................   Passed    0.00 sec
+      Start  8: verlauf_probe
+ 8/18 Test  #8: verlauf_probe ....................   Passed    0.00 sec
+      Start  9: werte_probe
+ 9/18 Test  #9: werte_probe ......................   Passed    0.00 sec
+      Start 10: zufall_probe
+10/18 Test #10: zufall_probe .....................   Passed    0.00 sec
+      Start 11: zustand_probe
+11/18 Test #11: zustand_probe ....................   Passed    0.01 sec
+      Start 12: zustandsausgabe_probe
+12/18 Test #12: zustandsausgabe_probe ............   Passed    0.05 sec
+      Start 13: vorrat_kernanker_probe
+13/18 Test #13: vorrat_kernanker_probe ...........   Passed    0.00 sec
+      Start 14: vorrat_probe
+14/18 Test #14: vorrat_probe .....................   Passed    0.00 sec
+      Start 15: vorrat_verfahren_probe
+15/18 Test #15: vorrat_verfahren_probe ...........   Passed    0.00 sec
+      Start 16: belegstellen_riegel
+16/18 Test #16: belegstellen_riegel ..............   Passed    2.56 sec
+      Start 17: bezeichner_riegel
+17/18 Test #17: bezeichner_riegel ................   Passed    0.13 sec
+      Start 18: schlussriegel_nachbau
+18/18 Test #18: schlussriegel_nachbau ............   Passed    4.25 sec
+
+100% tests passed, 0 tests failed out of 18
+
+Total Test time (real) =   7.05 sec
+Code: 0
+
+=== Konfigurieren, Profil FABRIK_SANITIZER=ON -- die Riegel ===
+-- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+-- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+Code: 0
+
+=== cmake --build, Profil ON (Schluss) ===
+$ cmake --build /tmp/claude-1000/p0155b-on -j4
+[100%] Linking CXX executable zustandsausgabe_probe
+[100%] Built target zustandsausgabe_probe
+Code: 0
+
+=== ctest, Profil FABRIK_SANITIZER=ON ===
+$ ctest --output-on-failure
+Test project /tmp/claude-1000/p0155b-on
+      Start  1: aktion_probe
+ 1/18 Test  #1: aktion_probe .....................   Passed    0.01 sec
+      Start  2: festkomma_probe
+ 2/18 Test  #2: festkomma_probe ..................   Passed    0.02 sec
+      Start  3: meldung_probe
+ 3/18 Test  #3: meldung_probe ....................   Passed    0.01 sec
+      Start  4: pruefsumme_probe
+ 4/18 Test  #4: pruefsumme_probe .................   Passed    0.01 sec
+      Start  5: schranken_probe
+ 5/18 Test  #5: schranken_probe ..................   Passed    0.01 sec
+      Start  6: schreiber_probe
+ 6/18 Test  #6: schreiber_probe ..................   Passed    0.02 sec
+      Start  7: schritt_probe
+ 7/18 Test  #7: schritt_probe ....................   Passed    0.02 sec
+      Start  8: verlauf_probe
+ 8/18 Test  #8: verlauf_probe ....................   Passed    0.03 sec
+      Start  9: werte_probe
+ 9/18 Test  #9: werte_probe ......................   Passed    0.02 sec
+      Start 10: zufall_probe
+10/18 Test #10: zufall_probe .....................   Passed    0.01 sec
+      Start 11: zustand_probe
+11/18 Test #11: zustand_probe ....................   Passed    0.06 sec
+      Start 12: zustandsausgabe_probe
+12/18 Test #12: zustandsausgabe_probe ............   Passed    0.24 sec
+      Start 13: vorrat_kernanker_probe
+13/18 Test #13: vorrat_kernanker_probe ...........   Passed    0.01 sec
+      Start 14: vorrat_probe
+14/18 Test #14: vorrat_probe .....................   Passed    0.01 sec
+      Start 15: vorrat_verfahren_probe
+15/18 Test #15: vorrat_verfahren_probe ...........   Passed    0.02 sec
+      Start 16: belegstellen_riegel
+16/18 Test #16: belegstellen_riegel ..............   Passed   10.82 sec
+      Start 17: bezeichner_riegel
+17/18 Test #17: bezeichner_riegel ................   Passed    0.92 sec
+      Start 18: schlussriegel_nachbau
+18/18 Test #18: schlussriegel_nachbau ............   Passed    4.19 sec
+
+100% tests passed, 0 tests failed out of 18
+
+Total Test time (real) =  16.45 sec
+Code: 0

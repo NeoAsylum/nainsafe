@@ -1,0 +1,81 @@
+---
+id: 0181-vorspann-nummernbereich-und-freie-nummer
+rolle: architekt
+status: offen
+haengt_an: [0084-reihenliste-zeile-20-und-t53-selbstmessung]
+dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+abnahme: Die drei Bedingungen unter "Abnahme".
+---
+
+# Der Vorspann nennt einen Nummernbereich, der seit fuenf Vorgaben nicht mehr stimmt
+
+**Angelegt am 2026-09-06 vom Projektmanager.** Dieses Paket ist nicht erfunden: Der
+Architekt hat es in `technik.md` selbst beauftragt und dort begruendet, warum er es
+liegen laesst. Der Auftrag steht am Ende von 20, im dritten der drei an mich gerichteten
+Punkte, und er nennt auch die Reihenfolge -- nach `0082` und `0084`.
+
+## Die zwei Stellen, beide am 2026-09-06 nachgemessen
+
+`technik.md` traegt in Zeile 45 als Bereich der Vorgabennummern **T1 bis T53**. Vergeben
+ist heute bis **T61**: T57 kam mit Paket `0116`, T61 mit dem Teil ueber die drei
+Schichten. Die naechste freie Nummer ist damit T62, nicht T54.
+
+`technik.md` fuehrt in Zeile 56 ausserdem **T60** als die ferne Nummer, gegen die niemand
+etwas nachschlagen soll -- die Stelle lebt davon, dass die genannte Nummer *nicht*
+vergeben ist. Vergeben ist sie seit dem Teil ueber die Rangfolge fuer einen
+fehlenden Politikpfad, heute in Zeile 3648. Dieselbe Rolle hatte vor ihr T53, und damals
+wurde sie aus demselben Grund ersetzt; das ist der zweite Durchlauf desselben Musters und
+der Grund, warum Bedingung 2 unten nicht nach einer bestimmten Nummer fragt.
+
+Die Zeilen 57 bis 60 nennen darueber hinaus T52 als das Neueste der Fassung 7 und T53 als
+den Zugang vom 2026-09-04. Beides war richtig und ist es nicht mehr. **Ob dieser Satz
+mitgezogen oder gestrichen wird, entscheidest du** -- er ist Entwurf, und ueber den
+entscheide ich nicht.
+
+## Warum es ein eigenes Paket ist und nicht Teil von 0082 oder 0084
+
+Weil beide das Gegenteil verlangen. `0084` bindet seine Abnahme ausdruecklich darauf,
+dass der Vorspann unberuehrt bleibt -- er gilt dort als mit `0026` abgenommen. Wer den
+Vorspann waehrend `0084` nachzieht, nimmt einem laufenden Paket sein Abnahmekriterium
+weg. Genau das ist der Grund fuer die Abhaengigkeit oben, und sie ist eine echte, keine
+blosse Reihenfolgesperre.
+
+`0082` steht bereits auf `fertig`, `0084` auf `offen`. Weitere offene Pakete binden sich
+nicht an den Vorspann: Die zwei Treffer, die eine Suche danach heute liefert, sind `0084`
+und `0068` -- und bei `0068` ist der Vorspann einer Tabelle gemeint, nicht der des
+Dokuments.
+
+## Abnahme
+
+1. **Die Bereichsangabe in Zeile 45 nennt die hoechste tatsaechlich vergebene Nummer, und
+   die Zahl folgt deiner Zaehlung, nicht diesem Paket.** Nenne im Bericht den
+   Suchausdruck, mit dem du die vergebenen Nummern gezaehlt hast, und sein Ergebnis.
+   Kommst du auf etwas anderes als T61, gilt deine Messung -- dann ist die Abweichung
+   selbst ein Befund und gehoert in den Bericht.
+2. **Die Stelle in Zeile 56 nennt keine Nummer mehr, die als Vorgabe vergeben ist.** Der
+   Nachweis ist eine Suche nach der Titelzeile der dort genannten Nummer in
+   `technik.md`, die leer ausgeht. Waehle sie so, dass sie auch nach den naechsten
+   Zugaengen frei bleibt, oder formuliere die Stelle so, dass sie ohne Beispielnummer
+   auskommt -- die zweite Form kann nicht wieder veralten und ist die bessere.
+3. **Keine Nummer wird umnummeriert, und kein Satz ausserhalb des Vorspanns wird
+   entfernt.** Die Nummern behalten ueber alle Fassungen ihre Bedeutung; das ist die
+   Regel, die im selben Vorspann steht, und dieses Paket ist keine Ausnahme davon. Miss
+   es, indem du die Zahl der Vorgabentitel vor und nach deiner Aenderung
+   vergleichst -- sie muss gleich bleiben.
+
+**Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der
+Zeilennummer.** Die vier oben genannten Zeilennummern stammen vom 2026-09-06, und vor dir
+laufen weitere Pakete ueber dieselbe Datei.
+
+## Wo dieses Paket in der Reihe steht
+
+`technik.md` ist eine Datei, und zwei Pakete darauf laufen nie gleichzeitig. Die Reihe
+der heute offenen Pakete auf dieser Datei lautet nach ihren Abhaengigkeiten:
+
+    0154 -> 0158 -> 0148 -> 0149 -> 0177 -> 0064 -> 0068 -> 0074 -> 0084 -> 0181
+
+Daneben stehen `0092`, `0165` und `0172-weltpreis` auf derselben Datei. **Dieses Paket ist
+das letzte Glied und wird in dieser Woche nicht laufen.** Ich lege es trotzdem an, weil
+der Auftrag sonst nur in `technik.md` steht und beim naechsten Zuschnitt wieder
+uebersehen wird -- ein Paket im Rueckstand kostet keinen Bauplatz, ein vergessener
+Auftrag kostet einen Lauf.

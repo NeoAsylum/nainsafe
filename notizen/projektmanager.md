@@ -2,8 +2,7 @@
 
 **Höchstens 12.000 Zeichen** (`wc -c`). Belege in die Ergebnisdatei, hierher die Lehre;
 **jede neue kostet eine alte.** Ausgeschiedenes in
-`notizen/archiv/projektmanager-2026-09-06.md` — **dort nachsehen, bevor ich eine Lehre für
-neu halte.**
+`notizen/archiv/projektmanager-2026-09-06.md` — **dort nachsehen, eh ich etwas für neu halte.**
 
 ---
 
@@ -11,34 +10,47 @@ neu halte.**
 
 1. **Statusnachzug.** Befunde auswerten, `fertig`/`offen` setzen, entblocken.
 2. **Vorschläge sichten.** Erst dann neue Pakete.
-3. **`baulauf.py <venture> --trocken`** vorher und nach jeder Änderung. Ohne die
-   Venture-Kennung druckt er nur die Liste.
+3. **`baulauf.py <venture> --trocken`** vorher und nach jeder Änderung — ohne
+   Venture-Kennung nur die Liste.
 
-## Ziehen schlägt Schneiden — dreimal am 2026-09-06 gemessen
+## Ziehen schlägt Schneiden — viermal am 2026-09-06 gemessen
 
-Baupakete vor dem Nachzug → danach: **1→5**, **1→7**, **1→6** (und mit den Vorschlägen
-auf 8, also voll). Jedes Mal lagen vier bis sechs Pakete auf `gebaut` mit fertigem
-`geprueft`-Befund, und jedes hielt eine Kette. **Der Nachzug steht zuerst, weil er als
-einziger Plätze schafft** — Schneiden verteilt nur, was schon frei ist.
+Baupakete vor dem Nachzug → danach: **1→5**, **1→7**, **1→6**. Jedes Mal lagen vier bis
+sechs Pakete auf `gebaut` mit fertigem Befund, und jedes hielt eine Kette. **Der Nachzug
+steht zuerst, weil er als einziger Plätze schafft.**
+
+**Der vierte Lauf zog null, und das war der harmlose Fall:** acht `gebaut`, **kein einziger
+Befund**, weil alle acht in dem Moment im Review saßen. Leerer Nachzug heißt nicht säumiger
+Prüfer — erst nachsehen, ob die Prüfung gerade läuft.
+
+## Bau, Review und Prüfung haben je ein eigenes Budget
+
+`baulauf.py:362/375/381` schneidet **drei** Listen unabhängig auf `gleichzeitig` zu. „2 von 8
+Bauplätzen" ist **nicht** die Auslastung der Fabrik: am 2026-09-06 liefen 2 Bau + 8 Review +
+1 Prüfung = elf Agenten, **Review mit 8 von 8 am Anschlag**. Bevor ich Bauplätze als leer
+melde, zähle ich die andere Stufe — mehr offene Pakete liefern sonst in eine volle Stufe.
 
 ## Der Rückstand ist Ketten, nicht Posten
 
-Der Durchsatz ist durch die Zahl der **verschiedenen Dateien** begrenzt, nicht durch
-`GLEICHZEITIG` (heute 8). Zwanzig Pakete auf fünf Dateien sind fünf Pakete.
+Der Durchsatz ist durch die Zahl **verschiedener Dateien** begrenzt, nicht durch
+`GLEICHZEITIG` (8). Zwanzig Pakete auf fünf Dateien sind fünf.
 
-**Je Paket ohne Platz fragen: Abhängigkeit oder nur Dateischnitt?** Nur die zweite Sorte
-gewinnt durch Zerlegen. **`startbereit()` überspringt ein Paket mit unerfüllter Abhängigkeit,
+**Je Paket ohne Platz: Abhängigkeit oder nur Dateischnitt?** Nur die zweite Sorte gewinnt
+durch Zerlegen. **`startbereit()` überspringt ein Paket mit unerfüllter Abhängigkeit,
 BEVOR es dessen Dateien belegt** — ein blockiertes Paket hält seine Datei nicht.
 
-**Ist die Kette echt? Miss sie:** `dateien` des Blockierten gegen die des Vorgängers; disjunkt
-heißt, die Abhängigkeit ist eine Behauptung. **Meine eigenen Vermerke sind die
-unzuverlässigsten** — kein Prüfer liest sie.
+**Ist die Kette echt? Miss sie:** `dateien` des Blockierten gegen die des Vorgängers;
+disjunkt heißt, die Abhängigkeit ist eine Behauptung — **gleich heißt, Streichen brächte
+null**, die Dateisperre hielte die Bahn ohnehin. Am 2026-09-06 warteten fünf Bahnen auf je
+ein Paket im Review, **vier davon dateiredundant**: kein Schnitt öffnete einen Platz, und
+genau das gehört so in den Bericht. **Meine eigenen Vermerke sind die unzuverlässigsten** —
+kein Prüfer liest sie.
 
 ## Ketten anlegen
 
-Nach jedem `fertig` prüfen, **wer dadurch bereit wird**, und die Gewordenen sofort zur Kette
-schließen; im Zweifel **das Paket zuerst, das die längste Kette freigibt.** Ein Prüfbefund
-bringt oft seinen eigenen Nachfolger mit.
+Nach jedem `fertig` prüfen, **wer dadurch bereit wird**, und sofort zur Kette schließen; im
+Zweifel **das Paket zuerst, das die längste Kette freigibt.** Ein Prüfbefund bringt oft
+seinen Nachfolger mit.
 
 **Halten N Pakete eine Datei, hängt jedes an seinem Vorgänger — die Kette steht im
 Frontmatter oder gar nicht.** Reihenfolgesperren als solche kennzeichnen; **beide Sorten
@@ -75,10 +87,9 @@ Vorschlag aufzählt.** Nennt mein Kriterium eine fremde Datei — oder braucht s
 der Mitte der Liste** (T48 Nr. 18–20 bauen aufeinander auf, 21–22 nicht → 0151, 0152).
 
 Zwei Pakete auf einer Datei laufen nacheinander — **das kostet nichts, wenn der Kopf ohnehin
-nichts liefert.** Sequenziell und ankommend schlägt parallel und stumm. **Dasselbe entscheidet
-die Reihenfolge:** eine geschlossene Korrektur in einem Lauf vor dem Kopf einer Kette, die
-diese Woche nicht durchläuft. **Nehme ich meinen eigenen Vorrang zurück, steht die Begründung
-im Paket.**
+nichts liefert.** Sequenziell und ankommend schlägt parallel und stumm; **dasselbe entscheidet
+die Reihenfolge:** eine geschlossene Korrektur vor dem Kopf einer Kette, die diese Woche
+nicht durchläuft. **Nehme ich meinen Vorrang zurück, steht die Begründung im Paket.**
 
 ## Zwei Rückläufe sind der Punkt, an dem ich prüfe
 
@@ -92,18 +103,16 @@ schreibe ich sie NICHT ab**; sonst wäre sie wieder nicht seine Messung.
 **Der stumme Lauf.** `baulauf.py:350` zählt Rückläufe; ein Lauf, der nichts liefert, erzeugt
 keinen — das Paket wird unbegrenzt zugewiesen. **Griff bei langer Standzeit:** `git log --
 <zieldatei>`, dann die **Bytezahl** gegen den letzten Commit, der sie anfasste — die
-Betreffzeile lügt (`lauf.py:620` schneidet `schreibpfade` am ersten Stern ab). **Dann nicht
-`blockiert`, wenn Pakete dahinter hängen:** verkleinern, Meldeauftrag hinein. **`gebaut`
-setze ich nie.**
+Betreffzeile lügt. **Dann nicht `blockiert`, wenn Pakete dahinter hängen:** verkleinern,
+Meldeauftrag hinein. **`gebaut` setze ich nie.**
 
 **Die Prüfrolle ohne Ausgang, 2026-09-06 gemessen.** `REVIEW` bildet nur Baurollen auf einen
 Prüfer ab (`:378`), also entsteht zu `bruchtester`, `selbstspieler`, `rueckvergleicher` **nie
 ein `pruefung-*`-Befund** — und `startbereit` zieht sie weiter aus `offen` (`:381`). Ein
-solches Paket liefert und bleibt stehen: 0145 lief **zweimal**, bezahlt sind zwei für eins.
+solches Paket liefert und bleibt stehen: 0145 lief **zweimal**.
 **Ich nehme sie gegen den abgedruckten Lauf ab** — es gibt keine andere Stelle dafür — und
 begründe es im Paket, weil es die eine Ausnahme von „nur mit Prüfbefund" ist. **Der Griff:**
-Gliederung des Befunds gegen die Abnahmebedingungen halten; ein Abschnitt je Bedingung ist
-der Regelfall und in einem Aufruf geprüft.
+Befundgliederung gegen die Abnahmebedingungen halten — je Bedingung ein Teil.
 
 ## Ich bin selbst Autor im Korpus des Belegstellenriegels
 
@@ -119,17 +128,15 @@ Schlüsselwörter nie steigern („im Abschnitt X" → „unter X").
   **Nummer gegen das Verzeichnis** (`ls aufgaben/ | tail`).
 - **Doppelte Nummer ist kein Umzugsgrund — doppelte `id` ist einer.** `_id` kommt aus dem
   Frontmatter, erst ersatzweise aus dem Dateinamen (`baulauf.py:239`): zwei `0172-*` mit
-  verschiedener `id` unterscheidet der Baulauf sauber → **nur ein Vermerk in beiden.** Ist
-  die **`id`** doppelt, ziehe ich um — **nicht per `git mv`** (Vorschlag unversioniert,
-  blankes `mv` verboten), sondern per **zwei `Edit`**: Text in die freie Nummer; an der
-  alten ein Verweis **ohne Frontmatter**, damit sie in keiner `^status:`-Zählung mitläuft.
+  verschiedener `id` trennt der Baulauf sauber → **nur ein Vermerk in beiden.** Bei doppelter
+  **`id`** umziehen per **zwei `Edit`** (nicht `git mv`, nicht `mv`): Text in die freie
+  Nummer, an der alten ein Verweis **ohne Frontmatter** — zählt in keiner `^status:`-Zählung mit.
 - **Meldet ein Vorschlag seine eigene Kollision, ist er gut — die Auflösung bleibt meine**,
-  und die Begründung gehört ins Paket.
+  Begründung ins Paket.
 - **Nennt ein Vorschlag die falsche Datei, ist meist die Ursache falsch.**
-- **Waisenrollen:** `builder`, `geschaeftsfuehrer`, `projektmanager` (0176 am 2026-09-06).
-  Liegt die Datei außerhalb jeder Schreibgrenze (`agents/*.py`, `.gitignore` der Wurzel):
-  **`blockiert` plus Meldung** — und ausdrücklich **kein `abgelehnt`**, wenn die Sache
-  stimmt und nur der Weg fehlt.
+- **Waisenrollen:** `builder`, `geschaeftsfuehrer`, `projektmanager`. Liegt die Datei außerhalb
+  jeder Schreibgrenze (`agents/*.py`, `.gitignore`): **`blockiert` plus Meldung**, ausdrücklich
+  **kein `abgelehnt`**, wenn die Sache stimmt und nur der Weg fehlt.
 - **„Zu früh" ist kein Ablehnungsgrund, sondern `blockiert`** — und wenn es das Paket, an
   das ich hängen müsste, noch nicht gibt, gehört genau das in die Meldung (0157).
 - **Nebenbefunde bei `geprueft` sind die bessere Paketquelle als `zurueck`.** Sagt der
@@ -137,17 +144,17 @@ Schlüsselwörter nie steigern („im Abschnitt X" → „unter X").
 
 ## Werkzeuge — was mich Aufrufe gekostet hat
 
-- **Nie `cd`en.** Ein `cd` nimmt das **Arbeitsverzeichnis der Sitzung** mit, und danach wird
-  **jeder `Edit` abgelehnt** — `Edit(ventures/**)` ist *relativ*. Die Meldung nennt nur
-  „don't ask mode". **Heilung: `cd /home/adria/fabrik && pwd`.** Sonst `git -C …`.
+- **Nie `cd`en.** Es nimmt das **Sitzungs-Arbeitsverzeichnis** mit, danach wird **jeder
+  `Edit` abgelehnt** (`Edit(ventures/**)` ist *relativ*); die Meldung nennt nur „don't ask
+  mode". **Heilung: `cd /home/adria/fabrik && pwd`.** Sonst `git -C …`.
 - **`Edit` verlangt vorher `Read`** — `cat` zählt nicht; `limit: 8` aufs Frontmatter genügt.
-  Anker: die `rolle:`-Zeile mitnehmen, `status:` allein ist nicht eindeutig.
+  Anker: `rolle:`-Zeile mitnehmen, `status:` allein ist nicht eindeutig.
 - Abgelehnt: `sed`, `cp`, `rm`, Schleifen, `git commit`, `python3 -c`, Heredocs, **Pipes und
   `&&`-Ketten**. Verlässlich: **je ein** `grep`, `head`, `ls`, `wc`, `git -C …`, `baulauf.py
   --trocken`. **Ich committe nicht selbst.**
-- **Dieses Logbuch kann ich nicht archivieren:** kein `Write`, `mv` abgelehnt. „Jede neue
-  Lehre kostet eine alte" ist Mechanik — **im selben Lauf schneiden, in dem ich schreibe**,
-  und **nach jedem Schnitt `wc -c`**: Kürzen im Kopf trifft nie.
+- **`Write` habe ich** (2026-09-06 für ein neues Paket), `mv` nicht. „Jede neue Lehre kostet
+  eine alte" ist Mechanik: **im selben Lauf schneiden, in dem ich schreibe**, und **nach
+  jedem Schnitt `wc -c`** — Kürzen im Kopf trifft nie.
 - **`Grep` mit `abnahme:` im Muster sprengt den Puffer.** Nur `^status:`, `^dateien:`,
   `^haengt_an:`, `^rolle:`; kein Look-around. **Mit `glob` über eine Nummernliste
   `0{064,068,…}*.md` in einem Aufruf.** `cut -c1-450` dahinter hält lange `abnahme`-Zeilen klein.
@@ -166,24 +173,19 @@ Schlüsselwörter nie steigern („im Abschnitt X" → „unter X").
 ## Offene Fährten
 
 - **`ops/plan.md` ist seit 2026-09-04 abgearbeitet**, alle fünf Vorrangkennungen `fertig`,
-  **zehnmal gemeldet, unbeantwortet.** Der Betreiber hat am 2026-09-05 stattdessen vier
-  Pakete (0116–0119) selbst geschrieben; **das ist die deutlichere Vorrangaussage**, und
-  danach richte ich die Kettenspitze.
+  **elfmal gemeldet, unbeantwortet.** Der Betreiber schrieb am 2026-09-05 stattdessen vier
+  Pakete (0116–0119) selbst; **das ist die deutlichere Vorrangaussage.**
 - **Prüfer setzen mal selbst `fertig`, mal gar nicht**, obwohl `baulauf.py:32` es mir
-  vorbehält. Am 2026-09-06 dreimal die teurere Hälfte: vier, dann sechs, dann wieder sechs
-  Pakete lagen als `gebaut` mit fertigem Befund da. **Zum vierten Mal gemeldet.**
-- **`technik.md` zerlegen**, zum zwölften Mal fällig, Preis steigend: **dreizehn der 28
-  offenen Pakete auf dieser einen Datei** (2026-09-06, drei neue Vorschläge). Das letzte
-  Glied läuft in keiner denkbaren Woche. **Ich habe 0177 eingeschoben** — vor die
-  Belegstellenreihe, weil es die Rundennummer betrifft; mehr kann ich nicht ausrichten,
-  **der Schnitt liegt in der Datei, nicht in meinen Paketen.**
+  vorbehält. Am 2026-09-06 dreimal die teurere Hälfte. **Viermal gemeldet.**
+- **`technik.md` zerlegen**, zum dreizehnten Mal fällig: **dreizehn der 22 offenen Pakete
+  auf dieser einen Datei**, als Kette von zehn Gliedern. Das letzte läuft in keiner
+  denkbaren Woche. **Der Schnitt liegt in der Datei, nicht in meinen Paketen.**
 - **Kein Paket baut einen rechnenden Rumpf für `schritt_2`…`schritt_6`.** Darum steht 0157
   weiter auf `blockiert` — es gibt kein `haengt_an`, das ich schreiben könnte. **Das ist
-  die Sperre, an der die drei Maße hängen.** Der Bruchtester hat sie am 2026-09-06
-  unabhängig bestätigt: vier fertige Kernpakete, null messbare Wirkung im Weltlauf.
+  die Sperre, an der die drei Maße hängen**, vom Bruchtester am 2026-09-06 bestätigt.
 - **Fünf Mitglieder meldet `cmake -S` als „noch nicht gebaut"** (`daten`, `schnittstelle`,
-  `konsole`, `oberflaeche`, `werkzeuge/aufbereitung`). Nur `daten` hat nach T13 einen
-  Vorgänger; Aufmachen ist Entwurfsentscheidung. **Nie zwei in einem Lauf.**
+  `konsole`, `oberflaeche`, `werkzeuge/aufbereitung`). Aufmachen ist Entwurfssache, **nie
+  zwei in einem Lauf.**
 - **Zwei Reste `.kopf.tmp`/`.paket.tmp` mit `status: gebaut`** verfälschen jede
   `^status:`-Zählung. Ich lösche nicht (Hausregel 3).
-- **Die Stufe `high` reicht** — dritter Lauf am 2026-09-06, nirgends fehlte mir der Kopf.
+- **Die Stufe `high` reicht** — vierter Lauf am 2026-09-06, nirgends fehlte mir der Kopf.

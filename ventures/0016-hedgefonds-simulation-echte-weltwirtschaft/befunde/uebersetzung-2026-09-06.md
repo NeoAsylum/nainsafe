@@ -23,62 +23,37 @@ anderes behauptet, irrt.
 -- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
 -- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
 -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
--- Warnsatz-Schlussriegel: 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
 -- Configuring done (0.1s)
--- Generating done (0.1s)
+-- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
 ```
 
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  4%] Built target pruefstand_geprueft
-[  7%] Built target bezeichner_riegel
-[  9%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
-[ 12%] Built target mutationstreiber
-[ 14%] Building CXX object kern/CMakeFiles/kern.dir/src/werte.cpp.o
-[ 15%] Building CXX object kern/CMakeFiles/kern.dir/src/verlauf.cpp.o
-[ 17%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/verlauf.cpp.o
-[ 18%] Building CXX object kern/CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
-[ 25%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
+[ 12%] Built target pruefstand_geprueft
 [ 25%] Built target pruefstand
-[ 26%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
-[ 29%] Built target vorrat_verfahren_probe
-[ 32%] Built target vorrat_probe
-[ 35%] Built target vorrat_kernanker_probe
-[ 37%] Linking CXX static library libkern_geprueft.a
-[ 48%] Built target kern_geprueft
-[ 50%] Linking CXX executable pruefsumme_probe
-[ 51%] Linking CXX executable meldung_probe
-[ 53%] Linking CXX executable aktion_probe
-[ 54%] Linking CXX executable schranken_probe
-[ 56%] Linking CXX executable festkomma_probe
-[ 57%] Linking CXX executable schreiber_probe
-[ 59%] Building CXX object kern/CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
-[ 60%] Building CXX object kern/CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
-[ 64%] Linking CXX executable schritt_probe
-[ 64%] Linking CXX executable zustand_probe
-[ 65%] Building CXX object kern/CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
-[ 67%] Linking CXX executable zufall_probe
-[ 68%] Built target schranken_probe
-[ 70%] Built target schreiber_probe
-[ 71%] Built target zustand_probe
-[ 73%] Built target pruefsumme_probe
-[ 76%] Built target zufall_probe
-[ 76%] Built target festkomma_probe
-[ 78%] Built target schritt_probe
-[ 79%] Built target meldung_probe
-[ 81%] Built target aktion_probe
-[ 82%] Linking CXX static library libkern.a
-[ 93%] Built target kern
-[ 95%] Linking CXX executable verlauf_probe
-[ 95%] Built target verlauf_probe
-[ 96%] Linking CXX executable werte_probe
-[ 96%] Built target werte_probe
-[ 98%] Linking CXX executable zustandsausgabe_probe
-[ 98%] Built target zustandsausgabe_probe
-[100%] Linking CXX executable belegstellen_riegel
-[100%] Built target belegstellen_riegel
+[ 28%] Built target kern
+[ 31%] Built target bezeichner_riegel
+[ 46%] Built target kern_geprueft
+[ 50%] Built target belegstellen_riegel
+[ 53%] Built target mutationstreiber
+[ 56%] Built target festkomma_probe
+[ 59%] Built target aktion_probe
+[ 62%] Built target vorrat_kernanker_probe
+[ 65%] Built target vorrat_verfahren_probe
+[ 68%] Built target schreiber_probe
+[ 71%] Built target vorrat_probe
+[ 75%] Built target schranken_probe
+[ 81%] Built target schritt_probe
+[ 81%] Built target pruefsumme_probe
+[ 84%] Built target meldung_probe
+[ 87%] Built target werte_probe
+[ 90%] Built target verlauf_probe
+[ 93%] Built target zufall_probe
+[ 96%] Built target zustandsausgabe_probe
+[100%] Built target zustand_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -116,15 +91,15 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 15: vorrat_verfahren_probe
 15/18 Test #15: vorrat_verfahren_probe ...........   Passed    0.01 sec
       Start 16: belegstellen_riegel
-16/18 Test #16: belegstellen_riegel ..............   Passed    4.82 sec
+16/18 Test #16: belegstellen_riegel ..............   Passed    6.00 sec
       Start 17: bezeichner_riegel
-17/18 Test #17: bezeichner_riegel ................   Passed    0.34 sec
+17/18 Test #17: bezeichner_riegel ................   Passed    0.36 sec
       Start 18: schlussriegel_nachbau
-18/18 Test #18: schlussriegel_nachbau ............   Passed    0.46 sec
+18/18 Test #18: schlussriegel_nachbau ............   Passed    0.44 sec
 
 100% tests passed, 0 tests failed out of 18
 
-Total Test time (real) =   5.87 sec
+Total Test time (real) =   7.05 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -132,7 +107,7 @@ Total Test time (real) =   5.87 sec
 ```
 -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
 -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
--- Warnsatz-Schlussriegel: 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 242 Schaltereintraege.
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 242 Schaltereintraege.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
@@ -141,43 +116,20 @@ Total Test time (real) =   5.87 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  4%] Building CXX object CMakeFiles/kern_geprueft.dir/src/verlauf.cpp.o
-[  4%] Building CXX object CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
-[  8%] Building CXX object CMakeFiles/kern.dir/src/werte.cpp.o
-[  8%] Building CXX object CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
-[ 10%] Building CXX object CMakeFiles/kern.dir/src/verlauf.cpp.o
-[ 13%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
-[ 15%] Linking CXX static library libkern_geprueft.a
-[ 30%] Built target kern_geprueft
-[ 32%] Linking CXX executable pruefsumme_probe
-[ 36%] Linking CXX executable festkomma_probe
-[ 36%] Linking CXX executable schranken_probe
-[ 39%] Linking CXX executable schreiber_probe
-[ 41%] Linking CXX executable aktion_probe
-[ 43%] Linking CXX executable zustand_probe
-[ 45%] Building CXX object CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
-[ 47%] Building CXX object CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
-[ 50%] Linking CXX executable zufall_probe
-[ 52%] Linking CXX executable schritt_probe
-[ 54%] Linking CXX executable meldung_probe
-[ 56%] Building CXX object CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
-[ 60%] Built target schranken_probe
-[ 60%] Built target zufall_probe
-[ 63%] Built target meldung_probe
-[ 65%] Built target pruefsumme_probe
-[ 67%] Built target zustand_probe
-[ 69%] Built target aktion_probe
-[ 71%] Built target schreiber_probe
-[ 73%] Built target festkomma_probe
-[ 76%] Built target schritt_probe
-[ 78%] Linking CXX static library libkern.a
-[ 93%] Built target kern
-[ 95%] Linking CXX executable verlauf_probe
-[ 95%] Built target verlauf_probe
-[ 97%] Linking CXX executable werte_probe
-[ 97%] Built target werte_probe
-[100%] Linking CXX executable zustandsausgabe_probe
-[100%] Built target zustandsausgabe_probe
+[ 47%] Built target kern
+[ 47%] Built target kern_geprueft
+[ 52%] Built target schreiber_probe
+[ 56%] Built target zustand_probe
+[ 65%] Built target verlauf_probe
+[ 65%] Built target schritt_probe
+[ 69%] Built target meldung_probe
+[ 73%] Built target pruefsumme_probe
+[ 80%] Built target zustandsausgabe_probe
+[ 82%] Built target schranken_probe
+[ 86%] Built target festkomma_probe
+[ 91%] Built target zufall_probe
+[ 95%] Built target aktion_probe
+[100%] Built target werte_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -207,18 +159,18 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 11: zustand_probe
 11/12 Test #11: zustand_probe ....................   Passed    0.01 sec
       Start 12: zustandsausgabe_probe
-12/12 Test #12: zustandsausgabe_probe ............   Passed    0.08 sec
+12/12 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
 
 100% tests passed, 0 tests failed out of 12
 
-Total Test time (real) =   0.21 sec
+Total Test time (real) =   0.22 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
 -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
--- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 89 Schaltereintraege.
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 89 Schaltereintraege.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/pruefstand/bau
@@ -227,11 +179,11 @@ Total Test time (real) =   0.21 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand
+[ 25%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
+[ 83%] Built target vorrat_kernanker_probe
+[ 83%] Built target vorrat_verfahren_probe
 [100%] Built target vorrat_probe
-[100%] Built target vorrat_kernanker_probe
-[100%] Built target vorrat_verfahren_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -254,7 +206,7 @@ Total Test time (real) =   0.03 sec
 
 ```
 -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
--- Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
@@ -263,8 +215,6 @@ Total Test time (real) =   0.03 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Building CXX object CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
-[100%] Linking CXX executable belegstellen_riegel
 [100%] Built target belegstellen_riegel
 ```
 
@@ -273,18 +223,18 @@ Total Test time (real) =   0.03 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/1 Test #1: belegstellen_riegel ..............   Passed    5.00 sec
+1/1 Test #1: belegstellen_riegel ..............   Passed    6.05 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   5.01 sec
+Total Test time (real) =   6.05 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
 -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
--- Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
@@ -301,18 +251,18 @@ Total Test time (real) =   5.01 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
     Start 1: bezeichner_riegel
-1/1 Test #1: bezeichner_riegel ................   Passed    0.34 sec
+1/1 Test #1: bezeichner_riegel ................   Passed    0.36 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.34 sec
+Total Test time (real) =   0.36 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
 
 ```
 -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
--- Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
+-- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
 -- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/mutation/bau
@@ -350,9 +300,9 @@ No tests were found!!!
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/bau
     Start 1: schlussriegel_nachbau
-1/1 Test #1: schlussriegel_nachbau ............   Passed    0.45 sec
+1/1 Test #1: schlussriegel_nachbau ............   Passed    0.44 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.45 sec
+Total Test time (real) =   0.44 sec
 ```

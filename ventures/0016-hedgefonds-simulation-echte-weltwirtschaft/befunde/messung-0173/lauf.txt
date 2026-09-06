@@ -1,0 +1,368 @@
+# Nachweis 0173 -- Stand 95fb40955651f1d48a2518b100091602956c58f8
+
+Der Stand ist einmal festgehalten und wird ueberall zitiert; der Kopf des
+Zweiges bewegt sich waehrend des Laufs.
+
+## Bedingung 3 -- ausserhalb der beiden Kommentarbloecke aendert sich nichts
+
+$ git diff --numstat -- ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp
+  | 9	9	ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp
+  OK   genau 9 Zeilen hinzu, 9 fort -- der verschobene Block, sonst nichts
+
+$ git diff -U0 -- <quelle>   (nur die Aenderungszeilen)
+  | -/// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
+  | -/// in der die Pruefung ausloest.
+  | -///
+  | -/// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
+  | -/// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
+  | -/// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
+  | -/// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
+  | -/// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
+  | -/// Schritt, den die Meldung ihm abnehmen soll.
+  | +/// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
+  | +/// in der die Pruefung ausloest.
+  | +///
+  | +/// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
+  | +/// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
+  | +/// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
+  | +/// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
+  | +/// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
+  | +/// Schritt, den die Meldung ihm abnehmen soll.
+  OK   18 Aenderungszeilen (9 hinzu, 9 fort)
+  OK   jede Aenderungszeile ist eine Doxygen-Zeile -- keine Zeile Code
+
+## Die zwei Wegwerfbaeume
+
+VORHER  = /tmp/claude-1000/0173/vorher   (git archive 95fb40955651f1d48a2518b100091602956c58f8, unveraendert)
+NACHHER = VORHER kopiert, darueber meine Datei -- kein zweiter Export.
+
+$ diff -rq /tmp/claude-1000/0173/vorher /tmp/claude-1000/0173/nachher
+  Code 1
+  | Files /tmp/claude-1000/0173/vorher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp and /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp differ
+  OK   genau eine Datei unterscheidet die Baeume, und es ist `werte.cpp`
+
+## Bedingung 1 -- `pruefe_landessektor` traegt ihren Kommentar wieder
+
+Vor `0152` (Stand e0682a1), 9 Zeilen ueber `pruefe_landessektor`:
+  | /// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
+  | /// in der die Pruefung ausloest.
+  | ///
+  | /// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
+  | /// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
+  | /// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
+  | /// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
+  | /// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
+  | /// Schritt, den die Meldung ihm abnehmen soll.
+
+Am Stand 95fb40955651f1d48a2518b100091602956c58f8 (vor meinem Lauf): 0 Zeilen.
+
+Jetzt, 9 Zeilen:
+  | /// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
+  | /// in der die Pruefung ausloest.
+  | ///
+  | /// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
+  | /// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
+  | /// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
+  | /// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
+  | /// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
+  | /// Schritt, den die Meldung ihm abnehmen soll.
+
+  OK   vorher stand ueber `pruefe_landessektor` kein einziges `///` -- das ist der Befund
+  OK   jetzt steht dort Zeile fuer Zeile der Wortlaut von vor `0152`
+
+## Bedingung 2 -- `pruefe_handelssektor` traegt allein den Kommentar aus `0152`
+
+Vorher 20 Zeilen, jetzt 11:
+  | /// Der Sektor einer Groesse, die es nur fuer die beiden handelbaren gibt -- geprueft
+  | /// unter dem Namen der Groesse und ohne den Umweg ueber `sektor_index`, das bei einer
+  | /// Kennung ausserhalb der drei unter fremdem Namen abbraeche.
+  | ///
+  | /// Die Sektoren zaehlen ab eins wie ihre Adresse; handelbar sind die ersten
+  | /// `SEKTOREN_HANDELBAR`. Die Bedingung faengt beide Faelle auf einmal -- den Sektor
+  | /// ausserhalb der drei und den dritten, der weder Handelszeile noch Weltpreis hat.
+  | ///
+  | /// `grund` nennt, **was** dem dritten Sektor fehlt: eine Handelszeile bei Nr. 11, ein
+  | /// Weltpreis bei Nr. 19 bis 21. Die Bedingung ist dieselbe, die Meldung nicht -- wer
+  | /// den Befund liest, soll die Sache lesen und nicht die Bedingung.
+
+  OK   jetzt steht dort genau der Rest des Doppelblocks -- der von `0152` geschriebene Teil
+  OK   die beiden Bloecke ergeben zusammen den alten Doppelblock -- keine Zeile erfunden
+  OK   keine Aussage ueber ein Land im Kopf von `pruefe_handelssektor`
+  OK   keine Aussage ueber "die beiden Zollkeilgroessen"
+  OK   der Absatz zur Sektorzaehlung und das Argument `grund` stehen darin
+
+Zwischen den beiden Funktionsdeklarationen (Zeile 400 und 422) liegen 9 `///`-Zeilen -- und sie gehoeren zum zweiten Block, nicht zum ersten:
+  OK   genau der Kopf von `pruefe_landessektor` liegt dazwischen, kein Rest des ersten
+  OK   beide Funktionen tragen unmittelbar ueber sich eine `///`-Zeile
+  OK   auf das Rumpfende der ersten folgen eine Leerzeile und der Kopf der zweiten
+
+## Bedingung 3 -- beide Bauprofile gruen, im NACHHER-Baum
+
+### Arbeitsbereich (kern, kern_geprueft, Belegstellen-, Bezeichner- und Sperrebindungsriegel)
+$ cmake -S /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft -B /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
+  Code 0
+  | -- The CXX compiler identification is GNU 15.2.0
+  | -- Detecting CXX compiler ABI info
+  | -- Detecting CXX compiler ABI info - done
+  | -- Check for working CXX compiler: /usr/bin/c++ - skipped
+  | -- Detecting CXX compile features
+  | -- Detecting CXX compile features - done
+  | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+  | -- Mitglied 'daten' ist noch nicht gebaut -- uebersprungen.
+  | -- Mitglied 'schnittstelle' ist noch nicht gebaut -- uebersprungen.
+  | -- Mitglied 'konsole' ist noch nicht gebaut -- uebersprungen.
+  | -- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
+  | -- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
+  | -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+  | -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+  | -- Configuring done (0.3s)
+  | -- Generating done (0.0s)
+  | -- Build files have been written to: /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
+  OK   Arbeitsbereich (kern, kern_geprueft, Belegstellen-, Bezeichner- und Sperrebindungsriegel): `cmake -S` Code 0
+$ cmake --build /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau -j 4
+  Code 0
+  | [  3%] Building CXX object pruefstand/CMakeFiles/pruefstand_geprueft.dir/src/vorrat.cpp.o
+  | [  3%] Building CXX object kern/CMakeFiles/kern.dir/src/aktion.cpp.o
+  | [  4%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/aktion.cpp.o
+  | [  6%] Building CXX object pruefstand/CMakeFiles/pruefstand.dir/src/vorrat.cpp.o
+  | [  7%] Building CXX object kern/CMakeFiles/kern.dir/src/festkomma.cpp.o
+  | [  9%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/festkomma.cpp.o
+  | [ 10%] Building CXX object pruefstand/CMakeFiles/pruefstand.dir/src/vorrat_verfahren.cpp.o
+  | [ 12%] Building CXX object pruefstand/CMakeFiles/pruefstand_geprueft.dir/src/vorrat_verfahren.cpp.o
+  | [ 14%] Building CXX object kern/CMakeFiles/kern.dir/src/pruefsumme.cpp.o
+  | [ 15%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/pruefsumme.cpp.o
+  | [ 17%] Linking CXX static library libpruefstand.a
+  | [ 18%] Building CXX object kern/CMakeFiles/kern.dir/src/schreiber.cpp.o
+  | [ 20%] Linking CXX static library libpruefstand_geprueft.a
+  | [ 21%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
+  | [ 21%] Built target pruefstand
+  | [ 23%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+  | [ 23%] Built target pruefstand_geprueft
+  | [ 25%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
+  | [ 26%] Building CXX object kern/CMakeFiles/kern.dir/src/schritt.cpp.o
+  | [ 28%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/verlauf.cpp.o
+  | [ 29%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
+  | [ 31%] Building CXX object kern/CMakeFiles/kern.dir/src/verlauf.cpp.o
+  | [ 32%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zufall.cpp.o
+  | [ 34%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
+  | [ 35%] Building CXX object kern/CMakeFiles/kern.dir/src/werte.cpp.o
+  | [ 37%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
+  | [ 39%] Building CXX object kern/CMakeFiles/kern.dir/src/zufall.cpp.o
+  | [ 40%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
+  | [ 42%] Building CXX object kern/CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
+  | [ 43%] Building CXX object werkzeuge/mutation/CMakeFiles/mutationstreiber.dir/mutationslauf.cpp.o
+  | [ 45%] Linking CXX static library libkern_geprueft.a
+  | [ 45%] Built target kern_geprueft
+  | [ 46%] Building CXX object werkzeuge/bezeichner/CMakeFiles/bezeichner_riegel.dir/bezeichner_riegel.cpp.o
+  | [ 48%] Linking CXX static library libkern.a
+  | [ 48%] Built target kern
+  | [ 50%] Building CXX object kern/CMakeFiles/aktion_probe.dir/test/aktion_probe.cpp.o
+  | [ 51%] Linking CXX executable aktion_probe
+  | [ 51%] Built target aktion_probe
+  | [ 53%] Building CXX object kern/CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+  | [ 54%] Linking CXX executable belegstellen_riegel
+  | [ 56%] Linking CXX executable festkomma_probe
+  | [ 56%] Built target festkomma_probe
+  | [ 56%] Built target belegstellen_riegel
+  | [ 57%] Building CXX object kern/CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+  | [ 59%] Building CXX object kern/CMakeFiles/pruefsumme_probe.dir/test/pruefsumme_probe.cpp.o
+  | [ 60%] Linking CXX executable meldung_probe
+  | [ 62%] Linking CXX executable pruefsumme_probe
+  | [ 62%] Built target meldung_probe
+  | [ 64%] Linking CXX executable mutationstreiber
+  | [ 65%] Building CXX object kern/CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+  | [ 65%] Built target pruefsumme_probe
+  | [ 65%] Built target mutationstreiber
+  | [ 67%] Building CXX object kern/CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
+  | [ 68%] Building CXX object kern/CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+  | [ 70%] Linking CXX executable schranken_probe
+  | [ 70%] Built target schranken_probe
+  | [ 71%] Building CXX object kern/CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
+  | [ 73%] Linking CXX executable schritt_probe
+  | [ 75%] Linking CXX executable schreiber_probe
+  | [ 76%] Linking CXX executable bezeichner_riegel
+  | [ 76%] Built target schritt_probe
+  | [ 76%] Built target schreiber_probe
+  | [ 78%] Building CXX object kern/CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+  | [ 79%] Building CXX object kern/CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
+  | [ 79%] Built target bezeichner_riegel
+  | [ 81%] Building CXX object kern/CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+  | [ 82%] Linking CXX executable verlauf_probe
+  | [ 82%] Built target verlauf_probe
+  | [ 84%] Linking CXX executable zufall_probe
+  | [ 85%] Building CXX object kern/CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
+  | [ 85%] Built target zufall_probe
+  | [ 87%] Building CXX object pruefstand/CMakeFiles/vorrat_kernanker_probe.dir/test/vorrat_kernanker_probe.cpp.o
+  | [ 89%] Linking CXX executable zustand_probe
+  | [ 89%] Built target zustand_probe
+  | [ 90%] Linking CXX executable werte_probe
+  | [ 92%] Building CXX object pruefstand/CMakeFiles/vorrat_probe.dir/test/vorrat_probe.cpp.o
+  | [ 93%] Linking CXX executable vorrat_kernanker_probe
+  | [ 93%] Built target werte_probe
+  | [ 95%] Building CXX object pruefstand/CMakeFiles/vorrat_verfahren_probe.dir/test/vorrat_verfahren_probe.cpp.o
+  | [ 95%] Built target vorrat_kernanker_probe
+  | [ 96%] Linking CXX executable vorrat_probe
+  | [ 96%] Built target vorrat_probe
+  | [ 98%] Linking CXX executable zustandsausgabe_probe
+  | [ 98%] Built target zustandsausgabe_probe
+  | [100%] Linking CXX executable vorrat_verfahren_probe
+  | [100%] Built target vorrat_verfahren_probe
+  OK   Arbeitsbereich (kern, kern_geprueft, Belegstellen-, Bezeichner- und Sperrebindungsriegel): `cmake --build` Code 0
+$ ctest --test-dir /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau --output-on-failure
+  Code 0
+  | Test project /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
+  |       Start  1: aktion_probe
+  |  1/18 Test  #1: aktion_probe .....................   Passed    0.01 sec
+  |       Start  2: festkomma_probe
+  |  2/18 Test  #2: festkomma_probe ..................   Passed    0.01 sec
+  |       Start  3: meldung_probe
+  |  3/18 Test  #3: meldung_probe ....................   Passed    0.01 sec
+  |       Start  4: pruefsumme_probe
+  |  4/18 Test  #4: pruefsumme_probe .................   Passed    0.01 sec
+  |       Start  5: schranken_probe
+  |  5/18 Test  #5: schranken_probe ..................   Passed    0.01 sec
+  |       Start  6: schreiber_probe
+  |  6/18 Test  #6: schreiber_probe ..................   Passed    0.01 sec
+  |       Start  7: schritt_probe
+  |  7/18 Test  #7: schritt_probe ....................   Passed    0.02 sec
+  |       Start  8: verlauf_probe
+  |  8/18 Test  #8: verlauf_probe ....................   Passed    0.02 sec
+  |       Start  9: werte_probe
+  |  9/18 Test  #9: werte_probe ......................   Passed    0.01 sec
+  |       Start 10: zufall_probe
+  | 10/18 Test #10: zufall_probe .....................   Passed    0.01 sec
+  |       Start 11: zustand_probe
+  | 11/18 Test #11: zustand_probe ....................   Passed    0.05 sec
+  |       Start 12: zustandsausgabe_probe
+  | 12/18 Test #12: zustandsausgabe_probe ............   Passed    0.20 sec
+  |       Start 13: vorrat_kernanker_probe
+  | 13/18 Test #13: vorrat_kernanker_probe ...........   Passed    0.01 sec
+  |       Start 14: vorrat_probe
+  | 14/18 Test #14: vorrat_probe .....................   Passed    0.01 sec
+  |       Start 15: vorrat_verfahren_probe
+  | 15/18 Test #15: vorrat_verfahren_probe ...........   Passed    0.02 sec
+  |       Start 16: belegstellen_riegel
+  | 16/18 Test #16: belegstellen_riegel ..............   Passed    2.09 sec
+  |       Start 17: bezeichner_riegel
+  | 17/18 Test #17: bezeichner_riegel ................   Passed    0.91 sec
+  |       Start 18: schlussriegel_nachbau
+  | 18/18 Test #18: schlussriegel_nachbau ............   Passed    4.42 sec
+  | 
+  | 100% tests passed, 0 tests failed out of 18
+  | 
+  | Total Test time (real) =   7.86 sec
+  OK   Arbeitsbereich (kern, kern_geprueft, Belegstellen-, Bezeichner- und Sperrebindungsriegel): `ctest --test-dir` Code 0
+
+### Kern allein (kern, kern_geprueft)
+$ cmake -S /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern -B /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
+  Code 0
+  | -- The CXX compiler identification is GNU 15.2.0
+  | -- Detecting CXX compiler ABI info
+  | -- Detecting CXX compiler ABI info - done
+  | -- Check for working CXX compiler: /usr/bin/c++ - skipped
+  | -- Detecting CXX compile features
+  | -- Detecting CXX compile features - done
+  | -- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+  | -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+  | -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 242 Schaltereintraege.
+  | -- Configuring done (0.2s)
+  | -- Generating done (0.0s)
+  | -- Build files have been written to: /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
+  OK   Kern allein (kern, kern_geprueft): `cmake -S` Code 0
+$ cmake --build /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau -j 4
+  Code 0
+  | [  2%] Building CXX object CMakeFiles/kern_geprueft.dir/src/aktion.cpp.o
+  | [  4%] Building CXX object CMakeFiles/kern.dir/src/pruefsumme.cpp.o
+  | [  8%] Building CXX object CMakeFiles/kern.dir/src/festkomma.cpp.o
+  | [  8%] Building CXX object CMakeFiles/kern.dir/src/aktion.cpp.o
+  | [ 10%] Building CXX object CMakeFiles/kern.dir/src/schreiber.cpp.o
+  | [ 13%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
+  | [ 15%] Building CXX object CMakeFiles/kern_geprueft.dir/src/festkomma.cpp.o
+  | [ 17%] Building CXX object CMakeFiles/kern.dir/src/verlauf.cpp.o
+  | [ 19%] Building CXX object CMakeFiles/kern.dir/src/werte.cpp.o
+  | [ 21%] Building CXX object CMakeFiles/kern.dir/src/zufall.cpp.o
+  | [ 23%] Building CXX object CMakeFiles/kern_geprueft.dir/src/pruefsumme.cpp.o
+  | [ 26%] Building CXX object CMakeFiles/kern.dir/src/zustand.cpp.o
+  | [ 28%] Building CXX object CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
+  | [ 30%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schreiber.cpp.o
+  | [ 32%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+  | [ 34%] Building CXX object CMakeFiles/kern_geprueft.dir/src/verlauf.cpp.o
+  | [ 36%] Building CXX object CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
+  | [ 39%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zufall.cpp.o
+  | [ 41%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustand.cpp.o
+  | [ 43%] Building CXX object CMakeFiles/kern_geprueft.dir/src/zustandsausgabe.cpp.o
+  | [ 45%] Linking CXX static library libkern.a
+  | [ 45%] Built target kern
+  | [ 47%] Linking CXX static library libkern_geprueft.a
+  | [ 47%] Built target kern_geprueft
+  | [ 52%] Building CXX object CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+  | [ 52%] Building CXX object CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+  | [ 54%] Building CXX object CMakeFiles/aktion_probe.dir/test/aktion_probe.cpp.o
+  | [ 56%] Building CXX object CMakeFiles/pruefsumme_probe.dir/test/pruefsumme_probe.cpp.o
+  | [ 58%] Linking CXX executable meldung_probe
+  | [ 60%] Linking CXX executable pruefsumme_probe
+  | [ 60%] Built target meldung_probe
+  | [ 63%] Building CXX object CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+  | [ 63%] Built target pruefsumme_probe
+  | [ 65%] Building CXX object CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
+  | [ 67%] Linking CXX executable festkomma_probe
+  | [ 67%] Built target festkomma_probe
+  | [ 69%] Linking CXX executable aktion_probe
+  | [ 71%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+  | [ 71%] Built target aktion_probe
+  | [ 73%] Building CXX object CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
+  | [ 76%] Linking CXX executable schranken_probe
+  | [ 76%] Built target schranken_probe
+  | [ 78%] Building CXX object CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+  | [ 80%] Linking CXX executable schreiber_probe
+  | [ 80%] Built target schreiber_probe
+  | [ 82%] Building CXX object CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
+  | [ 84%] Linking CXX executable schritt_probe
+  | [ 86%] Linking CXX executable verlauf_probe
+  | [ 86%] Built target schritt_probe
+  | [ 89%] Building CXX object CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+  | [ 89%] Built target verlauf_probe
+  | [ 91%] Building CXX object CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
+  | [ 93%] Linking CXX executable zufall_probe
+  | [ 95%] Linking CXX executable werte_probe
+  | [ 95%] Built target zufall_probe
+  | [ 95%] Built target werte_probe
+  | [ 97%] Linking CXX executable zustand_probe
+  | [ 97%] Built target zustand_probe
+  | [100%] Linking CXX executable zustandsausgabe_probe
+  | [100%] Built target zustandsausgabe_probe
+  OK   Kern allein (kern, kern_geprueft): `cmake --build` Code 0
+$ ctest --test-dir /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau --output-on-failure
+  Code 0
+  | Test project /tmp/claude-1000/0173/nachher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/bau
+  |       Start  1: aktion_probe
+  |  1/12 Test  #1: aktion_probe .....................   Passed    0.01 sec
+  |       Start  2: festkomma_probe
+  |  2/12 Test  #2: festkomma_probe ..................   Passed    0.01 sec
+  |       Start  3: meldung_probe
+  |  3/12 Test  #3: meldung_probe ....................   Passed    0.01 sec
+  |       Start  4: pruefsumme_probe
+  |  4/12 Test  #4: pruefsumme_probe .................   Passed    0.01 sec
+  |       Start  5: schranken_probe
+  |  5/12 Test  #5: schranken_probe ..................   Passed    0.01 sec
+  |       Start  6: schreiber_probe
+  |  6/12 Test  #6: schreiber_probe ..................   Passed    0.01 sec
+  |       Start  7: schritt_probe
+  |  7/12 Test  #7: schritt_probe ....................   Passed    0.02 sec
+  |       Start  8: verlauf_probe
+  |  8/12 Test  #8: verlauf_probe ....................   Passed    0.02 sec
+  |       Start  9: werte_probe
+  |  9/12 Test  #9: werte_probe ......................   Passed    0.01 sec
+  |       Start 10: zufall_probe
+  | 10/12 Test #10: zufall_probe .....................   Passed    0.01 sec
+  |       Start 11: zustand_probe
+  | 11/12 Test #11: zustand_probe ....................   Passed    0.05 sec
+  |       Start 12: zustandsausgabe_probe
+  | 12/12 Test #12: zustandsausgabe_probe ............   Passed    0.19 sec
+  | 
+  | 100% tests passed, 0 tests failed out of 12
+  | 
+  | Total Test time (real) =   0.38 sec
+  OK   Kern allein (kern, kern_geprueft): `ctest --test-dir` Code 0
+
+Abweichungen: 0

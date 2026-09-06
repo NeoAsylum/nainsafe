@@ -1,0 +1,67 @@
+HEAD vor der Messung: 8903184
+
+== Bauen ==
+  alt (HEAD, ohne Sortierung) und neu (Arbeitsbaum) uebersetzt, Schalter -std=c++20 -fwrapv -O1 -Wall -Wextra
+
+== Schritt 0: Kopie A gegen den echten Arbeitsbaum ==
+  Anlauf 1: echter Baum Code 0, Kopie A Code 0 -- gleich
+  gleich auf stdout und stderr -- die verkuerzte Kopie ist ein tauglicher Bestand.
+
+== Die drei Kopien ==
+  A ext4  aufsteigend: 88348 Dateien, Fingerabdruck a79341c530fef2af
+  B tmpfs aufsteigend: 88348 Dateien, Fingerabdruck a79341c530fef2af
+  C ext4  absteigend: 88348 Dateien, Fingerabdruck a79341c530fef2af
+
+== Bedingung 1: dieselbe Ausgabe ueber verschiedene Dateisysteme ==
+
+  A ext4 gegen B tmpfs, beide aufsteigend
+    vorher (HEAD):        VERSCHIEDEN  (Code 0 / 0)
+    Zeile 18:
+      A:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+      B:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+    nachher (Arbeitsbaum): gleich  (Code 0 / 0)
+
+  A gegen C, beide ext4, C absteigend angelegt
+    vorher (HEAD):        gleich  (Code 0 / 0)
+    nachher (Arbeitsbaum): gleich  (Code 0 / 0)
+
+  Zwilling: vorher verschieden bei A gegen B -- der Vergleich misst die Ordnung.
+
+== Bedingung 2: der neue Fall im Selbsttest ==
+  belegstellen_riegel, Selbsttest: 8 Faelle zur Suche nach links, 13 zur Form
+  ohne Anfuehrung, 6 zum Urteilsschritt, 17 zur Ortsfrage, 8 zum Wortabstand samt
+  Suche nach rechts, 5 zur Satzgrenze nach links und 8 zur Ausgabeordnung,
+  alle wie erwartet.
+
+  char-statt-unsigned -- der Umlautfall: vorzeichenbehaftet ist 0xC3 negativ und steht ganz vorn
+    Code 2, gerissen: Ordnungsfall
+    Ordnungsfall 1: an Platz 6 steht 'kern.md', erwartet war 'kern/src/werte.cpp'.
+    Ordnungsfall 2: an Platz 8 steht 'kern/src/werte.hpp', erwartet war 'Übersicht.md'.
+    Ordnungsfall 3: an Platz 3 steht 'aufgaben/0130-ordnung.md', erwartet war 'daten/reihen.toml'.
+    Ordnungsfall 4: an Platz 1 steht 'Übersicht.md', erwartet war 'CMakeLists.txt'.
+    Ordnungsfall 5: an Platz 5 steht 'daten/reihen.toml.alt', erwartet war 'kern.md'.
+    Ordnungsfall 6: an Platz 2 steht 'CMakeLists.txt', erwartet war 'aufgaben/0130-ordnung.md'.
+    Ordnungsfall 7: an Platz 7 steht 'kern/src/werte.cpp', erwartet war 'kern/src/werte.hpp'.
+    Ordnungsfall 8: an Platz 4 steht 'daten/reihen.toml', erwartet war 'daten/reihen.toml.alt'.
+
+  gross-wie-klein -- das Gebietsschema nachgestellt: Gross- und Kleinschreibung ineinander
+    Code 2, gerissen: Ordnungsfall
+    Ordnungsfall 4: an Platz 1 steht 'aufgaben/0130-ordnung.md', erwartet war 'CMakeLists.txt'.
+    Ordnungsfall 6: an Platz 2 steht 'CMakeLists.txt', erwartet war 'aufgaben/0130-ordnung.md'.
+
+  laengeres-zuerst -- die Regel zum gemeinsamen Anfang umgedreht
+    Code 2, gerissen: Ordnungsfall
+    Ordnungsfall 3: an Platz 3 steht 'daten/reihen.toml.alt', erwartet war 'daten/reihen.toml'.
+    Ordnungsfall 8: an Platz 4 steht 'daten/reihen.toml', erwartet war 'daten/reihen.toml.alt'.
+
+  ohne-sortierung -- die Sortierung an der Sammelstelle weg -- der Selbsttest sieht sie nicht
+    Code 0, gerissen: nichts
+    A gegen B: VERSCHIEDEN
+    Zeile 19:
+      A:   daten/adressen.md:637  (Gliederungsziffer statt Ueberschrift: 7)
+      B:   daten/reihen.toml:11  (Gliederungsziffer statt Ueberschrift: 7)
+
+HEAD nach der Messung: 8903184
+
+======================================================================
+Beide Bedingungen halten, gemessen gegen 8903184.
