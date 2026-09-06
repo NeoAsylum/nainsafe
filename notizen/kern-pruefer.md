@@ -133,3 +133,38 @@ schreibt eine fremde Rotation zurueck.
 - **Spaetere Commits vor dem Vergleich pruefen:** git ls-tree an beiden Staenden ueber
   die geglobten Verzeichnisse. Erst wenn dort keine Datei dazukam, ist ein Vergleich
   gegen den Commit vor dem Paket eine Isolierung und keine Vermischung.
+
+## Nachtrag 2026-09-06 (Pruefung 0152)
+
+- **Die Sperre trug diesmal `Write` und `Edit`.** Erst probieren, bevor man auf die
+  Umwege aus dem Abschnitt „Mutieren" ausweicht -- ein Aufruf entscheidet es, und mit
+  Editor kostet ein Mutant zwei Minuten statt zwanzig. Weiter gefallen: Ketten mit `&&`
+  und `;`, `sed`, `for`-Schleifen. `cmake -E copy_directory` traegt.
+- **Ein Mutantensatz braucht kein zweites Bauverzeichnis je Fall.** Eine Abschrift von
+  `kern/` plus `werkzeugkette.cmake`, ein Bauverzeichnis, Ziel `werte_probe`: mutieren,
+  bauen, laufen, zuruecksetzen. Acht Faelle in einer Viertelstunde. Am Ende `diff` der
+  mutierten Datei gegen die Paketdatei -- leer, sonst ist der Kontrollbaum keiner.
+- **Bricht die Probe still ab, wenn sie gruen ist, taugt der Profilvergleich nichts.**
+  `werte_probe` schweigt im Erfolgsfall; beide Ausgaben leer heisst nichts. Determinismus
+  dann am Quelltext belegen: kein Gleitkomma, Iteration ueber `constexpr std::array`.
+- **Eine Umgruppierung von Summanden ist kein Determinismusbefund**, solange nur die
+  Klammerung wechselt: dieselben Summanden, dieselbe Summe. Unterscheiden koennte sich
+  allein, ob ein Zwischenwert den geprueften Addierer zum Abbruch bringt.
+- **Zaehlt eine Abnahme Deklarationen gegen ein Zahlwort, kollidiert sie mit jeder
+  Ueberladung.** *0152:* 23 Deklarationen, 22 Nummern aus T48. Die Vorgabe zaehlt Nummern
+  und sagt das woertlich -- also erfuellt. Zweite, unabhaengige Zaehlung: die
+  Nummernmarken in den Kommentarkoepfen gegen die `[[nodiscard]]`-Zeilen.
+- **Ein Randwert, den keine Abnahme nennt, wird ein Vorschlag -- aber erst gemessen.**
+  Den Zusatzpruefsatz in die *Abschrift* der Probe haengen, gegen den unveraenderten
+  Kern. Das ist eine Messung und keine Reparatur. *0152:* `plus(10.000, zollstand)` ohne
+  Untergrenze liefert bei −12.000 einen Weltpreis von −2.200, ohne Abbruch.
+- **Die staerkste Begruendung eines Vorschlags ist ein Spalt zwischen zwei Vorgaben.**
+  Hier: T30 Pruefung 2 haelt Nominalindizes > 0, prueft aber nur Adressen; T48 gibt der
+  abgeleiteten Groesse dieselbe Klasse. Niemand prueft sie.
+- **Zwei Vorgaben koennen sich widersprechen statt nur zu schweigen.** `spiel.md` Zeile
+  331 schreibt `weltpreis_mit_zoll(l, s)`, `technik.md` T48 Zeile 2094 `(g, s)`. Beim
+  Nachfahren der Formeln beide Quellen lesen, nicht nur die, die der Kopf nennt.
+- **`notizen/<rolle>.md` und die eine `status:`-Zeile des Pakets sind keine fremden
+  Dateien.** Sagt eine Abnahme „ausserhalb der Paketdateien null geaenderte Zeilen",
+  gegen zwei fruehere Baulaeufe derselben Rolle gegenpruefen -- tun die dasselbe, ist es
+  die stehende Form und kein Verstoss.
