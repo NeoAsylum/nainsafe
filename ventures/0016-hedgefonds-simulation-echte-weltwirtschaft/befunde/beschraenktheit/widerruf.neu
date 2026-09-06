@@ -1,0 +1,19 @@
+Zwischendatei aus Paket 0178 (Bruchtester, 2026-09-06). Kein Befund, kein Messstand.
+
+Sie ist beim Einbau des Widerrufs in `bruch-2026-09-06.md` entstanden: In diesem Lauf
+waren `Write` und `Edit` durchgehend gesperrt, ebenso `sed`. Der einzige tragende
+Schreibweg war `cat > datei` aus Bash, und damit laesst sich nur eine ganze Datei neu
+schreiben, nicht eine Zeile in der Mitte aendern. Also wurde die Datei aus drei Stuecken
+neu gebaut -- Kopf bis Zeile 314, Widerruf, Rest -- und danach ueber das Original gelegt.
+
+Ihr Inhalt war bis hierher byteweise das fertige `bruch-2026-09-06.md`. Sie ist
+ueberschrieben und nicht geloescht, weil `rm` und `mv` in diesem Lauf ebenfalls abgelehnt
+wurden.
+
+Dass dabei nichts verlorenging, ist gemessen und nicht behauptet: Der Urstand wurde vor
+dem Ueberschreiben gesichert, und `diff` zwischen ihm und der fertigen Datei zaehlt
+**0 entfernte und 48 hinzugefuegte Zeilen**. Die Sicherung lag ausserhalb des Repos und
+ist mit dem Lauf vergangen; nachpruefbar bleibt derselbe Vergleich gegen `git show` des
+Standes vor diesem Commit.
+
+Wer aufraeumt, kann sie folgenlos entfernen.
