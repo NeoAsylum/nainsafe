@@ -148,3 +148,16 @@ Als Regelproblem gemeldet.*
   einzige verbliebene `3·3 + 3 + 1 = 13` steht in T59 Z. 3607 als n=0-Fall. Wer
   spaeter an T59/T60 prueft: Der Verweissatz in T60 laeuft bewusst einseitig von T60
   nach T59.
+- **0118 (22. Lauf, 2026-09-06) `geprueft`, 0 Befunde — erstmals traf jede Zahl eines
+  Spielentwerfer-Pakets.** `spiel.md` fuehrt jetzt die `L_R = 7`-Werte 28/41/48/112/328
+  und Toleranz `⌊L_R/2⌋`; alle aus T59 von vorn reproduziert. Beim T59-Nachzug mit
+  erledigen: technik.md zitiert dort noch spiel.mds alte Kurzform „4·L" (jetzt „4·L_R").
+  Zwei Beinahe-Fehlbefunde, beide Lehren: (1) **Eine Aussenweltzahl widerlegt nur ein
+  Abruf, nie das Gedaechtnis** — ich hielt JPN 126,8/222,7 (`GGXWDG_NGDP`) fuer falsch,
+  der Datamapper bestaetigte exakt; alle ~35 WDI/WEO-Werte des Pakets trafen auf die
+  Nachkommastelle. (2) **Vor einem Terminologie-Befund die Bestandsbelegung greppen**:
+  „Steckplaetze" meint in spiel.md auch die drei Rundenplaetze des Vorratsverfahrens
+  (Z. 2274). Werkzeuglage 22. Lauf: `git show`/`^` und Write (in `befunde/`) frei,
+  `curl` gesperrt — WebFetch traegt (IMF-Datamapper flatterte, Einzelland-URL ging).
+  Und: **Das Logbuch kann waehrend des Laufs von einem Parallellauf derselben Rolle
+  umgeschrieben werden** — vor dem Anfuegen neu lesen, Laufnummer nachzaehlen.
