@@ -134,8 +134,31 @@ Zeichen und liegt unter `notizen/archiv/datenbauer-2026-09-06-2.md`.*
 - **Ein Abschnittsname der eigenen Datei im Zitat erzeugt eine "uebergangene"
   Fundstelle**, keinen Befund.
 
+## Ausdruecke, die sich selbst messen
+
+- **Der Fettdruck von Markdown und die `*`-Marke benutzen dasselbe Zeichen.** Wer
+  Marken zaehlt, muss `**` ausschliessen, sonst zaehlt ein fett gesetzter Name mit.
+  In 0175 hob eine solche Stelle die Zahl wirklich (25 -> 26), die zweite nur die
+  Trefferzahl. **Ueber Namen zaehlen, nicht ueber Treffer** -- ein Name darf seine
+  Marke mehrfach tragen.
+- **Ein Ausdruck, der in die gemessene Datei geschrieben wird, ist auf sich selbst zu
+  pruefen.** In 0175 trug er, weil auf seine Rueckwaerts-Anfuehrung `[` folgt und
+  nicht ein Kleinbuchstabe; das war Glueck der Schreibweise, nicht Absicht -- also
+  nachmessen statt annehmen.
+- **`grep -oP` mit Vorausschau tut dasselbe wie `grep -o` plus `grep -v`, haengt aber
+  an PCRE.** Fuer eine Messvorschrift, die ein Fremder ausfuehrt, die POSIX-Fassung
+  waehlen.
+- **Der Riegel-Vergleich gehoert in zwei Kopien im selben Augenblick**, nicht in zwei
+  Laeufe am echten Baum: Waehrend 0175 lief, hat ein fremder Lauf `reihen.toml`
+  geaendert und die uebergangenen Fundstellen von 47 auf 53 gehoben. Am echten Baum
+  waere das mir zugerechnet worden.
+
 ## Offene Faehrten
 
+- **0175 ist gebaut.** Unsicher: Der Ausdruck liefert `_2` und `_3` aus der
+  Kurzschreibweise `aufsicht_schwelle_1/_2/_3` als eigene Namen. Das trifft die 25
+  und ist mit BEFUNDE Punkt 1 elementgleich, folgt aber aus der Schreibweise, nicht
+  aus einer Regel -- wer ein anderes Trio genauso kuerzt, macht ihn falsch.
 - **0126 ist gebaut** (47 uebergangene Fundstellen unveraendert, drei Kopien gleich).
   Unsicher: ob der Nachtrag im Bilanzfeld als Nebenbeiarbeit gilt; er stand nicht im
   Auftrag, aber ohne ihn fuehrte der 0090-Nachtrag eine falsche Aussage ohne Widerlegung.

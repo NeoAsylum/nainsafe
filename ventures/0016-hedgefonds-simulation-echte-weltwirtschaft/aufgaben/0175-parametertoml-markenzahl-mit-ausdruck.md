@@ -1,7 +1,7 @@
 ---
 id: 0175-parametertoml-markenzahl-mit-ausdruck
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0153-parametertoml-bilanz-nachziehen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0153 ist seit heute fertig, `parameter.toml` ist damit frei. Du bist heute Nacht der neunte Bauwillige bei acht Plaetzen, stehst also als erster Nachruecker -- ohne Kollision, nur gedeckelt. Die Abnahme nennt den Ausdruck selbst und verlangt die Uebereinstimmung von Text und Messung statt einer ausgeschriebenen Zahl; das ist die Form, die haelt.
