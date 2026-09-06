@@ -15,11 +15,19 @@ sobald eine nicht aufgeht. Was das Skript prueft:
      erzeugt. Eine Zahl im Kommentar, die nicht aus einem Aufruf stammt, ist eine
      Falschaussage in Wartestellung -- genau die Sorte, gegen die dieses Paket
      geschrieben ist.
+  C. **Die Vorfassung, an der A und die Gegenprobe haengen, bringt das Skript
+     selbst mit** (Paket 0171). Sie ist nicht das, was unter `$TMPDIR` liegt,
+     sondern ein benannter Stand aus dem Archiv: der Elternstand des Baucommits
+     von 0115. Fehlt sie, holt das Skript sie; liegt dort etwas anderes, endet
+     der Lauf rot. Vorher hing die Beweiskraft an einer Eingabe, die niemand
+     kontrollierte -- geprueft wurde an ihr nur, dass sie ungleich der neuen
+     Fassung ist, und `$TMPDIR` ist fluechtig.
 
 Gebaut wird ausschliesslich in `$TMPDIR`. Der Quellbaum wird nur fuer die Dauer
 von Lauf A auf die alte Fassung zurueckgestellt und in jedem Fall wieder auf die
 neue gebracht.
 """
+import hashlib
 import os
 import re
 import subprocess
@@ -31,6 +39,16 @@ QUELLE = W + "/werkzeuge/belegstellen/belegstellen_riegel.cpp"
 MUTIEREN = W + "/bau/kp0086-mutieren.py"
 TMP = os.environ.get("TMPDIR", "/tmp") + "/k0115"
 VORHER = TMP + "/vorher.cpp"
+
+# Woher die Vorfassung kommt, gegen die Teil A und die Gegenprobe messen: der
+# Elternstand des Baucommits von 0115, also genau der Wortlaut, den dieses Paket
+# berichtigt hat. Beides ist festgeschrieben -- die Herkunft, damit ein Leser
+# weiss, was gemessen wird, und die Blobkennung, damit der Inhalt sich ohne
+# fremdes Zutun nachrechnen laesst.
+BAUCOMMIT_0115 = "83faa06"
+HERKUNFTSPFAD = ("ventures/0016-hedgefonds-simulation-echte-weltwirtschaft"
+                 "/werkzeuge/belegstellen/belegstellen_riegel.cpp")
+VORFASSUNG_BLOB = "e3038e23316f4c18ca9bdd6cbab51e42579e7838"
 
 # Der Stand, gegen den die Zahlen im Kopfkommentar geschrieben sind. Er wird
 # abgedruckt und nicht geprueft: Ein fester Sollwert verfiele hier in Stunden.
@@ -62,6 +80,91 @@ def lies(pfad):
 def schreib(pfad, text):
     with open(pfad, "w", encoding="utf-8") as f:
         f.write(text)
+
+
+def git(*teile):
+    """git im Repo, Rueckgabe als Bytes. Ein Fehlschlag beendet den Lauf."""
+    p = subprocess.run(["git", "-C", "/home/adria/fabrik"] + list(teile),
+                       capture_output=True)
+    if p.returncode != 0:
+        raise SystemExit("`git %s` ist mit Code %d gescheitert: %s"
+                         % (" ".join(teile), p.returncode,
+                            p.stderr.decode("utf-8", "replace").strip()))
+    return p.stdout
+
+
+def blobkennung(daten):
+    """Die Objektkennung, die git diesem Inhalt gaebe -- ohne git zu fragen.
+
+    Selbst gerechnet und nicht ueber `git hash-object`, damit die Pruefung des
+    Inhalts nicht an derselben Stelle haengt wie seine Beschaffung.
+    """
+    return hashlib.sha1(b"blob %d\0" % len(daten) + daten).hexdigest()
+
+
+_vorfassung = None
+
+
+def vorfassung():
+    """Der Wortlaut vor der Berichtigung, an seine Herkunft gebunden.
+
+    Drei Schritte, und jeder kann den Lauf rot machen:
+
+      1. Die Herkunftsangabe wird gegen das Archiv gehalten: Fuehrt der
+         Elternstand des Baucommits wirklich diesen Blob? Wer die Geschichte
+         umschreibt, bekommt eine Meldung statt einer stillschweigend anderen
+         Messung.
+      2. Liegt schon eine Datei unter `VORHER`, wird ihr Inhalt nachgerechnet.
+         Eine untergeschobene aeltere oder fremde Fassung faellt damit auf,
+         bevor eine einzige Zahl erhoben ist. Sie wird **nicht** ueberschrieben:
+         Wer sie dort hingelegt hat, soll die Meldung lesen und nicht ihr
+         spurloses Verschwinden.
+      3. Fehlt sie, holt das Skript sie selbst und rechnet sie genauso nach.
+         Damit laeuft der Riegel auf einer frischen Umgebung ohne Handarbeit
+         durch, und `$TMPDIR` ist nur noch Zwischenlager statt Eingabe.
+
+    Der Text wird einmal beschafft und gemerkt. Was danach unter dem Pfad
+    passiert, aendert nichts mehr an dem, wogegen gemessen wird.
+    """
+    global _vorfassung
+    if _vorfassung is not None:
+        return _vorfassung
+    herkunft = BAUCOMMIT_0115 + "^:" + HERKUNFTSPFAD
+    steht = git("rev-parse", herkunft).decode("utf-8").strip()
+    if steht != VORFASSUNG_BLOB:
+        raise SystemExit(
+            "Der Elternstand des Baucommits von 0115 (%s) fuehrt heute den "
+            "Blob %s; festgeschrieben ist %s. Die Herkunft der Vorfassung "
+            "stimmt nicht mehr -- gemessen wird nichts." % (herkunft, steht,
+                                                            VORFASSUNG_BLOB))
+    if os.path.exists(VORHER):
+        with open(VORHER, "rb") as f:
+            daten = f.read()
+        ist = blobkennung(daten)
+        if ist != VORFASSUNG_BLOB:
+            raise SystemExit(
+                "Unter %s liegt nicht die Vorfassung von 0115: Der Inhalt "
+                "traegt die Blobkennung %s, erwartet ist %s aus %s. Teil A "
+                "wuerde gegen den falschen Stand vergleichen und die "
+                "Gegenprobe ihre Rotfaehigkeit am falschen Wortlaut pruefen -- "
+                "beides ohne eine Meldung. Loesche die Datei; das Skript holt "
+                "die richtige selbst."
+                % (VORHER, ist, VORFASSUNG_BLOB, herkunft))
+        woher = "lag bereit und ist nachgerechnet"
+    else:
+        daten = git("cat-file", "blob", VORFASSUNG_BLOB)
+        ist = blobkennung(daten)
+        if ist != VORFASSUNG_BLOB:
+            raise SystemExit(
+                "Das Archiv hat zu %s einen Inhalt mit der Kennung %s "
+                "geliefert. Das darf nicht vorkommen." % (VORFASSUNG_BLOB, ist))
+        with open(VORHER, "wb") as f:
+            f.write(daten)
+        woher = "gefehlt und ist geholt worden"
+    print("Vorfassung: %s -- Blob %s aus %s" % (woher, VORFASSUNG_BLOB,
+                                                herkunft))
+    _vorfassung = daten.decode("utf-8")
+    return _vorfassung
 
 
 def mutant(art):
@@ -113,7 +216,7 @@ def kopf():
 # A -- vorher und nachher am selben Baum, im selben Aufruf
 # ---------------------------------------------------------------------------
 def teil_a(neu):
-    alt = lies(VORHER)
+    alt = vorfassung()
     if alt == neu:
         raise SystemExit("Alte und neue Fassung sind zeichengleich -- es gibt "
                          "nichts zu messen.")
@@ -378,7 +481,7 @@ def gegenprobe(grund):
 
     Alle drei muessen reissen. Tut es eine nicht, misst sie nicht die Angabe,
     sondern laeuft nur mit."""
-    alt = lies(VORHER)
+    alt = vorfassung()
     vorher_fehler = len(fehler)
     teil_b1(alt, grund)
     n1 = len(fehler)
@@ -402,8 +505,10 @@ def gegenprobe(grund):
 
 def main():
     os.makedirs(TMP, exist_ok=True)
-    if not os.path.exists(VORHER):
-        raise SystemExit("Die alte Fassung fehlt unter " + VORHER)
+    # Vor allem anderen: Die Vorfassung wird beschafft und an ihre Herkunft
+    # gebunden. Was danach kommt, misst gegen sie -- eine falsche Eingabe hier
+    # macht jede Zahl weiter unten wertlos, und zwar lautlos.
+    vorfassung()
     neu = lies(QUELLE)
     vor = kopf()
     print("Bezugsstand im Kommentar: %s; HEAD zu Beginn: %s" % (BEZUGSSTAND, vor))
