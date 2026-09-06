@@ -523,9 +523,20 @@
 //!
 //!   1. *Nur ankuendigende Anfuehrungszeichen.* Mit Abstand zaehlen die typografischen
 //!      Anfuehrungen und die geklammerte Form, nicht Gegenstrich, Sternchen, einfaches
-//!      oder gerades Anfuehrungszeichen. Gemessen: ohne diese Trennung faengt der Riegel
-//!      **fuenf Stellen in seinem eigenen Quelltext, alle falsch** -- 38 Zitate, nur 33
-//!      aufgeloest, 70 statt 58 Fundstellen. Begruendung bei `Klammer::kuendigt_an`.
+//!      oder gerades Anfuehrungszeichen. Gemessen am 2026-09-06 gegen den Stand
+//!      `5d5e2d6` mit dem Mutanten `ohne-marken-rein`: ohne diese Trennung faengt der
+//!      Riegel **elf Stellen zu Unrecht, zehn davon in seinem eigenen Quelltext** --
+//!      51 statt 40 Zitate, weiterhin nur 40 aufgeloest, 59 statt 47 Fundstellen. Die
+//!      zehn liegen zu zweit in diesem Kopfkommentar, einmal in `SATZFAELLE` und
+//!      siebenmal in `ZITATFAELLE`; die elfte steht in `parameter.toml`.
+//!
+//!      **Diese Zahl zaehlt sich selbst mit, und genau daran ist ihre Vorgaengerin
+//!      falsch geworden.** Sie stand hier als Fuenf, waehrend eine der beiden Stellen
+//!      im Kopfkommentar erst danach entstand -- ein spaeteres Paket trug einen Satz
+//!      nach, und die Sechs, die daraus wurde, hat niemand nachgemessen. Wer hier
+//!      schreibt, veraendert moeglicherweise die Zahl, die er schreibt; sie ist
+//!      nachzumessen und nicht fortzuschreiben. Der Aufruf, der sie liefert, steht
+//!      unter `Klammer::kuendigt_an`, dort auch die Begruendung.
 //!   2. *Das Satzende.* Es beendet die Suche, dieselbe Regel wie bei der Suche nach
 //!      links. Nachgewiesen an Fall 3 in `ABSTANDSFAELLE`.
 //!   3. *Ein zweites Schluesselwort.* Die Anfuehrung gehoert dem naeheren. Der Bestand
@@ -543,9 +554,18 @@
 //! traegt einen Nachweis (das franzoesische Zitat in `lizenzbefund-reihen.md`), die
 //! Rechtssuche keinen. Sie laeuft deshalb nur, wenn links nichts steht, und nur fuer
 //! die Form **mit** Anfuehrung: ohne sie hat das Zitat keinen bestimmten rechten Rand.
-//! Ihre Grenze ist das Satzende, und auch das ist gemessen -- ohne sie bindet eine
-//! bisher uebergangene Fundstelle einen weit entfernten Dateinamen an sich und wird zu
-//! Unrecht rot (34 Zitate, 33 aufgeloest).
+//! Ihre Grenze ist das Satzende, und sie ist gemessen -- heute allein an Fall 6 in
+//! `ABSTANDSFAELLE`. Der Mutant `rechts-ohne-satzgrenze-rein` laesst ihn reissen und
+//! bricht mit Code 2 ab: rechts erwartet war kein Dateiname, gefunden wurde `spiel.md`.
+//!
+//! **Der Bestand misst diese Grenze nicht mehr mit.** Am 2026-09-06, gegen den Stand
+//! `5d5e2d6`, nennt derselbe Mutant genau dieselben drei Zahlen wie der unveraenderte
+//! Riegel -- 40 Zitate, 40 aufgeloest, 47 uebergangene Fundstellen, vorher wie nachher
+//! die Summe 87. Bis hierher stand an dieser Stelle, ohne die Grenze binde eine
+//! uebergangene Fundstelle einen weit entfernten Dateinamen an sich und werde zu
+//! Unrecht rot; das ist am 2026-09-06 am Baum nicht mehr zu sehen. Was sich zwischen
+//! den beiden Tagen bewegt hat, ist nicht nachgehalten -- der Fall in der Tabelle
+//! traegt die Regel seither allein.
 //!
 //! **Was weiterhin ungefangen bleibt, damit die Zahlen unten niemand fuer
 //! Vollstaendigkeit haelt:** ein Dokumentname rechts vom Zitat jenseits des Satzendes;
@@ -951,7 +971,7 @@ Zeilenfund fund_ab(std::string_view zeile, std::size_t von) {
 // fest, die sonst niemand nachlesen koennte, und der achte ist aus einem echten
 // Arbeitspaket abgewandelt.
 //
-// **Der achte Herkunftshinweis ist historisch, und das steht dort auch.** Bis zum
+// **Der siebte Herkunftshinweis ist historisch, und das steht dort auch.** Bis zum
 // 2026-09-05 sagte dieser Kopf "vier der acht", und Fall 7 nannte dafuer eine Datei,
 // die seinen Wortlaut seit dem 2026-09-04 nicht mehr traegt. Die Zahl war damit
 // richtig gezaehlt und falsch belegt. Berichtigt ist beides zusammen: die Zahl **und**
@@ -1264,11 +1284,28 @@ struct Klammer {
     /// Sternchen zeichnen Code und Kursives aus, das gerade Anfuehrungszeichen eroeffnet
     /// jede Zeichenkette dieser Uebersetzungseinheit, das einfache steht im Genitiv.
     ///
-    /// **Gemessen und nicht befuerchtet:** Ohne diese Trennung faengt der Riegel fuenf
-    /// Stellen in seinem eigenen Quelltext, alle falsch -- eine im Kopfkommentar
-    /// (`spiel.md` im Gegenstrich, ein Wort hinter dem Schluesselwort) und vier in
-    /// `ZITATFAELLE`, wo hinter `Namensart::Ueberschrift` ein Komma und danach ein
-    /// Zeichenkettenliteral steht. Die Zahlen stehen im Kopf.
+    /// **Gemessen und nicht befuerchtet:** Ohne diese Trennung faengt der Riegel zehn
+    /// Stellen in seinem eigenen Quelltext, alle falsch -- zwei im Kopfkommentar
+    /// (`spiel.md` im Gegenstrich, ein Wort hinter dem Schluesselwort; dazu ein
+    /// Werkzeugname im Gegenstrich, den ein spaeteres Paket dort nachgetragen hat),
+    /// eine in `SATZFAELLE` und sieben in `ZITATFAELLE`, wo hinter
+    /// `Namensart::Ueberschrift` ein Komma und danach ein Zeichenkettenliteral steht.
+    ///
+    /// Hinter diesem Wort darf in seinem Textblock kein zweiter Gegenstrich mehr
+    /// folgen: Er schloesse die Anfuehrung, die das Schluesselwort davor eroeffnet,
+    /// und der Riegel faende sich hier selbst -- gemessen am 2026-09-06, als der
+    /// Name der elften Stelle noch eine Zeile weiter unten stand. Sie liegt
+    /// ausserhalb dieser Datei, in der Parameterdatei des Vorhabens.
+    ///
+    /// So gemessen am 2026-09-06 gegen den Stand `5d5e2d6`, mit dem Mutanten
+    /// `ohne-marken-rein` aus `kp0086-mutieren.py`. Er laesst den Selbsttest zum
+    /// Wortabstand reissen und braucht deshalb den Filter, der den Zaehlzeilen ihre
+    /// Abbruchwirkung nimmt -- sonst bricht der Lauf mit Code 2 ab, ehe der Bestand
+    /// gelesen ist, und liefert gar keine Zahl. Der vollstaendige Aufruf steht im
+    /// Rumpf des Arbeitspakets 0115.
+    ///
+    /// Die Aufteilung waechst mit den Falltabellen und ist deshalb nachzumessen und
+    /// nicht abzuschreiben; die Gesamtzahlen stehen im Kopf, mit demselben Stand.
     bool kuendigt_an;
 };
 
