@@ -88,161 +88,161 @@ Tabelle dadurch prüfen, dass man sie einmal von Hand einlöst. Beide Summen geh
 
 ## 1. Stack
 
-**T1 — Kern, Datenschicht, Schnittstelle, Prüfstand und Werkzeuge in C++20**, übersetzt mit
-`g++`, gebaut über CMake, Übersetzerkennung und -version in `werkzeugkette.cmake`
-festgenagelt, **jede Fremdbibliothek nach T3 im Repo eingefroren**. Entschieden hat das der
-Betreiber am 2026-09-01 (**ADR 0011**); diese Fassung trägt die Entscheidung nach und ersetzt
-die Rust-Fassung der Vorfassungen.
+**T1 — Core, data layer, interface, test bench and tools in C++20**, compiled with
+`g++`, built via CMake, compiler identification and version pinned in `werkzeugkette.cmake`,
+**every third-party library frozen in the repo per T3**. The operator decided this on
+2026-09-01 (**ADR 0011**); this version records that decision and replaces the Rust version
+of the previous drafts.
 
-**Die Kandidaten, an den Kriterien dieses Vorhabens gemessen.** Die Vorfassungen haben *für*
-eine Sprache argumentiert statt *unter* Alternativen zu wählen; das ist der Befund, aus dem
-ADR 0010 und die Tabellenpflicht dieser Rolle entstanden sind. Die vier gemessenen Zeilen
-stammen aus `ventures/0016-…/messung-stack/BEFUND.md` (2026-09-01, erzeugt von
-`agents/stackmessung.py`): dieselbe Festkomma-Aufgabe, vier Agenten, vier Sprachen.
+**The candidates, measured against this venture's criteria.** The previous versions argued
+*for* a language instead of choosing *among* alternatives; that is the finding from which
+ADR 0010 and this role's table obligation arose. The four measured rows come from
+`ventures/0016-…/messung-stack/BEFUND.md` (2026-09-01, produced by
+`agents/stackmessung.py`): the same fixed-point task, four agents, four languages.
 
-| Sprache | Determinismus mechanisch erzwingbar | Agent trifft die Vorschrift | ns/Messschritt | Einzelprogramm beim Käufer | Speichersicher |
+| Language | Determinism mechanically enforceable | Agent hits the spec | ns/measurement step | Standalone program at the buyer | Memory-safe |
 |---|---|---|---:|---|---|
-| **C++20 (gewählt)** | **ja, aber zusammengesetzt** — drei Prüfregeln statt drei Spracheigenschaften (T4, T7, T9) | **erster Anlauf** | **947** | **ja** | **nein** |
-| Rust | ja, vom Werkzeug — `overflow-checks`, `clippy::float_arithmetic`, `BTreeMap` | erster Anlauf | 494 | ja | ja |
-| Java | teilweise — Gleitkomma nicht verbietbar, `HashMap` gestreut | erster Anlauf | **316** | nein, braucht JRE | ja |
-| Python | nein | ja, aber ohne Übersetzungslauf | 50.383 | nein | ja |
-| Go | nein — `float64` nicht verbietbar, Kartenreihenfolge absichtlich gestreut | *nicht gemessen* | *nicht gemessen* | ja | ja |
-| C# | nein — nur durch Disziplin | *nicht gemessen* | *nicht gemessen* | mit Laufzeit | ja |
+| **C++20 (chosen)** | **yes, but composite** — three check rules instead of three language properties (T4, T7, T9) | **first attempt** | **947** | **yes** | **no** |
+| Rust | yes, from the tooling — `overflow-checks`, `clippy::float_arithmetic`, `BTreeMap` | first attempt | 494 | yes | yes |
+| Java | partially — floating point not forbiddable, `HashMap` shuffled | first attempt | **316** | no, needs a JRE | yes |
+| Python | no | yes, but without a compile run | 50,383 | no | yes |
+| Go | no — `float64` not forbiddable, map order deliberately shuffled | *not measured* | *not measured* | yes | yes |
+| C# | no — only by discipline | *not measured* | *not measured* | with runtime | yes |
 
-Go und C# sind **nicht gemessen**; ihre Zeilen stehen aus ADR 0010 und sind Argument, nicht
-Zahl. Sie bleiben in der Tabelle, damit sichtbar ist, was geprüft wurde und was nicht.
+Go and C# are **not measured**; their rows come from ADR 0010 and are argument, not
+number. They stay in the table so that it is visible what was checked and what was not.
 
-**Was die Messung entschieden hat und was nicht.** Alle vier Umsetzungen trafen dieselbe
-Prüfsumme `1163237642073673` beim ersten Anlauf, einschliesslich der Rundung auf halbe
-Beträge von null weg bei negativen Werten. **Damit ist die Spalte „Agentenzuverlässigkeit"
-für diese Domäne leer** — sie war das Hauptargument der Rust-Fassung und trägt nicht mehr.
-Python scheidet an der Geschwindigkeit aus (in dieser Messung Faktor 53,2 gegenüber C++,
-gerechnet als 50.383 / 947); zwischen den drei übersetzten Sprachen ist die Geschwindigkeit
-gleichgültig, weil 11,78 Millionen Weltschritte überall Minuten sind (Abschnitt 10).
-Java ist mit 316 ns die schnellste und fällt trotzdem heraus: Eine Laufzeitumgebung neben
-einem Steam-Titel ist ein Auslieferungsproblem, das keine Rechenzeit aufwiegt.
+**What the measurement decided, and what it did not.** All four implementations hit the
+same checksum `1163237642073673` on the first attempt, including the rounding of half
+amounts away from zero for negative values. **That leaves the "agent reliability" column
+empty for this domain** — it was the Rust version's main argument and no longer carries.
+Python drops out on speed (factor 53.2 against C++ in this measurement, computed as
+50,383 / 947); among the three compiled languages speed is indifferent, because 11.78
+million world steps are minutes everywhere (section 10).
+Java, at 316 ns, is the fastest and falls out anyway: a runtime environment next to
+a Steam title is a shipping problem that no amount of compute time outweighs.
 
-**Der Einwand gegen die Wahl gehört dazu, und es sind zwei.** *Erstens:* C++ war in der
-Messung 1,92-mal langsamer als Rust und 3,0-mal langsamer als Java (947 / 494 bzw.
-947 / 316, beide in diesem Lauf gerechnet). Das ist eine Eigenschaft **dieser Umsetzung**,
-nicht der Sprache — **T6b** sagt jetzt, woran es lag und wie es der Kern anders macht.
-*Zweitens, und das ist der bleibende Preis:* C++ hat keine Speichersicherheit. In einer
-Fabrik ohne menschliche Codedurchsicht ist das eine eigene Fehlerklasse, und sie zeigt sich
-beim Käufer statt im Übersetzungslauf. Gegenmassnahmen sind der Adressen-Sanitizer im
-Testprofil (T7), der Warnsatz mit `-Werror` und die Zeigerfreiheit des Kerns (**T2b**) — sie
-decken Pfade ab, nicht alle Fälle. Das steht hier, damit es später nicht überrascht.
+**The objection to the choice belongs here, and there are two.** *First:* in the
+measurement C++ was 1.92 times slower than Rust and 3.0 times slower than Java (947 / 494
+and 947 / 316, both computed in this run). That is a property of **this implementation**,
+not of the language — **T6b** now says what caused it and how the core does it differently.
+*Second, and this is the lasting price:* C++ has no memory safety. In a factory without
+human code review that is a failure class of its own, and it shows up at the buyer
+instead of in the compile run. The countermeasures are the address sanitizer in the
+test profile (T7), the warning set with `-Werror` and the core's pointer freedom (**T2b**) —
+they cover paths, not all cases. This stands here so that it does not surprise anyone later.
 
-**Was jetzt fallen muss und was sich vertagen lässt.** Die Frage kostet nichts und spart am
-meisten, also steht sie ausgeschrieben da:
+**What must be settled now and what can be deferred.** The question costs nothing and
+saves the most, so it stands here spelled out:
 
-| Festlegung | jetzt oder später | Grund |
+| Decision | now or later | Reason |
 |---|---|---|
-| Sprache und Übersetzer des Kerns | **jetzt** | Jede Zeile Kern hängt daran; ein Wechsel später ist ein Neubau. |
-| Ganzzahldisziplin (T4, T6, T7) | **jetzt** | Nicht nachrüstbar: Sie ist die Voraussetzung jedes Regressionstests. |
-| Bausteinrichtung (T13) | **jetzt** | Sie ist zugleich der Kollisionsschnitt der Arbeitspakete (Abschnitt 13). |
-| Oberfläche | **später** (ADR 0010) | Das Modell fragt die Sicht nie etwas; sie ist austauschbar, solange der Kern steht. Entschieden wird, wenn bekannt ist, was sie zeigen muss. |
-| Parameterdatei-Leser | **später** | Er sitzt in `daten`, nicht im Kern; T3 nennt die Anforderung, nicht das Erzeugnis. |
-| Parallelisierung des Prüfstands | **später** | T39 verlangt Ergebnisgleichheit mit einem und mit vielen Kernen — das bindet das Verfahren, nicht die Bibliothek. |
+| Language and compiler of the core | **now** | Every line of core hangs on it; a switch later is a rebuild. |
+| Integer discipline (T4, T6, T7) | **now** | Not retrofittable: it is the precondition of every regression test. |
+| Module direction (T13) | **now** | It is at the same time the collision cut of the work packages (section 13). |
+| User interface | **later** (ADR 0010) | The model never asks the view anything; it is replaceable as long as the core stands. It is decided once it is known what it must show. |
+| Parameter-file reader | **later** | It sits in `daten`, not in the core; T3 names the requirement, not the product. |
+| Parallelising the test bench | **later** | T39 demands result equality with one and with many cores — that binds the procedure, not the library. |
 
-**T2 — Der Baustein `kern` hat null Fremdabhängigkeiten.** Kein Protokollkasten, keine
-Zufallsbibliothek, keine Zeit, keine Ein- und Ausgabe. Ein Baustein ohne Abhängigkeiten kann
-durch kein fremdes Versionsupdate sein Ergebnis ändern. **Die Standardbibliothek ist keine
-Fremdabhängigkeit** — sie kommt mit dem Übersetzer, den `werkzeugkette.cmake` festnagelt.
+**T2 — The module `kern` has zero third-party dependencies.** No logging kit, no
+random-number library, no time, no input and output. A module without dependencies cannot
+have its result changed by any outside version update. **The standard library is not a
+third-party dependency** — it comes with the compiler that `werkzeugkette.cmake` pins.
 
-*Wie das erzwungen wird, denn C++ hat keinen Abschnitt `[dependencies]`, der leer bleiben
-könnte.* Die Entsprechung ist eine Eigenschaft der `CMakeLists.txt` des Kerns, und sie ist
-mit **drei** Mustervergleichen nachweisbar. Zwei laufen über diese eine Datei: Der erste sucht
-jede Anweisung, die fremden Code hereinholt oder ein weiteres Quellverzeichnis dazunimmt, der
-zweite jede Bibliothek, die an `kern` gelinkt wird. Der dritte läuft über **alle übrigen**
-`CMakeLists.txt` des Vorhabens und sucht dort `link_libraries(` sowie
-`target_link_libraries(kern` — die zwei Formen, mit denen sich `kern` von aussen eine
-Abhängigkeit anhängen lässt, ohne dass in seiner eigenen Datei eine Zeile steht (T13).
-**Alle drei müssen leer ausgehen.** Ihr Wortlaut gehört in das Abnahmekriterium des jeweiligen
-Pakets und ausdrücklich nicht in die geprüfte Datei: Eine Datei, die ihre eigenen Suchmuster
-zitiert, lässt sie nie leer ausgehen.
+*How this is enforced, since C++ has no `[dependencies]` section that could stay empty.*
+The equivalent is a property of the core's `CMakeLists.txt`, and it is provable with
+**three** pattern matches. Two run over this one file: the first looks for every directive
+that pulls in outside code or adds another source directory, the second for every library
+linked to `kern`. The third runs over **all remaining** `CMakeLists.txt` of the venture
+and looks there for `link_libraries(` and
+`target_link_libraries(kern` — the two forms by which a dependency can be attached to
+`kern` from outside without a single line standing in its own file (T13).
+**All three must come up empty.** Their exact wording belongs in the acceptance criterion of
+the respective package and expressly not in the checked file: a file that quotes its own
+search patterns never lets them come up empty.
 
-*Warum der dritte Vergleich dazugehört und nicht Vorsicht ist:* Zwei Vergleiche über
-`kern/CMakeLists.txt` prüfen die Datei und nicht die Eigenschaft. `link_libraries(fremd)`
-eine Ebene höher gilt für jedes danach angelegte Ziel, also auch für `kern` aus
-`add_subdirectory(kern)`; und seit CMake 3.13 — verlangt sind 3.22 — darf
-`target_link_libraries(kern PRIVATE fremd)` in einem *anderen* Verzeichnis stehen als dem, in
-dem `kern` angelegt wurde. In beiden Fällen bleiben die ersten zwei Vergleiche leer, und der
-Kern linkt trotzdem eine Fremdbibliothek: T2 formal erfüllt, sachlich gebrochen. Das ist
-dieselbe Lücke, die T13 auf der **Kopfseite** mit dem Verbot von `include_directories()`
-schliesst — sie hat auf der Linkseite eine Zwillingsform, und die schliesst T13 jetzt mit.
+*Why the third match belongs here and is not caution:* Two matches over
+`kern/CMakeLists.txt` check the file and not the property. `link_libraries(fremd)`
+one level up applies to every target created after it, hence also to `kern` from
+`add_subdirectory(kern)`; and since CMake 3.13 — 3.22 is required —
+`target_link_libraries(kern PRIVATE fremd)` may stand in a *different* directory than the
+one where `kern` was created. In both cases the first two matches stay empty, and the
+core links a third-party library anyway: T2 formally satisfied, substantively broken. It is
+the same gap that T13 closes on the **header side** with the ban on `include_directories()`
+— it has a twin form on the link side, and T13 now closes that one too.
 
-**T2b — Was an die Stelle von `#![forbid(unsafe_code)]` tritt.** Das Attribut gibt es in C++
-nicht, und das ist der Preis aus ADR 0011: Speichersicherheit ist hier eine **Prüfregel statt
-einer Spracheigenschaft**. An seine Stelle treten drei Dinge, alle mechanisch, alle im
-Bauprofil verankert statt in einer Verabredung:
+**T2b — What takes the place of `#![forbid(unsafe_code)]`.** The attribute does not exist
+in C++, and that is the price from ADR 0011: memory safety is here a **check rule instead
+of a language property**. Three things take its place, all mechanical, all anchored in the
+build profile instead of in an understanding:
 
-1. **Der Warnsatz mit `-Werror`:** `-Wall -Wextra -Wconversion -Wsign-conversion -Wshadow
+1. **The warning set with `-Werror`:** `-Wall -Wextra -Wconversion -Wsign-conversion -Wshadow
    -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal
-   -Wnull-dereference -Wformat=2`. Was der Übersetzer als zweifelhaft erkennt, ist damit ein
-   Bauabbruch und keine Zeile, die im Protokoll untergeht. **`-Wpedantic` steht bewusst
-   nicht dabei:** Es warnt vor `__int128`, und `__int128` ist nach T6 verpflichtend. Ein
-   Warnschalter, der eine Vorschrift anmeckert, wird abgeschaltet oder ignoriert — beides
-   ist schlechter, als ihn nicht zu setzen.
-2. **Der Adressen-Sanitizer im Testprofil** (T7, Massnahme 2). Er ist die einzige der drei,
-   die Speicherfehler *findet* statt sie zu *erschweren*.
-3. **Die Zeigerfreiheit als Grep-Regel:**
-   `grep -rnE 'reinterpret_cast|const_cast|\bnew\b|\bdelete\b|\basm\b' kern/` liefert nichts.
-   Der Kern kommt ohne rohe Zeiger und ohne eigene Speicherverwaltung aus — feste Grössen und
-   `std::array` statt roher Felder (T15). Das ist keine Härtung, sondern eine Folge des
-   Datenmodells: Ein Zustand ohne Zeiger hat keine Stelle, an der ein Zeiger falsch sein
-   könnte.
+   -Wnull-dereference -Wformat=2`. Whatever the compiler recognises as doubtful is thereby
+   a build abort and not a line that drowns in the log. **`-Wpedantic` is deliberately not
+   among them:** it warns about `__int128`, and `__int128` is mandatory per T6. A
+   warning switch that nags about a requirement gets turned off or ignored — both are
+   worse than not setting it.
+2. **The address sanitizer in the test profile** (T7, measure 2). It is the only one of the
+   three that *finds* memory errors instead of making them *harder*.
+3. **Pointer freedom as a grep rule:**
+   `grep -rnE 'reinterpret_cast|const_cast|\bnew\b|\bdelete\b|\basm\b' kern/` returns nothing.
+   The core gets by without raw pointers and without memory management of its own — fixed
+   sizes and `std::array` instead of raw arrays (T15). That is not hardening but a
+   consequence of the data model: a state without pointers has no place where a pointer
+   could be wrong.
 
-**T3 — Die Abhängigkeiten ausserhalb des Kerns sind abschliessend aufgezählt, und zwar als
-Anforderung, nicht als Erzeugnis.** Welche Bibliothek eine Anforderung erfüllt, entscheidet
-das jeweilige Paket; dass es *keine weitere* gibt, entscheidet diese Vorgabe.
+**T3 — The dependencies outside the core are exhaustively enumerated, and as a
+requirement, not as a product.** Which library satisfies a requirement is decided by the
+respective package; that there is *no further one* is decided by this rule.
 
-| Baustein | Anforderung | Lage |
+| Module | Requirement | Status |
 |---|---|---|
-| `daten` | Leser für `parameter.toml` und die Jahrgangsdateien, **ohne Gleitkomma** (T4) | offen; die Anforderung schliesst jeden Leser aus, der über `double` geht |
-| `schnittstelle` | Protokollformat schreiben und lesen | offen; das Format steht in T17, nicht in einer Bibliothek |
-| `pruefstand` | Parallelität über Partien | offen; Abschnitt 9 bindet die **Ergebnisgleichheit** mit einem und mit zweiunddreissig Kernen, nicht das Mittel — `std::thread` und `<execution>` erfüllen sie beide |
-| `werkzeuge` | Datei-Prüfsummen für den Jahrgangsbau | offen; darf eine Fremdbibliothek sein, weil das Erzeugnis geprüft wird und nicht der Weg |
-| `oberflaeche` | — | **vertagt** (ADR 0010) |
+| `daten` | reader for `parameter.toml` and the vintage files, **without floating point** (T4) | open; the requirement rules out every reader that goes through `double` |
+| `schnittstelle` | write and read the protocol format | open; the format stands in T17, not in a library |
+| `pruefstand` | parallelism across games | open; section 9 binds the **result equality** with one and with thirty-two cores, not the means — `std::thread` and `<execution>` both satisfy it |
+| `werkzeuge` | file checksums for the vintage build | open; may be a third-party library, because the product is checked and not the way |
+| `oberflaeche` | — | **deferred** (ADR 0010) |
 
-**Jede tatsächlich eingesetzte Bibliothek braucht einen ADR mit Lizenzzitat**, und keine
-davon darf in den Kern (T2). Die frühere Liste dieser Vorgabe nannte sechs Fremdbibliotheken
-namentlich; sie ist ersatzlos gestrichen, weil sie eine Wahl festschrieb, die niemand
-treffen musste — und weil die Oberflächenzeile darin seit ADR 0010 ohnehin vertagt war.
+**Every library actually used needs an ADR with a licence quotation**, and none of them
+may enter the core (T2). The earlier list in this rule named six third-party libraries
+by name; it is struck without replacement, because it fixed a choice nobody had to
+make — and because its user-interface row had been deferred since ADR 0010 anyway.
 
-**Und jede eingesetzte Bibliothek liegt im Repo, nicht auf dem Rechner des Übersetzenden.**
-Das ist der Nachfolger von `cargo vendor`, und er hat beim Umschreiben auf C++ zunächst
-gefehlt: Der Satz der Vorfassung hatte zwei Hälften — Werkzeugkette festgenagelt,
-Abhängigkeiten eingefroren —, und nur die erste ist zu `werkzeugkette.cmake` geworden.
-Konkret tritt an die Stelle der zweiten: Der Quelltext liegt unter `fremd/<name>/`, Fassung
-und Commit-Kennung stehen in ihrem ADR, und übersetzt wird sie über
-`add_subdirectory(fremd/<name>)` mit. **`find_package()`, `FetchContent`, `ExternalProject`
-und `pkg_check_modules` sind im ganzen Vorhaben verboten** — sie binden den Bau an das, was
-auf dem jeweiligen Rechner gerade installiert ist. Das Verbot ist die eigentliche Vorgabe und
-nicht ein Zusatz zu T23: Ein `find_package(… REQUIRED)` **lädt nichts herunter**, verstösst
-also gegen „der Bau lädt nichts aus dem Netz" nicht und richtet trotzdem genau den Schaden
-an, den `cargo vendor` ausschloss.
+**And every library used lives in the repo, not on the machine of whoever compiles.**
+This is the successor of `cargo vendor`, and it was at first missing in the rewrite to
+C++: the sentence of the previous version had two halves — toolchain pinned,
+dependencies frozen — and only the first became `werkzeugkette.cmake`.
+Concretely, in place of the second: the source lives under `fremd/<name>/`, version
+and commit id stand in its ADR, and it is compiled along via
+`add_subdirectory(fremd/<name>)`. **`find_package()`, `FetchContent`, `ExternalProject`
+and `pkg_check_modules` are banned in the whole venture** — they tie the build to whatever
+happens to be installed on the machine at hand. The ban is the actual rule and
+not an addendum to T23: a `find_package(… REQUIRED)` **downloads nothing**, so it does
+not violate „der Bau lädt nichts aus dem Netz" and still does exactly the damage
+that `cargo vendor` ruled out.
 
-*Warum das heute nichts kostet und trotzdem jetzt dasteht:* Das Vorhaben hat null
-tatsächliche Fremdabhängigkeiten — T2 verbietet sie im Kern, und alle fünf Zeilen der Tabelle
-oben stehen auf „offen" oder „vertagt". Es ist also nichts kaputt, sondern etwas unbewacht.
-Die Zusage dahinter ist der Rückvergleich: Zwei Übersetzungen im Abstand von drei Monaten
-müssen dasselbe Programm ergeben, sonst prüft T31 gegen einen Regressionsbestand, den niemand
-identisch wiederherstellen kann — und der Parameterleser aus der ersten Tabellenzeile ist
-genau die Sorte Bibliothek, deren Fassungswechsel eine Zahl um eine Stelle verschiebt, ohne
-dass irgendetwas abbricht. Eine Vorgabe vor der ersten Bibliothek kostet einen Absatz;
-dieselbe Vorgabe nach der ersten Bibliothek kostet einen Umbau.
+*Why this costs nothing today and still stands here now:* The venture has zero
+actual third-party dependencies — T2 bans them in the core, and all five rows of the table
+above stand on "open" or "deferred". So nothing is broken; something is unguarded.
+The promise behind it is the backtest: two compilations three months apart
+must produce the same program, otherwise T31 checks against a regression baseline that
+nobody can restore identically — and the parameter reader from the first table row is
+exactly the sort of library whose version change shifts a number by one digit without
+anything aborting. A rule before the first library costs a paragraph;
+the same rule after the first library costs a rebuild.
 
-**Ausdrücklich nicht gewählt:** Eine Spiel-Engine (Godot, Unity, Unreal) — sie bringt eine
-Bildschleife, eine Zeitachse und eine eigene Zahlenwelt mit, also genau die drei Quellen
-von Nichtreproduzierbarkeit, die hier ausgeschlossen werden sollen; das Spiel braucht
-Tabellen, Verlaufsgraphen und eine Kettenansicht. Eine Netzoberfläche (Electron, Tauri) —
-JavaScript kennt keinen Ganzzahltyp, und ein versehentliches `/` erzeugt still eine
-Gleitkommazahl. Python — siehe die Rechnung in Abschnitt 10. Steamworks-SDK — für den
-ersten Titel nicht nötig (keine Erfolge, kein Wolkenspeicher), also eine Abhängigkeit und
-ein Konto weniger. **Ein Testrahmen** (GoogleTest, Catch2) — die Proben sind eigenständige
-Programme mit `static_assert` und Rückgabewert, von CTest aufgerufen; das kostet keine
-Abhängigkeit und macht die Hälfte der Prüfungen zu Übersetzungsfehlern statt zu
-Laufzeitmeldungen.
+**Expressly not chosen:** A game engine (Godot, Unity, Unreal) — it brings a frame
+loop, a timeline and a numeric world of its own, that is exactly the three sources
+of non-reproducibility that are to be excluded here; the game needs
+tables, history graphs and a chain view. A web UI (Electron, Tauri) —
+JavaScript has no integer type, and an accidental `/` silently produces a
+floating-point number. Python — see the calculation in section 10. The Steamworks SDK —
+not needed for the first title (no achievements, no cloud saves), hence one dependency and
+one account fewer. **A test framework** (GoogleTest, Catch2) — the tests are standalone
+programs with `static_assert` and return value, invoked by CTest; that costs no
+dependency and turns half of the checks into compile errors instead of
+runtime messages.
 
 ## 2. Der deterministische Kern
 
