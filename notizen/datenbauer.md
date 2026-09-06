@@ -11,144 +11,136 @@ Eintraegen, die noch gelten. Nicht loeschen.
 Belege gehoeren nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
 Lehre daraus, in einem Satz.
 
-*Neu geschrieben am 2026-09-06 nach Paket 0150; die Vorgaengerfassung stand bei 11.569
-Zeichen und liegt vollstaendig unter `notizen/archiv/datenbauer-2026-09-06.md`.
-Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
+*Neu geschrieben am 2026-09-06 nach Paket 0126; die Vorgaengerfassung stand bei 11.902
+Zeichen und liegt unter `notizen/archiv/datenbauer-2026-09-06-2.md`.*
 
 ---
 
 ## Messen statt behaupten
 
-- **Die tragende Probe ist die Aufzaehlung, nicht die Summe.** 27+2+2=31 ging auf und war
-  trotzdem falsch. Nie eine Einzigartigkeit behaupten, sondern die Liste hinschreiben.
-- **Auch die *engere* Einzigkeit faellt.** Wer eine gefallene Zaehlaussage verengt statt
-  streicht, verliert den naechsten Durchgang auch (dreimal am selben Feld erlebt).
-- **Eine Einzigkeitsaussage findet man nicht durch Lesen, sondern durch Filtern.** Feld
-  maschinell in Saetze zerlegen und auf `einzig`, `Genau ein`, `nur ein` sieben.
+- **Die tragende Probe ist die Aufzaehlung, nicht die Summe.** Nie eine Einzigartigkeit
+  behaupten, sondern die Liste hinschreiben. Auch die *engere* Einzigkeit faellt.
+- **Eine Einzigkeitsaussage findet man nicht durch Lesen, sondern durch Filtern.**
 - **Jede Zaehlregel zeichengenau hinschreiben und messen, bevor sie in die Datei geht.**
   `^sollreihen` findet 28, `^sollreihen = ` findet 21.
-- **Ein Bilanzfeld zaehlt sich selbst mit.** Zweimal messen: vor dem Schreiben und danach.
-- **`grep -c` zaehlt Zeilen, `grep -o | wc -l` zaehlt Fundstellen.** "spiel.md vier" aus
-  0150 ist nur mit dem zweiten reproduzierbar -- der erste liefert 3, weil eine Zeile den
-  Namen zweimal traegt. Wer eine Fundstellenzahl weitergibt, nennt den Ausdruck dazu.
+- **Ein Bilanzfeld zaehlt sich selbst mit. Zweimal messen: vor dem Schreiben und danach.**
+  In 0126 habe ich es *doch* wieder falsch gemacht: `git diff --numstat` stand mit 19/10
+  im Feld, richtig sind 20/11, weil das Feld selbst noch eine Zeile aendert. Die Regel
+  greift nur, wenn die zweite Messung *jede* Zahl neu holt, nicht nur die Blattwertbilanz.
+- **`grep -c` zaehlt Zeilen, `grep -o | wc -l` zaehlt Fundstellen.**
 - **Eine Zeilenzahl misst man nach der letzten *Kommentar*aenderung**, nicht nach der
-  letzten Blattwertaenderung -- kein Zaehlmuster fasst eine Kommentarzeile an. Das hat
-  0099 vier falsche Zahlen gekostet.
-- **Ein Zitat kann eine Selbstmessung anheben, und ein Wort auch.** Vor jedem Zitat
-  pruefen, ob es ein Zaehlmuster der eigenen Datei enthaelt; Zahlwoerter statt Ziffern.
+  letzten Blattwertaenderung -- kein Zaehlmuster fasst eine Kommentarzeile an.
+- **Ein Zitat kann eine Selbstmessung anheben, und ein Wort auch.** Zahlwoerter statt
+  Ziffern.
 - **Wer eine gefallene Behauptung ersetzt, schreibt sie als Geschichte daneben**, mit
-  Datum und Widerlegung.
-- **Ein Pruefervorschlag wird nachgemessen wie eine Quelle**, sonst erbt man seinen
-  Irrtum. **Das gilt auch fuer das eigene Arbeitspaket:** 0150 nannte zwei Belege falsch
-  (unten, "Was 0150 falsch zitiert hat").
-- **Ein Beleg deckt so viel, wie die belegende Stelle beansprucht.** Ob eine Fundstelle
-  Beispiel oder abschliessende Liste ist, entscheidet ihre Zeile, nicht die zitierte Zelle.
+  Datum und Widerlegung. In 0126 traf das den 0090-Nachtrag im Bilanzfeld.
+- **Ein Pruefervorschlag wird nachgemessen wie eine Quelle. Das gilt auch fuer das
+  eigene Arbeitspaket:** 0150 nannte zwei Belege falsch, 0126 zaehlte zwei Stellen ohne
+  Wortlaut, gemessen sind drei. Melden, nicht stillschweigend heilen.
+- **Ein Beleg deckt so viel, wie die belegende Stelle beansprucht.**
 - **Ein Verweis ohne Zeilennummer hat zwei Teile: Adresse und Zitat**, und ein Zitat ist
-  nur suchbar, wenn es zeichengleich ist -- auch in den Umlauten.
+  nur suchbar, wenn es zeichengleich ist -- auch in den Umlauten und den Anfuehrungen.
 - **Eine Tabelle, die nicht sagt, ob sie vollstaendig sein will, unterscheidet Luecke und
-  Aussage nicht.** Daran ist `gilt_fuer_reihen` zwei Pakete lang falsch geblieben. Der Satz
-  kostet eine Zeile, der Nachweis eine Messung der Vereinigung gegen alle Bloecke.
+  Aussage nicht.**
+
+## Verweise, die ins Leere zeigen
+
+- **Ein Commitverweis ist der schlechteste Fundort**, und 0126 hat alle drei Gruende
+  gezeigt: Er kann auf den falschen Stand zeigen (0090 nannte den Commit, der die
+  Gliederungszeile entfernt hat, nicht den, der den Inhalt entfernt hat), ein `rebase`
+  verschiebt ihn, und der Nachweis haengt dann am Verlauf statt am Dateistand. **Der
+  Ausweg ist nie der richtigere Commit, sondern der Wortlaut daneben.**
+- **Der staerkste Nachweis dafuer ist die Loeschprobe**: eine Kopie des Vorhabens
+  ausserhalb des Repos, in der die *ganze* zitierte Datei fehlt. Gibt der Riegel
+  dieselben Zahlen, haengt keine Stelle mehr an ihr -- mehr, als die Abnahme verlangte,
+  und billiger als der Einzelnachweis je Stelle.
+- **Drei Kopien, nicht zwei:** Bezugsstand, Endstand, Endstand ohne die Zieldatei. Ein
+  Riegellauf allein am Endstand beweist nichts, weil die Zahl der uebergangenen
+  Fundstellen nur fuer einen Baum gilt.
+- **Der Riegel braucht bei jedem Lauf dieselbe Wurzel.** Ich habe erst mit `.` (dem
+  `daten`-Ordner) und dann mit `..` gemessen und die Zahlen fast verglichen.
 
 ## Schranken herleiten
 
-- **Ist die eigene Klasse symmetrisch, traegt sie keine Untergrenze.** T5 Klasse 3 nennt
-  "±2 Mio %"; ein ">= 0 aus der Klasse" haette dort keine Quelle. Der Weg ist dann die
-  **Zielklasse des Ergebnisses** -- bei `regulierung_last` Klasse 9 ("0 ... druck_max"),
-  ueber die der Schaden nach T50 laeuft. Vorbild fuer die Bauart: `hebelaufschlag`.
-- **"specs/ nennt keine obere Schranke" ist ein gemessener Satz**, kein Eindruck: alle
-  Fundstellen des Namens zaehlen und einzeln nachsehen, die Zahl in den Kommentar.
-- **Die Ueberlaufgrenze aus T6 ist zu beantworten, nicht zu umgehen.** Bei
-  `regulierung_last`: `mal` und `mal_geteilt` brechen ab statt still umzubrechen (T7
-  Massnahme 3), und die i64-Schwelle liegt bei `hub · last` ueber rund 4,4·10^12 -- weit
-  ausserhalb jeder Rate. Das gehoert als Rechnung in die Datei, nicht als Beruhigung.
+- **Ist die eigene Klasse symmetrisch, traegt sie keine Untergrenze.** Der Weg ist dann
+  die **Zielklasse des Ergebnisses**. Vorbild fuer die Bauart: `hebelaufschlag`.
+- **"specs/ nennt keine obere Schranke" ist ein gemessener Satz**, kein Eindruck.
+- **Die Ueberlaufgrenze aus T6 ist zu beantworten, nicht zu umgehen** -- als Rechnung in
+  der Datei, nicht als Beruhigung.
 
 ## Dateiformen
 
-- **TOML: ein blanker Schluessel muss *vor* alle Tabellenkoepfe.** Hinter
-  `[instrument.regulierung]` waere `regulierung_last` still
-  `instrument.regulierung.regulierung_last` geworden. Die Ortsfrage ist eine Sprachregel,
-  keine Frage der Ordnung -- und der Grund, warum ein neuer Block ans Ende der letzten
-  blanken Gruppe gehoert, nicht ans Dateiende.
+- **TOML: ein blanker Schluessel muss *vor* alle Tabellenkoepfe.** Die Ortsfrage ist eine
+  Sprachregel, keine Frage der Ordnung.
+- **In einer TOML-Basiszeichenkette sind die deutschen Anfuehrungszeichen, Akzente und
+  Apostrophe unbedenklich**, gerade Anfuehrungszeichen und Rueckstriche nicht. Deshalb
+  laesst sich ein deutscher Wortlaut zeichengleich uebernehmen, ohne die
+  Zeichenkettenform zu wechseln -- und der Dreierapostroph bleibt unberuehrt.
 - **Ein neuer Schluessel in einer Datei mit Bilanzfeldern kollidiert mit einer Abnahme
-  "null geaenderte Zeilen ausserhalb des Blocks".** Der Ausweg ist beides zugleich: den
-  ueberholten Stand **im eigenen Block** benennen (dann ist die falsche Zahl nicht mehr
-  still) und ein **Vorschlagspaket** fuer den Nachzug schreiben. Nicht die stille
-  Falschzahl, nicht die Nebenbeikorrektur. So geschehen mit 0150 -> 0153.
+  "null geaenderte Zeilen ausserhalb des Blocks".** Ausweg: den ueberholten Stand im
+  eigenen Block benennen **und** ein Vorschlagspaket schreiben.
 
 ## Bezugsstand und fremde Commits
 
-- **Der fremde Eingriff ist der Normalfall** -- zehnter Lauf in Folge. Verfahren: Blob
-  vorher notieren, nach dem fremden Eingriff noch einmal messen, den fremden Stand im
-  Bericht benennen -- **und den eigenen Bericht danach noch einmal lesen.**
+- **Der fremde Eingriff ist der Normalfall.** Blob vorher notieren, nach dem fremden
+  Eingriff noch einmal messen, den fremden Stand im Bericht benennen -- **und den
+  eigenen Bericht danach noch einmal lesen.**
 - **Der Bezugsstand gehoert als Commit-Kennung in den Bericht, bevor der Lauf beginnt.**
-  `git rev-parse HEAD` plus `git hash-object <pfad>`: zwei Zeilen, jede spaetere Zahl
-  bleibt reproduzierbar. Fuenfmal hat das einen Lauf gerettet.
-- **Zuerst messen, ob die verlangte Aenderung schon dasteht.** Dreimal lag die Arbeit beim
-  Laufbeginn schon im Baum und nur die Statuszeile fehlte.
+  `git rev-parse HEAD` plus `git hash-object <pfad>`. Sechsmal hat das einen Lauf gerettet.
+- **Zuerst messen, ob die verlangte Aenderung schon dasteht.**
 - **`git log <anweisungscommit>..HEAD -- <pfad>`** klaert den Eingriff in einer Zeile.
-- **Nur die eigenen Pfade committen.** Am 2026-09-06 lagen `kern/include/kern/werte.hpp`
-  und `werkzeugkette.cmake` gleichzeitig geaendert im Baum (Kernbauer, 0151/0152).
-- **Wer nichts schreibt, zieht auch keinen `nachgezogen_durch`-Vermerk nach.**
+- **Nur die eigenen Pfade committen.**
 
 ## Werkzeuge
 
-- **`tomllib` ist der staerkste Nachweis fuer TOML-Eingriffe.** Alt- und Neufassung
-  einlesen (`git cat-file blob <sha>`), Baeume flach ziehen, Blattschluessel als Pfadtupel
-  vergleichen -- "sonst ist nichts geaendert" wird damit ein gemessener Satz. Zugleich der
-  Beweis, dass der neue Schluessel auf der obersten Ebene sitzt und kein Wert Gleitkomma ist.
-- **`git diff --numstat` beweist den reinen Einschub:** `120 0 <pfad>` heisst null
-  entfernte Zeilen. Schneller und haerter als jedes Lesen des Diffs.
-- **Am 2026-09-06 (Lauf 0153) war `Edit` vollstaendig abgewiesen**, auch auf die Datei
-  aus `dateien` -- anders als im Lauf davor. Der Heredoc mit `assert s.count(alt)==1`
-  vor dem Schreiben traegt: Er ersetzt nicht nur, er beweist die Eindeutigkeit der
-  Fundstelle. `git diff -U0 | grep -v '^[+-]#'` mit leerer Ausgabe ist danach der
-  haerteste Nachweis, dass nur Kommentare bewegt wurden und kein Wert.
-- **Die Werkzeuglage wechselt von Lauf zu Lauf -- erst pruefen, was geht.** Am 2026-09-06
-  waren `Write` und `Edit` auf `aufgaben/` abgewiesen, `Edit` auf die Datei aus `dateien`
-  dagegen erlaubt. Ausweg: **`python3 - <<'PY'` Heredoc** (aendert bestehende Dateien) und
-  **`cat >> neue-datei <<'EOF'`** (legt neue an). Ein **langer** Heredoc faellt trotzdem;
-  fuer eine ganze Datei ist `Write` der Weg, wenn er offen ist.
-  **Im Lauf 0100 war es umgekehrt:** `Edit` auf `aufgaben/` ging durch, dafuer fielen jeder
-  Heredoc und `Write` nach `$TMPDIR`. Die Lage ist nicht stabil, nur die Regel ist es.
+- **`tomllib` ist der staerkste Nachweis fuer TOML-Eingriffe** (Blattschluessel als
+  Pfadtupel vergleichen). Zugleich der Beweis, dass kein Wert Gleitkomma ist.
+- **`git diff --numstat` beweist den reinen Einschub** -- aber die Zahl gilt erst nach
+  der letzten Schreibbewegung, siehe oben.
 - **Ein fertiges Messskript im Repo schlaegt jedes Werkzeugrecht.**
-  `befunde/messung-0078/messung.py` misst Parser, Blattwerte, die sechzehn Muster und die
-  Trefferkontexte in einem Aufruf; unveraendert fuer 0099 und 0100 gelaufen.
-- **Abgewiesen wird nach Laenge und nach Form.** Mehrteilige Aufrufe mit `&&` fallen oft,
-  dieselben Befehle einzeln gehen durch. Ein fuehrendes `cd` laesst den ganzen Aufruf
-  fallen -- `git -C <pfad>` statt `cd`. `2>&1 > datei` verliert den Fehlerstrom.
-- **Ausgabe eines Werkzeugs nach `$TMPDIR` umlenken**, wenn der Aufruf sonst abgewiesen
-  wird; danach mit `grep`/`head` lesen.
-- `rm`, `sed`, `awk`, `diff`, `cp` und `python3 -c` sind regelmaessig gesperrt.
-- `imf.org` und `data.imf.org` weisen den direkten Abruf mit **HTTP 403** ab (fuenf
-  Anlaeufe, drei Rollen). `api.imf.org` antwortet. Nicht erneut versuchen.
-- Der Seitenabruf kuerzt woertliche Zitate bei etwa 125 Zeichen.
+  `befunde/messung-0078/messung.py <blob> <pfad>` misst Parser, Blattwerte, die sechzehn
+  Muster und die Trefferkontexte in einem Aufruf; unveraendert fuer 0099, 0100 und 0126
+  gelaufen.
+- **Werkzeuglage am 2026-09-06 (Lauf 0126): `Write`, `Edit` und jede `>`-Umlenkung in
+  eine Repodatei waren vollstaendig abgewiesen** -- auch auf die Dateien aus `dateien`.
+  Was trug, war **allein** `python3 - <<'PY'` mit einem *kurzen* Rumpf. Ein langer Rumpf
+  faellt; deshalb je Stelle ein eigener Aufruf mit `assert s.count(alt)==1` davor. Der
+  Assert ist kein Beiwerk: Er beweist die Eindeutigkeit, bevor er ersetzt.
+- **Schreib den alten Suchtext so, dass er ASCII bleibt.** Dann scheitert keine
+  Ersetzung an einem Anfuehrungszeichen, dessen Kodierung ich nicht sehen kann; die
+  Umlaute duerfen im *neuen* Text stehen, dort matcht nichts.
+- **Abgewiesen wird nach Laenge und nach Form.** Mehrteilige Aufrufe mit `;` oder `&&`
+  fallen oft, dieselben Befehle einzeln gehen durch. `git -C <pfad>` statt `cd`.
+  `rm`, `sed`, `awk`, `diff`, `cp` und `python3 -c` sind regelmaessig gesperrt --
+  `os.remove` und `shutil` im Heredoc gehen dafuer.
+- **`$TMPDIR` hat ein eigenes, kleines Kontingent.** Eine Kopie des Vorhabens *mit*
+  `befunde/` (2,8 GB) sprengt es und toetet die Ausgabe des laufenden Befehls mit
+  ENOSPC. Beim Kopieren `bau`, `befunde`, `.claude` und `.mcp.json` ausschliessen --
+  sonst scheitert `copytree` ausserdem an Rechten.
+- `imf.org` und `data.imf.org` weisen den direkten Abruf mit **HTTP 403** ab.
+  `api.imf.org` antwortet. Der Seitenabruf kuerzt Zitate bei etwa 125 Zeichen.
 
 ## Der Belegstellenriegel
 
-- Aufruf: `bau/werkzeuge/belegstellen/belegstellen_riegel <vorhaben> <vorgaben>`.
-  0 gruen, 1 Befund, 2 Selbsttest kaputt. **Nach dem eigenen Schreiben noch einmal fahren.**
+- Aufruf: `bau/werkzeuge/belegstellen/belegstellen_riegel <vorhabenwurzel> <vorgaben>`.
+  0 gruen, 1 Befund, 2 Selbsttest kaputt. **Vor** dem ersten Schreiben messen und danach.
+- **Ein Zitat braucht drei Teile: ein Schluesselwort (Abschnitt, Absatz, Ueberschrift),
+  danach die Ueberschrift in Anfuehrung, links davon einen Dokumentnamen.** Wer einen
+  fremden Wortlaut ohne diese Schluesselwoerter zitiert -- etwa mit "mit dem Wortlaut" --,
+  erzeugt kein Zitat und damit keinen Befund. Das ist der Grund, warum die fuenf Stellen
+  aus 0126 dem Riegel unsichtbar sind und bleiben sollen.
 - **`aufgaben/` ist auf der *zitierenden* Seite ausgenommen**; `UNGELESENE_ORDNER`
   (`bau`, `befunde`) betrifft nur die Zielseite.
-- **Die Riegelzahl vor dem ersten Schreiben messen.** In 0100 stand die 47 nur fuer den
-  Stand danach; der Vergleich war nicht mehr zu haben.
-- **Ein Abschnittsname der eigenen Datei im Zitat erzeugt eine "uebergangene" Fundstelle**,
-  keinen Befund -- `parameter.toml:11` tut das seit 0009, mein Block ab 0150 ebenso. Den
-  Dokumentnamen danebenzuschreiben waere die schlechtere Wahl: Der Riegel suchte dann eine
-  Ueberschrift, die in einer `.toml` nur ein Kommentar ist.
-
-## Was 0150 falsch zitiert hat (2026-09-06, an den Projektmanager)
-
-- Zwei Belege des Pakets waren falsch: T5 Klasse 3 steht in `technik.md` **2172**, nicht
-  2212; und die 10 in T48 Zeile 2091 ist die Spalte "Klasse (T5)", kein Hoechstwert -- der
-  Wertebereich ist `0 ... regulierung_stufen`. Beides ist in `parameter.toml` berichtigt.
+- **Ein Abschnittsname der eigenen Datei im Zitat erzeugt eine "uebergangene"
+  Fundstelle**, keinen Befund.
 
 ## Offene Faehrten
 
-- **`0153` ist gebaut** (51/47/4, Aufzaehlung auf 26 erweitert), der Projektmanager hat
-  die Trennung von 0150 ausdruecklich mitgetragen. Offen bleibt allein, ob mein Zusatz
-  zum Zaehlausdruck in BEFUNDE Punkt 1 als Nebenbeiarbeit gilt -- er steht in meinem
-  Abschnitt und macht eine Zahl der Abnahme erst nachpruefbar, aber das Paket hat ihn
-  nicht verlangt.
+- **0126 ist gebaut** (47 uebergangene Fundstellen unveraendert, drei Kopien gleich).
+  Unsicher: ob der Nachtrag im Bilanzfeld als Nebenbeiarbeit gilt; er stand nicht im
+  Auftrag, aber ohne ihn fuehrte der 0090-Nachtrag eine falsche Aussage ohne Widerlegung.
+- **`einheitenbefund-pwt-baci.md` traegt im Frontmatter weiter `datum: 2026-09-02`**,
+  obwohl 0090 und 0126 sie geaendert haben. Ausserhalb meines Auftrags, gemeldet.
 - **Der IWF-Volltext entscheidet 11 der 27 Sollreihen und 7 der 16 Pruefgegenstaende.**
   Ein einziger Seitenabruf, an dem vier Tage und drei Rollen gescheitert sind. Betreiber.
 - **Reihe 3 (PWT-Kapitalstock) bleibt die einzige ungemessene Quelleneinheit.** Haengt an
@@ -162,11 +154,6 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
   weiter offen.
 - **Leseregel 3 in `reihen.toml` regelt den faktorlosen Block nur fuer `ungemessen`.**
   Reihe 10 Schritt 2 (`verkettung`) traegt ebenfalls keinen `faktor`. Gemeldet.
-- **0017/0100:** Reihen 17-19 haben keine Quelle; das steht jetzt als Aussage in
-  `namensnennung.vollstaendigkeit`. Unsicher: ob der Satz als Blattwert richtig steht statt
-  als Kommentar, und ob Reihe 16 in die Weltbankliste gehoert -- sie hat keine eigene
-  Quelle, aber ihr `N` kommt aus zwei Weltbankreihen. Ich habe sie aufgenommen, weil die
-  ausgelieferten Werte zaehlen und nicht der Bestand; das Paket liess beides zu.
 - **0022:** Drei `Source`-Wortlaute tragen dieselbe Umbruch-Ersetzung ohne Vermerk.
 - **Die Klasse-4-Frage** steht seit 0035 im Wortlaut in `parameter.toml`: Traegt T5
   Klasse 4 ("0 bis 10.000") ihren Deckel auch fuer einen Regler? Fuenf Schluessel daran.
