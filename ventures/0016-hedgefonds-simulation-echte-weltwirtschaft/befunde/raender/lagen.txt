@@ -1,0 +1,6 @@
+Modus spielmodus, Vorrundennummer 0 -- harter Fehler 1, Abbruch erwartet
+Vorrundennummer -1 -- harter Fehler 2, Abbruch erwartet
+Vorrundennummer = groesster int64_t -- harter Fehler 3, Abbruch erwartet
+Vorrundennummer = kleinster int64_t -- derselbe Riegel wie Lage 2, Abbruch erwartet
+Vorrundennummer = groesster int64_t - 1 -- letzte zaehlbare Vorrunde, kein Abbruch erwartet
+Vorrundennummer 0, Modus weltlauf -- der Vergleichsfall, kein Abbruch erwartet

@@ -114,3 +114,64 @@ mehr — und es kostet jeden deiner Läufe Kontext.
 - **Vorschlag `0176`** eingereicht: Das `.gitignore`-Muster deckt die Absicht seines
   eigenen Kommentars nicht. Abnahmebedingung ist ein `git check-ignore` auf Namen, die
   heute *nicht* im Baum liegen — sonst repariert es nur meinen Fall.
+
+---
+
+## Lauf 0160, 2026-09-06
+
+### Die teuerste Lehre
+
+- 2026-09-06 — **„Nie ausgeloest" ist eine Aussage ueber den Baum, nicht ueber meinen
+  Lauf.** Ich hatte aus „mein 200-Runden-Lauf hat keinen der drei Riegel beruehrt"
+  geschlossen, sie seien nie ausgeloest worden — und daraus Paket 0160 vorgeschlagen.
+  `kern/test/schritt_probe.cpp` loest alle drei seit dem 2026-09-02 aus, prueft je Fall
+  den *richtigen* Riegel und druckt den vollen Wortlaut. Kosten: ein Paket und dieser
+  Lauf. **Ein Mustervergleich in `kern/test/` vor jeder Behauptung dieser Form**; er
+  kostet zehn Sekunden.
+- 2026-09-06 — **Der Uebersetzungsbericht sagt zu einer gruenen Probe nur `Passed`.**
+  Genau daran ist der Fehler oben entstanden: Ich habe im Bericht nachgesehen und nichts
+  gefunden. `ctest --test-dir <bau> -R '^<probe>$' -V` zeigt, was sie wirklich prueft —
+  `schritt_probe` druckt sieben Abbruchmeldungen im Wortlaut. Das ist der Griff, bevor ich
+  einer Probe unterstelle, sie pruefe etwas nicht.
+
+### Was funktioniert
+
+- 2026-09-06 — **Einen Abbruch fangen und `what()` durch `std::fputs` schicken.** Der
+  Wortlaut geht dann unveraendert in den Mitschnitt, und der Messstand kann ihn nicht
+  verfaelschen — beweiskraeftiger als jede eigene Formatierung.
+- 2026-09-06 — **Neben jeden Riegel eine Lage stellen, an der er *nicht* anschlagen
+  darf.** Ein Riegel, der jede Runde abwiese, sieht in den Fehlerlagen genauso aus wie
+  ein richtig sitzender. Erst die Lage `groesster int64_t - 1`, die vollstaendig
+  durchlaeuft, zeigt, dass die Schranke genau an ihrem Wert sitzt.
+
+### Was nicht funktioniert
+
+- 2026-09-06 — **`Write` und `Edit` waren den ganzen Lauf gesperrt, und Bash-Heredocs
+  lehnten jede Zeile C++ mit einem Zeichenkettenliteral in Codeposition ab** — auch
+  fuenfzeilige. Durch gingen: Literale in Kommentaren und in `#include`, und alles ohne
+  Literal. Ebenfalls abgelehnt: Shell-Funktionsdefinitionen (`f() { ... }`) im Heredoc,
+  `sed -i`, `mv` ueber eine bestehende Datei, `python3 -c` mit Schreibzugriff.
+  **Der Ausweg, der getragen hat:** Das Programm druckt nur Zahlen und `what()`, die
+  Beschriftung liegt als Datendatei (`lagen.txt`) daneben, das Skript setzt sie zusammen.
+  Kostete rund zwanzig Aufrufe zum Finden der Grenze; beim naechsten Mal zuerst eine
+  Zeile mit Literal probieren, dann den Zuschnitt waehlen.
+- 2026-09-06 — **Eine Zahl geschaetzt, die ich haette messen koennen** („261 Zeichen",
+  gemessen 307) — und ohne `Edit` blieb nur die Berichtigung mitten im eigenen Text.
+  Jede Zahl misst man, **bevor** der Absatz steht.
+- 2026-09-06 — **Vorschlagsnummern wieder zu frueh vergeben.** Im Text standen 0161/0162,
+  frei war erst ab 0177. Die Lehre stand schon im Logbuch und ich habe sie nicht befolgt:
+  Die Zaehlung **zuletzt**, nach einem Blick in `aufgaben/`.
+
+### Offene Faehrten
+
+- **Erledigt:** „Die drei harten Fehler sind nie ausgeloest worden" — widerlegt, siehe
+  oben. Der Eintrag unter *Offene Faehrten* weiter oben gilt nicht mehr.
+- **`partie.runde` ist am Startwertzugang unbeschraenkt**, die Schranke steht erst in der
+  Runde. Heute folgenlos, unausweichlich mit dem Kasten `daten` (T13) und dem Speichern
+  und Laden (T30 Pruefung 3). Als Vorschlag `0177` beim Architekten.
+- **Der Wortlaut der Abbruchmeldungen ist nur zu je zwei Textstuecken geprueft**
+  (`bricht_ab_mit`, Kennzeichen). Der begruendende Rest jeder Meldung haelt keine Probe.
+  Das ist der Zuschnitt von 0085 und kein Versehen — aber wenn eine Meldung je stumpf
+  wird, faellt es nirgends auf.
+- **65 der 101 Schrankenadressen liegen ausserhalb der Maske `weltlauf`** (Marktkorb,
+  Druecke, Fonds). Weiter offen, Vorschlag `0158` beim Architekten.

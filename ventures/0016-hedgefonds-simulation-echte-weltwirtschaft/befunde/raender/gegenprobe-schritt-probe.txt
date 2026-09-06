@@ -1,0 +1,37 @@
+UpdateCTestConfiguration  from :/home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/raender/bau-sanitizer-on/DartConfiguration.tcl
+Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/raender/bau-sanitizer-on
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 7
+    Start 7: schritt_probe
+
+7: Test command: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/raender/bau-sanitizer-on/kern/schritt_probe
+7: Working Directory: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/raender/bau-sanitizer-on/kern
+7: Test timeout computed to be: 10000000
+7:   Sollmaske weltlauf = 175, spielmodus = 310 (erwartet 175 und 310)
+7:   Vorrunde 0 -> Runde 1: Pruefsumme bec587d71f6905ff vorher, a28c49f74de4388a nachher; 1 von 310 Groessen geaendert (partie.runde)
+7:   Kette: 175 Glieder (erwartet 175), Runde 1 an jedem Glied
+7:   Vorrunde 9223372036854775806 -> Runde 9223372036854775807: Pruefsumme cedf8f3d65103b52 vorher, 098a309309d1f747 nachher; 1 von 310 Groessen geaendert (partie.runde)
+7:   Kette: 175 Glieder (erwartet 175), Runde 9223372036854775807 an jedem Glied
+7:   Abbruch wie erwartet (Runde nach der letzten zaehlbaren): kern::schritt -- partie.runde der Vorrunde ist 9223372036854775807 und damit der groesste int64_t: eine naechste Runde laesst sich nicht mehr zaehlen. Gelesen aus partie.runde (Nr. 307)
+7:   partie.runde ueber zwei Runden: 0 -> 1 -> 2
+7:   Abbruch wie erwartet (Zugang von vor Runde 1): kern::zustand::Startbelegung::setze -- an diesem Zugang ist eine Runde vorbeigelaufen: partie.runde (Nr. 307) traegt 2, der Zugang hat dort 0 hinterlassen. Startwerte gibt es nur vor der ersten Runde; danach waere jeder eine Aenderung ohne Ursachensatz (T18) und erschiene in der Diff-Ebene als Aenderung ohne Ursache (T20).
+7:   Abbruch wie erwartet (neuer Zugang nach der Runde): kern::zustand::Startbelegung -- die Partie laeuft schon (partie.runde ist nicht null); Startwerte gibt es nur vor der ersten Runde
+7:   Abbruch wie erwartet (Modus spielmodus): kern::schritt -- der Modus spielmodus ist in diesem Rahmen nicht gebaut: seine Sollmaske umfasst alle 310 Adressen, und die Schritte 2 (Aktionen) und 6 (Abrechnung) haben noch kein Paket. Ein stilles Vortragen aller 310 waere eine Falschaussage -- es saehe aus wie eine gerechnete Spielrunde und waere keine
+7:   Abbruch wie erwartet (partie.runde = -1): kern::schritt -- partie.runde der Vorrunde ist -1 und damit negativ: eine Runde vor der ersten gibt es nicht. Gelesen aus partie.runde (Nr. 307)
+7:   Abbruch wie erwartet (partie.runde = kleinster int64_t): kern::schritt -- partie.runde der Vorrunde ist -9223372036854775808 und damit negativ: eine Runde vor der ersten gibt es nicht. Gelesen aus partie.runde (Nr. 307)
+7:   Abbruch wie erwartet (partie.runde = groesster int64_t): kern::schritt -- partie.runde der Vorrunde ist 9223372036854775807 und damit der groesste int64_t: eine naechste Runde laesst sich nicht mehr zaehlen. Gelesen aus partie.runde (Nr. 307)
+7:   Kennzeichen: 7 Meldungen aus 5 Riegeln, 38 fremde und 4 eigene Paare geprueft, 0 Verletzung(en)
+7: schritt_probe: alle Pruefungen bestanden
+1/1 Test #7: schritt_probe ....................   Passed    0.02 sec
+
+The following tests passed:
+	schritt_probe
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.02 sec
