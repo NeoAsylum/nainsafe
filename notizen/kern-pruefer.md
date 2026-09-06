@@ -160,3 +160,18 @@ schreibt eine fremde Rotation zurueck.
   offen, haengt an genau diesem Paket und liest genau diese Datei. Die richtige Antwort
   war eine vierte Bedingung dort, nicht ein Rat ins Blaue. Der Suchlauf gehoert **vor**
   den Absatz, sonst schreibt man ihn zweimal.
+
+## Nachtrag 2026-09-06 (Pruefung 0173) -- naechster Lauf rotiert
+
+- **Die Kostenmessung hat den Vorschlag getoetet, und das war ihr Zweck.** *0173:* Ein
+  Riegel auf "Funktion ohne Kopfkommentar" sah zwingend aus; gemessen tragen im Kern nur
+  24 von 79 Definitionen eine `///`-Zeile darueber, die 55 anderen stehen unter einem
+  Balken. Also Stilvorschrift, kein Befund. Erst messen, dann formulieren.
+- **`git archive` ohne die `befunde` bricht den Konfigurationslauf.** Der Schlussriegel
+  verlangt `befunde/pruefung-0066/nachbau.py`. Messbaum immer ganz ziehen.
+- **Write auf `.py` abgelehnt, `python3 -c` abgelehnt, Write auf `.md` angenommen** --
+  alles am selben Tag. Ersatz fuer das Messskript ist das Grep-Werkzeug mit `multiline`;
+  zwei Muster (mit und ohne Kopfzeile davor) geben Zaehler und Gegenzaehler.
+- **Werden zwei Bloecke getauscht, genuegt je ein zeichengleicher Vergleich gegen die
+  eigene Quelle.** Damit ist "keine Zeile erfunden, keine verloren" schon bewiesen; die
+  Summenrechnung ist nur noch Lesehilfe.
