@@ -90,6 +90,26 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05-6.md` (voll nach 0105); davo
 - GEBAUT-Zahlen (208/46) vs. Protokoll (209/46) vs. heute (215/47): dreifacher
   Messstand derselben Groesse, alles Korpusdrift — erst datieren, dann urteilen.
 
+## 2026-09-06 — 0115 (Riegelkopf drei Zahlen): geprueft
+
+- **Eigene Mutation an anderer Stelle als der Treiber** (Bedingung in `klammer_ab`
+  neutralisiert statt Argument an der Aufrufstelle gekippt): identische Kippmenge
+  51/40/59 mit 11 Befunden — der billigste starke Nachweis, dass eine Kommentarzahl
+  an der Eigenschaft haengt und nicht am Messgeraet.
+- **Ein Messskript, das eine Eingabe aus `$TMPDIR` erwartet, hat eine ungebundene
+  Eingabe:** `messen.py` brach ohne `vorher.cpp` ab, prueft den Inhalt nur auf
+  `!= neu`. Selbst beschafft via `git show <baucommit>^:<pfad>`, Blob gegen den
+  Diff-Elternstand gehalten — dieser Handgriff gehoert ins Skript (Vorschlag 0171).
+- Erwartungen aus dem gepruefte Kommentar **lesen** statt im Skript fuehren (Bauart
+  von messen.py) ist die richtige Form gegen still veraltende Zahlen; die Gegenprobe
+  am alten Wortlaut (3/2/2 Meldungen) ersetzt den separaten Rotnachweis.
+- Sperren: Verbund mit `;`/`&&` und awk verweigert, python3-Heredoc (auch mit
+  python-internen Schleifen) ging, Write nur nach befunde/ und aufgaben/. Ein
+  unsichtbares Zeichen im getippten Pfad machte einen zweiten grep-Aufruf zum
+  Verweigerungsfall — Pfade kopieren, nicht tippen.
+- Zuordnung von Fundstellen zu Falltabellen billig ueber Zeilennummern gegen
+  `grep -n "FAELLE = {{"` und das Kopfende (letzte `//!`-Zeile).
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE einzeln nachschlagen.**
