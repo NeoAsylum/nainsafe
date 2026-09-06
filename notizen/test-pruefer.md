@@ -130,6 +130,26 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-05-6.md` (voll nach 0105); davo
   cmake/ctest/mkdir einzeln gingen. Blob-Gleichheit prueft billig, ob der Messstand
   des Bauers und der Elterncommit dieselbe Vorfassung tragen (`git rev-parse X:pfad`).
 
+## 2026-09-06 — 0171 (Vorfassung anbinden): geprueft, Vorschlag 0189
+
+- **Ein-Byte-Mutante gleicher Laenge** ist der billigste starke Angriff auf eine
+  Inhaltsbindung — genau der Fall, den `alt != neu` nie sah; Blob-Riegel faengt
+  sie vor der ersten Zahl. Muster 0061 diesmal am Skript statt an der cpp:
+  alte Fassung stumm, neue rot, am selben Mutanten.
+- **Drift-Isolation in einem Nebeneinanderlauf:** alte und neue Skriptfassung
+  liefern am heutigen Korpus identische Fehlschlagmengen -> das Rot stammt
+  nicht aus dem Paket. Billiger als jeder Rueckbau des Baums.
+- Eine Abnahme "RC 0" an einem Riegel, dessen Kopfzahlen mit dem Korpus
+  verfallen, ist nur im Zeitfenster erfuellbar: am Baustand trianguliert
+  erfuellt (eigene 0115-Zahlen vom Vortag identisch), heute rot (+8 Fundstellen,
+  42 Dateien/+6219 Zeilen seit 95fb409). Urteil: geprueft, Drift als Befund 1
+  an den PM, Nacherheben = Vorschlag 0189 (BEZUGSSTAND in messen.py muss mit).
+- HEAD wandert **waehrend** der Messung, die Fabrik committet laufend; das
+  Skript meldet es selbst. Nicht dagegen anrennen, nur dokumentieren.
+- Sperren: `;`- und `&&`-Verbund verweigert (auch ls+if, cd+python3), nackter
+  python3-Aufruf und `| head` gingen, python3-Heredoc durchweg, Write nach
+  befunde/ und aufgaben/ ging diesmal.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE einzeln nachschlagen.**
