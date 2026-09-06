@@ -230,10 +230,30 @@
 # `regulierung_start` in der Kopplungszeile zu `regulierung_stufen`. Die
 # erste **verfaelscht die Zahl** -- dieser Name traegt sonst nirgends
 # eine Marke, aus 25 wuerden 26.
-# **`sort -u`** zaehlt ueber verschiedene Namen statt ueber Fundstellen,
-# weil ein Name seine Marke mehrfach tragen darf: `regulierung_start` tat
-# das schon am 2026-09-03, als die Pruefungen zu 0042 und 0053 "26
-# Treffer auf 25 verschiedenen Namen" notierten.
+# **`sort -u`** zaehlt ueber verschiedene Namen statt ueber Fundstellen.
+# Das ist Vorsorge, nicht der Ausgleich eines beobachteten Falls: **Kein
+# Name hat in dieser Datei je zwei echte Marken getragen.** Gemessen
+# ueber alle zwoelf Fassungen -- fuer jeden Commit, der die Datei
+# angefasst hat, ihren Blob durch den Ausdruck mit dem Fettdruckfilter,
+# einmal mit und einmal ohne `sort -u` -- war die Fundstellenzahl jedes
+# Mal gleich der Namenszahl, 25 zu 25. Auf dem heutigen Stand liefert
+# der Ausdruck ohne `sort -u` darum dieselbe Zahl wie mit ihm:
+#   grep -o '`[a-z_0-9]*`\*\*\?' parameter.toml | grep -v '\*\*$' | wc -l   -> 25
+# Bis Paket 0193 stand hier, `regulierung_start` habe seine Marke am
+# 2026-09-03 mehrfach getragen, belegt mit "26 Treffer auf 25
+# verschiedenen Namen" aus den Pruefungen zu 0042 und 0053. Beide Zahlen
+# gibt es, aber sie sind **ohne** den Fettdruckfilter gemessen und
+# belegen darum den Fettdruck von Markdown, nicht eine zweite Marke --
+# auf dem Stand adfdd37 vom 2026-09-03, von der Vorhabenwurzel aus heute
+# noch nachmessbar:
+#   git show adfdd37:ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml \
+#     | grep -o '`[a-z_0-9]*`\*' | wc -l               -> 26
+#   git show adfdd37:ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml \
+#     | grep -o '`[a-z_0-9]*`\*' | sort -u | wc -l     -> 25
+# Die eine Fundstelle, die den Unterschied macht, ist `regulierung_start`
+# am Ende eines fett gesetzten Satzes; seine echte Marke steht daneben
+# und bleibt gezaehlt. Es ist derselbe Fettdruck, den der andere Zusatz
+# oben herausfiltert -- damals an einer Stelle, heute an zweien.
 # Der Ausdruck faellt nicht auf seinen eigenen Wortlaut herein: Auf jede
 # Rueckwaerts-Anfuehrung in ihm folgt ein Zeichen, das er nicht sucht.
 # Die Gegenprobe von der anderen Seite ist dieselbe wie oben: 25

@@ -32,29 +32,29 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  6%] Built target bezeichner_riegel
-[  6%] Built target belegstellen_riegel
-[  9%] Built target mutationstreiber
-[ 16%] Built target pruefstand_geprueft
-[ 30%] Built target kern_geprueft
-[ 37%] Built target pruefstand
-[ 36%] Built target zahlwort_riegel
+[ 10%] Built target pruefstand_geprueft
+[ 10%] Built target belegstellen_riegel
+[ 12%] Built target pruefstand
+[ 15%] Built target zahlwort_riegel
+[ 18%] Built target mutationstreiber
+[ 37%] Built target bezeichner_riegel
+[ 36%] Built target kern_geprueft
 [ 54%] Built target kern
-[ 57%] Built target meldung_probe
-[ 63%] Built target vorrat_probe
+[ 60%] Built target vorrat_kernanker_probe
+[ 60%] Built target vorrat_probe
 [ 63%] Built target festkomma_probe
-[ 66%] Built target vorrat_kernanker_probe
-[ 69%] Built target vorrat_verfahren_probe
-[ 72%] Built target pruefsumme_probe
-[ 75%] Built target aktion_probe
-[ 78%] Built target schranken_probe
-[ 83%] Built target schreiber_probe
-[ 84%] Built target schritt_probe
-[ 87%] Built target verlauf_probe
-[ 90%] Built target werte_probe
-[ 98%] Built target zustandsausgabe_probe
-[100%] Built target zufall_probe
-[100%] Built target zustand_probe
+[ 66%] Built target vorrat_verfahren_probe
+[ 72%] Built target schranken_probe
+[ 72%] Built target aktion_probe
+[ 75%] Built target werte_probe
+[ 78%] Built target schritt_probe
+[ 84%] Built target zufall_probe
+[ 84%] Built target meldung_probe
+[ 87%] Built target pruefsumme_probe
+[ 90%] Built target schreiber_probe
+[ 93%] Built target verlauf_probe
+[ 96%] Built target zustand_probe
+[100%] Built target zustandsausgabe_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -92,17 +92,17 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 15: vorrat_verfahren_probe
 15/19 Test #15: vorrat_verfahren_probe ...........   Passed    0.01 sec
       Start 16: belegstellen_riegel
-16/19 Test #16: belegstellen_riegel ..............   Passed    7.51 sec
+16/19 Test #16: belegstellen_riegel ..............   Passed    7.47 sec
       Start 17: bezeichner_riegel
 17/19 Test #17: bezeichner_riegel ................   Passed    0.37 sec
       Start 18: schlussriegel_nachbau
-18/19 Test #18: schlussriegel_nachbau ............   Passed    0.55 sec
+18/19 Test #18: schlussriegel_nachbau ............   Passed    0.54 sec
       Start 19: zahlwort_riegel
 19/19 Test #19: zahlwort_riegel ..................   Passed    0.03 sec
 
 100% tests passed, 0 tests failed out of 19
 
-Total Test time (real) =   8.74 sec
+Total Test time (real) =   8.69 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -119,20 +119,20 @@ Total Test time (real) =   8.74 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 23%] Built target kern
-[ 47%] Built target kern_geprueft
-[ 52%] Built target pruefsumme_probe
-[ 67%] Built target schranken_probe
-[ 67%] Built target meldung_probe
-[ 67%] Built target aktion_probe
-[ 69%] Built target schritt_probe
-[ 73%] Built target zustandsausgabe_probe
-[ 78%] Built target festkomma_probe
-[ 82%] Built target zufall_probe
-[ 86%] Built target werte_probe
-[ 91%] Built target zustand_probe
-[ 95%] Built target schreiber_probe
-[100%] Built target verlauf_probe
+[ 26%] Built target kern_geprueft
+[ 47%] Built target kern
+[ 56%] Built target festkomma_probe
+[ 56%] Built target meldung_probe
+[ 60%] Built target pruefsumme_probe
+[ 65%] Built target schranken_probe
+[ 69%] Built target werte_probe
+[ 73%] Built target schreiber_probe
+[ 93%] Built target verlauf_probe
+[ 93%] Built target aktion_probe
+[ 93%] Built target zufall_probe
+[ 93%] Built target zustand_probe
+[ 95%] Built target schritt_probe
+[100%] Built target zustandsausgabe_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -156,7 +156,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  8: verlauf_probe
  8/12 Test  #8: verlauf_probe ....................   Passed    0.02 sec
       Start  9: werte_probe
- 9/12 Test  #9: werte_probe ......................   Passed    0.01 sec
+ 9/12 Test  #9: werte_probe ......................   Passed    0.02 sec
       Start 10: zufall_probe
 10/12 Test #10: zufall_probe .....................   Passed    0.01 sec
       Start 11: zustand_probe
@@ -182,11 +182,11 @@ Total Test time (real) =   0.24 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand_geprueft
 [ 50%] Built target pruefstand
-[ 66%] Built target vorrat_probe
-[ 83%] Built target vorrat_verfahren_probe
-[100%] Built target vorrat_kernanker_probe
+[ 50%] Built target pruefstand_geprueft
+[ 83%] Built target vorrat_probe
+[ 83%] Built target vorrat_kernanker_probe
+[100%] Built target vorrat_verfahren_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -226,11 +226,11 @@ Total Test time (real) =   0.04 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/1 Test #1: belegstellen_riegel ..............   Passed    7.64 sec
+1/1 Test #1: belegstellen_riegel ..............   Passed    7.44 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   7.64 sec
+Total Test time (real) =   7.44 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -258,7 +258,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.37 sec
+Total Test time (real) =   0.36 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)

@@ -534,6 +534,49 @@ def commitpfade(gegenstand: str | None, rolle: str, breit: list[str]) -> list[st
     return erlaubt or breit
 
 
+LOGBUCH_MAX = 12_000
+
+
+def logbuch_rotieren(rolle: str) -> str | None:
+    """Rotates an oversized logbook into notizen/archiv/ and leaves a short head.
+
+    The 12,000-character cap is the roles' own convention, and most of them honour it by
+    hand. Three could not: `architekt`, `projektmanager` and `geschaeftsfuehrer` each
+    reported to the operator that copying into `notizen/archiv/` was denied them, and
+    they struck entries instead of archiving — against house rule 3. Since 2026-09-06
+    `Bash` is denied globally, so no role can do it any more.
+
+    So the runner does it. It never deletes: the full file moves to the archive, and the
+    new logbook names its predecessor. The agent writes the next entry into an empty
+    book, which is also why this runs *after* the run and not before.
+    """
+    datei = WURZEL / "notizen" / f"{rolle}.md"
+    try:
+        text = datei.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    if len(text) <= LOGBUCH_MAX:
+        return None
+
+    archiv = WURZEL / "notizen" / "archiv"
+    archiv.mkdir(parents=True, exist_ok=True)
+    heute = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    n = 1
+    while (ziel := archiv / f"{rolle}-{heute}-{n}.md").exists():
+        n += 1
+    ziel.write_text(text, encoding="utf-8")
+
+    kopf = text.split("\n\n", 1)[0].strip()
+    datei.write_text(
+        f"{kopf}\n\n"
+        f"Rotated by the runner on {heute} at {len(text)} characters "
+        f"(cap {LOGBUCH_MAX:,}). Predecessor: `notizen/archiv/{ziel.name}`.\n"
+        f"Carry forward only what holds beyond a single package; the rest is in the\n"
+        f"predecessor and stays readable.\n\n",
+        encoding="utf-8")
+    return ziel.name
+
+
 def frisch_geschrieben(pfade: list[str], seit: float) -> int:
     """Wie viele Dateien in den Schreibpfaden nach `seit` veraendert wurden.
 
@@ -786,6 +829,9 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
     breit = schreibpfade(werkzeuge)
     pfade = commitpfade(gegenstand, rolle, breit)
     commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id, pfade)
+    rotiert = logbuch_rotieren(rolle)
+    if rotiert:
+        print(f"  Logbuch rotiert -> notizen/archiv/{rotiert}")
     tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
 
     # Nichts zu committen heisst nicht, dass nichts entstanden ist: Bei parallelen

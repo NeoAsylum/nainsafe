@@ -48,6 +48,12 @@ pruefe "origin zeigt nicht mehr auf /mnt/c"        bash -c "cd '$ZIEL' && ! git 
 pruefe "nichts Uncommittetes liegen geblieben"     bash -c "cd '$ZIEL' && S=\$(cat ops/tageslauf.sperre 2>/dev/null) && kill -0 \"\$S\" 2>/dev/null && exit 0; test -z \"\$(git status --porcelain)\""
 
 echo
+
+echo
+
+pruefe "Heisser Satz unter 40.000 Zeichen"        bash -c "test \$(cat '$ZIEL/CLAUDE.md' '$ZIEL/notizen/lehren.md' | wc -c) -lt 40000"
+pruefe "Kein Logbuch ueber 12.000 Zeichen"        bash -c "! find '$ZIEL/notizen' -maxdepth 1 -name '*.md' -size +12k -not -name lehren.md | grep -q ."
+
 echo "Zeitplanung"
 pruefe "Tageslauf stuendlich in der crontab"       bash -c "crontab -l | grep -q '^0 \* \* \* \* .*tageslauf.py'"
 pruefe "Takt entspricht einrichtung/crontab"     bash -c "diff <(crontab -l | grep -vE '^#|^$') <(grep -vE '^#|^$' '$ZIEL/einrichtung/crontab') > /dev/null"
