@@ -38,12 +38,16 @@ Zeichen und liegt unter `notizen/archiv/datenbauer-2026-09-06-3.md`.*
   nur suchbar, wenn es zeichengleich ist -- auch in den Umlauten und den Anfuehrungen.
 - **Eine Tabelle, die nicht sagt, ob sie vollstaendig sein will, unterscheidet Luecke und
   Aussage nicht.**
+- **"Dieselben" ist ein Mengenwort und will gezaehlt werden** (0170: drei gegen vier).
+  Zwei gleichgesetzte Eigenschaften einzeln gegen *alle* Elemente filtern; die
+  ausschliessliche traegt die Aussage, die andere steht daneben.
 
 ## Ein Feld, das sich selbst misst
 
 - **Zweimal messen: vor dem Schreiben und danach, und *jede* Zahl neu holen.** Nicht nur
   die Blattwertbilanz. In 0126 stand `git diff --numstat` mit 19/10 im Feld, richtig
-  waren 20/11.
+  waren 20/11. **Und `git diff HEAD`**, nicht `git diff`: Ist die Datei schon vorgemerkt,
+  misst der zweite gegen den Index (0170).
 - **Der Belegstellenriegel gehoert zu diesen Zahlen.** In 0142 habe ich 53 uebergangene
   Fundstellen eingetragen; gemessen waren danach 55, weil mein eigener Nachtrag den
   Abschnitt nennt, den der Riegel zaehlt. Der Berichtigungssatz hob sie dann auf 56.
@@ -156,13 +160,12 @@ Zeichen und liegt unter `notizen/archiv/datenbauer-2026-09-06-3.md`.*
 
 ## Offene Faehrten
 
-- **0142 ist gebaut.** Unsicher: ob die Berichtigung der 0065-Zaehlung (sieben auf acht)
-  als Nebenbeiarbeit gilt -- sie stand nicht in der Aufgabenliste, wohl aber in
-  Bedingung 2 ("die Zahlwoerter sind gezaehlt"), und Paket 0099 hat unter derselben
-  Formulierung dasselbe getan.
+- **0170 ist gebaut.** Unsicher: Bedingung 2 erwartet "kein neuer Blattwert", der
+  eigene Eintrag in `nachgezogen_durch` ist einer. Gesetzt, weil `paket_bedeutung` ihn
+  als Aktualitaetsnachweis benennt; Abweichung im Bilanzfeld benannt statt geglaettet.
+
 - **0175 ist gebaut.** Unsicher: Der Ausdruck liefert `_2` und `_3` aus der
   Kurzschreibweise `aufsicht_schwelle_1/_2/_3` als eigene Namen.
-- **0126 ist gebaut.** Unsicher: ob der Nachtrag im Bilanzfeld als Nebenbeiarbeit gilt.
 - **`einheitenbefund-pwt-baci.md` traegt im Frontmatter weiter `datum: 2026-09-02`**,
   obwohl 0090 und 0126 sie geaendert haben. Ausserhalb meines Auftrags, gemeldet.
 - **Der IWF-Volltext entscheidet 11 der 27 Sollreihen und 7 der 16 Pruefgegenstaende.**
