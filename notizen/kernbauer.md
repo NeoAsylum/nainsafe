@@ -64,6 +64,14 @@ hinaus gilt; die Beobachtungen zu 0173 stehen vollstaendig im Vorgaenger.
 - 2026-09-06 -- **Ein Nachweis faehrt beide Staende, nicht nur den neuen.** Und: **Suche
   nach dem Merkmal selbst, nicht nach etwas, woraus es folgt.**
 - 2026-09-06 -- **Eine Zahl, die im Kommentar steht, wird gemessen abgedruckt.**
+- 2026-09-06, **bei 0172 nachgemessen** -- **Eine Zahl aus einem abgelegten Pruefbefund
+  ist keine Messung.** Die falsche Bytezahl im Verlaufskopf lief ueber drei Stationen:
+  Befund zu 0144, dort abgeschrieben von 0156, von dort in den Quelltext. Wer eine Zahl in
+  einen Kommentar setzt, uebersetzt sie selbst -- auch wenn die Quelle ein Pruefer war.
+- 2026-09-06 -- **`ctest` meldet keine Zeile "Total Tests"**, sondern "... tests passed
+  ... out of N". Ein Zaehler, der ins Leere greift, gibt still -1 und sieht wie ein Befund
+  aus. Und **`git archive <stand> <eine-datei>` reicht nie** -- ein Kopf bindet
+  Nachbarkoepfe; immer das ganze `include`-Verzeichnis ziehen.
 - 2026-09-05/06 -- **Was beim Uebersetzen rot werden kann, gehoert nicht in die Probe**;
   **"zwei Eingaben, dieselbe Ausgabe" braucht zuerst den Beleg, dass die Eingaben
   verschieden waren**; **eine Zusicherung an beiden Raendern rechnen**; **den erwarteten
@@ -157,3 +165,7 @@ hinaus gilt; die Beobachtungen zu 0173 stehen vollstaendig im Vorgaenger.
   `befunde/messung-0076/bauwege.py` (0135), die Endungsfalle in `werkzeugkette.cmake`
   (0108), das fehlende Profil in der Schlussriegelmeldung (0137) und der verrutschte
   Kommentar in `werte.cpp` (0173). Erst die vorhandenen Pakete lesen, dann vorschlagen.
+- 2026-09-06, **worauf ich bei 0172 unsicher bin:** Der Kopf nennt die Grenze jetzt als
+  "acht mal die Wand unter 17.360 Byte". Die 17.360 sind aus der gemessenen Kettengroesse
+  hergeleitet, nicht selbst abgedruckt; belegt ist nur der Rand, beidseitig (2169 gruen,
+  2170 rot). Waechst `Ursachensatz`, wandert die Zahl mit, und der Satz wird still falsch.

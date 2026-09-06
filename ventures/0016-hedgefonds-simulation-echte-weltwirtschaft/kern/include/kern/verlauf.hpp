@@ -93,9 +93,16 @@
 //! erste keine Speicherschranke: Beide ihrer Seiten sind aus derselben Wand gebildet und
 //! wachsen mit ihr. Wer die Wand verschiebt -- und T40 zieht sie aus der Ergebnisskala
 //! von `spiel.md`, die sich schon einmal geaendert hat --, bekaeme sonst keinen roten
-//! Bau, sondern still einen groesseren Behaelter. Gemessen am Stand `e0682a1` liefen
+//! Bau, sondern still einen groesseren Behaelter. Gemessen am Stand `45fc32f` liefen
 //! Wand und Kapazitaet gemeinsam bis zweitausendeinhundertneunundsechzig gruen durch,
-//! bei 37.670.312 Byte.
+//! bei 37.688.552 Byte.
+//!
+//! **Rot wird bei zweitausendeinhundertsiebzig die erste Schranke**, nicht die zweite.
+//! Der Grund ist die Bauart: Neben den Ketten traegt ein Verlauf je Runde noch ihre
+//! Rundennummer zu acht Byte, und die zehren den Vorsprung einer ganzen Kette langsam
+//! auf. Die erste Schranke haelt genau, solange acht mal die Wand unter 17.360 Byte
+//! bleibt -- eine Kette misst 17.368 Byte --, also bis
+//! zweitausendeinhundertneunundsechzig und keine Runde weiter.
 //!
 //! **Woher die absolute Grenze kommt: aus dem, was ein Aufrufer traegt.** Jeder heutige
 //! Aufrufer legt seinen Verlauf als oertliche Groesse an -- `verlauf_probe` an sieben
