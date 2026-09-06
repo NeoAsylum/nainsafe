@@ -233,7 +233,16 @@ def pakete(venture: str) -> list[dict]:
         return []
     alle = []
     for d in sorted(ordner.glob("*.md")):
-        kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        # Eine defekte Paketdatei darf nicht die ganze Fabrik anhalten. Am 2026-09-06
+        # fehlte in 0193 das schliessende `---`; `frontmatter` warf ValueError, und der
+        # Tageslauf von 06:00 scheiterte vierzigmal in einer Sekunde -- kein einziger
+        # Agent lief, bis jemand um 08:15 nachsah. Die Datei wird uebersprungen und
+        # laut genannt; wer sie repariert, findet sie im Protokoll.
+        try:
+            kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        except (ValueError, OSError) as fehler:
+            print(f"  DEFEKTE PAKETDATEI uebersprungen: {d.name} ({fehler})")
+            continue
         if not kopf:
             continue
         kopf["_id"] = kopf.get("id") or d.stem
