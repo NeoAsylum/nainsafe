@@ -92,171 +92,172 @@ angefasst. Die fünf sind **Japan, Indien, Chile, Singapur und Saudi-Arabien**, 
 als Rückvergleichsland erwartet, die letzten beiden als Spielland; damit ist `L_R = 7` und die
 Zahl der Prüfgegenstände wächst von 16 auf **28**, die Toleranz von 2 auf **3**.*
 
-## Die Partielänge R, und warum sie hier als Buchstabe steht
+## The game length R, and why it stands here as a letter
 
-Die zweite Fassung hat die Partielänge aus einer Regel abgeleitet — *die Partielänge ist
-die Länge des Fensters, in dem jede Sollreihe ohne Füllung belegt ist* — und dann eine
-falsche Zahl eingesetzt. Die dritte Fassung hat die Regel behalten und eine zweite Zahl
-eingesetzt, die an **drei** der 31 Reihen und am Handelsblock gemessen war — den drei
-US-Sektoranteilsreihen und BACI. **Seit dem 2026-09-02 sind alle 31 gemessen**, und beide
-Zahlen waren zu groß.
+The second version derived the game length from a rule — *the game length is the length
+of the window in which every target series is covered without a fill* — and then plugged
+in a wrong number. The third version kept the rule and plugged in a second number,
+measured against **three** of the 31 series and the trade block — the three US
+sector-share series and BACI. **Since 2026-09-02 all 31 are measured**, and both numbers
+were too large.
 
-### Was gemessen ist
+### What is measured
 
-`daten/deckungsbefund-1997.md` (Paket `0006-deckung-pruefjahrgang-1997`, `status: fertig`,
-Abrufe vom 2026-09-01) hat jede der 31 Sollreihen und den Handelsblock einzeln abgerufen.
-Von den 31 tragen 26 das Fenster 1997–2021 vollständig. Fünf nicht, und sie sind zwei
-verschiedene Sorten:
+`daten/deckungsbefund-1997.md` (package `0006-deckung-pruefjahrgang-1997`, `status: fertig`,
+retrievals of 2026-09-01) retrieved each of the 31 target series and the trade block
+individually. Of the 31, 26 hold the window 1997–2021 in full. Five do not, and they are
+of two different kinds:
 
-| Reihe | Land | Befund | Rolle nach `technik.md` Abschnitt 7 |
+| Series | Country | Finding | Role per `technik.md` section 7 |
 |---|---|---|---|
-| **11** Staatsschuldenquote | USA | beginnt **2001** (IWF WEO) | Start + Soll (**abgeleitet**) |
-| **11** Staatsschuldenquote | BRA | beginnt **2000** | dito |
-| **9** Leitzins | USA | endet **2020** (IWF `MFS_IR/DISR_RT_PT_A_PT`) | Start + Politikpfad + Soll (**gesetzt**) |
-| **9** Leitzins | DEU | **kein einziger Wert** | dito |
-| **9** Leitzins | CHN | **kein einziger Wert** | dito |
+| **11** government debt ratio | USA | begins **2001** (IMF WEO) | start + target (**derived**) |
+| **11** government debt ratio | BRA | begins **2000** | ditto |
+| **9** policy rate | USA | ends **2020** (IMF `MFS_IR/DISR_RT_PT_A_PT`) | start + policy path + target (**set**) |
+| **9** policy rate | DEU | **not a single value** | ditto |
+| **9** policy rate | CHN | **not a single value** | ditto |
 
-Dazu ein Nebenbefund außerhalb der Sollreihen, der hier mitentscheidet: **Reihe 12
-(Haushaltssaldo), der historische Politikpfad des vierten Instruments, beginnt für die USA
-ebenfalls 2001** — zwei unabhängige WEO-Reihen mit demselben Startjahr, im Befund gegen
-sechs bekannte Werte gegengeprüft. Das ist keine Ausleseunsicherheit, sondern die bekannte
-Eigenschaft des WEO, die Finanzstatistik des US-Gesamtstaats erst ab 2001 zu führen.
+Add a side finding outside the target series that co-decides here: **series 12 (budget
+balance), the historical policy path of the fourth instrument, likewise begins in 2001
+for the USA** — two independent WEO series with the same starting year, cross-checked in
+the finding against six known values. That is no retrieval uncertainty but the known
+property of the WEO of carrying the fiscal statistics of the US general government only
+from 2001 on.
 
-### Die Entscheidung: R = 20, Fenster 2001–2021, 21 Stützstellen
+### The decision: R = 20, window 2001–2021, 21 support points
 
-Der Befund legt drei Auswege mit je einem R daneben — 19, 20 oder 24. **Gewählt ist 20.**
-Die beiden anderen fallen aus je einem Grund, und beide Gründe stehen in der Rollenspalte
-der Reihenliste: Eine Reihe ist hier nicht einfach „da" oder „weg", sie hat bis zu drei
-Rollen — Startwert, Politikpfad, Sollreihe —, und ein Ausweg, der sie streicht, streicht nur
-eine davon.
+The finding lays three ways out side by side, each with an R — 19, 20 or 24. **Chosen
+is 20.** The other two fail for one reason each, and both reasons stand in the role
+column of the series list: a series here is not simply "there" or "gone", it has up to
+three roles — start value, policy path, target series — and a way out that strikes it
+strikes only one of them.
 
-**2001 ist erzwungen, und nicht von einer Sollreihenregel.** Der Ausweg zu `R = 24` heißt
-im Befund „Reihe 9 und Reihe 11 gestrichen". Streichen kann man aber nur die *Sollrolle*
-einer Reihe, nicht ihre beiden anderen. Reihe 11 ist auch **Start**: `staatsschuld[l]` ist
-eine Zustandsadresse, und ihr Startwert ist die erste Stützstelle dieser Reihe. Reihe 12 ist
-**Politikpfad**: Ohne sie steht das Haushaltsinstrument im Weltlauf auf nichts. Beide Lücken
-sind **Anfangslücken**, und die Füllregel aus T24 lautet „Fortschreibung des letzten
-bekannten Werts" — vor der ersten Stützstelle gibt es keinen. Eine Anfangslücke ist von der
-Regel, die es gibt, nicht füllbar.
+**2001 is forced, and not by a target-series rule.** The way out to `R = 24` is called
+„Reihe 9 und Reihe 11 gestrichen" in the finding. But only the *target role* of a series
+can be struck, not its other two. Series 11 is also **start**: `staatsschuld[l]` is a
+state address, and its start value is the first support point of this series. Series 12
+is **policy path**: without it, the budget instrument in the `weltlauf` stands on
+nothing. Both gaps are **leading gaps**, and the fill rule from T24 reads „Fortschreibung
+des letzten bekannten Werts" — before the first support point there is none. A leading
+gap cannot be filled by the rule that exists.
 
-**`R = 24` verlangt damit drei Quellenersetzungen, und keine davon ist zu haben.** Einzeln,
-weil sie sich unterscheiden:
+**`R = 24` thus demands three source replacements, and none of them is to be had.**
+Individually, because they differ:
 
-| was ersetzt werden müsste | Stand nach dem Deckungsbefund |
+| what would have to be replaced | state after the coverage finding |
 |---|---|
-| Reihe 11 **BRA** 1997–1999 | IWF WEO beginnt 2000, die Weltbank (`GC.DOD.TOTL.GD.ZS`) 2010. **In beiden geprüften Quellen kein Wert.** Das allein erledigt 1997. |
-| Reihe 11 **USA** 1997–2000 | Die Weltbank trägt die USA lückenlos 1997–2021 — aber sie misst die Schuld des **Zentralstaats**, das WEO die des **Gesamtstaats**, und für China und Deutschland trägt sie nichts. Der Ausweg hieße: eine Sollreihe, die je Land aus einer anderen Quelle mit einer anderen Abgrenzung kommt. Das ist genau der Mangel, an dem der Leitzins gerade seine Sollrolle verliert. |
-| Reihe 12 **USA** 1997–2000 | **Nicht gemessen.** Der Befund hat sie als Nebenbefund gefunden, nicht als Auftrag. Sie wäre erst noch zu suchen. |
+| series 11 **BRA** 1997–1999 | The IMF WEO begins in 2000, the World Bank (`GC.DOD.TOTL.GD.ZS`) in 2010. **No value in either checked source.** That alone settles 1997. |
+| series 11 **USA** 1997–2000 | The World Bank carries the USA gap-free 1997–2021 — but it measures the debt of the **central government**, the WEO that of the **general government**, and for China and Germany it carries nothing. The way out would mean: a target series that comes, per country, from a different source with a different delineation. That is exactly the defect over which the policy rate is losing its target role right now. |
+| series 12 **USA** 1997–2000 | **Not measured.** The finding found it as a side finding, not as an assignment. It would first have to be searched for. |
 
-Die erste Zeile ist bindend: Sie sagt nein, ohne dass die beiden anderen entschieden sein
-müssen. Eine Zahl in dieses Frontmatter zu schreiben, die auf Daten steht, die niemand hat,
-wäre genau der Fehler der zweiten Fassung noch einmal.
+The first row is binding: it says no without the other two having to be decided. Writing
+a number into this frontmatter that stands on data nobody has would be exactly the
+mistake of the second version all over again.
 
-**2021 ist nicht erzwungen.** Das Fenster endet nur deshalb 2020, weil der **US-Leitzins**
-dort endet. Diese Reihe war nach `technik.md` T37 **gesetzt**: Im Weltlauf wird das
-Instrument auf den historischen Wert gesetzt, ihr Fehler ist null per Konstruktion, ihre
-Richtungstreue eins, und sie ist keiner der 16 Prüfgegenstände und konnte keiner werden. **Alle
-Reihen, die etwas entscheiden, tragen 2021** — BIP, die zwölf Sektoranteile, die
-Verbraucherpreise, die drei Wechselkurse, der Handelsblock, dazu alle vier Schuldenquoten.
-`R = 19` wirft also die Stützstelle 2021 weg, um eine Reihe zu schützen, die nicht
-durchfallen kann. Und die weggeworfene ist nicht irgendeine: Ein Rückvergleich, der 2020
-endet, prüft den Einbruch und nie die Rückkehr. Sein letzter Übergang ist ein Sturz ohne
-Gegenstück, und die Richtungstreue misst über die schärfste Bewegung des ganzen Fensters
-genau eine Richtung.
+**2021 is not forced.** The window ends in 2020 only because the **US policy rate** ends
+there. Per `technik.md` T37 this series was **set**: in the `weltlauf` the instrument is
+set to the historical value, its error is zero by construction, its directional accuracy
+one, and it is none of the 16 check subjects and could become none. **All series that
+decide anything hold 2021** — GDP, the twelve sector shares, consumer prices, the three
+exchange rates, the trade block, plus all four debt ratios. `R = 19` thus throws away the
+support point 2021 to protect a series that cannot fail. And the one thrown away is not
+just any: a backtest that ends in 2020 checks the crash and never the rebound. Its last
+transition is a plunge without a counterpart, and directional accuracy measures, across
+the sharpest movement of the whole window, exactly one direction.
 
-**Daraus folgt der Schnitt:** Reihe 9 verliert ihre Sollrolle und behält Start und
-Politikpfad. Die Sollreihen sind damit **27** — Reihe 1 (4), Reihe 2 (12), Reihe 8 (4),
-Reihe 10 (3), Reihe 11 (4) —, und **alle 27 tragen 2001–2021 mit 21 Stützstellen ohne eine
-einzige Füllung.** Das ist das größte Fenster, in dem dieser Satz stimmt.
+**From this follows the cut:** series 9 loses its target role and keeps start and policy
+path. The target series are thus **27** — series 1 (4), series 2 (12), series 8 (4),
+series 10 (3), series 11 (4) — and **all 27 hold 2001–2021 with 21 support points without
+a single fill.** That is the largest window in which this sentence is true.
 
-### Was die drei Auswege Maß 4 kosten — und warum das die Wahl nicht trifft
+### What the three ways out cost Maß 4 — and why that does not decide the choice
 
-Weil die Abnahme dieses Pakets es namentlich verlangt, hier für jeden Ausweg die
-Prüfgegenstände statt nur der Sollreihen:
+Because the acceptance of this package demands it by name, here for each way out the
+check subjects rather than just the target series:
 
-| Ausweg | R | Fenster | Stützstellen | Sollreihen | Prüfgegenstände von Maß 4 |
+| Way out | R | Window | Support points | Target series | Check subjects of Maß 4 |
 |---|---:|---|---:|---:|---|
-| Reihe 9 **und** Reihe 11 aus den Sollreihen — *verworfen, Fenster nicht aus Daten erreichbar* | 24 | 1997–2021 | 25 | 23 | **16**, keiner gestrichen |
-| Reihe 9 für DE/CN ergänzt, alle 31 bleiben Sollreihen — *verworfen, opfert 2021* | 19 | 2001–2020 | 20 | 31 | **16**, keiner gestrichen |
-| **Reihe 9 aus den Sollreihen — gewählt** | **20** | **2001–2021** | **21** | **27** | **16**, keiner gestrichen |
+| series 9 **and** series 11 out of the target series — *rejected, window not reachable from data* | 24 | 1997–2021 | 25 | 23 | **16**, none struck |
+| series 9 supplemented for DE/CN, all 31 stay target series — *rejected, sacrifices 2021* | 19 | 2001–2020 | 20 | 31 | **16**, none struck |
+| **series 9 out of the target series — chosen** | **20** | **2001–2021** | **21** | **27** | **16**, none struck |
 
-**In allen drei Auswegen sind es sechzehn, und das ist der eigentliche Befund dieses
-Pakets.** Die 16 Prüfgegenstände speisen sich aus Reihe 1, 2, 8, 10 und 14 — BIP je Land
-(4), Sektorstruktur je Land (4), Verbraucherpreise je Land (4), Wechselkurs je Land außer
-USA (3), Handelsblock (1). Reihe 9 und Reihe 11 kommen darin nicht vor und können darin
-nicht vorkommen: Die eine ist Eingabe des Laufs, die andere folgt dem gesetzten
-Haushaltssaldo und hat nur einen endogenen Nenner — das BIP, das schon vier eigene Zähler
-hat. **Genau diese beiden Reihen haben das Fenster gekürzt.** Die Abnahmeregel „höchstens 2
-der 16 reißen" unterscheidet die drei Auswege also nicht, und sie war nie das, was auf dem
-Spiel stand.
+**In all three ways out it is sixteen, and that is the real finding of this package.**
+The 16 check subjects draw on series 1, 2, 8, 10 and 14 — GDP per country (4), sector
+structure per country (4), consumer prices per country (4), exchange rate per country
+except the USA (3), trade block (1). Series 9 and series 11 do not appear in them and
+cannot appear in them: the one is an input of the run, the other follows the set budget
+balance and has only one endogenous denominator — GDP, which already has four numerators
+of its own. **Exactly these two series are the ones that shortened the window.** The
+acceptance rule „höchstens 2 der 16 reißen" therefore does not distinguish the three ways
+out, and it was never what was at stake.
 
-*Die 16 und die 2 dieses Abschnitts sind der Stand vom 2026-09-03 und gelten unverändert für
-`L_R = 4`. Seit Paket 0118 stehen beide als Formel — `3·L_R + (L_R − n) + 1` und `⌊L_R/2⌋`,
-bei `L_R = 7` also 28 und 3. Die Wahl von R berührt das nicht: Alle drei Auswege oben hätten
-dieselbe Ländermenge gehabt, und der Vergleich bleibt gültig, wie er dasteht.*
+*The 16 and the 2 of this section are the state of 2026-09-03 and hold unchanged for
+`L_R = 4`. Since package 0118 both stand as formulas — `3·L_R + (L_R − n) + 1` and `⌊L_R/2⌋`,
+at `L_R = 7` thus 28 and 3. The choice of R does not touch this: all three ways out above
+would have had the same set of countries, and the comparison stays valid as it stands.*
 
-Was auf dem Spiel stand, sind zwei andere Dinge, und nach ihnen ist entschieden: **welches
-Fenster aus Daten überhaupt erreichbar ist** (das erledigt 24) und **was eine Stützstelle
-wert ist** (das erledigt 19). Was der Rückvergleich durch den Schnitt verliert, ist deshalb
-auch kein Prüfgegenstand, sondern **Auflösung**: Jeder der sechzehn wird über 21 statt 25
-Stützstellen gemessen, die Richtungstreue über 20 statt 24 Übergänge. Die Schwellen — MAPE
-20 Prozent, 300 Basispunkte, Richtungstreue 0,6 — bleiben unverändert; ob sie über ein
-kürzeres Fenster leichter oder schwerer zu halten sind, ist eine Messung des
-Rückvergleichers und keine Entscheidung von mir.
+What was at stake are two other things, and by them the decision was made: **which window
+is reachable from data at all** (that settles 24) and **what a support point is worth**
+(that settles 19). What the backtest loses through the cut is therefore no check subject
+either, but **resolution**: each of the sixteen is measured over 21 instead of 25 support
+points, directional accuracy over 20 instead of 24 transitions. The thresholds — MAPE
+20 percent, 300 basis points, directional accuracy 0.6 — stay unchanged; whether they are
+easier or harder to hold over a shorter window is a measurement for the backtester and
+not a decision of mine.
 
-### Was der Schnitt kostet, einzeln
+### What the cut costs, item by item
 
-- **Vier Runden.** Die Partie ist ein Sechstel kürzer als in der fünften Fassung, der
-  Nachtlauf der drei Maße um 17 Prozent billiger (11.519.040 → 9.539.200 Weltschritte).
-- **Der Euro-Beginn 1999 liegt vor dem Fenster.** Damit fällt die einzige Instrumentensperre,
-  die *während* einer Partie zuschnappt: Deutschland hatte ab Runde 3 keinen eigenen
-  Zinshebel mehr, jetzt hat es von Runde 1 an keinen. Die Asymmetrie **zwischen** den vier
-  Ländern bleibt — sie ist das, worauf das Argument in *Welche vier Länder* steht —, der
-  Übergang **innerhalb** der Partie ist weg. Für Maß 3 ist das der Verlust einer von drei
-  benannten Quellen; die beiden anderen, Nachahmer (Gegenkraft 4) und Preisstoß
-  (Gegenkraft 3), sind unberührt, und die Verschiebung war nie auf den Euro gestützt.
-- **Die Wechselkursverkettung `verkettet_ab = 1999` läuft im Prüfjahrgang nie.** Sie bleibt
-  in der Spezifikation, weil die Spieljahrgänge vor 2001 sie brauchen — aber der
-  Prüfjahrgang testet sie nicht mehr mit. Das gehört in jeden Befund, statt als „ein
-  Sonderfall weniger" gebucht zu werden.
-- **Eine gefüllte Stützstelle im Politikpfad.** Der US-Leitzins hat für 2021 keinen Wert.
-  Als Pfad — nicht als Sollreihe — wird er nach T24 fortgeschrieben und mit `gefuellt = 1`
-  gekennzeichnet. Das ist **ein** Eingabejahr für **ein** Land, und es wirkt auf den letzten
-  Übergang der US-Prüfgegenstände. Es wird ausgewiesen, nicht verrechnet.
+- **Four rounds.** The game is a sixth shorter than in the fifth version, the nightly run
+  of the three Maße 17 percent cheaper (11,519,040 → 9,539,200 world steps).
+- **The euro start 1999 lies before the window.** With it falls the only instrument lock
+  that snaps shut *during* a game: Germany had no interest-rate lever of its own from
+  round 3 on, now it has none from round 1. The asymmetry **between** the four countries
+  stays — it is what the argument in *Welche vier Länder* stands on —, the transition
+  **within** the game is gone. For Maß 3 that is the loss of one of three named sources;
+  the other two, imitators (counterforce 4) and price shock (counterforce 3), are
+  untouched, and the shift was never grounded on the euro.
+- **The exchange-rate chaining `verkettet_ab = 1999` never runs in the check vintage.**
+  It stays in the specification because the play vintages before 2001 need it — but the
+  check vintage no longer tests it along the way. That belongs in every finding instead
+  of being booked as "one special case fewer".
+- **One filled support point in the policy path.** The US policy rate has no value for
+  2021. As a path — not as a target series — it is carried forward per T24 and marked
+  with `gefuellt = 1`. That is **one** input year for **one** country, and it acts on the
+  last transition of the US check subjects. It is disclosed, not netted away.
 
-### Was der Schnitt behält, und eine Zugabe
+### What the cut keeps, and a bonus
 
-Im Fenster liegen weiterhin: Chinas WTO-Beitritt (Dezember 2001, wirksam ab Runde 1), die
-Finanzkrise **2008** (Ende Runde 7), der Einbruch **2020** (Ende Runde 19) und die Erholung
-**2021** (Ende Runde 20). Ebenso der negative Euro-Einlagesatz ab 2014, an dem die Schranke
-`aufschlag_min` hängt — siehe *Was ein Korb wert ist*.
+Still inside the window: China's WTO accession (December 2001, effective from round 1),
+the financial crisis of **2008** (end of round 7), the slump of **2020** (end of
+round 19) and the recovery of **2021** (end of round 20). Likewise the negative euro
+deposit rate from 2014, on which the bound `aufschlag_min` hangs — see *Was ein Korb wert
+ist*.
 
-Und eine Eigenschaft, die keiner der beiden verworfenen Werte hat: **20 ist ein Vielfaches
-von 5.** Nach dem Vorratsverfahren steht der Vorratsvektor nach je fünf Runden wieder auf
-`(0,0,0,0,0)`. Für jeden Lauf, der eine ganze Partie lang **dasselbe** Profil spielt — das
-sind alle 126 Läufe von Maß 2 und jede Trägerpartie von Maß 1 —, endet die Partie deshalb
-genau auf einem solchen Punkt, und jede Aktionsart hat exakt `12 · ai` der 60 Steckplätze
-bekommen. Bei 24 und bei 19 endet die Partie mitten im Zyklus, und die tatsächliche
-Artenverteilung weicht vom Profil ab, das Maß 2 und Maß 3 als unabhängige Größe führen. Das
-ist kein Hauptgrund; es ist der einzige Punkt, an dem die gewählte Zahl **besser** ist als
-die beiden verworfenen und nicht bloß weniger schlecht. (Für Maß 3 gilt er nicht: Seine
-Fenster sind 6 und 7 Runden lang, der Profilwechsel fällt nicht auf einen Nullpunkt, und die
-Abweichung innerhalb eines Fensters bleibt beschränkt statt null — wie bisher.)
+And one property that neither of the two rejected values has: **20 is a multiple of 5.**
+Under the stock procedure the stock vector stands at `(0,0,0,0,0)` again after every five
+rounds. For every run that plays **the same** profile for a whole game — that is all 126
+runs of Maß 2 and every carrier game of Maß 1 — the game therefore ends exactly on such a
+point, and every action type has received exactly `12 · ai` of the 60 slots. At 24 and at
+19 the game ends mid-cycle, and the actual distribution of types deviates from the
+profile that Maß 2 and Maß 3 carry as an independent quantity. That is no main reason; it
+is the only point at which the chosen number is **better** than the two rejected ones and
+not merely less bad. (For Maß 3 it does not hold: its windows are 6 and 7 rounds long,
+the profile switch does not fall on a zero point, and the deviation within a window stays
+bounded instead of zero — as before.)
 
-### Und die eigentliche Lehre steht nicht in der Zahl, sondern in ihrer Fassung
+### And the real lesson is not in the number, but in how it is written down
 
-Die zweite Fassung hat `28` in jede abgeleitete Größe geschrieben — Ergebnisskala,
-Partiedrittel, Fenstergrenzen, Kostenformeln. Eine einzige falsche Messung machte damit
-zwölf Zahlen falsch. **Deshalb steht in diesem Entwurf jede abgeleitete Größe als Formel
-in R, mit R = 20 eingesetzt.** Dieser Lauf ist die Probe darauf: Die Messung hat gegenüber
-der fünften Fassung vier Runden gekostet, und der Entwurf hat sich um zwölf Substitutionen
-geändert und um keine Regel. Kein Paket ist zweimal gebaut worden.
+The second version wrote `28` into every derived quantity — result scale, game thirds,
+window bounds, cost formulas. A single wrong measurement thereby made twelve numbers
+wrong. **That is why in this draft every derived quantity stands as a formula in R, with
+R = 20 substituted.** This run is the test of that: against the fifth version the
+measurement cost four rounds, and the draft changed by twelve substitutions and by no
+rule. No package has been built twice.
 
-**Und R kann weiter fallen.** Drei Pfade, an denen der Weltlauf hängt, sind bis heute
-**nicht gemessen**: die Bevölkerungs- und Erwerbstätigenpfade (Reihen 5 und 6) und der
-Zollpfad (Reihe 13, dazu mit offener Lizenzfrage). `daten/reihen.toml` führt sie mit
-`deckung_gemessen = false`. Die Ersetzungsregel gilt für sie genauso: Misst der Jahrgangsbau
-enger, ist R zu ersetzen und sonst nichts.
+**And R can fall further.** Three paths on which the `weltlauf` hangs are to this day
+**not measured**: the population and employment paths (series 5 and 6) and the tariff
+path (series 13, with an open licence question on top). `daten/reihen.toml` carries them
+with `deckung_gemessen = false`. The substitution rule holds for them just the same: if
+the vintage build measures narrower, R is to be replaced and nothing else.
 
 ## Die Schleife
 
