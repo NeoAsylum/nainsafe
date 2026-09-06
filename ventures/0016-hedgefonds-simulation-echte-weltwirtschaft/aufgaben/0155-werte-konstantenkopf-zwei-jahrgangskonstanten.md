@@ -1,7 +1,7 @@
 ---
 id: 0155-werte-konstantenkopf-zwei-jahrgangskonstanten
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp]
 abnahme: Die zwei Bedingungen unter "Abnahme".

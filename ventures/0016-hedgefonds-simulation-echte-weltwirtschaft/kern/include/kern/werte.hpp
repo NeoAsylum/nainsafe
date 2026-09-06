@@ -70,8 +70,13 @@ namespace kern::werte {
 // Die Zahlen neben dem Zustand
 // ---------------------------------------------------------------------------
 
-/// Die Kalibrierwerte und die eine Jahrgangskonstante, die in den Formeln aus T47 und
-/// T48 neben den Zustandsadressen vorkommen.
+/// Die Kalibrierwerte und die zwei Jahrgangskonstanten, die in den Formeln aus T47
+/// und T48 neben den Zustandsadressen vorkommen.
+///
+/// **Die zwei sind `leitzins_start` und `durchgriff`**, beide nach T23 Punkt 5 eine
+/// Groesse des Jahrgangs; warum sie deshalb nicht in `parameter.toml` stehen, sagt
+/// der Kommentar an den beiden Feldern und nicht dieser hier. Die uebrigen sechs
+/// Felder sind Parameterschluessel nach T27.
 ///
 /// **Warum sie als Argument hereinkommen und nicht aus einer Datei.** Der Kern liest
 /// keine Datei (T2) und haengt an keinem Kasten -- `daten` haengt an `kern` und nicht
