@@ -5,7 +5,7 @@ erstellt: 2026-09-01
 schleife: Der Spieler stellt je Runde bis zu drei Aktionen aus fünf Arten, die Welt rechnet ein Jahr weiter, und jede Zahländerung trägt die Kette ihrer Ursachen mit sich.
 siegbedingung: Das Mandat — Fondsvermögen über einer Schwelle UND Einfluss über einer Schwelle in mindestens zwei Ländern — erreicht innerhalb von R Runden, ohne vorher an einer der drei Todesarten zu sterben. Ergebnis ist die Rundenzahl bis zur Erfüllung.
 aktionen: 5
-laender: Schicht 1 — 4 Politikländer (USA, China, Deutschland, Brasilien), nach Paket 0118 neun; Schicht 3 — ein nicht spielbares Restwelt-Aggregat. Schicht 2 siehe boersenplaetze.
+laender: Schicht 1 — 4 Politikländer (USA, China, Deutschland, Brasilien), nach Paket 0118 neun: dazu Japan, Indien und Chile als Rückvergleichsländer, Singapur und Saudi-Arabien als Spielländer. Also L = 9, L_R = 7, L_S = 2, n = 1. Schicht 3 — ein nicht spielbares Restwelt-Aggregat. Schicht 2 siehe boersenplaetze.
 boersenplaetze: Schicht 2, B = 3·(L+1) — je Gebiet ein Platz je Leitsektor. Bei L = 9 sind das 30 Plätze zu je vier Feldern plus einem Positionssteckplatz, also 150 Adressen; Zustand 890, handelbare Plätze 75. Handelbar, nicht beeinflussbar, ohne Handelszeile, ohne Sollreihe.
 gueter: 3 Sektoren (Landwirtschaft, Industrie, Dienstleistungen), davon 2 mit Handelszeilen
 takt: 1 Runde = 1 Jahr; R = 20 Runden, Startzustand 2001, Endzustand 2021, 21 Stützstellen
@@ -13,7 +13,7 @@ gegenkraefte: 5
 messbar_entscheidungsdichte: Je Runde t = 1…R und je Startwert 30 gezogene Aktionsbündel; jedes ersetzt die Bot-Aktionen der Runde t, danach spielt der Heuristikbot auf dem Referenzprofil (1,1,1,1,1) bis Runde R. Dichte(t, Startwert) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden vom Median dieser 30 abweichen; Dichte(t) = Mittel über die 50 Startwerte. Abnahme = Mittel der Dichte(t) je Partiedrittel (1-6, 7-13, 14-20) jeweils >= 0,4.
 messbar_strategievielfalt: Profil = Fünftelverteilung über die fünf Aktionsarten (126 Profile), Wirkung über das Vorratsverfahren; je Profil Suchbot über 20 Startwerte, Profilergebnis = Median. Profil gewinnt, wenn sein Median <= 20.000 liegt. Strategiekern = die stärkste der drei Familien Position/Beteiligung/Lobby; die 6 Profile ohne jede Familienaktion haben keinen Kern und zählen nicht. Abnahme = alle drei Kerne stellen mindestens einen Gewinner, und das beste Klassenergebnis ist höchstens 25 Prozent besser als das schlechteste der drei.
 messbar_optimumsverschiebung: Frühfenster = Runden 1-6 mit Profil p, Rest mit Referenzprofil; Spätfenster = Runden 14-20 mit Profil p, Rest mit Referenzprofil; je 126 Profile x 20 Startwerte, Median als Profilergebnis, bestes Profil je Fenster nach kleinstem Median (Gleichstand nach Profilkennung). Verschiebung = L1-Abstand der beiden Profilvektoren geteilt durch 5, Werte aus {0; 0,4; …; 2,0}. Schwelle 0,4.
-messbar_rueckvergleich: Startjahrgang 2001, R = 20 Runden im Weltlauf (Fondsteilsystem abgeschaltet), Politikinstrumente exogen auf den historischen Pfaden; 16 Prüfgegenstände aus 23 freien Sollreihen plus Handelsblock, je über 21 Stützstellen ohne Füllung. Schwellen: MAPE 20 Prozent für Niveaureihen, mittlerer absoluter Fehler 300 Basispunkte für Ratenreihen, Richtungstreue 0,6 für alle. Bestanden, wenn höchstens 2 der 16 Prüfgegenstände reißen.
+messbar_rueckvergleich: Startjahrgang 2001, R = 20 Runden im Weltlauf (Fondsteilsystem abgeschaltet), Politikinstrumente exogen auf den historischen Pfaden; Prüfgegenstände 3·L_R + (L_R − n) + 1 aus L_R(S+3) − n freien Sollreihen plus Handelsblock, je über 21 Stützstellen ohne Füllung — heute L_R = 4, also 16 aus 23; nach Paket 0118 L_R = 7, also 28 aus 41. Schwellen: MAPE 20 Prozent für Niveaureihen, mittlerer absoluter Fehler 300 Basispunkte für Ratenreihen, Richtungstreue 0,6 für alle, gebildet über die Übergänge, in denen sich die Sollreihe bewegt. Bestanden, wenn höchstens ⌊L_R/2⌋ Prüfgegenstände reißen — heute 2, nach 0118 3.
 ---
 
 # Ein Hedgefonds mit vier Ländern, drei Sektoren und vier Politikhebeln — und jede Zahl, die sich bewegt, sagt warum.
@@ -79,6 +79,18 @@ fünf unter „Offene Entwurfsfragen" und ein Block unter „Was der Architekt n
 Fehlermaß ändert sich**; die Bezugszahl des Zustands bleibt bis 0116 und 0118 die **310**, und
 die Schichtensumme **890** gilt für den Stand nach beiden. Die zweite Schicht kostet **zwei**
 neue Schlüssel in `parameter.toml` und **keinen neunten Rückkopplungskanal**.*
+
+*Geändert am **2026-09-06** aus Arbeitspaket `0118-fuenf-weitere-laender-auswaehlen`, nach der
+Anweisung des Betreibers vom 2026-09-05 („Lass uns insofern direkt 5 weitere Länder
+einplanen") und seiner Wahl von Weg A (die Steckplätze wachsen mit `L`). Neu ist der Abschnitt
+**Welche neun Länder, welche Klasse, und was Weg A kostet** unter *Der Zustand*; dazu zwei
+Zeilen im Frontmatter, die Zählregel von Maß 4 in `L_R` statt in Ziffern, vier Einträge unter
+„Was bewusst fehlt", fünf unter „Offene Entwurfsfragen" — davon eine **geschlossen** — und ein
+Block unter „Was der Architekt neu rechnen muss". **Die 310 bleiben stehen**, bis 0116 die
+Ableitungskette geschrieben hat; keine Zahl in `technik.md`, `reihen.toml` oder im Kern ist
+angefasst. Die fünf sind **Japan, Indien, Chile, Singapur und Saudi-Arabien**, die ersten drei
+als Rückvergleichsland erwartet, die letzten beiden als Spielland; damit ist `L_R = 7` und die
+Zahl der Prüfgegenstände wächst von 16 auf **28**, die Toleranz von 2 auf **3**.*
 
 ## Die Partielänge R, und warum sie hier als Buchstabe steht
 
@@ -177,6 +189,11 @@ Haushaltssaldo und hat nur einen endogenen Nenner — das BIP, das schon vier ei
 hat. **Genau diese beiden Reihen haben das Fenster gekürzt.** Die Abnahmeregel „höchstens 2
 der 16 reißen" unterscheidet die drei Auswege also nicht, und sie war nie das, was auf dem
 Spiel stand.
+
+*Die 16 und die 2 dieses Abschnitts sind der Stand vom 2026-09-03 und gelten unverändert für
+`L_R = 4`. Seit Paket 0118 stehen beide als Formel — `3·L_R + (L_R − n) + 1` und `⌊L_R/2⌋`,
+bei `L_R = 7` also 28 und 3. Die Wahl von R berührt das nicht: Alle drei Auswege oben hätten
+dieselbe Ländermenge gehabt, und der Vergleich bleibt gültig, wie er dasteht.*
 
 Was auf dem Spiel stand, sind zwei andere Dinge, und nach ihnen ist entschieden: **welches
 Fenster aus Daten überhaupt erreichbar ist** (das erledigt 24) und **was eine Stützstelle
@@ -400,8 +417,11 @@ Optimumsverschiebung, die Maß 3 verlangt.
 ist dort nachgerechnet. Die Zahl selbst ist keine Verteidigung — siehe unten.
 
 **Diese 310 sind der Stand von heute und bleiben die Bezugszahl, bis Paket 0116 die
-Adressarithmetik parametrisch geschrieben und Paket 0118 die fünf weiteren Länder gewählt
-hat.** Was dieser Abschnitt beschreibt, ist die erste von drei Schichten; die zweite
+Adressarithmetik parametrisch geschrieben hat.** Die fünf weiteren Länder sind seit dem
+2026-09-06 gewählt (Paket 0118, siehe *Welche neun Länder*); damit steht die Ländersumme bei
+`L = 9` auf **740** und der Zustand nach allen drei Schichten auf **890** — gerechnet, aber
+noch nicht die Bezugszahl, weil die Adressarithmetik sie erst tragen muss.
+Was dieser Abschnitt beschreibt, ist die erste von drei Schichten; die zweite
 (Börsenplätze) und die Rechnung, die auf **890** führt, stehen unter *Die drei Schichten der
 Welt*. Zwei unkommentierte Summen in einem Dokument sind der Anfang des nächsten Zählfehlers,
 deshalb steht an jeder von beiden, welchen Stand sie meint.
@@ -809,6 +829,353 @@ einen Aktionsraum schließt und damit einen anderen erzwingt; seit dem Fenstersc
 hohe Zinsen, volatile Währung). Vier Länder, die sich gleichen, wären vier Kopien und
 kosteten Strategievielfalt, statt sie zu erzeugen.
 
+**Dieser Abschnitt bleibt unverändert stehen, und sein Argument trägt bei neun Ländern erst
+recht** — es sagt, warum drei zu wenig sind, nicht warum vier genug wären. Welche fünf
+dazukommen, steht im nächsten Abschnitt.
+
+### Welche neun Länder, welche Klasse, und was Weg A kostet
+
+**Angewiesen vom Betreiber am 2026-09-05:** *„Lass uns insofern direkt 5 weitere Länder
+einplanen."* Die Zahl ist entschieden, die Auswahl war es nicht. Die Regel für die Auswahl ist
+dieselbe wie bei den ersten vier: **strukturelle Verschiedenheit, nicht Bedeutung** — und
+strukturell heißt hier nicht „anders erzählt", sondern **an einer Größe anders, die dieses
+Modell wirklich rechnet**: `durchgriff`, Sektoranteile, Kapitalstock, Handelsvolumen,
+Schuldenquote, die Untergrenze des Zinshebels, die Zahl der eigenen Instrumente.
+
+Alle Zahlen unten sind Werte des **Startjahrs 2001** aus genau den Reihen, die das Modell
+ohnehin einbettet: Weltbank `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS`,
+`NE.TRD.GNFS.ZS`, `NY.GDP.MKTP.CD`, `PA.NUS.FCRF`, `FP.CPI.TOTL.ZG`, abgerufen am 2026-09-06
+über `api.worldbank.org/v2`; die Schuldenquoten aus dem IWF-WEO (`GGXWDG_NGDP`,
+`imf.org/external/datamapper`, gleicher Abruf). **Sie belegen die Wahl, sie ersetzen den
+Jahrgangsbau nicht** — die Werte, mit denen das Modell rechnet, entstehen dort und nicht hier.
+
+#### Die fünf, und je die Eigenschaft, die keines der vier heutigen trägt
+
+**Japan — der Anleihemarkt ist größer als die Volkswirtschaft, und das Preisniveau fällt.**
+Reihe 11 trägt für Japan **126,8** Prozent im Startjahr und **222,7** im Endjahr; weil
+`schuld[l] = mal_geteilt(bip[l], staatsschuld[l], 10.000)` die *Menge* des
+Anleihe-Steckplatzes ist, ist Japans Anleihemarkt vom ersten Zug an größer als sein BIP und am
+Ende mehr als doppelt so groß. Die USA kommen auf 53,5 und 125,0, Deutschland auf 58,1 und
+67,9. Dazu die zweite Hälfte, die kein heutiges Land hat: Reihe 8 ist für Japan in **zwölf der
+einundzwanzig** Stützstellen negativ (2001–2005, 2009–2012, 2016, 2020, 2021). Der
+Prüfgegenstand *Verbraucherpreise* misst damit zum ersten Mal ein **fallendes** Preisniveau —
+bis heute steigt es in allen vier Ländern, und ein Fehlermaß, das nur eine Richtung gesehen
+hat, ist kein geprüftes Fehlermaß. **Vermutung, ausdrücklich ungeprüft und nicht Teil der
+Begründung:** Ein Land mit zwölf Deflationsjahren dürfte auch den niedrigsten Leitzinspfad des
+Modells tragen und damit die Schranke `aufschlag_min = 1 − min(leitzins_pfad)` binden. Das ist
+nicht nachgemessen; es entscheidet sich am selben Abruf, an dem Japans Klasse hängt, und ich
+schreibe es nur hin, damit der Datenbauer beim Abruf danach sieht.
+
+**Indien — der einzige große Landwirtschaftssektor, der nicht vom Welthandel lebt.**
+Landwirtschaft **21,62** Prozent der Wertschöpfung, normiert 23,5 — gegen 13,82 in China, 4,80
+in Brasilien, 1,13 in den USA und 1,08 in Deutschland; über das ganze Fenster fällt der Anteil
+nie unter 16,03. Zugleich nur **25,99** Prozent Handel am BIP. Beides zusammen ist die
+Eigenschaft: Ein knappes Viertel der Volkswirtschaft hängt an einem Sektor, der einen Weltpreis
+**und** einen Zollkeil hat, aber mit großem `N` und kleinem `H` in
+`durchgriff = 10.000·H/(H+N)`. **Brasilien ist der Gegenfall** — kleines `N`, großes `H` —, und
+bis heute kennt das Modell nur den. Eine große, *geschlossene* Landwirtschaft ist etwas
+anderes als eine kleine, offene: Der Zollhebel eines Fremden erreicht sie kaum, der eigene
+Haushalts- und Regulierungshebel dafür umso mehr. **Überprüfbare Vorhersage, kein Etikett:**
+`durchgriff[IND][1]` liegt unter dem jedes heutigen Landes in der Landwirtschaft. Trifft sie
+nicht ein, ist das ein Befund gegen diesen Absatz.
+
+**Singapur — das obere Ende der Durchgriffsskala.** Handel **349,29** Prozent des BIP, gegen
+59,56 in Deutschland und 22,97 in den USA; die MAS begründet ihren eigenen geldpolitischen
+Rahmen mit derselben Größenordnung (*Monetary Policy Framework*, mas.gov.sg, abgerufen
+2026-09-06). Der Landwirtschaftsanteil beträgt **0,08** Prozent — dort ist `N` nahe null und
+`H` groß, also läuft `durchgriff` gegen seine Obergrenze 10.000: **der Sektorpreis ist der
+Weltpreis.** Genau für diesen Rand ist die Formel gewählt worden (*„liegt … im Bereich
+0 … 10.000 und braucht keine Kappung"*), und bis heute nähert sich ihm kein Land. Die Skala des
+Mechanismus, den das ganze Spiel verkauft, reicht heute von 22,97 (USA) bis 59,56
+(Deutschland), also über den Faktor **2,6**; mit Japan am unteren (19,28) und Singapur am
+oberen Ende über den Faktor **18,1**.
+
+**Saudi-Arabien — der einzige konstante Wechselkurs, und der einzige Sektor über der Hälfte.**
+Reihe 10 trägt für Saudi-Arabien in **jeder** der 21 Stützstellen denselben Wert 3,75.
+Industrie **50,78** Prozent der Wertschöpfung, normiert 51,3 — kein heutiges Land liegt über
+Chinas 44,28. Damit trägt zum ersten Mal ein *handelbarer* Sektor mit Weltpreis und Zollkeil
+die Mehrheit einer Volkswirtschaft, und ein Zollschritt irgendwo trifft dort nicht einen
+Randbereich, sondern den Kern. Der konstante Kurs ist zugleich der Grund seiner Klasse, siehe
+unten — er ist keine Nebeneigenschaft, sondern die schärfste des ganzen Abschnitts.
+
+**Chile — die kleinste Volkswirtschaft mit allen vier eigenen Instrumenten, und damit der
+billigste Einfluss.** BIP **71,6** Milliarden USD im Startjahr, gegen 559,98 in Brasilien — dem
+kleinsten der heutigen vier — und 10.582 in den USA. Dass es alle vier Instrumente selbst führt,
+ist die Erwartung, die seine Klasse trägt, und sie hängt am selben Abruf wie die von Japan und
+Indien; die Größe dagegen ist gemessen und hängt an nichts. Das ist keine Größenangabe, sondern eine
+Aussage über **Gegenkraft 5**: Ihr Schaden ist eine Menge mal einer Rate, und die Menge der
+Haushaltszeile ist das BIP. Mit der Größenordnungsprobe, die dieser Entwurf unter *Offene
+Entwurfsfragen* schon führt — Schrittweite 50 Basispunkte, `gegenlobby_satz = 1`, also ein
+Punkt je 10.000 Tausend USD —, erzeugt **derselbe** Instrumentenschritt in den USA rund
+**5.300** Gegenlobbypunkte und in Chile rund **36**. Der Faktor ist 148 und ist exakt das
+BIP-Verhältnis; die Rechnung ist eine Schätzung nur in der Schrittweite, nicht im Verhältnis.
+**Die zweite Mandatshälfte verlangt Einfluss in zwei Ländern**, und ob die Familie Lobby dafür
+überhaupt einen Gewinner stellen kann, steht seit dem 2026-09-03 als *„die schärfste
+Kalibrierbedingung"* unter den offenen Fragen. Chile beantwortet sie aus der **Bauart** statt
+aus der Kalibrierung: Es gibt ab hier einen Ort, an dem Einfluss zwei Größenordnungen billiger
+ist als in den USA — und weil er zugleich der flachste Markt ist, ist er der teuerste Ort für
+Kapital. Das ist derselbe Tausch wie bei der zweiten Schicht, nur mit vertauschten Vorzeichen.
+
+#### Die neun nebeneinander, an den Größen, die das Modell rechnet
+
+Startjahr 2001. „größter Anteil" ist der größte der drei Sektoranteile **nach** der Normierung
+auf 10.000, also die Zahl, aus der `sektorgewicht[b][s]` entsteht.
+
+| Land | BIP (Mrd. USD) | Landw. | Ind. | Dienstl. | größter Anteil | Handel (% BIP) |
+|---|---:|---:|---:|---:|---:|---:|
+| USA | 10.582 | 1,13 | 21,47 | 74,02 | **76,6** D | 22,97 |
+| Japan | 4.439 | 1,27 | 31,34 | 67,33 | 67,4 D | **19,28** |
+| Deutschland | 1.966 | 1,08 | 26,58 | 62,41 | 69,3 D | 59,56 |
+| China | 1.355 | 13,82 | 44,28 | 41,90 | 44,3 I | 38,08 |
+| Brasilien | 560 | 4,80 | 22,64 | 57,71 | 67,8 D | 26,94 |
+| Indien | 485 | **21,62** | 26,49 | 43,81 | 47,7 D | 25,99 |
+| Saudi-Arabien | 184 | 5,13 | **50,78** | 43,05 | 51,3 I | 63,56 |
+| Singapur | 90 | **0,08** | 30,38 | 63,59 | 67,6 D | **349,29** |
+| Chile | **72** | 4,06 | 28,48 | 55,65 | 63,1 D | 62,14 |
+
+**Zwei Spannen, die es heute nicht gibt, und beide sind Mechanik und keine Buntheit.** Die
+Tiefe der Märkte, auf denen der Fonds steht, ordnet sich nach dem Kapitalstock des Landes —
+`korbwert(l,s)` ist Kapitalstock mal Sektorpreis, `schuld[l]` ist BIP mal Schuldenquote —, und
+die Ordnung der Länder ist die des BIP. Heute spannt sie von 560 bis 10.582 Milliarden, also
+über den Faktor **19**; nach 0118 von 72 bis 10.582, über den Faktor **148**. Gegenkraft 3
+(Marktenge) wächst mit dem Anteil des Fonds am Markt: Auf einer Skala über zwei Größenordnungen
+ist „wo bin ich groß" eine Entscheidung, auf einer über eine ist es eine Konstante. Die zweite
+Spanne ist die des `durchgriff`, oben schon gerechnet. **Die Zahlenwerte der Kapitalstöcke
+kommen aus der PWT und nicht aus dieser Tabelle** — was hier steht, ist die Ordnung, und nur
+sie trägt das Argument.
+
+#### Die Klasse je Land, und woran sie hängt
+
+Die Klasse ist nach `technik.md` T61 Regel 5 **keine Wahl, sondern eine Ableitung**: Ein Land
+ist genau dann Spielland, wenn irgendeine seiner drei Politikpfadreihen `stufe = 4` trägt. Was
+hier steht, ist deshalb eine **Erwartung mit ihrer Bedingung**, wie es der Auftrag verlangt —
+entschieden wird sie am Abruf nach T63 Schritt 1.
+
+**Was für alle neun gleich ist und deshalb keine Klasse entscheidet:** Reihe 13 (Zollniveau)
+ist nach `lizenzbefund-wdi.md` für *jedes* Land gesperrt. Der Fall ist T26 erster Fall — kein
+Zollpfad, konstanter Zoll, zwei statt drei verankerte Instrumente —, er gilt für die heutigen
+vier genauso, und eine Eigenschaft, die alle teilen, unterscheidet niemanden.
+
+| Land | erwartete Klasse | woran sie hängt, und was sie kippt |
+|---|---|---|
+| **Japan** | Rückvergleichsland | `MFS_IR` führt für JPN einen Politiksatz auf Stufe 1. Fällt `JPN.*.A` leer und ist keine Ableitung ohne freien Parameter zu haben, ist es Stufe 4 und damit Spielland. |
+| **Indien** | Rückvergleichsland | dieselbe Bedingung, ein Abruf. |
+| **Chile** | Rückvergleichsland | dieselbe Bedingung, ein Abruf. |
+| **Singapur** | **Spielland** | Die Geldpolitik wird dort über den Wechselkurs geführt, und das Modell hat für den Wechselkurs kein Instrument. Ein Bankzins ist nach T60 kein Leitzins, und der Weg von ihm zu einem Politiksatz führte über einen Aufschlag — einen freien Parameter, also Stufe 4. **Es wird Rückvergleichsland**, sobald `MFS_IR` für SGP einen Politiksatz auf Stufe 1 führt, oder sobald T60 Stufe 3 auch ein Land trägt, dessen Zinsen von den Weltzinsen bestimmt werden statt von einer benennbaren Union. |
+| **Saudi-Arabien** | **Spielland** | Zwei unabhängige Gründe, und der zweite ist der bindende. Siehe unten. |
+
+**Singapur ist der Fall, für den T60 Stufe 3 nicht gedacht ist, und das gehört gesagt, weil der
+Einwand naheliegt.** Die MAS schreibt selbst, die heimischen Zinsen seien weitgehend von den
+Weltzinsen bestimmt — das klingt genau nach Stufe 3, „kein eigener geldpolitischer Hebel", und
+Stufe 3 bliebe **Rückvergleichsland**. Der Einwand trägt trotzdem nicht, und zwar an der
+Herleitungspflicht: Stufe 3 verlangt „welche Union, ab welchem Jahr", weil sie Stufe 1 und 2
+**auf die Union** anwendet statt auf das Land. Singapur hat darauf keine Antwort — es gibt
+keine Union mit einem gemessenen Satz, sondern nur „die Weltzinsen", und die sind keine Quelle,
+sondern eine Umschreibung. Hinzu kommt der schärfere Punkt: Singapur hat sehr wohl einen
+geldpolitischen Hebel; er ist nur einer, den dieses Modell nicht führt. **Stufe 3 ist für ein
+Land ohne Hebel gebaut, nicht für ein Modell ohne Instrument** — und der Unterschied ist keine
+Wortklauberei, er entscheidet die Klasse.
+
+**Saudi-Arabien, Grund 1 (kann fallen):** Sein Politiksatz folgt der Bindung. Ihn aus dem
+US-Satz abzuleiten verlangt einen Abstand, und ein Abstand ist ein freier Parameter — nach T60
+also keine Ableitung, sondern eine Schätzung. Führt `MFS_IR` aber einen eigenen SAMA-Satz auf
+Stufe 1, fällt dieser Grund weg.
+
+**Saudi-Arabien, Grund 2 (fällt nicht, und er liegt nicht in den Politikpfaden, sondern in den
+Sollreihen):** Reihe 10 ist für Saudi-Arabien über alle 21 Stützstellen **konstant**.
+Richtungstreue misst den Anteil der Übergänge, in denen Modell und Daten in derselben Richtung
+gehen; über eine konstante Reihe trägt **jeder** der zwanzig Übergänge die Richtung null, und
+ein endogen gerechneter Wechselkurs trifft die exakte Null so gut wie nie. Der Prüfgegenstand
+*Wechselkurs SAU* risse damit **von Bauart wegen und nicht aus einem Modellfehler** — der eine
+Fall, den ein Orakel niemals produzieren darf. Als Spielland trägt Saudi-Arabien keine
+Sollreihe, und die Frage stellt sich nicht. **Es wird Rückvergleichsland**, sobald das Modell
+eine Kursbindung kennt (der `wechselkurs[l]` eines gebundenen Landes wird nicht geschrieben)
+*und* ein Politiksatz auf Stufe 1 vorliegt.
+
+**Daraus folgt eine Ergänzung an Maß 4, und sie gilt unabhängig von Saudi-Arabien:** Die
+Richtungstreue wird nur über die Übergänge gebildet, in denen sich die **Sollreihe** bewegt.
+Ein Übergang ohne gemessene Bewegung trägt keine Richtung und wird nicht gezählt; bewegt sich
+eine Sollreihe in keinem Übergang, hat der Prüfgegenstand keine Richtungstreue und besteht
+allein über sein Niveaumaß. Das ist keine neue Schwelle, sondern das Schließen einer Lücke: Die
+Regel stand bisher nur für Reihen mit Bewegung geschrieben, und flache Abschnitte gibt es auch
+ohne Kursbindung.
+
+**Und eine Meldung an den Architekten, weil sie sein Gewerk betrifft.** T61 Regel 5 leitet die
+Klasse **allein aus den drei Politikpfadreihen** ab und hält den Jahrgangsbau an, wenn die
+Ableitung dem Manifest widerspricht. Grund 2 oben ist für diese Regel unsichtbar — und er ist
+nicht der einzige seiner Art: T62 Folgerung 2 nennt bereits einen zweiten, die fehlende
+Ausweichquelle für Reihe 2. **Beide sind Ausschlüsse, die in den Sollreihen liegen, und die
+Klassenregel kann keinen von beiden sehen.** Führt `MFS_IR` einen SAMA-Satz auf Stufe 1, leitet
+Regel 5 „Rückvergleichsland" ab, das Manifest sagt „Spielland", und der Bau bricht ab — richtig,
+weil zwei Buchführungen auseinandergehen, aber an der falschen Stelle behoben. Das gehört zu
+T61 und nicht hierher.
+
+#### Was neun Länder zählen
+
+Alles aus `technik.md` T59, eingesetzt für `L_R = 7`, `L_S = 2`, `n = 1`, `S = 3`, `I = 4`; jede
+Zahl in diesem Lauf einmal von Hand nachgerechnet und **nicht** aus der Nachbarzeile
+abgeschrieben.
+
+| Größe | Formel | heute (`L_R = 4`) | nach 0118 (`L_R = 7`) | alle neun im Rückvergleich |
+|---|---|---:|---:|---:|
+| Prüfgegenstände | `3·L_R + (L_R − n) + 1` | 16 | **28** | 36 |
+| freie Sollreihen | `L_R(S+3) − n` | 23 | **41** | 53 |
+| Sollreihen | `L_R(S+4) − n` | 27 | **48** | 62 |
+| Ströme im Handelsblock | `(L_R+1)·L_R·(S−1)` | 40 | **112** | 180 |
+| Sollmaske `weltlauf` | siehe T59 | 175 | **328** | 450 |
+| Toleranz von Maß 4 | `⌊L_R/2⌋` | 2 | **3** | 4 |
+
+Nachgerechnet im Fließtext: Prüfgegenstände `3·7 + (7−1) + 1 = 21 + 6 + 1 = 28`. Freie
+Sollreihen `7·6 − 1 = 41`, abgeleitete 7, zusammen `7·7 − 1 = 48`. Ströme `8·7·2 = 112`.
+Sollmaske `7·27 + 22 + 112 + 2 + 3 = 328`. Toleranz `⌊7/2⌋ = 3`.
+
+**Warum die Toleranz eine Formel ist und keine Zahl.** Bliebe sie bei 2, machte das Hinzufügen
+eines Landes den Rückvergleich **härter, ohne dass sich eine einzige Regel des Modells ändert**
+— ein bestandener Lauf könnte allein dadurch durchfallen, dass jemand ein Land aufnimmt. Das
+ist derselbe Fehler wie eine Zahl, die zwölf andere trägt. `⌊L_R/2⌋` reproduziert bei `L_R = 4`
+**genau die heutige 2** — das ist die Verträglichkeitsprobe — und hält den Anteil danach fast
+fest: 2 von 16 sind 12,5 Prozent, 3 von 28 sind 10,7, 4 von 36 sind 11,1. Sie wächst also
+langsamer als die Zahl der Gegenstände und senkt die Latte nie.
+
+**Was das an Daten kostet, nach T62.** Ein Rückvergleichsland kostet bei `R = 20`
+`32(R+1) + 6 = 678` Werte, ein Spielland `5(R+1) + 33 = 138`. Drei plus zwei ergibt
+`3·678 + 2·138 = 2.034 + 276`, also **2.310** Werte — gegen 3.390, wenn alle fünf
+Rückvergleichsländer wären, und 690, wenn alle fünf Spielländer wären. **Die Lizenzstellen
+sind von der Klasse unabhängig:** zwei je Land, also zehn neue, die nach T62 Folgerung 3 auf
+dieselbe Liste gehören wie die sieben offenen von heute. Kosten, kein Tor.
+
+#### Die Folge aus Weg A: was ein Spieler vom Brett überhaupt erreicht
+
+**Der Betreiber hat am 2026-09-05 Weg A gewählt** — die Positionssteckplätze wachsen mit `L`,
+von 20 auf 45, und mit den Börsenplätzen aus Paket 0119 auf **75**. Weg B (gedeckelte
+Steckplätze mit Auswahlmechanik) ist damit verworfen, **und die Begründung dafür ist die
+Entscheidung des Betreibers, keine fachliche.** Das gehört so hingeschrieben, damit niemand
+später eine Abwägung sucht, die es nicht gab.
+
+Offen ist die Folge, und sie ist zu rechnen und nicht zu behaupten. Von den 75 bleibt der
+Währungssteckplatz der USA nach T16 dauerhaft leer, also sind **74 besetzbar** (heute 19 von
+20). Steckplätze belegt **allein Aktionsart 1**; Lobby, Hebel und Sichtbarkeit belegen keinen,
+die Beteiligung hat ihre eigenen Felder. Nach dem Vorratsverfahren bekommt Art `i` über eine
+volle Partie genau `12·ai` der 60 Steckplätze — die Zugabe, die *Die Partielänge R* an `R = 20`
+festhält, und hier ist sie das, was die Rechnung überhaupt exakt macht statt ungefähr.
+
+| | heute, 19 besetzbar | nach 0118/0119, 74 besetzbar |
+|---|---:|---:|
+| Referenzprofil `(1,1,1,1,1)`, 12 Positionsaktionen | 12 von 19 = **63 %** | 12 von 74 = **16 %** |
+| reines Positionsprofil `(5,0,0,0,0)`, 60 Aktionen | 19 von 19 = **100 %**, jeder Platz gut dreimal | 60 von 74 = **81 %** |
+| Frühfenster von Maß 3 (6 Runden, `a1 = 5`), 18 Aktionen | 18 von 19 = **95 %** | 18 von 74 = **24 %** |
+
+**Die Zahl fällt hart: unter dem Referenzprofil von 63 auf 16 Prozent, also um den Faktor
+vier.** Die Frage ist, ob sie unter das fällt, was die vier Maße tragen, und die Antwort ist
+je Maß eine andere:
+
+- **Maß 4 liest keinen Steckplatz.** Der ganze Positionsblock liegt im `weltlauf` außerhalb der
+  Sollmaske. Unberührt.
+- **Maß 2 liest nicht das Referenzprofil, sondern je Familie ihr bestes Profil.** Das beste der
+  Familie 1 ist `(5,0,0,0,0)` und erreicht 81 Prozent des Bretts. Die Decke der Familie sinkt
+  also nicht; was sinkt, ist die Reichweite eines Profils, das keine Abnahmehälfte liest.
+  Unberührt.
+- **Maß 3 vergleicht zwei Fenster, und beide stehen unter derselben Decke.** Eine Schranke, die
+  in beiden Fenstern gleich wirkt, kann das eine nicht gegen das andere verschieben. Was Maß 3
+  verschiebt, ist der Unterschied in der **Art** des Platzes — früh der flache, unbeobachtete
+  Platzmarkt, spät Beteiligung und Lobby in Politikländern —, und daran ändert die Reichweite
+  nichts. Unberührt.
+- **Maß 1 ist das einzige, das das Brett unmittelbar liest**, und dort wirken zwei Kräfte
+  gegeneinander. *Für* die Dichte: Die Liste der zulässigen Aktionen wächst mit dem Brett, zwei
+  gezogene Bündel sind seltener dasselbe Bündel und häufiger von verschiedener Art. *Gegen* die
+  Dichte: Eine Stufe ist ein **Anteil des Marktes dieses Steckplatzes**, und
+  `tiefe[b] = platzanteil · …` macht jeden der 30 Börsenplätze flacher als jeden
+  Land×Sektor-Korb desselben Ankers. **Vierzig Prozent des Bretts sind damit von Bauart wegen
+  flach**, und eine Aktion auf einem flachen Markt bewegt das Fondsvermögen weniger.
+
+**Das Urteil, und es ist ein enges:** Die Deckung fällt nicht unter das, was die vier Maße
+tragen — drei von vieren lesen sie gar nicht. Was fällt, ist der Sicherheitsabstand von Maß 1,
+und welche der beiden Kräfte oben gewinnt, entscheidet nicht der Entwurf, sondern
+`platzanteil` — und der steht seit dem 2026-09-05 ohnehin als schärfste offene Frage der
+zweiten Schicht da. Weg A schafft also kein neues Risiko, er hängt ein vorhandenes höher.
+
+**Die eine empfohlene Stellschraube: die Aktionszahl je Runde, von drei auf vier.** Sie ist
+empfohlen für den Fall, **nicht für jetzt** — die Bedingung steht zwei Absätze weiter. Warum
+diese und nicht die beiden anderen, die der Auftrag nennt:
+
+- **Die Partielänge `R` ist nicht frei.** Sie ist die Länge des Fensters, in dem jede Sollreihe
+  ohne Füllung belegt ist, und das ist 2001–2021. `R` zu erhöhen verlangt Daten, die es nach
+  dem Deckungsbefund nicht gibt. **Scheidet aus, und zwar aus Daten und nicht aus Abwägung.**
+- **Plätze zusammenzufassen hieße, `B` zu senken.** `B = 3·(L+1)` ist eine **Abzählung** und
+  keine Wahl: Ein Platz *ist* das Paar (Gebiet, Leitsektor), jede Kombination genau einmal. Wer
+  `B` senkt, nimmt einem Gebiet die Unterscheidung nach Leitsektor und öffnet ein Paket wieder,
+  das entschieden ist. **Nicht empfohlen.**
+- **Die Aktionszahl ist die einzige freie**, und das Vorratsverfahren überlebt sie unverändert:
+  Mit `vi += 4·ai` und weiterhin `−5` je Aktion bekommt Art `i` je fünf Runden `4·ai` von 20
+  Steckplätzen und über die Partie `16·ai` von 80; nach `5k` Runden steht der Vorrat wieder auf
+  `(0,0,0,0,0)`, und `R = 20` bleibt ein Vielfaches von 5. Die Reichweite des Referenzprofils
+  stiege damit von 16 auf 22 Prozent, die des reinen Positionsprofils auf Sättigung (80
+  Aktionen auf 74 Plätze).
+
+**Und ihr Preis gehört dazu, sonst ist es keine Empfehlung.** Drei ist keine beliebige Zahl:
+*„Drei, nicht beliebig viele — die Knappheit ist die Quelle der Entscheidungsdichte. Wer alles
+tun kann, wählt nicht."* Eine vierte Aktion lockert genau diese Knappheit um ein Drittel und
+kostet den Nachtlauf in Maß 2 und Maß 3 ein Drittel mehr Weltschritte.
+
+**Deshalb die Bedingung, und sie hat eine Probe, die sagt, ob man drehen soll.** Gedreht wird
+nur, wenn `Dichte(t)` in einem Partiedrittel unter 0,4 fällt **und** die Verdünnung nachweislich
+die Ursache ist. Die Probe steht schon da und kostet einen zusätzlichen Lauf: `Dichte(t)` bei
+`B = 0` (Brett 45) gegen `B = 30` (Brett 75). **Hält die Dichte ohne die zweite Schicht und
+fällt sie mit ihr, ist die Verdünnung die Ursache und die Aktionszahl das Mittel. Fällt sie in
+beiden Fällen, liegt es nicht an der Zahl der Plätze, und eine vierte Aktion hilft nicht,
+sondern verdeckt.**
+
+#### Was neun Länder im Zustand kosten
+
+Gerechnet aus den Konstanten in `kern/zustand.hpp`; die Formel reproduziert für `L = 4` exakt
+die heutigen 310. **Die Summe unten ist die Ländersumme, also Schicht 1 und Schicht 3 — nicht
+die Gesamtzahl des Zustands.** Die ist nach den drei Schichten **890**: 740 plus `5·B = 150`
+(*Die drei Schichten der Welt*). Zwei unkommentierte Summen in einem Dokument sind der Anfang
+des nächsten Zählfehlers, deshalb steht es an beiden.
+
+| Block | `L = 4` | `L = 9` | |
+|---|---:|---:|---|
+| Länder (44 je Land) | 176 | 396 | 2,2× |
+| Handel `G·(G−1)·2` über `G = L+1` | 40 | **180** | **4,5×** |
+| Nachahmer | 12 | 27 | 2,2× |
+| Positionssteckplätze | 20 | **45** | 2,2× |
+| Beteiligungen | 24 | 54 | 2,2× |
+| fest (Restwelt, Fonds, Markt, Partie …) | 38 | 38 | 1,0× |
+| **Ländersumme** | **310** | **740** | **2,4×** |
+| Börsenplätze `5·B`, `B = 3·(L+1)` | (75) | **150** | |
+| **Zustand gesamt nach drei Schichten** | (385) | **890** | |
+
+Die Zeile *Länder* geht mit `9 · 58 = 522` auf, wenn man Steckplätze, Beteiligungsfelder und
+Nachahmerzähler dazunimmt (`396 + 45 + 54 + 27 = 522`) — dieselbe 58 je Politikland wie in der
+Schichtentabelle. Die beiden Zahlen in Klammern sind der Vollständigkeit halber gerechnet und
+kommen nie vor: Bei `L = 4` gibt es die zweite Schicht noch nicht.
+
+**Der Sprengsatz bleibt die Handelsmatrix**, und ihretwegen ist neun keine kleine Zahl: Sie
+wächst mit `G·(G−1)·2`, also viereinhalbfach, während alles andere sich gut verdoppelt. **Die
+Klassentrennung entschärft sie nicht** — sie spart Daten und Prüfaufwand, keine Adressen: Ein
+Spielland belegt seinen vollen Länderblock und seine Handelszeilen wie jedes andere. Was sie
+spart, sind die `112` statt `180` Ströme, über die der **Rückvergleich** läuft.
+
+#### Was die Wahl an einer offenen Frage entscheidet
+
+Seit dem 2026-09-05 steht die Frage offen, *„ob `3·(L+1)` die Länderwahl aus 0118 überlebt"* —
+sie setzt voraus, dass jedes Gebiet drei unterscheidbare Leitsektoren trägt, und für ein Land
+mit stark beherrschender Sektorstruktur lägen die drei Plätze nach der `kippung`-Regel eng
+beieinander. **Die Wahl entscheidet sie, und zwar zugunsten der Formel.**
+
+Die Spalte *größter Anteil* der Tabelle oben, absteigend: USA 76,6 — Deutschland 69,3 —
+Brasilien 67,8 — Singapur 67,6 — Japan 67,4 — Chile 63,1 — Saudi-Arabien 51,3 — Indien 47,7 —
+China 44,3. **Der einseitigste Anker der neun ist die USA, und die stehen seit der ersten
+Fassung im Modell.** Kein neues Land ist einseitiger als ein heutiges; die beiden
+ausgeglichensten Anker überhaupt sind zwei der fünf neuen, Saudi-Arabien und Indien. Die Wahl
+**verbessert** den bindenden Fall also, statt ihn zu verschärfen.
+
+Damit ist die Frage nicht beantwortet, aber sie ist umgezogen: Ob `kippung` die drei Plätze
+eines Ankers auseinanderträgt, entscheidet sich an den **USA** und nicht an einem der fünf
+neuen — und der Ausweg bliebe, wie es dort schon steht, eine andere `kippung` und keine andere
+Formel. **Der Fall, den ich gesucht und nicht gefunden habe**, wäre ein Land mit einem Anteil
+nahe 100 Prozent; den gibt es unter den neun nicht.
+
 ### Welche drei Sektoren, und aus welcher Reihe jeder entsteht
 
 | Modellsektor | WDI-Reihe | Handelszeile | enthält auch |
@@ -858,7 +1225,7 @@ bestechen.
 
 | Schicht | Einheiten | Felder je Einheit | handelbar | beeinflussbar | im Rückvergleich | Handelszeile |
 |---|---:|---:|---|---|---|---|
-| **1 Politikland** | 4, nach 0118 neun | **58** = 44 + 5 Steckplätze + 6 Beteiligungsfelder + 3 Nachahmerzähler, dazu seine Handelszeilen | ja | **ja** | **ja**, als Rückvergleichsland | ja |
+| **1 Politikland** | 4, nach 0118 neun | **58** = 44 + 5 Steckplätze + 6 Beteiligungsfelder + 3 Nachahmerzähler, dazu seine Handelszeilen | ja | **ja** | **ja, wenn** Rückvergleichsland — seit 0118 gibt es auch Spielländer | ja |
 | **2 Börsenplatz** | `B = 3·(L+1)`, bei `L = 9` **30** | **4** + 1 Steckplatz | **ja** | **nein** | **nein** | **nein** |
 | **3 Restwelt** | 1 | Sektor- und Aggregatgrößen, keine Instrumente | nein | nein | nur im Handelsblock | ja |
 
@@ -1086,9 +1453,12 @@ billiger als das Land** — und das ist die ganze Begründung der Schicht, in ei
 **87.788 Zustandsfelder, 76.440 Handelsströme und 195 × 19 = 3.705 lizenzgeprüfte
 Datenreihen** — Paket 0118 rechnet 19 Reihen und 2 Lizenzstellen je zusätzlichem Land, das
 sind hier 390 Lizenzstellen. Zum Vergleich: Dieser Entwurf führt heute 27 Sollreihen. Der
-Rückvergleich hätte nach der Zählung `4 · L` — vier Prüfgegenstände je Rückvergleichsland —
+Rückvergleich hätte nach der Zählung `4 · L_R` — vier Prüfgegenstände je Rückvergleichsland —
 **780** statt sechzehn (dieselbe
-Formel, die für vier Länder 16 ergibt), die Markträumung liefe über 76.440 Ströme statt 40,
+Formel, die für vier Länder 16 ergibt; das Symbol ist am 2026-09-06 von `L` auf `L_R`
+berichtigt, weil seit Paket 0118 nicht mehr jedes Politikland im Rückvergleich steht — in
+diesem verworfenen Fall wären es alle 195, also `L_R = L` und die Zahl unverändert),
+die Markträumung liefe über 76.440 Ströme statt 40,
 und das
 Laufzeitbudget der drei Selbstspielmaße — heute 9.539.200 Weltschritte — wüchse mit ihnen.
 Wer die Frage erneut stellt, findet hier die Antwort, statt sie neu zu rechnen.
@@ -1193,12 +1563,18 @@ umgeschichtet werden — wo es sofort Aufsicht und Gegenlobby weckt. Das ist ein
 Aktionsart 1 tragen, das Spätfensteroptimum `q*` auf 2 und 3. Trifft sie nicht ein, ist das
 ein Befund über diesen Abschnitt.
 
-**Maß 4 — Rückvergleich.** Er ändert sich **nicht**, und zwar in keiner seiner Zahlen.
-Börsenplätze sind nach Paket 0117 **Spielländer** — *als Verweis geschrieben, nicht als
-nachgemessene Tatsache: 0117 ist heute noch nicht gebaut.* Sie zählen damit nicht in den
-sechzehn Prüfgegenständen, und die Schärfe des Rückvergleichs sinkt nicht: Er läuft weiter über
-dieselben 23 freien Sollreihen und denselben Handelsblock aus 40 Strömen, denn ein Platz hat
-keine Handelszeile. Dazu tritt eine Eigenschaft, die stärker ist als die Klassenzuordnung und
+**Maß 4 — Rückvergleich.** **Durch diese Schicht** ändert er sich **nicht**, und zwar in keiner
+seiner Zahlen. *Berichtigt am 2026-09-06, weil 0117 seither gebaut ist und der Satz so nicht
+stimmte:* Ein Börsenplatz ist **kein Spielland** — ein Spielland ist nach T58 ein Land mit
+Politikpfaden, die geschätzt sein dürfen, und ein Platz hat gar keine. Er trägt schlicht keine
+Sollreihe und keine Handelszeile und kommt in keinem Prüfgegenstand vor; das Argument darunter
+— *die Schicht ist ein reines Blatt* — trägt das allein und braucht die Klassenzuordnung nicht.
+Die Schärfe des Rückvergleichs sinkt durch die Schicht also nicht: Er läuft weiter über
+dieselben freien Sollreihen und denselben Handelsblock, denn ein Platz hat
+keine Handelszeile. **Was ihn sehr wohl bewegt, ist die Länderwahl aus Paket 0118** — dort
+steigen die freien Sollreihen von 23 auf 41, die Prüfgegenstände von 16 auf 28 und die Ströme
+des Handelsblocks von 40 auf 112. Das ist die andere Achse und steht unter *Welche neun
+Länder*. Dazu tritt eine Eigenschaft, die stärker ist als die Klassenzuordnung und
 sie unabhängig davon trägt: **Die Schicht ist ein reines Blatt.** Kein Feld der ersten oder
 dritten Schicht liest ein Feld eines Börsenplatzes; gelesen werden Platzfelder ausschließlich
 vom Fondsteilsystem. Da dieses im `weltlauf` nicht läuft, wird die zweite Schicht dort **gar
@@ -2099,7 +2475,12 @@ Basispunkte, also drei Prozentpunkte mittlerer Fehler auf der Jahresrate, haben 
 Status wie die 20 Prozent und die 0,6: eine gesetzte Latte. Erweist sie sich als
 unerreichbar, ist das ein Befund über das Modell und kein Anlass, sie zu verschieben.
 
-**Die Abnahmeregel — 16 Prüfgegenstände, Toleranz 2.** Die zweite Fassung nannte zwei
+**Die Abnahmeregel — `3·L_R + (L_R − n) + 1` Prüfgegenstände, Toleranz `⌊L_R/2⌋`.** Heute, mit
+`L_R = 4` Rückvergleichsländern und `n = 1`, sind das **16 und 2**; nach Paket 0118 mit
+`L_R = 7` sind es **28 und 3** (siehe *Welche neun Länder*). **Beide stehen ab hier als Formel
+und nicht als Ziffer**, aus demselben Grund, aus dem `R` als Buchstabe steht: Eine feste 2
+machte das Hinzufügen eines Landes zu einer Verschärfung des Rückvergleichs, ohne dass sich
+eine Regel des Modells ändert. Die zweite Fassung nannte zwei
 Fehlermaße und keine Regel, wie über die Reihen zusammengefasst wird; `technik.md` T37 hat
 daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
 
@@ -2107,16 +2488,18 @@ daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
    werden berichtet und entscheiden nichts; der Leitzins ist seit dem 2026-09-03 gar keine
    Sollreihe mehr, sondern Eingabe mit Invariantenprobe. Eine Reihe, die per Konstruktion
    fehlerfrei ist, darf kein Gesamtmaß mildern.
-2. **Prüfgegenstand ist nicht die Reihe, sondern die Größe.** Es sind sechzehn:
+2. **Prüfgegenstand ist nicht die Reihe, sondern die Größe.** Es sind heute sechzehn, und
+   **gezählt wird je Rückvergleichsland, nicht je Land** — ein Spielland liegt nach T58
+   vollständig außerhalb der Sollmaske und trägt keinen:
 
-   | Prüfgegenstand | Zahl | zusammengefasst aus |
-   |---|---:|---|
-   | BIP je Land | 4 | je eine Reihe |
-   | Sektorstruktur je Land | 4 | die **drei** Anteilsreihen des Landes, alle drei müssen bestehen |
-   | Verbraucherpreise je Land | 4 | je eine Reihe |
-   | Wechselkurs je Land ausser USA | 3 | je eine Reihe |
-   | Handelsblock | 1 | 40 Ströme, Median des MAPE und Median der Richtungstreue; das schlechteste Fünftel wird ausgewiesen |
-   | **Summe** | **16** | |
+   | Prüfgegenstand | Formel | heute | nach 0118 | zusammengefasst aus |
+   |---|---|---:|---:|---|
+   | BIP je Rückvergleichsland | `L_R` | 4 | 7 | je eine Reihe |
+   | Sektorstruktur je Rückvergleichsland | `L_R` | 4 | 7 | die **drei** Anteilsreihen des Landes, alle drei müssen bestehen |
+   | Verbraucherpreise je Rückvergleichsland | `L_R` | 4 | 7 | je eine Reihe |
+   | Wechselkurs je Rückvergleichsland ausser dem Numéraire | `L_R − n` | 3 | 6 | je eine Reihe |
+   | Handelsblock | `1` | 1 | 1 | `(L_R+1)·L_R·(S−1)` Ströme — heute 40, nach 0118 112; Median des MAPE und Median der Richtungstreue; das schlechteste Fünftel wird ausgewiesen |
+   | **Summe** | `3·L_R + (L_R − n) + 1` | **16** | **28** | |
 
    Die drei Anteilsreihen eines Landes sind durch die Normierung auf 10.000 nicht
    unabhängig; als drei Zähler geführt, würde ein einzelnes falsch modelliertes Land die
@@ -2133,11 +2516,26 @@ daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
    der Nenner der *Sollreihen* (31 → 27), nicht der der *Prüfgegenstände*.
 
 3. **Ein Prüfgegenstand besteht**, wenn er beide für ihn geltenden Schwellen einhält.
-4. **Der Lauf ist bestanden, wenn höchstens zwei der sechzehn Prüfgegenstände reißen.**
-   Jeder gerissene wird im Befund einzeln benannt, mit beiden Zahlen. Drei reißende sind
-   ein Durchfallen, auch wenn sie knapp reißen.
+   **Die Richtungstreue wird dabei nur über die Übergänge gebildet, in denen sich die
+   Sollreihe bewegt.** Ein Übergang ohne gemessene Bewegung trägt keine Richtung und wird
+   weder als Treffer noch als Fehler gezählt; bewegt sich eine Sollreihe in keinem der
+   zwanzig Übergänge, hat der Prüfgegenstand keine Richtungstreue und besteht allein über
+   sein Niveaumaß. Das ist keine Milderung, sondern das Schließen einer Lücke: Über eine
+   konstante Reihe trägt jeder Übergang die Richtung null, ein endogen gerechneter Wert
+   trifft die exakte Null so gut wie nie, und der Gegenstand risse **von Bauart wegen**.
+   Der Fall ist nicht hypothetisch — er ist der Grund, aus dem Saudi-Arabien Spielland
+   erwartet wird (siehe *Welche neun Länder*), und flache Abschnitte gibt es auch ohne
+   Kursbindung.
+4. **Der Lauf ist bestanden, wenn höchstens `⌊L_R/2⌋` Prüfgegenstände reißen** — heute zwei
+   von sechzehn, nach Paket 0118 drei von achtundzwanzig. Jeder gerissene wird im Befund
+   einzeln benannt, mit beiden Zahlen. Einer mehr ist ein Durchfallen, auch wenn er knapp
+   reißt. **Die Formel reproduziert bei `L_R = 4` genau die heutige 2** — das ist die
+   Verträglichkeitsprobe —, und sie hält den Anteil danach fast fest: 2 von 16 sind 12,5
+   Prozent, 3 von 28 sind 10,7, 4 von 36 sind 11,1. Sie wächst also langsamer als die Zahl
+   der Gegenstände und senkt die Latte nie.
 
-Der Median über die 40 Handelsströme ist der Vorschlag des Architekten (`technik.md`
+Der Median über die Handelsströme — heute 40, nach Paket 0118 112 — ist der Vorschlag des
+Architekten (`technik.md`
 Abschnitt 12) und wird hiermit übernommen, mit seiner Begründung: Einzelne kleine Ströme
 — Brasilien–China in der Landwirtschaft — schwanken prozentual stark, ohne dass das Modell
 falsch wäre; ein Mittel ginge daran kaputt, eine Je-Strom-Schwelle schneller.
@@ -2177,6 +2575,47 @@ Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahr
   gegen die er ab jetzt zu lesen ist. Für das *investierbare Universum* ist er seit
   Paket 0119 gegenstandslos: Es wächst über die zweite Schicht, die keine
   Rückkopplungswege hinzufügt, weil sie keine Handelszeile hat.
+  **Am 2026-09-06 ausgefüllt:** Die neun sind USA, China, Deutschland, Brasilien, Japan,
+  Indien, Chile, Singapur und Saudi-Arabien. Der Satz über die vervierfachten
+  Rückkopplungswege bleibt trotzdem richtig und ist jetzt bezifferbar — die Handelsmatrix
+  wächst von 40 auf 180 Ströme, viereinhalbfach, während alles andere sich gut verdoppelt.
+  **Er ist damit der Grund, warum es neun sind und nicht zwölf**, und kein Einwand mehr
+  gegen die neun.
+- **Ein zehntes Politikland, und die Grenze liegt an der Matrix und nicht am Geschmack.**
+  `G·(G−1)·2` über `G = L+1` ergibt bei zehn Ländern 220 Ströme statt 180, bei zwölf 312.
+  Wer mehr investierbare Welt will, bekommt sie über die zweite Schicht zu fünf Feldern je
+  handelbarem Steckplatz statt zu rund zwanzig — das ist die ganze Begründung der Schicht,
+  und sie gilt gegen jedes zehnte Land genauso wie gegen das dreißigste.
+- **Ein zweites Land des Euroraums.** Griechenland war der stärkste Kandidat für den fünften
+  Platz: Sein Haushaltssaldo wird 2010 — Runde 10, genau zwischen den beiden Fenstern von
+  Maß 3 — unter dem Programm exogen, und das wäre die Instrumentensperre, die seit dem
+  Fensterschnitt auf 2001 fehlt und die dieser Entwurf ausdrücklich vermisst. **Es scheitert
+  an einer Adresse:** Der Wechselkurs des Euro gegen den Dollar ist für Deutschland und
+  Griechenland **dieselbe** Reihe, das Modell führt aber `wechselkurs[l]` je Land und
+  rechnete zwei Euro-Kurse, die auseinanderlaufen dürfen. Die beiden Länder trügen zwei
+  Prüfgegenstände auf einer einzigen Wirklichkeit, und ein Fehler im Euro-Kurs risse beide
+  zugleich. Der Ausweg wäre eine gemeinsame Kursadresse je Währungsraum — und die ändert die
+  Adressarithmetik, die Sollreihenzahl und die Prüfgegenstandsformel zugleich. Zu teuer für
+  ein fünftes Land, und ein eigenes Paket, falls der Euroraum je zweimal vorkommen soll.
+- **Eine Instrumentensperre, die innerhalb des Fensters zuschnappt.** Sie fehlt seit dem
+  2026-09-03 und sie fehlt weiter. Der Kandidat außerhalb des Euroraums war die Türkei
+  (IWF-Programm 2002–2008, also Runden 2 bis 8); er ist verworfen, weil das Fenster genau
+  über dem Frühfenster von Maß 3 liegt und die Sperre damit nicht *zwischen* den beiden
+  Fenstern läge, sondern *in* einem. Was bliebe, wäre eine Sperre auf einer mittleren Runde
+  — und das ist das erzählte Ereignis, das zwei Zeilen weiter unten aus gutem Grund auf
+  dieser Liste steht. **Maß 3 muss die Verschiebung weiterhin ohne einen solchen Übergang
+  erzeugen**; die dritte Quelle dafür ist seit Paket 0119 die zweite Schicht.
+- **Ein Wechselkursregime als Modellgröße.** Saudi-Arabiens Kurs steht über alle 21
+  Stützstellen auf 3,75, und das Modell hat keine Regel, die einen Kurs hält. Eine
+  Kursbindung wäre billig zu schreiben — der `wechselkurs[l]` eines gebundenen Landes wird
+  nicht geschrieben, dieselbe Bauart wie die stillgelegten Adressen eines Spiellands — und
+  sie ist trotzdem nicht hier entschieden: Sie machte aus einem Spielland ein
+  Rückvergleichsland und verschöbe damit `L_R`, die Prüfgegenstände und die Sollmaske. Das
+  ist eine Entscheidung über die Grundlage des Rückvergleichs und gehört nach T60 dem
+  Betreiber, nicht diesem Abschnitt. **Was sie kaufen würde, steht dabei:** Ein gebundener
+  Kurs ist die einzige Art, wie das Modell den Unterschied zwischen einer lauten und einer
+  stummen Währung ausdrücken könnte, und Saudi-Arabien ist der einzige Ort, an dem er
+  gemessen danebenliegt.
 - **Alle 195 Länder der Welt.** Das ist kein „später", sondern ein anderes Produkt, und die
   Zahlen stehen unter *Was die Schicht kostet*: **87.788 Zustandsfelder, 76.440 Handelsströme,
   3.705 lizenzgeprüfte Datenreihen** und 780 Prüfgegenstände statt sechzehn. Verworfen am
@@ -2459,11 +2898,39 @@ Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahr
   nutzt, ist eine Messung. Die Prüfform: Erreichen im Frühfenster von Maß 3 Profile mit
   Schwerpunkt auf verschiedenen Leitsektoren dasselbe Ergebnis, sind die drei Plätze eines
   Ankers ein Platz. Die Zahl ist Kalibrierung, die Form steht.
-- **Ob `3·(L+1)` die Länderwahl aus 0118 überlebt.** Die Formel setzt voraus, dass jedes
-  Gebiet drei unterscheidbare Leitsektoren trägt. Für ein Land, dessen Sektorstruktur stark
-  von einem Sektor beherrscht wird, liegen die drei Plätze nach der `kippung`-Regel eng
-  beieinander. Zu sehen ist das erst an den fünf gewählten Ländern; der Ausweg wäre nicht eine
-  andere Formel, sondern eine andere `kippung`.
+- **`3·(L+1)` überlebt die Länderwahl aus 0118, und diese Frage ist damit geschlossen.**
+  Sie lautete, ob jedes Gebiet drei unterscheidbare Leitsektoren trägt — für ein Land mit
+  stark beherrschender Sektorstruktur lägen die drei Plätze nach der `kippung`-Regel eng
+  beieinander. Gemessen am größten normierten Sektoranteil ist der einseitigste der neun
+  Anker die **USA** mit 76,6 Prozent, und die stehen seit der ersten Fassung im Modell; die
+  beiden ausgeglichensten sind mit 51,3 und 47,7 zwei der fünf neuen (Saudi-Arabien,
+  Indien). **Die Wahl verbessert den bindenden Fall, statt ihn zu verschärfen.** Was
+  offenbleibt, ist nicht die Formel, sondern `kippung` — und das steht schon als eigene
+  Frage zwei Punkte weiter oben, jetzt mit dem Land dazu, an dem sie sich entscheidet.
+- **Ob `MFS_IR` für Japan, Indien und Chile einen Politiksatz auf Stufe 1 führt.** An diesem
+  einen Abruf je Land hängt die Klasse dreier Länder und damit `L_R`, die Zahl der
+  Prüfgegenstände (28 gegen 16 bis 22), die Sollreihen und die Sollmaske. Es ist die
+  billigste offene Frage dieses Pakets — drei Abrufe nach T63 Schritt 1 — und die mit der
+  größten Hebelwirkung. Sie gehört dem Datenbauer, nicht mir.
+- **Ob die Klassenregel aus T61 Regel 5 die Ausschlüsse sieht, die in den Sollreihen liegen.**
+  Sie leitet die Klasse allein aus den drei Politikpfadreihen ab. Zwei Ausschlussgründe
+  liegen aber woanders: die fehlende Ausweichquelle für Reihe 2 (T62 Folgerung 2) und — neu
+  seit diesem Paket — eine Sollreihe, die über das ganze Fenster konstant ist und deshalb
+  keine Richtungstreue tragen kann. Führt `MFS_IR` einen SAMA-Satz auf Stufe 1, leitet
+  Regel 5 für Saudi-Arabien „Rückvergleichsland" ab, während das Manifest „Spielland" sagen
+  muss, und der Jahrgangsbau bricht ab. Der Abbruch ist richtig, die Stelle nicht. Gehört
+  zu T61.
+- **Ob die Toleranz `⌊L_R/2⌋` trägt.** Sie ist neu am 2026-09-06 und ersetzt die feste 2,
+  weil eine feste Zahl das Hinzufügen eines Landes zu einer Verschärfung machte. Sie
+  reproduziert die heutige 2 und hält den Anteil bei rund elf Prozent — aber ob elf Prozent
+  die richtige Quote sind, weiß erst der Rückvergleicher am laufenden Kern. Reißen
+  regelmäßig vier von 28, ist das ein Befund über das Modell und nicht über die Formel.
+- **Ob der Handelsblock als *ein* Prüfgegenstand richtig gewogen ist, wenn er von 40 auf 112
+  Ströme wächst.** Die Frage besteht schon bei vier Ländern und wird durch neun schärfer: Der
+  schwerste Einzelgegenstand des Rückvergleichs zählt so viel wie das BIP eines einzelnen
+  Landes. Die Zusammenfassung über den Median ist der Grund, warum er trotzdem nicht
+  auseinanderfliegt; ob sie bei 112 Strömen noch dasselbe leistet wie bei 40, ist eine
+  Messung. Nicht in diesem Paket entschieden, weil sie von der Länderzahl unabhängig ist.
 - **Woher die Sektorgewichte der drei Restwelt-Plätze kommen.** Sie folgen der gleichen Regel
   aus `sektoranteil[Restwelt][s]` des Startjahrs. Die Restwelt entsteht im Jahrgang als
   Residuum, und ob ihre Sektoranteile dabei sauber anfallen, weiß der Jahrgangsbau und nicht
@@ -2484,6 +2951,28 @@ Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahr
 
 Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
 
+### Neu aus Paket 0118 — neun Länder, `L_R = 7`, und die Zählregel von Maß 4
+
+`technik.md` habe ich nicht angefasst, und **keine Zahl darin ist heute falsch**: Bis 0116 die
+Adressarithmetik parametrisch geschrieben und der Datenbauer den Jahrgang gebaut hat, gilt
+weiter `L = 4`, `L_R = 4` und 310. Was danach nachzuziehen ist:
+
+| Stelle | was zu tun ist |
+|---|---|
+| **T59** (Zählung in `L_R`) | Die Tabelle bekommt die Spalte `L_R = 7, L_S = 2` — das ist die Wahl aus diesem Paket. Prüfgegenstände 28, freie Sollreihen 41, Sollreihen 48, Ströme im Handelsblock 112, Sollmaske `weltlauf` 328. Jede Zahl steht im Abschnitt *Welche neun Länder* eingesetzt daneben. Die Spalten `L_R = 4` und `L_R = 9` bleiben, sie sind die Ränder. |
+| **T58** (Klassen) | Die Rückvergleichsländer sind USA, China, Deutschland, Brasilien, Japan, Indien, Chile; Spielländer sind Singapur und Saudi-Arabien. **Erwartung mit Bedingung, nicht Festlegung** — entschieden wird sie nach T63 Schritt 1 am Abruf. Die Festlegungen 3 (Restweltrest je Modus) und 4 (Giftprobe) werden mit diesem Paket zum ersten Mal wirklich gebraucht: Es gibt ab hier Spielländer. |
+| **T61 Regel 5** | **Der eine Befund dieses Pakets gegen ein fremdes Gewerk.** Die Regel leitet die Klasse allein aus den drei Politikpfadreihen ab. Saudi-Arabien ist aus einem Grund Spielland, den sie nicht sehen kann: seine konstante Wechselkurs-**Sollreihe**. Führt `MFS_IR` einen SAMA-Politiksatz auf Stufe 1, gehen die abgeleitete und die geschriebene Klasse auseinander und der Jahrgangsbau bricht ab — richtig, aber an der falschen Stelle. T62 Folgerung 2 (Reihe 2 ohne Ausweichquelle) ist derselbe Fall. Beide Ausschlüsse liegen in den Sollreihen und gehören dorthin, wo die Klasse gebildet wird. |
+| **T62** (Datenkosten) | Drei Rückvergleichsländer zu `32(R+1)+6 = 678` und zwei Spielländer zu `5(R+1)+33 = 138` ergeben **2.310** Werte bei `R = 20`, nicht die 3.390 aller fünf als Rückvergleichsland. Die **zehn** neuen Lizenzstellen (zwei je Land) sind von der Klasse unabhängig und gehören nach Folgerung 3 auf dieselbe Liste wie die sieben offenen. |
+| **T37 / Toleranz** | Die Zahl der Prüfgegenstände und die Toleranz stehen ab hier als Formel: `3·L_R + (L_R − n) + 1` und `⌊L_R/2⌋`. Bei `L_R = 4` ergeben sie 16 und 2, also genau den heutigen Stand — das ist die Verträglichkeitsprobe, und deshalb ändert dieser Eintrag heute nichts. |
+| **Richtungstreue** | Sie wird nur über die Übergänge gebildet, in denen sich die **Sollreihe** bewegt. Ein Übergang ohne gemessene Bewegung zählt weder als Treffer noch als Fehler; bewegt sich eine Reihe nie, besteht der Gegenstand allein über sein Niveaumaß. Ohne diese Zeile risse jede konstante Sollreihe von Bauart wegen. |
+| **T16** (Steckplätze) | Unverändert gegenüber 0119: `3L + L + L + B = 75` bei `L = 9`, davon 74 besetzbar, weil der Währungssteckplatz des Numéraires leer bleibt. Die Deckungsrechnung dieses Pakets steht auf den 74. |
+| **T5 / Wertebereiche** | Zwei Ränder werden zum ersten Mal wirklich angefahren und sind zu prüfen, nicht anzunehmen: `durchgriff` läuft für Singapurs Landwirtschaft gegen 10.000 (Anteil 0,08 Prozent, also `N ≈ 0`), und `staatsschuld[JPN]` überschreitet 20.000 Basispunkte (222,7 Prozent im Endjahr). Beides bleibt im Wertebereich; beides gehört in die Invariantenprobe, weil es die erste Berührung ist. |
+
+**Was dieses Paket ausdrücklich nicht angefasst hat:** die 310, die Adressarithmetik, den Kern,
+`reihen.toml`, `technik.md` und die Zahl der Aktionen je Runde. Die Aktionszahl steht als
+**Stellschraube mit Bedingung und Probe** im Abschnitt *Die Folge aus Weg A* und ist nicht
+gedreht.
+
 ### Neu aus Paket 0119 — die zweite Schicht, 150 Adressen und zwei Parameter
 
 `technik.md` habe ich nicht angefasst, und keine Zahl darin ist heute falsch: Die zweite
@@ -2500,7 +2989,7 @@ parametrisch geschrieben hat, gilt weiter `L = 4` und 310. Was danach nachzuzieh
 | **T47** (`marktanteil`) | Dritter Summand in `korbbestand`, gebildet aus `boersenwert(b)` und `|stufen| · stufenweite`; ohne Beteiligungsanteil, weil es auf Plätzen keine Beteiligung gibt. |
 | **T39** (Kursregeln ohne Adresse) | `weltzins`, `zielzins(b)`, `zielkurs(b)`, `leitkurs(b)`, `zinsfaktor(b)` und `boersenwert(b)` sind Funktionen des Zustands, keine Adressen — dieselbe Bauart wie `anleihekurs` und `landespreis`. |
 | **Nachahmer- und Stoßregel** | **Die einzige Stelle, an der dieser Abschnitt auf eine fremde Formel zeigt, statt sie hinzuschreiben.** Der Aufschlag auf `index[b]` soll derselbe sein wie der auf einen Land×Sektor-Korb, mit `nachahmer[b]` an der Stelle von `nachahmer[l][s]` und `boersenwert(b)` an der von `korbwert(l,s)`. Liest die vorhandene Regel jedoch `kapitalstock[l][s]` unmittelbar statt über den Korbwert, trägt die Übertragung nicht, und dann ist das ein Befund gegen diese Zeile — nicht gegen die Schicht. Der Architekt sagt, welcher der beiden Fälle vorliegt. |
-| **T37 / die 16 Prüfgegenstände** | **Unverändert.** Börsenplätze sind Spielländer (Verweis auf Paket 0117, dort zu setzen), tragen keine Sollreihe und keine Handelszeile. Der Handelsblock bleibt bei `G·(G−1)·2` über die **Gebiete**, nicht über die Plätze. |
+| **T37 / die Prüfgegenstände** | **Durch diese Schicht unverändert.** Ein Börsenplatz trägt keine Sollreihe und keine Handelszeile und kommt in keinem Prüfgegenstand vor; der Handelsblock bleibt bei `G·(G−1)·2` über die **Gebiete**, nicht über die Plätze. *Berichtigt am 2026-09-06: Hier stand „Börsenplätze sind Spielländer (Verweis auf Paket 0117)". Ein Platz ist kein Land — die Zeile trägt ohne die Klassenzuordnung, weil die Schicht ein Blatt ist. Bewegt werden die Prüfgegenstände nicht von dieser Schicht, sondern von der Länderwahl aus Paket 0118: 16 → 28.* |
 | **Modus `weltlauf`** | Die zweite Schicht wird **nicht gerechnet**; ihre `5·B` Adressen behalten ihre Startwerte, wie der Fondsblock und die Nachahmerzähler. Die Menge der je Modus geschriebenen Adressen ist damit weiterhin fest und wächst im Weltlauf nicht. Der Weltlauf kostet unverändert `R` Weltschritte. |
 | **Schranke am Leitzins** | Bleibt, wie sie ist (`leitzins ≥ 1 − aufschlag`), und deckt `zins[b]` mit ab: `zins[b]` ist ein wiederholtes Mittel von Werten oberhalb dieser Schranke. **Keine zweite Schranke nötig.** |
 | **Laufzeitbudget (Abschnitt 10)** | Je Weltschritt kommen `B` Plätze zu je drei Halbierungen und einer Bewertung hinzu. Keine Iteration, keine Suche, keine Handelszeile — der Zuwachs ist linear in `B` und trifft nur die drei Selbstspielmaße, nicht den Weltlauf. |

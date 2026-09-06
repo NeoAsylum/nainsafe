@@ -1,7 +1,7 @@
 ---
 id: 0118-fuenf-weitere-laender-auswaehlen
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0119-welt-in-drei-schichten, 0128-zaehlung-vier-je-land-statt-vier-r, 0141-pruefliste-fuenftes-land]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Bedingung 3 rechnet auf der Steckplatzzahl, die nach 0119 gilt, gegen die 20 von heute — nicht auf den 45 aus der Ländergeometrie allein; siehe den Annahmevermerk.
@@ -183,6 +183,64 @@ berichtigt ist — statt den Fehler in deine eigene Rechnung zu übernehmen.
 **Dein Vorher-Stand** ist der dann geltende `HEAD`. Such am Text, nicht an einer
 Zeilennummer: `spiel.md` ist heute schon durch 0119 gewandert und wandert durch 0128 ein
 zweites Mal.
+
+## Selbstauskunft des Laufs vom 2026-09-06 (Spielentwerfer, `status: gebaut`)
+
+**Die fünf:** Japan, Indien, Chile (Rückvergleichsländer erwartet), Singapur, Saudi-Arabien
+(Spielländer erwartet). Also `L = 9`, `L_R = 7`, `L_S = 2`, `n = 1`. Alles steht im neuen
+Abschnitt *Welche neun Länder, welche Klasse, und was Weg A kostet* in `spiel.md`.
+
+**Bedingung für Bedingung:**
+
+1. **Fünf namentlich, je eine Eigenschaft, die keines der vier heutigen trägt** — erfüllt, und
+   jede an einer Größe belegt, die das Modell wirklich rechnet: Anleihemenge und Preisrichtung
+   (JPN), Landwirtschaftsanteil gegen Handelsanteil (IND), `durchgriff` an der Obergrenze
+   (SGP), konstante Wechselkursreihe und Industrie über der Hälfte (SAU), BIP als Menge der
+   Gegenlobby (CHL). Alle Zahlen aus WDI und IWF-WEO, abgerufen 2026-09-06, mit Endpunkt im
+   Text.
+2. **Klasse je Land mit Wechselbedingung** — erfüllt. Drei hängen an einem einzigen Abruf
+   (`MFS_IR`, T63 Schritt 1), zwei sind mit Grund Spielland.
+3. **Die Folge aus Weg A gerechnet** — erfüllt, **auf 74 besetzbaren von 75 Steckplätzen**
+   (die 75 aus 0119, nicht die 45 aus der Ländergeometrie; der Währungssteckplatz des
+   Numéraires bleibt nach T16 leer). Reichweite über die volle Partie: Referenzprofil 12 von
+   74 = 16 Prozent gegen 12 von 19 = 63 Prozent heute; reines Positionsprofil 60 von 74 = 81
+   Prozent gegen Sättigung heute. **Urteil: fällt nicht unter das, was die vier Maße tragen** —
+   drei von vieren lesen die Zahl nicht, und bei Maß 1 hängt es an `platzanteil`, einer schon
+   offenen Frage. **Genau eine Stellschraube empfohlen**: die Aktionszahl von drei auf vier,
+   mit Bedingung *und* mit der Probe, die sagt, ob man drehen soll (`Dichte(t)` bei `B = 0`
+   gegen `B = 30`). `R` scheidet aus Daten aus, `B` zu senken öffnete ein entschiedenes Paket.
+4. **Die Tabelle steht in `spiel.md`** mit den Werten für `L = 9`, und **an ihr steht, welche
+   Summe sie meint**: 740 ist die Ländersumme, 890 der Zustand nach den drei Schichten. Der
+   Eintrag über zwölf Länder unter *Was bewusst fehlt* ist nicht gelöscht, sondern ausgefüllt
+   und behält seine Aussage — er ist jetzt der Grund, warum es neun sind und nicht zwölf.
+5. **`git diff` ausschließlich in `spiel.md`** — erfüllt für das Gewerk. Die 310 stehen
+   unverändert, `technik.md`, `reihen.toml` und der Kern sind nicht angefasst. **Zwei
+   Einschränkungen, offen benannt:** Dieser Lauf ändert zusätzlich diese Statuszeile (ohne sie
+   plant der Runner das Paket erneut ein) und das Logbuch der Rolle (CLAUDE.md) — beides von
+   Regeln erzwungen, die über dem Paket stehen. Und im Arbeitsbaum lagen beim Lauf fremde
+   Änderungen an `CMakeLists.txt` und `aufgaben/0180-…` aus anderen Läufen; sie stammen nicht
+   von hier.
+
+**Drei Dinge, die über den Auftrag hinausgehen, weil sie ohne sie ein Loch hinterlassen
+hätten** — der Prüfer soll sie sehen und darf sie zurückweisen:
+
+- **Die Toleranz von Maß 4 steht ab jetzt als `⌊L_R/2⌋` statt als 2.** Bei `L_R = 4` ergibt sie
+  genau die heutige 2; bliebe sie eine Ziffer, machte das Aufnehmen eines Landes den
+  Rückvergleich härter, ohne dass sich eine Modellregel ändert.
+- **Die Richtungstreue zählt nur Übergänge, in denen sich die Sollreihe bewegt.** Ohne diese
+  Zeile risse jede konstante Sollreihe von Bauart wegen — der Fall, den Saudi-Arabien
+  mitbringt.
+- **Zwei stehengebliebene Sätze berichtigt**, beide von der Klassenfrage unmittelbar betroffen:
+  die Schichtentabelle sagte „ja, als Rückvergleichsland" ohne Ausnahme (die Meldung dazu
+  stammt aus 0117), und 0119 nannte Börsenplätze „Spielländer" — ein Platz ist kein Land, und
+  das Argument darunter (*die Schicht ist ein reines Blatt*) trägt ohne die Klassenzuordnung.
+
+**Ein Befund gegen ein fremdes Gewerk, für den Projektmanager:** `technik.md` T61 Regel 5
+leitet die Klasse allein aus den drei Politikpfadreihen ab. Zwei Ausschlussgründe liegen aber
+in den **Sollreihen** — die fehlende Ausweichquelle für Reihe 2 (T62 Folgerung 2) und, neu, eine
+über das Fenster konstante Sollreihe. Führt `MFS_IR` einen SAMA-Satz auf Stufe 1, gehen
+abgeleitete und geschriebene Klasse für Saudi-Arabien auseinander und der Jahrgangsbau bricht
+ab — richtig, aber an der falschen Stelle. Das ist ein Paket für den Architekten.
 
 ## Rückläufe
 
