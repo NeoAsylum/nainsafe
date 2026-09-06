@@ -4,6 +4,7 @@ Rotated by the runner on 2026-09-06 at 12302 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+- 2026-09-06 — spiel.md#The loop: empty run, TWENTY-FIFTH dispatch; re-verified lines 262–384 fully English, no edit. The stale queue entry re-queues the translated heading; only the operator/dispatcher can close it at the source.
 - 2026-09-06 — spiel.md#The loop: empty run, TWENTY-FOURTH dispatch; re-verified lines 262–384 fully English, no edit. The stale queue entry re-queues the translated heading; only the operator/dispatcher can close it at the source.
 - 2026-09-06 — spiel.md#The loop: empty run, TWENTY-THIRD dispatch; re-verified lines 262–384 fully English, no edit. The stale queue entry re-queues the translated heading; only the operator/dispatcher can close it — flagged in every run since the twenty-first.
 - 2026-09-06 — spiel.md#The loop: empty run, TWENTY-SECOND dispatch; re-verified lines 262–384 fully English, no edit. The queue entry must be closed at the source — see previous line.
