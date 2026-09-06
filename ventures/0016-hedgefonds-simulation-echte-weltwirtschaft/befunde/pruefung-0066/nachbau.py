@@ -11,10 +11,25 @@ Baulauf. Warum sie ueberhaupt bleibt: Der Schlussriegel hat keinen Regressionste
 im echten Baum steht nirgends ein `-w`, also wird nichts rot, wenn jemand die Pruefung
 stumpf macht. Diese Datei ist der billigste Ersatz.
 
+Seit Paket 0185 (2026-09-06) prueft er ausserdem die **Profilangabe** der Riegelzeile:
+Ein einziger seiner Baeume wird zusaetzlich in beiden Profilen konfiguriert, und die
+Zeile muss unter jedem den Schalter nennen, mit dem konfiguriert wurde. Warum das hier
+haengt und nicht in `bauwege.py`, steht in `aufgaben/0185-...` -- kurz: dieses Skript
+laeuft bei jeder Abnahme mit, jenes nur, wenn jemand es ruft.
+
 Aufruf aus WSL heraus:
 
     python3 befunde/pruefung-0066/nachbau.py            # gegen HEAD
     python3 befunde/pruefung-0066/nachbau.py 8fff575^   # gegen den Stand vor 0066
+
+    python3 befunde/pruefung-0066/nachbau.py --bruch=rohwert   # der Rotnachweis
+
+Der Rotnachweis ist kein Handgriff daneben, sondern dieser Schalter: `--bruch=<name>`
+verbiegt die geholte Fassung der Kette an genau einer Stelle und laesst alles andere
+laufen wie sonst. Die drei Namen stehen in `BRUECHE`. Sie sind der Beleg, dass die neue
+Bedingung misst und nicht nur laeuft -- und weil dabei die 22 Baeume gruen bleiben und
+nur die neue Zeile rot wird, zeigt derselbe Lauf noch einmal die Luecke, gegen die 0185
+geschrieben ist.
 
 Seit Paket 0133 (2026-09-05) ruft ihn ausserdem `ctest` von selbst: In
 `pruefstand/CMakeLists.txt` haengt er als Probe `schlussriegel_nachbau` und laeuft
@@ -34,9 +49,17 @@ Die uebrigen zwoelf urteilen an beiden Staenden gleich. Das gilt ausdruecklich a
 fuer `e1_addcompileopt` und `e2_dirprop`: Eine Verzeichniseigenschaft erbt in
 `COMPILE_OPTIONS` des Ziels und wurde schon vorher gefangen -- der Weg ueber
 `add_compile_options` war nie offen. Nachgemessen, nicht angenommen.
+
+**Fuer die Profilangabe gilt die Sollspalte nicht**, und das ist Absicht: Sie ist
+entweder da oder nicht, waehrend die 22 Urteile sich mit dem Baum aendern duerfen. Ein
+Stand vor Paket 0137 hat sie noch nicht und macht die neue Bedingung darum ohne jeden
+Bruch rot -- `python3 ... 5d5e2d6` endet seit 0185 mit 1 statt mit 0. Der Lauf druckt
+dazu, dass das eine Aussage ueber jenen Stand ist und nicht ueber HEAD. Damit ist der
+Baum vor 0137 der vierte Rotnachweis, und der einzige, den niemand gebaut hat.
 """
 
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -111,16 +134,72 @@ GESCHACHTELT = {
 }
 
 
-def kette_holen(stand: str, ablage: Path) -> Path:
+# --- Die Profilangabe der Riegelzeile (Paket 0185) ------------------------------------
+#
+# Die Zeile lautet
+#
+#   -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende ...
+#
+# und traegt zwei Haelften, die verschiedene Dinge fangen (begruendet in
+# `werkzeugkette.cmake` ueber dem `message`): den **rohen Wert**, der sich allein gegen
+# die Kommandozeile abgleichen laesst, und sein **Wahrheitswort**, das `=1` und `=ON` als
+# dasselbe Profil liest. Geprueft werden sie darum einzeln -- ein Riegel, der nur die
+# Zeile als ganze vergleicht, sagt einem Leser nicht, welche der beiden riss.
+PROFILE = (("ON", "wahr"), ("OFF", "falsch"))
+RIEGELMARKE = "Warnsatz-Schlussriegel"
+WERT_MUSTER = re.compile(r"FABRIK_SANITIZER=(\S*)")
+WORT_MUSTER = re.compile(r"\((wahr|falsch)\)")
+
+# Die drei Brueche, je einer je Haelfte und einer fuer beide zusammen. Sie werden nicht
+# von Hand hingeschrieben, sondern aus der geholten Fassung erzeugt: Ein handgeschriebenes
+# `werkzeugkette.cmake` waere in drei Wochen ein anderes Stueck Software als das im Baum,
+# und der Rotnachweis belegte dann etwas ueber eine Datei, die niemand mehr baut.
+#
+# Jeder Eintrag ist (Wortlaut im Baum, Ersatz). Kommt der Wortlaut nicht **genau einmal**
+# vor, bricht der Lauf ab -- ein Bruch, der nichts trifft, laesst die Probe gruen und
+# sieht wie ein Beweis aus.
+BRUECHE = {
+    # Der Schalter steht richtig da, das Wort dazu ist festgenagelt. Faengt allein die
+    # zweite Haelfte, und zwar nur unter OFF.
+    "wahrheitswort": ('    set(profilwort "falsch")\n',
+                      '    set(profilwort "wahr")\n'),
+    # Umgekehrt: das Wort folgt dem Schalter, der Wert daneben ist festgenagelt. Das ist
+    # der Bruch, den kein Bericht dieser Fabrik sehen wuerde -- der Baulauf faehrt nur ON.
+    "rohwert": ('"Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=${FABRIK_SANITIZER} "',
+                '"Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON "'),
+    # Die Angabe ganz weg -- der Stand vor Paket 0137. Beide Haelften fehlen.
+    "ohne": ('"Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=${FABRIK_SANITIZER} "\n'
+             '    "(${profilwort}): ${gezaehlt} uebersetzende Ziele geprueft, "',
+             '"Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, "'),
+}
+
+
+def kette_verbiegen(roh: bytes, bruch: str) -> bytes:
+    """Genau eine Stelle der geholten Kette austauschen -- fuer den Rotnachweis."""
+    if bruch not in BRUECHE:
+        raise SystemExit(f"Unbekannter Bruch {bruch!r}. Bekannt: {', '.join(sorted(BRUECHE))}")
+    suchen, ersetzen = BRUECHE[bruch]
+    txt = roh.decode()
+    if txt.count(suchen) != 1:
+        raise SystemExit(
+            f"Bruch {bruch!r}: der erwartete Wortlaut kommt {txt.count(suchen)}-mal vor, "
+            "erwartet ist genau einmal. Die Kette hat sich geaendert -- der Bruch waere "
+            "keiner, und ein gruener Lauf belegte nichts.")
+    return txt.replace(suchen, ersetzen).encode()
+
+
+def kette_holen(stand: str, ablage: Path, bruch: str | None = None) -> Path:
     """Die zu pruefende Fassung als eigene Datei -- nie die im Baum einbinden."""
     ziel = ablage / "werkzeugkette.cmake"
     if stand == "HEAD":
-        ziel.write_bytes(KETTE.read_bytes())
+        roh = KETTE.read_bytes()
     else:
         rel = KETTE.relative_to(WURZEL.parents[1])
         roh = subprocess.run(["git", "-C", str(WURZEL.parents[1]), "show", f"{stand}:{rel}"],
                              capture_output=True, check=True).stdout
-        ziel.write_bytes(roh)
+    if bruch:
+        roh = kette_verbiegen(roh, bruch)
+    ziel.write_bytes(roh)
     return ziel
 
 
@@ -154,8 +233,55 @@ def fahren(d: Path) -> tuple[int, list[str]]:
     return r.returncode, marken
 
 
+def profilangabe_pruefen(baum: Path) -> list[str]:
+    """Einen Baum in beiden Profilen konfigurieren und die zwei Haelften einzeln pruefen.
+
+    Genommen wird **ein** Baum, nicht alle 22: Die Angabe haengt am Schalter und an
+    nichts sonst, und 22 zweite Konfigurationen verdoppelten die Laufzeit ohne eine
+    zweite Erkenntnis. Uebersetzt wird nichts -- die Zeile faellt beim Konfigurieren.
+
+    Verglichen wird der Kopf der Zeile bis zum Doppelpunkt, nicht die ganze Zeile. Das
+    ist hier das schaerfere Mass: In diesem winzigen Baum steht kein Sanitizerziel, die
+    drei Zahlen hinter dem Doppelpunkt sind unter ON und OFF also ohnehin dieselben.
+    Unterscheiden sich die beiden Zeilen, dann **nur** durch die Angabe -- und wer die
+    ganze Zeile vergleicht, koennte das mit einem gewanderten Zaehlwerk verwechseln.
+    """
+    risse: list[str] = []
+    koepfe: dict[str, str] = {}
+    for wert, wort in PROFILE:
+        r = subprocess.run(["cmake", "-S", str(baum), "-B", str(baum / f"profil-{wert}"),
+                            f"-DFABRIK_SANITIZER={wert}"], capture_output=True, text=True)
+        txt = r.stdout + r.stderr
+        (baum / f"profil-{wert}.log").write_text(txt)
+        zeile = next((z.strip() for z in txt.splitlines() if RIEGELMARKE in z), None)
+        if zeile is None:
+            risse.append(f"-DFABRIK_SANITIZER={wert}: in der Ausgabe steht ueberhaupt "
+                         f"keine Zeile des Schlussriegels (cmake-Code {r.returncode}) -- "
+                         "beide Haelften fehlen")
+            continue
+        kopf = zeile.split(":", 1)[0]
+        koepfe[wert] = kopf
+        print(f"   -D{wert:<3s} {zeile[:150]}")
+        t = WERT_MUSTER.search(kopf)
+        if t is None or t.group(1) != wert:
+            risse.append(f"Haelfte 'roher Wert' unter -DFABRIK_SANITIZER={wert}: die Zeile "
+                         f"nennt {'nichts' if t is None else repr(t.group(1))}, "
+                         f"konfiguriert wurde {wert!r}")
+        w = WORT_MUSTER.search(kopf)
+        if w is None or w.group(1) != wort:
+            risse.append(f"Haelfte 'Wahrheitswort' unter -DFABRIK_SANITIZER={wert}: die "
+                         f"Zeile nennt {'nichts' if w is None else repr(w.group(1))}, "
+                         f"erwartet ist {wort!r}")
+    if len(koepfe) == 2 and koepfe["ON"] == koepfe["OFF"]:
+        risse.append("Beide Haelften zusammen: ON und OFF melden zeichengleich "
+                     f"{koepfe['ON']!r} -- die Angabe haengt nicht am Schalter")
+    return risse
+
+
 def main() -> int:
-    stand = sys.argv[1] if len(sys.argv) > 1 else "HEAD"
+    bruch = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--bruch=")), None)
+    frei = [a for a in sys.argv[1:] if not a.startswith("--bruch=")]
+    stand = frei[0] if frei else "HEAD"
     # Der Vorgabepfad haengt allein am **Stand**, nicht am **Baum**. Solange dieses
     # Skript nur von Hand im Arbeitsbaum lief, war das gleichgueltig. Als Probe laeuft
     # es auch in einem Wegwerf-Baum -- und die Gegenprobe zu Paket 0133 faehrt genau
@@ -165,11 +291,22 @@ def main() -> int:
     # Baum. `NACHBAU_ABLAGE` trennt sie. Der Aufruf ohne die Variable verhaelt sich
     # unveraendert -- die zwei Abnahmen, die diesen Aufruf namentlich nennen (0103,
     # 0108), sehen denselben Pfad wie zuvor.
-    vorgabe = Path(os.environ.get("TMPDIR", "/tmp")) / f"nachbau0066-{stand.replace('^', 'v')}"
+    #
+    # Ein Bruch bekommt aus demselben Grund seine eigene Ablage: Der Rotnachweis faehrt
+    # unmittelbar vor oder nach einem gruenen Lauf, und beide haetten sonst unter
+    # `nachbau0066-HEAD` einander die Bauablagen ueberschrieben. Ohne `--bruch` ist der
+    # Pfad zeichengleich der von vorher -- die zwei Abnahmen, die ihn nennen, sehen ihn
+    # unveraendert.
+    marke = stand.replace("^", "v") + (f"-bruch-{bruch}" if bruch else "")
+    vorgabe = Path(os.environ.get("TMPDIR", "/tmp")) / f"nachbau0066-{marke}"
     ablage = Path(os.environ.get("NACHBAU_ABLAGE") or vorgabe)
     ablage.mkdir(parents=True, exist_ok=True)
-    kette = kette_holen(stand, ablage)
-    print(f"Stand: {stand}   Kette: {kette}   ({kette.stat().st_size} Bytes)\n")
+    kette = kette_holen(stand, ablage, bruch)
+    print(f"Stand: {stand}   Kette: {kette}   ({kette.stat().st_size} Bytes)")
+    if bruch:
+        print(f"BRUCH {bruch!r} eingelegt -- dies ist ein Rotnachweis, kein Urteil "
+              "ueber den Baum.")
+    print()
 
     abweichungen = 0
     for name in sorted(BAEUME) + sorted(GESCHACHTELT):
@@ -208,8 +345,26 @@ def main() -> int:
     for z in diag[:1]:
         print("        " + z.strip()[:150])
 
+    # Die Profilangabe (Paket 0185). Sie steht hinter der Positivkontrolle, damit die
+    # Ausgabe bis hierher zeichengleich die von vorher ist.
+    print("\nProfilangabe der Riegelzeile, ein Baum in beiden Profilen:")
+    risse = profilangabe_pruefen(ablage / "p_positiv")
+    for r in risse:
+        print(f"     !! {r}")
+    if risse and stand != "HEAD":
+        # Anders als die Sollspalte oben zaehlt diese Bedingung an **jedem** Stand in den
+        # Rueckgabewert, und das ist Absicht: Die Sollspalte beschreibt 22 Urteile, die
+        # sich mit der Zeit aendern duerfen, und ein alter Stand faellt darum nicht
+        # deswegen durch. Die Angabe dagegen ist entweder da oder nicht. Wer einen Stand
+        # vor Paket 0137 faehrt, bekommt hier eine rote Zeile ueber **jenen** Stand.
+        print(f"     (Der Stand {stand} liegt vor Paket 0137 oder hat die Angabe sonst "
+              "nicht. Das ist eine Aussage ueber ihn, nicht ueber HEAD.)")
+    if not risse:
+        print("     beide Haelften nennen das konfigurierte Profil, und die beiden "
+              "Angaben unterscheiden sich.")
+
     print(f"\n{abweichungen} Abweichung(en) vom Soll.")
-    return 1 if (abweichungen or positiv_stumpf) else 0
+    return 1 if (abweichungen or positiv_stumpf or risse) else 0
 
 
 if __name__ == "__main__":
