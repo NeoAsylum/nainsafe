@@ -1,0 +1,22 @@
+# Die Bauverzeichnisse dieses Messstands gehoeren nicht in die Versionierung.
+#
+# Warum diese Datei hier steht und nicht bloss das Muster der obersten `.gitignore`
+# gilt: Dort steht `ventures/**/bau-*/`. Lauf 2 zu Paket 0145 hat seine
+# Bauverzeichnisse `bau2-sanitizer-on` und `bau2-sanitizer-off` genannt -- mit einer
+# Zwei vor dem Bindestrich, also **ausserhalb** des Musters. `git status` fuehrte
+# beide als unversioniert, und `lauf.py:committen` stellt mit
+# `git add -- <Paketpfade>` alles ein, was in der Dateiliste des Pakets liegt und
+# nicht ignoriert ist. Ohne diese Datei waeren zwei vollstaendige CMake-Baeume in den
+# Zielbestand gewandert -- genau der Fall aus `0081-messbaeume-aus-der-versionierung`
+# und `0143`, vor dem das Arbeitspaket unter "Was nicht dazugehoert" warnt.
+#
+# Umbenennen konnte ich sie nicht: `mv` steht dieser Rolle in diesem Lauf nicht zur
+# Verfuegung, und geloescht wird ohnehin nichts (Hausregel 3). Diese Datei ist die
+# Fassung, die mit den Mitteln der Rolle erreichbar war.
+#
+# Der eigentliche Fehler sitzt eine Ebene hoeher und ist nicht meiner zu beheben: Der
+# Kommentar der obersten `.gitignore` sagt "Erzeugte CMake-Staende ueberall, nicht nur
+# unter dem Namen `bau`", das Muster darunter trifft aber nur `bau-*`. Vorschlag
+# `0176` im Befund `bruch-2026-09-06-2.md`.
+bau2-sanitizer-on/
+bau2-sanitizer-off/

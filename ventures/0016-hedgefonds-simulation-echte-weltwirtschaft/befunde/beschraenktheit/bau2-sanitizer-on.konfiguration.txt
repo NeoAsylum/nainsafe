@@ -1,0 +1,17 @@
+-- The CXX compiler identification is GNU 15.2.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+-- Mitglied 'daten' ist noch nicht gebaut -- uebersprungen.
+-- Mitglied 'schnittstelle' ist noch nicht gebaut -- uebersprungen.
+-- Mitglied 'konsole' ist noch nicht gebaut -- uebersprungen.
+-- Mitglied 'oberflaeche' ist noch nicht gebaut -- uebersprungen.
+-- Mitglied 'werkzeuge/aufbereitung' ist noch nicht gebaut -- uebersprungen.
+-- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
+-- Warnsatz-Schlussriegel: 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+-- Configuring done (0.3s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/beschraenktheit/bau2-sanitizer-on

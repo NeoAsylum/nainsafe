@@ -1,0 +1,1 @@
+Probe, ob ein Bash-Heredoc in diesem Lauf schreiben darf. 2026-09-06.

@@ -1,0 +1,228 @@
+Ausgangslage: gueltig (wie schranken_probe.cpp)
+Runden:       200, Modus weltlauf, ohne Spieler
+Grenzen aus parameter.toml (Argumente, kein Dateizugriff, T2): druck_max=1 stufen_max=1 aufschlag=51
+Adressmengen  ist:  wechselkurs=5 nominalindex=22 produktivitaet=5 leitzinsstand=4 marktwert=1 druck=32 anteil=12 stufe=20 paar_leitzins=4 paar_haushalt=4 sektorgruppen=5 vollstaendig=1
+Adressmengen soll:  wechselkurs=5 nominalindex=22 produktivitaet=5 leitzinsstand=4 marktwert=1 druck=32 anteil=12 stufe=20 paar_leitzins=4 paar_haushalt=4 sektorgruppen=5 vollstaendig=1
+
+Runde   0: Startbelegung                                                               Maske    0  Pruefsumme 96b622001a457b61
+Runde   1: partie.runde=  1  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 915d6f19774f3ae0
+Runde   2: partie.runde=  2  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a16787cd6031fc63
+Runde   3: partie.runde=  3  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9c0ed4e6bd3bbbe2
+Runde   4: partie.runde=  4  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ac18ed9aa61e7d65
+Runde   5: partie.runde=  5  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a6c03ab403283ce4
+Runde   6: partie.runde=  6  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b6ca5367ec0afe67
+Runde   7: partie.runde=  7  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b171a0814914bde6
+Runde   8: partie.runde=  8  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c17bb93531f77f69
+Runde   9: partie.runde=  9  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme bc23064e8f013ee8
+Runde  10: partie.runde= 10  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme cc2d1f0277e4006b
+Runde  11: partie.runde= 11  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c6d46c1bd4edbfea
+Runde  12: partie.runde= 12  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d6de84cfbdd0816d
+Runde  13: partie.runde= 13  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d185d1e91ada40ec
+Runde  14: partie.runde= 14  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e18fea9d03bd026f
+Runde  15: partie.runde= 15  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme dc3737b660c6c1ee
+Runde  16: partie.runde= 16  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ec41506a49a98371
+Runde  17: partie.runde= 17  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e6e89d83a6b342f0
+Runde  18: partie.runde= 18  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f6f2b6378f960473
+Runde  19: partie.runde= 19  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f19a0350ec9fc3f2
+Runde  20: partie.runde= 20  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 01a41c04d5828575
+Runde  21: partie.runde= 21  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme fc4b691e328c44f4
+Runde  22: partie.runde= 22  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 0c5581d21b6f0677
+Runde  23: partie.runde= 23  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 06fcceeb7878c5f6
+Runde  24: partie.runde= 24  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 1706e79f615b8779
+Runde  25: partie.runde= 25  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 11ae34b8be6546f8
+Runde  26: partie.runde= 26  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 21b84d6ca748087b
+Runde  27: partie.runde= 27  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 1c5f9a860451c7fa
+Runde  28: partie.runde= 28  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 2c69b339ed34897d
+Runde  29: partie.runde= 29  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 271100534a3e48fc
+Runde  30: partie.runde= 30  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 371b190733210a7f
+Runde  31: partie.runde= 31  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 31c26620902ac9fe
+Runde  32: partie.runde= 32  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme eb9fc52bbb7d6b41
+Runde  33: partie.runde= 33  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e647124518872ac0
+Runde  34: partie.runde= 34  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f6512af90169ec43
+Runde  35: partie.runde= 35  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f0f878125e73abc2
+Runde  36: partie.runde= 36  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 010290c647566d45
+Runde  37: partie.runde= 37  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme fba9dddfa4602cc4
+Runde  38: partie.runde= 38  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 0bb3f6938d42ee47
+Runde  39: partie.runde= 39  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 065b43acea4cadc6
+Runde  40: partie.runde= 40  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 16655c60d32f6f49
+Runde  41: partie.runde= 41  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 110ca97a30392ec8
+Runde  42: partie.runde= 42  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 2116c22e191bf04b
+Runde  43: partie.runde= 43  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 1bbe0f477625afca
+Runde  44: partie.runde= 44  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 2bc827fb5f08714d
+Runde  45: partie.runde= 45  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 266f7514bc1230cc
+Runde  46: partie.runde= 46  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 36798dc8a4f4f24f
+Runde  47: partie.runde= 47  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3120dae201feb1ce
+Runde  48: partie.runde= 48  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 412af395eae17351
+Runde  49: partie.runde= 49  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3bd240af47eb32d0
+Runde  50: partie.runde= 50  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 4bdc596330cdf453
+Runde  51: partie.runde= 51  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 4683a67c8dd7b3d2
+Runde  52: partie.runde= 52  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 568dbf3076ba7555
+Runde  53: partie.runde= 53  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 51350c49d3c434d4
+Runde  54: partie.runde= 54  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 613f24fdbca6f657
+Runde  55: partie.runde= 55  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5be6721719b0b5d6
+Runde  56: partie.runde= 56  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6bf08acb02937759
+Runde  57: partie.runde= 57  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6697d7e45f9d36d8
+Runde  58: partie.runde= 58  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 76a1f098487ff85b
+Runde  59: partie.runde= 59  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 71493db1a589b7da
+Runde  60: partie.runde= 60  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 815356658e6c795d
+Runde  61: partie.runde= 61  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 7bfaa37eeb7638dc
+Runde  62: partie.runde= 62  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8c04bc32d458fa5f
+Runde  63: partie.runde= 63  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 86ac094c3162b9de
+Runde  64: partie.runde= 64  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 408968575cb55b21
+Runde  65: partie.runde= 65  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3b30b570b9bf1aa0
+Runde  66: partie.runde= 66  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 4b3ace24a2a1dc23
+Runde  67: partie.runde= 67  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 45e21b3dffab9ba2
+Runde  68: partie.runde= 68  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 55ec33f1e88e5d25
+Runde  69: partie.runde= 69  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5093810b45981ca4
+Runde  70: partie.runde= 70  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 609d99bf2e7ade27
+Runde  71: partie.runde= 71  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5b44e6d88b849da6
+Runde  72: partie.runde= 72  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6b4eff8c74675f29
+Runde  73: partie.runde= 73  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 65f64ca5d1711ea8
+Runde  74: partie.runde= 74  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 76006559ba53e02b
+Runde  75: partie.runde= 75  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 70a7b273175d9faa
+Runde  76: partie.runde= 76  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 80b1cb270040612d
+Runde  77: partie.runde= 77  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 7b5918405d4a20ac
+Runde  78: partie.runde= 78  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8b6330f4462ce22f
+Runde  79: partie.runde= 79  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 860a7e0da336a1ae
+Runde  80: partie.runde= 80  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 961496c18c196331
+Runde  81: partie.runde= 81  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 90bbe3dae92322b0
+Runde  82: partie.runde= 82  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a0c5fc8ed205e433
+Runde  83: partie.runde= 83  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9b6d49a82f0fa3b2
+Runde  84: partie.runde= 84  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ab77625c17f26535
+Runde  85: partie.runde= 85  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a61eaf7574fc24b4
+Runde  86: partie.runde= 86  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b628c8295ddee637
+Runde  87: partie.runde= 87  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b0d01542bae8a5b6
+Runde  88: partie.runde= 88  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c0da2df6a3cb6739
+Runde  89: partie.runde= 89  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme bb817b1000d526b8
+Runde  90: partie.runde= 90  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme cb8b93c3e9b7e83b
+Runde  91: partie.runde= 91  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c632e0dd46c1a7ba
+Runde  92: partie.runde= 92  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d63cf9912fa4693d
+Runde  93: partie.runde= 93  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d0e446aa8cae28bc
+Runde  94: partie.runde= 94  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e0ee5f5e7590ea3f
+Runde  95: partie.runde= 95  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme db95ac77d29aa9be
+Runde  96: partie.runde= 96  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 95730b82fded4b01
+Runde  97: partie.runde= 97  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 901a589c5af70a80
+Runde  98: partie.runde= 98  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a024715043d9cc03
+Runde  99: partie.runde= 99  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9acbbe69a0e38b82
+Runde 100: partie.runde=100  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme aad5d71d89c64d05
+Runde 101: partie.runde=101  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a57d2436e6d00c84
+Runde 102: partie.runde=102  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b5873ceacfb2ce07
+Runde 103: partie.runde=103  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b02e8a042cbc8d86
+Runde 104: partie.runde=104  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c038a2b8159f4f09
+Runde 105: partie.runde=105  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme badfefd172a90e88
+Runde 106: partie.runde=106  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme caea08855b8bd00b
+Runde 107: partie.runde=107  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c591559eb8958f8a
+Runde 108: partie.runde=108  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d59b6e52a178510d
+Runde 109: partie.runde=109  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d042bb6bfe82108c
+Runde 110: partie.runde=110  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e04cd41fe764d20f
+Runde 111: partie.runde=111  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme daf42139446e918e
+Runde 112: partie.runde=112  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme eafe39ed2d515311
+Runde 113: partie.runde=113  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e5a587068a5b1290
+Runde 114: partie.runde=114  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f5af9fba733dd413
+Runde 115: partie.runde=115  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f056ecd3d0479392
+Runde 116: partie.runde=116  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 00610587b92a5515
+Runde 117: partie.runde=117  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme fb0852a116341494
+Runde 118: partie.runde=118  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 0b126b54ff16d617
+Runde 119: partie.runde=119  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 05b9b86e5c209596
+Runde 120: partie.runde=120  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 15c3d12245035719
+Runde 121: partie.runde=121  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 106b1e3ba20d1698
+Runde 122: partie.runde=122  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 207536ef8aefd81b
+Runde 123: partie.runde=123  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 1b1c8408e7f9979a
+Runde 124: partie.runde=124  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 2b269cbcd0dc591d
+Runde 125: partie.runde=125  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 25cde9d62de6189c
+Runde 126: partie.runde=126  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 35d8028a16c8da1f
+Runde 127: partie.runde=127  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 307f4fa373d2999e
+Runde 128: partie.runde=128  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ea5caeae9f253ae1
+Runde 129: partie.runde=129  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme e503fbc7fc2efa60
+Runde 130: partie.runde=130  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme f50e147be511bbe3
+Runde 131: partie.runde=131  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme efb56195421b7b62
+Runde 132: partie.runde=132  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ffbf7a492afe3ce5
+Runde 133: partie.runde=133  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme fa66c7628807fc64
+Runde 134: partie.runde=134  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 0a70e01670eabde7
+Runde 135: partie.runde=135  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 05182d2fcdf47d66
+Runde 136: partie.runde=136  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 152245e3b6d73ee9
+Runde 137: partie.runde=137  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 0fc992fd13e0fe68
+Runde 138: partie.runde=138  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 1fd3abb0fcc3bfeb
+Runde 139: partie.runde=139  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 1a7af8ca59cd7f6a
+Runde 140: partie.runde=140  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 2a85117e42b040ed
+Runde 141: partie.runde=141  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 252c5e979fba006c
+Runde 142: partie.runde=142  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3536774b889cc1ef
+Runde 143: partie.runde=143  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 2fddc464e5a6816e
+Runde 144: partie.runde=144  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3fe7dd18ce8942f1
+Runde 145: partie.runde=145  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3a8f2a322b930270
+Runde 146: partie.runde=146  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 4a9942e61475c3f3
+Runde 147: partie.runde=147  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 45408fff717f8372
+Runde 148: partie.runde=148  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 554aa8b35a6244f5
+Runde 149: partie.runde=149  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 4ff1f5ccb76c0474
+Runde 150: partie.runde=150  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5ffc0e80a04ec5f7
+Runde 151: partie.runde=151  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5aa35b99fd588576
+Runde 152: partie.runde=152  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6aad744de63b46f9
+Runde 153: partie.runde=153  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6554c16743450678
+Runde 154: partie.runde=154  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 755eda1b2c27c7fb
+Runde 155: partie.runde=155  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 700627348931877a
+Runde 156: partie.runde=156  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 80103fe8721448fd
+Runde 157: partie.runde=157  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 7ab78d01cf1e087c
+Runde 158: partie.runde=158  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8ac1a5b5b800c9ff
+Runde 159: partie.runde=159  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8568f2cf150a897e
+Runde 160: partie.runde=160  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 3f4651da405d2ac1
+Runde 161: partie.runde=161  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 39ed9ef39d66ea40
+Runde 162: partie.runde=162  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 49f7b7a78649abc3
+Runde 163: partie.runde=163  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 449f04c0e3536b42
+Runde 164: partie.runde=164  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 54a91d74cc362cc5
+Runde 165: partie.runde=165  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 4f506a8e293fec44
+Runde 166: partie.runde=166  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5f5a83421222adc7
+Runde 167: partie.runde=167  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 5a01d05b6f2c6d46
+Runde 168: partie.runde=168  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6a0be90f580f2ec9
+Runde 169: partie.runde=169  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 64b33628b518ee48
+Runde 170: partie.runde=170  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 74bd4edc9dfbafcb
+Runde 171: partie.runde=171  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 6f649bf5fb056f4a
+Runde 172: partie.runde=172  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 7f6eb4a9e3e830cd
+Runde 173: partie.runde=173  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 7a1601c340f1f04c
+Runde 174: partie.runde=174  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8a201a7729d4b1cf
+Runde 175: partie.runde=175  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 84c7679086de714e
+Runde 176: partie.runde=176  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 94d180446fc132d1
+Runde 177: partie.runde=177  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8f78cd5dcccaf250
+Runde 178: partie.runde=178  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9f82e611b5adb3d3
+Runde 179: partie.runde=179  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9a2a332b12b77352
+Runde 180: partie.runde=180  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme aa344bdefb9a34d5
+Runde 181: partie.runde=181  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a4db98f858a3f454
+Runde 182: partie.runde=182  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b4e5b1ac4186b5d7
+Runde 183: partie.runde=183  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme af8cfec59e907556
+Runde 184: partie.runde=184  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme bf971779877336d9
+Runde 185: partie.runde=185  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ba3e6492e47cf658
+Runde 186: partie.runde=186  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme ca487d46cd5fb7db
+Runde 187: partie.runde=187  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme c4efca602a69775a
+Runde 188: partie.runde=188  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme d4f9e314134c38dd
+Runde 189: partie.runde=189  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme cfa1302d7055f85c
+Runde 190: partie.runde=190  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme dfab48e15938b9df
+Runde 191: partie.runde=191  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme da5295fab642795e
+Runde 192: partie.runde=192  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 942ff505e1951aa1
+Runde 193: partie.runde=193  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 8ed7421f3e9eda20
+Runde 194: partie.runde=194  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9ee15ad327819ba3
+Runde 195: partie.runde=195  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme 9988a7ec848b5b22
+Runde 196: partie.runde=196  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a992c0a06d6e1ca5
+Runde 197: partie.runde=197  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme a43a0db9ca77dc24
+Runde 198: partie.runde=198  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme b444266db35a9da7
+Runde 199: partie.runde=199  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme aeeb738710645d26
+Runde 200: partie.runde=200  Kette 175  geaendert ggue. Vorrunde   1  ggue. Start   1  Maske    0  Pruefsumme bef58c3af9471ea9
+
+Die eine Zahl, Feld fuer Feld gezaehlt (Zustand::lies ueber alle 310 Plaetze):
+  ueber EINE Runde   gegenueber der Startbelegung: 1 von 310
+  ueber 200 Runden  gegenueber der Startbelegung: 1 von 310
+
+Welche Adressen sich unterscheiden (Start -> Ende):
+  Platz 306  partie.runde                                        0 -> 200
+
+Je Sache eine Aussage ueber den ganzen Lauf:
+  GEHALTEN   Schranke 1  wechselkurs >= 1
+  GEHALTEN   Schranke 2  Nominalindex > 0
+  GEHALTEN   Schranke 3  produktivitaet > 0
+  GEHALTEN   Schranke 4  leitzins + aufschlag >= 1
+  GEHALTEN   Schranke 5  0 < markt.wert < 9,2e13
+  GEHALTEN   Schranke 6  0 <= druck <= druck_max
+  GEHALTEN   Schranke 7  Anteil 0..10.000, |Stufe| <= max
+  GEHALTEN   Gleichheit 1  leitzins = instrument.stand
+  GEHALTEN   Gleichheit 2  saldo = instrument.stand
+  GEHALTEN   Sektoranteile  Summe 10.000, keiner ausserhalb
+
+Lauf ueber 200 Runden vollstaendig. Rueckgabewert 0.

@@ -1,0 +1,70 @@
+[  8%] Building CXX object pruefstand/CMakeFiles/pruefstand.dir/src/vorrat.cpp.o
+[  8%] Building CXX object kern/CMakeFiles/kern.dir/src/aktion.cpp.o
+[  8%] Building CXX object werkzeuge/mutation/CMakeFiles/mutationstreiber.dir/mutationslauf.cpp.o
+[  8%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
+[ 10%] Building CXX object kern/CMakeFiles/kern.dir/src/festkomma.cpp.o
+[ 12%] Building CXX object pruefstand/CMakeFiles/pruefstand.dir/src/vorrat_verfahren.cpp.o
+[ 14%] Building CXX object kern/CMakeFiles/kern.dir/src/pruefsumme.cpp.o
+[ 16%] Linking CXX static library libpruefstand.a
+[ 16%] Built target pruefstand
+[ 18%] Building CXX object werkzeuge/bezeichner/CMakeFiles/bezeichner_riegel.dir/bezeichner_riegel.cpp.o
+[ 20%] Building CXX object kern/CMakeFiles/kern.dir/src/schreiber.cpp.o
+[ 22%] Building CXX object kern/CMakeFiles/kern.dir/src/schritt.cpp.o
+[ 24%] Building CXX object kern/CMakeFiles/kern.dir/src/verlauf.cpp.o
+[ 26%] Linking CXX executable mutationstreiber
+[ 28%] Building CXX object kern/CMakeFiles/kern.dir/src/werte.cpp.o
+[ 28%] Built target mutationstreiber
+[ 30%] Building CXX object pruefstand/CMakeFiles/vorrat_kernanker_probe.dir/test/vorrat_kernanker_probe.cpp.o
+[ 32%] Linking CXX executable belegstellen_riegel
+[ 34%] Building CXX object kern/CMakeFiles/kern.dir/src/zufall.cpp.o
+[ 36%] Linking CXX executable vorrat_kernanker_probe
+[ 36%] Built target belegstellen_riegel
+[ 36%] Built target vorrat_kernanker_probe
+[ 38%] Building CXX object pruefstand/CMakeFiles/vorrat_probe.dir/test/vorrat_probe.cpp.o
+[ 40%] Building CXX object pruefstand/CMakeFiles/vorrat_verfahren_probe.dir/test/vorrat_verfahren_probe.cpp.o
+[ 42%] Linking CXX executable vorrat_probe
+[ 44%] Building CXX object kern/CMakeFiles/kern.dir/src/zustand.cpp.o
+[ 44%] Built target vorrat_probe
+[ 46%] Building CXX object kern/CMakeFiles/kern.dir/src/zustandsausgabe.cpp.o
+[ 48%] Linking CXX executable bezeichner_riegel
+[ 50%] Linking CXX executable vorrat_verfahren_probe
+[ 50%] Built target vorrat_verfahren_probe
+[ 50%] Built target bezeichner_riegel
+[ 52%] Linking CXX static library libkern.a
+[ 52%] Built target kern
+[ 56%] Building CXX object kern/CMakeFiles/pruefsumme_probe.dir/test/pruefsumme_probe.cpp.o
+[ 56%] Building CXX object kern/CMakeFiles/meldung_probe.dir/test/meldung_probe.cpp.o
+[ 60%] Building CXX object kern/CMakeFiles/aktion_probe.dir/test/aktion_probe.cpp.o
+[ 60%] Building CXX object kern/CMakeFiles/festkomma_probe.dir/test/festkomma_probe.cpp.o
+[ 62%] Linking CXX executable pruefsumme_probe
+[ 64%] Linking CXX executable meldung_probe
+[ 64%] Built target pruefsumme_probe
+[ 66%] Linking CXX executable festkomma_probe
+[ 68%] Building CXX object kern/CMakeFiles/schranken_probe.dir/test/schranken_probe.cpp.o
+[ 68%] Built target meldung_probe
+[ 68%] Built target festkomma_probe
+[ 70%] Building CXX object kern/CMakeFiles/schreiber_probe.dir/test/schreiber_probe.cpp.o
+[ 72%] Linking CXX executable aktion_probe
+[ 74%] Building CXX object kern/CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+[ 74%] Built target aktion_probe
+[ 76%] Building CXX object kern/CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
+[ 78%] Linking CXX executable schranken_probe
+[ 78%] Built target schranken_probe
+[ 80%] Building CXX object kern/CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+[ 82%] Linking CXX executable schritt_probe
+[ 84%] Linking CXX executable schreiber_probe
+[ 84%] Built target schritt_probe
+[ 84%] Built target schreiber_probe
+[ 86%] Linking CXX executable verlauf_probe
+[ 88%] Building CXX object kern/CMakeFiles/zufall_probe.dir/test/zufall_probe.cpp.o
+[ 90%] Building CXX object kern/CMakeFiles/zustand_probe.dir/test/zustand_probe.cpp.o
+[ 90%] Built target verlauf_probe
+[ 92%] Building CXX object kern/CMakeFiles/zustandsausgabe_probe.dir/test/zustandsausgabe_probe.cpp.o
+[ 94%] Linking CXX executable zufall_probe
+[ 96%] Linking CXX executable werte_probe
+[ 98%] Linking CXX executable zustand_probe
+[ 98%] Built target zufall_probe
+[ 98%] Built target werte_probe
+[ 98%] Built target zustand_probe
+[100%] Linking CXX executable zustandsausgabe_probe
+[100%] Built target zustandsausgabe_probe
