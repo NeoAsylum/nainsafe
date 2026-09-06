@@ -1,7 +1,7 @@
 ---
 id: 0142-vorlagentabelle-reihenliste-ohne-stand
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0099-reihentoml-vorlagenliste-um-t53, 0100-namensnennung-reihe-14-weltbank]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme". Bedingung 3 ist die teure -- dieselbe Selbstmessung mit Bezugsstand wie in 0078 und 0099, weil ein geaenderter Blattwert in `[datei.vorlagen]` die Bilanz in `pruefweg.toml_geprueft` wandern laesst.
