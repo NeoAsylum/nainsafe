@@ -391,3 +391,35 @@ was die Belege ergaben, nicht die Belege.
   *Die eigentliche Lehre:* **Eine Grenze, die man nie von der falschen Seite geprüft
   hat, ist eine Vermutung.** Geprüft wurde, ob ein erlaubter Aufruf durchgeht. Nie, ob
   ein verbotener scheitert.
+
+- **2026-09-06** — **Der Dollarwert taugt nicht zur Eichung des Kontingents, und jetzt ist
+  es dreimal gemessen.** Drei Ablesungen des Betreibers, drei unvereinbare Hochrechnungen:
+
+  | Zeitpunkt | Journal | Anzeige | daraus „100 %" |
+  |---|---:|---:|---:|
+  | 2026-09-04 abends | 1.311 $ | 58 % | 2.260 $ |
+  | 2026-09-05 mittags | 1.906 $ | 15 % | 12.700 $ |
+  | 2026-09-06 vormittags | 2.834 $ | 90 % | 3.150 $ |
+
+  Zwischen der zweiten und dritten Ablesung liegen 928 Dollar und 75 Prozentpunkte —
+  daraus folgte ein Kontingent von 1.240 $, während dieselbe Zahl zwei Tage zuvor 12.700
+  ergab. Der Tarifwechsel 5x → 20x erklärt einen Teil, nicht das. `kosten_eur` rechnet
+  Cache-Tokens mit, die anders gewogen werden: **Die Zahl misst Arbeit, nicht Kontingent.**
+
+  *Folgerung:* Die Grenzen in `lauf.py` sind keine Rationierung mehr, sondern eine
+  Notbremse mit Eichdatum. Sie stehen jetzt an der Ablesung vom 2026-09-06 und tragen
+  diesen Vermerk. **Die Anzeige des Betreibers ist die einzige Wahrheit.**
+
+- **2026-09-06** — **Es sind zwei Töpfe, nicht einer.** Die Anzeige führt „All models" und
+  „Fable" getrennt, und sie leeren sich unabhängig: 90 gegen 56 Prozent am selben Morgen.
+  Die Fabrik führte eine gemeinsame Grenze und meldete 8.600 Dollar Spielraum, während im
+  bindenden Topf rund 300 übrig waren — sie hätte ihn leergefahren und dem Betreiber
+  nichts für die eigene Arbeit gelassen.
+
+  *Folgerung:* `wochenverbrauch(verbindung, topf)` trennt nach dem Modell der Rolle,
+  gelesen aus den Rollendateien. Die Notbremse prüft den Topf **des laufenden Agenten**.
+  Zwei Grenzen, zwei Eichungen, zwei Vermerke.
+
+  *Die allgemeine Form:* **Eine Grenze, die zwei Dinge zusammenzählt, die getrennt
+  laufen, ist keine Grenze.** Sie ist genau dann am blindesten, wenn eines der beiden
+  fast leer ist.

@@ -86,7 +86,9 @@ def wochenverbrauch() -> float:
     """Dieselbe Rechnung wie in lauf.py -- eine zweite Fassung war eine zweite Wahrheit."""
     verbindung = db()
     try:
-        return lauf_wochenverbrauch(verbindung)
+        # Der geteilte Topf bindet: Ohne ihn laufen weder Bau noch Projektmanager, und
+        # die Fable-Pruefer haetten nichts zu pruefen.
+        return lauf_wochenverbrauch(verbindung, "geteilt")
     finally:
         verbindung.close()
 

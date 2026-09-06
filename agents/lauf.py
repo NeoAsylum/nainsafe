@@ -224,7 +224,25 @@ except ValueError:
 # Gerechnet ueber Anthropics Wochenfenster (Montag 10:00 Ortszeit), siehe
 # `wochenfenster()`; die vorherige Rechnung ueber sieben rollende Tage drosselte gegen
 # eine Woche, die bereits zurueckgesetzt war.
-WOCHENGRENZE_USD = 12000.0
+# **Zwei Toepfe, nicht einer.** Die Anzeige des Betreibers fuehrt "All models" und
+# "Fable" getrennt, und sie leeren sich unabhaengig. Am 2026-09-06 um 10:05 standen sie
+# bei 90 und 56 Prozent -- waehrend diese Datei noch 12.000 als eine gemeinsame Grenze
+# fuehrte und 8.600 Dollar Spielraum meldete. Tatsaechlich waren rund 300 uebrig.
+#
+# **Der Dollarwert taugt nicht zur Eichung, und das ist jetzt dreimal gemessen:**
+# 1.906 $ = 15 % (2026-09-05 mittags), 1.311 $ = 58 % (2026-09-04 abends),
+# 2.834 $ = 90 % (2026-09-06 vormittags). Aus je zwei Punkten folgen drei verschiedene
+# Kontingente zwischen 1.240 und 12.700. Der Grund ist nicht der Tarifwechsel allein:
+# `kosten_eur` rechnet Cache-Tokens mit, die Anthropic anders wiegt. Die Zahl misst
+# **Arbeit**, nicht Kontingent.
+#
+# Deshalb sind die Werte unten **an der Anzeige vom 2026-09-06 geeicht** und gelten fuer
+# dieses Fenster: geteilter Topf 2.834 $ = 90 %, Fable 559 $ = 56 %. Sie sind eine
+# Notbremse gegen den Weglauf, keine Rationierung -- und sie gehoeren nachgezogen,
+# sobald der Betreiber wieder eine Anzeige vorliest. **Die Anzeige ist die einzige
+# Wahrheit; diese Datei ist eine Schaetzung mit Datum.**
+WOCHENGRENZE_USD = 2800.0
+FABLE_WOCHENGRENZE_USD = 900.0
 
 
 def tagesverbrauch(verbindung) -> float:
@@ -260,10 +278,40 @@ def wochenfenster() -> str:
     return start.astimezone(timezone.utc).strftime(ZEITFORMAT)
 
 
-def wochenverbrauch(verbindung) -> float:
-    """Gegenwert im laufenden Wochenfenster -- die Groesse, die wirklich bindet."""
+def fable_rollen() -> set[str]:
+    """Welche Rollen auf Fable laufen -- gelesen aus den Rollendateien, nicht geraten.
+
+    Das Journal kennt nur die Rolle, nicht das Modell. Rollen, deren Modell sich spaeter
+    aendert, werden dadurch rueckwirkend dem neuen Topf zugerechnet; bei einer Handvoll
+    Rollen ist das kleiner als die Unschaerfe des Dollarwerts selbst.
+    """
+    namen = set()
+    for d in (WURZEL / "agents" / "rollen").glob("*.md"):
+        try:
+            kopf, _ = frontmatter(d.read_text(encoding="utf-8"))
+        except (ValueError, OSError):
+            continue
+        if kopf and str(kopf.get("modell", "")).strip() == "fable":
+            namen.add(d.stem)
+    return namen
+
+
+def wochenverbrauch(verbindung, topf: str = "geteilt") -> float:
+    """Gegenwert im laufenden Wochenfenster, je Topf.
+
+    `topf="geteilt"` sind alle Rollen ausser den Fable-Rollen -- das ist die Anzeige
+    "All models". `topf="fable"` ist die zweite Anzeige.
+    """
+    fable = fable_rollen()
+    if not fable:
+        platzhalter, werte = "('')", []
+    else:
+        platzhalter = "(" + ",".join("?" * len(fable)) + ")"
+        werte = sorted(fable)
+    rein = "IN" if topf == "fable" else "NOT IN"
     zeile = verbindung.execute(
-        "SELECT sum(kosten_eur) FROM lauf WHERE gestartet > ?", (wochenfenster(),)
+        f"SELECT sum(kosten_eur) FROM lauf WHERE gestartet > ? AND rolle {rein} {platzhalter}",
+        (wochenfenster(), *werte),
     ).fetchone()
     return float(zeile[0] or 0)
 
@@ -645,11 +693,13 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
 
     # Notbremse vor dem Start, nicht danach: Ein Lauf, der die Grenze reisst,
     # soll gar nicht erst beginnen.
-    woche = wochenverbrauch(verbindung)
-    if woche >= WOCHENGRENZE_USD:
+    topf = "fable" if str(kopf.get("modell", "")).strip() == "fable" else "geteilt"
+    grenze = FABLE_WOCHENGRENZE_USD if topf == "fable" else WOCHENGRENZE_USD
+    woche = wochenverbrauch(verbindung, topf)
+    if woche >= grenze:
         verbindung.close()
-        print(f"  ABGEBROCHEN: Wochengrenze erreicht "
-              f"({woche:.0f} von {WOCHENGRENZE_USD:.0f} $ Gegenwert in sieben Tagen).")
+        print(f"  ABGEBROCHEN: Wochengrenze des Topfes '{topf}' erreicht "
+              f"({woche:.0f} von {grenze:.0f} $ Gegenwert).")
         print("  Das ist die Grenze, die wirklich bindet -- Anthropic rechnet")
         print("  woechentlich. Grenze in agents/lauf.py:WOCHENGRENZE_USD.")
         return 2
