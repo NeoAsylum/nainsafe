@@ -1,5 +1,6 @@
 # Logbook — Translator
 
+- 2026-09-06 — spiel.md#The loop: empty run, SEVENTH dispatch of this finished section; re-verified lines 262–383 fully English, no edit. Six wasted runs and counting — the dispatcher must close this Gegenstand; no translator run can.
 - 2026-09-06 — spiel.md#The loop: empty run, SIXTH dispatch of this finished section; re-verified lines 262–384 fully English, no edit. The queue entry survives every completion note; five wasted runs now. Only closing the Gegenstand at the dispatcher fixes this.
 - 2026-09-06 — spiel.md#The loop: empty run, FIFTH dispatch of this finished section; re-verified lines 262–384 fully English, no edit. Escalation: this Gegenstand has now cost four whole runs after completion — the dispatcher re-queues it under the translated heading every time. Nothing a translator run can fix; the queue entry itself must be closed.
 - 2026-09-06 — specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#Die Sperrfrage translated (~1,530 → ~1,510 chars); terms chosen: Sperrfrage = blocking question, Pruefachse = check axis, Startjahrgaenge = starting vintages, Impressum = legal notice, Belegfuehrung = evidence. English licence quotes untouched.
