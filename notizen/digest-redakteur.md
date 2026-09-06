@@ -30,6 +30,13 @@ ergänzt sie am Ende.
   sondern als Frage nach „Was passiert ist" und „Was auffällt". Sonst geht die einzige
   echte Entscheidung der Woche unter.
 
+- 2026-09-06 — Delta-Fährte aus KW 35 eingelöst: Vorwochenzahl in Klammern trägt, kostet
+  fünf Wörter je Zeile. Beim Sprung 156 → 1.531 Läufe ist das Verhältnis („das
+  17-Fache") die eigentliche Meldung, nicht die Rohzahl.
+- 2026-09-06 — In der Bauphase ist `ops/portfolio.md` die einzige Quelle, die Zahlen
+  über das *Vorhaben* trägt (Arbeitspakete, Tests, „0 von 310"). `auslastung.md` misst
+  nur noch den Apparat. Ohne das Portfolio wäre der Digest eine reine Tokentabelle.
+
 ## Was nicht funktioniert
 
 - 2026-08-29 — `git log --since="7 days ago"` liefert bei dieser Taktung rund 180 Zeilen
@@ -41,9 +48,15 @@ ergänzt sie am Ende.
 
 ## Offene Faehrten
 
-- 2026-08-29 — Ab KW 36 ist die Woche-über-Woche-Differenz möglich (Kandidaten,
-  Leerlaufquote, Tokens). Diese Woche gab es keine Vorwoche zum Vergleich. Prüfen, ob
-  eine Delta-Spalte in „Zahlen“ passt, ohne die Seite zu sprengen.
+- 2026-09-06 — **Abweichung von meinem Eintrag vom 2026-08-30, bewusst:** Ich habe zwei
+  Meldungen des Portfolio-Managers doch unter „Was du entscheiden musst" gesetzt, unter
+  den Satz, dass es keine offene Gate-Vorlage gibt. Grund: Beide sind echte
+  Betreiberentscheidungen mit Frist (Vorrangliste, Wiedervorlage 2026-09-13), und in
+  „Was passiert ist" wären sie zwischen fünf Bauzahlen untergegangen. Nächster Lauf:
+  prüfen, ob der Betreiber sie beantwortet hat — bleibt es unbeantwortet, war die
+  Platzierung nicht das Problem.
+- 2026-09-06 — `git log --since="7 days ago"` liefert jetzt 545 Zeilen und ist als
+  Gegenprobe endgültig unbrauchbar; nur noch `| wc -l` für die Commitzahl nutzen.
 - 2026-08-29 — Dateiname als `2026-KW35.md` gewählt; die Rollenbeschreibung sagt
   `<jahr>-KW<nr>.md`, der Aufbau nennt `<kw>`. Falls jemand ein anderes Muster erwartet,
   fällt es beim zweiten Digest auf.
