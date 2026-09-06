@@ -85,6 +85,26 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-06.md` (voll nach 0180); davor
 - Ordnungszahl-`<=` beidseitig eingeklemmt: 2<=2 gruen (Bestand), 2<=3 stumm
   (drittes Feld), 3>2 rot (verstellt).
 
+## 2026-09-06 — 0185 (Profilangabe-Regressionsnachweis): geprueft
+
+- **Wenn ein Paket seine eigenen Rotnachweise als `--bruch`-Schalter mitbringt, sie
+  trotzdem selbst fahren UND eine eigene Mutation an anderer Stelle setzen:** Die
+  if-Bedingung der Wortberechnung kippen statt des set() (Bruch traf nur OFF, meine
+  Kippe beide Profile) — und `message(STATUS` -> `message(DEBUG` trifft den
+  `zeile is None`-Zweig, den kein eingebauter Bruch je sieht. Beide rot, 22 Baeume
+  gruen dabei: es riss die neue Bedingung, nicht etwas anderes.
+- **Aufbaufehler, der mich einen Lauf kostete:** WURZEL = parents[2] der Skriptdatei;
+  bei der Vorfassungskopie die Ebene `befunde/` weggelassen -> Kette nicht gefunden,
+  RC 1 sah aus wie ein Paketproblem. Layout der Arbeitskopie immer gegen die
+  parents[]-Rechnung des Skripts legen, Fehlausgabe drucken statt nur RC lesen.
+- Testzahl-Drift wieder billig datiert: 18 vs 19 kam aus cf9e15a (0180) NACH dem
+  Baucommit — `git log adbf4a8..HEAD -- <venture>` reichte.
+- Redundante Drittbedingung (Koepfe verschieden folgt aus beiden Haelften korrekt)
+  ist kein Befund — Zusatzgurt, kein pruefbar eigenes Versprechen.
+- Sperren: `;`-Verbund (`python3 ...; echo RC`) verweigert, nackter python3-Aufruf
+  und python3-Heredoc mit subprocess/env= gingen durchweg; Write nach befunde/ ging.
+  rm nicht probiert, shutil.rmtree im Heredoc tat es.
+
 ## Offene Faehrten
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE einzeln nachschlagen.**
