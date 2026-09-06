@@ -1,0 +1,16 @@
+# Vom Uebersetzungslauf fertig gemeldete Abschnitte. Was hier
+# steht, wird nie wieder gewaehlt -- unabhaengig von jeder
+# Spracherkennung. Am 2026-09-06 fehlte diese Datei, und ein
+# englischer Abschnitt wurde 56-mal neu uebersetzt.
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#The blocking question
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#Sources one by one
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#The proposal
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#What the model needs and what is missing
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#What is unclear
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#The game length R, and why it stands here as a letter
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#The loop
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#1. Stack
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#Two views
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#Why this fits the rest — and is not decoration
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#What it costs — the one place where it collides
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#The order stands

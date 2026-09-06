@@ -43,17 +43,51 @@ def bestand() -> list[Path]:
     return sorted((WURZEL / "specs" / FOKUS).glob("*.md"))
 
 
+_DEUTSCH = re.compile(r"\b(der|die|das|und|nicht|ist|ein|eine|wird|sich|auch|nur|"
+                      r"wenn|dass|aber|oder|noch|schon|kein|keine|dieser|diese|"
+                      r"dieses|werden|wurde|haben|hat|sind|bei|nach|ueber|unter)\b")
+
+
 def deutsch(text: str) -> bool:
-    """Grobe, aber ausreichende Probe: deutsche Funktionswoerter und Umlaute."""
+    """Ganze deutsche Funktionswoerter je 4.000 Zeichen -- keine Teilzeichenketten.
+
+    Die erste Fassung zaehlte auch ae/oe/ue als Umlautersatz. Die stecken in true,
+    value, issue, sequence: Ein fertig uebersetzter Abschnitt kam auf 13 Treffer bei
+    Schwelle 12 und wurde 56-mal neu gewaehlt. Umlaute in deutschen Zitaten zaehlen
+    absichtlich nicht -- Zitate bleiben deutsch, und das ist kein Zeichen fuer eine
+    unuebersetzte Stelle.
+    """
     probe = text[:4000].lower()
-    treffer = sum(probe.count(w) for w in
-                  (" der ", " die ", " das ", " und ", " nicht ", " ist ", " ein ",
-                   " wird ", " sich ", " auch ", "ae", "oe", "ue", "ä", "ö", "ü", "ß"))
-    return treffer >= 12
+    return len(_DEUTSCH.findall(probe)) >= 10
+
+
+BUCH = WURZEL / "ops" / "uebersetzt.txt"
+
+
+def erledigt() -> set[str]:
+    """Alles, was ein erfolgreicher Lauf schon uebersetzt hat -- nie wieder waehlen."""
+    try:
+        return {z.strip() for z in BUCH.read_text(encoding="utf-8").splitlines()
+                if z.strip() and not z.startswith("#")}
+    except OSError:
+        return set()
+
+
+def eintragen(wo: str) -> None:
+    BUCH.parent.mkdir(parents=True, exist_ok=True)
+    if not BUCH.exists():
+        BUCH.write_text("# Vom Uebersetzungslauf fertig gemeldete Abschnitte. Was hier\n"
+                        "# steht, wird nie wieder gewaehlt -- unabhaengig von jeder\n"
+                        "# Spracherkennung. Am 2026-09-06 fehlte diese Datei, und ein\n"
+                        "# englischer Abschnitt wurde 56-mal neu uebersetzt.\n",
+                        encoding="utf-8")
+    with BUCH.open("a", encoding="utf-8") as f:
+        f.write(wo + "\n")
 
 
 def offen() -> list[tuple[Path, str | None]]:
-    """(Datei, Abschnitt) fuer alles, was noch deutsch ist."""
+    """(Datei, Abschnitt) fuer alles, was noch deutsch ist und nicht im Buch steht."""
+    fertig = erledigt()
     aufgaben = []
     for p in bestand():
         try:
@@ -63,14 +97,16 @@ def offen() -> list[tuple[Path, str | None]]:
         if not deutsch(t):
             continue
         if len(t) <= STUECK_MAX:
-            aufgaben.append((p, None))
+            if str(p.relative_to(WURZEL)) not in fertig:
+                aufgaben.append((p, None))
             continue
         # Grosse Dateien abschnittsweise, erster noch deutscher Abschnitt zuerst.
         for m in re.finditer(r"(?m)^## (.+)$", t):
             anfang = m.start()
             naechste = re.search(r"(?m)^## ", t[anfang + 3:])
             ende = anfang + 3 + naechste.start() if naechste else len(t)
-            if deutsch(t[anfang:ende]):
+            wo = f"{p.relative_to(WURZEL)}#{m.group(1).strip()}"
+            if wo not in fertig and deutsch(t[anfang:ende]):
                 aufgaben.append((p, m.group(1).strip()))
                 break
     return aufgaben
@@ -103,6 +139,7 @@ def main() -> int:
     # Abschnitte, und `--stueck 60` aenderte daran nichts. Am 2026-09-06 sah es aus, als
     # sei der Lauf gestorben; er war fertig.
     gemacht = 0
+    gesehen: set[str] = set()
     while gemacht < (8 if trocken else stueck):
         warten = offen()
         reservieren(sorted({x for x, _ in warten}))
@@ -118,6 +155,11 @@ def main() -> int:
         pfad, abschnitt = warten[0]
         rel = pfad.relative_to(WURZEL)
         wo = f"{rel}#{abschnitt}" if abschnitt else str(rel)
+        if wo in gesehen:
+            print(f"[{jetzt()}] {wo} zum zweiten Mal gewaehlt -- angehalten. "
+                  "Der Detektor haelt einen fertigen Abschnitt fuer deutsch.")
+            return 1
+        gesehen.add(wo)
         if trocken:
             print(f"  wuerde uebersetzen: {wo}")
             gemacht += 1
@@ -134,6 +176,7 @@ def main() -> int:
             print("  Lauf fehlgeschlagen -- angehalten.")
             reservieren(sorted({x for x, _ in offen()}))
             return 1
+        eintragen(wo)
         gemacht += 1
     print(f"[{jetzt()}] {gemacht} Abschnitte uebersetzt, Grenze erreicht.")
     return 0

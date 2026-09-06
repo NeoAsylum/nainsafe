@@ -41,3 +41,4 @@ against it.
 ---
 
 Full accounts and anything older: `notizen/archiv/lehren-ausfuehrlich.md`.
+- 2026-09-06 — A selector that can re-pick finished work needs a ledger, not a better heuristic: substring matching of ae/oe/ue flagged an English section 56 times (true, value, sequence). Cost 41.70 USD; the spec itself was untouched.
