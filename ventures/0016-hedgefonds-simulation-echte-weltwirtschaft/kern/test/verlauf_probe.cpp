@@ -20,6 +20,10 @@
 //!   4. **Die Ordnung und die Griffe daneben.** Rundennummern unter eins, nicht
 //!      aufsteigende Runden, ein Glied ohne begonnene Runde, ein Platz ausserhalb, eine
 //!      Runde, die der Verlauf nicht traegt.
+//!   5. **Die Rueckwaertsaufloesung aus T20** (Paket 0091). Eine Partie ueber drei
+//!      Runden, in der eine Aktion aus Runde 1 eine Groesse in Runde 3 aendert -- einmal
+//!      unmittelbar und einmal ueber ein Zwischenglied. Dazu die Gegenprobe auf die
+//!      Verzoegerung, die fuenf Enden einer Kette und die Griffe daneben.
 //!
 //! ## Keine Zahl steht hier abgeschrieben
 //!
@@ -63,21 +67,31 @@ using kern::meldung::Meldung;
 
 using kern::schreiber::Kette;
 using kern::schreiber::Modus;
+using kern::schreiber::Schreiber;
 using kern::schreiber::Ursache;
+using kern::schreiber::UrsacheArt;
 using kern::schreiber::Ursachensatz;
 using kern::schreiber::sollmaskengroesse;
 
 using kern::schritt::Rundenergebnis;
 
+using kern::verlauf::Aufloesung;
+using kern::verlauf::Ende;
 using kern::verlauf::GLIEDER_JE_RUNDE;
+using kern::verlauf::KEIN_RUNDENPLATZ;
 using kern::verlauf::PARTIELAENGE_HOECHSTENS;
 using kern::verlauf::RUNDEN_KAPAZITAET;
 using kern::verlauf::Verlauf;
 
 using kern::zustand::FELDER;
+using kern::zustand::Gebiet;
 using kern::zustand::i64;
 using kern::zustand::Index;
+using kern::zustand::Instrument;
+using kern::zustand::InstrumentFeld;
 using kern::zustand::PartieFeld;
+using kern::zustand::Sektor;
+using kern::zustand::SektorGroesse;
 using kern::zustand::Startbelegung;
 using kern::zustand::Zustand;
 
@@ -483,6 +497,404 @@ void probe_ordnung()
     }
 }
 
+// ---------------------------------------------------------------------------
+// Bedingung 5 -- die Rueckwaertsaufloesung aus T20 (Paket 0091)
+// ---------------------------------------------------------------------------
+
+/// Das Land, an dem die Partie dieser Probe ihre Ursachenkette baut.
+constexpr Gebiet LAND = Gebiet::DE;
+
+constexpr Index PLATZ_ZOLLSTAND =
+    kern::zustand::stelle_instrument(LAND, Instrument::Zoll, InstrumentFeld::Stand);
+constexpr Index PLATZ_ZOLLDRUCK =
+    kern::zustand::stelle_instrument(LAND, Instrument::Zoll, InstrumentFeld::Druck);
+constexpr Index PLATZ_PREIS =
+    kern::zustand::stelle_sektorgroesse(LAND, Sektor::Industrie, SektorGroesse::Preis);
+constexpr Index PLATZ_KAPITAL =
+    kern::zustand::stelle_sektorgroesse(LAND, Sektor::Industrie, SektorGroesse::Kapitalstock);
+
+/// Die Aktionsart, die die Partie in Runde 1 setzt.
+///
+/// Absichtlich keine Eins: In einer Kettenzeile stehen Rundennummern, Verzoegerungen und
+/// Beitraege daneben, und eine Eins darunter waere von jeder anderen Eins nicht zu
+/// unterscheiden.
+constexpr std::size_t AKTIONSART = 2;
+
+/// Was eine Runde dieser Partie ausser dem Vortrag schreibt.
+struct Setzung {
+    Index   ziel = 0;
+    i64     wert = 0;
+    Ursache ursache{};
+    i64     verzoegerung = 0;
+    i64     beitrag      = 0;
+};
+
+/// Eine Runde im Spielmodus von Hand: `partie.runde`, dann die benannten Setzungen, dann
+/// jede noch nicht geschriebene Adresse unveraendert vorgetragen.
+///
+/// **Der Weg geht durch `kern::schreiber` und nicht daneben.** Die Ursachensaetze, die
+/// hier entstehen, sind die des Kerns -- mit seiner Rundennummer, seinem Altwert und
+/// seinem Neuwert --, und die zweiseitige Maskenpruefung aus T38 laeuft mit: Eine Runde,
+/// die eine der 310 Adressen vergisst oder eine zweimal schreibt, kommt hier nicht heraus.
+/// Von Hand ist an ihr nur, **welche** Ursache an welcher Adresse steht; das ist genau
+/// der Teil, den `kern::schritt` heute noch nicht rechnet.
+template <std::size_t N>
+Rundenergebnis handrunde(const Zustand& vorrunde, i64 runde,
+                         const std::array<Setzung, N>& setzungen)
+{
+    Schreiber schreiber{vorrunde, Modus::Spielmodus, runde};
+
+    // Dieselbe Ursache wie im Rundengeruest des Kerns: Vortrag auf sich selbst,
+    // Verzoegerung null, Beitrag 1.000 Promille.
+    schreiber.setze(PLATZ_RUNDE, runde, Ursache::vortrag(PLATZ_RUNDE), 0, 1000);
+
+    for (const Setzung& setzung : setzungen) {
+        schreiber.setze(setzung.ziel, setzung.wert, setzung.ursache, setzung.verzoegerung,
+                        setzung.beitrag);
+    }
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        if (!schreiber.ist_geschrieben(platz)) {
+            schreiber.vortrag(platz);
+        }
+    }
+    return Rundenergebnis{schreiber.rundenende(), schreiber.kette()};
+}
+
+/// Der Startzustand der Partie -- Musterwerte, und darueber die vier benannten Adressen.
+Zustand partiestart()
+{
+    Zustand       welt;
+    Startbelegung zugang{welt};
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        zugang.setze(platz, musterwert(platz));
+    }
+    zugang.setze(PLATZ_ZOLLSTAND, 380);
+    zugang.setze(PLATZ_ZOLLDRUCK, 0);
+    zugang.setze(PLATZ_PREIS, 10'000);
+    zugang.setze(PLATZ_KAPITAL, 4'200'000);
+    zugang.setze(PLATZ_RUNDE, 0);
+    return welt;
+}
+
+/// Die Partie der Abnahme: drei Runden, und eine Aktion in Runde 1 aendert eine Groesse
+/// in Runde 3.
+///
+///   Runde 1: die Aktion setzt den Zollstand.
+///   Runde 2: der Lobbydruck am Zoll entsteht aus dem Zollstand (Ursache `Instrument`,
+///            Verzoegerung eins).
+///   Runde 3: der Sektorpreis kommt aus jenem Druck (Verzoegerung eins) -- drei Glieder;
+///            der Kapitalstock kommt unmittelbar aus dem Zollstand der Runde 1
+///            (Verzoegerung zwei) -- zwei Glieder ueber zwei Runden.
+///
+/// Der zweite Weg ist der, den die Abnahme woertlich verlangt. Der erste steht daneben,
+/// weil eine Kette aus zwei Gliedern noch nicht zeigt, dass die Aufloesung ueber ein
+/// Zwischenglied hinweg findet.
+Zustand partie_bauen(Verlauf& verlauf)
+{
+    Zustand welt = partiestart();
+
+    const std::array<Setzung, 1> runde1 = {
+        Setzung{PLATZ_ZOLLSTAND, 500, Ursache::aktion(AKTIONSART), 0, 1000}};
+    const std::array<Setzung, 1> runde2 = {
+        Setzung{PLATZ_ZOLLDRUCK, 4'200, Ursache::instrument(LAND, Instrument::Zoll), 1, 1000}};
+    const std::array<Setzung, 2> runde3 = {
+        Setzung{PLATZ_PREIS, 10'420, Ursache::vortrag(PLATZ_ZOLLDRUCK), 1, 700},
+        Setzung{PLATZ_KAPITAL, 4'260'000, Ursache::vortrag(PLATZ_ZOLLSTAND), 2, 300}};
+
+    const Rundenergebnis erste = handrunde(welt, 1, runde1);
+    verlauf.aufnehmen(1, erste.kette_dieser_runde);
+    welt = erste.neuer_zustand;
+
+    const Rundenergebnis zweite = handrunde(welt, 2, runde2);
+    verlauf.aufnehmen(2, zweite.kette_dieser_runde);
+    welt = zweite.neuer_zustand;
+
+    const Rundenergebnis dritte = handrunde(welt, 3, runde3);
+    verlauf.aufnehmen(3, dritte.kette_dieser_runde);
+    return dritte.neuer_zustand;
+}
+
+/// So viele Glieder legt diese Probe von einer Kette ab. Die laengste Kette der Partie
+/// hat drei; die Grenze steht darueber, damit ein zu langes Ergebnis auffaellt, statt in
+/// die Ablage zu passen.
+constexpr std::size_t KETTE_PROBE_MAX = 8;
+
+/// Eine aufgeloeste Kette als Liste -- damit die Pruefungen darunter sie an einem Stueck
+/// ansehen koennen, statt den Schrittzaehler mitzufuehren.
+struct Kettenprobe {
+    std::array<Ursachensatz, KETTE_PROBE_MAX> glied{};
+    std::size_t                               laenge = 0;
+    Ende                                      ende   = Ende::OhneEintrag;
+    bool                                      leer   = true;
+};
+
+Kettenprobe aufgeloest(const Verlauf& verlauf, i64 runde, Index ziel)
+{
+    Kettenprobe ergebnis;
+    Aufloesung  kette{verlauf, runde, ziel};
+
+    ergebnis.leer = kette.leer();
+    if (!kette.leer()) {
+        do {
+            if (ergebnis.laenge < KETTE_PROBE_MAX) {
+                ergebnis.glied[ergebnis.laenge] = kette.glied();
+            }
+            ++ergebnis.laenge;
+        } while (kette.weiter());
+        // Der Kasten zaehlt selbst mit; stimmten die beiden Zahlen nicht ueberein, waere
+        // eine der beiden Zaehlungen falsch und die Liste unten nichts wert.
+        pruefe(kette.glieder() == ergebnis.laenge, "die Aufloesung zaehlt ihre Glieder mit",
+               __LINE__);
+    }
+    ergebnis.ende = kette.ende();
+    return ergebnis;
+}
+
+/// Ein Glied von Hand -- fuer die Gegenproben, in denen sich genau eine Zahl unterscheidet.
+Ursachensatz satz_mit(i64 runde, Index ziel, Ursache ursache, i64 verzoegerung)
+{
+    Ursachensatz satz;
+    satz.runde        = runde;
+    satz.ziel         = ziel;
+    satz.alt          = 0;
+    satz.neu          = 1;
+    satz.ursache      = ursache;
+    satz.verzoegerung = verzoegerung;
+    satz.beitrag      = 1'000;
+    return satz;
+}
+
+void schreibe_kette(const char* was, const Kettenprobe& kette)
+{
+    std::printf("  %s: %zu Glied(er), Ende %d, Runden", was, kette.laenge,
+                static_cast<int>(kette.ende));
+    for (std::size_t n = 0; n < kette.laenge && n < KETTE_PROBE_MAX; ++n) {
+        std::printf(" %lld", static_cast<long long>(kette.glied[n].runde));
+    }
+    std::printf("\n");
+}
+
+void probe_partie_mit_ursachenkette()
+{
+    Verlauf       verlauf;
+    const Zustand nach_runde_3 = partie_bauen(verlauf);
+
+    PRUEFE(verlauf.runden() == 3);
+    PRUEFE(nach_runde_3.lies(PLATZ_RUNDE) == 3);
+    PRUEFE(verlauf.platz_der_runde(3) == 2);
+    PRUEFE(verlauf.platz_der_runde(4) == KEIN_RUNDENPLATZ);
+
+    // (a) Die Kette, die die Abnahme woertlich verlangt: die Aktion aus Runde 1 und die
+    //     Groesse aus Runde 3, mit der Verzoegerung dazwischen.
+    {
+        const Kettenprobe kette = aufgeloest(verlauf, 3, PLATZ_KAPITAL);
+        schreibe_kette("Kapitalstock aus der Aktion (zwei Runden)", kette);
+        PRUEFE(!kette.leer);
+        PRUEFE(kette.laenge == 2);
+        PRUEFE(kette.glied[0].runde == 3);
+        PRUEFE(kette.glied[0].ziel == PLATZ_KAPITAL);
+        PRUEFE(kette.glied[0].verzoegerung == 2);
+        PRUEFE(kette.glied[0].beitrag == 300);
+        PRUEFE(kette.glied[0].ursache.art() == UrsacheArt::Vortrag);
+        PRUEFE(kette.glied[0].ursache.vortragsadresse() == PLATZ_ZOLLSTAND);
+        PRUEFE(kette.glied[1].runde == 1);
+        PRUEFE(kette.glied[1].ziel == PLATZ_ZOLLSTAND);
+        PRUEFE(kette.glied[1].ursache.art() == UrsacheArt::Aktion);
+        PRUEFE(kette.glied[1].ursache.aktionsnummer() == AKTIONSART);
+        PRUEFE(kette.glied[1].alt == 380 && kette.glied[1].neu == 500);
+        PRUEFE(kette.ende == Ende::Ausloeser);
+
+        // Die Verzoegerung dazwischen, aus den beiden Gliedern gerechnet statt behauptet.
+        PRUEFE(kette.glied[0].runde - kette.glied[1].runde == 2);
+    }
+
+    // (b) Derselbe Ausloeser ueber ein Zwischenglied -- drei Glieder, drei Runden.
+    {
+        const Kettenprobe kette = aufgeloest(verlauf, 3, PLATZ_PREIS);
+        schreibe_kette("Sektorpreis ueber den Lobbydruck (drei Glieder)", kette);
+        PRUEFE(kette.laenge == 3);
+        PRUEFE(kette.glied[0].runde == 3 && kette.glied[0].ziel == PLATZ_PREIS);
+        PRUEFE(kette.glied[1].runde == 2 && kette.glied[1].ziel == PLATZ_ZOLLDRUCK);
+        PRUEFE(kette.glied[1].ursache.art() == UrsacheArt::Instrument);
+        PRUEFE(kette.glied[2].runde == 1 && kette.glied[2].ziel == PLATZ_ZOLLSTAND);
+        PRUEFE(kette.glied[2].ursache.art() == UrsacheArt::Aktion);
+        PRUEFE(kette.ende == Ende::Ausloeser);
+    }
+
+    // (c) Der Vortrag auf sich selbst. Er traegt nach T18 die Verzoegerung null, und
+    //     genau hier entscheidet sich, ob die Aufloesung ueber Runden hinweg findet:
+    //     Wer die Ursachenrunde aus Runde minus Verzoegerung ausrechnet, landet auf
+    //     demselben Glied und steht still. Das zweite Glied steht deshalb in Runde 2 und
+    //     nicht in Runde 3.
+    {
+        const Kettenprobe kette = aufgeloest(verlauf, 3, PLATZ_RUNDE);
+        schreibe_kette("partie.runde, dreimal vorgetragen", kette);
+        PRUEFE(kette.laenge == 3);
+        PRUEFE(kette.glied[0].runde == 3);
+        PRUEFE(kette.glied[1].runde == 2);
+        PRUEFE(kette.glied[2].runde == 1);
+        PRUEFE(kette.glied[1].ziel == PLATZ_RUNDE);
+        // Vor der ersten aufgenommenen Runde steht der Startwert, und der hat nach T18
+        // keinen Ursachensatz.
+        PRUEFE(kette.ende == Ende::OhneVorgaenger);
+    }
+
+    // (d) Keine der 310 Adressen bleibt ohne Ursache: In einer Runde im Spielmodus wird
+    //     jede geschrieben, also findet jede ihren Anfangspunkt.
+    {
+        std::size_t ohne = 0;
+        for (Index platz = 0; platz < FELDER; ++platz) {
+            if (Aufloesung{verlauf, 3, platz}.leer()) {
+                ++ohne;
+            }
+        }
+        PRUEFE(ohne == 0);
+        std::printf("  Adressen ohne Ursachensatz in Runde 3: %zu von %zu\n", ohne, FELDER);
+    }
+}
+
+/// Die Verzoegerung grenzt die Suche ein -- zweiseitig an derselben Lage.
+///
+/// Ohne den Gegenfall belegte die Partie oben nur, dass eine Kette herauskommt, nicht
+/// dass die Verzoegerung sie steuert: Eine Aufloesung, die das Feld gar nicht liest,
+/// faende dieselbe Runde 1, sobald in Runde 2 kein Schreibzugriff auf die Ursachenadresse
+/// stuende. In dieser Lage steht einer, und nur die Verzoegerung unterscheidet die beiden
+/// Laeufe.
+void probe_verzoegerung_grenzt_ein()
+{
+    for (const i64 verzoegerung : {i64{0}, i64{2}}) {
+        Verlauf verlauf;
+        verlauf.beginne_runde(1);
+        verlauf.anhaengen(satz_mit(1, PLATZ_ZOLLSTAND, Ursache::aktion(AKTIONSART), 0));
+        verlauf.beginne_runde(2);
+        verlauf.anhaengen(satz_mit(2, PLATZ_ZOLLSTAND, Ursache::vortrag(PLATZ_ZOLLSTAND), 0));
+        verlauf.beginne_runde(3);
+        verlauf.anhaengen(
+            satz_mit(3, PLATZ_KAPITAL, Ursache::vortrag(PLATZ_ZOLLSTAND), verzoegerung));
+
+        const Kettenprobe kette = aufgeloest(verlauf, 3, PLATZ_KAPITAL);
+        schreibe_kette(verzoegerung == 0 ? "Verzoegerung null" : "Verzoegerung zwei", kette);
+
+        if (verzoegerung == 0) {
+            pruefe(kette.laenge == 3, "ohne Verzoegerung fuehrt der Weg ueber die Runde 2",
+                   __LINE__);
+            pruefe(kette.glied[1].runde == 2, "und das zweite Glied steht dort", __LINE__);
+        } else {
+            pruefe(kette.laenge == 2, "mit Verzoegerung zwei ueberspringt er die Runde 2",
+                   __LINE__);
+            pruefe(kette.glied[1].runde == 1, "und das zweite Glied steht in Runde 1",
+                   __LINE__);
+        }
+        pruefe(kette.ende == Ende::Ausloeser, "beide enden bei derselben Aktion", __LINE__);
+    }
+}
+
+/// Die fuenf Enden, jedes an seiner eigenen Lage.
+void probe_enden()
+{
+    struct Fall {
+        const char* name;
+        Ursache     ursache;
+        Ende        erwartet;
+    };
+
+    const std::array<Fall, 4> faelle = {
+        Fall{"Aktion", Ursache::aktion(AKTIONSART), Ende::Ausloeser},
+        Fall{"Gegenkraft", Ursache::gegenkraft(3), Ende::Ausloeser},
+        Fall{"Jahrgang", Ursache::jahrgang(), Ende::Jahrgang},
+        Fall{"Marktraeumung", Ursache::marktraeumung(Sektor::Industrie), Ende::OhneAdresse},
+    };
+
+    for (const Fall& fall : faelle) {
+        Verlauf verlauf;
+        verlauf.beginne_runde(1);
+        verlauf.anhaengen(satz_mit(1, PLATZ_KAPITAL, fall.ursache, 0));
+
+        const Kettenprobe kette = aufgeloest(verlauf, 1, PLATZ_KAPITAL);
+        pruefe(kette.laenge == 1, "eine Ursache ohne Adresse ist das letzte Glied", __LINE__);
+        pruefe(kette.ende == fall.erwartet, fall.name, __LINE__);
+        std::printf("  Ende bei %s: %d\n", fall.name, static_cast<int>(kette.ende));
+    }
+
+    // Ein Vortrag ohne frueheren Schreibzugriff -- der Anfang des Verlaufs.
+    {
+        Verlauf verlauf;
+        verlauf.beginne_runde(1);
+        verlauf.anhaengen(satz_mit(1, PLATZ_KAPITAL, Ursache::vortrag(PLATZ_KAPITAL), 0));
+
+        const Kettenprobe kette = aufgeloest(verlauf, 1, PLATZ_KAPITAL);
+        PRUEFE(kette.laenge == 1);
+        PRUEFE(kette.ende == Ende::OhneVorgaenger);
+
+        // Zwei Lagen ohne Anfangspunkt: eine Runde, die der Verlauf nicht traegt, und
+        // eine Adresse, die in ihr nicht geschrieben wurde. Beide sind leer und keine
+        // bricht ab -- die Unterschiedsebene muss sie benennen koennen.
+        const Kettenprobe fremde_runde = aufgeloest(verlauf, 2, PLATZ_KAPITAL);
+        PRUEFE(fremde_runde.leer);
+        PRUEFE(fremde_runde.laenge == 0);
+        PRUEFE(fremde_runde.ende == Ende::OhneEintrag);
+
+        const Kettenprobe fremde_adresse = aufgeloest(verlauf, 1, PLATZ_PREIS);
+        PRUEFE(fremde_adresse.leer);
+        PRUEFE(fremde_adresse.ende == Ende::OhneEintrag);
+        std::printf("  ohne Anfangspunkt: fremde Runde und fremde Adresse, beide leer\n");
+    }
+}
+
+/// Die Griffe daneben: was abbricht und was nicht.
+void probe_aufloesung_grenzen()
+{
+    Verlauf verlauf;
+    verlauf.beginne_runde(1);
+    verlauf.anhaengen(satz_mit(1, PLATZ_ZOLLSTAND, Ursache::aktion(AKTIONSART), 0));
+    verlauf.beginne_runde(2);
+    verlauf.anhaengen(satz_mit(2, PLATZ_KAPITAL, Ursache::vortrag(PLATZ_ZOLLSTAND), 0));
+
+    // Eine Adresse ausserhalb der 310 ist ein Rechenfehler des Aufrufers.
+    {
+        const bool geworfen = hat_abgebrochen(
+            [&verlauf]() { static_cast<void>(Aufloesung{verlauf, 1, FELDER}.leer()); });
+        PRUEFE(geworfen);
+        PRUEFE(enthaelt(letzte_meldung.data(), "ausserhalb der 310"));
+        std::printf("  Adresse ausserhalb: %s\n", letzte_meldung.data());
+    }
+
+    // Das Glied einer leeren Aufloesung gibt es nicht.
+    {
+        const bool geworfen = hat_abgebrochen([&verlauf]() {
+            Aufloesung leere{verlauf, 9, PLATZ_KAPITAL};
+            static_cast<void>(leere.glied());
+        });
+        PRUEFE(geworfen);
+        PRUEFE(enthaelt(letzte_meldung.data(), "leer"));
+        std::printf("  Glied einer leeren Aufloesung: %s\n", letzte_meldung.data());
+    }
+
+    // Ein Ende, das noch nicht feststeht, ist keine Auskunft.
+    {
+        const bool geworfen = hat_abgebrochen([&verlauf]() {
+            Aufloesung laufende{verlauf, 2, PLATZ_KAPITAL};
+            static_cast<void>(laufende.ende());
+        });
+        PRUEFE(geworfen);
+        PRUEFE(enthaelt(letzte_meldung.data(), "noch nicht zu Ende"));
+        std::printf("  Ende vor dem Ende: %s\n", letzte_meldung.data());
+
+        // Der Gegenfall: dieselbe Aufloesung, zu Ende gegangen, antwortet.
+        Aufloesung laufende{verlauf, 2, PLATZ_KAPITAL};
+        PRUEFE(!laufende.beendet());
+        while (laufende.weiter()) {
+        }
+        PRUEFE(laufende.beendet());
+        PRUEFE(laufende.ende() == Ende::Ausloeser);
+        PRUEFE(laufende.glieder() == 2);
+
+        // Ein weiterer Schritt nach dem Ende bleibt bei false und aendert nichts.
+        PRUEFE(!laufende.weiter());
+        PRUEFE(laufende.glieder() == 2);
+    }
+}
+
 }  // namespace
 
 int main()
@@ -501,6 +913,11 @@ int main()
     probe_rundenkapazitaet();
     std::printf("Bedingung 4 -- Ordnung und Griffe daneben:\n");
     probe_ordnung();
+    std::printf("Bedingung 5 -- die Rueckwaertsaufloesung aus T20:\n");
+    probe_partie_mit_ursachenkette();
+    probe_verzoegerung_grenzt_ein();
+    probe_enden();
+    probe_aufloesung_grenzen();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

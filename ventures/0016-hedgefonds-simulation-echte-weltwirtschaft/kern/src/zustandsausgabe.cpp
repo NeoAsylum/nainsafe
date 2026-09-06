@@ -22,6 +22,9 @@
 #include <cstddef>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
+#include "kern/schreiber.hpp"
+#include "kern/verlauf.hpp"
 #include "kern/werte.hpp"
 #include "kern/zustand.hpp"
 #include "kern/zustandsausgabe.hpp"
@@ -270,7 +273,13 @@ namespace {
 
 /// Haengt `[K<nummer> <name>, <einheit>]` an -- die Skalenangabe, wegen der ein Leser
 /// nicht raten muss, ob eine Zahl Cent, Basispunkte oder Personen sind.
-void klassenangabe(Adressblatt& blatt, Index platz)
+///
+/// Ueber die Puffergroesse gebunden und nicht ueber `Adressblatt`: Die dritte und die
+/// vierte Ebene schreiben dieselbe Angabe in verschieden grosse Blaetter. Zwei Fassungen
+/// koennten auseinanderlaufen, und dann naennte die eine Ebene eine andere Klasse als die
+/// andere -- auf derselben Adresse.
+template <std::size_t N>
+void klassenangabe(Ausgabe<N>& blatt, Index platz)
 {
     const Skalenklasse klasse = skalenklasse_von(platz);
     blatt.text("  [K");
@@ -298,7 +307,8 @@ constexpr const char* STRICH_STATT_DIFFERENZ = "-  (T5: auf einer Kennung nur Gl
 /// Sie steht unter jedem Adressblatt, auch unter einem leeren, und das ist der ganze
 /// Zweck: Eine Ausgabe ohne Zeilen und eine, in der nichts zu berichten war, sind sonst
 /// dasselbe Zeichen fuer zwei verschiedene Lagen -- und die zweite ist ein Befund.
-void schlusszeile(Adressblatt& blatt, std::size_t gezaehlt, const char* was)
+template <std::size_t N>
+void schlusszeile(Ausgabe<N>& blatt, std::size_t gezaehlt, const char* was)
 {
     blatt.zahl(static_cast<i64>(gezaehlt));
     blatt.text(" von ");
@@ -306,6 +316,37 @@ void schlusszeile(Adressblatt& blatt, std::size_t gezaehlt, const char* was)
     blatt.text(" Adressen ");
     blatt.text(was);
     blatt.text(".");
+    blatt.zeilenende();
+}
+
+/// Die Zeile einer geaenderten Adresse: alter Wert, neuer Wert, Differenz, Klasse.
+///
+/// **Die dritte Ebene und die vierte schreiben sie aus dieser einen Funktion**, und das
+/// ist der Punkt: Die vierte ist die dritte mit einer zweiten Zeile darunter, nicht mit
+/// einer anderen ersten. Zwei Fassungen dieser Zeile waeren zwei Antworten auf dieselbe
+/// Frage, und die Probe auf die eine liesse die andere in Ruhe.
+template <std::size_t N>
+void unterschiedszeile(Ausgabe<N>& blatt, Index platz, i64 alt, i64 neu)
+{
+    blatt.text(zustand::index_zu_adresse(platz));
+    blatt.text("  alt ");
+    blatt.zahl(alt);
+    blatt.text("  neu ");
+    blatt.zahl(neu);
+    blatt.text("  Differenz ");
+    if (differenz_hat_bedeutung(skalenklasse_von(platz))) {
+        // Auf `i128`, weil der Abstand zweier `i64` keine `i64` ist (ADR 0011,
+        // Massnahme 3). Unter `-fwrapv` waere der Umlauf definiert und die Zahl
+        // wohlgeformt falsch -- die Sorte Wert, die keine Pruefung bemerkt.
+        blatt.zahl(static_cast<i128>(neu) - static_cast<i128>(alt));
+    } else {
+        // T5, Klasse 12: Hier ist die Subtraktion selbst der Fehler, nicht ihr
+        // Ergebnisbereich. Die Ausnahme haengt an der Klasse und nicht an einer
+        // Adressliste in dieser Datei -- eine zweite Liste waere die, die niemand
+        // nachfuehrt.
+        blatt.text(STRICH_STATT_DIFFERENZ);
+    }
+    klassenangabe(blatt, platz);
     blatt.zeilenende();
 }
 
@@ -363,26 +404,7 @@ Adressblatt diff(const zustand::Zustand& vorher, const zustand::Zustand& nachher
             continue;
         }
         ++gezaehlt;
-        blatt.text(zustand::index_zu_adresse(platz));
-        blatt.text("  alt ");
-        blatt.zahl(alt);
-        blatt.text("  neu ");
-        blatt.zahl(neu);
-        blatt.text("  Differenz ");
-        if (differenz_hat_bedeutung(skalenklasse_von(platz))) {
-            // Auf `i128`, weil der Abstand zweier `i64` keine `i64` ist (ADR 0011,
-            // Massnahme 3). Unter `-fwrapv` waere der Umlauf definiert und die Zahl
-            // wohlgeformt falsch -- die Sorte Wert, die keine Pruefung bemerkt.
-            blatt.zahl(static_cast<i128>(neu) - static_cast<i128>(alt));
-        } else {
-            // T5, Klasse 12: Hier ist die Subtraktion selbst der Fehler, nicht ihr
-            // Ergebnisbereich. Die Ausnahme haengt an der Klasse und nicht an einer
-            // Adressliste in dieser Datei -- eine zweite Liste waere die, die niemand
-            // nachfuehrt.
-            blatt.text(STRICH_STATT_DIFFERENZ);
-        }
-        klassenangabe(blatt, platz);
-        blatt.zeilenende();
+        unterschiedszeile(blatt, platz, alt, neu);
     }
 
     if (gezaehlt == 0) {
@@ -390,6 +412,241 @@ Adressblatt diff(const zustand::Zustand& vorher, const zustand::Zustand& nachher
         blatt.zeilenende();
     }
     schlusszeile(blatt, gezaehlt, "geaendert");
+    return blatt;
+}
+
+// ---------------------------------------------------------------------------
+// Ebene 3 mit der Ursachenkette (T20) -- die vierte Abfrage
+// ---------------------------------------------------------------------------
+
+namespace {
+
+using kern::verlauf::Aufloesung;
+using kern::verlauf::Ende;
+using kern::verlauf::KEIN_RUNDENPLATZ;
+using kern::verlauf::Verlauf;
+
+using schreiber::Ursache;
+using schreiber::UrsacheArt;
+
+/// Die Beschriftung der fuenf Enden aus `kern::verlauf`, nach ihrer Nummer.
+///
+/// Die Reihenfolge ist die der Aufzaehlung, und die Zusicherung darunter zaehlt nach,
+/// dass keine Zeile fehlt: Kommt ein sechstes Ende dazu, ohne dass jemand hier eine Zeile
+/// ergaenzt, ist der Bau rot statt die Ausgabe still falsch.
+constexpr std::array<const char*, kern::verlauf::ENDEN> ENDENAME = {
+    "ausloesende Aktion oder Gegenkraft (T20)",
+    "Sollreihe des Jahrgangs -- im Modell ohne Vorgaenger",
+    "Marktraeumung -- die Form nennt einen Sektor und keine Adresse",
+    "kein frueherer Schreibzugriff im Verlauf -- davor steht der Startwert",
+    "der Verlauf traegt zu dieser Adresse in dieser Runde keinen Schreibzugriff",
+};
+
+static_assert(ENDENAME.size() == kern::verlauf::ENDEN,
+              "jedes Ende einer Ursachenkette traegt genau eine Beschriftung");
+
+const char* endename(Ende ende)
+{
+    const std::size_t nummer = static_cast<std::size_t>(ende);
+    if (nummer >= kern::verlauf::ENDEN) {
+        festkomma::abbruch("kern::zustandsausgabe -- unbekanntes Ende einer Ursachenkette");
+    }
+    return ENDENAME[nummer];
+}
+
+/// Haengt die Ursache in der Form an, die T18 fuer sie nennt -- mit ihrem Beiwert und,
+/// wo die Form eine Adresse nennt, mit deren Text nach T17.
+///
+/// Die Adresse steht ausgeschrieben und nicht als Platz: Wer die Kette liest, soll die
+/// Ursache derselben Adresse zuordnen koennen, die die Zeile darueber nennt, ohne eine
+/// Nummer nachzuschlagen.
+template <std::size_t N>
+void ursachenangabe(Ausgabe<N>& blatt, const Ursache& ursache)
+{
+    switch (ursache.art()) {
+        case UrsacheArt::Aktion:
+            blatt.text("Aktion ");
+            blatt.zahl(static_cast<i64>(ursache.aktionsnummer()));
+            return;
+        case UrsacheArt::Instrument:
+            // Der Stand ist die Groesse, die das Instrument im Zustand fuehrt -- Druck,
+            // Gegendruck und Restverzoegerung sind seine Eingaben und nicht sein Wert.
+            blatt.text("Instrument ");
+            blatt.text(zustand::index_zu_adresse(zustand::stelle_instrument(
+                ursache.land(), ursache.politikinstrument(), zustand::InstrumentFeld::Stand)));
+            return;
+        case UrsacheArt::Gegenkraft:
+            blatt.text("Gegenkraft ");
+            blatt.zahl(static_cast<i64>(ursache.gegenkraftart()));
+            return;
+        case UrsacheArt::Marktraeumung:
+            blatt.text("Marktraeumung Sektor ");
+            blatt.zahl(static_cast<i64>(zustand::sektor_index(ursache.sektor()) + 1U));
+            return;
+        case UrsacheArt::Vortrag:
+            blatt.text("Vortrag ");
+            blatt.text(zustand::index_zu_adresse(ursache.vortragsadresse()));
+            return;
+        case UrsacheArt::Jahrgang:
+            blatt.text("Jahrgang");
+            return;
+    }
+    festkomma::abbruch("kern::zustandsausgabe -- unbekannte Ursachenform: T18 kennt sechs");
+}
+
+/// Schreibt die Kette einer Adresse, Glied fuer Glied, und darunter ihr Ende.
+///
+/// Rueckgabe: ob die Adresse ueberhaupt einen Ursachensatz hatte. Die Schlusszeile des
+/// Blattes zaehlt damit, was die Abnahme dieses Pakets ausschliessen will -- eine
+/// geaenderte Adresse ohne Ursache.
+bool kettenzeilen(Kettenblatt& blatt, const Verlauf& ketten, i64 bis, Index platz)
+{
+    Aufloesung kette{ketten, bis, platz};
+
+    if (kette.leer()) {
+        blatt.text("    ohne Ursachensatz in Runde ");
+        blatt.zahl(bis);
+        blatt.text(" -- ");
+        blatt.text(endename(kette.ende()));
+        blatt.zeilenende();
+        return false;
+    }
+
+    // Erst schreiben, dann weitergehen: Das erste Glied steht schon nach dem Anlegen,
+    // ein `while` davor ueberspraenge es.
+    do {
+        const schreiber::Ursachensatz& satz = kette.glied();
+        blatt.text("    Glied ");
+        blatt.zahl(static_cast<i64>(kette.glieder()));
+        blatt.text("  Runde ");
+        blatt.zahl(satz.runde);
+        blatt.text("  ");
+        ursachenangabe(blatt, satz.ursache);
+        blatt.text("  Verzoegerung ");
+        blatt.zahl(satz.verzoegerung);
+        blatt.text("  Beitrag ");
+        blatt.zahl(satz.beitrag);
+        blatt.text(" Promille");
+        blatt.zeilenende();
+    } while (kette.weiter());
+
+    // Die Runde des letzten Gliedes ist die der Ursache; `bis` ist die der Wirkung. Der
+    // Abstand steht hier ausgerechnet, weil er die Frage beantwortet, wegen der T20 die
+    // Kette ueberhaupt verlangt: wie lange die Ursache gebraucht hat. Auf `i128`, weil die
+    // Differenz zweier `i64` keine `i64` ist.
+    const i64 ursachenrunde = kette.glied().runde;
+    blatt.text("    Ende nach ");
+    blatt.zahl(static_cast<i64>(kette.glieder()));
+    blatt.text(" Glied(ern): ");
+    blatt.text(endename(kette.ende()));
+    blatt.text(", Runde ");
+    blatt.zahl(ursachenrunde);
+    blatt.text(", ");
+    blatt.zahl(static_cast<i128>(bis) - static_cast<i128>(ursachenrunde));
+    blatt.text(" Runde(n) vor der Wirkung");
+    blatt.zeilenende();
+    return true;
+}
+
+}  // namespace
+
+Kettenblatt diff_mit_kette(const zustand::Zustand& vorher, const zustand::Zustand& nachher,
+                           const Verlauf& ketten)
+{
+    const i64 von = vorher.lies(zustand::stelle_partie(PartieFeld::Runde));
+    const i64 bis = nachher.lies(zustand::stelle_partie(PartieFeld::Runde));
+
+    if (von < 0 || bis < 0) {
+        festkomma::abbruch("kern::zustandsausgabe::diff_mit_kette -- eine Runde vor der "
+                           "ersten gibt es nicht");
+    }
+    if (bis <= von) {
+        meldung::Meldung meldung;
+        meldung.text("kern::zustandsausgabe::diff_mit_kette -- eine Spanne braucht zwei "
+                     "Zeitpunkte: der zweite Zustand steht in Runde ");
+        meldung.zahl(bis);
+        meldung.text(", der erste in Runde ");
+        meldung.zahl(von);
+        meldung.text(". Fuer einen einzelnen Zeitpunkt gibt es die Unterschiedsebene "
+                     "ohne Kette.");
+        festkomma::abbruch(meldung.fertig());
+    }
+    if (ketten.platz_der_runde(bis) == KEIN_RUNDENPLATZ) {
+        meldung::Meldung meldung;
+        meldung.text("kern::zustandsausgabe::diff_mit_kette -- der Verlauf traegt die "
+                     "Runde ");
+        meldung.zahl(bis);
+        meldung.text(" nicht; er traegt ");
+        meldung.zahl(static_cast<i64>(ketten.runden()));
+        meldung.text(" Runde(n). Ohne sie haette keine Adresse einen Anfangspunkt, und "
+                     "das Blatt zeigte lauter Aenderungen ohne Ursache.");
+        festkomma::abbruch(meldung.fertig());
+    }
+
+    Kettenblatt blatt;
+
+    blatt.text("Unterschied mit Ursachenkette (Ebene 3 von 3, T20) -- alt, neu, Differenz "
+               "und die Kette aus T18, rueckwaerts");
+    blatt.zeilenende();
+    blatt.text("Runde ");
+    blatt.zahl(von);
+    blatt.text(" bis Runde ");
+    blatt.zahl(bis);
+    blatt.text("; der Verlauf traegt ");
+    blatt.zahl(static_cast<i64>(ketten.runden()));
+    blatt.text(" Runde(n) mit ");
+    blatt.zahl(static_cast<i64>(ketten.glieder()));
+    blatt.text(" Glied(ern).");
+    blatt.zeilenende();
+
+    std::size_t gezaehlt      = 0;
+    std::size_t mit_kette     = 0;
+    std::size_t ohne_ursache  = 0;
+
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        const i64 alt = vorher.lies(platz);
+        const i64 neu = nachher.lies(platz);
+        if (alt == neu) {
+            continue;
+        }
+        ++gezaehlt;
+        unterschiedszeile(blatt, platz, alt, neu);
+        if (kettenzeilen(blatt, ketten, bis, platz)) {
+            ++mit_kette;
+        } else {
+            ++ohne_ursache;
+        }
+
+        // Geprueft wird je Adresse und nicht am Schluss: Nur hier ist noch bekannt, an
+        // welcher der Puffer ausging. Eine Marke am Ende des Textes sagt **dass**
+        // gekuerzt wurde, diese Meldung sagt **wo** -- und ohne das Wo muss der naechste
+        // Leser 310 Adressen absuchen.
+        if (blatt.abgeschnitten()) {
+            meldung::Meldung meldung;
+            meldung.text("kern::zustandsausgabe::diff_mit_kette -- der Puffer hat nicht "
+                         "gereicht; ausgegangen ist er bei ");
+            meldung.adresse(platz);
+            meldung.text(". Eine gekuerzte Kette waere eine Luege gegenueber dem Kaeufer "
+                         "(T19).");
+            festkomma::abbruch(meldung.fertig());
+        }
+    }
+
+    if (gezaehlt == 0) {
+        blatt.text("Kein Feld unterscheidet sich -- die beiden Zustaende sind gleich.");
+        blatt.zeilenende();
+    }
+    schlusszeile(blatt, gezaehlt, "geaendert");
+
+    // Die zweite Schlusszeile ist die Abnahmebedingung dieses Pakets in Zahlen: Sie sagt,
+    // wie viele der geaenderten Adressen eine Ursache tragen und wie viele nicht. Eine
+    // Ausgabe, die das nur zeigt, statt es zu zaehlen, laesst den Leser zaehlen.
+    blatt.zahl(static_cast<i64>(mit_kette));
+    blatt.text(" davon mit Ursachenkette, ");
+    blatt.zahl(static_cast<i64>(ohne_ursache));
+    blatt.text(" ohne.");
+    blatt.zeilenende();
+
     return blatt;
 }
 

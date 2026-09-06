@@ -42,6 +42,90 @@ namespace {
 
 using meldung::Meldung;
 
+using schreiber::Ursache;
+using schreiber::UrsacheArt;
+
+/// Die Antwort auf "diese Kette traegt zu dieser Adresse keinen Schreibzugriff".
+///
+/// Sie liegt ausserhalb der Plaetze, die eine Kette vergibt -- derselbe Grund wie bei
+/// `KEIN_RUNDENPLATZ` und `zustand::KEIN_PLATZ`.
+constexpr std::size_t KEIN_GLIEDPLATZ = GLIEDER_JE_RUNDE;
+
+/// Der Platz des Schreibzugriffs auf `ziel` in dieser Kette, oder `KEIN_GLIEDPLATZ`.
+///
+/// Der erste Treffer genuegt und ist zugleich der einzige: Nach T18 wird jede Adresse je
+/// Runde hoechstens einmal geschrieben, und der zweite Schreibzugriff stirbt im
+/// Schreiber, bevor ein zweites Glied entstehen kann.
+std::size_t gliedplatz_von(const Kette& kette, Index ziel)
+{
+    for (std::size_t glied = 0; glied < kette.laenge(); ++glied) {
+        if (kette.eintrag(glied).ziel == ziel) {
+            return glied;
+        }
+    }
+    return KEIN_GLIEDPLATZ;
+}
+
+/// Wohin eine Ursache zeigt: auf eine Adresse -- oder auf ein Ende.
+struct Ursachenziel {
+    /// Die Adresse, aus der der Wert stammt, oder `zustand::KEIN_PLATZ`, wenn die Form
+    /// keine nennt.
+    Index adresse = zustand::KEIN_PLATZ;
+    /// Das Ende der Kette. Gilt **nur**, wenn `adresse` auf `zustand::KEIN_PLATZ` steht.
+    Ende ende = Ende::Ausloeser;
+};
+
+/// Die Zuordnung der sechs Formen aus T18 auf die eine Frage, die die Aufloesung stellt:
+/// Nennt diese Ursache eine Adresse, und wenn nicht -- warum endet die Kette hier?
+Ursachenziel ziel_der_ursache(const Ursache& ursache)
+{
+    switch (ursache.art()) {
+        case UrsacheArt::Vortrag:
+            return {ursache.vortragsadresse(), Ende::Ausloeser};
+        case UrsacheArt::Instrument:
+            // Der Stand ist die Groesse, die das Instrument im Zustand fuehrt; Druck,
+            // Gegendruck und Restverzoegerung sind seine Eingaben und nicht sein Wert.
+            return {zustand::stelle_instrument(ursache.land(), ursache.politikinstrument(),
+                                               zustand::InstrumentFeld::Stand),
+                    Ende::Ausloeser};
+        case UrsacheArt::Aktion:
+        case UrsacheArt::Gegenkraft:
+            // Das Ende, das T20 beim Namen nennt.
+            return {zustand::KEIN_PLATZ, Ende::Ausloeser};
+        case UrsacheArt::Jahrgang:
+            return {zustand::KEIN_PLATZ, Ende::Jahrgang};
+        case UrsacheArt::Marktraeumung:
+            return {zustand::KEIN_PLATZ, Ende::OhneAdresse};
+    }
+    // Erreichbar nur ueber einen Wert ausserhalb der sechs Formen. Er kann nur aus einer
+    // Umwandlung stammen, die den Erzeugern des Ursachentyps ausweicht -- und dann ist
+    // ein Abbruch die richtige Antwort und kein Ersatzende.
+    festkomma::abbruch("kern::verlauf -- unbekannte Ursachenform: T18 kennt sechs");
+}
+
+/// Setzt den Platz auf den Schreibzugriff **unmittelbar vor** dem uebergebenen: erst
+/// innerhalb der Kette, dann in die zuletzt aufgenommene fruehere Runde, die Glieder
+/// traegt. `false` heisst, dass es keinen frueheren gibt.
+///
+/// Das ist die Stelle, an der die Aufloesung ihr Ende beweist: Jeder Aufruf geht echt
+/// zurueck, und die Zahl der Plaetze ist endlich.
+bool schritt_zurueck(const Verlauf& verlauf, std::size_t& rundenplatz, std::size_t& gliedplatz)
+{
+    if (gliedplatz > 0) {
+        --gliedplatz;
+        return true;
+    }
+    while (rundenplatz > 0) {
+        --rundenplatz;
+        const std::size_t laenge = verlauf.kette(rundenplatz).laenge();
+        if (laenge > 0) {
+            gliedplatz = laenge - 1;
+            return true;
+        }
+    }
+    return false;
+}
+
 }  // namespace
 
 void Verlauf::beginne_runde(i64 runde)
@@ -142,15 +226,28 @@ const Kette& Verlauf::kette(std::size_t nummer) const
     return kette_[nummer];
 }
 
-const Kette& Verlauf::kette_der_runde(i64 runde) const
+std::size_t Verlauf::platz_der_runde(i64 runde) const noexcept
 {
     // Aufsteigend gesucht (T9), nicht ueber eine streuende Menge: Der Verlauf traegt
     // hoechstens `RUNDEN_KAPAZITAET` Runden, und eine feste Reihenfolge ist hier
     // billiger als jede Beschleunigung, die eine zweite Datenhaltung braechte.
     for (std::size_t platz = 0; platz < runden_; ++platz) {
         if (nummer_[platz] == runde) {
-            return kette_[platz];
+            return platz;
         }
+    }
+    return KEIN_RUNDENPLATZ;
+}
+
+const Kette& Verlauf::kette_der_runde(i64 runde) const
+{
+    // Gesucht wird nur einmal, naemlich oben. Die beiden Griffe unterscheiden sich in
+    // dem, was sie mit dem Fehlschlag tun, und nicht darin, wie sie suchen -- zwei
+    // Schleifen koennten auseinanderlaufen, und dann faende die eine Runden, die die
+    // andere nicht findet.
+    const std::size_t platz = platz_der_runde(runde);
+    if (platz != KEIN_RUNDENPLATZ) {
+        return kette_[platz];
     }
 
     Meldung meldung;
@@ -168,6 +265,99 @@ std::size_t Verlauf::glieder() const noexcept
         summe += kette_[platz].laenge();
     }
     return summe;
+}
+
+// ---------------------------------------------------------------------------
+// T20 -- die Rueckwaertsaufloesung
+// ---------------------------------------------------------------------------
+
+Aufloesung::Aufloesung(const Verlauf& verlauf, i64 runde, Index ziel) : verlauf_(verlauf)
+{
+    if (ziel >= zustand::FELDER) {
+        // Eine Adresse ausserhalb der 310 ist ein Rechenfehler des Aufrufers und keine
+        // Frage nach einer Ursache -- dieselbe Haltung wie `zustand::lies`.
+        festkomma::abbruch("kern::verlauf::Aufloesung -- Adresse ausserhalb der 310 Felder");
+    }
+
+    const std::size_t rundenplatz = verlauf.platz_der_runde(runde);
+    if (rundenplatz == KEIN_RUNDENPLATZ) {
+        return;  // leer, beendet, `OhneEintrag` -- so stehen die Felder schon
+    }
+
+    const std::size_t gliedplatz = gliedplatz_von(verlauf.kette(rundenplatz), ziel);
+    if (gliedplatz == KEIN_GLIEDPLATZ) {
+        return;
+    }
+
+    rundenplatz_ = rundenplatz;
+    gliedplatz_  = gliedplatz;
+    glieder_     = 1;
+    leer_        = false;
+    beendet_     = false;
+}
+
+const Ursachensatz& Aufloesung::glied() const
+{
+    if (leer_) {
+        festkomma::abbruch("kern::verlauf::Aufloesung -- zu diesem Anfangspunkt traegt der "
+                           "Verlauf keinen Ursachensatz; die Aufloesung ist leer");
+    }
+    return verlauf_.kette(rundenplatz_).eintrag(gliedplatz_);
+}
+
+Ende Aufloesung::ende() const
+{
+    if (!beendet_) {
+        festkomma::abbruch("kern::verlauf::Aufloesung -- die Kette ist noch nicht zu Ende; "
+                           "ein Ende, das noch nicht feststeht, waere eine Auskunft, die "
+                           "beim naechsten Schritt anders ausfaellt");
+    }
+    return ende_;
+}
+
+bool Aufloesung::weiter()
+{
+    if (beendet_) {
+        return false;
+    }
+
+    // Eine Abschrift, kein Verweis: Der Platz wandert gleich weiter, und die Bezugnahme
+    // zeigte dann auf das falsche Glied.
+    const Ursachensatz satz = glied();
+
+    const Ursachenziel ursprung = ziel_der_ursache(satz.ursache);
+    if (ursprung.adresse == zustand::KEIN_PLATZ) {
+        ende_    = ursprung.ende;
+        beendet_ = true;
+        return false;
+    }
+
+    // Die spaeteste Runde, in der die Ursache stehen darf. Auf `i128` gerechnet, weil
+    // die Differenz zweier `i64` keine `i64` ist (ADR 0011, Massnahme 3) -- unter
+    // `-fwrapv` waere der Umlauf definiert und die Schranke wohlgeformt falsch. Die
+    // Vergleiche unten laufen deshalb ebenfalls auf `i128`.
+    const festkomma::i128 spaetestens = static_cast<festkomma::i128>(satz.runde)
+                                        - static_cast<festkomma::i128>(satz.verzoegerung);
+
+    std::size_t rundenplatz = rundenplatz_;
+    std::size_t gliedplatz  = gliedplatz_;
+    while (schritt_zurueck(verlauf_, rundenplatz, gliedplatz)) {
+        if (static_cast<festkomma::i128>(verlauf_.rundennummer(rundenplatz)) > spaetestens) {
+            continue;  // noch innerhalb der Verzoegerung -- diese Runde zaehlt nicht
+        }
+        if (verlauf_.kette(rundenplatz).eintrag(gliedplatz).ziel == ursprung.adresse) {
+            rundenplatz_ = rundenplatz;
+            gliedplatz_  = gliedplatz;
+            ++glieder_;
+            return true;
+        }
+    }
+
+    // Vor der ersten aufgenommenen Runde steht der Startwert, und der hat nach T18
+    // ausdruecklich keinen Ursachensatz. Das ist kein Fehler, sondern der Anfang.
+    ende_    = Ende::OhneVorgaenger;
+    beendet_ = true;
+    return false;
 }
 
 }  // namespace kern::verlauf

@@ -1,11 +1,44 @@
 ---
 id: 0091-diff-ursachenkette-nach-t20
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0144-rundenkapazitaet-des-verlaufs-nicht-an-r, 0156-verlaufgroesse-auch-absolut-beschraenkt]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustandsausgabe.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/zustandsausgabe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/zustandsausgabe_probe.cpp]
 abnahme: Zu einem Unterschied ueber mehr als eine Runde nennt die Ausgabe je geaenderter Adresse nicht nur alt, neu und Differenz, sondern die Ursachenkette aus T18, rueckwaerts aufgeloest bis zur ausloesenden Aktion oder Gegenkraft, mit Verzoegerung und Beitrag je Glied. Nachgewiesen an einer Partie ueber mindestens drei Runden, in der eine Aktion in Runde 1 eine Groesse in Runde 3 aendert: Die Kette nennt beide Glieder und die Verzoegerung dazwischen, und eine Adresse ohne Ursache kommt nicht vor.
 ---
+
+## GEBAUT — 2026-09-06, Kernbauer
+
+Gebaut ist die Rueckwaertsaufloesung und ihre Ausgabe, in sechs Dateien und ohne eine
+siebte:
+
+* `kern::verlauf::Aufloesung` -- der Schrittkasten, der von einem Schreibzugriff zu
+  seiner Ursache geht. Er haelt einen Platz und keine Kette; ein Kettenwert waere ein
+  halbes Megabyte fuer eine Kette, die drei Glieder hat. Dazu `Ende` (fuenf Enden) und
+  `Verlauf::platz_der_runde`, die Frage neben dem abbrechenden `kette_der_runde`.
+* `kern::zustandsausgabe::diff_mit_kette` -- die vierte Abfrage. Je geaenderter Adresse
+  die **zeichengleiche** Wertzeile der dritten Ebene (beide kommen seit heute aus
+  `unterschiedszeile`) und darunter je ein Glied mit Runde, Ursache, Verzoegerung und
+  Beitrag, zuletzt das Ende samt Rundenabstand. Die Schlusszeile zaehlt, wie viele
+  geaenderte Adressen eine Ursache tragen und wie viele nicht.
+
+**Die eine Regel, nach der ein Schritt geht**, und sie ist die Stelle, an der dieses
+Paket haette scheitern koennen: Der Vorgaenger eines Gliedes ist der *juengste*
+Schreibzugriff auf die Ursachenadresse, der im Verlauf *vor* diesem Glied liegt und in
+keiner spaeteren Runde steht als Runde minus Verzoegerung. Wer die Ursachenrunde
+stattdessen ausrechnet, steht bei jedem Vortrag auf sich selbst still -- und das ist im
+`weltlauf` jede der 175 Adressen. Die Gegenprobe dazu steht in `verlauf_probe`.
+
+**Nachweis der Abnahme** (`zustandsausgabe_probe`, Abschnitt 10): eine Partie ueber drei
+Runden durch `kern::schreiber` im Spielmodus, mit der zweiseitigen Maskenpruefung an
+jedem Rundenende. Eine Aktion in Runde 1 setzt den Zollstand; in Runde 3 aendert sie den
+Kapitalstock unmittelbar (Verzoegerung zwei, zwei Glieder) und den Sektorpreis ueber den
+Lobbydruck der Runde 2 (drei Glieder). Das Blatt steht vollstaendig im Protokoll. Fuenf
+Adressen geaendert, fuenf mit Ursachenkette, null ohne -- und die Gegenprobe an einem
+Verlauf mit Luecke zeigt vier ohne.
+
+Gruen: zwoelf Kernproben, Bezeichnerriegel, Belegstellenriegel. Der Vierfachnachweis zur
+neuen Groessenzusicherung liegt unter `befunde/messung-0091/`.
 
 ## UMGEHAENGT — 2026-09-06, Projektmanager: 0144 ist gefallen, 0156 tritt davor
 

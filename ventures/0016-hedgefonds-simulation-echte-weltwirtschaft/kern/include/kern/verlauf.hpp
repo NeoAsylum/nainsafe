@@ -21,12 +21,21 @@
 //!
 //! ## Was hier nicht steht
 //!
-//! Die **Rueckwaertsaufloesung** ueber mehrere Runden (T20): Sie liest den Verlauf,
-//! statt in ihm zu stehen. Die **Ausgabe** in den drei Ebenen
-//! (`kern::zustandsausgabe`). Die **Erzeugung** der Ketten (`kern::schreiber`,
-//! `kern::schritt`) -- an einem Ursachensatz wird hier nichts geaendert, er wird
-//! abgelegt. Und der **Zustand**: T19 sagt gerade, dass die Kette dort nicht hingehoert,
-//! und dieser Kasten bindet den Zustandskopf nur wegen des Zahlentyps und der 310.
+//! Die **Ausgabe** in den drei Ebenen (`kern::zustandsausgabe`). Die **Erzeugung** der
+//! Ketten (`kern::schreiber`, `kern::schritt`) -- an einem Ursachensatz wird hier nichts
+//! geaendert, er wird abgelegt. Und der **Zustand**: T19 sagt gerade, dass die Kette dort
+//! nicht hingehoert, und dieser Kasten bindet den Zustandskopf nur wegen des Zahlentyps
+//! und der 310.
+//!
+//! ## Die Rueckwaertsaufloesung aus T20 steht seit Paket 0091 hier
+//!
+//! An dieser Stelle stand bis dahin, sie lese den Verlauf, statt in ihm zu stehen. Die
+//! erste Haelfte gilt weiter und ist die Bauart von `Aufloesung`: Sie haelt keine Kette,
+//! sie zeigt in eine. Der Kasten `Verlauf` hat keine Mitgliedsfunktion dazubekommen, die
+//! aufloest -- er nimmt weiter nur auf und gibt heraus.
+//!
+//! Die zweite Haelfte ist eingeloest, und deshalb steht der Satz nicht mehr da: Als
+//! Verweis auf ein Anderswo, das es nicht gibt, kostet er den naechsten Leser eine Suche.
 //!
 //! ## Die beiden Kapazitaeten, und warum beide hart sind
 //!
@@ -108,6 +117,7 @@
 
 #include <array>
 #include <cstddef>
+#include <cstdint>
 
 #include "kern/schreiber.hpp"
 #include "kern/zustand.hpp"
@@ -117,6 +127,7 @@ namespace kern::verlauf {
 using schreiber::Kette;
 using schreiber::Ursachensatz;
 using zustand::i64;
+using zustand::Index;
 
 // ---------------------------------------------------------------------------
 // Die beiden festen Kapazitaeten (T19) und die Wand, aus der die zweite folgt (T40)
@@ -148,6 +159,17 @@ inline constexpr std::size_t GLIEDER_JE_RUNDE = schreiber::KETTE_KAPAZITAET;
 
 static_assert(GLIEDER_JE_RUNDE == zustand::FELDER,
               "T18: hoechstens ein Schreibzugriff je Adresse, also hoechstens 310 Glieder");
+
+/// Die Antwort auf "diese Runde traegt der Verlauf nicht".
+///
+/// Sie liegt **ausserhalb** der Plaetze und nicht bei null -- derselbe Grund wie bei
+/// `zustand::KEIN_PLATZ`: Ein Fehlerwert innerhalb des gueltigen Bereichs waere von einem
+/// Fund nicht zu unterscheiden, und der Aufrufer, der die Pruefung vergisst, bekaeme
+/// stillschweigend die erste Runde statt einer Absage.
+inline constexpr std::size_t KEIN_RUNDENPLATZ = RUNDEN_KAPAZITAET;
+
+static_assert(KEIN_RUNDENPLATZ >= RUNDEN_KAPAZITAET,
+              "der Fehlerwert liegt ausserhalb der Plaetze, die ein Verlauf vergibt");
 
 // ---------------------------------------------------------------------------
 // Der Verlauf
@@ -216,6 +238,15 @@ public:
     /// leere Kette, die wie eine Runde ohne Schreibzugriffe aussaehe.
     [[nodiscard]] const Kette& kette_der_runde(i64 runde) const;
 
+    /// Der Platz der Runde `runde`, oder `KEIN_RUNDENPLATZ`, wenn der Verlauf sie nicht
+    /// traegt.
+    ///
+    /// Die Frage neben `kette_der_runde`, das abbricht: Wer sie **stellen** will, statt
+    /// sie am Abbruch zu erfahren, braucht eine Antwort ohne Ausnahme. Die
+    /// Unterschiedsebene aus T20 ist genau dieser Aufrufer -- eine geaenderte Adresse
+    /// ohne Ursachensatz ist dort ein Befund und kein Absturz.
+    [[nodiscard]] std::size_t platz_der_runde(i64 runde) const noexcept;
+
     /// Wie viele Glieder der Verlauf ueber alle Runden traegt.
     [[nodiscard]] std::size_t glieder() const noexcept;
 
@@ -254,5 +285,112 @@ static_assert(sizeof(Verlauf) < STAPEL_JE_FADEN,
               "T19: ein Verlauf ist groesser als der Stapel eines Fadens (8.388.608 "
               "Byte) und damit groesser, als ein Aufrufer ihn tragen kann -- die Wand "
               "aus T40 oder die Kapazitaet je Runde wurde heraufgesetzt");
+
+// ---------------------------------------------------------------------------
+// T20 -- die Rueckwaertsaufloesung ueber mehrere Runden
+// ---------------------------------------------------------------------------
+
+/// Warum eine rueckwaerts aufgeloeste Kette endet.
+///
+/// Fuenf Enden und kein sechstes. Die ersten drei sind Aussagen der Ursachenform selbst,
+/// die letzten beiden Aussagen ueber den Verlauf:
+///
+///   `Ausloeser`       Aktion oder Gegenkraft -- das Ende, das T20 beim Namen nennt;
+///   `Jahrgang`        der Wert kommt aus den Sollreihen und nicht aus einer Adresse;
+///   `OhneAdresse`     die Form nennt einen Sektor und keine Adresse (Marktraeumung);
+///   `OhneVorgaenger`  vor der Ursache hoert der Verlauf auf. Vor seiner ersten
+///                     aufgenommenen Runde steht der Startwert, und der hat nach T18
+///                     ausdruecklich keinen Ursachensatz;
+///   `OhneEintrag`     schon der Anfangspunkt fehlt -- zu dieser Adresse traegt der
+///                     Verlauf in jener Runde keinen Schreibzugriff.
+///
+/// Das letzte ist der Fall, den die Unterschiedsebene benennen koennen muss: eine
+/// geaenderte Groesse ohne Ursache ist ein Befund und kein Absturz.
+enum class Ende : std::uint8_t {
+    Ausloeser      = 0,
+    Jahrgang       = 1,
+    OhneAdresse    = 2,
+    OhneVorgaenger = 3,
+    OhneEintrag    = 4,
+};
+
+/// Wie viele Enden es gibt -- die Zahl, gegen die eine Beschriftungstabelle sich haelt.
+inline constexpr std::size_t ENDEN = 5;
+
+/// Die Rueckwaertsaufloesung aus T20: von einem Schreibzugriff zu seiner Ursache und von
+/// dort weiter, bis zur ausloesenden Aktion oder Gegenkraft.
+///
+/// **Sie zeigt in den Verlauf, sie kopiert ihn nicht.** Eine Kette als Wert waere hier
+/// ein Behaelter fuer den denkbar laengsten Fall -- RUNDEN_KAPAZITAET mal
+/// GLIEDER_JE_RUNDE Glieder --, also ein halbes Megabyte fuer eine Kette, die in der
+/// Regel drei Glieder hat. Dieser Kasten haelt stattdessen einen Platz und geht ihn
+/// zurueck; er ist ein paar Worte gross und lebt kuerzer als der Verlauf, in den er zeigt.
+///
+/// ## Die eine Regel, nach der ein Schritt geht
+///
+/// Der Vorgaenger eines Gliedes ist der **juengste** Schreibzugriff auf die
+/// Ursachenadresse, der im Verlauf **vor** diesem Glied liegt und in keiner spaeteren
+/// Runde steht als `runde` minus `verzoegerung`.
+///
+/// Sie deckt alle sechs Formen aus T18, weil die Frage nach der Ursachenadresse jede von
+/// ihnen beantwortet: `Vortrag` nennt sie unmittelbar, `Instrument` den Stand des
+/// genannten Politikinstruments. `Aktion` und `Gegenkraft` nennen keine -- das ist das
+/// Ende, das T20 meint. `Jahrgang` nennt keine, weil der Wert aus den Sollreihen kommt,
+/// und `Marktraeumung` nennt einen Sektor.
+///
+/// **Warum die Verzoegerung die Suche begrenzt, statt sie zu steuern.** Ein Vortrag auf
+/// die eigene Adresse traegt nach T18 die Verzoegerung null: Er sagt "in dieser Runde
+/// vollstaendig erklaert", nicht "in dieser Runde entstanden". Wer die Runde der Ursache
+/// aus `runde` minus `verzoegerung` **ausrechnete**, landete auf dem Glied, von dem er
+/// kommt, und stuende still -- und im `weltlauf`, wo jede der 175 Adressen so
+/// geschrieben wird, waere das jede Kette. Wer stattdessen zurueck sucht, findet den
+/// Schreibzugriff der Vorrunde. Genau das ist die Aufloesung ueber mehrere Runden, die
+/// T20 verlangt, und nicht die einer einzelnen.
+///
+/// ## Sie endet immer, und dafuer braucht sie keine Laengenschranke
+///
+/// Jeder Schritt geht auf einen echt frueheren Platz -- erst innerhalb der Kette, dann in
+/// eine frueher aufgenommene Runde --, und davon gibt es endlich viele. Eine
+/// Laengenschranke daneben waere ein Zweig, den keine Probe erreichen kann, solange die
+/// Ordnung des Verlaufs gilt; und gilt sie nicht mehr, ist die Schranke die falsche
+/// Stelle, es zu bemerken.
+class Aufloesung {
+public:
+    /// Beginnt beim Schreibzugriff auf `ziel` in der Runde `runde`.
+    ///
+    /// **Kein Abbruch, wenn es ihn nicht gibt.** Traegt der Verlauf die Runde nicht oder
+    /// wurde `ziel` in ihr nicht geschrieben, ist die Aufloesung `leer` und beendet, mit
+    /// dem Ende `OhneEintrag`.
+    Aufloesung(const Verlauf& verlauf, i64 runde, Index ziel);
+
+    /// Ob es zum Anfangspunkt ueberhaupt einen Ursachensatz gibt.
+    [[nodiscard]] bool leer() const noexcept { return leer_; }
+
+    /// Ob die Kette hier endet -- nach dem Anlegen wahr, sobald sie leer ist.
+    [[nodiscard]] bool beendet() const noexcept { return beendet_; }
+
+    /// Das Glied, auf dem die Aufloesung steht. Bricht auf einer leeren ab.
+    [[nodiscard]] const Ursachensatz& glied() const;
+
+    /// Wie viele Glieder besucht wurden -- eins nach dem Anlegen, sofern nicht leer.
+    [[nodiscard]] std::size_t glieder() const noexcept { return glieder_; }
+
+    /// Warum die Kette endet. Bricht ab, solange sie nicht beendet ist: Ein Ende, das
+    /// noch nicht feststeht, waere eine Auskunft, die spaeter anders ausfaellt.
+    [[nodiscard]] Ende ende() const;
+
+    /// Einen Schritt rueckwaerts. `false` heisst: hier endet die Kette, und `ende` sagt
+    /// warum. Ein weiterer Aufruf danach bleibt bei `false` und aendert nichts.
+    bool weiter();
+
+private:
+    const Verlauf& verlauf_;
+    std::size_t    rundenplatz_ = 0;
+    std::size_t    gliedplatz_  = 0;
+    std::size_t    glieder_     = 0;
+    bool           leer_        = true;
+    bool           beendet_     = true;
+    Ende           ende_        = Ende::OhneEintrag;
+};
 
 }  // namespace kern::verlauf

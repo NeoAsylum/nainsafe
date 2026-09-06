@@ -29,25 +29,45 @@
 //! eigene Speicherverwaltung" und war die Wahl zwischen dieser Zahl und einem Behaelter,
 //! den T2 ausschliesst.
 //!
+//! ## Die vierte Abfrage: der Unterschied mit seiner Ursachenkette
+//!
+//! T20 verlangt zum Unterschied zweier Zeitpunkte nicht nur alt, neu und Differenz,
+//! sondern die Kette aus T18, **rueckwaerts aufgeloest bis zur ausloesenden Aktion oder
+//! Gegenkraft, mit Verzoegerung und Beitrag je Glied**. Derselbe Absatz nennt die
+//! Rangfolge: Der Unterschied sagt *was*, die Kette sagt *warum*, und massgeblich ist
+//! die Kette.
+//!
+//! Sie steht nicht im Zustand, sondern nach T19 neben ihm -- `diff` sieht zwei Zustaende
+//! und sonst nichts und kann sie deshalb nicht kennen, wie man es auch schriebe. Seit
+//! Paket 0091 gibt es `diff_mit_kette`: dieselbe Ebene mit der Quelle, die ihr fehlte.
+//! Die Aufloesung selbst steht in `kern::verlauf` und nicht hier; diese Datei nimmt sie
+//! entgegen und schreibt sie hin.
+//!
+//! **`diff` bleibt daneben stehen, und das ist keine Doppelung.** Nicht jeder Aufrufer
+//! hat einen Verlauf: Der Rueckvergleich zweier Speicherstaende hat zwei Zustaende und
+//! keine Ketten, und der Pruefstand wirft sie nach T19 ausdruecklich weg, wenn er nur
+//! Ergebnisse zaehlt. Wer dort trotzdem einen verlangte, bekaeme einen leeren -- und ein
+//! leerer Verlauf sieht aus wie eine Partie, in der nichts eine Ursache hatte.
+//!
 //! ## Was hier ausdruecklich NICHT steht
 //!
-//! **Die Ursachenkette.** T20 verlangt zum Unterschied zweier Zeitpunkte auch die Kette
-//! aus T18, rueckwaerts aufgeloest. Sie steht nicht im Zustand, sondern nach T19 neben
-//! ihm, und ein Verlauf ueber mehrere Runden ist noch nicht gebaut. Der Unterschied
-//! sagt *was*; das *warum* kommt dazu, sobald es einen Traeger dafuer gibt. Es sind die
-//! drei Angaben -- alter Wert, neuer Wert, Differenz --, und mehr ist hier nicht gebaut.
-//!
-//! Die dritte davon ist auf zwei der 310 Adressen **keine Zahl**, sondern ein Strich
-//! mit seinem Grund: T5 erklaert auf den Kennungen jede Arithmetik ausser der
-//! Gleichheit zum Fehler. Die Herleitung steht bei `differenz_hat_bedeutung`.
+//! **Die Erzeugung der Glieder und ihre Sammlung.** Ein Ursachensatz entsteht in
+//! `kern::schreiber`, gesammelt und rueckwaerts aufgeloest wird er in `kern::verlauf`.
+//! An keinem Glied wird hier gerechnet.
 //!
 //! **Farben, Rahmen, Ausrichtung.** Das ist die Sicht und nicht das Modell.
+//!
+//! ## Auf zwei der 310 Adressen ist die Differenz keine Zahl
+//!
+//! Dort steht ein Strich mit seinem Grund: T5 erklaert auf den Kennungen jede Arithmetik
+//! ausser der Gleichheit zum Fehler. Die Herleitung steht bei `differenz_hat_bedeutung`.
 
 #include <array>
 #include <cstddef>
 #include <cstdint>
 
 #include "kern/festkomma.hpp"
+#include "kern/verlauf.hpp"
 #include "kern/werte.hpp"
 #include "kern/zustand.hpp"
 
@@ -659,6 +679,40 @@ inline constexpr std::size_t ADRESSBLATT_ZEICHEN = (FELDER + 4) * ZEILE_ZEICHEN 
 using Uebersichtsblatt = Ausgabe<UEBERSICHT_ZEICHEN>;
 using Adressblatt      = Ausgabe<ADRESSBLATT_ZEICHEN>;
 
+/// Wie viele Kettenzeilen die vierte Abfrage je geaenderter Adresse traegt.
+///
+/// **Hergeleitet und nicht gegriffen.** Eine rueckwaerts aufgeloeste Kette, die je Glied
+/// mindestens eine Runde zurueckgeht, hat hoechstens so viele Glieder, wie der Verlauf
+/// Runden aufnimmt; dazu kommt die Zeile, die das Ende der Kette nennt. Genau so lang ist
+/// jede Kette, deren Ursachen in frueheren Runden liegen -- und das ist der Fall, den T20
+/// beschreibt.
+///
+/// Laenger wird sie allein durch Glieder **innerhalb** einer Runde, also durch eine
+/// Ursache, die auf eine in derselben Runde frueher geschriebene Adresse zeigt. Wie viele
+/// davon hintereinander stehen koennen, sagt `specs/` nicht, und eine erfundene Zahl waere
+/// eine Vorgabe, die dort nicht steht. Der Puffer traegt deshalb keinen Vorrat auf
+/// Verdacht: Reicht er nicht, **bricht die Ebene ab** und nennt die Adresse. Eine
+/// gekuerzte Kette waere genau die Luege, gegen die T19 geschrieben ist.
+inline constexpr std::size_t KETTENZEILEN_JE_ADRESSE = verlauf::RUNDEN_KAPAZITAET + 1;
+
+/// Der Puffer der vierten Abfrage: je Adresse ihre Wertzeile und ihre Kettenzeilen, dazu
+/// Kopf und Schluss.
+inline constexpr std::size_t KETTENBLATT_ZEICHEN =
+    (FELDER * (1 + KETTENZEILEN_JE_ADRESSE) + 4) * ZEILE_ZEICHEN + 1;
+
+using Kettenblatt = Ausgabe<KETTENBLATT_ZEICHEN>;
+
+// Ein Kettenblatt ist gross, und die Zahl gehoert hingeschrieben statt gesucht: Sie liegt
+// bei 1.667.360 Byte und damit bei knapp einem Fuenftel dessen, was ein Faden ueberhaupt
+// an Stapel hat -- gemessen, `zustandsausgabe_probe` druckt beide Zahlen ab. Das ist die Kehrseite von T2 -- kein wachsender Behaelter, keine Zuteilung -- und
+// dieselbe Rechnung, die `kern::verlauf` fuer seinen eigenen Kasten aufmacht. Die
+// Zusicherung faengt beide Regler, die die linke Seite bewegen: die Zeilen je Adresse und
+// die Zeichen je Zeile. Ihre rechte Seite ist gemessen und waechst mit keinem von beiden.
+static_assert(sizeof(Kettenblatt) < verlauf::STAPEL_JE_FADEN,
+              "T2: ein Kettenblatt lebt auf dem Stapel des Aufrufers und passt dort nicht "
+              "mehr hinein -- die Zeilen je Adresse oder die Zeichen je Zeile wurden "
+              "heraufgesetzt");
+
 // ---------------------------------------------------------------------------
 // Die Bereiche
 // ---------------------------------------------------------------------------
@@ -762,5 +816,40 @@ inline constexpr std::array<const char*, BEREICHE> BEREICH_NAME = {
 ///
 /// Diese Ebene rechnet keine Modellgroesse und bricht deshalb auf keinem Zustand ab.
 [[nodiscard]] Adressblatt diff(const zustand::Zustand& vorher, const zustand::Zustand& nachher);
+
+/// **Ebene 3 mit der Ursachenkette aus T18 -- die vierte Abfrage.**
+///
+/// Je geaenderter Adresse dieselbe Zeile wie bei `diff` -- zeichengleich, aus derselben
+/// Funktion -- und darunter je ein Glied der Kette: Runde, Ursache, Verzoegerung und
+/// Beitrag. Die Kette laeuft rueckwaerts, vom Schreibzugriff der letzten Runde bis zu der
+/// Aktion oder Gegenkraft, die ihn ausgeloest hat; eine Schlusszeile nennt das Ende und
+/// wie viele Runden zwischen Ursache und Wirkung liegen.
+///
+/// **Die beiden Zeitpunkte stehen in den Zustaenden und nicht in Argumenten daneben.**
+/// `partie.runde` traegt die Nummer der letzten abgeschlossenen Runde; daraus kommt die
+/// Spanne. Zwei Argumente daneben liessen sich falsch besetzen, und die Kette nennte dann
+/// Runden einer anderen Spanne als die Zahlen darueber -- ein Widerspruch innerhalb
+/// desselben Blattes, den niemand sieht.
+///
+/// **Harte Fehler, alle ohne Ersatzwert:**
+///   * die Runde des zweiten Zustands ist nicht groesser als die des ersten. Eine Spanne
+///     braucht zwei Zeitpunkte; fuer einen einzelnen gibt es `diff`;
+///   * eine der beiden Rundennummern ist negativ -- eine Runde vor der ersten gibt es
+///     nicht;
+///   * der Verlauf traegt die Runde des zweiten Zustands nicht. Ohne sie haette keine
+///     einzige Adresse einen Anfangspunkt, und das Blatt zeigte 310 Aenderungen ohne
+///     Ursache -- ein Bild, das aussieht wie ein Befund und keiner ist;
+///   * der Puffer reicht nicht. Die Meldung nennt die Adresse, an der er ausging.
+///
+/// **Eine geaenderte Adresse ohne Ursachensatz bricht dagegen nicht ab**, sondern bekommt
+/// eine Zeile, die genau das sagt, und die Schlusszeile zaehlt sie mit. Der Unterschied
+/// ist Absicht: Das eine ist ein Fehler des Aufrufers, das andere ein Befund ueber die
+/// Partie -- und ein Befund, der den Lauf beendet, wird nicht gelesen, sondern umgangen.
+///
+/// Diese Ebene rechnet keine Modellgroesse und bricht deshalb auf keinem Zustand ab,
+/// dessen Werte ausserhalb ihrer Wertebereiche liegen.
+[[nodiscard]] Kettenblatt diff_mit_kette(const zustand::Zustand&   vorher,
+                                         const zustand::Zustand&   nachher,
+                                         const verlauf::Verlauf&   ketten);
 
 }  // namespace kern::zustandsausgabe

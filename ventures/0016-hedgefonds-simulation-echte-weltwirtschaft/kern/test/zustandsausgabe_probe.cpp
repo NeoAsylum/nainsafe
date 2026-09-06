@@ -47,6 +47,12 @@
 //!      weil es eine Aussage ueber erzeugten Text ist. Geprueft ist sie an dem einen
 //!      Zustandspaar, das die Abnahme verlangt, und danach an je einem eigenen Paar fuer
 //!      jede der 310 Adressen.
+//!  10. **Die Ursachenkette der Unterschiedsebene** (Abschnitt 10, Paket 0091). T20
+//!      verlangt zum Unterschied ueber mehr als eine Runde die Kette aus T18, rueckwaerts
+//!      aufgeloest. Nachgewiesen an einer Partie ueber drei Runden, in der eine Aktion aus
+//!      Runde 1 eine Groesse in Runde 3 aendert -- einmal unmittelbar und einmal ueber ein
+//!      Zwischenglied --, samt der Gegenprobe zu "keine Adresse ohne Ursache" an einem
+//!      Verlauf mit Luecke.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -56,6 +62,8 @@
 #include <cstdio>
 #include <stdexcept>
 
+#include "kern/schreiber.hpp"
+#include "kern/verlauf.hpp"
 #include "kern/werte.hpp"
 #include "kern/zustand.hpp"
 #include "kern/zustandsausgabe.hpp"
@@ -92,13 +100,20 @@ using kern::zustand::SEKTOREN;
 using kern::zustand::SEKTOREN_HANDELBAR;
 using kern::zustand::UEBERRENDITE_RUNDEN;
 
+using kern::verlauf::STAPEL_JE_FADEN;
+using kern::verlauf::Verlauf;
+
 using kern::zustandsausgabe::Adressblatt;
 using kern::zustandsausgabe::Ausgabe;
 using kern::zustandsausgabe::BEREICH_NAME;
 using kern::zustandsausgabe::BEREICHE;
 using kern::zustandsausgabe::detail;
 using kern::zustandsausgabe::diff;
+using kern::zustandsausgabe::diff_mit_kette;
 using kern::zustandsausgabe::gehoert_zum_bereich;
+using kern::zustandsausgabe::Kettenblatt;
+using kern::zustandsausgabe::KETTENBLATT_ZEICHEN;
+using kern::zustandsausgabe::KETTENZEILEN_JE_ADRESSE;
 using kern::zustandsausgabe::herkunft_von;
 using kern::zustandsausgabe::Herkunftsart;
 using kern::zustandsausgabe::HERKUNFTSARTEN;
@@ -110,6 +125,7 @@ using kern::zustandsausgabe::Skalenklasse;
 using kern::zustandsausgabe::skalenklasse_von;
 using kern::zustandsausgabe::uebersicht;
 using kern::zustandsausgabe::UEBERSICHT_ZEILEN_MAX;
+using kern::zustandsausgabe::ZEILE_ZEICHEN;
 
 int fehlgeschlagen = 0;
 
@@ -555,6 +571,292 @@ void belege_unterscheidbar(Zustand& z)
     startwert(z, stelle_partie(PartieFeld::ParameterPruefsumme), U_PRUEFSUMME);
     startwert(z, stelle_partie(PartieFeld::Mandatsstand), U_MANDATSSTAND);
     // `partie.runde` bleibt null -- siehe oben.
+}
+
+// ---------------------------------------------------------------------------
+// 10. Die Ursachenkette der Unterschiedsebene (T20, Paket 0091)
+// ---------------------------------------------------------------------------
+//
+// Die Abnahme des Pakets verlangt den Nachweis an einer **Partie ueber mindestens drei
+// Runden, in der eine Aktion in Runde 1 eine Groesse in Runde 3 aendert**. Die Partie
+// wird deshalb hier gebaut und nicht behauptet: drei Runden durch `kern::schreiber`, im
+// Spielmodus, mit der zweiseitigen Maskenpruefung aus T38 an jedem Rundenende. Von Hand
+// ist an ihr nur, welche Ursache an welcher Adresse steht -- den rechnenden Teil der
+// Runde gibt es im Kern noch nicht.
+
+constexpr Gebiet KETTEN_LAND = Gebiet::DE;
+
+constexpr Index PLATZ_RUNDE = stelle_partie(PartieFeld::Runde);
+constexpr Index PLATZ_ZOLLSTAND =
+    stelle_instrument(KETTEN_LAND, Instrument::Zoll, InstrumentFeld::Stand);
+constexpr Index PLATZ_ZOLLDRUCK =
+    stelle_instrument(KETTEN_LAND, Instrument::Zoll, InstrumentFeld::Druck);
+constexpr Index PLATZ_SEKTORPREIS =
+    stelle_sektorgroesse(KETTEN_LAND, Sektor::Industrie, SektorGroesse::Preis);
+constexpr Index PLATZ_KAPITAL =
+    stelle_sektorgroesse(KETTEN_LAND, Sektor::Industrie, SektorGroesse::Kapitalstock);
+
+/// Die Aktionsart der Partie. Absichtlich keine Eins: In einer Kettenzeile stehen
+/// Rundennummern, Verzoegerungen und Beitraege daneben, und eine Eins darunter waere von
+/// jeder anderen Eins nicht zu unterscheiden.
+constexpr std::size_t KETTEN_AKTIONSART = 2;
+
+/// Was eine Runde dieser Partie ausser dem Vortrag schreibt.
+struct Setzung {
+    Index                  ziel = 0;
+    i64                    wert = 0;
+    kern::schreiber::Ursache ursache{};
+    i64                    verzoegerung = 0;
+    i64                    beitrag      = 0;
+};
+
+/// Was eine Runde liefert. Ein eigener Verbund statt `kern::schritt::Rundenergebnis`:
+/// Diese Probe braucht den Rundenablauf nicht und soll ihn deshalb auch nicht binden.
+struct Rundenlauf {
+    Zustand              zustand;
+    kern::schreiber::Kette kette;
+};
+
+template <std::size_t N>
+Rundenlauf kettenrunde(const Zustand& vorrunde, i64 runde,
+                       const std::array<Setzung, N>& setzungen)
+{
+    kern::schreiber::Schreiber schreiber{vorrunde, kern::schreiber::Modus::Spielmodus, runde};
+
+    // Dieselbe Ursache wie im Rundengeruest des Kerns: Vortrag auf sich selbst,
+    // Verzoegerung null, Beitrag 1.000 Promille.
+    schreiber.setze(PLATZ_RUNDE, runde, kern::schreiber::Ursache::vortrag(PLATZ_RUNDE), 0,
+                    1000);
+
+    for (const Setzung& setzung : setzungen) {
+        schreiber.setze(setzung.ziel, setzung.wert, setzung.ursache, setzung.verzoegerung,
+                        setzung.beitrag);
+    }
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        if (!schreiber.ist_geschrieben(platz)) {
+            schreiber.vortrag(platz);
+        }
+    }
+    return Rundenlauf{schreiber.rundenende(), schreiber.kette()};
+}
+
+/// Der Startzustand: ein tragfaehiger Zustand, und darueber die vier Adressen, an denen
+/// die Kette entlanglaeuft.
+Zustand kettenpartie_start()
+{
+    Zustand z;
+    belege_tragfaehig(z);
+    startwert(z, PLATZ_ZOLLSTAND, 380);
+    startwert(z, PLATZ_ZOLLDRUCK, 0);
+    startwert(z, PLATZ_SEKTORPREIS, 10000);
+    startwert(z, PLATZ_KAPITAL, 4200000);
+    return z;
+}
+
+/// Drei Runden, und zwei Wege von derselben Aktion zu einer Groesse der Runde 3:
+///
+///   Runde 1: die Aktion setzt den Zollstand.
+///   Runde 2: der Lobbydruck am Zoll entsteht aus dem Zollstand (Ursache `Instrument`).
+///   Runde 3: der Sektorpreis kommt aus jenem Druck -- drei Glieder ueber drei Runden;
+///            der Kapitalstock kommt unmittelbar aus dem Zollstand der Runde 1
+///            (Verzoegerung zwei) -- zwei Glieder, und das ist der Fall, den die Abnahme
+///            woertlich nennt.
+Zustand kettenpartie_bauen(const Zustand& start, Verlauf& verlauf)
+{
+    const std::array<Setzung, 1> runde1 = {
+        Setzung{PLATZ_ZOLLSTAND, 500, kern::schreiber::Ursache::aktion(KETTEN_AKTIONSART), 0,
+                1000}};
+    const std::array<Setzung, 1> runde2 = {
+        Setzung{PLATZ_ZOLLDRUCK, 4200,
+                kern::schreiber::Ursache::instrument(KETTEN_LAND, Instrument::Zoll), 1, 1000}};
+    const std::array<Setzung, 2> runde3 = {
+        Setzung{PLATZ_SEKTORPREIS, 10420,
+                kern::schreiber::Ursache::vortrag(PLATZ_ZOLLDRUCK), 1, 700},
+        Setzung{PLATZ_KAPITAL, 4260000, kern::schreiber::Ursache::vortrag(PLATZ_ZOLLSTAND), 2,
+                300}};
+
+    const Rundenlauf erste = kettenrunde(start, 1, runde1);
+    verlauf.aufnehmen(1, erste.kette);
+    const Rundenlauf zweite = kettenrunde(erste.zustand, 2, runde2);
+    verlauf.aufnehmen(2, zweite.kette);
+    const Rundenlauf dritte = kettenrunde(zweite.zustand, 3, runde3);
+    verlauf.aufnehmen(3, dritte.kette);
+    return dritte.zustand;
+}
+
+/// Sind die beiden Zeilen bis zur Zeilenschaltung zeichengleich?
+[[nodiscard]] bool zeilen_gleich(const char* links, const char* rechts) noexcept
+{
+    if (links == nullptr || rechts == nullptr) {
+        return false;
+    }
+    std::size_t i = 0;
+    while (links[i] != '\0' && links[i] != '\n' && rechts[i] != '\0' && rechts[i] != '\n') {
+        if (links[i] != rechts[i]) {
+            return false;
+        }
+        ++i;
+    }
+    const bool links_endet  = links[i] == '\0' || links[i] == '\n';
+    const bool rechts_endet = rechts[i] == '\0' || rechts[i] == '\n';
+    return links_endet && rechts_endet;
+}
+
+/// Der Kern der Abnahme: das Blatt einer vollstaendigen Partie.
+void probe_kette_vollstaendig(const Zustand& start, const Zustand& ende, const Verlauf& verlauf)
+{
+    const Kettenblatt blatt = diff_mit_kette(start, ende, verlauf);
+    const char*       text  = blatt.fertig();
+
+    PRUEFE(!blatt.abgeschnitten());
+    PRUEFE(enthaelt(text, "Runde 0 bis Runde 3"));
+
+    // Fuenf Adressen unterscheiden sich, und **keine** davon steht ohne Ursache da. Das
+    // ist der zweite Satz der Abnahme, gezaehlt statt besichtigt.
+    PRUEFE(enthaelt(text, "5 von 310 Adressen geaendert."));
+    PRUEFE(enthaelt(text, "5 davon mit Ursachenkette, 0 ohne."));
+    PRUEFE(!enthaelt(text, "ohne Ursachensatz in Runde"));
+
+    // Die Wertzeile ist die der dritten Ebene, zeichengleich. Ohne diese Pruefung waere
+    // "dieselbe Zeile mit einer zweiten darunter" eine Behauptung ueber den Quelltext und
+    // keine ueber die Ausgabe.
+    {
+        const Adressblatt ohne_kette = diff(start, ende);
+        for (const Index platz : {PLATZ_ZOLLSTAND, PLATZ_ZOLLDRUCK, PLATZ_SEKTORPREIS,
+                                  PLATZ_KAPITAL, PLATZ_RUNDE}) {
+            const char* adresse = kern::zustand::index_zu_adresse(platz);
+            pruefe(zeilen_gleich(zeile_ab(ohne_kette.fertig(), adresse),
+                                 zeile_ab(text, adresse)),
+                   "die Wertzeile beider Unterschiedsebenen ist dieselbe", __LINE__);
+        }
+    }
+
+    // Die Kette der Abnahme: die Aktion aus Runde 1 und die Groesse aus Runde 3, mit der
+    // Verzoegerung dazwischen. Die Adressen werden erzeugt und nicht abgeschrieben.
+    {
+        Ausgabe<ZEILE_ZEICHEN> erstes;
+        erstes.text("    Glied 1  Runde 3  Vortrag ");
+        erstes.text(kern::zustand::index_zu_adresse(PLATZ_ZOLLSTAND));
+        erstes.text("  Verzoegerung 2  Beitrag 300 Promille");
+        PRUEFE(enthaelt(text, erstes.fertig()));
+
+        Ausgabe<ZEILE_ZEICHEN> zweites;
+        zweites.text("    Glied 2  Runde 1  Aktion ");
+        zweites.zahl(static_cast<i64>(KETTEN_AKTIONSART));
+        zweites.text("  Verzoegerung 0  Beitrag 1000 Promille");
+        PRUEFE(enthaelt(text, zweites.fertig()));
+
+        PRUEFE(enthaelt(text, "    Ende nach 2 Glied(ern): ausloesende Aktion oder "
+                              "Gegenkraft (T20), Runde 1, 2 Runde(n) vor der Wirkung"));
+    }
+
+    // Der zweite Weg zu derselben Aktion, ueber ein Zwischenglied. Er zeigt, dass die
+    // Aufloesung nicht nur einen Sprung schafft, sondern eine Kette.
+    {
+        Ausgabe<ZEILE_ZEICHEN> mittleres;
+        mittleres.text("    Glied 2  Runde 2  Instrument ");
+        mittleres.text(kern::zustand::index_zu_adresse(PLATZ_ZOLLSTAND));
+        mittleres.text("  Verzoegerung 1  Beitrag 1000 Promille");
+        PRUEFE(enthaelt(text, mittleres.fertig()));
+        PRUEFE(enthaelt(text, "    Ende nach 3 Glied(ern): ausloesende Aktion oder "
+                              "Gegenkraft (T20), Runde 1, 2 Runde(n) vor der Wirkung"));
+    }
+
+    // Und das andere Ende: `partie.runde` wird dreimal vorgetragen, und vor der ersten
+    // aufgenommenen Runde steht der Startwert -- der hat nach T18 keinen Ursachensatz.
+    PRUEFE(enthaelt(text, "kein frueherer Schreibzugriff im Verlauf"));
+
+    // Das Blatt vollstaendig ins Protokoll. Es misst achtundzwanzig Zeilen; wer die
+    // Abnahme nachvollziehen will, soll die Kette lesen und nicht nachbauen muessen.
+    std::fprintf(stdout, "Das Blatt der vierten Abfrage (%zu Zeichen, %zu Zeilen):\n%s",
+                 blatt.laenge(), blatt.zeilen(), text);
+}
+
+/// Die Gegenprobe zur Null: ein Verlauf, dessen letzte Runde nur ein Glied traegt.
+///
+/// Ohne sie belegte "0 ohne" oben nur, dass die Zeile nicht geschrieben wurde -- nicht,
+/// dass sie geschrieben **wuerde**, wenn es etwas zu melden gaebe.
+void probe_kette_luecke(const Zustand& start, const Zustand& ende)
+{
+    Verlauf luecke;
+    luecke.beginne_runde(3);
+
+    kern::schreiber::Ursachensatz glied;
+    glied.runde        = 3;
+    glied.ziel         = PLATZ_KAPITAL;
+    glied.alt          = 4200000;
+    glied.neu          = 4260000;
+    glied.ursache      = kern::schreiber::Ursache::aktion(KETTEN_AKTIONSART);
+    glied.verzoegerung = 0;
+    glied.beitrag      = 1000;
+    luecke.anhaengen(glied);
+
+    const Kettenblatt mager = diff_mit_kette(start, ende, luecke);
+    PRUEFE(enthaelt(mager.fertig(), "ohne Ursachensatz in Runde 3"));
+    PRUEFE(enthaelt(mager.fertig(),
+                    "ohne Ursachensatz in Runde 3 -- der Verlauf traegt zu dieser Adresse "
+                    "in dieser Runde keinen Schreibzugriff"));
+    PRUEFE(enthaelt(mager.fertig(), "5 von 310 Adressen geaendert."));
+    PRUEFE(enthaelt(mager.fertig(), "1 davon mit Ursachenkette, 4 ohne."));
+    std::fprintf(stdout, "Dasselbe mit einem Verlauf, dem die Runde 3 fast ganz fehlt:\n%s",
+                 mager.fertig());
+}
+
+/// Ruft die vierte Abfrage auf und wirft ihr Blatt weg.
+///
+/// Sie steht als eigene Funktion da und nicht als Ausdruck an der Aufrufstelle, und der
+/// Grund ist der Stapel: Ein Kettenblatt misst 1,7 MB, und drei Rueckgabeplaetze im
+/// selben Rahmen waeren fuenf. Hier ist es einer, dreimal benutzt.
+void kettenblatt_wegwerfen(const Zustand& vorher, const Zustand& nachher, const Verlauf& ketten)
+{
+    static_cast<void>(diff_mit_kette(vorher, nachher, ketten).laenge());
+}
+
+/// Die drei harten Fehler der vierten Abfrage.
+void probe_kette_abbrueche(const Zustand& start, const Zustand& ende, const Verlauf& verlauf)
+{
+    // Rueckwaerts ist keine Spanne.
+    ERWARTE_ABBRUCH(kettenblatt_wegwerfen(ende, start, verlauf));
+    // Derselbe Zeitpunkt zweimal ist auch keine.
+    ERWARTE_ABBRUCH(kettenblatt_wegwerfen(start, start, verlauf));
+
+    // Ein Verlauf, der die Runde des zweiten Zustands nicht traegt.
+    {
+        Verlauf fremd;
+        fremd.beginne_runde(1);
+        ERWARTE_ABBRUCH(kettenblatt_wegwerfen(start, ende, fremd));
+    }
+}
+
+/// Der ganze Abschnitt 10, als eigene Funktion.
+///
+/// Sie ist es aus demselben Grund wie `kettenblatt_wegwerfen`: Der Verlauf und die beiden
+/// Zustaende leben hier und nicht in `main`, dessen Rahmen schon ein Dutzend Blaetter
+/// traegt.
+void probe_ursachenkette()
+{
+    // Die Groessen zuerst und gemessen, nicht gerechnet: Der Kopf des Moduls nennt sie in
+    // Worten -- 1.667.360 Byte, knapp ein Fuenftel des Stapels --, und hier stehen die
+    // Zahlen, gegen die jene Worte zu halten sind.
+    std::fprintf(stdout,
+                 "Kettenblatt: sizeof %zu Byte, Puffer %zu Zeichen, %zu Kettenzeilen je "
+                 "Adresse, Stapel je Faden %zu Byte, Anteil %zu Prozent.\n",
+                 sizeof(Kettenblatt), KETTENBLATT_ZEICHEN, KETTENZEILEN_JE_ADRESSE,
+                 STAPEL_JE_FADEN, 100 * sizeof(Kettenblatt) / STAPEL_JE_FADEN);
+
+    Verlauf       verlauf;
+    const Zustand start = kettenpartie_start();
+    const Zustand ende  = kettenpartie_bauen(start, verlauf);
+
+    PRUEFE(verlauf.runden() == 3);
+    PRUEFE(start.lies(PLATZ_RUNDE) == 0);
+    PRUEFE(ende.lies(PLATZ_RUNDE) == 3);
+    PRUEFE(start.lies(PLATZ_ZOLLSTAND) == 380 && ende.lies(PLATZ_ZOLLSTAND) == 500);
+    PRUEFE(start.lies(PLATZ_KAPITAL) == 4200000 && ende.lies(PLATZ_KAPITAL) == 4260000);
+
+    probe_kette_vollstaendig(start, ende, verlauf);
+    probe_kette_luecke(start, ende);
+    probe_kette_abbrueche(start, ende, verlauf);
 }
 
 }  // namespace
@@ -1447,6 +1749,11 @@ int main()
         PRUEFE(nichts.laenge() == 0);
         PRUEFE(!nichts.abgeschnitten());
     }
+
+    // -----------------------------------------------------------------------
+    // 10. Die Ursachenkette der Unterschiedsebene (T20, Paket 0091)
+    // -----------------------------------------------------------------------
+    probe_ursachenkette();
 
     if (fehlgeschlagen == 0) {
         std::fprintf(stdout, "kern::zustandsausgabe -- alle Proben bestanden.\n");

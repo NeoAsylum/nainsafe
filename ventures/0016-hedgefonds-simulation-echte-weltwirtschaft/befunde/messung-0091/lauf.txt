@@ -1,0 +1,8 @@
+1. heutiger Stand (27): gruen (Code 0)
+2. knapp darunter (139): gruen (Code 0), Puffer 8333569 Byte
+3. eines darueber (140): rot (Code 1), Puffer 8393089 Byte
+   1 fehlgeschlagene Zusicherung(en)
+   /tmp/claude-1000/tmpz15harg3/kern/include/kern/zustandsausgabe.hpp:711:35: error: static assertion failed: T2: ein Kettenblatt lebt auf dem Stapel des Aufrufers und passt dort nicht mehr hinein -- die Zeilen je Adresse oder die Zeichen je Zeile wurden heraufgesetzt
+4. 140 ohne die Zusicherung: gruen (Code 0), Puffer 8393089 Byte
+Rechnung: 139 -> 8333569 Byte, 140 -> 8393089 Byte, Stapel je Faden 8388608 Byte
+Abweichungen: 0
