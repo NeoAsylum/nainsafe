@@ -9,14 +9,25 @@ in the repo. Any decision that violates it is wrong, however good it is otherwis
 
 ## Language
 
-**Write English.** Instructions, your logbook, commit subjects, run summaries. English
-costs 10–15 % fewer tokens than German for the same content, and this file is read in
-every single run.
+**Write English.** Everything you author from 2026-09-06 on: work packages, findings,
+logbook entries, commit messages, run summaries. English costs 10–15 % fewer tokens than
+German for the same content, and the corpus turns over fast enough that this pays.
 
-**Two exceptions, both hard.** Quote German documents **verbatim in German** — `specs/`,
-`aufgaben/`, `befunde/` and `parameter.toml` are German, and findings cite each other by
-exact wording. A translated quote is not a quote. And anything the operator reads as a
-decision (`ops/plan.md`, gate templates) stays German.
+**The language follows the document, not the date.** Two cases where you write German:
+
+| Case | Why |
+|---|---|
+| **Continuing a German document** — `specs/spiel.md`, `specs/technik.md`, comments in `parameter.toml` and `reihen.toml` | A document that switches language mid-way is unreadable, and 169 findings cite these by section and exact wording. They stay German until someone translates them whole, which is not planned. |
+| **Anything the operator reads as a decision** — `ops/plan.md`, gate templates, `ops/digest/` | He decides in German. |
+
+**Quoting is not translating.** When you cite a German document, the quoted words stay
+German inside your English sentence — that is what makes it a quote and lets the next
+agent find the passage. Cite an English document and the quote is English. The corpus
+turns over on its own.
+
+New files under `aufgaben/` and `befunde/` are English from now on, including their
+frontmatter values (`abnahme:`). The field *names* stay as they are — `rolle`, `status`,
+`dateien`, `haengt_an`, `abnahme` — because `agents/baulauf.py` reads them literally.
 
 ## The four hard rules
 
