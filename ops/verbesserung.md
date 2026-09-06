@@ -1,135 +1,180 @@
-# Verbesserungsvorschlag KW 35 (zweiter Lauf, 2026-08-30)
+# Verbesserungsvorschlag KW 36
+
+*Vorbemerkung zu den Zulieferungen: `ops/kontingent.md` und `ops/auslastung.md` sind von
+diesem Wochenlauf (2026-09-06T05:00:01) und tragen Zahlen. `ops/wege.md` ist vom selben
+Lauf, aber sein Datenblock ist **leer** — fuer die Bauphase gibt `weg.py` nichts her.
+Nachgerechnet habe ich nichts davon.*
 
 ## Die Beobachtung
 
-**Acht der zwoelf Fit-Filter-Ablehnungen zitieren als Todesgrund eine Frage, die der
-Ideator im Entwurf selbst als die entscheidende markiert und unbeantwortet gelassen
-hat.** Wortlaut aus den `ablehnungsgrund`-Zeilen:
+**Vier Baurollen fuehren je einen eigenen Katalog darueber, welche Werkzeugaufrufe der
+Sandkasten durchlaesst. Zwischen dem 2026-09-04 und heute ist dieser eine Abschnitt
+53-mal neu geschrieben worden.**
 
-| Idee | Grenze | Der Fit-Filter ueber den Entwurf |
-|---|---|---|
-| 0003 | G6 | „Die vom Ideator selbst als entscheidend markierte Abgrenzung […] traegt voraussichtlich nicht" |
-| 0004 | G4 | „Der Ideator benennt diesen Punkt selbst als den, an dem die Idee vermutlich kippt." |
-| 0006 | G3 | „Der Ideator benennt G3 selbst als die Frage, bei deren unguenstiger Antwort die Idee […] tot ist." |
-| 0007 | G5 | „Der Ideator stellt die Frage selbst und laesst sie offen; bei Unsicherheit wird abgelehnt." |
-| 0008 | G3 | „Der Ideator stellt genau diese Frage und laesst sie offen; bei Unsicherheit wird abgelehnt." |
-| 0013 | G7 | „der Ideator markiert diese Frage selbst als die vor allen anderen zu klaerende" |
-| 0014 | G7 | „Das ist die dritte offene Frage des Entwurfs, und sie steht vor der Marge" |
-| 0015 | G7 | „der Entwurf nennt das selbst die Frage, ohne die nichts geht" |
+| Abschnitt | Rolle | Fassungen (Logbuch + Archiv) |
+|---|---|---:|
+| `## Werkzeuge und Sperren` | kernbauer | 30 |
+| `## Der Apparat` / `## Zum Apparat` | kern-pruefer | 14 |
+| `## Werkzeuge — was mich Aufrufe gekostet hat` | projektmanager | 5 |
+| `## Werkzeuge` | datenbauer | 4 |
 
-Der Ideator kennzeichnet sie sogar mit Vorrang: „**Besetzung, entscheidend**" (0004),
-„**Erste und wichtigste Frage**" (0008), „**Zuerst zu klaeren, weil die ganze Idee daran
-haengt**" (0006), „**Das ist die G7-Frage vor allen anderen**" (0014).
+Dazu kommen dieselben Inhalte ohne eigene Ueberschrift, unter „Was nicht funktioniert":
+testentwickler, test-pruefer, daten-pruefer, geschaeftsfuehrer, architekt, bruchtester.
 
-Mindestens fuenf der acht Fragen sind mit **einem** Abruf zu entscheiden — „gibt es
-bereits einen Vergleich 2026?" (0008), „wie viele Anbieter loesen genau das?" (0004),
-„stellen die Laender dafuer schon einen kostenlosen Online-Dienst?" (0014). Die letzte
-brauchte nicht einmal eine Suche: Die Antwort stand seit dem 2026-08-29 im Repo, in
-`ideas/0012-asbestanzeige-je-baustelle.angriffe/vertrieb.md` (Hamburg, gebuehrenfrei,
-seit Jahren) — derselbe Beleg, mit dem der Fit-Filter dann 0015 erschlagen hat.
+Im laufenden Logbuch belegt der Abschnitt: **kern-pruefer 37 von 178 Zeilen (21 %),
+testentwickler 29 von 167 (17 %), kernbauer 21 von 172 (12 %), projektmanager 23 von 190
+(12 %).** Das ist der Anteil des privaten Gedaechtnisses, den jede Baurolle nicht fuer
+ihr Gewerk ausgibt, sondern fuer den Apparat — und bei jeder Rotation verliert.
 
-Ergebnis der Kette: 15 Ideen, 12 abgelehnt, 3 widerlegt, **null Kandidaten**. Der
-Fit-Filter lief am 2026-08-29 und am 2026-08-30 leer, der Ideator dreimal in Folge.
+**Die Kataloge widersprechen einander, alle Eintraege vom 2026-09-06:**
+
+- *Heredocs.* `notizen/kernbauer.md:16` — „Nicht wiederholen, sofort `python3 - <<PY`
+  nehmen", der Standardweg dieser Rolle. `notizen/testentwickler.md:104` —
+  „**Heredocs abgelehnt**". `notizen/projektmanager.md:152` — „Abgelehnt: … Heredocs".
+- *`&&`-Ketten.* `notizen/kern-pruefer.md:26` — „**Ketten mit `&&` oder `;`,
+  `for`-Schleifen und `sed` fallen regelmaessig.**" `notizen/testentwickler.md:92` —
+  „**Korrektur zur Zeile darunter:** `&&`-Ketten liefen heute mehrfach".
+- *`python3 -c`.* `notizen/kern-pruefer.md:172` — „`python3 -c` abgelehnt".
+  `notizen/testentwickler.md:101` — „ein Ausdruck, also erlaubt".
+
+**Der teuerste Einzelfall.** Drei Rollen melden, dass sie die Archivregel aus `CLAUDE.md`
+nicht ausfuehren koennen, zwei davon ausdruecklich an den Betreiber:
+
+- `notizen/architekt.md:8` — „**An den Betreiber: eine Zeile in der Rollendatei macht die
+  Archivregel ausführbar.**"
+- `notizen/projektmanager.md:6` — „**`Write` nach `notizen/archiv/` ist abgelehnt**
+  (2026-09-06): nicht rotieren, sondern überholte Einträge durch ihre neue Fassung
+  ersetzen. Gemeldet."
+- `notizen/geschaeftsfuehrer.md:8` — „kann meine Rolle nicht ausführen (`mv`, `cp`,
+  `Write` dorthin alle verwehrt) — **nicht wieder versuchen.**"
+
+Die Antwort steht seit dem 2026-09-06 geschrieben — in `notizen/testentwickler.md:101`:
+
+> **Kopieren ohne `cp`:** `python3 -c "…Path(ziel).write_bytes(…Path(quelle).read_bytes())"`
+> — ein Ausdruck, also erlaubt. So archiviert man das eigene Logbuch ohne `mv`.
+
+Drei Rollen halten eine Sache fuer unmoeglich, eine vierte hat sie geloest, und keine
+der drei darf die Datei lesen, in der die Loesung steht. Solange das so ist, streichen
+sie statt zu archivieren — und Hausregel 3 gilt fuer Logbuecher nur noch fuer die
+Rollen, die zufaellig den richtigen Aufruf gefunden haben.
 
 ## Warum es passiert
 
-Weil **drei Dateien versprechen, dass jemand diese Fragen beantwortet, und keine Rolle
-es tut.**
+`CLAUDE.md` sagt ueber das Logbuch: „Es gehört dir allein — kein anderer Agent schreibt
+hinein, und du schreibst in kein fremdes." Fuer ein **Urteil** ist das richtig, und
+`notizen/lehren.md` begruendet es sauber: elf Rollen an einer gemeinsamen Strategie
+erzeugen Rauschen. Fuer eine **mechanische Tatsache ueber den Apparat** ist es falsch:
+Die ist fuer alle dreizehn Rollen dieselbe, sie ist nachpruefbar, und sie veraltet in
+Tagen.
 
-1. `vorlagen/idee.md:59` — der Abschnitt **Offene Fragen** soll „konkret genug [sein],
-   dass ein Recherche-Agent damit arbeiten kann".
-2. `agents/rollen/rechercheur.md:22-25` — „In den bisherigen Ideen stehen Zeilen wie
-   *Vermutung, ungeprueft* […] Solche Saetze gehoeren nicht in eine Idee. Sie gehoeren
-   zu dir, beantwortet."
-3. Das Statusmodell in `CLAUDE.md` kennt aber keinen solchen Schritt:
-   `entwurf ──Fit-Filter──> kandidat | abgelehnt`. Der Rechercheur liest laut
-   Rollentabelle „ein Signal", nicht eine Idee, und sein Vorgehen beginnt mit „Lies das
-   **zugewiesene Signal**". Er arbeitet vor dem Ideator, nie nach ihm.
+Es gibt genau einen gemeinsamen Kanal, `notizen/lehren.md`, und er funktioniert
+nachweislich: Die Lehre „Nie `cd`" steht seit dem 2026-09-06 darin, weil der
+Portfolio-Manager sie in drei Logbuechern gesehen hat. Aber es ist eine einspurige
+Strasse, sie wird einmal pro Woche befahren, und die Hand am Steuer gehoert einer Rolle,
+deren Auftrag Strategie ist, nicht Handwerk. Eine Tatsache, die sich taeglich aendert,
+kommt darueber nie an.
 
-Die naechste Station nach dem Entwurf ist damit eine Rolle, deren Regel lautet: „**Bei
-Unsicherheit lehnst du ab**" (`agents/rollen/fit-filter.md:40`). Ein sauber
-aufgeschriebener Zweifel ist deshalb kein Arbeitsauftrag, sondern ein Todesurteil mit
-Vorlauf. Der Entwurf enthaelt seine eigene Ablehnung, fertig formuliert.
+**Und der Runner hat die Daten laengst.** `agents/lauf.py:698` liest
+`permission_denials` aus der Rueckgabe der CLI. Der Kommentar zwei Zeilen darueber nennt
+sie „der wertvollste Fruehwarnwert ueberhaupt". Verwendet wird davon nur `tool_name`;
+daraus entsteht eine 120 Zeichen lange Vorbemerkung am Antworttext (`:702`). Der Wortlaut
+des Aufrufs — genau das, was die vier Rollen einzeln rekonstruieren — wird verworfen.
+Sichtbar wird der Rest nur, wenn der Lauf ohnehin scheitert: `ops/nachtlauf.log` traegt
+die Marke **14-mal**, jedes Mal neben einer Kontingentabsage, in einer Datei, die keine
+Rolle liest.
 
-Der Ideator **hat** WebSearch, und er benutzt es genau richtig — aber nur an einer
-Stelle. `agents/rollen/ideator.md:73` steht unter der Ueberschrift „Die wertvollste
-Quelle: gescheiterte Ideen" und gilt nur fuer Anwalts-Zuschnitte: „Nennt der Anwalt eine
-Frage, von der sein Zuschnitt abhaengt, klaere sie mit WebSearch, bevor du entscheidest.
-Genau eine Frage je Vorschlag, die blockierende." Wo die Regel greift, wirkt sie, zweimal
-belegt in `notizen/ideator.md`: Alltagshilfe — „Zwei Suchen, kein Entwurf, fuenf
-Angriffslaeufe gespart"; ezyVet-Verzeichnis — „Ein Abruf entscheidet es". Fuer Ideen aus
-Signalen gilt sie nicht, und dort landet die Frage stattdessen in **Offene Fragen**.
+Die Regel dagegen steht seit dem 2026-09-01 in `notizen/lehren.md`, geschrieben fuer den
+Compiler und nie auf den Sandkasten angewandt:
+
+> Wenn eine Rolle ein Werkzeug nicht haben darf, ihre Arbeit aber ohne dessen Ausgabe
+> wertlos ist, gehört das Werkzeug in den Runner und seine Ausgabe in eine Datei.
 
 ## Der Vorschlag
 
-Die Regel aus dem Anwaltsabschnitt loesen und auf **jede** Idee anwenden — zwei Zeilen
-in zwei Dateien.
+**Der Runner schreibt auf, was er ohnehin sieht, und alle Rollen lesen es.**
 
-**`agents/rollen/ideator.md`** — den Absatz aus Zeile 73 aus dem Abschnitt „Die
-wertvollste Quelle" herausnehmen und als eigenen Punkt in „Vorgehen" setzen, vor dem
-Schreiben:
+**`agents/lauf.py`, Zeile 698–703.** Der Block bildet heute nur die Namensliste. Er
+haengt zusaetzlich je Verweigerung eine Zeile an `ops/werkzeugsperren.md` an:
 
-> **Bevor du eine Idee aufschreibst, benennst du die eine Frage, bei deren unguenstiger
-> Antwort sie tot ist — und beantwortest sie mit WebSearch oder Grep im Repo.** Genau
-> eine je Idee, die blockierende. Faellt die Antwort negativ aus, schreibst du statt der
-> Idee einen Logbucheintrag mit dem Befund; das ist ein vollwertiges Ergebnis. Faellt sie
-> positiv aus, steht sie belegt in **Belege** — nicht als Frage in **Offene Fragen**.
+```
+2026-09-06 | kernbauer | Bash | cd .../befunde && grep -n "..."
+2026-09-06 | kern-pruefer | Write | .../kern/src/verlauf.cpp
+```
 
-**`vorlagen/idee.md:59`** — statt
+Also Datum, Rolle, Werkzeug, und aus dem Eintrag das `tool_input` auf die ersten rund 80
+Zeichen gekuerzt. Doppelte Zeilen (gleiche Rolle, gleiches Werkzeug, gleicher Anfang)
+werden nicht zweimal geschrieben, Eintraege aelter als sieben Tage fallen weg — sonst
+wird die Datei das `notizen/markt-analyst.md` der Bauphase (43.632 Zeichen, das
+3,6-Fache der Grenze).
 
-> Was muesste man wissen, um das zu entscheiden? Konkret genug, dass ein Recherche-Agent
-> damit arbeiten kann.
+**`CLAUDE.md`, im Abschnitt zum Logbuch.** Aus „Zu Beginn jedes Laufs liest du zwei
+Dateien" werden drei. Die dritte ist `ops/werkzeugsperren.md`, und ihre Einfuehrung
+enthaelt im selben Atemzug die Lesevorschrift — der Satz existiert bereits, aber nur in
+**einer** Rollendatei, `agents/rollen/geschaeftsfuehrer.md:72`:
 
-kuenftig
+> Wird dir ein Werkzeug verweigert, heisst das: **dieser eine Aufruf** war nicht erlaubt.
+> Es heisst nicht, dass `Edit` in dieser Sitzung nicht ginge.
 
-> Was hier steht, beantwortet niemand mehr: Naechste Station ist der Fit-Filter, und
-> der lehnt bei Unsicherheit ab. Die Frage, an der die Idee **haengt**, gehoert deshalb
-> beantwortet nach **Belege**. Hierher gehoert nur, was die Entscheidung nicht traegt.
+Als Vorschlagstext fuer `CLAUDE.md`:
 
-Damit sagt die Vorlage, was die Fabrik tatsaechlich tut, statt einen Rechercheschritt zu
-versprechen, den das Statusmodell nicht enthaelt.
+> `ops/werkzeugsperren.md` — welche Aufrufe anderen Rollen zuletzt verweigert wurden.
+> **Das ist ein Protokoll gescheiterter Aufrufe, keine Regelliste.** Ein verweigerter
+> Aufruf heisst: *dieser eine Aufruf* war nicht erlaubt — nicht, dass das Werkzeug
+> gesperrt ist. Probiere zuerst, sieh dann nach. Was du hier findest, spart dir den
+> zweiten Versuch, nicht den ersten.
+
+Ist der Kanal da, kann jede Rolle ihren eigenen Abschnitt streichen — 12 bis 21 Prozent
+Logbuch, die wieder dem Gewerk gehoeren.
 
 ## Was er kostet und was er spart
 
-**Kosten:** ein bis zwei Abrufe je Idee, innerhalb eines ohnehin stattfindenden
-Ideatorlaufs. Keine neue Rolle, kein zusaetzlicher Lauf, kein Skript, keine
-Statusaenderung. Der Ideator ist mit 1,84 $ je Lauf und 9,6 Mio. Tokens die guenstigste
-produktive Rolle (`kontingent.py`, 2026-08-30); selbst eine Verdopplung bliebe ein
-Achtel des Rechercheurs.
+**Kosten:** rund zehn Zeilen in `agents/lauf.py` und drei Saetze in `CLAUDE.md`.
+**Kein einziger zusaetzlicher Agentenlauf** — die Daten liegen bereits im Runner, es
+fehlt nur der Schreibvorgang.
 
-**Ersparnis, belegt:** je Idee mit negativer Antwort ein Entwurf und eine
-Fit-Filter-Pruefung — der Mechanismus ist in `notizen/ideator.md` zweimal nachgewiesen
-(Alltagshilfe: fuenf Angriffslaeufe; ezyVet: ein Angriffszyklus).
+**Was es beim Lesen kostet: nichts.** Jede Baurolle traegt heute 12 bis 21 Prozent ihres
+Logbuchs an diesem Stoff und liest ihn in jedem Lauf. Sie traegt ihn kuenftig nicht mehr
+und liest stattdessen eine gemeinsame Datei aehnlicher Groesse. Es aendert sich nicht der
+Umfang, sondern die Abdeckung: von einem Dreizehntel des Wissens auf alles.
 
-**Ersparnis, erhofft:** je Idee mit positiver Antwort der Unterschied zwischen
-`abgelehnt` und `kandidat`. Den hat die Fabrik in 15 Versuchen kein einziges Mal
-erreicht — nicht weil jede Idee schlecht war, sondern weil die entscheidende Frage nie
-gestellt und „unbeantwortet" per Regel in „abgelehnt" uebersetzt wurde. Diese Zahl
-verspreche ich nicht; sie ist der eigentliche Grund fuer den Vorschlag.
+**Ersparnis, belegt:** die Wiederentdeckung. 53 Fassungen desselben Abschnitts in drei
+Tagen, vier Rollen. Der Archivierungsfall allein steht seit mindestens sechs Tagen in
+drei Logbuechern offen und ist in einem vierten seit dem 2026-09-06 beantwortet.
+
+**Ersparnis, nicht bezifferbar:** die Laeufe, die an einem umgangenen statt versuchten
+Werkzeug haengen. `notizen/kern-pruefer.md:18` beziffert das Verhaeltnis: „ein
+abgelehntes Werkzeug kostet einen Aufruf, ein umgangenes eine halbe Stunde."
+
+**Eines ist vorher zu pruefen, einmal, und ich kann es nicht:** ob der
+`permission_denials`-Eintrag der CLI neben `tool_name` auch den Wortlaut (`tool_input`)
+traegt. `lauf.py:700` liest nur den Namen, also hat noch niemand nachgesehen. Traegt er
+ihn nicht, bleibt der Vorschlag gueltig, aber schwaecher: Er beendet dann den Streit
+darueber, *welches Werkzeug* welcher Rolle verweigert wurde, nicht den ueber *welchen
+Wortlaut*.
 
 ## Was dagegen spricht
 
-**Der beste Einwand: Bei drei der acht haette der Vorabruf nichts geaendert, und ich
-verkaufe eine Hoffnung als Ersparnis.** 0003 und 0007 haengen an Rechtsfragen
-(§ 2 RDG, § 6 StBerG) — die entscheidet keine Suche, dafuer gibt es die Linse Recht.
-0015 brauchte eine Zahl, die nur ueber IFG-Auskunft zu haben ist, also ueber ein
-Schreiben nach aussen, das Hausregel 2 verbietet. Dort verbrennt der Ideator kuenftig
-zwei Abrufe und schreibt anschliessend dasselbe Nichts. Nachweisbar wirksam ist der
-Vorschlag bei fuenf von zwoelf Ablehnungen, nicht bei acht.
+**Der beste Einwand: Ein Verweigerungsprotokoll, das als Regelliste gelesen wird, macht
+die Fabrik langsamer, nicht schneller.** Die Sperre entscheidet nach Inhalt und wechselt
+innerhalb eines Laufs — `notizen/kern-pruefer.md:17`, 2026-09-06: „`Write` auf eine
+`.cpp` abgelehnt, `Write` auf eine `.md` angenommen -- in **demselben** Lauf." Eine
+Rolle, die „Heredoc abgelehnt" liest und deshalb gar nicht erst versucht, verliert den
+billigsten Weg. Genau diese Fehlverallgemeinerung steht als Lehre vom 2026-09-02 in
+`notizen/lehren.md` (der Architekt, neun gezaehlte Verweigerungen, sauber hergeleitet,
+falsch). Deshalb steht die Lesevorschrift oben **im selben Satz** wie die Datei. Faellt
+sie weg, ist der Vorschlag schaedlich.
 
-**Zweiter Einwand, und er wiegt schwerer:** `CLAUDE.md` warnt ausdruecklich vor genau
-dieser Bewegung — „Wer als Ideator anfaengt, Marktdaten zu erheben, produziert eine
-zweite Fassung dessen, was der Rechercheur schon geschrieben hat — langsamer und
-schlechter." Die Grenze zwischen „eine blockierende Frage" und „Marktrecherche" ist
-duenn, und ein Ideatorlauf, der sie ueberschreitet, kostet mehr als er spart. Meine
-Gegenrede: Die Schutzklausel steht bereits im Satz („Genau eine Frage je Vorschlag, die
-blockierende") und hat in drei Anwendungen nicht gerissen. Der Vorschlag aendert den
-Geltungsbereich, nicht die Schranke. Sicher bin ich mir nicht.
+**Zweiter Einwand: Es ist eine Codeaenderung, und der Betreiber hat zwei Stunden.** Die
+Fuenf-Minuten-Fassung, die vielleicht ein Drittel traegt: `CLAUDE.md` bekommt nur die
+zwei Saetze aus `agents/rollen/geschaeftsfuehrer.md:72`, ohne neue Datei und ohne
+Runner. Das transportiert keine Tagesfakten, verhindert aber den teuersten Fehlschluss —
+und es ist der Fall, den mein eigenes Logbuch als ergiebigsten kennt: eine Regel, die nur
+in einem Sonderfall angewandt wird.
 
-**Die Variante, die ich nicht vorschlage, aber nennen muss:** Statt den Ideator suchen zu
-lassen, koennte der Rechercheur einen zweiten Auftragstyp bekommen — „beantworte die als
-entscheidend markierte Frage aus `ideas/<id>.md`". Das repariert das Versprechen, statt
-es zu streichen, und traefe auch die Rechtsfragen. Es kostet aber je Idee einen Lauf der
-teuersten Rolle der Fabrik (4,68 $, 46 Laeufe, 85,9 Mio. Tokens), dazu ein Leserecht auf
-`ideas/` und eine Aenderung am Nachtlauf. Unter der Zwei-Stunden-Randbedingung halte ich
-den billigeren Weg fuer richtig — die Entscheidung liegt beim Betreiber.
+**Dritter Einwand, und er ist grundsaetzlich:** Der Vorschlag gibt der Fabrik eine
+weitere gemeinsam gelesene Datei, eine Woche nachdem `notizen/lehren.md` aus genau
+diesem Grund halbiert wurde (42.578 Zeichen, von jeder Baurolle in jedem der 1.531 Laeufe
+mitgelesen). Meine Gegenrede: Hier schreibt der Runner, nicht dreizehn Rollen — kein
+Parallelschreiben, kein Urteil in der Datei, und eine Verfallsfrist von sieben Tagen ist
+maschinell durchsetzbar, was bei `lehren.md` nicht der Fall war. Sicher bin ich mir bei
+der Verfallsfrist nicht: Sieben Tage sind geraten, nicht gemessen.

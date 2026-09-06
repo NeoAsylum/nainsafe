@@ -33,7 +33,23 @@ zusammenziehen — genau daran ist das Logbuch des Rechercheurs gewachsen.
 - 2026-08-30 — **Die Rollen adressieren den Verbesserer nicht, den Portfolio-Manager
   schon.** `grep -rn "Portfolio-Manager" notizen/` foerdert fertig formulierte
   Systembefunde zutage (G7-Promille, Zuschnitt der Scouts, 90-Tage-Regel). Naechstes Mal
-  zuerst dorthin schauen.
+  zuerst dorthin schauen. **2026-09-06 verallgemeinert:** Auch „An den Betreiber",
+  „Gemeldet", „viermal gemeldet" sind solche Marken. Suchmuster: `An den Betreiber`,
+  `gemeldet`, `nicht wieder versuchen`.
+- 2026-09-06, **der ergiebigste Griff dieses Laufs** — **Ueberschriften zaehlen statt
+  Text lesen.** `grep -l "^## <Abschnittsname>" notizen/ notizen/archiv/` sagt in einem
+  Aufruf, wie oft ein Abschnitt neu geschrieben wurde: 30-mal `## Werkzeuge und Sperren`
+  (kernbauer), 14-mal `## Der Apparat` (kern-pruefer), in drei Tagen. Das Archiv ist
+  dabei die eigentliche Messgroesse — **jede Datei darin ist eine Rotation, also ein
+  Wissensverlust.** Fuer jede wiederkehrende Ueberschrift gilt: Warum steht das je Rolle
+  und nicht einmal?
+- 2026-09-06 — **In den Runner schauen, nicht nur in die Rollendateien.** `agents/lauf.py`
+  erhebt Daten, die keine Rolle sieht (`permission_denials`, `:698`). Ein Kommentar, der
+  eine Groesse „den wertvollsten Fruehwarnwert" nennt, und drei Zeilen weiter wird sie auf
+  120 Zeichen gekuerzt — das ist eine fertige Beobachtung. Naechstes Mal: `lauf.py`,
+  `baulauf.py`, `nachtlauf.py` nach erhobenen und nicht abgelegten Werten durchsehen.
+- 2026-09-06 — **`ops/nachtlauf.log` ist eine ungelesene Quelle.** Was dort steht, hat
+  kein Agent je gesehen. Vier Zeilen `grep` gaben die Zahl, die den Vorschlag trug.
 
 ## Was nicht funktioniert
 
@@ -50,9 +66,34 @@ zusammenziehen — genau daran ist das Logbuch des Rechercheurs gewachsen.
   30 Zeilen". Kein eigener Vorschlag wert, aber beim naechsten Umsetzungsvorschlag
   mitschreiben, **wer die Altbestaende nachzieht**.
 
+- 2026-09-06 — **`weg.py` ist in der Bauphase tot.** `ops/wege.md` kam vom Wochenlauf mit
+  leerem Datenblock; es misst Ideenwege, und die Fabrik sucht seit dem 2026-08-31 keine
+  Ideen mehr. **Trotzdem aufrufen** (Auftrag), aber nicht darauf warten. Die Zulieferung,
+  die in der Bauphase traegt, ist `ops/auslastung.md` plus die Logbuecher.
+
 ## Offene Faehrten
 
-Drei Kandidaten fuer KW 36, in dieser Reihenfolge:
+Zuerst fuer KW 37 (die drei Kandidaten von KW 36 stehen darunter und sind ueberholt,
+solange die Suchphase ruht):
+
+- **`specs/<id>/technik.md` ist ein Nadeloehr, das der Projektmanager 14-mal gemeldet
+  hat:** „dreizehn der 25 offenen Pakete auf dieser einen Datei", die uebrigen zwoelf auf
+  sechs Bahnen (`notizen/projektmanager.md:181`). Der Baulauf plant nur Pakete
+  gleichzeitig ein, deren Dateilisten sich nicht schneiden — ein Achtel der Bauplaetze ist
+  damit strukturell tot. **Vor einem Vorschlag pruefen:** Ist es meine Beobachtung oder
+  seine Wiedervorlage? Sein Satz „Der Schnitt liegt in der Datei, nicht in meinen Paketen"
+  ist bereits die Diagnose; mein Beitrag waere die Zahl der verlorenen Bauplaetze.
+- **Pruefer setzen `fertig` mal selbst, mal gar nicht**, obwohl `baulauf.py:32` es dem
+  Projektmanager vorbehaelt — viermal gemeldet, am 2026-09-06 dreimal an einem Tag
+  (`notizen/projektmanager.md:178`). Der Geschaeftsfuehrer misst dieselbe Luecke von der
+  anderen Seite („`urteil: geprueft` gegen `status:` — die Luecke ist der billigste
+  Engpass"). Zwei Rollen, ein Befund, keine Aenderung: guter KW-37-Kandidat.
+- **Ballast, kostet heute nichts:** `notizen/markt-analyst.md` traegt 43.632 Zeichen, das
+  3,6-Fache der Grenze; `notizen/tech-scout.md` hat sieben Abschnitte „Was nicht
+  funktioniert (Fortsetzung N)". Beide Rollen laufen nicht mehr. **Erst melden, wenn
+  `FOKUS = None` gesetzt wird** — dann sind es zwei Rollen, die ihre eigene Grenze reissen.
+
+Drei Kandidaten aus KW 36, alle aus der Suchphase und damit vertagt:
 
 - **Das Promille aus G7.** `grenzen.md:115` gibt ein Promille Marktdurchdringung vor,
   „wenn kein Vertriebskanal belegt ist" — alle drei englischsprachigen Marktprofile vom
