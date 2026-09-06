@@ -1,7 +1,8 @@
 ---
 id: 0137-riegelmeldung-nennt-ihr-profil
 rolle: kernbauer
-status: gebaut
+status: fertig
+abnahme_befund: befunde/pruefung-0137-riegelmeldung-nennt-ihr-profil-2026-09-06.md (urteil geprueft, kern-pruefer, 2026-09-06)
 haengt_an: [0132-riegelmeldung-nennt-gesammelte-eintraege]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

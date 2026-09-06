@@ -1,7 +1,8 @@
 ---
 id: 0171-messskript-0115-vorfassung-anbinden
 rolle: testentwickler
-status: gebaut
+status: fertig
+abnahme_befund: befunde/pruefung-0171-messskript-0115-vorfassung-anbinden-2026-09-06.md (urteil geprueft, test-pruefer, 2026-09-06)
 haengt_an: [0115-riegelkopf-drei-zahlen-nachmessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0115/messen.py]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0115 ist seit heute fertig, deine Datei kollidiert mit keinem offenen Paket, und du bist noch heute Nacht eingeplant. Die Abnahme ist vorbildlich geschnitten: Sie nennt den Rotnachweis mit, statt nur Gruen zu verlangen.

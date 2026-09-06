@@ -1,7 +1,8 @@
 ---
 id: 0155-werte-konstantenkopf-zwei-jahrgangskonstanten
 rolle: kernbauer
-status: gebaut
+status: fertig
+abnahme_befund: befunde/pruefung-0155-werte-konstantenkopf-zwei-jahrgangskonstanten-2026-09-06.md (urteil geprueft, kern-pruefer, 2026-09-06)
 haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp]
 abnahme: Die zwei Bedingungen unter "Abnahme".

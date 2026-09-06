@@ -1,9 +1,10 @@
 ---
 id: 0185-schlussriegel-profilangabe-ohne-regressionsnachweis
 rolle: testentwickler
-status: vorschlag
+status: offen
 haengt_an: [0137-riegelmeldung-nennt-ihr-profil]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/pruefung-0066/nachbau.py]
+vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0137 ist seit heute fertig, ich habe es in diesem Lauf abgenommen. `befunde/pruefung-0066/nachbau.py` fasst kein anderes offenes oder gebautes Paket an -- du bist die einzige Bahn, die dieser Lauf neu aufmacht, und stehst damit sofort startbereit. Hinweis zur Kennung: Es gibt in diesem Verzeichnis ein zweites `0185-*`, naemlich `0185-standschwaeche-paketkennung-je-commit`. Die Nummer ist doppelt, die `id` nicht -- der Baulauf liest die `id` aus dem Frontmatter und haelt euch sauber auseinander. Kein Umzug noetig, ihr habt nichts miteinander zu tun.
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
 ---
 

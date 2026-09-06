@@ -25,35 +25,35 @@ anderes behauptet, irrt.
 -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_LINK_OPTIONS=[]; kern_geprueft.LINK_LIBRARIES=[]; kern_geprueft.INTERFACE_LINK_LIBRARIES=[]; kern_geprueft.LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]; kern_geprueft.INTERFACE_LINK_OPTIONS=[-fsanitize=undefined,address;-fno-sanitize-recover=all]
 -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
 -- Configuring done (0.1s)
--- Generating done (0.0s)
+-- Generating done (0.1s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/bau
 ```
 
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 12%] Built target pruefstand_geprueft
-[ 25%] Built target pruefstand
-[ 28%] Built target kern
-[ 31%] Built target bezeichner_riegel
-[ 46%] Built target kern_geprueft
-[ 50%] Built target belegstellen_riegel
-[ 53%] Built target mutationstreiber
-[ 56%] Built target festkomma_probe
+[  7%] Built target pruefstand_geprueft
+[  9%] Built target pruefstand
+[ 15%] Built target mutationstreiber
+[ 15%] Built target belegstellen_riegel
+[ 32%] Built target kern
+[ 35%] Built target bezeichner_riegel
+[ 53%] Built target kern_geprueft
+[ 56%] Built target vorrat_kernanker_probe
 [ 59%] Built target aktion_probe
-[ 62%] Built target vorrat_kernanker_probe
-[ 65%] Built target vorrat_verfahren_probe
-[ 68%] Built target schreiber_probe
-[ 71%] Built target vorrat_probe
-[ 75%] Built target schranken_probe
-[ 81%] Built target schritt_probe
+[ 62%] Built target vorrat_verfahren_probe
+[ 65%] Built target meldung_probe
+[ 71%] Built target schranken_probe
+[ 71%] Built target festkomma_probe
+[ 75%] Built target schritt_probe
+[ 78%] Built target vorrat_probe
 [ 81%] Built target pruefsumme_probe
-[ 84%] Built target meldung_probe
-[ 87%] Built target werte_probe
-[ 90%] Built target verlauf_probe
-[ 93%] Built target zufall_probe
-[ 96%] Built target zustandsausgabe_probe
-[100%] Built target zustand_probe
+[ 85%] Built target zufall_probe
+[ 87%] Built target zustandsausgabe_probe
+[ 90%] Built target zustand_probe
+[ 93%] Built target schreiber_probe
+[ 96%] Built target werte_probe
+[100%] Built target verlauf_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -77,13 +77,13 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  8: verlauf_probe
  8/18 Test  #8: verlauf_probe ....................   Passed    0.02 sec
       Start  9: werte_probe
- 9/18 Test  #9: werte_probe ......................   Passed    0.01 sec
+ 9/18 Test  #9: werte_probe ......................   Passed    0.02 sec
       Start 10: zufall_probe
 10/18 Test #10: zufall_probe .....................   Passed    0.01 sec
       Start 11: zustand_probe
-11/18 Test #11: zustand_probe ....................   Passed    0.01 sec
+11/18 Test #11: zustand_probe ....................   Passed    0.02 sec
       Start 12: zustandsausgabe_probe
-12/18 Test #12: zustandsausgabe_probe ............   Passed    0.08 sec
+12/18 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 13: vorrat_kernanker_probe
 13/18 Test #13: vorrat_kernanker_probe ...........   Passed    0.01 sec
       Start 14: vorrat_probe
@@ -91,15 +91,15 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 15: vorrat_verfahren_probe
 15/18 Test #15: vorrat_verfahren_probe ...........   Passed    0.01 sec
       Start 16: belegstellen_riegel
-16/18 Test #16: belegstellen_riegel ..............   Passed    6.00 sec
+16/18 Test #16: belegstellen_riegel ..............   Passed    6.08 sec
       Start 17: bezeichner_riegel
 17/18 Test #17: bezeichner_riegel ................   Passed    0.36 sec
       Start 18: schlussriegel_nachbau
-18/18 Test #18: schlussriegel_nachbau ............   Passed    0.44 sec
+18/18 Test #18: schlussriegel_nachbau ............   Passed    0.50 sec
 
 100% tests passed, 0 tests failed out of 18
 
-Total Test time (real) =   7.05 sec
+Total Test time (real) =   7.21 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -116,19 +116,19 @@ Total Test time (real) =   7.05 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 47%] Built target kern
+[ 23%] Built target kern
 [ 47%] Built target kern_geprueft
-[ 52%] Built target schreiber_probe
-[ 56%] Built target zustand_probe
-[ 65%] Built target verlauf_probe
-[ 65%] Built target schritt_probe
-[ 69%] Built target meldung_probe
-[ 73%] Built target pruefsumme_probe
-[ 80%] Built target zustandsausgabe_probe
-[ 82%] Built target schranken_probe
-[ 86%] Built target festkomma_probe
+[ 52%] Built target pruefsumme_probe
+[ 56%] Built target meldung_probe
+[ 65%] Built target festkomma_probe
+[ 65%] Built target aktion_probe
+[ 69%] Built target zustandsausgabe_probe
+[ 78%] Built target schreiber_probe
+[ 78%] Built target schritt_probe
+[ 82%] Built target verlauf_probe
+[ 89%] Built target schranken_probe
 [ 91%] Built target zufall_probe
-[ 95%] Built target aktion_probe
+[ 95%] Built target zustand_probe
 [100%] Built target werte_probe
 ```
 
@@ -153,17 +153,17 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  8: verlauf_probe
  8/12 Test  #8: verlauf_probe ....................   Passed    0.02 sec
       Start  9: werte_probe
- 9/12 Test  #9: werte_probe ......................   Passed    0.01 sec
+ 9/12 Test  #9: werte_probe ......................   Passed    0.02 sec
       Start 10: zufall_probe
 10/12 Test #10: zufall_probe .....................   Passed    0.01 sec
       Start 11: zustand_probe
-11/12 Test #11: zustand_probe ....................   Passed    0.01 sec
+11/12 Test #11: zustand_probe ....................   Passed    0.02 sec
       Start 12: zustandsausgabe_probe
 12/12 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
 
 100% tests passed, 0 tests failed out of 12
 
-Total Test time (real) =   0.22 sec
+Total Test time (real) =   0.23 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -179,11 +179,11 @@ Total Test time (real) =   0.22 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 25%] Built target pruefstand
+[ 50%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
+[ 83%] Built target vorrat_probe
 [ 83%] Built target vorrat_kernanker_probe
-[ 83%] Built target vorrat_verfahren_probe
-[100%] Built target vorrat_probe
+[100%] Built target vorrat_verfahren_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -199,7 +199,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =   0.03 sec
+Total Test time (real) =   0.04 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -223,11 +223,11 @@ Total Test time (real) =   0.03 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/1 Test #1: belegstellen_riegel ..............   Passed    6.05 sec
+1/1 Test #1: belegstellen_riegel ..............   Passed    6.16 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   6.05 sec
+Total Test time (real) =   6.16 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -251,11 +251,11 @@ Total Test time (real) =   6.05 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
     Start 1: bezeichner_riegel
-1/1 Test #1: bezeichner_riegel ................   Passed    0.36 sec
+1/1 Test #1: bezeichner_riegel ................   Passed    0.39 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.36 sec
+Total Test time (real) =   0.39 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -300,9 +300,9 @@ No tests were found!!!
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/bau
     Start 1: schlussriegel_nachbau
-1/1 Test #1: schlussriegel_nachbau ............   Passed    0.44 sec
+1/1 Test #1: schlussriegel_nachbau ............   Passed    0.49 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.44 sec
+Total Test time (real) =   0.49 sec
 ```

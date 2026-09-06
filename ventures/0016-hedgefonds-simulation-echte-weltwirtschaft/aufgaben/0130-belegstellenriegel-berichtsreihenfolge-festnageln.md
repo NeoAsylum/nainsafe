@@ -1,7 +1,8 @@
 ---
 id: 0130-belegstellenriegel-berichtsreihenfolge-festnageln
 rolle: testentwickler
-status: gebaut
+status: fertig
+abnahme_befund: befunde/pruefung-0130-belegstellenriegel-berichtsreihenfolge-festnageln-2026-09-06.md (urteil geprueft, test-pruefer, 2026-09-06)
 haengt_an: [0115-riegelkopf-drei-zahlen-nachmessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

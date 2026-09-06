@@ -1,7 +1,8 @@
 ---
 id: 0126-historischer-verweis-nennt-den-falschen-commit
 rolle: datenbauer
-status: gebaut
+status: fertig
+abnahme_befund: befunde/pruefung-0126-historischer-verweis-nennt-den-falschen-commit-2026-09-06.md (urteil geprueft, daten-pruefer, 2026-09-06)
 haengt_an: [0090-rueckstand-ueberschrift-fuenf-tote-zitate, 0100-namensnennung-reihe-14-weltbank]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/einheitenbefund-pwt-baci.md]
 abnahme: Weg 2, vom Projektmanager am 2026-09-05 gewaehlt (Begruendung im Abschnitt "Die Wahl zwischen den zwei Wegen"). Erstens traegt jede der fuenf Stellen, die 0090 auf `81853b8~1` verwiesen hat, den bei ihr zitierten Wortlaut unmittelbar selbst -- auch die beiden, die ihn heute nicht tragen. Zweitens nennt keine der fuenf Stellen mehr einen Commit als Fundort; der Fundort-Halbsatz ist gestrichen. Nachweis mechanisch ueber beide Dateien der `dateien`-Liste: eine Suche nach einer sieben- bis zehnstelligen Hexfolge findet an diesen fuenf Stellen nichts mehr, und die Trefferzeilen der Wortlautsuche sind je Stelle ausgeschrieben. Kein `git show` und kein Commitverweis ist zum Nachweis noetig; ist einer noetig, ist die Stelle nicht abgenommen. Zusaetzlich gilt unveraendert die Abnahme von 0090 und ist erneut zu belegen -- `belegstellen_riegel` meldet zu Bedingung 2 keine dieser fuenf Fundstellen, auch nicht an einer Kopie ausserhalb des Repos, in der die Gliederungszeile aus `rueckstand.md` geloescht ist, und die Zahl der uebergangenen Fundstellen steigt gegenueber dem unmittelbar vorhergehenden Stand desselben Baums nicht.
