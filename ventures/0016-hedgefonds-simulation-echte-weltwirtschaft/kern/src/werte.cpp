@@ -1,4 +1,4 @@
-//! `kern::werte` -- die Rechnung hinter den siebzehn Groessen aus T48.
+//! `kern::werte` -- die Rechnung hinter den zweiundzwanzig Groessen aus T48.
 //!
 //! Der Kopf `kern/werte.hpp` sagt, **was** dieses Modul anbietet und warum die Menge
 //! abgeschlossen ist. Hier steht, **wie** gerechnet wird, und drei Dinge, die nur hier
@@ -190,6 +190,7 @@ constexpr Konstanten PROBE_KONSTANTEN{
     /* aufschlag         */ 51,
     /* lobbykosten       */ 100,
     /* gegenlobby_satz   */ 3,
+    /* regulierung_last  */ 7,
     /* leitzins_start    */ {{0, 0, 0, 0}},
 };
 
@@ -394,6 +395,30 @@ std::size_t land_nummer(Gebiet land)
 /// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
 /// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
 /// Schritt, den die Meldung ihm abnehmen soll.
+/// Der Sektor einer Groesse, die es nur fuer die beiden handelbaren gibt -- geprueft
+/// unter dem Namen der Groesse und ohne den Umweg ueber `sektor_index`, das bei einer
+/// Kennung ausserhalb der drei unter fremdem Namen abbraeche.
+///
+/// Die Sektoren zaehlen ab eins wie ihre Adresse; handelbar sind die ersten
+/// `SEKTOREN_HANDELBAR`. Die Bedingung faengt beide Faelle auf einmal -- den Sektor
+/// ausserhalb der drei und den dritten, der weder Handelszeile noch Weltpreis hat.
+///
+/// `grund` nennt, **was** dem dritten Sektor fehlt: eine Handelszeile bei Nr. 11, ein
+/// Weltpreis bei Nr. 19 bis 21. Die Bedingung ist dieselbe, die Meldung nicht -- wer
+/// den Befund liest, soll die Sache lesen und nicht die Bedingung.
+void pruefe_handelssektor(const char* groesse, Sektor sektor, const char* grund)
+{
+    const std::size_t s = static_cast<std::size_t>(sektor);
+    if (s < 1 || s > SEKTOREN_HANDELBAR) {
+        Meldung text;
+        text.text(groesse);
+        text.text(" -- der Sektor ");
+        text.zahl(static_cast<i64>(s));
+        text.text(grund);
+        festkomma::abbruch(text.fertig());
+    }
+}
+
 void pruefe_landessektor(const char* groesse, Gebiet land, Sektor sektor)
 {
     const std::size_t g = static_cast<std::size_t>(land);
@@ -407,19 +432,9 @@ void pruefe_landessektor(const char* groesse, Gebiet land, Sektor sektor)
         festkomma::abbruch(text.fertig());
     }
 
-    // Die Sektoren zaehlen ab eins wie ihre Adresse; handelbar sind die ersten
-    // `SEKTOREN_HANDELBAR`. Die Pruefung faengt beide Faelle in einer Bedingung -- den
-    // Sektor ausserhalb der drei und den dritten, der keinen Weltpreis hat.
-    const std::size_t s = static_cast<std::size_t>(sektor);
-    if (s < 1 || s > SEKTOREN_HANDELBAR) {
-        Meldung text;
-        text.text(groesse);
-        text.text(" -- der Sektor ");
-        text.zahl(static_cast<i64>(s));
-        text.text(" traegt keinen Weltpreis; den Zollkeil gibt es nur fuer die "
-                  "handelbaren Sektoren (T15, T48).");
-        festkomma::abbruch(text.fertig());
-    }
+    pruefe_handelssektor(groesse, sektor,
+                         " traegt keinen Weltpreis; den Zollkeil gibt es nur fuer die "
+                         "handelbaren Sektoren (T15, T48).");
 }
 
 // ---------------------------------------------------------------------------
@@ -569,7 +584,7 @@ i64 anleihewert_zwei(const Zustand& mengen, const Zustand& kurse, const Konstant
 }  // namespace
 
 // ---------------------------------------------------------------------------
-// Die siebzehn Groessen aus T48
+// Die zweiundzwanzig Groessen aus T48
 // ---------------------------------------------------------------------------
 
 // --- Nr. 1 ---------------------------------------------------------------
@@ -692,23 +707,39 @@ i64 schuld(const Zustand& z, Gebiet land)
                        10'000);
 }
 
-// --- Nr. 11 --------------------------------------------------------------
-i64 handelsvolumen(const Zustand& z, Gebiet land)
+// --- Nr. 11, zweistellig ---------------------------------------------------
+i64 handelsvolumen(const Zustand& z, Gebiet land, Sektor sektor)
 {
     const std::size_t g = static_cast<std::size_t>(land);
     if (g >= GEBIETE) {
         festkomma::abbruch("kern::werte::handelsvolumen -- unbekanntes Gebiet");
     }
+    pruefe_handelssektor("kern::werte::handelsvolumen", sektor,
+                         " hat keine Handelszeile; ein Handelsvolumen gibt es nur fuer "
+                         "die handelbaren Sektoren (T15, T48).");
 
     i64 summe = 0;
     for (const Gebiet gegenueber : GEGENUEBER[g]) {
-        for (const Sektor sektor : SEKTORLISTE_HANDELBAR) {
-            // Beide Richtungen je Paar: Ausfuhr und Einfuhr. Wer nur eine zaehlte,
-            // haette die halbe Tiefe des Waehrungsmarktes und ein Handelsvolumen, das
-            // sich bei einem Zoll in die falsche Richtung bewegte.
-            summe = plus(summe, z.lies(zustand::stelle_handel(land, gegenueber, sektor)));
-            summe = plus(summe, z.lies(zustand::stelle_handel(gegenueber, land, sektor)));
-        }
+        // Beide Richtungen je Paar: Ausfuhr und Einfuhr. Wer nur eine zaehlte, haette
+        // die halbe Tiefe des Waehrungsmarktes und ein Handelsvolumen, das sich bei
+        // einem Zoll in die falsche Richtung bewegte.
+        summe = plus(summe, z.lies(zustand::stelle_handel(land, gegenueber, sektor)));
+        summe = plus(summe, z.lies(zustand::stelle_handel(gegenueber, land, sektor)));
+    }
+    return summe;
+}
+
+// --- Nr. 11, einstellig ----------------------------------------------------
+i64 handelsvolumen(const Zustand& z, Gebiet land)
+{
+    // Die Richtung ist vorgegeben (T48): Die einstellige Fassung ruft die zweistellige
+    // und nicht umgekehrt. Sie ist deren Aggregation ueber die beiden handelbaren
+    // Sektoren, keine zweite Definition -- die Gebietspruefung und die Tabelle der
+    // Gegenueber stehen deshalb nur dort. Der dritte Sektor kommt in keiner der beiden
+    // Fassungen vor; er hat keine Handelszeile.
+    i64 summe = 0;
+    for (const Sektor sektor : SEKTORLISTE_HANDELBAR) {
+        summe = plus(summe, handelsvolumen(z, land, sektor));
     }
     return summe;
 }
@@ -866,6 +897,108 @@ i64 preishub_zoll(const schreiber::Schreiber& rundenschreiber, const Konstanten&
     // gerundet. Die zusammengezogene Form ergaebe eine andere Zahl und braeuchte einen
     // ADR.
     return mal_geteilt(keilhub(rundenschreiber, land, sektor), durchgriff, 10'000);
+}
+
+// --- Nr. 21 --------------------------------------------------------------
+i64 weltpreis_mit_zoll(const Zustand& z, Gebiet gebiet, Sektor sektor)
+{
+    const std::size_t g = static_cast<std::size_t>(gebiet);
+    if (g >= GEBIETE) {
+        Meldung text;
+        text.text("kern::werte::weltpreis_mit_zoll -- das Gebiet ");
+        text.zahl(static_cast<i64>(g));
+        text.text(" gibt es nicht; T15 kennt fuenf, und diese Groesse gilt fuer alle.");
+        festkomma::abbruch(text.fertig());
+    }
+    pruefe_handelssektor("kern::werte::weltpreis_mit_zoll", sektor,
+                         " traegt keinen Weltpreis; den gibt es nur fuer die "
+                         "handelbaren Sektoren (T15, T48).");
+
+    // Der eine Fall, den T48 ausdruecklich entscheidet: Die Restwelt nimmt an der
+    // Preisuebertragung teil, hat aber nach T15 kein Politikinstrument. Ihr Zollstand
+    // ist keine Adresse, sondern die Zahl null -- gelesen wird fuer sie nichts.
+    //
+    // **Vorbehalt, von `technik.md` bei T48 selbst gemeldet und hier nicht
+    // aufgeloest** -- im Absatz ueber den Definitionsbereich von Nr. 21: Der
+    // Definitionsbereich dieser Groesse steht weder in T28 noch in `spiel.md`
+    // ausgeschrieben. Laeuft die Marktraeumung nur ueber die vier spielbaren Laender,
+    // ist diese Zeile ueberfluessig und nicht falsch. Eine Entwurfsfrage, keine
+    // Bauentscheidung.
+    const i64 zoll =
+        g < LAENDER
+            ? z.lies(zustand::stelle_instrument(gebiet, Instrument::Zoll, InstrumentFeld::Stand))
+            : 0;
+
+    // T48 Nr. 21, Zeichen fuer Zeichen. Der Keil ist ein **Faktor** und keine Summe:
+    // 10.000 Basispunkte sind der zollfreie Fall, und Klasse 3 mal Klasse 5 durch
+    // 10.000 ist wieder Klasse 5. Die Strichrechnung laeuft ueber den
+    // Ueberlaufbaustein (T7 Massnahme 4.2), das Produkt ueber `mal_geteilt`.
+    return mal_geteilt(z.lies(zustand::stelle_weltpreis(sektor)), plus(10'000, zoll), 10'000);
+}
+
+// --- Nr. 22 --------------------------------------------------------------
+i64 schaden(const Zustand& z, const schreiber::Schreiber& rundenschreiber,
+            const Konstanten& konst, Gebiet land, Instrument instrument)
+{
+    // Vor jeder Zeile und mit dem eigenen Namen: Die Groessen darunter pruefen
+    // dasselbe, melden es aber unter ihrem Namen -- und ein Befund, der die Groesse
+    // nicht nennt, kostet den Leser genau den Schritt, den die Meldung ihm abnimmt.
+    const std::size_t g = static_cast<std::size_t>(land);
+    if (g >= LAENDER) {
+        Meldung text;
+        text.text("kern::werte::schaden -- das Gebiet ");
+        text.zahl(static_cast<i64>(g));
+        text.text(" hat keine Politikinstrumente; einen Lobbyschaden gibt es nur bei den "
+                  "vier spielbaren Laendern (T15).");
+        festkomma::abbruch(text.fertig());
+    }
+
+    // Die vier Zeilen aus `spiel.md`, jede als `mal_geteilt(menge, verschiebung,
+    // 10.000)`. Die Fallunterscheidung steht **innen** und nicht beim Aufrufer (T48):
+    // `menge` und `verschiebung` haben weder eine gemeinsame Klasse noch eine
+    // gemeinsame Stelligkeit und sind deshalb ausdruecklich keine eigenen Groessen.
+    switch (instrument) {
+    case Instrument::Zoll: {
+        // Menge: das Handelsvolumen **je Sektor**. Verschiebung: der Anteil des
+        // Preishubs, den der Zollschritt verursacht hat. Die Summe steht innerhalb der
+        // Zeile -- nach aussen gibt auch sie eine Zahl je Land und Instrument.
+        i64 summe = 0;
+        for (const Sektor sektor : SEKTORLISTE_HANDELBAR) {
+            summe = plus(summe,
+                         mal_geteilt(handelsvolumen(z, land, sektor),
+                                     preishub_zoll(rundenschreiber, konst, land, sektor),
+                                     10'000));
+        }
+        return summe;
+    }
+    case Instrument::Leitzins:
+        // Menge: die Staatsschuld, nicht das Bruttoinlandsprodukt -- ein Zinsschritt
+        // trifft, was verzinst wird. Verschiebung: der Zinshub in Basispunkten.
+        return mal_geteilt(schuld(z, land), hub(rundenschreiber, land, Instrument::Leitzins),
+                           10'000);
+    case Instrument::Haushalt:
+        // Menge: das Bruttoinlandsprodukt. Ein Haushaltsschritt steht nach T5 in
+        // Basispunkten desselben, und die Verschiebung ist sein Hub.
+        return mal_geteilt(bip(z, land), hub(rundenschreiber, land, Instrument::Haushalt),
+                           10'000);
+    case Instrument::Regulierung:
+        // Die einzige Zeile mit einem Parameterschluessel, und der Grund steht in T48:
+        // Der Hub der Regulierung ist Klasse 10 (Stufen). Stufen mal Basispunkten je
+        // Stufe sind wieder Basispunkte, also Klasse 3 -- dieselbe Klasse wie die
+        // Verschiebung der beiden Zeilen darueber, und deshalb derselbe Nenner. Das
+        // Produkt laeuft ueber `mal` (T7 Massnahme 4.3).
+        return mal_geteilt(bip(z, land),
+                           mal(hub(rundenschreiber, land, Instrument::Regulierung),
+                               konst.regulierung_last),
+                           10'000);
+    }
+
+    Meldung text;
+    text.text("kern::werte::schaden -- zur Instrumentenkennung ");
+    text.zahl(static_cast<i64>(static_cast<std::uint8_t>(instrument)));
+    text.text(" gibt es keines der vier Politikinstrumente und damit keine der vier "
+              "Schadenszeilen; eine fuenfte gibt es nicht (T48).");
+    festkomma::abbruch(text.fertig());
 }
 
 }  // namespace kern::werte

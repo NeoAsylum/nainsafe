@@ -140,3 +140,34 @@ daneben. Uebernommen ist, was ueber sein Paket hinaus gilt.
   `befunde/messung-0076/bauwege.py` (Paket 0135) und die Endungsfalle in
   `werkzeugkette.cmake` (Paket 0108). **Erst die vorhandenen Pakete lesen, dann
   vorschlagen.**
+
+- 2026-09-06, **worauf ich bei 0152 unsicher bin:** `schaden` (Nr. 22) nimmt einen
+  `Zustand` **und** einen `Schreiber` -- die Nummern 9/10/11 nehmen einen Zustand, und
+  aus einem Schreiber ist keiner zu gewinnen. Nichts bindet die beiden aneinander; als
+  Paket `0165` vorgeschlagen.
+- 2026-09-06, **die Regel, die beide Wahlen dieses Laufs entschieden hat:** Wo `specs/`
+  eine Adresse **blank** hinschreibt, nimmt die Groesse einen `Zustand`; wo es
+  `lies_alt`/`lies_neu` ausschreibt, den `Schreiber`. Stimmt an allen 23 Deklarationen.
+- 2026-09-06 -- **`werte.hpp` traegt 22 Groessen in 23 Deklarationen.** Nr. 11 hat zwei
+  Stelligkeiten und ist nach T48 *eine* Groesse: Nummern zaehlen, nicht Zeilen. Das
+  Zahlwort steht sechsmal im Kopf, nicht dreimal wie das Paket sagt.
+
+## Riegel und fremde Laeufe, zusammen gelesen
+
+- 2026-09-06, **die Lehre dieses Laufs** -- **Ein Paket kann eine Vorgabe verlangen, die
+  ein Riegel verbietet.** 0152 verlangte woertlich einen Kommentar „mit Verweis auf
+  `technik.md` Zeile 3262"; genau das faengt der Belegstellenriegel. Der Riegel gewinnt,
+  weil er ein Bautor ist. Ersatz ist der **benannte Abschnitt** statt der Nummer -- kein
+  Zitat, keine Zahl.
+- 2026-09-06 -- **Ein roter Riegel am Arbeitsbaum ist nicht automatisch deiner.** Erster
+  Lauf: beide rot. Zwei Befunde waren meine, der Rest kam aus `verlauf.hpp`, an dem ein
+  Fremdlauf schrieb -- und `belegstellen_riegel.cpp` **selbst** war in derselben Minute
+  geaendert. Billiger Nachweis: `git diff --numstat` ueber das Vorhaben. Stehen dort
+  fremde Dateien, ist der Befund fremd; zweiter Lauf beide Code 0, ohne sie anzufassen.
+- 2026-09-06 -- **Eine Baumkopie ohne `befunde/` ist kein Bezugsstand fuer den
+  Belegstellenriegel.** Er prueft Verweisziele am Ort und meldet jedes Zitat nach
+  `befunde/...` als toten Verweis. Verlinken statt weglassen -- oder am Arbeitsbaum messen.
+- 2026-09-06 -- **Ein Zwischenstand meiner Datei war fuer eine Weile ein roter Bau eines
+  fremden Laufs** (Feld in `Konstanten` angelegt, positionale Initialisierer noch nicht
+  nachgezogen). Struktur und **alle** ihre Aggregatinitialisierer gehoeren in einen
+  Aufruf; `grep` auf den Nachbarfeldnamen findet sie.

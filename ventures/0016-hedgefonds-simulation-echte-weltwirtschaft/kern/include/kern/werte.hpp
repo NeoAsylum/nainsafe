@@ -1,5 +1,5 @@
 #pragma once
-//! `kern::werte` -- die siebzehn abgeleiteten Groessen aus T48 und die drei
+//! `kern::werte` -- die zweiundzwanzig abgeleiteten Groessen aus T48 und die drei
 //! Skalenuebergaenge aus T50.
 //!
 //! Vorgaben: T47 (das Fondsvermoegen ist genau eine Funktion), T48 (die abgeleiteten
@@ -13,7 +13,8 @@
 //!
 //! T48 sagt den Zweck in einem Satz: Ein Name in einer Formel der Vorgaben, der weder
 //! eine Zustandsadresse noch ein Parameterschluessel noch eine Jahrgangskonstante noch
-//! eine der siebzehn Groessen hier ist, **ist ein Befund und keine Bauentscheidung**.
+//! eine der zweiundzwanzig Groessen hier ist, **ist ein Befund und keine
+//! Bauentscheidung**.
 //! Waehlt der Bauagent, misst Mass 2 seine Wahl. Genau das war Befund 1 der sechsten
 //! Entwurfspruefung: `korbwert` und `positionswert` standen in einer Formel und wurden
 //! nirgends gebildet -- und der Abzaehlschritt aus T45 konnte die Luecke nicht finden,
@@ -25,14 +26,21 @@
 //! dieses Kopfes gegen die Tabelle aus T48 gelegt. Gezaehlt werden **Funktionen** --
 //! in Rust waere es ein Mustervergleich auf die oeffentlichen Funktionen, in C++ ist
 //! es der Kopf, weil dort und nur dort steht, was das Modul nach aussen anbietet.
-//! Unten stehen siebzehn, in der Reihenfolge der Tabelle aus T48 und mit deren
+//! Unten stehen zweiundzwanzig, in der Reihenfolge der Tabelle aus T48 und mit deren
 //! laufender Nummer davor.
 //!
-//! `Konstanten` ist keine achtzehnte Groesse, sondern der Traeger der Zahlen, die die
-//! Formeln aus T47 und T48 **neben** dem Zustand nennen. Ohne ihn muesste jede der
-//! siebzehn Funktionen sie einzeln durchreichen, und `fondsvermoegen` haette sechs
-//! gleichartige Zahlenargumente in einer Reihe, in der eine Verwechslung nicht
-//! auffiele.
+//! **Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen, und der Unterschied ist
+//! genau einer.** Nr. 11 traegt zwei Stelligkeiten -- `handelsvolumen(l, s)` und ihre
+//! Summe `handelsvolumen(l)` --; T48 nennt sie "nicht zwei Definitionen desselben
+//! Namens, sondern eine Definition und ihre Aggregation" und zaehlt sie als **eine**
+//! Groesse. Wer den Kopf gegen die Tabelle legt, zaehlt deshalb Nummern und nicht
+//! Zeilen; die beiden Fassungen stehen unter derselben Nummer nebeneinander.
+//!
+//! `Konstanten` ist keine dreiundzwanzigste Groesse, sondern der Traeger der Zahlen,
+//! die die Formeln aus T47 und T48 **neben** dem Zustand nennen. Ohne ihn muesste jede
+//! der zweiundzwanzig Funktionen sie einzeln durchreichen, und `fondsvermoegen`
+//! haette sechs gleichartige Zahlenargumente in einer Reihe, in der eine
+//! Verwechslung nicht auffiele.
 //!
 //! ## Was hier ausdruecklich NICHT steht
 //!
@@ -101,6 +109,16 @@ struct Konstanten {
     /// Schaden). Gelesen allein vom dritten Skalenuebergang aus T50.
     zustand::i64 gegenlobby_satz = 0;
 
+    /// Schluessel `regulierung_last` -- T5 Klasse 3 (Raten, Basispunkte des
+    /// Bruttoinlandsprodukts je Regulierungsstufe). Gelesen allein von der
+    /// Regulierungszeile der Schadensvorschrift (T48 Nr. 22).
+    ///
+    /// Er ist der Grund, warum jene Zeile trotz ihrer Klasse 10 denselben Nenner 10.000
+    /// hat wie die drei anderen: Stufen mal Basispunkten je Stufe sind wieder
+    /// Basispunkte, also Klasse 3 -- dieselbe Klasse wie die Verschiebung der beiden
+    /// mittleren Zeilen (T48, T27).
+    zustand::i64 regulierung_last = 0;
+
     /// Der Leitzins des Startjahrs je spielbarem Land -- T5 Klasse 3.
     ///
     /// **Keine Kalibriergroesse, sondern eine Messung**, und deshalb steht sie nach
@@ -131,7 +149,7 @@ struct Konstanten {
 };
 
 // ---------------------------------------------------------------------------
-// Die siebzehn Groessen aus T48, in der Reihenfolge seiner Tabelle
+// Die zweiundzwanzig Groessen aus T48, in der Reihenfolge seiner Tabelle
 // ---------------------------------------------------------------------------
 //
 // Die Argumentnamen folgen den Buchstaben der Vorgaben, und der Unterschied ist
@@ -208,12 +226,27 @@ struct Konstanten {
 /// nicht der Betrag -- daher der Umweg ueber `bip`.
 [[nodiscard]] zustand::i64 schuld(const zustand::Zustand& z, zustand::Gebiet land);
 
-/// **T48 Nr. 11** -- `handelsvolumen(l)`: Summe ueber die 4 Gegenueber `g` und die 2
-/// handelbaren Sektoren `s` von `handel[l][g][s] + handel[g][l][s]`. T5 Klasse 2.
+/// **T48 Nr. 11, zweistellig** -- `handelsvolumen(l, s)`: Summe ueber die 4 Gegenueber
+/// `g` von `handel[l][g][s] + handel[g][l][s]`. T5 Klasse 2.
 ///
 /// **Beide Richtungen je Paar** -- Aus- plus Einfuhr. Die Zuordnung des dichten
 /// Gegenueber-Index zum Gebietsindex steht in `src/werte.cpp` als benannte Tabelle und
 /// nicht als Rechnung auf Indizes (T48).
+///
+/// Nur die zwei handelbaren Sektoren: Der dritte hat nach T15 keine Handelszeile, und
+/// ein Handelsvolumen ohne Handelszeile waere eine Summe ueber nichts. Er bricht hier
+/// ab und nicht erst im Zustand.
+[[nodiscard]] zustand::i64 handelsvolumen(const zustand::Zustand& z, zustand::Gebiet land,
+                                          zustand::Sektor sektor);
+
+/// **T48 Nr. 11, einstellig** -- `handelsvolumen(l)`: die Summe der zweistelligen
+/// Fassung ueber s in {1, 2}. T5 Klasse 2.
+///
+/// **Zwei Stelligkeiten und eine Groesse** (T48): nicht zwei Definitionen desselben
+/// Namens, sondern eine Definition und ihre Aggregation. Die Richtung ist vorgegeben --
+/// die einstellige ruft die zweistellige und nicht umgekehrt --, und daran haengt, dass
+/// die Zollzeile von Gegenkraft 5 je Sektor rechnen kann, ohne dass Nr. 4 sich aendert:
+/// Dort steht weiterhin diese Fassung, und sie bedeutet weiterhin dasselbe.
 [[nodiscard]] zustand::i64 handelsvolumen(const zustand::Zustand& z, zustand::Gebiet land);
 
 /// **T48 Nr. 12** -- `anleihekurs(l) = teile_gerundet(10.000 * (leitzins_start[l] +
@@ -372,5 +405,83 @@ struct Konstanten {
 [[nodiscard]] zustand::i64 preishub_zoll(const schreiber::Schreiber& rundenschreiber,
                                          const Konstanten& konst, zustand::Gebiet land,
                                          zustand::Sektor sektor);
+
+/// **T48 Nr. 21** -- `weltpreis_mit_zoll(g, s) = mal_geteilt(welt.preis.<s>, 10.000 +
+/// zollstand(g), 10.000)`. T5 Klasse 5.
+///
+/// Der Weltpreis, wie ihn ein Gebiet sieht: das Niveau mal dem Zollfaktor. Ihr Leser
+/// ist die Marktraeumung aus T28, nicht Gegenkraft 5 -- dort steht sie im Zaehler der
+/// Preismischung, und der Zollkeil der Gegenkraft ist Nr. 19.
+///
+/// **Der Keil ist multiplikativ, und das ist keine Wahl.** Der Zollstand steht nach T5
+/// in Klasse 3 (Basispunkte), der Weltpreis in Klasse 5 (Index); eine Summe zweier
+/// Klassen kennt T5 nicht. Eine Rate trifft ein Niveau in diesem Modell ausnahmslos
+/// als Faktor, wie in `schuld = mal_geteilt(bip, staatsschuld, 10.000)`.
+///
+/// **Alle fuenf Gebiete, und der Zollstand der Restwelt ist die Null.** Sie nimmt an
+/// der Preisuebertragung teil -- `durchgriff` traegt nach T23 Punkt 5 zehn Werte, also
+/// auch ihre Zeile --, hat aber nach T15 kein Politikinstrument. `zollstand(RW)` ist
+/// deshalb keine Adresse, sondern die Zahl null, und diese Groesse liest fuer sie
+/// nichts.
+///
+/// **Der Vorbehalt gehoert an die Funktion und wird hier nicht aufgeloest.**
+/// `technik.md` meldet ihn bei T48 selbst, im Absatz ueber den Definitionsbereich
+/// dieser Nummer: Er steht weder in T28 noch in `spiel.md` ausgeschrieben. Der
+/// Architekt hat ihn aus dem Wort "je Gebiet" und aus
+/// der Zahl zehn gelesen und meldet die Stelle selbst als die eine, an der er einem
+/// Pruefer widerspruchslos folgen wuerde. Laeuft die Marktraeumung in Wahrheit nur
+/// ueber die vier spielbaren Laender, ist die Restweltzeile ueberfluessig und nicht
+/// falsch. Das ist eine Entwurfsfrage.
+///
+/// **Ein `Zustand` und kein `Schreiber`**, anders als bei Nr. 13 und Nr. 18 bis 20:
+/// T48 und `spiel.md` schreiben beide Adressen dieser Formel blank hin, waehrend sie
+/// dort `lies_alt` oder `lies_neu` ausschreiben, wo die Leseart das Ergebnis aendert.
+/// Dazu kommt der eine benannte Leser: Die Marktraeumung sucht den Weltpreis gerade
+/// erst, an ihrer Stelle gibt es weder einen alten noch einen neuen Stand von
+/// `welt.preis.<s>`.
+[[nodiscard]] zustand::i64 weltpreis_mit_zoll(const zustand::Zustand& z,
+                                             zustand::Gebiet gebiet, zustand::Sektor sektor);
+
+/// **T48 Nr. 22** -- `schaden(l, i) = mal_geteilt(menge(l, i), verschiebung(l, i),
+/// 10.000)`, vier Zeilen. T5 Klasse 2.
+///
+/// Der Lobbyschaden eines Politikschritts in einer Runde: der Preis, den das Instrument
+/// setzt, mal der Menge, auf die er wirkt -- beides an der Rundengrenze gemessen. Die
+/// vier Zeilen aus `spiel.md`, mit Menge und Verschiebung in dieser Reihenfolge:
+///
+///   * `zoll`        -- `handelsvolumen(l, s)` mal `preishub_zoll(l, s)`, summiert
+///                      ueber s in {1, 2}
+///   * `leitzins`    -- `schuld(l)` mal `hub(l, leitzins)`
+///   * `haushalt`    -- `bip(l)` mal `hub(l, haushalt)`
+///   * `regulierung` -- `bip(l)` mal `hub(l, regulierung)` mal `regulierung_last`
+///
+/// **Eine Funktion mit vier Zeilen und nicht vier Funktionen** (T48), weil das Ergebnis
+/// in allen vier Faellen Klasse 2 ist und die Stelligkeit dieselbe. Die Summe ueber die
+/// Sektoren steht **innerhalb** der Zollzeile; nach aussen gibt auch sie eine Zahl je
+/// Land und Instrument, und das ist die Zahl, die der dritte Skalenuebergang aus T50
+/// entgegennimmt.
+///
+/// **`menge` und `verschiebung` gibt es hier nicht, und das ist eine Vorgabe.** T48
+/// begruendet sie aus T5 selbst: `verschiebung` steht in der Zollzeile in Klasse 5 und
+/// in den drei uebrigen in Klasse 3, hat also kein einheitliches Ergebnis, das sich
+/// deklarieren liesse; `menge` ist immer Klasse 2, ist aber in der Zollzeile eine Zahl
+/// je Sektor und sonst eine je Land. Beide sind Spaltenueberschriften einer Tabelle mit
+/// vier Zeilen und keine Groessen -- eine gemeinsame Funktion muesste sich entweder
+/// eine Klasse oder ein Argument ausdenken. Die Fallunterscheidung liegt deshalb
+/// **innen**, dieselbe Bauart wie `markt(p)` (Nr. 5) mit den drei Steckplatzarten.
+///
+/// **Zwei Zustandseingaenge, und beide sind gebraucht.** `hub` und `preishub_zoll`
+/// brauchen nach T39 den alten *und* den neuen Stand, also den Schreiber; `bip`,
+/// `schuld` und `handelsvolumen` nennen ihre Adressen blank und nehmen einen `Zustand`,
+/// aus dem sich der Schreiber nicht gewinnen laesst. `z` traegt die Mengen, die
+/// `spiel.md` an der Rundengrenze liest. Dieselbe Bauart wie `marktkorb`, das aus
+/// demselben Grund zwei Zustaende nimmt und beide benennt.
+///
+/// Ein fuenftes Instrument faellt in keine der vier Zeilen, sondern bricht ab -- und
+/// die Meldung nennt `schaden` und nicht die Groesse darunter.
+[[nodiscard]] zustand::i64 schaden(const zustand::Zustand& z,
+                                   const schreiber::Schreiber& rundenschreiber,
+                                   const Konstanten& konst, zustand::Gebiet land,
+                                   zustand::Instrument instrument);
 
 }  // namespace kern::werte

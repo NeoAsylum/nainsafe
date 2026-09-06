@@ -237,9 +237,11 @@ using kern::werte::markt;
 using kern::werte::marktkorb;
 using kern::werte::positionswert;
 using kern::werte::preishub_zoll;
+using kern::werte::schaden;
 using kern::werte::schuld;
 using kern::werte::stufenwert;
 using kern::werte::waehrungswert;
+using kern::werte::weltpreis_mit_zoll;
 using kern::werte::wert;
 
 /// Ein brauchbarer Konstantensatz fuer die Proben. Die Zahlen sind gewaehlt und nicht
@@ -252,6 +254,7 @@ constexpr Konstanten K_GRUND{
     /* aufschlag         */ 51,
     /* lobbykosten       */ 100,
     /* gegenlobby_satz   */ 3,
+    /* regulierung_last  */ 7,
     /* leitzins_start    */ {{0, 0, 0, 0}},
 };
 
@@ -1055,6 +1058,7 @@ constexpr Konstanten K_ZOLL{
     /* aufschlag         */ 51,
     /* lobbykosten       */ 100,
     /* gegenlobby_satz   */ 3,
+    /* regulierung_last  */ 7,
     /* leitzins_start    */ {{0, 0, 0, 0}},
     /* durchgriff        */ {{
         /* US */ {{1'000, 2'000}},
@@ -1374,6 +1378,316 @@ void probe_zollkeil_raender()
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
 }
 
+// ---------------------------------------------------------------------------
+// T48 Nr. 11 -- beide Stelligkeiten, und die eine ist aus der anderen gebildet
+// ---------------------------------------------------------------------------
+
+/// Legt die acht Handelsadressen eines Landes in einem Sektor auf denselben Wert --
+/// vier Gegenueber mal zwei Richtungen. Das Handelsvolumen des Landes in diesem Sektor
+/// ist danach das Achtfache.
+void lege_handel_ringsum(Rohling& r, Gebiet land, Sektor sektor, i64 je_adresse)
+{
+    for (std::size_t n = 0; n < GEBIETE; ++n) {
+        const Gebiet gegenueber = static_cast<Gebiet>(n);
+        if (gegenueber == land) { continue; }
+        r.lege(stelle_handel(land, gegenueber, sektor), je_adresse);
+        r.lege(stelle_handel(gegenueber, land, sektor), je_adresse);
+    }
+}
+
+void probe_handelsvolumen_beide_stelligkeiten()
+{
+    Rohling r;
+    // Zwei **verschiedene** Sektorvolumen, und das ist die Voraussetzung der Aussage
+    // darunter: Waeren sie gleich, bestuende die Summe auch gegen eine Fassung, die
+    // einen Sektor doppelt zaehlt oder den anderen gar nicht liest.
+    lege_handel_ringsum(r, Gebiet::DE, Sektor::Landwirtschaft, 5'000'000);
+    lege_handel_ringsum(r, Gebiet::DE, Sektor::Industrie, 12'500'000);
+    const Zustand& z = r;
+
+    // Acht Adressen je Sektor, von Hand: 8 x 5.000.000 und 8 x 12.500.000.
+    PRUEFE(handelsvolumen(z, Gebiet::DE, Sektor::Landwirtschaft) == 40'000'000);
+    PRUEFE(handelsvolumen(z, Gebiet::DE, Sektor::Industrie) == 100'000'000);
+    PRUEFE(handelsvolumen(z, Gebiet::DE, Sektor::Landwirtschaft)
+           != handelsvolumen(z, Gebiet::DE, Sektor::Industrie));
+
+    // Abnahmebedingung 2: die einstellige Fassung gegen die von Hand gebildete Summe
+    // der zweistelligen ueber s in {1, 2}, und zusaetzlich gegen die ausgeschriebene
+    // Zahl -- sonst pruefte die Zeile nur, dass zweimal dasselbe gerechnet wird.
+    PRUEFE(handelsvolumen(z, Gebiet::DE)
+           == handelsvolumen(z, Gebiet::DE, Sektor::Landwirtschaft)
+                  + handelsvolumen(z, Gebiet::DE, Sektor::Industrie));
+    PRUEFE(handelsvolumen(z, Gebiet::DE) == 140'000'000);
+
+    // Der dritte Sektor hat keine Handelszeile. Die Meldung nennt die Groesse und
+    // nicht den Zustand -- `sektor_handelbar` braeche eine Ebene tiefer ab.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(handelsvolumen(z, Gebiet::DE, Sektor::Dienstleistungen));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+
+    // Und die Null, die ausserhalb der drei liegt -- die Sektoren zaehlen ab eins.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(handelsvolumen(z, Gebiet::DE, static_cast<Sektor>(0)));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 0).fertig()));
+
+    // Die Gebietspruefung steht in der zweistelligen Fassung und traegt damit auch die
+    // einstellige, die sie aufruft.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(handelsvolumen(z, static_cast<Gebiet>(5), Sektor::Industrie));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(handelsvolumen(z, static_cast<Gebiet>(5))); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+}
+
+// ---------------------------------------------------------------------------
+// T48 Nr. 21 -- der Weltpreis mit Zollkeil, fuer alle fuenf Gebiete
+// ---------------------------------------------------------------------------
+
+void probe_weltpreis_mit_zoll()
+{
+    Rohling r;
+    r.lege(stelle_weltpreis(Sektor::Landwirtschaft), 11'000);
+    r.lege(stelle_weltpreis(Sektor::Industrie), 10'400);
+    r.lege(zollstand(Gebiet::DE), 380);
+    r.lege(zollstand(Gebiet::US), 1'000);
+    const Zustand& z = r;
+
+    // Von Hand nachgerechnet, mit der Rundungsregel aus T6 (`spiel.md` rechnet den
+    // ersten Fall selbst vor):
+    //   wmz(DE, 1) = 11.000 * (10.000 + 380) / 10.000 = 11.418      glatt
+    //   wmz(DE, 2) = 10.400 * (10.000 + 380) / 10.000 = 10.795,2 -> 10.795
+    PRUEFE(weltpreis_mit_zoll(z, Gebiet::DE, Sektor::Landwirtschaft) == 11'418);
+    PRUEFE(weltpreis_mit_zoll(z, Gebiet::DE, Sektor::Industrie) == 10'795);
+
+    // Der Keil ist ein Faktor und keine Summe: Die additive Lesart ergaebe 11.380 und
+    // 10.780, und das sind andere Zahlen. Ohne diese beiden Zeilen pruefte die Probe
+    // die Entscheidung aus `spiel.md` nicht, sondern nur die Rechnung.
+    PRUEFE(11'000 + 380 != 11'418);
+    PRUEFE(10'400 + 380 != 10'795);
+
+    // Ein anderes Land, ein anderer Zollstand -- der Stand kommt aus der Zeile des
+    // Gebiets und nicht von irgendwo:
+    //   wmz(US, 1) = 11.000 * 11.000 / 10.000 = 12.100
+    PRUEFE(weltpreis_mit_zoll(z, Gebiet::US, Sektor::Landwirtschaft) == 12'100);
+
+    // Die Restwelt: kein Politikinstrument, also Zollstand null und der blanke
+    // Weltpreis. Die beiden Zeilen darueber sind die Gegenprobe dazu -- die Null ist
+    // hier eine Aussage ueber die Restwelt und nicht ueber den Zustand.
+    PRUEFE(weltpreis_mit_zoll(z, Gebiet::RW, Sektor::Landwirtschaft) == 11'000);
+    PRUEFE(weltpreis_mit_zoll(z, Gebiet::RW, Sektor::Industrie) == 10'400);
+
+    // Ein Gebiet ausserhalb der fuenf, unter dem eigenen Namen gemeldet.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(weltpreis_mit_zoll(z, static_cast<Gebiet>(5), Sektor::Industrie));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::weltpreis_mit_zoll"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 5).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+
+    // Der dritte Sektor traegt keinen Weltpreis. Auch hier meldet die Groesse und
+    // nicht `stelle_weltpreis`, das dieselbe Bedingung eine Ebene tiefer prueft.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(weltpreis_mit_zoll(z, Gebiet::DE, Sektor::Dienstleistungen));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::weltpreis_mit_zoll"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+}
+
+// ---------------------------------------------------------------------------
+// T48 Nr. 22 -- die vier Zeilen der Schadensvorschrift, jede einzeln
+// ---------------------------------------------------------------------------
+
+/// Die Adresse eines Instrumentenstands, wie ihn `hub` liest.
+Index instrumentenstand(Gebiet land, Instrument instrument)
+{
+    return stelle_instrument(land, instrument, InstrumentFeld::Stand);
+}
+
+/// Der Zustand der Schadensproben: Zustand A aus `spiel.md` fuer die Zollzeile, dazu
+/// die Mengen und Staende der drei uebrigen. Alle Zahlen sind so gewaehlt, dass die
+/// vier Zeilen **vier verschiedene** Ergebnisse haben -- eine Zeile, die die Menge oder
+/// den Hub einer anderen naehme, faellt damit auf.
+void lege_schadenszustand(Rohling& r)
+{
+    // Zollzeile: 8 x 5.000.000 und 8 x 12.500.000 sind 40.000.000 und 100.000.000.
+    lege_handel_ringsum(r, Gebiet::DE, Sektor::Landwirtschaft, 5'000'000);
+    lege_handel_ringsum(r, Gebiet::DE, Sektor::Industrie, 12'500'000);
+    r.lege(stelle_weltpreis(Sektor::Landwirtschaft), 9'000);
+    r.lege(stelle_weltpreis(Sektor::Industrie), 10'000);
+    r.lege(instrumentenstand(Gebiet::DE, Instrument::Zoll), 380);
+
+    // 200.000 + 300.000 + 500.000 sind ein Bruttoinlandsprodukt von 1.000.000, und
+    // 6.000 Basispunkte davon sind eine Staatsschuld von 600.000. Die beiden Mengen
+    // sind absichtlich verschieden.
+    r.lege(stelle_sektorgroesse(Gebiet::DE, Sektor::Landwirtschaft,
+                                SektorGroesse::Wertschoepfung), 200'000);
+    r.lege(stelle_sektorgroesse(Gebiet::DE, Sektor::Industrie,
+                                SektorGroesse::Wertschoepfung), 300'000);
+    r.lege(stelle_sektorgroesse(Gebiet::DE, Sektor::Dienstleistungen,
+                                SektorGroesse::Wertschoepfung), 500'000);
+    r.lege(stelle_aggregat(Gebiet::DE, Aggregat::Staatsschuld), 6'000);
+
+    r.lege(instrumentenstand(Gebiet::DE, Instrument::Leitzins), 250);
+    r.lege(instrumentenstand(Gebiet::DE, Instrument::Haushalt), 100);
+    r.lege(instrumentenstand(Gebiet::DE, Instrument::Regulierung), 2);
+}
+
+/// Schreibt die Staende dieser Runde. Jeder Hub ist ein anderer, und der Haushalt
+/// bewegt sich abwaerts -- `hub` ist der Betrag und nicht die Differenz.
+void schreibe_schadensrunde(Schreiber& s)
+{
+    s.setze(instrumentenstand(Gebiet::DE, Instrument::Zoll), 430,
+            Ursache::instrument(Gebiet::DE, Instrument::Zoll), 0, 1'000);
+    s.setze(instrumentenstand(Gebiet::DE, Instrument::Leitzins), 300,
+            Ursache::instrument(Gebiet::DE, Instrument::Leitzins), 0, 1'000);
+    s.setze(instrumentenstand(Gebiet::DE, Instrument::Haushalt), 40,
+            Ursache::instrument(Gebiet::DE, Instrument::Haushalt), 0, 1'000);
+    s.setze(instrumentenstand(Gebiet::DE, Instrument::Regulierung), 5,
+            Ursache::instrument(Gebiet::DE, Instrument::Regulierung), 0, 1'000);
+    s.setze(stelle_weltpreis(Sektor::Landwirtschaft), 11'000,
+            Ursache::marktraeumung(Sektor::Landwirtschaft), 0, 1'000);
+    s.setze(stelle_weltpreis(Sektor::Industrie), 10'400,
+            Ursache::marktraeumung(Sektor::Industrie), 0, 1'000);
+}
+
+/// Die Zollzeile -- Zustand A aus `spiel.md`, Summe ueber die beiden Sektoren innen.
+void probe_schaden_zollzeile()
+{
+    Rohling r;
+    lege_schadenszustand(r);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    schreibe_schadensrunde(s);
+
+    // Von Hand, mit der Rundungsregel aus T6 -- dieselben Zahlen wie die Tabelle
+    // "Zwei Zustaende, zwei Zahlen" in `spiel.md`:
+    //   hub(DE, zoll)        = |430 - 380|                    =        50
+    //   preishub_zoll(DE, 1) = 7.288 * (11.000 * 50 / 10.000) / 10.000 = 40
+    //   preishub_zoll(DE, 2) = 5.464 * (10.400 * 50 / 10.000) / 10.000 = 28
+    //   Beitrag 1            =  40.000.000 * 40 / 10.000       =   160.000
+    //   Beitrag 2            = 100.000.000 * 28 / 10.000       =   280.000
+    PRUEFE(schaden(z, s, K_ZOLL, Gebiet::DE, Instrument::Zoll) == 440'000);
+
+    // Die Summe steht **innen und je Sektor**. Wer stattdessen die einstellige Fassung
+    // des Handelsvolumens mit dem Preishub des ersten Sektors verrechnete, bekaeme
+    // 560.000 -- eine andere Zahl, und deshalb prueft die Zeile darueber die Vorgabe
+    // und nicht nur die Rechnung.
+    PRUEFE(mal_geteilt(handelsvolumen(z, Gebiet::DE), 40, 10'000) == 560'000);
+
+    // Zustand B derselben Tabelle: Bewegt sich der Zollstand nicht, ist der Schaden
+    // exakt null -- fuer jeden Weltpreis und jedes Handelsvolumen. Die Gegenprobe
+    // voran, dass die Weltpreise sich sehr wohl bewegt haben.
+    Rohling ruhe;
+    lege_schadenszustand(ruhe);
+    const Zustand& zr = ruhe;
+    Schreiber sr{zr, Modus::Spielmodus, 1};
+    sr.vortrag(instrumentenstand(Gebiet::DE, Instrument::Zoll));
+    sr.setze(stelle_weltpreis(Sektor::Landwirtschaft), 11'000,
+             Ursache::marktraeumung(Sektor::Landwirtschaft), 0, 1'000);
+    sr.setze(stelle_weltpreis(Sektor::Industrie), 10'400,
+             Ursache::marktraeumung(Sektor::Industrie), 0, 1'000);
+    PRUEFE(sr.lies_neu(stelle_weltpreis(Sektor::Landwirtschaft)) == 11'000
+           && sr.lies_alt(stelle_weltpreis(Sektor::Landwirtschaft)) == 9'000);
+    PRUEFE(handelsvolumen(zr, Gebiet::DE) == 140'000'000);
+    PRUEFE(schaden(zr, sr, K_ZOLL, Gebiet::DE, Instrument::Zoll) == 0);
+}
+
+/// Die drei uebrigen Zeilen -- jede mit ihrer eigenen Menge und ihrem eigenen Hub.
+void probe_schaden_drei_uebrige_zeilen()
+{
+    Rohling r;
+    lege_schadenszustand(r);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    schreibe_schadensrunde(s);
+
+    // Die Mengen und die Hube, von Hand und einzeln -- damit die vier Zahlen unten
+    // nachrechenbar sind, ohne die Funktion selbst zu befragen.
+    PRUEFE(bip(z, Gebiet::DE) == 1'000'000);
+    PRUEFE(schuld(z, Gebiet::DE) == 600'000);
+    PRUEFE(hub(s, Gebiet::DE, Instrument::Leitzins) == 50);
+    PRUEFE(hub(s, Gebiet::DE, Instrument::Haushalt) == 60);
+    PRUEFE(hub(s, Gebiet::DE, Instrument::Regulierung) == 3);
+
+    // Leitzins: die Staatsschuld, nicht das Bruttoinlandsprodukt.
+    //   600.000 * 50 / 10.000 = 3.000
+    PRUEFE(schaden(z, s, K_ZOLL, Gebiet::DE, Instrument::Leitzins) == 3'000);
+    // Mit dem Bruttoinlandsprodukt statt der Schuld stuende hier 5.000.
+    PRUEFE(mal_geteilt(bip(z, Gebiet::DE), 50, 10'000) == 5'000);
+
+    // Haushalt: das Bruttoinlandsprodukt und der eigene Hub.
+    //   1.000.000 * 60 / 10.000 = 6.000
+    PRUEFE(schaden(z, s, K_ZOLL, Gebiet::DE, Instrument::Haushalt) == 6'000);
+
+    // Regulierung: Stufen mal Basispunkten je Stufe. `regulierung_last` steht in
+    // `K_ZOLL` auf 7.
+    //   1.000.000 * (3 * 7) / 10.000 = 2.100
+    PRUEFE(schaden(z, s, K_ZOLL, Gebiet::DE, Instrument::Regulierung) == 2'100);
+
+    // Und der Nachweis, dass die Zeile den Schluessel liest und kein Literal traegt:
+    // Der doppelte Satz verdoppelt den Schaden.
+    Konstanten doppelt = K_ZOLL;
+    doppelt.regulierung_last = 14;
+    PRUEFE(schaden(z, s, doppelt, Gebiet::DE, Instrument::Regulierung) == 4'200);
+    // Ein Satz von null macht sie stumm -- die Gegenrichtung derselben Aussage.
+    Konstanten ohne = K_ZOLL;
+    ohne.regulierung_last = 0;
+    PRUEFE(schaden(z, s, ohne, Gebiet::DE, Instrument::Regulierung) == 0);
+
+    // Die vier Zeilen sind vier Zahlen. Ohne diese Bedingung bestuenden die vier
+    // Zeilen darueber auch gegen eine Fassung, die zweimal dieselbe Zeile nimmt.
+    PRUEFE(schaden(z, s, K_ZOLL, Gebiet::DE, Instrument::Zoll) == 440'000);
+    PRUEFE(440'000 != 3'000 && 3'000 != 6'000 && 6'000 != 2'100);
+}
+
+/// Die Raender von Nr. 22 -- und beide melden unter dem eigenen Namen.
+void probe_schaden_raender()
+{
+    Rohling r;
+    lege_schadenszustand(r);
+    const Zustand& z = r;
+    Schreiber s{z, Modus::Spielmodus, 1};
+    schreibe_schadensrunde(s);
+
+    // Positivkontrolle voran: Derselbe Aufruf rechnet mit einem der vier Instrumente.
+    PRUEFE(schaden(z, s, K_ZOLL, Gebiet::DE, Instrument::Haushalt) == 6'000);
+
+    // Ein fuenftes Instrument faellt in keine der vier Zeilen. Die Meldung nennt
+    // `schaden` und **nicht** `hub`, das dieselbe Kennung eine Ebene tiefer
+    // zurueckwiese -- sonst suchte der Leser den Fehler in der falschen Groesse.
+    PRUEFE(hat_abgebrochen([&] {
+        static_cast<void>(schaden(z, s, K_ZOLL, Gebiet::DE, static_cast<Instrument>(9)));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::schaden"));
+    PRUEFE(enthaelt(letzte_meldung.data(),
+                    erwarteter_ausschnitt("Instrumentenkennung ", 9).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+
+    // Die Restwelt hat keine Politikinstrumente. Der Riegel steht **vor** der
+    // Zollzeile, also nennt die Meldung nicht `preishub_zoll`.
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(schaden(z, s, K_ZOLL, Gebiet::RW, Instrument::Zoll)); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::schaden"));
+    PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 4).fertig()));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::preishub_zoll"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+
+    // Dasselbe fuer eine Zeile ohne Sektorschleife -- sonst waere nur belegt, dass
+    // eine der vier den Riegel vor sich hat.
+    PRUEFE(hat_abgebrochen(
+        [&] { static_cast<void>(schaden(z, s, K_ZOLL, Gebiet::RW, Instrument::Leitzins)); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::schaden"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+}
+
 }  // namespace
 
 int main()
@@ -1408,6 +1722,13 @@ int main()
     probe_zollkeil_rundet_zweimal();
     probe_zollkeil_ohne_aktion_ist_null();
     probe_zollkeil_raender();
+
+    // Paket 0152 -- T48 Nr. 11 in beiden Stelligkeiten sowie Nr. 21 und Nr. 22.
+    probe_handelsvolumen_beide_stelligkeiten();
+    probe_weltpreis_mit_zoll();
+    probe_schaden_zollzeile();
+    probe_schaden_drei_uebrige_zeilen();
+    probe_schaden_raender();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);
