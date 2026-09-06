@@ -10,30 +10,29 @@ empfehlung: Weltbank WDI (CC BY 4.0) als Kern, IWF-Statistikdaten fuer Zins, Wec
 
 # Ja: Vier Quellen erlauben im Wortlaut, die Daten in ein verkauftes Produkt einzubetten und mitzuliefern -- und sie decken den Kern des Modells ab.
 
-## Die Sperrfrage
+## The blocking question
 
-**Geloest.** Weltbank (CC BY 4.0), Penn World Table 11.0 (CC BY 4.0) und CEPII BACI
-(Etalab Open Licence 2.0) erlauben ausdruecklich Vervielfaeltigung, Weitergabe und
-gewerbliche Nutzung; der IWF erlaubt fuer seine Statistikdaten wortwoertlich das
-Verkaufen. Damit ist keine Ausweichkonstruktion noetig: Das Spiel darf die Startjahrgaenge
-enthalten und offline laufen, und die vierte Pruefachse aus `agentenbau.md` steht offen.
+**Solved.** The World Bank (CC BY 4.0), Penn World Table 11.0 (CC BY 4.0) and CEPII BACI
+(Etalab Open Licence 2.0) expressly permit reproduction, redistribution and commercial
+use; for its statistical data, the IMF in its literal wording permits selling. So no
+workaround construction is needed: the game may contain the starting vintages and run
+offline, and the fourth check axis from `agentenbau.md` stands open.
 
-Es haengt an zwei Auflagen, die den Entwurf beruehren, nicht nur das Impressum: Alle vier
-verlangen Namensnennung **und** die Kennzeichnung von Aenderungen -- und ein
-Wirtschaftsmodell veraendert Daten von Bauart wegen (Aggregation auf zwoelf Laender,
-Umrechnung in Ganzzahlen). Der Hinweistext muss das benennen, nicht nur die Quelle.
+It hinges on two conditions that touch the design, not just the legal notice: all four
+require attribution **and** the marking of changes -- and an economic model changes data
+by construction (aggregation to twelve countries, conversion to integers). The notice
+text must name that, not just the source.
 
-Was **nicht** geht, ist ebenso klar und war die eigentliche offene Frage der Idee:
-**UN Comtrade darf im Rohzustand nicht mitgeliefert werden**, ebenso wenig FRED, WTO und
-WITS. Der Ausweg fuer die bilateralen Handelsstroeme ist CEPII BACI -- eine aus Comtrade
-abgeleitete, bereinigte Fassung, die unter freier Lizenz steht und die Comtrade-Auflage
-nach deren eigener Auskunft nicht mehr traegt. Das ist der wichtigste Einzelfund dieses
-Laufs.
+What does **not** work is just as clear, and it was the idea's actual open question:
+**UN Comtrade must not be shipped in raw form**, and neither may FRED, WTO and WITS. The
+way out for the bilateral trade flows is CEPII BACI -- a cleaned version derived from
+Comtrade, which stands under a free licence and, by Comtrade's own account, no longer
+carries the Comtrade condition. That is the most important single find of this run.
 
-**Zur Belegfuehrung:** `imf.org`, `oecd.org` und `fred.stlouisfed.org` haben den direkten
-Seitenabruf mit HTTP 403 abgewiesen, `web.archive.org` ist nicht erreichbar. Wo unten ein
-Zitat aus einem Wortlaut-Suchtreffer statt aus einem eigenen Seitenabruf stammt, steht das
-dabei. Das ist ein schwaecherer Beleg, und ich markiere ihn als solchen.
+**On the evidence:** `imf.org`, `oecd.org` and `fred.stlouisfed.org` rejected direct page
+retrieval with HTTP 403, and `web.archive.org` is unreachable. Where a quotation below
+comes from a verbatim search hit rather than from my own page retrieval, that is stated
+alongside it. That is weaker evidence, and I mark it as such.
 
 ## Quellen einzeln
 
