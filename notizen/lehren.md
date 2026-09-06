@@ -367,3 +367,27 @@ was die Belege ergaben, nicht die Belege.
   `nach-aufraeumen.py` hat `dashboard` erfolgreich importiert und „keine Befunde" gemeldet
   — während dasselbe Skript beim Ausführen scheiterte. Alle dreißig Minuten, still, eine
   Stunde lang. Ein Import beweist, dass eine Datei syntaktisch heil ist, sonst nichts.
+
+- **2026-09-06** — **Die Shell-Grenze der Fabrik gab es nie.** `README.md` und `lehren.md`
+  behaupteten seit dem 2026-08-30: „Keine Rolle hat eine Shell", nachgemessen. Gemessen
+  war damals etwas anderes — dass ein `Bash(...)`-*Eintrag* jede `Edit()`-Sperre umgeht.
+  Daraus wurde der Schluss gezogen, *ohne* Eintrag gebe es keine Shell. Der Schluss war
+  falsch: `--allowedTools` **erlaubt vorab, es beschränkt nicht.** Im Modus `dontAsk`
+  läuft alles, was nicht ausdrücklich in `--disallowedTools` steht.
+
+  Gemessen am 2026-09-06 mit den exakten Schaltern des `kernbauer`: Umleitung
+  (`echo > specs/…`) und `python3 -c` legten Dateien **außerhalb seiner Edit()-Pfade**
+  an, null Verweigerungen. Nur `tee` scheiterte — weil `Bash(tee:*)` einzeln in `NIE`
+  stand. Die Sperrliste sperrte Befehlsanfänge, die Shell stand offen.
+
+  *Was das erklärt, rückwirkend:* die Schattenkopien des ganzen Vorhabens unter `bau/`,
+  den 329-Dateien-Commit, die Logbücher voller Kataloge, „welcher Aufruf durchgeht" (53
+  Fassungen in drei Tagen), und die Meldungen „`Write` auf `.cpp` abgelehnt, auf `.md`
+  angenommen" — das war der Inhaltsklassifikator des Sandkastens, keine Grenze.
+
+  *Folgerung:* `"Bash"` als Ganzes in `NIE`. Gegenprobe mit denselben drei Wegen: keine
+  Datei entsteht. Der Runner erzeugt, was ein Agent an Werkzeugausgabe braucht.
+
+  *Die eigentliche Lehre:* **Eine Grenze, die man nie von der falschen Seite geprüft
+  hat, ist eine Vermutung.** Geprüft wurde, ob ein erlaubter Aufruf durchgeht. Nie, ob
+  ein verbotener scheitert.

@@ -43,6 +43,21 @@ MODUS = "dontAsk"
 # Zweite Verteidigungslinie: was kein Agent jemals darf, unabhaengig von seiner Rolle.
 # Deny sticht Allow, auch wenn eine Rolle sich das Werkzeug in ihr Frontmatter schreibt.
 NIE = [
+    # **Bash als Ganzes.** Gemessen am 2026-09-06 mit den exakten Schaltern der Fabrik
+    # (Werkzeugliste des kernbauer, diese Sperrliste, Modus dontAsk): Der Agent legte per
+    # `echo > specs/...` und per `python3 -c` Dateien AUSSERHALB seiner Edit()-Pfade an --
+    # null Verweigerungen. Nur `tee` scheiterte, weil `Bash(tee:*)` unten steht.
+    #
+    # `--allowedTools` erlaubt vorab, es beschraenkt nicht. Im Modus dontAsk laeuft alles,
+    # was nicht ausdruecklich hier steht. Die Zeilen darunter sperrten also einzelne
+    # Befehlsanfaenge, waehrend die Shell selbst offen stand -- und das Repo beschrieb
+    # seit dem 2026-08-30 eine Grenze, die es nie gab ("Keine Rolle hat eine Shell").
+    # Daher kamen die Schattenkopien unter bau/, die 329-Dateien-Commits und die
+    # Logbuecher voller Katalogen, welcher Aufruf "durchgeht".
+    #
+    # Was ein Agent an Werkzeugausgabe braucht, erzeugt der Runner (Compiler, Tests,
+    # Berichte) und legt es als Datei hin. Die Zeilen darunter bleiben als zweite Linie.
+    "Bash",
     # Regel 1 und 2 aus CLAUDE.md -- kein Geld ausgeben, nichts nach aussen schreiben.
     "Bash(git push:*)",
     "Bash(git remote:*)",
