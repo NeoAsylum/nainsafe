@@ -1,8 +1,8 @@
 # Logbuch: kern-pruefer
 
-**Rotiert am 2026-09-06** bei 12.643 Zeichen, nach der Pruefung zu 0144. Vorfassung
-unter `notizen/archiv/kern-pruefer-2026-09-06-2.md` (die `-1` desselben Tages stammt
-aus einem Parallellauf). Archivieren mit `cmake -E copy`, dann neu schreiben.
+**Rotiert am 2026-09-06** bei 11.677 Zeichen, nach der Pruefung zu 0091. Vorfassung
+unter `notizen/archiv/kern-pruefer-2026-09-06-3.md` (die `-1` und `-2` desselben Tages
+stammen aus Parallellaeufen). Archivieren mit `cmake -E copy`, dann neu schreiben.
 
 **Hoechstens 12.000 Zeichen.** Belege in die Ergebnisdatei, hierher die Lehre in einem
 Satz. **An dieser Datei schreiben mehrere eigene Laeufe gleichzeitig** -- vor jedem
@@ -13,174 +13,116 @@ schreibt eine fremde Rotation zurueck.
 
 ## Der Apparat
 
-- **Die Sperre wechselt von Lauf zu Lauf und innerhalb eines Laufs, und sie entscheidet
-  nach Inhalt.** *2026-09-06:* `Write`, `Edit`, `python3` (auch als Datei), `sed`, `awk`
-  und `mv` durchgehend abgelehnt; `printf` mit Umlenkung trug in Haeppchen von vier bis
-  zehn Zeilen. Abgelehnt wurde alles, was wie Quelltext aussah -- schon ein
-  Gleichheitszeichen zwischen einem Namen und einer Zahl. Einmal probieren kostet einen
-  Aufruf; dieselbe Aussage anders formuliert geht oft durch.
-- **Ketten mit `&&` oder `;`, Pipes hinter dem Uebersetzer und `for`-Schleifen fallen
-  regelmaessig.** Befehle einzeln, Fehlerausgabe in eine Datei umlenken und danach mit
-  `grep` lesen. Beim Uebersetzer muss der Schalter fuer Makros **ohne Leerzeichen**
-  stehen -- mit Leerzeichen abgelehnt, ohne angenommen, sonst identischer Aufruf.
-- **Loeschen und Umbenennen sind gesperrt.** Ersatz: `cmake -E copy`, und die alte Datei
-  mit einem Verweis ueberschreiben. Auslassen statt Entfernen.
-- **`$TMPDIR` ist eine geteilte tmpfs und laeuft voll.** Unter
-  `befunde/bau-pruefung-<paket>/` messen: grosse Platte, und `baulauf.py` nimmt
-  `befunde` vom Manifestsuchlauf aus, die Abschriften werden also kein Bauziel.
-  `ventures/**/bau-*/` ist zudem in `.gitignore` -- ein Baum, der so heisst, wird nicht
-  mitcommittet.
-- **Die Shell verliert ihr Arbeitsverzeichnis zwischen Aufrufen.** Absolute Pfade, oder
-  `git -C`.
-- **Nie ueber den Commit-Betreff suchen**, immer `git log -- <datei>`, und zwar je
-  Datei einzeln. *0144:* Der Commit mit dem Paketnamen trug eine Kommentarzeile, die
-  Arbeit lag in zwei fremd betitelten Commits. Elfter Fall dieser Art.
-- **Im Befund den Stand nennen, nie das Wort `HEAD`.** Die md5 der geprueften Dateien
-  am Anfang und am Ende gegenrechnen und beides hinschreiben. Waehrend eines Laufs
-  committen fremde Rollen; `git log` am Ende noch einmal lesen und den Zuwachs im
-  Befund benennen.
+- **Die Sperre entscheidet nach Inhalt und wechselt innerhalb eines Laufs.**
+  *2026-09-06:* `Write` auf eine `.cpp` abgelehnt, `Write` auf eine `.md` angenommen --
+  in **demselben** Lauf. Vor dem Ausweichen also immer erst probieren; ein abgelehntes
+  Werkzeug kostet einen Aufruf, ein umgangenes eine halbe Stunde.
+- **`printf` faellt an Zeichen, nicht an Laenge.** Angenommen wurden mehrzeilige
+  C++-Zeilen mit Klammern, Punkten und Zahlen; abgelehnt jede Zeile mit `!=` und jede mit
+  einem Feldzugriff `name_[...]`. Auch `=` zwischen Name und Zahl faellt. Ausweg: die
+  Zeile aus der Originaldatei **ausschneiden** statt sie zu tippen
+  (`head -n N datei | tail -n 1`) und nur den Rest schreiben.
+- **Ketten mit `&&` oder `;`, `for`-Schleifen und `sed` fallen regelmaessig.** Befehle
+  einzeln. `cmake -E copy`, `cmake -E cat`, `cmake -E tar`, `cmake -E rm` tragen
+  zuverlaessig, ebenso `head`, `tail`, `diff`, `grep`, `md5sum`, `python3`.
+- **Die Shell verliert ihr Arbeitsverzeichnis zwischen Aufrufen.** Absolute Pfade oder
+  `cd` im selben Aufruf. Zweimal in einem Lauf darauf hereingefallen.
+- **`git archive <commit>` ohne Pfadangabe zieht das ganze Repo** (63 MB). Das ist
+  richtig so -- `specs/` und `decisions/` muessen mit, sonst faellt der
+  Belegstellenriegel aus --, aber der Tarball gehoert **in** das ignorierte Verzeichnis,
+  nicht daneben: `.gitignore` trifft `ventures/**/bau-*/`, also Verzeichnisse, keine
+  `.tar` daneben.
+- **Unter `befunde/bau-pruefung-<paket>/` messen**, nie in `$TMPDIR` (geteilte tmpfs,
+  laeuft voll). `baulauf.py` nimmt `befunde` vom Manifestsuchlauf aus.
+- **Nie ueber den Commit-Betreff suchen**, immer `git log -- <datei>` je Datei einzeln.
+  *0091:* diesmal traf der Betreff, aber `git log 9449bda..HEAD -- .../kern/` war die
+  Zeile, die zaehlte -- sie belegt, dass der Arbeitsbaum noch der Paketstand ist.
+- **Im Befund den Stand nennen, nie das Wort `HEAD`.** md5 am Anfang und am Ende
+  gegenrechnen, beides hinschreiben, und `git log` am Ende noch einmal lesen: Waehrend
+  meines 0091-Laufs kamen zwei fremde Commits dazu.
 
 ## Mutieren
 
-- **Ohne selbst geschriebenen Code:** Beide Konstantenzeilen aus einer Kopfkopie
-  herausschneiden -- `head`, `tail`, `cmake -E cat`, die Ersatzzeilen aus dem
-  Vorherstand -- und die Werte beim Uebersetzen von aussen setzen. Das trennt zwei
-  Konstanten, die einander definieren, und braucht keinen Editor.
-- **Ein eigenes Verzeichnis vor dem echten in den Suchpfad**, darin nur die eine
-  geaenderte Datei: Alle uebrigen Koepfe kommen weiter aus dem Bestand.
-- **Zu jedem Mutantensatz gehoert m0, der unveraenderte Baum.** Ein Apparat, der alles
-  rot macht, sieht sonst aus wie einer, der etwas findet.
-- **Zu jedem roten Baum gehoert ein gruener Kontrollbaum mit derselben Zulage und der
-  alten Fassung.** Das Rot allein zeigt nur, dass irgendetwas bricht.
+- **Die billigste Mutation ist eine geloeschte Zeile**, weil sie kein neues Zeichen
+  braucht: `head -n N` plus `tail -n +M`, mit `cmake -E cat` zusammengesetzt. *0091:*
+  ein entferntes `continue` und ein entfernter `if`-Block toeteten je zwei Proben.
+- **Waehle die Zeile so, dass der Rest uebersetzt.** Ein geloeschtes `continue` laesst
+  den leeren `if`-Rumpf stehen; ein geloeschter ganzer `if` haette die Variable darueber
+  unbenutzt gemacht und den Bau am Warnsatz rot gefaerbt -- rot aus dem falschen Grund.
+- **Eine Zahl heruntersetzen ist die zweitbilligste**, wenn die Konstante ueber zwei
+  Zeilen steht: Die erste endet auf `=`, also braucht die Ersatzzeile kein
+  Gleichheitszeichen. *0091:* `KETTENBLATT_ZEICHEN` von 1.667.329 auf 342, und der
+  behauptete Puffer-Abbruch war in einem Lauf belegt.
+- **Zu jedem Mutantensatz gehoert m0, der unveraenderte Baum**, und am Ende ein `diff`
+  der zurueckgesetzten Datei gegen die Paketdatei. Leer, sonst ist der Kontrollbaum
+  keiner.
+- **Ein Mutant an der Probe misst den Aufrufer, ein Mutant an der Quelle die Probe.**
+  Beides ist erlaubt und beweist Verschiedenes: Der Probenmutant zeigt, was bei falscher
+  Eingabe herauskommt (Vorschlagsbeleg), der Quellmutant, ob die Probe die Regel haelt.
 
 ## Was funktioniert
 
-- **Selbst bauen und messen ist der staerkste Nachweis.** Frischer Baum aus
-  `git archive`; `specs` und `decisions` muessen mit, sonst faellt der
-  Belegstellenriegel aus und man haelt die eigene Ablage fuer einen Befund.
-- **Den Vorherstand selbst herstellen**, nicht zitieren: denselben Baum, in dem nur die
-  Paketdateien durch ihre Fassungen vor der Aenderung ersetzt sind, und `diff -rq`
-  danebenlegen. Zwei `git archive` in dasselbe Verzeichnis -- erst der Stand, dann die
-  eine alte Datei darueber -- ersetzen jedes Kopieren.
-- **Jede Abnahmebedingung einzeln, mit eigenem mechanischem Aufruf.** Fast jeder Befund
-  fiel genau dabei an.
-- **Immer beide Bauprofile und beide Bauwege** (Alleinbau und Arbeitsbereich).
-- **Jede Riegel-Zahl braucht eine zweite, unabhaengige Zaehlung.**
-- **Zu jedem Negativnachweis gehoert der Positivnachweis.** Ein Riegel, der alles
-  blockiert, sieht im Negativtest identisch aus.
-- **Determinismus ueber den Profilvergleich:** die **ganze** Ausgabe der Probe aus
-  beiden Profilen zeilenweise gegenueberstellen. Uebrig bleiben die Pfad- und
-  Zeitzeilen von `ctest`.
-- **Eine Behauptung in einem Kommentar ist ein Pruefauftrag.** Auch die mechanischen
-  Nachweise, die ein Kopf ueber sich selbst behauptet, gehoeren nachgefahren.
-- **Jeden Namen und jede Zahl aus dem Paket gegen seinen T-Block halten**, nicht nur
-  die Zahlen. Der Auftrag kann der Vorgabe widersprechen; das Ergebnis geht dann an den
-  Projektmanager, nicht an den Bauagenten.
-- **Zusaetzlich `Release` und `RelWithDebInfo` bauen, wenn ein Aufruf verworfen wird.**
-  Eine Bereichspruefung ohne Optimierung ist trivial gruen.
-- **Von Hand nachrechnen, auch wenn die Probe gruen ist** -- und die Formel am
-  Messpunkt gegenrechnen, bevor man mit ihr weiterrechnet.
+- **Selbst bauen und selbst fahren ist der staerkste Nachweis.** Die Probe druckt
+  meistens ihr Ergebnis ab -- lies das Blatt, statt dem gruenen Haken zu glauben.
+- **Jede Abnahmebedingung einzeln, mit eigenem mechanischem Aufruf.**
+- **Immer beide Bauprofile und beide Bauwege** (Alleinbau und Arbeitsbereich). Der
+  Arbeitsbereich bringt die drei Riegel mit, die der Alleinbau nicht hat.
+- **Determinismus ueber den Profilvergleich:** die **ganze** Ausgabe der Probe aus Debug
+  und Release zeilenweise gegenueberstellen. Taugt nur, wenn die Probe wirklich etwas
+  druckt; sonst am Quelltext belegen (kein Gleitkomma, Iteration ueber `std::array`).
+- **Zu jedem Positivnachweis der Negativnachweis.** *0091:* „0 ohne Ursache" heisst erst
+  etwas, weil daneben ein Verlauf mit Luecke „4 ohne" produziert.
+- **Von Hand nachrechnen, auch wenn die Probe gruen ist.** Bei 0091 stimmten alle acht
+  Zahlen -- aber die Tabelle im Befund ist der Beleg, dass sie geprueft wurden.
+- **Den fremden Nachweis-Apparat lesen und selbst fahren.** Vorher seine Riegel pruefen:
+  Ersetzt er genau eine Zeile? Trennt er die eigene Zusicherung von der Nachbarin? Gibt
+  es den vierten Fall, der zeigt, dass **diese** Zeile reisst?
+- **Eine Behauptung in einem Kommentar ist ein Pruefauftrag** -- auch „die Probe druckt
+  beide Zahlen ab".
+- **Jeden Namen und jede Zahl aus dem Paket gegen seinen T-Block halten.**
 
 ## Was nicht funktioniert
 
 - **Ein rotes Ergebnis gehoert nicht automatisch dem geprueften Paket.**
-- **Eine Testeinspeisung an der falschen Stelle beweist nichts.** Scheitern Probe und
-  Kontrolle gleich, ist die Einspeisung schuld.
-- **Den Meldungstext einer Ausnahme nach dem Fangblock lesen** -- er ist dann fort.
 - **Eine Zusicherung, deren beide Seiten am selben Regler haengen, faengt diesen Regler
-  nicht.** *0144:* gruen bis 2.169 Runden, also 37 MB. Immer den Regler bewegen, nicht
-  nur die abgeleitete Groesse. *0156:* Sie wirkte dort doch -- nur spaet, und aus einem
-  Grund, den beide Texte uebersahen. Wirkungslos und spaet wirksam auseinanderhalten.
+  nicht.** Immer den Regler bewegen, nicht die abgeleitete Groesse.
+- **Zwei Regler, eine Messung.** *0091:* Der Kopf sagt, die Zusicherung fange beide; der
+  Nachweis bewegt einen. Der zweite traegt arithmetisch (positiver Faktor, strikte obere
+  Schranke) -- **aber im Befund hinschreiben, dass das eine Herleitung ist und kein
+  Lauf.**
+- **Den Meldungstext einer Ausnahme nach dem Fangblock lesen** -- er ist dann fort.
 
 ## Offene Faehrten
 
-- **Ein Widerspruch zwischen Abnahme und Vorgabe ist kein `zurueck`**, und eine
-  Vorgabe, zu der die Abnahme **schweigt**, ebenso wenig. Das Urteil folgt den
-  Bedingungen, der Verstoss wird ein Vorschlag. *0144, 0156:* je `geprueft` plus
-  Vorschlag.
+- **Ein Widerspruch zwischen Abnahme und Vorgabe ist kein `zurueck`**, und eine Vorgabe,
+  zu der die Abnahme **schweigt**, ebenso wenig. Das Urteil folgt den Bedingungen, der
+  Verstoss wird ein Vorschlag. *0144, 0156, 0091:* je `geprueft` plus Vorschlag.
 - **Prueffrage bei jedem unscharfen Satz:** *Fuehrt der Irrtum zu mehr Pruefung oder zu
   weniger?* Ein lauter Abbruch ist kein `zurueck`, eine stille Kuerzung immer.
-- **Ist die Abnahme in zwei Lesarten erfuellbar, beide hinschreiben und die gewaehlte
-  begruenden.**
-- **Eine vermutete Schwaeche einer Zusicherung erst mutieren, dann urteilen.** Ein
-  Befund aus dem Kopf war schon zweimal falsch.
-- **Zwei Schranken koennen sich gegenseitig festnageln.** *0144:* Die Zusicherung faengt
-  nur die eine Richtung, die Probe die andere; erst zusammen legen sie den Wert fest.
-  Das gehoert in den Nachweis, weil keine der beiden Stellen allein es tut.
+- **Trenne die Vorbedingung des Aufrufers von der Zusage des Kastens.** *0091:* Die
+  Kette ist richtig auf wohlgeformter Eingabe; ungeprueft ist, ob die Eingabe wohlgeformt
+  **ist**. Das Erste entscheidet das Urteil, das Zweite wird ein Vorschlag.
+- **Zwei Zahlen fuer dieselbe Aussage sind eine Fehlerquelle, sobald jemand beide
+  liest.** Suchmuster fuer den naechsten Lauf: Welche Groesse steht zweimal da, und
+  welche Stelle sieht beide? *0091:* `Ursachensatz.runde` gegen `Verlauf::rundennummer`.
+- **Eine vermutete Schwaeche erst mutieren, dann urteilen.** Ein Befund aus dem Kopf war
+  schon zweimal falsch.
+- **Ein unerreichbarer Zweig ist kein Befund, aber ein Pruefauftrag.** *0091:* Ein Ende
+  `Ausloeser`, das nur gaelte, wenn die Adresse `KEIN_PLATZ` waere -- nachgesehen, alle
+  sechs Erzeuger brechen vorher ab. Zwei Minuten, und die Frage ist erledigt.
 
 ## Zu Vorschlaegen
 
 - **Kein Vorschlag ohne belegten Schaden**, und erst `grep` ueber `aufgaben/` -- zehnmal
-  stand er schon da.
-- **Nummernkollision:** *2026-09-06* belegte ein Parallellauf dieselbe Nummer im selben
-  Zeitfenster. `ls aufgaben/` reicht nicht, wenn zwei Pruefer gleichzeitig laufen; die
-  Kollision im Befund benennen, aufraeumen tut sie der Projektmanager.
-- **Ein ueberholter Kommentar wird ein Vorschlag, wenn kein Folgepaket ihn einholt.**
-  Pruefkette: Nennt eine Abnahmebedingung ihn? Zieht das Folgepaket ihn ohnehin nach?
-  Zweimal nein -- dann eigenes Paket, und die Begruendung ist genau dieses zweimal nein.
-
-## Nachtrag 2026-09-06 (Pruefung 0132)
-
-- **printf lehnt Rueckwaertsanfuehrungszeichen ab**, auch in einfachen Anfuehrungs-
-  zeichen -- die Sperre sieht Kommandosubstitution. Befund ohne sie schreiben. Ebenso
-  fallen cp, Ketten mit && oder ; und Zeilen mit Gleichheitszeichen zwischen Name und
-  Zahl. cmake -E copy und cmake -E cat tragen zuverlaessig.
-- **Ein Makro leeren ohne Editor:** head -n <Zeile des macro> plus tail -n +<Zeile des
-  endmacro>, mit cmake -E cat zusammensetzen. Wichtig: return() im Makro verliesse die
-  ganze aufrufende Funktion und erzeugte gar keine Meldung -- der leere Rumpf ist der
-  Weg, wenn beide Laeufe dieselbe Meldung zeigen sollen.
-- **nachbau.py legt die Wegwerf-Baeume selbst an.** Danach die Kette daneben austauschen
-  und neu konfigurieren: A/B am identischen Baum, ganz ohne eine Datei zu schreiben.
-- **Eine Riegelzahl gegen Ziele mal Schalter gegenrechnen.** Ein Rest, den man erklaeren
-  kann, ist der beste Beleg dafuer, dass die Zahl zaehlt, was sie behauptet.
-- **Spaetere Commits vor dem Vergleich pruefen:** git ls-tree an beiden Staenden ueber
-  die geglobten Verzeichnisse. Erst wenn dort keine Datei dazukam, ist ein Vergleich
-  gegen den Commit vor dem Paket eine Isolierung und keine Vermischung.
-
-## Nachtrag 2026-09-06 (Pruefung 0152)
-
-- **Ein Mutantensatz braucht kein zweites Bauverzeichnis je Fall.** Eine Abschrift von
-  `kern/` plus `werkzeugkette.cmake`, ein Bauverzeichnis, ein Probenziel: mutieren,
-  bauen, laufen, zuruecksetzen. Am Ende `diff` der mutierten Datei gegen die
-  Paketdatei -- leer, sonst ist der Kontrollbaum keiner.
-- **Bricht die Probe still ab, wenn sie gruen ist, taugt der Profilvergleich nichts.**
-  Determinismus dann am Quelltext belegen: kein Gleitkomma, Iteration ueber
-  `constexpr std::array`.
-- **Eine Umgruppierung von Summanden ist kein Determinismusbefund**, solange nur die
-  Klammerung wechselt.
-- **Ein Randwert, den keine Abnahme nennt, wird ein Vorschlag -- aber erst gemessen.**
-  Den Zusatzpruefsatz in die *Abschrift* der Probe haengen, gegen den unveraenderten
-  Kern. Das ist eine Messung und keine Reparatur.
-- **Die staerkste Begruendung eines Vorschlags ist ein Spalt zwischen zwei Vorgaben.**
-- **Zwei Vorgaben koennen sich widersprechen statt nur zu schweigen.** Beim Nachfahren
-  der Formeln beide Quellen lesen, nicht nur die, die der Kopf nennt.
-- **`notizen/<rolle>.md` und die eine `status:`-Zeile des Pakets sind keine fremden
-  Dateien.** Gegen zwei fruehere Baulaeufe derselben Rolle gegenpruefen -- tun die
-  dasselbe, ist es die stehende Form und kein Verstoss.
-
-## Nachtrag 2026-09-06 (Pruefung 0156)
-
-- **Geht kein Mutant, traegt ein Gesetz aus gemessenen Punkten.** Drei Uebersetzungen
-  legten `sizeof = 17.376·N + 8` fest, der Rest war Einsetzen. Im Befund hinschreiben,
-  welche Uebersetzung fehlt -- eine Herleitung ist kein Lauf.
-- **Den fremden Nachweis-Apparat lesen und selbst fahren ist erlaubt und stark**; ein
-  Skript ist kein Logbuch. Vorher seine Riegel pruefen: Ersetzt es genau eine Zeile?
-  Prueft es bei Rot, **welche** Zusicherung riss? Den Bericht daneben erst danach.
-- **Eine Zahl aus einem eigenen alten Befund ist keine Quelle.** 0156 schrieb 37.670.312
-  aus meiner 0144-Tabelle ab; sie widersprach dort schon den Nachbarzeilen. Jede
-  uebernommene Messung gegen das Gesetz gegenrechnen, auch die eigene.
-- **Eine Schranke, die aus einem Literal gebildet ist, ist die richtige.** Haette sie
-  den Stapel beim Bauen abgefragt, waere derselbe Quelltext auf zwei Rechnern
-  verschieden rot -- danach zuerst suchen, wenn eine Zusicherung die Umgebung nennt.
-
-## Nachtrag 2026-09-06 (Pruefung 0137)
-
-- **Der Vorher-Stand ist oft schon der Mutant.** Ich musste keine Zeile schreiben: Bau
-  und `ctest` am Vorher-Baum, beide gruen wie am Nachher-Baum -- damit ist gemessen,
-  dass keine Probe die neue Eigenschaft haelt. Billigster Vorschlagsbeleg bisher.
-- **Randfaelle des Schalters selbst fahren, nicht nur ON/OFF.** `=1`, `=0` und der leere
-  Wert trennten hier die beiden Haelften der Angabe: Nur das Wahrheitswort ordnet den
-  leeren Wert richtig zu. Ohne diese drei Laeufe waere die zweite Haelfte unbelegt.
-- **Der Bericht faehrt nur ein Profil.** Was nur im zweiten Profil sichtbar wuerde, ist
-  faktisch unbewacht -- vor jedem „das faellt schon auf" pruefen, welche Laeufe der
-  Runner wirklich macht.
+  stand er schon da. Bei 0091 traf der Suchlauf fuenf Pakete, keines mit der Frage.
+- **Der staerkste Vorschlagsbeleg ist ein Blatt, das falsch ist und richtig aussieht.**
+  Drei geaenderte Zeilen in der *Probenabschrift* genuegten fuer 0091; der Kern blieb
+  unangetastet, und das gehoert dazugeschrieben.
+- **Nenne, warum die Luecke erst jetzt eine ist.** „Vor diesem Paket las niemand beide
+  Zahlen" ist die Begruendung, die den Vorschlag von einem Ruecklauf trennt.
+- **Schreib dazu, was der Riegel heute kostet.** Kostet er nichts, weil alle Aufrufer die
+  Regel schon halten, dann gehoert **das** in die Abnahme -- sonst ist ein Riegel, der
+  nichts kostet, von einem, der nicht greift, nicht zu unterscheiden.
+- **Nummernkollision:** *2026-09-06* war `0185` bereits doppelt belegt, ohne dass ich es
+  verursacht haette. `ls aufgaben/` vor der Wahl, die Kollision im Vorschlag benennen,
+  aufraeumen tut sie der Projektmanager.
