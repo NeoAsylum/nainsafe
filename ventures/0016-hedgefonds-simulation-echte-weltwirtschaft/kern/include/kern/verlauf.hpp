@@ -68,15 +68,43 @@
 //! ## Die Groesse des Behaelters
 //!
 //! Ein Verlauf traegt `RUNDEN_KAPAZITAET` Ketten zu je 310 Ursachensaetzen -- feste
-//! Groesse, keine Zuteilung, wie jeder Behaelter des Kerns. Die Schranke darauf steht
-//! unten als Zusicherung ueber die Typgroesse und nicht als Kommentar: Wer die
-//! Kapazitaeten hochsetzt, ohne die Folge zu bedenken, bekommt einen roten Bau.
+//! Groesse, keine Zuteilung, wie jeder Behaelter des Kerns. Die Schranken darauf stehen
+//! unten als Zusicherungen ueber die Typgroesse und nicht als Kommentar: Wer eine der
+//! beiden Kapazitaeten hochsetzt oder die Wand verschiebt, ohne die Folge zu bedenken,
+//! bekommt einen roten Bau. Es sind **zwei** Schranken, und sie fangen zwei
+//! verschiedene Regler.
 //!
-//! **Die Schranke ist aus der Wand gebildet und nicht aus einer runden Bytezahl.** Eine
+//! **Die erste ist aus der Wand gebildet und nicht aus einer runden Bytezahl.** Eine
 //! Zusicherung bei einem halben Megabyte liesse dreissig Runden durch; sie griffe damit
 //! erst weit oberhalb des Bereichs, den sie sichern soll, und ruehrte sich bei keiner
 //! Aenderung, die jemand tatsaechlich vornimmt. An `PARTIELAENGE_HOECHSTENS` gebunden
 //! reisst sie beim ersten Wert oberhalb der Wand.
+//!
+//! **Die zweite haelt die Groesse gegen eine absolute Grenze**, und ohne sie waere die
+//! erste keine Speicherschranke: Beide ihrer Seiten sind aus derselben Wand gebildet und
+//! wachsen mit ihr. Wer die Wand verschiebt -- und T40 zieht sie aus der Ergebnisskala
+//! von `spiel.md`, die sich schon einmal geaendert hat --, bekaeme sonst keinen roten
+//! Bau, sondern still einen groesseren Behaelter. Gemessen am Stand `e0682a1` liefen
+//! Wand und Kapazitaet gemeinsam bis zweitausendeinhundertneunundsechzig gruen durch,
+//! bei 37.670.312 Byte.
+//!
+//! **Woher die absolute Grenze kommt: aus dem, was ein Aufrufer traegt.** Jeder heutige
+//! Aufrufer legt seinen Verlauf als oertliche Groesse an -- `verlauf_probe` an sieben
+//! Stellen --, also ist der Platz, den er dafuer hat, der Stapel seines Fadens und nicht
+//! der Freispeicher. Das ist `STAPEL_JE_FADEN` unten: eine gemessene Zahl, keine
+//! gewaehlte.
+//!
+//! Der Abstand zwischen beiden Zahlen ist der Sinn der Schranke, und er gehoert
+//! danebengeschrieben: Der Behaelter ist heute **451.784 Byte** gross, also gut ein
+//! Zwanzigstel dessen, was ein Faden ueberhaupt an Stapel hat. Die Schranke reisst,
+//! wenn die Wand von sechsundzwanzig auf 483 stiege; bei 482 ist der Behaelter
+//! 8.375.240 Byte gross und geht gerade noch durch.
+//!
+//! **Und was die zweite Schranke nicht sagt**, damit sie niemand fuer mehr haelt: Ein
+//! Stapelrahmen traegt mehr als den Verlauf. Wer die Wand bis dicht unter die Grenze
+//! schoebe, bekaeme einen gruenen Bau und trotzdem einen Stapelueberlauf. Sie markiert
+//! die Stelle, an der es **sicher** nicht mehr geht, nicht die, an der es bequem bleibt
+//! -- eng gehalten wird der Behaelter von der ersten Schranke.
 
 #include <array>
 #include <cstddef>
@@ -197,13 +225,34 @@ private:
     std::size_t runden_ = 0;
 };
 
+// ---------------------------------------------------------------------------
+// Die Groesse des Behaelters -- an der Wand und am Stapel gehalten
+// ---------------------------------------------------------------------------
+
+/// Der Stapel, den das Betriebssystem einem Faden voreingestellt gibt.
+///
+/// **Gemessen, nicht gewaehlt.** `ulimit -s` meldet auf der Baumaschine 8192, also
+/// Kibibyte, und `getrlimit(RLIMIT_STACK)` denselben Wert als 8.388.608 Byte
+/// (2026-09-06, Ubuntu, glibc). Es ist die Voreinstellung von Linux und glibc und keine
+/// Einstellung dieses Vorhabens; deshalb steht die Zahl hier als Kibibyte mal 1024 und
+/// nicht als runde Bytezahl -- so ist ihre Herkunft am Ausdruck ablesbar.
+inline constexpr std::size_t STAPEL_JE_FADEN = 8192u * 1024u;
+
 // Die Groesse ist eine Folge der beiden Kapazitaeten und keine eigene Entscheidung --
-// sie steht hier, damit ein Heraufsetzen nicht unbemerkt ein Vielfaches daraus macht.
-// Ein Verlauf gehoert damit nicht beilaeufig auf einen Stapelrahmen.
+// die drei Zusicherungen stehen hier, damit ein Heraufsetzen nicht unbemerkt ein
+// Vielfaches daraus macht. Die ersten beiden binden die Groesse an die Wand, die dritte
+// an das, was ein Aufrufer traegt: Ohne sie waechst der Behaelter mit der Wand mit, ohne
+// dass eine Zusicherung sich ruehrt. Ein Verlauf gehoert schon bei seiner heutigen
+// Groesse nicht beilaeufig auf einen Stapelrahmen -- er belegt dort gut ein Zwanzigstel
+// dessen, was ein Faden ueberhaupt hat.
 static_assert(sizeof(Verlauf) >= RUNDEN_KAPAZITAET * sizeof(Kette),
               "der Verlauf traegt seine Ketten selbst und nicht hinter einem Zeiger");
 static_assert(sizeof(Verlauf) < (PARTIELAENGE_HOECHSTENS + 1) * sizeof(Kette),
               "T40: ein Verlauf traegt hoechstens die Runden der laengsten zulaessigen "
               "Partie, und eine weitere passt nicht mehr hinein");
+static_assert(sizeof(Verlauf) < STAPEL_JE_FADEN,
+              "T19: ein Verlauf ist groesser als der Stapel eines Fadens (8.388.608 "
+              "Byte) und damit groesser, als ein Aufrufer ihn tragen kann -- die Wand "
+              "aus T40 oder die Kapazitaet je Runde wurde heraufgesetzt");
 
 }  // namespace kern::verlauf

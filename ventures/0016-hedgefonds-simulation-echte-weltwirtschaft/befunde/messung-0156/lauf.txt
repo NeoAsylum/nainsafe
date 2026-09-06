@@ -1,0 +1,24 @@
+
+=== Wand 26 -- die Wand auf ihrem heutigen Wert (erwartet: gruen) ===
+  sizeof(Verlauf) = 451784 Byte
+  Sanitizer ON  -> gruen (Code 0)
+  Sanitizer OFF -> gruen (Code 0)
+
+=== Wand 482 -- der letzte Wert unterhalb der Schranke (erwartet: gruen) ===
+  sizeof(Verlauf) = 8375240 Byte
+  Sanitizer ON  -> gruen (Code 0)
+  Sanitizer OFF -> gruen (Code 0)
+
+=== Wand 483 -- der erste Wert oberhalb der Schranke (erwartet: rot) ===
+  sizeof(Verlauf) = (uebersetzt nicht) Byte
+  Sanitizer ON  -> rot (Code 2)
+    Wortlaut: /tmp/claude-1000/tmp8kf8oe6_/kern/include/kern/verlauf.hpp:253:31: error: static assertion failed: T19: ein Verlauf ist groesser als der Stapel eines Fadens (8.388.608 Byte) und damit groesser, als ein Aufrufer ihn tragen kann -- die Wand aus T40 oder die Kapazitaet je Runde wurde heraufgesetzt
+  Sanitizer OFF -> rot (Code 2)
+    Wortlaut: /tmp/claude-1000/tmp8kf8oe6_/kern/include/kern/verlauf.hpp:253:31: error: static assertion failed: T19: ein Verlauf ist groesser als der Stapel eines Fadens (8.388.608 Byte) und damit groesser, als ein Aufrufer ihn tragen kann -- die Wand aus T40 oder die Kapazitaet je Runde wurde heraufgesetzt
+
+=== Wand 483, ohne die Zusicherung -- Gegenprobe: derselbe Fall ohne die neue Zusicherung (erwartet: gruen) ===
+  sizeof(Verlauf) = 8392616 Byte
+  Sanitizer ON  -> gruen (Code 0)
+  Sanitizer OFF -> gruen (Code 0)
+
+Abweichungen: 0

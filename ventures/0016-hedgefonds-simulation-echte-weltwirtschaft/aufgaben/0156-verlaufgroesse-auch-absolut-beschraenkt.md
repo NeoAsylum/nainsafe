@@ -1,7 +1,7 @@
 ---
 id: 0156-verlaufgroesse-auch-absolut-beschraenkt
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp]
 abnahme: Die drei Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- ein Kopf, in dem ein Verschieben der Wand den Behaelter beliebig gross werden laesst, erfuellt sie nicht.

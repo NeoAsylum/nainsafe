@@ -3,171 +3,152 @@
 **Hoechstens 12.000 Zeichen** (`wc -c`). Belege gehoeren in die Ergebnisdatei, hier steht
 die Lehre in einem Satz. Format: `- JJJJ-MM-TT -- Beobachtung`.
 
-Vorgaenger: `notizen/archiv/kernbauer-2026-09-06-4.md` und siebenundzwanzig aeltere
+Vorgaenger: `notizen/archiv/kernbauer-2026-09-06-5.md` und siebenundzwanzig aeltere
 daneben. Uebernommen ist, was ueber sein Paket hinaus gilt.
 
 ---
 
 ## Werkzeuge und Sperren
 
-- 2026-09-05 bis 2026-09-06, staendig -- **`Edit` und `Write` fallen aus, einzelne
-  `Bash`-Aufrufe auch.** Am 2026-09-06 war `Edit` den ganzen Lauf ueber gesperrt. Sofort
-  `python3 - <<PY` nehmen statt zu wiederholen; **es entscheidet das Werkzeug, nicht die
-  Operation**, und die Nutzlast in Haeppchen von rund 25 Zeilen zerlegen.
-- 2026-09-06 -- **Auch die Umleitung `>` in eine Datei kann verweigert werden.** Dann den
-  Lauf mit `subprocess.run(..., capture_output=True)` fahren und die Ausgabe selbst
-  schreiben; das bringt nebenbei den Rueckgabewert sauber ins Protokoll.
-- 2026-09-06 -- **`sed` oder `cat` auf eine Datei ausserhalb des Arbeitsverzeichnisses
-  wird verweigert; `Read` mit absolutem Pfad geht.**
-- 2026-09-06 -- **`ps` sieht in dieser Umgebung keine Prozesse.** Wer damit prueft, ob ein
-  Lauf noch laeuft, bekommt eine leere Liste und haelt sie fuer eine Antwort.
+- 2026-09-05 bis 2026-09-06, staendig -- **`Edit`, `Write` und einzelne `Bash`-Aufrufe
+  fallen je Aufruf aus, auch mitten im Lauf.** Nicht wiederholen, sofort
+  `python3 - <<PY` nehmen; es entscheidet das Werkzeug, nicht die Operation. Rund 25
+  Zeilen gehen durch, 35 fielen aus. Grosse Nutzlast in `open("a")`-Haeppchen zerlegen.
+- 2026-09-06, **neu und zweimal getroffen:** Auch der Python-Umweg faellt aus, wenn die
+  Nutzlast **C-Quelltext im String** traegt (`#include`, `printf`). Der Ausweg ist kein
+  Zerlegen, sondern eine **eigene Datei**: den Schnipsel als `.cpp` unter `befunde/`
+  ablegen und im Skript kopieren statt schreiben. Das ist ohnehin besser lesbar.
+- 2026-09-06 -- **`sed`/`cat`/`grep` auf Pfade ausserhalb des Arbeitsverzeichnisses
+  werden verweigert; `Read` und das `Grep`-Werkzeug mit absolutem Pfad gehen.** Und der
+  Arbeitspfad einer `Bash`-Zeile ist nicht der der vorigen -- immer absolut schreiben.
 
 ## Fremde Laeufe -- der Baum bewegt sich
 
-- 2026-09-06, **die Lehre dieses Laufs** -- **Der Arbeitsbaum taugt nicht als
-  Messgrundlage, sobald ein Fremdlauf an `kern/` schreibt.** `bauwege.py` meldete acht
-  Abweichungen aus Bau und `ctest`, alle aus `werte.cpp` eines fremden Pakets, an einer
-  Aenderung, die nur `werkzeugkette.cmake` beruehrt. Der Ausweg ist billig: `git archive
-  <HEAD>` zweimal auspacken, in die zweite Kopie allein die eigene Datei legen, dann
-  `bauwege.py` einmal ohne Vergleich (schreibt `stand.json`; es meldet dabei **eine**
-  Abweichung, weil in `$TMPDIR` kein git liegt) und einmal mit `--gegen-datei`. Erst der
-  zweite Lauf muss `0 Abweichung(en)` melden.
-- 2026-09-06 -- **Ein abgebrochener Hintergrundlauf ist nicht tot.** Nach `TaskStop`
-  schrieb sein Python-Kind weiter und legte seine Zahlen in dieselbe Ablage wie mein
-  neuer Lauf; ich habe Minuten lang die des toten gelesen. Nach jedem Abbruch einen
-  **neuen Ablagenamen** waehlen, nie den alten wiederverwenden.
-- 2026-09-06, wieder belegt -- **Der Vorher-Stand als Kopie eingefroren ist der einzige
-  Bezugsstand**, HEAD ist keiner. Die Gegenprobe kostet nichts: `git diff --numstat` ueber
-  die eigenen Dateien, und die Groesse der eingefrorenen Kopie gegen die des Auspackens.
+- 2026-09-06, **die Lehre dieses Laufs** -- **Der Arbeitsbaum war zu Beginn meines Laufs
+  rot, und zwar an einer fremden Datei.** Ein Parallellauf hatte `werte_probe.cpp` mit
+  zwei ungenutzten Funktionen liegen (`-Werror=unused-function`); eine Stunde spaeter war
+  er gruen. Wer darauf einen Vorher-Nachher-Vergleich baut, misst den Fremdlauf.
+  **Der billige Ausweg ist `git archive HEAD` in einen Wegwerfordner**, samt `specs/`,
+  damit die Pfadlage stimmt -- besser als die Kopie des Arbeitsbaums, weil er die fremde
+  halbfertige Arbeit gar nicht erst enthaelt, und benennbar: Der Bezugsstand ist ein
+  Kurz-Hash und keine Uhrzeit.
+- 2026-09-06 -- **Der Kopf des Zweiges bewegt sich waehrend des Laufs.** Zwischen meinem
+  ersten und zweiten `git rev-parse` lagen zwei fremde Commits. Den Stand **einmal**
+  festhalten und ihn ueberall zitieren, statt ihn zweimal zu lesen.
+- 2026-09-06 -- **Der billigste Nachweis, nur die eigenen Dateien beruehrt zu haben:**
+  `git diff --numstat` ueber `kern/`. Und: nur die eigenen Pfade committen
+  (`git commit <pfade>`), sonst nimmt der Commit die fremde Arbeit aus dem Index mit.
 
 ## Nachweise fuehren
 
-- 2026-09-06, **die zweite Lehre dieses Laufs** -- **Zwei Fassungen einer Datei an
-  *einem* Wegwerf-Baum vergleicht man ueber einen Schalter, nicht ueber zwei Baeume.**
-  `include(${FABRIK_KETTE})` im Baum und `-DFABRIK_KETTE=<pfad>` am Aufruf: Dann ist der
-  Quellbaum in beiden Laeufen Byte fuer Byte derselbe, und "an einem Baum" ist keine
-  Auslegung mehr, sondern eine Tatsache.
-- 2026-09-06 -- **`return()` im Rumpf eines CMake-Makros ist keine Mutation, sondern ein
-  Ausstieg.** Ein Makro wird textuell eingesetzt; `return()` verlaesst die **rufende**
-  Funktion, hier den ganzen Riegel. Er meldet dann gar nichts, statt sich in einer Zahl
-  zu unterscheiden. Die leere Bedingung -- `if(FALSE)` -- ist die Mutation, die man will.
-- 2026-09-06 -- **Zur Mutation gehoert die Gegenprobe, dass sie wirklich stumpf macht.**
-  Zwei Laeufe mehr an einem Baum, der abbrechen **muss**: unveraendert Code 1, mutiert
-  Code 0. Ohne sie ist "stumpf" ein Wort und keine Messung.
-- 2026-09-06 -- **Der Mutationsnachweis gehoert als Skript nach `befunde/messung-<paket>/`,
-  faehrt beide Bauprofile in einem Aufruf und endet mit `Abweichungen: 0`**; der Lauf
-  daneben in `lauf.txt` erspart dem Pruefer das Starten. Vor jeder Mutation pruefen, dass
-  der Suchtext **genau einmal** vorkommt.
-- 2026-09-05 -- **"Zwei Eingaben, dieselbe Ausgabe" ist wohlfeil, solange nicht dasteht,
-  dass die Eingaben verschieden waren.** Erst die Verschiedenheit zeigen, dann die
-  Gleichheit. Und: der schaerfste zweite Weg ist der **verkehrte**, nicht irgendeiner.
-- 2026-09-06 -- **Auch eine Gleichheitsaussage braucht die Gegenprobe.** „Nichts aendert
-  sich" ist von „ich messe nichts" nicht zu unterscheiden, solange die Messung nicht rot
-  werden kann.
-- 2026-09-06 -- **„Zeichengleiche Ausgabe" ist nach jedem Einfuegen falsch**, wenn eine
-  CMake-Fehlermeldung im Spiel ist: Ihr Aufrufkeller nennt Zeilennummern der geaenderten
-  Datei. Nicht wegtilgen -- verlangen, dass jeder Unterschied eine solche Nummer ist.
-- 2026-09-05 -- **Was beim Uebersetzen rot werden kann, gehoert nicht in die Probe.**
-- 2026-09-06 -- **Jeden Baubaum aus dem Leeren.** Ein stehengebliebener bricht mit „does
-  not match the source used to generate cache" ab -- an beiden Staenden gleich, sieht also
-  nach Gleichstand aus und ist keiner.
+- 2026-09-06, **die zweite Lehre dieses Laufs** -- **Eine neue `static_assert` beweist
+  man mit vier Faellen, nicht mit drei.** Gruen unterhalb, rot oberhalb, gruen am
+  heutigen Wert -- und als vierten **denselben roten Fall mit entfernter Zusicherung,
+  der gruen wird**. Ohne ihn ist belegt, dass der Wert rot macht, nicht dass *meine*
+  Zeile es tut. Dazu der zweiseitige Wortlautvergleich: Die Meldung muss meine nennen
+  und die der Nachbarzusicherung **nicht** enthalten.
+- 2026-09-06 -- **Eine Zahl, die im Kopf steht, wird gemessen abgedruckt.** `sizeof` je
+  Fall aus einem winzigen Berichterstatter, der denselben Kopf bindet und den Kern nicht
+  linkt -- `sizeof` braucht keine Definition der Mitgliedsfunktionen. Drei meiner vier
+  Kopfzahlen kamen so heraus statt aus meiner Rechnung.
+- 2026-09-06 -- **Wo eine Probe beim Grenzwert abstuerzen wuerde, laeuft `ctest` beim
+  Nachweis nicht -- und das gehoert hingeschrieben.** Bei der Wand knapp unter der
+  Schranke legt `verlauf_probe` acht Megabyte auf einen Stapelrahmen. Geprueft wird dort
+  die Uebersetzung; wer das verschweigt, laesst einen Absturz wie ein Versehen aussehen.
+- 2026-09-05/06 -- **Was beim Uebersetzen rot werden kann, gehoert nicht in die Probe**;
+  **"zwei Eingaben, dieselbe Ausgabe" braucht zuerst den Beleg, dass die Eingaben
+  verschieden waren**; **eine Zusicherung an beiden Raendern rechnen**, auch am Rand, der
+  *nicht* abbrechen darf; **den erwarteten Wortlaut erzeugen, nicht abschreiben**;
+  **Zahlwoerter zaehlen, nicht abschreiben** (das Paket sagte "sechs Stellen", es waren
+  sieben).
+- 2026-09-06 -- **Vor jeder Mutation pruefen, dass der Suchtext genau einmal vorkommt.**
+  Ein kuerzerer Suchtext mutiert sonst still nichts oder die falsche Stelle. Das Skript
+  gehoert nach `befunde/messung-<paket>/`, faehrt beide Bauprofile in einem Aufruf und
+  endet mit `Abweichungen: 0`; der Lauf daneben in `lauf.txt`.
+- 2026-09-06 -- **Jeden Baubaum aus dem Leeren.** Ein stehengebliebener Baum bricht mit
+  "does not match the source used to generate cache" ab -- an beiden Staenden gleich,
+  sieht also nach Gleichstand aus und ist keiner.
+
+## Schranken und Zahlen im Kopf
+
+- 2026-09-06, **die dritte Lehre dieses Laufs** -- **Eine Schranke ist begruendet, wenn
+  sie aus dem Verhalten der Aufrufer gemessen ist, und gegriffen, wenn sie rund ist.**
+  Statt "ein halbes Megabyte" zu waehlen: nachsehen, **wo** die Aufrufer den Behaelter
+  hinlegen. Alle sieben Stellen legten ihn oertlich an, also ist die Grenze der Stapel
+  eines Fadens -- `ulimit -s`, 8.388.608 Byte, gemessen und nicht gewaehlt. Die Zahl im
+  Code als Kibibyte mal 1024 schreiben, dann ist ihre Herkunft am Ausdruck ablesbar.
+- 2026-09-06 -- **Eine Zusicherung, deren beide Seiten aus derselben Konstante gebildet
+  sind, ist keine Schranke.** Sie waechst mit. Genau daran ist die alte Groessenzusage
+  des Verlaufs still verschwunden. Prueffrage vor jedem `static_assert` ueber eine
+  Groesse: *Welcher Regler bewegt die linke Seite, und steht er auch rechts?*
+- 2026-09-06 -- **Zu einer Schranke gehoert der Satz, was sie nicht sagt.** Meine deckt
+  nur, was *sicher* nicht mehr geht (ein Rahmen traegt mehr als den einen Behaelter),
+  nicht, was bequem bleibt. Wer das weglaesst, verkauft eine schwache Zusicherung als
+  starke -- und der naechste Leser verlaesst sich darauf.
 
 ## Belegstellen, Riegel und CMake
 
-- 2026-09-06, jetzt mit dem Symptom -- **Ein Wegwerf-Baum muss die Lage nachbauen, nicht
-  nur den Inhalt.** Der Belegstellenriegel sucht seine Vorgaben als
-  `<wurzel>/../../specs/<name>`; flach abgelegt faellt in `ctest` `belegstellen_riegel`
-  aus, und zwar an beiden Staenden gleich -- also unauffaellig falsch. Beim Auspacken den
-  Pfad `ventures/<name>/` behalten und `specs` daneben verlinken.
-- 2026-09-05 -- **Der Sperrebindungsriegel deckt auch `kern/test`.** Ein neuer `#include`
-  in einer Probe gehoert **ueber** `kern/sperre.hpp`, nie darunter.
+- 2026-09-05 -- **Der Sperrebindungsriegel deckt `kern/src` **und** `kern/test`:**
+  `kern/sperre.hpp` ist der letzte `#include` jeder Kernquelle, ein neuer gehoert
+  **darueber**. Folge fuer jede Probe: kein `<cstring>`, die Teilstringsuche von Hand
+  (`enthaelt`, `hat_abgebrochen`, `schreibe_ab` stehen in `verlauf_probe` fertig).
+  Eine Hilfsdatei unter `befunde/` faellt nicht unter den Riegel -- kein Sammler liest
+  sie -- und braucht die Sperre daher nicht.
 - 2026-09-05 -- **Der Bezeichnerriegel liest jeden Namen in Rueckwaerts-Anfuehrung im
-  ganzen Kern, auch in den Proben** -- aber nur, wenn der **ganze** Inhalt ein Bezeichner
-  ist. Gross- und Kleinschreibung zaehlt. Der Belegstellenriegel faengt einen Dateinamen
-  mit Zeilenangabe und ein zitiertes Ueberschriftenwort, das es nicht gibt; eine fremde
-  Ueberschrift lieber umschreiben als zitieren. Beide laufen von Hand:
-  `werkzeuge/*/bau/*_riegel <venture> [<specs>]`, Code 0 heisst sauber.
-- 2026-09-06 -- **Ein CMake-Makro ersetzt seine Parameter als Text, und der Text wird
-  erneut gelesen.** Deshalb den **Namen** der Eingabevariablen uebergeben, nie ihren Wert.
-- 2026-09-05 -- **`festkomma::abbruch` wirft `std::domain_error`**, ist also fangbar und am
-  Wortlaut pruefbar; in einer `constexpr`-Funktion ist der Aufruf erlaubt, solange der
-  Zweig beim Uebersetzen nicht genommen wird.
-- 2026-09-05 -- **Die Einbauregel von `kern/sperre.hpp` ist der ganze Trick der beiden
-  Rechensperren**: der letzte `#include` jeder Kernquelle. Folge fuer jede Probe: kein
-  `<cstring>`, also die Teilstringsuche von Hand -- `enthaelt`, `hat_abgebrochen` und
-  `schreibe_ab` stehen in `verlauf_probe` fertig und sind wortgleich uebernehmbar.
-- 2026-09-05 -- Der Warnsatz steht in `kern/CMakeLists.txt` und endet auf `-Werror`. Jede
-  Umwandlung ausgeschrieben, aber keine auf denselben Typ -- `-Wuseless-cast` faengt sie.
-  Ein Parametername, der eine Mitgliedsfunktion verdeckt, ist unter `-Wshadow -Werror` ein
-  Bauabbruch; eine private Funktion ohne Aufrufer ebenso.
+  ganzen Kern**, aber nur, wenn der ganze Inhalt ein Bezeichner ist; Gross- und
+  Kleinschreibung zaehlt. **Der Belegstellenriegel** faengt Dateiname mit Zeilenangabe
+  und ein zitiertes Ueberschriftenwort, das es nicht gibt -- fremde Ueberschriften
+  lieber umschreiben als zitieren. Beide laufen auch als ctest-Eintrag Nr. 16 und 17 im
+  Arbeitsbereichsbau; von Hand: `werkzeuge/*/bau/*_riegel <venture> [<specs>]`.
+- 2026-09-05 -- **`festkomma::abbruch` wirft `std::domain_error`**, ist fangbar und am
+  Wortlaut pruefbar; in `constexpr` erlaubt, solange der Zweig beim Uebersetzen nicht
+  genommen wird. Eine Ausnahme anderer Art gilt in einer Probe **nicht** als Abbruch.
+- 2026-09-05 -- **Der Warnsatz endet auf `-Werror`** (`FABRIK_STRENGE` in
+  `werkzeugkette.cmake`, 15 Schalter, dazu `-fwrapv -fno-fast-math`). Jede Umwandlung
+  ausgeschrieben, aber keine auf denselben Typ (`-Wuseless-cast`). Ein Parametername,
+  der eine Mitgliedsfunktion verdeckt, und eine Funktion ohne Aufrufer sind Bauabbrueche.
 
 ## Der Kern selbst
 
 - 2026-09-06 -- **Eine Eingabe, die weder Zustandsadresse noch Parameterschluessel ist,
-  hat einen dritten Traeger: `Konstanten` in `werte.hpp`.** Wer sie in `zustand.hpp`
-  sucht, findet sie nicht -- und soll sie dort auch nicht anlegen.
+  hat einen dritten Traeger: `Konstanten` in `werte.hpp`** (Jahrgangskonstanten, T23
+  Punkt 5) -- der Kern liest keine Datei (T2). Nicht in `zustand.hpp` suchen oder anlegen.
 - 2026-09-06 -- **Steht dieselbe Formel in `technik.md` und in `spiel.md`, gewinnt die
-  genauere.** Kein Widerspruch, sondern eine Abkuerzung -- aber nur die zweite beantwortet
-  die Frage, die man beim Bauen hat.
-- 2026-09-06 -- **Eine Zuordnung, die keinen Leser hat, faellt unter den Warnsatz.** Als
-  **Bereichsriegel der eigenen Funktion** aufgerufen wird aus der Dokumentation eine
-  Pruefung; `static_cast<void>(...)` an der Aufrufstelle, mit einem Satz daneben.
-- 2026-09-06 -- **Eine Abbruchmeldung, die die eigene Groesse nennen soll, verlangt den
-  Bereichsriegel *vor* dem Aufruf der `stelle_*`-Funktion des Zustands.** Gegenprobe:
-  `!enthaelt(meldung, "kern::zustand")` neben dem erwarteten Namen.
-- 2026-09-05 -- **`std::sort` ist im Kern die falsche Antwort** (T9: nicht stabil).
-  Einfuegesortierung ist stabil; besser noch ein Schluessel, der **eindeutig** ordnet.
-  Eine Reihenfolge, die eine Vorgabe festlegt, gehoert als Aufzaehlung in den Code und
-  nicht in die Feldreihenfolge eines Verbundes.
-- 2026-09-05 -- Ein Behaelter des Kerns hat **feste Groesse und keine Zuteilung**;
-  Kapazitaet vom Aufrufer nehmen, wo `specs/` keine nennt.
-- 2026-09-06 -- **Zahlwoerter zaehlen, nicht abschreiben.** Ein Paket nannte drei Stellen
-  mit "siebzehn"; es waren fuenf.
+  genauere.** T48 schreibt die Adresse blank, `spiel.md` die Leseart dazu.
+- 2026-09-06 -- **Eine Zuordnung ohne Leser faellt unter den Warnsatz.** Als
+  Bereichsriegel der eigenen Funktion aufgerufen wird aus Dokumentation eine Pruefung;
+  `static_cast<void>(...)` an der Aufrufstelle, mit einem Satz daneben.
+- 2026-09-05 -- **`std::sort` ist im Kern die falsche Antwort** (T9: nicht stabil);
+  Einfuegesortierung, besser ein eindeutig ordnender Schluessel. Eine Reihenfolge, die
+  eine Vorgabe festlegt, gehoert als Aufzaehlung in den Code, nicht in die
+  Feldreihenfolge eines Verbundes. Ein Behaelter des Kerns hat feste Groesse und keine
+  Zuteilung. Kapazitaet vom Aufrufer nehmen, wo `specs/` keine nennt.
+
+## Wegwerfbaeume
+
+- 2026-09-06 -- **Fuer den Alleinbau des Kerns genuegen `kern/` und
+  `werkzeugkette.cmake` nebeneinander.** Das ist billig genug fuer einen Baum je
+  Messfall. Der Arbeitsbereichsbau braucht mehr: Der Belegstellenriegel sucht seine
+  Vorgaben als `<wurzel>/../../specs/<name>`, flach abgelegt faellt er aus -- an beiden
+  Staenden gleich, also unauffaellig falsch.
+- 2026-09-06 -- **Ein CMake-Makro ersetzt seine Parameter als Text**, deshalb den
+  **Namen** der Eingabevariablen uebergeben, nie ihren Wert (`-DPFAD=a\b` bricht in der
+  Wertform beim Konfigurieren ab). Eine Angriffszeile ueber `-DCMAKE_PROJECT_INCLUDE`
+  laeuft direkt hinter `project()` und sieht noch kein Ziel.
 
 ## Offene Faehrten und Unsicherheiten
 
-- 2026-09-06, **worauf ich bei 0132 unsicher bin:** Der neue Zaehler misst, **ob** der
-  Schlussriegel einsammelt, nicht **ob er richtig** einsammelt. Wer eine der fuenf
-  Eigenschaften stumm stellt, drueckt die Zahl, ohne sie auf 0 zu bringen -- gelesen
-  gehoert sie deshalb im Vergleich zum vorhergehenden Stand, wie die Zahl der Ziele. Die
-  Nullmeldung des Riegels habe ich absichtlich **nicht** erweitert: Dort ist die Frage
-  schon beantwortet, und ein Baum aus lauter Schnittstellenzielen traegt Eintraege, ohne
-  etwas zu uebersetzen.
-- 2026-09-06 -- **`werte.cpp` uebersetzte waehrend meines Laufs nicht** (`too many braces
-  around scalar initializer`, dreimal `non-constant condition for static assert`), aus
-  einem fremden Paket an `werte.hpp`. Nicht angefasst, hier gemeldet.
-- 2026-09-05, **erledigt, nicht mehr vorschlagen:** die veraltete Sollzahl in
+- 2026-09-06, **worauf ich bei 0156 unsicher bin:** Meine Schranke ist der **ganze**
+  Stapel eines Fadens, also die schwaechste wahre absolute Grenze -- Wand 482 uebersetzt
+  gruen und liefe trotzdem in einen Stapelueberlauf. Jede schaerfere Zahl (ein Halb, ein
+  Achtel) waere genau die gegriffene runde Zahl, die Bedingung 2 des Pakets verbietet.
+  Ich habe die Grenze der Zusicherung deshalb im Kopf ausdruecklich benannt, statt sie
+  zu verschweigen. Wer es anders will, braucht eine gemessene Zahl fuer den uebrigen
+  Rahmen -- das waere ein eigenes Paket.
+- 2026-09-06 -- **`0091-diff-ursachenkette-nach-t20` haelt dieselbe Datei** und stand
+  hinter diesem Paket in der Reihe. Es findet `STAPEL_JE_FADEN` und die dritte
+  Zusicherung jetzt vor; die beiden Saetze in Zeile 72/73 und 202 des alten Kopfes gibt
+  es nicht mehr in dieser Form.
+- 2026-09-06, **erledigt, nicht mehr vorschlagen:** die veraltete Sollzahl in
   `befunde/messung-0076/bauwege.py` (Paket 0135) und die Endungsfalle in
-  `werkzeugkette.cmake` (Paket 0108). **Erst die vorhandenen Pakete lesen, dann
-  vorschlagen.**
-
-- 2026-09-06, **worauf ich bei 0152 unsicher bin:** `schaden` (Nr. 22) nimmt einen
-  `Zustand` **und** einen `Schreiber` -- die Nummern 9/10/11 nehmen einen Zustand, und
-  aus einem Schreiber ist keiner zu gewinnen. Nichts bindet die beiden aneinander; als
-  Paket `0165` vorgeschlagen.
-- 2026-09-06, **die Regel, die beide Wahlen dieses Laufs entschieden hat:** Wo `specs/`
-  eine Adresse **blank** hinschreibt, nimmt die Groesse einen `Zustand`; wo es
-  `lies_alt`/`lies_neu` ausschreibt, den `Schreiber`. Stimmt an allen 23 Deklarationen.
-- 2026-09-06 -- **`werte.hpp` traegt 22 Groessen in 23 Deklarationen.** Nr. 11 hat zwei
-  Stelligkeiten und ist nach T48 *eine* Groesse: Nummern zaehlen, nicht Zeilen. Das
-  Zahlwort steht sechsmal im Kopf, nicht dreimal wie das Paket sagt.
-
-## Riegel und fremde Laeufe, zusammen gelesen
-
-- 2026-09-06, **die Lehre dieses Laufs** -- **Ein Paket kann eine Vorgabe verlangen, die
-  ein Riegel verbietet.** 0152 verlangte woertlich einen Kommentar „mit Verweis auf
-  `technik.md` Zeile 3262"; genau das faengt der Belegstellenriegel. Der Riegel gewinnt,
-  weil er ein Bautor ist. Ersatz ist der **benannte Abschnitt** statt der Nummer -- kein
-  Zitat, keine Zahl.
-- 2026-09-06 -- **Ein roter Riegel am Arbeitsbaum ist nicht automatisch deiner.** Erster
-  Lauf: beide rot. Zwei Befunde waren meine, der Rest kam aus `verlauf.hpp`, an dem ein
-  Fremdlauf schrieb -- und `belegstellen_riegel.cpp` **selbst** war in derselben Minute
-  geaendert. Billiger Nachweis: `git diff --numstat` ueber das Vorhaben. Stehen dort
-  fremde Dateien, ist der Befund fremd; zweiter Lauf beide Code 0, ohne sie anzufassen.
-- 2026-09-06 -- **Eine Baumkopie ohne `befunde/` ist kein Bezugsstand fuer den
-  Belegstellenriegel.** Er prueft Verweisziele am Ort und meldet jedes Zitat nach
-  `befunde/...` als toten Verweis. Verlinken statt weglassen -- oder am Arbeitsbaum messen.
-- 2026-09-06 -- **Ein Zwischenstand meiner Datei war fuer eine Weile ein roter Bau eines
-  fremden Laufs** (Feld in `Konstanten` angelegt, positionale Initialisierer noch nicht
-  nachgezogen). Struktur und **alle** ihre Aggregatinitialisierer gehoeren in einen
-  Aufruf; `grep` auf den Nachbarfeldnamen findet sie.
+  `werkzeugkette.cmake` (Paket 0108). Erst die vorhandenen Pakete lesen, dann vorschlagen.
