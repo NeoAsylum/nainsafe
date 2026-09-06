@@ -363,62 +363,63 @@ against a target series that changes underneath it is no test. The annual data-u
 from the idea's calculation thus produces a new, independently versioned vintage -- not
 an overwrite of the old one.
 
-## Was das Modell braucht und was fehlt
+## What the model needs and what is missing
 
-Die Idee nennt zwoelf Laender, sechs Sektoren, Quartalsrunden und fuenf
-Politikinstrumente. Danach geordnet:
+The idea names twelve countries, six sectors, quarterly rounds and five policy
+instruments. Ordered by that:
 
-**Belegt verfuegbar unter tragfaehiger Lizenz:**
+**Evidenced as available under a load-bearing licence:**
 
-| Groesse | Quelle | Auflösung |
+| Quantity | Source | Resolution |
 |---|---|---|
-| BIP je Land | WDI (ab 1960), PWT (ab 1950) | jaehrlich |
-| Bevoelkerung, Erwerbstaetige | WDI, PWT | jaehrlich |
-| Inflation / Verbraucherpreise | WDI, IWF IFS | jaehrlich / monatlich |
-| Leitzins, Geldmenge, Wechselkurs | IWF IFS | monatlich, quartalsweise |
-| Staatsschuld, Haushaltssaldo | IWF WEO | jaehrlich |
-| Handelsvolumen gesamt | WDI | jaehrlich |
-| bilaterale Handelsstroeme, Land-Land | IWF DOTS | quartalsweise |
-| bilaterale Handelsstroeme nach Ware | CEPII BACI | jaehrlich |
-| Produktivitaet, Kapitalstock, Preisniveau | PWT 11.0 (185 Laender, 1950-2023) | jaehrlich |
+| GDP per country | WDI (from 1960), PWT (from 1950) | annual |
+| population, employed persons | WDI, PWT | annual |
+| inflation / consumer prices | WDI, IMF IFS | annual / monthly |
+| policy rate, money supply, exchange rate | IMF IFS | monthly, quarterly |
+| government debt, fiscal balance | IMF WEO | annual |
+| total trade volume | WDI | annual |
+| bilateral trade flows, country-country | IMF DOTS | quarterly |
+| bilateral trade flows by commodity | CEPII BACI | annual |
+| productivity, capital stock, price level | PWT 11.0 (185 countries, 1950-2023) | annual |
 
-**Vier Luecken. Jede ist eine Entwurfsvorgabe fuer den Spielentwerfer, keine Randnotiz:**
+**Four gaps. Each is a design requirement for the game designer, not a side note:**
 
-1. **Sechs Sektoren gibt es nicht unter freier Lizenz.** WDI liefert die grobe Gliederung
-   -- Landwirtschaft, Industrie, verarbeitendes Gewerbe, Dienstleistungen, also vier
-   Positionen, davon eine als Teilmenge einer anderen. Feinere Gliederungen liegen bei
-   OECD (ungeklaert, Nr. 8) und Eurostat (fuer Nicht-EU-Laender gesperrt, Nr. 7).
-   **Vorgabe:** Entweder die Sektorzahl auf das absenken, was WDI hergibt (praktisch vier),
-   oder die feineren Sektoren als **Modellkonstrukt** fuehren, das aus den groben
-   aufgeteilt wird -- dann bezieht sich die vierte Pruefachse nur auf die aggregierte
-   Ebene, und das gehoert offen gesagt.
-2. **Sektorale Preise fehlen ganz.** Weder WDI noch PWT liefern sektorale Preisindizes im
-   Laendervergleich. PWT liefert Preisniveaus je Land insgesamt. **Vorgabe:** Sektorpreise
-   sind eine endogene Modellgroesse ohne Startwert aus Daten und **ohne Sollreihe** --
-   der Rueckvergleich kann sie nicht pruefen.
-3. **Zoelle -- das Instrument, um das sich das Spiel dreht -- sind die schwaechste
-   Stelle.** Die drei ueblichen Quellen (WTO, WITS, UNCTAD TRAINS) sind allesamt gesperrt
-   oder ungeklaert. WDI fuehrt einen aggregierten angewandten Zollsatz je Land, der aber
-   erkennbar aus WITS abgeleitet ist und damit unter die Drittanbieter-Ausnahme fallen
-   koennte. **Vorgabe:** Wenn nur ein Zollsatz je Land verfuegbar ist statt je Land und
-   Sektor, dann ist das Instrument „Zoll auf Sektor 3" ein Modellkonstrukt ohne
-   Datenanker. Das ist spielbar, aber es ist etwas anderes als die uebrigen Groessen, und
-   der Entwurf sollte es nicht so aussehen lassen, als sei es dasselbe.
-4. **Regierungszustimmung**, die Groesse, ueber die die Wirkungskette der Idee laeuft
-   („Realeinkommen -0,4% -> Zustimmung Regierung -1,2"), hat unter den geprueften Quellen
-   **keine** Entsprechung. Sie ist eine reine Modellgroesse. Das ist zulaessig -- aber sie
-   liegt damit ausserhalb dessen, was die vierte Pruefachse pruefen kann, und das ist
-   genau die Grenze, die `agentenbau.md` beschreibt.
+1. **Six sectors do not exist under a free licence.** WDI delivers the coarse breakdown
+   -- agriculture, industry, manufacturing, services, that is four positions, one of
+   them a subset of another. Finer breakdowns sit with the OECD (unresolved, no. 8) and
+   Eurostat (locked for non-EU countries, no. 7).
+   **Requirement:** either lower the sector count to what WDI yields (practically four),
+   or carry the finer sectors as a **model construct** that is split out of the coarse
+   ones -- then the fourth check axis refers only to the aggregated level, and that
+   belongs said openly.
+2. **Sectoral prices are missing entirely.** Neither WDI nor PWT delivers sectoral price
+   indices in cross-country comparison. PWT delivers price levels per country as a
+   whole. **Requirement:** sector prices are an endogenous model quantity without a
+   start value from data and **without a target series** -- the backtest cannot check
+   them.
+3. **Tariffs -- the instrument the game revolves around -- are the weakest spot.** The
+   three usual sources (WTO, WITS, UNCTAD TRAINS) are all locked or unresolved. WDI
+   carries an aggregated applied tariff rate per country, but it is recognisably derived
+   from WITS and could therefore fall under the third-party exception. **Requirement:**
+   if only one tariff rate per country is available instead of one per country and
+   sector, then the instrument „Zoll auf Sektor 3" is a model construct without a data
+   anchor. That is playable, but it is something other than the remaining quantities,
+   and the design should not make it look as if it were the same.
+4. **Government approval**, the quantity through which the idea's chain of effect runs
+   („Realeinkommen -0,4% -> Zustimmung Regierung -1,2"), has **no** counterpart among
+   the checked sources. It is a pure model quantity. That is permissible -- but it
+   thereby lies outside what the fourth check axis can check, and that is exactly the
+   boundary `agentenbau.md` describes.
 
-**Und eine Auflösungsluecke, die den Spielentwurf direkt trifft:** Die Idee rechnet in
-**Quartalsrunden**. Quartalsweise oder feiner liegen nur Zins, Wechselkurs und
-DOTS-Handelsstroeme vor; BIP, Bevoelkerung, Sektorstruktur, Produktivitaet und Zoll sind
-**jaehrlich**. Die Sollreihen der vierten Pruefachse sind damit ueberwiegend jaehrlich.
-Zwei Wege, beide zu entscheiden, nicht von mir: Jahresrunden statt Quartalsrunden -- dann
-passt der Rueckvergleich exakt, aber 60 Runden werden 60 Jahre. Oder Quartalsrunden mit
-Rueckvergleich nur auf Jahresenden -- dann bleiben drei von vier Runden ungeprueft.
-`agentenbau.md` verlangt die Masse im Entwurf, nicht in der Nachbereitung; das gehoert
-dazu.
+**And one resolution gap that hits the game design directly:** the idea reckons in
+**quarterly rounds**. Only interest rate, exchange rate and the DOTS trade flows are
+available quarterly or finer; GDP, population, sector structure, productivity and tariff
+are **annual**. The target series of the fourth check axis are thus predominantly annual.
+Two paths, both to be decided, and not by me: annual rounds instead of quarterly rounds
+-- then the backtest fits exactly, but 60 rounds become 60 years. Or quarterly rounds
+with the backtest only on year-ends -- then three of four rounds remain unchecked.
+`agentenbau.md` demands the measures in the design, not in the aftermath; this belongs
+among them.
 
 ## Was unklar ist
 
