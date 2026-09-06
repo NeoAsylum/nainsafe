@@ -178,12 +178,13 @@
 //! die vier Faelle, die die Verbreiterung verlangt (1, 2, 3 und 8), und die vier
 //! anderen bleiben gruen.
 //!
-//! Fuenf weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
+//! Sechs weitere Tabellen sind seither dazugekommen und laufen ebenso bei jedem Aufruf
 //! mit: `ZITATFAELLE` zur Form ohne Anfuehrung (Paket 0079), `ZIELFAELLE` zur Frage, wo
 //! eine genannte Zieldatei liegt (Paket 0083), `ABSTANDSFAELLE` zum Wortabstand samt
 //! Suche nach rechts (Paket 0086), `SATZFAELLE` zur Satzgrenze nach links (Paket 0079,
-//! zweiter Teil) und `URTEILSFAELLE` zu dem Schritt, an dem aus einer Art ein Urteil
-//! wird (Paket 0106). Die ersten vier halten vor allem den **roten** Fall fest, den der
+//! zweiter Teil), `URTEILSFAELLE` zu dem Schritt, an dem aus einer Art ein Urteil
+//! wird (Paket 0106), und `ORDNUNGSFAELLE` zu der Ordnung, in der gemeldet wird
+//! (Paket 0130). Die ersten vier halten vor allem den **roten** Fall fest, den der
 //! Bestand nicht hergibt -- auf ihm loest heute jedes Zitat auf, der Riegel koennte
 //! dort also nur zeigen, dass er gruen wird.
 //!
@@ -195,6 +196,13 @@
 //! ein Fall riss und ohne dass der Lauf ueber den Bestand rot wurde -- auch nicht auf
 //! einer Kopie mit umbenannter Zielzeile. Seit Paket 0106 steht er als eigener Aufruf
 //! da und hat sechs Faelle, und jeder einzelne ist einmal rot gemessen worden.
+//!
+//! Die sechste haelt etwas, das gar keinen Gegenstand auf der Platte braucht: **die
+//! Ordnung, in der gemeldet wird.** Bis zum 2026-09-06 war sie die des Dateisystems --
+//! zwei inhaltsgleiche Baeume, einer auf ext4 und einer auf tmpfs, ergaben dieselben
+//! Zahlen und dieselben Funde in verschiedener Reihenfolge. Die Begruendung und die
+//! drei Regeln, die die acht Faelle einzeln halten, stehen weiter unten bei
+//! `vor_in_byteordnung`.
 //!
 //! ## Was der Riegel liest, und warum genau das
 //!
@@ -707,6 +715,7 @@
 //! Vorgaben: T4 (kein Gleitkomma -- hier trivial, es wird nichts gerechnet),
 //! ADR 0011 (C++20, g++). Kein Zeiger, kein rohes Feld, jeder Zugriff ueber Index.
 
+#include <algorithm>
 #include <array>
 #include <cstddef>
 #include <cstdio>
@@ -1134,8 +1143,8 @@ using Ortsmenge = std::set<std::string>;
 /// Zwei Ausgaben aus einem Durchgang: die Dateien, die gelesen werden duerfen, und die
 /// Pfade derer, die in einem mit Absicht ungelesenen Ordner liegen. Zwei Durchgaenge
 /// ueber denselben Baum waeren zwei Ordnerlisten, die auseinanderlaufen koennen.
-std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Ortsmenge& ungelesene,
-                                     std::error_code& fehler) {
+std::vector<fs::path> sammle_dateien_roh(const fs::path& wurzel, Ortsmenge& ungelesene,
+                                         std::error_code& fehler) {
     std::vector<fs::path> gefunden;
     // Eingesammelt wird in einem Durchgang alles, was ueberhaupt gelesen werden kann;
     // welche Bedingung welche Teilmenge bekommt, entscheidet `main` an den Praedikaten
@@ -1186,6 +1195,227 @@ std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Ortsmenge& ungelese
         }
     }
     return gefunden;
+}
+
+// ---------------------------------------------------------------------------
+// Die Ausgabeordnung -- Paket 0130
+// ---------------------------------------------------------------------------
+//
+// Bis zum 2026-09-06 sortierte dieser Riegel nirgends. `std::sort` kam im ganzen
+// Quelltext nicht vor, und damit war die Ordnung jeder Liste, die er ausgibt, die
+// Auflistungsordnung des Dateisystems. Gemessen am 2026-09-05 bei der Pruefung von
+// Paket 0120, mit **einem** selbst uebersetzten Programm ueber inhaltsgleiche Baeume:
+// dieselben Kennzahlen, derselbe Rueckgabewert -- und die uebergangenen Fundstellen in
+// zwei verschiedenen Ordnungen, je nachdem, ob der Baum auf ext4 oder auf tmpfs lag.
+//
+// Das ist keine Schoenheitsfrage, sondern eine Pruefbarkeitsluecke, und sie hat
+// zugeschlagen. Viele Abnahmebedingungen dieses Vorhabens lauten "der Lauf danach zeigt
+// gegenueber dem Lauf davor keinen Rueckschritt". Wer den Vorher-Stand herstellt, ohne
+// eine fremde Datei anzufassen -- und die Hausregel laesst ihm keine Wahl --, legt ihn
+// neben den Arbeitsbaum und vergleicht danach zwei Ausgaben, deren Zeilenunterschiede
+// zu Dutzenden aus blossen Umsortierungen bestehen.
+//
+// Zweitens haengt an der Ordnung mehr als die Ordnung: `nimm_ziel_auf` traegt zu einem
+// mehrfach vergebenen Basisnamen den **zuerst gesehenen** Pfad ein. Welcher das ist,
+// entschied bis hierher das Dateisystem -- und mit ihm, welchen Pfad eine Meldung
+// nennt. Sortiert wird deshalb an der Sammelstelle und nicht erst an der Ausgabe.
+//
+// Die Namensmenge der ungelesenen Ordner braucht nichts dergleichen: Sie ist ein
+// `std::set<std::string>`, also schon nach `std::string::compare` geordnet -- und das
+// ist derselbe zeichenweise Vergleich wie hier, weil `char_traits<char>::lt` seine
+// Zeichen als `unsigned char` nimmt.
+//
+// Verglichen wird zeichenweise ueber die Byte-Folge. Drei Entscheidungen stecken darin,
+// und jede hat unten ihren Fall:
+//
+//   * **Kein Gebietsschema.** Ein Vergleich ueber `strcoll` ordnete Gross- und
+//     Kleinschreibung ineinander und haenge damit an einer Umgebungsvariablen des
+//     ausfuehrenden Rechners -- genau die Sorte Abhaengigkeit, die hier wegsoll.
+//   * **Kein Vergleich ueber `fs::path`.** Dessen Vergleich laeuft Bestandteil fuer
+//     Bestandteil; `kern/src/werte.cpp` staende damit vor `kern.md`, obwohl der Punkt
+//     (0x2E) vor dem Schraegstrich (0x2F) kommt. Gemeldet wird der Kurzname als
+//     Zeichenkette, also wird auch nach ihr sortiert.
+//   * **`unsigned char` und nicht `char`.** Auf dieser Werkzeugkette ist `char`
+//     vorzeichenbehaftet; ein Name mit einem Umlaut traegt in UTF-8 Bytes ab 0x80 und
+//     landete als negative Zahl **vor** allem anderen.
+
+/// Vergleicht zwei Kurznamen zeichenweise ueber ihre Bytes -- Paket 0130.
+///
+/// Ausgeschrieben statt `links < rechts`: Die Bibliothek vergleicht ebenso, aber sie
+/// ist nicht die Stelle, an der ein Selbsttest die Regel festhalten kann. Hier steht
+/// sie als **ein** Aufruf da, den der Lauf ueber den Bestand und der Selbsttest
+/// gleichermassen nehmen -- dieselbe Bauart wie bei `beurteile_zitat` in Paket 0106.
+///
+/// `constexpr`, damit die Tabelle unten schon beim Uebersetzen gegen sich selbst
+/// geprueft werden kann.
+constexpr bool vor_in_byteordnung(std::string_view links, std::string_view rechts) {
+    const std::size_t gemeinsam =
+        links.size() < rechts.size() ? links.size() : rechts.size();
+    for (std::size_t i = 0; i < gemeinsam; ++i) {
+        const unsigned char l = static_cast<unsigned char>(links[i]);
+        const unsigned char r = static_cast<unsigned char>(rechts[i]);
+        if (l != r) {
+            return l < r;
+        }
+    }
+    // Gleicher Anfang, verschiedene Laenge: das kuerzere zuerst. Ohne diese Zeile waeren
+    // zwei Namen, von denen einer den anderen fortsetzt, gleichwertig -- und `std::sort`
+    // duerfte sie in beliebiger Ordnung liegen lassen.
+    return links.size() < rechts.size();
+}
+
+/// Bringt eine Liste von Kurznamen in die Ausgabeordnung -- Paket 0130.
+void ordne_kurznamen(std::vector<std::string>& namen) {
+    std::sort(namen.begin(), namen.end(),
+              [](const std::string& links, const std::string& rechts) {
+                  return vor_in_byteordnung(links, rechts);
+              });
+}
+
+/// Sammelt wie oben und legt das Gesammelte in die Ausgabeordnung -- Paket 0130.
+///
+/// Sortiert wird nach dem **vollen** Pfad und nicht nach dem Kurznamen, den erst `main`
+/// bildet. Das ist dieselbe Ordnung: Jeder Eintrag steht unter derselben Wurzel, der
+/// Kurzname entsteht durch Wegnahme genau dieses gemeinsamen Vorsatzes, und ein
+/// gemeinsamer Vorsatz aendert an einem zeichenweisen Vergleich nichts.
+///
+/// Der Sortierschritt steht hier und nicht im Rumpf oben, weil der Rumpf drei Ausgaenge
+/// hat: zwei davon geben im Fehlerfall vorzeitig zurueck. Ein Aufrufer, der `fehler`
+/// nicht prueft, bekaeme sonst je nach Ausgang eine geordnete oder eine ungeordnete
+/// Liste.
+std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Ortsmenge& ungelesene,
+                                     std::error_code& fehler) {
+    std::vector<fs::path> gefunden = sammle_dateien_roh(wurzel, ungelesene, fehler);
+    std::sort(gefunden.begin(), gefunden.end(),
+              [](const fs::path& links, const fs::path& rechts) {
+                  const std::string a = links.string();
+                  const std::string b = rechts.string();
+                  return vor_in_byteordnung(a, b);
+              });
+    return gefunden;
+}
+
+// ---------------------------------------------------------------------------
+// Der Selbsttest zur Ausgabeordnung -- Paket 0130
+// ---------------------------------------------------------------------------
+//
+// Was diese Tabelle prueft, was keine andere prueft: **dass die Ordnung der Ausgabe
+// eine Regel hat und nicht das Dateisystem.** Sie ist die einzige, die ohne einen
+// Gegenstand auf der Platte auskommt und trotzdem den Weg misst, den der Lauf ueber den
+// Bestand nimmt -- `ordne_kurznamen` und die Sortierung in `sammle_dateien` nehmen
+// denselben Aufruf.
+//
+// Die Vorlage ist mit Absicht unsortiert, und dass sie es ist, wird beim Uebersetzen
+// geprueft: Stuende sie schon richtig da, bliebe der Fall auch dann gruen, wenn
+// `ordne_kurznamen` gar nichts taete.
+//
+// Der Umlaut unten ist als Oktalfolge geschrieben (`\303\234` ist das grosse `U` mit
+// zwei Punkten in UTF-8). Nicht wegen dieses Riegels -- das Wort ist keines seiner
+// Schluesselwoerter --, sondern damit der Fall auch dann noch dieselben zwei Bytes
+// traegt, wenn eine Werkzeugkette die Datei einmal anders liest, als sie geschrieben
+// wurde. Ein Fall, der die Byte-Folge festhalten soll, darf nicht selbst an einer
+// Umkodierung haengen.
+
+struct Ordnungsfall {
+    /// Ein Kurzname, wie der Riegel ihn meldet.
+    std::string_view name;
+    /// Sein Platz in der erwarteten Ordnung, von 1 an gezaehlt.
+    std::size_t platz;
+    /// Was diesen Fall von seinem Vorgaenger trennt -- die Regel, die er haelt.
+    std::string_view herkunft;
+};
+
+constexpr std::array<Ordnungsfall, 8> ORDNUNGSFAELLE = {{
+    {"kern/src/werte.cpp", 6,
+     "gegen den Nachbarn darunter: gleicher Anfang bis zum Namen, dann `c` (0x63) vor "
+     "`h` (0x68)"},
+    {"\303\234bersicht.md", 8,
+     "der Fall gegen `char`: das erste Byte ist 0xC3. Vorzeichenbehaftet verglichen "
+     "waere es negativ, und dieser Name staende an Platz 1 statt am Ende"},
+    {"daten/reihen.toml", 3, "gegen `kern...`: `d` (0x64) vor `k` (0x6B)"},
+    {"CMakeLists.txt", 1,
+     "der Fall gegen ein Gebietsschema: `C` (0x43) steht vor jedem Kleinbuchstaben. "
+     "Eine Sortierung nach Sprachregeln zoege diesen Namen zwischen die beiden "
+     "darunter"},
+    {"kern.md", 5,
+     "der Fall gegen einen Vergleich Bestandteil fuer Bestandteil: der Punkt (0x2E) "
+     "steht vor dem Schraegstrich (0x2F), also kommt dieser Name vor `kern/...`. Ueber "
+     "`fs::path` verglichen waere es umgekehrt"},
+    {"aufgaben/0130-ordnung.md", 2, "gegen `CMakeLists.txt`: `a` (0x61) nach `C` (0x43)"},
+    {"kern/src/werte.hpp", 7, "das Gegenstueck zum ersten Fall"},
+    {"daten/reihen.toml.alt", 4,
+     "der Fall zur gleichen Laenge: der Name darueber ist sein Anfang. Ohne die letzte "
+     "Zeile in `vor_in_byteordnung` waeren beide gleichwertig und ihre Ordnung wieder "
+     "offen"},
+}};
+
+/// Steht die Tabelle wirklich unsortiert da? Sonst prueft ihr Fall nichts.
+constexpr bool ordnungsvorlage_ist_ungeordnet() {
+    for (std::size_t k = 1; k < ORDNUNGSFAELLE.size(); ++k) {
+        if (vor_in_byteordnung(ORDNUNGSFAELLE[k].name, ORDNUNGSFAELLE[k - 1].name)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Ist jeder Platz von 1 bis N genau einmal vergeben?
+constexpr bool ordnungsplaetze_vollstaendig() {
+    for (std::size_t platz = 1; platz <= ORDNUNGSFAELLE.size(); ++platz) {
+        std::size_t treffer = 0;
+        for (std::size_t k = 0; k < ORDNUNGSFAELLE.size(); ++k) {
+            if (ORDNUNGSFAELLE[k].platz == platz) {
+                ++treffer;
+            }
+        }
+        if (treffer != 1) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static_assert(ordnungsvorlage_ist_ungeordnet(),
+              "ORDNUNGSFAELLE steht schon in der erwarteten Ordnung da. Der Fall waere "
+              "damit auch fuer ein ordne_kurznamen gruen, das nichts tut.");
+static_assert(ordnungsplaetze_vollstaendig(),
+              "Die Plaetze in ORDNUNGSFAELLE sind keine luecken- und doppellose Folge "
+              "von 1 bis zur Zahl der Faelle.");
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_ordnung() {
+    std::vector<std::string> namen;
+    for (std::size_t k = 0; k < ORDNUNGSFAELLE.size(); ++k) {
+        namen.push_back(std::string(ORDNUNGSFAELLE[k].name));
+    }
+    ordne_kurznamen(namen);
+
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < ORDNUNGSFAELLE.size(); ++k) {
+        const Ordnungsfall& fall = ORDNUNGSFAELLE[k];
+        // Der Platz ist durch `ordnungsplaetze_vollstaendig` schon beim Uebersetzen auf
+        // 1 bis N festgelegt. Geprueft wird er trotzdem: Ein Index, der aus einer
+        // spaeter geaenderten Tabelle kommt, soll hier ein roter Fall sein und kein
+        // Zugriff daneben.
+        if (fall.platz == 0 || fall.platz > namen.size()) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Ordnungsfall %zu: Platz %zu liegt ausserhalb der %zu Faelle.\n",
+                         k + 1, fall.platz, namen.size());
+            continue;
+        }
+        const std::string& gemessen = namen[fall.platz - 1];
+        if (gemessen != fall.name) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Ordnungsfall %zu: an Platz %zu steht '%s', erwartet war "
+                         "'%.*s'.\n      Herkunft: %.*s\n",
+                         k + 1, fall.platz, gemessen.c_str(),
+                         static_cast<int>(fall.name.size()), fall.name.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
 }
 
 // ---------------------------------------------------------------------------
@@ -3404,7 +3634,8 @@ int main(int argc, char** argv) {
                                        + selbsttest_urteil()
                                        + selbsttest_zielart()
                                        + selbsttest_abstand()
-                                       + selbsttest_satzgrenze();
+                                       + selbsttest_satzgrenze()
+                                       + selbsttest_ordnung();
     if (fehlgeschlagen > 0) {
         std::fprintf(stderr,
                      "\nbelegstellen_riegel: %zu von %zu Faellen des Selbsttests sind "
@@ -3414,16 +3645,17 @@ int main(int argc, char** argv) {
                      fehlgeschlagen,
                      NAMENSFAELLE.size() + ZITATFAELLE.size() + URTEILSFAELLE.size()
                          + ZIELFAELLE.size() + ABSTANDSFAELLE.size()
-                         + SATZFAELLE.size());
+                         + SATZFAELLE.size() + ORDNUNGSFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
                  "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links, %zu "
                  "zur Form\nohne Anfuehrung, %zu zum Urteilsschritt, %zu zur Ortsfrage, "
-                 "%zu zum Wortabstand samt\nSuche nach rechts und %zu zur Satzgrenze "
-                 "nach links, alle wie erwartet.\n",
+                 "%zu zum Wortabstand samt\nSuche nach rechts, %zu zur Satzgrenze "
+                 "nach links und %zu zur Ausgabeordnung,\nalle wie erwartet.\n",
                  NAMENSFAELLE.size(), ZITATFAELLE.size(), URTEILSFAELLE.size(),
-                 ZIELFAELLE.size(), ABSTANDSFAELLE.size(), SATZFAELLE.size());
+                 ZIELFAELLE.size(), ABSTANDSFAELLE.size(), SATZFAELLE.size(),
+                 ORDNUNGSFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {

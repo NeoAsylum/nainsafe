@@ -1,7 +1,7 @@
 ---
 id: 0130-belegstellenriegel-berichtsreihenfolge-festnageln
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0115-riegelkopf-drei-zahlen-nachmessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
@@ -100,3 +100,61 @@ wie sie sind, und bekommen einen Fall dazu (siehe Abnahme).
    Liste von Kurznamen wird durch die neue Sortierung in die erwartete Ordnung gebracht.
    Der Selbsttest bleibt vollstaendig gruen, und die Zahl seiner Faelle in der Kopfzeile
    des Riegels steigt entsprechend.
+
+## GEBAUT — 2026-09-06, Testentwickler
+
+Gemessen gegen `8903184`, Beleg in
+`befunde/messung-0130/lauf-2026-09-06.txt`, erzeugt von `messen.py` daneben. Das
+Skript ist selbst ein Riegel: Rueckgabe 1 bei der ersten Abweichung.
+
+**Was am Quelltext steht.** `sammle_dateien` sortiert das Gesammelte, bevor es
+zurueckgeht; der Vergleich `vor_in_byteordnung` steht als eigener Aufruf da, damit der
+Selbsttest denselben Weg misst wie der Lauf ueber den Bestand. Kein Erkennungsverhalten
+und keine Ausnahmeliste angefasst -- die Kennzahlen und der Rueckgabewert sind vor wie
+nach der Aenderung dieselben.
+
+**Bedingung 1.** Drei Kopien mit demselben Fingerabdruck (`a79341c5...`, 88.348
+Dateien): A auf ext4, B auf tmpfs, C auf ext4 absteigend angelegt. Der neue Riegel
+meldet ueber alle drei zeichengleich. Der Zwilling haelt: Der Stand aus `git show HEAD`
+meldet ueber A und B **Verschiedenes** -- die erste abweichende Zeile ist
+`daten/adressen.md` gegen `daten/reihen.toml` in der Liste der uebergangenen
+Fundstellen.
+
+Zwei Dinge, die der Vorschlag nicht vorhersehen konnte und die der Pruefer wissen soll:
+
+* **A gegen C zeigt auch vorher keinen Unterschied.** Zwei frisch angelegte Baeume auf
+  **demselben** ext4 liefern dieselbe Auflistungsordnung, gleichgueltig in welcher
+  Ordnung sie angelegt wurden -- die Ordnung haengt dort am Namen und nicht am
+  Anlegezeitpunkt. Der Unterschied kommt allein aus dem Wechsel des Dateisystems, also
+  genau aus dem, was die Abnahme verlangt. C ist damit kein Nachweis, sondern eine
+  Auskunft; sie steht im Beleg.
+* **Die Kopien sind verkuerzt, und die Verkuerzung ist gemessen.** Der ganze Baum misst
+  3,4 GB und passt nicht zweimal auf diesen Rechner. Von `bau` und `befunde` liest der
+  Riegel keinen Inhalt, und `ist_zieldatei` laesst nur acht Endungen durch; die Kopie
+  legt deshalb 39.671 Dateien gar nicht und 87.548 leer an. Dass das nichts aendert,
+  steht nicht als Behauptung da: Schritt 0 im Beleg laesst den Riegel ueber den echten
+  Arbeitsbaum und ueber Kopie A laufen und verlangt zeichengleiche Ausgabe.
+
+**Bedingung 2.** `ORDNUNGSFAELLE`, acht Faelle; die Kopfzeile nennt sie
+(`... und 8 zur Ausgabeordnung`). Dass die Vorlage unsortiert ist und die Plaetze eine
+luecken- und doppellose Folge sind, wird beim Uebersetzen geprueft, nicht zur Laufzeit.
+
+**Rot gemacht, viermal, jeder Mutant am ausgelieferten Stand:**
+
+| Mutant | Ausgang | reisst an |
+|---|---|---|
+| `char-statt-unsigned` | Code 2 | allen acht, darunter `\303\234bersicht.md` |
+| `gross-wie-klein` | Code 2 | Fall 4 und 6 -- `CMakeLists.txt` gegen `aufgaben/...` |
+| `laengeres-zuerst` | Code 2 | Fall 3 und 8 -- die beiden mit gemeinsamem Anfang |
+| `ohne-sortierung` | Code 0 | **keinem Fall** -- dafuer A gegen B verschieden |
+
+Keiner der vier laesst eine fremde Falltabelle reissen; das Skript prueft es und nennt
+je Mutant den Fall, der ihn **namentlich** treffen muss. Der vierte ist der wichtige:
+Er sitzt an der Sammelstelle, die kein Fall der Tabelle sieht, und belegt damit, dass
+Bedingung 1 und Bedingung 2 verschiedene Dinge messen.
+
+**Beide Bauwege gruen.** Alleinbau (`cmake -S werkzeuge/belegstellen`) und Arbeitsbereich
+(`cmake -S <vorhaben>`), jeweils mit dem Warnsatz und dem Sanitizer-Profil; `ctest
+--no-tests=error` laesst `belegstellen_riegel` und `bezeichner_riegel` durch.
+
+**Worauf ich unsicher bin,** steht im Logbuch unter demselben Datum.
