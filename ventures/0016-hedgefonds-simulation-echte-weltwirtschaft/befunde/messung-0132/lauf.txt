@@ -1,0 +1,28 @@
+Gemessene Kette: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake  (65051 Bytes)
+Ablage:          /tmp/claude-1000/messung0132
+Die Mutation:    if(NOT "${${listenname}}" STREQUAL "")  ->  if(FALSE)  # stumpf gemacht -- allein fuer diese Messung
+
+A-ohne-w-unveraendert  code=0  Zaehler=17
+        Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnitt
+B-ohne-w-stumpf        code=0  Zaehler=0
+        Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnitt
+C-mit-w-unveraendert   code=1  Zaehler=None
+        (keine Riegelzeile -- abgebrochen)
+D-mit-w-stumpf         code=0  Zaehler=0
+        Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnitt
+
+   A und B fahren denselben Quellbaum   [/tmp/claude-1000/messung0132/baum-ohne-w]
+   beide konfigurieren Code 0   [0 und 0]
+   beide melden `alle mit Warnsatz und ohne Pauschalabschalter`   [zweimal vorhanden]
+   die Riegelzeile ohne den Zaehler ist zeichengleich   [Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.]
+   allein die neue Zahl unterscheidet A und B   [17 gegen 0]
+   die unveraenderte Fassung sammelt ein   [17]
+   die stumpfe Fassung sammelt nichts mehr ein   [0]
+   C: die unveraenderte Fassung bricht an `-w` ab   [code=1]
+   D: die stumpfe Fassung laesst dasselbe `-w` gruen durch   [code=0]
+   D meldet ausser dem Zaehler zeichengleich dasselbe wie A   [Warnsatz-Schlussriegel: 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.]
+   und der Zaehler ist das Einzige, was den Unterschied traegt   [17 gegen 0]
+
+Abweichungen: 0
+
+Rueckgabewert: 0

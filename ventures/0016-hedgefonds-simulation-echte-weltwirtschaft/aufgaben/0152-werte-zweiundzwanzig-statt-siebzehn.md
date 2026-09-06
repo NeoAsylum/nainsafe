@@ -1,7 +1,7 @@
 ---
 id: 0152-werte-zweiundzwanzig-statt-siebzehn
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0151-werte-die-drei-hubgroessen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/werte.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: Die fuenf Bedingungen unter "Abnahme".

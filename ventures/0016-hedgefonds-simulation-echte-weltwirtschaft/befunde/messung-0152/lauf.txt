@@ -1,0 +1,58 @@
+1. Der Bestand, beide Bauprofile
+  [ok ] FABRIK_SANITIZER=ON: uebersetzt und ctest gruen (12 Proben)
+  [ok ] FABRIK_SANITIZER=OFF: uebersetzt und ctest gruen (12 Proben)
+
+2. Beisst die Probe? Jede Mutation dreht genau eine Entscheidung um
+  [ok ] nr11-eine-richtung: Nr. 11 zaehlt nur die Ausfuhr statt beider Richtungen je Paar -> ctest rot
+  [ok ] nr11-nur-ein-sektor: die einstellige Fassung summiert nicht ueber beide handelbaren Sektoren -> uebersetzt nicht
+  [ok ] nr11-ohne-sektorriegel: Nr. 11 laesst den dritten Sektor eine Ebene tiefer melden -> ctest rot
+  [ok ] nr21-additiv: Nr. 21 liest den Keil additiv statt multiplikativ (T5, spiel.md) -> ctest rot
+  [ok ] nr21-zoll-ignoriert: Nr. 21 nimmt den Zollstand des Gebiets gar nicht auf -> uebersetzt nicht
+  [ok ] nr21-restwelt-liest: Nr. 21 sucht fuer die Restwelt eine Zolladresse, die es nicht gibt -> ctest rot
+  [ok ] nr21-ohne-gebietsriegel: Nr. 21 meldet ihr Gebiet unter fremdem Namen -> ctest rot
+  [ok ] nr22-menge-einstellig: die Zollzeile nimmt das Handelsvolumen aller Sektoren statt des eigenen -> ctest rot
+  [ok ] nr22-leitzins-nimmt-bip: die Zinszeile misst das Bruttoinlandsprodukt statt der Staatsschuld -> ctest rot
+  [ok ] nr22-haushalt-fremder-hub: die Haushaltszeile liest den Hub eines anderen Instruments -> ctest rot
+  [ok ] nr22-regulierung-literal: die Regulierungszeile traegt ein Literal statt des Parameterschluessels -> ctest rot
+  [ok ] nr22-fremder-name: das fuenfte Instrument wird unter dem Namen von Nr. 18 gemeldet -> ctest rot
+  [ok ] nr22-ohne-landriegel: Nr. 22 laesst die Restwelt eine Ebene tiefer melden -> ctest rot
+
+3. Die drei Riegel am Arbeitsbaum
+  [ok ] belegstellen_riegel: Code 0
+  [ok ] bezeichner_riegel: Code 0
+  [ok ] Sperrebindungsriegel: Sperrebindungsriegel (T4, T7 Massnahme 4.2): 10 Kernquelle(n) und 12 Probe(n) geprueft, jede bindet "kern/sperre.hpp" als letzten #include.
+
+4. Der Zaehlnachweis aus T48
+  [ok ] werte.hpp nennt 'siebzehn' 0-mal (erwartet 0)
+  [ok ] werte.hpp traegt das nachgezaehlte Zahlwort 6-mal (erwartet 6)
+  [ok ] die Nummern der Tabelle sind luecken- und dublettenfrei 1 bis 22: 22 verschiedene, 23 Ueberschriften
+  [ok ] dreiundzwanzig Deklarationen ausserhalb von intern (gezaehlt 23)
+  [ok ] und der eine Unterschied ist Nr. 11 mit zwei Stelligkeiten: ['handelsvolumen']
+  [ok ] `menge` und `verschiebung` haben keine Deklaration im Kopf: keine
+
+Die dreiundzwanzig Deklarationen, in der Reihenfolge des Kopfes:
+   1  wert
+   2  korbwert
+   3  anleihewert
+   4  waehrungswert
+   5  markt
+   6  stufenwert
+   7  marktkorb
+   8  korbbestand
+   9  bip
+  10  schuld
+  11  handelsvolumen
+  12  handelsvolumen
+  13  anleihekurs
+  14  landespreis
+  15  fondsanteil
+  16  positionswert
+  17  beteiligung_wert
+  18  fondsvermoegen
+  19  hub
+  20  keilhub
+  21  preishub_zoll
+  22  weltpreis_mit_zoll
+  23  schaden
+
+Abweichungen: 0

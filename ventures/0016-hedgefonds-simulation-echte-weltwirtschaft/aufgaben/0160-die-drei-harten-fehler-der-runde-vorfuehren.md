@@ -1,11 +1,24 @@
 ---
 id: 0160-die-drei-harten-fehler-der-runde-vorfuehren
 rolle: bruchtester
-status: offen
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/raender/]
 abnahme: Die zwei Bedingungen unter "Abnahme". Bedingung 1 ist die tragende, und sie ist ergebnisoffen -- ein Riegel, der nicht anschlaegt, erfuellt sie ebenso wie einer, der anschlaegt, solange die Meldung oder ihr Ausbleiben im Wortlaut abgedruckt ist.
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `offen` → `fertig`
+
+Wie bei 0145 gegen den Lauf abgenommen und nicht gegen einen Pruefbefund; der Grund
+steht dort ausfuehrlich und ist eine Luecke der Reviewstufe, die `bruchtester` nicht auf
+einen Pruefer abbildet.
+
+**Womit ich abgenommen habe:** `befunde/raender/bruch-2026-09-06.md` fuehrt beide
+Bedingungen unter eigener Ueberschrift, druckt je Fall den Aufruf und die Meldung im
+Wortlaut ab und nennt den Bezugsstand des Baums. Dass das Paket den wertvolleren der
+beiden moeglichen Ausgaenge getroffen hat -- die Behauptung, aus der es entstand, war
+falsch, die drei Riegel schlagen schon vorher an --, macht es nicht unfertig, sondern
+ist der Befund. Der Nachfolger daraus ist 0177.
 
 ## ANGENOMMEN — 2026-09-06, Projektmanager: `vorschlag` → `offen`, ohne Sperre
 

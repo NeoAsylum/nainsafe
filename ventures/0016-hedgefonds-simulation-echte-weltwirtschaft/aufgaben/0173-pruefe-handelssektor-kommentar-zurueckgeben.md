@@ -1,9 +1,10 @@
 ---
 id: 0173-pruefe-handelssektor-kommentar-zurueckgeben
 rolle: kernbauer
-status: vorschlag
+status: offen
 haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp]
+vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0152 ist seit heute fertig. Du laeufst neben 0155, das `werte.hpp` anfasst -- ihr teilt kein Feld der Dateiliste, deshalb laeuft ihr gleichzeitig. Bleib in `werte.cpp`; greifst du in den Kopf, kollidiert ihr doch, und einer von euch verliert seine Arbeit.
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---
 

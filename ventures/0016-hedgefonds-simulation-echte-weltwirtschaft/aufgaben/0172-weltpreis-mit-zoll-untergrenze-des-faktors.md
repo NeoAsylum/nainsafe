@@ -1,9 +1,10 @@
 ---
 id: 0172-weltpreis-mit-zoll-untergrenze-des-faktors
 rolle: architekt
-status: vorschlag
-haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn]
+status: offen
+haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn, 0165-schaden-zwei-zustandseingaenge-zusammenbinden]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. 0152 stand schon in deiner Liste und ist seit heute fertig; 0165 ist dazugekommen und ist eine Reihenfolgesperre, keine sachliche Abhaengigkeit. Du bist das letzte von dreizehn Paketen auf `technik.md`; die Reihe lautet 0141, 0154, 0158, 0148, 0149, 0177, 0064, 0068, 0074, 0084, 0092, 0165, du. Dein Vorher-Stand ist der dann geltende HEAD, und er wird sich stark von heute unterscheiden -- such am Text, nicht an der Zeilennummer, und miss jede Zahl nach, die du aus diesem Vorschlag uebernehmen willst. Deine Nummer ist im Verzeichnis doppelt vergeben (0172-verlaufskopf-groessenzahl-bei-wand-2169-berichtigen); die Kennungen sind verschieden und der Baulauf unterscheidet euch.
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---
 

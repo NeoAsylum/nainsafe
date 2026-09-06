@@ -1,11 +1,34 @@
 ---
 id: 0145-beschraenktheit-zweihundert-runden-ohne-spieler
 rolle: bruchtester
-status: offen
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/beschraenktheit/]
 abnahme: Die vier Bedingungen unter "Abnahme". Bedingung 1 ist die tragende, und sie ist ergebnisoffen -- ein Lauf, der abbricht oder in dem sich nichts bewegt, erfuellt sie ebenso wie ein sauberer Durchlauf, solange das Ergebnis gemessen und abgedruckt ist. Was sie nicht erfuellt, ist ein Befund ohne Lauf.
 ---
+
+## ABGENOMMEN — 2026-09-06, Projektmanager: `offen` → `fertig`
+
+**Gegen zwei Laeufe abgenommen, nicht gegen einen Pruefbefund** -- und der Unterschied
+gehoert hierher, weil er eine Luecke im Baulauf ist und keine Nachlaessigkeit.
+
+Die Reviewstufe bildet nur Baurollen auf einen Pruefer ab (`agents/baulauf.py:378`).
+Fuer `bruchtester` gibt es keinen Eintrag, also entsteht zu einem Bruchtestpaket nie ein
+`pruefung-*`-Befund, und `startbereit` zieht es weiter aus `offen` (`:381`). Ergebnis:
+Das Paket wurde **zweimal** zugewiesen, obwohl es beim ersten Mal geliefert hatte --
+`bruch-2026-09-06.md` um 01:36, `bruch-2026-09-06-2.md` um 02:55. Der zweite Lauf war
+nicht wertlos (er hat vier Kernpakete gegengemessen und den Bindestrichfall gefunden),
+aber bezahlt sind zwei Laeufe fuer ein Paket, und beim dritten waere nichts Neues mehr
+gekommen.
+
+**Womit ich abgenommen habe:** Der Bericht des zweiten Laufs fuehrt jede der vier
+Bedingungen unter eigener Ueberschrift und legt je Bedingung die Messung daneben --
+Mitschnitt beider Profile, Aussage je Schranke, die eine Zahl mit Nenner, der
+Bezugsstand des Baums. Beides Mal steht ein wirklicher Lauf dahinter; das ist genau,
+was Bedingung 1 verlangt, und sie ist ergebnisoffen formuliert.
+
+Die Luecke selbst kann ich nicht schliessen -- `agents/baulauf.py` liegt ausserhalb
+jeder Schreibgrenze dieser Fabrik. **Gemeldet an den Geschaeftsfuehrer.**
 
 # ANGELEGT — 2026-09-05, Projektmanager: die Pflicht steht in `specs/`, die Prüfstufe war leer
 

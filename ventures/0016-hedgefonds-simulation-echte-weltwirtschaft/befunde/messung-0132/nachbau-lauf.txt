@@ -1,0 +1,49 @@
+Stand: HEAD   Kette: /tmp/claude-1000/nachbau0066-HEAD/werkzeugkette.cmake   (65051 Bytes)
+
+   a1_zielflags             code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_FLAGS an z:  -w
+   b1_quellflags            code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_FLAGS an /tmp/claude-1000/nachbau0066-HEAD/b1_quellflags/z.cpp:  -w
+   b1b_quellopt             code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an /tmp/claude-1000/nachbau0066-HEAD/b1b_quellopt/z.cpp:  -w
+   b2_iface                 code=1 (soll 1 an HEAD)
+        gefunden in:              INTERFACE_COMPILE_OPTIONS an iface:  -w
+   c1_wnoconv               code=0 (soll 0 an HEAD)
+   c2_leereiface            code=0 (soll 0 an HEAD)
+   e10_genexquelle          code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an /tmp/claude-1000/nachbau0066-HEAD/e10_genexquelle/z.cpp:  $<1:-w>
+   e1_addcompileopt         code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an z:  -w
+   e2_dirprop               code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an z:  -w
+   e4_zweiworte             code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_FLAGS an z:  -O0 -w
+   e5_zweitequelle          code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_FLAGS an /tmp/claude-1000/nachbau0066-HEAD/e5_zweitequelle/y.cpp:  -w
+   e6_targetobjects         code=0 (soll 0 an HEAD)
+   e7_ifacegut              code=0 (soll 0 an HEAD)
+   e8_wnoerrorquelle        code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an /tmp/claude-1000/nachbau0066-HEAD/e8_wnoerrorquelle/z.cpp:  -Wno-error=conversion
+   p_positiv                code=0 (soll 0 an HEAD)
+   r1_ohnesatz              code=1 (soll 1 an HEAD)
+        es fehlen: -Wall -Wextra -Werror -Wconversion -Wsign-conversion -Wshadow -Wold-style-cast -Wcast-qual -Wuseless-cast -Wdouble-promotion -Wfloat-equal 
+   r2_privatw               code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an z:  -w
+   r3_shellform             code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an z:  SHELL:-Wno-error -w
+   r4_staticpublic          code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_OPTIONS an z:  -w
+        gefunden in:              INTERFACE_COMPILE_OPTIONS an z:  -w
+   r5_nurschnittstelle      code=1 (soll 1 an HEAD)
+        fabrik_schlussriegel: kein einziges uebersetzendes Ziel unter
+   f1_targetdir             code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_FLAGS an /tmp/claude-1000/nachbau0066-HEAD/f1_targetdir/sub/y.cpp:  -w
+   x_unterbaum              code=1 (soll 1 an HEAD)
+        gefunden in:              COMPILE_FLAGS an /tmp/claude-1000/nachbau0066-HEAD/x_unterbaum/mitglied/src/z.cpp:  -w
+
+Positivkontrolle p_positiv: bau code=2, 1 Fehler
+        /tmp/claude-1000/nachbau0066-HEAD/p_positiv/z.cpp:1:26: error: conversion from ‘double’ to ‘int’ may change value [-Werror=float-conversion]
+
+0 Abweichung(en) vom Soll.
+
+Rueckgabewert: 0

@@ -1,0 +1,68 @@
+Gemessener Baum: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
+Stand davor: git ca60f8a vom 2026-09-06 ("projektmanager: 0016-hedgefonds-simulation-echte-weltwirtschaft (20 Dateien)"), ausgepackt nach /tmp/claude-1000/bauwege0076-paket0132/vergleichsstand-ca60f8a
+   FABRIK_SANITIZER=OFF   arbeitsbereich=20  kern=13  pruefstand=4
+   FABRIK_SANITIZER=ON    arbeitsbereich=22  kern=14  pruefstand=5
+
+=== Profil sanitizer-an (FABRIK_SANITIZER=ON) ===
+   arbeitsbereich   konfig code=0  uebersetzende Ziele=22 (Stand davor 22)
+        -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+   !! bau code=2
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:194:1: error: too many braces around scalar initializer
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:199:73: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:201:72: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:205:65: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:194:1: error: too many braces around scalar initializer
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:199:73: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:201:72: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:205:65: error: non-constant condition for static assert
+   !! ctest code=8  11% tests passed, 16 tests failed out of 18
+   kern             konfig code=0  uebersetzende Ziele=14 (Stand davor 14)
+        -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+   !! bau code=2
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:194:1: error: too many braces around scalar initializer
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:199:73: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:201:72: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:205:65: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:194:1: error: too many braces around scalar initializer
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:199:73: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:201:72: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:205:65: error: non-constant condition for static assert
+   !! ctest code=8  0% tests passed, 12 tests failed out of 12
+   pruefstand       konfig code=0  uebersetzende Ziele=5 (Stand davor 5)
+        -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
+        -- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabsc
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 3
+=== Profil sanitizer-aus (FABRIK_SANITIZER=OFF) ===
+   arbeitsbereich   konfig code=0  uebersetzende Ziele=20 (Stand davor 20)
+        -- Nullabhaengigkeitsriegel (T2): 1 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 20 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+   !! bau code=2
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:194:1: error: too many braces around scalar initializer
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:199:73: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:201:72: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:205:65: error: non-constant condition for static assert
+   !! ctest code=8  17% tests passed, 15 tests failed out of 18
+        16 - belegstellen_riegel (Failed)
+   kern             konfig code=0  uebersetzende Ziele=13 (Stand davor 13)
+        -- Nullabhaengigkeitsriegel (T2): 1 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+   !! bau code=2
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:194:1: error: too many braces around scalar initializer
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:199:73: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:201:72: error: non-constant condition for static assert
+        /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp:205:65: error: non-constant condition for static assert
+   !! ctest code=8  0% tests passed, 12 tests failed out of 12
+   pruefstand       konfig code=0  uebersetzende Ziele=4 (Stand davor 4)
+        -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
+        -- Warnsatz-Schlussriegel: 4 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabsc
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 3
+
+Verglichen gegen: git ca60f8a vom 2026-09-06 ("projektmanager: 0016-hedgefonds-simulation-echte-weltwirtschaft (20 Dateien)"), ausgepackt nach /tmp/claude-1000/bauwege0076-paket0132/vergleichsstand-ca60f8a
+Eigener Stand fuer den naechsten Lauf: /tmp/claude-1000/bauwege0076-paket0132/stand.json
+8 Abweichung(en). Ablage: /tmp/claude-1000/bauwege0076-paket0132
+
+Rueckgabewert: 1

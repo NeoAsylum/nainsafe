@@ -1,7 +1,7 @@
 ---
 id: 0115-riegelkopf-drei-zahlen-nachmessen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: [0086-belegstellenriegel-schluesselwort-mit-abstand, 0106-belegstellenriegel-aufloesung-mit-anker]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Drei Angaben im Kopfkommentar von `belegstellen_riegel.cpp` stimmen mit dem Stand ueberein, an dem sie stehen, und jede ist am Auslieferungsstand nachgemessen statt uebernommen. Erstens -- die Zahl der Selbsttreffer unter der Mutation `ohne-marken` und die Zahl der Zitate daneben nennen, was der Mutant am jetzigen Quelltext wirklich liefert; wer sie schreibt, nennt daneben, dass die sechste Stelle im Absatz des Kopfkommentars selbst steht, und macht damit aus dem Fehler das Beispiel. Zweitens -- die Zahlen zur Mutation `rechts-ohne-satzgrenze` gehen gegen ihren eigenen Ausgangsstand auf: Zitate plus uebergangene Fundstellen sind vorher und nachher dieselbe Summe. Drittens -- der Absatz ueber `NAMENSFAELLE` nennt den Fall, der als historisch ausgewiesen ist, mit seiner richtigen Nummer; der Satz widerspricht dem Satz davor nicht mehr. Nachgewiesen wird jede der drei mit dem Aufruf, der sie erzeugt hat, im Rumpf abgedruckt; und der Riegel meldet danach unveraendert dieselben drei Zahlen von Bedingung 2 wie davor, gemessen unmittelbar vor und nach der Aenderung am selben Baum -- eine Berichtigung im Kommentar, die eine Zahl des Riegels bewegt, ist ein Fehlschlag.

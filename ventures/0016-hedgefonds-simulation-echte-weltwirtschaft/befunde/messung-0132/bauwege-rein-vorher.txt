@@ -1,0 +1,44 @@
+Gemessener Baum: /tmp/claude-1000/kb0132/rein/vorher/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
+!! Vergleichsstand nicht zu bekommen: `git rev-parse --short HEAD` gab Code 128: fatal: not a git repository (or any parent up to mount point /)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+   Ohne ihn faellt das Gleichheitsmass ueber die Zielzahlen aus. Das zaehlt als Abweichung;
+   ein ausgefallenes Mass, das gruen meldet, ist der Fehler, gegen den dieses Skript steht.
+
+=== Profil sanitizer-an (FABRIK_SANITIZER=ON) ===
+   arbeitsbereich   konfig code=0  uebersetzende Ziele=22 (kein Stand davor)
+        -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 18
+   kern             konfig code=0  uebersetzende Ziele=14 (kein Stand davor)
+        -- Nullabhaengigkeitsriegel (T2): 2 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 12
+   pruefstand       konfig code=0  uebersetzende Ziele=5 (kein Stand davor)
+        -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
+        -- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabsc
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 3
+=== Profil sanitizer-aus (FABRIK_SANITIZER=OFF) ===
+   arbeitsbereich   konfig code=0  uebersetzende Ziele=20 (kein Stand davor)
+        -- Nullabhaengigkeitsriegel (T2): 1 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 20 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 18
+   kern             konfig code=0  uebersetzende Ziele=13 (kein Stand davor)
+        -- Nullabhaengigkeitsriegel (T2): 1 Ziel(e) gelesen -- kern.LINK_LIBRARIES=[]; kern.INTERFACE_LINK_LIBRARIES=[]; kern.LINK_OPTIONS=[]; kern.INTERFACE_
+        -- Warnsatz-Schlussriegel: 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabs
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 12
+   pruefstand       konfig code=0  uebersetzende Ziele=4 (kein Stand davor)
+        -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
+        -- Warnsatz-Schlussriegel: 4 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabsc
+      bau code=0
+      ctest code=0  100% tests passed, 0 tests failed out of 3
+
+Verglichen gegen: nichts -- s. o.
+Eigener Stand fuer den naechsten Lauf: /tmp/claude-1000/bauwege0076-rein2-vorher/stand.json
+1 Abweichung(en). Ablage: /tmp/claude-1000/bauwege0076-rein2-vorher
+
+Rueckgabewert: 1
