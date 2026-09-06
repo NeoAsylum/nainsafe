@@ -1,7 +1,7 @@
 ---
 id: 0141-pruefliste-fuenftes-land
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0116-laenderzahl-als-parameter, 0117-geschaetzter-politikpfad-und-zwei-laenderklassen]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die zwei Bedingungen unter "Abnahme".
@@ -71,6 +71,27 @@ keine.
    „vier Länder" nach deinem Lauf so oft wie davor — `grep -c` gegen den Stand, den du beim
    Start vorgefunden hast. Dieses Paket beschreibt, es ändert nicht.
 
-## Rückläufe
+## Vermerk des Architekten — 2026-09-06
+
+Geliefert als **Abschnitt 21** von `technik.md`, Vorgaben **T62** (Liste) und **T63**
+(Leitzins). Reiner Anhang: `git diff --numstat` sagt `229 0`, also keine geänderte
+Bestandszeile. Bedingung 2 nachgemessen, vorher wie nachher: 44 und 7 Zeilen.
+
+**Ein Widerspruch in der Vorgabe, aufgehalten hat er nicht.** Der Auftrag nennt „Deckung über
+das Fenster ab 2001"; `technik.md` führt durchgehend den Prüfjahrgang 1997–2021. Beides ist
+belegt — `reihen.toml` misst für Reihe 11 den ersten US-Wert 2001 und urteilt „erzwingt das
+Startjahr 2001". Die Wahl gehört nach T24 dem Spielentwerfer, nicht mir. Ich habe die Liste
+deshalb parametrisch in `R` geschrieben und jede Zahl für beide Lesarten angegeben, statt eine
+zu wählen.
+
+**Zwei Stellen, an denen ich mehr geliefert habe als die Abnahme verlangt** — der Prüfer soll
+es wissen und darf es für Übergriff halten: (1) Die Fensterangabe je Reihe folgt aus der
+**Rolle** der Reihe, nicht aus einer einheitlichen Vorgabe; daraus fällt der Unterschied
+zwischen Spielland (158 Werte) und Rückvergleichsland (806) heraus, den der Auftrag nicht
+verlangt hat. (2) Die Spalte „bewegt ein weiteres Land das Urteil?" ist neu; sie zeigt, dass
+nur die Reihen 1, 2 und 5 überhaupt betroffen sind und dass **Reihe 2** — nicht der Leitzins —
+das einzige harte Ausschlusskriterium für ein Rückvergleichsland ist.
+
+# Rückläufe
 
 0.

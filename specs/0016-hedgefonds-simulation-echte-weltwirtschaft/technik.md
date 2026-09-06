@@ -3829,3 +3829,232 @@ entwerten. Ebenso die Kennzeichnung, weil eine ungekennzeichnete Schätzung rüc
 mehr von einer Messung zu unterscheiden ist. Vertagt sind die Wahl der Länder (0118), die
 Wahl der Codes und das Schätzverfahren selbst — jedes davon ist eine Datenfrage, und keine
 davon ändert etwas an diesen drei Vorgaben.
+
+## 21. Was ein fünftes Land an Daten mitbringt — Paket `0141`
+
+**Was hier entschieden wird und was nicht.** Dieser Abschnitt wählt **kein** Land aus (das ist
+`0118`), ändert die Länderzahl **nicht**, lädt keine Daten und bewertet keine Lizenz. Er
+beschreibt den Aufwand, er treibt ihn nicht. Entschieden wird zweierlei: die abzählbare Liste
+dessen, was ein weiteres Land an Reihen, Fenstern und Lizenzfragen mitbringt (T62), und was
+gilt, wenn der eingebettete Leitzinscode ein Land nicht führt (T63). Der Abschnitt ist ein
+reiner Anhang; er entfernt und ändert keine Zeile des Bestands.
+
+### T62 — Die Liste je Datenreihe
+
+**Drei Fensterklassen, und sie folgen aus der Rolle der Reihe, nicht aus ihrer Nummer.** `A`
+ist das Startjahr des Jahrgangs, `R` die Rundenzahl; ein Jahrgang trägt `R+1` Stützstellen für
+die Jahre `A … A+R`.
+
+| Klasse | Anforderung | Vorgabe |
+|---|---|---|
+| **voll, ohne Füllung** | `R+1` Stützstellen, `gefuellt = 0` | T24, erste Schwelle |
+| **voll, Füllung gekennzeichnet** | `R+1` Stützstellen; Lücken werden gefüllt und ausgewiesen, gehen aber in kein Fehlermaß ein | T24, T25 |
+| **Startjahr** | genau eine Stützstelle, das Jahr `A` | T25 |
+
+**Die Liste ist in `R` geschrieben, weil das Fenster in diesem Repo zwei Werte hat.** Dieses
+Dokument führt durchgehend den Prüfjahrgang 1997–2021, also `A = 1997`, `R = 24`, 25
+Stützstellen. `daten/reihen.toml` misst für Reihe 11 den ersten US-Wert im Jahr 2001 und
+urteilt *„verkuerzt — 1997 bis 2000 fehlen, kostet vier Stuetzstellen und erzwingt das
+Startjahr 2001"*, also `A = 2001`, `R = 20`, 21 Stützstellen. Die Wahl zwischen den beiden
+Auswegen — Reihe streichen oder Fenster kürzen — steht nach T24 dem Spielentwerfer zu und
+kostet nach T40 eine Zahl im Manifest. **Dieser Abschnitt löst den Punkt nicht auf**; wo unten
+eine Zahl steht, steht sie für beide Lesarten.
+
+| Nr | Größe | neu bei `L: 4 → 5` | Quelle, eingebetteter Code | Fenster | Lizenzstand | bewegt ein weiteres Land das Urteil? |
+|---:|---|---:|---|---|---|---|
+| 1 | BIP, konstante Preise | 1 | WDI `NY.GDP.MKTP.KD`, Rückfall PWT | voll, ohne Füllung¹ | unklar | **ja** — Ämter und Notenbanken |
+| 2 | Wertschöpfungsanteil je Sektor | 3 | WDI `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS` | voll, ohne Füllung¹ | unklar | **ja** — Ämter und Notenbanken, **ohne Ausweichquelle** |
+| 3 | Kapitalstock | 1 | PWT, Code nirgends festgeschrieben | Startjahr | frei | nein |
+| 4 | Produktivität (TFP) | 1 | PWT, Code nirgends festgeschrieben | Startjahr | frei | nein |
+| 5 | Bevölkerung | 1 | WDI `SP.POP.TOTL`, Rückfall PWT | voll, Füllung gekennzeichnet | unklar | **ja** — Ämter (das Feld nennt keine Notenbank) |
+| 6 | Erwerbstätige | 1 | WDI `SL.TLF.TOTL.IN`, Rückfall PWT | voll, Füllung gekennzeichnet | unklar | nein — ILO |
+| 7 | Beschäftigung je Sektor | 3 | WDI (ILO) `SL.AGR.EMPL.ZS`, `SL.IND.EMPL.ZS`, `SL.SRV.EMPL.ZS` | Startjahr | unklar | nein — ILO |
+| 8 | Verbraucherpreise | 1 | WDI `FP.CPI.TOTL.ZG`, Rückfall IWF IFS | voll, ohne Füllung¹ | frei² | nein — IWF |
+| 9 | Leitzins | 1 | IWF `IMF.STA/MFS_IR 9.0.0`, Code `DISR_RT_PT_A_PT` | voll, Füllung gekennzeichnet | unklar | nein — IWF; **Codewahl je Land, siehe T63** |
+| 10 | Wechselkurs gegen USD | 1³ | WDI `PA.NUS.FCRF`, Rückfall IWF IFS | voll, ohne Füllung¹ | frei² | nein — IWF |
+| 11 | Staatsschuldenquote | 1 | IWF `IMF.RES/WEO 9.0.0`, `GGXWDG_NGDP` | voll, ohne Füllung¹ | unklar | nein — IWF |
+| 12 | Haushaltssaldo | 1 | IWF `IMF.RES/WEO 9.0.0`, `GGXCNL_NGDP` | voll, Füllung gekennzeichnet | unklar | nein — IWF |
+| 13 | Zollniveau, aggregiert | 1 | WDI (aus WITS) `TM.TAX.MRCH.WM.AR.ZS` | voll, Füllung gekennzeichnet | **gesperrt**⁴ | nein — WITS, UNCTAD, WTO |
+| 14 | Bilaterale Ströme nach HS92 | **20 Ströme** | CEPII BACI, Fassung 202601 | voll, ohne Füllung¹ | frei | nein — Etalab |
+| 15 | Preisniveau im Ländervergleich | 1 | PWT, Code nirgends festgeschrieben | Startjahr | frei | nein |
+| 16 | `durchgriff` | 2, abgeleitet | aus den Reihen 14, 1 und 2 nach T23 Punkt 5 | keine eigene Beschaffung | geerbt | erbt von 1 und 2 |
+| 17 | Sektorpreise | — | keine | endogen | — | — |
+| 18 | Zustimmung | 1 Schlüsselwert | `parameter.toml` | keine Beschaffung | — | — |
+| 19 | Marktkorbwert und Marktrendite | — | nicht je Land geführt | — | — | — |
+
+¹ **Nur wenn das Land Rückvergleichsland wird.** Als Spielland genügt für diese Reihen das
+Startjahr: T58 legt seine Adressen im `weltlauf` still, sie behalten ihren Startwert und
+werden nicht geschrieben. Die Sollrolle entsteht mit der Klasse, nicht mit dem Land.
+
+² `frei` nach `daten/lizenzbefund-wdi.md`, weil das Feld `Source` als Drittanbieter den IWF
+nennt und dessen Bedingungen den gewerblichen Verkauf erlauben. `reihen.toml` stellt dieser
+Zahl in `zaehlung.lizenz.gegenrechnung` eine zweite gegenüber: Der IWF-Lizenztext ist nach
+fünf Anläufen aus drei Rollen ungelesen (HTTP 403), und nimmt man „ein Suchauszug genügt
+nicht" auch dort ernst, ist auch dieses `frei` ein `unklar`. Beide Lesarten stehen
+nebeneinander; **ein weiteres Land bewegt keine von beiden.**
+
+³ Nur wenn das fünfte Land nicht das Numéraireland ist. Reihe 10 trägt die Dimension 3 und
+nicht 4, weil der Numéraire keinen eigenen Kurs hat — das ist der Term `n` aus T59.
+
+⁴ Für **alle** Länder gleich gesperrt, nach `lizenzbefund-wdi.md` der einzige Fall, in dem der
+genannte Drittanbieter seine Zustimmung ausdrücklich vorbehält. Ein fünftes Land ändert daran
+nichts und erbt den Fall: Von seinen drei Politikpfadreihen hat eine von vornherein keinen
+Datenanker. T26 erster Fall gilt unverändert — kein Zollpfad, konstanter Zoll, zwei statt drei
+verankerte Instrumente.
+
+**Die Zählung, und sie ist der eigentliche Gegenstand dieses Pakets.** Ein fünftes Land bringt
+**18 Landesreihen und 20 Handelsströme** mit, zusammen **38**. Die Landesreihen sind
+`12 + 2S`, bei `S = 3` also 18; die neuen Ströme sind `2(L+1)(S−1)`, bei `L = 4` und `S = 3`
+also 20 — die Differenz `(L+2)(L+1)(S−1) − (L+1)L(S−1)` aus der Handelsformel in T55.
+
+| Fensterklasse | Reihen und Ströme | welche |
+|---|---:|---|
+| voll, ohne Füllung | **27** | die sieben neuen Sollreihen (1, 2×3, 8, 10, 11) und die 20 Ströme |
+| voll, Füllung gekennzeichnet | **5** | die exogenen Pfade 5 und 6, die Politikpfade 9, 12, 13 |
+| Startjahr | **6** | 3, 4, 7×3, 15 |
+| Probe | **38** | `27 + 5 + 6` |
+
+Die sieben Sollreihen sind `S + 4` — genau der Zuwachs, den T59 mit `L_R(S+4) − n` von der
+anderen Seite ausrechnet. Die Prüfgegenstände wachsen um vier (`3 + 1` für ein Land, das nicht
+der Numéraire ist), wie in T58 unter dem Klassenwechsel schon steht.
+
+**Was daraus an Werten folgt, je Klasse.** Ein **Rückvergleichsland** kostet
+`32(R+1) + 6` Werte: 32 Reihen über das volle Fenster, sechs Startwerte. Ein **Spielland**
+kostet `5(R+1) + 33`: die fünf Pfade über das volle Fenster, 33 Startwerte (7 Reihen +
+20 Ströme + 6). Eingesetzt:
+
+| | `R = 24` (Fenster ab 1997) | `R = 20` (Fenster ab 2001) |
+|---|---:|---:|
+| Rückvergleichsland | **806** | **678** |
+| Spielland | **158** | **138** |
+| dieselben ohne die gesperrte Reihe 13 | 781 / 133 | 657 / 117 |
+
+**Gegenrechnung, nach Quelle statt nach Fensterklasse, für `R = 24` und Rückvergleichsland.**
+WDI zwölf Reihen: sechs Sollreihen (1, 2×3, 8, 10) zu je 25, drei volle Pfade (5, 6, 13) zu je
+25, drei Startwerte (7) — `150 + 75 + 3 = 228`. IWF drei Reihen (9, 11, 12) zu je 25 — 75.
+PWT drei Startwerte (3, 4, 15) — 3. BACI 20 Ströme zu je 25 — 500. Summe
+`228 + 75 + 3 + 500 = 806`, dieselbe Zahl über eine andere Aufteilung, und `12 + 3 + 3 = 18`
+Landesreihen.
+
+**Eine Falle, weil sie dieselbe Familie ist wie „40 gegen 40" und „27 gegen 27" in T55: 38
+gegen 38.** Die 38 Reihen und Ströme dieser Liste und die 38 von `L` unberührten
+Zustandsadressen aus T57 sind dieselbe Zahl und haben nichts miteinander zu tun. T57 rechnet
+`5S + 23` und hängt nicht von `L` ab; diese Liste rechnet `12 + 2S + 2(L+1)(S−1)` und hängt
+davon ab. Bei `L = 5` steht 42 gegen unverändert 38. Wer beide für dieselbe Größe hält, hält
+die Datenkosten eines weiteren Landes für konstant, und sie sind es nicht.
+
+**Was ein fünftes Land am Lizenzstand bewegt — und was nicht.** Von den 19 Reihen hängen
+genau **drei** im Feld `Source` an den nationalen Ämtern und Notenbanken der Meldeländer:
+Reihe 1 und Reihe 2 (*„Country official statistics, National Statistical Organizations and/or
+Central Banks"* beziehungsweise *„National Statistical Offices (NSOs); National Accounts data
+files, Central Banks"*) und Reihe 5, die allein die Ämter nennt. Alle übrigen nennen benannte
+Organisationen — IWF, ILO, OECD, WITS/UNCTAD/WTO, CEPII, PWT —, deren Bedingungen von der
+Länderliste unabhängig sind. Ein fünftes Land bringt deshalb **genau zwei** neue zu prüfende
+Stellen mit, sein statistisches Amt und seine Notenbank. Sie treten zu den acht der heutigen
+Modellländer, von denen nach `lizenzbefund-reihen.md` genau eine geprüft ist (Destatis);
+danach sind es zehn Stellen und eine Prüfung.
+
+Drei Folgerungen, und die dritte ist die, gegen die ich mich selbst korrigiert habe:
+
+1. **Ein fünftes Land kann kein Lizenzurteil verbessern.** Die drei betroffenen Reihen stehen
+   bereits auf `unklar`.
+2. **Es kann eines verschlechtern.** Verweigert das Amt oder die Notenbank des Landes die
+   gewerbliche Weitergabe, sind seine Werte in den Reihen 1, 2 und 5 gesperrt. Reihe 1 und
+   Reihe 5 haben mit der PWT eine geprüft freie Ausweichquelle. **Reihe 2 hat keine** —
+   `quellenwahl_grund` sagt warum: Die PWT liefert keine sektorale Wertschöpfung, feinere
+   Gliederungen liegen nur bei der OECD (ungeklärt) und bei Eurostat (für die Nicht-EU-Länder
+   des Modells gesperrt). Reihe 2 trägt `S` der sieben neuen Sollreihen. Sie ist damit die
+   einzige Stelle der ganzen Liste, an der die Herkunft eines Landes den Rückvergleich hart
+   ausschliesst.
+3. **Trotzdem ist das kein Auswahlkriterium für `0118`.** Sieben der acht heutigen Stellen sind
+   ungeprüft. Ein Kriterium, das von einem fünften Land eine Prüfung verlangt, die für die
+   heutigen Modellländer niemand gemacht hat, misst nicht die Sauberkeit des Landes, sondern
+   wer geprüft wurde. Die zwei neuen Stellen gehören auf dieselbe Liste wie die sieben offenen
+   (`lizenzbefund-reihen.md`, Klärung 4) und werden mit ihnen zusammen erledigt oder gar nicht.
+   **Kosten, kein Tor.**
+
+### T63 — Der Leitzins, wenn der eingebettete Code das Land nicht führt
+
+**Gewählt ist ein Ersatzverfahren: keine Ersatzquelle im Voraus und kein Ausschlusskriterium.**
+Die Regel für jedes Land, dessen Leitzins gebraucht wird:
+
+1. **Zuerst `LAND.*.A` abrufen, nicht den gewählten Code annehmen.** Ein Abruf auf
+   `IMF.STA/MFS_IR 9.0.0`. Führt das Land einen Code, der einen **Politiksatz** misst, ist das
+   Stufe 1 nach T60 und der Fall ist zu Ende.
+2. Sonst der Reihe nach Stufe 2 (Ableitung ohne freien Parameter), Stufe 3 (kein eigener
+   Hebel — Stufe 1 und 2 auf die Union statt auf das Land), Stufe 4.
+3. Bleibt es bei Stufe 4, ist das Land nach T58 ein **Spielland**. Es ist damit nicht
+   ausgeschlossen, sondern eingeordnet. Für die heutigen Modellländer gilt zusätzlich die
+   Sperre aus T60: Der Jahrgangsbau bricht ab, statt ihre Klasse still umzuschreiben.
+
+**Warum Schritt 1 keine Förmlichkeit ist.** `DISR_RT_PT_A_PT` steht in `reihen.toml` mit
+`code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"` — eine Wahl, keine Eigenschaft des
+Datenflusses. Wie weit Code und Datenfluss auseinanderliegen, ist gemessen und nicht vermutet:
+`daten/nachmessung-zinsreihen-2026-09-05.md` findet im Fenster 1997–2021 für Deutschland
+**elf** jährliche Reihen und den gewählten Code **nicht**, für China **null** Reihen, für die
+USA neun und für Brasilien sieben. Ein Befund „der Code trägt für dieses Land nicht" ist
+deshalb zunächst eine Aussage über die Wahl aus Paket 0006 und noch keine über die Quelle.
+Für ein fünftes Land kostet die Unterscheidung einen Abruf; sie zu überspringen kostet ein
+Land, das man gar nicht hätte verwerfen müssen.
+
+**Warum keine Ersatzquelle im Voraus festgelegt wird.** Eine zweite Zinsquelle einzuführen
+hiesse, für **eine** Reihe eine weitere Quelle in die Lizenzprüfung, in `namensnennung` und ins
+Manifest zu nehmen — und die Lizenzarbeit ist nach T62 der teuerste Posten der ganzen Liste.
+Der Preis ist gemessen: Von den acht im WDI eingebetteten Reihen sind fünf `unklar` und eine
+`gesperrt`. Die naheliegenden WDI-Kandidaten `FR.INR.RINR`, `FR.INR.LEND` und `FR.INR.DPST`
+sind ausserdem nach T60 keine Leitzinsen, sondern bestenfalls Eingang einer Ableitung, und der
+Weg über eine Staatsanleiherendite ist dort bereits versperrt: Er führte über `aufschlag`,
+einen Schlüssel aus `parameter.toml`, und eine Ableitung über einen Parametersatzschlüssel ist
+keine. **Solange `MFS_IR` für ein Land trägt, ist es der billigste Weg; trägt es nicht, ist
+Stufe 4 billiger als eine neunte Quelle.**
+
+**Warum kein Ausschlusskriterium — das ist das Argument, das die Wahl trägt.** Reihe 9 ist seit
+Paket 0054 **keine Sollreihe** (`sollreihen = 0`, `t37_klasse` leer) und steht in keinem der
+sechzehn Prüfgegenstände; die abschliessende Aufzählung in `reihen.toml` unter
+`zaehlung.pruefgegenstaende` führt BIP, Sektorstruktur, Verbraucherpreise, Wechselkurs und den
+Handelsblock — den Leitzins führt sie nicht. Ein Land wegen eines fehlenden Leitzinses
+auszuschliessen, schützte also eine Größe, die der Rückvergleich gar nicht misst. Was ein
+fehlender Leitzins wirklich kostet, ist ein verankertes Instrument im `spielmodus` — und genau
+dafür ist die Klasse Spielland gebaut: Ihre Größen sind im `weltlauf` stillgelegt und wirken
+über Handel und Weltpreise auf keinen Prüfgegenstand.
+
+**Die Ausschlussschranke steht an anderer Stelle, und sie ist schärfer.** Ein fünftes Land als
+**Rückvergleichsland** braucht seine `S + 4` = sieben Sollreihen auf Stufe 1 — nach der
+Umkehrung in T60 trägt eine Sollreihe ausschliesslich Stufe 1. Der Leitzins ist keine davon.
+Die eine Reihe, an der ein Land daran scheitern kann und die zugleich keine Ausweichquelle
+hat, ist Reihe 2 (T62, Folgerung 2). **Wer für `0118` ein Ausschlusskriterium sucht, findet es
+dort und nicht beim Leitzins.**
+
+**Was die Wahl mechanisch nach sich zieht — nichts Neues, und das ist beabsichtigt.** T61
+Regel 1 zählt die Herkunftsblöcke als `3L + 16`, bei `L = 4` also 28. Ein fünftes Land macht
+daraus **31**: drei weitere Blöcke, je einer für die Politikpfadreihen 9, 12 und 13. Fehlt
+einer, bricht der Jahrgangsbau nach Regel 1 ab. Trägt einer `stufe = 4`, ist das Land nach
+Regel 5 ein Spielland und muss auch im Manifest so stehen, sonst hält der Bau an. T63 braucht
+damit keine eigene Sperre; es sagt nur, in welcher Reihenfolge die Stufen zu versuchen sind
+und dass das Ergebnis eine Klasse ist und kein Urteil über die Zulässigkeit des Landes.
+
+### Was dieser Abschnitt nicht angefasst hat
+
+**Nichts.** Kein Land gewählt, die Länderzahl unverändert, keine Zeile des Bestands entfernt
+oder geändert, keine Tabelle nachgezogen, `reihen.toml` nicht berührt. Die Zustandsgröße aus
+T55 und die Aussage über die heutigen Modellländer stehen unbewegt: `grep -c` liefert vor und
+nach diesem Lauf 44 beziehungsweise 7 Zeilen. Das Fenster ist **nicht** entschieden — die
+Liste ist in `R` geschrieben, und beide Lesarten tragen ihre Zahl.
+
+**Drei Meldungen, weil sie fremden Gewerken gehören.** Erstens: Die zwei zusätzlichen Stellen
+gehören in die Aufzählung unter Klärung 4 in `daten/lizenzbefund-reihen.md`. Das ist ein
+Datenpaket und keine Architektenzeile. Zweitens: Der Auftragstext zu `0141` nennt das Fenster
+„ab 2001", dieses Dokument führt durchgehend 1997–2021. Beides ist belegt, die Wahl gehört
+nach T24 dem Spielentwerfer, und ich habe sie deshalb nicht getroffen. Drittens: Der
+Vorspann-Nachzug aus Abschnitt 20 wächst um eine Zeile — richtig wäre jetzt **T63**, die
+nächste freie Nummer ist T64. Ich fasse den Vorspann aus demselben Grund nicht an wie dort:
+`0082` und `0084` binden ihre Abnahme darauf, dass er unberührt bleibt.
+
+**Welche Festlegung jetzt fallen musste und welche vertagt ist.** Jetzt fallen musste die
+Frage aus T63, ob ein fehlender Leitzins **ausschliesst** oder die **Klasse entscheidet**. Sie
+muss vor `0118` fallen, weil sie den Suchraum der Länderauswahl um Größenordnungen ändert: Als
+Ausschlusskriterium bliebe nur, wofür ein einzelner IWF-Code einen Politiksatz führt — er tut
+es für zwei der heutigen Modellländer nicht; als Klassenfrage ist jedes Land wählbar, und der
+Leitzins entscheidet allein, ob es 806 oder 158 Werte kostet. Vertagt sind die Wahl des
+Landes, die Wahl seiner Codes, das Schätzverfahren der Stufe 4 und das Fenster. Keines davon
+ändert etwas an T62 oder T63.
