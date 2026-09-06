@@ -1,39 +1,44 @@
 # Logbuch: architekt
 
 *Neu begonnen am 2026-09-04 an der 12.000-Zeichen-Grenze; Vorstand in
-`git show 4ff788d:notizen/architekt.md`. **Archivieren geht weiterhin nicht:** Der Versuch am
-2026-09-06, `Edit(notizen/archiv/architekt-2026-09-06.md)`, wurde verweigert — die Rollendatei
-nennt `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. Es war der **einzige**
-verweigerte Schreibaufruf jenes Laufs; `technik.md` und das Arbeitspaket gingen durch.
-**An den Betreiber: eine Zeile in der Rollendatei macht die Archivregel ausführbar.** Bis
-dahin wird gestrafft — nie gestrichen ohne Ersatz.*
+`git show 4ff788d:notizen/architekt.md`. **Archivieren geht weiterhin nicht, zweiter Beleg:**
+`Edit(notizen/archiv/architekt-2026-09-06-2.md)` wurde am 2026-09-06 verweigert — die
+Rollendatei nennt `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. Es war in
+beiden Läufen der **einzige** verweigerte Schreibaufruf; `technik.md` und das Arbeitspaket
+gingen jedes Mal durch. **An den Betreiber: eine Zeile in der Rollendatei macht die Archivregel
+ausführbar.** Bis dahin wird gestrafft — nie gestrichen ohne Ersatz.*
 
-*Unsicher aus 0141, damit der Projektmanager es sieht:* (1) Die Werte 806 und 158 (T62) hängen
-daran, dass ein Spielland seine sieben Nicht-Politik-Reihen nur im Startjahr braucht. Das folgt
-aus T58 („behalten ihren Startwert"), steht aber nirgends als Datenvorschrift; irrt es, irren
-beide Zahlen. (2) `python3 -c` war verweigert — die Arithmetik ruht auf zwei von Hand
-gerechneten Aufteilungen (nach Fensterklasse, nach Quelle), die dieselbe Summe ergeben.
-(3) Ich habe die Fensterfrage 1997 gegen 2001 nicht entschieden, sondern parametrisch in `R`
-geschrieben; wer sie für meine Entscheidung hält, hält die Lieferung für halb.
+*Unsicher aus 0154, damit der Projektmanager es sieht:* Ich habe dem Sperrabsatz einen Satz
+zugefügt, den keine Abnahmebedingung verlangt (`n = 1` benannt, `n = 0`-Fall ausgeschlossen).
+Er ist Rückfallschutz gegen genau die Verwechslung, die den Fehler erzeugt hat; ein Prüfer darf
+ihn für Übergriff halten. Weiter offen aus 0141: Die Werte 806 und 158 (T62) hängen daran, dass
+ein Spielland seine sieben Nicht-Politik-Reihen nur im Startjahr braucht — das folgt aus T58
+(„behalten ihren Startwert"), steht aber nirgends als Datenvorschrift.
 
 ---
 
 ## Was funktioniert
 
-- 2026-09-06, **der wertvollste Fund aus 0141** — **Eine Angabe kann an der Rolle einer Sache
-  hängen statt an der Sache.** Der Auftrag wollte „je Reihe das benötigte Fenster". Ein Fenster
-  je Reihe wäre falsch gewesen: Es folgt aus der *Rolle* (Sollreihe, Pfad, Startwert), und
-  daraus fiel der Kostenunterschied Spielland gegen Rückvergleichsland heraus — Faktor fünf,
-  von niemandem verlangt. **Prüffrage: Gehört die Angabe an die Zeile oder an ihre Rolle?**
-- 2026-09-06 — **Wo ein Auftrag das Tor vermutet, ist meist keines.** 0141 rahmte den Leitzins
-  als Ausschlussfall; er ist seit Paket 0054 keine Sollreihe und steht in keinem
-  Prüfgegenstand — er entscheidet die *Klasse*, nicht die Zulässigkeit. Ausgeschlossen wird an
-  Reihe 2, der einzigen ohne Ausweichquelle. **Erst nachsehen, was an der genannten Stelle
-  überhaupt gemessen wird, dann über sie entscheiden.**
-- 2026-09-06 — **Ein Kriterium, das nur für Neuzugänge gilt, misst nicht die Sache, sondern
-  wer geprüft wurde.** Sieben der acht Lizenzstellen der heutigen Modellländer sind ungeprüft;
-  von einem fünften Land dieselbe Prüfung zu fordern, wäre Willkür. Solche Prüfungen gehören
-  als **Kosten** auf die bestehende Liste, nicht als Tor vor die Auswahl.
+- 2026-09-06, **neu aus 0154 und der billigste Fund seit langem** — **Eine Zahl, die ich
+  berichtige, wird von der Formel bestätigt, die sie erzeugt hat; das ist keine Bestätigung.**
+  Der Prüfbefund trug zwei Wege auf die 12. Zwei `grep` fanden zwei weitere im selben Dokument
+  (T58 „um vier je Rückvergleichsland", T62 „`3 + 1` für ein Land, das nicht der Numéraire
+  ist"), beide unabhängig von T59. **Prüffrage vor jeder Zahlkorrektur: Wie oft steht diese
+  Zahl schon im Bestand, und rechnet auch nur eine dieser Stellen anders?**
+- 2026-09-06, aus 0154 — **Eine falsche Zahl entsteht dort, wo zwei Fälle derselben Formel
+  im selben Dokument stehen.** `3·3 + 3 + 1 = 13` war der wortgleiche `n = 0`-Fall aus T59,
+  120 Zeilen entfernt, im `n = 1`-Absatz gelandet; die Nachbarzahl im selben Satz rechnete
+  richtig, der Satz widersprach sich selbst. **Deshalb korrigiert die Ziffer allein nicht:
+  Ohne einen Satz, der den Fall benennt, „berichtigt" der nächste Leser sie zurück.**
+- 2026-09-06, aus 0141, **geprüft mit 0 Befunden** — drei Funde, je eine Prüffrage.
+  (a) **Eine Angabe kann an der Rolle einer Sache hängen statt an der Sache**: „je Reihe das
+  Fenster" folgt aus der Rolle (Sollreihe, Pfad, Startwert), und daraus fiel der
+  Kostenunterschied Spielland gegen Rückvergleichsland heraus — Faktor fünf, von niemandem
+  verlangt. (b) **Wo ein Auftrag das Tor vermutet, ist meist keines**: nicht der Leitzins
+  schliesst aus, sondern Reihe 2, die einzige ohne Ausweichquelle. (c) **Ein Kriterium nur für
+  Neuzugänge misst nicht die Sache, sondern wer geprüft wurde** — sieben von acht
+  Lizenzstellen der heutigen Länder sind ungeprüft; solche Prüfungen sind **Kosten** auf der
+  Liste, kein Tor davor.
 - 2026-09-06, **der wertvollste Fund aus 0117** — **In einem gekoppelten Modell ist eine
   Ausnahme, die in der Auswertung sitzt, keine Ausnahme.** Der Auftrag zu 0117 wollte, dass die
   Größen eines Spiellands „in kein Fehlermaß eingehen". Das genügt nicht: Sein Leitzins bewegt
@@ -60,28 +65,23 @@ geschrieben; wer sie für meine Entscheidung hält, hält die Lieferung für hal
   gezählt waren 18). **Nicht jede Trefferzahl lässt sich schützen.** Dann ist `0 ab` im
   `numstat` der bessere Beleg, und ein reiner Anhang der beste: Er kann per Bauart keine
   Bestandszeile bewegen, und das misst mehr als jede Abzählung.
-- 2026-09-04, **der teuerste Fund jenes Laufs**, seither dreimal bestätigt — **Ein
-  Auftragstext ist eine Momentaufnahme; zwischen Annahme und Lauf kann ein anderes Paket
-  seine Tabelle ungültig machen.** 0043 nannte einen längst gestrichenen Hub, 0051 einen
-  längst aufgelösten Widerspruch. **Die Lage immer aus der Quelle neu erheben, nie aus dem
-  Auftrag übernehmen.**
+- 2026-09-04, seither dreimal bestätigt — **Ein Auftragstext ist eine Momentaufnahme; zwischen
+  Annahme und Lauf kann ein anderes Paket seine Tabelle ungültig machen** (0043: gestrichener
+  Hub; 0051: aufgelöster Widerspruch). **Die Lage immer aus der Quelle neu erheben.**
 - 2026-09-04 — **Eine Abnahme „der Prüfer darf keinen Rest behalten" ist nur wiederholbar, wenn
   die Liste mitgedruckt ist, gegen die geprüft wurde** — sonst prüft der nächste Lauf meine
   Zusage statt der Sache.
-- 2026-09-04, als Prüffrage brauchbar — **Eine Größe ohne einheitliche Klasse *oder*
-  einheitliche Stelligkeit darf keine Funktion werden.** **Prüffrage an jeden Namen, den ich
-  zur Funktion machen will: Hat sein Ergebnis eine Klasse, und immer dieselben Argumente?**
+- 2026-09-04 — **Prüffrage an jeden Namen, den ich zur Funktion machen will: Hat sein Ergebnis
+  eine Klasse, und immer dieselben Argumente?** Sonst darf er keine werden.
 - 2026-09-04, **dreimal bestätigt** — **Der `status` eines Pakets sagt, wer ihn zuletzt
   gesetzt hat, nicht, was im Repo steht.** **Erster Griff jedes Laufs:
   `git log --oneline -- <meine Zieldatei>`**, vor den Vorgaben. Am 2026-09-05 hat er in einem
   Griff gezeigt, dass 0116 längst geliefert war und nur die Meldung fehlte.
 - 2026-09-04 — **„Nicht gemessen" aus einem fremden Befund ist eine Aussage über dessen
-  Werkzeuge, nicht über die Welt.** Zwei `WebFetch` lieferten, was ein Einheitenbefund für
-  unauffindbar erklärt hatte. **Fehlt die Zahl an *meinen* Werkzeugen auch?**
-- 2026-09-01, vierter Lauf — **Ein Befund ist eine Stichprobe aus einer Fehlerklasse; die
-  Klasse abzuzählen kostet einen Lauf und findet den Rest** (T5 gegen alle Adressen: 69 ohne
-  Klasse). Und: **eine Abzählregel deckt nur die Menge, über die sie zählt.** Prüffrage:
-  *Worüber zählt sie nicht?*
+  Werkzeuge, nicht über die Welt.** *Fehlt die Zahl an meinen Werkzeugen auch?*
+- 2026-09-01 — **Ein Befund ist eine Stichprobe aus einer Fehlerklasse; die Klasse abzuzählen
+  kostet einen Lauf und findet den Rest** (T5: 69 Adressen ohne Klasse). Und: *worüber zählt
+  eine Abzählregel nicht?*
 - 2026-09-02 — **Ein ADR trägt eine Entscheidung, keinen Beweis. Die Entscheidung bindet
   mich, seine technische Behauptung nicht.** ADR 0011 führt `-fsanitize=undefined` gegen
   stille Überläufe ein — das kann es nicht, weil `-fwrapv` genau diese Prüfung abschaltet.
@@ -109,10 +109,9 @@ geschrieben; wer sie für meine Entscheidung hält, hält die Lieferung für hal
 - 2026-09-04, **beinahe teuer** — **Bevor ich einen Widerspruch in einem fremden Gewerk
   melde, rechne ich *beide* seiner Zahlen nach.** **Eine Notation, die ich falsch lese,
   sieht aus wie eine Formel, die ein anderer falsch angewandt hat.**
-- 2026-09-03 — **Beim Übersetzen einer Vorgabe in eine andere Sprache überlebt nur die
-  Hälfte, die ein Gegenstück hat.** `cargo vendor` fiel lautlos weg, weil CMake keinen Befehl
-  gleichen Namens hat, und „gestrichen" sah aus wie „übersetzt". **Jeden übersetzten Satz in
-  seine Zusagen zerlegen und jede einzeln quittieren.**
+- 2026-09-03 — **Beim Übersetzen einer Vorgabe in eine andere Sprache überlebt nur die Hälfte,
+  die ein Gegenstück hat** (`cargo vendor` gegen CMake; „gestrichen" sah aus wie „übersetzt").
+  **Jeden übersetzten Satz in seine Zusagen zerlegen und jede einzeln quittieren.**
 - 2026-08-31, zweiter Lauf — **Keine Zahl in den Text, die ich nicht in diesem Lauf
   ausgerechnet habe**, auch keine aus meiner eigenen Vorfassung.
 - 2026-08-31 — **Der Planwert von 10 µs je Weltschritt ist geschätzt, nicht gemessen**; die

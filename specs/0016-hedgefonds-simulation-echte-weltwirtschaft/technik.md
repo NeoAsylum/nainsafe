@@ -3726,9 +3726,12 @@ Stufe 1 scheitert dort innerhalb `MFS_IR`, Stufe 3 trifft nicht zu, und es bleib
 **Kein Datenpaket macht eines der vier heutigen Länder zum Spielland.** Scheitern die Stufen 1
 bis 3 für China oder Deutschland, ist das kein Befund über eine Reihe, sondern eine
 Entscheidung über die Grundlage des Rückvergleichs: `L_R` fiele von 4 auf 3, die
-Prüfgegenstände von 16 auf `3·3 + 3 + 1 = 13`, die Sollreihen von 27 auf `3·7 − 1 = 20`, und
-Maß 4 würde an einer anderen Welt gemessen als bisher. Das gehört dem Betreiber, nicht dem
-Jahrgangsbau. Der Jahrgangsbau **bricht ab** (T61), statt die Klasse still umzuschreiben.
+Prüfgegenstände von 16 auf `3·3 + (3−1) + 1 = 12`, die Sollreihen von 27 auf `3·7 − 1 = 20`,
+und Maß 4 würde an einer anderen Welt gemessen als bisher. **Beide Zahlen rechnen mit
+`n = 1`**, weil die USA in diesem Fall Rückvergleichsland und Numéraire bleiben; der
+`n = 0`-Fall, den die Kurzform in T59 durchrechnet, ist ein anderer und gilt hier nicht. Das
+gehört dem Betreiber, nicht dem Jahrgangsbau. Der Jahrgangsbau **bricht ab** (T61), statt die
+Klasse still umzuschreiben.
 
 **Und die Umkehrung gilt auch:** Eine Sollreihe trägt ausschliesslich Stufe 1. Wer für eine
 Sollreihe eine Ableitung oder eine Schätzung braucht, hat keine Sollreihe mehr, sondern eine
