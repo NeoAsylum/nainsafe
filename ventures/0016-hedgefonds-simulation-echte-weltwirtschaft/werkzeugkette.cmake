@@ -467,6 +467,21 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   set(abgeschaltet "")
   set(gezaehlt 0)
   set(schnittstellen 0)
+
+  # Der dritte Zaehler misst nicht den Baum, sondern den Riegel: wie viele Eintraege
+  # `fabrik_riegel_sammeln` ueber alle Ziele hinweg wirklich eingesammelt hat. Die
+  # Frage ist nach jeder Aenderung an dieser Datei dieselbe -- sammelt er noch ein? --,
+  # und keine der beiden Zahlen daneben beantwortet sie: Die Zahl der Ziele haengt am
+  # Baum und nicht am Riegel, und die Zahl der geprueften Eigenschaften ist fest fuenf
+  # je Ziel; sie faellt nicht, wenn das Einsammeln stumpf wird. Bis zum 2026-09-06
+  # brauchte jeder Nachweis darueber eine von Hand eingeschobene `message()` -- vier
+  # Nachweise haben genau das getan, und ein Nachweis, der eine Codeaenderung kostet,
+  # wird beim naechsten Mal nicht gefuehrt.
+  #
+  # Gezaehlt wird ausserhalb des Makros, an der Laenge der Liste, die es fuellt. In ihm
+  # selbst waere der Zaehler wertlos: Eine stumpf gemachte Fassung naehme ihren eigenen
+  # Zaehler mit, und die Zahl bezeugte dann nur noch sich selbst.
+  set(eingesammelt 0)
   while(offen)
     list(POP_FRONT offen verzeichnis)
 
@@ -636,6 +651,10 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       # gehoert und CMake keine Paare kennt. Beide Listen wachsen nur in
       # `fabrik_riegel_sammeln` und dort im Gleichschritt.
       list(LENGTH eintraege eintragszahl)
+      # Dieselbe Laenge traegt den Riegelzaehler von oben. Sie steht hier und nicht im
+      # Makro, und sie steht vor der Schleife und nicht in ihr: Gezaehlt gehoert, was
+      # eingesammelt wurde, nicht wie oft ein Muster danach zugriff.
+      math(EXPR eingesammelt "${eingesammelt} + ${eintragszahl}")
       set(lfd 0)
       while(lfd LESS eintragszahl)
         list(GET eintraege ${lfd} schalterwert)
@@ -705,7 +724,11 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       "`PROJECT_IS_TOP_LEVEL`-Block ein.\n"
       "Ohne den Satz uebersetzt das Ziel gruen und ohne `-Werror`. Blank konfiguriert "
       "fehlt ihm zusaetzlich `-fwrapv` (ADR 0011, Massnahme 1); allein gebaut ohne den "
-      "`PROJECT_IS_TOP_LEVEL`-Block auch der Sprachmodus -- `gnu++20` statt `c++20`.")
+      "`PROJECT_IS_TOP_LEVEL`-Block auch der Sprachmodus -- `gnu++20` statt `c++20`.\n"
+      "Eingesammelt hat der Riegel auf diesem Lauf ${eingesammelt} Schaltereintraege "
+      "aus fuenf Eigenschaften je Ziel. Die Zahl sagt, wieviel er ueberhaupt zu sehen "
+      "bekam -- ein Ziel ohne den Satz traegt oft gar keinen Eintrag, eine 0 ist hier "
+      "also kein Widerspruch zum Befund darueber.")
   endif()
 
   if(abgeschaltet)
@@ -726,7 +749,12 @@ function(fabrik_schlussriegel wurzelverzeichnis)
       "nicht bei jedem, der ihn erbt.\n"
       "Wer eine Warnung wirklich nicht loesen kann, unterdrueckt sie einzeln und "
       "benennt sie dabei: `-Wno-conversion` an genau diesem Ziel, mit einem Satz "
-      "daneben, warum. Das bleibt zugelassen. Pauschal abgeschaltet wird nichts.")
+      "daneben, warum. Das bleibt zugelassen. Pauschal abgeschaltet wird nichts.\n"
+      "Aus ${eingesammelt} eingesammelten Schaltereintraegen stammt dieser Befund. Die "
+      "Zahl steht hier aus demselben Grund wie in der gruenen Meldung: Sie "
+      "unterscheidet einen Riegel, der gelesen und etwas bemerkt hat, von einem, dem "
+      "jemand das Einsammeln genommen hat -- der zweite meldet nichts und sieht dabei "
+      "aus wie ein sauberer Baum.")
   endif()
 
   # ---------------------------------------------------------------------
@@ -1027,10 +1055,23 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # sie noch 1 -- `werkzeuge/mutation` kam erst danach dazu. Auch das ist ein Wert mit
   # Verfallsdatum; er steht hier allein als Beleg dafuer, dass die sechs Zahlen darueber
   # zusammenpassen.
+  # Die dritte Zahl beantwortet eine andere Frage als die beiden davor, und deshalb
+  # steht sie in derselben Zeile: Die ersten sagen, wieviel der Riegel geprueft hat,
+  # die dritte, wieviel er dabei ueberhaupt gelesen hat. Ein Riegel, dem das Einsammeln
+  # abhanden kommt, meldet die ersten beiden unveraendert -- gemessen am Stand vor Paket
+  # 0103 an vier Wegwerf-Baeumen, in denen `-w` auf der Uebersetzerzeile stand und diese
+  # Zeile zeichengleich dieselbe war wie im richtigen Lauf.
+  #
+  # Fuer sie gilt die Regel aus 0104 wie fuer die erste: Sie ist im Wesentlichen die
+  # Zahl der Schalter des Warnsatzes mal die erste Zahl und waechst darum mit jedem
+  # neuen Ziel mit. Ausgeschrieben gehoert sie deshalb in keine `abnahme`, sondern nur
+  # in den Vergleich gegen den eigenen Stand davor.
   message(STATUS
     "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, "
     "alle mit Warnsatz und ohne Pauschalabschalter; dazu ${schnittstellen} "
-    "Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle.")
+    "Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. "
+    "Eingesammelt und gegen die Pauschalmuster gehalten: ${eingesammelt} "
+    "Schaltereintraege.")
 endfunction()
 
 # Ans Ende der Konfiguration gehaengt, nicht an diese Stelle: Hier ist noch kein

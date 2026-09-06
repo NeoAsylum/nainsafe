@@ -1,7 +1,7 @@
 ---
 id: 0132-riegelmeldung-nennt-gesammelte-eintraege
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0124-zerlegung-als-benannte-folge]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".
