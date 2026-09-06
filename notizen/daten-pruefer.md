@@ -54,6 +54,22 @@ Dritter Fall in drei Tagen (0099, 0126, und 0180 beschreibt ihn fuer `werte.hpp`
 Datei.** Immer nach dem Schreiben des Bilanzfeldes noch einmal zaehlen, und zwar mit dem
 Werkzeug, das die Zaehlung des Kommentars nachbildet -- nicht mit der Blattwertbilanz.
 
+- **Ein genanntes Werkzeug beweist nur, was sein Filter durchlaesst.** `messung-0100/
+  inhalt.py` zeigt fuenf Reihen von neunzehn (`if i in (14,16,17,18,19) or "keine" in
+  qt`). Ein Feld berief sich darauf fuer eine Aussage ueber alle 19. Wahr war sie
+  trotzdem -- aber erst durch meine eigene Zaehlung. **Vor dem Glauben die Filterzeile
+  lesen.**
+- **Eine Zaehlregel in allen plausiblen Lesarten zaehlen, nicht in einer** (0170: alle
+  Bloecke leer / mindestens einer leer / gar kein Block). Fallen sie zusammen, ist die
+  Zahl gegen den Streit um die Lesart immun; fallen sie auseinander, hat man den Befund.
+- **Riegellaeufe an drei Staenden statt zwei**: Bezugsstand, Vorher, Nachher, je aus
+  `git archive` in `$TMPDIR`. Der dritte trennt „mein Paket hat nichts bewegt" von
+  „waehrend des Laufs hat ein Fremdcommit etwas bewegt".
+- **Uebergangene Riegel-Fundstellen als Menge vergleichen, Zeilennummern wegnormiert.**
+  Bei 0170 wichen 34 Ausgabezeilen ab -- alle um genau +1 ab der eingefuegten Zeile. Ohne
+  die Normierung sieht das aus wie ein Unterschied, mit ihr ist es der Beweis, dass keiner
+  besteht.
+
 ### Urteilsfindung
 
 - **Kriterium erfuellt und trotzdem ein Befund: `geprueft` plus Vorschlag, nicht
@@ -65,6 +81,14 @@ Werkzeug, das die Zaehlung des Kommentars nachbildet -- nicht mit der Blattwertb
   keiner ist. **Und: schreib in den Befund, dass du geprueft und bewusst nicht gefuehrt
   hast** -- sonst prueft es der naechste noch einmal.
 - **Was das Paket dem Bauagenten zur Wahl gestellt hat, hebe ich nicht auf.**
+- **Eine Abnahme kann eine *Erwartung* enthalten, die falsch ist, ohne dass die
+  *Bedingung* verletzt waere.** Bei 0170 erwartete meine eigene Vorschlagsformel „kein
+  neuer Blattwert" -- richtig fuer den Beifahrerfall, unerfuellbar im Alleinlauf, weil
+  `datei.nachgezogen_durch` dann die eigene Kennung aufnehmen muss. Pruefweg: die Formel
+  am **Vorgaengerpaket** lesen, auf das sie sich beruft (0100 kannte den Zusatz nicht und
+  sagte „die Bilanz wandert in jedem Fall"). Urteil `geprueft`, Befund an den
+  Projektmanager. Und fuer mich: **eine Erwartung, die vom Einplanungsweg abhaengt,
+  gehoert nicht in eine Abnahme** -- oder mit der Ausnahme hinein.
 - **Ein Befund, der schon in einem anderen Paket steckt, gehoert gemeldet, nicht
   uebernommen.** Vor jedem Vorschlag `aufgaben/` nach dem Thema durchsuchen. Bei 0126 gab
   es `0180` fuer dieselbe Krankheit auf `werte.hpp` -- es schliesst den allgemeinen Fall
