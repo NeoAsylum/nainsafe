@@ -34,293 +34,290 @@ retrieval with HTTP 403, and `web.archive.org` is unreachable. Where a quotation
 comes from a verbatim search hit rather than from my own page retrieval, that is stated
 alongside it. That is weaker evidence, and I mark it as such.
 
-## Quellen einzeln
+## Sources one by one
 
-### 1. Weltbank -- World Development Indicators — **traegt**
+### 1. World Bank -- World Development Indicators — **holds**
 
-**Lizenz im Wortlaut:** „The Creative Commons Attribution 4.0 (CC-BY 4.0) license […]
+**Licence in its literal wording:** „The Creative Commons Attribution 4.0 (CC-BY 4.0) license […]
 allows users to copy, modify and distribute data in any format for any purpose, including
 commercial use. Users are only obligated to give appropriate credit (attribution) and
 indicate if they have made any changes, including translations."
-(`datacatalog.worldbank.org/public-licenses`, abgerufen 2026-08-31)
+(`datacatalog.worldbank.org/public-licenses`, retrieved 2026-08-31)
 
-Ergaenzend, weil es die Weitergabe *in einem Produkt* ausdruecklich nennt: „you are free
+In addition, because it expressly names redistribution *in a product*: „you are free
 to copy, distribute, adapt, display or include the data in other products for commercial
 or noncommercial purposes at no cost"
-(`data.worldbank.org/summary-terms-of-use`, abgerufen 2026-08-31).
+(`data.worldbank.org/summary-terms-of-use`, retrieved 2026-08-31).
 
-Der Datensatz selbst nennt als Lizenz „Creative Commons Attribution 4.0"
+The dataset itself names „Creative Commons Attribution 4.0" as its licence
 (`datacatalog.worldbank.org/search/dataset/0037712/World-Development-Indicators`,
-abgerufen 2026-08-31).
+retrieved 2026-08-31).
 
-**Auflagen:** Namensnennung in der Form „The World Bank: Dataset name: Data source (if
-known)", Kennzeichnung von Aenderungen, und die Namensnennungspflicht muss an jeden
-weitergereicht werden, dem man die Daten weitergibt. Kein Copyleft, keine Registrierung,
-kein Bulk-Verbot.
+**Conditions:** attribution in the form „The World Bank: Dataset name: Data source (if
+known)", marking of changes, and the attribution obligation must be passed on to anyone
+the data is passed on to. No copyleft, no registration, no bulk prohibition.
 
-**Die Einschraenkung, und sie ist wichtig:** „Some datasets and indicators are provided by
+**The restriction, and it matters:** „Some datasets and indicators are provided by
 third parties, and may not be redistributed or reused without the consent of the original
 data provider, or may be subject to additional terms and conditions."
-(ebd.) Die WDI sind eine **Sammlung**, nicht durchgehend eigenes Werk der Weltbank. Genau
-die drei Reihen, die dieses Modell zusaetzlich braucht -- sektorale Beschaeftigung
-(ILO-Schaetzung), Zollsaetze (aus WITS/TRAINS) und Teile der Preisreihen (IWF) --, sind
-Kandidaten fuer diese Ausnahme. Zu tun: je Reihe das Feld „Source" im Indikatorendatensatz
-lesen, bevor sie eingebettet wird. Siehe **Was unklar ist**.
+(ibid.) The WDI are a **collection**, not the World Bank's own work throughout. Precisely
+the three series this model additionally needs -- sectoral employment (ILO estimate),
+tariff rates (from WITS/TRAINS) and parts of the price series (IMF) -- are candidates
+for this exception. To do: for each series, read the „Source" field in the indicator
+dataset before it is embedded. See **What is unclear**.
 
-**Inhalt:** ueber 200 Laender und Gebiete, ueber 1.500 Indikatoren, 1960 bis 2025,
-jaehrliche Auflösung, jaehrliche Aktualisierung (ebd.). Deckt BIP, Bevoelkerung,
-Inflation, Handelsvolumen, Wertschoepfung nach grober Sektorgliederung.
+**Content:** over 200 countries and territories, over 1,500 indicators, 1960 to 2025,
+annual resolution, annual updates (ibid.). Covers GDP, population, inflation, trade
+volume, value added by coarse sector breakdown.
 
-**Urteil:** Kern des Produkts. Beste Kombination aus Lizenz, Breite und Laenge.
+**Verdict:** core of the product. Best combination of licence, breadth and length.
 
-### 2. IWF -- WEO, IFS, DOTS — **traegt, mit einer Auflage zum Nachlesen**
+### 2. IMF -- WEO, IFS, DOTS — **holds, with one condition to re-read**
 
-**Lizenz im Wortlaut:** „Users may download, extract, copy, create derivative works,
+**Licence in its literal wording:** „Users may download, extract, copy, create derivative works,
 publish, distribute, and sell Data obtained from IMF Sites, including for commercial
-purposes." (`imf.org/en/about/copyright-and-terms`) — **Beleghinweis:** Der direkte Abruf
-der Seite wurde am 2026-08-31 mit HTTP 403 abgewiesen; der Satz ist ueber eine
-Wortlaut-Suche nach genau dieser Zeichenkette belegt, nicht ueber einen eigenen
-Seitenabruf. Vor dem Bau im Volltext nachzulesen.
+purposes." (`imf.org/en/about/copyright-and-terms`) — **Evidence note:** direct retrieval
+of the page was rejected on 2026-08-31 with HTTP 403; the sentence is evidenced via a
+literal search for exactly this string, not via my own page retrieval. To be re-read in
+the full text before the build.
 
-**Auflagen** (aus derselben Quelle): Die Daten muessen bei Weitergabe unveraendert und
-korrekt mit dem IWF als Quelle erscheinen; wer die Daten **materiell transformiert**, muss
-das ausdruecklich angeben; und: „If IMF Data is sold by Users as a standalone product,
+**Conditions** (from the same source): on redistribution the data must appear unchanged
+and correctly with the IMF as source; whoever **materially transforms** the data must
+state that expressly; and: „If IMF Data is sold by Users as a standalone product,
 sellers must inform purchasers that the Data is available free of charge from the IMF."
 
-**Beide Lesarten dieser letzten Klausel, weil sie mehrdeutig ist:** (a) Ein Spiel ist kein
-„standalone product" aus IWF-Daten, sondern eine Simulation, in der die Daten Startwerte
-sind -- dann entfaellt der Hinweis. (b) Der Kaeufer erhaelt die Daten mitgeliefert und
-bezahlt dafuer -- dann greift der Hinweis. Die Klausel kostet einen Satz im Impressum;
-ich waehle keine Lesart, sondern empfehle, den Satz zu schreiben. Er ist billiger als die
-Frage.
+**Both readings of this last clause, because it is ambiguous:** (a) A game is not a
+„standalone product" made of IMF data but a simulation in which the data are seeds --
+then the notice does not apply. (b) The buyer receives the data bundled and pays for
+it -- then the notice applies. The clause costs one sentence in the legal notice; I
+choose no reading but recommend writing the sentence. It is cheaper than the question.
 
-**Inhalt:** WEO liefert Staatsschuld und Haushaltssaldo in Prozent des BIP fuer nahezu
-alle Mitgliedslaender, halbjaehrlich aktualisiert und **rueckwirkend revidiert**; IFS
-liefert Leitzinsen, Geldmengen und Wechselkurse in monatlicher und quartalsweiser
-Auflösung; DOTS liefert bilaterale Handelsaggregate (Land gegen Land, ohne Warengliederung)
-in Monats- und Quartalsauflösung. Genau die drei Groessen, die den WDI fehlen oder in
-denen sie Luecken haben.
+**Content:** WEO delivers government debt and fiscal balance in percent of GDP for nearly
+all member countries, updated twice a year and **revised retroactively**; IFS delivers
+policy rates, money supply and exchange rates in monthly and quarterly resolution; DOTS
+delivers bilateral trade aggregates (country against country, without commodity
+breakdown) in monthly and quarterly resolution. Exactly the three quantities the WDI
+lack or have gaps in.
 
-**Urteil:** Zweite tragende Saeule, unentbehrlich fuer Zins, Wechselkurs und
-Staatsfinanzen. Die Revisionspraxis ist ein Entwurfsproblem, kein Lizenzproblem: Wer die
-vierte Pruefachse gegen WEO-Reihen fahren will, muss den Abrufstand einfrieren, sonst
-aendert sich der Sollwert des Regressionstests unter dem Test weg.
+**Verdict:** second load-bearing pillar, indispensable for interest rate, exchange rate
+and public finances. The revision practice is a design problem, not a licence problem:
+whoever wants to run the fourth check axis against WEO series must freeze the retrieval
+state, or the target value of the regression test changes away underneath the test.
 
-### 3. CEPII -- BACI und Gravity — **traegt, und loest den Comtrade-Knoten**
+### 3. CEPII -- BACI and Gravity — **holds, and unties the Comtrade knot**
 
-**Lizenz im Wortlaut:** „BACI is distributed under the Etalab Open Licence 2.0, which
+**Licence in its literal wording:** „BACI is distributed under the Etalab Open Licence 2.0, which
 means that any use is authorized, provided the source is mentionned."
-(`cepii.fr/DATA_DOWNLOAD/baci/doc/FAQ_BACI.html`, abgerufen 2026-08-31; Tippfehler im
-Original)
+(`cepii.fr/DATA_DOWNLOAD/baci/doc/FAQ_BACI.html`, retrieved 2026-08-31; typo in the
+original)
 
-**Auflagen:** Quellenangabe („BACI und das CEPII nennen, moeglichst mit Link auf die
-Webseite", ebd.). Die Etalab Open Licence 2.0 ist mit CC BY 4.0 vertraeglich und kennt
-kein Copyleft und kein Bulk-Verbot.
+**Conditions:** attribution („name BACI and the CEPII, ideally with a link to the
+website", ibid.). The Etalab Open Licence 2.0 is compatible with CC BY 4.0 and knows
+no copyleft and no bulk prohibition.
 
-**Inhalt:** bilaterale Handelsstroeme Land-Land-Produkt in HS-Nomenklatur, jaehrlich,
-geografische Abdeckung wie Comtrade, jaehrliche Aktualisierung ab Januar; das jeweils
-letzte Jahr wird noch revidiert (ebd.).
+**Content:** bilateral trade flows country-country-product in HS nomenclature, annual,
+geographic coverage as Comtrade, annual update from January; the latest year is still
+being revised (ibid.).
 
-**Warum das der Fund ist:** BACI ist aus UN Comtrade abgeleitet, und Comtrade selbst
-schreibt zu abgeleiteten Bestaenden: „Transformed data from UN Comtrade is no longer
-subject to copyright restrictions" und nennt als qualifizierende Transformationen
-ausdruecklich „calculating new indicators" und „performing geographic and other
-aggregations" (`uncomtrade.org/docs/faqs-on-use-and-re-dissemination/`, abgerufen
-2026-08-31). BACI ist genau das: harmonisiert, gespiegelt, bereinigt. Damit ist die
-Sorge der Idee („untersagt eine davon die Weitergabe im Bulk, muss der Kern auf
-Weltbank-Aggregate zurueckgeschnitten werden") gegenstandslos -- der Aussenhandelsteil
-darf in seiner feinen Form gebaut werden.
+**Why this is the find:** BACI is derived from UN Comtrade, and Comtrade itself writes
+about derived holdings: „Transformed data from UN Comtrade is no longer
+subject to copyright restrictions" and expressly names „calculating new indicators" and
+„performing geographic and other aggregations" as qualifying transformations
+(`uncomtrade.org/docs/faqs-on-use-and-re-dissemination/`, retrieved
+2026-08-31). BACI is exactly that: harmonised, mirrored, cleaned. That renders the
+idea's worry („untersagt eine davon die Weitergabe im Bulk, muss der Kern auf
+Weltbank-Aggregate zurueckgeschnitten werden") moot -- the foreign-trade part may be
+built in its fine-grained form.
 
-**Urteil:** Empfohlen fuer bilaterale Stroeme. Auf zwoelf Laender und sechs Sektoren
-aggregiert bleibt ohnehin nur ein Bruchteil des Datensatzes uebrig.
+**Verdict:** recommended for bilateral flows. Aggregated to twelve countries and six
+sectors, only a fraction of the dataset remains anyway.
 
-### 4. Penn World Table 11.0 — **traegt**
+### 4. Penn World Table 11.0 — **holds**
 
-**Lizenz im Wortlaut:** „Creative Commons Attribution 4.0 International License", mit der
-vorgeschriebenen Zitierung „Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer
+**Licence in its literal wording:** „Creative Commons Attribution 4.0 International License", with
+the prescribed citation „Feenstra, Robert C., Robert Inklaar and Marcel P. Timmer
 (2015), 'The Next Generation of the Penn World Table' American Economic Review, 105(10),
-3150-3182" (`rug.nl/ggdc/productivity/pwt/`, abgerufen 2026-08-31).
+3150-3182" (`rug.nl/ggdc/productivity/pwt/`, retrieved 2026-08-31).
 
-**Auflagen:** Namensnennung samt der genannten Literaturangabe, Kennzeichnung von
-Aenderungen. Kein Copyleft.
+**Conditions:** attribution including the citation named above, marking of changes. No
+copyleft.
 
-**Inhalt:** 185 Laender, **1950 bis 2023**, jaehrlich; kaufkraftbereinigte Niveaus von
-Output, Kapitalstock, Arbeitseinsatz, Produktivitaet und Preisniveaus. Version 11.0
-veroeffentlicht am 2025-10-07.
+**Content:** 185 countries, **1950 to 2023**, annual; purchasing-power-adjusted levels of
+output, capital stock, labour input, productivity and price levels. Version 11.0
+published on 2025-10-07.
 
-**Urteil:** Empfohlen als Ergaenzung. Zwei Dinge kann sie, die WDI und IWF nicht koennen:
-Sie reicht bis 1950 zurueck (mehr waehlbare Startjahrgaenge, also mehr verkaufbarer
-Inhalt nach dem Erweiterungsmodell der Idee) und liefert **Produktivitaet und Preisniveaus
-im Laendervergleich** -- die Groessen, aus denen ein Handelsmodell komparative Vorteile
-ueberhaupt erst bilden kann.
+**Verdict:** recommended as a complement. It can do two things WDI and IMF cannot:
+it reaches back to 1950 (more selectable starting vintages, hence more sellable content
+under the idea's expansion model) and it delivers **productivity and price levels in
+cross-country comparison** -- the quantities from which a trade model can form
+comparative advantages in the first place.
 
-### 5. Destatis — **traegt, ist hier aber entbehrlich**
+### 5. Destatis — **holds, but is dispensable here**
 
-**Lizenz im Wortlaut:** „Data licence Germany – attribution – version 2.0"; die Daten
-duerfen „be copied, printed, presented, altered, processed and transmitted to third
+**Licence in its literal wording:** „Data licence Germany – attribution – version 2.0"; the data
+may „be copied, printed, presented, altered, processed and transmitted to third
 parties", „be merged with own data and with the data of others and be combined to form new
-and independent datasets" und „be integrated in internal and external business processes,
-products and applications" (`govdata.de/dl-de/by-2-0`, abgerufen 2026-08-31; Fassung des
-Lizenztextes, auf den Destatis verweist). Gewerbliche und nichtgewerbliche Nutzung sind
-gleichgestellt.
+and independent datasets" and „be integrated in internal and external business processes,
+products and applications" (`govdata.de/dl-de/by-2-0`, retrieved 2026-08-31; version of
+the licence text Destatis points to). Commercial and non-commercial use are treated
+equally.
 
-**Auflagen:** Quellenvermerk mit Name des Bereitstellers, dem Zusatz „Data licence Germany
-– attribution – Version 2.0" oder „dl-de/by-2-0" und einem Verweis auf den Datensatz
-(URI); Aenderungen sind im Quellenvermerk zu kennzeichnen (ebd.).
-Destatis selbst: „© Statistisches Bundesamt (Destatis), 2026. Data licence Germany -
-attribution - version 2.0" (`destatis.de/EN/Service/Legal-Notice/_node.html`, abgerufen
+**Conditions:** source note with the provider's name, the addition „Data licence Germany
+– attribution – Version 2.0" or „dl-de/by-2-0" and a reference to the dataset
+(URI); changes are to be marked in the source note (ibid.).
+Destatis itself: „© Statistisches Bundesamt (Destatis), 2026. Data licence Germany -
+attribution - version 2.0" (`destatis.de/EN/Service/Legal-Notice/_node.html`, retrieved
 2026-08-31).
 
-**Inhalt:** Deutschland, tief gegliedert, ueberwiegend jaehrlich und quartalsweise.
+**Content:** Germany, deeply broken down, mostly annual and quarterly.
 
-**Urteil:** Lizenzseitig einwandfrei, aber ein Zwoelf-Laender-Modell braucht **eine**
-Datenbasis mit einheitlicher Abgrenzung, keine zwoelf nationalen. Nur heranziehen, falls
-Deutschland als Detailfall ausgebaut wird.
+**Verdict:** flawless on the licence side, but a twelve-country model needs **one** data
+base with a uniform delimitation, not twelve national ones. Draw on it only if Germany
+is built out as a detail case.
 
-### 6. Our World in Data — **traegt formal, bringt aber nichts Eigenes**
+### 6. Our World in Data — **holds formally, but adds nothing of its own**
 
-**Lizenz im Wortlaut:** CC BY; „You do not need permission from us, and we do not sign
+**Licence in its literal wording:** CC BY; „You do not need permission from us, and we do not sign
 copyright release forms, provided that you cite us appropriately."
-(`ourworldindata.org/faqs`, abgerufen 2026-08-31)
+(`ourworldindata.org/faqs`, retrieved 2026-08-31)
 
-**Die Einschraenkung ist der ganze Punkt:** „Most of the data on Our World in Data comes
+**The restriction is the whole point:** „Most of the data on Our World in Data comes
 from third-party providers (such as the WHO, UN, and World Bank) and is subject to the
 license terms of those providers. You should always check their license before reusing or
-republishing the data." (ebd.)
+republishing the data." (ibid.)
 
-**Urteil:** Kein eigenstaendiger Weg. Wer hier Wirtschaftsdaten holt, holt in Wahrheit
-Weltbank- oder IWF-Daten und muss deren Bedingungen ohnehin pruefen -- dann gleich direkt.
-Brauchbar allenfalls als Fundstelle, nicht als Lieferant.
+**Verdict:** no independent route. Whoever fetches economic data here in truth fetches
+World Bank or IMF data and must check their conditions anyway -- so go direct right away.
+Usable at most as a finding aid, not as a supplier.
 
-### 7. Eurostat — **nur fuer EU- und EFTA-Laender**
+### 7. Eurostat — **EU and EFTA countries only**
 
-**Lizenz im Wortlaut:** „Reuse of statistical data, metadata, publications, and other
+**Licence in its literal wording:** „Reuse of statistical data, metadata, publications, and other
 dissemination tools published on this website for commercial or non-commercial purposes is
 authorised provided the source is acknowledged."
-(`ec.europa.eu/eurostat/en/help/copyright-notice`, abgerufen 2026-08-31)
+(`ec.europa.eu/eurostat/en/help/copyright-notice`, retrieved 2026-08-31)
 
-**Auflagen:** Quellenangabe in der Form „Source: [DOI number of the Eurostat dataset],
-[access date]" (ebd.).
+**Conditions:** attribution in the form „Source: [DOI number of the Eurostat dataset],
+[access date]" (ibid.).
 
-**Die Ausnahmen entscheiden hier, und sie treffen genau diesen Zuschnitt.** Von der
-gewerblichen Weiterverwendung ausgenommen und nur nichtgewerblich nutzbar sind unter
-anderem: Daten fuer Nicht-EU/EFTA-Laender (die Seite nennt USA, Japan und China als
-Beispiele), Handelsdaten mit Liechtenstein und der Schweiz als Meldeland, oesterreichische
-Handelsdaten auf achtstelliger KN-Ebene sowie Ko-Publikationen mit fremdem Urheberrecht
-(ebd.).
+**The exceptions decide here, and they hit exactly this cut.** Excluded from commercial
+reuse and usable only non-commercially are, among others: data for non-EU/EFTA countries
+(the page names the USA, Japan and China as examples), trade data with Liechtenstein and
+Switzerland as reporting country, Austrian trade data at the eight-digit CN level, and
+co-publications carrying third-party copyright
+(ibid.).
 
-**Urteil:** Fuer ein Weltmodell mit zwoelf Laendern die falsche Quelle -- die grossen
-Nicht-EU-Volkswirtschaften, ohne die das Produkt sinnlos waere, faellt sie gerade aus.
-Verwendbar bliebe sie nur fuer die EU-Laender des Modells, und dort haben WDI und IWF
-dieselben Groessen ohne Sonderregel. **Nicht einplanen.** Das ist der Fall, vor dem der
-Auftrag warnt: perfekt aussehende Lizenz, Luecke in der halben Welt.
+**Verdict:** the wrong source for a world model with twelve countries -- it drops out for
+precisely the large non-EU economies without which the product would be pointless. It
+would remain usable only for the model's EU countries, and there WDI and IMF have the
+same quantities without a special rule. **Do not plan it in.** This is the case the
+assignment warns about: a perfect-looking licence, a gap across half the world.
 
-### 8. OECD — **ungeklaert, nicht einplanen**
+### 8. OECD — **unresolved, do not plan in**
 
-**Lizenz, Wortlaut soweit belegbar:** Standardlizenz fuer Inhalte ab dem 2024-07-01 ist
-CC BY 4.0; fuer aeltere Inhalte gelten die OECD-Nutzungsbedingungen, die erlauben, Inhalte
-„for commercial and non-commercial purposes without seeking authorisation from the OECD"
-zu nutzen, zu kopieren und zu verbreiten, bei Zitierung in der Form „[OECD (year), Title,
-URL]". Bearbeitungen verlangen zusaetzlich einen Distanzierungshinweis („This is an
+**Licence, literal wording as far as evidenced:** the standard licence for content from 2024-07-01
+on is CC BY 4.0; for older content the OECD terms of use apply, which permit using,
+copying and distributing content „for commercial and non-commercial purposes without
+seeking authorisation from the OECD", with citation in the form „[OECD (year), Title,
+URL]". Adaptations additionally require a disclaimer („This is an
 adaptation of an original work by the OECD…").
-(`oecd.org/en/about/terms-conditions.html` und
-`oecd.org/en/about/oecd-open-by-default-policy.html`) — **Beleghinweis:** Beide Seiten
-haben den direkten Abruf am 2026-08-31 mit HTTP 403 abgewiesen; die Formulierungen stammen
-aus Suchtreffern, nicht aus einem eigenen Seitenabruf.
+(`oecd.org/en/about/terms-conditions.html` and
+`oecd.org/en/about/oecd-open-by-default-policy.html`) — **Evidence note:** both pages
+rejected direct retrieval on 2026-08-31 with HTTP 403; the wordings come from search
+hits, not from my own page retrieval.
 
-**Die Mehrdeutigkeit, und deshalb faellt die Quelle vorerst aus:** Die zitierte
-Erlaubnisklausel spricht durchgaengig von **„written content"** -- Publikationen und
-Texten. Ob statistische Datenbanken darunter fallen, geht aus dem, was ich belegen konnte,
-nicht hervor. Zwei Lesarten: (a) Die Pressemitteilung vom Juli 2024 spricht ausdruecklich
-davon, dass „OECD data, publications and analysis" frei zugaenglich werden -- dann sind
-Daten mitgemeint. (b) Die Terms unterscheiden „written content" von Daten, und fuer Daten
-gilt etwas anderes, das ich nicht gefunden habe. Nach der Regel dieser Rolle gilt eine
-Quelle ohne Lizenzzitat im Wortlaut als ungeprueft, nicht als erlaubt.
+**The ambiguity, and therefore the source drops out for now:** the permission clause
+quoted speaks throughout of **„written content"** -- publications and texts. Whether
+statistical databases fall under that does not follow from what I could evidence. Two
+readings: (a) the press release of July 2024 speaks expressly of „OECD data,
+publications and analysis" becoming freely accessible -- then data is included. (b) The
+terms distinguish „written content" from data, and for data something else applies that
+I did not find. By this role's rule, a source without a licence quotation in its literal
+wording counts as unchecked, not as permitted.
 
-**Urteil:** Ungeprueft. Nicht in den Entwurf aufnehmen. Falls der Architekt sektorale
-Tiefe braucht, die nur die OECD hat (STAN, Input-Output-Tabellen), ist das ein eigener,
-kleiner Klaerungsauftrag -- kein Grund, den Kern daran zu haengen.
+**Verdict:** unchecked. Do not take into the design. If the architect needs sectoral
+depth that only the OECD has (STAN, input-output tables), that is a separate, small
+clarification assignment -- no reason to hang the core on it.
 
-### 9. UNCTAD / UNCTADstat — **widerspruechlich, nicht einplanen**
+### 9. UNCTAD / UNCTADstat — **contradictory, do not plan in**
 
-**Zwei Aussagen, die sich beissen.** Auf der Copyright-Seite selbst steht die
-UN-Standardklausel: „None of the materials provided on this web site may be used,
+**Two statements that bite each other.** On the copyright page itself stands the
+UN standard clause: „None of the materials provided on this web site may be used,
 reproduced or transmitted, in whole or in part, in any form or by any means, electronic or
 mechanical, including photocopying, recording or the use of any information storage and
-retrieval system" ohne schriftliche Erlaubnis
-(`unctadstat.unctad.org/EN/Copyright.html`, abgerufen 2026-08-31); dieselbe Seite verweist
-zugleich auf eine Creative-Commons-Nutzungsbedingung, und das UNCTAD Data Hub gibt
-CC BY 3.0 IGO an mit der Aussage, Daten duerften frei kopiert und weiterverbreitet werden,
-sofern das Data Hub als Quelle genannt wird.
+retrieval system" without written permission
+(`unctadstat.unctad.org/EN/Copyright.html`, retrieved 2026-08-31); the same page at the
+same time points to a Creative Commons term of use, and the UNCTAD Data Hub states
+CC BY 3.0 IGO with the statement that data may be freely copied and redistributed,
+provided the Data Hub is named as the source.
 
-**Urteil:** Beide Lesarten stehen nebeneinander auf derselben Seite; ich waehle keine.
-Solange das nicht aufgeloest ist, gilt die Quelle als ungeprueft. Sie wird auch nicht
-gebraucht -- was UNCTAD an Handelsdaten liefert, deckt BACI unter klarer Lizenz ab.
+**Verdict:** both readings stand side by side on the same page; I choose neither. As
+long as that is not resolved, the source counts as unchecked. Nor is it needed --
+what UNCTAD delivers in trade data, BACI covers under a clear licence.
 
-### 10. UN Comtrade — **negativ fuer Rohdaten**
+### 10. UN Comtrade — **negative for raw data**
 
-**Lizenz im Wortlaut:** „any copying, automated browsing or downloading, redistribution,
+**Licence in its literal wording:** „any copying, automated browsing or downloading, redistribution,
 publication, or commercial exploitation of any material contained on or otherwise made
 available to you on United Nations COMTRADE is strictly prohibited without the prior
-written permission" (`comtrade.un.org/licenseagreement.html`, Abschnitt 5 „Usage",
-abgerufen 2026-08-31).
+written permission" (`comtrade.un.org/licenseagreement.html`, section 5 „Usage",
+retrieved 2026-08-31).
 
-**Die neuere Praxis daneben, weil sie milder klingt und es doch nicht ist:** Wer Original-
-daten an Nicht-Abonnenten weitergibt und dabei 100.000 Datensaetze ueberschreitet, „must
-pay the 'license to distribute' fee" **zusaetzlich** zu einem aktiven Premium-Abonnement;
-und ausdruecklich: „There is no distinction between profit and non-profit when it comes to
-re-dissemination." (`uncomtrade.org/docs/faqs-on-use-and-re-dissemination/`, abgerufen
+**The newer practice beside it, because it sounds milder and is not:** whoever passes
+original data on to non-subscribers and exceeds 100,000 records in doing so „must
+pay the 'license to distribute' fee" **in addition** to an active premium subscription;
+and expressly: „There is no distinction between profit and non-profit when it comes to
+re-dissemination." (`uncomtrade.org/docs/faqs-on-use-and-re-dissemination/`, retrieved
 2026-08-31).
 
-**Urteil:** Fuer eingebettete Rohdaten **negativ** -- ein laufendes Abonnement plus Gebuehr
-verstiesse gegen Hausregel 1 und waere bei einem Produkt zu 24,99 EUR ohnehin unsinnig.
-Der Ausweg ist die transformierte Fassung (CEPII BACI, Nr. 3), die Comtrade selbst
-freigibt. Comtrade bleibt damit **mittelbar** die Grundlage des Aussenhandelsteils, ohne
-dass seine Bedingungen das Produkt beruehren.
+**Verdict:** **negative** for embedded raw data -- a running subscription plus fee would
+violate house rule 1 and would be senseless anyway for a product at 24.99 EUR.
+The way out is the transformed version (CEPII BACI, no. 3), which Comtrade itself
+releases. Comtrade thus remains **indirectly** the basis of the foreign-trade part,
+without its conditions touching the product.
 
-### 11. FRED (Federal Reserve Bank of St. Louis) — **negativ**
+### 11. FRED (Federal Reserve Bank of St. Louis) — **negative**
 
-**Lizenz im Wortlaut, soweit belegbar:** Reihen mit Copyright-Vermerk gehoeren Dritten;
-vor jeder Nutzung ueber den persoenlichen Gebrauch hinaus ist die Erlaubnis des
-Rechteinhabers einzuholen, und die gewerbliche Weiterverbreitung urheberrechtlich
-geschuetzter Reihen ist ohne Zustimmung des Rechteinhabers nicht erlaubt; Nutzer duerfen
-Schutzrechtsvermerke nicht entfernen oder veraendern
-(`fred.stlouisfed.org/legal` und `fred.stlouisfed.org/docs/api/terms_of_use.html`) —
-**Beleghinweis:** Der direkte Abruf beider Seiten wurde am 2026-08-31 mit HTTP 403
-abgewiesen; die Bedingungen stammen aus Suchtreffern.
+**Licence in its literal wording, as far as evidenced:** series with a copyright notice belong to
+third parties; before any use beyond personal use, the rights holder's permission must
+be obtained, and commercial redistribution of copyrighted series is not permitted
+without the rights holder's consent; users may not remove or alter proprietary notices
+(`fred.stlouisfed.org/legal` and `fred.stlouisfed.org/docs/api/terms_of_use.html`) —
+**Evidence note:** direct retrieval of both pages was rejected on 2026-08-31 with
+HTTP 403; the terms come from search hits.
 
-**Urteil:** **Negativ fuer das Einbetten.** FRED ist ein Aggregator: Der Lizenzstatus
-haengt an der einzelnen Reihe, nicht an FRED, und muss je Reihe geklaert werden -- genau
-die Arbeit, die kein Agent tragen sollte und die bei jeder Datenaktualisierung neu
-anfiele. US-Groessen liefern WDI und IWF unter klarer Lizenz.
+**Verdict:** **negative for embedding.** FRED is an aggregator: the licence status
+hangs on the individual series, not on FRED, and must be clarified per series -- exactly
+the work no agent should carry, and it would arise anew with every data update.
+US quantities are delivered by WDI and IMF under a clear licence.
 
-### 12. WTO — **negativ**
+### 12. WTO — **negative**
 
-**Lizenz im Wortlaut:** „Unrestricted official WTO documents and legal texts are free for
-public use"; sonstige Materialien duerfen nichtgewerblich genutzt werden, wenn die WTO
-genannt und informiert wird; „Commercial use of materials from the website requires written
-permission from the WTO." Eine Creative-Commons-Lizenz wird nicht angeboten.
-(`wto.org/english/info_e/copyrights_permissions_e.htm`, abgerufen 2026-08-31)
+**Licence in its literal wording:** „Unrestricted official WTO documents and legal texts are free for
+public use"; other materials may be used non-commercially if the WTO is named and
+informed; „Commercial use of materials from the website requires written
+permission from the WTO." No Creative Commons licence is offered.
+(`wto.org/english/info_e/copyrights_permissions_e.htm`, retrieved 2026-08-31)
 
-**Urteil:** **Negativ.** Schriftliche Genehmigung ist kein Weg, den ein Agentenlauf gehen
-darf (Hausregel 2). Damit ist die naheliegendste Zollquelle geschlossen -- siehe die Luecke
-unten.
+**Verdict:** **negative.** Written permission is not a path an agent run may take
+(house rule 2). That closes the most obvious tariff source -- see the gap
+below.
 
-### 13. WITS (World Bank Integrated Trade Solution) — **negativ**
+### 13. WITS (World Bank Integrated Trade Solution) — **negative**
 
-**Lizenz im Wortlaut:** WITS reicht die Auflagen seiner Lieferanten durch. Zu UN Comtrade:
-Daten „may not be re-disseminated in any form without written permission of the United
-Nations Statistics Division (UNSD)". Zur WTO-Datenbank: „re-dissemination by third parties
-… must be approved by the WTO Secretariat prior to such re-dissemination", und
-Veroeffentlichungen duerfen nicht feiner als die sechsstellige HS-Ebene sein. Fuer
-UNCTAD TRAINS gilt eine eigene Nutzungsbedingung.
-(`wits.worldbank.org/WITS/wits/registration/PrintTermsAndCondition.htm`, abgerufen
+**Licence in its literal wording:** WITS passes through its suppliers' conditions. On UN Comtrade:
+data „may not be re-disseminated in any form without written permission of the United
+Nations Statistics Division (UNSD)". On the WTO database: „re-dissemination by third parties
+… must be approved by the WTO Secretariat prior to such re-dissemination", and
+publications may not be finer than the six-digit HS level. For UNCTAD TRAINS a separate
+term of use applies.
+(`wits.worldbank.org/WITS/wits/registration/PrintTermsAndCondition.htm`, retrieved
 2026-08-31)
 
-**Urteil:** **Negativ.** Dass WITS unter dem Dach der Weltbank laeuft, uebertraegt die
-CC-BY-Lizenz der Weltbank nicht auf fremde Bestaende. Wichtig fuer die naechste Stufe:
-Weltbank-Herkunft ist **kein** Freibrief; die Lizenz haengt am Datensatz, nicht am
-Absender.
+**Verdict:** **negative.** That WITS runs under the World Bank's roof does not transfer
+the World Bank's CC-BY licence to third-party holdings. Important for the next stage:
+World Bank origin is **no** carte blanche; the licence hangs on the dataset, not on the
+sender.
 
 ## Der Vorschlag
 
