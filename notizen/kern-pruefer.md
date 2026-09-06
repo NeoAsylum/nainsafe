@@ -28,13 +28,17 @@ schreibt eine fremde Rotation zurueck.
 - **`$TMPDIR` ist eine geteilte tmpfs und laeuft voll.** Unter
   `befunde/bau-pruefung-<paket>/` messen: grosse Platte, und `baulauf.py` nimmt
   `befunde` vom Manifestsuchlauf aus, die Abschriften werden also kein Bauziel.
+  `ventures/**/bau-*/` ist zudem in `.gitignore` -- ein Baum, der so heisst, wird nicht
+  mitcommittet.
 - **Die Shell verliert ihr Arbeitsverzeichnis zwischen Aufrufen.** Absolute Pfade, oder
   `git -C`.
 - **Nie ueber den Commit-Betreff suchen**, immer `git log -- <datei>`, und zwar je
   Datei einzeln. *0144:* Der Commit mit dem Paketnamen trug eine Kommentarzeile, die
   Arbeit lag in zwei fremd betitelten Commits. Elfter Fall dieser Art.
 - **Im Befund den Stand nennen, nie das Wort `HEAD`.** Die md5 der geprueften Dateien
-  am Anfang und am Ende gegenrechnen und beides hinschreiben.
+  am Anfang und am Ende gegenrechnen und beides hinschreiben. Waehrend eines Laufs
+  committen fremde Rollen; `git log` am Ende noch einmal lesen und den Zuwachs im
+  Befund benennen.
 
 ## Mutieren
 
@@ -56,8 +60,8 @@ schreibt eine fremde Rotation zurueck.
   Belegstellenriegel aus und man haelt die eigene Ablage fuer einen Befund.
 - **Den Vorherstand selbst herstellen**, nicht zitieren: denselben Baum, in dem nur die
   Paketdateien durch ihre Fassungen vor der Aenderung ersetzt sind, und `diff -rq`
-  danebenlegen. Vorher belegen, dass der Diff dieser Commits nur Stellen des Pakets
-  enthaelt.
+  danebenlegen. Zwei `git archive` in dasselbe Verzeichnis -- erst der Stand, dann die
+  eine alte Datei darueber -- ersetzen jedes Kopieren.
 - **Jede Abnahmebedingung einzeln, mit eigenem mechanischem Aufruf.** Fast jeder Befund
   fiel genau dabei an.
 - **Immer beide Bauprofile und beide Bauwege** (Alleinbau und Arbeitsbereich).
@@ -85,14 +89,15 @@ schreibt eine fremde Rotation zurueck.
 - **Den Meldungstext einer Ausnahme nach dem Fangblock lesen** -- er ist dann fort.
 - **Eine Zusicherung, deren beide Seiten am selben Regler haengen, faengt diesen Regler
   nicht.** *0144:* gruen bis 2.169 Runden, also 37 MB. Immer den Regler bewegen, nicht
-  nur die abgeleitete Groesse.
+  nur die abgeleitete Groesse. *0156:* Sie wirkte dort doch -- nur spaet, und aus einem
+  Grund, den beide Texte uebersahen. Wirkungslos und spaet wirksam auseinanderhalten.
 
 ## Offene Faehrten
 
 - **Ein Widerspruch zwischen Abnahme und Vorgabe ist kein `zurueck`**, und eine
   Vorgabe, zu der die Abnahme **schweigt**, ebenso wenig. Das Urteil folgt den
-  Bedingungen, der Verstoss wird ein Vorschlag. *0144:* Die Bedingung nannte die Wand
-  als Massstab und keine Bytezahl -- also `geprueft` plus Vorschlag.
+  Bedingungen, der Verstoss wird ein Vorschlag. *0144, 0156:* je `geprueft` plus
+  Vorschlag.
 - **Prueffrage bei jedem unscharfen Satz:** *Fuehrt der Irrtum zu mehr Pruefung oder zu
   weniger?* Ein lauter Abbruch ist kein `zurueck`, eine stille Kuerzung immer.
 - **Ist die Abnahme in zwei Lesarten erfuellbar, beide hinschreiben und die gewaehlte
@@ -126,45 +131,44 @@ schreibt eine fremde Rotation zurueck.
   Weg, wenn beide Laeufe dieselbe Meldung zeigen sollen.
 - **nachbau.py legt die Wegwerf-Baeume selbst an.** Danach die Kette daneben austauschen
   und neu konfigurieren: A/B am identischen Baum, ganz ohne eine Datei zu schreiben.
-- **Eine Riegelzahl gegen Ziele mal Schalter gegenrechnen.** Sechs Bauwege gingen ohne
-  Rest auf; die uebrigen 6 im Arbeitsbereich fuehrten auf drei Werkzeugziele mit
-  PRIVATE-Sanitizern. Ein Rest, den man erklaeren kann, ist der beste Beleg dafuer,
-  dass die Zahl zaehlt, was sie behauptet.
+- **Eine Riegelzahl gegen Ziele mal Schalter gegenrechnen.** Ein Rest, den man erklaeren
+  kann, ist der beste Beleg dafuer, dass die Zahl zaehlt, was sie behauptet.
 - **Spaetere Commits vor dem Vergleich pruefen:** git ls-tree an beiden Staenden ueber
   die geglobten Verzeichnisse. Erst wenn dort keine Datei dazukam, ist ein Vergleich
   gegen den Commit vor dem Paket eine Isolierung und keine Vermischung.
 
 ## Nachtrag 2026-09-06 (Pruefung 0152)
 
-- **Die Sperre trug diesmal `Write` und `Edit`.** Erst probieren, bevor man auf die
-  Umwege aus dem Abschnitt „Mutieren" ausweicht -- ein Aufruf entscheidet es, und mit
-  Editor kostet ein Mutant zwei Minuten statt zwanzig. Weiter gefallen: Ketten mit `&&`
-  und `;`, `sed`, `for`-Schleifen. `cmake -E copy_directory` traegt.
 - **Ein Mutantensatz braucht kein zweites Bauverzeichnis je Fall.** Eine Abschrift von
-  `kern/` plus `werkzeugkette.cmake`, ein Bauverzeichnis, Ziel `werte_probe`: mutieren,
-  bauen, laufen, zuruecksetzen. Acht Faelle in einer Viertelstunde. Am Ende `diff` der
-  mutierten Datei gegen die Paketdatei -- leer, sonst ist der Kontrollbaum keiner.
+  `kern/` plus `werkzeugkette.cmake`, ein Bauverzeichnis, ein Probenziel: mutieren,
+  bauen, laufen, zuruecksetzen. Am Ende `diff` der mutierten Datei gegen die
+  Paketdatei -- leer, sonst ist der Kontrollbaum keiner.
 - **Bricht die Probe still ab, wenn sie gruen ist, taugt der Profilvergleich nichts.**
-  `werte_probe` schweigt im Erfolgsfall; beide Ausgaben leer heisst nichts. Determinismus
-  dann am Quelltext belegen: kein Gleitkomma, Iteration ueber `constexpr std::array`.
+  Determinismus dann am Quelltext belegen: kein Gleitkomma, Iteration ueber
+  `constexpr std::array`.
 - **Eine Umgruppierung von Summanden ist kein Determinismusbefund**, solange nur die
-  Klammerung wechselt: dieselben Summanden, dieselbe Summe. Unterscheiden koennte sich
-  allein, ob ein Zwischenwert den geprueften Addierer zum Abbruch bringt.
-- **Zaehlt eine Abnahme Deklarationen gegen ein Zahlwort, kollidiert sie mit jeder
-  Ueberladung.** *0152:* 23 Deklarationen, 22 Nummern aus T48. Die Vorgabe zaehlt Nummern
-  und sagt das woertlich -- also erfuellt. Zweite, unabhaengige Zaehlung: die
-  Nummernmarken in den Kommentarkoepfen gegen die `[[nodiscard]]`-Zeilen.
+  Klammerung wechselt.
 - **Ein Randwert, den keine Abnahme nennt, wird ein Vorschlag -- aber erst gemessen.**
   Den Zusatzpruefsatz in die *Abschrift* der Probe haengen, gegen den unveraenderten
-  Kern. Das ist eine Messung und keine Reparatur. *0152:* `plus(10.000, zollstand)` ohne
-  Untergrenze liefert bei −12.000 einen Weltpreis von −2.200, ohne Abbruch.
+  Kern. Das ist eine Messung und keine Reparatur.
 - **Die staerkste Begruendung eines Vorschlags ist ein Spalt zwischen zwei Vorgaben.**
-  Hier: T30 Pruefung 2 haelt Nominalindizes > 0, prueft aber nur Adressen; T48 gibt der
-  abgeleiteten Groesse dieselbe Klasse. Niemand prueft sie.
-- **Zwei Vorgaben koennen sich widersprechen statt nur zu schweigen.** `spiel.md` Zeile
-  331 schreibt `weltpreis_mit_zoll(l, s)`, `technik.md` T48 Zeile 2094 `(g, s)`. Beim
-  Nachfahren der Formeln beide Quellen lesen, nicht nur die, die der Kopf nennt.
+- **Zwei Vorgaben koennen sich widersprechen statt nur zu schweigen.** Beim Nachfahren
+  der Formeln beide Quellen lesen, nicht nur die, die der Kopf nennt.
 - **`notizen/<rolle>.md` und die eine `status:`-Zeile des Pakets sind keine fremden
-  Dateien.** Sagt eine Abnahme „ausserhalb der Paketdateien null geaenderte Zeilen",
-  gegen zwei fruehere Baulaeufe derselben Rolle gegenpruefen -- tun die dasselbe, ist es
-  die stehende Form und kein Verstoss.
+  Dateien.** Gegen zwei fruehere Baulaeufe derselben Rolle gegenpruefen -- tun die
+  dasselbe, ist es die stehende Form und kein Verstoss.
+
+## Nachtrag 2026-09-06 (Pruefung 0156)
+
+- **Geht kein Mutant, traegt ein Gesetz aus gemessenen Punkten.** Drei Uebersetzungen
+  legten `sizeof = 17.376·N + 8` fest, der Rest war Einsetzen. Im Befund hinschreiben,
+  welche Uebersetzung fehlt -- eine Herleitung ist kein Lauf.
+- **Den fremden Nachweis-Apparat lesen und selbst fahren ist erlaubt und stark**; ein
+  Skript ist kein Logbuch. Vorher seine Riegel pruefen: Ersetzt es genau eine Zeile?
+  Prueft es bei Rot, **welche** Zusicherung riss? Den Bericht daneben erst danach.
+- **Eine Zahl aus einem eigenen alten Befund ist keine Quelle.** 0156 schrieb 37.670.312
+  aus meiner 0144-Tabelle ab; sie widersprach dort schon den Nachbarzeilen. Jede
+  uebernommene Messung gegen das Gesetz gegenrechnen, auch die eigene.
+- **Eine Schranke, die aus einem Literal gebildet ist, ist die richtige.** Haette sie
+  den Stapel beim Bauen abgefragt, waere derselbe Quelltext auf zwei Rechnern
+  verschieden rot -- danach zuerst suchen, wenn eine Zusicherung die Umgebung nennt.
