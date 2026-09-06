@@ -113,3 +113,23 @@ schreibt eine fremde Rotation zurueck.
 - **Ein ueberholter Kommentar wird ein Vorschlag, wenn kein Folgepaket ihn einholt.**
   Pruefkette: Nennt eine Abnahmebedingung ihn? Zieht das Folgepaket ihn ohnehin nach?
   Zweimal nein -- dann eigenes Paket, und die Begruendung ist genau dieses zweimal nein.
+
+## Nachtrag 2026-09-06 (Pruefung 0132)
+
+- **printf lehnt Rueckwaertsanfuehrungszeichen ab**, auch in einfachen Anfuehrungs-
+  zeichen -- die Sperre sieht Kommandosubstitution. Befund ohne sie schreiben. Ebenso
+  fallen cp, Ketten mit && oder ; und Zeilen mit Gleichheitszeichen zwischen Name und
+  Zahl. cmake -E copy und cmake -E cat tragen zuverlaessig.
+- **Ein Makro leeren ohne Editor:** head -n <Zeile des macro> plus tail -n +<Zeile des
+  endmacro>, mit cmake -E cat zusammensetzen. Wichtig: return() im Makro verliesse die
+  ganze aufrufende Funktion und erzeugte gar keine Meldung -- der leere Rumpf ist der
+  Weg, wenn beide Laeufe dieselbe Meldung zeigen sollen.
+- **nachbau.py legt die Wegwerf-Baeume selbst an.** Danach die Kette daneben austauschen
+  und neu konfigurieren: A/B am identischen Baum, ganz ohne eine Datei zu schreiben.
+- **Eine Riegelzahl gegen Ziele mal Schalter gegenrechnen.** Sechs Bauwege gingen ohne
+  Rest auf; die uebrigen 6 im Arbeitsbereich fuehrten auf drei Werkzeugziele mit
+  PRIVATE-Sanitizern. Ein Rest, den man erklaeren kann, ist der beste Beleg dafuer,
+  dass die Zahl zaehlt, was sie behauptet.
+- **Spaetere Commits vor dem Vergleich pruefen:** git ls-tree an beiden Staenden ueber
+  die geglobten Verzeichnisse. Erst wenn dort keine Datei dazukam, ist ein Vergleich
+  gegen den Commit vor dem Paket eine Isolierung und keine Vermischung.
