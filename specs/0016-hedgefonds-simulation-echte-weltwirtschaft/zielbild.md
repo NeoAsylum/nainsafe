@@ -2,17 +2,17 @@
 typ: zielbild
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-quelle: Betreiber, 2026-09-01
-status: richtungsgebend, nicht bindend fuer Stufe 1
+quelle: operator, 2026-09-01
+status: directional, not binding for stage 1
 ---
 
-# Zielbild — was am Ende auf dem Schirm steht
+# Target picture — what ends up on the screen
 
-Vom Betreiber am 2026-09-01 vorgegeben. Es ist **kein Entwurf**, sondern die Richtung,
-auf die der Entwurf zulaufen soll. Der Spielentwerfer arbeitet daraus konkrete Regeln;
-was hier steht, ist das Bild, nicht die Mechanik.
+Set by the operator on 2026-09-01. It is **not a design**, but the direction the design
+is meant to run toward. The game designer works concrete rules out of it; what stands
+here is the picture, not the mechanics.
 
-## Die Vorgabe im Wortlaut
+## The directive verbatim
 
 > Die Zieldarstellung soll Interaktion erlauben und dabei rewarding sein und Progression
 > auf unterschiedlichen Wegen erlauben. Hier wird Grafik schließlich eine große Rolle
@@ -22,92 +22,89 @@ was hier steht, ist das Bild, nicht die Mechanik.
 > Weltkugel, die sich mit den Entscheidungen verändert — die unterschiedlichen Märkte und
 > die weltpolitischen Entscheidungen beeinflussen.
 
-## Zwei Ansichten
+## Two views
 
-**Das Hauptquartier.** Ausbaubar. Es beherbergt die Fähigkeiten, schaltet Aktionen und
-Operationen frei und ist der Ort, an dem entschieden wird, in welche Märkte der Fonds
-einsteigt.
+**The headquarters.** Expandable. It houses the abilities, unlocks actions and
+operations, and is the place where it is decided which markets the fund enters.
 
-**Die Weltkugel.** Sie verändert sich mit den Entscheidungen und zeigt Märkte und
-weltpolitische Wirkungen.
+**The globe.** It changes with the decisions and shows markets and world-political
+effects.
 
-## Warum das zum Rest passt — und nicht Dekoration ist
+## Why this fits the rest — and is not decoration
 
-Die beiden Ansichten zeigen genau die Größen, die der Selbstspieler ohnehin misst
+The two views show exactly the quantities the self-player measures anyway
 (`agentenbau.md`, *Die ehrliche Grenze*):
 
-| Ansicht | zeigt | ist das Maß |
+| View | shows | is the measure |
 |---|---|---|
-| Hauptquartier, Fähigkeitspfade | mehrere Wege zum Ziel, sichtbar nebeneinander | **Strategievielfalt** |
-| Weltkugel, die reagiert | was eine Entscheidung ausgelöst hat, und wo | **Entscheidungsdichte** |
-| Ausbaustufen über die Partie | wie sich das Beste im Verlauf verschiebt | **Verschiebung des Optimums** |
+| headquarters, ability paths | several ways to the goal, visible side by side | **strategy diversity** |
+| globe that reacts | what a decision triggered, and where | **decision density** |
+| expansion stages over the game | how the best option shifts over the course | **shift of the optimum** |
 
-Daraus folgt das Gestaltungsprinzip, an dem sich jede spätere Entscheidung messen lässt:
+From this follows the design principle against which every later decision can be
+measured:
 
-> **Gezeichnet wird, was gemessen wird.**
+> **What is measured is what gets drawn.**
 
-Eine Ansicht, die etwas zeigt, das kein Maß erfasst, ist Zierat und kostet Gestaltung.
-Eine Ansicht, die ein Maß zeigt, verdient ihren Aufwand doppelt — sie bedient den
-belegten Wunsch der Käufer *und* macht dem Betreiber sichtbar, was die Fabrik nachts
-ausrechnet.
+A view that shows something no measure captures is ornament and costs design effort. A
+view that shows a measure earns its effort twice over — it serves the documented wish of
+the buyers *and* makes visible to the operator what the factory computes at night.
 
-## Was das kostet — die eine Stelle, an der es kollidiert
+## What it costs — the one place where it collides
 
-`agentenbau.md` erlaubt ausdrücklich, dass das Kernversprechen der visuelle Eindruck ist,
-solange der **Zustand** als Text abrufbar bleibt. Das ist hier erfüllt: Ausbaustufen,
-freigeschaltete Fähigkeiten, betretene Märkte und Einfluss je Land sind Zahlen.
+`agentenbau.md` explicitly allows the core promise to be the visual impression, as long
+as the **state** stays retrievable as text. That is satisfied here: expansion stages,
+unlocked abilities, entered markets and influence per country are numbers.
 
-Die Kollision liegt woanders, bei Kriterium 6 — **wie oft muss jemand über Gestaltung
-entscheiden?**
+The collision lies elsewhere, at criterion 6 — **how often does someone have to decide
+about design?**
 
-**Ein Hauptquartier mit Räumen braucht eine Bildsprache.** Wie teuer die ist, hängt
-davon ab, ob sie *gezeichnet* oder *konstruiert* wird — und das ist ein Unterschied, den
-ich zunächst übersehen hatte.
+**A headquarters with rooms needs a visual language.** How expensive that is depends on
+whether it is *drawn* or *constructed* — and that is a distinction I had at first
+overlooked.
 
-> **Nachtrag vom 2026-09-01, vom Betreiber:** *„Ein solches Hauptquartier kann auch
+> **Addendum of 2026-09-01, from the operator:** *„Ein solches Hauptquartier kann auch
 > konstruktiv durch einen Agenten entworfen werden."*
 >
-> Das trifft zu und korrigiert die ursprüngliche Fassung dieses Abschnitts, die
-> behauptete, Bildmaterial könne kein Agent erzeugen. Richtig ist: Ein Agent **zeichnet**
-> nicht, aber er **konstruiert** — Geometrie aus Grundformen, Räume aus einem Raster,
-> Symbole aus Regeln, alles als SVG.
+> That is correct and corrects the original version of this section, which claimed that
+> no agent can produce imagery. What is right: an agent does not **draw**, but it
+> **constructs** — geometry from basic shapes, rooms from a grid, symbols from rules,
+> all as SVG.
 >
-> Und damit greift dasselbe Argument wie bei der Ansicht überhaupt: **SVG ist Text.** Ein
-> konstruiertes Hauptquartier ist prüfbar wie jede andere Ausgabe dieser Fabrik — ein
-> Agent kann es lesen, vergleichen und gegen den Zustand halten. Ein gemaltes Bild kann
-> er das nicht.
+> And with that the same argument applies as for the view in the first place: **SVG is
+> text.** A constructed headquarters is checkable like every other output of this
+> factory — an agent can read it, compare it and hold it against the state. A painted
+> picture it cannot.
 >
-> Der teure Rest ist damit klein und klar umrissen: die **Bildsprache selbst** — welche
-> Formen, welche Farben, welcher Aufbau. Das ist eine Entscheidung, keine laufende
-> Arbeit, und genau die zyklische Form, die Kriterium 6 erlaubt.
+> The expensive remainder is thereby small and clearly delimited: the **visual language
+> itself** — which shapes, which colors, which layout. That is a decision, not ongoing
+> work, and exactly the cyclical form that criterion 6 allows.
 
-Drei Wege bleiben, alle offen und alle vom Betreiber zu entscheiden — später, nicht
-jetzt:
+Three paths remain, all open and all for the operator to decide — later, not now:
 
-1. **Erzeugte Darstellung statt gezeichneter.** Die Weltkugel ist damit fast umsonst zu
-   haben: Ländergrenzen sind freie Daten, die Einfärbung ist eine Projektion des
-   Zustands, gerendert als SVG. Kein Bildmaterial, jede Änderung folgt aus einer Zahl.
-   Für das Hauptquartier gilt es eingeschränkt — ein schematischer, ikonischer Aufbau
-   ist erzeugbar, ein gezeichneter Raum nicht.
-2. **Gekauftes Bildmaterial.** Ein Paket kostet Geld und ist damit ein Gate, aber kein
-   Personal — G9 ist nicht berührt. Der Zeitaufwand ist einmalig statt laufend.
-3. **Eine Bildsprache, die aus Regeln entsteht.** Streng, ikonisch, wenige Farben, alles
-   aus Grundformen. Sie kostet eine Gestaltungsentscheidung am Anfang und danach fast
-   keine — genau die zyklische Form, die Kriterium 6 verlangt.
+1. **Generated depiction instead of drawn.** The globe is thereby almost free to have:
+   country borders are free data, the coloring is a projection of the state, rendered as
+   SVG. No imagery, every change follows from a number. For the headquarters it holds
+   only in part — a schematic, iconic layout is generatable, a drawn room is not.
+2. **Purchased imagery.** A package costs money and is therefore a gate, but no
+   personnel — G9 is not touched. The time cost is one-off instead of ongoing.
+3. **A visual language that arises from rules.** Strict, iconic, few colors, everything
+   from basic shapes. It costs one design decision at the start and almost none after —
+   exactly the cyclical form that criterion 6 demands.
 
-**Die Weltkugel ist nahezu umsonst, das Hauptquartier ist der teure Teil.** Diese
-Entscheidung fällt, bevor Stufe 3 beginnt, nicht vorher.
+**The globe is nearly free, the headquarters is the expensive part.** This decision is
+made before stage 3 begins, not earlier.
 
-## Die Reihenfolge bleibt
+## The order stands
 
-Das Zielbild ändert nichts an den drei Stufen:
+The target picture changes nothing about the three stages:
 
-1. **Die Zustandsausgabe ist die erste Oberfläche.** Übersicht, Detail, Diff — von G8
-   ohnehin verlangt, vollständig prüfbar, macht das Spiel spielbar und selbstspielbar,
-   bevor eine Grafik existiert.
-2. **Die Ansicht wird aus dem Schema erzeugt.** 310 Adressen, dreizehn Skalenklassen —
-   was daraus folgt, ist ableitbar und damit prüfbar.
-3. **Die Geschmacksschicht.** Hier lebt das Zielbild, und hier entscheidet ein Mensch.
+1. **The state output is the first interface.** Overview, detail, diff — demanded by G8
+   anyway, fully checkable, makes the game playable and self-playable before any
+   graphics exist.
+2. **The view is generated from the schema.** 310 addresses, thirteen scale classes —
+   what follows from that is derivable and therefore checkable.
+3. **The taste layer.** Here the target picture lives, and here a human decides.
 
-Wer Stufe 3 vorzieht, baut eine Oberfläche für einen Kern, den es nicht gibt, und
-verliert die einzige Prüfmöglichkeit, die diese Fabrik hat.
+Whoever pulls stage 3 forward builds an interface for a core that does not exist, and
+loses the only means of checking that this factory has.
