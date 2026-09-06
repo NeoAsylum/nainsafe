@@ -1,0 +1,3 @@
+# Logbook — Translator
+
+- 2026-09-06 — agents/rollen/architekt.md NOT translated: every write to agents/rollen/ is denied ("File is in a directory that is denied by your permission settings") despite `Edit(agents/rollen/**)` in my role file; deny rule sits outside repo settings (probably user-level/runner deny — CLAUDE.md declares role files immutable). notizen/ writes work. Translation drafted (~6,900 → ~6,500 chars); terms chosen: Pruefstand = test bench, Selbstspiel = self-play, Gewerk = trade, Startwert = seed, Pruefung = check. Bait-tested the denial three ways (Write, full-section Edit, one-line Edit) — all identical.
