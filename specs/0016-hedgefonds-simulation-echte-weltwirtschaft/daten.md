@@ -421,31 +421,31 @@ with the backtest only on year-ends -- then three of four rounds remain unchecke
 `agentenbau.md` demands the measures in the design, not in the aftermath; this belongs
 among them.
 
-## Was unklar ist
+## What is unclear
 
-- **Welche WDI-Reihen unter die Drittanbieter-Ausnahme fallen.** Die Weltbank-Lizenz ist
-  eindeutig, die Reichweite ihrer Ausnahme nicht. Betroffen sind vermutlich die
-  ILO-modellierte Beschaeftigung nach Sektor, der aus WITS abgeleitete Zollsatz und
-  IWF-gestuetzte Preisreihen. **Zu tun vor dem Bau, nicht vor der Bewertung:** je
-  einzubettender Reihe das Feld „Source" im Indikatorendatensatz lesen. Das sind
-  ueberschaubar viele Reihen, sobald der Spielentwerfer sie benannt hat -- deshalb ist es
-  seine Vorarbeit, nicht meine.
-- **Der IWF-Wortlaut ist nur ueber eine Wortlaut-Suche belegt**, weil `imf.org` den Abruf
-  mit HTTP 403 abweist. Dasselbe gilt fuer OECD und FRED. Der IWF-Satz ist der einzige
-  davon, auf dem der Vorschlag ruht -- er gehoert vor dem Bau aus dem Volltext bestaetigt,
-  etwa aus einem anderen Netz oder durch den Betreiber.
-- **Ob die IWF-Klausel zum „standalone product" auf ein Spiel zutrifft.** Beide Lesarten
-  stehen oben. Ich empfehle den Hinweissatz, weil er die Frage schliesst, statt sie zu
-  entscheiden. Kein Rechtsrat.
-- **OECD: „written content" oder auch Daten?** Ungeloest, siehe Nr. 8. Nur relevant, falls
-  sektorale Tiefe jenseits der WDI-Gliederung gebraucht wird.
-- **UNCTADstat widerspricht sich auf der eigenen Copyright-Seite.** Ungeloest, siehe Nr. 9.
-  Fuer den Vorschlag ohne Folgen.
-- **Die Frage nach den Personendaten stellt sich bei keiner der vier Quellen** -- es sind
-  durchweg Laenderaggregate. Die Auflage aus `agentenbau.md` („echte Institutionen ja,
-  echte lebende Personen nein") beruehrt damit nicht die Datenwahl, sondern nur, was das
-  Spiel an Namen erfindet. Das ist Sache des Spielentwerfers und des Compliance-Pruefers.
-- **Nicht geprueft, weil nicht beauftragt und nicht gebraucht:** Weltbank WITS-Alternativen
-  fuer Zolldaten (etwa MacMap des ITC), V-Dem oder aehnliche Politikdatensaetze fuer die
-  Zustimmungsgroesse. Beides waere ein kleiner Zusatzauftrag, falls der Spielentwerfer die
-  Luecken 3 und 4 nicht als Modellkonstrukt fuehren will.
+- **Which WDI series fall under the third-party exception.** The World Bank licence is
+  unambiguous; the reach of its exception is not. Presumably affected are the
+  ILO-modelled employment by sector, the tariff rate derived from WITS and
+  IMF-based price series. **To do before the build, not before the evaluation:** for
+  each series to be embedded, read the „Source" field in the indicator dataset. Those
+  are manageably few series once the game designer has named them -- which is why it is
+  their groundwork, not mine.
+- **The IMF wording is evidenced only via a literal search**, because `imf.org` rejects
+  retrieval with HTTP 403. The same holds for OECD and FRED. The IMF sentence is the only
+  one of these the proposal rests on -- it belongs confirmed from the full text before
+  the build, say from another network or by the operator.
+- **Whether the IMF clause on the „standalone product" applies to a game.** Both readings
+  stand above. I recommend the notice sentence because it closes the question instead of
+  deciding it. No legal advice.
+- **OECD: „written content" or data too?** Unresolved, see no. 8. Only relevant if
+  sectoral depth beyond the WDI breakdown is needed.
+- **UNCTADstat contradicts itself on its own copyright page.** Unresolved, see no. 9.
+  Without consequence for the proposal.
+- **The question of personal data arises with none of the four sources** -- they are
+  country aggregates throughout. The condition from `agentenbau.md` („echte Institutionen ja,
+  echte lebende Personen nein") thus touches not the choice of data but only what names
+  the game invents. That is a matter for the game designer and the compliance checker.
+- **Not checked, because not commissioned and not needed:** World Bank WITS alternatives
+  for tariff data (say the ITC's MacMap), V-Dem or similar policy datasets for the
+  approval quantity. Both would be a small add-on assignment if the game designer does
+  not want to carry gaps 3 and 4 as a model construct.
