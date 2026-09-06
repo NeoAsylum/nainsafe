@@ -35,17 +35,12 @@ STUECK_MAX = 20_000
 
 # Reihenfolge = Lesehaeufigkeit. Was in jedem Lauf gelesen wird, zuerst.
 def bestand() -> list[Path]:
-    aktiv = {"projektmanager", "geschaeftsfuehrer", "kernbauer", "datenbauer",
-             "oberflaechenbauer", "auslieferer", "testentwickler", "architekt",
-             "spielentwerfer", "kern-pruefer", "daten-pruefer", "test-pruefer",
-             "entwurf-pruefer", "oberflaechen-pruefer", "auslieferungs-pruefer",
-             "selbstspieler", "rueckvergleicher", "bruchtester", "verbesserer",
-             "portfolio-manager", "digest-redakteur", "chronist", "uebersetzer"}
-    liste = [WURZEL / "agents" / "rollen" / f"{r}.md" for r in sorted(aktiv)]
-    liste += [WURZEL / "grenzen.md", WURZEL / "agentenbau.md"]
-    liste += sorted((WURZEL / "specs" / FOKUS).glob("*.md"))
-    liste += sorted((WURZEL / "decisions").glob("*.md"))
-    return [p for p in liste if p.exists()]
+    # Nur specs/. agents/**, decisions/**, grenzen.md und agentenbau.md sperrt
+    # lauf.py:NIE fuer jeden Agenten -- das sind die Dokumente, nach denen die
+    # Fabrik beurteilt wird, und eine Uebersetzung ist eine Neufassung. Sie
+    # bleiben Sache des Betreibers. Am 2026-09-06 nachgemessen: drei
+    # Schreibversuche auf eine Rollendatei, drei identische Absagen.
+    return sorted((WURZEL / "specs" / FOKUS).glob("*.md"))
 
 
 def deutsch(text: str) -> bool:
@@ -81,6 +76,20 @@ def offen() -> list[tuple[Path, str | None]]:
     return aufgaben
 
 
+def reservieren(pfade: list[Path]) -> None:
+    """Traegt die noch nicht uebersetzten Dateien fuer den Baulauf ein."""
+    datei = WURZEL / "ops" / "reserviert.txt"
+    datei.parent.mkdir(parents=True, exist_ok=True)
+    if not pfade:
+        datei.write_text("# frei\n", encoding="utf-8")
+        return
+    datei.write_text(
+        "# Vom Uebersetzungslauf gehalten. Der Baulauf plant kein Paket ein, dessen\n"
+        "# dateien-Liste eine dieser Zeilen trifft. Leer, sobald er fertig ist.\n"
+        + "\n".join(sorted(str(p.relative_to(WURZEL)) for p in pfade)) + "\n",
+        encoding="utf-8")
+
+
 def main() -> int:
     trocken = "--trocken" in sys.argv
     stueck = 1
@@ -88,12 +97,14 @@ def main() -> int:
         stueck = int(sys.argv[sys.argv.index("--stueck") + 1])
 
     warten = offen()
+    reservieren(sorted({p for p, _ in warten}))
     gesamt = sum(len(p.read_text(encoding="utf-8")) for p, _ in warten)
     print(f"[{jetzt()}] Uebersetzung: {len(warten)} Dateien offen, "
           f"{gesamt:,} Zeichen deutsch")
 
     if not warten:
         print("  Der bleibende Bestand ist englisch.")
+        reservieren([])
         return 0
 
     for p, abschnitt in warten[:stueck if not trocken else 8]:
@@ -106,7 +117,9 @@ def main() -> int:
         print(f"[{jetzt()}] {wo}  ({gr:,} Zeichen)")
         if lauf("uebersetzer", wo) != 0:
             print("  Lauf fehlgeschlagen -- angehalten.")
+            reservieren(sorted({x for x, _ in offen()}))
             return 1
+        reservieren(sorted({x for x, _ in offen()}))
     return 0
 
 

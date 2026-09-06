@@ -293,11 +293,26 @@ def reviewbereit(venture: str, alle: list[dict]) -> list[dict]:
     return [p for _, _, p in sorted(dran)]
 
 
+def reserviert() -> set[str]:
+    """Pfade aus ops/reserviert.txt -- Dateien, die gerade ein anderer Runner haelt."""
+    datei = WURZEL / "ops" / "reserviert.txt"
+    try:
+        return {z.strip() for z in datei.read_text(encoding="utf-8").splitlines()
+                if z.strip() and not z.startswith("#")}
+    except OSError:
+        return set()
+
+
 def startbereit(alle: list[dict], rollen: set[str], zustand: str = "offen") -> list[dict]:
     """Pakete im genannten Zustand, deren Abhaengigkeiten fertig sind --
     und die sich nicht in denselben Dateien treffen."""
     fertig = {p["_id"] for p in alle if p.get("status") == "fertig"}
-    dran, belegt = [], set()
+    # Ein Runner ausserhalb des Paketmodells kann Dateien halten -- heute der
+    # Uebersetzungslauf, der `specs/` abschnittsweise umschreibt. Er traegt sie in
+    # ops/reserviert.txt ein; hier zaehlen sie wie ein bereits eingeplantes Paket.
+    # Ohne das haetten am 2026-09-06 der Architekt (Paket 0158) und der Uebersetzer
+    # gleichzeitig in technik.md geschrieben.
+    dran, belegt = [], reserviert()
     for p in alle:
         if p.get("status") != zustand or p.get("rolle") not in rollen:
             continue

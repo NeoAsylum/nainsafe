@@ -1,0 +1,4 @@
+# vom Betreiber gesetzt, bis der Uebersetzer fertig ist
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md
