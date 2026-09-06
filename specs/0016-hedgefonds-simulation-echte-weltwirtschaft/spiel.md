@@ -259,126 +259,128 @@ path (series 13, with an open licence question on top). `daten/reihen.toml` carr
 with `deckung_gemessen = false`. The substitution rule holds for them just the same: if
 the vintage build measures narrower, R is to be replaced and nothing else.
 
-## Die Schleife
+## The loop
 
-Eine Runde ist ein Jahr und läuft in sechs Schritten, immer in dieser Reihenfolge.
-Die feste Reihenfolge ist keine Formsache: Sie ist die Bedingung dafür, dass derselbe
-Startwert und dieselbe Aktionsfolge in drei Monaten dasselbe Ergebnis liefern.
+A round is a year and runs in six steps, always in this order. The fixed order is no
+formality: it is the condition for the same seed and the same action sequence delivering
+the same result in three months.
 
-1. **Ansicht.** Der Zustand, und daneben die Kette der Vorrunde: was sich geändert hat,
-   ausgelöst wodurch, über welchen Umweg, mit welcher Verzögerung.
-2. **Aktionen.** Der Spieler stellt **bis zu drei** Aktionen. Drei, nicht beliebig viele —
-   die Knappheit ist die Quelle der Entscheidungsdichte. Wer alles tun kann, wählt nicht.
-3. **Politik.** Anliegender Lobbydruck und Gegenlobby werden je Instrument gegeneinander
-   verrechnet, fällige Verzögerungen aus früheren Runden greifen, Instrumente bewegen sich
-   um höchstens einen Schritt je Runde.
-4. **Wirtschaft.** Produktion aus Kapitalstock und Produktivität, Handel zwischen den vier
-   Ländern und der Restwelt, Preise, Realeinkommen, Zins, Wechselkurs, Staatsfinanzen.
-5. **Reaktion.** Zustimmung, Regierungswechsel, Aufsichtszähler, Nachahmerzähler,
-   Anlegerbestand — die fünf Gegenkräfte rechnen ab.
-6. **Abrechnung.** Positionen bewertet, Hebel gegen den Innerjahresausschlag geprüft,
-   Mandat geprüft, Kette als Diff gespeichert.
+1. **View.** The state, and beside it the chain of the previous round: what changed,
+   triggered by what, via which detour, with what delay.
+2. **Actions.** The player places **up to three** actions. Three, not arbitrarily many —
+   the scarcity is the source of decision density. Whoever can do everything does not
+   choose.
+3. **Politics.** Pending lobby pressure and counter-lobby are netted against each other
+   per instrument, delays from earlier rounds that fall due take effect, instruments move
+   by at most one step per round.
+4. **Economy.** Production from capital stock and productivity, trade between the four
+   countries and the rest of world, prices, real incomes, interest rate, exchange rate,
+   public finances.
+5. **Reaction.** Approval, change of government, oversight counter, imitator counter,
+   investor base — the five counterforces settle up.
+6. **Settlement.** Positions valued, leverage checked against the intra-year swing,
+   mandate checked, chain stored as a diff.
 
-Innerhalb einer Runde wird **keine Zustandsgröße zweimal geschrieben**, und die
-Reihenfolge oben ist zyklenfrei. *Welche* Größen überhaupt geschrieben werden, hängt vom
-Modus ab — im Spielmodus alle, im Weltlauf des Rückvergleichs eine erklärte Teilmenge
-(siehe **Maß 4**). Die einzige Schleife im ganzen Modell ist die Markträumung in
-Schritt 4, und sie läuft mit fester Iterationszahl. Alles, was wie eine Rückkopplung
-aussieht, überquert eine Rundengrenze — siehe **Der Zustand**.
+Within a round **no state quantity is written twice**, and the order above is cycle-free.
+*Which* quantities are written at all depends on the mode — in `spielmodus` all of them,
+in the `weltlauf` of the backtest a declared subset (see **Maß 4**). The only loop in the
+whole model is the market clearing in step 4, and it runs with a fixed iteration count.
+Everything that looks like a feedback crosses a round boundary — see **Der Zustand**.
 
-### Was für die Preisbildung gelten muss
+### What must hold for price formation
 
-Das Wie ist Sache des Architekten; was gelten muss, steht hier.
+The how is the architect's business; what must hold stands here.
 
-Für die beiden Sektoren mit Handelszeilen gibt es je einen Weltpreis, der alle Angebote
-und Nachfragen räumt, und darauf je Land einen Zollkeil. Der Sektorpreis eines Landes
-hängt aber **nicht vollständig** am Weltpreis, sondern nur zum Anteil `durchgriff`:
+For the two sectors with trade rows there is one world price each, clearing all supplies
+and demands, and on it a tariff wedge per country. A country's sector price, however,
+does **not** hang entirely on the world price, but only to the share `durchgriff`:
 
 ```
 preis = weltpreis_mit_zoll · durchgriff + landespreis · (10.000 − durchgriff)
         alles geteilt durch 10.000
 ```
 
-Beide Größen darin sind jetzt bestimmt, und beide waren es in der zweiten Fassung nicht:
+Both quantities in it are now determined, and neither was in the second version:
 
-**`landespreis` ist der Sektorpreis derselben Größe aus der Vorrunde.** In Runde 1 ist es
-der Startwert des Jahrgangs (Index 10.000). Damit ist die Überschussfunktion monoton im
-Weltpreis, die Halbierungssuche aus `technik.md` T28 ist ein einziger Durchlauf, und es
-entsteht keine Fixpunktaufgabe. Inhaltlich ist das Preisträgheit: Der Inlandspreis eines
-Sektors folgt dem Weltpreis mit einem Jahr Verzögerung, und wie stark, sagt `durchgriff`.
+**`landespreis` is the sector price of the same quantity from the previous round.** In
+round 1 it is the vintage's start value (index 10,000). The excess function is thereby
+monotone in the world price, the bisection search from `technik.md` T28 is a single pass,
+and no fixed-point problem arises. In substance this is price inertia: a sector's
+domestic price follows the world price with a one-year lag, and how strongly is said by
+`durchgriff`.
 
-**`durchgriff` ist ein Modellkonstrukt mit Regel, kein gemessener Anteil.** Die zweite
-Fassung nannte ihn `handelsanteil` und definierte ihn als (Ausfuhr + Einfuhr) geteilt
-durch die Wertschöpfung des Sektors. Diese Größe verlässt ihren Wertebereich, und zwar
-nicht als Ausreißer, sondern von Bauart wegen: Aus- und Einfuhr sind Bruttoströme,
-Wertschöpfung ist netto. Für Deutschland 1995 ergibt sie 2,69 in der Landwirtschaft und
-1,20 in der Industrie (nachgerechnet vom Prüfer aus WDI, abgerufen 2026-08-31); das
-Gewicht auf dem Landespreis wird negativ, und aus der angekündigten Mischung wird eine
-Extrapolation mit negativen Preisen.
+**`durchgriff` is a model construct with a rule, not a measured share.** The second
+version called it `handelsanteil` and defined it as (exports + imports) divided by the
+sector's value added. That quantity leaves its value range, and not as an outlier but by
+construction: exports and imports are gross flows, value added is net. For Germany 1995
+it yields 2.69 in agriculture and 1.20 in industry (recomputed by the reviewer from WDI,
+retrieved 2026-08-31); the weight on the country price turns negative, and the announced
+mixture becomes an extrapolation with negative prices.
 
-Die Regel lautet deshalb, mit `H` = Aus- plus Einfuhr des Sektors und `N` = seine
-Wertschöpfung, beide im Startjahr:
+The rule therefore reads, with `H` = the sector's exports plus imports and `N` = its
+value added, both in the start year:
 
 ```
 durchgriff = teile_gerundet(10.000 · H, H + N)
 ```
 
-Das ist streng monoton in `H/N`, liegt für alle nichtnegativen `H`, `N` mit `H + N > 0`
-im Bereich 0 … 10.000 und braucht keine Kappung. Aus den beiden nachgerechneten Fällen
-werden `71,94/98,71` → **7.288** für die deutsche Landwirtschaft und `915,39/1.675,41` →
-**5.464** für die deutsche Industrie; eine US-Industrie mit `H/N = 0,3` käme auf 2.308.
-**Die Ordnung, die das Argument trägt, bleibt also erhalten** — ein Zoll
-trifft Chinas Industrie über ihren hohen `durchgriff` hart und die US-Industrie, in der
-Bau und Versorger dominieren, schwach —, und der Wertebereich hält.
+That is strictly monotone in `H/N`, lies in the range 0 … 10,000 for all nonnegative
+`H`, `N` with `H + N > 0`, and needs no cap. The two recomputed cases become
+`71.94/98.71` → **7,288** for German agriculture and `915.39/1,675.41` → **5,464** for
+German industry; a US industry with `H/N = 0.3` would come to 2,308. **The ordering that
+carries the argument is thus preserved** — a tariff hits China's industry hard via its
+high `durchgriff` and the US industry, dominated by construction and utilities, weakly —
+and the value range holds.
 
-Was der Koeffizient damit **nicht** ist: eine Messung der Handelsoffenheit. Sein
-Zahlenwert hat keine volkswirtschaftliche Bedeutung; er muss Länder und Sektoren richtig
-ordnen, und das tut er. Er ist exogen und über die Partie konstant; Chinas wachsende
-Handelsoffenheit bildet das Modell über die Mengen ab, nicht über die Preisübertragung.
-Zwei benannte Vereinfachungen, keine versteckten.
+What the coefficient thereby is **not**: a measurement of trade openness. Its numerical
+value has no economic meaning; it must order countries and sectors correctly, and it
+does. It is exogenous and constant over the game; China's growing trade openness is
+captured by the model through the quantities, not through the price transmission. Two
+named simplifications, none hidden.
 
-Dienstleistungen haben keine Handelszeile, keinen Weltpreis und nur einen Landespreis.
+Services have no trade row, no world price and only a country price.
 
-### Der Zollkeil ist multiplikativ, und das entscheidet die Skalentabelle
+### The tariff wedge is multiplicative, and the scale table decides that
 
-`technik.md` T28 **nennt** den Keil („der Zollkeil je Gebiet auf dem Weltpreis"), ohne ihn
-hinzuschreiben. Bis zum 2026-09-03 war das folgenlos; seit die Schadensvorschrift von
-Gegenkraft 5 den Keil vom übrigen Preishub trennt, ist es das nicht mehr. Was gelten muss:
+`technik.md` T28 **names** the wedge („der Zollkeil je Gebiet auf dem Weltpreis") without
+writing it down. Until 2026-09-03 that was without consequence; since the damage rule of
+counterforce 5 separates the wedge from the rest of the price lift, it no longer is. What
+must hold:
 
 ```
 weltpreis_mit_zoll(l, s) = mal_geteilt( welt.preis.<s>, 10.000 + zollstand(l), 10.000 )
 ```
 
-**Die additive Lesart ist nicht schlechter begründet, sondern gar nicht bildbar.** Der
-Zollstand steht nach `technik.md` T5 in **Klasse 3** (Basispunkte), der Weltpreis in
-**Klasse 5** (Index, Startjahr 10.000). Eine Summe zweier Klassen kennt T5 nicht; eine Rate
-trifft ein Niveau in diesem Modell ausnahmslos als Faktor, wie in
-`schuld = mal_geteilt(bip, staatsschuld, 10.000)`. Inhaltlich sagt dieselbe Wahl dasselbe:
-Ein aggregierter Zollsatz je Land in Basispunkten ist ein Wertzoll, sonst wäre er keine
-Rate. Beides zeigt in dieselbe Richtung, deshalb ist die Festlegung hier eine Klarstellung
-und keine Wahl.
+**The additive reading is not more poorly justified — it cannot be formed at all.** The
+tariff level stands, per `technik.md` T5, in **class 3** (basis points), the world price
+in **class 5** (index, start year 10,000). A sum of two classes is unknown to T5; a rate
+meets a level in this model without exception as a factor, as in
+`schuld = mal_geteilt(bip, staatsschuld, 10.000)`. In substance the same choice says the
+same: an aggregated tariff rate per country in basis points is an ad valorem tariff,
+otherwise it would not be a rate. Both point in the same direction, which is why the
+determination here is a clarification and not a choice.
 
-Sie steht hier und nicht in einer offenen Frage, weil eine Rechenvorschrift, die auf eine
-ungeschriebene Formel zeigt, wieder nur ein Adjektiv ist — genau der Mangel, gegen den
-Paket 0021 angetreten ist.
+It stands here and not in an open question because a computation rule that points to an
+unwritten formula is again just an adjective — exactly the defect that package 0021 set
+out against.
 
-### Die Zuordnung der BACI-Warencodes zu den zwei handelbaren Sektoren
+### The mapping of the BACI goods codes to the two tradable sectors
 
-Ohne sie ist weder `H` noch der Handelsblock berechenbar. Sie ist eine Tabelle im
-Manifest des Jahrgangs und lautet:
+Without it neither `H` nor the trade block is computable. It is a table in the vintage's
+manifest and reads:
 
-| HS92-Kapitel | Modellsektor |
+| HS92 chapter | Model sector |
 |---|---|
-| 01–24 | 1 Landwirtschaft |
-| 25–97 | 2 Industrie |
+| 01–24 | 1 agriculture |
+| 25–97 | 2 industry |
 
-**Der Fehler dieser Grobzuordnung gehört dazu:** Rohholz (44), Häute (41) und pflanzliche
-Spinnstoffe (50–53) zählt WDI zur Landwirtschaft, diese Tabelle zur Industrie;
-verarbeitete Nahrungsmittel (16–21) zählt WDI zum verarbeitenden Gewerbe, diese Tabelle
-zur Landwirtschaft. Der Fehler ist für alle fünf Gebiete derselbe, weil dieselbe Tabelle
-gilt — und er trifft die Sollreihe genauso wie das Modell, weil der Handelsblock des
-Rückvergleichs aus **derselben** Aggregation entsteht. Verglichen wird damit aggregiert
-gegen aggregiert, so wie bei den auf 10.000 normierten Sektoranteilen auch.
+**The error of this coarse mapping is part of the deal:** raw wood (44), hides (41) and
+vegetable textile fibres (50–53) are counted by WDI as agriculture, by this table as
+industry; processed foods (16–21) are counted by WDI as manufacturing, by this table as
+agriculture. The error is the same for all five territories because the same table
+applies — and it hits the target series just as it hits the model, because the backtest's
+trade block arises from the **same** aggregation. What is compared is thus aggregated
+against aggregated, just as with the sector shares normalised to 10,000.
 
 ## Die Aktionen
 
