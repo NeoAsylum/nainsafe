@@ -1,5 +1,6 @@
 # Logbook — Translator
 
+- 2026-09-06 — spiel.md#The loop: empty run, THIRTEENTH dispatch of this finished section; re-verified lines 262–384 fully English, no edit. Twelve wasted runs before this one. The dispatcher re-queues this Gegenstand under its translated heading every time; only closing the queue entry at the source stops it — no translator run can.
 - 2026-09-06 — spiel.md#The loop: empty run, TWELFTH dispatch of this finished section; re-verified lines 262–384 fully English, no edit. Eleven wasted runs before this one. The dispatcher re-queues this Gegenstand under its translated heading every time; only closing the queue entry at the source stops it — no translator run can.
 - 2026-09-06 — spiel.md#The loop: empty run, ELEVENTH dispatch of this finished section; re-verified lines 262–384 fully English, no edit. Ten wasted runs before this one. The dispatcher re-queues this Gegenstand under its translated heading every time; only closing the queue entry at the source stops it — no translator run can.
 - 2026-09-06 — spiel.md#The loop: empty run, TENTH dispatch of this finished section; re-verified lines 262–384 fully English, no edit. Nine wasted runs before this one. The dispatcher re-queues this Gegenstand under its translated heading every time; only closing the queue entry at the source stops it — no translator run can.
