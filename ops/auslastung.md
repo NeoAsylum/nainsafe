@@ -1,50 +1,58 @@
 # Auslastung
 
-Zeitraum: letzte 7 Tage. Erzeugt 2026-09-05T06:25:04 von `agents/auslastung.py`.
+Zeitraum: letzte 7 Tage. Erzeugt 2026-09-06T05:00:01 von `agents/auslastung.py`.
 
 Die Fabrik laeuft ueber das Abo — ihre Laeufe kosten kein Geld, aber
 Kontingent. Diese Seite misst deshalb Tokens und Ergiebigkeit.
 
 | Rolle | Laeufe | ergiebig | leer | Fehler | Tokens |
 |---|---:|---:|---:|---:|---:|
-| kernbauer | 42 | 39 | 2 | 1 | 331.555.898 |
-| kern-pruefer | 36 | 36 | 0 | 0 | 327.420.521 |
-| testentwickler | 33 | 32 | 0 | 1 | 317.525.015 |
-| projektmanager | 31 | 28 | 3 | 0 | 305.499.019 |
-| test-pruefer | 22 | 22 | 0 | 0 | 256.198.843 |
-| datenbauer | 35 | 32 | 1 | 2 | 227.693.163 |
-| daten-pruefer | 40 | 40 | 0 | 0 | 224.892.472 |
-| markt-analyst | 22 | 22 | 0 | 0 | 101.023.067 |
-| architekt | 12 | 10 | 2 | 0 | 81.153.975 |
-| entwurf-pruefer | 11 | 11 | 0 | 0 | 69.535.834 |
-| spielentwerfer | 7 | 6 | 1 | 0 | 53.683.853 |
-| rechercheur | 10 | 10 | 0 | 0 | 38.745.166 |
-| geschaeftsfuehrer | 14 | 12 | 2 | 0 | 35.984.180 |
+| testentwickler | 284 | 50 | 0 | 234 | 673.558.072 |
+| kern-pruefer | 64 | 58 | 0 | 6 | 662.482.454 |
+| kernbauer | 415 | 64 | 2 | 349 | 598.608.230 |
+| projektmanager | 163 | 40 | 3 | 120 | 411.691.796 |
+| test-pruefer | 158 | 40 | 0 | 118 | 362.101.317 |
+| datenbauer | 166 | 47 | 1 | 118 | 324.162.260 |
+| daten-pruefer | 51 | 49 | 0 | 2 | 307.616.937 |
+| architekt | 137 | 19 | 2 | 116 | 139.681.686 |
+| entwurf-pruefer | 18 | 16 | 0 | 2 | 88.852.672 |
+| spielentwerfer | 10 | 8 | 1 | 0 | 77.484.190 |
+| bruchtester | 4 | 4 | 0 | 0 | 62.542.774 |
+| markt-analyst | 9 | 9 | 0 | 0 | 57.783.092 |
+| geschaeftsfuehrer | 17 | 12 | 2 | 3 | 35.984.180 |
 | prozess-analyst | 8 | 8 | 0 | 0 | 33.053.333 |
-| modell-scout | 6 | 6 | 0 | 0 | 10.731.865 |
-| ideator | 5 | 5 | 0 | 0 | 8.143.516 |
-| portfolio-manager | 2 | 2 | 0 | 0 | 7.669.823 |
-| regel-scout | 6 | 6 | 0 | 0 | 7.409.066 |
-| pain-scout | 6 | 6 | 0 | 0 | 7.266.113 |
-| markt-scout | 6 | 6 | 0 | 0 | 5.830.195 |
-| tech-scout | 6 | 6 | 0 | 0 | 3.952.837 |
-| fit-filter | 5 | 5 | 0 | 0 | 3.398.182 |
-| verbesserer | 2 | 2 | 0 | 0 | 3.224.292 |
-| digest-redakteur | 2 | 2 | 0 | 0 | 981.730 |
+| modell-scout | 3 | 3 | 0 | 0 | 6.349.119 |
+| portfolio-manager | 1 | 1 | 0 | 0 | 4.624.372 |
+| regel-scout | 3 | 3 | 0 | 0 | 4.078.422 |
+| pain-scout | 3 | 3 | 0 | 0 | 4.020.988 |
+| rechercheur | 4 | 4 | 0 | 0 | 3.338.649 |
+| markt-scout | 3 | 3 | 0 | 0 | 2.972.492 |
+| ideator | 2 | 2 | 0 | 0 | 2.812.353 |
+| verbesserer | 1 | 1 | 0 | 0 | 2.628.359 |
+| fit-filter | 3 | 3 | 0 | 0 | 1.944.865 |
+| tech-scout | 3 | 3 | 0 | 0 | 1.918.353 |
+| digest-redakteur | 1 | 1 | 0 | 0 | 542.450 |
 
-**Gesamt:** 369 Laeufe, 2.462.571.958 Tokens.
+**Gesamt:** 1531 Laeufe, 3.870.833.415 Tokens.
 
-**Gegenwert:** 2160.63 $ zu Listenpreisen — hochgerechnet rund 9260 $ im Monat. Abgerechnet wird davon nichts, die Laeufe gehen ueber das Abo. Die Zahl sagt, was die Fabrik daraus zieht.
+**Gegenwert:** 3408.05 $ zu Listenpreisen — hochgerechnet rund 14606 $ im Monat. Abgerechnet wird davon nichts, die Laeufe gehen ueber das Abo. Die Zahl sagt, was die Fabrik daraus zieht.
 
 ## Kontingent
 
-Im laufenden 5-Stunden-Fenster: 22 Laeufe, 293.664.309 Tokens.
-Schwerster Tag im Zeitraum: 2026-09-04 mit 764.109.349 Tokens.
+Im laufenden 5-Stunden-Fenster: 44 Laeufe, 388.961.001 Tokens.
+Schwerster Tag im Zeitraum: 2026-09-05 mit 1.547.102.809 Tokens.
 
 Reisst ein Lauf das Fenster- oder Wochenkontingent, bricht er mittendrin ab und hinterlaesst `fehler` im Journal. Haeuft sich das, gehoert die Kette entzerrt — etwa indem die Scouts frueher laufen als Ideator und Fit-Filter.
 
 ## Auffaellig
 
-- **kernbauer**: 1 von 42 Laeufen abgebrochen.
-- **testentwickler**: 1 von 33 Laeufen abgebrochen.
-- **datenbauer**: 2 von 35 Laeufen abgebrochen.
+- **testentwickler**: 234 von 284 Laeufen abgebrochen.
+- **kern-pruefer**: 6 von 64 Laeufen abgebrochen.
+- **kernbauer**: 349 von 415 Laeufen abgebrochen.
+- **projektmanager**: 120 von 163 Laeufen abgebrochen.
+- **test-pruefer**: 118 von 158 Laeufen abgebrochen.
+- **datenbauer**: 118 von 166 Laeufen abgebrochen.
+- **daten-pruefer**: 2 von 51 Laeufen abgebrochen.
+- **architekt**: 116 von 137 Laeufen abgebrochen.
+- **entwurf-pruefer**: 2 von 18 Laeufen abgebrochen.
+- **geschaeftsfuehrer**: 3 von 17 Laeufen abgebrochen.

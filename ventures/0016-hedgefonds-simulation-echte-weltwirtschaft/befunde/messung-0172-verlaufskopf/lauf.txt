@@ -1,0 +1,19 @@
+Stand: 45fc32ff156eef604ce419b736fbd7e15941efe9
+
+=== Wand 26 -- die Wand auf ihrem heutigen Wert -- Rueckbindung an 0156 (erwartet: gruen) ===
+  Urteil: gruen (Code 0)
+  sizeof(Verlauf) = 451784 Byte, sizeof(Kette) = 17368 Byte, PARTIELAENGE_HOECHSTENS = 26
+
+=== Wand 2169, ohne Stapel -- der letzte Wert, den Wand und Kapazitaet gemeinsam tragen (erwartet: gruen) ===
+  Urteil: gruen (Code 0)
+  sizeof(Verlauf) = 37688552 Byte, sizeof(Kette) = 17368 Byte, PARTIELAENGE_HOECHSTENS = 2169
+
+=== Wand 2170, ohne Stapel -- der erste Wert darueber -- welche Zusicherung reisst? (erwartet: rot) ===
+  Urteil: rot (Code 1)
+    Wortlaut: /tmp/claude-1000/tmp2g5_4z49/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp:281:31: error: static assertion failed: T40: ein Verlauf traegt hoechstens die Runden der laengsten zulaessigen Partie, und eine weitere passt nicht mehr hinein
+
+=== Wand 2170, ohne Stapel und T40 -- Gegenprobe: derselbe Fall ohne die T40-Zusicherung (erwartet: gruen) ===
+  Urteil: gruen (Code 0)
+  sizeof(Verlauf) = 37705928 Byte, sizeof(Kette) = 17368 Byte, PARTIELAENGE_HOECHSTENS = 2170
+
+Abweichungen: 0

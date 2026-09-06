@@ -1,0 +1,38 @@
+Stand des Zweiges: 45fc32f
+Arbeitsbaum vor dem Lauf:
+ M ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0154-t60-sperrzahl-zwoelf-statt-dreizehn.md
+ M ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml
+ M ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp
+?? ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0172-verlaufskopf/
+
+=== Alleinbau, Sanitizer ON (erwartet: 12/18 Eintraege, alles gruen) ===
+  cmake -S       -> Code 0
+  cmake --build  -> Code 0
+  ctest          -> Code 0
+  ctest-Eintraege: 12 (Bezugsstand 2026-09-06: 12)
+
+=== Alleinbau, Sanitizer OFF (erwartet: 12/18 Eintraege, alles gruen) ===
+  cmake -S       -> Code 0
+  cmake --build  -> Code 0
+  ctest          -> Code 0
+  ctest-Eintraege: 12 (Bezugsstand 2026-09-06: 12)
+
+=== Arbeitsbereich, Sanitizer ON (erwartet: 12/18 Eintraege, alles gruen) ===
+  cmake -S       -> Code 0
+  cmake --build  -> Code 0
+  ctest          -> Code 0
+  ctest-Eintraege: 18 (Bezugsstand 2026-09-06: 18)
+
+=== Arbeitsbereich, Sanitizer OFF (erwartet: 12/18 Eintraege, alles gruen) ===
+  cmake -S       -> Code 0
+  cmake --build  -> Code 0
+  ctest          -> Code 0
+  ctest-Eintraege: 18 (Bezugsstand 2026-09-06: 18)
+
+Arbeitsbaum nach dem Lauf:
+ M ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/aufgaben/0154-t60-sperrzahl-zwoelf-statt-dreizehn.md
+ M ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml
+ M ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp
+?? ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0172-verlaufskopf/
+
+Abweichungen: 0

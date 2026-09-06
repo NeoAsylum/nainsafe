@@ -1,0 +1,68 @@
+==============================================================================
+Messung 0180, Stand HEAD 584326c8b0548b19a088804b4c48b6cc2a9d2ab5
+  Pruefling  kern/include/kern/werte.hpp  Blob 4f47f52d332b016b5fc1a465458970e50b01bb7e
+  Riegel     werkzeuge/zahlwort/zahlwort_riegel.cpp  Blob 4d66ac975f7a7bf7760b96f2bb0be2109b1354e8
+  Arbeitsplatz /tmp/claude-1000/messung-0180
+==============================================================================
+
+## Teil A: der Riegel gegen vier Staende von werte.hpp
+
+  A0 heutiger Stand: Code 0 (erwartet 0), 0 Befunde
+  A1 Zahlwort im Kopf verstellt: Code 1 (erwartet 1), 1 Befunde
+      Zeilennummer 2: 'einundzwanzig Groessen' nennt 21, gezaehlt sind 22
+  A2 Deklaration ergaenzt, Zahlwort nicht nachgezogen: Code 1 (erwartet 1), 4 Befunde
+      Zeilennummer 2: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23
+      Zeilennummer 16: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23
+      Zeilennummer 32: 'Zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23
+      Zeilennummer 157: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23
+  A3 Stand vor 0155 (b2829c8): Code 1 (erwartet 1), 1 Befunde
+      Zeilennummer 73: 'eine Jahrgangskonstante[n]' nennt 1, gezaehlt sind 2
+
+## Teil B: fuenf Mutanten des Riegels gegen die fuenf Tabellen
+
+  M1 die Artikelregel faellt weg
+      Code 2 (erwartet 2), gerissen: ['Behauptung 17', 'Behauptung 3']
+  M2 das Kardinalurteil ist immer gruen
+      Code 2 (erwartet 2), gerissen: ['Urteil 2', 'Urteil 3', 'Verdrahtung 2', 'Verdrahtung 3']
+  M3 jede Fundstelle bekommt eine eigene Nummer -- gezaehlt werden Zeilen
+      Code 2 (erwartet 2), gerissen: ['Zaehlung 2']
+  M4 eine wortlose Zeile trennt keinen Block mehr
+      Code 2 (erwartet 2), gerissen: ['Bloecke 3', 'Bloecke 4']
+  M5 die Zaehlung wird an die falsche Sorte gebunden
+      Code 2 (erwartet 2), gerissen: ['Verdrahtung 1', 'Verdrahtung 3', 'Verdrahtung 5']
+
+  Gegenprobe, unveraenderter Riegel am heutigen Baum: Code 0 (erwartet 0)
+
+Fehlschlaege: 0
+19: zahlwort_riegel, Selbsttest: 9 Faelle zur Zerlegung, 18 zur Zahlbehauptung,
+19: 8 zum Urteil, 7 zu den Zaehlungen und 6 zur Verdrahtung, alle wie erwartet.
+19: zahlwort_riegel: kern/include/kern/werte.hpp gelesen. 22 Nummern der Tabelle in 23 Funktionsdeklarationen;
+19: 8 Felder in struct Konstanten, davon 2 Groessen des Jahrgangs und 6 Parameterschluessel.
+19: 9 Fundstellen der zwei Nomen, davon 6 mit Zahlbehauptung (4 zu den Groessen,
+19: 2 zu den Jahrgangskonstanten).
+19: 
+19:   Groessen des Jahrgangs:  leitzins_start durchgriff
+19:   Parameterschluessel:     stufenweite ausstiegsabschlag aufschlag lobbykosten gegenlobby_satz regulierung_last
+19: 
+19: Jede Fundstelle mit ihrem Urteil -- der ausgeschriebene Nachlass dieses Riegels.
+19: Genannt wird auch, was keine Zahl behauptet:
+19: 
+19:       2  Groessen               Kardinalzahl: 'zweiundzwanzig' nennt 22, gezaehlt 22
+19:       6  Groessen               keine Zahlbehauptung
+19:      15  Jahrgangskonstante[n]  keine Zahlbehauptung
+19:      16  Groessen               Kardinalzahl: 'zweiundzwanzig' nennt 22, gezaehlt 22
+19:      32  Groessen               Kardinalzahl: 'Zweiundzwanzig' nennt 22, gezaehlt 22
+19:      73  Jahrgangskonstante[n]  Kardinalzahl: 'zwei' nennt 2, gezaehlt 2
+19:     139  Jahrgangskonstante[n]  Ordnungszahl: 'zweite' nennt 2, gezaehlt 2
+19:     157  Groessen               Kardinalzahl: 'zweiundzwanzig' nennt 22, gezaehlt 22
+19:     474  Groessen               keine Zahlbehauptung
+19: 
+19: Keine Zahl im Kommentar dieser Datei widerspricht dem, was unter ihr steht.
+1/1 Test #19: zahlwort_riegel ..................   Passed    0.05 sec
+
+The following tests passed:
+	zahlwort_riegel
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.05 sec
