@@ -382,37 +382,37 @@ applies — and it hits the target series just as it hits the model, because the
 trade block arises from the **same** aggregation. What is compared is thus aggregated
 against aggregated, just as with the sector shares normalised to 10,000.
 
-## Die Aktionen
+## The actions
 
-Fünf Arten. Jede ist diskret, keine hat einen Zeitpunkt innerhalb der Runde. Die
-Kennungen 1 bis 5 sind zugleich die Gleichstandsordnung aller Maße.
+Five kinds. Each is discrete, none has a point in time within the round. The
+identifiers 1 to 5 are at the same time the tie-breaking order of all Maße.
 
-1. **Position.** Long oder short auf ein Land×Sektor, auf eine Währung, auf die
-   Staatsanleihe eines Landes oder — seit dem 2026-09-05 — auf einen **Börsenplatz**
-   (siehe *Die drei Schichten der Welt*). In festen Stufen, sofort wirksam, jederzeit auflösbar.
-   Der Ein- und Ausstieg bewegt den Preis gegen den Fonds, und zwar umso stärker, je
-   größer sein Anteil an diesem Markt ist.
-2. **Beteiligung.** Ein dauerhafter Anteil an einem Land×Sektor. Sie ist illiquide — der
-   Ausstieg dauert zwei Runden, und ihr Ausstiegsabschlag steckt bereits im Wertansatz, ist
-   beim Einstieg also sofort bezahlt (siehe *Was das Fondsvermögen ist*) — und sie ist der einzige Weg zu
-   billigem Lobbying: Lobbyaktionen in einem Sektor, an dem der Fonds beteiligt ist,
-   kosten einen Bruchteil.
-3. **Lobbybudget.** Geld auf ein Politikinstrument eines Landes, in eine Richtung. Wirkt
-   nicht sofort, sondern legt sich als Druck an; ob es greift, entscheidet Schritt 3 gegen
-   die Gegenlobby. Ohne Beteiligung im betroffenen Sektor möglich, aber teuer.
-4. **Hebel.** Kreditaufnahme zum Leitzins des Landes plus einem Aufschlag, der mit der
-   Sichtbarkeit des Fonds steigt. Vergrößert jede Position und jede Verlustserie.
-5. **Sichtbarkeit.** Der Fonds legt eine Position öffentlich offen oder zieht sich zurück.
-   Offenlegung verstärkt jedes Lobbybudget in dieser Sache, weil sie öffentlichen Druck
-   erzeugt — und sie füttert den Aufsichtszähler in jedem Land, in dem der Fonds steht.
+1. **Position.** Long or short on a country×sector, on a currency, on a country's
+   government bond, or — since 2026-09-05 — on an **exchange venue**
+   (see *Die drei Schichten der Welt*). In fixed steps, effective immediately, unwindable at any
+   time. Entering and exiting moves the price against the fund, and the more strongly the
+   larger its share of that market is.
+2. **Stake.** A permanent share in a country×sector. It is illiquid — exiting takes two
+   rounds, and its exit discount is already built into the valuation, so it is paid in
+   full at entry (see *Was das Fondsvermögen ist*) — and it is the only path to
+   cheap lobbying: lobbying actions in a sector the fund holds a stake in cost a
+   fraction.
+3. **Lobbying budget.** Money on one policy instrument of one country, in one direction.
+   It does not act immediately but attaches as pressure; whether it takes hold is decided
+   by step 3 against the counter-lobby. Possible without a stake in the affected sector, but expensive.
+4. **Leverage.** Borrowing at the country's policy rate plus a spread that rises with the
+   fund's visibility. Magnifies every position and every losing streak.
+5. **Visibility.** The fund publicly discloses a position or withdraws from view.
+   Disclosure amplifies every lobbying budget on that matter, because it creates public
+   pressure — and it feeds the supervision counter in every country the fund is present in.
 
-**Warum fünf und nicht drei.** Die Arten 1 bis 3 sind die drei Strategiefamilien, an denen
-Maß 2 gemessen wird; ohne sie gibt es nichts zu messen. Hebel ist keine eigene Strategie,
-sondern die Angriffsfläche der ersten Todesart, und ohne ihn ist Größe risikolos.
-Sichtbarkeit ist der Grund, warum die Gegenkräfte ein Spielfeld sind und kein Bremsklotz:
-Ohne sie wäre Aufmerksamkeit eine bloße Strafe auf Erfolg, mit ihr ist sie eine
-Entscheidung — laut und schnell gegen leise und langsam. Genau daraus entsteht die
-Optimumsverschiebung, die Maß 3 verlangt.
+**Why five and not three.** Kinds 1 to 3 are the three strategy families against which
+Maß 2 is measured; without them there is nothing to measure. Leverage is not a strategy of
+its own but the attack surface of the first way of dying, and without it size is riskless.
+Visibility is the reason the counterforces are a playing field and not a brake:
+without it, attention would be a mere penalty on success; with it, it is a
+decision — loud and fast versus quiet and slow. That is exactly what produces the
+shift of the optimum that Maß 3 demands.
 
 ## Der Zustand
 

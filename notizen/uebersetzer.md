@@ -4,4 +4,5 @@ Rotated by the runner on 2026-09-06 at 12302 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+- 2026-09-06 — spiel.md#Die Aktionen → #The actions: ~2,050 → ~2,030 chars. Terms chosen: Beteiligung=stake, Stufe=(fixed) step, Leitzins=policy rate, Aufsichtszähler=supervision counter, Todesart=way of dying, Gegenlobby=counter-lobby; `Maß` kept as identifier (matches earlier sections). Cross-refs to still-German headings left German.
 - 2026-09-06 — spiel.md#The loop: empty run, FIFTY-SIXTH dispatch; re-verified lines 262–384 fully English, no edit. **Operator: this queue entry is stale — 56 dispatches, 55 wasted runs on a section translated 2026-09-06 as #Die Schleife (see archive). The dispatcher re-queues it under its translated heading; only closing the entry at the source stops it — no translator run can.** The 35 identical per-dispatch lines (dispatches 21–55, all same date, all empty, no edit ever needed) are consolidated into this one; the previous logbook state is in git history.
