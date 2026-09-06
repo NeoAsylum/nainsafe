@@ -124,6 +124,15 @@ def main(grenze: float = GRENZE, durchgaenge: int = DURCHGAENGE,
     return 0 if fehler == 0 else 1
 
 
+def berichtsalter_stunden() -> float:
+    """Alter von ops/plan.md in Stunden; sehr gross, wenn es die Datei nicht gibt."""
+    plan = Path(__file__).resolve().parent.parent / "ops" / "plan.md"
+    try:
+        return (time.time() - plan.stat().st_mtime) / 3600
+    except OSError:
+        return 1e9
+
+
 def durchgaenge_fahren(grenze: float, durchgaenge: int) -> int:
     fehler = 0
     for nr in range(1, durchgaenge + 1):
@@ -149,9 +158,19 @@ def durchgaenge_fahren(grenze: float, durchgaenge: int) -> int:
             # und `ops/plan.md` blieb auf dem Stand vom Vortag stehen, waehrend die
             # Fabrik in derselben Nacht 27 Pakete bewegte. Der Betreiber haette bis
             # Montag einen Bericht gelesen, der die eine Zahl noch bei 0 von 310 nennt.
+            # Ein alter Bericht ist ein eigener Grund. Die Sitzungsgrenze beendet den
+            # Tageslauf ueber `break`, nie ueber einen "letzten" Durchgang -- am
+            # 2026-09-06 stand ops/plan.md deshalb seit zwei Tagen still, waehrend die
+            # Fabrik 60 Pakete abschloss. Zwoelf Stunden sind die Grenze, weil der
+            # Betreiber den Rechner in diesem Takt weckt und dann liest.
+            plan_alt = berichtsalter_stunden() >= 12
             letzter = (nr == durchgaenge
                        or heute + 60 >= grenze
-                       or rest_woche <= 60)
+                       or rest_woche <= 60
+                       or plan_alt)
+            if plan_alt:
+                print(f"  Bericht ist {berichtsalter_stunden():.0f} h alt -- "
+                      "Geschaeftsfuehrer laeuft in diesem Durchgang.")
             if nachtlauf.main(False, bericht=letzter) != 0:
                 fehler += 1
             # Die Sitzungsgrenze ist keine Stoerung eines Durchgangs, sondern das Ende
