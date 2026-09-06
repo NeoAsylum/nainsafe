@@ -1,0 +1,12 @@
+Die vier Schluessel gilt_fuer_reihen wollen vollstaendig sein, und zwar in beide Richtungen.
+Erstens: Jede Reihe mit Fremdbestand steht unter mindestens einer Quelle. Zweitens, und an diesem
+zweiten Teil ist der Fall des Pakets 0100 unbemerkt geblieben: Sie steht unter jeder Quelle, aus der
+ihre ausgelieferten Werte entstehen, und nicht nur unter der ihres Hauptbestands. Wer eine Reihe
+hinzufuegt, ihre Quelle wechselt oder ihr einen Umrechnungsschritt mit fremder Bezugsgroesse gibt,
+zieht diese Tabelle nach. Daraus folgt, was eine fehlende Nummer bedeutet: eine Aussage und keine
+Luecke. Gemessen am 2026-09-06 gegen den Schluessel quelle_tabelle der 19 Reihenbloecke: Die
+Vereinigung der vier Listen ist 1 bis 16 ohne Ausnahme, und es fehlen genau die drei Reihen 17, 18
+und 19 -- dieselben drei, deren quelle_tabelle das Wort keine fuehrt und deren Block
+reihe.lizenzbeleg nach pruefweg.zaehlregel_lizenz leer ist. Reihe 16 ist dort nicht dabei: Sie
+fuehrt kein eigenes Wortlautfeld, hat aber Fremdbestand ueber ihre Eingabereihen und steht deshalb
+unter zwei Quellen.

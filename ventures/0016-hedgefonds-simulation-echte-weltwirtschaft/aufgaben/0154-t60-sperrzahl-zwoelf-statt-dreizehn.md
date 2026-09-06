@@ -1,7 +1,7 @@
 ---
 id: 0154-t60-sperrzahl-zwoelf-statt-dreizehn
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0141-pruefliste-fuenftes-land]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die zwei Bedingungen unter "Abnahme".

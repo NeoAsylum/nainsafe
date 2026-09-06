@@ -2,7 +2,7 @@
 id: 0180-zahlwortriegel-fuer-werte-hpp
 rolle: testentwickler
 haengt_an: [0155-werte-konstantenkopf-zwei-jahrgangskonstanten]
-status: gebaut
+status: fertig
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/zahlwort_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/CMakeLists.txt]
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---

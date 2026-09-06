@@ -1,7 +1,7 @@
 ---
 id: 0170-vollstaendigkeit-mengengleichheit-berichtigen
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: [0126-historischer-verweis-nennt-den-falschen-commit, 0142-vorlagentabelle-reihenliste-ohne-stand]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. `haengt_an` war leer und ist jetzt [0126, 0142]. Beides sind Reihenfolgesperren, keine sachlichen Abhaengigkeiten -- du brauchst aus keinem der beiden etwas. Drei Pakete liegen auf `reihen.toml`, die Reihe lautet 0126, 0142, du. Beide vor dir aendern die Datei; dein Vorher-Stand ist der dann geltende HEAD. Such am Text, nicht an der Zeilennummer.

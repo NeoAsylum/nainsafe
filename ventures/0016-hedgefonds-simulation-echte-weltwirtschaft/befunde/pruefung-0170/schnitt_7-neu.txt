@@ -1,0 +1,3 @@
+Wortlautfelder. Grep-Muster ^wortlaut = zaehlt 20, eines je Lizenzbeleg aus schnitt_3. Vier davon
+sind leer: die Reihen 16, 17, 18 und 19 ohne eigene Quelle, siehe zaehlregel_lizenz. Grep-Muster
+^wortlaut_form zaehlt 2, die beiden mehrzeiligen Wortlaute aus schnitt_2.

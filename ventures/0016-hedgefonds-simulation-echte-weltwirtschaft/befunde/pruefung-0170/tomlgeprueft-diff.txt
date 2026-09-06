@@ -1,0 +1,94 @@
++++ Nachtrag vom 2026-09-06, Baulauf des Pakets 0170:
++++ Bezugsstand ist der Commit 45fc32f, dessen Fassung dieser Datei mit dem Arbeitsbaum vor dem Lauf
+    zeichengleich war -- git rev-parse gibt 45fc32ff156eef604ce419b736fbd7e15941efe9, git ls-
+    tree auf diesen Commit und git hash-object auf den Arbeitsbaum geben beide den Blob
+    f057f74a4d8c261d1c3e857b25210d1d6b38dc02, und git status meldete die Datei vor der ersten
+    Schreibbewegung als unveraendert.
++++ Waehrend dieses Laufs ist zwei fremde Commits dazwischengekommen, c3f6a8d (architekt, Paket
+    0154-t60-sperrzahl-zwoelf-statt-dreizehn) und 6456047 (kernbauer, Paket 0172-verlaufskopf-
+    groessenzahl-bei-wand-2169-berichtigen); keiner von beiden fasst diese Datei an, und
+    derselbe Blob steht auch in ihren Baeumen, weshalb der genannte Bezugsstand gilt und die
+    Messung an c3f6a8d zeichengleich wiederholbar ist.
++++ Der erste aendert allerdings technik.md, also ein Vorgabendokument, und der zweite eine
+    Quelldatei im Zielbestand, gegen die der Belegstellenriegel ebenfalls prueft; sein Lauf nach
+    dem Eingriff schliesst beide ein und gibt dieselben Zahlen wie der Lauf davor.
++++ Verglichen wird gegen die hier vorliegende Fassung, und die Messung ist nach der letzten
+    Schreibbewegung dieses Pakets an dieser Datei wiederholt worden -- dieses Feld ist die
+    letzte.
++++ Werkzeug wie oben:
++++ Python 3, tomllib.loads auf den Bytes beider Fassungen, die alte ueber git cat-file blob und
+    ohne Zwischendatei, beide Baeume flach gezogen, Blattschluessel als Pfadtupel verglichen;
+    das Messskript ist das des Pakets 0078 unter befunde/messung-0078/messung.py, unveraendert
+    uebernommen, dazu befunde/messung-0099/zahlwoerter.py fuer die Vorlagentabelle und
+    befunde/messung-0100/inhalt.py fuer die vier Listen gilt_fuer_reihen.
++++ Ergebnis des Parserlaufs gegen die vorliegende Fassung:
++++ gueltiges TOML 1.0; die Liste reihe hat 19 Eintraege, die Liste widerspruch 9, die Wurzel fuehrt
+    sechs Tabellen (datei, namensnennung, pruefweg, reihe, widerspruch, zaehlung); die Summe des
+    Schluessels sollreihen ueber die 19 Reihenbloecke ist 27 und damit gleich
+    zaehlung.sollreihen_gesamt; zweimal eingelesen ergibt dieselbe Struktur.
++++ Der Bezugsstand traegt 1236 Blattwerte, die vorliegende Fassung 1237.
++++ Von den 1236 gemeinsamen Schluesseln tragen zwei verschiedene Werte:
++++ namensnennung.vollstaendigkeit, der Gegenstand dieses Pakets, und dieses Feld selbst, das die
+    Bilanz traegt und deshalb in ihr vorkommt.
++++ Die Messung ist zweimal gelaufen, vor dem Schreiben dieses Feldes und danach:
++++ davor war genau ein gemeinsamer Wert verschieden, danach sind es zwei, und die zweite Zahl steht
+    hier.
++++ Keiner doppelt, keiner ausgelassen.
++++ Nicht geaendert ist datei.stand, weil dort schon 2026-09-06 steht; ebensowenig eine
+    Kommentarzeile -- dieses Paket hat keine angefasst, und Kommentare waeren ohnehin keine
+    Blattwerte.
++++ Eine Abweichung von der Erwartung des Arbeitspakets gehoert benannt und nicht geglaettet:
++++ Seine zweite Bedingung erwartet keinen neuen Blattwert, und einer ist dazugekommen,
+    datei.nachgezogen_durch.14 mit der Kennung dieses Pakets; weggefallen ist keiner.
++++ Gesetzt ist er, weil datei.paket_bedeutung genau diesen Schluessel als den nennt, an dem sich
+    ablesen laesst, ob diese Datei aktuell ist, und weil sich jedes der vierzehn vorangegangenen
+    Pakete dort eingetragen hat.
++++ Ihn wegzulassen haette die Bedingung woertlich erfuellt und den Schluessel falsch gemacht.
++++ Was dieses Paket am Blattwert geaendert hat:
++++ namensnennung.vollstaendigkeit behauptete, die drei Reihen, die in der Vereinigung der vier
+    Listen gilt_fuer_reihen fehlen, seien dieselben drei, deren Block reihe.lizenzbeleg leer
+    ist.
++++ Die eine Menge hat drei Elemente, die andere vier.
++++ Gemessen ist mit tomllib gegen alle 19 Reihenbloecke und mit der Zaehlregel, die
+    zaehlregel_lizenz selbst nennt -- wortlaut, url und abrufdatum saemtlich leer:
++++ Leer sind die Bloecke der Reihen 16, 17, 18 und 19, also vier; den Wert keine im Schluessel
+    quelle_tabelle fuehren die Reihen 17, 18 und 19, also drei, und keine vierte.
++++ Die Vereinigung der vier Listen ist unveraendert 1 bis 16, es fehlen 17, 18 und 19.
++++ Die Aussage stuetzt sich jetzt allein auf quelle_tabelle, die fuer sich ausschliesslich ist; der
+    leere Lizenzbeleg steht als nicht-ausschliessliche Eigenschaft daneben, mit der gemessenen
+    Vier und mit Reihe 16 als dem Fall, der die beiden Mengen trennt.
++++ Damit stimmt das Feld mit zaehlregel_lizenz und mit schnitt_7 ueberein; beide nennen dieselben
+    vier Reihen, beide bleiben unveraendert, und das Arbeitspaket verlangt ausdruecklich, sie
+    nicht anzufassen, weil sie richtig sind.
++++ Die gefallene Behauptung steht im Feld als Geschichte mit Datum und Widerlegung, damit sie
+    niemand wieder eintraegt.
++++ Die Datei waechst von 1937 auf 1938 Zeilen; die eine ist der neue Eintrag in
+    datei.nachgezogen_durch, die beiden geaenderten Blattwerte bleiben je eine Zeile und kosten
+    keine.
++++ git diff HEAD --numstat gegen den Bezugsstand meldet dazu 3 hinzugefuegte und 2 entfernte Zeilen
+    -- gegen HEAD und nicht gegen den Index, denn ein bereits vorgemerkter Stand laesst git diff
+    ohne HEAD eine andere und hier falsche Zahl melden.
++++ Diese beiden Zahlen sind nach dem Schreiben dieses Feldes gemessen und nicht davor:
++++ Das Feld zaehlt sich selbst mit, und vor der letzten Schreibbewegung stuenden hier zwei und
+    eins.
++++ Genau daran ist dieses Feld schon dreimal gescheitert.
++++ Die sechzehn Muster sind nach dem Eingriff einzeln neu gezaehlt worden, nicht als Summe -- die
+    fuenfzehn Zaehlmuster der sieben Schnitte und als sechzehntes die Typaufzaehlung hinter
+    schnitt_3 --, und alle sechzehn sind unveraendert:
++++ schnitt_1 sechs Treffer; schnitt_2 neunundzwanzig Zeilen, vierundfuenfzig Vorkommen und
+    siebenundzwanzig Randzeilen; schnitt_3 hundertvierzehn Tabellenkoepfe, nach Typ einzeln
+    nachgezaehlt und wieder dreiundzwanzig vom Typ reihe.umrechnung bei gleicher Summe, also
+    weiterhin kein achter Typ; schnitt_4 neunzehn, neunzehn, neunzehn, hundertzweiundfuenfzig,
+    zwanzig und achtundzwanzig; schnitt_5 einundzwanzig und achtundzwanzig; schnitt_7 zwanzig
+    und zwei.
++++ Bei schnitt_1 sind zusaetzlich die sechs Trefferkontexte alt gegen neu verglichen worden und
+    sind zeichengleich dieselben.
++++ Mit zahlwoerter.py ist ausserdem die 0065-Zaehlung nachgemessen und unveraendert bei acht
+    Blattwerten mit der Zerlegung zwei plus eins plus fuenf; die sechs Vorlageneintraege melden
+    weiter alle sechs Stand genannt wahr.
++++ Der Belegstellenriegel ist vor und nach dem Eingriff gegen vorhaben und vorgaben gelaufen und
+    gibt beide Male 0 zurueck:
++++ 40 Zitate der geprueften Form gefunden, 40 aufgeloest, 55 Fundstellen uebergangen, davon 40 in
+    dieser Datei -- viermal dieselbe Zahl wie vorher.
++++ Anders als der Nachtrag des Pakets 0142 hebt dieser die uebergangenen Fundstellen nicht, weil
+    weder die Berichtigung noch er selbst eine Gliederungsziffer nennt.

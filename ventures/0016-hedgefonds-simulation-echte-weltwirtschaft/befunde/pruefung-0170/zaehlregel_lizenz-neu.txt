@@ -1,0 +1,4 @@
+Jede Reihe fuehrt `lizenzurteil` aus frei | gesperrt | unklar und mindestens einen Block
+[[reihe.lizenzbeleg]] mit `wortlaut`, `url` und `abrufdatum`. Leer sind diese drei Felder allein bei
+den Reihen 16, 17, 18 und 19 -- den vier Reihen ohne eigene Quelle; siehe [[widerspruch]] Nr. 7 und
+Nr. 8.

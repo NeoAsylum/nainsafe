@@ -1,7 +1,7 @@
 ---
 id: 0172-verlaufskopf-groessenzahl-bei-wand-2169-berichtigen
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: [0091-diff-ursachenkette-nach-t20]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. `haengt_an` war leer und ist jetzt [0091]; das ist eine Reihenfolgesperre, keine sachliche Abhaengigkeit -- 0091 fasst `verlauf.hpp` an, und zwei Pakete auf einer Datei laufen nie zusammen. Wichtig fuer dich: 0091 aendert den Kopf, in dem deine Zahl steht. Miss sie am dann geltenden HEAD nach, statt die Zahl aus diesem Vorschlag zu uebernehmen -- steht dort eine andere, ist das ein Befund, und die Zahl folgt der Messung, nicht dem Paket. Deine Nummer ist im Verzeichnis doppelt vergeben (0172-weltpreis-mit-zoll-untergrenze-des-faktors); die Kennungen sind verschieden, der Baulauf unterscheidet euch, aber verwechsle die Dateien beim Lesen nicht.

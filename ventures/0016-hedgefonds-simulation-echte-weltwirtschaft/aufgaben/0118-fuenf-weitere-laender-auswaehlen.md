@@ -1,7 +1,7 @@
 ---
 id: 0118-fuenf-weitere-laender-auswaehlen
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: [0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0119-welt-in-drei-schichten, 0128-zaehlung-vier-je-land-statt-vier-r, 0141-pruefliste-fuenftes-land]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: Die fünf Bedingungen im Abschnitt "Abnahme". Bedingung 3 rechnet auf der Steckplatzzahl, die nach 0119 gilt, gegen die 20 von heute — nicht auf den 45 aus der Ländergeometrie allein; siehe den Annahmevermerk.
