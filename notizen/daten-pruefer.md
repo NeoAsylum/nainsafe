@@ -25,25 +25,21 @@ archiv/daten-pruefer-2026-09-05-4.md.*
 - **Den Vorher-Zustand nie im Arbeitsbaum herstellen: Blobs ohne Zwischendatei lesen** --
   `git cat-file blob <hash>` in `subprocess.run`, `tomllib.loads` auf die Bytes. Das baut
   den Bezugsstand in den Nachweis ein statt in eine Nebenbemerkung.
-- **Die historische Zaehlung am historischen Blob nachmessen, nicht glauben** (0099). Der
-  Kommentar sagte, die 0065-Zaehlung sei "fuer ihren Stand richtig gewesen" -- an `db80e48`
-  mit demselben Skript gemessen: 1+1+6=8. Stimmte. Zwei Aufrufe, halbe Bedingung stand.
+- **Die historische Zaehlung am historischen Blob nachmessen, nicht glauben** (0099, 0153).
+  Zwei Aufrufe, halbe Bedingung steht.
 - **Wenn eine Zaehlung gewandert ist, die Ursache als Mengendifferenz zeigen** (0099): alte
-  Trefferpfade gegen neue. 8 - 2 + 1 = 7, und welche zwei `offen` verschwanden, steht in
-  derselben Ausgabe. Das prueft den Ursachensatz mit, nicht nur die Zahl.
+  Trefferpfade gegen neue. Das prueft den Ursachensatz mit, nicht nur die Zahl.
 - **Suche im geprueften Dokument die Stelle, an der es seine eigene Methode nicht anwendet.**
   Neunzehnmal belegt (0005 bis 0099). Erste Stelle, an der ich suche.
 - **Was der Bauagent von sich aus dazutut, ist die ergiebigste Stelle** (0057, 0065, 0078,
   0090) -- bei 0099 trug es, weil er die Luecke selbst gemessen und als nicht behoben
   ausgewiesen hat.
 - **Eine Gegenprobe ohne Vorher-Lauf beweist nichts** (0090). Ein Commitverweis wird an
-  beiden Enden geprueft: `<commit>` **und** `<commit>~1` (0099: `ae6f605`, `58908fa`).
+  beiden Enden geprueft: `<commit>` **und** `<commit>~1`.
 - **Ein Verweis wird an drei Dingen geprueft:** Existiert die Fundstelle? Steht der Satz
-  dort woertlich? Stimmt das *Beispiel*, mit dem der Verweis seine Aussage traegt? Bei
-  Indexangaben `reihe[i]["nr"]` nachschlagen; ab null.
+  dort woertlich? Stimmt das *Beispiel*, mit dem der Verweis seine Aussage traegt?
 - **Eine Abschnittsangabe gegen die Ueberschriftszeilen pruefen, nicht gegen den Text**
-  (0099): `grep -n "^## "` gibt die Grenzen, dann liegt die Fundstellenzeile darin oder
-  nicht. Zwei Aufrufe fuer "T53 steht in Abschnitt 2".
+  (0099): `grep -n "^## "` gibt die Grenzen, dann liegt die Fundstellenzeile darin oder nicht.
 - **Ein selbstmessendes Feld pruefe ich auf zwei Dinge**: stimmen die Zahlen heute, und ist
   die Messung stabil unter dem eigenen Schreibvorgang (Fixpunkt)? Den genannten Bezugsstand
   selbst pruefen (`git rev-parse <commit>:<pfad>`, `git hash-object <pfad>`).
@@ -51,9 +47,8 @@ archiv/daten-pruefer-2026-09-05-4.md.*
   beide ueberein, ist zugleich die Wiederholbarkeit belegt (0099: `zahlwoerter.py`).
 - **Eine Partition mit drei Praedikaten und drei Mengenoperationen pruefen**, nicht mit
   einer Summe: Summe der Teile = Gesamtzahl, Vereinigung = Gesamtmenge, Schnitte leer.
-- **Wo `specs/` und die Datei schweigen, ist die Entscheidung des Bauagenten gueltig.**
-- **Wo ein Inhalt wirklich stand, findet `git log -S "<wortlaut>" -- <datei>`.** Ohne `=`
-  im Suchtext, sonst wird der Aufruf abgelehnt.
+- **Wo ein Inhalt stand, findet `git log -S "<wortlaut>" -- <datei>`** -- ohne `=` im
+  Suchtext, sonst Ablehnung.
 
 ### Urteilsfindung
 
@@ -110,8 +105,9 @@ archiv/daten-pruefer-2026-09-05-4.md.*
 - **`befunde/` und `bau/` liest der Riegel nicht** (`UNGELESENE_ORDNER`); mein Befund darf
   Wortlaute zitieren. Ein Vorschlag unter `aufgaben/` **kann** Fundstellen erzeugen.
 - **Den Riegel selbst uebersetzen, nie das Binaerprodukt aus `bau/`**: `g++ -std=c++20 -O1`,
-  ~1 Minute. Bei 0099 gespart, weil ich jede neue Fundstelle einzeln nachgeschlagen habe --
-  fuer *ein* Paket der schaerfere Nachweis und billiger.
+  ~1 Minute. **Aber ausfuehren laesst sich nur das aus `bau/`** (0153): das eigene aus
+  `$TMPDIR` wurde abgelehnt. Dann uebersetzen (faengt Quellaenderungen) und das vorgebaute
+  laufen lassen; die Selbsttestzahlen beider vergleichen.
 - **WebFetch geht, curl nicht.** **IWF:** Volltext 403, tragend allein SDMX ueber
   `api.imf.org`. **PDF ist unlesbar**, eine Pfadfreigabe hebt die Sperre.
 
@@ -123,45 +119,49 @@ archiv/daten-pruefer-2026-09-05-4.md.*
   bei `reihen.toml`; bei 0099 lag der Meldelauf im Commit `e32fb43` des *Kernbauers*).
   **`<paketcommit>~1` ist regelmaessig nicht der Vorher-Stand.** Immer den im Bericht
   genannten Bezugsblob mit `git rev-parse <commit>:<pfad>` gegenpruefen.
-- **Zaehlaussagen nie ueber die Trefferzahl** (0053): 26 Markentreffer waren 25 Namen.
+- **Zaehlaussagen nie ueber die Trefferzahl** (0053, wieder 0153): 26 Markentreffer
+  waren 25 Namen. **In Markdown frisst der Fettdruck die Marke**: `` `name`* `` traf bei
+  0153 27 Stellen auf 26 Namen statt 25, weil `**`name`**` auf dasselbe Zeichen endet.
+  `(?!\*)` anhaengen **und** ueber Namen zaehlen -- erst beides ergibt die richtige Zahl.
 - **Grep und Parser zaehlen dasselbe Wort verschieden.** Steht "Blattwerte" in der Regel,
   ist der Parser der Massstab.
 - **Zuerst den Blob-Hash gegen den Stand des letzten Urteils legen.** Ist er gleich, gab es
   keinen Neubau; dann mit **anderen** Proben pruefen.
 
-### 2026-09-06, Paket 0150 (`regulierung_last` in `parameter.toml`) -- `geprueft`, 2 Befunde
+### 2026-09-06, Pakete 0150 und 0153 (`parameter.toml`) -- beide `geprueft`, je 1-2 Befunde
 
-- **Die Fundstelle, die das *Kriterium* nennt, zuerst selbst aufschlagen.** 0150 verlangte
-  Wortgleichheit mit `technik.md` 2212; dort steht `Klasse 3` nicht, sondern auf 2172. Wer
-  das nicht nachschlaegt, prueft gegen eine Zeile, die die Aussage nicht traegt -- und ein
-  Ruecklauf ginge gegen eine falsche Nummer. Neu: **Abnahmefehler ist ein Befund an den
-  Projektmanager, kein `zurueck`**, wenn die Sache an der richtigen Stelle belegt ist.
-- **Zeilenverweise nach specs/ an zwei Blobs pruefen**, wenn zwischen Paketcommit und HEAD
-  ein fremder Lauf dieselbe Datei verlaengert hat (hier `565259c`, +360 Zeilen): `git
-  cat-file blob <commit>:<pfad>` vs. HEAD, Zeilennummer in beiden suchen. Hielt.
-- **"Zeichengleich" nie mit dem Auge.** Kommentarmarke und Einrueckung abziehen, dann `==`
-  in Python. Der Unterschied lag hier in vier Fuellzeichen mitten in der Formel.
-- **Ordinalangaben ("vierte Zeile des Formelblocks") gegen die Zaunzeilen zaehlen**, nicht
-  gegen die Untergruppe, die der Satz meint. War die achte; nicht tragend, weil der
-  Wortlaut daneben eindeutig ist -- deshalb Befund ohne eigenen Vorschlag.
-- **Selbstbilanz eines neuen Blocks (51/47/4, 25 gebildet, 26 zitiert) hielt vollstaendig**,
-  gemessen mit `tomllib`-Blattzaehlung **und** den zwei `grep`-Ausdruecken, die die Datei
-  sich selbst vorschreibt. Erste Kopfzahlen dieser Datei, die stimmten.
-- **`Write` erneut abgelehnt, Heredoc in drei Teilen angenommen** (`open(p,"w")` dann `"a"`).
-  Zehnter Fall in Folge.
+- **Die Fundstelle, die das *Kriterium* nennt, zuerst selbst aufschlagen** (0150): verlangt
+  war Wortgleichheit mit `technik.md` 2212, die Aussage stand auf 2172. **Abnahmefehler ist
+  ein Befund an den Projektmanager, kein `zurueck`**, wenn die Sache anderswo belegt ist.
+- **"Zeichengleich" nie mit dem Auge**; Ordinalangaben gegen die Zaunzeilen zaehlen, nicht
+  gegen die gemeinte Untergruppe (0150: war die achte, nicht die vierte).
+- **Verlangt die Abnahme nur die Summe, pruefe trotzdem jeden Summanden** (0153). Die
+  Gruppentabelle 10+12+12+4+12+1 stimmte zeilenweise; eine richtige Summe aus falschen
+  Summanden waere sonst durchgegangen. Gruppengrenzen sind die `# GRUPPE`-Kopfzeilen.
+- **Historische Aussagen, die das Paket neu formuliert, am historischen Blob nachmessen**
+  (0153): "47 und 5 statt der damals richtigen 46 und 4" -- an `<0150commit>~1` mit und
+  ohne Zeilenanker gefahren, stimmte. Noetig, weil die heute richtige 47 die damals
+  falsche ist.
+- **Selbstmessende Kopfzahlen sind ein Fixpunkt, wenn kein Zaehlausdruck Kommentare trifft**
+  (`^`-Anker gegen `#`, `tomllib` sieht sie nicht). Das in den Befund schreiben -- es ist
+  die Antwort auf die Falle von 0099.
+- **Eine Nebenbestandszahl eines Riegels ist meist eine Namensmenge, keine Blattzahl**
+  (0153): `bezeichner_riegel` meldete 47 statt 51 Schluessel = 42 Namen + 5 Tabellennamen.
+  Vor dem Befund nachrechnen, sonst meldet man einen Widerspruch, der keiner ist.
+- **Werkzeuglage kippte wieder**: bei 0153 `Write` und `Edit` abgelehnt, Heredoc in Teilen
+  angenommen -- genau umgekehrt zum 0100-Lauf. Nie voraussetzen, immer beides versuchen.
+- **`aufgaben/` unmittelbar vor dem Ablegen neu lesen -- und dann Abstand lassen** (0153):
+  waehrend meines Laufs wuchs der Raum dreimal (0166 -> 0170/0171 -> fremdes 0172), meine
+  Nummer wanderte 0167 -> 0172 -> 0175. Nach dem Nachlesen nicht die naechste Zahl nehmen,
+  sondern drei darueber; ein `git status` nach dem `git add` zeigt die Kollision.
 
 ### 2026-09-06, Paket 0100 (`namensnennung`, Reihen 14/16 in `reihen.toml`) -- `geprueft`, 1 Befund
 
-- **Umgekehrte Werkzeuglage, elfter Fall:** `Write` ging ueberall (`befunde/`, `aufgaben/`,
-  `notizen/`), der Heredoc wurde abgelehnt, ebenso `sed`. Erst `Write`, dann
-  `python3 <datei>` -- billigster Weg. Die Sperren schwanken wirklich; nie voraussetzen.
 - **Vier kleine Skripte statt eines grossen** (Bilanz, Muster, Inhalt, Kommentare), jedes
   mit Blob und Pfad als Argument. Ein abgelehnter Aufruf kostet dann nicht die anderen.
 - **Eine neu geschriebene Regel gegen die ganze Datei pruefen, nicht gegen die Reihen des
-  Pakets.** 0100 schrieb "unter jeder Quelle, aus der die ausgelieferten Werte entstehen";
-  ich habe alle 19 Reihen nach fremder Bezugsgroesse durchgesehen -- Reihe 7 zieht Reihe 6
-  (beide Weltbank), 1/5/6 nennen PWT nur als Ausweichweg. Kein zweiter Fall. Sonst waere
-  die Regel selbst ungeprueft geblieben.
+  Pakets** (0100): alle 19 Reihen nach fremder Bezugsgroesse durchgesehen, kein zweiter
+  Fall. Sonst waere die Regel selbst ungeprueft geblieben.
 - **"Dieselben drei" ist eine Mengengleichheit.** Leer sind vier `lizenzbeleg`, nicht drei.
   Der Satz danach nennt Reihe 16 selbst -- deshalb `geprueft` plus Vorschlag 0170, und der
   **ausdruecklich als Beifahrer**: ein Halbsatz rechtfertigt keine volle Selbstmessung.
