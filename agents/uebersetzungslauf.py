@@ -96,30 +96,46 @@ def main() -> int:
     if "--stueck" in sys.argv:
         stueck = int(sys.argv[sys.argv.index("--stueck") + 1])
 
-    warten = offen()
-    reservieren(sorted({p for p, _ in warten}))
-    gesamt = sum(len(p.read_text(encoding="utf-8")) for p, _ in warten)
-    print(f"[{jetzt()}] Uebersetzung: {len(warten)} Dateien offen, "
-          f"{gesamt:,} Zeichen deutsch")
+    # **Nach jedem Abschnitt neu nachsehen.** `offen()` liefert hoechstens eine Aufgabe
+    # je Datei -- es bricht nach dem ersten noch deutschen Abschnitt ab, damit zwei
+    # Laeufe nicht dieselbe Datei anfassen. Die erste Fassung hat die Liste **einmal**
+    # gebildet und dann `warten[:stueck]` abgearbeitet: Bei vier Dateien waren das vier
+    # Abschnitte, und `--stueck 60` aenderte daran nichts. Am 2026-09-06 sah es aus, als
+    # sei der Lauf gestorben; er war fertig.
+    gemacht = 0
+    while gemacht < (8 if trocken else stueck):
+        warten = offen()
+        reservieren(sorted({x for x, _ in warten}))
+        if not warten:
+            print(f"[{jetzt()}] Der bleibende Bestand ist englisch "
+                  f"({gemacht} Abschnitte in diesem Lauf).")
+            return 0
+        if gemacht == 0:
+            gesamt = sum(len(x.read_text(encoding="utf-8")) for x, _ in warten)
+            print(f"[{jetzt()}] Uebersetzung: {len(warten)} Dateien mit offenen "
+                  f"Abschnitten, {gesamt:,} Zeichen in ihnen")
 
-    if not warten:
-        print("  Der bleibende Bestand ist englisch.")
-        reservieren([])
-        return 0
-
-    for p, abschnitt in warten[:stueck if not trocken else 8]:
-        rel = p.relative_to(WURZEL)
+        pfad, abschnitt = warten[0]
+        rel = pfad.relative_to(WURZEL)
         wo = f"{rel}#{abschnitt}" if abschnitt else str(rel)
-        gr = len(p.read_text(encoding="utf-8"))
         if trocken:
-            print(f"  wuerde uebersetzen: {wo}  ({gr:,} Zeichen)")
-            continue
-        print(f"[{jetzt()}] {wo}  ({gr:,} Zeichen)")
+            print(f"  wuerde uebersetzen: {wo}")
+            gemacht += 1
+            # Im Trockenlauf aendert sich nichts, also die naechste Datei zeigen.
+            rest = [x for x in warten if x[0] != pfad]
+            if not rest:
+                return 0
+            for pf, ab in rest[:7]:
+                print(f"  wuerde uebersetzen: {pf.relative_to(WURZEL)}"
+                      f"{'#' + ab if ab else ''}")
+            return 0
+        print(f"[{jetzt()}] {wo}")
         if lauf("uebersetzer", wo) != 0:
             print("  Lauf fehlgeschlagen -- angehalten.")
             reservieren(sorted({x for x, _ in offen()}))
             return 1
-        reservieren(sorted({x for x, _ in offen()}))
+        gemacht += 1
+    print(f"[{jetzt()}] {gemacht} Abschnitte uebersetzt, Grenze erreicht.")
     return 0
 
 
