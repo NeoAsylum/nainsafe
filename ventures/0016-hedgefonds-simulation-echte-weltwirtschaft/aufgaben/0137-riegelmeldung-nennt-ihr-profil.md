@@ -1,7 +1,7 @@
 ---
 id: 0137-riegelmeldung-nennt-ihr-profil
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0132-riegelmeldung-nennt-gesammelte-eintraege]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake]
 abnahme: Die zwei Bedingungen im Abschnitt "Abnahme".

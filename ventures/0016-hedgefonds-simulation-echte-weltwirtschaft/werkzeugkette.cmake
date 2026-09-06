@@ -1066,8 +1066,46 @@ function(fabrik_schlussriegel wurzelverzeichnis)
   # Zahl der Schalter des Warnsatzes mal die erste Zahl und waechst darum mit jedem
   # neuen Ziel mit. Ausgeschrieben gehoert sie deshalb in keine `abnahme`, sondern nur
   # in den Vergleich gegen den eigenen Stand davor.
+  #
+  # **Unter welchem Profil die drei Zahlen entstanden sind, sagt die Zeile seit Paket
+  # 0137 selbst.** Die Regel oben laesst eine Abnahme sie nur gegen den vorhergehenden
+  # Stand **desselben Profils** halten -- und bis zum 2026-09-06 nannte ausgerechnet die
+  # Zeile, die sie ausgibt, ihr Profil nicht. Auf zwei der drei Bauwege war es zufaellig
+  # abzulesen: Der Nullabhaengigkeitsriegel darueber zaehlt `kern_geprueft` mit, und das
+  # entsteht nur unter `FABRIK_SANITIZER`. Beim Alleinbau des Pruefstands liegt kein Kern
+  # im Baum, jene Zeile meldet dort "nichts gelesen" -- und die beiden
+  # Konfigurationsausgaben unter ON und OFF waren zeichengleich bis auf zwei Ziffern
+  # (gemessen am 2026-09-06 am Stand `b2829c8`: 5 gegen 4 Ziele, 89 gegen 68
+  # Schaltereintraege). Ein gewechseltes Profil und ein verlorengegangenes Ziel sahen im
+  # Bericht gleich aus, und der Vorgabewert des Schalters steht in dieser Datei und laesst
+  # sich mit einer Zeile umlegen.
+  #
+  # Ausgegeben werden **beide Haelften**, und jede faengt etwas anderes:
+  #
+  #   *Der Wert, wie er dasteht.* Nur er laesst sich gegen die Kommandozeile abgleichen,
+  #   die im Bericht ueber der Ausgabe steht -- und die dort auf die ersten beiden Worte
+  #   gekuerzt ist, die Schalter also gar nicht zeigt.
+  #
+  #   *Seine Leseart als Wahrheitswert.* `-DFABRIK_SANITIZER=1` und `=ON` meinen dasselbe
+  #   Profil und stehen verschieden da; ein Vergleich ueber die rohen Werte allein hielte
+  #   sie faelschlich fuer zwei Profile, und ein leerer Wert saehe wie ein drittes aus.
+  #   Gelesen wird mit demselben `if()`, mit dem `kern/CMakeLists.txt` und
+  #   `pruefstand/CMakeLists.txt` ueber ihre Sanitizerziele entscheiden -- also nicht mit
+  #   einer zweiten Auslegung desselben Schalters, die von jener abweichen koennte.
+  #
+  # **Was die Angabe nicht sagt:** dass in diesem Baum Sanitizerziele stehen. Sie nennt
+  # den Schalter, unter dem gezaehlt wurde, nicht das Ergebnis seiner Wirkung. Ein Baum
+  # ohne Kern und ohne Pruefstand meldet unter ON dasselbe Wort wie einer mit beiden --
+  # und das ist richtig so, denn der Riegel hat in beiden Faellen unter ON geprueft.
+  if(FABRIK_SANITIZER)
+    set(profilwort "wahr")
+  else()
+    set(profilwort "falsch")
+  endif()
+
   message(STATUS
-    "Warnsatz-Schlussriegel: ${gezaehlt} uebersetzende Ziele geprueft, "
+    "Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=${FABRIK_SANITIZER} "
+    "(${profilwort}): ${gezaehlt} uebersetzende Ziele geprueft, "
     "alle mit Warnsatz und ohne Pauschalabschalter; dazu ${schnittstellen} "
     "Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. "
     "Eingesammelt und gegen die Pauschalmuster gehalten: ${eingesammelt} "

@@ -1,0 +1,63 @@
+Bezugsstand (vor): b2829c8c55cecde4ac1453511e1de7b56e4426c7
+vor gegen nach, Dateiliste (soll: genau werkzeugkette.cmake):
+  Files /tmp/claude-1000/p0137-nachweis/vor/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake and /tmp/claude-1000/p0137-nachweis/nach/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeugkette.cmake differ
+
+Rueckgabecodes der zwoelf Konfigurationen:
+  vor  arbeitsbereich     OFF Code 0
+  vor  arbeitsbereich     ON  Code 0
+  vor  kern-allein        OFF Code 0
+  vor  kern-allein        ON  Code 0
+  vor  pruefstand-allein  OFF Code 0
+  vor  pruefstand-allein  ON  Code 0
+  nach arbeitsbereich     OFF Code 0
+  nach arbeitsbereich     ON  Code 0
+  nach kern-allein        OFF Code 0
+  nach kern-allein        ON  Code 0
+  nach pruefstand-allein  OFF Code 0
+  nach pruefstand-allein  ON  Code 0
+
+BEDINGUNG 1 -- Paarvergleich ON gegen OFF je Bauweg
+  vor  arbeitsbereich     Zeile mit Schalter und Wert: False (erwartet False) ok
+  vor  kern-allein        Zeile mit Schalter und Wert: False (erwartet False) ok
+  vor  pruefstand-allein  Zeile mit Schalter und Wert: False (erwartet False) ok
+  nach arbeitsbereich     Zeile mit Schalter und Wert: True  (erwartet True ) ok
+      ON : -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+      OFF: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 20 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 340 Schaltereintraege.
+  nach kern-allein        Zeile mit Schalter und Wert: True  (erwartet True ) ok
+      ON : -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 242 Schaltereintraege.
+      OFF: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 221 Schaltereintraege.
+  nach pruefstand-allein  Zeile mit Schalter und Wert: True  (erwartet True ) ok
+      ON : -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 89 Schaltereintraege.
+      OFF: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 4 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 68 Schaltereintraege.
+
+BEDINGUNG 2 -- vor gegen nach, je Bauweg und Profil (Pfad und Dauer eingeebnet)
+  arbeitsbereich     ON  geaenderte Zeilen: 1/1 ok
+      vor : -- Warnsatz-Schlussriegel: 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+      nach: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 22 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 388 Schaltereintraege.
+      Zahlen vor ['22', '0', '388'] gegen nach ['22', '0', '388'] -- gleich
+  arbeitsbereich     OFF geaenderte Zeilen: 1/1 ok
+      vor : -- Warnsatz-Schlussriegel: 20 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 340 Schaltereintraege.
+      nach: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 20 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 340 Schaltereintraege.
+      Zahlen vor ['20', '0', '340'] gegen nach ['20', '0', '340'] -- gleich
+  kern-allein        ON  geaenderte Zeilen: 1/1 ok
+      vor : -- Warnsatz-Schlussriegel: 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 242 Schaltereintraege.
+      nach: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 14 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 242 Schaltereintraege.
+      Zahlen vor ['14', '0', '242'] gegen nach ['14', '0', '242'] -- gleich
+  kern-allein        OFF geaenderte Zeilen: 1/1 ok
+      vor : -- Warnsatz-Schlussriegel: 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 221 Schaltereintraege.
+      nach: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 13 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 221 Schaltereintraege.
+      Zahlen vor ['13', '0', '221'] gegen nach ['13', '0', '221'] -- gleich
+  pruefstand-allein  ON  geaenderte Zeilen: 1/1 ok
+      vor : -- Warnsatz-Schlussriegel: 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 89 Schaltereintraege.
+      nach: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 5 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 89 Schaltereintraege.
+      Zahlen vor ['5', '0', '89'] gegen nach ['5', '0', '89'] -- gleich
+  pruefstand-allein  OFF geaenderte Zeilen: 1/1 ok
+      vor : -- Warnsatz-Schlussriegel: 4 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 68 Schaltereintraege.
+      nach: -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=OFF (falsch): 4 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 68 Schaltereintraege.
+      Zahlen vor ['4', '0', '68'] gegen nach ['4', '0', '68'] -- gleich
+
+BEDINGUNG 2 -- Bau und ctest im Arbeitsbereich, beide Profile
+  Profil ON   cmake --build Code 0   ctest Code 0   100% tests passed, 0 tests failed out of 18
+  Profil OFF  cmake --build Code 0   ctest Code 0   100% tests passed, 0 tests failed out of 18
+
+Abweichungen: 0
