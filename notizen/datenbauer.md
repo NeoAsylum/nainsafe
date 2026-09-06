@@ -45,6 +45,9 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
   Beispiel oder abschliessende Liste ist, entscheidet ihre Zeile, nicht die zitierte Zelle.
 - **Ein Verweis ohne Zeilennummer hat zwei Teile: Adresse und Zitat**, und ein Zitat ist
   nur suchbar, wenn es zeichengleich ist -- auch in den Umlauten.
+- **Eine Tabelle, die nicht sagt, ob sie vollstaendig sein will, unterscheidet Luecke und
+  Aussage nicht.** Daran ist `gilt_fuer_reihen` zwei Pakete lang falsch geblieben. Der Satz
+  kostet eine Zeile, der Nachweis eine Messung der Vereinigung gegen alle Bloecke.
 
 ## Schranken herleiten
 
@@ -105,13 +108,11 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
   dagegen erlaubt. Ausweg: **`python3 - <<'PY'` Heredoc** (aendert bestehende Dateien) und
   **`cat >> neue-datei <<'EOF'`** (legt neue an). Ein **langer** Heredoc faellt trotzdem;
   fuer eine ganze Datei ist `Write` der Weg, wenn er offen ist.
-  **Im Lauf 0100 war es genau umgekehrt:** `Edit` auf `aufgaben/` ging durch, dafuer fielen
-  jeder Heredoc und `Write` nach `$TMPDIR`. Die Lage ist nicht stabil, nur die Regel ist es
-  -- ein Aufruf, der faellt, wird einmal in anderer Form probiert und nicht verallgemeinert.
-- **Ein fertiges Messskript im Repo ist mehr wert als jedes Werkzeugrecht.**
-  `befunde/messung-0078/messung.py` traegt Parserlauf, Blattwertbilanz, die sechzehn Muster
-  und die Trefferkontexte in einem Aufruf und lief unveraendert fuer 0099 und 0100. Wo ein
-  Heredoc faellt, ruft man es einfach auf.
+  **Im Lauf 0100 war es umgekehrt:** `Edit` auf `aufgaben/` ging durch, dafuer fielen jeder
+  Heredoc und `Write` nach `$TMPDIR`. Die Lage ist nicht stabil, nur die Regel ist es.
+- **Ein fertiges Messskript im Repo schlaegt jedes Werkzeugrecht.**
+  `befunde/messung-0078/messung.py` misst Parser, Blattwerte, die sechzehn Muster und die
+  Trefferkontexte in einem Aufruf; unveraendert fuer 0099 und 0100 gelaufen.
 - **Abgewiesen wird nach Laenge und nach Form.** Mehrteilige Aufrufe mit `&&` fallen oft,
   dieselben Befehle einzeln gehen durch. Ein fuehrendes `cd` laesst den ganzen Aufruf
   fallen -- `git -C <pfad>` statt `cd`. `2>&1 > datei` verliert den Fehlerstrom.
@@ -128,6 +129,8 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
   0 gruen, 1 Befund, 2 Selbsttest kaputt. **Nach dem eigenen Schreiben noch einmal fahren.**
 - **`aufgaben/` ist auf der *zitierenden* Seite ausgenommen**; `UNGELESENE_ORDNER`
   (`bau`, `befunde`) betrifft nur die Zielseite.
+- **Die Riegelzahl vor dem ersten Schreiben messen.** In 0100 stand die 47 nur fuer den
+  Stand danach; der Vergleich war nicht mehr zu haben.
 - **Ein Abschnittsname der eigenen Datei im Zitat erzeugt eine "uebergangene" Fundstelle**,
   keinen Befund -- `parameter.toml:11` tut das seit 0009, mein Block ab 0150 ebenso. Den
   Dokumentnamen danebenzuschreiben waere die schlechtere Wahl: Der Riegel suchte dann eine
@@ -135,12 +138,9 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
 
 ## Was 0150 falsch zitiert hat (2026-09-06, an den Projektmanager)
 
-- **"Klasse 3 steht in technik.md Zeile 2212"** -- dort steht "Parameterschluessel, T27".
-  Die Klasse steht in **2172**. Der Kommentar zitiert deshalb 2172.
-- **"hub fuer die Regulierung geht nach T48 Zeile 2091 bis 10"** -- die Spalte heisst
-  **"Klasse (T5)"**; die 10 ist die Skalenklasse Instrumentenstufe, kein Hoechstwert. Der
-  Wertebereich ist `0 ... regulierung_stufen`. Die Fehllesung haette zu einer erfundenen
-  Obergrenze gefuehrt -- genau das, wovor dasselbe Paket warnt.
+- Zwei Belege des Pakets waren falsch: T5 Klasse 3 steht in `technik.md` **2172**, nicht
+  2212; und die 10 in T48 Zeile 2091 ist die Spalte "Klasse (T5)", kein Hoechstwert -- der
+  Wertebereich ist `0 ... regulierung_stufen`. Beides ist in `parameter.toml` berichtigt.
 
 ## Offene Faehrten
 
@@ -162,7 +162,11 @@ Aeltere Fassungen: `datenbauer-2026-09-02*.md` bis `-2026-09-05-4.md`.*
   weiter offen.
 - **Leseregel 3 in `reihen.toml` regelt den faktorlosen Block nur fuer `ungemessen`.**
   Reihe 10 Schritt 2 (`verkettung`) traegt ebenfalls keinen `faktor`. Gemeldet.
-- **0017:** Reihen 17, 18 und 19 haben keine Quelle; Reihe 16 erbt das schwaechere Urteil.
+- **0017/0100:** Reihen 17-19 haben keine Quelle; das steht jetzt als Aussage in
+  `namensnennung.vollstaendigkeit`. Unsicher: ob der Satz als Blattwert richtig steht statt
+  als Kommentar, und ob Reihe 16 in die Weltbankliste gehoert -- sie hat keine eigene
+  Quelle, aber ihr `N` kommt aus zwei Weltbankreihen. Ich habe sie aufgenommen, weil die
+  ausgelieferten Werte zaehlen und nicht der Bestand; das Paket liess beides zu.
 - **0022:** Drei `Source`-Wortlaute tragen dieselbe Umbruch-Ersetzung ohne Vermerk.
 - **Die Klasse-4-Frage** steht seit 0035 im Wortlaut in `parameter.toml`: Traegt T5
   Klasse 4 ("0 bis 10.000") ihren Deckel auch fuer einen Regler? Fuenf Schluessel daran.
