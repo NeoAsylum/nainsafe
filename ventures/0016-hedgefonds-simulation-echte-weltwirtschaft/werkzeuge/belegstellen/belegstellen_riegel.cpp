@@ -2263,6 +2263,153 @@ std::size_t selbsttest_zielart() {
     return falsch;
 }
 
+// ---------------------------------------------------------------------------
+// Was aus der Ortsfrage wird -- Paket 0147
+// ---------------------------------------------------------------------------
+//
+// **Die Luecke, um derentwillen dieses Paket existiert.** `ZIELFAELLE` oben ruft
+// `zielart` unmittelbar auf und misst, welche Art ein Ort hat. Was der Lauf ueber den
+// Bestand daraus macht -- drei verschiedene Gruende, und im Fall *tot* stattdessen ein
+// Befund samt einer Zaehlregel --, hat bis zu diesem Paket kein Fall gehalten. Dieselbe
+// Bauart und dieselbe Lehre wie bei `URTEILSFAELLE` (Paket 0106): Die Luecke sitzt in
+// der Verdrahtung und nicht im Baustein, und ein Riegel, dessen Verdrahtung kein Test
+// haelt, sieht in jedem Lauf aus wie einer, der prueft.
+
+/// Was mit einer Fundstelle geschieht, deren Ort bestimmt ist.
+enum class Ortsausgang {
+    Nachschlagen,  ///< im Bestand weiter -- die Zieldatei wird aufgeschlagen
+    Uebergangen,   ///< der Grund steht fest, bewertet wird die Stelle nicht
+    TotesZiel      ///< Befund: es gibt den genannten Ort unter keiner Wurzel
+};
+
+struct Ortsurteil {
+    Ortsausgang ausgang = Ortsausgang::Nachschlagen;
+    /// Leer, ausser bei `Uebergangen`.
+    std::string grund;
+};
+
+/// Der Schritt von der Art zum Ausgang, als eigener Aufruf -- damit `ORTSFAELLE` ihn
+/// halten kann und der Selbsttest **denselben** Weg misst wie der Lauf ueber den
+/// Bestand. Der Name steht im Grund, weil ein Grund ohne ihn den naechsten Leser zur
+/// Suche zwingt.
+Ortsurteil beurteile_ort(Zielart art, const std::string& name) {
+    switch (art) {
+        case Zielart::Ausserhalb:
+            return Ortsurteil{Ortsausgang::Uebergangen,
+                              "Ziel ausserhalb beider Wurzeln: " + name};
+        case Zielart::Ungelesen:
+            return Ortsurteil{Ortsausgang::Uebergangen,
+                              "Ziel in einem mit Absicht ungelesenen Ordner: " + name};
+        case Zielart::Tot:
+            return Ortsurteil{Ortsausgang::TotesZiel, std::string()};
+        case Zielart::Gelesen:
+            break;
+    }
+    return Ortsurteil{Ortsausgang::Nachschlagen, std::string()};
+}
+
+/// Zaehlt eine Stelle mit diesem Ausgang als Zitat? **Eigener Aufruf, und das ist der
+/// heikelste Teil dieses Pakets.** Am toten Ziel haengt eine Zaehlregel: Die Stelle
+/// zaehlt als Zitat, aber nicht als aufgeloest -- nur so bleibt der Satz wahr, dass
+/// ungleiche Zahlen einen roten Lauf bedeuten. Stuende die Regel weiter als blosse
+/// Zeile im Lauf, koennte sie still falsch werden; so hat sie einen Fall.
+bool zaehlt_als_zitat(Ortsausgang wie) { return wie == Ortsausgang::TotesZiel; }
+
+struct Ortsfall {
+    Zielart art;
+    /// Der genannte Name, so wie ihn der Lauf uebergibt. Er muss im Grund wieder
+    /// auftauchen -- ohne diese Haelfte bliebe ein fest eingebauter Grund gruen.
+    std::string_view name;
+    Ortsausgang erwartet;
+    /// Leer heisst: es darf kein Grund entstehen.
+    std::string_view erwarteter_grund;
+    bool erwartet_zaehlung;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Ortsfall, 4> ORTSFAELLE = {{
+    {Zielart::Gelesen, "daten/adressen.md", Ortsausgang::Nachschlagen, "", false,
+     "der Regelfall: Alle aufgeloesten Zitate gehen hier durch. Wer den Ausgang "
+     "festnagelt, schlaegt keine einzige Zieldatei mehr auf"},
+    {Zielart::Ausserhalb, "../../CLAUDE.md", Ortsausgang::Uebergangen,
+     "Ziel ausserhalb beider Wurzeln: ../../CLAUDE.md", false,
+     "der Verweis nach draussen. Der Name gehoert in den Grund: Ein Leser, der ihn "
+     "nicht sieht, sucht die Stelle von Hand"},
+    {Zielart::Ungelesen, "befunde/pruefung-0009-parameterdatei-schluessel-runde2-"
+                         "2026-09-02.md",
+     Ortsausgang::Uebergangen,
+     "Ziel in einem mit Absicht ungelesenen Ordner: befunde/pruefung-0009-"
+     "parameterdatei-schluessel-runde2-2026-09-02.md",
+     false,
+     "die einzige Fundstelle dieser Sorte im Bestand, gemessen 2026-09-05. Sie wird "
+     "uebergangen und nicht gezaehlt -- die Gegenprobe zum toten Ziel darunter"},
+    {Zielart::Tot, "spiel-gibt-es-nicht.md", Ortsausgang::TotesZiel, "", true,
+     "der Befund, um dessentwillen Paket 0083 existiert, und der einzige Ausgang mit "
+     "einer Zaehlregel: kein Grund, aber ein Zitat. Wer hier nicht zaehlt, laesst die "
+     "Zahl der Zitate hinter der Zahl der Fundstellen zurueck, ohne dass es auffaellt"},
+}};
+
+/// Die drei Ausgaenge im Klartext, in der Reihenfolge von `Ortsausgang`.
+constexpr std::array<std::string_view, 3> ORTSAUSGANGSNAMEN = {"nachschlagen",
+                                                              "uebergangen",
+                                                              "totes Ziel"};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_ortsurteil() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < ORTSFAELLE.size(); ++k) {
+        const Ortsfall& fall = ORTSFAELLE[k];
+        const Ortsurteil urteil = beurteile_ort(fall.art, std::string(fall.name));
+        const std::size_t gemessen = static_cast<std::size_t>(urteil.ausgang);
+        const std::size_t erwartet = static_cast<std::size_t>(fall.erwartet);
+        // Beide Werte stammen aus `Ortsausgang` und liegen damit unter der Groesse der
+        // Namensliste. Geprueft wird es trotzdem, wie an jeder Grenze dieses Programms.
+        if (gemessen >= ORTSAUSGANGSNAMEN.size() || erwartet >= ORTSAUSGANGSNAMEN.size()) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Ortsfall %zu: ein Ausgang liegt ausserhalb der Namensliste "
+                         "(%zu, erwartet %zu).\n",
+                         k + 1, gemessen, erwartet);
+            continue;
+        }
+        if (gemessen != erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Ortsfall %zu: der Ausgang ist '%.*s', erwartet war '%.*s'.\n"
+                         "      Name:     %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(ORTSAUSGANGSNAMEN[gemessen].size()),
+                         ORTSAUSGANGSNAMEN[gemessen].data(),
+                         static_cast<int>(ORTSAUSGANGSNAMEN[erwartet].size()),
+                         ORTSAUSGANGSNAMEN[erwartet].data(),
+                         static_cast<int>(fall.name.size()), fall.name.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (urteil.grund != std::string(fall.erwarteter_grund)) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Ortsfall %zu: der Grund ist '%s', erwartet war '%.*s'.\n"
+                         "      Name:     %.*s\n      Herkunft: %.*s\n",
+                         k + 1, urteil.grund.c_str(),
+                         static_cast<int>(fall.erwarteter_grund.size()),
+                         fall.erwarteter_grund.data(),
+                         static_cast<int>(fall.name.size()), fall.name.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (zaehlt_als_zitat(urteil.ausgang) != fall.erwartet_zaehlung) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Ortsfall %zu: die Stelle zaehlt %sals Zitat, erwartet war das "
+                         "Gegenteil.\n      Name:     %.*s\n      Herkunft: %.*s\n",
+                         k + 1, fall.erwartet_zaehlung ? "nicht " : "",
+                         static_cast<int>(fall.name.size()), fall.name.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
+}
+
 struct Zitatbefund {
     std::string datei;
     std::size_t zeilennummer = 0;
@@ -2559,6 +2706,201 @@ std::size_t name_ohne_anfuehrung(const Absatz& absatz, std::size_t i, std::strin
     }
     roh = std::string(text.substr(j, ende - j));
     return ende - i;
+}
+
+// ---------------------------------------------------------------------------
+// Welche der drei Formen gilt -- Paket 0147
+// ---------------------------------------------------------------------------
+//
+// **Die zweite Luecke dieses Pakets.** Jede der drei Formen hat eigene Faelle --
+// `ZITATFAELLE` fuer die ohne Anfuehrung, `ABSTANDSFAELLE` fuer die mit Wortabstand.
+// Dass sie in **dieser** Reihenfolge gefragt werden, hatte keinen, und der Quelltext
+// nennt die Reihenfolge zugleich "die ganze Vertraeglichkeit dieser Lockerung"
+// (Paket 0086). Eine Regel, an der die Vertraeglichkeit einer Lockerung haengt und die
+// kein Fall haelt, ist eine Behauptung.
+
+/// Welche der drei Formen an einer Fundstelle gilt.
+enum class Zitatform {
+    Keine,           ///< hier beginnt keine Fundstelle
+    MitAnfuehrung,   ///< die Anfuehrung steht unmittelbar hinter dem Wort
+    OhneAnfuehrung,  ///< der blosse Name -- Paket 0079
+    MitAbstand       ///< die Anfuehrung ein bis fuenf Woerter weiter -- Paket 0086
+};
+
+struct Formwahl {
+    Zitatform form = Zitatform::Keine;
+    /// Um wie viel die Leseschleife **ueber das Schluesselwort hinaus** weiterrueckt.
+    std::size_t zitatteil = 0;
+    /// Der gefundene Wortlaut, noch nicht normiert. Leer, wenn keine Form gilt.
+    std::string roh;
+};
+
+/// Die Wahl der Form als eigener Aufruf -- damit `FORMFAELLE` die Reihenfolge halten
+/// kann und der Selbsttest denselben Weg misst wie der Lauf ueber den Bestand.
+///
+/// **Warum die Reihenfolge so ist.** Der Abstand null ist die sichere Form: Dort
+/// kuendigt das Schluesselwort selbst an, was folgt. Erst wenn weder sie noch der
+/// blosse Name dort steht, wird weiter gesucht -- so aendert die Lockerung aus Paket
+/// 0086 keine einzige Fundstelle, die der Riegel vorher schon eingeordnet hat, sondern
+/// nur solche, die er gar nicht sah.
+///
+/// **Warum die Form ohne Anfuehrung nicht weiterrueckt.** Weitergerueckt wird bei ihr
+/// nur ueber das Schluesselwort und nicht ueber den Namen: Steht im Namen ein zweites
+/// Schluesselwort, soll es seine eigene Fundstelle bleiben -- Paket 0079. Fall 3 unten
+/// haelt die Null fest.
+Formwahl waehle_zitatform(const Absatz& absatz, std::size_t hinter) {
+    Formwahl wahl;
+    const std::size_t mit = ueberschrift_hinter(absatz.text, hinter, wahl.roh);
+    if (mit != 0) {
+        wahl.form = Zitatform::MitAnfuehrung;
+        wahl.zitatteil = mit;
+        return wahl;
+    }
+    if (name_ohne_anfuehrung(absatz, hinter, wahl.roh) != 0) {
+        wahl.form = Zitatform::OhneAnfuehrung;
+        wahl.zitatteil = 0;
+        return wahl;
+    }
+    const std::size_t abstand = ueberschrift_mit_abstand(absatz.text, hinter, wahl.roh);
+    if (abstand != 0) {
+        wahl.form = Zitatform::MitAbstand;
+        wahl.zitatteil = abstand;
+        return wahl;
+    }
+    wahl.roh.clear();
+    return wahl;
+}
+
+// **Was hier gemessen ist und was nicht, ausgeschrieben.** Zwei der drei Vertauschungen
+// reissen je einen Fall unten: die unmittelbare Anfuehrung nach hinten (Fall 2), die
+// Form ohne Anfuehrung nach hinten (Fall 3). Die dritte -- die ersten beiden
+// untereinander -- reisst **nichts**, und das ist kein fehlender Fall, sondern eine
+// Unmoeglichkeit: Beide koennen an derselben Stelle nie zugleich zutreffen. Die erste
+// verlangt hinter dem Leerraum ein Anfangszeichen aus `KLAMMERN`, die zweite dort einen
+// Grossbuchstaben oder eine Ziffer (`ist_namensanfang`), und keines der elf
+// Anfangszeichen ist eines von beiden. Diese Zeilen halten den Ausgang fest, nicht
+// seinen Grund -- dieselbe Bauart wie beim letzten Fall in `ZIELFAELLE`.
+//
+// Die Schluesselwoerter sind maskiert wie in den Tabellen davor (`\164` ist `t`): Zur
+// Laufzeit steht das Wort da, im Dateitext nicht.
+
+struct Formfall {
+    std::string_view zeile;
+    Zitatform erwartet;
+    /// Der normierte Wortlaut. Leer heisst: keiner.
+    std::string_view erwarteter_name;
+    /// Um wie viel die Leseschleife hinter dem Schluesselwort weiterrueckt.
+    std::size_t erwarteter_teil;
+    std::string_view herkunft;
+};
+
+constexpr std::array<Formfall, 4> FORMFAELLE = {{
+    // --- Jede Form einmal als die gewaehlte ----------------------------------
+    {"Absa\164z sagt es so: \342\200\236Reihe 2\"", Zitatform::MitAbstand, "Reihe 2", 24,
+     "gebaut: die dritte Form allein. Keine der beiden unmittelbaren trifft -- hinter "
+     "dem Wort steht ein Kleinbuchstabe. Ohne diesen Fall gilt keiner der vier "
+     "Ausgaenge dieser Wahl als gewaehlt"},
+
+    // --- Die Reihenfolge, um derentwillen dieses Paket existiert --------------
+    {"Absa\164z \342\200\236Reihe 1\" und \342\200\236Reihe 2\"",
+     Zitatform::MitAnfuehrung, "Reihe 1", 12,
+     "gebaut: **beide** Anfuehrungen liegen in Reichweite. Die unmittelbare gewinnt; "
+     "wird sie nach hinten gestellt, nimmt die zweite Anfuehrung ihr das Zitat weg und "
+     "der gesuchte Wortlaut ist 'Reihe 2'"},
+    {"Absa\164z Reihe 1, genannt \342\200\236Reihe 2\"", Zitatform::OhneAnfuehrung,
+     "Reihe 1", 0,
+     "gebaut: der blosse Name **und** eine Anfuehrung drei Woerter weiter. Der Name "
+     "gewinnt; wird er nach hinten gestellt, greift die Lockerung aus Paket 0086 auf "
+     "eine Stelle durch, die der Riegel vorher schon eingeordnet hatte -- genau das, "
+     "was ihre Begruendung ausschliesst. Die Null haelt zugleich fest, dass die "
+     "Leseschleife hier nicht ueber den Namen hinwegrueckt"},
+
+    // --- Und die Stelle, die keine ist ---------------------------------------
+    {"Absa\164z ohne einen namen und ohne zeichen", Zitatform::Keine, "", 0,
+     "gebaut: das Schluesselwort ohne Fundstelle. Der haeufigste Ausgang im Bestand "
+     "ueberhaupt -- ohne ihn bliebe ein 'immer eine Form' gruen"},
+}};
+
+/// Die vier Formen im Klartext, in der Reihenfolge von `Zitatform`.
+constexpr std::array<std::string_view, 4> FORMNAMEN = {"keine", "mit Anfuehrung",
+                                                       "ohne Anfuehrung",
+                                                       "mit Wortabstand"};
+
+/// Wie viele Faelle nicht wie erwartet ausgingen. Die Abweichungen stehen auf `stderr`.
+std::size_t selbsttest_zitatform() {
+    std::size_t falsch = 0;
+    for (std::size_t k = 0; k < FORMFAELLE.size(); ++k) {
+        const Formfall& fall = FORMFAELLE[k];
+        const Absatz absatz = absatz_aus_fall(fall.zeile);
+        // Das Schluesselwort wird gesucht wie im Ernstfall und nicht abgezaehlt --
+        // dieselbe Vorsorge wie bei `ZITATFAELLE`: Sonst pruefte der Fall eine Stelle,
+        // die `schluessellaenge` gar nicht findet.
+        std::size_t hinter = 0;
+        bool gefunden = false;
+        for (std::size_t i = 0; i < absatz.text.size() && !gefunden; ++i) {
+            const std::size_t laenge = schluessellaenge(absatz.text, i);
+            if (laenge > 0) {
+                hinter = i + laenge;
+                gefunden = true;
+            }
+        }
+        if (!gefunden) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Formfall %zu: kein Schluesselwort getroffen -- vermutlich ist "
+                         "die Maskierung verrutscht.\n      Zeile: %.*s\n",
+                         k + 1, static_cast<int>(fall.zeile.size()), fall.zeile.data());
+            continue;
+        }
+        const Formwahl wahl = waehle_zitatform(absatz, hinter);
+        const std::size_t gemessen = static_cast<std::size_t>(wahl.form);
+        const std::size_t erwartet = static_cast<std::size_t>(fall.erwartet);
+        if (gemessen >= FORMNAMEN.size() || erwartet >= FORMNAMEN.size()) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Formfall %zu: eine Form liegt ausserhalb der Namensliste "
+                         "(%zu, erwartet %zu).\n",
+                         k + 1, gemessen, erwartet);
+            continue;
+        }
+        if (gemessen != erwartet) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Formfall %zu: die Form ist '%.*s', erwartet war '%.*s'.\n"
+                         "      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, static_cast<int>(FORMNAMEN[gemessen].size()),
+                         FORMNAMEN[gemessen].data(),
+                         static_cast<int>(FORMNAMEN[erwartet].size()),
+                         FORMNAMEN[erwartet].data(),
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        const std::string gesucht =
+            wahl.form == Zitatform::Keine ? std::string() : normiere(wahl.roh);
+        if (gesucht != std::string(fall.erwarteter_name)) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Formfall %zu: der gesuchte Wortlaut ist '%s', erwartet war "
+                         "'%.*s'.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, gesucht.c_str(),
+                         static_cast<int>(fall.erwarteter_name.size()),
+                         fall.erwarteter_name.data(),
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+            continue;
+        }
+        if (wahl.zitatteil != fall.erwarteter_teil) {
+            ++falsch;
+            std::fprintf(stderr,
+                         "Formfall %zu: die Leseschleife rueckt um %zu weiter, erwartet "
+                         "waren %zu.\n      Zeile:    %.*s\n      Herkunft: %.*s\n",
+                         k + 1, wahl.zitatteil, fall.erwarteter_teil,
+                         static_cast<int>(fall.zeile.size()), fall.zeile.data(),
+                         static_cast<int>(fall.herkunft.size()), fall.herkunft.data());
+        }
+    }
+    return falsch;
 }
 
 // ---------------------------------------------------------------------------
@@ -3477,29 +3819,18 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                 ++i;
                 continue;
             }
-            std::string roh;
-            bool ohne_anfuehrung = false;
-            std::size_t zitatteil = ueberschrift_hinter(absatz.text, i + schluessel, roh);
-            if (zitatteil == 0) {
-                // Paket 0079: die Form ohne Anfuehrung. Weitergerueckt wird danach nur
-                // ueber das Schluesselwort und nicht ueber den Namen -- steht im Namen
-                // ein zweites Schluesselwort, soll es seine eigene Fundstelle bleiben.
-                if (name_ohne_anfuehrung(absatz, i + schluessel, roh) == 0) {
-                    // Paket 0086: erst jetzt, wenn beide unmittelbaren Formen nichts
-                    // hergeben, wird die Anfuehrung mit Wortabstand gesucht. Die
-                    // Reihenfolge ist die ganze Vertraeglichkeit dieser Lockerung.
-                    zitatteil = ueberschrift_mit_abstand(absatz.text, i + schluessel, roh);
-                    if (zitatteil == 0) {
-                        i += schluessel;
-                        continue;
-                    }
-                } else {
-                    ohne_anfuehrung = true;
-                    zitatteil = 0;
-                }
+            // Welche der drei Formen gilt, steht seit Paket 0147 als eigener Aufruf
+            // da, damit `FORMFAELLE` ihre Reihenfolge halten kann -- die Begruendung
+            // der Reihenfolge und das, was an ihr gemessen ist, stehen dort.
+            const Formwahl wahl = waehle_zitatform(absatz, i + schluessel);
+            if (wahl.form == Zitatform::Keine) {
+                i += schluessel;
+                continue;
             }
+            const bool ohne_anfuehrung = wahl.form == Zitatform::OhneAnfuehrung;
+            const std::size_t zitatteil = wahl.zitatteil;
             const std::size_t nummer = absatz.zeile[i];
-            const std::string gesucht = normiere(roh);
+            const std::string gesucht = normiere(wahl.roh);
 
             std::string name;
             bool netzadresse = false;
@@ -3543,21 +3874,22 @@ void pruefe_zitate(const fs::path& pfad, const std::string& anzeigename,
                 const Zielbestand::const_iterator es =
                     bestand.find(std::string(basisname(name)));
                 const Zielart ort = zielart(name, es != bestand.end(), ungelesene);
-                if (ort == Zielart::Ausserhalb) {
-                    grund = "Ziel ausserhalb beider Wurzeln: " + name;
-                } else if (ort == Zielart::Ungelesen) {
-                    grund = "Ziel in einem mit Absicht ungelesenen Ordner: " + name;
-                } else if (ort == Zielart::Tot) {
-                    // Der Befund, um dessentwillen Paket 0083 existiert: Es gibt unter
-                    // keiner der beiden Wurzeln einen Ort dieses Namens. Gezaehlt wird
-                    // die Stelle als Zitat, aber nicht als aufgeloest -- so bleibt der
-                    // Satz wahr, dass ungleiche Zahlen einen roten Lauf bedeuten.
-                    ++zaehlwerk.zitate;
-                    if (ohne_anfuehrung) {
-                        ++zaehlwerk.ohne_anfuehrung;
+                // Der Schritt von der Art zum Ausgang steht seit Paket 0147 als
+                // eigener Aufruf da, damit `ORTSFAELLE` ihn halten kann -- die
+                // Zaehlregel des toten Ziels eingeschlossen. Begruendung dort.
+                const Ortsurteil ortsurteil = beurteile_ort(ort, name);
+                if (ortsurteil.ausgang != Ortsausgang::Nachschlagen) {
+                    if (zaehlt_als_zitat(ortsurteil.ausgang)) {
+                        ++zaehlwerk.zitate;
+                        if (ohne_anfuehrung) {
+                            ++zaehlwerk.ohne_anfuehrung;
+                        }
                     }
-                    tote_ziele.push_back(
-                        Zitatbefund{anzeigename, nummer, name, gesucht});
+                    if (ortsurteil.ausgang == Ortsausgang::TotesZiel) {
+                        tote_ziele.push_back(
+                            Zitatbefund{anzeigename, nummer, name, gesucht});
+                    }
+                    grund = ortsurteil.grund;
                 } else if (es->second.anzahl != 1) {
                     grund = "Zielname mehrdeutig, " + std::to_string(es->second.anzahl)
                             + " Dateien heissen so: " + name;
@@ -3633,6 +3965,8 @@ int main(int argc, char** argv) {
                                        + selbsttest_ohne_anfuehrung()
                                        + selbsttest_urteil()
                                        + selbsttest_zielart()
+                                       + selbsttest_ortsurteil()
+                                       + selbsttest_zitatform()
                                        + selbsttest_abstand()
                                        + selbsttest_satzgrenze()
                                        + selbsttest_ordnung();
@@ -3644,18 +3978,20 @@ int main(int argc, char** argv) {
                      "verfehlt, misst auch fremde nicht.\n",
                      fehlgeschlagen,
                      NAMENSFAELLE.size() + ZITATFAELLE.size() + URTEILSFAELLE.size()
-                         + ZIELFAELLE.size() + ABSTANDSFAELLE.size()
-                         + SATZFAELLE.size() + ORDNUNGSFAELLE.size());
+                         + ZIELFAELLE.size() + ORTSFAELLE.size() + FORMFAELLE.size()
+                         + ABSTANDSFAELLE.size() + SATZFAELLE.size()
+                         + ORDNUNGSFAELLE.size());
         return 2;
     }
     std::fprintf(stdout,
                  "belegstellen_riegel, Selbsttest: %zu Faelle zur Suche nach links, %zu "
                  "zur Form\nohne Anfuehrung, %zu zum Urteilsschritt, %zu zur Ortsfrage, "
-                 "%zu zum Wortabstand samt\nSuche nach rechts, %zu zur Satzgrenze "
-                 "nach links und %zu zur Ausgabeordnung,\nalle wie erwartet.\n",
+                 "%zu zu ihrem Ausgang,\n%zu zur Wahl der Zitatform, %zu zum Wortabstand "
+                 "samt Suche nach rechts, %zu zur\nSatzgrenze nach links und %zu zur "
+                 "Ausgabeordnung, alle wie erwartet.\n",
                  NAMENSFAELLE.size(), ZITATFAELLE.size(), URTEILSFAELLE.size(),
-                 ZIELFAELLE.size(), ABSTANDSFAELLE.size(), SATZFAELLE.size(),
-                 ORDNUNGSFAELLE.size());
+                 ZIELFAELLE.size(), ORTSFAELLE.size(), FORMFAELLE.size(),
+                 ABSTANDSFAELLE.size(), SATZFAELLE.size(), ORDNUNGSFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     if (argumente.size() != 2 && argumente.size() != 3) {
