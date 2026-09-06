@@ -319,50 +319,49 @@ the World Bank's CC-BY licence to third-party holdings. Important for the next s
 World Bank origin is **no** carte blanche; the licence hangs on the dataset, not on the
 sender.
 
-## Der Vorschlag
+## The proposal
 
-**Vier Quellen, arbeitsteilig:**
+**Four sources, with a division of labour:**
 
-| Rolle im Modell | Quelle | Lizenz |
+| Role in the model | Source | Licence |
 |---|---|---|
-| BIP, Bevoelkerung, Inflation, Handelsvolumen, grobe Sektorstruktur | Weltbank WDI | CC BY 4.0 |
-| Leitzins, Wechselkurs, Staatsschuld, Haushaltssaldo, Handelsaggregate | IWF (IFS, WEO, DOTS) | eigene Bedingungen, gewerblicher Verkauf erlaubt |
-| bilaterale Handelsstroeme nach Ware | CEPII BACI | Etalab Open Licence 2.0 |
-| Produktivitaet, Kapitalstock, Preisniveaus, Startjahrgaenge ab 1950 | Penn World Table 11.0 | CC BY 4.0 |
+| GDP, population, inflation, trade volume, coarse sector structure | World Bank WDI | CC BY 4.0 |
+| policy rate, exchange rate, government debt, fiscal balance, trade aggregates | IMF (IFS, WEO, DOTS) | own conditions, commercial sale permitted |
+| bilateral trade flows by commodity | CEPII BACI | Etalab Open Licence 2.0 |
+| productivity, capital stock, price levels, starting vintages from 1950 | Penn World Table 11.0 | CC BY 4.0 |
 
-**Was dafuer zu tun ist -- Namensnennung, konkret.** Alle vier Lizenzen verlangen sie, und
-drei von vier verlangen zusaetzlich die Kennzeichnung von Aenderungen. Ein Aggregieren auf
-zwoelf Laender und sechs Sektoren und ein Umrechnen in Ganzzahlen ist eine Aenderung.
-Deshalb an drei Stellen:
+**What that requires -- attribution, concretely.** All four licences demand it, and three
+of four additionally demand the marking of changes. Aggregating to twelve countries and
+six sectors and converting to integers is a change. Hence in three places:
 
-1. **Datei `LIZENZEN.md` neben der ausgelieferten Datendatei**, mit je Quelle: Name,
-   Lizenzbezeichnung, Link auf den Lizenztext, Link auf den Datensatz, Abrufdatum des
-   verwendeten Standes und die vorgeschriebene Zitierung (bei PWT die Feenstra-Inklaar-
-   Timmer-Angabe im Wortlaut).
-2. **Im Spiel selbst, auf einer Seite „Datenquellen"**, erreichbar aus dem Hauptmenue --
-   nicht nur in einer Textdatei, weil ein Kaeufer die Zuordnung dort sucht, wo er die
-   Zahlen sieht.
-3. **Ein Satz zur Bearbeitung**, sinngemaess: *Die Ausgangsdaten wurden auf zwoelf Laender
-   und sechs Sektoren aggregiert und fuer die Simulation in ganzzahlige Einheiten
-   umgerechnet. Die Quellen verantworten diese Bearbeitung nicht.* Fuer die OECD-Fassung
-   dieses Hinweises gaebe es einen vorgeschriebenen Wortlaut -- fuer die vier gewaehlten
-   Quellen nicht, der Sinn genuegt.
+1. **A file `LIZENZEN.md` next to the shipped data file**, with, per source: name,
+   licence designation, link to the licence text, link to the dataset, retrieval date of
+   the data state used and the prescribed citation (for PWT the Feenstra-Inklaar-Timmer
+   reference in its literal wording).
+2. **In the game itself, on a „Datenquellen" (data sources) page**, reachable from the
+   main menu -- not only in a text file, because a buyer looks for the mapping where they
+   see the numbers.
+3. **One sentence on the processing**, to this effect: *The source data were aggregated
+   to twelve countries and six sectors and converted to integer units for the simulation.
+   The sources bear no responsibility for this processing.* For the OECD version of this
+   notice there would be a prescribed wording -- for the four chosen sources there is
+   none; the sense suffices.
 
-**Dazu der IWF-Satz**, wegen der mehrdeutigen Klausel oben: *Die verwendeten
-IWF-Statistikdaten sind beim IWF kostenfrei erhaeltlich.* Ein Satz, der eine offene Frage
-schliesst, ist billiger als die Frage.
+**Plus the IMF sentence**, because of the ambiguous clause above: *The IMF statistical
+data used are available free of charge from the IMF.* A sentence that closes an open
+question is cheaper than the question.
 
-**Was ausdruecklich nicht noetig ist:** keine Registrierung, kein Abonnement, keine
-Rueckfrage, keine Gebuehr -- also keine Gate-Vorlage nach Hausregel 1 fuer die Daten. Die
-einzige bekannte Ausgabe des Vorhabens bleibt die Steam-Direct-Gebuehr aus der Idee.
+**What is expressly not needed:** no registration, no subscription, no inquiry, no fee --
+hence no gate template under house rule 1 for the data. The venture's only known expense
+remains the Steam Direct fee from the idea.
 
-**Und eine Konstruktionsauflage, die aus den Lizenzen folgt:** Der ausgelieferte
-Datenstand muss **eingefroren und mit Abrufdatum versehen** sein. Nicht wegen der Lizenz,
-sondern wegen der vierten Pruefachse: Der IWF revidiert WEO-Reihen rueckwirkend, BACI
-revidiert das jeweils letzte Jahr, die Weltbank aktualisiert jaehrlich. Ein
-Regressionstest gegen eine Sollreihe, die sich unter ihm veraendert, ist keiner. Der
-jaehrliche Datenaktualisierungslauf aus der Rechnung der Idee erzeugt damit einen neuen,
-eigenstaendig versionierten Jahrgang -- nicht ein Ueberschreiben des alten.
+**And one construction condition that follows from the licences:** the shipped data state
+must be **frozen and stamped with its retrieval date**. Not because of the licence, but
+because of the fourth check axis: the IMF revises WEO series retroactively, BACI revises
+the latest year in each release, the World Bank updates annually. A regression test
+against a target series that changes underneath it is no test. The annual data-update run
+from the idea's calculation thus produces a new, independently versioned vintage -- not
+an overwrite of the old one.
 
 ## Was das Modell braucht und was fehlt
 
