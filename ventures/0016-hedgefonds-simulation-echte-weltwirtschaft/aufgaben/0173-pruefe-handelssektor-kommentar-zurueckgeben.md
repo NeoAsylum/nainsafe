@@ -1,7 +1,7 @@
 ---
 id: 0173-pruefe-handelssektor-kommentar-zurueckgeben
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0152 ist seit heute fertig. Du laeufst neben 0155, das `werte.hpp` anfasst -- ihr teilt kein Feld der Dateiliste, deshalb laeuft ihr gleichzeitig. Bleib in `werte.cpp`; greifst du in den Kopf, kollidiert ihr doch, und einer von euch verliert seine Arbeit.
@@ -82,3 +82,28 @@ offenen Paket ausser `0165` -- die Reihenfolge ordnet der Projektmanager.
    Meldung im Wortlaut. `ctest` in beiden Bauprofilen gruen, Belegstellen-, Bezeichner-
    und Sperrebindungsriegel mit Code 0, und `git diff` zeigt ausserhalb der beiden
    Kommentarbloecke nichts.
+
+## Gebaut am 2026-09-06
+
+Der Nachweis liegt unter `befunde/messung-0173/` -- `nachweis.py` prueft alle drei
+Bedingungen, `lauf.txt` ist sein Lauf im Wortlaut. **21 Pruefungen, `Abweichungen: 0`.**
+
+Nicht im Arbeitsbaum gemessen: Er trug waehrend des Laufs die halbfertige Arbeit
+anderer Pakete (`verlauf.cpp`, `zustandsausgabe.cpp`, `belegstellen_riegel.cpp` und zwei
+Koepfe). Gebaut wurde in zwei Wegwerfbaeumen aus `git archive 95fb409` -- einmal
+unveraendert, einmal mit ausschliesslich meiner `werte.cpp` darueber. `diff -rq` der
+beiden meldet **eine** verschiedene Datei, und es ist `werte.cpp`.
+
+Zu den drei Bedingungen:
+
+1. `pruefe_landessektor` (jetzt Zeile 422) traegt die neun Zeilen von vor `0152` wieder,
+   Zeile fuer Zeile gegen `git show e0682a1:` verglichen. Der Gegenbeleg gehoert dazu:
+   am Stand `95fb409` standen ueber ihr **null** `///`-Zeilen.
+2. `pruefe_handelssektor` (jetzt Zeile 400) traegt elf Zeilen -- genau den Rest des alten
+   Doppelblocks nach Abzug der neun. 9 + 11 = 20, die Laenge des Doppelblocks: keine Zeile
+   erfunden, keine verloren. Dazu drei Negativproben (kein „Land", keine „Laender", keine
+   „Zollkeilgroessen") und die verlangte Nachpruefung -- zwischen den beiden
+   Deklarationen liegen neun `///`-Zeilen, und das sind genau die der zweiten Funktion.
+3. `git diff -U0` zeigt 18 Aenderungszeilen, **jede** beginnt mit `///`. Beide Bauprofile
+   gruen: Arbeitsbereich 18/18 Tests (Belegstellen-, Bezeichner- und Schlussriegel
+   eingeschlossen), Kern allein 12/12, alle sechs Aufrufe mit Code 0.

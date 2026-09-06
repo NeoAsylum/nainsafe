@@ -386,15 +386,6 @@ std::size_t land_nummer(Gebiet land)
     return nummer;
 }
 
-/// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
-/// in der die Pruefung ausloest.
-///
-/// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
-/// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
-/// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
-/// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
-/// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
-/// Schritt, den die Meldung ihm abnehmen soll.
 /// Der Sektor einer Groesse, die es nur fuer die beiden handelbaren gibt -- geprueft
 /// unter dem Namen der Groesse und ohne den Umweg ueber `sektor_index`, das bei einer
 /// Kennung ausserhalb der drei unter fremdem Namen abbraeche.
@@ -419,6 +410,15 @@ void pruefe_handelssektor(const char* groesse, Sektor sektor, const char* grund)
     }
 }
 
+/// Land und Sektor der beiden Zollkeilgroessen, geprueft unter dem Namen der Groesse,
+/// in der die Pruefung ausloest.
+///
+/// Beide lesen einen Weltpreis und einen Zollhub: Es gibt sie nur fuer die vier
+/// spielbaren Laender -- die Restwelt hat nach T15 kein Politikinstrument -- und nur
+/// fuer die zwei handelbaren Sektoren, denn allein die tragen einen Weltpreis. Die
+/// `stelle_*`-Funktionen des Zustands pruefen dasselbe, melden es aber unter ihrem
+/// eigenen Namen; ein Befund, der die Groesse nicht nennt, kostet den Leser genau den
+/// Schritt, den die Meldung ihm abnehmen soll.
 void pruefe_landessektor(const char* groesse, Gebiet land, Sektor sektor)
 {
     const std::size_t g = static_cast<std::size_t>(land);
