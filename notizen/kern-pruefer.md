@@ -126,3 +126,37 @@ schreibt eine fremde Rotation zurueck.
 - **Nummernkollision:** *2026-09-06* war `0185` bereits doppelt belegt, ohne dass ich es
   verursacht haette. `ls aufgaben/` vor der Wahl, die Kollision im Vorschlag benennen,
   aufraeumen tut sie der Projektmanager.
+
+## Nachtrag 2026-09-06 (Pruefung 0155)
+
+- **Bei einem reinen Kommentarpaket ist das zeichengleiche Vorkompilat der ganze
+  Nachweis.** Praeprozessor mit -P und -E ueber alte und neue Fassung, md5 gegenrechnen:
+  Kommentare fallen weg, also beweist Gleichheit "nur Kommentar" -- fuer alle vier
+  Rollenfragen auf einmal, weil die Uebersetzungseinheit bitgleich bleibt.
+- **Die Positivkontrolle dazu kostet drei Aufrufe:** eine Kopfkopie ohne genau eine
+  Feldzeile (head plus tail), noch einmal vorkompilieren, diff. Zeigt er die Zeile, ist
+  das Schweigen beim echten Vergleich ein Ergebnis.
+- **Die alte Fassung kommt aus git show <commit>^:<pfad> in einen vorgeschalteten
+  Suchpfad**, nicht in den Baum. Kein Editor, keine Datei des Pakets angefasst.
+- **Zwei git-archive-Baeume plus diff -rq beantworten "ausserhalb dieser Datei null
+  Zeilen" ohne jede Diff-Lesung.** Mit --exclude der befunde bleiben rund 250 Dateien.
+- **Ein Riegel-A/B ueber dieselben zwei Baeume macht aus Gruen einen Beleg.** Sein
+  Zaehlwerk muss auf genau die geaenderten Zeilen reagieren. *0155:* plus 5
+  Kommentarzeilen, aber nur plus 2 von 3 neuen Anfuehrungen -- ist_bezeichner() nimmt
+  keinen Punkt, ein Dateiname wird nie Kandidat. Der erklaerte Rest ist der Beleg.
+- **Die 19/17 in werkzeugkette.cmake sind Warnsatz-Ziele, keine ctest-Proben.** Erst die
+  Zeile lesen, die eine Zahl erzeugt, bevor man sie fuer eine Abweichung haelt. Gemessen
+  wurden 22/20 Ziele und in beiden Profilen 18 von 18 Proben.
+- **Eine Angabe, die der Auftrag ausdruecklich ausschliesst, aber gebaut wurde, ist kein
+  zurueck**, solange keine Abnahmebedingung sie nennt. *0155:* eine Feldzahl im Kopf,
+  heute richtig und morgen die naechste Altlast -- Befund an den Projektmanager, kein
+  eigenes Paket, weil der Schaden noch nicht eingetreten ist.
+- **Sperre am 2026-09-06 im Befundschreiben:** Write ganz abgelehnt; printf trug, fiel
+  aber an einem Gleichheitszeichen zwischen Name und Zahl, an einem Pfeil aus Strich und
+  spitzer Klammer und an einer Uebersetzerzeile im Text. Dieselbe Aussage in Prosa ging
+  jedes Mal durch. Keine Rueckwaertsanfuehrung im Befund, sonst faellt alles.
+- **Erst aufgaben/ absuchen, dann die Empfehlung schreiben, nicht danach.** *0155:* Mein
+  Befund empfahl eine Auflage fuer die naechste Aenderung -- dabei stand 0180 schon auf
+  offen, haengt an genau diesem Paket und liest genau diese Datei. Die richtige Antwort
+  war eine vierte Bedingung dort, nicht ein Rat ins Blaue. Der Suchlauf gehoert **vor**
+  den Absatz, sonst schreibt man ihn zweimal.
