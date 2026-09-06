@@ -102,6 +102,11 @@ def main() -> int:
     verkettet |= baulauf.BAUROLLEN | baulauf.PRUEFROLLEN
     verkettet |= set(baulauf.REVIEW.values())
     verkettet |= {"projektmanager", "geschaeftsfuehrer", "spielentwerfer", "datenkurator"}
+    # Der Uebersetzer haengt an keiner der drei Ketten -- er hat einen eigenen Runner,
+    # der auf Zuruf laeuft, bis der bleibende Bestand englisch ist. Danach ist er eine
+    # Waise mit Zweck und keine vergessene Datei.
+    import uebersetzungslauf  # noqa: E402,F401
+    verkettet |= {"uebersetzer"}
     vorhanden = {d.stem for d in rollen}
     for r in sorted(verkettet - vorhanden):
         befunde.append(f"KETTE: ruft `{r}` auf, aber agents/rollen/{r}.md fehlt")

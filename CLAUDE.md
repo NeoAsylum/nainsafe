@@ -48,7 +48,7 @@ may read and write; it is more specific than anything here, and it wins. Never w
 outside your target directory, even if you see a bug there — report it in your own output
 instead.
 
-The full role table for every phase is in `agents/rollen/UEBERSICHT.md`. You do not need
+The full role table for every phase is in `agents/rollen-uebersicht.md`. You do not need
 it: you need your own role file.
 
 **No shell.** No role has `Bash`. Measured on 2026-09-06: with `--permission-mode
@@ -157,6 +157,6 @@ proposes which one should die.
 ---
 
 *Rewritten 2026-09-06: English, and the search-phase role table moved to
-`agents/rollen/UEBERSICHT.md`. The previous German version is
+`agents/rollen-uebersicht.md`. The previous German version is
 `archiv/CLAUDE-2026-09-06-deutsch.md`. Reason: this file is read in every run — 14,881
 characters × 1,696 runs so far. What is read once belongs elsewhere.*
