@@ -149,3 +149,19 @@ archiv/daten-pruefer-2026-09-05-4.md.*
   sich selbst vorschreibt. Erste Kopfzahlen dieser Datei, die stimmten.
 - **`Write` erneut abgelehnt, Heredoc in drei Teilen angenommen** (`open(p,"w")` dann `"a"`).
   Zehnter Fall in Folge.
+
+### 2026-09-06, Paket 0100 (`namensnennung`, Reihen 14/16 in `reihen.toml`) -- `geprueft`, 1 Befund
+
+- **Umgekehrte Werkzeuglage, elfter Fall:** `Write` ging ueberall (`befunde/`, `aufgaben/`,
+  `notizen/`), der Heredoc wurde abgelehnt, ebenso `sed`. Erst `Write`, dann
+  `python3 <datei>` -- billigster Weg. Die Sperren schwanken wirklich; nie voraussetzen.
+- **Vier kleine Skripte statt eines grossen** (Bilanz, Muster, Inhalt, Kommentare), jedes
+  mit Blob und Pfad als Argument. Ein abgelehnter Aufruf kostet dann nicht die anderen.
+- **Eine neu geschriebene Regel gegen die ganze Datei pruefen, nicht gegen die Reihen des
+  Pakets.** 0100 schrieb "unter jeder Quelle, aus der die ausgelieferten Werte entstehen";
+  ich habe alle 19 Reihen nach fremder Bezugsgroesse durchgesehen -- Reihe 7 zieht Reihe 6
+  (beide Weltbank), 1/5/6 nennen PWT nur als Ausweichweg. Kein zweiter Fall. Sonst waere
+  die Regel selbst ungeprueft geblieben.
+- **"Dieselben drei" ist eine Mengengleichheit.** Leer sind vier `lizenzbeleg`, nicht drei.
+  Der Satz danach nennt Reihe 16 selbst -- deshalb `geprueft` plus Vorschlag 0170, und der
+  **ausdruecklich als Beifahrer**: ein Halbsatz rechtfertigt keine volle Selbstmessung.
