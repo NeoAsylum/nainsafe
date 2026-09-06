@@ -1,1 +1,0 @@
-/usr/bin/c++ -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/vorrat_verfahren_probe.dir/link.d CMakeFiles/vorrat_verfahren_probe.dir/test/vorrat_verfahren_probe.cpp.o -o vorrat_verfahren_probe  libpruefstand_geprueft.a

@@ -1,1 +1,0 @@
-/usr/bin/c++ -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/pruefsumme_probe.dir/link.d CMakeFiles/pruefsumme_probe.dir/test/pruefsumme_probe.cpp.o -o pruefsumme_probe  libkern_geprueft.a

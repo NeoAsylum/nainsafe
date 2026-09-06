@@ -1,1 +1,0 @@
-/usr/bin/c++ -fsanitize=undefined,address -fno-sanitize-recover=all -Wl,--dependency-file=CMakeFiles/belegstellen_riegel.dir/link.d CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o -o belegstellen_riegel
