@@ -1033,7 +1033,7 @@ checksums on the same machine. The byte form is written field by field, and the
 
 ## 3. Trennung von Modell und Darstellung
 
-**T13 — Die Bausteinrichtung ist die Trennung, und CMake erzwingt sie.**
+**T13 — The component direction is the separation, and CMake enforces it.**
 
 ```
 kern            (keine Abhängigkeit)      Zustand, Regeln, Kette, Festkomma, Zufall, Prüfsumme
@@ -1048,59 +1048,59 @@ oberflaeche  -> schnittstelle             Binärprogramm (vertagt, ADR 0010)
 werkzeuge/aufbereitung -> daten           einmal je Jahrgang: Rohdaten -> Jahrgang
 ```
 
-Jeder Baustein ist ein eigenes CMake-Ziel mit eigenem Verzeichnis; die Pfeile sind
-`target_link_libraries`, und die Sichtbarkeit der Kopfverzeichnisse folgt ihnen. **Wer nicht
-verlinkt ist, findet die Köpfe nicht** — `kern` kennt weder Bildschirm noch Datei noch Uhr,
-und dass das Modell die Sicht nie etwas fragt, ist damit keine Verabredung, sondern
-scheitert am Übersetzer, sobald es jemand versucht.
+Each component is its own CMake target with its own directory; the arrows are
+`target_link_libraries`, and the visibility of the header directories follows them.
+**Whatever is not linked does not find the headers** — `kern` knows neither screen nor
+file nor clock, and that the model never asks the view for anything is thus not an
+agreement but fails at the compiler as soon as someone tries.
 
-*Der Unterschied zur Vorfassung, damit er nicht unbemerkt bleibt:* Ihr Bauwerkzeug hätte die
-Richtung erzwungen, weil ein Baustein ohne Eintrag in der Abhängigkeitsliste gar nicht erst
-gefunden wird. CMake erzwingt sie nur, solange die Kopfverzeichnisse **`PRIVATE`** bzw. sauber `PUBLIC`
-vergeben sind; ein globales `include_directories()` auf Arbeitsbereichsebene würde die
-Trennung still aufheben, ohne dass ein Bau fehlschlägt. **`include_directories()` ist
-deshalb im ganzen Vorhaben verboten**; Kopfverzeichnisse werden ausschliesslich über
-`target_include_directories` am jeweiligen Ziel vergeben.
+*The difference from the former version, so it does not go unnoticed:* Its build tool
+would have enforced the direction, because a component without an entry in the dependency
+list is not even found. CMake enforces it only as long as the header directories are
+assigned **`PRIVATE`** or cleanly `PUBLIC`; a global `include_directories()` at workspace
+level would silently lift the separation without any build failing. **`include_directories()`
+is therefore banned throughout the venture**; header directories are assigned exclusively
+via `target_include_directories` on the respective target.
 
-**Dasselbe gilt für die Linkseite, und das ist die zweite Hälfte desselben Gedankens.** Ein
-`link_libraries()` ohne Ziel wirkt auf jedes danach angelegte Ziel des Verzeichnisses und
-seiner Unterverzeichnisse, und seit CMake 3.13 darf `target_link_libraries(<ziel> …)` in
-einer anderen `CMakeLists.txt` stehen als der, in der `<ziel>` entsteht. Beides hängt einem
-Baustein eine Abhängigkeit an, ohne seine eigene Datei anzufassen — die Kopfseite verliert
-dabei die Trennung, die Linkseite die Nullabhängigkeit des Kerns aus T2. **`link_libraries()`
-ist deshalb im ganzen Vorhaben verboten, und `target_link_libraries(<ziel> …)` steht
-ausschliesslich in der `CMakeLists.txt` des Verzeichnisses, in dem `<ziel>` mit
-`add_library` oder `add_executable` angelegt wird.** Damit ist die Abhängigkeitsliste eines
-Bausteins wieder an genau einer Stelle lesbar, und der dritte Mustervergleich aus T2 hat
-etwas, wogegen er prüfen kann.
+**The same holds on the link side, and that is the second half of the same thought.** A
+`link_libraries()` without a target applies to every target created afterwards in the
+directory and its subdirectories, and since CMake 3.13 `target_link_libraries(<ziel> …)`
+may stand in a different `CMakeLists.txt` than the one in which `<ziel>` is created. Both
+attach a dependency to a component without touching its own file — the header side loses
+the separation that way, the link side the zero dependency of the core from T2.
+**`link_libraries()` is therefore banned throughout the venture, and
+`target_link_libraries(<ziel> …)` stands exclusively in the `CMakeLists.txt` of the
+directory in which `<ziel>` is created with `add_library` or `add_executable`.** With that
+the dependency list of a component is again readable in exactly one place, and the third
+pattern match from T2 has something to check against.
 
-Das sind die zwei Stellen, an denen diese Bauart eine Prüfregel braucht, wo die alte eine
-Werkzeugeigenschaft hatte.
+These are the two places where this build approach needs a check rule where the old one
+had a tool property.
 
-**Innerhalb von `kern` gibt es ein Modul, dessen Schnitt eine Vorgabe ist und keine
-Geschmacksfrage: der Namensraum `kern::werte` mit dem Kopf `kern/include/kern/werte.hpp`.**
-Dort und nur dort stehen die abgeleiteten Größen aus T48 und die drei Skalenübergänge aus
-T50; `tsd_in_cent`, `lobbypunkte_aus_geld` und `lobbypunkte_aus_schaden` liegen im
-Unternamensraum `kern::werte::intern` und sind damit als nicht öffentlich gekennzeichnet.
+**Within `kern` there is one module whose cut is a requirement and not a matter of taste:
+the namespace `kern::werte` with the header `kern/include/kern/werte.hpp`.**
+There and only there stand the derived quantities from T48 and the three scale transitions
+from T50; `tsd_in_cent`, `lobbypunkte_aus_geld` and `lobbypunkte_aus_schaden` live in the
+sub-namespace `kern::werte::intern` and are thereby marked as not public.
 
-Damit ist die öffentliche Schnittstelle dieses Moduls **dieselbe Liste**, die T48 aufzählt —
-ein Prüfer legt die Deklarationen in `werte.hpp` ausserhalb von `intern` gegen die Tabelle
-und ist fertig. Das ist der mechanische Nachweis, den Befund 1 der Runde 6 gebraucht hätte
-und den der Abzählschritt aus T45 nicht liefern konnte, weil er Adressen zählt und keine
-Funktionen.
+The public interface of this module is thus **the same list** that T48 enumerates — a
+reviewer lays the declarations in `werte.hpp` outside `intern` against the table and is
+done. That is the mechanical proof that finding 1 of round 6 would have needed and that
+the counting step from T45 could not deliver, because it counts addresses and not
+functions.
 
-*Die Grenze dieses Nachweises gehört dazu:* `intern` ist eine Kennzeichnung, keine Sperre —
-C++ hat für Funktionen eines Namensraums kein `pub`. Ein Aufruf von aussen übersetzt. Die
-Sperre ist deshalb die Grep-Regel aus T50: Ein Treffer von
-`grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` ausserhalb dieses einen Moduls ist ein
-Befund. Zwei schwache Nachweise an derselben Stelle sind hier billiger als ein starker, den
-die Sprache nicht hergibt.
+*The limit of this proof belongs with it:* `intern` is a marking, not a lock — C++ has no
+`pub` for the functions of a namespace. A call from outside compiles. The lock is
+therefore the grep rule from T50: a hit of
+`grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` outside this one module is a finding. Two
+weak proofs at the same spot are cheaper here than one strong proof the language does not
+offer.
 
-**T14 — Die Textoberfläche ist Teil des Produkts, nicht Werkzeug.** `konsole` spielt das
-Spiel vollständig — Zustand in drei Ebenen, Aktionen, Speichern, Laden. Sie ist zugleich
-die Schnittstelle, über die Agenten spielen (Anforderung 3), und der Rückfallweg, falls
-die grafische Oberfläche je klemmt. Was `oberflaeche` zeigt, muss aus der Ausgabe von
-`konsole` ableitbar sein; ist es das nicht, gehört es in den Kern.
+**T14 — The text interface is part of the product, not a tool.** `konsole` plays the game
+completely — state in three levels, actions, saving, loading. It is at once the
+interface through which agents play (requirement 3), and the fallback path in case
+the graphical interface ever jams. What `oberflaeche` shows must be derivable from the
+output of `konsole`; if it is not, it belongs in the core.
 
 ## 4. Datenmodell
 
