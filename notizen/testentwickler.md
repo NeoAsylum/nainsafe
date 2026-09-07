@@ -15,6 +15,27 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
 
 ## Was funktioniert
 
+- 2026-09-07 (0147) — **Ein Rücklauf, dessen Befund „nie ausgeführt" lautet, wird nicht
+  am Quelltext behoben, sondern an der `CMakeLists.txt`.** 0147 kam zurück, obwohl der
+  Prüfer alle neun Mutanten statisch nachgezogen und **nichts** zu berichtigen gefunden
+  hatte. Der ganze Rücklauf war eine fehlende `add_test`-Zeile. Ich habe am `.cpp` keine
+  Zeile angefasst. **Regel:** Lies erst den Befund, dann die Datei — sonst „repariert"
+  man einen Quelltext, gegen den nichts vorliegt, und der zweite Rücklauf kommt.
+- 2026-09-07 (0147) — **Drei Rückgabewerte sind erst dann etwas wert, wenn der Aufrufer
+  sie unterscheiden kann.** Der Stand gab vorher für „eine Nadel trifft nicht mehr" und
+  für „der Riegel weicht ab" beides `1`. Jetzt: **2 = nicht gemessen**, **1 = Befund**.
+  Für `ctest` ist beides rot — aber der Mensch, der den Bericht liest, sieht den
+  Unterschied zwischen einem kaputten Messgerät und einem kaputten Gegenstand.
+- 2026-09-07 (0147) — **Die Nadelprobe gehört vor die erste Übersetzung.** Alle neun
+  `alt`-Wortlaute werden geprüft, bevor irgendetwas gebaut wird. Kostet eine Sekunde,
+  spart elf Übersetzungen und einen falsch gelesenen Bericht. Der Umbau, der das trägt,
+  ist derselbe wie bei 0199: `einmal_ersetzen` **wirft**, der oberste Rahmen macht 2
+  daraus.
+- 2026-09-07 (0147) — **`Path(__file__).parents[n]` statt `/home/adria/fabrik`.** Der
+  Messstand trug einen fest eingebauten Pfad — genau das, was das Paket in seinen
+  *Grenzen* verbietet und was der Riegel selbst für seine Wurzel begründet. Ein Stand mit
+  eingebautem Pfad läuft auf einem Rechner; einer aus dem eigenen Ort läuft überall und
+  sagt, wenn die Ablage nicht stimmt.
 - 2026-09-07 (0199) — **Eine Probe erbt die Zeitgrenze ihres Aufrufers, nicht ihre
   eigene.** `agents/baulauf.py:195` bricht den **ganzen** `ctest`-Aufruf nach 900 s ab.
   Eine `TIMEOUT 900` an einer einzelnen Probe ist deshalb wirkungslos: Sie darf das
@@ -69,9 +90,12 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
   ersten gedruckten Abweichung** — mit einer Begründung, die das Gegenteil sagt. Genau im
   Fall, für den Sorte 3 gebaut ist. **Vorschlag 0213** steht dafür; A2 in `messen.py`
   hält den Zustand scharf fest (Code 2 + Wortlaut), damit der Fix ihn rot macht.
-- 2026-09-07 (0188, weiter offen) — **Kein anderer Riegel dieser Fabrik zeigt, dass er
-  rot werden kann.** `belegstellen_riegel`, `bezeichner_riegel`, `pruefstand`: Die Bauart
-  ist übertragbar und kostet je einen Mutanten. Ein eigenes Paket wert.
+- 2026-09-07 (0188, **halb erledigt** durch 0147) — `belegstellen_riegel` hat jetzt eine
+  lebende Gegenprobe (`belegstellen_messung`, neun Mutanten). Offen bleiben
+  `bezeichner_riegel` und `pruefstand`. Bevor ich dafür einen Vorschlag schreibe: 0171
+  („Messskript 0115 anbinden") und 0212 („Wandschranke als ctest-Eintrag") liegen schon
+  auf derselben Krankheit — erst prüfen, ob die beiden es mitnehmen, sonst kostet der
+  Vorschlag den Projektmanager einen Lauf umsonst.
 - 2026-09-07 (0188, weiter offen) — Derselbe Kopf trägt weitere selbstmessende Zahlen,
   die kein Paket hält: „2 + 1 + 5 = 8", „fuehrt sechs Schluessel", „nennen alle **sechs**
   einen Stand", „Zwei plus drei ergibt fuenf".
@@ -82,6 +106,25 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
   sind jetzt zwei.
 
 ## Worauf ich unsicher bin
+
+**0147.** Zwei Dinge.
+
+*Erstens, dasselbe wie immer:* **nichts gelaufen, dieser Lauf hatte keine Shell.** Ich habe
+die Messung *eingehängt*, nicht *gefahren*. Der Beleg ist `belegstellen_messung` im
+nächsten Nachtlauf. Zwei Stellen können dort rot werden, ohne dass am Riegel etwas falsch
+ist: die `TIMEOUT 600` (geschätzt aus `zahlwort_messung` = 13,5 s für sechs Übersetzungen
+von 1.800 Zeilen bei `-O1`; hier elf von 4.050 Zeilen bei `-O2`, also grob 100–150 s — die
+Schranke sollte reichen, ist aber nicht gemessen), und `hole_vorstand`, das den
+Vergleichsstand über `git log -S "Paket 0147"` holt. Beide melden sich mit **2**, nicht
+mit 1 — daran ist ein Fehlschlag dieser Sorte im Bericht zu erkennen.
+
+*Zweitens, die Kosten, weil sie niemandem auffallen sollen:* Die Probe hängt in
+`werkzeuge/belegstellen/CMakeLists.txt` und läuft damit **zweimal je Baulauf** — einmal
+im Arbeitsbereich, einmal im Alleinbau, so wie `belegstellen_riegel` selbst zweimal im
+Bericht steht. Bei geschätzten 100–150 s sind das 200–300 s zusätzlich pro Nacht auf
+einem 900-s-Kontingent für den ganzen `ctest`-Aufruf. Ich halte das für vertretbar, weil
+die Alternative eine Probe ist, die niemand fährt. Fällt es dem Betrieb zu teuer, ist die
+Stellschraube `-O2` → `-O1` im Messstand und nicht das Löschen der Probe.
 
 **0199.** Drei Dinge, alle bewusst.
 

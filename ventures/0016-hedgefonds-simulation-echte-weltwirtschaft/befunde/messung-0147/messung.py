@@ -3,13 +3,16 @@
 
 Er misst dreierlei und behauptet nichts:
 
-  0. **Die Selbstprobe des Auswerters.** Bevor irgendetwas uebersetzt wird, laeuft der
-     Zeilenleser unten gegen einen gebauten Meldungstext und muss die neun Marken
-     namentlich wiederfinden. Ohne diesen Schritt bliebe ein Auswerter, der gar nichts
-     erkennt, in jedem Lauf still gruen -- gemessen an `messung-0106/messung.py`, dessen
-     Liste `FREMDE_FAELLE` zwei Marken fuehrt (`Namensfall`, `Abstandsfall`), die der
-     Riegel so nie schreibt: er meldet sie als `Selbsttest N:` und `Selbsttest Abstand
-     N:`. Diese beiden Eintraege konnten dort nie treffen.
+  0. **Die Selbstprobe des Messstands.** Bevor irgendetwas uebersetzt wird, laufen zwei
+     Proben: Der Zeilenleser muss die neun Marken im Wortlaut des Riegels namentlich
+     wiederfinden, und **jede der neun Nadeln muss im Quelltext genau einmal vorkommen**.
+     Ohne die erste bliebe ein Auswerter, der gar nichts erkennt, in jedem Lauf still
+     gruen -- gemessen an `messung-0106/messung.py`, dessen Liste `FREMDE_FAELLE` zwei
+     Marken fuehrt (`Namensfall`, `Abstandsfall`), die der Riegel so nie schreibt.
+     Ohne die zweite misst der Stand irgendwann einen Wortlaut, den es nicht mehr gibt:
+     Genau das ist `befunde/messung-0180/messen.py` ab Paket 0194 passiert, vier von
+     fuenf Mutanten trafen ihren Gegenstand nicht mehr, und gemerkt hat es niemand.
+     Die Nadelprobe laeuft **vor** der ersten Uebersetzung und kostet damit nichts.
 
   1. **Der Vorlauf.** Die Fassung vor diesem Paket und die danach laufen im selben
      Aufruf ueber denselben Arbeitsbaum. Nur so ist "meldet dieselbe Zahlenzeile wie
@@ -19,8 +22,7 @@ Er misst dreierlei und behauptet nichts:
      eingetragene Kennung verfaellt in Stunden (Lehre aus Paket 0135).
 
   2. **Neun Mutanten.** Jeder ist eine Textersetzung auf einer Kopie ausserhalb des
-     Quellbaums; der Lauf bricht ab, wenn der erwartete Wortlaut nicht genau einmal
-     vorkommt. Jeder muss am **Selbsttest** sterben (Rueckgabe 2), also bevor der
+     Quellbaums. Jeder muss am **Selbsttest** sterben (Rueckgabe 2), also bevor der
      Bestand gelesen wird -- ein Anker am Bestand waere ein wandernder Anker.
 
 Je Mutant werden fuenf Dinge geprueft und nicht vier wie in 0106:
@@ -33,8 +35,15 @@ Die dritte Groesse ist die neue. Sie schliesst die Luecke, die eine reine Namens
 laesst: Reisst ein Fall, dessen Marke der Auswerter nicht kennt, faellt das ohne sie
 nicht auf, weil die Namensliste dann eben leer bleibt.
 
-Dieses Skript ist selbst ein Riegel und kein Bericht: Es vergleicht gegen die
-Erwartungstabelle unten und gibt bei jeder Abweichung 1 zurueck.
+**Drei Rueckgabewerte, und der Unterschied ist der Zweck dieser Datei:**
+
+    0  gruen -- alles wie erwartet.
+    1  **Befund** -- gemessen wurde, und das Ergebnis weicht ab.
+    2  **Messgeraet ohne Messung** -- es wurde gar nicht gemessen: eine Nadel trifft
+       nicht mehr, der Vergleichsstand ist nicht zu holen, etwas uebersetzt nicht.
+       Ein Lauf, der 2 gibt, sagt ueber den Riegel **nichts** -- weder gut noch
+       schlecht. Wer das mit 1 vermengt, liest spaeter eine Abweichung, wo keine
+       gemessen wurde.
 
 Gebaut wird ohne `-Werror`. Das ist Absicht und kein Nachlassen: Beim Sabotieren faellt
 regelmaessig eine Variable aus dem Spiel, und dann wuerde der **Bau** rot statt des
@@ -42,24 +51,38 @@ Tests -- gemessen, dreimal. Die Sprachschalter sind dieselben wie im Baulauf.
 
 Was dieses Skript ausserhalb des Repos anlegt, raeumt `aufraeumen.py` daneben weg.
 
-Aufruf:  python3 messung.py
+Aufruf:  python3 messung.py [--vorhaben <wurzel>] [--uebersetzer <pfad>]
+
+Beide Schalter sind wahlfrei und haben einen Rueckfall, damit der Stand von Hand
+laeuft. Aus `CMakeLists.txt` kommen beide gesetzt -- der Uebersetzer besonders: Ein fest
+eingebautes `g++` waere ein zweiter Uebersetzer neben dem, gegen den dieser Kasten
+gebaut wird, und ein Unterschied zwischen beiden faende sich nirgends wieder.
 """
 
+import argparse
 import os
 import pathlib
 import re
 import subprocess
 import sys
 
-REPO = pathlib.Path("/home/adria/fabrik")
-VORHABEN = REPO / "ventures/0016-hedgefonds-simulation-echte-weltwirtschaft"
-QUELLE = VORHABEN / "werkzeuge/belegstellen/belegstellen_riegel.cpp"
-IM_REPO = ("ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/"
-           "werkzeuge/belegstellen/belegstellen_riegel.cpp")
+# Kein fest eingebauter Pfad: Die Wurzeln stehen ueber dem Ort dieser Datei, und dieser
+# Ort ist `<repo>/ventures/<vorhaben>/befunde/messung-0147/messung.py`. Ein eingetragenes
+# `/home/...` liefe nur auf einem Rechner -- dieselbe Begruendung, die der Riegel selbst
+# fuer seine Wurzel gibt.
+HIER = pathlib.Path(__file__).resolve()
+VORHABEN_VORGABE = HIER.parents[2]
 
 SCHALTER = ["-std=c++20", "-fwrapv", "-fno-fast-math", "-O2"]
 
 ARBEITSNAME = "messung-0147"
+
+QUELLE_IM_VORHABEN = "werkzeuge/belegstellen/belegstellen_riegel.cpp"
+
+
+class Messfehler(Exception):
+    """Der Stand kann nicht messen. Fuehrt zu Rueckgabe 2, nie zu 1."""
+
 
 # --- Der Auswerter ---------------------------------------------------------------
 #
@@ -135,6 +158,22 @@ def bericht(text):
     return text
 
 
+def einmal_ersetzen(text, alt, neu):
+    """Ersetzt `alt` durch `neu` und besteht darauf, dass `alt` **genau einmal**
+    vorkommt.
+
+    Das ist die einzige Stelle, an der dieser Stand merkt, dass sein Gegenstand
+    weggewandert ist. Sie **wirft** und ruft nicht `sys.exit`, damit der oberste Rahmen
+    daraus die Rueckgabe 2 macht und nicht die 1 -- eine nicht mehr treffende Nadel ist
+    kein Befund ueber den Riegel, sondern ein blindes Messgeraet.
+    """
+    anzahl = text.count(alt)
+    if anzahl != 1:
+        raise Messfehler("der erwartete Wortlaut kommt " + str(anzahl)
+                         + "-mal vor, erwartet genau einmal")
+    return text.replace(alt, neu)
+
+
 # --- Die Selbstprobe des Auswerters ----------------------------------------------
 #
 # Ein Auswerter, der nie etwas findet, macht jeden Mutanten gruen. Diese Probe ist der
@@ -161,7 +200,7 @@ PROBE_ERWARTET = ["Namensfall 3", "Abstandsfall 5", "Satzfall 2", "Zitatfall 7",
 
 
 def selbstprobe():
-    """Rueckgabe: Zahl der Abweichungen."""
+    """Rueckgabe: Zahl der Abweichungen. Jede davon heisst: der Stand misst nicht."""
     fehler = 0
     gefunden = gerissene_faelle(PROBETEXT)
     if gefunden != PROBE_ERWARTET:
@@ -186,13 +225,30 @@ def selbstprobe():
         fehler += 1
     else:
         print("OK  Selbstprobe: eine gruene Ausgabe gibt nichts her.")
+
+    # Und die Probe auf die Probe: `einmal_ersetzen` ist die Falle, die zuschlaegt, wenn
+    # eine Nadel ihren Gegenstand verliert. Sie muss selbst dreimal richtig ausgehen --
+    # fehlt / zweimal / genau einmal. Kostet keine Uebersetzung.
+    faelle = [("fehlt", "abc", "x", None), ("zweimal", "axax", "a", None),
+              ("genau einmal", "axb", "a", "ayb")]
+    for name, text, nadel, erwartet in faelle:
+        try:
+            gab = einmal_ersetzen(text, nadel, "y")
+        except Messfehler:
+            gab = None
+        if gab != erwartet:
+            print("ROT Selbstprobe: `einmal_ersetzen` geht im Fall '" + name
+                  + "' aus als " + str(gab) + ", erwartet war " + str(erwartet) + ".")
+            fehler += 1
+        else:
+            print("OK  Selbstprobe: `einmal_ersetzen` haelt den Fall '" + name + "'.")
     return fehler
 
 
 # --- Die Mutanten ------------------------------------------------------------------
 #
-# `alt` muss im Quelltext **genau einmal** vorkommen; sonst bricht der Lauf ab, statt
-# still an der falschen Stelle zu treffen.
+# `alt` muss im Quelltext **genau einmal** vorkommen; sonst bricht der Lauf mit 2 ab,
+# statt still an der falschen Stelle zu treffen.
 
 # Der Rumpf von `waehle_zitatform`, aus seinen drei Bloecken zusammengesetzt. So ist
 # eine Vertauschung eine Umstellung dieser Liste und keine abgeschriebene zweite
@@ -341,16 +397,30 @@ MUTANTEN = [
 ]
 
 
-def git(*argumente):
-    fertig = subprocess.run(["git", "-C", str(REPO)] + list(argumente),
-                            capture_output=True, text=True)
+def git(repo, *argumente):
+    """Eine **gelesene Eingabe**. Faellt sie aus, ist nichts gemessen -- `Messfehler`."""
+    try:
+        fertig = subprocess.run(["git", "-C", str(repo)] + list(argumente),
+                                capture_output=True, text=True)
+    except OSError as grund:
+        raise Messfehler("git ist nicht aufrufbar: " + str(grund))
     if fertig.returncode != 0:
-        raise RuntimeError("git " + " ".join(argumente) + " gab "
-                           + str(fertig.returncode) + ":\n" + fertig.stderr[-2000:])
+        raise Messfehler("git " + " ".join(argumente) + " gab "
+                         + str(fertig.returncode) + ":\n" + fertig.stderr[-2000:])
     return fertig.stdout
 
 
-def hole_vorstand():
+def git_wahlfrei(repo, *argumente):
+    """Eine **Herkunftsangabe**. Fehlt sie, steht dort "unbekannt" und der Lauf geht
+    weiter -- sie ist Beiwerk des Berichts und keine Bedingung der Messung. Dieselbe
+    Trennung gilt aufrufweise und nicht dateiweise."""
+    try:
+        return git(repo, *argumente).strip()
+    except Messfehler:
+        return "unbekannt"
+
+
+def hole_vorstand(repo, im_repo):
     """Der Stand **unmittelbar vor** diesem Paket, aus dem Verlauf der Datei geholt.
 
     Eine von Hand eingetragene Kennung verfaellt in Stunden; eine geholte muss
@@ -358,14 +428,14 @@ def hole_vorstand():
     Die vier Proben unten sind die Falle: Sie schlagen zu, wenn der Verlauf etwas
     anderes hergibt als gemeint.
     """
-    zeilen = git("log", "--reverse", "--format=%H", "-S", "Paket 0147",
-                 "--", IM_REPO).split()
+    zeilen = git(repo, "log", "--reverse", "--format=%H", "-S", "Paket 0147",
+                 "--", im_repo).split()
     if not zeilen:
-        raise RuntimeError("Kein Commit fuehrt 'Paket 0147' in " + IM_REPO
-                           + " ein -- der Quelltext dieses Pakets fehlt.")
+        raise Messfehler("Kein Commit fuehrt 'Paket 0147' in " + im_repo
+                         + " ein -- der Quelltext dieses Pakets fehlt.")
     einfuehrend = zeilen[0]
-    vorstand = git("rev-parse", "--short", einfuehrend + "^").strip()
-    text = git("show", vorstand + ":" + IM_REPO)
+    vorstand = git(repo, "rev-parse", "--short", einfuehrend + "^").strip()
+    text = git(repo, "show", vorstand + ":" + im_repo)
 
     proben = [
         ("der Vorstand darf 'Paket 0147' nicht kennen", "Paket 0147" not in text),
@@ -376,60 +446,83 @@ def hole_vorstand():
     ]
     verfehlt = [wort for wort, gut in proben if not gut]
     if verfehlt:
-        raise RuntimeError("Der geholte Vergleichsstand " + vorstand
-                           + " ist nicht der gemeinte:\n  - "
-                           + "\n  - ".join(verfehlt))
+        raise Messfehler("Der geholte Vergleichsstand " + vorstand
+                         + " ist nicht der gemeinte:\n  - "
+                         + "\n  - ".join(verfehlt))
     return vorstand, text
 
 
-def uebersetze(quelle, ziel):
-    ruf = ["g++"] + SCHALTER + [str(quelle), "-o", str(ziel)]
-    fertig = subprocess.run(ruf, capture_output=True, text=True)
+def uebersetze(uebersetzer, quelle, ziel):
+    ruf = [uebersetzer] + SCHALTER + [str(quelle), "-o", str(ziel)]
+    try:
+        fertig = subprocess.run(ruf, capture_output=True, text=True)
+    except OSError as grund:
+        raise Messfehler("der Uebersetzer ist nicht aufrufbar: " + str(grund))
     if fertig.returncode != 0:
-        print("BAU ROT: " + " ".join(ruf))
-        print(fertig.stderr[-4000:])
-        return False
+        raise Messfehler("BAU ROT: " + " ".join(ruf) + "\n" + fertig.stderr[-4000:])
     return True
 
 
-def laufe(programm):
-    fertig = subprocess.run([str(programm), str(VORHABEN)],
+def laufe(programm, vorhaben):
+    fertig = subprocess.run([str(programm), str(vorhaben)],
                             capture_output=True, text=True)
     return fertig.returncode, fertig.stdout, fertig.stderr
 
 
-def main():
+def messe(vorhaben, uebersetzer):
+    """Rueckgabe: Zahl der **Befunde**. Wirft `Messfehler`, wenn nicht gemessen wurde."""
+    # `git` bekommt Pfade relativ zur Wurzel des Repos, und die liegt zwei Ebenen ueber
+    # dem Vorhaben (`<repo>/ventures/<vorhaben>`). Stimmt das nicht, sagt der Stand es,
+    # statt mit einem leeren `git log` eine leere Antwort zu geben.
+    repo = vorhaben.parent.parent
+    quelldatei = vorhaben / QUELLE_IM_VORHABEN
+    try:
+        im_repo = quelldatei.relative_to(repo).as_posix()
+    except ValueError:
+        raise Messfehler("die gemessene Datei liegt nicht unter der erwarteten "
+                         "Repowurzel " + str(repo) + ": " + str(quelldatei))
+
     arbeit = pathlib.Path(os.environ.get("TMPDIR", "/tmp")) / ARBEITSNAME
     arbeit.mkdir(parents=True, exist_ok=True)
 
     print("Messstand 0147 -- Anker an der Ortsfrage und an der Formreihenfolge")
+    print("Vorhaben:    " + str(vorhaben))
+    print("Uebersetzer: " + uebersetzer)
     print("")
 
-    fehler = 0
+    befunde = 0
 
-    # --- Teil 0: die Selbstprobe des Auswerters ---------------------------------
-    print("Teil 0 -- der Auswerter selbst")
-    fehler += selbstprobe()
+    # --- Teil 0: die Selbstprobe des Messstands ---------------------------------
+    print("Teil 0 -- der Messstand selbst")
+    if selbstprobe():
+        raise Messfehler("der Auswerter misst nicht. Alles Weitere waere wertlos.")
+
+    if not quelldatei.is_file():
+        raise Messfehler("die gemessene Datei fehlt: " + str(quelldatei))
+    nachher_text = quelldatei.read_text(encoding="utf-8")
+    if "Paket 0147" not in nachher_text:
+        raise Messfehler("der Arbeitsbaum fuehrt kein 'Paket 0147' in " + im_repo)
+
+    # Alle neun Nadeln **vor** der ersten Uebersetzung. Eine, die ihren Gegenstand
+    # verloren hat, kostet hier eine Sekunde und weiter unten elf Uebersetzungen und
+    # einen falsch gelesenen Bericht.
+    stumpf = []
+    for mutant in MUTANTEN:
+        try:
+            einmal_ersetzen(nachher_text, mutant["alt"], mutant["neu"])
+        except Messfehler as grund:
+            stumpf.append(mutant["name"] + ": " + str(grund))
+    if stumpf:
+        raise Messfehler("Nadeln treffen ihren Gegenstand nicht mehr:\n  - "
+                         + "\n  - ".join(stumpf))
+    print("OK  Selbstprobe: alle neun Nadeln treffen genau einmal.")
     print("")
-    if fehler:
-        print("Messstand 0147: der Auswerter misst nicht. Alles Weitere waere "
-              "wertlos.")
-        return 1
 
     # --- Teil 1: der Vorlauf, beide Fassungen im selben Aufruf -------------------
-    nachher_text = QUELLE.read_text(encoding="utf-8")
-    if "Paket 0147" not in nachher_text:
-        print("ABBRUCH: der Arbeitsbaum fuehrt kein 'Paket 0147' in " + IM_REPO)
-        return 1
-    try:
-        vorstand, vorher_text = hole_vorstand()
-    except RuntimeError as fehlschlag:
-        print("ABBRUCH beim Holen des Vergleichsstands:")
-        print(str(fehlschlag))
-        return 1
+    vorstand, vorher_text = hole_vorstand(repo, im_repo)
 
-    kopf_vorher = git("rev-parse", "--short", "HEAD").strip()
-    schmutz = git("status", "--porcelain", "--", IM_REPO).strip()
+    kopf_vorher = git_wahlfrei(repo, "rev-parse", "--short", "HEAD")
+    schmutz = git_wahlfrei(repo, "status", "--porcelain", "--", im_repo)
     print("Teil 1 -- der Vorlauf")
     print("Vergleichsstand: " + vorstand + " (aus dem Verlauf geholt, vier Proben "
           "bestanden)")
@@ -443,20 +536,18 @@ def main():
         quelle = arbeit / ("riegel-" + marke + ".cpp")
         programm = arbeit / ("riegel-" + marke)
         quelle.write_text(text, encoding="utf-8")
-        if not uebersetze(quelle, programm):
-            print("ABBRUCH: " + marke + " uebersetzt nicht.")
-            return 1
-        rc, aus, err = laufe(programm)
+        uebersetze(uebersetzer, quelle, programm)
+        rc, aus, err = laufe(programm, vorhaben)
         ergebnis[marke] = (rc, zahlenzeile(aus), bericht(aus), err)
         print("[" + marke + "] Rueckgabe " + str(rc))
         print("    " + zahlenzeile(aus))
         if rc != 0:
             print("ROT: " + marke + " ist nicht gruen auf dem heutigen Korpus.")
             print(err[-2000:])
-            fehler += 1
+            befunde += 1
     print("")
 
-    # Drei Groessen und nicht eine -- sonst heben zwei Aenderungen einander in der
+    # Vier Groessen und nicht eine -- sonst heben zwei Aenderungen einander in der
     # Summe auf (Lehre aus Paket 0115).
     for was, k in [("Rueckgabewert", 0), ("Zahlenzeile", 1), ("Befundteil", 2),
                    ("Fehlerkanal", 3)]:
@@ -466,27 +557,18 @@ def main():
             print("ABWEICHUNG im " + was + " -- der Umbau ist nicht wirkungsfrei:")
             print("   vorher:  " + str(ergebnis["vorher"][k])[:600])
             print("   nachher: " + str(ergebnis["nachher"][k])[:600])
-            fehler += 1
+            befunde += 1
     print("")
 
     # --- Teil 2: die Mutanten ----------------------------------------------------
     print("Teil 2 -- die neun Mutanten")
     for mutant in MUTANTEN:
-        anzahl = nachher_text.count(mutant["alt"])
-        if anzahl != 1:
-            print("ABBRUCH " + mutant["name"] + ": der Wortlaut kommt " + str(anzahl)
-                  + "-mal vor, erwartet genau einmal.")
-            fehler += 1
-            continue
         quelle = arbeit / (mutant["name"] + ".cpp")
         programm = arbeit / mutant["name"]
-        quelle.write_text(nachher_text.replace(mutant["alt"], mutant["neu"]),
+        quelle.write_text(einmal_ersetzen(nachher_text, mutant["alt"], mutant["neu"]),
                           encoding="utf-8")
-        if not uebersetze(quelle, programm):
-            print("ABBRUCH " + mutant["name"] + ": uebersetzt nicht.")
-            fehler += 1
-            continue
-        rc, aus, err = laufe(programm)
+        uebersetze(uebersetzer, quelle, programm)
+        rc, aus, err = laufe(programm, vorhaben)
         faelle = gerissene_faelle(err)
         wieviele = anzahl_gerissen(err)
         fremd = [f for f in faelle if not f.startswith(mutant["eigen"] + " ")]
@@ -504,7 +586,7 @@ def main():
         if las_bestand:
             abweichungen.append("Bestand gelesen")
         if abweichungen:
-            fehler += 1
+            befunde += 1
 
         print(("ROT " if abweichungen else "OK  ") + mutant["name"] + " -- "
               + mutant["was"])
@@ -521,8 +603,9 @@ def main():
     print("")
 
     # --- Die Drift waehrend der Messung -----------------------------------------
-    kopf_nachher = git("rev-parse", "--short", "HEAD").strip()
-    wanderung = git("log", "--oneline", vorstand + "..HEAD", "--", IM_REPO).strip()
+    kopf_nachher = git_wahlfrei(repo, "rev-parse", "--short", "HEAD")
+    wanderung = git_wahlfrei(repo, "log", "--oneline", vorstand + "..HEAD", "--",
+                             im_repo)
     print("Arbeitsbaum vorher/nachher: " + kopf_vorher + " / " + kopf_nachher)
     print("Aenderungen an der gemessenen Datei seit " + vorstand + ":")
     print("  " + (wanderung.replace("\n", "\n  ") if wanderung else "(keine)"))
@@ -531,11 +614,37 @@ def main():
               "Messung nicht falsch -- beide Fassungen liefen im selben Aufruf --, "
               "aber es gehoert abgedruckt.")
     print("")
+    return befunde
 
-    if fehler == 0:
+
+def main():
+    zerleger = argparse.ArgumentParser(add_help=True)
+    zerleger.add_argument("--vorhaben", default=str(VORHABEN_VORGABE),
+                          help="Wurzel des Vorhabens; sonst aus dem Ort dieser Datei.")
+    zerleger.add_argument("--uebersetzer", default=None,
+                          help="Der Uebersetzer, gegen den gebaut wird. Aus CMake "
+                               "${CMAKE_CXX_COMPILER}; sonst g++ aus dem Suchpfad.")
+    wahl = zerleger.parse_args()
+
+    if wahl.uebersetzer is None:
+        print("HINWEIS: kein --uebersetzer uebergeben, Rueckfall auf 'g++' aus dem "
+              "Suchpfad. Das ist nicht notwendig der, gegen den dieser Kasten gebaut "
+              "wird.")
+    uebersetzer = wahl.uebersetzer or "g++"
+
+    try:
+        befunde = messe(pathlib.Path(wahl.vorhaben).resolve(), uebersetzer)
+    except Messfehler as grund:
+        print("")
+        print("Messstand 0147: NICHT GEMESSEN -- " + str(grund))
+        print("Rueckgabe 2. Dieser Lauf sagt ueber den Riegel nichts, weder gut noch "
+              "schlecht.")
+        return 2
+
+    if befunde == 0:
         print("Messstand 0147: alles wie erwartet.")
         return 0
-    print("Messstand 0147: " + str(fehler) + " Abweichung(en).")
+    print("Messstand 0147: " + str(befunde) + " Abweichung(en).")
     return 1
 
 
