@@ -1,7 +1,7 @@
 ---
 id: 0188-zahlwortriegel-fuer-reihentoml
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0180-zahlwortriegel-fuer-werte-hpp]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0180 ist eine echte sachliche Abhaengigkeit und zugleich eine Dateisperre -- ihr teilt `werkzeuge/zahlwort/CMakeLists.txt`, und 0180 baut den Riegel, den du auf eine zweite Datei ausdehnst. Es ist heute Nacht eingeplant; du ruecktest nach, sobald es abgenommen ist. Deine zweite Datei `befunde/messung-0099/zahlwoerter.py` haelt niemand. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer.
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0099/zahlwoerter.py]
