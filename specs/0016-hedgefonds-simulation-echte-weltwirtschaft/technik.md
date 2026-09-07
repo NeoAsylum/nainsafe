@@ -1449,175 +1449,181 @@ under two kilobytes. Cost: R world steps on loading, at R = 24 thus 0.24 millise
 
 ## 7. Datenschicht
 
-**T23 — Der Jahrgang ist ein Erzeugnis, kein Programmteil.** `werkzeuge/aufbereitung`
-liest die eingefrorenen Rohdateien und schreibt `jahrgang-<jahr>.bin`,
-`sollreihen-<jahr>.bin` und ein `manifest.toml` mit SHA-256 je Ein- und Ausgabe, Quelle,
-Lizenz und Abrufdatum. Der Bau des Spiels lädt **nichts** aus dem Netz. Der Jahrgang
-enthält:
+**T23 — The vintage is a product, not a program part.** `werkzeuge/aufbereitung`
+reads the frozen raw files and writes `jahrgang-<jahr>.bin`,
+`sollreihen-<jahr>.bin` and a `manifest.toml` with SHA-256 per input and output, source,
+licence and retrieval date. The build of the game loads **nothing** from the net. The
+vintage contains:
 
-1. **Startwerte** für jede Zustandsgröße mit Datenanker; die Größen ohne Anker kommen aus
-   der Tabelle „Jede Größe ohne Datenanker" in `spiel.md`, aus `parameter.toml`, aus dem
-   Manifest oder aus **T46**. Welche Adresse woher kommt, entscheidet T45, und die Zuordnung
-   ist dort abgezählt.
+1. **Start values** for every state quantity with a data anchor; the quantities without
+   an anchor come from the table *Every quantity without a data anchor* in `spiel.md`,
+   from `parameter.toml`, from the manifest or from **T46**. Which address comes from
+   where is decided by T45, and the assignment is counted off there.
 
-   **Zwei Startwerte entstehen aus je zwei Reihen und nicht aus einer, und beide behalten
-   den Rang `Datenanker`.** Reihe 1 liefert ein BIP je Gebiet, Reihe 3 einen Kapitalstock je
-   Gebiet; T15 führt von beidem **drei** je Gebiet. Dieselbe Regel bildet beide, mit den auf
-   10.000 normierten Sektoranteilen aus Reihe 2:
+   **Two start values arise from two series each, not from one, and both keep the rank
+   `Datenanker`.** Series 1 delivers one GDP per territory, series 3 one capital stock
+   per territory; T15 carries **three** of each per territory. The same rule forms both,
+   with the sector shares from series 2 normalised to 10,000:
 
    ```
    wertschoepfung[g][s] = mal_geteilt(bip_start[g],          sektoranteil[g][s], 10.000)
    kapitalstock[g][s]   = mal_geteilt(kapitalstock_start[g], sektoranteil[g][s], 10.000)
    ```
 
-   Der Herkunftseintrag lautet `Datenanker(1 × 2)` beziehungsweise `Datenanker(3 × 2)`; die
-   Zählung in T45 ändert sich dadurch nicht, weil beide Adressgruppen dort schon als Anker
-   geführt sind. Die Regel für den Kapitalstock ist in Fassung 6 nachgetragen — `spiel.md`
-   Fassung 5 verlangt sie, weil der Korbwert seit dem am Sektorkapitalstock hängt und der
-   damit zum ersten Mal eine Größe ist, die jemand ausrechnen muss. Der Aufteilungsfehler
-   ist derselbe wie bei der Wertschöpfung und für den Rückvergleich folgenlos, weil die
-   zwölf Sektoranteil-Sollreihen aus **derselben** Normierung entstehen.
+   The provenance entry reads `Datenanker(1 × 2)` resp. `Datenanker(3 × 2)`; the count
+   in T45 does not change through this, because both address groups are already carried
+   there as anchors. The rule for the capital stock is added in version 6 — `spiel.md`
+   version 5 demands it, because the basket value has hung on the sector capital stock
+   since then, which is thereby for the first time a quantity someone must compute. The
+   split error is the same as for value added and without consequence for the backtest,
+   because the twelve sector-share target series arise from **the same** normalisation.
 
-   **Die Vorgabetabelle der Fassung 4 an dieser Stelle ist gestrichen, und das ist kein
-   Rückzug, sondern die Vermeidung eines Abbruchs.** Sie führte
-   `land.<L>.instrument.<I>.druck` und `…​.rest` mit Startwert 0, je 16 Adressen, weil
-   `spiel.md` sie damals nicht führte. `spiel.md` Fassung 4 hat alle 32 in seine Tabelle
-   aufgenommen. Stünden sie hier weiter als Herkunftseintrag, trügen sie **zwei** Einträge —
-   und genau das bricht den Jahrgangsbau nach T45 ab. Ihre Herkunft ist ab sofort `Entwurf`.
+   **The prescription table of version 4 at this spot is struck, and that is not a
+   retreat but the avoidance of an abort.** It carried
+   `land.<L>.instrument.<I>.druck` and `…​.rest` with start value 0, 16 addresses each, because
+   `spiel.md` did not carry them back then. `spiel.md` version 4 has taken all 32 into
+   its table. Were they still carried here as a provenance entry, they would carry
+   **two** entries — and exactly that aborts the vintage build per T45. Their provenance
+   is `Entwurf` from now on.
 
-   Was bleibt, ist die Begründung, weil sie den Wert erzwingt statt ihn zu wählen, und weil
-   ein späterer Leser sonst nicht weiss, warum dort 0 steht: Beide sind Laufzähler von
-   Schritt 3, Druck entsteht nach `spiel.md` ausschliesslich durch Aktion 3, und vor Runde 1
-   hat keine Aktion stattgefunden. Trüge eine der Adressen zu Partiebeginn einen Wert
-   ungleich null, gäbe es eine Ursache ohne Aktion, und die Kette aus T18 könnte sie in
-   Runde 1 nicht benennen. Nur die vier spielbaren Länder tragen Instrumente (T15), daher
-   je 16 und nicht je 20. **Dieser Absatz ist ein Nachweis, kein Herkunftseintrag;**
-2. **Sollreihen** für die 31 Reihen aus `spiel.md` plus den Handelsblock über 40 Ströme, je
-   Reihe mit der Klassifikation aus T37;
-3. **historische Politikpfade** für Leitzins, Zollniveau und Haushaltssaldo. Der vierte
-   Hebel, Finanzmarktregulierung, hat keinen Anker und steht im Weltlauf fest auf seinem
-   Startwert — was das Orakel für dieses Instrument blind macht, und das gehört in jeden
-   Befund;
-4. **exogene Pfade** nach T25;
-5. **Konstanten des Jahrgangs**: **vierzehn Werte** — `durchgriff[Gebiet][handelbarer
-   Sektor]`, also zehn in Zehntausendsteln, und **`leitzins_start[l]`**, vier in
-   Basispunkten. Die vier sind die erste Stützstelle des Politikpfads aus Reihe 9, also
-   keine neue Datenanforderung; sie stehen hier, weil `anleihekurs` sie über die ganze
-   Partie braucht und ein Rückgriff auf „den Leitzins in Runde 1" einen Zustand voraussetzte,
-   den der Zustand nicht mehr hat. Bildungsregel für `durchgriff` mit `H` = Aus- plus Einfuhr des Sektors im Startjahr
-   (aus BACI über die Konkordanz in Punkt 9) und `N` = seine Wertschöpfung (aus WDI):
+   What stays is the justification, because it forces the value instead of choosing it,
+   and because a later reader otherwise does not know why 0 stands there: both are
+   running counters of step 3, pressure arises per `spiel.md` solely through action 3,
+   and before round 1 no action has taken place. Did one of the addresses carry a
+   non-zero value at game start, there would be a cause without an action, and the chain
+   from T18 could not name it in round 1. Only the four playable countries carry
+   instruments (T15), hence 16 each and not 20 each. **This paragraph is a proof, not a
+   provenance entry;**
+2. **Target series** for the 31 series from `spiel.md` plus the trade block over 40
+   flows, per series with the classification from T37;
+3. **historical policy paths** for policy rate, tariff level and budget balance. The
+   fourth lever, financial-market regulation, has no anchor and stands fixed in the
+   `weltlauf` at its start value — which makes the oracle blind for this instrument, and
+   that belongs in every finding;
+4. **exogenous paths** per T25;
+5. **constants of the vintage**: **fourteen values** — `durchgriff[Gebiet][handelbarer
+   Sektor]`, that is ten in ten-thousandths, and **`leitzins_start[l]`**, four in basis
+   points. The four are the first support point of the policy path from series 9, so no
+   new data requirement; they stand here because `anleihekurs` needs them over the whole
+   game and a recourse to "the policy rate in round 1" would presuppose a state the
+   state no longer has. Formation rule for `durchgriff` with `H` = exports plus imports
+   of the sector in the start year (from BACI via the concordance in point 9) and
+   `N` = its value added (from WDI):
 
    ```
    durchgriff = teile_gerundet(10.000 · H, H + N)
    ```
 
-   Der Wertebereich 0 … 10.000 gilt damit für alle nichtnegativen `H`, `N` per
-   Konstruktion; eine Kappung gibt es nicht und darf es nicht geben, weil sie den Fehler
-   aus Befund 3 nur verstecken würde. **Der einzige undefinierte Fall ist `H + N = 0`** —
-   ein Sektor ohne Wertschöpfung und ohne Handel. Der Jahrgangsbau setzt dann
-   `durchgriff = 0` (der Sektorpreis folgt vollständig dem Landespreis, was für einen
-   Sektor ohne Handel die richtige Aussage ist) und **meldet den Fall im Manifest als
-   Befund**, weil ein Gebiet mit einem leeren Sektor eine Datenfrage aufwirft und keine
-   Rechenfrage. Er tritt im Prüfjahrgang bei keinem der fünf Gebiete auf; die Regel steht
-   hier, damit der Jahrgangsbau nicht an einer Division abbricht, deren Ursache er nicht
-   nennt.
+   The value range 0 … 10,000 thereby holds for all non-negative `H`, `N` by
+   construction; a cap does not exist and must not exist, because it would only hide the
+   error from finding 3. **The only undefined case is `H + N = 0`** — a sector without
+   value added and without trade. The vintage build then sets `durchgriff = 0` (the
+   sector price follows the country price completely, which for a sector without trade
+   is the right statement) and **reports the case in the manifest as a finding**,
+   because a territory with an empty sector raises a data question, not a computation
+   question. It occurs in the check vintage for none of the five territories; the rule
+   stands here so that the vintage build does not abort at a division whose cause it
+   does not name.
 
-   **Und der Jahrgangsbau prüft eine Bedingung an den Parametersatz, die `spiel.md`
-   Fassung 5 aufstellt und die genau dieses Fenster trifft:** `anleihekurs(l)` hat den Nenner
-   `leitzins[l] + aufschlag`, der Leitzins hat deshalb die Untergrenze `1 − aufschlag`, und
-   der historische Politikpfad muss sie einhalten. Der Jahrgangsbau rechnet
+   **And the vintage build checks a condition on the parameter set that `spiel.md`
+   version 5 establishes and that hits exactly this window:** `anleihekurs(l)` has the
+   denominator `leitzins[l] + aufschlag`, the policy rate therefore has the lower bound
+   `1 − aufschlag`, and the historical policy path must keep to it. The vintage build
+   computes
 
    ```
    aufschlag_min = 1 − min über alle l und t von leitzins_pfad[l][t]
    ```
 
-   und weist einen Parametersatz mit `aufschlag < aufschlag_min` für diesen Jahrgang als
-   **unzulässig** zurück, statt später durch null zu teilen. Für 1997–2021 ist das keine
-   theoretische Schranke: Deutschland folgt dem Euroraum ab Runde 3 exogen, und die EZB hat
-   ihren Einlagesatz am 2014-06-11 erstmals auf −0,10 % gesenkt und bis September 2019 auf
-   **−0,50 %** (`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` und
+   and rejects a parameter set with `aufschlag < aufschlag_min` as **inadmissible** for
+   this vintage, instead of dividing by zero later. For 1997–2021 that is no theoretical
+   bound: Germany follows the euro area exogenously from round 3, and the ECB first cut
+   its deposit rate to −0.10 % on 2014-06-11 and by September 2019 to
+   **−0.50 %** (`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` and
    `ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html`,
-   abgerufen 2026-09-01 vom Spielentwerfer, hier übernommen). Zieht der Jahrgang den
-   Einlagesatz, ist `aufschlag_min = 1 − (−50) = 51` Basispunkte; zieht er den
-   Hauptrefinanzierungssatz, der ab 2016 bei 0,00 % steht, ist `aufschlag_min = 1`. **Welche
-   Reihe eingebettet wird, entscheidet der Jahrgangsbau; die Schranke rechnet er in beiden
-   Fällen selbst aus, statt eine Zahl zu übernehmen.** Dieselbe Untergrenze gilt im
-   `spielmodus` am Instrument selbst (T51) — sonst unterliefe sie eine Lobbyaktion, die kein
-   Jahrgangsbau je zu sehen bekommt;
-6. **abgeleitete Kennzahlen**: die mittlere absolute Jahresänderung je Land als
-   Schwankungsbreite für den Innerjahresausschlag. Mittlere absolute Abweichung, nicht
-   Standardabweichung — die bräuchte eine Wurzel und damit Gleitkomma (T4);
-7. **Normierung**: die drei Sektoranteile je Gebiet und Jahr werden auf 10.000 normiert,
-   weil die WDI-Anteile wegen der Gütersteuern abzüglich Subventionen nicht auf 100 Prozent
-   summieren. Die Normierung — Verfahren und der je Gebiet und Jahr abgeschnittene Rest —
-   steht im Manifest, und der Rückvergleich vergleicht normiert gegen normiert;
-8. **Brüche**: je Reihe ein Feld `exogen_ab` und ein Feld `verkettet_ab`, beide als
-   Jahreszahl gespeichert und nach T40 in eine Runde umgerechnet. Für Deutschland trägt der
-   Leitzins `exogen_ab = 1999`, im Prüfjahrgang also **Runde 3**, und die Wechselkursreihe
-   `verkettet_ab = 1999` mit dem unwiderruflichen Umrechnungskurs;
-9. **die Konkordanz HS92 → Modellsektor**, als Tabelle im Manifest und nicht im Code
-   (Befund 12). Sie lautet nach `spiel.md`: Kapitel **01–24 → Sektor 1 Landwirtschaft**,
-   **25–97 → Sektor 2 Industrie**. Dieselbe Tabelle erzeugt `H` aus Punkt 5, die
-   Handelsstartmatrix und die 40 Sollströme des Handelsblocks — deshalb ist ihr
-   Zuordnungsfehler für den Rückvergleich folgenlos, und deshalb darf es sie nur einmal
-   geben. Eine zweite Kopie im Code wäre die Gelegenheit, sie auseinanderlaufen zu lassen;
-10. **die Restwelt als Rest**, in beiden Größen ausdrücklich gebildet: Ihre Aggregate sind
-    die Weltreihe der Weltbank minus die vier Länder; ihre Handelszeilen sind die
-    Gesamtein- und -ausfuhr eines Landes im Sektor minus die Ströme zu den drei anderen.
-    **Je gerichtetem Paar steht genau eine Zahl** (BACI meldet den Ausfuhrwert; ein
-    getrennter Einfuhrwert würde die Invariante „Summe aller Handelsbilanzen = 0" von der
-    Datenqualität abhängig machen statt von der Bauart).
+   retrieved 2026-09-01 by the game designer, adopted here). If the vintage draws the
+   deposit rate, `aufschlag_min = 1 − (−50) = 51` basis points; if it draws the main
+   refinancing rate, which stands at 0.00 % from 2016, `aufschlag_min = 1`. **Which
+   series is embedded is decided by the vintage build; the bound it computes itself in
+   both cases, instead of adopting a number.** The same lower bound holds in the
+   `spielmodus` at the instrument itself (T51) — otherwise a lobby action that no
+   vintage build ever gets to see would slip under it;
+6. **derived key figures**: the mean absolute annual change per country as the swing
+   width for the intra-year swing. Mean absolute deviation, not standard deviation —
+   that would need a root and with it floating point (T4);
+7. **normalisation**: the three sector shares per territory and year are normalised to
+   10,000, because the WDI shares do not sum to 100 percent owing to taxes less
+   subsidies on products. The normalisation — the procedure and the remainder cut off
+   per territory and year — stands in the manifest, and the backtest compares normalised
+   against normalised;
+8. **breaks**: per series a field `exogen_ab` and a field `verkettet_ab`, both stored as
+   a year and converted into a round per T40. For Germany the policy rate carries
+   `exogen_ab = 1999`, in the check vintage thus **round 3**, and the exchange-rate
+   series `verkettet_ab = 1999` with the irrevocable conversion rate;
+9. **the concordance HS92 → model sector**, as a table in the manifest and not in code
+   (finding 12). Per `spiel.md` it reads: chapters **01–24 → sector 1 agriculture**,
+   **25–97 → sector 2 industry**. The same table produces `H` from point 5, the trade
+   start matrix and the 40 target flows of the trade block — that is why its assignment
+   error is without consequence for the backtest, and that is why it may exist only
+   once. A second copy in code would be the opportunity to let them drift apart;
+10. **the rest of world as a remainder**, formed explicitly in both quantities: its
+    aggregates are the World Bank's world series minus the four countries; its trade
+    rows are a country's total imports and exports in the sector minus the flows to the
+    three others. **Per directed pair stands exactly one number** (BACI reports the
+    export value; a separate import value would make the invariant "sum of all trade
+    balances = 0" depend on data quality instead of on the construction).
 
-Größenordnung: 5 Gebiete × 25 Jahre × rund 30 Reihen × 8 Byte = 30 kB, Handel
-`40 × 25 × 8` = 8 kB. Der ausgelieferte Datenteil bleibt je Jahrgang deutlich unter
-100 kB und mit allen Jahrgängen deutlich unter einem Megabyte.
+Order of magnitude: 5 territories × 25 years × around 30 series × 8 bytes = 30 kB, trade
+`40 × 25 × 8` = 8 kB. The shipped data part stays well under 100 kB per vintage and with
+all vintages well under one megabyte.
 
-**T45 — Der Jahrgangsbau zählt die Adressen ab und bricht bei einer Lücke ab.** Das ist die
-architektonische Antwort auf Befund 2, und sie ist die einzige, die dessen Wiederholung
-ausschliesst. Zwei Tabellenzeilen nachzutragen behebt den Fall; sie nachzutragen und die
-Stelle offenzulassen, an der niemand das Fehlen bemerkt, behebt ihn nicht.
+**T45 — The vintage build counts off the addresses and aborts at a gap.** That is the
+architectural answer to finding 2, and it is the only one that rules out its repetition.
+Adding two table rows fixes the case; adding them and leaving open the spot at which
+nobody notices an absence does not fix it.
 
-Der Jahrgangsbau führt über **alle 310 Adressen aus T15** eine Herkunftstabelle mit genau
-**fünf** zulässigen Einträgen. Vier standen in Fassung 4; die fünfte ist in dieser Fassung
-hinzugekommen, weil das Auszählen zwei Adressen gefunden hat, deren Wert weder in einer
-Reihe noch in einem Dokument steht, sondern vom Jahrgangsbau selbst gerechnet wird.
+The vintage build keeps, over **all 310 addresses from T15**, a provenance table with
+exactly **five** admissible entries. Four stood in version 4; the fifth has come in with
+this version, because the counting-off found two addresses whose value stands neither in
+a series nor in a document but is computed by the vintage build itself.
 
-| Eintrag | Bedeutung | Adressen | Beispiel |
+| Entry | Meaning | Addresses | Example |
 |---|---|---:|---|
-| `Datenanker(nr)` | eine Reihe der Reihenliste weiter unten | 136 | `land.DE.sektor.2.wertschoepfung` → Reihe 1 × 2 |
-| `Entwurf` | die Tabelle „Jede Größe ohne Datenanker" in `spiel.md` nennt einen **Zahlenwert** | 150 | `land.CN.aufsichtszaehler` → 0 |
-| `Parameter(schluessel)` | `parameter.toml` nach T27 | 11 | `fonds.kasse` → `startkapital` |
-| `Manifest(feld)` | vom Jahrgangsbau gerechnet und im Manifest ausgewiesen | 2 | `markt.wert` → Startkorb zu Startpreisen (T33) |
-| `Vorgabe(T-Nummer)` | dieses Dokument, abschliessend aufgezählt in **T46** | 11 | `restwelt.basiswechsel` → 0 (T8) |
-| **Summe** | | **310** | |
+| `Datenanker(nr)` | a series from the series list further down | 136 | `land.DE.sektor.2.wertschoepfung` → series 1 × 2 |
+| `Entwurf` | the table *Every quantity without a data anchor* in `spiel.md` names a **numeric value** | 150 | `land.CN.aufsichtszaehler` → 0 |
+| `Parameter(schluessel)` | `parameter.toml` per T27 | 11 | `fonds.kasse` → `startkapital` |
+| `Manifest(feld)` | computed by the vintage build and reported in the manifest | 2 | `markt.wert` → start basket at start prices (T33) |
+| `Vorgabe(T-Nummer)` | this document, exhaustively enumerated in **T46** | 11 | `restwelt.basiswechsel` → 0 (T8) |
+| **Sum** | | **310** | |
 
-**Die Vorrangregel, ohne die die Summe nicht aufgeht.** Die Entwurfstabelle in `spiel.md`
-nennt für einige Zeilen keinen Zahlenwert, sondern eine **Bezugsquelle** — „aus
-`parameter.toml`" bei Zustimmung, Finanzmarktregulierung, Fondskasse, Anlegerbestand und
-Parametersatz-Prüfsumme, „aus dem Manifest des Jahrgangs" bei der Jahrgangskennung. Nach dem
-Wortlaut der Fassung 4 trügen diese Adressen zwei Einträge und brächen den Bau ab. Es gilt
-deshalb: **Der Eintrag ist die Stelle, die den Wert *bestimmt*, nicht die, die ihn
-erwähnt.** Verweist die Entwurfstabelle weiter, lautet der Eintrag `Parameter(…)`
-beziehungsweise `Manifest(…)`; `Entwurf` bleibt den Zeilen vorbehalten, die eine Zahl
-hinschreiben. Ein Verweis ist kein zweiter Eintrag.
+**The precedence rule without which the sum does not come out.** The draft table in
+`spiel.md` names for some rows not a numeric value but a **source of reference** — "from
+`parameter.toml`" for approval, financial-market regulation, fund cash, investor stock
+and parameter-set checksum, "from the vintage's manifest" for the vintage id. By the
+wording of version 4 these addresses would carry two entries and abort the build. It
+therefore holds: **the entry is the place that *determines* the value, not the one that
+mentions it.** Where the draft table refers onward, the entry reads `Parameter(…)` resp.
+`Manifest(…)`; `Entwurf` stays reserved for the rows that write down a number. A
+reference is not a second entry.
 
-**Eine Adresse ohne Eintrag bricht den Jahrgangsbau ab, eine Adresse mit zwei Einträgen
-ebenso.** Der zweite Fall ist der wichtigere: Er ist die Stelle, an der eine Größe zwei
-Herren bekäme und die beiden Werte auseinanderlaufen könnten — derselbe Fehlertyp, den T39
-für `landespreis`, T23 Punkt 9 für die BACI-Konkordanz und T47 für das Fondsvermögen schon
-geschlossen haben. Er ist in dieser Fassung einmal eingetreten und behoben: die 32
-Druck- und Restverzögerungsadressen, die `spiel.md` Fassung 4 aufgenommen hat und die T23
-Punkt 1 weiterhin führte.
+**An address without an entry aborts the vintage build, an address with two entries
+likewise.** The second case is the more important one: it is the place at which a
+quantity would get two masters and the two values could drift apart — the same error
+type that T39 has already closed for `landespreis`, T23 point 9 for the BACI concordance
+and T47 for the fund's assets. It has occurred once in this version and is fixed: the 32
+pressure and remaining-delay addresses that `spiel.md` version 4 took in and that T23
+point 1 continued to carry.
 
-**Wie die Zahlen der dritten Spalte entstanden sind, damit sie nachzählbar sind statt
-geglaubt.** Je spielbarem Land tragen 21 Adressen einen Datenanker (9 Sektorgrößen ohne den
-Preis, 8 Aggregatgrößen ohne den Wechselkurs, der Wechselkurs selbst, 3 Instrumentenstände),
-20 den Eintrag `Entwurf` (3 Sektorpreise, Aufsichtszähler, Einfluss, 12 Druck-, Gegendruck-
-und Restverzögerungsfelder, 3 Restdauern), 2 einen Parameterschlüssel (Zustimmung,
-Finanzmarktregulierung) und 1 eine Vorgabe (`basiswechsel`) — zusammen die 44 aus T15. Für
-die USA fällt der Wechselkurs vom Anker in die Vorgabe (Numéraire), also `3 × 21 + 20 = 83`
-Anker. Die Restwelt trägt 13 Anker, 3 `Entwurf` und 6 Vorgaben. Dazu 40 Handelsströme mit
-Anker.
+**How the numbers of the third column came about, so that they can be recounted instead
+of believed.** Per playable country 21 addresses carry a data anchor (9 sector
+quantities without the price, 8 aggregate quantities without the exchange rate, the
+exchange rate itself, 3 instrument levels), 20 the entry `Entwurf` (3 sector prices,
+supervision counter, influence, 12 pressure, counter-pressure and remaining-delay
+fields, 3 remaining durations), 2 a parameter key (approval, financial-market
+regulation) and 1 a prescription (`basiswechsel`) — together the 44 from T15. For the
+USA the exchange rate falls from anchor into prescription (numéraire), hence
+`3 × 21 + 20 = 83` anchors. The rest of world carries 13 anchors, 3 `Entwurf` and 6
+prescriptions. Plus 40 trade flows with an anchor.
 
 ```
 Datenanker  83 + 13 + 40                                            = 136
@@ -1632,211 +1638,211 @@ Vorgabe     T46                                                     =  11
                                                                       310
 ```
 
-Die vollständige Tabelle — 310 Zeilen aus Adresse, Herkunft und Startwert — wird ins
-Manifest geschrieben. Damit ist die Abnahmebedingung 2 des Arbeitspakets **maschinell
-beantwortbar**, statt vier Dokumente nebeneinanderzulegen: Wer sie prüfen will, liest eine
-Datei, die der Jahrgangsbau gar nicht erst hätte schreiben können, wenn eine Zeile fehlte.
+The complete table — 310 rows of address, provenance and start value — is written into
+the manifest. With that, acceptance condition 2 of the work package is **answerable by
+machine**, instead of laying four documents side by side: whoever wants to check it
+reads one file that the vintage build could not even have written if a row were missing.
 
-Der Preis ist 310 Vergleiche, einmal je Datenlauf und nicht je Partie. Die naheliegende
-Alternative — Startwert null, wenn nichts dasteht — wäre die teure gewesen: Sie hätte
-Befund 2 der dritten Prüfung in eine Zahl verwandelt, die niemand mehr hinterfragt, und
-zwar in genau die Zahl, die dort zufällig richtig ist.
+The price is 310 comparisons, once per data run and not per game. The obvious
+alternative — start value zero where nothing stands — would have been the expensive one:
+it would have turned finding 2 of the third check into a number nobody questions any
+more, and into exactly the number that happens to be right there.
 
-**T46 — Die elf Adressen, deren Herkunft dieses Dokument ist, abschliessend.** Fassung 4
-hat `Vorgabe(T-Nummer)` eingeführt und mit „derzeit allein T23 Punkt 1" beschrieben. Das war
-falsch, und der Fehler ist erst beim Auszählen aufgefallen: Nach der Aufnahme der 32
-Adressen in `spiel.md` hat T23 Punkt 1 gar keine Adresse mehr — dafür haben elf andere seit
-jeher keinen zulässigen Eintrag gehabt, ohne dass es jemandem aufgefallen wäre. Sie stehen
-hier mit Startwert, Grund und Regel im Lauf:
+**T46 — The eleven addresses whose provenance is this document, exhaustively.** Version 4
+introduced `Vorgabe(T-Nummer)` and described it with „derzeit allein T23 Punkt 1". That
+was wrong, and the error only surfaced at the counting-off: after the intake of the 32
+addresses into `spiel.md`, T23 point 1 has no address left at all — while eleven others
+have never had an admissible entry, without anyone noticing. They stand here with start
+value, reason and rule in the run:
 
-| Adresse | Zahl | Startwert | Grund und Regel im Lauf |
+| Address | Count | Start value | Reason and rule in the run |
 |---|---:|---:|---|
-| `gebiet.<G>.basiswechsel`, alle fünf Gebiete | 5 | 0 | Zähler der Neubasierungen nach **T8**. Vor Runde 1 hat keine stattgefunden; im Lauf erhöht ihn allein die Regel aus T8. Keine Reihe kann ihn tragen, weil er eine Eigenschaft des Modells ist und nicht der Welt |
-| `land.US.wechselkurs` | 1 | 10.000 | Der US-Dollar ist der Numéraire (**T5**). Reihe 10 trägt drei Länder, die USA definitionsgemäß nicht. Der Wert ist über die ganze Partie fest und wird je Runde mit der Ursache `Vortrag` geschrieben (T18) — dieselbe Bauart wie der dauerhaft leere Steckplatz aus T16 |
-| `restwelt.leitzins`, `restwelt.staatsschuld`, `restwelt.haushaltssaldo` | 3 | 0 | Die Restwelt hat nach `spiel.md` keine Politikinstrumente, keine Regierung und keinen Aufsichtszähler; sie hat folglich auch keine Notenbank und keinen Haushalt. Diese drei Adressen und die nächste existieren nur, weil T15 der Restwelt denselben Aggregatblock gibt wie einem Land. **Keine Modellregel liest sie**, alle vier werden je Runde mit der Ursache `Vortrag` fortgeschrieben, damit die Sollmaske aus T38 aufgeht |
-| `restwelt.wechselkurs` | 1 | 10.000 | Ebenso ungelesen, aber mit anderem Startwert: Die Restwelt rechnet im Numéraire, und ein Kurs eines Währungsaggregats gegen den Dollar hat keine Bedeutung. 10.000 statt 0, damit eine versehentliche Verwendung nicht durch null teilt, sondern die Zahl unverändert lässt |
-| `restwelt.inflation` | 1 | 0 | Reihe 8 (Verbraucherpreise) trägt vier Länder, die Restwelt nicht. Im Lauf ist die Größe endogen wie überall — Jahresrate von `restwelt.preisniveau`, das Reihe 15 verankert. Nur ihr Startwert hat keine Quelle |
+| `gebiet.<G>.basiswechsel`, all five territories | 5 | 0 | Counter of the rebasings per **T8**. Before round 1 none has taken place; in the run only the rule from T8 raises it. No series can carry it, because it is a property of the model and not of the world |
+| `land.US.wechselkurs` | 1 | 10,000 | The US dollar is the numéraire (**T5**). Series 10 carries three countries, the USA by definition not. The value is fixed over the whole game and is written each round with the cause `Vortrag` (T18) — the same construction as the permanently empty slot from T16 |
+| `restwelt.leitzins`, `restwelt.staatsschuld`, `restwelt.haushaltssaldo` | 3 | 0 | The rest of world per `spiel.md` has no policy instruments, no government and no supervision counter; consequently it has no central bank and no budget either. These three addresses and the next one exist only because T15 gives the rest of world the same aggregate block as a country. **No model rule reads them**, all four are carried forward each round with the cause `Vortrag` so that the target mask from T38 comes out |
+| `restwelt.wechselkurs` | 1 | 10,000 | Likewise unread, but with a different start value: the rest of world computes in the numéraire, and a rate of a currency aggregate against the dollar has no meaning. 10,000 instead of 0, so that an accidental use does not divide by zero but leaves the number unchanged |
+| `restwelt.inflation` | 1 | 0 | Series 8 (consumer prices) carries four countries, the rest of world not. In the run the quantity is endogenous as everywhere — the annual rate of `restwelt.preisniveau`, which series 15 anchors. Only its start value has no source |
 
-**Die erste Zeile nennt fünf Adressen und keine Schreibweise.** `gebiet.<G>.` ist die
-Sammelschreibweise aus **T17b** und löst hier zu `land.US.basiswechsel`,
-`land.CN.basiswechsel`, `land.DE.basiswechsel`, `land.BR.basiswechsel` und
-`restwelt.basiswechsel` auf — laufende Nummern 44, 88, 132, 176 und 198 in
-`daten/adressen.md`. Das ist keine Ausnahme von T17, sondern seine Anwendung: Fünf Zeilen
-einzeln aufzuführen, wo sie sich nur im Gebiet unterscheiden, bläht die Tabelle und sagt
-nichts mehr.
+**The first row names five addresses and no notation.** `gebiet.<G>.` is the collective
+notation from **T17b** and resolves here to `land.US.basiswechsel`,
+`land.CN.basiswechsel`, `land.DE.basiswechsel`, `land.BR.basiswechsel` and
+`restwelt.basiswechsel` — running numbers 44, 88, 132, 176 and 198 in
+`daten/adressen.md`. That is no exception to T17 but its application: listing five rows
+singly where they differ only in the territory bloats the table and says nothing any
+more.
 
-**Zwei Auflagen, ohne die die vier Restweltadressen eine stille Annahme wären.** Erstens:
-Auf sie ist **ausser dem Vortrag selbst kein Lesezugriff zulässig**. Der `Schreiber` führt
-sie in einer Liste `nur_vortrag`; ein `lies_alt` oder `lies_neu` darauf aus einer anderen
-Ursache als `Vortrag{adresse}` ist ein harter Fehler, kein Bericht, und der Bruchtester
-prüft es in Prüfung 5 und 6 mit. Sonst wüchse eine Modellregel auf einer Zahl, die niemand
-gesetzt hat. Zweitens: Fällt später eine Regel an, die eine davon braucht, ist das ein ADR
-und keine Zeile Code — dann bekommt die Adresse einen Datenanker oder eine begründete
-Bildungsregel.
+**Two conditions without which the four rest-of-world addresses would be a silent
+assumption.** First: apart from the carry-forward itself, **no read access to them is
+admissible**. The `Schreiber` carries them in a list `nur_vortrag`; a `lies_alt` or
+`lies_neu` on them from a cause other than `Vortrag{adresse}` is a hard error, not a
+report, and the break tester checks it along in checks 5 and 6. Otherwise a model rule
+would grow on a number nobody has set. Second: should a rule later arise that needs one
+of them, that is an ADR and not a line of code — then the address gets a data anchor or
+a justified formation rule.
 
-**Warum T46 überhaupt gebraucht wird und die Adressen nicht einfach entfallen.** Sie zu
-streichen wäre die sauberere Architektur und ist ausgeschlossen: `spiel.md` nennt **310**
-Größen und verweist für die Aufstellung hierher. 306 hier und 310 dort wäre ein Widerspruch
-in einer Zahl, also genau der Fall, den Abnahmebedingung 3 ausschliesst — und ändern darf
-ich `spiel.md` nicht. Vier Adressen, die nie gelesen werden, kosten 32 Byte und einen Test;
-ein Widerspruch zwischen den beiden Dokumenten kostet einen Lauf.
+**Why T46 is needed at all and the addresses do not simply fall away.** Striking them
+would be the cleaner architecture and is ruled out: `spiel.md` names **310** quantities
+and refers here for the listing. 306 here and 310 there would be a contradiction in a
+number, so exactly the case that acceptance condition 3 rules out — and I may not change
+`spiel.md`. Four addresses that are never read cost 32 bytes and one test; a
+contradiction between the two documents costs a run.
 
-**T24 — Lücken werden gekennzeichnet, nicht stillschweigend gefüllt — und der Prüfjahrgang
-duldet keine.** Je Reihe, Land und Jahr ein Flag `gefuellt`. Die Füllregel steht im
-Manifest (Fortschreibung des letzten bekannten Werts, lineare Ganzzahlinterpolation
-zwischen Stützstellen), und **gefüllte Jahre zählen im Fehlermaß des Rückvergleichs nicht
-mit**, sondern werden gezählt und ausgewiesen.
+**T24 — Gaps are marked, not silently filled — and the check vintage tolerates none.**
+Per series, country and year a flag `gefuellt`. The filling rule stands in the manifest
+(carry-forward of the last known value, linear integer interpolation between support
+points), and **filled years do not count in the error measure of the backtest** — they
+are counted and reported.
 
-Zwei Schwellen:
+Two thresholds:
 
-- **Prüfjahrgang 1997–2021:** `spiel.md` verlangt jede der 31 Sollreihen und jeden der 40
-  Handelsströme über **25 Stützstellen ohne Füllung**, also `gefuellt = 0`. Eine Reihe, die
-  das nicht erfüllt, wird **nicht gefüllt und nicht stillschweigend übernommen**, sondern
-  als Befund an den Spielentwerfer gemeldet, samt der beiden Auswege, die ihm zustehen:
-  Reihe streichen oder Fenster kürzen. Nach T40 kostet die zweite Wahl nur eine Zahl im
-  Manifest.
-- **Spieljahrgänge:** Eine Sollreihe, die zu mehr als einem Fünftel gefüllt ist, gilt als
-  nicht belastbar und wird im Befund als solche markiert.
+- **Check vintage 1997–2021:** `spiel.md` demands each of the 31 target series and each
+  of the 40 trade flows over **25 support points without filling**, that is
+  `gefuellt = 0`. A series that does not meet this is **not filled and not silently
+  adopted** but reported as a finding to the game designer, together with the two ways
+  out that are theirs: strike the series or shorten the window. Per T40 the second
+  choice costs only a number in the manifest.
+- **Play vintages:** a target series filled to more than one fifth counts as not
+  reliable and is marked as such in the finding.
 
-**Der Verdachtsfall ist enger geworden, aber nicht geschlossen.** Fassung 2 hat hier die
-chinesischen und brasilianischen Leitzinsreihen der neunziger Jahre genannt; `spiel.md`
-Fassung 3 hat den Fall gegen `FR.INR.LEND` geprüft (China 1995–2023 lückenlos, Brasilien
-ab 1997) und damit ein Indiz, keinen Beweis. `FR.INR.LEND` ist eine andere Reihe als der
-IFS-Leitzins, und `imf.org` weist den Abruf mit HTTP 403 ab. Der Jahrgangsbau prüft es an
-der Reihe, die tatsächlich eingebettet wird. **Das ist unverändert die wahrscheinlichste
-Stelle, an der das Vorhaben an Daten scheitert** — nur ist sie jetzt billig, weil sie
-niemanden mehr zwingt, ein Paket zweimal zu bauen.
+**The suspect case has become narrower, but not closed.** Version 2 named here the
+Chinese and Brazilian policy-rate series of the nineties; `spiel.md` version 3 checked
+the case against `FR.INR.LEND` (China 1995–2023 gapless, Brazil from 1997) and with that
+holds an indication, not a proof. `FR.INR.LEND` is a different series from the IFS
+policy rate, and `imf.org` rejects the retrieval with HTTP 403. The vintage build checks
+it on the series that is actually embedded. **That is unchanged the most probable spot
+at which the venture fails on data** — only it is now cheap, because it no longer forces
+anyone to build a package twice.
 
-**T25 — Die Grenze zwischen exogen und endogen ist die Grenze der Aussagekraft des
-Orakels, und deshalb ist sie eng gezogen.**
+**T25 — The boundary between exogenous and endogenous is the boundary of the oracle's
+power of statement, and that is why it is drawn tight.**
 
-| Größe | im Spiel | Begründung |
+| Quantity | in the game | Justification |
 |---|---|---|
-| Bevölkerung, Erwerbstätige | **exogen**, Pfad aus Daten | Demografie ist nach `spiel.md` ausdrücklich keine Spielgröße |
-| Restwelt-Nachfrageniveau | **exogen**, Pfad aus Daten | Randbedingung des Modells; der Rückvergleich prüft die Restwelt folglich nicht |
-| `durchgriff` | **exogen und konstant**, Konstante des Jahrgangs | so von `spiel.md` festgelegt, samt der dort benannten Vereinfachung: Chinas wachsende Handelsoffenheit bildet das Modell über Mengen ab, nicht über die Preisübertragung |
-| Produktivität | **endogen**, nur Startwert aus PWT | Würde sie jährlich aus den Daten gelesen, wäre das BIP im Rückvergleich eine Wiedergabe der Sollreihe und der Test prüfte sich selbst |
-| Preise, Zinswirkung, Handel, Staatsfinanzen, Zustimmung | **endogen** | das ist die Maschine, die geprüft werden soll |
-| Politikinstrumente | im `spielmodus` endogen, im `weltlauf` auf die historischen Pfade gesetzt | so verlangt es `spiel.md` — mit der Folge aus T37 und der Maske aus T38 |
+| Population, labour force | **exogenous**, path from data | demography per `spiel.md` is expressly not a game quantity |
+| Rest-of-world demand level | **exogenous**, path from data | boundary condition of the model; the backtest consequently does not check the rest of world |
+| `durchgriff` | **exogenous and constant**, constant of the vintage | so fixed by `spiel.md`, together with the simplification named there: China's growing trade openness the model maps via quantities, not via price transmission |
+| Productivity | **endogenous**, only the start value from PWT | were it read from the data each year, GDP in the backtest would be a replay of the target series and the test would check itself |
+| Prices, interest effect, trade, public finances, approval | **endogenous** | that is the machine that is to be checked |
+| Policy instruments | endogenous in the `spielmodus`, set to the historical paths in the `weltlauf` | so `spiel.md` demands — with the consequence from T37 and the mask from T38 |
 
-**T51 — Jedes Politikinstrument hat eine Schrittweite und einen Wertebereich, beide aus
-`parameter.toml`, und der Wertebereich gilt in beiden Modi.** `spiel.md` sagt „Instrumente
-bewegen sich um höchstens einen Schritt je Runde" und nennt für die Finanzmarktregulierung
-keine Einheit; seit T5 Klasse 10 gibt es eine, und damit lässt sich der Satz aufschreiben:
+**T51 — Every policy instrument has a step width and a value range, both from
+`parameter.toml`, and the value range holds in both modes.** `spiel.md` says "instruments
+move by at most one step per round" and names no unit for the financial-market
+regulation; since T5 class 10 there is one, and with that the sentence can be written
+down:
 
-| Instrument | Klasse | ein Schritt | Wertebereich |
+| Instrument | Class | one step | Value range |
 |---|---|---|---|
-| Leitzins | 3 Raten | `schrittweite[leitzins]` bp | `instrument_min[leitzins] … instrument_max[leitzins]`, und **`instrument_min[leitzins] ≥ 1 − aufschlag`** |
-| Zollniveau | 3 Raten | `schrittweite[zoll]` bp | `0 … instrument_max[zoll]` |
-| Haushaltssaldo | 3 Raten | `schrittweite[haushalt]` bp | `instrument_min … instrument_max` |
-| Finanzmarktregulierung | 10 Instrumentenstufe | **1 Stufe** | `0 … regulierung_stufen` |
+| Policy rate | 3 rates | `schrittweite[leitzins]` bp | `instrument_min[leitzins] … instrument_max[leitzins]`, and **`instrument_min[leitzins] ≥ 1 − aufschlag`** |
+| Tariff level | 3 rates | `schrittweite[zoll]` bp | `0 … instrument_max[zoll]` |
+| Budget balance | 3 rates | `schrittweite[haushalt]` bp | `instrument_min … instrument_max` |
+| Financial-market regulation | 10 instrument tier | **1 tier** | `0 … regulierung_stufen` |
 
-Nach jeder Bewegung in Schritt 3 gilt `stand = min(max(stand ± schritt, min), max)`; die
-Kappung trägt die Ursache des auslösenden Drucks und nicht `Vortrag`, damit die Kette aus
-T18 sagt, *dass* gekappt wurde. **Im `weltlauf` gilt die Schrittweite nicht** — der
-historische Pfad ist dort die Wahrheit und darf in einem Jahr weiter springen —, **der
-Wertebereich schon**: Verlässt der Pfad ihn, ist das ein Befund des Jahrgangsbaus und kein
-stilles Kappen einer Sollgröße.
+After every movement in step 3, `stand = min(max(stand ± schritt, min), max)` holds; the
+capping carries the cause of the triggering pressure and not `Vortrag`, so that the
+chain from T18 says *that* capping happened. **In the `weltlauf` the step width does not
+hold** — the historical path is the truth there and may jump further within a year —,
+**the value range does**: if the path leaves it, that is a finding of the vintage build
+and no silent capping of a target quantity.
 
-Die Zeile, an der das hängt, ist die zweite Spalte des Leitzinses. Ohne sie kann eine
-Lobbyaktion den Zins unter `−aufschlag` drücken, und `anleihekurs` teilt in derselben Runde
-durch null oder wechselt das Vorzeichen. Der Jahrgangsbau prüft die Bedingung gegen den
-historischen Pfad (T23 Punkt 5), das Instrument prüft sie gegen den Spieler, und der
-Invariantentest prüft sie gegen beide (T30 Prüfung 2). Drei Prüfungen für eine Schranke ist
-nicht zu viel: Sie ist die einzige Stelle des Modells, an der ein Kurs unendlich wird.
+The row this hangs on is the second column of the policy rate. Without it a lobby action
+can push the rate below `−aufschlag`, and `anleihekurs` divides by zero in the same
+round or flips its sign. The vintage build checks the condition against the historical
+path (T23 point 5), the instrument checks it against the player, and the invariant test
+checks it against both (T30 check 2). Three checks for one bound is not too many: it is
+the only place in the model at which a price becomes infinite.
 
-**T26 — Ein gesperrter oder fehlender Datenanker ändert das Programm nicht, nur das
-Manifest.** Drei Fälle, alle nach demselben Muster: Der Jahrgang trägt ein Modellkonstrukt,
-das Manifest sagt es, der Befund wiederholt es.
+**T26 — A locked or missing data anchor does not change the program, only the
+manifest.** Three cases, all on the same pattern: the vintage carries a model construct,
+the manifest says so, the finding repeats it.
 
-| Fall | Ersatz | Folge für das Orakel |
+| Case | Substitute | Consequence for the oracle |
 |---|---|---|
-| Aggregierter Zollsatz fällt unter die Drittanbieter-Ausnahme (die schwerste offene Frage aus `spiel.md`) | kein Zollpfad; der Weltlauf läuft mit konstantem Zoll | zwei statt drei verankerte Instrumente |
-| Sektorale Beschäftigung (Reihe 7) gesperrt | Aufteilung nach Wertschöpfungsanteil | Startwert wird Modellkonstrukt, keine Sollreihe betroffen |
-| **Spieljahrgang vor 1995 braucht eine Handelsmatrix, BACI beginnt 1995** | IWF-DOTS-Aggregate je Länderpaar, aufgeteilt nach den WDI-Sektoranteilen des Ausfuhrlandes | die Startmatrix ist ein Modellkonstrukt; Spieljahrgänge tragen ohnehin keinen Handelsblock im Rückvergleich (`spiel.md`) |
+| Aggregated tariff rate falls under the third-party exception (the gravest open question from `spiel.md`) | no tariff path; the `weltlauf` runs with a constant tariff | two instead of three anchored instruments |
+| Sectoral employment (series 7) locked | split by value-added share | start value becomes a model construct, no target series affected |
+| **A play vintage before 1995 needs a trade matrix, BACI begins 1995** | IMF DOTS aggregates per country pair, split by the WDI sector shares of the exporting country | the start matrix is a model construct; play vintages carry no trade block in the backtest anyway (`spiel.md`) |
 
-Der dritte Fall betrifft nach der Verschiebung auf 1997 nicht nur die Jahrgänge vor 1995,
-sondern auch 1995 und 1996: Sie sind nach `spiel.md` Spiel-, aber keine Prüfjahrgänge und
-tragen als US-Startwert die Sektorstruktur von 1997, gekennzeichnet als `gefuellt`.
-Lizenz- und Deckungsrisiko sind damit eine Eigenschaft der Datenschicht, nie eine des Kerns.
+The third case, after the shift to 1997, concerns not only the vintages before 1995 but
+also 1995 and 1996: per `spiel.md` they are play but not check vintages and carry as US
+start value the sector structure of 1997, marked as `gefuellt`. Licence and coverage
+risk are thereby a property of the data layer, never one of the core.
 
 ### Die Reihenliste, die `spiel.md` vom Architekten verlangt
 
-Damit der Datenbauer je Reihe das Feld „Source" prüfen kann. Quelle nach `daten.md`;
-„Verdacht" heisst Drittanbieter-Ausnahme der Weltbank. Die Nummern 7, 8, 10 und 13, die
-`spiel.md` zur Prüfung benennt, sind unverändert.
+So that the data builder can check the field „Source" per series. Source per `daten.md`;
+"Suspect" means the World Bank's third-party exception. The numbers 7, 8, 10 and 13 that
+`spiel.md` names for checking are unchanged.
 
-| Nr | Größe | Dimension | Modelleinheit | Quelle | Rolle | Verdacht |
+| Nr | Quantity | Dimension | Model unit | Source | Role | Suspect |
 |---:|---|---|---|---|---|---|
-| 1 | BIP, konstante Preise | 4 + RW | Tsd USD | WDI / PWT | Start + Soll (4, frei) | nein |
-| 2 | Wertschöpfungsanteil je Sektor: `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS` | (4+RW) × 3 | Zehntausendstel, auf 10.000 normiert | WDI | Start + Soll (12, frei, 8 unabhängig) | nein |
-| 3 | Kapitalstock | 4 + RW | Tsd USD | PWT | Start | nein |
-| 4 | Produktivität (TFP) | 4 + RW | Index | PWT | nur Start (T25) | nein |
-| 5 | Bevölkerung | 4 + RW | Personen | WDI / PWT | exogener Pfad | nein |
-| 6 | Erwerbstätige | 4 + RW | Personen | WDI / PWT | exogener Pfad | nein |
-| 7 | Beschäftigung je Sektor | (4+RW) × 3 | Personen | WDI (ILO) | Start | **ja** |
-| 8 | Verbraucherpreise | 4 | bp Jahresrate | WDI / IWF IFS | Start + Soll (4, frei) | **ja** (IWF-gestützt) |
-| 9 | Leitzins | 4 | bp | IWF IFS | Start + Politikpfad + Soll (4, **gesetzt**) | nein |
-| 10 | Wechselkurs gegen USD | 3 | Index | IWF IFS / WDI | Start + Soll (3, frei) | prüfen |
-| 11 | Staatsschuldenquote | 4 | bp | IWF WEO | Start + Soll (4, **abgeleitet**) | nein |
-| 12 | Haushaltssaldo | 4 | bp | IWF WEO | Start + Politikpfad | nein |
-| 13 | Zollniveau, aggregiert | 4 | bp | WDI (aus WITS) | Start + Politikpfad | **ja, entscheidend** |
-| 14 | Bilaterale Ströme nach HS92, aggregiert über die Konkordanz aus T23 Punkt 9 | 5 × 4 × 2 | Tsd USD | CEPII BACI | Start + Sollblock (frei) | nein |
-| 15 | Preisniveau im Ländervergleich | 4 + RW | Index | PWT | Start (Numéraire) | nein |
-| 16 | `durchgriff` | 5 × 2 | Zehntausendstel | BACI + WDI, abgeleitet nach T23 Punkt 5 | Konstante des Jahrgangs | nein |
-| 17 | Sektorpreise | (4+RW) × 3 | Index | **keine** | endogen, kein Soll | — |
-| 18 | Zustimmung | 4 | Zehntausendstel | **keine** | aus `parameter.toml` | — |
-| 19 | Marktkorbwert und Marktrendite | 1 + 1 | Tsd USD / bp | **keine** | Startwert nach T33, endogen, kein Soll | — |
+| 1 | GDP, constant prices | 4 + RW | thousand USD | WDI / PWT | start + target (4, frei) | no |
+| 2 | Value-added share per sector: `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS` | (4+RW) × 3 | ten-thousandths, normalised to 10,000 | WDI | start + target (12, frei, 8 independent) | no |
+| 3 | Capital stock | 4 + RW | thousand USD | PWT | start | no |
+| 4 | Productivity (TFP) | 4 + RW | index | PWT | start only (T25) | no |
+| 5 | Population | 4 + RW | persons | WDI / PWT | exogenous path | no |
+| 6 | Labour force | 4 + RW | persons | WDI / PWT | exogenous path | no |
+| 7 | Employment per sector | (4+RW) × 3 | persons | WDI (ILO) | start | **yes** |
+| 8 | Consumer prices | 4 | bp annual rate | WDI / IMF IFS | start + target (4, frei) | **yes** (IMF-based) |
+| 9 | Policy rate | 4 | bp | IMF IFS | start + policy path + target (4, **gesetzt**) | no |
+| 10 | Exchange rate against USD | 3 | index | IMF IFS / WDI | start + target (3, frei) | check |
+| 11 | Government-debt ratio | 4 | bp | IMF WEO | start + target (4, **abgeleitet**) | no |
+| 12 | Budget balance | 4 | bp | IMF WEO | start + policy path | no |
+| 13 | Tariff level, aggregated | 4 | bp | WDI (from WITS) | start + policy path | **yes, decisive** |
+| 14 | Bilateral flows per HS92, aggregated via the concordance from T23 point 9 | 5 × 4 × 2 | thousand USD | CEPII BACI | start + target block (frei) | no |
+| 15 | Price level in country comparison | 4 + RW | index | PWT | start (numéraire) | no |
+| 16 | `durchgriff` | 5 × 2 | ten-thousandths | BACI + WDI, derived per T23 point 5 | constant of the vintage | no |
+| 17 | Sector prices | (4+RW) × 3 | index | **none** | endogenous, no target | — |
+| 18 | Approval | 4 | ten-thousandths | **none** | from `parameter.toml` | — |
+| 19 | Market-basket value and market return | 1 + 1 | thousand USD / bp | **none** | start value per T33, endogenous, no target | — |
 
-`NV.IND.MANF.ZS` (verarbeitendes Gewerbe) wird nach `spiel.md` **nicht** verwendet und ist
-deshalb hier nicht aufgeführt. Die 31 Sollreihen sind die Zeilen 1, 2, 8, 9, 10 und 11
-(4+12+4+4+3+4); der Handelsblock aus Zeile 14 kommt als eigener Block hinzu. Die vier
-Größen ohne Datenanker sind die Zeilen 17, 18, 19 und das Instrument
-Finanzmarktregulierung — genau die vier, die `spiel.md` unter „Die Grenze des Orakels"
-aufzählt.
+`NV.IND.MANF.ZS` (manufacturing) is per `spiel.md` **not** used and is therefore not
+listed here. The 31 target series are rows 1, 2, 8, 9, 10 and 11 (4+12+4+4+3+4); the
+trade block from row 14 comes in as a block of its own. The four quantities without a
+data anchor are rows 17, 18, 19 and the instrument financial-market regulation —
+exactly the four that `spiel.md` enumerates under „Die Grenze des Orakels".
 
-**Und hier steht die Zeile, deren Fehlen T46 nötig gemacht hat.** Die Spalte „Dimension"
-ist zu lesen, wie sie dasteht: Zeile 8 trägt **4**, nicht 4 + RW; die Zeilen 9, 11 und 12
-tragen **4**, Zeile 10 trägt **3**. Daraus folgt, dass elf Zustandsadressen von keiner Reihe
-gedeckt sind — der US-Wechselkurs (Numéraire), fünf Aggregatgrößen der Restwelt und die fünf
-Neubasierungszähler. Sie stehen in **T46**. Bis Fassung 4 stand das nirgends, weil niemand
-die Dimensionen gegen T15 gelegt hat; die Prüfung der Runde 4 hat Bedingung 2 für erfüllt
-erklärt und dabei auf dieselbe Lücke geschaut wie ich.
+**And here stands the row whose absence made T46 necessary.** The column "Dimension" is
+to be read as it stands: row 8 carries **4**, not 4 + RW; rows 9, 11 and 12 carry **4**,
+row 10 carries **3**. From that it follows that eleven state addresses are covered by no
+series — the US exchange rate (numéraire), five aggregate quantities of the rest of
+world and the five rebasing counters. They stand in **T46**. Until version 4 that stood
+nowhere, because nobody had laid the dimensions against T15; the check of round 4
+declared condition 2 fulfilled and in doing so looked at the same gap as I did.
 
-**T27 — Die Kalibrierdatei liegt ausserhalb des Codes, und jeder Schlüssel trägt eine
-Skalenklasse.** Sämtliche Zahlenwerte, die `spiel.md` ausdrücklich der Kalibrierung
-überlässt — Mandatsschwelle (`schwelle_v` und `schwelle_e`), drei Aufsichtsschwellen,
-Nachahmergeschwindigkeit, Anlegerabzugsanteil, Startkapital, Startzustimmung, Startstand der
-Finanzmarktregulierung, `ausstiegsabschlag` und `zwangsabschlag` (T47), Verzögerungen,
-Elastizitäten — stehen in `parameter.toml`.
+**T27 — The calibration file lies outside the code, and every key carries a scale
+class.** All numeric values that `spiel.md` expressly leaves to calibration — the
+mandate threshold (`schwelle_v` and `schwelle_e`), three supervision thresholds,
+imitator speed, investor-withdrawal share, start capital, start approval, start level of
+the financial-market regulation, `ausstiegsabschlag` and `zwangsabschlag` (T47), delays,
+elasticities — stand in `parameter.toml`.
 
-**Elf Schlüssel bekommen in dieser Fassung eine Einheit oder gibt es neu**, weil T49 und T50
-sie sonst nicht einordnen könnten. Ein Parameterschlüssel ohne Klasse ist derselbe Fehler
-wie eine Adresse ohne Klasse:
+**Eleven keys get a unit in this version or are new**, because T49 and T50 could not
+place them otherwise. A parameter key without a class is the same error as an address
+without a class:
 
-| Schlüssel | Klasse (T5) | Bedeutung | woher |
+| Key | Class (T5) | Meaning | from where |
 |---|---|---|---|
-| `stufenweite` | 4 Anteile | Anteil des Marktes je Positionsstufe, **kein Geldbetrag** | `spiel.md` Fassung 5 |
-| `stufen_max` | 11 Zähler | Betragsgrenze der Stufenzahl je Steckplatz | T16 |
-| `ausstiegsabschlag`, `zwangsabschlag` | 4 Anteile | Abschläge auf den Beteiligungswert | T47 |
-| `aufschlag` | 3 Raten | Abstand Leitzins ↔ Anleiherendite, `≥ aufschlag_min` (T23 Punkt 5) | **neu**, `spiel.md` Fassung 5 |
-| `lobbykosten` | 1 Fondsgeld | US-Cent je Lobbypunkt, `≥ 1` | T50 |
-| `beteiligungsrabatt` | 4 Anteile | Preisnachlass auf den Lobbypunkt bei Beteiligung, `1 … 10.000` | **neu**, T50 |
-| `gegenlobby_satz` | 9 Lobbydruck | Lobbypunkte je 10.000 Tausend USD Schaden | **neu**, T50 |
-| `druck_max` | 9 Lobbydruck | Obergrenze für Druck und Gegendruck je Instrument | **neu**, T5 Klasse 9 |
-| `regulierung_stufen` | 10 Instrumentenstufe | Zahl der Stufen der Finanzmarktregulierung | **neu**, T5 Klasse 10 |
-| `schrittweite[i]`, `instrument_min[i]`, `instrument_max[i]` | wie das Instrument | Bewegung je Runde und Wertebereich | **neu**, T51 |
+| `stufenweite` | 4 shares | share of the market per position step, **not a money amount** | `spiel.md` version 5 |
+| `stufen_max` | 11 counters | magnitude bound on the step count per slot | T16 |
+| `ausstiegsabschlag`, `zwangsabschlag` | 4 shares | discounts on the stake value | T47 |
+| `aufschlag` | 3 rates | spread policy rate ↔ bond yield, `≥ aufschlag_min` (T23 point 5) | **new**, `spiel.md` version 5 |
+| `lobbykosten` | 1 fund money | US cents per lobby point, `≥ 1` | T50 |
+| `beteiligungsrabatt` | 4 shares | price discount on the lobby point with a stake, `1 … 10.000` | **new**, T50 |
+| `gegenlobby_satz` | 9 lobby pressure | lobby points per 10.000 thousand USD damage | **new**, T50 |
+| `druck_max` | 9 lobby pressure | upper bound for pressure and counter-pressure per instrument | **new**, T5 class 9 |
+| `regulierung_stufen` | 10 instrument tier | number of tiers of the financial-market regulation | **new**, T5 class 10 |
+| `schrittweite[i]`, `instrument_min[i]`, `instrument_max[i]` | as the instrument | movement per round and value range | **new**, T51 |
 
-`leitzins_start[l]` steht **nicht** hier, sondern im Jahrgang (T23 Punkt 5): Es ist keine
-Kalibriergröße, sondern eine Messung. Die Zahl der Adressen mit Herkunft
-`Parameter(schluessel)` bleibt bei elf (T45) — neue Schlüssel sind keine neuen Adressen.
+`leitzins_start[l]` stands **not** here but in the vintage (T23 point 5): it is not a
+calibration quantity but a measurement. The number of addresses with provenance
+`Parameter(schluessel)` stays at eleven (T45) — new keys are not new addresses.
 
-Alle Werte werden als Dezimalzeichenketten in skalierte Ganzzahlen gelesen (T4)
-und in eine Struktur mit benannten Feldern gefüllt, nie über eine Schleife über Schlüssel
-(T9). Die Prüfsumme des Parametersatzes steht im Zustand und in jedem Speicherstand. Damit
-ist Kalibrieren eine Datenänderung, die kein Übersetzen braucht — genau die Bauart, die
-`spiel.md` an Democracy 4 belegt hat, und die Voraussetzung dafür, dass ein Agent über
-Nacht tausend Parametersätze durchsucht (Abschnitt 10).
+All values are read as decimal strings into scaled integers (T4) and filled into a
+structure with named fields, never via a loop over keys (T9). The checksum of the
+parameter set stands in the state and in every save. With that, calibrating is a data
+change that needs no compiling — exactly the construction that `spiel.md` has evidenced
+on Democracy 4, and the precondition for an agent searching a thousand parameter sets
+overnight (section 10).
 
 ## 8. Markträumung und die beiden Renditen
 
