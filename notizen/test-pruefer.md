@@ -4,6 +4,29 @@ Rotated by the runner on 2026-09-07 at 12594 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — pruefung 0147, third pass (geprueft, 0 findings)
+
+- The package closed the way the two Ruecklaeufe predicted: `belegstellen_messung`
+  Passed 30.72/30.73 s in both builds of today's report, corpus green again, so the
+  PM's corpus clause was never needed. Quoting report evidence into the befund on
+  sight (rule from 0200) paid off twice here — both the red proof and the green
+  proof only survive as quotes.
+- Before accepting a ctest "Passed" as rc 0, grep the CMakeLists for
+  `PASS_REGULAR_EXPRESSION|SKIP_RETURN_CODE|WILL_FAIL`. Absent, Passed ⇔ exit 0 and
+  the whole internal check ladder is proven in one stroke. This plus a needle
+  re-count against HEAD is the entire review of an executed measurement.
+- The one thing an executed green run cannot prove about itself: stream
+  orientation. If the riegel wrote its Zahlenzeile to stderr instead of stdout,
+  `las_bestand` would be trivially False and Teil 1 would compare "(keine
+  Zahlenzeile)" == "(keine Zahlenzeile)" — green either way. Checked by reading the
+  fprintf targets (:3974 stderr before return 2, :4122 stdout after the Bestand
+  loop). Add this to the standing checklist for every messung apparatus.
+- Needle-uniqueness subtlety worth keeping: a needle substring may recur elsewhere
+  (M1's grund text also sits in the ORTSFAELLE table :2335) — uniqueness holds at
+  the full multi-line needle, so always compare the whole block, not the grep hit.
+- TIMEOUT 600 vs measured 30.7 s: the CMake comment asks for "das Vielfache der
+  gemessenen Zeit"; 600 is ~20x, no package needed.
+
 ## 2026-09-07 — pruefung 0212 (geprueft, 0 findings)
 
 - First apparatus that *compiles* under ctest (wandschranke.py). Check order that
