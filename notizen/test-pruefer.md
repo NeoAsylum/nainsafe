@@ -105,7 +105,33 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-06.md` (voll nach 0180); davor
   und python3-Heredoc mit subprocess/env= gingen durchweg; Write nach befunde/ ging.
   rm nicht probiert, shutil.rmtree im Heredoc tat es.
 
+## 2026-09-07 — 0147 (Orts-/Formanker Belegstellenriegel): zurueck, Vorschlag 0200
+
+- **Builder-Lauf hatte selbst keine Shell:** messung-0147 steht komplett, lief aber
+  nie (`ergebnis: nicht_ausgefuehrt` im Nachweis). Eine Mess-Abnahme ohne Lauf ist
+  zurueck, egal wie gut der Stand ist. Statisch ersatzgeprueft: alle 9 alt-Nadeln
+  einmalig und aktuell, jeder Mutant reisst genau seinen Fall, Selbsttest laeuft vor
+  argv/Bestand, Ein-Wurzel-Aufruf ist kanonisch (Riegel leitet specs/ selbst ab,
+  CMake add_test hat ein Argument).
+- **Zuerst den Uebersetzungsbericht des Tages oeffnen, dann "gruen auf dem Korpus"
+  glauben:** Der Korpus war den ganzen Lauf ueber rot — Uebersetzung benennt
+  spec-Ueberschriften um ("Die Schleife" -> "The loop"), 10 Zitate tot, ctest
+  belegstellen_riegel FAILED in beiden Baeumen. Ein Gruen-Zitat im Nachweis stammte
+  vom Vortag und war Stunden spaeter falsch.
+- **Ein "fehlender" Mutant kann eine Unmoeglichkeit sein:** FORMFAELLE-Tausch 1<->2
+  reisst nichts, weil KLAMMERN-Anfangszeichen und ist_namensanfang disjunkt sind
+  (selbst nachgeprueft). Dann das Disjunktheitsargument verlangen, keinen gruenen
+  Fall.
+- messung.py-Koederluecke, aber gedeckt: falsche ZAHLENMARKE ergaebe beidseitig
+  "(keine Zahlenzeile)" und bliebe still — der Befundteil-Vergleich faengt es ueber
+  den veraenderten Selbsttest-Vorspann.
+
 ## Offene Faehrten
+
+- 2026-09-07 (0147) -- Nachweis meldet Befund gegen messung-0106/messung.py:
+  FREMDE_FAELLE-Marken `Namensfall`/`Abstandsfall` treffen nie (Riegel schreibt
+  `Selbsttest N:`). Beim naechsten 0106-Familien-Paket pruefen, ob das ein Paket
+  bekam.
 
 - 2026-09-05 (0086) -- **Herkunftsangaben von ZITATFAELLE einzeln nachschlagen.**
   Mehrfach vertagt; ZIELFAELLE-Herkuenfte stichprobenhaft ok (0083r2).
