@@ -246,140 +246,142 @@ runtime messages.
 
 ## 2. Der deterministische Kern
 
-**T4 — Keine Gleitkommazahl im Kern, in der Datenschicht und im Protokoll.** Kein `float`,
-kein `double`, kein `long double`, kein `sqrt`, kein `pow`, kein `log`, kein `exp`.
+**T4 — No floating-point number in the core, in the data layer and in the protocol.** No
+`float`, no `double`, no `long double`, no `sqrt`, no `pow`, no `log`, no `exp`.
 
-**Die Sperre ist ein Übersetzungsfehler, kein Vorsatz.** Rust hätte hier
-`#![deny(clippy::float_arithmetic)]` gehabt; die C++-Entsprechung ist `#pragma GCC poison`
-in `kern/include/kern/sperre.hpp`. Ein vergifteter Bezeichner ist ab dieser Zeile ein harter
-Fehler des Vorverarbeiters. Wer im Kern `double` schreibt, bekommt keinen Zahlenfehler in
-Runde 400, sondern einen roten Übersetzungslauf. Vergiftet sind `float` und `double`
-(`long double` sind zwei Token und damit miterfasst), die Wurzel-, Potenz-, Logarithmus- und
-Exponentialfunktionen in allen drei Suffixformen und die Zeichenketten-Umwandler `atof`,
+**The lock is a compile error, not a resolution.** Rust would have had
+`#![deny(clippy::float_arithmetic)]` here; the C++ equivalent is `#pragma GCC poison`
+in `kern/include/kern/sperre.hpp`. From that line on, a poisoned identifier is a hard error
+of the preprocessor. Whoever writes `double` in the core gets no numeric error in
+round 400 but a red compile run. Poisoned are `float` and `double`
+(`long double` is two tokens and thus covered along), the root, power, logarithm and
+exponential functions in all three suffix forms, and the string converters `atof`,
 `strtod`, `strtof`, `strtold`.
 
-**Die Einbauregel, und sie ist der ganze Trick:** `sperre.hpp` ist die **letzte** Zeile des
-Include-Blocks jeder Kernquelle und steht in **keiner** `.hpp`. Die Vergiftung gilt ab der
-Stelle, an der sie steht, bis zum Ende der Übersetzungseinheit — ein Standardkopf, der
-danach eingebunden wird, zerbricht daran, weil etwa `<string>` ein `std::to_string` für
-`double` deklariert. Eine Sperre in einem Kopf würde also nicht den Kern schützen, sondern
-den Bau anhalten.
+**The placement rule, and it is the whole trick:** `sperre.hpp` is the **last** line of the
+include block of every core source and stands in **no** `.hpp`. The poisoning applies from
+the place where it stands to the end of the translation unit — a standard header included
+after it breaks on it, because `<string>`, say, declares a `std::to_string` for
+`double`. A lock in a header would therefore not protect the core but halt
+the build.
 
-Nachweis, zwei Zeilen: `grep -c 'include "kern/sperre.hpp"' kern/src/*.cpp` gibt für jede
-Quelle genau `1`, und `grep -rnE 'float|double' kern/` trifft nur `sperre.hpp`
-selbst. Auch die Parameterdatei wird ohne Gleitkomma gelesen — Dezimalzeichenketten werden
-direkt in skalierte Ganzzahlen zerlegt, nie über einen Gleitkommaumweg; in `daten` gilt
-dieselbe Sperre.
+Proof, two lines: `grep -c 'include "kern/sperre.hpp"' kern/src/*.cpp` returns exactly `1`
+for every source, and `grep -rnE 'float|double' kern/` hits only `sperre.hpp`
+itself. The parameter file, too, is read without floating point — decimal strings are
+split directly into scaled integers, never via a floating-point detour; the same lock
+applies in `daten`.
 
-**T5 — Jede Größenklasse hat eine deklarierte Skala.** Der Typ ist überall `i64` — im Kern
-ein Aliasname für `std::int64_t`, damit die Breite an keiner Stelle vom Zielsystem abhängt —,
-die Bedeutung steht in dieser Tabelle und nirgends sonst:
+**T5 — Every size class has a declared scale.** The type is `i64` everywhere — in the core
+an alias for `std::int64_t`, so that the width depends on the target system at no point —,
+the meaning stands in this table and nowhere else:
 
-| # | Klasse | Einheit | Beispiel | Bereich |
+| # | Class | Unit | Example | Range |
 |---:|---|---|---|---|
-| 1 | Fondsgeld (Kasse, **Positionswert**, **Beteiligungswert**, Hebel, Anlegerbestand) | US-Cent | 4.200.000.000 = 42 Mio USD | ±9,2·10^16 USD |
-| 2 | Volkswirtschaftliche Beträge (BIP, Wertschöpfung, Kapitalstock, Handelsstrom, **Korbwert**, Marktkorbwert) | Tausend USD zu konstanten Preisen **des Jahres 2015**; was in einer anderen Preisbasis ankommt, wird beim Jahrgangsbau nach **T53** darauf gebracht | 21.000.000.000 = 21 Bio USD | reichlich |
-| 3 | Raten (Zins, Inflation, Zoll, Haushaltssaldo, Schuldenquote, Rendite, Überrendite, **`aufschlag`**) | Basispunkte (1 bp = 0,01 %) | 250 = 2,50 % | ±2 Mio % |
-| 4 | Anteile (Sektoranteil, Marktanteil, Einfluss, Zustimmung, **Sichtbarkeit**, **Beteiligungsanteil**, `durchgriff`, **`stufenweite`**) | Zehntausendstel | 10.000 = 100 % | 0 bis 10.000 |
-| 5 | Nominalindizes (Sektorpreise, Weltpreise, Preisniveau, **`anleihekurs`**) | Index, Startjahr = 10.000 | 12.500 = +25 % | > 0, siehe T8 und T50 |
-| 6 | Wechselkurs | Index gegen USD, Startjahr = 10.000 | 8.000 = Aufwertung um 25 % | ≥ 1, siehe T8 und T50 |
-| 7 | **Realindizes (Produktivität)** | Index, Startjahr = 10.000, **nie neu basiert** | 11.200 = +12 % | > 0 |
-| 8 | **Personen** (Bevölkerung, Erwerbstätige, Beschäftigung je Sektor) | Personen | 82.000.000 | 0 … 10^10 |
-| 9 | **Lobbydruck** (anliegender Druck, Gegendruck) | Lobbypunkte | 1.500 | 0 … `druck_max` |
-| 10 | **Instrumentenstufe** (allein Finanzmarktregulierung) | Stufe | 3 | 0 … `regulierung_stufen` |
-| 11 | Zähler und Restdauern (Aufsicht, Nachahmer, Restverzögerung, die drei Restdauern, `basiswechsel`, Runde, Mandatsstand, Positionsstufe) | Stück bzw. Runden | 3 = drei Runden | 0 … Obergrenze aus `parameter.toml`; Positionsstufe `−stufen_max … +stufen_max` |
-| 12 | **Kennungen** (Jahrgangskennung, Parametersatz-Prüfsumme) | Bitmuster ohne Größenbedeutung | — | jede `i64`; **jede Arithmetik ausser Gleichheit ist ein Fehler** |
-| 13 | Ergebnis einer Partie (**keine Zustandsadresse**) | Milli-Runden | 12.000 = Runde 12,0 | siehe T34 |
+| 1 | Fund money (cash, **position value**, **stake value**, leverage, investor stock) | US cents | 4,200,000,000 = 42 million USD | ±9.2·10^16 USD |
+| 2 | Macroeconomic amounts (GDP, value added, capital stock, trade flow, **basket value**, market-basket value) | thousand USD at constant prices **of the year 2015**; whatever arrives in a different price basis is brought onto it at vintage build per **T53** | 21,000,000,000 = 21 trillion USD | ample |
+| 3 | Rates (interest, inflation, tariff, budget balance, debt ratio, return, excess return, **`aufschlag`**) | basis points (1 bp = 0.01 %) | 250 = 2.50 % | ±2 million % |
+| 4 | Shares (sector share, market share, influence, approval, **visibility**, **stake share**, `durchgriff`, **`stufenweite`**) | ten-thousandths | 10,000 = 100 % | 0 to 10,000 |
+| 5 | Nominal indices (sector prices, world prices, price level, **`anleihekurs`**) | index, start year = 10,000 | 12,500 = +25 % | > 0, see T8 and T50 |
+| 6 | Exchange rate | index against USD, start year = 10,000 | 8,000 = appreciation by 25 % | ≥ 1, see T8 and T50 |
+| 7 | **Real indices (productivity)** | index, start year = 10,000, **never rebased** | 11,200 = +12 % | > 0 |
+| 8 | **Persons** (population, labour force, employment per sector) | persons | 82,000,000 | 0 … 10^10 |
+| 9 | **Lobby pressure** (applied pressure, counter-pressure) | lobby points | 1,500 | 0 … `druck_max` |
+| 10 | **Instrument tier** (financial-market regulation alone) | tier | 3 | 0 … `regulierung_stufen` |
+| 11 | Counters and remaining durations (supervision, imitators, remaining delay, the three remaining durations, `basiswechsel`, round, mandate level, position step) | count resp. rounds | 3 = three rounds | 0 … upper bound from `parameter.toml`; position step `−stufen_max … +stufen_max` |
+| 12 | **Ids** (vintage id, parameter-set checksum) | bit pattern without magnitude meaning | — | any `i64`; **any arithmetic except equality is an error** |
+| 13 | Result of a game (**no state address**) | milli-rounds | 12,000 = round 12.0 | see T34 |
 
-**Fünf Klassen sind in dieser Fassung neu, und sie sind es nicht aus Ordnungsliebe.** T5
-sagt von sich, die Bedeutung stehe „in dieser Tabelle und nirgends sonst"; ich habe die
-Zusage in diesem Lauf zum ersten Mal gegen alle 310 Adressen eingelöst und 69 gefunden, die
-in keiner Zeile vorkamen. Welche das sind und wie die Zuordnung aufgeht, steht in **T49**;
-was die neuen Klassen bedeuten, hier:
+**Five classes are new in this version, and they are not new out of love of order.** T5
+says of itself that the meaning stands „in this table and nowhere else"; in this run I have
+redeemed that promise for the first time against all 310 addresses and found 69 that
+appeared in none of its rows. Which ones they are and how the mapping comes out stands in
+**T49**; what the new classes mean, here:
 
-- **Personen (8).** 25 Adressen. Ohne eigene Klasse hätte ein Bauagent Erwerbstätige in
-  Tausenden oder in Personen führen können, und die Produktivität hinge am Faktor 1.000.
-- **Realindizes (7).** 5 Adressen. Die Trennung von Klasse 5 ist keine Feinheit, sondern
-  eine Regel: T8 teilt bei einer Neubasierung die **nominalen** Größen eines Gebiets durch
-  1.000. Die Produktivität ist real und darf nicht mitlaufen; stünde sie in Klasse 5, würde
-  ein brasilianischer Basiswechsel die Produktivität um drei Größenordnungen senken.
-- **Lobbydruck (9).** 32 Adressen, und der Grund steht oben im Vorspann: `druck` kommt aus
-  dem Fondsbudget, `gegendruck` aus einem volkswirtschaftlichen Schaden, und Schritt 3
-  verrechnet beide gegeneinander. Die gemeinsame Einheit ist der **Lobbypunkt**; die beiden
-  Übergänge dorthin stehen in T50.
-- **Instrumentenstufe (10).** 4 Adressen. Drei der vier Instrumente stehen in Basispunkten,
-  weil ihr historischer Politikpfad in Basispunkten vorliegt; die Finanzmarktregulierung hat
-  nach `spiel.md` keinen Anker und deshalb keine natürliche Einheit. Sie bekommt eine
-  Stufenskala, und „höchstens ein Schritt je Runde" heisst dort **eine Stufe**, bei den
-  anderen dreien `schrittweite[instrument]` Basispunkte aus `parameter.toml`.
-- **Kennungen (12).** 2 Adressen. Das Verbot der Arithmetik ist der eigentliche Inhalt: Eine
-  Prüfsumme, die versehentlich in eine Summe gerät, erzeugt eine Zahl, die keine Prüfung
-  bemerkt, weil sie in keinem Wertebereich liegt.
+- **Persons (8).** 25 addresses. Without a class of their own, a build agent could have
+  carried the labour force in thousands or in persons, and productivity would have hung on
+  the factor 1,000.
+- **Real indices (7).** 5 addresses. The separation from class 5 is no nicety but a rule:
+  on a rebasing, T8 divides the **nominal** quantities of a territory by
+  1,000. Productivity is real and must not move along; if it stood in class 5, a Brazilian
+  base change would lower productivity by three orders of magnitude.
+- **Lobby pressure (9).** 32 addresses, and the reason stands above in the preamble:
+  `druck` comes from the fund's budget, `gegendruck` from a macroeconomic damage, and
+  step 3 nets the two against each other. The common unit is the **lobby point**; the two
+  transitions into it stand in T50.
+- **Instrument tier (10).** 4 addresses. Three of the four instruments stand in basis
+  points, because their historical policy path comes in basis points; financial-market
+  regulation has no anchor per `spiel.md` and therefore no natural unit. It gets a tier
+  scale, and „at most one step per round" means **one tier** there, for the other three
+  `schrittweite[instrument]` basis points from `parameter.toml`.
+- **Ids (12).** 2 addresses. The ban on arithmetic is the actual content: a checksum that
+  accidentally gets into a sum produces a number that no check notices, because it lies
+  in no value range.
 
-**Zwei bestehende Klassen sind erweitert, und auch das ist kein Ordnungsschritt:**
-**Fondsgeld (1)** und **volkswirtschaftliche Beträge (2)** führen jetzt `positionswert` und
-`korbwert` ausdrücklich, auf beiden Seiten der Grenze. Das ist Befund 2 der Runde 6 an seiner
-Wurzel — die beiden Namen standen in T47 in einer Formel, aber in keiner Klasse.
+**Two existing classes are widened, and this too is no tidying step:**
+**fund money (1)** and **macroeconomic amounts (2)** now carry `positionswert` and
+`korbwert` explicitly, on both sides of the boundary. That is finding 2 of round 6 at its
+root — the two names stood in a formula in T47, but in no class.
 
-Einfluss und Zustimmung erscheinen dem Spieler als 0 bis 100 (so nennt sie `spiel.md`);
-gespeichert sind sie in Zehntausendsteln, damit die Gegenkräfte unterhalb eines
-sichtbaren Punktes noch rechnen können. Die Umrechnung findet in der Sicht statt.
+Influence and approval appear to the player as 0 to 100 (that is what `spiel.md` calls
+them); stored they are in ten-thousandths, so that the counterforces can still calculate
+below one visible point. The conversion takes place in the view.
 
-Der Koeffizient heisst seit `spiel.md` Fassung 3 **`durchgriff`** und nicht mehr
-`handelsanteil`. Er bleibt in der Klasse Anteile — anders als sein Vorgänger hält er ihren
-Bereich jetzt per Konstruktion ein; die Bildungsregel steht in T23 Punkt 5.
+The coefficient has been called **`durchgriff`** since `spiel.md` version 3, no longer
+`handelsanteil`. It stays in the shares class — unlike its predecessor it now holds that
+class's range by construction; the formation rule stands in T23 point 5.
 
-**`stufenweite` steht seit `spiel.md` Fassung 5 in der Klasse Anteile und nicht in der
-Klasse Fondsgeld**, und das ist die Entscheidung, an der Befund 2 hing: Eine Stufe ist
-*`stufenweite` Zehntausendstel des Marktes*, an dem der Steckplatz hängt, kein Geldbetrag.
-Damit ist der Anteil, den Gegenkraft 1 und der Preisstoß lesen, dieselbe Zahl wie die, aus
-der der Positionswert entsteht, und der Zustand braucht keine zwanzig Einstandspreise.
+**`stufenweite` has stood in the shares class and not in the fund-money class since
+`spiel.md` version 5**, and that is the decision finding 2 hung on: a step is
+*`stufenweite` ten-thousandths of the market* the slot hangs on, not an amount of money.
+With that, the share that counterforce 1 and the price shock read is the same number as
+the one the position value arises from, and the state needs no twenty entry prices.
 
-**Das Basisjahr der Klasse 2 ist 2015, und es steht seit dieser Fassung als Jahreszahl da
-statt als „das Basisjahr".** Bis zum 2026-09-04 nannte die Zeile ein Basisjahr, ohne eines zu
-nennen; für 56 der 71 Adressen war damit unbestimmt, worauf sie sich bezieht, und ein
-Bauagent hätte es wählen müssen. Gewählt ist **2015**, weil es das einzige in diesem Vorhaben
-**gemessene** Basisjahr ist: Reihe 1 trägt am Weltbank-Endpunkt im Feld `Unitofmeasure` den
-Wortlaut „constant 2015 US$" (zwei Endpunkte, zeichengleich gegengeprüft,
-`daten/einheitenbefund-pwt-baci.md` Abschnitt 6, abgerufen 2026-09-02), und die Wertschöpfung
-aller fünf Gebiete entsteht nach T23 Punkt 1 aus ihr. Ein anderes Basisjahr hätte geheissen,
-die einzige gemessene Reihe umzurechnen, um zwei ungemessene zu treffen.
+**The base year of class 2 is 2015, and since this version it stands there as a year
+instead of as „the base year".** Until 2026-09-04 the row named a base year without naming
+one; for 56 of the 71 addresses it was thereby undetermined what they refer to, and a
+build agent would have had to choose it. Chosen is **2015**, because it is the only base
+year **measured** in this venture: series 1 carries, at the World Bank endpoint, in the
+field `Unitofmeasure` the wording „constant 2015 US$" (two endpoints, cross-checked
+character-identical, `daten/einheitenbefund-pwt-baci.md` section 6, retrieved 2026-09-02),
+and the value added of all five territories arises from it per T23 point 1. A different
+base year would have meant converting the only measured series in order to hit two
+unmeasured ones.
 
-**Welche Klasse-2-Adresse in welcher Preisbasis ankommt und was mit ihr geschieht, steht in
-T53** — namentlich für die 40 Handelsströme aus BACI, die als einzige gemessen in einer
-**anderen** Basis ankommen.
+**Which class-2 address arrives in which price basis, and what happens to it, stands in
+T53** — by name for the 40 trade flows from BACI, which as the only ones arrive measured
+in a **different** basis.
 
-**Zwischen Fondsskala und volkswirtschaftlicher Skala liegt der Faktor 100.000** (1 Tausend
-USD = 100.000 US-Cent). Wo er überschritten wird, sagt **T50** — und er wird nur in **einer
-Richtung** überschritten, weshalb es `cent_in_tsd` in dieser Fassung nicht mehr gibt.
+**Between the fund scale and the macroeconomic scale lies the factor 100,000** (1 thousand
+USD = 100,000 US cents). Where it is crossed, **T50** says — and it is crossed in only
+**one direction**, which is why `cent_in_tsd` no longer exists in this version.
 
-**T49 — Jede der 310 Adressen trägt genau eine Skalenklasse, und die Zuordnung ist
-abgezählt.** Das ist T45 eine Ebene tiefer, aus demselben Grund und mit demselben Verfahren:
-Der Jahrgangsbau führt neben der Herkunftstabelle eine **Skalentabelle** über alle 310
-Adressen; eine Adresse ohne Klasse und eine mit zwei Klassen brechen den Bau ab. Beide
-Tabellen werden ins Manifest geschrieben, und beide müssen auf 310 summieren.
+**T49 — Each of the 310 addresses carries exactly one scale class, and the mapping is
+counted off.** That is T45 one level deeper, for the same reason and with the same
+procedure: next to the provenance table, the vintage build keeps a **scale table** over all
+310 addresses; an address without a class and one with two classes abort the build. Both
+tables are written into the manifest, and both must sum to 310.
 
-**Je spielbarem Land**, die 44 aus T15 nach Klasse:
+**Per playable country**, the 44 from T15 by class:
 
-| Klasse | Adressen | welche |
+| Class | Addresses | which |
 |---|---:|---|
-| 2 volkswirtschaftlich | 6 | 3 Wertschöpfungen, 3 Sektorkapitalstöcke |
-| 8 Personen | 5 | 3 Sektorbeschäftigungen, Bevölkerung, Erwerbstätige |
-| 5 Nominalindizes | 4 | 3 Sektorpreise, Preisniveau |
-| 7 Realindizes | 1 | Produktivität |
-| 3 Raten | 7 | Inflation, Leitzins, Staatsschuld, Haushaltssaldo, 3 Instrumentenstände (Leitzins, Zoll, Haushalt) |
-| 6 Wechselkurs | 1 | Wechselkurs |
-| 4 Anteile | 2 | Zustimmung, Einfluss |
-| 9 Lobbydruck | 8 | 4 anliegende Drücke, 4 Gegendrücke |
-| 10 Instrumentenstufe | 1 | Stand der Finanzmarktregulierung |
-| 11 Zähler | 9 | Aufsichtszähler, 4 Restverzögerungen, 3 Restdauern, `basiswechsel` |
-| **Summe** | **44** | wie T15 |
+| 2 macroeconomic | 6 | 3 value-added figures, 3 sector capital stocks |
+| 8 persons | 5 | 3 sector employments, population, labour force |
+| 5 nominal indices | 4 | 3 sector prices, price level |
+| 7 real indices | 1 | productivity |
+| 3 rates | 7 | inflation, policy rate, government debt, budget balance, 3 instrument levels (policy rate, tariff, budget) |
+| 6 exchange rate | 1 | exchange rate |
+| 4 shares | 2 | approval, influence |
+| 9 lobby pressure | 8 | 4 applied pressures, 4 counter-pressures |
+| 10 instrument tier | 1 | level of financial-market regulation |
+| 11 counters | 9 | supervision counter, 4 remaining delays, 3 remaining durations, `basiswechsel` |
+| **Sum** | **44** | as T15 |
 
-**Die Restwelt** trägt davon 22: 6 volkswirtschaftlich, 5 Personen, 4 Nominalindizes,
-1 Realindex, 4 Raten, 1 Wechselkurs, 1 Zähler — sie hat keine Instrumente, keine
-Zustimmung, keinen Aufsichtszähler, keinen Einfluss und keine Restdauern.
+**The rest of world** carries 22 of these: 6 macroeconomic, 5 persons, 4 nominal indices,
+1 real index, 4 rates, 1 exchange rate, 1 counter — it has no instruments, no approval,
+no supervision counter, no influence and no remaining durations.
 
-**Die ganze Zerlegung**, gegen dieselben 310:
+**The whole decomposition**, against the same 310:
 
 ```
 Klasse  1 Fondsgeld           Kasse, Hebelstand, Anlegerbestand                  =   3
@@ -399,96 +401,97 @@ Klasse 12 Kennungen           Jahrgangskennung, Parametersatz-Prüfsumme        
                                                                                    310
 ```
 
-Gegengerechnet gegen die Gruppenzerlegung aus T15 (`198 + 56 + 52 + 4`) und gegen die
-Herkunftszerlegung aus T45 (`136 + 150 + 11 + 2 + 11`). **Drei unabhängige Aufteilungen
-derselben Menge, alle drei von Hand gerechnet** — eine Zahl, die nur einmal entsteht, ist
-unbelegt, auch wenn sie stimmt.
+Counter-checked against the group decomposition from T15 (`198 + 56 + 52 + 4`) and against
+the provenance decomposition from T45 (`136 + 150 + 11 + 2 + 11`). **Three independent
+partitions of the same set, all three computed by hand** — a number that arises only once
+is unsubstantiated, even if it is right.
 
-**Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines Zufalls.**
-`land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` sind dieselbe Größe, ebenso
-`land.<L>.haushaltssaldo` und `land.<L>.instrument.haushalt.stand`; T15 führt beide, weil
-`spiel.md` beide aufzählt. Verbindlich ist deshalb: **Geschrieben wird der Instrumentenstand
-in Schritt 3; die Aggregatgröße wird in Schritt 4 mit `lies_neu` vom Stand übernommen und
-trägt die Ursache `Instrument{l, i}`.** Der Invariantentest (T30 Prüfung 2) prüft die
-Gleichheit je Runde. Ohne diese Regel gäbe es zwei Herren über eine Zahl — derselbe
-Fehlertyp, den T39 für `landespreis`, T23 Punkt 9 für die BACI-Konkordanz und T47 für das
-Fondsvermögen schon geschlossen haben. Dass das Paar überhaupt existiert, ist eine
-Beobachtung an `spiel.md` und steht in Abschnitt 12; es blockiert nichts.
+**Two address pairs carry the same value, and that needs a rule instead of a coincidence.**
+`land.<L>.leitzins` and `land.<L>.instrument.leitzins.stand` are the same quantity, as are
+`land.<L>.haushaltssaldo` and `land.<L>.instrument.haushalt.stand`; T15 carries both
+because `spiel.md` enumerates both. Binding is therefore: **written is the instrument
+level, in step 3; the aggregate quantity is taken over from the level in step 4 with
+`lies_neu` and carries the cause `Instrument{l, i}`.** The invariant test (T30 check 2)
+checks the equality every round. Without this rule there would be two masters over one
+number — the same error type that T39 has already closed for `landespreis`, T23 point 9
+for the BACI concordance and T47 for the fund's assets. That the pair exists at all is an
+observation about `spiel.md` and stands in section 12; it blocks nothing.
 
-**T50 — Es gibt genau drei Skalenübergänge, jeder hat eine benannte Funktion und genau
-einen Aufrufort.** Ein Übergang ohne Namen ist die Fehlerart, an der Befund 2 der Runde 6
-hing; ein Name ohne Ortsbindung ist derselbe Fehler eine Woche später.
+**T50 — There are exactly three scale transitions, each has a named function and exactly
+one call site.** A transition without a name is the error kind that finding 2 of round 6
+hung on; a name without a binding to a place is the same error one week later.
 
-| # | von | nach | Funktion | einziger Aufrufort |
+| # | from | to | Function | sole call site |
 |---:|---|---|---|---|
-| 1 | volkswirtschaftlich (2) | Fondsgeld (1) | `tsd_in_cent(x) = x · 100.000` | äusserster Aufruf von `positionswert` und `beteiligung_wert` (T47) |
-| 2 | Fondsgeld (1) | Lobbydruck (9) | `lobbypunkte_aus_geld(cent, rabatt) = mal_geteilt(cent, 10.000, lobbykosten · rabatt)` | Aktion 3, Schritt 2 |
-| 3 | volkswirtschaftlich (2) | Lobbydruck (9) | `lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz, 10.000)` | Gegenkraft 5, Schritt 5 |
+| 1 | macroeconomic (2) | fund money (1) | `tsd_in_cent(x) = x · 100.000` | outermost call of `positionswert` and `beteiligung_wert` (T47) |
+| 2 | fund money (1) | lobby pressure (9) | `lobbypunkte_aus_geld(cent, rabatt) = mal_geteilt(cent, 10.000, lobbykosten · rabatt)` | action 3, step 2 |
+| 3 | macroeconomic (2) | lobby pressure (9) | `lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz, 10.000)` | counterforce 5, step 5 |
 
-`lobbykosten` (US-Cent je Lobbypunkt, ≥ 1), `gegenlobby_satz` (Lobbypunkte je 10.000 Tausend
-USD Schaden) und `beteiligungsrabatt` (Zehntausendstel; `rabatt` ist 10.000 ohne und
-`beteiligungsrabatt` mit Beteiligung im betroffenen Sektor, also `1 ≤ beteiligungsrabatt ≤
-10.000`) stehen nach T27 in `parameter.toml` und werden kalibriert, nicht entworfen. Ein
-kleinerer Rabattwert heisst mehr Punkte für dasselbe Geld — das ist der „Bruchteil", den
-`spiel.md` der Aktion 3 mit Beteiligung zusagt. **Der Rabatt sitzt am Preis eines
-Lobbypunkts, nicht an der Punktzahl** — sonst wäre `einfluss`, nach `spiel.md` der Anteil
-des Fonds am gesamten Lobbydruck, über Länder hinweg nicht mehr vergleichbar.
+`lobbykosten` (US cents per lobby point, ≥ 1), `gegenlobby_satz` (lobby points per 10.000
+thousand USD of damage) and `beteiligungsrabatt` (ten-thousandths; `rabatt` is 10.000
+without and `beteiligungsrabatt` with a stake in the affected sector, so
+`1 ≤ beteiligungsrabatt ≤ 10.000`) stand per T27 in `parameter.toml` and are calibrated,
+not designed. A smaller rebate value means more points for the same money — that is the
+„fraction" that `spiel.md` promises action 3 with a stake. **The rebate sits on the price
+of a lobby point, not on the number of points** — otherwise `einfluss`, per `spiel.md` the
+fund's share of the total lobby pressure, would no longer be comparable across countries.
 
-***Wie hoch* der Schaden eines Sektors ist, hat `spiel.md` am 2026-09-03 entschieden, und
-der Satz, der hier bis zum 2026-09-04 offenliess, ist damit geschlossen.** Er lautete: *„Wie
-hoch der Schaden eines Sektors ist, bleibt Sache von `spiel.md` und des Bauagenten; T50 legt
-nur fest, in welcher Einheit er ankommt."* Die Rückgabe war richtig — hätte ich die Lücke
-gefüllt, hätte Maß 2 meine Wahl gemessen —, und sie ist beantwortet: Der Abschnitt *Der
-Schaden in Gegenkraft 5, als Rechenvorschrift* in `spiel.md` gibt die eine Regel („Verschiebung
-des Preises, den das Instrument setzt, mal der Menge, auf die dieser Preis wirkt") und die
-vier Zeilen dazu. Sie steht als **Nummer 22** in T48; der Bauagent wählt an dieser Stelle
-nichts mehr. Was T50 unverändert festlegt, ist allein die Einheit, in der sie hier ankommt:
-Klasse 2, Tausend USD. Die Skalenprobe dazu führt `spiel.md` selbst — Klasse 2 mal
-Zehntausendstel durch 10.000 ist wieder Klasse 2, in allen vier Zeilen und über beide
-Zwischenschritte der Zollzeile, **also entsteht kein vierter Skalenübergang.** Diese Tabelle
-bleibt bei dreien.
+***How high* a sector's damage is, `spiel.md` decided on 2026-09-03, and the sentence that
+left it open here until 2026-09-04 is thereby closed.** It read: *„Wie hoch der Schaden
+eines Sektors ist, bleibt Sache von `spiel.md` und des Bauagenten; T50 legt nur fest, in
+welcher Einheit er ankommt."* Handing it back was right — had I filled the gap, Maß 2
+would have measured my choice —, and it is answered: the section *Der Schaden in
+Gegenkraft 5, als Rechenvorschrift* in `spiel.md` gives the one rule („the shift of the
+price the instrument sets, times the quantity that price acts on") and the four rows to
+go with it. It stands as **number 22** in T48; the build agent chooses nothing at this
+place any more. What T50 fixes unchanged is solely the unit in which it arrives here:
+class 2, thousand USD. The scale check for it `spiel.md` carries itself — class 2 times
+ten-thousandths divided by 10.000 is class 2 again, in all four rows and across both
+intermediate steps of the tariff row, **so no fourth scale transition arises.** This table
+stays at three.
 
-**`cent_in_tsd` gibt es nicht.** Fassung 5 hat die Umkehrfunktion neben `tsd_in_cent`
-genannt; sie hat in diesem Modell **keinen Aufrufer**, und der Grund ist eine Eigenschaft
-des Entwurfs und kein Zufall: Der Fonds wirkt auf die Welt ausschliesslich über **Anteile in
-Zehntausendsteln** (Preisstoß aus Aktion 1, Fußabdruck in Gegenkraft 1, Nachahmerzähler),
-nie über einen Geldbetrag. Eine Umrechnungsfunktion ohne Aufrufer ist eine stehende
-Einladung, sie irgendwo zu benutzen, wo sie nicht hingehört; sie ist deshalb gestrichen.
-Fällt später eine Regel an, die sie braucht, ist das ein ADR.
+**`cent_in_tsd` does not exist.** Version 5 named the inverse function next to
+`tsd_in_cent`; it has **no caller** in this model, and the reason is a property of the
+design and no coincidence: the fund acts on the world exclusively via **shares in
+ten-thousandths** (price shock from action 1, footprint in counterforce 1, imitator
+counter), never via an amount of money. A conversion function without a caller is a
+standing invitation to use it somewhere it does not belong; it is therefore struck.
+If a rule turns up later that needs it, that is an ADR.
 
-**Wo die Übergänge erzwungen werden.** Alle drei Funktionen und alle abgeleiteten Größen aus
-T48 stehen im Modul `kern::werte`; `tsd_in_cent` und die beiden Lobbyumrechnungen sind dort
-privat. Ein Treffer von `grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` ausserhalb dieses
-einen Moduls ist ein Befund — dieselbe Bauart wie der Gleitkommanachweis aus T4, und ebenso
-mechanisch.
+**Where the transitions are enforced.** All three functions and all derived quantities
+from T48 stand in the module `kern::werte`; `tsd_in_cent` and the two lobby conversions
+are private there. A hit of `grep -rn 'tsd_in_cent\|lobbypunkte_aus' kern/` outside this
+one module is a finding — the same construction as the floating-point proof from T4, and
+just as mechanical.
 
-**T53 — Was Klasse 2 für eine Reihe bedeutet, die in laufenden Preisen ankommt: Sie wird beim
-Jahrgangsbau deflationiert, mit einem benannten Deflator aus einer bereits zugelassenen
-Quelle, auf die Basis 2015.** Der Kern sieht davon nichts. Das ist die Entscheidung, auf die
-Paket 0002 seit dem 2026-09-02 wartet.
+**T53 — What class 2 means for a series that arrives in current prices: it is deflated at
+vintage build, with a named deflator from an already admitted source, onto the 2015
+basis.** The core sees none of this. This is the decision package 0002 has been waiting
+for since 2026-09-02.
 
-**Wo jede der 71 Klasse-2-Adressen ankommt, gemessen und abgezählt.** Die Zerlegung ist die aus
-T49 (`4×6 + 6 + 40 Handelsströme + markt.wert`), nach Preisbasis geschnitten statt nach Gebiet:
+**Where each of the 71 class-2 addresses arrives, measured and counted off.** The
+decomposition is the one from T49 (`4×6 + 6 + 40 Handelsströme + markt.wert`), cut by
+price basis instead of by territory:
 
-| Adressen | Zahl | Reihe | Quelle | Preisbasis, wie gemessen | was geschieht |
+| Addresses | Count | Series | Source | Price basis, as measured | what happens |
 |---|---:|---|---|---|---|
-| Wertschöpfung, 5 Gebiete × 3 | 15 | 1 über T23 P1 | WDI `NY.GDP.MKTP.KD` | **konstant, 2015** (gemessen 2026-09-02, zwei Endpunkte) | nichts — sie *ist* die Basis |
-| Sektorkapitalstock, 5 × 3 | 15 | 3 über T23 P1 | PWT 11.0 | **ungemessen** (PDF-Sperre) | **ausgewiesene Nichtentscheidung**, unten |
-| Handelsströme | 40 | 14 | CEPII BACI, Feld `v` | **laufend** (gemessen 2026-09-02, „in thousands current USD") | **Deflator**, unten |
-| `markt.wert` | 1 | 19 | keine, T33 | folgt seinen Eingängen (12 `korbwert` + 4 `anleihewert`) | nichts |
-| **Summe** | **71** | | | | wie T49 |
+| value added, 5 territories × 3 | 15 | 1 via T23 P1 | WDI `NY.GDP.MKTP.KD` | **constant, 2015** (measured 2026-09-02, two endpoints) | nothing — it *is* the basis |
+| sector capital stock, 5 × 3 | 15 | 3 via T23 P1 | PWT 11.0 | **unmeasured** (PDF lock) | **declared non-decision**, below |
+| trade flows | 40 | 14 | CEPII BACI, field `v` | **current** (measured 2026-09-02, „in thousands current USD") | **deflator**, below |
+| `markt.wert` | 1 | 19 | none, T33 | follows its inputs (12 `korbwert` + 4 `anleihewert`) | nothing |
+| **Sum** | **71** | | | | as T49 |
 
-Nachgerechnet: `15 + 15 + 40 + 1 = 71`, und `15 + 15` ist die `4×6 + 6 = 30` aus T49, nach
-Größe statt nach Gebiet aufgeteilt. **Genau eine Zeile ist gemessen in einer anderen Basis als
-2015**, und sie trägt 40 der 71 Adressen.
+Recomputed: `15 + 15 + 40 + 1 = 71`, and `15 + 15` is the `4×6 + 6 = 30` from T49, split
+by quantity instead of by territory. **Exactly one row is measured in a basis other than
+2015**, and it carries 40 of the 71 addresses.
 
-**Die Zahl, die entscheidet — der Preisanteil allein reisst die Schwelle.** T42 misst den
-Handelsblock mit dem MAPE gegen die Schwelle 2.000 (= 20 %). Das Modell führt den
-Handelsstrom real (`spiel.md` stützt darauf ausdrücklich die Schadensvorschrift von
-Gegenkraft 5: *„`handelsvolumen` steht nach T5 Klasse 2 zu konstanten Preisen"*), die Sollreihe
-kommt nominal. Wie gross der Fehler ist, den das **allein** erzeugt, war bis heute ungemessen;
-er ist es nicht mehr. Weltausfuhr in laufenden und in konstanten Preisen von 2015, beide von
-der Weltbank, ihr Quotient ist ein USD-Ausfuhrpreisindex mit Basis 2015 = 10.000:
+**The number that decides — the price share alone breaks the threshold.** T42 measures the
+trade block with the MAPE against the threshold 2,000 (= 20 %). The model carries the
+trade flow real (`spiel.md` expressly rests counterforce 5's damage rule on this:
+*„`handelsvolumen` stands per T5 in class 2 at constant prices"*), the target series comes
+nominal. How large the error is that this **alone** produces was unmeasured until today;
+it no longer is. World exports in current and in constant 2015 prices, both from the
+World Bank, their quotient is a USD export price index with basis 2015 = 10,000:
 
 ```
 https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.CD   "Exports of goods and services (current US$)"
@@ -496,58 +499,58 @@ https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.KD   "Exports of 
                                                                      beide abgerufen 2026-09-04
 ```
 
-| Jahr | 97 | 98 | 99 | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 |
+| Year | 97 | 98 | 99 | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Index | 7.417 | 7.021 | 6.911 | 6.849 | 6.594 | 6.738 | 7.485 | 8.246 | 8.755 | 9.281 | 10.133 | 11.232 | 10.045 |
+| Index | 7,417 | 7,021 | 6,911 | 6,849 | 6,594 | 6,738 | 7,485 | 8,246 | 8,755 | 9,281 | 10,133 | 11,232 | 10,045 |
 
-| Jahr | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
+| Year | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Index | 10.682 | 11.989 | 11.840 | 11.798 | 11.592 | **10.000** | 9.570 | 10.022 | 10.553 | 10.254 | 10.158 | 11.549 |
+| Index | 10,682 | 11,989 | 11,840 | 11,798 | 11,592 | **10,000** | 9,570 | 10,022 | 10,553 | 10,254 | 10,158 | 11,549 |
 
-Ein Modell, das die Mengen **fehlerfrei** trifft, startet auf dem BACI-Wert von 1997 und läuft
-real weiter; die Sollreihe läuft mit dem Index. Sein Fehler je Stützstelle ist damit
-`|1 − r(t)| / r(t)` mit `r(t) = Index(t)/Index(1997)`, und das Mittel über die 25 Stützstellen
-des Prüfjahrgangs ist **2.203 Zehntausendstel gegen eine Schwelle von 2.000**. Am rechten Rand
-allein sind es 3.578 (2021: `r = 1,5571`). **Der Prüfgegenstand Handelsblock fällt also durch,
-bevor das Modell einen einzigen Fehler gemacht hat** — die Preisdrift allein verbraucht das
-Fehlerbudget nicht zum Teil, sondern **ganz und mit 10 Prozent Überhang** (2.203 gegen 2.000).
-Für Modellgüte bleibt nichts übrig.
+A model that hits the quantities **error-free** starts on the BACI value of 1997 and runs
+on in real terms; the target series runs with the index. Its error per support point is
+thus `|1 − r(t)| / r(t)` with `r(t) = Index(t)/Index(1997)`, and the mean over the 25
+support points of the check vintage is **2,203 ten-thousandths against a threshold of
+2,000**. At the right edge alone it is 3,578 (2021: `r = 1,5571`). **The check subject
+trade block thus fails before the model has made a single error** — the price drift alone
+uses up the error budget not in part but **entirely, and with 10 percent overshoot**
+(2,203 against 2,000). Nothing is left for model quality.
 
-Drei Vorbehalte gehören an dieselbe Stelle wie die Zahl. *Erstens* ist das der
-**Welt**aggregatindex und nicht der Deflator der 40 bilateralen Ströme; er hat die richtige
-Größenordnung und ist gemessen, er ist keine Vorhersage des tatsächlichen MAPE. *Zweitens*
-ist 2.203 der **systematische Anteil**, zu dem der Modellfehler noch hinzukommt, nicht davon
-ab. *Drittens* trägt das Argument auch bei einer kleineren Zahl: Eine Schwelle, die Modellgüte
-messen soll und ihr Budget an eine Preisdrift verliert, die niemand modelliert hat, misst
-etwas anderes als das, wofür sie dasteht.
+Three caveats belong in the same place as the number. *First*, this is the **world**
+aggregate index and not the deflator of the 40 bilateral flows; it has the right order of
+magnitude and is measured, it is no prediction of the actual MAPE. *Second*, 2,203 is the
+**systematic share**, on top of which the model error still comes, not off it. *Third*,
+the argument carries even at a smaller number: a threshold that is meant to measure model
+quality and loses its budget to a price drift nobody has modelled measures something
+other than what it stands there for.
 
-**Die vier Wege nebeneinander, mit Preis.** Der Preis steht in Rechenschritten je Weltschritt
-und in zusätzlichen Sollreihen, weil das die zwei Größen sind, an denen dieses Vorhaben
-zugrunde gehen kann:
+**The four ways side by side, with price.** The price stands in computation steps per
+world step and in additional target series, because those are the two quantities this
+venture can perish on:
 
-| Weg | Rechenschritte je Weltschritt | zusätzliche Sollreihen | weiterer Preis | Ergebnis |
+| Way | Computation steps per world step | additional target series | further price | Result |
 |---|---:|---:|---|---|
-| **1 Deflationieren (gewählt)** | **0** | **0** | einmalig 1.040 Umrechnungen je Jahrgangsbau; **+1 Reihe** (Nr. 20, 2 Indikatorcodes, 1 Gebiet, 25 Zahlen), **keine neue Quelle** | Handelsblock bleibt Prüfgegenstand, T47/T48/T50 unberührt |
-| 2 Klasse wechseln | 0 in diesem Dokument | 0 | T5 **+1 Zeile**, T49-Zerlegung neu (71 → 31 + 40), T8 neu abzählen — **und eine Entscheidung in `spiel.md` vom 2026-09-03 wieder auf** | nicht meine Entscheidung, siehe unten |
-| 3 Maß 4 einschränken | 0 | 0 | 16 → **15** Prüfgegenstände bei unveränderter Toleranz 2, also ein *schärferer* Test auf dem Rest; 40 der 71 Adressen ohne jede Prüfung; Kanal 3 ohne historischen Anker | billigster Bau, teuerster Verlust |
-| 4 Quelle wechseln (IWF DOTS) | — | — | **nicht bezifferbar**: T26 lässt DOTS nur für Spieljahrgänge vor 1997 zu, der Prüfjahrgang beginnt 1997, und die Preisbasis von DOTS ist ungemessen (HTTP 403 in fünf Anläufen aus drei Rollen) | tauscht eine gemessene Schwierigkeit gegen eine ungemessene |
+| **1 Deflate (chosen)** | **0** | **0** | one-off 1,040 conversions per vintage build; **+1 series** (no. 20, 2 indicator codes, 1 territory, 25 numbers), **no new source** | trade block remains a check subject, T47/T48/T50 untouched |
+| 2 Change class | 0 in this document | 0 | T5 **+1 row**, T49 decomposition anew (71 → 31 + 40), T8 to recount — **and a decision in `spiel.md` of 2026-09-03 reopened** | not my decision, see below |
+| 3 Restrict Maß 4 | 0 | 0 | 16 → **15** check subjects at unchanged tolerance 2, hence a *sharper* test on the rest; 40 of the 71 addresses without any check; channel 3 without a historical anchor | cheapest build, dearest loss |
+| 4 Change source (IMF DOTS) | — | — | **not quantifiable**: T26 admits DOTS only for play vintages before 1997, the check vintage starts 1997, and the price basis of DOTS is unmeasured (HTTP 403 in five attempts from three roles) | trades a measured difficulty for an unmeasured one |
 
-**Warum Weg 1 und nicht Weg 3**, obwohl beide im Kern null kosten: Weg 3 heisst nicht
-„einschränken", sondern **streichen**. Bei einem Fehleranteil von 2.203 gegen 2.000 gibt es
-keine Einschränkung, die den Handelsblock noch etwas prüfen liesse — eine eigene Schwelle
-oberhalb von 2.203 wäre eine Schwelle, die jedes Modell besteht. Der Block trägt 40 der 71
-Klasse-2-Adressen und ist der einzige historische Anker von **Kanal 3** (Instrument → Handel →
-Weltpreis → Schaden → Gegendruck), den `spiel.md` unter seinen acht Kanälen führt. Weg 1
-kauft ihn für 25 Zahlen aus einer Quelle, die ohnehin schon eingebunden ist.
+**Why way 1 and not way 3**, although both cost zero in the core: way 3 does not mean
+„restrict" but **strike**. At an error share of 2,203 against 2,000 there is no
+restriction that would leave the trade block still checking anything — a threshold of its
+own above 2,203 would be a threshold every model passes. The block carries 40 of the 71
+class-2 addresses and is the only historical anchor of **channel 3** (instrument → trade →
+world price → damage → counter-pressure) that `spiel.md` carries among its eight channels.
+Way 1 buys it for 25 numbers from a source that is already integrated anyway.
 
-**Warum Weg 2 nicht, und das ist kein Preisargument.** `spiel.md` hat am 2026-09-03 den
-Konjunktursockel aus Gegenkraft 5 gestrichen und die Streichung ausdrücklich darauf gestützt,
-dass `handelsvolumen` nach T5 Klasse 2 real ist — der Sockel *war* die Inflation mal dem
-Handelsvolumen. Klasse 2 nominal zu stellen holt ihn zurück. **Was gespielt wird, steht in
-`spiel.md`; ich widerspreche dort nicht.** Weg 2 ist damit nicht teuer, sondern nicht meiner.
+**Why not way 2, and this is no price argument.** On 2026-09-03 `spiel.md` struck the
+business-cycle base term from counterforce 5 and expressly rested the striking on
+`handelsvolumen` being real per T5 class 2 — the base term *was* inflation times the
+trade volume. Setting class 2 nominal brings it back. **What is played stands in
+`spiel.md`; I do not contradict it there.** Way 2 is thus not expensive but not mine.
 
-**Der Deflator, benannt, mit Quelle und in Ganzzahlen.** Er wird eine Reihe des Jahrgangs, kein
-Programmteil (T23), und keine Sollreihe — er wird gegen nichts verglichen:
+**The deflator, named, with source and in integers.** It becomes a series of the vintage,
+no program part (T23), and no target series — it is compared against nothing:
 
 ```
 preisindex_handel[t] = teile_gerundet( ausfuhr_laufend[t] · 10.000, ausfuhr_konstant[t] )
@@ -556,477 +559,477 @@ handel_konstant[a][b][s][t] = mal_geteilt( handel_laufend[a][b][s][t],
                                            10.000, preisindex_handel[t] )
 ```
 
-`ausfuhr_laufend` ist `NE.EXP.GNFS.CD`, `ausfuhr_konstant` ist `NE.EXP.GNFS.KD`, beide für das
-Gebiet `WLD`, beide Weltbank — also **Quelle Nr. 1 aus `daten.md`**, dieselbe Lizenz, dieselbe
-Zitierpflicht, keine fünfte Quelle und kein Fall für den Datenkurator. Beide Rechnungen laufen
-über T6; `ausfuhr_laufend[t] · 10.000` erreicht bei 2,8 · 10^13 USD rund 2,8 · 10^17 und bleibt
-damit im `i64`. Der Faktor 1 aus dem Einheitenbefund bleibt unberührt: Er ist die
-**Größenordnung**, der Deflator ist die **Preisbasis**, und die beiden sind zwei Fragen an
-dieselbe Zeile.
+`ausfuhr_laufend` is `NE.EXP.GNFS.CD`, `ausfuhr_konstant` is `NE.EXP.GNFS.KD`, both for
+the territory `WLD`, both World Bank — hence **source no. 1 from `daten.md`**, the same
+licence, the same citation duty, no fifth source and no case for the data curator. Both
+computations run through T6; `ausfuhr_laufend[t] · 10.000` reaches about 2.8 · 10^17 at
+2.8 · 10^13 USD and thus stays within `i64`. The factor 1 from the units finding remains
+untouched: it is the **order of magnitude**, the deflator is the **price basis**, and the
+two are two questions to the same row.
 
-**Ein Selbsttest, der zwei Zeilen kostet und die ganze Zuordnung trägt:**
-`preisindex_handel[2015] = 10.000` **exakt**. Er gilt nicht aus Konvention, sondern weil die
-beiden Reihen im Basisjahr denselben Wert führen (21.272.611.247.725,1 — in beiden Abrufen
-zeichengleich). Weicht er ab, führen die zwei Indikatorcodes **nicht** dieselbe Basis, und der
-Jahrgangsbau bricht ab, statt eine Preisbasis zu behaupten, die er nicht hat. Das ist dieselbe
-Bauart wie die Abzählprüfungen aus T45 und T49: eine Zusage, die sich selbst nachweist.
+**A self-test that costs two lines and carries the whole mapping:**
+`preisindex_handel[2015] = 10.000` **exactly**. It holds not by convention but because the
+two series carry the same value in the base year (21,272,611,247,725.1 —
+character-identical in both retrievals). If it deviates, the two indicator codes do
+**not** carry the same basis, and the vintage build aborts instead of asserting a price
+basis it does not have. That is the same construction as the count-off checks from T45
+and T49: a promise that proves itself.
 
-**Die Umrechnung trifft die Sollreihe und die Startmatrix, und zwar mit demselben Index.** Nach
-T23 Punkt 9 erzeugt **eine** Konkordanz die Handelsstartmatrix, die 40 Sollströme und `H` aus
-Punkt 5; entsprechend deflationiert **ein** Index alle drei. Eine Sollreihe zu deflationieren
-und die Startmatrix nicht wäre der Fehler, den T23 Punkt 9 für die Konkordanz schon
-ausschliesst. Für den Prüfjahrgang ist der Faktor auf das Startjahr
+**The conversion hits the target series and the start matrix, and with the same index.**
+Per T23 point 9, **one** concordance produces the trade start matrix, the 40 target flows
+and `H` from point 5; correspondingly, **one** index deflates all three. Deflating a
+target series and not the start matrix would be the error T23 point 9 already rules out
+for the concordance. For the check vintage the factor onto the start year is
 `10.000 / 7.417 = 1,34825`.
 
-**Reihe 16 (`durchgriff`) ist damit mitentschieden, und sie war die zweite Hälfte des
-Widerspruchs.** `H` kommt nach T23 Punkt 5 aus derselben deflationierten Matrix. `N` ist die
-Wertschöpfung des Sektors und entsteht nach T23 Punkt 1 aus **zwei** Reihen —
-`wertschoepfung[g][s] = mal_geteilt(bip_start[g], sektoranteil[g][s], 10.000)`, also Reihe 1
-mal dem Sektoranteil aus Reihe 2. **Die Preisbasis von `N` hängt allein an Reihe 1**, weil
-Reihe 2 ein Anteil in Zehntausendsteln ohne Preisbasis ist. Beide Seiten stehen danach in
-konstanten Preisen von 2015, und der Quotient trägt keinen Preisanteil mehr. **Der Zug hat eine Eigenschaft, die kein anderer Deflatorzuschnitt hätte:**
-Weil *ein* Index auf *alle* 40 Ströme wirkt, wird jedes `H` mit demselben Faktor multipliziert,
-`H/N` also für alle Gebiete und Sektoren mit demselben — und `durchgriff = 10.000 · H/(H+N)`
-ist streng monoton in `H/N`. **Die Ordnung über Länder und Sektoren bleibt damit exakt
-erhalten**, und genau sie ist das Einzige, was `spiel.md` von dieser Größe verlangt
-(*„Sein Zahlenwert hat keine volkswirtschaftliche Bedeutung; er muss Länder und Sektoren
-richtig ordnen"*). Der **Betrag** verschiebt sich, und zwar nach oben: Auf die beiden Fälle,
-die `spiel.md` durchrechnet, wirkt der Faktor 1,34825 als `7.288 → 7.837` und
-`5.464 → 6.189`. Beide Zahlen sind **Nachrechnungen auf `spiel.md`s Beispielwerten aus WDI 1995
-und nicht die Werte des Jahrgangs** — sie zeigen die Größe der Verschiebung, nicht ihr
-Ergebnis. Die Reihenfolge Landwirtschaft vor Industrie hält in beiden Fassungen.
+**Series 16 (`durchgriff`) is thereby co-decided, and it was the second half of the
+contradiction.** `H` comes per T23 point 5 from the same deflated matrix. `N` is the
+sector's value added and arises per T23 point 1 from **two** series —
+`wertschoepfung[g][s] = mal_geteilt(bip_start[g], sektoranteil[g][s], 10.000)`, that is,
+series 1 times the sector share from series 2. **The price basis of `N` hangs on series 1
+alone**, because series 2 is a share in ten-thousandths without a price basis. Both sides
+thereafter stand in constant 2015 prices, and the quotient carries no price share any
+more. **The move has a property no other deflator cut would have:**
+because *one* index acts on *all* 40 flows, every `H` is multiplied by the same factor,
+hence `H/N` for all territories and sectors by the same one — and
+`durchgriff = 10.000 · H/(H+N)` is strictly monotonic in `H/N`. **The ordering across
+countries and sectors thus stays exactly preserved**, and it is the only thing `spiel.md`
+demands of this quantity (*„Its numerical value has no economic meaning; it must order
+countries and sectors correctly"*). The **amount** shifts, namely upward: on the two
+cases `spiel.md` works through, the factor 1.34825 acts as `7.288 → 7.837` and
+`5.464 → 6.189`. Both numbers are **recomputations on `spiel.md`'s example values from
+WDI 1995 and not the values of the vintage** — they show the size of the shift, not its
+result. The order agriculture before industry holds in both versions.
 
-**Ein per-Ausführer-Deflator wäre genauer und ist nicht zu haben — gemessen, nicht vermutet.**
-`NE.EXP.GNFS.KD` liegt für die Volksrepublik China im Fenster 1997–2021 **allein für 2015** vor;
-die übrigen 24 Stützstellen sind `null` (Abruf 2026-09-04, einzeln nachgefragt, weil eine erste
-Sammelabfrage sich selbst widersprach). Für Brasilien, Deutschland und die USA ist die Reihe
-vollständig. Die Wahl des Weltindex ist damit **erzwungen und nicht bevorzugt**, und das gehört
-hierher, weil sie sonst wie Bequemlichkeit aussieht. Was übrig bleibt, ist der Abstand zwischen
-dem Weltindex und den wahren bilateralen Deflatoren; er ist **ungemessen** und die ehrliche
-Restgrösse dieses Wegs. Er ist zweiter Ordnung gegen die 2.203, die der Weg beseitigt — dass er
-klein *ist*, behaupte ich nicht.
+**A per-exporter deflator would be more precise and is not to be had — measured, not
+presumed.** `NE.EXP.GNFS.KD` exists for the People's Republic of China in the window
+1997–2021 **for 2015 alone**; the other 24 support points are `null` (retrieved
+2026-09-04, queried one by one, because a first bulk query contradicted itself). For
+Brazil, Germany and the USA the series is complete. The choice of the world index is thus
+**forced and not preferred**, and that belongs here because otherwise it looks like
+convenience. What remains is the distance between the world index and the true bilateral
+deflators; it is **unmeasured** and the honest residual of this way. It is second order
+against the 2,203 the way removes — that it *is* small, I do not claim.
 
-**Reihe 3 (PWT-Kapitalstock, 15 Adressen): ausgewiesene Nichtentscheidung.** Weder Einheit noch
-Basisjahr sind gemessen; vier PDF-Abrufe aus drei Verzeichnissen kamen unlesbar an
-(`daten/einheitenbefund-pwt-baci.md` Abschnitte 3 und 4). Ich entscheide hier **nichts**, weil
-jede Wahl geraten wäre, und schreibe stattdessen die drei Teile hin, die die Entscheidung
-tragen:
+**Series 3 (PWT capital stock, 15 addresses): declared non-decision.** Neither unit nor
+base year is measured; four PDF retrievals from three directories arrived unreadable
+(`daten/einheitenbefund-pwt-baci.md` sections 3 and 4). I decide **nothing** here, because
+any choice would be a guess, and instead write down the three parts that carry the
+decision:
 
-- **Die fehlende Zahl:** Einheit und Basisjahr der Kapitalstockvariablen in PWT 11.0. Es kostet
-  **einen** lesbaren Auszug aus `pwt110_user_guide_to_data_files.pdf` (Dataverse-Kennung
-  554025) oder aus dem Bezeichnungsblatt von `pwt110.xlsx` (554105).
-- **Der Adressat:** der Datenbauer, und über ihn der Betreiber — die Sperre ist die
-  Werkzeugkette und nicht die Quelle. Es ist die zweite Sperre dieser Art neben dem
-  IWF-Volltext.
-- **Die Folge, und sie ist nach Größe geordnet.** Die **Einheit** ist der schwere Teil: Steht
-  der Kapitalstock in Millionen statt in Tausend USD, ist der Faktor 1.000 und nicht 1 — drei
-  Größenordnungen, still. Das **Basisjahr** ist der leichte: Ein Unterschied zwischen 2015 und
-  2017 oder 2021 verschiebt alle 15 Adressen um **denselben** Faktor in der Größenordnung
-  weniger Prozent. Beides trifft **keine Sollreihe** — Reihe 3 ist nach der Reihenliste `Start`
-  und trägt keinen Prüfgegenstand —, wirkt also nicht auf Maß 4, sondern über `korbwert` auf
-  `marktkorb` und `fondsvermoegen`. Ein gemeinsamer Faktor auf allen 12 Körben kürzt sich in
-  `fonds.marktanteil` heraus und wird bei `startkapital` und `stufenweite` mitkalibriert; **was
-  er nicht tut, ist sich in `marktkorb` herauszukürzen**, denn dort stehen 12 Körbe neben 4
-  `anleihewert`, die aus Reihe 1 kommen und nicht mitwandern. Die Mischung der 16 Marktwerte
-  verschiebt sich also, und mit ihr das Verhältnis von Korb- zu Anleihesteckplätzen.
-- **Solange das offen ist**, bleibt in `daten/reihen.toml` bei Reihe 3 `art = "ungemessen"`
-  richtig, und der Jahrgangsbau darf für sie **keinen** Faktor einsetzen. T24 kennzeichnet
-  Lücken, statt sie zu füllen; das ist hier der Fall.
+- **The missing number:** unit and base year of the capital-stock variables in PWT 11.0.
+  It costs **one** readable excerpt from `pwt110_user_guide_to_data_files.pdf` (Dataverse
+  id 554025) or from the label sheet of `pwt110.xlsx` (554105).
+- **The addressee:** the data builder, and through them the operator — the lock is the
+  toolchain and not the source. It is the second lock of this kind next to the IMF full
+  text.
+- **The consequence, and it is ordered by size.** The **unit** is the heavy part: if the
+  capital stock stands in millions instead of thousand USD, the factor is 1,000 and not
+  1 — three orders of magnitude, silently. The **base year** is the light one: a
+  difference between 2015 and 2017 or 2021 shifts all 15 addresses by the **same** factor,
+  on the order of a few percent. Neither hits **any target series** — series 3 is `Start`
+  per the series list and carries no check subject —, so it acts not on Maß 4 but via
+  `korbwert` on `marktkorb` and `fondsvermoegen`. A common factor on all 12 baskets
+  cancels out in `fonds.marktanteil` and is calibrated along in `startkapital` and
+  `stufenweite`; **what it does not do is cancel out in `marktkorb`**, for there 12
+  baskets stand next to 4 `anleihewert`, which come from series 1 and do not move along.
+  The mix of the 16 market values thus shifts, and with it the ratio of basket to bond
+  slots.
+- **As long as this is open**, `art = "ungemessen"` at series 3 in `daten/reihen.toml`
+  remains correct, and the vintage build may insert **no** factor for it. T24 marks gaps
+  instead of filling them; that is the case here.
 
-**Die Folge für Paket 0002, ausgeschrieben, weil es daran hängt: T47, T48 und T50 bleiben
-unberührt.** Kein Wort, keine Formel, keine Zeile in einer ihrer Tabellen ändert sich, und der
-Grund ist eine Eigenschaft des gewählten Wegs und keine Zusage:
+**The consequence for package 0002, written out because it hangs on it: T47, T48 and T50
+remain untouched.** Not a word, not a formula, not a row in any of their tables changes,
+and the reason is a property of the chosen way and no promise:
 
-- **T47** rechnet ausschliesslich auf Zustandsgrößen. Die Deflationierung liegt in
-  `werkzeuge/aufbereitung` und ist abgeschlossen, bevor der Kern die erste Zahl sieht. `wert`,
+- **T47** computes exclusively on state quantities. The deflation lies in
+  `werkzeuge/aufbereitung` and is finished before the core sees the first number. `wert`,
   `korbwert`, `anleihewert`, `waehrungswert`, `markt`, `stufenwert`, `positionswert`,
-  `beteiligung_wert` und `fondsvermoegen` stehen unverändert.
-- **T48** führt `handelsvolumen(l)` als Klasse 2. Das war bisher eine Behauptung und ist jetzt
-  eine Tatsache — die Zeile ändert sich gerade deshalb **nicht**.
-- **T50** zählt drei Skalenübergänge. Ein Deflator ist keiner: Er führt von Klasse 2 nach
-  Klasse 2, und er läuft ausserhalb des Kerns. Es bleiben drei.
+  `beteiligung_wert` and `fondsvermoegen` stand unchanged.
+- **T48** carries `handelsvolumen(l)` as class 2. Until now that was an assertion and is
+  now a fact — precisely for that reason the row does **not** change.
+- **T50** counts three scale transitions. A deflator is none: it leads from class 2 to
+  class 2, and it runs outside the core. Three remain.
 
-**`kern::werte` kann damit unverändert gebaut werden, und Paket 0002 kann unverändert zurück
-auf `offen`.** Seine fünf Leser aus T47 Punkt 3 sehen dieselbe Zahl wie vorher; was sich
-geändert hat, ist, was sie **bedeutet**. Das ist der ganze Zweck dieses Wegs: Die Korrektur
-sitzt an der einzigen Stelle des Vorhabens, an der sie den teuersten Baustein nicht berührt.
+**`kern::werte` can thus be built unchanged, and package 0002 can go back to `offen`
+unchanged.** Its five readers from T47 point 3 see the same number as before; what has
+changed is what it **means**. That is the whole purpose of this way: the correction sits
+at the only place in the venture where it does not touch the most expensive building
+block.
 
-**T6 — Genau eine Rundungsregel, `/` auf Zustandsgrößen ist verboten, und der Nenner null
-ist ein harter Fehler.** Alle Divisionen laufen über `teile_gerundet(zaehler, nenner)` mit
-Rundung **auf halbe Beträge von null weg**.
+**T6 — Exactly one rounding rule, `/` on state quantities is forbidden, and a denominator
+of zero is a hard error.** All divisions run through `teile_gerundet(zaehler, nenner)`
+with rounding **of half amounts away from zero**.
 
-**Die Regel bleibt, ihre Begründung wechselt die Sprache.** Die Vorfassungen begründeten sie
-mit Rusts Divisionsverhalten. C++ verhält sich seit C++11 genauso: `/` liefert für
-ganzzahlige Operanden den algebraischen Quotienten mit abgeschnittenem Bruchteil, schneidet
-also **gegen null** ab (ISO/IEC 14882, `[expr.mul]`; vor C++11 war es für negative Operanden
-implementierungsabhängig, weshalb der Sprachstand aus T1 hier mitbindet und nicht nur eine
-Bequemlichkeit ist). Damit gilt unverändert derselbe Einwand: Abschneiden gegen null ist über
-dem Vorzeichen unsymmetrisch — bei einem Fonds, der nach `spiel.md` ausdrücklich long **und**
-short sein können soll, würde es eine Richtung still bevorzugen und Maß 2 verfälschen.
+**The rule stays, its justification changes language.** The previous versions justified it
+with Rust's division behaviour. C++ has behaved the same way since C++11: for integer
+operands `/` yields the algebraic quotient with the fractional part cut off, i.e. it
+truncates **towards zero** (ISO/IEC 14882, `[expr.mul]`; before C++11 it was
+implementation-dependent for negative operands, which is why the language standard from
+T1 binds here as well and is not just a convenience). The same objection thus holds
+unchanged: truncating towards zero is asymmetric across the sign — for a fund that per
+`spiel.md` is expressly meant to be able to go long **and** short, it would silently
+favour one direction and distort Maß 2.
 
-Ebenso verpflichtend: `mal_geteilt(a, b, c)` rechnet `a·b/c` über einen
-**`__int128`**-Zwischenwert (ADR 0011, Massnahme 3); die naive Form läuft bei Beträgen in
-Cent mal Anteilen in Zehntausendsteln über. Ein nachträglicher Überlauftest käme dafür zu
-spät — das Produkt wäre dann schon gebildet und nach T7 still umgebrochen.
+Equally binding: `mal_geteilt(a, b, c)` computes `a·b/c` via an **`__int128`**
+intermediate (ADR 0011, measure 3); the naive form overflows at amounts in cents times
+shares in ten-thousandths. An overflow test after the fact would come too late for that —
+the product would already be formed and, per T7, silently wrapped.
 
-**Schreibweise für den Rest des Dokuments:** `i128` steht überall als Kurzform für
-`__int128`, so wie im Kern der gleichlautende Aliasname dafür steht. `__int128` ist eine
-Erweiterung des Typsystems, nicht des Sprachmodus — es bleibt unter `-std=c++20` verfügbar,
-und `-Wpedantic` ist nach T2b genau deswegen abgeschaltet.
+**Notation for the rest of the document:** `i128` stands everywhere as shorthand for
+`__int128`, just as the alias of the same name stands for it in the core. `__int128` is
+an extension of the type system, not of the language mode — it stays available under
+`-std=c++20`, and `-Wpedantic` is switched off per T2b for exactly this reason.
 
-**T6b — Die Divisionsform ist vorgeschrieben: Vorzeichen zuerst, dann genau eine
-vorzeichenlose 128-Bit-Division auf den Beträgen.** Also `betrag()` auf Zähler und Nenner, ein
-`unsigned __int128`-Quotient, der Rest als `az − ganz·an` statt als zweite Operation, die
-Aufrundungsbedingung als `rest ≥ an − rest` statt als `2·rest ≥ an`, und das Vorzeichen zum
-Schluss.
+**T6b — The division form is prescribed: sign first, then exactly one unsigned 128-bit
+division on the absolute values.** That is, `betrag()` on numerator and denominator, one
+`unsigned __int128` quotient, the remainder as `az − ganz·an` instead of as a second
+operation, the round-up condition as `rest ≥ an − rest` instead of as `2·rest ≥ an`, and
+the sign at the end.
 
-Das ist keine Geschmacksfrage, sondern die Antwort auf den Geschwindigkeitseinwand aus T1.
-Die 947 ns der Messung sind **eine** Umsetzung, nicht die Sprache, und ADR 0011 vermutet als
-Ursache einen fehlenden `__int128`. Das trifft nicht zu: Die gemessene C++-Fassung benutzt
-`__int128` (`messung-stack/cpp/schritt.cpp`, Zeilen 21–31). Der nachweisbare Unterschied
-liegt eine Ebene tiefer, und er steht im Erzeugnis statt in der Vermutung — `objdump -d` über
-die beiden abgelegten Programme in diesem Lauf ausgeführt:
+That is no matter of taste but the answer to the speed objection from T1. The 947 ns of
+the measurement are **one** implementation, not the language, and ADR 0011 presumes a
+missing `__int128` as the cause. That is not so: the measured C++ version uses `__int128`
+(`messung-stack/cpp/schritt.cpp`, lines 21–31). The provable difference lies one level
+lower, and it stands in the artefact instead of in the presumption — `objdump -d`
+executed in this run over the two stored programs:
 
-| Umsetzung | Divisionsform | Aufrufe der Übersetzerhilfe |
+| Implementation | Division form | Calls into the compiler runtime |
 |---|---|---|
-| `messung-stack/cpp/schritt` | signiert dividieren **und** Rest nehmen | `__divmodti4` |
-| `messung-stack/rust/schritt` | Vorzeichen zuerst, dann Beträge dividieren | `__udivti3` |
+| `messung-stack/cpp/schritt` | divide signed **and** take the remainder | `__divmodti4` |
+| `messung-stack/rust/schritt` | sign first, then divide absolute values | `__udivti3` |
 
-Eine 128-Bit-Division ist auf x86-64 kein Befehl, sondern ein Aufruf in die Laufzeitbibliothek
-des Übersetzers, und die **vorzeichenlose** Form ist die billigere: Die signierte normalisiert
-zuerst die Vorzeichen und ruft dann dieselbe unsignierte Routine. Dazu kommt in der
-C++-Fassung ein zusätzliches 128-Bit-Produkt für `rest_betrag * 2`, das die hier
-vorgeschriebene Form nicht braucht — und das nach der eigenen Anmerkung in `festkomma.hpp`
-bei einem Nenner nahe der `i128`-Grenze selbst überlaufen könnte.
+A 128-bit division is no instruction on x86-64 but a call into the compiler's runtime
+library, and the **unsigned** form is the cheaper one: the signed one first normalises
+the signs and then calls the same unsigned routine. On top of that, the C++ version has
+an additional 128-bit product for `rest_betrag * 2`, which the form prescribed here does
+not need — and which, per the own remark in `festkomma.hpp`, could itself overflow at a
+denominator near the `i128` limit.
 
-**Was ich damit nicht behaupte:** Ich habe die schnellere Form nicht nachgemessen; der
-Abstand von 1,92 könnte auch nur teilweise daran hängen. Die Vorgabe steht trotzdem, weil sie
-unter jedem Übersetzer die kleinere Rechnung ist und weil sie den Überlauf in der
-Aufrundungsbedingung gleich mit ausräumt. **Entschieden wird die Frage nicht hier, sondern
-durch `ticks_je_sekunde` aus dem ersten Prüfstandsbefund** (Abschnitt 9, Berichtspflicht).
+**What I do not claim with this:** I have not re-measured the faster form; the gap of
+1.92 might also hang on it only in part. The prescription stands regardless, because it
+is the smaller computation under any compiler and because it clears away the overflow in
+the round-up condition at the same time. **The question is decided not here but by
+`ticks_je_sekunde` from the first test-bench finding** (section 9, reporting duty).
 
-Mechanischer Nachweis: `objdump -d` über die Kernbibliothek darf `__divti3` und
-`__divmodti4` **nicht** enthalten; erlaubt ist allein `__udivti3`. Die 64-Bit-Divisionen der
-Zähler und Restdauern erzeugen keinen solchen Aufruf und stören die Prüfung nicht.
+Mechanical proof: `objdump -d` over the core library must **not** contain `__divti3` and
+`__divmodti4`; allowed is solely `__udivti3`. The 64-bit divisions of the counters and
+remaining durations produce no such call and do not disturb the check.
 
-**`nenner == 0` bricht ab und wird nie still zu null.** Befund 2 der zweiten Prüfung
-entstand genau an dieser Stelle: Ein Rückvergleich mit einem Fonds ohne Vermögen brauchte
-dieses Vermögen als Nenner. Ein stiller Ersatzwert hätte den Fehler in eine falsche Zahl
-verwandelt statt in einen Abbruch; die Behebung gehört nach T38 in den Modus und nicht in
-die Divisionsregel, aber die Regel bleibt die Wand, gegen die ein solcher Fehler läuft.
+**`nenner == 0` aborts and never silently becomes zero.** Finding 2 of the second review
+arose at exactly this place: a backtest with a fund without assets needed those assets as
+a denominator. A silent substitute value would have turned the error into a wrong number
+instead of an abort; the fix belongs per T38 into the mode and not into the division
+rule, but the rule remains the wall such an error runs into.
 
-**T7 — Überlauf erzeugt nie still eine falsche Zahl.** Die Vorgabe behält Nummer und Sinn;
-ihr Mittel wechselt mit der Sprache. Rust hätte sie mit `overflow-checks = true` im
-Freigabeprofil erledigt — **eine** Einstellung. In C++ sind es vier Massnahmen, drei davon
-aus ADR 0011 und eine, die dort fehlt.
+**T7 — Overflow never silently produces a wrong number.** The requirement keeps its
+number and its sense; its means changes with the language. Rust would have settled it
+with `overflow-checks = true` in the release profile — **one** setting. In C++ it is four
+measures, three of them from ADR 0011 and one that is missing there.
 
-**Massnahme 1 — `-fwrapv` in jedem Profil.** Damit ist vorzeichenbehafteter Ganzzahlüberlauf
-als Umbruch im Zweierkomplement **definiert**. Die eigentliche Gefahr ist nämlich nicht der
-Überlauf, sondern was ein Optimierer aus seiner angeblichen Unmöglichkeit folgert: Ohne
-`-fwrapv` darf er Vergleiche wegwerfen, die „nicht eintreten können", und aus einem
-Zahlenfehler wird ein weggefallener Programmzweig. Der Schalter steht in
-`werkzeugkette.cmake` und nicht nur im Runner — ein Determinismusschalter, der allein im
-Nachtlauf gilt, ist keiner.
+**Measure 1 — `-fwrapv` in every profile.** With it, signed integer overflow is
+**defined** as wrap-around in two's complement. For the real danger is not the overflow
+but what an optimiser concludes from its supposed impossibility: without `-fwrapv` it may
+throw away comparisons that „cannot happen", and a numeric error becomes a dropped
+program branch. The switch stands in `werkzeugkette.cmake` and not only in the runner — a
+determinism switch that holds only in the night run is none.
 
-**Massnahme 2 — `-fsanitize=undefined,address` im Testprofil**, mit
-`-fno-sanitize-recover=all`, damit ein Fund ein Abbruch wird und keine Meldung, die ein
-grüner Testlauf überschreibt. Der Prüfstand läuft darüber. Weil ein Sanitizer nur findet,
-was er selbst übersetzt hat, wird der Kern für die Proben ein **zweites Mal** übersetzt
-(`kern_geprueft`); linkten die Proben die ungeprüfte Bibliothek, sicherte die Massnahme den
-Testcode ab und nicht den Code, um den es geht.
+**Measure 2 — `-fsanitize=undefined,address` in the test profile**, with
+`-fno-sanitize-recover=all`, so that a hit becomes an abort and not a message that a
+green test run overwrites. The test bench runs over this. Because a sanitizer only finds
+what it has compiled itself, the core is compiled a **second time** for the checks
+(`kern_geprueft`); if the checks linked the unchecked library, the measure would secure
+the test code and not the code at stake.
 
-> **Und hier ist ADR 0011 zu widersprechen, in genau einem Punkt.** Dort steht, ein Überlauf,
-> der trotz `-fwrapv` unbeabsichtigt ist, werde durch Massnahme 2 „im Nachtlauf laut statt
-> still". **Das trifft nicht zu.** Seit GCC 8 schaltet `-fwrapv` die Prüfung
-> `-fsanitize=signed-integer-overflow` ab — der Sanitizer meldet nur *undefiniertes*
-> Verhalten, und `-fwrapv` hat den Überlauf gerade definiert. Die beiden Massnahmen heben
-> sich an dieser einen Stelle gegenseitig auf; genau deshalb hat der Linux-Kernel seine
-> UBSan-Überlaufprüfungen wieder ausgebaut, nachdem er `-fno-strict-overflow` gesetzt hatte.
+> **And here ADR 0011 is to be contradicted, in exactly one point.** It says there that
+> an overflow that is unintended despite `-fwrapv` becomes, through measure 2, „im
+> Nachtlauf laut statt still". **That is not so.** Since GCC 8, `-fwrapv` switches off
+> the check `-fsanitize=signed-integer-overflow` — the sanitizer reports only *undefined*
+> behaviour, and `-fwrapv` has just defined the overflow. The two measures cancel each
+> other out at this one place; exactly for this reason the Linux kernel removed its UBSan
+> overflow checks again after it had set `-fno-strict-overflow`.
 >
-> **Was Massnahme 2 deshalb wirklich leistet — und es ist trotzdem viel:** Sie deckt den
-> Adressen-Sanitizer ab und die übrigen UB-Klassen (Schiebeweiten, Ausrichtung,
-> Feldgrenzen, Nullzeiger). Das ist genau die Fehlerklasse, die C++ nach T1 gegenüber Rust
-> offen hat, und sie ist der Grund, die Massnahme unverändert zu behalten. Sie ist nur
-> **nicht** die Antwort auf den Überlauf, als die ADR 0011 sie einführt.
+> **What measure 2 therefore really delivers — and it is still a lot:** it covers the
+> address sanitizer and the remaining UB classes (shift widths, alignment, array bounds,
+> null pointers). That is exactly the failure class that C++ per T1 has open against
+> Rust, and it is the reason to keep the measure unchanged. It is only **not** the answer
+> to overflow as which ADR 0011 introduces it.
 
-**Massnahme 3 — `__int128` für jeden Zwischenwert** einer Multiplikation-Division, nie ein
-nachträglicher Test auf Überlauf (T6, T6b).
+**Measure 3 — `__int128` for every intermediate value** of a multiply-divide, never an
+overflow test after the fact (T6, T6b).
 
-**Massnahme 4 — geprüfte Arithmetik im Kern. Sie schliesst die Lücke, die Massnahme 2
-offenlässt, und ohne sie hätte das Vorhaben keinen Ersatz für `overflow-checks = true`.**
-Drei Formen, alle vom Übersetzer unabhängig, weil sie ausdrücklich prüfen statt sich auf
-undefiniertes Verhalten zu verlassen. Sie sind nach der **Rechenart** geschnitten und nicht
-nach der Stelle, damit keine Art zwischen ihnen liegen bleibt: die Verengung jedes
-128-Bit-Zwischenwerts (1), die Strichrechnung auf `i64` (2), die Multiplikation ohne
-folgende Division (3).
+**Measure 4 — checked arithmetic in the core. It closes the gap that measure 2 leaves
+open, and without it the venture would have no substitute for `overflow-checks = true`.**
+Three forms, all independent of the compiler, because they check expressly instead of
+relying on undefined behaviour. They are cut by the **kind of operation** and not by
+place, so that no kind is left lying between them: the narrowing of every 128-bit
+intermediate (1), addition and subtraction on `i64` (2), multiplication without a
+following division (3).
 
-1. **Die Verengung von `__int128` auf `i64` ist der Prüfpunkt.** Jeder Wert, der aus einem
-   128-Bit-Zwischenwert in eine Zustandsadresse zurückkehrt, läuft durch einen Wächter, der
-   gegen `I64_MIN`/`I64_MAX` prüft und bei Verletzung **abbricht** statt zu kappen. Weil
-   T6 jede Multiplikation-Division ohnehin über `__int128` führt, liegt der weitaus grösste
-   Teil aller Überlaufgelegenheiten genau auf diesem Weg — die Prüfung ist damit kein
-   Flickwerk, sondern sitzt an der Engstelle.
-2. **Was nicht über `__int128` läuft — Additionen und Subtraktionen auf `i64` —, benutzt
-   `__builtin_add_overflow` und `__builtin_sub_overflow`.** Sie rechnen in unendlicher
-   Genauigkeit und melden, ob das Ergebnis in den Zieltyp passt; `-fwrapv` berührt sie
-   nicht, weil sie kein undefiniertes Verhalten auslösen, sondern eines abfragen.
-3. **Auch eine Multiplikation ohne nachfolgende Division läuft über `__int128` und den
-   Wächter aus 4.1**, nämlich über `mal(a, b)` in `kern/include/kern/festkomma.hpp`, gebaut
-   wie `mal_geteilt`: Produkt als `i128`, Rückkehr durch `intern::nach_i64`. Der
-   Zwischenwert kann dabei nicht selbst überlaufen, weil `|a·b| ≤ 2^126`, also rund
-   `8,5·10^37`, unter der `i128`-Grenze `1,7·10^38` bleibt — dasselbe Argument, das
-   `potenz` in derselben Datei schon führt.
+1. **The narrowing from `__int128` to `i64` is the checkpoint.** Every value returning
+   from a 128-bit intermediate into a state address passes through a guard that checks
+   against `I64_MIN`/`I64_MAX` and on violation **aborts** instead of capping. Because T6
+   routes every multiply-divide through `__int128` anyway, by far the largest part of all
+   overflow opportunities lies exactly on this path — the check is thus no patchwork but
+   sits at the bottleneck.
+2. **What does not run through `__int128` — additions and subtractions on `i64` — uses
+   `__builtin_add_overflow` and `__builtin_sub_overflow`.** They compute in unbounded
+   precision and report whether the result fits into the target type; `-fwrapv` does not
+   touch them, because they trigger no undefined behaviour but query one.
+3. **A multiplication without a following division, too, runs through `__int128` and the
+   guard from 4.1**, namely through `mal(a, b)` in `kern/include/kern/festkomma.hpp`,
+   built like `mal_geteilt`: product as `i128`, return through `intern::nach_i64`. The
+   intermediate cannot itself overflow there, because `|a·b| ≤ 2^126`, i.e. about
+   `8,5·10^37`, stays below the `i128` limit `1,7·10^38` — the same argument that
+   `potenz` in the same file already makes.
 
-**Punkt 3 ist in dieser Fassung nachgetragen, und die Lücke davor war keine Formalie.** Die
-Aufzählung nannte „Additionen und Subtraktionen" und liess damit die **blanke Multiplikation
-zweier `i64`** zwischen den Massnahmen liegen: Massnahme 3 deckt die Multiplikation *mit*
-nachfolgender Division, 4.1 die Verengung eines 128-Bit-Werts, 4.2 die Strichrechnung — und
-Massnahme 1 macht ihren Überlauf gerade **definiert**, also still. `overflow-checks = true`
-der Vorfassung deckte mit *einer* Einstellung jede Rechenart; hier wäre mit der Bauart ein
-Stück Inhalt verschwunden. Der Weg in den Fehler steht im Dokument selbst:
-`tsd_in_cent(x) = x · 100.000` (T50) hat keine Division, keinen 128-Bit-Zwischenwert und
-keine Addition, `positionswert` rechnet davor `stufen · stufenwert` (T48) ebenso blank, und
-das Ergebnis geht nach T47 unmittelbar ins Fondsvermögen — also in Abrechnung, Mandat,
-Todesart 1 und die Botzielgröße `B`. Die Invariante `0 < markt.wert < 9,2·10^13` (T30
-Prüfung 2) fängt davon **einen** Aufrufer ab, am Rundenende und nicht auf der Fondsseite; ein
-Detektor nach der Tatsache ist nicht die Zusage, die T7 in seiner Überschrift gibt.
+**Point 3 is added in this version, and the gap before it was no formality.** The
+enumeration named „Additionen und Subtraktionen" and thereby left the **bare
+multiplication of two `i64`** lying between the measures: measure 3 covers the
+multiplication *with* a following division, 4.1 the narrowing of a 128-bit value, 4.2
+addition and subtraction — and measure 1 makes their overflow precisely **defined**, that
+is, silent. `overflow-checks = true` of the previous version covered every kind of
+operation with *one* setting; here, a piece of content would have vanished with the
+change of construction. The path into the error stands in the document itself:
+`tsd_in_cent(x) = x · 100.000` (T50) has no division, no 128-bit intermediate and no
+addition, `positionswert` computes `stufen · stufenwert` (T48) just as bare before it,
+and the result goes per T47 straight into the fund's assets — that is, into settlement,
+mandate, way of dying 1 and the bot target quantity `B`. The invariant
+`0 < markt.wert < 9,2·10^13` (T30 check 2) catches **one** caller of these, at the round
+end and not on the fund side; a detector after the fact is not the promise that T7 gives
+in its heading.
 
-**Warum `mal` und nicht `__builtin_mul_overflow`:** Beides schliesst die Lücke. Der
-`i128`-Weg hat denselben Abbruchpfad wie 4.1 statt eines zweiten, hält die ganze
-Punktrechnung bei *einer* Regel, und `mal` steht neben `mal_geteilt` in der Datei, die T6
-ohnehin als einzige Rechenstelle des Kerns ausweist.
+**Why `mal` and not `__builtin_mul_overflow`:** both close the gap. The `i128` path has
+the same abort path as 4.1 instead of a second one, keeps the whole of multiplicative
+arithmetic under *one* rule, and `mal` stands next to `mal_geteilt` in the file that T6
+designates as the core's only computation site anyway.
 
-**Die Vorgabe gilt für jede Multiplikation, nicht für eine Liste von Stellen.** Der
-Weltschritt multipliziert schon in der Preismischung (T28) blank, dazu `fondsanteil`,
-`anleihekurs` und `lobbypunkte_aus_geld` (T48, T50), und jede neue Formel bringt weitere; eine
-Aufzählung wäre hier die Form, die beim nächsten Zusatz still falsch wird. Der Nachweis ist
-deshalb eine **Zuordnung**, und ich habe sie in diesem Lauf einmal ausgeführt:
-`grep -rn ' \* ' kern/src kern/include` liefert heute **52 Zeilen**, und jede fällt in eine
-von vier zugelassenen Arten — Adressrechnung auf `Index`/`std::size_t` (`zustand.hpp`,
-`zustand.cpp`), vorzeichenlose Rechnung in `zufall.hpp` und `pruefsumme.hpp` (die beiden
-Ausnahmen unten), `i128`-Zwischenwert innerhalb von `festkomma.hpp`, oder Fliesstext in einem
-Kommentar. Eine fünfte Art — zwei `i64` mit Größenbedeutung nach T5 — kommt heute **nicht**
-vor, weil `kern::werte` noch nicht gebaut ist; genau dort entsteht sie. Ein solcher Treffer
-ausserhalb von `festkomma.hpp` ist ein Befund. `kern/test` steht nicht unter der Regel,
-sondern prüft sie; dort kommen sechs weitere Trefferzeilen dazu, davon zwei echte
-Multiplikationen der Form `static_cast<i64>(platz) * 10`, mit denen eine Probe sich ihre
-Eingabewerte aus einem Schleifenindex baut.
+**The prescription holds for every multiplication, not for a list of places.** The world
+step already multiplies bare in the price mix (T28), plus `fondsanteil`, `anleihekurs`
+and `lobbypunkte_aus_geld` (T48, T50), and every new formula brings more; an enumeration
+would here be the form that silently goes wrong at the next addition. The proof is
+therefore a **mapping**, and I have carried it out once in this run:
+`grep -rn ' \* ' kern/src kern/include` yields **52 lines** today, and each falls into
+one of four admitted kinds — address arithmetic on `Index`/`std::size_t` (`zustand.hpp`,
+`zustand.cpp`), unsigned arithmetic in `zufall.hpp` and `pruefsumme.hpp` (the two
+exceptions below), an `i128` intermediate inside `festkomma.hpp`, or running text in a
+comment. A fifth kind — two `i64` with magnitude meaning per T5 — does **not** occur
+today, because `kern::werte` is not yet built; exactly there it arises. Such a hit
+outside `festkomma.hpp` is a finding. `kern/test` does not stand under the rule but
+checks it; six further hit lines come in there, of which two are real multiplications of
+the form `static_cast<i64>(platz) * 10`, with which a check builds itself its input
+values from a loop index.
 
-**Der Abbruch ist eine Ausnahme und kein `std::abort`**, und das aus zwei mechanischen
-Gründen: Bei der Auswertung zur Übersetzungszeit macht ein `throw` den Ausdruck zu keiner
-Konstante — ein `static_assert`, das den Abbruchpfad trifft, ist damit ein
-**Übersetzungsfehler** statt eines unprüfbaren Falls; und ein Signal lässt CTest nicht als
-erwartetes Ergebnis verbuchen, eine Ausnahme dagegen fängt die Probe und weist sie nach. Was
-nicht nachweisbar ist, ist in dieser Fabrik nicht gebaut. Still ist der Abbruch trotzdem
-nicht: Er hat keinen Rückgabewert, den jemand versehentlich weiterrechnet.
+**The abort is an exception and no `std::abort`**, and that for two mechanical reasons:
+in compile-time evaluation a `throw` makes the expression no constant — a `static_assert`
+that hits the abort path is thereby a **compile error** instead of an uncheckable case;
+and CTest cannot book a signal as an expected result, whereas a check catches an
+exception and attests it. What is not attestable is not built in this factory. Silent
+the abort still is not: it has no return value that anyone accidentally computes on.
 
-**Zwei Stellen brechen absichtlich um, und sie sind die Ausnahme von T7:** die Prüfsumme aus
-T12 und der Zufallserzeuger aus T11. Beide rechnen auf **vorzeichenlosen** Typen, deren
-Umbruch in C++ seit jeher definiert ist und deren Rechenvorschrift ihn ausdrücklich verlangt.
-Sie bekommen keinen Wächter — ein Wächter dort wäre kein Schutz, sondern ein Fehler.
+**Two places wrap deliberately, and they are the exception to T7:** the checksum from T12
+and the random generator from T11. Both compute on **unsigned** types, whose wrap-around
+has always been defined in C++ and whose computation rule expressly demands it. They get
+no guard — a guard there would be no protection but an error.
 
-Die Kosten sind wenige Prozent und in Abschnitt 10 eingerechnet.
+The costs are a few percent and are priced into section 10.
 
-**Quellen zu Massnahme 2**, beide abgerufen am 2026-09-02:
-GCC-Dokumentation zu `-fsanitize=signed-integer-overflow` und `-fno-sanitize-recover`
-(<https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html>) — sie beschreibt die
-Prüfung, **erwähnt die Wechselwirkung mit `-fwrapv` nicht**, weshalb sie hier steht;
-der Beleg für die Abschaltung ist der Kernel-Patch „ubsan: remove overflow checks"
+**Sources on measure 2**, both retrieved 2026-09-02:
+the GCC documentation on `-fsanitize=signed-integer-overflow` and `-fno-sanitize-recover`
+(<https://gcc.gnu.org/onlinedocs/gcc/Instrumentation-Options.html>) — it describes the
+check, **does not mention the interaction with `-fwrapv`**, which is why it stands here;
+the evidence for the switch-off is the kernel patch „ubsan: remove overflow checks"
 (<https://lkml.iu.edu/hypermail/linux/kernel/2102.1/03333.html>): *„Since GCC 8.0
 -fsanitize=signed-integer-overflow doesn't work with -fwrapv. -fwrapv makes signed overflows
-defines and GCC essentially disables ubsan checks."* Die Überlaufbausteine aus Massnahme 4
-sind in
-<https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html> beschrieben.
+defines and GCC essentially disables ubsan checks."* The overflow builtins from measure 4
+are described in
+<https://gcc.gnu.org/onlinedocs/gcc/Integer-Overflow-Builtins.html>.
 
-**T52 — Dieselbe Aktionsfolge ergibt auf jeder Zielplattform denselben Zustand, und in C++
-ist das eine Vorgabe statt einer Selbstverständlichkeit.** *Neu in Fassung 7.*
+**T52 — The same action sequence yields the same state on every target platform, and in
+C++ that is a requirement instead of a matter of course.** *New in version 7.*
 
-Warum die Anforderung überhaupt noch gilt: Der Speicherstand ist unverändert **Startwert
-plus Aktionsfolge** und nicht der Zustand (Frontmatter, **T22**). Ein Spielstand, der auf einem
-Rechner geschrieben und auf einem anderen geladen wird, wird also **nachgerechnet** — läuft
-die Rechnung dort anders, ist der Spielstand still ein anderer. T30 Prüfung 3 vergleicht die
-Prüfsummen deshalb über die Zielplattformen hinweg; das bleibt so.
+Why the requirement still holds at all: the save is unchanged **start value plus action
+sequence** and not the state (frontmatter, **T22**). A save written on one machine and
+loaded on another is therefore **recomputed** — if the computation runs differently
+there, the save is silently a different one. T30 check 3 therefore compares the checksums
+across the target platforms; that stays.
 
-Rust hatte die Eigenschaft geschenkt, weil seine Ganzzahltypen überall dieselbe Breite
-haben. C++ hat sie nicht geschenkt, und die vier Stellen, an denen sie verloren geht, sind
-benannt:
+Rust had the property as a gift, because its integer types have the same width
+everywhere. C++ does not have it as a gift, and the four places where it gets lost are
+named:
 
-1. **Nur Typen fester Breite aus `<cstdint>`** in jedem Wert, der eine Zustandsadresse
-   erreicht oder in eine Formel eingeht: `std::int64_t`, `std::uint64_t`, `std::uint8_t`.
-   **`int`, `long`, `unsigned` und `std::size_t` sind dort verboten.** `long` ist unter
-   Windows 32 Bit und unter Linux 64 Bit — das ist die klassische Falle und die einzige
-   dieser vier, die schweigend eine falsche Zahl erzeugt statt eines Warnhinweises.
-2. **Kein `char` in einer Rechnung.** Ob `char` vorzeichenbehaftet ist, entscheidet die
-   Zielarchitektur. Wo ein Byte gemeint ist, steht `std::uint8_t`.
-3. **Kein Wert aus `sizeof` oder einer Ausrichtung** in einer Formel des Kerns.
-4. **Schiebeoperationen** sind zulässig und der Zufallserzeuger braucht sie. Sie sind hier
-   ungefährlich, **weil** T1 auf C++20 festlegt: Seit C++20 ist die
-   Zweierkomplementdarstellung vorgeschrieben und das Rechtsschieben negativer Werte als
-   arithmetisches Schieben definiert. Unter einem älteren Sprachstand wäre beides
-   implementierungsabhängig. Das ist der zweite Grund, aus dem der Sprachstand aus T1 bindet
-   und keine Bequemlichkeit ist — der erste steht in T6.
+1. **Only fixed-width types from `<cstdint>`** in every value that reaches a state
+   address or enters a formula: `std::int64_t`, `std::uint64_t`, `std::uint8_t`.
+   **`int`, `long`, `unsigned` and `std::size_t` are forbidden there.** `long` is 32 bits
+   under Windows and 64 bits under Linux — that is the classic trap and the only one of
+   these four that silently produces a wrong number instead of a warning.
+2. **No `char` in a computation.** Whether `char` is signed is decided by the target
+   architecture. Where a byte is meant, `std::uint8_t` stands.
+3. **No value from `sizeof` or from an alignment** in a formula of the core.
+4. **Shift operations** are admissible, and the random generator needs them. They are
+   harmless here **because** T1 fixes C++20: since C++20, two's-complement
+   representation is prescribed and right-shifting negative values is defined as
+   arithmetic shifting. Under an older language standard both would be
+   implementation-dependent. That is the second reason the language standard from T1
+   binds and is no convenience — the first stands in T6.
 
-**Beobachtung an ADR 0011, gemeldet und nicht selbst entschieden:** Das erste Argument des
-ADR lautet, die plattformübergreifende Reproduzierbarkeit falle weg, *wenn* der Spielstand
-den Zustand speichert statt der Aktionsfolge. Diesen Wechsel ordnet der ADR in seinen Folgen
-aber nicht an, und mein Arbeitspaket auch nicht. **Bis er angeordnet ist, gilt die
-Anforderung** — deshalb steht T52 hier statt eines gestrichenen Absatzes. Der Wechsel wäre
-eine Erleichterung, keine Notwendigkeit: Die vier Regeln oben sind mechanisch und kosten den
-Bauagenten nichts, den sie nicht ohnehin zahlt.
+**Observation on ADR 0011, reported and not decided by me:** the ADR's first argument
+reads that cross-platform reproducibility falls away *if* the save stores the state
+instead of the action sequence. But the ADR does not order this switch in its
+consequences, and neither does my work package. **Until it is ordered, the requirement
+holds** — which is why T52 stands here instead of a struck paragraph. The switch would be
+a relief, not a necessity: the four rules above are mechanical and cost the build agent
+nothing it does not pay anyway.
 
-**T40 — Die Partielänge R ist eine Größe des Jahrgangs, keine Konstante des Codes, und
-keine aus ihr abgeleitete Zahl steht als Literal irgendwo.** Das ist die architektonische
-Antwort auf Befund 1, und sie ist die einzige, die dessen eigentlichen Preis vermeidet: Die
-falsche Zahl war billig, ihre Verbreitung in zwölf abgeleitete Größen war teuer.
+**T40 — The game length R is a quantity of the vintage, no constant of the code, and no
+number derived from it stands as a literal anywhere.** That is the architectural answer
+to finding 1, and it is the only one that avoids its actual price: the wrong number was
+cheap, its spread into twelve derived quantities was expensive.
 
-`R = manifest.stuetzstellen − 1` wird beim Laden des Jahrgangs gebildet. Aus R und sonst
-nichts entstehen zur Laufzeit:
+`R = manifest.stuetzstellen − 1` is formed when the vintage is loaded. From R and nothing
+else arise at run time:
 
-| Abgeleitete Größe | Formel | bei R = 24 |
+| Derived quantity | Formula | at R = 24 |
 |---|---|---|
-| Ergebnisband „Mandat erfüllt" | `1.000 … R × 1.000` | 1.000 … 24.000 |
-| Ergebnisband „überlebt" | `(R+1) × 1.000 … (R+1) × 1.000 + 3.000` | 25.000 … 28.000 |
-| Ergebnisband „Todesart" | `30.000 + 1.000 … 30.000 + R × 1.000` | 31.000 … 54.000 |
-| Partiedrittel (Maß 1, Fenster von Maß 3) | `1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R` | 1-8, 9-16, 17-24 |
-| Gewinnschwelle Maß 2 | `E(p) ≤ R × 1.000` | 24.000 |
-| Suchbotpartie | `R × (1 + 60)` | 1.464 |
-| Kosten Maß 1 je Startwert | `30 · R(R+1)/2 + R` | 9.024 |
-| `exogen_ab_runde` je Reihe | `bruchjahr − startjahr + 1` | DE-Leitzins: 1999 − 1997 + 1 = 3 |
+| result band „mandate fulfilled" | `1.000 … R × 1.000` | 1,000 … 24,000 |
+| result band „survived" | `(R+1) × 1.000 … (R+1) × 1.000 + 3.000` | 25,000 … 28,000 |
+| result band „way of dying" | `30.000 + 1.000 … 30.000 + R × 1.000` | 31,000 … 54,000 |
+| game thirds (Maß 1, window of Maß 3) | `1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R` | 1-8, 9-16, 17-24 |
+| profit threshold Maß 2 | `E(p) ≤ R × 1.000` | 24,000 |
+| search-bot game | `R × (1 + 60)` | 1,464 |
+| cost of Maß 1 per seed | `30 · R(R+1)/2 + R` | 9,024 |
+| `exogen_ab_runde` per series | `bruchjahr − startjahr + 1` | DE policy rate: 1999 − 1997 + 1 = 3 |
 
-**Eine Schranke gehört dazu, weil die Ergebnisskala von `spiel.md` an einer Stelle ein
-echtes Literal trägt** — die 30.000, ab der die Todesarten zählen. Der Jahrgangsbau bricht
-mit `R > 26` ab, statt eine Skala zu erzeugen, in der ein Wert zwei Bedeutungen trägt.
+**A bound belongs with this, because the result scale of `spiel.md` carries a genuine
+literal at one place** — the 30,000 from which the ways of dying count. The vintage build
+aborts at `R > 26` instead of producing a scale in which one value carries two meanings.
 
-**Die Schranke steht seit Fassung 5 unverändert bei `R ≤ 26`, ist seither aber scharf statt
-grosszügig, und sie ist dort nachgerechnet worden.** `spiel.md` Fassung 4 hat die
-Kappung des Fehlbetrags gestrichen; das Band „überlebt" endet dadurch bei
-`(R+1) × 1.000 + 3.000` statt bei `+ 2.000`. Der niedrigste erreichbare Wert des Todesbandes
-ist `30.000 + (R + 1 − R) × 1.000 = 31.000`, unabhängig von R. Disjunkt sind beide Bänder
-also genau dann, wenn `(R+1) × 1.000 + 3.000 < 31.000`, das heisst `R < 27`. Bei `R = 26`
-endet „überlebt" bei 30.000 und lässt 999 Milli-Runden Luft; bei `R = 27` fiele sein oberes
-Ende mit dem unteren Ende des Todesbandes zusammen. **Das breitere Band kostet damit keine
-Runde Partielänge** — dieselbe Schranke, aber ohne Reserve.
+**The bound has stood unchanged at `R ≤ 26` since version 5, but has been tight instead
+of generous since, and it has been recomputed there.** `spiel.md` version 4 struck the
+capping of the shortfall; the band „survived" thereby ends at `(R+1) × 1.000 + 3.000`
+instead of at `+ 2.000`. The lowest reachable value of the death band is
+`30.000 + (R + 1 − R) × 1.000 = 31.000`, independent of R. The two bands are thus
+disjoint exactly when `(R+1) × 1.000 + 3.000 < 31.000`, that is `R < 27`. At `R = 26`
+„survived" ends at 30,000 and leaves 999 milli-rounds of air; at `R = 27` its upper end
+would coincide with the lower end of the death band. **The wider band thus costs no round
+of game length** — the same bound, but without reserve.
 
-Für das Fenster 1997–2021 ist das folgenlos, und `spiel.md` lässt das Fenster nur enger
-werden, nie weiter. Es ist eine Wand, keine Einschränkung — aber es ist eine, die vor dem
-Bau sichtbar sein muss und nicht danach.
+For the window 1997–2021 this is without consequence, and `spiel.md` lets the window only
+become narrower, never wider. It is a wall, not a restriction — but it is one that must
+be visible before the build and not after.
 
-**T8 — Preisniveau und Wechselkurs werden geführt und neu basiert.** Der Prüfjahrgang
-beginnt nach `spiel.md` Fassung 3 im Jahr **1997**, also lange nach dem Plano Real; dort
-tritt die Neubasierung nie ein. Sie bleibt trotzdem, weil `spiel.md` die Jahrgänge vor 1997
-ausdrücklich als **Spieljahrgänge** erhält und Brasilien zwischen 1980 und 1994 rund zwölf
-Nullen gestrichen hat. Regel: Übersteigt der Preisindex eines Landes das 100.000-fache
-seines Startwerts, werden Index, Wechselkurs und alle nominalen Größen dieses Landes durch
-1.000 geteilt und der Zähler `basiswechsel` erhöht.
+**T8 — Price level and exchange rate are carried and rebased.** The check vintage begins
+per `spiel.md` version 3 in the year **1997**, long after the Plano Real; there the
+rebasing never triggers. It stays nevertheless, because `spiel.md` expressly keeps the
+vintages before 1997 as **play vintages**, and Brazil struck about twelve zeros between
+1980 and 1994. Rule: if a country's price index exceeds 100,000 times its start value,
+index, exchange rate and all nominal quantities of that country are divided by 1,000 and
+the counter `basiswechsel` is incremented.
 
-**Welche Größen das sind, ist seit T49 abzählbar und steht deshalb hier statt in einer
-Auslegung: genau fünf je Gebiet** — die drei Sektorpreise, das Preisniveau (Klasse 5) und
-der Wechselkurs (Klasse 6). Sonst nichts. Die volkswirtschaftlichen Beträge stehen nach T5
-Klasse 2 **zu konstanten Preisen des Jahres 2015**, sind also real und laufen nicht mit — und
-sie laufen aus einem **zweiten**, unabhängigen Grund nicht mit, der seit T53 hier stehen kann:
-Klasse 2 ist in konstanten **US-Dollar** ausgedrückt, hat also gar keine Dimension in der
-Landeswährung, die eine Währungsreform des Gastlandes treffen könnte. Für die 40
-Handelsströme gilt das erst, seit T53 sie beim Jahrgangsbau auf dieselbe Basis bringt; vorher
-kamen sie in laufenden Preisen an, und dieser Absatz behauptete für sie eine Eigenschaft, die
-sie nicht hatten. Die
-Produktivität steht in Klasse 7 und darf es nicht (sonst senkte ein brasilianischer
-Basiswechsel die Produktivität um drei Größenordnungen); Raten, Anteile, Personen,
-Lobbypunkte und Zähler haben keine Währungsdimension; das Fondsgeld steht in US-Cent, also
-im Numéraire, und ist von einer Währungsreform des Gastlandes nicht berührt. „Alle nominalen
-Größen dieses Landes" war bis Fassung 5 eine Formulierung, die der Bauagent hätte auslegen
-müssen; es sind fünf Adressen, und sie stehen hier namentlich.
+**Which quantities those are has been countable since T49 and therefore stands here
+instead of in an interpretation: exactly five per territory** — the three sector prices,
+the price level (class 5) and the exchange rate (class 6). Nothing else. The
+macroeconomic amounts stand per T5 class 2 **at constant prices of the year 2015**, are
+hence real and do not move along — and they do not move along for a **second**,
+independent reason that can stand here since T53: class 2 is expressed in constant **US
+dollars**, so it has no dimension in the local currency at all that a currency reform of
+the host country could hit. For the 40 trade flows this holds only since T53 brings them
+onto the same basis at vintage build; before, they arrived in current prices, and this
+paragraph asserted a property for them that they did not have. Productivity stands in
+class 7 and must not (otherwise a Brazilian base change would lower productivity by three
+orders of magnitude); rates, shares, persons, lobby points and counters have no currency
+dimension; the fund money stands in US cents, that is, in the numéraire, and is untouched
+by a currency reform of the host country. „All nominal quantities of that country" was,
+until version 5, a wording the build agent would have had to interpret; it is five
+addresses, and they stand here by name.
 
-Weil sie im Prüfjahrgang nie greift, wäre sie ungeprüfter Code. **Auflage an den
-Testentwickler:** Mindestens eine Partie im Regressionsbestand (T31) läuft auf einem
-Spieljahrgang 1980 und durchläuft einen Basiswechsel. Ein Zweig, den der Nachtlauf nie
-betritt, ist ein Zweig, den niemand kennt.
+Because it never takes hold in the check vintage, it would be unchecked code.
+**Obligation on the test developer:** at least one game in the regression baseline (T31)
+runs on a 1980 play vintage and passes through a base change. A branch the night run
+never enters is a branch nobody knows.
 
-**Der Rückvergleich läuft für Preise und Wechselkurse auf Jahresänderungsraten in
-Basispunkten, nicht auf Niveaus.** Ein prozentualer Fehler auf einem Niveau, das über zwei
-Jahrzehnte um eine Größenordnung wandert, misst den Anfang und nicht die Maschine.
-`spiel.md` hat diese Vorgabe in Fassung 3 übernommen und beziffert (300 bp); die
-Rechenvorschrift steht in T42, einschliesslich der Korrektur, die eine Neubasierung
-innerhalb der Reihe erzwingt.
+**The backtest runs, for prices and exchange rates, on annual rates of change in basis
+points, not on levels.** A percentage error on a level that wanders by an order of
+magnitude over two decades measures the beginning and not the machine. `spiel.md` adopted
+this requirement in version 3 and quantified it (300 bp); the computation rule stands in
+T42, including the correction that a rebasing within the series forces.
 
-**T9 — Feste Reihenfolge, keine streuenden Behälter.** Länder, Sektoren, Instrumente und
-Handelspaare sind dichte Indexlisten: **`std::array` fester Länge**, angesprochen über eigene
-Indextypen `LandId`, `SektorId`, `InstrumentId` — je ein `enum class : std::uint8_t` oder ein
-Hüllentyp über `std::uint8_t`, damit zwei Indexarten sich nicht stillschweigend vermischen.
-Ein blanker `int` als Index ist ein Befund.
+**T9 — Fixed order, no hashing containers.** Countries, sectors, instruments and trade
+pairs are dense index lists: **`std::array` of fixed length**, addressed via own index
+types `LandId`, `SektorId`, `InstrumentId` — each an `enum class : std::uint8_t` or a
+wrapper type over `std::uint8_t`, so that two kinds of index do not silently mix. A bare
+`int` as an index is a finding.
 
-**Verboten im Kern sind `std::unordered_map` und `std::unordered_set`.** Ihre
-Durchlaufreihenfolge hängt von Streuwert, Einfügefolge und Standardbibliothek ab und ist
-damit genau das, was T9 ausschliesst. Wird eine Zuordnung gebraucht, ist es **`std::map`**
-oder **`std::set`** — die geordnete Entsprechung zu Rusts `BTreeMap`, mit einer
-Durchlaufreihenfolge, die eine Eigenschaft des Schlüssels ist und keine des Speichers.
+**Forbidden in the core are `std::unordered_map` and `std::unordered_set`.** Their
+iteration order depends on hash value, insertion order and standard library and is thus
+exactly what T9 rules out. If a mapping is needed, it is **`std::map`** or
+**`std::set`** — the ordered counterpart to Rust's `BTreeMap`, with an iteration order
+that is a property of the key and not one of the memory.
 
-**Zwei Fallen, die C++ zusätzlich stellt und Rust nicht:**
+**Two traps that C++ sets in addition and Rust does not:**
 
-- **`std::sort` ist nicht stabil.** Wo sortiert wird — der Prüfstand tut es in T39 —, ist
-  entweder `std::stable_sort` zu nehmen oder nach einem Schlüssel zu sortieren, der die
-  Elemente **eindeutig** ordnet. Eine Sortierung mit Gleichständen ist sonst eine
-  Reihenfolge, die der Übersetzer wählt.
-- **Die Auswertungsreihenfolge von Funktionsargumenten ist unbestimmt.** Solange die
-  Argumentausdrücke des Kerns seiteneffektfrei sind, ist das folgenlos — und genau deshalb
-  ist es eine Vorgabe: **Kein Argumentausdruck im Kern verändert etwas.** Kein `++i` und
-  keine Zuweisung innerhalb eines Aufrufs.
+- **`std::sort` is not stable.** Where sorting happens — the test bench does it in
+  T39 —, either `std::stable_sort` is to be used, or the sort must go by a key that
+  orders the elements **uniquely**. A sort with ties is otherwise an order the compiler
+  chooses.
+- **The evaluation order of function arguments is unspecified.** As long as the core's
+  argument expressions are free of side effects, this is without consequence — and
+  exactly for that reason it is a requirement: **no argument expression in the core
+  changes anything.** No `++i` and no assignment inside a call.
 
-Die sechs Schritte der Runde laufen in der Reihenfolge aus `spiel.md`, Abschnitt
-„Die Schleife", und diese Reihenfolge steht als benannte Konstantenliste im Code, damit ein
-Umstellen sichtbar wird.
+The six steps of the round run in the order from `spiel.md`, section „The loop", and this
+order stands as a named constant list in the code, so that a reordering becomes visible.
 
-**T10 — Der Weltschritt zieht nicht.** Nach `spiel.md` ist jede Regel eine Schwelle, ein
-Zähler oder eine Rechnung; auch der Innerjahresausschlag folgt „deterministisch aus der
-Jahresbewegung und der historischen Schwankungsbreite". Also gilt:
-`schritt(zustand, aktionen, modus)` ist eine **reine Funktion ohne Zufallsargument**. Das
-ist die billigste Art, Anforderung 1 zu erfüllen, und sie macht den Rückvergleich zu einer
-exakt wiederholbaren Rechnung.
+**T10 — The world step does not draw.** Per `spiel.md` every rule is a threshold, a
+counter or a computation; the intra-year swing too follows „deterministically from the
+year's movement and the historical volatility range". So:
+`schritt(zustand, aktionen, modus)` is a **pure function without a randomness argument**.
+That is the cheapest way to satisfy requirement 1, and it makes the backtest an exactly
+repeatable computation.
 
-**T11 — Zufall gibt es nur an zwei Stellen, und er hängt an einem Wurzelstartwert.**
-Erstens die Streuung der Startjahrgänge (ein Spiel soll nicht immer identisch beginnen),
-zweitens die Bots und Stichproben des Prüfstands. Der Erzeuger ist selbst geschrieben —
-SplitMix64 zur Ableitung, xoshiro256\*\* zur Erzeugung, zwanzig Zeilen, im Repo
-festgeschrieben, **keine Fremdbibliothek** (T2): Ein Versionssprung eines fremden
-Zufallskastens würde sonst jede gespeicherte Partie entwerten.
+**T11 — Randomness exists at only two places, and it hangs on one root seed.**
+First, the spread of the start vintages (a game should not always begin identically);
+second, the bots and samples of the test bench. The generator is written in-house —
+SplitMix64 for derivation, xoshiro256\*\* for generation, twenty lines, fixed in the
+repo, **no third-party library** (T2): a version jump of a foreign randomness kit would
+otherwise devalue every saved game.
 
-**Auch `<random>` aus der Standardbibliothek ist ausgeschlossen, und der Grund ist
-schärfer als der allgemeine.** Der Standard legt die *Erzeuger* fest (`std::mt19937` liefert
-überall dieselbe Folge), aber **nicht die Verteilungen**: Was
-`std::uniform_int_distribution` aus einer Bitfolge macht, ist der Standardbibliothek
-überlassen und unterscheidet sich zwischen libstdc++ und libc++. Ein Spielstand, der auf
-einer Verteilung beruht, wäre damit an eine Standardbibliotheksfassung gebunden statt an
-eine Rechenvorschrift. Die Reduktion auf einen Wertebereich wird deshalb im Kern
-ausgeschrieben und ist Teil des geprüften Codes.
+**`<random>` from the standard library is excluded too, and the reason is sharper than
+the general one.** The standard fixes the *generators* (`std::mt19937` yields the same
+sequence everywhere), but **not the distributions**: what `std::uniform_int_distribution`
+makes of a bit sequence is left to the standard library and differs between libstdc++ and
+libc++. A save that rested on a distribution would thereby be bound to a
+standard-library version instead of to a computation rule. The reduction to a value range
+is therefore written out in the core and is part of the checked code.
 
-Jeder Strom wird **abgeleitet**, nicht fortgeschrieben:
+Every stream is **derived**, not carried forward:
 
 ```
 strom = splitmix64(wurzelstartwert, jahrgang_id, parameter_pruefsumme,
                    zweck_id, runde, index)
 ```
 
-Ein fortlaufender Strom hätte die Eigenschaft, dass eine einzige neue Ziehung irgendwo alle
-späteren Ziehungen verschiebt und damit den ganzen Regressionsbestand rot macht, ohne dass
-sich etwas Inhaltliches geändert hätte. Das ist die Vorgabe, an der später der Unterschied
-zwischen „verbessern" und „verändern" hängt. Die `zweck_id` ist eine benannte Aufzählung
-(`JAHRGANGSSTREUUNG`, `ZUFALLSBOT`, `BUENDELZIEHUNG`, `SUCHBOT_KANDIDATEN`) und wird nie
-über eine Zahl geschrieben.
+A running stream would have the property that a single new draw anywhere shifts all later
+draws and thereby turns the whole regression baseline red without anything substantive
+having changed. That is the requirement on which the difference between „improving" and
+„changing" later hangs. The `zweck_id` is a named enumeration (`JAHRGANGSSTREUUNG`,
+`ZUFALLSBOT`, `BUENDELZIEHUNG`, `SUCHBOT_KANDIDATEN`) and is never written via a number.
 
-**Im Modus `weltlauf` wird kein einziger Strom gezogen** (T38): Es gibt keine Bots, keine
-Stichproben und keine Jahrgangsstreuung. Der Rückvergleich ist damit nicht nur
-reproduzierbar, sondern startwertfrei.
+**In mode `weltlauf` not a single stream is drawn** (T38): there are no bots, no samples
+and no vintage spread. The backtest is thereby not only reproducible but seed-free.
 
-**T12 — Kanonische Byteform und Prüfsumme.** `Zustand` wird über eine ausdrücklich
-geschriebene Funktion in Bytes gefasst (feste Feldreihenfolge, `i64` in Little-Endian),
-**nie über die Speicheranordnung der Struktur**. Darüber läuft FNV-1a-64, ebenfalls im
-Kern implementiert. Diese Prüfsumme ist die Währung aller Regressionstests.
+**T12 — Canonical byte form and checksum.** `Zustand` is put into bytes via an expressly
+written function (fixed field order, `i64` in little-endian), **never via the memory
+layout of the struct**. Over this runs FNV-1a-64, likewise implemented in the core. This
+checksum is the currency of all regression tests.
 
-**In C++ ist die Abkürzung besonders naheliegend und deshalb ausdrücklich verboten:** ein
-`memcpy` über die Struktur oder ein `reinterpret_cast` auf `unsigned char*` sind zwei Zeilen
-und liefern eine Prüfsumme, die Füllbytes zwischen den Feldern und die Bytefolge des
-Zielsystems mitnimmt. Füllbytes haben keinen festgelegten Inhalt — dieselbe Partie ergäbe
-auf demselben Rechner zwei Prüfsummen. Die Byteform wird Feld für Feld geschrieben, und der
-`reinterpret_cast` steht ohnehin auf der Grep-Liste aus T2b.
+**In C++ the shortcut is especially near at hand and therefore expressly forbidden:** a
+`memcpy` over the struct or a `reinterpret_cast` to `unsigned char*` are two lines and
+yield a checksum that takes along the padding bytes between the fields and the byte order
+of the target system. Padding bytes have no fixed content — the same game would yield two
+checksums on the same machine. The byte form is written field by field, and the
+`reinterpret_cast` stands on the grep list from T2b anyway.
 
 ## 3. Trennung von Modell und Darstellung
 
