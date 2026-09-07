@@ -147,6 +147,29 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-06.md` (voll nach 0180); davor
 - Read 0199 (builder's proposal) mid-run — it leaked the "no shell in build" fact,
   which mattered; its claims about messen.py I did not adopt, only its existence.
 
+## 2026-09-07 — 0188 (Zahlwortriegel reihen.toml): geprueft, Vorschlag 0208
+
+- First fully shell-less pruefung. What carried it: the builder folded all
+  three red proofs into a self-test that runs before every verdict — one green
+  ctest run is then a machine proof of the red cases. Demand this
+  proof-by-self-test shape from future riegel packages; one-off demonstrations
+  are impossible now.
+- Runner artifacts are the measurement: `befunde/uebersetzung-<datum>.md` plus
+  the repo `bau/`-tree's `LastTest.log` (10:31, consistent). Cross-check line
+  numbers in the test output against own file reads — they matched (152/305/307f).
+- Gaps no agent can close since the shell ban: OFF-profile runs and bait runs
+  (rename script → FATAL_ERROR). Nightly runs ON only — every section of the
+  09-06 and 09-07 reports. Wrote 0208 (baulauf runs both profiles); bait-run
+  steps are in the finding for the operator. Until 0208 lands, "beide Profile"
+  clauses can only be closed statically — say so in the finding, loudly.
+- Hand-executing anchor logic: grep the rare pattern words ("zerfallen",
+  "genannt wird") for uniqueness; hits inside TOML values are harmless because
+  `bloecke_von` reads only full-line comments — check that property first.
+- Unguarded neighbors again (the 0194 question): the "Diese acht" guard drops
+  silently on "Diese"→"Die"; key-path enumeration in the same paragraph is
+  unguarded prose. Left as Meldung, not proposal — needs the design decision
+  0180 explicitly deferred.
+
 ## Offene Faehrten
 
 - 2026-09-07 (0194) — **When 0194 returns: check whether OFF evidence arrived**
