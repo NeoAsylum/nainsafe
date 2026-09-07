@@ -3278,205 +3278,206 @@ reviewer without objection.
 
 ## 19. Die Länderzahl als Parameter — Paket `0116`
 
-**Was hier entschieden wird und was nicht.** Über die Zahl der Länder entscheidet dieser
-Abschnitt **nichts**. `L = 4` bleibt, und die Begründung dafür steht in `spiel.md`; sie steht
-nicht zur Disposition. Entschieden wird allein, ob ein weiteres Land später ein **Vorgang mit
-bekannten Schritten** ist oder ein Umbau mit offenem Ende. Dazu gehören drei Dinge: die Formel
-hinter jeder heute ausgeschriebenen Zahl (T54, T55), die Frage, wo die Identität eines Landes
-wohnt (T56), und die Liste dessen, was **nicht** mitwächst (T57).
+**What is decided here and what is not.** This section decides **nothing** about the number
+of countries. `L = 4` stays, and the reasoning for it is in `spiel.md`; it is not up for
+debate. All that is decided is whether a further country is later a **procedure with known
+steps** or a rebuild with an open end. Three things belong to that: the formula behind every
+number written out today (T54, T55), the question of where a country's identity lives (T56),
+and the list of what does **not** grow along (T57).
 
-**Der Kern ist an dieser Stelle weiter als dieses Dokument.** `LAENDER`, `GEBIETE`,
-`SEKTOREN`, `INSTRUMENTE` und `SEKTOREN_HANDELBAR` sind je eine `constexpr` in
-`kern/include/kern/zustand.hpp`; die Blockanfänge werden daraus **gerechnet**
-(`BASIS_RESTWELT = LAENDER * LAND_FELDER`) und von einer Kette aus `static_assert` gegen die
-Gruppentabelle in T15 gehalten. Auch `daten/reihen.toml` führt je Reihe eine `dimension` und
-schreibt sie als `"4 + RW"`, also als Größe und nicht als Konstante. Was fehlt, ist die
-Gegenrichtung: In `specs/` stehen die abgeleiteten Zahlen als **Literale**, und nirgends steht
-an einer Stelle, aus welcher Formel welche entsteht. Wer ein Land hinzufügt, muss sie heute
-einzeln nachrechnen und in Prosa nachziehen. Genau das behebt T55.
+**The core is further along here than this document.** `LAENDER`, `GEBIETE`,
+`SEKTOREN`, `INSTRUMENTE` and `SEKTOREN_HANDELBAR` are each a `constexpr` in
+`kern/include/kern/zustand.hpp`; the block starts are **computed** from them
+(`BASIS_RESTWELT = LAENDER * LAND_FELDER`) and held against the group table in T15 by a
+chain of `static_assert`. `daten/reihen.toml`, too, carries a `dimension` per series and
+writes it as `"4 + RW"`, that is, as a quantity and not as a constant. What is missing is the
+opposite direction: in `specs/` the derived numbers stand as **literals**, and nowhere does
+one place state which formula yields which. Whoever adds a country must today recompute them
+one by one and pull the prose along. That is exactly what T55 fixes.
 
-### T54 — Drei Formgrössen, und alles andere folgt daraus
+### T54 — Three shape quantities, and everything else follows from them
 
-| Zeichen | Bedeutung | heute | Konstante im Kern |
+| Symbol | Meaning | today | Constant in the core |
 |---|---|---:|---|
-| `L` | spielbare Länder | 4 | `LAENDER` |
-| `S` | Sektoren | 3 | `SEKTOREN` |
-| `I` | Politikinstrumente | 4 | `INSTRUMENTE` |
+| `L` | playable countries | 4 | `LAENDER` |
+| `S` | sectors | 3 | `SEKTOREN` |
+| `I` | policy instruments | 4 | `INSTRUMENTE` |
 
-Zwei weitere Größen sind **abgeleitet und keine eigene Wahl**: Die Zahl der Gebiete ist
-`L + 1` — die Restwelt ist immer genau eine, wie viele Länder auch modelliert werden —, und
-die Zahl der handelbaren Sektoren steht in den Formeln unten als `S − 1`.
+Two further quantities are **derived and not a choice of their own**: the number of
+territories is `L + 1` — the rest of world is always exactly one, however many countries are
+modelled —, and the number of tradable sectors appears in the formulas below as `S − 1`.
 
-**Zu `S − 1` gehört eine Warnung, und sie ist keine Förmlichkeit.** Der Kern führt
-`SEKTOREN_HANDELBAR` als **eigene** Konstante, nicht als Rechenausdruck. Dass sie bei `S = 3`
-denselben Wert hat wie `S − 1`, ist eine Tatsache über die heutige Sektorliste und keine
-Regel: Wer einen vierten Sektor einführt, entscheidet dessen Handelbarkeit selbst und setzt
-dann die Konstante ein, wo hier `S − 1` steht. **Für die Länderzahl, um die es in diesem
-Abschnitt geht, ist der Unterschied ohne Folge** — die Zahl der handelbaren Sektoren hängt
-nicht von `L` ab.
+**A warning belongs with `S − 1`, and it is not a formality.** The core carries
+`SEKTOREN_HANDELBAR` as a constant of its **own**, not as an arithmetic expression. That at
+`S = 3` it has the same value as `S − 1` is a fact about today's sector list and not a rule:
+whoever introduces a fourth sector decides its tradability themselves and then puts the
+constant where `S − 1` stands here. **For the number of countries, which is what this
+section is about, the difference has no consequence** — the number of tradable sectors does
+not depend on `L`.
 
-### T55 — Die Ableitungskette
+### T55 — The derivation chain
 
-Jede Zeile nennt ihre Fundstelle in diesem Dokument, damit die Formel gegen die Stelle gelegt
-werden kann, die die Zahl heute ausschreibt.
+Every row names its reference in this document, so that the formula can be laid against the
+place that writes the number out today.
 
-| Größe | Formel in `L`, `S`, `I` | `L=4` | `L=9` | Fundstelle |
+| Quantity | Formula in `L`, `S`, `I` | `L=4` | `L=9` | Reference |
 |---|---|---:|---:|---|
-| Felder je spielbarem Land | `4S + 4I + 16` | 44 | 44 | T15 |
-| Felder der Restwelt | `4S + 10` | 22 | 22 | T15 |
-| Gebietsblock zusammen | `L(4S+4I+16) + 4S + 10` | 198 | 418 | T15, T17b |
-| Handelsströme | `(L+1)·L·(S−1)` | **40** | 180 | T15, „Handel" |
-| Weltpreise | `S − 1` | 2 | 2 | T15 |
-| Nachahmerzähler | `L·S` | 12 | 27 | T15 |
-| Positionssteckplätze | `L·(S+2)` | **20** | 45 | T16 |
-| Beteiligungen | `2·L·S` | 24 | 54 | T15, Aktion 2 |
-| von `L` unberührter Rest | `5S + 23` | 38 | 38 | T57 |
-| **Zustand gesamt** | `L(4S+4I+16) + (L+1)L(S−1) + L(S+2) + 3LS + 5S + 23` | **310** | **740** | T15 |
-| Sollmaske `weltlauf`, je Land | `4S + I + 11` | 27 | 27 | T38 |
-| **Sollmaske `weltlauf`** | `L(4S+I+11) + (4S+10) + (L+1)L(S−1) + (S−1) + 3` | **175** | 450 | T38 |
-| **ausserhalb der Sollmaske** | `L(3I+5) + L(S+2) + 3LS + 11` | **135** | 290 | T38 |
-| Sollreihen | `L·(S+4) − 1` | **27** | 62 | Reihenliste zu T23, `reihen.toml` |
+| Fields per playable country | `4S + 4I + 16` | 44 | 44 | T15 |
+| Fields of the rest of world | `4S + 10` | 22 | 22 | T15 |
+| Territory block together | `L(4S+4I+16) + 4S + 10` | 198 | 418 | T15, T17b |
+| Trade flows | `(L+1)·L·(S−1)` | **40** | 180 | T15, „Handel" |
+| World prices | `S − 1` | 2 | 2 | T15 |
+| Imitator counters | `L·S` | 12 | 27 | T15 |
+| Position slots | `L·(S+2)` | **20** | 45 | T16 |
+| Stakes | `2·L·S` | 24 | 54 | T15, action 2 |
+| remainder untouched by `L` | `5S + 23` | 38 | 38 | T57 |
+| **State total** | `L(4S+4I+16) + (L+1)L(S−1) + L(S+2) + 3LS + 5S + 23` | **310** | **740** | T15 |
+| Target mask `weltlauf`, per country | `4S + I + 11` | 27 | 27 | T38 |
+| **Target mask `weltlauf`** | `L(4S+I+11) + (4S+10) + (L+1)L(S−1) + (S−1) + 3` | **175** | 450 | T38 |
+| **outside the target mask** | `L(3I+5) + L(S+2) + 3LS + 11` | **135** | 290 | T38 |
+| Target series | `L·(S+4) − 1` | **27** | 62 | series list for T23, `reihen.toml` |
 
-**Nachrechnung im Fliesstext, jede Zahl einmal von Hand eingesetzt.** Je Land
-`4·3 + 4·4 + 16 = 44`, Restwelt `4·3 + 10 = 22`, zusammen `4·44 + 22 = 198`. Handel
-`5·4·2 = 40`, Weltpreise `2`, Nachahmer `4·3 = 12`, Marktkorb `2` — die Welt also `56`.
-Steckplätze `4·5 = 20`, Beteiligungen `2·4·3 = 24`, Fondsaggregat und Überrendite `5 + 3 = 8`
-— der Fonds also `52`. Partie `4`. Summe `198 + 56 + 52 + 4 = 310`, dieselbe Zerlegung wie in
-T15. Sollmaske `4·27 + 22 + 40 + 2 + 3 = 175`, ausserhalb `4·17 + 20 + 24 + 12 + 11 = 135`,
-und beide zusammen wieder die Adressenzahl aus T15. Sollreihen `4·7 − 1 = 27`.
+**Recomputation in prose, every number substituted by hand once.** Per country
+`4·3 + 4·4 + 16 = 44`, rest of world `4·3 + 10 = 22`, together `4·44 + 22 = 198`. Trade
+`5·4·2 = 40`, world prices `2`, imitators `4·3 = 12`, market basket `2` — the world thus `56`.
+Slots `4·5 = 20`, stakes `2·4·3 = 24`, fund aggregate and excess return `5 + 3 = 8`
+— the fund thus `52`. Game `4`. Sum `198 + 56 + 52 + 4 = 310`, the same decomposition as in
+T15. Target mask `4·27 + 22 + 40 + 2 + 3 = 175`, outside `4·17 + 20 + 24 + 12 + 11 = 135`,
+and both together again the address count from T15. Target series `4·7 − 1 = 27`.
 
-**Warum die Spalte `L = 9` danebensteht, obwohl dieser Abschnitt keine Länderzahl ändert.**
-Sie ist keine Festlegung, sondern die einzige Probe, die etwas beweist. Heute gilt `L = I = 4`
-— und deshalb ist jede Verwechslung von `L` und `I` bei den heutigen Werten **unsichtbar**:
-`4S + 4I + 16` und `4S + 4L + 16` liefern beide 44. Erst bei `L ≠ I` fallen die beiden Formeln
-auseinander. Die Werte der Spalte sind gegen eine **unabhängig** entstandene Rechnung gelegt,
-die der Betreiber am 2026-09-05 in Paket `0118-fuenf-weitere-laender-auswaehlen` aufgeschrieben
-hat: Länderblock 396, Handel 180, Nachahmer 27, Steckplätze 45, Beteiligungen 54, fester Rest
-38, Zustand 740, Sollreihen 62. Alle acht Zahlen stimmen mit den Formeln überein. Das ist die
-Gegenrechnung, die eine einmal gerechnete Zahl nicht hat.
+**Why the `L = 9` column stands alongside, although this section changes no country count.**
+It is not a stipulation but the only test that proves anything. Today `L = I = 4` holds
+— and therefore every confusion of `L` and `I` is **invisible** at today's values:
+`4S + 4I + 16` and `4S + 4L + 16` both yield 44. Only at `L ≠ I` do the two formulas come
+apart. The column's values are laid against an **independently** produced calculation that
+the operator wrote down on 2026-09-05 in package `0118-fuenf-weitere-laender-auswaehlen`:
+country block 396, trade 180, imitators 27, slots 45, stakes 54, fixed remainder
+38, state 740, target series 62. All eight numbers agree with the formulas. That is the
+counter-calculation that a number computed only once does not have.
 
-**Zwei Zahlenpaare sehen bei `L = 4` gleich aus und sind es nicht.** Beide sind genau die
-Sorte Falle, gegen die diese Tabelle geschrieben ist:
+**Two pairs of numbers look the same at `L = 4` and are not.** Both are exactly the
+kind of trap this table is written against:
 
-- **40 gegen 40.** Die 40 Handelsströme wachsen mit `(L+1)·L·(S−1)`; die **40
-  Halbierungsschritte** der Markträumung aus T28 sind eine Genauigkeitsvorgabe und wachsen mit
-  gar nichts. Wer beide für dieselbe Größe hält, macht aus einer Länderänderung eine Änderung
-  am Lösungsverfahren.
-- **27 gegen 27.** Die 27 Sollreihen wachsen mit `L(S+4) − 1`, die 27 Maskenadressen je Land
-  aus T38 mit `4S + I + 11` — also gar nicht mit `L`. Bei `L = 9` stehen 62 gegen unverändert
-  27.
+- **40 against 40.** The 40 trade flows grow with `(L+1)·L·(S−1)`; the **40
+  halving steps** of the market clearing from T28 are a precision prescription and grow with
+  nothing at all. Whoever takes the two for the same quantity turns a country change into a
+  change to the solution procedure.
+- **27 against 27.** The 27 target series grow with `L(S+4) − 1`, the 27 mask addresses per
+  country from T38 with `4S + I + 11` — that is, not with `L` at all. At `L = 9` it is 62
+  against an unchanged 27.
 
-**Woher die 27 Sollreihen kommen, und warum die Reihenliste 31 nennt.** Gezählt wird an
-`daten/reihen.toml`, Stand 2026-09-05: `sollreihen_gesamt = 27`, aufgeteilt auf Reihe 1 (BIP,
-`L`), Reihe 2 (Sektoranteile, `L·S`), Reihe 8 (Verbraucherpreise, `L`), Reihe 10 (Wechselkurs,
-`L − 1`, weil der US-Dollar der Numéraire ist) und Reihe 11 (Staatsschuldenquote, `L`). Das
-ergibt `L(S+4) − 1`. Der Fliesstext unter der Reihenliste in Abschnitt 7 nennt weiterhin 31 und
-zählt Reihe 9 (Leitzins) mit vier Sollreihen mit; die Reihe hat ihre Sollrolle in Paket `0054`
-verloren (`sollreihen = 0`, leere `t37_klasse`), und die Prosa ist nicht mitgezogen worden.
-**Das ist kein Widerspruch zu dieser Formel, sondern die offene Arbeit von Paket
-`0068-technikmd-reihe-9-ohne-sollrolle`**, das hinter diesem Paket in derselben Datei steht.
-Ich fasse die Stelle nicht an; sie gehört ihm.
+**Where the 27 target series come from, and why the series list says 31.** The count is taken
+against `daten/reihen.toml`, as of 2026-09-05: `sollreihen_gesamt = 27`, split across series 1
+(GDP, `L`), series 2 (sector shares, `L·S`), series 8 (consumer prices, `L`), series 10
+(exchange rate, `L − 1`, because the US dollar is the numéraire) and series 11 (government
+debt ratio, `L`). That yields `L(S+4) − 1`. The prose below the series list in section 7 still
+says 31 and counts series 9 (policy rate) with four target series; the series lost its target
+role in package `0054` (`sollreihen = 0`, empty `t37_klasse`), and the prose has not been
+pulled along. **That is no contradiction to this formula but the open work of package
+`0068-technikmd-reihe-9-ohne-sollrolle`**, which stands behind this package in the same file.
+I do not touch the passage; it belongs to that package.
 
-### T56 — Die Identität eines Landes bleibt eine namentliche Aufzählung
+### T56 — The identity of a country remains a named enumeration
 
-**Gewählt ist die erste der beiden Möglichkeiten: `Gebiet` und `Steckplatz` bleiben
-namentliche Aufzählungen.** Sie werden **nicht** durch einen blanken Index plus Kürzeltabelle
-ersetzt. Die eine Stelle, an der ein Land eingetragen wird, ist
+**Chosen is the first of the two possibilities: `Gebiet` and `Steckplatz` remain
+named enumerations.** They are **not** replaced by a bare index plus abbreviation table.
+The one place where a country is entered is
 **`kern/include/kern/zustand.hpp`**.
 
-Vier Gründe, nachgemessen am 2026-09-05 und nicht vermutet:
+Four reasons, measured on 2026-09-05 and not presumed:
 
-1. **Die Aufzählung *ist* schon der Index.** `enum class Gebiet : std::uint8_t` trägt die Werte
-   0 bis 4, die Adressarithmetik rechnet ausschliesslich mit `LAENDER` und `GEBIETE`, und die
-   Kürzeltabelle existiert bereits: `GEBIET_KUERZEL` in `kern/src/zustand.cpp`. Es stehen also
-   nicht zwei Verfahren zur Wahl, sondern ein Index **mit** Namensschicht gegen denselben Index
-   **ohne** sie. Der Umbau brächte keine Rechnung in Ordnung, die heute falsch wäre.
-2. **Ein falscher Index ist ein gültiger Wert, ein falscher Name nicht.** `Steckplatz{37}`
-   übersetzt; `Steckplatz::Anleihe_BX` nicht. Dieses Vorhaben fängt seine Fehler mechanisch ab
-   — `static_assert` auf die Blockgrenzen, Sollmaske je Runde, Bitfeld gegen den zweiten
-   Schreibzugriff. Eine Prüfung zur Übersetzungszeit gegen eine zur Laufzeit zu tauschen, läuft
-   dieser Bauart entgegen.
-3. **Die Namen tragen die Proben.** Gezählt in `kern/`: `Gebiet::<Kürzel>` steht auf 42 Zeilen
-   Quelltext (`werte.cpp` 25, `schritt.cpp` 6, `schreiber.cpp` 5, `zustand.cpp` 5,
-   `zustandsausgabe.hpp` 1) und auf **141** Zeilen in den Proben (`werte_probe.cpp` 109,
-   `schreiber_probe.cpp` 22, `zustand_probe.cpp` 9, `zustandsausgabe_probe.cpp` 1). Der
-   Schwerpunkt liegt bei den Proben, und dort ist der Name die Aussage: `Gebiet::DE` sagt, was
-   geprüft wird, `Gebiet{2}` sagt es nicht. Ein Umbau ersetzte 183 lesbare Zeilen durch 183
-   nachschlagepflichtige, ohne eine Zahl zu bewegen.
-4. **T17 macht die Adresse zum Bestandteil der Schnittstellenversion.** `fonds.position.CN.1`
-   und `handel.DE.CN.1` tragen das Kürzel im Text. Die Identität eines Landes ist damit ohnehin
-   schon namentlich; eine Aufzählung, deren Namen den Adressen folgen, ist die Fassung
-   derselben Sache, die der Übersetzer prüfen kann.
+1. **The enumeration already *is* the index.** `enum class Gebiet : std::uint8_t` carries the
+   values 0 to 4, the address arithmetic computes exclusively with `LAENDER` and `GEBIETE`,
+   and the abbreviation table already exists: `GEBIET_KUERZEL` in `kern/src/zustand.cpp`. So
+   there are not two procedures to choose between, but one index **with** a naming layer
+   against the same index **without** it. The rebuild would put no calculation right that is
+   wrong today.
+2. **A wrong index is a valid value, a wrong name is not.** `Steckplatz{37}`
+   compiles; `Steckplatz::Anleihe_BX` does not. This venture catches its errors mechanically
+   — `static_assert` on the block boundaries, target mask per round, bitfield against the
+   second write access. Trading a compile-time check for a run-time one runs against this
+   way of building.
+3. **The names carry the tests.** Counted in `kern/`: `Gebiet::<Kürzel>` stands on 42 lines
+   of source (`werte.cpp` 25, `schritt.cpp` 6, `schreiber.cpp` 5, `zustand.cpp` 5,
+   `zustandsausgabe.hpp` 1) and on **141** lines in the tests (`werte_probe.cpp` 109,
+   `schreiber_probe.cpp` 22, `zustand_probe.cpp` 9, `zustandsausgabe_probe.cpp` 1). The
+   weight lies with the tests, and there the name is the statement: `Gebiet::DE` says what is
+   being checked, `Gebiet{2}` does not. A rebuild would replace 183 readable lines with 183
+   that require a lookup, without moving a single number.
+4. **T17 makes the address part of the interface version.** `fonds.position.CN.1`
+   and `handel.DE.CN.1` carry the abbreviation in their text. A country's identity is thus
+   named already anyway; an enumeration whose names follow the addresses is the rendering of
+   the same thing that the compiler can check.
 
-**Der Preis dieser Wahl, ausgeschrieben, weil er real ist.** Bei `L = 5` bekommt
-`enum class Steckplatz` fünf weitere Werte (`Sektor_XX_1` bis `_3`, `Waehrung_XX`,
-`Anleihe_XX`), und weil die Plätze nach Art gruppiert sind, verschieben sich die
-Ordnungszahlen der Währungs- und Anleiheplätze. Das ist Handarbeit, und Handarbeit driftet.
+**The price of this choice, written out because it is real.** At `L = 5`,
+`enum class Steckplatz` gains five further values (`Sektor_XX_1` to `_3`, `Waehrung_XX`,
+`Anleihe_XX`), and because the slots are grouped by kind, the ordinal values of the currency
+and bond slots shift. That is manual work, and manual work drifts.
 
-**Dagegen steht die Regel, die diese Wahl überhaupt erst tragfähig macht: Die Formel bewacht
-die Aufzählung.** In `zustand.hpp` gehört je ein `static_assert` gegen T55 neben die betroffene
-Konstante — `STECKPLAETZE == LAENDER * (SEKTOREN + 2)`,
+**Against that stands the rule that makes this choice viable in the first place: the formula
+guards the enumeration.** In `zustand.hpp`, one `static_assert` against T55 belongs next to
+each affected constant — `STECKPLAETZE == LAENDER * (SEKTOREN + 2)`,
 `LAND_FELDER == 4 * SEKTOREN + 4 * INSTRUMENTE + 16`, `RESTWELT_FELDER == 4 * SEKTOREN + 10`,
-und `STECKPLATZ_WAEHRUNG_ERSTER` sowie `STECKPLATZ_ANLEIHE_ERSTER` gegen `LAENDER * SEKTOREN`
-beziehungsweise `LAENDER * (SEKTOREN + 1)`. Ein vergessener Eintrag bricht dann die
-Übersetzung, statt eine Adresse still zu verschieben. **Ohne diese Zusicherungen wäre die Wahl
-falsch** — sie sind der Grund, warum eine handgeführte Liste hier zulässig bleibt.
+and `STECKPLATZ_WAEHRUNG_ERSTER` as well as `STECKPLATZ_ANLEIHE_ERSTER` against
+`LAENDER * SEKTOREN` and `LAENDER * (SEKTOREN + 1)` respectively. A forgotten entry then
+breaks compilation instead of silently shifting an address. **Without these assertions the
+choice would be wrong** — they are the reason a hand-kept list remains admissible here.
 
-**Damit „die eine Stelle" wörtlich stimmt, muss eine Zeile umziehen.** `GEBIET_KUERZEL` steht
-heute in `kern/src/zustand.cpp`, die Aufzählung in `kern/include/kern/zustand.hpp` — ein Land
-hinzuzufügen berührt also zwei Dateien. Die Tabelle gehört als `constexpr std::array` neben
-die Aufzählung in den Kopf, mit `static_assert(GEBIET_KUERZEL.size() == GEBIETE)`. Danach ist
-der vollständige Vorgang für ein weiteres Land im Kern: ein Wert in `Gebiet` vor `RW`, `RW` um
-eins höher, `LAENDER` um eins höher, ein Kürzel in `GEBIET_KUERZEL`, `S + 2` Werte in
-`Steckplatz` — alles in einer Datei, alles von `static_assert` bewacht. Die Datenarbeit, die
-daneben anfällt, steht in `0141-pruefliste-fuenftes-land` und ist der grössere Posten.
+**For "the one place" to hold literally, one line must move.** `GEBIET_KUERZEL` sits
+today in `kern/src/zustand.cpp`, the enumeration in `kern/include/kern/zustand.hpp` — adding
+a country thus touches two files. The table belongs next to the enumeration in the header as
+a `constexpr std::array`, with `static_assert(GEBIET_KUERZEL.size() == GEBIETE)`. After that,
+the complete procedure for a further country in the core is: one value in `Gebiet` before
+`RW`, `RW` one higher, `LAENDER` one higher, one abbreviation in `GEBIET_KUERZEL`, `S + 2`
+values in `Steckplatz` — all in one file, all guarded by `static_assert`. The data work that
+falls due alongside is in `0141-pruefliste-fuenftes-land` and is the larger item.
 
-Beides — die Zusicherungen und der Umzug — ist **Entwurf, nicht Ausführung**, und braucht je
-ein Kernbauer-Paket. Ich schreibe keinen Code.
+Both — the assertions and the move — are **design, not execution**, and each needs a
+core-builder package. I write no code.
 
-### T57 — Was bei `L = 5` gleich bleibt
+### T57 — What stays the same at `L = 5`
 
-Von den Zustandsadressen sind **38 von `L` unberührt** (`5S + 23`, bei `S = 3` also 38) — und
-das ist dieselbe Zahl, die Paket `0118` unabhängig als „fest" ausweist:
+Of the state addresses, **38 are untouched by `L`** (`5S + 23`, at `S = 3` thus 38) — and
+that is the same number that package `0118` independently lists as „fest":
 
-| bleibt gleich | Zahl | warum |
+| stays the same | number | why |
 |---|---:|---|
-| Restwelt-Block | `4S + 10` = 22 | Die Restwelt ist definitionsgemäss **eine**: die Welt abzüglich der Modellländer. Ein weiteres Land verkleinert ihren Inhalt, nicht ihre Adressenzahl |
-| Fondsaggregat | 5 | Kasse, Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil sind Eigenschaften des Fonds, nicht der Landkarte |
-| Überrendite | 3 | drei Runden Gedächtnis, an die Todesbedingung gebunden |
-| Marktkorb | 2 | ein Korb, ein Wert, eine Rendite — unabhängig davon, worüber er gebildet wird |
-| Weltpreise | `S − 1` = 2 | je handelbarem Sektor einer, nicht je Land |
-| Partie | 4 | Runde, Jahrgangskennung, Parametersatz-Prüfsumme, Mandatsstand |
+| rest-of-world block | `4S + 10` = 22 | The rest of world is by definition **one**: the world minus the model countries. A further country shrinks its content, not its address count |
+| fund aggregate | 5 | cash, leverage level, visibility, investor holdings, market share are properties of the fund, not of the map |
+| excess return | 3 | three rounds of memory, tied to the death condition |
+| market basket | 2 | one basket, one value, one return — independent of what it is formed over |
+| world prices | `S − 1` = 2 | one per tradable sector, not per country |
+| game | 4 | round, vintage id, parameter-set checksum, mandate level |
 
-Ausserhalb des Zustands bleibt ebenfalls unverändert, und hier liegt der eigentliche Punkt:
-**die Todesarten**, die **drei Aktionen je Runde**, die **Partielänge `R`**, die dreizehn
-Skalenklassen aus T5, die fünf Herkunftsarten aus T45, die 40 Halbierungsschritte aus T28 und
-die vier Maße aus `agentenbau.md`. Sie sind an Spielbalance, Skalenordnung oder Messverfahren
-gebunden — an keiner Stelle an die Ländergeometrie. Ein Land mehr ist für sie kein Ereignis.
+Outside the state, likewise unchanged — and here lies the actual point:
+**the ways of dying**, the **three actions per round**, the **game length `R`**, the thirteen
+scale classes from T5, the five origin kinds from T45, the 40 halving steps from T28 and
+the four Maße from `agentenbau.md`. They are tied to game balance, scale order or measurement
+procedure — nowhere to the country geometry. One more country is no event for them.
 
-**Eine Berichtigung gehört hierher, und sie betrifft die Steckplätze.** Der Auftragstext zu
-`0116` nennt die zwanzig Steckplätze unter dem, was *nicht* mitwächst. Nach T15 und T16 sind
-sie `L·(S+2)` — `L·S` Land×Sektor, `L` Währung, `L` Anleihe —, also **geometrisch und
-wachsend**; und der Betreiber hat am 2026-09-05 in `0118` ausdrücklich „Weg A" gewählt: Die
-Steckplätze wachsen mit `L`, bei `L = 9` auf 45. Beide Aussagen stammen vom selben Tag; die
-jüngere sticht. **Was an den Steckplätzen wirklich nicht mitwächst, ist die Zahl der Aktionen
-je Runde** — und genau daraus entsteht die Frage nach der Entscheidungsdichte, die `0118` zu
-beantworten hat. Die Adressenzahl ist Geometrie, die Knappheit ist Balance; dieser Abschnitt
-trennt beides und entscheidet nur das Erste.
+**A correction belongs here, and it concerns the slots.** The brief for
+`0116` lists the twenty slots under what does *not* grow along. By T15 and T16 they are
+`L·(S+2)` — `L·S` country×sector, `L` currency, `L` bond —, that is, **geometric and
+growing**; and on 2026-09-05 in `0118` the operator explicitly chose „Weg A": the
+slots grow with `L`, at `L = 9` to 45. Both statements are from the same day; the
+younger one prevails. **What truly does not grow along at the slots is the number of actions
+per round** — and exactly from that arises the question of decision density that `0118` has
+to answer. The address count is geometry, the scarcity is balance; this section
+separates the two and decides only the first.
 
-Gleiches in halb: **der Fondsblock wächst zur Hälfte mit.** Von seinen 52 Adressen sind 8
-`L`-frei (Aggregat 5, Überrendite 3), 44 sind Geometrie (Steckplätze `L(S+2)`, Beteiligungen
-`2LS`). „Der Fondsblock wächst nicht" wäre für die kleinere Hälfte richtig und für die
-grössere falsch.
+The same thing in halves: **the fund block grows along by half.** Of its 52 addresses, 8 are
+`L`-free (aggregate 5, excess return 3), 44 are geometry (slots `L(S+2)`, stakes
+`2LS`). "The fund block does not grow" would be right for the smaller half and wrong for the
+larger.
 
-### Was dieser Abschnitt nicht angefasst hat
+### What this section has not touched
 
-Nichts. Er ist **ausschliesslich beschreibend**: Er trägt keine Zahl in einem bestehenden
-Abschnitt nach, ändert keine Tabelle, keinen `static_assert` und keine Zeile Quelltext. Die
-Formeln sind gegen die bestehenden Stellen gelegt und stimmen mit ihnen überein; die eine
-Abweichung — 27 gegen 31 bei den Sollreihen — ist oben benannt und gehört Paket `0068`. Die
-Länderzahl selbst, die Auswahl eines weiteren Landes und der Umbau des Kerns sind eigene
-Pakete und hier nicht entschieden.
+Nothing. It is **exclusively descriptive**: it carries no number into an existing
+section, changes no table, no `static_assert` and no line of source. The
+formulas are laid against the existing places and agree with them; the one
+deviation — 27 against 31 for the target series — is named above and belongs to package
+`0068`. The number of countries itself, the selection of a further country and the rebuild of
+the core are packages of their own and not decided here.
 
 ## 20. Zwei Länderklassen und der geschätzte Politikpfad — Paket `0117`
 
