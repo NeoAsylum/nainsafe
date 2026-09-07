@@ -398,6 +398,17 @@ def db() -> sqlite3.Connection:
     if not vorhanden:
         verbindung.executescript(SCHEMA.read_text(encoding="utf-8"))
         verbindung.commit()
+
+    # Fehlende Spalten nachruesten. sqlite kennt kein ADD COLUMN IF NOT EXISTS, und
+    # state.db darf beim Fortschreiben des Schemas nicht neu angelegt werden muessen --
+    # sie ist die einzige Quelle fuer jede Eichung. ADD COLUMN haelt die Schreibsperre
+    # nur Millisekunden; laufende Agenten mit dem alten UPDATE stoert eine zusaetzliche
+    # Spalte nicht.
+    haben = {z[1] for z in verbindung.execute("PRAGMA table_info(lauf)")}
+    for name, art in (("zuege", "INTEGER DEFAULT 0"),):
+        if name not in haben:
+            verbindung.execute(f"ALTER TABLE lauf ADD COLUMN {name} {art}")
+            verbindung.commit()
     return verbindung
 
 
@@ -423,7 +434,7 @@ def journal_ende(verbindung, lauf_id: int, ergebnis: str, nutzung: dict,
                  commit_hash: str | None, notiz: str | None) -> None:
     verbindung.execute(
         """UPDATE lauf SET beendet=?, tokens_in=?, tokens_frisch=?, tokens_cneu=?,
-                           tokens_cles=?, tokens_denken=?, tokens_out=?,
+                           tokens_cles=?, tokens_denken=?, tokens_out=?, zuege=?,
                            kosten_eur=?, ergebnis=?, commit_hash=?, notiz=?
            WHERE id=?""",
         (
@@ -434,6 +445,7 @@ def journal_ende(verbindung, lauf_id: int, ergebnis: str, nutzung: dict,
             nutzung.get("cache_gelesen", 0),
             nutzung.get("denken", 0),
             nutzung.get("output_tokens", 0),
+            nutzung.get("zuege", 0),
             nutzung.get("kosten", 0.0),
             ergebnis,
             commit_hash,
@@ -807,6 +819,11 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
             "denken": (verbrauch.get("output_tokens_details") or {}).get(
                 "thinking_tokens", 0),
             "output_tokens": verbrauch.get("output_tokens", 0),
+            # num_turns steht neben usage, nicht darin: Werkzeugaufrufe des Laufs.
+            # Der Kontext wird in JEDEM Zug erneut gesendet -- Zuege mal Kontext ist
+            # die eigentliche Rechnung. Ohne diese Zahl ist nicht zu unterscheiden,
+            # ob ein teurer Lauf zu viel liest oder zu oft greift.
+            "zuege": roh.get("num_turns", 0) or 0,
             # Claude Code meldet total_cost_usd auch bei Abo-Anmeldung. Der Betrag
             # wird dann NICHT abgerechnet -- er ist der rechnerische Gegenwert zu
             # Listenpreisen, also das, was derselbe Lauf ueber die API gekostet haette.

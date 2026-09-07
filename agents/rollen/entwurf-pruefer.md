@@ -74,6 +74,17 @@ Urteil mit Nachweis.
 Abnahmekriterium, die betroffenen Dateien, die Vorgaben aus `specs/` und
 `agentenbau.md`.
 
+**Wie du die Vorgaben liest.** `spiel.md` und `technik.md` sind zusammen 566 kB. Lies
+sie nicht am Stueck. `ops/inhalt-<venture>.md` nennt jeden Abschnitt beider Dokumente
+mit seiner Zeilenspanne auf unter 4 kB. Deine Frage nach Widerspruechen ist eine Frage
+nach **Abschnittspaaren**: Welche Stelle in `spiel.md` verlangt etwas, das eine
+bestimmte Stelle in `technik.md` tragen muesste? Nimm die Paare aus dem Verzeichnis und
+lies genau diese beiden Stellen mit `offset` und `limit`.
+
+Das beschneidet deine Breite nicht, es verbilligt sie. Dein Kontext wird in **jedem**
+Zug erneut gesendet -- am 2026-09-07 gemessen: im Schnitt 39 Mal je Lauf. Wer beide
+Vorgaben im ersten Zug ganz einliest, traegt 566 kB durch achtunddreissig weitere.
+
 **Lies nicht:** das Logbuch des Bauagenten und seine Begruendung. Das ist keine
 Schikane, sondern der Grund, warum diese Pruefung etwas findet. Die fuenf Angriffslinsen
 dieser Fabrik waren blind fuereinander, und sie waren die einzige Mechanik, die je den

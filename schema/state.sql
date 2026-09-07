@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS lauf (
   tokens_cneu   INTEGER DEFAULT 0,   -- Cache-Erzeugung, einmalig
   tokens_cles   INTEGER DEFAULT 0,   -- Cache-Lesen, dominiert die Summe
   tokens_denken INTEGER DEFAULT 0,   -- Anteil des Nachdenkens an der Ausgabe
+  zuege         INTEGER DEFAULT 0,   -- num_turns: Werkzeugaufrufe je Lauf.
+                                     -- Trennt langen Lauf von schwerem Kontext.
   tokens_out    INTEGER DEFAULT 0,
   -- Gegenwert zu Listenpreisen, kein Rechnungsbetrag: Claude Code meldet ihn auch
   -- bei Abo-Anmeldung, abgerechnet wird davon nichts. Der Name ist historisch.

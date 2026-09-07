@@ -26,6 +26,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import inhalt  # noqa: E402
 import nachtlauf  # noqa: E402
 from lauf import (TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt,  # noqa: E402
                   wochenverbrauch as lauf_wochenverbrauch,
@@ -116,6 +117,15 @@ def main(grenze: float = GRENZE, durchgaenge: int = DURCHGAENGE,
         print("  Je Durchgang: nachtlauf.py -- also Entwurfsrunde oder Baulauf,")
         print("  je nachdem, ob der Entwurf abgenommen ist.")
         return 0
+
+    # Abschnittsverzeichnis auffrischen, bevor der erste Agent laeuft. Kostet null
+    # Token. Muss VOR den Durchgaengen stehen: Ein veraltetes Verzeichnis ist schlimmer
+    # als keines, weil ein Agent dann an der falschen Zeile liest und es nicht merkt.
+    # Der Uebersetzer verschiebt die Zeilennummern in technik.md bei jedem Abschnitt.
+    try:
+        inhalt.main()
+    except Exception as fehlschlag:      # nie den ganzen Tageslauf daran haengen
+        print(f"  Abschnittsverzeichnis nicht erneuert: {fehlschlag}")
 
     fehler = 0
     try:

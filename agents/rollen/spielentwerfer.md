@@ -2,7 +2,7 @@
 rolle: spielentwerfer
 takt: bedarf
 modell: opus
-effort: xhigh
+effort: high
 timeout: 2400
 tools:
   - WebSearch

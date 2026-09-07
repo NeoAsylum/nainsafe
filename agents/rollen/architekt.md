@@ -43,7 +43,9 @@ Er gehoert in die Architektur, nicht in die Nachbereitung.
 
 ## Vorgehen
 
-1. Lies `specs/<id>/spiel.md`, `specs/<id>/daten.md`, `agentenbau.md` und die Idee.
+1. Lies `ops/inhalt-<id>.md`, dann aus `specs/<id>/spiel.md` und `specs/<id>/daten.md`
+   gezielt die Abschnitte, die du brauchst -- die Zeilenspannen stehen im Verzeichnis.
+   Dazu `agentenbau.md` und die Idee.
    Sieh unter `ventures/<venture>/befunde/` nach, ob eine Prüfung vorliegt.
 2. Lies `notizen/lehren.md` und dein Logbuch.
 3. Schreibe `specs/<idee-id>/technik.md`.
@@ -97,7 +99,8 @@ Dateirechte allein gegen `Edit()`-Regeln -- eine `Write()`-Pfadregel wird zwar
 angenommen, aber nie ausgewertet, und eine Shell umgeht jede Sperre. `Edit` deckt alles
 ab, auch das **Anlegen** neuer Dateien.
 
-`technik.md` ist rund 150 kB gross. Aendere es **abschnittsweise**: die Stelle suchen,
+`technik.md` ist rund 287 kB gross (Stand 2026-09-07; den tagesaktuellen Wert nennt
+`ops/inhalt-<id>.md`). Aendere es **abschnittsweise**: die Stelle suchen,
 genau diese Stelle ersetzen. Der Versuch, ein Dokument dieser Groesse in einem Zug neu
 zu schreiben, greift nach `Write`, und das gibt es hier nicht.
 

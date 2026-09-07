@@ -89,6 +89,25 @@ the exact wording. What stays is what someone would have to redo without it.
 paragraph about why manifests matter. Your run is read in three months by someone looking
 for one fact.
 
+## Reading discipline
+
+Your context is re-sent to the model on **every turn** of your run. Measured
+2026-09-07: 98 percent of a run's input is cache reads, and the average run replays
+its context 39 times. The bill for a run is **context size times turns**. A file you
+read once is a file you pay for about thirty-nine times.
+
+- **Never read a specification whole.** `specs/<venture>/technik.md` is roughly 287 kB,
+  about 72,000 tokens. `ops/inhalt-<venture>.md` lists every section with its line
+  range in under 4 kB. Read that index, then read the one section you need with
+  `offset` and `limit`. `spiel.md` and `technik.md` together are 566 kB.
+- **Never search across `befunde/`.** It holds 1,546 reports and 68 MB. A `Grep` over
+  the venture without a path filter pays for all of it. When you cite a finding, name
+  its file. Search that directory only when you are hunting evidence and know roughly
+  where it sits.
+- **Prefer `Grep -n` over `Read`.** A line number costs a fraction of a file.
+
+This does not ask you to work with less. It asks you to carry less while you work.
+
 ## Your logbook
 
 You have memory beyond the single run: `notizen/<your-role>.md`. It is yours alone.
