@@ -4,6 +4,49 @@ Rotated by the runner on 2026-09-07 at 14796 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — 0224, the reference sweep over spiel.md
+
+107 internal references, 18 repaired, 3 left with a reason. Cost: four `Grep` over
+`spiel.md` plus nine `Read` windows of 4–14 lines. I never opened the spec whole.
+
+What holds beyond this package:
+
+- **A reference sweep needs three greps, not one, and the missing two are where the
+  breaks hide.** Single-line italics is the obvious call. It found 10 of 18. The other 8
+  came from (a) the *same* pattern in `multiline: true` with `\n[^*]{0,60}` before the
+  closing `*` — italics broken by prose wrapping, invisible to the single-line call, and
+  `spiel.md:40` was one — and (b) the **bold** form `**Section**`, which the abnahme did
+  not name at all and which held three more dead references. Next sweep of this class:
+  run all three forms before reporting a count, or the count is a fiction.
+- **Resolve against the *bold leads* too, or a third of the targets read as broken.**
+  Five targets here are `**Sentence.**` pseudo-headings, not `#` headings — including
+  2835, the abnahme's own target. A sweep whose heading roster is `Grep "^#"` alone
+  reports false breaks on all five and would have had me "repair" four live references.
+- **The nachzug breaks citations in both directions.** `spiel.md:438` was an *English*
+  reference (`*Which nine countries*`) to a heading that is still *German* (859). I
+  nearly missed it because I was hunting German wording. The rule is not "German quote =
+  suspect"; it is "resolve every quote against the file", full stop.
+- **A dead reference is not always a translation casualty, and those cost the most.**
+  Two of eighteen were not: `:228 *Welche vier Länder*` (a section that never existed
+  under that name; the argument sits under `Warum vier Länder und nicht drei`) and
+  `:3623 *Die Ordnung, die das Argument trägt*` (a table *row*, gone from both specs —
+  the one I could not repair without revising, so I carried it). Budget for these: they
+  need a judgement about *which section carries the argument*, not a string swap.
+- **Confirmed from 0223: the one-line quote rule pays, but not at any price.** Three
+  repairs pulled split quotes onto one line for free. At `:24` and `:783` unwrapping
+  would have cascaded through four following lines of German prose; I left those wrapped
+  and let the leading fragment carry the grep. Cascading rewraps are churn a reviewer
+  has to read.
+
+Unsure, for the PM: the abnahme asked for "one row per reference" — 107 rows, roughly
+8,500 characters into a package already at 5,900, against a 4,000 cap. I gave one row
+per *repair* and per *non-repair* in full, and grouped the 89 resolving ones by target
+with every citing line named. No site is dropped and calls 1–4 regenerate the ungrouped
+list. That is a deliberate deviation from the literal wording; I said so in the Meldung
+rather than let the reviewer find it. If the reviewer wants the flat 107 rows, it is a
+mechanical expansion of what is already there — but then the character cap for a Meldung
+that carries a sweep needs saying out loud, because this class of package will recur.
+
 ## 2026-09-07 — 0223, two sentences in *Das Realeinkommen in Gegenkraft 2*
 
 Both findings of `pruefung-0198-...-2026-09-07.md` fixed, both **behoben**, nothing else

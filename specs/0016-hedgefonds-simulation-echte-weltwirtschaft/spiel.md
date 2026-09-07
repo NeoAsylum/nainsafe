@@ -21,8 +21,8 @@ messbar_rueckvergleich: Startjahrgang 2001, R = 20 Runden im Weltlauf (Fondsteil
 *Fünfte Fassung, nach
 `ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde6-2026-09-01.md` und gegen
 `ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Geändert sind gegenüber der vierten
-Fassung genau drei Stellen: der neue Abschnitt **Was ein Korb wert ist, was eine Stufe ist
-und was eine Anleihe kostet** (Befund 1), die **Kanaltabelle**, die dadurch einen achten
+Fassung genau drei Stellen: der neue Abschnitt **What a basket is worth, what a step is
+and what a bond costs** (Befund 1), die **Kanaltabelle**, die dadurch einen achten
 Kanal bekommt, und drei Zeilen in der Tabelle der Größen ohne Datenanker. Keine Zahl der
 vierten Fassung ändert sich, keine Zustandsadresse kommt hinzu. Die Abarbeitung der zwei
 Befunde steht am Ende der Datei, die der früheren Runden darunter.*
@@ -37,8 +37,8 @@ Zustandsadresse; er füllt die Lücke, die `technik.md` Abschnitt 12 Punkt 3 gem
 Befund 1 und 2 der Prüfung vom 2026-09-02. Die **Zollzeile** der Schadensvorschrift misst
 nicht mehr die ganze Verschiebung des Sektorpreises, sondern **allein den Anteil, den der
 Zollkeil daran hat** — Weg 1 von den dreien, die der Befund offengelassen hat. Betroffen
-sind sechs Abschnitte unter *Der Schaden in Gegenkraft 5*, eine neue Zeile unter *Was für
-die Preisbildung gelten muss*, die Zeile zu Kanal 3, vier Zeilen unter „Was bewusst
+sind sechs Abschnitte unter *Der Schaden in Gegenkraft 5*, eine neue Zeile unter
+*What must hold for price formation*, die Zeile zu Kanal 3, vier Zeilen unter „Was bewusst
 fehlt", drei unter „Offene Entwurfsfragen" und die Nachziehtabelle. Auch dieser Nachtrag
 kommt **ohne neue Zustandsadresse** aus; die Zahl der Lesezugriffe fällt von behaupteten
 120 auf nachgezählte **106**. Die Abarbeitung beider Befunde steht am Ende der Datei.*
@@ -48,7 +48,7 @@ kommt **ohne neue Zustandsadresse** aus; die Zahl der Lesezugriffe fällt von be
 21.** Reihe 9 (Leitzins) ist **keine Sollreihe mehr** und behält ihre beiden anderen Rollen;
 die Sollreihenzahl fällt damit von 31 auf **27**. Die 16 Prüfgegenstände von Maß 4 und die
 Toleranz 2 bleiben **unverändert** — die vier gestrichenen Reihen waren nie darunter. Die
-Begründung steht vollständig im Abschnitt **Die Partielänge R**, die Liste der nachzuziehenden
+Begründung steht vollständig im Abschnitt **The game length R**, die Liste der nachzuziehenden
 Stellen unter *Was der Architekt neu rechnen muss*. Dies ist der Fall, für den die
 Ersetzungsregel der fünften Fassung geschrieben war: R ist ersetzt und sonst nichts.*
 
@@ -71,9 +71,9 @@ Kalibrierzahl und keine der Zahlen von Zustand A ändern sich.*
 des Betreibers vom selben Tag: Ein Hedgefonds, der nur in vier Ländern etwas halten kann, ist
 kein globaler Hedgefonds. Neu ist der Abschnitt **Die drei Schichten der Welt** mit der
 zweiten Schicht, den **Börsenplätzen**; dazu ein Halbsatz in Aktion 1, ein Absatz unter
-*Der Zustand* (welchen Stand die 310 meint), ein Absatz unter *Warum die Größe des Zustands
+*The state* (welchen Stand die 310 meint), ein Absatz unter *Warum die Größe des Zustands
 keine Verteidigung ist*, **sieben** Einträge unter „Was bewusst fehlt" — sechs neue und der
-erste, „Mehr als vier Länder und drei Sektoren", ergänzt statt gestrichen —,
+erste, „More than four countries and three sectors", ergänzt statt gestrichen —,
 fünf unter „Offene Entwurfsfragen" und ein Block unter „Was der Architekt neu rechnen muss".
 **Keine Zahl der bestehenden vier Länder, keine Sollreihe, kein Prüfgegenstand und kein
 Fehlermaß ändert sich**; die Bezugszahl des Zustands bleibt bis 0116 und 0118 die **310**, und
@@ -83,7 +83,7 @@ neue Schlüssel in `parameter.toml` und **keinen neunten Rückkopplungskanal**.*
 *Geändert am **2026-09-06** aus Arbeitspaket `0118-fuenf-weitere-laender-auswaehlen`, nach der
 Anweisung des Betreibers vom 2026-09-05 („Lass uns insofern direkt 5 weitere Länder
 einplanen") und seiner Wahl von Weg A (die Steckplätze wachsen mit `L`). Neu ist der Abschnitt
-**Welche neun Länder, welche Klasse, und was Weg A kostet** unter *Der Zustand*; dazu zwei
+**Welche neun Länder, welche Klasse, und was Weg A kostet** unter *The state*; dazu zwei
 Zeilen im Frontmatter, die Zählregel von Maß 4 in `L_R` statt in Ziffern, vier Einträge unter
 „Was bewusst fehlt", fünf unter „Offene Entwurfsfragen" — davon eine **geschlossen** — und ein
 Block unter „Was der Architekt neu rechnen muss". **Die 310 bleiben stehen**, bis 0116 die
@@ -225,10 +225,10 @@ not a decision of mine.
 - **The euro start 1999 lies before the window.** With it falls the only instrument lock
   that snaps shut *during* a game: Germany had no interest-rate lever of its own from
   round 3 on, now it has none from round 1. The asymmetry **between** the four countries
-  stays — it is what the argument in *Welche vier Länder* stands on —, the transition
-  **within** the game is gone. For Maß 3 that is the loss of one of three named sources;
-  the other two, imitators (counterforce 4) and price shock (counterforce 3), are
-  untouched, and the shift was never grounded on the euro.
+  stays — it is what the argument in *Warum vier Länder und nicht drei* stands on —, the
+  transition **within** the game is gone. For Maß 3 that is the loss of one of three
+  named sources; the other two, imitators (counterforce 4) and price shock (counterforce
+  3), are untouched, and the shift was never grounded on the euro.
 - **The exchange-rate chaining `verkettet_ab = 1999` never runs in the check vintage.**
   It stays in the specification because the play vintages before 2001 need it — but the
   check vintage no longer tests it along the way. That belongs in every finding instead
@@ -243,8 +243,8 @@ not a decision of mine.
 Still inside the window: China's WTO accession (December 2001, effective from round 1),
 the financial crisis of **2008** (end of round 7), the slump of **2020** (end of
 round 19) and the recovery of **2021** (end of round 20). Likewise the negative euro
-deposit rate from 2014, on which the bound `aufschlag_min` hangs — see *Was ein Korb wert
-ist*.
+deposit rate from 2014, on which the bound `aufschlag_min` hangs — see
+*What a basket is worth*.
 
 And one property that neither of the two rejected values has: **20 is a multiple of 5.**
 Under the stock procedure the stock vector stands at `(0,0,0,0,0)` again after every five
@@ -299,7 +299,7 @@ Within a round **no state quantity is written twice**, and the order above is cy
 *Which* quantities are written at all depends on the mode — in `spielmodus` all of them,
 in the `weltlauf` of the backtest a declared subset (see **Maß 4**). The only loop in the
 whole model is the market clearing in step 4, and it runs with a fixed iteration count.
-Everything that looks like a feedback crosses a round boundary — see **Der Zustand**.
+Everything that looks like a feedback crosses a round boundary — see **The state**.
 
 ### What must hold for price formation
 
@@ -408,7 +408,7 @@ identifiers 1 to 5 are at the same time the tie-breaking order of all Maße.
    larger its share of that market is.
 2. **Stake.** A permanent share in a country×sector. It is illiquid — exiting takes two
    rounds, and its exit discount is already built into the valuation, so it is paid in
-   full at entry (see *Was das Fondsvermögen ist*) — and it is the only path to
+   full at entry (see *What the fund's assets are*) — and it is the only path to
    cheap lobbying: lobbying actions in a sector the fund holds a stake in cost a
    fraction.
 3. **Lobbying budget.** Money on one policy instrument of one country, in one direction.
@@ -435,7 +435,7 @@ recomputed there. The number itself is no defence — see below.
 
 **These 310 are the status as of today and remain the reference number until package 0116
 has written the address arithmetic parametrically.** The five further countries have been
-chosen since 2026-09-06 (package 0118, see *Which nine countries*); with that the country
+chosen since 2026-09-06 (package 0118, see *Welche neun Länder*); with that the country
 sum at `L = 9` stands at **740** and the state after all three layers at **890** —
 computed, but not yet the reference number, because the address arithmetic must first
 carry it. What this section describes is the first of three layers; the second (exchange
@@ -780,8 +780,8 @@ gibt es genau acht, und sie sind hier abschließend aufgezählt:
 an der dieses Genre stirbt — *wer vorn liegt, kann mehr lobbyieren, und wer mehr lobbyiert,
 liegt weiter vorn* —, und er steht wörtlich im Beispiel der Idee („Zoll +5pp → Importpreis
 → dein Bestand Sektor 3 +8,3%"). In der Tabelle fehlte er, weil das Glied *Bewertung* bis zu
-dieser Fassung kein gerechneter Schritt war, sondern ein Wort; erst der Abschnitt *Was ein
-Korb wert ist* macht ihn benennbar. Vier Dämpfungen greifen an ihm, alle vier stehen schon
+dieser Fassung kein gerechneter Schritt war, sondern ein Wort; erst der Abschnitt
+*What a basket is worth* macht ihn benennbar. Vier Dämpfungen greifen an ihm, alle vier stehen schon
 im Entwurf, und **drei davon wachsen mit dem Erfolg** — das ist der Grund, warum er
 gedämpft ist und nicht bloß langsam. Die Anleihevariante desselben Kanals (Lobby auf den
 Leitzins statt auf den Zoll, `anleihekurs` statt `sektorpreis`) ist kein neunter Kanal,
@@ -848,7 +848,7 @@ Die vier sind nach struktureller Verschiedenheit gewählt, nicht nach Bedeutung:
 `durchgriff`, gemanagter Wechselkurs, starker Zollhebel), **Deutschland**
 (Exportüberschuss und **kein eigener Zinshebel** — die einzige Asymmetrie, die
 einen Aktionsraum schließt und damit einen anderen erzwingt; seit dem Fensterschnitt auf
-2001 gilt sie von Runde 1 an statt ab Runde 3, siehe *Die Partielänge R*), **Brasilien** (Agrarexport,
+2001 gilt sie von Runde 1 an statt ab Runde 3, siehe *The game length R*), **Brasilien** (Agrarexport,
 hohe Zinsen, volatile Währung). Vier Länder, die sich gleichen, wären vier Kopien und
 kosteten Strategievielfalt, statt sie zu erzeugen.
 
@@ -1079,7 +1079,7 @@ Offen ist die Folge, und sie ist zu rechnen und nicht zu behaupten. Von den 75 b
 Währungssteckplatz der USA nach T16 dauerhaft leer, also sind **74 besetzbar** (heute 19 von
 20). Steckplätze belegt **allein Aktionsart 1**; Lobby, Hebel und Sichtbarkeit belegen keinen,
 die Beteiligung hat ihre eigenen Felder. Nach dem Vorratsverfahren bekommt Art `i` über eine
-volle Partie genau `12·ai` der 60 Steckplätze — die Zugabe, die *Die Partielänge R* an `R = 20`
+volle Partie genau `12·ai` der 60 Steckplätze — die Zugabe, die *The game length R* an `R = 20`
 festhält, und hier ist sie das, was die Rechnung überhaupt exakt macht statt ungefähr.
 
 | | heute, 19 besetzbar | nach 0118/0119, 74 besetzbar |
@@ -1218,7 +1218,7 @@ normiert gegen normiert. Das Modell hat damit keinen Gütersteuerkeil; die Staat
 laufen über den Haushaltssaldo, der ohnehin ein eigenes Instrument ist. Weil die dritte
 Reihe je Land durch die Normierung festliegt, sind von den 27 Sollreihen **23
 unabhängig** — ausgewiesen werden trotzdem alle 27. (Bis zum 2026-09-03 waren es 31 und 27;
-Reihe 9 ist seither keine Sollreihe mehr, siehe *Die Partielänge R*.)
+Reihe 9 ist seither keine Sollreihe mehr, siehe *The game length R*.)
 
 Zweitens: Brasiliens Erzausfuhr liegt im Modell in Sektor 2, nicht in Sektor 1. „Brasilien
 als Rohstoffexporteur" heißt hier Agrarexporteur. Das ist ein Verlust an Kennzeichnung und
@@ -1603,10 +1603,10 @@ Since that subsystem does not run in the `weltlauf`, the second layer is **not c
 all** there — its four fields per venue keep their start values, just as the fund block and
 the imitator counters already do. After this layer the `weltlauf` costs not one world step
 more than before, and the set of addresses written per mode stays fixed. The price of this
-cleanliness belongs with it and stands under *Die Grenze des Orakels*: for the second layer
-the oracle is completely blind. There is also nothing of it to check against — a world
-equity index under a free licence does not exist, that already stands under *Was
-bewusst fehlt*, and `daten.md` carries not a single price series.
+cleanliness belongs with it and stands under *And the limit of the oracle, explicitly*: for
+the second layer the oracle is completely blind. There is also nothing of it to check
+against — a world equity index under a free licence does not exist, that already stands
+under *Was bewusst fehlt*, and `daten.md` carries not a single price series.
 
 ### Die drei Klagen, auf dieser Schicht gelesen
 
@@ -2385,14 +2385,14 @@ symmetric over the sign, chosen for exactly this reason.
 #### Skalen, Auflösung, und was die Regel kostet
 
 Class 2 divided by class 2, times ten-thousandths, is a rate in ten-thousandths — class 3,
-the same construction as `marktanteil` in *Was ein Korb wert ist*. **No fourth scale
+the same construction as `marktanteil` in *What a basket is worth*. **No fourth scale
 transition, class 1 touched nowhere.** `mal_geteilt` computes over `i128` per T6, so the
 product `politiklast · 10.000` needs no bound of its own: `politiklast` is bounded by the
 largest of the four quantities times the largest possible shift, thus by a small multiple
 of `bip(US)` — per T5 of order `2,1 · 10^10` thousand USD —, and the product stays around
 `10^14`. `bip(l) > 0` is the denominator condition; it is a sum of positive value added
-and a value-range bound the break run checks, as with `wechselkurs` in *Eine
-Bewertungsformel*.
+and a value-range bound the break run checks, as with `wechselkurs` in
+*One valuation formula*.
 
 **Read accesses:** 94 addresses, of which **90 are already read in step 5** by
 counterforce 5 — the sixteen instrument levels at both ends, twelve value added, four
