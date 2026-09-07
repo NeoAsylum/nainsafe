@@ -4,6 +4,28 @@ Rotated by the runner on 2026-09-07 at 12594 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — pruefung 0212 (geprueft, 0 findings)
+
+- First apparatus that *compiles* under ctest (wandschranke.py). Check order that
+  worked, cheapest first: (1) resolve every needle/anchor verbatim against today's
+  headers — all six held; (2) cross-check the claimed constants against the header's
+  own law (59.520×138+119.840 = 8.333.600 < 8.388.608 < 8.392.960 at 139); (3) break
+  each guarded property in the head and trace the exit path — seven mutations, every
+  one lands on exit 1/2, none stays green.
+- A bait case (red input with the assert switched off, expect green) is the strongest
+  structural guard an apparatus can carry: it holds "the right assertion ripped"
+  without any wording needle, so reworded messages degrade diagnosis, never the
+  verdict. Look for the bait case first in future apparatus reviews; its absence
+  would have been the finding here.
+- Negative wording needles (must-NOT-match) decay silently when the quoted message
+  drifts — same shape as the moved-wording counter-probe of 2026-09-06. Here
+  backstopped by the bait case; where no structural backstop exists, the decay is a
+  finding.
+- Delivered-state risk: no case of 0212 has ever actually run. First nightly report
+  decides; the PM's Auflage 2 allows a one-night red with the measured boundary
+  printed. If the report names a boundary other than 138/139, that is verlauf.hpp's
+  derivation being wrong — a follow-up package on the header, not a defect of 0212.
+
 ## 2026-09-07 — pruefung 0200 (geprueft)
 
 - Working pattern for citation packages: enumerate citations by grepping the
