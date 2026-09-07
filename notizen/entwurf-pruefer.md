@@ -26,3 +26,25 @@ Worth keeping:
 - spiel.md:2151 and 2719 quote the same T38 sentence and already match today's
   English wording — no stale-quote follow-up needed there.
 
+## 2026-09-07 — Pruefung 0224, zurueck, 5 findings
+
+A reference sweep of spiel.md missed three „-form sites; two are dead (:1561 →
+target now English at :3144, :1184 → question closed at :3215), one resolves but
+is absent from the roster (:2857 → :1228). Method that worked and was cheap: run
+the builder's own calls with `-o -n`, then diff the reference-shaped hits against
+the Meldung's line lists instead of re-classifying everything — four calls, ~6
+targeted greps, 5 small reads, never opened the spec whole.
+
+Worth keeping:
+- Italic patterns of the form `\*[A-Za-z…]` cannot see *„…"* references — the
+  quote char right after the `*` fails the letter class. On any future reference
+  sweep, check the *„…"* hybrid form first; it is where 0224 died.
+- A Meldung that claims "line numbers are post-repair state" can still be off by
+  one at wrapped sites (five here). Verify by grepping the wording, never by
+  reading the claimed line.
+- Sub-counts (89 headings, 89 resolved) did not reproduce (95, 103), but the
+  headline total did (107 = 103 + 4). Check the arithmetic across tables before
+  trusting any single stated count.
+- :3344-type false positives: a quote inside a "*Corrected on …: here stood „…"*"
+  note is historical, not a reference. Clear these before writing a finding.
+
