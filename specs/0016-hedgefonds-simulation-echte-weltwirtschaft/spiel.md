@@ -3436,86 +3436,87 @@ not mine; this run is the answer to it.
 
 ## Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31
 
-**Befund 1, Prüfjahrgang 1995 nicht belegt — behoben, und der Befund war richtig.** Ich
-habe die drei US-Sektoranteilsreihen selbst abgerufen (2026-09-01): 1997 bis 2021, an
-beiden Enden wie beschrieben. Das Fenster ist 1997–2021, **R = 24**. Der teuerste Teil des
-Befundes war nicht die Zahl, sondern ihre Verbreitung in zwölf abgeleitete Größen; deshalb
-steht jede davon jetzt als Formel in R, und ein weiteres Kürzen des Fensters ist eine
-Substitution statt einer Neufassung. Das ist die dritte Befundrunde zum Startjahrgang, aber
-nicht dreimal derselbe Befund: erst ein Widerspruch zwischen Frontmatter und Text, dann
-eine unbelegte Zahl, jetzt eine gemessene mit einer Fassung, die den Fehlertyp ausschließt.
+**Finding 1, check vintage 1995 not substantiated — fixed, and the finding was right.** I
+retrieved the three US sector-share series myself (2026-09-01): 1997 to 2021, at both
+ends as described. The window is 1997–2021, **R = 24**. The most expensive part of the
+finding was not the number but its spread into twelve derived quantities; that is why
+each of them now stands as a formula in R, and a further shortening of the window is a
+substitution instead of a redraft. This is the third finding round on the start vintage,
+but not three times the same finding: first a contradiction between frontmatter and text,
+then an unsubstantiated number, now a measured one with a formulation that rules out the
+error type.
 
-**Befund 2, Rückvergleichslauf nicht durchführbar — behoben.** Maß 4 läuft im Modus
-`weltlauf`: Fondsteilsystem vollständig abgeschaltet, keine Rendite, keine Todesart,
-Politikinstrumente exogen. Damit gibt es weder den Nenner null noch den Tod in Runde 3. Die
-zweite Lücke — `markt.wert` ohne Startwert — ist unabhängig davon geschlossen: Der
-Startwert steht in der Tabelle *Größen ohne Datenanker* (Wert des Startkorbs zu
-Startpreisen), und im Spielmodus sichert die Regel „Fondsvermögen ≤ 0 löst Todesart 1 in
-derselben Runde aus", dass nie durch null geteilt wird.
+**Finding 2, backtest run not executable — fixed.** Maß 4 runs in mode `weltlauf`: fund
+subsystem fully switched off, no return, no way of dying, policy instruments exogenous.
+Thus there is neither the zero denominator nor the death in round 3. The second gap —
+`markt.wert` without a start value — is closed independently of that: the start value
+stands in the table *Every quantity without a data anchor, with its start value* (value
+of the start basket at start prices), and in `spielmodus` the rule „fund assets ≤ 0
+triggers way of dying 1 in the same round" secures that division by zero never happens.
 
-**Befund 3, `handelsanteil` verlässt seinen Wertebereich — behoben, mit einer vierten
-Lösung.** Der Prüfer nannte drei Auswege; ich nehme keinen davon unverändert. Der
-Koeffizient heißt jetzt `durchgriff` und wird als `10.000·H/(H+N)` gebildet: monoton in
-`H/N`, per Konstruktion in 0…10.000, ohne Kappung, ohne negatives Gewicht auf dem
-Landespreis, ohne negative Preise. Die Rangfolge zwischen Ländern und Sektoren — das
-Einzige, was das Argument trägt — bleibt exakt erhalten. Dass sein Zahlenwert keine
-volkswirtschaftliche Bedeutung hat, steht ausdrücklich dabei; die Umbenennung soll
-verhindern, dass ihn jemand für einen gemessenen Anteil hält.
+**Finding 3, `handelsanteil` leaves its value range — fixed, with a fourth solution.**
+The reviewer named three ways out; I take none of them unchanged. The coefficient is now
+called `durchgriff` and is formed as `10.000·H/(H+N)`: monotone in `H/N`, by construction
+in 0…10,000, without capping, without a negative weight on the country price, without
+negative prices. The ranking between countries and sectors — the only thing the argument
+rests on — is preserved exactly. That its numeric value has no macroeconomic meaning is
+stated explicitly right there; the renaming is meant to prevent anyone from taking it for
+a measured share.
 
-**Befund 4, Profil → Aktionen nicht definiert — behoben.** Das **Vorratsverfahren** steht
-oben mit Schritt, Zähler und Gleichstandsregel: `vi += 3·ai` je Runde, `vi −= 5` je
-Steckplatz, drei Steckplätze je Runde, größtes `vi` gewinnt, Gleichstand nach kleinerer
-Kennung. Alle drei Fragen des Befundes sind beantwortet — nicht runden und nicht ziehen,
-`ai = 0` schiebt ans Ende statt zu verbieten, die Bündelgröße gehört nicht zum Profil. Für
-den Suchbot ist ergänzt, wie das Profil die 60 Kandidaten einschränkt: über die
-Artenzusammensetzung, gesucht wird nur über Ziele und Stufen.
+**Finding 4, profile → actions not defined — fixed.** The **stock procedure** stands
+above with step, counter and tie rule: `vi += 3·ai` per round, `vi −= 5` per slot, three
+slots per round, largest `vi` wins, tie broken by the smaller id. All three questions of
+the finding are answered — no rounding and no drawing, `ai = 0` pushes to the back
+instead of forbidding, the bundle size is not part of the profile. For the search bot it
+is added how the profile restricts the 60 candidates: via the composition of kinds; the
+search runs only over targets and steps.
 
-**Befund 5, Maß 4 ohne Abnahmeregel — behoben.** Sechzehn Prüfgegenstände, nur die freien
-Reihen, die drei Anteilsreihen eines Landes als **ein** Gegenstand, Toleranz zwei. Die
-Rückfrage aus `technik.md` Abschnitt 12 ist damit beantwortet (die 23 freien entscheiden,
-alle 31 werden berichtet), und die zweite Rückfrage zum Handelsblock ebenfalls: Der
-Vorschlag des Architekten wird übernommen, Median über die 40 Ströme, schlechtestes Fünftel
-ausgewiesen. Dazu kam eine Lücke, die der Befund nicht nannte und die dieselbe Stelle
-betrifft: Für Preis- und Wechselkursreihen ist ein MAPE nach T8 gar nicht das verglichene
-Maß; für sie gilt jetzt ein mittlerer absoluter Fehler auf der Jahresrate.
+**Finding 5, Maß 4 without an acceptance rule — fixed.** Sixteen check subjects, only the
+free series, a country's three share series as **one** subject, tolerance two. The query
+from `technik.md` section 12 is thereby answered (the 23 free ones decide, all 31 are
+reported), and the second query on the trade block likewise: the architect's proposal is
+adopted, median over the 40 flows, worst fifth reported. Added to this came a gap the
+finding did not name and that concerns the same place: for price and exchange-rate series
+a MAPE per T8 is not the compared measure at all; for them a mean absolute error on the
+annual rate now applies.
 
-**Befund 6, `landespreis` nicht definiert — behoben, mit der Lesart, die der Prüfer als
-wohldefiniert bezeichnet.** `landespreis` ist der Sektorpreis der Vorrunde, Startwert
-10.000. Damit bleibt die Überschussfunktion monoton im Weltpreis, die Halbierung aus T28
-ist zulässig, und es entsteht keine Fixpunktaufgabe. Die Größe braucht keine eigene Adresse
-— sie **ist** der Sektorpreis, einen Schritt früher gelesen; der daraus entstehende
-Preiskanal ist oben in die Kanaltabelle eingeordnet und gedämpft.
+**Finding 6, `landespreis` not defined — fixed, with the reading the reviewer calls
+well-defined.** `landespreis` is the previous round's sector price, start value 10,000.
+The excess function thus stays monotone in the world price, the bisection search from T28
+is admissible, and no fixed-point problem arises. The quantity needs no address of its
+own — it **is** the sector price, read one step earlier; the price channel this creates
+is filed into the channel table above and damped.
 
-**Befund 7, Zusammenfassung über die 50 Startwerte fehlt — behoben.** Die 50 stehen jetzt
-in `spiel.md`, und die Zusammenfassung auch: `Dichte(t, s)` gegen den Median **derselben**
-30, dann Mittel über die 50 Startwerte. Der vom Prüfer benannte Fehlweg — ein gemeinsamer
-Median über 1.500 Ergebnisse aus verschiedenen Jahrgangsstreuungen — ist als solcher
-benannt und ausgeschlossen. Die Gesamtkostenzahl nennt nur noch die Summe der drei Maße,
-also genau das, was dieser Entwurf selbst festlegt.
+**Finding 7, summary over the 50 start values missing — fixed.** The 50 now stand in
+`spiel.md`, and the summary too: `Dichte(t, s)` against the median of **the same** 30,
+then the mean over the 50 start values. The wrong path the reviewer named — a common
+median over 1,500 results from different vintage spreads — is named as such and ruled
+out. The total-cost figure now names only the sum of the three Maße, that is, exactly
+what this draft itself fixes.
 
-**Befund 8, sechs Profile ohne Familienaktion — behoben, durch die vom Prüfer als billig
-bezeichnete zweite Variante.** Die sechs Profile `(0,0,0,a4,a5)` haben keinen
-Strategiekern, laufen mit, werden berichtet und gehen in keine der beiden Abnahmehälften
-von Maß 2 ein. Klassifiziert sind 120 Profile. Für Maß 3 bleiben alle 126 wählbar — dort
-misst der Vektorabstand, nicht die Klasse.
+**Finding 8, six profiles without a family action — fixed, by the second variant the
+reviewer called cheap.** The six profiles `(0,0,0,a4,a5)` have no strategy core, run
+along, are reported, and enter neither of the two acceptance halves of Maß 2. 120
+profiles are classified. For Maß 3 all 126 remain selectable — there the vector distance
+measures, not the class.
 
-**Befund 9, Schwelle zwischen zwei erreichbaren Werten — behoben.** Maß 3 verlangt jetzt
-**0,4**, also genau ein verschobenes Fünftel; die Wertemenge `{0; 0,4; …; 2,0}` steht
-daneben, damit die Kalibrierung sieht, worauf sie zielt.
+**Finding 9, threshold between two attainable values — fixed.** Maß 3 now demands
+**0.4**, that is, exactly one shifted fifth; the value set `{0; 0,4; …; 2,0}` stands next
+to it so that the calibration sees what it is aiming at.
 
-**Befund 10, Ergebnisskala nicht streng geordnet — behoben.** Das Band „Mandat erfüllt"
-endet bei `R × 1.000 = 24.000`, der überlebte Misserfolg beginnt bei `(R+1) × 1.000 =
-25.000`. Kein Wert trägt zwei Bedeutungen, und Maß 2 kann als `E(p) ≤ 24.000` geschrieben
-werden, ohne dass die beiden Hälften des Satzes auseinanderfallen.
+**Finding 10, result scale not strictly ordered — fixed.** The band „mandate fulfilled"
+ends at `R × 1.000 = 24.000`, the survived failure begins at `(R+1) × 1.000 = 25.000`.
+No value carries two meanings, and Maß 2 can be written as `E(p) ≤ 24.000` without the
+two halves of the sentence falling apart.
 
-**Befund 11, Kostenformel eine Runde zu kurz — behoben, und die dahinterstehende Frage
-entschieden.** Maß 1 misst die Entscheidung **der Runde t**: Das Bündel wird in Runde `t`
-gesetzt, Runde `t` wird gerechnet, Kosten `R + 1 − t`. Die Drittel meinen damit die Runden,
-die sie nennen. Neu: `t` läuft bis `R` statt bis `R − 1`, weil auch die letzte Runde über
-das Mandat entscheidet. Je Startwert 9.000 statt der alten Formel, plus 24 Trägerpartie.
+**Finding 11, cost formula one round too short — fixed, and the question behind it
+decided.** Maß 1 measures the decision **of round t**: the bundle is set in round `t`,
+round `t` is computed, cost `R + 1 − t`. The thirds thus mean the rounds they name. New:
+`t` runs to `R` instead of to `R − 1`, because the last round too decides the mandate.
+Per start value 9,000 instead of the old formula, plus 24 for the carrier game.
 
-**Befund 12, BACI-Konkordanz fehlt — behoben.** HS92-Kapitel 01–24 → Sektor 1, 25–97 →
-Sektor 2, als Tabelle im Manifest. Der Fehler dieser Grobzuordnung ist benannt (Rohholz,
-Häute, Spinnstoffe, verarbeitete Nahrungsmittel) und folgenlos für den Rückvergleich, weil
-Sollreihe und Modell aus derselben Aggregation entstehen. Damit sind `H`, der Handelsblock
-und die Startmatrix berechenbar.
+**Finding 12, BACI concordance missing — fixed.** HS92 chapters 01–24 → sector 1, 25–97 →
+sector 2, as a table in the manifest. The error of this coarse mapping is named (raw
+wood, hides, textile fibres, processed food) and without consequence for the backtest,
+because target series and model arise from the same aggregation. With that, `H`, the
+trade block and the start matrix are computable.
