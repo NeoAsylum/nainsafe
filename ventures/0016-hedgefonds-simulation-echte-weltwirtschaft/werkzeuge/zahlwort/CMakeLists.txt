@@ -106,3 +106,50 @@ add_test(NAME zahlwort_reihen
 # gewaehlt, nicht als Schaetzung nach oben. Wer den ersten Nachtlauf im Bericht sieht,
 # soll sie durch das Vielfache der gemessenen Zeit ersetzen.
 set_tests_properties(zahlwort_reihen PROPERTIES TIMEOUT 300)
+
+# ---------------------------------------------------------------------------
+# Die Gegenprobe des Riegels -- Paket 0199
+#
+# `befunde/messung-0180/messen.py` ist die einzige lebende Gegenprobe des Riegels: fuenf
+# Mutanten seines Quelltextes gegen die fuenf Selbsttesttabellen, dazu vier Staende von
+# `werte.hpp` gegen den unveraenderten Riegel. Sie beantwortet die Frage, die der
+# Selbsttest nicht beantworten kann -- ob seine Faelle etwas messen oder nur laufen.
+#
+# **Warum sie hier steht und nicht nur in `befunde/`:** Bis zum 2026-09-07 stand sie in
+# keinem `add_test`. `agents/baulauf.py` sucht jede `CMakeLists.txt` und ruft `cmake`,
+# `--build` und `ctest` -- ein Skript, das in keinem dieser drei vorkommt, laeuft in
+# dieser Fabrik nirgends. Es ist danach ein halbes Jahr lang nicht aufgefallen, dass
+# vier ihrer fuenf Mutanten seit Paket 0194 ihren Gegenstand nicht mehr trafen. Eine
+# Probe, die niemand faehrt, verfaellt still.
+#
+# Kein `if(EXISTS ...) add_test() endif()`, aus demselben Grund wie oben.
+get_filename_component(FABRIK_MESSUNG_0180
+                       ${FABRIK_VORHABEN_WURZEL}/befunde/messung-0180/messen.py
+                       ABSOLUTE)
+
+if(NOT EXISTS ${FABRIK_MESSUNG_0180})
+  message(FATAL_ERROR
+          "Die Gegenprobe des Zahlwortriegels fehlt: ${FABRIK_MESSUNG_0180}\n"
+          "Sie ist der einzige Nachweis, dass die fuenf Selbsttesttabellen von "
+          "zahlwort_riegel.cpp etwas messen. Ist sie absichtlich umgezogen, gehoert der "
+          "neue Pfad hierher -- nicht diese Bedingung entfernt.")
+endif()
+
+# Der Uebersetzer kommt von CMake und steht nicht im Skript. Das Skript baut fuenf
+# Mutanten und einen Vergleichsstand unmittelbar, ohne CMake -- ein fest eingebautes
+# `g++` waere dabei ein zweiter Uebersetzer neben dem, gegen den dieser Kasten gebaut
+# wird, und ein Unterschied zwischen beiden faende sich nirgends wieder.
+add_test(NAME zahlwort_messung
+         COMMAND ${FABRIK_ZAHLWORT_PYTHON} ${FABRIK_MESSUNG_0180}
+                 --uebersetzer ${CMAKE_CXX_COMPILER})
+
+# 600 und nicht 900: `agents/baulauf.py` bricht **den ganzen `ctest`-Aufruf** nach 900 s
+# ab. Eine Probe mit derselben Grenze koennte das Kontingent allein aufbrauchen, und der
+# Bericht wuerde dann nicht sie nennen, sondern nur einen abgeschnittenen Lauf. Mit 600 meldet
+# `ctest` die haengende Probe beim Namen und die uebrigen laufen noch.
+#
+# Die Zahl ist eine Schranke und keine gemessene Zeit -- der Lauf, der sie gesetzt hat,
+# hatte keine Schale. Sechs Uebersetzungen von rund 1.800 Zeilen bei `-O1` sind der
+# Kostenpunkt; wer den ersten Nachtlauf im Bericht sieht, ersetzt sie durch das
+# Vielfache der gemessenen Zeit.
+set_tests_properties(zahlwort_messung PROPERTIES TIMEOUT 600)
