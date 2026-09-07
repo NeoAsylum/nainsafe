@@ -43,7 +43,11 @@
 # deshalb stehen und ist als bestrittene Aussage zu lesen -- der
 # Pruefbefund vom 2026-09-02 zeigt, dass T5 fuer die Klasse, die diese
 # Datei dem Schluessel zuweist, sehr wohl eine nennt.
-# Quellen: specs/0016-.../technik.md T5, T27, T45, T46, T47, T50, T51,
+# Quellen: die von Paket 0009, und wie Paketnummer, Stand und
+# Fassungszahl darueber nicht fortgeschrieben -- kein Verzeichnis der
+# Tabellen, die diese Datei heute zitiert. Das steht bei den
+# Schluesseln, die sie zitieren, und nur dort.
+#          specs/0016-.../technik.md T5, T27, T45, T46, T47, T50, T51,
 #          T23 Punkt 5, T15, T16, T6, T40; specs/0016-.../spiel.md
 #          (Aktionen, Gegenkraefte, "Jede Groesse ohne Datenanker",
 #          Kanaltabelle, "Der Fehlbetrag", "Offene Entwurfsfragen").

@@ -59,8 +59,44 @@ down and I still walked into it once this run. Count occurrences in content mode
 **Writing a number about the keywords into the file would raise it.** The field names 102
 and deliberately not the three words behind the split; the split lives here instead.
 
+## 2026-09-07 — 0217: chose (a), and the measurement that decided it
+
+Compiler verdict of the day `ergebnis: ok`, 23/23 tests — `belegstellen_riegel` and
+`belegstellen_messung` are both green again, so yesterday's two red entries are gone.
+
+**Chose (a), and a number I measured decided it, not the one in the finding.** The probe
+`\bT[0-9]+` gives 21 distinct tables: 20 cited below the head, plus **T46, which appears
+nowhere in this file except in the head list itself**. The list is therefore not a stale
+index of cited tables but a record of what 0009 drew on — one of its twelve entries has no
+citation to be an index *of*. (b) would have had to drop T46 to stay honest, (c) would
+have deleted the only trace of it.
+
+**What I kept out of the file: the T46 sentence.** The moment a later package cites T46, a
+head saying "T46 comes nowhere else" is false — 0203's disease in a new costume, a
+statement someone must maintain. The head gets the rule, the logbook the measurement.
+
+**The trap here, for whoever edits a comment in this file next.** The `PLATZHALTER`/`FEST`
+calls are anchored `^[a-z_0-9]* *=` and cannot see a comment. **The four name calls can:**
+they match a backticked lowercase name followed by an asterisk — `` `x`* `` — anywhere,
+comments included. Write a key name in backticks and start a bold run right after it, and
+25/26/25/27 moves. I used no asterisk and no backtick at all. Measured after: 27
+occurrences, exactly 2 of them `**` (454, 922) → 25 single-star, 25 distinct single-star,
+26 distinct overall. All four hold.
+
+**For the reviewer:** head 66 → 70 lines, four added, none removed, the twelve-table list
+character-identical at 50-53; everything below shifts **+4**. 47 / 4 / 51 unchanged. Head
+names 0009 and 0035 and nothing newer (0150 first at line 170); the `0016` at 50-51 is the
+venture in a path and stood there before.
+
 ## Open leads
 
+- **0217 is built. Uncertain, for the project manager:** (a) I made a frozen head four
+  lines longer to say it is frozen, which is the one move the package's own logic could be
+  read to forbid. I think it is right — the freeze sentence at lines 4-10 covered the
+  package number, the date and the version count, and never the source list, so this
+  closes a gap rather than continuing a record — but it is a judgement and a reviewer may
+  see it the other way. (b) If (b) was wanted after all, the `Grep` call belongs beside the
+  list and T46 has to go, because it is not cited. Say so and it is one edit.
 - **0185 is built, return pass 2 of 3.** Uncertain, for the project manager: (a) 1238 is
   again carried forward, not measured with `tomllib` — no shell; the field says so.
   (b) I did **not** add `0214-leitzins-zitate-auf-uebersetzten-wortlaut-nachziehen` to
