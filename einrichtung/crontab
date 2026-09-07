@@ -21,6 +21,10 @@ PATH=/home/adria/.cargo/bin:/home/adria/.local/bin:/usr/local/bin:/usr/bin:/bin
 # (einrichtung/ANKER.md). Das ist Absicht: Dieser hier laeuft, solange die VM lebt, der
 # andere weckt sie. Beide prallen an derselben Sperre ab.
 0 * * * * cd /home/adria/fabrik && /usr/bin/python3 -u agents/tageslauf.py >> ops/nachtlauf.log 2>&1
+# A second attempt at half past. On 2026-09-07 the 20:00 attempt bounced off the lock
+# of a run in its last seconds, right after the session window had reopened -- an
+# idle hour. The lock makes this idempotent; it costs nothing while a run is alive.
+30 * * * * cd /home/adria/fabrik && /usr/bin/python3 -u agents/tageslauf.py >> ops/nachtlauf.log 2>&1
 
 # The translator resumes itself, like the factory. On 2026-09-07 the session limit
 # stopped it at 12:03 and nobody restarted it until 15:13 -- three hours in which the
