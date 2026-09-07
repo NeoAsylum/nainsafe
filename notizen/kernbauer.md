@@ -169,3 +169,28 @@ hinaus gilt; die Beobachtungen zu 0173 stehen vollstaendig im Vorgaenger.
   "acht mal die Wand unter 17.360 Byte". Die 17.360 sind aus der gemessenen Kettengroesse
   hergeleitet, nicht selbst abgedruckt; belegt ist nur der Rand, beidseitig (2169 gruen,
   2170 rot). Waechst `Ursachensatz`, wandert die Zahl mit, und der Satz wird still falsch.
+- 2026-09-07, **im Lauf zu 0186 -- der Lauf hatte ueberhaupt kein `Bash`.** Nicht einzelne
+  Aufrufe fielen aus, sondern das Werkzeug fehlte im Satz: `Edit`, `Read`, `Grep`, `Glob`,
+  `Write` -- sonst nichts. Damit faellt alles weg, was oben unter "Nachweise fuehren"
+  steht: kein `cmake`, kein `ctest`, kein Python-Umweg, kein Wegwerfbaum, keine gemessene
+  Zahl. Wer so einen Lauf zieht, hat genau zwei Mittel: den Quelltext der Aufrufer lesen
+  und die Aenderung so klein halten, dass Lesen reicht. **Vorher pruefen, ob `Bash` da
+  ist** -- die Wahl der Bauart haengt daran, nicht nur die Nachweisform.
+- 2026-09-07, **worauf ich bei 0186 unsicher bin, und es ist dasselbe:** Der Riegel steht
+  in `Verlauf::anhaengen`, die zweiseitige Probe steht als Bedingung 6 in `verlauf_probe`
+  -- **beides ungebaut und ungelaufen.** Vier Aufrufer habe ich von Hand nachgelesen und
+  jeder setzt heute beide Zahlen gleich (`verlauf_probe` an allen Stellen,
+  `zustandsausgabe_probe` in `kettenpartie_bauen` und in `probe_kette_luecke` mit
+  `glied.runde = 3` unter `beginne_runde(3)`); die Schranke kostet also keine Anpassung.
+  Nachgelesen ist auch, dass sie nicht doch woanders greift -- ausser `verlauf.cpp` ruft
+  nur diese beiden Proben `anhaengen` oder `aufnehmen`. Was ich **nicht** weiss: ob der
+  Warnsatz die neue Probe durchlaesst. `-Wuseless-cast` bei `static_cast<long long>` auf
+  `i64` und die vorzeichenlose Umwandlung der Literale in `muster_satz` habe ich am
+  Bestand abgeglichen, nicht am Uebersetzer.
+- 2026-09-07 -- **`aufnehmen` ist bei einem Fehler im Glied keine Einheit.** Es laeuft
+  ueber `beginne_runde` und dann `anhaengen`; bricht das erste Glied ab, steht die Runde
+  schon im Verlauf, leer. Der Verlauf kennt keinen Rueckbau (kein Loeschen, kein
+  Zuruecksetzen -- das ist die Zusage des Kastens), also ist das kein Fehler, sondern die
+  Bauart. Ich habe es in der Probe ausgeschrieben statt ein "unveraendert" zu behaupten,
+  das nur fuer den Weg ueber `anhaengen` stimmt. Wer das anders haben will, braucht ein
+  eigenes Paket -- und muesste zuerst die Zusage aufmachen.

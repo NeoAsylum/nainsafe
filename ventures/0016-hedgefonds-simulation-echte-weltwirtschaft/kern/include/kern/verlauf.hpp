@@ -188,14 +188,26 @@ static_assert(KEIN_RUNDENPLATZ >= RUNDEN_KAPAZITAET,
 /// entgegen -- das ist der Weg, den eine Sitzung mit dem `Rundenergebnis` in der Hand
 /// nimmt. `beginne_runde` und `anhaengen` sind derselbe Weg in Einzelschritten, fuer
 /// einen Aufrufer, der die Glieder erzeugt, waehrend die Runde laeuft. `aufnehmen`
-/// laeuft ueber die beiden anderen und nicht daneben: Die Kapazitaetspruefung liegt
-/// damit an genau einer Stelle, und kein Weg kommt an ihr vorbei.
+/// laeuft ueber die beiden anderen und nicht daneben: Jede Pruefung ueber ein Glied liegt
+/// damit an genau einer Stelle -- in `anhaengen` --, und kein Weg kommt an ihr vorbei.
 ///
 /// **Die Runden steigen streng an** (T9). Eine Runde, die nicht groesser ist als die
 /// zuletzt aufgenommene, ist ein harter Fehler und kein Ueberschreiben: Zweimal
 /// dieselbe Runde aufzunehmen hiesse, eine der beiden Ketten zu verlieren, und genau
 /// dagegen ist T19 geschrieben. Rundennummern beginnen bei eins -- vor der ersten Runde
 /// wurde nichts geschrieben, es gibt dort also keine Kette.
+///
+/// **Ein Glied gehoert in die Runde, unter der es steht** (Paket 0186). Ein
+/// `Ursachensatz` traegt nach T18 selbst die Runde, in der er geschrieben wurde, und der
+/// Verlauf stellt seine eigene Rundennummer daneben: zwei Zahlen fuer dieselbe Aussage,
+/// und dieser Kasten ist die einzige Stelle, an der beide sichtbar sind. Er haelt sie
+/// deshalb gegeneinander und bricht ab, wenn sie auseinanderlaufen. Seit Paket 0091
+/// haengt die Richtigkeit einer Antwort daran: `Aufloesung` vergleicht `runde` minus
+/// `verzoegerung` mit den Rundennummern des Verlaufs, und aus zwei Zeitachsen wird dort
+/// keine Schranke, sondern ein lautloser Fehlgriff.
+///
+/// Geprueft wird Glied gegen Runde und **nicht** Runde gegen Vorrunde: Der Verlauf
+/// verlangt Ordnung, keine Lueckenlosigkeit -- ein Sprung nach vorn bleibt erlaubt.
 ///
 /// **Die zuletzt begonnene Runde bleibt offen.** Nach `aufnehmen` haengt ein weiteres
 /// `anhaengen` an dieselbe Runde an; geschlossen wird eine Runde erst dadurch, dass die
@@ -217,15 +229,23 @@ public:
 
     /// Haengt ein Glied an die zuletzt begonnene Runde.
     ///
-    /// Zwei harte Fehler:
+    /// Drei harte Fehler, in dieser Reihenfolge geprueft:
     ///   * es ist noch keine Runde begonnen;
     ///   * die Runde traegt bereits `GLIEDER_JE_RUNDE` Glieder. Die Meldung nennt die
     ///     Rundennummer und die Kapazitaet, denn ohne beides sagt sie dem Aufrufer
     ///     nicht, welche Kette wie weit gefuellt war.
+    ///   * das Glied traegt eine andere Runde als die, unter der es abgelegt wird. Die
+    ///     Meldung nennt **beide** Zahlen: Welche der beiden falsch gesetzt ist, weiss
+    ///     der Aufrufer und nicht dieser Kasten.
     void anhaengen(const Ursachensatz& satz);
 
     /// Nimmt die Kette einer ganzen Runde auf -- `beginne_runde` und danach jedes Glied
     /// in der Reihenfolge, in der es in der Kette steht.
+    ///
+    /// Die harten Fehler sind die der beiden. Sie brechen dort ab, wo sie zuschlagen, und
+    /// nicht am Anfang: Bricht das erste Glied ab, ist die Runde bereits begonnen und
+    /// steht leer im Verlauf. Zurueckgebaut wird sie nicht -- dieser Kasten kennt kein
+    /// Loeschen, und das ist die Zusage im Kopf dieses Kastens.
     void aufnehmen(i64 runde, const Kette& rundenkette);
 
     /// Wie viele Runden der Verlauf traegt.

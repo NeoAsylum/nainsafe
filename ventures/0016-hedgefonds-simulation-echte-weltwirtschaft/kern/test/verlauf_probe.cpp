@@ -24,6 +24,10 @@
 //!      Runden, in der eine Aktion aus Runde 1 eine Groesse in Runde 3 aendert -- einmal
 //!      unmittelbar und einmal ueber ein Zwischenglied. Dazu die Gegenprobe auf die
 //!      Verzoegerung, die fuenf Enden einer Kette und die Griffe daneben.
+//!   6. **Ein Glied traegt die Runde, unter der es abgelegt wird** (Paket 0186).
+//!      Zweiseitig an derselben Lage: Das uebereinstimmende Glied laeuft durch, das
+//!      abweichende bricht ab -- nach oben und nach unten --, die Meldung nennt beide
+//!      Rundennummern, und der Verlauf steht danach unveraendert da.
 //!
 //! ## Keine Zahl steht hier abgeschrieben
 //!
@@ -895,6 +899,112 @@ void probe_aufloesung_grenzen()
     }
 }
 
+// ---------------------------------------------------------------------------
+// Bedingung 6 -- ein Glied traegt die Runde, unter der es abgelegt wird (Paket 0186)
+// ---------------------------------------------------------------------------
+
+/// Die Rundennummer, unter der die Glieder dieser Probe abgelegt werden.
+///
+/// Absichtlich keine Eins: In der Abbruchmeldung stehen zwei Rundennummern nebeneinander,
+/// und die Probe unterscheidet sie am Wortlaut.
+constexpr i64 RUNDE_DER_ABLAGE = 4;
+
+/// Zwei fremde Rundennummern, eine oberhalb und eine unterhalb der offenen Runde.
+///
+/// Beide Richtungen, weil eine Schranke, die nur nach oben oder nur nach unten prueft, an
+/// der jeweils anderen Vertauschung gruen bliebe -- und vertauscht waren die
+/// Rundennummern in der Messung, aus der dieses Paket entstanden ist.
+constexpr std::array<i64, 2> FREMDE_RUNDEN = {RUNDE_DER_ABLAGE + 2, RUNDE_DER_ABLAGE - 2};
+
+void probe_glied_gehoert_in_seine_runde()
+{
+    // (a) Der uebereinstimmende Fall laeuft durch, und zwar auf beiden Wegen hinein:
+    //     einzeln ueber `anhaengen` und als ganze Kette ueber `aufnehmen`.
+    Verlauf verlauf;
+    verlauf.beginne_runde(RUNDE_DER_ABLAGE);
+    verlauf.anhaengen(muster_satz(RUNDE_DER_ABLAGE, 0));
+    verlauf.anhaengen(muster_satz(RUNDE_DER_ABLAGE, 1));
+
+    Kette gleiche;
+    gleiche.anhaengen(muster_satz(RUNDE_DER_ABLAGE + 1, 2));
+    gleiche.anhaengen(muster_satz(RUNDE_DER_ABLAGE + 1, 3));
+    verlauf.aufnehmen(RUNDE_DER_ABLAGE + 1, gleiche);
+
+    PRUEFE(verlauf.runden() == 2);
+    PRUEFE(verlauf.glieder() == 4);
+    std::printf("  uebereinstimmend: %zu Runden, %zu Glieder, kein Abbruch\n",
+                verlauf.runden(), verlauf.glieder());
+
+    // (b) Das abweichende Glied bricht ab, und der Verlauf steht danach unveraendert da.
+    const i64 offene_runde = verlauf.rundennummer(verlauf.runden() - 1);
+    for (const i64 fremd : FREMDE_RUNDEN) {
+        const bool geworfen =
+            hat_abgebrochen([&verlauf, fremd]() { verlauf.anhaengen(muster_satz(fremd, 4)); });
+        pruefe(geworfen, "ein Glied mit fremder Rundennummer ist ein harter Fehler",
+               __LINE__);
+
+        // Die Meldung nennt beide Zahlen. Beide Erwartungen entstehen mit demselben
+        // Meldungsbau, den der Kasten benutzt; abgeschrieben koennten sie von der Ausgabe
+        // abweichen. Dass es wirklich zwei verschiedene sind, haelt die Pruefung darunter
+        // fest -- sonst bestuende dieser Vergleich auch bei einer Meldung, die dieselbe
+        // Zahl zweimal nennt.
+        Meldung erwartetes_glied;
+        erwartetes_glied.text("Runde ");
+        erwartetes_glied.zahl(fremd);
+        Meldung erwartete_ablage;
+        erwartete_ablage.text("Runde ");
+        erwartete_ablage.zahl(offene_runde);
+        pruefe(fremd != offene_runde, "die beiden Erwartungen sind verschieden", __LINE__);
+        pruefe(enthaelt(letzte_meldung.data(), erwartetes_glied.fertig()),
+               "die Meldung nennt die Runde des Gliedes", __LINE__);
+        pruefe(enthaelt(letzte_meldung.data(), erwartete_ablage.fertig()),
+               "und die Runde, unter der es abgelegt wird", __LINE__);
+        pruefe(enthaelt(letzte_meldung.data(), "kern::verlauf"), "und den Kasten", __LINE__);
+
+        // Dieselbe Gegenprobe wie bei Bedingung 2: Es war die Pruefung des Verlaufs. Die
+        // Kette traegt keine Rundennummer und koennte diesen Fehler gar nicht sehen --
+        // eine Meldung aus `kern::schreiber` hiesse also, dass hier etwas anderes
+        // zugeschlagen hat als die neue Schranke.
+        pruefe(!enthaelt(letzte_meldung.data(), "kern::schreiber"),
+               "und nicht die der Kette", __LINE__);
+
+        pruefe(verlauf.runden() == 2, "der Verlauf traegt danach dieselben Runden", __LINE__);
+        pruefe(verlauf.glieder() == 4, "und dieselben Glieder", __LINE__);
+        pruefe(verlauf.rundennummer(1) == offene_runde, "unter derselben Rundennummer",
+               __LINE__);
+        std::printf("  Glied aus Runde %lld unter Runde %lld: %s\n",
+                    static_cast<long long>(fremd), static_cast<long long>(offene_runde),
+                    letzte_meldung.data());
+    }
+
+    // Und die Gegenprobe zum Riegel selbst: Dieselbe Stelle nimmt danach ein
+    // uebereinstimmendes Glied weiterhin an. Ein Riegel, der nach dem ersten Abbruch alles
+    // abwiese, waere an den beiden Abbruechen oben von diesem nicht zu unterscheiden.
+    verlauf.anhaengen(muster_satz(offene_runde, 5));
+    PRUEFE(verlauf.glieder() == 5);
+    std::printf("  danach wieder uebereinstimmend: %zu Glieder\n", verlauf.glieder());
+
+    // (c) Derselbe Riegel auf dem Weg ueber `aufnehmen`. Die Runde ist dort bereits
+    //     begonnen, wenn das erste Glied abgewiesen wird -- `aufnehmen` laeuft ueber
+    //     `beginne_runde` und `anhaengen` und nicht daneben. Der Verlauf traegt danach
+    //     also eine Runde und kein Glied, und genau das steht hier statt eines
+    //     ungepruefen "unveraendert".
+    {
+        Verlauf zweiter;
+        Kette   fremde;
+        fremde.anhaengen(muster_satz(FREMDE_RUNDEN[0], 6));
+
+        const bool geworfen = hat_abgebrochen(
+            [&zweiter, &fremde]() { zweiter.aufnehmen(RUNDE_DER_ABLAGE, fremde); });
+        PRUEFE(geworfen);
+        PRUEFE(zweiter.runden() == 1);
+        PRUEFE(zweiter.glieder() == 0);
+        PRUEFE(zweiter.rundennummer(0) == RUNDE_DER_ABLAGE);
+        std::printf("  ueber aufnehmen: %zu Runde(n), %zu Glieder, Abbruch mit \"%s\"\n",
+                    zweiter.runden(), zweiter.glieder(), letzte_meldung.data());
+    }
+}
+
 }  // namespace
 
 int main()
@@ -918,6 +1028,8 @@ int main()
     probe_verzoegerung_grenzt_ein();
     probe_enden();
     probe_aufloesung_grenzen();
+    std::printf("Bedingung 6 -- ein Glied traegt die Runde, unter der es steht:\n");
+    probe_glied_gehoert_in_seine_runde();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

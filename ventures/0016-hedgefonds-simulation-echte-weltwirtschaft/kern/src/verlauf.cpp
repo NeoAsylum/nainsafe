@@ -25,6 +25,11 @@
 //! Vorrunde, dann der Platz im Verlauf. Ohne festgelegte Reihenfolge haenge es an der
 //! Uebersetzung, welche der Meldungen ankommt, und eine Probe auf den Wortlaut pruefte
 //! dann den Zufall.
+//!
+//! In `anhaengen` gilt dasselbe und in derselben Richtung: erst die Aussage ueber den
+//! Behaelter -- ist eine Runde begonnen, ist noch Platz --, dann die ueber das Argument.
+//! Die Rundennummer des Gliedes wird zuletzt geprueft, weil ihre Meldung die Rundennummer
+//! des Verlaufs nennt und die es ohne begonnene Runde nicht gibt.
 
 #include <cstddef>
 
@@ -184,6 +189,19 @@ void Verlauf::anhaengen(const Ursachensatz& satz)
         meldung.text(" ist voll: die Aufnahmekapazitaet je Runde betraegt ");
         meldung.zahl(static_cast<i64>(GLIEDER_JE_RUNDE));
         meldung.text(" Glieder (T19). Ein weiteres Glied waere eine stille Kuerzung.");
+        festkomma::abbruch(meldung.fertig());
+    }
+
+    if (satz.runde != nummer_[runden_ - 1]) {
+        Meldung meldung;
+        meldung.text("kern::verlauf -- das Glied traegt die Runde ");
+        meldung.zahl(satz.runde);
+        meldung.text(", aufgenommen wird es unter der Runde ");
+        meldung.zahl(nummer_[runden_ - 1]);
+        meldung.text(". Beide Zahlen sagen dasselbe (T18), und dieser Kasten ist die "
+                     "einzige Stelle, an der sie nebeneinander stehen. Laufen sie "
+                     "auseinander, haelt die Rueckwaertsaufloesung aus T20 die "
+                     "Ursachenrunde gegen eine fremde Rundennummer -- und tut es lautlos.");
         festkomma::abbruch(meldung.fertig());
     }
 
