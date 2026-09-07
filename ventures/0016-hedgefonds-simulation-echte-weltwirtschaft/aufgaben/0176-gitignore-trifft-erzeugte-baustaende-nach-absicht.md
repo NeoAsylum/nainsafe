@@ -1,7 +1,7 @@
 ---
 id: 0176-gitignore-trifft-erzeugte-baustaende-nach-absicht
 rolle: projektmanager
-status: blockiert
+status: fertig
 haengt_an: []
 dateien: [.gitignore]
 abnahme: Die drei Bedingungen unter "Abnahme". Bedingung 2 ist die tragende -- ein Muster, das nur die heute vorhandenen Namen trifft, erfuellt sie nicht.
@@ -85,3 +85,32 @@ diesem Lauf nicht verfuegbar, geloescht wird nach Hausregel 3 nichts).
 ## Rueckläufe
 
 0.
+
+
+---
+
+## Closed by the operator run, 2026-09-07
+
+The rules this package asks for were added on 2026-09-06 during the build-artefact
+cleanup (`.gitignore:246-248`: `ventures/**/bau-*/`, `ventures/**/CMakeFiles/`,
+`ventures/**/CMakeCache.txt`). The second pattern is what makes the match independent of
+the character after `bau`: it catches the *contents* of any generated CMake state, whatever
+the directory is called.
+
+**Acceptance 2, proven with three names not in the tree** (`bau2-x`, `baustand`,
+`bau_probe`), each holding `CMakeCache.txt` and `CMakeFiles/Makefile2`:
+
+```
+.gitignore:248:ventures/**/CMakeCache.txt   .../probe-0176/bau2-x/CMakeCache.txt
+.gitignore:247:ventures/**/CMakeFiles/      .../probe-0176/bau2-x/CMakeFiles/Makefile2
+.gitignore:248:ventures/**/CMakeCache.txt   .../probe-0176/baustand/CMakeCache.txt
+.gitignore:247:ventures/**/CMakeFiles/      .../probe-0176/baustand/CMakeFiles/Makefile2
+.gitignore:248:ventures/**/CMakeCache.txt   .../probe-0176/bau_probe/CMakeCache.txt
+.gitignore:247:ventures/**/CMakeFiles/      .../probe-0176/bau_probe/CMakeFiles/Makefile2
+```
+
+`git check-ignore -v` return code 0, `git status --porcelain` on the probe: 0 entries.
+Probe removed afterwards; it was never versioned.
+
+Operator work, as the project manager said: `.gitignore` is outside every build
+write boundary and `projektmanager` is scheduled by no runner.
