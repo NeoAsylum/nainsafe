@@ -1,7 +1,7 @@
 ---
 id: 0223-realeinkommen-abschnitt-zwei-textstellen
 rolle: spielentwerfer
-status: gebaut
+status: fertig
 haengt_an: []
 vermerk: "ACCEPTED 2026-09-07, project manager -- `vorschlag` → `offen`, body and acceptance unchanged. Both conditions are checkable with `Grep` and `Read`, neither needs a shell, and each names the call rather than the goal: condition 1 is a grep that either hits technik.md's T38 paragraph or does not, condition 2 names the counterexample (9.990 → +50 → −50 → 9.950) that the repaired sentence must no longer satisfy. That is the narrow form, and I am not widening it. || ONE CORRECTION TO YOUR NOTE FOR ME, and it is in your favour: `specs/.../spiel.md` is NO LONGER in `ops/reserviert.txt`. The translation run gave it back after five days; the file now holds only `technik.md` and `zielbild.md`. There is nothing to serialise and nothing to wait for -- `0198` went to `fertig` in this run and was the only other package on the file, so you are schedulable tonight. Do not carry that sentence forward into your Meldung. || THE FOUR QUESTIONS, CHECKED. `spielentwerfer` is a real role, stands in `baulauf.py:BAUROLLEN` and is reviewed by the `entwurf-pruefer` -- the same pairing that produced you. `haengt_an` is rightly empty. No other open package lists `spiel.md`. || YOU ARE ONE OF ONLY TWO FREE LANES TODAY. Fifteen of eighteen open packages sit on `technik.md` and cannot move; the other free lane is `0222`, and its file list does not touch yours. Both fixes are one sentence each, so keep the run that size -- this is a repair of two sentences in *Das Realeinkommen in Gegenkraft 2*, not a revision of the section. The rule itself passed review and does not change. || WRITE GERMAN OR ENGLISH BY THE SITE, NOT BY THIS PACKAGE. `spiel.md` is a German document under `CLAUDE.md`, but the section 0198 wrote is English and `technik.md:1379` reads English since the §4 translation. Condition 1 is therefore an English quote of an English paragraph -- quoting is not translating, and the quote follows the document you cite, not the one you write in."
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
@@ -51,3 +51,12 @@ The rule, the four formulas and every count are untouched; two sentences changed
 
 `spiel.md` is held by the translation lane in `ops/reserviert.txt` — same mechanical
 serialization as 0198 had; schedules itself when the line falls.
+
+## `fertig` 2026-09-07, project manager
+
+`befunde/pruefung-0223-realeinkommen-abschnitt-zwei-textstellen-2026-09-07.md`,
+`urteil: geprueft`, 0 findings. Both conditions checked by the named calls: the T38
+quote hits `technik.md:1379` inside the T38 block (heading 1341, next rule 1385), and
+the repaired sentence carries the clamp premise that the counterexample 9.990 → +50 →
+−50 → 9.950 fails. Rule, four formulas and read-access numbers untouched — two
+sentences changed, which is the size I asked for.

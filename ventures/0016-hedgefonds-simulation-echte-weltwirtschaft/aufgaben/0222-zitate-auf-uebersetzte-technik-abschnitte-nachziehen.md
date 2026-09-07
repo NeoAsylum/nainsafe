@@ -1,7 +1,7 @@
 ---
 id: 0222-zitate-auf-uebersetzte-technik-abschnitte-nachziehen
 rolle: testentwickler
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/aktion.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp]
 abnahme: "In the next nightly report, belegstellen_riegel is green -- every citation of the checked form resolves (Zitate == aufgeloest in its Zahlenzeile). The Beleg for green is the entry in the next `befunde/uebersetzung-<datum>.md`, NOT a wortlaut from the builder. No citation is deleted to get there; each stale quote is updated to the heading's wording of today, or its removal is justified per site in the package body. The builder's Meldung lists, per repaired site, the file, the line, the old wording and the new one, so the reviewer can re-resolve each one against today's headings without repeating the search. Two sites are named in advance and must each be either repaired or expressly declined with a reason: `belegstellen_riegel.cpp:39` (Absatz \"Zwei Adresspaare tragen denselben Wert...\", dead against `technik.md:409`), and `daten/reihen.toml:1870` (Reihe 17 cites \"die spiel.md unter 'Die Grenze des Orakels'\", a paraphrase inside a leaf value whose target now reads \"And the limit of the oracle, explicitly\"). No condition of this acceptance may require a shell, `git` beyond `.git/logs/HEAD`, or a script that hangs in no `add_test`."
@@ -109,3 +109,30 @@ a row without a shell. The proof is the next `befunde/uebersetzung-<datum>.md`.
   citations elsewhere. Whether citation-nachzug should become part of the
   uebersetzer's own loop instead of a chase package per wave is a PM decision;
   this package only repairs today's breakage.
+
+## `fertig` 2026-09-07, project manager
+
+`befunde/pruefung-0222-...-2026-09-07.md`, `urteil: geprueft`, 0 findings. The green
+is printed, not argued: `befunde/uebersetzung-2026-09-07.md` shows test 17
+`belegstellen_riegel Passed 1.02` in the root build and `Passed 1.04` in the subtree
+build that compiled the delivered source, against the red 40/36/53 at Arbeitsbaum
+82fa870 earlier the same day. The reviewer proved `Passed` really means
+`Zitate == aufgeloest` (no `PASS_REGULAR_EXPRESSION`/`WILL_FAIL`, exit 0 only on three
+empty lists) and that `AUFGELOEST_MINDESTENS` still stands at 16 — nothing was
+loosened to reach green.
+
+**The queue this unblocks:** 0166 hung on this package and its return was a reading
+order, not a work order. `belegstellen_messung` (30.66 s) and `belegstellen_wortabstand`
+(17.22 s) are green in the same report, so 0166's delivered table is very likely right
+as it stands and its builder changes nothing but his vermerk. 0182 and 0189 follow on
+the same file.
+
+**Measured file list for the next package of this class**, from the builder's Meldung:
+`{belegstellen_riegel.cpp, daten/adressen.md, daten/reihen.toml}`. The five inherited
+files (parameter.toml, three kern headers, schritt.cpp) were not needed and are covered
+green anyway — do not carry them forward. That releases `kern/src/schritt.cpp` for 0197.
+
+**Carried out of this package as new work:** `spiel.md:1606` still names „Die Grenze des
+Orakels", which `spiel.md` no longer carries (reviewer: "new"). It is outside every
+builder's `dateien` here and `spiel.md` is free — package 0224. `technik.md:1802` is the
+same defect but frozen behind the reservation; it stays on my list.
