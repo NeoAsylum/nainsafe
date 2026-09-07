@@ -113,32 +113,83 @@ all. And `ops/uebersetzt.txt` records that a section was **worked**, not that it
 **changed** — "Was bewusst fehlt" is listed there and still stands German at
 `spiel.md:2859`. Resolve every citation against the file; the list will lie to you.
 
+## `ops/uebersetzt.txt` counts attempts, not completions — my morning forecast was wrong in method — 2026-09-07 (8)
+
+**This morning I divided `uebersetzt.txt` by `ops/inhalt-<venture>.md` and forecast "three
+sections left, the wall dissolves in about two days."** Tonight the ledger says
+**technik.md 21 of 21** and **spiel.md 14 of 15** — and `ops/reserviert.txt` still holds
+**both** files. The forecast was not merely off; the denominator was the wrong kind of
+number.
+
+**Why, and it was printed in front of me:** technik.md §5 and §6 each appear **twice** in
+`uebersetzt.txt`. A section can be listed and re-worked. Today's commits say it outright —
+"Uebersetzer: ein halb uebersetzter Abschnitt darf nicht ins Buch" and "der Bestand war
+nicht englisch -- drei Luecken in der Erkennung". So the file records *a section was
+worked*, not *a section is finished*. That is the same property 0224's vermerk already
+warned about for headings ("records that a section was **worked**, not that its heading
+**changed**") — I applied it to headings and not to my own arithmetic.
+
+**The rule: a ledger of attempts has no denominator.** `reserviert.txt` is the only
+statement of what is still held, and it is written by the run that holds it. Read it;
+do not compute a completion date from a work log. My entry (7) is superseded on its
+forecast and stands only on its instruction — *do not re-cut around the reservation*,
+which was right for the wrong reason.
+
+**And that flips entry (7)'s other conclusion.** I wrote "split `technik.md` for the next
+venture, not for this one", because the wait was about to end. It is not about to end,
+and the arithmetic that matters is unchanged either way: **15 open packages sit on that
+one file, so they serialise to 15 nights whenever it thaws.** Twenty-first time due, and
+this time it goes to the Geschäftsführer as a number, not as a complaint.
+
+## One lane of eight, and I did not invent a second
+
+**0182 was the only schedulable package tonight.** 16 of 18 open packages are frozen under
+the reservation, and 0157 waits behind blocked 0197. I checked the two blocked packages
+whose `haengt_an` looked satisfiable and **both are legitimately blocked** — 0194 needs
+`agents/baulauf.py` to run the OFF profile (no role may write `agents/`), 0003 contradicts
+T5 and needs an operator ADR. Re-verified, not assumed; **do not re-open either next run
+without new evidence.**
+
+I cut **0225** (reihen.toml:1870, the citation with no Schluesselwort) but hung it
+**behind** 0182 and 0189 rather than beside them, because adding a keyword there moves the
+riegel's base numbers — the exact drift that cost 0166 a Ruecklauf. **A free file is not a
+free lane when the two packages share a measurement.** `dateien` cannot see that; I can.
+That leaves tonight at one lane, and the honest reason is the reservation, not the cut.
+
 ## Offene Fährten
 
-- **Lanes tonight: two of eight** (0166, 0224 — I had to cut the second one to get it).
-  **19 open, 15 frozen on `technik.md`**, seventh day, including priority places 1, 4, 5.
-  **But see entry (7): three sections left, so the wall dissolves rather than needs
-  breaking.** When it does, fifteen packages land at once and the file lists will collide
-  hard — the next cut of mine should be ready for that, not for the drought.
-- **The belegstellen queue moved for the first time in days.** 0222 `fertig` → 0166 fully
-  unblocked (all four `haengt_an` now `fertig`) → 0182 → 0189 behind it. All three sit on
-  `belegstellen_riegel.cpp`, so they can only ever run one per night; that chain is four
-  nights long at best and nothing can shorten it.
+- **Lanes tonight: one of eight** (0182). **18 open, 15 frozen on `technik.md`, 1 on
+  `spiel.md`**, eighth day, including priority places 1, 4, 5. **Entry (8) supersedes (7):
+  the wall has no measurable end** — do not forecast one from `uebersetzt.txt` again.
+- **The belegstellen queue is now the factory's only moving part.** 0166 `fertig` → 0182
+  unblocked → 0189 → 0225 behind it. All four touch the same measurement (the first three
+  share `belegstellen_riegel.cpp`; 0225 moves the corpus it counts), so it is **one per
+  night, four nights**, and nothing can shorten it.
+- **The standing red is gone.** Today's report is `ergebnis: ok`, 24/24 in the root tree,
+  every subtree green. `ops/plan.md`'s "Was quer liegt" opens with a red that no longer
+  exists — the Geschäftsführer is writing against a stale observation.
 - **Measured file list for the citation-nachzug class**, from 0222's builder:
   `{belegstellen_riegel.cpp, daten/adressen.md, daten/reihen.toml}`. The five inherited
   files were not needed — notably `kern/src/schritt.cpp`, which 0197 needs the moment its
   blockade lifts. **Inherited `dateien` lists cost lanes; make the builder report which
   ones he did not touch.** That instruction paid for itself in one run.
-- **Deferred on purpose, do not forget it:** `daten/reihen.toml:1870` was repaired but
-  deliberately left without a Schluesselwort, because adding one would move the base
-  number 0166's Messstand prints. It is a real open decision — take it up **after** 0166
-  is `fertig`, never during.
-- **Third wave of citation breakage, and I am carrying the count to the Geschäftsführer.**
-  0200 wave one, 0222 wave three, 0224 the prose sites the riegel never scanned. Whether
-  nachzug belongs in the uebersetzer's own loop is recommendation B in `ops/plan.md` and
-  has been the operator's open decision for a day. Note for that report: three sections of
-  `technik.md` remain, so **wave four is the last one** — which weakens the case for a
-  rule change and strengthens the case for just finishing.
+- **Deferred item discharged:** `daten/reihen.toml:1870` is now package **0225**, behind
+  0182 and 0189. Its siblings — the three paraphrase citations of the same file
+  (`Abschnitt zur Partielaenge R`, twice `spiel.md, Offene Entwurfsfragen`) — are
+  deliberately **not** in it: each one moves the base numbers again. Cut them as a
+  follow-on **only after 0225's report shows the head numbers stable**, and then as one
+  package, not three.
+- **0224's builder measured something worth more than his package:** the abnahme named
+  `*Kursiv*` and „Anführung" as the reference forms, and an unrequested fifth grep found
+  **three more dead references in bold form** (:24, :51, :302). **The two forms an
+  acceptance names are not the whole class** — when I write a sweep abnahme again, the
+  form list is a floor, and the builder is asked to report forms it missed.
+- **Fourth wave of citation breakage, and the "last wave" argument is withdrawn.** 0200
+  wave one, 0222 wave three, 0224 the prose sites the riegel never scanned, 0225 the
+  citation it cannot see at all. This morning I told the Geschäftsführer wave four would
+  be the last, on the strength of the ledger arithmetic that entry (8) has now retired.
+  **I have no basis for a last wave, so recommendation B in `ops/plan.md` stands on its
+  own merits and I stop qualifying it.**
 - **0197 stays blocked, one package deep** — 0198 is `fertig` and off its `haengt_an`;
   only 0208-schritt remains, frozen under the same `technik.md` line. Both remaining gaps
   of `ops/plan.md` are behind the translation run, not behind an agent.
@@ -148,15 +199,14 @@ all. And `ops/uebersetzt.txt` records that a section was **worked**, not that it
   here:** without a shell he cannot read a blob, so a leaf value changed *in place* moves
   none of his counts. He wrote it himself rather than letting it pass as coverage.
 - Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` corrupt every `^status:` count —
-  **fourth run in a row.** No role may delete (hard rule 3), so this only ever leaves the
-  repo by the operator's hand. It belongs in the Geschäftsführer's report, not in this
-  list where I have now written it four times. Subtract 2 from every `gebaut` count until
-  it goes.
-- **`technik.md` zerlegen**, twentieth time due — but for the first time the argument has
-  changed: the file frees itself in about two days. **Split it for the next venture, not
-  for this one.** Fifteen packages waiting on one file was worth a rewrite when the wait
-  was open-ended; it is not worth one with three sections left.
-- **`high` was enough**, thirteenth run. Two acceptances, one unblocking, one package cut.
-  The one thing that needed judgement was refusing to re-plan around the reservation, and
-  what settled it was arithmetic on two small files — reading, not reasoning.
+  **fifth run in a row.** No role may delete (hard rule 3), so this only ever leaves the
+  repo by the operator's hand. Subtract 2 from every `gebaut` count until it goes.
+- **`technik.md` zerlegen**, twenty-first time due, and the argument is **back on for this
+  venture**. Entry (8) killed the reason I gave for deferring it. The number that decides
+  it: 15 open packages on one file = 15 nights of serialisation, thaw or no thaw. That is
+  the form it goes to the Geschäftsführer in.
+- **`high` was enough**, fourteenth run — and this run is the argument for it. What
+  mattered was noticing that my own two-day forecast was built on a work log rather than a
+  completion record. That is a reading error caught by re-reading, not a depth problem.
+  What I would have wanted more of is nothing; what I wanted was one more free file.
 
