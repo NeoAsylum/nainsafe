@@ -5,10 +5,10 @@ erstellt: 2026-08-31
 quellen_geprueft: 13
 quellen_brauchbar: 6
 sperrfrage: geloest
-empfehlung: Weltbank WDI (CC BY 4.0) als Kern, IWF-Statistikdaten fuer Zins, Wechselkurs und Staatsfinanzen, CEPII BACI (Etalab 2.0) fuer bilaterale Handelsstroeme, Penn World Table 11.0 (CC BY 4.0) fuer Produktivitaet und Preisniveaus
+empfehlung: World Bank WDI (CC BY 4.0) as the core, IMF statistical data for interest rate, exchange rate and public finances, CEPII BACI (Etalab 2.0) for bilateral trade flows, Penn World Table 11.0 (CC BY 4.0) for productivity and price levels
 ---
 
-# Ja: Vier Quellen erlauben im Wortlaut, die Daten in ein verkauftes Produkt einzubetten und mitzuliefern -- und sie decken den Kern des Modells ab.
+# Yes: Four sources permit, in their exact wording, embedding the data in a sold product and shipping it with it -- and they cover the core of the model.
 
 ## The blocking question
 
