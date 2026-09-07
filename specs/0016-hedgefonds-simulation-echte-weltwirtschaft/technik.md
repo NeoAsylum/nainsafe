@@ -3847,229 +3847,229 @@ none of them changes anything about these three prescriptions.
 
 ## 21. Was ein fünftes Land an Daten mitbringt — Paket `0141`
 
-**Was hier entschieden wird und was nicht.** Dieser Abschnitt wählt **kein** Land aus (das ist
-`0118`), ändert die Länderzahl **nicht**, lädt keine Daten und bewertet keine Lizenz. Er
-beschreibt den Aufwand, er treibt ihn nicht. Entschieden wird zweierlei: die abzählbare Liste
-dessen, was ein weiteres Land an Reihen, Fenstern und Lizenzfragen mitbringt (T62), und was
-gilt, wenn der eingebettete Leitzinscode ein Land nicht führt (T63). Der Abschnitt ist ein
-reiner Anhang; er entfernt und ändert keine Zeile des Bestands.
+**What is decided here and what is not.** This section selects **no** country (that is
+`0118`), does **not** change the country count, loads no data and assesses no license. It
+describes the effort; it does not incur it. Two things are decided: the countable list of
+what a further country brings in series, windows and license questions (T62), and what
+holds when the embedded policy-rate code does not list a country (T63). The section is a
+pure appendix; it removes and changes no line of the existing text.
 
-### T62 — Die Liste je Datenreihe
+### T62 — The list per data series
 
-**Drei Fensterklassen, und sie folgen aus der Rolle der Reihe, nicht aus ihrer Nummer.** `A`
-ist das Startjahr des Jahrgangs, `R` die Rundenzahl; ein Jahrgang trägt `R+1` Stützstellen für
-die Jahre `A … A+R`.
+**Three window classes, and they follow from the role of the series, not from its number.** `A`
+is the start year of the vintage, `R` the round count; a vintage carries `R+1` support points
+for the years `A … A+R`.
 
-| Klasse | Anforderung | Vorgabe |
+| Class | Requirement | Prescription |
 |---|---|---|
-| **voll, ohne Füllung** | `R+1` Stützstellen, `gefuellt = 0` | T24, erste Schwelle |
-| **voll, Füllung gekennzeichnet** | `R+1` Stützstellen; Lücken werden gefüllt und ausgewiesen, gehen aber in kein Fehlermaß ein | T24, T25 |
-| **Startjahr** | genau eine Stützstelle, das Jahr `A` | T25 |
+| **full, no filling** | `R+1` support points, `gefuellt = 0` | T24, first threshold |
+| **full, filling marked** | `R+1` support points; gaps are filled and disclosed, but enter no error measure | T24, T25 |
+| **start year** | exactly one support point, the year `A` | T25 |
 
-**Die Liste ist in `R` geschrieben, weil das Fenster in diesem Repo zwei Werte hat.** Dieses
-Dokument führt durchgehend den Prüfjahrgang 1997–2021, also `A = 1997`, `R = 24`, 25
-Stützstellen. `daten/reihen.toml` misst für Reihe 11 den ersten US-Wert im Jahr 2001 und
-urteilt *„verkuerzt — 1997 bis 2000 fehlen, kostet vier Stuetzstellen und erzwingt das
-Startjahr 2001"*, also `A = 2001`, `R = 20`, 21 Stützstellen. Die Wahl zwischen den beiden
-Auswegen — Reihe streichen oder Fenster kürzen — steht nach T24 dem Spielentwerfer zu und
-kostet nach T40 eine Zahl im Manifest. **Dieser Abschnitt löst den Punkt nicht auf**; wo unten
-eine Zahl steht, steht sie für beide Lesarten.
+**The list is written in `R` because the window has two values in this repo.** This
+document uses the check vintage 1997–2021 throughout, so `A = 1997`, `R = 24`, 25
+support points. `daten/reihen.toml` measures the first US value of series 11 in the year 2001
+and judges *„verkuerzt — 1997 bis 2000 fehlen, kostet vier Stuetzstellen und erzwingt das
+Startjahr 2001"*, so `A = 2001`, `R = 20`, 21 support points. The choice between the two
+ways out — drop the series or shorten the window — belongs to the game designer under T24 and
+costs a number in the manifest under T40. **This section does not resolve the point**; where a
+number stands below, it stands for both readings.
 
-| Nr | Größe | neu bei `L: 4 → 5` | Quelle, eingebetteter Code | Fenster | Lizenzstand | bewegt ein weiteres Land das Urteil? |
+| No | Quantity | new at `L: 4 → 5` | Source, embedded code | Window | License status | does a further country move the verdict? |
 |---:|---|---:|---|---|---|---|
-| 1 | BIP, konstante Preise | 1 | WDI `NY.GDP.MKTP.KD`, Rückfall PWT | voll, ohne Füllung¹ | unklar | **ja** — Ämter und Notenbanken |
-| 2 | Wertschöpfungsanteil je Sektor | 3 | WDI `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS` | voll, ohne Füllung¹ | unklar | **ja** — Ämter und Notenbanken, **ohne Ausweichquelle** |
-| 3 | Kapitalstock | 1 | PWT, Code nirgends festgeschrieben | Startjahr | frei | nein |
-| 4 | Produktivität (TFP) | 1 | PWT, Code nirgends festgeschrieben | Startjahr | frei | nein |
-| 5 | Bevölkerung | 1 | WDI `SP.POP.TOTL`, Rückfall PWT | voll, Füllung gekennzeichnet | unklar | **ja** — Ämter (das Feld nennt keine Notenbank) |
-| 6 | Erwerbstätige | 1 | WDI `SL.TLF.TOTL.IN`, Rückfall PWT | voll, Füllung gekennzeichnet | unklar | nein — ILO |
-| 7 | Beschäftigung je Sektor | 3 | WDI (ILO) `SL.AGR.EMPL.ZS`, `SL.IND.EMPL.ZS`, `SL.SRV.EMPL.ZS` | Startjahr | unklar | nein — ILO |
-| 8 | Verbraucherpreise | 1 | WDI `FP.CPI.TOTL.ZG`, Rückfall IWF IFS | voll, ohne Füllung¹ | frei² | nein — IWF |
-| 9 | Leitzins | 1 | IWF `IMF.STA/MFS_IR 9.0.0`, Code `DISR_RT_PT_A_PT` | voll, Füllung gekennzeichnet | unklar | nein — IWF; **Codewahl je Land, siehe T63** |
-| 10 | Wechselkurs gegen USD | 1³ | WDI `PA.NUS.FCRF`, Rückfall IWF IFS | voll, ohne Füllung¹ | frei² | nein — IWF |
-| 11 | Staatsschuldenquote | 1 | IWF `IMF.RES/WEO 9.0.0`, `GGXWDG_NGDP` | voll, ohne Füllung¹ | unklar | nein — IWF |
-| 12 | Haushaltssaldo | 1 | IWF `IMF.RES/WEO 9.0.0`, `GGXCNL_NGDP` | voll, Füllung gekennzeichnet | unklar | nein — IWF |
-| 13 | Zollniveau, aggregiert | 1 | WDI (aus WITS) `TM.TAX.MRCH.WM.AR.ZS` | voll, Füllung gekennzeichnet | **gesperrt**⁴ | nein — WITS, UNCTAD, WTO |
-| 14 | Bilaterale Ströme nach HS92 | **20 Ströme** | CEPII BACI, Fassung 202601 | voll, ohne Füllung¹ | frei | nein — Etalab |
-| 15 | Preisniveau im Ländervergleich | 1 | PWT, Code nirgends festgeschrieben | Startjahr | frei | nein |
-| 16 | `durchgriff` | 2, abgeleitet | aus den Reihen 14, 1 und 2 nach T23 Punkt 5 | keine eigene Beschaffung | geerbt | erbt von 1 und 2 |
-| 17 | Sektorpreise | — | keine | endogen | — | — |
-| 18 | Zustimmung | 1 Schlüsselwert | `parameter.toml` | keine Beschaffung | — | — |
-| 19 | Marktkorbwert und Marktrendite | — | nicht je Land geführt | — | — | — |
+| 1 | GDP, constant prices | 1 | WDI `NY.GDP.MKTP.KD`, fallback PWT | full, no filling¹ | unklar | **yes** — offices and central banks |
+| 2 | Value-added share per sector | 3 | WDI `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS` | full, no filling¹ | unklar | **yes** — offices and central banks, **no fallback source** |
+| 3 | Capital stock | 1 | PWT, code not fixed anywhere | start year | frei | no |
+| 4 | Productivity (TFP) | 1 | PWT, code not fixed anywhere | start year | frei | no |
+| 5 | Population | 1 | WDI `SP.POP.TOTL`, fallback PWT | full, filling marked | unklar | **yes** — offices (the field names no central bank) |
+| 6 | Labor force | 1 | WDI `SL.TLF.TOTL.IN`, fallback PWT | full, filling marked | unklar | no — ILO |
+| 7 | Employment per sector | 3 | WDI (ILO) `SL.AGR.EMPL.ZS`, `SL.IND.EMPL.ZS`, `SL.SRV.EMPL.ZS` | start year | unklar | no — ILO |
+| 8 | Consumer prices | 1 | WDI `FP.CPI.TOTL.ZG`, fallback IMF IFS | full, no filling¹ | frei² | no — IMF |
+| 9 | Policy rate | 1 | IMF `IMF.STA/MFS_IR 9.0.0`, code `DISR_RT_PT_A_PT` | full, filling marked | unklar | no — IMF; **code choice per country, see T63** |
+| 10 | Exchange rate against USD | 1³ | WDI `PA.NUS.FCRF`, fallback IMF IFS | full, no filling¹ | frei² | no — IMF |
+| 11 | Government debt ratio | 1 | IMF `IMF.RES/WEO 9.0.0`, `GGXWDG_NGDP` | full, no filling¹ | unklar | no — IMF |
+| 12 | Fiscal balance | 1 | IMF `IMF.RES/WEO 9.0.0`, `GGXCNL_NGDP` | full, filling marked | unklar | no — IMF |
+| 13 | Tariff level, aggregated | 1 | WDI (from WITS) `TM.TAX.MRCH.WM.AR.ZS` | full, filling marked | **gesperrt**⁴ | no — WITS, UNCTAD, WTO |
+| 14 | Bilateral flows by HS92 | **20 flows** | CEPII BACI, version 202601 | full, no filling¹ | frei | no — Etalab |
+| 15 | Price level in country comparison | 1 | PWT, code not fixed anywhere | start year | frei | no |
+| 16 | `durchgriff` | 2, derived | from series 14, 1 and 2 per T23 point 5 | no procurement of its own | inherited | inherits from 1 and 2 |
+| 17 | Sector prices | — | none | endogenous | — | — |
+| 18 | Approval | 1 key value | `parameter.toml` | no procurement | — | — |
+| 19 | Market basket value and market return | — | not kept per country | — | — | — |
 
-¹ **Nur wenn das Land Rückvergleichsland wird.** Als Spielland genügt für diese Reihen das
-Startjahr: T58 legt seine Adressen im `weltlauf` still, sie behalten ihren Startwert und
-werden nicht geschrieben. Die Sollrolle entsteht mit der Klasse, nicht mit dem Land.
+¹ **Only if the country becomes a backtest country.** As a play-only country the start year
+suffices for these series: T58 shuts down its addresses in the `weltlauf`; they keep their
+start value and are not written. The target role arises with the class, not with the country.
 
-² `frei` nach `daten/lizenzbefund-wdi.md`, weil das Feld `Source` als Drittanbieter den IWF
-nennt und dessen Bedingungen den gewerblichen Verkauf erlauben. `reihen.toml` stellt dieser
-Zahl in `zaehlung.lizenz.gegenrechnung` eine zweite gegenüber: Der IWF-Lizenztext ist nach
-fünf Anläufen aus drei Rollen ungelesen (HTTP 403), und nimmt man „ein Suchauszug genügt
-nicht" auch dort ernst, ist auch dieses `frei` ein `unklar`. Beide Lesarten stehen
-nebeneinander; **ein weiteres Land bewegt keine von beiden.**
+² `frei` per `daten/lizenzbefund-wdi.md`, because the `Source` field names the IMF as third
+party and its terms permit commercial sale. `reihen.toml` sets a second number against this
+one in `zaehlung.lizenz.gegenrechnung`: the IMF license text is unread after five attempts
+from three roles (HTTP 403), and taking „ein Suchauszug genügt
+nicht" seriously there too, this `frei` is an `unklar` as well. Both readings stand
+side by side; **a further country moves neither of them.**
 
-³ Nur wenn das fünfte Land nicht das Numéraireland ist. Reihe 10 trägt die Dimension 3 und
-nicht 4, weil der Numéraire keinen eigenen Kurs hat — das ist der Term `n` aus T59.
+³ Only if the fifth country is not the numéraire country. Series 10 carries dimension 3 and
+not 4 because the numéraire has no rate of its own — that is the term `n` from T59.
 
-⁴ Für **alle** Länder gleich gesperrt, nach `lizenzbefund-wdi.md` der einzige Fall, in dem der
-genannte Drittanbieter seine Zustimmung ausdrücklich vorbehält. Ein fünftes Land ändert daran
-nichts und erbt den Fall: Von seinen drei Politikpfadreihen hat eine von vornherein keinen
-Datenanker. T26 erster Fall gilt unverändert — kein Zollpfad, konstanter Zoll, zwei statt drei
-verankerte Instrumente.
+⁴ Equally locked for **all** countries; per `lizenzbefund-wdi.md` the only case in which the
+named third party expressly reserves its consent. A fifth country changes nothing about this
+and inherits the case: of its three policy-path series, one has no data anchor from the
+outset. T26 first case holds unchanged — no tariff path, constant tariff, two instead of three
+anchored instruments.
 
-**Die Zählung, und sie ist der eigentliche Gegenstand dieses Pakets.** Ein fünftes Land bringt
-**18 Landesreihen und 20 Handelsströme** mit, zusammen **38**. Die Landesreihen sind
-`12 + 2S`, bei `S = 3` also 18; die neuen Ströme sind `2(L+1)(S−1)`, bei `L = 4` und `S = 3`
-also 20 — die Differenz `(L+2)(L+1)(S−1) − (L+1)L(S−1)` aus der Handelsformel in T55.
+**The count, and it is the actual subject of this package.** A fifth country brings
+**18 country series and 20 trade flows**, together **38**. The country series are
+`12 + 2S`, so 18 at `S = 3`; the new flows are `2(L+1)(S−1)`, so 20 at `L = 4` and `S = 3`
+— the difference `(L+2)(L+1)(S−1) − (L+1)L(S−1)` from the trade formula in T55.
 
-| Fensterklasse | Reihen und Ströme | welche |
+| Window class | Series and flows | which |
 |---|---:|---|
-| voll, ohne Füllung | **27** | die sieben neuen Sollreihen (1, 2×3, 8, 10, 11) und die 20 Ströme |
-| voll, Füllung gekennzeichnet | **5** | die exogenen Pfade 5 und 6, die Politikpfade 9, 12, 13 |
-| Startjahr | **6** | 3, 4, 7×3, 15 |
-| Probe | **38** | `27 + 5 + 6` |
+| full, no filling | **27** | the seven new target series (1, 2×3, 8, 10, 11) and the 20 flows |
+| full, filling marked | **5** | the exogenous paths 5 and 6, the policy paths 9, 12, 13 |
+| start year | **6** | 3, 4, 7×3, 15 |
+| test | **38** | `27 + 5 + 6` |
 
-Die sieben Sollreihen sind `S + 4` — genau der Zuwachs, den T59 mit `L_R(S+4) − n` von der
-anderen Seite ausrechnet. Die Prüfgegenstände wachsen um vier (`3 + 1` für ein Land, das nicht
-der Numéraire ist), wie in T58 unter dem Klassenwechsel schon steht.
+The seven target series are `S + 4` — exactly the increase T59 computes from the other side
+with `L_R(S+4) − n`. The check subjects grow by four (`3 + 1` for a country that is not
+the numéraire), as T58 already states under the class change.
 
-**Was daraus an Werten folgt, je Klasse.** Ein **Rückvergleichsland** kostet
-`32(R+1) + 6` Werte: 32 Reihen über das volle Fenster, sechs Startwerte. Ein **Spielland**
-kostet `5(R+1) + 33`: die fünf Pfade über das volle Fenster, 33 Startwerte (7 Reihen +
-20 Ströme + 6). Eingesetzt:
+**What follows in values, per class.** A **backtest country** costs
+`32(R+1) + 6` values: 32 series over the full window, six start values. A **play-only country**
+costs `5(R+1) + 33`: the five paths over the full window, 33 start values (7 series +
+20 flows + 6). Inserted:
 
-| | `R = 24` (Fenster ab 1997) | `R = 20` (Fenster ab 2001) |
+| | `R = 24` (window from 1997) | `R = 20` (window from 2001) |
 |---|---:|---:|
-| Rückvergleichsland | **806** | **678** |
-| Spielland | **158** | **138** |
-| dieselben ohne die gesperrte Reihe 13 | 781 / 133 | 657 / 117 |
+| backtest country | **806** | **678** |
+| play-only country | **158** | **138** |
+| the same without the locked series 13 | 781 / 133 | 657 / 117 |
 
-**Gegenrechnung, nach Quelle statt nach Fensterklasse, für `R = 24` und Rückvergleichsland.**
-WDI zwölf Reihen: sechs Sollreihen (1, 2×3, 8, 10) zu je 25, drei volle Pfade (5, 6, 13) zu je
-25, drei Startwerte (7) — `150 + 75 + 3 = 228`. IWF drei Reihen (9, 11, 12) zu je 25 — 75.
-PWT drei Startwerte (3, 4, 15) — 3. BACI 20 Ströme zu je 25 — 500. Summe
-`228 + 75 + 3 + 500 = 806`, dieselbe Zahl über eine andere Aufteilung, und `12 + 3 + 3 = 18`
-Landesreihen.
+**Counter-calculation, by source instead of by window class, for `R = 24` and backtest country.**
+WDI twelve series: six target series (1, 2×3, 8, 10) at 25 each, three full paths (5, 6, 13) at
+25 each, three start values (7) — `150 + 75 + 3 = 228`. IMF three series (9, 11, 12) at 25 each — 75.
+PWT three start values (3, 4, 15) — 3. BACI 20 flows at 25 each — 500. Sum
+`228 + 75 + 3 + 500 = 806`, the same number over a different split, and `12 + 3 + 3 = 18`
+country series.
 
-**Eine Falle, weil sie dieselbe Familie ist wie „40 gegen 40" und „27 gegen 27" in T55: 38
-gegen 38.** Die 38 Reihen und Ströme dieser Liste und die 38 von `L` unberührten
-Zustandsadressen aus T57 sind dieselbe Zahl und haben nichts miteinander zu tun. T57 rechnet
-`5S + 23` und hängt nicht von `L` ab; diese Liste rechnet `12 + 2S + 2(L+1)(S−1)` und hängt
-davon ab. Bei `L = 5` steht 42 gegen unverändert 38. Wer beide für dieselbe Größe hält, hält
-die Datenkosten eines weiteren Landes für konstant, und sie sind es nicht.
+**A trap, because it is the same family as "40 against 40" and "27 against 27" in T55: 38
+against 38.** The 38 series and flows of this list and the 38 state addresses untouched by
+`L` from T57 are the same number and have nothing to do with each other. T57 computes
+`5S + 23` and does not depend on `L`; this list computes `12 + 2S + 2(L+1)(S−1)` and does.
+At `L = 5` it is 42 against an unchanged 38. Whoever takes the two for the same quantity takes
+the data cost of a further country for constant, and it is not.
 
-**Was ein fünftes Land am Lizenzstand bewegt — und was nicht.** Von den 19 Reihen hängen
-genau **drei** im Feld `Source` an den nationalen Ämtern und Notenbanken der Meldeländer:
-Reihe 1 und Reihe 2 (*„Country official statistics, National Statistical Organizations and/or
-Central Banks"* beziehungsweise *„National Statistical Offices (NSOs); National Accounts data
-files, Central Banks"*) und Reihe 5, die allein die Ämter nennt. Alle übrigen nennen benannte
-Organisationen — IWF, ILO, OECD, WITS/UNCTAD/WTO, CEPII, PWT —, deren Bedingungen von der
-Länderliste unabhängig sind. Ein fünftes Land bringt deshalb **genau zwei** neue zu prüfende
-Stellen mit, sein statistisches Amt und seine Notenbank. Sie treten zu den acht der heutigen
-Modellländer, von denen nach `lizenzbefund-reihen.md` genau eine geprüft ist (Destatis);
-danach sind es zehn Stellen und eine Prüfung.
+**What a fifth country moves in the license status — and what it does not.** Of the 19 series,
+exactly **three** hang, in the `Source` field, on the national offices and central banks of the
+reporting countries: series 1 and series 2 (*„Country official statistics, National Statistical Organizations and/or
+Central Banks"* and *„National Statistical Offices (NSOs); National Accounts data
+files, Central Banks"* respectively) and series 5, which names the offices alone. All others name
+named organizations — IMF, ILO, OECD, WITS/UNCTAD/WTO, CEPII, PWT — whose terms are
+independent of the country list. A fifth country therefore brings **exactly two** new bodies
+to check, its statistical office and its central bank. They join the eight of today's
+model countries, of which per `lizenzbefund-reihen.md` exactly one is checked (Destatis);
+after that it is ten bodies and one check.
 
-Drei Folgerungen, und die dritte ist die, gegen die ich mich selbst korrigiert habe:
+Three conclusions, and the third is the one against which I corrected myself:
 
-1. **Ein fünftes Land kann kein Lizenzurteil verbessern.** Die drei betroffenen Reihen stehen
-   bereits auf `unklar`.
-2. **Es kann eines verschlechtern.** Verweigert das Amt oder die Notenbank des Landes die
-   gewerbliche Weitergabe, sind seine Werte in den Reihen 1, 2 und 5 gesperrt. Reihe 1 und
-   Reihe 5 haben mit der PWT eine geprüft freie Ausweichquelle. **Reihe 2 hat keine** —
-   `quellenwahl_grund` sagt warum: Die PWT liefert keine sektorale Wertschöpfung, feinere
-   Gliederungen liegen nur bei der OECD (ungeklärt) und bei Eurostat (für die Nicht-EU-Länder
-   des Modells gesperrt). Reihe 2 trägt `S` der sieben neuen Sollreihen. Sie ist damit die
-   einzige Stelle der ganzen Liste, an der die Herkunft eines Landes den Rückvergleich hart
-   ausschliesst.
-3. **Trotzdem ist das kein Auswahlkriterium für `0118`.** Sieben der acht heutigen Stellen sind
-   ungeprüft. Ein Kriterium, das von einem fünften Land eine Prüfung verlangt, die für die
-   heutigen Modellländer niemand gemacht hat, misst nicht die Sauberkeit des Landes, sondern
-   wer geprüft wurde. Die zwei neuen Stellen gehören auf dieselbe Liste wie die sieben offenen
-   (`lizenzbefund-reihen.md`, Klärung 4) und werden mit ihnen zusammen erledigt oder gar nicht.
-   **Kosten, kein Tor.**
+1. **A fifth country can improve no license verdict.** The three affected series already
+   stand at `unklar`.
+2. **It can worsen one.** If the country's office or central bank refuses commercial
+   redistribution, its values in series 1, 2 and 5 are locked. Series 1 and
+   series 5 have, with the PWT, a checked free fallback source. **Series 2 has none** —
+   `quellenwahl_grund` says why: the PWT delivers no sectoral value added, finer
+   breakdowns exist only at the OECD (unresolved) and at Eurostat (locked for the non-EU
+   countries of the model). Series 2 carries `S` of the seven new target series. It is thus the
+   only place in the whole list where a country's origin hard-excludes the
+   backtest.
+3. **Still, this is no selection criterion for `0118`.** Seven of today's eight bodies are
+   unchecked. A criterion that demands from a fifth country a check nobody has done for
+   today's model countries does not measure the country's cleanliness but
+   who was checked. The two new bodies belong on the same list as the seven open ones
+   (`lizenzbefund-reihen.md`, clarification 4) and are dealt with together with them or not at all.
+   **A cost, not a gate.**
 
-### T63 — Der Leitzins, wenn der eingebettete Code das Land nicht führt
+### T63 — The policy rate when the embedded code does not list the country
 
-**Gewählt ist ein Ersatzverfahren: keine Ersatzquelle im Voraus und kein Ausschlusskriterium.**
-Die Regel für jedes Land, dessen Leitzins gebraucht wird:
+**Chosen is a substitute procedure: no substitute source in advance and no exclusion criterion.**
+The rule for every country whose policy rate is needed:
 
-1. **Zuerst `LAND.*.A` abrufen, nicht den gewählten Code annehmen.** Ein Abruf auf
-   `IMF.STA/MFS_IR 9.0.0`. Führt das Land einen Code, der einen **Politiksatz** misst, ist das
-   Stufe 1 nach T60 und der Fall ist zu Ende.
-2. Sonst der Reihe nach Stufe 2 (Ableitung ohne freien Parameter), Stufe 3 (kein eigener
-   Hebel — Stufe 1 und 2 auf die Union statt auf das Land), Stufe 4.
-3. Bleibt es bei Stufe 4, ist das Land nach T58 ein **Spielland**. Es ist damit nicht
-   ausgeschlossen, sondern eingeordnet. Für die heutigen Modellländer gilt zusätzlich die
-   Sperre aus T60: Der Jahrgangsbau bricht ab, statt ihre Klasse still umzuschreiben.
+1. **First query `LAND.*.A`, do not assume the chosen code.** One query on
+   `IMF.STA/MFS_IR 9.0.0`. If the country lists a code that measures a **policy rate**, that is
+   stage 1 under T60 and the case is closed.
+2. Otherwise, in order, stage 2 (derivation without a free parameter), stage 3 (no lever of
+   its own — stages 1 and 2 on the union instead of the country), stage 4.
+3. If it stays at stage 4, the country is a **play-only country** under T58. It is thereby not
+   excluded but classified. For today's model countries the lock from T60 additionally
+   applies: the vintage build aborts instead of silently rewriting their class.
 
-**Warum Schritt 1 keine Förmlichkeit ist.** `DISR_RT_PT_A_PT` steht in `reihen.toml` mit
-`code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"` — eine Wahl, keine Eigenschaft des
-Datenflusses. Wie weit Code und Datenfluss auseinanderliegen, ist gemessen und nicht vermutet:
-`daten/nachmessung-zinsreihen-2026-09-05.md` findet im Fenster 1997–2021 für Deutschland
-**elf** jährliche Reihen und den gewählten Code **nicht**, für China **null** Reihen, für die
-USA neun und für Brasilien sieben. Ein Befund „der Code trägt für dieses Land nicht" ist
-deshalb zunächst eine Aussage über die Wahl aus Paket 0006 und noch keine über die Quelle.
-Für ein fünftes Land kostet die Unterscheidung einen Abruf; sie zu überspringen kostet ein
-Land, das man gar nicht hätte verwerfen müssen.
+**Why step 1 is no formality.** `DISR_RT_PT_A_PT` stands in `reihen.toml` with
+`code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"` — a choice, not a property of the
+data flow. How far code and data flow lie apart is measured, not presumed:
+`daten/nachmessung-zinsreihen-2026-09-05.md` finds, in the window 1997–2021, **eleven**
+annual series for Germany and the chosen code **not** among them, **zero** series for China,
+nine for the USA and seven for Brazil. A finding "the code does not carry for this country" is
+therefore at first a statement about the choice from package 0006 and not yet one about the source.
+For a fifth country the distinction costs one query; skipping it costs a
+country that need not have been discarded at all.
 
-**Warum keine Ersatzquelle im Voraus festgelegt wird.** Eine zweite Zinsquelle einzuführen
-hiesse, für **eine** Reihe eine weitere Quelle in die Lizenzprüfung, in `namensnennung` und ins
-Manifest zu nehmen — und die Lizenzarbeit ist nach T62 der teuerste Posten der ganzen Liste.
-Der Preis ist gemessen: Von den acht im WDI eingebetteten Reihen sind fünf `unklar` und eine
-`gesperrt`. Die naheliegenden WDI-Kandidaten `FR.INR.RINR`, `FR.INR.LEND` und `FR.INR.DPST`
-sind ausserdem nach T60 keine Leitzinsen, sondern bestenfalls Eingang einer Ableitung, und der
-Weg über eine Staatsanleiherendite ist dort bereits versperrt: Er führte über `aufschlag`,
-einen Schlüssel aus `parameter.toml`, und eine Ableitung über einen Parametersatzschlüssel ist
-keine. **Solange `MFS_IR` für ein Land trägt, ist es der billigste Weg; trägt es nicht, ist
-Stufe 4 billiger als eine neunte Quelle.**
+**Why no substitute source is fixed in advance.** Introducing a second interest-rate source
+would mean taking, for **one** series, a further source into the license check, into `namensnennung` and into the
+manifest — and license work is, per T62, the most expensive item of the whole list.
+The price is measured: of the eight series embedded in the WDI, five are `unklar` and one
+`gesperrt`. The obvious WDI candidates `FR.INR.RINR`, `FR.INR.LEND` and `FR.INR.DPST`
+are moreover, under T60, no policy rates but at best input to a derivation, and the
+route via a government bond yield is already barred there: it ran via `aufschlag`,
+a key from `parameter.toml`, and a derivation via a parameter-set key is not
+one. **As long as `MFS_IR` carries for a country, it is the cheapest route; where it does not,
+stage 4 is cheaper than a ninth source.**
 
-**Warum kein Ausschlusskriterium — das ist das Argument, das die Wahl trägt.** Reihe 9 ist seit
-Paket 0054 **keine Sollreihe** (`sollreihen = 0`, `t37_klasse` leer) und steht in keinem der
-sechzehn Prüfgegenstände; die abschliessende Aufzählung in `reihen.toml` unter
-`zaehlung.pruefgegenstaende` führt BIP, Sektorstruktur, Verbraucherpreise, Wechselkurs und den
-Handelsblock — den Leitzins führt sie nicht. Ein Land wegen eines fehlenden Leitzinses
-auszuschliessen, schützte also eine Größe, die der Rückvergleich gar nicht misst. Was ein
-fehlender Leitzins wirklich kostet, ist ein verankertes Instrument im `spielmodus` — und genau
-dafür ist die Klasse Spielland gebaut: Ihre Größen sind im `weltlauf` stillgelegt und wirken
-über Handel und Weltpreise auf keinen Prüfgegenstand.
+**Why no exclusion criterion — this is the argument that carries the choice.** Series 9 has,
+since package 0054, been **no target series** (`sollreihen = 0`, `t37_klasse` empty) and stands in none of the
+sixteen check subjects; the exhaustive enumeration in `reihen.toml` under
+`zaehlung.pruefgegenstaende` lists GDP, sector structure, consumer prices, exchange rate and the
+trade block — the policy rate it does not list. Excluding a country over a missing policy
+rate would thus protect a quantity the backtest does not measure at all. What a
+missing policy rate really costs is one anchored instrument in the `spielmodus` — and that is
+exactly what the play-only country class is built for: its quantities are shut down in the
+`weltlauf` and act via trade and world prices on no check subject.
 
-**Die Ausschlussschranke steht an anderer Stelle, und sie ist schärfer.** Ein fünftes Land als
-**Rückvergleichsland** braucht seine `S + 4` = sieben Sollreihen auf Stufe 1 — nach der
-Umkehrung in T60 trägt eine Sollreihe ausschliesslich Stufe 1. Der Leitzins ist keine davon.
-Die eine Reihe, an der ein Land daran scheitern kann und die zugleich keine Ausweichquelle
-hat, ist Reihe 2 (T62, Folgerung 2). **Wer für `0118` ein Ausschlusskriterium sucht, findet es
-dort und nicht beim Leitzins.**
+**The exclusion barrier stands elsewhere, and it is sharper.** A fifth country as a
+**backtest country** needs its `S + 4` = seven target series at stage 1 — by the
+inversion in T60, a target series carries stage 1 exclusively. The policy rate is none of them.
+The one series on which a country can fail at this and which at the same time has no fallback
+source is series 2 (T62, conclusion 2). **Whoever seeks an exclusion criterion for `0118` finds
+it there and not at the policy rate.**
 
-**Was die Wahl mechanisch nach sich zieht — nichts Neues, und das ist beabsichtigt.** T61
-Regel 1 zählt die Herkunftsblöcke als `3L + 16`, bei `L = 4` also 28. Ein fünftes Land macht
-daraus **31**: drei weitere Blöcke, je einer für die Politikpfadreihen 9, 12 und 13. Fehlt
-einer, bricht der Jahrgangsbau nach Regel 1 ab. Trägt einer `stufe = 4`, ist das Land nach
-Regel 5 ein Spielland und muss auch im Manifest so stehen, sonst hält der Bau an. T63 braucht
-damit keine eigene Sperre; es sagt nur, in welcher Reihenfolge die Stufen zu versuchen sind
-und dass das Ergebnis eine Klasse ist und kein Urteil über die Zulässigkeit des Landes.
+**What the choice entails mechanically — nothing new, and that is intended.** T61
+rule 1 counts the origin blocks as `3L + 16`, so 28 at `L = 4`. A fifth country makes
+that **31**: three further blocks, one each for the policy-path series 9, 12 and 13. If one is
+missing, the vintage build aborts under rule 1. If one carries `stufe = 4`, the country is a
+play-only country under rule 5 and must stand so in the manifest too, otherwise the build halts. T63 thus
+needs no lock of its own; it only says in which order the stages are to be tried
+and that the result is a class and not a verdict on the admissibility of the country.
 
-### Was dieser Abschnitt nicht angefasst hat
+### What this section did not touch
 
-**Nichts.** Kein Land gewählt, die Länderzahl unverändert, keine Zeile des Bestands entfernt
-oder geändert, keine Tabelle nachgezogen, `reihen.toml` nicht berührt. Die Zustandsgröße aus
-T55 und die Aussage über die heutigen Modellländer stehen unbewegt: `grep -c` liefert vor und
-nach diesem Lauf 44 beziehungsweise 7 Zeilen. Das Fenster ist **nicht** entschieden — die
-Liste ist in `R` geschrieben, und beide Lesarten tragen ihre Zahl.
+**Nothing.** No country chosen, the country count unchanged, no line of the existing text
+removed or changed, no table updated, `reihen.toml` untouched. The state quantity from
+T55 and the statement about today's model countries stand unmoved: `grep -c` yields 44 and
+7 lines respectively before and after this run. The window is **not** decided — the
+list is written in `R`, and both readings carry their number.
 
-**Drei Meldungen, weil sie fremden Gewerken gehören.** Erstens: Die zwei zusätzlichen Stellen
-gehören in die Aufzählung unter Klärung 4 in `daten/lizenzbefund-reihen.md`. Das ist ein
-Datenpaket und keine Architektenzeile. Zweitens: Der Auftragstext zu `0141` nennt das Fenster
-„ab 2001", dieses Dokument führt durchgehend 1997–2021. Beides ist belegt, die Wahl gehört
-nach T24 dem Spielentwerfer, und ich habe sie deshalb nicht getroffen. Drittens: Der
-Vorspann-Nachzug aus Abschnitt 20 wächst um eine Zeile — richtig wäre jetzt **T63**, die
-nächste freie Nummer ist T64. Ich fasse den Vorspann aus demselben Grund nicht an wie dort:
-`0082` und `0084` binden ihre Abnahme darauf, dass er unberührt bleibt.
+**Three reports, because they belong to other trades.** First: the two additional bodies
+belong in the enumeration under clarification 4 in `daten/lizenzbefund-reihen.md`. That is a
+data package and not an architect's line. Second: the brief text for `0141` names the window
+„ab 2001", this document uses 1997–2021 throughout. Both are documented, the choice belongs
+to the game designer under T24, and I therefore have not made it. Third: the
+preamble follow-up from section 20 grows by one line — correct would now be **T63**, the
+next free number is T64. I do not touch the preamble for the same reason as there:
+`0082` and `0084` bind their acceptance to it remaining untouched.
 
-**Welche Festlegung jetzt fallen musste und welche vertagt ist.** Jetzt fallen musste die
-Frage aus T63, ob ein fehlender Leitzins **ausschliesst** oder die **Klasse entscheidet**. Sie
-muss vor `0118` fallen, weil sie den Suchraum der Länderauswahl um Größenordnungen ändert: Als
-Ausschlusskriterium bliebe nur, wofür ein einzelner IWF-Code einen Politiksatz führt — er tut
-es für zwei der heutigen Modellländer nicht; als Klassenfrage ist jedes Land wählbar, und der
-Leitzins entscheidet allein, ob es 806 oder 158 Werte kostet. Vertagt sind die Wahl des
-Landes, die Wahl seiner Codes, das Schätzverfahren der Stufe 4 und das Fenster. Keines davon
-ändert etwas an T62 oder T63.
+**Which stipulation had to fall now and which is deferred.** What had to fall now was the
+question from T63 whether a missing policy rate **excludes** or the **class decides**. It
+must fall before `0118` because it changes the search space of the country selection by orders
+of magnitude: as an exclusion criterion all that would remain is what a single IMF code lists
+a policy rate for — it does not for two of today's model countries; as a class question every
+country is selectable, and the policy rate alone decides whether it costs 806 or 158 values.
+Deferred are the choice of the country, the choice of its codes, the estimation procedure of
+stage 4 and the window. None of these changes anything about T62 or T63.
