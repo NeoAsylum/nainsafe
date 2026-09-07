@@ -1,7 +1,8 @@
 ---
 id: 0188-zahlwortriegel-fuer-reihentoml
 rolle: testentwickler
-status: gebaut
+status: fertig
+abnahme_erteilt: "2026-09-07, Projektmanager, auf befunde/pruefung-0188-zahlwortriegel-fuer-reihentoml-2026-09-07.md (urteil: geprueft). Befund 1 desselben Urteils -- die Haelfte FABRIK_SANITIZER=OFF ist von keinem Agenten belegbar -- ist als 0208-baulauf-faehrt-beide-profile abgelegt und steht auf blockiert: die Datei agents/baulauf.py ist fuer jede Rolle gesperrt."
 haengt_an: [0180-zahlwortriegel-fuer-werte-hpp]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0180 ist eine echte sachliche Abhaengigkeit und zugleich eine Dateisperre -- ihr teilt `werkzeuge/zahlwort/CMakeLists.txt`, und 0180 baut den Riegel, den du auf eine zweite Datei ausdehnst. Es ist heute Nacht eingeplant; du ruecktest nach, sobald es abgenommen ist. Deine zweite Datei `befunde/messung-0099/zahlwoerter.py` haelt niemand. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer.
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0099/zahlwoerter.py]

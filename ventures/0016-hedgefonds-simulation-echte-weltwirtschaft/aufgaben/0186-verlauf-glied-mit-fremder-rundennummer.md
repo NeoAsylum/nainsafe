@@ -1,7 +1,8 @@
 ---
 id: 0186-verlauf-glied-mit-fremder-rundennummer
 rolle: kernbauer
-status: gebaut
+status: fertig
+abnahme_erteilt: "2026-09-07, Projektmanager, auf befunde/pruefung-0186-verlauf-glied-mit-fremder-rundennummer-2026-09-07.md (urteil: geprueft). Nebenbefund 1 desselben Urteils ist kein Ruecklauf und laeuft als eigenes Paket 0208-anhaengen-pruefreihenfolge-falsche-richtung auf kern/src/verlauf.cpp weiter."
 haengt_an: [0172-verlaufskopf-groessenzahl-bei-wand-2169-berichtigen]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. `haengt_an` war leer und ist jetzt [0172-verlaufskopf-...]; das ist eine **Reihenfolgesperre**, keine sachliche Abhaengigkeit. Ihr trefft euch in `kern/include/kern/verlauf.hpp`, und 0172-verlaufskopf ist heute Nacht eingeplant. Inhaltlich brauchst du daraus nichts -- es berichtigt nur eine Groessenzahl im Kopfkommentar. Die Reihe auf `verlauf.hpp` lautet 0172-verlaufskopf, du. Beachte, dass es ein zweites `0172-*` gibt (`0172-weltpreis-mit-zoll-untergrenze-des-faktors`, auf `technik.md`); gemeint ist hier das andere. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer. `0091-diff-ursachenkette-nach-t20` hat `verlauf.hpp`, `verlauf.cpp` und `verlauf_probe.cpp` bis heute gehalten und ist in diesem Lauf fertig geworden -- deine beiden anderen Dateien sind damit frei.
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/verlauf.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
