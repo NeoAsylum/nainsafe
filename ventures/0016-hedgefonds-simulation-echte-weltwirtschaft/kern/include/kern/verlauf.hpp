@@ -80,8 +80,40 @@
 //! Groesse, keine Zuteilung, wie jeder Behaelter des Kerns. Die Schranken darauf stehen
 //! unten als Zusicherungen ueber die Typgroesse und nicht als Kommentar: Wer eine der
 //! beiden Kapazitaeten hochsetzt oder die Wand verschiebt, ohne die Folge zu bedenken,
-//! bekommt einen roten Bau. Es sind **zwei** Schranken, und sie fangen zwei
-//! verschiedene Regler.
+//! bekommt einen roten Bau.
+//!
+//! **Es sind drei Schranken, und die bindende steht nicht in dieser Datei** (Paket
+//! 0195). Zwei stehen unten und fangen zwei verschiedene Regler. Die dritte gehoert
+//! `kern::zustandsausgabe`, haengt seit Paket 0091 an derselben Wand und reisst beim
+//! Heraufsetzen der Wand als erste -- rund fuenfzehnmal frueher als die eine hier und
+//! knapp viermal frueher als die andere. Wer nur die beiden unten liest, haelt die Wand
+//! fuer weit verschiebbar, als sie ist.
+//!
+//! **Die dritte: die Zusicherung ueber das Kettenblatt.** Paket 0091 hat die Zahl der
+//! Kettenzeilen je Adresse an die Rundenkapazitaet dieses Kastens gebunden --
+//! Rundenkapazitaet **plus eins** -- und den Puffer der Unterschiedsebene mit Kette
+//! daneben gegen denselben `STAPEL_JE_FADEN` gehalten. Ein Kettenblatt waechst damit mit
+//! dieser Wand, und zwar um 310 Zeilen je zusaetzlicher Runde statt um eine einzige
+//! Kette. Es reisst im Bau von `kern::zustandsausgabe` und nicht hier: Wer allein diesen
+//! Kopf uebersetzt, bekommt die Meldung nie zu sehen.
+//!
+//! **Dass sie zuerst reisst, ist uebersetzt.** Im Alleinbau des ganzen Kerns mit der
+//! Wand auf 482 ist sie rot, und der Uebersetzer druckt den Vergleich ausgerechnet ab:
+//! 28.808.480 gegen 8.388.608 (2026-09-06, Arbeitsbaum, beide Profile). Die
+//! Stapelzusicherung dieser Datei traegt dieselbe 482 dagegen noch -- derselbe Alleinbau
+//! war dort vor Paket 0091 gruen, bei 8.375.240 Byte, und rot erst bei 483.
+//!
+//! **Wo genau sie reisst, ist gerechnet und nicht uebersetzt**, und das steht hier,
+//! damit die Zahl niemand fuer eine Messung haelt. Uebersetzt sind drei Punkte: Wand 26
+//! ergibt 1.667.360 Byte -- `zustandsausgabe_probe` druckt die Zahl im Alleinbau des
+//! Kerns ab --, Wand 482 ergibt 28.808.480, Wand 483 ergibt 28.868.000. Daraus folgt das
+//! Gesetz: Ein Kettenblatt misst 59.520 mal Wand plus 119.840 Byte. Gegen
+//! `STAPEL_JE_FADEN` gehalten traegt es die Wand bis 138 und reisst bei 139. **Mit den
+//! Waenden 138 und 139 ist nichts uebersetzt worden.** Wer die Wand wirklich schiebt,
+//! uebersetzt sie und schreibt hierhin, was der Uebersetzer sagt -- die Messung
+//! entscheidet und nicht diese Herleitung.
+//!
+//! ## Die beiden Schranken dieser Datei
 //!
 //! **Die erste ist aus der Wand gebildet und nicht aus einer runden Bytezahl.** Eine
 //! Zusicherung bei einem halben Megabyte liesse dreissig Runden durch; sie griffe damit
@@ -93,34 +125,41 @@
 //! erste keine Speicherschranke: Beide ihrer Seiten sind aus derselben Wand gebildet und
 //! wachsen mit ihr. Wer die Wand verschiebt -- und T40 zieht sie aus der Ergebnisskala
 //! von `spiel.md`, die sich schon einmal geaendert hat --, bekaeme sonst keinen roten
-//! Bau, sondern still einen groesseren Behaelter. Gemessen am Stand `45fc32f` liefen
-//! Wand und Kapazitaet gemeinsam bis zweitausendeinhundertneunundsechzig gruen durch,
-//! bei 37.688.552 Byte.
+//! Bau, sondern still einen groesseren Behaelter.
 //!
-//! **Rot wird bei zweitausendeinhundertsiebzig die erste Schranke**, nicht die zweite.
-//! Der Grund ist die Bauart: Neben den Ketten traegt ein Verlauf je Runde noch ihre
-//! Rundennummer zu acht Byte, und die zehren den Vorsprung einer ganzen Kette langsam
-//! auf. Die erste Schranke haelt genau, solange acht mal die Wand unter 17.360 Byte
-//! bleibt -- eine Kette misst 17.368 Byte --, also bis
-//! zweitausendeinhundertneunundsechzig und keine Runde weiter.
+//! **Wo die beiden reissen, ist in Anordnungen gemessen, die es so nicht mehr gibt.**
+//! Jede der folgenden Zahlen traegt ihre deshalb bei sich:
+//!
+//!   * **Bis 2169 gruen, bei 2170 rot die erste Schranke** -- gemessen am Stand
+//!     `45fc32f` (2026-09-06) in einem Bau, der **allein diesen Kopf** uebersetzt, und
+//!     zusaetzlich **ohne die Stapelzusicherung** unten. Der Behaelter misst dort bei
+//!     2169 37.688.552 Byte. Der Grund fuer die 2169 ist die Bauart: Neben den Ketten
+//!     traegt ein Verlauf je Runde noch ihre Rundennummer zu acht Byte, und die zehren
+//!     den Vorsprung einer ganzen Kette langsam auf. Die erste Schranke haelt genau,
+//!     solange acht mal die Wand unter 17.360 Byte bleibt -- eine Kette misst 17.368
+//!     Byte --, also bis 2169 und keine Runde weiter.
+//!   * **Bei 482 gruen, bei 483 rot die zweite Schranke** -- gemessen im Alleinbau des
+//!     ganzen Kerns, aber **vor Paket 0091**, also bevor es die dritte Schranke gab. Der
+//!     Behaelter misst bei 482 8.375.240 Byte und bei 483 8.392.616. Im heutigen Bau ist
+//!     schon die 482 rot, und zwar an der Zusicherung ueber das Kettenblatt.
+//!
+//! Keine dieser vier Zahlen sagt also, wie weit die Wand sich schieben laesst. Das sagt
+//! die dritte Schranke, und ihre Grenze ist oben als gerechnet ausgewiesen.
 //!
 //! **Woher die absolute Grenze kommt: aus dem, was ein Aufrufer traegt.** Jeder heutige
 //! Aufrufer legt seinen Verlauf als oertliche Groesse an -- `verlauf_probe` an sieben
 //! Stellen --, also ist der Platz, den er dafuer hat, der Stapel seines Fadens und nicht
 //! der Freispeicher. Das ist `STAPEL_JE_FADEN` unten: eine gemessene Zahl, keine
-//! gewaehlte.
-//!
-//! Der Abstand zwischen beiden Zahlen ist der Sinn der Schranke, und er gehoert
-//! danebengeschrieben: Der Behaelter ist heute **451.784 Byte** gross, also gut ein
-//! Zwanzigstel dessen, was ein Faden ueberhaupt an Stapel hat. Die Schranke reisst,
-//! wenn die Wand von sechsundzwanzig auf 483 stiege; bei 482 ist der Behaelter
-//! 8.375.240 Byte gross und geht gerade noch durch.
+//! gewaehlte. Der Behaelter ist bei der heutigen Wand **451.784 Byte** gross (Stand
+//! `45fc32f`, 2026-09-06), also gut ein Zwanzigstel dessen, was ein Faden ueberhaupt an
+//! Stapel hat.
 //!
 //! **Und was die zweite Schranke nicht sagt**, damit sie niemand fuer mehr haelt: Ein
-//! Stapelrahmen traegt mehr als den Verlauf. Wer die Wand bis dicht unter die Grenze
+//! Stapelrahmen traegt mehr als den Verlauf. Wer die Wand bis dicht unter ihre Grenze
 //! schoebe, bekaeme einen gruenen Bau und trotzdem einen Stapelueberlauf. Sie markiert
 //! die Stelle, an der es **sicher** nicht mehr geht, nicht die, an der es bequem bleibt
-//! -- eng gehalten wird der Behaelter von der ersten Schranke.
+//! -- und eng gehalten wird der Behaelter ohnehin nicht von ihr, sondern von der
+//! Zusicherung ueber das Kettenblatt.
 
 #include <array>
 #include <cstddef>
@@ -303,6 +342,11 @@ inline constexpr std::size_t STAPEL_JE_FADEN = 8192u * 1024u;
 // dass eine Zusicherung sich ruehrt. Ein Verlauf gehoert schon bei seiner heutigen
 // Groesse nicht beilaeufig auf einen Stapelrahmen -- er belegt dort gut ein Zwanzigstel
 // dessen, was ein Faden ueberhaupt hat.
+//
+// Keine der drei ist die Schranke, die eine hochgesetzte Wand zuerst faengt: Das tut die
+// Zusicherung ueber das Kettenblatt in `kern::zustandsausgabe`, und wer nur diese Datei
+// uebersetzt, sieht sie nicht. Der Kopf oben sagt, woran das haengt und wo es gemessen
+// ist.
 static_assert(sizeof(Verlauf) >= RUNDEN_KAPAZITAET * sizeof(Kette),
               "der Verlauf traegt seine Ketten selbst und nicht hinter einem Zeiger");
 static_assert(sizeof(Verlauf) < (PARTIELAENGE_HOECHSTENS + 1) * sizeof(Kette),

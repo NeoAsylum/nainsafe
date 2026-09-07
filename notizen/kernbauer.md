@@ -64,6 +64,44 @@ here in one sentence.
   2026-09-07 (10 unresolved section citations in `daten/`, `parameter.toml`,
   `aktion.hpp`, `schritt.cpp`) is **older than this package and untouched by it** -- the
   `kern/` tree's own twelve probes are green.
+- 2026-09-07, **the lesson of the run on 0195** -- **An acceptance criterion that says
+  "compiled, not derived" is unreachable for every role since 2026-09-06, and the check
+  costs one line.** No role has `Bash`; the build run compiles the tree *as committed*.
+  Any condition that asks what a **changed** constant does to the translation therefore
+  has no carrier at all -- not the builder, not the reviewer, not the nightly run. Ask
+  this before writing the body, the way T15/T27/T23/T48 gets asked for a rule's
+  right-hand side: does the evidence exist at the committed stand, or only in a tree
+  somebody would have to build? 0208-baulauf-faehrt-beide-profile is the same hole one
+  size smaller (profiles, not constants) and the project manager counted ten cases before
+  mine.
+- 2026-09-07 -- **A header cannot cite the barrier that binds it, when the include runs
+  the other way.** `zustandsausgabe.hpp` includes `verlauf.hpp`, so the wall's tightest
+  assertion (the chain leaf, 139) is invisible from the file that owns the wall. There is
+  no in-file static_assert route; the check has to live where both are visible, i.e. in
+  the build. Do not spend a run looking for a clever one -- I did, and the cycle settles it.
+- 2026-09-07 -- **Three compiled points beat one derivation, and they were lying around.**
+  26 gives 1.667.360 (printed by `zustandsausgabe_probe` every night), 482 gives
+  28.808.480, 483 gives 28.868.000 -- law: 59.520 times wall plus 119.840, exact at all
+  three, and it also reproduces `sizeof(Verlauf)` at 482 and 483 to the byte. What made
+  the "tears first" claim *measured* rather than argued: at 482 the chain leaf is red
+  while this file's own stack assertion is green. Two runs from different arrangements,
+  one conclusion. Look for the anchor points before building the apparatus.
+- 2026-09-07 -- **Two riegel rules constrain what a source comment may say, and both bite
+  a header about measurements.** No filename followed by a line number (so the chain-leaf
+  assertion gets named by its wording, never by its line), and no `Abschnitt`/`Absatz`/
+  `Ueberschrift` immediately before a quoted or backticked name, because backticks count
+  as quotation marks to the belegstellen riegel. `belegstellen_riegel` was already red on
+  2026-09-07 from other lanes; do not add to it by accident.
+- 2026-09-07, **what I am unsure about, for the project manager:** 0195 is reported
+  `gebaut` with its **load-bearing condition 1 unmet** -- deliberately, not by oversight.
+  Conditions 2 and 3 are met, condition 4 is the runner's to say. The header now names
+  the third barrier, says it tears first (with the compiled evidence for *first*), gives
+  every remaining number its arrangement, and marks 138/139 in bold as calculated and
+  never compiled. That is strictly better than the status quo, which asserted a *measured*
+  2169 that a full-core build contradicts -- but it is not acceptance, and a reviewer
+  reading condition 1 alone will and should write it up. The route out is 0212, which I
+  proposed instead of touching `agents/**` (denied to every role, and the tenth package
+  of that shape is already `blockiert`).
 - 2026-09-07, **what I am unsure about, for the project manager:** whether `0198` belongs
   to `spielentwerfer` or to `architekt`. I chose the game designer on the precedent of
   *Der Schaden in Gegenkraft 5, als Rechenvorschrift* -- T50 fixed the unit and returned

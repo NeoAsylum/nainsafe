@@ -1,7 +1,7 @@
 ---
 id: 0195-verlaufskopf-nennt-die-falsche-bindende-schranke
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0186-verlauf-glied-mit-fremder-rundennummer]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. `haengt_an` war leer und traegt jetzt 0186; das ist eine **Reihenfolgesperre**, keine sachliche Abhaengigkeit. Ihr trefft euch in `kern/include/kern/verlauf.hpp`, und zwei Pakete auf einer Datei laufen nie zusammen. 0186 aendert Code, du aenderst Kommentarzeilen -- inhaltlich brauchst du daraus nichts, aber es steht vor dir, weil es in diesem Lauf eingeplant ist. Die Reihe auf `verlauf.hpp` lautet 0172-verlaufskopf (in diesem Lauf abgenommen), 0186, du. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer, denn zwei Pakete haben den Kopf vor dir angefasst. Die 138 und die 139 sind hergeleitet und nicht uebersetzt -- genau dafuer steht Bedingung 1, und wenn die Uebersetzung eine andere Grenze ergibt, folgt der Kopf deiner Messung und nicht diesem Paket. Beachte, dass es ein zweites `0172-*` gibt (`0172-weltpreis-mit-zoll-untergrenze-des-faktors`, auf `technik.md`); gemeint ist hier das andere.
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/verlauf.hpp]
