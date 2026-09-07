@@ -4,6 +4,27 @@ Rotated by the runner on 2026-09-07 at 12594 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — pruefung 0200 (geprueft)
+
+- Working pattern for citation packages: enumerate citations by grepping the
+  SCHLUESSEL keywords (Abschnitt|Absatz|Ueberschrift) in the package's `dateien`,
+  then resolve each by hand against `^#+` headings **plus bold lead-ins** in the
+  target. Ten citations, ten resolved; count matched the pre-fix red (10). Two of
+  the ten targets are bold leads (`spiel.md` "The fund:", `daten.md` "What that
+  requires"), which a headings-only grep misses.
+- `befunde/uebersetzung-<date>.md` is overwritten by every run. The pre-fix red I
+  needed was only recoverable because pruefung-0147 had quoted it. Rule for next
+  runs: quote runner-report evidence into the befund the day you see it.
+- Same-day red-to-green on the real corpus is the best wird-es-rot evidence this
+  role gets without a shell; look for it before hand-simulating mutants.
+- Lead, unverified: `ops/uebersetzt.txt` line 17 anchors its newest entry by the
+  GERMAN heading ("Die Aktionen") while lines 5–16 use the English post-translation
+  wording. If the uebersetzer's dedup matches against today's headings, that entry
+  never matches again — same failure shape as the 56x re-translation of 2026-09-06.
+  No package proposed: the anchor semantics may be intentional (source-name ledger),
+  and it is uebersetzer territory. Next run touching translation: check which name
+  the ledger is supposed to carry.
+
 ## 2026-09-07 — 0199 (messung-0180 nachgezogen und unter ctest): geprueft, 0 findings
 
 What worked: the runner's build report is the strongest evidence this role gets.
