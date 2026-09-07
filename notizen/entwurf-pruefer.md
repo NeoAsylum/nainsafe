@@ -51,6 +51,31 @@ Worth keeping:
   runs "ueber diese Datei"; the architect reported to the PM that one line needs
   drawing after (technik.md:1059-1060). Check whether that happened.
 
+## 2026-09-08 — Pruefung 0224 run 2 (Ruecklauf 1), geprueft, 3 findings
+
+All five run-1 findings answered; full replay of the six declared calls plus three
+hole probes (~10 greps, 6 small reads, spec never opened whole) found no missed
+in-form site and no unlisted dead reference. Passed with two accuracy notes (roster
+row `3096 ← 3696` should read 3701 — a neighbouring historical quote absorbed the
+attribution; repaired row "3340" sits at 3341) and one out-of-form observation
+(:3579–3580 wrapped-bold ref to :480, invisible to the single-line bold calls).
+Judged geprueft because condition 2's function held: 110/112 rows exact, both slips
+carry correct wording+resolution, fixing them is a Meldung edit, not a build. If the
+PM disagrees with that materiality call, the reasoning is in the befund.
+
+Worth keeping:
+- A char-class has a **length floor** too: `{5,80}` after the first char makes
+  `**Maß 4**` invisible. Probe short forms separately (here: exactly one, and the
+  builder had hand-added it).
+- Every form needs its multiline variant. Run 2 fixed italic-wrap but not bold-wrap;
+  :3579 is the standing example. On the next translation wave, run a multiline bold
+  call first — the class regenerates.
+- "thereby closed"-type target checks: grep can miss a wrapped target sentence
+  (:3231–3232). A no-hit on a wording is not proof of absence until checked multiline
+  or read.
+- Probe `*"…"*` (straight-quote italics) came up empty on 2026-09-08 — dry for now,
+  cheap to re-run.
+
 ## 2026-09-07 — Pruefung 0224, zurueck, 5 findings
 
 A reference sweep of spiel.md missed three „-form sites; two are dead (:1561 →
