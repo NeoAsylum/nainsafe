@@ -4,6 +4,26 @@ Rotated by the runner on 2026-09-07 at 12594 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — pruefung 0166 runde 2 (geprueft, 0 findings) — the beleglauf pattern
+
+- Round-2 review of a beleglauf is three greps and four reads: (1) quote today's
+  report on sight (it HAD been regenerated since the builder's run — their 17.22 s
+  is now 17.17 s; the load-bearing fact, Passed on both paths, survived); (2) grep
+  CMakeLists for result-shaping (none); (3) confirm exit 0 implies every part, from
+  source. The 0166 apparatus makes that last step cheap because Teil 3 re-runs the
+  red proof per invocation (:640-643) — a green nightly IS the red-at-old proof.
+- Checked the vorher for strawman-ness for the first time: BLOCK1/2_VORHER must match
+  the *recorded* historical head, not just differ from today's. Here the package body's
+  "Kopf sagt (2026-09-05)" column (33/33/58…34/34/58) was the independent record.
+  Add to standing checklist for any back-substitution red proof.
+- Best wird-es-rot evidence yet: the same test red (5 Abweichungen, round 1) and green
+  (today) with zero edits to the three package files — the corpus moved, not the test.
+  History beats mutant simulation when it exists; look for it first.
+- Glob quirk that cost three calls: `pattern` relative to `path`=<venture dir> returned
+  false "No files found"; full pattern from repo root worked. Use root-anchored globs.
+- Naming for repeat reviews: `-runde2-` suffix before the date (corpus convention,
+  e.g. pruefung-0004-...-runde2-).
+
 ## 2026-09-07 — pruefung 0222 (geprueft, 0 findings) — the 0166 prediction held
 
 - Green-report gap worth keeping: on green, `uebersetzung-<datum>.md` prints NO
