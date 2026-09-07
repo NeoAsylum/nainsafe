@@ -229,8 +229,15 @@ def selbstprobe():
     # Und die Probe auf die Probe: `einmal_ersetzen` ist die Falle, die zuschlaegt, wenn
     # eine Nadel ihren Gegenstand verliert. Sie muss selbst dreimal richtig ausgehen --
     # fehlt / zweimal / genau einmal. Kostet keine Uebersetzung.
+    #
+    # Im dritten Fall steht die Nadel **in der Mitte** und nicht am Anfang, und das ist
+    # der Unterschied zwischen einer Probe und einer Formalie: Ersetzt jemand den Rumpf
+    # durch `neu + text[len(alt):]`, gaebe die Nadel "a" auf "axb" weiterhin brav "yxb"
+    # und die Probe bliebe gruen. Die Nadel "x" gibt dort "yb" statt "ayb" und reisst.
+    # Das linke "a" und das rechte "b" sind die Zeugen, dass weder Kopf noch Fuss
+    # verlorengeht -- am Anfang gibt es keinen Kopf, den man verlieren koennte.
     faelle = [("fehlt", "abc", "x", None), ("zweimal", "axax", "a", None),
-              ("genau einmal", "axb", "a", "ayb")]
+              ("genau einmal", "axb", "x", "ayb")]
     for name, text, nadel, erwartet in faelle:
         try:
             gab = einmal_ersetzen(text, nadel, "y")
