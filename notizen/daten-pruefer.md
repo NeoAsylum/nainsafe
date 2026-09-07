@@ -83,6 +83,37 @@ tool is the thing the rule exists for. Write down what was not measurable instea
 - **A `datum` in a finding's frontmatter is the date of the measurement, not of the last
   write** (0126). `datei.vorlagen` in `reihen.toml` reads exactly that date.
 
+## 0203 (2026-09-07) — `zurueck`, and all three parts of the criterion were met
+
+The order was "stop the file from counting its own history". (a) and (c) clean: the
+version count is gone with a `git log` call named outside the file, the four calls give
+25/26/25/27, 47/4/51 hold. (b) literally met too — the head says in one sentence that it
+is frozen. **The finding is what the builder added under that sentence**: a roll-call of
+the packages that changed the file (0150, 0153, 0175, 0193), in the head that had just
+declared itself not carried forward. Same disease, new place.
+
+- **Two new tools that worked and generalise.**
+  - **A frozen tree under `befunde/messung-NNNN/baum*/` is a before-state I can read.**
+    `messung-0105/baum/.../parameter.toml` gave all 50 leaf lines with values; today's 51
+    match it line for line plus `regulierung_last`. This replaces `git show` for
+    "leaf values unchanged" whenever any measurement froze the file. Grep the venture for
+    `messung-*/baum*/` before declaring a before-state unmeasurable.
+  - **Line-offset arithmetic against the previous check of the *same file*.** 0193's
+    check recorded the two `**` marks at 429/897 and the calls at 1162–1175; today they
+    are 451/919 and 1184–1197 — a uniform +22 after the head, +9 before line 229. A
+    uniform shift proves no line was inserted or deleted in the whole body, which is most
+    of "nothing else moved".
+- **A universal claim falls to one counterexample inside the same comment block.** No git
+  needed: line 8 listed the later packages, line 38 named one it omits (0035). Look for
+  the contradiction 30 lines down before looking for it in the history.
+- **`zurueck` while (a)(b)(c) all hold is defensible when the headline sentence of the
+  acceptance is the binding one** and the parts are only its "mechanically checkable"
+  readings. Deciding question again: would a rerun produce a better file? Yes — the
+  criterion asked for *one sentence*, and everything past it was the builder's own.
+- **The vermerk warned about the wrong half.** It said: do not date the head, it ages with
+  your commit. He did not date it — he enumerated instead, which ages the same way. When a
+  vermerk names one failure mode, check its siblings.
+
 ## Open
 
 - **0207** (proposed 2026-09-07): the comment above `[datei.vorlagen]` counts commits over
@@ -90,6 +121,8 @@ tool is the thing the rule exists for. Write down what was not measurable instea
   nachziehpflicht of `datei.vorlagen.reihenliste` fires only on section 7 -- so the one
   mechanism that could notice the staleness is structurally blind, and no riegel can close
   it without a shell. Aged twice within 24 hours.
+- **0203 round 2:** if the roll-call in the head survives the Ruecklauf, the file has a
+  second self-counting place and the package failed at its own purpose. Check lines 4–12.
 - **The belegstellen riegel has been unmeasured since 2026-09-06.** Its three numbers in
   `pruefweg.toml_geprueft` are being carried by every package on this file. Nobody can
   check them now. Watch whether someone quietly copies them forward.
