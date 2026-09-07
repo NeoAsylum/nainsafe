@@ -3063,130 +3063,133 @@ each in T2 and T13 — that is the return and not an eighth version.
 
 ## 17. Paket `0026-klasse-2-preisbasis` — Umfang, und was ausdrücklich liegen bleibt
 
-**Dieses Paket ist geliefert.** Zwei Läufe am 2026-09-04, Commits `77a84e8` und `d26eb3e`.
-Ein dritter Lauf am selben Tag hat es erneut zugewiesen bekommen, weil `status: offen` im
-Paket steht; er hat nichts neu entschieden, sondern nachgerechnet — unten unter „Dritter
-Lauf". **Wer 0026 erneut eingeplant findet, liest zuerst diesen Abschnitt.**
+**This package is delivered.** Two runs on 2026-09-04, commits `77a84e8` and `d26eb3e`.
+A third run on the same day got it assigned again because `status: offen` stands in the
+package; it decided nothing anew but recomputed — below under "Third run".
+**Whoever finds 0026 scheduled again reads this section first.**
 
-**Kein Rücklauf.** Das Paket führt `Rückläufe: 0`, und unter
-`ventures/0016-…/befunde/` liegt keine Prüfung zu diesem Gewerk mit `urteil: zurueck`. Es gibt
-also keinen Befund abzuarbeiten; dieser Abschnitt hält stattdessen den Umfang fest, weil
-Bedingung 5 der Abnahme ihn begrenzt.
+**No return.** The package carries `Rückläufe: 0`, and under
+`ventures/0016-…/befunde/` lies no check of this trade with `urteil: zurueck`. So there is
+no finding to work off; this section records the scope instead, because condition 5 of the
+acceptance bounds it.
 
-**Zwei Läufe, ein Paket.** Der erste Lauf (2026-09-04 05:24, Commit `77a84e8`) hat die
-Entscheidung geliefert; der zweite (2026-09-04, derselbe Tag) hat sie nachgerechnet und drei
-Zahlen berichtigt. Der Grund für den zweiten Lauf liegt nicht am Gewerk: Das Paket stand nach
-der Lieferung weiter auf `status: offen` und wurde deshalb erneut eingeplant
-(`rueckstand.md`, „Was der Geschäftsführer entscheiden lassen muss", Punkt 2 — der fehlende
-Satz „Setze `status: gebaut`" in der Rollendatei `architekt`). **Was der zweite Lauf inhaltlich
-geändert hat, steht unten unter „Berichtigt"; die Entscheidung selbst ist unverändert.**
+**Two runs, one package.** The first run (2026-09-04 05:24, commit `77a84e8`) delivered the
+decision; the second (2026-09-04, the same day) recomputed it and corrected three numbers.
+The reason for the second run does not lie with the trade: after delivery the package still
+stood on `status: offen` and was therefore scheduled again
+(`rueckstand.md`, „Was der Geschäftsführer entscheiden lassen muss", point 2 — the missing
+sentence „Setze `status: gebaut`" in the role file `architekt`). **What the second run
+changed in substance stands below under "Corrected"; the decision itself is unchanged.**
 
-**Angefasst sind sechs Stellen und sonst keine.** Die Liste ist gegen die Hunks von
-`git show 77a84e8 -- specs/0016-…/technik.md` abgezählt und nicht aus dem Gedächtnis
-geschrieben — eine Umfangsangabe, die den eigenen Diff nicht deckt, verfehlt genau die
-Bedingung, die sie belegen soll:
+**Six places are touched and no others.** The list is counted against the hunks of
+`git show 77a84e8 -- specs/0016-…/technik.md` and not written from memory — a statement of
+scope that does not cover its own diff misses exactly the condition it is meant to prove:
 
-1. die Klasse-2-Zeile in **T5** samt zwei Absätzen dahinter (Basisjahr 2015, Verweis auf T53),
-2. die neue Vorgabe **T53** hinter T50,
-3. der Absatz in **T8**, der die Aufzählung der neu basierten Größen begründet,
-4. dieser Abschnitt,
-5. der **Vorspann** vor Abschnitt 1: „T1 bis T52" wird zu „T1 bis T53"; der Satz über die
-   Buchstabennummern nannte als Beispiel für eine noch freie Nummer T53 und nennt jetzt T60,
-   weil T53 vergeben ist; ein Absatz ordnet T53 ein. Diese Stelle ist **erzwungen**, nicht
-   gewählt: Ein Vorspann, der die Vorgaben bei T52 enden lässt, widerspricht der Vorgabe, die
-   vier Abschnitte weiter steht,
-6. das **Frontmatter**: die Zeile `fassung`, weil sie sonst den Stand der Datei falsch angibt,
-   und der neue Schlüssel `preisbasis`, weil die Kopfzeilen die tragenden Festlegungen führen
-   und die Preisbasis seit T53 eine davon ist.
+1. the class-2 row in **T5** together with the two paragraphs behind it (base year 2015,
+   reference to T53),
+2. the new prescription **T53** behind T50,
+3. the paragraph in **T8** that justifies the enumeration of the re-based quantities,
+4. this section,
+5. the **preamble** before section 1: „T1 bis T52" becomes „T1 bis T53"; the sentence about
+   the letter numbers named T53 as its example of a still-free number and now names T60,
+   because T53 is taken; one paragraph places T53. This place is **forced**, not chosen: a
+   preamble that lets the prescriptions end at T52 contradicts the prescription that stands
+   four sections further on,
+6. the **frontmatter**: the line `fassung`, because it otherwise states the file's version
+   wrongly, and the new key `preisbasis`, because the header lines carry the load-bearing
+   determinations and since T53 the price basis is one of them.
 
-**Berichtigt im zweiten Lauf, ohne die Entscheidung zu berühren:** Der erste Lauf zählte die
-Stellen 5 und 6 nicht auf und schrieb „vier Stellen und sonst keine" über eine Liste von sechs.
-Dazu zwei Zahlen in T53, die abgeschnitten statt gerundet waren und damit gegen die einzige
-Rundungsregel dieses Dokuments (T6) verstiessen: der Fehler am rechten Rand ist 3.577,80 und
-steht jetzt als **3.578** statt als 3.577, und `r(2021) = 11.549/7.417 = 1,55710` steht jetzt
-als **1,5571** statt als 1,5570. Der Kopfwert **2.203** (exakt 2.202,98) war richtig gerundet
-und ist unverändert; das Argument hängt an keiner der beiden berichtigten Zahlen, die Schwelle
-liegt bei 2.000 und der Kopfwert darüber. Alle Zahlen aus T53 sind im zweiten Lauf neu gerechnet worden — die 25 Stützstellen des
-Index, der MAPE, der Startfaktor 10.000/7.417 = 1,34825, die beiden `durchgriff`-Fälle
-(7.288 → 7.837 und 5.464 → 6.189), die Summe 15 + 15 + 40 + 1 = 71 und der `i64`-Kopfraum
-(2,8 · 10^17 gegen 9,2 · 10^18) — und reproduzieren bis auf die zwei genannten Stellen.
+**Corrected in the second run, without touching the decision:** The first run did not list
+places 5 and 6 and wrote „vier Stellen und sonst keine" over a list of six. In addition, two
+numbers in T53 that were truncated instead of rounded and thereby violated the only rounding
+rule of this document (T6): the error at the right edge is 3,577.80 and now stands as
+**3,578** instead of 3,577, and `r(2021) = 11.549/7.417 = 1,55710` now stands as **1.5571**
+instead of 1.5570. The headline value **2,203** (exactly 2,202.98) was rounded correctly and
+is unchanged; the argument hangs on neither of the two corrected numbers — the threshold
+lies at 2,000 and the headline value above it. All numbers from T53 were computed afresh in
+the second run — the 25 support points of the index, the MAPE, the start factor
+10,000/7,417 = 1.34825, the two `durchgriff` cases (7,288 → 7,837 and 5,464 → 6,189), the
+sum 15 + 15 + 40 + 1 = 71 and the `i64` headroom (2.8 · 10^17 against 9.2 · 10^18) — and
+they reproduce except for the two places named.
 
-**Dritter Lauf, 2026-09-04 — nachgerechnet statt neu entschieden.** Die 25 Stützstellen der
-Indextabelle in T53 sind ein zweites Mal durch `10.000 · |7.417 − Index(t)| / Index(t)`
-gerechnet worden, ohne die Zwischenwerte des zweiten Laufs anzusehen: Summe **55.074,54**
-Zehntausendstel, Mittel **2.202,98** → 2.203, rechter Rand 2021 **3.577,80** → 3.578,
-`r(2021) = 11.549/7.417 = 1,557098`, Startfaktor `10.000/7.417 = 1,348254`. Die beiden
-`durchgriff`-Fälle reproduzieren über `H/N` als **7.836,99** → 7.837 und **6.189,15** →
-6.189, die Summe als `15 + 15 + 40 + 1 = 71`, der `i64`-Kopfraum als 2,8 · 10^17 gegen
-9,2 · 10^18. **Alle Zahlen aus T53 sind damit in zwei unabhängigen Läufen gerechnet**, und
-keine hat sich geändert.
+**Third run, 2026-09-04 — recomputed rather than decided anew.** The 25 support points of
+the index table in T53 have been computed a second time through
+`10.000 · |7.417 − Index(t)| / Index(t)`, without looking at the second run's intermediate
+values: sum **55,074.54** ten-thousandths, mean **2,202.98** → 2,203, right edge 2021
+**3,577.80** → 3,578, `r(2021) = 11.549/7.417 = 1,557098`, start factor
+`10.000/7.417 = 1,348254`. The two `durchgriff` cases reproduce via `H/N` as **7,836.99** →
+7,837 and **6,189.15** → 6,189, the sum as `15 + 15 + 40 + 1 = 71`, the `i64` headroom as
+2.8 · 10^17 against 9.2 · 10^18. **All numbers from T53 have thus been computed in two
+independent runs**, and none has changed.
 
-**Was der dritte Lauf trotzdem gefunden hat — eine Stelle, und sie sitzt am Übergang zu
-`reihen.toml`.** T53 nannte für `N` nur Reihe 1; nach T23 Punkt 1 ist die Wertschöpfung
-Reihe 1 **mal** dem Sektoranteil aus Reihe 2. `daten/reihen.toml` führt bei Reihe 16
-umgekehrt `abgeleitet aus Reihe 14 (H) und Reihe 2 (N)` und nennt Reihe 1 nicht. Zwei
-Dokumente gaben also zwei verschiedene und beide unvollständige Antworten auf dieselbe Frage,
-und die Frage ist genau die, an der die Preisbasis hängt. T53 nennt jetzt beide Reihen und
-sagt, welche von ihnen die Preisbasis trägt; die Gegenseite gehört in den Übertrag aus
-Meldung 2. Das Argument des Absatzes ändert sich nicht — Reihe 2 trägt keine Preisbasis.
+**What the third run found nonetheless — one place, and it sits at the transition to
+`reihen.toml`.** T53 named only series 1 for `N`; per T23 point 1 the value added is
+series 1 **times** the sector share from series 2. `daten/reihen.toml` carries at series 16,
+the other way round, `abgeleitet aus Reihe 14 (H) und Reihe 2 (N)` and does not name
+series 1. Two documents thus gave two different and both incomplete answers to the same
+question, and the question is exactly the one the price basis hangs on. T53 now names both
+series and says which of them carries the price basis; the counterpart belongs in the
+transfer from message 2. The paragraph's argument does not change — series 2 carries no
+price basis.
 
-**Stand der drei Meldungen am 2026-09-04, nachgesehen statt vermutet.** Meldung 1 ist
-angekommen: `0002` steht wieder auf `status: offen` und führt `haengt_an: [0008, 0026]`,
-0008 ist `fertig`. Meldung 2 ist **halb** angekommen: das nächste Architektenpaket an der
-Reihenliste ist als `0068` angelegt, **die Reihenliste-Zeile 20 und der Übertrag nach
-`daten/reihen.toml` aber nicht** — eine Suche über alle Paketdateien nach „Reihe 20",
-„Ausfuhrpreisindex" und „Deflator" findet ausser 0025 und 0026 selbst nichts. Solange das so
-bleibt, führt `reihen.toml` bei Reihe 14 weiter den Widerspruch, den T53 aufgelöst hat, und
-bei Reihe 16 die unvollständige Herkunft von oben. Meldung 3 (der lesbare PWT-Auszug) ist
-unverändert offen.
+**State of the three messages on 2026-09-04, looked up rather than presumed.** Message 1
+has arrived: `0002` stands on `status: offen` again and carries `haengt_an: [0008, 0026]`;
+0008 is `fertig`. Message 2 has arrived **half**: the next architect package on the series
+list has been created as `0068`, **but the series-list row 20 and the transfer to
+`daten/reihen.toml` have not** — a search over all package files for „Reihe 20",
+„Ausfuhrpreisindex" and „Deflator" finds nothing besides 0025 and 0026 themselves. As long
+as that stays so, `reihen.toml` continues to carry, at series 14, the contradiction that
+T53 resolved, and at series 16 the incomplete origin from above. Message 3 (the readable
+PWT excerpt) is still open.
 
-Nicht angefasst: T42, T37, T47, T48, T50, T23, die Reihenliste, die 310 Adressen, die vier
-Maße, die Kostenrechnungen und die Stacktabelle. Der dritte Lauf hat davon nichts berührt;
-er hat innerhalb der oben aufgezählten sechs Stellen gearbeitet (T53, dieser Abschnitt, die
-Zeile `fassung`) und keine siebte aufgemacht.
+Not touched: T42, T37, T47, T48, T50, T23, the series list, the 310 addresses, the four
+Maße, the cost calculations and the stack table. The third run touched none of them; it
+worked inside the six places enumerated above (T53, this section, the line `fassung`) and
+opened no seventh.
 
-**Was hier hingehörte und trotzdem nicht hier steht — die Reihenliste.** T53 nennt eine neue
-Reihe des Jahrgangs, und die Reihenliste in Abschnitt 7 führt sie nicht. Das ist bewusst:
-Bedingung 5 nimmt die offenen Fragen aus `rueckstand.md` Punkt 6 und 7 ausdrücklich aus diesem
-Paket heraus, und eine davon — das `frei` in der Spalte „Rolle" — sitzt in genau dieser
-Tabelle. Zwei Pakete an einer Tabelle sind der Kollisionsfall, den der Zuschnitt vermeiden
-soll. **Die Zeile steht deshalb hier, fertig für das nächste Architektenpaket:**
+**What belonged here and still does not stand here — the series list.** T53 names a new
+series of the vintage, and the series list in section 7 does not carry it. That is
+deliberate: condition 5 expressly takes the open questions from `rueckstand.md` points 6
+and 7 out of this package, and one of them — the `frei` in the column "Role" — sits in
+exactly this table. Two packages on one table are the collision case the scoping is meant
+to avoid. **The row therefore stands here, ready for the next architect package:**
 
-| Nr | Größe | Dimension | Modelleinheit | Quelle | Rolle | Verdacht |
+| Nr | Quantity | Dimension | Model unit | Source | Role | Suspect |
 |---:|---|---|---|---|---|---|
-| 20 | Ausfuhrpreisindex der Welt, aus `NE.EXP.GNFS.CD` und `NE.EXP.GNFS.KD` | 1 | Zehntausendstel, 2015 = 10.000 | WDI | Umrechnung des Jahrgangs nach T53, **kein Soll** | nein |
+| 20 | Export price index of the world, from `NE.EXP.GNFS.CD` and `NE.EXP.GNFS.KD` | 1 | ten-thousandths, 2015 = 10,000 | WDI | conversion of the vintage per T53, **no target** | no |
 
-Sie ändert die Sätze unter der Tabelle **nicht**: Die 31 Sollreihen bleiben die Zeilen 1, 2, 8,
-9, 10 und 11, der Handelsblock bleibt ein eigener Block, und die vier Größen ohne Datenanker
-bleiben die Zeilen 17, 18, 19 und die Finanzmarktregulierung. Reihe 20 ist eine
-Umrechnungsgröße, keine geprüfte.
+It does **not** change the sentences under the table: the 31 target series remain rows 1,
+2, 8, 9, 10 and 11, the trade block remains a block of its own, and the four quantities
+without a data anchor remain rows 17, 18, 19 and the financial-market regulation. Series 20
+is a conversion quantity, not a checked one.
 
-**Drei Meldungen, weil sie ausserhalb meines Verzeichnisses liegen.**
+**Three messages, because they lie outside my directory.**
 
-1. **An den Projektmanager, zu Paket 0002 (`kern::werte`, Fondsbewertung):** Sein
-   Entblockungssatz verlangte *„eine Entscheidung des Architekten zur Klasse-2-Frage,
-   schriftlich in `technik.md` oder in einem ADR"*. Sie steht in T53. **T47, T48 und T50 sind
-   unberührt** — Umfang und Abnahme von 0002 brauchen keine Änderung, es kann unverändert
-   zurück auf `offen`. Über 0002 hängt 0010 (Zustandsausgabe) mit daran.
-2. **An den Projektmanager, zwei neue Pakete:** die Reihenliste-Zeile 20 oben (Architekt,
-   zusammen mit `rueckstand.md` Punkt 6 und 7, weil dieselbe Tabelle) und der Übertrag nach
-   `daten/reihen.toml` (Datenbauer): Reihe 14 bekommt den Deflatorschritt und verliert den
-   Eintrag im Feld `offen`, der den Widerspruch führt; Reihe 16 bekommt die Antwort, dass
-   `H` und `N` nach T53 dieselbe Preisbasis tragen; Reihe 20 kommt neu hinzu. Reihe 3 bleibt
+1. **To the project manager, on package 0002 (`kern::werte`, fund valuation):** Its
+   unblocking sentence demanded *„eine Entscheidung des Architekten zur Klasse-2-Frage,
+   schriftlich in `technik.md` oder in einem ADR"*. It stands in T53. **T47, T48 and T50
+   are untouched** — scope and acceptance of 0002 need no change; it can go back to `offen`
+   unchanged. Via 0002, 0010 (state output) hangs on this too.
+2. **To the project manager, two new packages:** the series-list row 20 above (architect,
+   together with `rueckstand.md` points 6 and 7, because same table) and the transfer to
+   `daten/reihen.toml` (data builder): series 14 gets the deflator step and loses the entry
+   in the field `offen` that carries the contradiction; series 16 gets the answer that `H`
+   and `N` carry the same price basis per T53; series 20 is added. Series 3 stays
    `art = "ungemessen"`.
-3. **An den Datenbauer und über ihn an den Betreiber:** Einheit und Basisjahr des
-   PWT-Kapitalstocks sind weiter ungemessen, und die Sperre ist die Werkzeugkette — vier
-   PDF-Abrufe aus drei Verzeichnissen kamen unlesbar an. Es kostet **einen** lesbaren Auszug
-   aus Dataverse 554025 oder 554105. Die Folge ist in T53 nach Größe geordnet: Die Einheit ist
-   der schwere Teil (Faktor 1 gegen 1.000), das Basisjahr der leichte, und beide treffen keine
-   Sollreihe.
+3. **To the data builder, and through them to the operator:** unit and base year of the
+   PWT capital stock remain unmeasured, and the lock is the toolchain — four PDF retrievals
+   from three directories arrived unreadable. It costs **one** readable excerpt from
+   Dataverse 554025 or 554105. The consequence is ordered by size in T53: the unit is the
+   heavy part (factor 1 against 1,000), the base year the light one, and neither touches a
+   target series.
 
-**Was dieses Paket ausdrücklich nicht entschieden hat.** Die Höhe des Schadens in Gegenkraft 5
-gehört `spiel.md` und dem Paket 0021. Ob Reihe 1 auf PWT wechselt, ist in `daten/reihen.toml`
-als `quellenwahl = "offen"` geführt und bleibt es; wechselt sie, wandert mit ihr das gemessene
-Basisjahr, und T53 ist die Stelle, an der das nachzuziehen wäre. Und die Restgrösse des
-gewählten Wegs — der Abstand zwischen dem Weltausfuhrindex und den wahren bilateralen
-Deflatoren der 40 Ströme — ist ungemessen und steht in T53 als solche.
+**What this package expressly did not decide.** The size of the damage in counterforce 5
+belongs to `spiel.md` and to package 0021. Whether series 1 switches to PWT is carried in
+`daten/reihen.toml` as `quellenwahl = "offen"` and stays so; if it switches, the measured
+base year moves with it, and T53 is the place where that would have to be brought up to
+date. And the residual quantity of the chosen way — the distance between the world export
+index and the true bilateral deflators of the 40 flows — is unmeasured and stands in T53
+as such.
 
 ## 18. Paket `0043-t48-groessen-gegenkraft-5` — Umfang und die Meldung an den Projektmanager
 
