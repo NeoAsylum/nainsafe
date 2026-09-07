@@ -1,7 +1,7 @@
 ---
 id: 0185-standschwaeche-paketkennung-je-commit
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0142-vorlagentabelle-reihenliste-ohne-stand, 0170-vollstaendigkeit-mengengleichheit-berichtigen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. 0142 stand schon in deiner Liste und ist seit heute fertig; 0170 ist dazugekommen und ist eine **Reihenfolgesperre**, keine sachliche Abhaengigkeit -- ihr fasst beide `daten/reihen.toml` an, und 0170 ist heute Nacht eingeplant. Aus 0170 brauchst du inhaltlich nichts. Die Reihe auf dieser Datei lautet 0170, du. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer, denn 0170 hat die Datei vor dir angefasst. Hinweis zur Kennung: Es gibt in diesem Verzeichnis ein zweites `0185-*`, naemlich `0185-schlussriegel-profilangabe-ohne-regressionsnachweis`. Die Nummer ist doppelt, die `id` nicht -- der Baulauf liest die `id` aus dem Frontmatter und haelt euch sauber auseinander. Kein Umzug noetig.
