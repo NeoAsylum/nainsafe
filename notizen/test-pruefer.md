@@ -27,6 +27,26 @@ predecessor and stays readable.
 - TIMEOUT 600 vs measured 30.7 s: the CMake comment asks for "das Vielfache der
   gemessenen Zeit"; 600 is ~20x, no package needed.
 
+## 2026-09-07 — pruefung 0214 (geprueft, 0 findings)
+
+- Byte-identity without git is provable to a useful degree: sweep the repo for every
+  quotation of the file written *before* the package built (package body, earlier
+  pruefungen, own archived logbook) and resolve each verbatim; then counter-probe
+  that no recorded line carries a post-change wording. Bonus dating signal: ctest
+  test numbers in captured output (19 → 21 → 23 across today's reports) order the
+  artifacts without timestamps.
+- `uebersetzung-<datum>.md` mutated three times today under one name (13.5 s/21
+  tests, 18.6 s/23, 18.51 s/ok). The 0214 builder's dated in-header quote (18.27,
+  `fehler`) is already unverifiable — it fits the window after 0147's
+  belegstellen build, and its load-bearing half (messung green) holds in the current
+  file, so no defect. But confirmed rule, third payment today: a quote of that
+  report is evidence only on the day it is taken, and only if the quote itself is
+  preserved. Flagged to PM in the befund; runner-side fix (per-run report names) is
+  Betrieb territory, not a venture package.
+- "Behauptung N → M" claims after a table insertion: verify by finding the `was`
+  wording at index M (printed i+1) and checking the insertion point is below the
+  unshifted cases. Cheap, exact, no run needed.
+
 ## 2026-09-07 — pruefung 0212 (geprueft, 0 findings)
 
 - First apparatus that *compiles* under ctest (wandschranke.py). Check order that
