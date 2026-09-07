@@ -2,88 +2,87 @@
 typ: technik
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-fassung: 7, nachgebessert am 2026-09-03 gegen die drei Befunde der Runde 1 zu Paket 0011 (Abschnitt 16) und am 2026-09-04 gegen Paket 0026-klasse-2-preisbasis (T53, Abschnitt 17), dort in drei Läufen -- der zweite hat die Zahlen von T53 nachgerechnet und drei Stellen berichtigt (Umfangsliste in Abschnitt 17, zwei abgeschnittene Zahlen in T53), der dritte hat sie ein zweites Mal unabhängig gerechnet (keine Abweichung) und die Herkunft von N im durchgriff-Absatz von T53 vervollstaendigt (Reihe 1 mal Reihe 2 statt Reihe 1); die Entscheidung selbst ist unverändert; die Fassung folgt ADR 0011 und ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, ausschliesslich die Stellen, die an der Sprache hängen; der Inhalt der Fassung 6 steht unverändert -- und am 2026-09-04 gegen Paket 0043-t48-groessen-gegenkraft-5 (T48 waechst von 17 auf 22 Groessen, T50 und Abschnitt 12 Punkt 3 sind geschlossen, Abschnitt 10 bekommt die Kostenzeile von Gegenkraft 5; Abschnitt 18)
-preisbasis: Klasse 2 steht zu konstanten Preisen des Jahres 2015 (gemessen an Reihe 1, WDI "constant 2015 US$"); die 40 BACI-Handelsströme kommen laufend an und werden beim Jahrgangsbau mit einem Weltausfuhrpreisindex aus WDI darauf gebracht -- 0 Rechenschritte je Weltschritt, 0 zusätzliche Sollreihen, T47/T48/T50 unberührt (T53)
-stack: C++20, übersetzt mit g++, Version in werkzeugkette.cmake festgenagelt, Bau über CMake, jede Fremdbibliothek als Quelltext unter fremd/ im Repo eingefroren (find_package und FetchContent verboten); Kern ohne jede Fremdabhängigkeit und ohne Gleitkommatyp; Oberfläche vertagt (ADR 0010)
-ueberlauf: -fwrapv in jedem Profil, -fsanitize=undefined,address im Testprofil, __int128 für jeden Zwischenwert -- dazu geprüfte Arithmetik im Kern, nach Rechenart geschnitten (Verengung, Strichrechnung, Multiplikation ohne Division), weil -fwrapv genau die Überlaufprüfung des Sanitizers abschaltet (T7)
-determinismus: i64-Festkomma mit deklarierter Skala je Größenklasse, feste Iterationsreihenfolge über Indexlisten, ein Wurzelstartwert mit abgeleiteten Strömen, Weltschritt ohne jede Ziehung
-zustand: fester, allokationsfreier Wert, 310 i64 (2.480 Byte), Prüfsumme über kanonische Byteform
-speicherstand: Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme -- nicht der Zustand
-kalibrierung: alle Zahlenwerte in einer Parameterdatei ausserhalb des Codes, mitgehasht
-partie: R Runden, R ist eine Größe des Jahrgangs; im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte
-fondsvermoegen: Kasse + bewertete Positionen + bewertete Beteiligungen - Hebel, Beteiligungen zum Ausstiegswert; genau eine Funktion im Kern, gelesen von Abrechnung, Mandat, Todesart 1, Invariantentest und B (T47)
-skalen: dreizehn Klassen, zwölf davon mit Zustandsadressen; jede der 310 Adressen trägt genau eine -- 3 Fondsgeld, 71 volkswirtschaftlich, 36 Raten, 22 Anteile, 22 Nominalindizes, 5 Wechselkurs, 5 Realindizes, 25 Personen, 32 Lobbydruck, 4 Instrumentenstufe, 83 Zähler, 2 Kennungen (T49)
-skalenuebergaenge: genau drei, je eine benannte Funktion an genau einem Ort -- tsd_in_cent (Bewertung), lobbypunkte_aus_geld (Aktion 3), lobbypunkte_aus_schaden (Gegenkraft 5); cent_in_tsd hat keinen Aufrufer und gibt es nicht (T50)
-abgeleitet: 22 Funktionen des Zustands im Kern (17 bis zum 2026-09-03, dazu die fünf aus dem Schaden in Gegenkraft 5 und dem Zollkeil), 3 im Prüfstand, abschliessend aufgezählt; ein Name in einer Formel, der weder Adresse (T15) noch Parameter (T27) noch Jahrgangskonstante (T23) noch abgeleitete Größe ist, ist ein Befund (T48)
-suchbot: Zielgröße B nach T44 -- statische Ergebnisprognose des Zwischenzustands, im Zweig "überlebt" formelgleich mit der Ergebnisgröße von spiel.md, ohne freien Parameter
-herkunft: jede der 310 Adressen trägt genau einen Herkunftseintrag aus fünf Arten; 136 Datenanker, 150 Entwurf, 11 Parameter, 2 Manifest, 11 Vorgabe (T45, T46) -- eine Lücke oder ein zweiter Eintrag bricht den Jahrgangsbau ab
-tick_planwert: 10 Mikrosekunden je Weltschritt (Bandbreite 5 bis 30) -- geschätzt, nicht gemessen; es gibt noch keinen Kern
-nachtlauf: 11.783.264 Weltschritte, 2,0 Minuten auf einem Kern beim Planwert, 9,8 Minuten im ungünstigen Fall
+fassung: 7, reworked on 2026-09-03 against the three findings of round 1 on package 0011 (section 16) and on 2026-09-04 against package 0026-klasse-2-preisbasis (T53, section 17), there in three runs -- the second recomputed the numbers of T53 and corrected three places (the scope list in section 17, two truncated numbers in T53), the third computed them a second time independently (no deviation) and completed the origin of N in the durchgriff paragraph of T53 (series 1 times series 2 instead of series 1); the decision itself is unchanged; the version follows ADR 0011 and ventures/0016-.../aufgaben/0011-stack-auf-cpp.md, exclusively the places that hang on the language; the content of version 6 stands unchanged -- and on 2026-09-04 against package 0043-t48-groessen-gegenkraft-5 (T48 grows from 17 to 22 quantities, T50 and section 12 point 3 are closed, section 10 gets the cost line of counterforce 5; section 18)
+preisbasis: class 2 stands at constant prices of the year 2015 (measured by series 1, WDI "constant 2015 US$"); the 40 BACI trade flows arrive at current prices and are brought onto that basis at vintage build with a world export price index from WDI -- 0 computation steps per world step, 0 additional target series, T47/T48/T50 untouched (T53)
+stack: C++20, compiled with g++, version pinned in werkzeugkette.cmake, build via CMake, every third-party library frozen as source under fremd/ in the repo (find_package and FetchContent forbidden); core without any third-party dependency and without a floating-point type; user interface deferred (ADR 0010)
+ueberlauf: -fwrapv in every profile, -fsanitize=undefined,address in the test profile, __int128 for every intermediate value -- plus checked arithmetic in the core, cut by kind of operation (narrowing, addition and subtraction, multiplication without division), because -fwrapv switches off exactly the sanitizer's overflow check (T7)
+determinismus: i64 fixed point with a declared scale per scale class, fixed iteration order via index lists, one root start value with derived streams, world step without any draw
+zustand: a fixed, allocation-free value, 310 i64 (2.480 bytes), checksum over the canonical byte form
+speicherstand: vintage, mode, start value, action sequence and checksum -- not the state
+kalibrierung: all numeric values in a parameter file outside the code, included in the hash
+partie: R rounds, R is a quantity of the vintage; in the check vintage 1997-2021, R = 24, one search-bot game costs R × 61 = 1.464 world steps
+fondsvermoegen: cash + valued positions + valued stakes - leverage, stakes at exit value; exactly one function in the core, read by settlement, mandate, way of dying 1, the invariant test and B (T47)
+skalen: thirteen classes, twelve of them with state addresses; each of the 310 addresses carries exactly one -- 3 fund money, 71 macroeconomic, 36 rates, 22 shares, 22 nominal indices, 5 exchange rate, 5 real indices, 25 persons, 32 lobby pressure, 4 instrument stage, 83 counters, 2 ids (T49)
+skalenuebergaenge: exactly three, one named function each at exactly one place -- tsd_in_cent (valuation), lobbypunkte_aus_geld (action 3), lobbypunkte_aus_schaden (counterforce 5); cent_in_tsd has no caller and does not exist (T50)
+abgeleitet: 22 functions of the state in the core (17 up to 2026-09-03, plus the five from the damage in counterforce 5 and the tariff wedge), 3 in the test bench, exhaustively enumerated; a name in a formula that is neither an address (T15) nor a parameter (T27) nor a vintage constant (T23) nor a derived quantity is a finding (T48)
+suchbot: target quantity B per T44 -- a static outcome forecast of the intermediate state, in the "überlebt" branch formula-identical to the outcome quantity of spiel.md, without a free parameter
+herkunft: each of the 310 addresses carries exactly one origin entry from five kinds; 136 data anchor, 150 design, 11 parameter, 2 manifest, 11 prescription (T45, T46) -- a gap or a second entry aborts the vintage build
+tick_planwert: 10 microseconds per world step (range 5 to 30) -- estimated, not measured; there is no core yet
+nachtlauf: 11.783.264 world steps, 2,0 minutes on one core at the plan value, 9,8 minutes in the unfavourable case
 ---
 
-# Der Kern ist eine reine Ganzzahlfunktion ohne Ziehung -- damit ist Determinismus keine Disziplin, sondern eine Eigenschaft des Bauprofils.
+# The core is a pure integer function without a draw -- which makes determinism not a discipline but a property of the build profile.
 
-Siebte Fassung, gegen `ventures/0016-.../aufgaben/0011-stack-auf-cpp.md` und **ADR 0011**.
-Sie tauscht **die Bauart und sonst nichts**: Zustandsaufbau, 310 Adressen, dreizehn
-Skalenklassen, Formeln, Herkunftseinträge und Jahrgangskonstanten stehen unverändert, weil
-nichts davon an einer Sprache hängt. Berührt sind T1 bis T15 in Abschnitt 1 bis 4 und die
-Stellen weiter hinten, die ein Sprachmerkmal beim Namen nannten.
+Seventh version, against `ventures/0016-.../aufgaben/0011-stack-auf-cpp.md` and **ADR 0011**.
+It swaps **the way of building and nothing else**: state layout, 310 addresses, thirteen
+scale classes, formulas, origin entries and vintage constants stand unchanged, because none
+of them hangs on a language. Touched are T1 to T15 in sections 1 to 4 and the places
+further back that named a language feature by name.
 
-Die Vorfassung begründete den Determinismus damit, dass er sich in Rust **vom Werkzeug**
-erzwingen lasse. Der Betreiber hat am 2026-09-01 C++ entschieden, und die Überschrift oben
-ist deshalb um ein Wort geändert: Was in Rust das Typsystem trug, tragen hier das Bauprofil
-und drei Prüfregeln — die Gleitkommasperre (T4), die geprüfte Arithmetik (T7) und die
-geordneten Behälter (T9). **Das ist der Unterschied, der beim Lesen wichtig ist:** Jede
-dieser drei ist mechanisch nachweisbar, aber keine ist geschenkt. Wo die Vorfassung eine
-Spracheigenschaft nannte, nennt diese eine Prüfung — und sagt dazu, was sie *nicht* deckt.
+The previous version justified determinism by saying that in Rust it can be enforced **by
+the tooling**. The operator decided C++ on 2026-09-01, and the heading above is therefore
+changed by one word: what the type system carried in Rust is carried here by the build
+profile and three check rules — the floating-point lock (T4), the checked arithmetic (T7)
+and the ordered containers (T9). **This is the difference that matters when reading:** each
+of these three is mechanically verifiable, but none comes for free. Where the previous
+version named a language property, this one names a check — and says what it does *not*
+cover.
 
-Die Abarbeitung der Prüfung zu `0001-entwurf-abnahme` steht am Ende der Datei und ist von
-diesem Lauf nicht berührt. Die Abarbeitungen der ersten vier Prüfungen standen in den
-Fassungen 2 bis 5 und sind dort je von der nächsten Prüfung unter deren Bedingung 5
-abgenommen worden; sie stehen im Git-Verlauf und werden hier nicht wiederholt.
+The working-off of the check on `0001-entwurf-abnahme` stands at the end of the file and is
+untouched by this run. The working-offs of the first four checks stood in versions 2 to 5
+and were each accepted there by the next check under its condition 5; they are in the Git
+history and are not repeated here.
 
-Die Vorgaben sind mit **T1** bis **T53** durchnummeriert. Der Builder weicht von keiner ab,
-ohne dass ein ADR sie aufhebt; der Prüfer zitiert die Nummer, statt sie zu umschreiben.
-**Die Nummern behalten über alle Fassungen ihre Bedeutung**, damit alle Prüfungen
-zitierbar bleiben; neue Vorgaben tragen die nächsten freien Nummern und stehen dort, wo sie
-inhaltlich hingehören. Die Nummerierung ist deshalb innerhalb der Abschnitte nicht
-fortlaufend.
+The prescriptions are numbered **T1** through **T53**. The builder deviates from none of
+them unless an ADR lifts it; the reviewer cites the number instead of paraphrasing it.
+**The numbers keep their meaning across all versions**, so that all checks stay citable;
+new prescriptions take the next free numbers and stand where they belong by content. The
+numbering is therefore not consecutive within the sections.
 
-**Zwei Vorgaben tragen in dieser Fassung einen Buchstaben — T2b und T6b.** Sie sind keine
-neuen Regeln, sondern die C++-Hälfte einer bestehenden: T2b sagt, was an die Stelle von
-`#![forbid(unsafe_code)]` tritt, T6b schreibt die Divisionsform vor, an der die
-Geschwindigkeitsmessung aus ADR 0011 hing. Ein Buchstabe statt einer neuen Nummer, damit die
-Prüfungen der Runden 1 bis 6 zitierbar bleiben und niemand T2 gegen T60 nachschlagen muss.
-Wirklich neu war in der Fassung 7 allein **T52** (Plattformunabhängigkeit der
-Ganzzahlrechnung), und die Vorfassung brauchte sie nicht, weil Rust sie geschenkt hatte.
-**T53** ist am 2026-09-04 mit Paket `0026-klasse-2-preisbasis` dazugekommen und steht hinter
-T50, weil sie zu den Skalen gehört und nicht zur Sprache (Abschnitt 17).
+**Two prescriptions carry a letter in this version — T2b and T6b.** They are not new
+rules but the C++ half of an existing one: T2b says what takes the place of
+`#![forbid(unsafe_code)]`, T6b prescribes the division form on which the speed measurement
+from ADR 0011 hung. A letter instead of a new number, so that the checks of rounds 1 to 6
+stay citable and nobody has to look up T2 against T60. Genuinely new in version 7 was only
+**T52** (platform independence of the integer arithmetic), and the previous version did not
+need it because Rust had given it for free. **T53** was added on 2026-09-04 with package
+`0026-klasse-2-preisbasis` and stands after T50 because it belongs to the scales and not to
+the language (section 17).
 
-**Die teuerste Lehre der Fassung 6, unverändert gültig: Der Abzählschritt aus T45 zählt
-Adressen, und Befund 2 der Runde 6 lag zwischen zweien.** Die gemischten Skalen in
-`beteiligung_wert` waren keine fehlende Adresse und keine fehlende Zahl, sondern eine
-**fehlende Einheit an einer vorhandenen Größe**. Fassung 6 hat deshalb dieselbe Prüfung, die
-Fassung 5 für die Herkunft von Hand ausgeführt hat, für die **Skala** ausgeführt — und dabei
-gefunden, dass
-T5 von sich sagt, die Bedeutung stehe „in dieser Tabelle und nirgends sonst", während **69
-der 310 Adressen** in keiner ihrer Zeilen vorkamen: 25 Personengrößen, 5 Produktivitäten,
-4 Regulierungsstände, 32 Druck- und Gegendruckfelder, die Sichtbarkeit des Fonds und die
-beiden Kennungsfelder.
+**The most expensive lesson of version 6, valid unchanged: the counting step from T45
+counts addresses, and finding 2 of round 6 lay between two of them.** The mixed scales in
+`beteiligung_wert` were not a missing address and not a missing number, but a
+**missing unit on an existing quantity**. Version 6 therefore ran the same check that
+version 5 had run by hand for the origin, for the **scale** — and in doing so found that
+T5 says of itself that the meaning stands „in dieser Tabelle und nirgends sonst", while **69
+of the 310 addresses** appeared in none of its rows: 25 person quantities, 5 productivities,
+4 regulation levels, 32 pressure and counter-pressure fields, the visibility of the fund and
+the two id fields.
 
-Die 32 Druckfelder sind darunter der teure Fall, und sie sind wörtlich Befund 2 ein zweites
-Mal: Der anliegende Druck entsteht aus dem **Lobbybudget des Fonds** (US-Cent), der
-Gegendruck aus dem **Schaden eines Sektors** (Tausend USD), und `spiel.md` verrechnet beide
-in Schritt 3 gegeneinander. Ohne erklärte Einheit hätte der Bauagent zwei Skalen addiert,
-die um den Faktor 100.000 auseinanderliegen — und diesmal hätte es nicht wie ein
-Rechenfehler ausgesehen, sondern wie eine Gegenlobby, die nie greift.
+Among these, the 32 pressure fields are the expensive case, and they are literally finding 2
+a second time: the applied pressure arises from the fund's **lobby budget** (US cents), the
+counter-pressure from a **sector's damage** (thousand USD), and `spiel.md` nets the two
+against each other in step 3. Without a declared unit, the build agent would have added two
+scales that lie a factor of 100.000 apart — and this time it would not have looked like a
+computation error, but like a counter-lobby that never bites.
 
-Die Antwort sind **T49** (jede der 310 Adressen trägt genau eine Skalenklasse, abgezählt),
-**T50** (die Skalengrenzen werden von benannten Funktionen an genau einem Ort überquert) und
-**T48** (die abgeleiteten Größen, die keine Adresse sind, abschliessend aufgezählt — die
-Menge, in der Befund 1 lag). Dieselbe Bauart wie T40, T44 und T45: nicht die fehlende Zahl
-nachtragen, sondern die Stelle schliessen, an der sie fehlen konnte, und die Zusage einer
-Tabelle dadurch prüfen, dass man sie einmal von Hand einlöst. Beide Summen gehen auf:
-`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 + 83 + 2 = 310` neben
+The answer is **T49** (each of the 310 addresses carries exactly one scale class, counted),
+**T50** (the scale boundaries are crossed by named functions at exactly one place) and
+**T48** (the derived quantities that are not addresses, exhaustively enumerated — the set
+in which finding 1 lay). The same way of building as T40, T44 and T45: not adding the
+missing number, but closing the place where it could go missing, and testing a table's
+promise by redeeming it once by hand. Both sums come out even:
+`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 + 83 + 2 = 310` alongside
 `136 + 150 + 11 + 2 + 11 = 310`.
 
 ## 1. Stack
