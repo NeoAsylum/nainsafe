@@ -223,3 +223,80 @@ foreach(probe IN LISTS KERN_PROBEN)
   fabrik_warnsatz_anlegen(${name})
   add_test(NAME ${name} COMMAND ${name})
 endforeach()
+
+# ---------------------------------------------------------------------------
+# Die Wandschranke -- Paket 0212
+# ---------------------------------------------------------------------------
+#
+# `PARTIELAENGE_HOECHSTENS` in `include/kern/verlauf.hpp` ist die Wand, die T40 ueber die
+# Laenge einer Partie zieht. Vier Zusicherungen bewegen sich mit ihr. Drei stehen in
+# demselben Kopf; die **bindende** nicht -- sie gehoert `kern::zustandsausgabe` und haelt
+# das Kettenblatt gegen `STAPEL_JE_FADEN`.
+#
+# Wo sie reisst, war bis heute hergeleitet: ein Groessengesetz, gelegt durch die drei
+# Waende, die ueberhaupt je jemand uebersetzt hat (26, 482, 483). Der Kopf schreibt
+# selbst hin, dass mit den Waenden 138 und 139 nichts uebersetzt worden ist -- und keine
+# Rolle dieser Fabrik hat eine Schale, mit der sie es haette nachholen koennen. Paket
+# 0195 ist an genau dieser Luecke zurueckgekommen.
+#
+# Der Eintrag unten schliesst sie: Er uebersetzt beide Waende, jede Nacht, und macht aus
+# einer einmaligen Messung eine stehende Regression. Wandert die Grenze -- und Paket 0091
+# hat einen vierten Behaelter an dieselbe Wand gehaengt, ohne dass es jemand bemerkte --,
+# wird er rot und druckt die **gemessene** Grenze aus, statt sie nur zu bestreiten.
+#
+# **Was er kostet.** Drei Uebersetzungen **einer** Uebersetzungseinheit mit
+# `-fsyntax-only`. Alle vier Zusicherungen stehen in Koepfen, ein einziges `#include`
+# erreicht also jede von ihnen; es entsteht keine Objektdatei, keine Bibliothek und keine
+# Probe. Das ist noetig und nicht sparsam: Dieser Kasten wird von **beiden** Baeumen
+# gelesen -- dem Arbeitsbereich und dem Alleinbau des Kerns --, der Eintrag laeuft also
+# zweimal je Nacht, genau wie `zahlwort_reihen`.
+#
+# Kein `if(EXISTS ...) add_test() endif()`. Genau diese Bauform laesst eine Probe still
+# verschwinden, sobald jemand die Datei verschiebt, und meldet danach eine gruene Abnahme
+# ueber einen Baum ohne sie. Ausgeschrieben steht die Begruendung im Bauskript des
+# Zahlwortriegels.
+
+get_filename_component(FABRIK_WANDSCHRANKE
+                       ${CMAKE_CURRENT_SOURCE_DIR}/messung/wandschranke.py ABSOLUTE)
+
+if(NOT EXISTS ${FABRIK_WANDSCHRANKE})
+  message(FATAL_ERROR
+          "Die Wandschranke fehlt: ${FABRIK_WANDSCHRANKE}\n"
+          "Sie ist der einzige Nachweis, dass die bindende Schranke der Wand aus T40 "
+          "dort liegt, wo `include/kern/verlauf.hpp` sie ausweist -- und die einzige "
+          "Stelle im ganzen Vorhaben, an der eine veraenderte Wand ueberhaupt "
+          "uebersetzt wird. Ist sie absichtlich umgezogen, gehoert der neue Pfad "
+          "hierher -- nicht diese Bedingung entfernt.")
+endif()
+
+# Wird kein Deuter gefunden, wird `python3` trotzdem eingetragen. Dann meldet `ctest` die
+# Probe rot ("Unable to find executable"), statt dass sie lautlos aus der Liste faellt.
+# Eine uebersprungene Probe sieht im Bericht aus wie eine bestandene.
+find_package(Python3 QUIET COMPONENTS Interpreter)
+if(Python3_Interpreter_FOUND)
+  set(FABRIK_WANDSCHRANKE_PYTHON ${Python3_EXECUTABLE})
+else()
+  set(FABRIK_WANDSCHRANKE_PYTHON python3)
+  message(WARNING "Kein Python3 gefunden -- die Probe `wandschranke` faellt auf "
+                  "`python3` aus dem Suchpfad zurueck und wird rot, wenn es das nicht "
+                  "gibt.")
+endif()
+
+# Der Uebersetzer kommt von CMake und steht nicht im Skript. Das Skript uebersetzt
+# unmittelbar, ohne CMake -- ein fest eingebautes `g++` waere ein zweiter Uebersetzer
+# neben dem, gegen den dieser Kasten gebaut wird, und ein Unterschied zwischen beiden
+# faende sich nirgends wieder.
+add_test(NAME wandschranke
+         COMMAND ${FABRIK_WANDSCHRANKE_PYTHON} ${FABRIK_WANDSCHRANKE}
+                 --uebersetzer ${CMAKE_CXX_COMPILER}
+                 --koepfe ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+# 300 und nicht 900: `agents/baulauf.py` bricht **den ganzen `ctest`-Aufruf** nach 900 s
+# ab. Eine Probe mit derselben Grenze koennte das Kontingent allein aufbrauchen, und der
+# Bericht nennte dann nicht sie, sondern nur einen abgeschnittenen Lauf.
+#
+# Die Zahl ist ein Hemmschuh und keine gemessene Zeit -- der Lauf, der sie gesetzt hat,
+# hatte keine Schale. Der Kostenpunkt sind drei Uebersetzungen ohne Erzeugnis, im roten
+# Fall bis zu vierzehn. Wer den ersten Nachtlauf im Bericht sieht, ersetzt sie durch das
+# Vielfache der gemessenen Zeit; ueber zwei Minuten je Lauf gehoert ein Befund dazu.
+set_tests_properties(wandschranke PROPERTIES TIMEOUT 300)
