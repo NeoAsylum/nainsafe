@@ -3481,281 +3481,284 @@ the core are packages of their own and not decided here.
 
 ## 20. Zwei Länderklassen und der geschätzte Politikpfad — Paket `0117`
 
-**Was hier entschieden wird und was nicht.** Dieser Abschnitt wählt **kein** Land aus, sucht
-**keine** Zinsreihe, ändert **keine** Zeile des Kerns und fasst die heutigen vier Länder nicht
-an. Entschieden wird dreierlei: was die beiden Klassen sind und wie sich die Ausnahme von den
-Prüfgegenständen **mechanisch** halten lässt (T58); wie die sechzehn Prüfgegenstände
-parametrisch zu zählen sind (T59); und in welcher Reihenfolge ein fehlender Politikpfad zu
-ersetzen ist, samt der Kennzeichnung, die eine Schätzung als Schätzung erkennbar hält (T60,
+**What is decided here and what is not.** This section selects **no** country, searches for
+**no** interest-rate series, changes **no** line of the core and does not touch today's four
+countries. Three things are decided: what the two classes are and how the exemption from the
+check subjects can be held **mechanically** (T58); how the sixteen check subjects are to be
+counted parametrically (T59); and in what order a missing policy path is to be replaced,
+together with the marking that keeps an estimate recognisable as an estimate (T60,
 T61).
 
-**Der Anlass steht in den Daten und nicht in der Zukunft.** `daten/reihen.toml` führt Reihe 9
-(Leitzins) mit `deckung_urteil = "reisst -- DEU und CHN tragen in dieser Quelle keinen
-einzigen Wert, USA endet 2020"`. Die Frage nach dem geschätzten Politikpfad ist damit keine
-Vorsorge für ein künftiges fünftes Land, sondern eine offene Frage an zwei der heutigen vier —
-und genau deshalb braucht sie eine Regel, die nicht von Fall zu Fall entschieden wird.
+**The occasion stands in the data, not in the future.** `daten/reihen.toml` carries series 9
+(policy rate) with `deckung_urteil = "reisst -- DEU und CHN tragen in dieser Quelle keinen
+einzigen Wert, USA endet 2020"`. The question of the estimated policy path is thus no
+provision for a future fifth country but an open question about two of today's four — and
+exactly for that reason it needs a rule that is not decided case by case.
 
-### T58 — Die beiden Klassen, und was „ausgenommen" mechanisch heisst
+### T58 — The two classes, and what "exempt" means mechanically
 
-| Klasse | Politikpfad | Datenreihen | im `weltlauf` | in den Prüfgegenständen |
+| Class | policy path | data series | in the `weltlauf` | in the check subjects |
 |---|---|---|---|---|
-| **Rückvergleichsland** | aus gemessener oder abgeleiteter Quelle (T60 Stufe 1–3) | alle aus gemessener Quelle | läuft, innerhalb der Sollmaske | **ja** — BIP, Sektorstruktur, Preise, Wechselkurs zählen |
-| **Spielland** | darf geschätzt sein (T60 Stufe 4) | für den `spielmodus`, nicht für den Rückvergleich | **stillgelegt**, vollständig ausserhalb der Sollmaske | **nein** — keine seiner Größen geht in ein Fehlermaß ein |
+| **Backtest country** | from a measured or derived source (T60 stage 1–3) | all from a measured source | runs, inside the target mask | **yes** — GDP, sector structure, prices, exchange rate count |
+| **Play-only country** | may be estimated (T60 stage 4) | for the `spielmodus`, not for the backtest | **shut down**, entirely outside the target mask | **no** — none of its quantities enters an error measure |
 
-**Die heutigen vier Länder — USA, China, Deutschland, Brasilien — sind Rückvergleichsländer**,
-alle vier, und dieser Abschnitt ändert daran nichts. Ihre sechzehn Prüfgegenstände nach T37
-bleiben, was sie sind.
+**Today's four countries — USA, China, Germany, Brazil — are backtest countries**,
+all four, and this section changes nothing about that. Their sixteen check subjects per T37
+remain what they are.
 
-**Warum die blosse Ausnahme von den Fehlermaßen nicht genügt — das ist der eine Befund dieses
-Abschnitts.** Der Auftrag beschreibt die Ausnahme als Eigenschaft der *Auswertung*: das BIP
-des Spiellands geht in kein Fehlermaß ein. Das reicht nicht. Das Modell ist gekoppelt: Schritt
-4 rechnet aus dem Politikpfad BIP, Preise und Wechselkurs, die Markträumung bildet daraus
-Weltpreise, und die Weltpreise stehen im BIP **jedes anderen Gebiets**. Ein Spielland, das mit
-einem erfundenen Leitzins endogen mitrechnet, verschiebt damit das BIP von Deutschland — einen
-Prüfgegenstand — ohne je selbst gemessen zu werden. `spiel.md` hat den Satz dafür schon:
-*„Ein Lauf mit erfundener Politik prüfte nur die halbe Maschine."* Die Ausnahme muss deshalb
-im **Lauf** sitzen, nicht in der Auswertung.
+**Why the mere exemption from the error measures does not suffice — that is the one finding
+of this section.** The brief describes the exemption as a property of the *evaluation*: the
+play-only country's GDP enters no error measure. That is not enough. The model is coupled:
+step 4 computes GDP, prices and exchange rate from the policy path, the market clearing forms
+world prices from them, and the world prices stand in the GDP of **every other territory**. A
+play-only country that computes along endogenously with an invented policy rate thereby
+shifts the GDP of Germany — a check subject — without ever being measured itself. `spiel.md`
+already has the sentence for it:
+*„Ein Lauf mit erfundener Politik prüfte nur die halbe Maschine."* The exemption must
+therefore sit in the **run**, not in the evaluation.
 
-Drei Wege, an den Kriterien dieses Vorhabens gemessen:
+Three ways, measured against this venture's criteria:
 
-| | **A Stilllegung** (gewählt) | **B exogene Führung** | **C blosse Maskierung** |
+| | **A shutdown** (chosen) | **B exogenous guidance** | **C mere masking** |
 |---|---|---|---|
-| Was das Spielland im `weltlauf` tut | nichts; seine Adressen liegen ausserhalb der Sollmaske | es läuft mit, aber jede seiner Größen kommt je Runde aus gemessenen Daten | es rechnet endogen mit dem geschätzten Pfad |
-| Wirkt der geschätzte Pfad auf einen Prüfgegenstand? | nein | nein, solange **jede** seiner übrigen Reihen gemessen ist | **ja**, über Handel und Weltpreise |
-| Womit ist das belegt? | zweiseitige Maskenprüfung je Runde (T38) und eine Giftprobe | Reihe für Reihe nachgesehen, je Jahrgang neu | gar nicht |
-| Datenkosten je Spielland | Startwerte und der geschätzte Pfad, beides nur für den `spielmodus` | Stützstellen für BIP, Sektoranteile, Preise, Kurs — fast ein Rückvergleichsland | wie B |
-| Kosten am Jahrgang | der Restweltrest wird je Modus einmal gebildet | einmal | einmal |
-| gespeicherte Rückvergleichsergebnisse | bleiben gültig | verfallen bei jedem neuen Spielland | verfallen ebenso |
-| was der Rückvergleich gewinnt | nichts | ein gemessenes Gebiet mehr im Handelsblock | nichts |
+| What the play-only country does in the `weltlauf` | nothing; its addresses lie outside the target mask | it runs along, but each of its quantities comes from measured data every round | it computes endogenously with the estimated path |
+| Does the estimated path act on a check subject? | no | no, as long as **every** one of its remaining series is measured | **yes**, via trade and world prices |
+| What proves it? | two-sided mask check per round (T38) and a poison test | looked up series by series, anew per vintage | not at all |
+| Data cost per play-only country | start values and the estimated path, both only for the `spielmodus` | support points for GDP, sector shares, prices, rate — almost a backtest country | like B |
+| Cost at the vintage | the rest-of-world remainder is formed once per mode | once | once |
+| stored backtest results | stay valid | expire with every new play-only country | expire likewise |
+| what the backtest gains | nothing | one more measured territory in the trade block | nothing |
 
-**Gewählt ist A**, und der Grund ist die dritte Zeile: Nur dort ist die Ausnahme eine Prüfung
-und kein Argument. B ist fachlich nicht schlechter — es macht den Rückvergleich sogar
-genauer —, aber es kostet je Spielland fast die Datenarbeit eines Rückvergleichslands und
-entwertet bei jedem Zuwachs die gespeicherten Ergebnisse des Rückvergleichs, also das
-teuerste Gut dieses Vorhabens. C ist der Weg, den der Auftragstext wörtlich beschreibt, und
-er ist undicht.
+**A is chosen**, and the reason is the third row: only there is the exemption a check and not
+an argument. B is not worse on the merits — it even makes the backtest more
+precise — but per play-only country it costs almost the data work of a backtest country and
+devalues the stored results of the backtest with every addition, that is, the dearest
+good of this venture. C is the way the brief text literally describes, and it
+leaks.
 
-**Vier Festlegungen, mehr braucht A nicht:**
+**Four stipulations, more than that A does not need:**
 
-1. **Ein Ort für die Menge.** `aktive_gebiete(modus)` liefert im `spielmodus` alle Gebiete, im
-   `weltlauf` die Rückvergleichsländer und die Restwelt. **Jede** Schleife über Gebiete —
-   Markträumung, Handel, Preisübertragung, Invariantenprüfung, Zustandsausgabe — läuft über
-   diese eine Menge. Ein zweiter Ort, an dem die Menge gebildet wird, ist ein Fehler derselben
-   Familie wie die doppelte Konkordanz aus T23 Punkt 9.
-2. **Ausserhalb der Maske, nicht per Vortrag.** Im `weltlauf` liegen alle Adressen eines
-   Spiellands und alle Handelszeilen, an denen es beteiligt ist, **ausserhalb** der Sollmaske
-   aus T38. Sie behalten ihren Startwert und werden nicht geschrieben — dieselbe Bauart, mit
-   der der Fondsblock im `weltlauf` schon heute nicht gerechnet wird statt abgefangen zu
-   werden. Der zweiseitige Maskentest macht daraus je Runde einen harten Fehler: Wer schreibt,
-   fliegt auf.
-3. **Der Restweltrest bekommt einen Modus.** T23 Punkt 10 bildet die Restwelt heute als
-   „Weltreihe minus die vier Länder" und ihre Handelszeilen als „Gesamtein- und -ausfuhr minus
-   die Ströme zu den drei anderen". Mit zwei Klassen lautet die Regel: im `weltlauf` minus die
-   **Rückvergleichsländer**, im `spielmodus` minus **alle Politikländer**. Damit tragen der
-   Restweltblock (`4S + 10`, also 22) und die Restwelt-Handelszeilen (`2·L_R·(S−1)`, bei
-   `L_R = 4` also 16) je Jahrgang zwei Werte, zusammen 38 Adressen; die Handelszeilen zwischen
-   Restwelt und Spielland gibt es nur im `spielmodus`. **Ohne diesen zweiten Rest schrumpft die
-   Welt des `weltlauf` um die Masse des Spiellands** — `handel.DE.RW.*` verlöre den Anteil, der
-   heute nach dorthin geht —, und der Handelsblock ist ein Prüfgegenstand. Die Datenseite
-   verschöbe dann genau das, was Festlegung 2 auf der Rechenseite schützt.
-4. **Die Giftprobe, weil die Maske nur die Schreibseite deckt.** „Keine Adresse ausserhalb der
-   Maske berührt" fängt den Schreibzugriff; eine Regel, die eine Spiellandadresse nur **liest**,
-   bleibt unsichtbar. Der Prüfstand fährt deshalb je Jahrgang einen `weltlauf` zweimal: einmal
-   gewöhnlich, einmal mit allen Spiellandadressen auf einem absurden Wert (Wertebereichsrand
-   nach T5/T49). **Beide Läufe müssen in allen Maskenadressen bitgleich sein.** Weicht eine ab,
-   liest eine Regel, was sie nicht lesen darf. Kosten: ein zusätzlicher Lauf über `R`
-   Weltschritte je Jahrgang, also nichts gegen die drei Selbstspielmaße.
+1. **One place for the set.** `aktive_gebiete(modus)` returns, in the `spielmodus`, all
+   territories; in the `weltlauf`, the backtest countries and the rest of world. **Every**
+   loop over territories — market clearing, trade, price transmission, invariant check, state
+   output — runs over this one set. A second place where the set is formed is an error of the
+   same family as the double concordance from T23 point 9.
+2. **Outside the mask, not per Vortrag.** In the `weltlauf` all addresses of a play-only
+   country and all trade rows it takes part in lie **outside** the target mask
+   from T38. They keep their start value and are not written — the same construction by
+   which the fund block is already today not computed in the `weltlauf` instead of being
+   caught. The two-sided mask test turns that into a hard error every round: whoever writes
+   is found out.
+3. **The rest-of-world remainder gets a mode.** T23 point 10 forms the rest of world today as
+   "world series minus the four countries" and its trade rows as "total imports and exports
+   minus the flows to the three others". With two classes the rule reads: in the `weltlauf`
+   minus the **backtest countries**, in the `spielmodus` minus **all policy countries**. The
+   rest-of-world block (`4S + 10`, so 22) and the rest-of-world trade rows (`2·L_R·(S−1)`, at
+   `L_R = 4` so 16) thus carry two values per vintage, together 38 addresses; the trade rows
+   between rest of world and play-only country exist only in the `spielmodus`. **Without this
+   second remainder the world of the `weltlauf` shrinks by the mass of the play-only
+   country** — `handel.DE.RW.*` would lose the share that today goes there — and the trade
+   block is a check subject. The data side would then shift exactly what stipulation 2
+   protects on the computation side.
+4. **The poison test, because the mask covers only the write side.** "No address outside the
+   mask touched" catches the write access; a rule that only **reads** a play-only-country
+   address stays invisible. The test bench therefore runs a `weltlauf` twice per vintage: once
+   ordinarily, once with all play-only-country addresses at an absurd value (value-range edge
+   per T5/T49). **Both runs must be bit-identical in all mask addresses.** If one deviates, a
+   rule reads what it may not read. Cost: one additional run over `R`
+   world steps per vintage, so nothing against the three self-play measures.
 
-**Der Wechsel der Klasse ist eine Richtung und ein Vorgang.** Wird der Politikpfad eines
-Spiellands später gemessen (T60 Stufe 1) oder ohne freien Parameter abgeleitet (Stufe 2), wird
-es ein Rückvergleichsland: `L_R` wächst um eins, die Prüfgegenstände um vier, seine Reihen
-kommen in die Sollmaske, und die gespeicherten Rückvergleichsergebnisse werden **einmal** neu
-gebildet, weil sich der Restweltrest ändert. Die Gegenrichtung — ein Rückvergleichsland wird
-Spielland — ist kein Datenvorgang, siehe T60.
+**The change of class is a direction and a procedure.** If the policy path of a play-only
+country is later measured (T60 stage 1) or derived without a free parameter (stage 2), it
+becomes a backtest country: `L_R` grows by one, the check subjects by four, its series enter
+the target mask, and the stored backtest results are rebuilt **once**, because the
+rest-of-world remainder changes. The opposite direction — a backtest country becomes a
+play-only country — is not a data procedure, see T60.
 
-### T59 — Die Zählung, parametrisch in der Zahl der Rückvergleichsländer
+### T59 — The count, parametric in the number of backtest countries
 
-`L_R` ist die Zahl der Rückvergleichsländer, `L_S` die der Spielländer, und
-`L = L_R + L_S` ist die Länderzahl aus T54. `n` ist 1, wenn das Numéraireland (heute die USA)
-ein Rückvergleichsland ist, sonst 0; heute ist `n = 1`.
+`L_R` is the number of backtest countries, `L_S` that of the play-only countries, and
+`L = L_R + L_S` is the country count from T54. `n` is 1 if the numéraire country (today the
+USA) is a backtest country, otherwise 0; today `n = 1`.
 
-| Größe | Formel | heute (`L_R = 4`) | `L_R = 4`, `L_S = 5` | `L_R = 9` | Fundstelle |
+| Quantity | Formula | today (`L_R = 4`) | `L_R = 4`, `L_S = 5` | `L_R = 9` | Reference |
 |---|---|---:|---:|---:|---|
-| BIP je Land | `L_R` | 4 | 4 | 9 | T37, Reihe 1 |
-| Sektorstruktur je Land | `L_R` | 4 | 4 | 9 | T37, Reihe 2 |
-| Verbraucherpreise je Land | `L_R` | 4 | 4 | 9 | T37, Reihe 8 |
-| Wechselkurs je Land ausser dem Numéraire | `L_R − n` | 3 | 3 | 8 | T37, Reihe 10 |
-| Handelsblock | `1` | 1 | 1 | 1 | T37, Reihe 14 |
-| **Prüfgegenstände** | `3·L_R + (L_R − n) + 1` | **16** | **16** | **36** | T37 |
-| Ströme im Handelsblock | `(L_R+1)·L_R·(S−1)` | 40 | 40 | 180 | Reihe 14, `handelsblock_stroeme` |
-| freie Sollreihen | `L_R(S+3) − n` | 23 | 23 | 53 | `zaehlregel_t37` |
-| abgeleitete Sollreihen | `L_R` | 4 | 4 | 9 | Reihe 11 |
-| **Sollreihen** | `L_R(S+4) − n` | **27** | **27** | **62** | T55, `sollreihen_gesamt` |
-| **Sollmaske `weltlauf`** | `L_R(4S+I+11) + (4S+10) + (L_R+1)L_R(S−1) + (S−1) + 3` | **175** | **175** | **450** | T38, T55 |
+| GDP per country | `L_R` | 4 | 4 | 9 | T37, series 1 |
+| Sector structure per country | `L_R` | 4 | 4 | 9 | T37, series 2 |
+| Consumer prices per country | `L_R` | 4 | 4 | 9 | T37, series 8 |
+| Exchange rate per country except the numéraire | `L_R − n` | 3 | 3 | 8 | T37, series 10 |
+| Trade block | `1` | 1 | 1 | 1 | T37, series 14 |
+| **Check subjects** | `3·L_R + (L_R − n) + 1` | **16** | **16** | **36** | T37 |
+| Flows in the trade block | `(L_R+1)·L_R·(S−1)` | 40 | 40 | 180 | series 14, `handelsblock_stroeme` |
+| free target series | `L_R(S+3) − n` | 23 | 23 | 53 | `zaehlregel_t37` |
+| derived target series | `L_R` | 4 | 4 | 9 | series 11 |
+| **Target series** | `L_R(S+4) − n` | **27** | **27** | **62** | T55, `sollreihen_gesamt` |
+| **Target mask `weltlauf`** | `L_R(4S+I+11) + (4S+10) + (L_R+1)L_R(S−1) + (S−1) + 3` | **175** | **175** | **450** | T38, T55 |
 
-**Nachrechnung im Fliesstext, jede Zahl in diesem Lauf einmal von Hand eingesetzt.**
-Prüfgegenstände heute `3·4 + (4−1) + 1 = 12 + 3 + 1 = 16`, bei neun Rückvergleichsländern
-`3·9 + 8 + 1 = 27 + 8 + 1 = 36`. Ströme `5·4·2 = 40` und `10·9·2 = 180`. Freie Sollreihen
-`4·6 − 1 = 23` und `9·6 − 1 = 53`, abgeleitete 4 und 9, zusammen `4·7 − 1 = 27` und
-`9·7 − 1 = 62`. Sollmaske `4·27 + 22 + 40 + 2 + 3 = 175` und `9·27 + 22 + 180 + 2 + 3 = 450`.
+**Recomputation in running text, every number substituted once by hand in this run.**
+Check subjects today `3·4 + (4−1) + 1 = 12 + 3 + 1 = 16`, with nine backtest countries
+`3·9 + 8 + 1 = 27 + 8 + 1 = 36`. Flows `5·4·2 = 40` and `10·9·2 = 180`. Free target series
+`4·6 − 1 = 23` and `9·6 − 1 = 53`, derived 4 and 9, together `4·7 − 1 = 27` and
+`9·7 − 1 = 62`. Target mask `4·27 + 22 + 40 + 2 + 3 = 175` and `9·27 + 22 + 180 + 2 + 3 = 450`.
 
-**Ein zusätzliches Spielland lässt jede Zeile dieser Tabelle unverändert**, weil in keiner
-Formel `L_S` vorkommt — das ist die Spalte `L_R = 4, L_S = 5` gegen die Spalte `heute`, Zeile
-für Zeile dieselbe Zahl. Sie ändert sich erst, wenn `L_R` sich ändert; deshalb steht die
-Spalte `L_R = 9` daneben, in der jede Zeile wandert, die wandern soll.
-Der Auftragstext sagt an einer Stelle „Ein Spielland ändert die Zahl, nicht
-die Struktur"; die Abnahmebedingung desselben Pakets verlangt das Gegenteil und ist die
-schärfere Aussage. Die Formel entscheidet den Punkt: Die Zahl hängt an `L_R`, ein Spielland
-erhöht `L`.
+**An additional play-only country leaves every row of this table unchanged**, because `L_S`
+appears in no formula — that is the column `L_R = 4, L_S = 5` against the column `today`, row
+by row the same number. It changes only when `L_R` changes; that is why the
+column `L_R = 9` stands beside it, in which every row moves that is meant to move.
+The brief text says at one point „Ein Spielland ändert die Zahl, nicht
+die Struktur"; the acceptance condition of the same package demands the opposite and is the
+sharper statement. The formula decides the point: the count hangs on `L_R`, a play-only
+country raises `L`.
 
-**Die Kurzform `4·L_R` ist richtig und darf trotzdem nicht die bindende sein.** Bei `n = 1`
-heben sich die `−1` des Numéraires und die `+1` des Handelsblocks auf, und `16 = 4·4`,
-`36 = 4·9`. Die beiden Terme haben aber nichts miteinander zu tun: Würde je handelbarem Sektor
-ein Handelsblock geführt statt einem insgesamt, oder wäre das Numéraireland ein Spielland,
-fiele die Aufhebung weg. Zweiter Fall, durchgerechnet: `L_R = 3` ohne die USA ergäbe
-`3·3 + 3 + 1 = 13`, nicht 12. Das ist dieselbe Falle wie „40 gegen 40" und „27 gegen 27" in
-T55, nur eine Ebene höher.
+**The short form `4·L_R` is right and still must not be the binding one.** At `n = 1`
+the `−1` of the numéraire and the `+1` of the trade block cancel, and `16 = 4·4`,
+`36 = 4·9`. But the two terms have nothing to do with each other: were one trade block kept
+per tradable sector instead of one overall, or were the numéraire country a play-only
+country, the cancellation would fall away. Second case, computed through: `L_R = 3` without
+the USA would give `3·3 + 3 + 1 = 13`, not 12. That is the same trap as "40 against 40" and
+"27 against 27" in T55, only one level up.
 
-**In T55 wechseln genau drei Zeilen von `L` auf `L_R`, und keine weitere.** „Sollreihen" wird
-`L_R(S+4) − n`. „Sollmaske `weltlauf`" wird die Formel aus der Tabelle oben. „Ausserhalb der
-Sollmaske" ist keine Formel in einer Variablen mehr, sondern die Differenz *Zustand gesamt
-(in `L`)* minus *Sollmaske (in `L_R`)*. Alle übrigen Zeilen zählen **Geometrie** und bleiben
-bei `L`: Ein Spielland belegt seinen vollen Länderblock, seine Handelszeilen, seine
-Steckplätze, Beteiligungen und Nachahmerzähler — es ist im Zustand ein Land wie jedes andere.
-Auch „Sollmaske `weltlauf`, je Land" bleibt unberührt, weil es eine Größe je Land ist und
-keine Klasse kennt. Bei `L_S = 0` gehen alle drei Zeilen in ihre heutige Fassung über; das ist
-die Verträglichkeitsprobe.
+**In T55 exactly three rows switch from `L` to `L_R`, and no other.** "Target series" becomes
+`L_R(S+4) − n`. "Target mask `weltlauf`" becomes the formula from the table above. "Outside
+the target mask" is no longer a formula in one variable but the difference *state total
+(in `L`)* minus *target mask (in `L_R`)*. All remaining rows count **geometry** and stay
+at `L`: a play-only country occupies its full country block, its trade rows, its
+slots, stakes and imitator counters — in the state it is a country like any other.
+"Target mask `weltlauf`, per country" also stays untouched, because it is a per-country
+quantity and knows no class. At `L_S = 0` all three rows pass over into their present form;
+that is the compatibility test.
 
-**Die Klassentrennung spart Prüfaufwand und Daten, keine Adressen.** Bei `L = 9` mit fünf
-Spielländern bleibt der Zustand bei den 740 aus T55, die Maske bei 175 — also liegen 565
-Adressen ausserhalb statt der 290 bei neun Rückvergleichsländern. Die 275 Adressen Unterschied
-zerfallen in `5 × 27 = 135` Maskenadressen der fünf Spielländer und `180 − 40 = 140`
-Handelsströme, zusammen 275; zwei Wege, dieselbe Zahl. Was ein Land im Zustand kostet, steht
-in `spiel.md`: 58 Felder je Politikland zuzüglich seiner Handelszeilen, unabhängig von der
-Klasse.
+**The class separation saves checking effort and data, not addresses.** At `L = 9` with five
+play-only countries the state stays at the 740 from T55, the mask at 175 — so 565
+addresses lie outside instead of the 290 with nine backtest countries. The 275 addresses of
+difference decompose into `5 × 27 = 135` mask addresses of the five play-only countries and
+`180 − 40 = 140` trade flows, together 275; two ways, the same number. What a country costs
+in the state stands in `spiel.md`: 58 fields per policy country plus its trade rows,
+independent of the class.
 
-**Zwei Gegenrechnungen, die diese Formeln nicht kennen.** `spiel.md` zählt für den Fall aller
-195 Länder „`4 · L` — vier Prüfgegenstände je Rückvergleichsland" und kommt auf 780; einsetzen
-von 195 in die Formel oben ergibt `3·195 + 194 + 1 = 780`. Und das Arbeitspaket
-`0118-fuenf-weitere-laender-auswaehlen` stellt vom 2026-09-05 unabhängig beide Klassenwahlen
-nebeneinander: neun Rückvergleichsländer ergäben 62 Sollreihen und 36 Prüfgegenstände, vier
-plus fünf Spielländer 27 und 16. Alle vier Zahlen stimmen mit den Formeln überein.
+**Two counter-calculations that do not know these formulas.** `spiel.md` counts, for the case
+of all 195 countries, „`4 · L` — vier Prüfgegenstände je Rückvergleichsland" and arrives at
+780; substituting 195 into the formula above gives `3·195 + 194 + 1 = 780`. And the work
+package `0118-fuenf-weitere-laender-auswaehlen` of 2026-09-05 independently puts both class
+choices side by side: nine backtest countries would give 62 target series and 36 check
+subjects, four plus five play-only countries 27 and 16. All four numbers agree with the
+formulas.
 
-**Was die Zählung nicht enthält.** `S` und `I` kommen in der Prüfgegenstandsformel nicht vor.
-Ein vierter Sektor erzeugt keinen neuen Prüfgegenstand — er macht den Prüfgegenstand
-*Sektorstruktur* schwerer, weil nach T37 alle Anteilsreihen des Landes bestehen müssen. Ein
-fünftes Instrument erzeugt gar keinen. Das ist der Unterschied zu T55, wo `S` und `I` in fast
-jeder Zeile stehen, und er ist der Grund, warum diese Tabelle eine eigene ist und keine
-weitere Zeile in T55.
+**What the count does not contain.** `S` and `I` do not appear in the check-subject formula.
+A fourth sector creates no new check subject — it makes the check subject
+*sector structure* harder, because per T37 all of the country's share series must pass. A
+fifth instrument creates none at all. That is the difference from T55, where `S` and `I`
+stand in almost every row, and it is the reason this table is its own and not a
+further row in T55.
 
-**Rechenzeit.** Die Klassentrennung verbilligt den Prüfstand nicht. Maß 4 ist **ein** Lauf
-über `R` Weltschritte je Jahrgang, jetzt über `L_R + 1` statt `L + 1` Gebiete; das Budget des
-Prüfstands tragen die Selbstspielmaße 1 bis 3, und die laufen im `spielmodus` über alle `L`.
-Was billiger wird, ist die Datenbeschaffung und die Zahl der Reihen, die je Jahrgang
-lizenzgeprüft sein müssen — nicht die Nacht.
+**Computing time.** The class separation does not make the test bench cheaper. Maß 4 is
+**one** run over `R` world steps per vintage, now over `L_R + 1` instead of `L + 1`
+territories; the test bench's budget is carried by the self-play measures 1 to 3, and those
+run in the `spielmodus` over all `L`. What becomes cheaper is the data procurement and the
+number of series that must be licence-checked per vintage — not the night.
 
-### T60 — Die Rangfolge für einen fehlenden Politikpfad
+### T60 — The ranking for a missing policy path
 
-Geraten wird zuletzt. Die Stufen sind in dieser Reihenfolge zu versuchen, und die erreichte
-Stufe entscheidet die Klasse des Landes:
+Guessing comes last. The stages are to be tried in this order, and the stage reached decides
+the class of the country:
 
-| Stufe | Was versucht wird | Klasse | Herleitung im Klartext |
+| Stage | What is tried | Class | Derivation in plain text |
 |---:|---|---|---|
-| **1** | ein anderer Code **derselben schon geklärten Quelle für dieselbe Größe** | Rückvergleichsland | nein; `codes` und `code_herkunft` genügen |
-| **2** | eine **abgeleitete** Reihe aus einer bereits lizenzgeklärten Quelle | Rückvergleichsland | **ja**, nachrechenbar |
-| **3** | **kein eigener Pfad**, weil das Land keinen geldpolitischen Hebel hat | Rückvergleichsland | **ja**: welche Union, ab welchem Jahr |
-| **4** | ein **geschätzter** Pfad | **Spielland** | **ja**, mit jedem freien Parameter benannt |
+| **1** | another code **of the same already cleared source for the same quantity** | backtest country | no; `codes` and `code_herkunft` suffice |
+| **2** | a **derived** series from an already licence-cleared source | backtest country | **yes**, recomputable |
+| **3** | **no path of its own**, because the country has no monetary-policy lever | backtest country | **yes**: which union, from which year |
+| **4** | an **estimated** path | **play-only country** | **yes**, with every free parameter named |
 
-**Stufe 1 verlangt dieselbe Größe, und das ist keine Förmlichkeit.** Der heutige Code
-`DISR_RT_PT_A_PT` ist nach `reihen.toml` eine Wahl aus Paket 0006
-(`code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"`), keine Notwendigkeit — ein
-anderer Code desselben Datenflusses ist deshalb der erste Griff. Ein Code, der **etwas anderes
-misst**, ist aber nicht Stufe 1, sondern bestenfalls Eingang einer Ableitung nach Stufe 2.
-Ohne diesen Zusatz liesse sich jede Ersatzgröße zur Stufe 1 erklären, und die Rangfolge wäre
-wirkungslos. Der Fall liegt vor: `daten/nachmessung-zinsreihen-2026-09-05.md` nennt für
-Deutschland `S13BOND_RT_PT_A_PT` (Rendite von Staatsanleihen, 1957–2017) und stellt die Frage
-ausdrücklich an diesen Abschnitt. **Die Antwort ist nein.** Eine Staatsanleiherendite ist ein
-Marktpreis; Reihe 9 speist in Schritt 3 einen Politikpfad, und ein Instrument, das der Markt
-setzt, ist keines. Als **Eingang einer Ableitung** nach Stufe 2 bleibt die Reihe brauchbar —
-dann aber mit Herleitung, mit der Lücke 2018–2021 im Fenster und unter der Schranke des
-nächsten Absatzes.
+**Stage 1 demands the same quantity, and that is no formality.** Today's code
+`DISR_RT_PT_A_PT` is per `reihen.toml` a choice from package 0006
+(`code_herkunft = "gewaehlt-0006, in specs/ nicht genannt"`), not a necessity — another code
+of the same data flow is therefore the first reach. But a code that **measures something
+else** is not stage 1, at best the input of a derivation per stage 2.
+Without this addition any substitute quantity could be declared stage 1, and the ranking
+would be without effect. The case is at hand: `daten/nachmessung-zinsreihen-2026-09-05.md`
+names for Germany `S13BOND_RT_PT_A_PT` (yield of government bonds, 1957–2017) and puts the
+question expressly to this section. **The answer is no.** A government-bond yield is a
+market price; series 9 feeds a policy path in step 3, and an instrument that the market
+sets is not one. As the **input of a derivation** per stage 2 the series remains usable —
+but then with a derivation, with the gap 2018–2021 in the window and under the bound of the
+next paragraph.
 
-**Die Grenze zwischen Stufe 2 und Stufe 4, damit Stufe 2 keine Hintertür wird.** Eine
-**Ableitung** enthält keinen Parameter, der am Ergebnis des Modells angepasst wird; eine
-**Schätzung** enthält einen. Wer einen Aufschlag wählt, weil das BIP damit besser trifft, hat
-nicht abgeleitet, sondern das Modell an sich selbst geeicht — und der Rückvergleich misst dann
-diese Wahl. Die Regel ist maschinell prüfbar, weil die Kennzeichnung nach T61 die Zahl der
-freien Parameter mitführt: `> 0` schliesst Stufe 2 aus.
+**The boundary between stage 2 and stage 4, so that stage 2 does not become a back door.** A
+**derivation** contains no parameter that is adjusted against the result of the model; an
+**estimate** contains one. Whoever chooses a spread because GDP hits better with it has
+not derived but calibrated the model against itself — and the backtest then measures
+that choice. The rule is machine-checkable, because the marking per T61 carries the number
+of free parameters along: `> 0` rules out stage 2.
 
-**Dieses Dokument zieht dieselbe Grenze schon einmal, und zwar an genau dieser Größe.** T27
-hält fest: `leitzins_start[l]` steht **nicht** in `parameter.toml`, sondern im Jahrgang —
-*„keine Kalibriergröße, sondern eine Messung"*. Der naheliegende Weg von einer
-Anleiherendite zu einem Leitzins liefe über `aufschlag`, und `aufschlag` ist eine
-Kalibriergröße: Klasse 3, aus `parameter.toml`, in T27 als *„Abstand Leitzins ↔
-Anleiherendite"* geführt und vom Nachtlauf über tausend Parametersätze variiert. Ein so
-gebildeter Pfad ist deshalb nicht nur „geschätzt" — er ist **im Kreis geschätzt**: T23 Punkt 5
-rechnet `aufschlag_min = 1 − min(leitzins_pfad)`, der Pfad käme aber aus `aufschlag`. **Eine
-Ableitung, die über einen Parametersatzschlüssel führt, ist keine.**
+**This document draws the same boundary once already, and at exactly this quantity.** T27
+records: `leitzins_start[l]` stands **not** in `parameter.toml` but in the vintage —
+*"not a calibration quantity but a measurement"*. The obvious way from a
+bond yield to a policy rate would run via `aufschlag`, and `aufschlag` is a
+calibration quantity: class 3, from `parameter.toml`, carried in T27 as *"spread policy rate
+↔ bond yield"* and varied by the night run over a thousand parameter sets. A path formed
+this way is therefore not merely "estimated" — it is **estimated in a circle**: T23 point 5
+computes `aufschlag_min = 1 − min(leitzins_pfad)`, but the path would come from `aufschlag`.
+**A derivation that runs through a parameter-set key is none.**
 
-**Stufe 2 ist eine ungeprüfte Vermutung und keine Quelle.** Als Kandidaten stehen im Raum die
-WDI-Zinsreihen `FR.INR.RINR`, `FR.INR.LEND` und `FR.INR.DPST`. Sie sind **keine Leitzinsen**,
-und **nichts an ihnen ist geprüft**: nicht die Deckung, nicht die Länderliste, nicht die
-Drittanbieterlage. Ich habe sie in diesem Lauf ausdrücklich **nicht** nachgesehen — Zinsreihen
-zu suchen gehört nach dem Auftrag nicht zu diesem Paket. Ein Punkt lässt sich ohne Suche
-schärfen, und er wiegt schwerer als die Vermutung selbst: **Die Annahme „aus dem WDI, also
-CC BY 4.0" sagt über eine einzelne Reihe nichts.** In `reihen.toml` sind acht Reihen aus dem
-WDI eingebettet (1, 2, 5, 6, 7, 8, 10, 13), alle acht mit
-`lizenz_beleg_typ = "feld_source"` — entschieden wird am Feld `Source` des Codes, nicht am
-Katalog. Das Ergebnis für diese acht: fünfmal `unklar` (1, 2, 5, 6, 7), zweimal `frei`
-(8, 10) und **einmal `gesperrt`** — Reihe 13, das Zollniveau, und damit ausgerechnet einer
-der drei Politikpfade. Wer Stufe 2 über das WDI geht, hat die Lizenzfrage nicht abgekürzt,
-sondern nur verschoben.
+**Stage 2 is an unchecked conjecture and not a source.** In the room as candidates stand the
+WDI interest series `FR.INR.RINR`, `FR.INR.LEND` and `FR.INR.DPST`. They are **no policy
+rates**, and **nothing about them is checked**: not the coverage, not the country list, not
+the third-party situation. I have expressly **not** looked them up in this run — searching
+for interest series does not belong to this package per the brief. One point can be sharpened
+without a search, and it weighs more than the conjecture itself: **the assumption "from the
+WDI, hence CC BY 4.0" says nothing about a single series.** In `reihen.toml` eight series
+from the WDI are embedded (1, 2, 5, 6, 7, 8, 10, 13), all eight with
+`lizenz_beleg_typ = "feld_source"` — the decision is made at the code's field `Source`, not
+at the catalogue. The result for these eight: five times `unklar` (1, 2, 5, 6, 7), twice
+`frei` (8, 10) and **once `gesperrt`** — series 13, the tariff level, and with that of all
+things one of the three policy paths. Whoever goes stage 2 via the WDI has not shortened the
+licence question, only postponed it.
 
-**Stufe 3 ist eine Antwort und keine Lücke — aber sie liefert eine Zahl.** Für ein Land ohne
-eigenen geldpolitischen Hebel ist „kein eigener Pfad" richtig; Deutschland trägt das nach
-`spiel.md` ausdrücklich als Entwurfsmerkmal, und `reihen.toml` führt es bereits mit
-`exogen_ab = 1999` und dem Bruch „Euroraum -- Deutschland folgt ab 1999 exogen der gemeinsamen
-Geldpolitik". **Was fehlt, ist die Urheberschaft, nicht der Wert:** Schritt 3 braucht weiter
-eine Zahl, und das ist der Satz der Union. Stufe 3 heisst deshalb genau: Stufe 1 und 2 werden
-**auf die Union** angewandt statt auf das Land. Trägt die Union einen gemessenen Satz, bleibt
-das Land Rückvergleichsland; muss der Satz der Union geschätzt werden, fällt das Land auf
-Stufe 4. Ein vollständig fremdwährungsgebundenes Land, dessen Instrument über das ganze
-Fenster konstant ist, ist ebenfalls Stufe 3 — eine Konstante ist eine gemessene Tatsache.
+**Stage 3 is an answer and not a gap — but it delivers a number.** For a country without a
+monetary-policy lever of its own, "no path of its own" is right; Germany expressly carries
+that per `spiel.md` as a design feature, and `reihen.toml` already carries it with
+`exogen_ab = 1999` and the break „Euroraum -- Deutschland folgt ab 1999 exogen der gemeinsamen
+Geldpolitik". **What is missing is the authorship, not the value:** step 3 still needs
+a number, and that is the union's rate. Stage 3 therefore means exactly: stages 1 and 2 are
+applied **to the union** instead of to the country. If the union carries a measured rate,
+the country remains a backtest country; if the union's rate must be estimated, the country
+falls to stage 4. A country fully pegged to a foreign currency, whose instrument is constant
+over the whole window, is likewise stage 3 — a constant is a measured fact.
 
-**Stufe 4 macht das Land zum Spielland**, mit hinterlegter Herleitung nach T61 und mit der
-Stilllegung nach T58.
+**Stage 4 makes the country a play-only country**, with a deposited derivation per T61 and
+with the shutdown per T58.
 
-**Der erste Anwendungsfall sind nicht künftige Länder, sondern China und Deutschland.** Für
-Deutschland ist der erste Griff Stufe 1 auf die Union — ob derselbe Datenfluss ein Gebiet für
-den Euroraum führt, ist ungeprüft und die billigste offene Frage dieses Themas. Für China
-liefert `CHN.*.A` im Fenster nach der Nachmessung vom 2026-09-05 **null** jährliche Reihen;
-Stufe 1 scheitert dort innerhalb `MFS_IR`, Stufe 3 trifft nicht zu, und es bleibt Stufe 2.
+**The first application case is not future countries but China and Germany.** For
+Germany the first reach is stage 1 on the union — whether the same data flow carries a
+territory for the euro area is unchecked and the cheapest open question of this topic. For
+China, `CHN.*.A` delivers **zero** annual series in the window per the re-measurement of
+2026-09-05; stage 1 fails there within `MFS_IR`, stage 3 does not apply, and stage 2 remains.
 
-**Deshalb eine Sperre, und sie ist der Grund, warum diese Regel überhaupt eine braucht.**
-**Kein Datenpaket macht eines der vier heutigen Länder zum Spielland.** Scheitern die Stufen 1
-bis 3 für China oder Deutschland, ist das kein Befund über eine Reihe, sondern eine
-Entscheidung über die Grundlage des Rückvergleichs: `L_R` fiele von 4 auf 3, die
-Prüfgegenstände von 16 auf `3·3 + (3−1) + 1 = 12`, die Sollreihen von 27 auf `3·7 − 1 = 20`,
-und Maß 4 würde an einer anderen Welt gemessen als bisher. **Beide Zahlen rechnen mit
-`n = 1`**, weil die USA in diesem Fall Rückvergleichsland und Numéraire bleiben; der
-`n = 0`-Fall, den die Kurzform in T59 durchrechnet, ist ein anderer und gilt hier nicht. Das
-gehört dem Betreiber, nicht dem Jahrgangsbau. Der Jahrgangsbau **bricht ab** (T61), statt die
-Klasse still umzuschreiben.
+**Hence a lock, and it is the reason this rule needs one at all.**
+**No data package makes one of today's four countries a play-only country.** If stages 1
+to 3 fail for China or Germany, that is not a finding about a series but a
+decision about the foundation of the backtest: `L_R` would fall from 4 to 3, the
+check subjects from 16 to `3·3 + (3−1) + 1 = 12`, the target series from 27 to
+`3·7 − 1 = 20`, and Maß 4 would be measured against a different world than before. **Both
+numbers compute with `n = 1`**, because the USA in this case remain backtest country and
+numéraire; the `n = 0` case, which the short form in T59 computes through, is a different one
+and does not apply here. That belongs to the operator, not to the vintage build. The vintage
+build **aborts** (T61) instead of silently rewriting the class.
 
-**Und die Umkehrung gilt auch:** Eine Sollreihe trägt ausschliesslich Stufe 1. Wer für eine
-Sollreihe eine Ableitung oder eine Schätzung braucht, hat keine Sollreihe mehr, sondern eine
-Schätzung, die wie eine Messung aussieht — der eine Fall, der schlimmer ist als eine fehlende
-Reihe. Die Kennzeichnungspflicht in T61 ist für die Politikpfade eine Buchführung; für die
-Sollreihen ist sie ein Verbot.
+**And the reverse holds too:** a target series carries exclusively stage 1. Whoever needs a
+derivation or an estimate for a target series no longer has a target series but an
+estimate that looks like a measurement — the one case that is worse than a missing
+series. The marking duty in T61 is bookkeeping for the policy paths; for the
+target series it is a prohibition.
 
-### T61 — Die Kennzeichnung in `reihen.toml`
+### T61 — The marking in `reihen.toml`
 
-**Das Feld, das eine geschätzte Reihe trägt, heisst `stufe` und steht in einem neuen Block
-`[[reihe.herkunft]]`.** Über die Klasse eines Landes entscheiden allein die drei Reihen mit
-`politikpfad` in `rolle` — Reihe 9 (Leitzins), Reihe 12 (Haushaltssaldo) und Reihe 13
-(Zollniveau); das vierte Instrument, die Finanzmarktregulierung, hat keine Reihe, sein Wert
-kommt nach T45 aus `parameter.toml`. Der Block ist trotzdem für **jede** Reihe Pflicht, und
-Regel 1 sagt warum.
+**The field that an estimated series carries is called `stufe` and stands in a new block
+`[[reihe.herkunft]]`.** The class of a country is decided solely by the three series with
+`politikpfad` in `rolle` — series 9 (policy rate), series 12 (budget balance) and series 13
+(tariff level); the fourth instrument, financial-market regulation, has no series, its value
+comes per T45 from `parameter.toml`. The block is nevertheless mandatory for **every**
+series, and rule 1 says why.
 
 ```toml
 [[reihe.herkunft]]
@@ -3770,77 +3773,77 @@ nachgerechnet werden kann: Eingangsreihen, Rechenweg, Fenster, Luecken.
 """
 ```
 
-**Fünf Regeln, alle mechanisch:**
+**Five rules, all mechanical:**
 
-1. **Keine Reihe ohne Herkunft.** Die drei Politikpfadreihen tragen je Land genau einen
-   Block — sie haben alle `dimension = "4"`, das sind bei `L = 4` also `3 × 4 = 12`. Jede der
-   übrigen sechzehn Reihen trägt genau einen Block mit `land = "alle"`, wie es
-   `[[reihe.deckung]]` schon kennt; zusammen **28**. Fehlt einer, **bricht der Jahrgangsbau
-   ab** — dieselbe Bauart wie die Herkunftstabelle aus T45, und aus demselben Grund: Ein
-   stillschweigendes „gemessen" für ein fehlendes Feld wäre genau die Lüge, gegen die diese
-   Regel geschrieben ist. Ein freiwilliges Feld hätte sie nicht verhindert, sondern erzeugt.
-2. **Herleitungspflicht.** `stufe ≥ 2` ohne nichtleere `herleitung` bricht ab.
-3. **Parametersperre.** `stufe = 2` mit `freie_parameter > 0` bricht ab (T60).
-4. **Sollreihensperre.** Eine Reihe mit `soll` in `rolle` und `stufe ≥ 2` bricht ab. Erst
-   Regel 1 gibt dieser Sperre Zähne: Ohne den Pflichtblock je Reihe wäre sie nur wirksam
-   gegen den, der seine Schätzung freiwillig einträgt.
-5. **Doppelte Buchführung über die Klasse.** Das Manifest des Jahrgangs führt
-   `rueckvergleichslaender = [...]` ausgeschrieben. Aus `reihen.toml` folgt dieselbe Menge
-   abgeleitet: Ein Land ist genau dann Spielland, wenn **irgendeine** seiner drei
-   Politikpfadreihen `stufe = 4` trägt. **Stimmen beide nicht überein, bricht der Jahrgangsbau
-   ab.** Die Ableitung allein wäre die bequemere Bauart und die falsche: Sie liesse eine
-   Zeile in einer Datenreihe die Grundlage des Rückvergleichs verschieben, ohne dass es
-   irgendwo aufschlägt. Die Sperre aus T60 ist genau diese Prüfung.
+1. **No series without origin.** The three policy-path series carry exactly one block per
+   country — they all have `dimension = "4"`, at `L = 4` that is `3 × 4 = 12`. Each of the
+   remaining sixteen series carries exactly one block with `land = "alle"`, as
+   `[[reihe.deckung]]` already knows it; together **28**. If one is missing, **the vintage
+   build aborts** — the same construction as the provenance table from T45, and for the same
+   reason: a tacit "measured" for a missing field would be exactly the lie against which this
+   rule is written. An optional field would not have prevented it but produced it.
+2. **Derivation duty.** `stufe ≥ 2` without a non-empty `herleitung` aborts.
+3. **Parameter lock.** `stufe = 2` with `freie_parameter > 0` aborts (T60).
+4. **Target-series lock.** A series with `soll` in `rolle` and `stufe ≥ 2` aborts. Only
+   rule 1 gives this lock teeth: without the mandatory block per series it would be effective
+   only against whoever enters their estimate voluntarily.
+5. **Double bookkeeping over the class.** The manifest of the vintage carries
+   `rueckvergleichslaender = [...]` written out. From `reihen.toml` the same set follows
+   derived: a country is a play-only country exactly when **any** of its three
+   policy-path series carries `stufe = 4`. **If the two do not agree, the vintage build
+   aborts.** The derivation alone would be the more convenient construction and the wrong
+   one: it would let one row in a data series shift the foundation of the backtest without
+   it showing up anywhere. The lock from T60 is exactly this check.
 
-Die Klasse steht damit an einer Stelle geschrieben und an einer zweiten gerechnet, und der
-Bau hält an, wo sie auseinandergehen — dieselbe Bauart wie der zweite Schreibzugriff in T39
-und das Fondsvermögen in T47.
+The class thus stands written in one place and computed in a second, and the
+build halts where they diverge — the same construction as the second write access in T39
+and the fund's assets in T47.
 
-### Was dieser Abschnitt nicht angefasst hat, und was offen bleibt
+### What this section has not touched, and what stays open
 
-**Nicht angefasst.** T37 behält seine sechzehn Prüfgegenstände, seine Toleranz 2 und seine
-Klassentabelle Wort für Wort; die Formel steht hier und nicht dort, damit
-`0068-technikmd-reihe-9-ohne-sollrolle` seinen Bezugspunkt unverändert vorfindet. Dass die
-Zeile `gesetzt` in der Klassentabelle von T37 seit Paket 0054 leer ist, ist bekannt und
-gehört ebenfalls 0068. Abschnitt 7, T55 und die Zahlen 310 und 740 bleiben stehen: Der
-Zustandsumfang ist durch die drei Schichten in `spiel.md` gerade in Bewegung und gehört
-0118/0119, und dieser Abschnitt braucht ihn nicht — seine Formeln zählen Prüfgegenstände und
-Sollreihen, nicht Adressen. `reihen.toml` ist **nicht** geändert; T61 beschreibt einen Block,
-den ein Datenpaket einträgt.
+**Not touched.** T37 keeps its sixteen check subjects, its tolerance 2 and its
+class table word for word; the formula stands here and not there, so that
+`0068-technikmd-reihe-9-ohne-sollrolle` finds its reference point unchanged. That the
+row `gesetzt` in the class table of T37 has been empty since package 0054 is known and
+likewise belongs to 0068. Section 7, T55 and the numbers 310 and 740 remain standing: the
+extent of the state is just now in motion through the three layers in `spiel.md` and belongs
+to 0118/0119, and this section does not need it — its formulas count check subjects and
+target series, not addresses. `reihen.toml` is **not** changed; T61 describes a block that
+a data package enters.
 
-**Drei Meldungen an den Projektmanager, weil sie fremden Gewerken gehören.** Erstens:
-`spiel.md` führt in der Tabelle der drei Schichten für Schicht 1 in der Spalte *im
-Rückvergleich* „ja, als Rückvergleichsland" ohne Ausnahme. Mit den beiden Klassen wird daraus
-„ja, **wenn** Rückvergleichsland". Das ist eine Zeile in `spiel.md` und nicht meine.
-Zweitens: T58 Festlegung 3 (Restweltrest je Modus) und Festlegung 4 (Giftprobe) sind Entwurf
-und brauchen je ein Paket — Jahrgangsbau und Prüfstand —, sobald das erste Spielland
-tatsächlich eingetragen wird. Vorher wäre es Code auf Vorrat.
+**Three reports to the project manager, because they belong to other trades.** First:
+`spiel.md` carries, in the table of the three layers, for layer 1 in the column *im
+Rückvergleich* „ja, als Rückvergleichsland" without exception. With the two classes that
+becomes „ja, **wenn** Rückvergleichsland". That is one line in `spiel.md` and not mine.
+Second: T58 stipulation 3 (rest-of-world remainder per mode) and stipulation 4 (poison test)
+are design and each need a package — vintage build and test bench — as soon as the first
+play-only country is actually entered. Before that it would be code written ahead of need.
 
-**Drittens, und es ist ein Nachzug, den ich sehenden Auges liegen lasse:** Der Vorspann vor
-Abschnitt 1 sagt „Die Vorgaben sind mit **T1** bis **T53** durchnummeriert". Richtig wäre seit
-Paket 0116 T57 und nach diesem Abschnitt **T61**; die nächste freie Nummer ist T62. Derselbe
-Vorspann und Abschnitt 17 führen ausserdem **T60** als Beispiel für eine *noch freie* Nummer —
-sie ist es ab hier nicht mehr. **Ich fasse beide Stellen nicht an, und zwar nicht aus
-Vorsicht:** Die Arbeitspakete `0082` und `0084` binden ihre Abnahme ausdrücklich darauf, dass
-„der Vorspann unberührt bleibt — er ist mit 0026 abgenommen". Wer ihn nachzieht, nimmt zwei
-laufenden Paketen ihr Abnahmekriterium weg. Das ist ein eigenes Paket, und es sollte nach 0082
-und 0084 laufen.
+**Third, and it is a follow-up I leave lying with open eyes:** the preamble before
+section 1 says „Die Vorgaben sind mit **T1** bis **T53** durchnummeriert". Right would be,
+since package 0116, T57, and after this section **T61**; the next free number is T62. The
+same preamble and section 17 moreover carry **T60** as an example of a *still free* number —
+from here on it is one no longer. **I touch neither place, and not out of
+caution:** the work packages `0082` and `0084` bind their acceptance expressly to
+„der Vorspann unberührt bleibt — er ist mit 0026 abgenommen". Whoever brings it up to date
+takes the acceptance criterion away from two running packages. That is a package of its own,
+and it should run after 0082 and 0084.
 
-**Eine Kollision der Abnahme mit sich selbst, offen benannt.** Bedingung 4 verlangt, `git diff`
-zeige Änderungen ausschliesslich in `technik.md`. Der Lauf ändert zwei weitere Dateien, beide
-durch Regeln erzwungen, die über diesem Paket stehen: die Statuszeile im Arbeitspaket (ohne
-sie plant der Runner dasselbe Paket erneut ein) und das Logbuch der Rolle (CLAUDE.md). Der
-Zweck der Bedingung — keine Zahl ausserhalb `technik.md` bewegt sich, kein zweites Gewerk wird
-angefasst — ist erfüllt; die schärfere Messung dafür ist, dass dieser Abschnitt ein reiner
-Anhang ist und **keine** Zeile des Bestands entfernt oder ändert.
+**A collision of the acceptance with itself, named openly.** Condition 4 demands that
+`git diff` show changes exclusively in `technik.md`. The run changes two further files, both
+forced by rules that stand above this package: the status line in the work package (without
+it the runner schedules the same package again) and the role's logbook (CLAUDE.md). The
+purpose of the condition — no number outside `technik.md` moves, no second trade is
+touched — is met; the sharper measurement for it is that this section is a pure
+appendix and removes or changes **no** existing line.
 
-**Welche Festlegung jetzt fallen musste und welche vertagt ist.** Jetzt fallen musste die
-Wahl zwischen A, B und C: Sie entscheidet, ob die Ausnahme im Lauf oder in der Auswertung
-sitzt, und das lässt sich nicht nachrüsten, ohne jeden gespeicherten Rückvergleich zu
-entwerten. Ebenso die Kennzeichnung, weil eine ungekennzeichnete Schätzung rückwirkend nicht
-mehr von einer Messung zu unterscheiden ist. Vertagt sind die Wahl der Länder (0118), die
-Wahl der Codes und das Schätzverfahren selbst — jedes davon ist eine Datenfrage, und keine
-davon ändert etwas an diesen drei Vorgaben.
+**Which stipulation had to fall now and which is deferred.** What had to fall now was the
+choice between A, B and C: it decides whether the exemption sits in the run or in the
+evaluation, and that cannot be retrofitted without devaluing every stored backtest.
+Likewise the marking, because an unmarked estimate can afterwards no longer be
+distinguished from a measurement. Deferred are the choice of countries (0118), the
+choice of codes and the estimation procedure itself — each of these is a data question, and
+none of them changes anything about these three prescriptions.
 
 ## 21. Was ein fünftes Land an Daten mitbringt — Paket `0141`
 
