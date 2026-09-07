@@ -2953,268 +2953,270 @@ vintage.
 
 ## Was der Architekt neu rechnen muss
 
-Nur damit es nicht gesucht werden muss. Alles Übrige an `technik.md` bleibt gültig.
+Only so that it does not have to be searched for. Everything else in `technik.md` stays
+valid.
 
 ### Neu aus Paket 0118 — neun Länder, `L_R = 7`, und die Zählregel von Maß 4
 
-`technik.md` habe ich nicht angefasst, und **keine Zahl darin ist heute falsch**: Bis 0116 die
-Adressarithmetik parametrisch geschrieben und der Datenbauer den Jahrgang gebaut hat, gilt
-weiter `L = 4`, `L_R = 4` und 310. Was danach nachzuziehen ist:
+I have not touched `technik.md`, and **no number in it is wrong today**: until 0116 has
+written the address arithmetic parametrically and the data builder has built the vintage,
+`L = 4`, `L_R = 4` and 310 continue to hold. What has to be caught up after that:
 
-| Stelle | was zu tun ist |
+| Place | what to do |
 |---|---|
-| **T59** (Zählung in `L_R`) | Die Tabelle bekommt die Spalte `L_R = 7, L_S = 2` — das ist die Wahl aus diesem Paket. Prüfgegenstände 28, freie Sollreihen 41, Sollreihen 48, Ströme im Handelsblock 112, Sollmaske `weltlauf` 328. Jede Zahl steht im Abschnitt *Welche neun Länder* eingesetzt daneben. Die Spalten `L_R = 4` und `L_R = 9` bleiben, sie sind die Ränder. |
-| **T58** (Klassen) | Die Rückvergleichsländer sind USA, China, Deutschland, Brasilien, Japan, Indien, Chile; Spielländer sind Singapur und Saudi-Arabien. **Erwartung mit Bedingung, nicht Festlegung** — entschieden wird sie nach T63 Schritt 1 am Abruf. Die Festlegungen 3 (Restweltrest je Modus) und 4 (Giftprobe) werden mit diesem Paket zum ersten Mal wirklich gebraucht: Es gibt ab hier Spielländer. |
-| **T61 Regel 5** | **Der eine Befund dieses Pakets gegen ein fremdes Gewerk.** Die Regel leitet die Klasse allein aus den drei Politikpfadreihen ab. Saudi-Arabien ist aus einem Grund Spielland, den sie nicht sehen kann: seine konstante Wechselkurs-**Sollreihe**. Führt `MFS_IR` einen SAMA-Politiksatz auf Stufe 1, gehen die abgeleitete und die geschriebene Klasse auseinander und der Jahrgangsbau bricht ab — richtig, aber an der falschen Stelle. T62 Folgerung 2 (Reihe 2 ohne Ausweichquelle) ist derselbe Fall. Beide Ausschlüsse liegen in den Sollreihen und gehören dorthin, wo die Klasse gebildet wird. |
-| **T62** (Datenkosten) | Drei Rückvergleichsländer zu `32(R+1)+6 = 678` und zwei Spielländer zu `5(R+1)+33 = 138` ergeben **2.310** Werte bei `R = 20`, nicht die 3.390 aller fünf als Rückvergleichsland. Die **zehn** neuen Lizenzstellen (zwei je Land) sind von der Klasse unabhängig und gehören nach Folgerung 3 auf dieselbe Liste wie die sieben offenen. |
-| **T37 / Toleranz** | Die Zahl der Prüfgegenstände und die Toleranz stehen ab hier als Formel: `3·L_R + (L_R − n) + 1` und `⌊L_R/2⌋`. Bei `L_R = 4` ergeben sie 16 und 2, also genau den heutigen Stand — das ist die Verträglichkeitsprobe, und deshalb ändert dieser Eintrag heute nichts. |
-| **Richtungstreue** | Sie wird nur über die Übergänge gebildet, in denen sich die **Sollreihe** bewegt. Ein Übergang ohne gemessene Bewegung zählt weder als Treffer noch als Fehler; bewegt sich eine Reihe nie, besteht der Gegenstand allein über sein Niveaumaß. Ohne diese Zeile risse jede konstante Sollreihe von Bauart wegen. |
-| **T16** (Steckplätze) | Unverändert gegenüber 0119: `3L + L + L + B = 75` bei `L = 9`, davon 74 besetzbar, weil der Währungssteckplatz des Numéraires leer bleibt. Die Deckungsrechnung dieses Pakets steht auf den 74. |
-| **T5 / Wertebereiche** | Zwei Ränder werden zum ersten Mal wirklich angefahren und sind zu prüfen, nicht anzunehmen: `durchgriff` läuft für Singapurs Landwirtschaft gegen 10.000 (Anteil 0,08 Prozent, also `N ≈ 0`), und `staatsschuld[JPN]` überschreitet 20.000 Basispunkte (222,7 Prozent im Endjahr). Beides bleibt im Wertebereich; beides gehört in die Invariantenprobe, weil es die erste Berührung ist. |
+| **T59** (count in `L_R`) | The table gains the column `L_R = 7, L_S = 2` — that is the choice made in this package. Check subjects 28, free target series 41, target series 48, flows in the trade block 112, target mask `weltlauf` 328. Each number stands next to it, worked out, in the section *Welche neun Länder*. The columns `L_R = 4` and `L_R = 9` stay; they are the edges. |
+| **T58** (classes) | The backtest countries are the USA, China, Germany, Brazil, Japan, India, Chile; play-only countries are Singapore and Saudi Arabia. **An expectation with a condition, not a determination** — it is decided per T63 step 1 at retrieval. Festlegung 3 (rest-of-world remainder per mode) and Festlegung 4 (Giftprobe) are genuinely needed for the first time with this package: from here on there are play-only countries. |
+| **T61 rule 5** | **The one finding of this package against another trade's work.** The rule derives the class from the three policy-path series alone. Saudi Arabia is a play-only country for a reason the rule cannot see: its constant exchange-rate **target series**. If `MFS_IR` carries a SAMA policy rate at Stufe 1, the derived and the written class diverge and the vintage build aborts — correctly, but in the wrong place. T62 Folgerung 2 (series 2 without a fallback source) is the same case. Both exclusions lie in the target series and belong where the class is formed. |
+| **T62** (data costs) | Three backtest countries at `32(R+1)+6 = 678` and two play-only countries at `5(R+1)+33 = 138` yield **2,310** values at `R = 20`, not the 3,390 of all five as backtest countries. The **ten** new licence points (two per country) are independent of the class and belong, per Folgerung 3, on the same list as the seven open ones. |
+| **T37 / tolerance** | The number of check subjects and the tolerance stand from here on as formulas: `3·L_R + (L_R − n) + 1` and `⌊L_R/2⌋`. At `L_R = 4` they give 16 and 2, exactly today's state — that is the compatibility check, and that is why this entry changes nothing today. |
+| **Directional accuracy** | It is formed only over the transitions in which the **target series** moves. A transition without measured movement counts neither as a hit nor as a miss; if a series never moves, the subject passes on its level measure alone. Without this line, every constant target series would break by construction. |
+| **T16** (slots) | Unchanged from 0119: `3L + L + L + B = 75` at `L = 9`, of which 74 can be filled, because the numéraire's currency slot stays empty. This package's coverage calculation stands on the 74. |
+| **T5 / value ranges** | Two edges are genuinely approached for the first time and are to be checked, not assumed: `durchgriff` runs towards 10,000 for Singapore's agriculture (share 0.08 percent, so `N ≈ 0`), and `staatsschuld[JPN]` exceeds 20,000 basis points (222.7 percent in the final year). Both stay within the value range; both belong in the invariant check, because it is the first contact. |
 
-**Was dieses Paket ausdrücklich nicht angefasst hat:** die 310, die Adressarithmetik, den Kern,
-`reihen.toml`, `technik.md` und die Zahl der Aktionen je Runde. Die Aktionszahl steht als
-**Stellschraube mit Bedingung und Probe** im Abschnitt *Die Folge aus Weg A* und ist nicht
-gedreht.
+**What this package has expressly not touched:** the 310, the address arithmetic, the
+core, `reihen.toml`, `technik.md` and the number of actions per round. The action count
+stands as a **tuning knob with a condition and a check** in the section *Die Folge aus
+Weg A* and has not been turned.
 
 ### Neu aus Paket 0119 — die zweite Schicht, 150 Adressen und zwei Parameter
 
-`technik.md` habe ich nicht angefasst, und keine Zahl darin ist heute falsch: Die zweite
-Schicht kommt zusammen mit den neun Ländern aus 0118, und bis 0116 die Adressarithmetik
-parametrisch geschrieben hat, gilt weiter `L = 4` und 310. Was danach nachzuziehen ist:
+I have not touched `technik.md`, and no number in it is wrong today: the second layer
+arrives together with the nine countries from 0118, and until 0116 has written the
+address arithmetic parametrically, `L = 4` and 310 continue to hold. What has to be
+caught up after that:
 
-| Stelle | was zu tun ist |
+| Place | what to do |
 |---|---|
-| **T15** (Adressaufstellung) | Ein sechster Block `boersenplatz`: `5 · B` Adressen mit `B = 3·(L+1)`, also 150 bei `L = 9`. Vier Felder je Platz (`index`, `wechselkurs`, `zins`, `nachahmer`) plus ein Positionssteckplatz. Gesamt 890. |
-| **T16** (Steckplätze) | Die Steckplatzliste bekommt eine vierte Art. `3·L` Land×Sektor + `L` Währung + `L` Anleihe + `B` Börsenplatz = 75 bei `L = 9`. Die Regel „Steckplatz Währung USA bleibt leer" hat auf der neuen Art keine Entsprechung — jeder Platz ist besetzbar. |
-| **T5** (Skalenklassen) | `index[b]` und `wechselkurs[b]` in Klasse 5, `zins[b]` in Klasse 3, `nachahmer[b]` ganzzahlig mit Obergrenze wie `nachahmer[l][s]`. `tiefe[b]` steht in der volkswirtschaftlichen Skala, `boersenwert(b)` ebenfalls — die Skalengrenze zum Fondsgeld liegt wie gehabt zwischen `stufenwert` und `positionswert`. |
-| **T27** (`parameter.toml`) | Zwei neue Schlüssel: `kippung` und `platzanteil`. `aufschlag` wird wiederverwendet. |
-| **T33** (Marktkorb) | Der eingefrorene Mengenkorb bekommt einen dritten Summanden: `B` Plätze mit Menge `tiefe[b]` und Kurs `index[b]`. Bei `L = 9` sind das 27 Körbe, 9 Anleihen und 30 Plätze. Währungen bleiben draußen, Plätze nicht — sie tragen eine Kapitalisierung. |
-| **T47** (`marktanteil`) | Dritter Summand in `korbbestand`, gebildet aus `boersenwert(b)` und `|stufen| · stufenweite`; ohne Beteiligungsanteil, weil es auf Plätzen keine Beteiligung gibt. |
-| **T39** (Kursregeln ohne Adresse) | `weltzins`, `zielzins(b)`, `zielkurs(b)`, `leitkurs(b)`, `zinsfaktor(b)` und `boersenwert(b)` sind Funktionen des Zustands, keine Adressen — dieselbe Bauart wie `anleihekurs` und `landespreis`. |
-| **Nachahmer- und Stoßregel** | **Die einzige Stelle, an der dieser Abschnitt auf eine fremde Formel zeigt, statt sie hinzuschreiben.** Der Aufschlag auf `index[b]` soll derselbe sein wie der auf einen Land×Sektor-Korb, mit `nachahmer[b]` an der Stelle von `nachahmer[l][s]` und `boersenwert(b)` an der von `korbwert(l,s)`. Liest die vorhandene Regel jedoch `kapitalstock[l][s]` unmittelbar statt über den Korbwert, trägt die Übertragung nicht, und dann ist das ein Befund gegen diese Zeile — nicht gegen die Schicht. Der Architekt sagt, welcher der beiden Fälle vorliegt. |
-| **T37 / die Prüfgegenstände** | **Durch diese Schicht unverändert.** Ein Börsenplatz trägt keine Sollreihe und keine Handelszeile und kommt in keinem Prüfgegenstand vor; der Handelsblock bleibt bei `G·(G−1)·2` über die **Gebiete**, nicht über die Plätze. *Berichtigt am 2026-09-06: Hier stand „Börsenplätze sind Spielländer (Verweis auf Paket 0117)". Ein Platz ist kein Land — die Zeile trägt ohne die Klassenzuordnung, weil die Schicht ein Blatt ist. Bewegt werden die Prüfgegenstände nicht von dieser Schicht, sondern von der Länderwahl aus Paket 0118: 16 → 28.* |
-| **Modus `weltlauf`** | Die zweite Schicht wird **nicht gerechnet**; ihre `5·B` Adressen behalten ihre Startwerte, wie der Fondsblock und die Nachahmerzähler. Die Menge der je Modus geschriebenen Adressen ist damit weiterhin fest und wächst im Weltlauf nicht. Der Weltlauf kostet unverändert `R` Weltschritte. |
-| **Schranke am Leitzins** | Bleibt, wie sie ist (`leitzins ≥ 1 − aufschlag`), und deckt `zins[b]` mit ab: `zins[b]` ist ein wiederholtes Mittel von Werten oberhalb dieser Schranke. **Keine zweite Schranke nötig.** |
-| **Laufzeitbudget (Abschnitt 10)** | Je Weltschritt kommen `B` Plätze zu je drei Halbierungen und einer Bewertung hinzu. Keine Iteration, keine Suche, keine Handelszeile — der Zuwachs ist linear in `B` und trifft nur die drei Selbstspielmaße, nicht den Weltlauf. |
+| **T15** (address roster) | A sixth block `boersenplatz`: `5 · B` addresses with `B = 3·(L+1)`, i.e. 150 at `L = 9`. Four fields per venue (`index`, `wechselkurs`, `zins`, `nachahmer`) plus one position slot. Total 890. |
+| **T16** (slots) | The slot list gains a fourth kind. `3·L` country×sector + `L` currency + `L` bond + `B` exchange venue = 75 at `L = 9`. The rule „Steckplatz Währung USA bleibt leer" has no counterpart on the new kind — every venue can be filled. |
+| **T5** (scale classes) | `index[b]` and `wechselkurs[b]` in class 5, `zins[b]` in class 3, `nachahmer[b]` integer with the same upper bound as `nachahmer[l][s]`. `tiefe[b]` stands on the macroeconomic scale, as does `boersenwert(b)` — the scale boundary to the fund's money lies, as before, between `stufenwert` and `positionswert`. |
+| **T27** (`parameter.toml`) | Two new keys: `kippung` and `platzanteil`. `aufschlag` is reused. |
+| **T33** (market basket) | The frozen quantity basket gains a third summand: `B` venues with quantity `tiefe[b]` and price `index[b]`. At `L = 9` that is 27 baskets, 9 bonds and 30 venues. Currencies stay out, venues do not — they carry a capitalisation. |
+| **T47** (`marktanteil`) | Third summand in `korbbestand`, formed from `boersenwert(b)` and `|stufen| · stufenweite`; without a stake share, because there are no stakes on venues. |
+| **T39** (price rules without an address) | `weltzins`, `zielzins(b)`, `zielkurs(b)`, `leitkurs(b)`, `zinsfaktor(b)` and `boersenwert(b)` are functions of the state, not addresses — the same construction as `anleihekurs` and `landespreis`. |
+| **Imitator and shock rule** | **The only place where this section points at another formula instead of writing it down.** The surcharge on `index[b]` is to be the same as the one on a country×sector basket, with `nachahmer[b]` in the place of `nachahmer[l][s]` and `boersenwert(b)` in that of `korbwert(l,s)`. If, however, the existing rule reads `kapitalstock[l][s]` directly instead of through the basket value, the transfer does not hold, and then that is a finding against that line — not against the layer. The architect says which of the two cases applies. |
+| **T37 / the check subjects** | **Unchanged by this layer.** An exchange venue carries no target series and no trade row and appears in no check subject; the trade block stays at `G·(G−1)·2` over the **territories**, not over the venues. *Corrected on 2026-09-06: here stood „Börsenplätze sind Spielländer (Verweis auf Paket 0117)". A venue is not a country — the line holds without the class assignment, because the layer is a leaf. The check subjects are moved not by this layer but by the country choice from package 0118: 16 → 28.* |
+| **Mode `weltlauf`** | The second layer is **not computed**; its `5·B` addresses keep their start values, like the fund block and the imitator counters. The set of addresses written per mode thus stays fixed and does not grow in the `weltlauf`. The `weltlauf` costs `R` world steps, unchanged. |
+| **Bound at the policy rate** | Stays as it is (`leitzins ≥ 1 − aufschlag`) and covers `zins[b]` too: `zins[b]` is a repeated mean of values above this bound. **No second bound needed.** |
+| **Runtime budget (section 10)** | Per world step, `B` venues are added, at three halvings and one valuation each. No iteration, no search, no trade row — the growth is linear in `B` and hits only the three self-play measures, not the `weltlauf`. |
 
-**Der Abzählschritt aus T45 geht mit dem neuen Block auf**, weil jede der `5·B` Adressen
-ihren Herkunftseintrag in der Feldtabelle unter *Was ein Börsenplatz trägt* hat.
+**The count-off step from T45 comes out even with the new block**, because each of the
+`5·B` addresses has its provenance entry in the field table under *Was ein Börsenplatz
+trägt*.
 
 ### Neu aus Paket 0054 — R fällt von 24 auf 20, das Fenster auf 2001–2021
 
-`technik.md` habe ich nicht angefasst. **Der größte Teil dieser Liste ist keine Änderung,
-sondern eine Probe:** T40 bildet `R = manifest.stuetzstellen − 1` und leitet alles Weitere
-zur Laufzeit ab, also genügt eine geänderte Zahl im Manifest. Was hier steht, sind die
-Stellen, an denen `technik.md` eine Zahl **ausgeschrieben** hat oder eine Regel auf dem
-Startjahr 1997 steht.
+I have not touched `technik.md`. **The greater part of this list is not a change but a
+check:** T40 forms `R = manifest.stuetzstellen − 1` and derives everything else at
+runtime, so a changed number in the manifest suffices. What stands here are the places
+where `technik.md` has **written a number out**, or where a rule stands on the start year
+1997.
 
-| war (`technik.md`) | ist | betrifft |
+| was (`technik.md`) | is | affects |
 |---|---|---|
-| Beispielspalte „bei R = 24": Bänder 1.000…24.000 / 25.000…28.000 / 31.000…54.000, Drittel 1-8 / 9-16 / 17-24, Gewinnschwelle 24.000, Suchbotpartie 1.464, Maß-1-Kosten 9.024 | **bei R = 20**: 1.000…20.000 / 21.000…24.000 / 31.000…50.000, Drittel **1-6 / 7-13 / 14-20**, Gewinnschwelle **20.000**, Suchbotpartie **1.220**, Maß-1-Kosten **6.320**. Die Formeln daneben sind unverändert richtig | T40, Tabelle abgeleiteter Größen |
-| T24: „jede der **31** Sollreihen … über **25** Stützstellen ohne Füllung" | **27** Sollreihen über **21** Stützstellen. Reihe 9 ist keine Sollreihe mehr und fällt damit aus dem Verbot; ihr Pfad darf gefüllt und gekennzeichnet werden | T24 |
-| T37: drei Klassen, davon `gesetzt` = Leitzins (4) | **zwei Klassen**: `frei` (23) und `abgeleitet` (4). Die Klasse `gesetzt` entfällt, weil ihre einzige Reihe keine Sollreihe mehr ist. **Statt eines Fehlermaßes gilt für den Leitzins eine Invariante:** Modellwert ≠ gesetzter Pfad ist ein harter Fehler | T37 |
-| T42: Ratenreihen sind Verbraucherpreise, Wechselkurs, **Leitzins**; `S` = 25 | Ratenreihen sind Verbraucherpreise und Wechselkurs; `S` = **21**, Übergänge **20** | T42 |
-| Reihenliste Nr. 9, Rolle „Start + Politikpfad + Soll (4, gesetzt)" | **„Start + Politikpfad"**. Die Zeile bleibt sonst unverändert — Dimension, Einheit, Quelle | Abschnitt 7 |
-| T23 Punkt 8: DE-Leitzins `exogen_ab = 1999`, „im Prüfjahrgang also Runde 3"; Wechselkurs `verkettet_ab = 1999` | Beide Bruchjahre liegen **vor** dem Fenster. `exogen_ab_runde = bruchjahr − startjahr + 1` wird für sie **≤ 0**, und dafür braucht die Regel eine Lesart: **`≤ 0` heißt „gilt von Runde 1 an"**, nicht „ungültig" und nicht „nie". Die Felder bleiben, weil die Spieljahrgänge vor 2001 sie brauchen | T23 Punkt 8, T40 |
-| T23 Punkt 5: `leitzins_start[l]` = erste Stützstelle des Politikpfads | unverändert richtig, jetzt der Wert von **2001** | T23 Punkt 5 |
-| Größenordnung „5 Gebiete × **25** Jahre × rund 30 Reihen", Handel `40 × 25 × 8` | **21** Jahre; die Schätzung fällt entsprechend | T23, Schlusssatz |
-| T22/T23: Prüfjahrgang **1997**–2021 | **2001–2021** | überall, wo das Startjahr als Zahl steht |
+| Example column „bei R = 24": bands 1,000…24,000 / 25,000…28,000 / 31,000…54,000, thirds 1-8 / 9-16 / 17-24, profit threshold 24,000, search-bot game 1,464, Maß-1 cost 9,024 | **bei R = 20**: 1,000…20,000 / 21,000…24,000 / 31,000…50,000, thirds **1-6 / 7-13 / 14-20**, profit threshold **20,000**, search-bot game **1,220**, Maß-1 cost **6,320**. The formulas next to them remain correct, unchanged | T40, table of derived quantities |
+| T24: „jede der **31** Sollreihen … über **25** Stützstellen ohne Füllung" | **27** target series over **21** support points. Series 9 is no longer a target series and thus drops out of the prohibition; its path may be filled and marked | T24 |
+| T37: three classes, of which `gesetzt` = policy rate (4) | **two classes**: `frei` (23) and `abgeleitet` (4). The class `gesetzt` is dropped, because its only series is no longer a target series. **Instead of an error measure, an invariant holds for the policy rate:** model value ≠ set path is a hard error | T37 |
+| T42: rate series are consumer prices, exchange rate, **policy rate**; `S` = 25 | rate series are consumer prices and exchange rate; `S` = **21**, transitions **20** | T42 |
+| Series list no. 9, role „Start + Politikpfad + Soll (4, gesetzt)" | **„Start + Politikpfad"**. The row otherwise stays unchanged — dimension, unit, source | section 7 |
+| T23 point 8: DE policy rate `exogen_ab = 1999`, „im Prüfjahrgang also Runde 3"; exchange rate `verkettet_ab = 1999` | Both break years lie **before** the window. `exogen_ab_runde = bruchjahr − startjahr + 1` becomes **≤ 0** for them, and for that the rule needs a reading: **`≤ 0` means „gilt von Runde 1 an"**, not „ungültig" and not „nie". The fields stay, because the play vintages before 2001 need them | T23 point 8, T40 |
+| T23 point 5: `leitzins_start[l]` = first support point of the policy path | unchanged and correct, now the value of **2001** | T23 point 5 |
+| Order of magnitude „5 Gebiete × **25** Jahre × rund 30 Reihen", trade `40 × 25 × 8` | **21** years; the estimate falls accordingly | T23, closing sentence |
+| T22/T23: check vintage **1997**–2021 | **2001–2021** | everywhere the start year stands as a number |
 
 #### Nachtrag desselben Tages: die Tabelle oben war nicht vollständig
 
-Sie ist entstanden, indem ich die T-Nummern durchgegangen bin, die R oder das Startjahr
-**definieren**. Das findet jede Regel und keine Erwähnung. Ein zweiter Durchgang, diesmal
-über jede *Zahl* in `technik.md` statt über jede *Regel*, hat sieben weitere Stellen
-ergeben; sechs davon stehen außerhalb eines T-Blocks, und genau deshalb hat der erste
-Durchgang sie nicht gesehen. Keine ist eine Regel, alle sind ausgeschriebene Zahlen. Die
-beiden Tabellen zusammen sind die Liste — **die erste ist ergänzt, nicht ersetzt.**
+It came about by my going through the T-numbers that **define** R or the start year. That
+finds every rule and no mention. A second pass, this time over every *number* in
+`technik.md` instead of every *rule*, produced seven further places; six of them stand
+outside a T-block, and exactly for that reason the first pass did not see them. None is a
+rule, all are written-out numbers. The two tables together are the list — **the first is
+supplemented, not replaced.**
 
-| war (`technik.md`) | ist | betrifft |
+| was (`technik.md`) | is | affects |
 |---|---|---|
-| **Frontmatter Z. 12**: „im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte" | „im Prüfjahrgang **2001–2021** ist **R = 20** … **20 × 61 = 1.220**" | Frontmatter, Schlüssel `partie` |
-| T23 Punkt 2: „**Sollreihen** für die **31** Reihen aus `spiel.md` plus den Handelsblock" | **27** Reihen | T23 Punkt 2 |
-| Abschnitt 7, Schlusssatz der Reihenliste: „Die **31** Sollreihen sind die Zeilen 1, 2, 8, **9**, 10 und 11 (4+12+4+**4**+3+4)" | „Die **27** Sollreihen sind die Zeilen 1, 2, 8, 10 und 11 (**4+12+4+3+4**)". Zeile 9 fällt aus dieser Aufzählung, **nicht** aus der Reihenliste — sie bleibt als Start und Politikpfad | Abschnitt 7 |
-| T30, Prüfungstabelle Nr. 8: „**31** Sollreihen plus Handelsblock" | **27** | T30 |
+| **Frontmatter line 12**: „im Prüfjahrgang 1997-2021 ist R = 24, eine Suchbotpartie kostet R × 61 = 1.464 Weltschritte" | „im Prüfjahrgang **2001–2021** ist **R = 20** … **20 × 61 = 1.220**" | frontmatter, key `partie` |
+| T23 point 2: „**Sollreihen** für die **31** Reihen aus `spiel.md` plus den Handelsblock" | **27** series | T23 point 2 |
+| Section 7, closing sentence of the series list: „Die **31** Sollreihen sind die Zeilen 1, 2, 8, **9**, 10 und 11 (4+12+4+**4**+3+4)" | „Die **27** Sollreihen sind die Zeilen 1, 2, 8, 10 und 11 (**4+12+4+3+4**)". Row 9 drops out of this enumeration, **not** out of the series list — it stays as start and policy path | section 7 |
+| T30, check table no. 8: „**31** Sollreihen plus Handelsblock" | **27** | T30 |
 | T43: „… fängt eine falsche Implementierung in fünf Runden statt in einer **24**-Runden-Partie" | **20**-Runden-Partie | T43 |
-| Abschnitt 10, Laufzeitbudget: die ganze Tabelle **und** ihre Nachzählzeile stehen auf `R = 24` | Zeile für Zeile in der Zahlentabelle darunter | Abschnitt 10 |
-| Abschnitt 13: „der Jahrgangsbau **1997** … **25** Stützstellen ohne Füllung für alle **31** Reihen … und der IFS-Leitzins ist nur durch ein Indiz gestützt" | Jahrgangsbau **2001**, **21** Stützstellen, **27** Reihen. Hier ändert sich mehr als drei Zahlen: Der Halbsatz zum IFS-Leitzins begründet, warum das Paket Entwurfsrisiko trägt — und der Leitzins ist seit heute keine Sollreihe mehr. **Das Paket trägt weniger Risiko, als dort steht** | Abschnitt 13 |
+| Section 10, runtime budget: the whole table **and** its recount row stand on `R = 24` | row by row, in the number table below | section 10 |
+| Section 13: „der Jahrgangsbau **1997** … **25** Stützstellen ohne Füllung für alle **31** Reihen … und der IFS-Leitzins ist nur durch ein Indiz gestützt" | vintage build **2001**, **21** support points, **27** series. Here more than three numbers change: the half-sentence on the IFS policy rate justifies why the package carries design risk — and as of today the policy rate is no longer a target series. **The package carries less risk than it says there** | section 13 |
 
-**Abschnitt 10 im Einzelnen, damit es eine Substitution bleibt und keine Rechnung.** Jede
-Zeile ist aus R neu gerechnet und **nicht** aus der alten Tabelle skaliert:
+**Section 10 in detail, so that it stays a substitution and does not become a
+calculation.** Every row is computed afresh from R and **not** scaled from the old table:
 
-| Zeile | war (R = 24) | ist (R = 20) |
+| Row | was (R = 24) | is (R = 20) |
 |---|---:|---:|
-| eine Partie, Heuristikbot | 24 | **20** |
-| eine Partie, Suchbot | 1.464 | **1.220** |
-| 1.000 Partien, Heuristikbot | 24.000 | **20.000** |
-| 1.000 Partien, Suchbot | 1.464.000 | **1.220.000** |
-| Entscheidungsdichte, K=30, ein Startwert | 9.024 | **6.320** |
-| Entscheidungsdichte, 50 Startwerte | 451.200 | **316.000** |
-| Strategievielfalt, 126 × 20 | 3.689.280 | **3.074.400** |
-| Optimumsverschiebung, zwei Fenster | 7.378.560 | **6.148.800** |
-| Bruchlauf, 10.000 Zufallspartien | 240.000 | **200.000** |
-| Beschränktheit, 200 Runden | 200 | **200 — unverändert**, die Zeile prüft 200 gesetzte Runden und nicht R |
-| Rückvergleich, ein Weltlauf | 24 | **20** |
-| Regressionsbestand, 1.000 Partien | 24.000 | **20.000** |
-| **Nachtlauf gesamt** | 11.783.264 | **9.759.420** |
+| one game, heuristic bot | 24 | **20** |
+| one game, search bot | 1,464 | **1,220** |
+| 1,000 games, heuristic bot | 24,000 | **20,000** |
+| 1,000 games, search bot | 1,464,000 | **1,220,000** |
+| decision density, K=30, one seed | 9,024 | **6,320** |
+| decision density, 50 seeds | 451,200 | **316,000** |
+| strategy diversity, 126 × 20 | 3,689,280 | **3,074,400** |
+| shift of the optimum, two windows | 7,378,560 | **6,148,800** |
+| break run, 10,000 random games | 240,000 | **200,000** |
+| boundedness, 200 rounds | 200 | **200 — unchanged**, the row checks 200 set rounds and not R |
+| backtest, one `weltlauf` | 24 | **20** |
+| regression stock, 1,000 games | 24,000 | **20,000** |
+| **night run total** | 11,783,264 | **9,759,420** |
 
-Die Nachzählzeile darunter lautet damit: `Σ(R+1−t)` für `t = 1…20` ist `210`, also
-`30 × 210 = 6.300` je Startwert, zuzüglich 20 Weltschritte für die Trägerpartie ergibt
-**6.320**; mal 50 Startwerte **316.000**. `1.220 = 20 × 61`,
-`3.074.400 = 126 × 20 × 1.220`, `6.148.800` das Doppelte davon; die drei Maße zusammen
-**9.539.200**, so wie dieses Dokument es oben rechnet. Der Nachtlauf ist
-`9.539.200 + 200.000 + 200 + 20 + 20.000 = 9.759.420`. `126 = C(9,4)` bleibt stehen, es
-hängt nicht an R. Die beiden Zeitspalten gehören dem Architekten: Sie folgen aus der
-ersten Spalte und einem `ticks_je_sekunde`, den es weiterhin nicht gibt.
+The recount row below it thus reads: `Σ(R+1−t)` for `t = 1…20` is `210`, so
+`30 × 210 = 6.300` per seed, plus 20 world steps for the carrier game gives
+**6,320**; times 50 seeds **316,000**. `1.220 = 20 × 61`,
+`3.074.400 = 126 × 20 × 1.220`, `6.148.800` twice that; the three Maße together
+**9,539,200**, just as this document computes above. The night run is
+`9.539.200 + 200.000 + 200 + 20 + 20.000 = 9.759.420`. `126 = C(9,4)` stands, it does not
+hang on R. The two time columns belong to the architect: they follow from the first
+column and a `ticks_je_sekunde`, which still does not exist.
 
-**Auch die Kalibrierschleife am Ende von Abschnitt 10 steht auf der alten Zahl.** Tausend
-Parametersätze über den vollen Maßsatz kosten `1.000 × 9.539.200` = **9,54 Milliarden**
-Weltschritte statt 11,52, beim Planwert also rund **26,5 Stunden auf einem Kern und 3,3 auf
-acht**. Die verkürzte Nachtfassung wird `10 × 6.320` = **63.200** für Maß 1 und
-`126 × 5 × 1.220` = **768.600** für Maß 2. Der Schluss des Abschnitts — in voller Breite
-keine Nachtaufgabe, verkürzt nachtfähig — ändert sich dadurch nicht.
+**The calibration loop at the end of section 10 also stands on the old number.** A
+thousand parameter sets over the full set of Maße cost `1.000 × 9.539.200` = **9.54
+billion** world steps instead of 11.52, at the plan value thus around **26.5 hours on one
+core and 3.3 on eight**. The shortened night version becomes `10 × 6.320` = **63,200**
+for Maß 1 and `126 × 5 × 1.220` = **768,600** for Maß 2. The section's conclusion — at
+full width not a night task, shortened night-capable — does not change.
 
-**Zwei Dinge, die ich nachgerechnet habe, damit du es nicht musst.** Erstens hält die
-Schranke `R ≤ 26` aus T40 mit Abstand: Das Band „überlebt" endet bei 24.000, das Todesband
-beginnt bei 31.000, 7.000 Milli-Runden Luft statt 3.000. Zweitens bleibt der Bereichstest
-`1.000 … R × 1.000 + 30.000` gültig und ergibt jetzt **1.000 … 50.000**.
+**Two things I have recomputed so that you do not have to.** First, the bound `R ≤ 26`
+from T40 holds with room to spare: the band „überlebt" ends at 24,000, the death band
+begins at 31,000 — 7,000 milli-rounds of headroom instead of 3,000. Second, the range
+test `1.000 … R × 1.000 + 30.000` remains valid and now gives **1,000 … 50,000**.
 
-**Und eine Stelle außerhalb von `technik.md`, die ich nur benennen darf:** `reihen.toml`
-führt Reihe 9 mit `t37_klasse = "gesetzt"` und `rolle_tabelle = "Start + Politikpfad + Soll
-(4, gesetzt)"`. Beides ist ab heute falsch. Die Datei gehört dem Datenbauer; das ist ein
-Folgepaket für ihn, zusammen mit dem Leitzinspfad für Deutschland und China (siehe *Offene
-Entwurfsfragen*). Ebenso benannt und nicht angefasst: `daten/deckungsbefund-1997.md` behält
-seinen Namen und seinen Inhalt — er hat das Fenster 1997 gemessen, und das bleibt richtig.
+**And one place outside `technik.md` that I may only name:** `reihen.toml` carries series
+9 with `t37_klasse = "gesetzt"` and `rolle_tabelle = "Start + Politikpfad + Soll
+(4, gesetzt)"`. Both are wrong as of today. The file belongs to the data builder; this is
+a follow-up package for that role, together with the policy-rate path for Germany and
+China (see *Offene Entwurfsfragen*). Likewise named and not touched:
+`daten/deckungsbefund-1997.md` keeps its name and its content — it measured the 1997
+window, and that remains correct.
 
 ### Neu aus Paket 0021 — der Schaden in Gegenkraft 5
 
-Fünf Stellen, keine davon eine Entscheidung. `technik.md` habe ich nicht angefasst; Paket
-0011 arbeitet darin.
+Five places, none of them a decision. I have not touched `technik.md`; package 0011 is
+working in it.
 
-| war (`technik.md`) | ist | betrifft |
+| was (`technik.md`) | is | affects |
 |---|---|---|
-| T50: „*Wie hoch* der Schaden eines Sektors ist, bleibt Sache von `spiel.md`"; Abschnitt 12 Punkt 3 meldet die Lücke | Die Vorschrift steht im Abschnitt *Der Schaden in Gegenkraft 5*: `mal_geteilt(menge, verschiebung, 10.000)` je Land und Instrument, vier Zeilen | T50, Abschnitt 12 Punkt 3 |
-| `handelsvolumen(l)` über beide handelbaren Sektoren zusammen | dazu die sektorweise Fassung `handelsvolumen(l, s)`; ihre Summe über s ist die alte Größe, die Definition ändert sich nicht | T48 Nr. 11 |
-| `parameter.toml` ohne Lastsatz für die Finanzmarktregulierung | neuer Schlüssel **`regulierung_last`**, Klasse 3, Basispunkte des BIP je Regulierungsstufe, kalibriert wie `gegenlobby_satz` | T27 |
-| `lobbypunkte_aus_schaden` mit Aufrufort, ohne Aufrufzahl | **16 Aufrufe je Runde**, sämtlich in Schritt 5; dazu **106** Lesezugriffe und 16 Schreibzugriffe, aufgeschlüsselt im Abschnitt (die 120 der Fassung vom 2026-09-02 waren falsch, siehe Befundabarbeitung) | T50, Kostenzeile in Abschnitt 10 |
-| T30 Prüfung 6 prüft `0 ≤ gegendruck ≤ druck_max`, ohne dass ein Erzeuger die Grenze hielte | Die Obergrenze steht jetzt im Entwurf als `min(druck_max, …)`; die Prüfung bleibt, sie ist nun eine Probe und keine Hoffnung | T30 |
+| T50: „*Wie hoch* der Schaden eines Sektors ist, bleibt Sache von `spiel.md`"; section 12 point 3 reports the gap | The prescription stands in the section *Der Schaden in Gegenkraft 5*: `mal_geteilt(menge, verschiebung, 10.000)` per country and instrument, four lines | T50, section 12 point 3 |
+| `handelsvolumen(l)` over both tradable sectors together | plus the sector-wise version `handelsvolumen(l, s)`; its sum over s is the old quantity, the definition does not change | T48 no. 11 |
+| `parameter.toml` without a load rate for the Finanzmarktregulierung | new key **`regulierung_last`**, class 3, basis points of GDP per regulation step, calibrated like `gegenlobby_satz` | T27 |
+| `lobbypunkte_aus_schaden` with a call site, without a call count | **16 calls per round**, all in step 5; plus **106** read accesses and 16 write accesses, itemised in the section (the 120 of the 2026-09-02 version were wrong, see the Befundabarbeitung) | T50, cost line in section 10 |
+| T30 check 6 checks `0 ≤ gegendruck ≤ druck_max`, without any producer holding the bound | The upper bound now stands in the design as `min(druck_max, …)`; the check stays, it is now a probe and not a hope | T30 |
 
-**Was sich ausdrücklich nicht ändert:** keine Zustandsadresse, die 310, der Abzählschritt
-aus T45, die drei Skalenübergänge aus T50, die acht Kanäle, R, die vier Maße und ihre
-Schwellen. Die Vorschrift liest ausschließlich Größen, die `daten/adressen.md` führt, und
-drei Funktionen aus T48.
+**What expressly does not change:** no state address, the 310, the count-off step from
+T45, the three scale transitions from T50, the eight channels, R, the four Maße and their
+thresholds. The prescription reads exclusively quantities that `daten/adressen.md`
+carries, and three functions from T48.
 
 ### Neu aus Paket 0039 — die Zollzeile misst nur noch den Keil
 
-Vier Stellen, und die erste ist die einzige, an der `technik.md` etwas **hinzubekommt** statt
-ersetzt zu werden. Angefasst habe ich sie nicht.
+Four places, and the first is the only one where `technik.md` **gains** something instead
+of being replaced. I have not touched it.
 
-| war (`technik.md`) | ist | betrifft |
+| was (`technik.md`) | is | affects |
 |---|---|---|
-| T28 nennt „der Zollkeil je Gebiet auf dem Weltpreis", ohne ihn hinzuschreiben | `weltpreis_mit_zoll(l,s) = mal_geteilt(welt.preis.<s>, 10.000 + zollstand(l), 10.000)`, im Abschnitt *Der Zollkeil ist multiplikativ*. Die additive Lesart ist gegen T5 nicht bildbar | T28 |
-| `preishub(l, s)` als Differenz der Sektorpreise | entfällt; an seine Stelle treten `keilhub(l, s)` und `preishub_zoll(l, s)`, beide Klasse 5. `land.<l>.sektor.<s>.preis` wird von Gegenkraft 5 **nicht mehr gelesen**, `welt.preis.<s>` neu | T50, T48 |
-| Kostenzeile mit 120 Lesezugriffen (aus der Fassung vom 2026-09-02) | **106**, aufgeschlüsselt in der Lesetabelle. Die 120 zählten den Zollstand doppelt mit 16, obwohl die alte Zollzeile ihn gar nicht las; die 112 des Prüfbefunds galten für die alte Zeile | T50, Kostenzeile in Abschnitt 10 |
-| `durchgriff` wird allein in der Markträumung (Schritt 4) gebraucht | zusätzlich in Schritt 5, für `preishub_zoll`. Es bleibt eine Jahrgangskonstante nach T23 Punkt 5 und wird keine Adresse | T23 Punkt 5, T50 |
+| T28 names „der Zollkeil je Gebiet auf dem Weltpreis" without writing it down | `weltpreis_mit_zoll(l,s) = mal_geteilt(welt.preis.<s>, 10.000 + zollstand(l), 10.000)`, in the section *The tariff wedge is multiplicative*. The additive reading cannot be formed against T5 | T28 |
+| `preishub(l, s)` as the difference of the sector prices | dropped; in its place come `keilhub(l, s)` and `preishub_zoll(l, s)`, both class 5. `land.<l>.sektor.<s>.preis` is **no longer read** by counterforce 5, `welt.preis.<s>` newly is | T50, T48 |
+| cost line with 120 read accesses (from the 2026-09-02 version) | **106**, itemised in the read table. The 120 counted the tariff level twice with 16, although the old tariff row did not read it at all; the 112 of the check finding applied to the old row | T50, cost line in section 10 |
+| `durchgriff` is needed in market clearing (step 4) alone | additionally in step 5, for `preishub_zoll`. It remains a vintage constant per T23 point 5 and does not become an address | T23 point 5, T50 |
 
-**Und eine Bedingung für den Jahrgangsbau, keine für dich:** Der Ausdruck
+**And one condition for the vintage build, none for you:** the expression
 `mal_geteilt(mal_geteilt(welt.preis_start(s), schrittweite[zoll], 10.000), durchgriff(l,s), 10.000)`
-muss für jedes der acht Land×Sektor-Paare mindestens 1 ergeben, sonst ist die Zollzeile dort
-stumm. Die Zahl, die das erfüllt, kommt aus der Kalibrierung.
+must yield at least 1 for each of the eight country×sector pairs, otherwise the tariff
+row is mute there. The number that satisfies this comes from calibration.
 
 ### Neu in Fassung 5 — acht Stellen, und keine davon ist eine Zahl
 
-Der neue Abschnitt *Was ein Korb wert ist* ist Entwurf und braucht von dir eine Aufnahme,
-keine Entscheidung. Was daraus in `technik.md` nachzuführen ist:
+The new section *What a basket is worth* is design and needs from you an incorporation,
+not a decision. What of it has to be carried into `technik.md`:
 
-| war (`technik.md`) | ist | betrifft |
+| was (`technik.md`) | is | affects |
 |---|---|---|
-| T47 verwendet `korbwert(l, s)` und `positionswert(p)`, gebildet werden sie nirgends | beide gebildet, dazu `anleihewert`, `waehrungswert`, `anleihekurs`, `schuld` und `handelsvolumen` | T47 |
-| T33: „Modellmarktwerte", der Mengenkorb ohne Menge | Marktkorb = Σ der 12 `korbwert` + Σ der 4 `anleihewert`; die Mengen sind Kapitalstock und Schuld, die Kurse Sektorpreis, Anleihekurs und Wechselkurs | T33 Punkt 1 und 3 |
-| Skalengrenze in T47 nicht gezogen — **Befund 2 der Runde 6** | `korbwert` bleibt volkswirtschaftlich, die Umrechnung liegt je Bewertung einmal am äußersten Aufruf; der zweite Weg (`korbwert` in Cent) ist ausgeschlossen, weil T33 denselben Korb bewertet | T5, T47 |
-| T27: `stufenweite` ohne Bedeutung | **Anteil in Zehntausendsteln des Marktes**, kein Geldbetrag; dazu ein neuer Schlüssel `aufschlag` in Basispunkten | T27 |
-| T23 Punkt 5: Konstanten des Jahrgangs sind zehn `durchgriff`-Werte | dazu **`leitzins_start[l]`**, vier Werte, erste Stützstelle des Politikpfads aus Reihe 9 | T23 Punkt 5 |
-| Reihe 3 liefert **einen** Kapitalstock je Gebiet, T15 führt **drei** je Gebiet | Startregel: Aufteilung über die normierten Sektoranteile, dieselbe Regel wie bei der Wertschöpfung; der Rang `Datenanker` bleibt | T23 Punkt 1, Reihenliste Nr. 3 |
-| „sieben rundenübergreifende Kanäle"; „gibt es einen **achten** Kanal, und der ist ein Befund" | **acht**; „einen **neunten**" | Z. 374 (T38-Begründung), T30 Prüfung 6 |
-| Leitzins ohne Untergrenze | Untergrenze **`1 − aufschlag`**, vom Jahrgangsbau gegen den historischen Politikpfad geprüft; sie hält den Anleihenenner positiv | T23, T27, T40-Umfeld |
+| T47 uses `korbwert(l, s)` and `positionswert(p)`, formed nowhere | both formed, plus `anleihewert`, `waehrungswert`, `anleihekurs`, `schuld` and `handelsvolumen` | T47 |
+| T33: „Modellmarktwerte", the quantity basket without a quantity | market basket = Σ of the 12 `korbwert` + Σ of the 4 `anleihewert`; the quantities are capital stock and debt, the prices sector price, bond price and exchange rate | T33 points 1 and 3 |
+| scale boundary in T47 not drawn — **finding 2 of round 6** | `korbwert` stays macroeconomic, the conversion sits once per valuation at the outermost call; the second way (`korbwert` in cents) is ruled out, because T33 values the same basket | T5, T47 |
+| T27: `stufenweite` without a meaning | **share in ten-thousandths of the market**, not an amount of money; plus a new key `aufschlag` in basis points | T27 |
+| T23 point 5: constants of the vintage are ten `durchgriff` values | plus **`leitzins_start[l]`**, four values, first support point of the policy path from series 9 | T23 point 5 |
+| series 3 delivers **one** capital stock per territory, T15 carries **three** per territory | start rule: split over the normalised sector shares, the same rule as for value added; the rank `Datenanker` stays | T23 point 1, series list no. 3 |
+| „sieben rundenübergreifende Kanäle"; „gibt es einen **achten** Kanal, und der ist ein Befund" | **acht**; „einen **neunten**" | line 374 (T38 reasoning), T30 check 6 |
+| policy rate without a lower bound | lower bound **`1 − aufschlag`**, checked by the vintage build against the historical policy path; it keeps the bond denominator positive | T23, T27, around T40 |
 
-**Was sich ausdrücklich nicht ändert:** keine Zahl der vierten Fassung, keine
-Zustandsadresse, R, die Ergebnisbänder, die vier Maße, ihre Schwellen und alle
-Kostenzeilen. Der Abzählschritt aus T45 geht unverändert auf.
+**What expressly does not change:** no number of the fourth version, no state address, R,
+the result bands, the four Maße, their thresholds and all cost lines. The count-off step
+from T45 comes out even, unchanged.
 
-**Und zwei Entscheidungen aus deinem Abschnitt 12 nehme ich an statt sie zurückzuholen:**
-die Ausschlussregel für Stützstellen mit `soll = 0` (T42) und die elf Startwerte in T46.
-Beide folgen aus Regeln, die schon dastehen; ich habe je eine Zeile gelesen und keine
-gefunden, die ich anders setzen würde. Deine Beobachtung 2 zur Tabelle *Größen ohne
-Datenanker* ist oben eingearbeitet — die Tabelle verweist jetzt auf T46, statt eine
-Abschließlichkeit zu behaupten, die sie allein nicht haben kann.
+**And two decisions from your section 12 I accept instead of pulling them back:** the
+exclusion rule for support points with `soll = 0` (T42) and the eleven seeds in T46. Both
+follow from rules that already stand there; I read one line each and found none I would
+set differently. Your observation 2 on the table *Every quantity without a data anchor*
+is worked in above — the table now refers to T46 instead of claiming a completeness it
+cannot have on its own.
 
 ---
 
-**Ab hier steht kein geltender Wert mehr, sondern das Protokoll.** Alle folgenden
-Abschnitte — die erledigten Nachziehtabellen der Fassungen 3 und 4 und die
-Befundabarbeitungen — sind **datierte Nachweise abgeschlossener Läufe**. Die Zahlen darin
-stehen auf dem R, das zum Zeitpunkt ihrer Prüfung galt (`R = 24`, Fenster 1997–2021), und
-sie werden **nicht** nachgezogen. Der Grund ist derselbe, aus dem der Chronist keine alten
-ADRs ändert: Ein Protokoll, das man an den neuen Stand anpasst, belegt nichts mehr — man
-könnte an ihm nicht mehr ablesen, was der Prüfer damals gesehen und der Entwerfer damals
-geantwortet hat. **Wer nach dem geltenden R sucht, liest oberhalb dieser Linie.** Was
-unterhalb steht und was sich seither daran geändert hat, führt die Nachziehtabelle *Neu aus
-Paket 0054* Zeile für Zeile auf.
+**From here on, no governing value stands any more — only the record.** All following
+sections — the completed catch-up tables of versions 3 and 4 and the
+Befundabarbeitungen — are **dated evidence of completed runs**. The numbers in them stand
+on the R that held at the time of their check (`R = 24`, window 1997–2021), and they are
+**not** carried forward. The reason is the same one for which the chronicler changes no
+old ADRs: a record adapted to the new state proves nothing any more — one could no longer
+read off from it what the checker saw then and what the designer answered then. **Whoever
+looks for the governing R reads above this line.** What stands below, and what has
+changed about it since, is listed row by row by the catch-up table *Neu aus Paket 0054*.
 
 ---
 
 ### Aus Fassung 4 — vom Architekten am 2026-09-01 erledigt
 
-Steht nur noch als Nachweis hier; alle vier sind in `technik.md` Fassung 5 nachgeführt und
-vom Prüfer der Runde 6 einzeln nachgerechnet worden. *Die Zahlen dieses Abschnitts gelten
-für `R = 24`; siehe die Linie darüber.*
+Stands here only as evidence; all four are carried into `technik.md` version 5 and were
+individually recomputed by the checker of round 6. *The numbers of this section hold for
+`R = 24`; see the line above.*
 
-| war (`technik.md`) | ist | betrifft |
+| was (`technik.md`) | is | affects |
 |---|---|---|
-| Ergebnisband „überlebt" `(R+1)×1.000 … +2.000`, 25.000 … 27.000 | **`(R+1)×1.000 … +3.000`, 25.000 … 28.000** (keine Kappung mehr) | T40, Bandtabelle |
-| unerreichbare Lücken 24.001 … 24.999 und **27.001** … 30.999 | 24.001 … 24.999 und **28.001** … 30.999 | T34, Bandprüfung |
-| T44: „Die einzige Abweichung von der Ergebnisgröße ist die Kappung" | **entfällt** — der Zweig „überlebt" von `B` und die Ergebnisgröße sind jetzt dieselbe Formel; `B`s eigene Zahlen (`e ≤ 2.000`, 25.000 … 28.000) bleiben richtig | T44 |
-| `Fondsvermögen = Kasse + bewertete Positionen − Hebel` | **`… + bewertete Beteiligungen − Hebel`**, bewertet zum Ausstiegswert | Schritt „Abrechnung", T30 Prüfung 2 (Invariantentest), T44 `v(z)` |
+| result band „überlebt" `(R+1)×1.000 … +2.000`, 25,000 … 27,000 | **`(R+1)×1.000 … +3.000`, 25,000 … 28,000** (no more capping) | T40, band table |
+| unreachable gaps 24,001 … 24,999 and **27,001** … 30,999 | 24,001 … 24,999 and **28,001** … 30,999 | T34, band check |
+| T44: „Die einzige Abweichung von der Ergebnisgröße ist die Kappung" | **dropped** — the branch „überlebt" of `B` and the result quantity are now the same formula; `B`'s own numbers (`e ≤ 2.000`, 25,000 … 28,000) stay correct | T44 |
+| `Fondsvermögen = Kasse + bewertete Positionen − Hebel` | **`… + bewertete Beteiligungen − Hebel`**, valued at the exit value | step „settlement", T30 check 2 (invariant test), T44 `v(z)` |
 
-**Zwei Dinge, die ich nachgerechnet habe, damit du es nicht musst.** Erstens: Die Schranke
-`R ≤ 26` aus T40 bleibt unverändert gültig — mit dem breiteren Band ist sie jetzt genau die
-Disjunktheitsbedingung statt einer großzügigen; das Band kostet also keine Runde
-Partielänge. Zweitens: Der Bereichstest `1.000 … R × 1.000 + 30.000` ist unberührt, weil
-sein oberes Ende aus dem Todesband kommt.
+**Two things I have recomputed so that you do not have to.** First: the bound `R ≤ 26`
+from T40 remains valid, unchanged — with the wider band it is now exactly the
+disjointness condition instead of a generous one; the band therefore costs no round of
+game length. Second: the range test `1.000 … R × 1.000 + 30.000` is untouched, because
+its upper end comes from the death band.
 
-**Und drei Stellen, die durch diese Fassung *entfallen* statt sich zu ändern:** die offene
-Frage aus Abschnitt 12 Punkt 3 (Beteiligungen, oben entschieden), die Klasse-2-Erörterung
-in T44 (sie hing an genau dieser Frage) und der Nachtrag in T23 Punkt 1 — er bleibt
-richtig, ist aber jetzt doppelt, weil die 32 Adressen in der Entwurfstabelle stehen, die
-sie zugesagt hatte.
+**And three places that this version makes *lapse* rather than change:** the open
+question from section 12 point 3 (stakes, decided above), the class-2 discussion in T44
+(it hung on exactly this question) and the addendum in T23 point 1 — it remains correct
+but is now duplicated, because the 32 addresses stand in the design table that had
+promised them.
 
 ### Aus Fassung 3 — vom Architekten am 2026-09-01 erledigt
 
-Steht nur noch als Nachweis hier; nichts davon ist offen. *Die Zahlen dieses Abschnitts
-gelten für `R = 24`; die Spalte „ist" ist der Stand vom 2026-09-01 und nicht der heutige.
-Was seither an ihre Stelle getreten ist, steht in der Nachziehtabelle **Neu aus Paket
-0054**.*
+Stands here only as evidence; nothing of it is open. *The numbers of this section hold
+for `R = 24`; the column „is" is the state of 2026-09-01 and not today's. What has taken
+their place since stands in the catch-up table **Neu aus Paket 0054**.*
 
-| war | ist | betrifft |
+| was | is | affects |
 |---|---|---|
-| 28 Runden, 1995–2023, 29 Stützstellen | **R = 24**, 1997–2021, 25 Stützstellen | Frontmatter, T22, T23, T24, Abschnitt 10 |
-| Suchbotpartie `28 × 61 = 1.708` | **`24 × 61 = 1.464`** | Frontmatter, Abschnitt 10, 12 |
-| Maß 1 je Startwert 11.368 | **9.024** (Formel korrigiert, siehe Befund 11) | Abschnitt 10 |
-| Maß 2 4.304.160 / Maß 3 8.608.320 | **3.689.280 / 7.378.560** | Abschnitt 10 |
-| Nachtlauf 13.789.108 | neu zu summieren; die drei Maße tragen **11.519.040** | Frontmatter, Abschnitt 10 |
-| Ergebnisbereich 1.000 … 58.000 | **1.000 … 54.000** | T34 |
-| `handelsanteil` | **`durchgriff`**, neue Bildungsregel, bleibt Klasse Anteile | T5, T23 Punkt 5, T25, T28, Reihenliste Nr. 16 |
-| `landespreis` undefiniert | **Sektorpreis der Vorrunde**, Startwert 10.000 | T28, T15 (keine neue Zeile) |
-| Rückvergleich als Partie | **Modus `weltlauf`**, Fondsteilsystem aus, Instrumente exogen | T30 Prüfung 8, T37 |
-| Maß-4-Abnahme offen (Abschnitt 12) | **16 Prüfgegenstände, Toleranz 2**; Handelsblock nach deinem Vorschlag | T37, Abschnitt 12 |
-| DE `exogen_ab` in Runde 5 | **Runde 3** (1999 liegt jetzt am Ende von Runde 2) | T23 Punkt 8 |
-| 50 Startwerte „Vorgabe des Prüfstands" | jetzt in `spiel.md` gesetzt, samt Zusammenfassungsregel | Abschnitt 10 |
+| 28 rounds, 1995–2023, 29 support points | **R = 24**, 1997–2021, 25 support points | frontmatter, T22, T23, T24, section 10 |
+| search-bot game `28 × 61 = 1.708` | **`24 × 61 = 1.464`** | frontmatter, sections 10, 12 |
+| Maß 1 per seed 11,368 | **9,024** (formula corrected, see finding 11) | section 10 |
+| Maß 2 4,304,160 / Maß 3 8,608,320 | **3,689,280 / 7,378,560** | section 10 |
+| night run 13,789,108 | to be re-summed; the three Maße contribute **11,519,040** | frontmatter, section 10 |
+| result range 1,000 … 58,000 | **1,000 … 54,000** | T34 |
+| `handelsanteil` | **`durchgriff`**, new formation rule, stays in the shares class | T5, T23 point 5, T25, T28, series list no. 16 |
+| `landespreis` undefined | **previous round's sector price**, start value 10,000 | T28, T15 (no new row) |
+| backtest as a game | **mode `weltlauf`**, fund subsystem off, instruments exogenous | T30 check 8, T37 |
+| Maß-4 acceptance open (section 12) | **16 check subjects, tolerance 2**; trade block as you proposed | T37, section 12 |
+| DE `exogen_ab` in round 5 | **round 3** (1999 now lies at the end of round 2) | T23 point 8 |
+| 50 seeds „Vorgabe des Prüfstands" | now set in `spiel.md`, together with the summary rule | section 10 |
 
-Neu hinzugekommen und ohne Vorbild in Fassung 2: das **Vorratsverfahren** (Profil →
-Aktionen), die **HS92-Konkordanz** und die Tabelle **Größen ohne Datenanker**. Alle drei
-sind Entwurf, nicht Architektur — sie brauchen von dir nur eine Aufnahme, keine
-Entscheidung.
+Newly added and without precedent in version 2: the **stock procedure** (profile →
+actions), the **HS92 concordance** and the table **Every quantity without a data
+anchor**. All three are design, not architecture — they need from you only an
+incorporation, not a decision.
 
 ## Befundabarbeitung — Prüfung 0039 vom 2026-09-03, Paket 0055
 
