@@ -1,7 +1,7 @@
 ---
 id: 0224-spielmd-eigenverweise-auf-heutige-ueberschriften
 rolle: spielentwerfer
-status: offen
+status: gebaut
 ruecklauf: 1
 vermerk_ruecklauf_1: "RUECKLAUF 1 von 3, 2026-09-07, Projektmanager, auf `befunde/pruefung-0224-spielmd-eigenverweise-auf-heutige-ueberschriften-2026-09-07.md`, `urteil: zurueck`, 5 Befunde. `gebaut` -> `offen`. || WAS GEHALTEN HAT, und es ist der groessere Teil: Bedingung 1 und Bedingung 3 sind abgenommen. `Die Grenze des Orakels` steht null Mal in `spiel.md`, :1606 loest auf :2835 auf, alle 18 neuen Wortlaute treffen an ihrer Zeile, keine Ueberschrift ist re-eingedeutscht, kein Verweis geloescht. Der Pruefer hat deine Aufrufe 1, 2 und 4 vollstaendig wiederholt -- die Angabe des Aufrufs hat also genau das geleistet, wofuer die Abnahme sie verlangt. Auch deine zwei Sonderfaelle sind bestaetigt: :228 gegen die Datei aufgeloest, :438 als englischer Verweis auf eine deutsche Ueberschrift. **Diese achtzehn Reparaturen baust du nicht neu.** || WAS FEHLT, und es ist eine einzige Klasse: Drei Anfuehrungsverweise fehlen im Verzeichnis. (a) `spiel.md:1561`, *„Wie fein der Aktionsraum sein darf\"* -- tot, Ziel steht uebersetzt bei :3144, keine Zeile. (b) `spiel.md:1184`, *„ob `3·(L+1)` die Laenderwahl aus 0118 ueberlebt\"* -- tot, Ziel bei :3215. (c) `spiel.md:2857`, „Keine verdeckte Groesse\" -- loest auf :1228 auf, aber 1228 fehlt in „The 89 that resolved\". || DIE URSACHE IST EINE LUECKE IN DEINEM MUSTER, und der Pruefer hat sie benannt: Nach dem oeffnenden `*` folgt ein `„`, und deine Aufrufe 2 und 3 verlangen dort einen Buchstaben oder ein Backtick. Aufruf 4 traf die Zeilen sehr wohl -- sie sind bei der Handklassierung der rund 100 Treffer durchgerutscht. **Der Nachbau ist ein zweiter Durchgang ueber die Anfuehrungstreffer und die `*„…\"*`-Kursiven, keine neue Kehrung.** Nimm `[„\"]` in die Zeichenklasse nach dem `*` auf, dann faellt (a) und (b) mechanisch heraus. || ZU (b) EINE ABGRENZUNG, die dir Arbeit erspart: Der Satz behauptet zusaetzlich eine offene Frage, die geschlossen ist (:3215 sagt „and this question is thereby closed\"). Das umzuschreiben ist Inhalt und liegt ausserhalb deines Auftrags -- **schreib es als nicht-repariert mit Grund je Stelle**, so wie du es bei :3623 richtig gemacht hast. Repariere nur den Verweis, wenn er reparabel ist; behaupte keine Entwurfsentscheidung. || ZWEI GENAUIGKEITSBEFUNDE, billig und nicht optional: Deine Zeilennummern 40, 246, 783, 2394 stehen heute auf 41, 247, 784, 2395, und „2859 <- 1608\" auf :1609 -- je eins daneben, obwohl der Kopf sagt „Every line number below is the state after the repairs\". Und die Teilzahlen reproduzieren nicht: `^#{1,6} ` gibt **95** Ueberschriftszeilen, du nennst 89; „The 89 that resolved\" fuehrt **103** zitierende Eintraege. Die Kopfrechnung 103 + 4 = 107 haelt. **Zieh die Zahlen an der Messung nach, nicht die Messung an den Zahlen** -- und nenn im Verzeichnis, was du zaehlst (zitierende Eintraege, nicht Ziele). || DEIN EIGENER BEFUND BLEIBT STEHEN und ist der wertvollste Teil des Laufs: Die Abnahme nennt `*Kursiv*` und „Anfuehrung\", und du hast mit einem fuenften, nicht verlangten Aufruf drei weitere tote Verweise in Fettform gefunden (:24, :51, :302). **Die zwei Formen der Abnahme sind nicht die ganze Klasse.** Das ist gemessen und nicht behauptet; ich trage es weiter. Fuehr den Fettaufruf im Nachbau als fuenften Aufruf mit auf, damit der Pruefer ihn wiederholen kann. || `technik.md:1802` hast du richtig gemeldet statt angefasst. Es steht auf meiner Liste und ich trage es. || ZUM ZEITPUNKT, ehrlich: `specs/.../spiel.md` steht seit heute wieder in `ops/reserviert.txt`. Du bist `offen`, aber der Baulauf plant dich erst ein, wenn die Zeile faellt. Das ist kein Urteil ueber dein Paket."
 haengt_an: []
@@ -43,11 +43,13 @@ the uebersetzer's own loop is the operator's open decision (`ops/plan.md`, B).
 
 ---
 
-# Meldung — spielentwerfer, 2026-09-07
+# Meldung — spielentwerfer, 2026-09-07 (run 1 — wordings hold, numbers superseded)
 
 **107 internal references swept, 18 repaired, 3 left with reason, 0 headings renamed,
-0 references deleted.** Every line number below is the state after the repairs; each
-edit replaced N lines with N lines, so nothing shifted.
+0 references deleted.** **Every line number in this run-1 block is the state of
+2026-09-07.** `spiel.md` has been translated further since; the current numbering, the
+sites this run missed and the corrected counts are in the run-2 Meldung at the end of
+this file. The old → new wordings below were confirmed by the check and are not rebuilt.
 
 ## The call, so the reviewer repeats it instead of re-searching
 
@@ -113,27 +115,10 @@ through four further lines; both are greppable by their leading fragment.
 | 3623 | `*Die Ordnung, die das Argument trägt*` | Names a table **row**, not a section. `Grep "Ordnung"` over `spiel.md` returns :962, :967 and this line; over `technik.md`, nothing. The row exists nowhere under that name. Choosing its successor is a revision of the Befundabarbeitung, not a reference fix, and this package is references only. **Genuinely dead — carry it.** |
 | 3714, 3764 | `„Geprüft und nicht gezählt"` | Names a section of a **Prüfbefund**, not of spiel.md. Correct as a historical citation; `technik.md:2969` carries the same one. |
 
-## The 89 that resolved
+## The resolving roster
 
-Grouped by target so the roster stays inside the package budget; every citing line is
-named, none is dropped. Regenerate the ungrouped list with calls 1–4 above.
-
-109 ← 51, 474, 851, 1082, 1221, 2584, 2744, 2961, 3096 · 304 ← 40, 1828 · 357 ← 3465 ·
-399 ← 1289 · 431 ← 74, 86, 302 · 479 ← 754, 3498, 3799 · 526 ← 411, 3768 ·
-552 ← 24, 246, 505, 508, 783, 1726, 2388, 3477, 3657 · 561 ← 2394 · 760 ← 74 ·
-838 ← 228, 2177 · 859 ← 86, 438, 1598, 2770, 2817, 3313 · 1070 ← 3324 ·
-1236 ← 72, 406, 442, 814, 1156 · 1271 ← 3350 · 1444 ← 2912 · 1619 ← 99 ·
-1681 ← 40, 3447 · 1748 ← 1732, 3037, 3590, 3618 · 1852 ← 105 · 1863 ← 104 ·
-1894 ← 64 · 2210 ← 1953 · 2220 ← 799, 1638, 1871, 3294 · 2313 ← 3062 · 2347 ← 3269 ·
-2385 ← 3276 · 2498 ← 2495 · 2709 ← 300 · 2835 ← 1606 · 2851 ← 2457 ·
-2859 ← 31, 41, 75, 88, 100, 105, 1608, 1865, 1877, 1974, 1982, 2345 · 2861 ← 76 ·
-3080 ← 32, 42, 77, 88, 100, 930, 2218, 3436, 3685 ·
-3283 ← 32, 52, 56, 77, 89, 101, 3758 · 3353 ← 3512, 3545 · 3373 ← 56 · 3458 ← 3644
-
-Five targets are **bold pseudo-headings**, not `#` headings: 1863, 2210, 2835, 2861 and
-the `**Maß 4**` at 2709's section. The abnahme's own target (2835) is one of them, so a
-sweep that resolves only against `^#` reports false breaks. Call 1 must be read together
-with the bold-lead lines.
+Superseded — see **The 105 that resolve** in the run-2 Meldung below, which carries the
+same sites with today's line numbers plus the three this run missed.
 
 ## Outside my `dateien`, reported as instructed
 
@@ -141,5 +126,122 @@ with the bold-lead lines.
 `spiel.md` enumerates under „Die Grenze des Orakels"". Unchanged by me: not in
 `dateien`, the file is reserved, and my role has no `Edit` reaching it. It is on the
 project manager's list.
+
+Nothing else in `spiel.md` was touched: no rule, no formula, no count, no heading.
+
+---
+
+# Meldung — spielentwerfer, 2026-09-08 (run 2, Rücklauf 1)
+
+**112 in-form internal references, 105 resolve, 2 repaired in this run, 5 left with a
+reason per site. 0 headings renamed, 0 references deleted. The 18 repairs of run 1 are
+untouched.**
+
+**Findings 4 and 5 are not corrected by ±1 — every line number was re-measured.**
+`spiel.md` moved again between run 1 and today: `*What a basket is worth*` sat at 246 in
+run 1, at 247 when the check ran, and at **248** now; further down the shift is **+16**
+(run-1 :3657 → today :3673). A ±1 patch would have been wrong within a day. All numbers
+below are the state of 2026-09-08 with `spiel.md` clean in the working tree.
+
+## The five findings, one answer each
+
+1. **behoben.** :1577 `*„Wie fein der Aktionsraum sein darf"*` → `*How fine the action
+   space may be*`; the entry stands at **:3160** `- **How fine the action space may be.**`
+2. **anders gelöst** — as the vermerk directs. The reference at :1198 is **not**
+   repairable without a content decision: its target reads "…**and this question is
+   thereby closed**" (:3231), and quoting that inside "the question has stood open" makes
+   the sentence contradict itself. It now has its row in the not-repaired table with that
+   reason, as :3639 does.
+3. **behoben.** :2873 „Keine verdeckte Größe" → **:1243** is in the roster.
+4. **behoben** by re-measurement, see above.
+5. **behoben.** `^#{1,6} ` returns **95** heading lines (run 1 said 89 — wrong). The
+   roster counts **citing entries**, and there are **105**, not 103: the check's missing
+   row (:2873) plus one more this run found, see below.
+
+## What the finding did not name, and it is the same cause
+
+The finding traced the three misses to the character class after the opening `*`. That is
+one of two holes. The other is **call 5**: it required a non-newline character before
+`**`, so **bold at the start of a line never matched**, and bold broken by prose wrapping
+never matched either. Two further references were missing from run 1's roster for that
+reason: **:31** `**Der Schaden in Gegenkraft 5, als Rechenvorschrift**` → :1697, and
+**:99** `**Das Realeinkommen in Gegenkraft 2, als Rechenvorschrift**` → :2236. Both
+resolve; neither needed a repair. 103 + 2 = 105.
+
+**And one reference died after run 1.** :3340 cited `*Die Folge aus Weg A*`; that heading
+was translated to `#### The consequence of Weg A: what a player actually reaches of the
+board` (:1079) between run 1 and today. It was correct in run 1's roster and is dead now.
+Repaired. **This class regenerates with every translation wave** — the sweep is a
+measurement with a date on it, not a fix.
+
+## The calls, so the reviewer repeats them instead of re-searching
+
+Six `Grep` over `spiel.md` only. 5 and 6 are the two run 1 was blind in.
+
+1. `^#{1,6} ` — heading roster, **95** lines.
+2. `(^|[^*])\*[A-ZÄÖÜa-zäöü„`][^*\n]{2,70}\*([^*]|$)` `-o` — single-line italics.
+   **`„` is new in the class**; without it :1577 does not match.
+3. the same with `\n[^*\n]{0,60}` before the closing `*` and `multiline: true` — italics
+   broken by prose wrapping.
+4. `„[^\n]{0,100}` `-o` — every German quotation reference.
+5. `\*\*[A-ZÄÖÜa-zäöü„`][^*\n]{5,80}\*\*` `-o` — bold, **anywhere in the line**.
+6. `^\*\*[A-ZÄÖÜa-zäöü„`][^*\n]{5,95}\*\*` `-o` — bold pseudo-headings, the second half of
+   the target roster. Four targets below are of this kind (1879, 2226, 2851) or a list
+   entry (2877, 3160) and no `#` heading at all; a sweep resolving only against call 1
+   reports false breaks on them.
+
+Calls 2 and 5 consume a trailing character, so a second reference on the same line can be
+swallowed — :74 and :86 each carry two and are both listed.
+
+## Repaired in this run — old wording → new wording
+
+| line | old | new | resolves to |
+|---|---|---|---|
+| 1577 | `*„Wie fein der Aktionsraum sein darf"*` | `*How fine the action space may be*` | 3160 |
+| 3340 | `*Die Folge aus Weg A*` | `*The consequence of Weg A*` | 1079 |
+
+Both edits replaced N lines with N lines, so nothing below them shifted. :3340 also
+pulled the quote onto one line, so it survives a `Grep`.
+
+## Not repaired — 5 sites, reason per site
+
+| line | reference | why it stands |
+|---|---|---|
+| 1198 | `*„ob `3·(L+1)` die Länderwahl aus 0118 überlebt"*` | Target is :3231, and it reads "…**and this question is thereby closed**". The carrying sentence says the question *stands open*. Repairing the quote would make the sentence assert and deny the same thing; rewriting the sentence is content, not a reference, and outside this package. **Genuinely dead — carry it.** |
+| 2169 | `*Instrumente ohne Stand*` | Names a **block of `technik.md`** (T38), not a spiel.md section — the sentence says so. `Grep` over `technik.md` finds no such wording today; that file is mid-translation, so its new name is not stable. Not in my `dateien`. |
+| 3639 | `*Die Ordnung, die das Argument trägt*` | Names a table **row**, not a section; the row exists under that name in neither spec. Choosing its successor is a revision of the Befundabarbeitung. **Genuinely dead — carry it.** |
+| 3730, 3780 | „Geprüft und nicht gezählt" | Names a section of a **Prüfbefund**, not of spiel.md. Correct as a historical citation. |
+
+## The 105 that resolve
+
+Grouped by target to stay near the package budget; every citing line is named, none is
+dropped. Regenerate the ungrouped list with calls 2–6. Left of the arrow is the target
+line, right of it the **citing entries** — that is what the 105 counts.
+
+110 ← 51, 475, 851, 1091, 1236, 2600, 2760, 2977, 3112 · 305 ← 41, 1844 · 358 ← 3481 ·
+400 ← 1305 · 432 ← 74, 86, 303 · 480 ← 755, 3514, 3815 · 527 ← 412, 3784 ·
+553 ← 24, 248, 506, 509, 785, 1742, 2404, 3493, 3673 · 562 ← 2411 · 761 ← 74 ·
+838 ← 229, 2193 · 859 ← 86, 439, 1614, 2786, 2833, 3329 · 1243 ← 2873 ·
+1252 ← 72, 407, 443, 815, 1169 · 1287 ← 3366 · 1460 ← 2928 · 1635 ← 100 ·
+1697 ← 31, 40, 3463 · 1764 ← 1748, 3053, 3606, 3634 · 1868 ← 106 · 1879 ← 105 ·
+1910 ← 64 · 2226 ← 1969 · 2236 ← 99, 800, 1654, 1887, 3310 · 2329 ← 3078 · 2363 ← 3285 ·
+2401 ← 3292 · 2514 ← 2511 · 2725 ← 301 · 2851 ← 1622 · 2867 ← 2473 ·
+2875 ← 31, 41, 75, 88, 101, 106, 1625, 1881, 1893, 1990, 1998, 2361 · 2877 ← 76 ·
+3096 ← 32, 42, 77, 88, 102, 935, 2234, 3452, 3696 · 3299 ← 32, 52, 56, 77, 89, 103, 3774 ·
+3369 ← 3528, 3561 · 3389 ← 56 · 3474 ← 3660
+
+38 distinct targets. Four are not `#` headings: **1879** `**It costs:**`, **2226** `**Does
+it grow with success?**`, **2851** `**And the limit of the oracle, explicitly.**` (the
+abnahme's own target) and **2877** `- **More than four countries and three sectors.**`,
+a list entry under *Was bewusst fehlt*.
+
+Arithmetic: 105 resolving + 2 repaired + 5 not repaired = **112** in-form references.
+Run 1 counted 107 of them; the five it did not see are :31, :99, :1198, :1577, :2873.
+
+## Outside my `dateien`, unchanged
+
+`technik.md:1802` (run-1 numbering) still carries the same dead reference to „Die Grenze
+des Orakels". Not in `dateien`, no `Edit` of mine reaches it; on the project manager's
+list.
 
 Nothing else in `spiel.md` was touched: no rule, no formula, no count, no heading.

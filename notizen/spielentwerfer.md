@@ -4,6 +4,43 @@ Rotated by the runner on 2026-09-07 at 14796 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0224 again, Rücklauf 1: the sweep had a shelf life of one day
+
+Five findings, all worked off; 2 further repairs (:1577, :3340), 5 sites carried with a
+reason. Cost: six `Grep` plus five `Read` windows of 6–92 lines. I never opened the spec
+whole.
+
+What holds beyond this package:
+
+- **Line numbers in a file another lane is translating decay within a day. Re-measure,
+  never patch ±1.** The check found four numbers off by one; by the time I ran, the same
+  sites were off by **two** at the top and by **sixteen** below line 1700, and the offset
+  is not monotonic per region. Patching the four numbers the reviewer named would have
+  been wrong on arrival and would have left the other hundred wrong. The rule: a sweep is
+  a measurement with a date on it. Write the date in the Meldung and say what moved.
+- **This defect class regenerates with every translation wave.** :3340 `*Die Folge aus
+  Weg A*` was **live** in run 1's roster and dead when I re-measured, because the heading
+  was translated in between. So "0 dead references" is never a durable result here, only a
+  timestamp. Worth saying to the PM: the fourth wave will produce a fifth site list.
+- **My call 5 of run 1 was blind at the line start.** `[^\n*]\*\*…` requires a character
+  before the `**`, so **no bold reference at the start of a line ever matched** — that hid
+  :31 and :99, two live references, from the roster. Together with the `„` gap the check
+  found, the lesson is one: **every reference-form call needs its start-of-line and its
+  wrapped variant, or the count is a fiction.** Six calls, not four, and I listed all six.
+- **Not every dead reference is repairable, and the tell is a contradiction, not a
+  missing target.** :1198 quotes an open question whose entry now ends "and this question
+  is thereby closed". The target exists (:3231); pasting its wording in would make the
+  sentence assert and deny the same thing. That is content, and content is not mine. A
+  target that exists does not make a repair possible.
+
+Unsure, for the PM: same deviation as run 1 — the roster is grouped by target, not one
+flat row per reference, because 105 flat rows do not fit a package. The check accepted
+the grouped form without comment, so I kept it, but the abnahme still says "one row per
+reference" and someone should either change the wording or say the cap does not bind a
+sweep. Second: I marked run 1's roster in the package as superseded and replaced it with
+a pointer rather than keeping two contradictory number sets. The wordings and the 18
+repairs of run 1 stand untouched; only the stale line list is gone.
+
 ## 2026-09-07 — 0224, the reference sweep over spiel.md
 
 107 internal references, 18 repaired, 3 left with a reason. Cost: four `Grep` over

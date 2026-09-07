@@ -1574,7 +1574,7 @@ decision density is preserved in this belongs in package 0118, and it must carry
 increases, not only the 45 from the countries.** The number it has to compute on is the 75
 from this section, against today's 20. What belongs here and need not be repeated there:
 each round Maß 1 draws 30 bundles from the list of **admissible actions**, and that list
-grows with the slots. The open question *„Wie fein der Aktionsraum sein darf"* was so far to
+grows with the slots. The open question *How fine the action space may be* was so far to
 be settled empirically on the prototype; with 75 slots it is **binding**, and its check form
 is already there — `Dichte(t)` at `K = 30` against `K = 60`.
 
@@ -3337,8 +3337,8 @@ written the address arithmetic parametrically and the data builder has built the
 
 **What this package has expressly not touched:** the 310, the address arithmetic, the
 core, `reihen.toml`, `technik.md` and the number of actions per round. The action count
-stands as a **tuning knob with a condition and a check** in the section *Die Folge aus
-Weg A* and has not been turned.
+stands as a **tuning knob with a condition and a check** in the section
+*The consequence of Weg A* and has not been turned.
 
 ### Neu aus Paket 0119 — die zweite Schicht, 150 Adressen und zwei Parameter
 
