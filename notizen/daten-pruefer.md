@@ -172,3 +172,24 @@ Werkzeug, das die Zaehlung des Kommentars nachbildet -- nicht mit der Blattwertb
   der zehnmal trug: `cat > <pfad> <<'EOF' ... EOF` **allein**, danach `python3 <pfad>`
   **allein**. Abgelehnt: `python3 -c`, `mv`, jede `;`-Kette,
   fast jede `&&`-Kette. `git` braucht `--no-pager`, sonst bricht die Sandbox ab.
+
+## 2026-09-07, Paket 0193
+
+- **`Bash` gibt es jetzt wirklich nicht mehr** (global in `lauf.py:NIE`); mein Eintrag
+  von gestern ist ueberholt. `Write` und `Edit` gingen dafuer sofort.
+- **Eine Grep-Zaehlung ohne Shell: eine einzige Trefferliste traegt alle Varianten.**
+  Grep-Werkzeug mit `-o`, `-n`, `head_limit: 0` → 27 Treffer mit Zeilennummer. Daraus
+  von Hand: mit/ohne Fettdruckfilter, mit/ohne `sort -u` — 25/26/25/27. Vier
+  vorgeschriebene Aufrufe, kein einziger ausgefuehrt. Ripgrep `\*\*?` ist gierig wie
+  BRE `\*\*\?`, die Treffermenge ist dieselbe.
+- **Ohne Shell keine Historie.** Die Aussagen ueber alte Staende (`adfdd37`, "zwoelf
+  Fassungen") bleiben ungeprueft. **Schreib das hin, statt die eigene alte Pruefung als
+  Quelle zu nehmen** — und pruef, ob die Abnahme sie ueberhaupt verlangt (hier nein:
+  "unveraendert auf `parameter.toml` ausgefuehrt").
+- **Neuer Fehlertyp: eine Zahl, die die eigenen Fassungen zaehlt, ist im Moment des
+  Schreibens veraltet.** "Gemessen ueber alle zwoelf Fassungen" wurde vor dem Commit
+  gemessen, der sie hinschreibt. **Prueffrage: Beschreibt diese Zahl die Daten oder die
+  Datei?** Die zweite Sorte hat nie ein Messgeraet. → `geprueft` plus Vorschlag 0203,
+  zusammen mit dem Dateikopf, den 0193 selbst als eigenen Fall ausgeschlossen hat.
+- **Marken als Menge gegen die Aufzaehlung legen, nicht als Zahl** — 25 Treffer gegen
+  die 25 Namen in BEFUNDE Punkt 1, elementweise. Trug wieder.
