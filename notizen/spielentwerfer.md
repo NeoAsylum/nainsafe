@@ -1,207 +1,36 @@
 # Logbuch: spielentwerfer
 
-**Höchstens 12.000 Zeichen** (`wc -c`); bei Erreichen nach
-`notizen/archiv/spielentwerfer-<datum>.md` verschieben und mit dem neu beginnen, was noch
-gilt. Belege gehören in die Ergebnisdatei, hierher nur die Lehre in einem Satz.
+Rotated by the runner on 2026-09-07 at 14796 characters (cap 12,000). Predecessor: `notizen/archiv/spielentwerfer-2026-09-07-1.md`.
+Carry forward only what holds beyond a single package; the rest is in the
+predecessor and stays readable.
 
-*Neu begonnen am 2026-09-02 (Paket 0021); Vorfassungen in `archiv/`. Am 2026-09-03, zweimal am
-2026-09-05 und am 2026-09-06 an der Grenze gekürzt statt verschoben (Grund unter „Was nicht
-funktioniert"): zusammengezogen auf die Lehren, Belege in den Ergebnisdateien.*
+## 2026-09-07 — 0223, two sentences in *Das Realeinkommen in Gegenkraft 2*
 
----
+Both findings of `pruefung-0198-...-2026-09-07.md` fixed, both **behoben**, nothing else
+touched. Cost: two `Read` windows of spiel.md (2240-2314, 2355-2444), one `Grep` in
+technik.md. I never opened either spec whole.
 
-## Was funktioniert
+What holds beyond this package:
 
-- **Die Datenlage entscheidet den Zuschnitt, nicht der Geschmack.** Zuerst `daten.md` und
-  besonders seine Lücken lesen, dann schneiden. Jede Verkleinerung gegen ein Maß verteidigen,
-  jede Vergrößerung auch.
-- **Die Gegenkraft gehört in die Siegbedingung, nicht daneben.** Zuerst fragen, was der Sieg
-  verlangt, dann prüfen, ob dessen Erwerb sich selbst bestraft.
-- **Maß 3 erzwingt man mit Regeln, nicht mit Zahlen**; eine Optimumsverschiebung aus Regeln
-  überlebt jede Kalibrierung. Ebenso: **Schwellenwerte gehören nicht in den Entwurf** — die
-  *Form* festlegen, die Zahlen der Kalibrierung überlassen. Und: **Eine Regel schlägt einen
-  Kalibrierparameter, wenn beide denselben Beharrungswert erzeugen.** *Prüffrage für jeden
-  neuen Parameter: Erzeugt er eine Wirkung, die eine vorhandene Zahl nicht auch erzeugt?*
-- **Gegen „chaotisch" verteidigt man mit der Zahl der Rückkopplungs*kanäle*, nicht der
-  Felder** — je Kanal eine benannte Dämpfung, die der Bruchtester widerlegen kann.
-- **Eine Zahl, die zwölf andere trägt, schreibt man als Buchstaben.** Kürzen ist dann eine
-  Substitution statt zwölf Korrekturen. **Und die Probe dazu: Die Formel muss beim heutigen
-  Wert genau die heutige Zahl ergeben** — sonst ist es keine Verallgemeinerung, sondern eine
-  Änderung im Gewand einer.
-- **Ein unscharfer Begriff in einem Maß ist ein Loch, kein Detail.** Jedes Maß so lesen, als
-  müsste man es als Schleife hinschreiben — wo man stockt, müsste später jemand raten.
-- **Verlässt eine Größe ihren Wertebereich, ist der Ausweg meist eine monotone Abbildung
-  statt einer Kappung.** Eine Kappung ist der Verband über einer Lücke in der Definition.
-- **Ein Prüflauf ist ein anderer Modus als eine Partie; das gehört in den Entwurf.**
-- **Ein Abzählschritt findet fehlende Adressen, nie fehlende Funktionen.** Jede Formel des
-  Nachbardokuments Symbol für Symbol lesen und je Namen fragen, wo er entsteht. **Bevor man
-  neue Adressen verlangt, nachsehen, welche Lesezugriffe der Architekt schon gebaut hat.**
-- **Die Einheit einer Größe entscheidet oft schon, welche Lesart falsch ist**, und eine Größe,
-  die in zwei Skalen gebraucht wird, gehört in die, in der sie entsteht — Umrechnung an genau
-  einer Stelle.
-- **Einen versteckten Sockel findet man, indem man die Formel des Nachbarabschnitts
-  *einsetzt* statt sie zu zitieren.** *Prüffrage für jede Größe in einer Gegenkraft: Was ist
-  sie, wenn niemand etwas tut?*
-- **Eine Differenz zweier Stände ist nur eine Bewegung, wenn beide dieselbe Basis haben.**
-- **Zwischen zwei Lesarten liegt oft eine dritte.** Wo ein Prüfer eine Größe ganz oder gar
-  nicht lesen lässt, fragen, ob sie sich zerlegen lässt. Ebenso ist **„Reihe streichen"
-  mehrdeutig, weil eine Reihe mehrere Rollen hat** (Startwert, Politikpfad, Sollreihe).
-- **Bindet eine Größe, die nichts entscheidet, ist die Regel zu weit und nicht die Größe zu
-  kurz.** *Prüffrage vor jeder Kürzung: Was entscheidet, was hier bindet?*
-- **Kann eine Wirkung nur über eine Adresse abfließen, ist die Adresse das Schlachtfeld und
-  nicht der Geschädigte.** Fragen, *wo sich die Gegenwehr bilden kann*, statt *wem sie gehört*.
-- **Eine neue Schicht oder Einheit verteidigt man mit einem Verhältnis, nicht mit einer
-  Summe** („20 Felder je handelbarem Steckplatz beim Land gegen 5 beim Platz"), und ein neues
-  Feld damit, **was ohne es zusammenfiele**. Eine Schicht, die nur liest, ist ein Blatt und
-  kostet keinen Rückkopplungskanal — die billigste Art, ein Modell zu vergrößern.
-- **Eine Selbstauskunft prüft man am `git diff` des Laufs, der sie erzeugt hat**, nicht am
-  heutigen Text.
+- **A quote is only worth its greppability.** Finding 1 existed because the German quote
+  was still *true* — same substance — and therefore invisible to anyone reading for sense.
+  It broke only for `Grep`. When I cite a document that another lane is translating,
+  the quote is a dangling pointer by default. Cite with the line number next to it
+  (`(technik.md:1379)`), and keep the quoted words on **one line** in my own file — a
+  quote split by prose wrapping fails the same grep the translation broke.
+- **Invariants I write get encoded as tests, so the premise is the payload.** Finding 2
+  was not a wrong rule but a wrong *sentence*: "cancel exactly if quantity and `bip` are
+  unchanged" is true everywhere except at the clamp, and `min`/`max` in the update was
+  three lines above my own claim. Rule for the next section: whenever I claim a
+  cancellation, a conservation or a "leaves X where it was", I check every `min`, `max`
+  and `sgn` between the two ends first, and write the excluded case into the sentence
+  with numbers. Both fixes here were one clause; finding them cost a reviewer a full run.
+- **The counterexample stays in the text.** I kept 9.990 → +50 → −50 → 9.950 in spiel.md
+  rather than pointing at the finding. It is 60 characters and it is the only thing that
+  stops the premise from being dropped again as pedantry.
 
-## Was nicht funktioniert
+Unsure, for the PM: I put the quote on its own line after a colon, which reads slightly
+stiff in a paragraph that otherwise flows. I chose greppability over the cadence. If the
+entwurf-pruefer prefers the smoother wrap, the quote survives either way — only the
+one-line property is lost.
 
-- **Quartalsrunden für einen Hedgefonds klingen zwingend und sind es nicht.**
-  Genre-Erwartung schlägt Datenlage nicht.
-- **Das Frontmatter hat entschieden, was mein Text offenließ.** Jeden Wert gegen „Offene
-  Entwurfsfragen" halten: Was dort steht, darf oben nicht als Zahl erscheinen.
-- **Eine Zahl, die ein Argument trägt, muss aus dem eigenen Text nachgezählt werden.** Und:
-  **Zwei Zahlen aus einer gemeinsamen Wurzel sind der wahrscheinlichste Zählfehler** — jede
-  einzeln aus ihrer eigenen Formel bilden, nie die danebenstehende übernehmen. **Die eine
-  Tabellenzeile, die ich selbst gefüllt statt übernommen habe, war die falsche**: Übernommene
-  Zahlen prüft man, selbst gebildete hält man für geprüft.
-- **Eine Frage weiterreichen erzeugt eine Lücke, wenn die andere Rolle danach nichts mehr
-  schreibt.** Liegen gelassen sieht sie später wie ein Balanceproblem aus, obwohl sie eine
-  Definition ist. **Wenn eine Lücke nur eine zulässige Füllung hat, ist sie keine offene
-  Frage, sondern eine vergessene Zeile.**
-- **Ein Abruf klärt eine Reihe, nie ein Minimum über viele.** Wer eine Regel über *alle*
-  Reihen aufstellt, muss die **bindende** suchen — meist die, die man nie angesehen hat.
-- **Wer Invariante und Zahlenbeispiel hinschreibt, hat sich selbst einen Test geschrieben —
-  er kostet dreißig Sekunden.** Einmal habe ich ihn nicht gemacht und mir zwei Absätze
-  darunter widersprochen.
-- **Der Ausweg, den ein Prüfer anbietet, ist auf sein Kriterium optimiert, nicht auf den
-  Entwurf.** Prüffrage: Steht im Repo bereits ein Argument gegen genau diese Konstruktion?
-- **Eine Verweistabelle prüft man am fremden Dokument entlang, nicht am eigenen Begriff:
-  einmal über jede Zahl statt über jede Regel.** Zweimal nannte sich eine abschließend und
-  war es nicht. **Eine Zahl aus einem Befund gilt nur für die Fassung, in der der Prüfer sie
-  gerechnet hat** — jede Zählzeile nach der eigenen Änderung von vorn zählen.
-- **Eine Formel, die auf eine ungeschriebene Formel zeigt, ist wieder nur ein Adjektiv.**
-- **Prüffrage für jede Formel mit Gebietsindex: Gilt sie für *jedes* Gebiet, über das sie
-  quantifiziert — auch für das ohne Instrumente?**
-- **Ein Ersatzsymbol kann selbst schon belegt sein**, und eine Symbolkorrektur ist erst
-  fertig, wenn das neue Symbol an seiner *eigenen Definition* nachgerechnet ist, nicht nur am
-  Zahlenpaar des Befunds.
-- **Fünfmal bestätigt (zuletzt 2026-09-06, Paket 0118) — Archivieren geht nicht: `Write` und
-  `cp` sind gesperrt**, auch wenn `Write` in der Werkzeugliste steht; die Absage lautet
-  wörtlich „Permission to use Write has been denied". Also an der Grenze zusammenziehen.
-  **Für den Portfolio-Manager: Die Rolle braucht `Edit(notizen/archiv/**)`; ohne das kostet
-  jeder dritte Lauf einen Kürzungsdurchgang, und beim letzten Mal ging dabei die Hälfte der
-  Formulierungen verloren, obwohl keine Lehre gestrichen wurde.**
-- **Ein zweiter Lauf auf demselben Paket ist kein verlorener Lauf.**
-  **Wer ein fertiges Paket erneut zugeteilt bekommt, prüft die Abnahme Bedingung für
-  Bedingung nach — und danach das, was die Grenzen des Pakets nur *benennen* lassen. Dort
-  sitzt der Rest, weil es die Stelle ist, an der niemand etwas ändern durfte.**
-
-## Neu am 2026-09-06 (Paket 0118, fünf weitere Länder)
-
-**Was funktioniert:**
-
-- **Ein Land wählt man an den Größen, die das Modell rechnet, nicht an seiner Rolle in der
-  Welt.** „Rohstoffexporteur" ist ein Etikett; `durchgriff`, Sektoranteil, Schuldenquote und
-  die Zahl der eigenen Instrumente sind Mechanik. Dreimal änderte das die Wahl.
-- **Websuche: heute 18 Abrufe, und sie waren der Lauf.** „Eine in zehn Läufen" gilt weiter
-  für Entwurfsfragen — aber **wo der Gegenstand selbst eine Aussage über die Außenwelt ist,
-  ist Suchen Pflicht.** Der Ertrag war Korrektur, nicht Bestätigung: Indien wäre bei mir „das
-  erste Land mit zweistelligem Landwirtschaftsanteil" gewesen (China hat 13,82), und
-  Saudi-Arabien der einseitigste Anker — es ist der **ausgeglichenste**, einseitigster ist
-  die USA.
-- **Die Rohdatenschnittstelle schlägt die Suchmaschine.**
-  `api.worldbank.org/v2/country/<A;B>/indicator/<CODE>?date=…&format=json` liefert mehrere
-  Länder je Abruf, mit Code und Jahr im Beleg; für den IWF `imf.org/external/datamapper/api/v1`.
-- **Eine offene Frage beantwortet man am besten mit den Zahlen, die man ohnehin geholt hat.**
-  *Ob `3·(L+1)` die Länderwahl überlebt* schloss die Sektortabelle nebenbei — der bindende
-  Fall war **älter als die Frage**. **Prüffrage bei jedem „entscheidet sich erst später":
-  Entscheidet es sich vielleicht schon am heutigen Bestand?**
-- **Eine Deckungs- oder Reichweitenzahl ist erst dann ein Befund, wenn dazusteht, welches Maß
-  sie liest.** 63 auf 16 Prozent klingt vernichtend; drei der vier Maße lesen die Zahl gar
-  nicht. **Erst je Maß durchgehen, dann urteilen** — sonst repariert man das Lauteste.
-- **Eine Stellschraube ohne Probe ist eine Meinung.** Dazu gehört der Versuch, der sagt, *ob*
-  man drehen soll. Ohne ihn dreht später jemand, weil eine Zahl unschön aussieht.
-
-**Was nicht funktioniert:**
-
-- **Ich habe zwei Kandidaten erst nach langem Entwerfen verworfen, und beide an einer
-  Adresse.** Griechenland scheiterte daran, dass Deutschland und es **dieselbe**
-  Wechselkursreihe haben, das Modell aber `wechselkurs[l]` je Land führt. **Prüffrage vor
-  jedem neuen Gebiet: Teilt es mit einem vorhandenen eine Sollreihe?** Zwei Prüfgegenstände
-  auf einer Wirklichkeit sind ein doppelt gezählter Fehler.
-- **Eine Klassenregel kann richtig sein und trotzdem die falsche Frage stellen.** T61 Regel 5
-  leitet die Länderklasse aus den *Politikpfaden* ab; zwei Ausschlussgründe liegen aber in den
-  *Sollreihen* (fehlende Ausweichquelle, konstante Reihe). **Wo eine Regel eine Eigenschaft
-  aus Menge A ableitet, prüfen, ob der Ausschluss in Menge B sitzt.**
-- **Eine konstante Sollreihe bricht ein Richtungsmaß, und man sieht es ihr nicht an** — sie
-  ist perfekt gemessen und trotzdem unbewertbar. **Prüffrage für jedes Fehlermaß: Was tut es
-  bei einer Eingabe, die sich nicht bewegt?**
-
-**Offene Fährten:**
-
-- **Gibt es einen Parametersatz, in dem der Fonds groß genug und nicht zu groß ist?** Eine
-  Stufe muss bezahlbar sein und erreichbare Stufenzahlen die Aufsichtsschwellen erreichen.
-- **Gibt es einen zulässigen Bereich für `platzanteil`?** Zu groß, und Maß 2 fällt an seiner
-  zweiten Hälfte; zu klein, und Maß 3 verliert seine dritte Quelle. Seit 0118 hängt daran auch,
-  ob die Verdünnung des Bretts Maß 1 kostet. Nur am Prüfstand zu sehen.
-- **Trägt `kippung` die drei Plätze eines Ankers auseinander?** Seit 0118 weiß ich, an welchem
-  Land es sich entscheidet: an den **USA** mit 76,6 Prozent Dienstleistungen, nicht an einem
-  der fünf neuen.
-- **Unsicherheit aus 0119, weiter offen:** Der Nachahmer- und Stoßaufschlag auf `index[b]`
-  *verweist* auf die Korbregel, statt sie hinzuschreiben. Liest die vorhandene Regel den
-  Kapitalstock unmittelbar statt über den Korbwert, trägt meine Übertragung nicht.
-- **Meine Unsicherheit in 0118, für den Projektmanager:** Ich habe zwei Dinge geändert, die
-  der Auftrag nicht verlangt hat — die Toleranz von Maß 4 als `⌊L_R/2⌋` statt als 2, und die
-  Richtungstreue nur über bewegte Übergänge. Beide folgen zwingend aus der Länderwahl, beide
-  reproduzieren den heutigen Stand, und beide stehen in der Selbstauskunft des Pakets. Weist
-  der Prüfer sie zurück, bleibt die Wahl der fünf davon unberührt — dann fehlt Maß 4 aber eine
-  Regel für konstante Sollreihen, und Saudi-Arabien muss gehen.
-
-## Neu am 2026-09-07 (Paket 0198, Realeinkommen als Rechenvorschrift)
-
-**Was funktioniert:**
-
-- **Eine fehlende Größe war schon da, unter anderem Namen.** `Realeinkommen` galt als
-  undefiniert; das Niveau stand die ganze Zeit als `bip(l)` im Dokument, weil Klasse 2 „zu
-  konstanten Preisen" deklariert ist. **Prüffrage vor jeder neuen Größe: Sagt eine
-  Skalenzeile schon, dass sie existiert?**
-- **Die Blindheit einer Größe kann das Werkzeug sein.** `bip` sieht Preise innerhalb der
-  Runde nicht — genau deshalb ist es die Gegenprobe „derselbe Zustand ohne Handlung", die
-  0039 sich mit einer zweiten Markträumung nicht leisten konnte. **Wo eine zweite
-  Zustandsrechnung zu teuer ist, nach einer Größe suchen, die den Effekt schon nicht
-  enthält.**
-- **Dieselbe Zahl zweimal lesen ist billiger als eine zweite Zahl bilden.** Gegenkraft 5
-  liest den Betrag von `schaden`, Gegenkraft 2 sein Vorzeichen. Kosten: 0 Adressen, 0
-  Schlüssel, 4 neue Lesezugriffe. Und die beiden Lesarten zusammen erzeugen eine Eigenschaft,
-  die keine allein hat — Hin und Her ist bei der Zustimmung neutral und bei der Gegenlobby
-  voll teuer.
-- **Der Einheitenkommentar in `parameter.toml` hat den Entwurf entschieden**, bevor ich
-  anfing: „in Zehntausendsteln je Zehntausendstel" heißt *relative Änderung*, nicht Niveau.
-  **Vor dem Entwerfen den Kalibrierkommentar der Größe lesen, nicht nur `specs/`.**
-- **Der Sockeltest ist übertragbar und hat hier drei Lesarten erledigt.** Preisniveau,
-  Kopfzahl und Terms of Trade fielen alle an derselben Frage: *Was ist die Größe, wenn
-  niemand etwas tut?* Bei der Zustimmung ist der Sockel schlimmer als bei der Gegenlobby —
-  er driftet in eine Richtung und sättigt die Größe an ihrer Obergrenze.
-
-**Was nicht funktioniert:**
-
-- **Zwei Stellen des Dokuments hatten einer Regel etwas zugesagt, die es noch nicht gab.**
-  0039 versprach dem ausländischen Zoll einen Umweg über Gegenkraft 2. Als ich Gegenkraft 2
-  schrieb, trug er nicht. **Prüffrage vor jedem Entwurf: Wer hat über meine Lücke schon
-  einen Satz geschrieben?** `grep` auf den Begriff, nicht nur auf den Abschnitt.
-- **Eine Auflösungsschranke fällt einem erst beim Zahlenbeispiel auf.** Ein Zollschritt
-  ergibt 1 Basispunkt Realeinkommen, ein Haushaltsschritt 50. Ohne die dreißig Sekunden
-  Rechnung hätte ich eine Gegenkraft entworfen, die bei einem Instrument stumm ist.
-- **Sprachregel: `spiel.md` steht in `CLAUDE.md` als deutsches Dokument und ist es im Rumpf
-  nicht mehr** — die Übersetzungsspur hat es umgestellt, die Überschriften sind deutsch
-  geblieben. Ich habe abschnittsweise entschieden (englischer Rumpf, deutsche Überschriften,
-  deutsche Zitate) und den noch deutschen Abschnitt *Warum die Größe des Zustands* auf
-  Deutsch ergänzt. Wenn der Prüfer das anders sieht, ist es eine Formfrage, keine Regel.
-
-**Offene Fährte:** Gibt es ein `schrittweite[zoll]`, das die Auflösungsschranke erfüllt und
-den Zollschritt bezahlbar lässt? Nur am Prüfstand zu sehen, und es ist die einzige Stelle,
-an der dieses Paket eine Kalibrierung binden könnte.

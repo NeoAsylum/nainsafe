@@ -2372,8 +2372,12 @@ holds for approval too: *it is nonzero exactly when an instrument moved in this 
 **The invariant that follows, and it is the reason the signed reading is safe:** an
 instrument that goes up and comes back leaves approval where it was — the two rounds
 contribute `+x` and `−x` and cancel exactly if the quantity and `bip` are unchanged
-between them. Approval measures the **net** policy burden against the start of the game,
-not the churn. Oscillating is still not free, because counterforce 5 charges both moves
+between them **and neither round is clamped, that is: the unclamped sum inside the update
+lies within `0…10.000` both times**. At a bound it does not cancel, and a test written
+from this sentence without the premise asserts wrongly: from 9.990 with
+`zustimmung_elastizitaet` 10.000, a budget step down and back up gives
+`min(10.000, 9.990 + 50) = 10.000` and then 9.950. Approval measures the **net** policy
+burden against the start of the game, not the churn. Oscillating is still not free, because counterforce 5 charges both moves
 at full magnitude; **the two readings of the same number are what makes cycling strictly
 expensive.** T6 carries this: its rounding runs „auf halbe Beträge von null weg" and is
 symmetric over the sign, chosen for exactly this reason.
@@ -2424,8 +2428,9 @@ reset of the instruments is written in step 3 of the following round, and `lies_
 `zustimmung` in step 3 would be a hard error per T39.
 
 **Unlike counterforce 5, this rule does run in the `weltlauf`** — `technik.md` T38 carries
-`zustimmung` in the mask and lets „nur Zustimmung und Regierungswechsel" out of step 5,
-and every input the rule needs stands in that mask as well: instrument levels, value
+`zustimmung` in the mask and says:
+„of step 5 only approval and change of government run" (technik.md:1379). Every input the
+rule needs stands in that mask as well: instrument levels, value
 added, government debt, world prices, the trade block. In the check vintage the
 instruments follow their historical paths, so the burden is nonzero and approval is an
 **endogenous, computed quantity in the backtest too**. The change of government is
