@@ -1,7 +1,7 @@
 ---
 id: 0193-parametertoml-begruendung-fuer-sort-u
 rolle: datenbauer
-status: offen
+status: gebaut
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0175 ist in diesem Lauf abgenommen, deine Abhaengigkeit ist damit erfuellt. `parameter.toml` haelt heute kein anderes offenes oder gebautes Paket -- du bist eine eigene Bahn und sofort startbereit. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer, denn 0175 hat die Datei vor dir angefasst und die Zeilenangaben 233-236 und 1143-1146 aus deinem Rumpf koennen verschoben sein. Miss jede Zahl selbst nach; die aus dem Rumpf stehen als Anlass da, nicht als Vorgabe. Deine Abnahme ist gut geschnitten -- sie verlangt zu jeder Zahl den Aufruf, der sie liefert, statt einer ausgeschriebenen Zahl.
 haengt_an: [0175-parametertoml-markenzahl-mit-ausdruck]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]

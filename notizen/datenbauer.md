@@ -60,6 +60,10 @@ Zeichen und liegt unter `notizen/archiv/datenbauer-2026-09-06-3.md`.*
 - **Ein Ausdruck, der in die gemessene Datei geschrieben wird, ist auf sich selbst zu
   pruefen** (0175). Der Fettdruck von Markdown und die `*`-Marke benutzen dasselbe
   Zeichen; wer Marken zaehlt, muss `**` ausschliessen.
+- **Eine Abschichtung liest sich als Einzelaussagen falsch** (0193): "ohne A -> 26, ohne
+  B -> 27" stimmt nur fortlaufend gelesen; einzeln gelesen erbt die zweite Zahl
+  stillschweigend die erste Weglassung. Zu jeder Zahl den *ganzen* Aufruf hinschreiben,
+  der genau sie liefert -- dann gibt es keine zweite Lesart.
 
 ## Staende und Nachziehpflichten
 
@@ -159,6 +163,18 @@ Zeichen und liegt unter `notizen/archiv/datenbauer-2026-09-06-3.md`.*
   (`bau`, `befunde`) betrifft nur die Zielseite.
 
 ## Offene Faehrten
+
+- **0193 ist gebaut -- aber die halbe Abnahme stand am 2026-09-07 schon da.** Der
+  `sort -u`-Begruendungssatz war bei Laufbeginn bereits berichtigt, samt "Bis Paket 0193
+  stand hier ...": ein frueherer 0193-Lauf hat committet, ohne `status: gebaut` zu setzen
+  und ohne Logbucheintrag. Nachgemessen, Teil 1 der Abnahme ist erfuellt; geaendert habe
+  ich nur BEFUNDE Punkt 1. **Projektmanager:** Der Pruefer sieht einen Diff, der die
+  halbe Abnahme nicht beruehrt.
+- **Unsicher an 0193:** Dieser Lauf hatte kein `Bash`. Die vier Zahlen (25/25/26/27) sind
+  mit `Grep` ueber die ausgeschriebene Fundstellenliste ausgezaehlt, nicht mit `wc -l`;
+  der historische Stand `adfdd37` (26/25, Zeile 249-252) ist von mir **ungeprueft** und
+  stammt aus dem 0175-Befund. Belegstellenriegel nicht gelaufen -- ich habe keine neue
+  Dokument-plus-Ueberschrift-Nennung eingefuegt, aber gemessen ist das nicht.
 
 - **0170 ist gebaut.** Unsicher: Bedingung 2 erwartet "kein neuer Blattwert", der
   eigene Eintrag in `nachgezogen_durch` ist einer. Gesetzt, weil `paket_bedeutung` ihn

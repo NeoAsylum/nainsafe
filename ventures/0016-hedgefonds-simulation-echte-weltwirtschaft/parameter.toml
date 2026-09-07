@@ -1160,12 +1160,27 @@ instrument_max = 1  # FEST (T51), muss `regulierung_stufen` gleichen
 #    "WIE DER PRUEFER ZAEHLT", wo auch steht, warum er zwei Zusaetze
 #    braucht:
 #      grep -o '`[a-z_0-9]*`\*\*\?' parameter.toml | grep -v '\*\*$' | sort -u | wc -l   -> 25
-#    Ohne `\*\*\?` und `grep -v` zaehlt der Fettdruck von Markdown mit
-#    (heute `regulierung_last` im spiel.md-Zitat der Gruppe D -- 26 statt
-#    25), ohne `sort -u` zaehlt der Ausdruck Fundstellen statt Namen (27
-#    statt 25). Die 26 woertlich belegten Namen daneben bleiben eine
-#    Aufzaehlung; 25 + 26 sind die 51 Blattschluessel, die `tomllib` in
-#    dieser Datei findet.
+#    Jeder Zusatz einzeln weggelassen, und zu jeder Zahl der Aufruf, der
+#    genau sie liefert -- alle drei am 2026-09-07 aus dem
+#    Vorhabenverzeichnis gefahren:
+#      ohne den Fettdruckfilter, mit `sort -u` -- der Fettdruck von
+#      Markdown zaehlt mit, heute `regulierung_last` im spiel.md-Zitat
+#      der Gruppe D:
+#        grep -o '`[a-z_0-9]*`\*' parameter.toml | sort -u | wc -l   -> 26
+#      ohne `sort -u`, mit dem Fettdruckfilter -- gezaehlt werden
+#      Fundstellen statt Namen, was heute nichts aendert, weil kein Name
+#      zwei echte Marken traegt:
+#        grep -o '`[a-z_0-9]*`\*\*\?' parameter.toml | grep -v '\*\*$' | wc -l   -> 25
+#      ohne beide Zusaetze -- erst hier entstehen die 27:
+#        grep -o '`[a-z_0-9]*`\*' parameter.toml | wc -l   -> 27
+#    Bis Paket 0193 standen hier "26 statt 25" und "27 statt 25"
+#    nebeneinander, ohne je einen Aufruf daneben. Als fortlaufende
+#    Abschichtung gelesen stimmt beides, als zwei Einzelaussagen gelesen
+#    ist die zweite falsch: Laesst man allein `sort -u` weg, sind es
+#    heute 25 und nicht 27.
+#    Die 26 woertlich belegten Namen daneben bleiben eine Aufzaehlung;
+#    25 + 26 sind die 51 Blattschluessel, die `tomllib` in dieser Datei
+#    findet.
 #
 # 2. **T27 nennt "Elastizitaeten", specs/ nennt keine einzige.** Die
 #    zwoelf Schluessel der Gruppe C sind nach der oben genannten Regel
