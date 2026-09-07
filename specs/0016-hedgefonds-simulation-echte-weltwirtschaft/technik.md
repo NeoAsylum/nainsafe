@@ -2745,21 +2745,21 @@ customer) holds.
 
 ## 11. Auslieferung, und wo Geld anfängt
 
-**Windows x86-64 zuerst**, Linux gleich mit (dasselbe Programm, andere Zielkennung),
-**macOS nicht in Fassung eins**: Beglaubigung durch Apple kostet 99 USD im Jahr und wäre
-eine Ausgabe nach Hausregel 1. Ebenso: Eine gehostete Bauumgebung ist **nicht** der
-Vorgabeweg — gebaut und geprüft wird im Nachtlauf der Fabrik, auf dem Rechner des
-Betreibers. Wer eine gehostete Kette will, schreibt eine Gate-Vorlage.
+**Windows x86-64 first**, Linux alongside (the same program, a different target id),
+**macOS not in version one**: notarization by Apple costs 99 USD per year and would be an
+expense under house rule 1. Likewise: a hosted build environment is **not** the default
+path — building and checking happen in the factory's night run, on the operator's
+machine. Whoever wants a hosted chain writes a gate template.
 
-Die Plattformgleichheit wird nicht behauptet, sondern geprüft: Prüfung 3 vergleicht die
-Prüfsummen aus dem Windows- und dem Linux-Lauf derselben Partien.
+Platform equality is not asserted but checked: check 3 compares the checksums from the
+Windows and the Linux run of the same games.
 
-Aus `daten.md` folgt eine Auslieferungsauflage: `LIZENZEN.md` neben den Jahrgangsdateien,
-eine Seite „Datenquellen" im Hauptmenü, ein Satz zur Bearbeitung („Die Ausgangsdaten wurden
-aggregiert und in ganzzahlige Einheiten umgerechnet; die Quellen verantworten diese
-Bearbeitung nicht") und der Hinweis, dass die IWF-Daten beim IWF kostenfrei erhältlich sind.
-Alle drei Stellen werden aus dem Manifest des Jahrgangs erzeugt (T23), nicht von Hand
-gepflegt — sonst weichen sie beim ersten Datenaktualisierungslauf von der Wahrheit ab.
+From `daten.md` follows a delivery requirement: `LIZENZEN.md` next to the vintage files,
+a page „Datenquellen" in the main menu, one sentence on the processing („Die Ausgangsdaten
+wurden aggregiert und in ganzzahlige Einheiten umgerechnet; die Quellen verantworten diese
+Bearbeitung nicht"), and the note that the IMF data are available free of charge from the
+IMF. All three places are generated from the vintage's manifest (T23), not maintained by
+hand — otherwise they diverge from the truth at the first data-update run.
 
 ## 12. Was ich nicht entschieden habe
 
