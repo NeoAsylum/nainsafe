@@ -5,10 +5,9 @@
 # fortgeschrieben.** Paketnummer, Stand und Fassungszahl gleich darunter
 # gehoeren zu Paket 0009 und altern absichtlich nicht mit -- sie sind kein
 # Stand von heute. Was spaetere Pakete geaendert haben, steht da, wo sie
-# es geaendert haben, mit eigener Nummer und eigenem Datum: 0150 und 0153
-# bei der Gruppe D, 0175 und 0193 bei den Zaehlaufrufen. Entschieden mit
-# Paket 0203, weil der Kopf sich bis dahin als Stand der ganzen Datei las
-# und in dieser Lesart seit Paket 0150 falsch war.
+# es geaendert haben. So entschieden, weil der Kopf sich bis dahin als
+# Stand der ganzen Datei las und in dieser Lesart ueberholt war, sobald
+# ein spaeteres Paket die Datei anfasste.
 #
 # Paket 0009-parameterdatei-schluessel, Datenbauer, Stand 2026-09-02,
 # **Fassung 3 nach Ruecklauf 2** (Pruefbefund
