@@ -3263,47 +3263,47 @@ calibration numbers are not touched.
 
 ## Befundabarbeitung — Prüfung 0021 vom 2026-09-02, Paket 0039
 
-Zwei Befunde, beide `Schwere: mittel` beziehungsweise `gering`, keiner ein Rücklaufgrund.
-Das Abnahmekriterium von 0021 war erfüllt; diese Abarbeitung ändert daran nichts und
-beantwortet die Frage, die der Prüfer offengelassen hat.
+Two findings, `Schwere: mittel` and `gering` respectively, neither a reason for a return.
+The acceptance criterion of 0021 was met; this work-off changes nothing about that and
+answers the question the reviewer left open.
 
-**Befund 1 — die Zollzeile wächst auch dann, wenn niemand etwas tut: behoben.** Gewählt ist
-**Weg 1**, den Zollkeilanteil der Preisverschiebung zu isolieren. Die Zerlegung ist exakt und
-steht mit ihrer Herleitung im Abschnitt *Warum die Zollzeile nur den Keil misst*; sie zieht
-genau den Summanden ab, der übrig bliebe, wenn der Zollstand stehen bliebe, und lässt den
-Aktionsanteil unberührt. Die Begründung nennt Maß 2 wie verlangt und führt zwei weitere
-Gründe. Weg 2 (`hub(l, zoll)` lesen) und Weg 3 (den Sockel behalten) sind einzeln mit Grund
-verworfen, Weg 2 zusätzlich mit dem Selbstwiderspruch, den er gegen Zeile *Die Ordnung, die
-das Argument trägt* erzeugt hätte. Der Prüfer kann `schaden(l, zoll)` jetzt für einen
-Zustand ohne Aktion ausrechnen: Er ist **null**, und zwar ohne dass er die Form des
-Zollkeils kennen müsste. Die Probe steht als Tabelle mit zwei Zuständen.
+**Finding 1 — the tariff row grows even when nobody does anything: fixed.** Chosen is
+**path 1**, isolating the tariff-wedge share of the price shift. The decomposition is exact
+and stands with its derivation in the section *Warum die Zollzeile nur den Keil misst*; it
+subtracts exactly the summand that would remain if the tariff level stood still, and leaves
+the action share untouched. The justification names Maß 2 as required and gives two further
+reasons. Path 2 (reading `hub(l, zoll)`) and path 3 (keeping the base term) are each
+rejected with a reason, path 2 additionally with the self-contradiction it would have
+created against the row *Die Ordnung, die das Argument trägt*. The reviewer can now compute
+`schaden(l, zoll)` for a state without an action: it is **zero**, and without having to
+know the form of the tariff wedge. The check stands as a table with two states.
 
-Was ich dabei **zusätzlich** gefunden habe und was den Befund verstärkt: Die alte Größe
-differenzierte den Sektorpreis, und `technik.md` T8 basiert genau den bei Hyperinflation
-neu. Eine Differenz über eine Neubasierung hinweg ist der Basiswechsel und nicht die
-Preisverschiebung. Im Prüfjahrgang 1997 tritt der Fall nie ein, in den Spieljahrgängen vor
-1997 schon. Die neue Fassung kann er nicht treffen.
+What I found **in addition**, and what strengthens the finding: the old quantity
+differenced the sector price, and `technik.md` T8 rebases exactly that price under
+hyperinflation. A difference taken across a rebasing is the base change, not the price
+shift. In check vintage 1997 the case never occurs; in the play vintages before 1997 it
+does. The new version it cannot hit.
 
-**Befund 2 — die Lesetabelle zählt acht Zugriffe, die nicht stattfinden: behoben, mit
-anderer Zahl.** Der Zählfehler ist bestätigt: Die 120 der Vorfassung zählten
-`land.<l>.instrument.<i>.stand` zweimal mit 16, obwohl die damalige Zollzeile ihn nicht las.
-Die 112 des Befunds sind für die damalige Zeile richtig nachgerechnet — sie sind aber nicht
-die Zahl, die jetzt gilt. Nach der Entscheidung liest der Zoll seinen Stand wieder (zweimal
-16 statt zweimal 12), dafür fallen beide Sektorpreiszeilen weg (zweimal 8) und die beiden
-Weltpreise kommen hinzu: `112 + 8 − 16 + 2 =` **106**. Die Lesetabelle und die
-Nachziehtabelle nennen beide diese Zahl, und die Zeilenzuordnung zur Instrumententabelle
-steht in einer eigenen Spalte, damit sie nachzählbar ist statt nachvollziehbar.
+**Finding 2 — the read table counts eight accesses that do not happen: fixed, with a
+different number.** The counting error is confirmed: the 120 of the previous version
+counted `land.<l>.instrument.<i>.stand` twice at 16, although the tariff row of that time
+did not read it. The finding's 112 are correctly recomputed for the row as it then stood —
+but they are not the number that holds now. After the decision the tariff reads its level
+again (twice 16 instead of twice 12), in exchange both sector-price rows drop out (twice 8)
+and the two world prices come in: `112 + 8 − 16 + 2 =` **106**. The read table and the
+catch-up table both name this number, and the row mapping to the instrument table stands
+in its own column, so that it can be recounted rather than merely followed.
 
-**Was ich nicht getan habe.** `technik.md` habe ich nicht angefasst; was dort nachzuziehen
-ist, steht in der Tabelle *Neu aus Paket 0039*. Keine neue Zustandsadresse, keine neue Reihe,
-keine Kalibrierzahl. Die Bedingung an `schrittweite[zoll]` steht als Form ohne Wert.
+**What I did not do.** I have not touched `technik.md`; what needs catching up there is in
+the table *Neu aus Paket 0039*. No new state address, no new series, no calibration number.
+The condition on `schrittweite[zoll]` stands as a form without a value.
 
-**Und ein Vorschlag, der nicht in dieses Paket gehört, aber aus ihm folgt:** Die Fassung des
-Zollkeils war bis heute nirgends aufgeschrieben, obwohl sie seit der zweiten Fassung in der
-Markträumung steht. Ich habe sie hier festgelegt, weil die Schadensvorschrift sie braucht
-und weil T5 nur eine Lesart zulässt. Ob `technik.md` T28 sie übernimmt oder eine andere
-Begründung dagegen hat, ist Sache des Architekten — widerspricht er, ist es ein Befund gegen
-diesen Abschnitt und nicht gegen die Zollzeile.
+**And a proposal that does not belong in this package but follows from it:** the
+formulation of the tariff wedge was written down nowhere until today, although it has stood
+in the market clearing since the second version. I have laid it down here because the
+damage rule needs it and because T5 admits only one reading. Whether `technik.md` T28
+adopts it or has another justification against it is the architect's business — if the
+architect objects, it is a finding against this section and not against the tariff row.
 
 ## Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01
 
