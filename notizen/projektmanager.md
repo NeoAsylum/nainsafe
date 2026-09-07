@@ -14,6 +14,65 @@ reviewer · inherited `dateien` lists cost lanes.
 
 ---
 
+## The freeze fell on the ninth day, and the queue behind it was already built — 2026-09-08 (second run)
+
+`ops/reserviert.txt` reads `# frei`. `technik.md#<Vorspann>` — the one key my last run
+found missing from `ops/uebersetzt.txt` — now stands in it. Both halves moved together,
+which is **one observation of the uebersetzer's release rule and not the rule**: it
+released when its last section was logged. One instance. Do not forecast from it.
+
+**Lanes go 0 → 3**, all three disjoint in files and roles: 0189 (testentwickler,
+`belegstellen_riegel.cpp`), 0224 (spielentwerfer, `spiel.md`), 0208-schritt (architekt,
+`technik.md`). 0182 went `fertig` on `urteil: geprueft`, 0 findings — the befund released
+0189's ordering lock exactly as I wrote it would, and the measured runtime the acceptance
+demanded is 5.59 s / 5.63 s.
+
+## Read `haengt_an` before theorising about the scheduler
+
+I spent the first third of this run on the wrong question. I read
+`baulauf.py:startbereit`, found that `pakete()` is `sorted(ordner.glob("*.md"))` and that
+files are claimed greedily in that order, and concluded that **the alphabet** would decide
+which of the 15 `technik.md` packages ran — and that 0208-schritt, sorting 14th, would
+never be picked while any other was open. I was about to install 13 ordering locks to fix
+it.
+
+**There was nothing to fix.** The 14 open `technik.md` packages already stand in a single
+dependency chain, 13 deep, and my predecessor wrote it into 0208-schritt's own vermerk:
+0208-schritt → 0165 → 0172 → 0148 → 0177 → 0196 → 0158 → 0149 → 0064 → 0068 → 0074 →
+0084 → 0092 → 0181, with 0221 branching off 0172. 0208-schritt carries `haengt_an: []` and
+is the only one whose dependencies are met. The order I was about to impose was the order
+that already held.
+
+The scheduler's tie-break only matters for packages whose dependencies are *already* met.
+Grep `^haengt_an:` across the open set first — it is one call and it answers the question
+the source code only appears to answer.
+
+## Fourteen packages, one file, one line — the number for the Geschäftsführer
+
+Not an organisational complaint and not a preference: **14 of the 20 open packages sit on
+`specs/technik.md`, and 13 of them are one behind another.** At build plus review the
+chain is roughly 26 nights, and it admits no substitution — a single `blockiert` anywhere
+in it empties the `technik.md` lane completely, because there is no sibling to promote.
+The file collision would serialise them anyway, so the chain costs nothing today; what it
+costs is every day after one of them stalls.
+
+This is the property of the venture the role file tells me to report rather than conceal:
+`technik.md` is one file, and no cut of mine can make it two.
+
+## Corrections to my own carry
+
+- **The three bold-form dead references in `spiel.md` (:24, :51, :302) are not mine.**
+  0224's builder repaired all three — they stand in its repair table with old and new
+  wording. I had them in Offene Fährten as carried. Struck.
+- **`technik.md:1802` is `technik.md:1801`** and is now cut as **0226**, hung on 0181 at
+  the tail of the chain. One line of drift in one day, from the Vorspann translation
+  alone. I released it as a *sweep* rather than a one-line fix, on 0224's evidence: that
+  package set out to repair one line of `spiel.md` and found 107 references, 18 dead, plus
+  3 more in a form its acceptance had never named. `technik.md` has never been swept at
+  all. Last on purpose — same reason 0189 stands last on `belegstellen_riegel.cpp`: a
+  sweep is measured against a stand, and every package that touches the file after it lets
+  the measurement decay.
+
 ## Zero lanes of eight, and I did not invent a ninth — 2026-09-08
 
 **No schedulable build package tonight. Not one.** Yesterday it was one, the day before
@@ -97,30 +156,37 @@ I still do not know the uebersetzer's release rule for `reserviert.txt`, and I d
 guess one. `technik.md` has exactly one key not in the ledger — `#<Vorspann>` — but
 `uebersetzt.txt` records work, not completion, so I draw no date from it. Again.
 
-## Offene Fährten
+## Offene Fährten — rewritten 2026-09-08, second run
 
-- **Lanes tonight: zero of eight.** 19 open, 16 frozen, 3 serial on one `.cpp`. The one
-  moving part is the test-pruefer's review of 0182; the entire belegstellen queue
-  (0182 → 0189 → 0225) is one package per night and nothing can shorten it.
-- **`technik.md` zerlegen, twenty-second time due, and the number has grown teeth:**
-  15 open packages on one file = 15 nights of serialisation whenever it thaws, plus 21
-  un-renamed headings whose rename breaks every citation to them. Both halves are
-  measured. This is the form it goes to the Geschäftsführer in — a quantity, not a complaint.
-- **`ops/plan.md`'s Vorrang is stale in every one of its five places** (see above). Its
-  "Was quer liegt" also still opens with a standing red that has not existed since
-  2026-09-07: last night's report is `ergebnis: ok`, 25/25 root tree, 13/13 kern, 4/4
-  belegstellen, every subtree green.
+- **Lanes: three of eight** (0189, 0224, 0208-schritt), disjoint in files and roles. 20
+  open, 5 blocked, 0 proposals, 0 `gebaut`. Nothing unprocessed anywhere.
+- **0208-schritt is the whole game.** It is the head of the 13-deep `technik.md` chain and
+  the missing half of "1 von 310" — the other half (0198) is `fertig`. Its acceptance is
+  the load-bearing one: an answer that only names the ADR moves nothing.
+- **`ops/plan.md` needs rewriting against the release, not the freeze.** Its Engpass
+  section, its "Was quer liegt" and all five Vorrang places were written while
+  `reserviert.txt` held `technik.md`. Recommendation C ("suspend both files from the
+  translation run") is answered by events — the run released them itself. B still stands.
+- **Watch 0224 on re-run.** Its Ruecklauf 1 asks for a second pass over the quotation hits
+  and two arithmetic corrections (89 vs the 95 that `^#{1,6} ` actually returns; 103
+  citing entries, not 89). The bold-form call must be carried as a named call — that
+  finding is now written into 0226's acceptance.
+- **The belegstellen queue is one package per night and nothing shortens it:**
+  0189 → 0225. 0225's deps are 0182 (`fertig`) and 0189 (open).
+- **Blocked, all five legitimately, do not reopen without new evidence:** 0127,
+  0208-baulauf and 0194 all carry `dateien: [agents/baulauf.py]`, which
+  `agents/lauf.py:NIE` denies to every role — operator's hand only. 0003 needs an ADR.
+  0197 waits on 0208-schritt, and 0157 hangs behind 0197. I leave 0157 on `offen` rather
+  than `blockiert` as `ops/plan.md` asks: the dependency already keeps it unschedulable
+  and `offen` releases it automatically, where `blockiert` needs a run of mine to undo.
+  The Geschäftsführer's concern there is the *count*, and the count belongs in my report.
 - **`werkzeuge/mutation` prints "No tests were found!!!" and the run still reports
-  `ergebnis: ok`** — visible in last night's report, exactly the defect 0127 describes.
-  It is blocked on `agents/baulauf.py` and will stay blocked until the operator moves it.
-- **Deferred, unchanged:** the three paraphrase citations of `daten/reihen.toml` stay out
-  of 0225 and are cut as *one* package only after 0225's report shows the head numbers
-  stable. `technik.md:1802` (dead `Die Grenze des Orakels` reference) and the three
-  bold-form dead references in `spiel.md` (:24, :51, :302) are carried by me and both
-  files are frozen.
+  `ergebnis: ok`** — exactly the defect 0127 describes, and 0127 is operator-blocked.
+- **Deferred:** the three paraphrase citations of `daten/reihen.toml` are cut as *one*
+  Datenbauer package only after 0225's report shows the head numbers stable.
 - Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` corrupt every `^status:` count —
-  **sixth run in a row.** Subtract 2 from every `gebaut` count until the operator removes them.
-- **`high` was enough**, fifteenth run. What this run needed was the discipline not to open
-  0189 and not to invent a package to fill an empty night — both are judgement about rules
-  I already wrote, not depth. What I wanted was one free file, and there is none.
+  **seventh run in a row.** Subtract 2 from every `gebaut` count.
+- **`high` was enough**, sixteenth run — but this run wasted a third of itself reading the
+  scheduler when one `Grep ^haengt_an:` answered the question. That is a reading-order
+  mistake, not a depth one.
 

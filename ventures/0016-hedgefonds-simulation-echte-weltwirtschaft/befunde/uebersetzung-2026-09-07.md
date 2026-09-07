@@ -32,28 +32,28 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  4%] Built target pruefstand
 [  9%] Built target pruefstand_geprueft
-[ 12%] Built target zahlwort_riegel
-[ 18%] Built target mutationstreiber
+[  9%] Built target pruefstand
+[ 12%] Built target mutationstreiber
+[ 15%] Built target belegstellen_riegel
 [ 18%] Built target bezeichner_riegel
-[ 31%] Built target belegstellen_riegel
-[ 37%] Built target kern
-[ 54%] Built target kern_geprueft
-[ 57%] Built target vorrat_kernanker_probe
-[ 60%] Built target vorrat_probe
-[ 63%] Built target festkomma_probe
-[ 66%] Built target vorrat_verfahren_probe
-[ 72%] Built target meldung_probe
-[ 72%] Built target aktion_probe
-[ 75%] Built target schranken_probe
-[ 78%] Built target schritt_probe
-[ 81%] Built target verlauf_probe
-[ 84%] Built target zufall_probe
-[ 87%] Built target schreiber_probe
-[ 90%] Built target pruefsumme_probe
-[ 93%] Built target werte_probe
-[ 96%] Built target zustand_probe
+[ 34%] Built target kern
+[ 51%] Built target kern_geprueft
+[ 54%] Built target zahlwort_riegel
+[ 57%] Built target vorrat_verfahren_probe
+[ 63%] Built target vorrat_probe
+[ 63%] Built target vorrat_kernanker_probe
+[ 66%] Built target aktion_probe
+[ 69%] Built target festkomma_probe
+[ 72%] Built target schreiber_probe
+[ 78%] Built target meldung_probe
+[ 78%] Built target pruefsumme_probe
+[ 81%] Built target schranken_probe
+[ 84%] Built target werte_probe
+[ 89%] Built target schritt_probe
+[ 90%] Built target verlauf_probe
+[ 93%] Built target zufall_probe
+[100%] Built target zustand_probe
 [100%] Built target zustandsausgabe_probe
 ```
 
@@ -86,7 +86,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 12: zustandsausgabe_probe
 12/25 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 13: wandschranke
-13/25 Test #13: wandschranke .....................   Passed    0.48 sec
+13/25 Test #13: wandschranke .....................   Passed    0.47 sec
       Start 14: vorrat_kernanker_probe
 14/25 Test #14: vorrat_kernanker_probe ...........   Passed    0.01 sec
       Start 15: vorrat_probe
@@ -96,13 +96,13 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 17: belegstellen_riegel
 17/25 Test #17: belegstellen_riegel ..............   Passed    1.02 sec
       Start 18: belegstellen_messung
-18/25 Test #18: belegstellen_messung .............   Passed   30.65 sec
+18/25 Test #18: belegstellen_messung .............   Passed   30.53 sec
       Start 19: belegstellen_wortabstand
-19/25 Test #19: belegstellen_wortabstand .........   Passed   17.21 sec
+19/25 Test #19: belegstellen_wortabstand .........   Passed   16.80 sec
       Start 20: belegstellen_sammelordnung
-20/25 Test #20: belegstellen_sammelordnung .......   Passed    5.69 sec
+20/25 Test #20: belegstellen_sammelordnung .......   Passed    5.59 sec
       Start 21: bezeichner_riegel
-21/25 Test #21: bezeichner_riegel ................   Passed    0.38 sec
+21/25 Test #21: bezeichner_riegel ................   Passed    0.37 sec
       Start 22: schlussriegel_nachbau
 22/25 Test #22: schlussriegel_nachbau ............   Passed    0.51 sec
       Start 23: zahlwort_riegel
@@ -110,11 +110,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 24: zahlwort_reihen
 24/25 Test #24: zahlwort_reihen ..................   Passed    0.13 sec
       Start 25: zahlwort_messung
-25/25 Test #25: zahlwort_messung .................   Passed   18.49 sec
+25/25 Test #25: zahlwort_messung .................   Passed   18.16 sec
 
 100% tests passed, 0 tests failed out of 25
 
-Total Test time (real) =  74.88 sec
+Total Test time (real) =  73.90 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -131,20 +131,20 @@ Total Test time (real) =  74.88 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 23%] Built target kern
-[ 47%] Built target kern_geprueft
-[ 52%] Built target schreiber_probe
-[ 56%] Built target schranken_probe
-[ 60%] Built target aktion_probe
-[ 65%] Built target schritt_probe
-[ 69%] Built target zufall_probe
-[ 73%] Built target meldung_probe
-[ 91%] Built target werte_probe
-[ 91%] Built target verlauf_probe
-[ 91%] Built target festkomma_probe
-[ 91%] Built target pruefsumme_probe
-[ 95%] Built target zustand_probe
-[100%] Built target zustandsausgabe_probe
+[ 45%] Built target kern_geprueft
+[ 47%] Built target kern
+[ 52%] Built target meldung_probe
+[ 56%] Built target pruefsumme_probe
+[ 60%] Built target schreiber_probe
+[ 65%] Built target festkomma_probe
+[ 69%] Built target schranken_probe
+[ 73%] Built target aktion_probe
+[ 78%] Built target schritt_probe
+[ 82%] Built target verlauf_probe
+[ 86%] Built target zustandsausgabe_probe
+[ 91%] Built target zufall_probe
+[ 95%] Built target werte_probe
+[100%] Built target zustand_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -176,11 +176,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 12: zustandsausgabe_probe
 12/13 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 13: wandschranke
-13/13 Test #13: wandschranke .....................   Passed    0.42 sec
+13/13 Test #13: wandschranke .....................   Passed    0.41 sec
 
 100% tests passed, 0 tests failed out of 13
 
-Total Test time (real) =   0.66 sec
+Total Test time (real) =   0.65 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -196,11 +196,11 @@ Total Test time (real) =   0.66 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand_geprueft
 [ 50%] Built target pruefstand
-[100%] Built target vorrat_kernanker_probe
+[ 50%] Built target pruefstand_geprueft
+[ 83%] Built target vorrat_probe
+[ 83%] Built target vorrat_kernanker_probe
 [100%] Built target vorrat_verfahren_probe
-[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -216,7 +216,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =   0.03 sec
+Total Test time (real) =   0.04 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -240,17 +240,17 @@ Total Test time (real) =   0.03 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/4 Test #1: belegstellen_riegel ..............   Passed    1.02 sec
+1/4 Test #1: belegstellen_riegel ..............   Passed    1.03 sec
     Start 2: belegstellen_messung
-2/4 Test #2: belegstellen_messung .............   Passed   30.86 sec
+2/4 Test #2: belegstellen_messung .............   Passed   30.32 sec
     Start 3: belegstellen_wortabstand
-3/4 Test #3: belegstellen_wortabstand .........   Passed   17.28 sec
+3/4 Test #3: belegstellen_wortabstand .........   Passed   17.13 sec
     Start 4: belegstellen_sammelordnung
-4/4 Test #4: belegstellen_sammelordnung .......   Passed    5.70 sec
+4/4 Test #4: belegstellen_sammelordnung .......   Passed    5.63 sec
 
 100% tests passed, 0 tests failed out of 4
 
-Total Test time (real) =  54.87 sec
+Total Test time (real) =  54.11 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -323,11 +323,11 @@ No tests were found!!!
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/bau
     Start 1: schlussriegel_nachbau
-1/1 Test #1: schlussriegel_nachbau ............   Passed    0.51 sec
+1/1 Test #1: schlussriegel_nachbau ............   Passed    0.50 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.51 sec
+Total Test time (real) =   0.50 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -351,13 +351,13 @@ Total Test time (real) =   0.51 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/bau
     Start 1: zahlwort_riegel
-1/3 Test #1: zahlwort_riegel ..................   Passed    0.04 sec
+1/3 Test #1: zahlwort_riegel ..................   Passed    0.05 sec
     Start 2: zahlwort_reihen
 2/3 Test #2: zahlwort_reihen ..................   Passed    0.13 sec
     Start 3: zahlwort_messung
-3/3 Test #3: zahlwort_messung .................   Passed   18.46 sec
+3/3 Test #3: zahlwort_messung .................   Passed   18.27 sec
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =  18.64 sec
+Total Test time (real) =  18.45 sec
 ```
