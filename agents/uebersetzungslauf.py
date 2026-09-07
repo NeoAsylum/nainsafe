@@ -198,6 +198,9 @@ def main() -> int:
     # sei der Lauf gestorben; er war fertig.
     gemacht = 0
     gesehen: set[str] = set()
+    # Je Gegenstand die Zahl deutscher Funktionswoerter beim letzten Versuch. Sie ist
+    # das Fortschrittsmass fuer Abschnitte, die groesser sind als ein Lauf schafft.
+    fortschritt: dict[str, int] = {}
     while gemacht < (8 if trocken else stueck):
         warten = offen()
         reservieren(sorted({x for x, _ in warten}))
@@ -242,10 +245,22 @@ def main() -> int:
         # verborgen; er darf nicht ueber das Buch zurueckkommen.
         rest = textstueck(pfad.read_text(encoding="utf-8"), abschnitt)
         if abschnitt is not None and deutsch(rest):
-            print(f"  {wo} ist kuerzer, aber noch deutsch -- NICHT ins Buch.")
-            print("  Der stuendliche Versuch nimmt denselben Abschnitt wieder auf und")
-            print("  uebersetzt das naechste Stueck. Kein Verlust, nur langsamer.")
-            return 0
+            # Fortschritt an den deutschen Woertern messen, nicht an der Laenge:
+            # Uebersetzen aendert die Zeichenzahl kaum, die Wortzahl aber stark.
+            dicht = len(_DEUTSCH.findall(rest.lower()))
+            vorher = fortschritt.get(wo)
+            if vorher is not None and dicht >= vorher:
+                print(f"  {wo}: {dicht} deutsche Woerter, vorher {vorher} -- kein "
+                      "Fortschritt. Angehalten, statt dasselbe Stueck noch einmal "
+                      "zu bezahlen.")
+                return 1
+            fortschritt[wo] = dicht
+            gesehen.discard(wo)          # derselbe Abschnitt darf noch einmal dran
+            gemacht += 1                 # begrenzt die Schleife auf --stueck
+            print(f"  {wo}: noch {dicht} deutsche Woerter"
+                  + (f" (vorher {vorher})" if vorher else "")
+                  + " -- NICHT ins Buch, naechstes Stueck folgt.")
+            continue
         eintragen(wo)
         gemacht += 1
     print(f"[{jetzt()}] {gemacht} Abschnitte uebersetzt, Grenze erreicht.")
