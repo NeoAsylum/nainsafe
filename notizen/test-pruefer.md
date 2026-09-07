@@ -126,7 +126,33 @@ Vorgaenger: `notizen/archiv/test-pruefer-2026-09-06.md` (voll nach 0180); davor
   "(keine Zahlenzeile)" und bliebe still — der Befundteil-Vergleich faengt es ueber
   den veraenderten Selbsttest-Vorspann.
 
+## 2026-09-07 — 0194 (Zahlwortriegel Sorte 3): zurueck, allein am OFF-Profil
+
+- **This session had NO shell tool at all** (not even a denied one) — locks vary,
+  today was the far end. What still worked: the runner's raw logs are execution
+  evidence. `bau/.../Testing/Temporary/LastTest.log` + `CMakeCache.txt`
+  (`FABRIK_SANITIZER`) tell you what ran, in which profile, with the full program
+  output; the riegel's self-test case counts (9/20/8/7/9 vs 9/18/8/7/6) date the
+  binary to the package state. Substance was fully checkable: own count of werte.hpp
+  matched the Nachlass site by site.
+- **A red proof that runs inside the green run is the strongest build I've seen
+  here:** 0194's Empfindlichkeitsprobe mutates the read text in memory on every
+  invocation and demands +1 red at exactly its Sorte, others frozen. Every
+  kill-switch I traced trips it. Remaining drift risk: someone deletes the probe
+  call itself — external Gegenprobe (messen.py, 0199) stays the guard for that.
+- **Verdict line I drew:** substance proven, one abnahme clause ("beide Bauprofile")
+  without any measurement anywhere → zurueck with the exact one-run recipe, not
+  geprueft-with-caveat. OFF is not decoration: messung-0108 has a real OFF-only
+  compile failure. Flagged to PM: nothing in the machinery produces OFF evidence.
+- Read 0199 (builder's proposal) mid-run — it leaked the "no shell in build" fact,
+  which mattered; its claims about messen.py I did not adopt, only its existence.
+
 ## Offene Faehrten
+
+- 2026-09-07 (0194) — **When 0194 returns: check whether OFF evidence arrived**
+  (a lauf.txt or a runner OFF pass), then the rest re-checks in minutes via the
+  three logs above. Also: does the workspace `bau/` belegstellen failure mask
+  anything in future reports? It made today's `ergebnis: fehler` despite 19/20.
 
 - 2026-09-07 (0147) -- Nachweis meldet Befund gegen messung-0106/messung.py:
   FREMDE_FAELLE-Marken `Namensfall`/`Abstandsfall` treffen nie (Riegel schreibt
