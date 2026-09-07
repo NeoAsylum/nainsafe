@@ -2900,106 +2900,106 @@ fourth, and each names, at its place, the finding that forced it.
 
 ## 15. Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01 und `spiel.md` Fassung 5
 
-Zwei Befunde. Der Prüfer hat sie zwei Gewerken zugewiesen: Befund 1 dem Spielentwerfer,
-Befund 2 mir. Beide sind einzeln abgearbeitet, weil die Rolle es verlangt und weil der
-erste hier acht Stellen bewegt.
+Two findings. The reviewer assigned them to two trades: finding 1 to the game designer,
+finding 2 to me. Both are worked off individually, because the role demands it and
+because the first one moves eight places here.
 
-**Befund 1, `positionswert(p)` und `korbwert(l, s)` haben keine Entstehungsregel —
-behoben, auf der Seite, der er gehörte, und hier vollständig aufgenommen.** `spiel.md`
-Fassung 5 bildet beide Namen, dazu `anleihewert`, `waehrungswert` und den `anleihekurs`, den
-der Prüfer im fünften Schritt seines Nachweises eigens benannt hatte. Ich habe die acht
-Stellen abgearbeitet, die der Entwurf unter *Was der Architekt neu rechnen muss* auflistet;
-hier steht, wo jede gelandet ist:
+**Finding 1, `positionswert(p)` and `korbwert(l, s)` have no formation rule — fixed, on
+the side it belonged to, and taken up here in full.** `spiel.md` version 5 forms both
+names, along with `anleihewert`, `waehrungswert` and the `anleihekurs` that the reviewer
+had named specifically in the fifth step of his proof. I worked off the eight places that
+the design lists under *Was der Architekt neu rechnen muss*; here is where each one
+landed:
 
-| aus `spiel.md` Fassung 5 | eingearbeitet in | nachgerechnet oder nachgewiesen |
+| from `spiel.md` version 5 | incorporated into | recalculated or proven |
 |---|---|---|
-| `korbwert`, `positionswert` und fünf weitere Namen werden gebildet | **T47**, aufgezählt in **T48** (neu) | 17 Funktionen im Kern, 3 im Prüfstand; vier (`bip`, `handelsvolumen`, `anleihekurs`, `korbbestand`) standen bis heute nirgends und stehen jetzt in T48. *Stand dieser Abarbeitung (2026-09-01); seit dem 2026-09-04 sind es 22, siehe Abschnitt 18* |
-| Marktkorb mit Menge und Kurs statt „Modellmarktwerten" | **T33** Punkt 1 bis 4 | `marktkorb(m, k)`, Mengen über `lies_alt`, Kurse über `lies_neu` (T39) |
-| Skalengrenze je Bewertung einmal, am äussersten Aufruf | **T47**, **T5**, **T50** (neu) | `tsd_in_cent` mit genau zwei Aufruforten; `cent_in_tsd` gestrichen, weil ohne Aufrufer |
-| `stufenweite` ist ein Anteil, neuer Schlüssel `aufschlag` | **T5** Klassen 4 und 3, **T27** | elf Parameterschlüssel mit Skalenklasse, davon fünf neu; die 11 Adressen mit Herkunft `Parameter` bleiben 11 |
-| `leitzins_start[l]` als Konstante des Jahrgangs | **T23** Punkt 5 | vierzehn Jahrgangskonstanten statt zehn, ohne neue Datenanforderung (erste Stützstelle von Reihe 9) |
-| Kapitalstock je Sektor aus den normierten Anteilen | **T23** Punkt 1 | `Datenanker(3 × 2)`, dieselbe Regel wie bei der Wertschöpfung; T45 zählt unverändert 136 Anker |
-| „sieben Kanäle" → acht, „achter Kanal" → neunter | **T18**, **T30** Prüfung 6 | zwei Stellen, beide Wortlaut |
-| Leitzins-Untergrenze `1 − aufschlag` | **T51** (neu), **T23** Punkt 5, **T30** Prüfung 2 | `aufschlag_min = 1 − min(leitzins_pfad)`; beim EZB-Einlagesatz (−50 bp) sind das **51 bp**, beim Hauptrefinanzierungssatz **1 bp** |
+| `korbwert`, `positionswert` and five further names are formed | **T47**, enumerated in **T48** (new) | 17 functions in the core, 3 in the test bench; four (`bip`, `handelsvolumen`, `anleihekurs`, `korbbestand`) had stood nowhere until today and now stand in T48. *State of this working-off (2026-09-01); since 2026-09-04 there are 22, see section 18* |
+| market basket with quantity and price instead of „Modellmarktwerten" | **T33** points 1 to 4 | `marktkorb(m, k)`, quantities via `lies_alt`, prices via `lies_neu` (T39) |
+| scale boundary once per valuation, at the outermost call | **T47**, **T5**, **T50** (new) | `tsd_in_cent` with exactly two call sites; `cent_in_tsd` struck, because it has no caller |
+| `stufenweite` is a share, new key `aufschlag` | **T5** classes 4 and 3, **T27** | eleven parameter keys with a scale class, five of them new; the 11 addresses with origin `Parameter` remain 11 |
+| `leitzins_start[l]` as a constant of the vintage | **T23** point 5 | fourteen vintage constants instead of ten, without a new data requirement (first support point of series 9) |
+| capital stock per sector from the normalised shares | **T23** point 1 | `Datenanker(3 × 2)`, the same rule as for value added; T45 still counts 136 anchors |
+| „sieben Kanäle" → acht, „achter Kanal" → neunter | **T18**, **T30** check 6 | two places, both wording |
+| policy-rate lower bound `1 − aufschlag` | **T51** (new), **T23** point 5, **T30** check 2 | `aufschlag_min = 1 − min(leitzins_pfad)`; at the ECB deposit rate (−50 bp) that is **51 bp**, at the main refinancing rate **1 bp** |
 
-**Und eine Sache habe ich über die Aufnahme hinaus getan, weil sie zu genau diesem Befund
-gehört.** Der Prüfer schreibt: „T45s Abzählschritt findet sie nicht, weil sie **keine
-Zustandsadresse** ist." Das ist der eigentliche Inhalt des Befundes, und er wäre mit zwei
-nachgetragenen Formeln nicht beantwortet gewesen. **T48** zählt deshalb die Menge auf, in
-der die Lücke lag — die Funktionen des Zustands —, gibt ihr eine Regel („ein Name, der
+**And one thing I did beyond taking it up, because it belongs to exactly this finding.**
+The reviewer writes: „T45s Abzählschritt findet sie nicht, weil sie **keine
+Zustandsadresse** ist." That is the actual content of the finding, and it would not have
+been answered by two formulas added after the fact. **T48** therefore enumerates the set
+in which the gap lay — the functions of the state —, gives it a rule („ein Name, der
 weder Adresse noch Parameter noch Jahrgangskonstante noch abgeleitete Größe ist, ist ein
-Befund") und einen mechanischen Nachweis (die öffentliche Schnittstelle von `kern::werte`
-gegen die Tabelle). Ich habe den Nachweis in diesem Lauf von Hand geführt, in der einzigen
-Form, die vor dem Bau möglich ist; die vier Namen, die dabei herausfielen, stehen oben.
+Befund") and a mechanical proof (the public interface of `kern::werte` against the
+table). I carried out that proof by hand in this run, in the only form possible before
+the build; the four names that fell out of it stand above.
 
-**Befund 2, `beteiligung_wert` liefert Tausend USD und wird als US-Cent verbucht — behoben,
-und der Befund war richtig.** Die Formel der Fassung 5 bestand aus zwei `mal_geteilt` mit
-einheitenlosen Anteilen und war damit skalenerhaltend; zwischen Ein- und Ausgabe liegt aber
-der Faktor 100.000 aus T5. Die Behebung steht in **T47**: `tsd_in_cent` um den äussersten
-Aufruf, dieselbe Klammer bei `positionswert`, und beides als **T50** festgeschrieben, damit
-die Umrechnung einen Namen und einen Ort hat statt einer Gelegenheit.
+**Finding 2, `beteiligung_wert` delivers thousand USD and is booked as US cents — fixed,
+and the finding was right.** The formula of version 5 consisted of two `mal_geteilt`
+with unitless shares and was therefore scale-preserving; between input and output,
+however, lies the factor 100,000 from T5. The fix stands in **T47**: `tsd_in_cent`
+around the outermost call, the same bracket at `positionswert`, and both written down as
+**T50**, so that the conversion has a name and a place instead of an opportunity.
 
-**Die Wahl zwischen den beiden Wegen habe ich nicht getroffen, sondern übernommen.**
-`spiel.md` Fassung 5 entscheidet sie unter *Wo die Skalengrenze liegt*: `korbwert` bleibt
-volkswirtschaftlich, weil T33 denselben Korb bewertet und „eine Bewertung, nicht zwei" sonst
-nur ein Satz wäre. Mir blieb, welche Funktion es tut und wo sie steht — und die Antwort
-auf beides steht in T47 und T50.
+**The choice between the two ways I did not make but took over.** `spiel.md` version 5
+decides it under *Wo die Skalengrenze liegt*: `korbwert` stays macroeconomic, because
+T33 values the same basket and „eine Bewertung, nicht zwei" would otherwise be just a
+sentence. What was left to me was which function does it and where it stands — and the
+answer to both stands in T47 and T50.
 
-**Die Zahlenprobe des Prüfers, mit der Behebung nachgerechnet.** Korb 21.000.000.000 (Tsd
-USD), `anteil = 20`, `ausstiegsabschlag = 0`: innen `21.000.000.000 · 20 / 10.000 =
-42.000.000` Tausend USD, das sind 42 Mrd USD und damit genau 0,2 % von 21 Bio USD; nach
-`tsd_in_cent` **4.200.000.000.000 Cent**. Die Kasse gibt denselben Betrag ab, das
-Fondsvermögen bleibt unverändert, Todesart 1 greift nicht. Der Fonds mit 42 Mio USD aus dem
-Beispiel kann diese Beteiligung nicht kaufen — das ist jetzt richtigerweise eine
-**Zulässigkeitsfrage** (Kasse überzogen, T32) und kein Partieende, und es ist genau die
-Kalibrierbedingung, die `spiel.md` unter *Offene Entwurfsfragen* stellt.
+**The reviewer's numerical check, recalculated with the fix.** Basket 21,000,000,000
+(thousand USD), `anteil = 20`, `ausstiegsabschlag = 0`: inside, `21.000.000.000 · 20 /
+10.000 = 42.000.000` thousand USD, which is 42 billion USD and thus exactly 0.2 % of
+21 trillion USD; after `tsd_in_cent`, **4,200,000,000,000 cents**. The cash hands over
+the same amount, the fund assets remain unchanged, way of dying 1 does not trigger. The
+fund with 42 million USD from the example cannot buy this stake — that is now, correctly,
+an **admissibility question** (cash overdrawn, T32) and not an end of the game, and it is
+exactly the calibration condition that `spiel.md` poses under *Offene Entwurfsfragen*.
 
-**Derselbe Fehlertyp ein zweites Mal, an einer Stelle, die kein Befund war — und das ist der
-teure Teil dieses Laufs.** Befund 2 war eine Größe mit zwei Skalen. Ich habe deshalb T5
-gegen alle 310 Adressen gelegt, so wie Fassung 5 T45 gegen alle 310 gelegt hat, und **69
-Adressen ohne Skalenklasse** gefunden. Darunter die 32 Druck- und Gegendruckfelder, und die
-sind wörtlich Befund 2 noch einmal: `druck` entsteht aus dem Lobbybudget des Fonds
-(US-Cent), `gegendruck` aus dem Schaden eines Sektors (Tausend USD), und `spiel.md` Schritt 3
-verrechnet beide gegeneinander. **Der Unterschied zum ersten Mal ist, dass es nicht wie ein
-Rechenfehler ausgesehen hätte, sondern wie eine Gegenlobby, die nie greift** — also wie ein
-Balanceproblem, das der Selbstspieler wochenlang wegzukalibrieren versucht hätte. Die
-Antwort sind die fünf neuen Klassen in **T5**, die abgezählte Zuordnung in **T49** und die
-drei benannten Übergänge in **T50**.
+**The same error type a second time, at a place that was no finding — and that is the
+expensive part of this run.** Finding 2 was a quantity with two scales. I therefore laid
+T5 against all 310 addresses, just as version 5 laid T45 against all 310, and found **69
+addresses without a scale class**. Among them the 32 pressure and counter-pressure
+fields, and those are literally finding 2 over again: `druck` arises from the fund's
+lobby budget (US cents), `gegendruck` from a sector's damage (thousand USD), and
+`spiel.md` step 3 offsets the two against each other. **The difference from the first
+time is that it would not have looked like an arithmetic error but like a counter-lobby
+that never bites** — that is, like a balance problem that the self-player would have
+tried for weeks to calibrate away. The answer is the five new classes in **T5**, the
+enumerated assignment in **T49** and the three named transitions in **T50**.
 
-**Die drei Punkte aus „Geprüft und nicht gezählt", weil der Prüfer sie an diesen Lauf
-adressiert hat.**
+**The three points from „Geprüft und nicht gezählt", because the reviewer addressed them
+to this run.**
 
-1. **Die Kostenaussage zu `B` war zu klein — der Prüfer hat recht, und sie ist jetzt
-   ausgezählt.** Nicht „rund zwanzig Operationen, drei Promille", sondern rund 240, davon 71
-   `i128`-Divisionen, also gut drei Prozent eines Weltschritts. Nachgeführt in **T44**, in
-   **T47** (mit der Auszählung je Teil) und in **Abschnitt 10**. Es war eine Zeile und kein
-   Lauf, wie der Prüfer schrieb; die Auszählung hat trotzdem zwei Vorgaben erzeugt, die
-   Rechenzeit sparen und zugleich eine Zusage einlösen — die Abkürzung bei `stufen(p) = 0`
-   und die einmalige Berechnung der zwölf `korbwert` je Aufruf.
-2. **`markt.wert` mit Herkunft `Manifest` trotz Erwähnung in der Entwurfstabelle.** Die
-   Vorrangregel aus T45 löst das, der Prüfer hat es fallen lassen, der Spielentwerfer hat die
-   Auflösung übernommen. Keine Änderung.
-3. **`einfluss` als 0…100 in `spiel.md`, in Zehntausendsteln im Speicher.** Bleibt, wie es
-   ist, und steht seit dieser Fassung zusätzlich in T49 als Klasse 4 — die Konvention ist
-   damit nicht mehr nur in einem Absatz erklärt, sondern in einer Tabelle abgezählt.
+1. **The cost statement for `B` was too small — the reviewer is right, and it is now
+   counted out.** Not „rund zwanzig Operationen, drei Promille" but around 240, of which
+   71 are `i128` divisions, so a good three percent of a world step. Brought up to date
+   in **T44**, in **T47** (with the count per part) and in **section 10**. It was one
+   line and not a run, as the reviewer wrote; the counting nevertheless produced two
+   prescriptions that save computing time and at the same time honour a promise — the
+   shortcut at `stufen(p) = 0` and computing the twelve `korbwert` once per call.
+2. **`markt.wert` with origin `Manifest` despite being mentioned in the design table.**
+   The precedence rule from T45 resolves it, the reviewer let it drop, the game designer
+   took over the resolution. No change.
+3. **`einfluss` as 0…100 in `spiel.md`, in ten-thousandths in memory.** Stays as it is,
+   and since this version additionally stands in T49 as class 4 — the convention is thus
+   no longer explained only in a paragraph, but counted out in a table.
 
-**Was ich nicht entschieden habe, weil es nicht meine Rolle ist:** die Meldung des Prüfers
-an den Projektmanager, dass der Rücklaufzähler mit Runde 6 bei 3 von 3 steht und die Tabelle
-im Arbeitspaket seit Runde 3 nicht nachgeführt ist. Ich schreibe weder in das Arbeitspaket
-noch urteile ich über `blockiert`. Was ich beitragen kann, ist die Sachlage: Befund 2 dieser
-Runde war eine Skalenmischung mit Todesfolge für Klasse 2 von Maß 2, also kein
-Genauigkeitsbefund; er ist behoben, und der Fehlertyp ist mit T48, T49 und T50 an drei
-Stellen geschlossen statt an einer.
+**What I did not decide, because it is not my role:** the reviewer's report to the
+project manager that the return counter stands at 3 of 3 with round 6 and that the table
+in the work package has not been brought up to date since round 3. I neither write into
+the work package nor judge on `blockiert`. What I can contribute is the state of
+affairs: finding 2 of this round was a scale mixture that was fatal for class 2 of
+measure 2, so not an accuracy finding; it is fixed, and the error type is closed with
+T48, T49 and T50 at three places instead of one.
 
-**Was diese Fassung nicht geändert hat:** R bleibt 24, die 310 Adressen bleiben 310, die
-Herkunftszerlegung bleibt `136 + 150 + 11 + 2 + 11`, die Sollmaske 175 von 310, die
-Ergebnisbänder, die vier Maße und ihre Schwellen, die drei Maße kosten 11.519.040
-Weltschritte und der Nachtlauf 11.783.264. Ich habe alle Summen dieses Dokuments in diesem
-Lauf erneut nachgerechnet — auch die, die ich nicht angefasst habe, weil eine Fassung, in
-der die Kostenrechnung nicht angefasst wird, genau die ist, in der man es unterlässt. Neu
-nachgerechnet sind die Skalenzerlegung (`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 + 83 +
-2 = 310`, je Land `6 + 5 + 4 + 1 + 7 + 1 + 2 + 8 + 1 + 9 = 44`), die Operationszahl von
-`fondsvermoegen` (230) und die Untergrenze `aufschlag_min` (51 bp).
+**What this version did not change:** R stays 24, the 310 addresses stay 310, the origin
+decomposition stays `136 + 150 + 11 + 2 + 11`, the target mask 175 of 310, the result
+bands, the four measures and their thresholds, the three measures cost 11,519,040 world
+steps and the night run 11,783,264. I recalculated every sum of this document in this
+run — including the ones I did not touch, because a version in which the cost
+calculation goes untouched is exactly the one in which it gets left undone. Newly
+recalculated are the scale decomposition (`3 + 71 + 36 + 22 + 22 + 5 + 5 + 25 + 32 + 4 +
+83 + 2 = 310`, per country `6 + 5 + 4 + 1 + 7 + 1 + 2 + 8 + 1 + 9 = 44`), the operation
+count of `fondsvermoegen` (230) and the lower bound `aufschlag_min` (51 bp).
 
 ## 16. Befundabarbeitung — Prüfung zu Paket `0011-stack-auf-cpp`, Runde 1 vom 2026-09-03
 
