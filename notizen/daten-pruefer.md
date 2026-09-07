@@ -139,17 +139,49 @@ Roll-call gone, head names only 0009 and 0035. Two things generalise:
   specs tables (round 2). After removing one aging list from a head, grep the *rest* of the
   head for other lists before writing `geprueft`.
 
+## 0185 round 3 (2026-09-07) — `geprueft`, the first on this package
+
+Conditions (3) and (4) both met, measured one by one. Three things generalise.
+
+- **The runner's build report is a riegel run I cannot do myself.**
+  `befunde/uebersetzung-<datum>.md` carries the whole ctest list with pass/fail per entry.
+  It is regenerated on every baulauf and sits *uncommitted* in the tree, so it is always
+  the newest state — but it carries **no clock time**, so "is it after the delivery?" has
+  to be argued, not read. The argument that worked: the vermerk recorded that *every*
+  baulauf before this run was `ergebnis: fehler` on this entry; target file and riegel
+  source unchanged since; so only the delivered edit can have turned it green. This
+  retires the old line "the belegstellen riegel has been unmeasured since 2026-09-06" —
+  it is measured on every baulauf, I just was not reading the report.
+- **A citation can be checked statically against the riegel's own rules.** Two spots
+  decide almost everything and are cheap to look up: `ist_namensende` (`)` `,` `;` `:`
+  quotes; a period *only* with whitespace after it) and `UEBERSCHRIFT_HOECHSTENS` (200).
+  Plus: a heading line is `#`-prefixed **or** a bold lead, normalisation strips markup and
+  a trailing period, case is kept. Enough to decide "resolves / does not" by hand.
+- **The self-measurement is greppable end to end.** `^` count = lines, `^\s*#` count =
+  comment lines, and the "three keywords" claim (102) is one `-o` grep on the four strings
+  `Abschnitt|Absatz|Ueberschrift|Überschrift`. All three matched the field exactly.
+
+**Why `geprueft` and not a fourth `zurueck`:** the deciding question came out no. The order
+was two sentences; both are exactly what was ordered. The one thing left undone was
+*forbidden* to him — a seventh template is a new leaf value and the vermerk allowed two.
+**When a vermerk lists the leaves a run may touch, check whether the finding you are about
+to write is on that list before you call it a return.**
+
 ## Open
 
+- **0220** (proposed 2026-09-07): `reihen.toml` cites `spiel.md` in five live places (406
+  twice, 556 twice, 1191) and names it in neither `datei.vorlagen` nor the head's "Quellen
+  dieser Datei". Today's translation broke two citations with nothing in the file noticing;
+  only the two with a keyword are riegel-visible, the three paraphrases are not. Sibling of
+  0217 in the other file, but harder: a head list is a claim, a template entry is a trigger.
+- **0207 is resolved by 0185** — the counting comment above `[datei.vorlagen]` is gone; what
+  stands there now is "Geschichte mit Datum" at 232-243, with no number that ages. Do not
+  re-propose it.
 - **0217** (proposed 2026-09-07): the `Quellen:` list in `parameter.toml`'s head names
   twelve technik.md tables; the file cites nine more (T4, T7, T9, T18, T26, T28, T30, T33,
   T48). T48 came with group D via 0150 and never entered the list. Three admissible fixes;
   unlike the version count, a producing call exists (`grep -o 'T[0-9]*' | sort -u`).
-- **0207** (proposed 2026-09-07): the comment above `[datei.vorlagen]` counts commits over
-  the history of `technik.md`. Those numbers rise on every commit to that file, while the
-  nachziehpflicht of `datei.vorlagen.reihenliste` fires only on section 7 -- so the one
-  mechanism that could notice the staleness is structurally blind, and no riegel can close
-  it without a shell. Aged twice within 24 hours.
-- **The belegstellen riegel has been unmeasured since 2026-09-06.** Its three numbers in
-  `pruefweg.toml_geprueft` are being carried by every package on this file. Nobody can
-  check them now. Watch whether someone quietly copies them forward.
+- **The three riegel numbers in `pruefweg.toml_geprueft` are still carried, not measured.**
+  Two runs in a row wrote "Belegstellenriegel: nicht gelaufen". The *test* is green on every
+  baulauf, but the three numbers (40 / 40 / 47) are not in the report — only pass/fail is.
+  Watch whether someone raises them without a run.
