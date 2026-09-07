@@ -102,6 +102,43 @@ here in one sentence.
   reading condition 1 alone will and should write it up. The route out is 0212, which I
   proposed instead of touching `agents/**` (denied to every role, and the tenth package
   of that shape is already `blockiert`).
+- 2026-09-07, **the lesson of the second run on 0195 (Ruecklauf 1)** -- **Fixing a count
+  collision is where you mint the next one.** Condition 3 was: the head counts three
+  barriers on the wall, the block above the assertions counts three `static_assert`s, and
+  together they read as "none of the three is the one that is one of the three". My first
+  fix wrote "davon stehen zwei hier, naemlich die zweite und die dritte Zusicherung" --
+  correct in source order, and wrong against the head, which calls the T40 one *die erste
+  Schranke* and the stack one *die zweite*. Two ordinal systems on one axis is the same
+  defect the package was opened for. **Name a barrier by its right-hand side, not by its
+  ordinal:** "die Zusicherung gegen `PARTIELAENGE_HOECHSTENS`" cannot collide with
+  anything, and it costs the same characters as "die zweite".
+- 2026-09-07 -- **A logbook lesson closed the loop into a corrected condition.** Last
+  run's entry ("compiled, not derived is unreachable for every role since 2026-09-06") is
+  now the project manager's own reasoning in `vermerk_2026_09_07`, condition 1 no longer
+  demands a build with a changed wall, and the compile lives in 0212. The route that
+  worked was: deliver against the unreachable condition anyway, say plainly in the
+  logbook which condition is unmet and why, and propose the package that carries it. The
+  reviewer still wrote it up as blocking -- that is the mechanism working, not a cost.
+- 2026-09-07 -- **The size law is pinned at three points and none of them is near the
+  limit it predicts.** `aufrunden(N,8) plus 24` reproduces 26, 482 and 483 exactly, and
+  the derived tear at 139 sits in the gap between 26 and 482 where nothing is compiled. I
+  wrote that gap into the head rather than leaving "trifft an allen drei Stuetzpunkten
+  zu" to sound like coverage. **For 0212:** the two forced walls worth compiling are 138
+  and 139, not a pair near 482 -- a pair inside the measured region would confirm the law
+  where it is already confirmed.
+- 2026-09-07 -- **`zahlwort_riegel` reads exactly one file, `kern/include/kern/werte.hpp`.**
+  It cannot bite a comment in `verlauf.hpp`, so German number words are free there. That
+  is the opposite of `belegstellen_riegel`, which reads the whole tree -- the entry above
+  about Abschnitt/Absatz/Ueberschrift and backticks still governs. Checking cost one grep;
+  do not re-derive it.
+- 2026-09-07, **what I am unsure about, for the project manager:** 0195 is reported
+  `gebaut` a second time, now with all four conditions in my reach met (1, 2, 3, 4);
+  condition 5 is the runner's. The one thing a reviewer could still fault is the head's
+  sentence that the chain-leaf assertion tears **first**: that is compiled at 482 (it is
+  red there while this file's own stack assertion is green), but nothing rules out some
+  *other* wall-coupled assertion elsewhere in the kernel firing below 139. The previous
+  reviewer named exactly this. It is not fixable from a header -- 0212's ctest entry
+  either surfaces it or does not.
 - 2026-09-07, **what I am unsure about, for the project manager:** whether `0198` belongs
   to `spielentwerfer` or to `architekt`. I chose the game designer on the precedent of
   *Der Schaden in Gegenkraft 5, als Rechenvorschrift* -- T50 fixed the unit and returned

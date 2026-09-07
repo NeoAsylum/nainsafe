@@ -82,12 +82,18 @@
 //! beiden Kapazitaeten hochsetzt oder die Wand verschiebt, ohne die Folge zu bedenken,
 //! bekommt einen roten Bau.
 //!
-//! **Es sind drei Schranken, und die bindende steht nicht in dieser Datei** (Paket
-//! 0195). Zwei stehen unten und fangen zwei verschiedene Regler. Die dritte gehoert
-//! `kern::zustandsausgabe`, haengt seit Paket 0091 an derselben Wand und reisst beim
-//! Heraufsetzen der Wand als erste -- rund fuenfzehnmal frueher als die eine hier und
-//! knapp viermal frueher als die andere. Wer nur die beiden unten liest, haelt die Wand
-//! fuer weit verschiebbar, als sie ist.
+//! **Es sind drei Schranken auf die Wand, und die bindende steht nicht in dieser Datei**
+//! (Paket 0195). Gezaehlt sind hier Schranken -- was beim Heraufsetzen der Wand rot wird
+//! --, nicht Zusicherungen: Unten stehen drei Zusicherungen, und das sind nicht dieselben
+//! drei; die Zuordnung steht bei ihnen. Zwei der drei Schranken stehen unten und fangen
+//! zwei verschiedene Regler, die dritte gehoert `kern::zustandsausgabe`.
+//!
+//! Die dritte haengt seit Paket 0091 an derselben Wand und reisst beim Heraufsetzen der
+//! Wand **als erste**: bei 139, waehrend die Stapelzusicherung hier erst bei 483 reisst
+//! und die T40-Zusicherung erst bei 2170 -- das 3,47fache und das 15,6fache. Die
+//! Anordnung jeder dieser Zahlen steht weiter unten, und die 139 ist gerechnet und nicht
+//! uebersetzt. Wer nur die beiden unten liest, haelt die Wand fuer weiter verschiebbar,
+//! als sie ist.
 //!
 //! **Die dritte: die Zusicherung ueber das Kettenblatt.** Paket 0091 hat die Zahl der
 //! Kettenzeilen je Adresse an die Rundenkapazitaet dieses Kastens gebunden --
@@ -104,14 +110,26 @@
 //! war dort vor Paket 0091 gruen, bei 8.375.240 Byte, und rot erst bei 483.
 //!
 //! **Wo genau sie reisst, ist gerechnet und nicht uebersetzt**, und das steht hier,
-//! damit die Zahl niemand fuer eine Messung haelt. Uebersetzt sind drei Punkte: Wand 26
-//! ergibt 1.667.360 Byte -- `zustandsausgabe_probe` druckt die Zahl im Alleinbau des
-//! Kerns ab --, Wand 482 ergibt 28.808.480, Wand 483 ergibt 28.868.000. Daraus folgt das
-//! Gesetz: Ein Kettenblatt misst 59.520 mal Wand plus 119.840 Byte. Gegen
-//! `STAPEL_JE_FADEN` gehalten traegt es die Wand bis 138 und reisst bei 139. **Mit den
-//! Waenden 138 und 139 ist nichts uebersetzt worden.** Wer die Wand wirklich schiebt,
-//! uebersetzt sie und schreibt hierhin, was der Uebersetzer sagt -- die Messung
-//! entscheidet und nicht diese Herleitung.
+//! damit die Zahl niemand fuer eine Messung haelt. Uebersetzt sind drei Stuetzpunkte:
+//! Wand 26 ergibt 1.667.360 Byte -- `zustandsausgabe_probe` druckt die Zahl im Alleinbau
+//! des Kerns ab --, Wand 482 ergibt 28.808.480 und Wand 483 ergibt 28.868.000, diese
+//! beiden aus dem Lauf vom 2026-09-06 gegen den Arbeitsbaum, der den Kern ganz
+//! uebersetzt. Daraus folgt das Gesetz: Ein Kettenblatt misst 59.520 mal Wand plus
+//! 119.840 Byte. Gegen `STAPEL_JE_FADEN` gehalten traegt es die Wand bis 138 und reisst
+//! bei 139.
+//!
+//! **Das Gesetz steht auf einer Annahme, und die ist keine Messung.** Ein Kettenblatt
+//! haelt ein Feld von N Zeichen und daneben zwei Laengen und ein Kennzeichen; angenommen
+//! ist, dass sein Typ damit aufrunden(N, 8) plus 24 Byte gross ist. Das ist eine Annahme
+//! ueber die Ablage, die dieser Uebersetzer auf dieser Maschine trifft, und keine Zusage
+//! der Sprache. Sie trifft an allen drei Stuetzpunkten zu -- mehr sagt sie nicht, und
+//! zwischen 26 und 482 liegt kein einziger davon.
+//!
+//! **Mit den Waenden 138 und 139 ist nichts uebersetzt worden.** Was ein Bau an ihnen
+//! wirklich meldet, holt Paket 0212 ein: Es haengt einen ctest-Eintrag ein, der den Kern
+//! an zwei erzwungenen Waenden uebersetzt. Nennt der eine andere Grenze als 138 und 139,
+//! gilt seine und nicht diese Herleitung, und dieser Kopf wird ihr nachgezogen -- die
+//! Messung entscheidet.
 //!
 //! ## Die beiden Schranken dieser Datei
 //!
@@ -336,17 +354,26 @@ private:
 inline constexpr std::size_t STAPEL_JE_FADEN = 8192u * 1024u;
 
 // Die Groesse ist eine Folge der beiden Kapazitaeten und keine eigene Entscheidung --
-// die drei Zusicherungen stehen hier, damit ein Heraufsetzen nicht unbemerkt ein
-// Vielfaches daraus macht. Die ersten beiden binden die Groesse an die Wand, die dritte
-// an das, was ein Aufrufer traegt: Ohne sie waechst der Behaelter mit der Wand mit, ohne
-// dass eine Zusicherung sich ruehrt. Ein Verlauf gehoert schon bei seiner heutigen
-// Groesse nicht beilaeufig auf einen Stapelrahmen -- er belegt dort gut ein Zwanzigstel
-// dessen, was ein Faden ueberhaupt hat.
+// die drei Zusicherungen dieses Kastens stehen hier, damit ein Heraufsetzen nicht
+// unbemerkt ein Vielfaches daraus macht. Die ersten beiden binden die Groesse an die
+// Wand, die dritte an das, was ein Aufrufer traegt: Ohne sie waechst der Behaelter mit
+// der Wand mit, ohne dass eine Zusicherung sich ruehrt. Ein Verlauf gehoert schon bei
+// seiner heutigen Groesse nicht beilaeufig auf einen Stapelrahmen -- er belegt dort gut
+// ein Zwanzigstel dessen, was ein Faden ueberhaupt hat.
 //
-// Keine der drei ist die Schranke, die eine hochgesetzte Wand zuerst faengt: Das tut die
-// Zusicherung ueber das Kettenblatt in `kern::zustandsausgabe`, und wer nur diese Datei
-// uebersetzt, sieht sie nicht. Der Kopf oben sagt, woran das haengt und wo es gemessen
-// ist.
+// Drei Zusicherungen hier, drei Schranken auf die Wand -- das sind nicht dieselben drei,
+// und die Ordnungszahlen der beiden Zaehlungen stimmen nicht ueberein. Der Kopf oben
+// zaehlt Schranken, also was beim Heraufsetzen der Wand rot wird. Davon stehen zwei hier:
+// die Zusicherung gegen `PARTIELAENGE_HOECHSTENS` -- im Kopf die erste Schranke -- und
+// die gegen `STAPEL_JE_FADEN`, im Kopf die zweite. Die verbleibende hier, die mit dem
+// `>=`, ist eine untere Schranke und faengt gar keine Wand: Sie haelt fest, dass ein
+// Verlauf seine Ketten selbst traegt und nicht hinter einem Zeiger. Die dritte Schranke
+// des Kopfes steht in einer anderen Datei.
+//
+// Keine der drei Zusicherungen hier ist also die, die eine hochgesetzte Wand zuerst
+// faengt: Das tut die Zusicherung ueber das Kettenblatt in `kern::zustandsausgabe`, und
+// wer nur diese Datei uebersetzt, sieht sie nicht. Der Kopf oben sagt, woran das haengt,
+// wo es gemessen ist und wo es gerechnet ist.
 static_assert(sizeof(Verlauf) >= RUNDEN_KAPAZITAET * sizeof(Kette),
               "der Verlauf traegt seine Ketten selbst und nicht hinter einem Zeiger");
 static_assert(sizeof(Verlauf) < (PARTIELAENGE_HOECHSTENS + 1) * sizeof(Kette),
