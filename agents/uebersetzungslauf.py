@@ -33,6 +33,10 @@ FOKUS = "0016-hedgefonds-simulation-echte-weltwirtschaft"
 # 15 Abschnitte auf zweiter Ebene, technik.md 21 -- rund 14.000 Zeichen je Stueck.
 STUECK_MAX = 20_000
 
+# Name des Stuecks vor der ersten `## `-Ueberschrift. Steht so im Buch und im
+# Gegenstand des Agenten; `agents/rollen/uebersetzer.md` erklaert ihn.
+VORSPANN = "<Vorspann>"
+
 # Reihenfolge = Lesehaeufigkeit. Was in jedem Lauf gelesen wird, zuerst.
 def bestand() -> list[Path]:
     # Nur specs/. agents/**, decisions/**, grenzen.md und agentenbau.md sperrt
@@ -56,9 +60,36 @@ def deutsch(text: str) -> bool:
     Schwelle 12 und wurde 56-mal neu gewaehlt. Umlaute in deutschen Zitaten zaehlen
     absichtlich nicht -- Zitate bleiben deutsch, und das ist kein Zeichen fuer eine
     unuebersetzte Stelle.
+
+    Die zweite Fassung sah nur `text[:4000]`. Am 2026-09-07 gemessen, woran das
+    scheitert: Der Abschnitt „The state" in `spiel.md` ist 54.395 Zeichen lang, oben
+    uebersetzt und unten deutsch -- 1 Treffer in den ersten 4.000, 1.002 im Ganzen.
+    Er galt als englisch und war zur Haelfte deutsch. Genau so sieht ein Abschnitt aus,
+    den ein Lauf am Sitzungslimit in der Mitte liegen liess.
+
+    Darum ein gleitendes Fenster ueber den ganzen Text: Deutsch ist, was IRGENDWO
+    dicht steht, nicht nur am Anfang. Ein Fehlalarm -- etwa ueber einem langen
+    deutschen Zitat, das deutsch bleiben soll -- kostet hoechstens einen Lauf, denn
+    danach steht die Stelle im Buch und wird nie wieder gewaehlt.
+
+    Die Schwelle 10 stammte aus der Kopfprobe und ist fuer das Fenster zu niedrig. Am
+    2026-09-07 ueber den ganzen Bestand nachgemessen, dichtestes Fenster je Abschnitt:
+
+        fertig uebersetzt, deutsche Ueberschrift und deutsche Zitate .. 10 bis 21
+        unuebersetzte deutsche Prosa ("The state") ................... 153
+
+    Dazwischen liegt kein Grenzfall. 40 trennt beides mit Abstand nach beiden Seiten
+    und haelt die Zitate in Ruhe, die absichtlich deutsch bleiben.
     """
-    probe = text[:4000].lower()
-    return len(_DEUTSCH.findall(probe)) >= 10
+    tief = text.lower()
+    if not tief.strip():
+        return False
+    if len(tief) <= 4000:
+        return len(_DEUTSCH.findall(tief)) >= 40 * len(tief) / 4000
+    for anfang in range(0, len(tief) - 2000, 2000):
+        if len(_DEUTSCH.findall(tief[anfang:anfang + 4000])) >= 40:
+            return True
+    return False
 
 
 BUCH = WURZEL / "ops" / "uebersetzt.txt"
@@ -94,12 +125,26 @@ def offen() -> list[tuple[Path, str | None]]:
             t = p.read_text(encoding="utf-8")
         except OSError:
             continue
-        if not deutsch(t):
-            continue
+        # Kein Vorfilter ueber die ganze Datei mehr. Er hat `daten.md` verworfen, bevor
+        # dessen deutscher Vorspann geprueft war: Eine Datei, die zu 99 Prozent englisch
+        # ist, faellt als Ganzes unter die Schwelle und nimmt ihre deutschen Reste mit
+        # (gemessen 2026-09-07). Die Pruefungen je Stueck unten entscheiden das genauer,
+        # und sie kosten Millisekunden.
         if len(t) <= STUECK_MAX:
-            if str(p.relative_to(WURZEL)) not in fertig:
+            if deutsch(t) and str(p.relative_to(WURZEL)) not in fertig:
                 aufgaben.append((p, None))
             continue
+        # Der Vorspann zuerst: alles vor der ersten `## `-Ueberschrift. Er war nie ein
+        # Ziel, weil `offen()` ueber `^## `-Treffer iteriert -- in `spiel.md` sind das
+        # 10.413 Zeichen mit Frontmatter-Werten, der `# `-Ueberschrift des Dokuments und
+        # dem ganzen einleitenden Text, alle noch deutsch (gemessen 2026-09-07).
+        erste = re.search(r"(?m)^## ", t)
+        kopfende = erste.start() if erste else len(t)
+        wo = f"{p.relative_to(WURZEL)}#{VORSPANN}"
+        if kopfende > 400 and wo not in fertig and deutsch(t[:kopfende]):
+            aufgaben.append((p, VORSPANN))
+            continue
+
         # Grosse Dateien abschnittsweise, erster noch deutscher Abschnitt zuerst.
         for m in re.finditer(r"(?m)^## (.+)$", t):
             anfang = m.start()

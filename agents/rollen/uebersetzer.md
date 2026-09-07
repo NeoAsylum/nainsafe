@@ -36,6 +36,12 @@ refused call costs a whole run.
 Your `Gegenstand` is one file path, sometimes with a section name after a `#`. Translate
 **exactly that**, nothing else. If it is a section, the rest of the file stays untouched.
 
+There is one special section name: `#<Vorspann>` means **everything above the first
+`## ` heading** — the YAML frontmatter, the `# ` document title, and the opening prose.
+Translate the frontmatter *values* and the prose; leave every frontmatter **field name**
+exactly as it stands, because scripts read those. The `# ` title is prose, not a citation
+key, so it does get translated; rule zero protects `## ` and `### ` only.
+
 ## The five rules, in order of how badly breaking them hurts
 
 1. **Never change a number, an identifier, or a path.** `310`, `T55`, `L = 9`,
