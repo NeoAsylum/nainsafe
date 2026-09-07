@@ -69,6 +69,24 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 - **Vor jedem „unverändert seit N Plänen" die Uhr des Betreibers prüfen:** `git log` nach
   Commits ohne Rollenpräfix. Eine Empfehlung, die er noch nicht gesehen hat, ist nicht
   abgelehnt — das gehört ausdrücklich in den Plan.
+- **Die *Arithmetik* der Schlange nennen, nicht die Reihenfolge — das ist der Hebel.**
+  (2026-09-07, 15. Lauf, bestes Werkzeug bisher.) Der 14. Plan schrieb „13 Pakete tief,
+  seriell, jedes Glied davor kostet einen Tag". Der Projektmanager hat daraufhin **alle
+  dreizehn Glieder umgehängt** und in sein Logbuch geschrieben, alle fünf meiner
+  Vorrangkennungen seien unstartbar gewesen und er sei die Ursache. Eine Reihenfolge kann
+  er ablehnen; eine Rechnung nicht. **Und: die Empfehlung an den Betreiber (ein Satz in
+  `projektmanager.md`) war überflüssig** — der PM hat sie selbst erledigt, aus derselben
+  Seite. *Erst den Engpass an die richtige Hand benennen, dann fragen, ob eine Regel
+  fehlt.*
+- **Der nächste Engpass steht in der jüngsten `pruefung-*`, einen Tag vor den Paketen.**
+  0208 („der Rahmen kann keinen Parameter lesen — sperrt alle sechs Schritte") wurde im
+  Befund zu 0197 geboren, nicht im Rückstand. Prüferbefunde des Tages vor den Vorschlägen
+  lesen.
+- **Jeden `vorschlag` mit `dateien:` gegen `agents/lauf.py:NIE` halten.** Dort steht
+  `Edit(/agents/**)`, `Edit(/CLAUDE.md)`, `Edit(/decisions/**)`, `Edit(/grenzen.md)`.
+  0208-baulauf zielt auf `agents/baulauf.py` — auf `offen` gesetzt ein sicher verlorener
+  Lauf. Zusammen mit der Rollenprüfung (`BAUROLLEN`) sind das zwei Grep, die einen Lauf
+  sparen.
 
 ## Was nicht funktioniert
 
@@ -97,10 +115,11 @@ Das vorgeschriebene Verschieben nach `notizen/archiv/` kann meine Rolle nicht au
 ## Erledigt — nicht erneut aufgreifen
 
 10./11. Lauf: Review-Engpass als Kapazitätsfrage, 0019, Architektendiagnose,
-Rust/C++-Divergenz, `schritt` ohne Paket. 12. Lauf: doppelte Nummern 0039/0040,
-`ops/baulauf.log`, Wochenbremse (alle drei vom Betreiber oder PM erledigt). 13. Lauf
-(2026-09-04): der Prüfstau 0040/0049/0053/0058 — der PM hat alle vier nachgezogen, **eine
-Meldung hat gereicht**. Nicht als Engpass wiederholen; die Sortierregel bleibt aber.
+Rust/C++-Divergenz. 12. Lauf: doppelte Nummern 0039/0040, `ops/baulauf.log`, Wochenbremse.
+13. Lauf: der Prüfstau 0040/0049/0053/0058 — **eine Meldung hat gereicht**. 14. Lauf
+(2026-09-06): „die sechs Schritte haben kein Paket" und die serielle `technik.md`-Schlange
+— der PM hat 0197 geschnitten und alle dreizehn Glieder umgehängt, ohne dass der Betreiber
+etwas tun musste. **Beides nicht als Engpass wiederholen.**
 
 **Die Lehre:** Nichts davon fiel an meiner Wiederholung. Es fiel an einer Teilung des
 Pakets, einer Rollendatei, einem neuen Paket. *Wenn ein Paket dreimal nicht liefert, ist
@@ -116,10 +135,16 @@ Hand, wirkt; fünfmal sagen kostet nur meinen Platz im Plan.**
   Datenzeile", Preis inzwischen 379,38 $ = 29 % der Bauphase. **Nicht wieder als Frage
   stellen**, nur als Zahl fortschreiben. *Eine Empfehlung zurückzunehmen ist billiger, als
   sie zum vierten Mal zu wiederholen.*
-- **Nächster Lauf zuerst:** Trockenlauf; dann für jedes `offen`-Paket auf einem Bauplatz
-  `git log` auf seine `dateien:`. Steht 0026 nach dem 4. `architekt`-Commit immer noch auf
-  `offen`, hat der Betreiber die drei Zeilen nicht ergänzt — dann ist es **keine
-  Vorrangfrage mehr**, sondern gehört als einziger Punkt an ihn.
+- **Nächster Lauf zuerst:** Sind 0198 und 0208 auf `offen`? Wenn nein, ist der Engpass
+  derselbe und die Frage geht an den PM, nicht in eine neue Analyse. Steht `belegstellen_riegel`
+  im Bericht des Tages weiter rot, hat der Betreiber die Übersetzerfrage nicht entschieden
+  — dann als einziger Punkt an ihn, nicht neu begründet.
+- **Ohne `Bash` (15. Lauf, 2026-09-07) fällt jedes Skript aus.** Kein `baulauf.py --trocken`,
+  kein `kontingent.py`. Ersatz, alle rein lesend: `ops/kontingent.md` (vom Wochenlauf, bis
+  zu einem Tag alt), `befunde/uebersetzung-<datum>.md` (Compiler und ctest im Wortlaut,
+  runner-erzeugt), und `Grep "^status:"` über `aufgaben/` für die Schlange. Das reicht für
+  einen ganzen Plan — **nicht erst Werkzeuge suchen.** Die `.tmp`-Reste in `aufgaben/`
+  verfälschen die `^status:`-Zählung um zwei (beide `gebaut`).
 - **Fehlerklasse des Betreibers** (eine Regel an einer Stelle, die der Ablauf nicht
   erreicht): 8. Fall — `architekt`, `spielentwerfer`, `testentwickler` fehlt „Setze
   `status: gebaut`". **Er kostet jetzt messbar** (0026 dreimal, ~22,60 $) und blockiert die
@@ -132,10 +157,17 @@ Hand, wirkt; fünfmal sagen kostet nur meinen Platz im Plan.**
   10:00. **Jeden Lauf neu rechnen.** Wenn der Spielraum unter etwa 300 $ fällt, ist die
   Frage an den Betreiber nicht mehr *ob* gedrosselt wird, sondern **wofür die letzten ~40
   Läufe ausgegeben werden** — das ist eine Inhaltsfrage und damit meine.
-- **Die eine Zahl ist ab dem 13. Plan `0 von 310`**: Eine Runde `weltlauf` läuft und ändert
-  keine der 310 Zustandsgrössen (0033 Bedingung 6 verlangte genau das, 0071 ersetzt sie).
-  `werte.hpp` (78 Byte, seit 2026-09-02) bleibt die *benannte Ursache*, nicht mehr die Zahl
-  selbst — Kette 0026 → 0002. Wechselt die Zahl noch einmal, alte im Plan mitnennen.
+- **Die eine Zahl:** 13. Plan `0 von 310`, seit dem 14. **`1 von 310`** (`partie.runde`).
+  Am 2026-09-07 zum ersten Mal *gedruckt* statt hergeleitet — Mitschnitt von `schritt_probe`
+  im eigenständigen Kernbaum. Benannte Ursache jetzt nicht mehr organisatorisch, sondern
+  zwei Lücken in `specs/`: die Regel (0198, `Realeinkommen` hat keine Rechenvorschrift) und
+  der Weg (0208, `schritt()` hat kein Parameterargument). **Bewegt sich die Zahl, bevor
+  beide `fertig` sind, stimmt die Messung nicht.** Alte Zahl im Plan mitnennen.
+- **Der Übersetzungslauf ist neu und bricht Zitate.** Rolle `uebersetzer` (Modell Fable,
+  eigener Topf), `ops/uebersetzt.txt` führt die fertigen Abschnitte. Er benennt
+  Überschriften um; `belegstellen_riegel` fällt seitdem in beiden Bäumen aus, zehn Zitate.
+  `CLAUDE.md` sagt dazu weiter „not planned" — der Satz ist überholt. **Nur der Betreiber
+  kann das ändern; steht es im nächsten Plan noch offen, nicht neu begründen, nur zählen.**
 - **0003 (Einheiten) ist eine Betreiberfrage, keine Bausache.** Nicht als Rückstand zählen,
   solange es nichts blockiert.
 - **Ein Prüfer committet den Befund eines anderen mit.** Nie vom Commit auf den Autor
