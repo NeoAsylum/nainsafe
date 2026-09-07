@@ -2,109 +2,110 @@
 typ: spiel
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-09-01
-schleife: Der Spieler stellt je Runde bis zu drei Aktionen aus fünf Arten, die Welt rechnet ein Jahr weiter, und jede Zahländerung trägt die Kette ihrer Ursachen mit sich.
-siegbedingung: Das Mandat — Fondsvermögen über einer Schwelle UND Einfluss über einer Schwelle in mindestens zwei Ländern — erreicht innerhalb von R Runden, ohne vorher an einer der drei Todesarten zu sterben. Ergebnis ist die Rundenzahl bis zur Erfüllung.
+schleife: Each round the player places up to three actions from five kinds, the world computes one year forward, and every change in a number carries the chain of its causes with it.
+siegbedingung: The mandate — fund assets above a threshold AND influence above a threshold in at least two countries — reached within R rounds, without first dying by one of the three ways of dying. The result is the number of rounds until fulfilment.
 aktionen: 5
-laender: Schicht 1 — 4 Politikländer (USA, China, Deutschland, Brasilien), nach Paket 0118 neun: dazu Japan, Indien und Chile als Rückvergleichsländer, Singapur und Saudi-Arabien als Spielländer. Also L = 9, L_R = 7, L_S = 2, n = 1. Schicht 3 — ein nicht spielbares Restwelt-Aggregat. Schicht 2 siehe boersenplaetze.
-boersenplaetze: Schicht 2, B = 3·(L+1) — je Gebiet ein Platz je Leitsektor. Bei L = 9 sind das 30 Plätze zu je vier Feldern plus einem Positionssteckplatz, also 150 Adressen; Zustand 890, handelbare Plätze 75. Handelbar, nicht beeinflussbar, ohne Handelszeile, ohne Sollreihe.
-gueter: 3 Sektoren (Landwirtschaft, Industrie, Dienstleistungen), davon 2 mit Handelszeilen
-takt: 1 Runde = 1 Jahr; R = 20 Runden, Startzustand 2001, Endzustand 2021, 21 Stützstellen
+laender: Layer 1 — 4 policy countries (USA, China, Germany, Brazil), after package 0118 nine: plus Japan, India and Chile as backtest countries, Singapore and Saudi Arabia as play-only countries. So L = 9, L_R = 7, L_S = 2, n = 1. Layer 3 — one non-playable rest-of-world aggregate. Layer 2 see boersenplaetze.
+boersenplaetze: Layer 2, B = 3·(L+1) — per territory one venue per lead sector. At L = 9 that is 30 venues of four fields each plus one position slot, hence 150 addresses; state 890, tradable venues 75. Tradable, not influenceable, no trade line, no target series.
+gueter: 3 sectors (agriculture, industry, services), 2 of them with trade lines
+takt: 1 round = 1 year; R = 20 rounds, start state 2001, end state 2021, 21 support points
 gegenkraefte: 5
-messbar_entscheidungsdichte: Je Runde t = 1…R und je Startwert 30 gezogene Aktionsbündel; jedes ersetzt die Bot-Aktionen der Runde t, danach spielt der Heuristikbot auf dem Referenzprofil (1,1,1,1,1) bis Runde R. Dichte(t, Startwert) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden vom Median dieser 30 abweichen; Dichte(t) = Mittel über die 50 Startwerte. Abnahme = Mittel der Dichte(t) je Partiedrittel (1-6, 7-13, 14-20) jeweils >= 0,4.
-messbar_strategievielfalt: Profil = Fünftelverteilung über die fünf Aktionsarten (126 Profile), Wirkung über das Vorratsverfahren; je Profil Suchbot über 20 Startwerte, Profilergebnis = Median. Profil gewinnt, wenn sein Median <= 20.000 liegt. Strategiekern = die stärkste der drei Familien Position/Beteiligung/Lobby; die 6 Profile ohne jede Familienaktion haben keinen Kern und zählen nicht. Abnahme = alle drei Kerne stellen mindestens einen Gewinner, und das beste Klassenergebnis ist höchstens 25 Prozent besser als das schlechteste der drei.
-messbar_optimumsverschiebung: Frühfenster = Runden 1-6 mit Profil p, Rest mit Referenzprofil; Spätfenster = Runden 14-20 mit Profil p, Rest mit Referenzprofil; je 126 Profile x 20 Startwerte, Median als Profilergebnis, bestes Profil je Fenster nach kleinstem Median (Gleichstand nach Profilkennung). Verschiebung = L1-Abstand der beiden Profilvektoren geteilt durch 5, Werte aus {0; 0,4; …; 2,0}. Schwelle 0,4.
-messbar_rueckvergleich: Startjahrgang 2001, R = 20 Runden im Weltlauf (Fondsteilsystem abgeschaltet), Politikinstrumente exogen auf den historischen Pfaden; Prüfgegenstände 3·L_R + (L_R − n) + 1 aus L_R(S+3) − n freien Sollreihen plus Handelsblock, je über 21 Stützstellen ohne Füllung — heute L_R = 4, also 16 aus 23; nach Paket 0118 L_R = 7, also 28 aus 41. Schwellen: MAPE 20 Prozent für Niveaureihen, mittlerer absoluter Fehler 300 Basispunkte für Ratenreihen, Richtungstreue 0,6 für alle, gebildet über die Übergänge, in denen sich die Sollreihe bewegt. Bestanden, wenn höchstens ⌊L_R/2⌋ Prüfgegenstände reißen — heute 2, nach 0118 3.
+messbar_entscheidungsdichte: Per round t = 1…R and per start value 30 drawn action bundles; each replaces the bot actions of round t, after which the heuristic bot plays on the reference profile (1,1,1,1,1) until round R. Dichte(t, Startwert) = share of the 30 results that deviate from the median of these 30 by more than 1.000 milli-rounds; Dichte(t) = mean over the 50 start values. Acceptance = mean of Dichte(t) per game third (1-6, 7-13, 14-20) each >= 0,4.
+messbar_strategievielfalt: Profile = fifths distribution over the five action kinds (126 profiles), effect via the stockpile procedure; per profile a search bot over 20 start values, profile result = median. A profile wins if its median lies <= 20.000. Strategy core = the strongest of the three families position/stake/lobby; the 6 profiles without any family action have no core and do not count. Acceptance = all three cores produce at least one winner, and the best class result is at most 25 percent better than the worst of the three.
+messbar_optimumsverschiebung: Early window = rounds 1-6 with profile p, rest with the reference profile; late window = rounds 14-20 with profile p, rest with the reference profile; 126 profiles x 20 start values each, median as profile result, best profile per window by smallest median (ties by profile identifier). Shift = L1 distance of the two profile vectors divided by 5, values from {0; 0,4; …; 2,0}. Threshold 0,4.
+messbar_rueckvergleich: Start vintage 2001, R = 20 rounds in weltlauf (fund subsystem switched off), policy instruments exogenous on the historical paths; check subjects 3·L_R + (L_R − n) + 1 out of L_R(S+3) − n free target series plus the trade block, each over 21 support points without filling — today L_R = 4, hence 16 out of 23; after package 0118 L_R = 7, hence 28 out of 41. Thresholds: MAPE 20 percent for level series, mean absolute error 300 basis points for rate series, directional accuracy 0,6 for all, formed over the transitions in which the target series moves. Passed if at most ⌊L_R/2⌋ check subjects break — today 2, after 0118 3.
 ---
 
-# Ein Hedgefonds mit vier Ländern, drei Sektoren und vier Politikhebeln — und jede Zahl, die sich bewegt, sagt warum.
+# A hedge fund with four countries, three sectors and four policy levers — and every number that moves says why.
 
-*Fünfte Fassung, nach
-`ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde6-2026-09-01.md` und gegen
-`ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Geändert sind gegenüber der vierten
-Fassung genau drei Stellen: der neue Abschnitt **What a basket is worth, what a step is
-and what a bond costs** (Befund 1), die **Kanaltabelle**, die dadurch einen achten
-Kanal bekommt, und drei Zeilen in der Tabelle der Größen ohne Datenanker. Keine Zahl der
-vierten Fassung ändert sich, keine Zustandsadresse kommt hinzu. Die Abarbeitung der zwei
-Befunde steht am Ende der Datei, die der früheren Runden darunter.*
+*Fifth version, after
+`ventures/0016-.../befunde/pruefung-0001-entwurf-abnahme-runde6-2026-09-01.md` and against
+`ventures/0016-.../aufgaben/0001-entwurf-abnahme.md`. Compared with the fourth version,
+exactly three places are changed: the new section **What a basket is worth, what a step is
+and what a bond costs** (finding 1), the **channel table**, which thereby gains an eighth
+channel, and three lines in the table of quantities without a data anchor. No number of the
+fourth version changes, no state address is added. The working-off of the two findings
+stands at the end of the file, that of the earlier rounds below it.*
 
-*Nachgetragen am **2026-09-02** aus Arbeitspaket `0021-schaden-gegenkraft-5`: der Abschnitt
-**Der Schaden in Gegenkraft 5, als Rechenvorschrift**, sechs Zeilen unter „Was bewusst
-fehlt", fünf unter „Offene Entwurfsfragen" und eine Tabelle unter „Was der Architekt neu
-rechnen muss". Auch dieser Nachtrag ändert keine Zahl der fünften Fassung und keine
-Zustandsadresse; er füllt die Lücke, die `technik.md` Abschnitt 12 Punkt 3 gemeldet hat.*
+*Added on **2026-09-02** from work package `0021-schaden-gegenkraft-5`: the section
+**Der Schaden in Gegenkraft 5, als Rechenvorschrift**, six lines under „Was bewusst
+fehlt", five under „Offene Entwurfsfragen" and a table under „Was der Architekt neu
+rechnen muss". This addendum too changes no number of the fifth version and no state
+address; it fills the gap that `technik.md` section 12 point 3 reported.*
 
-*Geändert am **2026-09-03** aus Arbeitspaket `0039-zollzeile-konjunktursockel`, nach
-Befund 1 und 2 der Prüfung vom 2026-09-02. Die **Zollzeile** der Schadensvorschrift misst
-nicht mehr die ganze Verschiebung des Sektorpreises, sondern **allein den Anteil, den der
-Zollkeil daran hat** — Weg 1 von den dreien, die der Befund offengelassen hat. Betroffen
-sind sechs Abschnitte unter *Der Schaden in Gegenkraft 5*, eine neue Zeile unter
-*What must hold for price formation*, die Zeile zu Kanal 3, vier Zeilen unter „Was bewusst
-fehlt", drei unter „Offene Entwurfsfragen" und die Nachziehtabelle. Auch dieser Nachtrag
-kommt **ohne neue Zustandsadresse** aus; die Zahl der Lesezugriffe fällt von behaupteten
-120 auf nachgezählte **106**. Die Abarbeitung beider Befunde steht am Ende der Datei.*
+*Changed on **2026-09-03** from work package `0039-zollzeile-konjunktursockel`, after
+findings 1 and 2 of the check of 2026-09-02. The **tariff line** of the damage prescription
+no longer measures the whole shift of the sector price, but **only the share the tariff
+wedge has in it** — way 1 of the three the finding left open. Affected are six sections
+under *Der Schaden in Gegenkraft 5*, one new line under
+*What must hold for price formation*, the line for channel 3, four lines under „Was bewusst
+fehlt", three under „Offene Entwurfsfragen" and the follow-up table. This addendum too gets
+by **without a new state address**; the number of read accesses falls from a claimed
+120 to a recounted **106**. The working-off of both findings stands at the end of the file.*
 
-*Geändert am **2026-09-03** aus Arbeitspaket `0054-partielaenge-r-entscheiden`. **R ist von
-24 auf 20 gefallen, das Fenster von 1997–2021 auf 2001–2021, die Stützstellenzahl von 25 auf
-21.** Reihe 9 (Leitzins) ist **keine Sollreihe mehr** und behält ihre beiden anderen Rollen;
-die Sollreihenzahl fällt damit von 31 auf **27**. Die 16 Prüfgegenstände von Maß 4 und die
-Toleranz 2 bleiben **unverändert** — die vier gestrichenen Reihen waren nie darunter. Die
-Begründung steht vollständig im Abschnitt **The game length R**, die Liste der nachzuziehenden
-Stellen unter *Was der Architekt neu rechnen muss*. Dies ist der Fall, für den die
-Ersetzungsregel der fünften Fassung geschrieben war: R ist ersetzt und sonst nichts.*
+*Changed on **2026-09-03** from work package `0054-partielaenge-r-entscheiden`. **R has
+fallen from 24 to 20, the window from 1997–2021 to 2001–2021, the number of support points
+from 25 to 21.** Series 9 (policy rate) is **no longer a target series** and keeps its two
+other roles; the number of target series thus falls from 31 to **27**. The 16 check subjects
+of Maß 4 and the tolerance of 2 remain **unchanged** — the four struck series were never
+among them. The reasoning stands in full in the section **The game length R**, the list of
+places to follow up under *Was der Architekt neu rechnen muss*. This is the case the
+replacement rule of the fifth version was written for: R is replaced and nothing else.*
 
-*Zweiter Lauf desselben Pakets, ebenfalls am **2026-09-03**. Die Entscheidung steht
-unverändert; nachgetragen ist allein der Block **Nachtrag desselben Tages** unter *Was der
-Architekt neu rechnen muss*, weil die Nachziehtabelle des ersten Laufs sieben Stellen in
-`technik.md` nicht genannt hatte — sechs davon außerhalb eines T-Blocks, darunter das
-vollständige Laufzeitbudget in dessen Abschnitt 10. Keine Zahl dieser Datei ändert sich
-dadurch, keine Zustandsadresse, und `technik.md` ist weiterhin nicht angefasst.*
+*Second run of the same package, likewise on **2026-09-03**. The decision stands
+unchanged; added is solely the block **Nachtrag desselben Tages** under *Was der
+Architekt neu rechnen muss*, because the follow-up table of the first run had not named
+seven places in `technik.md` — six of them outside a T-block, among them the complete
+runtime budget in its section 10. No number of this file changes as a result, no state
+address, and `technik.md` remains untouched.*
 
-*Geändert am **2026-09-04** aus Arbeitspaket `0055-zollzeile-vergleichszahl-zustand-b`, nach
-Befund 1 der Prüfung vom 2026-09-03. Betroffen ist **ein** Absatz: die Vergleichszahl im
-Abschnitt **Zwei Zustände, zwei Zahlen**, die eine Größe eines fremden Zustands unter der
-Beschriftung „Zustand B" führte. Sie ist durch die Zahl ersetzt, die aus der Tabelle darüber
-folgt (**8.472.000**), die Tabelle bekommt die eine Eingabezeile dazu, die dafür fehlte, und
-die Abarbeitung steht am Ende der Datei. Keine Entscheidung, keine Zustandsadresse, keine
-Kalibrierzahl und keine der Zahlen von Zustand A ändern sich.*
+*Changed on **2026-09-04** from work package `0055-zollzeile-vergleichszahl-zustand-b`, after
+finding 1 of the check of 2026-09-03. Affected is **one** paragraph: the comparison number in
+the section **Zwei Zustände, zwei Zahlen**, which carried a quantity of a foreign state under
+the label „Zustand B". It is replaced by the number that follows from the table above it
+(**8.472.000**), the table gains the one input row that was missing for that, and the
+working-off stands at the end of the file. No decision, no state address, no calibration
+number and none of the numbers of state A change.*
 
-*Geändert am **2026-09-05** aus Arbeitspaket `0119-welt-in-drei-schichten`, nach einem Einwand
-des Betreibers vom selben Tag: Ein Hedgefonds, der nur in vier Ländern etwas halten kann, ist
-kein globaler Hedgefonds. Neu ist der Abschnitt **Die drei Schichten der Welt** mit der
-zweiten Schicht, den **Börsenplätzen**; dazu ein Halbsatz in Aktion 1, ein Absatz unter
-*The state* (welchen Stand die 310 meint), ein Absatz unter *Warum die Größe des Zustands
-keine Verteidigung ist*, **sieben** Einträge unter „Was bewusst fehlt" — sechs neue und der
-erste, „More than four countries and three sectors", ergänzt statt gestrichen —,
-fünf unter „Offene Entwurfsfragen" und ein Block unter „Was der Architekt neu rechnen muss".
-**Keine Zahl der bestehenden vier Länder, keine Sollreihe, kein Prüfgegenstand und kein
-Fehlermaß ändert sich**; die Bezugszahl des Zustands bleibt bis 0116 und 0118 die **310**, und
-die Schichtensumme **890** gilt für den Stand nach beiden. Die zweite Schicht kostet **zwei**
-neue Schlüssel in `parameter.toml` und **keinen neunten Rückkopplungskanal**.*
+*Changed on **2026-09-05** from work package `0119-welt-in-drei-schichten`, after an objection
+by the operator from the same day: a hedge fund that can hold something in only four countries
+is not a global hedge fund. New is the section **Die drei Schichten der Welt** with the
+second layer, the **exchange venues**; plus half a sentence in action 1, a paragraph under
+*The state* (which level the 310 means), a paragraph under *Warum die Größe des Zustands
+keine Verteidigung ist*, **seven** entries under „Was bewusst fehlt" — six new ones and the
+first, „More than four countries and three sectors", extended instead of struck —,
+five under „Offene Entwurfsfragen" and a block under „Was der Architekt neu rechnen muss".
+**No number of the existing four countries, no target series, no check subject and no
+error measure changes**; the reference number of the state remains **310** until 0116 and
+0118, and the layer sum **890** holds for the level after both. The second layer costs
+**two** new keys in `parameter.toml` and **no ninth feedback channel**.*
 
-*Geändert am **2026-09-06** aus Arbeitspaket `0118-fuenf-weitere-laender-auswaehlen`, nach der
-Anweisung des Betreibers vom 2026-09-05 („Lass uns insofern direkt 5 weitere Länder
-einplanen") und seiner Wahl von Weg A (die Steckplätze wachsen mit `L`). Neu ist der Abschnitt
-**Welche neun Länder, welche Klasse, und was Weg A kostet** unter *The state*; dazu zwei
-Zeilen im Frontmatter, die Zählregel von Maß 4 in `L_R` statt in Ziffern, vier Einträge unter
-„Was bewusst fehlt", fünf unter „Offene Entwurfsfragen" — davon eine **geschlossen** — und ein
-Block unter „Was der Architekt neu rechnen muss". **Die 310 bleiben stehen**, bis 0116 die
-Ableitungskette geschrieben hat; keine Zahl in `technik.md`, `reihen.toml` oder im Kern ist
-angefasst. Die fünf sind **Japan, Indien, Chile, Singapur und Saudi-Arabien**, die ersten drei
-als Rückvergleichsland erwartet, die letzten beiden als Spielland; damit ist `L_R = 7` und die
-Zahl der Prüfgegenstände wächst von 16 auf **28**, die Toleranz von 2 auf **3**.*
+*Changed on **2026-09-06** from work package `0118-fuenf-weitere-laender-auswaehlen`, after the
+operator's instruction of 2026-09-05 („Lass uns insofern direkt 5 weitere Länder
+einplanen") and his choice of Weg A (the slots grow with `L`). New is the section
+**Welche neun Länder, welche Klasse, und was Weg A kostet** under *The state*; plus two
+lines in the frontmatter, the counting rule of Maß 4 in `L_R` instead of in digits, four
+entries under „Was bewusst fehlt", five under „Offene Entwurfsfragen" — one of them
+**closed** — and a block under „Was der Architekt neu rechnen muss". **The 310 stay in
+place** until 0116 has written the derivation chain; no number in `technik.md`,
+`reihen.toml` or in the core is touched. The five are **Japan, India, Chile, Singapore and
+Saudi Arabia**, the first three expected as backtest countries, the last two as play-only
+countries; with that `L_R = 7` and the number of check subjects grows from 16 to **28**,
+the tolerance from 2 to **3**.*
 
-*Geändert am **2026-09-07** aus Arbeitspaket `0198-realeinkommen-als-rechenvorschrift`, nach
-`befunde/ergebnis-0197-schritt-5-reaktion-rechnet-die-zustimmung-2026-09-07.md`: Der Kernbauer
-konnte Schritt 5 nicht bauen, weil `Realeinkommen` in acht Zeilen von `specs/` vorkommt und in
-keiner als Formel. Neu ist der Abschnitt **Das Realeinkommen in Gegenkraft 2, als
-Rechenvorschrift** unter *Die Gegenkraefte*; dazu ein Verweis in Gegenkraft 2, die **Zeile zu
-Kanal 2** samt Erläuterung, vier Einträge unter „Was bewusst fehlt", zwei unter „Offene
-Entwurfsfragen", drei Zusätze in der Klagentabelle und ein Block unter „Was der Architekt neu
-rechnen muss". **Keine Zustandsadresse kommt hinzu** — die 310 bleiben 310, die 890 bleiben
-890 —, kein Schlüssel in `parameter.toml`, kein neunter Kanal; die abgeleiteten Größen aus
-T48 wachsen von 22 auf **25**. Zwei Stellen sind **berichtigt**: der Absatz „It costs" unter
-*Was die Entscheidung kostet* und der zugehörige Eintrag unter „Was bewusst fehlt" hatten dem
-ausländischen Zoll einen Weg über Gegenkraft 2 zugesagt, den die hier geschriebene Regel nicht
-trägt.*
+*Changed on **2026-09-07** from work package `0198-realeinkommen-als-rechenvorschrift`, after
+`befunde/ergebnis-0197-schritt-5-reaktion-rechnet-die-zustimmung-2026-09-07.md`: the core
+builder could not build step 5 because `Realeinkommen` occurs in eight lines of `specs/` and
+in none of them as a formula. New is the section **Das Realeinkommen in Gegenkraft 2, als
+Rechenvorschrift** under *Die Gegenkraefte*; plus a reference in counterforce 2, the **line
+for channel 2** together with its explanation, four entries under „Was bewusst fehlt", two
+under „Offene Entwurfsfragen", three additions in the complaints table and a block under
+„Was der Architekt neu rechnen muss". **No state address is added** — the 310 remain 310,
+the 890 remain 890 —, no key in `parameter.toml`, no ninth channel; the derived quantities
+from T48 grow from 22 to **25**. Two places are **corrected**: the paragraph „It costs"
+under *Was die Entscheidung kostet* and the corresponding entry under „Was bewusst fehlt"
+had promised the foreign tariff a path via counterforce 2 that the rule written here does
+not carry.*
 
 ## The game length R, and why it stands here as a letter
 
