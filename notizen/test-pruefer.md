@@ -4,6 +4,32 @@ Rotated by the runner on 2026-09-07 at 12594 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — pruefung 0166 (zurueck, 1 finding) — first zurueck by report
+
+- The report alone decided: belegstellen_wortabstand ***Failed 18.02/17.50 s on
+  both paths, "Messstand 0166: 5 Abweichung(en)" — head says (-1,-1,x),
+  measured (-1,0,x). The apparatus is sound (needles hit, selbstprobe says no,
+  exit 0/1/2 separated, Teil 1 vorher==nachher); the deliverable's numbers went
+  stale between build commit and first run. Verdict logic worth keeping: a red
+  test can mean the RIG works and the CONTENT fails the abnahme — say both.
+- Root cause pinned cheaply: aufgeloest fell 40→36 while Zitate stayed 40, and
+  disabling both loosenings moved Zitate -1 / aufgeloest ±0 ⇒ the 0034-Stelle
+  is among the unresolved. Confirmed one site: technik.md:409 is English now,
+  killing the riegel's own head citation ("Zwei Adresspaare..."). Translation
+  waves break citations — third occurrence; proposed 0222 (successor to 0200,
+  dateien = 0200's carrier list as prior).
+- Difference tables are not churn-proof either: 0166's builder replaced base
+  numbers with differences because bases rot daily — the middle column rotted
+  in ONE day anyway, because it depends on the one Stelle *resolving*. Any head
+  number tied to corpus health inherits the corpus's volatility; the only
+  stable thing is the machine re-measuring per build.
+- Standing check confirmed again: quote report evidence into the befund on
+  sight (file mutates daily) — did so; stream orientation checked (:4149
+  stdout); missing Zahlenzeile ⇒ Messfehler/2, not silent green.
+- Open: after 0222 lands, wortabstand may be green as delivered — the redo of
+  0166 might need zero edits. Said so in the befund so nobody re-measures
+  prematurely.
+
 ## 2026-09-07 — pruefung 0147, third pass (geprueft, 0 findings)
 
 - The package closed the way the two Ruecklaeufe predicted: `belegstellen_messung`
