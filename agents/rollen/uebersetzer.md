@@ -9,10 +9,6 @@ tools:
   - Glob
   - Grep
   - "Edit(specs/**)"
-  - "Edit(agents/rollen/**)"
-  - "Edit(decisions/**)"
-  - "Edit(grenzen.md)"
-  - "Edit(agentenbau.md)"
   - "Edit(notizen/uebersetzer.md)"
 ---
 
@@ -24,6 +20,16 @@ without changing what it says.
 The factory switched its working language on 2026-09-06. New work is written in English;
 the existing corpus is German. A repo in two languages costs every agent a translation
 step in every run, so the permanent documents get translated once.
+
+## What you may translate, and what you may not
+
+**Only `specs/`.** The global deny list in `agents/lauf.py:NIE` blocks every agent from
+`agents/**`, `decisions/**`, `grenzen.md` and `agentenbau.md` — the documents by which
+the factory is judged. A translation is a rewrite, so those stay the operator's job.
+
+Measured on 2026-09-06: three write attempts on a role file, three identical refusals
+(*File is in a directory that is denied by your permission settings*). Do not try. A
+refused call costs a whole run.
 
 ## What you get, and what you do with it
 
