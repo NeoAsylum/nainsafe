@@ -3003,63 +3003,63 @@ count of `fondsvermoegen` (230) and the lower bound `aufschlag_min` (51 bp).
 
 ## 16. Befundabarbeitung — Prüfung zu Paket `0011-stack-auf-cpp`, Runde 1 vom 2026-09-03
 
-Drei Befunde, alle in dieser Datei, alle **behoben**. Kein Widerspruch, kein „anders gelöst":
-Der Prüfer hat in allen drei Fällen recht, und in allen drei war der Fehler derselbe — beim
-Übersetzen von Rust nach C++ ist eine Zusage von der Bauart mitgenommen worden, die an ihr gar
-nicht hing. Was der Prüfer ausdrücklich nicht als Befund führt, ist nicht angefasst.
+Three findings, all in this file, all **fixed**. No dissent, no „anders gelöst": the
+reviewer is right in all three cases, and in all three the error was the same — in
+translating from Rust to C++, a promise was carried along from the way of building, though it
+did not hang on it at all. What the reviewer expressly does not carry as a finding has not
+been touched.
 
-**Befund 1, der Ersatz für `overflow-checks` erreicht die blanke Multiplikation nicht —
-behoben.** Massnahme 4 hat einen dritten Punkt bekommen: Jede Multiplikation zweier `i64`
-ohne folgende Division läuft über `mal(a, b)` in `festkomma.hpp`, also über `__int128` und den
-Wächter aus 4.1. Die Aufzählung der Massnahme ist zugleich vom Ort auf die **Rechenart**
-umgestellt — Verengung, Strichrechnung, Multiplikation ohne Division —, denn eine Aufzählung
-nach Stellen wird beim nächsten Zusatz wieder unvollständig, und genau das war passiert. Zwei
-Dinge, die nicht im Befund standen und dazugehören: Ich habe `__builtin_mul_overflow` nicht
-genommen und sage in T7, warum (ein Abbruchpfad statt zweier); und der Nachweis ist eine
-Zuordnung statt einer Liste, in diesem Lauf einmal ausgeführt —
-`grep -rn ' \* ' kern/src kern/include` gibt heute 52 Zeilen in vier zugelassenen Arten, keine
-davon eine `i64`-Größenmultiplikation, weil `kern::werte` noch nicht gebaut ist.
+**Finding 1, the replacement for `overflow-checks` does not reach the bare multiplication —
+fixed.** Measure 4 has received a third point: every multiplication of two `i64` without a
+following division runs through `mal(a, b)` in `festkomma.hpp`, that is, through `__int128`
+and the guard from 4.1. The measure's enumeration has at the same time been switched from
+place to **kind of arithmetic** — narrowing, addition and subtraction, multiplication without
+division — because an enumeration by places becomes incomplete again with the next addition,
+and exactly that had happened. Two things that did not stand in the finding and belong with
+it: I did not take `__builtin_mul_overflow` and say in T7 why (one abort path instead of
+two); and the proof is a mapping instead of a list, executed once in this run —
+`grep -rn ' \* ' kern/src kern/include` gives 52 lines today in four permitted kinds, none
+of them an `i64` quantity multiplication, because `kern::werte` is not yet built.
 
-**Befund 2, `cargo vendor` ist gestrichen statt neu gefasst — behoben.** T3 hat den Nachfolger
-bekommen: Quelltext jeder Fremdbibliothek unter `fremd/<name>/`, Fassung und Commit-Kennung im
-ADR, Einbindung über `add_subdirectory`; `find_package()`, `FetchContent`, `ExternalProject`
-und `pkg_check_modules` sind verboten. T1 nennt die Vorgabe am Ort des alten Satzes und
-verweist auf T3, damit die übersetzte Zusage dort wieder beide Hälften hat. Den Hinweis des
-Prüfers, dass `find_package` **nichts herunterlädt** und deshalb an T23 vorbeigeht, habe ich
-in die Vorgabe selbst geschrieben — er ist der Grund, warum ein Verbot des Ladens hier nicht
-genügt.
+**Finding 2, `cargo vendor` is struck rather than recast — fixed.** T3 has received the
+successor: source code of every third-party library under `fremd/<name>/`, version and
+commit id in the ADR, integration via `add_subdirectory`; `find_package()`, `FetchContent`,
+`ExternalProject` and `pkg_check_modules` are forbidden. T1 names the prescription at the
+place of the old sentence and points to T3, so that the translated promise has both halves
+there again. The reviewer's remark that `find_package` **downloads nothing** and therefore
+passes T23 by, I have written into the prescription itself — it is the reason why a ban on
+downloading is not enough here.
 
-**Befund 3, die Erzwingung von T2 liest nur `kern/CMakeLists.txt` — behoben, an beiden
-Stellen.** T13 verbietet `link_libraries()` im ganzen Vorhaben und bindet
-`target_link_libraries(<ziel> …)` an die `CMakeLists.txt` des Verzeichnisses, in dem `<ziel>`
-angelegt wird — die Zwillingsform des dort schon stehenden Verbots von
-`include_directories()`, wie der Prüfer es vorgezeichnet hat. T2 hat einen **dritten**
-Mustervergleich bekommen, der über alle übrigen `CMakeLists.txt` läuft und `link_libraries(`
-sowie `target_link_libraries(kern` sucht; ohne ihn wäre das Verbot eine Verabredung. Beides
-gehört zusammen: T13 sagt, was nicht sein darf, T2 sagt, wie man es sieht.
+**Finding 3, the enforcement of T2 reads only `kern/CMakeLists.txt` — fixed, in both
+places.** T13 forbids `link_libraries()` across the whole venture and binds
+`target_link_libraries(<ziel> …)` to the `CMakeLists.txt` of the directory in which `<ziel>`
+is created — the twin form of the ban on `include_directories()` already standing there, as
+the reviewer sketched it. T2 has received a **third** pattern match, which runs over all
+remaining `CMakeLists.txt` and searches for `link_libraries(` and
+`target_link_libraries(kern`; without it the ban would be an agreement. The two belong
+together: T13 says what must not be, T2 says how one sees it.
 
-**Gegen den heutigen Baum geprüft, nicht nur behauptet.** Die drei neuen Verbote sind keine
-nachträgliche Verurteilung des Gebauten:
+**Checked against today's tree, not merely asserted.** The three new bans are no retroactive
+condemnation of what has been built:
 `grep -rnE 'link_libraries|include_directories|find_package|FetchContent' --include=CMakeLists.txt .`
-gibt über das ganze Vorhaben **sechs** Zeilen — vier `target_include_directories` und zwei
+gives **six** lines across the whole venture — four `target_include_directories` and two
 `target_link_libraries(${name} PRIVATE …)`
-für Probenziele, jede in der Datei, in der ihr Ziel entsteht. Kein Treffer auf
-`link_libraries(`, `include_directories(` oder `find_package(`. Die Pakete 0004 und 0031 haben
-also schon so gebaut; diese Fassung schreibt hin, was bisher Gewohnheit war.
+for test targets, each in the file in which its target is created. No hit on
+`link_libraries(`, `include_directories(` or `find_package(`. Packages 0004 and 0031 have
+therefore already built this way; this version writes down what until now was habit.
 
-**Zwei Meldungen an den Projektmanager, weil sie ausserhalb meines Verzeichnisses liegen und
-ich dort nichts ändere.** Erstens: `festkomma.hpp` hat heute kein `mal(a, b)` — es ist die
-einzige Zeile Code, die diese Nachbesserung nach sich zieht, und sie gehört in ein eigenes
-kleines Paket samt Probe für den Abbruchfall. Zweitens: Die Abnahme von Paket 0004,
-Bedingung 3, schreibt die zwei Mustervergleiche über `kern/CMakeLists.txt` wörtlich aus und
-kennt den dritten deshalb nicht. Der Prüfer hat das gesehen und ausdrücklich gesagt, die
-Lücke gehöre in die Vorgabe geschlossen; hier ist sie geschlossen. Ob 0004 nachgeführt wird,
-entscheidet nicht der Architekt.
+**Two messages to the project manager, because they lie outside my directory and I change
+nothing there.** First: `festkomma.hpp` has no `mal(a, b)` today — it is the single line of
+code that this rework entails, and it belongs in its own small package together with a test
+for the abort case. Second: the acceptance of package 0004, condition 3, spells out the two
+pattern matches over `kern/CMakeLists.txt` verbatim and therefore does not know the third.
+The reviewer saw this and said expressly that the gap belongs closed in the prescription;
+here it is closed. Whether 0004 is brought up to date is not the architect's decision.
 
-**Was diese Nachbesserung nicht geändert hat:** kein Wort an der Stacktabelle, an T6, T6b,
-T2b, T9, den Massnahmen 1 bis 3, den 310 Adressen, den Formeln, den Maßen oder den
-Kostenrechnungen. Der Umfang ist ein Punkt in T7, ein Absatz in T3 mit einem Halbsatz in T1
-und je ein Absatz in T2 und T13 — das ist der Rücklauf und keine achte Fassung.
+**What this rework has not changed:** not a word on the stack table, on T6, T6b, T2b, T9,
+measures 1 to 3, the 310 addresses, the formulas, the Maße or the cost calculations. The
+scope is one point in T7, one paragraph in T3 with a half-sentence in T1, and one paragraph
+each in T2 and T13 — that is the return and not an eighth version.
 
 ## 17. Paket `0026-klasse-2-preisbasis` — Umfang, und was ausdrücklich liegen bleibt
 
