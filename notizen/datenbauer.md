@@ -70,9 +70,12 @@ package 0185 against `daten/reihen.toml`:
   0 green, 1 finding, 2 self-test broken.
 - **Its keywords are countable:** `Abschnitt`, `Absatz`, `Ueberschrift` and the umlaut
   spelling; the word boundary is checked only on the **left**, so `Abschnitte` counts.
-  `reihen.toml` holds 101 of them (2026-09-07). **A correction that leaves exactly as
+  `reihen.toml` holds **102** of them, `78 + 17 + 7`, measured 2026-09-07 before and
+  after the 0185 return pass. The 101 that `pruefweg.toml_geprueft` still claims is not
+  reproducible; reported in the field, not healed. **A correction that leaves exactly as
   many occurrences as it found holds the four Riegel numbers fixed without starting the
-  Riegel** — counted, not hoped.
+  Riegel** — counted, not hoped. Count with `-o` in content mode: bare `Abschnitt` gives
+  56 in count mode (lines) against 78 occurrences.
 - **A quotation needs three parts: keyword, then the heading in quotation marks, then a
   document name to its left.** A section number without a heading produces an
   *übergangene* Fundstelle, not a finding.
@@ -143,13 +146,40 @@ of the Riegel (Zeile + blank + two digits) and the Riegel is green at HEAD — s
 presumably one of the 55 übergangene Fundstellen. Evidence that the blind spot is not
 theoretical.
 
+## 2026-09-07 — 0185 return pass 1: the second riegel on this file, and which branch to take
+
+Reference state `8c3dbbb`. **The same lesson as 0203 above, reached from the other side**
+— and worth the second entry because here *both* branches were open and one still lost.
+
+- **`daten/reihen.toml` has a second live guard nobody had noted: `zahlwort_reihen`**, run
+  by `ctest` as `befunde/messung-0099/zahlwoerter.py --riegel <wurzel>`. It holds three
+  word sequences against three counts of this file: `stand der <zahl> vorlagen`, `genannt
+  wird er in <zahl> blattwerten`, `zerfallen ohne rest in <zahl> plus <zahl> plus <zahl>`.
+  **Each must occur exactly once or the run is Code 2** — a missing anchor is louder than
+  a wrong number. Read it before rewriting any comment here.
+- **It reads whole-line comments only.** Words are collected solely from lines whose first
+  non-blank character is `#`; blocks break at a blank comment line and at any code line.
+  So `zerfallen ohne Rest in` stands five times inside `pruefweg.toml_geprueft` and counts
+  zero times. Quote the anchors freely in a field, never in a comment.
+- **Why the count went instead of getting a date.** The passage counted commits over
+  `technik.md`, a **foreign** file. `.git/logs/HEAD` never says which files a commit
+  touched, so without a shell the number is only ever a lower bound — the reviewer said so
+  of his own seven. Of the four numbers, three rose on *every* commit to that file; only
+  "seven changed Abschnitt 7" was coupled to this entry's nachziehpflicht. The volatile
+  three went; what stays rests on `fassung: 7` and the section headings, both readable in
+  the document itself **without any history**.
+- **Check the replacement against the paragraph above it.** My first draft restated the
+  preceding one almost verbatim; the claim was already carried, so the new text only had
+  to add what was new. Cut three lines, then re-measured every number again.
+
 ## Open leads
 
 - **0203 is built.** The uncertainty above is the only one.
-- **0185 is built.** Uncertain: the balance 1237 -> 1238 is carried forward from the
-  review of package 0170 and not measured with `tomllib` myself; the field says so.
-  Second, `datei.stand` still reads 2026-09-06 although the change is from 2026-09-07 —
-  the package allows no third leaf value, named instead of smoothed over.
+- **0185 is built, return pass 1 of 3.** Uncertain: the balance 1238 is carried forward
+  and still not measured with `tomllib` myself; the field says so. `datei.stand` still
+  reads 2026-09-06 although the change is from 2026-09-07 — the package allows no third
+  leaf value, named instead of smoothed over. The four belegstellen numbers rest on the
+  keyword balance (102 before and after), not on a run; the run belongs to the reviewer.
 - **0170 and 0175 are built**; both carry an uncertainty named in their fields.
 - **`einheitenbefund-pwt-baci.md` still carries `datum: 2026-09-02`** in its frontmatter
   although 0090 and 0126 changed it. Outside my assignment, reported.
