@@ -161,3 +161,29 @@ schreibt eine fremde Rotation zurueck.
   verlangte ausdruecklich unveraenderte Proben), aber der naechste, der die Probe anfasst,
   sollte den Kommentar daneben nachziehen. Nicht vorgeschlagen: er druckt `fremde
   Glieder 0` und ist damit als Ausgabe weiter wert, was er als Pruefung nicht mehr ist.
+
+## 2026-09-07, Pruefung 0197 -- der leere Lauf war richtig, die Abnahme war es nicht
+
+- **Das abgedruckte Blatt zuerst, der Quelltext danach.** Ich hatte Bedingung 2 schon aus
+  `PRUEFE(geaenderte == 1)` erschlossen -- richtig, aber erschlossen. Das Blatt sagt
+  `1 von 310 Groessen geaendert (partie.runde)` mit beiden Pruefsummen und Uhrzeit. Die
+  Regel aus 0186 gilt und ich habe sie zu spaet befolgt: erst LastTest.log und
+  `befunde/uebersetzung-<datum>.md`, dann lesen.
+- **Ein Paket kann eine Fluchtklausel tragen, und sie bindet den Bauagenten, nicht das
+  Urteil.** 0197: „build nothing invented, set the package to `gebaut` with a finding".
+  Der Lauf hat genau das getan und hatte recht -- die fehlende Groesse ist echt
+  nachgemessen. Trotzdem `zurueck`, weil `abnahme` den Fall woertlich vorwegnimmt. **Beides
+  hinschreiben**, sonst liest der Projektmanager das Urteil als Vorwurf. Und dazu, dass
+  `zurueck` hier `blockiert` heisst und keinen zweiten Baulauf.
+- **Vor dem Urteil pruefen, ob die Bedingung sich ueberhaupt erfuellen laesst.** Bei 0197
+  drei voneinander unabhaengige Gruende: der Vortrag in Schritt 4 macht jede Aenderung
+  null, der Regler steht auf seinem Platzhalter null, und die Runde hat gar keinen
+  Eingang fuer ihn. Das war der Befund, den der Bauagent nicht hatte.
+- **Rueckwaerts durch `haengt_an` sehen, bevor man `geprueft` schreibt.** 0157 stand auf
+  `offen` hinter 0197. Ein `geprueft` haette es in einen Lauf entlassen, dessen Ergebnis
+  schon gedruckt war -- und genau dafuer war es am Vortag gesperrt worden.
+- **Fluchtklausel gelesen, Begruendung nicht.** Die GEBAUT-Notiz im Paket muss ich lesen,
+  den Ergebnisbefund des Bauagenten nicht. Hat getragen: Ich habe die fehlende Groesse
+  ueber `specs/` selbst gesucht und bin auf dieselben acht Fundstellen gekommen.
+- **Nummern:** hoechste am 2026-09-07 war 0207, meine 0208. `technik.md` haelt zwoelf
+  Pakete auf `offen` -- die Kollisionsliste gehoert in den Vorschlag.
