@@ -1,109 +1,105 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-07. Abgedeckt: seit 2026-09-06 08:30.
+Stand 2026-09-08. Abgedeckt: seit 2026-09-07.
 
 ## Wo das Vorhaben steht
 
-**Der Engpass des letzten Plans ist aufgelöst, und der nächste stand schon dahinter.** Der
-Projektmanager hat 0197 geschnitten — das erste Paket, das einen der sechs Rundenschritte
-rechnen lässt — und die dreizehngliedrige `technik.md`-Schlange umgehängt (0165 →
-0172-weltpreis → 0148 → 0177 → …), wie der Vorrang es verlangte. **Der Baulauf hat nichts
-gebaut, und das war richtig:** dem Kern fehlt die Rechenvorschrift und der Draht zu ihr.
-186 Pakete: 147 fertig, 18 offen, 8 Vorschläge, 7 gebaut, 3 blockiert; Spielraum 8.722 von
-12.000 $ (Stand 2026-09-06 05:00), Geld bindet nicht.
+**Der Rückstand des letzten Plans ist abgeräumt.** 0198 (die Rechenvorschrift) ist `fertig`
+und geprüft, 0200 hat die zehn toten Zitate nachgezogen, 0197 und 0208-baulauf stehen auf
+`blockiert` statt auf `zurueck`. **Das stehende Rot ist weg:**
+`befunde/uebersetzung-2026-09-07.md` meldet `ergebnis: ok` — 25 von 25 Tests grün im
+Werkstattbaum, 13 von 13 im Kern, alle Werkzeugbäume grün. 196 Pakete: 169 fertig (+22),
+19 offen, **0 Vorschläge**, 1 gebaut, 5 blockiert; Spielraum 8.722 von 12.000 $ (Stand
+2026-09-06 05:00, zwei Tage alt), Geld bindet nicht.
 
 ## Der Engpass
 
-**Die sechs Schritte haben jetzt einen Auftrag, aber weder eine Vorschrift noch einen Draht
-— und beide Lücken liegen in `specs/`, wo kein Bauagent sie schliessen darf.**
+**Eine Zeile in `ops/reserviert.txt` hält 15 der 19 offenen Pakete an.**
 
-Der Kernbauer von 0197 hat `schritt_5_reaktion` nicht angefasst und den Grund benannt: die
-Zustimmungsregel liest die *Änderung des Realeinkommens*, und `Realeinkommen` steht in
-`specs/` achtmal, jedes Mal als Prosa oder als Pfeil in einem Kettenbild. T48 entscheidet,
-wem das gehört: „Ein Name in einer Formel … **ist ein Befund und keine Bauentscheidung**."
-Vorschlag **0198** (Spielentwerfer, `spiel.md`).
+Die Zeile lautet `specs/0016-.../technik.md` und wird vom Übersetzungslauf gesetzt.
+`baulauf.py:startbereit` zählt sie wie ein eingeplantes Paket: kein Paket, dessen
+`dateien:` diese Datei trifft, wird eingeplant. Betroffen sind **0208-schritt** (der Draht),
+0165, 0172-weltpreis, 0148, 0177, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181,
+0221.
 
-Der Kernprüfer hat unabhängig die zweite Lücke gemessen: `schritt(zustand, aktionen, modus)`
-hat **kein Parameterargument**, `werte::Konstanten` führt `zustimmung_elastizitaet` nicht,
-und `schritt.hpp` sagt es wörtlich — „`parameter.toml` wird hier nicht gelesen, der Rahmen
-braucht keinen Parameter." Damit ist jede Regel mit einem Koeffizienten unbaubar, **auch
-die Politikinstrumente aus Schritt 3**. Vorschlag **0208** (Architekt, `technik.md`).
+Übrig bleiben **drei startbare Pakete** — 0189, 0224, 0225 —, und zwei davon räumen hinter
+dem Übersetzungslauf auf. (0157 steht auf `offen`, hängt aber an 0197, das `blockiert` ist.)
 
-**Beide stehen auf `vorschlag`, keines auf `offen`.** Die zwei Rollen, die sie schreiben
-müssen, sind die am wenigsten benutzten der Fabrik: Spielentwerfer 9 Läufe, Architekt 137
-zu 0,97 $ — zusammen unter 1,5 % des Verbrauchs.
+Der Engpass ist damit zum ersten Mal **kein fehlender Beschluss, sondern eine Sperre.** Der
+Projektmanager hat seinen Teil getan: sein Vermerk auf 0208 nennt die Sperre im Wortlaut
+und stellt das Paket so, dass es anläuft, sobald sie fällt — „und dann ohne einen weiteren
+Lauf von mir".
 
 ## Was quer liegt
 
-- **Ein stehendes Rot.** `belegstellen_riegel` fällt in beiden Bäumen aus (Code 8), der
-  Baulauf meldet `ergebnis: fehler` — 19 von 20 Tests grün, dieser rot. Grund: der
-  Übersetzungslauf benennt Überschriften in `spiel.md` und `daten.md` um („Die Schleife",
-  „Die Aktionen", „Der Zustand", „Der Fonds"), und zehn Abschnittszitate in `aktion.hpp`,
-  `schritt.hpp`, `zustand.hpp`, `schritt.cpp`, `parameter.toml`, `adressen.md`,
-  `reihen.toml` und im Riegel selbst suchen weiter den deutschen Wortlaut. Der Riegel hat
-  recht; genau dafür gibt es ihn. Vorschlag 0200 zieht die zehn nach — der wiederkehrende
-  Teil ist eine Regelfrage, unten.
-- **`zurueck` ist bei 0197 das falsche Urteil.** Der Prüfer schreibt es selbst dazu: es
-  gehöre auf `blockiert` hinter 0198. `zurueck` plant den Kernbauer gegen dieselbe Wand
-  neu ein, und 0157 (`offen`, `haengt_an: [0197]`) läuft direkt hinterher in dasselbe
-  Ergebnis. Zwei Läufe, deren Ausgabe heute schon gedruckt ist.
-- **Ein Vorschlag, den kein Agent bauen kann.** 0208-baulauf-faehrt-beide-profile trägt
-  `dateien: [agents/baulauf.py]`; `agents/lauf.py:NIE` sperrt `Edit(/agents/**)` für jede
-  Rolle. Auf `offen` gesetzt ist es ein verlorener Lauf — zehnter Fall derselben Klasse.
-- **Drei Pakete mit bestandenem Urteil stehen weiter auf `gebaut`** (0186, 0188, 0193, alle
-  `urteil: geprueft` vom 2026-09-07). `fertig` steht seit gestern unverändert bei 147; ein
-  Lauf des Projektmanagers behebt es.
+- **Der Übersetzungslauf meldet alles fertig und hält die Datei trotzdem.**
+  `ops/uebersetzt.txt` führt alle 21 Abschnitte von `technik.md`, alle 15 von `spiel.md`,
+  alle 5 von `daten.md`; der Vorspann von `technik.md` liest bereits Englisch (Zeilen
+  1–31). Der Kopf von `reserviert.txt` sagt „**Leer, sobald er fertig ist.**" Er ist nicht
+  leer. Ob noch etwas aussteht oder die Zeile stehengeblieben ist, kann ich ohne Shell
+  nicht messen — beides endet in demselben Stillstand.
+- **Sieben der elf neuesten Pakete sind Nachlauf der Übersetzung** (0214-leitzins, 0220,
+  0221, 0222, 0223, 0224, 0225). Der Riegel ist heute grün, **weil sie gebaut wurden** —
+  nicht weil die Ursache weg wäre.
+- **Überschriften werden uneinheitlich umbenannt.** In `spiel.md` sind vier ersetzt („Die
+  Schleife" → „The loop", „Die Aktionen" → „The actions", „Der Zustand" → „The state", „Die
+  Spiellänge R" → „The game length R"), elf stehen weiter deutsch; in `technik.md` keine
+  einzige. Jede Umbenennung kostet ein Nachziehpaket.
+- **0182 steht auf `gebaut` mit `urteil: geprueft`** (2026-09-08). Ein Lauf des
+  Projektmanagers setzt es auf `fertig`. Heute der einzige Fall — gestern drei; die Lücke
+  schliesst sich.
 - Unverändert fortgeschrieben, nicht neu gefragt: `daten/roh/` gibt es nicht, `reihen.toml`
-  sagt weiter „**Sie enthaelt keine Datenzeile.**" Drei Pakete tragen die Nummer 0208.
+  sagt weiter „**Sie enthaelt keine Datenzeile.**" Drei Pakete tragen die Nummer 0208, die
+  `id` ist eindeutig.
 
 ## Was der Betreiber entscheiden muss
 
-**Ob der Übersetzungslauf weiter Überschriften umbenennen darf, ohne dass die zitierenden
-Dateien mitgezogen werden.** Nur du kannst das entscheiden: `CLAUDE.md` und
-`agents/rollen/uebersetzer.md` sind für jeden Agenten unschreibbar. Keine Geldfrage.
+Die Frage vom 2026-09-07 ist **unbeantwortet, nicht abgelehnt** — kein Commit ohne
+Rollenpräfix, und `CLAUDE.md` trägt weiter „**They stay German until someone translates
+them whole, which is not planned.**" Ich begründe sie nicht neu. **Sie hat sich aber
+verschoben, und deshalb ändere ich meine Empfehlung.**
 
-`CLAUDE.md` sagt heute über `spiel.md` und `technik.md`: „**They stay German until someone
-translates them whole, which is not planned.**" Der Lauf läuft (`ops/uebersetzt.txt`, 13
-Abschnitte fertig gemeldet). Der Satz stimmt nicht mehr — und er steht in der Datei, die
-jeder Agent in jedem Lauf liest.
+Damals war der Preis ein rotes Testergebnis. Heute ist es die Sperre: Übersetzungslauf und
+Baulauf wollen dieselben zwei Dokumente, und der Übersetzungslauf gewinnt, weil er eine
+Datei hält. Nur du kannst das entscheiden — `CLAUDE.md` und `agents/rollen/uebersetzer.md`
+sind für jeden Agenten unschreibbar. Keine Geldfrage.
 
-- **A — nur nachziehen.** 0200 räumt die zehn Zitate ab. Die nächste übersetzte
-  Überschrift bricht sie wieder; der Riegel ist morgen erneut rot.
-- **B — ein Satz in `agents/rollen/uebersetzer.md`:** Eine Überschrift wird erst
-  umbenannt, wenn im selben Lauf jedes Zitat darauf nachgezogen ist; sonst bleibt sie
-  stehen. Dazu die Berichtigung des Satzes in `CLAUDE.md`.
-- **C — `spiel.md` und `technik.md` vom Übersetzungslauf aussetzen**, bis die Runde
-  rechnet. Das sind die zwei Dokumente, aus denen gebaut wird.
+- **B (meine Empfehlung vom 2026-09-07)** — Überschrift erst umbenennen, wenn im selben
+  Lauf jedes Zitat darauf nachgezogen ist. Richtig, aber **rührt die Sperre nicht an.**
+- **C — `technik.md` und `spiel.md` vom Übersetzungslauf aussetzen**, bis die Runde
+  rechnet. Gibt beide Dateien frei; 15 Pakete werden startbar.
 
-**Empfehlung B, und 0200 unabhängig davon sofort.** Ein Testergebnis, das jeden Tag rot
-ist, erzieht die Fabrik dazu, das eine Signal zu übersehen, das sie hat. `lehren.md` hat
-die eine Hälfte schon („Eine Prüfung, deren Gegenstand sich nicht bewegen *kann*, ist grün
-und wertlos") — dies ist die teurere andere.
+**Empfehlung jetzt C** (bisher B). Der Grund ist neu und kostet nichts: Der Lauf meldet für
+beide Dateien bereits **jeden** Abschnitt fertig. C nimmt ihm damit voraussichtlich keine
+Arbeit ab — es nimmt nur die Sperre weg. B bleibt richtig und kann danach folgen.
 
 ## Vorrang
 
-1. **0208-schritt-braucht-einen-parametereingang** — der Draht. Ohne ihn ist keiner der
-   sechs Schritte baubar, gleich wie 0198 ausgeht. **An den Kopf der `technik.md`-Kette,
-   vor 0165.**
-2. **0198-realeinkommen-als-rechenvorschrift** — die Vorschrift, die 0197 fehlte. Läuft
-   neben 1 (andere Datei, andere Rolle); kollidiert auf `spiel.md` mit dem
-   Übersetzungslauf — das Serialisieren ist deins.
-3. **0200-zitate-auf-uebersetzte-ueberschriften-nachziehen** — nimmt das stehende Rot weg
-   und entsperrt die Nachmessung von 0147.
-4. **0165** — unverändert Kopf der umgehängten Kette und die Sperre vor 0172-weltpreis.
-5. **0172-weltpreis** — der Zollfaktor, Schritt 4; das einzige `technik.md`-Paket, das die
-   Wirtschaft bewegt. Jetzt Platz zwei der Kette statt Platz dreizehn.
+Solange die Sperre steht, sind nur die ersten beiden Punkte überhaupt einplanbar.
 
-**Nicht einplanen:** 0197 gehört auf `blockiert` hinter 0198 und 0208, nicht auf `zurueck`;
-0157 bleibt dahinter. 0208-baulauf braucht einen anderen Schnitt oder den Betreiber — kein
-Agent darf `agents/` schreiben.
+1. **0224** und **0225** — startbar, billig, schliessen den Nachlauf der Übersetzung.
+   Solange er offen ist, ist der grüne Riegel geliehen.
+2. **0189** — startbar; seine drei Abhängigkeiten (0147, 0166, 0182) sind durch.
+3. **0208-schritt-braucht-einen-parametereingang** — unverändert der Draht und Kopf der
+   Kette. **Keine Handlung nötig:** es läuft von selbst an, sobald `reserviert.txt` fällt.
+4. **0165** — Kopf der umgehängten Kette, direkt hinter dem Draht.
+5. **0172-weltpreis** — der Zollfaktor, Schritt 4; das einzige `technik.md`-Paket, das die
+   Wirtschaft bewegt.
+
+**Nicht einplanen:** 0157 steht auf `offen`, hängt aber am blockierten 0197 — es gehört
+ebenfalls auf `blockiert`, sonst zählt es als Rückstand, den niemand abarbeiten kann.
+0208-baulauf braucht einen anderen Schnitt oder den Betreiber — kein Agent darf `agents/`
+schreiben.
 
 ## Die eine Zahl
 
-**1 von 310** — unverändert gegenüber dem letzten Plan, aber zum ersten Mal **gedruckt
-statt hergeleitet**. Mitschnitt von `schritt_probe`, 2026-09-07 um 10:30: „Vorrunde 0 ->
-Runde 1: … **1 von 310 Groessen geaendert (partie.runde)**", und beide Startzustände
-drucken dieselbe 1. Der Apparat ist weiter gewachsen — 20 Tests im Werkstattbaum, 12 im
-Kernbaum, acht Manifeste, 407 geprüfte Schaltereinträge — und die Runde rechnet weiterhin
-nichts. Neu ist, dass die beiden Sätze feststehen, die sie bewegen: die Regel aus 0198 und
-der Weg aus 0208. Die Ursache ist damit zum ersten Mal nicht mehr organisatorisch.
+**1 von 310** — unverändert seit dem 14. Plan (`partie.runde`). Der Apparat ist erneut
+gewachsen: 25 Tests im Werkstattbaum (vorher 20), 13 im Kern (vorher 12), acht Manifeste,
+407 geprüfte Schaltereinträge, alles grün — und die Runde rechnet weiterhin nichts.
+
+**Neu ist, dass die eine Hälfte der Ursache weg ist.** 0198 ist `fertig`: die
+Rechenvorschrift für das Realeinkommen steht in `spiel.md` und wurde vom Entwurfsprüfer
+gegen T15/T27/T23/T48 nachgerechnet, jeder Name aufgelöst, jede Zahl unabhängig neu
+gerechnet. Die andere Hälfte ist der Weg — `schritt(zustand, aktionen, modus)` hat weiter
+kein Parameterargument —, und der Weg liegt hinter der Sperre. **Bewegt sich die Zahl,
+bevor 0208 `fertig` ist, stimmt die Messung nicht.**
