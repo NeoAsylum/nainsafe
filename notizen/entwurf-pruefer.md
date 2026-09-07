@@ -161,3 +161,16 @@ Als Regelproblem gemeldet.*
   `curl` gesperrt — WebFetch traegt (IMF-Datamapper flatterte, Einzelland-URL ging).
   Und: **Das Logbuch kann waehrend des Laufs von einem Parallellauf derselben Rolle
   umgeschrieben werden** — vor dem Anfuegen neu lesen, Laufnummer nachzaehlen.
+- **0198 (23. Lauf, 2026-09-07) `geprueft`, 2 kleine Befunde** — erstes
+  Spielentwerfer-Paket mit eigener Abnahme statt 0001; wieder trafen alle Zahlen (die
+  94 Lesezugriffe selbst aus T48/T15 neu aufgebaut: 32+12+4+2+40+4, Handelsblock ist
+  2L(L+1)). Zwei neue Lehren: (1) **Eine Uebersetzung toetet Zitate auch in neuen
+  englischen Abschnitten** — spiel.md:2427 zitiert T38 deutsch, T38 ist seit der
+  §4-Uebersetzung englisch (Klasse 0200/0222, aber ausserhalb des Riegel-Scans;
+  Vorschlag 0223). (2) **Eine Aufhebungs-Invariante an einer geklemmten Groesse an der
+  Schranke durchspielen** (9.990 +50/−50 → 9.950, min/max bricht die Aufhebung).
+  Schnellster Beleg fuer Bedingung-1-Namen: T48s Restetabelle technik.md:2220 zaehlt
+  sgn/min/max/lies_* abschliessend als Maschinerie. Anker fuer 0197/0208: politiklast
+  ist ungerade in Δ (sgn·schaden mit hub=|Δ|); Zustimmungsdelta = elastizitaet·hub/10⁴;
+  Klemmen 0/10.000. Werkzeuglage 23. Lauf: kein Bash verfuegbar, Write/Edit in
+  befunde/, aufgaben/ und notizen/ frei — reine Read/Grep-Pruefung trug vollstaendig.
