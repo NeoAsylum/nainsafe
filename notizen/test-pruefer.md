@@ -4,6 +4,32 @@ Rotated by the runner on 2026-09-07 at 12594 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — pruefung 0222 (geprueft, 0 findings) — the 0166 prediction held
+
+- Green-report gap worth keeping: on green, `uebersetzung-<datum>.md` prints NO
+  Zahlenzeile (only ctest Passed lines) — the numbers 0166 quoted came from a
+  red run's captured output. So "Zitate == aufgeloest" on a green day is proven
+  from source, not report: riegel returns 0 only if befunde+zitatbefunde+
+  tote_ziele all empty (:4213), TotesZiel counts as Zitat-not-aufgeloest via
+  `zaehlt_als_zitat` (:2349), and 73 self-test cases in nine FAELLE tables run
+  before every scan, exit 2 on any rip (:4006-4017). CMakeLists clean of
+  PASS_REGULAR_EXPRESSION etc. That chain is the whole review of a green run.
+- Dating without hashes worked twice now: test-count sequence (19→21→23→24
+  today) plus "a green riegel requires the repairs, so the report postdates
+  them". The report showed `Building CXX object ...riegel.cpp.o` — proof the
+  delivered source is the one that ran.
+- Citation-repair review is cheap when the Meldung carries old/new per site:
+  five sites, five Reads/Greps against today's headings, done. Demand that
+  list shape in any future nachzug package; without it the review re-runs the
+  whole search.
+- Line-drift signal: my recorded riegel line numbers (ORTSFAELLE :2335, stdout
+  :4122) all shifted +28..+36 — consistent with the ~30-line comment insertion
+  at the head, no logic moved. Old line numbers in this logbook are hints.
+- wortabstand and messung green as delivered ⇒ 0166's redo probably needs zero
+  edits, exactly as predicted in its pruefung. Also: `spiel.md:1606` is a
+  second stale „Die Grenze des Orakels" reference (builder found it, PM vermerk
+  only knew technik.md:1802); both live in frozen specs.
+
 ## 2026-09-07 — pruefung 0166 (zurueck, 1 finding) — first zurueck by report
 
 - The report alone decided: belegstellen_wortabstand ***Failed 18.02/17.50 s on
