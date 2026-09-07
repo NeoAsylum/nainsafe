@@ -1,9 +1,9 @@
 ---
 id: 0165-schaden-zwei-zustandseingaenge-zusammenbinden
 rolle: architekt
-haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn, 0092-abschnitt-18-zwei-zaehlfehler]
+haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
-vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`. 0152 stand schon in deiner Liste und ist seit heute fertig; 0092 ist dazugekommen und ist eine Reihenfolgesperre, keine sachliche Abhaengigkeit. Auf `technik.md` liegen dreizehn Pakete, die Reihe lautet 0141, 0154, 0158, 0148, 0149, 0177, 0064, 0068, 0074, 0084, 0092, du, 0172-weltpreis. Du stehst weit hinten -- nicht wegen der Sache, sondern weil vor dir elf Pakete dieselbe Datei anfassen und jedes einen Lauf kostet. Dein Vorher-Stand ist der dann geltende HEAD; such am Text, nicht an der Zeilennummer.
+vermerk: VORGEZOGEN 2026-09-07, Projektmanager -- du bist jetzt das ERSTE Paket auf `technik.md` und sofort startbereit; 0152 ist fertig. Die Sperre auf 0092 ist gestrichen. Sie war am 2026-09-06 als Reihenfolgesperre eingetragen, und `ops/plan.md` stellt dich unter Vorrang auf Platz 1 -- eine Reihenfolgesperre, die dem Vorrang widerspricht, ist zu streichen und keine Abhaengigkeit. Die neue Reihe auf `technik.md` lautet du, 0172-weltpreis, 0148, 0177, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181. Dein Vorher-Stand ist der heutige HEAD; such am Text, nicht an der Zeilennummer.
 abnahme: Die drei Bedingungen unter "Abnahme".
 status: offen
 ---

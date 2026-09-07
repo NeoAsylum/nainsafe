@@ -52,11 +52,42 @@ dürfen nebeneinander in `haengt_an` stehen. **In jedes Glied:** *Vorher-Stand i
 geltende `HEAD`; such am Text, nicht an der Zeilennummer* — und **die ganze Reihe**, sonst
 sieht keiner, wo er steht.
 
-## `specs/` beauftragt mich manchmal wörtlich — dann ist ein Paket nicht erfunden
+## Der Vorrang schlägt meine Reihenfolgesperre — 2026-09-07
+
+**Alle fünf Vorrang-Kennungen des Plans waren unstartbar, und ich war die Ursache.** 0165
+lag acht Glieder tief, 0172-weltpreis neun — hinter elf Zähl- und Belegkorrekturen, die
+ich selbst davorgehängt hatte. Der Plan sagt zugleich „0064, 0068, 0084, 0092, 0149 und
+0181 ans Ende": arithmetisch unmöglich, solange 0165 an 0092 hängt.
+
+**Auflösbar war es, weil ich jede dieser Sperren selbst als *„Reihenfolgesperre, keine
+sachliche Abhängigkeit"* in den Vermerk geschrieben hatte.** Eine solche Sperre ist frei
+umzuhängen: Alle dreizehn liegen auf `technik.md`, die Dateisperre serialisiert sie
+ohnehin — **umhängen kostet null Durchsatz und entscheidet allein, wer zuerst kommt.**
+Neu: 0165 → 0172-weltpreis → 0148 → 0177 → 0196 → 0158 → 0149 → 0064 → 0068 → 0074 →
+0084 → 0092 → 0181.
+
+**Die Lehre für den nächsten Lauf:** Vor jedem „ich halte mich an den Vorrang" prüfen,
+ob die Vorrangpakete überhaupt *startbereit* sind. Ein Vorrang auf einem Paket, das acht
+Glieder tief hängt, ist keiner — und wenn die Glieder meine eigenen sind, ist das Nichts-
+tun keine Treue zur Kette, sondern ein Fehler von mir.
+
+## `specs/` **und der Quelltext** beauftragen mich wörtlich — dann ist ein Paket nicht erfunden
 
 **Bevor ich melde „kein Platz zu füllen", `specs/` nach *Projektmanager*, *Folgepaket* und
 *nachzuziehen* durchsuchen.** Ein Architekt, der eine Lücke meldet statt sie zu füllen, hat
 mir ein Paket hinterlassen — es steht nur nicht im Rückstand (0150, 0151, 0152).
+
+**Zu eng gefasst, am 2026-09-07 bezahlt: `kern/` gehört dazu.** `kern/src/schritt.cpp`
+sagt *„Das ist der Anschlussort fuer die Folgepakete"*, `schritt.hpp` nennt die sechs
+Schritte *„sechs eigene Pakete"*. Fünfzehn Läufe lang war „kein Paket baut einen rechnenden
+Rumpf" der gemeldete Engpass — **der Auftrag stand die ganze Zeit im Quelltext**, und ich
+habe nur `specs/` durchsucht. Griff: `Grep` auf *Anschlussort*, *Folgepaket*, *auf Widerruf*
+**auch unter `kern/`**.
+
+**Die Größe des Schnitts steht oft in einem `static_assert`.** `3 + 0 + 16 + 152 + 4 + 0
+== 175` in `schritt.cpp` sagte mir, dass Schritt 4 mit 152 Adressen mehrere Läufe ist und
+Schritt 5 mit **vier** einer. Ohne diese Zahl hätte ich Schritt 4 geschnitten, weil der
+Plan ihn nennt — und ein Paket geschrieben, das kein Agent in einem Lauf schafft.
 
 **Aber der Auftrag selbst kann verfallen sein — erst die Zieldatei messen, dann schneiden.**
 Am 2026-09-06 zweimal: `technik.md` bestellte ein Folgepaket zu `regulierung_last` in
@@ -173,16 +204,14 @@ Schlüsselwörter nie steigern — in meinen Vermerken „unter X" statt „im A
   selbst (0116–0119); **das ist die deutlichere Vorrangaussage.**
 - **Prüfer setzen mal selbst `fertig`, mal gar nicht**, obwohl `baulauf.py:32` es mir
   vorbehält. Am 2026-09-06 dreimal die teurere Hälfte. **Viermal gemeldet.**
-- **`technik.md` zerlegen**, zum fünfzehnten Mal fällig: **vierzehn der 23 offenen Pakete
-  auf dieser einen Datei**, die übrigen neun verteilen sich auf sechs Bahnen. Das letzte
-  Glied läuft in keiner denkbaren Woche. **Der Schnitt liegt in der Datei, nicht in meinen
-  Paketen** — solange sie eine ist, ist ein Achtel meiner Bauplätze strukturell tot.
-  **Am 2026-09-06 war die achte Bahn nicht zu füllen:** vier `blockiert` geprüft (zwei
-  außerhalb jeder Schreibgrenze, 0003 wartet auf einen ADR, 0157 auf einen Rumpf), `specs/`
-  nach Aufträgen an mich durchsucht — sieben war das Maximum, das es gab.
-- **Kein Paket baut einen rechnenden Rumpf für `schritt_2`…`schritt_6`.** Darum steht 0157
-  weiter auf `blockiert` — es gibt kein `haengt_an`, das ich schreiben könnte. **Das ist
-  die Sperre, an der die drei Maße hängen**, vom Bruchtester am 2026-09-06 bestätigt.
+- **`technik.md` zerlegen**, zum sechzehnten Mal fällig: **dreizehn der 25 offenen Pakete
+  auf dieser einen Datei.** Der Schnitt liegt in der Datei, nicht in meinen Paketen.
+  **Neu seit 2026-09-07: die Reihenfolge darin ist meine Entscheidung und war falsch** —
+  siehe oben. Umhängen ist der Hebel, den ich habe; Zerlegen der, den ich nicht habe.
+- **0157 ist entblockt** (2026-09-07, `haengt_an: [0197]`) — nach dreizehn Meldungen.
+  Der Rumpf, auf den es wartete, ist jetzt beauftragt. **Prüfen, ob 0197 wirklich mehr als
+  eine der 310 Größen bewegt**, bevor ich 0157 abnehme: Trägt sein Mitschnitt weiter
+  durchgehend die Änderungszahl `1`, ist nicht 0157 gescheitert, sondern 0197.
 - **Reste `.kopf.tmp`/`.paket.tmp` mit `status: gebaut`** verfälschen jede `^status:`-Zählung.
   Ich lösche nicht (Hausregel 3).
 - **Die Stufe `high` reicht** — sechster Lauf am 2026-09-06, nirgends fehlte mir der Kopf.

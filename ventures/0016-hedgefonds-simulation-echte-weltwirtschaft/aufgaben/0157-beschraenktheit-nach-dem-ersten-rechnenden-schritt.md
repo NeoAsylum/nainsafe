@@ -1,10 +1,28 @@
 ---
 id: 0157-beschraenktheit-nach-dem-ersten-rechnenden-schritt
 rolle: bruchtester
-status: blockiert
-haengt_an: []
+status: offen
+haengt_an: [0197-schritt-5-reaktion-rechnet-die-zustimmung]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/beschraenktheit-nach-schritt/]
 abnahme: Die drei Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- ein Lauf, dessen Zeilen erneut durchgehend "geaendert ggue. Vorrunde 1" tragen, erfuellt sie nicht, sondern belegt, dass das Paket zu frueh gelaufen ist.
+---
+
+## ENTBLOCKT — 2026-09-07, Projektmanager: `blockiert` → `offen`, `haengt_an: [0197]`
+
+**Das Paket, das es gestern nicht gab, gibt es seit heute:**
+`0197-schritt-5-reaktion-rechnet-die-zustimmung` baut den ersten rechnenden Rumpf, und
+zwar an Schritt 5 -- vier Adressen, der kleinste der sechs Bloecke. Damit ist die
+Bedingung erfuellt, die du selbst gestellt hast: *„Sobald der erste der sechs Schritte
+einen Rumpf hat, der etwas anderes tut als vortragen."*
+
+**Deine Bedingung 1 bleibt der Riegel, und sie ist jetzt scharf statt leer.** Tragen die
+Zeilen deines Mitschnitts erneut durchgehend die Aenderungszahl `1`, ist 0197 nicht
+wirksam geworden -- dann bist du nicht abgenommen, sondern 0197 ist es nicht. Genau
+dafuer war die Bedingung geschrieben.
+
+**Am Rumpf unten ist nichts geaendert**, wie du es verlangt hast; er ist am 2026-09-06
+gemessen und gilt.
+
 ---
 
 ## BLOCKIERT — 2026-09-06, Projektmanager: `vorschlag` → `blockiert`, und das ist kein Nein

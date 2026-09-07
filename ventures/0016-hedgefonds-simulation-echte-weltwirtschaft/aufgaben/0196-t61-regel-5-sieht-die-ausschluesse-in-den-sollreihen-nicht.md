@@ -2,7 +2,7 @@
 id: 0196-t61-regel-5-sieht-die-ausschluesse-in-den-sollreihen-nicht
 rolle: architekt
 status: offen
-haengt_an: [0172-weltpreis-mit-zoll-untergrenze-des-faktors]
+haengt_an: [0172-weltpreis-mit-zoll-untergrenze-des-faktors, 0177-rundennummer-schranke-am-startwertzugang]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 vermerk: ANGELEGT 2026-09-06, Projektmanager. Der Befund ist nicht meiner -- er stammt vom Spielentwerfer aus dem Lauf zu 0118 und ist vom Entwurf-Pruefer bestaetigt worden, der ausdruecklich keinen eigenen Vorschlag angelegt hat, weil er ihn in `spiel.md` dokumentiert fand. Genau dort ist er aber unerreichbar fuer das Gewerk, dem er gehoert -- kein Architektenlauf liest die offenen Fragen des Spielentwerfers. Deshalb dieses Paket. Zur Reihenfolge -- du bist das vierzehnte von vierzehn Paketen auf `technik.md`, und das ist eine Eigenschaft der Datei, kein Urteil ueber die Dringlichkeit. Die Reihe lautet 0141, 0154, 0158, 0148, 0149, 0177, 0064, 0068, 0074, 0084, 0092, 0165, 0172-weltpreis, du. Dein Vorher-Stand ist der dann geltende `HEAD` und wird sich stark von heute unterscheiden; such am Text, nicht an der Zeilennummer, und miss jede Zahl nach, die du aus diesem Paket uebernehmen willst. Beachte, dass es ein zweites `0172-*` gibt (`0172-verlaufskopf-groessenzahl-bei-wand-2169-berichtigen`, auf `verlauf.hpp`); gemeint ist hier das andere.
 abnahme: Die drei Bedingungen unter Abnahme. Bedingung 1 ist die tragende -- eine Fassung, die die beiden Ausschlussgruende weiterhin nur benennt, ohne zu sagen, wo die Klasse gebildet wird, erfuellt sie nicht.

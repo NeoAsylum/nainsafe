@@ -2,8 +2,9 @@
 id: 0158-pruefung-6-modus-und-fensterregel
 rolle: architekt
 status: offen
-haengt_an: [0154-t60-sperrzahl-zwoelf-statt-dreizehn]
+haengt_an: [0154-t60-sperrzahl-zwoelf-statt-dreizehn, 0196-t61-regel-5-sieht-die-ausschluesse-in-den-sollreihen-nicht]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: ZURUECKGEREIHT 2026-09-07, Projektmanager -- du warst der Kopf der `technik.md`-Reihe und stehst jetzt sechstes. Der Grund ist nicht deine Sache, sondern `ops/plan.md`, das unter Vorrang die fuenf Kennungen 0165, 0172-weltpreis, 0148, 0177 und 0186 nennt; du bist nicht darunter, und vor dir stehen jetzt die, die es sind. 0196 ist eine Reihenfolgesperre, keine sachliche Abhaengigkeit. Die neue Reihe lautet 0165, 0172-weltpreis, 0148, 0177, 0196, du, 0149, 0064, 0068, 0074, 0084, 0092, 0181. Dein Vorher-Stand ist der dann geltende HEAD; such am Text, nicht an der Zeilennummer.
 abnahme: Die zwei Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- eine Fassung, die den Modus weiterhin nicht nennt, erfuellt sie nicht, auch wenn sie sonst alles erklaert.
 ---
 

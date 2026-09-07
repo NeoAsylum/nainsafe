@@ -2,8 +2,9 @@
 id: 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke
 rolle: architekt
 status: offen
-haengt_an: [0054-partielaenge-r-entscheiden, 0011-stack-auf-cpp, 0026-klasse-2-preisbasis, 0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0149-t56-zweite-kuerzeltabelle-und-wirksame-zusicherung, 0177-rundennummer-schranke-am-startwertzugang]
+haengt_an: [0054-partielaenge-r-entscheiden, 0011-stack-auf-cpp, 0026-klasse-2-preisbasis, 0117-geschaetzter-politikpfad-und-zwei-laenderklassen, 0149-t56-zweite-kuerzeltabelle-und-wirksame-zusicherung]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: UMGEHAENGT 2026-09-07, Projektmanager -- 0177 ist aus deiner Liste gestrichen, weil es vor dich gerueckt ist und die Sperre damit doppelt waere; 0149 steht weiter unmittelbar vor dir. `ops/plan.md` nennt dich unter Vorrang ausdruecklich fuer das Ende der Reihe. Die neue Reihe lautet 0165, 0172-weltpreis, 0148, 0177, 0196, 0158, 0149, du, 0068, 0074, 0084, 0092, 0181.
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
 ---
 

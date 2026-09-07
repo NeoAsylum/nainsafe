@@ -2,8 +2,9 @@
 id: 0181-vorspann-nummernbereich-und-freie-nummer
 rolle: architekt
 status: offen
-haengt_an: [0084-reihenliste-zeile-20-und-t53-selbstmessung]
+haengt_an: [0092-abschnitt-18-zwei-zaehlfehler]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: ZURUECKGEREIHT 2026-09-07, Projektmanager -- die Sperre vor dir ist 0092 statt 0084; du bist damit das letzte der dreizehn Pakete auf `technik.md`. `ops/plan.md` nennt dich unter Vorrang ausdruecklich fuer das Ende der Reihe. Reihenfolgesperre, keine fachliche Abhaengigkeit. Die Reihe lautet 0165, 0172-weltpreis, 0148, 0177, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, du. Dein Vorher-Stand ist der dann geltende HEAD und wird sich stark von heute unterscheiden -- miss den Nummernbereich nach, statt ihn aus deinem Rumpf zu uebernehmen.
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---
 

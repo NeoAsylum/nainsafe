@@ -2,8 +2,9 @@
 id: 0177-rundennummer-schranke-am-startwertzugang
 rolle: architekt
 status: offen
-haengt_an: [0149-t56-zweite-kuerzeltabelle-und-wirksame-zusicherung]
+haengt_an: [0148-zielkennung-je-aktionsart]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: UMGEHAENGT 2026-09-07, Projektmanager -- die Sperre vor dir ist 0148 statt 0149, und du stehst jetzt viertes statt sechstes auf `technik.md`. `ops/plan.md` nennt dich unter Vorrang auf Platz 4. Es bleibt eine Reihenfolgesperre, keine sachliche Abhaengigkeit -- du brauchst aus 0148 nichts. Die neue Reihe lautet 0165, 0172-weltpreis, 0148, du, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181; der Vermerk unten nennt noch die alte.
 abnahme: In technik.md steht eine Antwort auf die Frage, wo der Wertebereich von partie.runde geprueft wird -- am Startwertzugang, in der Runde, oder an beiden -- mit Begruendung und mit der Folge fuer das Speichern und Laden aus T30 Pruefung 3. Eine Antwort "an beiden" nennt zusaetzlich, welche der beiden Stellen im Fehlerfall meldet.
 ---
 

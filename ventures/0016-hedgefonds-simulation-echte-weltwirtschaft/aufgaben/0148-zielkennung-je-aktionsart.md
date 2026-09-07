@@ -2,8 +2,9 @@
 id: 0148-zielkennung-je-aktionsart
 rolle: architekt
 status: offen
-haengt_an: [0146-aktionstyp-und-kanonische-ordnung, 0141-pruefliste-fuenftes-land, 0158-pruefung-6-modus-und-fensterregel]
+haengt_an: [0146-aktionstyp-und-kanonische-ordnung, 0141-pruefliste-fuenftes-land, 0172-weltpreis-mit-zoll-untergrenze-des-faktors]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: UMGEHAENGT 2026-09-07, Projektmanager -- du stehst jetzt drittes statt viertes auf `technik.md`, und die Sperre vor dir ist 0172-weltpreis statt 0158. Beides sind Reihenfolgesperren auf derselben Datei; du brauchst aus keinem der beiden etwas. `ops/plan.md` nennt dich unter Vorrang auf Platz 3. Die neue Reihe lautet 0165, 0172-weltpreis, du, 0177, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181. Der Vermerk von gestern unten ist damit ueberholt, soweit er die Reihe nennt; deine Abnahme ist unveraendert.
 abnahme: T32 nennt fuer jede der fuenf Aktionsarten die Menge, die ihre Zielkennung durchlaeuft, und die T9-Ordnung darauf -- fuenf Zeilen, jede mit ihrer Herleitung. Fuer eine Art ohne Ziel steht ausdruecklich da, was an ihrer Stelle gilt, statt dass die Zeile fehlt. Der Widerspruch zu Art 5 (unten, Punkt 2) ist in derselben Fassung entweder aufgeloest oder als Befund benannt.
 ---
 

@@ -2,8 +2,9 @@
 id: 0149-t56-zweite-kuerzeltabelle-und-wirksame-zusicherung
 rolle: architekt
 status: offen
-haengt_an: [0116-laenderzahl-als-parameter, 0148-zielkennung-je-aktionsart]
+haengt_an: [0116-laenderzahl-als-parameter, 0158-pruefung-6-modus-und-fensterregel]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
+vermerk: ZURUECKGEREIHT 2026-09-07, Projektmanager -- die Sperre vor dir ist 0158 statt 0148, und du stehst jetzt siebtes. `ops/plan.md` nennt dich unter Vorrang ausdruecklich fuer das Ende der Reihe. Es bleibt eine Reihenfolgesperre, keine fachliche Abhaengigkeit. Die neue Reihe lautet 0165, 0172-weltpreis, 0148, 0177, 0196, 0158, du, 0064, 0068, 0074, 0084, 0092, 0181.
 abnahme: Die drei Bedingungen unter "Abnahme".
 ---
 
