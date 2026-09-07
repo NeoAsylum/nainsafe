@@ -43,6 +43,27 @@ here in one sentence.
   `schritt_probe.cpp` has counted over all 310 and printed the number since 0071. Read the
   probe before building the measurement a package describes -- half of what 0197 asked for
   existed.
+- 2026-09-07, **the lesson of the run on 0208 (`anhaengen` Pruefreihenfolge)** -- **When a
+  comment states a rule and two call sites disagree, the rule stated is usually not the
+  rule obeyed.** Read off the branches: `beginne_runde` is `runde < 1` → `runde <=
+  nummer_[runden_-1]` → `runden_ >= RUNDEN_KAPAZITAET` (argument → container),
+  `anhaengen` is `runden_ == 0` → `laufende.laenge() >= GLIEDER_JE_RUNDE` → `satz.runde
+  != nummer_[runden_-1]` (container → argument). Neither is wrong; the head's
+  „Argument zuerst" was never the governing rule. The real one is data dependency: both
+  later checks in `anhaengen` need `kette_[runden_-1]` / `nummer_[runden_-1]`, which are
+  no value without a begun round, so the order is forced there and free in
+  `beginne_runde` -- which pays for it by carrying `runden_ > 0 &&` inside its own middle
+  condition instead of hoisting it. Cost: one file read, one edit, no code change.
+- 2026-09-07 -- **Comment-only packages still have a mechanical failure mode, and it is
+  the `belegstellen_riegel`.** A citation there is keyword (Abschnitt / Absatz /
+  Ueberschrift) + a name in quotes/backticks/asterisks immediately after + a document
+  name to the left **in the same paragraph** (`belegstellen_riegel.cpp`, Bedingung 2). A
+  prose sentence like „nicht nach der Richtung, die der Absatz darueber festhaelt" is one
+  keyword away from minting a citation that cannot resolve. I rewrote it to avoid the
+  word. Check this before writing German prose into a `kern/` source head. Its red on
+  2026-09-07 (10 unresolved section citations in `daten/`, `parameter.toml`,
+  `aktion.hpp`, `schritt.cpp`) is **older than this package and untouched by it** -- the
+  `kern/` tree's own twelve probes are green.
 - 2026-09-07, **what I am unsure about, for the project manager:** whether `0198` belongs
   to `spielentwerfer` or to `architekt`. I chose the game designer on the precedent of
   *Der Schaden in Gegenkraft 5, als Rechenvorschrift* -- T50 fixed the unit and returned

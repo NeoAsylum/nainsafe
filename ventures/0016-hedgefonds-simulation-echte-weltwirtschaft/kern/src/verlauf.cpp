@@ -20,16 +20,32 @@
 //! ## Die Reihenfolge der Pruefungen ist festgelegt und nicht beliebig
 //!
 //! Ein Aufruf kann mehrere Bedingungen auf einmal verletzen -- eine Runde null auf
-//! einen vollen Verlauf etwa. Geprueft wird dann von der Aussage ueber das Argument zur
-//! Aussage ueber den Behaelter: erst der Wert der Rundennummer, dann ihr Verhaeltnis zur
-//! Vorrunde, dann der Platz im Verlauf. Ohne festgelegte Reihenfolge haenge es an der
+//! einen vollen Verlauf etwa. In `beginne_runde` wird dann von der Aussage ueber das
+//! Argument zur Aussage ueber den Behaelter geprueft: erst der Wert der Rundennummer
+//! (`runde < 1`), dann ihr Verhaeltnis zur Vorrunde
+//! (`runde <= nummer_[runden_ - 1]`), dann der Platz im Verlauf
+//! (`runden_ >= RUNDEN_KAPAZITAET`). Ohne festgelegte Reihenfolge haenge es an der
 //! Uebersetzung, welche der Meldungen ankommt, und eine Probe auf den Wortlaut pruefte
 //! dann den Zufall.
 //!
-//! In `anhaengen` gilt dasselbe und in derselben Richtung: erst die Aussage ueber den
-//! Behaelter -- ist eine Runde begonnen, ist noch Platz --, dann die ueber das Argument.
-//! Die Rundennummer des Gliedes wird zuletzt geprueft, weil ihre Meldung die Rundennummer
-//! des Verlaufs nennt und die es ohne begonnene Runde nicht gibt.
+//! In `anhaengen` ist die Reihenfolge ebenso festgelegt, laeuft aber in der
+//! **Gegenrichtung**: erst die Aussage ueber den Behaelter -- ist eine Runde begonnen
+//! (`runden_ == 0`), ist in ihrer Kette noch Platz
+//! (`laufende.laenge() >= GLIEDER_JE_RUNDE`) --, dann die ueber das Argument
+//! (`satz.runde != nummer_[runden_ - 1]`).
+//!
+//! Die Gegenrichtung ist dort erzwungen und nicht gewaehlt: Die beiden spaeteren
+//! Pruefungen greifen selbst auf den Behaelter zu. `kette_[runden_ - 1]` und
+//! `nummer_[runden_ - 1]` sind ohne begonnene Runde kein Wert, und die letzte Meldung
+//! nennt die Rundennummer des Verlaufs obendrein im Wortlaut. In `beginne_runde` zwingt
+//! nichts: `runde < 1` braucht vom Behaelter nichts, und die mittlere Pruefung traegt
+//! ihre Bedingung an ihn mit `runden_ > 0 &&` in sich selbst, statt sie sich vorziehen
+//! zu lassen.
+//!
+//! Die Regel hinter beiden Richtungen heisst deshalb nicht Argument vor Behaelter,
+//! sondern: Jede Pruefung steht so frueh, wie ihre Operanden und ihre Meldung es
+//! zulassen. Wer in `anhaengen` eine Pruefung ergaenzt, ordnet sie danach ein -- nicht
+//! nach der Richtung, die hier fuer `beginne_runde` steht.
 
 #include <cstddef>
 
