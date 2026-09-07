@@ -26,7 +26,7 @@ Widerspruch zwischen zwei Vorgaben und eine Menge frei gebildeter Adressen —, 
 | Spalte | Inhalt |
 |---|---|
 | # | laufende Nummer 1 … 310, nur zum Zählen |
-| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Die 133 unmarkierten Zeilen sind wörtlich belegte Adressen und die daraus über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Umgekehrt gilt der Satz nicht: Ist der eingesetzte Bestandteil selbst neu, trägt auch die Geschwisteradresse eine Marke — so bei `restwelt.` vor einem Sektorpfad (Nr. 180, gebildet aus `land.DE.sektor.2.preis`) und beim Instrument `regulierung` (Nr. 37, gebildet aus `land.BR.instrument.zoll.stand`). **Und ein Beleg, der in T46 steht, deckt nur die Adresse selbst: T46 zählt seine elf Vorgabeadressen abschliessend auf und erzeugt deshalb keine unmarkierten Geschwister.** Wer dort einen Index anders belegt, verlässt die Ausnahmeliste — die drei übrigen Länderwechselkurse (Nr. 63, 107, 151) tragen deshalb eine Marke, die drei übrigen Aufsichtszähler (Nr. 23, 111, 155) dagegen nicht, weil T45 `land.CN.aufsichtszaehler` als Beispiel einer Kategorie von 150 Adressen führt und nicht als abschliessende Liste. Eine Adresse mit eigenem wörtlichem Beleg bleibt davon unberührt: `land.<L>.leitzins` (Nr. 18, 62, 106, 150) steht mit Index in `technik.md`, **T49**, im Absatz „Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines Zufalls“ — dort im Wortlaut: „`land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` sind dieselbe Größe“. Die Bildungsregeln und die Gegenprobe an allen acht T46-Zeilen stehen unter *Befund 2* |
+| Adresse | nach T17. **Ein `*` heisst: an dieser Adresse ist ein Bestandteil neu erfunden — oder eine Zusammensetzung von Bestandteilen, die in keinem Dokument gemeinsam vorkommt.** Die Marke sitzt an den Bestandteilen, nicht an der ganzen Zeichenkette: Die 133 unmarkierten Zeilen sind wörtlich belegte Adressen und die daraus über die Gebiets-, Sektor- und Instrumentenindizes gebildeten Geschwister — `handel.US.CN.1` trägt deshalb keine Marke, obwohl genau diese Zeichenkette nirgends steht, denn `handel.DE.CN.1` steht in T17. Umgekehrt gilt der Satz nicht: Ist der eingesetzte Bestandteil selbst neu, trägt auch die Geschwisteradresse eine Marke — so bei `restwelt.` vor einem Sektorpfad (Nr. 180, gebildet aus `land.DE.sektor.2.preis`) und beim Instrument `regulierung` (Nr. 37, gebildet aus `land.BR.instrument.zoll.stand`). **Und ein Beleg, der in T46 steht, deckt nur die Adresse selbst: T46 zählt seine elf Vorgabeadressen abschliessend auf und erzeugt deshalb keine unmarkierten Geschwister.** Wer dort einen Index anders belegt, verlässt die Ausnahmeliste — die drei übrigen Länderwechselkurse (Nr. 63, 107, 151) tragen deshalb eine Marke, die drei übrigen Aufsichtszähler (Nr. 23, 111, 155) dagegen nicht, weil T45 `land.CN.aufsichtszaehler` als Beispiel einer Kategorie von 150 Adressen führt und nicht als abschliessende Liste. Eine Adresse mit eigenem wörtlichem Beleg bleibt davon unberührt: `land.<L>.leitzins` (Nr. 18, 62, 106, 150) steht mit Index in `technik.md`, **T49**, im Absatz „Two address pairs carry the same value, and that needs a rule instead of a coincidence“ — dort im Wortlaut: „`land.<L>.leitzins` and `land.<L>.instrument.leitzins.stand` are the same quantity“. Die Bildungsregeln und die Gegenprobe an allen acht T46-Zeilen stehen unter *Befund 2* |
 | Gruppe | die Zeile der Tabelle in T15, aus der die Adresse stammt |
 | Herkunft | einer der fünf Einträge aus T45. `*` an einem Schlüsselnamen heisst dasselbe wie an einer Adresse |
 | K | Skalenklasse 1 … 12 nach T5, zugeordnet nach T49 |
@@ -537,11 +537,11 @@ enger oder weiter setzen will, ändert damit keine Adresse, sondern nur die Zahl
 **Warum `land.CN.wechselkurs` markiert ist und `land.DE.aufsichtszaehler` nicht.** Beide sind
 Geschwister einer einzigen wörtlich belegten Adresse über den Gebietsindex; der Unterschied
 liegt in der Stelle, die den Beleg trägt. T46 zählt seine elf Vorgabeadressen
-**abschliessend** auf — die Überschrift der Tabelle sagt es selbst: „T46 — Die elf Adressen,
-deren Herkunft dieses Dokument ist, abschliessend“ (`technik.md`; am 2026-09-03 Zeile 1219,
-die Nummer ist nicht tragend) — und sagt zu `land.US.wechselkurs` sogar, warum
-die drei anderen Länder nicht dazugehören („Reihe 10 trägt drei Länder, die USA
-definitionsgemäß nicht"). **Ein Beleg, der in T46 steht, deckt deshalb nur die Adresse
+**abschliessend** auf — die Überschrift der Tabelle sagt es selbst: „T46 — The eleven
+addresses whose provenance is this document, exhaustively“
+(`technik.md`; am 2026-09-03 Zeile 1219, die Nummer ist nicht tragend) — und sagt zu
+`land.US.wechselkurs` sogar, warum die drei anderen Länder nicht dazugehören
+(„Series 10 carries three countries, the USA by definition not"). **Ein Beleg, der in T46 steht, deckt deshalb nur die Adresse
 selbst** — wer dort einen Index anders belegt, verlässt die Ausnahmeliste und bildet eine neue
 Adresse. Das betrifft alle acht unmarkierten Zeilen, die ihren Beleg dort haben: Nr. 19
 `land.US.wechselkurs` und die sieben Restweltzeilen 192 bis 198. Gemeint ist die Zeichenkette
@@ -553,9 +553,10 @@ deshalb markiert: die drei Wechselkurse (63, 107, 151), `land.<L>.preisniveau`
 zusätzlich der Präfix `gebiet.<G>.` in `land.<L>.` umgeschrieben ist. Zwei Geschwisterpaare
 bleiben unmarkiert, und zwar nicht als Ausnahme: `land.<L>.leitzins` (18, 62, 106, 150) und
 `land.<L>.haushaltssaldo` (21, 65, 109, 153) stehen mit Index in `technik.md` unter **T49**,
-im Absatz „Zwei Adresspaare tragen denselben Wert, und das braucht eine Regel statt eines
-Zufalls“ — im Wortlaut „`land.<L>.leitzins` und `land.<L>.instrument.leitzins.stand` sind
-dieselbe Größe, ebenso `land.<L>.haushaltssaldo` und `land.<L>.instrument.haushalt.stand`“
+im Absatz „Two address pairs carry the same value, and that needs a rule instead of a
+coincidence“ — im Wortlaut „`land.<L>.leitzins` and `land.<L>.instrument.leitzins.stand`
+are the same quantity, as are `land.<L>.haushaltssaldo` and
+`land.<L>.instrument.haushalt.stand`“
 (am 2026-09-03 Zeile 352 bis 354; die Nummern sind nicht tragend) —, und beziehen ihren Beleg
 gar nicht aus T46. `land.CN.aufsichtszaehler` schliesslich steht in T45 als **Beispiel** einer
 Kategorie von 150 Adressen und nicht als abschliessende Liste;

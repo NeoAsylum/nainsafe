@@ -43,6 +43,33 @@ every test timeout well under the runner's 900 s.
   field, first seven characters. Enough to print which state a measurement ran against,
   which is the whole point of "name the state". Report trimming, never a condition.
 
+- 2026-09-07 (0222) — **The riegel's own head citation is the cheapest possible red proof,
+  and it worked exactly once as designed.** The head cites `technik.md` on purpose ("wer
+  den Wortlaut hier oder dort aendert, macht den Riegel rot"). The uebersetzer changed the
+  wording there; the riegel went red at its own line 39. No mutant, no stand, no shell —
+  the nightly report was the measurement. **The general rule: a checker that cites the
+  thing it checks needs no separate red proof for that path.**
+- 2026-09-07 (0222) — **The report's three numbers locate the sites without running
+  anything.** 40 Zitate / 36 aufgeloest said "four dead", and exactly four turned up:
+  three quotes of the T49 Absatz (`belegstellen_riegel.cpp:39`, `daten/adressen.md:29`,
+  `:556`) and one of the T46 table heading (`daten/adressen.md:540`). **The count is the
+  stopping criterion** — without it I could not have told a complete sweep from a partial
+  one, because the corpus has no other way to enumerate its own citations.
+- 2026-09-07 (0222) — **The cheap way to find them: never grep the corpus for keywords,
+  grep it for the two target file names.** `Abschnitt|Absatz|Ueberschrift` over the
+  venture gives 11,120 hits in 1,641 files. `technik\.md|spiel\.md` restricted to `kern/`,
+  `pruefstand/`, `werkzeuge/`, `daten/`, `parameter.toml` gives about 150 lines, and only
+  a translated document can have broken a citation. Then `(Abschnitt|Absatz|Ueberschrift)
+  \s+(\\?["„»"'`*])` per directory for the quote form, plus the same keyword anchored at
+  `$` for the quote that sits on the next line. Both passes are needed: two of the four
+  sites had the quote on the following line.
+- 2026-09-07 (0222) — **`ops/inhalt-<venture>.md` answers "is this heading still there"
+  for `##` headings and lies about everything below.** The uebersetzer keeps the numbered
+  `##` titles German ("5. Die drei Zustandsebenen (G8)" is listed as translated and is
+  still German) and translates the bold lead-ins underneath — and the bold lead-in is
+  exactly what the riegel accepts as a heading. So the index is the wrong instrument
+  here; `Grep` on the quoted wording in the target file is the right one.
+
 ## What does not work
 
 <!-- An entry older than 30 days counts as due for re-checking. -->
@@ -57,6 +84,16 @@ every test timeout well under the runner's 900 s.
   answer "does my new comment text move the numbers" is one binary against two trees —
   and a test must not write into the tree it measures.
 
+- 2026-09-07 (0222) — **Seventh run in a row with no shell.** Nothing compiled, nothing
+  run. Everything below rests on reading; the proof is the next
+  `befunde/uebersetzung-<datum>.md`.
+- 2026-09-07 (0222) — **A citation repair cannot be verified by the repairer.** I can show
+  that each new wording exists in the target file today, and that the riegel's
+  normalisation (umlauts, em dash, bold markers, trailing period) maps both sides onto the
+  same string. I cannot show that no *fifth* citation broke between the report's tree
+  (82fa870, §5–§8) and mine (§9, §10, §11 translated since). The count 40/36 covers the
+  first three sections only.
+
 ## Open leads
 
 - 2026-09-07 (0166, **look at the next night report**) — The six differences in the head
@@ -69,6 +106,16 @@ every test timeout well under the runner's 900 s.
   building block that a later table now covers?** `messung-0180` is the known case;
   `messung-0106`, `-0115`, `-0129` are candidates. No proposal on a hunch — but whoever
   next touches one of them should run its needles before believing its numbers.
+- 2026-09-07 (0222, **look at the next night report**) — If `belegstellen_riegel` comes
+  back with `Zitate == aufgeloest`, the four sites are right and 0166 can be measured. If
+  it comes back with a gap of one, a section translated after 82fa870 (§9, §10 or §11)
+  carried a fifth citation I never saw — grep the corpus for `technik\.md` again, not for
+  keywords.
+- 2026-09-07 (0222) — **Fourth wave of the same breakage** (0200, 0214, this one). Each
+  translated section can kill citations elsewhere, and each wave costs a package. The
+  operator's decision on whether citation-nachzug belongs in the uebersetzer's own loop is
+  open in `ops/plan.md` (recommendation B); the project manager is carrying the count to
+  the Geschaeftsfuehrer. Nothing for me to do but note that the count is now four.
 - 2026-09-07 (0188, 0214, still open) — `bezeichner_riegel` and `pruefstand` still have no
   red-proof; `befunde/messung-0130`, `-0132`, `-0137`, `-0139`, `-0156`, `-0172`, `-0173`
   carry no dated provenance head.
@@ -96,4 +143,20 @@ compiles six — `beide` reuses the "after" build, `abstand5` the `nur-abstand` 
 roughly 17 s — and it runs twice a night, because both build paths read
 this `CMakeLists.txt`. The measured figure belongs in the next report; whoever reads it
 first should replace the 240 with a multiple of it.
+
+**0222.** Two things.
+
+*First, `daten/reihen.toml`, Reihe 17.* I updated the wording and deliberately did **not**
+give it a Schluesselwort. As it stands ("die spiel.md unter 'And the limit of the oracle,
+explicitly' aufzaehlt") it is not one of the 40 and never was; adding "Abschnitt" would
+make it counted and would move the base number the riegel prints, which 0166's Messstand
+and its reviewer read. Repairing a citation and changing what is measured are two
+different packages. The project manager may disagree — it is one word.
+
+*Second, the ABSTANDSFAELLE fixture, Fall 1.* Its `herkunft` names `daten/adressen.md` and
+its literal still carries the German T46 heading, which the corpus no longer has. I left
+it alone: the fixture measures the five-word distance and the right-hand name, not the
+corpus; its keyword is masked, so the riegel never reads it as a citation; and
+`messung-0166/messen.py` substitutes that exact line as `FALL1_ALT`. Touching it would
+blunt a live needle to tidy a comment.
 

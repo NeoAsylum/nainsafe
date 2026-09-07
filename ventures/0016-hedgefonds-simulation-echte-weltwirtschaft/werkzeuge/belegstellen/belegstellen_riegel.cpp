@@ -36,10 +36,16 @@
 //! jemand hier eine Zeilenangabe hinschreibt.
 //!
 //! Ein zweites, ebenso echtes Beispiel, und es traegt das am 2026-09-04 dazugekommene
-//! dritte Schluesselwort: `technik.md`, Absatz "Zwei Adresspaare tragen denselben
-//! Wert, und das braucht eine Regel statt eines Zufalls". Auch dieses Zitat zaehlt
-//! mit, auch es loest auf, und auch es ist der Rothebel fuer das, was es zeigt: Wer
-//! den Wortlaut hier oder dort aendert, macht den Riegel rot.
+//! dritte Schluesselwort: `technik.md`, Absatz "Two address pairs carry the same value,
+//! and that needs a rule instead of a coincidence". Auch dieses Zitat zaehlt mit, auch
+//! es loest auf, und auch es ist der Rothebel fuer das, was es zeigt: Wer den Wortlaut
+//! hier oder dort aendert, macht den Riegel rot.
+//!
+//! **Und genau das ist am 2026-09-07 geschehen** (Paket 0222). Der Uebersetzer hat den
+//! Absatz in `technik.md` uebersetzt; der Wortlaut oben stand bis dahin auf Deutsch und
+//! war tot. Der Riegel hat sich an seiner eigenen Kopfzeile gefangen -- nicht als
+//! Nebenwirkung, sondern als der Zweck, um dessentwillen dieses Beispiel echt ist.
+//! Nachgezogen wurde das Zitat, nie die Ueberschrift.
 //!
 //! ## Bedingung 2: was als Zitat zaehlt
 //!

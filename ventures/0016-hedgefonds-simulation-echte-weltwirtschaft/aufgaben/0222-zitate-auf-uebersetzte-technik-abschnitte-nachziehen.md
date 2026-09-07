@@ -1,7 +1,7 @@
 ---
 id: 0222-zitate-auf-uebersetzte-technik-abschnitte-nachziehen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/adressen.md, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/aktion.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/zustand.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp]
 abnahme: "In the next nightly report, belegstellen_riegel is green -- every citation of the checked form resolves (Zitate == aufgeloest in its Zahlenzeile). The Beleg for green is the entry in the next `befunde/uebersetzung-<datum>.md`, NOT a wortlaut from the builder. No citation is deleted to get there; each stale quote is updated to the heading's wording of today, or its removal is justified per site in the package body. The builder's Meldung lists, per repaired site, the file, the line, the old wording and the new one, so the reviewer can re-resolve each one against today's headings without repeating the search. Two sites are named in advance and must each be either repaired or expressly declined with a reason: `belegstellen_riegel.cpp:39` (Absatz \"Zwei Adresspaare tragen denselben Wert...\", dead against `technik.md:409`), and `daten/reihen.toml:1870` (Reihe 17 cites \"die spiel.md unter 'Die Grenze des Orakels'\", a paraphrase inside a leaf value whose target now reads \"And the limit of the oracle, explicitly\"). No condition of this acceptance may require a shell, `git` beyond `.git/logs/HEAD`, or a script that hangs in no `add_test`."
@@ -49,6 +49,61 @@ including bold lead-ins that a headings-only grep misses.
 - `belegstellen_riegel.cpp` in this list collides with 0166's redo -- these two
   must be serialized, and this one first: after the citation repair, 0166's
   table may be green as delivered (the report decides, see its pruefung).
+## Meldung 2026-09-07 -- five sites repaired, per site
+
+Line numbers are the ones before the edit. Wording is quoted, not paraphrased,
+so the reviewer can re-resolve each against today's headings with one `Grep`.
+
+1. `werkzeuge/belegstellen/belegstellen_riegel.cpp:39` -- Absatz, target
+   `technik.md:409`. Old: "Zwei Adresspaare tragen denselben Wert, und das
+   braucht eine Regel statt eines Zufalls". New: "Two address pairs carry the
+   same value, and that needs a rule instead of a coincidence".
+2. `daten/adressen.md:29` (table cell `Adresse`) -- same Absatz, same target,
+   same old/new wording. The verbatim quote in the same sentence went from
+   "`land.<L>.leitzins` und ... sind dieselbe Größe" to "... are the same
+   quantity" (`technik.md:410`).
+3. `daten/adressen.md:540` -- Ueberschrift, target `technik.md:1651`. Old:
+   "T46 — Die elf Adressen, deren Herkunft dieses Dokument ist, abschliessend".
+   New: "T46 — The eleven addresses whose provenance is this document,
+   exhaustively". The five words between keyword and quote and the document
+   name to the right are unchanged -- this site is the measured case of
+   `ABSTANDSFAELLE` Fall 1. The lines were rewrapped so that `technik.md` and
+   "Zeile 1219" stay on one line: that pair is the real-world form behind
+   `NAMENSFAELLE` Fall 1 and only counts while both stand in the same line.
+   The verbatim quote two lines below went from
+   "Reihe 10 trägt drei Länder, die USA definitionsgemäß nicht" to
+   "Series 10 carries three countries, the USA by definition not"
+   (`technik.md:1661`).
+4. `daten/adressen.md:556` -- same Absatz as 1 and 2, same old/new wording;
+   the verbatim quote carries the second pair as well ("as are
+   `land.<L>.haushaltssaldo` and `land.<L>.instrument.haushalt.stand`").
+5. `daten/reihen.toml:1870` -- **repaired, not declined, and its form is
+   deliberately left as it was.** Old paraphrase: "die spiel.md unter 'Die
+   Grenze des Orakels' aufzaehlt". New: "die spiel.md unter 'And the limit of
+   the oracle, explicitly' aufzaehlt" (`spiel.md:2835`). It carries no
+   Schluesselwort and is therefore not one of the 40; adding one would repair
+   nothing and would move the base number that 0166's Messstand prints. That is
+   a separate decision, not this package's.
+
+Sites 1-4 are exactly the four unresolved citations of the report at 82fa870
+(40 Zitate / 36 aufgeloest). The red proof is that report itself -- test 17,
+`belegstellen_riegel (Failed)` -- not a mutant of mine.
+
+**Files of the `dateien` list I did not need:** `parameter.toml`,
+`kern/include/kern/aktion.hpp`, `kern/include/kern/schritt.hpp`,
+`kern/include/kern/zustand.hpp`, `kern/src/schritt.cpp`. Every citation in them
+targets `spiel.md`, Abschnitt "The loop" / "The actions" / "The state" / Absatz
+"The fund" or the two still-German headings of `spiel.md` -- all resolve today.
+The next package of this class can start from
+`{belegstellen_riegel.cpp, daten/adressen.md, daten/reihen.toml}`.
+
+**Reported, not fixed (outside my `dateien`, and `specs/` is unwritable for me):**
+`technik.md:1802` and `spiel.md:1606` both still name „Die Grenze des Orakels",
+which `spiel.md` no longer carries.
+
+**What I could not measure:** nothing was compiled or run this run -- seventh in
+a row without a shell. The proof is the next `befunde/uebersetzung-<datum>.md`.
+
 - Recurring class, third occurrence (0200's wave, `ops/uebersetzt.txt` anchor
   drift noted in pruefung-0200, now this): every translated section can kill
   citations elsewhere. Whether citation-nachzug should become part of the
