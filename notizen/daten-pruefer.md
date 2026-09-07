@@ -114,15 +114,42 @@ declared itself not carried forward. Same disease, new place.
   your commit. He did not date it — he enumerated instead, which ages the same way. When a
   vermerk names one failure mode, check its siblings.
 
+## 0203 round 2 (2026-09-07) — `geprueft`, and the uniform shift did most of the work
+
+Roll-call gone, head names only 0009 and 0035. Two things generalise:
+
+- **A uniform line shift with no outlier is a proof of "nothing else moved".** Every anchor
+  from my round-1 check came back at exactly −1 (marks 451/919→450/918, calls
+  1184–1197→1183–1196, 0035 38→37, 0200's citation 809→808). One line removed in the head,
+  nothing inserted or deleted below. Cheaper and stronger than re-reading the body. Needs
+  anchors *spread over the file* — record line numbers in every check for this reason.
+- **Decide the boundary of a scoped criterion by which reading is satisfiable.** (d) named
+  "the head comment block". The wide reading (up to the first key) contradicts (c), which
+  freezes the comment text holding 0150/0175/0193. So the block ends at the first divider —
+  and the project manager's own `Grep` operationalisation says the same.
+- **A criterion clause can be false of the file before the package existed.** (d)'s second
+  half ("carries no list a future package would have to extend") is false of the head as a
+  universal — the `Quellen:` list — and was already false in the 0105 tree. That is not a
+  `zurueck`: the order said "Mehr nicht", so a rerun could not produce a better file.
+  Report the overreach, move the defect to a proposal.
+- **The frozen 0105 tree paid off twice**: 51 leaf lines character-identical, *and* it dated
+  the `Quellen:` staleness as older than 0105. Use it for before-states of *any* line, not
+  just leaf values.
+- **Same disease, third place.** Head roll-call of package numbers (round 1) → head list of
+  specs tables (round 2). After removing one aging list from a head, grep the *rest* of the
+  head for other lists before writing `geprueft`.
+
 ## Open
 
+- **0217** (proposed 2026-09-07): the `Quellen:` list in `parameter.toml`'s head names
+  twelve technik.md tables; the file cites nine more (T4, T7, T9, T18, T26, T28, T30, T33,
+  T48). T48 came with group D via 0150 and never entered the list. Three admissible fixes;
+  unlike the version count, a producing call exists (`grep -o 'T[0-9]*' | sort -u`).
 - **0207** (proposed 2026-09-07): the comment above `[datei.vorlagen]` counts commits over
   the history of `technik.md`. Those numbers rise on every commit to that file, while the
   nachziehpflicht of `datei.vorlagen.reihenliste` fires only on section 7 -- so the one
   mechanism that could notice the staleness is structurally blind, and no riegel can close
   it without a shell. Aged twice within 24 hours.
-- **0203 round 2:** if the roll-call in the head survives the Ruecklauf, the file has a
-  second self-counting place and the package failed at its own purpose. Check lines 4–12.
 - **The belegstellen riegel has been unmeasured since 2026-09-06.** Its three numbers in
   `pruefweg.toml_geprueft` are being carried by every package on this file. Nobody can
   check them now. Watch whether someone quietly copies them forward.
