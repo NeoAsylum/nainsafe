@@ -57,6 +57,24 @@ Regressionsbestand.
   bestehender Fall still auf die andere Satzhälfte gesprungen und hätte weiter grün
   gemeldet. Jetzt steht jede Hälfte als eigener Fall unter demselben Satz, und die Sorte
   steht in der Fehlermeldung — sonst wäre nicht zu sehen, welcher riss.
+- 2026-09-07 (0200) — **Die Abbildung liest man am Riegel, nicht am Wörterbuch.** Vier der
+  fünf Ziele sind `##`-Überschriften („Der Zustand" → `The state`, „Die Aktionen" →
+  `The actions`, „Die Schleife" → `The loop`); das fünfte ist gar keine Überschrift,
+  sondern ein **fett ausgezeichneter Vorspann** — `**The fund:**` in `spiel.md`, gefunden
+  über `ueberschrift_aus_zeile`, das die zweite Form ausdrücklich trägt. Wer nur nach
+  `^#` sucht, hält das Zitat aus `zustand.hpp` für tot und schreibt einen falschen Befund.
+- 2026-09-07 (0200) — **Bei der Form *mit* Anfuehrung ist Gleichheit verlangt, nicht
+  Präfix.** `beurteile_zitat` vergleicht dort `liste[u] == gesucht`; `ist_wortpraefix`
+  läuft allein für die Form ohne Anfuehrung. Folge für dieses Paket: „Was dafuer zu tun
+  ist -- Namensnennung, konkret" wird zu `What that requires -- attribution, concretely`
+  **ohne** den Punkt, den die Zieldatei trägt — `normiere` schneidet Punkt, Doppelpunkt,
+  Komma und Semikolon am Ende auf beiden Seiten weg, deshalb geht es auf. Dasselbe trägt
+  den Doppelpunkt von `**The fund:**`.
+- 2026-09-07 (0200) — **Der Rotnachweis war schon geführt und musste nicht gebaut werden.**
+  `befunde/uebersetzung-2026-09-07.md` zeigt `belegstellen_riegel` in beiden Bäumen auf
+  Code 8 mit „10 Abschnittszitat(e) finden ihre Ueberschrift nicht" und nennt jede Stelle
+  einzeln. Ein Paket, dessen Test heute rot ist und dessen Abnahme grün verlangt, braucht
+  keinen Mutanten — die Messung liegt vor dem Eingriff.
 - Weiter gültig aus der Vorgängerdatei, ungeprüft in diesem Lauf: Mutieren ohne den
   Quellbaum anzufassen (Kopie außerhalb, Abbruch wenn der erwartete Wortlaut nicht genau
   einmal vorkommt); `ctest -R` ohne Treffer gibt 0, also **`--no-tests=error`**; drei
@@ -104,6 +122,17 @@ Regressionsbestand.
   kann.** `belegstellen_riegel`, `bezeichner_riegel`, `pruefstand`: Die Bauart ist
   übertragbar und kostet je einen Mutanten. Ein eigenes Paket wert.
 
+- 2026-09-07 (0200) — **`specs/technik.md` zitiert selbst „Die Schleife" und ist damit
+  jetzt tot** (zwei Zeilen, im Satz „Die sechs Schritte der Runde laufen in der
+  Reihenfolge aus `spiel.md`, Abschnitt …"). Der Riegel fängt das **nicht**: Er liest
+  `specs/` nur als Ziel, nie als zitierende Datei — mit Absicht, denn ein Rot dort dürfte
+  niemand beheben. Ausserhalb meiner Dateiliste und ausserhalb jedes Bauwegs; Gebiet des
+  Übersetzers. Ein Paket wert, sobald der Übersetzungslauf `specs/` freigibt.
+- 2026-09-07 (0200) — **Drei `.tmp`-Abschriften von `reihen.toml` liegen unter
+  `daten/zwischenstaende/`** (`.neu.tmp`, `.neu2.tmp`, `.neu3.tmp`) und tragen das alte
+  Zitat weiter. Sie fallen aus Bedingung 2 heraus, weil dort nur `.md` und `.toml` gelesen
+  werden — kein Befund, aber ein stiller Zwilling des Bestands im Baum.
+
 ## Worauf ich unsicher bin
 
 **0188.** Drei Dinge, alle bewusst.
@@ -129,6 +158,21 @@ statt still, und im Selbsttest festgenagelt — aber es ist eine Lücke.
 Zerlegung nur, *falls* sie dort steht. Die Abnahme verlangt für jenen Stand allein „rot".
 Ein fremder historischer Wortlaut ist keine Bedingung dieses Pakets, und ich wollte den
 Nachtlauf nicht an eine Formulierung hängen, die ich nicht lesen konnte.
+
+**0200.** Zwei Dinge.
+
+*Erstens:* **Nichts ausgeführt** — dieser Lauf hatte wieder keine Schale. Die zehn Ziele
+sind im Wortlaut der Arbeitsbaum-Fassung nachgeschlagen und gegen `normiere`,
+`ueberschrift_aus_zeile` und `beurteile_zitat` von Hand durchgerechnet, nicht gemessen.
+Der Beleg ist der nächste Baulauf.
+
+*Zweitens, und es ist der eigentliche Vorbehalt:* `ops/reserviert.txt` hält `spiel.md`
+weiter für den Übersetzungslauf, und `ops/uebersetzt.txt` führt `The state`, `The actions`
+und `The fund` **gar nicht** auf, obwohl die Überschriften im Arbeitsbaum schon englisch
+sind. Der Stand, auf den ich nachgezogen habe, ist also jünger als die Fertigliste. Wird
+eine der fünf Überschriften nach diesem Lauf noch einmal umbenannt, ist der Riegel wieder
+rot — an einer Stelle, die ich richtig getroffen habe. Das Paket nennt genau diesen Fall
+einen Befund und keinen Rücklauf.
 
 **0194.** Drei Dinge, alle bewusst.
 

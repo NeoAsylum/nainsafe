@@ -224,7 +224,7 @@ inline constexpr std::size_t MARKTGROESSEN = 2;
 /// Anlegerbestand, Marktanteil" --, in `daten/adressen.md` stehen die fuenf Bezeichner
 /// `fonds.kasse`, `fonds.hebelstand`, `fonds.sichtbarkeit`, `fonds.anlegerbestand` und
 /// `fonds.marktanteil` in genau dieser Folge, und in `spiel.md` traegt sie der Absatz
-/// "Der Fonds".
+/// "The fund".
 ///
 /// **Warum hier Bezeichner und Wortlaut stehen und keine Nummern.** Bis zum
 /// 2026-09-04 stand hier ein Zeilenbereich in `daten/adressen.md`, und der

@@ -30,7 +30,7 @@
 //! lesen, waehrend Bedingung 1 ein Mustertreffer in derselben Zeile ist.
 //!
 //! Ein Beispiel, und es ist absichtlich echt statt erfunden: `spiel.md`, Abschnitt
-//! "Die Schleife". Der Satz, den Sie gerade lesen, ist selbst ein Zitat der von
+//! "The loop". Der Satz, den Sie gerade lesen, ist selbst ein Zitat der von
 //! Bedingung 2 geprueften Form. Wer den Abschnitt dort umbenennt, macht diesen Riegel
 //! an seiner eigenen Kopfzeile rot -- so wie Bedingung 1 sich selbst faengt, wenn
 //! jemand hier eine Zeilenangabe hinschreibt.

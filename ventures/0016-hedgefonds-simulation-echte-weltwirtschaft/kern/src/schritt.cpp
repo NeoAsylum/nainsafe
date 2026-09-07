@@ -119,7 +119,7 @@ constexpr std::array<Instrument, zustand::INSTRUMENTE> INSTRUMENTE_ALLE = {
     Instrument::Leitzins, Instrument::Zoll, Instrument::Haushalt, Instrument::Regulierung};
 
 // ---------------------------------------------------------------------------
-// Die sechs Schritte aus `spiel.md`, Abschnitt "Die Schleife"
+// Die sechs Schritte aus `spiel.md`, Abschnitt "The loop"
 // ---------------------------------------------------------------------------
 
 /// Die sechs Schritte der Runde, mit ausgeschriebenen Nummern.

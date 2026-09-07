@@ -7,7 +7,7 @@
 //! und die Warnung vor einer Sortierung mit Gleichstaenden), T35 (Mass 1 zieht ohne
 //! Zuruecklegen aus dieser Liste), T7 und ADR 0011 (Ganzzahlarithmetik, kein
 //! Gleitkomma). Die fuenf Arten und ihre Kennungen 1 bis 5 stehen in `spiel.md`,
-//! Abschnitt "Die Aktionen".
+//! Abschnitt "The actions".
 //!
 //! Gelesene Fassung von T32: Stand `1f763e9`.
 //!
@@ -80,7 +80,7 @@ using i64 = std::int64_t;
 // ---------------------------------------------------------------------------
 
 /// Die fuenf Aktionsarten mit ihren Kennungen aus `spiel.md`, Abschnitt
-/// "Die Aktionen": dort sind die Kennungen 1 bis 5 zugleich die Gleichstandsordnung
+/// "The actions": dort sind die Kennungen 1 bis 5 zugleich die Gleichstandsordnung
 /// aller Masse, und genau diese Zahlen sind der staerkste Ordnungsschluessel aus T32.
 ///
 /// Die Nummern stehen ausgeschrieben und werden nicht vom Uebersetzer vergeben. Der
@@ -398,7 +398,7 @@ template <std::size_t N>
 /// einem Speicherstand nach T22 und in der Maschinenschnittstelle nach T21.
 [[nodiscard]] Art art_der_kennung(i64 kennung);
 
-/// Der Name einer Art, wie ihn `spiel.md`, Abschnitt "Die Aktionen" fuehrt. Ein Wert
+/// Der Name einer Art, wie ihn `spiel.md`, Abschnitt "The actions" fuehrt. Ein Wert
 /// ausserhalb 1 bis 5 bricht ab.
 [[nodiscard]] const char* art_name(Art art);
 

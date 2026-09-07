@@ -4,7 +4,7 @@
 //! Vorgaben: T10 (der Weltschritt zieht nicht), T19 (die Kette gehoert nicht in den
 //! Zustand), T38 (der Modus ist Argument und bringt eine Sollmaske mit), T39 (zwei
 //! Lesezugriffe), T18 (der Schreiber ist der einzige Schreibweg), T9 (feste
-//! Reihenfolge); `spiel.md`, Abschnitt *Die Schleife* (die sechs Schritte).
+//! Reihenfolge); `spiel.md`, Abschnitt *The loop* (die sechs Schritte).
 //!
 //! ## Was dieser Kasten ist -- und was er ausdruecklich nicht ist
 //!

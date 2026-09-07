@@ -2,7 +2,7 @@
 paket: 0007-adressverzeichnis-310
 rolle: datenbauer
 stand: 2026-09-01
-quellen: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md T5, T15, T16, T17, T22, T23, T27, T33, T45, T46, T47, T49, T51; specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md, Abschnitt "Der Zustand" und Tabelle "Jede Größe ohne Datenanker"]
+quellen: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md T5, T15, T16, T17, T22, T23, T27, T33, T45, T46, T47, T49, T51; specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md, Abschnitt "The state" und Tabelle "Jede Größe ohne Datenanker"]
 ---
 
 # Die 310 Zustandsadressen, einzeln
