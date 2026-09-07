@@ -2625,123 +2625,123 @@ replaced within one night by a measurement — and stays measured.
 
 ## 10. Was das Modell an Rechenzeit kostet
 
-Ein Weltschritt umfasst geschätzt 7.500 elementare Ganzzahloperationen; den Löwenanteil
-tragen die Markträumung (2 Sektoren × 40 Halbierungen, T28) und das Mitschreiben der
-Kette (T18). Teuer sind darin die `i128`-Divisionen aus T6. **Planwert: 10 Mikrosekunden
-je Schritt**, Bandbreite 5 bis 30. Die Spalte „ungünstig" rechnet mit 50 Mikrosekunden,
-also dem Fünffachen des Planwerts — eine Reserve, keine Erwartung.
+A world step comprises an estimated 7,500 elementary integer operations; the lion's share
+is carried by the market clearing (2 sectors × 40 halvings, T28) and the recording of the
+chain (T18). Expensive within that are the `i128` divisions from T6. **Plan value: 10
+microseconds per step**, bandwidth 5 to 30. The column "unfavourable" reckons with 50
+microseconds, five times the plan value — a reserve, not an expectation.
 
-**Die Bewertung aus T47 ändert diese Schätzung nicht, und diesmal ist die Zahl gezählt statt
-gerundet.** Ein voller Aufruf von `fondsvermoegen` kostet nach der Tabelle in T47 rund 230
-Ganzzahloperationen, davon 71 `i128`-Divisionen; er fällt im `spielmodus` einmal je
-Weltschritt in Schritt 6 an und im Suchbot zusätzlich je Kandidat. Das sind gut drei Prozent
-eines Weltschritts, nicht die drei Promille der Fassung 5 — und weiterhin tief innerhalb der
-Bandbreite 5 bis 30 µs, die der Planwert ohnehin trägt. **Im `weltlauf` fällt er gar nicht
-an**, weil das Fondsteilsystem nach T38 nicht läuft; der Rückvergleich ist von der
-Korrektur nicht berührt. Keine Zeile der Tabelle unten bewegt sich.
+**The valuation from T47 does not change this estimate, and this time the number is counted
+rather than rounded.** A full call of `fondsvermoegen` costs, per the table in T47, around
+230 integer operations, 71 of them `i128` divisions; it occurs in `spielmodus` once per
+world step in step 6 and in the search bot additionally per candidate. That is a good three
+percent of a world step, not the three per mille of version 5 — and still deep inside the
+bandwidth of 5 to 30 µs that the plan value carries anyway. **In the `weltlauf` it does not
+occur at all**, because the fund subsystem per T38 does not run; the backtest is untouched
+by the correction. No row of the table below moves.
 
-**Gegenkraft 5 kostet je Runde 106 Lesezugriffe, 16 Schreibzugriffe und 16 Aufrufe des
-dritten Skalenübergangs, und auch diese Zahl ist gezählt.** Die Aufschlüsselung steht in
-`spiel.md` im Abschnitt *Wo die Regel läuft, und warum Kanal 3 zyklenfrei bleibt*; sie ist
-hier nachgezählt und stimmt überein:
+**Counterforce 5 costs per round 106 read accesses, 16 write accesses and 16 calls of the
+third scale transition, and this number too is counted.** The breakdown is in `spiel.md` in
+the section *Wo die Regel läuft, und warum Kanal 3 zyklenfrei bleibt*; it is recounted
+here and agrees:
 
-| woher | gelesene Adressen | Zahl |
+| from where | addresses read | count |
 |---|---|---:|
-| Schritt 3 | `lies_neu(land.<l>.instrument.<i>.stand)`, 4 Länder × 4 Instrumente | 16 |
-| Schritt 4 | `lies_neu(welt.preis.<s>)`, s ∈ {1, 2} | 2 |
-| Schritt 4 | `lies_neu(handel.<a>.<b>.<s>)`, der ganze Handelsblock | 40 |
-| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, für `bip`, 4 × 3 | 12 |
-| Schritt 4 | `lies_neu(land.<l>.staatsschuld)`, für `schuld` | 4 |
-| Vorrunde | `lies_alt(land.<l>.instrument.<i>.stand)`, für `hub` | 16 |
-| Vorrunde | `lies_alt(land.<l>.instrument.<i>.gegendruck)`, für den Zerfall | 16 |
-| | **Summe** | **106** |
+| step 3 | `lies_neu(land.<l>.instrument.<i>.stand)`, 4 countries × 4 instruments | 16 |
+| step 4 | `lies_neu(welt.preis.<s>)`, s ∈ {1, 2} | 2 |
+| step 4 | `lies_neu(handel.<a>.<b>.<s>)`, the whole trade block | 40 |
+| step 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, for `bip`, 4 × 3 | 12 |
+| step 4 | `lies_neu(land.<l>.staatsschuld)`, for `schuld` | 4 |
+| previous round | `lies_alt(land.<l>.instrument.<i>.stand)`, for `hub` | 16 |
+| previous round | `lies_alt(land.<l>.instrument.<i>.gegendruck)`, for the decay | 16 |
+| | **Sum** | **106** |
 
-`16 + 2 + 40 + 12 + 4 + 16 + 16 = 106`. **Gezählt sind unterschiedliche Adressen, nicht
-Zugriffsvorgänge**, und an genau einer Zeile macht das einen Unterschied: Der Handelsblock
-steht mit **40** und nicht mit 64. 64 wäre die Zahl der Vorgänge — vier Länder mal zwei
-Sektoren mal acht Strömen je `handelsvolumen(l, s)` —, aber ein Strom zwischen zwei
-spielbaren Ländern geht in zwei davon ein. Die 40 sind der Block vollständig: nach T15
-`Gebiet × Gegenüber × handelbarer Sektor = 5 × 4 × 2`, und die vier `handelsvolumen`
-zusammen berühren jedes geordnete Gebietspaar, weil an jedem Paar mindestens ein spielbares
-Land beteiligt ist. Die 16 Schreibzugriffe sind die sechzehn `gegendruck`-Adressen, die 16
-Aufrufe die des dritten Skalenübergangs aus T50 — je Adresse einer, sämtlich in Schritt 5,
-und das ist zugleich der Nachweis für dessen „genau ein Aufrufort".
+`16 + 2 + 40 + 12 + 4 + 16 + 16 = 106`. **Counted are distinct addresses, not access
+operations**, and at exactly one row that makes a difference: the trade block stands at
+**40** and not at 64. 64 would be the number of operations — four countries times two
+sectors times eight flows per `handelsvolumen(l, s)` —, but a flow between two playable
+countries enters two of them. The 40 are the block in full: per T15
+`Gebiet × Gegenüber × handelbarer Sektor = 5 × 4 × 2`, and the four `handelsvolumen`
+together touch every ordered pair of territories, because at least one playable country
+takes part in every pair. The 16 write accesses are the sixteen `gegendruck` addresses, the
+16 calls those of the third scale transition from T50 — one per address, all in step 5, and
+that is at the same time the proof of its "exactly one call site".
 
-**Auf die Tabelle oben wirkt das nicht.** 106 Lesezugriffe und 16 Multiplikationen sind
-gegen die geschätzten 7.500 Ganzzahloperationen eines Weltschritts rund anderthalb Prozent,
-und Gegenkraft 5 lief in dieser Schätzung schon mit; neu ist nicht die Arbeit, sondern dass
-sie abgezählt ist. **Zwei frühere Zahlen sind damit abgelöst**: die 120 der Fassung vom
-2026-09-02 (sie zählte den Zollstand doppelt, obwohl die damalige Zollzeile ihn gar nicht
-las) und die 112 des Prüfbefunds vom 2026-09-02 (richtig gerechnet, aber für die alte
-Zollzeile). Der Weg von der einen zur anderen: `112 + 8 − 16 + 2 = 106` — der Zollstand
-kommt mit `lies_neu` und `lies_alt` hinzu, beide Sektorpreiszeilen fallen ersatzlos weg, die
-zwei Weltpreise treten an ihre Stelle.
+**On the table above this has no effect.** 106 read accesses and 16 multiplications are,
+against the estimated 7,500 integer operations of a world step, around one and a half
+percent, and counterforce 5 was already running in that estimate; new is not the work but
+that it is counted out. **Two earlier numbers are thereby superseded**: the 120 of the
+version of 2026-09-02 (it counted the tariff state twice although the tariff row of that
+time did not read it at all) and the 112 of the check finding of 2026-09-02 (correctly
+computed, but for the old tariff row). The path from one to the other:
+`112 + 8 − 16 + 2 = 106` — the tariff state comes in with `lies_neu` and `lies_alt`, both
+sector price rows drop without replacement, the two world prices take their place.
 
-**Der Planwert ist unverändert geschätzt und nicht gemessen.** Mein Logbuch verlangt, beim
-nächsten Lauf zuerst den gemessenen `ticks_je_sekunde` zu lesen; es gibt ihn weiterhin
-nicht. Unter `ventures/0016-…/kern/` stehen inzwischen Festkomma, Zufall, Prüfsumme,
-Zustand und Schreiber, aber kein Weltschritt und kein Prüfstandslauf — gemessen ist damit
-die Arithmetik, nicht die Schleife. Das bleibt die größte Unsicherheit dieses Abschnitts,
-und sie steht in Abschnitt 12.
+**The plan value is unchanged: estimated and not measured.** My logbook demands reading
+the measured `ticks_je_sekunde` first on the next run; it still does not exist. Under
+`ventures/0016-…/kern/` there now stand fixed point, random, checksum, state and writer,
+but no world step and no test bench run — measured is thus the arithmetic, not the loop.
+That remains the biggest uncertainty of this section, and it stands in
+section 12.
 
-Grundlage ist die **R = 24-Runden-Partie** aus `spiel.md` Fassung 3. Alle Zeilen sind in
-diesem Lauf gerechnet.
+The basis is the **R = 24-round game** from `spiel.md` version 3. All rows are computed in
+this run.
 
-| Lauf | Weltschritte | bei 10 µs | ungünstig (50 µs) |
+| Run | world steps | at 10 µs | unfavourable (50 µs) |
 |---|---:|---:|---:|
-| eine Partie, Heuristikbot | 24 | 0,24 ms | 1,2 ms |
-| eine Partie, Suchbot (60 Kandidaten, 1 Zug voraus) | 1.464 | 15 ms | 73 ms |
-| **1.000 Partien, Heuristikbot** | 24.000 | **0,24 s** | 1,2 s |
-| **1.000 Partien, Suchbot** | 1.464.000 | **15 s** | 1,2 min |
-| Entscheidungsdichte, K=30, ein Startwert | 9.024 | 0,090 s | 0,45 s |
-| **Entscheidungsdichte, 50 Startwerte** | **451.200** | 4,5 s | 23 s |
-| **Strategievielfalt, 126 Profile × 20 Startwerte** | **3.689.280** | 37 s | 3,1 min |
-| **Optimumsverschiebung, zwei Fenster** | **7.378.560** | 1,2 min | 6,1 min |
-| **Bruchlauf, 10.000 Zufallspartien** | **240.000** | 2,4 s | 12 s |
-| **Beschränktheit, 200 Runden** | **200** | 2 ms | 10 ms |
-| **Rückvergleich, ein Weltlauf** | **24** | 0,24 ms | 1,2 ms |
-| **Regressionsbestand, 1.000 Partien** | **24.000** | 0,24 s | 1,2 s |
-| **Nachtlauf gesamt** | **11.783.264** | **2,0 min** | **9,8 min** |
+| one game, heuristic bot | 24 | 0.24 ms | 1.2 ms |
+| one game, search bot (60 candidates, 1 move ahead) | 1,464 | 15 ms | 73 ms |
+| **1,000 games, heuristic bot** | 24,000 | **0.24 s** | 1.2 s |
+| **1,000 games, search bot** | 1,464,000 | **15 s** | 1.2 min |
+| decision density, K=30, one seed | 9,024 | 0.090 s | 0.45 s |
+| **decision density, 50 seeds** | **451,200** | 4.5 s | 23 s |
+| **strategy diversity, 126 profiles × 20 seeds** | **3,689,280** | 37 s | 3.1 min |
+| **shift of the optimum, two windows** | **7,378,560** | 1.2 min | 6.1 min |
+| **break run, 10,000 random games** | **240,000** | 2.4 s | 12 s |
+| **boundedness, 200 rounds** | **200** | 2 ms | 10 ms |
+| **backtest, one `weltlauf`** | **24** | 0.24 ms | 1.2 ms |
+| **regression stock, 1,000 games** | **24,000** | 0.24 s | 1.2 s |
+| **night run total** | **11,783,264** | **2.0 min** | **9.8 min** |
 
-Die Zeilen im Einzelnen, damit die Summe nachzählbar ist: `Σ(R+1−t)` für `t = 1…24` ist
-`300`, also `30 × 300 = 9.000` je Startwert, zuzüglich 24 Weltschritte für die
-Trägerpartie ergibt **9.024**; mal 50 Startwerte **451.200**. `126 = C(9,4)`,
-`1.464 = 24 × 61`, `3.689.280 = 126 × 20 × 1.464`, `7.378.560` das Doppelte davon. Die drei
-Maße zusammen sind **11.519.040**, so wie `spiel.md` es rechnet. Der Nachtlauf addiert
-Bruchlauf, Beschränktheit, Rückvergleich und Regressionsbestand:
-`11.519.040 + 240.000 + 200 + 24 + 24.000 = 11.783.264`. Die beiden Zeilen „1.000 Partien"
-sind Vergleichswerte und gehen nicht in die Summe ein.
+The rows one by one, so that the sum can be recounted: `Σ(R+1−t)` for `t = 1…24` is
+`300`, so `30 × 300 = 9.000` per seed, plus 24 world steps for the carrier game gives
+**9,024**; times 50 seeds **451,200**. `126 = C(9,4)`, `1.464 = 24 × 61`,
+`3.689.280 = 126 × 20 × 1.464`, `7.378.560` twice that. The three Maße together are
+**11,519,040**, just as `spiel.md` computes it. The night run adds break run, boundedness,
+backtest and regression stock:
+`11.519.040 + 240.000 + 200 + 24 + 24.000 = 11.783.264`. The two rows "1,000 games" are
+comparison values and do not enter the sum.
 
-Alles auf **einem** Kern. Mit acht Rechenkernen fällt der Nachtlauf auf rund
-**15 Sekunden** beim Planwert und auf rund **1,2 Minuten** im ungünstigen Fall. Womit
-parallelisiert wird, ist nach T3 offen und für dieses Dokument gleichgültig: Gebunden ist
-nach Abschnitt 9, dass ein Lauf mit einem und mit zweiunddreissig Kernen dasselbe Ergebnis
-liefert, nicht das Mittel, mit dem das erreicht wird.
+Everything on **one** core. With eight cores the night run falls to around
+**15 seconds** at the plan value and to around **1.2 minutes** in the unfavourable case.
+What is used to parallelise is per T3 open and immaterial for this document: bound per
+section 9 is that a run delivers the same result with one core and with thirty-two, not
+the means by which that is achieved.
 
-**Die Antwort auf die Frage, die dieser Abschnitt beantworten soll: Ja, der Prüfstand kann
-täglich laufen — und stündlich.** Der Engpass ist nicht die Rechenzeit, sondern das
-Tokenbudget der Agenten, die die Befunde lesen.
+**The answer to the question this section is meant to answer: yes, the test bench can run
+daily — and hourly.** The bottleneck is not compute time but the token budget of the
+agents who read the findings.
 
-**Die Kalibrierschleife.** Tausend Parametersätze über den vollen Maßsatz (11.519.040
-Schritte je Satz) kosten 11,52 Milliarden Weltschritte, also **32,0 Stunden auf einem Kern
-und 4,0 Stunden auf acht** — keine Nachtaufgabe. Nachtfähig ist die verkürzte Fassung:
-Maß 1 mit 10 statt 50 Startwerten (90.240) und Maß 2 mit 5 statt 20 (922.320), Maß 3 gar
-nicht, weil die Verschiebung des Optimums erst interessant ist, wenn Maß 1 und 2 halten.
-Zusammen **1.012.560 Schritte je Parametersatz**, für tausend Sätze also **21 Minuten auf
-acht Kernen**. Die Vorgabe an den Selbstspieler lautet deshalb: grob mit der verkürzten
-Fassung suchen, die zehn besten Sätze mit der vollen nachrechnen.
+**The calibration loop.** A thousand parameter sets over the full set of Maße (11,519,040
+steps per set) cost 11.52 billion world steps, that is **32.0 hours on one core and 4.0
+hours on eight** — not a night task. Night-capable is the shortened version: Maß 1 with 10
+instead of 50 seeds (90,240) and Maß 2 with 5 instead of 20 (922,320), Maß 3 not at all,
+because the shift of the optimum only becomes interesting once Maß 1 and 2 hold. Together
+**1,012,560 steps per parameter set**, for a thousand sets thus **21 minutes on eight
+cores**. The instruction to the self-player is therefore: search roughly with the
+shortened version, recompute the ten best sets with the full one.
 
-**Die Gegenrechnung, die die Stackwahl trägt:** Derselbe Weltschritt kostet in Python
-zwischen 0,75 und 3 Millisekunden, also das 75- bis 300-fache. Der Nachtlauf läge bei
-**2,5 bis 9,8 Stunden** auf einem Kern. Er wäre damit nicht täglich, sondern gelegentlich —
-und die Kalibrierschleife wäre auch in der verkürzten Fassung unmöglich. Das ist die Zahl,
-an der die Wahl aus T1 hängt. Sie ist durch die kürzere Partie kleiner geworden, aber der
-Abstand ist derselbe: Der Faktor entscheidet, nicht die Partielänge.
+**The counter-calculation that carries the stack choice:** the same world step costs in
+Python between 0.75 and 3 milliseconds, that is 75 to 300 times as much. The night run
+would lie at **2.5 to 9.8 hours** on one core. It would then be not daily but
+occasional — and the calibration loop would be impossible even in the shortened version.
+That is the number the choice from T1 hangs on. It has become smaller through the shorter
+game, but the gap is the same: the factor decides, not the game length.
 
-**Beim Käufer** kostet eine Runde einen Weltschritt: 10 Mikrosekunden. Der Speicherbedarf
-sind 2,5 kB Zustand, unter 1 MB Jahrgänge und wenige hundert kB Kettenverlauf. Das
-Produkt läuft auf allem und braucht keinen Server — die Kostenrechnung der Idee (keine
-Kosten je Kunde) hält.
+**At the buyer's** a round costs one world step: 10 microseconds. The memory footprint is
+2.5 kB of state, under 1 MB of vintages and a few hundred kB of chain history. The
+product runs on anything and needs no server — the idea's cost calculation (no cost per
+customer) holds.
 
 ## 11. Auslieferung, und wo Geld anfängt
 
