@@ -1,4 +1,4 @@
-//! # Der Zahlwortriegel -- Paket 0180
+//! # Der Zahlwortriegel -- Paket 0180, um Sorte 3 erweitert in Paket 0194
 //!
 //! `werte.hpp` traegt Saetze, die zaehlen, was unter ihnen steht. Sie stimmen, wenn sie
 //! geschrieben werden, und sie werden falsch, sobald ein Paket eine Deklaration
@@ -11,19 +11,29 @@
 //! Die Zahlen sind nicht schwer zu bilden. Sie sind schwer im Blick zu behalten, und
 //! genau das ist die Sorte Arbeit, die kein Agent tun sollte.
 //!
-//! ## Was dieses Programm prueft -- zwei Behauptungen gegen zwei Zaehlungen
+//! ## Was dieses Programm prueft -- drei Behauptungen gegen drei Zaehlungen
 //!
 //! Gelesen wird genau eine Datei, `kern/include/kern/werte.hpp`, und in ihr werden
-//! zwei Sorten Satz gegen zwei Zaehlungen im selben Quelltext gehalten:
+//! drei Sorten Satz gegen drei Zaehlungen im selben Quelltext gehalten:
 //!
 //!   **Sorte 1 -- das Zahlwort vor "Groessen"** gegen die Zahl der T48-Nummern, die als
 //!   oeffentliche Funktionsdeklaration darunter stehen. Gezaehlt werden **Nummern und
-//!   nicht Zeilen**: Nr. 11 traegt zwei Stelligkeiten unter einer Nummer, und der Kopf
-//!   sagt selbst, dass zweiundzwanzig Groessen in dreiundzwanzig Deklarationen stehen.
+//!   nicht Zeilen**: Nr. 11 traegt zwei Stelligkeiten unter einer Nummer.
 //!
 //!   **Sorte 2 -- das Zahlwort vor "Jahrgangskonstante" oder "Jahrgangskonstanten"**
 //!   gegen die Zahl der Felder von `struct Konstanten`, deren Kommentar sich auf T23
 //!   Punkt 5 beruft.
+//!
+//!   **Sorte 3 -- das Zahlwort vor "Deklarationen"** gegen die Zahl der
+//!   Funktionsdeklarationen, diesmal **Zeilen und nicht Nummern** (Paket 0194).
+//!
+//! Sorte 1 und Sorte 3 stehen in **einem** Satz: Zeile 32 sagt "Zweiundzwanzig
+//! Groessen in dreiundzwanzig Deklarationen". Bis 0194 war davon eine Zahl bewacht und
+//! eine nicht -- eine weitere Stelligkeit unter einer **vorhandenen** Nummer laesst die
+//! Nummernzaehlung bei 22 und macht "dreiundzwanzig" still falsch. Genau diese Sorte
+//! Drift hat 0151 schon einmal einen Lauf lang ueberlebt. Zwei Zahlen in einem Satz
+//! brauchen zwei Pruefungen: Ein Vergleich der ganzen Zeile wuerde rot, sagte aber
+//! nicht, welche Haelfte riss.
 //!
 //! Die Zaehlungen kommen aus dem Quelltext und nicht aus diesem Programm. Eine feste
 //! Sollzahl hier waere ein Messgeraet, das nur prueft, dass die Welt sich nicht bewegt
@@ -80,6 +90,11 @@
 //!     die eine Zahl nennen und sie zugleich verneinen ("ist keine dreiundzwanzigste
 //!     Groesse"). Eine Verneinung maschinell zu lesen ist eine andere Aufgabe; der
 //!     Plural traegt alle vier Zaehlsaetze der Datei.
+//!   * **Nur der Plural "Deklarationen"**, aus demselben Grund: Der Singular steht im
+//!     Bestand in "haben in diesem Kopf keine Deklaration" -- wieder eine Verneinung.
+//!     Der Plural steht zweimal, einmal mit Zahl (Zeile 32) und einmal ohne ("die
+//!     oeffentlichen Deklarationen dieses Kopfes"); beide Stellen stehen als Fall im
+//!     Selbsttest, damit die stumme stumm bleibt.
 //!   * **Nur Zahlwoerter, keine Ziffern.** `die 22 Groessen` faengt dieser Riegel
 //!     nicht. Der Bestand schreibt Zaehlsaetze aus, und eine Ziffernform mitzunehmen
 //!     hiesse, jede Jahreszahl und jede Vorgabenkennung erst wieder auszunehmen.
@@ -97,11 +112,31 @@
 //! die fuenfte liesse sich das Zusammensetzen auf "immer gruen" festnageln, ohne dass
 //! ein Fall risse.
 //!
+//! ## Die Empfindlichkeitsprobe -- der Rotnachweis laeuft mit, statt danebenzuliegen
+//!
+//! Ein Riegel, der nie rot wird, prueft nichts, und ob er es wuerde, weiss man nur,
+//! wenn man es zeigt. Deshalb macht dieses Programm nach dem gruenen Lauf **denselben
+//! Lauf ein zweites Mal auf einem Mutanten des gelesenen Textes**: Unter eine
+//! **vorhandene** Nummer der Tabelle kommt eine weitere Deklaration. Damit bleibt die
+//! Nummernzaehlung, wo sie war, und nur die Zahl der Deklarationen steigt um eins --
+//! die Drift, gegen die Sorte 3 gebaut ist. Verlangt wird: die Zahl der Deklarationen
+//! genau eins hoeher, die Nummernmenge und die Maengelliste unveraendert, an Sorte 3
+//! **mehr** Abweichungen als vorher und an den Sorten 1 und 2 gleich viele. Faellt eine
+//! dieser Bedingungen aus, ist der Riegel taub und meldet **2** statt gruen.
+//!
+//! Der Mutant wird nur im Speicher gebildet; `werte.hpp` wird gelesen und nie
+//! geschrieben. Wer den roten Lauf selbst sehen will, ruft
+//! `zahlwort_riegel <wurzel> --bruch=stelligkeit` -- dann laeuft der ganze Riegel auf
+//! dem Mutanten, druckt seinen Nachlass und gibt **1**. Der Schalter verbiegt die
+//! geholte Eingabe an genau einer Stelle und ist die einzige Stelle, an der dieses
+//! Programm etwas anderes prueft als die Datei.
+//!
 //! ## Die drei Rueckgabewerte
 //!
-//!   * **2** -- der Selbsttest ist verfehlt, die Datei fehlt, oder der Riegel hat
-//!     keinen Gegenstand (keine Deklaration, kein Feld, keine Zahlbehauptung einer der
-//!     beiden Sorten). Das ist kein gruener Lauf, sondern ein Messgeraet ohne Messung.
+//!   * **2** -- der Selbsttest ist verfehlt, die Empfindlichkeitsprobe ist verfehlt,
+//!     die Datei fehlt, oder der Riegel hat keinen Gegenstand (keine Deklaration, kein
+//!     Feld, keine Zahlbehauptung einer der drei Sorten). Das ist kein gruener Lauf,
+//!     sondern ein Messgeraet ohne Messung.
 //!   * **1** -- eine Behauptung weicht von ihrer Zaehlung ab, oder eine Deklaration
 //!     nennt keine Nummer der Tabelle, oder ein Feld faellt in keine der beiden Sorten.
 //!   * **0** -- jede Behauptung deckt sich mit ihrer Zaehlung.
@@ -140,6 +175,11 @@ constexpr std::string_view BERUFUNG_SCHLUESSEL = "/// Schluessel ";
 
 /// Der Vorspann, hinter dem die laufende Nummer der Tabelle aus T48 steht.
 constexpr std::string_view VORSPANN_NUMMER = "T48 Nr. ";
+
+/// Der Schalter, der den Rotnachweis von Hand fuehrt. Er steht hier neben den anderen
+/// Wortlauten und nicht in `main`, damit die Meldung, die ihn nennt, und die Stelle,
+/// die ihn liest, denselben Wortlaut benutzen.
+constexpr std::string_view BRUCHSCHALTER = "--bruch=stelligkeit";
 
 // ---------------------------------------------------------------------------
 // Zeichenwerk
@@ -788,11 +828,31 @@ Zaehlung zaehle(std::string_view text) {
 // Die Pruefung -- die Verdrahtung der vier Bausteine
 // ---------------------------------------------------------------------------
 
-enum class Sorte { Groessen, Jahrgang };
+enum class Sorte { Groessen, Jahrgang, Deklarationen };
 
 std::string_view sortenname(Sorte s) {
-    return s == Sorte::Groessen ? std::string_view("Groessen")
-                                : std::string_view("Jahrgangskonstante[n]");
+    if (s == Sorte::Groessen) {
+        return std::string_view("Groessen");
+    }
+    if (s == Sorte::Jahrgang) {
+        return std::string_view("Jahrgangskonstante[n]");
+    }
+    return std::string_view("Deklarationen");
+}
+
+/// Welche der drei Zaehlungen zu einer Sorte gehoert. Ein eigener Aufruf und keine
+/// Bedingung mitten in der Schleife: Sorte 1 und Sorte 3 zaehlen **dieselben**
+/// Deklarationen, die eine nach Nummern und die andere nach Zeilen. Wer die zwei
+/// vertauscht, faellt an keinem Baustein auf -- der Fall dagegen steht in der
+/// Verdrahtungstabelle, auf einem Kopf, in dem die beiden Zahlen verschieden sind.
+std::size_t zaehlung_zur_sorte(const Zaehlung& z, Sorte s) {
+    if (s == Sorte::Groessen) {
+        return z.nummern.size();
+    }
+    if (s == Sorte::Jahrgang) {
+        return z.jahrgang.size();
+    }
+    return z.deklarationen;
 }
 
 struct Fundstelle {
@@ -809,6 +869,7 @@ struct Ergebnis {
     std::vector<std::string> befunde;
     std::size_t behauptungen_groessen = 0;
     std::size_t behauptungen_jahrgang = 0;
+    std::size_t behauptungen_deklarationen = 0;
 };
 
 bool ist_nomen(std::string_view wort, Sorte& sorte) {
@@ -818,6 +879,10 @@ bool ist_nomen(std::string_view wort, Sorte& sorte) {
     }
     if (wort == "Jahrgangskonstante" || wort == "Jahrgangskonstanten") {
         sorte = Sorte::Jahrgang;
+        return true;
+    }
+    if (wort == "Deklarationen") {
+        sorte = Sorte::Deklarationen;
         return true;
     }
     return false;
@@ -841,14 +906,15 @@ Ergebnis pruefe(std::string_view text) {
             f.sorte = sorte;
             f.zeile = worte[i].zeile;
             f.behauptung = behauptung_an(worte, i);
-            f.gezaehlt = sorte == Sorte::Groessen ? e.zaehlung.nummern.size()
-                                                  : e.zaehlung.jahrgang.size();
+            f.gezaehlt = zaehlung_zur_sorte(e.zaehlung, sorte);
             f.ergebnis = urteil(f.behauptung, f.gezaehlt);
             if (f.behauptung.art != Art::Keine) {
                 if (sorte == Sorte::Groessen) {
                     ++e.behauptungen_groessen;
-                } else {
+                } else if (sorte == Sorte::Jahrgang) {
                     ++e.behauptungen_jahrgang;
+                } else {
+                    ++e.behauptungen_deklarationen;
                 }
             }
             if (f.ergebnis == Urteil::Rot) {
@@ -865,6 +931,134 @@ Ergebnis pruefe(std::string_view text) {
         e.befunde.push_back(e.zaehlung.maengel[m]);
     }
     return e;
+}
+
+// ---------------------------------------------------------------------------
+// Der Mutant und die Empfindlichkeitsprobe
+// ---------------------------------------------------------------------------
+
+/// Der eine Mutant dieses Riegels: **eine weitere Deklaration unter einer vorhandenen
+/// Nummer**, eingesetzt unmittelbar vor dem Ende des Namensraums.
+///
+/// Die Nummer kommt als Argument und steht nicht hier: Eine eingebaute Nummer waere
+/// wieder die Handnachfuehrung, gegen die dieses Programm antritt, und eine fremde
+/// Nummer bewegte die falsche Zaehlung -- der Mutant soll die Nummernmenge gerade
+/// **nicht** vergroessern. Der eingesetzte Kommentar traegt keines der drei Nomen;
+/// sonst brachte der Mutant eine Fundstelle mit, die er selbst gestellt hat.
+///
+/// Gebildet wird nur eine Zeichenkette. `werte.hpp` wird von diesem Programm gelesen
+/// und nie geschrieben.
+bool mit_weiterer_stelligkeit(std::string_view text, std::size_t nummer,
+                              std::string& hinein, std::string& warum) {
+    const std::vector<std::string> zeilen = zeilen_von(text);
+    std::size_t start = zeilen.size();
+    for (std::size_t i = 0; i < zeilen.size(); ++i) {
+        if (beginnt_mit(getrimmt(zeilen[i]), "namespace kern::werte")) {
+            start = i;
+            break;
+        }
+    }
+    if (start == zeilen.size()) {
+        warum = "kein Namensraum 'kern::werte' -- der Mutant hat keine Stelle";
+        return false;
+    }
+    std::size_t schluss = zeilen.size();
+    for (std::size_t i = start + 1; i < zeilen.size(); ++i) {
+        const std::string t = getrimmt(zeilen[i]);
+        if (beginnt_mit(t, "}") && t.find("namespace") != std::string::npos) {
+            schluss = i;
+            break;
+        }
+    }
+    if (schluss == zeilen.size()) {
+        warum = "der Namensraum 'kern::werte' wird nicht geschlossen";
+        return false;
+    }
+    std::ostringstream aus;
+    for (std::size_t i = 0; i < zeilen.size(); ++i) {
+        if (i == schluss) {
+            aus << "\n/// **" << VORSPANN_NUMMER << nummer
+                << ", weitere Fassung** -- eingesetzt vom Riegel selbst.\n"
+                << "[[nodiscard]] int weitere_fassung(int wert);\n\n";
+        }
+        aus << zeilen[i] << "\n";
+    }
+    hinein = aus.str();
+    return true;
+}
+
+std::size_t rot_der_sorte(const Ergebnis& e, Sorte s) {
+    std::size_t rot = 0;
+    for (std::size_t i = 0; i < e.funde.size(); ++i) {
+        if (e.funde[i].sorte == s && e.funde[i].ergebnis == Urteil::Rot) {
+            ++rot;
+        }
+    }
+    return rot;
+}
+
+struct Probe {
+    bool bestanden = false;
+    std::string warum;
+    std::size_t deklarationen_vorher = 0;
+    std::size_t deklarationen_nachher = 0;
+    std::size_t rot_vorher = 0;
+    std::size_t rot_nachher = 0;
+};
+
+/// Zeigen, dass der Riegel rot werden **kann**, und zwar an der Sorte, um die es geht.
+/// Jede Bedingung sagt einzeln, was sie ausschliesst -- "der Mutant war rot" allein
+/// hiesse noch nicht, dass er aus dem gemeinten Grund rot war. Der Mutant darf genau
+/// eine Zahl bewegen und muss genau eine Sorte reissen.
+Probe empfindlichkeitsprobe(std::string_view text, const Ergebnis& bestand) {
+    Probe p;
+    p.deklarationen_vorher = bestand.zaehlung.deklarationen;
+    p.rot_vorher = rot_der_sorte(bestand, Sorte::Deklarationen);
+    if (bestand.zaehlung.nummern.empty()) {
+        p.warum = "keine Nummer der Tabelle, unter die der Mutant eine Deklaration "
+                  "setzen koennte";
+        return p;
+    }
+    const std::size_t nummer = *bestand.zaehlung.nummern.begin();
+    std::string mutant;
+    if (!mit_weiterer_stelligkeit(text, nummer, mutant, p.warum)) {
+        return p;
+    }
+    const Ergebnis nach = pruefe(mutant);
+    p.deklarationen_nachher = nach.zaehlung.deklarationen;
+    p.rot_nachher = rot_der_sorte(nach, Sorte::Deklarationen);
+    if (!nach.zaehlung.brauchbar) {
+        p.warum = "der Mutant ist unbrauchbar: " + nach.zaehlung.warum;
+        return p;
+    }
+    if (nach.zaehlung.nummern.size() != bestand.zaehlung.nummern.size()) {
+        p.warum = "der Mutant hat die Nummernmenge veraendert -- dann misst er nicht die "
+                  "Drift, gegen die Sorte 3 gebaut ist";
+        return p;
+    }
+    if (p.deklarationen_nachher != p.deklarationen_vorher + 1) {
+        p.warum = "der Mutant zaehlt nicht genau eine Deklaration mehr -- die eingesetzte "
+                  "Zeile wird nicht als Deklaration gelesen";
+        return p;
+    }
+    if (nach.zaehlung.maengel.size() != bestand.zaehlung.maengel.size()) {
+        p.warum = "der Mutant bringt einen eigenen Mangel mit -- dann steht der Befund "
+                  "unten fuer ihn und nicht fuer die Zahl";
+        return p;
+    }
+    if (rot_der_sorte(nach, Sorte::Groessen) != rot_der_sorte(bestand, Sorte::Groessen)
+        || rot_der_sorte(nach, Sorte::Jahrgang) != rot_der_sorte(bestand, Sorte::Jahrgang)) {
+        p.warum = "der Mutant bewegt auch Sorte 1 oder Sorte 2 -- dann trennt der Riegel "
+                  "die Zahlen eines Satzes nicht";
+        return p;
+    }
+    if (p.rot_nachher <= p.rot_vorher) {
+        p.warum = "der Mutant bleibt an Sorte 3 gruen -- der Riegel liest das Zahlwort "
+                  "vor 'Deklarationen' nicht oder haelt es gegen die falsche Zaehlung";
+        return p;
+    }
+    p.bestanden = true;
+    return p;
 }
 
 // ---------------------------------------------------------------------------
@@ -935,22 +1129,27 @@ std::size_t selbsttest_bloecke() {
 
 struct Behauptungsfall {
     std::string_view satz;
+    /// An welchem der Nomen gelesen wird. Die Sorte steht seit 0194 im Fall und nicht
+    /// mehr in der Suche: Ein Satz kann zwei Nomen tragen -- "Zweiundzwanzig Groessen
+    /// in dreiundzwanzig Deklarationen" ist der Bestandsfall --, und dann ist "das
+    /// letzte Nomen" keine Angabe, sondern ein Zufall der Wortstellung.
+    Sorte an;
     std::string_view erwartet;
     std::string_view was;
 };
 
-std::string behauptungsbild(std::string_view satz) {
+std::string behauptungsbild(std::string_view satz, Sorte an) {
     std::vector<Wort> worte;
     worte_der_zeile(satz, 1, worte);
     std::size_t stelle = worte.size();
     for (std::size_t i = 0; i < worte.size(); ++i) {
-        Sorte egal = Sorte::Groessen;
-        if (ist_nomen(worte[i].text, egal)) {
+        Sorte gefunden = Sorte::Groessen;
+        if (ist_nomen(worte[i].text, gefunden) && gefunden == an) {
             stelle = i;
         }
     }
     if (stelle == worte.size()) {
-        return "kein Nomen";
+        return std::string("kein Nomen der Sorte ") + std::string(sortenname(an));
     }
     const Behauptung b = behauptung_an(worte, stelle);
     std::ostringstream aus;
@@ -964,55 +1163,71 @@ std::string behauptungsbild(std::string_view satz) {
     return aus.str();
 }
 
-constexpr std::array<Behauptungsfall, 18> BEHAUPTUNGSFAELLE = {
-    Behauptungsfall{"die zwei Jahrgangskonstanten", "kardinal 2",
+constexpr std::array<Behauptungsfall, 20> BEHAUPTUNGSFAELLE = {
+    Behauptungsfall{"die zwei Jahrgangskonstanten", Sorte::Jahrgang, "kardinal 2",
                     "der heutige Wortlaut des Traegerkopfes"},
-    Behauptungsfall{"die eine Jahrgangskonstante", "kardinal 1",
+    Behauptungsfall{"die eine Jahrgangskonstante", Sorte::Jahrgang, "kardinal 1",
                     "der Wortlaut vor 0155 -- der Artikel macht aus dem Begleiter eine Zahl"},
-    Behauptungsfall{"noch eine Jahrgangskonstante noch", "keine",
+    Behauptungsfall{"noch eine Jahrgangskonstante noch", Sorte::Jahrgang, "keine",
                     "die Kategorienzeile des Modulkopfes: unbestimmter Artikel, keine Zahl"},
-    Behauptungsfall{"Die zweite Jahrgangskonstante dieses Traegers", "ordnung 2",
+    Behauptungsfall{"Die zweite Jahrgangskonstante dieses Traegers", Sorte::Jahrgang,
+                    "ordnung 2",
                     "eine Ordnungszahl sagt nicht wie viele, sondern mindestens wie viele"},
-    Behauptungsfall{"die dritte Jahrgangskonstante", "ordnung 3",
+    Behauptungsfall{"die dritte Jahrgangskonstante", Sorte::Jahrgang, "ordnung 3",
                     "Ordnungszahl, unregelmaessig gebildet"},
-    Behauptungsfall{"die letzte Jahrgangskonstante", "keine",
+    Behauptungsfall{"die letzte Jahrgangskonstante", Sorte::Jahrgang, "keine",
                     "was auf -te endet, ist nicht schon eine Ordnungszahl"},
-    Behauptungsfall{"die zweiundzwanzig abgeleiteten Groessen", "kardinal 22",
+    Behauptungsfall{"die zweiundzwanzig abgeleiteten Groessen", Sorte::Groessen,
+                    "kardinal 22",
                     "die erste Zeile der Datei -- ein Beiwort steht dazwischen"},
-    Behauptungsfall{"die abgeleiteten Groessen", "keine", "Beiwort ohne Zahlwort dahinter"},
-    Behauptungsfall{"vier Zeilen und keine Groessen", "keine",
+    Behauptungsfall{"die abgeleiteten Groessen", Sorte::Groessen, "keine",
+                    "Beiwort ohne Zahlwort dahinter"},
+    Behauptungsfall{"vier Zeilen und keine Groessen", Sorte::Groessen, "keine",
                     "der Bestandsfall, an dem ein weiteres Fenster falsch griffe"},
-    Behauptungsfall{"eine der zweiundzwanzig Groessen hier", "kardinal 22",
+    Behauptungsfall{"eine der zweiundzwanzig Groessen hier", Sorte::Groessen, "kardinal 22",
                     "Zahlwort unmittelbar davor, Begleiter weiter links"},
-    Behauptungsfall{"Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen", "kardinal 22",
+    Behauptungsfall{"Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen",
+                    Sorte::Groessen, "kardinal 22",
                     "am Blockanfang steht kein Wort davor, und das ist keine Ausrede"},
-    Behauptungsfall{"Groessen", "keine", "nichts davor"},
-    Behauptungsfall{"die zwei und Groessen", "keine",
+    Behauptungsfall{"Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen",
+                    Sorte::Deklarationen, "kardinal 23",
+                    "dieselbe Zeile 32, die andere Haelfte -- die Zahl, die bis 0194 "
+                    "niemand hielt"},
+    Behauptungsfall{"die oeffentlichen Deklarationen dieses Kopfes", Sorte::Deklarationen,
+                    "keine",
+                    "die zweite Bestandsstelle (Zeile 25): Beiwort, aber kein Zahlwort "
+                    "davor -- sie muss stumm bleiben, sonst ist Sorte 3 ein Dauerbefund"},
+    Behauptungsfall{"Groessen", Sorte::Groessen, "keine", "nichts davor"},
+    Behauptungsfall{"die zwei und Groessen", Sorte::Groessen, "keine",
                     "was kein Beiwort ist, wird nicht uebersprungen"},
-    Behauptungsfall{"der zweiundzwanzigsten Groessen", "ordnung 22",
+    Behauptungsfall{"der zweiundzwanzigsten Groessen", Sorte::Groessen, "ordnung 22",
                     "gebeugte Ordnungszahl, aus dem Kardinalstamm gerechnet"},
-    Behauptungsfall{"die dreiundzwanzig Groessen", "kardinal 23",
+    Behauptungsfall{"die dreiundzwanzig Groessen", Sorte::Groessen, "kardinal 23",
                     "das naechste Zahlwort steht in keiner Liste und wird trotzdem erkannt"},
-    Behauptungsfall{"die siebenundvierzig Groessen", "kardinal 47",
+    Behauptungsfall{"die siebenundvierzig Groessen", Sorte::Groessen, "kardinal 47",
                     "und das uebernaechste auch"},
-    Behauptungsfall{"eine abgeleitete Groessen", "keine",
+    Behauptungsfall{"eine abgeleitete Groessen", Sorte::Groessen, "keine",
                     "mehrdeutige Form ueber ein Beiwort hinweg, ohne Artikel davor"},
-    Behauptungsfall{"die eine abgeleitete Groessen", "kardinal 1",
+    Behauptungsfall{"die eine abgeleitete Groessen", Sorte::Groessen, "kardinal 1",
                     "dieselbe Stelle mit Artikel"}};
 
 std::size_t selbsttest_behauptung() {
     std::size_t verfehlt = 0;
     for (std::size_t i = 0; i < BEHAUPTUNGSFAELLE.size(); ++i) {
-        const std::string ist = behauptungsbild(BEHAUPTUNGSFAELLE[i].satz);
+        const std::string ist =
+            behauptungsbild(BEHAUPTUNGSFAELLE[i].satz, BEHAUPTUNGSFAELLE[i].an);
         if (ist == BEHAUPTUNGSFAELLE[i].erwartet) {
             continue;
         }
         ++verfehlt;
+        // Die Sorte gehoert in die Meldung: Zwei Faelle tragen denselben Satz und lesen
+        // ihn an verschiedenen Nomen. Ohne sie waere nicht zu sehen, welcher riss.
         std::fprintf(stderr,
                      "Selbsttest Behauptung, Fall %zu (%s):\n  Satz     [%s]\n"
-                     "  erwartet [%s]\n  gefunden [%s]\n",
+                     "  gelesen an [%s]\n  erwartet [%s]\n  gefunden [%s]\n",
                      i + 1, std::string(BEHAUPTUNGSFAELLE[i].was).c_str(),
                      std::string(BEHAUPTUNGSFAELLE[i].satz).c_str(),
+                     std::string(sortenname(BEHAUPTUNGSFAELLE[i].an)).c_str(),
                      std::string(BEHAUPTUNGSFAELLE[i].erwartet).c_str(), ist.c_str());
     }
     return verfehlt;
@@ -1197,9 +1412,17 @@ std::size_t selbsttest_zaehlung() {
 // gruen" festnageln liess, ohne dass ein Fall riss. Diese Tabelle geht denselben Weg
 // wie der Ernstfall, nur auf Text statt auf einer Datei.
 
-/// Ein Kopf mit zwei Nummern und zwei Feldern, in den sich der zu pruefende Satz
-/// einsetzen laesst. Seine Zaehlung: 2 Nummern, 1 Groesse des Jahrgangs.
-std::string mit_kopf(std::string_view satz) {
+/// Die zwei Koepfe, in die sich der zu pruefende Satz einsetzen laesst.
+///
+///   * `Schlicht` -- 2 Nummern in 2 Deklarationen, 1 Groesse des Jahrgangs.
+///   * `ZweiStelligkeiten` -- 2 Nummern in **3** Deklarationen, 1 Groesse des
+///     Jahrgangs. Dieser Kopf ist der Bestand im Kleinen: Nr. 2 traegt zwei
+///     Stelligkeiten. Er gehoert hierher, weil im schlichten Kopf die Zaehlung der
+///     Nummern und die der Deklarationen **dieselbe Zahl** ergeben -- ein Riegel, der
+///     Sorte 3 an die Nummern haengt, bliebe dort gruen.
+enum class Kopf { Schlicht, ZweiStelligkeiten };
+
+std::string mit_kopf(std::string_view satz, Kopf art) {
     std::string t = "//! ";
     t += satz;
     t += "\n\n";
@@ -1215,16 +1438,27 @@ std::string mit_kopf(std::string_view satz) {
         "\n"
         "/// **T48 Nr. 1** -- die erste.\n"
         "[[nodiscard]] i64 wert(const Zustand& z);\n"
-        "\n"
-        "/// **T48 Nr. 2** -- die zweite.\n"
-        "[[nodiscard]] i64 korbwert(const Zustand& z);\n"
-        "\n"
-        "}  // namespace kern::werte\n";
+        "\n";
+    if (art == Kopf::Schlicht) {
+        t +=
+            "/// **T48 Nr. 2** -- die zweite.\n"
+            "[[nodiscard]] i64 korbwert(const Zustand& z);\n"
+            "\n";
+    } else {
+        t +=
+            "/// **T48 Nr. 2, zweistellig** -- die zweite.\n"
+            "[[nodiscard]] i64 korbwert(const Zustand& z, Sektor s);\n"
+            "\n"
+            "/// **T48 Nr. 2, einstellig** -- ihre Summe, unter derselben Nummer.\n"
+            "[[nodiscard]] i64 korbwert(const Zustand& z);\n"
+            "\n";
+    }
+    t += "}  // namespace kern::werte\n";
     return t;
 }
 
-std::string pruefbild(std::string_view satz) {
-    const Ergebnis e = pruefe(mit_kopf(satz));
+std::string pruefbild(std::string_view satz, Kopf art) {
+    const Ergebnis e = pruefe(mit_kopf(satz, art));
     std::ostringstream aus;
     aus << "befunde=" << e.befunde.size();
     for (std::size_t i = 0; i < e.befunde.size(); ++i) {
@@ -1235,44 +1469,66 @@ std::string pruefbild(std::string_view satz) {
 
 struct Verdrahtungsfall {
     std::string_view satz;
+    Kopf kopf;
     std::string_view erwartet;
     std::string_view was;
 };
 
-constexpr std::array<Verdrahtungsfall, 6> VERDRAHTUNGSFAELLE = {
-    Verdrahtungsfall{"die zwei Groessen und die eine Jahrgangskonstante", "befunde=0",
-                     "beide Behauptungen treffen"},
-    Verdrahtungsfall{"die drei Groessen",
+constexpr std::array<Verdrahtungsfall, 9> VERDRAHTUNGSFAELLE = {
+    Verdrahtungsfall{"die zwei Groessen und die eine Jahrgangskonstante", Kopf::Schlicht,
+                     "befunde=0", "beide Behauptungen treffen"},
+    Verdrahtungsfall{"die drei Groessen", Kopf::Schlicht,
                      "befunde=1 [Zeilennummer 1: 'drei Groessen' nennt 3, gezaehlt sind 2]",
                      "Sorte 1 weicht ab -- die Meldung nennt beide Zahlen und die Zeile"},
     Verdrahtungsfall{
-        "die zwei Groessen und die zwei Jahrgangskonstanten",
+        "die zwei Groessen und die zwei Jahrgangskonstanten", Kopf::Schlicht,
         "befunde=1 [Zeilennummer 1: 'zwei Jahrgangskonstante[n]' nennt 2, gezaehlt sind 1]",
         "Sorte 2 weicht ab, Sorte 1 daneben nicht"},
     Verdrahtungsfall{
         "weder ein Schluessel noch eine Jahrgangskonstante noch eine der zwei Groessen",
-        "befunde=0",
+        Kopf::Schlicht, "befunde=0",
         "die Kategorienzeile bleibt stumm, die Zahlbehauptung daneben wird geprueft"},
     Verdrahtungsfall{
-        "die zwei Groessen und die dritte Jahrgangskonstante",
+        "die zwei Groessen und die dritte Jahrgangskonstante", Kopf::Schlicht,
         "befunde=1 [Zeilennummer 1: 'dritte Jahrgangskonstante[n]' nennt 3, gezaehlt sind 1]",
         "eine Ordnungszahl jenseits der Zaehlung ist ein Befund"},
-    Verdrahtungsfall{"die zwei Groessen und die erste Jahrgangskonstante", "befunde=0",
-                     "eine Ordnungszahl innerhalb der Zaehlung ist keiner"}};
+    Verdrahtungsfall{"die zwei Groessen und die erste Jahrgangskonstante", Kopf::Schlicht,
+                     "befunde=0", "eine Ordnungszahl innerhalb der Zaehlung ist keiner"},
+    // Die drei Faelle von 0194. Sie laufen alle auf dem Kopf mit den zwei
+    // Stelligkeiten, weil dort 2 Nummern in 3 Deklarationen stehen -- erst dann sind
+    // die beiden Zaehlungen unterscheidbar.
+    Verdrahtungsfall{"die zwei Groessen in drei Deklarationen", Kopf::ZweiStelligkeiten,
+                     "befunde=0",
+                     "der Bestandssatz im Kleinen: zwei Zahlen in einem Satz, beide "
+                     "richtig und beide verschieden"},
+    Verdrahtungsfall{
+        "die drei Groessen in drei Deklarationen", Kopf::ZweiStelligkeiten,
+        "befunde=1 [Zeilennummer 1: 'drei Groessen' nennt 3, gezaehlt sind 2]",
+        "Sorte 1 zaehlt Nummern und nicht Deklarationen -- wer sie an die Deklarationen "
+        "haengt, macht diesen Fall gruen"},
+    Verdrahtungsfall{
+        "die zwei Groessen in zwei Deklarationen", Kopf::ZweiStelligkeiten,
+        "befunde=1 [Zeilennummer 1: 'zwei Deklarationen' nennt 2, gezaehlt sind 3]",
+        "und Sorte 3 zaehlt Deklarationen und nicht Nummern -- der Fall, den es vor "
+        "0194 nicht gab"}};
 
 std::size_t selbsttest_verdrahtung() {
     std::size_t verfehlt = 0;
     for (std::size_t i = 0; i < VERDRAHTUNGSFAELLE.size(); ++i) {
-        const std::string ist = pruefbild(VERDRAHTUNGSFAELLE[i].satz);
+        const std::string ist =
+            pruefbild(VERDRAHTUNGSFAELLE[i].satz, VERDRAHTUNGSFAELLE[i].kopf);
         if (ist == VERDRAHTUNGSFAELLE[i].erwartet) {
             continue;
         }
         ++verfehlt;
         std::fprintf(stderr,
                      "Selbsttest Verdrahtung, Fall %zu (%s):\n  Satz     [%s]\n"
-                     "  erwartet [%s]\n  gefunden [%s]\n",
+                     "  im Kopf  [%s]\n  erwartet [%s]\n  gefunden [%s]\n",
                      i + 1, std::string(VERDRAHTUNGSFAELLE[i].was).c_str(),
                      std::string(VERDRAHTUNGSFAELLE[i].satz).c_str(),
+                     VERDRAHTUNGSFAELLE[i].kopf == Kopf::Schlicht
+                         ? "2 Nummern in 2 Deklarationen"
+                         : "2 Nummern in 3 Deklarationen",
                      std::string(VERDRAHTUNGSFAELLE[i].erwartet).c_str(), ist.c_str());
     }
     return verfehlt;
@@ -1306,11 +1562,17 @@ int main(int argc, char** argv) {
                  ZAEHLFAELLE.size(), VERDRAHTUNGSFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
-    if (argumente.size() != 2) {
+    const bool bruch =
+        argumente.size() == 3 && argumente[2] == std::string(BRUCHSCHALTER);
+    if (argumente.size() != 2 && !bruch) {
         std::fprintf(stderr,
-                     "Aufruf: zahlwort_riegel <wurzel-des-vorhabens>\n"
+                     "Aufruf: zahlwort_riegel <wurzel-des-vorhabens> [%s]\n"
                      "Die Wurzel kommt von CMake; ein eingebauter Pfad liefe nur auf einem "
-                     "Rechner.\n");
+                     "Rechner.\nDer Schalter setzt eine weitere Deklaration unter eine "
+                     "vorhandene Nummer der\nTabelle und laesst den Riegel darauf laufen -- "
+                     "der Rotnachweis von Hand. Er\nveraendert nur den gelesenen Text im "
+                     "Speicher, nie die Datei.\n",
+                     std::string(BRUCHSCHALTER).c_str());
         return 2;
     }
 
@@ -1345,7 +1607,35 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    const Ergebnis e = pruefe(text);
+    // Der Schalter verbiegt die geholte Eingabe an genau dieser einen Stelle. Alles
+    // darunter weiss nicht, ob es den Bestand oder den Mutanten liest -- sonst waere
+    // der Rotnachweis ein anderer Weg als der Ernstfall und bewiese nichts ueber ihn.
+    std::string gelesen(text);
+    if (bruch) {
+        const Zaehlung vorlauf = zaehle(text);
+        if (!vorlauf.brauchbar || vorlauf.nummern.empty()) {
+            std::fprintf(stderr,
+                         "zahlwort_riegel: der Bestand gibt keine Nummer der Tabelle her, "
+                         "unter die der\nSchalter eine Deklaration setzen koennte.\n");
+            return 2;
+        }
+        const std::size_t nummer = *vorlauf.nummern.begin();
+        std::string mutant;
+        std::string warum;
+        if (!mit_weiterer_stelligkeit(text, nummer, mutant, warum)) {
+            std::fprintf(stderr, "zahlwort_riegel: %s.\n", warum.c_str());
+            return 2;
+        }
+        gelesen = mutant;
+        std::fprintf(stdout,
+                     "\n%s: unter %s%zu steht eine weitere Deklaration. Die Nummernzaehlung\n"
+                     "bleibt, wo sie war; die Zahl der Deklarationen steigt um eins. Was "
+                     "unten steht,\ngilt fuer diesen Mutanten und nicht fuer die Datei.\n",
+                     std::string(BRUCHSCHALTER).c_str(),
+                     std::string(VORSPANN_NUMMER).c_str(), nummer);
+    }
+
+    const Ergebnis e = pruefe(gelesen);
     if (!e.zaehlung.brauchbar) {
         std::fprintf(stderr, "zahlwort_riegel: %s.\n", e.zaehlung.warum.c_str());
         return 2;
@@ -1368,7 +1658,8 @@ int main(int argc, char** argv) {
                      std::string(TRAEGER).c_str());
         return 2;
     }
-    if (e.behauptungen_groessen == 0 || e.behauptungen_jahrgang == 0) {
+    if (e.behauptungen_groessen == 0 || e.behauptungen_jahrgang == 0
+        || e.behauptungen_deklarationen == 0) {
         std::fprintf(stderr,
                      "zahlwort_riegel: keine Zahlbehauptung der Sorte %s gefunden. Der "
                      "Riegel haette\ndann nichts zu pruefen und meldete gruen -- das ist "
@@ -1376,8 +1667,43 @@ int main(int argc, char** argv) {
                      "Wortlaut nicht mehr, dann ist das die\nUrsache, oder der Kopf zaehlt "
                      "nicht mehr. Nur im zweiten Fall wird diese Schranke\ngeaendert, und "
                      "zwar mit Begruendung an ihrer Stelle.\n",
-                     e.behauptungen_groessen == 0 ? "Groessen" : "Jahrgangskonstante[n]");
+                     e.behauptungen_groessen == 0      ? "Groessen"
+                     : e.behauptungen_jahrgang == 0    ? "Jahrgangskonstante[n]"
+                                                       : "Deklarationen");
         return 2;
+    }
+
+    // ------------------------------------------------------------------
+    // Die Empfindlichkeitsprobe
+    // ------------------------------------------------------------------
+    // Sie laeuft nur am Bestand: Unter dem Schalter ist der gelesene Text schon der
+    // Mutant, und ein Mutant des Mutanten bewiese ueber den Bestand nichts.
+    if (!bruch) {
+        // `gelesen` und nicht `text`: Der Vergleich geht gegen `e`, und `e` ist aus
+        // `gelesen` gebildet. Ohne Schalter sind beide dasselbe -- die Probe soll aber
+        // auch dann noch stimmen, wenn zwischen Lesen und Pruefen einmal mehr steht.
+        const Probe p = empfindlichkeitsprobe(gelesen, e);
+        if (!p.bestanden) {
+            std::fprintf(stderr,
+                         "zahlwort_riegel: die Empfindlichkeitsprobe ist verfehlt -- %s.\n\n"
+                         "Der Riegel hat den Bestand gelesen, aber er zeigt nicht mehr, dass "
+                         "er rot werden\nkann. Ein Riegel, der nie rot wird, prueft nichts; "
+                         "sein gruener Lauf ist deshalb\nhier nichts wert. Gezaehlt wurden "
+                         "%zu Deklarationen am Bestand und %zu am\nMutanten, rot an Sorte 3 "
+                         "waren %zu und %zu.\n",
+                         p.warum.c_str(), p.deklarationen_vorher, p.deklarationen_nachher,
+                         p.rot_vorher, p.rot_nachher);
+            return 2;
+        }
+        std::fprintf(stdout,
+                     "zahlwort_riegel, Empfindlichkeitsprobe: mit einer weiteren "
+                     "Deklaration unter einer\nvorhandenen Nummer zaehlt der Riegel %zu statt "
+                     "%zu Deklarationen und meldet %zu statt\n%zu Abweichungen der Sorte "
+                     "'Deklarationen' -- die Sorten 1 und 2 bleiben, wie sie\nwaren. Der "
+                     "rote Lauf im Wortlaut: %s %s.\n",
+                     p.deklarationen_nachher, p.deklarationen_vorher, p.rot_nachher,
+                     p.rot_vorher, argumente[1].c_str(),
+                     std::string(BRUCHSCHALTER).c_str());
     }
 
     // ------------------------------------------------------------------
@@ -1386,15 +1712,17 @@ int main(int argc, char** argv) {
     std::fprintf(stdout,
                  "zahlwort_riegel: %s gelesen. %zu Nummern der Tabelle in %zu "
                  "Funktionsdeklarationen;\n%zu Felder in %s, davon %zu Groessen des "
-                 "Jahrgangs und %zu Parameterschluessel.\n%zu Fundstellen der zwei Nomen, "
+                 "Jahrgangs und %zu Parameterschluessel.\n%zu Fundstellen der drei Nomen, "
                  "davon %zu mit Zahlbehauptung (%zu zu den Groessen,\n%zu zu den "
-                 "Jahrgangskonstanten).\n",
+                 "Jahrgangskonstanten, %zu zu den Deklarationen).\n",
                  std::string(PRUEFLING).c_str(), e.zaehlung.nummern.size(),
                  e.zaehlung.deklarationen, e.zaehlung.felder.size(),
                  std::string(TRAEGER).c_str(), e.zaehlung.jahrgang.size(),
                  e.zaehlung.schluessel.size(), e.funde.size(),
-                 e.behauptungen_groessen + e.behauptungen_jahrgang, e.behauptungen_groessen,
-                 e.behauptungen_jahrgang);
+                 e.behauptungen_groessen + e.behauptungen_jahrgang
+                     + e.behauptungen_deklarationen,
+                 e.behauptungen_groessen, e.behauptungen_jahrgang,
+                 e.behauptungen_deklarationen);
 
     std::fprintf(stdout, "\n  Groessen des Jahrgangs: ");
     for (std::size_t i = 0; i < e.zaehlung.jahrgang.size(); ++i) {

@@ -2,7 +2,7 @@
 id: 0194-zahlwortriegel-auch-deklarationen-zaehlen
 rolle: testentwickler
 haengt_an: [0180-zahlwortriegel-fuer-werte-hpp]
-status: offen
+status: gebaut
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. 0180 ist in diesem Lauf abgenommen; den Riegel, den du erweiterst, gibt es damit. Gegen 0188-zahlwortriegel-fuer-reihentoml geprueft, das gleichzeitig laeuft -- es dehnt den Riegel auf `reihen.toml` aus, baut dafuer aber kein C++, sondern haengt ein Python-Skript per `add_test` ein. Eure Dateilisten schneiden sich nicht, ihr lauft nebeneinander. Bleib deshalb in `zahlwort_riegel.cpp`. Brauchst du doch einen Eintrag in `werkzeuge/zahlwort/CMakeLists.txt`, ist das ein Befund an mich und keine stille Erweiterung deiner Dateiliste -- diese Datei haelt 0188, und einer von euch verloere seine Arbeit. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer. Die 24 in deiner Abnahme ist die Zahl unter dem Mutanten, nicht am Bestand -- steht am Bestand eine andere Zahl, folgt sie deiner Zaehlung, nicht diesem Paket.
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/zahlwort_riegel.cpp]
 abnahme: Das Zahlwort vor "Deklarationen" in werte.hpp wird gegen die Deklarationszaehlung gehalten; nachgewiesen rot an einer ergaenzten zweiten Stelligkeit unter vorhandener Nummer (Zeile 32 sagt dann dreiundzwanzig bei 24 gezaehlten), gruen am Bestand, beide Bauprofile.
