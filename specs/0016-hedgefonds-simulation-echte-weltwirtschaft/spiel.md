@@ -2183,26 +2183,26 @@ successful lobbying. That this makes two penalties out of one cause stands under
 
 ## Wie die vier Masse berechnet werden
 
-Alle vier laufen im Selbstspiel ohne Darstellung über dieselbe Zustandsschnittstelle. Was
-hier steht, ist eine Rechenvorschrift; wo eine Wahl offenbliebe, ist sie hier getroffen.
-Jeder Gleichstand wird nach Aktions- beziehungsweise Profilkennung gebrochen, nie nach
-Auffindereihenfolge. Der Median über eine gerade Anzahl ist der kleinere der beiden
-mittleren Werte. **R = 20.**
+All four run in self-play without rendering, over the same state interface. What stands
+here is a calculation rule; wherever a choice would have remained open, it is made here.
+Every tie is broken by action id or profile id, never by discovery order. The median over
+an even count is the smaller of the two middle values. **R = 20.**
 
 ### Die Ergebnisgröße einer Partie
 
-Ein `i64` in Milli-Runden, **kleiner ist besser**, streng geordnet und ohne Sammelwert:
+An `i64` in milli-rounds, **smaller is better**, strictly ordered and without a catch-all
+value:
 
-| Ausgang | Wert | Bereich bei R = 20 |
+| Outcome | Value | Range at R = 20 |
 |---|---|---|
-| Mandat in Runde r erfüllt | `r × 1.000` | 1.000 … 20.000 |
-| R Runden überlebt, Mandat nicht erfüllt | `(R+1) × 1.000 + v + e`, siehe **Der Fehlbetrag** | 21.000 … 24.000 |
-| an einer Todesart in Runde d gestorben | `30.000 + (R + 1 − d) × 1.000` | 31.000 … 50.000 |
+| mandate fulfilled in round r | `r × 1.000` | 1.000 … 20.000 |
+| survived R rounds, mandate not fulfilled | `(R+1) × 1.000 + v + e`, see **Der Fehlbetrag** | 21.000 … 24.000 |
+| died of a way of dying in round d | `30.000 + (R + 1 − d) × 1.000` | 31.000 … 50.000 |
 
 #### Der Fehlbetrag, und wie „fehlender Einfluss" über die Länder gerechnet wird
 
-Der Fehlbetrag ist `v + e`, beide in Promille der jeweiligen Mandatsschwelle
-(`schwelle_v`, `schwelle_e` aus `parameter.toml`):
+The shortfall is `v + e`, both in per mille of the respective mandate threshold
+(`schwelle_v`, `schwelle_e` from `parameter.toml`):
 
 ```
 v = teile_gerundet(max(0, schwelle_v − fondsvermoegen) · 1.000, schwelle_v)
@@ -2211,110 +2211,110 @@ e = Summe über die zwei Länder mit dem höchsten Einfluss (Gleichstand nach La
     teile_gerundet(max(0, schwelle_e − einfluss[land]) · 1.000, schwelle_e)
 ```
 
-**Zwei Länder, weil das Mandat zwei verlangt, und die eigenen zwei besten, weil ein Fonds
-nicht für die Länder büßen soll, die er nie betreten wollte.** Von den drei naheliegenden
-Lesarten — Summe, Mittel, schwächeres der beiden — ist die Summe gewählt: Sie misst die
-**verbleibende Arbeit**. Ein Fonds mit einem Land am Ziel und einem bei null (0 + 1.000)
-und einer mit zwei Ländern bei je der Hälfte (500 + 500) sind gleich weit vom Mandat
-entfernt, und genau das sagt die Summe. Das Mittel ordnet identisch — es ist die Summe
-halbiert —, das schwächere der beiden nicht: Es erklärte den halbierten Fonds für deutlich
-näher dran und belohnte damit Breite, die das Mandat nicht verlangt.
+**Two countries because the mandate demands two, and the fund's own two best because a
+fund should not pay for countries it never wanted to enter.** Of the three obvious
+readings — sum, mean, weaker of the two — the sum is chosen: it measures the **remaining
+work**. A fund with one country at target and one at zero (0 + 1.000) and one with two
+countries at half each (500 + 500) are equally far from the mandate, and that is exactly
+what the sum says. The mean orders identically — it is the sum halved —; the weaker of
+the two does not: it would declare the halved fund distinctly closer and thereby reward a
+breadth the mandate does not demand.
 
-**Es wird nichts gekappt, und es muss auch nichts gekappt werden.** `einfluss` liegt nach
-Bauart in 0 … 100, also ist jeder der beiden Summanden in `e` per Konstruktion in
-0 … 1.000 und damit `0 ≤ e ≤ 2.000`; im Band „überlebt" lebt der Fonds, also ist
-`fondsvermoegen > 0` (sonst hätte Todesart 1 in derselben Runde gegriffen) und damit
-`0 ≤ v ≤ 1.000`, wobei 1.000 nur die Rundung erreicht. Daraus folgt
-`0 ≤ v + e ≤ 3.000` und das Band 21.000 … 24.000 — nachgerechnet und nicht verordnet. Die
-Kappung der dritten Fassung war der Ersatz für eine fehlende Aggregationsregel; mit der
-Regel entfällt sie, und sie war schädlich: Sie hätte jeden Fonds mit weniger als einer
-Schwelle Gesamteinfluss auf denselben Wert 1.000 gelegt — also die untere Hälfte des
-Ergebnisraums geglättet, und zwar genau dort, wo Maß 3 sein Argminimum sucht, wenn im
-Fenster kein Profil das Mandat erreicht.
+**Nothing is capped, and nothing needs to be capped.** By build `einfluss` lies in
+0 … 100, so each of the two summands in `e` is in 0 … 1.000 by construction and thus
+`0 ≤ e ≤ 2.000`; in the band „survived" the fund is alive, so `fondsvermoegen > 0`
+(otherwise way of dying 1 would have struck in the same round) and thus
+`0 ≤ v ≤ 1.000`, where only rounding reaches 1.000. From this follows
+`0 ≤ v + e ≤ 3.000` and the band 21.000 … 24.000 — computed, not decreed. The cap of the
+third version was the substitute for a missing aggregation rule; with the rule it is
+dropped, and it was harmful: it would have put every fund with less than one threshold of
+total influence on the same value 1.000 — flattening the lower half of the outcome space,
+precisely where Maß 3 seeks its argminimum when no profile in the window reaches the
+mandate.
 
-**Damit rechnen `spiel.md` und die Botzielgröße `B` aus `technik.md` T44 in diesem Zweig
-dieselbe Formel** — die dort begründete Abweichung (T44 kappt nicht, weil Kappen den Bot
-in der Frühphase blind machte) verschwindet, weil hier ebenfalls nicht gekappt wird. `B`
-bleibt botintern, die Bandprüfung gilt weiter nur für das Partieergebnis.
+**With this, `spiel.md` and the bot objective `B` from `technik.md` T44 compute the same
+formula in this branch** — the deviation justified there (T44 does not cap, because
+capping made the bot blind in the early phase) disappears, because here too nothing is
+capped. `B` stays bot-internal; the band check continues to apply only to the game
+result.
 
-**Die Bänder bleiben disjunkt, auch das obere:** „überlebt" endet bei
-`(R+1) × 1.000 + 3.000`, das Todesband beginnt bei `31.000`; disjunkt sind sie genau für
-`R ≤ 26`. Das ist **dieselbe Schranke**, die `technik.md` T40 schon in den Jahrgangsbau
-zieht — sie bleibt unverändert gültig, ist jetzt aber scharf statt großzügig, und das
-breitere Band kostet keine Runde Partielänge. Bei R = 20 sind die unerreichbaren Lücken
-20.001 … 20.999 und **24.001 … 30.999**; zwischen dem Ende von „überlebt" und dem Beginn des
-Todesbandes liegen 7.000 Milli-Runden Luft.
+**The bands remain disjoint, the upper one too:** „survived" ends at
+`(R+1) × 1.000 + 3.000`, the death band begins at `31.000`; they are disjoint exactly for
+`R ≤ 26`. That is **the same bound** that `technik.md` T40 already draws into the vintage
+build — it remains valid unchanged, but is now tight instead of generous, and the wider
+band costs no round of game length. At R = 20 the unreachable gaps are
+20.001 … 20.999 and **24.001 … 30.999**; between the end of „survived" and the start of
+the death band lie 7.000 milli-rounds of air.
 
-**Die Kante aus Befund 10 ist damit geschlossen:** Das Band 1.000 … 20.000 heißt genau
-„Mandat erfüllt", der überlebte Misserfolg beginnt bei 21.000, und kein Wert trägt zwei
-Bedeutungen. Der frühe Tod ist schlechter als der späte, und zwar um volle Runden — genau
-die Auflösung, die Maß 1 im letzten Partiedrittel braucht. Eine Sammelkappe auf den
-Gesamtwert gibt es **nicht**. Der Bereichstest lautet: ein Ergebnis ausserhalb
-1.000 … 50.000 ist ein harter Fehler.
+**The edge from finding 10 is thereby closed:** the band 1.000 … 20.000 means exactly
+„mandate fulfilled", the survived failure begins at 21.000, and no value carries two
+meanings. The early death is worse than the late one, and by full rounds — exactly the
+resolution Maß 1 needs in the last game third. A catch-all cap on the total value does
+**not** exist. The range test reads: a result outside 1.000 … 50.000 is a hard error.
 
 ### Das Aktionsprofil und wie es auf Aktionen wirkt
 
-Ein **Aktionsprofil** ist die Verteilung des Rundenbudgets über die fünf Aktionsarten in
-Fünftelrasterung, also ein Vektor `(a1…a5)` mit `ai ∈ {0…5}` und `Σai = 5`. Das sind
-`C(9,4) = 126` Profile. Das **Referenzprofil** ist `(1,1,1,1,1)`.
+An **action profile** is the distribution of the round budget over the five action kinds
+on a fifth grid, i.e. a vector `(a1…a5)` with `ai ∈ {0…5}` and `Σai = 5`. That makes
+`C(9,4) = 126` profiles. The **reference profile** is `(1,1,1,1,1)`.
 
-Das Profil ist ein Werkzeug des Prüfstands, keine Spielgröße — der Mensch wählt frei. Wie
-es auf Aktionen wirkt, war in der zweiten Fassung nicht gesagt, und Maß 2 und Maß 3 stehen
-vollständig darauf. **Das Vorratsverfahren, verbindlich:**
+The profile is a tool of the test stand, not a game quantity — the human chooses freely.
+How it acts on actions was not stated in the second version, and Maß 2 and Maß 3 rest
+entirely on it. **The stock procedure, binding:**
 
-Jede Art `i` führt einen ganzzahligen Vorrat `vi`, zu Partiebeginn null.
+Each kind `i` keeps an integer stock `vi`, zero at game start.
 
-1. **Am Rundenanfang:** `vi += 3 · ai` für alle fünf Arten. Die Summe wächst damit je Runde
-   um 15.
-2. **Für jeden der drei Steckplätze der Runde, nacheinander:** Wähle unter den Arten, die
-   in dieser Runde noch mindestens eine zulässige Aktion haben, die mit dem größten `vi`;
-   bei Gleichstand die kleinere Kennung. Setze eine Aktion dieser Art und rechne
-   `vi −= 5`. Hat keine Art eine zulässige Aktion, bleibt der Steckplatz leer und kein
-   Vorrat wird verrechnet.
-3. **Welche** Aktion innerhalb der gewählten Art gesetzt wird, entscheidet der Bot: der
-   Heuristikbot nach seiner festen Rangfolge, der Suchbot durch Suche.
+1. **At the start of the round:** `vi += 3 · ai` for all five kinds. The total thus grows
+   by 15 per round.
+2. **For each of the round's three slots, one after another:** among the kinds that still
+   have at least one admissible action this round, pick the one with the largest `vi`; on
+   a tie, the smaller id. Place one action of this kind and compute
+   `vi −= 5`. If no kind has an admissible action, the slot stays empty and no stock is
+   charged.
+3. **Which** action within the chosen kind is placed is decided by the bot: the heuristic
+   bot by its fixed ranking, the search bot by search.
 
-Drei Fragen, die der Prüfer zu Recht gestellt hat, sind damit beantwortet. Der Bot füllt
-**immer drei Steckplätze**, solange zulässige Aktionen da sind; die Bündelgröße gehört
-nicht zum Profil. `ai = 0` **verbietet die Art nicht**, sondern schiebt sie ans Ende — ein
-hartes Verbot ließe Profile mit Nullen ihre Steckplätze nicht füllen und machte Maß 2 zu
-einem Vergleich zwischen drei und weniger als drei Aktionen je Runde statt zwischen
-Strategien. Es wird nie gerundet und nie gezogen: **Nach `5k` Runden steht der Vorratsvektor wieder
-auf `(0,0,0,0,0)`, und Art `i` hat genau `3k·ai` der `15k` Steckplätze bekommen** — für
-`k = 1` also `3·ai` von fünfzehn nach **fünf** Runden, für `k = 3` `9·ai` von
-fünfundvierzig nach fünfzehn. Zwischen zwei solchen Punkten ist die Abweichung beschränkt.
-**Seit `R = 20` ist das Partieende selbst ein solcher Punkt** (`k = 4`): Ein Lauf, der eine
-ganze Partie lang dasselbe Profil spielt, vergibt `12·ai` der 60 Steckplätze exakt nach
-Profil — siehe *Die Partielänge R*.
+Three questions the reviewer rightly asked are thereby answered. The bot fills **all
+three slots** as long as admissible actions exist; the bundle size is not part of the
+profile. `ai = 0` does **not forbid the kind** but pushes it to the back — a hard ban
+would leave profiles with zeros unable to fill their slots and would turn Maß 2 into a
+comparison between three and fewer-than-three actions per round instead of between
+strategies. There is never rounding and never a random draw: **after `5k` rounds the
+stock vector stands at `(0,0,0,0,0)` again, and kind `i` has received exactly `3k·ai` of
+the `15k` slots** — for `k = 1` that is `3·ai` of fifteen after **five** rounds, for
+`k = 3` `9·ai` of forty-five after fifteen. Between two such points the deviation is
+bounded. **Since `R = 20` the end of the game is itself such a point** (`k = 4`): a run
+that plays the same profile for a whole game assigns `12·ai` of the 60 slots exactly by
+profile — see *The game length R*.
 
-Zur Probe das Referenzprofil: Runden 1 bis 5 vergeben die Arten
-1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 und stehen danach wieder auf `(0,0,0,0,0)` — je
-Art genau drei von fünfzehn Steckplätzen, gleichverteilt und deterministisch.
+As a check, the reference profile: rounds 1 to 5 assign the kinds
+1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 | 3,4,5 and stand at `(0,0,0,0,0)` again afterwards —
+exactly three of fifteen slots per kind, evenly distributed and deterministic.
 
-**Für den Suchbot** legt das Profil die Artenzusammensetzung des Rundenbündels fest; die
-60 Kandidatenbündel entstehen aus der nach T32 geordneten Zulässigkeitsliste,
-**eingeschränkt auf genau diese Zusammensetzung**, und gezogen nach T35. Der Suchbot sucht
-also über Ziele und Stufen, nie über Arten.
+**For the search bot** the profile fixes the kind composition of the round bundle; the 60
+candidate bundles arise from the admissibility list ordered per T32, **restricted to
+exactly this composition**, and drawn per T35. The search bot thus searches over targets
+and steps, never over kinds.
 
 ### Maß 1 — Entscheidungsdichte
 
-**Eingabe:** 50 Startwerte, je Startwert eine Trägerpartie mit dem Heuristikbot auf dem
-Referenzprofil.
+**Input:** 50 seeds, per seed one carrier game with the heuristic bot on the reference
+profile.
 
-Für jede Runde `t = 1 … R` und jeden Startwert: Ziehe **30 Aktionsbündel**. Ein Bündel
-entsteht, indem zuerst die Bündelgröße gleichverteilt aus `{0,1,2,3}` gezogen wird und
-dann so viele Aktionen ohne Zurücklegen gleichverteilt aus der Liste der in dieser Runde
-zulässigen Aktionen. Doppelte Bündel im Stichprobensatz werden **nicht** entfernt — sonst
-hinge die Stichprobengröße vom Zustand ab. Der Zufallsstartwert folgt aus `(Jahrgang,
+For every round `t = 1 … R` and every seed: draw **30 action bundles**. A bundle arises
+by first drawing the bundle size uniformly from `{0,1,2,3}` and then drawing that many
+actions, uniformly and without replacement, from the list of actions admissible in this
+round. Duplicate bundles in the sample set are **not** removed — otherwise the sample
+size would depend on the state. The random seed follows from `(Jahrgang,
 Parametersatz, Wurzelstartwert, t, Stichprobenindex)`.
 
-Das Bündel **ersetzt die Bot-Aktionen der Runde t**; Runde `t` wird gerechnet, danach
-spielt der Heuristikbot auf dem Referenzprofil bis Runde `R` durch. Der Vorrat aus dem
-Vorratsverfahren wird für Runde `t` so fortgeschrieben, als hätte der Bot die Arten des
-gezogenen Bündels gespielt (`vi += 3·ai` am Rundenanfang, `vi −= 5` je tatsächlich
-gesetzter Aktion) — sonst wäre der Zustand des Zählers nach der Einspeisung undefiniert.
+The bundle **replaces the bot actions of round t**; round `t` is computed, then the
+heuristic bot plays through to round `R` on the reference profile. The stock of the stock
+procedure is carried forward for round `t` as if the bot had played the kinds of the
+drawn bundle (`vi += 3·ai` at the round start, `vi −= 5` per action actually placed) —
+otherwise the state of the counter after the injection would be undefined.
 
-**Rechenweg:**
+**Calculation:**
 
 ```
 Ergebnis(t, s, k)      k = 1…30 Bündel, s = 1…50 Startwerte
@@ -2323,20 +2323,20 @@ Dichte(t, s) = Anteil der 30 Ergebnisse, die um mehr als 1.000 Milli-Runden
 Dichte(t)    = Mittel der Dichte(t, s) über die 50 Startwerte
 ```
 
-**Über die Startwerte wird erst am Ende gemittelt, und zwar über Dichten, nicht über
-Ergebnisse.** Ein gemeinsamer Median über alle 1.500 Ergebnisse einer Runde wäre falsch:
-Verschiedene Startwerte erzeugen nach `technik.md` T11 verschiedene Jahrgangsstreuungen,
-und ein Median über mehrere Welten triebe den Abweichungsanteil gegen 1, ohne dass eine
-einzige Entscheidung dichter geworden wäre.
+**Averaging over the seeds happens only at the end, and over densities, not over
+results.** A common median over all 1.500 results of a round would be wrong: per
+`technik.md` T11 different seeds produce different vintage spreads, and a median over
+several worlds would drive the deviation share towards 1 without a single decision having
+become denser.
 
-**Abnahme:** Mittel der `Dichte(t)` über jedes Partiedrittel — die Drittel sind
-`1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R`, bei R = 20 also **1-6, 7-13, 14-20** —
-jeweils **≥ 0,4**, nicht nur über die ganze Partie. Ein Spiel, das nur in der Mitte lebt,
-fällt hier durch. Fällt es durch, ist „the consequences of choices often feel intangible"
-gerade gemessen worden.
+**Acceptance:** the mean of `Dichte(t)` over each game third — the thirds are
+`1…⌊R/3⌋`, `⌊R/3⌋+1…⌊2R/3⌋`, `⌊2R/3⌋+1…R`, at R = 20 thus **1-6, 7-13, 14-20** — each
+**≥ 0,4**, not merely over the whole game. A game that lives only in the middle fails
+here. If it fails, „the consequences of choices often feel intangible" has just been
+measured.
 
-**Kosten.** Ein Bündel in Runde `t` kostet die Runden `t … R`, also `R + 1 − t`
-Weltschritte — Maß 1 misst die Entscheidung **der Runde t**, deshalb wird sie mitgerechnet.
+**Cost.** A bundle in round `t` costs rounds `t … R`, i.e. `R + 1 − t` world steps —
+Maß 1 measures the decision **of round t**, so it is counted in.
 
 ```
 je Startwert:  30 · Σ(R+1−t) für t = 1…R  =  30 · R(R+1)/2  =  30 · 210 =  6.300
@@ -2348,217 +2348,217 @@ je Startwert:  30 · Σ(R+1−t) für t = 1…R  =  30 · R(R+1)/2  =  30 · 210
 
 ### Maß 2 — Strategievielfalt
 
-**Eingabe:** alle 126 Profile, je 20 Startwerte, Suchbot.
+**Input:** all 126 profiles, 20 seeds each, search bot.
 
-Das Profilergebnis `E(p)` ist der Median der 20 Partieergebnisse. Ein Profil **gewinnt**,
-wenn `E(p) ≤ R × 1.000 = 20.000` — also genau dann, wenn es im Median im Band „Mandat
-erfüllt" landet.
+The profile result `E(p)` is the median of the 20 game results. A profile **wins** if
+`E(p) ≤ R × 1.000 = 20.000` — that is, exactly when its median lands in the band
+„mandate fulfilled".
 
-Der **Strategiekern** eines Profils ist die Aktionsart mit dem größten Anteil unter den
-drei Familien `{1 Position, 2 Beteiligung, 3 Lobby}`, bei Gleichstand die kleinere
-Kennung. Hebel und Sichtbarkeit sind Verstärker, keine Strategien, und gehen in den Kern
-nicht ein.
+The **strategy core** of a profile is the action kind with the largest share among the
+three families `{1 Position, 2 Beteiligung, 3 Lobby}`; on a tie, the smaller id.
+Leverage and visibility are amplifiers, not strategies, and do not enter the core.
 
-**Die sechs Profile `(0,0,0,a4,a5)` mit `a4 + a5 = 5` haben keinen Strategiekern.** Sie
-enthalten keine einzige Familienaktion; ihnen über den Gleichstand die Klasse 1 zuzuweisen
-hieße, eine Positionsstrategie als erfüllt zu zählen, in der keine Position vorkommt. Sie
-laufen mit, ihr Ergebnis wird berichtet, und sie gehen in **keine** der beiden
-Abnahmehälften ein. Klassifiziert sind damit 120 Profile, verteilt auf genau drei Klassen.
+**The six profiles `(0,0,0,a4,a5)` with `a4 + a5 = 5` have no strategy core.** They
+contain not a single family action; assigning them class 1 via the tie rule would mean
+counting a position strategy as fulfilled in which no position occurs. They run along,
+their result is reported, and they enter **neither** of the two acceptance halves. That
+leaves 120 profiles classified, spread over exactly three classes.
 
-**Abnahme, beide Teile:**
+**Acceptance, both parts:**
 
-1. **Jede der drei Klassen stellt mindestens einen Gewinner.**
-2. Sei `Ek` das beste (kleinste) Profilergebnis der Klasse `k`. Dann muss
-   `max(Ek) ≤ 1,25 × min(Ek)` gelten.
+1. **Each of the three classes provides at least one winner.**
+2. Let `Ek` be the best (smallest) profile result of class `k`. Then
+   `max(Ek) ≤ 1,25 × min(Ek)` must hold.
 
-Der zweite Teil ist der wichtigere — sonst gewinnen drei, aber eines dominiert, und das
-ist derselbe Defekt unter anderem Namen. Das ist die Zahl hinter „trying to implement the
-tiniest socialist policy will always result in bankruptcy".
+The second part is the more important one — otherwise three win but one dominates, and
+that is the same defect under another name. This is the number behind „trying to
+implement the tiniest socialist policy will always result in bankruptcy".
 
-**Kosten:** eine Suchbotpartie `R × (1 + 60) = 20 × 61 = 1.220`;
-`126 × 20 × 1.220` = **3.074.400 Weltschritte**.
+**Cost:** one search-bot game `R × (1 + 60) = 20 × 61 = 1.220`;
+`126 × 20 × 1.220` = **3.074.400 world steps**.
 
 ### Maß 3 — Verschiebung des Optimums
 
-Zwei getrennte Läufe je Profil, jeder über die **volle Partie**, damit keine Runde ohne
-Vorgabe bleibt. Die Fenster sind das erste und das letzte Partiedrittel aus Maß 1:
+Two separate runs per profile, each over the **full game**, so that no round is left
+without a prescription. The windows are the first and last game third from Maß 1:
 
-- **Frühfenster:** Runden 1-6 mit Profil `p`, Runden 7-20 mit dem Referenzprofil.
-  Ergebnis `Efrüh(p)` = Median über 20 Startwerte.
-- **Spätfenster:** Runden 1-13 mit dem Referenzprofil, Runden 14-20 mit Profil `p`.
-  Ergebnis `Espät(p)` = Median über 20 Startwerte.
+- **Early window:** rounds 1-6 with profile `p`, rounds 7-20 with the reference profile.
+  Result `Efrüh(p)` = median over 20 seeds.
+- **Late window:** rounds 1-13 with the reference profile, rounds 14-20 with profile `p`.
+  Result `Espät(p)` = median over 20 seeds.
 
-Der Profilwechsel geschieht am Rundenanfang; der Vorrat des Vorratsverfahrens läuft über
-den Wechsel hinweg weiter und wird nicht zurückgesetzt. Beide Läufe verwenden den
-Suchbot, innerhalb wie außerhalb des Fensters.
+The profile switch happens at the round start; the stock of the stock procedure keeps
+running across the switch and is not reset. Both runs use the search bot, inside as well
+as outside the window.
 
-`p*` = Profil mit kleinstem `Efrüh`, `q*` = Profil mit kleinstem `Espät`, Gleichstand nach
-Profilkennung; alle 126 Profile sind wählbar. **Verschiebung** = `Σ|p*i − q*i| / 5`.
+`p*` = profile with the smallest `Efrüh`, `q*` = profile with the smallest `Espät`, ties
+by profile id; all 126 profiles are eligible. **Shift** = `Σ|p*i − q*i| / 5`.
 
-**Abnahmeschwelle 0,4.** Beide Vektoren summieren auf 5, die Summe der Beträge ist deshalb
-stets gerade, und die Verschiebung nimmt nur die Werte `{0; 0,4; 0,8; 1,2; 1,6; 2,0}` an.
-Die Schwelle 0,5 der zweiten Fassung verlangte in Wahrheit 0,8, also zwei verschobene
-Fünftel; gemeint war und gefordert ist **eines**.
+**Acceptance threshold 0,4.** Both vectors sum to 5, so the sum of absolute differences
+is always even, and the shift takes only the values `{0; 0,4; 0,8; 1,2; 1,6; 2,0}`.
+The threshold 0,5 of the second version in truth demanded 0,8, i.e. two shifted fifths;
+what was meant and what is demanded is **one**.
 
-Erzwungen wird die Verschiebung nicht durch Balance, sondern durch Gegenkraft 4 und 3:
-Nachahmer grasen jede frühe Position ab, der Preisstoß entwertet Größe. Das ist die Zahl
-hinter „already the richest hedge fund in the game and nothing fun to do".
+The shift is forced not by balance but by counterforces 4 and 3: imitators graze off
+every early position, the price shock devalues size. This is the number behind „already
+the richest hedge fund in the game and nothing fun to do".
 
-**Kosten:** `2 × 126 × 20 × 1.220` = **6.148.800 Weltschritte**.
+**Cost:** `2 × 126 × 20 × 1.220` = **6.148.800 world steps**.
 
-**Summe der drei Maße:** `316.000 + 3.074.400 + 6.148.800` = **9.539.200 Weltschritte**.
-Was der ganze Nachtlauf kostet, steht in `technik.md` Abschnitt 10 und nicht hier — die
-zweite Fassung hat an dieser Stelle eine Zahl genannt, die Vorgaben des Prüfstands
-voraussetzte, die sie selbst nicht machte.
+**Sum of the three Maße:** `316.000 + 3.074.400 + 6.148.800` = **9.539.200 world steps**.
+What the whole night run costs is in `technik.md` section 10 and not here — at this spot
+the second version named a number that presupposed test-stand prescriptions it did not
+itself make.
 
 ### Maß 4 — Rückvergleich
 
-**Der Rückvergleich ist ein Weltlauf, keine Partie.** Das ist die Antwort auf Befund 2, und
-sie ist eine Entwurfsentscheidung, keine Auslegung: Ein Fonds mit Nullvermögen dividiert in
-Runde 1 durch null und stirbt, wenn man ihn davor bewahrt, spätestens in Runde 3 am
-Anlegerabzug. Beides ist kein Zustand, in dem sich eine Weltmaschine prüfen lässt.
+**The backtest is a `weltlauf`, not a game.** That is the answer to finding 2, and it is
+a design decision, not an interpretation: a fund with zero assets divides by zero in
+round 1 and, if you protect it from that, dies of investor withdrawal by round 3 at the
+latest. Neither is a state in which a world machine can be checked.
 
-Im Modus `weltlauf` gilt deshalb:
+In `weltlauf` mode, therefore:
 
-- **Das Fondsteilsystem läuft nicht.** Schritt 2 (Aktionen) und Schritt 6 (Abrechnung)
-  entfallen vollständig; aus Schritt 5 laufen nur Zustimmung und Regierungswechsel. Die
-  Gegenkräfte 1, 3, 4 und 5 werden nicht gerechnet, es gibt keine Rendite, keine
-  Überrendite, keinen Anlegerbestand, kein Mandat und **keine Todesart**. Kein Feld des
-  Fondsblocks und kein Nachahmerzähler wird geschrieben; sie behalten ihre Startwerte.
-- **Die Politikinstrumente sind exogen** und folgen Runde für Runde den historischen
-  Pfaden für Leitzins, Zollniveau und Haushaltssaldo. Jede Regel, die ein Instrument
-  schriebe — Lobbydruck, Gegenlobby, der Instrumentenrückstellung durch einen
-  Regierungswechsel —, wird nicht ausgeführt. Ein Regierungswechsel wird berechnet und
-  ausgewiesen, bleibt aber ohne Wirkung; das Orakel ist an dieser Stelle blind, und das
-  gehört in jeden Befund.
-- **Die Schreibregel wird dadurch nicht weicher, sondern schmaler:** Auch im Weltlauf wird
-  keine Adresse zweimal je Runde geschrieben. Die Menge der überhaupt geschriebenen
-  Adressen ist je Modus fest und wird vom Prüfstand mit ausgewiesen.
+- **The fund subsystem does not run.** Step 2 (actions) and step 6 (settlement) are
+  dropped entirely; of step 5 only approval and change of government run. Counterforces
+  1, 3, 4 and 5 are not computed; there is no return, no excess return, no investor
+  base, no mandate and **no way of dying**. No field of the fund block and no imitator
+  counter is written; they keep their start values.
+- **The policy instruments are exogenous** and follow, round by round, the historical
+  paths for policy rate, tariff level and fiscal balance. Every rule that would write an
+  instrument — lobby pressure, counter-lobby, the instrument reset by a change of
+  government — is not executed. A change of government is computed and reported but
+  remains without effect; the oracle is blind at this spot, and that belongs in every
+  finding.
+- **The write rule does not become softer through this, but narrower:** in the
+  `weltlauf` too, no address is written twice per round. The set of addresses written at
+  all is fixed per mode and is reported alongside by the test stand.
 
-Damit prüft Maß 4 genau, was es prüfen soll: die Übertragung Politik → Wirtschaft über die
-Schritte 3 und 4. Ein Lauf mit erfundener Politik prüfte nur die halbe Maschine; ein Lauf
-mit einem sterbenden Fonds prüfte gar nichts.
+Maß 4 thereby checks exactly what it is supposed to check: the transmission
+politics → economy via steps 3 and 4. A run with invented politics would check only half
+the machine; a run with a dying fund would check nothing at all.
 
-**Die 27 Sollreihen** sind BIP je Land (4), Sektoranteile (12, davon 8 unabhängig),
-Verbraucherpreise (4), Wechselkurs gegen USD (3), Staatsschuldenquote (4); dazu der
-Handelsblock über 40 Ströme als eigener Block. Jede über 21 Stützstellen ohne Füllung. Nach
-der Klassifikation aus `technik.md` T37 sind die vier Staatsschuldenquoten **abgeleitet**,
-die übrigen 23 **frei**.
+**The 27 target series** are GDP per country (4), sector shares (12, of which 8
+independent), consumer prices (4), exchange rate against USD (3), government debt ratio
+(4); plus the trade block over 40 flows as a block of its own. Each over 21 support
+points without filling. Per the classification from `technik.md` T37 the four government
+debt ratios are **derived**, the remaining 23 **free**.
 
-**Der Leitzins ist seit dem 2026-09-03 keine Sollreihe.** Die Klasse `gesetzt` ist damit
-leer und entfällt. Der Grund steht in *Die Partielänge R* und ist keiner der Deckung: Eine
-Reihe, die im Weltlauf als Eingabe gesetzt wird, hat den Fehler null per Konstruktion — sie
-kann nicht durchfallen und nichts belegen, und sie hat das Fenster trotzdem um ein Jahr
-gekürzt. **Was an ihre Stelle tritt, ist schärfer und nicht weicher:** Der Leitzins bleibt
-Eingabe (Reihe 9, Rolle Start + Politikpfad), und dass die Maschine ihn unverändert
-wiedergibt, ist eine **Invariante**, keine Schwelle. Weicht der Modellwert an irgendeiner
-Stützstelle vom gesetzten Pfad ab, ist das ein harter Fehler und kein Fehlermaß von 300
-Basispunkten. Ausgewiesen wird er weiterhin.
+**The policy rate has not been a target series since 2026-09-03.** The class `gesetzt`
+is thereby empty and is dropped. The reason is in *The game length R* and is not one of
+coverage: a series that is set as input in the `weltlauf` has error zero by construction
+— it cannot fail and cannot prove anything, and it still shortened the window by a year.
+**What takes its place is sharper, not softer:** the policy rate remains input (series
+9, role start + policy path), and that the machine reproduces it unchanged is an
+**invariant**, not a threshold. If the model value deviates from the set path at any
+support point, that is a hard error and not an error measure of 300 basis points. It is
+still reported.
 
-**Die drei Fehlermaße, je Reihe:**
+**The three error measures, per series:**
 
-| Reihen | verglichen wird | Schwelle |
+| Series | what is compared | Threshold |
 |---|---|---|
-| BIP (4), Sektoranteile (12), Staatsschuldenquote (4), Handelsströme (40) | das **Niveau** | MAPE über die 21 Stützstellen ≤ 20 % |
-| Verbraucherpreise (4), Wechselkurs (3) | die **Jahresänderungsrate** in Basispunkten | mittlerer absoluter Fehler über die 20 Übergänge ≤ 300 bp |
-| alle | die **Richtung** | Anteil der 20 Übergänge mit `sgn(Δmodell) = sgn(Δsoll)` ≥ 0,6 |
+| GDP (4), sector shares (12), government debt ratio (4), trade flows (40) | the **level** | MAPE over the 21 support points ≤ 20 % |
+| consumer prices (4), exchange rate (3) | the **annual rate of change** in basis points | mean absolute error over the 20 transitions ≤ 300 bp |
+| all | the **direction** | share of the 20 transitions with `sgn(Δmodell) = sgn(Δsoll)` ≥ 0,6 |
 
-Die zweite Zeile ist die Folge von `technik.md` T8: Ein prozentualer Fehler auf einem
-Index, der über zwei Jahrzehnte um eine Größenordnung wandert, misst den Anfang und nicht
-die Maschine — und ein prozentualer Fehler auf einer Rate nahe null explodiert. Die 300
-Basispunkte, also drei Prozentpunkte mittlerer Fehler auf der Jahresrate, haben denselben
-Status wie die 20 Prozent und die 0,6: eine gesetzte Latte. Erweist sie sich als
-unerreichbar, ist das ein Befund über das Modell und kein Anlass, sie zu verschieben.
+The second row is the consequence of `technik.md` T8: a percentage error on an index
+that wanders by an order of magnitude over two decades measures the starting point and
+not the machine — and a percentage error on a rate near zero explodes. The 300 basis
+points, i.e. three percentage points of mean error on the annual rate, have the same
+status as the 20 percent and the 0,6: a bar that was set. Should it prove unreachable,
+that is a finding about the model and no reason to move it.
 
-**Die Abnahmeregel — `3·L_R + (L_R − n) + 1` Prüfgegenstände, Toleranz `⌊L_R/2⌋`.** Heute, mit
-`L_R = 4` Rückvergleichsländern und `n = 1`, sind das **16 und 2**; nach Paket 0118 mit
-`L_R = 7` sind es **28 und 3** (siehe *Welche neun Länder*). **Beide stehen ab hier als Formel
-und nicht als Ziffer**, aus demselben Grund, aus dem `R` als Buchstabe steht: Eine feste 2
-machte das Hinzufügen eines Landes zu einer Verschärfung des Rückvergleichs, ohne dass sich
-eine Regel des Modells ändert. Die zweite Fassung nannte zwei
-Fehlermaße und keine Regel, wie über die Reihen zusammengefasst wird; `technik.md` T37 hat
-daraus ein Gesamtmaß gelesen und die Entscheidung zurückgegeben. Hier ist sie:
+**The acceptance rule — `3·L_R + (L_R − n) + 1` check subjects, tolerance `⌊L_R/2⌋`.**
+Today, with `L_R = 4` backtest countries and `n = 1`, that is **16 and 2**; after
+package 0118 with `L_R = 7` it is **28 and 3** (see *Welche neun Länder*). **From here
+on both stand as a formula and not as a digit**, for the same reason `R` stands as a
+letter: a fixed 2 would make adding a country a tightening of the backtest without any
+rule of the model changing. The second version named two error measures and no rule for
+how to aggregate over the series; `technik.md` T37 read a total measure out of that and
+returned the decision. Here it is:
 
-1. **Abnahmerelevant sind nur die freien Reihen.** Die vier abgeleiteten Schuldenquoten
-   werden berichtet und entscheiden nichts; der Leitzins ist seit dem 2026-09-03 gar keine
-   Sollreihe mehr, sondern Eingabe mit Invariantenprobe. Eine Reihe, die per Konstruktion
-   fehlerfrei ist, darf kein Gesamtmaß mildern.
-2. **Prüfgegenstand ist nicht die Reihe, sondern die Größe.** Es sind heute sechzehn, und
-   **gezählt wird je Rückvergleichsland, nicht je Land** — ein Spielland liegt nach T58
-   vollständig außerhalb der Sollmaske und trägt keinen:
+1. **Only the free series are acceptance-relevant.** The four derived debt ratios are
+   reported and decide nothing; since 2026-09-03 the policy rate is not even a target
+   series any more, but input with an invariant check. A series that is error-free by
+   construction must not soften a total measure.
+2. **The check subject is not the series but the quantity.** There are sixteen today,
+   and **counting is per backtest country, not per country** — per T58 a play-only
+   country lies entirely outside the target mask and contributes none:
 
-   | Prüfgegenstand | Formel | heute | nach 0118 | zusammengefasst aus |
+   | Check subject | Formula | today | after 0118 | aggregated from |
    |---|---|---:|---:|---|
-   | BIP je Rückvergleichsland | `L_R` | 4 | 7 | je eine Reihe |
-   | Sektorstruktur je Rückvergleichsland | `L_R` | 4 | 7 | die **drei** Anteilsreihen des Landes, alle drei müssen bestehen |
-   | Verbraucherpreise je Rückvergleichsland | `L_R` | 4 | 7 | je eine Reihe |
-   | Wechselkurs je Rückvergleichsland ausser dem Numéraire | `L_R − n` | 3 | 6 | je eine Reihe |
-   | Handelsblock | `1` | 1 | 1 | `(L_R+1)·L_R·(S−1)` Ströme — heute 40, nach 0118 112; Median des MAPE und Median der Richtungstreue; das schlechteste Fünftel wird ausgewiesen |
-   | **Summe** | `3·L_R + (L_R − n) + 1` | **16** | **28** | |
+   | GDP per backtest country | `L_R` | 4 | 7 | one series each |
+   | sector structure per backtest country | `L_R` | 4 | 7 | the country's **three** share series, all three must pass |
+   | consumer prices per backtest country | `L_R` | 4 | 7 | one series each |
+   | exchange rate per backtest country except the numéraire | `L_R − n` | 3 | 6 | one series each |
+   | trade block | `1` | 1 | 1 | `(L_R+1)·L_R·(S−1)` flows — 40 today, 112 after 0118; median of the MAPE and median of the directional accuracy; the worst fifth is reported |
+   | **Sum** | `3·L_R + (L_R − n) + 1` | **16** | **28** | |
 
-   Die drei Anteilsreihen eines Landes sind durch die Normierung auf 10.000 nicht
-   unabhängig; als drei Zähler geführt, würde ein einzelnes falsch modelliertes Land die
-   Toleranz allein aufbrauchen. Als **ein** Zähler geführt, kostet es einen von sechzehn —
-   und muss dafür in allen drei Anteilen bestehen.
+   The three share series of a country are not independent, due to the normalisation to
+   10.000; kept as three counters, a single badly modelled country would use up the
+   tolerance on its own. Kept as **one** counter it costs one of sixteen — and in return
+   must pass in all three shares.
 
-   **Die Zahl 16 ist durch den Schnitt vom 2026-09-03 unverändert geblieben, und das ist
-   nachgezählt, nicht angenommen.** Gestrichen sind die vier Leitzinsreihen; die Tabelle
-   oben speist sich aus Reihe 1 (BIP), Reihe 2 (Sektoranteile), Reihe 8
-   (Verbraucherpreise), Reihe 10 (Wechselkurs) und Reihe 14 (Handelsblock). Keiner der
-   sechzehn Prüfgegenstände enthält Reihe 9, und keiner könnte sie enthalten: Sie war nach
-   T37 `gesetzt`. **Die Abnahmeregel „höchstens 2 der 16" läuft damit auf derselben
-   Reihenmenge weiter wie vorher, nur über 21 statt 25 Stützstellen.** Verändert hat sich
-   der Nenner der *Sollreihen* (31 → 27), nicht der der *Prüfgegenstände*.
+   **The number 16 has remained unchanged by the cut of 2026-09-03, and that is
+   recounted, not assumed.** Struck are the four policy-rate series; the table above
+   draws on series 1 (GDP), series 2 (sector shares), series 8
+   (consumer prices), series 10 (exchange rate) and series 14 (trade block). None of the
+   sixteen check subjects contains series 9, and none could: per T37 it was `gesetzt`.
+   **The acceptance rule „at most 2 of the 16" thus keeps running on the same set of
+   series as before, only over 21 instead of 25 support points.** What has changed is
+   the denominator of the *target series* (31 → 27), not that of the *check subjects*.
 
-3. **Ein Prüfgegenstand besteht**, wenn er beide für ihn geltenden Schwellen einhält.
-   **Die Richtungstreue wird dabei nur über die Übergänge gebildet, in denen sich die
-   Sollreihe bewegt.** Ein Übergang ohne gemessene Bewegung trägt keine Richtung und wird
-   weder als Treffer noch als Fehler gezählt; bewegt sich eine Sollreihe in keinem der
-   zwanzig Übergänge, hat der Prüfgegenstand keine Richtungstreue und besteht allein über
-   sein Niveaumaß. Das ist keine Milderung, sondern das Schließen einer Lücke: Über eine
-   konstante Reihe trägt jeder Übergang die Richtung null, ein endogen gerechneter Wert
-   trifft die exakte Null so gut wie nie, und der Gegenstand risse **von Bauart wegen**.
-   Der Fall ist nicht hypothetisch — er ist der Grund, aus dem Saudi-Arabien Spielland
-   erwartet wird (siehe *Welche neun Länder*), und flache Abschnitte gibt es auch ohne
-   Kursbindung.
-4. **Der Lauf ist bestanden, wenn höchstens `⌊L_R/2⌋` Prüfgegenstände reißen** — heute zwei
-   von sechzehn, nach Paket 0118 drei von achtundzwanzig. Jeder gerissene wird im Befund
-   einzeln benannt, mit beiden Zahlen. Einer mehr ist ein Durchfallen, auch wenn er knapp
-   reißt. **Die Formel reproduziert bei `L_R = 4` genau die heutige 2** — das ist die
-   Verträglichkeitsprobe —, und sie hält den Anteil danach fast fest: 2 von 16 sind 12,5
-   Prozent, 3 von 28 sind 10,7, 4 von 36 sind 11,1. Sie wächst also langsamer als die Zahl
-   der Gegenstände und senkt die Latte nie.
+3. **A check subject passes** if it holds both thresholds that apply to it. **The
+   directional accuracy is formed only over the transitions in which the target series
+   moves.** A transition without measured movement carries no direction and is counted
+   neither as a hit nor as an error; if a target series moves in none of the twenty
+   transitions, the check subject has no directional accuracy and passes on its level
+   measure alone. That is not a softening but the closing of a gap: over a constant
+   series every transition carries direction zero, an endogenously computed value
+   virtually never hits the exact zero, and the subject would break **by construction**.
+   The case is not hypothetical — it is the reason Saudi Arabia is expected to be a
+   play-only country (see *Welche neun Länder*), and flat stretches exist even without a
+   currency peg.
+4. **The run passes if at most `⌊L_R/2⌋` check subjects break** — today two of sixteen,
+   after package 0118 three of twenty-eight. Every broken one is named individually in
+   the finding, with both numbers. One more is a fail, even if it breaks narrowly. **At
+   `L_R = 4` the formula reproduces exactly today's 2** — that is the compatibility
+   check — and after that it holds the share nearly fixed: 2 of 16 is 12,5 percent, 3
+   of 28 is 10,7, 4 of 36 is 11,1. It thus grows more slowly than the number of subjects
+   and never lowers the bar.
 
-Der Median über die Handelsströme — heute 40, nach Paket 0118 112 — ist der Vorschlag des
-Architekten (`technik.md`
-Abschnitt 12) und wird hiermit übernommen, mit seiner Begründung: Einzelne kleine Ströme
-— Brasilien–China in der Landwirtschaft — schwanken prozentual stark, ohne dass das Modell
-falsch wäre; ein Mittel ginge daran kaputt, eine Je-Strom-Schwelle schneller.
+The median over the trade flows — 40 today, 112 after package 0118 — is the architect's
+proposal (`technik.md`
+section 12) and is hereby adopted, with its reasoning: individual small flows
+— Brazil–China in agriculture — fluctuate strongly in percentage terms without the model
+being wrong; a mean would break on that, a per-flow threshold faster.
 
-**Kosten:** R = 20 Weltschritte.
+**Cost:** R = 20 world steps.
 
-**Und die Grenze des Orakels, ausdrücklich.** Ohne Sollreihe sind: **Sektorpreise**
-und **Weltpreise** (Lücke 2 des Datenkurators), **Zustimmung** (Lücke 4), das Instrument
-**Finanzmarktregulierung**, die **Marktrendite** und seit dem 2026-09-03 der **Leitzins**
-— letzterer nicht aus Datenmangel, sondern weil er Eingabe ist und ein gesetzter Wert nichts
-prüft. Dazu kommt im Weltlauf das gesamte
-Fondsteilsystem, das gar nicht läuft. Alle diese Größen sind im Zustand sichtbar, keine ist
-vom Rückvergleich gedeckt. Er prüft die Dynamik der Maschine über den historischen
-Zeitraum und sagt nichts über den Ast, den der Spieler betritt.
+**And the limit of the oracle, explicitly.** Without a target series are: **sector
+prices** and **world prices** (gap 2 of the data curator), **approval** (gap 4), the
+instrument **Finanzmarktregulierung**, the **market return** and, since 2026-09-03, the
+**policy rate** — the last not for lack of data, but because it is input and a set value
+checks nothing. Added to this, in the `weltlauf`, is the entire fund subsystem, which
+does not run at all. All these quantities are visible in the state; none is covered by
+the backtest. It checks the dynamics of the machine over the historical period and says
+nothing about the branch the player enters.
 
-**Eine gefüllte Stützstelle, die in jeden Befund gehört.** Der US-Leitzinspfad endet 2020;
-seine einundzwanzigste Stützstelle ist der fortgeschriebene Wert von 2020 und trägt
-`gefuellt = 1`. Sie ist keine Sollstelle, also fällt sie nicht unter T24s Verbot — aber sie
-ist eine **Eingabe**, und der letzte Übergang der US-Prüfgegenstände läuft auf ihr. Der
-Prüfstand weist sie aus. Das ist der einzige gefüllte Wert im ganzen Prüfjahrgang.
+**One filled support point, which belongs in every finding.** The US policy-rate path
+ends in 2020; its twenty-first support point is the carried-forward value of 2020 and
+carries `gefuellt = 1`. It is not a target point, so it does not fall under T24's
+prohibition — but it is an **input**, and the last transition of the US check subjects
+runs on it. The test stand reports it. It is the only filled value in the whole check
+vintage.
 
 ### Die drei Klagen und was sie beantwortet
 
-| Klage aus den Rezensionen | Entwurfsentscheidung |
+| Complaint from the reviews | Design decision |
 |---|---|
-| „the consequences of choices often feel intangible" | **Höchstens drei Aktionen je Runde** — Knappheit zwingt jede Aktion, groß genug zum Wirken zu sein. Dazu die Kette als eigener Zustandsteil (Schritt 1 und 6) und Maß 1 als Abnahmeschwelle je Partiedrittel statt als Wunsch. **Seit dem 2026-09-03 dazu die Gegenprobe:** In Gegenkraft 5 ist der Schaden jedes Instruments genau dann von null verschieden, wenn das Instrument sich bewegt hat. Eine Kette, die eine Strafe zeigt und dahinter keine Aktion, ist dieselbe Klage von hinten — deshalb ist der Konjunktursockel der Zollzeile gefallen. |
-| „trying to implement the tiniest socialist policy will always result in bankruptcy" | **Der Fonds kann long und short sein.** Damit ist keine politische Richtung dominant: Wer auf Regulierung setzt, weil er short steht, gewinnt genauso wie wer sie verhindert. Dazu die zweiteilige Siegbedingung (Kapital UND Einfluss) und Maß 2, das jede der drei Familien einzeln gewinnen sehen will. |
-| „no dramatic setbacks or successes", „everything is incredibly surface level" | **Drei Todesarten mit sichtbaren Schwellen** (Zwangsliquidation, Marktverbot, Anlegerabzug), die Ergebnisskala, die den frühen Tod schlechter bewertet als den späten, und Maß 3, erzwungen durch Nachahmer und Preisstoß. Der Rückschlag ist dramatisch, aber nie willkürlich — siehe „Keine verdeckte Größe". |
+| „the consequences of choices often feel intangible" | **At most three actions per round** — scarcity forces every action to be big enough to have an effect. Plus the chain as its own part of the state (steps 1 and 6) and Maß 1 as an acceptance threshold per game third instead of a wish. **Since 2026-09-03 also the counter-check:** in counterforce 5 the damage of each instrument is non-zero exactly when the instrument has moved. A chain that shows a penalty and no action behind it is the same complaint from behind — that is why the business-cycle base term of the tariff row fell. |
+| „trying to implement the tiniest socialist policy will always result in bankruptcy" | **The fund can be long and short.** Thus no political direction is dominant: whoever bets on regulation because they are short wins just as much as whoever prevents it. Plus the two-part victory condition (capital AND influence) and Maß 2, which wants to see each of the three families win individually. |
+| „no dramatic setbacks or successes", „everything is incredibly surface level" | **Three ways of dying with visible thresholds** (forced liquidation, market ban, investor withdrawal), the result scale that rates the early death worse than the late one, and Maß 3, forced by imitators and price shock. The setback is dramatic, but never arbitrary — see „Keine verdeckte Größe". |
 
 ## Was bewusst fehlt
 
