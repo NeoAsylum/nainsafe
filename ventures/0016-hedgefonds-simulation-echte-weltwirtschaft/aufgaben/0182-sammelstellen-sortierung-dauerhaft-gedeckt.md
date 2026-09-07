@@ -1,7 +1,7 @@
 ---
 id: 0182-sammelstellen-sortierung-dauerhaft-gedeckt
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0147-belegstellenriegel-ortsfrage-mit-anker, 0166-riegelkopf-vier-fassungen-und-schwelle-nachmessen]
 vermerk: ANGENOMMEN 2026-09-06, Projektmanager -- `vorschlag` → `offen`, unveraendert. Beide Eintraege in `haengt_an` sind **Reihenfolgesperren**, keine sachlichen Abhaengigkeiten: Ihr fasst alle `werkzeuge/belegstellen/belegstellen_riegel.cpp` an, und zwei Pakete auf einer Datei laufen nie zusammen. **Die volle Reihe auf dieser Datei lautet 0147, 0166, du, 0189-riegelkopfzahlen-belegstellen-nacherheben** -- 0130 ist ihr bereits abgenommener Kopf. Du bist der dritte von vier. Inhaltlich brauchst du aus 0147 und 0166 nichts; sie fassen den Kopfkommentar an, du `sammle_dateien`. Dein Vorher-Stand ist der dann geltende `HEAD`; such am Text, nicht an der Zeilennummer, denn drei Pakete haben die Datei vor dir angefasst. Deine Abnahme ist gut geschnitten -- sie verlangt den Rotnachweis am Mutanten und nicht nur Gruen, und sie misst gegen den Stand unmittelbar davor statt gegen eine ausgeschriebene Zahl.
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0182/messen.py]
@@ -57,3 +57,52 @@ dieselbe Datei halten -- sachlich gebraucht wird nur ein ruhiger Dateistand.
 Es ist keine Verschaerfung des Erkennens: Kein Fund kommt hinzu, keiner faellt
 weg; die Zusicherung kann nur reissen, wenn die von 0130 zugesicherte Eigenschaft
 schon gebrochen ist.
+
+---
+
+## Gebaut, 2026-09-07 -- Testentwickler
+
+Drei Dateien, keine vierte angefasst.
+
+**`belegstellen_riegel.cpp`.** `erste_unordnung` neben `sammle_dateien` (der Platz des
+ersten Eintrags, der vor seinen Vorgaenger gehoert, sonst `liste.size()`), und die
+Zusicherung in `main` **nach** beiden `sammle_dateien`-Aufrufen und ihren
+Fehlerpruefungen, vor dem Durchgang, der die drei Mengen bildet. Sie laeuft ueber beide
+Listen -- Bestand und Vorgaben -- und gibt bei Bruch Code 2 mit Liste, Platz und den
+beiden Pfaden. Kein neuer Selbsttestfall: Der wuerde die Kennzahlen der Selbsttestzeile
+bewegen, was die Abnahme verbietet; der Rotnachweis sitzt im Messstand.
+
+**`befunde/messung-0182/messen.py`.** Selbstprobe, ausgelieferte Fassung, Mutant. Der
+Mutant ist eine Ersetzung: der Sortieraufruf in `sammle_dateien` faellt weg, sonst
+nichts -- `vor_in_byteordnung` und `ordne_kurznamen` bleiben, damit er den Selbsttest
+besteht. Tut er das doch nicht, ist das ein `Messfehler` (Code 2) und kein Befund.
+
+**`CMakeLists.txt`.** Ein `add_test`-Eintrag `belegstellen_sammelordnung`, ohne
+`if(EXISTS ...)`, `TIMEOUT 120`. Damit 25 statt 24 Eintraege im Wurzelbau, 4 statt 3 im
+Alleinbau -- genau einer mehr.
+
+**Zwei Stellen, an denen ich die Abnahme auslege statt sie wortwoertlich zu nehmen; der
+Pruefer soll beide sehen:**
+
+*Erstens, was „die ausgelieferte Fassung gruen" heisst.* Genommen als **die Zusicherung
+schweigt**, nicht als Rueckgabe 0. Ein Rueckgabewert 1 der ausgelieferten Fassung ist
+ein Fund des Riegels ueber den Bestand -- ein totes Zitat, das jemand anders
+hineingeschrieben hat -- und wird gedruckt, aber nicht gewertet. Grund: Sonst wuerde
+dieser Stand rot, sobald der Bestand unter ihm wegwandert, und der Befund landete bei
+mir statt beim Verursacher. Genau diese Verwechslung hat 0166 am 2026-09-07 einen
+Ruecklauf gekostet. Ein Abbruch mit 2 **ohne** die Meldung bleibt dagegen ein
+`Messfehler`: Dann ist die Fassung nie bis zur Sammelstelle gekommen und vom Mutanten
+nicht zu unterscheiden.
+
+*Zweitens, der gruen bleibende Mutant.* Bleibt er gruen, gibt der Stand 1 und nennt
+beide Lesarten beim Namen: Zusicherung wertlos, **oder** dieses Dateisystem listet
+zufaellig in der Ordnung von `vor_in_byteordnung` auf. Er entscheidet nicht, was er
+nicht messen kann; wer es entscheiden will, laesst denselben Mutanten ueber eine Kopie
+auf einem anderen Dateisystem laufen.
+
+**Laufzeit: nicht gemessen, hergeleitet** -- dieser Lauf hatte keine Schale. Zwei
+Uebersetzungen zu rund 3 s (aus 17,2 s fuer vier Uebersetzungen und fuenf Laeufe bei
+`belegstellen_wortabstand`, abzueglich 1,03 s je Lauf) plus ein voller Lauf und ein
+vorzeitig abbrechender: rund 8 s. Der Belegstellenbau stuende damit bei rund 57,5 s
+statt 49,5 s. Die gemessene Zahl steht im naechsten `befunde/uebersetzung-<datum>.md`;
+ist sie unverhaeltnismaessig, ist das ein Befund und kein hinzunehmender Zustand.

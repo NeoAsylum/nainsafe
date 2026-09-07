@@ -1328,6 +1328,29 @@ std::vector<fs::path> sammle_dateien(const fs::path& wurzel, Ortsmenge& ungelese
     return gefunden;
 }
 
+/// Sucht die erste Stelle, an der eine gesammelte Liste die Ordnung von
+/// `vor_in_byteordnung` verlaesst -- Paket 0182.
+///
+/// Rueckgabe: der Platz des ersten Eintrags, der vor seinen Vorgaenger gehoert, sonst
+/// `liste.size()`. Das ist `std::is_sorted_until` mit dem Vergleich oben, nur dass hier
+/// der Platz herauskommt statt ein Zeiger: Die Meldung soll die Stelle **benennen**
+/// koennen und nicht nur sagen, dass es eine gibt.
+///
+/// **Der Durchgang ist mit Absicht von Hand ausgeschrieben und nimmt nicht den Aufruf,
+/// der sortiert.** Zu bezeugen ist nicht, dass `std::sort` tut, was `std::sort` tut,
+/// sondern dass die Liste, die `main` in den Haenden haelt, geordnet ist -- gleich,
+/// welcher Weg sie dorthin gebracht hat.
+std::size_t erste_unordnung(const std::vector<fs::path>& liste) {
+    for (std::size_t i = 1; i < liste.size(); ++i) {
+        const std::string vorgaenger = liste[i - 1].string();
+        const std::string dieser = liste[i].string();
+        if (vor_in_byteordnung(dieser, vorgaenger)) {
+            return i;
+        }
+    }
+    return liste.size();
+}
+
 // ---------------------------------------------------------------------------
 // Der Selbsttest zur Ausgabeordnung -- Paket 0130
 // ---------------------------------------------------------------------------
@@ -4081,6 +4104,53 @@ int main(int argc, char** argv) {
         std::fprintf(stderr, "belegstellen_riegel: Lesefehler unter '%s': %s\n",
                      vorgaben.string().c_str(), lesefehler.message().c_str());
         return 2;
+    }
+
+    // -----------------------------------------------------------------------
+    // Die Zusicherung zur Ausgabeordnung -- Paket 0182
+    // -----------------------------------------------------------------------
+    //
+    // Paket 0130 hat die Ordnung des Berichts an eine Regel gebunden, damit zwei Laeufe
+    // auf verschiedenen Dateisystemen denselben Bericht geben. Die Tabelle
+    // ORDNUNGSFAELLE misst dabei `ordne_kurznamen`; die Sortierung der wirklich
+    // gesammelten Liste nimmt denselben Vergleich, aber einen eigenen Aufruf, den kein
+    // Fall des Selbsttests sieht. Ein Mutant, der genau jenen Aufruf wirkungslos macht,
+    // bestand am 2026-09-06 den vollstaendigen Selbsttest und den ganzen Lauf.
+    //
+    // Diese Zusicherung schliesst die Luecke, und sie steht mit Absicht **hier** und
+    // nicht neben dem Sortieraufruf: dort waere sie tautologisch und verschwaende bei
+    // einem Umbau zusammen mit ihm. Sie verschaerft das Erkennen nicht -- kein Fund
+    // kommt hinzu, keiner faellt weg; sie kann nur reissen, wenn die von Paket 0130
+    // zugesicherte Eigenschaft schon gebrochen ist. Dass sie reissen **kann**, misst der
+    // Messstand zu Paket 0182 bei jedem Bau an einem Mutanten nach, statt es zu
+    // behaupten.
+    struct Sammelstelle {
+        const char* woher;
+        const std::vector<fs::path>* liste;
+    };
+    const std::array<Sammelstelle, 2> sammelstellen = {
+        Sammelstelle{"Bestand", &gelesen},
+        Sammelstelle{"Vorgaben", &gelesen_vorgaben}};
+    for (std::size_t k = 0; k < sammelstellen.size(); ++k) {
+        const std::vector<fs::path>& liste = *sammelstellen[k].liste;
+        const std::size_t stelle = erste_unordnung(liste);
+        if (stelle < liste.size()) {
+            std::fprintf(
+                stderr,
+                "belegstellen_riegel: die gesammelte Liste '%s' ist nicht in der Ordnung "
+                "von\n`vor_in_byteordnung`. Zuerst an Platz %zu:\n"
+                "  Platz %zu: %s\n"
+                "  Platz %zu: %s\n"
+                "Das zweite gehoert vor das erste. Damit haengt die Ordnung des Berichts "
+                "wieder am\nDateisystem statt an einer Regel, und zwei Laeufe auf "
+                "verschiedenen Dateisystemen\ngaeben verschiedene Berichte. Der Riegel "
+                "hat den Bestand deshalb nicht geprueft:\nPaket 0130 sichert diese "
+                "Ordnung zu, Paket 0182 misst sie nach.\n",
+                sammelstellen[k].woher, stelle, stelle - 1,
+                liste[stelle - 1].string().c_str(), stelle,
+                liste[stelle].string().c_str());
+            return 2;
+        }
     }
 
     // Drei Mengen aus einem Durchgang. Welche wofuer, steht im Kopf.

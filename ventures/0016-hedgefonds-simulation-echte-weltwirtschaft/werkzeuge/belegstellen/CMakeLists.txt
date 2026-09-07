@@ -153,3 +153,51 @@ add_test(NAME belegstellen_wortabstand
 # denen `baulauf.py` den ganzen ctest-Aufruf abbricht. Wer die gemessene Zeit im ersten
 # Nachtlauf sieht, ersetzt sie durch ein Vielfaches davon.
 set_tests_properties(belegstellen_wortabstand PROPERTIES TIMEOUT 240)
+
+# ---------------------------------------------------------------------------
+# Die Sammelstellen-Sortierung -- Paket 0182
+#
+# `befunde/messung-0182/messen.py` faehrt den Rotnachweis zu der Zusicherung, die seit
+# Paket 0182 in `main` die gesammelte Dateiliste in der Ordnung von
+# `vor_in_byteordnung` haelt. Zwei Uebersetzungen: die ausgelieferte Fassung, die
+# schweigen muss, und ein Mutant ohne den Sortieraufruf an der Sammelstelle, der reissen
+# muss.
+#
+# **Warum ueberhaupt ein Mutant und nicht nur die Zusicherung:** Der Selbsttest des
+# Riegels prueft die Ausgabeordnung an `ordne_kurznamen`; den zweiten Sortieraufruf --
+# den ueber die wirklich gesammelten Dateien -- sieht keiner seiner Faelle. Genau
+# deshalb bestand ein Mutant ohne diesen Aufruf am 2026-09-06 den vollstaendigen
+# Selbsttest und den ganzen Lauf. Eine Zusicherung, von der niemand nachfaehrt, dass sie
+# reissen kann, waere derselbe gruene Bericht ueber nichts.
+#
+# Kein `if(EXISTS ...) add_test() endif()`, aus demselben Grund wie bei den beiden
+# Proben darueber: Diese Bauform laesst eine Probe verschwinden, sobald jemand die Datei
+# verschiebt, und meldet danach eine gruene Abnahme ueber einen Baum ohne sie.
+get_filename_component(FABRIK_MESSUNG_0182
+                       ${FABRIK_VORHABEN_WURZEL}/befunde/messung-0182/messen.py
+                       ABSOLUTE)
+
+if(NOT EXISTS ${FABRIK_MESSUNG_0182})
+  message(FATAL_ERROR
+          "Der Messstand zu Paket 0182 fehlt: ${FABRIK_MESSUNG_0182}\n"
+          "Er ist der einzige dauerhafte Nachweis, dass die Zusicherung zur "
+          "Sammelstellen-Sortierung in belegstellen_riegel.cpp reissen kann. Ohne ihn "
+          "ist sie eine Zeile, die noch nie etwas gefangen hat. Ist er absichtlich "
+          "umgezogen, gehoert der neue Pfad hierher -- nicht diese Bedingung entfernt.")
+endif()
+
+add_test(NAME belegstellen_sammelordnung
+         COMMAND ${FABRIK_BELEGSTELLEN_PYTHON} ${FABRIK_MESSUNG_0182}
+                 --vorhaben ${FABRIK_VORHABEN_WURZEL}
+                 --uebersetzer ${CMAKE_CXX_COMPILER})
+
+# 120 und nicht 900: dieselbe Rechnung wie bei den beiden Proben darueber. Die Zahl ist
+# **hergeleitet und nicht gemessen** -- der Lauf, der sie gesetzt hat, hatte keine
+# Schale. Herleitung aus dem Bericht vom 2026-09-07: `belegstellen_wortabstand`
+# uebersetzt vier verschiedene Fassungen, laesst fuenf laufen und steht bei 17,2 s;
+# `belegstellen_riegel` allein braucht 1,03 s fuer einen Lauf. Also rund 3 s je
+# Uebersetzung, und dieser Stand uebersetzt zwei und laesst zwei laufen, davon einen
+# vorzeitig abbrechenden -- rund 8 s. Die 120 sind das Fuenfzehnfache und liegen weit
+# unter den 900, nach denen `baulauf.py` den ganzen ctest-Aufruf abbricht. Wer die
+# gemessene Zeit im ersten Nachtlauf sieht, ersetzt sie durch ein Vielfaches davon.
+set_tests_properties(belegstellen_sammelordnung PROPERTIES TIMEOUT 120)
