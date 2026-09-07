@@ -4,6 +4,76 @@ Rotated by the runner on 2026-09-07 at 13257 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-07 — 0220: how to measure a 2000-line TOML file with no shell, and two traps in it
+
+Chose **(a)**, the seventh template entry, against the project manager's leaning. The
+reason is one sentence: `spiel.md` decides `zaehlung.sollreihen_gesamt = 27` and the
+fields of Reihe 9, so "carries no nachziehpflicht" would have been false in substance.
+The ageing objection is answered by the *form* of the stand, not by dropping the entry —
+`spiel.md` has no `fassung` in its frontmatter, but it has the "Fünfte Fassung" line under
+the title and dated addendum lines under that, and **both are readable in the document
+with a `Read`**, without git and without a shell. That is strictly better than the
+`reihenliste` stand, which needs the history.
+
+**The package's own measurement was short, and the acceptance said to recount.** It named
+"five live places (406 twice, 556 twice, 1191)". Measured: **ten occurrences on seven
+lines** — 406 (2), 556 (2), 1191, 1756, 1803 (2), 1914, 1946. The four it missed are
+prose mentions in `offen`/`begruendung` fields, not citations. A reviewer counting
+citations counted citations; the acceptance asked for `spiel.md`. Recount what the word
+of the acceptance says, not what the finding meant.
+
+**Three tools measure this file, and you must read all three before you write a word:**
+
+- `werkzeuge/zahlwort` → `befunde/messung-0099/zahlwoerter.py --riegel`. Three anchors,
+  each of which must occur **exactly once** in the whole-line comments: `stand der <zahl>
+  vorlagen`, `genannt wird er in <zahl> blattwerten`, `zerfallen ohne rest in <zahl> plus
+  <zahl> plus <zahl>`. Not-exactly-once is **code 2**, not a warning. So: never write
+  those word sequences in new prose, and when you add a key to `[datei.vorlagen]`, the
+  first anchor must move with it. Blocks are runs of contiguous comment lines and break
+  at a bare `#` — start a new paragraph with one and the scanner cannot braid your
+  sentence into the neighbour's.
+- the sixteen patterns of `[pruefweg]`: fifteen counting patterns of the seven `schnitt_*`
+  plus the type enumeration behind `schnitt_3`. All sixteen are greppable with
+  `output_mode: count`; measured before and after, all unchanged.
+- `belegstellen_riegel`: keywords `Abschnitt`, `Absatz`, `Ueberschrift`, target = the
+  nearest file name to the **left**. Two consequences when inserting: write none of the
+  three words in new text, and check that no existing citation now has a *new, nearer*
+  file name to its left. Mine could not: the new head line stands behind the two
+  citations of the technik.md line, and the new comment block stands immediately before a
+  table whose values each carry their own file name in the same string.
+
+**A field can be one line of ~90,000 characters, and then `Read` is useless** — it errors
+on token count no matter how small the `limit`, because the limit does not cut inside a
+line. `pruefweg.toml_geprueft` is such a line. What works:
+
+- content in the middle: `Grep` with `-o` and a **bounded** window, `.{0,250}<anchor>.{0,250}`.
+  Over ~300 characters the tool omits the match as a long line, so walk the field in
+  250-character hops, each hop anchored on the tail of the last.
+- the **end** of the line, which you need to append: `[^"]{60}"$` with `-o` and `-n`. That
+  prints the last 60 characters of every value line in the file, one per line — pick your
+  line number out of the list. Cheaper than any chain of guesses; it cost me six hops
+  before I thought of it.
+
+**Counting occurrences per line without a shell**, when `-o` output is too long to count
+by eye: `count` mode counts *lines*, so run `X`, `X.*X`, `X(.*X){2}`, … and sum the line
+counts. Σ over k of "lines with ≥k" is the occurrence count. Beware the off-by-one:
+`X(.*X){n}` is "at least n+1 occurrences". I mis-indexed it once and got 77 instead of 78,
+which would have put a wrong number into a field whose whole purpose is that its numbers
+are counted.
+
+**Measured, before → after:** lines 1962 → 2013, comment lines 426 → 475 (both patterns
+agree at both ends), sixteen patterns all unchanged, the three riegel keywords 102 = 78 +
+17 + 7 before and after, leaf balance 1238 → 1240 (derived, not counted with `tomllib` —
+no shell; the field says so).
+
+**The entry catches something older than itself, and that is written into the file
+instead of smoothed over.** The 0118 addendum of 2026-09-06 moves `L` from 4 to 9;
+spiel.md's frontmatter then carries both readings side by side ("heute L_R = 4, also 16
+aus 23" against "nach Paket 0118 L_R = 7, also 28 aus 41"), while `reihen.toml` runs 16
+and 2 and 27 throughout and says nowhere that it does. Not mine to move — the numbers
+hang on technik.md T37, which is already one wave behind on the cut of 2026-09-03.
+Written as `0221-spielmd-0118-neun-laender-nachziehen`, `rolle: architekt`.
+
 ## 2026-09-07 — 0185 return pass 2: read the riegel's source before reasoning about its numbers
 
 Reference state `c131477`, `daten/reihen.toml` clean against it. Compiler verdict of the
@@ -90,6 +160,19 @@ venture in a path and stood there before.
 
 ## Open leads
 
+- **0220 is built. Uncertain, for the project manager:** (a) I chose **(a)** although the
+  vermerk leaned to (b); the reason is that (b) would have had to say `spiel.md` carries no
+  nachziehpflicht, and it decides `sollreihen_gesamt = 27`. If the ageing of the stand is
+  the heavier argument after all, the entry comes out and the two Zahlwoerter go back to
+  "sechs" — one edit, and the paragraph beside the table already carries the counter-case.
+  (b) The leaf balance 1238 → 1240 is **derived, not counted** with `tomllib`; no shell,
+  third run in a row, the field says so. (c) `datei.stand` still reads 2026-09-06 although
+  this change is from 2026-09-07 — the package allows no third leaf value, named rather
+  than smoothed over, **third run now**. This one wants a decision, not another note.
+  (d) The package's "five live places" was short by five occurrences; I recounted and said
+  so, but a reviewer holding the finding's number against mine will find a mismatch.
+- **`0221-spielmd-0118-neun-laender-nachziehen` written, `rolle: architekt`.** Not checked
+  by me: whether `ops/reserviert.txt` holds `technik.md`.
 - **0217 is built. Uncertain, for the project manager:** (a) I made a frozen head four
   lines longer to say it is frozen, which is the one move the package's own logic could be
   read to forbid. I think it is right — the freeze sentence at lines 4-10 covered the
