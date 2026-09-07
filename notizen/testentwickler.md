@@ -14,6 +14,26 @@ every test timeout well under the runner's 900 s.
 
 ## What works
 
+- 2026-09-07 (0166, Beleglauf) — **The number I could not measure came back green, and the
+  cheap thing that made that legible was the return-code split.** `belegstellen_wortabstand`
+  stood at `5 Abweichung(en)` in the Rücklauf and reads `Passed 17.22 sec` today. Because
+  1 and 2 are separate, the green is a real statement: had a needle gone blunt after 0222
+  touched `belegstellen_riegel.cpp:39`, the stand would have said 2, and a 2 is not a green.
+  **The general rule: a stand whose failure modes are one code cannot be believed when it
+  passes.** The whole diagnosis of this Rücklauf — "the numbers were right, the corpus moved
+  under them" — was only checkable because the instrument could say which of the two it was.
+- 2026-09-07 (0166, Beleglauf) — **A standing red proof inside the program is worth more
+  than a red run in a report, because it re-proves itself nightly.** Teil 3 runs the same
+  comparison against the reverse-substituted pre-0166 head and counts a Befund if it finds
+  nothing. Return 0 therefore *contains* the red proof: I never had to run anything to show
+  the check can fail. Compare the Rücklauf's red — that was corpus drift, not a built proof,
+  and it is worth naming the difference rather than banking the accident as evidence.
+- 2026-09-07 (0166, Beleglauf) — **The nightly report prints no output for a passing test.**
+  So the riegel's base numbers (Zitate/aufgeloest/uebergangen) are unobtainable from a green
+  report — only a red one shows them. That is a second, independent reason the head carries
+  differences and not base numbers: even with the report in hand I could not have written a
+  base number without inventing it. Worth remembering before promising anyone a figure that
+  only exists inside a passing test's stdout.
 - 2026-09-07 (0166) — **A mutant that has to read the corpus is a different species from
   one that has to die at the self-test, and the factory has no name for the difference.**
   0147's nine mutants are correct when they abort with 2 before reading anything — the
@@ -84,6 +104,9 @@ every test timeout well under the runner's 900 s.
   answer "does my new comment text move the numbers" is one binary against two trees —
   and a test must not write into the tree it measures.
 
+- 2026-09-07 (0166, Beleglauf) — **Eighth run in a row with no shell** — but for the first
+  time that cost nothing, because the run's job was to read a measurement the runner had
+  already taken. **A Beleglauf is the shape of run a shell-less agent is actually good at.**
 - 2026-09-07 (0222) — **Seventh run in a row with no shell.** Nothing compiled, nothing
   run. Everything below rests on reading; the proof is the next
   `befunde/uebersetzung-<datum>.md`.
@@ -96,21 +119,18 @@ every test timeout well under the runner's 900 s.
 
 ## Open leads
 
-- 2026-09-07 (0166, **look at the next night report**) — The six differences in the head
-  are the one thing I could not measure. If `belegstellen_wortabstand` comes back **1**,
-  the report prints the measured differences beside the written ones and the fix is one
-  line each; that is a Rücklauf, not a redesign. If it comes back **2**, a needle went
-  blunt — most likely one of the two head blocks in `BLOCK1_NACHHER`/`BLOCK2_NACHHER`,
-  which I typed twice and could not diff.
+- ~~2026-09-07 (0166) — the six differences in the head, unmeasured.~~ **Closed
+  2026-09-07: `Passed 17.22 s` / `17.23 s`, both build paths.** Neither branch of the
+  guess was needed — not 1 (no difference wrong) and not 2 (no blunt needle, though 0222
+  moved `belegstellen_riegel.cpp:39` between the two runs). The two head blocks I typed
+  twice and could not diff were correct.
+- ~~2026-09-07 (0222) — does `belegstellen_riegel` come back with `Zitate == aufgeloest`?~~
+  **Closed 2026-09-07: `Test #17 belegstellen_riegel ... Passed 1.02 sec`.** No fifth
+  citation broke in §9–§11. The four sites were the whole set.
 - 2026-09-07 (0166) — **Are there other measurement stands whose mutants attack a shared
   building block that a later table now covers?** `messung-0180` is the known case;
   `messung-0106`, `-0115`, `-0129` are candidates. No proposal on a hunch — but whoever
   next touches one of them should run its needles before believing its numbers.
-- 2026-09-07 (0222, **look at the next night report**) — If `belegstellen_riegel` comes
-  back with `Zitate == aufgeloest`, the four sites are right and 0166 can be measured. If
-  it comes back with a gap of one, a section translated after 82fa870 (§9, §10 or §11)
-  carried a fifth citation I never saw — grep the corpus for `technik\.md` again, not for
-  keywords.
 - 2026-09-07 (0222) — **Fourth wave of the same breakage** (0200, 0214, this one). Each
   translated section can kill citations elsewhere, and each wave costs a package. The
   operator's decision on whether citation-nachzug belongs in the uebersetzer's own loop is
@@ -137,12 +157,20 @@ exactly, not from a run of mine. They rest on there being no other word-distance
 distance one to four in the corpus. If one has appeared since, the stand goes red and is
 right to.
 
-*Third, the runtime.* The `TIMEOUT 240` is derived, not measured: `belegstellen_messung`
-compiles eleven versions of the same source at 30.7 s (report of 2026-09-07), this one
-compiles six — `beide` reuses the "after" build, `abstand5` the `nur-abstand` one — so
-roughly 17 s — and it runs twice a night, because both build paths read
-this `CMakeLists.txt`. The measured figure belongs in the next report; whoever reads it
-first should replace the 240 with a multiple of it.
+*Third, the runtime.* ~~Derived, not measured.~~ **Measured 2026-09-07: 17,22 s / 17,23 s.**
+The estimate "roughly 17 s" was right to two significant figures, and the reasoning behind
+it — eleven versions at 30,7 s, mine compiles four distinct ones of the six — is therefore
+worth reusing for the next stand. I left the `TIMEOUT 240` alone at factor 14: a cap that
+tears on a load spike costs more than the wait it saves. Whoever wants it tighter now has
+the figure.
+
+**0166, Beleglauf 2026-09-07.** One thing, and it is a gap in what I can *show*, not a
+doubt about the result. The report prints no stdout for a passing test, so I cannot quote
+the riegel's base numbers from it — only that all three entries passed. Everything I claim
+about *why* the stand is green (Teil 3's red proof fired, the needles still hit) is
+inferred from the return code being 0 rather than 1 or 2, which is exactly what the
+three-way split was built for, but it is inference from one number and not a printed trace.
+If the reviewer wants the trace, it takes a deliberately red run.
 
 **0222.** Two things.
 
