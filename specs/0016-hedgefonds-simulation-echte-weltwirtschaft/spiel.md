@@ -1595,87 +1595,87 @@ bewusst fehlt*, and `daten.md` carries not a single price series.
 
 ## Die Gegenkraefte
 
-Fünf, jede wächst mit dem Erfolg, jede als Mechanismus und nicht als Absicht.
+Five, each grows with success, each as a mechanism and not as an intention.
 
-**1. Aufsicht.** Je Land ein Zähler, der jede Runde um einen Betrag steigt, der aus
-globaler Sichtbarkeit mal lokalem Fußabdruck (Einfluss mal Positionsanteil am Sektor)
-folgt — **nicht aus dem Vermögen allein**, sonst wäre er nur eine Vermögenssteuer. Drei
-Schwellen: Bei der ersten bewegt sich das Instrument „Finanzmarktregulierung" gegen den
-Fonds, unabhängig von dessen Lobbybudget und mit Vorrang davor. Bei der zweiten wird die
-Beteiligung zwangsverkauft, mit Abschlag. Bei der dritten gilt ein Marktverbot in diesem
-Land für mehrere Runden. Wächst mit dem Erfolg, weil Einfluss und Anteil genau das sind,
-was das Mandat verlangt.
+**1. Supervision.** Per country one counter that rises every round by an amount
+following from global visibility times local footprint (influence times position share
+in the sector) — **not from wealth alone**, or it would be nothing but a wealth tax.
+Three thresholds: at the first, the instrument „Finanzmarktregulierung" moves against
+the fund, independently of the fund's lobby budget and with precedence over it. At the
+second, the stake is force-sold, at a discount. At the third, a market ban holds in that
+country for several rounds. Grows with success, because influence and share are exactly
+what the mandate demands.
 
-**2. Politische Gegenreaktion über das Realeinkommen.** Jede durchgesetzte Lobbyaktion
-verschiebt Preise und damit Realeinkommen. Sinkt das Realeinkommen, sinkt die Zustimmung;
-unter einer Schwelle wechselt die Regierung, die neue setzt **alle** Instrumente in
-Richtung ihres historischen Mittels zurück und verdoppelt die Lobbykosten des Fonds für
-mehrere Runden. Wächst mit dem Erfolg, weil erfolgreiches Lobbying genau die Verschiebung
-erzeugt, die die Zustimmung senkt. Das ist die Wirkungskette der Idee, hier als Kreis
-geschlossen statt als Pfeil.
+**2. Political backlash via real income.** Every lobby action pushed through shifts
+prices and with them real income. If real income falls, approval falls; below a
+threshold the government changes, the new one resets **all** instruments toward their
+historical mean and doubles the fund's lobby costs for several rounds. Grows with
+success, because successful lobbying produces exactly the shift that lowers approval.
+That is the idea's chain of effect, closed here into a circle instead of an arrow.
 
-**3. Marktenge.** Der Fonds lebt von Anlegergeld, und Anleger vergleichen seine Rendite
-mit einer Marktrendite. Diese Marktrendite ist die **wertgewichtete Rendite aller im
-Modell handelbaren Körbe und Anleihen zu Modellmarktwerten** — gewichtet nach dem Markt,
-**nicht nach dem Bestand des Fonds**. Sie hat keinen eigenen Datenanker; ihr Startwert ist
-der Wert des Startkorbs zu Startpreisen, ihre Fortschreibung ist Modell (`technik.md`
-T33).
+**3. Market thinness.** The fund lives on investor money, and investors compare its
+return with a market return. That market return is the **value-weighted return of all
+baskets and bonds tradable in the model, at model market values** — weighted by the
+market, **not by the fund's holdings**. It has no data anchor of its own; its start
+value is the value of the start basket at start prices, its continuation is model
+(`technik.md` T33).
 
-Die Kraft dieser Gegenkraft liegt **im Preisstoß, nicht in der Definition des
-Vergleichsmaßstabs**: Je größer der Fondsanteil an einem Markt, desto stärker bewegt jeder
-Ein- und Ausstieg den Preis gegen ihn, desto teurer wird jede Umschichtung. Bleibt die
-Überrendite drei Runden unter null, zieht ein fester Anteil der Anleger ab, was Verkäufe
-in einen Markt erzwingt, den der Fonds selbst bewegt.
+The power of this counterforce lies **in the price shock, not in the definition of the
+benchmark**: the larger the fund's share of a market, the more strongly every entry and
+exit moves the price against it, the more expensive every reallocation becomes. If the
+excess return stays below zero for three rounds, a fixed share of investors withdraws,
+forcing sales into a market the fund itself moves.
 
-**Und der Ausweg gehört dazu, sonst wäre es keine Gegenkraft, sondern ein Todesurteil auf
-Größe:** Der Fonds schlägt einen breiten Markt durch **Konzentration und Ursache** —
-Beteiligung und Lobbying heben den Wert *seiner* Körbe stärker als den Marktdurchschnitt.
-Wer nur breit mitläuft, verliert gegen die eigene Kostenschwelle; wer die Fundamentaldaten
-seiner Position verschiebt, gewinnt auch groß. Genau das ist die Verbindung zwischen den
-beiden Hälften des Mandats.
+**And the way out belongs to it, or this would be no counterforce but a death sentence
+on size:** the fund beats a broad market through **concentration and causation** — stake
+and lobbying raise the value of *its* baskets more than the market average. Whoever
+merely runs along broadly loses against their own cost threshold; whoever shifts the
+fundamentals of their position also wins big. Exactly that is the link between the two
+halves of the mandate.
 
-**4. Nachahmer.** Für jede Position, die über mehrere Runden Überrendite bringt, steigt
-ein Nachahmerzähler auf diesem Land×Sektor. Nachahmerkapital tritt als Gegenposition auf,
-hebt den Einstiegspreis und senkt die künftige Rendite derselben Position. Damit ist jede
-funktionierende Strategie **selbstverbrauchend**. Das ist nicht Balance, das ist die Regel,
-die Maß 3 erzwingt: Was im ersten Drittel optimal war, ist im letzten abgegrast.
+**4. Imitators.** For every position that yields excess return over several rounds, an
+imitator counter rises on that country×sector. Imitator capital enters as a
+counter-position, raises the entry price and lowers the future return of the same
+position. Every working strategy is thereby **self-consuming**. That is not balance,
+that is the rule Maß 3 enforces: what was optimal in the first third is grazed bare in
+the last.
 
-**5. Gegenlobby.** Einfluss ist relativ zur Summe allen Lobbydrucks auf ein Instrument.
-Wer etwas durchsetzt, schädigt einen anderen Sektor — und dessen Gegenbudget wächst um
-`gegenlobby_satz` Lobbypunkte je 10.000 Tausend USD erlittenen Schadens. Je stärker man in
-eine Richtung verschiebt, desto teurer wird der nächste Schritt in dieselbe Richtung. Die
-Rückkopplung, die im Genre nach
-oben läuft, läuft hier gegen sich selbst. **Welche Zahl dieser Schaden ist, steht im
-nächsten Abschnitt.** Bis zum 2026-09-02 stand hier nur das Adjektiv, und ein Gegenbudget,
-das „proportional zu" etwas wächst, ohne dass die Größe benannt wäre, ist keine Gegenkraft,
-sondern eine Absicht — genau die Sorte Satz, gegen die der Kopf dieses Abschnitts sich
-richtet.
+**5. Counter-lobby.** Influence is relative to the sum of all lobby pressure on an
+instrument. Whoever pushes something through damages another sector — and that sector's
+counter-budget grows by `gegenlobby_satz` lobby points per 10.000 thousand USD of damage
+suffered. The more strongly one shifts in a direction, the more expensive the next step
+in the same direction becomes. The feedback that runs upward in the genre runs against
+itself here. **Which number this damage is stands in the next section.** Until
+2026-09-02 only the adjective stood here, and a counter-budget that grows „proportional
+zu" something, without the quantity being named, is not a counterforce but an intention
+— exactly the kind of sentence the head of this section stands against.
 
 ### Der Schaden in Gegenkraft 5, als Rechenvorschrift
 
-`technik.md` T50 hat die **Einheit** des Schadens festgelegt — volkswirtschaftlich, Tausend
-USD, Skalenklasse 2, Übergang in Lobbypunkte über
-`lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz, 10.000)` — und die **Höhe**
-ausdrücklich hierher zurückgegeben, mit der richtigen Begründung: Füllte der Architekt die
-Lücke, misst Maß 2 seine Wahl. Sie ist hier gefüllt.
+`technik.md` T50 fixed the **unit** of the damage — economy-wide, thousand USD, scale
+class 2, transition into lobby points via
+`lobbypunkte_aus_schaden(tsd) = mal_geteilt(tsd, gegenlobby_satz, 10.000)` — and expressly
+handed the **magnitude** back here, with the right reasoning: had the architect filled the
+gap, Maß 2 would be measuring the architect's choice. It is filled here.
 
 #### Die eine Regel
 
-> **Der Schaden eines Instruments ist die Verschiebung des Preises, den es setzt, mal der
-> Menge, auf die dieser Preis wirkt — beides an der Rundengrenze gemessen.**
+> **The damage of an instrument is the shift of the price it sets, times the quantity
+> that price acts on — both measured at the round boundary.**
 
-Vier Instrumente, vier Preise, vier Mengen, eine Rechenform. **„Der Preis, den es setzt" ist
-beim Zoll der Keil und nicht der Sektorpreis** — der Sektorpreis entsteht aus Weltpreis,
-Keil und Preisträgheit, und nur der Keil hat das Instrument als Ursache. Seit dem 2026-09-03
-misst die Zollzeile deshalb ihn; die Begründung steht zwei Abschnitte weiter unten.
+Four instruments, four prices, four quantities, one computational form. **„The price it
+sets" is, for the tariff, the wedge and not the sector price** — the sector price arises
+from world price, wedge and price inertia, and only the wedge has the instrument as its
+cause. Since 2026-09-03 the tariff row therefore measures the wedge; the reasoning
+stands two sections further down.
 
-Für jedes der vier Länder `l` und jedes seiner vier Instrumente `i`:
+For each of the four countries `l` and each of its four instruments `i`:
 
 ```
 schaden(l, i) = mal_geteilt( menge(l, i), verschiebung(l, i), 10.000 )      [Klasse 2]
 ```
 
-Die Bausteine, alle aus dem Zustand und dem Jahrgang, keiner eine neue Adresse:
+The building blocks, all from the state and the vintage, none of them a new address:
 
 ```
 hub(l, i)           = | lies_neu(land.<l>.instrument.<i>.stand)
@@ -1692,45 +1692,45 @@ bip(l)              = Σ über die drei Sektoren  lies_neu(land.<l>.sektor.<s>.w
 schuld(l)           = mal_geteilt( bip(l), lies_neu(land.<l>.staatsschuld), 10.000 )
 ```
 
-`bip` und `schuld` sind die Nummern 9 und 10 aus `technik.md` T48, unverändert übernommen.
-`handelsvolumen(l, s)` ist die sektorweise Fassung der Nummer 11; ihre Summe über die beiden
-handelbaren Sektoren ist die alte Größe. Keiner dieser Namen ist eine Zustandsadresse — es
-sind Funktionen des Zustands, dieselbe Bauart wie `korbwert` im Abschnitt *Was ein Korb wert
-ist*. `durchgriff(l, s)` ist keine Zustandsgröße, sondern eine der vierzehn
-**Jahrgangskonstanten** (`technik.md` T23 Punkt 5), über die Partie fest.
+`bip` and `schuld` are numbers 9 and 10 from `technik.md` T48, taken over unchanged.
+`handelsvolumen(l, s)` is the sector-wise version of number 11; its sum over the two
+tradable sectors is the old quantity. None of these names is a state address — they are
+functions of the state, the same construction as `korbwert` in the section *What a basket
+is worth*. `durchgriff(l, s)` is not a state quantity but one of the fourteen
+**vintage constants** (`technik.md` T23 point 5), fixed over the game.
 
-**`keilhub` und `preishub_zoll` sind seit dem 2026-09-03 neu und ersetzen `preishub`.** Die
-Vorfassung las die volle Verschiebung des Sektorpreises; warum das die falsche Größe war und
-warum diese die richtige ist, steht unter *Warum die Zollzeile nur den Keil misst*.
+**`keilhub` and `preishub_zoll` are new since 2026-09-03 and replace `preishub`.** The
+previous version read the full shift of the sector price; why that was the wrong quantity
+and why this one is right stands under *Warum die Zollzeile nur den Keil misst*.
 
-Damit die vier Zeilen:
+Thus the four rows:
 
-| Instrument | `verschiebung(l, i)` | Klasse | `menge(l, i)` | `schaden(l, i)` |
+| Instrument | `verschiebung(l, i)` | Class | `menge(l, i)` | `schaden(l, i)` |
 |---|---|---:|---|---|
-| `zoll` | `preishub_zoll(l, s)`, je handelbarem Sektor einzeln | 5 | `handelsvolumen(l, s)` | `Σ` über s ∈ {1, 2}: `mal_geteilt(handelsvolumen(l,s), preishub_zoll(l,s), 10.000)` |
+| `zoll` | `preishub_zoll(l, s)`, per tradable sector separately | 5 | `handelsvolumen(l, s)` | `Σ` over s ∈ {1, 2}: `mal_geteilt(handelsvolumen(l,s), preishub_zoll(l,s), 10.000)` |
 | `leitzins` | `hub(l, leitzins)` | 3 | `schuld(l)` | `mal_geteilt(schuld(l), hub(l,leitzins), 10.000)` |
 | `haushalt` | `hub(l, haushalt)` | 3 | `bip(l)` | `mal_geteilt(bip(l), hub(l,haushalt), 10.000)` |
 | `regulierung` | `hub(l, regulierung) · regulierung_last` | 10 × 3 | `bip(l)` | `mal_geteilt(bip(l), hub(l,regulierung) · regulierung_last, 10.000)` |
 
-Der dritte Sektor trägt in der Zollzeile null, weil er weder eine Handelszeile noch einen
-Weltpreis hat und nach T28 `durchgriff = 0` trägt — drei Gründe, von denen jeder einzeln
-genügt; ob man über zwei oder über drei Sektoren summiert, ändert die Zahl nicht.
-`welt.preis.<s>` gibt es ohnehin nur für s ∈ {1, 2}.
+The third sector contributes zero in the tariff row because it has neither a trade row
+nor a world price and carries `durchgriff = 0` per T28 — three reasons, each sufficient
+on its own; whether one sums over two or over three sectors does not change the number.
+`welt.preis.<s>` exists only for s ∈ {1, 2} anyway.
 
 #### Warum die Zollzeile nur den Keil misst
 
-**Die Entscheidung, in einem Satz:** Von der Verschiebung des Sektorpreises zählt als
-Schaden **allein der Teil, den der Zollschritt verursacht hat** — der Rest ist Konjunktur
-und gehört nicht in eine Gegenkraft.
+**The decision, in one sentence:** of the shift of the sector price, **only the part the
+tariff step caused** counts as damage — the rest is business cycle and does not belong
+in a counterforce.
 
-Bis zum 2026-09-03 stand hier die volle Verschiebung, und das war falsch. Der Nachweis ist
-zwei Zeilen lang und stammt aus der Preisbildungsregel oben:
+Until 2026-09-03 the full shift stood here, and that was wrong. The proof is two lines
+long and comes from the price-formation rule above:
 
 ```
 preis_neu − preis_alt = durchgriff/10.000 · ( weltpreis_mit_zoll_neu − preis_alt )
 ```
 
-Der Klammerausdruck zerfällt in zwei Summanden, und nur der erste hat einen Verursacher:
+The bracketed expression splits into two summands, and only the first has a causer:
 
 ```
 weltpreis_mit_zoll_neu − preis_alt
@@ -1738,159 +1738,158 @@ weltpreis_mit_zoll_neu − preis_alt
     + ( welt.preis_neu · (10.000 + zoll_alt)/10.000 − preis_alt )   ← der Sockel
 ```
 
-Der zweite Summand ist genau die Verschiebung, die eingetreten wäre, **wenn der Zollstand
-sich nicht bewegt hätte**. Er ist nach der Preisträgheitsregel oben („der Inlandspreis
-folgt dem Weltpreis mit einem Jahr Verzögerung") von Bauart wegen von null verschieden,
-in jeder Runde, ohne jede Aktion.
+The second summand is exactly the shift that would have occurred **had the tariff level
+not moved**. By the price-inertia rule above („domestic price follows the world price
+with a one-year lag") it is nonzero by construction, in every round, without any action.
 
-**Die alte Größe war der Betrag der Summe, die neue ist der Betrag des ersten Summanden**,
-beide mal `durchgriff/10.000`. Der Unterschied ist also nicht eine Dämpfung, sondern eine
-Streichung: Was wegfällt, ist der Summand ohne Verursacher, und was bleibt, bleibt
-unverändert.
+**The old quantity was the absolute value of the sum, the new one is the absolute value
+of the first summand**, both times `durchgriff/10.000`. The difference is therefore not
+a damping but a deletion: what falls away is the summand without a causer, and what
+stays, stays unchanged.
 
-**Was der Sockel wirklich ist: die Inflation, mal dem Handelsvolumen.** `handelsvolumen`
-steht nach T5 Klasse 2 zu konstanten Preisen, `preishub` war ein Nominalindex — ihr Produkt
-ist die nominale Aufwertung des Handelsstroms und damit im Kern die jährliche
-Sektorpreissteigerung des Landes. Die Zollzeile hat vor dieser Änderung die **Inflation
-gemessen** und sie als Lobbyschaden gebucht.
+**What the base term really is: inflation, times the trade volume.** `handelsvolumen`
+stands per T5 in class 2 at constant prices, `preishub` was a nominal index — their
+product is the nominal appreciation of the trade flow and thus, at its core, the
+country's annual sector-price increase. Before this change, the tariff row **measured
+inflation** and booked it as lobby damage.
 
-**Drei Gründe, und der erste allein genügt.**
+**Three reasons, and the first alone suffices.**
 
-1. **Er trifft Maß 2 an seiner empfindlichsten Stelle, und keine Kalibrierung holt ihn
-   zurück.** Die Familie Lobby ist die einzige der drei, deren Gegenkraft ausschließlich
-   Gegenkraft 5 ist. Ein Sockel, der ohne Aktion entsteht, ist für jedes Profil derselbe
-   und für kein Profil vermeidbar — er zieht die Grundlinie unter genau einer der drei
-   Klassen weg. `gegenlobby_satz` hilft nicht, weil er Sockel und Aktionsantwort gemeinsam
-   skaliert; wer den Sockel halbiert, halbiert die Antwort mit. Und Einfluss ist der
-   **Anteil** des Fonds am gesamten Lobbydruck, also verschiebt ein exogen gespeister
-   Gegendruck diesen Anteil dauerhaft. Die Abnahme von Maß 2 lautet
-   `max(Ek) ≤ 1,25 × min(Ek)` über die drei Klassen; ein Handicap, das genau eine Klasse
-   trägt und über die Partie mit dem Preisniveau wächst, ist die naheliegendste Art, sie zu
-   reißen — und sie fiele nicht an einer Zahl, sondern an der Bauart.
-2. **Er steht gegen die eigene Begründung dieses Abschnitts.** Der Wertschöpfungsverlust ist
-   unten mit dem Satz verworfen: *„Er ist Konjunktur, nicht Reaktion … ohne dass eine einzige
-   Lobbyaktion stattgefunden hätte."* Dieselbe Eigenschaft hatte die Zollzeile, und dort war
-   sie nicht die Ausnahme, sondern die Regel. Zwei Größen mit derselben Eigenschaft
-   verschieden zu behandeln ist kein Entwurf, sondern ein Versehen.
-3. **Er macht den Rückschlag unerklärbar, und das ist die erste der drei Klagen.** Schritt 1
-   zeigt die Kette der Vorrunde. Unter der alten Regel las sie sich: *Gegendruck auf dem
-   deutschen Zollinstrument +6.570, Ursache: Schaden 32.850.000 Tsd USD, Ursache: der
-   Sektorpreis hat sich bewegt* — und dahinter steht keine Aktion, sondern der Weltmarkt.
-   Genau das meint „the consequences of choices often feel intangible": nicht, dass zu wenig
-   passiert, sondern dass das, was passiert, nicht am Spieler hängt. Der Entwurf verspricht
-   im Titel, dass jede Zahl sagt, warum sie sich bewegt. Der Sockel konnte das nicht.
+1. **It hits Maß 2 at its most sensitive spot, and no calibration brings it back.** The
+   family Lobby is the only one of the three whose counterforce is exclusively
+   counterforce 5. A base term that arises without action is the same for every profile
+   and avoidable for none — it pulls the baseline out from under exactly one of the
+   three classes. `gegenlobby_satz` does not help, because it scales base term and
+   action response together; whoever halves the base term halves the response with it.
+   And influence is the fund's **share** of total lobby pressure, so an exogenously fed
+   counter-pressure shifts that share permanently. The acceptance of Maß 2 reads
+   `max(Ek) ≤ 1,25 × min(Ek)` over the three classes; a handicap that exactly one class
+   carries and that grows with the price level over the game is the most obvious way to
+   tear it — and it would fail not on a number but on the construction.
+2. **It stands against this section's own reasoning.** The value-added loss is rejected
+   below with the sentence: *„It is business cycle, not reaction … without a single
+   lobby action having taken place."* The tariff row had the same property, and there it
+   was not the exception but the rule. Treating two quantities with the same property
+   differently is not design but an oversight.
+3. **It makes the setback inexplicable, and that is the first of the three complaints.**
+   Step 1 shows the previous round's chain. Under the old rule it read: *counter-pressure
+   on the German tariff instrument +6.570, cause: damage 32.850.000 Tsd USD, cause: the
+   sector price moved* — and behind that stands no action but the world market. Exactly
+   that is what "the consequences of choices often feel intangible" means: not that too
+   little happens, but that what happens does not hang on the player. The design
+   promises in its title that every number says why it moves. The base term could not.
 
-**Und der Nebeneffekt ist der zweite Beleg dafür, dass die alte Größe die falsche war.**
-`technik.md` T8 basiert bei Hyperinflation die drei Sektorpreise eines Landes neu (Division
-durch 1.000), `welt.preis.<s>` dagegen nicht — es hängt an keinem Gebiet. Eine Differenz
-`preis_neu − preis_alt` über eine solche Neubasierung hinweg ist nicht die Preisverschiebung,
-sondern der Basiswechsel; sie hätte den Gegendruck des betroffenen Landes still auf
-`druck_max` gelegt. Dass eine Differenz das braucht, weiß der Architekt bereits: T42 rechnet
-für den Rückvergleich genau diese Korrektur heraus. Die Schadensvorschrift hatte sie nicht.
-Im Prüfjahrgang 2001 tritt der Fall nie ein — in den Spieljahrgängen vor 2001, die dieser
-Entwurf ausdrücklich erhält, schon. **Die neue Fassung differenziert nur den Zollstand
-(Klasse 3, wird nie neu basiert) und liest den Weltpreis als Niveau; T8 kann sie nicht
-treffen.**
+**And the side effect is the second piece of evidence that the old quantity was the
+wrong one.** `technik.md` T8 rebases a country's three sector prices under hyperinflation
+(division by 1.000), but `welt.preis.<s>` not — it hangs on no territory. A difference
+`preis_neu − preis_alt` across such a rebasing is not the price shift but the base
+change; it would have silently pushed the affected country's counter-pressure to
+`druck_max`. That a difference needs this, the architect already knows: T42 computes
+exactly this correction out for the backtest. The damage rule did not have it. In the
+check vintage 2001 the case never occurs — in the play vintages before 2001, which this
+design expressly retains, it does. **The new version differences only the tariff level
+(class 3, never rebased) and reads the world price as a level; T8 cannot hit it.**
 
 #### Die beiden anderen Wege, und warum sie es nicht sind
 
-**Weg 2 — `hub(l, zoll)` lesen wie die drei anderen Zeilen.** Er ist billiger und löst den
-Sockel ebenfalls. Er scheitert an zwei Stellen.
+**Way 2 — read `hub(l, zoll)` like the three other rows.** It is cheaper and also
+removes the base term. It fails in two places.
 
-Erstens macht er die Zeile blind für die Sektorwirkung. `schaden(l, zoll)` wäre dann
-`mal_geteilt(handelsvolumen(l), hub(l,zoll), 10.000)` und hinge nur noch am Land. Der
-Entwurf begründet aber im Abschnitt *Was für die Preisbildung gelten muss* die Ordnung, die
-`durchgriff` herstellt: *„ein Zoll trifft Chinas Industrie über ihren hohen `durchgriff` hart und die
-US-Industrie, in der Bau und Versorger dominieren, schwach"*. Unter Weg 2 trifft er beide je
-Einheit Handelsvolumen gleich hart. Das ist derselbe Selbstwiderspruch wie unter 2 oben, nur
-in die andere Richtung.
+First, it makes the row blind to the sector effect. `schaden(l, zoll)` would then be
+`mal_geteilt(handelsvolumen(l), hub(l,zoll), 10.000)` and would hang on the country
+alone. But in the section *What must hold for price formation* the design justifies the
+ordering `durchgriff` establishes: *„a tariff hits China's industry hard via its high
+`durchgriff` and the US industry, dominated by construction and utilities, weakly"*.
+Under way 2 it hits both equally hard per unit of trade volume. That is the same
+self-contradiction as under 2 above, only in the other direction.
 
-Zweitens verwechselt er eine Rate mit einem Preis. Ein Zollsatz ist kein Preis, sondern ein
-Keil; was der Käufer zahlt, ist der Sektorpreis. Der Leitzins dagegen **ist** der Preis des
-Geldes, der Haushaltssaldo **ist** der Anteil am Ausstoß, und die Regulierungsstufe wird mit
-ihrem Lastsatz zu einem solchen Anteil. Diese Unterscheidung stand schon in der Fassung vom
-2026-09-02 und gilt unverändert — sie ist der Grund, warum die Zollzeile den Zollstand
-**umrechnet** statt ihn einzusetzen. Genau das leistet `keilhub`: Er übersetzt eine Rate in
-Basispunkten am Weltpreisniveau in eine Verschiebung in Indexpunkten, und erst `durchgriff`
-lässt davon durch, was im Inland ankommt.
+Second, it confuses a rate with a price. A tariff rate is not a price but a wedge; what
+the buyer pays is the sector price. The policy rate, by contrast, **is** the price of
+money, the fiscal balance **is** the share of output, and the regulation step becomes
+such a share via its load rate. This distinction already stood in the version of
+2026-09-02 and holds unchanged — it is the reason the tariff row **converts** the tariff
+level instead of inserting it. Exactly that is what `keilhub` does: it translates a rate
+in basis points at the world-price level into a shift in index points, and only
+`durchgriff` lets through what arrives domestically.
 
-**Weg 3 — den Sockel behalten und hinschreiben.** Er fällt an Grund 1: Ein hingeschriebener
-Konstruktionsfehler bleibt einer. Der Sockel ist nichts, was die Kalibrierung noch drehen
-könnte, und er wäre auch für Maß 3 schädlich, nicht nur folgenlos: Er wächst mit dem
-nominalen Preisniveau über die Partie, verteuert die Familie Lobby also im letzten
-Partiedrittel systematisch — eine Verschiebung des Optimums, die **auch bei abgeschaltetem
-Fonds** entstünde. Maß 3 hätte seine Schwelle dann mit einer Drift der Welt erreicht statt
-mit einer Eigenschaft des Spiels. Ein Maß, das sich so bedienen lässt, misst nicht mehr.
+**Way 3 — keep the base term and write it down.** It fails on reason 1: a written-down
+construction error remains one. The base term is nothing calibration could still turn,
+and it would also be harmful for Maß 3, not merely inconsequential: it grows with the
+nominal price level over the game, so it systematically makes the family Lobby more
+expensive in the last third of the game — a shift of the optimum that would arise **even
+with the fund switched off**. Maß 3 would then have reached its threshold with a drift
+of the world instead of a property of the game. A measure that can be worked like that
+no longer measures.
 
 #### Was die Entscheidung kostet, und was sie nicht kostet
 
-**Sie kostet nicht:** eine neue Zustandsadresse (`welt.preis.1` und `welt.preis.2` sind die
-Nummern 239 und 240 in `daten/adressen.md`), eine neue Reihe, einen vierten Skalenübergang,
-einen neunten Kanal oder eine zweite Markträumung. Und sie kostet **nichts an Signal**: Der
-Aktionsanteil des Schadens ist derselbe wie vorher, nur der Sockel fällt weg. Die Zerlegung
-oben ist algebraisch exakt und nicht ungefähr; verschieden sind allein die Rundungswege —
-die alte Zeile rundete einmal in den gespeicherten Sektorpreis und einmal in den Schaden,
-die neue zweimal zwischen Weltpreis und Schaden. Ein Unterschied um wenige Indexpunkte, kein
-Unterschied in der Größenordnung.
+**It does not cost:** a new state address (`welt.preis.1` and `welt.preis.2` are numbers
+239 and 240 in `daten/adressen.md`), a new series, a fourth scale transition, a ninth
+channel or a second market clearing. And it costs **nothing in signal**: the action
+share of the damage is the same as before, only the base term falls away. The
+decomposition above is algebraically exact, not approximate; only the rounding paths
+differ — the old row rounded once into the stored sector price and once into the damage,
+the new one twice between world price and damage. A difference of a few index points, no
+difference in order of magnitude.
 
-**Sie kostet:** den Schaden, den ein *fremder* Zoll im Inland anrichtet. Ein deutscher
-Industriesektor, den ein amerikanischer Zollschritt über den Weltpreis trifft, erzeugt in
-Deutschland keinen Gegendruck mehr, weil `hub(DE, zoll)` null ist. Das steht unter *Was
-bewusst fehlt*, und der Kanal ist nicht durchtrennt, sondern umgeleitet: Der fremde
-Zollschritt hebt den deutschen Sektorpreis, senkt das Realeinkommen, senkt die Zustimmung
-und löst über Gegenkraft 2 einen Regierungswechsel aus, der **alle vier** deutschen
-Instrumente zurückstellt und damit über `hub` Schaden erzeugt. Das ist schwellengesteuert
-statt stetig, und der Unterschied gehört benannt — aber es ist derselbe Weg, den der Entwurf
-für Preiswirkungen ohnehin vorsieht.
+**It costs:** the damage a *foreign* tariff does domestically. A German industrial
+sector hit by an American tariff step via the world price no longer generates
+counter-pressure in Germany, because `hub(DE, zoll)` is zero. That stands under *Was
+bewusst fehlt*, and the channel is not severed but rerouted: the foreign tariff step
+raises the German sector price, lowers real income, lowers approval and, via
+counterforce 2, triggers a change of government that resets **all four** German
+instruments and thereby generates damage via `hub`. That is threshold-driven instead of
+continuous, and the difference deserves naming — but it is the same path the design
+provides for price effects anyway.
 
-**Eine Bedingung, die daraus folgt und die der Jahrgangsbau prüfen muss.** `preishub_zoll`
-entsteht aus zwei Rundungen. Ist der kleinstmögliche Zollschritt zu klein, rundet die Zeile
-für ein Land×Sektor-Paar auf null, und die Gegenkraft ist dort **stumm, ohne es zu sagen**.
-Was gelten muss, als Form und ohne Zahl:
+**One condition that follows from this and that the vintage build must check.**
+`preishub_zoll` arises from two roundings. If the smallest possible tariff step is too
+small, the row rounds to zero for a country×sector pair, and the counterforce is **mute
+there without saying so**. What must hold, as a form and without a number:
 
 ```
 mal_geteilt( mal_geteilt(welt.preis_start(s), schrittweite[zoll], 10.000),
              durchgriff(l, s), 10.000 )  ≥  1     für jedes Land×Sektor des Jahrgangs
 ```
 
-Der Wert von `schrittweite[zoll]`, der das erfüllt, ist Kalibrierung und steht nicht hier;
-dass die Bedingung geprüft wird, ist Entwurf und steht hier.
+The value of `schrittweite[zoll]` that satisfies this is calibration and does not stand
+here; that the condition is checked is design and stands here.
 
 #### Zwei Zustände, zwei Zahlen
 
-Dieselbe Probe wie in Paket 0021, jetzt an der Zeile, die dort keine hatte. Beide Zustände
-unterscheiden sich in **genau einer** Größe, dem Zollstand.
+The same probe as in package 0021, now on the row that had none there. The two states
+differ in **exactly one** quantity, the tariff level.
 
-| Größe | Zustand A (ein Zollschritt) | Zustand B (keine Aktion) |
+| Quantity | State A (one tariff step) | State B (no action) |
 |---|---:|---:|
-| `handelsvolumen(DE,1)` / `(DE,2)` (Tsd USD) | 40.000.000 / 100.000.000 | dieselben |
-| `durchgriff(DE,1)` / `(DE,2)` (Jahrgang) | 7.288 / 5.464 | dieselben |
-| `lies_neu(welt.preis.1)` / `(welt.preis.2)` | 11.000 / 10.400 | dieselben |
+| `handelsvolumen(DE,1)` / `(DE,2)` (Tsd USD) | 40.000.000 / 100.000.000 | the same |
+| `durchgriff(DE,1)` / `(DE,2)` (vintage) | 7.288 / 5.464 | the same |
+| `lies_neu(welt.preis.1)` / `(welt.preis.2)` | 11.000 / 10.400 | the same |
 | `…instrument.zoll.stand`, `lies_alt` → `lies_neu` | 380 → 430 bp | 380 → 380 bp |
-| `lies_alt(…sektor.1.preis)` / `(…sektor.2.preis)` — nur die Vorfassung liest ihn | 10.000 / 10.000 | dieselben |
+| `lies_alt(…sektor.1.preis)` / `(…sektor.2.preis)` — only the previous version reads it | 10.000 / 10.000 | the same |
 | `hub(DE, zoll)` | 50 | **0** |
 | `keilhub(DE,1)` / `(DE,2)` | 55 / 52 | 0 / 0 |
 | `preishub_zoll(DE,1)` / `(DE,2)` | 40 / 28 | 0 / 0 |
-| Beitrag Sektor 1 / Sektor 2 | 160.000 / 280.000 | 0 / 0 |
+| Contribution sector 1 / sector 2 | 160.000 / 280.000 | 0 / 0 |
 | **`schaden(DE, zoll)`** | **440.000** | **0** |
 
-Nachgerechnet mit `mal_geteilt` und der Rundungsregel aus T6 (auf halbe Beträge von null
-weg): `11.000 · 50 / 10.000 = 55` glatt; `7.288 · 55 / 10.000 = 40,084 → 40`;
+Recomputed with `mal_geteilt` and the rounding rule from T6 (halves away from zero):
+`11.000 · 50 / 10.000 = 55` exactly; `7.288 · 55 / 10.000 = 40,084 → 40`;
 `5.464 · 52 / 10.000 = 28,4128 → 28`; `40.000.000 · 40 / 10.000 = 160.000`;
 `100.000.000 · 28 / 10.000 = 280.000`.
 
-**Die Zeile `lies_alt(…sektor.<s>.preis)` geht in keine Zahl der Spalten darunter ein.** Sie
-steht nur für den Vergleich am Ende dieses Abschnitts: Die geltende Zollzeile liest
-`land.<l>.sektor.<s>.preis` nicht mehr — das ist die Entscheidung —, die Vorfassung las ihn
-als ihre einzige Zustandseingabe. Ihr Wert ist der Startwert der Preisträgheitsregel oben,
-also Runde 1.
+**The row `lies_alt(…sektor.<s>.preis)` enters no number in the columns below it.** It
+stands only for the comparison at the end of this section: the current tariff row no
+longer reads `land.<l>.sektor.<s>.preis` — that is the decision —, the previous version
+read it as its only state input. Its value is the start value of the price-inertia rule
+above, hence round 1.
 
-**Zustand B ist die Abnahme, und er ist ohne jede Kenntnis der Keilform nachrechenbar.**
-Bewegt sich der Zollstand nicht, ist `hub` null, damit `keilhub` null, damit
-`preishub_zoll` null und damit `schaden(l, zoll)` **exakt null** — für jeden Weltpreis, jede
-Preisträgheit und jedes Handelsvolumen. Zum Vergleich dieselbe Zeile in der **Vorfassung**,
-auf denselben Zustand B angewandt und allein aus den Größen der Tabelle darüber gerechnet,
-mit `mal_geteilt` und der Rundungsregel aus T6:
+**State B is the acceptance, and it can be recomputed without any knowledge of the wedge
+form.** If the tariff level does not move, `hub` is zero, hence `keilhub` zero, hence
+`preishub_zoll` zero and hence `schaden(l, zoll)` **exactly zero** — for every world
+price, every price inertia and every trade volume. For comparison, the same row in the
+**previous version**, applied to the same state B and computed solely from the
+quantities in the table above, with `mal_geteilt` and the rounding rule from T6:
 
 ```
 wmz(DE,1)      = 11.000 · (10.000 + 380) / 10.000              = 11.418
@@ -1902,53 +1901,53 @@ Beitrag 2      = 100.000.000 · 434 / 10.000                    =  4.340.000
                                                      Summe     =  8.472.000
 ```
 
-**8.472.000 statt null**, und das ist mehr als das **Neunzehnfache** dessen, was der
-absichtlich gesetzte Zollschritt in Zustand A erzeugt (440.000). Genau diese Größe fällt mit
-der Entscheidung weg, und sie fiel ohne Aktion an, in jeder Runde und für jedes Profil
-gleich. Die einzige Rundung, die man hier anders legen könnte, ist der Zwischenwert
-`10.795,2`; sie entscheidet nichts — ungerundet weitergerechnet ergibt
-`795,2 · 5.464 / 10.000 = 434,49728 → 434`, dieselbe Zahl.
+**8.472.000 instead of zero**, and that is more than **nineteen times** what the
+deliberately taken tariff step in state A generates (440.000). Exactly this quantity
+falls away with the decision, and it accrued without action, in every round and equally
+for every profile. The only rounding one could place differently here is the
+intermediate value `10.795,2`; it decides nothing — carried on unrounded,
+`795,2 · 5.464 / 10.000 = 434,49728 → 434`, the same number.
 
-**Damit gilt für alle vier Zeilen derselbe Satz**, und das ist die eigentliche Wirkung
-dieser Entscheidung: *Der Schaden eines Instruments ist genau dann von null verschieden,
-wenn das Instrument sich in dieser Runde bewegt hat.* Vorher galt er für drei von vier.
+**With this, the same sentence holds for all four rows**, and that is the real effect of
+this decision: *the damage of an instrument is nonzero exactly when the instrument moved
+in this round.* Before, it held for three of four.
 
-Dass ein Instrument sich auch ohne Aktion des Spielers bewegen kann, bleibt möglich — ein
-Regierungswechsel stellt alle vier zurück. Das ist keine Ausnahme von dem Satz, sondern
-dieselbe Kette eine Stufe später, und sie trifft alle vier Zeilen gleich; siehe *Wächst mit
-dem Erfolg?*.
+That an instrument can move without a player action remains possible — a change of
+government resets all four. That is no exception to the sentence but the same chain one
+step later, and it hits all four rows equally; see *Does it grow with success?*.
 
 #### Wer geschädigt wird, und an welche der 16 Adressen es fließt
 
-| Instrument | Wer trägt den Schaden | warum diese Menge |
+| Instrument | who bears the damage | why this quantity |
 |---|---|---|
-| `zoll` | die beiden handelbaren Sektoren des Landes und ihre Gegenüber im Handel, ein- wie ausfuhrseitig | der Keil wirkt auf die Waren, die die Grenze überqueren — deshalb der Handelsstrom in beide Richtungen, und deshalb nur die Verschiebung, die der Keil selbst erzeugt |
-| `leitzins` | der Staat als Schuldner und über seinen Haushalt alle drei Sektoren | der Zins wird auf den Schuldenstand gezahlt, nicht auf den Ausstoß |
-| `haushalt` | die Empfänger der Staatsleistung, also alle drei Sektoren nach Wertschöpfungsanteil | der Saldo steht in Basispunkten **des BIP**; die Menge ist deshalb das BIP |
-| `regulierung` | das Finanzgewerbe in Sektor 3 und über die Kapitalkosten die übrigen | der Zustand führt keinen Finanzsektor; das BIP ist die gröbste ehrliche Menge |
+| `zoll` | the country's two tradable sectors and their counterparts in trade, on the import as on the export side | the wedge acts on the goods that cross the border — hence the trade flow in both directions, and hence only the shift the wedge itself generates |
+| `leitzins` | the state as debtor and, via its budget, all three sectors | the interest is paid on the debt stock, not on output |
+| `haushalt` | the recipients of government services, i.e. all three sectors by value-added share | the balance stands in basis points **of GDP**; the quantity is therefore GDP |
+| `regulierung` | the financial trade in sector 3 and, via capital costs, the rest | the state carries no financial sector; GDP is the coarsest honest quantity |
 
-**Die Zuordnung in einem Satz:** Der Schaden wird **je Land aus den Größen dieses Landes**
-gerechnet und legt sich auf die Instrumente **desselben** Landes —
-`land.<l>.instrument.<i>.gegendruck`, vier Länder mal vier Instrumente, die sechzehn
-Adressen. Damit ist jede einzelne herleitbar: Wer `land.BR.instrument.leitzins.gegendruck`
-aufschlägt, rechnet `mal_geteilt(schuld(BR), hub(BR, leitzins), 10.000)` und danach
-`lobbypunkte_aus_schaden` darauf.
+**The assignment in one sentence:** the damage is computed **per country from that
+country's quantities** and settles on the instruments of the **same** country —
+`land.<l>.instrument.<i>.gegendruck`, four countries times four instruments, the sixteen
+addresses. Every single one is thereby derivable: whoever opens
+`land.BR.instrument.leitzins.gegendruck` computes
+`mal_geteilt(schuld(BR), hub(BR, leitzins), 10.000)` and then `lobbypunkte_aus_schaden`
+on it.
 
-**Die Regel dahinter bleibt: Eine Gegenlobby bildet sich dort, wo sie handeln kann**, beim
-eigenen Gesetzgeber und nicht beim fremden. Was sie dort erreicht, ist Widerstand gegen
-Bewegung und nicht Vergeltung — siehe *Was bewusst fehlt*.
+**The rule behind it stays: a counter-lobby forms where it can act**, at its own
+legislator and not at the foreign one. What it achieves there is resistance against
+movement, not retaliation — see *Was bewusst fehlt*.
 
-**Seit dem 2026-09-03 gilt diese Regel für den Zoll allerdings nur noch für den eigenen
-Schritt.** Bis dahin trug die Zollzeile auch den Schaden, den ein *fremder* Zoll über den
-Weltpreis im Inland anrichtete; mit dem Sockel fällt er weg, denn er hängt am Weltpreis und
-nicht am eigenen Keil. Ihn zurückzuholen hieße, den allgemeinen Gleichgewichtsanteil eines
-Zollschritts zu isolieren, und das braucht eine **zweite Markträumung** je Runde — die
-teuerste Rechnung des Modells noch einmal, für einen Zustand, den es nicht gibt. Er steht
-deshalb unter *Was bewusst fehlt*, mit dem Weg, über den er trotzdem ankommt.
+**Since 2026-09-03, however, this rule holds for the tariff only for the own step.**
+Until then the tariff row also carried the damage a *foreign* tariff did domestically
+via the world price; with the base term it falls away, for it hangs on the world price
+and not on the own wedge. Bringing it back would mean isolating the general-equilibrium
+share of a tariff step, and that takes a **second market clearing** per round — the
+model's most expensive computation once more, for a state that does not exist. It
+therefore stands under *Was bewusst fehlt*, with the path by which it arrives anyway.
 
 #### Wie das Gegenbudget wächst und wieder vergeht
 
-In Schritt 5, für alle sechzehn Adressen, genau einmal je Runde:
+In step 5, for all sixteen addresses, exactly once per round:
 
 ```
 gegendruck_neu(l, i) = min( druck_max,
@@ -1956,234 +1955,231 @@ gegendruck_neu(l, i) = min( druck_max,
                             + lobbypunkte_aus_schaden( schaden(l, i) ) )
 ```
 
-**Die Halbierung ist eine Regel und keine Kalibrierzahl**, und das ist eine Entscheidung
-gegen einen naheliegenden Parameter. Ein Zerfallssatz neben `gegenlobby_satz` wäre für den
-Beharrungswert exakt redundant: Bei gleichbleibendem Schaden `D` läuft der Gegendruck gegen
-`2 · lobbypunkte_aus_schaden(D)`, und ein freier Satz verschöbe nur, welche der beiden
-Zahlen diesen Wert trägt. Unterscheiden würden sich die beiden allein im Einschwingen —
-eine Kalibrierdimension, die nur den Übergang formt, kostet den Nachtlauf über tausend
-Parametersätzen eine ganze Achse und gewinnt kein Maß. Die Aussage der Halbierung ist
-inhaltlich und prüfbar: *Ein Gegner, der eine Runde lang nicht neu geschädigt wird, verliert
-die Hälfte seines Budgets.*
+**The halving is a rule and not a calibration number**, and that is a decision against
+an obvious parameter. A decay rate next to `gegenlobby_satz` would be exactly redundant
+for the steady state: under constant damage `D` the counter-pressure runs toward
+`2 · lobbypunkte_aus_schaden(D)`, and a free rate would only shift which of the two
+numbers carries that value. The two would differ only in the transient — a calibration
+dimension that shapes nothing but the transition costs the night run over a thousand
+parameter sets a whole axis and gains nothing on any Maß. The statement of the halving
+is substantive and checkable: *an opponent that goes one round without new damage loses
+half its budget.*
 
-**Ein Gegendruck ohne Zerfall wäre kein Zerfall, sondern ein Endzustand.** Er liefe in jedem
-Land, das der Fonds anfasst, gegen `druck_max` und bliebe dort; die Strategiefamilie Lobby
-könnte im letzten Partiedrittel nichts mehr bewegen, und Maß 2 fiele nicht an einer
-Kalibrierung, sondern an der Bauart. Umgekehrt wäre ein reiner Zufluss ohne Vortrag zu
-mild: Wer abwechselnd lobbyiert und etwas anderes tut, träfe jedes zweite Mal auf einen
-Gegendruck von null. Die Halbierung ist die kleinste Fassung, die beides vermeidet.
+**A counter-pressure without decay would be no decay but an end state.** It would run
+toward `druck_max` in every country the fund touches and stay there; the strategy family
+Lobby could move nothing in the last third of the game, and Maß 2 would fail not on a
+calibration but on the construction. Conversely, a pure inflow without carry-over would
+be too mild: whoever alternates lobbying with something else would meet a
+counter-pressure of zero every second time. The halving is the smallest version that
+avoids both.
 
 #### Warum diese Lesart und nicht die beiden anderen
 
-`technik.md` Abschnitt 12 nennt drei: **Preisverschiebung mal Menge**,
-**Wertschöpfungsverlust**, **Bewertungsverlust**. Gewählt ist die erste, und die beiden
-anderen scheitern nicht am Geschmack.
+`technik.md` section 12 names three: **price shift times quantity**, **value-added
+loss**, **valuation loss**. Chosen is the first, and the other two do not fail on taste.
 
-**Der Wertschöpfungsverlust** — `wertschoepfung_alt − wertschoepfung_neu` — ist die
-einfachere Formel und die falsche Größe, aus drei Gründen, deren erster genügt:
+**The value-added loss** — `wertschoepfung_alt − wertschoepfung_neu` — is the simpler
+formula and the wrong quantity, for three reasons, of which the first suffices:
 
-1. **Er ist gegenüber dem Zoll blind.** Klasse 2 steht nach T5 in *Tausend USD zu konstanten
-   Preisen des Basisjahrs*. Die Wertschöpfung ist damit eine **reale** Größe; ein Zoll
-   verschiebt Preise, nicht reale Mengen — jedenfalls nicht in derselben Runde, denn der
-   reale Weg läuft über Investition und Kapitalstock und ist Kanal 1. Der Zoll ist das
-   einzige Instrument, das Kanal 3 überhaupt nennt, und das einzige mit Datenanker im
-   Handelsblock. Eine Schadensgröße, die ihn nicht sieht, misst die falsche Kette.
-2. **Er ist Konjunktur, nicht Reaktion.** In einem Wachstumsjahr ist er für alle zwölf
-   Land×Sektor-Paare null, im Einbruchsjahr 2008 oder 2020 für alle zwölf gleichzeitig groß
-   — ohne dass eine einzige Lobbyaktion stattgefunden hätte. Gegenkraft 5 wäre dann keine
-   Kraft, die *mit dem Erfolg wächst*, sondern ein Konjunkturrauschen mit Lobbywirkung, und
-   die Auflage aus dem Kopf dieses Abschnitts wäre verfehlt.
-3. **Er lässt sich keinem Instrument zuordnen.** Eine Differenz, vier Instrumente: Jede
-   Aufteilung auf die sechzehn Adressen wäre erfunden.
+1. **It is blind to the tariff.** Class 2 stands per T5 in *Tausend USD zu konstanten
+   Preisen des Basisjahrs*. Value added is thus a **real** quantity; a tariff shifts
+   prices, not real quantities — at least not in the same round, for the real path runs
+   via investment and capital stock and is channel 1. The tariff is the only instrument
+   channel 3 names at all, and the only one with a data anchor in the trade block. A
+   damage quantity that does not see it measures the wrong chain.
+2. **It is business cycle, not reaction.** In a growth year it is zero for all twelve
+   country×sector pairs, in the slump year 2008 or 2020 large for all twelve at once —
+   without a single lobby action having taken place. Counterforce 5 would then be no
+   force that *grows with success* but business-cycle noise with lobby effect, and the
+   requirement from the head of this section would be missed.
+3. **It cannot be assigned to any instrument.** One difference, four instruments: any
+   split across the sixteen addresses would be invented.
 
-**Und der Satz, der auf Maß 2 zeigt:** Die Familie Lobby ist die einzige der drei, deren
-Gegenkraft ausschließlich Gegenkraft 5 ist — Position wird von Preisstoß und Nachahmern
-gebremst, Beteiligung von Aufsicht und Illiquidität. Eine Gegenkraft, die nicht auf die
-Aktion des Spielers antwortet, ist für diese Familie keine, und die Familie ohne Preis
-dominiert. Maß 2 verlangt `max(Ek) ≤ 1,25 × min(Ek)` über die drei Klassen; das ist
-derselbe Defekt, den die Rezension als „trying to implement the tiniest socialist policy
-will always result in bankruptcy" von der anderen Seite beschreibt, und er fällt hier auf
-die andere Richtung.
+**And the sentence that points at Maß 2:** the family Lobby is the only one of the three
+whose counterforce is exclusively counterforce 5 — Position is braked by price shock and
+imitators, Stake by supervision and illiquidity. A counterforce that does not answer the
+player's action is none for this family, and the family without a price dominates. Maß 2
+demands `max(Ek) ≤ 1,25 × min(Ek)` over the three classes; that is the same defect the
+review describes from the other side as „trying to implement the tiniest socialist
+policy will always result in bankruptcy", and here it falls in the other direction.
 
-**Der Bewertungsverlust** scheitert zweimal, und der erste Grund ist der schwerere:
+**The valuation loss** fails twice, and the first reason is the heavier one:
 
-1. **Er ist eine Fondsgröße und würde die Gegenkraft an den Misserfolg koppeln.** Verliert
-   der Fonds, wächst die Gegenlobby; gewinnt er, verschwindet sie. Das ist die Umkehrung
-   dessen, was eine Gegenkraft dieses Entwurfs leisten muss, und würde Kanal 8 nicht
-   dämpfen, sondern verstärken.
-2. **Er kostet einen vierten Skalenübergang.** Er steht in Klasse 1 (US-Cent), `cent_in_tsd`
-   gibt es nach T50 ausdrücklich nicht, und eine Umkehrfunktion nachzurüsten ist ein ADR
-   gegen T50 und kein Satz in `spiel.md`.
+1. **It is a fund quantity and would couple the counterforce to failure.** If the fund
+   loses, the counter-lobby grows; if it wins, it vanishes. That is the inversion of
+   what a counterforce of this design must do, and it would not damp channel 8 but
+   amplify it.
+2. **It costs a fourth scale transition.** It stands in class 1 (US cents),
+   `cent_in_tsd` expressly does not exist per T50, and retrofitting an inverse function
+   is an ADR against T50 and not a sentence in `spiel.md`.
 
-Liest man „Bewertungsverlust" stattdessen als Änderung des **Sektorkorbs** — `korbwert(l,s)`,
-Klasse 2, also skalenrechtlich zulässig —, dann ist er beinahe die gewählte Regel, mit
-`kapitalstock` statt `handelsvolumen` als Menge und einem zusätzlichen Glied für die
-Kapitalstockänderung. Genau dieses Glied ist der Einwand: Es gehört zu Kanal 1 und würde in
-Kanal 3 ein zweites Mal verbucht. Der Handelsstrom ist die Menge, die der Zollkeil berührt;
-der Kapitalstock ist es nicht.
+If one instead reads "valuation loss" as the change of the **sector basket** —
+`korbwert(l,s)`, class 2, hence admissible under the scale rules —, then it is almost
+the chosen rule, with `kapitalstock` instead of `handelsvolumen` as the quantity and an
+additional term for the capital-stock change. Exactly that term is the objection: it
+belongs to channel 1 and would be booked a second time in channel 3. The trade flow is
+the quantity the tariff wedge touches; the capital stock is not.
 
 #### Wo die Regel läuft, und warum Kanal 3 zyklenfrei bleibt
 
-Gerechnet wird in **Schritt 5**, dem Ort, den T50 als einzigen Aufrufort von
-`lobbypunkte_aus_schaden` festlegt — sechzehn Aufrufe je Runde, alle hier. Gelesen wird:
+Computed in **step 5**, the place T50 fixes as the only call site of
+`lobbypunkte_aus_schaden` — sixteen calls per round, all here. Read:
 
-| woher | Adressen | Zahl | für welche Zeile |
+| from where | addresses | count | for which row |
 |---|---|---:|---|
-| Schritt 3 | `lies_neu(land.<l>.instrument.<i>.stand)` | 16 | alle vier |
-| Schritt 4 | `lies_neu(welt.preis.<s>)`, s ∈ {1, 2} | 2 | `zoll` |
-| Schritt 4 | `lies_neu(handel.<a>.<b>.<s>)`, der ganze Handelsblock | 40 | `zoll` |
-| Schritt 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, für `bip` | 12 | `leitzins`, `haushalt`, `regulierung` |
-| Schritt 4 | `lies_neu(land.<l>.staatsschuld)`, für `schuld` | 4 | `leitzins` |
-| Vorrunde | `lies_alt(land.<l>.instrument.<i>.stand)` | 16 | alle vier |
-| Vorrunde | `lies_alt(land.<l>.instrument.<i>.gegendruck)` | 16 | alle vier |
+| step 3 | `lies_neu(land.<l>.instrument.<i>.stand)` | 16 | all four |
+| step 4 | `lies_neu(welt.preis.<s>)`, s ∈ {1, 2} | 2 | `zoll` |
+| step 4 | `lies_neu(handel.<a>.<b>.<s>)`, the whole trade block | 40 | `zoll` |
+| step 4 | `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, for `bip` | 12 | `leitzins`, `haushalt`, `regulierung` |
+| step 4 | `lies_neu(land.<l>.staatsschuld)`, for `schuld` | 4 | `leitzins` |
+| previous round | `lies_alt(land.<l>.instrument.<i>.stand)` | 16 | all four |
+| previous round | `lies_alt(land.<l>.instrument.<i>.gegendruck)` | 16 | all four |
 
-`16 + 2 + 40 + 12 + 4 + 16 + 16 =` **106 Lesezugriffe**, 16 Schreibzugriffe, **keine neue
-Adresse**. Gezählt sind unterschiedliche Adressen, nicht Zugriffsvorgänge — der
-Handelsblock steht deshalb mit 40 und nicht mit 64, weil ein Strom zwischen zwei spielbaren
-Ländern in zwei `handelsvolumen` eingeht. Jede gelesene Größe steht in `daten/adressen.md`,
-`welt.preis.1` und `welt.preis.2` als Nummern 239 und 240; `bip`, `schuld` und
-`handelsvolumen` sind Funktionen daraus und keine Felder, `durchgriff` ist eine
-Jahrgangskonstante. Die Zahl 310 bleibt, und der Abzählschritt aus T45 geht unverändert auf.
+`16 + 2 + 40 + 12 + 4 + 16 + 16 =` **106 read accesses**, 16 write accesses, **no new
+address**. Counted are distinct addresses, not access events — the trade block therefore
+stands at 40 and not 64, because a flow between two playable countries enters two
+`handelsvolumen`. Every quantity read stands in `daten/adressen.md`, `welt.preis.1` and
+`welt.preis.2` as numbers 239 and 240; `bip`, `schuld` and `handelsvolumen` are
+functions of them and not fields, `durchgriff` is a vintage constant. The number 310
+stays, and the counting step from T45 still comes out unchanged.
 
-**Die Zahl ist zweimal falsch gewesen, und die Korrektur gehört zur Entscheidung.** Die
-Fassung vom 2026-09-02 nannte 120 und zählte den Zollstand doppelt mit 16, obwohl die
-Zollzeile ihn damals gar nicht las — der Prüfbefund 2 hat das gefunden und 112 gerechnet.
-Nach dieser Entscheidung liest der Zoll seinen Stand wieder, dafür fallen beide
-Sektorpreiszeilen (`lies_neu` und `lies_alt`, je 8) ersatzlos weg und die zwei Weltpreise
-kommen hinzu: `112 + 4 + 4 − 8 − 8 + 2 = 106`. Beide Zahlen der Vorfassungen sind damit
-abgelöst, und die Nachziehtabelle am Ende nennt dieselbe 106.
+**The number has been wrong twice, and the correction belongs to the decision.** The
+version of 2026-09-02 named 120 and counted the tariff level twice with 16, although the
+tariff row did not read it at all back then — check finding 2 found that and computed
+112. After this decision the tariff reads its level again, in exchange both sector-price
+rows (`lies_neu` and `lies_alt`, 8 each) fall away without replacement and the two world
+prices are added: `112 + 4 + 4 − 8 − 8 + 2 = 106`. Both numbers of the previous versions
+are thereby superseded, and the catch-up table at the end names the same 106.
 
-**Die Rundengrenze ist die Lösung, nicht ein zweiter Satz Adressen.** Ein Schaden, der den
-Zustand vor dem Instrumentenschritt mit dem danach vergleicht, bräuchte Schattenadressen;
-der Vergleich `lies_neu` gegen `lies_alt` braucht keine, weil der Schreiber nach T39 beide
-Stände ohnehin führt.
+**The round boundary is the solution, not a second set of addresses.** A damage that
+compared the state before the instrument step with the one after would need shadow
+addresses; the comparison of `lies_neu` against `lies_alt` needs none, because the
+writer keeps both levels anyway per T39.
 
-**Kanal 3, abgegangen:** Instrument (Schritt 3, `stand`) → Handel (Schritt 4, `handel`) →
-Weltpreis (Schritt 4, Markträumung) → Schaden (Schritt 5, hier) →
-Gegenlobbybudget (Schritt 5, `gegendruck`) → Instrument (Schritt 3 der **Folgerunde**).
-Genau eine Rundengrenze wird überquert, und sie wird nicht versprochen, sondern erzwungen:
-Schritt 3 muss `lies_alt(gegendruck)` lesen, weil die Adresse in dieser Runde noch nicht
-geschrieben ist und `lies_neu` darauf nach T39 ein harter Fehler wäre. Die Dämpfung
-„Gegendruck wirkt erst in der Folgerunde" ist damit eine Eigenschaft, die jeder Lauf
-nachweist.
+**Channel 3, walked through:** instrument (step 3, `stand`) → trade (step 4, `handel`) →
+world price (step 4, market clearing) → damage (step 5, here) →
+counter-lobby budget (step 5, `gegendruck`) → instrument (step 3 of the **following
+round**). Exactly one round boundary is crossed, and it is not promised but enforced:
+step 3 must read `lies_alt(gegendruck)`, because the address is not yet written in this
+round and `lies_neu` on it would be a hard error per T39. The damping „counter-pressure
+acts only in the following round" is thereby a property every run proves.
 
-**`welt.preis.<s>` wird gelesen, aber nicht differenziert, und der Unterschied ist der
-ganze Punkt.** Die Vorfassung hat den Weltpreis mit dem Argument ausgeschlossen, er sei für
-alle Gebiete derselbe und könne nicht unterscheiden, wen es getroffen hat. Das Argument
-gilt weiterhin — und es trifft die neue Zeile nicht, weil dort keine Weltpreis*differenz*
-steht. Unterschieden wird durch `durchgriff(l, s)`, `handelsvolumen(l, s)` und
-`hub(l, zoll)`, alle drei land- oder landessektorspezifisch; der Weltpreis liefert allein
-das **Niveau**, an dem eine Rate in Basispunkten zu einer Verschiebung in Indexpunkten wird.
-Ein Niveau kann niemanden auszeichnen und soll es auch nicht.
+**`welt.preis.<s>` is read but not differenced, and the difference is the whole point.**
+The previous version excluded the world price with the argument that it is the same for
+all territories and cannot distinguish who was hit. The argument still holds — and it
+does not hit the new row, because no world-price *difference* stands there. Distinction
+comes from `durchgriff(l, s)`, `handelsvolumen(l, s)` and `hub(l, zoll)`, all three
+country- or country-sector-specific; the world price supplies only the **level** at
+which a rate in basis points becomes a shift in index points. A level can single out no
+one and is not meant to.
 
-**Und es ist kein neunter Kanal.** Der Zollstand erreicht den Schaden jetzt auf zwei Wegen
-statt einem: über die Menge (Instrument → Handel → `handelsvolumen`) wie bisher und über die
-Verschiebung (Instrument → `hub` → Schaden) neu. Beide sind Glieder von Kanal 3, der zweite
-ist der erste ohne seinen Umweg. Die Dämpfung ist unverändert dieselbe und wird unverändert
-erzwungen: `gegendruck` wird nur in Schritt 5 geschrieben, `lies_neu` darauf in Schritt 3
-ist nach T39 ein harter Fehler, also überquert der Weg genau eine Rundengrenze. Innerhalb
-der Runde bleibt die Ordnung 3 → 4 → 5 zyklenfrei.
+**And it is no ninth channel.** The tariff level now reaches the damage by two paths
+instead of one: via the quantity (instrument → trade → `handelsvolumen`) as before, and
+newly via the shift (instrument → `hub` → damage). Both are links of channel 3, the
+second is the first without its detour. The damping is unchanged the same and unchanged
+enforced: `gegendruck` is written only in step 5, `lies_neu` on it in step 3 is a hard
+error per T39, so the path crosses exactly one round boundary. Within the round the
+order 3 → 4 → 5 stays cycle-free.
 
 #### Die Skalenprobe
 
-Klasse 5 (Preisindex) und Klasse 3 (Basispunkte) sind beide **Zehntausendstel**, und Klasse
-2 steht zu konstanten Preisen des Basisjahrs. Für eine reale Menge `Q` und einen Preisindex
-`P` ist der Nominalwert `Q · P / 10.000`; verschiebt sich der Preis um `ΔP`, verschiebt sich
-der Wert um `Q · ΔP / 10.000`. Das ist die Formel, Zeichen für Zeichen. Für die Zinszeile
-dieselbe Rechnung mit einer Rate statt eines Index: Schuldenstand mal Ratenänderung in
-Basispunkten durch 10.000 ist der zusätzliche Zinsdienst eines Jahres, in Tausend USD.
-**Aus Klasse 2 mal Zehntausendstel geteilt durch 10.000 kommt Klasse 2**, und dieses
-Ergebnis geht unverändert in `lobbypunkte_aus_schaden`. Ein vierter Skalenübergang entsteht
-an keiner Stelle.
+Class 5 (price index) and class 3 (basis points) are both **ten-thousandths**, and class
+2 stands at constant prices of the base year. For a real quantity `Q` and a price index
+`P` the nominal value is `Q · P / 10.000`; if the price shifts by `ΔP`, the value shifts
+by `Q · ΔP / 10.000`. That is the formula, character for character. For the interest row
+the same computation with a rate instead of an index: debt stock times rate change in
+basis points divided by 10.000 is the additional debt service of one year, in thousand
+USD. **Class 2 times ten-thousandths divided by 10.000 yields class 2**, and this result
+goes unchanged into `lobbypunkte_aus_schaden`. A fourth scale transition arises nowhere.
 
-**Die Zollzeile hat seit dem 2026-09-03 zwei Zwischenschritte statt einem, und beide halten
-die Klasse.** `keilhub` ist Klasse 5 mal Klasse 3 durch 10.000, also wieder Klasse 5 — die
-Verschiebung des zollbelasteten Weltpreises in Indexpunkten. `preishub_zoll` ist Klasse 5
-mal Klasse 4 (`durchgriff`, Zehntausendstel) durch 10.000, also erneut Klasse 5. Erst der
-letzte Schritt verlässt die Indexwelt, und er ist derselbe wie in den drei anderen Zeilen:
-Klasse 2 mal Zehntausendstel durch 10.000 ist Klasse 2. **Kein vierter Skalenübergang, und
-Klasse 1 wird an keiner Stelle berührt** — die Einordnung der Zollzeile in der
-Instrumententabelle bleibt Klasse 5, wie in der Vorfassung.
+**Since 2026-09-03 the tariff row has two intermediate steps instead of one, and both
+hold the class.** `keilhub` is class 5 times class 3 divided by 10.000, hence class 5
+again — the shift of the tariff-laden world price in index points. `preishub_zoll` is
+class 5 times class 4 (`durchgriff`, ten-thousandths) divided by 10.000, hence class 5
+once more. Only the last step leaves the index world, and it is the same as in the three
+other rows: class 2 times ten-thousandths divided by 10.000 is class 2. **No fourth
+scale transition, and class 1 is touched nowhere** — the tariff row's classification in
+the instrument table remains class 5, as in the previous version.
 
-Zum Überlauf: Der größte Faktor ist `bip(US)`, nach T5 in der Größenordnung `2,1 · 10^10`
-Tausend USD; mal einer Verschiebung in Zehntausendsteln bleibt das Zwischenergebnis
-weit unter der `i64`-Grenze, und `mal_geteilt` rechnet nach T6 ohnehin über `i128`. Die
-Zollzeile bleibt darunter: `welt.preis` ist ein Index in der Größenordnung 10^4,
-`hub(l, zoll)` durch `instrument_max[zoll]` begrenzt, `keilhub` und `preishub_zoll` damit
-selbst Indexgrößen; das größte Produkt ist `handelsvolumen · preishub_zoll` und liegt bei
-einem Handelsstrom in der Größenordnung 10^9 bei rund 10^13.
+On overflow: the largest factor is `bip(US)`, per T5 of order `2,1 · 10^10` thousand
+USD; times a shift in ten-thousandths, the intermediate result stays far below the
+`i64` limit, and `mal_geteilt` computes over `i128` per T6 anyway. The tariff row stays
+below that: `welt.preis` is an index of order 10^4, `hub(l, zoll)` is bounded by
+`instrument_max[zoll]`, `keilhub` and `preishub_zoll` are thus index quantities
+themselves; the largest product is `handelsvolumen · preishub_zoll` and, at a trade flow
+of order 10^9, lies around 10^13.
 
 #### Was Gegenkraft 5 im Weltlauf tut
 
-**Nichts, und das ist bereits entschieden.** Im Modus `weltlauf` läuft das Fondsteilsystem
-nicht; aus Schritt 5 laufen nur Zustimmung und Regierungswechsel, die Gegenkräfte 1, 3, 4
-und 5 werden nicht gerechnet. `gegendruck` gehört nach `technik.md` T38 zum Block
-*Instrumente ohne Stand* und steht dort auf **nein**: Die Adresse wird nicht geschrieben und
-behält ihren Startwert 0. Diese Rechenvorschrift wird im Weltlauf nicht ausgewertet.
+**Nothing, and that is already decided.** In mode `weltlauf` the fund subsystem does
+not run; of step 5 only approval and change of government run, counterforces 1, 3, 4
+and 5 are not computed. `gegendruck` belongs per `technik.md` T38 to the block
+*Instrumente ohne Stand* and stands there on **nein**: the address is not written and
+keeps its start value 0. This computation rule is not evaluated in the weltlauf.
 
-Das ist kein Verlust, sondern die Bedingung des Maßes. Die Politikinstrumente sind im
-Weltlauf exogen; ein Gegendruck hätte dort keinen Adressaten, und die Regulierung, deren
-Schadenszeile ohnehin die einzige ohne Datenanker ist, steht fest auf dem Startwert.
-Die Eingangsgrößen der Formel — Instrumentenstände, **Weltpreise**, Handelsblock,
-Wertschöpfung, Staatsschuld — stehen sämtlich in der Weltlaufmaske (`technik.md` T38 führt
-die Weltpreise dort mit **ja**); die Sektorpreise, die die Vorfassung noch brauchte, stehen
-seit dem 2026-09-03 gar nicht mehr in der Formel. Die Rechnung *ließe* sich also mitlaufen.
-Sie zu schreiben würde die Maske brechen, und eine Ausgabe daneben ist Sache des Prüfstands
-und keine Entwurfsfrage.
+That is no loss but the condition of the measure. The policy instruments are exogenous
+in the weltlauf; a counter-pressure would have no addressee there, and regulation, whose
+damage row is the only one without a data anchor anyway, stands fixed at its start
+value. The formula's inputs — instrument levels, **world prices**, trade block, value
+added, government debt — all stand in the weltlauf mask (`technik.md` T38 carries the
+world prices there with **ja**); the sector prices the previous version still needed
+have not stood in the formula at all since 2026-09-03. The computation *could* therefore
+run along. Writing it would break the mask, and an output beside it is the test stand's
+business and not a design question.
 
-**Die Folge, ausdrücklich benannt: Maß 4 prüft diese Vorschrift nicht.** Geprüft wird sie
-von Maß 2 (bleibt die Familie Lobby innerhalb der 25 Prozent?), von Maß 3 (verschiebt sich
-das beste Profil zwischen Früh- und Spätfenster?) und vom Bruchtester über die Invariante
-`0 ≤ gegendruck ≤ druck_max` aus T30 Prüfung 6. Wer eine Zahl dieser Vorschrift ändert,
-sieht die Wirkung im Selbstspiel und nirgends sonst.
+**The consequence, named expressly: Maß 4 does not check this rule.** It is checked by
+Maß 2 (does the family Lobby stay within the 25 percent?), by Maß 3 (does the best
+profile shift between early and late window?) and by the break tester via the invariant
+`0 ≤ gegendruck ≤ druck_max` from T30 check 6. Whoever changes a number of this rule
+sees the effect in self-play and nowhere else.
 
 #### Was diese Regel für Maß 2 und Maß 3 leistet
 
-**Ein Satz, vier Mengen.** `gegenlobby_satz` gilt für alle sechzehn Adressen gleich; was
-sich unterscheidet, ist die Menge, an der er ansetzt — und die steht nicht in
-`parameter.toml`, sondern im Jahrgang. Die vier Länder sind oben nach struktureller
-Verschiedenheit gewählt (*Warum vier Länder und nicht drei*), und genau diese
-Verschiedenheit trägt jetzt einen Preis: Wer einen Exportüberschuss hat, hat eine teure
-Zollzeile; wer hohe Zinsen auf hoher Schuld zahlt, eine teure Zinszeile. **Welches Instrument
-billig zu bewegen ist, hängt damit am Land und nicht an einer Balancezahl.** Das ist die
-Bauart, die dieser Entwurf an Democracy 4 belegt hat: Wirkung aus geladenen Tabellen, nicht
-aus einprogrammierten Ausnahmen.
+**One rate, four quantities.** `gegenlobby_satz` holds equally for all sixteen
+addresses; what differs is the quantity it engages — and that stands not in
+`parameter.toml` but in the vintage. The four countries are chosen above for structural
+difference (*Warum vier Länder und nicht drei*), and exactly this difference now carries
+a price: whoever has an export surplus has an expensive tariff row; whoever pays high
+interest on high debt, an expensive interest row. **Which instrument is cheap to move
+thus hangs on the country and not on a balance number.** That is the construction this
+design has documented at Democracy 4: effect from loaded tables, not from programmed-in
+exceptions.
 
-**Und die Zollzeile ist die einzige mit Struktur unterhalb des Landes.** `schuld` und `bip`
-kennen nur das Land; die Zollzeile rechnet je Land **und Sektor**, weil `durchgriff(l, s)`
-und `handelsvolumen(l, s)` es tun. Das ist der Grund, warum die Entscheidung vom 2026-09-03
-auf den Keil und nicht auf den nackten Zollstand fällt: Ein Zoll, dessen Preis nicht mehr
-davon abhängt, welchen Sektor er trifft, wäre für Maß 2 die vierte Zeile derselben Sorte
-statt einer eigenen.
+**And the tariff row is the only one with structure below the country.** `schuld` and
+`bip` know only the country; the tariff row computes per country **and sector**, because
+`durchgriff(l, s)` and `handelsvolumen(l, s)` do. That is the reason the decision of
+2026-09-03 falls on the wedge and not on the bare tariff level: a tariff whose price no
+longer depends on which sector it hits would be, for Maß 2, a fourth row of the same
+kind instead of one of its own.
 
-**Und die Mengen bewegen sich über die Partie.** `handelsvolumen`, `schuld` und `bip` sind
-endogene Größen auf einem historischen Pfad, und die vier Brüche, die der Zuschnitt oben
-ausdrücklich im Fenster behalten hat — WTO-Beitritt 2001, 2008, 2020, Erholung 2021 —, laufen
-sämtlich über Handel, Staatsschuld oder Ausstoß und damit über genau diese drei Mengen.
-Seit dem 2026-09-03 bewegt sich in der Zollzeile zusätzlich das **Niveau**, an dem die Rate
-ansetzt: `welt.preis.<s>` ist ebenso endogen, und derselbe Zollschritt kostet auf einem
-teureren Weltmarkt mehr. Das
-billigste Lobbyziel der dritten Runde ist deshalb nicht zwangsläufig das billigste der
-zwanzigsten — eine **dritte** Quelle der Optimumsverschiebung neben Nachahmern (Gegenkraft
-4) und Preisstoß (Gegenkraft 3), und diesmal eine, die aus dem Jahrgang kommt statt aus
-einer Regel. *In welche Richtung und wie stark*, misst der Jahrgangsbau und danach der
-Prüfstand; dieser Entwurf behauptet es nicht.
+**And the quantities move over the game.** `handelsvolumen`, `schuld` and `bip` are
+endogenous quantities on a historical path, and the four breaks the cut above expressly
+kept in the window — WTO accession 2001, 2008, 2020, recovery 2021 — all run through
+trade, government debt or output and thus through exactly these three quantities. Since
+2026-09-03 the **level** at which the rate engages moves in the tariff row as well:
+`welt.preis.<s>` is just as endogenous, and the same tariff step costs more on a more
+expensive world market. The cheapest lobby target of round three is therefore not
+necessarily the cheapest of round twenty — a **third** source of optimum shift beside
+imitators (counterforce 4) and price shock (counterforce 3), and this time one that
+comes from the vintage instead of from a rule. *In which direction and how strongly* is
+measured by the vintage build and then the test stand; this design does not claim it.
 
-Dazu kommt die Asymmetrie, die schon dasteht und jetzt eine Menge hinter sich hat:
-Deutschland hat keinen eigenen Zinshebel — seit dem Fensterschnitt auf 2001 über die ganze
-Partie statt ab Runde 3. Die Zinszeile ist dort geschlossen,
-gleich was sie kostete, und der Ausweg führt über ein Instrument mit anderer Menge. Ein
-geschlossener Aktionsraum, der einen anderen erzwingt — dafür ist die Asymmetrie oben
-gewählt worden, und Gegenkraft 5 gibt ihr jetzt einen Preis statt nur eine Sperre.
+Added to this is the asymmetry that already stands and now has a quantity behind it:
+Germany has no policy-rate lever of its own — since the window cut to 2001, over the
+whole game instead of from round 3. The interest row is closed there, whatever it would
+cost, and the way out leads through an instrument with a different quantity. A closed
+action space that forces another — that is what the asymmetry above was chosen for, and
+counterforce 5 now gives it a price instead of only a lock.
 
-**Wächst mit dem Erfolg?** Ja, auf zwei Wegen. Der erste ist der gewollte: Ein Instrument
-bewegt sich absichtlich nur durch Aktion 3, deren Wirkung mit dem Fondsvermögen wächst
-(Kanal 8) — mehr Erfolg, mehr Bewegung, mehr Schaden, mehr Gegendruck. Der zweite ist eine
-Verzahnung mit Gegenkraft 2: Ein Regierungswechsel stellt **alle** Instrumente in Richtung
-ihres historischen Mittels zurück, erzeugt damit in einer Runde Schaden an allen vier und
-legt in der Folgerunde auf alle vier Gegendruck. Das ist nicht Zufall, sondern der Erfolg
-eine Stufe später: Der Regierungswechsel ist selbst die Folge erfolgreichen Lobbyierens.
-Dass daraus zwei Strafen aus einer Ursache werden, steht unter *Offene Entwurfsfragen*.
+**Does it grow with success?** Yes, on two paths. The first is the intended one: an
+instrument moves deliberately only through action 3, whose effect grows with the fund's
+wealth (channel 8) — more success, more movement, more damage, more counter-pressure.
+The second is an interlocking with counterforce 2: a change of government resets **all**
+instruments toward their historical mean, thereby generates damage on all four in one
+round and lays counter-pressure on all four in the following round. That is not chance
+but success one step later: the change of government is itself the consequence of
+successful lobbying. That this makes two penalties out of one cause stands under
+*Offene Entwurfsfragen*.
 
 ## Wie die vier Masse berechnet werden
 
