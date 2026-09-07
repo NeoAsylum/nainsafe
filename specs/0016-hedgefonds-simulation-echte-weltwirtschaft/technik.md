@@ -2763,97 +2763,97 @@ hand — otherwise they diverge from the truth at the first data-update run.
 
 ## 12. Was ich nicht entschieden habe
 
-Die Rückfragen der Fassungen 2 und 4 — Abnahme über 31 oder 23 Reihen, Zusammenfassung des
-Handelsblocks, Beteiligungen im Fondsvermögen — sind von `spiel.md` Fassung 3 und 4
-beantwortet und stehen in T37 und T47; sie sind hier gestrichen, weil eine beantwortete
-Frage in dieser Liste nur noch Platz kostet. Offen bleibt:
+The queries of versions 2 and 4 — acceptance over 31 or 23 series, aggregation of the
+trade block, stakes in the fund assets — are answered by `spiel.md` versions 3 and 4 and
+stand in T37 and T47; they are struck here, because an answered question in this list
+only costs space. What remains open:
 
-- **Zwei Stellen in ADR 0011, die ich nicht selbst entscheiden kann. Beide blockieren
-  nichts, beide gehören dem Betreiber.** *Erstens:* Massnahme 2 des ADR soll unbeabsichtigte
-  Überläufe „laut statt still" machen; sie kann das nicht, weil `-fwrapv` aus Massnahme 1
-  genau diese Sanitizer-Prüfung abschaltet (Beleg in T7). Ich habe die Lücke mit einer
-  vierten Massnahme geschlossen statt den ADR zu ändern — das ist meine Entscheidung, die
-  Frage, ob der ADR nachgeführt wird, nicht. *Zweitens:* Das erste Argument des ADR setzt
-  voraus, dass der Spielstand künftig den **Zustand** speichert statt der Aktionsfolge; die
-  Folgen des ADR ordnen diesen Wechsel nicht an. Bis dahin gilt T22 unverändert, und daraus
-  folgt T52. Wird der Wechsel angeordnet, wird T52 billiger, aber nicht überflüssig.
-- **Der Planwert von 10 Mikrosekunden je Weltschritt ist weiterhin geschätzt.** Den Kern
-  gibt es inzwischen in Teilen — Festkomma, Zufall, Prüfsumme, Zustand, Schreiber —, aber
-  keinen Weltschritt, also weiterhin keinen gemessenen `ticks_je_sekunde`. Liegt der
-  gemessene Wert über 50 µs, trägt Abschnitt 10 nicht mehr, und dann ist die Markträumung
-  anders zu bauen als über 40 Halbierungsschritte. Das ist die einzige Zahl dieses
-  Dokuments, die eine Prüfung im Bau umwerfen kann — und seit T6b hängt an ihr zusätzlich
-  die Frage, ob die Divisionsform den Abstand aus der Stackmessung erklärt.
-- **Ob der Suchbot mit Tiefe 1 stark genug ist, damit Maß 2 das Spiel misst und nicht den
-  Bot.** *Wonach* er sucht, ist seit T44 entschieden und hat keinen freien Parameter mehr;
-  offen ist allein, *wie weit*. Neu gerechnet für R = 24: Tiefe 2 kostet je Partie
+- **Two spots in ADR 0011 that I cannot decide myself. Neither blocks anything, both
+  belong to the operator.** *First:* measure 2 of the ADR is meant to make unintended
+  overflows „laut statt still"; it cannot, because `-fwrapv` from measure 1 switches off
+  exactly this sanitizer check (evidence in T7). I closed the gap with a fourth measure
+  instead of changing the ADR — that is my decision; whether the ADR is brought up to
+  date is not. *Second:* the first argument of the ADR presupposes that the saved game
+  will in future store the **state** instead of the action sequence; the consequences of
+  the ADR do not order this switch. Until then T22 holds unchanged, and from it follows
+  T52. If the switch is ordered, T52 becomes cheaper, but not superfluous.
+- **The plan value of 10 microseconds per world step is still an estimate.** The core now
+  exists in parts — fixed point, random, checksum, state, writer — but no world step, and
+  thus still no measured `ticks_je_sekunde`. If the measured value lies above 50 µs,
+  section 10 no longer carries, and then the market clearing must be built differently
+  than over 40 halving steps. That is the only number in this document that a check
+  during the build can overturn — and since T6b, it additionally carries the question
+  whether the division form explains the gap from the stack measurement.
+- **Whether the search bot at depth 1 is strong enough for Maß 2 to measure the game and
+  not the bot.** *What* it searches for has been decided since T44 and has no free
+  parameter left; open is only *how far*. Recomputed for R = 24: depth 2 costs per game
   `24 × (1 + 60 × 61) = 87.864`
-  statt 1.464 Weltschritte, Maß 2 und 3 zusammen **664 Millionen**, also 1,8 Stunden auf
-  einem Kern und **rund 14 Minuten auf acht** beim Planwert, im ungünstigen Fall 1,2 Stunden
-  auf acht. Das sprengt den Nachtlauf nicht, es verlegt ihn. Tiefe 2 ist damit kein
-  Ausschluss, sondern eine Entscheidung, die der Selbstspieler treffen darf, wenn Maß 2 mit
-  Tiefe 1 keinen Gewinner in allen drei Klassen findet.
-- **Die Zahlenwerte sämtlicher Schwellen und Elastizitäten.** Sie stehen nach T27 in der
-  Parameterdatei und werden vom Selbstspieler gesucht, nicht von mir gesetzt.
-- **Die konkrete Rangfolge im Heuristikbot** innerhalb einer Art. Modellierungsfrage des
-  Selbstspielers; die Architektur verlangt nur, dass sie fest, dokumentiert und
-  gleichstandsfrei ist.
-- **Die Ausschlussregel für Stützstellen mit `soll = 0` (T42) habe ich entschieden, nicht
-  offengelassen** — sie folgt dem Muster, das T24 für gefüllte Jahre schon setzt, und ohne
-  sie bricht der Rückvergleich an einem bilateralen Nullstrom ab. Sie ändert keine Schwelle.
-  Hält der Spielentwerfer sie für falsch, ist sie eine Zeile in T42 und sonst nichts.
-- **Die elf Startwerte in T46 habe ich ebenso entschieden statt zurückgegeben**, und der
-  Grund ist derselbe: Jeder von ihnen folgt aus einer Regel, die schon dasteht (Numéraire,
-  Zähler ohne Vorgeschichte, Aggregatblock ohne Regierung), keiner ist eine Wahl zwischen
-  zwei sinnvollen Zahlen. Eine Rückgabe hätte einen Lauf des Spielentwerfers gekostet und
-  dieselben elf Zahlen ergeben. Hält er eine für falsch, ist es eine Tabellenzeile.
-- **Die dreizehn Skalenklassen und die drei Übergänge habe ich entschieden statt
-  zurückgegeben**, aus demselben Grund wie die elf Startwerte: Eine Einheit ist keine
-  Spielfrage. Bei zweien ist der Spielraum trotzdem grösser als bei den übrigen, und ich
-  nenne sie, damit sie nicht als selbstverständlich durchgehen — der **Lobbypunkt** (T50;
-  jede andere gemeinsame Einheit für Druck und Gegendruck täte es auch, aber irgendeine muss
-  es geben) und die **Instrumentenstufe** der Finanzmarktregulierung (T5 Klasse 10; sie
-  könnte ebenso in Zehntausendsteln stehen, dann hiesse „ein Schritt" eine andere Zahl).
-  Beide sind je eine Zeile, falls der Spielentwerfer sie anders will.
+  instead of 1,464 world steps, Maß 2 and 3 together **664 million**, that is 1.8 hours
+  on one core and **around 14 minutes on eight** at the plan value, in the unfavourable
+  case 1.2 hours on eight. That does not burst the night run, it relocates it. Depth 2 is
+  thus not an exclusion but a decision the self-player may take if Maß 2 finds no winner
+  in all three classes at depth 1.
+- **The numeric values of all thresholds and elasticities.** Per T27 they stand in the
+  parameter file and are searched for by the self-player, not set by me.
+- **The concrete ranking in the heuristic bot** within a kind. A modelling question for
+  the self-player; the architecture demands only that it is fixed, documented and
+  tie-free.
+- **The exclusion rule for support points with `soll = 0` (T42) I decided, not left
+  open** — it follows the pattern T24 already sets for filled years, and without it the
+  backtest aborts at a bilateral zero flow. It changes no threshold. If the game designer
+  holds it to be wrong, it is one line in T42 and nothing else.
+- **The eleven start values in T46 I likewise decided instead of handing back**, and the
+  reason is the same: each of them follows from a rule that already stands (numéraire,
+  counter without history, aggregate block without government), none is a choice between
+  two sensible numbers. A hand-back would have cost a run of the game designer and
+  yielded the same eleven numbers. If it holds one to be wrong, it is a table row.
+- **The thirteen scale classes and the three transitions I decided instead of handing
+  back**, for the same reason as the eleven start values: a unit is not a game question.
+  For two of them the latitude is nevertheless larger than for the rest, and I name them
+  so they do not pass as self-evident — the **lobby point** (T50; any other common unit
+  for pressure and counter-pressure would do as well, but there has to be one) and the
+  **instrument tier** of the financial-market regulation (T5 class 10; it could just as
+  well stand in ten-thousandths, then „ein Schritt" would mean a different number). Both
+  are one line each, should the game designer want them otherwise.
 
-**Vier Beobachtungen an `spiel.md`, die ich melde statt zu ändern** (die Rolle verbietet
-mir, dem Entwurf zu widersprechen; keine blockiert den Bau). **Punkt 3 ist seit dem
-2026-09-04 erledigt und bleibt durchgestrichen stehen**, weil eine gelöschte Beobachtung
-nicht mehr zeigt, dass die Rückgabe funktioniert hat:
+**Four observations on `spiel.md` that I report instead of changing** (the role forbids
+me to contradict the design; none blocks the build). **Point 3 has been settled since
+2026-09-04 and remains standing struck through**, because a deleted observation no
+longer shows that the hand-back worked:
 
-1. Die Ergebnisskala trägt in der 30.000 ein echtes Literal, und das Band „überlebt" stösst
-   seit dem Wegfall der Kappung dagegen, sobald `R ≥ 27` — die Schranke ist jetzt scharf
-   statt grosszügig, in T40 nachgerechnet. Für 1997–2021 ist das folgenlos, und `spiel.md`
-   lässt das Fenster nur enger werden. T40 zieht die Schranke bei `R ≤ 26` in den
-   Jahrgangsbau, damit sie nicht erst in einer Ergebnisverteilung auffällt.
-2. **Zwei Adresspaare tragen denselben Wert.** `land.<L>.leitzins` steht im Aggregatblock
-   *und* als Instrumentenstand, `land.<L>.haushaltssaldo` ebenso; `spiel.md` zählt beide
-   auf, T15 führt beide, und die Sollmaske aus T38 schreibt beide. Die sauberere Fassung
-   hätte je Paar eine Adresse und käme auf **302 statt 310** (vier Länder mal zwei Paare;
-   die Restwelt hat keine Instrumente) — das ist eine Zeile in `spiel.md` und deshalb nicht
-   meine. Solange sie dasteht, gilt die Schreib- und Leseregel aus T49 und die
-   Gleichheitsprüfung in T30 Prüfung 2. **Es blockiert nichts; ungeregelt wäre es der
-   Fehlertyp „zwei Herren über eine Zahl", geregelt kostet es 64 Byte und einen Test.**
-3. **~~„Schaden" in Gegenkraft 5 ist eine Größe ohne Rechenvorschrift.~~ Erledigt am
-   2026-09-03 durch `spiel.md`, nachgetragen hier am 2026-09-04.** Der Punkt hat gefragt,
-   welche der drei Zahlen — Preisverschiebung mal Menge, Wertschöpfungsverlust,
-   Bewertungsverlust — gemeint ist. `spiel.md` hat **die erste** gewählt und die beiden
-   anderen einzeln widerlegt (der Wertschöpfungsverlust ist gegenüber dem Zoll blind, weil
-   Klasse 2 real ist; der Bewertungsverlust buchte Kanal 1 ein zweites Mal in Kanal 3). Die
-   Vorschrift steht im Abschnitt *Der Schaden in Gegenkraft 5, als Rechenvorschrift*, die
-   Größe als Nummer 22 in T48, die Einheit unverändert in T50. **Der Weg über die Rückgabe
-   war der billigere:** Hätte ich die Zahl gefüllt, stünde in Maß 2 meine Wahl, und die
-   Zollzeile hätte den Fehler bekommen, den `spiel.md` am 2026-09-03 an sich selbst gefunden
-   und beseitigt hat — sie maß bis dahin die Inflation und buchte sie als Lobbyschaden.
-   Zurückgegeben und einen Lauf gewartet zu haben, hat hier eine falsche Größe verhindert
-   und keine Zeit gekostet.
-4. **`fonds.sichtbarkeit` ist eine Adresse, Aktion 5 spricht von einer Position.**
-   `spiel.md` lässt den Fonds „eine Position öffentlich offenlegen", der Zustand führt aber
-   nur **eine** globale Sichtbarkeit und kein Offenlegungsmerkmal je Steckplatz. Ich lese das
-   als Anteil in Zehntausendsteln (T5 Klasse 4), den Aktion 5 um einen Parameterschritt hebt
-   oder senkt — das ist die einzige Lesart, die ohne neue Adressen auskommt. Meint der
-   Entwurf eine Offenlegung je Steckplatz, kostet das zwanzig Adressen und damit die Zahl
-   310; dann ist es keine Zeile mehr, sondern ein ADR.
+1. The result scale carries a true literal in the 30,000, and the band „überlebt" pushes
+   against it since the capping was dropped, as soon as `R ≥ 27` — the bound is now tight
+   instead of generous, recomputed in T40. For 1997–2021 this has no consequence, and
+   `spiel.md` only lets the window become narrower. T40 pulls the bound at `R ≤ 26` into
+   the vintage build, so that it does not first show up in a result distribution.
+2. **Two address pairs carry the same value.** `land.<L>.leitzins` stands in the
+   aggregate block *and* as instrument level, `land.<L>.haushaltssaldo` likewise;
+   `spiel.md` lists both, T15 carries both, and the target mask from T38 writes both. The
+   cleaner version would have one address per pair and come to **302 instead of 310**
+   (four countries times two pairs; the rest of world has no instruments) — that is one
+   line in `spiel.md` and therefore not mine. As long as it stands, the write-and-read
+   rule from T49 applies, and the equality check in T30 check 2. **It blocks nothing;
+   unregulated it would be the error type „zwei Herren über eine Zahl", regulated it
+   costs 64 bytes and one test.**
+3. **~~„Schaden" in counterforce 5 is a quantity without a computation rule.~~ Settled on
+   2026-09-03 by `spiel.md`, recorded here on 2026-09-04.** The point asked which of the
+   three numbers — price shift times quantity, value-added loss, valuation loss — is
+   meant. `spiel.md` chose **the first** and refuted the other two individually (the
+   value-added loss is blind to the tariff, because class 2 is real; the valuation loss
+   would book channel 1 a second time in channel 3). The rule stands in the section *Der
+   Schaden in Gegenkraft 5, als Rechenvorschrift*, the quantity as number 22 in T48, the
+   unit unchanged in T50. **The path via the hand-back was the cheaper one:** had I
+   filled the number, my choice would stand in Maß 2, and the tariff row would have
+   received the error that `spiel.md` found in itself on 2026-09-03 and removed — until
+   then it measured inflation and booked it as lobby damage. Having handed back and
+   waited one run prevented a wrong quantity here and cost no time.
+4. **`fonds.sichtbarkeit` is an address, action 5 speaks of a position.** `spiel.md` lets
+   the fund „eine Position öffentlich offenlegen", but the state carries only **one**
+   global visibility and no disclosure flag per slot. I read this as a share in
+   ten-thousandths (T5 class 4) that action 5 raises or lowers by one parameter step —
+   that is the only reading that gets by without new addresses. If the design means a
+   disclosure per slot, that costs twenty addresses and with it the number 310; then it
+   is no longer one line but an ADR.
 
 ## 13. Hinweis für den Projektmanager
 
