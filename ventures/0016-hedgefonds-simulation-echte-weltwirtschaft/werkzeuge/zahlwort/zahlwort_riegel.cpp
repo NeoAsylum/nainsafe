@@ -120,9 +120,26 @@
 //! **vorhandene** Nummer der Tabelle kommt eine weitere Deklaration. Damit bleibt die
 //! Nummernzaehlung, wo sie war, und nur die Zahl der Deklarationen steigt um eins --
 //! die Drift, gegen die Sorte 3 gebaut ist. Verlangt wird: die Zahl der Deklarationen
-//! genau eins hoeher, die Nummernmenge und die Maengelliste unveraendert, an Sorte 3
-//! **mehr** Abweichungen als vorher und an den Sorten 1 und 2 gleich viele. Faellt eine
-//! dieser Bedingungen aus, ist der Riegel taub und meldet **2** statt gruen.
+//! genau eins hoeher, die Nummernmenge und die Maengelliste unveraendert, an den Sorten
+//! 1 und 2 gleich viele Abweichungen wie vorher, und an Sorte 3 -- **je Fundstelle** --
+//! eine Zaehlung, die der weiteren Deklaration gefolgt ist, dazu mindestens eine
+//! Fundstelle, die das in ihrem Urteil zeigt. Faellt eine dieser Bedingungen aus, ist
+//! der Riegel taub und meldet **2** statt gruen.
+//!
+//! ### Je Fundstelle und nicht als Zahl der roten -- Paket 0213
+//!
+//! Bis 0213 verlangte die Probe an Sorte 3 *mehr* rote Fundstellen als vorher. Der Kopf
+//! traegt aber genau **eine** Fundstelle der Sorte 3 mit Zahlbehauptung (Zeile 32), und
+//! eine schon rote kann nicht roeter werden. Standen die Zahl der Deklarationen und ihr
+//! Zahlwort auseinander -- der eine Fall, fuer den Sorte 3 ueberhaupt gebaut ist --,
+//! saettigte der Zaehlvergleich: Die Probe schlug fehl, der Riegel gab **2 vor der
+//! ersten gedruckten Abweichung**, und seine Begruendung sagte das Gegenteil des
+//! Zutreffenden. Der beste Fall des Riegels war damit sein schlechtester.
+//!
+//! Verglichen wird deshalb, was an der Fundstelle selbst steht -- genannte Zahl,
+//! gehaltene Zaehlung, Urteil --, vor und nach dem Mutanten. Das antwortet in beide
+//! Richtungen: gruen nach rot, und rot nach weiter rot, aber gegen eine um eins hoehere
+//! Zaehlung.
 //!
 //! Der Mutant wird nur im Speicher gebildet; `werte.hpp` wird gelesen und nie
 //! geschrieben. Wer den roten Lauf selbst sehen will, ruft
@@ -997,13 +1014,72 @@ std::size_t rot_der_sorte(const Ergebnis& e, Sorte s) {
     return rot;
 }
 
+/// Die Sorte, an der die Empfindlichkeitsprobe misst. Sie steht als eigener Name da und
+/// nicht als Wort in der Bedingung: Die Gegenprobe `befunde/messung-0180/messen.py`
+/// verstellt genau diese Zeile, um zu zeigen, dass die Probe rot wird, wenn sie die
+/// falsche Sorte vergleicht. Eine Bedingung, von der niemand gezeigt hat, dass sie
+/// zuschlaegt, ist keine.
+constexpr Sorte SORTE_DER_PROBE = Sorte::Deklarationen;
+
+/// Was der Riegel an **einer** Fundstelle entschieden hat. Genannte Zahl, gehaltene
+/// Zaehlung und Urteil stehen einzeln da, weil die Probe sie einzeln vergleicht: Die
+/// Zaehlung muss sich bewegt haben, die Behauptung darf es nicht, und das Urteil ist
+/// das, woran sich die Bewegung zeigt.
+struct Sortenbild {
+    std::size_t zeile = 0;
+    Art art = Art::Keine;
+    std::size_t genannt = 0;
+    std::size_t gezaehlt = 0;
+    Urteil ergebnis = Urteil::Unbeteiligt;
+};
+
+std::vector<Sortenbild> bild_der_sorte(const Ergebnis& e, Sorte s) {
+    std::vector<Sortenbild> bild;
+    for (std::size_t i = 0; i < e.funde.size(); ++i) {
+        if (e.funde[i].sorte != s) {
+            continue;
+        }
+        Sortenbild eintrag;
+        eintrag.zeile = e.funde[i].zeile;
+        eintrag.art = e.funde[i].behauptung.art;
+        eintrag.genannt = e.funde[i].behauptung.zahl;
+        eintrag.gezaehlt = e.funde[i].gezaehlt;
+        eintrag.ergebnis = e.funde[i].ergebnis;
+        bild.push_back(eintrag);
+    }
+    return bild;
+}
+
+/// Das Bild als Text, fuer die Meldung. Es steht in jeder Fehlermeldung der Probe: Wer
+/// liest, dass die Probe verfehlt ist, soll nicht raten muessen, was sich bewegt hat.
+std::string bildtext(const std::vector<Sortenbild>& bild) {
+    if (bild.empty()) {
+        return "keine Fundstelle";
+    }
+    std::ostringstream aus;
+    for (std::size_t i = 0; i < bild.size(); ++i) {
+        if (i > 0) {
+            aus << "; ";
+        }
+        aus << "Zeile " << bild[i].zeile << ": ";
+        if (bild[i].art == Art::Keine) {
+            aus << "ohne Zahlbehauptung";
+        } else {
+            aus << (bild[i].art == Art::Kardinal ? "kardinal " : "ordnung ")
+                << bild[i].genannt << " gegen " << bild[i].gezaehlt << " -> "
+                << (bild[i].ergebnis == Urteil::Rot ? "rot" : "gruen");
+        }
+    }
+    return aus.str();
+}
+
 struct Probe {
     bool bestanden = false;
     std::string warum;
     std::size_t deklarationen_vorher = 0;
     std::size_t deklarationen_nachher = 0;
-    std::size_t rot_vorher = 0;
-    std::size_t rot_nachher = 0;
+    std::string bild_vorher;
+    std::string bild_nachher;
 };
 
 /// Zeigen, dass der Riegel rot werden **kann**, und zwar an der Sorte, um die es geht.
@@ -1013,7 +1089,8 @@ struct Probe {
 Probe empfindlichkeitsprobe(std::string_view text, const Ergebnis& bestand) {
     Probe p;
     p.deklarationen_vorher = bestand.zaehlung.deklarationen;
-    p.rot_vorher = rot_der_sorte(bestand, Sorte::Deklarationen);
+    const std::vector<Sortenbild> vorher = bild_der_sorte(bestand, SORTE_DER_PROBE);
+    p.bild_vorher = bildtext(vorher);
     if (bestand.zaehlung.nummern.empty()) {
         p.warum = "keine Nummer der Tabelle, unter die der Mutant eine Deklaration "
                   "setzen koennte";
@@ -1026,7 +1103,8 @@ Probe empfindlichkeitsprobe(std::string_view text, const Ergebnis& bestand) {
     }
     const Ergebnis nach = pruefe(mutant);
     p.deklarationen_nachher = nach.zaehlung.deklarationen;
-    p.rot_nachher = rot_der_sorte(nach, Sorte::Deklarationen);
+    const std::vector<Sortenbild> nachher = bild_der_sorte(nach, SORTE_DER_PROBE);
+    p.bild_nachher = bildtext(nachher);
     if (!nach.zaehlung.brauchbar) {
         p.warum = "der Mutant ist unbrauchbar: " + nach.zaehlung.warum;
         return p;
@@ -1052,9 +1130,63 @@ Probe empfindlichkeitsprobe(std::string_view text, const Ergebnis& bestand) {
                   "die Zahlen eines Satzes nicht";
         return p;
     }
-    if (p.rot_nachher <= p.rot_vorher) {
-        p.warum = "der Mutant bleibt an Sorte 3 gruen -- der Riegel liest das Zahlwort "
-                  "vor 'Deklarationen' nicht oder haelt es gegen die falsche Zaehlung";
+    // Ab hier der Vergleich je Fundstelle statt der Zahl der roten (Paket 0213). Erst
+    // muss dieselbe Menge Fundstellen dastehen und dasselbe behaupten -- sonst
+    // vergleicht der Rest zwei verschiedene Stellen miteinander.
+    if (nachher.size() != vorher.size()) {
+        p.warum = "der Mutant hat die Fundstellen der Sorte 3 veraendert -- er bringt "
+                  "eine eigene mit oder verdeckt eine vorhandene, und dann steht der "
+                  "Vergleich fuer eine andere Stelle als der davor";
+        return p;
+    }
+    for (std::size_t i = 0; i < vorher.size(); ++i) {
+        if (vorher[i].art != nachher[i].art || vorher[i].genannt != nachher[i].genannt) {
+            p.warum = "eine Fundstelle der Sorte 3 behauptet nach dem Mutanten etwas "
+                      "anderes als davor -- der Mutant soll die Zaehlung bewegen und "
+                      "nicht den Satz";
+            return p;
+        }
+    }
+
+    // Eine Ordnungszahl behauptet nur, dass es mindestens so viele sind; eine weitere
+    // Deklaration kann sie nicht widerlegen. Sie taugt deshalb nicht als Zeuge, und
+    // gezaehlt werden hier allein die Kardinalzahlen.
+    std::size_t kardinale = 0;
+    std::size_t gefolgt = 0;
+    std::size_t gezeigt = 0;
+    for (std::size_t i = 0; i < vorher.size(); ++i) {
+        if (vorher[i].art != Art::Kardinal) {
+            continue;
+        }
+        ++kardinale;
+        if (nachher[i].gezaehlt == vorher[i].gezaehlt + 1) {
+            ++gefolgt;
+        }
+        // Zwei Weisen, in denen sich die bewegte Zaehlung im Urteil zeigt: Die
+        // Fundstelle wird rot, oder sie wechselt die Farbe. Die erste deckt den Fall
+        // ab, an dem der Zaehlvergleich saettigte -- eine Behauptung, die schon vorher
+        // rot war und es gegen die neue Zaehlung bleibt.
+        if (nachher[i].ergebnis == Urteil::Rot
+            || nachher[i].ergebnis != vorher[i].ergebnis) {
+            ++gezeigt;
+        }
+    }
+    if (kardinale == 0) {
+        p.warum = "keine Fundstelle der Sorte 3 behauptet eine Kardinalzahl -- eine "
+                  "Ordnungszahl laesst sich durch eine weitere Deklaration nicht "
+                  "widerlegen, und ohne Kardinalzahl hat die Probe keinen Gegenstand";
+        return p;
+    }
+    if (gefolgt != kardinale) {
+        p.warum = "die Zaehlung, gegen die Sorte 3 gehalten wird, ist der weiteren "
+                  "Deklaration nicht gefolgt -- der Riegel haelt das Zahlwort vor "
+                  "'Deklarationen' gegen die falsche Zaehlung";
+        return p;
+    }
+    if (gezeigt == 0) {
+        p.warum = "keine Fundstelle der Sorte 3 zeigt die bewegte Zaehlung in ihrem "
+                  "Urteil -- der Riegel liest das Zahlwort vor 'Deklarationen' nicht "
+                  "oder faellt darueber kein Urteil";
         return p;
     }
     p.bestanden = true;
@@ -1689,20 +1821,20 @@ int main(int argc, char** argv) {
                          "Der Riegel hat den Bestand gelesen, aber er zeigt nicht mehr, dass "
                          "er rot werden\nkann. Ein Riegel, der nie rot wird, prueft nichts; "
                          "sein gruener Lauf ist deshalb\nhier nichts wert. Gezaehlt wurden "
-                         "%zu Deklarationen am Bestand und %zu am\nMutanten, rot an Sorte 3 "
-                         "waren %zu und %zu.\n",
+                         "%zu Deklarationen am Bestand und %zu am\nMutanten. Sorte 3 stand "
+                         "davor auf\n  %s\nund danach auf\n  %s\n",
                          p.warum.c_str(), p.deklarationen_vorher, p.deklarationen_nachher,
-                         p.rot_vorher, p.rot_nachher);
+                         p.bild_vorher.c_str(), p.bild_nachher.c_str());
             return 2;
         }
         std::fprintf(stdout,
                      "zahlwort_riegel, Empfindlichkeitsprobe: mit einer weiteren "
                      "Deklaration unter einer\nvorhandenen Nummer zaehlt der Riegel %zu statt "
-                     "%zu Deklarationen und meldet %zu statt\n%zu Abweichungen der Sorte "
-                     "'Deklarationen' -- die Sorten 1 und 2 bleiben, wie sie\nwaren. Der "
-                     "rote Lauf im Wortlaut: %s %s.\n",
-                     p.deklarationen_nachher, p.deklarationen_vorher, p.rot_nachher,
-                     p.rot_vorher, argumente[1].c_str(),
+                     "%zu Deklarationen -- die Sorten 1 und 2\nbleiben, wie sie waren. Sorte "
+                     "3 stand davor auf\n  %s\nund danach auf\n  %s\nDer rote Lauf im "
+                     "Wortlaut: %s %s.\n",
+                     p.deklarationen_nachher, p.deklarationen_vorher,
+                     p.bild_vorher.c_str(), p.bild_nachher.c_str(), argumente[1].c_str(),
                      std::string(BRUCHSCHALTER).c_str());
     }
 

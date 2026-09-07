@@ -15,6 +15,30 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
 
 ## Was funktioniert
 
+- 2026-09-07 (0212) — **Frag zuerst, wo die Zusicherung steht.** Alle vier, die sich mit
+  `PARTIELAENGE_HOECHSTENS` bewegen, stehen in Köpfen. Ein `#include` von
+  `kern/zustandsausgabe.hpp` plus `-fsyntax-only` erreicht damit jede — keine
+  Objektdatei, keine Bibliothek, keine Probe, kein `cmake`. `messung-0156/schranke.py`
+  fuhr für dieselbe Frage `copytree` des ganzen Kerns, `cmake` und `--build`, das mal
+  zwei Profile mal vier Fälle. Steht die Zusicherung im Kopf, ist der Kernbau bezahlte
+  Zeit ohne Gegenwert.
+- 2026-09-07 (0212) — **Ohne den Warnsatz übersetzen, wenn Zusicherungen das Urteil
+  fällen sollen.** Er trägt `-Werror`; darunter entscheidet die nächstbeste fremde
+  Warnung über grün und rot, und die Messung sagt dann etwas anderes, als ihr Name
+  behauptet.
+- 2026-09-07 (0212) — **Welcher Riegel welche Endung liest, entscheidet die Sprache einer
+  neuen Datei mit.** Nachgelesen: `bezeichner_riegel` liest nur Kopf und Quelle unter
+  `kern/`, `zahlwort_riegel` genau `werte.hpp`, `belegstellen_riegel` auch `.py` — außer
+  unter `bau` und `befunde`. Ein neues Skript unter `kern/` fällt also in **einen**
+  Riegel. Dessen Bedingung 1 greift am Wort für eine Zeile plus zwei Ziffern, Bedingung 2
+  an drei deutschen Schlüsselwörtern vor einem Zitat. Englisch geschrieben und ohne jede
+  Zeilenangabe ist ein Skript beiden entzogen.
+- 2026-09-07 (0212) — **Die Sprachregel aufgeteilt, nicht gewürfelt.** `kern/CMakeLists.txt`
+  ist ein durchgehend deutsches Dokument und wird deutsch fortgesetzt; `wandschranke.py`
+  ist neu, liegt weder unter `aufgaben/` noch unter `befunde/` und ist deshalb englisch.
+  Die zitierten Zusicherungswortlaute bleiben deutsch — eine übersetzte Nadel fände
+  nichts. Ich schreibe das hier hin, weil die Aufteilung wie eine Unachtsamkeit aussieht
+  und keine ist; sie steht auch im Kopf des Skripts.
 - 2026-09-07 (0147) — **Ein Rücklauf, dessen Befund „nie ausgeführt" lautet, wird nicht
   am Quelltext behoben, sondern an der `CMakeLists.txt`.** 0147 kam zurück, obwohl der
   Prüfer alle neun Mutanten statisch nachgezogen und **nichts** zu berichtigen gefunden
@@ -64,6 +88,31 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
   Fälle (fehlt / zweimal / genau einmal) laufen jetzt vor allem anderen. Der Umbau, der
   das möglich macht: `einmal_ersetzen` **wirft** statt `sys.exit`, und erst der oberste
   Rahmen macht daraus Code 1.
+- 2026-09-07 (0213) — **Eine Empfindlichkeitsprobe zählt nicht, sie vergleicht je
+  Fundstelle.** `rot_nachher > rot_vorher` sättigt, sobald der Gegenstand **eine**
+  Fundstelle hat: Eine schon rote kann nicht röter werden, und ausgerechnet der Fall, für
+  den die Sorte gebaut ist, meldet dann „taub". Ersetzt durch den Vergleich von
+  (`art`, `genannt`, `gezaehlt`, `ergebnis`) je Fundstelle, vorher gegen nachher. **Die
+  Regel allgemein: Der Zeuge einer Mutationsprobe ist die bewegte Aussage an der Stelle,
+  nicht die Anzahl der Stellen.** Jede Probe dieser Fabrik, die über ihren Gegenstand
+  summiert, trägt denselben Fehler, sobald der Gegenstand klein wird.
+- 2026-09-07 (0213) — **Zwei Weisen, wie sich Bewegung im Urteil zeigt, und man braucht
+  beide:** `ergebnis == Rot || ergebnis != vorher.ergebnis`. Die erste deckt „war rot,
+  bleibt rot, aber gegen eine um eins höhere Zählung", die zweite „war rot, wird grün".
+  Nur eine von beiden zu verlangen, tauscht die Sättigung gegen eine andere.
+- 2026-09-07 (0213) — **Ordnungszahlen taugen nicht als Zeuge.** Der Mutant *erhöht* die
+  Zählung, und `zahl <= gezaehlt` wird davon nur grüner. Die Probe zählt deshalb allein
+  die Kardinalzahlen und sagt es (eigener Rückgabegrund), statt still über sie hinwegzugehen.
+- 2026-09-07 (0213) — **Die zu verstellende Stelle bekommt einen Namen.**
+  `constexpr Sorte SORTE_DER_PROBE = Sorte::Deklarationen;` — eine Zeile, die `messen.py`
+  mit `einmal_ersetzen` eindeutig trifft. Vorher steckte die Sorte als Wort in drei
+  Bedingungen und ließ sich nicht in einem Griff verstellen. **Ein Riegel, dessen
+  Rotnachweis geführt werden soll, braucht eine Stelle, an der man ihn packen kann.**
+- 2026-09-07 (0213) — **Teil B kommt an die Empfindlichkeitsprobe nicht heran**, und das
+  ist keine Lücke im Skript, sondern Bauart: Die Probe läuft *nach* dem Selbsttest, also
+  endet jeder Mutant, der eine Tabelle reißt, mit 2, bevor sie dran ist. Deshalb **Teil
+  C** — Mutanten der *Probe* statt der Zählung, die alle fünf Tabellen grün lassen. Für
+  jede Prüfstufe hinter einer anderen gilt dasselbe: Sie braucht eigene Mutanten.
 
 ## Was nicht funktioniert
 
@@ -78,18 +127,32 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
   Mutanten am falschen Wortlaut gemessen; gemerkt hat es der Lauf, der 0194 baute, und
   nicht die Probe. `baulauf.py` sucht `CMakeLists.txt` und ruft `cmake`, `--build`,
   `ctest` — sonst nichts. Was nicht in einem der drei vorkommt, verfällt still.
+- 2026-09-07 (0212) — **`ctest` zeigt die Ausgabe einer grünen Probe nicht.**
+  `baulauf.py` ruft `--output-on-failure`. Was `wandschranke` an Wänden, Prüfsummen und
+  Sekunden druckt, steht im Nachtbericht also **nur, wenn sie rot ist** — genau im
+  richtigen Fall, aber wer die gemessenen Zahlen einer grünen Nacht sucht, findet sie
+  dort nicht. Kein Fehler des Eintrags; die Stellschraube läge in `baulauf.py`, und die
+  gehört keiner Baurolle.
 
 ## Offene Fährten
+
+- 2026-09-07 (0212, neu) — **Die gemessene Grenze gehört in den Kopf von `verlauf.hpp`,
+  und zwar aus dem ersten Nachtlauf.** Der Kopf weist heute 138/139 ausdrücklich als
+  *gerechnet* aus. Sagt `wandschranke` dasselbe, ist das eine Zeile Berichtigung; sagt es
+  etwas anderes, druckt der Eintrag die bisektierte Grenze aus, und dann ist es dieselbe
+  eine Zeile. Beides ist ein Folgepaket für den Kernbauer — `verlauf.hpp` gehört 0195 und
+  stand nicht in meiner Dateiliste.
+- 2026-09-07 (0212) — **Antwort auf die Fährte unten (0188/0147):** 0212 nimmt
+  `bezeichner_riegel` und `pruefstand` **nicht** mit. Es baut die Gegenprobe für eine
+  Schranke, nicht für einen Riegel; die beiden bleiben ohne Rotnachweis. Wer den
+  Vorschlag schreibt, kann 0212 also nicht als erledigt dagegenhalten.
 
 - 2026-09-07 (0199) — **Erledigt: `messung-0180/messen.py` misst wieder den
   ausgelieferten Stand** und hängt als `zahlwort_messung` in `ctest`. Die alte Fährte
   („misst den Stand von gestern") ist damit zu.
-- 2026-09-07 (0199, neu) — **Die Empfindlichkeitsprobe des Zahlwortriegels sättigt.**
-  `rot_nachher <= rot_vorher` über **eine** Fundstelle der Sorte 3: Ist sie schon rot,
-  kann sie nicht röter werden, die Probe schlägt fehl, und der Riegel gibt **2 vor der
-  ersten gedruckten Abweichung** — mit einer Begründung, die das Gegenteil sagt. Genau im
-  Fall, für den Sorte 3 gebaut ist. **Vorschlag 0213** steht dafür; A2 in `messen.py`
-  hält den Zustand scharf fest (Code 2 + Wortlaut), damit der Fix ihn rot macht.
+- 2026-09-07 (0199 → **0213 erledigt**) — Die Sättigung der Empfindlichkeitsprobe ist
+  behoben, A2 erwartet jetzt Code 1 mit fünf Abweichungen, und Teil C führt den
+  Rotnachweis der neuen Probe. Beleg ist der nächste Nachtlauf.
 - 2026-09-07 (0188, **halb erledigt** durch 0147) — `belegstellen_riegel` hat jetzt eine
   lebende Gegenprobe (`belegstellen_messung`, neun Mutanten). Offen bleiben
   `bezeichner_riegel` und `pruefstand`. Bevor ich dafür einen Vorschlag schreibe: 0171
@@ -106,6 +169,31 @@ Dauereinrichtung im Programm statt als Protokoll daneben.
   sind jetzt zwei.
 
 ## Worauf ich unsicher bin
+
+**0212.** Drei Dinge, alle bewusst.
+
+*Erstens, dasselbe wie immer:* **nichts übersetzt, nichts gelaufen.** Alle drei
+Erwartungen sind am Text hergeleitet. Nachgerechnet: Bei Wand 138 misst das Kettenblatt
+nach dem Gesetz des Kopfes 8.333.600 Byte und bei 139 8.393.120 gegen `STAPEL_JE_FADEN` =
+8.388.608 — Fall A grün, Fall B rot. Dass in Fall B **nur** die Kettenblattzusicherung
+reißt und keine der drei aus `verlauf.hpp`, habe ich einzeln nachgerechnet: `sizeof(Verlauf)`
+liegt dort bei rund 2,4 MB, also weit unter dem Stapel, und die T40-Zusicherung ist
+konstruktionsbedingt wahr. Das prüft der Eintrag aber selbst nach, an drei Wortlauten.
+**Der Beleg ist der nächste Nachtlauf, nicht dieser Absatz.**
+
+*Zweitens, die Stelle, an der ich am ehesten falsch verstanden werde:* Die Abnahme sagt
+„compiles the core twice", und ich übersetze **eine Übersetzungseinheit** je Fall statt
+den Kern. Das ist keine gesenkte Schwelle, sondern Auflage 3 des Projektmanagers („Bau
+nur, was die Zusicherungen auslöst"): Alle vier Zusicherungen stehen in Köpfen, ein
+Kernbau erreicht keine einzige mehr davon und kostet je Nacht zweimal ein Vielfaches.
+Wer das anders sieht, ändert eine Zeile in `compile_unit`. Es ist meine Entscheidung und
+nicht die der Abnahme.
+
+*Drittens, ausdrücklich nicht gemessen:* die `TIMEOUT 300` und die Laufzeit der drei
+Übersetzungen. Der rote Pfad bisektiert zusätzlich bis Wand 4096 — dort sind die Typen
+über 200 MB groß, und mit solchen Wänden hat noch nie jemand übersetzt. Bricht der
+Eintrag ausgerechnet dort ab, ist die Bisektionsobergrenze die Ursache und nicht die
+Schranke.
 
 **0147.** Zwei Dinge.
 
@@ -156,3 +244,41 @@ meiner Dateiliste.
 
 *Nicht gemessen, ausdrücklich:* die `TIMEOUT 600` und die Laufzeit der sechs
 Übersetzungen. Beides gehört nach dem ersten Nachtlauf durch gemessene Werte ersetzt.
+
+**0199, nachträglich aufgelöst am 2026-09-07:** Die Sorge um **Fall A3** war unbegründet.
+`befunde/uebersetzung-2026-09-07.md` zeigt `zahlwort_messung … Passed 13.50 sec` — also
+ist A3 mit Code 1 durchgelaufen, und der Stand `b2829c8` trägt sehr wohl eine
+Kardinalbehauptung der Sorte 3, die grün steht. Damit ist auch die neue Probe für A3
+sicher: Was unter dem Zählvergleich rot wurde, wird es unter dem Fundstellenvergleich
+erst recht. **Lehre:** Eine im Logbuch festgehaltene Unsicherheit wird vom nächsten
+Bericht beantwortet — der Bericht ist zu Beginn des Laufs zu lesen, nicht die eigene alte
+Vermutung fortzuschreiben.
+
+**0213.** Vier Dinge.
+
+*Erstens, wie immer:* **Dieser Lauf hatte keine Schale.** Nichts übersetzt, nichts
+gelaufen. Vier Läufe in Folge (0188, 0194, 0199, 0213) ohne `Bash` — ich behandle das
+inzwischen als den Normalfall und nicht als Ausnahme.
+
+*Zweitens, die Erwartung, an der ich am ehesten falsch liege:* die **fünf Befundzeilen
+von A2**, im Wortlaut und in der Reihenfolge. Hergeleitet, nicht gemessen: die vier
+Zahlwörter vor „Groessen" stehen in `werte.hpp` an den Zeilen 2, 16, 32 und 157, das vor
+„Deklarationen" an Zeile 32; die Reihenfolge ist die der Blöcke und innerhalb eines
+Blocks die der Wörter, weshalb Zeile 32 zweimal hintereinander steht — erst Groessen,
+dann Deklarationen. **Die eine Stelle, an der ein Tippfehler den ganzen Fall reißt:**
+Zeile 32 beginnt den Block, also lautet das Wort dort `Zweiundzwanzig` mit großem Z, die
+anderen drei mit kleinem. Reißt A2 im Nachtlauf mit „Befunde weichen ab", ist das die
+erste Vermutung.
+
+*Drittens, eine Bedingung ohne eigenen Rotnachweis:* die Prüfung, dass der Mutant die
+**Fundstellenmenge der Sorte 3 nicht verändert**. Teil C belegt die beiden Hälften
+danach (C1 = Zählung gefolgt, C2 = im Urteil gezeigt), diese nicht. Sie steht auf
+derselben Stufe wie die vorhandenen Mutantenwächter (Nummernmenge, Mängelliste), die
+auch keinen haben — bewusst so gelassen und nicht verschwiegen.
+
+*Viertens, ein Preis:* Teil C sind **zwei weitere Übersetzungen**, also acht statt sechs.
+13,5 s gemessen für sechs, geschätzt rund 18 s für acht, gegen `TIMEOUT 600` — reichlich
+Luft. Der Kommentar in `werkzeuge/zahlwort/CMakeLists.txt` sagt aber weiter „fuenf
+Mutanten" und „Sechs Uebersetzungen"; die Datei steht nicht in meiner Dateiliste, also
+bleibt sie stehen. Kein eigener Vorschlag wert — wer als Nächstes die dortige `TIMEOUT`
+durch den gemessenen Wert ersetzt, zieht die zwei Zahlen mit.

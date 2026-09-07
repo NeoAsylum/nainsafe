@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Messung zu Paket 0180, auf den Stand nach 0194 nachgezogen in Paket 0199.
+"""Messung zu Paket 0180, nachgezogen in 0199 (Stand nach 0194) und in 0213 (Teil C).
 
 Laeuft als Probe `zahlwort_messung` unter `ctest`. Von Hand, aus beliebigem
 Verzeichnis -- die Wurzel des Vorhabens kommt aus dem eigenen Pfad:
@@ -10,7 +10,7 @@ Das Skript ist selbst ein Riegel und kein Bericht: Zu jedem Fall steht die Erwar
 hier im Skript, und bei der ersten Abweichung endet der Lauf mit Code 1. Wer nur die
 Ausgabe liest, liest ein Ergebnis; wer den Code liest, liest ein Urteil.
 
-Gemessen werden zwei Sorten Fall, und sie beantworten zwei verschiedene Fragen:
+Gemessen werden drei Sorten Fall, und sie beantworten drei verschiedene Fragen:
 
   **Teil A -- wird der Riegel rot, wenn die Datei falsch wird?** Drei Staende von
   `werte.hpp`, jeder in einer eigenen Wegwerfwurzel, dazu der heutige Stand als
@@ -22,10 +22,15 @@ Gemessen werden zwei Sorten Fall, und sie beantworten zwei verschiedene Fragen:
   fremde Tabelle mitreisst, ist genauso ein Fehlschlag wie einer, bei dem gar nichts
   reisst: Im ersten Fall misst die Tabelle nicht, was sie zu messen vorgibt.
 
-Der fuenfte Mutant ist der wichtigste. Er verstellt **nur die Verdrahtung** -- die
-Zaehlung wird an die falsche Sorte gebunden -- und laesst jeden Baustein unberuehrt.
-Die vier Bausteintabellen bleiben deshalb gruen, und nur die fuenfte reisst. Genau das
-ist ihre Rechtfertigung.
+  **Teil C -- wird die Empfindlichkeitsprobe rot, wenn man sie neutralisiert?** Zwei
+  Mutanten, die je eine Haelfte ihres Vergleichs ausser Kraft setzen und dabei alle
+  fuenf Tabellen gruen lassen. Sie sind der Rotnachweis der Probe selbst (Paket 0213);
+  Teil B kommt an sie nicht heran, weil sie erst nach dem Selbsttest laeuft.
+
+Der fuenfte Mutant von Teil B ist der wichtigste dort. Er verstellt **nur die
+Verdrahtung** -- die Zaehlung wird an die falsche Sorte gebunden -- und laesst jeden
+Baustein unberuehrt. Die vier Bausteintabellen bleiben deshalb gruen, und nur die
+fuenfte reisst. Genau das ist ihre Rechtfertigung.
 
 ## Die Faelle heissen bei ihrem Wortlaut und nicht bei ihrer Nummer
 
@@ -291,30 +296,31 @@ try:
          einmal_ersetzen(heutig, "die zweiundzwanzig abgeleiteten Groessen",
                          "die einundzwanzig abgeleiteten Groessen", "A1"),
          1, ["Zeilennummer 2: 'einundzwanzig Groessen' nennt 21, gezaehlt sind 22"], ""),
-        # A2 endet seit 0194 mit **2 und nicht mit 1**, und das ist ein Befund gegen den
-        # Riegel und keine Eigenheit dieses Falles:
+        # A2 ist der Fall, den Paket 0213 zurechtgerueckt hat, und er ist der schaerfste
+        # in Teil A: Der Mutant setzt eine 23. Nummer ein, ohne eines der vier Zahlwoerter
+        # nachzuziehen. Damit weichen **fuenf** Behauptungen zugleich ab -- vier an den
+        # Groessen (Zeilen 2, 16, 32, 157) gegen 23 gezaehlte Nummern und eine an den
+        # Deklarationen (Zeile 32) gegen 24 gezaehlte Zeilen.
         #
-        # Der Mutant setzt eine 23. Nummer ein. Damit wird die Behauptung 'dreiundzwanzig
-        # Deklarationen' (Zeile 32) schon am Bestand rot -- rot_vorher der Sorte 3 ist 1.
-        # Die Empfindlichkeitsprobe im Riegel verlangt danach `rot_nachher > rot_vorher`.
-        # Es gibt aber nur *eine* Fundstelle der Sorte 3 in der Datei; sie ist schon rot
-        # und kann nicht roeter werden. Die Probe schlaegt fehl, der Riegel gibt 2, und
-        # seine Begruendung ("der Mutant bleibt an Sorte 3 gruen") sagt das Gegenteil des
-        # Zutreffenden. Fuenf belegte Abweichungen -- vier an den Groessen (Zeilen 2, 16,
-        # 32, 157) und eine an den Deklarationen (Zeile 32) -- werden dabei gar nicht
-        # erst gedruckt.
-        #
-        # Die Erwartung steht so scharf da, wie der Zustand ist: Code 2 und dieser Satz.
-        # Wer die Saettigung im Riegel behebt -- Vorschlag 0213 --, macht diesen Fall rot
-        # und schreibt hier Code 1 mit den fuenf Abweichungen hin. Abgeschwaecht ist
-        # nichts: vorher stand hier eine Erwartung ohne Grund, jetzt eine mit.
+        # Von 0194 bis 0213 stand hier Code **2** und keine einzige Abweichung: Die
+        # Fundstelle der Sorte 3 war schon am Bestand rot, die Empfindlichkeitsprobe
+        # verglich die *Zahl* der roten Fundstellen, und eine schon rote kann nicht
+        # roeter werden. Der Riegel brach vor der ersten gedruckten Abweichung ab, mit
+        # einer Begruendung, die das Gegenteil sagte. Seit 0213 vergleicht die Probe je
+        # Fundstelle; dieser Fall belegt, dass genau die Saettigung weg ist.
         ("A2 Deklaration ergaenzt, Zahlwort nicht nachgezogen",
          einmal_ersetzen(
              heutig, "\n}  // namespace kern::werte\n",
              "\n/// **T48 Nr. 23** -- eine neue Groesse, und niemand zieht das Zahlwort nach.\n"
              "[[nodiscard]] zustand::i64 neuwert(const zustand::Zustand& z);\n"
              "\n}  // namespace kern::werte\n", "A2"),
-         2, [], "der Mutant bleibt an Sorte 3 gruen"),
+         1,
+         ["Zeilennummer 2: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23",
+          "Zeilennummer 16: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23",
+          "Zeilennummer 32: 'Zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23",
+          "Zeilennummer 32: 'dreiundzwanzig Deklarationen' nennt 23, gezaehlt sind 24",
+          "Zeilennummer 157: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23"],
+         ""),
         (f"A3 Stand vor 0155 ({VORSTAND})", vorher, 1,
          ["Zeilennummer 73: 'eine Jahrgangskonstante[n]' nennt 1, gezaehlt sind 2"], ""),
     ]
@@ -332,8 +338,9 @@ try:
             melde(f"{name}: Code {code} statt {soll_code}")
         if gefunden != soll_zeilen:
             melde(f"{name}: Befunde weichen ab -- erwartet {soll_zeilen}")
-        # Der Grund gehoert zur Erwartung: Ein Code allein sagt nicht, warum er kam --
-        # und bei A2 kommt die 2 aus einer anderen Ecke als bei einem fehlenden Pruefling.
+        # Der Grund gehoert zur Erwartung: Ein Code allein sagt nicht, warum er kam. A0
+        # verlangt deshalb den Satz der Empfindlichkeitsprobe -- eine 0 ohne ihn waere
+        # ein gruener Lauf, in dem die Probe gar nicht stattgefunden hat.
         if soll_grund and soll_grund not in (aus + err):
             melde(f"{name}: '{soll_grund}' steht in der Ausgabe nicht -- der Code stimmt, "
                   f"aber nicht aus dem erwarteten Grund")
@@ -416,6 +423,58 @@ try:
         if nur_tabelle and fremde:
             melde(f"{name}: fremde Tabellen mitgerissen ({sorted(fremde)}) -- der Nachweis "
                   f"fuer die Verdrahtungstabelle haengt daran, dass kein Baustein beruehrt ist")
+
+    # -----------------------------------------------------------------------
+    # Teil C -- wird die Empfindlichkeitsprobe rot, wenn man sie neutralisiert?
+    # -----------------------------------------------------------------------
+    #
+    # Teil B misst die fuenf Selbsttesttabellen. An die Empfindlichkeitsprobe kommt er
+    # nicht heran: Sie laeuft erst **nach** dem Selbsttest und nur auf der wirklichen
+    # `werte.hpp`, und jeder Mutant, der die Zaehlung selbst verstellt, reisst schon
+    # eine Tabelle -- der Riegel endet dann mit 2, bevor die Probe ueberhaupt dran ist.
+    # M5 ist genau dieser Fall.
+    #
+    # Deshalb hier zwei Mutanten der **Probe** statt der Zaehlung. Beide lassen alle
+    # fuenf Tabellen gruen und muessen trotzdem mit 2 enden, und zwar mit dem Satz der
+    # Probe. Sie sind der Rotnachweis fuer die beiden Haelften des Vergleichs, den 0213
+    # eingesetzt hat: dass die Zaehlung der weiteren Deklaration **gefolgt** ist (C1),
+    # und dass sich das an einer Fundstelle im **Urteil zeigt** (C2).
+    #
+    # Ohne Teil C waere 0213 der Tausch einer Probe, die falsch rot wird, gegen eine,
+    # die gar nicht mehr rot wird -- und das ist die teurere Haelfte.
+
+    print("\n## Teil C: zwei Mutanten der Empfindlichkeitsprobe\n")
+
+    C_FAELLE = [
+        ("C1 die Probe vergleicht die falsche Sorte",
+         "constexpr Sorte SORTE_DER_PROBE = Sorte::Deklarationen;",
+         "constexpr Sorte SORTE_DER_PROBE = Sorte::Groessen;",
+         "die Zaehlung, gegen die Sorte 3 gehalten wird, ist der weiteren "
+         "Deklaration nicht gefolgt"),
+        ("C2 das Urteil an der Fundstelle bewegt sich nicht mehr",
+         "eintrag.ergebnis = e.funde[i].ergebnis;",
+         "eintrag.ergebnis = Urteil::Gruen;",
+         "keine Fundstelle der Sorte 3 zeigt die bewegte Zaehlung in ihrem Urteil"),
+    ]
+
+    for nr, (name, alt, neu, soll_grund) in enumerate(C_FAELLE, start=1):
+        mutant = uebersetze(einmal_ersetzen(rein, alt, neu, name), f"c{nr}")
+        code, aus, err = rufe(mutant, VORHABEN)
+        gerissen = sorted(f"{t} {f}" for t, f, _ in gerissene_faelle(err))
+        print(f"  {name}")
+        print(f"      Code {code} (erwartet 2), Selbsttest gerissen: "
+              f"{gerissen or 'nichts'}")
+        if code != 2:
+            melde(f"{name}: Code {code} statt 2 -- die Empfindlichkeitsprobe laesst sich "
+                  f"neutralisieren, ohne dass es auffaellt")
+        if soll_grund not in (aus + err):
+            melde(f"{name}: '{soll_grund}' steht in der Ausgabe nicht -- der Code stimmt, "
+                  f"aber die 2 kommt aus einer anderen Ecke als der Empfindlichkeitsprobe")
+        # Reisst dabei eine Tabelle, endet der Riegel schon vor der Probe, und der Fall
+        # zeigt ueber sie nichts.
+        if gerissen:
+            melde(f"{name}: der Selbsttest ist mitgerissen ({gerissen}) -- dann endet der "
+                  f"Riegel vor der Probe und dieser Fall belegt sie nicht")
 
     # -----------------------------------------------------------------------
     # Der Nachweis, dass der reine Stand nicht schon von selbst rot ist
