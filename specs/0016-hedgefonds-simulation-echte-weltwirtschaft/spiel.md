@@ -2766,184 +2766,190 @@ vintage.
 
 ## Offene Entwurfsfragen
 
-- **Die schwerste: Ist der aggregierte Zollsatz der Weltbank verwendbar?** Er ist erkennbar
-  aus WITS abgeleitet und fällt damit möglicherweise unter die Drittanbieter-Ausnahme der
-  WDI-Lizenz. Ist er gesperrt, verliert der Rückvergleich das wichtigste seiner drei
-  verankerten Instrumente. Das ändert den Entwurf nicht — `technik.md` T26 hat den Fall
-  architektonisch aufgefangen —, aber es halbiert seinen Beleg. Zu prüfen, bevor gebaut
-  wird.
-- **Die übrigen WDI-Reihen unter der Drittanbieter-Ausnahme.** Zu prüfen sind nach der
-  Kennzeichnung des Architekten Nr. 7 (sektorale Beschäftigung, ILO-Schätzung), Nr. 8
-  (Verbraucherpreise, IWF-gestützt), Nr. 10 (Wechselkurs) und Nr. 13 (Zoll). Je Reihe ist
-  das Feld „Source" im Indikatorendatensatz zu lesen. Vier Abrufe, und die Frage ist
-  geschlossen — Aufgabe des Datenbauers, weil sie am Jahrgang hängt und nicht am Entwurf.
-- **Das Fenster ist entschieden und diese Frage geschlossen.** Sie hieß „Bleibt das Fenster
-  bei 1997–2021?" und lautete seit dem 2026-09-02 „19, 20 oder 24?". **Nein, und 20.** Das
-  Fenster ist **2001–2021**, `R = 20`, 21 Stützstellen; entschieden am 2026-09-03 in Paket
-  `0054-partielaenge-r-entscheiden`, begründet im Abschnitt *Die Partielänge R*, nachgezogen
-  in allen vier Maßvorschriften und in der Nachziehtabelle für den Architekten benannt. Der
-  Verdachtsfall aus `technik.md` T24 — die chinesische und die brasilianische Leitzinsreihe
-  der neunziger Jahre — ist damit gegenstandslos: Die neunziger Jahre liegen außerhalb des
-  Fensters, und der Leitzins ist keine Sollreihe mehr.
+- **The hardest: Is the World Bank's aggregated tariff rate usable?** It is recognisably
+  derived from WITS and may therefore fall under the third-party exception of the WDI
+  licence. If it is locked, the backtest loses the most important of its three anchored
+  instruments. That does not change the design — `technik.md` T26 has absorbed the case
+  architecturally — but it halves its evidence. To be checked before anything is built.
+- **The remaining WDI series under the third-party exception.** Per the architect's
+  marking, the ones to check are Nr. 7 (sectoral employment, ILO estimate), Nr. 8
+  (consumer prices, IMF-based), Nr. 10 (exchange rate) and Nr. 13 (tariff). For each
+  series, read the field „Source" in the indicator dataset. Four retrievals and the
+  question is closed — a task for the data builder, because it hangs on the vintage, not
+  on the design.
+- **The window is decided and this question is closed.** It was called „Bleibt das Fenster
+  bei 1997–2021?" and since 2026-09-02 read „19, 20 oder 24?". **No, and 20.** The window
+  is **2001–2021**, `R = 20`, 21 support points; decided on 2026-09-03 in package
+  `0054-partielaenge-r-entscheiden`, justified in the section *The game length R*, carried
+  through in all four measure rules and named for the architect in the catch-up table. The
+  suspect case from `technik.md` T24 — the Chinese and the Brazilian policy-rate series of
+  the nineties — is thereby moot: the nineties lie outside the window, and the policy rate
+  is no longer a target series.
 
-  **Was aus der Entscheidung als neue offene Frage hervorgeht, steht in den nächsten beiden
-  Punkten.** Sie ersetzen die geschlossene, sie sind nicht dasselbe in anderer Form: Die eine
-  betrifft die Beschaffung einer Eingabe, die andere ihre Einheitlichkeit. Keine von beiden
-  hängt mehr an R.
-- **Woher der Leitzinspfad für Deutschland und China kommt.** `IMF.STA/MFS_IR` führt für
-  beide Länder keinen einzigen Wert (Deckungsbefund, Abrufe 2026-09-01), und das gilt für
-  jedes Fenster. Der Pfad wird trotzdem gebraucht: als `leitzins_start[l]`, als exogener
-  Pfad im Weltlauf und als Wertebereich des Instruments im Spielmodus. **Das ist eine
-  Beschaffungsfrage und ein Folgepaket des Datenbauers, keine Entwurfsfrage** — und sie ist
-  seit dem Wegfall der Sollrolle deutlich kleiner: Eine Eingabe darf nach T24 gefüllt und
-  gekennzeichnet werden, eine Sollreihe des Prüfjahrgangs nicht. Zwei Fährten stehen schon in
-  den eigenen Unterlagen und sind hier nur benannt, nicht geprüft: **Eurostat** ist nach
-  `daten.md` Nr. 7 für EU- und EFTA-Länder gewerblich nutzbar und deckt damit die deutsche
-  beziehungsweise die Euroraum-Seite; **`FR.INR.LEND`** (WDI) trägt China nach dem
-  Deckungsbefund 1997–2021 lückenlos, ist aber ein Bankzins und kein Leitzins.
-- **Ob ein einheitlicher Zinsbegriff über die vier Länder erreichbar ist.** Der
-  Deckungsbefund weist nach, dass `DISR_RT_PT_A_PT` je Land etwas anderes misst — für die
-  USA den Diskontsatz des Fed-Diskontfensters, für Brasilien den Rediskontsatz, der nicht die
-  Selic ist. Als *Sollreihe* wäre das ein Fehler, den die Streichung erledigt. Als *Eingabe*
-  bleibt er eine offene Frage, und zwar eine, die auf Prüfgegenstände durchschlägt: Ein
-  brasilianischer Pfad auf dem falschen Niveau treibt Anleihekurs und Zinskanal und damit
-  BIP, Sektorstruktur, Verbraucherpreise und Wechselkurs Brasiliens — vier der sechzehn.
-  **Die Entwurfsvorgabe an das Folgepaket lautet deshalb: ein Begriff für alle vier Länder,
-  und wenn keiner erreichbar ist, dann der je Land plausibelste, ausdrücklich benannt und im
-  Befund des Rückvergleichs mitgeführt.** Zu entscheiden hat das der Datenbauer an den
-  Quellen, nicht ich am Schreibtisch.
-- **Die Zahlenwerte der Schwellen** — Mandatsschwelle, Aufsichtsschwellen, Startkapital,
-  Nachahmergeschwindigkeit, Stufenweite einer Position, Anlegerabzugsanteil. Sie gehören
-  nicht in diesen Entwurf, weil sie nicht entschieden, sondern **kalibriert** werden: Das
-  Selbstspiel sucht die Werte, bei denen Maß 1 bis 3 ihre Schwellen erreichen. Genau dafür
-  gibt es die Maße. Festgelegt ist die Form, nicht die Zahl; die Werte stehen nach T27 in
-  `parameter.toml`.
-- **Ob ein Parametersatz existiert, in dem der Fonds groß genug und nicht zu groß ist.**
-  Neu mit dieser Fassung, und die Frage ist eine Messung, keine Entscheidung: Startkapital
-  und `stufenweite` müssen zusammen eine Stufe bezahlbar machen **und** erreichbare
-  Stufenzahlen bis an die Aufsichtsschwellen heranreichen lassen. Beides zugleich ist nicht
-  garantiert — die Märkte des Modells sind ganze Sektorkapitalstöcke, und ein Fonds, der
-  sie bewegt, ist groß. Verfehlt der Selbstspieler die erste Bedingung, gewinnt Klasse 1
-  nie; verfehlt er die zweite, greift keine Gegenkraft und Maß 3 fällt auf null. **Beides
-  ist am Prüfstand sichtbar**, und beides ist ein Befund über den Parametersatz, nicht über
-  den Entwurf — es sei denn, es gibt keinen zulässigen. Dann ist es der Entwurf.
-- **Wie fein der Aktionsraum sein darf.** Zu grob, und Maß 1 findet keine Unterschiede; zu
-  fein, und die Stichprobe von 30 Bündeln deckt zu wenig ab. Empirisch am Prototyp zu
-  bestimmen — messbar daran, ob `Dichte(t)` bei K=30 und K=60 dieselbe Antwort gibt.
-- **Der Lastsatz der Finanzmarktregulierung, `regulierung_last`.** Neu mit der
-  Schadensvorschrift, Klasse 3, Basispunkte des BIP je Regulierungsstufe. Er ist die einzige
-  Zahl in Gegenkraft 5 ohne datenverankerte Entsprechung — und zwar genau dort, wo die
-  Instrumententabelle oben ohnehin „reines Modellkonstrukt, ohne Sollreihe" sagt. Die drei
-  übrigen Zeilen kommen ohne neue Zahl aus. Sein Wert wird kalibriert, nicht entworfen; im
-  Weltlauf ist er ohne Wirkung, weil das Instrument dort feststeht.
-- **Ob `druck` derselben Rundengrenzenregel folgt wie `gegendruck`.** Zum anliegenden
-  Lobbydruck sagt dieser Entwurf nur „Aktion 3, Verrechnung in Schritt 3"; ob er über die
-  Runde stehen bleibt, zerfällt oder verbraucht wird, steht nirgends. Das ist dieselbe Art
-  Lücke wie die geschlossene, eine Ebene daneben, und **sie ist nicht folgenlos**: Einfluss
-  ist der Anteil des Fonds am gesamten Lobbydruck, also am Verhältnis `druck : gegendruck`,
-  und dieses Verhältnis hängt an beiden Regeln. Mein Vorschlag für das Folgepaket ist
-  dieselbe Halbierung aus demselben Grund; entschieden ist sie hier nicht, weil sie zu
-  Schritt 3 gehört und nicht zu Gegenkraft 5.
-- **Ob `schrittweite[zoll]` die Rundungsschwelle der Zollzeile überschreitet.** Neu am
-  2026-09-03 und die einzige Bedingung, die aus der Zollkeilentscheidung folgt. Ein
-  Zollschritt läuft über zwei Rundungen — Weltpreisniveau mal Rate, dann mal `durchgriff` —,
-  und für ein Land×Sektor-Paar mit niedrigem `durchgriff` kann `preishub_zoll` bei kleinen
-  Schritten auf null fallen. Dann ist die Zollzeile dort **stumm, ohne es zu melden**. Die
-  Prüfform steht im Abschnitt; die Zahl, die sie erfüllt, ist Kalibrierung. Der Jahrgangsbau
-  hat alle acht Paare vorliegen und kann die Bedingung mechanisch prüfen — sie gehört in
-  seine Ausgabe, nicht in einen Nachtlauf.
-- **Ob ein `gegenlobby_satz` alle vier Zeilen zugleich trägt, jetzt mit anderem Vorzeichen.**
-  Die Frage stand schon; die Entscheidung vom 2026-09-03 verschiebt sie. Die Zollzeile ist
-  um den Sockel kleiner geworden — ihr Aktionsanteil ist unverändert, aber der Abstand zur
-  Haushaltszeile, deren Menge das ganze BIP ist, liegt jetzt offen. Ob ein Satz beide trägt
-  oder ob die Familie Lobby faktisch nur noch ein bezahlbares Instrument hat, ist am
-  Prüfstand zu sehen und nicht hier. Der Entwurf hält an einem Satz fest, weil vier Sätze
-  der Kalibrierung drei Achsen gäben, deren Wirkung die Mengen ohnehin erzeugen; fällt Maß 2
-  daran, ist es ein Befund über den Entwurf und nicht über die Parameter.
-- **Ob die Gegenlobby die Einflusshälfte des Mandats erreichbar lässt.** Einfluss ist der
-  Anteil des Fonds am gesamten Lobbydruck auf ein Instrument; ein Gegendruck, der in jedem
-  angefassten Land gegen `druck_max` läuft, drückt diesen Anteil unter jede Schwelle, und
-  die Familie Lobby stellt in Maß 2 keinen Gewinner. Das ist die schärfste
-  Kalibrierbedingung, die aus dieser Vorschrift folgt, und sie ist am Prüfstand sichtbar.
-  Gibt es keinen zulässigen Satz, ist es ein Befund über den Entwurf und nicht über die
-  Parameter.
-- **Ob `gegenlobby_satz` als Ganzzahl fein genug ist.** Klasse 9 kennt keine
-  Unterteilung, der kleinste zulässige Wert ist also ein Lobbypunkt je 10.000 Tausend USD.
-  Eine Größenordnungsprobe — ausdrücklich eine Schätzung, weil `schrittweite[haushalt]` noch
-  nicht feststeht: Bei einem BIP von `2,1 · 10^10` Tausend USD und einer angenommenen
-  Schrittweite von 50 Basispunkten sind das `1,05 · 10^8` Tausend USD Schaden und damit
-  rund **10.500 Lobbypunkte** bei `gegenlobby_satz = 1`. Ob das zu `druck_max` und zu dem
-  passt, was der Fonds über `lobbykosten` aufbringt, entscheidet die Suche; da in Schritt 3
-  nur das Verhältnis zählt, kann sie über `lobbykosten` gegensteuern. Reicht auch das nicht,
-  wäre der Ausweg eine Zehntausendstel-Skala für `gegenlobby_satz` — ein ADR gegen T5
-  Klasse 9, und zu entscheiden am Prüfstand, nicht hier.
-- **Ob der Regierungswechsel Schaden erzeugen soll.** Entschieden ist: ja — die Rückstellung
-  aller Instrumente ist selbst die Folge erfolgreichen Lobbyierens. Offen bleibt, ob die
-  Kalibrierung danach noch einen Weg zurück findet: Gegenkraft 2 verdoppelt die Lobbykosten
-  für mehrere Runden, Gegenkraft 5 legt in derselben Runde Gegendruck auf alle vier
-  Instrumente. Zwei Strafen aus einer Ursache; ob daraus eine Sackgasse wird, misst Maß 2
-  und nicht dieser Entwurf.
-- **Ob `platzanteil` einen zulässigen Bereich hat.** Neu am 2026-09-05 und die schärfste
-  Bedingung, die aus der zweiten Schicht folgt. Zu groß, und die Plätze sind tief genug, dass
-  Familie 1 dort ungestört Kapital aufbaut — dann fällt die zweite Abnahmehälfte von Maß 2
-  (`max(Ek) ≤ 1,25 · min(Ek)`), weil Position die anderen beiden Familien abhängt. Zu klein,
-  und eine Stufe auf einem Platz ist entweder unbezahlbar oder bewegt den Preis so stark, dass
-  die Schicht unbenutzbar ist — dann ist sie Dekoration und Maß 3 verliert seine dritte
-  Quelle wieder. Beides ist am Prüfstand sichtbar, beides ist ein Befund über den
-  Parametersatz — es sei denn, es gibt keinen zulässigen. Dann ist es der Entwurf.
-- **Ob `kippung` die drei Plätze eines Ankers wirklich unterscheidet.** Sie sind per
-  Konstruktion verschieden, aber ob der Unterschied groß genug ist, dass ein Suchbot ihn
-  nutzt, ist eine Messung. Die Prüfform: Erreichen im Frühfenster von Maß 3 Profile mit
-  Schwerpunkt auf verschiedenen Leitsektoren dasselbe Ergebnis, sind die drei Plätze eines
-  Ankers ein Platz. Die Zahl ist Kalibrierung, die Form steht.
-- **`3·(L+1)` überlebt die Länderwahl aus 0118, und diese Frage ist damit geschlossen.**
-  Sie lautete, ob jedes Gebiet drei unterscheidbare Leitsektoren trägt — für ein Land mit
-  stark beherrschender Sektorstruktur lägen die drei Plätze nach der `kippung`-Regel eng
-  beieinander. Gemessen am größten normierten Sektoranteil ist der einseitigste der neun
-  Anker die **USA** mit 76,6 Prozent, und die stehen seit der ersten Fassung im Modell; die
-  beiden ausgeglichensten sind mit 51,3 und 47,7 zwei der fünf neuen (Saudi-Arabien,
-  Indien). **Die Wahl verbessert den bindenden Fall, statt ihn zu verschärfen.** Was
-  offenbleibt, ist nicht die Formel, sondern `kippung` — und das steht schon als eigene
-  Frage zwei Punkte weiter oben, jetzt mit dem Land dazu, an dem sie sich entscheidet.
-- **Ob `MFS_IR` für Japan, Indien und Chile einen Politiksatz auf Stufe 1 führt.** An diesem
-  einen Abruf je Land hängt die Klasse dreier Länder und damit `L_R`, die Zahl der
-  Prüfgegenstände (28 gegen 16 bis 22), die Sollreihen und die Sollmaske. Es ist die
-  billigste offene Frage dieses Pakets — drei Abrufe nach T63 Schritt 1 — und die mit der
-  größten Hebelwirkung. Sie gehört dem Datenbauer, nicht mir.
-- **Ob die Klassenregel aus T61 Regel 5 die Ausschlüsse sieht, die in den Sollreihen liegen.**
-  Sie leitet die Klasse allein aus den drei Politikpfadreihen ab. Zwei Ausschlussgründe
-  liegen aber woanders: die fehlende Ausweichquelle für Reihe 2 (T62 Folgerung 2) und — neu
-  seit diesem Paket — eine Sollreihe, die über das ganze Fenster konstant ist und deshalb
-  keine Richtungstreue tragen kann. Führt `MFS_IR` einen SAMA-Satz auf Stufe 1, leitet
-  Regel 5 für Saudi-Arabien „Rückvergleichsland" ab, während das Manifest „Spielland" sagen
-  muss, und der Jahrgangsbau bricht ab. Der Abbruch ist richtig, die Stelle nicht. Gehört
-  zu T61.
-- **Ob die Toleranz `⌊L_R/2⌋` trägt.** Sie ist neu am 2026-09-06 und ersetzt die feste 2,
-  weil eine feste Zahl das Hinzufügen eines Landes zu einer Verschärfung machte. Sie
-  reproduziert die heutige 2 und hält den Anteil bei rund elf Prozent — aber ob elf Prozent
-  die richtige Quote sind, weiß erst der Rückvergleicher am laufenden Kern. Reißen
-  regelmäßig vier von 28, ist das ein Befund über das Modell und nicht über die Formel.
-- **Ob der Handelsblock als *ein* Prüfgegenstand richtig gewogen ist, wenn er von 40 auf 112
-  Ströme wächst.** Die Frage besteht schon bei vier Ländern und wird durch neun schärfer: Der
-  schwerste Einzelgegenstand des Rückvergleichs zählt so viel wie das BIP eines einzelnen
-  Landes. Die Zusammenfassung über den Median ist der Grund, warum er trotzdem nicht
-  auseinanderfliegt; ob sie bei 112 Strömen noch dasselbe leistet wie bei 40, ist eine
-  Messung. Nicht in diesem Paket entschieden, weil sie von der Länderzahl unabhängig ist.
-- **Woher die Sektorgewichte der drei Restwelt-Plätze kommen.** Sie folgen der gleichen Regel
-  aus `sektoranteil[Restwelt][s]` des Startjahrs. Die Restwelt entsteht im Jahrgang als
-  Residuum, und ob ihre Sektoranteile dabei sauber anfallen, weiß der Jahrgangsbau und nicht
-  ich. Fällt die Größe nicht an, ist der Ausweg der kapitalstockgewichtete Mittelwert der
-  `L` Länderanteile — eine Regel, keine erfundene Zahl.
-- **Ob es doch eine einbettbare Kursreihe gibt.** Die Schicht ist ohne jede Sollreihe
-  entworfen, weil `daten.md` keine führt und dieser Entwurf schon festhält, dass es keinen
-  Weltaktienindex unter freier Lizenz gibt. Fände der Datenbauer eine Indexreihe unter
-  tragfähiger Lizenz, wären die betroffenen Plätze **Rückvergleichsländer** statt Spielländer,
-  und Maß 4 gewönne Prüfgegenstände hinzu, statt keine zu verlieren. Der Entwurf hängt nicht
-  daran — er gewönne nur. Zu prüfen vom Datenbauer, nicht von mir.
-- **Ob die Schwellen von Maß 4 mit endogener Produktivität überhaupt erreichbar sind.**
-  Unverändert das größte ungemessene Risiko des Vorhabens. Es ist keine Entwurfsfrage
-  mehr, sondern eine Messung des Rückvergleichers am laufenden Kern — die Abnahmeregel
-  steht jetzt, also lässt sich das Ergebnis überhaupt beurteilen.
+  **What emerges from the decision as new open questions is in the next two points.** They
+  replace the closed one; they are not the same thing in another form: one concerns the
+  procurement of an input, the other its uniformity. Neither hangs on R any more.
+- **Where the policy-rate path for Germany and China comes from.** `IMF.STA/MFS_IR`
+  carries not a single value for either country (coverage finding, retrievals 2026-09-01),
+  and that holds for every window. The path is needed nonetheless: as `leitzins_start[l]`,
+  as an exogenous path in the `weltlauf` and as the instrument's value range in the
+  `spielmodus`. **This is a procurement question and a follow-up package for the data
+  builder, not a design question** — and since the target role was dropped it is markedly
+  smaller: under T24 an input may be filled and marked, a target series of the check
+  vintage may not. Two leads already stand in our own records and are only named here, not
+  checked: **Eurostat** is, per `daten.md` Nr. 7, commercially usable for EU and EFTA
+  countries and thus covers the German — or rather the euro-area — side; **`FR.INR.LEND`**
+  (WDI) carries China without gaps 1997–2021 per the coverage finding, but it is a bank
+  lending rate, not a policy rate.
+- **Whether a uniform notion of the interest rate is achievable across the four
+  countries.** The coverage finding proves that `DISR_RT_PT_A_PT` measures something
+  different per country — for the USA the discount rate of the Fed's discount window, for
+  Brazil the rediscount rate, which is not the Selic. As a *target series* that would be
+  an error which the deletion settles. As an *input* it remains an open question, and one
+  that strikes through to check subjects: a Brazilian path at the wrong level drives bond
+  price and interest-rate channel and with them Brazil's GDP, sector structure, consumer
+  prices and exchange rate — four of the sixteen. **The design requirement for the
+  follow-up package is therefore: one notion for all four countries, and if none is
+  achievable, then the most plausible one per country, expressly named and carried along
+  in the backtest's finding.** The data builder decides that at the sources, not I at the
+  desk.
+- **The numerical values of the thresholds** — mandate threshold, supervision thresholds,
+  starting capital, imitator speed, step width of a position, investor withdrawal share.
+  They do not belong in this design, because they are not decided but **calibrated**: the
+  self-play searches for the values at which Maß 1 to 3 reach their thresholds. That is
+  exactly what the measures exist for. What is fixed is the form, not the number; per T27
+  the values stand in `parameter.toml`.
+- **Whether a parameter set exists in which the fund is large enough and not too large.**
+  New with this version, and the question is a measurement, not a decision: starting
+  capital and `stufenweite` must together make one step affordable **and** let achievable
+  step counts reach up to the supervision thresholds. Both at once is not guaranteed —
+  the model's markets are entire sector capital stocks, and a fund that moves them is
+  large. If the self-player misses the first condition, class 1 never wins; if it misses
+  the second, no counterforce engages and Maß 3 falls to zero. **Both are visible on the
+  test stand**, and both are a finding about the parameter set, not about the design —
+  unless no admissible one exists. Then it is the design.
+- **How fine the action space may be.** Too coarse, and Maß 1 finds no differences; too
+  fine, and the sample of 30 bundles covers too little. To be determined empirically on
+  the prototype — measurable by whether `Dichte(t)` gives the same answer at K=30 and
+  K=60.
+- **The load rate of the instrument „Finanzmarktregulierung", `regulierung_last`.** New
+  with the damage rule, class 3, basis points of GDP per regulation step. It is the only
+  number in counterforce 5 without a data-anchored counterpart — and precisely where the
+  instrument table above in any case says „pure model construct", without a target series.
+  The three remaining rows get by without a new number. Its value is calibrated, not
+  designed; in the `weltlauf` it has no effect, because the instrument is fixed there.
+- **Whether `druck` follows the same round-boundary rule as `gegendruck`.** About pending
+  lobby pressure this design says only „action 3, netting in step 3"; whether it stays
+  across the round, decays or is consumed is stated nowhere. That is the same kind of gap
+  as the closed one, one level over, and **it is not without consequence**: influence is
+  the fund's share of total lobby pressure, that is, of the ratio `druck : gegendruck`,
+  and that ratio hangs on both rules. My proposal for the follow-up package is the same
+  halving for the same reason; it is not decided here, because it belongs to step 3 and
+  not to counterforce 5.
+- **Whether `schrittweite[zoll]` exceeds the rounding threshold of the tariff row.** New
+  on 2026-09-03 and the only condition that follows from the tariff-wedge decision. A
+  tariff step runs through two roundings — world price level times rate, then times
+  `durchgriff` — and for a country×sector pair with low `durchgriff`, `preishub_zoll` can
+  fall to zero at small steps. Then the tariff row is **silent there, without reporting
+  it**. The check form stands in the section; the number that satisfies it is calibration.
+  The vintage build has all eight pairs on hand and can check the condition mechanically —
+  it belongs in its output, not in a night run.
+- **Whether one `gegenlobby_satz` carries all four rows at once, now with the opposite
+  sign.** The question already stood; the decision of 2026-09-03 shifts it. The tariff row
+  has become smaller by the base term — its action share is unchanged, but the gap to the
+  budget row, whose quantity is the whole GDP, now lies open. Whether one rate carries
+  both, or whether the Lobby family in effect has only one affordable instrument left, is
+  to be seen on the test stand and not here. The design holds to a single rate, because
+  four rates would give the calibration three axes whose effect the quantities produce
+  anyway; if Maß 2 fails on that, it is a finding about the design and not about the
+  parameters.
+- **Whether the counter-lobby leaves the influence half of the mandate reachable.**
+  Influence is the fund's share of the total lobby pressure on an instrument; a
+  counter-pressure that runs toward `druck_max` in every country the fund touches pushes
+  that share below any threshold, and the Lobby family produces no winner in Maß 2. That
+  is the sharpest calibration condition that follows from this rule, and it is visible on
+  the test stand. If no admissible rate exists, it is a finding about the design and not
+  about the parameters.
+- **Whether `gegenlobby_satz` is fine enough as an integer.** Class 9 knows no
+  subdivision, so the smallest admissible value is one lobby point per 10.000 thousand
+  USD. An order-of-magnitude check — expressly an estimate, because
+  `schrittweite[haushalt]` is not yet fixed: at a GDP of `2.1 · 10^10` thousand USD and an
+  assumed step width of 50 basis points, that is `1.05 · 10^8` thousand USD of damage and
+  thus around **10.500 lobby points** at `gegenlobby_satz = 1`. Whether that fits
+  `druck_max` and what the fund raises via `lobbykosten` is for the search to decide;
+  since only the ratio counts in step 3, it can counter-steer via `lobbykosten`. If even
+  that is not enough, the way out would be a ten-thousandths scale for `gegenlobby_satz` —
+  an ADR against T5 class 9, to be decided on the test stand, not here.
+- **Whether the change of government should produce damage.** Decided: yes — the reset of
+  all instruments is itself the consequence of successful lobbying. What remains open is
+  whether the calibration still finds a way back afterwards: counterforce 2 doubles the
+  lobby costs for several rounds, counterforce 5 puts counter-pressure on all four
+  instruments in the same round. Two penalties from one cause; whether that becomes a dead
+  end is measured by Maß 2, not by this design.
+- **Whether `platzanteil` has an admissible range.** New on 2026-09-05 and the sharpest
+  condition that follows from the second layer. Too large, and the venues are deep enough
+  for family 1 to build up capital there undisturbed — then the second acceptance half of
+  Maß 2 (`max(Ek) ≤ 1,25 · min(Ek)`) fails, because Position leaves the other two families
+  behind. Too small, and one step on a venue is either unaffordable or moves the price so
+  strongly that the layer is unusable — then it is decoration and Maß 3 loses its third
+  source again. Both are visible on the test stand, both are a finding about the parameter
+  set — unless no admissible one exists. Then it is the design.
+- **Whether `kippung` really distinguishes the three venues of an anchor.** They are
+  different by construction, but whether the difference is large enough for a search bot
+  to exploit it is a measurement. The check form: if, in the early window of Maß 3,
+  profiles weighted toward different lead sectors reach the same result, the three venues
+  of an anchor are one venue. The number is calibration; the form stands.
+- **`3·(L+1)` survives the country choice from 0118, and this question is thereby
+  closed.** It asked whether every territory carries three distinguishable lead sectors —
+  for a country with a strongly dominant sector structure the three venues would lie close
+  together under the `kippung` rule. Measured by the largest normalised sector share, the
+  most one-sided of the nine anchors is the **USA** at 76.6 percent, and it has stood in
+  the model since the first version; the two most balanced, at 51.3 and 47.7, are two of
+  the five new ones (Saudi Arabia, India). **The choice improves the binding case instead
+  of sharpening it.** What remains open is not the formula but `kippung` — and that
+  already stands as its own question two points further up, now with the country attached
+  on which it will be decided.
+- **Whether `MFS_IR` carries a policy rate at Stufe 1 for Japan, India and Chile.** On
+  this one retrieval per country hang the class of three countries and with it `L_R`, the
+  number of check subjects (28 versus 16 to 22), the target series and the target mask. It
+  is the cheapest open question of this package — three retrievals per T63 step 1 — and
+  the one with the greatest leverage. It belongs to the data builder, not to me.
+- **Whether the class rule from T61 rule 5 sees the exclusions that lie in the target
+  series.** It derives the class solely from the three policy-path series. But two grounds
+  for exclusion lie elsewhere: the missing fallback source for series 2 (T62 Folgerung 2)
+  and — new since this package — a target series that is constant over the whole window
+  and therefore cannot carry directional accuracy. If `MFS_IR` carries a SAMA rate at
+  Stufe 1, rule 5 derives „Rückvergleichsland" for Saudi Arabia while the manifest must
+  say „Spielland", and the vintage build aborts. The abort is right, the place is not.
+  Belongs to T61.
+- **Whether the tolerance `⌊L_R/2⌋` holds.** It is new on 2026-09-06 and replaces the
+  fixed 2, because a fixed number turned adding a country into a tightening. It reproduces
+  today's 2 and keeps the share at around eleven percent — but whether eleven percent is
+  the right quota, only the backtester at the running core knows. If four of 28 break
+  regularly, that is a finding about the model and not about the formula.
+- **Whether the trade block is weighted correctly as *one* check subject when it grows
+  from 40 to 112 flows.** The question exists already at four countries and becomes
+  sharper with nine: the heaviest single subject of the backtest counts as much as the GDP
+  of a single country. The aggregation via the median is the reason it does not fly apart
+  anyway; whether at 112 flows it still delivers what it does at 40 is a measurement. Not
+  decided in this package, because it is independent of the number of countries.
+- **Where the sector weights of the three rest-of-world venues come from.** They follow
+  the same rule from `sektoranteil[Restwelt][s]` of the start year. The rest of world
+  arises in the vintage as a residual, and whether its sector shares fall out cleanly in
+  the process is known to the vintage build, not to me. If the quantity does not fall out,
+  the way out is the capital-stock-weighted mean of the `L` country shares — a rule, not
+  an invented number.
+- **Whether an embeddable price series exists after all.** The layer is designed without
+  any target series, because `daten.md` carries none and this design already records that
+  there is no world equity index under a free licence. Were the data builder to find an
+  index series under a viable licence, the affected venues would be **backtest countries**
+  instead of play-only countries, and Maß 4 would gain check subjects instead of losing
+  none. The design does not hang on it — it would only gain. To be checked by the data
+  builder, not by me.
+- **Whether the thresholds of Maß 4 are reachable at all with endogenous productivity.**
+  Unchanged the largest unmeasured risk of the venture. It is no longer a design question
+  but a measurement by the backtester at the running core — the acceptance rule now
+  stands, so the result can be judged at all.
 
 ## Was der Architekt neu rechnen muss
 
