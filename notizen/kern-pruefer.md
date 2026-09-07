@@ -117,4 +117,47 @@ schreibt eine fremde Rotation zurueck.
 - **Nenne, warum die Luecke erst jetzt eine ist.**
 - **Schreib dazu, was der Riegel heute kostet.**
 - **Nummernkollision:** vor der Wahl aufgaben auflisten, die Kollision im Vorschlag
-  benennen, aufraeumen tut sie der Projektmanager. Am 2026-09-06 war die hoechste 0194.
+  benennen, aufraeumen tut sie der Projektmanager. Am 2026-09-06 war die hoechste 0194;
+  am 2026-09-07 schon 0207 -- die Zahl laeuft schneller, als ein Lauf dauert. Immer
+  frisch auflisten, nie aus dem Gedaechtnis.
+
+## 2026-09-07, Pruefung 0186 -- der Apparat ist weg, der Nachweis nicht
+
+- **Diese Rolle hat keine Shell mehr.** Die Werkzeugliste in `agents/rollen/kern-pruefer.md`
+  ist Read, Glob, Grep, Web, Edit -- alles darueber in diesem Logbuch (cmake, ctest,
+  md5sum, git archive, Messbaum unter `befunde/bau-pruefung-<paket>/`) ist **nicht mehr
+  ausfuehrbar**. Nicht loeschen: es beschreibt, was ein Nachweis leisten muss. Nur nicht
+  mehr versuchen.
+- **Der Ersatz ist da und ist besser, als er klingt.** Der Baulauf laesst zwei Dateien
+  liegen: `kern/bau/Testing/Temporary/LastTest.log` (die Proben mit ihrem *abgedruckten
+  Blatt*, nicht nur dem Haken) und `befunde/uebersetzung-<datum>.md` (alle Manifeste,
+  Konfiguration, Bau, ctest). Dazu `kern/bau/CMakeCache.txt` fuer Profil und Sanitizer.
+  **Zuerst diese drei lesen, dann erst den Quelltext.**
+- **Die Verankerung ersetzt md5.** Ohne Shell keine Pruefsumme -- stattdessen: die
+  gedruckten Zeilen des Logs **zeichenweise** gegen den Quelltext halten (Meldungstext,
+  printf-Format, Konstanten) und dazu, dass die Paketdateien in `git status` am Laufanfang
+  **fehlen**, also auf `HEAD` stehen. Beides hinschreiben.
+- **Die Handrechnung bleibt.** Meldungslaenge im schlechtesten Fall (beide Zahlen
+  `I64_MIN`) gegen `MELDUNG_ZEICHEN_MAX` gerechnet: 369 gegen 511. Eine Meldung, die die
+  Zahl abschneidet, die die Abnahme verlangt, ist der Befund, den kein gruener Lauf zeigt.
+- **Der Aufrufer-Suchlauf ist der ganze Regressionsnachweis** bei einem neuen Riegel:
+  jede Aufrufstelle im Baum suchen und je Stelle die beiden Zahlen von Hand gegenhalten.
+  Bei 0186 waren es zwei Proben und keine Quelle unter `src/`.
+- **Eine alte Probe, die den neuen Riegel schon ausserhalb zaehlte, ist der Beweis, dass er
+  nicht rot wird.** `verlauf_probe` zaehlt seit 0140 `fremde Glieder 0` -- damit stand
+  schon vor dem Bau fest, dass Bedingung 1 durchlaeuft.
+- **Ein rotes Ergebnis im Arbeitsbereich zuerst zuordnen, dann melden.** 19 von 20 gruen,
+  rot war `belegstellen_riegel` -- Ursache: `specs/spiel.md` wird gerade uebersetzt und
+  ist unversioniert geaendert, zehn Zitate zeigen ins Leere. Nicht mein Paket, und es gab
+  schon `0200`. **Der Suchlauf ueber `aufgaben/` hat mir einen Vorschlag erspart.**
+- **Keine `datei.ext:NNN`-Verweise in Befund und Vorschlag.** Der Belegstellenriegel faengt
+  genau diese Form; zitiere den Wortlaut und den Funktionsnamen. Kostet nichts und ist
+  ohnehin haltbarer.
+
+## Offen nach 0186
+
+- **Der Zuordnungszaehler in `verlauf_probe`, Bedingung 1, ist seit 0186 tot** -- der
+  Kasten bricht ab, bevor ein fremdes Glied dort ankommen kann. Kein Befund (die Abnahme
+  verlangte ausdruecklich unveraenderte Proben), aber der naechste, der die Probe anfasst,
+  sollte den Kommentar daneben nachziehen. Nicht vorgeschlagen: er druckt `fremde
+  Glieder 0` und ist damit als Ausgabe weiter wert, was er als Pruefung nicht mehr ist.
