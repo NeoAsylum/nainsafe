@@ -2233,163 +2233,162 @@ outward.
 
 ## 9. Test- und Prüfstandsaufbau
 
-**T30 — Acht Prüfungen, ein Aufruf.** `nacht` läuft der Reihe nach und bricht mit einem
-Rückgabewert ungleich null ab, sobald eine Schwelle aus `spiel.md` gerissen ist. Was nicht
-in einem Aufruf läuft, läuft nachts nicht.
+**T30 — Eight checks, one call.** `nacht` runs them in order and aborts with a non-zero
+return value as soon as a threshold from `spiel.md` is breached. What does not run in one
+call does not run at night.
 
-| # | Prüfung | Gegenstand | Verantwortlich |
+| # | Check | Subject | Responsible |
 |---:|---|---|---|
-| 1 | Einheitstests je Wirkungskette | jeder Pfeil aus `spiel.md` einzeln, auf einem Minimalzustand: Zoll rauf → Einfuhr runter → Preis rauf → Realeinkommen runter → Zustimmung runter. Dazu die Vorratsinvariante aus T43, geprüft für `k = 1` (fünf Runden) **und** `k = 3` (fünfzehn), damit die Verwechslung aus Befund 3 auch im Code auffällt | Testentwickler |
-| 2 | Invariantentest | Summe aller Handelsbilanzen einschliesslich Restwelt = 0; Staatsschuld(t) = Staatsschuld(t−1) − Saldo; **Fondsvermögen = Kasse + bewertete Positionen + bewertete Beteiligungen − Hebel** (T47, gegen `fondsvermoegen()` und gegen eine im Test getrennt hingeschriebene Summe, damit der Test nicht die geprüfte Funktion wiederholt); die drei Sektoranteile je Gebiet summieren auf 10.000; kein Anteil ausserhalb 0…10.000; **die sieben Wertebereichsschranken aus T5/T49** (siehe darunter); jedes Partieergebnis in einem der drei Bänder aus T34 | Testentwickler |
-| 3 | Determinismustest | derselbe Startwert, Modus und dieselbe Aktionsfolge ergeben dieselbe Prüfsumme — zweimal im Lauf, über Speichern und Laden hinweg, und auf jeder Zielplattform verglichen | Testentwickler |
-| 4 | Regressionsbestand | gespeicherte Partien nach T22 rechnen bitgleich nach; zusätzlich eine Prüfsumme über die Kette, damit auch eine geänderte *Begründung* auffällt; mindestens eine Partie auf einem Spieljahrgang 1980 mit Basiswechsel (T8) | Testentwickler |
-| 5 | Bruchlauf | 10.000 Partien mit dem Zufallsbot: kein Absturz, kein Überlauf, keine Invariantenverletzung, kein Kettenüberlauf, kein doppelter Schreibzugriff und keine Maskenverletzung (T18, T38, T39) | Bruchtester |
-| 6 | **Beschränktheit** | **200 Runden ohne Spieler**; verlässt eine Größe ihren Wertebereich, gibt es einen **neunten** Rückkopplungskanal, und der ist ein Befund. Die Kanaltabelle in `spiel.md` zählt seit Fassung 5 **acht** | Bruchtester |
-| 7 | Die drei Maße | Entscheidungsdichte, Strategievielfalt, Optimumsverschiebung nach den Rechenvorschriften in `spiel.md`, gegen die dortigen Schwellen: **0,4 je Partiedrittel**; **drei Klassen mit je einem Gewinner bei höchstens 25 % Abstand**; **Verschiebung ≥ 0,4** | Selbstspieler |
-| 8 | Rückvergleich | im Modus `weltlauf` (T38), 31 Sollreihen plus Handelsblock, Fehlermaße nach T42, Abnahme über die **16 Prüfgegenstände mit Toleranz 2** nach T37 | Rückvergleicher |
+| 1 | unit tests per effect chain | every arrow from `spiel.md` singly, on a minimal state: tariff up → imports down → price up → real income down → approval down. Plus the stock invariant from T43, checked for `k = 1` (five rounds) **and** `k = 3` (fifteen), so that the mix-up from finding 3 shows in the code too | test developer |
+| 2 | invariant test | sum of all trade balances including rest of world = 0; government debt(t) = government debt(t−1) − balance; **fund assets = cash + valued positions + valued stakes − leverage** (T47, against `fondsvermoegen()` and against a sum written out separately in the test, so that the test does not repeat the function under test); the three sector shares per territory sum to 10,000; no share outside 0…10,000; **the seven value-range bounds from T5/T49** (see below); every game result in one of the three bands from T34 | test developer |
+| 3 | determinism test | the same seed, mode and the same action sequence yield the same checksum — twice within the run, across save and load, and compared on every target platform | test developer |
+| 4 | regression corpus | stored games per T22 recompute bit-identically; in addition a checksum over the chain, so that a changed *justification* shows too; at least one game on a 1980 vintage with a base change (T8) | test developer |
+| 5 | break run | 10,000 games with the random bot: no crash, no overflow, no invariant violation, no chain overflow, no double write access and no mask violation (T18, T38, T39) | break tester |
+| 6 | **boundedness** | **200 rounds without a player**; if a quantity leaves its value range, there is a **ninth** feedback channel, and that is a finding. The channel table in `spiel.md` has counted **eight** since version 5 | break tester |
+| 7 | the three measures | decision density, strategy diversity, optimum shift per the calculation rules in `spiel.md`, against the thresholds there: **0.4 per game third**; **three classes with one winner each at most 25 % apart**; **shift ≥ 0.4** | self-player |
+| 8 | backtest | in mode `weltlauf` (T38), 31 target series plus the trade block, error measures per T42, acceptance via the **16 check subjects with tolerance 2** per T37 | backtester |
 
-**Die sieben Wertebereichsschranken, die Prüfung 2 je Runde prüft.** Sie folgen aus T5, T49
-und T51 und stehen hier zusammen, damit der Testentwickler sie nicht aus zwölf
-Tabellenzeilen zusammensuchen muss. Jede ist ein **harter Fehler**, kein Bericht:
+**The seven value-range bounds that check 2 checks every round.** They follow from T5, T49
+and T51 and stand here together so that the test developer does not have to gather them
+from twelve table rows. Each is a **hard error**, not a report:
 
-| # | Schranke | Adressen | warum sie nicht bloß Kosmetik ist |
+| # | Bound | Addresses | why it is not mere cosmetics |
 |---:|---|---:|---|
-| 1 | `wechselkurs[g] ≥ 1` | 5 | Nenner jeder Bewertung (T47); null bricht ab, negativ dreht still jedes Vorzeichen |
-| 2 | Nominalindizes `> 0` | 22 | Nenner der Ratenbildung in T42 und Faktor jeder Bewertung |
-| 3 | `produktivitaet[g] > 0` | 5 | Faktor der Produktionsfunktion |
-| 4 | `leitzins[l] + aufschlag ≥ 1` | 4 | Nenner von `anleihekurs`; die Schranke sitzt am Instrument (T51) |
-| 5 | `0 < markt.wert < 9,2 · 10^13` | 1 | Nenner von `markt.rendite` und `marktanteil`, Überlaufschranke von `tsd_in_cent` (T47) |
-| 6 | `0 ≤ druck, gegendruck ≤ druck_max` | 32 | Klasse 9; ohne Obergrenze ist Kanal 8 unbeschränkt |
-| 7 | `0 ≤ fondsanteil(l, s) ≤ 10.000`, `\|stufen(p)\| ≤ stufen_max` | 12 + 20 | ein Anteil über 100 % ist kein Anteil; die Zulässigkeitsprüfung aus T32 hält ihn ein, der Test prüft, dass sie es tut |
+| 1 | `wechselkurs[g] ≥ 1` | 5 | denominator of every valuation (T47); zero aborts, negative silently flips every sign |
+| 2 | nominal indices `> 0` | 22 | denominator of the rate formation in T42 and factor of every valuation |
+| 3 | `produktivitaet[g] > 0` | 5 | factor of the production function |
+| 4 | `leitzins[l] + aufschlag ≥ 1` | 4 | denominator of `anleihekurs`; the bound sits at the instrument (T51) |
+| 5 | `0 < markt.wert < 9,2 · 10^13` | 1 | denominator of `markt.rendite` and `marktanteil`, overflow bound of `tsd_in_cent` (T47) |
+| 6 | `0 ≤ druck, gegendruck ≤ druck_max` | 32 | class 9; without an upper bound, channel 8 is unbounded |
+| 7 | `0 ≤ fondsanteil(l, s) ≤ 10.000`, `\|stufen(p)\| ≤ stufen_max` | 12 + 20 | a share above 100 % is not a share; the admissibility check from T32 keeps it in bounds, the test checks that it does |
 
-Dazu die **zwei Gleichheiten** aus T49: `land.<L>.leitzins = land.<L>.instrument.leitzins.stand`
-und `land.<L>.haushaltssaldo = land.<L>.instrument.haushalt.stand`, je Runde und je Land.
+Plus the **two equalities** from T49: `land.<L>.leitzins = land.<L>.instrument.leitzins.stand`
+and `land.<L>.haushaltssaldo = land.<L>.instrument.haushalt.stand`, per round and per country.
 
-Schranke 1 und 5 sind die beiden, die ohne Test still falsch würden statt laut: Ein
-negativer Wechselkurs macht aus jedem Gewinn einen Verlust, und ein Marktkorb jenseits der
-Überlaufschranke stürzt zwar nach T7 ab, aber erst in `tsd_in_cent` und damit an einer
-Stelle, an der niemand die Ursache sucht.
+Bounds 1 and 5 are the two that without a test would go wrong silently instead of loudly:
+a negative exchange rate turns every profit into a loss, and a market basket beyond the
+overflow bound does crash per T7, but only in `tsd_in_cent` and thus at a place where
+nobody looks for the cause.
 
-**Prüfung 6 läuft über das Ende des Jahrgangsfensters hinaus, und das braucht eine Regel.**
-Die exogenen Pfade aus T25 tragen nur R+1 Stützstellen. Ab Runde R+1 werden sie **auf ihrem
-letzten Wert eingefroren**, nicht fortgeschrieben, und der Lauf wird als `ueber_fenster`
-gekennzeichnet. Einfrieren ist hier die schärfere Wahl: Läuft eine Größe danach weg, ist es
-das Modell und nicht die Eingabe. Kosten: 200 Weltschritte.
+**Check 6 runs past the end of the vintage window, and that needs a rule.**
+The exogenous paths from T25 carry only R+1 support points. From round R+1 on they are
+**frozen at their last value**, not carried forward, and the run is marked
+`ueber_fenster`. Freezing is the sharper choice here: if a quantity runs away afterwards,
+it is the model and not the input. Cost: 200 world steps.
 
-**T31 — Der Regressionsbestand wird nie stillschweigend neu erzeugt.** Ein bewusst
-geänderter Modellwert macht Prüfung 4 rot — das ist der Zweck. Die Erneuerung läuft
-über einen eigenen Aufruf, der einen **Abweichungsbericht** schreibt: welche Partie,
-welche Größe, alter und neuer Wert, welche Kettenglieder sich geändert haben. Dieser
-Bericht ist der Gegenstand der Prüfung, nicht der neue Bestand.
+**T31 — The regression corpus is never silently regenerated.** A deliberately changed
+model value turns check 4 red — that is the purpose. Renewal runs via a call of its own,
+which writes a **deviation report**: which game, which quantity, old and new value, which
+chain links changed. This report is the subject of the check, not the new corpus.
 
-**T34 — Die Ergebnisgröße ist ein `i64` in Milli-Runden; die Skala gehört `spiel.md`.**
-Die dreiteilige Tabelle steht dort und wird hier **nicht** wiederholt, nicht ausgelegt und
-nicht gedeckelt. Was der Architektur zusteht, ist ausschliesslich:
+**T34 — The result quantity is an `i64` in milli-rounds; the scale belongs to `spiel.md`.**
+The three-part table stands there and is **not** repeated here, not interpreted and not
+capped. What the architecture is entitled to is exclusively:
 
-- Typ `i64`, Einheit Milli-Runden, **kleiner ist besser**;
-- die Ordnung ist strikt total: Bei gleichem Ergebniswert entscheidet die Profilkennung,
-  bei gleichem Profil der Stichprobenindex — nie die Auffindereihenfolge;
-- der Median über eine gerade Anzahl ist der kleinere der beiden mittleren Werte
+- type `i64`, unit milli-rounds, **smaller is better**;
+- the order is strictly total: on an equal result value the profile id decides, on an
+  equal profile the sample index — never the order of discovery;
+- the median over an even count is the smaller of the two middle values
   (so `spiel.md`);
-- **die Bereichsprüfung ist die Bandprüfung.** `spiel.md` verlangt: ein Ergebnis ausserhalb
-  `1.000 … R × 1.000 + 30.000` — bei R = 24 also 1.000 … 54.000 — ist ein harter Fehler.
-  Geprüft wird schärfer und ohne eigene Entscheidung, weil es aus derselben Tabelle folgt:
-  Der Wert muss in **einem der drei Bänder** aus T40 liegen. Die Lücken dazwischen
-  (24.001 … 24.999 und **28.001 … 30.999** bei R = 24) sind unerreichbar; ein Wert dort ist
-  ein Rechenfehler und kein Ausreisser. Die Prüfung kostet zwei Vergleiche und findet genau
-  die Kante, die Befund 10 an der Skala selbst gefunden hat. Die obere Lücke beginnt seit
-  `spiel.md` Fassung 4 bei 28.001 und nicht mehr bei 27.001, weil die Kappung des
-  Fehlbetrags entfallen ist (T40); der Bereich `1.000 … R × 1.000 + 30.000` ist davon
-  unberührt, weil sein oberes Ende aus dem Todesband kommt.
+- **the range check is the band check.** `spiel.md` demands: a result outside
+  `1.000 … R × 1.000 + 30.000` — at R = 24 thus 1,000 … 54,000 — is a hard error.
+  The check is sharper and involves no decision of its own, because it follows from the
+  same table: the value must lie in **one of the three bands** from T40. The gaps between
+  them (24,001 … 24,999 and **28,001 … 30,999** at R = 24) are unreachable; a value there
+  is a computation error and not an outlier. The check costs two comparisons and finds
+  exactly the edge that finding 10 found at the scale itself. Since `spiel.md` version 4
+  the upper gap begins at 28,001 and no longer at 27,001, because the capping of the
+  shortfall has been dropped (T40); the range `1.000 … R × 1.000 + 30.000` is untouched by
+  that, because its upper end comes from the death band.
 
-**T35 — Die Ziehregel für Maß 1, ausgeschrieben, weil sie sonst am Zufallserzeuger hängt.**
-`spiel.md` gibt vor: Bündelgröße gleichverteilt aus `{0,1,2,3}`, dann so viele Aktionen
-ohne Zurücklegen gleichverteilt aus der Liste der zulässigen Aktionen, Doppelte im
-Stichprobensatz bleiben. Das ist eindeutig bis auf das Verfahren, und ein anderes Verfahren
-ergibt eine andere Stichprobe. Verbindlich ist deshalb:
+**T35 — The draw rule for Maß 1, written out, because otherwise it hangs on the random
+generator.** `spiel.md` prescribes: bundle size uniformly from `{0,1,2,3}`, then that many
+actions without replacement, uniformly from the list of admissible actions, duplicates in
+the sample set stay. That is unambiguous up to the procedure, and a different procedure
+yields a different sample. Binding is therefore:
 
 1. `s = splitmix64(wurzelstartwert, jahrgang_id, parameter_pruefsumme, BUENDELZIEHUNG, t, i)`
-   nach T11; `s` wird als xoshiro-Zustand fortgeschrieben, und zwar nur innerhalb dieser
-   einen Ziehung.
-2. `n = naechster(s) mod 4`. Ist `n` größer als die Länge `m` der Zulässigkeitsliste, gilt
-   `n = m`.
-3. Die Liste steht in der kanonischen Ordnung aus T32. Partielles Fisher-Yates:
-   für `k = 0 … n−1` sei `j = k + (naechster(s) mod (m − k))`, tausche `L[k]` und `L[j]`.
-   Das Bündel sind die ersten `n` Einträge.
-4. Das Bündel wird vor dem Setzen nach Aktionskennung sortiert. Nach `spiel.md` hat keine
-   Aktion einen Zeitpunkt innerhalb der Runde; die Sortierung stellt sicher, dass die
-   Ziehreihenfolge das Ergebnis nicht berührt. Verletzt es `buendel_zulaessig` (T32), wird
-   es auf das größte zulässige Anfangsstück gekürzt — nicht neu gezogen, weil eine
-   Verwerfungsschleife die Zahl der Ziehungen zustandsabhängig machte.
-5. **Die Vorratsfortschreibung der eingespeisten Runde** folgt `spiel.md`: `vi += 3·ai` am
-   Rundenanfang mit dem `ai` des Referenzprofils, dann `vi −= 5` je tatsächlich gesetzter
-   Aktion der Art `i`. Bei einem Bündel kleiner als drei driftet der Vorrat, und das ist
-   gewollt — die Trägerpartie spielt danach mit dem Zustand weiter, den die Einspeisung
-   hinterlassen hat, nicht mit einem zurechtgesetzten.
+   per T11; `s` is carried forward as xoshiro state, and only within this one
+   draw.
+2. `n = naechster(s) mod 4`. If `n` is greater than the length `m` of the admissibility
+   list, `n = m` holds.
+3. The list stands in the canonical order from T32. Partial Fisher-Yates:
+   for `k = 0 … n−1` let `j = k + (naechster(s) mod (m − k))`, swap `L[k]` and `L[j]`.
+   The bundle is the first `n` entries.
+4. Before being placed the bundle is sorted by action id. Per `spiel.md` no action has a
+   time within the round; the sort ensures that the draw order does not touch the result.
+   If the bundle violates `buendel_zulaessig` (T32), it is cut to the largest admissible
+   prefix — not redrawn, because a rejection loop would make the number of draws
+   state-dependent.
+5. **The stock carry-forward of the injected round** follows `spiel.md`: `vi += 3·ai` at
+   the round start with the `ai` of the reference profile, then `vi −= 5` per action of
+   kind `i` actually placed. With a bundle smaller than three the stock drifts, and that
+   is intended — the carrier game then plays on with the state the injection left behind,
+   not with a straightened one.
 
-`naechster(s) mod k` ist verzerrt, sobald `k` kein Teiler von 2^64 ist. Die Verzerrung
-liegt bei `m ≤ 2^32` unter 2^-32 und ist damit kleiner als jede Wirkung, die Maß 1 misst;
-sie wird hier benannt statt behoben, aus demselben Grund wie in Punkt 4.
+`naechster(s) mod k` is biased as soon as `k` is not a divisor of 2^64. For `m ≤ 2^32` the
+bias lies below 2^-32 and is thus smaller than any effect Maß 1 measures; it is named here
+instead of fixed, for the same reason as in point 4.
 
-**T43 — Das Vorratsverfahren ist ein Baustein des Prüfstands, und es hat eine Invariante,
-die es testbar macht.** `spiel.md` legt es fest (Vorrat `vi`, `vi += 3·ai` je Runde, drei
-Steckplätze, `vi −= 5` je Steckplatz, größtes `vi` gewinnt, Gleichstand nach kleinerer
-Kennung, `ai = 0` verbietet nicht, sondern schiebt ans Ende). Der Architektur stehen zwei
-Dinge zu, und beide stehen hier:
+**T43 — The stock procedure is a component of the test bench, and it has an invariant
+that makes it testable.** `spiel.md` fixes it (stock `vi`, `vi += 3·ai` per round, three
+slots, `vi −= 5` per slot, largest `vi` wins, tie by smaller id, `ai = 0` does not forbid
+but pushes to the back). The architecture is entitled to two things, and both stand
+here:
 
-- **Die Zulässigkeit, gegen die es prüft, ist die Liste aus T32** — einmal je Runde gegen
-  den Rundenanfangszustand gebildet, beim Fortschreiten über die drei Steckplätze nur um
-  die mit dem Bündel unverträglichen Einträge gekürzt. Kein Weltschritt, keine
-  Zwischenrechnung.
-- **Die Invariante, gegen die ein Einheitstest läuft:** Sind in fünf aufeinanderfolgenden
-  Runden alle fünf Arten durchgehend zulässig, so steht der Vorratsvektor danach wieder auf
-  `(0,0,0,0,0)`, und jede Art `i` hat genau `3·ai` der fünfzehn Steckplätze bekommen. Das
-  gilt für **alle 126 Profile** — ich habe es für alle 126 durchgerechnet, und die von
-  `spiel.md` selbst angegebene Probe des Referenzprofils (`1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 |
-  3,4,5`) fällt dabei zeichengleich heraus. Damit ist das Verfahren nicht nur beschrieben,
-  sondern hat einen Test, der eine falsche Implementierung in fünf Runden fängt statt in
-  einer 24-Runden-Partie mit Median über zwanzig Startwerte.
-- **Dieselbe Invariante in allgemeiner Form — und seit `spiel.md` Fassung 4 steht sie in
-  beiden Dokumenten wörtlich gleich:** Nach `5k` Runden steht der Vorratsvektor wieder auf
-  `(0,0,0,0,0)`, und Art `i` hat `3k·ai` der `15k` Steckplätze bekommen. Für `k = 1` sind
-  das fünf Runden und `3·ai` von fünfzehn — genau der Fall, den `spiel.md` zwei Absätze
-  darunter als Probe rechnet. Für `k = 3` sind es fünfzehn Runden und `9·ai` von
-  fünfundvierzig. Der Satz, der in den Fassungen 2 und 3 von `spiel.md` „über 15 Runden
-  … `3·ai`" sagte und beide Fälle mischte, ist dort ersetzt; die Stelle, die dreimal
-  Befund war, ist geschlossen, und ich habe beide Sätze in diesem Lauf nebeneinandergelegt.
-  Verbindlich für den Bau bleibt diese Invariante; der Einheitstest aus T30 Prüfung 1 prüft
-  `k = 1` und `k = 3`, damit die Verwechslung auch dann auffällt, wenn jemand sie aus einer
-  älteren Fassung in die Implementierung übernimmt.
+- **The admissibility it checks against is the list from T32** — formed once per round
+  against the round-start state, and while stepping across the three slots shortened only
+  by the entries incompatible with the bundle. No world step, no intermediate
+  computation.
+- **The invariant a unit test runs against:** if in five consecutive rounds all five
+  kinds are admissible throughout, the stock vector stands at `(0,0,0,0,0)` again
+  afterwards, and each kind `i` has received exactly `3·ai` of the fifteen slots. That
+  holds for **all 126 profiles** — I have computed it through for all 126, and the check
+  of the reference profile that `spiel.md` itself gives (`1,2,3 | 4,5,1 | 2,3,4 | 5,1,2 |
+  3,4,5`) falls out of it character-identically. With that the procedure is not merely
+  described but has a test that catches a wrong implementation in five rounds instead of
+  in a 24-round game with a median over twenty seeds.
+- **The same invariant in general form — and since `spiel.md` version 4 it stands
+  word-for-word identical in both documents:** after `5k` rounds the stock vector stands
+  at `(0,0,0,0,0)` again, and kind `i` has received `3k·ai` of the `15k` slots. For
+  `k = 1` that is five rounds and `3·ai` of fifteen — exactly the case that `spiel.md`
+  computes as a check two paragraphs further down. For `k = 3` it is fifteen rounds and
+  `9·ai` of forty-five. The sentence that in versions 2 and 3 of `spiel.md` said „über 15
+  Runden … `3·ai`" and mixed both cases is replaced there; the spot that was a finding
+  three times is closed, and I have laid both sentences side by side in this run.
+  Binding for the build remains this invariant; the unit test from T30 check 1 checks
+  `k = 1` and `k = 3`, so that the mix-up shows even if someone carries it into the
+  implementation from an older version.
 
-**T41 — Wie das Profil die Kandidaten des Suchbots einschränkt.** Das war die Hälfte von
-Befund 4, die mir gehörte: T35 schrieb die Ziehregel nur für Maß 1 aus. Verbindlich ist:
+**T41 — How the profile restricts the search bot's candidates.** That was the half of
+finding 4 that belonged to me: T35 wrote out the draw rule only for Maß 1. Binding is:
 
-1. Das Vorratsverfahren (T43) liefert für die Runde die Artenfolge der drei Steckplätze.
-   Der Suchbot sucht **über Ziele und Stufen, nie über Arten** (`spiel.md`).
-2. Für Kandidat `c = 0 … 59` und Steckplatz `j = 1,2,3`: `Lj` ist die Teilliste der
-   zulässigen Aktionen der Art des Steckplatzes in kanonischer Ordnung (T32), gekürzt um
-   die mit den schon gewählten `x1 … xj−1` unverträglichen Einträge. Gezogen wird
-   `xj = Lj[naechster(s) mod |Lj|]` mit
+1. The stock procedure (T43) delivers the kind sequence of the round's three slots.
+   The search bot searches **over targets and steps, never over kinds** (`spiel.md`).
+2. For candidate `c = 0 … 59` and slot `j = 1,2,3`: `Lj` is the sublist of the
+   admissible actions of the slot's kind in canonical order (T32), shortened by the
+   entries incompatible with the already chosen `x1 … xj−1`. Drawn is
+   `xj = Lj[naechster(s) mod |Lj|]` with
    `s = splitmix64(…, SUCHBOT_KANDIDATEN, runde, c)`.
-3. Ein Steckplatz ohne zulässige Art entfällt; `|Lj| ≥ 1` gilt sonst immer, weil das
-   Vorratsverfahren nur unter Arten wählt, die mindestens eine zulässige Aktion haben.
+3. A slot without an admissible kind is dropped; otherwise `|Lj| ≥ 1` always holds,
+   because the stock procedure chooses only among kinds with at least one admissible action.
 
-**Genau drei Ziehungen je Kandidat, genau 60 Kandidaten, keine Verwerfungsschleife, keine
-Zählung eines Produktraums.** Doppelte Kandidaten bleiben — wie in Maß 1 —, sie kosten ein
-Weltschritt und ändern kein Ergebnis. Der Preis ist damit fest bei `1 + 60` Weltschritten je
-Runde, unabhängig davon, wie groß die Zulässigkeitsliste gerade ist; das ist dieselbe
-Begründung wie bei T28 und der Grund, warum die Rechnung in Abschnitt 10 überhaupt trägt.
+**Exactly three draws per candidate, exactly 60 candidates, no rejection loop, no counting
+of a product space.** Duplicate candidates stay — as in Maß 1 —, they cost one world step
+and change no result. The price is thereby fixed at `1 + 60` world steps per round,
+regardless of how large the admissibility list currently is; that is the same reasoning
+as with T28 and the reason the calculation in section 10 holds up at all.
 
-**T44 — Die Zielgröße des Suchbots ist die Ergebnisprognose des Zwischenzustands, und sie
-ist abgeleitet, nicht erfunden.** T41 sagte, **welche** 60 Kandidaten entstehen, aber nicht,
-**wonach** unter ihnen gewählt wird; der Gleichstandsbrecher setzte eine Vergleichsgröße
-voraus, die kein Satz benannte. Solange sie fehlt, misst Maß 2 die Wahl des Bauagenten
-statt das Spiel, und Maß 3 misst sie zweimal.
+**T44 — The search bot's objective is the result forecast of the intermediate state, and
+it is derived, not invented.** T41 said **which** 60 candidates arise, but not **by what**
+one is chosen among them; the tie-breaker presupposed a comparison quantity that no
+sentence named. As long as it is missing, Maß 2 measures the choice of the build agent
+instead of the game, and Maß 3 measures it twice.
 
-Nach genau einem Weltschritt läuft die Partie in aller Regel noch; die Ergebnisgröße von
-`spiel.md` ist aber erst am Partieende definiert. Gebraucht wird also eine **statische**
-Bewertung `B(z)` des Zwischenzustands, und sie beantwortet die Frage, die die Ergebnisgröße
-selbst stellt: *Was ergäbe diese Partie, wenn sie hier endete?*
+After exactly one world step the game is as a rule still running; the result quantity of
+`spiel.md`, however, is defined only at game end. What is needed is therefore a **static**
+valuation `B(z)` of the intermediate state, and it answers the question the result
+quantity itself asks: *What would this game yield if it ended here?*
 
 ```
 B(z) =  r × 1.000                      das Mandat ist in Runde r erfüllt
@@ -2397,232 +2396,232 @@ B(z) =  r × 1.000                      das Mandat ist in Runde r erfüllt
         (R + 1) × 1.000 + v(z) + e(z)  sonst — die Partie läuft weiter
 ```
 
-**Alle drei Zeilen sind seit `spiel.md` Fassung 4 wörtlich die Ergebnisgröße aus `spiel.md`,
-nur auf `z` gerechnet statt auf das Partieende.** Die dritte Zeile trug in Fassung 4 dieses
-Dokuments noch das Literal `25.000`; sie steht jetzt als Formel in R, weil T40 keine
-abgeleitete Zahl als Literal duldet und `(R+1) × 1.000` bei einem anderen Jahrgang eben
-nicht 25.000 ist. Bei R = 24 ist es 25.000, also unverändert.
+**All three lines have been, since `spiel.md` version 4, word-for-word the result quantity
+from `spiel.md`, only computed on `z` instead of on the game end.** In version 4 of this
+document the third line still carried the literal `25.000`; it now stands as a formula in
+R, because T40 tolerates no derived number as a literal and `(R+1) × 1.000` on a different
+vintage is simply not 25,000. At R = 24 it is 25,000, thus unchanged.
 
 - `v(z) = teile_gerundet(max(0, schwelle_v − fondsvermoegen(z)) · 1.000, schwelle_v)` —
-  fehlendes Vermögen in Promille seiner Schwelle. `fondsvermoegen` ist die Funktion aus
-  **T47** und damit seit `spiel.md` Fassung 4 einschliesslich der zum Ausstiegswert
-  bewerteten Beteiligungen; einen zweiten Rechenweg gibt es nicht.
-- `e(z)` = Summe über die **zwei Länder mit dem höchsten Einfluss** (Gleichstand nach
-  `LandId`) von `teile_gerundet(max(0, schwelle_e − einfluss[land]) · 1.000, schwelle_e)` —
-  fehlender Einfluss in Promille seiner Schwelle. Zwei Länder, weil das Mandat zwei verlangt.
-  `spiel.md` Fassung 4 hat dieselbe Regel für die Ergebnisgröße übernommen; beide Dokumente
-  rechnen den Fehlbetrag jetzt mit **einer** Formel.
+  missing assets in per mille of their threshold. `fondsvermoegen` is the function from
+  **T47** and thus, since `spiel.md` version 4, includes the stakes valued at exit
+  value; a second computation path does not exist.
+- `e(z)` = sum over the **two countries with the highest influence** (tie by
+  `LandId`) of `teile_gerundet(max(0, schwelle_e − einfluss[land]) · 1.000, schwelle_e)` —
+  missing influence in per mille of its threshold. Two countries, because the mandate
+  demands two. `spiel.md` version 4 has adopted the same rule for the result quantity;
+  both documents now compute the shortfall with **one** formula.
 
-Beide Schwellen stehen bereits in `parameter.toml` (T27, Mandatsschwelle). **`B` hat damit
-keinen freien Parameter** — keine Gewichtung, keinen eigenen Kalibrierwert, nichts, was ein
-Bauagent wählen könnte. Genau das ist die Antwort auf den Einwand: Maß 2 misst nicht mehr
-die Wahl des Bots, weil an dieser Stelle keine Wahl mehr besteht.
+Both thresholds already stand in `parameter.toml` (T27, mandate threshold). **`B` thus has
+no free parameter** — no weighting, no calibration value of its own, nothing a build agent
+could choose. Exactly that is the answer to the objection: Maß 2 no longer measures the
+bot's choice, because at this spot no choice remains.
 
-**Und `B` ist an `spiel.md` gebunden, nicht daneben gestellt.** Benennt der Entwurf die
-Vergleichsgröße selbst, sticht seine Fassung diese hier, und T44 schrumpft auf die
-Rechenvorschrift dazu. Ändert sich die Ergebnisgröße, ändert sich `B` mit ihr, ohne dass
-jemand zwei Stellen nachführen müsste.
+**And `B` is bound to `spiel.md`, not placed beside it.** If the design names the
+comparison quantity itself, its version trumps this one, and T44 shrinks to the
+calculation rule for it. If the result quantity changes, `B` changes with it, without
+anyone having to keep two places in step.
 
-**Es gibt seit `spiel.md` Fassung 4 keine Abweichung mehr zwischen `B` und der
-Ergebnisgröße, und das ist die eigentliche Nachricht dieser Fassung.** Fassung 4 dieses
-Dokuments musste hier eine Kappung ausnehmen: `spiel.md` begrenzte damals jeden der beiden
-Teile bei 1.000 Promille, und für eine Bewertungsfunktion wäre das tödlich gewesen — ein
-Fonds, der zu Partiebeginn in beiden Ländern Einfluss null hat, säße bei gekappten 1.000,
-und eine Verbesserung des ersten Landes von 0 auf 60 Prozent der Schwelle bliebe
-**unsichtbar**. Der Spielentwerfer hat dieselbe Begründung eine Ebene höher gelten lassen
-und die Kappung **ganz gestrichen**. Damit rechnen beide Dokumente in diesem Zweig
-buchstabengleich, und die Stelle kann nicht mehr auseinanderlaufen.
+**Since `spiel.md` version 4 there is no deviation left between `B` and the result
+quantity, and that is the actual news of this version.** Version 4 of this document had
+to exempt a cap here: `spiel.md` then bounded each of the two parts at 1,000 per mille,
+and for a valuation function that would have been fatal — a fund that at game start has
+influence zero in both countries would sit at a capped 1,000, and an improvement of the
+first country from 0 to 60 percent of the threshold would remain **invisible**. The game
+designer let the same reasoning apply one level up and **struck the cap entirely**. With
+that both documents compute letter-identically in this branch, and the spot can no longer
+drift apart.
 
-Der Preis steht in T40 und T34 und ist zweimal eine Zahl (Bandende 27.000 → 28.000,
-Lückengrenze 27.001 → 28.001). Die Schranke bleibt: `v ≤ 1.000`, solange der Fonds lebt
-(bei `fondsvermoegen ≤ 0` greift Todesart 1 in derselben Runde, T33 und T47; die 1.000
-erreicht nur die Rundung), und `e ≤ 2.000`, also `25.000 ≤ B ≤ 28.000` im laufenden Fall —
-oberhalb des Bandes „Mandat erfüllt" (bis 24.000) und unterhalb des Todesbandes (ab 31.000).
-**Daraus folgt eine Eigenschaft, die eine Bewertung haben muss und die man ihr nicht ansieht:
-Der Bot zieht den Tod nie vor.** Der schlechteste laufende Zustand steht bei 28.000, der
-beste Tod bei 31.000. `B` bleibt trotz der Formelgleichheit eine **botinterne** Größe: Sie
-wird nie als Partieergebnis berichtet, und die Bandprüfung aus T34 gilt für sie nicht, weil
-sie auf einem Zwischenzustand steht und nicht auf einem Partieende.
+The price stands in T40 and T34 and is twice a number (band end 27,000 → 28,000, gap
+boundary 27,001 → 28,001). The bound remains: `v ≤ 1.000` as long as the fund lives
+(at `fondsvermoegen ≤ 0` way of dying 1 takes hold in the same round, T33 and T47; only
+the rounding reaches the 1,000), and `e ≤ 2.000`, thus `25.000 ≤ B ≤ 28.000` in the
+running case — above the band „mandate fulfilled" (up to 24,000) and below the death band
+(from 31,000). **From that follows a property a valuation must have and that cannot be
+seen in it: the bot never prefers death.** The worst running state stands at 28,000, the
+best death at 31,000. Despite the formula identity, `B` remains a **bot-internal**
+quantity: it is never reported as a game result, and the band check from T34 does not
+apply to it, because it stands on an intermediate state and not on a game end.
 
-**Warum das den Lobbyweg nicht strukturell erschlägt** — die Frage, an der eine reine
-Vermögensbewertung gescheitert wäre: Einfluss ist nach `spiel.md` der geglättete Anteil des
-Fonds **am gesamten Lobbydruck** eines Landes, nicht die Wirkung des Instruments. Aktion 3
-legt den Druck in derselben Runde an; sie hebt `einfluss` also schon in dem einen
-Weltschritt, den der Bot vorausrechnet — gedämpft durch die Glättung, aber ungleich null und
-monoton im eingesetzten Budget. Der Kassenabfluss hebt `v`, der Druck senkt `e`, und welche
-Wirkung überwiegt, entscheidet der Zustand und nicht die Bauart der Bewertung. Klasse 3
-**kann** damit Gewinner stellen; ob sie es tut, ist die Frage, die Maß 2 stellen soll, und
-nicht die, die es beantwortet, bevor es läuft.
+**Why this does not structurally kill the lobby path** — the question on which a pure
+asset valuation would have failed: influence is per `spiel.md` the smoothed share of the
+fund **in a country's total lobby pressure**, not the effect of the instrument. Action 3
+applies the pressure in the same round; it thus raises `einfluss` already within the one
+world step the bot computes ahead — damped by the smoothing, but non-zero and monotone in
+the budget deployed. The cash outflow raises `v`, the pressure lowers `e`, and which
+effect prevails is decided by the state and not by the construction of the valuation.
+Class 3 **can** thus produce winners; whether it does is the question Maß 2 is meant to
+ask, and not the one it answers before it runs.
 
-**Dieselbe Prüfung für die beiden anderen Klassen, weil eine einzeln geprüfte Klasse nichts
-beweist.** Klasse 1 (Position) wirkt unmittelbar auf `fondsvermoegen` und damit auf `v`;
-unproblematisch. **Klasse 2 (Beteiligung) hing an einer Frage, die `spiel.md` Fassung 4
-entschieden hat: Die zwölf Beteiligungen zählen zum Fondsvermögen** (T47), bewertet zum
-Ausstiegswert. Damit wirkt Aktion 2 auf `v` wie Aktion 1, nur illiquide und um den
-Ausstiegsabschlag verringert, und `B` behandelt beide gleich. Die Erörterung der Fassung 4 —
-was geschähe, wenn sie nicht dazuzählten — ist damit gegenstandslos und gestrichen; sie
-hatte einen einzigen Zweck, nämlich die Frage sichtbar zu halten, bis sie beantwortet ist.
+**The same check for the two other classes, because a class checked alone proves
+nothing.** Class 1 (position) acts directly on `fondsvermoegen` and thus on `v`;
+unproblematic. **Class 2 (stake) hung on a question that `spiel.md` version 4 has
+decided: the twelve stakes count towards the fund assets** (T47), valued at exit value.
+Action 2 thus acts on `v` like action 1, only illiquid and reduced by the exit discount,
+and `B` treats both alike. Version 4's discussion — of what would happen if they did not
+count — is thereby moot and struck; it had a single purpose, namely to keep the question
+visible until it is answered.
 
-Ein zweiter Weg der Klasse 2 bleibt bei Tiefe 1 unsichtbar, und dieser Punkt bleibt
-bestehen: Eine Beteiligung verbilligt nach `spiel.md` das Lobbying im selben Sektor, zahlt
-sich also erst in einer späteren Runde aus. Das ist kein Fehler der Bewertung, sondern der
-Preis eines Zuges Vorausschau — und damit das erste konkrete Argument für die Tiefe 2, die
-Abschnitt 12 offen hält.
+A second path of class 2 stays invisible at depth 1, and this point stands: a stake
+cheapens, per `spiel.md`, the lobbying in the same sector, and thus pays off only in a
+later round. That is not a flaw of the valuation but the price of one move of lookahead —
+and with that the first concrete argument for depth 2, which section 12 keeps open.
 
-**Ordnung und Gleichstand.** Gewählt wird der Kandidat mit dem kleinsten `B`. Bei
-Gleichstand entscheidet die lexikographisch kleinste Folge der Aktionskennungen des Bündels
-in der kanonischen Ordnung aus T32, danach der kleinere Kandidatenindex `c` aus T41 — nie
-die Auffindereihenfolge. Doppelte Kandidaten (T41 lässt sie ausdrücklich zu) tragen dieselbe
-Kennungsfolge und denselben `B`; ihr Gleichstand fällt auf `c` und ist damit entschieden.
+**Order and ties.** Chosen is the candidate with the smallest `B`. On a tie the
+lexicographically smallest sequence of the bundle's action ids in the canonical order
+from T32 decides, then the smaller candidate index `c` from T41 — never the order of
+discovery. Duplicate candidates (T41 expressly allows them) carry the same id sequence
+and the same `B`; their tie falls to `c` and is thereby decided.
 
-**Tiefe.** Bei Tiefe 1 wird `B` auf dem Zustand nach dem einen Weltschritt ausgewertet, und
-es gibt **keine** Fortsetzung durch den Heuristikbot — die Wendung „Nachspiel mit dem
-Heuristikbot als Fortsetzung" aus Fassung 3 war an dieser Stelle irreführend und ist der
-Grund, warum der Befund entstehen konnte. Bei Tiefe `d > 1` ist der Wert eines
-Zwischenknotens das Minimum von `B` über seine 60 Kandidaten, rekursiv bis zur Tiefe `d`;
-das Spiel hat einen einzigen Spieler, es gibt also keinen Gegenzug und kein Maximum.
+**Depth.** At depth 1, `B` is evaluated on the state after the one world step, and there
+is **no** continuation by the heuristic bot — the phrase „Nachspiel mit dem
+Heuristikbot als Fortsetzung" from version 3 was misleading at this spot and is the
+reason the finding could arise. At depth `d > 1` the value of an inner node is the
+minimum of `B` over its 60 candidates, recursively to depth `d`;
+the game has a single player, so there is no counter-move and no maximum.
 
-**Kosten, in dieser Fassung berichtigt.** Fassung 5 nannte „rund zwanzig
-Ganzzahloperationen, also drei Promille" und zählte damit nur `v` und `e` selbst — der
-Prüfer der Runde 6 hat das unter *geprüft und nicht gezählt* beanstandet und recht damit.
-`v(z)` ruft `fondsvermoegen(z)`, und das sind nach der Auszählung in T47 rund **230**
-Operationen, davon 71 `i128`-Divisionen; dazu eine Division für `v`, vier Vergleiche und
-zwei Divisionen für `e`. Zusammen **rund 240 Ganzzahloperationen** gegen 7.500 je
-Weltschritt, also gut **drei Prozent** statt drei Promille. Im Suchbot fallen sie 60-mal je
-Runde an, gegen 61 Weltschritte — auch dort rund drei Prozent. Der Planwert von 10 µs hat
-Bandbreite bis 30, die Reserve rechnet mit 50, und die Abkürzung bei leeren Steckplätzen
-(T47) senkt den tatsächlichen Wert weiter. Die Kostenrechnung `R × (1 + 60) = 1.464` bleibt
-unverändert — und genau dafür braucht es eine statische Bewertung. Ein Nachspiel bis Runde R
-je Kandidat kostete `60 · Σ(R+1−t) + R = 60 · 300 + 24 = 18.024` Weltschritte je Partie, das
-Zwölffache, und würfe Abschnitt 10 um.
+**Costs, corrected in this version.** Version 5 said „rund zwanzig
+Ganzzahloperationen, also drei Promille" and thereby counted only `v` and `e` themselves —
+the reviewer of round 6 objected to that under *geprüft und nicht gezählt* and was right.
+`v(z)` calls `fondsvermoegen(z)`, and per the count in T47 that is around **230**
+operations, 71 of them `i128` divisions; plus one division for `v`, four comparisons and
+two divisions for `e`. Together **around 240 integer operations** against 7,500 per
+world step, thus a good **three percent** instead of three per mille. In the search bot
+they occur 60 times per round, against 61 world steps — there too around three percent.
+The plan value of 10 µs has bandwidth up to 30, the reserve calculates with 50, and the
+shortcut on empty slots (T47) lowers the actual value further. The cost calculation
+`R × (1 + 60) = 1.464` stays unchanged — and exactly for this a static valuation is
+needed. A playout to round R per candidate would cost
+`60 · Σ(R+1−t) + R = 60 · 300 + 24 = 18.024` world steps per game, twelve times as much,
+and would overturn section 10.
 
-**Die drei Bots:**
+**The three bots:**
 
-- **Zufallsbot(startwert)** — zulässige Aktionen gleichverteilt, Ziehung nach T35, ohne
-  Profil. Für Prüfungen 5 und 6.
-- **Heuristikbot(profil)** — Arten nach dem Vorratsverfahren (T43), innerhalb einer Art
-  nach einer festen, dokumentierten Rangfolge. Keine Nachspiele, also billig. **Er ist auf
-  dem Referenzprofil `(1,1,1,1,1)` die „feste Folgepolitik" von Maß 1.**
-- **Suchbot(profil, kandidaten=60, tiefe=1)** — 60 Kandidaten nach T41, jeder um einen
-  Weltschritt vorausgerechnet und **statisch bewertet nach T44**; gewählt wird das kleinste
-  `B`, Gleichstand nach T44 und nie nach Auffindereihenfolge. Eine Fortsetzung durch den
-  Heuristikbot gibt es bei Tiefe 1 nicht. Kosten je Partie `R × 61`, bei R = 24 also
-  **1.464** Weltschritte.
+- **Zufallsbot(startwert)** — admissible actions uniformly, draw per T35, without a
+  profile. For checks 5 and 6.
+- **Heuristikbot(profil)** — kinds per the stock procedure (T43), within a kind by a
+  fixed, documented ranking. No playouts, hence cheap. **On the reference profile
+  `(1,1,1,1,1)` it is the „feste Folgepolitik" of Maß 1.**
+- **Suchbot(profil, kandidaten=60, tiefe=1)** — 60 candidates per T41, each computed one
+  world step ahead and **statically valued per T44**; chosen is the smallest
+  `B`, ties per T44 and never by order of discovery. There is no continuation by the
+  heuristic bot at depth 1. Cost per game `R × 61`, at R = 24 thus
+  **1,464** world steps.
 
-**T36 — Was der Prüfstand zu Maß 2 und 3 fest verdrahtet.**
+**T36 — What the test bench hard-wires for Maß 2 and 3.**
 
-- **Profilliste.** Die 126 Profile werden in lexikographisch aufsteigender Ordnung von
-  `(a1…a5)` erzeugt und **nullbasiert** durchnummeriert. Die **Profilkennung** ist dieser
-  Index und der Gleichstandsbrecher aus `spiel.md`; sie ist Teil der Schnittstellenversion
-  (T17). Zwei Festwerte als Anker für den Test, beide durchgerechnet: Das Referenzprofil
-  `(1,1,1,1,1)` trägt die **Kennung 76**, und die Kennungen **0 bis 5** sind genau die sechs
-  Profile `(0,0,0,a4,a5)`.
-- **Strategiekern, vierwertig.** Aktionsart mit dem größten Anteil unter `{1 Position,
-  2 Beteiligung, 3 Lobby}`, Gleichstand nach kleinerer Kennung; Hebel und Sichtbarkeit gehen
-  nicht ein. **Sind alle drei null, ist der Kern `ohne`** — nicht 1. Das ist Befund 8, und
-  er lässt sich nur an dieser Stelle beheben: Ein dreiwertiger Kern zwingt den
-  Gleichstandsbrecher, eine Positionsstrategie zu behaupten, in der keine Position vorkommt.
-  Profile mit Kern `ohne` laufen mit, ihr Ergebnis wird berichtet, und sie gehen in keine
-  der beiden Abnahmehälften von Maß 2 ein; klassifiziert sind 120. Der Kern wird einmal je
-  Profil berechnet und mit der Profilliste abgelegt, nicht je Lauf neu.
-- **Fensterlogik von Maß 3.** Beide Läufe gehen über die volle Partie; die Fenster sind
-  nach T40 das erste und das letzte Partiedrittel, ausserhalb gilt das Referenzprofil, und
-  der Suchbot fährt innerhalb wie ausserhalb. Der Profilwechsel geschieht am Rundenanfang;
-  **der Vorrat läuft über den Wechsel hinweg weiter und wird nicht zurückgesetzt**
-  (`spiel.md`). Damit kostet ein Lauf dasselbe wie eine gewöhnliche Suchbotpartie, und die
-  Rechnung in Abschnitt 10 trägt. Für Maß 3 sind alle 126 Profile wählbar, auch die sechs
-  ohne Kern — dort misst der Vektorabstand und nicht die Klasse.
-- **Was `B` aus T44 in beiden Maßen nicht ist.** Das Profilergebnis `E(p)`, der
-  Gewinnvergleich gegen `R × 1.000` und die Argminima `p*` und `q*` laufen ausschliesslich
-  über die **Ergebnisgröße** aus `spiel.md`, nie über `B`. `B` steuert den Bot innerhalb der
-  Partie und verlässt sie nicht. Beide Maße hängen deshalb an T44 — das ist der Grund,
-  warum sein Fehlen ein schwerer Befund war —, aber keines von beiden rechnet mit ihr.
+- **Profile list.** The 126 profiles are generated in lexicographically ascending order
+  of `(a1…a5)` and numbered **zero-based**. The **profile id** is this index and the
+  tie-breaker from `spiel.md`; it is part of the interface version (T17). Two fixed
+  values as anchors for the test, both computed through: the reference profile
+  `(1,1,1,1,1)` carries **id 76**, and the ids **0 to 5** are exactly the six profiles
+  `(0,0,0,a4,a5)`.
+- **Strategy core, four-valued.** The action kind with the largest share among
+  `{1 position, 2 stake, 3 lobby}`, tie by smaller id; leverage and visibility do not
+  enter. **If all three are zero, the core is `ohne`** — not 1. That is finding 8, and it
+  can only be fixed at this spot: a three-valued core forces the tie-breaker to assert a
+  position strategy in which no position occurs. Profiles with core `ohne` run along,
+  their result is reported, and they enter neither of the two acceptance halves of Maß 2;
+  120 are classified. The core is computed once per profile and stored with the profile
+  list, not anew per run.
+- **Window logic of Maß 3.** Both runs go over the full game; the windows are per T40 the
+  first and the last game third, outside them the reference profile holds, and the search
+  bot runs inside as outside. The profile switch happens at the round start;
+  **the stock runs on across the switch and is not reset**
+  (`spiel.md`). A run thus costs the same as an ordinary search-bot game, and the
+  calculation in section 10 holds. For Maß 3 all 126 profiles are selectable, including
+  the six without a core — there the vector distance measures, not the class.
+- **What `B` from T44 is not, in either measure.** The profile result `E(p)`, the win
+  comparison against `R × 1.000` and the argminima `p*` and `q*` run exclusively over the
+  **result quantity** from `spiel.md`, never over `B`. `B` steers the bot within the game
+  and does not leave it. Both measures therefore hang on T44 — that is why its absence
+  was a severe finding —, but neither of the two computes with it.
 
-**T37 — Der Rückvergleich weist je Sollreihe aus, ob sie überhaupt etwas prüfen kann — und
-`spiel.md` hat entschieden, welche entscheiden.** Im Weltlauf werden die Politikinstrumente
-auf die historisch tatsächlichen Werte gesetzt. Damit ist die Leitzinsreihe des Modells per
-Konstruktion die Sollreihe; ihr Fehler ist null und ihre Richtungstreue eins, ohne dass das
-Modell irgendetwas geleistet hätte.
+**T37 — The backtest reports per target series whether it can check anything at all — and
+`spiel.md` has decided which ones decide.** In the `weltlauf` the policy instruments are
+set to the historically actual values. The model's policy-rate series is thereby the
+target series by construction; its error is zero and its directional accuracy one,
+without the model having achieved anything.
 
-| Klasse | Reihen | Zahl | Bedeutung |
+| Class | Series | Count | Meaning |
 |---|---|---:|---|
-| `frei` | BIP (4), Sektoranteile (12), Verbraucherpreise (4), Wechselkurs (3) | 23 (19 unabhängig), dazu der Handelsblock | prüft die Maschine, entscheidet die Abnahme |
-| `gesetzt` | Leitzins (4) | 4 | Eingabe des Laufs, Fehler null per Konstruktion; wird berichtet, entscheidet nichts |
-| `abgeleitet` | Staatsschuldenquote (4) | 4 | Zähler folgt dem gesetzten Haushaltssaldo, nur der Nenner ist endogen; wird berichtet, entscheidet nichts |
+| `frei` | GDP (4), sector shares (12), consumer prices (4), exchange rate (3) | 23 (19 independent), plus the trade block | checks the machine, decides the acceptance |
+| `gesetzt` | policy rate (4) | 4 | input of the run, error zero by construction; is reported, decides nothing |
+| `abgeleitet` | government debt ratio (4) | 4 | numerator follows the set budget balance, only the denominator is endogenous; is reported, decides nothing |
 
-**Die Abnahme läuft über 16 Prüfgegenstände mit Toleranz 2**, so von `spiel.md` Fassung 3
-gesetzt; meine Rückfrage aus Fassung 2 ist damit beantwortet und aus Abschnitt 12
-gestrichen. Prüfgegenstand ist nicht die Reihe, sondern die Größe:
+**The acceptance runs over 16 check subjects with tolerance 2**, so set by `spiel.md`
+version 3; my query from version 2 is thereby answered and struck from section 12. The
+check subject is not the series but the quantity:
 
-| Prüfgegenstand | Zahl | zusammengefasst aus |
+| Check subject | Count | aggregated from |
 |---|---:|---|
-| BIP je Land | 4 | je eine Reihe |
-| Sektorstruktur je Land | 4 | die drei Anteilsreihen des Landes, **alle drei** müssen bestehen |
-| Verbraucherpreise je Land | 4 | je eine Reihe |
-| Wechselkurs je Land ausser USA | 3 | je eine Reihe |
-| Handelsblock | 1 | 40 Ströme, Median des MAPE und Median der Richtungstreue; das schlechteste Fünftel wird ausgewiesen |
-| **Summe** | **16** | |
+| GDP per country | 4 | one series each |
+| sector structure per country | 4 | the country's three share series, **all three** must pass |
+| consumer prices per country | 4 | one series each |
+| exchange rate per country except USA | 3 | one series each |
+| trade block | 1 | 40 flows, median of the MAPE and median of the directional accuracy; the worst fifth is reported |
+| **Sum** | **16** | |
 
-Ein Prüfgegenstand besteht, wenn er beide für ihn geltenden Schwellen einhält. Der Lauf ist
-bestanden, wenn höchstens zwei der sechzehn reissen; jeder gerissene wird einzeln benannt,
-mit beiden Zahlen. Berichtet werden alle 31 Reihen plus die 40 Ströme, entscheiden tun die
-sechzehn.
+A check subject passes if it holds both thresholds that apply to it. The run is passed if
+at most two of the sixteen are breached; each breached one is named individually, with
+both numbers. Reported are all 31 series plus the 40 flows; the sixteen
+decide.
 
-**T42 — Die drei Fehlermaße, ausgeschrieben, weil `spiel.md` sie beziffert und nicht
-rechnet.** Alles in Ganzzahlen über `teile_gerundet` (T6). `S` ist die Zahl der
-Stützstellen (im Prüfjahrgang 25), `V` die Menge der verwertbaren Stützstellen.
+**T42 — The three error measures, written out, because `spiel.md` puts numbers on them
+and does not compute them.** Everything in integers via `teile_gerundet` (T6). `S` is the
+number of support points (25 in the check vintage), `V` the set of usable support points.
 
-**Niveaureihen** (BIP, Sektoranteile, Staatsschuldenquote, 40 Handelsströme) —
-mittlerer absoluter prozentualer Fehler in Zehntausendsteln, Schwelle **2.000 (= 20 %)**:
+**Level series** (GDP, sector shares, government debt ratio, 40 trade flows) —
+mean absolute percentage error in ten-thousandths, threshold **2,000 (= 20 %)**:
 
 ```
 MAPE = Mittel über t ∈ V von  teile_gerundet(|modell(t) − soll(t)| · 10.000, |soll(t)|)
 ```
 
-**`V` schliesst zwei Sorten Stützstelle aus, beide gezählt und ausgewiesen:** die mit
-`gefuellt = 1` (so schon T24) und die mit `soll(t) = 0`. Der zweite Fall ist bei einem
-bilateralen Agrarstrom zwischen zwei Ländern real, und ein Nullnenner ist nach T6 ein
-Abbruch. Hat ein Strom weniger als die Hälfte verwertbarer Stützstellen, gilt er als nicht
-prüfbar, geht in den Median des Handelsblocks nicht ein und wird als solcher berichtet. Die
-Regel ändert keine Schwelle; sie definiert einen Fall, den `spiel.md` nicht kennt, nach dem
-Muster, das T24 für gefüllte Jahre schon vorgibt.
+**`V` excludes two sorts of support point, both counted and reported:** those with
+`gefuellt = 1` (as T24 already has it) and those with `soll(t) = 0`. The second case is
+real for a bilateral agricultural flow between two countries, and a zero denominator is
+per T6 an abort. If a flow has fewer than half its support points usable, it counts as
+not checkable, does not enter the trade block's median and is reported as such. The rule
+changes no threshold; it defines a case that `spiel.md` does not know, after the pattern
+T24 already prescribes for filled years.
 
-**Ratenreihen** (Verbraucherpreise, Wechselkurs, Leitzins) — mittlerer absoluter Fehler auf
-der Jahresänderungsrate, Schwelle **300 bp**:
+**Rate series** (consumer prices, exchange rate, policy rate) — mean absolute error on
+the annual rate of change, threshold **300 bp**:
 
 ```
 rate(t) = teile_gerundet((wert(t) − wert(t−1)) · 10.000, wert(t−1))          in bp
 MAE     = Mittel über t = 2 … S von |rate_modell(t) − rate_soll(t)|
 ```
 
-**Eine Neubasierung nach T8 wird vor der Ratenbildung herausgerechnet:** Steigt
-`basiswechsel` zwischen `t−1` und `t` um `d`, wird `wert(t)` für diese eine Rate mit
-`1.000^d` multipliziert. Ohne diese Zeile meldete ein Basiswechsel einen Absturz um 99,9
-Prozent als Modellfehler. Im Prüfjahrgang tritt sie nie ein — sie steht hier, weil T8 selbst
-verlangt, dass kein Zweig ungeprüft bleibt, und die Regressionspartie von 1980 sie
-mitnimmt.
+**A rebasing per T8 is factored out before the rate formation:** if `basiswechsel` rises
+by `d` between `t−1` and `t`, `wert(t)` is multiplied by `1.000^d` for this one rate.
+Without this line a base change would report a plunge of 99.9 percent as model error. In
+the check vintage it never occurs — it stands here because T8 itself demands that no
+branch stay unchecked, and the 1980 regression game takes it
+along.
 
-**Richtungstreue** (alle Reihen) — Anteil der `S−1` Übergänge mit gleichem Vorzeichen, in
-Zehntausendsteln, Schwelle **6.000 (= 0,6)**:
+**Directional accuracy** (all series) — share of the `S−1` transitions with the same
+sign, in ten-thousandths, threshold **6,000 (= 0.6)**:
 
 ```
 treue = teile_gerundet(#{t : sgn(Δmodell(t)) = sgn(Δsoll(t))} · 10.000, S − 1)
 ```
 
-`sgn` ist die dreiwertige Vorzeichenfunktion auf Ganzzahlen; „beide unverändert" zählt
-damit als Treffer und „einer unverändert, einer nicht" als Fehlschlag. Das folgt aus der
-Schreibweise in `spiel.md` und ist keine Auslegung — auf Ganzzahlen gibt es keine andere.
+`sgn` is the three-valued sign function on integers; "both unchanged" thus counts as a
+hit and "one unchanged, one not" as a miss. That follows from the notation in `spiel.md`
+and is not an interpretation — on integers there is no other.
 
-**Parallelität ohne Preisgabe des Determinismus:** Jedes Nachspiel ist eine reine Funktion
-von (Jahrgang, Parametersatz, Modus, Startwert, Politik, Runde, Stichprobenindex); der
-abgeleitete Zufallsstartwert folgt aus genau diesem Tupel (T11). Ergebnisse werden in ein
-vorab bemessenes Feld **an ihrem Index** abgelegt, nie angehängt. Jede Zusammenfassung läuft
-über das sortierte Feld. Damit liefert der Prüfstand mit einem Kern und mit
-zweiunddreissig dasselbe Ergebnis.
+**Parallelism without giving up determinism:** every playout is a pure function of
+(vintage, parameter set, mode, seed, policy, round, sample index); the derived random
+seed follows from exactly this tuple (T11). Results are placed into a pre-sized array
+**at their index**, never appended. Every aggregation runs over the sorted array. The
+test bench thus delivers the same result with one core and with
+thirty-two.
 
-**Berichtspflicht:** Jeder Befund trägt `ticks_gesamt`, `sekunden`, `ticks_je_sekunde`, den
-Modus und die Größe der Sollmaske. Die Schätzung des nächsten Abschnitts wird damit binnen
-einer Nacht durch eine Messung ersetzt — und bleibt gemessen.
+**Reporting duty:** every finding carries `ticks_gesamt`, `sekunden`, `ticks_je_sekunde`,
+the mode and the size of the target mask. The estimate of the next section is thereby
+replaced within one night by a measurement — and stays measured.
 
 ## 10. Was das Modell an Rechenzeit kostet
 
