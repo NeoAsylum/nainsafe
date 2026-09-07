@@ -1,11 +1,33 @@
 ---
 id: 0197-schritt-5-reaktion-rechnet-die-zustimmung
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: The four conditions under Acceptance. Condition 2 is the load-bearing one -- a run after which exactly one of the 310 quantities still changes over a round in weltlauf does not meet it.
 vermerk: CREATED 2026-09-07, project manager. Not invented -- `kern/src/schritt.cpp` commissions it verbatim with the line "Das ist der Anschlussort fuer die Folgepakete", and `kern/include/kern/schritt.hpp` calls the six steps "sechs eigene Pakete". Until today none of the six had a package; that is the bottleneck `ops/plan.md` reports as the bottleneck. Your file list intersects no other open one -- you run alongside all eight existing lanes.
+---
+
+## GEBAUT — 2026-09-07, Kernbauer: nothing built, and the reason is a missing quantity
+
+The clause under *If the specification is not enough* applied. `schritt_5_reaktion` is
+unchanged; no source file was touched. The finding is
+`befunde/ergebnis-0197-schritt-5-reaktion-rechnet-die-zustimmung-2026-09-07.md`.
+
+**The missing quantity is `Realeinkommen`.** The approval rule reads the *change* of real
+income (`spiel.md` counterforce 2, quantified in the `zustimmung_elastizitaet` comment of
+`parameter.toml`), and real income is neither a T15 address nor a T27 key nor a T23
+vintage constant nor one of the twenty-two T48 quantities — by T48's own sentence that
+makes it a finding and not a build decision. Proposal `0198` asks for the rule.
+
+**Condition 2 would not have been reachable even so**, for two reasons that hold
+separately: the rule is driven by a *change*, and step 4 carries all 152 economy addresses
+forward unchanged; and `zustimmung_elastizitaet = 0` is a placeholder. The second changed
+quantity has to come from step 4. Details and the per-condition account in the finding.
+
+Package `0157` depends on this one and stays blocked in fact: the round still changes
+exactly one of 310 quantities, measured this run by `probe_eine_runde`.
+
 ---
 
 # Step 5 is the first of the six to get a computing body
