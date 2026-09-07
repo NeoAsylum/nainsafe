@@ -33,3 +33,22 @@ predecessor and stays readable.
 - Left for PM: carry measured 5.59/5.63 s into the 0182 vermerk on `fertig` (builder
   could only derive ~8 s, no shell). Behind 0182 on this file: only 0189, then 0225.
 
+## 2026-09-08 — pruefung 0189 (zurueck, 2 findings)
+
+- The night report is the review's best instrument when the abnahme names it as Beleg:
+  uebersetzung-2026-09-07.md already carried the full `belegstellen_kopfzahlen` run
+  (Failed, 11 Erwartungen, both build paths) — no simulation needed, the red proof and
+  the Gegenprobe (3/2/2 Meldungen) had executed overnight. Check the working-tree report
+  before assuming "next report doesn't exist yet"; the runner appends into the dated file.
+- Transferable pattern: a messstand that pins a Vorfassung blob (here e3038e2, parent of
+  0115) silently starts measuring every later package's *code* delta, not the original
+  comment fix — teil_a red (36,34,57)/1 vs (36,36,57)/0 survives any number transcription.
+  When a package plans "transcribe numbers -> green", check whether any FEHLSCHLAG line
+  comes from an alt/neu binary comparison; those need a re-pin, not a transcription.
+  Flagged as amendment to 0227 instead of own proposal — 0227 already claims messen.py.
+- Builder's own build-note in the package body openly declared the unmet clause; verified
+  it anyway and it was accurate. Zurueck can coexist with a clean build — said so
+  explicitly so the PM reads it as a state problem (split pending), not rework.
+- Current corpus numbers for the next pruefung on this file: 36/36/57 Summe 93, B1 mutant
+  47/70, measured at HEAD 7ebc1a9 (report :90-104). Expect 0227 to write exactly these.
+
