@@ -1104,289 +1104,289 @@ output of `konsole`; if it is not, it belongs in the core.
 
 ## 4. Datenmodell
 
-**T15 — `Zustand` ist ein Wert fester Größe ohne Speicheranforderung: 310 `i64`, also
-2.480 Byte.** Feste Felder, `std::array` fester Länge, **kein `std::vector`, kein
-`std::string`, kein Zeiger, kein `std::unique_ptr`**. Das Kopieren ist damit ein
-Speicherumzug von 2,5 kB (etwa 200 Nanosekunden) — die Voraussetzung dafür, dass der
-Prüfstand Millionen von Nachspielen aus Zwischenständen startet.
+**T15 — `Zustand` is a value of fixed size without memory allocation: 310 `i64`, i.e.
+2,480 bytes.** Fixed fields, `std::array` of fixed length, **no `std::vector`, no
+`std::string`, no pointer, no `std::unique_ptr`**. Copying is thereby a memory move of
+2.5 kB (about 200 nanoseconds) — the precondition for the test bench starting millions
+of replays from intermediate states.
 
-**Zwei `static_assert` machen daraus eine geprüfte Eigenschaft statt einer Beschreibung**,
-und beide gehören in denselben Kopf wie der Typ:
+**Two `static_assert`s make this a checked property instead of a description**, and both
+belong in the same header as the type:
 
-- `static_assert(std::is_trivially_copyable_v<Zustand>)` — sie fällt in dem Augenblick, in
-  dem jemand ein `std::vector` oder einen eigenen Kopierkonstruktor einbaut. Das ist der
-  billigste Wächter des ganzen Datenmodells: Er verteidigt nicht die Grösse, sondern die
-  Eigenschaft, aus der die Grösse folgt.
-- `static_assert(sizeof(Zustand) == 2480)` — sie fällt bei Füllbytes und bei jeder
-  Adressenzahl ungleich 310. Zusammen mit T12 heisst das: Die Struktur *ist* füllbytefrei,
-  und die Byteform wird trotzdem Feld für Feld geschrieben. Der Gürtel ersetzt die
-  Hosenträger nicht — die Prüfsumme darf auch dann nicht an der Speicheranordnung hängen,
-  wenn diese zufällig passt.
+- `static_assert(std::is_trivially_copyable_v<Zustand>)` — it fails the moment somebody
+  builds in a `std::vector` or a custom copy constructor. That is the cheapest guard of
+  the whole data model: it defends not the size but the property from which the size
+  follows.
+- `static_assert(sizeof(Zustand) == 2480)` — it fails on padding bytes and on any address
+  count other than 310. Together with T12 that means: the struct *is* free of padding,
+  and the byte form is still written field by field. The belt does not replace the
+  braces — the checksum must not hang on the memory layout even when the layout happens
+  to fit.
 
-Fünf Gebiete (USA, China, Deutschland, Brasilien, Restwelt), drei Sektoren, davon zwei mit
-Handelszeilen, vier Politikinstrumente. **Jede Zeile nennt ihre Herkunft in `spiel.md`,
-damit die Summe nachzählbar ist:**
+Five territories (USA, China, Germany, Brazil, rest of world), three sectors, two of them
+with trade rows, four policy instruments. **Every row names its origin in `spiel.md` so
+that the sum can be recounted:**
 
-| Gruppe | Felder | Anzahl | Herkunft in `spiel.md` |
+| Group | Fields | Count | Origin in `spiel.md` |
 |---|---|---:|---|
-| je Sektor (3×) | Wertschöpfung, Kapitalstock, Beschäftigung, Sektorpreis | 12 | „Der Zustand", Je Land |
-| Aggregat | Bevölkerung, Erwerbstätige, Produktivität, Preisniveau, Inflation, Leitzins, Wechselkurs, Staatsschuld, Haushaltssaldo | 9 | ebd. |
-| politisch | Zustimmung, Aufsichtszähler, Einfluss | 3 | ebd. |
-| Instrumente (4×) | Stand, anliegender Druck, Gegendruck, Restverzögerung | 16 | ebd. |
-| Restdauern | `marktverbot_rest`, `lobbykosten_rest`, `regierungsdruck_rest` | 3 | Gegenkraft 1 (dritte Schwelle) und Gegenkraft 2 |
-| Buchhaltung | `basiswechsel` | 1 | T8; Herkunft nach T46 |
-| **je spielbarem Land** | | **44** | |
-| **vier spielbare Länder** | | **176** | |
-| **Restwelt** | Sektoren 12 + Aggregat 9 + `basiswechsel` 1; **keine** Instrumente, Zustimmung, Aufsicht, Einfluss, Restdauern | **22** | „Die Restwelt" |
-| Handel | Gebiet × Gegenüber × handelbarer Sektor = 5 × 4 × 2 | 40 | „Handel" |
-| Weltpreise | je handelbarem Sektor | 2 | „Was für die Preisbildung gelten muss" |
-| Nachahmerzähler | Land × Sektor = 4 × 3 | 12 | „Der Fonds" |
-| Marktkorb | `markt.wert`, `markt.rendite` | 2 | „Der Fonds", Marktrendite; Regel in T33 |
-| Fonds, Aggregat | Kasse, Hebelstand, Sichtbarkeit, Anlegerbestand, Marktanteil | 5 | „Der Fonds" |
-| Fonds, Überrendite | letzte drei Runden | 3 | ebd. |
-| Positionssteckplätze | 12 Land×Sektor, 4 Währung, 4 Anleihe | 20 | ebd., T16 |
-| Beteiligungen | 12 Land×Sektor × (Anteil, Restdauer des Ausstiegs) | 24 | Aktion 2 |
-| Partie | Runde, Jahrgangskennung, Parametersatz-Prüfsumme, Mandatsstand | 4 | — |
-| **Summe** | | **310** | |
+| per sector (3×) | value added, capital stock, employment, sector price | 12 | "The state", per country |
+| aggregate | population, labour force, productivity, price level, inflation, policy rate, exchange rate, government debt, budget balance | 9 | ibid. |
+| political | approval, supervision counter, influence | 3 | ibid. |
+| instruments (4×) | level, pending pressure, counter-pressure, remaining delay | 16 | ibid. |
+| remaining durations | `marktverbot_rest`, `lobbykosten_rest`, `regierungsdruck_rest` | 3 | counterforce 1 (third threshold) and counterforce 2 |
+| bookkeeping | `basiswechsel` | 1 | T8; origin per T46 |
+| **per playable country** | | **44** | |
+| **four playable countries** | | **176** | |
+| **rest of world** | sectors 12 + aggregate 9 + `basiswechsel` 1; **no** instruments, approval, supervision, influence, remaining durations | **22** | "The rest of world" |
+| trade | territory × counterpart × tradable sector = 5 × 4 × 2 | 40 | "Trade" |
+| world prices | per tradable sector | 2 | "What must hold for price formation" |
+| imitator counters | country × sector = 4 × 3 | 12 | "The fund" |
+| market basket | `markt.wert`, `markt.rendite` | 2 | "The fund", market return; rule in T33 |
+| fund, aggregate | cash, leverage level, visibility, investor stock, market share | 5 | "The fund" |
+| fund, excess return | last three rounds | 3 | ibid. |
+| position slots | 12 country×sector, 4 currency, 4 bond | 20 | ibid., T16 |
+| stakes | 12 country×sector × (share, remaining exit duration) | 24 | action 2 |
+| game | round, vintage id, parameter-set checksum, mandate status | 4 | — |
+| **sum** | | **310** | |
 
-Nachrechnung: `4 × 44 + 22 = 198` für die Gebiete, `40 + 2 + 12 + 2 = 56` für die Welt,
-`5 + 3 + 20 + 24 = 52` für den Fonds, `4` für die Partie. `198 + 56 + 52 + 4 = 310`.
-`spiel.md` nennt dieselbe Zahl und verweist für die Aufstellung hierher. **Dieselben 310
-Adressen sind in T45 ein zweites Mal aufgeteilt, diesmal nach ihrer Herkunft** — die beiden
-Summen laufen über dieselbe Menge und müssen beide aufgehen; dass die zweite es in Fassung 4
-nicht tat, ist der Grund für T46.
+Recount: `4 × 44 + 22 = 198` for the territories, `40 + 2 + 12 + 2 = 56` for the world,
+`5 + 3 + 20 + 24 = 52` for the fund, `4` for the game. `198 + 56 + 52 + 4 = 310`.
+`spiel.md` names the same number and points here for the breakdown. **The same 310
+addresses are split up a second time in T45, this time by their origin** — the two sums
+run over the same set and must both come out; that the second did not in version 4 is
+the reason for T46.
 
-**Die Restwelt trägt vier Adressen, die keine Regel liest** (`leitzins`, `wechselkurs`,
-`staatsschuld`, `haushaltssaldo`). Sie stehen hier, weil der Aggregatblock für alle fünf
-Gebiete gleich gebaut ist — gleichförmige Adressierung nach T17, dieselbe Begründung wie der
-dauerhaft leere Steckplatz aus T16. Ihre Behandlung steht in T46, ihre Schreibregel
-(`Vortrag`, kein anderer Lesezugriff) ebenfalls.
+**The rest of world carries four addresses that no rule reads** (`leitzins`,
+`wechselkurs`, `staatsschuld`, `haushaltssaldo`). They stand here because the aggregate
+block is built the same for all five territories — uniform addressing per T17, the same
+reasoning as the permanently empty slot from T16. Their treatment stands in T46, and so
+does their write rule (`Vortrag`, no other read access).
 
-**`landespreis` bekommt keine Zeile, und das ist die Behebung von Befund 6, nicht ihre
-Umgehung.** Die Größe ist nach `spiel.md` der Sektorpreis der Vorrunde. Sie hat deshalb
-keine eigene Adresse, sondern einen eigenen **Lesezugriff** — siehe T39. Ein Feld dafür
-wäre eine zweite Kopie derselben Zahl und damit eine Gelegenheit, sie auseinanderlaufen zu
-lassen.
+**`landespreis` gets no row, and that is the remedy of finding 6, not its
+circumvention.** Per `spiel.md` the quantity is the previous round's sector price. It
+therefore has no address of its own but a **read access** of its own — see T39. A field
+for it would be a second copy of the same number and thus an opportunity to let the two
+drift apart.
 
-**T16 — Positionen sind Steckplätze, keine Liste.** Es gibt genau zwanzig mögliche
-Positionen; eine Position ist eine vorzeichenbehaftete Stufenzahl auf einem festen Platz,
-null heisst „keine". Damit entfällt jede Frage nach Höchstzahl, Reihenfolge und
-Zusammenlegung, und der Zustand bleibt vergleichbar (T12).
+**T16 — Positions are slots, not a list.** There are exactly twenty possible positions;
+a position is a signed step count on a fixed slot, zero means "none". That removes every
+question about maximum count, ordering and merging, and the state stays comparable
+(T12).
 
-**Ein Steckplatz ist dauerhaft leer:** die Währung USA. Der US-Dollar ist der Numéraire,
-eine Position darauf wäre gegen sich selbst gerichtet. Der Platz bleibt für die
-gleichförmige Adressierung (T17), die Zulässigkeitsprüfung bietet ihn nie an (T32).
-Spielbar sind 19 der 20 Plätze; wer 20 zählt, zählt Adressen, nicht Möglichkeiten.
+**One slot is permanently empty:** the currency USA. The US dollar is the numéraire; a
+position on it would be directed against itself. The slot remains for the uniform
+addressing (T17); the admissibility check never offers it (T32). 19 of the 20 slots are
+playable; whoever counts 20 counts addresses, not possibilities.
 
-**T17 — Jede Größe hat eine stabile Adresse.** `land.DE.sektor.2.preis`,
+**T17 — Every quantity has a stable address.** `land.DE.sektor.2.preis`,
 `land.BR.instrument.zoll.stand`, `fonds.position.CN.1`, `handel.DE.CN.1`, `markt.rendite`.
-Diese Adressen erscheinen im Protokoll, in der Kette, in den Testvorlagen und in der
-Oberfläche. Sie sind Teil der Schnittstellenversion: Wer eine umbenennt, macht den
-Regressionsbestand ungültig und braucht einen ADR.
+These addresses appear in the log, in the chain, in the test templates and in the
+interface. They are part of the interface version: whoever renames one invalidates the
+regression corpus and needs an ADR.
 
-**T17b — Der Adressbaum hat keinen Knoten `gebiet`, und `gebiet.<G>.` ist eine
-Sammelschreibweise dieses Dokuments.** Vier Stellen benutzen ein Präfix `gebiet.…`, wo eine
-Aussage für alle fünf Gebiete zugleich gilt. Es ist **keine Adresse**: Es erscheint in keinem
-Protokoll, in keiner Kette, in keiner Testvorlage und in keiner Oberfläche, und ein
-`detail gebiet.US` gibt es nach T20 nicht. Aufgelöst wird es so, und die Auflösung ist
-vollständig:
+**T17b — The address tree has no node `gebiet`, and `gebiet.<G>.` is a collective
+notation of this document.** Four places use a prefix `gebiet.…` where a statement holds
+for all five territories at once. It is **not an address**: it appears in no log, no
+chain, no test template and no interface, and per T20 there is no `detail gebiet.US`. It
+is resolved as follows, and the resolution is complete:
 
-| `<G>` steht für | aufgelöstes Präfix | Adressen |
+| `<G>` stands for | resolved prefix | addresses |
 |---|---|---:|
-| eines der vier spielbaren Länder | `land.US.`, `land.CN.`, `land.DE.`, `land.BR.` | 4 × 44 = 176 |
-| die Restwelt | `restwelt.` — ohne Kürzel, weder `gebiet.RW.` noch `land.RW.` | 22 |
-| **zusammen** | | **198** |
+| one of the four playable countries | `land.US.`, `land.CN.`, `land.DE.`, `land.BR.` | 4 × 44 = 176 |
+| the rest of world | `restwelt.` — without a code, neither `gebiet.RW.` nor `land.RW.` | 22 |
+| **together** | | **198** |
 
-Die 198 sind dieselbe Zahl wie die Gebietsspalte der Nachrechnung zu T15
-(`4 × 44 + 22 = 198` für die Gebiete). Die Schreibung des Platzhalters folgt der Regel, die
-dieses Dokument für `land.<L>.` gegen `land.<l>.` schon benutzt: **Grossbuchstabe** heisst
-„ein beliebiges Gebiet" im Fliesstext, **Kleinbuchstabe** heisst „der Wert dieses
-Funktionsarguments" (T48, `landespreis(g, s)`). Aufgelöst wird in beiden Fällen gleich.
+The 198 are the same number as the territory column of the recount for T15
+(`4 × 44 + 22 = 198` for the territories). The spelling of the placeholder follows the
+rule this document already uses for `land.<L>.` against `land.<l>.`: **upper case** means
+"any territory" in running text, **lower case** means "the value of this function
+argument" (T48, `landespreis(g, s)`). Both cases resolve the same way.
 
-**Warum diese Richtung und nicht die umgekehrte** — vier Gründe, jeder für sich tragend:
+**Why this direction and not the reverse** — four reasons, each carrying on its own:
 
-1. **T17 zählt die Adressform selbst auf** und schreibt `land.DE.sektor.2.preis` und
-   `land.BR.instrument.zoll.stand`; ein Knoten `gebiet` kommt dort nicht vor. T20 nennt für
-   `detail` ebenso `land.US` und `land.CN.sektor.1`.
-2. **T45 widerspräche T46 innerhalb desselben Abschnitts.** Die Zeile `Vorgabe(T-Nummer)`
-   führt als Beispiel wörtlich „`restwelt.basiswechsel` → 0 (T8)" — eine der elf Adressen,
-   auf die T46 wenige Absätze später abschliessend zeigt. Eine der beiden Stellen müsste
-   falsch sein, und keine ist es.
-3. **Die Restwelt trägt im Präfix kein Kürzel.** `RW` kommt allein in den 40 Handelsadressen
-   vor (`handel.RW.US.1`), dort als Bestandteil zwischen zwei Punkten und nicht als
-   Blockpräfix. Ein `gebiet.RW.` gäbe der Restwelt eine zweite Schreibweise, ohne eine Regel
-   zu vereinfachen.
-4. **Der Preis wären nicht fünf Adressen, sondern 198.** `basiswechsel` ist nach T15 ein Feld
-   des Gebietsblocks wie `leitzins` und `preisniveau` auch. Wer es `gebiet.US.basiswechsel`
-   nennt, muss `gebiet.US.leitzins` mitnennen — sonst trägt ein und derselbe Block zwei
-   Präfixe. Zu Ende geführt benennt die Gegenrichtung 198 der 310 Adressen um, macht damit
-   nach T17 den Regressionsbestand ungültig und braucht einen ADR. Der Gewinn wäre null:
-   dieselben Größen unter anderen Namen.
+1. **T17 enumerates the address form itself** and writes `land.DE.sektor.2.preis` and
+   `land.BR.instrument.zoll.stand`; a node `gebiet` does not occur there. T20 likewise
+   names `land.US` and `land.CN.sektor.1` for `detail`.
+2. **T45 would contradict T46 within the same section.** The row `Vorgabe(T-Nummer)`
+   gives as its example, verbatim, „`restwelt.basiswechsel` → 0 (T8)" — one of the eleven
+   addresses that T46 points to conclusively a few paragraphs later. One of the two
+   places would have to be wrong, and neither is.
+3. **The rest of world carries no code in its prefix.** `RW` occurs solely in the 40
+   trade addresses (`handel.RW.US.1`), there as a component between two dots and not as
+   a block prefix. A `gebiet.RW.` would give the rest of world a second spelling without
+   simplifying any rule.
+4. **The price would be not five addresses but 198.** Per T15, `basiswechsel` is a field
+   of the territory block just like `leitzins` and `preisniveau`. Whoever names it
+   `gebiet.US.basiswechsel` must name `gebiet.US.leitzins` along with it — otherwise one
+   and the same block carries two prefixes. Carried to the end, the reverse direction
+   renames 198 of the 310 addresses, thereby invalidates the regression corpus per T17
+   and needs an ADR. The gain would be zero: the same quantities under other names.
 
-**Die beiden Folgen, beide nachgesehen und beide passend — kein „vermutlich".**
-`daten/adressen.md` führt die fünf `basiswechsel`-Zeilen als `land.US.basiswechsel`,
-`land.CN.basiswechsel`, `land.DE.basiswechsel`, `land.BR.basiswechsel` und
-`restwelt.basiswechsel`, laufende Nummern 44, 88, 132, 176 und 198. Das ist genau die
-Auflösung der T46-Zeile; das Verzeichnis bleibt **unverändert**, und auch seine Markierungen
-hängen nicht daran — es rechnet unter *Was hier offen bleibt und hier nicht entschieden wird*
-selbst vor, dass beide denkbaren Antworten dieselben Marken ergeben. Was dort nachzutragen
-bleibt, ist allein die Antwort selbst; das ist Arbeit am Verzeichnis und gehört in ein
-eigenes Paket. `gebietspraefix()` in `kern/src/zustand.cpp` hängt für die vier spielbaren
-Länder `land.`, das Gebietskürzel und einen Punkt an und für die Restwelt `restwelt.`; der
-Kommentar über der Funktion sagt es wörtlich. Das ist die maschinelle Fassung dieser Regel —
-**passend, keine Änderung am Kern und kein ADR.**
+**The two consequences, both looked up and both fitting — no "presumably".**
+`daten/adressen.md` lists the five `basiswechsel` rows as `land.US.basiswechsel`,
+`land.CN.basiswechsel`, `land.DE.basiswechsel`, `land.BR.basiswechsel` and
+`restwelt.basiswechsel`, running numbers 44, 88, 132, 176 and 198. That is exactly the
+resolution of the T46 row; the register stays **unchanged**, and its markers do not hang
+on it either — under *Was hier offen bleibt und hier nicht entschieden wird* it works
+out itself that both conceivable answers yield the same marks. What remains to be added
+there is the answer alone; that is work on the register and belongs in a package of its
+own. `gebietspraefix()` in `kern/src/zustand.cpp` appends `land.`, the territory code
+and a dot for the four playable countries, and `restwelt.` for the rest of world; the
+comment above the function says so verbatim. That is the machine version of this rule —
+**fitting, no change to the core and no ADR.**
 
-**Die vier Fundstellen, abschliessend.** Jede wird von der Regel aufgelöst, keine ist eine
-Ausnahme:
+**The four occurrences, conclusively.** Each is resolved by the rule; none is an
+exception:
 
-| Stelle | Form | löst auf zu |
+| Place | Form | resolves to |
 |---|---|---|
-| **T28**, Absatz zur Preismischung, „mit `landespreis` = … nach T39" | `lies_alt(gebiet.<G>.sektor.<s>.preis)` | 15 Adressen — 5 Gebiete × 3 Sektorpreise |
-| **T39**, letzter Absatz, „Damit hat `landespreis` seinen Ort" | `lies_alt(gebiet.<G>.sektor.<s>.preis)` | dieselben 15 |
-| **T46**, erste Tabellenzeile | `gebiet.<G>.basiswechsel`, alle fünf Gebiete | 5 Adressen — laufende Nummern 44, 88, 132, 176, 198 |
-| **T48**, Nummer 13, `landespreis(g, s)` | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | dieselben 15, `g` als Argument |
+| **T28**, paragraph on the price mix, „mit `landespreis` = … nach T39" | `lies_alt(gebiet.<G>.sektor.<s>.preis)` | 15 addresses — 5 territories × 3 sector prices |
+| **T39**, last paragraph, "With that `landespreis` has its place" | `lies_alt(gebiet.<G>.sektor.<s>.preis)` | the same 15 |
+| **T46**, first table row | `gebiet.<G>.basiswechsel`, all five territories | 5 addresses — running numbers 44, 88, 132, 176, 198 |
+| **T48**, number 13, `landespreis(g, s)` | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | the same 15, `g` as argument |
 
-Die 15 sind an `daten/adressen.md` abgezählt und nicht gerechnet: Die laufenden Nummern 4, 8,
-12, 48, 52, 56, 92, 96, 100, 136, 140, 144, 180, 184 und 188 tragen einen Sektorpreis.
+The 15 are counted off against `daten/adressen.md`, not computed: running numbers 4, 8,
+12, 48, 52, 56, 92, 96, 100, 136, 140, 144, 180, 184 and 188 carry a sector price.
 
-**Zwei der vier Stellen schrieben bis zu dieser Fassung `gebiet.sektor.preis`** — ohne
-Platzhalter, also ohne zu sagen, welches Gebiet und welcher Sektor gemeint ist. Sie tragen
-ihn jetzt. Die Adressmenge bleibt 310 und die Tabelle in T46 Zeile für Zeile, wie sie war:
-Diese Festlegung ändert keine Adresse, sondern sagt, was eine Schreibweise bedeutet.
+**Two of the four places wrote `gebiet.sektor.preis` up to this version** — without
+placeholders, that is, without saying which territory and which sector is meant. They
+now carry them. The address set remains 310 and the table in T46 row for row as it was:
+this ruling changes no address; it says what a notation means.
 
-**Die Zählung vor und nach der Regel, damit sie niemand nachrechnen muss** — denn „vier
-Stellen" oben und der Befund einer Volltextsuche sind nicht dieselbe Zahl, und ohne diesen
-Absatz muss die Differenz jeder Leser selbst auflösen. **Gezählt wird als fester Text, nicht
-als Ausdruck** (`grep -oF`; der Punkt ist ein Punkt und kein Platzhalter), und die drei
-Muster stehen in der Tabelle mit **geschütztem** Punkt (`gebiet\.`). Beides zusammen sorgt
-dafür, dass keine Zeile dieses Absatzes selbst ein Treffer ist: Er nennt die ungeschützte
-Form nirgends, auch nicht als Gegenbeispiel. Die Zahlen der Spalte „jetzt" gelten deshalb
-für das Dokument einschliesslich seiner selbst.
+**The count before and after the rule, so that nobody has to recount it** — for "four
+places" above and the result of a full-text search are not the same number, and without
+this paragraph every reader must resolve the difference themselves. **Counted as fixed
+text, not as an expression** (`grep -oF`; the dot is a dot and not a wildcard), and the
+three patterns stand in the table with an **escaped** dot (`gebiet\.`). Together these
+two ensure that no line of this paragraph is itself a hit: it nowhere names the
+unescaped form, not even as a counter-example. The numbers of the column "now" therefore
+hold for the document including itself.
 
-| Muster | vor dieser Festlegung | jetzt |
+| Pattern | before this ruling | now |
 |---|---:|---:|
 | `gebiet\.<G>\.` | 1 | 8 |
 | `gebiet\.<g>\.` | 1 | 2 |
-| `gebiet\.` — die loseste Form, alles zusammen | 4 | 17 |
+| `gebiet\.` — the loosest form, everything together | 4 | 17 |
 
-**Die 17 ist am 2026-09-05 nachgezählt und stand in der Fassung `a127600` um eins zu
-niedrig.** Dieser Absatz führte die ungeschützte Form damals als Gegenbeispiel mit („statt
-…") und war damit selbst der achtzehnte Treffer, den die Tabelle nicht mitzählte. Er nennt
-sie nicht mehr; gezählt sind jetzt 17, und die Aufteilung darunter geht auf.
+**The 17 was recounted on 2026-09-05 and stood one too low in version `a127600`.** This
+paragraph then still carried the unescaped form as a counter-example („statt …") and was
+thereby itself the eighteenth hit, which the table did not count. It no longer names it;
+the count now is 17, and the breakdown below comes out.
 
-**Vorher vier, und es waren genau die vier T-Nummern der Tabelle oben:** T39 und T28 in der
-Kurzform ohne Platzhalter, T46 als `<G>`-Zeile, T48 als `<g>`-Formel. Nachzusehen in der
-Fassung vor dieser Festlegung, `git show ce59b8b^:specs/0016-…/technik.md`.
+**Before: four, and they were exactly the four T-numbers of the table above:** T39 and
+T28 in the short form without placeholders, T46 as the `<G>` row, T48 as the `<g>`
+formula. To be looked up in the version before this ruling,
+`git show ce59b8b^:specs/0016-…/technik.md`.
 
-**Nachher siebzehn, und keine davon ist eine fünfte Stelle.** Zehn tragen einen
-Platzhalter: **fünf** stehen in T17b selbst (die Überschrift und die vier Zeilen der
-Fundstellentabelle), die anderen **fünf** verteilen sich auf dieselben vier T-Nummern wie
-vorher — T46 trägt zwei, die Tabellenzeile und den Absatz, der von dort auf diese Regel
-zeigt. Die restlichen **sieben** stehen sämtlich in T17b und sind **Gegenbeispiele, keine
-Verwendungen**: dreimal `gebiet\.US` und zweimal `gebiet\.RW\.` in der Begründung, warum es
-diese Adressen nicht gibt, einmal `gebiet\.sektor` als Zitat der alten Kurzform und einmal
-`gebiet\.` mit Auslassungszeichen im Einleitungssatz. `4 → 17`, davon `13`
-neu: `5 + 1` in T17b und T46 mit Platzhalter, `7` als Gegenbeispiel. **Keine Ausnahme.**
+**After: seventeen, and none of them is a fifth place.** Ten carry a placeholder:
+**five** stand in T17b itself (the heading and the four rows of the occurrence table),
+the other **five** are spread over the same four T-numbers as before — T46 carries two,
+the table row and the paragraph that points from there to this rule. The remaining
+**seven** all stand in T17b and are **counter-examples, not uses**: three times
+`gebiet\.US` and twice `gebiet\.RW\.` in the reasoning why these addresses do not exist,
+once `gebiet\.sektor` as a citation of the old short form, and once `gebiet\.` with an
+ellipsis in the opening sentence. `4 → 17`, of which `13` are new: `5 + 1` in T17b and
+T46 with placeholder, `7` as counter-examples. **No exception.**
 
-**T18 — Die Kette wird erzeugt, nicht rekonstruiert — und jede Größe der Sollmaske wird je
-Runde genau einmal geschrieben.** Die Felder von `Zustand` sind ausserhalb des Kerns nicht
-schreibbar; innerhalb schreibt niemand direkt, sondern über
-`Schreiber::setze(adresse, wert, ursache, verzoegerung, beitrag)`. Jeder Aufruf hängt einen
-`Ursachensatz` an:
+**T18 — The chain is generated, not reconstructed — and every quantity of the target
+mask is written exactly once per round.** The fields of `Zustand` are not writable
+outside the core; inside, nobody writes directly but through
+`Schreiber::setze(adresse, wert, ursache, verzoegerung, beitrag)`. Every call appends an
+`Ursachensatz`:
 
-| Feld | Inhalt |
+| Field | Content |
 |---|---|
-| `runde` | in welcher Runde geschrieben |
-| `ziel` | Adresse nach T17 |
-| `alt`, `neu` | Werte in der Skala der Größe |
+| `runde` | in which round written |
+| `ziel` | address per T17 |
+| `alt`, `neu` | values in the quantity's scale |
 | `ursache` | `Aktion{nr}` \| `Instrument{land,instr}` \| `Gegenkraft{art}` \| `Markträumung{sektor}` \| `Vortrag{adresse}` \| `Jahrgang` |
-| `verzoegerung` | wie viele Runden zwischen Ursache und Wirkung lagen |
-| `beitrag` | Anteil dieser Ursache an der Änderung, in Promille |
+| `verzoegerung` | how many rounds lay between cause and effect |
+| `beitrag` | this cause's share of the change, in per mille |
 
-Der `Schreiber` führt ein Bitfeld über alle 310 Adressen. **Ein zweiter Schreibzugriff auf
-dieselbe Adresse in derselben Runde ist ein harter Fehler**, kein überschreibender Wert.
-Eine Adresse, die sich nicht ändert, wird trotzdem geschrieben, mit der Ursache
-`Vortrag` — „unverändert" ist eine Aussage und keine Lücke.
+The `Schreiber` keeps a bit field over all 310 addresses. **A second write to the same
+address in the same round is a hard error**, not an overwriting value. An address that
+does not change is written anyway, with the cause `Vortrag` — "unchanged" is a statement
+and not a gap.
 
-Das ist die maschinelle Fassung der Vorgabe aus `spiel.md` und zugleich die billigste Art,
-die dortige Behauptung über **acht** rundenübergreifende Rückkopplungskanäle prüfbar zu
-machen: Eine Rückkopplung innerhalb der Runde erzeugt zwangsläufig einen zweiten
-Schreibzugriff und stirbt hier, statt als neunter Kanal unbemerkt zu entstehen.
+That is the machine version of the requirement from `spiel.md` and at the same time the
+cheapest way to make the claim there about **eight** round-spanning feedback channels
+checkable: a feedback within the round necessarily produces a second write and dies
+here, instead of arising unnoticed as a ninth channel.
 
-**Acht statt sieben seit `spiel.md` Fassung 5**, und der Zuwachs ist die Ausbeute des
-Befundes 1: Kanal 8 ist *Vermögen → Lobbybudget → Instrument → Kurs → Bewertung → Vermögen*.
-Er war die ganze Zeit da; sein Glied „Bewertung" wurde erst zu einem gerechneten Schritt,
-als T47 und der Abschnitt *Was ein Korb wert ist* die Bewertungsformeln hinschrieben. Das
-ist der Grund, warum eine fehlende **Funktion** teurer ist als eine fehlende Zahl: Sie
-versteckt einen Rückkopplungskanal. Kosten:
-40 Byte je Runde, ein Bittest je Schreibzugriff.
+**Eight instead of seven since `spiel.md` version 5**, and the increase is the yield of
+finding 1: channel 8 is *Vermögen → Lobbybudget → Instrument → Kurs → Bewertung →
+Vermögen*. It was there the whole time; its link „Bewertung" only became a computed step
+when T47 and the section *What a basket is worth* wrote down the valuation formulas.
+That is the reason why a missing **function** is more expensive than a missing number:
+it hides a feedback channel. Cost:
+40 bytes per round, one bit test per write.
 
-**T39 — Es gibt zwei Lesezugriffe, und der falsche stirbt sofort.** Der `Schreiber` hält
-den Zustand der Vorrunde (`alt`, unveränderlich) und den entstehenden Zustand (`neu`):
+**T39 — There are two read accesses, and the wrong one dies immediately.** The
+`Schreiber` holds the previous round's state (`alt`, immutable) and the emerging state
+(`neu`):
 
-- `lies_alt(adresse)` — der Wert am Ende der Vorrunde. Immer verfügbar.
-- `lies_neu(adresse)` — der Wert dieser Runde. **Ist die Adresse in dieser Runde noch nicht
-  geschrieben, ist das ein harter Fehler**, kein stiller Rückgriff auf `alt`.
+- `lies_alt(adresse)` — the value at the end of the previous round. Always available.
+- `lies_neu(adresse)` — this round's value. **If the address has not yet been written in
+  this round, that is a hard error**, not a silent fallback to `alt`.
 
-Der stille Rückgriff wäre die gefährlichere Bequemlichkeit: Er macht das Ergebnis von der
-Reihenfolge der sechs Schritte abhängig, ohne dass irgendwo steht, dass es das tut. Mit dem
-Abbruch ist die Zyklenfreiheit der Rundenreihenfolge kein Versprechen mehr, sondern eine
-Eigenschaft, die jeder Lauf nachweist — auch der beim Käufer.
+The silent fallback would be the more dangerous convenience: it makes the result depend
+on the order of the six steps without it standing anywhere that it does. With the abort,
+the cycle-freedom of the round order is no longer a promise but a property that every
+run proves — including the one at the buyer's.
 
-Damit hat `landespreis` seinen Ort: In der Markträumung (T28) ist er
-`lies_alt(gebiet.<G>.sektor.<s>.preis)`, Präfix nach T17b. In Runde 1 ist das der Startwert
-des Jahrgangs, nach `spiel.md` der Index 10.000.
+With that `landespreis` has its place: in the market clearing (T28) it is
+`lies_alt(gebiet.<G>.sektor.<s>.preis)`, prefix per T17b. In round 1 that is the start
+value of the vintage, per `spiel.md` the index 10,000.
 
-**T38 — Der Modus ist eine Eigenschaft des Laufs, nicht des Zustands — und er bringt eine
-Sollmaske mit.** Das ist die Behebung von Befund 2 auf der Architekturseite.
+**T38 — The mode is a property of the run, not of the state — and it brings a target
+mask with it.** That is the remedy of finding 2 on the architecture side.
 
-`spiel.md` kennt zwei Modi: `spielmodus` und `weltlauf`. Der Modus steht **nicht** im
-Zustand. Zwei Gründe, beide zwingend: Er wäre ein 311. Feld und widerspräche einer Zahl, die
-`spiel.md` nennt; und er beschreibt nicht die Welt, sondern die Art, sie zu rechnen. Er ist
-Argument von `schritt` (T10), steht im Kopf des Speicherstands (T22) und in jedem Befund.
-Wer eine Partie im falschen Modus nachrechnet, bekommt keine falsche Zahl, sondern einen
-Prüfsummenbruch beim Laden.
+`spiel.md` knows two modes: `spielmodus` and `weltlauf`. The mode is **not** in the
+state. Two reasons, both compelling: it would be a 311th field and would contradict a
+number that `spiel.md` names; and it describes not the world but the way of computing
+it. It is an argument of `schritt` (T10), stands in the header of the save (T22) and in
+every finding. Whoever recomputes a game in the wrong mode gets not a wrong number but a
+checksum break on loading.
 
-Zu jedem Modus gehört eine **Sollmaske**: die Menge der Adressen, die in diesem Modus je
-Runde geschrieben werden. Am Rundenende prüft der `Schreiber` zweiseitig — jede Adresse der
-Maske genau einmal geschrieben, keine Adresse ausserhalb der Maske berührt. Beides ist ein
-harter Fehler, kein Bericht.
+To each mode belongs a **target mask**: the set of addresses written per round in this
+mode. At the end of the round the `Schreiber` checks in both directions — every address
+of the mask written exactly once, no address outside the mask touched. Either is a hard
+error, not a report.
 
-| Block | Adressen | in `weltlauf` |
+| Block | Addresses | in `weltlauf` |
 |---|---:|---|
-| je spielbarem Land: Sektoren (12), Aggregat (9), Zustimmung (1), Instrumentenstand (4), `basiswechsel` (1) | 27 × 4 = 108 | **ja** |
-| je spielbarem Land: Aufsichtszähler (1), Einfluss (1), Instrumente ohne Stand (12), Restdauern (3) | 17 × 4 = 68 | nein |
-| Restwelt | 22 | **ja** |
-| Handel | 40 | **ja** |
-| Weltpreise | 2 | **ja** |
-| Nachahmerzähler | 12 | nein |
-| Marktkorb | 2 | nein |
-| Fonds (Aggregat 5, Überrendite 3, Steckplätze 20, Beteiligungen 24) | 52 | nein |
-| Partie: Runde, Jahrgangskennung, Parametersatz-Prüfsumme | 3 | **ja** |
-| Partie: Mandatsstand | 1 | nein |
+| per playable country: sectors (12), aggregate (9), approval (1), instrument level (4), `basiswechsel` (1) | 27 × 4 = 108 | **yes** |
+| per playable country: supervision counter (1), influence (1), instruments without level (12), remaining durations (3) | 17 × 4 = 68 | no |
+| rest of world | 22 | **yes** |
+| trade | 40 | **yes** |
+| world prices | 2 | **yes** |
+| imitator counters | 12 | no |
+| market basket | 2 | no |
+| fund (aggregate 5, excess return 3, slots 20, stakes 24) | 52 | no |
+| game: round, vintage id, parameter-set checksum | 3 | **yes** |
+| game: mandate status | 1 | no |
 
-Nachrechnung: `108 + 22 + 40 + 2 + 3 = 175` in der Maske, `68 + 12 + 2 + 52 + 1 = 135`
-ausserhalb, `175 + 135 = 310`. Die Maske `spielmodus` umfasst alle 310.
+Recount: `108 + 22 + 40 + 2 + 3 = 175` in the mask, `68 + 12 + 2 + 52 + 1 = 135`
+outside, `175 + 135 = 310`. The mask `spielmodus` covers all 310.
 
-Was ausserhalb der Maske liegt, behält seinen Startwert — so verlangt es `spiel.md`. Der
-Fonds startet im Weltlauf also nicht mit Nullvermögen, sondern er wird **überhaupt nicht
-gerechnet**: kein Vermögen, keine Rendite, keine Überrendite, kein Anlegerabzug, keine
-Todesart. Der Nenner aus Befund 2 entsteht nicht, statt abgefangen zu werden. Der Prüfstand
-weist die Maskengröße in jedem Befund aus.
+What lies outside the mask keeps its start value — `spiel.md` demands it so. In the
+weltlauf the fund thus does not start with zero wealth; it is **not computed at all**:
+no wealth, no return, no excess return, no investor withdrawal, no manner of death. The
+denominator from finding 2 does not arise, instead of being caught. The test bench
+reports the mask size in every finding.
 
-Der Modus wirkt an genau vier Stellen und nirgends sonst — Schritt 2 und 6 der Runde
-entfallen, aus Schritt 5 laufen nur Zustimmung und Regierungswechsel, und die
-Politikinstrumente kommen in Schritt 3 aus dem Jahrgang statt aus dem Lobbydruck. Der
-Regierungswechsel wird gerechnet und ausgewiesen, schreibt aber nichts; dass das Orakel an
-dieser Stelle blind ist, gehört nach `spiel.md` in jeden Befund und steht deshalb in der
-Befundvorlage, nicht in einer Fussnote.
+The mode acts at exactly four places and nowhere else — steps 2 and 6 of the round are
+dropped, of step 5 only approval and change of government run, and in step 3 the policy
+instruments come from the vintage instead of from the lobby pressure. The change of
+government is computed and reported but writes nothing; that the oracle is blind at this
+point belongs in every finding per `spiel.md` and therefore stands in the finding
+template, not in a footnote.
 
-**T19 — Die Kette gehört nicht in den Zustand.** `schritt` liefert
-`(neuer_zustand, kette_dieser_runde)`; die Sitzung sammelt die Ketten in einem `Verlauf`.
-So bleibt `Zustand` klein und vergleichbar, und der Prüfstand kann die Ketten wegwerfen,
-wenn er nur Ergebnisse zählt. Die Aufnahmekapazität je Runde ist fest; wird sie erreicht,
-ist das ein harter Fehler und keine stille Kürzung — eine gekürzte Kette wäre eine Lüge
-gegenüber dem Käufer.
+**T19 — The chain does not belong in the state.** `schritt` returns
+`(neuer_zustand, kette_dieser_runde)`; the session collects the chains in a `Verlauf`.
+That keeps `Zustand` small and comparable, and the test bench can throw the chains away
+when it only counts results. The recording capacity per round is fixed; reaching it is a
+hard error and not a silent truncation — a truncated chain would be a lie to the buyer.
 
 ## 5. Die drei Zustandsebenen (G8)
 
