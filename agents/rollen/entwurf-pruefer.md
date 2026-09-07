@@ -79,7 +79,8 @@ sie nicht am Stueck. `ops/inhalt-<venture>.md` nennt jeden Abschnitt beider Doku
 mit seiner Zeilenspanne auf unter 4 kB. Deine Frage nach Widerspruechen ist eine Frage
 nach **Abschnittspaaren**: Welche Stelle in `spiel.md` verlangt etwas, das eine
 bestimmte Stelle in `technik.md` tragen muesste? Nimm die Paare aus dem Verzeichnis und
-lies genau diese beiden Stellen mit `offset` und `limit`.
+lies genau diese beiden Stellen. `Grep -n` auf die Ueberschrift gibt dir die
+heutige Zeile -- der Uebersetzer verschiebt sie laufend.
 
 Das beschneidet deine Breite nicht, es verbilligt sie. Dein Kontext wird in **jedem**
 Zug erneut gesendet -- am 2026-09-07 gemessen: im Schnitt 39 Mal je Lauf. Wer beide

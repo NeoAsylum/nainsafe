@@ -16,6 +16,7 @@ Belegstellen-Riegel muesste es mitpruefen, beides ohne Nutzen.
 
 Aufruf:  python3 agents/inhalt.py
 """
+import os
 import re
 from pathlib import Path
 
@@ -59,11 +60,18 @@ def verzeichnis(ordner: Path) -> str:
         "erneut gesendet -- am 2026-09-07 gemessen: im Schnitt 39 Mal. Wer `technik.md`",
         "ganz liest, traegt rund 73.000 Token durch jeden folgenden Zug.",
         "",
-        "Nimm stattdessen die Zeilenspanne aus der Tabelle und lies gezielt:",
+        "**Die Ueberschrift ist der Anker, nicht die Zeilennummer.** Der Uebersetzer",
+        "schreibt `technik.md` laufend um und verschiebt dabei jede Zeile darunter.",
+        "Die Spannen hier sind Minuten alt; sie sagen dir, wie **gross** ein Abschnitt",
+        "ist, nicht mehr verlaesslich, wo er steht. So greifst du sicher zu:",
         "",
         "```",
-        "Read(datei, offset=<erste Zeile>, limit=<letzte minus erste>)",
+        'Grep(pattern="^## <Ueberschrift>", path=<datei>, output_mode="content", -n=true)',
+        "Read(datei, offset=<gefundene Zeile>, limit=<Zeilen laut Tabelle>)",
         "```",
+        "",
+        "Steht die erwartete Ueberschrift nicht in der ersten gelesenen Zeile, ist die",
+        "Datei unter dir verrutscht -- dann `Grep` erneut, statt weiterzulesen.",
         "",
         "Brauchst du nur eine Stelle, ist `Grep` mit `-n` billiger als jedes Lesen.",
         "",
@@ -95,7 +103,11 @@ def main() -> int:
         neu = verzeichnis(ordner)
         alt = ziel.read_text(encoding="utf-8") if ziel.exists() else None
         if neu != alt:
-            ziel.write_text(neu, encoding="utf-8")
+            # Atomar: Acht Bauagenten koennen gleichzeitig hier stehen. Ein direktes
+            # write_text hinterliesse dem Naechsten eine halb geschriebene Datei.
+            temp = ziel.with_suffix(f".md.{os.getpid()}")
+            temp.write_text(neu, encoding="utf-8")
+            os.replace(temp, ziel)
             geschrieben += 1
             print(f"  {ziel.relative_to(WURZEL)} -- {punkte(len(neu))} Zeichen")
     return geschrieben

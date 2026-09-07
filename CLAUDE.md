@@ -98,8 +98,8 @@ read once is a file you pay for about thirty-nine times.
 
 - **Never read a specification whole.** `specs/<venture>/technik.md` is roughly 287 kB,
   about 72,000 tokens. `ops/inhalt-<venture>.md` lists every section with its line
-  range in under 4 kB. Read that index, then read the one section you need with
-  `offset` and `limit`. `spiel.md` and `technik.md` together are 566 kB.
+  range in under 4 kB. Read that index, then `Grep -n` the section heading for its
+  current line and read that one section. `spiel.md` and `technik.md` together are 566 kB.
 - **Never search across `befunde/`.** It holds 1,546 reports and 68 MB. A `Grep` over
   the venture without a path filter pays for all of it. When you cite a finding, name
   its file. Search that directory only when you are hunting evidence and know roughly

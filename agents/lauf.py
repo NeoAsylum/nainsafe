@@ -781,6 +781,18 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         print("  aufgebraucht wird. Grenze steht in agents/lauf.py:TAGESGRENZE_USD.")
         return 2
 
+    # Abschnittsverzeichnis auffrischen, unmittelbar bevor der Agent es liest -- hinter
+    # den Bremsen, damit ein abgewiesener Lauf keine Arbeit macht. Einmal je Tageslauf
+    # reicht nicht: Der Uebersetzer schreibt `technik.md` alle zehn Minuten neu und
+    # verschiebt jede Zeilennummer darunter. Am 2026-09-07 war das Verzeichnis vier
+    # Minuten nach dem Schreiben veraltet. Ein Scan ueber vier Dokumente kostet
+    # Millisekunden und null Token; inhalt.main() schreibt nur bei Aenderung, atomar.
+    try:
+        import inhalt
+        inhalt.main()
+    except Exception:
+        pass                                   # nie einen Lauf daran haengen
+
     lauf_id = journal_start(verbindung, rolle, gegenstand)
     begonnen = time.time()
     print(f"[{jetzt()}] Lauf {lauf_id}: {rolle}" + (f" -> {gegenstand}" if gegenstand else ""))

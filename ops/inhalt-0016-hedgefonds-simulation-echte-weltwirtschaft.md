@@ -9,11 +9,18 @@ Lies **nie** eine Vorgabe ganz. Der Kontext eines Laufs wird in jedem Zug
 erneut gesendet -- am 2026-09-07 gemessen: im Schnitt 39 Mal. Wer `technik.md`
 ganz liest, traegt rund 73.000 Token durch jeden folgenden Zug.
 
-Nimm stattdessen die Zeilenspanne aus der Tabelle und lies gezielt:
+**Die Ueberschrift ist der Anker, nicht die Zeilennummer.** Der Uebersetzer
+schreibt `technik.md` laufend um und verschiebt dabei jede Zeile darunter.
+Die Spannen hier sind Minuten alt; sie sagen dir, wie **gross** ein Abschnitt
+ist, nicht mehr verlaesslich, wo er steht. So greifst du sicher zu:
 
 ```
-Read(datei, offset=<erste Zeile>, limit=<letzte minus erste>)
+Grep(pattern="^## <Ueberschrift>", path=<datei>, output_mode="content", -n=true)
+Read(datei, offset=<gefundene Zeile>, limit=<Zeilen laut Tabelle>)
 ```
+
+Steht die erwartete Ueberschrift nicht in der ersten gelesenen Zeile, ist die
+Datei unter dir verrutscht -- dann `Grep` erneut, statt weiterzulesen.
 
 Brauchst du nur eine Stelle, ist `Grep` mit `-n` billiger als jedes Lesen.
 
@@ -47,7 +54,7 @@ Brauchst du nur eine Stelle, ist `Grep` mit `-n` billiger als jedes Lesen.
 | Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01 | 3722-3777 | 3.841 |
 | Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31 | 3778-3863 | 5.913 |
 
-## technik.md -- 286.573 Zeichen, 21 Abschnitte
+## technik.md -- 286.199 Zeichen, 21 Abschnitte
 
 | Abschnitt | Zeilen | Zeichen |
 |---|---|---|
@@ -59,9 +66,9 @@ Brauchst du nur eine Stelle, ist `Grep` mit `-n` billiger als jedes Lesen.
 | 6. Maschinenschnittstelle und Partieformat | 1408-1449 | 2.838 |
 | 7. Datenschicht | 1450-1846 | 28.842 |
 | 8. Markträumung und die beiden Renditen | 1847-2233 | 25.490 |
-| 9. Test- und Prüfstandsaufbau | 2234-2625 | 27.377 |
-| 10. Was das Modell an Rechenzeit kostet | 2626-2745 | 8.022 |
-| 11. Auslieferung, und wo Geld anfängt | 2746-2763 | 1.142 |
+| 9. Test- und Prüfstandsaufbau | 2234-2625 | 27.263 |
+| 10. Was das Modell an Rechenzeit kostet | 2626-2745 | 7.795 |
+| 11. Auslieferung, und wo Geld anfängt | 2746-2763 | 1.109 |
 | 12. Was ich nicht entschieden habe | 2764-2857 | 7.470 |
 | 13. Hinweis für den Projektmanager | 2858-2882 | 1.630 |
 | 14. Befundabarbeitung — die vier früheren Prüfungen | 2883-2901 | 1.180 |

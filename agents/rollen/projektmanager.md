@@ -106,8 +106,8 @@ steht, ist ein Fehler von dir.
 
 1. Lies `ops/inhalt-<venture>.md` -- das Abschnittsverzeichnis beider Vorgaben mit
    Zeilenspannen. Daraus entstehen die Pakete. Oeffne aus `spiel.md` und `technik.md`
-   nur die Abschnitte, die dein Schnitt wirklich braucht, mit `offset` und `limit` aus
-   der Tabelle. Beide zusammen sind 566 kB; einmal ganz gelesen traegst du sie durch
+   nur die Abschnitte, die dein Schnitt wirklich braucht: `Grep -n` auf die
+   Ueberschrift gibt die heutige Zeile, die Tabelle die Groesse. Beide zusammen sind 566 kB; einmal ganz gelesen traegst du sie durch
    jeden weiteren Zug deines Laufs.
 2. Lies den vorhandenen Rueckstand und die Befunde der Pruefer.
 3. **Zieh die Zustaende nach**: Pruefbefunde auswerten, `fertig` oder `offen` setzen,
