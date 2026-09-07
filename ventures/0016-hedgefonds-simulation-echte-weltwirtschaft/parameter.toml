@@ -1,6 +1,15 @@
 # =====================================================================
 # parameter.toml -- die Kalibrierdatei des Spiels
 #
+# **Dieser Kopf haelt die Entstehung der Datei fest und wird nicht
+# fortgeschrieben.** Paketnummer, Stand und Fassungszahl gleich darunter
+# gehoeren zu Paket 0009 und altern absichtlich nicht mit -- sie sind kein
+# Stand von heute. Was spaetere Pakete geaendert haben, steht da, wo sie
+# es geaendert haben, mit eigener Nummer und eigenem Datum: 0150 und 0153
+# bei der Gruppe D, 0175 und 0193 bei den Zaehlaufrufen. Entschieden mit
+# Paket 0203, weil der Kopf sich bis dahin als Stand der ganzen Datei las
+# und in dieser Lesart seit Paket 0150 falsch war.
+#
 # Paket 0009-parameterdatei-schluessel, Datenbauer, Stand 2026-09-02,
 # **Fassung 3 nach Ruecklauf 2** (Pruefbefund
 # `befunde/pruefung-0009-parameterdatei-schluessel-runde2-2026-09-02.md`,
@@ -232,12 +241,25 @@
 # eine Marke, aus 25 wuerden 26.
 # **`sort -u`** zaehlt ueber verschiedene Namen statt ueber Fundstellen.
 # Das ist Vorsorge, nicht der Ausgleich eines beobachteten Falls: **Kein
-# Name hat in dieser Datei je zwei echte Marken getragen.** Gemessen
-# ueber alle zwoelf Fassungen -- fuer jeden Commit, der die Datei
-# angefasst hat, ihren Blob durch den Ausdruck mit dem Fettdruckfilter,
-# einmal mit und einmal ohne `sort -u` -- war die Fundstellenzahl jedes
-# Mal gleich der Namenszahl, 25 zu 25. Auf dem heutigen Stand liefert
-# der Ausdruck ohne `sort -u` darum dieselbe Zahl wie mit ihm:
+# Name hat in dieser Datei je zwei echte Marken getragen.** Gemessen am
+# 2026-09-06 ueber jeden Commit, der die Datei bis dahin angefasst hatte
+# -- ihren Blob durch den Ausdruck mit dem Fettdruckfilter, einmal mit
+# und einmal ohne `sort -u` -- war die Fundstellenzahl jedes Mal gleich
+# der Namenszahl, 25 zu 25.
+# **Wie viele Fassungen das waren, steht hier nicht**, und das ist die
+# Entscheidung von Paket 0203: Diese Zahl waechst mit jedem Commit, der
+# die Datei anfasst, auch mit dem, der den Satz ueber sie schreibt, und
+# kein Aufruf in dieser Datei erzeugt sie -- sie waere die einzige Zahl
+# hier ohne Messgeraet. Bis dahin stand hier "gemessen ueber alle zwoelf
+# Fassungen": am 2026-09-06 nachgezaehlt und richtig, einen Commit
+# spaeter ueberholt, und nichts in der Datei zeigte das an. Wer die Zahl
+# braucht, holt sie von der Vorhabenwurzel aus, mit dem Datum des Abrufs
+# daneben und nicht in dieser Datei:
+#   git log --oneline -- \
+#     ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml \
+#     | wc -l
+# Auf dem heutigen Stand liefert der Ausdruck ohne `sort -u` darum
+# dieselbe Zahl wie mit ihm:
 #   grep -o '`[a-z_0-9]*`\*\*\?' parameter.toml | grep -v '\*\*$' | wc -l   -> 25
 # Bis Paket 0193 stand hier, `regulierung_start` habe seine Marke am
 # 2026-09-03 mehrfach getragen, belegt mit "26 Treffer auf 25

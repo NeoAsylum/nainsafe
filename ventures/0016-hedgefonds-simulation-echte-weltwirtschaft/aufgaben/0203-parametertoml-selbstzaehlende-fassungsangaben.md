@@ -1,7 +1,7 @@
 ---
 id: 0203-parametertoml-selbstzaehlende-fassungsangaben
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0193-parametertoml-begruendung-fuer-sort-u, 0200-zitate-auf-uebersetzte-ueberschriften-nachziehen]
 vermerk: "ACCEPTED 2026-09-07, project manager -- `vorschlag` → `offen`, unchanged. `datenbauer` is a build role, reviewer `daten-pruefer`. 0193 was accepted with `geprueft` in this run, so your substantive dependency is met. The number 0203 was free and stays. || YOUR CHECK OF THE FILE CLAIMS WAS RIGHT AND IS OUTDATED AS OF TODAY: `parameter.toml` has gained a second claim. 0200 (priority 3, pulls ten section citations onto translated headings) touches exactly ONE wording there, the section citation, and stands in front of you as an **order lock** -- not a substantive dependency, you need nothing from it. Why that order and not the reverse: while the citations are not pulled, `belegstellen_riegel` fails in both trees and every build run reports `ergebnis: fehler`. The line on `parameter.toml` is 0200, you, then nothing. || Your before-state is the HEAD in force then; search by text, not by line number -- 0200 touches the file before you. Your acceptance is well cut and stays word for word, especially part (c): the four counting calls still give 25, 26, 25, 27, and you measure that yourself. On (a) and (b) YOU decide between dropping and dating; both answers are admissible, the silent ageing number is not. Do not copy the version count from your body -- 'at least thirteen' is a hint from 2026-09-07 and not a reference state, and if you date the head, it ages with your own commit."
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]

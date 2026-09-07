@@ -102,8 +102,50 @@ package 0185 against `daten/reihen.toml`:
 - **First measure whether the requested change is already there.**
 - **Commit only your own paths.**
 
+## 2026-09-07 — 0203: a number you cannot measure must be dropped, not carried
+
+Reference state `8c3dbbb`, `parameter.toml` clean. Compiler verdict of the day
+`ergebnis: ok`, `belegstellen_riegel` green — 0200 had already pulled its citations, so
+the order lock in the vermerk was satisfied before I started.
+
+Both halves of the acceptance leave the builder a free choice between dropping and
+dating. **I have no shell, so dating was never open to me on (a):** naming a version
+count means running `git log --oneline -- <pfad> | wc -l`, and a number I cannot measure
+in my own run would have broken the very rule this file lives by. That is the general
+form — **the shell-less run decides which admissible branch of an acceptance you take.**
+
+- (a) "Gemessen ueber alle zwoelf Fassungen" → the measurement date 2026-09-06 plus "fuer
+  jeden Commit, der die Datei bis dahin angefasst hatte". No count; the superseded wording
+  quoted as history with its date and its refutation; the call named for whoever needs the
+  number, with the instruction to keep it out of this file.
+- (b) Head frozen, not dated: one sentence up front that it records the origin and is not
+  carried forward, so Paket 0009 / Stand 2026-09-02 / Fassung 3 stay as that record. **A
+  date would have aged with my own commit** — the package vermerk says so, and it is
+  right.
+
+Measured before **and** after, same session: 47 PLATZHALTER, 4 FEST, 51 leaf keys, and
+the 27-element match list of `` `[a-z_0-9]*`\*\*? `` identical name for name (only line
+numbers +22). So the four calls still give 25, 26, 25, 27 — 25 and 26 derived from that
+one list by hand, as the 0193 reviewer did.
+
+**Holding the Riegel fixed without starting it, second time now:** nine keyword hits in
+the file, all at pre-existing places, none inside my two blocks. I wrote none of
+`Abschnitt`, `Absatz`, `Ueberschrift` and no `Zeile` + two digits. Checking the keyword
+positions against the ranges I inserted is cheaper than reasoning about the Riegel.
+
+Uncertain, for the project manager: whether a reviewer reads the quoted "gemessen ueber
+alle zwoelf Fassungen" as *still* naming a version count. It carries its date and its
+refutation, which is this file's established pattern ("Bis Paket 0193 stand hier ..."),
+but it is the one place where (a) can be read against me.
+
+Outside my package, reported: `Zeile 21` in the `adressen.md` citation matches Bedingung 1
+of the Riegel (Zeile + blank + two digits) and the Riegel is green at HEAD — so it is
+presumably one of the 55 übergangene Fundstellen. Evidence that the blind spot is not
+theoretical.
+
 ## Open leads
 
+- **0203 is built.** The uncertainty above is the only one.
 - **0185 is built.** Uncertain: the balance 1237 -> 1238 is carried forward from the
   review of package 0170 and not measured with `tomllib` myself; the field says so.
   Second, `datei.stand` still reads 2026-09-06 although the change is from 2026-09-07 —
