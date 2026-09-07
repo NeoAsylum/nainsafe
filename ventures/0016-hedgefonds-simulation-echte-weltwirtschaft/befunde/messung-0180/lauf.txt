@@ -1,3 +1,39 @@
+##############################################################################
+AUFZEICHNUNG, NICHT DER HEUTIGE STAND.  Kopf angelegt am 2026-09-07, Paket 0214.
+
+Alles unter diesem Kopf ist der Lauf von `messen.py` am Stand HEAD 584326c
+(vollstaendig in der Zeile darunter), zeichengleich belassen. Der Wert dieser
+Datei ist gerade, dass sie einen alten Stand zeigt -- sie wird deshalb weder
+geloescht noch berichtigt (Hausregel 3). Ueberholt ist sie trotzdem:
+
+  0194 -- der Riegel zaehlt eine dritte Sorte (Deklarationen). Die Schlusszeile
+  unten sagt "9 Fundstellen der zwei Nomen"; heute steht dort "der drei Nomen"
+  (`zahlwort_riegel.cpp:1847`). Die Selbsttestzahlen unten -- 9 / 18 / 8 / 7 / 6
+  -- sind heute 9 / 20 / 8 / 7 / 9; am Quelltext gelesen und nicht gemessen, die
+  fuenf Tabellen stehen in `zahlwort_riegel.cpp` an 1226, 1298, 1380, 1498, 1609.
+  Fall A2 gewinnt dadurch die Deklarationszeile ("Zeilennummer 32:
+  'dreiundzwanzig Deklarationen' nennt 23, gezaehlt sind 24"), die unten fehlt.
+
+  0213 -- die Empfindlichkeitsprobe vergleicht je Fundstelle statt die Anzahl
+  roter Fundstellen. Fall A2 hat unten **4** Befunde; erwartet werden heute
+  **5** (`messen.py:318-322`). Und es gibt seit 0213 einen **Teil C** -- zwei
+  Mutanten der Probe selbst (`messen.py:446-477`) --, der unten fehlt.
+
+  0199 -- Teil B nennt seine gerissenen Faelle unten bei der Nummer
+  ("Behauptung 17"), heute beim Wortlaut: aus 17 wurde durch 0194 die 19. Auch
+  die Zahl gerissener Faelle ist ueberholt -- M2, M3 und M5 reissen heute 6, 4
+  und 6 statt 4, 1 und 3 (`messen.py:354-405`).
+
+Der lebende Beleg ist nicht diese Datei, sondern der juengste Bericht
+`befunde/uebersetzung-<datum>.md`. Am 2026-09-07 steht dort `zahlwort_messung
+... Passed 18.27 sec` (Arbeitsbereich) und `18.34 sec` (Alleinbau): Die Messung
+ist mit den heutigen Erwartungen gruen durchgelaufen. Das Gesamturteil jenes
+Berichts lautet `fehler`, aber wegen `belegstellen_riegel` und
+`belegstellen_messung`, nicht wegen der Zahlwortkette. Was `ctest` bei einer
+gruenen Probe druckt, zeigt der Bericht nicht (`--output-on-failure`) -- darum
+stehen die Zahlen oben mit ihrer Herkunft dabei und nicht als Messwert.
+##############################################################################
+
 ==============================================================================
 Messung 0180, Stand HEAD 584326c8b0548b19a088804b4c48b6cc2a9d2ab5
   Pruefling  kern/include/kern/werte.hpp  Blob 4f47f52d332b016b5fc1a465458970e50b01bb7e
