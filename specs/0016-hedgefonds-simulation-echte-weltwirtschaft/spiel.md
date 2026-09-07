@@ -760,479 +760,494 @@ missing **function**, and the only remedy is that someone writes the formula dow
 
 ### Warum die Größe des Zustands keine Verteidigung ist
 
-`agentenbau.md` nennt als wunden Punkt dieses Genres, dass „ein Modell mit tausenden
+`agentenbau.md` names as this genre's sore point that „ein Modell mit tausenden
 rückgekoppelten Größen leicht chaotisch wird, und dann trägt kein Regressionstest mehr".
-Dagegen hilft nicht eine kleine Zahl von Feldern, sondern eine kleine Zahl von
-**rückgekoppelten Kanälen**. Innerhalb einer Runde gibt es keine; über die Rundengrenze
-gibt es genau acht, und sie sind hier abschließend aufgezählt:
+What helps against that is not a small number of fields but a small number of
+**fed-back channels**. Within a round there are none; across the round boundary there
+are exactly eight, and they are exhaustively enumerated here:
 
-| # | Kanal | Dämpfung |
+| # | Channel | Damping |
 |---:|---|---|
-| 1 | Gewinn → Investition → Kapitalstock → Produktion → Gewinn | eine Runde Verzögerung, Abschreibungsrate |
-| 2 | Instrument → Belastung → Realeinkommen → Zustimmung → Regierungswechsel → Instrument | Instrument höchstens ein Schritt je Runde; der Wechsel wird in Schritt 5 entschieden und wirkt erst in Schritt 3 der Folgerunde |
-| 3 | Instrument → Handel → Weltpreis → Schaden → Gegenlobbybudget → Instrument | Gegendruck wirkt erst in der Folgerunde |
-| 4 | Vermögen → Hebel → Positionsgröße → Preisstoß → Vermögen | Hebelobergrenze, Aufschlag steigt mit Sichtbarkeit |
-| 5 | Sichtbarkeit → Aufsichtszähler → Zwangsverkauf → Marktanteil → Sichtbarkeit | Zähler ganzzahlig mit Obergrenze, drei feste Schwellen |
-| 6 | Überrendite → Nachahmerzähler → Preis → Überrendite | Zähler ganzzahlig mit Obergrenze |
-| 7 | Überrendite → Anlegerbestand → Positionsgröße → Preisstoß → Überrendite | Abzug erst nach drei Runden, fester Anteil je Runde |
-| 8 | Vermögen → Lobbybudget → Instrument → Kurs → Bewertung → Vermögen | Verzögerung und höchstens ein Schritt je Runde; Gegendruck wächst mit dem Schaden (Gegenkraft 5); Aufsicht wächst mit Einfluss mal Anteil (Gegenkraft 1); Nachahmer grasen den Kursgewinn ab (Gegenkraft 4) |
+| 1 | profit → investment → capital stock → production → profit | one round of delay, depreciation rate |
+| 2 | instrument → burden → real income → approval → change of government → instrument | instrument at most one step per round; the change is decided in step 5 and takes effect only in step 3 of the following round |
+| 3 | instrument → trade → world price → damage → counter-lobby budget → instrument | counter-pressure takes effect only in the following round |
+| 4 | assets → leverage → position size → price impact → assets | leverage cap, markup rises with visibility |
+| 5 | visibility → supervision counter → forced sale → market share → visibility | counter is integer with an upper bound, three fixed thresholds |
+| 6 | excess return → imitator counter → price → excess return | counter is integer with an upper bound |
+| 7 | excess return → investor base → position size → price impact → excess return | deduction only after three rounds, fixed share per round |
+| 8 | assets → lobby budget → instrument → price → valuation → assets | delay and at most one step per round; counter-pressure grows with the damage (counterforce 5); supervision grows with influence times share (counterforce 1); imitators graze off the price gain (counterforce 4) |
 
-**Kanal 8 ist neu in dieser Fassung, und er war die ganze Zeit da.** Er ist die Schleife,
-an der dieses Genre stirbt — *wer vorn liegt, kann mehr lobbyieren, und wer mehr lobbyiert,
-liegt weiter vorn* —, und er steht wörtlich im Beispiel der Idee („Zoll +5pp → Importpreis
-→ dein Bestand Sektor 3 +8,3%"). In der Tabelle fehlte er, weil das Glied *Bewertung* bis zu
-dieser Fassung kein gerechneter Schritt war, sondern ein Wort; erst der Abschnitt
-*What a basket is worth* macht ihn benennbar. Vier Dämpfungen greifen an ihm, alle vier stehen schon
-im Entwurf, und **drei davon wachsen mit dem Erfolg** — das ist der Grund, warum er
-gedämpft ist und nicht bloß langsam. Die Anleihevariante desselben Kanals (Lobby auf den
-Leitzins statt auf den Zoll, `anleihekurs` statt `sektorpreis`) ist kein neunter Kanal,
-sondern derselbe mit anderem Instrument und anderem Kurs.
+**Channel 8 is new in this version, and it was there the whole time.** It is the loop
+this genre dies at — *whoever is ahead can lobby more, and whoever lobbies more is
+further ahead* — and it stands verbatim in the idea's example („Zoll +5pp → Importpreis
+→ dein Bestand Sektor 3 +8,3%"). It was missing from the table because the link
+*valuation* was, until this version, not a computed step but a word; only the section
+*What a basket is worth* makes it nameable. Four dampings act on it, all four already
+stand in the draft, and **three of them grow with success** — that is the reason it is
+damped and not merely slow. The bond variant of the same channel (lobbying the policy
+rate instead of the tariff, `anleihekurs` instead of `sektorpreis`) is not a ninth
+channel but the same one with a different instrument and a different price.
 
-Die Abkürzung `Instrument → Schaden → Gegenlobbybudget → Instrument`, die seit dem
-2026-09-03 in der Zollzeile von Gegenkraft 5 steht, ist **kein neunter**: Sie ist Kanal 3
-ohne seinen Umweg über die Menge. Der Zollstand geht dort jetzt zweimal ein — über
-`handelsvolumen` wie bisher und über `hub(l, zoll)` neu —, beide Male in dasselbe Glied
-*Schaden*, und beide Male mit derselben Dämpfung: Der Gegendruck wird nur in Schritt 5
-geschrieben und kann erst in Schritt 3 der Folgerunde wirken. Es kommt kein Glied hinzu und
-keine Rundengrenze weg.
+The shortcut `instrument → damage → counter-lobby budget → instrument`, which has stood
+in counterforce 5's tariff line since 2026-09-03, is **not a ninth**: it is channel 3
+without its detour via the quantity. The tariff level now enters there twice — via
+`handelsvolumen` as before and via `hub(l, zoll)` newly — both times into the same link
+*damage*, and both times with the same damping: the counter-pressure is written only in
+step 5 and can take effect only in step 3 of the following round. No link is added and
+no round boundary removed.
 
-**Kanal 2 hat am 2026-09-07 seinen Kopf gewechselt und ist derselbe Kanal geblieben.** Er
-begann mit *Preis*, solange das Realeinkommen ein Wort war; seit *Das Realeinkommen in
-Gegenkraft 2* liest es die **Belastung** aus dem Instrumentenschritt und nicht den Preis.
-Das ist Kanal 2 ohne seinen Umweg über den Preis, genau wie die Zollabkürzung Kanal 3 ohne
-seinen Umweg über die Menge — ein Glied weniger, keine Rundengrenze weniger. Die Dämpfung
-ist dieselbe und ebenso erzwungen: Die Instrumente werden allein in Schritt 3 geschrieben,
-der Regierungswechsel fällt in Schritt 5, also liegt zwischen Ursache und Rücksetzung
-genau eine Rundengrenze. Ein neunter Kanal entsteht nicht.
+**Channel 2 changed its head on 2026-09-07 and has remained the same channel.** It began
+with *price* as long as real income was a word; since *Das Realeinkommen in
+Gegenkraft 2* it reads the **burden** from the instrument step and not the price. That
+is channel 2 without its detour via the price, exactly as the tariff shortcut is
+channel 3 without its detour via the quantity — one link fewer, no round boundary fewer.
+The damping is the same and just as enforced: the instruments are written solely in
+step 3, the change of government falls in step 5, so between cause and reset lies
+exactly one round boundary. No ninth channel arises.
 
-Der Preiskanal `Sektorpreis(t−1) → landespreis → Sektorpreis(t)` ist dagegen **kein eigener**:
-Er ist Kanal 3 in seinem Preisglied, ausgeschrieben. Seine Dämpfung ist der Anteil
-`(10.000 − durchgriff)/10.000`, also strikt kleiner als eins, solange `durchgriff > 0`;
-für Dienstleistungen mit `durchgriff = 0` ist er eine reine Fortschreibung ohne
-Verstärkung.
+The price channel `sektorpreis(t−1) → landespreis → sektorpreis(t)`, by contrast, is
+**not one of its own**: it is channel 3 in its price link, written out. Its damping is
+the share `(10.000 − durchgriff)/10.000`, hence strictly smaller than one as long as
+`durchgriff > 0`; for services with `durchgriff = 0` it is a pure carry-forward without
+amplification.
 
-**Die zweite Schicht bringt keinen neunten Kanal, und das ist nachgegangen und nicht
-behauptet** (siehe *Die drei Schichten der Welt*). Vier Wege führen in sie hinein, und jeder
-ist ein vorhandener Kanal mit einem anderen Kurs an der Stelle des Sektorpreises:
-`sektorpreis → index → Bewertung → Vermögen → Lobby → Instrument → sektorpreis` ist **Kanal 8**
-— dieselbe Auskunft, die für die Anleihe schon dasteht, ein drittes Mal;
-`leitzins → zins[b] → index → …` ist derselbe Kanal in seiner Zinsvariante, um die Halbierung
-länger verzögert; `Überrendite → nachahmer[b] → index → Überrendite` ist **Kanal 6**;
-`Vermögen → Hebel → Positionsgröße → Preisstoß → index → Vermögen` ist **Kanal 4**, und
-`index → markt.wert → Überrendite → Anlegerbestand → …` ist **Kanal 7**. **Was wächst, ist die
-Verzweigung und nicht die Zahl der Kanäle:** Über `weltzins` erreicht ein Zinsschritt in einem
-Land alle dreißig Plätze statt nur die drei seines Ankers. Die Dämpfung dieses breiteren Wegs
-ist ausrechenbar und klein — ein Schritt auf `leitzins[A]` geht mit dem Kapitalstockgewicht
-von `A` in `weltzins` ein, dort mit `1/2` in `zielzins(b)` eines fremden Ankers und dann noch
-einmal mit `1/2` in die Halbierung, bei neun Ländern etwa gleicher Größe also mit rund
-`1/(4·9) ≈ 2,8 Prozent` in der ersten Runde. **Und die Schicht ist ein Blatt:** Keine Größe der
-Politikland- oder der Restweltschicht liest ein Feld eines Börsenplatzes. Das ist mechanisch
-prüfbar und die eigentliche Verteidigung — ein Blatt kann keinen Kreis schließen, den es nicht
-selbst durchläuft.
+**The second layer brings no ninth channel, and that has been checked, not asserted**
+(see *Die drei Schichten der Welt*). Four ways lead into it, and each is an existing
+channel with a different price in the sector price's place:
+`sektorpreis → index → valuation → assets → lobby → instrument → sektorpreis` is **channel 8**
+— the same answer that already stands there for the bond, a third time;
+`leitzins → zins[b] → index → …` is the same channel in its interest-rate variant, delayed
+longer by the halving; `excess return → nachahmer[b] → index → excess return` is **channel 6**;
+`assets → leverage → position size → price impact → index → assets` is **channel 4**, and
+`index → markt.wert → excess return → investor base → …` is **channel 7**. **What grows is the
+branching, not the number of channels:** via `weltzins` an interest-rate step in one country
+reaches all thirty venues instead of only the three of its anchor. The damping of this broader
+path is computable and small — a step on `leitzins[A]` enters `weltzins` with the
+capital-stock weight of `A`, there with `1/2` into `zielzins(b)` of a foreign anchor and then
+once more with `1/2` into the halving, so with nine countries of roughly equal size with about
+`1/(4·9) ≈ 2,8 Prozent` in the first round. **And the layer is a leaf:** no quantity of the
+policy-country or the rest-of-world layer reads a field of an exchange venue. That is
+mechanically checkable and the actual defence — a leaf cannot close a circle it does not
+itself run through.
 
-**Das ist die Verteidigung, und sie ist prüfbar**, anders als eine Feldzahl: Der
-Bruchtester bekommt die Auflage, das Modell **200 Runden ohne Spieler** laufen zu lassen;
-verlässt dabei eine Größe ihren Wertebereich, gibt es einen Kanal mehr, und der ist ein
-Fehler. Ein Kanal, der nicht in dieser Tabelle steht, ist kein Feature, sondern ein
-Befund.
+**That is the defence, and it is checkable**, unlike a field count: the break tester is
+given the stipulation to run the model **200 rounds without a player**; if any quantity
+leaves its value range in the process, there is one channel more, and that one is an
+error. A channel that does not stand in this table is not a feature but a finding.
 
 ### Warum vier Länder und nicht drei
 
-Bei drei Ländern hat jeder Zoll genau einen Ausweichpartner. Die Reaktion des Systems auf
-jede Lobbyaktion ist damit einzügig und vorhersehbar — Maß 1 kollabiert, weil eine Wahl
-ohne Alternativen keine Wahl ist. Bei vier Ländern gibt es zwei Umlenkungspfade
-unterschiedlicher Größe, und welcher der bessere ist, ändert sich mit dem Zustand. Das ist
-der Mechanismus, aus dem Maß 3 überhaupt entstehen kann.
+With three countries every tariff has exactly one diversion partner. The system's
+reaction to every lobbying action is thereby single-move and predictable — Maß 1
+collapses, because a choice without alternatives is no choice. With four countries there
+are two diversion paths of different size, and which is the better one changes with the
+state. That is the mechanism from which Maß 3 can arise at all.
 
-Die vier sind nach struktureller Verschiedenheit gewählt, nicht nach Bedeutung: **USA**
-(großer Binnenmarkt, Leitwährung, dienstleistungsschwer), **China** (industriestark, hoher
-`durchgriff`, gemanagter Wechselkurs, starker Zollhebel), **Deutschland**
-(Exportüberschuss und **kein eigener Zinshebel** — die einzige Asymmetrie, die
-einen Aktionsraum schließt und damit einen anderen erzwingt; seit dem Fensterschnitt auf
-2001 gilt sie von Runde 1 an statt ab Runde 3, siehe *The game length R*), **Brasilien** (Agrarexport,
-hohe Zinsen, volatile Währung). Vier Länder, die sich gleichen, wären vier Kopien und
-kosteten Strategievielfalt, statt sie zu erzeugen.
+The four are chosen by structural difference, not by importance: **USA** (large domestic
+market, lead currency, service-heavy), **China** (industry-strong, high `durchgriff`,
+managed exchange rate, strong tariff lever), **Germany** (export surplus and **no
+interest-rate lever of its own** — the only asymmetry that closes one action space and
+thereby forces another; since the window cut to 2001 it holds from round 1 instead of
+from round 3, see *The game length R*), **Brazil** (agricultural exports, high interest
+rates, volatile currency). Four countries that resemble each other would be four copies
+and would cost strategy diversity instead of generating it.
 
-**Dieser Abschnitt bleibt unverändert stehen, und sein Argument trägt bei neun Ländern erst
-recht** — es sagt, warum drei zu wenig sind, nicht warum vier genug wären. Welche fünf
-dazukommen, steht im nächsten Abschnitt.
+**This section stays as it stands, and its argument carries all the more with nine
+countries** — it says why three are too few, not why four would be enough. Which five
+join is in the next section.
 
 ### Welche neun Länder, welche Klasse, und was Weg A kostet
 
-**Angewiesen vom Betreiber am 2026-09-05:** *„Lass uns insofern direkt 5 weitere Länder
-einplanen."* Die Zahl ist entschieden, die Auswahl war es nicht. Die Regel für die Auswahl ist
-dieselbe wie bei den ersten vier: **strukturelle Verschiedenheit, nicht Bedeutung** — und
-strukturell heißt hier nicht „anders erzählt", sondern **an einer Größe anders, die dieses
-Modell wirklich rechnet**: `durchgriff`, Sektoranteile, Kapitalstock, Handelsvolumen,
-Schuldenquote, die Untergrenze des Zinshebels, die Zahl der eigenen Instrumente.
+**Directed by the operator on 2026-09-05:** *„Lass uns insofern direkt 5 weitere Länder
+einplanen."* The number is decided; the selection was not. The rule for the selection is
+the same as for the first four: **structural difference, not importance** — and
+structural here does not mean "told differently" but **different in a quantity this
+model actually computes**: `durchgriff`, sector shares, capital stock, trade volume,
+debt ratio, the lower bound of the interest-rate lever, the number of a country's own
+instruments.
 
-Alle Zahlen unten sind Werte des **Startjahrs 2001** aus genau den Reihen, die das Modell
-ohnehin einbettet: Weltbank `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS`,
-`NE.TRD.GNFS.ZS`, `NY.GDP.MKTP.CD`, `PA.NUS.FCRF`, `FP.CPI.TOTL.ZG`, abgerufen am 2026-09-06
-über `api.worldbank.org/v2`; die Schuldenquoten aus dem IWF-WEO (`GGXWDG_NGDP`,
-`imf.org/external/datamapper`, gleicher Abruf). **Sie belegen die Wahl, sie ersetzen den
-Jahrgangsbau nicht** — die Werte, mit denen das Modell rechnet, entstehen dort und nicht hier.
+All numbers below are values of the **start year 2001** from exactly the series the
+model embeds anyway: World Bank `NV.AGR.TOTL.ZS`, `NV.IND.TOTL.ZS`, `NV.SRV.TOTL.ZS`,
+`NE.TRD.GNFS.ZS`, `NY.GDP.MKTP.CD`, `PA.NUS.FCRF`, `FP.CPI.TOTL.ZG`, retrieved on
+2026-09-06 via `api.worldbank.org/v2`; the debt ratios from the IMF WEO (`GGXWDG_NGDP`,
+`imf.org/external/datamapper`, same retrieval). **They substantiate the choice, they do
+not replace the vintage build** — the values the model computes with arise there and not
+here.
 
-#### Die fünf, und je die Eigenschaft, die keines der vier heutigen trägt
+#### The five, and for each the property that none of today's four carries
 
-**Japan — der Anleihemarkt ist größer als die Volkswirtschaft, und das Preisniveau fällt.**
-Reihe 11 trägt für Japan **126,8** Prozent im Startjahr und **222,7** im Endjahr; weil
-`schuld[l] = mal_geteilt(bip[l], staatsschuld[l], 10.000)` die *Menge* des
-Anleihe-Steckplatzes ist, ist Japans Anleihemarkt vom ersten Zug an größer als sein BIP und am
-Ende mehr als doppelt so groß. Die USA kommen auf 53,5 und 125,0, Deutschland auf 58,1 und
-67,9. Dazu die zweite Hälfte, die kein heutiges Land hat: Reihe 8 ist für Japan in **zwölf der
-einundzwanzig** Stützstellen negativ (2001–2005, 2009–2012, 2016, 2020, 2021). Der
-Prüfgegenstand *Verbraucherpreise* misst damit zum ersten Mal ein **fallendes** Preisniveau —
-bis heute steigt es in allen vier Ländern, und ein Fehlermaß, das nur eine Richtung gesehen
-hat, ist kein geprüftes Fehlermaß. **Vermutung, ausdrücklich ungeprüft und nicht Teil der
-Begründung:** Ein Land mit zwölf Deflationsjahren dürfte auch den niedrigsten Leitzinspfad des
-Modells tragen und damit die Schranke `aufschlag_min = 1 − min(leitzins_pfad)` binden. Das ist
-nicht nachgemessen; es entscheidet sich am selben Abruf, an dem Japans Klasse hängt, und ich
-schreibe es nur hin, damit der Datenbauer beim Abruf danach sieht.
+**Japan — the bond market is larger than the economy, and the price level falls.**
+Series 11 carries **126,8** percent for Japan in the start year and **222,7** in the end
+year; because `schuld[l] = mal_geteilt(bip[l], staatsschuld[l], 10.000)` is the *amount*
+of the bond slot, Japan's bond market is larger than its GDP from the first move on and
+more than twice as large at the end. The USA come to 53,5 and 125,0, Germany to 58,1 and
+67,9. Add the second half, which no current country has: series 8 is negative for Japan
+in **twelve of the twenty-one** support points (2001–2005, 2009–2012, 2016, 2020, 2021).
+The check subject *Verbraucherpreise* thereby measures a **falling** price level for the
+first time — to date it rises in all four countries, and an error measure that has seen
+only one direction is not a tested error measure. **Conjecture, expressly unchecked and
+not part of the justification:** a country with twelve deflation years should also carry
+the model's lowest policy-rate path and thereby bind the bound
+`aufschlag_min = 1 − min(leitzins_pfad)`. That has not been measured; it is decided at
+the same retrieval Japan's class hangs on, and I write it down only so the data builder
+looks for it at the retrieval.
 
-**Indien — der einzige große Landwirtschaftssektor, der nicht vom Welthandel lebt.**
-Landwirtschaft **21,62** Prozent der Wertschöpfung, normiert 23,5 — gegen 13,82 in China, 4,80
-in Brasilien, 1,13 in den USA und 1,08 in Deutschland; über das ganze Fenster fällt der Anteil
-nie unter 16,03. Zugleich nur **25,99** Prozent Handel am BIP. Beides zusammen ist die
-Eigenschaft: Ein knappes Viertel der Volkswirtschaft hängt an einem Sektor, der einen Weltpreis
-**und** einen Zollkeil hat, aber mit großem `N` und kleinem `H` in
-`durchgriff = 10.000·H/(H+N)`. **Brasilien ist der Gegenfall** — kleines `N`, großes `H` —, und
-bis heute kennt das Modell nur den. Eine große, *geschlossene* Landwirtschaft ist etwas
-anderes als eine kleine, offene: Der Zollhebel eines Fremden erreicht sie kaum, der eigene
-Haushalts- und Regulierungshebel dafür umso mehr. **Überprüfbare Vorhersage, kein Etikett:**
-`durchgriff[IND][1]` liegt unter dem jedes heutigen Landes in der Landwirtschaft. Trifft sie
-nicht ein, ist das ein Befund gegen diesen Absatz.
+**India — the only large agricultural sector that does not live off world trade.**
+Agriculture **21,62** percent of value added, normalised 23,5 — against 13,82 in China,
+4,80 in Brazil, 1,13 in the USA and 1,08 in Germany; over the whole window the share
+never falls below 16,03. At the same time only **25,99** percent trade to GDP. Both
+together are the property: just under a quarter of the economy hangs on a sector that
+has a world price **and** a tariff wedge, but with large `N` and small `H` in
+`durchgriff = 10.000·H/(H+N)`. **Brazil is the counter-case** — small `N`, large `H` —
+and to date the model knows only that one. A large, *closed* agriculture is something
+different from a small, open one: a foreigner's tariff lever barely reaches it, the
+country's own budget and regulation levers all the more. **Checkable prediction, not a
+label:** `durchgriff[IND][1]` lies below that of every current country in agriculture.
+If it does not come true, that is a finding against this paragraph.
 
-**Singapur — das obere Ende der Durchgriffsskala.** Handel **349,29** Prozent des BIP, gegen
-59,56 in Deutschland und 22,97 in den USA; die MAS begründet ihren eigenen geldpolitischen
-Rahmen mit derselben Größenordnung (*Monetary Policy Framework*, mas.gov.sg, abgerufen
-2026-09-06). Der Landwirtschaftsanteil beträgt **0,08** Prozent — dort ist `N` nahe null und
-`H` groß, also läuft `durchgriff` gegen seine Obergrenze 10.000: **der Sektorpreis ist der
-Weltpreis.** Genau für diesen Rand ist die Formel gewählt worden (*„liegt … im Bereich
-0 … 10.000 und braucht keine Kappung"*), und bis heute nähert sich ihm kein Land. Die Skala des
-Mechanismus, den das ganze Spiel verkauft, reicht heute von 22,97 (USA) bis 59,56
-(Deutschland), also über den Faktor **2,6**; mit Japan am unteren (19,28) und Singapur am
-oberen Ende über den Faktor **18,1**.
+**Singapore — the upper end of the pass-through scale.** Trade **349,29** percent of
+GDP, against 59,56 in Germany and 22,97 in the USA; the MAS justifies its own
+monetary-policy framework with the same order of magnitude (*Monetary Policy Framework*,
+mas.gov.sg, retrieved 2026-09-06). The agriculture share is **0,08** percent — there `N`
+is near zero and `H` is large, so `durchgriff` runs toward its upper bound 10.000: **the
+sector price is the world price.** It is exactly for this edge that the formula was
+chosen (*„liegt … im Bereich 0 … 10.000 und braucht keine Kappung"*), and to date no
+country comes near it. The scale of the mechanism the whole game sells runs today from
+22,97 (USA) to 59,56 (Germany), that is, over a factor of **2,6**; with Japan at the
+lower end (19,28) and Singapore at the upper end, over a factor of **18,1**.
 
-**Saudi-Arabien — der einzige konstante Wechselkurs, und der einzige Sektor über der Hälfte.**
-Reihe 10 trägt für Saudi-Arabien in **jeder** der 21 Stützstellen denselben Wert 3,75.
-Industrie **50,78** Prozent der Wertschöpfung, normiert 51,3 — kein heutiges Land liegt über
-Chinas 44,28. Damit trägt zum ersten Mal ein *handelbarer* Sektor mit Weltpreis und Zollkeil
-die Mehrheit einer Volkswirtschaft, und ein Zollschritt irgendwo trifft dort nicht einen
-Randbereich, sondern den Kern. Der konstante Kurs ist zugleich der Grund seiner Klasse, siehe
-unten — er ist keine Nebeneigenschaft, sondern die schärfste des ganzen Abschnitts.
+**Saudi Arabia — the only constant exchange rate, and the only sector above half.**
+Series 10 carries the same value 3,75 for Saudi Arabia in **every** one of the 21
+support points. Industry **50,78** percent of value added, normalised 51,3 — no current
+country lies above China's 44,28. Thus for the first time a *tradable* sector with world
+price and tariff wedge carries the majority of an economy, and a tariff step anywhere
+hits not a fringe there but the core. The constant rate is at the same time the reason
+for its class, see below — it is not a side property but the sharpest one of the whole
+section.
 
-**Chile — die kleinste Volkswirtschaft mit allen vier eigenen Instrumenten, und damit der
-billigste Einfluss.** BIP **71,6** Milliarden USD im Startjahr, gegen 559,98 in Brasilien — dem
-kleinsten der heutigen vier — und 10.582 in den USA. Dass es alle vier Instrumente selbst führt,
-ist die Erwartung, die seine Klasse trägt, und sie hängt am selben Abruf wie die von Japan und
-Indien; die Größe dagegen ist gemessen und hängt an nichts. Das ist keine Größenangabe, sondern eine
-Aussage über **Gegenkraft 5**: Ihr Schaden ist eine Menge mal einer Rate, und die Menge der
-Haushaltszeile ist das BIP. Mit der Größenordnungsprobe, die dieser Entwurf unter *Offene
-Entwurfsfragen* schon führt — Schrittweite 50 Basispunkte, `gegenlobby_satz = 1`, also ein
-Punkt je 10.000 Tausend USD —, erzeugt **derselbe** Instrumentenschritt in den USA rund
-**5.300** Gegenlobbypunkte und in Chile rund **36**. Der Faktor ist 148 und ist exakt das
-BIP-Verhältnis; die Rechnung ist eine Schätzung nur in der Schrittweite, nicht im Verhältnis.
-**Die zweite Mandatshälfte verlangt Einfluss in zwei Ländern**, und ob die Familie Lobby dafür
-überhaupt einen Gewinner stellen kann, steht seit dem 2026-09-03 als *„die schärfste
-Kalibrierbedingung"* unter den offenen Fragen. Chile beantwortet sie aus der **Bauart** statt
-aus der Kalibrierung: Es gibt ab hier einen Ort, an dem Einfluss zwei Größenordnungen billiger
-ist als in den USA — und weil er zugleich der flachste Markt ist, ist er der teuerste Ort für
-Kapital. Das ist derselbe Tausch wie bei der zweiten Schicht, nur mit vertauschten Vorzeichen.
+**Chile — the smallest economy with all four instruments of its own, and thereby the
+cheapest influence.** GDP **71,6** billion USD in the start year, against 559,98 in
+Brazil — the smallest of today's four — and 10.582 in the USA. That it carries all four
+instruments itself is the expectation its class rests on, and it hangs on the same
+retrieval as Japan's and India's; the size, by contrast, is measured and hangs on
+nothing. That is not a statement of size but a statement about **counterforce 5**: its
+damage is a quantity times a rate, and the quantity of the budget line is GDP. With the
+order-of-magnitude test this draft already runs under *Offene Entwurfsfragen* — step
+width 50 basis points, `gegenlobby_satz = 1`, that is, one point per 10.000 thousand
+USD — the **same** instrument step generates about **5.300** counter-lobby points in the
+USA and about **36** in Chile. The factor is 148 and is exactly the GDP ratio; the
+calculation is an estimate only in the step width, not in the ratio. **The second
+mandate half demands influence in two countries**, and whether the Lobby family can
+field a winner for that at all has stood since 2026-09-03 as *„die schärfste
+Kalibrierbedingung"* among the open questions. Chile answers it out of the
+**construction** instead of out of the calibration: from here on there is a place where
+influence is two orders of magnitude cheaper than in the USA — and because it is at the
+same time the shallowest market, it is the most expensive place for capital. That is the
+same trade as with the second layer, only with the signs swapped.
 
-#### Die neun nebeneinander, an den Größen, die das Modell rechnet
+#### The nine side by side, in the quantities the model computes
 
-Startjahr 2001. „größter Anteil" ist der größte der drei Sektoranteile **nach** der Normierung
-auf 10.000, also die Zahl, aus der `sektorgewicht[b][s]` entsteht.
+Start year 2001. "largest share" is the largest of the three sector shares **after** the
+normalisation to 10.000, that is, the number `sektorgewicht[b][s]` arises from.
 
-| Land | BIP (Mrd. USD) | Landw. | Ind. | Dienstl. | größter Anteil | Handel (% BIP) |
+| Country | GDP (bn USD) | Agri. | Ind. | Serv. | largest share | Trade (% GDP) |
 |---|---:|---:|---:|---:|---:|---:|
-| USA | 10.582 | 1,13 | 21,47 | 74,02 | **76,6** D | 22,97 |
-| Japan | 4.439 | 1,27 | 31,34 | 67,33 | 67,4 D | **19,28** |
-| Deutschland | 1.966 | 1,08 | 26,58 | 62,41 | 69,3 D | 59,56 |
+| USA | 10.582 | 1,13 | 21,47 | 74,02 | **76,6** S | 22,97 |
+| Japan | 4.439 | 1,27 | 31,34 | 67,33 | 67,4 S | **19,28** |
+| Germany | 1.966 | 1,08 | 26,58 | 62,41 | 69,3 S | 59,56 |
 | China | 1.355 | 13,82 | 44,28 | 41,90 | 44,3 I | 38,08 |
-| Brasilien | 560 | 4,80 | 22,64 | 57,71 | 67,8 D | 26,94 |
-| Indien | 485 | **21,62** | 26,49 | 43,81 | 47,7 D | 25,99 |
-| Saudi-Arabien | 184 | 5,13 | **50,78** | 43,05 | 51,3 I | 63,56 |
-| Singapur | 90 | **0,08** | 30,38 | 63,59 | 67,6 D | **349,29** |
-| Chile | **72** | 4,06 | 28,48 | 55,65 | 63,1 D | 62,14 |
+| Brazil | 560 | 4,80 | 22,64 | 57,71 | 67,8 S | 26,94 |
+| India | 485 | **21,62** | 26,49 | 43,81 | 47,7 S | 25,99 |
+| Saudi Arabia | 184 | 5,13 | **50,78** | 43,05 | 51,3 I | 63,56 |
+| Singapore | 90 | **0,08** | 30,38 | 63,59 | 67,6 S | **349,29** |
+| Chile | **72** | 4,06 | 28,48 | 55,65 | 63,1 S | 62,14 |
 
-**Zwei Spannen, die es heute nicht gibt, und beide sind Mechanik und keine Buntheit.** Die
-Tiefe der Märkte, auf denen der Fonds steht, ordnet sich nach dem Kapitalstock des Landes —
-`korbwert(l,s)` ist Kapitalstock mal Sektorpreis, `schuld[l]` ist BIP mal Schuldenquote —, und
-die Ordnung der Länder ist die des BIP. Heute spannt sie von 560 bis 10.582 Milliarden, also
-über den Faktor **19**; nach 0118 von 72 bis 10.582, über den Faktor **148**. Gegenkraft 3
-(Marktenge) wächst mit dem Anteil des Fonds am Markt: Auf einer Skala über zwei Größenordnungen
-ist „wo bin ich groß" eine Entscheidung, auf einer über eine ist es eine Konstante. Die zweite
-Spanne ist die des `durchgriff`, oben schon gerechnet. **Die Zahlenwerte der Kapitalstöcke
-kommen aus der PWT und nicht aus dieser Tabelle** — was hier steht, ist die Ordnung, und nur
-sie trägt das Argument.
+**Two spans that do not exist today, and both are mechanics and not colour.** The depth
+of the markets the fund stands on orders itself by the country's capital stock —
+`korbwert(l,s)` is capital stock times sector price, `schuld[l]` is GDP times debt
+ratio — and the ordering of the countries is that of GDP. Today it spans from 560 to
+10.582 billion, that is, over a factor of **19**; after 0118 from 72 to 10.582, over a
+factor of **148**. Counterforce 3 (market narrowness) grows with the fund's share of the
+market: on a scale across two orders of magnitude, "where am I big" is a decision; on
+one across one, it is a constant. The second span is that of `durchgriff`, already
+worked out above. **The numeric values of the capital stocks come from the PWT and not
+from this table** — what stands here is the ordering, and only it carries the argument.
 
-#### Die Klasse je Land, und woran sie hängt
+#### The class per country, and what it hangs on
 
-Die Klasse ist nach `technik.md` T61 Regel 5 **keine Wahl, sondern eine Ableitung**: Ein Land
-ist genau dann Spielland, wenn irgendeine seiner drei Politikpfadreihen `stufe = 4` trägt. Was
-hier steht, ist deshalb eine **Erwartung mit ihrer Bedingung**, wie es der Auftrag verlangt —
-entschieden wird sie am Abruf nach T63 Schritt 1.
+The class is, per `technik.md` T61 rule 5, **not a choice but a derivation**: a country
+is a play-only country exactly when any of its three policy-path series carries
+`stufe = 4`. What stands here is therefore an **expectation with its condition**, as the
+brief demands — it is decided at the retrieval per T63 step 1.
 
-**Was für alle neun gleich ist und deshalb keine Klasse entscheidet:** Reihe 13 (Zollniveau)
-ist nach `lizenzbefund-wdi.md` für *jedes* Land gesperrt. Der Fall ist T26 erster Fall — kein
-Zollpfad, konstanter Zoll, zwei statt drei verankerte Instrumente —, er gilt für die heutigen
-vier genauso, und eine Eigenschaft, die alle teilen, unterscheidet niemanden.
+**What is the same for all nine and therefore decides no class:** series 13 (tariff
+level) is locked for *every* country per `lizenzbefund-wdi.md`. The case is T26's first
+case — no tariff path, constant tariff, two instead of three anchored instruments —; it
+holds for today's four just the same, and a property all share distinguishes no one.
 
-| Land | erwartete Klasse | woran sie hängt, und was sie kippt |
+| Country | expected class | what it hangs on, and what tips it |
 |---|---|---|
-| **Japan** | Rückvergleichsland | `MFS_IR` führt für JPN einen Politiksatz auf Stufe 1. Fällt `JPN.*.A` leer und ist keine Ableitung ohne freien Parameter zu haben, ist es Stufe 4 und damit Spielland. |
-| **Indien** | Rückvergleichsland | dieselbe Bedingung, ein Abruf. |
-| **Chile** | Rückvergleichsland | dieselbe Bedingung, ein Abruf. |
-| **Singapur** | **Spielland** | Die Geldpolitik wird dort über den Wechselkurs geführt, und das Modell hat für den Wechselkurs kein Instrument. Ein Bankzins ist nach T60 kein Leitzins, und der Weg von ihm zu einem Politiksatz führte über einen Aufschlag — einen freien Parameter, also Stufe 4. **Es wird Rückvergleichsland**, sobald `MFS_IR` für SGP einen Politiksatz auf Stufe 1 führt, oder sobald T60 Stufe 3 auch ein Land trägt, dessen Zinsen von den Weltzinsen bestimmt werden statt von einer benennbaren Union. |
-| **Saudi-Arabien** | **Spielland** | Zwei unabhängige Gründe, und der zweite ist der bindende. Siehe unten. |
+| **Japan** | backtest country | `MFS_IR` lists a policy rate for JPN at stage 1. If `JPN.*.A` comes up empty and no derivation without a free parameter is to be had, it is stage 4 and thus a play-only country. |
+| **India** | backtest country | the same condition, one retrieval. |
+| **Chile** | backtest country | the same condition, one retrieval. |
+| **Singapore** | **play-only country** | Monetary policy is conducted there via the exchange rate, and the model has no instrument for the exchange rate. A bank rate is, per T60, not a policy rate, and the way from it to one would run via a spread — a free parameter, hence stage 4. **It becomes a backtest country** as soon as `MFS_IR` lists a policy rate for SGP at stage 1, or as soon as T60 stage 3 also carries a country whose interest rates are determined by world interest rates instead of by a nameable union. |
+| **Saudi Arabia** | **play-only country** | Two independent reasons, and the second is the binding one. See below. |
 
-**Singapur ist der Fall, für den T60 Stufe 3 nicht gedacht ist, und das gehört gesagt, weil der
-Einwand naheliegt.** Die MAS schreibt selbst, die heimischen Zinsen seien weitgehend von den
-Weltzinsen bestimmt — das klingt genau nach Stufe 3, „kein eigener geldpolitischer Hebel", und
-Stufe 3 bliebe **Rückvergleichsland**. Der Einwand trägt trotzdem nicht, und zwar an der
-Herleitungspflicht: Stufe 3 verlangt „welche Union, ab welchem Jahr", weil sie Stufe 1 und 2
-**auf die Union** anwendet statt auf das Land. Singapur hat darauf keine Antwort — es gibt
-keine Union mit einem gemessenen Satz, sondern nur „die Weltzinsen", und die sind keine Quelle,
-sondern eine Umschreibung. Hinzu kommt der schärfere Punkt: Singapur hat sehr wohl einen
-geldpolitischen Hebel; er ist nur einer, den dieses Modell nicht führt. **Stufe 3 ist für ein
-Land ohne Hebel gebaut, nicht für ein Modell ohne Instrument** — und der Unterschied ist keine
-Wortklauberei, er entscheidet die Klasse.
+**Singapore is the case T60 stage 3 is not meant for, and that needs saying, because the
+objection suggests itself.** The MAS itself writes that domestic interest rates are
+largely determined by world interest rates — that sounds exactly like stage 3, „kein
+eigener geldpolitischer Hebel", and stage 3 would remain **backtest country**. The
+objection still does not carry, namely at the derivation duty: stage 3 demands „welche
+Union, ab welchem Jahr", because it applies stages 1 and 2 **to the union** instead of
+to the country. Singapore has no answer to that — there is no union with a measured
+rate, only "the world interest rates", and those are not a source but a circumlocution.
+Add the sharper point: Singapore very much has a monetary-policy lever; it is just one
+this model does not carry. **Stage 3 is built for a country without a lever, not for a
+model without an instrument** — and the difference is not hair-splitting, it decides the
+class.
 
-**Saudi-Arabien, Grund 1 (kann fallen):** Sein Politiksatz folgt der Bindung. Ihn aus dem
-US-Satz abzuleiten verlangt einen Abstand, und ein Abstand ist ein freier Parameter — nach T60
-also keine Ableitung, sondern eine Schätzung. Führt `MFS_IR` aber einen eigenen SAMA-Satz auf
-Stufe 1, fällt dieser Grund weg.
+**Saudi Arabia, reason 1 (can fall):** its policy rate follows the peg. Deriving it from
+the US rate demands a distance, and a distance is a free parameter — per T60 thus not a
+derivation but an estimate. But if `MFS_IR` lists a SAMA rate of its own at stage 1,
+this reason falls away.
 
-**Saudi-Arabien, Grund 2 (fällt nicht, und er liegt nicht in den Politikpfaden, sondern in den
-Sollreihen):** Reihe 10 ist für Saudi-Arabien über alle 21 Stützstellen **konstant**.
-Richtungstreue misst den Anteil der Übergänge, in denen Modell und Daten in derselben Richtung
-gehen; über eine konstante Reihe trägt **jeder** der zwanzig Übergänge die Richtung null, und
-ein endogen gerechneter Wechselkurs trifft die exakte Null so gut wie nie. Der Prüfgegenstand
-*Wechselkurs SAU* risse damit **von Bauart wegen und nicht aus einem Modellfehler** — der eine
-Fall, den ein Orakel niemals produzieren darf. Als Spielland trägt Saudi-Arabien keine
-Sollreihe, und die Frage stellt sich nicht. **Es wird Rückvergleichsland**, sobald das Modell
-eine Kursbindung kennt (der `wechselkurs[l]` eines gebundenen Landes wird nicht geschrieben)
-*und* ein Politiksatz auf Stufe 1 vorliegt.
+**Saudi Arabia, reason 2 (does not fall, and it lies not in the policy paths but in the
+target series):** series 10 is **constant** for Saudi Arabia across all 21 support
+points. Directional accuracy measures the share of transitions in which model and data
+go in the same direction; over a constant series **every** one of the twenty transitions
+carries direction zero, and an endogenously computed exchange rate hits the exact zero
+practically never. The check subject *Wechselkurs SAU* would thereby break **by
+construction and not from a model error** — the one case an oracle must never produce.
+As a play-only country Saudi Arabia carries no target series, and the question does not
+arise. **It becomes a backtest country** as soon as the model knows an exchange-rate peg
+(the `wechselkurs[l]` of a pegged country is not written) *and* a policy rate at stage 1
+is available.
 
-**Daraus folgt eine Ergänzung an Maß 4, und sie gilt unabhängig von Saudi-Arabien:** Die
-Richtungstreue wird nur über die Übergänge gebildet, in denen sich die **Sollreihe** bewegt.
-Ein Übergang ohne gemessene Bewegung trägt keine Richtung und wird nicht gezählt; bewegt sich
-eine Sollreihe in keinem Übergang, hat der Prüfgegenstand keine Richtungstreue und besteht
-allein über sein Niveaumaß. Das ist keine neue Schwelle, sondern das Schließen einer Lücke: Die
-Regel stand bisher nur für Reihen mit Bewegung geschrieben, und flache Abschnitte gibt es auch
-ohne Kursbindung.
+**From this follows an addition to Maß 4, and it holds independently of Saudi Arabia:**
+directional accuracy is formed only over the transitions in which the **target series**
+moves. A transition without measured movement carries no direction and is not counted;
+if a target series moves in no transition, the check subject has no directional accuracy
+and passes on its level measure alone. That is not a new threshold but the closing of a
+gap: the rule was so far written only for series with movement, and flat stretches exist
+even without a peg.
 
-**Und eine Meldung an den Architekten, weil sie sein Gewerk betrifft.** T61 Regel 5 leitet die
-Klasse **allein aus den drei Politikpfadreihen** ab und hält den Jahrgangsbau an, wenn die
-Ableitung dem Manifest widerspricht. Grund 2 oben ist für diese Regel unsichtbar — und er ist
-nicht der einzige seiner Art: T62 Folgerung 2 nennt bereits einen zweiten, die fehlende
-Ausweichquelle für Reihe 2. **Beide sind Ausschlüsse, die in den Sollreihen liegen, und die
-Klassenregel kann keinen von beiden sehen.** Führt `MFS_IR` einen SAMA-Satz auf Stufe 1, leitet
-Regel 5 „Rückvergleichsland" ab, das Manifest sagt „Spielland", und der Bau bricht ab — richtig,
-weil zwei Buchführungen auseinandergehen, aber an der falschen Stelle behoben. Das gehört zu
-T61 und nicht hierher.
+**And a report to the architect, because it concerns their trade.** T61 rule 5 derives
+the class **solely from the three policy-path series** and halts the vintage build when
+the derivation contradicts the manifest. Reason 2 above is invisible to this rule — and
+it is not the only one of its kind: T62 consequence 2 already names a second, the
+missing fallback source for series 2. **Both are exclusions that lie in the target
+series, and the class rule can see neither.** If `MFS_IR` lists a SAMA rate at stage 1,
+rule 5 derives "backtest country", the manifest says "play-only country", and the build
+aborts — correctly, because two bookkeepings diverge, but repaired in the wrong place.
+That belongs to T61 and not here.
 
-#### Was neun Länder zählen
+#### What nine countries count
 
-Alles aus `technik.md` T59, eingesetzt für `L_R = 7`, `L_S = 2`, `n = 1`, `S = 3`, `I = 4`; jede
-Zahl in diesem Lauf einmal von Hand nachgerechnet und **nicht** aus der Nachbarzeile
-abgeschrieben.
+Everything from `technik.md` T59, substituted for `L_R = 7`, `L_S = 2`, `n = 1`,
+`S = 3`, `I = 4`; every number recomputed by hand once in this run and **not** copied
+from the neighbouring row.
 
-| Größe | Formel | heute (`L_R = 4`) | nach 0118 (`L_R = 7`) | alle neun im Rückvergleich |
+| Quantity | Formula | today (`L_R = 4`) | after 0118 (`L_R = 7`) | all nine in the backtest |
 |---|---|---:|---:|---:|
-| Prüfgegenstände | `3·L_R + (L_R − n) + 1` | 16 | **28** | 36 |
-| freie Sollreihen | `L_R(S+3) − n` | 23 | **41** | 53 |
-| Sollreihen | `L_R(S+4) − n` | 27 | **48** | 62 |
-| Ströme im Handelsblock | `(L_R+1)·L_R·(S−1)` | 40 | **112** | 180 |
-| Sollmaske `weltlauf` | siehe T59 | 175 | **328** | 450 |
-| Toleranz von Maß 4 | `⌊L_R/2⌋` | 2 | **3** | 4 |
+| check subjects | `3·L_R + (L_R − n) + 1` | 16 | **28** | 36 |
+| free target series | `L_R(S+3) − n` | 23 | **41** | 53 |
+| target series | `L_R(S+4) − n` | 27 | **48** | 62 |
+| flows in the trade block | `(L_R+1)·L_R·(S−1)` | 40 | **112** | 180 |
+| target mask `weltlauf` | see T59 | 175 | **328** | 450 |
+| tolerance of Maß 4 | `⌊L_R/2⌋` | 2 | **3** | 4 |
 
-Nachgerechnet im Fließtext: Prüfgegenstände `3·7 + (7−1) + 1 = 21 + 6 + 1 = 28`. Freie
-Sollreihen `7·6 − 1 = 41`, abgeleitete 7, zusammen `7·7 − 1 = 48`. Ströme `8·7·2 = 112`.
-Sollmaske `7·27 + 22 + 112 + 2 + 3 = 328`. Toleranz `⌊7/2⌋ = 3`.
+Recomputed in running text: check subjects `3·7 + (7−1) + 1 = 21 + 6 + 1 = 28`. Free
+target series `7·6 − 1 = 41`, derived ones 7, together `7·7 − 1 = 48`. Flows
+`8·7·2 = 112`. Target mask `7·27 + 22 + 112 + 2 + 3 = 328`. Tolerance `⌊7/2⌋ = 3`.
 
-**Warum die Toleranz eine Formel ist und keine Zahl.** Bliebe sie bei 2, machte das Hinzufügen
-eines Landes den Rückvergleich **härter, ohne dass sich eine einzige Regel des Modells ändert**
-— ein bestandener Lauf könnte allein dadurch durchfallen, dass jemand ein Land aufnimmt. Das
-ist derselbe Fehler wie eine Zahl, die zwölf andere trägt. `⌊L_R/2⌋` reproduziert bei `L_R = 4`
-**genau die heutige 2** — das ist die Verträglichkeitsprobe — und hält den Anteil danach fast
-fest: 2 von 16 sind 12,5 Prozent, 3 von 28 sind 10,7, 4 von 36 sind 11,1. Sie wächst also
-langsamer als die Zahl der Gegenstände und senkt die Latte nie.
+**Why the tolerance is a formula and not a number.** Were it to stay at 2, adding a
+country would make the backtest **harder without a single rule of the model changing** —
+a passed run could fail solely because someone adds a country. That is the same error as
+a number that carries twelve others. `⌊L_R/2⌋` reproduces **exactly today's 2** at
+`L_R = 4` — that is the compatibility test — and holds the share almost fixed
+afterwards: 2 of 16 is 12,5 percent, 3 of 28 is 10,7, 4 of 36 is 11,1. It thus grows
+more slowly than the number of subjects and never lowers the bar.
 
-**Was das an Daten kostet, nach T62.** Ein Rückvergleichsland kostet bei `R = 20`
-`32(R+1) + 6 = 678` Werte, ein Spielland `5(R+1) + 33 = 138`. Drei plus zwei ergibt
-`3·678 + 2·138 = 2.034 + 276`, also **2.310** Werte — gegen 3.390, wenn alle fünf
-Rückvergleichsländer wären, und 690, wenn alle fünf Spielländer wären. **Die Lizenzstellen
-sind von der Klasse unabhängig:** zwei je Land, also zehn neue, die nach T62 Folgerung 3 auf
-dieselbe Liste gehören wie die sieben offenen von heute. Kosten, kein Tor.
+**What that costs in data, per T62.** A backtest country costs `32(R+1) + 6 = 678`
+values at `R = 20`, a play-only country `5(R+1) + 33 = 138`. Three plus two gives
+`3·678 + 2·138 = 2.034 + 276`, that is **2.310** values — against 3.390 if all five were
+backtest countries, and 690 if all five were play-only countries. **The license
+clarifications are independent of the class:** two per country, so ten new ones, which
+per T62 consequence 3 belong on the same list as today's seven open ones. A cost, not a
+gate.
 
-#### Die Folge aus Weg A: was ein Spieler vom Brett überhaupt erreicht
+#### The consequence of Weg A: what a player actually reaches of the board
 
-**Der Betreiber hat am 2026-09-05 Weg A gewählt** — die Positionssteckplätze wachsen mit `L`,
-von 20 auf 45, und mit den Börsenplätzen aus Paket 0119 auf **75**. Weg B (gedeckelte
-Steckplätze mit Auswahlmechanik) ist damit verworfen, **und die Begründung dafür ist die
-Entscheidung des Betreibers, keine fachliche.** Das gehört so hingeschrieben, damit niemand
-später eine Abwägung sucht, die es nicht gab.
+**The operator chose Weg A on 2026-09-05** — the position slots grow with `L`, from 20
+to 45, and with the exchange venues from package 0119 to **75**. Weg B (capped slots
+with a selection mechanic) is thereby rejected, **and the justification for that is the
+operator's decision, not a substantive one.** That belongs written down just so, lest
+someone later search for a weighing that never happened.
 
-Offen ist die Folge, und sie ist zu rechnen und nicht zu behaupten. Von den 75 bleibt der
-Währungssteckplatz der USA nach T16 dauerhaft leer, also sind **74 besetzbar** (heute 19 von
-20). Steckplätze belegt **allein Aktionsart 1**; Lobby, Hebel und Sichtbarkeit belegen keinen,
-die Beteiligung hat ihre eigenen Felder. Nach dem Vorratsverfahren bekommt Art `i` über eine
-volle Partie genau `12·ai` der 60 Steckplätze — die Zugabe, die *The game length R* an `R = 20`
-festhält, und hier ist sie das, was die Rechnung überhaupt exakt macht statt ungefähr.
+What is open is the consequence, and it is to be computed, not asserted. Of the 75, the
+USA's currency slot stays permanently empty per T16, so **74 are occupiable** (today 19
+of 20). Slots are occupied **by action kind 1 alone**; lobby, leverage and visibility
+occupy none, the stake has fields of its own. Under the stockpile procedure, kind `i`
+gets exactly `12·ai` of the 60 slots over a full game — the allowance that *The game
+length R* fixes at `R = 20`, and here it is what makes the calculation exact at all
+instead of approximate.
 
-| | heute, 19 besetzbar | nach 0118/0119, 74 besetzbar |
+| | today, 19 occupiable | after 0118/0119, 74 occupiable |
 |---|---:|---:|
-| Referenzprofil `(1,1,1,1,1)`, 12 Positionsaktionen | 12 von 19 = **63 %** | 12 von 74 = **16 %** |
-| reines Positionsprofil `(5,0,0,0,0)`, 60 Aktionen | 19 von 19 = **100 %**, jeder Platz gut dreimal | 60 von 74 = **81 %** |
-| Frühfenster von Maß 3 (6 Runden, `a1 = 5`), 18 Aktionen | 18 von 19 = **95 %** | 18 von 74 = **24 %** |
+| reference profile `(1,1,1,1,1)`, 12 position actions | 12 of 19 = **63 %** | 12 of 74 = **16 %** |
+| pure position profile `(5,0,0,0,0)`, 60 actions | 19 of 19 = **100 %**, every place a good three times | 60 of 74 = **81 %** |
+| early window of Maß 3 (6 rounds, `a1 = 5`), 18 actions | 18 of 19 = **95 %** | 18 of 74 = **24 %** |
 
-**Die Zahl fällt hart: unter dem Referenzprofil von 63 auf 16 Prozent, also um den Faktor
-vier.** Die Frage ist, ob sie unter das fällt, was die vier Maße tragen, und die Antwort ist
-je Maß eine andere:
+**The number falls hard: under the reference profile from 63 to 16 percent, that is, by
+a factor of four.** The question is whether it falls below what the four Maße carry, and
+the answer differs per Maß:
 
-- **Maß 4 liest keinen Steckplatz.** Der ganze Positionsblock liegt im `weltlauf` außerhalb der
-  Sollmaske. Unberührt.
-- **Maß 2 liest nicht das Referenzprofil, sondern je Familie ihr bestes Profil.** Das beste der
-  Familie 1 ist `(5,0,0,0,0)` und erreicht 81 Prozent des Bretts. Die Decke der Familie sinkt
-  also nicht; was sinkt, ist die Reichweite eines Profils, das keine Abnahmehälfte liest.
-  Unberührt.
-- **Maß 3 vergleicht zwei Fenster, und beide stehen unter derselben Decke.** Eine Schranke, die
-  in beiden Fenstern gleich wirkt, kann das eine nicht gegen das andere verschieben. Was Maß 3
-  verschiebt, ist der Unterschied in der **Art** des Platzes — früh der flache, unbeobachtete
-  Platzmarkt, spät Beteiligung und Lobby in Politikländern —, und daran ändert die Reichweite
-  nichts. Unberührt.
-- **Maß 1 ist das einzige, das das Brett unmittelbar liest**, und dort wirken zwei Kräfte
-  gegeneinander. *Für* die Dichte: Die Liste der zulässigen Aktionen wächst mit dem Brett, zwei
-  gezogene Bündel sind seltener dasselbe Bündel und häufiger von verschiedener Art. *Gegen* die
-  Dichte: Eine Stufe ist ein **Anteil des Marktes dieses Steckplatzes**, und
-  `tiefe[b] = platzanteil · …` macht jeden der 30 Börsenplätze flacher als jeden
-  Land×Sektor-Korb desselben Ankers. **Vierzig Prozent des Bretts sind damit von Bauart wegen
-  flach**, und eine Aktion auf einem flachen Markt bewegt das Fondsvermögen weniger.
+- **Maß 4 reads no slot.** The whole position block lies outside the target mask in the
+  `weltlauf`. Untouched.
+- **Maß 2 does not read the reference profile but each family's best profile.** Family
+  1's best is `(5,0,0,0,0)` and reaches 81 percent of the board. The family's ceiling
+  thus does not sink; what sinks is the reach of a profile that no acceptance half
+  reads. Untouched.
+- **Maß 3 compares two windows, and both stand under the same ceiling.** A bound that
+  acts equally in both windows cannot shift one against the other. What shifts Maß 3 is
+  the difference in the **kind** of place — early the shallow, unobserved venue market,
+  late stake and lobby in policy countries — and the reach changes nothing about that.
+  Untouched.
+- **Maß 1 is the only one that reads the board directly**, and there two forces act
+  against each other. *For* the density: the list of admissible actions grows with the
+  board, two drawn bundles are more rarely the same bundle and more often of different
+  kinds. *Against* the density: a step is a **share of that slot's market**, and
+  `tiefe[b] = platzanteil · …` makes each of the 30 exchange venues shallower than any
+  country×sector basket of the same anchor. **Forty percent of the board is thereby
+  shallow by construction**, and an action on a shallow market moves the fund's assets
+  less.
 
-**Das Urteil, und es ist ein enges:** Die Deckung fällt nicht unter das, was die vier Maße
-tragen — drei von vieren lesen sie gar nicht. Was fällt, ist der Sicherheitsabstand von Maß 1,
-und welche der beiden Kräfte oben gewinnt, entscheidet nicht der Entwurf, sondern
-`platzanteil` — und der steht seit dem 2026-09-05 ohnehin als schärfste offene Frage der
-zweiten Schicht da. Weg A schafft also kein neues Risiko, er hängt ein vorhandenes höher.
+**The verdict, and it is a narrow one:** the coverage does not fall below what the four
+Maße carry — three of the four do not read it at all. What falls is Maß 1's safety
+margin, and which of the two forces above wins is decided not by the draft but by
+`platzanteil` — and that has stood since 2026-09-05 as the sharpest open question of the
+second layer anyway. So Weg A creates no new risk; it hangs an existing one higher.
 
-**Die eine empfohlene Stellschraube: die Aktionszahl je Runde, von drei auf vier.** Sie ist
-empfohlen für den Fall, **nicht für jetzt** — die Bedingung steht zwei Absätze weiter. Warum
-diese und nicht die beiden anderen, die der Auftrag nennt:
+**The one recommended dial: the action count per round, from three to four.** It is
+recommended for the case, **not for now** — the condition stands two paragraphs on. Why
+this one and not the two others the brief names:
 
-- **Die Partielänge `R` ist nicht frei.** Sie ist die Länge des Fensters, in dem jede Sollreihe
-  ohne Füllung belegt ist, und das ist 2001–2021. `R` zu erhöhen verlangt Daten, die es nach
-  dem Deckungsbefund nicht gibt. **Scheidet aus, und zwar aus Daten und nicht aus Abwägung.**
-- **Plätze zusammenzufassen hieße, `B` zu senken.** `B = 3·(L+1)` ist eine **Abzählung** und
-  keine Wahl: Ein Platz *ist* das Paar (Gebiet, Leitsektor), jede Kombination genau einmal. Wer
-  `B` senkt, nimmt einem Gebiet die Unterscheidung nach Leitsektor und öffnet ein Paket wieder,
-  das entschieden ist. **Nicht empfohlen.**
-- **Die Aktionszahl ist die einzige freie**, und das Vorratsverfahren überlebt sie unverändert:
-  Mit `vi += 4·ai` und weiterhin `−5` je Aktion bekommt Art `i` je fünf Runden `4·ai` von 20
-  Steckplätzen und über die Partie `16·ai` von 80; nach `5k` Runden steht der Vorrat wieder auf
-  `(0,0,0,0,0)`, und `R = 20` bleibt ein Vielfaches von 5. Die Reichweite des Referenzprofils
-  stiege damit von 16 auf 22 Prozent, die des reinen Positionsprofils auf Sättigung (80
-  Aktionen auf 74 Plätze).
+- **The game length `R` is not free.** It is the length of the window in which every
+  target series is covered without filling, and that is 2001–2021. Raising `R` demands
+  data that, per the coverage finding, do not exist. **Ruled out, and from data, not
+  from weighing.**
+- **Merging venues would mean lowering `B`.** `B = 3·(L+1)` is a **count**, not a
+  choice: a venue *is* the pair (territory, lead sector), each combination exactly once.
+  Whoever lowers `B` takes away a territory's distinction by lead sector and reopens a
+  package that is decided. **Not recommended.**
+- **The action count is the only free one**, and the stockpile procedure survives it
+  unchanged: with `vi += 4·ai` and still `−5` per action, kind `i` gets `4·ai` of 20
+  slots per five rounds and `16·ai` of 80 over the game; after `5k` rounds the stockpile
+  stands at `(0,0,0,0,0)` again, and `R = 20` remains a multiple of 5. The reference
+  profile's reach would thereby rise from 16 to 22 percent, that of the pure position
+  profile to saturation (80 actions on 74 places).
 
-**Und ihr Preis gehört dazu, sonst ist es keine Empfehlung.** Drei ist keine beliebige Zahl:
-*„Drei, nicht beliebig viele — die Knappheit ist die Quelle der Entscheidungsdichte. Wer alles
-tun kann, wählt nicht."* Eine vierte Aktion lockert genau diese Knappheit um ein Drittel und
-kostet den Nachtlauf in Maß 2 und Maß 3 ein Drittel mehr Weltschritte.
+**And its price belongs with it, otherwise it is no recommendation.** Three is not an
+arbitrary number: *„Drei, nicht beliebig viele — die Knappheit ist die Quelle der
+Entscheidungsdichte. Wer alles tun kann, wählt nicht."* A fourth action loosens exactly
+this scarcity by a third and costs the night run a third more world steps in Maß 2 and
+Maß 3.
 
-**Deshalb die Bedingung, und sie hat eine Probe, die sagt, ob man drehen soll.** Gedreht wird
-nur, wenn `Dichte(t)` in einem Partiedrittel unter 0,4 fällt **und** die Verdünnung nachweislich
-die Ursache ist. Die Probe steht schon da und kostet einen zusätzlichen Lauf: `Dichte(t)` bei
-`B = 0` (Brett 45) gegen `B = 30` (Brett 75). **Hält die Dichte ohne die zweite Schicht und
-fällt sie mit ihr, ist die Verdünnung die Ursache und die Aktionszahl das Mittel. Fällt sie in
-beiden Fällen, liegt es nicht an der Zahl der Plätze, und eine vierte Aktion hilft nicht,
-sondern verdeckt.**
+**Hence the condition, and it has a test that says whether to turn the dial.** It is
+turned only if `Dichte(t)` falls below 0,4 in one third of the game **and** the dilution
+is demonstrably the cause. The test already stands there and costs one additional run:
+`Dichte(t)` at `B = 0` (board 45) against `B = 30` (board 75). **If the density holds
+without the second layer and falls with it, the dilution is the cause and the action
+count the remedy. If it falls in both cases, it is not down to the number of places, and
+a fourth action does not help but conceals.**
 
-#### Was neun Länder im Zustand kosten
+#### What nine countries cost in the state
 
-Gerechnet aus den Konstanten in `kern/zustand.hpp`; die Formel reproduziert für `L = 4` exakt
-die heutigen 310. **Die Summe unten ist die Ländersumme, also Schicht 1 und Schicht 3 — nicht
-die Gesamtzahl des Zustands.** Die ist nach den drei Schichten **890**: 740 plus `5·B = 150`
-(*Die drei Schichten der Welt*). Zwei unkommentierte Summen in einem Dokument sind der Anfang
-des nächsten Zählfehlers, deshalb steht es an beiden.
+Computed from the constants in `kern/zustand.hpp`; the formula reproduces today's 310
+exactly for `L = 4`. **The sum below is the country sum, that is, layers 1 and 3 — not
+the state's total count.** That is, after the three layers, **890**: 740 plus
+`5·B = 150` (*Die drei Schichten der Welt*). Two uncommented sums in one document are
+the beginning of the next counting error, which is why it stands at both places.
 
 | Block | `L = 4` | `L = 9` | |
 |---|---:|---:|---|
-| Länder (44 je Land) | 176 | 396 | 2,2× |
-| Handel `G·(G−1)·2` über `G = L+1` | 40 | **180** | **4,5×** |
-| Nachahmer | 12 | 27 | 2,2× |
-| Positionssteckplätze | 20 | **45** | 2,2× |
-| Beteiligungen | 24 | 54 | 2,2× |
-| fest (Restwelt, Fonds, Markt, Partie …) | 38 | 38 | 1,0× |
-| **Ländersumme** | **310** | **740** | **2,4×** |
-| Börsenplätze `5·B`, `B = 3·(L+1)` | (75) | **150** | |
-| **Zustand gesamt nach drei Schichten** | (385) | **890** | |
+| countries (44 per country) | 176 | 396 | 2,2× |
+| trade `G·(G−1)·2` over `G = L+1` | 40 | **180** | **4,5×** |
+| imitators | 12 | 27 | 2,2× |
+| position slots | 20 | **45** | 2,2× |
+| stakes | 24 | 54 | 2,2× |
+| fixed (rest of world, fund, market, game …) | 38 | 38 | 1,0× |
+| **country sum** | **310** | **740** | **2,4×** |
+| exchange venues `5·B`, `B = 3·(L+1)` | (75) | **150** | |
+| **state total after three layers** | (385) | **890** | |
 
-Die Zeile *Länder* geht mit `9 · 58 = 522` auf, wenn man Steckplätze, Beteiligungsfelder und
-Nachahmerzähler dazunimmt (`396 + 45 + 54 + 27 = 522`) — dieselbe 58 je Politikland wie in der
-Schichtentabelle. Die beiden Zahlen in Klammern sind der Vollständigkeit halber gerechnet und
-kommen nie vor: Bei `L = 4` gibt es die zweite Schicht noch nicht.
+The *countries* row works out at `9 · 58 = 522` once slots, stake fields and imitator
+counters are added in (`396 + 45 + 54 + 27 = 522`) — the same 58 per policy country as
+in the layer table. The two numbers in parentheses are computed for completeness and
+never occur: at `L = 4` the second layer does not yet exist.
 
-**Der Sprengsatz bleibt die Handelsmatrix**, und ihretwegen ist neun keine kleine Zahl: Sie
-wächst mit `G·(G−1)·2`, also viereinhalbfach, während alles andere sich gut verdoppelt. **Die
-Klassentrennung entschärft sie nicht** — sie spart Daten und Prüfaufwand, keine Adressen: Ein
-Spielland belegt seinen vollen Länderblock und seine Handelszeilen wie jedes andere. Was sie
-spart, sind die `112` statt `180` Ströme, über die der **Rückvergleich** läuft.
+**The explosive charge remains the trade matrix**, and because of it nine is not a small
+number: it grows with `G·(G−1)·2`, that is, four-and-a-half-fold, while everything else
+merely about doubles. **The class separation does not defuse it** — it saves data and
+checking effort, not addresses: a play-only country occupies its full country block and
+its trade lines like any other. What it saves are the `112` instead of `180` flows the
+**backtest** runs over.
 
-#### Was die Wahl an einer offenen Frage entscheidet
+#### What the choice decides on an open question
 
-Seit dem 2026-09-05 steht die Frage offen, *„ob `3·(L+1)` die Länderwahl aus 0118 überlebt"* —
-sie setzt voraus, dass jedes Gebiet drei unterscheidbare Leitsektoren trägt, und für ein Land
-mit stark beherrschender Sektorstruktur lägen die drei Plätze nach der `kippung`-Regel eng
-beieinander. **Die Wahl entscheidet sie, und zwar zugunsten der Formel.**
+Since 2026-09-05 the question has stood open *„ob `3·(L+1)` die Länderwahl aus 0118
+überlebt"* — it presupposes that every territory carries three distinguishable lead
+sectors, and for a country with a strongly dominant sector structure the three venues
+would lie close together under the `kippung` rule. **The choice decides it, and in the
+formula's favour.**
 
-Die Spalte *größter Anteil* der Tabelle oben, absteigend: USA 76,6 — Deutschland 69,3 —
-Brasilien 67,8 — Singapur 67,6 — Japan 67,4 — Chile 63,1 — Saudi-Arabien 51,3 — Indien 47,7 —
-China 44,3. **Der einseitigste Anker der neun ist die USA, und die stehen seit der ersten
-Fassung im Modell.** Kein neues Land ist einseitiger als ein heutiges; die beiden
-ausgeglichensten Anker überhaupt sind zwei der fünf neuen, Saudi-Arabien und Indien. Die Wahl
-**verbessert** den bindenden Fall also, statt ihn zu verschärfen.
+The column *largest share* of the table above, descending: USA 76,6 — Germany 69,3 —
+Brazil 67,8 — Singapore 67,6 — Japan 67,4 — Chile 63,1 — Saudi Arabia 51,3 — India
+47,7 — China 44,3. **The most one-sided anchor of the nine is the USA, and they have
+stood in the model since the first version.** No new country is more one-sided than a
+current one; the two most balanced anchors of all are two of the five new ones, Saudi
+Arabia and India. So the choice **improves** the binding case instead of sharpening it.
 
-Damit ist die Frage nicht beantwortet, aber sie ist umgezogen: Ob `kippung` die drei Plätze
-eines Ankers auseinanderträgt, entscheidet sich an den **USA** und nicht an einem der fünf
-neuen — und der Ausweg bliebe, wie es dort schon steht, eine andere `kippung` und keine andere
-Formel. **Der Fall, den ich gesucht und nicht gefunden habe**, wäre ein Land mit einem Anteil
-nahe 100 Prozent; den gibt es unter den neun nicht.
+With that the question is not answered, but it has moved: whether `kippung` carries an
+anchor's three venues apart is decided at the **USA** and not at one of the five new
+ones — and the way out would remain, as it already says there, a different `kippung` and
+not a different formula. **The case I looked for and did not find** would be a country
+with a share near 100 percent; among the nine there is none.
 
 ### Welche drei Sektoren, und aus welcher Reihe jeder entsteht
 
-| Modellsektor | WDI-Reihe | Handelszeile | enthält auch |
+| Model sector | WDI series | trade line | also contains |
 |---|---|---|---|
-| 1 Landwirtschaft | `NV.AGR.TOTL.ZS` (Landwirtschaft, Forst, Fischerei) | ja | — |
-| 2 Industrie | `NV.IND.TOTL.ZS` (Industrie **einschließlich Bau**) | ja | Bergbau, verarbeitendes Gewerbe, Bau, Versorger |
-| 3 Dienstleistungen | `NV.SRV.TOTL.ZS` | nein | — |
+| 1 agriculture | `NV.AGR.TOTL.ZS` (agriculture, forestry, fishing) | yes | — |
+| 2 industry | `NV.IND.TOTL.ZS` (industry **including construction**) | yes | mining, manufacturing, construction, utilities |
+| 3 services | `NV.SRV.TOTL.ZS` | no | — |
 
-`NV.IND.MANF.ZS` (verarbeitendes Gewerbe) wird **nicht** verwendet. Damit hat jeder
-Modellsektor genau eine Quellreihe, kein Teil der Wertschöpfung verschwindet, und die
-zwölf Sektoranteil-Sollreihen bleiben echte Sollreihen statt Modellkonstrukte.
+`NV.IND.MANF.ZS` (manufacturing) is **not** used. Thus every model sector has exactly
+one source series, no part of value added disappears, and the twelve sector-share target
+series remain true target series instead of model constructs.
 
-**Zwei Folgen, beide benannt.** Erstens: Die drei WDI-Anteile summieren wegen der
-Gütersteuern abzüglich Subventionen nicht auf 100 Prozent. Sie werden im Jahrgang auf
-10.000 normiert, die Normierung steht im Manifest, und der Rückvergleich vergleicht
-normiert gegen normiert. Das Modell hat damit keinen Gütersteuerkeil; die Staatseinnahmen
-laufen über den Haushaltssaldo, der ohnehin ein eigenes Instrument ist. Weil die dritte
-Reihe je Land durch die Normierung festliegt, sind von den 27 Sollreihen **23
-unabhängig** — ausgewiesen werden trotzdem alle 27. (Bis zum 2026-09-03 waren es 31 und 27;
-Reihe 9 ist seither keine Sollreihe mehr, siehe *The game length R*.)
+**Two consequences, both named.** First: the three WDI shares do not sum to 100 percent,
+because of taxes on products less subsidies. They are normalised to 10.000 in the
+vintage, the normalisation stands in the manifest, and the backtest compares normalised
+against normalised. The model thereby has no product-tax wedge; government revenue runs
+via the budget balance, which is an instrument of its own anyway. Because the third
+series per country is fixed by the normalisation, of the 27 target series **23 are
+independent** — all 27 are disclosed nonetheless. (Until 2026-09-03 it was 31 and 27;
+series 9 has not been a target series since, see *The game length R*.)
 
-Zweitens: Brasiliens Erzausfuhr liegt im Modell in Sektor 2, nicht in Sektor 1. „Brasilien
-als Rohstoffexporteur" heißt hier Agrarexporteur. Das ist ein Verlust an Kennzeichnung und
-kein Verlust an Mechanik — der Handelsstrom ist derselbe, er hängt nur an einem anderen
-Weltpreis.
+Second: Brazil's ore exports lie in sector 2 in the model, not in sector 1. „Brasilien
+als Rohstoffexporteur" here means agricultural exporter. That is a loss of labelling and
+not a loss of mechanics — the trade flow is the same, it just hangs on a different world
+price.
 
 ### Keine verdeckte Größe
 
-Eine Entwurfsregel, die überall gilt: **Jede Größe, die gegen den Spieler wirkt, ist im
-Zustand ablesbar, samt ihrer Herkunft und ihrer Schwelle.** Der Aufsichtszähler ist
-sichtbar, der Nachahmerzähler ist sichtbar, das Gegenlobbybudget ist sichtbar. Das ist die
-direkte Antwort auf „the wealthy automatically hate me 100 % no matter what": Feindschaft
-hat hier immer einen Zähler, einen Grund und einen Abstand zur nächsten Schwelle.
+A design rule that holds everywhere: **every quantity that acts against the player is
+readable in the state, together with its origin and its threshold.** The supervision
+counter is visible, the imitator counter is visible, the counter-lobby budget is
+visible. That is the direct answer to „the wealthy automatically hate me 100 % no matter
+what": hostility here always has a counter, a reason and a distance to the next
+threshold.
 
 ## Die drei Schichten der Welt
 
