@@ -1407,46 +1407,45 @@ the answer, division happens only in the view.
 
 ## 6. Maschinenschnittstelle und Partieformat
 
-**T21 — Ein Befehl je Zeile, eine JSON-Antwort je Zeile, über Standardein- und -ausgabe.**
-Kein Netzdienst, kein Anschluss, keine Zugangsdaten — damit auch keine Berührung mit
-Hausregel 2. Befehle: `neu {jahrgang, modus, startwert}`, `zustand {ebene, adresse}`,
-`aktionen` (die zulässigen dieser Runde), `setze {aktionen: […]}`, `runde`,
+**T21 — One command per line, one JSON reply per line, over standard input and output.**
+No network service, no port, no credentials — and therefore no contact with house rule 2.
+Commands: `neu {jahrgang, modus, startwert}`, `zustand {ebene, adresse}`,
+`aktionen` (those admissible this round), `setze {aktionen: […]}`, `runde`,
 `kette {von, bis}`, `speichern {pfad}`, `laden {pfad}`, `pruefsumme`.
-Jede Antwort trägt `schema_version`. Eine mitgeschriebene Sitzung ist damit von selbst
-eine Testvorlage.
+Every reply carries `schema_version`. A recorded session is thereby, by itself, a test
+template.
 
-**T32 — Die Liste der zulässigen Aktionen hat eine kanonische Ordnung, und sie ist Teil der
-Schnittstellenversion.** Sortiert wird nach `(Aktionsart 1…5, Zielkennung, Stufe)`; die
-Zielkennung ist die feste Indexordnung aus T9. Grund: Maß 1 zieht nach `spiel.md` Aktionen
-**ohne Zurücklegen aus der Liste der in dieser Runde zulässigen Aktionen** (T35). Wäre die
-Ordnung eine Nebenwirkung der Erzeugung, hinge die Entscheidungsdichte an einer
-Schleifenreihenfolge, die niemand aufgeschrieben hat. Die Ordnung ändern entwertet den
-Regressionsbestand und braucht einen ADR.
+**T32 — The list of admissible actions has a canonical order, and it is part of the
+interface version.** Sorting is by `(Aktionsart 1…5, Zielkennung, Stufe)`; the target id is
+the fixed index order from T9. Reason: per `spiel.md`, Maß 1 draws actions **without
+replacement from the list of actions admissible in this round** (T35). Were the order a
+side effect of generation, the decision density would hang on a loop order that nobody
+wrote down. Changing the order devalues the regression corpus and needs an ADR.
 
-**Die Liste wird einmal je Runde gegen den Rundenanfangszustand gebildet**, nicht nach jeder
-gesetzten Aktion neu. Nach `spiel.md` hat keine Aktion einen Zeitpunkt innerhalb der Runde;
-eine Liste, die sich zwischen zwei Steckplätzen ändert, würde genau diesen Zeitpunkt
-einführen. Was ein Bündel als Ganzes betrifft — derselbe Steckplatz zweimal, Kasse
-überzogen, mehr als drei Aktionen —, prüft `buendel_zulaessig(zustand, buendel)` gegen
-denselben Rundenanfangszustand. Zwei Prüfungen, beide zustandsfrei innerhalb der Runde.
+**The list is built once per round against the round-start state**, not anew after every
+placed action. Per `spiel.md` no action has a point in time within the round; a list that
+changes between two slots would introduce exactly that point in time. What concerns a
+bundle as a whole — the same slot twice, cash overdrawn, more than three actions — is
+checked by `buendel_zulaessig(zustand, buendel)` against the same round-start state. Two
+checks, both stateless within the round.
 
-**Zwei Zulässigkeitsbedingungen kommen mit `spiel.md` Fassung 5 hinzu, und beide folgen aus
-der Anteilsskala.** Eine Aktion 1 oder 2, nach der `fondsanteil(l, s)` über **10.000** läge,
-ist unzulässig — ein Anteil über hundert Prozent ist kein Anteil, und Gegenkraft 1 und der
-Preisstoß lesen genau diese Zahl. Ebenso unzulässig ist eine Aktion, nach der
-`|stufen(p)| > stufen_max` wäre. Beide werden **im Bündel** geprüft, nicht je Aktion: Drei
-Aufstockungen desselben Steckplatzes in einer Runde sind einzeln zulässig und zusammen nicht.
-Der Invariantentest (T30 Prüfung 2, Schranke 7) prüft danach, dass die Zulässigkeitsprüfung
-gehalten hat — die Prüfung schützt den Spieler, der Test schützt vor der Prüfung.
+**Two admissibility conditions are added with `spiel.md` version 5, and both follow from
+the share scale.** An action 1 or 2 after which `fondsanteil(l, s)` would lie above
+**10,000** is inadmissible — a share above one hundred percent is not a share, and
+counterforce 1 and the price shock read exactly this number. Likewise inadmissible is an
+action after which `|stufen(p)| > stufen_max` would hold. Both are checked **on the
+bundle**, not per action: three top-ups of the same slot in one round are individually
+admissible and jointly not. The invariant test (T30 check 2, bound 7) checks afterwards
+that the admissibility check held — the check protects the player, the test protects
+against the check.
 
-**T22 — Ein Speicherstand ist Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme, nicht
-der Zustand.** Datei: `{schema_version, jahrgang_id, modus, daten_pruefsumme,
-parameter_pruefsumme, startwert, aktionen: [[runde, aktion…]], end_pruefsumme}`. Beim Laden
-wird die Partie nachgerechnet und die Prüfsumme verglichen; weicht sie ab, meldet das
-Programm einen Determinismusbruch, statt weiterzuspielen. Drei Gewinne auf einmal: Der
-Käufer bemerkt einen Determinismusfehler zuerst, der Regressionsbestand **ist** der
-Speicherordner, und eine Datei bleibt unter zwei Kilobyte. Kosten: R Weltschritte beim
-Laden, bei R = 24 also 0,24 Millisekunden.
+**T22 — A save is vintage, mode, seed, action sequence and checksum, not the state.**
+File: `{schema_version, jahrgang_id, modus, daten_pruefsumme,
+parameter_pruefsumme, startwert, aktionen: [[runde, aktion…]], end_pruefsumme}`. On
+loading, the game is recomputed and the checksum compared; if it deviates, the program
+reports a determinism break instead of playing on. Three wins at once: the buyer notices a
+determinism error first, the regression corpus **is** the save folder, and a file stays
+under two kilobytes. Cost: R world steps on loading, at R = 24 thus 0.24 milliseconds.
 
 ## 7. Datenschicht
 
