@@ -116,6 +116,22 @@ def eintragen(wo: str) -> None:
         f.write(wo + "\n")
 
 
+def stueck(text: str, abschnitt: str | None) -> str:
+    """Der Text, den ein Gegenstand bezeichnet. Eine Stelle, damit `offen()` und die
+    Nachschau nach dem Lauf nicht auseinanderlaufen koennen."""
+    if abschnitt is None:
+        return text
+    if abschnitt == VORSPANN:
+        erste = re.search(r"(?m)^## ", text)
+        return text[:erste.start()] if erste else text
+    m = re.search(rf"(?m)^## {re.escape(abschnitt)}$", text)
+    if not m:
+        return ""                       # Ueberschrift weg: nichts mehr zu tun
+    naechste = re.search(r"(?m)^## ", text[m.start() + 3:])
+    ende = m.start() + 3 + naechste.start() if naechste else len(text)
+    return text[m.start():ende]
+
+
 def offen() -> list[tuple[Path, str | None]]:
     """(Datei, Abschnitt) fuer alles, was noch deutsch ist und nicht im Buch steht."""
     fertig = erledigt()
@@ -138,21 +154,18 @@ def offen() -> list[tuple[Path, str | None]]:
         # Ziel, weil `offen()` ueber `^## `-Treffer iteriert -- in `spiel.md` sind das
         # 10.413 Zeichen mit Frontmatter-Werten, der `# `-Ueberschrift des Dokuments und
         # dem ganzen einleitenden Text, alle noch deutsch (gemessen 2026-09-07).
-        erste = re.search(r"(?m)^## ", t)
-        kopfende = erste.start() if erste else len(t)
+        vorspann = stueck(t, VORSPANN)
         wo = f"{p.relative_to(WURZEL)}#{VORSPANN}"
-        if kopfende > 400 and wo not in fertig and deutsch(t[:kopfende]):
+        if len(vorspann) > 400 and wo not in fertig and deutsch(vorspann):
             aufgaben.append((p, VORSPANN))
             continue
 
         # Grosse Dateien abschnittsweise, erster noch deutscher Abschnitt zuerst.
         for m in re.finditer(r"(?m)^## (.+)$", t):
-            anfang = m.start()
-            naechste = re.search(r"(?m)^## ", t[anfang + 3:])
-            ende = anfang + 3 + naechste.start() if naechste else len(t)
-            wo = f"{p.relative_to(WURZEL)}#{m.group(1).strip()}"
-            if wo not in fertig and deutsch(t[anfang:ende]):
-                aufgaben.append((p, m.group(1).strip()))
+            name = m.group(1).strip()
+            wo = f"{p.relative_to(WURZEL)}#{name}"
+            if wo not in fertig and deutsch(stueck(t, name)):
+                aufgaben.append((p, name))
                 break
     return aufgaben
 
@@ -221,6 +234,18 @@ def main() -> int:
             print("  Lauf fehlgeschlagen -- angehalten.")
             reservieren(sorted({x for x, _ in offen()}))
             return 1
+        # Nachschau, bevor das Buch geschrieben wird. Ein Abschnitt kann groesser sein
+        # als das, was ein Lauf schafft -- "The state" hat 54.395 Zeichen, und geteilt
+        # wird nur ZWISCHEN Abschnitten, nie innerhalb. Traegt man einen halb
+        # uebersetzten Abschnitt ein, schlaegt das Buch jede spaetere Erkennung und die
+        # Reste sind dauerhaft unsichtbar. Genau dieser Fehler hat heute 50.000 Zeichen
+        # verborgen; er darf nicht ueber das Buch zurueckkommen.
+        rest = stueck(pfad.read_text(encoding="utf-8"), abschnitt)
+        if abschnitt is not None and deutsch(rest):
+            print(f"  {wo} ist kuerzer, aber noch deutsch -- NICHT ins Buch.")
+            print("  Der stuendliche Versuch nimmt denselben Abschnitt wieder auf und")
+            print("  uebersetzt das naechste Stueck. Kein Verlust, nur langsamer.")
+            return 0
         eintragen(wo)
         gemacht += 1
     print(f"[{jetzt()}] {gemacht} Abschnitte uebersetzt, Grenze erreicht.")
