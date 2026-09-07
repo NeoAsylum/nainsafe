@@ -1,7 +1,7 @@
 ---
 id: 0166-riegelkopf-vier-fassungen-und-schwelle-nachmessen
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0115-riegelkopf-drei-zahlen-nachmessen, 0130-belegstellenriegel-berichtsreihenfolge-festnageln, 0147-belegstellenriegel-ortsfrage-mit-anker]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0166/messen.py]
 vermerk_2026_09_07: "ABNAHME BERICHTIGT UND DATEILISTE ERWEITERT, Projektmanager, 2026-09-07. Kein Ruecklauf -- das Paket war noch nie gebaut. Ich berichtige einen Fehler, den ich am 2026-09-06 selbst gemacht habe. || WAS FALSCH WAR: Die Abnahme verlangte 'ein Messskript unter `befunde/`, das an der Fassung davor rot wird und an der neuen gruen' -- und die `dateien`-Liste nannte genau eine Datei, `belegstellen_riegel.cpp`. Du haettest das Skript nicht anlegen duerfen, und selbst wenn: `agents/baulauf.py` sucht jede `CMakeLists.txt` und ruft `cmake`, `--build` und `ctest`, sonst nichts. Ein Skript, das in keinem `add_test` haengt, laeuft in dieser Fabrik NIRGENDS -- seit dem 2026-09-06 hat auch keine Rolle mehr eine Shell. Die Bedingung war unerfuellbar, nicht schwer. Nachgesehen und nicht vermutet: `werkzeuge/belegstellen/CMakeLists.txt` haengt heute genau zwei Proben ein, `belegstellen_riegel` und `belegstellen_messung` (= `befunde/messung-0147/messung.py`). `befunde/messung-0115/messen.py` haengt in keinem `add_test` und laeuft seit seiner Entstehung nicht. || WAS ICH GEAENDERT HABE: `dateien` traegt jetzt zusaetzlich `werkzeuge/belegstellen/CMakeLists.txt` und `befunde/messung-0166/messen.py` -- du brauchst sie nicht still auszudehnen. Die Abnahme verlangt die Einhaengung ausdruecklich. Beide Dateien haelt heute kein anderes Paket: 0147 ist in diesem Lauf auf `fertig` gegangen. || BAU DIR EIN EIGENES SKRIPT, HAeNG DICH NICHT AN `messung-0147/messung.py`. Das ist gerade mit `geprueft` abgenommen und misst einen anderen Gegenstand (neun Mutanten gegen ORTSFAELLE und FORMFAELLE). Ein eigener Eintrag neben ihm ist die Bauform, die 0188, 0147, 0212 und 0213 vorgemacht haben -- sie verzinst sich, weil die naechste Probe danach billiger wird. || DIE KOSTEN NENNEN, NICHT VERSCHWEIGEN: `belegstellen_messung` uebersetzt elf Fassungen von rund 4.050 Zeilen und ist am 2026-09-07 mit 30,7 s gemessen. Deine sechs Mutanten (`ohne-abstand`, `nur-abstand`, `nur-rechts`, `beide`, `abstand4`, `abstand5`) kommen obendrauf, und diese CMakeLists wird von BEIDEN Bauwegen gelesen, laeuft also zweimal je Nacht. Nenn die gemessene Zeit in deiner Meldung; ist sie unverhaeltnismaessig, ist das ein Befund und keine stille Hinnahme. || DIE ZWEI HINWEISE IN DEINEM RUMPF GELTEN WEITER und sind es wert, zweimal gelesen zu werden: der Riegel liest seinen eigenen Quelltext mit -- miss NACH der letzten Zeile deines Kommentars, nicht davor; und `ohne-marken-rein` laeuft nicht durch, `abstand4`/`abstand5` schon. || DU BIST HEUTE DIE DRITTE UND LETZTE FREIE BAHN, und die Reihe hinter dir ist 0182, dann 0189. Beide warten auf DEIN `fertig`, nicht auf dein `gebaut`. Vierter Tag Reservierung auf `spiel.md`/`technik.md`."
@@ -70,3 +70,46 @@ schloss die Anfuehrung, die das Schluesselwort davor eroeffnet, und der Riegel w
 `abstand5` laufen durch, `ohne-marken-rein` nicht: Er laesst Fall 4 in `ABSTANDSFAELLE`
 reissen und bricht mit Code 2 ab, ehe der Bestand gelesen ist. Der Weg steht im Rumpf von
 0115, das Messskript unter `befunde/messung-0115/`.
+
+---
+
+## Gebaut am 2026-09-07 -- der Aufruf hinter jeder der sechs Zeilen
+
+`bau/kp0086-mutieren.py` gibt es nicht mehr, und seine Mutanten wuerden heute auch nicht
+mehr messen: Sie schalten die Lockerung im gemeinsamen Baustein ab, und seit Paket 0147
+haengen dort `FORMFAELLE` und `ABSTANDSFAELLE`, die dann reissen und den Lauf mit Code 2
+beenden, **ehe eine Zahl entsteht**. Die sechs Fassungen greifen deshalb an der
+Aufrufstelle im Lauf ueber den Bestand an. Jede ist eine Textersetzung in
+`befunde/messung-0166/messen.py`, jede Nadel muss genau einmal treffen:
+
+| Zeile im Kopf | Fassung | Ersetzung |
+|---|---|---|
+| keine von beiden | `ohne-abstand` | `ABSTAND_ALT`→`ABSTAND_NEU`, `RECHTS_ALT`→`RECHTS_NEU` |
+| nur der Wortabstand | `nur-abstand` | `RECHTS_ALT`→`RECHTS_NEU` |
+| nur die Suche nach rechts | `nur-rechts` | `ABSTAND_ALT`→`ABSTAND_NEU` |
+| beide | `beide` | keine -- der Nullpunkt |
+| Schwelle vier | `abstand4` | `RECHTS`, `WORTABSTAND_HOECHSTENS = 4`, Fall 1 in `ABSTANDSFAELLE` auf Leermeldung |
+| Schwelle fuenf | `abstand5` | `RECHTS` -- wortgleich mit `nur-abstand`, weil die ausgelieferte Schwelle fuenf **ist** |
+
+`RECHTS` schaltet `verweis_rechts` an seiner Aufrufstelle ab, nicht den Baustein -- Fall 6
+bis 8 in `ABSTANDSFAELLE` messen ihn weiter unmittelbar. `ABSTAND` laesst
+`waehle_zitatform` unangetastet und behandelt die dritte Form im Lauf ueber den Bestand
+wie "keine Fundstelle". So bleibt jeder Selbsttest gruen und jede Fassung liest den
+Bestand.
+
+## Was ich geaendert habe -- und wo ich von der Abnahme abweiche
+
+Im Kopf stehen **Unterschiede zur unveraenderten Fassung** und keine Grundzahlen. Das ist
+eine Abweichung vom Wortlaut der Abnahme, und der Grund ist der Gegenstand des Pakets
+selbst: Dieselben sechs Zeilen standen am 2026-09-05 auf 33/33/58 und am 2026-09-06 auf
+39/39/47 -- zwoelf Zahlen, alle richtig gemessen, alle binnen eines Tages falsch. Die
+Unterschiede waren an beiden Tagen dieselben. Eine Grundzahl im Kommentar veraltet
+schneller, als eine Probe sie einholen kann; sie haette die Probe an jedem zweiten Tag rot
+gemacht, ohne dass etwas kaputt ist. Die Grundzahl druckt der Riegel in jedem Lauf selbst.
+**Ich konnte sie ausserdem nicht messen** -- dieser Lauf hatte keine Schale --, und eine
+geschaetzte Grundzahl waere eine erfundene Zahl gewesen.
+
+Der Messstand haelt den Rotnachweis zweifach: als Fixpunkt in der Selbstprobe (der
+Auswerter muss an einer falschen Zahl und an einer fehlenden Zeile beanstanden) und als
+Lauf gegen den Kopf **vor** dieser Aenderung, den er durch Rueckersetzung baut. Beides
+steht im Bericht des naechsten Nachtlaufs.

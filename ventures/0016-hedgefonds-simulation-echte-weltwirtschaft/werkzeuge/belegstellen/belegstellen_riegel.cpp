@@ -510,20 +510,40 @@
 //! uebergangen. Seither faengt der Riegel sie.
 //!
 //! **Dass keine der beiden Lockerungen allein genuegt, ist gemessen und nicht
-//! nachgesprochen.** Am selben Baum, am 2026-09-05, je ein Mutant:
+//! nachgesprochen.** Sechs Fassungen, alle im selben Aufruf ueber denselben Baum, und
+//! die Messung laeuft bei **jedem** Bau: Der Messstand zu Paket 0166 baut die sechs,
+//! misst sie und haelt sie gegen diese Tabelle; weicht eine Zahl ab, wird der Bau rot.
+//! Den Stand, an dem gemessen wurde, druckt er dabei mit.
 //!
-//!     Fassung                   Zitate  aufgeloest  uebergangen
-//!     keine von beiden              33          33           58
-//!     nur der Wortabstand           33          33           59
-//!     nur die Suche nach rechts     33          33           58
-//!     beide                         34          34           58
+//! Aufgeschrieben ist der **Unterschied zur unveraenderten Fassung**, nicht die
+//! Grundzahl -- und auch das ist gemessen und nicht vorsorglich. Hier standen bis zum
+//! 2026-09-07 die Grundzahlen vom 2026-09-05 (33/33/58 bis 34/34/58). Am 2026-09-06,
+//! Stand 5d5e2d6, gab derselbe Satz Mutanten 39/39/47 bis 40/40/47: Jede der zwoelf
+//! Zahlen war beim Aufschreiben richtig und einen Tag darauf falsch, waehrend die
+//! Unterschiede zwischen den Fassungen an beiden Tagen dieselben blieben. Die Grundzahl
+//! druckt der Riegel in jedem Lauf selbst; sie hier zu wiederholen heisst, sie in dem
+//! Augenblick zu faelschen, in dem der naechste Lauf ueber den Baum geht.
+//!
+//!     Fassung                    Zitate  aufgeloest  uebergangen
+//!     keine von beiden               -1          -1            0
+//!     nur der Wortabstand            -1          -1           +1
+//!     nur die Suche nach rechts      -1          -1            0
+//!     beide                           0           0            0
+//!     Schwelle vier                  -1          -1            0
+//!     Schwelle fuenf                 -1          -1           +1
+//!
+//! Jede Zeile ist der Unterschied zu "beide", also zur unveraenderten Fassung; deren
+//! eigene Zeile ist damit der Nullpunkt und keine Messung. Die beiden Schwellenzeilen
+//! gehoeren zu dem Wert weiter unten und sind gebaut wie "nur der Wortabstand", die
+//! Suche nach rechts also abgeschaltet -- sonst waere der Unterschied zwischen vier und
+//! fuenf an keiner der drei Zahlen zu sehen. Wie jede der sechs gebaut wird, steht im
+//! Messstand als Textersetzung da und nicht als Beschreibung.
 //!
 //! Der Wortabstand macht die Stelle **sichtbar** -- sie wandert unter die uebergangenen
-//! Fundstellen, weil ihr Absatz links keinen Dokumentnamen nennt. Die Suche nach rechts
-//! macht sie **aufloesbar**. Allein traegt keine ein einziges Zitat; die Rechtssuche
-//! allein aendert nicht eine Zahl, und das ist zugleich der Beleg, dass sie keine
-//! vorhandene Zuordnung umhaengt. Zusammen sind es genau ein Zitat mehr und keine
-//! Fundstelle mehr.
+//! Fundstellen, weil links kein Dokumentname steht. Die Suche nach rechts macht sie
+//! **aufloesbar**. Allein traegt keine ein einziges Zitat; die Rechtssuche allein
+//! aendert nicht eine Zahl, und das ist zugleich der Beleg, dass sie keine vorhandene
+//! Zuordnung umhaengt. Zusammen sind es genau ein Zitat mehr und keine Fundstelle mehr.
 //!
 //! **Drei Riegel halten die Lockerung eng, und jeder hat seinen eigenen Nachweis.**
 //! Ohne sie wird der Riegel rot, wo nichts kaputt ist -- der Einwand, an dem schon 0047
@@ -551,11 +571,18 @@
 //!      misst diesen Riegel heute **nicht** -- er fuehrt keine Stelle dieser Bauart --,
 //!      Fall 5 in `ABSTANDSFAELLE` baut sie eigens.
 //!
-//! **Die Schwelle fuenf ist gemessen.** Bei vier bleibt die Stelle ungefangen (58
-//! Fundstellen wie ohne die Lockerung), bei fuenf faellt sie an (59); sechs und acht
-//! aendern gegenueber fuenf nichts mehr -- der Bestand fuehrt zwischen fuenf und acht
-//! Woertern keine weitere Form. Gewaehlt ist deshalb der kleinste Wert, der die
+//! **Die Schwelle fuenf ist gemessen.** Bei vier bleibt die Stelle ungefangen: Die
+//! Fassung "Schwelle vier" oben steht Zahl fuer Zahl auf "keine von beiden". Bei fuenf
+//! faellt sie unter die uebergangenen Fundstellen, und dieselbe Fassung steht dann auf
+//! "nur der Wortabstand" -- ein Zitat gewinnt sie damit noch nicht, dafuer braucht es
+//! die Suche nach rechts dazu. Gewaehlt ist deshalb der kleinste Wert, der die
 //! gemessene Stelle traegt, und nicht der groesste, der noch nichts kaputt macht.
+//!
+//! **Was hier nicht mehr mitgemessen wird, damit es niemand fuer gemessen haelt:** dass
+//! sechs und acht gegenueber fuenf nichts aendern und der Bestand zwischen fuenf und
+//! acht Woertern keine weitere Form fuehrt. Das ist am 2026-09-05 gemessen und seither
+//! nicht wiederholt worden; der Messstand zu Paket 0166 baut die Schwellen vier und
+//! fuenf und sagt ueber sechs und acht nichts.
 //!
 //! **Wer gewinnt, wenn links und rechts ein Name steht: der linke.** Die Frage ist
 //! nicht offen gelassen, sondern zugunsten des Gemessenen entschieden -- die Linksregel

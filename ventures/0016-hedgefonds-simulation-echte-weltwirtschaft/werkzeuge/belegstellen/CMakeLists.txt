@@ -113,3 +113,43 @@ add_test(NAME belegstellen_messung
 # Zeilen bei 13,5 s im Bericht vom 2026-09-07. Wer den ersten Nachtlauf im Bericht sieht,
 # ersetzt die 600 durch das Vielfache der dort gemessenen Zeit.
 set_tests_properties(belegstellen_messung PROPERTIES TIMEOUT 600)
+
+# ---------------------------------------------------------------------------
+# Die sechs Fassungen des Wortabstands -- Paket 0166
+#
+# `befunde/messung-0166/messen.py` misst die sechs Fassungen, um derentwillen der
+# Kopfkommentar seine Tabelle fuehrt, und haelt die Tabelle gegen das Gemessene. Bis zum
+# 2026-09-07 standen dort Grundzahlen, und die waren zweimal nachweislich binnen eines
+# Tages veraltet (33/33/58 am 2026-09-05, 39/39/47 am 2026-09-06 -- dieselben Fassungen,
+# derselbe Riegel). Seither steht dort der Unterschied zwischen den Fassungen, und diese
+# Probe ist der Nachweis, dass er heute noch gilt.
+#
+# Kein `if(EXISTS ...) add_test() endif()`, aus demselben Grund wie oben: Diese Bauform
+# laesst eine Probe verschwinden, sobald jemand die Datei verschiebt, und meldet danach
+# eine gruene Abnahme ueber einen Baum ohne sie.
+get_filename_component(FABRIK_MESSUNG_0166
+                       ${FABRIK_VORHABEN_WURZEL}/befunde/messung-0166/messen.py
+                       ABSOLUTE)
+
+if(NOT EXISTS ${FABRIK_MESSUNG_0166})
+  message(FATAL_ERROR
+          "Der Messstand zu Paket 0166 fehlt: ${FABRIK_MESSUNG_0166}\n"
+          "Er ist der einzige Nachweis, dass die Tabelle der sechs Fassungen im "
+          "Kopfkommentar von belegstellen_riegel.cpp noch misst, was sie sagt. Ist er "
+          "absichtlich umgezogen, gehoert der neue Pfad hierher -- nicht diese Bedingung "
+          "entfernt.")
+endif()
+
+add_test(NAME belegstellen_wortabstand
+         COMMAND ${FABRIK_BELEGSTELLEN_PYTHON} ${FABRIK_MESSUNG_0166}
+                 --vorhaben ${FABRIK_VORHABEN_WURZEL}
+                 --uebersetzer ${CMAKE_CXX_COMPILER})
+
+# 240 und nicht 900: dieselbe Rechnung wie bei `belegstellen_messung` daneben. Die Zahl
+# ist **hergeleitet und nicht gemessen** -- der Lauf, der sie gesetzt hat, hatte keine
+# Schale. Herleitung: `belegstellen_messung` uebersetzt elf Fassungen derselben Quelle
+# und steht im Bericht vom 2026-09-07 bei 30,7 s; dieser Stand uebersetzt sechs, also
+# rund 17 s. Die 240 sind das Vierzehnfache davon und liegen weit unter den 900, nach
+# denen `baulauf.py` den ganzen ctest-Aufruf abbricht. Wer die gemessene Zeit im ersten
+# Nachtlauf sieht, ersetzt sie durch ein Vielfaches davon.
+set_tests_properties(belegstellen_wortabstand PROPERTIES TIMEOUT 240)
