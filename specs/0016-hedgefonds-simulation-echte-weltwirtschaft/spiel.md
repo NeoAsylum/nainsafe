@@ -3307,75 +3307,76 @@ architect objects, it is a finding against this section and not against the tari
 
 ## Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01
 
-**Befund 1, `positionswert(p)` und `korbwert(l, s)` ohne Entstehungsregel — behoben, und der
-Befund war richtig.** Der Abschnitt *Was ein Korb wert ist, was eine Stufe ist und was eine
-Anleihe kostet* bildet beide, dazu `anleihewert`, `waehrungswert` und den `anleihekurs`, den
-der Prüfer im fünften Schritt seines Nachweises eigens benannt hat („für die vier
-Anleihe-Steckplätze gibt es nicht einmal einen Preis"). Drei Entscheidungen stecken darin,
-und ich nenne sie einzeln, weil
-jede anders hätte ausfallen können:
+**Finding 1, `positionswert(p)` and `korbwert(l, s)` with no rule for how they arise —
+fixed, and the finding was right.** The section *What a basket is worth, what a step is and
+what a bond costs* defines both, plus `anleihewert`, `waehrungswert` and the `anleihekurs`
+that the reviewer named specifically in the fifth step of their proof („für die vier
+Anleihe-Steckplätze gibt es nicht einmal einen Preis"). Three decisions are packed into it,
+and I name them one by one, because
+each could have gone the other way:
 
-1. **Der Korb hängt am Kapitalstock, nicht an der Wertschöpfung.** Grund ist nicht die
-   Volkswirtschaftslehre, sondern T33: Der eingefrorene Mengenkorb braucht eine Menge, und
-   ein Jahresstrom ist keine. Der zweite Grund ist die Wirkungskette — hinge der Korbwert an
-   der Wertschöpfung, überdeckte jede Produktionsschwankung die Kursänderung, die dieses
-   Spiel erklären will.
-2. **Eine Stufe ist ein Anteil, kein Betrag.** Das ist die Entscheidung, die den Zustand
-   rettet: Ein fester Geldbetrag verlangte je Steckplatz den Einstandspreis, also zwanzig
-   weitere Adressen. Als Anteil folgt der Wert vollständig aus dem heutigen Zustand, long
-   und short sind dieselbe Formel, und der Anteil, den Gegenkraft 1 und der Preisstoß lesen,
-   ist dieselbe Zahl.
-3. **Der Anleihekurs ist eine Regel, keine Adresse** — die Bauart, die T39 für `landespreis`
-   schon trägt. Er ist der Kurs einer ewigen Anleihe, im Startjahr per Konstruktion 10.000,
-   streng fallend im Zins und ohne Kappung positiv; die Schranke sitzt am Leitzins, wo sie
-   hingehört, und der Jahrgangsbau kann sie prüfen.
+1. **The basket hangs on the capital stock, not on value added.** The reason is not
+   economics but T33: the frozen quantity basket needs a quantity, and an annual flow is
+   not one. The second reason is the chain of effects — if the basket value hung on value
+   added, every fluctuation in production would drown out the price change this game
+   wants to explain.
+2. **A step is a share, not an amount.** That is the decision that saves the state: a
+   fixed money amount would require the entry price per slot, hence twenty more
+   addresses. As a share, the value follows entirely from today's state, long
+   and short are the same formula, and the share that counterforce 1 and the price shock
+   read is the same number.
+3. **The bond price is a rule, not an address** — the construction T39 already carries for
+   `landespreis`. It is the price of a perpetual bond, 10,000 in the start year by
+   construction, strictly falling in the interest rate and positive without a cap; the
+   bound sits on the policy rate, where it belongs, and the vintage build can check it.
 
-**Die Frage nach der Größenordnung, die der Befund mitstellte, ist beantwortet, aber nicht
-so, wie er sie stellte.** „Wie groß ein Anteil in Zehntausendsteln überhaupt sein kann"
-hängt am Verhältnis von Startkapital zu Marktgröße, und dieses Verhältnis hat genau einen
-Regler. Ein zweiter — ein „investierbarer Anteil" des Kapitalstocks — wäre mit dem
-Startkapital redundant gewesen und hätte der Kalibrierung eine Dimension ohne Wirkung
-gegeben. Er ist deshalb nicht eingebaut; stattdessen stehen die **zwei Bedingungen** unter
-*Offene Entwurfsfragen*, die ein zulässiger Parametersatz erfüllen muss, und beide sind am
-Prüfstand ablesbar.
+**The order-of-magnitude question the finding raised alongside is answered, but not the
+way it asked it.** „Wie groß ein Anteil in Zehntausendsteln überhaupt sein kann"
+hangs on the ratio of start capital to market size, and that ratio has exactly one
+knob. A second one — an "investable share" of the capital stock — would have been
+redundant with the start capital and would have given the calibration a dimension with no
+effect. It is therefore not built in; instead, the **two conditions** a permissible
+parameter set must satisfy stand under *Offene Entwurfsfragen*, and both can be read off
+the test stand.
 
-**Und ein Kanal ist dabei aufgefallen, den der Befund nicht verlangt hat.** Sobald die
-Bewertung ein gerechneter Schritt ist, wird sichtbar, dass *Vermögen → Lobbybudget →
-Instrument → Kurs → Bewertung → Vermögen* eine Rückkopplung über die Rundengrenze ist — die
-Schleife, an der dieses Genre stirbt. Sie stand nicht in der Kanaltabelle. Sie steht jetzt
-als Kanal 8 mit vier Dämpfungen, von denen drei mit dem Erfolg wachsen. **Das ist der teure
-Teil dieses Laufs und der einzige, der eine Zahl in `technik.md` bewegt:** T30 Prüfung 6
-und die Begründung zu T38 sprechen von „sieben" und vom „achten Kanal als Befund"; beides
-wird um eins größer.
+**And along the way a channel stood out that the finding did not demand.** Once
+valuation is a computed step, it becomes visible that *wealth → lobby budget →
+instrument → price → valuation → wealth* is a feedback across the round boundary — the
+loop this genre dies of. It was not in the channel table. It now stands
+as channel 8 with four dampings, three of which grow with success. **That is the expensive
+part of this run and the only one that moves a number in `technik.md`:** T30 check 6
+and the rationale for T38 speak of „sieben" and of the „achten Kanal als Befund"; both
+grow by one.
 
-**Befund 2, `beteiligung_wert` mischt Tausend USD und US-Cent — behoben, soweit er dem
-Entwurf gehört, und die Wahl zwischen den beiden Wegen ist getroffen.** Der Prüfer hat den
-Befund dem Architekten zugewiesen und zwei Auswege offengelassen. Der Entwurf entscheidet
-zwischen ihnen, weil nur einer mit T33 verträglich ist: **`korbwert` bleibt eine
-volkswirtschaftliche Größe**, denn der Marktkorb bewertet dieselben zwölf Körbe und ist
-selbst volkswirtschaftlich. Führte man `korbwert` in Cent, gäbe es zwei Skalen für einen
-Korb und damit zwei Bewertungen für einen Korb — genau das, was T47 mit „eine Bewertung,
-nicht zwei" ausschließt. Die Umrechnung liegt deshalb auf der Grenze zum Fondsbuch und
-findet je Bewertung **einmal am äußersten Aufruf** statt, nachdem die Anteile verrechnet
-sind. Welche Funktion sie leistet, bleibt deine Sache; wo sie steht, ist Entwurf.
+**Finding 2, `beteiligung_wert` mixes thousand USD and US cents — fixed as far as it
+belongs to the design, and the choice between the two paths is made.** The reviewer
+assigned the finding to the architect and left two ways out open. The design decides
+between them, because only one is compatible with T33: **`korbwert` stays a
+macroeconomic quantity**, for the market basket values the same twelve baskets and is
+itself macroeconomic. Kept `korbwert` in cents, there would be two scales for one
+basket and hence two valuations for one basket — exactly what T47 rules out with „eine
+Bewertung, nicht zwei". The conversion therefore sits on the boundary to the fund book
+and happens **once, at the outermost call** per valuation, after the shares have been
+netted. Which function performs it remains your business; where it sits is design.
 
-Der Rechenfehler selbst — Faktor 100.000, Kasse fällt um das Hunderttausendfache dessen, was
-das Beteiligungsvermögen steigt, Todesart 1 in derselben Runde — ist damit an seiner Wurzel
-geschlossen und nicht durch eine Klammer. Der Prüfer hat recht damit, dass er Maß 2 von
-Bauart wegen getroffen hätte: Klasse 2 hätte die erste Abnahmehälfte nicht bestehen können,
-und im Prüfstand hätte es wie ein Balanceproblem ausgesehen.
+The calculation error itself — factor 100,000, cash falling by a hundred thousand times
+what the stake wealth rises, way of dying 1 in the same round — is thereby closed at its
+root and not by a parenthesis. The reviewer is right that it would have hit Maß 2 by
+construction: class 2 could not have passed the first half of the acceptance,
+and on the test stand it would have looked like a balance problem.
 
-**Die drei Punkte aus „Geprüft und nicht gezählt", weil dieser Lauf ohnehin stattfand.**
-Die Kostenaussage zu `B` ist eine Zeile des Architekten und keine Entwurfsfrage; ich rühre
-sie nicht an. Die Doppelführung von `markt.wert` löst T45s Vorrangregel, und ich übernehme
-die Auflösung. Die Skalenkonvention bei `einfluss` (0…100 in der Sicht, Zehntausendstel im
-Speicher) ist erklärt und bleibt, wie sie ist — ich habe nachgerechnet, dass `e ≤ 2.000` in
-beiden Einheiten gilt, weil `schwelle_e` in derselben steht wie `einfluss`.
+**The three points from „Geprüft und nicht gezählt", because this run took place anyway.**
+The cost statement about `B` is a line of the architect's and not a design question; I do
+not touch it. The double keeping of `markt.wert` is resolved by T45's precedence rule, and
+I adopt that resolution. The scale convention for `einfluss` (0…100 in the view,
+ten-thousandths in storage) is explained and stays as it is — I have re-checked that
+`e ≤ 2.000` holds in both units, because `schwelle_e` is stated in the same unit as
+`einfluss`.
 
-**Was ich nicht angefasst habe:** die Meldung des Prüfers an den Projektmanager, dass der
-Rücklaufzähler mit dieser Runde bei 3 von 3 steht und die Tabelle im Arbeitspaket seit
-Runde 3 nicht nachgeführt ist. Das ist Ablaufsteuerung und nicht meine Rolle; ich schreibe
-weder in das Arbeitspaket noch entscheide ich über `blockiert`.
+**What I did not touch:** the reviewer's report to the project manager that the
+return counter stands at 3 of 3 with this round and that the table in the work package has
+not been kept up since round 3. That is process control and not my role; I write
+neither into the work package nor do I decide on `blockiert`.
 
 ## Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01
 
