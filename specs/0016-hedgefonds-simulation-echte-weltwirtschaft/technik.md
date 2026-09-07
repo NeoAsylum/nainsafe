@@ -3193,85 +3193,88 @@ as such.
 
 ## 18. Paket `0043-t48-groessen-gegenkraft-5` — Umfang und die Meldung an den Projektmanager
 
-Vier Bedingungen, vier Stellen. Geändert sind **T48** (fünf Größen, die sektorweise Fassung
-von Nummer 11, die Restetabelle), **T50** (der offengelassene Satz ist geschlossen),
-**Abschnitt 10** (die Kostenzeile mit ihrer Lesetabelle) und **Abschnitt 12 Punkt 3** (die
-Lücke ist keine mehr). Dazu die Zeile `abgeleitet:` im Frontmatter, die 17 nannte.
+Four conditions, four places. Changed are **T48** (five quantities, the sector-wise form
+of number 11, the remainder table), **T50** (the sentence left open is closed),
+**section 10** (the cost line with its read table) and **section 12 point 3** (the gap is
+one no longer). Plus the line `abgeleitet:` in the frontmatter, which named 17.
 
-**Der Auftrag sprach von fünf Namen, gemeint waren sie am 2026-09-03 — es sind sechs, und
-einer davon ist älter als das Paket.** Der Auftragstext nennt `hub`, `preishub`, `menge`,
-`verschiebung` und `schaden`. Dazwischen ist Paket **0039** gelaufen: `preishub(l, s)` gibt
-es nicht mehr, an seine Stelle sind `keilhub(l, s)` und `preishub_zoll(l, s)` getreten. Aus
-fünf Namen wurden damit sechs, von denen zwei keine Größe wurden (`menge`, `verschiebung`,
-Begründung in T48) und vier eine. Der fünfte Neuzugang, `weltpreis_mit_zoll`, stammt aus
-keinem der beiden Pakete, sondern aus T28 dieses Dokuments: Die Preisformel der Markträumung
-rechnet seit jeher mit ihm, gebildet wurde er nie. Gefunden hat ihn nicht das Lesen der
-Auftragstabelle, sondern die Erhebung über `spiel.md`, die T48 jetzt mit abdruckt — der
-Auftrag hätte ihn nicht gebracht.
+**The brief spoke of five names, meant as of 2026-09-03 — there are six, and one of them
+is older than the package.** The brief's text names `hub`, `preishub`, `menge`,
+`verschiebung` and `schaden`. In between, package **0039** ran: `preishub(l, s)` no longer
+exists; `keilhub(l, s)` and `preishub_zoll(l, s)` have taken its place. Five names thereby
+became six, of which two did not become quantities (`menge`, `verschiebung`, reasoning in
+T48) and four did. The fifth newcomer, `weltpreis_mit_zoll`, comes from neither of the two
+packages but from T28 of this document: the price formula of the market clearing has
+computed with it all along; formed it never was. What found it was not the reading of the
+brief's table but the collection over `spiel.md` that T48 now prints alongside — the brief
+would not have surfaced it.
 
-**Die Abnahmebedingungen, einzeln:**
+**The acceptance conditions, one by one:**
 
-1. **Die Namensliste lässt keinen Rest.** Die Erhebung, ihre Zuordnung und die zwölf
-   erlaubten Reste stehen in T48. Zwei Namen darin sind der unangenehme Fall und deshalb
-   ausdrücklich aufgeführt: `wmz` und `preishub` stehen in `spiel.md` noch, aber allein im
-   Gegenbeispiel, mit dem der Entwurf die verworfene Vorfassung vorrechnet. Wer sie für
-   Vorschriften hält, trägt zwei tote Größen nach; wer sie stillschweigend übergeht,
-   hinterlässt dem nächsten Prüfer denselben Zweifel. Sie stehen deshalb in der Restetabelle.
-   **Die Erhebung hat nebenbei eine ältere Lücke gefunden**, die keinem der drei Pakete
-   gehört: `stufen(p)` steht seit Fassung 5 in den Formeln der Nummern 14 und 15, ohne dass
-   T48 je gesagt hätte, was es ist. Es ist eine Adresse in Funktionsschreibweise und steht
-   jetzt als solche in der Restetabelle — ein Beleg dafür, dass die maschinelle Erhebung
-   findet, was das Lesen einer Auftragstabelle nicht findet.
-2. **`handelsvolumen`** steht als Nummer 11 in der sektorweisen Fassung, die einstellige
-   daneben als deren Summe über s ∈ {1, 2}. Nummer 4 (`waehrungswert`) liest weiter die
-   einstellige und ändert sich nicht.
-3. **T50 und Abschnitt 12 Punkt 3** verweisen auf den Abschnitt in `spiel.md`. Der alte Satz
-   steht an beiden Stellen im Wortlaut daneben, damit die Prüfungen, die ihn zitiert haben,
-   zitierbar bleiben.
-4. **Die Kostenzeile** nennt 106 Lesezugriffe, 16 Schreibzugriffe und 16 Aufrufe, mit der
-   Lesetabelle darunter und der Summe ausgeschrieben. Ich habe sie in diesem Lauf
-   nachgezählt statt übernommen; die eine Zeile, die nicht selbsterklärend ist, sind die 40
-   des Handelsblocks, und warum es nicht 64 sind, steht dort.
+1. **The name list leaves no remainder.** The collection, its assignment and the twelve
+   permitted remainders stand in T48. Two names in it are the awkward case and are
+   therefore listed explicitly: `wmz` and `preishub` still stand in `spiel.md`, but only
+   in the counterexample with which the design demonstrates the discarded former version.
+   Whoever takes them for prescriptions carries two dead quantities forward; whoever
+   passes over them silently leaves the next reviewer the same doubt. They therefore
+   stand in the remainder table.
+   **The collection has, in passing, found an older gap** that belongs to none of the
+   three packages: `stufen(p)` has stood in the formulas of numbers 14 and 15 since
+   version 5 without T48 ever saying what it is. It is an address in function notation
+   and now stands as such in the remainder table — evidence that the mechanical
+   collection finds what the reading of a brief's table does not.
+2. **`handelsvolumen`** stands as number 11 in the sector-wise form, the one-argument one
+   next to it as its sum over s ∈ {1, 2}. Number 4 (`waehrungswert`) continues to read
+   the one-argument form and does not change.
+3. **T50 and section 12 point 3** point to the section in `spiel.md`. The old sentence
+   stands next to it verbatim in both places, so that the checks that quoted it remain
+   quotable.
+4. **The cost line** names 106 read accesses, 16 write accesses and 16 calls, with the
+   read table beneath it and the sum written out. I recounted it in this run instead of
+   copying it; the one line that is not self-explanatory is the 40 of the trade block,
+   and why they are not 64 stands there.
 
-**An den Projektmanager — welche der neuen Größen eine Schnittstelle in `kern::werte`
-braucht.** Das ist die Angabe, aus der das Folgepaket zugeschnitten wird; es ist nicht meins.
+**To the project manager — which of the new quantities needs an interface in
+`kern::werte`.** This is the statement from which the follow-up package is cut; it is not
+mine.
 
-| Größe | Schnittstelle in `kern::werte`? |
+| Quantity | Interface in `kern::werte`? |
 |---|---|
-| `hub(l, i)` (Nr. 18) | **ja**, öffentlich. Argumente Land und Instrument, Ergebnis `i64` |
-| `keilhub(l, s)` (Nr. 19) | **ja**, öffentlich |
-| `preishub_zoll(l, s)` (Nr. 20) | **ja**, öffentlich |
-| `weltpreis_mit_zoll(g, s)` (Nr. 21) | **ja**, öffentlich — und ihr Leser ist die Markträumung (T28), nicht Gegenkraft 5 |
-| `schaden(l, i)` (Nr. 22) | **ja**, öffentlich, mit der Fallunterscheidung über die vier Instrumente innen |
-| `handelsvolumen(l, s)` (Nr. 11) | **Formänderung an einer bestehenden.** Heute steht in `werte.hpp` `handelsvolumen(z, land)`; gebraucht werden beide Stelligkeiten, die einstellige gebildet aus der zweistelligen |
-| `menge(l, i)`, `verschiebung(l, i)` | **nein**, und das ist eine Vorgabe und kein Vergessen. Begründung in T48 |
-| `regulierung_last` | **nein** — Parameterschlüssel nach T27. Er gehört in `parameter.toml` (Datenbauer) und in die Struktur `Konstanten` in `werte.hpp`, wo `gegenlobby_satz` und `lobbykosten` schon stehen |
+| `hub(l, i)` (no. 18) | **yes**, public. Arguments country and instrument, result `i64` |
+| `keilhub(l, s)` (no. 19) | **yes**, public |
+| `preishub_zoll(l, s)` (no. 20) | **yes**, public |
+| `weltpreis_mit_zoll(g, s)` (no. 21) | **yes**, public — and its reader is the market clearing (T28), not counterforce 5 |
+| `schaden(l, i)` (no. 22) | **yes**, public, with the case distinction over the four instruments inside |
+| `handelsvolumen(l, s)` (no. 11) | **change of form to an existing one.** Today `werte.hpp` has `handelsvolumen(z, land)`; both arities are needed, the one-argument formed from the two-argument |
+| `menge(l, i)`, `verschiebung(l, i)` | **no**, and that is a prescription, not an oversight. Reasoning in T48 |
+| `regulierung_last` | **no** — parameter key per T27. It belongs in `parameter.toml` (data builder) and in the struct `Konstanten` in `werte.hpp`, where `gegenlobby_satz` and `lobbykosten` already stand |
 
-**Drei Stellen, die dadurch nachziehen und die nicht mir gehören.** Sie sind alle drei
-mechanisch und keine ist eine Frage:
+**Three places that follow from this, and none of them is mine.** All three are
+mechanical and none is a question:
 
-1. **`kern/include/kern/werte.hpp` sagt an drei Stellen „siebzehn"** — in der Kopfzeile
-   (`//! kern::werte -- die siebzehn abgeleiteten Groessen aus T48`), im Absatz über den
-   mechanischen Nachweis („Unten stehen siebzehn") und in der Überschrift des zweiten Blocks.
-   Nach diesem Paket sind es zweiundzwanzig. Das ist Kernbauer-Arbeit, und es ist genau der
-   Nachweis, den T48 vorschreibt: Wer den Kopf gegen die Tabelle legt, findet die fünf
-   fehlenden Deklarationen. **Solange sie fehlen, ist der Nachweis nicht erfüllt** — der Kopf
-   ist damit heute unvollständig und nicht falsch.
-2. **Die Abnahme von Paket 0002** nennt die Zahl siebzehn wörtlich. Sie war zum Zeitpunkt
-   ihrer Erfüllung richtig: 0002 stand am 2026-09-04 auf `fertig`, bevor dieses Paket lief —
-   die Reihenfolge, die der Projektmanager dafür angeordnet hat, hat gehalten. Wer sie später
-   liest, braucht diesen Absatz, sonst sieht die erfüllte Abnahme wie eine verletzte aus.
-3. **`regulierung_last` fehlt in `parameter.toml`.** Folgepaket des Datenbauers, im Auftrag
-   dieses Pakets schon benannt und hier nicht angefasst.
+1. **`kern/include/kern/werte.hpp` says „siebzehn" in three places** — in the header line
+   (`//! kern::werte -- die siebzehn abgeleiteten Groessen aus T48`), in the paragraph on
+   the mechanical proof („Unten stehen siebzehn") and in the heading of the second block.
+   After this package it is twenty-two. That is core-builder work, and it is exactly the
+   proof T48 prescribes: whoever lays the header against the table finds the five missing
+   declarations. **As long as they are missing, the proof is not fulfilled** — the header
+   is thereby incomplete today, and not wrong.
+2. **The acceptance of package 0002** names the number seventeen verbatim. It was right
+   at the time it was fulfilled: 0002 stood on `fertig` on 2026-09-04, before this
+   package ran — the sequence the project manager ordered for that purpose has held.
+   Whoever reads it later needs this paragraph, otherwise the fulfilled acceptance looks
+   like a violated one.
+3. **`regulierung_last` is missing from `parameter.toml`.** Follow-up package of the data
+   builder, already named in this package's brief and not touched here.
 
-**Worauf ich unsicher bin, und es steht hier statt nur im Logbuch.** Nummer 21 ist die
-einzige Stelle, an der ich etwas entschieden statt gemeldet habe: `zollstand(RW) = 0`. Der
-Weg dorthin ist belegt — zehn `durchgriff`-Werte für fünf Gebiete, keine Instrumente für die
-Restwelt —, aber der Definitionsbereich von `weltpreis_mit_zoll` steht nirgends
-ausgeschrieben, weder in T28 noch in `spiel.md`; ich habe ihn aus dem Wort „je Gebiet" und
-aus der Zahl zehn gelesen. Läuft die Markträumung in Wahrheit nur über die vier spielbaren
-Länder, ist meine Zeile überflüssig und nicht falsch. Das ist die Stelle, an der ich einem
-Prüfer widerspruchslos folgen würde.
+**Where I am unsure, and it stands here rather than only in the logbook.** Number 21 is
+the only place where I decided something instead of reporting it: `zollstand(RW) = 0`.
+The way there is documented — ten `durchgriff` values for five territories, no
+instruments for the rest of world —, but the domain of `weltpreis_mit_zoll` is written
+out nowhere, neither in T28 nor in `spiel.md`; I read it out of the word „je Gebiet" and
+out of the number ten. If the market clearing in truth runs only over the four playable
+countries, my line is superfluous and not wrong. This is the place where I would follow a
+reviewer without objection.
 
 ## 19. Die Länderzahl als Parameter — Paket `0116`
 
