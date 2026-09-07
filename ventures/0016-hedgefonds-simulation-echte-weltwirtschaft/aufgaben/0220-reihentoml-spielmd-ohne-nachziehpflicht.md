@@ -1,7 +1,7 @@
 ---
 id: 0220-reihentoml-spielmd-ohne-nachziehpflicht
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 ruecklauf: 1
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
