@@ -2857,28 +2857,27 @@ longer shows that the hand-back worked:
 
 ## 13. Hinweis für den Projektmanager
 
-Der Bausteinschnitt aus T13 ist zugleich der Kollisionsschnitt für Arbeitspakete: Zwei
-gleichzeitig offene Pakete dürfen sich nicht im selben Baustein treffen. Die natürliche
-Reihenfolge ist `kern` (Zustand, Festkomma, Zufall, Prüfsumme, Schreiber mit T18/T38/T39)
-→ `daten` und `schnittstelle` parallel → `konsole` → Tests und `pruefstand` →
-`oberflaeche`. Der Jahrgang (`werkzeuge/aufbereitung`) kann von Beginn an parallel laufen,
-weil er nur gegen T5, T23 bis T26, T40, **T45/T46** und **T49/T51** gebaut wird und nichts
-vom Kern braucht. Er trägt seit dieser Fassung zwei Prüfungen mehr, die das Vorhaben nicht
-kippen, aber einen späten Abbruch ersparen: die Skalentabelle über alle 310 Adressen (T49)
-und die Untergrenze `aufschlag ≥ aufschlag_min` gegen den historischen Leitzinspfad (T23
-Punkt 5).
+The component cut from T13 is at the same time the collision cut for work packages: two
+packages open at the same time must not meet in the same component. The natural order is
+`kern` (state, fixed point, randomness, checksum, writer with T18/T38/T39)
+→ `daten` and `schnittstelle` in parallel → `konsole` → tests and `pruefstand` →
+`oberflaeche`. The vintage (`werkzeuge/aufbereitung`) can run in parallel from the start,
+because it is built only against T5, T23 through T26, T40, **T45/T46** and **T49/T51** and
+needs nothing from the core. Since this version it carries two more checks, which cannot
+tip the venture but do spare a late abort: the scale table over all 310 addresses (T49)
+and the lower bound `aufschlag ≥ aufschlag_min` against the historical policy-rate path
+(T23 point 5).
 
-**Zwei Pakete sind vorzuziehen, weil sie Entwurfsrisiko tragen und nicht Bauaufwand:** der
-Jahrgangsbau 1997 (T24 sagt, dass er scheitern kann — 25 Stützstellen ohne Füllung für alle
-31 Reihen und alle 40 Handelsströme sind eine Behauptung, keine Tatsache, und der
-IFS-Leitzins ist nur durch ein Indiz gestützt) und die Prüfung der vier WDI-Verdachtsreihen
-7, 8, 10 und 13 auf die Drittanbieter-Ausnahme. Beide klären sich gegen Daten, nicht gegen
-Code.
+**Two packages are to be pulled forward, because they carry design risk and not build
+effort:** the vintage build 1997 (T24 says it can fail — 25 support points without filling
+for all 31 series and all 40 trade flows are a claim, not a fact, and the IFS policy rate
+is supported by only one indication) and the check of the four WDI suspect series 7, 8, 10
+and 13 for the third-party exception. Both resolve against data, not against code.
 
-**Was gegenüber Fassung 2 billiger geworden ist:** Ein engeres Fenster kostet nach T40 eine
-Zahl im Manifest und kein zweites Paket. Der Jahrgangsbau muss deshalb nicht mehr *vor* dem
-Kern fertig sein, sondern nur vor dem ersten Rückvergleich — er bleibt trotzdem vorn, weil
-er das Vorhaben kippen kann und nicht nur verzögern.
+**What has become cheaper compared to version 2:** per T40 a narrower window costs a
+number in the manifest and no second package. The vintage build therefore no longer has to
+be finished *before* the core, only before the first backtest — it stays in front anyway,
+because it can tip the venture and not merely delay it.
 
 ## 14. Befundabarbeitung — die vier früheren Prüfungen
 
