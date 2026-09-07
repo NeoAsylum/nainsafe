@@ -2881,22 +2881,22 @@ because it can tip the venture and not merely delay it.
 
 ## 14. Befundabarbeitung — die vier früheren Prüfungen
 
-**Erledigt und im Git-Verlauf.** Fassung 2 hat die acht Befunde der ersten Prüfung
-beantwortet, Fassung 3 die zwölf der zweiten, Fassung 4 die drei der dritten, Fassung 5 die
-zwei der vierten (Runde 4). Jede dieser Abarbeitungen ist von der jeweils nächsten Prüfung
-unter deren Bedingung 5 ausdrücklich abgenommen worden; die Prüfung der Runde 6 sagt es für
-Fassung 5 wörtlich: „Beide Befunde der Vorrunde sind beantwortet, je mit einer der drei
+**Done and in the git history.** Version 2 answered the eight findings of the first
+check, version 3 the twelve of the second, version 4 the three of the third, version 5 the
+two of the fourth (round 4). Each of these workings-off was expressly accepted by the
+respectively next check under its condition 5; the check of round 6 says it for version 5
+verbatim: „Beide Befunde der Vorrunde sind beantwortet, je mit einer der drei
 zulässigen Antworten … Beide habe ich gegen die Sache nachgeprüft, nicht gegen die
 Behauptung."
 
-Sie hier weiterzuschleppen kostete jeden Leser hundert Zeilen und brächte nichts, was
-`git log -p specs/0016-…/technik.md` nicht genauer sagt. Gelöscht ist nichts: Alle vier
-Abarbeitungen stehen unverändert in der Versionsgeschichte.
+Dragging them along here would cost every reader a hundred lines and would bring nothing
+that `git log -p specs/0016-…/technik.md` does not say more precisely. Nothing is deleted:
+all four workings-off stand unchanged in the version history.
 
-Was aus ihnen **fortwirkt**, steht nicht in einer Abarbeitungsliste, sondern in den
-Vorgaben, die daraus entstanden sind — T38 bis T43 tragen die zwölf Antworten der zweiten
-Prüfung als Regel statt als Bericht, T44 und T45 die drei der dritten, T46 und T47 die zwei
-der vierten, und jede nennt an ihrer Stelle den Befund, der sie erzwungen hat.
+What **lives on** from them stands not in a working-off list but in the prescriptions
+that arose from them — T38 to T43 carry the twelve answers of the second check as a rule
+instead of a report, T44 and T45 the three of the third, T46 and T47 the two of the
+fourth, and each names, at its place, the finding that forced it.
 
 ## 15. Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01 und `spiel.md` Fassung 5
 
