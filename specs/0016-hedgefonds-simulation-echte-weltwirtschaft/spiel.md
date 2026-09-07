@@ -414,158 +414,157 @@ without it, attention would be a mere penalty on success; with it, it is a
 decision — loud and fast versus quiet and slow. That is exactly what produces the
 shift of the optimum that Maß 3 demands.
 
-## Der Zustand
+## The state
 
-**310** ganzzahlige Größen; die Aufstellung Zeile für Zeile steht in `technik.md` T15 und
-ist dort nachgerechnet. Die Zahl selbst ist keine Verteidigung — siehe unten.
+**310** integer quantities; the line-by-line listing stands in `technik.md` T15 and is
+recomputed there. The number itself is no defence — see below.
 
-**Diese 310 sind der Stand von heute und bleiben die Bezugszahl, bis Paket 0116 die
-Adressarithmetik parametrisch geschrieben hat.** Die fünf weiteren Länder sind seit dem
-2026-09-06 gewählt (Paket 0118, siehe *Welche neun Länder*); damit steht die Ländersumme bei
-`L = 9` auf **740** und der Zustand nach allen drei Schichten auf **890** — gerechnet, aber
-noch nicht die Bezugszahl, weil die Adressarithmetik sie erst tragen muss.
-Was dieser Abschnitt beschreibt, ist die erste von drei Schichten; die zweite
-(Börsenplätze) und die Rechnung, die auf **890** führt, stehen unter *Die drei Schichten der
-Welt*. Zwei unkommentierte Summen in einem Dokument sind der Anfang des nächsten Zählfehlers,
-deshalb steht an jeder von beiden, welchen Stand sie meint.
+**These 310 are the status as of today and remain the reference number until package 0116
+has written the address arithmetic parametrically.** The five further countries have been
+chosen since 2026-09-06 (package 0118, see *Which nine countries*); with that the country
+sum at `L = 9` stands at **740** and the state after all three layers at **890** —
+computed, but not yet the reference number, because the address arithmetic must first
+carry it. What this section describes is the first of three layers; the second (exchange
+venues) and the computation that leads to **890** stand under *Die drei Schichten der
+Welt*. Two uncommented sums in one document are the beginning of the next counting error,
+which is why each of the two says which status it means.
 
-**Je Land** (vier Länder): drei Sektoren mit Wertschöpfung, Kapitalstock, Beschäftigung
-und Preis; Bevölkerung und Erwerbstätige; Produktivität; Preisniveau und Inflation;
-Leitzins; Wechselkurs gegen den US-Dollar als Numéraire; Staatsschuld und Haushaltssaldo;
-Zustimmung zur Regierung; Aufsichtszähler; Einfluss; vier Politikinstrumente, jedes mit
-Stand, anliegendem Druck, Gegendruck und Restverzögerung; drei Restdauerzähler.
+**Per country** (four countries): three sectors with value added, capital stock,
+employment and price; population and employed persons; productivity; price level and
+inflation; policy rate; exchange rate against the US dollar as numéraire; government debt
+and budget balance; approval of the government; supervision counter; influence; four
+policy instruments, each with level, pending pressure, counter-pressure and remaining
+delay; three remaining-duration counters.
 
-**Die Restwelt** trägt dieselben Sektor- und Aggregatgrößen, aber **keine
-Politikinstrumente, keine Zustimmung, keinen Aufsichtszähler und keinen Einfluss** — der
-Fonds kann dort weder handeln noch lobbyieren. Sie schließt den Kreislauf; ohne sie wäre
-die Summe der vier Handelsbilanzen zwangsläufig null, was gegen die echten Daten falsch
-ist.
+**The rest of world** carries the same sector and aggregate quantities, but **no policy
+instruments, no approval, no supervision counter and no influence** — the fund can
+neither trade nor lobby there. It closes the circuit; without it the sum of the four
+trade balances would necessarily be zero, which is false against the real data.
 
-**Handel:** eine volle Matrix über **fünf Gebiete × vier Gegenüber × zwei Sektoren mit
-Handelszeilen = 40 Ströme**, die Restwelt mit eigenen Zeilen. Nur so hält die Invariante
-„Summe aller Handelsbilanzen einschließlich Restwelt = 0".
+**Trade:** a full matrix over **five territories × four counterparts × two sectors with
+trade rows = 40 flows**, the rest of world with rows of its own. Only so does the
+invariant "sum of all trade balances including rest of world = 0" hold.
 
-**Der Fonds:** Kasse, Positionen, Beteiligungen, Hebelstand, globale Sichtbarkeit,
-Anlegerbestand, Marktanteil, Überrendite der letzten drei Runden. Dazu je Land×Sektor ein
-Nachahmerzähler (12) und der Marktkorb (Wert und Rendite) als Bezugsgröße.
+**The fund:** cash, positions, stakes, leverage level, global visibility, investor base,
+market share, excess return of the last three rounds. Plus, per country×sector, an
+imitator counter (12) and the market basket (value and return) as reference quantity.
 
-**Einfluss je Land** ist der geglättete Anteil des Fonds am gesamten Lobbydruck in diesem
-Land, 0 bis 100. Er ist die zweite Hälfte der Siegbedingung — und die Größe, deren Erwerb
-sämtliche Gegenkräfte weckt.
+**Influence per country** is the fund's smoothed share of the total lobby pressure in
+that country, 0 to 100. It is the second half of the victory condition — and the quantity
+whose acquisition wakes all the counterforces.
 
-### Die vier Politikinstrumente
+### The four policy instruments
 
-| Instrument | Datenanker | Bemerkung |
+| Instrument | Data anchor | Remark |
 |---|---|---|
-| Leitzins | ja, aber **als Pfad, nicht als Sollreihe** (seit 2026-09-03, siehe *Die Partielänge R*) | Für Deutschland **exogen ab 1999**; das liegt vor dem Fenster 2001–2021, Deutschland hat also über die ganze Partie keinen eigenen Zinshebel. Diese Asymmetrie ist gewollt, siehe unten. |
-| Zollniveau | ja, aber **nur aggregiert je Land** (WDI, mit Vorbehalt) | Kein Zoll je Sektor. Die Sektorwirkung entsteht aus `durchgriff` und den Importanteilen, nicht aus einem erfundenen Sektorzoll. |
-| Haushaltssaldo / Staatsausgabenquote | ja (IWF WEO) | |
-| Kapitalverkehrs- und Finanzmarktregulierung | **nein, reines Modellkonstrukt** | Muss existieren, weil die Aufsicht sonst keinen Angriffspunkt auf den Fonds hat. Ohne Sollreihe; im Rückvergleich fest auf dem Startwert, und das Orakel ist für dieses Instrument blind. |
+| Policy rate | yes, but **as a path, not as a target series** (since 2026-09-03, see *The game length R*) | For Germany **exogenous from 1999**; that lies before the window 2001–2021, so Germany has no interest-rate lever of its own over the whole game. This asymmetry is intended, see below. |
+| Tariff level | yes, but **only aggregated per country** (WDI, with reservations) | No tariff per sector. The sector effect arises from `durchgriff` and the import shares, not from an invented sector tariff. |
+| Budget balance / government spending ratio | yes (IMF WEO) | |
+| Capital-flow and financial-market regulation | **no, pure model construct** | Must exist, because otherwise the supervision has no point of attack on the fund. Without a target series; in the backtest fixed at the start value, and the oracle is blind to this instrument. |
 
-### Jede Größe ohne Datenanker, mit ihrem Startwert
+### Every quantity without a data anchor, with its start value
 
-Die Abnahmebedingung 2 verlangt, dass jede Größe entweder auf eine Reihe aus `daten.md`
-zurückgeführt oder als Modellkonstrukt mit Entstehungsregel gekennzeichnet ist. Die
-verankerten stehen in der Reihenliste des Architekten. Hier stehen **alle übrigen** — bis
-auf die elf, deren Herkunft `technik.md` T46 ist und die diese Tabelle nicht kennen kann,
-weil sie aus dem Vergleich der Reihenliste mit der Adressaufstellung folgen (US-Wechselkurs
-als Numéraire, fünf Aggregatgrößen der Restwelt, fünf Neubasierungszähler). **Mit T46
-zusammen ist die Aufzählung abschließend, und nur zusammen war sie es je.** Das ist
-Beobachtung 2 aus `technik.md` Abschnitt 12, hier angenommen statt bestritten:
+Acceptance condition 2 demands that every quantity is either traced back to a series from
+`daten.md` or marked as a model construct with a formation rule. The anchored ones stand
+in the architect's series list. Here stand **all the rest** — except for the eleven whose
+provenance is `technik.md` T46 and which this table cannot know, because they follow from
+comparing the series list with the address listing (US exchange rate as numéraire, five
+aggregate quantities of the rest of world, five rebasing counters). **Together with T46
+the enumeration is exhaustive, and only together was it ever that.** That is
+observation 2 from `technik.md` section 12, accepted here rather than disputed:
 
-| Größe | Startwert | Regel im Lauf |
+| Quantity | Start value | Rule in the run |
 |---|---|---|
-| Sektorpreis (je Gebiet × Sektor, 15) | Index 10.000 | Markträumung, siehe oben |
-| Weltpreis (je handelbarem Sektor, 2) | Index 10.000 | Markträumung in Schritt 4, siehe oben |
-| `landespreis` | = Sektorpreis, Runde 1 also 10.000 | Sektorpreis der Vorrunde |
-| `durchgriff` (je Gebiet × handelbarem Sektor) | Konstante des Jahrgangs | `10.000·H/(H+N)`, über die Partie fest |
-| Zustimmung (je Land) | aus `parameter.toml` | Gegenkraft 2 |
-| Aufsichtszähler (je Land) | 0 | Gegenkraft 1 |
-| Nachahmerzähler (je Land × Sektor) | 0 | Gegenkraft 4 |
-| Einfluss (je Land) | 0 | geglätteter Anteil am Lobbydruck |
-| Lobbydruck je Instrument (16) | 0 | Aktion 3, Verrechnung in Schritt 3 |
-| Gegendruck je Instrument (16) | 0 | Gegenkraft 5 |
-| Restverzögerung je Instrument (16) | 0 | Schritt 3 |
-| drei Restdauerzähler je Land (12) | 0 | Gegenkraft 1 und 2 |
-| Finanzmarktregulierung (Stand) | aus `parameter.toml` | Instrument wie die anderen drei |
-| `markt.wert` | Wert des Startkorbs zu Startpreisen | eingefrorener Mengenkorb aus zwölf Körben und vier Anleihen, T33; Bewertung siehe *Was ein Korb wert ist* |
-| `markt.rendite` | 0 | ebd. |
-| Fondskasse, Anlegerbestand | aus `parameter.toml` (Startkapital) | Aktionen und Abrechnung |
-| Marktanteil | 0 | Wertanteil am Marktkorb, Formel unter *Was ein Korb wert ist* |
-| Hebelstand, Sichtbarkeit, Überrendite (3) | 0 | Aktionen 4 und 5, Abrechnung |
-| Beteiligungen (12 Anteile + 12 Restdauern) | 0 | Aktion 2 |
-| Positionssteckplätze (20) | 0 | Aktion 1 |
-| Partie: Runde | 0 | Buchführung des Laufs |
-| Partie: Jahrgangskennung | aus dem Manifest des Jahrgangs | fest über die Partie |
-| Partie: Parametersatz-Prüfsumme | aus `parameter.toml` | fest über die Partie |
-| Partie: Mandatsstand | 0 | Schritt 6, Mandatsprüfung |
+| Sector price (per territory × sector, 15) | index 10,000 | market clearing, see above |
+| World price (per tradable sector, 2) | index 10,000 | market clearing in step 4, see above |
+| `landespreis` | = sector price, round 1 thus 10,000 | previous round's sector price |
+| `durchgriff` (per territory × tradable sector) | constant of the vintage | `10.000·H/(H+N)`, fixed over the game |
+| Approval (per country) | from `parameter.toml` | counterforce 2 |
+| Supervision counter (per country) | 0 | counterforce 1 |
+| Imitator counter (per country × sector) | 0 | counterforce 4 |
+| Influence (per country) | 0 | smoothed share of lobby pressure |
+| Lobby pressure per instrument (16) | 0 | action 3, netting in step 3 |
+| Counter-pressure per instrument (16) | 0 | counterforce 5 |
+| Remaining delay per instrument (16) | 0 | step 3 |
+| three remaining-duration counters per country (12) | 0 | counterforces 1 and 2 |
+| Financial-market regulation (level) | from `parameter.toml` | instrument like the other three |
+| `markt.wert` | value of the start basket at start prices | frozen basket of amounts made of twelve baskets and four bonds, T33; valuation see *What a basket is worth* |
+| `markt.rendite` | 0 | ibid. |
+| Fund cash, investor base | from `parameter.toml` (start capital) | actions and settlement |
+| Market share | 0 | value share of the market basket, formula under *What a basket is worth* |
+| Leverage level, visibility, excess return (3) | 0 | actions 4 and 5, settlement |
+| Stakes (12 shares + 12 remaining durations) | 0 | action 2 |
+| Position slots (20) | 0 | action 1 |
+| Game: round | 0 | bookkeeping of the run |
+| Game: vintage identifier | from the vintage's manifest | fixed over the game |
+| Game: parameter-set checksum | from `parameter.toml` | fixed over the game |
+| Game: mandate status | 0 | step 6, mandate check |
 
-**Diese Tabelle ist der Herkunftseintrag für die 150 Entwurfsadressen**, und erst mit den
-sieben Zeilen der vierten Fassung und dem Verweis auf T46 ist sie das, was sie von sich
-behauptet. Der
-Abgleich gegen die 310 Adressen aus `technik.md` T15 stammt nicht von mir, sondern aus der
-Prüfung vom 2026-09-01: Ohne Herkunftseintrag blieben dort **32** Adressen (Lobbydruck und
-Restverzögerung je Instrument, vom Architekten in T23 Punkt 1 nachgetragen) und **sechs**
-(zwei Weltpreise, vier Partiefelder, für die T45 keine zulässige Eintragsart kannte). Alle
-38 stehen jetzt hier, wo die Tabelle sie zugesagt hatte. Das ist die Bedingung, an der der
-Jahrgangsbau nach T45 sonst abbräche.
+**This table is the provenance entry for the 150 draft addresses**, and only with the
+seven rows of the fourth version and the reference to T46 is it what it claims to be. The
+reconciliation against the 310 addresses from `technik.md` T15 is not mine but comes from
+the check of 2026-09-01: without a provenance entry there remained **32** addresses
+(lobby pressure and remaining delay per instrument, added by the architect in T23
+point 1) and **six** (two world prices, four game fields, for which T45 knew no
+admissible entry kind). All 38 now stand here, where the table had promised them. That is
+the condition on which the vintage build would otherwise abort per T45.
 
-### Was das Fondsvermögen ist, und ob die Beteiligungen dazugehören
+### What the fund's assets are, and whether the stakes belong to them
 
-Der Architekt hat die Frage zurückgegeben (`technik.md` Abschnitt 12, Punkt 3), und sie ist
-eine Modellfrage. **Sie zählen dazu:**
+The architect returned the question (`technik.md` section 12, point 3), and it is a model
+question. **They belong:**
 
 ```
 fondsvermoegen = Kasse + bewertete Positionen + bewertete Beteiligungen − Hebel
 ```
 
-**Der Grund ist kein Geschmack, sondern Maß 2.** Zählten sie nicht, verwandelte Aktion 2
-Kasse in etwas, das in keiner Hälfte des Mandats vorkommt; Klasse 2 könnte die erste
-Abnahmehälfte von Maß 2 dann unabhängig von jeder Kalibrierung nicht bestehen, und ein Maß,
-das eine seiner drei Klassen von Bauart wegen durchfallen lässt, misst nichts.
+**The reason is not taste but Maß 2.** If they did not count, action 2 would turn cash
+into something that appears in neither half of the mandate; class 2 could then not pass
+the first acceptance half of Maß 2 regardless of any calibration, and a Maß that fails
+one of its three classes by construction measures nothing.
 
-**Bewertet wird zum Ausstiegswert, also zum Modellwert des Land×Sektor-Korbs abzüglich des
-Ausstiegsabschlags.** Damit heißt „Fondsvermögen" durchgehend dasselbe — *was der Fonds
-wert ist, wenn er hier aufhört* —, und genau das brauchen die Ergebnisgröße, das Mandat und
-Todesart 1. Der Abschlag ist damit beim **Aufbau** der Beteiligung bezahlt und wird beim
-gewöhnlichen Ausstieg nicht ein zweites Mal abgezogen; illiquide bleibt sie über die zwei
-Runden Ausstiegsdauer. Der Zwangsverkauf aus Gegenkraft 1 ist davon unberührt — sein
-Abschlag ist eine zusätzliche Strafe und kommt oben drauf.
+**Valuation is at exit value, that is, at the model value of the country×sector basket
+minus the exit discount.** "Fund assets" thereby means the same thing throughout — *what
+the fund is worth if it stops here* — and that is exactly what the result quantity, the
+mandate and way of dying 1 need. The discount is thus paid when the stake is **built up**
+and is not deducted a second time on an ordinary exit; the stake stays illiquid over the
+two rounds of exit duration. The forced sale from counterforce 1 is untouched by this —
+its discount is an additional penalty and comes on top.
 
-**Und die Regel, die den Nenner der Fondsrendite sichert:** Fällt das Fondsvermögen auf null
-oder darunter, greift Todesart 1 (Zwangsliquidation) in derselben Runde. Eine Rendite auf
-einen nichtpositiven Nenner wird damit nie gebildet.
+**And the rule that secures the denominator of the fund return:** if the fund's assets
+fall to zero or below, way of dying 1 (forced liquidation) takes effect in the same
+round. A return on a nonpositive denominator is thus never formed.
 
-### Was ein Korb wert ist, was eine Stufe ist und was eine Anleihe kostet
+### What a basket is worth, what a step is and what a bond costs
 
-Die vierte Fassung hat entschieden, **dass** die Beteiligungen zum Fondsvermögen zählen, und
-`technik.md` T47 hat das als Formel hingeschrieben. Damit wurde sichtbar, dass zwei Namen
-darin nirgends gebildet werden: `korbwert(l, s)` und `positionswert(p)`. Beide sind
-Modellentscheidungen und stehen deshalb hier; mit dem **Anleihekurs**, den der Prüfer als
-dritte Lücke benannt hat („für die vier Anleihe-Steckplätze gibt es nicht einmal einen
-Preis"), sind es drei, und sie hängen zusammen.
+The fourth version decided **that** the stakes count toward the fund's assets, and
+`technik.md` T47 wrote that down as a formula. That made visible that two names in it are
+formed nowhere: `korbwert(l, s)` and `positionswert(p)`. Both are model decisions and
+therefore stand here; with the **bond price**, which the reviewer named as the third gap
+(„für die vier Anleihe-Steckplätze gibt es nicht einmal einen Preis"), they are three,
+and they hang together.
 
-#### Eine Bewertungsformel, drei Mengen, drei Kurse
+#### One valuation formula, three amounts, three prices
 
-Jede Bewertung im Modell hat dieselbe Bauart — **Menge mal Kurs, umgerechnet in den
-Numéraire**:
+Every valuation in the model has the same construction — **amount times price, converted
+into the numéraire**:
 
 ```
 wert(menge, kurs, gebiet) = mal_geteilt(menge, kurs, wechselkurs[gebiet])
 ```
 
-Kurs und Wechselkurs sind beide Indizes mit Startwert 10.000; ihr Skalenfaktor kürzt sich
-gegeneinander weg, und die Bewertung braucht keine Konstante. Für die USA steht
-`wechselkurs` als Numéraire dauerhaft auf 10.000; dort ist die Formel eine reine
-Kursbewertung. Menge und Kurs je Steckplatzart:
+Price and exchange rate are both indices with start value 10,000; their scale factors
+cancel against each other, and the valuation needs no constant. For the USA,
+`wechselkurs` stands permanently at 10,000 as the numéraire; there the formula is a pure
+price valuation. Amount and price per slot kind:
 
-| Steckplatzart | Menge | Kurs |
+| Slot kind | Amount | Price |
 |---|---|---|
-| Land×Sektor (12) | `kapitalstock[l][s]` | `sektorpreis[l][s]` |
-| Währung (4) | `handelsvolumen[l]` — Aus- plus Einfuhr des Landes über beide handelbaren Sektoren, aus der Handelsmatrix | 10.000, fest |
-| Anleihe (4) | `schuld[l] = mal_geteilt(bip[l], staatsschuld[l], 10.000)`, mit `bip[l]` = Summe der drei Wertschöpfungen | `anleihekurs[l]`, siehe unten |
+| Country×sector (12) | `kapitalstock[l][s]` | `sektorpreis[l][s]` |
+| Currency (4) | `handelsvolumen[l]` — the country's exports plus imports over both tradable sectors, from the trade matrix | 10,000, fixed |
+| Bond (4) | `schuld[l] = mal_geteilt(bip[l], staatsschuld[l], 10.000)`, with `bip[l]` = sum of the three sectors' value added | `anleihekurs[l]`, see below |
 
-Daraus die vier Bewertungen, aus denen T47 seine beiden fehlenden Namen bekommt:
+From this the four valuations from which T47 gets its two missing names:
 
 ```
 korbwert(l, s)   = wert(kapitalstock[l][s], sektorpreis[l][s], l)
@@ -576,81 +575,79 @@ stufenwert(p)    = mal_geteilt(markt(p), stufenweite, 10.000)
 positionswert(p) = stufen(p) · stufenwert(p), in Fondsgeld umgerechnet
 ```
 
-`markt(p)` ist der Korb-, Anleihe- oder Währungswert des Steckplatzes, `stufen(p)` seine
-vorzeichenbehaftete Stufenzahl aus T16. Die ersten vier Größen stehen in der
-**volkswirtschaftlichen Skala**, `positionswert` ist nach T5 **Fondsgeld** — die Skalengrenze
-verläuft also genau zwischen `stufenwert` und `positionswert`, und was das heißt, steht
-unten. Der Steckplatz Währung USA bleibt nach T16 dauerhaft leer, die Formel ist dort ohne
-Wirkung.
+`markt(p)` is the basket, bond or currency value of the slot, `stufen(p)` its signed step
+count from T16. The first four quantities stand in the **economy-wide scale**,
+`positionswert` is per T5 **fund money** — the scale boundary thus runs exactly between
+`stufenwert` and `positionswert`, and what that means stands below. The slot currency USA
+stays permanently empty per T16, the formula has no effect there.
 
-`staatsschuld[l]` ist nach Reihenliste Nr. 11 und der Klasse *Raten* aus T5 die **Quote in
-Basispunkten**, nicht der Betrag — deshalb der Umweg über `bip[l]`. Ein Nenner null tritt
-in keiner der drei Zeilen auf: Der Wechselkurs ist als Index strikt positiv — das ist eine
-Bedingung an die Wechselkursregel und eine Wertebereichsgrenze, die der Bruchlauf prüft —,
-die 10.000 ist ein Literal, und der Anleihenenner ist unten beschränkt.
+`staatsschuld[l]` is, per series list no. 11 and the class *rates* from T5, the **ratio
+in basis points**, not the amount — hence the detour via `bip[l]`. A denominator of zero
+occurs in none of the three rows: the exchange rate, being an index, is strictly
+positive — that is a condition on the exchange-rate rule and a value-range bound the
+break run checks —, the 10.000 is a literal, and the bond denominator is bounded below.
 
-#### Warum der Kapitalstock und nicht die Wertschöpfung
+#### Why the capital stock and not value added
 
-Beide stehen im Zustand, und der Prüfer hat beide als Kandidaten benannt. Es ist der
-**Kapitalstock**, aus drei Gründen, und der dritte entscheidet:
+Both stand in the state, and the reviewer named both as candidates. It is the **capital
+stock**, for three reasons, and the third decides:
 
-1. **T33 Punkt 3 verlangt einen Mengenkorb**, den man zu den Preisen dieser Runde bewertet.
-   Ein Bestand ist eine Menge, ein Jahresstrom ist keine. Mit dem Kapitalstock ist der
-   eingefrorene Mengenkorb aus T33 zum ersten Mal eine benennbare Größe.
-2. **Eine Beteiligung ist ein Anteil an dem, was ein Sektor besitzt**, nicht an dem, was er
-   in einem Jahr erwirtschaftet. Der Ertrag steckt im Kurs, nicht in der Menge.
-3. **Die Wertschöpfung schwankt jährlich, der Kapitalstock nicht.** Hinge der Wert eines
-   Korbs an der Wertschöpfung, bewegte ihn jede Produktionsschwankung stärker als jede
-   Lobbyaktion — und die Wirkungskette, die dieses Spiel verkauft
-   („Zoll → Importpreis → dein Bestand"), verschwände im Rauschen ihrer eigenen
-   Nebengrößen. Der Kapitalstock ändert sich nur über Kanal 1, also langsam und mit
-   Verzögerung; **damit ist die Kursänderung der sichtbare Teil der Bewertung, und das ist
-   genau die Zahl, die der Käufer erklärt haben will.**
+1. **T33 point 3 demands a basket of amounts** to be valued at this round's prices. A
+   stock is an amount, an annual flow is not. With the capital stock the frozen basket of
+   amounts from T33 is a nameable quantity for the first time.
+2. **A stake is a share in what a sector owns**, not in what it earns in a year. The
+   yield sits in the price, not in the amount.
+3. **Value added fluctuates yearly, the capital stock does not.** If a basket's value
+   hung on value added, every production fluctuation would move it more strongly than any
+   lobbying action — and the causal chain this game sells
+   („Zoll → Importpreis → dein Bestand") would vanish in the noise of its own side
+   quantities. The capital stock changes only via channel 1, that is, slowly and with
+   delay; **the price change is thereby the visible part of the valuation, and that is
+   exactly the number the buyer wants explained.**
 
-Ein Vielfaches auf die Wertschöpfung („Kurs-Gewinn-Verhältnis") wäre die dritte Lesart. Sie
-kostet einen zweiten freien Parameter ohne Anker und liefert dieselbe Ordnung; sie ist
-deshalb nicht gewählt.
+A multiple on value added (a "price-earnings ratio") would be the third reading. It costs
+a second free parameter without an anchor and yields the same ordering; it is therefore
+not chosen.
 
-**Der Kapitalstock je Sektor braucht eine Startregel, und es ist dieselbe wie bei der
-Wertschöpfung.** Reihenliste Nr. 3 liefert einen Kapitalstock **je Gebiet**, der Zustand
-führt drei **je Gebiet und Sektor**. Sie entstehen im Startjahr aus den auf 10.000
-normierten Sektoranteilen (Reihe 2), also genau so, wie aus BIP und denselben Anteilen die
-drei Wertschöpfungen entstehen:
+**The capital stock per sector needs a start rule, and it is the same as for value
+added.** Series list no. 3 delivers a capital stock **per territory**, the state carries
+three **per territory and sector**. They arise in the start year from the sector shares
+normalised to 10,000 (series 2), exactly as the three value-added figures arise from GDP
+and the same shares:
 
 ```
 kapitalstock[l][s] = mal_geteilt(kapitalstock[l], sektoranteil[l][s], 10.000)
 ```
 
-Danach ist er endogen über Kanal 1. Das ist kein neuer Mechanismus, sondern der schon
-vorhandene, ein zweites Mal angewandt — und es hält die drei Sektorkapitalstöcke im Rang
-`Datenanker`, weil beide Eingangsreihen verankert sind.
+After that it is endogenous via channel 1. That is no new mechanism but the existing one
+applied a second time — and it keeps the three sector capital stocks in the rank
+`Datenanker`, because both input series are anchored.
 
-#### Warum eine Stufe ein Anteil ist und kein Betrag
+#### Why a step is a share and not an amount
 
-`stufenweite` steht in `parameter.toml` (T27). **Sie ist ein Anteil in Zehntausendsteln des
-Marktes, an dem der Steckplatz hängt, kein Geldbetrag.** Eine Stufe auf `US×Industrie` ist
-also *`stufenweite` Zehntausendstel dieses Korbs*, und ihr Preis ist, was dieser Anteil heute
-kostet.
+`stufenweite` stands in `parameter.toml` (T27). **It is a share, in ten-thousandths, of
+the market the slot hangs on, not a money amount.** A step on `US×Industrie` is thus
+*`stufenweite` ten-thousandths of that basket*, and its price is what that share costs
+today.
 
-**Der Grund ist der Zustand, nicht der Geschmack.** Wäre eine Stufe ein fester Geldbetrag,
-brauchte jeder Steckplatz seinen Einstandspreis, um überhaupt bewertbar zu sein — zwanzig
-weitere Adressen, ein zweiter Ort für dieselbe Wahrheit und ein Zustand, der nicht mehr aus
-sich heraus lesbar ist. Als Anteil folgt der Wert **vollständig aus dem heutigen Zustand**:
-Kaufe ich eine Stufe, gibt die Kasse ihren heutigen Wert ab und der Steckplatz nimmt ihn
-auf, netto null; bewegt sich danach der Kurs, bewegt sich der Steckplatz und sonst nichts.
-Bei negativer Stufenzahl kehrt sich das Vorzeichen um, und ein Kursanstieg ist ein Verlust —
-long und short sind dieselbe Formel, wie es Maß 2 verlangt.
+**The reason is the state, not taste.** If a step were a fixed money amount, every slot
+would need its entry price just to be valued at all — twenty further addresses, a second
+place for the same truth and a state that is no longer readable out of itself. As a
+share, the value follows **entirely from today's state**: if I buy a step, the cash gives
+up its present value and the slot takes it in, net zero; if the price then moves, the
+slot moves and nothing else. With a negative step count the sign flips, and a price rise
+is a loss — long and short are the same formula, as Maß 2 demands.
 
-**Drei Größen, die daran hängen, sind damit ebenfalls gerechnet:**
+**Three quantities that hang on this are thereby computed as well:**
 
-- **Der Anteil des Fonds an einem Land×Sektor**, in Zehntausendsteln:
-  `|stufen| · stufenweite + anteil[l][s]`. Position und Beteiligung sind Anteile an
-  **demselben** Korb und addieren sich. Beträge, nicht Vorzeichen — ein großer Short bewegt
-  einen Markt so stark wie ein großer Long.
-- **Der lokale Fußabdruck aus Gegenkraft 1** liest genau diese Zahl, und der Preisstoß aus
-  Aktion 1 ebenfalls („umso stärker, je größer sein Anteil an diesem Markt ist"). Beide
-  brauchen keinen eigenen Begriff mehr.
-- **`fonds.marktanteil`**, gebildet in Schritt 6 nach T33 Punkt 4, also gegen den neuen
+- **The fund's share in a country×sector**, in ten-thousandths:
+  `|stufen| · stufenweite + anteil[l][s]`. Position and stake are shares in the **same**
+  basket and add up. Absolute values, not signs — a large short moves a market as
+  strongly as a large long.
+- **The local footprint from counterforce 1** reads exactly this number, and so does the
+  price impact from action 1 ("the more strongly the larger its share of that market
+  is"). Neither needs a concept of its own any more.
+- **`fonds.marktanteil`**, formed in step 6 per T33 point 4, that is, against the new
   `markt.wert`:
 
   ```
@@ -659,92 +656,92 @@ long und short sind dieselbe Formel, wie es Maß 2 verlangt.
   marktanteil  = teile_gerundet(korbbestand · 10.000, markt.wert)
   ```
 
-  Währungen gehen nicht ein — nach T33 Punkt 1 tragen sie keine Kapitalisierung. Das
-  `handelsvolumen` ist die **Tiefe** des Währungsmarktes und trägt Stufenwert und
-  Preisstoß, nicht den Marktkorb. `markt.wert` ist eine Summe positiver Mengen mal positiver
-  Kurse und damit nie null.
+  Currencies do not enter — per T33 point 1 they carry no capitalisation. The
+  `handelsvolumen` is the **depth** of the currency market and carries step value and
+  price impact, not the market basket. `markt.wert` is a sum of positive amounts times
+  positive prices and thus never zero.
 
-**Was die Kalibrierung dabei zu treffen hat, und woran sie scheitert.** Startkapital und
-`stufenweite` legen zusammen fest, wie groß der Fonds gegenüber der Welt werden kann. Zwei
-Bedingungen, beide am Prüfstand ablesbar: Eine Stufe muss aus dem Startkapital bezahlbar
-sein, und erreichbare Stufenzahlen müssen die Aufsichtsschwellen aus Gegenkraft 1 überhaupt
-erreichen können. Verfehlt der Parametersatz die erste, gewinnt Klasse 1 nie; verfehlt er
-die zweite, greift keine Gegenkraft und Maß 3 fällt auf null. **Ein dritter Regler dafür —
-etwa ein „investierbarer Anteil" des Kapitalstocks — wäre mit dem Startkapital redundant:
-Nur das Verhältnis beider Größen wirkt.** Es gibt ihn deshalb nicht.
+**What the calibration has to hit here, and what it fails on.** Start capital and
+`stufenweite` together fix how large the fund can become relative to the world. Two
+conditions, both readable off the test bench: a step must be affordable out of the start
+capital, and reachable step counts must be able to reach the supervision thresholds from
+counterforce 1 at all. If the parameter set misses the first, class 1 never wins; if it
+misses the second, no counterforce takes hold and Maß 3 falls to zero. **A third dial for
+this — say, an "investable share" of the capital stock — would be redundant with the
+start capital: only the ratio of the two quantities acts.** It therefore does not exist.
 
-#### Der Anleihekurs, die einzige neue Kursgröße
+#### The bond price, the only new price quantity
 
-Der Zustand führt je Land `leitzins` und `staatsschuld`, aber keinen Anleihekurs — der
-Prüfer hat zu Recht bemerkt, dass die vier Anleihesteckplätze damit an nichts hängen. Er
-bekommt **keine Adresse, sondern eine Regel**, wie `landespreis` auch (T39):
+The state carries `leitzins` and `staatsschuld` per country, but no bond price — the
+reviewer rightly remarked that the four bond slots thus hang on nothing. It gets **no
+address but a rule**, like `landespreis` (T39):
 
 ```
 anleihekurs(l) = teile_gerundet(10.000 · (leitzins_start[l] + aufschlag), leitzins[l] + aufschlag)
 ```
 
-`leitzins_start[l]` ist der Leitzins des Startjahrs, den der Jahrgang als erste Stützstelle
-des Politikpfads ohnehin trägt (Reihe 9); `aufschlag` ist ein neuer Schlüssel in
-`parameter.toml`, in Basispunkten, und bedeutet den Abstand zwischen Leitzins und
-Anleiherendite.
+`leitzins_start[l]` is the start year's policy rate, which the vintage carries anyway as
+the first support point of the policy path (series 9); `aufschlag` is a new key in
+`parameter.toml`, in basis points, and means the distance between policy rate and bond
+yield.
 
-Das ist der Kurs einer ewigen Anleihe: streng fallend im Zins, im Startjahr per
-Konstruktion genau 10.000, positiv für jeden positiven Nenner, ohne Kappung. **Die Schranke
-sitzt am Instrument und nicht am Kurs:** Der Leitzins hat eine Untergrenze, und sie ist
-`1 − aufschlag`. Damit ist der Nenner nie null und nie negativ, und der Jahrgangsbau kann
-sie prüfen — der historische Politikpfad muss sie einhalten, sonst ist der Parametersatz
-für diesen Jahrgang unzulässig.
+That is the price of a perpetual bond: strictly falling in the interest rate, exactly
+10,000 in the start year by construction, positive for every positive denominator,
+without a cap. **The bound sits at the instrument and not at the price:** the policy rate
+has a lower bound, and it is `1 − aufschlag`. The denominator is thus never zero and
+never negative, and the vintage build can check it — the historical policy path must
+respect it, otherwise the parameter set is inadmissible for that vintage.
 
-**Das ist eine echte Bedingung und keine formale, und sie trifft genau dieses Fenster.** Die
-EZB senkte ihren Einlagesatz am 2014-06-11 erstmals unter null auf **−0,10 %** und bis
-September 2019 auf **−0,50 %**; negativ blieb er bis 2022
-(`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` und
+**That is a real condition and not a formal one, and it hits exactly this window.** The
+ECB first cut its deposit rate below zero on 2014-06-11, to **−0.10 %**, and by
+September 2019 to **−0.50 %**; it stayed negative until 2022
+(`ecb.europa.eu/press/pr/date/2014/html/pr140605_3.en.html` and
 `ecb.europa.eu/stats/policy_and_exchange_rates/key_ecb_interest_rates/html/index.en.html`,
-abgerufen 2026-09-01). Deutschland folgt dem Euroraum über die ganze Partie exogen — der
-Bruch 1999 liegt vor dem Fenster 2001–2021 —, also liegt der negative Zins ab 2014
-**im Prüfjahrgang**, und zwar in dessen Runden 13 bis 20. Ob die Zinsreihe, die der Jahrgang
-zieht, den Einlagesatz oder den Hauptrefinanzierungssatz führt, entscheidet der
-Jahrgangsbau; die Untergrenze muss
-in beiden Fällen unter dem Minimum der Reihe liegen, und `aufschlag` ist damit nicht frei
-wählbar, sondern nach unten gebunden.
+retrieved 2026-09-01). Germany follows the euro area exogenously over the whole game —
+the 1999 break lies before the window 2001–2021 —, so the negative rate from 2014 on lies
+**in the check vintage**, namely in its rounds 13 to 20. Whether the interest series the
+vintage draws carries the deposit rate or the main refinancing rate is decided by the
+vintage build; the lower bound must in both cases lie below the series' minimum, and
+`aufschlag` is thus not freely choosable but bounded from below.
 
-Zwei Eigenschaften, die dabei geschenkt entstehen und die ich behalte. Erstens ist die
-Zinsempfindlichkeit **implizit und länderverschieden**: Bei niedrigem Zins reagiert der
-Kurs stark, bei hohem schwach — ein deutscher Bestand hängt am Zins, ein brasilianischer
-kaum. Das kostet keinen Parameter und unterscheidet zwei der vier Länder um eine weitere
-Achse. Zweitens ist die Anleihe die einzige Anlage, die der Fonds **ohne Einfluss** halten
-kann; sie kann deshalb nie allein gewinnen, weil das Mandat zwei Hälften hat. Eine
-Zinswette ist ein Weg, Kapital aufzubauen, und nie ein Weg, das Spiel zu gewinnen.
+Two properties that arise for free here, and I keep them. First, the interest sensitivity
+is **implicit and different per country**: at a low rate the price reacts strongly, at a
+high one weakly — a German holding hangs on the interest rate, a Brazilian one barely.
+That costs no parameter and distinguishes two of the four countries along one more axis.
+Second, the bond is the only asset the fund can hold **without influence**; it can
+therefore never win alone, because the mandate has two halves. An interest-rate bet is a
+way to build capital, and never a way to win the game.
 
-#### Wo die Skalengrenze liegt
+#### Where the scale boundary lies
 
-`korbwert`, `anleihewert`, `waehrungswert`, `stufenwert`, `korbbestand`, `schuld` und
-`markt.wert` sind **volkswirtschaftliche Beträge** und stehen in deren Skala (T5, Zeile 109).
-`positionswert`, `beteiligung_wert`, Kasse und Hebel sind **Fondsgeld** (Zeile 108). Die
-Umrechnung liegt genau auf dieser Grenze und findet **je Bewertung einmal statt, am äußersten
-Aufruf** — also nachdem die Anteile verrechnet sind, nicht davor. `marktanteil` überquert die
-Grenze gar nicht: Zähler und Nenner stehen beide in der volkswirtschaftlichen Skala.
+`korbwert`, `anleihewert`, `waehrungswert`, `stufenwert`, `korbbestand`, `schuld` and
+`markt.wert` are **economy-wide amounts** and stand in that scale (T5, line 109).
+`positionswert`, `beteiligung_wert`, cash and leverage are **fund money** (line 108). The
+conversion lies exactly on this boundary and happens **once per valuation, at the
+outermost call** — that is, after the shares are netted, not before. `marktanteil` does
+not cross the boundary at all: numerator and denominator both stand in the economy-wide
+scale.
 
-Der zweite Weg, den der Prüfer offengelassen hat — `korbwert` gleich in Fondsgeld führen —
-ist damit ausgeschlossen, und der Grund ist T33: Der Marktkorb bewertet dieselben zwölf
-Körbe, und er ist eine volkswirtschaftliche Größe. Zwei Skalen für einen Korb wären zwei
-Bewertungen für einen Korb, und T47 verlangt „eine Bewertung, nicht zwei". **Welche
-Funktion die Umrechnung leistet, ist Sache des Architekten; dass sie an dieser Stelle und
-nur dort steht, ist Entwurf.**
+The second way, which the reviewer left open — carrying `korbwert` in fund money
+directly — is thereby ruled out, and the reason is T33: the market basket values the same
+twelve baskets, and it is an economy-wide quantity. Two scales for one basket would be
+two valuations for one basket, and T47 demands „eine Bewertung, nicht zwei". **Which
+function performs the conversion is the architect's business; that it stands at this spot
+and only there is design.**
 
-#### Keine neue Adresse
+#### No new address
 
-Keine Größe dieses Abschnitts ist eine Zustandsadresse. `korbwert`, `anleihewert`,
-`waehrungswert`, `stufenwert`, `korbbestand`, `anleihekurs`, `schuld`, `bip` und
-`handelsvolumen` sind Funktionen des Zustands; `stufenweite`, `aufschlag` und
-`leitzins_start` sind Parameter beziehungsweise Konstanten des Jahrgangs. `marktanteil` ist
-die einzige Adresse, die überhaupt vorkommt, und sie steht schon in T15.
+No quantity of this section is a state address. `korbwert`, `anleihewert`,
+`waehrungswert`, `stufenwert`, `korbbestand`, `anleihekurs`, `schuld`, `bip` and
+`handelsvolumen` are functions of the state; `stufenweite`, `aufschlag` and
+`leitzins_start` are parameters or, respectively, constants of the vintage. `marktanteil`
+is the only address that appears at all, and it already stands in T15.
 
-**Die 310 aus `technik.md` T15 bleiben damit unverändert, die Tabelle *Größen ohne
-Datenanker* bekommt keine neue Adresse — nur drei genauere Regeln —, und der Abzählschritt
-aus T45 geht unverändert auf.** Genau deshalb hat er die Lücke auch nicht gefunden: Sie lag
-außerhalb der Menge, über die er zählt. Der Abzählschritt prüft Adressen; diese Lücke war
-eine fehlende **Funktion**, und dagegen hilft nur, dass jemand die Formel hinschreibt.
+**The 310 from `technik.md` T15 thus remain unchanged, the table *Every quantity without
+a data anchor* gets no new address — only three more precise rules —, and the counting
+step from T45 comes out unchanged.** That is exactly why it did not find the gap: it lay
+outside the set it counts over. The counting step checks addresses; this gap was a
+missing **function**, and the only remedy is that someone writes the formula down.
 
 ### Warum die Größe des Zustands keine Verteidigung ist
 
@@ -1215,69 +1212,67 @@ hat hier immer einen Zähler, einen Grund und einen Abstand zur nächsten Schwel
 
 ## Die drei Schichten der Welt
 
-Bis zum 2026-09-05 hatte dieser Entwurf **zwei Achsen zu einer verschmolzen**: wo der Spieler
-Politik verschieben kann, und wo sein Fonds etwas halten kann. Beides war `L = 4`. Damit sah
-„mehr Welt" aus wie „mehr Länder zum vollen Preis" — und ein Hedgefonds, der nur in vier
-Ländern etwas halten kann, ist kein globaler Hedgefonds, gleichgültig wie gut das Makromodell
-darunter rechnet. Ein echter Fonds kauft japanische Aktien, ohne die Bank of Japan zu
-bestechen.
+Until 2026-09-05 this design had **fused two axes into one**: where the player can move
+policy, and where the fund can hold something. Both were `L = 4`. That made "more world"
+look like "more countries at full price" — and a hedge fund that can hold something in only
+four countries is no global hedge fund, however well the macro model underneath computes.
+A real fund buys Japanese equities without bribing the Bank of Japan.
 
-**Die beiden Achsen werden getrennt.** Die Welt hat ab hier drei Schichten.
+**The two axes are separated.** From here on the world has three layers.
 
 ### Die drei Schichten, mit ihren Feldern und ihren Rechten
 
-| Schicht | Einheiten | Felder je Einheit | handelbar | beeinflussbar | im Rückvergleich | Handelszeile |
+| Layer | units | fields per unit | tradable | influenceable | in the backtest | trade row |
 |---|---:|---:|---|---|---|---|
-| **1 Politikland** | 4, nach 0118 neun | **58** = 44 + 5 Steckplätze + 6 Beteiligungsfelder + 3 Nachahmerzähler, dazu seine Handelszeilen | ja | **ja** | **ja, wenn** Rückvergleichsland — seit 0118 gibt es auch Spielländer | ja |
-| **2 Börsenplatz** | `B = 3·(L+1)`, bei `L = 9` **30** | **4** + 1 Steckplatz | **ja** | **nein** | **nein** | **nein** |
-| **3 Restwelt** | 1 | Sektor- und Aggregatgrößen, keine Instrumente | nein | nein | nur im Handelsblock | ja |
+| **1 policy country** | 4, nine after 0118 | **58** = 44 + 5 slots + 6 stake fields + 3 imitator counters, plus its trade rows | yes | **yes** | **yes, if** it is a backtest country — since 0118 there are also play-only countries | yes |
+| **2 exchange venue** | `B = 3·(L+1)`, at `L = 9` **30** | **4** + 1 slot | **yes** | **no** | **no** | **no** |
+| **3 rest of world** | 1 | sector and aggregate quantities, no instruments | no | no | only in the trade block | yes |
 
-**Warum es Schicht 1 gibt:** Sie ist der einzige Ort, an dem eine Wirkungskette *beginnt* —
-ohne Politikinstrumente gäbe es nichts zu lobbyieren und nichts, dessen Folge man erklären
-könnte. Sie ist teuer, tief und deshalb knapp.
+**Why layer 1 exists:** It is the only place where a chain of effects *begins* — without
+policy instruments there would be nothing to lobby and nothing whose consequence one could
+explain. It is expensive, deep, and therefore scarce.
 
-**Warum es Schicht 2 gibt:** Damit das investierbare Universum wachsen kann, ohne dass die
-Handelsmatrix mitwächst. Ein Börsenplatz ist ein **Finanzpreis, keine Volkswirtschaft** — er
-hat keine Sektoren, keinen Kapitalstock, keine Beschäftigung, keine Staatsfinanzen und keine
-Handelszeile. Genau daran hängt der Unterschied zwischen 890 und 87.788 Feldern.
+**Why layer 2 exists:** So that the investable universe can grow without the trade matrix
+growing with it. An exchange venue is a **financial price, not an economy** — it has no
+sectors, no capital stock, no employment, no public finances and no trade row. Exactly this
+carries the difference between 890 and 87,788 fields.
 
-**Warum es Schicht 3 gibt:** Sie schließt den Kreislauf. Ohne sie wäre die Summe der
-Handelsbilanzen zwangsläufig null, was gegen die echten Daten falsch ist. Neu ab hier ist nur,
-dass die Restwelt **Ankergebiet dreier Börsenplätze** wird — sie selbst bleibt unhandelbar und
-ohne Instrumente, aber der Fonds kann über diese drei Plätze eine Sache halten, die **kein
-Instrument der Welt bewegt**. Das ist die einzige Anlage im Modell, bei der Lobbyismus
-prinzipiell nicht hilft, und sie ist deshalb der Prüfstein für die Frage, ob Einfluss überhaupt
-etwas wert ist.
+**Why layer 3 exists:** It closes the circuit. Without it the sum of the trade balances
+would necessarily be zero, which is false against the real data. All that is new from here
+is that the rest of world becomes the **anchor territory of three exchange venues** — it
+itself stays untradable and without instruments, but through these three venues the fund can
+hold something that **no instrument in the world moves**. That is the only asset in the
+model for which lobbying is of no help in principle, and it is therefore the touchstone for
+the question of whether influence is worth anything at all.
 
 ### Was ein Börsenplatz trägt — vier Felder, jedes mit seinem Grund
 
-Ein Feld, das keinen Grund hat, ist eine Adresse zuviel. Deshalb steht je Feld dabei, was
-ohne es kaputtginge.
+A field without a reason is one address too many. So each field states what would break
+without it.
 
-| Feld | Klasse | Startwert | Warum es eine Adresse ist und keine Funktion |
+| Field | class | start value | why it is an address and not a function |
 |---|---|---|---|
-| `index[b]` | 5 (Index) | 10.000 | Der Platz braucht ein **eigenes Gedächtnis**, sonst ist er in jeder Runde eine Momentaufnahme der Sektorpreise seines Ankers — und zwei Plätze mit ähnlichem Anker liefen für immer im Gleichschritt. Ohne dieses Feld ist die Schicht Dekoration. |
-| `wechselkurs[b]` | 5 (Index) | 10.000 | **Ohne ihn ist ein Börsenplatz eine Linearkombination vorhandener Steckplätze** — aus den drei Sektorkörben seines Ankers und dessen Währung. Dieses Feld und das nächste sind die beiden, die den Platz aus dem Aufspann des Bestehenden herausholen. |
-| `zins[b]` | 3 (Basispunkte) | `zielzins(b)` des Startjahrs | Der **Diskontkanal**, den kein Land×Sektor-Korb hat: Ein Korb ist Menge mal Sektorpreis, ein Platz ist zusätzlich abgezinst. Ohne ihn trennt keine Zinsbewegung Platz und Korb. |
-| `nachahmer[b]` | ganzzahlig, gedeckelt | 0 | **Gegenkraft 4 muss die neue Schicht erreichen.** Ohne diesen Zähler wären 30 Plätze ein Versteck vor genau der Gegenkraft, die Maß 3 trägt — und die Schicht machte das Spiel leichter statt reicher. |
+| `index[b]` | 5 (index) | 10,000 | The venue needs a **memory of its own**, otherwise it is, every round, a snapshot of its anchor's sector prices — and two venues with a similar anchor would run in lockstep forever. Without this field the layer is decoration. |
+| `wechselkurs[b]` | 5 (index) | 10,000 | **Without it an exchange venue is a linear combination of existing slots** — of its anchor's three sector baskets and that anchor's currency. This field and the next are the two that lift the venue out of the span of what already exists. |
+| `zins[b]` | 3 (basis points) | `zielzins(b)` of the start year | The **discount channel** that no country×sector basket has: a basket is quantity times sector price, a venue is additionally discounted. Without it no interest-rate move separates venue from basket. |
+| `nachahmer[b]` | integer, capped | 0 | **Counterforce 4 must reach the new layer.** Without this counter, 30 venues would be a hiding place from exactly the counterforce that carries Maß 3 — and the layer would make the game easier instead of richer. |
 
-Dazu **ein Positionssteckplatz je Platz** — „handelbar" heißt genau das und nicht mehr. Also
-**fünf Adressen je Börsenplatz**.
+On top, **one position slot per venue** — "tradable" means exactly that and no more. So
+**five addresses per exchange venue**.
 
-**Was ein Börsenplatz ausdrücklich nicht trägt:** keine Politikinstrumente, keinen Druck,
-keinen Gegendruck, keine Restverzögerung, keine Zustimmung, keinen Aufsichtszähler, keinen
-Einfluss, keine Beteiligung, keine Handelszeile, keine Sollreihe. Die Beteiligung fehlt nicht
-aus Sparsamkeit: Sie ist nach *Die Aktionen* der einzige Weg zu billigem Lobbying, und ein
-Platz, an dem man sich beteiligen könnte, wäre beeinflussbar und damit kein Platz mehr,
-sondern ein billiges Land.
+**What an exchange venue expressly does not carry:** no policy instruments, no pressure, no
+counter-pressure, no residual delay, no approval, no supervision counter, no influence, no
+stake, no trade row, no target series. The stake is not missing out of thrift: by
+*The actions* it is the only route to cheap lobbying, and a venue one could take a stake in
+would be influenceable and thus no longer a venue but a cheap country.
 
 ### Woran ein Börsenplatz hängt, und was ihn eigenständig macht
 
-Ein Index, der sich unabhängig von allem bewegt, ist Dekoration; einer, der nur mitläuft, ist
-eine Kopie. Hier ist die Kopplung, als Rechenvorschrift und nicht als Adjektiv.
+An index that moves independently of everything is decoration; one that merely tags along is
+a copy. Here is the coupling, as a computation rule and not as an adjective.
 
-**Jahrgangskonstanten je Platz `b`** (keine Zustandsadressen, wie `durchgriff` und
-`leitzins_start` auch):
+**Vintage constants per venue `b`** (not state addresses, just like `durchgriff` and
+`leitzins_start`):
 
 ```
 gebiet[b]           ∈ {1…L, Restwelt}        — das Ankergebiet
@@ -1290,7 +1285,7 @@ tiefe[b]            = mal_geteilt( Σ_s mal_geteilt(kapitalstock[gebiet[b]][s],
 zins_start[b]       = zielzins(b) des Startjahrs
 ```
 
-**Funktionen des Zustands** (ebenfalls keine Adressen, wie `anleihekurs` und `landespreis`):
+**Functions of the state** (likewise not addresses, like `anleihekurs` and `landespreis`):
 
 ```
 weltzins      = teile_gerundet( Σ_{l=1..L} kapitalstock[l] · leitzins[l],
@@ -1310,16 +1305,16 @@ boersenwert(b) = wert( tiefe[b], index[b], b )
                = mal_geteilt( tiefe[b], index[b], wechselkurs[b] )
 ```
 
-**Zwei Sonderfälle der Restwelt, beide aus demselben Grund.** Sie hat keinen Leitzins und
-keinen Wechselkurs — sie trägt keine Politikinstrumente, und ihre Aggregatgrößen sind ein
-Residuum. Ihre drei Plätze zinsen deshalb mit dem `weltzins` ab und notieren im **Numéraire**
-(`zielkurs = 10.000`). Das ist keine Verlegenheitslösung, sondern die richtige Lesart: Ein
-Korb, der den Rest der Welt abbildet, hat keine eigene Währung, gegen die man ihn stellen
-könnte. **Keine der beiden Formeln liest damit eine Restweltadresse, deren Existenz dieser
-Entwurf nicht belegen kann.**
+**Two special cases for the rest of world, both for the same reason.** It has no policy rate
+and no exchange rate — it carries no policy instruments, and its aggregate quantities are a
+residual. Its three venues therefore discount with the `weltzins` and quote in the
+**numéraire** (`zielkurs = 10.000`). That is not a makeshift but the correct reading: a
+basket that depicts the rest of the world has no currency of its own to set it against.
+**Neither of the two formulas thus reads a rest-of-world address whose existence this design
+cannot substantiate.**
 
-**Die Schreibregel, je Platz genau einmal je Runde**, in Schritt 4 (Wirtschaft) — außer
-`nachahmer[b]`, der wie jeder Nachahmerzähler in Schritt 5 geschrieben wird:
+**The write rule, exactly once per venue per round**, in step 4 (economy) — except
+`nachahmer[b]`, which like every imitator counter is written in step 5:
 
 ```
 zins[b]        ← teile_gerundet( zins[b]        + zielzins(b), 2 )
@@ -1331,271 +1326,272 @@ index[b]       ← teile_gerundet( mal_geteilt(leitkurs(b), zinsfaktor(b), 10.00
                  von nachahmer[l][s] und korbwert(l,s)
 ```
 
-**Die fünf Einflüsse, aufgezählt statt umschrieben.** Woran der Preis eines Platzes hängt:
+**The five influences, enumerated rather than paraphrased.** What the price of a venue
+depends on:
 
-1. **Die Sektorpreise seines Ankergebiets**, gewichtet mit `sektorgewicht[b]`. Das ist der
-   Durchgriff des Handels: Ein Zollschritt in irgendeinem Politikland bewegt über die
-   Markträumung den Weltpreis, der Weltpreis über `durchgriff` die Sektorpreise des Ankers,
-   und die den Platz. Die Kette, die das Spiel verkauft, reicht damit bis in die zweite
-   Schicht.
-2. **Der Leitzins seines Ankergebiets**, zur Hälfte.
-3. **Der Weltzins**, zur anderen Hälfte — der kapitalstockgewichtete Mittelwert aller
-   `L` Leitzinsen. Ein Zinsschritt in Land A erreicht damit **jeden** Platz, auch die mit
-   Anker B.
-4. **Der Wechselkurs seines Ankergebiets**, zur Hälfte; die andere Hälfte ist der Numéraire.
-5. **Der Andrang** — Nachahmer und der eigene Preisstoß des Fonds.
+1. **The sector prices of its anchor territory**, weighted with `sektorgewicht[b]`. That is
+   the pass-through of trade: a tariff step in any policy country moves the world price via
+   market clearing, the world price moves the anchor's sector prices via `durchgriff`, and
+   those move the venue. The chain the game sells thus reaches into the second layer.
+2. **The policy rate of its anchor territory**, at half weight.
+3. **The world rate**, the other half — the capital-stock-weighted mean of all `L` policy
+   rates. An interest-rate step in country A thereby reaches **every** venue, including
+   those anchored to B.
+4. **The exchange rate of its anchor territory**, at half weight; the other half is the
+   numéraire.
+5. **The crowding** — imitators and the fund's own price shock.
 
-**Und was ihn eigenständig macht, sind drei Dinge, alle drei aus Regeln und keines aus einem
-Zahlenwert:**
+**And what makes it stand on its own are three things, all three from rules and none from a
+numeric value:**
 
-- **Die Trägheit.** `index[b]`, `zins[b]` und `wechselkurs[b]` gehen je Runde nur **halb** auf
-  ihr Ziel zu. Ein Platz, der hochgelaufen ist, bleibt oben, auch wenn die Fundamentaldaten
-  seines Ankers schon zurückgefallen sind. Das ist dieselbe Preisträgheit, mit der
-  `landespreis` begründet ist, dreimal angewandt.
-- **Die Mischung.** Ein Korb ist ein Sektor, ein Platz ist alle drei mit einem Schwerpunkt.
-  Über Plätze zu streuen ist deshalb etwas anderes, als über Körbe zu streuen — und über
-  Plätze **verschiedener Anker** zu streuen ist wieder etwas anderes, weil der dritte Einfluss
-  oben — der `weltzins` — sie trotzdem zur Hälfte koppelt. **Vollständig diversifizieren kann man nicht, gar nicht
-  diversifizieren aber auch nicht.** Genau deshalb ist Diversifikation hier eine
-  Entscheidung und kein Etikett.
-- **Die halbe Bindung an den Numéraire.** Im Beharrungswert liegt die Abweichung eines
-  Platzkurses von 10.000 bei genau der Hälfte der Abweichung seiner Ankerwährung — er schwankt
-  halb so weit. Der Platz ist damit die **ruhige** Art, ein Land zu halten —
-  und die Währung des Landes bleibt die laute. Zwei Steckplätze, dieselbe These, verschiedenes
-  Risiko.
+- **The inertia.** `index[b]`, `zins[b]` and `wechselkurs[b]` move only **halfway** toward
+  their target each round. A venue that has run up stays up, even when its anchor's
+  fundamentals have already fallen back. That is the same price inertia that justifies
+  `landespreis`, applied three times.
+- **The mix.** A basket is one sector; a venue is all three with an emphasis. Spreading
+  across venues is therefore something other than spreading across baskets — and spreading
+  across venues **of different anchors** is something else again, because the third
+  influence above — the `weltzins` — still couples them by half. **One cannot diversify
+  completely, but one cannot fail to diversify entirely either.** That is exactly why
+  diversification here is a decision and not a label.
+- **The half peg to the numéraire.** In the steady state, the deviation of a venue quote
+  from 10,000 is exactly half the deviation of its anchor currency — it swings half as far.
+  The venue is thus the **quiet** way to hold a country — and the country's currency remains
+  the loud one. Two slots, the same thesis, different risk.
 
-**Vier Proben, die ohne Rechnung aufgehen und die der Jahrgangsbau mechanisch prüfen kann:**
+**Four checks that work out without computation and that the vintage build can verify
+mechanically:**
 
-1. **Im Startjahr steht die ganze Schicht auf ihrem Fixpunkt.** Alle Sektorpreise starten bei
-   10.000, also ist `leitkurs(b) = 10.000`; `zins[b] = zins_start[b] = zielzins(b)`, also ist
-   `zinsfaktor(b) = 10.000`; alle Wechselkurse starten bei 10.000, also ist
-   `zielkurs(b) = 10.000`. Alle drei Halbierungen bilden ihren eigenen Wert ab, und
-   `index[b] = 10.000` ist die Startbedingung, nicht eine gesetzte Zahl.
-2. **Der Nenner von `zinsfaktor` wird nie null.** `zins[b]` ist ein wiederholtes Mittel aus
-   Werten, die alle nicht unter der Leitzins-Untergrenze `1 − aufschlag` liegen — und die
-   steht schon im Entwurf, wegen `anleihekurs`. Also ist `zins[b] + aufschlag ≥ 1`. **Die
-   Schicht braucht keine neue Schranke**, sie erbt die vorhandene.
-3. **Der Nenner von `boersenwert` wird nie null.** `wechselkurs[b]` ist ein wiederholtes
-   Mittel zweier strikt positiver Zahlen und damit strikt positiv — dasselbe Argument wie für
-   `wechselkurs[l]`.
-4. **`index[b]` läuft nicht weg.** Es ist ein Mittel aus einem Fundamentalwert und sich
-   selbst, liegt also stets zwischen dem laufenden Minimum und Maximum des Fundamentalwerts.
-   Der reine Trägheitsanteil eines Stoßes klingt mit `(1/2)^k` ab: nach fünf Runden sind
-   **3 Prozent** übrig.
+1. **In the start year the whole layer sits at its fixed point.** All sector prices start at
+   10,000, so `leitkurs(b) = 10.000`; `zins[b] = zins_start[b] = zielzins(b)`, so
+   `zinsfaktor(b) = 10.000`; all exchange rates start at 10,000, so
+   `zielkurs(b) = 10.000`. All three halvings reproduce their own value, and
+   `index[b] = 10.000` is the start condition, not a number that was set.
+2. **The denominator of `zinsfaktor` never becomes zero.** `zins[b]` is a repeated mean of
+   values none of which lies below the policy-rate floor `1 − aufschlag` — and that floor is
+   already in the design, because of `anleihekurs`. So `zins[b] + aufschlag ≥ 1`. **The
+   layer needs no new bound**; it inherits the existing one.
+3. **The denominator of `boersenwert` never becomes zero.** `wechselkurs[b]` is a repeated
+   mean of two strictly positive numbers and hence strictly positive — the same argument as
+   for `wechselkurs[l]`.
+4. **`index[b]` does not run away.** It is a mean of a fundamental value and itself, so it
+   always lies between the running minimum and maximum of the fundamental value. The pure
+   inertia share of a shock decays with `(1/2)^k`: after five rounds **3 percent** remains.
 
-**Zwei neue Schlüssel in `parameter.toml`, und keiner mehr:** `kippung` (wie stark ein Platz
-auf seinen Leitsektor gekippt ist) und `platzanteil` (welcher Anteil des Ankerkapitalstocks
-die Tiefe eines Platzes ist). `aufschlag` wird **wiederverwendet**, nicht verdoppelt — ein
-zweiter Aufschlag erzeugte keine Wirkung, die der erste nicht auch erzeugt.
+**Two new keys in `parameter.toml`, and not one more:** `kippung` (how strongly a venue is
+tilted toward its lead sector) and `platzanteil` (what share of the anchor capital stock a
+venue's depth is). `aufschlag` is **reused**, not doubled — a second markup would produce no
+effect the first does not produce as well.
 
-**Warum diese beiden Zahlen Parameter sind und die drei Halbierungen Literale:** Ein Maß liest
-sie. `kippung` setzt den Abstand zwischen den drei Plätzen eines Ankers, und genau den misst
-Maß 2; `platzanteil` setzt, wie groß der Fonds auf einem Platz werden kann, und das misst
-Maß 3 über den Preisstoß. Die Halbierungen liest kein Maß — sie zu kalibrieren gäbe der Suche
-drei Achsen, deren Wirkung `kippung` und `platzanteil` ohnehin erzeugen.
+**Why these two numbers are parameters and the three halvings are literals:** a measure
+reads them. `kippung` sets the distance between an anchor's three venues, and that is
+precisely what Maß 2 measures; `platzanteil` sets how large the fund can become on a venue,
+and Maß 3 measures that via the price shock. No measure reads the halvings — calibrating
+them would give the search three axes whose effect `kippung` and `platzanteil` produce
+anyway.
 
 ### Wie viele Plätze — und warum die Zahl eine Formel ist
 
-**`B = 3 · (L + 1)`.** Je Gebiet — die `L` Politikländer und die Restwelt — ein Platz je
-Leitsektor. Bei `L = 9` sind das **30**.
+**`B = 3 · (L + 1)`.** Per territory — the `L` policy countries and the rest of world — one
+venue per lead sector. At `L = 9` that is **30**.
 
-Die Zahl ist keine Wahl, sondern eine Abzählung, und das ist ihr Vorzug: Ein Platz **ist**
-das Paar `(Gebiet, Leitsektor)`. Jede Kombination kommt genau einmal vor, keine zweimal.
+The number is not a choice but a count, and that is its virtue: a venue **is** the pair
+`(Gebiet, Leitsektor)`. Every combination occurs exactly once, none twice.
 
-- **Weniger — etwa ein Platz je Gebiet, `B = L + 1 = 10`** — ließe den Leitsektor
-  unausgedrückt. Der Platz wäre dann die nach Sektoranteilen gewichtete Mischung seines
-  Ankers und sonst nichts, also näher an einer Kopie, als dieser Entwurf verträgt.
-- **Mehr — etwa zwei Plätze je Zelle, `B = 6·(L+1) = 60`** — unterschiede den zweiten Platz
-  einer Zelle vom ersten nur noch durch Zahlenwerte, nicht durch die Art. „Zwanzig Indizes,
-  die dasselbe tun, sind ein Index", und es kostete 300 Adressen statt 150.
-- **30 liegt im Band 20–40**, das das Arbeitspaket vorgibt, und trifft es nicht zufällig,
-  sondern weil `3·(L+1)` bei den neun Ländern aus 0118 dort landet.
+- **Fewer — say one venue per territory, `B = L + 1 = 10`** — would leave the lead sector
+  unexpressed. The venue would then be its anchor's mixture weighted by sector shares and
+  nothing else, closer to a copy than this design can bear.
+- **More — say two venues per cell, `B = 6·(L+1) = 60`** — would distinguish a cell's second
+  venue from its first only by numeric values, no longer by kind. „Zwanzig Indizes,
+  die dasselbe tun, sind ein Index", and it would cost 300 addresses instead of 150.
+- **30 lies in the band 20–40** the work package prescribes, and it hits that band not by
+  chance but because `3·(L+1)` lands there with the nine countries from 0118.
 
-**Was daraus folgt und was ausdrücklich nicht.** Die Formel legt die **Zahl** und den
-**Zuschnitt** der Plätze fest — 30 Zellen, jede mit Ankergebiet und Leitsektor. Welcher
-Börsenplatz namentlich in welcher Zelle sitzt, legt sie **nicht** fest; das ist ein eigenes
-Paket und hängt an der Datenlage. Dieser Abschnitt ist dessen Pflichtenheft: 30 Zellen, je
-ein Name, und je Zelle die Probe, ob der gewählte Platz den Leitsektor seiner Zelle
-tatsächlich trägt.
+**What follows from this, and what expressly does not.** The formula fixes the **number**
+and the **cut** of the venues — 30 cells, each with anchor territory and lead sector. Which
+exchange venue by name sits in which cell it does **not** fix; that is a package of its own
+and depends on the data situation. This section is that package's specification: 30 cells,
+one name each, and per cell the check whether the chosen venue actually carries its cell's
+lead sector.
 
-**Und die Formel ist der Grund, warum die Schicht 0116 nicht im Weg steht:** Sie ist in `L`
-geschrieben, nicht in einer Ziffer. Setzt 0116 die Adressarithmetik parametrisch, kommt
-`5·B = 15·(L+1)` als ein weiterer Summand hinzu, und `L = 4` ergäbe 75, `L = 9` ergibt 150.
+**And the formula is the reason the layer does not stand in 0116's way:** it is written in
+`L`, not in a digit. If 0116 makes the address arithmetic parametric, `5·B = 15·(L+1)` is
+added as one more summand, and `L = 4` would give 75, `L = 9` gives 150.
 
 ### Was die Schicht kostet, und die drei verworfenen Wege
 
-Gerechnet aus den Konstanten in `kern/zustand.hpp`; die Formel reproduziert für `L = 4` exakt
-die heutigen 310 und für `L = 9` die 740 aus Paket 0118.
+Computed from the constants in `kern/zustand.hpp`; the formula reproduces exactly today's
+310 for `L = 4` and the 740 from package 0118 for `L = 9`.
 
-| Weg | Politikländer | Börsenplätze | Zustand | handelbare Plätze | Handelsströme |
+| Path | policy countries | exchange venues | state | tradable slots | trade flows |
 |---|---:|---:|---:|---:|---:|
-| heute | 4 | 0 | **310** | 20 | 40 |
-| nur mehr Länder (0118) | 9 | 0 | 740 | 45 | 180 |
-| **drei Schichten — gewählt** | 9 | **30** | **890** | **75** | **180** |
-| die 30 Plätze als Länder — verworfen | 39 | 0 | 5.420 | 195 | **3.120** |
-| alle Länder der Welt — verworfen | 195 | 0 | **87.788** | 975 | **76.440** |
+| today | 4 | 0 | **310** | 20 | 40 |
+| only more countries (0118) | 9 | 0 | 740 | 45 | 180 |
+| **three layers — chosen** | 9 | **30** | **890** | **75** | **180** |
+| the 30 venues as countries — rejected | 39 | 0 | 5,420 | 195 | **3,120** |
+| all countries of the world — rejected | 195 | 0 | **87,788** | 975 | **76,440** |
 
-**Der Sprengsatz ist die Handelsmatrix.** Sie wächst mit `G·(G−1)·2` über `G = L + 1`
-Gebiete:
+**The explosive charge is the trade matrix.** It grows as `G·(G−1)·2` over `G = L + 1`
+territories:
 
-| Politikländer | Handelsströme |
+| policy countries | trade flows |
 |---:|---:|
 | 4 | 40 |
 | 9 | 180 |
-| 30 | 1.860 |
-| 39 | 3.120 |
-| 195 | **76.440** |
+| 30 | 1,860 |
+| 39 | 3,120 |
+| 195 | **76,440** |
 
-**Die entscheidende Zahl steht nicht in der Summe, sondern im Verhältnis.** Ein zusätzliches
-Politikland kostet am Rand `44 + 40 + 3 + 5 + 6 = 98` Felder für **fünf** handelbare
-Steckplätze, also rund **20 Felder je handelbarem Platz**. Ein Börsenplatz kostet **fünf**
-Felder für **einen** Steckplatz. **Der Platz ist je handelbarem Steckplatz rund viermal
-billiger als das Land** — und das ist die ganze Begründung der Schicht, in einer Zahl.
+**The decisive number is not in the sum but in the ratio.** At the margin, an additional
+policy country costs `44 + 40 + 3 + 5 + 6 = 98` fields for **five** tradable slots, so
+roughly **20 fields per tradable slot**. An exchange venue costs **five** fields for **one**
+slot. **Per tradable slot the venue is roughly four times cheaper than the country** — and
+that is the whole justification of the layer, in one number.
 
-**Verworfen: alle 195 Länder der Welt.** Nicht „später", sondern ein anderes Produkt.
-**87.788 Zustandsfelder, 76.440 Handelsströme und 195 × 19 = 3.705 lizenzgeprüfte
-Datenreihen** — Paket 0118 rechnet 19 Reihen und 2 Lizenzstellen je zusätzlichem Land, das
-sind hier 390 Lizenzstellen. Zum Vergleich: Dieser Entwurf führt heute 27 Sollreihen. Der
-Rückvergleich hätte nach der Zählung `4 · L_R` — vier Prüfgegenstände je Rückvergleichsland —
-**780** statt sechzehn (dieselbe
-Formel, die für vier Länder 16 ergibt; das Symbol ist am 2026-09-06 von `L` auf `L_R`
-berichtigt, weil seit Paket 0118 nicht mehr jedes Politikland im Rückvergleich steht — in
-diesem verworfenen Fall wären es alle 195, also `L_R = L` und die Zahl unverändert),
-die Markträumung liefe über 76.440 Ströme statt 40,
-und das
-Laufzeitbudget der drei Selbstspielmaße — heute 9.539.200 Weltschritte — wüchse mit ihnen.
-Wer die Frage erneut stellt, findet hier die Antwort, statt sie neu zu rechnen.
+**Rejected: all 195 countries of the world.** Not "later" — a different product.
+**87,788 state fields, 76,440 trade flows and 195 × 19 = 3,705 licence-checked data
+series** — package 0118 reckons 19 series and 2 licence points per additional country, which
+here is 390 licence points. For comparison: this design carries 27 target series today. By
+the count `4 · L_R` — four check subjects per backtest country — the backtest would have
+**780** instead of sixteen (the same
+formula that gives 16 for four countries; the symbol was corrected from `L` to `L_R` on
+2026-09-06, because since package 0118 not every policy country is in the backtest — in this
+rejected case it would be all 195, so `L_R = L` and the number unchanged),
+market clearing would run over 76,440 flows instead of 40,
+and the
+runtime budget of the three self-play measures — today 9,539,200 world steps — would grow
+with them. Whoever raises the question again finds the answer here instead of recomputing
+it.
 
-**Verworfen: die 30 Plätze als vollwertige Länder.** 5.420 Felder statt 890, 3.120
-Handelsströme statt 180, und 30 × 19 zusätzliche Datenreihen — für dieselben 30 handelbaren
-Steckplätze. Man bekäme dafür, dass man die Plätze auch beeinflussen könnte; genau das soll
-man aber nicht, siehe unten.
+**Rejected: the 30 venues as full countries.** 5,420 fields instead of 890, 3,120 trade
+flows instead of 180, and 30 × 19 additional data series — for the same 30 tradable slots.
+What one would gain is that the venues could also be influenced; that is exactly what they
+must not be, see below.
 
-**Verworfen: ein Börsenplatz mit Handelszeile.** Er wäre dann keine zweite Schicht, sondern
-ein billiges Land — und die Matrix wüchse mit `G²`, also genau der Größe, wegen der die
-Schicht überhaupt existiert.
+**Rejected: an exchange venue with a trade row.** It would then be not a second layer but a
+cheap country — and the matrix would grow with `G²`, which is exactly the quantity the layer
+exists to escape.
 
 ### Warum die Plätze handelbar sind und nicht beeinflussbar
 
-Das ist keine Sparmaßnahme, sondern die Aussage der Schicht.
+This is not an economy measure but the statement the layer makes.
 
-**Ein Börsenplatz füttert keinen Aufsichtszähler.** Gegenkraft 1 liest globale Sichtbarkeit
-mal lokalen Fußabdruck, und der Fußabdruck ist Einfluss mal Positionsanteil am Sektor. Auf
-einem Platz hat der Fonds keinen Einfluss und steht in keinem Sektor eines Landes; sein
-Bestand dort geht in keinen Zähler ein. **Die zweite Schicht ist der Ort, an dem der Fonds
-groß werden kann, ohne beobachtet zu werden.**
+**An exchange venue feeds no supervision counter.** Counterforce 1 reads global visibility
+times local footprint, and the footprint is influence times position share of the sector. On
+a venue the fund has no influence and stands in no country's sector; its holding there
+enters no counter. **The second layer is the place where the fund can grow large without
+being watched.**
 
-**Und genau deshalb kann er dort nie gewinnen.** Das Mandat hat zwei Hälften — Vermögen
-**und** Einfluss in mindestens zwei Ländern. Börsenplätze liefern die erste und **null** von
-der zweiten. Sie sind damit dieselbe Art Gegenstand wie die Staatsanleihe, von der schon
-dasteht: *„Eine Zinswette ist ein Weg, Kapital aufzubauen, und nie ein Weg, das Spiel zu
-gewinnen."* Die zweite Schicht ist der zweite solche Weg, dreißigmal so breit.
+**And exactly for that reason it can never win there.** The mandate has two halves — wealth
+**and** influence in at least two countries. Exchange venues deliver the first and **zero**
+of the second. They are thus the same kind of object as the government bond, of which it
+already stands written: *„Eine Zinswette ist ein Weg, Kapital aufzubauen, und nie ein Weg,
+das Spiel zu gewinnen."* The second layer is the second such path, thirty times as wide.
 
-**Der Fonds kann die Plätze trotzdem bewegen — nur nicht bei ihnen.** Er lobbyiert den
-Leitzins eines Ankers und trifft dessen drei Plätze über `zielzins` und alle dreißig über
-`weltzins`; er lobbyiert einen Zoll und trifft über Weltpreis und `durchgriff` die Sektorpreise
-seines Ankers und damit dessen `leitkurs`. **Wirkung ja, Zugriff nein** — das ist eine
-schärfere Aussage als „unbeeinflussbar" und die interessantere.
+**The fund can still move the venues — just not at the venues.** It lobbies an anchor's
+policy rate and hits that anchor's three venues via `zielzins` and all thirty via
+`weltzins`; it lobbies a tariff and, via the world price and `durchgriff`, hits its anchor's
+sector prices and with them its `leitkurs`. **Effect yes, access no** — that is a sharper
+statement than "uninfluenceable", and the more interesting one.
 
 ### Die Gegenkräfte auf der neuen Schicht
 
-Die fünf Gegenkräfte bleiben fünf. Was sich ändert, ist ihre Reichweite, und die gehört einzeln
-hingeschrieben, weil eine neue Fläche ohne Gegenkraft der schnellste Weg zurück zu der
-Rückkopplung ist, die dieses Genre tötet.
+The five counterforces remain five. What changes is their reach, and that belongs written
+out one by one, because a new surface without a counterforce is the fastest way back to the
+feedback loop that kills this genre.
 
-| Gegenkraft | erreicht die zweite Schicht? | wie |
+| Counterforce | reaches the second layer? | how |
 |---|---|---|
-| 1 Aufsicht | **nein, und das ist entschieden** | Kein Einfluss, kein Fußabdruck, kein Zähler. Der Preis dafür ist das Mandat. |
-| 2 Politische Gegenreaktion | mittelbar | Über den Anker: Ein Regierungswechsel stellt dessen Instrumente zurück, das bewegt `leitkurs` und `zielzins`. |
-| 3 Marktenge | **ja, und stärker als in Schicht 1** | Siehe unten. |
-| 4 Nachahmer | **ja** | `nachahmer[b]`, dieselbe Regel wie beim Korb. |
-| 5 Gegenlobby | nein | Ein Platz hat kein Instrument, an dem sich Gegendruck bilden könnte — dasselbe Argument wie bei der Restwelt. |
+| 1 supervision | **no, and that is decided** | No influence, no footprint, no counter. The price for this is the mandate. |
+| 2 political backlash | indirectly | Via the anchor: a change of government resets its instruments, which moves `leitkurs` and `zielzins`. |
+| 3 market thinness | **yes, and more strongly than in layer 1** | See below. |
+| 4 imitators | **yes** | `nachahmer[b]`, the same rule as for the basket. |
+| 5 counter-lobby | no | A venue has no instrument on which counter-pressure could form — the same argument as for the rest of world. |
 
-**Gegenkraft 3 ist die, die mit dem Erfolg wächst, und sie wächst auf der neuen Schicht
-schneller.** Zwei Mechanismen, beide ohne neue Regel:
+**Counterforce 3 is the one that grows with success, and on the new layer it grows
+faster.** Two mechanisms, both without a new rule:
 
-- **Plätze sind flacher als Länder.** `tiefe[b]` ist ein Anteil `platzanteil` des
-  Ankerkapitalstocks, also kleiner als jeder Land×Sektor-Korb desselben Gebiets. Der Preisstoß
-  aus Aktion 1 wächst mit dem Anteil des Fonds am Markt — auf einem flacheren Markt ist
-  derselbe Betrag ein größerer Anteil. **Die Schicht, auf der man unbeobachtet groß werden
-  kann, ist zugleich die, auf der die eigene Größe am schnellsten wehtut.**
-- **Der Marktkorb wird breiter.** Die Marktrendite aus Gegenkraft 3 ist die wertgewichtete
-  Rendite **aller handelbaren** Körbe und Anleihen; die dreißig Plätze gehören dazu, sonst
-  wäre ein handelbarer Gegenstand außerhalb des Vergleichsmaßstabs eine geschenkte
-  Überrendite. Die Latte, über die der Fonds springen muss, steigt also mit der Schicht — und
-  „breit mitlaufen" wird noch weniger tragfähig, als es war.
+- **Venues are shallower than countries.** `tiefe[b]` is a share `platzanteil` of the anchor
+  capital stock, hence smaller than any country×sector basket of the same territory. The
+  price shock from action 1 grows with the fund's share of the market — on a shallower
+  market the same amount is a larger share. **The layer on which one can grow large
+  unobserved is at the same time the one on which one's own size hurts fastest.**
+- **The market basket gets broader.** The market return from counterforce 3 is the
+  value-weighted return of **all tradable** baskets and bonds; the thirty venues belong to
+  it, otherwise a tradable object outside the benchmark would be a gifted excess return. The
+  bar the fund must clear thus rises with the layer — and "running broadly with the market"
+  becomes even less viable than it was.
 
-**Zwei Gegenkräfte greifen damit auf der neuen Schicht, beide wachsen mit dem Erfolg, und eine
-greift ausdrücklich nicht.** Das ist die ehrliche Bilanz; sie steht so hier, damit der
-Bruchtester weiß, wo er zu suchen hat.
+**Two counterforces thus bite on the new layer, both growing with success, and one expressly
+does not.** That is the honest balance; it stands here so the break tester knows where to
+look.
 
 ### Was die Schicht für die vier Maße bedeutet
 
-**Maß 1 — Entscheidungsdichte.** Die handelbaren Steckplätze steigen von 20 auf **75**: 45 aus
-der Ländergeometrie bei `L = 9` und 30 aus dieser Schicht. Die Aktionszahl bleibt bei drei je
-Runde — der Betreiber hat am 2026-09-05 Weg A gewählt, die Steckplätze wachsen mit. **Die
-Rechnung, wie die Entscheidungsdichte dabei erhalten bleibt, gehört in Paket 0118, und sie muss
-beide Zuwächse tragen, nicht nur die 45 aus den Ländern.** Die Zahl, auf der sie zu rechnen
-hat, ist die 75 aus diesem Abschnitt, gegen die 20 von heute. Was hier dazugehört und dort
-nicht wiederholt werden muss: Maß 1 zieht je Runde 30 Bündel aus der Liste der **zulässigen
-Aktionen**, und diese Liste wächst mit den Steckplätzen. Die offene Frage *„Wie fein der
-Aktionsraum sein darf"* war bisher empirisch am Prototyp zu klären; mit 75 Plätzen ist sie
-**bindend**, und ihre Prüfform steht schon da — `Dichte(t)` bei `K = 30` gegen `K = 60`.
+**Maß 1 — decision density.** The tradable slots rise from 20 to **75**: 45 from the country
+geometry at `L = 9` and 30 from this layer. The action count stays at three per round — the
+operator chose path A on 2026-09-05, and the slots grow along. **The computation of how
+decision density is preserved in this belongs in package 0118, and it must carry both
+increases, not only the 45 from the countries.** The number it has to compute on is the 75
+from this section, against today's 20. What belongs here and need not be repeated there:
+each round Maß 1 draws 30 bundles from the list of **admissible actions**, and that list
+grows with the slots. The open question *„Wie fein der Aktionsraum sein darf"* was so far to
+be settled empirically on the prototype; with 75 slots it is **binding**, and its check form
+is already there — `Dichte(t)` at `K = 30` against `K = 60`.
 
-**Maß 2 — Strategievielfalt.** Die 126 Profile bleiben 126: Ein Börsenplatz ist ein Ziel
-innerhalb der Familie 1 (Position), keine sechste Aktionsart und keine vierte Familie. Die
-Schicht vergrößert also die Auswahl **einer** der drei Familien, und das ist der Einwand, den
-man dagegen erheben muss. **Er trägt nicht, und der Grund ist die Bauart und nicht die
-Kalibrierung:** Plätze liefern kein Gramm Einfluss, und die zweite Hälfte des Mandats verlangt
-Einfluss in zwei Ländern. Familie 1 bekommt damit eine höhere Decke für **Kapital** und
-keinen Zentimeter mehr für den **Sieg**. Was die Schicht dagegen wirklich verschiebt, ist die
-zweite Abnahmehälfte `max(Ek) ≤ 1,25 · min(Ek)` — sie ist ab hier die scharfe Bedingung, und
-sie ist der Ort, an dem eine zu große `platzanteil`-Kalibrierung sichtbar wird.
+**Maß 2 — strategy diversity.** The 126 profiles remain 126: an exchange venue is a target
+within family 1 (position), not a sixth action kind and not a fourth family. So the layer
+enlarges the choice within **one** of the three families, and that is the objection one must
+raise against it. **It does not hold, and the reason is the construction, not the
+calibration:** venues deliver not a gram of influence, and the second half of the mandate
+demands influence in two countries. Family 1 thus gets a higher ceiling for **capital** and
+not a centimetre more toward the **win**. What the layer does genuinely shift is the second
+acceptance half `max(Ek) ≤ 1,25 · min(Ek)` — from here on it is the sharp condition, and it
+is the place where an oversized `platzanteil` calibration becomes visible.
 
-**Maß 3 — Verschiebung des Optimums.** Hier gewinnt der Entwurf am meisten, und zwar an einer
-Stelle, an der er seit dem 2026-09-03 offen ausgewiesen schwach war. Mit dem Fenster 2001–2021
-ist der Euro-Übergang weggefallen, die einzige Sperre, die während einer Partie zuschnappte;
-seither trugen Maß 3 **zwei** Quellen, Nachahmer und Preisstoß, und dieser Entwurf hat
-ausdrücklich hingeschrieben, dass ein Scheitern daran ein Befund über diese beiden wäre. **Die
-zweite Schicht ist die dritte Quelle, und sie kommt aus einer Regel statt aus einer Zahl:** Am
-Partieanfang hat der Fonds keinen Einfluss, also ist der unbeobachtete, flache, breite
-Platzmarkt der effiziente Weg, Kapital aufzubauen; gegen Partieende bindet die zweite
-Mandatshälfte, und Kapital muss in Beteiligungen und Lobbydruck **in Politikländern**
-umgeschichtet werden — wo es sofort Aufsicht und Gegenlobby weckt. Das ist eine überprüfbare
-**Vorhersage** und keine Absichtserklärung: Das Frühfensteroptimum `p*` sollte Gewicht auf
-Aktionsart 1 tragen, das Spätfensteroptimum `q*` auf 2 und 3. Trifft sie nicht ein, ist das
-ein Befund über diesen Abschnitt.
+**Maß 3 — shift of the optimum.** Here the design gains most, and at a spot where since
+2026-09-03 it was openly declared weak. With the window 2001–2021 the euro transition
+dropped away, the only lock that snapped shut during a game; since then Maß 3 rested on
+**two** sources, imitators and the price shock, and this design has explicitly written down
+that failing it would be a finding about those two. **The second layer is the third source,
+and it comes from a rule rather than a number:** at the start of a game the fund has no
+influence, so the unobserved, shallow, broad venue market is the efficient way to build
+capital; toward the end of a game the second mandate half binds, and capital must be shifted
+into stakes and lobbying pressure **in policy countries** — where it immediately wakes
+supervision and the counter-lobby. That is a testable **prediction**, not a declaration of
+intent: the early-window optimum `p*` should put weight on action kind 1, the late-window
+optimum `q*` on 2 and 3. If it does not come true, that is a finding about this section.
 
-**Maß 4 — Rückvergleich.** **Durch diese Schicht** ändert er sich **nicht**, und zwar in keiner
-seiner Zahlen. *Berichtigt am 2026-09-06, weil 0117 seither gebaut ist und der Satz so nicht
-stimmte:* Ein Börsenplatz ist **kein Spielland** — ein Spielland ist nach T58 ein Land mit
-Politikpfaden, die geschätzt sein dürfen, und ein Platz hat gar keine. Er trägt schlicht keine
-Sollreihe und keine Handelszeile und kommt in keinem Prüfgegenstand vor; das Argument darunter
-— *die Schicht ist ein reines Blatt* — trägt das allein und braucht die Klassenzuordnung nicht.
-Die Schärfe des Rückvergleichs sinkt durch die Schicht also nicht: Er läuft weiter über
-dieselben freien Sollreihen und denselben Handelsblock, denn ein Platz hat
-keine Handelszeile. **Was ihn sehr wohl bewegt, ist die Länderwahl aus Paket 0118** — dort
-steigen die freien Sollreihen von 23 auf 41, die Prüfgegenstände von 16 auf 28 und die Ströme
-des Handelsblocks von 40 auf 112. Das ist die andere Achse und steht unter *Welche neun
-Länder*. Dazu tritt eine Eigenschaft, die stärker ist als die Klassenzuordnung und
-sie unabhängig davon trägt: **Die Schicht ist ein reines Blatt.** Kein Feld der ersten oder
-dritten Schicht liest ein Feld eines Börsenplatzes; gelesen werden Platzfelder ausschließlich
-vom Fondsteilsystem. Da dieses im `weltlauf` nicht läuft, wird die zweite Schicht dort **gar
-nicht gerechnet** — ihre vier Felder je Platz behalten ihre Startwerte, so wie der Fondsblock
-und die Nachahmerzähler es schon tun. Der Weltlauf kostet nach dieser Schicht keinen
-Weltschritt mehr als vorher, und die Menge der je Modus geschriebenen Adressen bleibt fest.
-Der Preis dieser Sauberkeit gehört dazu und steht unter *Die Grenze des Orakels*: Für die
-zweite Schicht ist das Orakel vollständig blind. Es gibt zu ihr auch nichts, wogegen es prüfen
-könnte — einen Weltaktienindex unter freier Lizenz gibt es nicht, das steht schon unter *Was
-bewusst fehlt*, und `daten.md` führt keine einzige Kursreihe.
+**Maß 4 — backtest.** **Through this layer** it does **not** change, in any of its numbers.
+*Corrected on 2026-09-06, because 0117 has since been built and the sentence no longer held
+as it stood:* an exchange venue is **not a play-only country** — by T58 a play-only country
+is a country with policy paths that may be estimated, and a venue has none at all. It simply
+carries no target series and no trade row and appears in no check subject; the argument
+below — *the layer is a pure leaf* — carries that on its own and does not need the class
+assignment. So the sharpness of the backtest does not sink through the layer: it keeps
+running over the same free target series and the same trade block, for a venue has no trade
+row. **What does move it is the country choice from package 0118** — there the free target
+series rise from 23 to 41, the check subjects from 16 to 28 and the flows of the trade block
+from 40 to 112. That is the other axis and stands under *Welche neun
+Länder*. Added to this is a property that is stronger than the class assignment and carries
+it independently of it: **the layer is a pure leaf.** No field of the first or third layer
+reads a field of an exchange venue; venue fields are read exclusively by the fund subsystem.
+Since that subsystem does not run in the `weltlauf`, the second layer is **not computed at
+all** there — its four fields per venue keep their start values, just as the fund block and
+the imitator counters already do. After this layer the `weltlauf` costs not one world step
+more than before, and the set of addresses written per mode stays fixed. The price of this
+cleanliness belongs with it and stands under *Die Grenze des Orakels*: for the second layer
+the oracle is completely blind. There is also nothing of it to check against — a world
+equity index under a free licence does not exist, that already stands under *Was
+bewusst fehlt*, and `daten.md` carries not a single price series.
 
 ### Die drei Klagen, auf dieser Schicht gelesen
 
-| Klage aus den Rezensionen | was die zweite Schicht dazu beiträgt |
+| Complaint from the reviews | what the second layer contributes to it |
 |---|---|
-| „the consequences of choices often feel intangible" | Die Kopplung ist eine Formel, die der Spieler in der Kette nachlesen kann: Zollschritt → Weltpreis → `durchgriff` → Sektorpreis des Ankers → `leitkurs` → `index[b]`. Eine Handlung in einem Land bewegt sichtbar einen Preis dreißig Steckplätze weiter — und weil `weltzins` alle Plätze erreicht, hat ein Zinsschritt eine Wirkung, die man **weltweit** ablesen kann, ohne dass irgendetwas erzählt würde. |
-| „trying to implement the tiniest socialist policy will always result in bankruptcy" | Auf jedem Platz ist long und short dieselbe Formel mit umgekehrtem Vorzeichen. Die Schicht bringt keine politische Richtung mit; sie kann in keiner Richtung allein gewinnen, weil sie null Einfluss liefert. Sie verbreitert damit die Familie Position, ohne eine politische Linie zu belohnen. |
-| „no dramatic setbacks", „broad as an ocean, but deep as a puddle" | Die Schicht ist genau die Breite, die die Klage vermisst — und sie ist mit einer Falle versehen, statt gratis zu sein: Wer auf den flachen Plätzen groß wird, bewegt den Preis gegen sich, sammelt Nachahmer und hebt zugleich die Latte des Marktkorbs, an der sein Anlegerbestand hängt. Der Rückschlag ist mechanisch und im Zustand ablesbar, wie jeder andere hier auch. |
+| „the consequences of choices often feel intangible" | The coupling is a formula the player can trace along the chain: tariff step → world price → `durchgriff` → the anchor's sector price → `leitkurs` → `index[b]`. An action in one country visibly moves a price thirty slots away — and because `weltzins` reaches every venue, an interest-rate step has an effect one can read off **worldwide**, without anything being narrated. |
+| „trying to implement the tiniest socialist policy will always result in bankruptcy" | On every venue, long and short are the same formula with the sign reversed. The layer brings no political direction with it; it cannot win in any direction on its own, because it delivers zero influence. It thus broadens the position family without rewarding any political line. |
+| „no dramatic setbacks", „broad as an ocean, but deep as a puddle" | The layer is exactly the breadth the complaint misses — and it comes with a trap instead of being free: whoever grows large on the shallow venues moves the price against themselves, gathers imitators and at the same time raises the bar of the market basket on which their investor base hangs. The setback is mechanical and readable in the state, like every other one here. |
 
 ## Die Gegenkraefte
 
