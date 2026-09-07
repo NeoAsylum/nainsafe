@@ -88,7 +88,8 @@ def wochenverbrauch() -> float:
     try:
         # Der geteilte Topf bindet: Ohne ihn laufen weder Bau noch Projektmanager, und
         # die Fable-Pruefer haetten nichts zu pruefen.
-        return lauf_wochenverbrauch(verbindung, "geteilt")
+        return (lauf_wochenverbrauch(verbindung, "geteilt")
+                + lauf_wochenverbrauch(verbindung, "fable"))
     finally:
         verbindung.close()
 

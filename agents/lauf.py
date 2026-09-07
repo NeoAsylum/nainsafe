@@ -241,7 +241,11 @@ except ValueError:
 # Notbremse gegen den Weglauf, keine Rationierung -- und sie gehoeren nachgezogen,
 # sobald der Betreiber wieder eine Anzeige vorliest. **Die Anzeige ist die einzige
 # Wahrheit; diese Datei ist eine Schaetzung mit Datum.**
-WOCHENGRENZE_USD = 2800.0
+# WOCHENGRENZE_USD is the umbrella ("All models") and binds every run. The Fable
+# figure is a sub-limit within it. Both calibrated to the 2026-09-06 readings
+# (90 / 56 percent); the umbrella now includes Fable spend, so 2.800 + 900 would
+# overshoot -- 3.400 is the umbrella at roughly 90 percent of what was observed.
+WOCHENGRENZE_USD = 3400.0
 FABLE_WOCHENGRENZE_USD = 900.0
 
 
@@ -736,12 +740,21 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
 
     # Notbremse vor dem Start, nicht danach: Ein Lauf, der die Grenze reisst,
     # soll gar nicht erst beginnen.
-    topf = "fable" if str(kopf.get("modell", "")).strip() == "fable" else "geteilt"
-    grenze = FABLE_WOCHENGRENZE_USD if topf == "fable" else WOCHENGRENZE_USD
-    woche = wochenverbrauch(verbindung, topf)
+    # "All models" is the umbrella: every run counts against it, Fable included.
+    # Measured 2026-09-06 21:56 -- the translator on Fable (56 percent) was refused
+    # with "hit your weekly limit" while the shared line stood at 100. Until then this
+    # check let Fable runs bypass the umbrella. The Fable cap is a second, narrower
+    # brake on top, not an alternative.
+    fable = str(kopf.get("modell", "")).strip() == "fable"
+    gesamt = wochenverbrauch(verbindung, "geteilt") + wochenverbrauch(verbindung, "fable")
+    grenze, topf, woche = WOCHENGRENZE_USD, "gesamt", gesamt
+    if fable and woche < grenze:
+        f = wochenverbrauch(verbindung, "fable")
+        if f >= FABLE_WOCHENGRENZE_USD:
+            grenze, topf, woche = FABLE_WOCHENGRENZE_USD, "fable", f
     if woche >= grenze:
         verbindung.close()
-        print(f"  ABGEBROCHEN: Wochengrenze des Topfes '{topf}' erreicht "
+        print(f"  ABGEBROCHEN: Wochengrenze '{topf}' erreicht "
               f"({woche:.0f} von {grenze:.0f} $ Gegenwert).")
         print("  Das ist die Grenze, die wirklich bindet -- Anthropic rechnet")
         print("  woechentlich. Grenze in agents/lauf.py:WOCHENGRENZE_USD.")
