@@ -201,3 +201,58 @@ add_test(NAME belegstellen_sammelordnung
 # unter den 900, nach denen `baulauf.py` den ganzen ctest-Aufruf abbricht. Wer die
 # gemessene Zeit im ersten Nachtlauf sieht, ersetzt sie durch ein Vielfaches davon.
 set_tests_properties(belegstellen_sammelordnung PROPERTIES TIMEOUT 120)
+
+# ---------------------------------------------------------------------------
+# Die drei Zahlen im Kopfkommentar -- Paket 0115, eingehaengt von Paket 0189
+#
+# `befunde/messung-0115/messen.py` haelt die absoluten Zahlen des Kopfkommentars gegen
+# den Bestand von heute: die alte und die neue Fassung im selben Aufruf ueber denselben
+# Baum, dazu die drei berichtigten Angaben, jede gegen den Mutanten, der sie erzeugt,
+# und dieselben drei Pruefungen noch einmal gegen den Wortlaut von vorher, wo alle drei
+# reissen muessen.
+#
+# **Warum die Einhaengung ein eigenes Paket wert war:** Dieser Stand ist am 2026-09-06
+# entstanden und bis zum 2026-09-08 **kein einziges Mal gelaufen**. `agents/baulauf.py`
+# sucht jede `CMakeLists.txt` und ruft `cmake`, `--build` und `ctest` -- ein Skript, das
+# in keinem dieser drei vorkommt, laeuft in dieser Fabrik nirgends. Dass es nie lief,
+# hat mehr gekostet als die Zahlen, um die es geht: Sein Erzeuger fuer die beiden
+# Mutanten lag unter `bau/`, dem Bauordner von CMake, und ist mit dem naechsten frischen
+# Bau verschwunden. Der Stand waere beim ersten Mutanten abgebrochen, ohne je eine Zahl
+# zu melden. Seit Paket 0189 traegt er die beiden Ersetzungen selbst.
+#
+# Kein `if(EXISTS ...) add_test() endif()`, aus demselben Grund wie bei den drei Proben
+# darueber: Diese Bauform laesst eine Probe verschwinden, sobald jemand die Datei
+# verschiebt, und meldet danach eine gruene Abnahme ueber einen Baum ohne sie.
+get_filename_component(FABRIK_MESSUNG_0115
+                       ${FABRIK_VORHABEN_WURZEL}/befunde/messung-0115/messen.py
+                       ABSOLUTE)
+
+if(NOT EXISTS ${FABRIK_MESSUNG_0115})
+  message(FATAL_ERROR
+          "Der Messstand zu Paket 0115 fehlt: ${FABRIK_MESSUNG_0115}\n"
+          "Er ist der einzige Nachweis, dass die drei absoluten Zahlen im Kopfkommentar "
+          "von belegstellen_riegel.cpp noch den Bestand treffen, gegen den sie erhoben "
+          "sind. Ist er absichtlich umgezogen, gehoert der neue Pfad hierher -- nicht "
+          "diese Bedingung entfernt.")
+endif()
+
+add_test(NAME belegstellen_kopfzahlen
+         COMMAND ${FABRIK_BELEGSTELLEN_PYTHON} ${FABRIK_MESSUNG_0115}
+                 --vorhaben ${FABRIK_VORHABEN_WURZEL}
+                 --uebersetzer ${CMAKE_CXX_COMPILER})
+
+# 300 und nicht 900, und diesmal mit einem kleineren Vielfachen als bei den drei Proben
+# darueber. Die Zahl ist **hergeleitet und nicht gemessen** -- der Lauf, der sie gesetzt
+# hat, hatte keine Schale. Herleitung aus dem Bericht vom 2026-09-07, dieselbe Rechnung
+# wie nebenan: `belegstellen_wortabstand` uebersetzt vier Fassungen, laesst fuenf laufen
+# und steht bei 17,2 s; ein Lauf des Riegels allein braucht 1,03 s, also rund 3 s je
+# Uebersetzung. Dieser Stand uebersetzt acht Fassungen und laesst acht laufen -- rund
+# 32 s.
+#
+# Das Vielfache ist neun statt vierzehn, weil die Schranken dieses Verzeichnisses sich
+# aufsummieren: 600 plus 240 plus 120 plus 300 liegt bereits ueber den 900, nach denen
+# `baulauf.py` den ganzen ctest-Aufruf abbricht. Jede weitere Probe hier macht die
+# Grenze enger, und eine Schranke, die im Ernstfall erst nach dem Gesamtabbruch griffe,
+# nennt die haengende Probe nicht mehr beim Namen. Wer die gemessene Zeit im ersten
+# Nachtlauf sieht, ersetzt sie durch ein Vielfaches davon.
+set_tests_properties(belegstellen_kopfzahlen PROPERTIES TIMEOUT 300)

@@ -22,23 +22,48 @@ sobald eine nicht aufgeht. Was das Skript prueft:
      der Lauf rot. Vorher hing die Beweiskraft an einer Eingabe, die niemand
      kontrollierte -- geprueft wurde an ihr nur, dass sie ungleich der neuen
      Fassung ist, und `$TMPDIR` ist fluechtig.
+  D. **Die beiden Mutanten bringt das Skript ebenfalls selbst mit** (Paket 0189).
+     Bis dahin holte es sie von einem Erzeuger im Bauordner von CMake. Der wird
+     bei jedem frischen Bau neu angelegt; der Erzeuger liegt seit langem nicht
+     mehr darin, und damit brach dieser Stand beim ersten Mutanten ab, ohne je
+     eine Zahl zu melden. Was ersetzt wird, steht unten als Textersetzung da und
+     nicht als Beschreibung, und jede Nadel muss genau einmal treffen.
 
-Gebaut wird ausschliesslich in `$TMPDIR`. Der Quellbaum wird nur fuer die Dauer
-von Lauf A auf die alte Fassung zurueckgestellt und in jedem Fall wieder auf die
-neue gebracht.
+Gebaut wird ausschliesslich in `$TMPDIR`; was dort angelegt wurde, raeumt der
+Lauf am Ende selbst wieder weg. Der Quellbaum wird nur fuer die Dauer von Lauf A
+auf die alte Fassung zurueckgestellt und in jedem Fall wieder auf die neue
+gebracht -- auch dann, wenn der Lauf mittendrin abgeraeumt wird.
+
+Aufruf:  python3 messen.py [--vorhaben <wurzel>] [--uebersetzer <pfad>]
 """
+import argparse
 import hashlib
 import os
 import re
+import shutil
+import signal
 import subprocess
 import sys
 
-W = ("/home/adria/fabrik/ventures/"
-     "0016-hedgefonds-simulation-echte-weltwirtschaft")
+# Vorgabewerte fuer den Aufruf von Hand. Im Nachtlauf kommen beide von CMake --
+# der Uebersetzer vor allem deshalb, damit hier nicht ein zweiter neben dem
+# steht, gegen den der Kasten gebaut wird. Ein Unterschied zwischen beiden faende
+# sich sonst nirgends wieder.
+VORHABEN_VORGABE = ("/home/adria/fabrik/ventures/"
+                    "0016-hedgefonds-simulation-echte-weltwirtschaft")
+UEBERSETZER_VORGABE = "/usr/bin/c++"
+
+W = VORHABEN_VORGABE
 QUELLE = W + "/werkzeuge/belegstellen/belegstellen_riegel.cpp"
-MUTIEREN = W + "/bau/kp0086-mutieren.py"
+REPO = os.path.dirname(os.path.dirname(W))
+UEBERSETZER = UEBERSETZER_VORGABE
 TMP = os.environ.get("TMPDIR", "/tmp") + "/k0115"
 VORHER = TMP + "/vorher.cpp"
+# Der Rueckweg fuer den Fall, dass der Lauf waehrend des Tauschs stirbt: der
+# Wortlaut, auf den der Quellbaum gehoert, und die Marke, die sagt, dass er
+# gerade nicht darauf steht.
+NACHHER = TMP + "/nachher.cpp"
+SCHWEBT = TMP + "/schwebt"
 
 # Woher die Vorfassung kommt, gegen die Teil A und die Gegenprobe messen: der
 # Elternstand des Baucommits von 0115, also genau der Wortlaut, den dieses Paket
@@ -82,9 +107,56 @@ def schreib(pfad, text):
         f.write(text)
 
 
+def _notruf(signum, rahmen):        # noqa: ARG001 -- Signatur gibt das Modul vor
+    """Abgeraeumt werden, waehrend der Quellbaum getauscht ist.
+
+    Der Ruecktausch steht hier ein zweites Mal, weil er der einzige Handgriff
+    dieses Standes ist, dessen Ausbleiben etwas hinterlaesst: eine Quelldatei
+    von 3.600 Zeilen auf einem alten Wortlaut, die niemand angefasst zu haben
+    glaubt.
+    """
+    if os.path.exists(SCHWEBT):
+        schreib(QUELLE, lies(NACHHER))
+        os.remove(SCHWEBT)
+    sys.stderr.write("Abbruch durch Signal %d -- der Quellbaum steht wieder auf "
+                     "der neuen Fassung.\n" % signum)
+    sys.exit(1)
+
+
+def heile_unterbrochenen_lauf():
+    """Was ein abgeraeumter Vorlauf hinterlassen hat, vor dem ersten Messen.
+
+    Steht die Marke, ist der Vorlauf im Tauschfenster gestorben, ohne dass sein
+    Signalhandgriff noch lief -- abgeschossen oder der Rechner aus. Zurueckgelegt
+    wird **nur**, wenn der Quellbaum wirklich noch auf der alten Fassung steht:
+    Hat inzwischen jemand daran gearbeitet, waere das Zurueckschreiben kein
+    Heilen, sondern das Ueberschreiben fremder Arbeit.
+    """
+    if not os.path.exists(SCHWEBT):
+        return
+    os.remove(SCHWEBT)
+    if not os.path.exists(NACHHER):
+        print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben, und "
+              "der Rueckweg fehlt. Der Quellbaum ist von Hand nachzusehen.")
+        return
+    # Die Frage ist nicht "steht da etwas anderes als der Rueckweg", sondern
+    # "steht da noch die Vorfassung". Nur dann ist es der Tausch dieses Standes;
+    # jeder andere Inhalt ist fremde Arbeit und bleibt liegen.
+    steht = lies(QUELLE)
+    if blobkennung(steht.encode("utf-8")) != VORFASSUNG_BLOB:
+        print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben, aber "
+              "der Quellbaum steht nicht mehr auf der Vorfassung. Es ist nichts "
+              "zurueckgelegt worden -- was dort steht, ist nicht dieser Tausch.")
+        return
+    schreib(QUELLE, lies(NACHHER))
+    print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben und hat "
+          "den Quellbaum auf der alten Fassung stehen lassen. Er ist "
+          "zurueckgelegt; die Messung darunter laeuft auf der neuen.")
+
+
 def git(*teile):
     """git im Repo, Rueckgabe als Bytes. Ein Fehlschlag beendet den Lauf."""
-    p = subprocess.run(["git", "-C", "/home/adria/fabrik"] + list(teile),
+    p = subprocess.run(["git", "-C", REPO] + list(teile),
                        capture_output=True)
     if p.returncode != 0:
         raise SystemExit("`git %s` ist mit Code %d gescheitert: %s"
@@ -167,9 +239,59 @@ def vorfassung():
     return _vorfassung
 
 
+# ---------------------------------------------------------------------------
+# Die beiden Mutanten -- Paket 0086, seit Paket 0189 hier statt im Bauordner
+#
+# Abgeschaltet wird **im Rumpf** und nie am Aufruf: Faellt eine Funktion aus dem
+# Spiel, bricht ein Warnsatz mit `-Werror` den Bau ab, statt den Riegel rot zu
+# machen. Deshalb bleibt bei beiden der Aufruf stehen und verliert nur seine
+# Wirkung.
+#
+# Was jeder belegen soll, steht im Nachweis zu Paket 0086:
+#
+#   `ohne-marken-rein`             -- nur ankuendigende Anfuehrungszeichen;
+#                                     laesst Fall 4 zum Wortabstand reissen.
+#   `rechts-ohne-satzgrenze-rein`  -- die Satzgrenze der Rechtssuche;
+#                                     laesst Fall 6 zum Wortabstand reissen.
+#
+# Das Suffix bedeutet, dass die jeweils **andere** Lockerung nicht mit
+# abgeschaltet wird -- sonst fielen Faelle, die mit der gemessenen Regel nichts
+# zu tun haben, und der Nachweis zeigte auf die falsche Stelle. Beide Nadeln
+# stehen deshalb an genau einer Stelle des Riegels, und dass es genau eine ist,
+# wird bei jedem Aufruf nachgezaehlt.
+MUTANTEN = {
+    "ohne-marken-rein": (
+        "        if (nur_ankuendigende && !klammer.kuendigt_an) {",
+        "        if (false && nur_ankuendigende && !klammer.kuendigt_an) {"),
+    "rechts-ohne-satzgrenze-rein": (
+        "    const std::size_t obergrenze = satzende_nach(text, ab);",
+        "    const std::size_t satzende = satzende_nach(text, ab);\n"
+        "    const std::size_t obergrenze = "
+        "satzende > text.size() ? satzende : text.size();"),
+}
+
+_neu = None
+
+
 def mutant(art):
-    return subprocess.run([sys.executable, MUTIEREN, art], check=True,
-                          capture_output=True, text=True).stdout
+    """Der Wortlaut von **heute** mit genau einer Ersetzung.
+
+    Immer aus der neuen Fassung, auch waehrend der Gegenprobe: Dort wechselt die
+    gepruefte Aussage, nicht der Mutant. Ein Mutant aus der alten Fassung wuerde
+    die Gegenprobe an einem zweiten Unterschied gruen werden lassen und niemand
+    saehe, an welchem von beiden.
+    """
+    such, ersatz = MUTANTEN[art]
+    if _neu is None:
+        raise SystemExit("Der Mutant `" + art + "` ist verlangt worden, ehe die "
+                         "neue Fassung gelesen war.")
+    if _neu.count(such) != 1:
+        raise SystemExit(
+            "Die Nadel des Mutanten `%s` trifft %d mal statt genau einmal. Der "
+            "Riegel ist an dieser Stelle umgeschrieben worden; gemessen wird "
+            "nichts, bis die Nadel nachgezogen ist. Gesucht wurde:\n%s"
+            % (art, _neu.count(such), such))
+    return _neu.replace(such, ersatz)
 
 
 def bauen(text, name, entschaerfen):
@@ -179,7 +301,7 @@ def bauen(text, name, entschaerfen):
                              "der Selbsttests hat ihre Gestalt geaendert.")
         text = text.replace(ZAEHLZEILE, "")
     pfad = TMP + "/m_" + name
-    p = subprocess.run(["/usr/bin/c++", "-x", "c++", "-"] + SCHALTER
+    p = subprocess.run([UEBERSETZER, "-x", "c++", "-"] + SCHALTER
                        + ["-o", pfad], input=text, text=True,
                        capture_output=True)
     if p.returncode != 0:
@@ -207,9 +329,8 @@ def drei(ausgabe, wobei):
 
 
 def kopf():
-    return subprocess.run(["git", "-C", "/home/adria/fabrik", "rev-parse",
-                           "--short", "HEAD"], capture_output=True,
-                          text=True).stdout.strip()
+    return subprocess.run(["git", "-C", REPO, "rev-parse", "--short", "HEAD"],
+                          capture_output=True, text=True).stdout.strip()
 
 
 # ---------------------------------------------------------------------------
@@ -222,6 +343,15 @@ def teil_a(neu):
                          "nichts zu messen.")
     bin_alt = bauen(alt, "vorher", False)
     bin_neu = bauen(neu, "nachher", False)
+    # Das Fenster, in dem der Quellbaum nicht auf der neuen Fassung steht. Es
+    # dauert einen Lauf des Riegels, rund eine Sekunde -- aber seit Paket 0189
+    # faehrt dieser Stand im Nachtlauf unter einer Zeitschranke, und ein Signal
+    # trifft ihn irgendwann genau hier. `finally` faengt die Ausnahme, nicht das
+    # Signal; deshalb zusaetzlich der Handgriff auf SIGTERM und die Marke, an
+    # der ein spaeterer Lauf den unterbrochenen erkennt.
+    schreib(NACHHER, neu)
+    schreib(SCHWEBT, "")
+    vorheriger = signal.signal(signal.SIGTERM, _notruf)
     try:
         schreib(QUELLE, alt)
         code_a, aus_a, _ = laufen(bin_alt)
@@ -229,6 +359,12 @@ def teil_a(neu):
         befunde_a = befundliste(aus_a)
     finally:
         schreib(QUELLE, neu)
+        signal.signal(signal.SIGTERM, vorheriger)
+        # Die Bedingung ist noetig: Kam das Signal mitten im Fenster, hat der
+        # Handgriff die Marke schon genommen, und ein blankes `os.remove`
+        # verdeckte hier den Abbruch mit einem Fehler ueber eine fehlende Datei.
+        if os.path.exists(SCHWEBT):
+            os.remove(SCHWEBT)
     code_b, aus_b, _ = laufen(bin_neu)
     b = drei(aus_b, "der neuen Fassung")
     befunde_b = befundliste(aus_b)
@@ -504,12 +640,20 @@ def gegenprobe(grund):
 
 
 def main():
+    global _neu
     os.makedirs(TMP, exist_ok=True)
-    # Vor allem anderen: Die Vorfassung wird beschafft und an ihre Herkunft
-    # gebunden. Was danach kommt, misst gegen sie -- eine falsche Eingabe hier
-    # macht jede Zahl weiter unten wertlos, und zwar lautlos.
+    # Vor allem anderen: der Quellbaum. Ein Vorlauf, der im Tauschfenster
+    # gestorben ist, haette ihn auf der alten Fassung stehen lassen, und dann
+    # misst alles Weitere den falschen Wortlaut -- lautlos und ueberzeugend.
+    heile_unterbrochenen_lauf()
+    # Dann die Vorfassung, beschafft und an ihre Herkunft gebunden. Was danach
+    # kommt, misst gegen sie -- eine falsche Eingabe hier macht jede Zahl weiter
+    # unten wertlos, und zwar ebenfalls lautlos.
     vorfassung()
     neu = lies(QUELLE)
+    _neu = neu
+    print("Vorhaben:    " + W)
+    print("Uebersetzer: " + UEBERSETZER)
     vor = kopf()
     print("Bezugsstand im Kommentar: %s; HEAD zu Beginn: %s" % (BEZUGSSTAND, vor))
     grund = teil_a(neu)
@@ -539,6 +683,12 @@ def main():
               % (nach, BEZUGSSTAND))
     if lies(QUELLE) != neu:
         melde("Die Quelldatei steht am Ende nicht auf der neuen Fassung.")
+    # Der Arbeitsplatz wird geraeumt, sobald gemessen ist -- gleich, ob gruen
+    # oder rot. Was zu sagen war, steht oben; unter `$TMPDIR` bleiben nur
+    # Uebersetzungserzeugnisse. Nach einem Abbruch (SystemExit) laeuft diese
+    # Zeile mit Absicht **nicht**: Dann ist der Arbeitsplatz das einzige, woran
+    # sich nachsehen laesst, was schiefging.
+    aufraeumen()
     if fehler:
         print("\n%d Erwartung(en) nicht erfuellt." % len(fehler))
         return 1
@@ -546,4 +696,26 @@ def main():
     return 0
 
 
+def aufraeumen():
+    shutil.rmtree(TMP, ignore_errors=True)
+
+
+def einstellungen():
+    """Vorhaben und Uebersetzer, beide mit Vorgabe.
+
+    Ohne Schalter laeuft der Stand wie bisher; im Nachtlauf setzt CMake beide,
+    damit hier kein zweiter Uebersetzer neben dem des Kastens steht.
+    """
+    global W, QUELLE, REPO, UEBERSETZER
+    zerleger = argparse.ArgumentParser(add_help=True)
+    zerleger.add_argument("--vorhaben", default=VORHABEN_VORGABE)
+    zerleger.add_argument("--uebersetzer", default=UEBERSETZER_VORGABE)
+    wahl = zerleger.parse_args()
+    W = os.path.abspath(wahl.vorhaben).rstrip("/")
+    QUELLE = W + "/werkzeuge/belegstellen/belegstellen_riegel.cpp"
+    REPO = os.path.dirname(os.path.dirname(W))
+    UEBERSETZER = wahl.uebersetzer
+
+
+einstellungen()
 sys.exit(main())

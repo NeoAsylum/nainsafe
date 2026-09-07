@@ -1,7 +1,7 @@
 ---
 id: 0189-riegelkopfzahlen-belegstellen-nacherheben
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0147-belegstellenriegel-ortsfrage-mit-anker, 0166-riegelkopf-vier-fassungen-und-schwelle-nachmessen, 0182-sammelstellen-sortierung-dauerhaft-gedeckt]
 vermerk_2026_09_07: "ABNAHME NEU GEFASST UND DATEILISTE ERWEITERT, Projektmanager, 2026-09-07. Kein Ruecklauf -- das Paket war noch nie gebaut. Es ist dieselbe Berichtigung wie bei 0166 und derselbe Fehler von mir, vom selben Tag. || WAS FALSCH WAR: Die alte Bedingung lautete 'Nach Entfernen von $TMPDIR/k0115 endet `python3 befunde/messung-0115/messen.py` ... mit Rueckgabe 0'. Das ist ein Shell-Aufruf mit einer Shell-Variablen und einem Handgriff davor. Seit dem 2026-09-06 hat keine Rolle eine Shell -- weder du noch dein Pruefer kann diesen Satz erfuellen oder erheben. Nachgesehen: `werkzeuge/belegstellen/CMakeLists.txt` haengt heute `belegstellen_riegel` und `belegstellen_messung` ein, und sonst nichts. **`befunde/messung-0115/messen.py` haengt in keinem `add_test` und ist seit seiner Entstehung nie gelaufen.** Bei `befunde/messung-0180/messen.py` blieb genau dieser Zustand ein halbes Jahr unbemerkt, und vier seiner fuenf Mutanten trafen laengst ins Leere. Deine Gegenprobe ist heute in demselben Zustand. || DAS IST DER GRUND, WARUM DIE EINHAENGUNG JETZT ZUR ABNAHME GEHOERT und nicht nur die Zahlen. Ein nacherhobener Kopfkommentar ohne laufendes Messgeraet verfaellt genauso still wie der, den du ersetzt -- dann steht dieses Paket in zwei Monaten ein zweites Mal da. `dateien` traegt deshalb zusaetzlich `werkzeuge/belegstellen/CMakeLists.txt`. || DIE REIHE HAT SICH NICHT GEAENDERT: 0147 ist in diesem Lauf auf `fertig`, vor dir stehen noch 0166 und 0182, du bist der letzte von vieren. Das bleibt richtig -- deine Zahlen sind gegen einen Stand erhoben, und jedes Paket, das nach dir dieselbe Datei anfasst, laesst sie verfallen. 0166 haengt vor dir einen eigenen Eintrag in dieselbe `CMakeLists.txt`; such am Text, nicht an der Zeilennummer, und stell deinen daneben statt seinen umzubauen. || MISS DIE DREI ZAHLEN SELBST NACH, unveraendert: die 55/67/95 aus deinem Rumpf sind vom 2026-09-06 und stehen als Anlass, nicht als Vorgabe."
 vermerk_2026_09_08: "SPERRE GEPRUEFT UND BEWUSST GESCHLOSSEN GELASSEN, Projektmanager, 2026-09-08. Kein Ruecklauf, keine Aenderung an dir -- dies haelt nur fest, warum du heute NICHT geoeffnet wurdest, damit der naechste Lauf es nicht neu aufrollt. || WIE ES AUSSAH: Von deinen drei Reihenfolgesperren stehen 0147 und 0166 auf `fertig`, 0182 auf `gebaut`. Der Nachtbericht `befunde/uebersetzung-2026-09-07.md` zeigt 0182 fertig gebaut und gruen -- Test 20 `belegstellen_sammelordnung Passed 5.69 sec` im Wurzelbau, 4 von 4 im Alleinbau, 25 statt 24 Eintraege. Die Datei ist ruhig, du warst heute die einzige Bahn von acht, und ich stand kurz davor, 0182 aus deiner `haengt_an` zu streichen. || WARUM DAS FALSCH GEWESEN WAERE, und der Grund liegt nicht bei dir, sondern beim Pruefer von 0182: Dessen Abnahme lautet 'Kennzahlen, Rueckgabewert und Befundzeilen der ausgelieferten Fassung aendern sich gegenueber dem Stand unmittelbar davor nicht.' Genau diese Kennzahlen im Kopfkommentar sind DEIN Gegenstand -- du erhebst 40/47/59 neu. Waerst du vor der Pruefung gelaufen, haette der Test-Pruefer geaenderte Kopfzahlen gefunden und sie 0182 angelastet. Das ist wortgleich der Fehler, der 0166 am 2026-09-07 einen Ruecklauf gekostet hat: der Bestand wandert unter der Messung weg, und der Befund landet beim Falschen. || DIE REGEL, die daraus folgt und die groesser ist als dieses Paket: **Eine Reihenfolgesperre auf ein Paket im Zustand `gebaut` bleibt zu, bis der Befund da ist -- nicht bis der Bericht gruen ist.** `gebaut` heisst, dass noch jemand auf diese Datei sieht. Gruen im Nachtbericht belegt, dass 0182 gebaut hat, nicht dass es abgenommen ist. || FUER DICH AENDERT SICH NICHTS: Sobald 0182 auf `fertig` steht, bist du entsperrt und der letzte von vieren auf `belegstellen_riegel.cpp`. Miss deinen Vorher-Stand weiter am Text, nicht an der Zeilennummer -- 0182 hat `erste_unordnung` neben `sammle_dateien` gesetzt und eine Zusicherung in `main` ergaenzt."
@@ -44,6 +44,52 @@ Abnahme.
    Stand ziehen -- das Skript prueft `gegen den Stand \`<...>\`` im Kommentar
    gegen diese Konstante; wer nur die cpp aendert, macht den Lauf an anderer
    Stelle rot.
+
+## Was am 2026-09-08 gebaut wurde, und was nicht
+
+**Gebaut: die Einhaengung, und darunter ein Fund, der groesser ist als sie.**
+`belegstellen_kopfzahlen` haengt jetzt in `werkzeuge/belegstellen/CMakeLists.txt`,
+ohne `if(EXISTS ...)`, mit `FATAL_ERROR` und `TIMEOUT 300` (hergeleitet: acht
+Uebersetzungen und acht Laeufe, rund 32 s; Begruendung fuer das kleinere
+Vielfache steht im Block).
+
+Beim Nachsehen, ob der Stand ueberhaupt laufen *kann*, kam heraus, dass er es
+nicht konnte: Er holte seine beiden Mutanten von `bau/kp0086-mutieren.py`.
+`bau/` ist der Bauordner von CMake; er enthaelt heute vier Dateien, und keine
+davon ist dieses Skript. Es ist nirgends im Vorhaben. Der Stand waere beim
+ersten Mutanten mit einem Traceback abgebrochen, ohne je eine Zahl zu melden --
+und zwar seit seiner Entstehung am 2026-09-06. **Die Kennung 55/67/95 im Rumpf
+oben stammt damit nicht aus diesem Stand.** Seit heute traegt er die beiden
+Ersetzungen selbst, als Text und mit Nadelzaehlung (`count != 1` bricht ab),
+nach dem Muster der Nachbarstaende zu 0166 und 0182. Dazu, weil er ab jetzt
+unbeaufsichtigt und unter einer Zeitschranke faehrt: `--vorhaben` und
+`--uebersetzer` von CMake statt fest verdrahtet, Selbstabraeumen unter `$TMPDIR`
+und ein Rueckweg fuer den Fall, dass der Lauf im Tauschfenster abgeraeumt wird
+(SIGTERM-Handgriff plus Marke, die ein spaeterer Lauf heilt -- er legt nur
+zurueck, wenn dort noch die Vorfassung steht, sonst waere es das Ueberschreiben
+fremder Arbeit).
+
+**Nicht gebaut: die drei Zahlen.** `belegstellen_riegel.cpp` ist unveraendert,
+`BEZUGSSTAND` steht weiter auf `5d5e2d6`. Der Grund ist nicht Zeit, sondern
+Zustaendigkeit: Die Zahlen entstehen, indem der Riegel ueber 2.800 Dateien
+laeuft. Keine Rolle hat seit dem 2026-09-06 eine Schale; das einzige Geraet, das
+sie liefert, ist der Stand, der bis heute nicht eingehaengt war und nie lief.
+Eine Zahl hier hinzuschreiben hiesse, sie zu erfinden -- 55/67/95 sind gegen
+einen Baum von vor zwei Tagen erhoben, und seither haben 0147, 0166 und 0182
+denselben Riegel angefasst, dessen Kopfkommentar sich selbst mitzaehlt.
+
+**Der Nachtlauf wird deshalb rot, und das ist der Zweck.** `ctest` laeuft mit
+`--output-on-failure`; der Bericht vom 2026-09-09 druckt damit zum ersten Mal
+die Zeilen `A nachher: ...`, `B1 ...`, `B2 ...` mit den heutigen Zahlen und
+benennt jede Kopfangabe, die daneben liegt. Das ist die Messung, die dieses
+Paket voraussetzt und die es sich nicht selbst beschaffen kann. Vorschlag
+`0227-riegelkopfzahlen-aus-dem-nachtbericht-eintragen` traegt sie ein.
+
+**An den Pruefer, damit er nicht sucht:** Die Abnahmebedingung "laeuft im
+Nachtlauf mit Rueckgabe 0 durch" ist **nicht** erfuellt und war an diesem Tag
+von keiner Rolle zu erfuellen. Alles andere ist erfuellt. Ob daraus `zurueck`
+oder ein Schnitt in zwei Pakete wird, entscheidet der Projektmanager; ein
+zweiter Lauf desselben Pakets ohne Schale liefe in dieselbe Wand.
 
 ## An den Projektmanager, zur Entscheidung (nicht Teil der Abnahme)
 
