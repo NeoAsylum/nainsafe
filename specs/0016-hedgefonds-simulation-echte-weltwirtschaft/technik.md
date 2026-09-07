@@ -1390,20 +1390,20 @@ hard error and not a silent truncation — a truncated chain would be a lie to t
 
 ## 5. Die drei Zustandsebenen (G8)
 
-**T20 — Drei Abfragen, zwei Ausgabeformen, eine Quelle.** Jede Ebene entsteht aus
-demselben Datentyp und wird entweder als Text (für Menschen und Logbücher) oder als
-JSON-Zeile (für Agenten und Oberfläche) ausgegeben. Ganzzahlen bleiben Ganzzahlen; die
-Skala steht im Kopf der Antwort, geteilt wird erst in der Sicht.
+**T20 — Three queries, two output forms, one source.** Each level arises from the same
+data type and is emitted either as text (for humans and logbooks) or as a JSON line (for
+agents and the interface). Integers stay integers; the scale is stated in the header of
+the answer, division happens only in the view.
 
-- **`uebersicht`** — eine Zeile je Gebiet, eine je Fonds, eine für den Markt:
+- **`uebersicht`** — one line per territory, one per fund, one for the market:
   `DE | BIP 3.412 | Zins 250bp | Zoll 380bp | Haushalt -210bp | Fondsanteil 420 | Einfluss 1.700`
-- **`detail <adresse>`** — ein Objekt vollständig, für **jede** adressierbare Einheit nach
-  T17, nicht nur für Länder: `land.US`, `fonds`, `land.BR.instrument.zoll`,
+- **`detail <adresse>`** — one object in full, for **every** addressable unit per T17,
+  not only for countries: `land.US`, `fonds`, `land.BR.instrument.zoll`,
   `land.CN.sektor.1`, `markt`.
-- **`diff <von> <bis>`** — je geänderter Größe alt, neu, Änderung **und die Ursachenkette
-  aus T18**, rückwärts aufgelöst bis zur auslösenden Aktion oder Gegenkraft, mit
-  Verzögerung und Beitrag je Glied. Der Unterschied zweier Zustände sagt *was*, die Kette
-  sagt *warum*; ausgegeben wird beides, massgeblich ist die Kette.
+- **`diff <von> <bis>`** — per changed quantity: old, new, change, **and the cause chain
+  from T18**, resolved backwards to the triggering action or counterforce, with delay and
+  contribution per link. The difference of two states says *what*, the chain says *why*;
+  both are output, the chain is what counts.
 
 ## 6. Maschinenschnittstelle und Partieformat
 
