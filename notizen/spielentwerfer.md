@@ -160,3 +160,48 @@ funktioniert"): zusammengezogen auf die Lehren, Belege in den Ergebnisdateien.*
   reproduzieren den heutigen Stand, und beide stehen in der Selbstauskunft des Pakets. Weist
   der Prüfer sie zurück, bleibt die Wahl der fünf davon unberührt — dann fehlt Maß 4 aber eine
   Regel für konstante Sollreihen, und Saudi-Arabien muss gehen.
+
+## Neu am 2026-09-07 (Paket 0198, Realeinkommen als Rechenvorschrift)
+
+**Was funktioniert:**
+
+- **Eine fehlende Größe war schon da, unter anderem Namen.** `Realeinkommen` galt als
+  undefiniert; das Niveau stand die ganze Zeit als `bip(l)` im Dokument, weil Klasse 2 „zu
+  konstanten Preisen" deklariert ist. **Prüffrage vor jeder neuen Größe: Sagt eine
+  Skalenzeile schon, dass sie existiert?**
+- **Die Blindheit einer Größe kann das Werkzeug sein.** `bip` sieht Preise innerhalb der
+  Runde nicht — genau deshalb ist es die Gegenprobe „derselbe Zustand ohne Handlung", die
+  0039 sich mit einer zweiten Markträumung nicht leisten konnte. **Wo eine zweite
+  Zustandsrechnung zu teuer ist, nach einer Größe suchen, die den Effekt schon nicht
+  enthält.**
+- **Dieselbe Zahl zweimal lesen ist billiger als eine zweite Zahl bilden.** Gegenkraft 5
+  liest den Betrag von `schaden`, Gegenkraft 2 sein Vorzeichen. Kosten: 0 Adressen, 0
+  Schlüssel, 4 neue Lesezugriffe. Und die beiden Lesarten zusammen erzeugen eine Eigenschaft,
+  die keine allein hat — Hin und Her ist bei der Zustimmung neutral und bei der Gegenlobby
+  voll teuer.
+- **Der Einheitenkommentar in `parameter.toml` hat den Entwurf entschieden**, bevor ich
+  anfing: „in Zehntausendsteln je Zehntausendstel" heißt *relative Änderung*, nicht Niveau.
+  **Vor dem Entwerfen den Kalibrierkommentar der Größe lesen, nicht nur `specs/`.**
+- **Der Sockeltest ist übertragbar und hat hier drei Lesarten erledigt.** Preisniveau,
+  Kopfzahl und Terms of Trade fielen alle an derselben Frage: *Was ist die Größe, wenn
+  niemand etwas tut?* Bei der Zustimmung ist der Sockel schlimmer als bei der Gegenlobby —
+  er driftet in eine Richtung und sättigt die Größe an ihrer Obergrenze.
+
+**Was nicht funktioniert:**
+
+- **Zwei Stellen des Dokuments hatten einer Regel etwas zugesagt, die es noch nicht gab.**
+  0039 versprach dem ausländischen Zoll einen Umweg über Gegenkraft 2. Als ich Gegenkraft 2
+  schrieb, trug er nicht. **Prüffrage vor jedem Entwurf: Wer hat über meine Lücke schon
+  einen Satz geschrieben?** `grep` auf den Begriff, nicht nur auf den Abschnitt.
+- **Eine Auflösungsschranke fällt einem erst beim Zahlenbeispiel auf.** Ein Zollschritt
+  ergibt 1 Basispunkt Realeinkommen, ein Haushaltsschritt 50. Ohne die dreißig Sekunden
+  Rechnung hätte ich eine Gegenkraft entworfen, die bei einem Instrument stumm ist.
+- **Sprachregel: `spiel.md` steht in `CLAUDE.md` als deutsches Dokument und ist es im Rumpf
+  nicht mehr** — die Übersetzungsspur hat es umgestellt, die Überschriften sind deutsch
+  geblieben. Ich habe abschnittsweise entschieden (englischer Rumpf, deutsche Überschriften,
+  deutsche Zitate) und den noch deutschen Abschnitt *Warum die Größe des Zustands* auf
+  Deutsch ergänzt. Wenn der Prüfer das anders sieht, ist es eine Formfrage, keine Regel.
+
+**Offene Fährte:** Gibt es ein `schrittweite[zoll]`, das die Auflösungsschranke erfüllt und
+den Zollschritt bezahlbar lässt? Nur am Prüfstand zu sehen, und es ist die einzige Stelle,
+an der dieses Paket eine Kalibrierung binden könnte.

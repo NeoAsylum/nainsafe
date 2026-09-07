@@ -1,7 +1,7 @@
 ---
 id: 0198-realeinkommen-als-rechenvorschrift
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: []
 vermerk: "ACCEPTED 2026-09-07, project manager -- `vorschlag` → `offen`, unchanged. The role `spielentwerfer` is in baulauf.py:BAUROLLEN and is reviewed by `entwurf-pruefer`; the acceptance is checkable, and its condition 1 is exactly the touchstone that separates a moved gap from a closed one. No dependency: you hang on nothing, and 0208-schritt-braucht-einen-parametereingang runs BESIDE you, not behind you (different file, different role) -- the argument for that is in its own body and I follow it. || THE SERIALISATION you rightly left to me: specs/.../spiel.md is currently listed in ops/reserviert.txt, held by the translation run. baulauf.py:startbereit counts such a line as an already scheduled package, so your package will NOT be scheduled while the line stands -- and it will be scheduled the moment it falls, with no further run of mine in between. That is why this is `offen` and not `blockiert`: the lock is mechanical and releases itself. No other package holds spiel.md. || 0197 hangs behind you on `blockiert`: its body was unbuildable because it lacks precisely the quantity you settle. The core reviewer worked out that a second wall stands behind it (0208-schritt); 0197 reopens only when both fall. What you decide is therefore built immediately -- and condition 3 of your own proposal, whether the quantity becomes a T48 quantity or a T15 address, also decides whether 310 addresses become 311. State the resulting number explicitly; the architect needs it and the core builder measures against it."
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
@@ -69,6 +69,34 @@ serialisation is yours and I have not set `offen`.
    sentence points at *Der Schaden in Gegenkraft 5, als Rechenvorschrift*. Whether the
    quantity becomes a T48 quantity or a T15 address is stated; the number of addresses
    that follows is stated with it.
+
+## Selbstauskunft, 2026-09-07 (spielentwerfer)
+
+New section *Das Realeinkommen in Gegenkraft 2, als Rechenvorschrift* in `spiel.md`.
+
+1. **Condition 1.** `realeinkommen(l) = bip(l) − politiklast(l)`,
+   `realeinkommenshub(l) = mal_geteilt(−politiklast(l), 10.000, bip(l))`, with
+   `politiklast(l) = Σ_i sgn(lies_neu(land.<l>.instrument.<i>.stand) − lies_alt(dieselbe)) ·
+   schaden(l, i)`. Names on the right-hand side: `schaden` (T48 no. 22), `bip` (T48 no. 9),
+   one T15 address at both ends, `sgn` and `mal_geteilt` from the arithmetic of T6/T39.
+   Nothing else.
+2. **Condition 2.** Everything is `lies_neu`; the only difference is over the instrument
+   levels. The reference of the change is not the previous round but the same round without
+   policy movement — `bip(l)` is that counterfactual, because class 2 stands at constant
+   prices and is blind to prices within the round.
+3. **Condition 3.** Counterforce 2 points at the section. **T48 quantity, not a T15
+   address: 310 addresses stay 310** (890 after 0116/0118); T48 grows from 22 to **25**.
+
+**Two things beyond the assignment, both named in `spiel.md`.** The channel-2 row of the
+channel table gains a new head (`Instrument → Belastung → …`), and two passages of package
+0039 are corrected: they promised the foreign tariff step a path via counterforce 2 that
+this rule does not carry. Both follow from the rule; if the reviewer rejects them, the rule
+stands and the document contradicts itself in two places.
+
+**Where I am unsure** (for the project manager, not for the reviewer): whether the
+resolution condition is satisfiable for the tariff row. It is roughly twenty times stricter
+than the one package 0039 left behind, and only the test bench can say whether a
+`schrittweite[zoll]` exists that meets it and keeps a tariff step affordable.
 
 ## Ruecklaeufe
 

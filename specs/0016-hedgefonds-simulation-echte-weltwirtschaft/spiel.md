@@ -92,6 +92,20 @@ angefasst. Die fünf sind **Japan, Indien, Chile, Singapur und Saudi-Arabien**, 
 als Rückvergleichsland erwartet, die letzten beiden als Spielland; damit ist `L_R = 7` und die
 Zahl der Prüfgegenstände wächst von 16 auf **28**, die Toleranz von 2 auf **3**.*
 
+*Geändert am **2026-09-07** aus Arbeitspaket `0198-realeinkommen-als-rechenvorschrift`, nach
+`befunde/ergebnis-0197-schritt-5-reaktion-rechnet-die-zustimmung-2026-09-07.md`: Der Kernbauer
+konnte Schritt 5 nicht bauen, weil `Realeinkommen` in acht Zeilen von `specs/` vorkommt und in
+keiner als Formel. Neu ist der Abschnitt **Das Realeinkommen in Gegenkraft 2, als
+Rechenvorschrift** unter *Die Gegenkraefte*; dazu ein Verweis in Gegenkraft 2, die **Zeile zu
+Kanal 2** samt Erläuterung, vier Einträge unter „Was bewusst fehlt", zwei unter „Offene
+Entwurfsfragen", drei Zusätze in der Klagentabelle und ein Block unter „Was der Architekt neu
+rechnen muss". **Keine Zustandsadresse kommt hinzu** — die 310 bleiben 310, die 890 bleiben
+890 —, kein Schlüssel in `parameter.toml`, kein neunter Kanal; die abgeleiteten Größen aus
+T48 wachsen von 22 auf **25**. Zwei Stellen sind **berichtigt**: der Absatz „It costs" unter
+*Was die Entscheidung kostet* und der zugehörige Eintrag unter „Was bewusst fehlt" hatten dem
+ausländischen Zoll einen Weg über Gegenkraft 2 zugesagt, den die hier geschriebene Regel nicht
+trägt.*
+
 ## The game length R, and why it stands here as a letter
 
 The second version derived the game length from a rule — *the game length is the length
@@ -754,7 +768,7 @@ gibt es genau acht, und sie sind hier abschließend aufgezählt:
 | # | Kanal | Dämpfung |
 |---:|---|---|
 | 1 | Gewinn → Investition → Kapitalstock → Produktion → Gewinn | eine Runde Verzögerung, Abschreibungsrate |
-| 2 | Preis → Realeinkommen → Zustimmung → Regierungswechsel → Instrument → Preis | Instrument höchstens ein Schritt je Runde |
+| 2 | Instrument → Belastung → Realeinkommen → Zustimmung → Regierungswechsel → Instrument | Instrument höchstens ein Schritt je Runde; der Wechsel wird in Schritt 5 entschieden und wirkt erst in Schritt 3 der Folgerunde |
 | 3 | Instrument → Handel → Weltpreis → Schaden → Gegenlobbybudget → Instrument | Gegendruck wirkt erst in der Folgerunde |
 | 4 | Vermögen → Hebel → Positionsgröße → Preisstoß → Vermögen | Hebelobergrenze, Aufschlag steigt mit Sichtbarkeit |
 | 5 | Sichtbarkeit → Aufsichtszähler → Zwangsverkauf → Marktanteil → Sichtbarkeit | Zähler ganzzahlig mit Obergrenze, drei feste Schwellen |
@@ -780,6 +794,15 @@ ohne seinen Umweg über die Menge. Der Zollstand geht dort jetzt zweimal ein —
 *Schaden*, und beide Male mit derselben Dämpfung: Der Gegendruck wird nur in Schritt 5
 geschrieben und kann erst in Schritt 3 der Folgerunde wirken. Es kommt kein Glied hinzu und
 keine Rundengrenze weg.
+
+**Kanal 2 hat am 2026-09-07 seinen Kopf gewechselt und ist derselbe Kanal geblieben.** Er
+begann mit *Preis*, solange das Realeinkommen ein Wort war; seit *Das Realeinkommen in
+Gegenkraft 2* liest es die **Belastung** aus dem Instrumentenschritt und nicht den Preis.
+Das ist Kanal 2 ohne seinen Umweg über den Preis, genau wie die Zollabkürzung Kanal 3 ohne
+seinen Umweg über die Menge — ein Glied weniger, keine Rundengrenze weniger. Die Dämpfung
+ist dieselbe und ebenso erzwungen: Die Instrumente werden allein in Schritt 3 geschrieben,
+der Regierungswechsel fällt in Schritt 5, also liegt zwischen Ursache und Rücksetzung
+genau eine Rundengrenze. Ein neunter Kanal entsteht nicht.
 
 Der Preiskanal `Sektorpreis(t−1) → landespreis → Sektorpreis(t)` ist dagegen **kein eigener**:
 Er ist Kanal 3 in seinem Preisglied, ausgeschrieben. Seine Dämpfung ist der Anteil
@@ -1612,6 +1635,11 @@ threshold the government changes, the new one resets **all** instruments toward 
 historical mean and doubles the fund's lobby costs for several rounds. Grows with
 success, because successful lobbying produces exactly the shift that lowers approval.
 That is the idea's chain of effect, closed here into a circle instead of an arrow.
+**Which number this real income is stands in the section *Das Realeinkommen in Gegenkraft
+2*.** Until 2026-09-07 only the adjective stood here, and a quantity that „sinkt", without
+its formation rule being written anywhere, is not a chain of effect but an arrow — the
+same defect counterforce 5 was freed from on 2026-09-02, and the reason package `0197`
+could not be built.
 
 **3. Market thinness.** The fund lives on investor money, and investors compare its
 return with a market return. That market return is the **value-weighted return of all
@@ -1835,12 +1863,20 @@ difference in order of magnitude.
 **It costs:** the damage a *foreign* tariff does domestically. A German industrial
 sector hit by an American tariff step via the world price no longer generates
 counter-pressure in Germany, because `hub(DE, zoll)` is zero. That stands under *Was
-bewusst fehlt*, and the channel is not severed but rerouted: the foreign tariff step
-raises the German sector price, lowers real income, lowers approval and, via
-counterforce 2, triggers a change of government that resets **all four** German
-instruments and thereby generates damage via `hub`. That is threshold-driven instead of
-continuous, and the difference deserves naming — but it is the same path the design
-provides for price effects anyway.
+bewusst fehlt*.
+
+**Corrected on 2026-09-07, and the correction belongs to this decision.** This paragraph
+promised the effect was „not severed but rerouted" — via the German sector price, real
+income, approval and a change of government. **That reroute does not exist.** Once real
+income was written down as a rule (*Das Realeinkommen in Gegenkraft 2*), it read the
+burden of the country's **own** instrument steps, for the same reason this section
+rejected the base term: the world-price share of a tariff step has no causer that can be
+isolated without a second market clearing. `politiklast(DE)` is therefore zero as well,
+and the foreign tariff step reaches German politics in no round. What remains of it is
+economic and not political: it moves the German sector price, the trade volumes and, via
+channel 1, the capital stock of the following round. The loss stands under *Was bewusst
+fehlt* with its reason; a promise that two rules kept apart could not have kept is worth
+less than the consistency of the two.
 
 **One condition that follows from this and that the vintage build must check.**
 `preishub_zoll` arises from two roundings. If the smallest possible tariff step is too
@@ -2180,6 +2216,261 @@ round and lays counter-pressure on all four in the following round. That is not 
 but success one step later: the change of government is itself the consequence of
 successful lobbying. That this makes two penalties out of one cause stands under
 *Offene Entwurfsfragen*.
+
+### Das Realeinkommen in Gegenkraft 2, als Rechenvorschrift
+
+`parameter.toml` fixed the **unit** — „Aenderung der Zustimmung in Zehntausendsteln je
+Zehntausendstel Aenderung des Realeinkommens" — and thereby said what counterforce 2
+needs: not a level but a **relative change in ten-thousandths**. The magnitude was
+missing, and package `0197` could not be built for that reason
+(`befunde/ergebnis-0197-schritt-5-reaktion-rechnet-die-zustimmung-2026-09-07.md`: eight
+lines in `specs/` mention the quantity, every one prose or an arrow). It is filled here,
+in the same place and the same form as the damage of counterforce 5.
+
+#### Was Realeinkommen ist, und warum das BIP seine Gegenprobe ist
+
+**As a level it already stands in the model:** real income of country `l` is `bip(l)`,
+number 9 in `technik.md` T48. Class 2 stands per T5 „zu konstanten Preisen des Jahres
+2015"; value added is therefore a real quantity, and its sum over the three sectors is
+the country's real income of that year. That sentence is not new — the rejection of the
+value-added loss two sections up rests on it.
+
+What was missing is the other half, and it is why the word looked undefined: **real
+output is blind to the prices policy sets.** A tariff step, an interest step, a
+consolidation shift what an income buys, and none of that reaches `bip(l)` in the same
+round — the real path runs via investment and capital stock and is channel 1.
+
+Here that blindness is the instrument and not the defect. It gives counterforce 2 the
+one thing counterforce 5 had to buy with a second market clearing and could not afford:
+**the state that would have been without the action.** `bip(l)` is that counterfactual —
+free, in the same round, without a second address. Hence, for each of the playable
+countries:
+
+```
+realeinkommen(l)     = bip(l) − politiklast(l)                          [Klasse 2]
+realeinkommenshub(l) = mal_geteilt( −politiklast(l), 10.000, bip(l) )   [Klasse 3]
+```
+
+**The reference of the change is therefore not the previous round but the same round
+without policy movement.** Everything is read with `lies_neu`; the only difference of the
+whole rule is taken over the instrument levels, inside `politiklast`. That is T39
+answered at one place instead of four.
+
+#### Die Belastung, vier Zeilen, ein Vorzeichen
+
+```
+politiklast(l) = Σ über die vier Instrumente i:
+                   sgn( lies_neu(land.<l>.instrument.<i>.stand)
+                      − lies_alt(land.<l>.instrument.<i>.stand) ) · schaden(l, i)
+```
+
+`schaden(l, i)` is number 22 in T48, taken over unchanged with all four of its rows, and
+that is the whole content of the decision: **the burden a policy step puts on households
+is the same number the damaged sector reads — read twice, with different treatment of
+its sign.** Counterforce 5 reads its magnitude, because whoever moves something damages
+someone in either direction. Counterforce 2 reads its sign, because a household is not
+indifferent to the direction. Both readings stand in the same section for that reason.
+
+| Instrument | rising level means | for the household | `menge(l,i)/bip(l)` |
+|---|---|---|---|
+| `zoll` | tariff up, import price up | burden | trade volume over GDP |
+| `leitzins` | rate up, debt service on `schuld(l)` up | burden | the debt ratio `staatsschuld[l]/10.000` |
+| `haushalt` | balance up, i.e. consolidation | burden | **1** |
+| `regulierung` | one step tighter, `regulierung_last` bp of GDP per step | burden | **1** |
+
+The fourth column is what the division by `bip(l)` newly makes visible, and it costs no
+number: for the budget instrument the real-income change is **exactly the negative
+instrument step in basis points**, because that row's quantity *is* `bip`; for the
+interest instrument it is that step times the debt ratio; for the tariff, times the trade
+openness. **The country asymmetry the design chose its nine countries for thereby prices
+the political cost as well** — a highly indebted country pays for an interest step, a
+trade-dependent one for a tariff step, and everyone the same for a consolidation.
+
+**The level of the budget instrument is the balance** (series 12, IMF WEO; per
+`parameter.toml` „deutlich negativ" in several countries of the check vintage), so a
+rising level is consolidation. Were it read as the spending ratio, this row's sign would
+flip; the design decides the balance, and the data anchor is the reason.
+
+**And the approval rule, since it is two lines and otherwise blocks `0197` a second
+time:**
+
+```
+zustimmung_neu(l) = min( 10.000,
+                         max( 0,
+                              lies_alt(land.<l>.zustimmung)
+                              + mal_geteilt( zustimmung_elastizitaet,
+                                             realeinkommenshub(l), 10.000 ) ) )
+```
+
+The two bounds are the value range of class 4 and not a bandage over a gap: 0 and 100
+percent approval are attainable states, and `min` at a bound is the construction
+counterforce 5 already uses at `druck_max`. Below `zustimmung_wechselschwelle` the
+government changes; it sets `regierungsdruck_rest` and `lobbykosten_rest` in step 5, and
+the **instruments are reset in step 3 of the following round**, because step 3 is the
+only place an instrument level is written and no state quantity is written twice in a
+round.
+
+#### Warum die Belastung und nicht das Preisniveau
+
+The package `0198` named three candidates, a fourth follows from them, and **all of them
+fail on the same property: a term that moves without an action.** The reasons are already
+written down in this document, one counterforce further up.
+
+**`bip(l)` against `preisniveau[l]`** — the textbook form. It **deflates twice**: class 2
+already stands at constant prices, so the quotient is not real income but real income
+divided by a price index. Read as intended — value added valued at sector prices, over
+the price level — it is worse, not better: in an inflationary year the numerator and the
+denominator both rise, the remainder is the relative price movement, and it moves in
+every round without any action. That is the base term of the tariff row again, one
+counterforce further on, and its consequence is the same one 2026-09-03 named: approval
+would be driven by the world market instead of by the player, exactly the reading of „the
+consequences of choices often feel intangible". It is the heavier objection here, because
+the drift is one-directional: real growth is the normal case, approval would saturate at
+its upper bound after a few rounds, and **a counterforce whose main driver is exogenous
+growth does not grow with success** — the requirement at the head of this section.
+
+**`bip(l)` against `bevoelkerung[l]`** — real income per head. It fails on the first of
+the three reasons the value-added loss failed on: **it is blind to every instrument.**
+Population and value added move on channel 1 and on the vintage; a tariff step does not
+appear in it at all. It costs a scale class on top (class 2 over class 8 is in no line of
+T5), and the change it measures is the business cycle minus population growth.
+
+**The terms of trade** — the third reading, and the closest to being right: the two world
+prices move differently, so a country that exports industry and imports agriculture
+gains. It is computable from the trade block without a second market clearing. It fails
+on the base term as well, this time as noise instead of drift: world prices move every
+round from market clearing, and an approval change whose cause is „agricultural world
+prices rose relative to industrial ones" hangs on no action. It is named here rather than
+omitted because it is the one reading that would have carried the effect of a **foreign**
+instrument, and that effect is now expressly missing — see *Was bewusst fehlt*.
+
+#### Die Zahlenprobe, an denselben zwei Zuständen
+
+The probe of the section above, continued. State A is one German tariff step of 50 basis
+points, state B the same round without an action; the two differ in exactly one quantity.
+`bip(DE)` is an order-of-magnitude probe value like the trade volumes in that table, not
+a measurement.
+
+| Quantity | State A (one tariff step) | State B (no action) |
+|---|---:|---:|
+| `schaden(DE, zoll)` from the table above (Tsd USD) | 440.000 | 0 |
+| `bip(DE)` (Tsd USD, probe value) | 3.400.000.000 | the same |
+| `politiklast(DE)` | +440.000 | **0** |
+| **`realeinkommenshub(DE)`** | **−1 bp** | **0** |
+
+`440.000 · 10.000 / 3.400.000.000 = 1,294 → 1` under the rounding rule of T6, with the
+sign from `sgn`. The same probe for the budget instrument needs no rounding at all: at a
+step of 50 basis points, `politiklast = 3.400.000.000 · 50 / 10.000 = 17.000.000` and
+`realeinkommenshub = −50`, exactly the step.
+
+**State B is the acceptance, and it holds for all four rows without knowing any of the
+forms above:** if no instrument level moves, every `sgn` is zero, hence `politiklast`
+zero, hence `realeinkommenshub` **exactly zero** — for every price, every trade volume
+and every debt ratio. The sentence that has held for the damage since 2026-09-03 thereby
+holds for approval too: *it is nonzero exactly when an instrument moved in this round.*
+
+**The invariant that follows, and it is the reason the signed reading is safe:** an
+instrument that goes up and comes back leaves approval where it was — the two rounds
+contribute `+x` and `−x` and cancel exactly if the quantity and `bip` are unchanged
+between them. Approval measures the **net** policy burden against the start of the game,
+not the churn. Oscillating is still not free, because counterforce 5 charges both moves
+at full magnitude; **the two readings of the same number are what makes cycling strictly
+expensive.** T6 carries this: its rounding runs „auf halbe Beträge von null weg" and is
+symmetric over the sign, chosen for exactly this reason.
+
+#### Skalen, Auflösung, und was die Regel kostet
+
+Class 2 divided by class 2, times ten-thousandths, is a rate in ten-thousandths — class 3,
+the same construction as `marktanteil` in *Was ein Korb wert ist*. **No fourth scale
+transition, class 1 touched nowhere.** `mal_geteilt` computes over `i128` per T6, so the
+product `politiklast · 10.000` needs no bound of its own: `politiklast` is bounded by the
+largest of the four quantities times the largest possible shift, thus by a small multiple
+of `bip(US)` — per T5 of order `2,1 · 10^10` thousand USD —, and the product stays around
+`10^14`. `bip(l) > 0` is the denominator condition; it is a sum of positive value added
+and a value-range bound the break run checks, as with `wechselkurs` in *Eine
+Bewertungsformel*.
+
+**Read accesses:** 94 addresses, of which **90 are already read in step 5** by
+counterforce 5 — the sixteen instrument levels at both ends, twelve value added, four
+government debt, two world prices, the forty trade flows. New are **four**:
+`lies_alt(land.<l>.zustimmung)`, one per playable country. As a formula in `L` that is
+`2L² + 15L + 2`, thus 94 at `L = 4` and 299 at `L = 9`. **No new state address, no new
+parameter key, no new vintage constant, no ninth channel.**
+
+**One resolution condition, in form and without a number, and it is stricter than the one
+counterforce 5 got in 2026-09-03.** If the smallest possible step of an instrument
+produces a burden below one ten-thousandth of GDP, the row rounds to zero and the
+counterforce is **mute there without saying so**:
+
+```
+mal_geteilt( schaden(l, i) bei schrittweite[i], 10.000, bip(l) )  ≥  1
+                                    für jedes Land und jedes der vier Instrumente
+```
+
+The binding case is the tariff row, and it is binding by an order of magnitude: the probe
+above yields 1 basis point where the budget row yields 50. That the condition is checked
+at vintage build is design; the value of `schrittweite[zoll]` that satisfies it is
+calibration and does not stand here.
+
+#### Wo die Regel läuft, und was sie im Weltlauf tut
+
+Computed in **step 5**, `L` times per round, after the instrument levels of step 3 and
+the economy of step 4 stand. **Channel 2 keeps its damping and gains no link:** its head
+is now the instrument step rather than the price — `Instrument → Belastung →
+Realeinkommen → Zustimmung → Regierungswechsel → Instrument` —, which is channel 2
+without its detour through the price, the same relation the tariff shortcut has to
+channel 3. Exactly one round boundary is crossed and it is enforced, not promised: the
+reset of the instruments is written in step 3 of the following round, and `lies_neu` on
+`zustimmung` in step 3 would be a hard error per T39.
+
+**Unlike counterforce 5, this rule does run in the `weltlauf`** — `technik.md` T38 carries
+`zustimmung` in the mask and lets „nur Zustimmung und Regierungswechsel" out of step 5,
+and every input the rule needs stands in that mask as well: instrument levels, value
+added, government debt, world prices, the trade block. In the check vintage the
+instruments follow their historical paths, so the burden is nonzero and approval is an
+**endogenous, computed quantity in the backtest too**. The change of government is
+computed and reported and writes nothing, so the exogenous policy paths stay untouched
+and no check subject can move because of it.
+
+**And the consequence, named expressly: Maß 4 does not check this rule.** Approval has no
+target series — the data curator's gap 4, „no counterpart among the checked sources" —
+and it is none of the check subjects, neither of today's 16 nor of the 28 after 0118. It
+is checked by Maß 2 and Maß 3 in self-play,
+by the per-chain unit test that `technik.md` section 9 already demands („Zoll rauf →
+Einfuhr runter → Preis rauf → Realeinkommen runter → Zustimmung runter") — **that test is
+buildable for the first time with this rule, and its two last arrows now hang on the
+tariff step rather than on the price** —, and by the break run against
+`0 ≤ zustimmung ≤ 10.000`.
+
+**One consequence for whoever builds step 5 next:** because the rule is exactly zero
+without an instrument step, a round in which step 3 carries the instruments forward moves
+no approval address. A probe that counts changed quantities over such a round measures
+nothing about this rule; the probe it needs is the two-state comparison above.
+
+#### Was diese Regel für die Klagen und für Maß 2 und Maß 3 leistet
+
+The three complaints stand row by row in *Die drei Klagen*; what this rule adds to the
+first and the third stands there. Here the two that are its own.
+
+**The sign is the answer to the second complaint.** „Trying to implement the tiniest
+socialist policy will always result in bankruptcy" describes a game in which one political
+direction is punished by construction. Here the direction that relieves households —
+lower tariff, lower rate, larger deficit — **raises** approval and buys the political room
+that the direction which burdens them spends. Whoever wants to lobby against the public
+must first pay for it, or accept the change of government. That is a decision each round,
+not a penalty, and it is the same argument the design makes for long and short.
+
+**For Maß 3 it is a source of shift that costs nothing.** The four quantities of the
+fourth column above — trade openness, debt ratio, one, one — move over the game on the
+historical path, and so the politically cheapest instrument of round three need not be
+that of round twenty. This is the same mechanism counterforce 5 has, read through the
+other counterforce, and it needs no rule of its own.
+
+**For Maß 2 it is the removal of a handicap, not a new one.** The family Lobby is the only
+one whose counterforce was exclusively counterforce 5. It now has a second, and that
+second one is **two-sided** — the only counterforce of the five that a player can move in
+their own favour. A base term would have hit exactly this family for the second time and
+in the same direction; that is why none of the three rejected readings survived.
 
 ## Wie die vier Masse berechnet werden
 
@@ -2556,9 +2847,9 @@ vintage.
 
 | Complaint from the reviews | Design decision |
 |---|---|
-| „the consequences of choices often feel intangible" | **At most three actions per round** — scarcity forces every action to be big enough to have an effect. Plus the chain as its own part of the state (steps 1 and 6) and Maß 1 as an acceptance threshold per game third instead of a wish. **Since 2026-09-03 also the counter-check:** in counterforce 5 the damage of each instrument is non-zero exactly when the instrument has moved. A chain that shows a penalty and no action behind it is the same complaint from behind — that is why the business-cycle base term of the tariff row fell. |
-| „trying to implement the tiniest socialist policy will always result in bankruptcy" | **The fund can be long and short.** Thus no political direction is dominant: whoever bets on regulation because they are short wins just as much as whoever prevents it. Plus the two-part victory condition (capital AND influence) and Maß 2, which wants to see each of the three families win individually. |
-| „no dramatic setbacks or successes", „everything is incredibly surface level" | **Three ways of dying with visible thresholds** (forced liquidation, market ban, investor withdrawal), the result scale that rates the early death worse than the late one, and Maß 3, forced by imitators and price shock. The setback is dramatic, but never arbitrary — see „Keine verdeckte Größe". |
+| „the consequences of choices often feel intangible" | **At most three actions per round** — scarcity forces every action to be big enough to have an effect. Plus the chain as its own part of the state (steps 1 and 6) and Maß 1 as an acceptance threshold per game third instead of a wish. **Since 2026-09-03 also the counter-check:** in counterforce 5 the damage of each instrument is non-zero exactly when the instrument has moved. A chain that shows a penalty and no action behind it is the same complaint from behind — that is why the business-cycle base term of the tariff row fell. **Since 2026-09-07 the same holds for approval:** `realeinkommenshub` is nonzero exactly when an instrument moved, so no change of government can appear in the chain without an action behind it. |
+| „trying to implement the tiniest socialist policy will always result in bankruptcy" | **The fund can be long and short.** Thus no political direction is dominant: whoever bets on regulation because they are short wins just as much as whoever prevents it. Plus the two-part victory condition (capital AND influence) and Maß 2, which wants to see each of the three families win individually. **Since 2026-09-07 also in the counterforce itself:** counterforce 2 reads the **sign** of the burden, so the direction that relieves households raises approval. It is the only one of the five counterforces a player can move in their own favour. |
+| „no dramatic setbacks or successes", „everything is incredibly surface level" | **Three ways of dying with visible thresholds** (forced liquidation, market ban, investor withdrawal), the result scale that rates the early death worse than the late one, and Maß 3, forced by imitators and price shock. The setback is dramatic, but never arbitrary — see „Keine verdeckte Größe". The change of government is the fourth threshold of this kind, and since 2026-09-07 it has a quantity behind it instead of an adjective. |
 
 ## Was bewusst fehlt
 
@@ -2748,13 +3039,30 @@ vintage.
   does not exist: the same round with the old tariff level, that is, a **second market
   clearing** with another 40 halving steps per sector. The price would be the model's
   most expensive computation doubled, the yield a number no Maß checks.
-- **The damage a foreign tariff does at home, as a row of its own.** It is the
-  consequence of the previous item and falls with it. It does not vanish from the game
-  but changes counterforce: the foreign tariff step lifts the domestic sector price,
-  lowers real income and approval, and via counterforce 2 can trigger a change of
-  government that resets all four instruments and thereby produces damage. The
-  difference deserves naming and is no small thing: the old path was continuous, the new
-  one is threshold-driven and at least one round slower.
+- **The damage a foreign tariff does at home, in any counterforce.** It is the
+  consequence of the previous item and falls with it. **Sharpened on 2026-09-07:** until
+  then this entry said the effect merely changed counterforce — via the domestic sector
+  price to real income, approval and a change of government. Since real income is a rule
+  it does not, because that rule reads the country's own instrument steps and nothing
+  else. The foreign tariff step therefore reaches neither the counter-lobby nor approval;
+  it stays in the economy, in prices, trade volumes and the capital stock of the
+  following round. Both counterforces now measure only what a causer inside the country
+  did, and treating them alike is worth more than a political path that only one of the
+  two could have carried.
+- **The business-cycle share of real income, and it is the larger share.** Real output
+  grows or shrinks every round, and approval reads none of it. Booking it would mean the
+  world market deciding who governs, all countries at once and unavoidably for every
+  profile — the drift version of the base term the tariff row lost on 2026-09-03, and
+  this time one that would let approval saturate at its upper bound. The reasoning stands
+  under *Warum die Belastung und nicht das Preisniveau*.
+- **Real income per head.** `bevoelkerung[l]` stands in the state and is not read by this
+  rule. It would cost a scale class that T5 does not have, and it would measure population
+  growth rather than any instrument.
+- **A state address for real income, and a level for the display.** The rule needs the
+  quantity only as a change, and the level it would carry — `bip(l)` minus this round's
+  burden — is a function of the state, computable at any time. An address would be a
+  second copy of the same truth, the defect T45 excludes for addresses and T15 refused
+  `landespreis` for.
 - **A counter-lobby rate of its own per instrument.** One `gegenlobby_satz`, four
   quantities. Four rates would give the calibration three axes whose effect the
   quantities produce anyway — and from the vintage rather than from a number.
@@ -2950,11 +3258,44 @@ vintage.
   Unchanged the largest unmeasured risk of the venture. It is no longer a design question
   but a measurement by the backtester at the running core — the acceptance rule now
   stands, so the result can be judged at all.
+- **Whether the change of government is reachable within `R` rounds — and it is a
+  calibration probe with a ceiling, not a free dial.** `zustimmung_elastizitaet` is class
+  4, so if that class's range binds, it is at most 10.000 and approval can move at most
+  one-to-one with `realeinkommenshub`. The probe under *Die Zahlenprobe* gives 1 basis
+  point for a tariff step and 50 for a budget step; against a distance
+  `startzustimmung − zustimmung_wechselschwelle` in ten-thousandths, this decides whether
+  counterforce 2 reaches its threshold at all. If it does not, the way out is the
+  distance and the step widths, not a larger elasticity — that is the self-player's
+  measurement and the reason `parameter.toml` calibrates the three together.
+- **Which of the four instruments the resolution condition binds on, per country.** The
+  form stands under *Skalen, Auflösung*; the tariff row is binding at four countries by an
+  order of magnitude, and at nine it hits the two most trade-dependent ones first. Whether
+  a `schrittweite[zoll]` exists that satisfies the condition for Singapore *and* keeps a
+  step affordable for the fund is a measurement at the test bench. This is the stricter
+  sibling of the condition package 0039 left behind, and both are checked at vintage
+  build.
 
 ## Was der Architekt neu rechnen muss
 
 Only so that it does not have to be searched for. Everything else in `technik.md` stays
 valid.
+
+### Neu aus Paket 0198 — das Realeinkommen als Rechenvorschrift
+
+Five places, none of them a decision. I have not touched `technik.md`.
+
+| was (`technik.md`) | is | affects |
+|---|---|---|
+| `Realeinkommen` occurs exactly once in your document — in the chain of effect of the unit test in section 9 — and in no formula; T48 declares such a name a finding | The prescription stands in the section *Das Realeinkommen in Gegenkraft 2*: `realeinkommen(l) = bip(l) − politiklast(l)`, and the change `realeinkommenshub(l) = mal_geteilt(−politiklast(l), 10.000, bip(l))` | T48, section 9 |
+| T48 counts **22** derived quantities | **25**. New are `politiklast(l)` (class 2), `realeinkommen(l)` (class 2) and `realeinkommenshub(l)` (**class 3**, basis points). All three are functions of the state and read exclusively addresses, `schaden(l, i)` (no. 22), `bip(l)` (no. 9) and `sgn` | T48, `kern::werte` |
+| Step 5 without a call count for counterforce 2 | `L` evaluations per round, all in step 5; **94 read accesses**, of which 90 are already read by counterforce 5, four are new (`lies_alt(land.<l>.zustimmung)`). As a formula `2L² + 15L + 2`, thus 94 at `L = 4` and 299 at `L = 9`. Writes: the `L` approval addresses | cost line in section 10 |
+| `zustimmung_elastizitaet` has no carrier into the core — `werte::Konstanten` holds six keys and not this one, and `schritt(zustand, aktionen, modus)` has no parameter argument (T10) | Unchanged a gap, and **not one this design may close**: the widening of the signature needs an ADR. Package `0208` covers it. The rule above is written so that it needs exactly one parameter key and no second | T10, T27 |
+| Approval as a written but not computed address in the `weltlauf` mask | The rule runs in the `weltlauf` — every input stands in the mask per T18 — and makes approval endogenous there. The change of government is computed and reported and **writes nothing**, so no policy path and no check subject moves | T18, T38 |
+
+**What expressly does not change:** no state address (310 stays 310, and 890 after 0116
+and 0118), no new key in `parameter.toml`, no new vintage constant, the count-off step
+from T45, the three scale transitions from T50, the **eight** channels, R, the four Maße
+and their thresholds.
 
 ### Neu aus Paket 0118 — neun Länder, `L_R = 7`, und die Zählregel von Maß 4
 
