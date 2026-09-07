@@ -114,12 +114,64 @@ Dateien disjunkt sind** (`verlauf.cpp` / `verlauf.hpp`): das sind zwei Bahnen st
 und Bahnen waren heute knapper als Bauplätze. Einfassen spart einen Lauf und kostet eine
 Bahn — richtig nur, wenn sie sich ohnehin eine Datei teilen.
 
+## Die unerfüllbare Formel stand in einem Paket, das ich selbst angenommen hatte — 2026-09-07 (2)
+
+**0195 kam mit `zurueck` zurück, und beide beanstandeten Bedingungen sind wörtlich die
+zwei, die ich am Vormittag desselben Tages als unerfüllbar aufgeschrieben habe** („in
+beiden Bauprofilen", „übersetzt statt hergeleitet, ohne `add_test`"). Angenommen habe ich
+sie am 2026-09-06 — einen Tag vor der Lehre. Der Prüfer rechnet das Größengesetz von Hand
+nach, bestätigt 138/139, und schreibt trotzdem `zurueck`, weil die Bedingung eine
+Übersetzung verlangt und keine Herleitung. Er hat recht, und der Bauagent hat nichts falsch
+gemacht.
+
+**Der Griff war nicht `blockiert`, sondern die Berichtigung der Bedingung.** Das Paket
+begründet sie in seinem eigenen Rumpf: „Falsch gestellt war die Bedingung, nicht die
+Arbeit — und eine Bedingung berichtigt der Projektmanager." Fünf erfüllbare Bedingungen
+statt vier, Befund 2 (das Wort „drei" zählt in einer Datei zwei Dinge) als eigene
+Bedingung, und die Übersetzung selbst an das Paket abgegeben, das der Bauagent dafür
+vorgeschlagen hat (0212).
+
+**Was das gegen die Alternative spart:** 0195 hinter 0212 zu hängen hätte die Bahn
+`verlauf.hpp` einen ganzen Bau-und-Prüf-Zyklus gesperrt und den einen wirklich
+behebbaren Befund mit verzögert. Die Dateien sind disjunkt — **hängen kostet hier eine
+Bahn und bringt keine.** Die Regel: *erst prüfen, ob der Rücklauf zwei Befunde trägt,
+von denen nur einer unerreichbar ist.* Dann trennt man sie, statt das Paket zu stellen.
+
+## Der `add_test`-Weg verzinst sich, und man sieht es an der dritten Generation
+
+**0188 → 0199 → 0213.** 0188 hat die Bauform erfunden (Python-Skript ohne übersetzendes
+Ziel per `add_test`), 0199 hat sie auf `messung-0180/messen.py` angewandt — und **0213 ist
+das erste Paket, dessen Abnahme von selbst ausführt**, ohne dass ich einen Vermerk über
+die Ausführungsstrecke schreiben musste. `zahlwort_messung` ist Test 21 (13,5 s), und wer
+die Erwartung falsch setzt, sieht es in der Nacht nach der Lieferung.
+
+**Das ist der Gegensatz zum Rest des Rückstands:** bei 0147 und 0199 musste ich die
+Strecke ins Paket zwingen, bei 0212 tue ich es wieder. Jede eingehängte Probe macht die
+nächste billiger. **Neu dazugeschrieben, weil es fast schiefging:** `kern/CMakeLists.txt`
+wird von **beiden** Bäumen gelesen — ein Eintrag dort läuft zweimal je Nacht. Bei einem
+Skript, das den Kern zweimal übersetzt, ist das eine Kostenfrage; deshalb steht die
+Laufzeit in 0212s Auflagen.
+
+## Das stehende Rot ist weg, und es waren zwei Bahnen mehr
+
+`belegstellen_riegel` grün in beiden Bäumen, `ergebnis: ok` im ganzen Baulauf. 0200 hat
+auf einen Schlag **0147, 0166, 0182, 0189** (belegstellen), **0185** (`reihen.toml`) und
+**0203** (`parameter.toml`) entsperrt. Bauplätze heute: **sechs von acht** (0147, 0185,
+0203, 0195, 0212, 0213) gegen vier gestern.
+
+Die zwei leeren sind wieder `ops/reserviert.txt`: **fünfzehn der zweiundzwanzig offenen
+Pakete** liegen auf `spiel.md`/`technik.md`, darunter die Vorrangplätze 1, 2, 4 und 5.
+Zweiter Tag. Nicht mein Schnitt, und ich schneide auch nichts daneben — 0157 hängt
+sachlich an 0197, und ein Paket zu erfinden, um eine Bahn zu füllen, ist die teurere
+Sorte Leerlauf.
+
 ## Offene Fährten
 
-- **Der Übersetzungslauf gegen den Belegstellenriegel** ist die Entscheidung, die der
-  Geschäftsführer dem Betreiber vorlegt (Empfehlung B). Bis dahin ist 0200 die
-  Einmalräumung, und sie bricht bei der nächsten übersetzten Überschrift wieder. **Prüfen,
-  ob der Riegel danach grün war** — 0147, 0166, 0182, 0189 hängen daran.
+- **Der Übersetzungslauf gegen den Belegstellenriegel:** 0200 ist abgenommen, der Riegel
+  war am 2026-09-07 grün (Test 16/21 bzw. 1/1) — die Nachprüfung von gestern ist erledigt.
+  **Die Regelfrage bleibt offen** (Empfehlung B beim Betreiber): die nächste übersetzte
+  Überschrift bricht die Zitate erneut. Kommt der Riegel wieder rot, ist es kein neues
+  Paket, sondern dieselbe Frage zum zweiten Mal.
 - **`agents/baulauf.py` fährt nur ein Profil.** 0194 liegt deswegen still, 0180 und 0188
   fehlt der Beleg rückwirkend. Nur der Betreiber kann es ändern (`Edit(/agents/**)` ist
   global gesperrt). 0208-baulauf steht als `blockiert` samt Kostenschätzung bereit.
@@ -129,5 +181,8 @@ Bahn — richtig nur, wenn sie sich ohnehin eine Datei teilen.
   weitere Schrittpakete stürben an derselben Zeile „1 von 310".
 - **`technik.md` zerlegen**, siebzehntes Mal fällig — dreizehn Pakete auf einer Datei.
 - Reste `.kopf.tmp`/`.paket.tmp` mit `status: gebaut` verfälschen jede `^status:`-Zählung.
-- **Die Stufe `high` hat gereicht**, siebter Lauf. Der teuerste Griff heute war kein
-  Denken, sondern ein Nachsehen in `baulauf.py`.
+- **Die Stufe `high` hat gereicht**, achter Lauf. Der teuerste Griff heute war das
+  Umschreiben einer Abnahme, die ich selbst falsch gestellt hatte — Sorgfalt, keine Tiefe.
+- **Meine eigenen Abnahmen von vor der Lehre sind der nächste Fundort.** 0195 war eine;
+  es können mehr sein. Beim nächsten Rücklauf zuerst fragen, ob die Bedingung aus der
+  Zeit vor dem 2026-09-07 stammt.
