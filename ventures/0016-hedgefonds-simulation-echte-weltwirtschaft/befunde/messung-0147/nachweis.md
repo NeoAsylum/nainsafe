@@ -2,16 +2,36 @@
 typ: messung
 paket: 0147-belegstellenriegel-ortsfrage-mit-anker
 datum: 2026-09-07
-ergebnis: nicht_ausgefuehrt
+ergebnis: eingehaengt_als_ctest_probe
+probe: belegstellen_messung
 ---
 
-# Der Messstand steht, gelaufen ist er nicht
+# Der Messstand haengt jetzt in `ctest`
 
-**Das Wichtigste zuerst, damit es niemand uebersieht:** Dieser Lauf hatte **keine
-Shell**. `messung.py` ist geschrieben und vollstaendig, aber **nicht einmal
-ausgefuehrt**. Jede Zahl unten ist am Quelltext hergeleitet und **nicht gemessen**. Wer
-das Paket abnimmt, laesst zuerst `python3 messung.py` laufen; sie gibt 0 oder 1 zurueck
-und braucht kein Urteil.
+**Der Ruecklauf vom 2026-09-07 hatte genau einen Grund:** Der Messstand war vollstaendig
+und **nie ausgefuehrt**. Er stand in keinem `add_test`, und `agents/baulauf.py` faehrt
+nur `cmake`, `--build` und `ctest` -- ein Skript ausserhalb dieser drei laeuft in dieser
+Fabrik nirgends.
+
+**Behoben, und zwar mechanisch:** `werkzeuge/belegstellen/CMakeLists.txt` fuehrt ihn als
+Probe **`belegstellen_messung`**, mit `--vorhaben` und `--uebersetzer` von CMake und
+`TIMEOUT 600`. Ab dem naechsten Baulauf steht sein Ergebnis im Wortlaut in
+`befunde/uebersetzung-<datum>.md`. **Der Beleg ist jener Bericht, nicht diese Datei.**
+
+Auch dieser Lauf hatte keine Shell; die Erwartungen unten sind weiterhin am Quelltext
+hergeleitet. Neu ist, dass die Herleitung ab jetzt jede Nacht gegen eine Messung
+gehalten wird, statt darauf zu warten, dass jemand von Hand misst.
+
+**Drei Rueckgabewerte, und der Unterschied entscheidet die Abnahme:** `0` gruen, `1`
+**Befund** (gemessen, weicht ab), `2` **nicht gemessen** (eine Nadel trifft nicht mehr,
+der Vergleichsstand fehlt, etwas uebersetzt nicht). Ein Lauf mit 2 sagt ueber den Riegel
+nichts -- weder gut noch schlecht. Vorher gab der Stand fuer beide Faelle `1` und machte
+sie ununterscheidbar.
+
+**Die Nadeln werden vor der ersten Uebersetzung geprueft.** Alle neun muessen genau
+einmal treffen, sonst endet der Lauf mit 2, bevor er elfmal uebersetzt. Das ist die
+Lehre aus `messung-0180/messen.py`: Dort trafen ab Paket 0194 vier von fuenf Mutanten
+ins Leere, und weil niemand den Stand fuhr, blieb es unbemerkt.
 
 ## Was schon da war und was dieser Lauf beitraegt
 

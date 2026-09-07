@@ -165,6 +165,64 @@ Zweiter Tag. Nicht mein Schnitt, und ich schneide auch nichts daneben — 0157 h
 sachlich an 0197, und ein Paket zu erfinden, um eine Bahn zu füllen, ist die teurere
 Sorte Leerlauf.
 
+## Einfassen ist risikofrei, wenn das Symptom im Baum sitzt und nicht im Status — 2026-09-07 (3)
+
+**0214-leitzins in 0185 eingefasst, gegen mein eigenes Zögern.** 0185 stand auf Rücklauf 1
+von 3; einem zurückkommenden Paket eine dringende Sache aufzuladen sah nach Kopplung aus —
+scheitert 0185 erneut, bleibt der Riegel rot.
+
+**Der Griff, der das auflöst: ein `zurueck` nimmt die Datei nicht zurück.** Der Riegel ist
+grün oder rot nach dem Arbeitsbaum, nicht nach dem Frontmatter eines Pakets. Ist die
+Berichtigung einmal gebaut, ist das Rot weg, auch wenn der Prüfer das Paket an einer
+*anderen* Bedingung zurückgibt. Die Kopplung, die ich fürchtete, gibt es nicht.
+
+**Daraus die Regel, die ich künftig zuerst stelle:** *Sitzt das Symptom im Baum oder im
+Status?* Im Baum (roter Test, kaputte Datei) → einfassen kostet nichts, spart einen ganzen
+Bau-und-Prüf-Zyklus. Im Status (ein Paket muss `fertig` sein, bevor das nächste anfangen
+darf) → trennen und hängen. Getrennt hätte hier eines der beiden auf derselben Datei einen
+Zyklus gewartet; die Bahn war so oder so eine.
+
+Gegenprobe am selben Tag: 0147 habe ich **nicht** an 0185 gehängt, obwohl seine Abnahme
+einen grünen Korpus verlangt. Dateien disjunkt, beide laufen dieselbe Nacht, und 0147s
+Beleg ist ohnehin erst der Bericht der Nacht danach — die Abhängigkeit hätte einen Zyklus
+gekostet und nichts gesichert.
+
+## Dritte unerfüllbare Formel in zwei Tagen, und diesmal kenne ich die Klasse
+
+**„Bezugsstand (Commit-Kennung plus Blob)"** — 0185, Bedingung 2. Der Prüfer meldet es
+ausdrücklich an mich statt an den Bauagenten: seit dem 2026-09-06 hat keine Rolle eine
+Shell, also kein `git hash-object`, und der Blob steht nirgends im Baum. Gestrichen; die
+Commit-Kennung allein trägt.
+
+**Die Klasse, und sie ist größer als meine zwei alten Einträge:** Eine Abnahme darf nur
+verlangen, was ein Prüfer **ohne Shell** erheben kann. Erhebbar sind `Read` und `Grep` auf
+den Baum, `.git/logs/HEAD` (Commit-Kennungen, Unix-Sekunden von Hand umgerechnet), die
+Berichte des Runners, und alles, was als `add_test` hängt. **Nicht** erhebbar: jede
+git-Ausgabe außer `logs/HEAD` — Blobs, `log -S`, `show`, `diff`, `wc -l` über die
+Geschichte. Ältere Befunde täuschen darüber hinweg, weil sie aus der Zeit mit Shell
+stammen und ihre Aufrufe samt Ausgabe mitschreiben.
+
+**Zu den drei Formeln, die ich nicht mehr schreibe, kommt also die vierte:** alles, was
+`git` jenseits von `logs/HEAD` braucht.
+
+## Wenn die Ursache von außerhalb des Paketsystems wiederkehrt, gehört ein Auffangsatz in die Abnahme
+
+0147 verlangt „Der Riegel bleibt auf dem dann geltenden Korpus grün". Am 2026-09-06 habe
+ich das **nicht** gesenkt, sondern die Ursache weggeräumt (0200) — richtig, weil die
+Ursache ein Paket war. Heute ist dieselbe Bedingung zum zweiten Mal gerissen, und die
+Ursache ist diesmal der Übersetzungslauf: sie kehrt bei jeder nächsten übersetzten
+Überschrift wieder, und **kein Paket kann sie schließen** (das ist Empfehlung B, beim
+Betreiber).
+
+**Der Unterschied entscheidet die Behandlung.** Ursache ist ein Paket → davorhängen.
+Ursache ist ein Lauf oder eine Regel, die kein Agent ändern darf → die Bedingung bekommt
+einen **benannten Auffangsatz**, der die tragende Hälfte nicht senkt. Bei 0147: fällt der
+Riegel allein auf fremden Zitaten aus, zählt (i) zeichengleiche Zahlenzeile plus dieselben
+fremden Zitate im Wortlaut in beiden Fassungen und (ii) dass jeder der neun Mutanten am
+Selbsttest starb, **bevor** der Bestand gelesen wurde — Hälfte (ii) ist korpusunabhängig
+und war immer die tragende. Ohne Auffangsatz wäre 0147 beim dritten Rücklauf `blockiert`
+gewesen, an einem Paket, an dem nichts falsch ist.
+
 ## Offene Fährten
 
 - **Der Übersetzungslauf gegen den Belegstellenriegel:** 0200 ist abgenommen, der Riegel
@@ -181,7 +239,19 @@ Sorte Leerlauf.
   weitere Schrittpakete stürben an derselben Zeile „1 von 310".
 - **`technik.md` zerlegen**, siebzehntes Mal fällig — dreizehn Pakete auf einer Datei.
 - Reste `.kopf.tmp`/`.paket.tmp` mit `status: gebaut` verfälschen jede `^status:`-Zählung.
-- **Die Stufe `high` hat gereicht**, achter Lauf. Der teuerste Griff heute war das
+- **Der Riegel ist zum zweiten Mal rot, aus demselben Grund wie gestern** — Anleser „Der
+  Leitzins ist seit dem 2026-09-03 keine Sollreihe", jetzt englisch bei `spiel.md:2447`.
+  Nachzug als Bedingung 4 in 0185. **Kommt es ein drittes Mal, ist es kein Paket mehr,
+  sondern die Regelfrage** — dann gehört es in den Bericht an den Geschäftsführer und
+  nicht in einen vierten Nachzug.
+- **Meine eigenen Abnahmen von vor dem 2026-09-07 sind der Fundort, und die Fährte trägt:**
+  0195 gestern, 0185 heute. Beim nächsten Rücklauf zuerst fragen, aus welcher Zeit die
+  Bedingung stammt und ob sie ohne Shell erhebbar ist.
+- **Bahnen heute: vier von acht** (0147, 0185, 0203, 0214-lauf-txt). Gegenüber sechs
+  gestern zwei weniger, und beide Male ist es dieselbe Ursache in anderer Gestalt: 0212 und
+  0213 sind fertig, ihre Nachfolger liegen unter `ops/reserviert.txt`. Fünfzehn der offenen
+  Pakete stehen auf `spiel.md`/`technik.md`, dritter Tag.
+- **Die Stufe `high` hat gereicht**, neunter Lauf. Der teuerste Griff heute war das
   Umschreiben einer Abnahme, die ich selbst falsch gestellt hatte — Sorgfalt, keine Tiefe.
 - **Meine eigenen Abnahmen von vor der Lehre sind der nächste Fundort.** 0195 war eine;
   es können mehr sein. Beim nächsten Rücklauf zuerst fragen, ob die Bedingung aus der
