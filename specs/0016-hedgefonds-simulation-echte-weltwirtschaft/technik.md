@@ -1846,99 +1846,98 @@ overnight (section 10).
 
 ## 8. Markträumung und die beiden Renditen
 
-**T28 — Feste Iterationszahl statt Konvergenzabbruch.** Der Weltpreis je handelbarem
-Sektor wird durch **genau 40 Halbierungsschritte** über einem festen Preisintervall
-gesucht, nicht bis zu einer Schranke. Ein Abbruch nach Genauigkeit macht die Laufzeit vom
-Zustand abhängig und die Zahl der Schritte zu einem stillen Teil des Ergebnisses; eine
-feste Zahl macht beides messbar und begrenzt. 40 Halbierungen über einem Intervall von
-sechs Größenordnungen lösen bis unter ein Zehntausendstel auf — mehr Auflösung, als die
-Preisskala aus T5 überhaupt darstellt.
+**T28 — Fixed iteration count instead of convergence cutoff.** The world price per
+tradable sector is found by **exactly 40 bisection steps** over a fixed price interval,
+not until a bound is met. A cutoff by accuracy makes the runtime depend on the state and
+the number of steps a silent part of the result; a fixed count makes both measurable and
+bounded. 40 bisections over an interval of six orders of magnitude resolve to below one
+ten-thousandth — more resolution than the price scale from T5 can represent at all.
 
-Innerhalb jedes Halbierungsschritts stehen, in dieser Reihenfolge, der Zollkeil je Gebiet
-auf dem Weltpreis und daraus der wirksame Sektorpreis als Mischung
+Within each bisection step come, in this order, the tariff wedge per territory on the
+world price and from it the effective sector price as a blend
 
 ```
 preis = teile_gerundet(weltpreis_mit_zoll · durchgriff
                        + landespreis · (10.000 − durchgriff),  10.000)
 ```
 
-mit `landespreis = lies_alt(gebiet.<G>.sektor.<s>.preis)` nach T39, Präfix nach T17b, in
-Runde 1 also dem Startwert 10.000. Angebot und Nachfrage werden auf diesem Preis gebildet.
+with `landespreis = lies_alt(gebiet.<G>.sektor.<s>.preis)` per T39, prefix per T17b, in
+round 1 therefore the start value 10,000. Supply and demand are formed on this price.
 
-**Damit ist die Zulässigkeit der Halbierung belegt statt behauptet** — und das ist die
-Behebung von Befund 6, nicht nur seine Beantwortung. Beide Gewichte sind nichtnegativ
-(`durchgriff` liegt nach T23 Punkt 5 in 0 … 10.000), `landespreis` steht fest, während die
-Halbierung läuft, und `preis` ist deshalb monoton wachsend im Weltpreis. Die
-Überschussfunktion erbt diese Monotonie, es entsteht keine Fixpunktaufgabe, und ein Durchlauf
-genügt. Die zweite Lesart des Prüfers — `landespreis` als räumender Inlandspreis derselben
-Runde — hätte genau das zerstört; sie ist mit T39 nicht nur verworfen, sondern nicht mehr
-formulierbar.
+**With that the admissibility of the bisection is proven instead of asserted** — and that
+is the resolution of finding 6, not merely its answer. Both weights are non-negative
+(`durchgriff` lies per T23 point 5 in 0 … 10,000), `landespreis` stands fixed while the
+bisection runs, and `preis` is therefore monotonically increasing in the world price. The
+excess function inherits this monotonicity, no fixed-point problem arises, and one pass
+suffices. The reviewer's second reading — `landespreis` as the clearing domestic price of
+the same round — would have destroyed exactly that; with T39 it is not merely rejected
+but no longer expressible.
 
-Dienstleistungen haben keine Handelszeile, keinen Weltpreis und `durchgriff = 0`; ihr
-Sektorpreis ist die reine Fortschreibung des Vorrundenpreises durch die inländische
-Räumung.
+Services have no trade line, no world price and `durchgriff = 0`; their sector price is
+the pure carry-forward of the previous round's price through the domestic clearing.
 
-**T29 — Ganzzahlige Potenzen und Wurzeln über Newton auf `i128`.** Wo die
-Produktionsfunktion einen Exponenten wie 1/3 braucht, wird `wurzel(x, n)` mit fester
-Schrittzahl verwendet; Exponenten sind auf Brüche kleiner ganzer Zahlen beschränkt. Keine
-Reihenentwicklung, kein Logarithmus, keine Tabelleninterpolation.
+**T29 — Integer powers and roots via Newton on `i128`.** Where the production function
+needs an exponent like 1/3, `wurzel(x, n)` with a fixed step count is used; exponents are
+restricted to fractions of small integers. No series expansion, no logarithm, no table
+interpolation.
 
-**T33 — Marktrendite und Fondsrendite werden über einen eingefrorenen Mengenkorb
-gerechnet.** `spiel.md` hat die Auslegung entschieden: wertgewichtete Rendite aller
-handelbaren Körbe zu Modellmarktwerten, gewichtet nach dem Markt und **nicht** nach dem
-Bestand des Fonds. Die Regel, in Schritt 6 der Runde und nur im `spielmodus`:
+**T33 — Market return and fund return are computed over a frozen quantity basket.**
+`spiel.md` has decided the interpretation: value-weighted return of all tradable baskets
+at model market values, weighted by the market and **not** by the fund's holdings. The
+rule, in step 6 of the round and only in `spielmodus`:
 
-1. Der **Marktkorb** umfasst die 12 Land×Sektor-Körbe und die 4 Staatsanleihen, jeweils zu
-   Modellmarktwerten. Währungen tragen keine Marktkapitalisierung und gehen nicht ein; ihre
-   Wirkung steckt in der Umrechnung der übrigen Körbe in den Numéraire. **Seit `spiel.md`
-   Fassung 5 sind Menge und Kurs benannt**, und damit ist der Korb eine Rechnung statt einer
-   Umschreibung — die Mengen sind Kapitalstock und Staatsschuld, die Kurse Sektorpreis,
-   Anleihekurs und Wechselkurs (T48):
+1. The **market basket** comprises the 12 country×sector baskets and the 4 government
+   bonds, each at model market values. Currencies carry no market capitalisation and do
+   not enter; their effect sits in the conversion of the other baskets into the numéraire.
+   **Since `spiel.md` version 5, quantity and price are named**, and with that the basket
+   is a calculation instead of a paraphrase — the quantities are capital stock and
+   government debt, the prices sector price, bond price and exchange rate (T48):
 
    ```
    marktkorb(m, k) = Σ über die 12 Land×Sektor  wert_(m,k)(kapitalstock[l][s], sektorpreis[l][s], l)
                    + Σ über die  4 Anleihen     wert_(m,k)(schuld(l),          anleihekurs(l),    l)
    ```
 
-   `m` und `k` sagen, aus welcher Runde die Menge und aus welcher der Kurs gelesen wird;
-   beide Summen laufen über die Indexordnung aus T9. Der Wert steht in der
-   **volkswirtschaftlichen** Skala (T5 Klasse 2) und überquert keine Skalengrenze.
-2. `markt.wert` trägt den Wert dieses Korbs am Ende der Vorrunde. **In Runde 1 ist es der
-   Startwert aus dem Jahrgang** — der Wert des Startkorbs zu Startpreisen, vom Jahrgangsbau
-   als `marktkorb(start, start)` gerechnet und im Manifest ausgewiesen. Damit ist die zweite
-   Hälfte von Befund 2 der zweiten Prüfung geschlossen, unabhängig vom Modus.
-3. Bewerte den **Mengenkorb der Vorrunde** zu den Preisen dieser Runde:
-   `W_neu = marktkorb(alt, neu)`, also Mengen über `lies_alt` und Kurse über `lies_neu`
-   (T39). `markt.rendite = teile_gerundet((W_neu − markt.wert) · 10.000, markt.wert)` in
-   Basispunkten.
-4. Erst danach wird `markt.wert = marktkorb(neu, neu)` gesetzt.
+   `m` and `k` say from which round the quantity and from which the price is read; both
+   sums run over the index order from T9. The value stands on the **macroeconomic** scale
+   (T5 class 2) and crosses no scale boundary.
+2. `markt.wert` carries the value of this basket at the end of the previous round. **In
+   round 1 it is the start value from the vintage** — the value of the start basket at
+   start prices, computed by the vintage build as `marktkorb(start, start)` and reported
+   in the manifest. With that the second half of finding 2 of the second review is
+   closed, independent of the mode.
+3. Value the **quantity basket of the previous round** at this round's prices:
+   `W_neu = marktkorb(alt, neu)`, that is, quantities via `lies_alt` and prices via
+   `lies_neu` (T39). `markt.rendite = teile_gerundet((W_neu − markt.wert) · 10.000, markt.wert)`
+   in basis points.
+4. Only afterwards is `markt.wert = marktkorb(neu, neu)` set.
 
-Mengenwachstum erzeugt damit keine Scheinrendite. **`markt.wert` ist nie null** — er ist
-eine Summe positiver Mengen mal positiver Kurse, und beide Wertebereiche prüft der
-Invariantentest (T30 Prüfung 2). Damit sieht die Division in Punkt 3 nie einen Nenner null,
-ohne dass irgendwo ein Sonderfall stünde; das ist dieselbe Bauart wie Schritt (c) vor (d)
-weiter unten.
+Quantity growth thus produces no spurious return. **`markt.wert` is never zero** — it is
+a sum of positive quantities times positive prices, and both value ranges are checked by
+the invariant test (T30 check 2). With that the division in point 3 never sees a zero
+denominator without a special case standing anywhere; that is the same construction as
+step (c) before (d) further down.
 
-**Die Fondsrendite entsteht in derselben Reihenfolge, und die Reihenfolge ist die Regel:**
-(a) Positionen bewerten, (a') Beteiligungen bewerten, (b) Fondsvermögen bilden, (c) ist es
-**null oder kleiner**, greift nach `spiel.md` Todesart 1 in derselben Runde und die Partie
-endet ohne Renditebildung, (d) erst sonst wird die Rendite gebildet: Änderung des
-Fondsvermögens gegenüber der Vorrunde, **bereinigt um Anlegerzu- und -abflüsse dieser
-Runde** — sonst zählte frisches Anlegergeld als Leistung und der Anlegerabzug aus
-Gegenkraft 3 verstärkte sich selbst. Die Überrendite ist die Differenz beider Größen in
-Basispunkten und steht für drei Runden im Zustand.
+**The fund return arises in the same order, and the order is the rule:** (a) value the
+positions, (a') value the stakes, (b) form the fund assets, (c) if they are **zero or
+below**, `spiel.md` way of dying 1 takes hold in the same round and the game ends without
+return formation, (d) only otherwise is the return formed: change of the fund assets
+against the previous round, **adjusted for investor inflows and outflows of this round**
+— otherwise fresh investor money would count as performance and the investor withdrawal
+from counterforce 3 would reinforce itself. The excess return is the difference of the
+two quantities in basis points and stands in the state for three rounds.
 
-Schritt (c) vor (d) ist keine Feinheit: Er ist der Grund, warum `teile_gerundet` in diesem
-Modell nie einen Nenner null sieht, ohne dass irgendwo ein Sonderfall geprüft würde.
+Step (c) before (d) is no fine point: it is the reason why `teile_gerundet` in this model
+never sees a zero denominator without a special case being checked anywhere.
 
-**T47 — Das Fondsvermögen ist genau eine Funktion, und jede Bewertung darin überquert die
-Skalengrenze genau einmal, am äussersten Aufruf.** `spiel.md` Fassung 5 bildet `korbwert`
-und `positionswert`, die Fassung 4 nur verwendet hatte (Befund 1 der Runde 6), und
-entscheidet, auf welcher Seite der Grenze `korbwert` steht (Befund 2). Hier steht, wo
-gerechnet wird.
+**T47 — The fund assets are exactly one function, and every valuation in it crosses the
+scale boundary exactly once, at the outermost call.** `spiel.md` version 5 forms
+`korbwert` and `positionswert`, which version 4 had only used (finding 1 of round 6), and
+decides on which side of the boundary `korbwert` stands (finding 2). Here stands where
+the computing is done.
 
-**Die Marktwerte, alle in der volkswirtschaftlichen Skala** (T5 Klasse 2); `wert` ist die
-eine Bewertungsformel, aus der alle drei Steckplatzarten entstehen:
+**The market values, all on the macroeconomic scale** (T5 class 2); `wert` is the one
+valuation formula from which all three slot kinds arise:
 
 ```
 wert(menge, kurs, g) = mal_geteilt(menge, kurs, wechselkurs[g])
@@ -1951,7 +1950,7 @@ markt(p)         = korbwert | anleihewert | waehrungswert, je nach Steckplatzart
 stufenwert(p)    = mal_geteilt(markt(p), stufenweite, 10.000)
 ```
 
-**Die beiden Fondswerte, in US-Cent** (T5 Klasse 1) — und genau hier liegt die Grenze:
+**The two fund values, in US cents** (T5 class 1) — and exactly here lies the boundary:
 
 ```
 positionswert(p)       = 0                                        falls stufen(p) = 0
@@ -1967,169 +1966,166 @@ fondsvermoegen(z) = kasse
                   − hebelstand
 ```
 
-Beide Summen laufen über die Indexordnung aus T9, nie über eine Menge. `korbwert(l, s)` ist
-derselbe Wert, den auch der Marktkorb aus Punkt 1 dieses Abschnitts verwendet — **eine
-Bewertung, nicht zwei**, sonst könnten Marktrendite und Fondsvermögen denselben Korb
-verschieden ansetzen.
+Both sums run over the index order from T9, never over a set. `korbwert(l, s)` is the
+same value that the market basket from point 1 of this section also uses — **one
+valuation, not two**, otherwise market return and fund assets could price the same basket
+differently.
 
-**Das ist die Behebung von Befund 2, und sie steht an der Wurzel und nicht in einer
-Klammer.** Die Formel der Fassung 5 bestand aus zwei `mal_geteilt` mit einheitenlosen
-Anteilen, war also skalenerhaltend: Was in Tausend USD hineinging, kam in Tausend USD
-heraus und wurde als US-Cent verbucht — Faktor 100.000, Kasse fällt um das
-Hunderttausendfache dessen, was das Beteiligungsvermögen steigt, Todesart 1 in derselben
-Runde, Klasse 2 von Maß 2 von Bauart wegen chancenlos. `tsd_in_cent` um den äussersten
-Aufruf schliesst das.
+**That is the resolution of finding 2, and it stands at the root and not in a
+parenthesis.** The version-5 formula consisted of two `mal_geteilt` with unitless shares,
+hence was scale-preserving: what went in in thousand USD came out in thousand USD and was
+booked as US cents — factor 100,000, the cash falls by a hundred thousand times what the
+stake assets rise, way of dying 1 in the same round, class 2 of Maß 2 hopeless by
+construction. `tsd_in_cent` around the outermost call closes that.
 
-**Von den beiden Wegen, die der Prüfer offengelassen hat, ist der andere ausgeschlossen,
-und die Begründung ist nicht meine.** `korbwert` gleich in Cent zu führen hiesse, denselben
-Korb in zwei Skalen zu führen, denn T33 bewertet dieselben zwölf Körbe volkswirtschaftlich —
-zwei Bewertungen für einen Korb, also genau das, was der Absatz darüber ausschliesst.
-`spiel.md` Fassung 5 entscheidet das unter *Wo die Skalengrenze liegt* und weist mir nur
-noch zu, **welche Funktion** es tut. Es ist `tsd_in_cent` aus T50, und sie hat in diesem
-Dokument genau die zwei Aufruforte, die oben stehen.
+**Of the two paths the reviewer left open, the other one is ruled out, and the reasoning
+is not mine.** To carry `korbwert` in cents right away would mean carrying the same
+basket on two scales, for T33 values the same twelve baskets macroeconomically — two
+valuations for one basket, hence exactly what the paragraph above rules out. `spiel.md`
+version 5 decides that under *Where the scale boundary lies* and assigns to me only
+**which function** does it. It is `tsd_in_cent` from T50, and in this document it has
+exactly the two call sites that stand above.
 
-**Die Reihenfolge der Rundungen ist verbindlich, weil sie das Ergebnis ändert.**
-`stufen(p) · stufenwert(p)` und `mal_geteilt(markt(p), stufen(p) · stufenweite, 10.000)`
-unterscheiden sich um bis zu `|stufen(p)|` Einheiten. Verbindlich ist die erste Form, weil
-`spiel.md` sie so schreibt; die zweite wäre genauer und macht jeden Regressionsbestand
-ungültig, der mit der ersten entstanden ist. Wer sie will, braucht einen ADR, keinen
-besseren Grund.
+**The order of the roundings is binding, because it changes the result.**
+`stufen(p) · stufenwert(p)` and `mal_geteilt(markt(p), stufen(p) · stufenweite, 10.000)`
+differ by up to `|stufen(p)|` units. Binding is the first form, because `spiel.md` writes
+it that way; the second would be more accurate and invalidates every regression corpus
+that arose with the first. Whoever wants it needs an ADR, not a better reason.
 
-**Zwei Wertebereichsschranken gehören dazu, sonst ist die Formel nur bei gutem Wetter
-richtig.** Erstens teilt `wert` durch `wechselkurs[g]`: Ein Nenner null ist nach T6 ein
-Abbruch, ein **negativer** Nenner wäre schlimmer — er drehte das Vorzeichen jeder Bewertung,
-ohne dass irgendetwas abbräche. `wechselkurs[g] ≥ 1` ist deshalb eine Invariante (T30
-Prüfung 2), keine Erwartung. Zweitens ist `tsd_in_cent` die einzige Stelle, an der ein `i64`
-überlaufen kann: `x · 100.000` verlässt den Bereich ab `|x| > 9,2 · 10^13` Tausend USD. Der
-grösste Wert, der dort ankommen kann, ist durch den ganzen Marktkorb beschränkt; bei einem
-Weltkapitalstock in der Größenordnung von `4 · 10^11` Tausend USD — grob das Drei- bis
-Vierfache eines Weltbruttoinlandsprodukts von rund `10^11` Tausend USD, als Größenordnung
-und nicht als Messung — liegen gut zwei Größenordnungen dazwischen. Der Jahrgangsbau prüft
-`marktkorb(start, start) < 9,2 · 10^13`, der Invariantentest prüft `markt.wert` je Runde
-gegen dieselbe Schranke. Damit ist der Überlauf nicht bloß unwahrscheinlich, sondern
-ausgeschlossen und geprüft.
+**Two value-range bounds belong with this, otherwise the formula is only right in fair
+weather.** First, `wert` divides by `wechselkurs[g]`: a zero denominator is per T6 an
+abort, a **negative** denominator would be worse — it would flip the sign of every
+valuation without anything aborting. `wechselkurs[g] ≥ 1` is therefore an invariant (T30
+check 2), not an expectation. Second, `tsd_in_cent` is the only place where an `i64` can
+overflow: `x · 100.000` leaves the range from `|x| > 9,2 · 10^13` thousand USD on. The
+largest value that can arrive there is bounded by the whole market basket; with a world
+capital stock on the order of `4 · 10^11` thousand USD — roughly three to four times a
+world gross domestic product of around `10^11` thousand USD, as an order of magnitude and
+not as a measurement — a good two orders of magnitude lie in between. The vintage build
+checks `marktkorb(start, start) < 9,2 · 10^13`, the invariant test checks `markt.wert`
+each round against the same bound. With that the overflow is not merely improbable but
+ruled out and checked.
 
-**Was die Anteilsskala nach unten begrenzt, und warum das eine Auflage an den Selbstspieler
-ist.** `stufenweite` ist ganzzahlig und mindestens 1; eine Stufe kostet deshalb mindestens
-ein Zehntausendstel des Korbs, an dem sie hängt. Die sechzehn Marktwerte eines Jahrgangs
-liegen weit auseinander — der Kapitalstock der Dienstleistungen in den USA gegen die
-Landwirtschaft Brasiliens —, und **derselbe** `stufenweite`-Wert gilt für alle. Der
-Jahrgangsbau weist deshalb den kleinsten und den grössten der sechzehn Startmarktwerte im
-Manifest aus. Das ist die Zahl, die der Selbstspieler braucht, bevor er `startkapital` und
-`stufenweite` sucht: Eine Stufe auf dem grössten Korb muss bezahlbar sein (sonst gewinnt
-Klasse 1 nie), und erreichbare Stufenzahlen müssen die Aufsichtsschwellen erreichen (sonst
-greift keine Gegenkraft und Maß 3 fällt auf null) — die beiden Bedingungen, die `spiel.md`
-unter *Offene Entwurfsfragen* aufstellt, hier mit der Zahl versehen, an der man sie abliest.
+**What bounds the share scale from below, and why that is a condition on the
+self-player.** `stufenweite` is integer and at least 1; one step therefore costs at least
+one ten-thousandth of the basket it hangs on. The sixteen market values of a vintage lie
+far apart — the capital stock of services in the USA against Brazil's agriculture — and
+**the same** `stufenweite` value holds for all of them. The vintage build therefore
+reports the smallest and the largest of the sixteen start market values in the manifest.
+That is the number the self-player needs before it searches for `startkapital` and
+`stufenweite`: a step on the largest basket must be affordable (otherwise class 1 never
+wins), and reachable step counts must reach the supervision thresholds (otherwise no
+counterforce takes hold and Maß 3 falls to zero) — the two conditions `spiel.md` sets up
+under *Offene Entwurfsfragen*, here furnished with the number they are read off from.
 
-Vier Eigenschaften, die diese Fassung binden, alle aus `spiel.md`:
+Four properties that bind this version, all from `spiel.md`:
 
-1. **`ausstiegsabschlag` ist ein Schlüssel aus `parameter.toml`** (T27), kein Literal, und
-   liegt in Zehntausendsteln. Der Abschlag steckt damit im Wertansatz und ist beim
-   **Aufbau** bezahlt: Die Kasse gibt beim Einstieg den vollen Korbanteil ab, das
-   Fondsvermögen fällt in derselben Runde um den Abschlag. Beim gewöhnlichen Ausstieg wird
-   er **nicht ein zweites Mal** abgezogen; illiquide bleibt die Beteiligung über die zwei
-   Runden, die `restdauer[l][s]` zählt.
-2. **Der Zwangsverkauf aus Gegenkraft 1 zieht `zwangsabschlag` zusätzlich ab** — ein zweiter
-   Parameterschlüssel, eine zusätzliche Strafe, keine Ersetzung des ersten.
-3. **`fondsvermoegen` hat genau einen Aufrufort je Zweck und keinen zweiten Rechenweg.**
-   Gelesen wird sie von der Abrechnung (Schritt 6), der Mandatsprüfung, Todesart 1, dem
-   Invariantentest aus T30 Prüfung 2 und von `v(z)` in T44. Dass alle fünf dieselbe Zahl
-   sehen, ist der Grund, warum „Fondsvermögen" durchgehend dasselbe heisst — *was der Fonds
-   wert ist, wenn er hier aufhört*.
-4. **Sie ist keine Zustandsadresse.** Der Zustand hält Kasse, Steckplätze, Anteile und
-   Hebel; das Vermögen ist deren Funktion. Ein Feld dafür wäre eine zweite Kopie derselben
-   Zahl — derselbe Fehlertyp, den T39 für `landespreis` und T23 Punkt 9 für die
-   BACI-Konkordanz schon geschlossen haben. Die 310 aus T15 ändern sich deshalb nicht.
+1. **`ausstiegsabschlag` is a key from `parameter.toml`** (T27), not a literal, and lies
+   in ten-thousandths. The discount thus sits in the valuation and is paid at
+   **build-up**: on entry the cash gives up the full basket share, the fund assets fall
+   in the same round by the discount. On an ordinary exit it is **not deducted a second
+   time**; the stake stays illiquid over the two rounds that `restdauer[l][s]` counts.
+2. **The forced sale from counterforce 1 deducts `zwangsabschlag` in addition** — a
+   second parameter key, an additional penalty, not a replacement of the first.
+3. **`fondsvermoegen` has exactly one call site per purpose and no second computation
+   path.** It is read by the settlement (step 6), the mandate check, way of dying 1, the
+   invariant test from T30 check 2 and by `v(z)` in T44. That all five see the same
+   number is the reason why "fund assets" means the same thing throughout — *what the
+   fund is worth if it stops here*.
+4. **It is not a state address.** The state holds cash, slots, shares and leverage; the
+   assets are their function. A field for it would be a second copy of the same number —
+   the same error type that T39 has already closed for `landespreis` and T23 point 9 for
+   the BACI concordance. The 310 from T15 therefore do not change.
 
-**Was ein Aufruf kostet, diesmal ausgezählt statt geschätzt.** Fassung 5 sprach von „wenigen
-Dutzend Operationen"; der Prüfer der Runde 6 hat das unter *geprüft und nicht gezählt* als
-zu klein bezeichnet und recht damit. Im ungünstigsten Fall — alle zwanzig Steckplätze
-belegt, alle zwölf Beteiligungen ungleich null:
+**What a call costs, this time counted out instead of estimated.** Version 5 spoke of
+„wenigen Dutzend Operationen"; the reviewer of round 6 called that too small under
+*geprüft und nicht gezählt* and was right. In the worst case — all twenty slots occupied,
+all twelve stakes non-zero:
 
-| Teil | Aufrufe | Operationen |
+| Part | Calls | Operations |
 |---|---:|---:|
-| `bip(l)` | 4 | 8 Additionen |
+| `bip(l)` | 4 | 8 additions |
 | `schuld(l)` | 4 | 4 `mal_geteilt` |
-| `anleihekurs(l)` | 4 | 4 Additionen, 4 `teile_gerundet` |
+| `anleihekurs(l)` | 4 | 4 additions, 4 `teile_gerundet` |
 | `anleihewert(l)` | 4 | 4 `mal_geteilt` |
-| `handelsvolumen(l)` | 4 | 64 Additionen |
+| `handelsvolumen(l)` | 4 | 64 additions |
 | `waehrungswert(l)` | 3 | 3 `mal_geteilt` |
 | `korbwert(l, s)` | 12 | 12 `mal_geteilt` |
 | `stufenwert(p)` | 20 | 20 `mal_geteilt` |
-| `positionswert(p)` | 20 | 40 Multiplikationen |
-| `beteiligung_wert(l, s)` | 12 | 24 `mal_geteilt`, 12 Multiplikationen |
-| zwei Summen | 1 | 32 Additionen |
-| **Summe** | | **rund 230, davon 71 `i128`-Divisionen** |
+| `positionswert(p)` | 20 | 40 multiplications |
+| `beteiligung_wert(l, s)` | 12 | 24 `mal_geteilt`, 12 multiplications |
+| two sums | 1 | 32 additions |
+| **Total** | | **around 230, of which 71 `i128` divisions** |
 
-Gegen 7.500 Operationen je Weltschritt sind das **gut drei Prozent**, nicht drei Promille.
-Der Planwert von 10 µs hat Bandbreite bis 30 und die Reserve rechnet mit 50; keine Zeile
-von Abschnitt 10 bewegt sich. Zwei Vorgaben senken den tatsächlichen Preis weit darunter:
-`positionswert` bricht bei `stufen(p) = 0` ab, bevor `markt(p)` überhaupt gerechnet wird
-(die meisten Steckplätze sind die meiste Zeit leer), und **`korbwert(l, s)` wird je Aufruf
-von `fondsvermoegen` einmal in ein Feld von zwölf gerechnet und von Steckplatz und
-Beteiligung daraus gelesen** — nicht, um Zeit zu sparen, sondern weil „eine Bewertung, nicht
-zwei" sonst nur ein Satz wäre und keine Eigenschaft des Codes.
+Against 7,500 operations per world step that is **a good three percent**, not three per
+mille. The plan value of 10 µs has bandwidth up to 30 and the reserve reckons with 50; no
+line of section 10 moves. Two prescriptions push the actual price far below that:
+`positionswert` breaks off at `stufen(p) = 0` before `markt(p)` is computed at all (most
+slots are empty most of the time), and **`korbwert(l, s)` is computed once per call of
+`fondsvermoegen` into a field of twelve and read from there by slot and stake** — not to
+save time, but because "one valuation, not two" would otherwise be only a sentence and
+not a property of the code.
 
-**T48 — Die abgeleiteten Größen sind Funktionen des Zustands, keine Adressen, und sie sind
-abschliessend aufgezählt.** Das ist die architektonische Antwort auf Befund 1 der Runde 6,
-und sie ist die einzige, die dessen Wiederholung ausschliesst. Zwei Formeln nachzutragen
-behebt den Fall; ihn zu beheben und die Menge offenzulassen, in der niemand ein Fehlen
-bemerkt, behebt ihn nicht. T45 zählt **Adressen** ab und konnte die Lücke deshalb nicht
-finden — `korbwert` war nie eine der 310. Diese Tabelle ist die Menge, in der er lag.
+**T48 — The derived quantities are functions of the state, not addresses, and they are
+exhaustively enumerated.** That is the architectural answer to finding 1 of round 6, and
+it is the only one that rules out its repetition. Adding two formulas fixes the case; to
+fix it and leave open the set in which nobody notices an absence does not fix it. T45
+enumerates **addresses** and therefore could not find the gap — `korbwert` was never one
+of the 310. This table is the set in which it lay.
 
-| # | Name | Klasse (T5) | Definition | steht in |
+| # | Name | Class (T5) | Definition | stands in |
 |---:|---|---:|---|---|
 | 1 | `wert(menge, kurs, g)` | 2 | `mal_geteilt(menge, kurs, wechselkurs[g])` | T47 |
 | 2 | `korbwert(l, s)` | 2 | `wert(kapitalstock[l][s], sektorpreis[l][s], l)` | T47 |
 | 3 | `anleihewert(l)` | 2 | `wert(schuld(l), anleihekurs(l), l)` | T47 |
 | 4 | `waehrungswert(l)` | 2 | `wert(handelsvolumen(l), 10.000, l)` | T47 |
-| 5 | `markt(p)` | 2 | Fallunterscheidung über die drei Steckplatzarten aus T16 | T47 |
+| 5 | `markt(p)` | 2 | case distinction over the three slot kinds from T16 | T47 |
 | 6 | `stufenwert(p)` | 2 | `mal_geteilt(markt(p), stufenweite, 10.000)` | T47 |
-| 7 | `marktkorb(m, k)` | 2 | Σ 12 `korbwert` + Σ 4 `anleihewert`, Mengen aus `m`, Kurse aus `k` | T33 |
-| 8 | `korbbestand(z)` | 2 | siehe unten | T47 |
-| 9 | `bip(l)` | 2 | `Σ über die 3 Sektoren wertschoepfung[l][s]` | hier |
-| 10 | `schuld(l)` | 2 | `mal_geteilt(bip(l), staatsschuld[l], 10.000)` | hier |
-| 11 | `handelsvolumen(l, s)` | 2 | siehe unten; die einstellige Fassung `handelsvolumen(l)` ist ihre Summe über s ∈ {1, 2} | hier |
-| 12 | `anleihekurs(l)` | 5 | siehe unten | hier |
+| 7 | `marktkorb(m, k)` | 2 | Σ 12 `korbwert` + Σ 4 `anleihewert`, quantities from `m`, prices from `k` | T33 |
+| 8 | `korbbestand(z)` | 2 | see below | T47 |
+| 9 | `bip(l)` | 2 | `Σ über die 3 Sektoren wertschoepfung[l][s]` | here |
+| 10 | `schuld(l)` | 2 | `mal_geteilt(bip(l), staatsschuld[l], 10.000)` | here |
+| 11 | `handelsvolumen(l, s)` | 2 | see below; the one-argument form `handelsvolumen(l)` is its sum over s ∈ {1, 2} | here |
+| 12 | `anleihekurs(l)` | 5 | see below | here |
 | 13 | `landespreis(g, s)` | 5 | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | T39 |
-| 14 | `fondsanteil(l, s)` | 4 | `\|stufen(l, s)\| · stufenweite + anteil[l][s]` | hier |
-| 15 | `positionswert(p)` | 1 | `tsd_in_cent(stufen(p) · stufenwert(p))`, 0 bei `stufen = 0` | T47 |
-| 16 | `beteiligung_wert(l, s)` | 1 | Korbanteil abzüglich `ausstiegsabschlag`, dann `tsd_in_cent` | T47 |
-| 17 | `fondsvermoegen(z)` | 1 | Kasse + Positionen + Beteiligungen − Hebel | T47 |
-| 18 | `hub(l, i)` | **die des Instruments**: 3 für Zoll, Leitzins und Haushalt, 10 für die Regulierung | `\|lies_neu(land.<l>.instrument.<i>.stand) − lies_alt(dieselbe Adresse)\|` | hier |
-| 19 | `keilhub(l, s)` | 5 | `mal_geteilt(welt.preis.<s>, hub(l, zoll), 10.000)` | hier |
-| 20 | `preishub_zoll(l, s)` | 5 | `mal_geteilt(keilhub(l, s), durchgriff(l, s), 10.000)` | hier |
+| 14 | `fondsanteil(l, s)` | 4 | `\|stufen(l, s)\| · stufenweite + anteil[l][s]` | here |
+| 15 | `positionswert(p)` | 1 | `tsd_in_cent(stufen(p) · stufenwert(p))`, 0 at `stufen = 0` | T47 |
+| 16 | `beteiligung_wert(l, s)` | 1 | basket share minus `ausstiegsabschlag`, then `tsd_in_cent` | T47 |
+| 17 | `fondsvermoegen(z)` | 1 | cash + positions + stakes − leverage | T47 |
+| 18 | `hub(l, i)` | **that of the instrument**: 3 for tariff, policy rate and budget, 10 for the regulation | `\|lies_neu(land.<l>.instrument.<i>.stand) − lies_alt(dieselbe Adresse)\|` | here |
+| 19 | `keilhub(l, s)` | 5 | `mal_geteilt(welt.preis.<s>, hub(l, zoll), 10.000)` | here |
+| 20 | `preishub_zoll(l, s)` | 5 | `mal_geteilt(keilhub(l, s), durchgriff(l, s), 10.000)` | here |
 | 21 | `weltpreis_mit_zoll(g, s)` | 5 | `mal_geteilt(welt.preis.<s>, 10.000 + zollstand(g), 10.000)` | T28 |
-| 22 | `schaden(l, i)` | 2 | `mal_geteilt(menge, verschiebung, 10.000)`, vier Zeilen, siehe unten | hier |
+| 22 | `schaden(l, i)` | 2 | `mal_geteilt(menge, verschiebung, 10.000)`, four lines, see below | here |
 
-**Nummer 18 bis 22 sind am 2026-09-04 mit Paket `0043-t48-groessen-gegenkraft-5`
-dazugekommen**, aus den Paketen 0021 (die Schadensvorschrift) und 0039 (die Zollzeile misst
-nur noch den Keil). Sie sind der Fall, für den T48 gebaut wurde, ein zweites Mal: Der Entwurf
-hat fünf Namen in Formeln eingeführt und seine eigene Nachziehtabelle meldete davon keinen.
-Nummer 21 ist der ältere Fall — T28 **nennt** den Zollkeil („der Zollkeil je Gebiet auf dem
-Weltpreis") und rechnet in seiner Preisformel mit `weltpreis_mit_zoll`, ohne ihn je zu
-bilden; das war folgenlos, solange keine zweite Stelle ihn brauchte, und ist es seit Nummer 19
-nicht mehr.
+**Numbers 18 to 22 were added on 2026-09-04 with package `0043-t48-groessen-gegenkraft-5`**,
+from packages 0021 (the damage prescription) and 0039 (the tariff line now measures only
+the wedge). They are the case T48 was built for, a second time: the design introduced
+five names in formulas, and its own catch-up table reported none of them. Number 21 is
+the older case — T28 **names** the tariff wedge ("the tariff wedge per territory on the
+world price") and computes with `weltpreis_mit_zoll` in its price formula without ever
+forming it; that was without consequence as long as no second place needed it, and since
+number 19 it no longer is.
 
-**Nummer 18 ist die einzige Größe der Tabelle ohne eine einzige Klasse, und das ist kein
-Versehen.** `hub` ist skalen*erhaltend*: Es bildet den Betrag einer Differenz zweier Stände
-**derselben** Adresse, und die Klasse des Ergebnisses ist die der Adresse. T49 gibt den vier
-Instrumentenständen eines Landes nicht dieselbe Klasse — Zoll, Leitzins und Haushalt stehen
-in Basispunkten (3), die Finanzmarktregulierung in Stufen (10). Eine erfundene gemeinsame
-Klasse wäre hier die Fehlerart, gegen die T5 gebaut ist; die richtige Aussage ist die über
-die Abbildung und nicht die über den Wert.
+**Number 18 is the only quantity of the table without a single class, and that is no
+oversight.** `hub` is scale-*preserving*: it forms the absolute value of a difference of
+two levels of **the same** address, and the class of the result is that of the address.
+T49 does not give the four instrument levels of a country the same class — tariff, policy
+rate and budget stand in basis points (3), the financial-market regulation in steps (10).
+An invented common class would be, here, the error kind T5 is built against; the correct
+statement is the one about the mapping, not the one about the value.
 
-**Nummer 21 gilt für alle fünf Gebiete, und für die Restwelt ist `zollstand` null.** Der
-Grund steht in den Daten und ist keine Wahl: T23 Punkt 5 führt `durchgriff` mit **5 × 2 = 10**
-Werten (Reihenliste Nr. 16), die Restwelt nimmt an der Preisübertragung also teil und braucht
-einen zollbelasteten Weltpreis; Instrumente hat sie nach T15 keine, ein `zollstand(RW)` ist
-deshalb keine Adresse, sondern die Null. Ich entscheide das hier, statt es zurückzugeben, aus
-demselben Grund wie die elf Startwerte in T46: Es ist keine Wahl zwischen zwei sinnvollen
-Zahlen, sondern die einzige Belegung, mit der die Formel über ihren angeschriebenen
-Definitionsbereich („je Gebiet") überhaupt total ist. Hält der Spielentwerfer sie für falsch,
-ist es eine Zeile.
+**Number 21 holds for all five territories, and for the rest of world `zollstand` is
+zero.** The reason stands in the data and is not a choice: T23 point 5 carries
+`durchgriff` with **5 × 2 = 10** values (series list no. 16), so the rest of world takes
+part in the price transmission and needs a tariff-laden world price; instruments it has
+none per T15, so a `zollstand(RW)` is not an address but the zero. I decide that here
+instead of handing it back, for the same reason as the eleven start values in T46: it is
+not a choice between two sensible numbers but the only assignment with which the formula
+is total at all over its written domain ("per territory"). If the game designer considers
+it wrong, it is one line.
 
-Die vier, die bisher nirgends standen:
+The four that until now stood nowhere:
 
 ```
 bip(l)               = Σ über die 3 Sektoren  wertschoepfung[l][s]
@@ -2144,19 +2140,19 @@ korbbestand(z)       = Σ über die 12 Körbe     mal_geteilt(korbwert(l, s),  f
                      + Σ über die  4 Anleihen  mal_geteilt(anleihewert(l),  |stufen(p)| · stufenweite, 10.000)
 ```
 
-**`handelsvolumen` hat seit dem 2026-09-03 zwei Fassungen, und sie sind eine Größe.** Die
-sektorweise ist die gebildete, die einstellige ihre Summe über die beiden handelbaren
-Sektoren — nicht zwei Definitionen desselben Namens, sondern eine Definition und ihre
-Aggregation. Das ist die Bedingung, unter der die Zollzeile von Gegenkraft 5 je Sektor
-rechnen kann, ohne dass Nummer 4 (`waehrungswert(l) = wert(handelsvolumen(l), 10.000, l)`)
-sich ändert: Dort steht weiterhin die einstellige Fassung, und sie bedeutet weiterhin
-dasselbe. Der dritte Sektor kommt in keiner der beiden vor — er hat keine Handelszeile.
+**`handelsvolumen` has had two forms since 2026-09-03, and they are one quantity.** The
+per-sector one is the defined one, the one-argument one its sum over the two tradable
+sectors — not two definitions of the same name, but one definition and its aggregation.
+That is the condition under which the tariff line of counterforce 5 can compute per
+sector without number 4 (`waehrungswert(l) = wert(handelsvolumen(l), 10.000, l)`)
+changing: there the one-argument form still stands, and it still means the same. The
+third sector appears in neither of the two — it has no trade line.
 
-`handelsvolumen` liest **beide Richtungen** je Paar; die Zuordnung des dichten
-Gegenüber-Index zum Gebietsindex ist die feste Abbildung aus T9 und steht im Code als
-benannte Tabelle, nicht als Rechnung auf Indizes.
+`handelsvolumen` reads **both directions** per pair; the assignment of the dense
+counterpart index to the territory index is the fixed mapping from T9 and stands in the
+code as a named table, not as arithmetic on indices.
 
-Die fünf aus Gegenkraft 5 und dem Zollkeil, in Rechenreihenfolge:
+The five from counterforce 5 and the tariff wedge, in computation order:
 
 ```
 hub(l, i)            = | lies_neu(land.<l>.instrument.<i>.stand)
@@ -2173,67 +2169,67 @@ schaden(l, haushalt)    = mal_geteilt(bip(l),    hub(l, haushalt),  10.000)
 schaden(l, regulierung) = mal_geteilt(bip(l),    hub(l, regulierung) · regulierung_last, 10.000)
 ```
 
-**`schaden` ist eine Funktion mit vier Zeilen und nicht vier Funktionen**, weil ihr Ergebnis
-in allen vier Fällen Klasse 2 ist und ihre Stelligkeit dieselbe. Die Summe über die Sektoren
-steht **innerhalb** der Zollzeile; nach aussen gibt auch sie eine Zahl je Land und
-Instrument, und das ist die Zahl, die der dritte Skalenübergang aus T50 entgegennimmt.
-`regulierung_last` ist der Parameterschlüssel aus T27 (Klasse 3, Basispunkte des BIP je
-Regulierungsstufe); das Produkt `hub(l, regulierung) · regulierung_last` ist Stufen mal
-Basispunkte je Stufe, also Klasse 3 — dieselbe Klasse wie die Verschiebung der beiden
-mittleren Zeilen, und deshalb rechnen alle vier über denselben Nenner 10.000. Der Nenner von `anleihekurs` ist nach T51
-nie null und nie negativ. **`fonds.marktanteil` ist keine abgeleitete Größe, sondern eine
-Adresse**, in Schritt 6 geschrieben als `mal_geteilt(korbbestand(z), 10.000, markt.wert)` —
-`spiel.md` schreibt dort `teile_gerundet(korbbestand · 10.000, markt.wert)`; das ist dieselbe
-Zahl, aber die naive Form läuft nach T6 über, und deshalb ist die `i128`-Form verbindlich.
+**`schaden` is one function with four lines and not four functions**, because its result
+in all four cases is class 2 and its arity the same. The sum over the sectors stands
+**inside** the tariff line; outwardly it too yields one number per country and
+instrument, and that is the number the third scale transition from T50 accepts.
+`regulierung_last` is the parameter key from T27 (class 3, basis points of GDP per
+regulation step); the product `hub(l, regulierung) · regulierung_last` is steps times
+basis points per step, hence class 3 — the same class as the shift of the two middle
+lines, and therefore all four compute over the same denominator 10.000. The denominator
+of `anleihekurs` is per T51 never zero and never negative. **`fonds.marktanteil` is not a
+derived quantity but an address**, written in step 6 as
+`mal_geteilt(korbbestand(z), 10.000, markt.wert)` — `spiel.md` writes there
+`teile_gerundet(korbbestand · 10.000, markt.wert)`; that is the same number, but the
+naive form overflows per T6, and therefore the `i128` form is binding.
 
-**Drei Größen liegen ausserhalb des Kerns** und stehen deshalb nicht in der Tabelle: `B(z)`,
-`v(z)` und `e(z)` aus T44. Sie sind Prüfstandsgrößen, gehören dem Baustein `pruefstand` und
-verlassen die Partie nie.
+**Three quantities lie outside the core** and therefore do not stand in the table:
+`B(z)`, `v(z)` and `e(z)` from T44. They are test-bench quantities, belong to the
+component `pruefstand` and never leave the game.
 
-**Die Regel, die daraus folgt, und der mechanische Nachweis dazu.** Ein Name in einer Formel
-dieses Dokuments oder in `spiel.md`, der weder eine Zustandsadresse aus T15 noch ein
-Parameterschlüssel aus T27 noch eine Jahrgangskonstante aus T23 noch eine der
-**zweiundzwanzig** Größen oben ist, **ist ein Befund und keine Bauentscheidung** — das ist
-der Fall, den Befund 1 beschreibt, und der Grund, warum er teuer war: Wählt der Bauagent,
-misst Maß 2 seine Wahl. Nachgewiesen wird es wie der Gleitkommaverzicht aus T4: Die
-zweiundzwanzig Namen sind die öffentliche Schnittstelle des Moduls `kern::werte` (T13), und
-die Deklarationen in `kern/include/kern/werte.hpp` ausserhalb von `namespace intern` gegen
-diese Tabelle gelegt sind eine Prüfung von zwei Minuten. **Ich habe
-sie in diesem Lauf einmal von Hand ausgeführt**, in der einzigen Form, die vor dem Bau
-möglich ist: jede Formel aus `spiel.md` und aus diesem Dokument Name für Name gegen die vier
-Mengen gelegt.
+**The rule that follows from this, and the mechanical proof for it.** A name in a formula
+of this document or in `spiel.md` that is neither a state address from T15 nor a
+parameter key from T27 nor a vintage constant from T23 nor one of the **twenty-two**
+quantities above **is a finding and not a build decision** — that is the case finding 1
+describes, and the reason it was expensive: if the build agent chooses, Maß 2 measures
+its choice. It is proven like the floating-point renunciation from T4: the twenty-two
+names are the public interface of the module `kern::werte` (T13), and laying the
+declarations in `kern/include/kern/werte.hpp` outside `namespace intern` against this
+table is a check of two minutes. **I have run it once by hand in this run**, in the only
+form possible before the build: every formula from `spiel.md` and from this document laid
+name by name against the four sets.
 
-**Und diesmal ist die Liste, gegen die geprüft wurde, mit abgedruckt** — das ist die
-Bedingung, unter der die Prüfung ein zweites Mal dasselbe ergibt. Erhoben mit
-`rg -o '\b[a-z][a-z0-9_]{2,}\('` über `spiel.md`, danach jeder Treffer einzeln zugeordnet.
-Übrig blieben die fünf oben; die **zweiundzwanzig Namen in den zehn Zeilen unten** sind
-**keine** abgeleiteten Größen, und warum sie es nicht sind, steht daneben. Wer die Erhebung
-wiederholt, darf genau diese Reste behalten und keinen weiteren:
+**And this time the list that was checked against is printed with it** — that is the
+condition under which the check yields the same result a second time. Collected with
+`rg -o '\b[a-z][a-z0-9_]{2,}\('` over `spiel.md`, then every hit assigned individually.
+What remained were the five above; the **twenty-two names in the ten lines below** are
+**not** derived quantities, and why they are not stands next to them. Whoever repeats the
+collection may keep exactly these remainders and no further one:
 
-| Name in `spiel.md` | keine abgeleitete Größe, sondern |
+| Name in `spiel.md` | not a derived quantity, but |
 |---|---|
-| `menge(l, i)`, `verschiebung(l, i)` | **Spaltenüberschriften der Schadenstabelle**, siehe den Absatz unten |
-| `zollstand(g)` | `land.<g>.instrument.zoll.stand` in Funktionsschreibweise; für die Restwelt null (Nr. 21) |
-| `stufen(p)`, `stufen(l, s)` | die Positionsstufe des Steckplatzes, `fonds.position.<l>.<s>` — eine Adresse aus T15, T5 Klasse 11, ebenfalls in Funktionsschreibweise. Sie stand schon vor diesem Paket unregistriert in den Formeln der Nummern 14 und 15; die Erhebung hat sie mitgefunden |
-| `durchgriff(l, s)` | Jahrgangskonstante, T23 Punkt 5, zehn Werte |
-| `welt.preis_start(s)` | Startwert des Jahrgangs, T23; steht nur in einer Kalibrierbedingung |
-| `regulierung_last`, `druck_max`, `stufenweite`, `aufschlag` | Parameterschlüssel, T27 |
-| `lobbypunkte_aus_schaden(tsd)` | dritter Skalenübergang, T50; **privat** in `kern::werte` und deshalb nicht in dieser Tabelle |
-| `gegendruck_neu(l, i)` | der in Schritt 5 geschriebene Wert von `land.<l>.instrument.<i>.gegendruck`, also eine Adresse |
-| `wmz(l, s)`, `preishub(l, s)` | Namen der **verworfenen** Vorfassung der Zollzeile. Sie stehen allein im Gegenbeispiel, mit dem `spiel.md` vorrechnet, was die Entscheidung vom 2026-09-03 beseitigt hat (8.472.000 statt null ohne jede Aktion) — ein Beleg, keine Vorschrift |
-| `mal_geteilt`, `teile_gerundet`, `lies_neu`, `lies_alt`, `min`, `max`, `sgn`, `wurzel` | Rechenwerk und Zugriffsform, T6, T29, T39 |
+| `menge(l, i)`, `verschiebung(l, i)` | **column headings of the damage table**, see the paragraph below |
+| `zollstand(g)` | `land.<g>.instrument.zoll.stand` in function notation; zero for the rest of world (no. 21) |
+| `stufen(p)`, `stufen(l, s)` | the position step of the slot, `fonds.position.<l>.<s>` — an address from T15, T5 class 11, likewise in function notation. It already stood unregistered in the formulas of numbers 14 and 15 before this package; the collection found it as well |
+| `durchgriff(l, s)` | vintage constant, T23 point 5, ten values |
+| `welt.preis_start(s)` | start value of the vintage, T23; stands only in one calibration condition |
+| `regulierung_last`, `druck_max`, `stufenweite`, `aufschlag` | parameter keys, T27 |
+| `lobbypunkte_aus_schaden(tsd)` | third scale transition, T50; **private** in `kern::werte` and therefore not in this table |
+| `gegendruck_neu(l, i)` | the value of `land.<l>.instrument.<i>.gegendruck` written in step 5, hence an address |
+| `wmz(l, s)`, `preishub(l, s)` | names of the **discarded** former version of the tariff line. They stand only in the counterexample with which `spiel.md` demonstrates what the decision of 2026-09-03 removed (8.472.000 instead of zero without any action) — evidence, not a prescription |
+| `mal_geteilt`, `teile_gerundet`, `lies_neu`, `lies_alt`, `min`, `max`, `sgn`, `wurzel` | arithmetic machinery and access form, T6, T29, T39 |
 
-**`menge` und `verschiebung` bekommen ausdrücklich keine Funktion, und der Grund ist T5
-selbst.** Beide sind in `spiel.md` die Spaltenüberschriften einer Tabelle mit vier Zeilen,
-nicht zwei Größen: `verschiebung` steht für die Zollzeile in Klasse 5 und für die drei
-übrigen in Klasse 3, hat also kein einheitliches Ergebnis, das man deklarieren könnte —
-genau die Eigenschaft, die T5 einer Größe abverlangt. `menge` ist immer Klasse 2, scheitert
-aber an der **Stelligkeit**: In der Zollzeile ist sie `handelsvolumen(l, s)` und damit eine
-Zahl je Sektor, in den drei übrigen `schuld(l)` beziehungsweise `bip(l)` und damit eine je
-Land. Eine gemeinsame Funktion müsste sich entweder eine Klasse oder ein Argument
-ausdenken. **Gebildet wird deshalb `schaden(l, i)`**, und die Fallunterscheidung liegt in
-ihr — dieselbe Bauart wie `markt(p)` (Nr. 5), das die drei Steckplatzarten aus T16 ebenso
-innen unterscheidet, statt drei Namen nach aussen zu geben.
+**`menge` and `verschiebung` explicitly get no function, and the reason is T5 itself.**
+Both are, in `spiel.md`, the column headings of a table with four rows, not two
+quantities: `verschiebung` stands for the tariff line in class 5 and for the three others
+in class 3, hence has no uniform result one could declare — exactly the property T5
+demands of a quantity. `menge` is always class 2 but fails on **arity**: in the tariff
+line it is `handelsvolumen(l, s)` and thus one number per sector, in the three others
+`schuld(l)` or `bip(l)` and thus one per country. A common function would have to invent
+either a class or an argument. **Therefore `schaden(l, i)` is formed**, and the case
+distinction lies inside it — the same construction as `markt(p)` (no. 5), which likewise
+distinguishes the three slot kinds from T16 on the inside instead of giving three names
+outward.
 
 ## 9. Test- und Prüfstandsaufbau
 
