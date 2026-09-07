@@ -3220,46 +3220,46 @@ incorporation, not a decision.
 
 ## Befundabarbeitung — Prüfung 0039 vom 2026-09-03, Paket 0055
 
-Ein Befund, `Schwere: gering`, ausdrücklich kein Rücklaufgrund; das Urteil der Prüfung war
-`geprueft` und bleibt es. Diese Abarbeitung hebt kein bestandenes Kriterium an.
+One finding, `Schwere: gering`, explicitly no reason for a return; the check's verdict was
+`geprueft` and remains so. This work-off raises no criterion that had passed.
 
-**Befund 1 — die Vergleichszahl 32.850.000 gehört nicht zu Zustand B: behoben, auf dem Weg,
-der die Tabelle stärkt statt sie zu entlasten.** Der Widerspruch ist bestätigt, und ich habe
-ihn an beiden Stellen einzeln nachgemessen statt ihn zu übernehmen: Die Vergleichszahl war
-mit einem Handelsvolumen von 1,5·10^9 gebildet, die Tabelle im selben Abschnitt gibt Zustand B
-zusammen 1,4·10^8. Die Zahl selbst ist richtig, nur für einen anderen Zustand.
+**Finding 1 — the comparison figure 32.850.000 does not belong to state B: fixed, on the
+path that strengthens the table instead of relieving it.** The contradiction is confirmed,
+and I re-measured it at both places individually instead of taking it over: the comparison
+figure had been formed with a trade volume of 1.5·10^9, while the table in the same section
+gives state B a total of 1.4·10^8. The number itself is correct, only for a different state.
 
-**Warum Weg A und nicht Weg B.** Der Prüfer bot beides an: die richtige Zahl einsetzen, oder
-die falsche stehen lassen und ihren Zustand danebenschreiben. Drei Gründe für Weg A, und der
-erste allein genügt:
+**Why path A and not path B.** The reviewer offered both: insert the correct number, or
+leave the wrong one standing and write its state next to it. Three reasons for path A, and
+the first alone suffices:
 
-1. **Der Vergleich soll die Entscheidung messen, nicht illustrieren.** Was der Sockel kostet,
-   zeigt nur ein Vergleich, in dem alte und neue Vorschrift **dieselben** Eingaben sehen. Mit
-   der Zahl eines fremden Zustands vergleicht man zwei Regeln auf zwei Welten; das ist keine
-   Größenordnung, sondern eine Anekdote.
-2. **Die Tabelle ist als Regressionsfall gebaut**, und ein Regressionsfall mit einer Zahl aus
-   einem anderen Zustand daneben ist genau die Falle, gegen die dieses Paket geschrieben ist —
-   Weg B beschriftet sie nur um, statt sie zu räumen.
-3. **Die 32.850.000 geht nirgends verloren.** Sie steht mit ihrem eigenen Zustand im Beispiel
-   der Ursachenkette unter *Warum die Zollzeile nur den Keil misst* und ist dort richtig; eine
-   zweite, umbeschriftete Kopie hätte den Leser an der Stelle, an der er rechnen soll, zwischen
-   zwei Welten wechseln lassen.
+1. **The comparison is meant to measure the decision, not illustrate it.** What the base
+   term costs is shown only by a comparison in which the old and the new rule see **the
+   same** inputs. With the number of a foreign state you compare two rules on two worlds;
+   that is not an order of magnitude, it is an anecdote.
+2. **The table is built as a regression case**, and a regression case with a number from a
+   different state next to it is exactly the trap this package was written against — path B
+   merely relabels it instead of clearing it.
+3. **The 32.850.000 is not lost anywhere.** It stands with its own state in the example of
+   the causal chain under *Warum die Zollzeile nur den Keil misst* and is correct there; a
+   second, relabelled copy would have made the reader switch between two worlds at the very
+   point where they are supposed to calculate.
 
-Weg A verlangt eine Eingabe, die die Tabelle nicht führte: den Sektorpreis der Vorrunde, den
-allein die Vorfassung liest. Er steht jetzt als eigene Zeile mit dem Startwert 10.000 aus der
-Preisträgheitsregel und ist als das gekennzeichnet, was er ist — die einzige Zeile der
-Tabelle, die in keine Zahl der Spalten darunter eingeht.
+Path A demands an input the table did not carry: the sector price of the previous round,
+which only the previous version reads. It now stands as a row of its own with the start
+value 10.000 from the price-inertia rule and is marked as what it is — the only row of the
+table that enters no number in the columns below it.
 
-**Nachgerechnet, nicht abgeschrieben.** Die 8.472.000 des Prüfers habe ich Schritt für
-Schritt selbst gebildet und bestätige sie; die Rechnung steht im Abschnitt, damit der nächste
-Leser sie nicht glauben muss. Der einzige Freiheitsgrad ist die Rundung des Zwischenwerts
-`10.795,2`, und beide Lesarten führen auf denselben Beitrag — das steht dort ebenfalls.
+**Recomputed, not copied.** The reviewer's 8.472.000 I formed step by step myself and
+confirm it; the calculation stands in the section so the next reader does not have to take
+it on faith. The only degree of freedom is the rounding of the intermediate value
+`10.795,2`, and both readings lead to the same contribution — that stands there as well.
 
-**Was ich nicht getan habe.** Keine der sieben Größen von Zustand A angefasst, die Null für
-Zustand B ist die Null geblieben, die Entscheidung für Weg 1 und ihre Maß-2-Begründung sind
-unberührt, die Zahl der Lesezugriffe kommt an keiner neuen Stelle vor, und die zweite
-Fundstelle von 32.850.000 in der Ursachenkette ist unverändert. `technik.md`,
-`daten/adressen.md` und die Kalibrierzahlen sind nicht angefasst.
+**What I did not do.** None of the seven quantities of state A touched, the zero for
+state B has stayed the zero, the decision for path 1 and its Maß-2 justification are
+untouched, the read-access count appears at no new place, and the second occurrence of
+32.850.000 in the causal chain is unchanged. `technik.md`, `daten/adressen.md` and the
+calibration numbers are not touched.
 
 ## Befundabarbeitung — Prüfung 0021 vom 2026-09-02, Paket 0039
 
