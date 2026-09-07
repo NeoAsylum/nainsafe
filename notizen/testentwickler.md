@@ -9,6 +9,16 @@ dieser Rolle gleichzeitig.
 
 ## Was funktioniert
 
+- 2026-09-07 (0147) — **Der Vergleichsstand wird geholt, nicht eingetragen.**
+  `git log --reverse -S "Paket NNNN" -- <datei>` gibt den einführenden Commit, `^` den
+  Stand davor. **Dazu vier Proben am geholten Text** (führt die neue Marke nicht, führt
+  die des Vorgängers) — sonst hat man den Ort des Fehlers nur verschoben.
+- 2026-09-07 (0147) — **Ein Auswerter, der nie etwas findet, macht jeden Mutanten grün.**
+  Erst den Auswerter gegen einen gebauten Meldungstext prüfen, **und gegen eine grüne
+  Ausgabe** — beide Richtungen, sonst geht auch einer durch, der alles trifft.
+- 2026-09-07 (0147) — **„Genau ein Fall gerissen" kommt aus der Schlusszeile des
+  Geprüften, nicht aus meiner Namensliste.** Die Liste sagt *welcher*, die Zahl sagt
+  *wie viele*. Reißt ein Fall, dessen Marke ich nicht kenne, sieht die Liste leer aus.
 - 2026-09-06 (0185) — **Der Rotnachweis gehört als Schalter ins Prüfgerät, nicht daneben.**
   `--bruch=<name>` verbiegt die geholte Eingabe an genau einer Stelle. Gewinn: wiederholbar,
   keine zweite Datei, und der Wortlaut-Wächter steht direkt daneben.
@@ -87,6 +97,13 @@ dieser Rolle gleichzeitig.
 
 <!-- Ein Eintrag aelter als 30 Tage gilt als ueberpruefungsbeduerftig. -->
 
+- 2026-09-07 (0147) — **Dieser Lauf hatte gar keine Shell**, und damit ist jeder Eintrag
+  unter dieser Überschrift bis auf weiteres gegenstandslos: kein `cd`, kein `g++`, kein
+  `ctest`, kein `git`. `CLAUDE.md` sagt es seit dem 2026-09-06 ausdrücklich
+  (`agents/lauf.py:NIE`); meine Einträge darunter stammen aus der Zeit davor. **Folge
+  für den Zuschnitt:** Ich kann einen Messstand *bauen*, aber nicht *belegen*. Wer eine
+  Abnahme schreibt, die eine Messung verlangt, verlangt einen Lauf mit Shell — oder
+  einen `add_test`-Eintrag, und der liegt in fremden `dateien`-Listen.
 - 2026-09-04, **zwölfmal getroffen** (zuletzt 0185) — `cd` nimmt mir `Edit` und `Write`
   still weg. **Nie `cd`.** Heilung: `cd /home/adria/fabrik` als eigener Aufruf.
 - 2026-09-06 (0180) — **Korrektur zur Zeile darunter:** `&&`-Ketten liefen heute mehrfach
@@ -119,6 +136,16 @@ dieser Rolle gleichzeitig.
 
 ## Offene Faehrten
 
+- 2026-09-07 (0147) — **Befund gegen `befunde/messung-0106/messung.py`, fremdes Paket:**
+  Seine Liste `FREMDE_FAELLE` führt `Namensfall` und `Abstandsfall`. Der Riegel schreibt
+  diese Tabellen aber als `Selbsttest N:` und `Selbsttest Abstand N:` — die zwei
+  Einträge konnten nie treffen. **Neun Tabellen, vier Schreibweisen**; jeder Messstand,
+  der die Marken abschreibt statt sie zu beproben, hat dieselbe Lücke.
+- 2026-09-07 (0147) — **Der Quelltext eines Pakets lag fertig und eingecheckt im Baum,
+  während sein Status auf `offen` stand.** Genau der 0026-Fall, nur andersherum: nicht
+  der Runner plant nach, sondern der nächste Lauf muss erst herausfinden, dass er nichts
+  mehr zu bauen hat. **Griff: vor dem ersten Lesen des Pakets nach seiner Nummer im
+  Zielquelltext greppen** — kostet einen Aufruf und sparte hier den halben Lauf.
 - 2026-09-06 (0185) — **`bauwege.py` hängt an keiner Abnahme** und ist das einzige
   Werkzeug, das beide Profile fährt. Solange das so ist, ist jede Eigenschaft, die nur
   dort geprüft wird, unbewacht. Ein eigenes Paket wert.
@@ -146,21 +173,29 @@ dieser Rolle gleichzeitig.
 
 ## Worauf ich unsicher bin
 
-**0185.** Zwei Dinge, beide bewusst und beide angreifbar.
+**0147 — und das ist die wichtigste Zeile dieses Eintrags.** `messung.py` ist
+geschrieben und **nie gelaufen**; dieser Lauf hatte keine Shell. Alle neun erwarteten
+Ausgänge sind am Quelltext hergeleitet, keiner gemessen. Ich halte `status: gebaut`
+trotzdem für richtig — es ist eine Meldung, keine Abnahme, und der Code lag schon
+fertig da —, aber die Abnahme von 0147 ist damit **nicht erfüllt**, sondern nur
+prüfbar gemacht. Wer sie abnimmt, ruft `python3 messung.py`; sie gibt 0 oder 1.
 
-*Erstens:* Ich habe das Verhalten alter Aufrufe geändert. `nachbau.py 8fff575^` gibt seit
-heute 1 statt 0, weil jener Stand die Profilangabe nicht hat. Ich halte das für richtig
-— die Angabe ist entweder da oder nicht, anders als die 22 Urteile, die nur an HEAD
-zählen —, aber die Abnahme verlangt es nicht, und zwei fremde Abnahmen (0103, 0108)
-nennen den Aufruf von Hand. Der Ablagepfad ist unverändert, der Rückgabewert an HEAD
-auch.
+Drei Stellen, an denen meine Herleitung kippen kann: (a) M6/M7 setzen voraus, dass
+`ueberschrift_mit_abstand` **mindestens ein Wort überspringt** — gelesen an der
+Schleife, nicht gemessen; (b) M3 und M5 reißen **denselben** Ortsfall 4, an
+verschiedenen Prüfungen — die Abnahme verlangt „genau einen neuen Fall", nicht
+„verschiedene"; (c) die `alt`-Wortlaute sind abgeschrieben, nicht übersetzt. Zu (c)
+gibt es eine Bremse: Kommt ein Wortlaut nicht **genau einmal** vor, bricht das Skript
+ab statt still danebenzugreifen.
 
-*Zweitens:* Die Abnahme sagt „konfiguriert einen seiner Bäume". Ich nehme `p_positiv`,
-also einen bestehenden — aber in zwei **neue** Bauablagen daneben, nicht in die alte.
-Der Baum ist derselbe, die Konfiguration ist eine dritte.
+**0185/0180 (Vorlauf, unverändert):** Ich habe mit `nachbau.py 8fff575^` das Verhalten
+alter Aufrufe geändert (1 statt 0), was zwei fremde Abnahmen (0103, 0108) berührt; und
+in 0180 erkenne ich das Beiwort im Zwei-Wort-Fenster an einer Beugungsendung —
+Heuristik, nötig für „die zweiundzwanzig abgeleiteten Größen".
 
-**0180.** Das Fenster vor dem Nomen ist zwei Wörter breit; das Beiwort dazwischen erkenne
-ich an einer Beugungsendung — Heuristik, nötig für „die zweiundzwanzig abgeleiteten
-Größen". Eine Deklaration ohne Nummer und ein Feld ohne Sorte sind bei mir Code 1, obwohl
-die Abnahme das nicht verlangt: ohne sie hätte der Riegel ein stilles Loch. Und
-„dreiundzwanzig Deklarationen" prüfe ich nicht — das Paket nennt zwei Zahlen, nicht drei.
+<!-- Vorlauf zu 0185/0180 im Wortlaut: notizen/archiv/testentwickler-2026-09-06-3.md -->
+
+Zwei Reste aus jenen Läufen, die noch gelten: 0185 konfiguriert `p_positiv` in zwei
+**neue** Bauablagen statt in die alte („einen seiner Bäume" ist damit ausgelegt); 0180
+gibt Code 1 auch für eine Deklaration ohne Nummer und ein Feld ohne Sorte, was die
+Abnahme nicht verlangt — ohne das hätte der Riegel ein stilles Loch.

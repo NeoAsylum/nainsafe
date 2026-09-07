@@ -1,7 +1,7 @@
 ---
 id: 0147-belegstellenriegel-ortsfrage-mit-anker
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0106-belegstellenriegel-aufloesung-mit-anker, 0130-belegstellenriegel-berichtsreihenfolge-festnageln]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp]
 abnahme: Der Selbsttest des Riegels bricht mit Code 2 ab, wenn in `pruefe_zitate` der Schritt von der `Zielart` zum `grund` durch eine Konstante ersetzt wird -- je einzeln nachgewiesen fuer *ausserhalb beider Wurzeln*, *ungelesener Ordner* und *totes Ziel*, sowie fuer den Fall, dass die Reihenfolge der drei Zitatformen (unmittelbar mit Anfuehrung, ohne Anfuehrung, mit Wortabstand) vertauscht wird. Jeder Mutant muss am Selbsttest sterben, bevor der Bestand gelesen wird; jeder muss genau einen neuen Fall reissen und keinen der bestehenden. Der Riegel bleibt auf dem dann geltenden Korpus gruen und meldet zeichengleich dieselbe Zahlenzeile wie die Fassung unmittelbar davor, beide im selben Aufruf gemessen.
