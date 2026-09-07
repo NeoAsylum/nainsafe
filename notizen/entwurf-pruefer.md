@@ -26,6 +26,31 @@ Worth keeping:
 - spiel.md:2151 and 2719 quote the same T38 sentence and already match today's
   English wording — no stale-quote follow-up needed there.
 
+## 2026-09-08 — Pruefung 0208, geprueft, 0 findings
+
+The architect's T10/T10b answer (parameter carrier into `schritt`) holds against all
+three conditions; every load-bearing claim reproduced. ~9 greps, 6 section reads,
+never opened either spec whole.
+
+Worth keeping:
+- The one check that could have killed it: `partie.parameter_pruefsumme` looked
+  invented — every mention of `partie.` in technik.md sits inside the 0208 text, and
+  spiel.md has no `partie.` at all. But the address pre-exists as "game:
+  parameter-set checksum" (technik.md:1461 in the 310 recount, spiel.md:515). The
+  address tables are English-translated; the formula spelling is still German. A
+  future grep for a German address prefix that finds nothing may be seeing
+  translation, not absence — grep the translated block name before calling it a gap.
+- Verifying a spec's quotes of code/config (werte.hpp:85, parameter.toml:117/297/678)
+  is one grep each and twice turned a suspicion into a non-finding. Cheapest step of
+  the run, keep doing it first.
+- Left over, deliberately not findings (noted in the pruefung): T27:1941 shorthand
+  "over the values of the carrier" vs T10b's Runde(feld)-only checksum domain — if a
+  builder ever includes vintage constants in the parameter checksum, that sentence is
+  the source; and spiel.md:3313's stale gap row, self-resolving via its 0208 pointer.
+- Open thread for a later run: parameter.toml:297 head note still says the checksum
+  runs "ueber diese Datei"; the architect reported to the PM that one line needs
+  drawing after (technik.md:1059-1060). Check whether that happened.
+
 ## 2026-09-07 — Pruefung 0224, zurueck, 5 findings
 
 A reference sweep of spiel.md missed three „-form sites; two are dead (:1561 →
