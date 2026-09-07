@@ -2562,204 +2562,207 @@ vintage.
 
 ## Was bewusst fehlt
 
-- **Mehr als vier Länder und drei Sektoren.** Die Idee nannte zwölf und sechs. Zwölf Länder
-  vervierfachen die Rückkopplungswege ohne ein Maß zu verbessern; sechs Sektoren gibt es
-  unter freier Lizenz nicht, und aus drei aufgeteilte wären ein Konstrukt ohne Sollreihe.
-  **Am 2026-09-05 eingeordnet, nicht gestrichen:** Der Satz galt und gilt für
-  *Politikländer* — der Betreiber hat neun entschieden (Paket 0118), und das ist die Zahl,
-  gegen die er ab jetzt zu lesen ist. Für das *investierbare Universum* ist er seit
-  Paket 0119 gegenstandslos: Es wächst über die zweite Schicht, die keine
-  Rückkopplungswege hinzufügt, weil sie keine Handelszeile hat.
-  **Am 2026-09-06 ausgefüllt:** Die neun sind USA, China, Deutschland, Brasilien, Japan,
-  Indien, Chile, Singapur und Saudi-Arabien. Der Satz über die vervierfachten
-  Rückkopplungswege bleibt trotzdem richtig und ist jetzt bezifferbar — die Handelsmatrix
-  wächst von 40 auf 180 Ströme, viereinhalbfach, während alles andere sich gut verdoppelt.
-  **Er ist damit der Grund, warum es neun sind und nicht zwölf**, und kein Einwand mehr
-  gegen die neun.
-- **Ein zehntes Politikland, und die Grenze liegt an der Matrix und nicht am Geschmack.**
-  `G·(G−1)·2` über `G = L+1` ergibt bei zehn Ländern 220 Ströme statt 180, bei zwölf 312.
-  Wer mehr investierbare Welt will, bekommt sie über die zweite Schicht zu fünf Feldern je
-  handelbarem Steckplatz statt zu rund zwanzig — das ist die ganze Begründung der Schicht,
-  und sie gilt gegen jedes zehnte Land genauso wie gegen das dreißigste.
-- **Ein zweites Land des Euroraums.** Griechenland war der stärkste Kandidat für den fünften
-  Platz: Sein Haushaltssaldo wird 2010 — Runde 10, genau zwischen den beiden Fenstern von
-  Maß 3 — unter dem Programm exogen, und das wäre die Instrumentensperre, die seit dem
-  Fensterschnitt auf 2001 fehlt und die dieser Entwurf ausdrücklich vermisst. **Es scheitert
-  an einer Adresse:** Der Wechselkurs des Euro gegen den Dollar ist für Deutschland und
-  Griechenland **dieselbe** Reihe, das Modell führt aber `wechselkurs[l]` je Land und
-  rechnete zwei Euro-Kurse, die auseinanderlaufen dürfen. Die beiden Länder trügen zwei
-  Prüfgegenstände auf einer einzigen Wirklichkeit, und ein Fehler im Euro-Kurs risse beide
-  zugleich. Der Ausweg wäre eine gemeinsame Kursadresse je Währungsraum — und die ändert die
-  Adressarithmetik, die Sollreihenzahl und die Prüfgegenstandsformel zugleich. Zu teuer für
-  ein fünftes Land, und ein eigenes Paket, falls der Euroraum je zweimal vorkommen soll.
-- **Eine Instrumentensperre, die innerhalb des Fensters zuschnappt.** Sie fehlt seit dem
-  2026-09-03 und sie fehlt weiter. Der Kandidat außerhalb des Euroraums war die Türkei
-  (IWF-Programm 2002–2008, also Runden 2 bis 8); er ist verworfen, weil das Fenster genau
-  über dem Frühfenster von Maß 3 liegt und die Sperre damit nicht *zwischen* den beiden
-  Fenstern läge, sondern *in* einem. Was bliebe, wäre eine Sperre auf einer mittleren Runde
-  — und das ist das erzählte Ereignis, das zwei Zeilen weiter unten aus gutem Grund auf
-  dieser Liste steht. **Maß 3 muss die Verschiebung weiterhin ohne einen solchen Übergang
-  erzeugen**; die dritte Quelle dafür ist seit Paket 0119 die zweite Schicht.
-- **Ein Wechselkursregime als Modellgröße.** Saudi-Arabiens Kurs steht über alle 21
-  Stützstellen auf 3,75, und das Modell hat keine Regel, die einen Kurs hält. Eine
-  Kursbindung wäre billig zu schreiben — der `wechselkurs[l]` eines gebundenen Landes wird
-  nicht geschrieben, dieselbe Bauart wie die stillgelegten Adressen eines Spiellands — und
-  sie ist trotzdem nicht hier entschieden: Sie machte aus einem Spielland ein
-  Rückvergleichsland und verschöbe damit `L_R`, die Prüfgegenstände und die Sollmaske. Das
-  ist eine Entscheidung über die Grundlage des Rückvergleichs und gehört nach T60 dem
-  Betreiber, nicht diesem Abschnitt. **Was sie kaufen würde, steht dabei:** Ein gebundener
-  Kurs ist die einzige Art, wie das Modell den Unterschied zwischen einer lauten und einer
-  stummen Währung ausdrücken könnte, und Saudi-Arabien ist der einzige Ort, an dem er
-  gemessen danebenliegt.
-- **Alle 195 Länder der Welt.** Das ist kein „später", sondern ein anderes Produkt, und die
-  Zahlen stehen unter *Was die Schicht kostet*: **87.788 Zustandsfelder, 76.440 Handelsströme,
-  3.705 lizenzgeprüfte Datenreihen** und 780 Prüfgegenstände statt sechzehn. Verworfen am
-  2026-09-05.
-- **Ein Börsenplatz mit Handelszeile, Politikinstrumenten oder Beteiligung.** Jedes einzelne
-  davon macht ihn zu einem billigen Land: Die Handelszeile bringt die `G²`-Matrix zurück
-  (3.120 Ströme statt 180), die Instrumente machen ihn beeinflussbar und heben damit die
-  Trennung auf, um derentwillen die Schicht existiert, und die Beteiligung wäre der Weg zu
-  billigem Lobbying an einem Ort, an dem es kein Lobbying gibt.
-- **Ein Aufsichtszähler auf der zweiten Schicht.** Der Fonds kann dort unbeobachtet groß
-  werden. Das ist ausdrücklich gewollt und teuer bezahlt: Die Schicht liefert null Einfluss
-  und kann die zweite Mandatshälfte nie erfüllen. Ein halber Zähler („Sichtbarkeit ja,
-  Einfluss nein") wäre eine Regel, die nichts entscheidet, weil der Fußabdruck den Einfluss
-  als Faktor trägt und damit ohnehin null bliebe.
-- **Ein Regulierungskanal auf `zins[b]`.** Naheliegend wäre, dass die Finanzmarktregulierung
-  des Ankers Kapital vertreibt und den Platzzins hebt — ein dritter Hebel in die zweite
-  Schicht hinein. Er kostete einen weiteren Kalibrierschlüssel, und zwei Hebel dorthin gibt
-  es schon (Leitzins über `zielzins` und `weltzins`, Zoll über `leitkurs`). Fällt Maß 3 an zu
-  wenig Zugriff auf die Schicht, ist dieser Kanal der erste Nachschlag.
-- **Eine gemessene Marktkapitalisierung je Börsenplatz.** `tiefe[b]` wird aus dem
-  Kapitalstock des Ankers und den Sektorgewichten gebildet, mal `platzanteil`. Eine echte
-  Kapitalisierungsreihe wäre die richtigere Größe, hinge aber an einer weiteren Quelle mit
-  eigener Lizenzfrage — und die Ordnung, auf die es ankommt (großer Anker, tiefer Platz),
-  liefert die abgeleitete Größe auch.
-- **Ein eigener Trägheitsparameter für die zweite Schicht.** `index`, `zins` und
-  `wechselkurs` eines Platzes gehen je Runde genau **halb** auf ihr Ziel zu. Drei
-  kalibrierbare Gewichte gäben der Suche drei Achsen, deren Wirkung `kippung` und
-  `platzanteil` ohnehin erzeugen — und kein Maß liest die Halbierung.
-- **Das verarbeitende Gewerbe als eigener Sektor.** Es wäre die interessantere Gliederung
-  und ist als WDI-Reihe sogar vorhanden — aber nur als Teilmenge der Industrie. Ein
-  vierter Sektor „übrige Industrie" hätte keine eigene Quellreihe und müsste als Differenz
-  gebildet werden. Vier Sektoren mit einem ungedeckten, drei mit lauter gedeckten: die
-  Wahl ist die zweite.
-- **Startjahrgänge vor 2001**, und die Grenze liegt jetzt vier Jahre später als in der
-  fünften Fassung. 2000 und früher bleiben als **Spieljahrgänge** möglich und sind der
-  naheliegende Inhalt des Erweiterungsmodells aus der Idee. Sie tragen keine
-  US-Staatsschuldenquote und keinen US-Haushaltspfad aus Daten (IWF WEO beginnt für die
-  USA 2001), vor 1997 zusätzlich keine US-Sektorstruktur und vor 1995 keinen Handelsblock;
-  ein Spieljahrgang vor 2001 übernimmt die fehlenden US-Startwerte aus dem ersten belegten
-  Jahr und kennzeichnet sie als gefüllt. Damit sind sie Spiel-, aber keine Prüfjahrgänge.
-  Das gehört ins Kaufangebot geschrieben, nicht in eine Fußnote.
-- **Ein Ersatz für den Euro-Übergang, seit dem 2026-09-03 und ausdrücklich.** Mit dem
-  Fenster 2001–2021 fällt die einzige Instrumentensperre weg, die während einer Partie
-  zuschnappte (Deutschland verliert 1999 seinen Zinshebel). Der naheliegende Ausweg wäre,
-  irgendeine andere Sperre auf eine mittlere Runde zu legen — und genau das tue ich nicht:
-  Das wäre ein erzähltes Ereignis, und die stehen zwei Zeilen weiter unten aus gutem Grund
-  auf dieser Liste. Ereignisse entstehen hier aus Schwellen oder aus Daten, nicht aus dem
-  Wunsch nach einem Wendepunkt. Maß 3 muss die Verschiebung ohne diesen Übergang erzeugen;
-  tut es das nicht, ist das ein Befund über die beiden verbliebenen Quellen (Nachahmer,
-  Preisstoß) und kein Anlass, eine Sperre zu erfinden.
-- **Der Wiederaufbau des Fensters 1997–2000 aus einer dritten Quelle.** Die Tabelle in
-  *Die Partielänge R* rechnet ihn durch: Für Brasilien gibt es die Jahre nicht, für die USA
-  gäbe es sie nur um den Preis einer anderen Abgrenzung als für China und Deutschland. Vier
-  Stützstellen sind billiger als eine Sollreihe, die je Land etwas anderes misst.
-- **Eine eigene Füllregel für Politikpfade.** Der Leitzinspfad darf gefüllt werden, die
-  Sollreihen des Prüfjahrgangs nicht — das steht in T24 und genügt. Eine dritte Schwelle
-  („ein Pfad darf zu höchstens x Prozent gefüllt sein") wäre eine Zahl, die niemand messen
-  kann, bevor die Quelle feststeht. Was stattdessen gilt: Jede gefüllte Stützstelle eines
-  Pfades wird im Befund einzeln benannt. Bei 21 Stützstellen ist eine Liste billiger als
-  ein Anteil.
-- **Ein feinerer Warenschlüssel als HS92-Kapitel.** Die Zuordnung 01–24 / 25–97 ist grob
-  und ihr Fehler oben benannt. Eine echte HS-nach-ISIC-Konkordanz wäre genauer und kostete
-  eine weitere Quelle mit eigener Lizenzfrage — für zwei Modellsektoren steht das nicht
-  dafür.
-- **Quartals- und Tagestakt.** Damit fallen Panik, Runs und Margin Calls im Wortsinn weg —
-  ein spürbarer Verlust an Genre-Erwartung, und ich nenne ihn als solchen. Der Grund ist
-  hart: BIP, Sektorstruktur, Produktivität und Zoll liegen **jährlich** vor. Quartalsrunden
-  ließen drei von vier Runden ungeprüft. Ersatz für das Innerjahresrisiko: Der Hebel wird
-  nicht gegen den Jahresendstand geprüft, sondern gegen einen Innerjahresausschlag, der
-  deterministisch aus der Jahresbewegung und der historischen Schwankungsbreite des Landes
-  folgt. Hebel bleibt gefährlich, ohne dass eine zweite Zeitschicht entsteht.
-- **Ein Weltaktienindex als Vergleichsmaßstab.** Es gibt keinen unter freier Lizenz. Die
-  Marktrendite ist deshalb eine Modellgröße ohne Anker — benannt, nicht versteckt.
-- **Ein eigener Kurs neben dem Sektorpreis.** Ein Korb wird mit dem Preis seines Sektors
-  bewertet, nicht mit einem Aktienkurs, der davon abweichen dürfte. Damit gibt es keine
-  Bewertungsblase und keine Stimmung — der Wert eines Bestandes folgt seiner
-  Ursachenkette und sonst nichts. Das ist ein Verlust an Genre-Erwartung und der Preis
-  dafür, dass jede Wertänderung erklärbar bleibt.
-- **Veränderliche Bonität.** Der `aufschlag` zwischen Leitzins und Anleiherendite ist eine
-  Konstante. Ein Land, dessen Schuldenquote davonläuft, zahlt im Modell keinen höheren
-  Aufschlag; Staatspleiten und Risikoprämien gibt es nicht. Der Aufschlag hätte einen
-  Anker (Renditereihen), aber keine Sollreihe im Zustand, und er kostete einen neunten
-  Rückkopplungskanal (Haushalt → Aufschlag → Kurs → Haushalt).
-- **Die Geldmenge als Tiefe des Währungsmarktes.** Sie läge bei IWF IFS vor und wäre die
-  bessere Größe als das Handelsvolumen. Sie kostet eine Zustandsadresse je Land und einen
-  exogenen Pfad, und sie verbessert kein Maß. Das Handelsvolumen ordnet die vier Länder
-  gleich und steht schon im Zustand.
-- **Einzelne Unternehmen.** Nur Land×Sektor-Körbe. Firmendaten unter freier Lizenz gibt es
-  nicht, und was der Datenkurator nicht beschaffen kann, kommt nicht vor.
-- **Derivate, Optionen, strukturierte Produkte.** Long, short, Hebel. Mehr Instrumente
-  vergrößern den Aktionsraum, ohne ein Profil hinzuzufügen, das Maß 2 unterscheiden könnte.
-- **Namentlich benannte Personen.** Regierungen sind Rollen („Regierung Brasilien"),
-  Notenbanken sind Institutionen. Auflage aus `agentenbau.md`, und sie berührt gerade
-  dieses Spiel.
-- **Wahlmechanik.** Keine Parteien, keine Koalitionen, keine Wahlkreise. Eine Größe
-  Zustimmung, ein Regierungswechsel bei Unterschreitung.
-- **Erzählte Ereignisse und Ereigniskarten.** Sie wären ein Inhaltslaufband (G4) und
-  regressiv nicht prüfbar. Ereignisse entstehen hier aus Schwellen.
-- **Krieg, Klima, Migration, Demografie als Spielgröße, Mehrspieler.**
-- **Ein Zollsatz je Sektor.** Es gibt ihn nicht unter tragfähiger Lizenz. Die
-  Sektorwirkung entsteht aus `durchgriff` und den Importanteilen.
-- **Ein zeitlich veränderlicher `durchgriff`.** Er wäre richtiger und kostete zehn weitere
-  exogene Pfade. Konstant genügt, weil die Mengen ohnehin endogen sind.
-- **Eine Gegenlobby, die selbst etwas durchsetzen will.** `gegendruck` ist ein Skalar, der
-  in Schritt 3 gegen `druck` verrechnet wird; er kann Bewegung **hemmen, nicht verlangen**.
-  Was Gegenkraft 5 abbildet, ist Mobilisierung und nicht Vergeltung — ein geschädigter
-  Sektor macht jede Bewegung seines Zollinstruments teurer, auch die, die ihm helfen würde.
-  Vergeltungszölle kosteten eine Richtung je Instrument und damit sechzehn weitere Adressen.
-- **Eine Aufteilung des Schadens auf den geschädigten Sektor.** Wer ihn trägt, steht als
-  Regel da; gerechnet wird er je Land und Instrument, nicht je Sektor. Die Aufteilung
-  bräuchte eine Vorleistungsmatrix — eine weitere Quelle mit eigener Lizenzfrage —, und sie
-  änderte an keiner der sechzehn Zahlen in Schritt 3 etwas.
-- **Ein Gedächtnis der Gegenlobby über eine Runde hinaus.** Die Halbierung ist die ganze
-  Geschichte. Ein verteilter Nachlauf über mehrere Runden kostete sechzehn weitere Adressen
-  und formte nur das Einschwingen.
-- **Schaden der Restwelt.** Sie hat keine Politikinstrumente und damit keine Adresse, an der
-  sich eine Gegenlobby bilden könnte. Ihre Preisverschiebungen bleiben unverbucht; die
-  Restwelt schließt den Kreislauf, sie handelt nicht.
-- **Ein Schaden, der Anstieg und Rückgang unterscheidet.** Die Verschiebung geht als Betrag
-  ein: Jede Bewegung schädigt jemanden. Die Richtung trägt bereits die Verrechnung gegen
-  `druck` in Schritt 3, und ein Vorzeichen im Schaden zöge sie ein zweites Mal ein.
-- **Der Konjunkturanteil der Preisverschiebung, seit dem 2026-09-03 und ausdrücklich.** Ein
-  Sektorpreis, der dem Weltpreis nachläuft, verschiebt sich in jeder Runde; dass jemand
-  darunter leidet, ist wahr und trotzdem kein Lobbyschaden. Wer die Preisträgheit als Schaden
-  bucht, bucht die Inflation als Gegenkraft — die Begründung steht unter *Warum die Zollzeile
-  nur den Keil misst*. Was dadurch **nicht** fehlt: die Wirkung des Zolls auf den Sektor. Sie
-  steckt in `durchgriff(l, s)`, und das ist der einzige Grund, warum die Zeile nicht einfach
-  `hub(l, zoll)` liest.
-- **Der allgemeine Gleichgewichtsanteil eines Zollschritts.** Ein amerikanischer Zoll bewegt
-  über die Markträumung den Weltpreis und damit die Sektorpreise aller Länder. Dieser Teil
-  seiner Wirkung geht in keine Schadenszeile ein, denn er ließe sich nur gegen einen
-  Zustand messen, den es nicht gibt: dieselbe Runde mit dem alten Zollstand, also eine
-  **zweite Markträumung** mit noch einmal 40 Halbierungsschritten je Sektor. Der Preis wäre
-  die teuerste Rechnung des Modells verdoppelt, der Ertrag eine Zahl, die kein Maß prüft.
-- **Der Schaden, den ein fremder Zoll im Inland anrichtet, als eigene Zeile.** Er ist die
-  Folge des Vorigen und fällt mit ihm. Er verschwindet nicht aus dem Spiel, sondern wechselt
-  die Gegenkraft: Der fremde Zollschritt hebt den inländischen Sektorpreis, senkt das
-  Realeinkommen und die Zustimmung und kann über Gegenkraft 2 einen Regierungswechsel
-  auslösen, der alle vier Instrumente zurückstellt und damit Schaden erzeugt. Der Unterschied
-  gehört benannt und ist keine Kleinigkeit: Der alte Weg war stetig, der neue ist
-  schwellengesteuert und um mindestens eine Runde langsamer.
-- **Ein eigener Gegenlobbysatz je Instrument.** Ein `gegenlobby_satz`, vier Mengen. Vier
-  Sätze gäben der Kalibrierung drei Achsen, deren Wirkung die Mengen ohnehin erzeugen —
-  und zwar aus dem Jahrgang statt aus einer Zahl.
-- **Grafik über Tabelle, Verlaufsgraph und Kettenansicht hinaus.** Democracy 4 verkauft
-  sich mit einer 2D-Knotenoberfläche und besteht in seiner Simulation vollständig aus
-  geladenen Tabellen statt einprogrammierter Effekte
-  (positech.co.uk/democracy4/modding.html, abgerufen 2026-08-31). Das ist die Bauart, an
-  der ich mich orientiere.
+- **More than four countries and three sectors.** The idea named twelve and six. Twelve
+  countries quadruple the feedback paths without improving any Maß; six sectors do not
+  exist under a free licence, and sectors split out of three would be a construct without
+  a target series.
+  **Classified on 2026-09-05, not struck:** The sentence applied and still applies to
+  *policy countries* — the operator has decided on nine (package 0118), and that is the
+  number it is to be read against from now on. For the *investable universe* it has been
+  moot since package 0119: that universe grows through the second layer, which adds no
+  feedback paths because it has no trade row.
+  **Filled in on 2026-09-06:** The nine are the USA, China, Germany, Brazil, Japan,
+  India, Chile, Singapore and Saudi Arabia. The sentence about the quadrupled feedback
+  paths remains true all the same and can now be given a number — the trade matrix grows
+  from 40 to 180 flows, four-and-a-half-fold, while everything else roughly doubles.
+  **It is thereby the reason why there are nine and not twelve**, and no longer an
+  objection to the nine.
+- **A tenth policy country, and the boundary lies in the matrix, not in taste.**
+  `G·(G−1)·2` with `G = L+1` yields 220 flows instead of 180 at ten countries, 312 at
+  twelve. Whoever wants more investable world gets it through the second layer at five
+  fields per tradable slot instead of around twenty — that is the layer's entire
+  justification, and it holds against any tenth country just as against the thirtieth.
+- **A second euro-area country.** Greece was the strongest candidate for the fifth place:
+  its fiscal balance becomes exogenous under the programme in 2010 — round 10, exactly
+  between the two windows of Maß 3 — and that would be the instrument lock that has been
+  missing since the window was cut to 2001 and that this design explicitly misses. **It
+  fails at one address:** the euro's exchange rate against the dollar is the **same**
+  series for Germany and Greece, but the model keeps `wechselkurs[l]` per country and
+  would compute two euro rates that are allowed to drift apart. The two countries would
+  carry two check subjects on a single reality, and an error in the euro rate would break
+  both at once. The way out would be a shared rate address per currency area — and that
+  changes the address arithmetic, the target-series count and the check-subject formula
+  all at once. Too expensive for a fifth country, and a package of its own should the
+  euro area ever appear twice.
+- **An instrument lock that snaps shut inside the window.** It has been missing since
+  2026-09-03 and it stays missing. The candidate outside the euro area was Turkey (IMF
+  programme 2002–2008, i.e. rounds 2 to 8); it is rejected because that window lies
+  exactly over the early window of Maß 3, so the lock would sit not *between* the two
+  windows but *inside* one. What would remain is a lock on a middle round — and that is
+  the narrated event that stands two lines further down on this list for good reason.
+  **Maß 3 must still produce the shift without such a transition**; since package 0119
+  its third source is the second layer.
+- **An exchange-rate regime as a model quantity.** Saudi Arabia's rate stands at 3.75
+  across all 21 support points, and the model has no rule that holds a rate. A currency
+  peg would be cheap to write — the `wechselkurs[l]` of a pegged country is simply not
+  written, the same construction as the decommissioned addresses of a play-only country —
+  and it is still not decided here: it would turn a play-only country into a backtest
+  country and thereby shift `L_R`, the check subjects and the target mask. That is a
+  decision about the foundation of the backtest and belongs, per T60, to the operator,
+  not to this section. **What it would buy is stated here:** a pegged rate is the only
+  way the model could express the difference between a loud and a mute currency, and
+  Saudi Arabia is the only place where it is measurably off.
+- **All 195 countries of the world.** That is not a „later" but a different product, and
+  the numbers stand under *Was die Schicht kostet*: **87,788 state fields, 76,440 trade
+  flows, 3,705 licence-checked data series** and 780 check subjects instead of sixteen.
+  Rejected on 2026-09-05.
+- **An exchange venue with a trade row, policy instruments or a stake.** Each of these by
+  itself turns it into a cheap country: the trade row brings the `G²` matrix back
+  (3,120 flows instead of 180), the instruments make it influenceable and thereby cancel
+  the separation for whose sake the layer exists, and the stake would be the road to
+  cheap lobbying in a place where there is no lobbying.
+- **A supervision counter on the second layer.** The fund can grow large there
+  unobserved. That is explicitly intended and dearly paid for: the layer delivers zero
+  influence and can never fulfil the second half of the mandate. A half counter
+  („visibility yes, influence no") would be a rule that decides nothing, because the
+  footprint carries influence as a factor and would stay zero anyway.
+- **A regulation channel onto `zins[b]`.** The obvious move would be for the anchor's
+  Finanzmarktregulierung to drive capital away and lift the venue rate — a third lever
+  into the second layer. It would cost another calibration key, and two levers into it
+  exist already (the policy rate via `zielzins` and `weltzins`, the tariff via
+  `leitkurs`). Should Maß 3 fail for lack of grip on the layer, this channel is the
+  first addition.
+- **A measured market capitalisation per exchange venue.** `tiefe[b]` is built from the
+  anchor's capital stock and the sector weights, times `platzanteil`. A real
+  capitalisation series would be the more correct quantity, but would hang on another
+  source with its own licence question — and the ordering that matters (large anchor,
+  deep venue) is delivered by the derived quantity too.
+- **An inertia parameter of its own for the second layer.** A venue's `index`, `zins` and
+  `wechselkurs` move exactly **half** way towards their target each round. Three
+  calibratable weights would give the search three axes whose effect `kippung` and
+  `platzanteil` produce anyway — and no Maß reads the halving.
+- **Manufacturing as a sector of its own.** It would be the more interesting breakdown
+  and even exists as a WDI series — but only as a subset of industry. A fourth sector
+  „rest of industry" would have no source series of its own and would have to be formed
+  as a difference. Four sectors with one uncovered, three with all of them covered: the
+  choice is the second.
+- **Start vintages before 2001**, and the boundary now lies four years later than in the
+  fifth version. 2000 and earlier remain possible as **play vintages** and are the
+  obvious content of the expansion model from the idea. They carry no US government debt
+  ratio and no US fiscal path from data (IMF WEO begins in 2001 for the USA), before 1997
+  additionally no US sector structure and before 1995 no trade block; a play vintage
+  before 2001 takes the missing US start values from the first covered year and marks
+  them as filled. That makes them play vintages, but not check vintages. This belongs
+  written into the sales offer, not into a footnote.
+- **A replacement for the euro transition, since 2026-09-03 and explicitly.** With the
+  window 2001–2021 the only instrument lock that snapped shut during a game disappears
+  (Germany loses its interest-rate lever in 1999). The obvious way out would be to put
+  some other lock on a middle round — and that is exactly what I do not do: it would be
+  a narrated event, and those stand two lines further down on this list for good reason.
+  Events here arise from thresholds or from data, not from the wish for a turning point.
+  Maß 3 must produce the shift without this transition; if it does not, that is a finding
+  about the two remaining sources (imitator, price shock) and no reason to invent a lock.
+- **Rebuilding the window 1997–2000 from a third source.** The table in *The game length
+  R* works it through: for Brazil the years do not exist, for the USA they would exist
+  only at the price of a different delimitation than for China and Germany. Four support
+  points are cheaper than a target series that measures something different per country.
+- **A fill rule of its own for policy paths.** The policy-rate path may be filled, the
+  target series of the check vintage may not — that stands in T24 and suffices. A third
+  threshold („a path may be filled to at most x percent") would be a number nobody can
+  measure before the source is fixed. What holds instead: every filled support point of
+  a path is named individually in the finding. With 21 support points a list is cheaper
+  than a share.
+- **A finer goods key than HS92 chapters.** The mapping 01–24 / 25–97 is coarse and its
+  error is named above. A real HS-to-ISIC concordance would be more accurate and would
+  cost another source with its own licence question — for two model sectors that is not
+  worth it.
+- **Quarterly and daily time steps.** With them, panic, runs and margin calls in the
+  literal sense drop out — a palpable loss of genre expectation, and I name it as such.
+  The reason is hard: GDP, sector structure, productivity and tariffs are available
+  **annually**. Quarterly rounds would leave three of four rounds unchecked. The
+  substitute for intra-year risk: leverage is checked not against the year-end level but
+  against an intra-year swing that follows deterministically from the year's movement and
+  the country's historical volatility range. Leverage stays dangerous without a second
+  time layer coming into being.
+- **A world equity index as a benchmark.** None exists under a free licence. The market
+  return is therefore a model quantity without an anchor — named, not hidden.
+- **A price of its own beside the sector price.** A basket is valued at the price of its
+  sector, not at a share price that would be allowed to deviate from it. So there is no
+  valuation bubble and no sentiment — the value of a holding follows its causal chain
+  and nothing else. That is a loss of genre expectation and the price paid so that every
+  change in value stays explainable.
+- **Variable creditworthiness.** The `aufschlag` between policy rate and bond yield is a
+  constant. A country whose debt ratio runs away pays no higher spread in the model;
+  sovereign defaults and risk premia do not exist. The spread would have an anchor
+  (yield series) but no target series in the state, and it would cost a ninth feedback
+  channel (budget → spread → price → budget).
+- **The money supply as the depth of the currency market.** It would be available from
+  IMF IFS and would be the better quantity than trade volume. It costs one state address
+  per country and one exogenous path, and it improves no Maß. Trade volume orders the
+  four countries the same way and is already in the state.
+- **Individual companies.** Only country×sector baskets. Firm-level data under a free
+  licence does not exist, and what the data curator cannot obtain does not appear.
+- **Derivatives, options, structured products.** Long, short, leverage. More instruments
+  enlarge the action space without adding a profile that Maß 2 could distinguish.
+- **Persons named by name.** Governments are roles („government of Brazil"), central
+  banks are institutions. A requirement from `agentenbau.md`, and it touches precisely
+  this game.
+- **Election mechanics.** No parties, no coalitions, no constituencies. One approval
+  quantity, a change of government when it drops below the threshold.
+- **Narrated events and event cards.** They would be a content treadmill (G4) and not
+  regressively checkable. Events here arise from thresholds.
+- **War, climate, migration, demographics as game quantities, multiplayer.**
+- **A tariff rate per sector.** It does not exist under a viable licence. The sector
+  effect arises from `durchgriff` and the import shares.
+- **A time-varying `durchgriff`.** It would be more correct and would cost ten more
+  exogenous paths. Constant suffices, because the quantities are endogenous anyway.
+- **A counter-lobby that wants to push something through itself.** `gegendruck` is a
+  scalar netted against `druck` in step 3; it can **restrain movement, not demand it**.
+  What counterforce 5 depicts is mobilisation, not retaliation — a damaged sector makes
+  every movement of its tariff instrument more expensive, including the ones that would
+  help it. Retaliatory tariffs would cost one direction per instrument and thus sixteen
+  more addresses.
+- **A split of the damage onto the damaged sector.** Who bears it stands there as a
+  rule; it is computed per country and instrument, not per sector. The split would need
+  an intermediate-inputs matrix — another source with its own licence question — and it
+  would change none of the sixteen numbers in step 3.
+- **A memory of the counter-lobby beyond one round.** The halving is the whole story. A
+  tail spread over several rounds would cost sixteen more addresses and would only shape
+  the transient.
+- **Damage to the rest of world.** It has no policy instruments and thus no address at
+  which a counter-lobby could form. Its price shifts remain unbooked; the rest of world
+  closes the circular flow, it does not act.
+- **A damage that distinguishes rise from fall.** The shift enters as an absolute value:
+  every movement damages someone. The direction is already carried by the netting
+  against `druck` in step 3, and a sign in the damage would pull it in a second time.
+- **The business-cycle share of the price shift, since 2026-09-03 and explicitly.** A
+  sector price trailing the world price shifts every round; that someone suffers from it
+  is true and still no lobby damage. Whoever books price inertia as damage books
+  inflation as a counterforce — the reasoning stands under *Warum die Zollzeile nur den
+  Keil misst*. What is **not** missing because of this: the tariff's effect on the
+  sector. It sits in `durchgriff(l, s)`, and that is the only reason the row does not
+  simply read `hub(l, zoll)`.
+- **The general-equilibrium share of a tariff step.** An American tariff moves the world
+  price via market clearing, and with it the sector prices of all countries. This part
+  of its effect enters no damage row, for it could only be measured against a state that
+  does not exist: the same round with the old tariff level, that is, a **second market
+  clearing** with another 40 halving steps per sector. The price would be the model's
+  most expensive computation doubled, the yield a number no Maß checks.
+- **The damage a foreign tariff does at home, as a row of its own.** It is the
+  consequence of the previous item and falls with it. It does not vanish from the game
+  but changes counterforce: the foreign tariff step lifts the domestic sector price,
+  lowers real income and approval, and via counterforce 2 can trigger a change of
+  government that resets all four instruments and thereby produces damage. The
+  difference deserves naming and is no small thing: the old path was continuous, the new
+  one is threshold-driven and at least one round slower.
+- **A counter-lobby rate of its own per instrument.** One `gegenlobby_satz`, four
+  quantities. Four rates would give the calibration three axes whose effect the
+  quantities produce anyway — and from the vintage rather than from a number.
+- **Graphics beyond table, time-series graph and chain view.** Democracy 4 sells itself
+  with a 2D node surface and consists, in its simulation, entirely of loaded tables
+  rather than hard-coded effects
+  (positech.co.uk/democracy4/modding.html, retrieved 2026-08-31). That is the
+  construction I orient myself by.
 
 ## Offene Entwurfsfragen
 
