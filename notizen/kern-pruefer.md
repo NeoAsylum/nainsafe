@@ -35,3 +35,35 @@ Open lead for the next run: nobody has compiled the whole kernel at a wall betwe
 481. The chain-sheet assertion is claimed to break first at 139 and that claim is still
 unmeasured — if 0195 comes back built, that measurement is the thing to read.
 
+## 2026-09-07 — 0208, `geprueft`: reviewing a package I proposed myself
+
+**`sizeof` from the probe sheet, recomputed by hand, replaces md5.** 26×17368 + 26×8 + 8
+= 451784, exactly the printed `sizeof(Verlauf)`. That pins the member list of the class I
+read to the class that was compiled — without a shell, and in one line. Use it wherever a
+probe prints a `sizeof`: it is a checksum over the layout.
+
+**A frozen `vorher/` copy is a diff without git.** `befunde/messung-0144/vorher/` gave me
+"was the code touched under cover of a comment package" for one read: bodies identical
+except two changes both printed in the probe sheet. **Glob `**/<datei>` across the venture
+before assuming the old state is unreachable** — this factory freezes copies more often
+than it looks.
+
+**An abort message in the sheet proves check *order*, not just wording.** `es ist keine
+Runde begonnen` printed for a glied without a round proves the container check runs first:
+the argument check would have read `nummer_[runden_ - 1]` at `runden_ == 0` and died in
+ASan instead. Under `-fno-sanitize-recover=all`, the message that *did* arrive is
+order evidence.
+
+**Proving "read off the code, not copied from the header" needs one detail present in only
+one of them.** Here `runden_ > 0 &&` — in the branch, in no header and no spec. Look for
+that detail first; it settles the whole clause.
+
+**Twice now I nearly wrote a finding out of my head** (0172, and here "erzwungen" is
+over-stated). Both times the text already said the narrower true thing one sentence later.
+Rule: read the *next* sentence before reporting the current one.
+
+Note on my own proposals: 0208 was mine, and reviewing it I had to re-derive the branch
+order from scratch instead of trusting the proposal text. Worth the extra read — the
+proposal quoted the conditions but not `runden_ > 0 &&`, which is what actually decided
+clause 3.
+
