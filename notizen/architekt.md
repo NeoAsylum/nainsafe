@@ -8,6 +8,23 @@ beiden Läufen der **einzige** verweigerte Schreibaufruf; `technik.md` und das A
 gingen jedes Mal durch. **An den Betreiber: eine Zeile in der Rollendatei macht die Archivregel
 ausführbar.** Bis dahin wird gestrafft — nie gestrichen ohne Ersatz.*
 
+*Unsicher aus 0208, 2026-09-08, damit der Projektmanager es sieht — drei Stellen:*
+**(1)** Ich habe in T10b festgelegt, dass `partie.parameter_pruefsumme` über die **Werte**
+des Trägers gebildet wird und nicht über den Text von `parameter.toml`. Keine
+Abnahmebedingung verlangt das; ohne es kann der Kern die übergebenen Zahlen gegen den
+Zustand nicht prüfen, und die Absicherung gegen den nullvorbelegten Träger fiele weg.
+**Ein Prüfer darf es für Übergriff halten.** Es widerspricht ausserdem einem Satz im Kopf
+von `parameter.toml` („wird ueber diese Datei *gerechnet*") — Datenbauer-Gewerk, gemeldet
+und nicht angefasst; **das braucht ein Paket beim Datenbauer.**
+**(2)** Die Aufteilung `Start(adresse…)` gegen `Runde(feld)` habe ich **nicht abgezählt.**
+T45 zählt 11 *Adressen* mit Herkunft `Parameter(schluessel)`, und das ist nicht die Zahl
+der Startschlüssel — `startkapital` allein speist zwei. Die beiden Zahlen erzeugt erst
+der Abzählschritt selbst; ich habe deshalb keine hingeschrieben.
+**(3)** `Konstanten` bleibt in `kern::werte`, obwohl sein Vertrag jetzt weiter ist als das
+Modul. Umziehen wäre heute billig — von 64 Fundstellen in `kern/` liegen 49 in drei
+Dateien (`werte.hpp` 16, `werte.cpp` 21, `werte_probe.cpp` 12) — und später teurer. Ich
+habe es gelassen, weil ein Umzug nichts kauft, was der Vertragssatz nicht schon kauft.
+
 *Unsicher aus 0154, damit der Projektmanager es sieht:* Ich habe dem Sperrabsatz einen Satz
 zugefügt, den keine Abnahmebedingung verlangt (`n = 1` benannt, `n = 0`-Fall ausgeschlossen).
 Er ist Rückfallschutz gegen genau die Verwechslung, die den Fehler erzeugt hat; ein Prüfer darf
@@ -19,6 +36,27 @@ ein Spielland seine sieben Nicht-Politik-Reihen nur im Startjahr braucht — das
 
 ## Was funktioniert
 
+- 2026-09-08, **der Fund aus 0208 und der teuerste, den die Fabrik bisher liegen liess** —
+  **Eine Lücke, die drei Gewerke einzeln benennen und jedes für sich aus dem Umfang
+  nehmen, gehört keinem von ihnen.** Der Spielentwerfer schrieb „the widening of the
+  signature needs an ADR", der Datenbauer „Abschliessend beantworten kann das erst das
+  Paket, das Schritt 3 bis 5 baut", der Kernbauer „der Rahmen braucht keinen Parameter" —
+  jeder Satz war für sein eigenes Gewerk wahr, und dazwischen lag der fehlende Draht für
+  dreizehn Pakete. **Prüffrage: Wer nennt diese Lücke sonst noch, und hat einer von ihnen
+  sie im Umfang?** Nennen sie alle und hat sie keiner, ist es eine Entwurfsentscheidung,
+  und sie wird von niemandem als Befund gemeldet werden.
+- 2026-09-08, aus 0208, **vierte Bestätigung von „erst im Bestand suchen"** — Der Träger
+  war fertig gebaut, mit genau der richtigen Bauart und beiden Herkünften (sechs
+  T27-Schlüssel *und* zwei T23-Jahrgangskonstanten in einem `struct Konstanten`), und
+  es fehlte allein die oberste Verbindung: `schritt` nahm ihn nicht entgegen. **Ein
+  fehlender Weg sieht aus wie ein fehlender Mechanismus.** Der Unterschied kostete eine
+  Datei lesen und ersparte einen zweiten Typ samt Feld-für-Feld-Umkopie — und eine
+  vergessene Zeile in einer Umkopie fängt nichts ab.
+- 2026-09-08, aus 0208, gemessen in diesem Lauf — **Eine Prüfsumme über eine Datei ist
+  eine Prüfsumme über ihre Kommentare.** `parameter.toml` hat 1.315 Zeilen und 51
+  Schlüsselzeilen: unter vier Prozent trägt einen Wert. Über den Dateitext hätte jede
+  Kommentaränderung den ganzen Regressionsbestand rot gefärbt. **Prüffrage an jede
+  Prüfsumme: Worüber genau läuft sie, und wie viel davon ist die Sache?**
 - 2026-09-06, **neu aus 0154 und der billigste Fund seit langem** — **Eine Zahl, die ich
   berichtige, wird von der Formel bestätigt, die sie erzeugt hat; das ist keine Bestätigung.**
   Der Prüfbefund trug zwei Wege auf die 12. Zwei `grep` fanden zwei weitere im selben Dokument

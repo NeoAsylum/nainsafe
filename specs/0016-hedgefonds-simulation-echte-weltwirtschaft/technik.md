@@ -987,6 +987,94 @@ year's movement and the historical volatility range". So:
 That is the cheapest way to satisfy requirement 1, and it makes the backtest an exactly
 repeatable computation.
 
+**What of that sentence is normative — decided 2026-09-08, package `0208`.** Normative is
+**the absence of a randomness argument**, and nothing else about the argument list. The
+three names are the illustration of the rule about randomness; they were written down
+before any step needed a number. The touchstone: an added `const` argument that carries
+no drawn number leaves purity, exact repeatability and requirement 1 exactly where they
+are — a randomness argument would not. Whoever **removes** an argument, or adds one that
+is not `const`, needs an ADR; whoever adds a `const` carrier that T10b covers does not.
+The binding signature stands in T10b.
+
+**T10b — The round takes the numbers that are not addresses as an argument, and there is
+exactly one carrier.**
+
+```
+schritt(vorrunde, aktionen, konstanten, modus) -> (neuer_zustand, kette_dieser_runde)
+```
+
+with `konstanten` a `const kern::werte::Konstanten&`. The reason for the widening in one
+line: T48 calls a name in a formula legitimate if it is a state address (T15), a
+parameter key (T27), a vintage constant (T23) or one of its own twenty-two quantities —
+and of those four kinds, two had no route into the round at all. A step body could read
+the state and nothing else, so every rule in `spiel.md` that carries a coefficient was
+unbuildable for want of a route, not for want of a rule. Measured in `0208`:
+`zustimmung_elastizitaet` is a key of `parameter.toml`, `werte::Konstanten` does not hold
+it, and `schritt` had no argument through which it could arrive.
+
+**The carrier is not new, only its top link was missing.** `kern::werte::Konstanten`
+already holds six T27 keys and the two T23 vintage constants `leitzins_start` and
+`durchgriff`, and every derived quantity that needs one already takes it as
+`const Konstanten&`. What widens is its contract: it stops being „der Ausschnitt daraus,
+den die Bewertung braucht" and becomes **the numbers of a round that are not addresses** — both
+kinds, one struct, one argument. A second struct beside it is rejected: it would need a
+per-field copy between the two, and a field forgotten in a copy is caught by nothing.
+
+**Which key belongs in it — the split, in the construction of T45.** Every key of
+`parameter.toml` is exactly one of two kinds:
+
+| Entry | Where it acts | Example |
+|---|---|---|
+| `Start(adresse…)` | the vintage build writes it into a state address; the round reads the address, never the key | `startkapital` → `fonds.kasse`, `fonds.anlegerbestand` |
+| `Runde(feld)` | a rule reads it while a round runs; it is a field of the carrier | `stufenweite`, `zustimmung_elastizitaet` |
+
+**A key without an entry aborts the vintage build, a key with two entries likewise, and a
+carrier field that is neither a `Runde(feld)` key nor a T23 vintage constant aborts as
+well.** The two-entry case is the important one, for the reason T45 already gives for
+addresses: it is the spot where a quantity gets two masters. The count-off runs where
+T45's runs and over the same file — **51 keys** by that file's own count-off of
+2026-09-06, against the 310 addresses. It is the mechanism for the gap the calibration
+file names itself and leaves open: „Zwei Fehler sind hier moeglich … eine Wirkung zu viel
+(ein Regler ohne Modellregel) oder eine zu wenig (eine Modellregel ohne Regler)."
+Answered by an abort instead of by a reading, once the sixth step stands.
+
+**The tie to the state, and it is what makes the widening safe.** `Konstanten` is
+default-initialised to zeros, and the calibration file says what a set at its bounds
+does: „`druck_max = 1`, `gegenlobby_satz = 0`, `hebel_max = 0` und `nachahmer_max = 0`
+schalten Lobbyismus, Gegenlobby, Hebel und Nachahmer praktisch ab." A round handed such a
+set computes a dead world and reports nothing. Therefore: **`schritt` forms the checksum
+over the `Runde(feld)` fields of the carrier and compares it with
+`lies_alt(partie.parameter_pruefsumme)`; a mismatch is a hard error and no substitute
+value, like the wrong read access in T39.** Construction as in T12 — field by field in
+declaration order, fixed byte
+order, FNV-1a-64 from `kern::pruefsumme` — never over the memory layout of the struct.
+
+**And therefore the parameter checksum is a function of the values, not of the file
+text.** The vintage build writes `partie.parameter_pruefsumme` with the **same** function:
+one function, two callers, the construction of T47. `parameter.toml` notes today that the
+checksum is computed „ueber diese Datei"; that reading is superseded here, for a measured
+reason — the file is 1,315 lines of which 51 are key lines, so under four percent of it
+carries a value. Over the file text every comment edit of the data builder would turn the
+whole regression corpus red without a number having moved, and the core, which reads no
+file (T2), could not check the number at all. *Reported to the project manager: the head
+of `parameter.toml` needs one line drawn after. It is not mine to edit.*
+
+**The vintage constants are tied one step weaker, and that is named and not hidden.** The
+state holds `partie.jahrgang_id`, an identity and not a checksum of the vintage's
+content; the content checksum is `daten_pruefsumme` and lies in the save (T22), outside
+the core. The round can therefore prove that its parameter set belongs to its state, and
+cannot prove the same of `leitzins_start` and `durchgriff`. That is enough because both
+come out of the same vintage build that writes the start state, so a mismatched pair
+cannot arise from a build — only from a hand-edited save, and that the checksum
+comparison on loading catches one step later. The stronger tie is a vintage checksum in
+the state, hence a 311th address, hence an ADR.
+
+**What expressly does not change.** No state address (310 stays 310), no field of
+`Zustand`, no target mask (T38), no save format: T22 already records `parameter_pruefsumme`
+and `daten_pruefsumme` and recomputes the game on loading, so the parameter set has always
+been an input to that recomputation — only the code did not say so. The carrier arrives as
+a reference, so the cost line of section 10 does not move.
+
 **T11 — Randomness exists at only two places, and it hangs on one root seed.**
 First, the spread of the start vintages (a game should not always begin identically);
 second, the bots and samples of the test bench. The generator is written in-house —
@@ -1346,6 +1434,14 @@ number that `spiel.md` names; and it describes not the world but the way of comp
 it. It is an argument of `schritt` (T10), stands in the header of the save (T22) and in
 every finding. Whoever recomputes a game in the wrong mode gets not a wrong number but a
 checksum break on loading.
+
+**The mode is not the only argument of this kind, and a step builder looks here first.**
+Since `0208` the round carries a second one: `const kern::werte::Konstanten&`, the
+parameter keys and vintage constants that the rules name beside the addresses. Same test,
+same reason — it describes not the world but how it is computed, it is no 311th field,
+and it stands in the save header as `parameter_pruefsumme`. Where a key of `parameter.toml`
+belongs, how the carrier is tied to `partie.parameter_pruefsumme` and what T10's signature
+sentence does and does not bind: **T10b**.
 
 To each mode belongs a **target mask**: the set of addresses written per round in this
 mode. At the end of the round the `Schreiber` checks in both directions — every address
@@ -1837,8 +1933,13 @@ calibration quantity but a measurement. The number of addresses with provenance
 `Parameter(schluessel)` stays at eleven (T45) — new keys are not new addresses.
 
 All values are read as decimal strings into scaled integers (T4) and filled into a
-structure with named fields, never via a loop over keys (T9). The checksum of the
-parameter set stands in the state and in every save. With that, calibrating is a data
+structure with named fields, never via a loop over keys (T9). **That structure is
+`kern::werte::Konstanten`, and since `0208` it is an argument of `schritt`** — this is
+the one route by which a key of this file reaches a rule of the round. Which keys stand
+in it and which instead determine a start address at vintage build, and how the count-off
+catches a key that does neither or both, stands in **T10b**. The checksum of the
+parameter set stands in the state and in every save; it is formed over the values of the
+carrier, not over the text of the file (T10b). With that, calibrating is a data
 change that needs no compiling — exactly the construction that `spiel.md` has evidenced
 on Democracy 4, and the precondition for an agent searching a thousand parameter sets
 overnight (section 10).
@@ -2191,7 +2292,10 @@ of this document or in `spiel.md` that is neither a state address from T15 nor a
 parameter key from T27 nor a vintage constant from T23 nor one of the **twenty-two**
 quantities above **is a finding and not a build decision** — that is the case finding 1
 describes, and the reason it was expensive: if the build agent chooses, Maß 2 measures
-its choice. It is proven like the floating-point renunciation from T4: the twenty-two
+its choice. **Two of the four kinds reach a step body only through the carrier of T10b**,
+and until `0208` through nothing at all: a name from T27 or T23 was legitimate here while
+being unreachable there. Whoever finds one in a formula reads T10b before writing the
+rule. It is proven like the floating-point renunciation from T4: the twenty-two
 names are the public interface of the module `kern::werte` (T13), and laying the
 declarations in `kern/include/kern/werte.hpp` outside `namespace intern` against this
 table is a check of two minutes. **I have run it once by hand in this run**, in the only
