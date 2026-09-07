@@ -248,3 +248,5 @@ ventures/**/CMakeFiles/
 ventures/**/CMakeCache.txt
 ventures/**/cmake_install.cmake
 ventures/**/CTestTestfile.cmake
+# Sperre des Uebersetzungslaufs (flock) -- gehoert dem Prozess, nicht der Historie
+ops/uebersetzung.sperre

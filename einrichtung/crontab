@@ -22,6 +22,13 @@ PATH=/home/adria/.cargo/bin:/home/adria/.local/bin:/usr/local/bin:/usr/bin:/bin
 # andere weckt sie. Beide prallen an derselben Sperre ab.
 0 * * * * cd /home/adria/fabrik && /usr/bin/python3 -u agents/tageslauf.py >> ops/nachtlauf.log 2>&1
 
+# The translator resumes itself, like the factory. On 2026-09-07 the session limit
+# stopped it at 12:03 and nobody restarted it until 15:13 -- three hours in which the
+# factory had already resumed on its own at 15:00. Ten past the hour, so it never races
+# the tageslauf start; flock -n so two invocations never overlap; it exits at once when
+# ops/uebersetzt.txt says nothing is left.
+10 * * * * cd /home/adria/fabrik && flock -n ops/uebersetzung.sperre /usr/bin/python3 -u agents/uebersetzungslauf.py --stueck 60 >> ops/uebersetzung.log 2>&1
+
 0 7 * * 0 cd /home/adria/fabrik && /usr/bin/python3 -u agents/wochenlauf.py >> ops/wochenlauf.log 2>&1
 
 # Sicherung ebenfalls nachholend; die Logik steht im Skript, nicht in dieser Zeile.
