@@ -3380,59 +3380,59 @@ neither into the work package nor do I decide on `blockiert`.
 
 ## Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01
 
-**Befund 1, `spiel.md` und `technik.md` widersprechen sich in der Steckplatzzahl — behoben,
-und der Fehler war meiner.** Der Satz sagte „über 15 Runden … `3·ai` Steckplätze" und
-mischte damit `k = 1` und `k = 3`. Er steht jetzt in der allgemeinen Form, die T43 schon
-trägt: nach `5k` Runden `3k·ai` von `15k`, mit beiden Fällen ausgeschrieben. Die Probe zwei
-Absätze darunter (fünf Runden, drei von fünfzehn) war die ganze Zeit richtig und ist jetzt
-nicht mehr der Widerspruch zum eigenen Satz. Der Prüfer hat den Rechenweg von Hand
-nachgerechnet, ich habe ihn gegen dieselbe Probe geprüft und komme auf dieselbe Zahl.
+**Finding 1, `spiel.md` and `technik.md` contradict each other on the slot count — fixed,
+and the mistake was mine.** The sentence said „über 15 Runden … `3·ai` Steckplätze" and
+thereby mixed `k = 1` and `k = 3`. It now stands in the general form that T43 already
+carries: after `5k` rounds `3k·ai` of `15k`, with both cases written out. The check two
+paragraphs below (five rounds, three of fifteen) was right the whole time and is no longer
+the contradiction to its own sentence. The reviewer reworked the calculation by hand; I
+tested it against the same check and arrive at the same number.
 
-**Befund 2, die Aggregation des fehlenden Einflusses fehlt — behoben, aber nicht auf dem
-vorgeschlagenen Weg, und der Unterschied kostet zwei Zahlen.** Die Aggregation ist
-übernommen, wie der Prüfer sie vorschlägt und wie T44 sie für `B` schon schreibt: Summe
-über die zwei Länder mit dem höchsten Einfluss, Gleichstand nach `LandId`. Beide Dokumente
-rechnen dieselbe Größe damit gleich.
+**Finding 2, the aggregation of the missing influence is missing — fixed, but not by the
+proposed route, and the difference costs two numbers.** The aggregation is adopted as the
+reviewer proposes it and as T44 already writes it for `B`: sum over the two countries with
+the highest influence, ties broken by `LandId`. With that, both documents compute the same
+quantity the same way.
 
-**Nicht übernommen habe ich die Kappung**, und das ist die eine Stelle, an der ich vom
-billigsten Weg abweiche. Der Prüfer hat sie ausdrücklich stehen lassen dürfen — sie ist in
-T44 begründet und war kein Befund. Aber dieselbe Begründung schlägt zurück: T44 verwirft
-das Kappen für `B`, weil ein Fonds bei Einfluss null in beiden Ländern auf dem gekappten
-Wert 1.000 säße und eine Verbesserung auf 60 Prozent der Schwelle **unsichtbar** bliebe.
-Für das Partieergebnis gilt das eine Ebene höher: Die Kappung legte jeden Fonds mit
-weniger als einer Schwelle Gesamteinfluss auf denselben Wert und glättete damit die untere
-Hälfte des Ergebnisraums — genau dort, wo Maß 3 sein Argminimum sucht, wenn im Fenster kein
-Profil das Mandat erreicht. Das ist der Fall, den der Befund selbst als den plausiblen
-benennt. Ich hätte damit eine Blindheit eingebaut, die der Prüfstand nicht mehr findet,
-weil sie kein Fehler ist, sondern eine Definition.
+**What I did not adopt is the capping**, and that is the one place where I depart from the
+cheapest route. The reviewer explicitly allowed it to stand — it is justified in T44 and
+was not a finding. But the same justification strikes back: T44 rejects capping for `B`
+because a fund with influence zero in both countries would sit at the capped value 1,000
+and an improvement to 60 percent of the threshold would stay **invisible**. For the game
+result the same holds one level up: the capping would put every fund with less than one
+threshold of total influence on the same value and thereby flatten the lower half of the
+outcome space — exactly where Maß 3 seeks its argminimum when no profile in the window
+reaches the mandate. That is the case the finding itself names as the plausible one. I
+would have built in a blindness the test stand can no longer find, because it is not an
+error but a definition.
 
-Gebraucht wird die Kappung ohnehin nicht: `einfluss` liegt nach Bauart in 0 … 100, also ist
-jeder Summand per Konstruktion höchstens 1.000, und `fondsvermoegen > 0` gilt für jeden
-lebenden Fonds. Die Schranke folgt jetzt aus der Rechnung statt aus einer Deckelung.
-**Der Preis steht in „Was der Architekt neu rechnen muss" und ist zweimal eine Zahl:**
-Ergebnisband 27.000 → 28.000 (T40) und Lückengrenze 27.001 → 28.001 (T34). Dafür entfällt
-der Kappungsunterschied zwischen `B` und der Ergebnisgröße vollständig — zwei Formeln
-werden zu einer, und die Stelle kann nicht mehr auseinanderlaufen. Nachgerechnet habe ich
-auch, was der Befund nicht verlangte: Die Bänder bleiben disjunkt, und T40s Schranke
-`R ≤ 26` gilt unverändert.
+The capping is not needed anyway: `einfluss` lies in 0 … 100 by design, so every summand
+is at most 1,000 by construction, and `fondsvermoegen > 0` holds for every living fund.
+The bound now follows from the calculation instead of from a ceiling.
+**The price is stated in „Was der Architekt neu rechnen muss" and is twice a number:**
+result band 27,000 → 28,000 (T40) and gap bound 27,001 → 28,001 (T34). In return, the
+capping difference between `B` and the result quantity disappears entirely — two formulas
+become one, and the spot can no longer drift apart. I also reworked what the finding did
+not demand: the bands stay disjoint, and T40's bound `R ≤ 26` holds unchanged.
 
-**Dazu zwei Punkte aus „Geprüft und nicht gezählt", weil dieser Lauf ohnehin stattfand.**
-Der Prüfer hat beide ausdrücklich nicht als Befund gezählt; beide waren an mich adressiert,
-und beide kosten hier eine Entscheidung statt eines weiteren Laufs.
+**In addition, two points from „Geprüft und nicht gezählt", because this run took place
+anyway.** The reviewer explicitly counted neither as a finding; both were addressed to me,
+and both cost a decision here instead of another run.
 
-1. **Gehören die zwölf Beteiligungen zum Fondsvermögen? Ja** — der Abschnitt *Was das
-   Fondsvermögen ist* entscheidet es samt Bewertung zum Ausstiegswert. Ich lasse das nicht
-   offen, obwohl es kein Befund ist: Fiele die Antwort später anders aus, könnte Klasse 2
-   die erste Abnahmehälfte von Maß 2 von Bauart wegen nicht bestehen, und das sähe im
-   Prüfstand aus wie ein Balanceproblem, obwohl es eine Definition wäre.
-2. **Die 38 Adressen ohne Herkunftseintrag** (32 aus T23 Punkt 1, sechs ohne zulässige
-   Eintragsart) stehen jetzt in der Entwurfstabelle, die von sich sagt, sie führe „alle
-   übrigen, abschließend". Damit ist die Zusage der Tabelle wieder wahr, und T45 braucht
-   keine neue Eintragsart.
+1. **Do the twelve stakes belong to the fund's assets? Yes** — the section *What the
+   fund's assets are, and whether the stakes belong to them* decides it, including
+   valuation at exit value. I do not leave that open although it is not a finding: if the
+   answer later came out differently, class 2 could fail the first acceptance half of
+   Maß 2 by construction, and on the test stand that would look like a balance problem
+   although it would be a definition.
+2. **The 38 addresses without a provenance entry** (32 from T23 point 1, six without a
+   permissible entry kind) now stand in the draft table that says of itself it lists „alle
+   übrigen, abschließend". With that the table's promise is true again, and T45 needs no
+   new entry kind.
 
-**Was ich nicht angefasst habe:** die Bemerkung des Prüfers an den Projektmanager, dass ein
-Rücklauf ohne Lauf des Spielentwerfers nicht schließbar war. Das ist eine Frage der
-Ablaufsteuerung und nicht meine; dieser Lauf ist die Antwort darauf.
+**What I did not touch:** the reviewer's remark to the project manager that a return could
+not be closed without a run of the game designer. That is a matter of process control and
+not mine; this run is the answer to it.
 
 ## Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31
 
