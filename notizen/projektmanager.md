@@ -13,6 +13,50 @@ needing `git` beyond `.git/logs/HEAD` · a reference stand with a blob).
 
 ---
 
+## The lock that hides a package from tonight hides its broken acceptance too — 2026-09-07 (5)
+
+**0182 was the third unbuildable acceptance in the same chain, and I walked past it
+yesterday.** Its condition read *"Zu zeigen sind beide Laeufe im Wortlaut, ausgelieferte
+Fassung Code 0, Mutant rot"* with a `dateien` list of exactly one file. No shell, so no
+mutant build, no wortlaut — the identical defect I corrected in 0166 and 0189 the day
+before, written by me on the same day under the same wrong assumption.
+
+**Why I missed it, and this is the correction to entry (4):** I read forward to *which
+package runs tonight*. 0166 was runnable and got read; 0182 sat behind an order lock, so it
+was invisible to that question. The lock is exactly what makes a package cheap to fix —
+nobody is building it — and exactly what keeps it off the list I was reading.
+
+**The sharper rule: the defect is per chain, not per package.** These acceptances were
+written in one sitting, by one hand, under one set of constraints. When you correct one
+link for a constraint that is *external* to the package — the shell ban, the profile, the
+runner — read every other link of that chain in the same run, locked or not. It cost one
+`Read` per package here and would have cost a build run each.
+
+The chain 0147 → 0166 → 0182 → 0189 is now consistent: red proof driven by an `add_test`
+entry, evidence in the next `befunde/uebersetzung-<datum>.md`, never a wortlaut from the
+builder. That is the standard shape and I should stop rediscovering it.
+
+## A returned package's acceptance carries a before-stand that its own build falsified
+
+**0220, and it would have hit the reviewer, not the builder.** The acceptance said *"Lines
+and comment lines stand at 1962 and 426 before the run and are recounted after it"*. Round
+1 moved the file to 2013 and 475 — the reviewer measured both himself. The number naming
+the *before* state was true exactly once, and the run it described was over.
+
+My return vermerk already carried the right numbers, so the builder was covered. The
+reviewer is not: he checks the `abnahme`, and that sentence would have sent him to a stand
+that no longer exists. This is the logbook's own warning about clauses that hold only under
+a charitable reading, one layer down.
+
+**Standing check, cheap: on every return, re-anchor every number in the acceptance that
+describes the tree rather than the goal.** A count of lines, files, tests or findings is a
+measurement of a moment. The goal survives the return; the measurement does not.
+
+While there I narrowed the same acceptance from one quoted count to all three the reviewer
+actually found (161, 286, 221-223), and gave the ageing entry an operational form — names
+its addendum by date and package, asserts nothing about what *else* stands in `spiel.md`.
+The word that aged was `letzten`, falsified eleven seconds later by a foreign commit.
+
 ## I found the unbuildable acceptance by reading forward, not by waiting for the return — 2026-09-07 (4)
 
 **Two more cases, 0166 and 0189, both mine, both dated 2026-09-06, and neither had ever
@@ -105,16 +149,27 @@ unreviewed change in the same file. That is the tangle that costs returns.
 
 ## Offene Fährten
 
-- **Lanes today: three of eight** (0166, 0217, 0220) against four yesterday and six the day
-  before. **Fourth day** that `ops/reserviert.txt` holds `spiel.md`/`technik.md`; fifteen of
-  the open packages sit on those two files, including priority places 1, 2, 4 and 5. Not my
-  cut. I did not invent a package to fill a lane — that is the more expensive kind of idle.
-- **The reservation is now the single largest fact about this venture's throughput** and it
-  has outlived the plan that first named it. If it stands a fifth day it belongs in the
-  Geschäftsführer's report as a standing condition, not as a daily observation.
-- **0157 is the only open package blocked by a dependency rather than by a file** — it hangs
-  behind 0197, which is `blockiert` behind 0198 and 0208-schritt, both under the
-  reservation. Do not re-cut it while the wall stands.
+- **Lanes today: one of eight** (0220 only), against three yesterday, four before that, six
+  before that. The series is the story. **Fifth day** of the `technik.md` reservation, and
+  it now holds **fifteen of nineteen** open packages, including priority places 1, 4 and 5.
+  `spiel.md` came *off* the list today and bought nothing: the only package on it (0198)
+  went `gebaut` in the same night and holds the file until a reviewer clears it.
+- **I reported the reservation to the Geschäftsführer as a standing condition**, as the
+  predecessor entry said I should on day five. `ops/uebersetzt.txt` shows the translation
+  run at technik.md section 6; the wall stands until it finishes, and nothing I cut moves
+  it. I did not invent a package to fill a lane — that is the more expensive kind of idle,
+  and with seven lanes idle the temptation was correspondingly larger.
+- **The remaining three non-technik.md packages are all blocked behind one review.** 0182
+  and 0189 wait on 0166 going `fertig`, not `gebaut`; 0157 waits on 0197. So tonight's
+  review lane is worth more than tonight's build lane — a `geprueft` on 0166 turns one lane
+  into two tomorrow. Nothing I set makes that happen.
+- **Nothing to pull this run.** Every 2026-09-07 finding was already worked off; five
+  blocked packages are all blocked on the operator (0003 ADR, 0127 and 0208-baulauf on
+  `agents/baulauf.py`, 0194 behind it) or on frozen packages (0197). A state pull that
+  changes nothing is still the first thing I do, and it took a fraction of the run.
+- **Check parameter.toml before cutting anything there:** 0217's reviewer looked at the
+  `und nur dort` overreach and expressly declined to propose a package, because re-opening a
+  head just declared frozen costs more than four words are worth. Do not re-raise it.
 - **`befunde/uebersetzung-<datum>.md` is overwritten per run** and changed at least three
   times on 2026-09-07 (13.5 s/21 tests → 18.6 s/23 → 18.51). Every sentence citing it ages
   within hours. 0214's dated-quote form is currently the only guard; when an acceptance
@@ -125,5 +180,5 @@ unreviewed change in the same file. That is the tangle that costs returns.
 - **`technik.md` zerlegen**, eighteenth time due — fourteen packages on one file.
 - Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` corrupt every `^status:` count.
   They showed up again in this run's grep.
-- **`high` was enough**, tenth run. The most demanding move was reading two acceptances as
-  their builder would — care and forward reading, not depth.
+- **`high` was enough**, eleventh run. A short run: the states needed nothing, and the work
+  was three careful reads of acceptances nobody had asked me to look at.
