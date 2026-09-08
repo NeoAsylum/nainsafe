@@ -4,6 +4,43 @@ Rotated by the runner on 2026-09-07 at 17945 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0225: one word, and the counter it moves on purpose
+
+Built. `reihen.toml:1870`, `unter '...'` → `, Absatz '...'`. Compiler verdict of the day
+`uebersetzung-2026-09-08.md`, `ergebnis: ok`, **26 of 26 green** — including
+`belegstellen_kopfzahlen`, which was red yesterday. 0189 did what it said.
+
+**The target is not a heading, and that decided the keyword.** `spiel.md:2851` is a bold
+lead-in, `**And the limit of the oracle, explicitly.**`, not a `##` line —
+`Grep("limit of the oracle")` gives exactly two hits, `:1622` (running text) and `:2851`.
+`ueberschrift_aus_zeile` (`:1711-1735`) takes both forms, so `Abschnitt` would have
+resolved too; `Absatz` is the true one, and it is the keyword the riegel uses in its own
+head (`:39`) for a bold lead in `technik.md`. **A keyword that resolves is not yet a
+keyword that is right.**
+
+**The rule that decides everything about quoted citations:** with Anfuehrung the name is
+demanded **wortgleich** (`beurteile_zitat`, `:3481-3483`) — no prefix match, unlike the
+form without. Both sides run through `normiere`, which strips a trailing `. : , ;`
+(`:1701-1705`); that is the only reason my quote may drop the period the spec carries
+inside the bold. Straight `'` is pair 5 in `KLAMMERN` (`:1605`) with `kuendigt_an =
+false`, so it counts **only** at distance zero — which is where I put it.
+
+**Measured myself, before → after:** 2029 → 2029 lines, 491 → 491 comment lines
+(`^\s*#`), keyword hits 60 → 61. `datenanker = false` stands **four** times in the file,
+so "Eine der vier Groessen" is not a stale number and I left it alone.
+
+**What I nearly broke while writing the Vermerk:** the package body now quotes the new
+line verbatim, keyword and all. That would be a second, resolving citation — except
+`main` excludes everything under `aufgaben/` from the zitierende set (`:4177`,
+`!liegt_unter(kurz, "aufgaben")`). Checked, not assumed. `befunde/` and `bau/` are
+`UNGELESENE_ORDNER` (`:782`), which is also why the three `spiel.md` copies under
+`befunde/messung-0105/baum*/` do not make the bare name ambiguous.
+
+**And `specs/` is a second root, not part of the venture:** `main` derives it as
+`wurzel/../../specs/<venture>` (`:4079`) and takes those files as **targets only**, never
+as citing documents (`:4183-4185`). That is why a bare `spiel.md` resolves at all from
+`ventures/`.
+
 ## 2026-09-08 — 0228: one comment passage, and the four counters it must not move
 
 Built. `parameter.toml:297-319` (was :297-300). Compiler verdict of the day
@@ -97,6 +134,23 @@ each in the comments, at 156, 320, 322.
 
 ## Open leads
 
+- **0225 is built. Uncertain, for the project manager:** (a) The head numbers of
+  `belegstellen_riegel.cpp` **will be stale after this run** — 36 → 37 Zitate, 36 → 37
+  aufgeloest, 57 uebergangen unchanged, and Angabe 1's mutant numbers (47/36/70/57,
+  `messung-0115/messen.py:483-484`) shift with them. `belegstellen_riegel` itself stays
+  green (`AUFGELOEST_MINDESTENS` is a lower bound, `:4267`); `belegstellen_kopfzahlen`
+  will not. This is the package's own foreseen outcome (abnahme: "ein Befund an den
+  Projektmanager und kein Ruecklauf"), and 0189 has just re-measured those numbers — the
+  next re-measurement is one line of work but it is **not** in my `dateien`. (b) The
+  numbers above are **derived from the mechanism, not run** — no shell; what the riegel
+  actually prints stands in tomorrow's `uebersetzung-<datum>.md`, and that is the
+  daten-pruefer's condition, not mine.
+- **The other three paraphrases in `reihen.toml` are still invisible to the riegel** and
+  the package's own Abzugrenzen names them: `Abschnitt zur Partielaenge R` (dead against
+  `spiel.md:109`, green by construction), twice `spiel.md, Offene Entwurfsfragen`
+  (`:1258` is one). A follow-up package can now be estimated instead of guessed: each one
+  moves the head numbers by exactly one Zitat, and after this run there is a measured
+  precedent for what that costs.
 - **0228 is built. Uncertain, for the project manager:** (a) T10b says `parameter.toml`
   "is 1,315 lines"; I count **1314** before my edit and 1333 after. Not my file and not a
   package, but that number was already off by one against the tree and is now off by

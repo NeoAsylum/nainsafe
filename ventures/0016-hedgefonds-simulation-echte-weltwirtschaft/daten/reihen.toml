@@ -1867,7 +1867,7 @@ t26_folge = ""
 deckung_gemessen = false
 deckung_urteil = "entfaellt -- keine Quelle, keine Deckungsfrage"
 offen = [
-  "Eine der vier Groessen ohne Datenanker, die spiel.md unter 'And the limit of the oracle, explicitly' aufzaehlt. Startwert nach T45 aus der Entwurfstabelle in spiel.md.",
+  "Eine der vier Groessen ohne Datenanker, aufgezaehlt in spiel.md, Absatz 'And the limit of the oracle, explicitly'. Startwert nach T45 aus der Entwurfstabelle in spiel.md.",
   "Das Lizenzurteil ist auf keine der drei Lizenz- und Deckungsbefunddateien zurueckfuehrbar -- siehe Widerspruch Nr. 7.",
 ]
 

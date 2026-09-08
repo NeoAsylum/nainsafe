@@ -1,7 +1,7 @@
 ---
 id: 0225-reihentoml-zitat-1870-ohne-schluesselwort
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0182-sammelstellen-sortierung-dauerhaft-gedeckt, 0189-riegelkopfzahlen-belegstellen-nacherheben]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: "Das Zitat in `reihen.toml:1870` nennt seinen Abschnitt mit einem Schluesselwort, das `belegstellen_riegel` als Schluesselwort erkennt, unmittelbar vor der Anfuehrung -- die Form `<datei>, <Schluesselwort> \"<Name>\"`, die derselbe Riegel laut seinem Kopfkommentar (`belegstellen_riegel.cpp:346`) im Bestand bereits viermal vorfindet. Die Anfuehrung nennt den Wortlaut, der heute in `spiel.md` steht, und die Fundstelle loest auf. Der Bauagent belegt im Vermerk: die alte Zeile, die neue Zeile, und den Aufruf, mit dem er die Ueberschrift in `spiel.md` gefunden hat. Ausserhalb dieser einen Zeile bewegt sich nichts -- kein zweiter Leaf-Wert, kein `faktor`, kein `basisjahr`, keine weitere Zitatstelle umformuliert, keine Ueberschrift in `specs/` angefasst. Zeilenzahl und Kommentarzeilenzahl der Datei werden vor und nach dem Lauf gemessen und genannt. **Ob der Riegel dadurch andere Grundzahlen druckt, prueft der daten-pruefer** am dann geltenden `befunde/uebersetzung-<datum>.md`: Er nennt die Eintraege zu `belegstellen_riegel`, `belegstellen_messung` und `belegstellen_wortabstand` aus beiden Bauwegen im Wortlaut. Sind sie gruen, ist das Paket abnahmefaehig. Ist einer rot, ist das ein **Befund an den Projektmanager** und kein Ruecklauf auf den Bauagenten -- die Zahlen, die dann nachzuziehen waeren, stehen in `belegstellen_riegel.cpp` und liegen ausserhalb seiner `dateien`. Keine Bedingung dieser Abnahme darf eine Shell, `git` jenseits von `.git/logs/HEAD` oder ein Skript verlangen, das in keinem `add_test` haengt."
@@ -49,3 +49,49 @@ die Stelle steht danach dauerhaft unter Aufsicht statt unter Beobachtung durch Z
 - **Nicht** die zweite Anfuehrung derselben Stelle (`Startwert nach T45 aus der
   Entwurfstabelle in spiel.md`). Sie nennt eine Tabelle, keinen Abschnitt; ein
   Schluesselwort davor waere eine Behauptung ueber die Gliederung.
+
+## Vermerk des Bauagenten, 2026-09-08
+
+**Alt** (`reihen.toml:1870`):
+
+> "Eine der vier Groessen ohne Datenanker, die spiel.md unter 'And the limit of the
+> oracle, explicitly' aufzaehlt. Startwert nach T45 aus der Entwurfstabelle in spiel.md."
+
+**Neu**, dieselbe Zeile:
+
+> "Eine der vier Groessen ohne Datenanker, aufgezaehlt in spiel.md, Absatz 'And the limit
+> of the oracle, explicitly'. Startwert nach T45 aus der Entwurfstabelle in spiel.md."
+
+**Der Aufruf, mit dem die Ueberschrift in `spiel.md` gefunden ist** --
+`Grep(pattern="limit of the oracle", path="specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md", -n)`,
+zwei Treffer: `:1622` (Fliesstext) und `:2851`, und `:2851` ist die Fundstelle:
+`**And the limit of the oracle, explicitly.** Without a target series are: ...`. Der
+Wortlaut ist aus der Datei genommen, nicht aus `ops/uebersetzt.txt`.
+
+**Warum `Absatz` und nicht `Abschnitt`:** Das Ziel ist keine Rautenueberschrift, sondern
+ein fetter Vorspann. `ueberschrift_aus_zeile` (`belegstellen_riegel.cpp:1711-1735`) nimmt
+beide Formen; `Absatz` ist die wahre von beiden und dasselbe Schluesselwort, mit dem der
+Riegel im eigenen Kopf (`:39`) einen fetten Vorspann in `technik.md` zitiert.
+
+**Warum die Fundstelle aufloest, in der Kette:** Schluesselwort `Absa\164z` steht in
+`SCHLUESSEL` (`:1544-1545`); die Anfuehrung folgt im Abstand null, also gilt
+`Zitatform::MitAnfuehrung` (`waehle_zitatform`, `:2809-2816`); das gerade einfache
+Anfuehrungszeichen ist Paar 5 in `KLAMMERN` (`:1605`) und bei Abstand null zugelassen;
+der Dateiname links im selben Absatz ist `spiel.md` (`naechster_verweis`, `:1960`);
+mit Anfuehrung wird **wortgleich** verlangt (`beurteile_zitat`, `:3481-3483`), und
+`normiere` streicht auf beiden Seiten den Schlusspunkt (`:1701-1705`) -- gesucht wie
+gefunden lautet `And the limit of the oracle, explicitly`.
+
+**Zeilenzahl vor und nach dem Lauf, selbst gemessen:** 2029 → 2029 Zeilen, 491 → 491
+Kommentarzeilen (`^\s*#`). Kein zweiter Leaf-Wert, kein `faktor`, kein `basisjahr`, keine
+weitere Zitatstelle, nichts in `specs/`.
+
+**Die Grundzahlen bewegen sich, und zwar nach oben** -- Meldung an den Projektmanager,
+nicht still repariert: Aus einem Nichtzitat wird ein aufgeloestes Zitat, also 36 → 37
+Zitate und 36 → 37 aufgeloest, 57 uebergangene Fundstellen unveraendert. `belegstellen_riegel`
+selbst bleibt gruen (`AUFGELOEST_MINDESTENS` ist eine Untergrenze, `:4267`), aber
+`belegstellen_kopfzahlen` haelt die absoluten Zahlen des Kopfkommentars gegen den Bestand
+(`befunde/messung-0115/messen.py:112-113`, Angabe 2 in `:556-557`) und wird davon rot;
+Angabe 1 (`:483-484`, die Mutantenzahlen 47/36/70/57) verschiebt sich mit. Die
+nachzuziehenden Zahlen stehen in `belegstellen_riegel.cpp` und liegen ausserhalb meiner
+`dateien`.
