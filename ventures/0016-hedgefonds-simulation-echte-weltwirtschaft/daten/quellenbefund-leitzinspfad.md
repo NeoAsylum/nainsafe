@@ -149,9 +149,9 @@ Until 2026-09-08 this file called the Chinese value the „administered PBoC ben
 lending rate": an identification the queried source does not make, with no query of its own
 behind it. Way 2 below rests on this code for China, so the difference is load-bearing.
 
-The known asymmetry the package named as the anchor to beat is not beaten: `DISR` remains
-two concepts across two countries, and every alternative reached by the queries above
-either drops a country or drops the policy character.
+The anchor the package named is not beaten: every alternative reached by the queries above
+drops a country or the policy character. Whether `DISR` itself is two concepts across two
+countries is open, not answered — the codelist at `:294` identifies none per country.
 
 ## What a decision would need
 
@@ -259,7 +259,7 @@ Line numbers are of this file as of 2026-09-08, unchanged by Ruecklauf 2 and by 
 | 128–130 | what „absent" means in the table below it | the definition that binds every cell of `:134`–`:138` |
 | 134–138 | the eleven „absent" cells | the wildcard listings `:79`–`:82` for the IMF codes, `:85`–`:86` for the WDI codes |
 | 140–150 | WDI names no institution for `FR.INR.LEND` and no instrument per country, and calls the rates not comparable across countries | `/v2/indicator/FR.INR.LEND`, daten-pruefer 2026-09-08. **New in Ruecklauf 1**, replacing an unsourced institutional identification |
-| 152–154 | the asymmetry is not beaten; every alternative drops a country or the policy character | **a summary** over `:134`–`:138`; no query of its own |
+| 152–154 | every alternative drops a country or the policy character; whether `DISR` is two concepts is open | **a summary** over `:134`–`:138` for the first clause; the second rests on the codelist at `:294`. **Amended in 0253 Ruecklauf 1**, replacing „`DISR` remains two concepts across two countries", which had no query of its own |
 | 173–176 | the IMF endpoint ignores `startPeriod` and `endPeriod` | `DEU.*.A` carrying both, answered 1957–2023 |
 | 177–179 | the IMF licence text is unread | five attempts, HTTP 403 (`daten/reihen.toml`, series 9, `[[reihe.lizenzbeleg]]`); not retried in this run |
 | 180–190 | the enumeration reaches topic 7 only; how many rate indicators sit outside it is unmeasured | `topic/7` complete at `total: 203, pages: 1`, with `MMKT` as the worked instance |
@@ -308,14 +308,15 @@ source further on. `daten/reihen.toml` carried the same denial twice, at `:621`
 nothing about whether BRA `DISR` is the policy rate, so way 2 costs the countries it
 already cost. No observation count moved: this run queried structure, not data.
 
-**Out of scope of 0252, named so it does not read as an oversight.** The USA cells at
-`:30` and `:134` („Fed discount-window rate") and the matching USA half-clauses in
-`daten/reihen.toml:621` and `:1258` assert exactly the kind of per-country identification
-this retrieval declines to make, and `daten/deckungsbefund-1997.md:206` still carries the
-retired Brazilian denial in full. 0252 covered the Brazilian clause in two files;
-`deckungsbefund-1997.md` was not among its `dateien` at all. Proposed as
-`aufgaben/0253-disr-je-land-identifikation-nachziehen.md` — and done there the same day,
-in the section below.
+**Out of scope of 0252, named so it does not read as an oversight.** The state on
+2026-09-08 as 0252 closed: the USA cells at `:30` and `:134` read „Fed discount-window
+rate", and the matching USA half-clauses stood in `daten/reihen.toml:621` and `:1258` —
+exactly the kind of per-country identification this retrieval declines to make. A third
+site lay outside 0252's `dateien` entirely, in `daten/deckungsbefund-1997.md`. All three
+were proposed as `aufgaben/0253-disr-je-land-identifikation-nachziehen.md` and done there
+the same day, in the section below. **Every clause of this paragraph is dated to that day.**
+What `deckungsbefund-1997.md` holds now is not asserted here in either direction — that
+file is another package's lane, and this one states only what its own file carries.
 
 ## Revision 2026-09-08, package 0253: the USA identification goes the same way
 
@@ -336,11 +337,38 @@ between levels is measured; a difference of concept is not read off it.
 
 `daten/deckungsbefund-1997.md` point 1 carried the retired Selic denial whole, and with it
 „die richtigen Zahlen" — a claim that the USA values match the Fed discount window,
-measured against no named reference. Rewritten to the same shape; every value in it is
-unchanged, and the design question it hands to the spielentwerfer stays open.
+measured against no named reference. Rewritten to the same shape on 2026-09-08; that edit
+moved no value, and it left open the design question the point hands to the spielentwerfer.
 
 **What this does not change.** No observation count, no coverage verdict, no way at `:163`,
 and not the „Policy rate?" column: that column is a reading, row `:230` says so, and it now
 also says which sentence of the codelist the two `DISR` readings rest on. `reihen.toml`
 carried 62 lines with a `technik.md`/`spiel.md` citation before this package and carries 62
 after — 78 occurrences on the same 62 line numbers.
+
+## Revision 2026-09-08, package 0253 Ruecklauf 1: the summary at `:152` follows
+
+Round 1 retired the two instrument names and left the sentence they carried. `:152`–`:154`
+still read „`DISR` remains two concepts across two countries" while `:134` already said „a
+discount rate, not identified per country" in both cells, and the closing note at `:330`
+said the framing „rested on the two instrument names and falls with them". Row `:262` binds
+`:152`–`:154` as a summary over `:134`–`:138` with no query of its own, so the summary had
+no warrant left in this file and none elsewhere in it.
+
+Split rather than deleted, because the two clauses had different standing: **every
+alternative drops a country or the policy character** is a summary over `:134`–`:138` and
+still holds, so it stays and keeps that binding; **`DISR` is two concepts across two
+countries** now rests on the codelist sentence at `:294`, which identifies no instrument
+for any country, and is therefore stated as open rather than answered no. Row `:262`
+carries both bindings in the same edit.
+
+`:311`–`:319` was dated instead of rewritten: it recorded the pre-0253 state of three
+sites in the present tense, one of them in a file this package does not own. It now says
+which day it describes and asserts nothing about that file's present content.
+
+**What this does not change.** Three in-line edits above the last cited line — `:152`–`:154`
+in place at three lines, row `:262` in place at one — so all 39 enumeration rows keep their
+references and the anchors at `:9`, `:30`, `:31`, `:40`, `:72`, `:90`, `:92`, `:148`,
+`:152`, `:292` and `:294` stand where they stood. `daten/reihen.toml` was not opened:
+62 lines with a `technik.md`/`spiel.md` citation before and after. No number, no
+observation count, no way at `:163`, no „Policy rate?" reading moved.
