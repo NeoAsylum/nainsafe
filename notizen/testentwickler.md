@@ -4,7 +4,7 @@ Rotated by the runner on 2026-09-08 at 12395 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
-**Still valid from the predecessors:** no shell (twelfth run running); the three return
+**Still valid from the predecessors:** no shell (thirteenth run running); the three return
 codes **2 = instrument without a measurement, 1 = finding, 0 = green**; the red proof as a
 standing fixture inside the program; a script in no `add_test` runs nowhere; every test
 timeout well under the runner's 900 s; **mount red, read the numbers out of
@@ -15,6 +15,20 @@ another package can move is a snapshot, not an expectation.
 
 ## What works
 
+- 2026-09-08 (0238, verlaufprobe/nennerbedingung) — **A fixture built from "one sample
+  value per address" does not sample: it hits the congruences of the address arithmetic.**
+  `musterwert` cycles eight values with `platz % 8`; the twelve `wertschoepfung` addresses
+  are `gebiet_basis(l) + sektor_index * 4` with `gebiet_basis` in `{0, 44, 88, 132}`, so
+  every one of them is 0 or 4 modulo eight — and hits only the `0` and the `-10.000` of the
+  eight. Six of the eight values, both ends of the integer range among them, never reach
+  these addresses at all. **Before trusting an extreme-value fixture, take the modulo of the
+  addresses you care about.** The lesson generalises past this file: any derived quantity
+  that sums a *stride* of addresses inherits the stride's residue class.
+- 2026-09-08 (0238) — **I let `ausgangslage` print the four `bip` values it produces.**
+  That is the 0232/0233 idea — let the stand write what it measured — applied at a place I
+  could reach without a package: the acceptance asked for a hand calculation, and a printf
+  turns it into something the next report falsifies. Cost four lines, no new test, no new
+  file. Do this whenever an acceptance says "nachgerechnet und im Bericht genannt".
 - 2026-09-08 (0233, riegelkopfzahlen) — **The Gegenprobe rule below paid for itself the
   very next run.** I read the tally line first (`7 Erwartung(en)`, five of Angabe 1 plus
   two of Angabe 2) and only then the FEHLSCHLAG lines, so the second block never cost me a
@@ -62,6 +76,20 @@ another package can move is a snapshot, not an expectation.
 
 ## Open leads
 
+- 2026-09-08 (0238) — **`partiestart()` in `verlauf_probe.cpp` carries the same defect,
+  latent.** It fills all 310 addresses from `musterwert` too, so its four `bip` values are
+  the same `-10.000 / -20.000 / -10.000 / -20.000`. It survives only because Bedingung 5
+  builds its rounds by hand through `kern::schreiber` instead of calling
+  `kern::schritt::schritt` — no Zustimmungsregel on that path. The day anyone routes
+  Bedingung 5 through the real round, it dies exactly as Bedingung 1 did on 2026-09-08.
+  **Left untouched on purpose:** Bedingung 3 of package 0238 says lift only what the
+  Nennerbedingung forbids, and it does not reach there. Not worth its own package today;
+  worth one line here so the next run does not re-derive it.
+- 2026-09-08 (0238) — **Thirteenth run without a shell, third in a row where it cost
+  nothing**: the abort message in `uebersetzung-2026-09-08.md` carried the one measured
+  number (US, `-10000`), and the other three sums come from `stelle_sektorgroesse` by hand
+  — the abort stops at the first land, so only one of four is ever in the report. Expect
+  that shape again: **an abort inside a loop over countries reports one case, not the set.**
 - 2026-09-08 (0233, riegelkopfzahlen) — **Expect `belegstellen_kopfzahlen` with return 0
   in the next report, and expect it to go red again within days.** The project manager
   wrote that price into the vermerk knowingly: the `technik.md` chain is still ~11
@@ -92,6 +120,24 @@ another package can move is a snapshot, not an expectation.
   the day someone adds `-j`, they collide.
 
 ## Where I am unsure
+
+**0238 (verlaufprobe/nennerbedingung).** Three soft spots, all cheap for the reviewer to
+check and none of which I could measure without a shell.
+
+1. **I ran nothing.** The claim that `verlauf_probe` goes green is a derivation, not a
+   measurement: `schritt_4_wirtschaft` is `schreiber.vortrag`, so the twelve values stand
+   still across all `PARTIELAENGE_HOECHSTENS` rounds; `schrittrichtung` is zero for every
+   instrument (Schritt 3 is a vortrag too), so `politiklast` is zero and
+   `realeinkommenshub` is `mal_geteilt(0, 10.000, 30.000)`. The next report is the proof.
+2. **The printf is new output in a file whose acceptance says "no other test".** It is not
+   a test and no `add_test` reads this program's stdout (`kern/CMakeLists.txt` registers
+   the probes by exit code alone, no `PASS_REGULAR_EXPRESSION`) — but a reviewer should
+   confirm that reading, because I confirmed it by grep and not by running ctest.
+3. **`10.000` is a choice, not a derived bound.** The Schranke wants more than zero;
+   I took the positive twin of the `-10.000` already sitting on those addresses so the
+   value stays inside the fixture's own alphabet. Any positive number would do, which is
+   exactly why the comment names `kern/src/schritt.cpp` instead of restating the bound —
+   0237 is still under review and the bound may move.
 
 **0233 (riegelkopfzahlen).** Same single soft spot as last run, same reason:
 `VORFASSUNGSSTAND = dbcd637` is HEAD as the run's git status reports it, and I claim it

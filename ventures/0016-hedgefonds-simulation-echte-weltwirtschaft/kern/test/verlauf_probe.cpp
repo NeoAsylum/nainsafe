@@ -94,8 +94,10 @@ using kern::zustand::i64;
 using kern::zustand::Index;
 using kern::zustand::Instrument;
 using kern::zustand::InstrumentFeld;
+using kern::zustand::LAENDER;
 using kern::zustand::PartieFeld;
 using kern::zustand::Sektor;
+using kern::zustand::SEKTOREN;
 using kern::zustand::SektorGroesse;
 using kern::zustand::Startbelegung;
 using kern::zustand::Zustand;
@@ -239,12 +241,42 @@ Ursachensatz muster_satz(i64 runde, std::size_t lauf)
     return satz;
 }
 
+/// Die drei Sektoren in der Reihenfolge aus T9 -- gebraucht fuer die zwoelf
+/// Wertschoepfungen, die `ausgangslage` nachsetzt.
+constexpr std::array<Sektor, SEKTOREN> SEKTORLISTE = {
+    Sektor::Landwirtschaft, Sektor::Industrie, Sektor::Dienstleistungen};
+
+/// Der Wert, den `ausgangslage` auf jede der zwoelf Wertschoepfungen nachsetzt.
+///
+/// **Warum ueberhaupt nachgesetzt wird.** `werte::bip` ist keine Adresse, sondern die
+/// Summe der drei Sektorwertschoepfungen eines Landes, und `kern/src/schritt.cpp` haelt
+/// an dieser Summe eine Bedingung, bevor die Zustimmungsregel sie als Nenner nimmt. Die
+/// Musterschleife trifft auf diesen zwoelf Adressen nur zwei der acht Musterwerte -- ihre
+/// Plaetze sind modulo acht durchweg 0 oder 4, also die Null und die minus Zehntausend --,
+/// und damit ist jede der vier Summen ohne dieses Nachsetzen null oder negativ. Kein Land
+/// der Musterlage hat je eine erlaubte Weltlage getragen; nur gemerkt hat es niemand,
+/// solange die Bedingung nicht stand.
+///
+/// **Die Bedingung steht hier nicht abgeschrieben, sondern nur ihr Ort.** Sie kam mit
+/// Paket 0237 und wird geprueft, waehrend dies hier gebaut wird; ein Kommentar, der eine
+/// bewegliche Schranke wiederholt, ist der naechste falsche Satz. Der Wert daneben ist
+/// deshalb keine Zahl an der Grenze, sondern die positive Entsprechung des Musterwerts,
+/// der heute an diesen Adressen steht -- er haelt unter jeder Fassung der Schranke, die
+/// von einem Bruttoinlandsprodukt ueberhaupt etwas Positives verlangt.
+constexpr i64 WERTSCHOEPFUNG_DER_PROBE = 10'000;
+
 /// Eine Ausgangslage mit Musterwerten auf allen 310 Adressen und `partie.runde` auf
-/// `rundennummer` -- ein einziger Startwertzugang, die beiden Partiefelder zuletzt.
+/// `rundennummer` -- ein einziger Startwertzugang, die Partiefelder und die
+/// Wertschoepfungen zuletzt.
 ///
 /// Die Parameterpruefsumme wird nachgesetzt, weil ein Musterwert an dieser Adresse die
 /// Runde nach T10b an ihrer Schranke sterben liesse (Paket 0229). Die Zahl kommt aus
 /// derselben Rechnung, die die Runde benutzt, und wird nicht abgeschrieben.
+///
+/// Die zwoelf Wertschoepfungen werden aus demselben Grund nachgesetzt (Paket 0238); die
+/// Herleitung steht an `WERTSCHOEPFUNG_DER_PROBE`. Jede andere der 310 Adressen behaelt
+/// ihren Musterwert -- der Sinn dieser Lage sind Extremwerte, gehoben wird nur, was eine
+/// Schranke des Kerns verbietet.
 Zustand ausgangslage(i64 rundennummer)
 {
     Zustand welt;
@@ -255,6 +287,20 @@ Zustand ausgangslage(i64 rundennummer)
     zugang.setze(PLATZ_RUNDE, rundennummer);
     zugang.setze(PLATZ_PARAMETERSUMME,
                  kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
+    for (std::size_t nummer = 0; nummer < LAENDER; ++nummer) {
+        for (const Sektor sektor : SEKTORLISTE) {
+            zugang.setze(kern::zustand::stelle_sektorgroesse(static_cast<Gebiet>(nummer), sektor,
+                                                             SektorGroesse::Wertschoepfung),
+                         WERTSCHOEPFUNG_DER_PROBE);
+        }
+    }
+
+    // Und die vier Summen gemessen statt behauptet: Was die Bedingung ansieht, steht
+    // damit im Lauf und nicht nur in der Handrechnung eines Arbeitspakets.
+    for (std::size_t nummer = 0; nummer < LAENDER; ++nummer) {
+        std::printf("  bip der Ausgangslage, Land %zu: %lld\n", nummer,
+                    static_cast<long long>(kern::werte::bip(welt, static_cast<Gebiet>(nummer))));
+    }
     return welt;
 }
 

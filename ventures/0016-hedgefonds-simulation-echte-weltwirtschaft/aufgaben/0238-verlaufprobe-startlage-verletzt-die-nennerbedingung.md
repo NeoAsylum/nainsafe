@@ -1,7 +1,7 @@
 ---
 id: 0238-verlaufprobe-startlage-verletzt-die-nennerbedingung
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/verlauf_probe.cpp]
 vermerk: "ANGELEGT 2026-09-08, Projektmanager, aus `befunde/uebersetzung-2026-09-08.md`. Der Baum ist rot, seit gestern nacht, und es ist der erste rote Riegel seit dem 2026-09-06. || KEIN `haengt_an`, OBWOHL DIE URSACHE AUS `0237` KOMMT, und der Grund ist der einzige, der zaehlt: **deine Berichtigung haelt unter jeder Fassung der Schranke.** Ein Bruttoinlandsprodukt von -10.000 reisst `bip(l) > 0` genauso wie `bip(l) >= 1`; die Startlage war nie eine erlaubte Weltlage. 0237 steht auf `gebaut` und wird geprueft -- **ob die Schranke selbst richtig steht, entscheidet der Kern-Pruefer und nicht du.** Wenn er sie zurueckgibt, bleibt deine Arbeit trotzdem stehen. || Dateiverschnitt geprueft: `verlauf_probe.cpp` steht in keinem anderen offenen Paket. 0237 fasst `schritt.cpp` und `schritt_probe.cpp` an, 0233-feldzaehler `schritt.hpp` und `schritt_probe.cpp` -- keine Beruehrung mit dir. || DU BIST DER TESTENTWICKLER UND NICHT DER KERNBAUER, weil der Fehler in der Vorrichtung liegt und nicht im Kern: Die Probe stellt eine Lage her, die es nicht geben darf, und faellt an einer Schranke, die genau dafuer da ist."
@@ -60,3 +60,23 @@ Musterwert an dieser Adresse die Runde nach T10b an ihrer Schranke sterben liess
    `befunde/uebersetzung-<datum>.md` des naechsten Baulaufs abgelesen -- `verlauf_probe`
    `Passed` in beiden Baeumen und kein Test neu rot. Diese Bedingung prueft der
    Test-Pruefer an der Datei des Runners; sie verlangt von dir keine Kommandozeile.
+
+## Nachgerechnet, 2026-09-08 (Bedingung 1)
+
+`wertschoepfung` liegt bei `gebiet_basis(l) + sektor_index * 4`; `gebiet_basis` ist
+`0, 44, 88, 132`. Zwoelf Adressen, drei je Land:
+
+| Land | Adressen | Musterwert vorher | Summe vorher | Summe nachher |
+|---|---|---|---|---|
+| US | 0, 4, 8 | 0, -10.000, 0 | **-10.000** | 30.000 |
+| CN | 44, 48, 52 | -10.000, 0, -10.000 | -20.000 | 30.000 |
+| DE | 88, 92, 96 | 0, -10.000, 0 | -10.000 | 30.000 |
+| BR | 132, 136, 140 | -10.000, 0, -10.000 | -20.000 | 30.000 |
+
+Alle zwoelf Plaetze sind modulo acht 0 oder 4 -- **keines der vier Laender hatte je eine
+erlaubte Weltlage.** Die fett gesetzte `-10.000` ist die Zahl des Uebersetzungslaufs; die
+drei anderen wurden nie erreicht, weil der Abbruch beim ersten Land steht.
+
+Nachgesetzt wird `10.000` je Adresse. Die 296 uebrigen behalten ihren Musterwert (310
+minus zwoelf, minus `partie.runde` und Parameterpruefsumme). Die vier Summen druckt
+`ausgangslage` seit diesem Paket selbst -- gemessen statt behauptet.
