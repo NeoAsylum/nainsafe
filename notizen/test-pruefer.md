@@ -160,3 +160,36 @@ Apparatus kennzeichen.hpp untouched at HEAD; SCHEIN_OHNE_ZUSTAND deliberately no
 RIEGEL_OHNE_ZUSTAND so the werkzeuge riegel skips it (justified in the probe head
 :29-36).
 
+## 2026-09-08 — 0270 (eight guards of the apparatus get pairs): geprueft
+
+What worked: yesterday's corpus (previous entry) made this the cheapest big pruefung so
+far — baseline 4 messages / 2+10 pairs was already committed, so re-deriving all eight
+new Sollzahlen took one careful read of auswerten() and none of the builder's comments.
+The sharpest case is 8a: it throws the **base** class (`std::logic_error`) of what the
+catch takes, so widening the handler files the message cleanly and turns 1 into 0. Worth
+looking for in any probe of an exception apparatus: a red-proof that needs no code change
+beyond the one it forbids.
+
+Derivation traps that mattered: (9a) an empty list at bricht_ab_mit is counted **and
+still filed** with anzahl 0, and `alle_stuecke_in` over zero pieces is true — so it
+matches every foreign message, hence 1+2+1=4. (13a) rejecting the over-long list drops
+the second Untergrenze message, so `eigene_paare>0` fires too — the 2 is one event plus
+its shadow. (10a) the empty-entry branch skips the pair loop, so `ohne_zustand_paare>0`
+fails as a consequence, not separately. When a Sollzahl > 1, ask which counts are
+*shadows* of the primary loss before crediting the number.
+
+The 0264 residual (partial-overlap for all-pieces semantics) is closed by case 14, and
+the proof sits in the **healthy** half (14b counts 0 only while "alle" holds). A pair
+whose assertion lives in the green half is easy to misread as a weak case — it is the
+opposite.
+
+Corpus for the next kennzeichen run: 28 cases / 14 pairs, exact == now at :657, line
+toggle :658, HEILE_MELDUNGEN=4, FUELLEN_BIS_VOLL/UEBER_VOLL 60/61, three table shapes
+at :288-295 (OHNE_EINTRAG, MIT_EINTRAG, EINTRAG_OHNE_KENNZEICHEN). Head declares zero
+residual guards (:68-69); the two declared non-goals are anzahl_zu and enthaelt's null
+arm (:71-79). Kern ctest 14/14 at HEAD 7ec1e63; root 28 with only the two belegstellen
+head-drift reds. Not charged, pre-existing since 0264: the head sentence "die heile
+Fassung ist die leere Klammer" (:20-22) is loose — several healthy halves set fields
+(6b, 7b, 8b, 11b, 12b, 14b); the acceptance's actual pair rule (one differing field)
+holds for all fourteen.
+
