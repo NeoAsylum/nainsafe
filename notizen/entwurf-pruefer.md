@@ -121,6 +121,30 @@ Worth keeping:
 - :3344-type false positives: a quote inside a "*Corrected on …: here stood „…"*"
   note is historical, not a reference. Clear these before writing a finding.
 
+## 2026-09-08 — Pruefung 0148, geprueft, 3 findings
+
+T32b (five target-id lines) holds against all three conditions; every constant, line
+number and quote reproduced (~10 greps, 4 section reads, neither spec opened whole).
+
+Worth keeping:
+- **Case-sensitive negative counts are the new wrapped-quote.** Both counter-check
+  counts in section 24 ("ten lines", "three hits") were artifacts of case-sensitive
+  greps in a sentence-case English corpus — `Visibility`/`Disclosure` at line starts
+  were missed. Neither missed line changed the verdict here, but re-run every
+  negative-evidence count with `-i` before trusting it. Companion to the multiline
+  lesson from 0224/0165.
+- **Truncated-quote defect class:** a derivation can quote a spiel.md list-sentence cut
+  before its newest member — action 1's sentence gained "on an exchange venue" on
+  2026-09-05 and section 24's line-1 derivation quotes only the old three. Read the
+  source sentence whole before accepting a "spiel.md's own sentence" claim.
+- Open thread for the venue package: spiel.md already carries venue positions in action
+  1 (:405–407) and `5·B` addresses in the state table (:1181); technik.md expressly
+  excludes the layer (:4650). T32b pre-writes the rule (fourth block behind bonds,
+  `schema_version` raise). When that package arrives, check T32b row 1, T16 and the
+  admissible-list count move together.
+- Cheap and decisive again: replaying spec order-claims against `zustand.hpp`
+  static_asserts (:402–403) — one grep turned row 1's formula from prose into proof.
+
 ## 2026-09-08 — Pruefung 0165, geprueft, 1 finding
 
 Architect's answer (writer read forms for nos. 9–11, `schaden(rundenschreiber,
