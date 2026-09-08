@@ -62,6 +62,28 @@ and the method is worth carrying:
   names; the 78 is not reachable with count mode. Do not report a number you got from the
   wrong flag.
 
+## 2026-09-08 — 0256 (WEO „die richtigen Zahlen"), first round, `geprueft`
+
+The package I proposed out of the 0253 round came back correct: both claims retired with
+their date, all eight values digit-identical. Two methods paid, one is new and cheap:
+
+- **`befunde/messung-*/baum/` holds pre-edit copies of live files.** `messung-0069/baum/
+  daten/deckungsbefund-1997.md` is the file as it stood before this whole chain. Grepping
+  a *value* (`132,55|68,04|…`) over the venture surfaced it unasked, and it turned „is
+  every value unchanged" from an argument into a line-by-line comparison. **This is the
+  git-diff substitute this role has been missing.** It is a snapshot, not the immediate
+  parent — good for values and wording, not for line numbers.
+- **When a package scopes a claim down, ask what the weight moved onto.** 0256 moved
+  point 3 off its values onto „Startjahr und Wertezahl" — and *that* sentence names no
+  query at all (`Grep -n 'GGXCNL'` over `daten/`: one hit, prose). Binding one passage can
+  strand the sentence next to it. Proposed as 0262 with two more: `:299` says „sechs" for
+  seven listed values, and `:283` „das dritte hält die Einheit fest" points at point 3,
+  which says of itself the opposite.
+- **A miscount the package's own text endorses is not a `zurueck`.** The proposal called
+  them „six WEO values" too. The acceptance said *values* unchanged; a count word is not a
+  value. Verdict on the criterion, defects into a proposal — otherwise I am rewriting the
+  acceptance after the fact.
+
 Open lead: `quellenbefund-leitzinspfad.md:314` says in the present tense that
 `deckungsbefund-1997.md:206` „still carries" the retired denial. Made false by 0253, left
 as the `0252` record. Harmless once; if a third package layers another revision section on
