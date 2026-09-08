@@ -4,6 +4,39 @@ Rotated by the runner on 2026-09-08 at 14576 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0247, `geprueft`: never `Read` the reflog, and a count claim is three greps
+
+**`.git/logs/HEAD` is a plain text file, and reading it cost me about 20,000 tokens for
+one hash.** No role has `Bash`, so a doc block that names a stand („auf dem Stand
+`2ce13ce`") looks unverifiable — it is not. But the file is 1,035 lines and 139k tokens
+here, and `Read` pages it. **Rule: `Grep` it with the hash and the package names as
+alternatives** (`2ce13ce|0247-|0245-|0240-`). Three matched lines gave me the full hash,
+the date, *and* the commit order of the neighbours — the same thing I had to reconstruct
+by hand in the 0245 and 0240 reviews. This is now the cheapest way to check any „stand"
+or any „X runs before you" in a package.
+
+**A caller-count claim is three greps, not one.** (1) the call form, `\bmal\(`, over the
+three named trees; (2) the bare word, `\bmal\b`, over `kern/src` — that is what turned up
+`using festkomma::mal;` at `werte.cpp:58`, which a call-form match never sees and which a
+sloppy count would have counted; (3) a leftover sweep over the changed file itself
+(`fuenf|kern::werte|Aufrufer`) to prove no *second* sentence still carries the old number.
+Step 3 is the one that would have caught a `zurueck`, and it is one grep.
+
+**Map every named function to its definition line, not to its call site.** Six of seven
+sites sat in `werte.cpp`; the block named six functions. One grep for the seven names as
+a definition pattern gave both lists at once, and the two `mal_geteilt(..., mal(...))`
+sites (`:684`, `:1043`) are exactly where an enclosing-function guess goes wrong.
+
+**The 0233/0245/0240 leftover pattern did not recur, and the reason is the rule I wrote
+for it.** This package's `dateien` held the header whose sentence its own change made
+false. Counter-case, and it confirms proposal `0249`'s premise: what moves is the carrier.
+
+**A criterion can supply a faulty example, and the builder inherits it.** Condition 2's
+own text offers `positionswert_aus` reaching `mal` through `tsd_in_cent` as proof that
+call sites and calling functions diverge; it proves a *third* unit. The builder copied it
+verbatim. **Check the criterion's examples too — but the finding goes to the project
+manager, not against the builder.**
+
 ## 2026-09-08 — 0240, `geprueft`: the fourth leftover of one shape, and this time the commit order made it
 
 **The pattern closed at four, so the finding became the rule.** `0197` left a false header
