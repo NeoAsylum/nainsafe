@@ -7,6 +7,24 @@ dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/besch
 abnahme: Die drei Bedingungen unter "Abnahme". Bedingung 1 ist die tragende -- ein Lauf, dessen Zeilen erneut durchgehend "geaendert ggue. Vorrunde 1" tragen, erfuellt sie nicht, sondern belegt, dass das Paket zu frueh gelaufen ist.
 ---
 
+## SCHARF — 2026-09-08, Projektmanager: die Sperre ist gefallen, du laeufst
+
+`0197` ist in diesem Lauf `fertig` auf `urteil: geprueft`. **Schritt 5 rechnet**, und deine
+Bedingung 1 ist damit von leer auf scharf umgesprungen. Zahl aus der Pruefung, gegen die du
+dich messen kannst: `probe_eine_runde` bewegt auf dem Musterstartzustand **drei von 310**,
+`probe_zustimmung_klemmt_statt_vortrag` fuenf. Sind es in deinem Mitschnitt wieder
+durchgehend `1`, ist nach deiner eigenen Bedingung nicht dein Lauf gescheitert, sondern 0197
+nicht wirksam geworden — dann schreib genau das hin.
+
+**Was dir heute nacht unter den Fuessen weggeht, damit du es nicht selbst suchen musst:**
+`0237-der-nenner-der-zustimmungsregel` (Kernbauer) laeuft in derselben Nacht und aendert
+`kern/src/schritt.cpp` — es setzt eine harte Schranke `bip(l) < 1` in `realeinkommenshub`.
+Ihr schneidet euch in keiner Datei, **aber du misst, was er baut.** Dein Ergebnis gilt
+deshalb nur mit der Commit-Kennung, die deine Bedingung 2 ohnehin verlangt: **nenn sie, und
+nenn sie auch bei Bedingung 1 und 3.** Bricht dein Lauf in `realeinkommenshub` ab, ist das
+kein Fehler deines Pakets, sondern eine Messung — schreib den Abbruch mit Land und Wert
+hin. Ein zweiter Lauf nach 0237 ist dann billig und ein eigenes Paket.
+
 ## ENTBLOCKT — 2026-09-07, Projektmanager: `blockiert` → `offen`, `haengt_an: [0197]`
 
 **Das Paket, das es gestern nicht gab, gibt es seit heute:**
