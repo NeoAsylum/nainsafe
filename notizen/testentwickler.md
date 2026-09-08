@@ -61,6 +61,31 @@ there:*
   stream on failure, every later print of the apparatus would go nowhere, and the run would
   count green while measuring nothing.
 
+- 2026-09-08 (0270) — **Add a call site, don't replace one.** Two of the eight guards live in
+  `bricht_ab_mit` (the call that never aborts, the throw the catch block doesn't know). The
+  obvious build is to make an *existing* call misbehave — and it costs a second assertion
+  every time: drop the first Untergrenze message and `eigene_paare` falls to 0; drop the
+  Obergrenze one and Vollzaehligkeit fires. Either way the target is 2 and the case no longer
+  names one guard. An **extra** call beside the healthy four leaves all counters intact and
+  the target is exactly 1. **When a disturbance perturbs a global count, add rather than
+  substitute.**
+- 2026-09-08 (0270) — **A pair can measure its own reference point.** Case 12 needs "one
+  message more than `MELDUNGEN_MAX`", which means knowing how many the healthy run already
+  logs (4). Written as a bare constant that would be a snapshot. Written as the *pair*
+  `FUELLEN_BIS_VOLL = MELDUNGEN_MAX - HEILE_MELDUNGEN` (target 0) and `+1` (target 1), a
+  wrong `HEILE_MELDUNGEN` makes **both** halves miss. The assumption stopped being an
+  assumption and became the thing under test.
+- 2026-09-08 (0270) — **The assertion can live in the healthy half.** The eighth guard —
+  `alle_stuecke_in` demands *all* pieces — has no disturbable version in the usual sense: the
+  correct behaviour is a *non*-match. So 14b (target 0) is the case that dies if "all" ever
+  becomes "any", and 14a (target 2) only proves the comparison happens at all. **A pair whose
+  meaning sits in the green half still needs the red one beside it**, or nothing shows that
+  the comparison ran.
+- 2026-09-08 (0270) — **Append new struct fields at the end.** C++20 designated initializers
+  must follow declaration order. Four new fields in `Aufbau` placed among their thematic kin
+  would have rewritten every existing row of the case table — and the acceptance forbade
+  touching them. Appended, not one existing row changed.
+
 ## Open leads
 
 - 2026-09-08 (0259) — **`bezeichner_riegel` is red at HEAD and it is mine.** Proposed `0265`
@@ -78,16 +103,40 @@ there:*
   `kern/sperre.hpp`. `belegstellen_kopfzahlen` was already red at HEAD on exactly this drift
   (its head says 53, measured 54) and is with the Geschaeftsfuehrer as a structural item.
   Expect the measured number to rise again and **do not read that as caused by the package**.
-- 2026-09-08 (0264) — **The remaining guards of `Buch` have no case.** Named in the head
-  comment of the new probe: the run without an abort, a throw that is not
-  `std::domain_error`, a call site with no Kennzeichen at all, an entry without Kennzeichen
-  in the second directory, the truncated message, the full store, more than
-  `KENNZEICHEN_MAX`. Each is one row in the setup table and one target number now that the
-  harness exists — a cheap package, and the right one to propose next.
+- 2026-09-08 (0264) — ~~**The remaining guards of `Buch` have no case.**~~ **Discharged by
+  `0270` the same night** — all seven, plus an eighth from `0264`'s review. Cases 7–14 in
+  `kennzeichen_probe.cpp`. The prediction held: each was one row in the setup table and one
+  number, because the harness already existed.
 - 2026-09-08 (0259) — **What the next report should show:** all three probes unchanged green,
   each still printing its one `Riegel ohne Zustand (...)` line, and **no probe printing the
   new `keiner eingetragen` line** — none is empty. If one does, someone emptied a table.
-  `kennzeichen_probe` is the exception and prints it ten times out of twelve, on purpose.
+  `kennzeichen_probe` is the exception and prints it on purpose — **since `0270` twenty-four
+  times out of twenty-eight**, not ten out of twelve. The four that stay silent are the ones
+  carrying a non-empty second directory: 1b, 2a, 10a, 10b.
+- 2026-09-08 (0270) — **Sixteen more hand-derived target numbers, and again none was run.**
+  7a 1, 7b 0, 8a 1, 8b 0, 9a 4, 9b 0, 10a 3, 10b 0, 11a 1, 11b 0, 12a 1, 12b 0, 13a 2, 13b 0,
+  14a 2, 14b 0. Same method and same exposure as `0264`: derived by reading `auswerten` and
+  `verzeichne`, never executed. **One check I did run and that raised my confidence:** the
+  same arithmetic reproduces `0264`'s already-green 3 for case 3a (two violations plus the
+  count assertion) — the model of the apparatus is at least not wrong about a measured case.
+  The three least obvious: **9a is 4**, not 1 (empty list, then it matches *both* foreign
+  messages, then the violation count); **10a is 3** (missing list, the ohne-Zustand pair count
+  falling to 0, the violation count); **13a is 2** (the refused message takes the second
+  Untergrenze entry with it, so `eigene_paare` hits 0). Read a miss out of
+  `--output-on-failure` and write the number back — the fix is one number, not a redesign.
+- 2026-09-08 (0270) — **The apparatus announces success for a message it refused.** When
+  `merke_meldung` rejects an entry (store full, or more than `KENNZEICHEN_MAX` pieces) it
+  counts the failure and returns, but `verzeichne` then runs its piece loop anyway and prints
+  `Abbruch wie erwartet` for a message that was never stored. Harmless to my targets — I
+  designed cases 12a and 13a so the pieces match, precisely so the count stays 1 and 2 — but
+  it is a line in the Mitschrift asserting something false. **Not my package** (the apparatus
+  is out of scope); worth a package of its own, and I did not write one because I have not
+  measured it, only read it.
+- 2026-09-08 (0270) — **The empty list is less harmless than its own head says.**
+  `alle_stuecke_in`'s comment calls the empty case "gewollt und harmlos" because it is caught
+  earlier. Case 9a says it is caught earlier *and then trips two foreign-pair violations*.
+  The head is not wrong about the catch, only about the consequences. If 9a comes back with a
+  number other than 4, this is the sentence to re-derive first.
 - 2026-09-08 — **The logbook rotated under me mid-run** (21192 chars, two other lanes writing
   the same file). Nothing was lost, but do not read-then-edit it late: write the entry, and
   if the read is stale, re-read before assuming your block is the only one.
