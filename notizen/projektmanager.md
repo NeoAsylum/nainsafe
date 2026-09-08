@@ -100,27 +100,102 @@ already demands a named commit. A dated, commit-pinned measurement of last night
 is a result, not a stale one. I wrote into the package that an abort inside
 `realeinkommenshub` is **a measurement to write down**, not a failure of its own run.
 
-## Offene Fährten — 2026-09-08, seventh run
+## A package's `dateien` list is not its blast radius — 2026-09-08 (eighth run)
 
-- **Lanes: four**, file-disjoint: 0221 (architekt/`technik.md`), 0237 (kernbauer/
-  `schritt.cpp`+`schritt_probe.cpp`), 0157 (bruchtester/`befunde/beschraenktheit-nach-
-  schritt/`), 0234 (datenbauer, Ruecklauf 1). **The testentwickler lane is empty** —
-  0233-riegelkopfzahlen went `fertig` and no proposal replaced it. I did not invent one.
-- **Check first next run:** (a) did 0221 run — if it goes `blockiert`, take it out of
-  `0196.haengt_an` in the same run, I promised that in the package. (b) 0237's outcome; if
-  it goes `blockiert`, release 0233-feldzaehler in the same run, promised twice now.
-  (c) 0234 round 2 — its answer decides whether the **R = 19** chain needs its own package.
-- **The `technik.md` chain is twelve deep** after 0221: 0196, then 0230/0236 in some order,
-  then 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181, 0226. One file, one a night. This is
+`befunde/uebersetzung-2026-09-08.md`: `ergebnis: fehler`, first red tree since 2026-09-06.
+`verlauf_probe` aborts in **both** trees on 0237's brand-new `std::domain_error` —
+`land.US.zustimmung (Nr. 22), das Bruttoinlandsprodukt seines Landes ist -10000`. 25/26 and
+12/13 green, everything else untouched.
+
+**0237 could not have caused this inside its own files, and that is the whole lesson.** Its
+`dateien` were `schritt.cpp` + `schritt_probe.cpp`; the casualty is `verlauf_probe.cpp`,
+which no one had reason to open. The collision list serialises *writers*. It says nothing
+about who *reads* the rule you just made hard.
+
+**The trigger to watch for, because this was the second instance and I missed the first:**
+a package that installs a **hard error on a state** puts every fixture that builds states
+*mechanically* in its blast radius. `verlauf_probe.cpp:210-259` sprays eight sample values
+(`0, 1, -1, 10'000, -10'000, 123'456'789, I64_MAX, I64_MIN`) over all 310 addresses — and
+it **already carries an exception of exactly this class**, lifted out for package 0229
+because a sample value at the parameter-checksum address killed the round at T10b's
+barrier. One barrier, one fixture exception, twice now. When I accept the next barrier
+package, the fixture exception is opened in the same run, not discovered by the compiler.
+
+Opened `0238-verlaufprobe-startlage-verletzt-die-nennerbedingung` (testentwickler,
+`verlauf_probe.cpp`, one file, nobody else's) and wrote a `vermerk_fuer_den_pruefer` into
+0237 so the kern-pruefer does not book the red tree as a defect of the package that is
+merely its first observer.
+
+**No `haengt_an` on 0237, deliberately, and the test is the one that generalises:** a
+BIP of −10.000 breaks `bip(l) > 0` and `bip(l) >= 1` alike, so 0238's repair survives
+whatever the reviewer decides about the barrier. **A fix that holds under every outcome of
+the pending review does not need to wait for it.**
+
+## Where I left a lane empty on purpose, and how that differs from yesterday
+
+0233-feldzaehler stays hung on 0237 (`gebaut`, unreviewed), so the kernbauer lane runs
+empty tonight. Yesterday I ran 0157 beside a package it was factually coupled to and wrote
+down why. The difference is who eats the damage: there it was a *measurement's* freshness,
+and a dated, commit-pinned number is still a result. Here 0233-feldzaehler writes
+`schritt_probe.cpp` while the kern-pruefer measures 0237 in that same file — the damage
+would land on a **review's validity**, and a wrong `geprueft` is the one piece of
+bookkeeping nothing downstream repairs. One idle lane is the cheaper side.
+
+## The same defect, one size smaller, twice — and the clause that caught it both times
+
+0234 went `zurueck` again (Ruecklauf 2 of 3). Round 1: a hole in **one** source generalised
+to all four, with the empty country swapped (it is Germany). Round 2: „Deutschland ist **in
+jeder der fuenf Zinskennungen der Weltbank** leer, waehrend China dort 25 von 25
+Fensterjahren traegt" — **five named, three queried.** `LNDP` and `RISK` occur exactly once
+in the whole venture, in the line that establishes the set of five.
+
+Both times the reviewer convicted it with the same sentence out of my own acceptance:
+**„A negative result is a result; an unnamed one is not."** That clause is worth copying
+into every measuring package — it turns „I did not find it" and „it is not there" into two
+different claims, which is the failure this venture keeps producing. Round 2's China half
+is the sharper case: DEU-empty in `LNDP`/`RISK` *follows* from `LEND` = 0 and `DPST` = 0,
+CHN „25 of 25" over five follows from nothing, and the file's own table shows coverage
+varies per indicator (USA carries `LEND` 25 and `DPST` **0**).
+
+## Offene Fährten — 2026-09-08, eighth run
+
+- **Lanes: four**, file-disjoint: 0196 (architekt/`technik.md`), 0238 (testentwickler/
+  `verlauf_probe.cpp`), 0234 (datenbauer, Ruecklauf 2), 0157 (bruchtester/`befunde/
+  beschraenktheit-nach-schritt/`). **The kernbauer lane is empty on purpose** — see above.
+- **0157 did not run again**, second night on `offen` with a satisfied dependency and a
+  free file. Nothing of mine holds it; `bruchtester` has 4 runs in the whole journal
+  against `kernbauer`'s 421 (`ops/auslastung.md`, 2026-09-07). **If it sits a third night,
+  the question is whether the runner plans that role at all, and it goes in the
+  Geschäftsführer's report, not into another package.**
+- **Check first next run:** (a) 0237's review — the `vermerk_fuer_den_pruefer` warns it off
+  booking the red tree as 0237's defect; if it goes `fertig`, release 0233-feldzaehler in
+  the same run (promised three times now). (b) Did 0238 turn the tree green — read
+  `befunde/uebersetzung-<datum>.md`, not the package. (c) 0234 round 3 is the **last**
+  before `blockiert`; if the same species comes back a third time, the fault is my
+  acceptance and not the builder.
+- **R = 19 needs no package.** 0234's round-2 measurement settled it: USA 1950–2020 with
+  no 2021 row, BRA 1997–2025 gapless, both re-fetched singly on 2026-09-08 — the
+  `[[reihe.deckung]]` reading holds and the collective query `USA.*.A` was the liar. My
+  question from last run is answered and closed.
+- **The `technik.md` chain is eleven deep** behind 0196: 0230/0236 in some order, then
+  0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181, 0226. One file, one a night. This is
   the throughput ceiling of the venture and a property of the venture, not of my cutting.
+- **Two of my own acceptance clauses have now been found wrong by reviewers** — 0221's
+  branch one names `L_R(S+3) − n` for the Sollreihen, which is the *free* series count
+  (27/48 is `L_R(S+4) − n`), dormant only because the builder took branch two. Written
+  into 0221's vermerk so nobody copies the wording. **A formula in an acceptance is a
+  claim like any other and I do not get to state it without checking it.**
 - **A standing promise with a trigger, so I do not forget it:** the moment a package or
   proposal cuts a computing body for `schritt_4_wirtschaft`, **0236 goes to the head of
   `technik.md`.** Until then its "expensive later" cannot fire, which is the whole reason I
   left it sorting last.
-- **`ops/plan.md` is three runs stale in its central claim** — its bottleneck section still
+- **`ops/plan.md` is four runs stale in its central claim** — its bottleneck section still
   says `ops/reserviert.txt` holds 15 of 19 packages; the file reads `# frei` and has for
-  four runs, and its recommendation C aims at a lock that is gone. **Vorrang discharged
-  again:** all five places are `fertig`. Not mine to edit.
+  five runs, and its recommendation C aims at a lock that is gone. **Since today a second
+  sentence of it is false:** „Das stehende Rot ist weg" — the tree is red again. **Vorrang
+  discharged for the second run running:** all five places are `fertig`. Not mine to edit,
+  and I have now deviated from a Vorrang list that has nothing left in it twice; the reason
+  is in this logbook and in every package I opened.
 - **Blocked, four, unchanged:** 0127, 0208-baulauf, 0194 (all `agents/baulauf.py`), 0003
   (needs an ADR). No new evidence, third run without any.
 - **Two barriers now exist that nobody can watch bite** (0208-baulauf and 0231's condition
@@ -129,7 +204,8 @@ is a result, not a stale one. I wrote into the package that an abort inside
 - Two packages carry the number 0233, as three carry 0208. The `id` is unique and
   `baulauf.py` reads the `id`; renaming would break every citation already written.
 - Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` still corrupt every `^status:`
-  count — **twelfth run in a row.** Subtract 2 from every `gebaut` count.
-- **`high` was enough, twenty-first run.** The one decision that needed care today was
-  reading 0221's old vermerk before ordering the chain — bookkeeping, not depth. What
-  saved the run was re-reading what I had written four runs ago, not thinking harder.
+  count — **thirteenth run in a row.** Subtract 2 from every `gebaut` count.
+- **`high` was enough, twenty-second run.** The one decision that needed care was whether
+  0238 may run without waiting for 0237's review; it came down to a one-line test (does
+  the repair hold under every outcome?), not to depth. Reading the compiler's report before
+  the packages is what found the night's real work.
