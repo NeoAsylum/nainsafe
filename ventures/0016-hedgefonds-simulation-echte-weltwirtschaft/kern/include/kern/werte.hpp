@@ -42,6 +42,14 @@
 //! haette sechs gleichartige Zahlenargumente in einer Reihe, in der eine
 //! Verwechslung nicht auffiele.
 //!
+//! **Seit T10b traegt er mehr, als die Bewertung braucht.** Sein Zuschnitt heisst jetzt:
+//! die Zahlen einer Runde, die keine Adressen sind -- Parameterschluessel und
+//! Jahrgangsgroessen, ein Traeger, ein Argument. Ein Feld darin muss deshalb keine
+//! Formel aus T47 oder T48 mehr bedienen; `zustimmung_elastizitaet` bedient eine Regel
+//! aus `spiel.md`, die `kern::schritt` rechnet, und kommt in diesem Kopf sonst nirgends
+//! vor. Ein zweiter Traeger daneben ist ausgeschlossen: Er braeuchte eine Abschrift
+//! Feld fuer Feld, und ein dabei vergessenes Feld faenge nichts.
+//!
 //! ## Was hier ausdruecklich NICHT steht
 //!
 //! Die drei Skalenuebergaenge aus T50. Sie sind **privat**: Sie stehen allein in
@@ -70,20 +78,28 @@ namespace kern::werte {
 // Die Zahlen neben dem Zustand
 // ---------------------------------------------------------------------------
 
-/// Die Kalibrierwerte und die zwei Jahrgangskonstanten, die in den Formeln aus T47
-/// und T48 neben den Zustandsadressen vorkommen.
+/// Die Kalibrierwerte und die zwei Jahrgangskonstanten, die eine Runde neben den
+/// Zustandsadressen liest (T10b).
 ///
 /// **Die zwei sind `leitzins_start` und `durchgriff`**, beide nach T23 Punkt 5 eine
 /// Groesse des Jahrgangs; warum sie deshalb nicht in `parameter.toml` stehen, sagt
-/// der Kommentar an den beiden Feldern und nicht dieser hier. Die uebrigen sechs
+/// der Kommentar an den beiden Feldern und nicht dieser hier. Die uebrigen sieben
 /// Felder sind Parameterschluessel nach T27.
+///
+/// **Die Trennung traegt eine Pruefung und ist deshalb keine Ordnungsfrage.** T10b
+/// laesst die Runde ihre Pruefsumme allein ueber die sieben Schluesselfelder bilden
+/// und gegen `partie.parameter_pruefsumme` halten; die beiden Jahrgangsgroessen liegen
+/// ausserhalb, weil der Zustand mit `partie.jahrgang_id` nur eine Kennung fuehrt und
+/// keine Summe ueber den Inhalt des Jahrgangs. Wer sie einrechnet, macht aus einer
+/// haltbaren Zusage eine, die kein Zustand belegen kann.
 ///
 /// **Warum sie als Argument hereinkommen und nicht aus einer Datei.** Der Kern liest
 /// keine Datei (T2) und haengt an keinem Kasten -- `daten` haengt an `kern` und nicht
 /// umgekehrt (T13). T27 schreibt vor, dass der Parametersatz beim Laden in eine
 /// Struktur mit benannten Feldern faellt, nie ueber eine Schleife ueber Schluessel;
-/// diese Struktur ist der Ausschnitt daraus, den die Bewertung braucht. Damit bleibt
-/// Kalibrieren eine Datenaenderung, die kein Uebersetzen braucht.
+/// diese Struktur ist sie, seit T10b sie vom Ausschnitt fuer die Bewertung zum einen
+/// Traeger der Runde erweitert hat. Damit bleibt Kalibrieren eine Datenaenderung, die
+/// kein Uebersetzen braucht.
 ///
 /// Jedes Feld traegt seinen Schluesselnamen und seine Skalenklasse nach T5. Ein
 /// Parameterschluessel ohne Klasse ist nach T27 derselbe Fehler wie eine Adresse ohne
@@ -123,6 +139,18 @@ struct Konstanten {
     /// Basispunkte, also Klasse 3 -- dieselbe Klasse wie die Verschiebung der beiden
     /// mittleren Zeilen (T48, T27).
     zustand::i64 regulierung_last = 0;
+
+    /// Schluessel `zustimmung_elastizitaet` -- T5 Klasse 4 (Anteile, Zehntausendstel):
+    /// Aenderung der Zustimmung in Zehntausendsteln je Zehntausendstel Aenderung des
+    /// Realeinkommens. Schranke `>= 0` nach `parameter.toml`.
+    ///
+    /// **Das erste Feld dieses Traegers, das keine der zweiundzwanzig Funktionen
+    /// liest.** Es gehoert Gegenkraft 2 aus `spiel.md` und damit dem Rumpf von
+    /// Schritt 5 in `kern::schritt`; hier steht es, weil T10b genau einen Traeger fuer
+    /// die Zahlen einer Runde vorsieht, die keine Adressen sind -- und nicht, weil die
+    /// Bewertung es braeuchte. Ein Leser, der es unter den Formeln sucht, sucht
+    /// vergebens.
+    zustand::i64 zustimmung_elastizitaet = 0;
 
     /// Der Leitzins des Startjahrs je spielbarem Land -- T5 Klasse 3.
     ///

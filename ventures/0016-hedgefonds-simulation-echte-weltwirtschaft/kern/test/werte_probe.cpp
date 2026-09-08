@@ -255,6 +255,7 @@ constexpr Konstanten K_GRUND{
     /* lobbykosten       */ 100,
     /* gegenlobby_satz   */ 3,
     /* regulierung_last  */ 7,
+    /* zustimmung_elastizitaet */ 0,
     /* leitzins_start    */ {{0, 0, 0, 0}},
 };
 
@@ -1059,6 +1060,7 @@ constexpr Konstanten K_ZOLL{
     /* lobbykosten       */ 100,
     /* gegenlobby_satz   */ 3,
     /* regulierung_last  */ 7,
+    /* zustimmung_elastizitaet */ 0,
     /* leitzins_start    */ {{0, 0, 0, 0}},
     /* durchgriff        */ {{
         /* US */ {{1'000, 2'000}},

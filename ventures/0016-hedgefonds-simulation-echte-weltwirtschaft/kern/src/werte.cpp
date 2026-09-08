@@ -191,6 +191,7 @@ constexpr Konstanten PROBE_KONSTANTEN{
     /* lobbykosten       */ 100,
     /* gegenlobby_satz   */ 3,
     /* regulierung_last  */ 7,
+    /* zustimmung_elastizitaet */ 0,
     /* leitzins_start    */ {{0, 0, 0, 0}},
 };
 

@@ -61,6 +61,7 @@
 #include "kern/schreiber.hpp"
 #include "kern/schritt.hpp"
 #include "kern/verlauf.hpp"
+#include "kern/werte.hpp"
 #include "kern/zustand.hpp"
 
 #include "kern/sperre.hpp"  // T4: ab hier ist Gleitkomma ein Uebersetzungsfehler
@@ -102,6 +103,19 @@ using kern::zustand::Zustand;
 /// Der Platz von `partie.runde` -- aus der Adressrechnung geholt und nicht als Zahl
 /// hingeschrieben.
 constexpr Index PLATZ_RUNDE = kern::zustand::stelle_partie(PartieFeld::Runde);
+
+/// Der Platz der Parameterpruefsumme, aus demselben Grund aus der Adressrechnung geholt.
+constexpr Index PLATZ_PARAMETERSUMME =
+    kern::zustand::stelle_partie(PartieFeld::ParameterPruefsumme);
+
+/// Der Parametersatz, mit dem die Partie dieser Probe faehrt -- alle Felder auf ihrer
+/// Vorbelegung (T10b).
+///
+/// Diese Datei prueft den Verlauf und nicht die Rechnung einer Runde; welche Zahlen im
+/// Traeger stehen, ist ihr gleichgueltig. Wichtig ist allein, dass **derselbe** Satz
+/// ueber alle Runden der Partie laeuft und dass die Ausgangslage seine Pruefsumme
+/// traegt -- sonst braeche schon die erste Runde an der Schranke aus T10b ab.
+constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE{};
 
 int fehlgeschlagen = 0;
 
@@ -226,7 +240,11 @@ Ursachensatz muster_satz(i64 runde, std::size_t lauf)
 }
 
 /// Eine Ausgangslage mit Musterwerten auf allen 310 Adressen und `partie.runde` auf
-/// `rundennummer` -- ein einziger Startwertzugang, die Rundennummer zuletzt.
+/// `rundennummer` -- ein einziger Startwertzugang, die beiden Partiefelder zuletzt.
+///
+/// Die Parameterpruefsumme wird nachgesetzt, weil ein Musterwert an dieser Adresse die
+/// Runde nach T10b an ihrer Schranke sterben liesse (Paket 0229). Die Zahl kommt aus
+/// derselben Rechnung, die die Runde benutzt, und wird nicht abgeschrieben.
 Zustand ausgangslage(i64 rundennummer)
 {
     Zustand welt;
@@ -235,6 +253,8 @@ Zustand ausgangslage(i64 rundennummer)
         zugang.setze(platz, musterwert(platz));
     }
     zugang.setze(PLATZ_RUNDE, rundennummer);
+    zugang.setze(PLATZ_PARAMETERSUMME,
+                 kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
     return welt;
 }
 
@@ -260,7 +280,8 @@ void probe_partie()
 
     Zustand welt = ausgangslage(0);
     for (std::size_t n = 0; n < PARTIERUNDEN; ++n) {
-        const Rundenergebnis ergebnis = kern::schritt::schritt(welt, {}, Modus::Weltlauf);
+        const Rundenergebnis ergebnis =
+            kern::schritt::schritt(welt, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
 
         // Die Rundennummer kommt aus dem Zustand, den die Runde zurueckgibt, und nicht
         // aus der Zaehlschleife: So ist es die Nummer, die der Kern vergeben hat.

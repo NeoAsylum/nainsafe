@@ -50,20 +50,30 @@
 //! Mustervergleiche ueber `src/schritt.cpp` und `include/kern/schritt.hpp` und keine
 //! Laufzeitfragen. Ihre Suchmuster stehen deshalb **in keiner der beiden Dateien** --
 //! eine Datei, die ihr eigenes Suchmuster zitiert, laesst es nie leer ausgehen. Was die
-//! Probe dazu beitragen kann, ist die Gegenrichtung: Sie ruft `schritt` mit genau drei
-//! Argumenten (Zustand, Buendel, Modus) und bekommt beides zurueck, Zustand und Kette.
+//! Probe dazu beitragen kann, ist die Gegenrichtung: Sie ruft `schritt` mit genau vier
+//! Argumenten (Zustand, Buendel, Parametersatz, Modus) und bekommt beides zurueck,
+//! Zustand und Kette.
 //!
-//! **Und die drei Argumente sind seit dem 2026-09-07 nicht mehr die vorgeschriebenen.**
-//! T10b traegt seit Paket 0208 die Form `schritt(vorrunde, aktionen, konstanten, modus)`
-//! mit `konstanten` als `const kern::werte::Konstanten&`; der Kern ist ihr noch nicht
-//! gefolgt, und der Traeger `kern::werte::Konstanten` fuehrt den Schluessel
-//! `zustimmung_elastizitaet` bis heute nicht. Solange beides so steht, uebergibt diese
-//! Probe drei Argumente, weil es kein viertes gibt -- nicht, weil drei richtig waeren.
+//! **Das vierte Argument gibt es seit Paket 0229**, in der Form aus T10b:
+//! `schritt(vorrunde, aktionen, konstanten, modus)` mit `konstanten` als
+//! `const kern::werte::Konstanten&`. Mit ihm kommt eine Schranke, die **jede**
+//! Ausgangslage dieser Datei betrifft: Die Runde bildet die Pruefsumme ueber die
+//! Schluesselfelder des Traegers und haelt sie gegen `partie.parameter_pruefsumme`.
+//! Deshalb bekommt diese eine Adresse in `ausgangslage` nicht mehr ihren Musterwert,
+//! sondern die Zahl, die zum Traeger dieser Probe gehoert -- ein Musterwert dort liesse
+//! jede Runde dieser Datei an der Schranke sterben.
 //!
-//! **Paket 0197 -- die beiden Zahlen der Zustimmung.** Die letzte Probe misst, was den
+//! Geprueft wird die Schranke zweiseitig: Die passende Paarung laeuft durch -- das tut
+//! sie in jeder Probe dieser Datei --, die unpassende bricht ab und nennt beide Zahlen.
+//! Dazu die Feldprobe, ohne die die Summe eine Zahl waere, die niemand nachrechnet:
+//! Jedes der sieben Schluesselfelder bewegt sie, und die beiden Jahrgangsgroessen
+//! bewegen sie nicht.
+//!
+//! **Paket 0197 -- die beiden Zahlen der Zustimmung.** Eine Probe misst, was den
 //! gerechneten Rumpf von Schritt 5 traegt: den bewegten Instrumentenschritt und die
 //! Adressordnung, die ihn aus der aufsteigenden Runde heraushaelt. Beides ohne den
-//! Koeffizienten, der noch keinen Weg in die Runde hat; die Begruendung steht dort.
+//! Koeffizienten, der seit Paket 0229 zwar einen Weg in die Runde hat, aber noch keinen
+//! Leser; die Begruendung steht dort.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -79,6 +89,7 @@
 #include "kern/pruefsumme.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/schritt.hpp"
+#include "kern/werte.hpp"
 #include "kern/zustand.hpp"
 
 #include "kern/sperre.hpp"  // T4: ab hier ist Gleitkomma ein Uebersetzungsfehler
@@ -109,6 +120,21 @@ using u64 = std::uint64_t;
 /// aendert. Aus der Adressrechnung geholt und nicht als 306 hingeschrieben: Verschoebe
 /// ein spaeteres Paket den Partieblock, prueft diese Datei weiter das richtige Feld.
 constexpr Index PLATZ_RUNDE = kern::zustand::stelle_partie(PartieFeld::Runde);
+
+/// Der Platz der Parameterpruefsumme -- die zweite Adresse, die diese Datei beim Namen
+/// kennen muss, seit die Runde sie gegen den Traeger haelt (T10b).
+constexpr Index PLATZ_PARAMETERSUMME =
+    kern::zustand::stelle_partie(PartieFeld::ParameterPruefsumme);
+
+/// Der Parametersatz, mit dem diese Probe jede Runde faehrt -- alle Felder auf ihrer
+/// Vorbelegung.
+///
+/// **Ein voreingestellter Satz ist hier richtig und waere anderswo falsch.** Er rechnet
+/// nach T10b eine tote Welt; der Rahmen rechnet aber ohnehin nichts, er traegt vor. Was
+/// diese Datei prueft, ist die **Bindung** von Satz und Zustand, und die ist von der
+/// Kalibrierung unabhaengig. Ein erfundener Satz mit plausiblen Zahlen saehe an dieser
+/// Stelle wie eine Kalibrierung aus, die niemand beschlossen hat.
+constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE{};
 
 int fehlgeschlagen = 0;
 
@@ -157,13 +183,13 @@ enum class Riegel : std::size_t {
     StartwertSetzen,      ///< in `kern::zustand`: an diesem Zugang lief eine Runde vorbei
     StartwertBinden,      ///< in `kern::zustand`: die Partie laeuft schon
     Spielmodus,           ///< in `kern::schritt`: der Modus ist in diesem Rahmen nicht gebaut
+    Parametersatz,        ///< in `kern::schritt`: der Traeger gehoert nicht zu diesem Zustand
     Anzahl,
 };
 
-constexpr std::array<Riegel, 5> ALLE_RIEGEL = {Riegel::ObereRundenschranke,
-                                               Riegel::RundeVorDerErsten,
-                                               Riegel::StartwertSetzen,
-                                               Riegel::StartwertBinden, Riegel::Spielmodus};
+constexpr std::array<Riegel, 6> ALLE_RIEGEL = {
+    Riegel::ObereRundenschranke, Riegel::RundeVorDerErsten, Riegel::StartwertSetzen,
+    Riegel::StartwertBinden,     Riegel::Spielmodus,        Riegel::Parametersatz};
 
 // Kommt ein Riegel dazu und niemand traegt ihn hier nach, faellt es beim Uebersetzen auf
 // und nicht erst daran, dass die Vollzaehligkeitspruefung unten ihn nie sucht.
@@ -182,6 +208,8 @@ const char* riegelname(Riegel welcher)
         return "Startwertzugang binden nach der Runde";
     case Riegel::Spielmodus:
         return "Modus spielmodus nicht gebaut";
+    case Riegel::Parametersatz:
+        return "Parametersatz gehoert nicht zum Zustand";
     case Riegel::Anzahl:
         break;
     }
@@ -398,14 +426,23 @@ i64 musterwert(Index platz)
     return muster[platz % muster.size()];
 }
 
-/// Baut eine Ausgangslage mit Musterwerten auf allen 310 Adressen und `partie.runde` auf
-/// `rundennummer`.
+/// Baut eine Ausgangslage mit Musterwerten auf allen 310 Adressen, `partie.runde` auf
+/// `rundennummer` und die Parameterpruefsumme passend zum Traeger dieser Probe.
 ///
-/// **Ein einziger Startwertzugang fuer alle 310 Adressen**, und `partie.runde` zuletzt:
-/// Der Riegel aus Paket 0027 greift beim Binden und nicht bei jedem `setze` -- genau
-/// deshalb, weil `partie.runde` selbst zu der Menge gehoert, die eine Startbelegung
-/// setzt. Ein Zugang je Aufruf haette sich nach der ersten gesetzten Rundennummer selbst
-/// die Tuer zugemacht.
+/// **Ein einziger Startwertzugang fuer alle 310 Adressen**, und die beiden Partiefelder
+/// zuletzt: Der Riegel aus Paket 0027 greift beim Binden und nicht bei jedem `setze` --
+/// genau deshalb, weil `partie.runde` selbst zu der Menge gehoert, die eine
+/// Startbelegung setzt. Ein Zugang je Aufruf haette sich nach der ersten gesetzten
+/// Rundennummer selbst die Tuer zugemacht.
+///
+/// **Die zweite Nachsetzung ist neu (Paket 0229) und keine Bequemlichkeit.** Auf
+/// `PLATZ_PARAMETERSUMME` stuende sonst `musterwert(PLATZ_PARAMETERSUMME)` -- eine Zahl
+/// aus acht Mustern, die den Traeger nicht kennt. Seit die Runde beide gegeneinander
+/// haelt, stuerbe jede Runde dieser Datei an der Schranke, ehe sie eine Adresse
+/// schreibt. Die Zahl wird nicht abgeschrieben, sondern von der Rechnung geholt, die die
+/// Runde selbst benutzt: Zwei Abschriften derselben Summe waeren zwei Stellen, die
+/// auseinanderlaufen. Dass die Rechnung damit nicht sich selbst prueft, ist der Grund
+/// fuer `probe_parametersatz` weiter unten -- dort steht die Gegenseite.
 Zustand ausgangslage(i64 rundennummer)
 {
     Zustand welt;
@@ -414,6 +451,8 @@ Zustand ausgangslage(i64 rundennummer)
         zugang.setze(platz, musterwert(platz));
     }
     zugang.setze(kern::zustand::stelle_partie(PartieFeld::Runde), rundennummer);
+    zugang.setze(PLATZ_PARAMETERSUMME,
+                 kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
     return welt;
 }
 
@@ -574,7 +613,8 @@ Zustand probe_eine_runde(i64 vorrundennummer)
 
     // Bedingung 3: kehrt zurueck, ohne abzubrechen. Der Aufruf selbst ist der Nachweis,
     // dass die Rundenendpruefung aus T38 gehalten hat.
-    const Rundenergebnis ergebnis = kern::schritt::schritt(vorher, {}, Modus::Weltlauf);
+    const Rundenergebnis ergebnis =
+        kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
     const Zustand& nachher = ergebnis.neuer_zustand;
 
     // Bedingung 6 in der Fassung von Paket 0071: **genau eine** der 310 Groessen aendert
@@ -654,7 +694,8 @@ void probe_runden()
     const std::array<const char*, 2> nach_der_letzten = {{"kern::schritt", "groesste int64_t"}};
     BRICHT_AB_MIT("Runde nach der letzten zaehlbaren", Riegel::ObereRundenschranke,
                   nach_der_letzten, [&] {
-        static_cast<void>(kern::schritt::schritt(am_ende, {}, Modus::Weltlauf));
+        static_cast<void>(
+            kern::schritt::schritt(am_ende, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf));
     });
 }
 
@@ -683,6 +724,12 @@ void probe_zwei_runden_und_startwertriegel()
         zugang.setze(platz, musterwert(platz));
     }
     zugang.setze(PLATZ_RUNDE, 0);
+    // Diese Lage wird von Hand gebaut und nicht ueber `ausgangslage`, weil der Zugang
+    // hier ueber die beiden Runden hinaus offen bleiben muss -- er ist der Gegenstand
+    // der zweiten Haelfte. Die Parameterpruefsumme braucht sie trotzdem, und aus
+    // demselben Grund.
+    zugang.setze(PLATZ_PARAMETERSUMME,
+                 kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
 
     // Die Positivkontrolle, und sie steht vor den beiden Abbruechen unten: Der Zugang
     // **hat** geschrieben. Ohne sie zeigten die Abbrueche auch dann dasselbe Bild, wenn
@@ -692,11 +739,13 @@ void probe_zwei_runden_und_startwertriegel()
     PRUEFE(welt.lies(FELDER - 1) == musterwert(FELDER - 1));
     PRUEFE(kern::zustand::vor_der_ersten_runde(welt));
 
-    const Rundenergebnis erste = kern::schritt::schritt(welt, {}, Modus::Weltlauf);
+    const Rundenergebnis erste =
+        kern::schritt::schritt(welt, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
     welt = erste.neuer_zustand;
     PRUEFE(welt.lies(PLATZ_RUNDE) == 1);
 
-    const Rundenergebnis zweite = kern::schritt::schritt(welt, {}, Modus::Weltlauf);
+    const Rundenergebnis zweite =
+        kern::schritt::schritt(welt, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
     welt = zweite.neuer_zustand;
     PRUEFE(welt.lies(PLATZ_RUNDE) == 2);
 
@@ -746,8 +795,10 @@ void probe_zweimal_dasselbe()
 {
     const Zustand vorher = ausgangslage(7);
 
-    const Rundenergebnis erster = kern::schritt::schritt(vorher, {}, Modus::Weltlauf);
-    const Rundenergebnis zweiter = kern::schritt::schritt(vorher, {}, Modus::Weltlauf);
+    const Rundenergebnis erster =
+        kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
+    const Rundenergebnis zweiter =
+        kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
 
     PRUEFE(erster.neuer_zustand == zweiter.neuer_zustand);
     PRUEFE(erster.kette_dieser_runde.laenge() == zweiter.kette_dieser_runde.laenge());
@@ -777,7 +828,8 @@ void probe_spielmodus_bricht_ab()
     const std::array<const char*, 4> kennzeichen = {
         {"kern::schritt", "spielmodus", "310", "kein Paket"}};
     BRICHT_AB_MIT("Modus spielmodus", Riegel::Spielmodus, kennzeichen, [&] {
-        static_cast<void>(kern::schritt::schritt(welt, {}, Modus::Spielmodus));
+        static_cast<void>(
+            kern::schritt::schritt(welt, {}, KONSTANTEN_DER_PROBE, Modus::Spielmodus));
     });
 }
 
@@ -823,7 +875,8 @@ void probe_rundennummer()
     for (const Rundenfall& fall : faelle) {
         const Zustand welt = ausgangslage(fall.nummer);
         BRICHT_AB_MIT(fall.was, fall.riegel, fall.kennzeichen, [&] {
-            static_cast<void>(kern::schritt::schritt(welt, {}, Modus::Weltlauf));
+            static_cast<void>(
+                kern::schritt::schritt(welt, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf));
         });
     }
 }
@@ -863,7 +916,8 @@ constexpr std::array<kern::zustand::Instrument, kern::zustand::INSTRUMENTE>
 void probe_zustimmung_ohne_instrumentenschritt()
 {
     const Zustand vorher = ausgangslage(11);
-    const Rundenergebnis ergebnis = kern::schritt::schritt(vorher, {}, Modus::Weltlauf);
+    const Rundenergebnis ergebnis =
+        kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
     const Zustand& nachher = ergebnis.neuer_zustand;
 
     // Erste Zahl: wie viele der 16 Instrumentenstaende sich ueber die Runde bewegt haben.
@@ -924,6 +978,100 @@ void probe_zustimmung_ohne_instrumentenschritt()
     std::printf("  Instrumentenschritt: %zu von 16 Staenden bewegt, %zu von 4 Zustimmungen "
                 "bewegt; %zu von 16 Paaren haben die Zustimmung vor ihrem Instrumentenstand\n",
                 bewegte_instrumente, bewegte_zustimmungen, zustimmung_vor_instrument);
+}
+
+// ---------------------------------------------------------------------------
+// Paket 0229 -- der Parametersatz gehoert zum Zustand, und die Summe sagt es
+// ---------------------------------------------------------------------------
+//
+// T10b bindet den Traeger an den Zustand: Die Runde bildet die Pruefsumme ueber die
+// Schluesselfelder von `kern::werte::Konstanten` und haelt sie gegen
+// `partie.parameter_pruefsumme`. Drei Aussagen, und keine ist ohne die anderen etwas
+// wert:
+//
+//   1. **Jedes der sieben Schluesselfelder geht ein.** Ohne diese Aussage waere eine
+//      Summe ueber drei Felder von einer ueber sieben nicht zu unterscheiden -- sie
+//      passte zu ihrem Zustand genauso gut und liesse vier Regler unbewacht.
+//   2. **Die beiden Jahrgangsgroessen gehen nicht ein.** Das ist der Fehler, den der
+//      Pruefer von Paket 0208 hier erwartet hat, und er wird nicht gruen, sondern rot:
+//      Der Zustand fuehrt vom Jahrgang nur `partie.jahrgang_id` und keine Summe ueber
+//      seinen Inhalt, also gaebe es zu ihnen nichts zu vergleichen.
+//   3. **Die unpassende Paarung bricht ab.** Die passende laeuft in jeder anderen Probe
+//      dieser Datei durch; ohne die Gegenseite waere das keine Schranke, sondern eine
+//      Rechnung, die niemand widerlegen kann.
+//
+// Was diese Probe **nicht** faengt: ein Feld, das erst morgen zum Traeger kommt. Die
+// Liste unten und die Aufrufe in `parameter_pruefsumme` sind zwei Abschriften derselben
+// Reihe, und zwei Abschriften fangen eine Auslassung in einer von beiden -- nicht eine
+// Erweiterung, die in keiner steht.
+
+/// Ein Schluesselfeld des Traegers, mit seinem Namen fuer die Fehlermeldung.
+struct Schluesselfeld {
+    const char* name;
+    i64 kern::werte::Konstanten::*wo;
+};
+
+/// Die sieben Felder aus T10b, in der Reihenfolge, in der die Summe sie nimmt.
+constexpr std::array<Schluesselfeld, 7> SCHLUESSELFELDER = {{
+    {"stufenweite", &kern::werte::Konstanten::stufenweite},
+    {"ausstiegsabschlag", &kern::werte::Konstanten::ausstiegsabschlag},
+    {"aufschlag", &kern::werte::Konstanten::aufschlag},
+    {"lobbykosten", &kern::werte::Konstanten::lobbykosten},
+    {"gegenlobby_satz", &kern::werte::Konstanten::gegenlobby_satz},
+    {"regulierung_last", &kern::werte::Konstanten::regulierung_last},
+    {"zustimmung_elastizitaet", &kern::werte::Konstanten::zustimmung_elastizitaet},
+}};
+
+void probe_parametersatz()
+{
+    const i64 grundsumme = kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE);
+
+    // Die Positivkontrolle: Die Ausgangslage traegt wirklich diese Zahl. Ohne sie saehe
+    // eine Ausgangslage, in der die Nachsetzung wirkungslos waere, genauso aus wie eine,
+    // in der sie greift -- die Runden liefen beide durch, wenn der Riegel selbst fehlte.
+    const Zustand welt = ausgangslage(4);
+    PRUEFE(welt.lies(PLATZ_PARAMETERSUMME) == grundsumme);
+
+    // Haelfte 1: jedes der sieben Schluesselfelder bewegt die Summe.
+    std::size_t bewegende_felder = 0;
+    const char* erstes_stummes = nullptr;
+    for (const Schluesselfeld& feld : SCHLUESSELFELDER) {
+        kern::werte::Konstanten geaendert = KONSTANTEN_DER_PROBE;
+        geaendert.*(feld.wo) = 4711;
+        if (kern::schritt::parameter_pruefsumme(geaendert) != grundsumme) {
+            ++bewegende_felder;
+        } else if (erstes_stummes == nullptr) {
+            erstes_stummes = feld.name;
+        }
+    }
+    PRUEFE(bewegende_felder == SCHLUESSELFELDER.size());
+    if (erstes_stummes != nullptr) {
+        std::fprintf(stderr, "  erstes Schluesselfeld ohne Wirkung auf die Summe: %s\n",
+                     erstes_stummes);
+    }
+
+    // Haelfte 2: die beiden Groessen des Jahrgangs bewegen sie nicht.
+    kern::werte::Konstanten anderer_jahrgang = KONSTANTEN_DER_PROBE;
+    anderer_jahrgang.leitzins_start[0] = 300;
+    anderer_jahrgang.durchgriff[0][0] = 2'500;
+    PRUEFE(kern::schritt::parameter_pruefsumme(anderer_jahrgang) == grundsumme);
+
+    std::printf("  Parametersumme %lld; %zu von %zu Schluesselfeldern bewegen sie, die "
+                "beiden Jahrgangsgroessen nicht\n",
+                static_cast<long long>(grundsumme), bewegende_felder,
+                SCHLUESSELFELDER.size());
+
+    // Haelfte 3: die unpassende Paarung bricht ab -- ein Feld anders, alles andere
+    // gleich, und die Ausgangslage ist dieselbe, die oben durchlaeuft.
+    kern::werte::Konstanten fremder = KONSTANTEN_DER_PROBE;
+    fremder.zustimmung_elastizitaet = 1;
+    PRUEFE(kern::schritt::parameter_pruefsumme(fremder) != grundsumme);
+
+    const std::array<const char*, 2> kennzeichen = {
+        {"kern::schritt", "Pruefsumme des Parametersatzes"}};
+    BRICHT_AB_MIT("fremder Parametersatz", Riegel::Parametersatz, kennzeichen, [&] {
+        static_cast<void>(kern::schritt::schritt(welt, {}, fremder, Modus::Weltlauf));
+    });
 }
 
 // ---------------------------------------------------------------------------
@@ -1041,8 +1189,9 @@ int main()
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
     probe_zustimmung_ohne_instrumentenschritt();
+    probe_parametersatz();
 
-    // Zuletzt, denn sie liest ein, was die fuenf Aufrufstellen oben hinterlassen haben.
+    // Zuletzt, denn sie liest ein, was die sechs Aufrufstellen oben hinterlassen haben.
     probe_kennzeichen_eindeutig();
 
     if (fehlgeschlagen != 0) {

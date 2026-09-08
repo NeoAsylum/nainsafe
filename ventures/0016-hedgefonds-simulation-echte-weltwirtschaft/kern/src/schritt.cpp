@@ -86,6 +86,12 @@ using schreiber::Ursache;
 /// verschobener Partieblock nur drei davon erwischt.
 constexpr Index PLATZ_RUNDE = zustand::stelle_partie(PartieFeld::Runde);
 
+/// Der Platz von `partie.parameter_pruefsumme` -- aus derselben Adressrechnung und aus
+/// demselben Grund wie `PLATZ_RUNDE`: Er kommt zweimal vor, in der Zuordnungstafel und
+/// in der Bindung des Parametersatzes an den Zustand (T10b).
+constexpr Index PLATZ_PARAMETERSUMME =
+    zustand::stelle_partie(PartieFeld::ParameterPruefsumme);
+
 // ---------------------------------------------------------------------------
 // Die festen Reihenfolgen, ueber die iteriert wird (T9)
 // ---------------------------------------------------------------------------
@@ -282,8 +288,7 @@ constexpr Zuordnung baue_zuordnung()
     // Schritt 1 -- Ansicht: die drei Partiefelder der Maske.
     teile_zu(tafel, PLATZ_RUNDE, Rundenschritt::Ansicht);
     teile_zu(tafel, zustand::stelle_partie(PartieFeld::JahrgangId), Rundenschritt::Ansicht);
-    teile_zu(tafel, zustand::stelle_partie(PartieFeld::ParameterPruefsumme),
-             Rundenschritt::Ansicht);
+    teile_zu(tafel, PLATZ_PARAMETERSUMME, Rundenschritt::Ansicht);
 
     // Schritt 2 -- Aktionen: kein Eintrag. Entfaellt im `weltlauf` (T38).
 
@@ -506,15 +511,15 @@ void schritt_4_wirtschaft(Schreiber& schreiber, Index platz) { schreiber.vortrag
 ///
 /// **Der Rumpf traegt vor, und das ist seit dem 2026-09-08 kein Platzhalter mehr,
 /// sondern ein gemeldetes Hindernis.** Die Zustimmungsregel steht in `spiel.md`
-/// ausgeschrieben, seit Paket 0198 sie gefuellt hat; gebaut ist sie hier trotzdem nicht,
-/// aus zwei Gruenden, die beide ausserhalb dieser Datei liegen:
+/// ausgeschrieben, seit Paket 0198 sie gefuellt hat; gebaut ist sie hier trotzdem nicht.
+/// Von den zwei Gruenden, die an dieser Stelle standen, ist einer weg und einer
+/// geblieben, und beide liegen ausserhalb dieser Funktion:
 ///
-///   1. **Der Koeffizient hat keinen Weg in die Runde.** `zustimmung_elastizitaet` ist
-///      ein Schluessel aus `parameter.toml`; `kern::werte::Konstanten` fuehrt ihn nicht,
-///      und `schritt` nimmt den Traeger gar nicht erst entgegen. T10b schreibt die
-///      erweiterte Form seit Paket 0208 vor -- der Kern ist ihr noch nicht gefolgt.
-///      Dasselbe Argument trifft `werte::schaden`, das die Regel als rechte Seite
-///      braucht und `const Konstanten&` verlangt.
+///   1. **Der Weg des Koeffizienten in die Runde ist offen** -- Paket 0229.
+///      `zustimmung_elastizitaet` ist ein Feld von `Konstanten`, und `schritt` nimmt den
+///      Traeger nach T10b entgegen; damit ist auch `werte::schaden` aufrufbar, das die
+///      Regel als rechte Seite braucht und `const Konstanten&` verlangt. Was hier fehlt,
+///      ist der Rumpf, und der gehoert Paket 0197.
 ///   2. **Die Zustimmung liegt in der Adressordnung vor den Instrumentenstaenden, die
 ///      sie liest.** Die Regel nimmt `lies_neu` der vier Instrumentenstaende eines
 ///      Landes; nach T39 ist `lies_neu` auf eine in dieser Runde noch nicht geschriebene
@@ -524,8 +529,8 @@ void schritt_4_wirtschaft(Schreiber& schreiber, Index platz) { schreiber.vortrag
 ///      nehmen und nach der Adressrunde laufen, und dann steigt die Kette nicht mehr auf.
 ///      `test/schritt_probe.cpp` misst die Ordnung, statt sie aus T15 abzuschreiben.
 ///
-/// Solange beides steht, ist der Vortrag die einzige wahre Aussage, die dieser Rumpf
-/// machen kann.
+/// Solange der zweite Grund steht, ist der Vortrag die einzige wahre Aussage, die dieser
+/// Rumpf machen kann.
 void schritt_5_reaktion(Schreiber& schreiber, Index platz) { schreiber.vortrag(platz); }
 
 /// **Schritt 6 -- Abrechnung.** Nach `spiel.md`: "Positionen bewertet, Hebel gegen den
@@ -596,7 +601,8 @@ void fuehre_schritt_aus(Rundenschritt welcher, Schreiber& schreiber,
 // Die Runde
 // ---------------------------------------------------------------------------
 
-Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen, Modus modus)
+Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
+                       const Konstanten& konstanten, Modus modus)
 {
     static_assert(FELDER == 310, "die Meldung unten nennt die Zahl im Wortlaut");
 
@@ -645,6 +651,37 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen, 
     const i64 diese_runde = vorrundennummer + 1;
 
     Schreiber rundenschreiber(vorrunde, modus, diese_runde);
+
+    // T10b: Der Parametersatz gehoert zu diesem Zustand, oder die Runde laeuft nicht.
+    //
+    // **Die Pruefung steht hier und nicht beim ersten Leser eines Feldes**, und der
+    // Grund ist derselbe wie beim `spielmodus` weiter oben: Heute liest kein Schritt ein
+    // Feld des Traegers, also faende eine Pruefung am Leseort heute nirgends statt --
+    // und der Tag, an dem der erste Schritt rechnet, ist genau der Tag, an dem niemand
+    // mehr daran denkt. Ein voreingestellter Traeger rechnet nach T10b eine tote Welt,
+    // die von einer gerechneten am Ergebnis nicht zu unterscheiden waere.
+    //
+    // Gelesen wird ueber `lies_alt` und nicht am `Zustand` vorbei: Nach T39 ist das der
+    // Zugang, der den Wert am Ende der Vorrunde immer hat, und er sagt zugleich, dass
+    // diese Zahl nichts ist, was die Runde erst herstellt.
+    const i64 gerechnete_summe = parameter_pruefsumme(konstanten);
+    const i64 summe_im_zustand = rundenschreiber.lies_alt(PLATZ_PARAMETERSUMME);
+    if (gerechnete_summe != summe_im_zustand) {
+        Meldung meldung;
+        meldung.text(
+            "kern::schritt -- die Pruefsumme des Parametersatzes passt nicht zum Zustand "
+            "(T10b): der Traeger ergibt ");
+        meldung.zahl(gerechnete_summe);
+        meldung.text(", ");
+        meldung.adresse(PLATZ_PARAMETERSUMME);
+        meldung.text(" traegt ");
+        meldung.zahl(summe_im_zustand);
+        meldung.text(
+            ". Gerechnet wird ueber die sieben Schluesselfelder des Traegers und nicht ueber "
+            "die Datei. Ein Ersatzwert wird nicht gebildet");
+        festkomma::abbruch(meldung.fertig());
+    }
+
     const Bitfeld& maske = schreiber::sollmaske(modus);
 
     // Die aufsteigende Adressrunde (T9, keine streuende Menge). Jede gesetzte Adresse
