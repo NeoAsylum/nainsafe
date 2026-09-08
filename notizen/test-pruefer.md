@@ -52,3 +52,30 @@ predecessor and stays readable.
 - Current corpus numbers for the next pruefung on this file: 36/36/57 Summe 93, B1 mutant
   47/70, measured at HEAD 7ebc1a9 (report :90-104). Expect 0227 to write exactly these.
 
+## 2026-09-08 — pruefung 0189, second run (geprueft, 1 finding)
+
+- Wrote to `pruefung-...-2026-09-08-2.md` — the morning's zurueck-Befund holds the
+  undated name; same-day re-review needs a suffix, never an overwrite.
+- Cheapest full proof yet: when the rc-0 path is unique and the old state *cannot*
+  pass (old script fails teil_a, old comment fails B1/B2), the bare green line in the
+  night report proves the run measured the transfer commit — no state reconstruction.
+  uebersetzung-2026-09-08.md :123-124 root 15.93 s, :290-291 standalone 16.03 s.
+- Ancestor-pin acceptance pattern: VORFASSUNGSSTAND=d8e3bfb is 4 commits before
+  0d6cf7b, not the parent — accepted because (a) intermediate lanes 0228/0165/0197
+  claim disjoint `dateien` (checked, one grep), so pinned content == parent's, and
+  (b) an ancestor pin can only false-red, never false-green. Worth reusing: check the
+  intermediate packages' `dateien:` lines instead of wishing for `git diff`.
+- Abnahme self-contradiction found: the 09-08 amendment (Vorfassung wanders with each
+  correction) makes the 09-07 clause "je mindestens eine Meldung am alten Wortlaut"
+  unsatisfiable for any Angabe the package didn't touch (Angabe 3 → 0 Meldungen by
+  construction). Builder's per-Angabe falsification (messen.py:644-661, VERFAELSCHUNGEN)
+  is strictly stronger and runs nightly. Judged purpose over letter, flagged the text to
+  the PM as the finding. Third sighting of the legitimate-interpretation pattern.
+- Gegenprobe review trick: needles deliberately exclude the current number (group
+  around it), so re-transcription can't blunt them; verstellen aborts on hits != 1.
+  Checked each of the three lambdas produces a guaranteed mismatch Meldung.
+- For the next pruefung on this file: head now carries 47/36/70, elf/zehn, 2/1/7,
+  36/36/57 Summe 93, Stand 7ebc1a9 at riegel.cpp:560-565/:602-605/:1016; exactly three
+  `gegen den Stand` sites (:560, :602, :1586); :527's 5d5e2d6 is dated wording outside
+  the script's pattern — that asymmetry is intentional (0166's line), don't flag it.
+
