@@ -294,10 +294,29 @@
 # * `markt.wert` (Startkorb zu Startpreisen) -- Manifest (T33, T45).
 # * Die Partielaenge R -- Groesse des Jahrgangs, `R =
 #   manifest.stuetzstellen - 1`, keine Konstante des Codes (T40).
-# * Die Pruefsumme des Parametersatzes -- sie wird ueber diese Datei
-#   *gerechnet* und in `partie.parameter_pruefsumme` abgelegt (T27, T45).
-#   Ein Schluessel dafuer in dieser Datei waere die Pruefsumme ihrer
-#   selbst.
+# * Die Pruefsumme des Parametersatzes -- sie wird ueber die *Werte*
+#   gerechnet und nicht ueber den Text dieser Datei: ueber die
+#   `Runde(feld)`-Felder des Traegers `kern::werte::Konstanten`,
+#   abgelegt in `partie.parameter_pruefsumme` (T27, T45; gebaut wie in
+#   T12). Bindend ist T10b in technik.md, im Wortlaut: "the parameter
+#   checksum is a function of the values, not of the file text".
+#   Bis Paket 0228 stand hier die alte Lesart, die Summe laufe ueber
+#   den Dateitext; T10b hebt sie auf, und der Grund ist gemessen: 51
+#   Zeilen dieser Datei tragen einen Wert (47 + 4, oben nachgezaehlt),
+#   alles uebrige ist Kommentar. Ueber den Dateitext faerbte jede
+#   Kommentaraenderung des Datenbauers den ganzen Rueckvergleich rot,
+#   ohne dass eine Zahl sich bewegt haette, und der Kern, der keine
+#   Datei liest (T2), koennte die Summe ueberhaupt nicht pruefen.
+#   **Nicht in dieser Summe stehen die beiden Jahrgangskonstanten**
+#   `leitzins_start` und `durchgriff` (T23 Punkt 5). Sie sind Felder
+#   desselben Traegers, aber keine `Runde(feld)`-Felder, und T10b haelt
+#   sie ausdruecklich draussen. Der Verweissatz in T27 nennt nur die
+#   "values of the carrier" und liest sich deshalb, als gehoerten sie
+#   dazu -- die engere Fassung in T10b gilt.
+#   Ein Schluessel fuer die Pruefsumme in dieser Datei waere die
+#   Pruefsumme ihrer selbst. Das ist der Grund, warum es ihn nicht
+#   gibt, und er haengt nicht an der alten Lesart -- unter der neuen
+#   gilt er unveraendert.
 # * Zahlen, die spiel.md bereits festlegt und die deshalb keine
 #   Kalibriergroessen sind: drei Aktionen je Runde, zwei Runden
 #   Ausstiegsdauer der Beteiligung, drei Runden bis zum Anlegerabzug,

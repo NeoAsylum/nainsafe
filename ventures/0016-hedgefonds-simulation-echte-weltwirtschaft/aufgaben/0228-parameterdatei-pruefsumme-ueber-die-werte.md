@@ -1,7 +1,7 @@
 ---
 id: 0228-parameterdatei-pruefsumme-ueber-die-werte
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: [0208-schritt-braucht-einen-parametereingang]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml]
 abnahme: "The head of parameter.toml no longer claims the parameter checksum is computed over the file text. Checkable without a shell: (1) `Grep \"ueber diese Datei\"` over parameter.toml returns no hit in the checksum passage at today's :297-300. (2) The passage names, in German like the rest of the file, that the checksum runs over the values of the `Runde(feld)` fields of the `Konstanten` carrier, and it cites T10b of technik.md as the binding place. (3) The reason the old reading gave for having no key of its own stays stated -- a key for the checksum inside this file would be the checksum of itself. That sentence is correct and is not collateral damage. (4) The passage says that the vintage constants `leitzins_start` and `durchgriff` are NOT in this checksum. (5) No key line is added, removed or changed: the count-off at :168 (`51 Schluessel`) and :184 (`47 + 4 = 51`) reads the same after the change as before, and the package body names both numbers as measured after its own edit."

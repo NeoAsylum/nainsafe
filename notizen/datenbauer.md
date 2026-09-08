@@ -4,6 +4,50 @@ Rotated by the runner on 2026-09-07 at 17945 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0228: one comment passage, and the four counters it must not move
+
+Built. `parameter.toml:297-319` (was :297-300). Compiler verdict of the day
+`uebersetzung-2026-09-07.md`, `ergebnis: fehler`, and **none of it is mine**: the single
+red test is `belegstellen_kopfzahlen`, and every FEHLSCHLAG names head-comment numbers of
+`belegstellen_riegel.cpp` itself (51/40/59/47 claimed against 36/36/57 measured, plus the
+`NAMENSFAELLE` seventh/eighth contradiction). That file is not in my `dateien`.
+
+**Measured myself, before → after, all four unchanged:** `^[a-z_0-9]* *=.*PLATZHALTER`
+47 → 47; `^[a-z_0-9]* *=.*FEST \(T51\)` 4 → 4; the mark expression
+`` `[a-z_0-9]*`\*\*? `` 25 → 25; and `:168` / `:184` still read `51 Schluessel` and
+`47 + 4 = 51` on those exact lines, because the insert sits below them. `ueber diese
+Datei` now has **zero** hits in the whole file, not just outside the passage.
+
+**The real work of this run was not the sentence, it was not tripping four riegel.** Rules
+I checked in source rather than assumed, all in `belegstellen_riegel.cpp`:
+
+- **The keyword list is exactly four** (`:1544-1545`, obfuscated literals): `Abschnitt`,
+  `Ueberschrift`, `Überschrift`, `Absatz`. Nothing else opens a Zitat — not `Tabelle`,
+  not `Wortlaut`, not a file name. So my passage carries two verbatim English quotes and
+  is **not a Zitat**: Teil 1 is missing. Corpus counts (36 Zitate / 36 aufgeloest / 57
+  uebergangen) cannot move, and `belegstellen_kopfzahlen` gets no new stale number from me.
+- **Bedingung 1 needs `Zeile <Ziffern>` / `Zeilen <Ziffern>` / `Z. <Ziffern>`, in that
+  order** (`musterlaenge`, `:829-861`). A number *before* the word does not match — so
+  "51 Zeilen dieser Datei tragen einen Wert" is inert. And I wrote **no** line number next
+  to `technik.md`, which the file's own rule at `:55-63` forbids as load-bearing anyway.
+- **A paragraph ends at a bare `#`** (`lies_absaetze`/`zerlege_zeile`, `:1823-1897`: the
+  content after the marker is empty → break). Lines 291-319 are therefore **one** Absatz,
+  and I put `technik.md` into it. Safe only because no keyword stands in it — I read all
+  of 291-323 to check, and the eight keyword hits in the file are at 19, 56, 83, 831, 835,
+  920, 936, 1285, none of them in my range.
+- **The bold trap the file documents about itself is real and I stayed clear of it:** no
+  `*` follows a closing backtick anywhere in my text. `**Nicht in dieser Summe stehen die
+  beiden Jahrgangskonstanten**` closes at line end, `` `leitzins_start` `` starts the next
+  line. That is why the 25 held.
+- `zahlwort_riegel` reads **only** `kern/include/kern/werte.hpp` (`:16`). My number words
+  are out of its reach. Checked instead of feared.
+
+**The substance, in one line:** the checksum runs over the `Runde(feld)` fields of
+`kern::werte::Konstanten` (T10b), not over the file text, and the two vintage constants
+`leitzins_start` and `durchgriff` are fields of the same carrier but deliberately outside
+the sum. The old "no key for it here, it would be its own checksum" sentence is re-hung,
+not deleted — it holds under either reading, and I said so in the file.
+
 ## 2026-09-07 — 0220 return 1: three counts of one table, and the word that ages
 
 Compiler verdict of the day `ergebnis: fehler`, and none of it is mine: the two red
@@ -53,6 +97,16 @@ each in the comments, at 156, 320, 322.
 
 ## Open leads
 
+- **0228 is built. Uncertain, for the project manager:** (a) T10b says `parameter.toml`
+  "is 1,315 lines"; I count **1314** before my edit and 1333 after. Not my file and not a
+  package, but that number was already off by one against the tree and is now off by
+  nineteen. (b) I quoted T10b and T27 in **English inside German text** — CLAUDE.md
+  sanctions it ("quoting is not translating"), but it is the first English wording in this
+  file's head, and if a reviewer wants it otherwise it is one edit. (c) The 51 leaf keys
+  are still **derived** (47 + 4), not counted with `tomllib` — no shell, fifth run running.
+- **`belegstellen_kopfzahlen` is red for reasons inside `belegstellen_riegel.cpp`'s own
+  head comment** — stale corpus numbers (51/40/59/47 against 36/36/57) and the
+  seventh/eighth `NAMENSFAELLE` contradiction. Wants a package; not the data builder's.
 - **0220 return 1 is built. Uncertain, for the project manager:** (a) The entry now names
   the **0198** addendum, while the paragraph at 426-437 still names the **0118** one for
   the L 4→9 case — deliberately, because the reviewer confirmed that paragraph and it is
