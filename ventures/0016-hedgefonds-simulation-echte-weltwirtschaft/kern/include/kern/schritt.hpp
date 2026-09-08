@@ -306,9 +306,10 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 ///   * jeder Abbruch aus `Schreiber` -- zweiter Schreibzugriff, Lesezugriff auf eine
 ///     noch ungeschriebene Adresse, verfehlte Sollmaske am Rundenende.
 ///
-/// **Zwei weitere sind mit dem rechnenden Rumpf von Schritt 5 dazugekommen** (Paket
-/// 0197). Beide fuehren aus `kern::werte` heraus und greifen erst, wenn die drei
-/// Schranken des Rahmens gehalten haben:
+/// **Drei weitere sind mit dem rechnenden Rumpf von Schritt 5 dazugekommen** (Paket
+/// 0197). Alle drei greifen erst, wenn die drei Schranken des Rahmens gehalten haben;
+/// die ersten beiden fuehren aus `kern::werte` heraus, der dritte aus
+/// `kern::festkomma`:
 ///   * das Bruttoinlandsprodukt eines Landes taugt nicht als Nenner der
 ///     Zustimmungsregel. Gelesen wird es mit `kern::werte::bip`, und die Schranke steht
 ///     in `kern/src/schritt.cpp` vor der Rechnung, in `realeinkommenshub`. **Ihre
@@ -319,6 +320,15 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 ///     derselben Quelle, und nur fuer ein Instrument, dessen Stand sich in dieser Runde
 ///     bewegt hat. Solange Schritt 3 vortraegt, bewegt sich keiner, und dieser Weg wird
 ///     nie betreten.
+///   * jeder Ueberlauf ueber den `i64` hinaus in der Festkommarechnung der
+///     Zustimmungsregel selbst. Sie rechnet mit `kern::festkomma`, und dessen Strich-
+///     und Punktrechnung bricht nach T7 hart ab, statt umzubrechen. Dorthin fuehren in
+///     `kern/src/schritt.cpp` der Rumpf von Schritt 5 selbst und die beiden Hilfen, die
+///     er dafuer ruft -- `realeinkommenshub` und, aus ihm heraus, `politiklast`.
+///     **Anders als die beiden Eintraege davor wird dieser Weg heute begangen**, jede
+///     Runde: Aus demselben Grund, der `schaden` ungerechnet laesst, sind Last, Hub und
+///     Wirkung null, und weder ein Produkt mit der Null noch eine Summe mit ihr laeuft
+///     ueber.
 [[nodiscard]] Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
                                      const Konstanten& konstanten, Modus modus);
 
