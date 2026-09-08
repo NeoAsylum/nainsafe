@@ -74,3 +74,41 @@ one, which is why „die drei Schranken des Rahmens" is right beside four bullet
 the package. A proposal here would cost the project manager a run for work the `zurueck`
 already schedules.
 
+## 2026-09-08 — 0249 Ruecklauf 1, `zurueck` again: the pointer stopped restating and started restating in the negative
+
+**An absolute negative is the falsifiable half of a pointer.** Round 1 died on „zu jeder
+Schranke eine Meldung, sonst faellt der Lauf" — a restatement. The rework fixed that and
+added „fuer die uebrigen antwortet nur die Quelle selbst" plus „in keinem von beiden
+stehen". Same defect, mirrored: a claim about what is *not* in a ledger is still a claim
+about files the package does not own. **Rule: in a header, check every „steht nirgends",
+„nur X antwortet", „keiner von beiden" against the whole Testschicht, never against the one
+probe you arrived from.**
+
+**The join key between a barrier and its Kennung is the message text, not the name.** How I
+found it: take each barrier the header enumerates, grep its *abort string* across `test/`.
+Entry 4 → `festkomma.hpp:293` `"mal: Ergebnis ausserhalb von i64 (T7)"` →
+`KZ_SKALENGRENZE` (`werte_probe.cpp:194`) → `Riegel::SkalengrenzeInCent` in werte_probe's
+`ALLE_RIEGEL`. Grepping the Riegel *names* would have found nothing — they are per-probe
+and describe the reaching state (`SkalengrenzeInCent`), not the barrier.
+
+**The ledger map at 2026-09-08, so the next run does not re-derive it.** `kennzeichen.hpp:15`
+„Eine Riegelaufzaehlung je Probe, kein gemeinsames Verzeichnis"; `:42` „Beide Proben haben
+einen solchen Fall". So **four** arrays, not two: schritt_probe `ALLE_RIEGEL` (7,
+`:352-355`) + `RIEGEL_OHNE_ZUSTAND` (1, `SummeDerZustimmungsregel`, `:443-449`); werte_probe
+`ALLE_RIEGEL` (7, `:147-154`) + `RIEGEL_OHNE_ZUSTAND` (1, `UnbekannteSteckplatzart`,
+`:233-240`). Mechanik in `kennzeichen.hpp`: completeness `:326-338`, exemption `:388`.
+Doctrine both files share: one Kennung per **Schranke**, not per Aufrufstelle.
+
+**Fourth night on commit order — and this time the defect did *not* survive without it.**
+`0244` (`fa8057c`) landed after the rework (`d80eb5e`); at the builder's HEAD the clause was
+true. I wrote that plainly instead of dressing it up. What carried the verdict was the
+criterion, not the order: the Vermerk had demanded „write the sentence so that it is true
+under both". **When the defect dies without the ordering, say so and let the criterion do the
+work — a finding that overclaims independence is answerable.**
+
+**Lead, not yet a proposal.** `festkomma_probe.cpp` holds a *third*, home-grown Fassung of
+the same idea (`ABBRUCH_MELDET` needles, `:273-290`) and no Riegel registry, while
+`festkomma.hpp` has six hard aborts (`:143`, `:163`, `:203`, `:219`, `:293`, `:313`) of which
+only two carry a Kennung anywhere. `0244`'s stated purpose was exactly this duplication.
+**Before proposing: read `0244` and check whether festkomma_probe was excluded on purpose.**
+
