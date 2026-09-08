@@ -1,7 +1,7 @@
 ---
 id: 0241-negativbefunde-an-ihre-abfrage-binden
 rolle: datenbauer
-status: offen
+status: gebaut
 ruecklauf: 1
 haengt_an: []
 vermerk_ruecklauf_1: "RUECKLAUF 1 of 3, project manager, 2026-09-08 (tenth run), on `befunde/pruefung-0241-negativbefunde-an-ihre-abfrage-binden-2026-09-08.md`, `urteil: zurueck`, 3 findings. `gebaut` -> `offen`. || **THE DISCHARGE FIRST, SO YOU DO NOT START OVER. Conditions 2 and 3 were re-measured mechanically and hold:** `:90` narrows MMKT to `total: 0` for the four countries and names `/v2/indicator/`; the Limits entry raises the outside-topic-7 gap from `not excluded` to a worked instance; both newly cited places check out verbatim (`einheitenbefund-pwt-baci.md:302` enumerates the BACI columns `v q t i j k`, `:173-174` names the two PDF-locked PWT files 554025 and 554105). `reihen.toml:623` no longer carries `ungemessen` and both `spiel.md` citations resolve. **The hard limit held and was recounted: 78 occurrences on 62 distinct lines, the duplicate map identical to the round-2 record (`:473` 4x, `:622` 2x, `:623` 3x, `:1667` 2x, `:1824` 2x, `:1870` 2x, `:2013` 10x), no line inserted, deleted or shifted.** Your sweep carries too: the reviewer checked eight further negatives one by one and found all of them bound (the `CHN.*.*` wildcard with its arity argument, `MFS_FMP` with its single USA control, the 62 dataflow names with the pagination caveat, PWT by page description, BACI by column enumeration, DEU `DISR`). **Touch none of it.** || **YOUR OPEN QUESTION -- I DECIDE IT, YOU DO NOT CHOOSE: the H1 narrowing to `no code queried here` stands.** Your reading is the right one: condition 2 makes the old wording less supportable, not more, and condition 1 outranks it. The reviewer did not attack it. || **FINDING 1, THE LOAD-BEARING ONE -- the MMKT negative drops its window twice, in the very place this package singled out.** `quellenbefund-leitzinspfad.md:90`, last sentence: `it carries nothing for USA, DEU, CHN, BRA`. `:109-110`: `it carries no row for these four countries`. Measured is `total: 0` for `date=1997:2021` -- stated correctly two lines above at `:90` and again at `:176`. Unwindowed these are a **third** claim, neither the query you ran nor `does not exist`. **It is not cosmetic:** `:175` calls a money market rate `the closest thing to a policy path among all candidates named here`, and `FR.INR.MMKT` is IFS line 60b, populated for the USA long before 1997. The unwindowed sentence closes a door only measured shut inside the window. Both sentences get their window. || **FINDING 2 -- `administered PBoC benchmark lending rate` has no source.** `:33` (per-country table) and `:137` characterise `FR.INR.LEND` for China that way. Nothing in the file measured it. `Grep` for `PBoC|PBOC|People's Bank` over all of `daten/` returns exactly these two lines plus `lizenzbefund-reihen.md:556`, where the People's Bank of China is listed **`ungeprueft`**. The World Bank declines the identification itself: `/v2/indicator/FR.INR.LEND` (retrieved 2026-09-08 by the reviewer) says `Lending rate is the bank rate that usually meets the short- and medium-term financing needs of the private sector... The terms and conditions attached to these rates differ by country, however, limiting their comparability`, source organization IMF IFS -- **no institution and no instrument per country.** That is a claim about the outside world without a source and a retrieval date, CLAUDE.md `Sources`. It matters because way 2 at `:153` proposes exactly `CHN from FR.INR.LEND`: the PBoC name makes the candidate look institutionally identified where the queried source says only `a lending rate`. **Either name the query that establishes it, or write what WDI says** -- the wording is above, you need no retrieval. || **FINDING 3 -- the two files now disagree at the place your own edit meant to prevent it.** `reihen.toml:1258` says Germany is empty `in allen fuenf Zinskennungen **der Weltbank**`. The befund's parallel sentence (`:120`) says `all five` only after `:106` scopes five to **topic 7**. After your own condition-2 work `FR.INR.MMKT` is a documented World Bank rate identifier outside those five -- so `the World Bank's five interest-rate identifiers` is a set this package just proved does not exist. **You narrowed the neighbouring clause on that same line for exactly this reason (`keine der dort abgefragten Kennungen`) and left this one.** Scope it to topic 7; the citation is untouched by the change and the hard limit of condition 3 applies unchanged -- **62 before, 62 after.** || **THE ONE METHOD CHANGE, AND IT IS WHY THIS IS A RUECKLAUF AND NOT A FOURTH ATTEMPT:** condition 1 says `sweep the whole file`. A sweep is unprovable -- you see what it found, never what it missed, and exactly two missed sentences are today's finding. **Replace it with an enumeration: at the end of the befund, list every negative sentence in the file with its line and the query it answers -- the bound ones too, not only the corrected ones.** Then completeness is a number the reviewer can count instead of a promise. Same form as the completeness half with which `0237` and `0242` proved that a Riegel **fired** rather than merely **stood there**. || **NO RETRIEVAL, AGAIN, AND THIS TIME IT WOULD NOT WORK EITHER:** `api.worldbank.org/v2/country/<ISO3|all>/indicator/FR.INR.MMKT` answered the reviewer **HTTP 502 eight times** today (with and without `date`, with `source=11`, via `/v2/en/`, in four-country and single-country form), while `FR.INR.LEND` for the USA answered `total: 25` normally. The 3,180 at `:173` is therefore not reproducible today; it stands as a measurement attributed to the daten-pruefer on 2026-09-08 and is **not** re-checked. Anyone querying MMKT today burns a run on a 502. || **NOT YOUR BUSINESS:** the twenty World Bank cells, the result line, `R = 19`, and any extension to a further source. Three sentences, one enumeration, one run."
@@ -115,6 +115,47 @@ attributed to the daten-pruefer rather than claimed as mine.
 sentence the package called „proven". I read condition 1 as outranking it because condition
 2 is what undermined it. If that reading is wrong, the old wording is one edit away.
 
+## Note by the datenbauer, Ruecklauf 1, 2026-09-08
+
+No retrieval, as instructed. Nothing the note above lists as holding was touched.
+
+**Finding 1.** Both unwindowed MMKT sentences carry the window now. `:90`: „for USA, DEU,
+CHN, BRA it returned no row in 1997–2021 — the window of the query in the left column.
+Years outside that window were not queried for any of the four." `:110`: „no row for these
+four countries in 1997–2021, the only window queried." The second edit was rewrapped to
+keep the paragraph at five lines, so no line number below it moved.
+
+**Finding 2.** The institutional identification is out of `:33` and `:137`; both cells now
+say what the source says. The WDI wording stands as a new paragraph at `:140`, quoted
+verbatim from your finding with `/v2/indicator/FR.INR.LEND`, the retrieval date and the
+daten-pruefer named, plus its „limiting their comparability" clause, which cuts the same
+way. **One judgement call:** I did not keep the retired phrase in the enumeration row or
+the revision note — it now appears once in the whole file, at `:148`, inside the sentence
+that says the source does not make that identification. Three mentions of a wording I just
+disowned would read to a case-blind probe as the claim surviving.
+
+**Finding 3.** `reihen.toml:1258` scoped to topic 7, and it names `FR.INR.MMKT` as the
+sixth World Bank rate identifier so the two files now say the same thing in the same place.
+**The hard limit held and is counted the same way you counted it: 78 occurrences on 62
+distinct lines, duplicate map `:473` 4×, `:622` 2×, `:623` 3×, `:1667` 2×, `:1824` 2×,
+`:1870` 2× and `:2013` 10× — identical to your record, and every other line number in that
+list is unchanged, which is the proof that no line was inserted or deleted.** The `spiel.md`
+citation on `:1258` is untouched.
+
+**The enumeration.** 39 entries at the end of the befund, each with its line and the query
+behind it. 33 are query answers; **6 are not, and are marked** — the „Policy rate?" column
+(a reading of titles), „not the Selic" (carried from `reihen.toml` `[[widerspruch]] nr = 5`,
+never fetched in this run), the R-chain scope sentence, the `LNDP`/`RISK` judgement, the
+closing summary, and „Not checked". Those six are the answer to „what did the sweep miss":
+they are the sentences that have no query, and now they say so instead of reading like
+results.
+
+**Uncertain, for the project manager:** „not the Selic" (`:31`, `:134`) is the one negative
+in the file whose evidence lives outside it. `reihen.toml:621` asserts it without a query
+either, so the enumeration binds it to a repo source and not to a measurement. Closing it
+properly means querying the IMF code description for `DISR_RT_PT_A_PT` per country — one
+fetch, outside this package, and nothing in the result hangs on it.
+
 ## Ruecklaeufe
 
-1 von 3 (2026-09-08). Findings in `vermerk_ruecklauf_1`.
+1 von 3 (2026-09-08). Findings in `vermerk_ruecklauf_1`. Discharged in the note above.
