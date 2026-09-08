@@ -139,6 +139,50 @@ here in one sentence.
   *other* wall-coupled assertion elsewhere in the kernel firing below 139. The previous
   reviewer named exactly this. It is not fixable from a header -- 0212's ctest entry
   either surfaces it or does not.
+## 2026-09-08
+
+- 2026-09-08, **the lesson of the second run on 0197** -- **Ask where the rule's addresses
+  sit in the address order, right after asking whether its names resolve.** Last run's
+  lesson was the four carriers (T15/T27/T23/T48); it is only half a check. The approval
+  rule needs `lies_neu` of the four instrument stands, and `LAND_POLITISCH_AB = 21` sits
+  **before** `LAND_INSTRUMENTE_AB = 24`, so in the ascending address round the approval
+  address arrives first and `lies_neu` on an unwritten address is a hard error (T39). A
+  body built as commissioned aborts on its first address, in all four countries. Cost of
+  the check: one grep over `zustand.hpp`. It is the same shape as the carrier check --
+  mechanical, cheap, and it belongs before the first line of the body, not after it.
+- 2026-09-08 -- **A spec section written to unblock a package can also refute its
+  acceptance, and it did.** `0198` filled the rule *and* wrote the sentence that kills
+  condition 2: „a round in which step 3 carries the instruments forward moves no approval
+  address. A probe that counts changed quantities over such a round measures nothing about
+  this rule." Read the *whole* new section, including the part addressed to you by name --
+  the paragraph headed *Wo die Regel laeuft* is where the design tells the next builder
+  what their own criterion is worth.
+- 2026-09-08 -- **A blocked coefficient is usually a blocked class, and saying so is what
+  makes the proposal land.** `zustimmung_elastizitaet` looked like one missing key; the
+  load-bearing fact is that `werte::schaden` already demands `const Konstanten&`, so
+  without the carrier **no term** of the rule is callable, and the same holds for every
+  later rule carrying a coefficient. That is the sentence that turns "widen a signature"
+  into its own package (`0229`, seven files, four of them outside 0197's list).
+- 2026-09-08 -- **There is a probe to build even when the body cannot be built, if the
+  rule has a half that needs no parameter.** `spiel.md` calls its own zero case the
+  acceptance: no instrument step ⇒ hub exactly zero, for any coefficient. That is
+  testable today, stays true once step 3 computes if written as an **implication** rather
+  than an equality, and it is the regression test the rule will need anyway. Two runs of
+  zero code on one package would have been my own role file's failure case; the escape was
+  to look for the coefficient-free half instead of for a smaller body.
+- 2026-09-08 -- **I paid for the lesson in `CLAUDE.md` about `befunde/` in my own run.** A
+  `Grep` for `schritt\(` over the venture without a path filter returned 97 files, most of
+  them frozen tree copies under `befunde/messung-0105/baum{,_gut,_tot}/`. The same search
+  scoped to `kern/` gives the four real call sites in one screen. Scope to `kern/` first;
+  the venture root is never the right path for a code question.
+- 2026-09-08, **what I am unsure about, for the project manager:** condition 2 of 0197 is
+  now refuted by `spiel.md` in writing, and I did not rewrite the criterion -- that is
+  yours. The open question behind it is an **ordering** one and bigger than a body: step 5
+  has to leave the ascending address loop and take its block after it, which retracts the
+  ascending-chain statement in `schritt.cpp` and changes what `probe_kette` may assert.
+  Whether that restructuring belongs in 0197, in 0229, or in a third package, I could not
+  decide from inside 0197.
+
 - 2026-09-07, **what I am unsure about, for the project manager:** whether `0198` belongs
   to `spielentwerfer` or to `architekt`. I chose the game designer on the precedent of
   *Der Schaden in Gegenkraft 5, als Rechenvorschrift* -- T50 fixed the unit and returned

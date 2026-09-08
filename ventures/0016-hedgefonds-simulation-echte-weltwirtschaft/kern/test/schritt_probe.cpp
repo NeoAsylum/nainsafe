@@ -52,7 +52,18 @@
 //! eine Datei, die ihr eigenes Suchmuster zitiert, laesst es nie leer ausgehen. Was die
 //! Probe dazu beitragen kann, ist die Gegenrichtung: Sie ruft `schritt` mit genau drei
 //! Argumenten (Zustand, Buendel, Modus) und bekommt beides zurueck, Zustand und Kette.
-//! Ein viertes Argument gaebe es nicht zu uebergeben.
+//!
+//! **Und die drei Argumente sind seit dem 2026-09-07 nicht mehr die vorgeschriebenen.**
+//! T10b traegt seit Paket 0208 die Form `schritt(vorrunde, aktionen, konstanten, modus)`
+//! mit `konstanten` als `const kern::werte::Konstanten&`; der Kern ist ihr noch nicht
+//! gefolgt, und der Traeger `kern::werte::Konstanten` fuehrt den Schluessel
+//! `zustimmung_elastizitaet` bis heute nicht. Solange beides so steht, uebergibt diese
+//! Probe drei Argumente, weil es kein viertes gibt -- nicht, weil drei richtig waeren.
+//!
+//! **Paket 0197 -- die beiden Zahlen der Zustimmung.** Die letzte Probe misst, was den
+//! gerechneten Rumpf von Schritt 5 traegt: den bewegten Instrumentenschritt und die
+//! Adressordnung, die ihn aus der aufsteigenden Runde heraushaelt. Beides ohne den
+//! Koeffizienten, der noch keinen Weg in die Runde hat; die Begruendung steht dort.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -818,6 +829,104 @@ void probe_rundennummer()
 }
 
 // ---------------------------------------------------------------------------
+// Paket 0197 -- was die Zustimmung im weltlauf bewegen koennte, und was nicht
+// ---------------------------------------------------------------------------
+//
+// `spiel.md` traegt die Zustimmungsregel seit Paket 0198 ausgeschrieben. Sie haengt
+// nicht am Zustand der Vorrunde, sondern am **Instrumentenschritt dieser Runde**:
+//
+//     politiklast(l) = Summe ueber die vier Instrumente i:
+//                        sgn( lies_neu(land.<l>.instrument.<i>.stand)
+//                           - lies_alt(land.<l>.instrument.<i>.stand) ) * schaden(l, i)
+//
+// und darueber `realeinkommenshub(l)` und die Zustimmung. Der Entwurf nennt den
+// Grenzfall selbst die Abnahme: Bewegt sich kein Instrumentenstand, ist jedes `sgn`
+// null, also `politiklast` null, also der Hub **genau** null -- fuer jeden Preis, jedes
+// Handelsvolumen und jede Schuldenquote.
+//
+// Diese Probe misst die beiden Zahlen, an denen der gerechnete Rumpf haengt, und sie
+// misst sie **ohne** ihn: den Koeffizienten `zustimmung_elastizitaet` braucht keine der
+// beiden Aussagen. Was hier steht, ist deshalb heute schon falsifizierbar und bleibt es,
+// wenn Schritt 3 und Schritt 5 rechnen.
+
+/// Die vier spielbaren Laender, in der Reihenfolge aus T15.
+constexpr std::array<kern::zustand::Gebiet, kern::zustand::LAENDER> LAENDER_DER_PROBE = {
+    kern::zustand::Gebiet::US, kern::zustand::Gebiet::CN, kern::zustand::Gebiet::DE,
+    kern::zustand::Gebiet::BR};
+
+/// Die vier Instrumente, in der Reihenfolge aus T15.
+constexpr std::array<kern::zustand::Instrument, kern::zustand::INSTRUMENTE>
+    INSTRUMENTE_DER_PROBE = {
+        kern::zustand::Instrument::Leitzins, kern::zustand::Instrument::Zoll,
+        kern::zustand::Instrument::Haushalt, kern::zustand::Instrument::Regulierung};
+
+void probe_zustimmung_ohne_instrumentenschritt()
+{
+    const Zustand vorher = ausgangslage(11);
+    const Rundenergebnis ergebnis = kern::schritt::schritt(vorher, {}, Modus::Weltlauf);
+    const Zustand& nachher = ergebnis.neuer_zustand;
+
+    // Erste Zahl: wie viele der 16 Instrumentenstaende sich ueber die Runde bewegt haben.
+    // Heute null, weil `schritt_3_politik` vortraegt; die Zahl wird ungleich null an dem
+    // Tag, an dem Schritt 3 einen rechnenden Rumpf bekommt.
+    std::size_t bewegte_instrumente = 0;
+    for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
+        for (const kern::zustand::Instrument welches : INSTRUMENTE_DER_PROBE) {
+            const Index platz = kern::zustand::stelle_instrument(
+                land, welches, kern::zustand::InstrumentFeld::Stand);
+            if (vorher.lies(platz) != nachher.lies(platz)) {
+                ++bewegte_instrumente;
+            }
+        }
+    }
+
+    // Zweite Zahl: wie viele der vier Zustimmungsadressen sich bewegt haben.
+    std::size_t bewegte_zustimmungen = 0;
+    for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
+        const Index platz = kern::zustand::stelle_politisch(
+            land, kern::zustand::PolitischeGroesse::Zustimmung);
+        if (vorher.lies(platz) != nachher.lies(platz)) {
+            ++bewegte_zustimmungen;
+        }
+    }
+
+    // **Die Aussage aus `spiel.md`, als Bedingung und nicht als Behauptung ueber heute.**
+    // Ohne Instrumentenschritt kann sich keine Zustimmung bewegen. Umgekehrt sagt die
+    // Zeile nichts: Bewegt sich ein Instrument, darf sich Zustimmung bewegen und muss
+    // nicht -- der Hub kann nach der Rundungsregel aus T6 auf null fallen. Deshalb eine
+    // Implikation; eine Gleichsetzung waere an dem Tag falsch, an dem Schritt 3 rechnet.
+    PRUEFE(bewegte_instrumente != 0 || bewegte_zustimmungen == 0);
+
+    // **Die Ordnungsaussage, und sie ist der Grund, warum Schritt 5 nicht in der
+    // aufsteigenden Adressrunde stehen bleiben kann.** Die Regel liest `lies_neu` der
+    // Instrumentenstaende; `lies_neu` auf eine in dieser Runde noch nicht geschriebene
+    // Adresse ist nach T39 ein harter Fehler. Liegt die Zustimmung eines Landes **vor**
+    // seinen Instrumentenstaenden, kommt sie in der aufsteigenden Runde als erste an und
+    // findet den neuen Stand noch nicht vor.
+    //
+    // Gemessen und nicht aus T15 abgeschrieben. Faellt die Zeile eines Tages, ist das
+    // keine Verschlechterung, sondern die Nachricht, dass das Hindernis weg ist -- dann
+    // gehoert dieser Kommentar gestrichen und nicht die Adressordnung zurueckgedreht.
+    std::size_t zustimmung_vor_instrument = 0;
+    for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
+        const Index zustimmung = kern::zustand::stelle_politisch(
+            land, kern::zustand::PolitischeGroesse::Zustimmung);
+        for (const kern::zustand::Instrument welches : INSTRUMENTE_DER_PROBE) {
+            const Index stand = kern::zustand::stelle_instrument(
+                land, welches, kern::zustand::InstrumentFeld::Stand);
+            if (zustimmung < stand) {
+                ++zustimmung_vor_instrument;
+            }
+        }
+    }
+    PRUEFE(zustimmung_vor_instrument == 16);
+
+    std::printf("  Instrumentenschritt: %zu von 16 Staenden bewegt, %zu von 4 Zustimmungen "
+                "bewegt; %zu von 16 Paaren haben die Zustimmung vor ihrem Instrumentenstand\n",
+                bewegte_instrumente, bewegte_zustimmungen, zustimmung_vor_instrument);
+}
+
+// ---------------------------------------------------------------------------
 // Paket 0107 -- die Kennzeichen kennzeichnen wirklich
 // ---------------------------------------------------------------------------
 //
@@ -931,6 +1040,7 @@ int main()
     probe_zweimal_dasselbe();
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
+    probe_zustimmung_ohne_instrumentenschritt();
 
     // Zuletzt, denn sie liest ein, was die fuenf Aufrufstellen oben hinterlassen haben.
     probe_kennzeichen_eindeutig();

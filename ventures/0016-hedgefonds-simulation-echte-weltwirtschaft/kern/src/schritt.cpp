@@ -503,6 +503,29 @@ void schritt_4_wirtschaft(Schreiber& schreiber, Index platz) { schreiber.vortrag
 /// das Orakel an dieser Stelle blind ist, gehoert nach `spiel.md` in jeden Befund.
 /// Aufsichtszaehler, Einfluss, Restdauern, Nachahmerzaehler und Anlegerbestand liegen
 /// ausserhalb der Maske.
+///
+/// **Der Rumpf traegt vor, und das ist seit dem 2026-09-08 kein Platzhalter mehr,
+/// sondern ein gemeldetes Hindernis.** Die Zustimmungsregel steht in `spiel.md`
+/// ausgeschrieben, seit Paket 0198 sie gefuellt hat; gebaut ist sie hier trotzdem nicht,
+/// aus zwei Gruenden, die beide ausserhalb dieser Datei liegen:
+///
+///   1. **Der Koeffizient hat keinen Weg in die Runde.** `zustimmung_elastizitaet` ist
+///      ein Schluessel aus `parameter.toml`; `kern::werte::Konstanten` fuehrt ihn nicht,
+///      und `schritt` nimmt den Traeger gar nicht erst entgegen. T10b schreibt die
+///      erweiterte Form seit Paket 0208 vor -- der Kern ist ihr noch nicht gefolgt.
+///      Dasselbe Argument trifft `werte::schaden`, das die Regel als rechte Seite
+///      braucht und `const Konstanten&` verlangt.
+///   2. **Die Zustimmung liegt in der Adressordnung vor den Instrumentenstaenden, die
+///      sie liest.** Die Regel nimmt `lies_neu` der vier Instrumentenstaende eines
+///      Landes; nach T39 ist `lies_neu` auf eine in dieser Runde noch nicht geschriebene
+///      Adresse ein harter Fehler. In der aufsteigenden Adressrunde kommt die Zustimmung
+///      des Landes **vor** ihnen an. Ein rechnender Rumpf an dieser Stelle braeche
+///      deshalb an seiner ersten Adresse ab -- Schritt 5 muss seinen Block als Ganzes
+///      nehmen und nach der Adressrunde laufen, und dann steigt die Kette nicht mehr auf.
+///      `test/schritt_probe.cpp` misst die Ordnung, statt sie aus T15 abzuschreiben.
+///
+/// Solange beides steht, ist der Vortrag die einzige wahre Aussage, die dieser Rumpf
+/// machen kann.
 void schritt_5_reaktion(Schreiber& schreiber, Index platz) { schreiber.vortrag(platz); }
 
 /// **Schritt 6 -- Abrechnung.** Nach `spiel.md`: "Positionen bewertet, Hebel gegen den
