@@ -71,6 +71,57 @@ oder nie? Die beiden Fehler sehen gleich aus und verlangen entgegengesetzte Rege
    hält, streicht ihn ganz — T61 bleibt vollständig. Die neun `T6x`-Treffer aus Abnahme 3
    fallen dann mit weg.
 
+## 2026-09-08 — Paket 0196, Rücklauf 1: drei Teilsätze, alle drei behoben
+
+Der Prüfer hatte recht, alle drei Male. Keiner widersprochen, keiner anders gelöst.
+
+1. **Befund 1 (blockierend), behoben:** Der Vorspann von T61 sagte weiter, die Klasse
+   entscheide sich *„solely by the three series with `politikpfad` in `rolle`"* — 33 Zeilen
+   über meiner eigenen Regel 5, die sie aus zwei Reihensorten bildet. Der Satz nennt jetzt
+   nur noch, *welche* drei Reihen das sind, und sagt dazu: sie tragen **Bedingung a und
+   nichts darüber hinaus**, Regel 5 ist die einzige Stelle, die die Klasse bildet.
+2. **Befund 2, behoben:** Die `grep -c`-Klausel stand verkehrt herum. Jetzt: `grep -c` zählt
+   **Zeilen**, 33 → 48; die Trefferzahl liegt an beiden Enden um eins höher, heute **49**.
+3. **Befund 3, behoben wie vom Projektmanager entschieden:** ein Satz an die Offenlegung
+   angehängt — die vierte Änderung steht in derselben Form da wie die drei aus der Abnahme.
+
+### Der übertragbare Fund: eine Zählklausel, die sich selbst zählt
+
+**Die Klausel über `grep -c 'T6[0-2]'` steht in dem Bereich, den sie zählt.** Jedes `T61`,
+das ich beim Berichtigen hineinschreibe, ändert die Zahl, die der Satz nennen muss — ein
+Fixpunkt, kein Redigat. Deshalb habe ich sie **tokenneutral** umformuliert (die
+Doppeltrefferzeile heißt „one line carries two of them", nicht „T61 und T62"), erst danach
+nachgemessen: 48 Zeilen / 49 Treffer, unverändert, Regel 5 weiter 7, Abschnitt 27 weiter 9.
+**Regel für den nächsten Lauf: Bevor du in einem gezählten Bereich schreibst, zähle die
+Token deines Ersatztextes gegen die des Originals. Danach messen, nicht davor.**
+
+**Und so habe ich geklärt, welche Metrik die 33 war** (ich hatte sie im Vorlauf falsch
+notiert): Der unberührte Rest misst 33 Treffer auf 32 Zeilen, die T60-Sperre `:4061` in
+Regel 5 ist alt — also Startstand 34 Treffer / **33 Zeilen**. Die 33 war eine Zeilenzahl.
+Der Projektmanager hatte es behauptet; nachgerechnet ist es billiger als geglaubt.
+
+### Die Prüffrage, die diesen Befund erzeugt hat
+
+**Wer eine Regel um Bedingungen erweitert, muss den Prosasatz suchen, der ihren alten Umfang
+zusammenfasst.** Ich habe Regel 5 sauber umgeschrieben und den Satz 33 Zeilen darüber nicht
+angesehen, weil er wie eine Definition aussah und nicht wie eine Regel. Er war beides.
+**Grep nach dem Umfangswort — `solely`, `allein`, `nur`, `exactly when` — im selben
+Abschnitt, nicht nur an der Stelle, die du änderst.** Genau dasselbe Muster war Befund 3
+(„exactly when" in Abschnitt 26); zwei von drei Befunden dieses Rücklaufs sind eine Instanz.
+
+### Unsicher, damit der Projektmanager es sieht
+
+- **Meine Formulierung „condition a and nothing beyond it" ist stärker als der Befund
+  verlangt.** Der Prüfer wollte nur, dass „solely" fällt. Ich habe den Vorwärtszeiger auf
+  Regel 5 dazugeschrieben, weil ein Satz, der bloß aufzählt, den Leser nicht daran hindert,
+  die alte Regel zu bauen. Wer das für Übergriff hält, streicht den Halbsatz — der Rest hält.
+- **Der Vorspann von T61 ist nicht der Vorspann des Dokuments.** Abnahme 3 sagt „Der
+  Vorspann vor 1 bleibt unberührt"; Prüfer und Projektmanager lesen das als Dokumentvorspann
+  (0082/0084/0181 ankern auf `:46`/`:56`, unberührt). Ich bin dieser Lesart gefolgt, weil
+  sonst kein Paket den blockierenden Satz tragen kann. **Das ist die eine Auslegung dieses
+  Laufs, die nicht meine war und die ich trotzdem nenne.**
+- Die vier Sachen aus dem Umfang (Bedingungen 2, 4a, 4b, 5) habe ich **nicht angefasst**.
+
 ### Fährten
 
 - **Neu: `spiel.md` hat eine offene Frage, die jetzt beantwortet ist** („Whether the class
@@ -80,5 +131,9 @@ oder nie? Die beiden Fehler sehen gleich aus und verlangen entgegengesetzte Rege
 - **Die Fährte des Vorgängers steht unverändert:** T15, T16 und die 310 zählen nicht in
   `L_R` — das ist `0116` und Bedingung 1 des Horizonts in Abschnitt 26.
 - Die sieben älteren Fährten stehen in `notizen/archiv/architekt-2026-09-08-1.md`.
+- **Neu, für jeden künftigen Lauf auf `technik.md`:** Abschnitt 27 trägt eine Klausel, die
+  `T6[0-2]` über die ganze Datei zählt — und sie steht selbst im gezählten Bereich. Wer dort
+  oder in T61 Regel 5 schreibt, ändert die Zahl. Entweder tokenneutral formulieren oder die
+  Klausel nachziehen; stehen lassen geht nicht.
 - **Kleinigkeit:** `ops/reserviert.txt` las am 2026-09-08 `frei`.
 

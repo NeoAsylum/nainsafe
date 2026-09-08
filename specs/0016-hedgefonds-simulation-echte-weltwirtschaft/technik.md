@@ -4010,11 +4010,12 @@ target series it is a prohibition.
 ### T61 — The marking in `reihen.toml`
 
 **The field that an estimated series carries is called `stufe` and stands in a new block
-`[[reihe.herkunft]]`.** The class of a country is decided solely by the three series with
-`politikpfad` in `rolle` — series 9 (policy rate), series 12 (budget balance) and series 13
-(tariff level); the fourth instrument, financial-market regulation, has no series, its value
-comes per T45 from `parameter.toml`. The block is nevertheless mandatory for **every**
-series, and rule 1 says why.
+`[[reihe.herkunft]]`.** The three series with `politikpfad` in `rolle` are series 9 (policy
+rate), series 12 (budget balance) and series 13 (tariff level); the fourth instrument,
+financial-market regulation, has no series, its value comes per T45 from `parameter.toml`.
+They carry **condition a of the class rule and nothing beyond it** — since package `0196` the
+class is formed from two sorts of series, and rule 5 below is the only place that says which.
+The block is nevertheless mandatory for **every** series, and rule 1 says why.
 
 ```toml
 [[reihe.herkunft]]
@@ -5106,10 +5107,14 @@ the fourth caused by it.** Section 25's measurement paragraph and the T18b point
 corrections from the review of `0177`; the `spiel.md` quote in section 26 got its read date
 from the review of `0221`. The fourth is mine and was not in the acceptance: section 26 stated
 the old rule 5 as *„exactly when"*, which this package makes false — it now reads „already
-when", with the ground count beside it. Whoever calls that overreach strikes half a sentence.
+when", with the ground count beside it. Whoever calls that overreach strikes half a sentence. The
+project manager weighed it on 2026-09-08 and let it stand (review of `0196`, finding 3): it is
+disclosed here in the same form as the three above — place, old wording, cause — and that
+disclosure, not the acceptance list, is what makes such a clause checkable.
 
 **The check this section can be held to.** `T6[0-2]` on this file, measured with the same
-call before and after the run: **33** matches at the start, **48** at the end. All fifteen new
-ones lie in T61 rule 5 (six) and in this section (nine); outside those two places the count is
-unchanged. `grep -c` counts lines and therefore gives 47 today, because one line carries two
-matches. No number outside T61 has moved.
+call before and after the run: `grep -c` counts **lines** and gives **33** at the start, **48**
+at the end. All fifteen new lines lie in T61 rule 5 (six) and in this section (nine); outside
+those two places the count is unchanged. A tool that counts **matches** instead of lines gives
+one more at either end, **49** today, because one line carries two of them. No number outside
+T61 has moved.
