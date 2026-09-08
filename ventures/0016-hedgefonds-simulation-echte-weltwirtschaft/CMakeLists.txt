@@ -16,26 +16,34 @@
 #   oberflaeche  -> schnittstelle          Binaerprogramm (vertagt, ADR 0010)
 #   werkzeuge/aufbereitung -> daten        einmal je Jahrgang: Rohdaten -> Jahrgang
 #
-# Fuenf Mitglieder stehen zusaetzlich hier und stammen nicht aus T13:
-# `werkzeuge/belegstellen` seit Paket 0059, `werkzeuge/mutation` seit Paket 0110,
-# `werkzeuge/bezeichner` seit Paket 0129, `werkzeuge/schlussriegel` seit Paket 0136 und
-# `werkzeuge/zahlwort` seit Paket 0180.
-# Alle fuenf haengen an nichts und werden von nichts gelinkt. Sie sind Riegel ueber den
-# Baum selbst, keine Bausteine des Erzeugnisses. Sie stehen trotzdem in der Liste und
-# nicht daneben, weil die Liste die einzige Stelle ist, an der ein Verzeichnis
+# Weitere Mitglieder stehen zusaetzlich hier und stammen nicht aus T13. Jedes traegt
+# sein eigenes Paket, und keine Zahl steht darueber: Eine Ueberschrift, die die Eintraege
+# unter sich zaehlt, wird bei jeder Einfuegung unwahr, und genau das war sie schon.
+#
+#   werkzeuge/belegstellen   seit Paket 0059
+#   werkzeuge/mutation       seit Paket 0110
+#   werkzeuge/bezeichner     seit Paket 0129
+#   werkzeuge/schlussriegel  seit Paket 0136
+#   werkzeuge/zahlwort       seit Paket 0180
+#   werkzeuge/kennzeichen    seit Paket 0251
+#
+# Keines von ihnen haengt an etwas und keines wird von etwas gelinkt. Sie sind Riegel
+# ueber den Baum selbst, keine Bausteine des Erzeugnisses. Sie stehen trotzdem in der
+# Liste und nicht daneben, weil die Liste die einzige Stelle ist, an der ein Verzeichnis
 # eingehaengt wird -- ohne Eintrag liefe ein solcher Riegel nur beim Alleinbau und
 # fehlte genau im Arbeitsbereichslauf, den der Uebersetzungsbericht oben fuehrt.
 #
-# Der Unterschied zwischen ihnen ist der Aufrufort. Belegstellen-, Bezeichner-, Zahlwort-
-# und Schlussriegelwaechter haengen als `add_test` in `ctest` und laufen damit bei jeder
-# Abnahme mit; sie lesen den Baum und kosten unter einer Sekunde, der Schlussriegel-
-# waechter 4,2 Sekunden. Der Zahlwortriegel liest als einziger von ihnen nicht den Baum,
-# sondern genau eine Datei -- die Begruendung fuer den engen Zuschnitt steht in seinem
-# eigenen Kopf. Der Mutationslauf tut das ausdruecklich nicht: Ein Fall kostet
-# Uebersetzen, Binden und einen Probenlauf, und ein Katalog ueber alle Module waechst
-# schnell auf Minuten. Er ist ein eigenes Ziel, das gerufen wird, wenn jemand es braucht
-# -- entschieden vom Projektmanager am 2026-09-05 im Rumpf des Pakets 0110. Sein Eintrag
-# hier hebt deshalb die Zahl der konfigurierten Ziele, nicht die Zahl der Proben.
+# Der Unterschied zwischen ihnen ist der Aufrufort. Belegstellen-, Bezeichner-, Zahlwort-,
+# Kennzeichen- und Schlussriegelwaechter haengen als `add_test` in `ctest` und laufen
+# damit bei jeder Abnahme mit; sie kosten unter einer Sekunde, der Schlussriegelwaechter
+# 4,2 Sekunden. Wie viel sie dafuer lesen, ist verschieden und steht jeweils in ihrem
+# eigenen Kopf: Der Zahlwortriegel liest genau eine Datei, der Kennzeichenriegel die
+# Proben und die Quellen des Kerns, die uebrigen den Baum. Der Mutationslauf haengt
+# ausdruecklich nicht in `ctest`: Ein Fall kostet Uebersetzen, Binden und einen
+# Probenlauf, und ein Katalog ueber alle Module waechst schnell auf Minuten. Er ist ein
+# eigenes Ziel, das gerufen wird, wenn jemand es braucht -- entschieden vom
+# Projektmanager am 2026-09-05 im Rumpf des Pakets 0110. Sein Eintrag hier hebt deshalb
+# die Zahl der konfigurierten Ziele, nicht die Zahl der Proben.
 #
 # `werkzeuge/schlussriegel` ist der einzige der fuenf ohne uebersetzendes Ziel -- er
 # traegt nur eine Bahn zu einem Skript. Er bindet deshalb als einziges Mitglied des Baums
@@ -71,7 +79,8 @@ set(FABRIK_MITGLIEDER
     werkzeuge/mutation
     werkzeuge/bezeichner
     werkzeuge/schlussriegel
-    werkzeuge/zahlwort)
+    werkzeuge/zahlwort
+    werkzeuge/kennzeichen)
 
 foreach(mitglied IN LISTS FABRIK_MITGLIEDER)
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${mitglied}/CMakeLists.txt)
