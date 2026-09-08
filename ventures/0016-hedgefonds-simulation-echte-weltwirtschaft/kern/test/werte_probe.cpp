@@ -410,7 +410,8 @@ constexpr std::array<Sollzahl, 23> SOLLZAHLEN = {{
     {Riegel::WeltpreisMitZollNurBeiHandelbarenSektoren, 1},
     {Riegel::SchadenOhneSchadenszeile, 1},
     {Riegel::SchadenNurBeiSpielbarenLaendern, 2},   // die Zollzeile und die Zinszeile
-    {Riegel::BipsummeVerlaesstI64, 2},              // die obere und die untere Decke
+    // Paket 0261 hat die Restwelt dazugelegt: 2 -> 3.
+    {Riegel::BipsummeVerlaesstI64, 3},   // obere Decke, untere Decke, untere in der Restwelt
     {Riegel::PlusOhneDarstellbareSumme, 1},
 }};
 
@@ -2143,6 +2144,19 @@ Meldung adressform(Index platz)
     return text;
 }
 
+/// Wie `adressform`, aber fuer eine Zahl allein -- und nur zum **Messen** ihrer
+/// Zeichenzahl.
+///
+/// Nicht als Nadel zu gebrauchen: `erwarteter_ausschnitt` verlangt den Vorspann gerade
+/// deshalb, weil eine blosse Zahl in einer Meldung schnell auch anderswo steht. Hier
+/// wird nichts gesucht, hier wird gezaehlt.
+Meldung zahlform(i64 wert)
+{
+    Meldung text;
+    text.zahl(wert);
+    return text;
+}
+
 void probe_bip_nennerdecke()
 {
     const Index us_eins =
@@ -2233,6 +2247,96 @@ void probe_bip_nennerdecke()
         }
     }
 
+    // Paket 0261 -- die Restwelt, und mit ihr die einzige Meldung, die die laengste
+    // Form ueberhaupt erreicht.
+    //
+    // `bip` nimmt ein `Gebiet` und nicht nur ein spielbares Land; bis hierher fuhren
+    // beide Faelle oben ein Land, und `Gebiet::RW` kam in dieser Datei kein einziges
+    // Mal als Argument von `bip` vor. Weder die Rechnung noch der Abbruch der Restwelt
+    // hatte damit einen Fall.
+    //
+    // Der Rand voran, wie darueber: Ein Summand auf `I64_MIN` rechnet noch.
+    {
+        Rohling r;
+        lege_wertschoepfung(r, Gebiet::RW, I64_MIN, 0, 0);
+        const Zustand& z = r;
+        PRUEFE(bip(z, Gebiet::RW) == I64_MIN);
+    }
+
+    // Und derselbe Fall mit dem zweiten Summanden dazu: Die erste Teilsumme ist genau
+    // `I64_MIN`, die zweite faellt heraus. Genannt wird der **zweite** Sektor, und
+    // beide Zahlen der Meldung sind `I64_MIN` -- die laengste, die es gibt.
+    {
+        const Index rw_eins = stelle_sektorgroesse(Gebiet::RW, Sektor::Landwirtschaft,
+                                                   SektorGroesse::Wertschoepfung);
+        const Index rw_zwei =
+            stelle_sektorgroesse(Gebiet::RW, Sektor::Industrie, SektorGroesse::Wertschoepfung);
+
+        Rohling r;
+        lege_wertschoepfung(r, Gebiet::RW, I64_MIN, I64_MIN, 0);
+        const Zustand& z = r;
+        PRUEFE(hat_abgebrochen([&] { static_cast<void>(bip(z, Gebiet::RW)); }));
+
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::bip"));
+        PRUEFE(enthaelt(letzte_meldung.data(), "Nenner der Zustimmungsregel"));
+        PRUEFE(enthaelt(letzte_meldung.data(), adressform(rw_zwei).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), adressform(rw_eins).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("mit ", I64_MIN).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("die Summe davor war ", I64_MIN).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), "plus: Summe"));
+
+        // Die Zahl, um derentwillen dieser Fall da ist. Die Messung oben haelt 319
+        // gegen `MELDUNG_ZEICHEN_MAX` -- 192 Zeichen Luft, und damit eine Zusicherung,
+        // die auch dann gruen bliebe, wenn sich die Prosa verdoppelte. Hier steht eine
+        // Gleichung statt einer Schranke.
+        //
+        // Die feste Prosa ist das einzige Stueck, das diese Probe nicht selbst bauen
+        // kann -- sie steht in `src/werte.cpp`. Nachgezaehlt dort und hier noch einmal
+        // am 2026-09-08: 215 Zeichen bis einschliesslich "Ueberzaehlig ist ", dazu
+        // " mit " mit 5 und "; die Summe davor war " mit 22.
+        constexpr std::size_t PROSA_ZEICHEN = 242;
+
+        // Adresse und Zahl dagegen gemessen und nicht abgeschrieben, aus demselben
+        // Grund wie bei `adressform`: Eine abgeschriebene Breite weicht nach der
+        // ersten Umbenennung ab, ohne dass es auffaellt.
+        const std::size_t adresse_zeichen = zeichenzahl(adressform(rw_zwei).fertig());
+        const std::size_t zahl_zeichen    = zeichenzahl(zahlform(I64_MIN).fertig());
+        // Die Typen ausgeschrieben und nicht dem Uebersetzer ueberlassen: Der Warnsatz
+        // fuehrt `-Wsign-conversion` mit `-Werror`, und eine Ganzzahlliteral neben einem
+        // `std::size_t` ist genau die Stelle, an der das zuschlaegt.
+        const std::size_t erwartet =
+            PROSA_ZEICHEN + adresse_zeichen + std::size_t{2} * zahl_zeichen;
+
+        const std::size_t laenge = zeichenzahl(letzte_meldung.data());
+        std::printf("  Deckenmeldung Restwelt: %zu Zeichen = %zu Prosa + %zu Adresse + "
+                    "2 x %zu Zahl (erwartet %zu), hoechstens sind %zu erlaubt\n",
+                    laenge, PROSA_ZEICHEN, adresse_zeichen, zahl_zeichen, erwartet,
+                    kern::meldung::MELDUNG_ZEICHEN_MAX);
+        PRUEFE(erwartet == std::size_t{324});
+        PRUEFE(laenge == erwartet);
+        PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
+
+        // **Warum es die Restwelt sein muss**, gebaut statt behauptet -- und zugleich
+        // der Rotnachweis der Gleichung darueber. Dieselbe Groesse desselben Sektors
+        // im breitesten Land: „land.BR.sektor.2.wertschoepfung" traegt 31 Zeichen,
+        // „restwelt.sektor.2.wertschoepfung" 32, und beide laufende Nummern (137 und
+        // 181) sind dreistellig. Der ganze Unterschied zwischen 323 und 324 ist dieses
+        // eine Zeichen. Macht jemand die beiden Textformen gleich breit, faellt diese
+        // Zeile, und `laenge == erwartet` faellt im selben Lauf mit.
+        const Index br_zwei =
+            stelle_sektorgroesse(Gebiet::BR, Sektor::Industrie, SektorGroesse::Wertschoepfung);
+        PRUEFE(adresse_zeichen == zeichenzahl(adressform(br_zwei).fertig()) + std::size_t{1});
+
+        MERKE(Riegel::BipsummeVerlaesstI64, KZ_BIPSUMME,
+              "bip(z, RW) unter der unteren Decke -- die laengste Meldung, 324 Zeichen");
+
+        if (enthaelt(letzte_meldung.data(), "kern::werte::bip")) {
+            ++nennerdecke_angekommen;
+        }
+    }
+
     // Die Gegenrichtung des Nachweises: Die Kennzeichen dieses Riegels duerfen auf die
     // fremde Meldung **nicht** passen. Sonst kennzeichnete die Liste nichts, und der
     // Nachweis oben bestuende auch gegen die Fassung vor diesem Paket.
@@ -2247,11 +2351,16 @@ void probe_bip_nennerdecke()
     MERKE(Riegel::PlusOhneDarstellbareSumme, KZ_PLUS_SUMME, "festkomma::plus(I64_MAX, 1)");
 }
 
-/// Hat der Riegel in diesem Lauf wirklich gefeuert -- beide Richtungen, beide Meldungen?
+/// Hat der Riegel in diesem Lauf wirklich gefeuert -- beide Richtungen und beide
+/// Gebietsarten, also alle drei Meldungen?
 ///
-/// Zwei und nicht "mindestens eine": Wer eine der beiden Richtungen streicht, streicht
+/// Drei und nicht "mindestens eine": Wer eine der beiden Richtungen streicht, streicht
 /// damit die halbe Wertebereichsschranke, und eine Zaehlung mit `> 0` saehe das nicht.
-void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 2); }
+/// Die dritte kam mit Paket 0261 dazu -- `bip` nimmt ein `Gebiet`, und die Restwelt ist
+/// das eine, dessen Adressen breiter sind als die eines Landes. Wer sie wieder
+/// herausnimmt, nimmt die einzige Stelle mit, an der die Meldung ihre volle Laenge
+/// erreicht.
+void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 3); }
 
 // ---------------------------------------------------------------------------
 // Paket 0244 -- die Vollzaehligkeit je Riegel, als Zahl

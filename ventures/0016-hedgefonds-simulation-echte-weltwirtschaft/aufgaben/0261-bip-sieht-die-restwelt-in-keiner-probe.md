@@ -1,7 +1,7 @@
 ---
 id: 0261-bip-sieht-die-restwelt-in-keiner-probe
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0260-bip-liest-fuenfzehn-adressen-nicht-zwoelf]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: "The four conditions below, plus condition 5 added by the project manager on 2026-09-08: no compile error and no failing assertion attributable to `kern/test/werte_probe.cpp`. This is deliberately **not** *the tree stays green* -- see `vermerk`."
