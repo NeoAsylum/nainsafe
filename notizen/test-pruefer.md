@@ -117,3 +117,21 @@ Corpus for the fix round: festkomma 10 riegel + Anzahl, SOLLZAHLEN sum 17,
 RIEGEL_OHNE_ZUSTAND = 1 (potenz_i128, :121), printed line "vor Paket 0257 stand hier
 keine". Kern ctest 13/13 green; root red only via belegstellen/bezeichner lanes.
 
+## 2026-09-08 — 0257 Ruecklauf 1 (two comment fixes): geprueft
+
+Cheapest pruefung yet (~5 tool calls of substance) because the previous entry's corpus
+did the work: three greps (macro name, citation words, report lanes) settled both
+findings, and the 17-BRICHT_AB_MIT recount proved the fix was comment-only without a
+diff. Writing tomorrow's numbers into today's befund keeps paying — third time now.
+
+Both fixes took the permitted easy path: :136 describes the macro without naming it
+(:501 left, riegel green twice), the :259 citation was dropped and the argument inlined
+rather than re-cited. Report after fix: bezeichner green root+tool lane, belegstellen A
+41/41 resolved (was 42/41). Remaining reds are wortabstand + kopfzahlen, both the
+tool's own head vs Bezugsstand 2f2f79f / Messstand 0166 — pre-adjudicated off the
+builder's account, and no failure line names festkomma_probe.cpp.
+
+Open thread for whoever reviews the belegstellen tool next: its head comment is now
+two states behind (says 41/41/53, tree measures 41/41/54; NAMENSFAELLE head names the
+wrong case in one lane). That re-baselining is a werkzeuge package, not a kern one.
+
