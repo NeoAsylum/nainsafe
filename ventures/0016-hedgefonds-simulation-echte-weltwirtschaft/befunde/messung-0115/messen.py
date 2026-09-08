@@ -11,20 +11,35 @@ sobald eine nicht aufgeht. Was das Skript prueft:
      getrennte Laeufe wuerden die Drift des Baums mitmessen -- am 2026-09-05 ist
      der Bestand einer Rolle waehrend ihres eigenen Laufs von 37 auf 40 Zitate
      gewandert, von fremder Hand.
-  B. **Die drei berichtigten Angaben selbst**, jede gegen den Mutanten, der sie
-     erzeugt. Eine Zahl im Kommentar, die nicht aus einem Aufruf stammt, ist eine
-     Falschaussage in Wartestellung -- genau die Sorte, gegen die dieses Paket
-     geschrieben ist.
+  B. **Die Aussagen des Kopfkommentars selbst**, jede als Beziehung zwischen
+     zwei Laeufen desselben Aufrufs. Bis zum 2026-09-08 standen dort die drei
+     Zahlen des Bestands als Abschrift, und dieser Stand hielt sie dagegen. Sechs
+     fertige Pakete haben sie nacheinander nachgetragen -- 0115, 0166, 0189,
+     0227, 0232, 0233 --, und jede Abschrift war mit dem naechsten Commit wieder
+     falsch: Der Riegel zaehlt einen Bestand, der seinen eigenen Quelltext
+     enthaelt. **Seit Paket 0278 vergleicht dieser Teil ausschliesslich
+     Gemessenes mit Gemessenem.** Was der Kopf an absoluten Zahlen fuer den
+     menschlichen Leser behaelt, ist dort als Momentaufnahme mit Datum
+     ausgewiesen und wird hier nicht mehr geprueft; was hier geprueft wird, sind
+     Unterschiede und Gleichheiten zwischen zwei Fassungen, die im selben Aufruf
+     ueber denselben Baum laufen.
   C. **Die Vorfassung, an der Teil A haengt, bringt das Skript selbst mit**
      (Paket 0171). Sie ist nicht das, was unter `$TMPDIR` liegt,
-     sondern ein benannter Stand aus dem Archiv: der unmittelbar vor der
-     Berichtigung, festgeschrieben unter `VORFASSUNGSSTAND`. Fehlt sie, holt das
-     Skript sie; liegt dort etwas anderes, endet der Lauf rot. Vorher hing die
-     Beweiskraft an einer Eingabe, die niemand kontrollierte -- geprueft wurde an
-     ihr nur, dass sie ungleich der neuen Fassung ist, und `$TMPDIR` ist
-     fluechtig. **Dieser Stand wandert mit jeder Berichtigung mit** (Paket 0189):
-     Bleibt er stehen, misst Teil A irgendwann fremden Code statt der
-     Berichtigung und legt dessen Wirkung ihr zur Last.
+     sondern ein benannter Stand aus dem Archiv, festgeschrieben unter
+     `VORFASSUNGSSTAND`. Fehlt sie, holt das Skript sie; liegt dort etwas
+     anderes, endet der Lauf rot. Vorher hing die Beweiskraft an einer Eingabe,
+     die niemand kontrollierte -- geprueft wurde an ihr nur, dass sie ungleich
+     der neuen Fassung ist, und `$TMPDIR` ist fluechtig.
+
+     **Ab Paket 0278 wandert dieser Stand nicht mehr mit.** Bis dahin zog ihn
+     jede Berichtigung des Kopfkommentars nach (Paket 0189), damit Teil A die
+     Wirkung der Berichtigung und nicht die fremden Code dazwischen misst. Es
+     gibt keine Berichtigung mehr, die er begleiten koennte: Die Zahlen stehen
+     nicht mehr im Kopf. Was Teil A seither misst, ist, ob sich das **Verhalten**
+     des Riegels zwischen dem festgeschriebenen Stand und heute bewegt hat. Wird
+     er rot, ist das keine Aussage ueber eine Berichtigung, sondern ueber einen
+     Commit dazwischen -- und der gehoert benannt, bevor jemand den Stand
+     weiterschiebt.
   D. **Die beiden Mutanten bringt das Skript ebenfalls selbst mit** (Paket 0189).
      Bis dahin holte es sie von einem Erzeuger im Bauordner von CMake. Der wird
      bei jedem frischen Bau neu angelegt; der Erzeuger liegt seit langem nicht
@@ -92,21 +107,22 @@ SCHWEBT = TMP + "/schwebt"
 #     Geschichte wandert. Die Kennung wird deshalb einmal erfragt und danach
 #     genauso nachgerechnet wie zuvor.
 #
-# Nachgezogen mit Paket 0233 von `4d14905` auf den Stand, den der Lauf dieser
-# Berichtigung selbst verlaesst -- HEAD zu seinem Beginn. Das ist der Handgriff,
-# den Abschnitt C oben verlangt; er gehoert in jede Berichtigung, sonst misst
-# Teil A ab der uebernaechsten fremden Code statt der Berichtigung.
+# Zuletzt nachgezogen mit Paket 0233, von `4d14905` auf den Stand, den jener Lauf
+# selbst verliess. **Mit Paket 0278 steht er still** -- siehe C oben: Es gibt
+# keine Berichtigung mehr, die er begleiten koennte, und er ist damit ein fester
+# Anker fuer das Verhalten des Riegels statt ein mitwandernder Nullpunkt.
 VORFASSUNGSSTAND = "dbcd637"
 HERKUNFTSPFAD = ("ventures/0016-hedgefonds-simulation-echte-weltwirtschaft"
                  "/werkzeuge/belegstellen/belegstellen_riegel.cpp")
 
-# Der Stand, gegen den die Zahlen im Kopfkommentar geschrieben sind. Er wird
-# abgedruckt und nicht geprueft: Ein fester Sollwert verfiele hier in Stunden.
-# Nicht derselbe wie oben, und das mit Absicht: Gemessen wurde im Nachtlauf zum
-# 2026-09-08 auf 2f2f79f, geschrieben wird die Berichtigung auf dem Kind von
-# dbcd637.
-BEZUGSSTAND = "2f2f79f"
-
+# Hier stand bis zum 2026-09-08 ein `BEZUGSSTAND` -- der Commit, gegen den die
+# Zahlen im Kopfkommentar erhoben waren. Er ist mit Paket 0278 entfallen, und mit
+# ihm die Pruefung, dass Kommentar und Skript denselben Commit nennen. Der Grund
+# ist derselbe, aus dem die Zahlen entfallen sind: Der Kopfkommentar behauptet
+# nichts mehr ueber einen Baum von gestern, sondern nur noch Beziehungen zwischen
+# zwei Fassungen, die dieser Aufruf beide selbst laufen laesst. Ein Bezugsstand
+# haette danach nur noch etwas zu binden, was niemand mehr abschreibt.
+#
 # Die Zaehlzeile der Selbsttests. Wird sie herausgenommen, verlieren die
 # Falltabellen ihre Abbruchwirkung, nicht ihre Meldung -- erst dadurch kommt ein
 # Mutant, der eine Tabelle reissen laesst, ueberhaupt bis zum Bestand.
@@ -412,10 +428,12 @@ def teil_a(neu):
     print("A  nachher: Code %d, %d Zitate, %d aufgeloest, %d uebergangen"
           % ((code_b,) + b))
     if a != b:
-        melde("Die Berichtigung bewegt die drei Zahlen des Riegels: %s -> %s. "
-              "Die Abnahme von 0115 nennt genau das einen Fehlschlag." % (a, b))
+        melde("Zwischen dem festgeschriebenen Stand %s und heute hat sich das "
+              "Verhalten des Riegels bewegt: %s -> %s, gemessen im selben Aufruf "
+              "ueber denselben Baum. Welcher Commit dazwischen das getan hat, "
+              "gehoert benannt." % (VORFASSUNGSSTAND, a, b))
     if code_a != code_b:
-        melde("Die Berichtigung bewegt den Rueckgabewert: %d -> %d."
+        melde("Derselbe Vergleich am Rueckgabewert: %d -> %d."
               % (code_a, code_b))
     # Die Zahlen allein genuegen nicht: Ein weggefallener und ein neuer Befund
     # heben einander in der Summe auf. Verglichen werden deshalb die Listen.
@@ -442,15 +460,24 @@ def befundliste(ausgabe):
 
 
 # ---------------------------------------------------------------------------
-# B -- die drei berichtigten Angaben, jede gegen ihren Mutanten
+# B -- die Aussagen des Kopfkommentars, jede gegen zwei Messungen desselben
+#      Aufrufs
 #
-# Die Erwartung steht **nicht** als Zahl im Skript, sondern wird aus dem
-# Kommentar gelesen, der sie behauptet. Das ist der ganze Punkt von 0115: Eine
-# Zahl, die nur im Messgeraet mitgefuehrt wird, kann im Text still falsch werden.
+# Bis zum 2026-09-08 stand die Erwartung als Zahlwort im Kommentar und wurde von
+# dort gelesen. Der Gedanke war richtig -- eine Zahl, die nur im Messgeraet steht,
+# kann im Text still falsch werden -- und die Ausfuehrung trug ihn nicht: Der
+# Riegel zaehlt einen Bestand, der seinen eigenen Quelltext enthaelt, also
+# veraltete jede Abschrift mit dem naechsten Commit, sechsmal hintereinander.
+#
+# Seit Paket 0278 traegt keine Pruefung dieses Teils eine abgeschriebene Zahl.
+# Was hier steht, sind Beziehungen: eine Gleichheit, ein Unterschied, eine
+# Zuordnung -- und **beide Seiten jeder Beziehung erhebt dieser Aufruf selbst**,
+# aus Laeufen, die wenige Sekunden auseinander ueber denselben Baum gehen.
+# Gelesen wird aus dem Kommentar nur noch der **Satz**, der die Beziehung
+# behauptet; verschwindet er, meldet `gelesen()` das. Damit kann eine Pruefung
+# hier nur noch aus zwei Gruenden rot werden: Der Satz ist weg, oder er ist
+# falsch. Nicht mehr: Der Baum ist inzwischen ein anderer.
 # ---------------------------------------------------------------------------
-ZAHLWORT = {"eine": 1, "zwei": 2, "drei": 3, "vier": 4, "fuenf": 5,
-            "sechs": 6, "sieben": 7, "acht": 8, "neun": 9, "zehn": 10,
-            "elf": 11, "zwoelf": 12, "zweit": 2}
 
 
 def flach(text):
@@ -470,56 +497,80 @@ def gelesen(text, muster, was):
     return t
 
 
-def teil_b1(text, grund):
-    """Angabe 1: die Selbsttreffer unter `ohne-marken-rein`, gegen den Wortlaut
-    des Kopfkommentars und gegen die Aufschluesselung bei `Klammer`."""
+def messe_ohne_marken(text):
+    """Der Mutant `ohne-marken-rein`, einmal gebaut und einmal gelaufen.
+
+    Getrennt vom Urteil, weil dieselbe Messung zweimal beurteilt wird: einmal
+    gegen den ausgelieferten Riegel (die Pruefung) und einmal gegen sich selbst
+    (die Gegenprobe). Zwei Uebersetzungen desselben Wortlauts waeren derselbe
+    Nachweis zum doppelten Preis.
+
+    Zurueck kommen: Rueckgabewert, die drei Zahlen des Bestands unter der
+    Mutation, die Zahl der gemeldeten Stellen, die davon im eigenen Quelltext und
+    deren Verteilung ueber Kopfkommentar und Falltabellen.
+    """
     pfad = bauen(mutant("ohne-marken-rein"), "ohne_marken_rein", True)
     code, aus, _ = laufen(pfad)
-    z, auf, ueb = drei(aus, "ohne-marken-rein")
+    zahlen = drei(aus, "ohne-marken-rein")
     stellen = re.findall(r"zitierend: (\S+?):(\d+)", aus)
     eigen = [int(n) for d, n in stellen
              if d.endswith("werkzeuge/belegstellen/belegstellen_riegel.cpp")]
     verteilung = einordnen(text, eigen)
     print("B1 ohne-marken-rein: Code %d, %d Zitate, %d aufgeloest, %d "
           "uebergangen; %d Stellen zu Unrecht, davon %d im eigenen Quelltext %s"
-          % (code, z, auf, ueb, len(stellen), len(eigen), verteilung))
+          % ((code,) + zahlen + (len(stellen), len(eigen), verteilung)))
+    return code, zahlen, len(stellen), len(eigen), verteilung
 
-    t = gelesen(text,
-                r"\*\*(\w+) Stellen zu Unrecht, (\w+) davon in seinem eigenen "
-                r"Quelltext\*\* -- (\d+) statt (\d+) Zitate, weiterhin nur "
-                r"(\d+) aufgeloest, (\d+) statt (\d+) Fundstellen",
-                "Angabe 1")
-    if t:
-        for genannt, ist, was in (
-                (ZAHLWORT.get(t.group(1)), len(stellen), "Stellen zu Unrecht"),
-                (ZAHLWORT.get(t.group(2)), len(eigen), "davon im eigenen Quelltext"),
-                (int(t.group(3)), z, "Zitate unter der Mutation"),
-                (int(t.group(4)), grund[0], "Zitate ohne die Mutation"),
-                (int(t.group(5)), auf, "aufgeloeste Zitate"),
-                (int(t.group(6)), ueb, "uebergangene Fundstellen unter der Mutation"),
-                (int(t.group(7)), grund[2], "uebergangene Fundstellen ohne sie")):
-            if genannt != ist:
-                melde("Der Kopfkommentar nennt %s %s, gemessen sind %d."
-                      % (genannt, was, ist))
 
-    a = gelesen(text,
-                r"faengt der Riegel (\w+) Stellen in seinem eigenen Quelltext, "
-                r"alle falsch -- (\w+) im Kopfkommentar .*?, (\w+) in "
-                r"`SATZFAELLE` und (\w+) in `ZITATFAELLE`",
-                "die Aufschluesselung bei Klammer::kuendigt_an")
-    if a:
-        for genannt, schluessel in ((a.group(1), None), (a.group(2), "Kopf"),
-                                    (a.group(3), "SATZFAELLE"),
-                                    (a.group(4), "ZITATFAELLE")):
-            ist = len(eigen) if schluessel is None else verteilung.get(schluessel, 0)
-            if ZAHLWORT.get(genannt) != ist:
-                melde("Die Aufschluesselung bei `Klammer::kuendigt_an` nennt "
-                      "%s fuer %s, gemessen sind %d."
-                      % (genannt, schluessel or "den eigenen Quelltext", ist))
+def pruefe_angabe1(text, grund, mess, wobei):
+    """Angabe 1: drei Beziehungen zwischen dem ausgelieferten Riegel und dem
+    Mutanten `ohne-marken-rein`. Keine traegt eine abgeschriebene Zahl.
+
+    `grund` sind die drei Zahlen des ausgelieferten Riegels aus Teil A, `mess`
+    die Messung des Mutanten -- beide aus diesem Aufruf, ueber denselben Baum.
+
+    Die drei Beziehungen, in der Reihenfolge der drei Halbsaetze im Kopf:
+
+      1. *Jede dieser Stellen meldet er als unaufgeloestes Zitat.* Die Zahl der
+         gemeldeten Stellen ist die Zahl der Zitate, die er nicht aufloest.
+      2. *Aufgeloest wird keine einzige davon.* Er loest genauso viele auf wie
+         der unveraenderte Riegel -- was er zusaetzlich faengt, bleibt offen.
+      3. *Zitate wie uebergangene Fundstellen werden dabei mehr.* Beide Zahlen
+         steigen. Steigt eine nicht, misst dieser Stand nichts mehr: Entweder
+         traegt der Bestand die Form nicht mehr, oder die Trennung ist aus dem
+         ausgelieferten Riegel verschwunden. Beides gehoert gemeldet.
+
+    Keine der drei bricht, wenn der Riegel aus fremdem Grund rot ist: Verglichen
+    werden nur Zahlen desselben Laufs mit Zahlen desselben Laufs.
+    """
+    _code, zahlen, stellen, _eigen, verteilung = mess
+    if gelesen(text,
+               r"\*\*Jede dieser Stellen meldet er als unaufgeloestes Zitat; "
+               r"aufgeloest wird keine einzige davon, und Zitate wie "
+               r"uebergangene Fundstellen werden dabei mehr\.\*\*",
+               "Angabe 1"):
+        if stellen != zahlen[0] - zahlen[1]:
+            melde("%s: Der Mutant meldet %d Stellen, laesst aber %d Zitate "
+                  "unaufgeloest (%d von %d). Der erste Halbsatz sagt, das sei "
+                  "dieselbe Menge."
+                  % (wobei, stellen, zahlen[0] - zahlen[1], zahlen[1],
+                     zahlen[0]))
+        if zahlen[1] != grund[1]:
+            melde("%s: Der Mutant loest %d Zitate auf, der unveraenderte Riegel "
+                  "%d. Der zweite Halbsatz sagt, keine der zu Unrecht "
+                  "gefangenen Stellen werde aufgeloest."
+                  % (wobei, zahlen[1], grund[1]))
+        if zahlen[0] <= grund[0] or zahlen[2] <= grund[2]:
+            melde("%s: Der Mutant nennt %d Zitate und %d uebergangene "
+                  "Fundstellen, der unveraenderte Riegel %d und %d -- mehr "
+                  "werden sie damit nicht. Entweder traegt der Bestand die Form "
+                  "nicht mehr, oder die Trennung ist aus dem ausgelieferten "
+                  "Riegel verschwunden; gemessen wird so oder so nichts mehr."
+                  % (wobei, zahlen[0], zahlen[2], grund[0], grund[2]))
     if verteilung.get("sonst"):
-        melde("%d Selbsttreffer liegen weder im Kopfkommentar noch in einer "
-              "genannten Falltabelle -- die Aufschluesselung ist unvollstaendig."
-              % verteilung["sonst"])
+        melde("%s: %d Selbsttreffer liegen weder im Kopfkommentar noch in einer "
+              "genannten Falltabelle -- die Momentaufnahme im Kopf zaehlt sie "
+              "nicht auf." % (wobei, verteilung["sonst"]))
 
 
 def einordnen(text, nummern):
@@ -548,62 +599,80 @@ def einordnen(text, nummern):
     return aus
 
 
-def teil_b2(text, grund):
-    """Angabe 2: `rechts-ohne-satzgrenze-rein` bewegt den Bestand nicht mehr,
-    und Fall 6 in ABSTANDSFAELLE traegt die Regel allein."""
+def messe_rechts_ohne_satzgrenze():
+    """Der Mutant `rechts-ohne-satzgrenze-rein`, zweimal gebaut und zweimal
+    gelaufen: entschaerft fuer die drei Zahlen, scharf fuer den Selbsttest.
+
+    Beide werden gebraucht. Entschaerft laeuft er bis zum Bestand durch und nennt
+    Zahlen; scharf bricht er an der Falltabelle ab und nennt den Fall, der die
+    Regel traegt. Ein Lauf allein gibt immer nur eines von beiden.
+    """
     frei = bauen(mutant("rechts-ohne-satzgrenze-rein"), "rosg_frei", True)
     code, aus, _ = laufen(frei)
     m = drei(aus, "rechts-ohne-satzgrenze-rein")
     print("B2 rechts-ohne-satzgrenze-rein (entschaerft): Code %d, %d Zitate, "
           "%d aufgeloest, %d uebergangen" % ((code,) + m))
 
-    t = gelesen(text,
-                r"nennt derselbe Mutant genau dieselben drei Zahlen wie der "
-                r"unveraenderte Riegel -- (\d+) Zitate, (\d+) aufgeloest, "
-                r"(\d+) uebergangene Fundstellen, vorher wie nachher die "
-                r"Summe (\d+)", "Angabe 2")
-    if t:
-        genannt = (int(t.group(1)), int(t.group(2)), int(t.group(3)))
-        if genannt != grund:
-            melde("Angabe 2 nennt %s als die Zahlen des unveraenderten "
-                  "Riegels, gemessen sind %s." % (genannt, grund))
-        if genannt != m:
-            melde("Angabe 2 sagt, der Mutant nenne dieselben Zahlen; er nennt "
-                  "%s statt %s." % (m, genannt))
-        if int(t.group(4)) != m[0] + m[2]:
-            melde("Angabe 2 nennt die Summe %s; Zitate plus uebergangene "
-                  "Fundstellen sind %d." % (t.group(4), m[0] + m[2]))
-    if m[0] + m[2] != grund[0] + grund[2]:
-        melde("Zitate plus uebergangene Fundstellen gehen gegen den eigenen "
-              "Ausgangsstand nicht auf: %d statt %d."
-              % (m[0] + m[2], grund[0] + grund[2]))
-
     roh = bauen(mutant("rechts-ohne-satzgrenze-rein"), "rosg_roh", False)
-    code, _, stderr = laufen(roh)
+    code_roh, _, stderr = laufen(roh)
     zeilen = [z for z in stderr.splitlines() if z.startswith("Selbsttest")]
     print("B2 rechts-ohne-satzgrenze-rein (scharf): Code %d, %d Meldung(en)"
-          % (code, len(zeilen)))
+          % (code_roh, len(zeilen)))
     for z in zeilen:
         print("     " + z)
+    return m, code_roh, zeilen
+
+
+def pruefe_angabe2(text, grund, m, wobei):
+    """Angabe 2: der Mutant bewegt den Bestand nicht.
+
+    Eine Gleichheit zwischen zwei Laeufen desselben Aufrufs, ohne jede Zahl im
+    Text. Bis zum 2026-09-08 stand die Aussage als Abschrift da -- `41 Zitate,
+    41 aufgeloest, 53 uebergangene Fundstellen, die Summe 94` --, und sie war am
+    naechsten Tag falsch, waehrend die Gleichheit, die sie meinte, weiter galt.
+
+    Rot wird sie an dem Tag, an dem der Bestand wieder eine Stelle traegt, an der
+    die Satzgrenze wirkt. Dass sie das merken wuerde, weist die Gegenprobe nach:
+    Dort steht in `m` der Mutant `ohne-marken-rein`, der den Bestand
+    nachweislich bewegt.
+    """
+    if gelesen(text,
+               r"Derselbe Mutant nennt \*\*genau dieselben drei Zahlen wie der "
+               r"unveraenderte Riegel\*\*", "Angabe 2"):
+        if m != grund:
+            melde("%s: Der Mutant nennt %s, der unveraenderte Riegel %s. Der "
+                  "Kopf sagt, es seien genau dieselben drei Zahlen."
+                  % (wobei, m, grund))
+
+
+def pruefe_fall6(text, code, zeilen, wobei):
+    """Die Fallangabe von Angabe 2: welcher Selbsttestfall die Regel traegt.
+
+    Das ist keine Zahl des Bestands, sondern eine ueber diese Datei selbst -- die
+    Nummer eines Falls in einer Tabelle, die hier steht. Sie veraltet nicht mit
+    fremden Commits, sondern nur, wenn jemand die Tabelle umstellt, und dann ist
+    Rot die richtige Antwort. Sie bleibt deshalb geprueft.
+    """
     f = gelesen(text, r"heute allein an Fall (\d+) in `(\w+)`\. Der Mutant "
                       r"`([\w-]+)` laesst ihn reissen und bricht mit Code (\d+) "
                       r"ab: (.*?)\.", "die Fallangabe von Angabe 2")
-    if f:
-        if int(f.group(4)) != code:
-            melde("Angabe 2 nennt Code %s, gemessen ist %d."
-                  % (f.group(4), code))
-        # `ABSTANDSFAELLE` -> `Abstand`: der Selbsttest nennt den Fall im
-        # Singular, die Tabelle im Plural mit Fugen-s.
-        erwartet = "Selbsttest %s %s:" % (
-            f.group(2).removesuffix("FAELLE").rstrip("S").capitalize(),
-            f.group(1))
-        if len(zeilen) != 1 or not zeilen[0].startswith(erwartet):
-            melde("Angabe 2 nennt Fall %s in `%s` als den einzigen, der "
-                  "reisst (%r). Gerissen sind: %s"
-                  % (f.group(1), f.group(2), erwartet, zeilen or "keiner"))
-        elif f.group(5).replace("`", "") not in zeilen[0]:
-            melde("Angabe 2 druckt den Wortlaut der Meldung ab; er lautet "
-                  "heute anders: %s" % zeilen[0])
+    if not f:
+        return
+    if int(f.group(4)) != code:
+        melde("%s: Der Kopf nennt Code %s, gemessen ist %d."
+              % (wobei, f.group(4), code))
+    # `ABSTANDSFAELLE` -> `Abstand`: der Selbsttest nennt den Fall im
+    # Singular, die Tabelle im Plural mit Fugen-s.
+    erwartet = "Selbsttest %s %s:" % (
+        f.group(2).removesuffix("FAELLE").rstrip("S").capitalize(),
+        f.group(1))
+    if len(zeilen) != 1 or not zeilen[0].startswith(erwartet):
+        melde("%s: Der Kopf nennt Fall %s in `%s` als den einzigen, der "
+              "reisst (%r). Gerissen sind: %s"
+              % (wobei, f.group(1), f.group(2), erwartet, zeilen or "keiner"))
+    elif f.group(5).replace("`", "") not in zeilen[0]:
+        melde("%s: Der Kopf druckt den Wortlaut der Meldung ab; er lautet heute "
+              "anders: %s" % (wobei, zeilen[0]))
 
 
 def teil_b3(text):
@@ -649,22 +718,35 @@ def teil_b3(text):
 # Die Gegenprobe -- ein Riegel, der nie rot wird, prueft nichts
 #
 # Bis zum 2026-09-08 lief sie gegen den Wortlaut **vor** der Berichtigung. Das
-# traegt seit Paket 0189 nicht mehr: Der Vorfassungsstand wandert jetzt mit, und
-# damit ist die alte Fassung nur noch in den Angaben falsch, die das jeweils
-# letzte Paket angefasst hat. Angabe 3 stand am 2026-09-08 in beiden Fassungen
-# richtig da -- ihre Gegenprobe waere lautlos gruen geworden und haette von da an
-# nichts mehr geprueft. Ein Rotnachweis, der davon abhaengt, was zufaellig im
-# vorigen Commit stand, ist kein Nachweis.
+# traegt seit Paket 0189 nicht mehr: Der Vorfassungsstand wandert mit, und damit
+# ist die alte Fassung nur noch in den Angaben falsch, die das jeweils letzte
+# Paket angefasst hat. Angabe 3 stand am 2026-09-08 in beiden Fassungen richtig
+# da -- ihre Gegenprobe waere lautlos gruen geworden und haette von da an nichts
+# mehr geprueft. Ein Rotnachweis, der davon abhaengt, was zufaellig im vorigen
+# Commit stand, ist kein Nachweis.
 #
-# Jede Angabe bekommt deshalb ihre eigene Verfaelschung, angebracht am heutigen
-# Wortlaut. Verfaelscht wird die **Zahl**, nicht der Satz: Ein geloeschter Satz
-# macht die Pruefung zwar auch rot, aber ueber `gelesen()` -- das belegt, dass
-# sie den Satz sucht, nicht dass sie die Zahl prueft.
+# **Seit Paket 0278 gibt es zwei Sorten Gegenprobe, und die Sorte folgt aus dem,
+# was die Pruefung liest.** Wo im Kommentar noch eine Zahl steht, wird die Zahl
+# verstellt; wo nur noch ein Satz ueber eine Beziehung steht, hilft das nichts --
+# den Satz zu loeschen belegt bloss, dass `gelesen()` ihn sucht. Verfaelscht wird
+# dort deshalb der **Quelltext**, gegen den gemessen wird:
 #
-# Die Nadel traegt die heutige Zahl **nicht** im Muster, sondern eine Gruppe um
-# sie herum. Eine Nadel mit der Zahl darin waere nach der naechsten
-# Nacherhebung stumpf, und eine stumpfe Nadel liesse die Gegenprobe still
-# bestehen -- genau der Fehler, gegen den dieser Teil ueberhaupt steht.
+#   * *Angabe 1* -- der ausgelieferte Riegel wird durch den Mutanten
+#     `ohne-marken-rein` ersetzt. Dann sind Riegel und Mutant dieselbe Fassung,
+#     Zitate und uebergangene Fundstellen werden nicht mehr, und der dritte
+#     Halbsatz im Kopf ist falsch. Die Pruefung muss das melden.
+#   * *Angabe 2* -- an die Stelle des Mutanten, der den Bestand nicht bewegt,
+#     tritt `ohne-marken-rein`, der ihn nachweislich bewegt. Die behauptete
+#     Gleichheit ist damit falsch, und die Pruefung muss es merken.
+#   * *die Fallangabe* und *Angabe 3* tragen weiter je eine Zahl bzw. ein
+#     Zahlwort ueber diese Datei selbst. Dort bleibt es bei der Verstellung im
+#     Text, mit einer Nadel, die die heutige Zahl **nicht** im Muster traegt,
+#     sondern eine Gruppe um sie herum -- eine Nadel mit der Zahl darin waere
+#     nach der naechsten Aenderung stumpf, und eine stumpfe Nadel liesse die
+#     Gegenprobe still bestehen.
+#
+# Keine der vier braucht eine eigene Uebersetzung: Alle vier beurteilen Messungen
+# neu, die schon vorliegen.
 # ---------------------------------------------------------------------------
 def verstellen(text, muster, anders, was):
     """Genau eine Angabe im Rohtext um einen Schritt verstellen.
@@ -684,38 +766,65 @@ def verstellen(text, muster, anders, was):
     return text[:t.start(1)] + anders(t.group(1)) + text[t.end(1):]
 
 
-VERFAELSCHUNGEN = (
-    ("Angabe 1", r"(\d+) statt \d+ Zitate", lambda z: str(int(z) + 1)),
-    ("Angabe 2", r"die Summe (\d+)", lambda z: str(int(z) + 1)),
-    ("Angabe 3", r"\*\*Der (\w+) Herkunftshinweis ist historisch",
-     lambda w: "zweite" if w == "erste" else "erste"),
-)
+VERFAELSCHUNGEN = {
+    "die Fallangabe": (r"heute allein an Fall (\d+) in",
+                       lambda z: str(int(z) + 1)),
+    "Angabe 3": (r"\*\*Der (\w+) Herkunftshinweis ist historisch",
+                 lambda w: "zweite" if w == "erste" else "erste"),
+}
 
 
-def gegenprobe(grund):
-    """Dieselben drei Pruefungen, jede an einem Wortlaut, in dem genau ihre
-    Angabe verstellt ist. Der Bestand und die Mutanten bleiben dabei die von
-    heute; was sich unterscheidet, ist allein die Aussage, die geprueft wird.
+def gegenprobe(grund, mess, m_rosg, code_roh, zeilen):
+    """Vier Rotnachweise, keiner davon mit einer eigenen Uebersetzung.
 
-    Alle drei muessen reissen. Tut es eine nicht, misst sie nicht die Angabe,
-    sondern laeuft nur mit."""
+    Jeder laesst dieselbe Pruefung noch einmal laufen, mit genau einer
+    verfaelschten Eingabe -- beim Quelltext oder beim Text. Alle vier muessen
+    reissen. Tut es einer nicht, prueft die betreffende Pruefung nicht das, was
+    ihr Name sagt, sondern laeuft nur mit.
+    """
     ergebnis = []
-    for (name, muster, anders), pruefung in zip(VERFAELSCHUNGEN,
-                                                (teil_b1, teil_b2, teil_b3)):
-        verstellt = verstellen(_neu, muster, anders, name)
+
+    def nachweis(name, tun):
         vorher_fehler = len(fehler)
-        if pruefung is teil_b3:
-            pruefung(verstellt)
-        else:
-            pruefung(verstellt, grund)
+        tun()
         ergebnis.append((name, len(fehler) - vorher_fehler))
         del fehler[vorher_fehler:]
-    print("G  Gegenprobe an der verstellten Angabe -- " +
+
+    # Angabe 1: der Mutant selbst als ausgelieferter Riegel. `mess[1]` sind
+    # seine drei Zahlen -- steht dasselbe auf beiden Seiten, faellt der
+    # Unterschied auf null, den der dritte Halbsatz behauptet.
+    nachweis("Angabe 1 (Riegel := Mutant)",
+             lambda: pruefe_angabe1(_neu, mess[1], mess,
+                                    "Gegenprobe zu Angabe 1"))
+    # Angabe 2: statt des Mutanten, der den Bestand nicht bewegt, der, der es
+    # nachweislich tut. Die behauptete Gleichheit ist damit falsch.
+    nachweis("Angabe 2 (Mutant := ohne-marken-rein)",
+             lambda: pruefe_angabe2(_neu, grund, mess[1],
+                                    "Gegenprobe zu Angabe 2"))
+    # Die beiden Zahlen ueber diese Datei selbst: im Text verstellt.
+    for name, pruefung in (("die Fallangabe",
+                            lambda t: pruefe_fall6(t, code_roh, zeilen,
+                                                   "Gegenprobe zur Fallangabe")),
+                           ("Angabe 3", teil_b3)):
+        muster, anders = VERFAELSCHUNGEN[name]
+        verstellt = verstellen(_neu, muster, anders, name)
+        nachweis(name + " (Zahl im Text verstellt)",
+                 lambda t=verstellt, p=pruefung: p(t))
+
+    print("G  Gegenprobe -- " +
           ", ".join("%s: %d Meldung(en)" % p for p in ergebnis))
     for name, zahl in ergebnis:
         if zahl == 0:
-            melde("Die Pruefung zu %s wird an der verstellten Angabe nicht "
-                  "rot. Sie misst die Angabe nicht." % name)
+            melde("Der Rotnachweis `%s` bleibt gruen. Die zugehoerige Pruefung "
+                  "misst nicht, was ihr Name sagt." % name)
+    # Ein unbenutzter Wert waere hier ein stiller Fehler: `m_rosg` ist das, was
+    # die regulaere Pruefung zu Angabe 2 gesehen hat, und die Gegenprobe muss
+    # etwas **anderes** einsetzen, sonst wiederholt sie nur den gruenen Lauf.
+    if m_rosg == mess[1]:
+        melde("Die Gegenprobe zu Angabe 2 setzt dieselben Zahlen ein, die die "
+              "regulaere Pruefung schon gesehen hat (%s). Sie kann damit nichts "
+              "belegen -- der Mutant `ohne-marken-rein` bewegt den Bestand "
+              "heute nicht mehr." % (m_rosg,))
 
 
 def main():
@@ -734,32 +843,26 @@ def main():
     print("Vorhaben:    " + W)
     print("Uebersetzer: " + UEBERSETZER)
     vor = kopf()
-    print("Bezugsstand im Kommentar: %s; HEAD zu Beginn: %s" % (BEZUGSSTAND, vor))
+    print("Vorfassungsstand: %s; HEAD zu Beginn: %s" % (VORFASSUNGSSTAND, vor))
     grund = teil_a(neu)
-    teil_b1(neu, grund)
-    teil_b2(neu, grund)
+    mess = messe_ohne_marken(neu)
+    pruefe_angabe1(neu, grund, mess, "Angabe 1")
+    m_rosg, code_roh, zeilen = messe_rechts_ohne_satzgrenze()
+    pruefe_angabe2(neu, grund, m_rosg, "Angabe 2")
+    pruefe_fall6(neu, code_roh, zeilen, "die Fallangabe von Angabe 2")
     teil_b3(neu)
     print()
-    gegenprobe(grund)
+    gegenprobe(grund, mess, m_rosg, code_roh, zeilen)
     nach = kopf()
     print("HEAD am Ende: %s" % nach)
     if vor != nach:
         melde("Der Baum ist waehrend der Messung gewandert (%s -> %s). Die "
               "Zahlen gehoeren neu erhoben." % (vor, nach))
-    # Der Stand im Kommentar ist eine Herkunftsangabe, keine Bedingung: Ein
-    # fremder Commit darf dieses Skript nicht rot machen. Geprueft wird nur,
-    # dass Kommentar und Skript denselben Stand nennen; weicht HEAD davon ab,
-    # steht es als Hinweis da und nicht als Fehlschlag.
-    # Ueber `flach` und nicht ueber den Rohtext: Die Angabe bricht um, und ein
-    # Muster am Rohtext uebersieht genau die Fundstelle, die dann stehen bleibt.
-    staende = set(re.findall(r"gegen den Stand `(\w+)`", flach(neu)))
-    if staende != {BEZUGSSTAND}:
-        melde("Das Skript nennt %s als Bezugsstand, der Kommentar nennt %s."
-              % (BEZUGSSTAND, sorted(staende) or "keinen"))
-    if BEZUGSSTAND not in (vor, nach):
-        print("Hinweis: HEAD steht auf %s, gemessen und niedergeschrieben ist "
-              "der Stand %s. Die Zahlen sind damit aelter als der Baum."
-              % (nach, BEZUGSSTAND))
+    # Hier stand bis zum 2026-09-08 der Abgleich zwischen dem `BEZUGSSTAND` des
+    # Skripts und dem Commit, den der Kopfkommentar nannte, dazu ein Hinweis,
+    # sobald HEAD von beiden abwich. Beides ist mit Paket 0278 entfallen: Der
+    # Kommentar nennt keinen Commit mehr, weil er nichts mehr behauptet, was an
+    # einem Commit haengt.
     if lies(QUELLE) != neu:
         melde("Die Quelldatei steht am Ende nicht auf der neuen Fassung.")
     # Der Arbeitsplatz wird geraeumt, sobald gemessen ist -- gleich, ob gruen

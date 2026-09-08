@@ -557,20 +557,35 @@
 //!
 //!   1. *Nur ankuendigende Anfuehrungszeichen.* Mit Abstand zaehlen die typografischen
 //!      Anfuehrungen und die geklammerte Form, nicht Gegenstrich, Sternchen, einfaches
-//!      oder gerades Anfuehrungszeichen. Gemessen am 2026-09-08 gegen den Stand
-//!      `2f2f79f` mit dem Mutanten `ohne-marken-rein`: ohne diese Trennung faengt der
-//!      Riegel **elf Stellen zu Unrecht, zehn davon in seinem eigenen Quelltext** --
-//!      52 statt 41 Zitate, weiterhin nur 41 aufgeloest, 66 statt 53 Fundstellen. Die
-//!      zehn liegen zu zweit in diesem Kopfkommentar, einmal in `SATZFAELLE` und
-//!      siebenmal in `ZITATFAELLE`; die elfte steht in `parameter.toml`.
+//!      oder gerades Anfuehrungszeichen. Der Mutant `ohne-marken-rein` nimmt die
+//!      Trennung heraus, und was er dadurch faengt, ist falsch gefangen:
+//!      **Jede dieser Stellen meldet er als unaufgeloestes Zitat; aufgeloest wird
+//!      keine einzige davon, und Zitate wie uebergangene Fundstellen werden dabei
+//!      mehr.** Drei Beziehungen zwischen zwei Laeufen -- der Messstand erhebt in
+//!      jedem Nachtlauf beide Seiten selbst und schreibt keine davon ab.
 //!
-//!      **Diese Zahl zaehlt sich selbst mit, und genau daran ist ihre Vorgaengerin
-//!      falsch geworden.** Sie stand hier als Fuenf, waehrend eine der beiden Stellen
-//!      im Kopfkommentar erst danach entstand -- ein spaeteres Paket trug einen Satz
-//!      nach, und die Sechs, die daraus wurde, hat niemand nachgemessen. Wer hier
-//!      schreibt, veraendert moeglicherweise die Zahl, die er schreibt; sie ist
-//!      nachzumessen und nicht fortzuschreiben. Der Aufruf, der sie liefert, steht
-//!      unter `Klammer::kuendigt_an`, dort auch die Begruendung.
+//!      **Hier steht keine Zahl des Bestands mehr, und das ist die Lehre aus sechs
+//!      Paketen.** 0115, 0166, 0189, 0227, 0232 und 0233 haben nacheinander die drei
+//!      Zahlen nachgetragen; jede war mit dem naechsten Commit wieder falsch, denn
+//!      dieser Riegel zaehlt einen Bestand, der seinen eigenen Quelltext enthaelt.
+//!      Wer die Zahl aufschreibt, veraendert sie moeglicherweise dabei -- ihre
+//!      Vorgaengerin stand hier als Fuenf, waehrend eine der beiden Stellen im
+//!      Kopfkommentar erst danach entstand, und die Sechs, die daraus wurde, hat
+//!      niemand nachgemessen. Dasselbe Mittel wie bei der Tabelle weiter oben:
+//!      Unterschiede statt Grundzahlen.
+//!
+//!      **Momentaufnahme vom 2026-09-08, vom Messstand nicht geprueft:** elf Stellen
+//!      zu Unrecht, zehn davon im eigenen Quelltext -- zu zweit in diesem
+//!      Kopfkommentar, einmal in `SATZFAELLE`, siebenmal in `ZITATFAELLE`; die elfte
+//!      steht in `parameter.toml`. Nachzumessen und nicht fortzuschreiben; der Aufruf,
+//!      der sie liefert, steht unter `Klammer::kuendigt_an`.
+//!
+//!      **Wie diese Pruefung rot wird.** Verschwindet die Trennung aus dem
+//!      ausgelieferten Riegel, sind Riegel und Mutant dieselbe Fassung: Zitate und
+//!      uebergangene Fundstellen werden nicht mehr, und der dritte Halbsatz oben ist
+//!      falsch. Genau diesen Fall stellt der Messstand in seiner Gegenprobe her --
+//!      er setzt den Mutanten an die Stelle des ausgelieferten Riegels -- und
+//!      verlangt, dass die Pruefung ihn meldet.
 //!   2. *Das Satzende.* Es beendet die Suche, dieselbe Regel wie bei der Suche nach
 //!      links. Nachgewiesen an Fall 3 in `ABSTANDSFAELLE`.
 //!   3. *Ein zweites Schluesselwort.* Die Anfuehrung gehoert dem naeheren. Der Bestand
@@ -599,10 +614,16 @@
 //! `ABSTANDSFAELLE`. Der Mutant `rechts-ohne-satzgrenze-rein` laesst ihn reissen und
 //! bricht mit Code 2 ab: rechts erwartet war kein Dateiname, gefunden wurde `spiel.md`.
 //!
-//! **Der Bestand misst diese Grenze nicht mehr mit.** Am 2026-09-08, gegen den Stand
-//! `2f2f79f`, nennt derselbe Mutant genau dieselben drei Zahlen wie der unveraenderte
-//! Riegel -- 41 Zitate, 41 aufgeloest, 53 uebergangene Fundstellen, vorher wie nachher
-//! die Summe 94. Bis hierher stand an dieser Stelle, ohne die Grenze binde eine
+//! **Der Bestand misst diese Grenze nicht mehr mit.** Derselbe Mutant nennt **genau
+//! dieselben drei Zahlen wie der unveraenderte Riegel** -- kein Zitat mehr, keines
+//! weniger, keine uebergangene Fundstelle mehr. Welche drei Zahlen das heute sind,
+//! steht hier nicht: Der Messstand erhebt beide Seiten in einem Aufruf ueber einen
+//! Baum und haelt sie gegeneinander. Rot wird diese Pruefung an dem Tag, an dem der
+//! Bestand wieder eine Stelle traegt, an der die Grenze wirkt; dass sie das merken
+//! wuerde, weist die Gegenprobe nach, indem sie den Mutanten `ohne-marken-rein` an
+//! seine Stelle setzt, der den Bestand nachweislich bewegt.
+//!
+//! Bis hierher stand an dieser Stelle, ohne die Grenze binde eine
 //! uebergangene Fundstelle einen weit entfernten Dateinamen an sich und werde zu
 //! Unrecht rot; das ist am 2026-09-06 am Baum nicht mehr zu sehen. Was sich zwischen
 //! den beiden Tagen bewegt hat, ist nicht nachgehalten -- der Fall in der Tabelle
@@ -1570,8 +1591,9 @@ struct Klammer {
     /// Sternchen zeichnen Code und Kursives aus, das gerade Anfuehrungszeichen eroeffnet
     /// jede Zeichenkette dieser Uebersetzungseinheit, das einfache steht im Genitiv.
     ///
-    /// **Gemessen und nicht befuerchtet:** Ohne diese Trennung faengt der Riegel zehn
-    /// Stellen in seinem eigenen Quelltext, alle falsch -- zwei im Kopfkommentar
+    /// **Gemessen und nicht befuerchtet, Momentaufnahme vom 2026-09-08:** Ohne diese
+    /// Trennung faengt der Riegel zehn Stellen in seinem eigenen Quelltext, alle
+    /// falsch -- zwei im Kopfkommentar
     /// (`spiel.md` im Gegenstrich, ein Wort hinter dem Schluesselwort; dazu ein
     /// Werkzeugname im Gegenstrich, den ein spaeteres Paket dort nachgetragen hat),
     /// eine in `SATZFAELLE` und sieben in `ZITATFAELLE`, wo hinter
@@ -1583,7 +1605,7 @@ struct Klammer {
     /// Name der elften Stelle noch eine Zeile weiter unten stand. Sie liegt
     /// ausserhalb dieser Datei, in der Parameterdatei des Vorhabens.
     ///
-    /// So gemessen am 2026-09-08 gegen den Stand `2f2f79f`, mit dem Mutanten
+    /// So gemessen am 2026-09-08 mit dem Mutanten
     /// `ohne-marken-rein`. Er steht seit Paket 0189 als Textersetzung im Messstand
     /// selbst, in `befunde/messung-0115/messen.py`; bis dahin nannte diese Stelle
     /// einen Erzeuger im Bauordner von CMake, den es dort seit langem nicht mehr
@@ -1593,7 +1615,10 @@ struct Klammer {
     /// Zahl. Gefahren wird er im Nachtlauf, als Eintrag `belegstellen_kopfzahlen`.
     ///
     /// Die Aufteilung waechst mit den Falltabellen und ist deshalb nachzumessen und
-    /// nicht abzuschreiben; die Gesamtzahlen stehen im Kopf, mit demselben Stand.
+    /// nicht abzuschreiben. Der Messstand haelt sie seit Paket 0278 **nicht mehr**
+    /// gegen diesen Wortlaut: Eine Zahl, die sich selbst mitzaehlt, taugt nicht als
+    /// Sollwert. Geprueft wird nur noch, dass jeder Selbsttreffer in einer hier
+    /// genannten Gegend liegt -- Kopfkommentar oder Falltabelle.
     bool kuendigt_an;
 };
 

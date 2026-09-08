@@ -203,13 +203,25 @@ add_test(NAME belegstellen_sammelordnung
 set_tests_properties(belegstellen_sammelordnung PROPERTIES TIMEOUT 120)
 
 # ---------------------------------------------------------------------------
-# Die drei Zahlen im Kopfkommentar -- Paket 0115, eingehaengt von Paket 0189
+# Die Aussagen des Kopfkommentars -- Paket 0115, eingehaengt von Paket 0189,
+# umgestellt von Paket 0278
 #
-# `befunde/messung-0115/messen.py` haelt die absoluten Zahlen des Kopfkommentars gegen
-# den Bestand von heute: die alte und die neue Fassung im selben Aufruf ueber denselben
-# Baum, dazu die drei berichtigten Angaben, jede gegen den Mutanten, der sie erzeugt,
-# und dieselben drei Pruefungen noch einmal gegen den Wortlaut von vorher, wo alle drei
-# reissen muessen.
+# `befunde/messung-0115/messen.py` haelt die Aussagen des Kopfkommentars gegen zwei
+# Messungen desselben Aufrufs: die alte und die neue Fassung im selben Aufruf ueber
+# denselben Baum, dazu die Aussagen selbst, jede gegen den Mutanten, der sie erzeugt,
+# und vier Rotnachweise, die jeder Pruefung eine verfaelschte Eingabe vorlegen und
+# verlangen, dass sie reisst.
+#
+# **Was Paket 0278 daran geaendert hat, und warum es ein eigenes Paket war:** Bis dahin
+# standen im Kopfkommentar drei absolute Zahlen des Bestands -- Zitate, aufgeloest,
+# uebergangene Fundstellen --, und dieser Stand hielt sie dagegen. Sechs fertige Pakete
+# haben sie nacheinander nachgetragen (0115, 0166, 0189, 0227, 0232, 0233), und jede
+# Abschrift war mit dem naechsten Commit wieder falsch: Der Riegel zaehlt einen Bestand,
+# der seinen eigenen Quelltext enthaelt. Seither steht im Kopf keine Zahl des Bestands
+# mehr, sondern die Beziehung zwischen zwei Laeufen, und beide Seiten erhebt der Stand
+# selbst. Was der Kopf an absoluten Zahlen fuer den Leser behaelt, traegt dort das Wort
+# `Momentaufnahme` und ein Datum und wird nicht geprueft. Dasselbe Mittel wie bei
+# `belegstellen_wortabstand` daneben, aus demselben Grund.
 #
 # **Warum die Einhaengung ein eigenes Paket wert war:** Dieser Stand ist am 2026-09-06
 # entstanden und bis zum 2026-09-08 **kein einziges Mal gelaufen**. `agents/baulauf.py`
@@ -241,18 +253,19 @@ add_test(NAME belegstellen_kopfzahlen
                  --vorhaben ${FABRIK_VORHABEN_WURZEL}
                  --uebersetzer ${CMAKE_CXX_COMPILER})
 
-# 300 und nicht 900, und diesmal mit einem kleineren Vielfachen als bei den drei Proben
-# darueber. Die Zahl ist **hergeleitet und nicht gemessen** -- der Lauf, der sie gesetzt
-# hat, hatte keine Schale. Herleitung aus dem Bericht vom 2026-09-07, dieselbe Rechnung
-# wie nebenan: `belegstellen_wortabstand` uebersetzt vier Fassungen, laesst fuenf laufen
-# und steht bei 17,2 s; ein Lauf des Riegels allein braucht 1,03 s, also rund 3 s je
-# Uebersetzung. Dieser Stand uebersetzt acht Fassungen und laesst acht laufen -- rund
-# 32 s.
+# 300 bleibt, und die Zahl ist seit dem Bericht vom 2026-09-08 **gemessen und nicht mehr
+# hergeleitet**: Dieser Eintrag stand dort mit 16,26 s. Die 300 sind das Achtzehnfache
+# davon.
 #
-# Das Vielfache ist neun statt vierzehn, weil die Schranken dieses Verzeichnisses sich
-# aufsummieren: 600 plus 240 plus 120 plus 300 liegt bereits ueber den 900, nach denen
-# `baulauf.py` den ganzen ctest-Aufruf abbricht. Jede weitere Probe hier macht die
-# Grenze enger, und eine Schranke, die im Ernstfall erst nach dem Gesamtabbruch griffe,
-# nennt die haengende Probe nicht mehr beim Namen. Wer die gemessene Zeit im ersten
-# Nachtlauf sieht, ersetzt sie durch ein Vielfaches davon.
+# Paket 0278 senkt die Zahl der Uebersetzungen von acht auf fuenf -- die vier
+# Rotnachweise beurteilen Messungen neu, die schon vorliegen, statt eigene Fassungen zu
+# bauen. Erwartet ist damit rund 10 s statt 16,26 s. **Die Schranke wird deshalb nicht
+# gesenkt**, sondern die naechste gemessene Zeit entscheidet: Wer sie im Bericht sieht,
+# ersetzt die 300 durch ein Vielfaches davon.
+#
+# Warum ueberhaupt eine so grosse Reserve, obwohl die Schranken dieses Verzeichnisses
+# sich aufsummieren -- 600 plus 240 plus 120 plus 300 liegt bereits ueber den 900, nach
+# denen `baulauf.py` den ganzen ctest-Aufruf abbricht: Eine Schranke, die im Ernstfall
+# erst nach dem Gesamtabbruch griffe, nennt die haengende Probe nicht mehr beim Namen.
+# Jede weitere Probe hier macht die Grenze enger.
 set_tests_properties(belegstellen_kopfzahlen PROPERTIES TIMEOUT 300)
