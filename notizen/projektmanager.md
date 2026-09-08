@@ -1,6 +1,6 @@
 # Logbuch: projektmanager
 
-Rotated by the runner on 2026-09-08 at 17714 characters (cap 12,000). Predecessor: `notizen/archiv/projektmanager-2026-09-08-4.md`.
+Rotated by the runner on 2026-09-08 at 20041 characters (cap 12,000). Predecessor: `notizen/archiv/projektmanager-2026-09-08-5.md`.
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
@@ -9,272 +9,122 @@ items · read `ops/reserviert.txt` yourself every run · quote the evidence into
 never cite the mutable report · read the *last* befund, not only its frontmatter · on a
 Ruecklauf, narrow `dateien` to what the package still needs · a satisfied `haengt_an` is
 inert — name the package you must **not** run beside, and recompute a proposed one, never
-carry it over · the asymmetry test: "run A first — is B still buildable inside its own
-`dateien`?" · a sweep is unprovable, an enumeration is countable · ask whether the role owns
-the tools its own acceptance requires · a riegel without `add_test` never runs · before
-lifting a lock, ask whether either package writes a sentence **or a parser** whose truth
-depends on the other's file — for prose raise the altitude and keep the lane, for a parser
-serialise.
+carry it over · the asymmetry test · a sweep is unprovable, an enumeration is countable ·
+ask whether the role owns the tools its own acceptance requires · before writing „and the
+number lands in the report", ask where the number physically goes · never lock past the
+next link, and re-decide the one link every run.
 
 ---
 
-## I wrote a false clause into an acceptance criterion and a builder obeyed it — 2026-09-08 (fourteenth run)
+## A pass that stops after the compile leaves every lane dark, and `haengt_an` is why — 2026-09-08 (fifteenth run)
 
-**`0251` passed with 0 findings and the reviewer still handed me a defect: mine.** Its
-condition 1 demanded the riegel be wired *„so the runner executes it and the numbers land in
-`befunde/uebersetzung-<datum>.md`"*. `agents/baulauf.py:186` runs `ctest
---output-on-failure` — **a passing test's stdout goes nowhere.** The clause is false for
-every riegel in the tree, `bezeichner` included, and `bezeichner` is the shape I named to
-the builder as the model. Tonight's report proves it: four riegel, four lines, each
-`Passed`, no number. The numbers that do land come from `message(STATUS)` at configure time.
+**Zero packages were startable when I began. Eight build slots, none of them fillable.**
+Not a file collision — the failure mode I have written down five times — but its mirror.
 
-**The builder complied and the clause stayed false, which is the part worth keeping.** An
-unreachable criterion announces itself — `0157`, five strikes, each caught before the run.
-**A false one does not: it is satisfiable, the package passes, and nobody notices the clause
-never became true.** That is the more expensive kind and I had no test for it. The one I
-have now: **before writing „and the number lands in the report", ask where the number
-physically goes.** Configure-time `message(STATUS)` lands. A passing test's stdout does not.
+The previous pass ran `projektmanager → Bau → Uebersetzung` and stopped. Five packages
+landed (`0068`, `0253`, `0254`, `0256`, `0257`, commits `805589b`…`09d0c51`),
+`uebersetzung-2026-09-08.md` was rewritten, and the Review phase never ran: **not one
+befund exists for any of the five.** So all five stand `gebaut` with no verdict, and
+`startbereit` (`baulauf.py:319`) demands `fertig` — every one of the eight `offen`
+packages hung on one of them. Seven on `0068` through the `technik.md` chain, `0258` on
+`0257`.
 
-**And the fix for a false criterion is to stop writing it, not to build the mechanism it
-assumed.** The proposal offered both: way 1 makes every riegel's number visible at configure
-time; way 2 gives the tool a floor so a half-blind run cannot stay green. Way 1's real
-benefit was that it would make *my* clause true. **That is not worth a package — the
-operator has two hours a week and a number in a report nobody diffs is the same silence with
-more characters.** Way 2 only, in `0258`; way 1 recorded in its `vermerk` with the
-proposer's cost numbers so nobody re-measures them.
+**The lesson is about the shape of the dependency, not about the interrupted pass.** An
+interrupted pass costs one night. What turned one night into a total stop is that
+`haengt_an` has exactly one predicate — `fertig` — and most of my locks do not need it.
+There are two kinds:
 
-## A lock is retargeted, not removed, when the chain merely moved one link along
+- **A real dependency** needs the predecessor *correct*: `0074` genuinely wants `0068`'s
+  edit to have survived review.
+- **An anti-falsification lock** needs the predecessor's bytes *present*. `0258` hangs on
+  `0257` only so its parser meets the third `RIEGEL_OHNE_ZUSTAND` table on disk instead of
+  mid-flight. **That table landed with the commit. The verdict changes no byte it reads.**
 
-Last night's note to myself was: *if `0064` is `fertig`, remove the locks on `0230`/`0236`
-rather than renewing them down the chain.* **Half right, and I nearly followed it into the
-failure it was written against.** `0064` is `fertig`, so the lock is discharged — but the
-lane is unchanged: eight packages on `technik.md`, the planner picking arbitrarily among
-whatever is startable, and tonight the startable three are `0068` (head of a chain five
-deep) and the same two leaves. Remove the locks and two thirds of the time the lane goes to
-a leaf again.
+**So: an anti-falsification lock is discharged by the landing, not by the verdict — and
+`haengt_an` cannot say so, which means every such lock over-charges by at least one
+night.** Normally that night is invisible because other lanes run. Tonight it was the
+whole factory. I discharged `0258` by hand and wrote the reasoning into its `vermerk`,
+because the next agent will otherwise read the removal as carelessness.
 
-**The rule I actually meant, stated properly: never lock past the next link, and re-decide
-the one link every run.** „Do not renew" guards against locking to the chain's *tail* — five
-nights of unreviewed commitment, unable to fall back if a member jams. It does not mean
-letting the ordering fall to chance the moment the head changes. `0230` and `0236` now hang
-on `0068`, with the discharge condition written into the package: **`0068` `fertig` and this
-is inert; re-decide, do not renew blind.**
+## The lock I did *not* remove, and it is the same night's opposite decision
 
-## Two proposals, one number — and the pointer shape was already in the tree
+`0236` hangs on `0068` alone, as a pure ordering lock I placed last night. Remove it and
+it is the one `technik.md` package that becomes startable — one lane instead of two.
 
-The kern-pruefer proposed two packages tonight, out of two reviews, and both took `0257`.
-`0092` and `0107` and `0232` and `0233` all carry the same collision, so the house has been
-living with it. **The repair is `0092-linkschalterform-durchgereichtes-l.md`:
-`status: umgezogen`, `dateien: []`, body says „Kein Paket. Diese Datei ist nur ein Zeiger."**
-No delete (rule 3), no ambiguous number. I renumbered the *dependent* one so the
-prerequisite keeps the lower number: `0257` is festkomma, `0258` hangs on it.
+**Kept, and for a reason the original lock did not have.** Bau is step 2 of a pass and
+Review is step 4 (`baulauf.py:381-402`), and the two sets are computed from **separate**
+`belegt` sets. So a `gebaut` package under review does not reserve its file: `0236` would
+rewrite `technik.md` at step 2 while the architekt-pruefer judges `0068` against that file
+at step 4. `0068` is the head of a chain of five. **A spurious `zurueck` there costs the
+chain a night *and* a Ruecklauf count out of three.** One extra lane is not worth it.
 
-**Why they are serialised at all, and it is the parser rule again, now with its limit
-found.** `0258` sweeps every probe under `kern/test/` that names `RIEGEL_OHNE_ZUSTAND`;
-`0257` gives `festkomma_probe.cpp` a third such table. Last night's refinement — a parser
-raises its altitude by naming a symbol instead of a file — **is what makes `0258` a good
-tool and does not save the lane here**, because the hazard is not that the parser goes blind
-but that a table it has never seen *joins its set* the same night. **Naming a symbol widens
-what a parser sees; it does not stop what it sees from arriving mid-flight.** Asymmetry test
-answers cleanly: `0257` first and `0258` is written against three tables instead of two.
+**The general form, and it is now two rules that look alike and are not:**
+`dateien` prevents two writers. **It does not prevent a writer from landing under a
+reviewer.** Before opening anything, subtract the `dateien` of every `gebaut` package —
+they are invisible to the planner and they are exactly the files being judged tonight.
 
-## A Ruecklauf that narrows `dateien` frees a lane for somebody else
+## „Too small for a run of its own" means never, once nobody owns the file
 
-`0253` came back with one finding — one sentence in one of its three files, the other two
-verified line by line and done. Narrowing `dateien` to `quellenbefund-leitzinspfad.md` is my
-standing rule, and tonight it paid twice: **`deckungsbefund-1997.md` came free, which is the
-only reason `0256` could open at all.** A Ruecklauf is not only a cost; it is a release, if
-you cut the package back to what is actually left.
+`0242`'s review found `werte.cpp:718-720` counted over the wrong set — twelve addresses,
+31 characters, „hoechstens 323", where `bip` takes a `Gebiet` and the Restwelt makes it
+fifteen / 32 / 324 — and closed with *„Worth folding into whichever package next owns
+`werte.cpp`; too small for a run of its own."*
 
-Both packages then got the same instruction in both directions: **assert nothing about the
-other's file, presence or absence.** That is the `0249` mechanism — four true sentences
-falsified by lanes landing the same night, two Rueckläufe spent on it, one short of frozen.
+**That sentence is correct arithmetic and a wrong disposal.** It has sat in my „dormant"
+list for eight runs; no open package owns `werte.cpp` and none was ever going to. **A
+residue parked on a future owner that does not exist is a deletion with better manners.**
+It became `0260` tonight, and the honest reason is in its `vermerk`: the alternative was
+an idle slot, not a better package.
 
-## Offene Fährten — 2026-09-08, fourteenth run
+Two scoping notes I had to make myself, because the review did not: `werte_probe.cpp`
+carries none of the three numbers (grepped, no match), so one file is enough; and
+`verlauf_probe.cpp:254` / `schritt_probe.cpp:522,1584` carry the same phrase „zwoelf
+Adressen" and are **not** presumed wrong — those probes set only country addresses, where
+twelve may be right. **A measured finding must not be widened into an unmeasured sweep by
+the person who plans it.**
 
-- **Four to `fertig`, one back.** `0064`, `0249`, `0251`, `0255` `geprueft`. **`0249` passed
-  on its third attempt, one short of `RUECKLAUF_MAX`** — what carried it was the reviewer's
-  remedy of *deleting* the absolute negative rather than replacing it. `0253` `zurueck`,
-  Ruecklauf 1, and its finding is one sentence.
-- **Lanes tonight: five, all file-disjoint.** `technik.md` → `0068` (architekt, chain head);
-  `daten/quellenbefund` → `0253`; `daten/deckungsbefund` → `0256`; `kern/CMakeLists.txt` →
-  `0254` (freed by `0255`); `kern/test/festkomma_probe.cpp` → `0257`.
-  **Three of the eight slots stand idle on purpose:** everything else `offen` is on
-  `technik.md`, and `0258` is deliberately held behind `0257`.
-- **Three proposals, three accepted, two cuts unchanged.** `0256` needed nothing. `0257`
-  needed its `ctest bleibt gruen` rewritten — a claim about the whole tree while three other
-  lanes run. `0258` needed a way chosen, a number, and a lock.
-- **`0064` left a residue and it went into `0068` rather than into a package.** §29's own
-  check clause (`technik.md:5359`) says a `Grep` for `18.024`/`87.864` gives zero hits, and
-  three lines inside §29 hold both; the reviewer names the fix (*outside this section*).
-  **One phrase on the one lane this venture has — a package of its own would cost a whole
-  night.** Bounded in the vermerk: that phrase, nothing else in §29.
-- **For the Geschäftsführer, fourth run running: `RUECKLAUF_MAX` counts befunde, not fault.**
-  `0249` survived on its last attempt having spent both rounds on sentences falsified by
-  concurrent lanes. **The brake is aimed at the builder and is hitting the schedule.**
-- **`ops/plan.md`, eighth run:** its Vorrang list (0224, 0225, 0189, 0208-schritt, 0165,
-  0172-weltpreis) is entirely discharged, and „Der Engpass" still rests on a lock
-  (`ops/reserviert.txt` = `# frei`) that has been gone for eight runs. **The real bottleneck:
-  eight packages on `technik.md`, one lane, a chain six deep.** Not mine to edit. Reported.
-- **Check first next run:** (a) `0253` — is `:152` scoped and row `:262` with it, and does
-  anything in it still speak about `deckungsbefund`? (b) `0257` — did it recount the nine
-  `abbruch` sites at HEAD, and did it stay out of `kennzeichen.hpp`? If it touched the
-  header, `0254`'s round is compromised through no fault of its own. (c) `0068` — did it
-  re-measure after `0064` moved ten places in `technik.md`, and did condition 4 stay one
-  phrase? (d) If `0068` is `fertig`, retarget `0230`/`0236` to `0074`, do not free them.
-- **Blocked, five:** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py` — no agent may
-  write `agents/`), `0003` (ADR), `0157` (no execution tool, successor `0243`).
-- **Dormant, unchanged:** clamp-first vs add-first deviation from `spiel.md` → ADR →
-  Geschäftsführer. `werte.cpp:718-720` still says „zwoelf Adressen … 31 Zeichen … hoechstens
-  323" where the Restwelt makes it fifteen/32/324; **still no open package owns `werte.cpp`.**
-  `werte::schaden` → `schuld` for CN/BR in `0237`'s `vermerk_abnahme`.
-- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **nineteenth run in a row.**
+## Offene Fährten — 2026-09-08, fifteenth run
+
+- **Nothing to `fertig`, nothing back. No befunde to act on at all** — a first. Five
+  packages await their first verdict; `0253` awaits its second (Ruecklauf 1).
+- **Lanes tonight: two, both created by this run.** `werkzeuge/kennzeichen/kennzeichen_riegel.cpp`
+  → `0258` (unlocked); `kern/src/werte.cpp` → `0260` (new). **Six slots idle, and I could
+  not honestly fill them:** everything else `offen` is on `technik.md` behind `0068`, and
+  `0259` is deliberately held behind `0254`. Review has five, so seven agents run.
+- **One proposal, accepted, lock retargeted.** `0259` (testentwickler, out of `0257`) hung
+  itself on `0257` while its own closing paragraph named `0254` as the contested one. It
+  was right about the contest and wrong about the package: `0254`'s collector runs over
+  `kern/test/*.hpp`, whose set today is exactly `0259`'s single file, and its acceptance
+  is *the current tree passes*. Retargeted to `0254`, discharge condition written in.
+- **Two whole-tree clauses narrowed, same wording as `0257` got last night:** `0258`'s
+  *„At HEAD the tree passes"* and `0259`'s *„laufen unveraendert gruen"* both become *no
+  failure attributable to your own file*. **This is now the fourth package in three runs
+  needing it. It is not a builder habit — it is what a proposer writes when they cannot
+  see the other lanes.** Consider making it the default reading rather than a per-package
+  edit; that is a `CLAUDE.md` question and not mine.
+- **Check first next run:** (a) all five verdicts, and whether the Review phase ran at all
+  — if a second pass ends after `Uebersetzung`, the stall is structural and belongs to the
+  Geschäftsführer, not to my planning. (b) `0068` `fertig` → free `0230` and `0236`,
+  re-decide, do not renew down the chain. (c) `0254` `fertig` → `0259` is inert. (d) Did
+  `0260` stay in comment lines only, and what did it report about line 722's claim that
+  `werte_probe` re-measures the length?
+- **For the Geschäftsführer, and it is new tonight and bigger than `RUECKLAUF_MAX`:** an
+  interrupted pass does not degrade throughput, it **zeroes** it, because `haengt_an` only
+  reads `fertig`. Five builds, no reviews, and the next pass had nothing to schedule until
+  I hand-discharged a lock. `RUECKLAUF_MAX` counting befunde rather than fault stands, fifth
+  run running.
+- **`ops/plan.md`, ninth run:** Vorrang (0224, 0225, 0189, 0208-schritt, 0165,
+  0172-weltpreis) fully discharged; „Der Engpass" still rests on `ops/reserviert.txt`,
+  which reads `# frei` and has for nine runs. **The bottleneck is seven packages on
+  `technik.md` behind one unreviewed head.** Not mine to edit. Reported.
+- **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py` —
+  no agent may write `agents/`), `0003` (ADR), `0157` (no execution tool, successor `0243`).
+- **Dormant:** clamp-first vs add-first deviation from `spiel.md` → ADR → Geschäftsführer.
+  `werte::schaden` → `schuld` for CN/BR in `0237`'s `vermerk_abnahme`. **The `werte.cpp`
+  entry is gone from this list — it became `0260`.**
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twentieth run in a row.**
   Subtract 2 from every `gebaut` count.
-- **`high` was enough, twenty-eighth run.** The two real decisions — that a *false* criterion
-  is a different animal from an unreachable one, and that naming a symbol does not protect a
-  parser from a table arriving mid-flight — were both corrections to rules I wrote in the
-  last two runs. That is what the logbook is for.
-
----
-
-## The planner picks arbitrarily among startable packages, and nobody was choosing — 2026-09-08 (thirteenth run)
-
-**This is the throughput lever I had not noticed in twelve runs, and it was free.**
-
-`0149` finished tonight and freed the `technik.md` lane. Nine packages stand `offen` on
-that one file; `startbereit` (`baulauf.py:306-325`) serialises on `dateien`, so **one file
-is one lane** — that part I had written down five times. What I had not asked is *which*
-of the nine runs. Tonight three were startable at once: `0064`, `0230`, `0236`. The planner
-picks among them **arbitrarily**, and `0064` is the head of a chain of six
-(`0068` → `0074` → `0084` → `0092` → `0181` → `0226`, each locked to its predecessor)
-while `0230` and `0236` are leaves that unlock nothing.
-
-**Two thirds of the time the single lane would have been spent on a leaf and six packages
-would have stood another night.** I have written down "one file, one lane, nine nights" in
-three consecutive runs as a fact about the venture. It is a fact about the venture; **which
-nine nights, in which order, was mine and I was leaving it to chance.**
-
-**The fix is an ordering lock in `haengt_an`, and the repo already had the precedent** —
-`0149`'s own Vermerk of 2026-09-07 calls its second entry "eine Reihenfolgesperre auf
-`technik.md` und keine fachliche Abhaengigkeit". Two edits: `0230` and `0236` now hang on
-`0064`. Costs them nothing they had (same file, same lane either way); buys six packages a
-night each.
-
-**And the shape of the lock is the part I nearly got wrong.** The tempting version locks
-the two leaves behind the chain's *tail* `0226`, which fully orders all nine and never has
-to be revisited. **That is six nights of unreviewed commitment: if a chain member jams —
-`blockiert`, or spends its three Rueckläufe — the lane must fall back to a leaf, and a lock
-on `0226` would freeze it instead.** I run every night and can re-decide in two edits, so
-the lock goes one link deep and says so in its own Vermerk: *`0064` `fertig` and this lock
-is inert and should be removed, not renewed further down.* **Lock as far as the next run
-can see, not as far as the plan goes.**
-
-## A parser can raise its altitude after all — by naming a symbol, not a file
-
-Last night's rule was: when A merely *describes* B's structure, fix the altitude and keep
-the lane; when A *reads* B's structure, **serialise**, because code must name a file.
-
-**The second half is too strong, and `0251` is the counterexample.** Its riegel reads the
-`RIEGEL_OHNE_ZUSTAND` table out of a probe; `0255` edits one of the probes that holds one.
-Same shape as last night, and the rule said lock. But a parser does not have to name a
-*file* — it can name a **symbol and a directory**: find the tables by name under
-`kern/test/`, the way `bezeichner_riegel` already walks a tree and owns its file selection.
-**Then `0255`'s edit cannot blind it, and the lane stays.**
-
-**And this is not a trick to save a lane — it is the better tool.** `0244` proved it the
-hard way: the package was written when there was **one** `RIEGEL_OHNE_ZUSTAND` table and
-there are now **two** (`schritt_probe.cpp:443`, `werte_probe.cpp:233`), because `0244`
-lifted the apparatus into `kennzeichen.hpp` but deliberately left one enumeration per probe
-(`kennzeichen.hpp:15`). **A tool that had hard-coded `schritt_probe.cpp` would have been one
-refactor from looking at nothing — the precise state `0251`'s own condition 3 exists to
-detect.** So: **serialise a parser only when it cannot be written against a name.**
-
-`0254` got the lock instead, and for the opposite reason: it asserts `the current tree
-passes` about `kennzeichen.hpp`, which `0255` rewrites tonight. **An acceptance that is a
-claim about somebody else's file in flight is not raisable — you can only wait.**
-
-## The `0157` trap, fifth strike — and the second one replaced by something stronger
-
-`0254`'s condition 1 as proposed: *a header under `test/` that names a poisoned identifier
-fails the configure run.* **No role runs cmake** (`agents/lauf.py:NIE`), the compiler runs
-after the run, and a bait committed to the tree would leave the tree red — so the criterion
-is unreachable *and* the workaround is worse than unreachable.
-
-**The replacement was already in the tree, again:** the test-pruefer discharged `0244`'s
-condition 2 by **red-when-broken traced in code** — name the line at which the check raises,
-name what input reaches it. That is the house method for "this check really fires" without
-executing anything, and it is now `0254`'s condition 1. **Two strikes running (`0251`,
-`0254`) replaced by something better rather than smaller; the three before them were struck
-and shrunk.** The pattern: **before weakening an unreachable criterion, look for who in this
-tree already had to solve the same problem.**
-
-## `0249` is at Ruecklauf 2, and the third falsification is the same mechanism
-
-`schritt.hpp` has now had **four** sentences falsified by an edit in a file the package did
-not own. Round 2's finding: the builder wrote *"die Schranken in `kern::werte` und
-`kern::festkomma` stehen in keinem von beiden [Verzeichnissen]"* — true at their own HEAD,
-false after `0244` landed the same night and created `werte_probe`'s registries. **They
-avoided the *path* exactly as I instructed and then asserted the ledgers' *contents*, which
-is the same defect one level in.**
-
-**The reviewer's remedy is a deletion and that is why it will hold:** *"Drop the absolute
-negative … Any clause of the form X steht in keinem Verzeichnis is an assertion about files
-this package does not own and will go stale again."* **A clause you delete cannot be
-falsified; a clause you replace can.** I passed that through verbatim and named tonight's
-live hazard (`0255` on `werte_probe.cpp` and `kennzeichen.hpp`) with the instruction:
-**assert nothing about those two files in either direction — presence *or* absence.**
-
-One more Ruecklauf freezes it. The scope is one clause.
-
-## Offene Fährten — 2026-09-08, thirteenth run
-
-- **Three to `fertig`, one back.** `0244`, `0149`, `0252` `geprueft` — **`0252` on its first
-  attempt, on the file that cost `0241` three**, because it wrote what its retrieval
-  supported and named the residue instead of widening (that residue is `0253`). `0249`
-  `zurueck`, Ruecklauf 2.
-- **Lanes tonight: five, all file-disjoint.** `technik.md` → `0064` (architekt, chain head);
-  `schritt.hpp` → `0249` (kernbauer, Ruecklauf 2); `daten/` → `0253` (datenbauer);
-  `kern/test/` → `0255` (testentwickler); `werkzeuge/kennzeichen/` → `0251` (kernbauer,
-  freed after one night). **`0254` deliberately not opened into a sixth lane** — it hangs on
-  `0255` because its acceptance is a claim about `0255`'s file.
-- **Three proposals, all three accepted, two of them unchanged.** `0253` and `0255` needed
-  nothing rewritten; `0254` needed its proof method replaced. **All three came out of the
-  two packages that finished last night, and all three had `haengt_an: []` that was right by
-  accident.** Recompute every time.
-- **`0234` closed: `blockiert` → `abgelehnt`** with a pointer to `0241` (`fertig`), which
-  delivered its residual scope. Frozen by `RUECKLAUF_MAX` either way; the status now says
-  *decided* rather than *backlog*. One line, and it had been on this list for two runs.
-- **For the Geschäftsführer, third run running: `RUECKLAUF_MAX` counts befunde, not fault.**
-  `rueckläufe()` globs the review files and counts `urteil: zurueck`. It cannot tell "builder
-  failed" from "reviewer corrected himself" from "the endpoint healed overnight" from "a
-  concurrent lane falsified a true sentence". `0241` spent both of its on the reviewer's own
-  corrections and survived; `0249` has spent one of its two on a lane that landed after it.
-  **The brake is aimed at the builder and is hitting the schedule.**
-- **`ops/plan.md` is stale in a way that now misleads.** `ops/reserviert.txt` reads `# frei`;
-  the plan's whole "Der Engpass" section rests on a lock that has been gone for seven runs,
-  and its Vorrang list (0224, 0225, 0189, 0208-schritt, 0165, 0172-weltpreis) is discharged
-  for the **seventh** run running. **The real bottleneck is now structural and I can name it:
-  nine packages on one file, one lane, and after tonight a chain seven deep.** Not mine to
-  edit. Reported for the third time.
-- **Check first next run:** (a) `0249` — is the clause **deleted** or replaced? A replacement
-  that still asserts anything about `werte_probe.cpp` is Ruecklauf 3 and the package freezes.
-  (b) `0255` — does its run summary say whether a `RIEGEL_OHNE_ZUSTAND` table moved or changed
-  shape? `0251`'s riegel and `0254` both start from that. (c) `0064` — did it stay inside its
-  three conditions, or touch lines the next eight packages must re-measure? (d) If `0064` is
-  `fertig`, **remove the locks on `0230`/`0236` rather than renewing them down the chain.**
-- **Blocked, five (was six):** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py` — no
-  agent may write `agents/`), `0003` (ADR), `0157` (no execution tool, successor `0243`).
-- **Dormant, unchanged:** clamp-first vs add-first deviation from `spiel.md`
-  (`alt = -100, wirkung = +50` gives 0 by spec, 50 clamp-first) → ADR → Geschäftsführer.
-  `werte.cpp:718-720` still says "zwoelf Adressen … 31 Zeichen … hoechstens 323" where the
-  Restwelt makes it fifteen/32/324; **still no open package owns `werte.cpp`** — and `0255`
-  reads it without writing it, so that stays true.
-  `werte::schaden` → `schuld` for CN/BR in `0237`'s `vermerk_abnahme`.
-- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **eighteenth run in a row.**
-  Subtract 2 from every `gebaut` count.
-- **`high` was enough, twenty-seventh run — entry of the thirteenth run.** Every decision turned on something I looked up:
-  the two reviewers' own sentences (the table locations came from the `0244` review, not from
-  the builder), the three proposals' `dateien` against each other, `0064`'s five dependencies
-  against tonight's statuses. **The one piece of real thinking — that a parser raises altitude
-  by naming a symbol instead of a file — was a correction to a rule I wrote last night, which
-  is what the logbook is for.**
+- **`high` was enough, twenty-ninth run.** The run turned on one distinction — that a lock
+  wanting *bytes present* is discharged by a commit while a lock wanting *correctness* is
+  not — and on noticing that Bau and Review use separate `belegt` sets. Both came out of
+  reading `baulauf.py`, not out of thinking harder about it.
