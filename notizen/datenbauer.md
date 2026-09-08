@@ -73,6 +73,39 @@ and the provenance are both named in the acceptance, so I did not cut either. (3
 also says „62 lines … before and after" but carries **no** occurrence count, so it was
 never wrong and I left it — check that this reads as a decision, not an oversight.
 
+## 2026-09-08 — 0262, three self-contradictions in the passage 0256 left
+
+All three closed in `daten/deckungsbefund-1997.md`, edits at `:283`+ only, no value moved.
+
+- **The count word was inherited, not introduced by 0256.** The pre-edit copy
+  (`befunde/messung-0069/baum/daten/deckungsbefund-1997.md:284`) already says „Alle sechs"
+  over a list of seven. So the live claim at `:300` is now „sieben", and the retraction
+  record at `:294` keeps „alle sechs" **in quotes** with a parenthesis saying the miscount
+  stood in the retired version. **A retraction record must quote the wrong wording, not
+  silently correct it** — otherwise the next reader sees two counts and re-opens the defect.
+- **The fetch was worth it this time, and the difference from 0256 is what it would
+  prove.** 0256 asked for a second read of the *same* reference and got nothing new. Here
+  the file asserted figures with no recorded provenance at all, so a named query with a
+  date is a real gain. `WEO 9.0.0 / USA.GGXCNL_NGDP.A` reached and matched: 2001–2031,
+  31 values, 2009 = −13,176825 and 2020 = −14,126658 — the rounded −13,18 / −14,13.
+- **A fetch today does not record what a fetch on 2026-09-01 delivered.** Both sentences
+  are in the file: the original query is *not* recorded, and the 2026-09-08 re-read is a
+  **second draw from the same source, not a second reference**. Naming a query is
+  provenance; it is still not verification. Same lesson as 0256, one level down.
+- **`WebFetch` rendered the SDMX-CSV response index-based** („observation index 8" for
+  2009) although `format=sdmx-csv` is in the URL. The years line up with the index
+  arithmetic, so the read holds — but a reviewer re-running it should expect that shape
+  and not read the mismatch as a wrong query.
+- **Lead-in fix:** points **1 and 3** carry against the Auslesefehler, **2** holds the
+  unit. The old „das dritte hält die Einheit fest" contradicted `:312`–`:313`, where point
+  3 says of itself that it carries over Startjahr und Wertezahl.
+
+**Open for the projektmanager, on 0262:** (1) I added the full-precision values
+−13,176825 / −14,126658 next to the two rounded ones. That is a new number in a file whose
+limit was „move no number" — nothing was moved, but if the reviewer reads adding as moving,
+delete the two and the query line still closes the defect. (2) The parenthesis at `:296`
+explains a miscount inside a retraction; it is the least compressed thing I wrote.
+
 ## Open leads
 
 Carried by hand through the rotation of 2026-09-08; long form in

@@ -280,8 +280,8 @@ Startjahrs von 1997 auf 2001 und kosten vier der 25 Stützstellen.
 **Wie das nachgeprüft ist, weil daran die Zahl hängt.** Der kompakte SDMX-JSON-Aufbau ist
 über einen Textabruf nicht sicher auszuzählen — zwei Lesungen derselben Sammelabfrage haben
 sich widersprochen (erste: USA ab 2000; zweite: USA ab 1995). Deshalb ist je Land **einzeln**
-abgerufen und jede Reihe an drei Dingen gemessen worden. **Zwei davon tragen gegen den
-Auslesefehler; das dritte hält die Einheit fest und mehr nicht:**
+abgerufen und jede Reihe an drei Dingen gemessen worden. **Punkt 1 und Punkt 3 tragen gegen
+den Auslesefehler; Punkt 2 hält die Einheit fest und mehr nicht:**
 
 1. **Zahl der Werte gleich Länge des Zeitraums.** USA: 2001–2031 sind 31 Jahre, 31 Werte
    geliefert. CHN: 1995–2031 sind 37 Jahre, 37 Werte. DEU: 1991–2031 sind 41 Jahre,
@@ -291,15 +291,23 @@ Auslesefehler; das dritte hält die Einheit fest und mehr nicht:**
    die Werte des oben genannten Einzelabrufs, abgerufen 2026-09-01. Was sie zeigen, ist die
    **Einheit**: Werte in dieser Größenordnung sind Prozent des BIP, nicht bp und kein Index;
    das ist die Stütze des Absatzes „Zur Einheit" oben. **Mehr ist ihnen nicht
-   zu entnehmen.** Bis 2026-09-08 stand hier, alle sechs seien „die richtigen WEO-Werte" und
-   eine um ein Jahr verschobene Zuordnung hätte sie verfehlt — **das braucht eine zweite
-   Referenz, und dieser Befund ruft keine ab.** Die einzige weitere Schuldenreihe hier ist
-   die Weltbankreihe weiter unten, und sie ist nur auf Abdeckung abgefragt: keine Werte
-   gegengelesen, für CHN und DEU überhaupt keine geliefert. Gegen dieselbe Abfrage gelesen
-   zeigen die sechs Werte nur, dass der Abruf in sich stimmt, und das zählt Punkt 1 ab.
+   zu entnehmen.** Bis 2026-09-08 stand hier, „alle sechs" seien „die richtigen WEO-Werte"
+   und eine um ein Jahr verschobene Zuordnung hätte sie verfehlt — **das braucht eine zweite
+   Referenz, und dieser Befund ruft keine ab.** (Aufgezählt sind **sieben** Werte; „sechs"
+   stand schon in der zurückgezogenen Fassung falsch da und ist hier nur zitiert.) Die
+   einzige weitere Schuldenreihe hier ist die Weltbankreihe weiter unten, und sie ist nur auf
+   Abdeckung abgefragt: keine Werte gegengelesen, für CHN und DEU überhaupt keine geliefert.
+   Gegen dieselbe Abfrage gelesen zeigen die sieben Werte nur, dass der Abruf in sich stimmt,
+   und das zählt Punkt 1 ab.
 3. **Zweite Reihe desselben Blocks.** `GGXCNL_NGDP` (Haushaltssaldo, Reihe 12) für die USA
    beginnt **ebenfalls 2001** und liefert 31 Werte, darunter 2009 = −13,18 und 2020 = −14,13.
-   Auch diese beiden sind **nicht gegen eine Referenz geprüft** (der Satz „die richtigen
+   **Welche Abfrage sie am 2026-09-01 geliefert hat, hält dieser Befund nicht fest.**
+   Nachgelesen am **2026-09-08** unter
+   `api.imf.org/external/sdmx/3.0/data/dataflow/IMF.RES/WEO/9.0.0/USA.GGXCNL_NGDP.A?format=sdmx-csv`
+   — derselbe Pfad wie oben, nur der Indikator getauscht: 2001–2031, 31 Werte, 2009 =
+   −13,176825 und 2020 = −14,126658, auf zwei Stellen gerundet die beiden Zahlen oben. Das
+   ist ein **zweiter Abruf derselben Quelle, keine zweite Referenz**: Auch diese beiden Werte
+   sind gegen nichts außerhalb des WEO geprüft (der Satz „die richtigen
    Zahlen" stand hier bis 2026-09-08 und ist aus demselben Grund zurückgezogen); ihr
    Vorzeichen hält fest, dass die Reihe Defizite negativ führt. Der Punkt trägt über
    Startjahr und Wertezahl, nicht über die Werte: Zwei Reihen desselben Blocks mit demselben
