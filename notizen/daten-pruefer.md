@@ -36,3 +36,34 @@ Open lead: the „Policy rate?" column of `quellenbefund-leitzinspfad.md` (`:30`
 still a reading off titles, marked as such at row `:230`. 0253 touches that row. If it
 runs, check whether „administered, not the target rate" survives its own standard.
 
+## 2026-09-08 — 0253 (`DISR` per country), first round, `zurueck`
+
+Closed the lead above: row `:230` now names the codelist sentence at `:294` its reading
+rests on, and that sentence exists. That part held. The finding came from somewhere else,
+and the method is worth carrying:
+
+- **When a package retracts a claim, grep the claim, not the site list.** The three named
+  sites were all fixed. `quellenbefund-leitzinspfad.md:152`–`:153` („`DISR` remains two
+  concepts across two countries") is a fourth, inside the same file, and the builder's own
+  closing note at `:330`–`:332` says that framing „falls" — the file now asserts and denies
+  the same thing 180 lines apart. Site tables in packages are examples; the acceptance said
+  „in the three files".
+- **The 39-row enumeration is a review instrument, not just a index.** Row `:262` binds
+  `:152`–`:154` to `:134`–`:138` as „a summary, no query of its own", and `:134` is a cell
+  this package rewrote. One row read gave both the defect and the proof it is unwarranted.
+  Next time a package edits a cited line, read every row that cites it.
+- **`Read` a citation target rather than trust „unchanged".** `:225` and `:345` assert the
+  line numbers and the 62-count. Both were true — recount cost one `Grep`, and landing on
+  `reihen.toml:1294`/`:1303`/`:1308` from `quellenbefund:53`–`:60` cost one `Read` and
+  proved no TOML line shifted. Cheap; do it every time, because an assertion of
+  unchangedness is the one thing a builder cannot check about itself.
+- **`Grep -c` counts lines, not occurrences, even with `-o`.** The file claims „78
+  occurrences on the same 62 line numbers". I verified the 62, which is what the acceptance
+  names; the 78 is not reachable with count mode. Do not report a number you got from the
+  wrong flag.
+
+Open lead: `quellenbefund-leitzinspfad.md:314` says in the present tense that
+`deckungsbefund-1997.md:206` „still carries" the retired denial. Made false by 0253, left
+as the `0252` record. Harmless once; if a third package layers another revision section on
+this file, the stack of present-tense-but-historical claims becomes a real trap.
+
