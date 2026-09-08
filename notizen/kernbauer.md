@@ -75,3 +75,43 @@ predecessor and stays readable.
   I added a paragraph for 0237 rather than rewrite the list -- a reviewer may fault the
   choice; the alternative was a bigger edit to a head that is not the package's subject.
 
+## 2026-09-08 -- the run on 0242 (the ceiling of the denominator condition)
+
+- 2026-09-08, **the lesson of the run** -- **An acceptance condition can name machinery
+  that lives in another package's file. Grep for the apparatus, not for the concept,
+  before you plan the run.** Condition 3 said "register the Riegel so the completeness
+  half of the Kennzeichen probe covers it". That apparatus -- `Riegel`, `bricht_ab_mit`,
+  the ledger, `probe_kennzeichen_eindeutig` -- exists **only** in `schritt_probe.cpp`,
+  which `0240` owns; `grep -rl kennzeichen kern/` returns two files and `werte_probe.cpp`
+  is not one of them. `werte_probe.cpp` proves its aborts with `hat_abgebrochen` plus
+  `enthaelt(letzte_meldung, ...)` and has no completeness half at all. I built a
+  one-Riegel ledger locally (`nennerdecke_angekommen`, `probe_nennerdecke_vollzaehlig`)
+  and wrote the divergence up as proposal `0244`. Two minutes of grep would have told me
+  this before I read the precedent in full.
+- 2026-09-08 -- **The way to keep an abort set fixed while changing its message: test the
+  precondition on `i128`, then let `festkomma` do the addition anyway.** Doing the
+  addition myself with `__builtin_add_overflow` would have been shorter and would have
+  broken T6 -- `festkomma.hpp` says in its own words that a checked addition outside it
+  makes "ein Satz mit einer Ausnahme". So `bip` compares
+  `static_cast<i128>(summe) + static_cast<i128>(teil)` against the two bounds *before*
+  each `plus`, in the same order over the same three addresses. Same aborting states,
+  different message -- which is exactly what condition 2 demanded and what let this run
+  beside `0240`. `I64_MAX - teil` would not have worked: for `teil == I64_MIN` the test
+  is itself the overflow it is meant to catch.
+- 2026-09-08 -- **Take the ceiling's wording from the spec, not from the floor's message.**
+  `spiel.md` names both ends in one sentence: `bip(l) > 0` **and** "a sum of positive
+  value added and a value-range bound the break run checks". I nearly wrote "obere Seite"
+  into the message, which would have been wrong -- the barrier catches both ends of `i64`,
+  and the negative end is the one the probe now exercises with the longest number the
+  message can carry (`I64_MIN`, twenty characters).
+- 2026-09-08, **what I am unsure about, for the project manager:** two things.
+  **(a)** The 319 characters in the doc block of `bip` are **hand-counted, not measured** --
+  I cannot compile. The probe prints the measured length next to
+  `MELDUNG_ZEICHEN_MAX`, and asserts only the bound and the absence of `meldung::MARKE`,
+  so a wrong hand count shows up in the report as a number rather than as a red tree. If
+  the printed value differs, the doc block is what needs correcting, not the code.
+  **(b)** The local ledger in `werte_probe.cpp` is a second copy of an idea that already
+  exists in `schritt_probe.cpp`. I think it is the right call under the file boundary and
+  wrote `0244` to close it, but a reviewer may fault it as exactly the divergence
+  `meldung.hpp` was built to prevent. The alternative was to leave condition 3 unmet.
+

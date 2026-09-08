@@ -1,7 +1,7 @@
 ---
 id: 0242-die-nennerbedingung-schuetzt-ihren-boden-und-nicht-ihre-decke
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: The three conditions under Acceptance. Condition 2 is the hard limit and the reason this package is cheap — you improve the message, not the arithmetic.

@@ -1690,6 +1690,161 @@ void probe_schaden_raender()
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
 }
 
+// ---------------------------------------------------------------------------
+// T48 Nr. 9 -- die Decke der Nennerbedingung, Paket 0242
+// ---------------------------------------------------------------------------
+//
+// Der Boden `bip(l) > 0` hat seit Paket 0237 eine verortete Meldung: Regel, Wortlaut,
+// Adresse, Zahl. Die Decke hatte keine -- die Summe lief durch `festkomma::plus`, und
+// dessen Meldung nennt weder Land noch Adresse noch den Nenner. Dieselbe Groesse, zwei
+// Meldungen sehr verschiedener Guete.
+//
+// Geprueft wird nach der Bauart dieser Datei: der Rand, der noch **rechnet**, und der
+// Schritt daneben, der abbricht. Beide Richtungen, denn beide Enden von `i64` sind
+// Teil derselben Wertebereichsschranke, und eine Fassung, die nur nach oben prueft,
+// bestuende einen Nachweis, der nur nach oben fragt.
+//
+// Der Zaehler ist die Vollzaehligkeitshaelfte. Ohne ihn hoehlt jede gestrichene
+// Abbruchstelle den Nachweis still aus: Was nicht ankommt, widerspricht nichts, und die
+// Probe bliebe gruen und saegte weniger. Faellt der Aufruf unten aus `main` heraus oder
+// verschwindet der Riegel aus `src/werte.cpp`, wird `probe_nennerdecke_vollzaehlig` rot.
+
+constexpr i64 ZWEI_HOCH_62 = 4'611'686'018'427'387'904;
+
+/// Wie oft die verortete Deckenmeldung in diesem Lauf angekommen ist.
+int nennerdecke_angekommen = 0;
+
+/// Zeichenzahl ohne Abschlussnull. Von Hand, weil `<cstring>` hinter der Sperre nicht
+/// mehr eingebunden werden darf -- derselbe Grund wie bei `enthaelt` daneben.
+std::size_t zeichenzahl(const char* text)
+{
+    std::size_t n = 0;
+    while (text[n] != '\0') {
+        ++n;
+    }
+    return n;
+}
+
+void lege_wertschoepfung(Rohling& r, Gebiet land, i64 eins, i64 zwei, i64 drei)
+{
+    r.lege(stelle_sektorgroesse(land, Sektor::Landwirtschaft, SektorGroesse::Wertschoepfung),
+           eins);
+    r.lege(stelle_sektorgroesse(land, Sektor::Industrie, SektorGroesse::Wertschoepfung), zwei);
+    r.lege(stelle_sektorgroesse(land, Sektor::Dienstleistungen, SektorGroesse::Wertschoepfung),
+           drei);
+}
+
+/// Die erwartete Adresse im Meldungsbau des Kerns erzeugt, nicht abgeschrieben: Eine
+/// abgeschriebene Textform weicht nach der ersten Umbenennung ab, ohne dass es auffaellt.
+Meldung adressform(Index platz)
+{
+    Meldung text;
+    text.adresse(platz);
+    return text;
+}
+
+void probe_bip_nennerdecke()
+{
+    const Index us_eins =
+        stelle_sektorgroesse(Gebiet::US, Sektor::Landwirtschaft, SektorGroesse::Wertschoepfung);
+    const Index us_zwei =
+        stelle_sektorgroesse(Gebiet::US, Sektor::Industrie, SektorGroesse::Wertschoepfung);
+    const Index de_drei = stelle_sektorgroesse(Gebiet::DE, Sektor::Dienstleistungen,
+                                               SektorGroesse::Wertschoepfung);
+
+    // Positivkontrolle voran: Der Rand selbst rechnet. 2^62 plus 2^62 minus eins ist
+    // genau I64_MAX. Ohne diese Bedingung bestuenden die darunter auch gegen eine
+    // Fassung, die eine Stelle zu frueh abbricht -- und dann waere aus dem Riegel eine
+    // verschobene Schwelle geworden, was dieses Paket ausdruecklich nicht darf.
+    {
+        Rohling r;
+        lege_wertschoepfung(r, Gebiet::US, ZWEI_HOCH_62, ZWEI_HOCH_62 - 1, 0);
+        const Zustand& z = r;
+        PRUEFE(bip(z, Gebiet::US) == I64_MAX);
+    }
+
+    // Der Fall aus dem Befund: dreimal 2^62. Die erste Teilsumme passt, die zweite nicht.
+    // Genannt wird deshalb die **zweite** Adresse und nicht die dritte -- die Reihenfolge
+    // der Summanden ist dieselbe wie vorher, und die Meldung weist sie aus.
+    {
+        Rohling r;
+        lege_wertschoepfung(r, Gebiet::US, ZWEI_HOCH_62, ZWEI_HOCH_62, ZWEI_HOCH_62);
+        const Zustand& z = r;
+        PRUEFE(hat_abgebrochen([&] { static_cast<void>(bip(z, Gebiet::US)); }));
+
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::bip"));
+        PRUEFE(enthaelt(letzte_meldung.data(), "Nenner der Zustimmungsregel"));
+        PRUEFE(enthaelt(letzte_meldung.data(), "bip(l) > 0"));
+        PRUEFE(enthaelt(letzte_meldung.data(), adressform(us_zwei).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), adressform(us_eins).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("mit ", ZWEI_HOCH_62).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("die Summe davor war ", ZWEI_HOCH_62).fertig()));
+
+        // Und **nicht** die Meldung, die bis zu diesem Paket hier ankam. Das ist der
+        // ganze Unterschied, um den es geht.
+        PRUEFE(!enthaelt(letzte_meldung.data(), "plus: Summe"));
+
+        // Die eine Zahl, die das Paket verlangt, gemessen statt behauptet. Die Marke am
+        // Ende einer abgeschnittenen Meldung waere hier teuer: Sie frisst genau den
+        // Schluss, um dessentwillen die Meldung gebaut wurde.
+        const std::size_t laenge = zeichenzahl(letzte_meldung.data());
+        std::printf("  Deckenmeldung: %zu Zeichen, hoechstens sind %zu erlaubt\n", laenge,
+                    kern::meldung::MELDUNG_ZEICHEN_MAX);
+        PRUEFE(laenge < kern::meldung::MELDUNG_ZEICHEN_MAX);
+        PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
+
+        if (enthaelt(letzte_meldung.data(), "kern::werte::bip")) {
+            ++nennerdecke_angekommen;
+        }
+    }
+
+    // Das andere Ende, und wieder der rechnende Rand zuerst: minus 2^62 zweimal ist
+    // genau I64_MIN und noch darstellbar.
+    {
+        Rohling r;
+        lege_wertschoepfung(r, Gebiet::DE, -ZWEI_HOCH_62, -ZWEI_HOCH_62, 0);
+        const Zustand& z = r;
+        PRUEFE(bip(z, Gebiet::DE) == I64_MIN);
+    }
+
+    // Eine Einheit weiter, und die Summe faellt aus `i64` heraus. Der Abbruch faellt an
+    // der dritten Adresse, und die Meldung traegt hier die laengste Zahl, die sie
+    // ueberhaupt tragen kann.
+    {
+        Rohling r;
+        lege_wertschoepfung(r, Gebiet::DE, -ZWEI_HOCH_62, -ZWEI_HOCH_62, -1);
+        const Zustand& z = r;
+        PRUEFE(hat_abgebrochen([&] { static_cast<void>(bip(z, Gebiet::DE)); }));
+
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::bip"));
+        PRUEFE(enthaelt(letzte_meldung.data(), adressform(de_drei).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("die Summe davor war ", I64_MIN).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), "plus: Summe"));
+        PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
+
+        if (enthaelt(letzte_meldung.data(), "kern::werte::bip")) {
+            ++nennerdecke_angekommen;
+        }
+    }
+
+    // Die Gegenrichtung des Nachweises: Die Kennzeichen dieses Riegels duerfen auf die
+    // fremde Meldung **nicht** passen. Sonst kennzeichnete die Liste nichts, und der
+    // Nachweis oben bestuende auch gegen die Fassung vor diesem Paket.
+    PRUEFE(hat_abgebrochen([&] { static_cast<void>(kern::festkomma::plus(I64_MAX, 1)); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "plus: Summe"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::bip"));
+    PRUEFE(!enthaelt(letzte_meldung.data(), "Nenner der Zustimmungsregel"));
+}
+
+/// Hat der Riegel in diesem Lauf wirklich gefeuert -- beide Richtungen, beide Meldungen?
+///
+/// Zwei und nicht "mindestens eine": Wer eine der beiden Richtungen streicht, streicht
+/// damit die halbe Wertebereichsschranke, und eine Zaehlung mit `> 0` saehe das nicht.
+void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 2); }
+
 }  // namespace
 
 int main()
@@ -1731,6 +1886,12 @@ int main()
     probe_schaden_zollzeile();
     probe_schaden_drei_uebrige_zeilen();
     probe_schaden_raender();
+
+    // Paket 0242 -- die Decke der Nennerbedingung, T48 Nr. 9.
+    probe_bip_nennerdecke();
+
+    // Zuletzt, denn sie liest ein, was der Aufruf darueber hinterlassen hat.
+    probe_nennerdecke_vollzaehlig();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

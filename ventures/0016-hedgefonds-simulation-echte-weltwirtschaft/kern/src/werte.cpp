@@ -688,13 +688,64 @@ i64 korbbestand(const Zustand& z, const Konstanten& konst)
 }
 
 // --- Nr. 9 ---------------------------------------------------------------
+
+/// Die Decke der Nennerbedingung, in der Form, die ihr Boden seit Paket 0237 hat.
+///
+/// `spiel.md` sagt ueber diese Summe zweierlei an derselben Stelle: "bip(l) > 0" sei die
+/// Nennerbedingung, und sie sei "a sum of positive value added and a value-range bound
+/// the break run checks". Den Boden haelt `kern::schritt` mit einer verorteten Meldung.
+/// Die Decke hatte bis Paket 0242 gar keine: Die Summe lief durch `festkomma::plus`, und
+/// der meldete "plus: Summe ausserhalb von i64 (T7)" -- ohne Land, ohne Adresse, ohne ein
+/// Wort ueber den Nenner. Dieselbe Groesse bricht einen Schritt weiter unten mit Regel,
+/// Wortlaut, Adresse und Zahl ab -- ein Wert, zwei Meldungen sehr verschiedener Guete.
+///
+/// **Der Riegel verschiebt keine Schwelle** -- das ist die Bedingung, unter der dieses
+/// Paket neben anderen laufen durfte. Geprueft wird vor jeder Teiladdition genau die
+/// Bedingung, an der `plus` unmittelbar danach abbraeche, und in derselben Reihenfolge
+/// ueber dieselben drei Adressen. Die Menge der abbrechenden Zustaende ist deshalb
+/// dieselbe wie vorher; allein die Meldung ist eine andere.
+///
+/// **Die Addition bleibt in `festkomma`.** Eine zweite gepruefte Addition im Kern waere
+/// nach T6 der Satz mit der Ausnahme, den der eine Rechenort verhindert -- hier steht
+/// eine Vorbedingung, keine Rechnung.
+///
+/// Warum die Vorbedingung auf `i128` prueft und nicht auf `i64`: `I64_MAX - teil` ist
+/// fuer `teil == I64_MIN` selbst der Ueberlauf, den sie fangen soll. Die Summe zweier
+/// `i64` passt auf `i128` immer (ADR 0011, Massnahme 3).
+///
+/// **Die Laenge ist gezaehlt, nicht geschaetzt.** In dem Fall, den der Befund nennt,
+/// misst die Meldung 319 Zeichen; ueber alle Zustaende, die sie erreichen kann,
+/// hoechstens 323. Die zwoelf Adressen dieser Summe tragen alle dieselbe Textform von 31
+/// Zeichen und unterscheiden sich nur in der Stellenzahl ihrer Nummer, und laenger als
+/// zwanzig Zeichen wird keine der beiden Zahlen. `meldung::MELDUNG_ZEICHEN_MAX` ist 511 --
+/// abgeschnitten wird hier nichts, und der Landesname am Ende geht nicht verloren.
+/// `werte_probe` misst dieselbe Laenge zur Laufzeit nach.
 i64 bip(const Zustand& z, Gebiet land)
 {
     i64 summe = 0;
     for (const Sektor sektor : SEKTORLISTE) {
-        summe = plus(summe,
-                     z.lies(zustand::stelle_sektorgroesse(land, sektor,
-                                                          SektorGroesse::Wertschoepfung)));
+        const Index platz =
+            zustand::stelle_sektorgroesse(land, sektor, SektorGroesse::Wertschoepfung);
+        const i64 teil = z.lies(platz);
+
+        const festkomma::i128 gesamt =
+            static_cast<festkomma::i128>(summe) + static_cast<festkomma::i128>(teil);
+        if (gesamt > static_cast<festkomma::i128>(festkomma::I64_MAX)
+            || gesamt < static_cast<festkomma::i128>(festkomma::I64_MIN)) {
+            Meldung text;
+            text.text("kern::werte::bip -- die Wertschoepfungssumme verlaesst i64 (T7). "
+                      "Sie ist der Nenner der Zustimmungsregel; spiel.md gibt ihr neben "
+                      "\"bip(l) > 0\" eine Wertebereichsschranke, und die ist hier "
+                      "gerissen. Ueberzaehlig ist ");
+            text.adresse(platz);
+            text.text(" mit ");
+            text.zahl(teil);
+            text.text("; die Summe davor war ");
+            text.zahl(summe);
+            festkomma::abbruch(text.fertig());
+        }
+
+        summe = plus(summe, teil);
     }
     return summe;
 }
