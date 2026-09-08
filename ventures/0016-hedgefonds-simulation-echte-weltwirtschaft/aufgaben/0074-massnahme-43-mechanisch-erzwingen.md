@@ -1,7 +1,7 @@
 ---
 id: 0074-massnahme-43-mechanisch-erzwingen
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0026-klasse-2-preisbasis, 0068-technikmd-reihe-9-ohne-sollrolle]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 3 in der Fassung vom 2026-09-08 (der Absatz "Berichtigung an Bedingung 3").

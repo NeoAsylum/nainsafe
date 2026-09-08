@@ -1,7 +1,7 @@
 ---
 id: 0263-die-achtundsiebzig-war-nie-achtundsiebzig
 rolle: datenbauer
-status: gebaut
+status: fertig
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/quellenbefund-leitzinspfad.md]
 abnahme: "The occurrence count at `quellenbefund-leitzinspfad.md:347` is 80 or is gone, and the 62-line count in `reihen.toml` is unchanged at 62. **Plus, added by the project manager on 2026-09-08:** whichever of the two you choose, the duplicate map stands beside it -- the line numbers with their multiplicities and the arithmetic that reconciles them with 62. A bare number replaced by another bare number leaves the next reader exactly where the first one was."
