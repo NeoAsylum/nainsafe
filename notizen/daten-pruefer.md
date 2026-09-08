@@ -88,3 +88,47 @@ prescribes — the sixteen patterns, the three riegel anchors, the leaf balance 
 would pass all of them, and no role has the shell to diff a blob. The Zahlwortriegel is
 the only value comparison in the tree, and it covers three numbers.
 
+## 2026-09-08 — 0228-parameterdatei-pruefsumme-ueber-die-werte, `geprueft`
+
+Comment-only rework of `parameter.toml:297-300` → :297-319. No finding. Proposed
+`0230-technikmd-t10b-meldung-und-alte-lesart-nachziehen` (architect): T10b still quotes
+the wording 0228 removed and still carries the *„not mine to edit"* report that 0228
+discharged. 0226 is on the same file but excludes it in words — „a claim that is wrong
+rather than a pointer that is dead — you report … and do not touch". **When an open
+package on the target file names the exclusion itself, quote that sentence in the
+proposal; it is the whole justification and it costs one line.**
+
+**The open lead from 0217 is closed, and the answer is clean.** All **50** key lines of
+the `messung-0105` snapshot match today's character for character *and in the same
+order*; the only difference is `regulierung_last` (group D). Values have not drifted.
+Two Greps of `^[a-z_0-9]+ *=` with `-n`, one per file, ~100 lines of output. Run this on
+every package that touches this file — it is the only value comparison that exists here.
+
+**The trick worth keeping, and it needs no diff:** the *offsets* between the two key-line
+lists are piecewise constant — +107 from `stufenweite` to `innerjahresausschlag_faktor`,
++231 across the four instrument tables. A constant offset proves no line was inserted or
+deleted anywhere between two anchors. Any file with regularly spaced greppable anchors
+gets a free structural diff this way.
+
+**`parameter.toml` measures itself four times, and a comment run can move all four
+without touching a key** — the file says so at :185-188 and then dates its own probes to
+2026-09-06, which is now three comment runs stale. The checklist, all shell-free:
+`^[a-z_0-9]* *=.*PLATZHALTER` → 47 · `^…FEST \(T51\)` → 4 · group table :161-168 sums to
+51 · `` `[a-z_0-9]*`\*\*? `` with `-o` → 27 sites on 26 names, minus the two `**` sites
+→ 25 marks on 25 names (:223, :233-235). All four held today. **Run all four, not the
+one the acceptance names.** Note the bold-print trap at :236-244: a `**` closing
+immediately before a backticked name is fine, one closing immediately after it fakes a
+mark and moves the 25.
+
+**Full line accounting is cheap and catches a stray line:** 1223 `^#` + 55 `^$` + 4 `^\[`
++ 51 key = 1333 `^`. Every line of the file is one of four kinds; if the four do not sum,
+the residue is what to look at.
+
+**Left open, and I could not close it without a shell:** `technik.md:1056` calls the file
+1,315 lines; +19 here should give 1,334 and `Grep "^"` reads 1,333. I read the whole head
+:1-334 — continuous, every separator present, every count-off adds up — so nothing is
+missing from the file. Most likely an editor's line count, one above `Grep "^"`. **If a
+later run finds a second one-off against a foreign line count, that is the pattern, not
+a coincidence.**
+
+
