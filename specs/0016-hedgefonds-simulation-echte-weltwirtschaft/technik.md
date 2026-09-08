@@ -2183,9 +2183,9 @@ of the 310. This table is the set in which it lay.
 | 6 | `stufenwert(p)` | 2 | `mal_geteilt(markt(p), stufenweite, 10.000)` | T47 |
 | 7 | `marktkorb(m, k)` | 2 | Σ 12 `korbwert` + Σ 4 `anleihewert`, quantities from `m`, prices from `k` | T33 |
 | 8 | `korbbestand(z)` | 2 | see below | T47 |
-| 9 | `bip(l)` | 2 | `Σ über die 3 Sektoren wertschoepfung[l][s]` | here |
-| 10 | `schuld(l)` | 2 | `mal_geteilt(bip(l), staatsschuld[l], 10.000)` | here |
-| 11 | `handelsvolumen(l, s)` | 2 | see below; the one-argument form `handelsvolumen(l)` is its sum over s ∈ {1, 2} | here |
+| 9 | `bip(l)` | 2 | `Σ über die 3 Sektoren wertschoepfung[l][s]`; **two read forms**, see no. 22 | here |
+| 10 | `schuld(l)` | 2 | `mal_geteilt(bip(l), staatsschuld[l], 10.000)`; **two read forms**, see no. 22 | here |
+| 11 | `handelsvolumen(l, s)` | 2 | see below; the one-argument form `handelsvolumen(l)` is its sum over s ∈ {1, 2}; **two read forms**, see no. 22 | here |
 | 12 | `anleihekurs(l)` | 5 | see below | here |
 | 13 | `landespreis(g, s)` | 5 | `lies_alt(gebiet.<g>.sektor.<s>.preis)` | T39 |
 | 14 | `fondsanteil(l, s)` | 4 | `\|stufen(l, s)\| · stufenweite + anteil[l][s]` | here |
@@ -2282,6 +2282,32 @@ derived quantity but an address**, written in step 6 as
 `mal_geteilt(korbbestand(z), 10.000, markt.wert)` — `spiel.md` writes there
 `teile_gerundet(korbbestand · 10.000, markt.wert)`; that is the same number, but the
 naive form overflows per T6, and therefore the `i128` form is binding.
+
+**Number 22 takes exactly one state input, and it is the `Schreiber` — decided
+2026-09-08, package `0165`.** `spiel.md` writes the three quantities of the damage rows
+with `lies_neu` (section *Die eine Regel*: `bip`, `schuld`, `handelsvolumen`) and books
+the addresses they read as written in **step 4**, while the damage itself runs in step 5.
+Numbers 9, 10 and 11 therefore read **the state emerging in this round**, and that state
+exists nowhere as a `Zustand`: the writer releases one only through `rundenende()`, after
+the target-mask check, and in step 5 the round is not over. A second `Zustand` argument
+beside the writer can therefore only ever be the **previous** round's — it reads
+`lies_alt` on 56 addresses where `spiel.md` prescribes `lies_neu`. Therefore:
+
+**Numbers 9, 10 and 11 each get a second read form that takes a
+`const schreiber::Schreiber&` and reads every address of its formula through
+`lies_neu`.** The `Zustand` forms stay unchanged and keep every reader they have. Number
+22 takes the writer, the carrier of T10b and the two indices, and nothing else:
+
+```
+schaden(rundenschreiber, konstanten, l, i)
+```
+
+**Two read forms are not two quantities**, the same construction as the two arities of
+number 11: one definition, two routes to its addresses. The table therefore still counts
+**twenty-two** quantities; the declarations in `werte.hpp` outside `intern` rise from
+**twenty-three to twenty-six**, and whoever lays header against table counts a name once
+and its forms beside it. Why not a read access on the writer's state, which readers the
+`Zustand` forms have, and what it costs: section 22.
 
 **Three quantities lie outside the core** and therefore do not stand in the table:
 `B(z)`, `v(z)` and `e(z)` from T44. They are test-bench quantities, belong to the
@@ -4176,3 +4202,166 @@ a policy rate for — it does not for two of today's model countries; as a class
 country is selectable, and the policy rate alone decides whether it costs 806 or 158 values.
 Deferred are the choice of the country, the choice of its codes, the estimation procedure of
 stage 4 and the window. None of these changes anything about T62 or T63.
+
+## 22. Der Schadenseingang — Paket `0165`
+
+**What is decided here and what is not.** Decided is which state numbers 9, 10 and 11
+read when number 22 calls them, and by which route it arrives. Not decided is anything
+about the damage rule itself: the four rows, their quantities, their shifts and the number
+106 stay as `spiel.md` writes them, and no address is added, removed or reclassified. The
+decision stands at T48 number 22; this section carries the evidence for it, the two
+answers rejected and the reports.
+
+### The finding, in the numbers of `spiel.md`
+
+The brief reported number 22 as built with **two** state inputs,
+`schaden(z, rundenschreiber, konst, l, i)`, and asked what ties them together. Nothing
+does, and the count-off `spiel.md` prints for itself says why it also cannot be made to.
+Section *Wo die Regel läuft* books the reads of the damage:
+
+| read as | addresses | comes today through |
+|---|---:|---|
+| `lies_neu(land.<l>.instrument.<i>.stand)`, written in step 3 | 16 | `hub` — the writer ✓ |
+| `lies_neu(welt.preis.<s>)`, written in step 4 | 2 | `keilhub` — the writer ✓ |
+| `lies_neu(handel.<a>.<b>.<s>)`, written in step 4 | 40 | `handelsvolumen` — a `Zustand` ✗ |
+| `lies_neu(land.<l>.sektor.<s>.wertschoepfung)`, written in step 4 | 12 | `bip` — a `Zustand` ✗ |
+| `lies_neu(land.<l>.staatsschuld)`, written in step 4 | 4 | `schuld` — a `Zustand` ✗ |
+| `lies_alt(…instrument.<i>.stand)`, `lies_alt(…gegendruck)` | 32 | `hub`, counterforce 5 ✓ |
+
+`74` of the `106` are `lies_neu`, and **56 of those 74 arrive today through a `Zustand`.**
+The damage runs in step 5; those 56 addresses are written in step 4 of the **same** round.
+So the state the three quantities have to read is the one emerging in this round — and no
+`Zustand` in step 5 carries it. `Schreiber` keeps it as `neu` and releases it only through
+`rundenende()`, after the two-sided mask check of T38. The only `Zustand` a step-5 caller
+holds is `vorrunde`, the argument of `schritt` per T10b.
+
+**The two inputs are therefore not merely unbound; the second one has no correct value.**
+That is one step worse than the brief assumed, and it changes which answer is available:
+whatever `z` a caller passes, three of the four damage rows read the world before step 4.
+All four are affected — the tariff row through `handelsvolumen`. `spiel.md` writes of
+channel 3 that the tariff level reaches the damage „by two paths instead of one", and the
+older of the two runs instrument → trade → `handelsvolumen`; read from the previous round,
+that path carries nothing.
+
+### Why the cheap answer is not available
+
+Answer 3 of the brief — leave two inputs and write down which state is meant — asks for a
+sentence that cannot be written true. „`z` is the state emerging in this round" names no
+object that exists in step 5; „`z` is the previous round" contradicts the 56 rows above.
+A binding sentence over a pair of which one member has no correct value binds nothing.
+
+**And the precedent the built version cites does not carry.** Its header calls the
+two-input form „dieselbe Bauart wie `marktkorb`". Number 7 takes two states **because they
+are meant to differ** — quantities via `lies_alt`, prices via `lies_neu` per T33; the
+difference is the quantity's whole content. Number 22's two inputs are meant to be the
+same round. A construction whose point is a difference is no precedent for a pair that
+must not differ.
+
+### Why not answer 2, with the readers
+
+Answer 2 — move numbers 9, 10 and 11 wholly onto the writer — fails on readers that have
+no writer and cannot get one, and this is the list checked against (state of
+2026-09-08):
+
+| Reader | where | reads | why a `Zustand` and not a writer |
+|---|---|---|---|
+| `waehrungswert(l)`, no. 4 | `kern/src/werte.cpp:628` | `handelsvolumen(z, l)` | valuation, called on a finished state |
+| `anleihewert(l)`, no. 3 | `kern/src/werte.cpp:581` | `schuld(mengen, l)` | the **quantity** side of `marktkorb`, deliberately `lies_alt` per T33 |
+| state output, country level (G8) | `kern/src/zustandsausgabe.cpp:169` | `bip(z, l)` | displays a saved or finished game; there is no round and no writer |
+| test bench | `kern/test/werte_probe.cpp`, `kern/test/zustandsausgabe_probe.cpp` | all three | states built by hand, without a round |
+
+The third row alone settles it: the three-level state output of G8 must be able to print a
+loaded game, and a loaded game has no writer. Answer 2 would have to invent one.
+
+### Why not a read access on the writer's state
+
+The obvious cheap form of answer 1 — the `Schreiber` hands out its emerging state as
+`const Zustand&`, and numbers 9 to 11 stay as they are — is the one form that must not be
+built, and the built writer says so itself:
+
+> `neu` beginnt als Abschrift von `alt`. … Auf das Leserecht wirkt die Abschrift nicht —
+> `lies_neu` entscheidet am Bitfeld und nicht am Wert.
+> (`kern/include/kern/schreiber.hpp`, box above `class Schreiber`)
+
+A bare reference to `neu` reads past the bit field. An address not yet written in this
+round then yields its previous-round value **silently** — exactly the fallback T39 forbids
+in words („kein stiller Rueckgriff auf `alt`"), and reintroduced at the one place the
+order 4 → 5 has to hold. The route must therefore be `lies_neu` itself, and that means a
+form of each quantity that takes the writer.
+
+### What is prescribed
+
+1. Numbers 9, 10 and 11 each get a **second form** taking `const schreiber::Schreiber&`,
+   with the same name, the same arity and the same class as the `Zustand` form, and every
+   address of the formula read through `lies_neu`. The existing `Zustand` signatures are
+   **unchanged**; no reader of the table above is touched.
+2. Number 22 becomes `schaden(rundenschreiber, konstanten, l, i)`. It calls the writer
+   forms of 9, 10 and 11 and the already-writer-based 18, 19 and 20, and holds no
+   `Zustand` at all.
+3. **The duplication is pinned by a check and not by care.** For a writer in which every
+   address of the formula has been written with the value a state `z` carries, both forms
+   return the same number, bit for bit — one test per quantity, over the countries and
+   sectors, and it fails the moment the two bodies drift apart. That is a cheaper proof
+   than a shared implementation would be, and a shared one is not available: the two
+   forms differ precisely in the access that has to differ.
+4. **The T39 abort is the yield, not the cost.** Reading through `lies_neu` turns
+   „counterforce 5 runs after the market clearing" from a promise into a property every
+   run proves: called before step 4, number 22 dies at the first unwritten address instead
+   of returning a plausible number from the previous round. `spiel.md` argues the same way
+   for the round boundary of channel 3 — „not promised but enforced".
+
+### The count-off after this section
+
+**Twenty-two quantities, twenty-six declarations** in `werte.hpp` outside `intern`,
+counted 2026-09-08: twenty-three today, plus one each for numbers 9, 10 and 11. The
+quantity count does not move, and the mechanical proof of T48 stays runnable with one
+added rule — a name is counted once, its forms beside it. That rule is not new; number 11
+has needed it since 2026-09-03 for its two arities, and this is the same case with the
+read access in place of the arity.
+
+**A blank address in the Definition column of T48 does not mean `Zustand`.** It means the
+table does not decide the access, and where the access changes the number, the entry at
+the quantity does — this is now written out for numbers 9 to 11, and it was already the
+case for number 19, whose blank `welt.preis.<s>` is read through the writer because
+`hub` forces it, and for number 21, whose blank is a `Zustand` for the stated reason that
+the market clearing has not yet written a world price.
+
+### Cost, and what does not change
+
+**No new address (310 stays 310), no new field, no target mask changed, no save format
+touched, and no new read.** The same 56 addresses are read as today, by the same formulas
+in the same order; only the route changes. Each of those reads gains the bit test that
+`lies_neu` performs anyway — the same order of magnitude T18 prices for the write side at
+„one bit test per write". The cost line of section 10 does not move, and the 106 read
+accesses of `spiel.md` stay 106.
+
+**No ADR, and the reason is checkable.** T10's touchstone from `0208` — removing an
+argument needs one — protects a **signature sentence that stands in a specification**,
+and answers which part of T10 binds. `schaden(z, rundenschreiber, konst, l, i)` stands in
+no specification; it stands in `werte.hpp`, chosen by the build agent of `0152` and
+reported by it as the one decision it had to make without cover. T48 has never bound C++
+argument lists: number 13 and numbers 18 to 20 take a writer, numbers 1 to 12 a state, and
+the table's Definition column names neither. Closing that gap for number 22 is what this
+package is, and the place for it is the document that carries the decisions of this trade.
+*Whoever reads T10's touchstone as general rather than as a statement about `schritt` gets
+a different answer here; then this section is the ADR text and someone with write access
+to `decisions/` has to copy it. I do not have it.*
+
+### Reports
+
+1. **To the project manager — the built version must move, and it is small.** Affected:
+   one declaration and one definition of number 22, three new declarations and definitions
+   for numbers 9 to 11, and **twelve call sites in `kern/test/werte_probe.cpp`**;
+   `schaden` has **no** caller in `kern/src` today (checked 2026-09-08 over `kern/**.cpp`).
+2. **The existing test currently proves the opposite of what it looks like.**
+   `probe_schaden_zollzeile` passes as `z` the very state the writer was constructed from
+   and writes only instrument levels and world prices into the round, so `handelsvolumen`,
+   `bip` and `schuld` read values that did not move. The numbers 440.000, 3.000, 6.000 and
+   2.100 are right and stay right; what the test does not show is the case in which step 4
+   moved the trade block. **A test whose subject cannot move is green and worthless** —
+   the writer forms turn that into a case the test must set up explicitly.
+3. **To the game designer, and it needs no answer for this section:** `spiel.md` writes
+   `lies_neu(land.<l>.staatsschuld)` and books it as written in step 4. It is in the target
+   mask of T38 in both modes, so the read is satisfiable; whether the debt ratio is in fact
+   written before step 5 in every mode is a property of the step order and not of this
+   decision.
