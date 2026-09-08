@@ -846,8 +846,13 @@ binary `*` against **named rules**, first match wins — the construction of
 4. `static_cast<i128>` on both sides — the computation site of T6;
 5. **both operands are integer literals** — digits, the digit separator `'`, whitespace,
    parentheses and `+ - *`, no identifier — **and** the `*` stands in the condition of a
-   `static_assert`. *Decided in this version, package `0268`;* section 33 says why both
-   halves are needed and why the operand alphabet ends there.
+   `static_assert`. The region the alphabet is held against is the run around that `*`,
+   bounded on each side by the nearest **delimiter** — `==`, `!=`, or the top-level comma
+   before the message — and otherwise by the opening `static_assert(` and its closing `)`.
+   **Only these three end the region.** Any other character outside the alphabet *inside*
+   the run — `/`, for instance — is a **finding**, not a boundary. *Decided in this
+   version, package `0268`;* section 33 says why both halves are needed and derives both of
+   its examples from this boundary.
 
 Anything else is a **finding**, and that is the fifth kind: two `i64` with magnitude
 meaning per T5. Deny by default is the whole point; a rule reads the **declaration** the
@@ -5806,6 +5811,11 @@ lines that stand in the corpus today matched neither; `schritt.cpp:405` now fall
 fifth **named rule**, `festkomma.cpp:91` under a stated rule of **reading**, and the latch
 runs green on its first day instead of red.
 
+**Return 1 of 2026-09-08, finding 1 — fixed.** Rule 5 named an operand alphabet but not where
+the operand **region** ends, and its own two normative examples could not both be derived from
+it. The delimiter set now stands in rule 5 and its derivation below. Nothing else in this
+section or in T7 was touched.
+
 **Two answers and not one, because the two cases are not the same question.** The first asks
 what the rule set **covers**, the second what the latch **reads** before any rule applies. A
 single sentence over both would have been the list of tolerated names that T7 rejects with
@@ -5835,9 +5845,24 @@ state opens at `static_assert(` in the code part and closes at the next `;` — 
 as `im_block` in `bezeichner_riegel.cpp:222`, and the `;` is unambiguous because the message
 is a string and its content is gone by then.
 
-**A character outside the operand alphabet is a finding, deliberately.**
-`static_assert(4 * 3 / 2 == 6)` would not match, because `/` is not in it. Deny by default
-means the next kind is decided in this document, not by whoever writes the line.
+**Where the operand region ends, because the alphabet decides nothing until it is fixed.**
+The two ways of fixing it *without* named delimiters each falsify one of the sentences of
+this section. Take the whole `static_assert` state as the region, and line 405 still carries
+`== 152, ""` after the reading rule, so `=`, `,` and `"` make it a **finding** — the latch
+is red on day one. Take the maximal *alphabet* run instead, and the right-hand run in
+`4 * 3 / 2 == 6` stops before the `/` and leaves the pure literal `3`, so the line
+**matches**. Hence the delimiter set in rule 5: `==`, `!=`, and the top-level comma before
+the message end the region, and nothing else does. That is what separates the `=` of `==`
+from the `/` — without it, both are merely „not in the alphabet".
+
+**A character outside the operand alphabet is a finding, deliberately.** With that boundary
+the two examples fall out together instead of against each other: line 405's region is
+`4 * (12 + 9 + 1) + 22 + 40 + 2`, which lies entirely inside the alphabet, so it **matches**;
+the region in `static_assert(4 * 3 / 2 == 6)` is `4 * 3 / 2`, and `/` is not in the alphabet,
+so it **does not**. The relational operators `<`, `>`, `<=`, `>=` are deliberately **not**
+delimiters: they would cut a template argument list as readily as a comparison, and no
+recount in the corpus uses them. Deny by default means the next kind is decided in this
+document, not by whoever writes the line.
 
 ### `festkomma.cpp:91` — reading, not a rule
 
