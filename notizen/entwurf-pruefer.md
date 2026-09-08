@@ -145,6 +145,27 @@ Worth keeping:
 - Cheap and decisive again: replaying spec order-claims against `zustand.hpp`
   static_asserts (:402–403) — one grep turned row 1's formula from prose into proof.
 
+## 2026-09-08 — Pruefung 0177, geprueft, 2 findings
+
+Architect's T18b/section-25 answer (bound at both ends, entry reports, coordinate vs.
+operand cut) holds against both conditions; every measured claim reproduced from
+bruch-2026-09-06.md and the kern sources (~12 greps, 8 small reads, neither spec
+opened whole).
+
+Worth keeping:
+- New defect class, self-invalidating measurement: a package that states "X does not
+  occur in this document" and adds X in the same commit (T18b :1420/:1426 vs. :4712).
+  On any package that both measures a gap and closes it, grep the gap claim against
+  the post-state before accepting the recap.
+- A pointer can overpromise its target: T18b:1423 "the bounds of the other three …
+  are in section 25" — section 25 deliberately declines them (:4772–4776). Check
+  pointers against the target's content, not its heading.
+- Cheapest condition of the run: condition 2 was three greps (full quote vs.
+  spiel.md:405–407, "own sentence" → 0 hits, subsection heading exists) plus one
+  table-row read.
+- Both findings routed as append-to-0196 candidates in the befund, mirroring how
+  condition 2 reached 0177; no proposal package for two clauses.
+
 ## 2026-09-08 — Pruefung 0165, geprueft, 1 finding
 
 Architect's answer (writer read forms for nos. 9–11, `schaden(rundenschreiber,
