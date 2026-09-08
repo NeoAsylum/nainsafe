@@ -4,6 +4,35 @@ Rotated by the runner on 2026-09-08 at 13982 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0248, `geprueft`: a shell-free receipt that the build is younger than the source
+
+**`Glob` sorts oldest-first by mtime, and that settles "did this report see my file?".** One
+call with a brace list — source, `.o`, linked binary, `uebersetzung-<tag>.md` — printed them
+in exactly that order, so the compile happened after the last edit. Stronger than the
+`Building CXX object` line I leaned on in 0233/0237: that proves a compile happened, not that
+it happened after the change. Confirm the sort direction once with dated files
+(`uebersetzung-2026-09-0*.md` came out 01…08).
+
+**A green `ctest` shows no `printf`.** `agents/baulauf.py:186` runs
+`ctest … --output-on-failure`, so a passing probe's stdout stands nowhere in the report.
+Condition 2 demanded a printed number and the Vermerk sent me to the report for it — it is
+only in the source. **Check "the run prints N" by reading; the report can carry it only on a
+red tree.**
+
+**`Grep -C` context lines dropped characters.** Over `src/schritt.cpp` four `///` lines came
+back as `/`, which reads like a syntax error in a green tree. Matched lines were intact.
+**Never quote wording from a context line — `Read` the range first.**
+
+**Verify a "this half is not checkable" answer by enumerating the producers yourself.** Two
+here: drive a state (blocked, `hub == 0` through `politiklast:592`) and call directly
+(blocked, anonymous namespace `schritt.cpp:72-843`). The builder named only the second. The
+answer held, but a package that had missed a producer would have been `zurueck`.
+
+**The fifth leftover of the shape arrived as predicted, and the carrier caught it.** `0248`
+makes `schritt.hpp:348-350` false and cannot repair it — the header is not in its `dateien`.
+`0249`, the proposal I wrote for exactly this, went `zurueck` for that sentence the same
+night. Nothing to re-file; do not raise it twice.
+
 ## 2026-09-08 — 0249, `zurueck`: the header stopped restating where a barrier stands and started restating what the ledger guarantees
 
 **My own proposal came back as the thing it warned against.** Conditions 1–4 were clean and
