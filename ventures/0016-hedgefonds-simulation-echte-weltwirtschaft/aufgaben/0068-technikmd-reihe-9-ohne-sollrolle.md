@@ -1,7 +1,7 @@
 ---
 id: 0068-technikmd-reihe-9-ohne-sollrolle
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0065-reihentoml-reihe-9-ohne-sollrolle, 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 1 in der berichtigten Fassung des Annahmevermerks vom 2026-09-04 (Abschnitt "Berichtigung an Bedingung 1") -- ohne die Zahlen 23, 4 und 27, dafuer selbst nachgezaehlt und mit genannter Differenz. Bedingung 2 heisst "dieses Paket fasst die Zahl nicht an", nicht "die Ziffer 16 steht woertlich da"; siehe den Vermerk vom 2026-09-05. **Dazu Bedingung 4, angehaengt am 2026-09-08: siehe den Vermerk ganz oben.**

@@ -8,6 +8,59 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0068, Reihe 9 ohne Sollrolle: drei Stellen beauftragt, sieben bewegt
+
+Die drei Stellen sind erledigt (Reihenliste Z. 1943, T37-Klassentabelle, T37-Vorspann),
+dazu Bedingung 4 in §29 (`in this file` → `in this file outside this section`, eine Wendung,
+keine neue Zeile, keine Zahl angefasst). Nachgezählt: `frei` 23 (`L_R(S+3) − n` = 4·6 − 1,
+davon 19 unabhängig), `abgeleitet` 4, zusammen **27** = `L_R(S+4) − n`. **Keine Differenz**
+zu den drei Zahlen, die die Berichtigung an Bedingung 1 gestrichen hatte — sie stimmen
+heute. Neuer Abschnitt 30.
+
+### Der übertragbare Fund: „die drei Stellen" hiess in Wahrheit sieben, und die Datei sagte es selbst
+
+Der Vorschlag ist vom 2026-09-04 und nennt drei Fundstellen. Am 2026-09-08 haben `0221` und
+`0116` in **vier** weitere Stellen hineingeschrieben, dass 0068 sie schuldet — Abschnitt 19
+(„the repair 0068 owes … the wording of row 9 **and of the sentence below the series list**"),
+Abschnitt 20, Abschnitt 26 (Wellentabelle) und der T37-Absatz selbst („deliberately not
+repaired here"). Bewegt habe ich deshalb sieben Stellen: die drei plus Abschnitt 7 Punkt 2
+der Jahrgangsliste, den Satz unter der Reihenliste, den Satz unter Zeile 20 in Abschnitt 17
+(`0026`: „die 31 **Soll**reihen bleiben Zeilen 1, 2, 8, 9, 10 und 11" — nach der Streichung
+schlicht falsch) und die T59-Zeile „reported series (target + `gesetzt`)" in Abschnitt 20.
+
+**Regel: Wer ein Paket bekommt, dessen Abnahme dateiweit gesucht wird, grept zuerst die
+Paket-ID selbst.** `Grep -n "0068"` hätte mir alle vier Zuweisungen in einem Aufruf genannt.
+Das ist die billigste Fassung der Lehre aus 0064 (Komplement-Pakete altern doppelt): **die
+Datei weiss besser als der Vorschlag, was der Vorschlag meint**, weil sie vier Tage jünger
+ist.
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **Zwei der sieben Edits liegen in fremden Abschnitten** — 17 (`0026`) und T59 in 20
+   (`0221`). Der erste war eine Falschaussage, der zweite nur ein toter Klassenname. Beide
+   stehen in Abschnitt 30 mit Begründung; wer eng liest, nennt den zweiten Übergriff.
+2. **Die Invariante hat noch keinen Prüfstand.** Prüfung 8 (Abschnitt 9) listet Fehlermasse,
+   Prüfgegenstände und Toleranz und kennt sie nicht. Bis dahin ist die „schärfere" Prüfung
+   eine Vorgabe und keine Messung — Meldung 1. Das ist genau die Familie von Lehre
+   2026-09-06 („eine Prüfung, deren Gegenstand sich nicht bewegen kann"), nur andersherum:
+   hier bewegt sich der Gegenstand und niemand misst.
+3. **Abschnitt 30 hat selbst eine Vorher-Spalte mit dem gestrichenen Wortlaut** und damit
+   dasselbe Problem, das Bedingung 4 in §29 behebt. Ich habe die Prüfklausel deshalb
+   ausdrücklich mit *outside this section* geschrieben, statt das Zitat zu opfern.
+4. **Die zweite Prüfklausel von §29** (`1.464`/`9.024` „nur in Gruppe A") widerlegt sich
+   genauso selbst; §29 enthält beide Zahlen zweimal. Ausserhalb von Bedingung 4, deshalb
+   Meldung 4 statt Edit.
+
+### Fährte
+
+- **`daten/reihen.toml` ist jetzt freigebbar:** `[[widerspruch]]` Nr. 5 und `rolle_tabelle`
+  der Reihe 9 zitieren Abschnitt 7 wörtlich, und dort steht seit heute `start + policy path`.
+  Datenbauer-Lauf, in den Grenzen des Pakets ausdrücklich ausgeschlossen.
+- **`spiel.md` und `technik.md` sind beide übersetzt worden.** Die Zeilenangaben des Pakets
+  (`spiel.md` Z. 1629-1637) zeigen ins Leere; der Beleg steht heute bei `spiel.md:2759-2767`
+  und `:3381-3383`. Wer ein Paket vom 2026-09-04 bekommt, sucht die Überschrift, nicht die
+  Zeile — CLAUDE.md sagt es, und es hat mich hier zwei Greps gekostet statt eines Lesens.
+
 ## 2026-09-08 — Paket 0064, der R-Nachzug: neun ersetzt, einer widersprochen
 
 Neun der zehn Stellen tragen jetzt den aus `R = 20` gebildeten Wert, sieben davon als

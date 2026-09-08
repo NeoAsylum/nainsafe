@@ -1645,11 +1645,13 @@ vintage contains:
    from T18 could not name it in round 1. Only the four playable countries carry
    instruments (T15), hence 16 each and not 20 each. **This paragraph is a proof, not a
    provenance entry;**
-2. **Target series** for the `L_R(S+5) − n` reported series from `spiel.md` plus the trade
-   block over `(L_R+1)·L_R·(S−1)` flows — today **31** and **40** —, per series with the
-   classification from T37. The vintage carries all 31, because `gesetzt` and `abgeleitet`
-   are reported; **target series in the narrow sense are `L_R(S+4) − n` = 27** since the
-   cut of 2026-09-03. The wording belongs to `0068`, the count in `L_R` to section 26;
+2. **Comparison values** — the file `sollreihen-<jahr>.bin` — for the `L_R(S+5) − n`
+   reported series from `spiel.md` plus the trade block over `(L_R+1)·L_R·(S−1)` flows —
+   today **31** and **40** —, per series with the classification from T37. It carries all
+   31, because the policy rate and the `abgeleitet` government debt ratio are reported as
+   well; **target series are the `L_R(S+4) − n` = 27 that remain** since the cut of
+   2026-09-03. The file name predates that cut and is not renamed here — renaming moves
+   T23, the manifest and the builder together; the count in `L_R` stands in section 26;
 3. **historical policy paths** for policy rate, tariff level and budget balance. The
    fourth lever, financial-market regulation, has no anchor and stands fixed in the
    `weltlauf` at its start value — which makes the oracle blind for this instrument, and
@@ -1940,7 +1942,7 @@ So that the data builder can check the field „Source" per series. Source per `
 | 6 | Labour force | 4 + RW | persons | WDI / PWT | exogenous path | no |
 | 7 | Employment per sector | (4+RW) × 3 | persons | WDI (ILO) | start | **yes** |
 | 8 | Consumer prices | 4 | bp annual rate | WDI / IMF IFS | start + target (4, frei) | **yes** (IMF-based) |
-| 9 | Policy rate | 4 | bp | IMF IFS | start + policy path + target (4, **gesetzt**) | no |
+| 9 | Policy rate | 4 | bp | IMF IFS | start + policy path | no |
 | 10 | Exchange rate against USD | 3 | index | IMF IFS / WDI | start + target (3, frei) | check |
 | 11 | Government-debt ratio | 4 | bp | IMF WEO | start + target (4, **abgeleitet**) | no |
 | 12 | Budget balance | 4 | bp | IMF WEO | start + policy path | no |
@@ -1954,10 +1956,11 @@ So that the data builder can check the field „Source" per series. Source per `
 
 `NV.IND.MANF.ZS` (manufacturing) is per `spiel.md` **not** used and is therefore not
 listed here. The `L_R(S+5) − n` reported series are rows 1, 2, 8, 9, 10 and 11 — at
-`L_R = 4`, `S = 3`, `n = 1` that is 4+12+4+4+3+4 = **31**. Row 9 (policy rate, class
-`gesetzt`) has carried no target role since the cut of 2026-09-03, so `L_R(S+4) − n` =
+`L_R = 4`, `S = 3`, `n = 1` that is 4+12+4+4+3+4 = **31**. Row 9 (policy rate) has carried
+no target role since the cut of 2026-09-03 and, since package `0068`, no class in T37
+either — it is checked as an invariant, see the preamble of T37 —, so `L_R(S+4) − n` =
 **27** of them are target series; the whole table above counts in `L_R = 4` and moves with
-the horizon in section 26, the wording of row 9 with `0068`. The
+the horizon in section 26. The
 trade block from row 14 comes in as a block of its own. The four quantities without a
 data anchor are rows 17, 18, 19 and the instrument financial-market regulation —
 exactly the four that `spiel.md` enumerates under „Die Grenze des Orakels".
@@ -2801,9 +2804,26 @@ cost `60 · Σ(R+1−t) + R`, with `Σ(R+1−t) = R(R+1)/2`, at R = 20 thus
 
 **T37 — The backtest reports per target series whether it can check anything at all — and
 `spiel.md` has decided which ones decide.** In the `weltlauf` the policy instruments are
-set to the historically actual values. The model's policy-rate series is thereby the
-target series by construction; its error is zero and its directional accuracy one,
+set to the historically actual values. The model's policy-rate series thereby reproduces
+its own input; an error measure over it would be zero and its directional accuracy one,
 without the model having achieved anything.
+
+**What takes the place of the class `gesetzt` — because a struck table row on its own reads
+as a waiver.** Package `0054` (2026-09-03) took the target role off series 9, and the class
+fell with it: its only series was no longer a target series. The policy rate is thereby
+checked **harder**, not less. That the machine carries the set path through unchanged is an
+**invariant**, not a threshold: deviates the model value at **any** support point of the
+window from the set path, that is a hard error of the run — not an error measure of 300 bp,
+the bar this series would otherwise have had to clear as a rate series under T42. It is
+still reported. `spiel.md` decides it in the same words: *"What takes its place is sharper,
+not softer … If the model value deviates from the set path at any support point, that is a
+hard error and not an error measure of 300 basis points. It is still reported."* (`spiel.md`,
+section *Wie die vier Masse berechnet werden*, read 2026-09-08.)
+
+The invariant costs **no** check subject and enters no tolerance: it can only hold or break,
+so there is nothing to aggregate over support points. Enforcing it falls to the backtester,
+check 8 in section 9; that row still lists only the error measures, and section 30 reports
+the gap.
 
 **Every count in this block is a formula in `L_R`, `S` and `n` (T59), no longer a digit —
 changed 2026-09-08, package `0221`.** `L_R` is the number of backtest countries, `S = 3`
@@ -2816,8 +2836,13 @@ of `spiel.md`.
 | Class | Series | Count | today (`L_R = 4`) | Meaning |
 |---|---|---|---:|---|
 | `frei` | GDP (`L_R`), sector shares (`L_R·S`), consumer prices (`L_R`), exchange rate (`L_R − n`) | `L_R(S+3) − n`, of them `L_R(S+2) − n` independent, plus the trade block | 23 (19 independent) | checks the machine, decides the acceptance |
-| `gesetzt` | policy rate (`L_R`) | `L_R` | 4 | input of the run, error zero by construction; is reported, decides nothing |
 | `abgeleitet` | government debt ratio (`L_R`) | `L_R` | 4 | numerator follows the set budget balance, only the denominator is endogenous; is reported, decides nothing |
+
+**Two rows, and they add up:** `L_R(S+3) − n` + `L_R` = `L_R(S+4) − n`, at `L_R = 4` that
+is 23 + 4 = **27** — the target-series count of T59 and of `sollreihen_gesamt` in
+`daten/reihen.toml`. The row `gesetzt` is **gone, not set to zero**: a class with count 0
+would go on suggesting a third sort of target series where there are two. The policy rate
+keeps its two other roles and is reported; what checks it now stands above.
 
 **The acceptance runs over `3·L_R + (L_R − n) + 1` check subjects with tolerance
 `⌊L_R/2⌋`.** So set by `spiel.md`: version 3 wrote the two as the digits 16 and 2, the
@@ -2843,9 +2868,20 @@ at most `⌊L_R/2⌋` of them are breached — today two of sixteen —; each br
 named individually, with both numbers. Reported are all `L_R(S+5) − n` series plus the
 flows, today **31**. **Of those 31, `L_R(S+4) − n` = 27 are target series** since the cut
 of 2026-09-03 (`spiel.md`, package `0054`: series 9 lost its target role and keeps its two
-others). The word "target series" for all 31 is the **second wave** and is deliberately
-not repaired here — it belongs to `0068-technikmd-reihe-9-ohne-sollrolle`; section 26 says
-why.
+others). The second wave — the word "target series" for all 31 — is repaired since
+2026-09-08 with package `0068`; section 30 names every place it moved and every one it left
+standing.
+
+**`3·L_R + (L_R − n) + 1` and `⌊L_R/2⌋` are untouched by that cut, and that is recounted,
+not assumed.** Series 9 never entered a check subject: the table above draws solely on
+series 1, 2, 8, 10 and 14, and it could not draw on series 9, because that one carried the
+class `gesetzt` and was error-free by construction — a series that cannot fail must not
+soften a total measure. `spiel.md` counts it off the same way: *"None of the sixteen check
+subjects contains series 9, and none could: per T37 it was `gesetzt`. … What has changed is
+the denominator of the target series (31 → 27), not that of the check subjects."*
+(`spiel.md`, section *Wie die vier Masse berechnet werden*, read 2026-09-08.) So 16 and 2
+stay what they were before 2026-09-03 — and they stay it as the evaluation of the two
+formulas at `L_R = 4`, per package `0221`, not as digits.
 
 **T42 — The three error measures, written out, because `spiel.md` puts numbers on them
 and does not compute them.** Everything in integers via `teile_gerundet` (T6). `S` is the
@@ -3460,7 +3496,7 @@ to avoid. **The row therefore stands here, ready for the next architect package:
 |---:|---|---|---|---|---|---|
 | 20 | Export price index of the world, from `NE.EXP.GNFS.CD` and `NE.EXP.GNFS.KD` | 1 | ten-thousandths, 2015 = 10,000 | WDI | conversion of the vintage per T53, **no target** | no |
 
-It does **not** change the sentences under the table: the 31 target series remain rows 1,
+It does **not** change the sentences under the table: the 31 reported series remain rows 1,
 2, 8, 9, 10 and 11, the trade block remains a block of its own, and the four quantities
 without a data anchor remain rows 17, 18, 19 and the financial-market regulation. Series 20
 is a conversion quantity, not a checked one.
@@ -3930,7 +3966,7 @@ USA) is a backtest country, otherwise 0; today `n = 1`.
 | free target series | `L_R(S+3) − n` | 23 | 23 | 41 | 53 | `zaehlregel_t37` |
 | derived target series | `L_R` | 4 | 4 | 7 | 9 | series 11 |
 | **Target series** | `L_R(S+4) − n` | **27** | **27** | **48** | **62** | T55, `sollreihen_gesamt` |
-| reported series (target + `gesetzt`) | `L_R(S+5) − n` | 31 | 31 | 55 | 71 | T37, section 7 series list |
+| reported series (target + policy rate) | `L_R(S+5) − n` | 31 | 31 | 55 | 71 | T37, section 7 series list |
 | **Target mask `weltlauf`** | `L_R(4S+I+11) + (4S+10) + (L_R+1)L_R(S−1) + (S−1) + 3` | **175** | **175** | **328** | **450** | T38, T55 |
 
 **Recomputation in running text, every number substituted once by hand.**
@@ -5356,7 +5392,86 @@ the three **sectors** in T37 and T59, and the **support points** (25, per the ta
 
 ### The check this section can be held to
 
-`Grep` for `18.024` and `87.864` in this file gives **zero** hits. `Grep` for `1.464` and
+`Grep` for `18.024` and `87.864` in this file outside this section gives **zero** hits. `Grep` for `1.464` and
 `9.024` gives hits only in the frontmatter key `partie`, in T40's example column and in
 section 10's table and recount row — that is, exclusively in group A. Every hit of `24` and
 `25` outside those places falls into B, C or D above, or is one of the five reports.
+
+## 30. Reihe 9 ohne Sollrolle — Paket `0068`
+
+**What this answers, in one line.** `spiel.md` took the target role off series 9 (policy
+rate) on 2026-09-03 with package `0054`; `technik.md` went on carrying it at three places,
+and `daten/reihen.toml` therefore had to keep a contradiction (`[[widerspruch]]` no. 5,
+package `0065`) that only this file can release.
+
+### The three places, and what stands there now
+
+| # | Place | before | now |
+|---:|---|---|---|
+| 1 | Series list, section 7, row 9, column "Role" | `start + policy path + target (4, gesetzt)` | `start + policy path` — the wording rows 12 and 13 already carry |
+| 2 | Class table T37 | three rows, `gesetzt` = policy rate (4) | two rows, `frei` and `abgeleitet`; the row is **gone, not zeroed** |
+| 3 | Preamble of T37 | „the model's policy-rate series is thereby the target series by construction" | the same observation, then what takes the class's place: the invariant, with its threshold, its cost in check subjects and its enforcer |
+
+### The count, recounted against the file and not taken from the package
+
+`frei` **23** (`L_R(S+3) − n` = 4·6 − 1), of them 19 independent (`L_R(S+2) − n` = 4·5 − 1);
+`abgeleitet` **4** (`L_R`); together **27** = `L_R(S+4) − n` = 4·7 − 1. **No difference** to
+the three numbers the package's original condition 1 named, and none to
+`zaehlung.sollreihen_gesamt = 27` in `daten/reihen.toml` from package `0065`. The reported
+count stays **31** = `L_R(S+5) − n` — a different denominator, not touched here. Each of
+these is a formula in `L_R` per package `0221`, and `L_R = 4` is the reading section 26
+binds.
+
+### The second wave outside the three places — four corrections
+
+Condition 1 is searched file-wide, not against a table of three, and four further places
+carried the struck word or the struck class name:
+
+- **Section 7, the vintage's content list, point 2** — labelled all 31 "target series" and
+  named `gesetzt` as a reported class; both would dangle after this package. The file name
+  `sollreihen-<jahr>.bin` stays, and why is said there.
+- **Section 7, the sentence below the series list** — named the class of row 9 and pointed
+  at `0068`; it names the invariant now.
+- **Section 17 (`0026`), the sentence under the new row 20** — said „the 31 target series
+  remain rows 1, 2, 8, 9, 10 and 11". Two words; what that sentence claims about package
+  `0026` is untouched.
+- **T59 in section 20 (`0221`), row „reported series"** — its label read
+  „target + `gesetzt`" and thereby named a class that no longer exists. Now
+  „target + policy rate". The formula, all four columns and the reference are unchanged;
+  this is the one place where I edited inside another package's block without the defect
+  being a false statement, and I say so here rather than leave the name dangling.
+
+### Four reports to the project manager
+
+1. **Check 8 in section 9 does not name the invariant.** Its row lists the error measures,
+   the check subjects and the tolerance. The invariant of T37 is nowhere in the test bench
+   yet — an architect package over section 9, not commissioned here, and until it runs the
+   sharper check exists only as a requirement.
+2. **`daten/reihen.toml` can be released now.** `[[widerspruch]]` no. 5 and the field
+   `rolle_tabelle` of series 9 quote section 7 verbatim; that wording is now
+   `start + policy path`. A data-builder run, per the package's own limits.
+3. **Three forward pointers to `0068` are records, not open work** — section 19 (*„the
+   repair 0068 owes … is untouched"*), section 20 (*„what 0068 owes is the wording of the
+   `gesetzt` row"*) and section 26's wave table (*„marked at each place, repaired by
+   `0068`"*). Each stays true as a record of what its **own** package did; whoever follows
+   one looking for open work lands here. Not touched, because they belong to other packages.
+4. **§29's second check clause has the defect condition 4 fixed in the first.** It claims
+   `1.464` and `9.024` hit only in group A — §29's own group-A table row and its `Grep` list
+   contain both. The same phrase would fix it; condition 4 named the first clause only.
+
+### Untouched, expressly
+
+The 16 check subjects and the tolerance 2 — the reason stands at the end of the T37 block —,
+the 31 reported series, the target mask 175, T55, `daten/reihen.toml`, and every place that
+carries `R`. T59 only in the one label named above.
+
+### The check this section can be held to
+
+**Outside this section**, `Grep` over `technik.md` finds `gesetzt` at five places, and each
+says the class fell away rather than that it holds: the preamble of T37, the sentence under
+its class table, the ground for the 16, the quotation from `spiel.md` beside it, and
+section 20's record of what *that* package did (two lines). **No table row carries `gesetzt`
+together with the policy rate, and no place gives row 9 a target role.** Inside this section
+the struck wording stands in the "before" column of the table above — that is the evidence,
+and it is why this clause says *outside this section* instead of repeating the mistake
+condition 4 had to correct in §29.
