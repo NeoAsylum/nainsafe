@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Messung zu Paket 0180, nachgezogen in 0199 (Stand nach 0194) und in 0213 (Teil C).
+"""Messung zu Paket 0180, nachgezogen in 0199 (Stand nach 0194), 0213 (Teil C) und
+0232 (die Zeilennummern von A2).
 
 Laeuft als Probe `zahlwort_messung` unter `ctest`. Von Hand, aus beliebigem
 Verzeichnis -- die Wurzel des Vorhabens kommt aus dem eigenen Pfad:
@@ -44,6 +45,13 @@ Jeder erwartete Wortlaut muss auf **genau einen** gerissenen Fall passen, und je
 gerissene Fall muss von genau einem Wortlaut getroffen sein. Wird ein Fall umformuliert,
 reisst die Messung laut; wird er umnummeriert, merkt sie es gar nicht -- und das ist
 richtig so. Die aufgeloeste Nummer steht in der Ausgabe, damit sie lesbar bleibt.
+
+Dieselbe Regel gilt seit 0232 fuer die **Zeilennummern** in der Erwartung von Fall A2.
+Sie standen ausgeschrieben da; 0229 hat oberhalb in `werte.hpp` eingefuegt, aus 157
+wurde 185, und die Messung war rot, ohne dass am Riegel etwas fehlte. Erhoben wird
+jede Nummer jetzt aus dem Mutantentext selbst, an dem Wortlaut, den die Behauptung
+traegt. Wie die Schranke dieser Ableitung aussieht und warum sie nicht auf alles passt,
+steht bei Fall A2 selbst.
 
 ## Der Uebersetzer kommt von aussen
 
@@ -110,6 +118,20 @@ def einmal_ersetzen(text, alt, neu, wo):
     return text.replace(alt, neu)
 
 
+def zeile_von(text, wortlaut, wo):
+    """Die 1-basierte Zeilennummer eines Wortlauts, der genau einmal dastehen muss.
+
+    Die Bedingung ist die ganze Ableitung: Ohne eindeutige Fundstelle gibt es keine
+    Zeilennummer, und eine geratene waere schlimmer als eine veraltete.
+    """
+    if text.count(wortlaut) != 1:
+        raise Messfehler(
+            f"{wo}: '{wortlaut[:60]}' kommt {text.count(wortlaut)} mal vor, erwartet war "
+            f"genau einmal. Die Zeilennummer dieser Behauptung ist damit nicht zu "
+            f"erheben; die Erwartung waere geraten.")
+    return text.count("\n", 0, text.index(wortlaut)) + 1
+
+
 # ---------------------------------------------------------------------------
 # Die Selbstprobe -- der Rotnachweis dieses Skripts, bei jedem Aufruf
 # ---------------------------------------------------------------------------
@@ -141,6 +163,39 @@ def selbstprobe():
             abbruch(f"Selbstprobe '{name}' ist verfehlt: ersetzt wurde [{ergebnis}], "
                     f"erwartet war [{soll_text}].")
     print(f"  Selbstprobe: {len(faelle)} Faelle zu einmal_ersetzen, alle wie erwartet.")
+
+
+# `zeile_von` traegt seit 0232 die fuenf Erwartungen von Fall A2. Eine abgeleitete
+# Erwartung, die still auf alles passt, ist schlimmer als eine veraltete -- also wird
+# hier bei jedem Lauf gezeigt, dass die Ableitung in beide Richtungen zuschlaegt: dass
+# sie bei fehlendem und bei doppeltem Wortlaut abbricht, und dass die Nummer, die sie
+# bei genau einem Vorkommen zurueckgibt, wirklich gezaehlt und nicht geraten ist. Die
+# Nadel steht dafuer einmal in der Mitte, mit einer Zeile auf jeder Seite als Zeugin.
+
+def selbstprobe_zeile():
+    TEXT = "aa\nbb\ncc\n"
+    faelle = [
+        ("Wortlaut fehlt", TEXT, "xx", True, None),
+        ("Wortlaut steht zweimal", "aa\nbb\naa\n", "aa", True, None),
+        ("Wortlaut in der ersten Zeile", TEXT, "aa", False, 1),
+        ("Wortlaut in der Mitte", TEXT, "bb", False, 2),
+        ("Wortlaut in der letzten Zeile", TEXT, "cc", False, 3),
+    ]
+    for name, text, wortlaut, soll_reissen, soll_nummer in faelle:
+        try:
+            ergebnis = zeile_von(text, wortlaut, "Selbstprobe")
+            gerissen = False
+        except Messfehler:
+            ergebnis, gerissen = None, True
+        if gerissen != soll_reissen:
+            abbruch(f"Selbstprobe '{name}' ist verfehlt: zeile_von hat "
+                    f"{'nicht ' if soll_reissen else ''}abgebrochen. Dann ist die "
+                    f"Zeilennummernableitung von Fall A2 keine Schranke mehr, sondern "
+                    f"eine Erwartung, die auf jeden Text passt.")
+        if not gerissen and ergebnis != soll_nummer:
+            abbruch(f"Selbstprobe '{name}' ist verfehlt: erhoben wurde Zeile "
+                    f"{ergebnis}, erwartet war {soll_nummer}.")
+    print(f"  Selbstprobe: {len(faelle)} Faelle zu zeile_von, alle wie erwartet.")
 
 
 # ---------------------------------------------------------------------------
@@ -241,6 +296,7 @@ def ordne_zu(name, erwartet, beobachtet):
 # ---------------------------------------------------------------------------
 
 selbstprobe()
+selbstprobe_zeile()
 UEBERSETZER = uebersetzer_aus(sys.argv[1:])
 
 try:
@@ -287,6 +343,62 @@ vergleich = uebersetze(rein, "rein")
 print("\n## Teil A: der Riegel gegen vier Staende von werte.hpp\n")
 
 try:
+    # A2 ist der Fall, den Paket 0213 zurechtgerueckt hat, und er ist der schaerfste in
+    # Teil A: Der Mutant setzt eine 23. Nummer ein, ohne eines der vier Zahlwoerter
+    # nachzuziehen. Damit weichen **fuenf** Behauptungen zugleich ab -- vier an den
+    # Groessen gegen 23 gezaehlte Nummern und eine an den Deklarationen gegen 24
+    # gezaehlte Zeilen.
+    #
+    # Von 0194 bis 0213 stand hier Code **2** und keine einzige Abweichung: Die
+    # Fundstelle der Sorte 3 war schon am Bestand rot, die Empfindlichkeitsprobe
+    # verglich die *Zahl* der roten Fundstellen, und eine schon rote kann nicht roeter
+    # werden. Der Riegel brach vor der ersten gedruckten Abweichung ab, mit einer
+    # Begruendung, die das Gegenteil sagte. Seit 0213 vergleicht die Probe je
+    # Fundstelle; dieser Fall belegt, dass genau die Saettigung weg ist.
+    #
+    # Bis 0232 standen die fuenf Zeilennummern ausgeschrieben da: 2, 16, 32, 32, 157.
+    # Sie gehoeren einer Datei, die dieser Fall nicht besitzt; 0229 hat oberhalb
+    # eingefuegt, aus 157 wurde 185, und die Messung war rot, ohne dass am Riegel etwas
+    # fehlte. Jede Nummer wird jetzt am Wortlaut der Behauptung erhoben.
+    #
+    # Warum das keine Erwartung ist, die still auf alles passt -- drei Gruende:
+    #   * Der Wortlaut muss **genau einmal** dastehen, sonst Messfehler und Code 1.
+    #     `selbstprobe_zeile()` zeigt bei jedem Lauf, dass diese Schranke zuschlaegt.
+    #   * Die Nummer kommt aus dem **Eingabetext** des Mutanten, nicht aus der Ausgabe
+    #     des Riegels. Nennt der Riegel eine andere Zeile, weicht die Liste ab.
+    #   * Verglichen wird weiter die **ganze Liste**, nicht ihre Laenge: Faellt eine der
+    #     fuenf Behauptungen weg, ist der Fall rot. Genau das war die Saettigung von
+    #     0194, und sie kommt hierueber nicht zurueck.
+    # Wandert der Wortlaut, folgt die Erwartung ihm; verschwindet er, reisst sie.
+    A2_BEHAUPTUNGEN = [
+        ("die zweiundzwanzig abgeleiteten Groessen",
+         "'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23"),
+        ("eine der zweiundzwanzig Groessen hier ist",
+         "'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23"),
+        ("**Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen",
+         "'Zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23"),
+        ("**Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen",
+         "'dreiundzwanzig Deklarationen' nennt 23, gezaehlt sind 24"),
+        ("Die zweiundzwanzig Groessen aus T48, in der Reihenfolge seiner Tabelle",
+         "'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23"),
+    ]
+
+    a2_text = einmal_ersetzen(
+        heutig, "\n}  // namespace kern::werte\n",
+        "\n/// **T48 Nr. 23** -- eine neue Groesse, und niemand zieht das Zahlwort nach.\n"
+        "[[nodiscard]] zustand::i64 neuwert(const zustand::Zustand& z);\n"
+        "\n}  // namespace kern::werte\n", "A2")
+
+    # Der Riegel liest die Datei von oben nach unten, also wird nach Zeilennummer
+    # sortiert und nicht in der Reihenfolge der Tabelle oben. `sorted` ist stabil: die
+    # beiden Behauptungen derselben Zeile behalten ihre Reihenfolge von dort.
+    a2_erhoben = sorted(((zeile_von(a2_text, wortlaut, "A2"), rest)
+                         for wortlaut, rest in A2_BEHAUPTUNGEN),
+                        key=lambda paar: paar[0])
+    a2_soll = [f"Zeilennummer {nummer}: {rest}" for nummer, rest in a2_erhoben]
+    print(f"  A2: {len(a2_soll)} Behauptungen erwartet, ihre Zeilen aus dem "
+          f"Mutantentext erhoben: {[nummer for nummer, _ in a2_erhoben]}")
+
     # A0 -- die Gegenprobe. Ohne sie zeigt Teil A nur, dass der Riegel ueberhaupt rot
     # werden kann, und nicht, dass er es aus dem gemeinten Grund tut.
     A_FAELLE = [
@@ -296,31 +408,8 @@ try:
          einmal_ersetzen(heutig, "die zweiundzwanzig abgeleiteten Groessen",
                          "die einundzwanzig abgeleiteten Groessen", "A1"),
          1, ["Zeilennummer 2: 'einundzwanzig Groessen' nennt 21, gezaehlt sind 22"], ""),
-        # A2 ist der Fall, den Paket 0213 zurechtgerueckt hat, und er ist der schaerfste
-        # in Teil A: Der Mutant setzt eine 23. Nummer ein, ohne eines der vier Zahlwoerter
-        # nachzuziehen. Damit weichen **fuenf** Behauptungen zugleich ab -- vier an den
-        # Groessen (Zeilen 2, 16, 32, 157) gegen 23 gezaehlte Nummern und eine an den
-        # Deklarationen (Zeile 32) gegen 24 gezaehlte Zeilen.
-        #
-        # Von 0194 bis 0213 stand hier Code **2** und keine einzige Abweichung: Die
-        # Fundstelle der Sorte 3 war schon am Bestand rot, die Empfindlichkeitsprobe
-        # verglich die *Zahl* der roten Fundstellen, und eine schon rote kann nicht
-        # roeter werden. Der Riegel brach vor der ersten gedruckten Abweichung ab, mit
-        # einer Begruendung, die das Gegenteil sagte. Seit 0213 vergleicht die Probe je
-        # Fundstelle; dieser Fall belegt, dass genau die Saettigung weg ist.
-        ("A2 Deklaration ergaenzt, Zahlwort nicht nachgezogen",
-         einmal_ersetzen(
-             heutig, "\n}  // namespace kern::werte\n",
-             "\n/// **T48 Nr. 23** -- eine neue Groesse, und niemand zieht das Zahlwort nach.\n"
-             "[[nodiscard]] zustand::i64 neuwert(const zustand::Zustand& z);\n"
-             "\n}  // namespace kern::werte\n", "A2"),
-         1,
-         ["Zeilennummer 2: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23",
-          "Zeilennummer 16: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23",
-          "Zeilennummer 32: 'Zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23",
-          "Zeilennummer 32: 'dreiundzwanzig Deklarationen' nennt 23, gezaehlt sind 24",
-          "Zeilennummer 157: 'zweiundzwanzig Groessen' nennt 22, gezaehlt sind 23"],
-         ""),
+        # A2 -- gebaut und begruendet oben, weil seine Erwartung erhoben werden muss.
+        ("A2 Deklaration ergaenzt, Zahlwort nicht nachgezogen", a2_text, 1, a2_soll, ""),
         (f"A3 Stand vor 0155 ({VORSTAND})", vorher, 1,
          ["Zeilennummer 73: 'eine Jahrgangskonstante[n]' nennt 1, gezaehlt sind 2"], ""),
     ]

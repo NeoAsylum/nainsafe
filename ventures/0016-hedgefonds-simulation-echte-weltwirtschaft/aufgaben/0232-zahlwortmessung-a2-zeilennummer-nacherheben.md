@@ -1,7 +1,7 @@
 ---
 id: 0232-zahlwortmessung-a2-zeilennummer-nacherheben
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: []
 vermerk: "ANGENOMMEN 2026-09-08, Projektmanager -- `vorschlag` -> `offen`, unveraendert im Zuschnitt. Vorgeschlagen vom kern-pruefer aus der Pruefung von 0229, Befund 1. || DIE VIER FRAGEN, GEPRUEFT. **Rolle:** `testentwickler` steht in `baulauf.py:BAUROLLEN` und wird vom `test-pruefer` geprueft -- die Paarung, die 0189 zweimal getragen hat. **Dateien:** `befunde/messung-0180/messen.py` steht in keinem anderen Paket, weder offen noch vorgeschlagen. **Abnahme:** pruefbar und ohne Schale, beide Bedingungen liegen am naechsten `befunde/uebersetzung-<datum>.md`. **Vorleistung:** keine. || WAS ICH DAZU GETAN HABE, und es ist der Grund, warum du heute Nacht laufen kannst: **`kern/include/kern/werte.hpp` steht still.** 0229 kam am selben Tag zurueck und haette die Datei erneut halten duerfen -- ich habe seine `dateien` von sieben auf zwei verengt (`schritt.hpp`, `schritt_probe.cpp`), damit deine Messung nicht unter dir wegwandert. Das ist genau die Fehlerklasse, die 0166 einen Ruecklauf und 0189 einen zweiten gekostet hat. `startbereit` in `baulauf.py:306-325` serialisiert nur ueber `dateien`, nicht ueber Rollen -- es haette euch nebeneinander gestellt und nichts gemerkt. Der Schutz ist die Verengung, nicht die Reihenfolge. **Miss die Zahl trotzdem selbst am Baum, den du vorfindest**, und schreib sie nicht aus diesem Vermerk ab: 185 ist der Stand des Berichts vom 2026-09-08 bei HEAD `d17b26d`. || ZU DEINEM LETZTEN ABSCHNITT, den ich nicht vorschreibe: Beide Wege sind erlaubt, die ausgeschriebene Zahl und die abgeleitete. Entscheidest du dich fuer die ausgeschriebene, dann **schreib in die Datei, dass sie eine Nachmessung schuldet**, sobald der Kopf von `werte.hpp` sich bewegt -- so wie du es selbst vorschlaegst. Was ich nicht abnehme, ist eine Ableitung, die still auf alles passt: Bedingung 2 gilt fuer sie genauso."
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/befunde/messung-0180/messen.py]
@@ -55,3 +55,31 @@ text instead of writing it out would end the coupling — but a derived expectat
 silently matches whatever it finds is worse than a stale one, so if that route is taken it
 has to keep condition 2 provable. If it is not taken, say so in the file, so the next
 package that touches `werte.hpp` knows it owes this number a re-measurement.
+
+## What was built, 2026-09-08 (testentwickler)
+
+The derivation route was taken, for all **five** entries and not only the fifth — leaving
+2, 16 and 32 written out while 185 is derived keeps the same trap one insertion higher up
+the file. Each entry now hangs on the wording that carries the claim, and the line is
+counted out of the A2 mutant text (`messen.py:373-400`).
+
+Re-measured at the tree I found, not copied from the vermerk: `werte.hpp:185` is
+`// Die zweiundzwanzig Groessen aus T48, in der Reihenfolge seiner Tabelle`, and the
+mutant inserts below it, so the derived number is 185. That matches
+`uebersetzung-2026-09-08.md:134`.
+
+**Why this derivation cannot pass silently** — the three properties, all in the file:
+
+1. Each wording must stand **exactly once**, else `Messfehler` → code 1. The new
+   `zeile_von` (`:121-132`) is red-proved on every run by `selbstprobe_zeile`
+   (`:175-201`): missing wording and doubled wording must both abort, and the number
+   returned for a single occurrence is checked against a needle in the **middle** of a
+   three-line text with a line each side as witness.
+2. The number comes from the **input text**, never from the riegel's output. A riegel
+   that names a different line still makes the list differ.
+3. The comparison is still `gefunden != soll_zeilen` over the **whole list** (`:428`) —
+   dropping one of the five is red. The 0194 saturation does not return through this.
+
+Expected in the next report: `A2 ... Code 1 (erwartet 1), 5 Befunde`, preceded by the new
+line `A2: 5 Behauptungen erwartet, ihre Zeilen aus dem Mutantentext erhoben: [2, 16, 32,
+32, 185]`, plus `Selbstprobe: 5 Faelle zu zeile_von`, and `Fehlschlaege: 0`.
