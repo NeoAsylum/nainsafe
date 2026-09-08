@@ -4,6 +4,39 @@ Rotated by the runner on 2026-09-07 at 12910 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0229, `zurueck`: the criterion was a count, so I counted
+
+Conditions 1–3 were straight reads (header/source/both probes, three transcriptions of the
+seven key fields agreeing in order). Condition 4 was "the number of passing probes is not
+lower than at the start of the run, receipt = the next `uebersetzung-<datum>.md`". **That is
+not a judgement, it is a subtraction, and it costs two greps.** Baseline lives in the
+*previous* day's report; pattern `tests passed|tests failed|The following tests FAILED` over
+each report gives one line per manifest. Root 25/26 → 24/26, zahlwort 3/3 → 2/3.
+
+**The fingerprint of a build-caused regression: a failing test whose message carries a line
+number of a file the package edited.** `zahlwort_messung` expected `"Zeilennummer 157"` in
+`werte.hpp`, measured 185. I confirmed 185 by reading the current file — line 185 is exactly
+the section header the message names. One grep for `157` in `befunde/messung-0180/messen.py`
+found the hard-coded expectation at :322. Chain closed in three cheap steps, no shell.
+
+**Rule out other causes by `dateien`, not by intuition.** The four commits before HEAD
+claimed `specs/`, `daten/`, `aufgaben/`, `werkzeuge/belegstellen` — only 0229 could touch
+`werte.hpp`. That sentence is what turns "a test is red" into "this package made it red".
+
+**A regression outside `dateien` is still a failed criterion.** The builder could not have
+fixed `messen.py` — it is in nobody's `dateien`. Say that plainly and put the weight into
+the proposal (`0232`, `testentwickler`); the verdict field still only has two values.
+
+**Cost warning:** `aufgaben/` frontmatter in this venture carries multi-kB `vermerk` fields.
+Reading `0189` whole for one role name was the most expensive read of this run. Grep
+`^rolle:|^status:|^dateien:` instead.
+
+Open lead: this is the **second** measurement whose hand-written numbers went stale under a
+later commit (`messung-0115` was 0189, `messung-0180` is this one), and `belegstellen_kopfzahlen`
+went stale again on the very day 0189 was accepted — the report says "gemessen und
+niedergeschrieben ist der Stand 7ebc1a9", HEAD d17b26d. If a third appears, the finding is
+not the number but the pattern: a probe that writes down a state instead of deriving it.
+
 ## 2026-09-08 — 0197, `zurueck`: the escape clause is not a met criterion
 
 The package carries a clause that lets the builder deliver nothing and set `gebaut`. He
