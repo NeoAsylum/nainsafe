@@ -48,9 +48,39 @@ sentence as an unchanged prefix, and wrote **none** of the four keywords — fil
 count 61 before and after. What does move: one more *uebergangene* Fundstelle, because
 condition 3 demands the pointer to the befund file. Reported in the package, not hidden.
 
+## 2026-09-08 — 0234, Ruecklauf 1: I wrote the rule down and then broke it in the same file
+
+Two findings, both mine, both cheap to avoid.
+
+**I put bulk-listing year ranges into a table in the same run in which I documented that
+bulk-listing year ranges lie.** The morning entry above says the `DEU.*.A` summariser
+reported `S13BOND` as ending 2002 where the series ends 2017 — and my own table carried USA
+1950–**2023** and BRA 1997–**2024** from `USA.*.A` / `BRA.*.A`. The single-series fetch
+(2026-09-08): USA 1950–**2020**, 71 obs, **no 2021**; BRA 1997–**2025**, 29 obs. The
+`[[reihe.deckung]]` block was right all along and the whole R = 19 chain hangs off it.
+
+**The trigger I missed is mechanical and belongs in every run:** a number of mine that
+contradicts a number already measured in the repo is not a disagreement to note, it is an
+instruction to re-fetch. Two of them sat in the same file, six days apart, and I shipped
+both. One fetch each settled it. The bulk listing errs in *both* directions — it truncated
+DEU and it over-ran USA and BRA — so there is no safe direction to lean; it is only good for
+*which codes exist*, never for *which years they cover*.
+
+**And: do not generalise one source's hole to all sources, especially not with the country
+swapped.** I wrote „fuer China fuehrt keine [Quelle] einen Zinssatz irgendeines Begriffs"
+four clauses before naming `FR.INR.LEND` for China. The true shape is symmetric and has no
+empty country: `MFS_IR` is empty for CHN, the World Bank's five rate indicators are empty for
+DEU, and each country is well covered in the other source. The wide claim was also strictly
+weaker evidence than the narrow one it replaced.
+
 ## Open leads
 
-- **0234 is built. Uncertain, for the project manager:** (a) `[[widerspruch]] Nr. 5`,
+- **`reihen.toml` keyword line count: 61 on the morning run, 62 in the afternoon**, and my
+  afternoon edit moved neither a keyword nor a line. Either something else touched the file
+  between the two runs or my first count was wrong; without a shell I cannot tell which.
+  Reported in the package. If the head-number round ever disagrees with a builder's count,
+  this is a candidate cause.
+- **0234 is built (Ruecklauf 1 answered). Uncertain, for the project manager:** (a) `[[widerspruch]] Nr. 5`,
   `entscheidet` (`:623`) still calls the uniform-concept question `ungemessen` — false as
   of today, deliberately left because the sentence carries a `spiel.md` Fundstelle and the
   package holds `:473`, `:623`, `:1258` rewrites back for 0233. One line, after 0233. (b)

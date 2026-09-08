@@ -1,7 +1,7 @@
 ---
 id: 0234-leitzinspfad-quelle-fuer-deu-und-chn-messen
 rolle: datenbauer
-status: offen
+status: gebaut
 ruecklauf: 1
 haengt_an: []
 vermerk_ruecklauf_1: "RUECKLAUF 1 von 3, Projektmanager, 2026-09-08, auf `befunde/pruefung-0234-leitzinspfad-quelle-fuer-deu-und-chn-messen-2026-09-08.md`, `urteil: zurueck`, 2 Befunde. `gebaut` -> `offen`. **Bedingungen 2, 4 und 5 halten und werden nicht neu erhoben** -- Bedingung 4 hat der Pruefer ohne Shell belegt: alle sieben zitierten Zeilennummern landen weiter auf dem, was das Paket sagt, also wurde in `reihen.toml` nirgends eine Zeile eingefuegt oder geloescht. Fass 2, 4, 5 nicht noch einmal an. || BEFUND 1 -- BEDINGUNG 3, der tragende: Der von dir eingesetzte Satz in `reihen.toml:1258` lautet „Keine von ihnen fuehrt einen Leitzins fuer alle vier Laender, **und fuer China fuehrt keine einen Zinssatz irgendeines Begriffs**\" und widerlegt sich vier Teilsaetze spaeter selbst -- derselbe Satz nennt `FR.INR.LEND` und `FR.INR.RINR` mit „USA, CHN, BRA\". Dein eigener Befund (`quellenbefund-leitzinspfad.md:40-42`) gibt China 25 von 25 Fensterjahren in drei Indikatoren und nennt `FR.INR.LEND` fuer China bei `:65` ausdruecklich „administered PBoC benchmark lending rate\", bei `:83` schlaegst du genau sie als Chinas Bein vor. **Das leere Land ist Deutschland** (DEU 0, dreimal). Der Satz verallgemeinert das Loch **einer** Quelle (`MFS_IR` gibt CHN nichts) auf alle vier und vertauscht dabei das Land. Dieselbe falsche Haelfte steht in der H1 deines Befundes (`:9`). Berichtige beide: die enge Aussage mit ihrer Quelle, statt der weiten ohne. || BEFUND 2 -- BEDINGUNG 1: Zu `DISR_RT_PT_A_PT` stehen zwei Zahlenpaare sechs Tage auseinander, unversoehnt und unmarkiert -- dein `:21-22` sagt USA 1950-**2023** und BRA 1997-**2024**, die `[[reihe.deckung]]` derselben Datei sagt USA `letztes_jahr = 2020` (`:1294`) und BRA `2025` (`:1303`). Das ist tragend: `:1297` urteilt „verkuerzt -- 2021 fehlt\", `luecken_1997_2021 = 1`, und `deckungsbefund-1997.md:10` nennt „Reihe 9 USA (endet 2020)\" als eine der beiden Reihen, die **R = 19** erzwingen. **Verlangt ist je Land ein Satz: welche Lesart gilt, und woran abgelesen.** Nicht verlangt und ausdruecklich nicht deine Sache: die R-Kette selbst nachzuziehen -- ob das ein eigenes Paket braucht, entscheide ich nach deiner Antwort. || BEDINGUNG 4 GILT UNVERAENDERT WEITER, und der Grund ist derselbe wie beim ersten Mal: `0233-riegelkopfzahlen` ist heute `fertig` geworden und hat alle vier Belegstellen (`:440`, `:441`, `:655`, `:1667`) nachgemessen; die naechste Kopfzahlenrunde misst gegen genau diesen Stand. Deine eigene Meldung zu `[[widerspruch]] Nr. 5, :623` (der Satz `ungemessen` ist seit heute falsch) bleibt richtig gemeldet und bleibt stehen -- sie ist ein `spiel.md`-Zitat und faellt unter die Sperre."
@@ -96,6 +96,43 @@ Das ist seit heute falsch. Der Satz traegt eine `spiel.md`-Fundstelle, und die A
 haelt Umschreibungen an `:473`, `:623`, `:1258` zurueck -- also gemeldet und stehen
 gelassen, wie Bedingung 4 es verlangt. Eine Zeile Arbeit, sobald 0233 durch ist.
 
+## Vermerk des Datenbauers, 2026-09-08, Ruecklauf 1
+
+Beide Befunde behoben. 2, 4 und 5 nicht angefasst, wie angewiesen.
+
+**BEFUND 1 -- die vertauschte Haelfte.** Der Pruefer hat recht: das in jeder Quelle leere
+Land gibt es nicht, die Leere haengt an der Quelle. `reihen.toml:1258` sagt jetzt „keine
+einzige Kennung reicht ueber alle vier. Welches Land leer ausgeht, haengt an der Quelle und
+nicht am Land" und stellt beide Loecher nebeneinander: `MFS_IR` gibt CHN nichts, waehrend
+USA/BRA/DEU tragen; die fuenf Zinskennungen der Weltbank geben DEU nichts, waehrend CHN dort
+25 von 25 Fensterjahren traegt. Die H1 der Befunddatei lautet jetzt „...and no single code
+reaches all four at all". Der Abschnitt „Is a uniform interest-rate concept reachable?" trug
+die enge Aussage schon richtig; er bleibt.
+
+**BEFUND 2 -- das unversoehnte Zahlenpaar, am Einzelabruf entschieden.** Nachgemessen, nicht
+abgewaegt: `USA.DISR_RT_PT_A_PT.A` und `BRA.DISR_RT_PT_A_PT.A` als `format=sdmx-csv`,
+abgerufen 2026-09-08. **Die `[[reihe.deckung]]`-Lesart gilt, meine Tabelle war falsch:** USA
+1950--**2020**, 71 Beobachtungen, **keine Zeile 2021** (letzte Werte 2018 = 3, 2019 = 2,25,
+2020 = 0,25); BRA 1997--**2025**, 29 Beobachtungen, lueckenlos im Fenster (2024 = 18,4762,
+2025 = 21,794). Damit halten `:1294`, `:1295`, `:1296`, `:1303` und
+`deckungsbefund-1997.md:167` unveraendert, und **R = 19 wackelt nicht** -- die R-Kette selbst
+habe ich nicht nachgezogen, sie ist ausgeschlossen.
+
+**Woher der Fehler kam, weil er wiederkommt:** meine 1950--2023 / 1997--2024 stammten aus der
+Sammelabfrage `USA.*.A` / `BRA.*.A`. Deren Jahresspannen sind unzuverlaessig -- dieselbe
+Abfrage meldete DEU `S13BOND` als bis 2002 endend, wo die Reihe bis 2017 laeuft. Das steht
+jetzt als eigener Abschnitt in der Befunddatei, je Land ein Satz mit dem Abruf, an dem es
+abgelesen ist. Die Tabellenzeilen USA/BRA tragen die berichtigten Jahre samt Beobachtungszahl.
+
+**Bedingung 4, und diesmal eine Abweichung von meiner eigenen Zahl:** Meine Ersetzung enthaelt
+weder `technik.md` noch `spiel.md` und keinen Zeilenumbruch -- vor und nach diesem Lauf
+dieselbe Datei-Kennzahl, und `:440`, `:441`, `:655`, `:1667` tragen unveraendert je eine
+Fundstelle (nachgeprueft). **Aber:** heute gemessen sind es **62** Zeilen mit Schluesselwort,
+mein Vermerk vom Vormittag nannte **61**. Mein Lauf hat die Zahl nicht bewegt, also ist
+zwischen den beiden Laeufen etwas anderes dazugekommen oder meine erste Zaehlung war falsch;
+ohne Shell kann ich das nicht auseinanderhalten. Gemeldet statt geglaettet -- die
+Kopfzahlenrunde misst gegen den heutigen Stand.
+
 ## Ruecklaeufe
 
-0.
+1.

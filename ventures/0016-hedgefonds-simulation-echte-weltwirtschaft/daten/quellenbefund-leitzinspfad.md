@@ -6,7 +6,7 @@ datum: 2026-09-08
 ergebnis: not reachable within the vetted sources
 ---
 
-# No vetted source carries a policy rate for all four countries, and none carries a rate of any concept for China
+# No vetted source carries a policy rate for all four countries, and no single code reaches all four at all
 
 Measured 2026-09-08 against the four sources vetted in `specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md`, line 8. Every endpoint
 below is freely retrievable: no account, no key, no payment.
@@ -18,14 +18,41 @@ World Bank endpoint: `https://api.worldbank.org/v2/country/USA;DEU;CHN;BRA/indic
 
 | Country | Source | Flow | Code | Years | What it measures | Policy rate? |
 |---|---|---|---|---|---|---|
-| USA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1950–2023 | Fed discount-window rate | administered, not the target rate |
-| BRA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1997–2024 | rediscount rate, **not the Selic** | administered, not the target rate |
+| USA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1950–2020, 71 obs | Fed discount-window rate | administered, not the target rate |
+| BRA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1997–2025, 29 obs | rediscount rate, **not the Selic** | administered, not the target rate |
 | DEU | IMF | `MFS_IR` 9.0.0 | `S13BOND_RT_PT_A_PT` | 1957–**2017**, 61 obs | government bond yield | **no** — a market price |
 | CHN | — | — | — | — | — | **nothing found in any vetted source** |
 
 The German window shortfall is exact: 1997–2017 all carry a value, 2018–2021 carry none
 (`DEU.S13BOND_RT_PT_A_PT.A`, retrieved 2026-09-08). This confirms the operator's count of
 2026-09-05 (`daten/nachmessung-zinsreihen-2026-09-05.md`) against the series itself.
+
+## `DISR_RT_PT_A_PT` coverage: which reading holds
+
+Two readings of this code stood six days apart. The **single-series fetch decides**, and it
+confirms the `[[reihe.deckung]]` block of `daten/reihen.toml` (`:1290`–`:1313`) in every
+figure. The wider years an earlier draft of the table above carried came from the bulk
+`USA.*.A` / `BRA.*.A` listing, whose year ranges are unreliable — the same listing reported
+DEU `S13BOND` as ending 2002 where the series ends 2017.
+
+- **USA — 1950–2020 holds.** 71 observations, **no 2021 row**, so 1997–2021 carries 24 of 25
+  years. Read off `USA.DISR_RT_PT_A_PT.A?format=sdmx-csv`, retrieved 2026-09-08; last three
+  rows 2018 = 3, 2019 = 2.25, 2020 = 0.25. `reihen.toml:1294` (`letztes_jahr = 2020`),
+  `:1295` (`luecken_1997_2021 = 1`), `:1296` (24 support points) and
+  `deckungsbefund-1997.md:167` stand unchanged.
+- **BRA — 1997–2025 holds.** 29 observations, no gap inside the window, 25 support points.
+  Read off `BRA.DISR_RT_PT_A_PT.A?format=sdmx-csv`, retrieved 2026-09-08; 2024 = 18.4762,
+  2025 = 21.794. `reihen.toml:1303` (`letztes_jahr = 2025`) stands unchanged.
+- **DEU — no reading to reconcile.** `DEU.DISR_RT_PT_A_PT.A` is empty (2026-09-01,
+  `deckungsbefund-1997.md:174`); `reihen.toml:1308`–`:1313` stands. The German row of the
+  table above is `S13BOND_RT_PT_A_PT`, a different code.
+- **CHN — no reading to reconcile.** The series does not exist, and neither does any other
+  in `MFS_IR` at any frequency.
+
+Nothing this run measured moves the R chain: `deckungsbefund-1997.md:10` names „Reihe 9 USA
+(endet 2020)" as one of the two series that force **R = 19**, and 2020 is now confirmed
+against the observations. The chain itself is not re-traced here — it is outside this
+package.
 
 ## What was tried, and what each answered
 
