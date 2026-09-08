@@ -1534,6 +1534,36 @@ admissible and jointly not. The invariant test (T30 check 2, bound 7) checks aft
 that the admissibility check held — the check protects the player, the test protects
 against the check.
 
+**T32b — What the target id runs over, per kind — five lines, and the kind without a
+target has one too.** The Zielkennung is the **place of the target in the order in which
+`Zustand` already addresses it** (T15, T17), never a place in this round's admissible
+list. The list is rebuilt every round (paragraph above), and a save replays actions by
+number (T22): an id that moved when admissibility moved would make yesterday's save a
+different game today.
+
+| Kind | The set its Zielkennung runs over | Size | today | The T9 order on it — and where that order already stands |
+|---|---|---|---:|---|
+| 1 Position | the position slots of T16 | `LAENDER·(SEKTOREN+2)` | 20 | the ordinal of `Steckplatz`: sectors `land·SEKTOREN + sektor`, then currency `STECKPLATZ_WAEHRUNG_ERSTER + land`, then bond `STECKPLATZ_ANLEIHE_ERSTER + land` |
+| 2 Stake | country × sector, playable countries only | `LAENDER·SEKTOREN` | 12 | `land·SEKTOREN + sektor` — the address arithmetic of the stake block (T15 row *stakes*) |
+| 3 Lobby budget | country × policy instrument | `LAENDER·INSTRUMENTE` | 16 | `land·INSTRUMENTE + instrument` — the instrument block inside the country block (T15 row *instruments*) |
+| 4 Leverage | the single address `fonds.hebelstand` | 1 | 1 | a one-element set, and the place of its only element is **0** |
+| 5 Visibility | the single address `fonds.sichtbarkeit` | 1 | 1 | likewise **0**; the contradiction in `spiel.md` is resolved in section 24 |
+
+Three consequences, each of which would otherwise be guessed later:
+
+- **A kind without a target carries 0, not "any value".** Every action goes into the save
+  and thereby into the checksum (T22, T12); an unread field with two possible values makes
+  two files out of one game.
+- **Kind 1's set has twenty places, its admissible list nineteen.** The permanently empty
+  currency slot USA keeps its place in the order and is never offered (T16). Place count is
+  not possibility count.
+- **The domain is checked where the list is built and where an action arrives from outside
+  (T21 `setze`, T22 load) — not in the type that carries the order.** That type orders; it
+  compares at the edges of its value range and must keep doing so.
+
+Derivation of each line, the resolution at kind 5, and what the fifth country and the
+exchange venues change: section 24.
+
 **T22 — A save is vintage, mode, seed, action sequence and checksum, not the state.**
 File: `{schema_version, jahrgang_id, modus, daten_pruefsumme,
 parameter_pruefsumme, startwert, aktionen: [[runde, aktion…]], end_pruefsumme}`. On
@@ -2986,13 +3016,16 @@ longer shows that the hand-back worked:
    received the error that `spiel.md` found in itself on 2026-09-03 and removed — until
    then it measured inflation and booked it as lobby damage. Having handed back and
    waited one run prevented a wrong quantity here and cost no time.
-4. **`fonds.sichtbarkeit` is an address, action 5 speaks of a position.** `spiel.md` lets
-   the fund „eine Position öffentlich offenlegen", but the state carries only **one**
-   global visibility and no disclosure flag per slot. I read this as a share in
-   ten-thousandths (T5 class 4) that action 5 raises or lowers by one parameter step —
-   that is the only reading that gets by without new addresses. If the design means a
-   disclosure per slot, that costs twenty addresses and with it the number 310; then it
-   is no longer one line but an ADR.
+4. **~~`fonds.sichtbarkeit` is an address, action 5 speaks of a position.~~ Settled on
+   2026-09-08 in section 24, out of `spiel.md` itself.** The point asked whether visibility
+   is one global number or one per slot. `spiel.md` answers it in *The state*, subsection
+   *The consequence of Weg A* (line 1089 as of 2026-09-08): "Slots are occupied **by action
+   kind 1 alone**; lobby, leverage and visibility occupy none, the stake has fields of its
+   own." The reading held to here —
+   a share in ten-thousandths (T5 class 4) that action 5 raises or lowers by one parameter
+   step — thereby stands, and T32b line 5 is its consequence: kind 5 has no target. What is
+   left over is not an address question but a rule that `spiel.md` describes and nowhere
+   computes; it is reported in section 24 to the game designer.
 
 ## 13. Hinweis für den Projektmanager
 
@@ -4494,3 +4527,142 @@ instrument address per T15.
    names the **domain** and not the value range and is therefore not closed by this
    section. The core builder's work from this package is nil; the work is the test
    developer's, item 1.
+
+## 24. Die Zielkennung je Aktionsart — Paket `0148`
+
+T32 said what is sorted by and left open **which set** the target id runs over per kind.
+Package `0146` built the order and expressly did not fill that gap. T32b fills it: five
+lines, and the derivation of each stands here.
+
+### The one root of all five lines
+
+**The Zielkennung is not a new order — it is an existing one, named.** T9 demands a fixed
+index order and forbids anything whose iteration order is a property of the memory. For
+each of the three kinds that have a target, the state already carries exactly one such
+order, and T55/T56 guard it with `static_assert`s against the block boundaries. Writing a
+second order beside it would be the same mistake T15 refuses for `landespreis`: a second
+copy of one number is an opportunity to let the two drift apart. So each line below names
+an order that is already checked, and none invents one.
+
+### Line by line
+
+**1 Position.** `spiel.md`, *The actions*: long or short "on a country×sector, on a
+currency, on a country's government bond". T16 turns exactly those into twenty fixed
+slots, T55 into `LAENDER·(SEKTOREN+2)`. The order is the slot ordinal — grouped by kind,
+country-major inside each group. That kind 1 and **only** kind 1 addresses this set is not
+my reading but `spiel.md`'s own sentence, quoted at section 12 point 4 above.
+
+**2 Stake.** `spiel.md`: "A permanent share in a country×sector." T15 books 24 addresses
+as `LAENDER·SEKTOREN` stakes of two fields. The pair is **one** target with two fields, not
+two targets: the remaining exit duration is bookkeeping of the exit that the settlement
+writes, not something the action chooses. The rest of world carries no stake block —
+neither T15 nor the address arithmetic knows one — so the set runs over playable countries,
+`0 … LAENDER-1`, exactly as T9's index rule prescribes for every loop over countries.
+
+**3 Lobby budget.** `spiel.md`: "Money on one policy instrument of one country, in one
+direction." The target is the **pair**; the direction is the sign of the Stufe and not part
+of the id, otherwise the same target would carry two ids and the order would have a tie
+that T32 forbids. The set is `LAENDER·INSTRUMENTE`; the rest of world has no instruments
+(T15) and therefore no place in it. The order is the instrument block's own order inside
+the country block.
+
+**4 Leverage.** The state carries `fonds.hebelstand`, one address in the fund's aggregate
+block (T15). Leverage occupies no slot and has no per-country address; the set has one
+element and the place of that element is 0.
+
+**5 Visibility.** Same shape, `fonds.sichtbarkeit` — and the contradiction the package
+names is resolved below rather than left standing.
+
+### Kind 5 — the contradiction, resolved out of `spiel.md` itself
+
+The brief: *The actions* has the fund "publicly disclose a position" and says disclosure
+"amplifies every lobbying budget on that matter", while the state carries a single number.
+Either visibility has no target, and "on that matter" is without object — or it has one,
+and the addresses for it are missing.
+
+**Three passages of `spiel.md`, each a reading site and each global** (line numbers as of
+2026-09-08):
+
+1. *The state*, line 463: "cash, positions, stakes, leverage level, **global** visibility,
+   investor base" — the word stands in the state's own list.
+2. Counterforce 1, line 1640: the counter rises by an amount "following from global
+   visibility **times local footprint** (influence times position share in the sector)".
+   The locality of the effect is produced **at the reading site**, out of quantities that
+   have addresses of their own. That is precisely what a target on the action would
+   duplicate.
+3. *Die drei Schichten der Welt*, line 1518: "An exchange venue feeds no supervision
+   counter. Counterforce 1 reads global visibility …" — a second reading site, same
+   reading, written after the layer was added.
+
+**And the counter-check, which is what makes this a resolution and not a preference:** the
+word *visibility* stands on ten lines of `spiel.md` (419, 463, 510, 774, 775, 1089, 1518,
+1640, 2671, 2939; measured 2026-09-08). **Not one of them is a computation rule that reads
+visibility per instrument or per slot.** The amplification of lobby budgets appears in the
+action's description and in no rule of step 3. A negative count is worth only its search
+term, so it was run a second time on the effect's own vocabulary — *disclos·*,
+*Offenlegung*, *public pressure*: three hits, of which line 420 is the action description
+itself and the other two (240, 1235) speak of disclosed data series. Together with line 1089 — "lobby, leverage
+and visibility occupy none" — the state and the rules say the same thing, and only the
+description says otherwise.
+
+**Therefore: kind 5 has no target, T32b line 5 stands, and the number 310 is untouched.**
+
+**What is left over belongs to the game designer and is reported, not decided here.** The
+half-sentence describes an effect no rule computes. Two ways out, both his: it is dropped
+as a leftover of the description — then nothing here changes — or it becomes a rule, and
+then the cost depends on the reading. Global (visibility enters step 3 the way it enters
+counterforce 1): no address, no change to T32b. Per instrument: `LAENDER·INSTRUMENTE` = 16
+new addresses, the number 310, and an ADR on line 5. **The third reading — one address per
+slot, twenty addresses, the old section 12 point 4 — is the only one the sentence would
+*not* buy**, because it speaks of lobby budgets and not of slots.
+
+### Where the domain is checked, and why not in the type
+
+Three places, in the order in which an action can reach the core:
+
+1. **The generation of the admissible list** (T32, first half) — the only place where the
+   domain is *produced*. Everything else compares against it.
+2. **T21 `setze`** — an id outside its kind's domain is a rejected command with a reason.
+3. **T22 load** — the same, reported as an inadmissible save and **not** as a determinism
+   break, because that is what it is.
+
+**Not in the type that carries the order**, and for two reasons that can be checked rather
+than believed. First, the rank proof of T32 consists of assertions that compare at the
+edges of the value range, `ZIELKENNUNG_MAX` against 0 (`kern/include/kern/aktion.hpp`); a
+type that refused every value above 19 would refuse its own proof. Second, the probe corpus
+already holds a triple outside its domain: `kern/test/aktion_probe.cpp:189` is
+`{Art::Sichtbarkeit, Zielkennung{2}, 1}` (measured 2026-09-08). That line is **right** as
+an ordering test and **inadmissible** as a game action, and both stay true only as long as
+the ordering type carries no domain. The other eleven entries of that list happen to lie
+inside their domains; that is coincidence and does not become a rule here.
+
+### What the fifth country and the exchange venues change
+
+- **The lines are formulas, so the numbers change and the lines do not.** At `L = 5` the
+  three sets become 25, 15 and 20; the `static_assert`s T56 demands already guard the
+  constants they are made of. That is the whole reason they are written as formulas.
+- **But the ids change their meaning, and that is not visible from T56.** At `L = 5`,
+  Zielkennung 12 of kind 1 is no longer the currency USA but a sector slot. Per T32 the
+  canonical order is part of the interface version: **the package that raises `LAENDER`
+  raises `schema_version`** (T21, T22). Without that, an old save replays with silently
+  different targets — the cheapest way in this whole document to lose the regression
+  corpus.
+- **The exchange-venue layer is not in this document** (`spiel.md`, *Die drei Schichten der
+  Welt*: `5·B` addresses, one position slot per venue). When it arrives, its slots belong
+  **behind** the bond block as a fourth block. Any other position renumbers every existing
+  slot id, which per T32 needs an ADR and devalues the corpus. That is a rule for the
+  package that brings the layer, not an address decision taken here.
+
+### Reports
+
+1. **To the game designer — one half-sentence, above.** "Amplifies every lobbying budget on
+   that matter" is an effect without a rule. Global, per instrument, or struck: the choice
+   is his, and only the middle one touches this document.
+2. **To the core builder — no code in this package, and one comment.** The admissible-list
+   generation (T32 first half, its own package) reads the five lines. `kern::aktion` stays
+   as built, expressly including `ZIELKENNUNG_MAX` and `aktion_probe.cpp:189`. The header
+   comment there reports the domain as missing from the specs; it may now cite T32b
+   instead. That is one comment, not a rebuild.
+3. **To the project manager — the `schema_version` sentence must travel with the
+   fifth-country package.** It follows from T32b, not from T56, and whoever reads only T56
+   will not see it.
