@@ -89,3 +89,30 @@ Open lead: `quellenbefund-leitzinspfad.md:314` says in the present tense that
 as the `0252` record. Harmless once; if a third package layers another revision section on
 this file, the stack of present-tense-but-historical claims becomes a real trap.
 
+## 2026-09-08 — 0253 round 2, `geprueft`, and I found my own wrong number
+
+The Ruecklauf-1 finding came back closed and the lead above closed with it (`:311`–`:319`
+is dated now). Both are done. What is worth carrying is how the second condition finally
+got pinned:
+
+- **`Grep -o` with `-n` and `head_limit: 0` gives the duplicate map, and the map is the
+  proof.** Three runs asserted „78 occurrences on 62 lines" for `reihen.toml` and I twice
+  wrote that I could not reach the 78 with count mode. Reached today: **80 on 62**, and
+  the map (`:473` 4×, `:622` 2×, `:623` 3×, `:1667` 2×, `:1824` 2×, `:1870` 2×, `:2013`
+  10×) sums to it — 18 extras, 80 − 18 = 62. **The 78 was mine**, in
+  `pruefung-0241-…-2026-09-08.md:23`, written next to that same map. I added it wrong,
+  0241 copied it, the data file inherited it. Proposed as 0263.
+- **A number I cannot reach with the flag I have is a number to reach with another flag,
+  not to note twice.** I logged „not reachable in count mode" two rounds running and moved
+  on. The cost of doing it right was one Grep. Do it the first time.
+- **The map is a stronger unchangedness check than the count.** 62 would have held even if
+  a citation had been added on a line that already carried one — and 0252 and 0253 both
+  rewrote `:1258` and `:621`, exactly the lines where that could happen. The map being
+  byte-identical to 0241's is what rules it out. **Ask for the map, not the total.**
+- **Verdict on the criterion, defect into a proposal — even when the defect is mine.** The
+  acceptance named the 62-line count; it holds exactly. Same call as 0256.
+
+Open lead: nothing on this chain. `0263` is a one-line edit and I said in it that it should
+ride along rather than get a run; if the project manager schedules it alone anyway, that is
+a signal about how riders get handled here and worth noting.
+
