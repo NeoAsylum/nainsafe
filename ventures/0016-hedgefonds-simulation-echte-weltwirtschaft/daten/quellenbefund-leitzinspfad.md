@@ -30,7 +30,7 @@ endpoint itself is named alongside it.
 | USA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1950–2020, 71 obs | Fed discount-window rate | administered, not the target rate |
 | BRA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1997–2025, 29 obs | rediscount rate, **not the Selic** | administered, not the target rate |
 | DEU | IMF | `MFS_IR` 9.0.0 | `S13BOND_RT_PT_A_PT` | 1957–**2017**, 61 obs | government bond yield | **no** — a market price |
-| CHN | World Bank | WDI | `FR.INR.LEND` | 1997–2021, 25 of 25 | a bank lending rate; WDI names no institution and no instrument for it (below) | **no** — a bank lending rate, not the policy instrument |
+| CHN | World Bank | WDI | `FR.INR.LEND` | 1997–2021, 25 of 25 | a bank lending rate; no institution named by the source, and its terms differ by country (below) | **no** — a bank lending rate, not the policy instrument |
 
 The CHN row is the nearest candidate, not a find: no query in this run returned a policy
 rate for China, and `IMF.STA/MFS_IR` returns no observations for CHN at any frequency
@@ -143,11 +143,11 @@ such rate:
 is the bank rate that usually meets the short- and medium-term financing needs of the
 private sector… The terms and conditions attached to these rates differ by country,
 however, limiting their comparability", source organization IMF IFS. **It names no
-institution and no instrument, per country or at all** — and it says in the same breath
-that the rates are not comparable across countries. Until 2026-09-08 this file called the
-Chinese value the „administered PBoC benchmark lending rate": an identification the queried
-source does not make, with no query of its own behind it. Way 2 below rests on this code
-for China, so the difference is load-bearing and not wording.
+institution, and no instrument per country**: the instrument it describes is generic to
+all countries, and the quote's second sentence says the terms differ between them.
+Until 2026-09-08 this file called the Chinese value the „administered PBoC benchmark
+lending rate": an identification the queried source does not make, with no query of its own
+behind it. Way 2 below rests on this code for China, so the difference is load-bearing.
 
 The known asymmetry the package named as the anchor to beat is not beaten: `DISR` remains
 two concepts across two countries, and every alternative reached by the queries above
@@ -222,7 +222,7 @@ A sweep cannot be checked — you see what it found, never what it missed. This 
 sentence in the file that asserts an absence: of a row, a series, an identifier, a
 variable, or of policy character. **39 entries. 33 are the answer of a named query; the
 other 6 are readings, summaries or scope statements, and each of those rows says so.**
-Line numbers are of this file as of 2026-09-08 after Ruecklauf 1.
+Line numbers are of this file as of 2026-09-08 after Ruecklauf 1, unchanged by Ruecklauf 2.
 
 | Line | The negative | What answers it |
 |---|---|---|
@@ -258,7 +258,7 @@ Line numbers are of this file as of 2026-09-08 after Ruecklauf 1.
 | 125–126 | CHN wildcard returns nothing | `:82` |
 | 128–130 | what „absent" means in the table below it | the definition that binds every cell of `:134`–`:138` |
 | 134–138 | the eleven „absent" cells | the wildcard listings `:79`–`:82` for the IMF codes, `:85`–`:86` for the WDI codes |
-| 140–150 | WDI names no institution and no instrument for `FR.INR.LEND`, and calls the rates not comparable across countries | `/v2/indicator/FR.INR.LEND`, daten-pruefer 2026-09-08. **New in Ruecklauf 1**, replacing an unsourced institutional identification |
+| 140–150 | WDI names no institution for `FR.INR.LEND` and no instrument per country, and calls the rates not comparable across countries | `/v2/indicator/FR.INR.LEND`, daten-pruefer 2026-09-08. **New in Ruecklauf 1**, replacing an unsourced institutional identification |
 | 152–154 | the asymmetry is not beaten; every alternative drops a country or the policy character | **a summary** over `:134`–`:138`; no query of its own |
 | 173–176 | the IMF endpoint ignores `startPeriod` and `endPeriod` | `DEU.*.A` carrying both, answered 1957–2023 |
 | 177–179 | the IMF licence text is unread | five attempts, HTTP 403 (`daten/reihen.toml`, series 9, `[[reihe.lizenzbeleg]]`); not retried in this run |
@@ -269,5 +269,12 @@ Line numbers are of this file as of 2026-09-08 after Ruecklauf 1.
 **What this enumeration does not do:** it binds each sentence to a query, it does not
 re-verify the answers. The twenty World Bank cells were re-fetched cell for cell by the
 daten-pruefer on 2026-09-08; the IMF side rests on the retrievals of that day named per
-row. And `FR.INR.MMKT` answered HTTP 502 eight times on 2026-09-08 to the daten-pruefer, so
-the 3,180 is a measurement attributed to that run and is not reproducible today.
+row. The 3,180 is reproducible: `country/all/indicator/FR.INR.MMKT?format=json&per_page=1`
+answered `page: 1, pages: 3180, per_page: 1, total: 3180` to the daten-pruefer on
+2026-09-08 (`befunde/pruefung-0241-negativbefunde-an-ihre-abfrage-binden-2026-09-08-2.md`),
+after the same endpoint had answered HTTP 502 eight times earlier that day. The identifier
+fetch of the same date strengthens `:183`–`:184`, which is asserted there and proven here:
+`/v2/indicator/FR.INR.MMKT` gives `total: 1`, `sourceNote: "Money market interest rate, IFS
+line 60b (%)."`, `source: {id: 11, "Africa Development Indicators"}` and **`topics: [{}]`**
+— an empty topic list is mechanical proof that the code is filed outside topic 7, and IFS
+line 60b comes from the source rather than from this file.

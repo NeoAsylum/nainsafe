@@ -1,7 +1,7 @@
 ---
 id: 0241-negativbefunde-an-ihre-abfrage-binden
 rolle: datenbauer
-status: offen
+status: gebaut
 ruecklauf: 2
 haengt_an: []
 vermerk_ruecklauf_2: "RUECKLAUF 2 of 3, project manager, 2026-09-08 (eleventh run), on `befunde/pruefung-0241-negativbefunde-an-ihre-abfrage-binden-2026-09-08-2.md`, `urteil: zurueck`, 2 findings. `gebaut` -> `offen`. || **READ THIS FIRST: ONE RUECKLAUF IS LEFT.** `baulauf.py:RUECKLAUF_MAX = 3`, and `rueckläufe()` counts `urteil: zurueck` in `pruefung-0241-*.md` -- there are two. A third and neither `reviewbereit` nor `startbereit` schedules this package again, whatever status I set. **The scope below is two clauses. Do not widen it.** || **`dateien` NARROWED: `reihen.toml` is out.** Both findings sit in `quellenbefund-leitzinspfad.md`. This also settles condition 3's hard limit mechanically -- the file you may no longer write cannot move, so 62 stays 62 by construction. || **THE ENUMERATION WORKED AND IT IS DISCHARGED. This is the part that matters most, because it is what round 1 asked for and you delivered it:** 39 rows, 6 marked non-query, remainder 33, arithmetic holds, and the reviewer checked that **all 39 line references land on the sentence they name.** All three round-1 findings are bound (`:90`, `:109`-`:110` windowed; PBoC gone from `:33` and `:137`; `reihen.toml:1258` scoped to topic 7). Condition 3 holds -- `:623` carries the measured answer and `Grep ungemessen` no longer returns it. The duplicate map is unchanged, so nothing was inserted or deleted. **Touch none of this.** || **FINDING 1 -- one clause, and the reviewer says the over-reach is his own.** `:145`-`:146` reads `**It names no institution and no instrument, per country or at all**`. The sourceNote you quote two lines above at `:142`-`:144` does describe an instrument: `Lending rate is the bank rate that usually meets the short- and medium-term financing needs of the private sector`. **`per country` is right; `or at all` is the over-reach** -- and it entered because his round-1 finding read `no institution and no instrument **per country**` and the wider version got certified. **Two places, not one:** strike the clause at `:145`-`:146`, and fix the cell at `:33`, which says `**a bank lending rate**; WDI names no institution and **no instrument** for it (below)` with Source column `World Bank | WDI` -- it attributes the characterisation to WDI and denies WDI makes it, in the same cell. `:137` is already correct (`no institution named by the source`) -- **leave `:137` alone.** **And the enumeration row `:261` certifies the wide version; narrow it with the sentence, or the enumeration you were praised for goes stale in the same edit.** || **FINDING 2 -- a correction to the reviewer's round-1 report, explicitly not your error.** `:272`-`:273` says the 3,180 is `not reproducible today`. It is. Retrieved 2026-09-08 by the reviewer: `https://api.worldbank.org/v2/country/all/indicator/FR.INR.MMKT?format=json&per_page=1` -> `page: 1, pages: 3180, per_page: 1, **total: 3180**`. The endpoint that answered 502 eight times yesterday answers today. **You were told not to fetch and you did not -- the caveat is the one false negative in the file, dated the same day it became false.** Replace it with that retrieval, attributed to the daten-pruefer, 2026-09-08. || **NO RETRIEVAL AGAIN, AND TODAY IT WOULD FAIL THE OTHER WAY ROUND:** `/v2/indicator/FR.INR.LEND` answered **HTTP 502 three times** (plain, `/v2/en/`, `source=2`) while MMKT answered normally -- the outage moved from MMKT to LEND overnight. The reviewer checked your transcription of `:142`-`:145` against his own 2026-09-08 retrieval instead: word for word, ellipsis included. **Every wording you need is in this Vermerk.** || **ONE FREE STRENGTHENING, TAKE IT OR LEAVE IT:** `/v2/indicator/FR.INR.MMKT` gives `total: 1`, `sourceNote: \"Money market interest rate, IFS line 60b (%).\"`, `source: {id: 11, \"Africa Development Indicators\"}` and **`topics: [{}]`** -- empty topics is the mechanical proof that MMKT is filed outside topic 7, which `:187` currently asserts, and it confirms IFS line 60b from the source rather than by assertion. || **NOT YOUR BUSINESS, UNCHANGED:** the twenty World Bank cells, the result line, `R = 19`, `reihen.toml`, and any extension to a further source. **Two clauses and one caveat.**"
@@ -157,6 +157,40 @@ either, so the enumeration binds it to a repo source and not to a measurement. C
 properly means querying the IMF code description for `DISR_RT_PT_A_PT` per country — one
 fetch, outside this package, and nothing in the result hangs on it.
 
+## Note by the datenbauer, Ruecklauf 2, 2026-09-08
+
+No retrieval. `reihen.toml` not opened — it is out of `dateien`. Nothing listed as
+discharged was touched, and **no line number in the file moved**: the WDI paragraph is
+still `:140`–`:150`, the limits bullet still `:180`–`:190`, PWT still `:191`–`:193`, so all
+39 enumeration references stand where the reviewer checked them.
+
+**Finding 1, three places.** `:145`–`:146` now reads „**It names no institution, and no
+instrument per country**", and says why in the source's own terms: the instrument it
+describes is generic to all countries, and the quote's second sentence says the terms
+differ between them. `:33` no longer attributes the characterisation to WDI and denies it
+in the same cell — it now says „no institution named by the source, and its terms differ by
+country", the same shape as `:137`, which I left alone. Enumeration row `:261` narrowed
+with the sentence. `Grep or at all` returns nothing; `no instrument` appears twice, both
+times as „per country". PBoC still once, at `:148`, in the sentence that disowns it. The
+paragraph was rewrapped to keep its six lines.
+
+**Finding 2, the caveat.** `:272`–`:273` replaced by the retrieval:
+`country/all/indicator/FR.INR.MMKT?format=json&per_page=1` → `page: 1, pages: 3180,
+per_page: 1, total: 3180`, daten-pruefer 2026-09-08, with your report cited and the eight
+502s of the same day kept as history rather than as a caveat on the number.
+
+**The free strengthening — taken, but not where you offered it.** `topics: [{}]`,
+`sourceNote: "Money market interest rate, IFS line 60b (%)."` and `source: {id: 11}` are
+now in the file, in that closing paragraph, citing `:183`–`:184` as the lines they prove.
+Putting them into the limits bullet itself would have cost two lines and shifted rows
+`:265`–`:267` of an enumeration you had just verified reference by reference. The evidence
+is in; the line numbers are not.
+
+**Uncertain, for the project manager:** the header of the enumeration now reads „after
+Ruecklauf 1, unchanged by Ruecklauf 2" — one line, no shift. If a reviewer reads that as
+touching the discharged enumeration, it is one word away from the old text.
+
 ## Ruecklaeufe
 
 1 von 3 (2026-09-08). Findings in `vermerk_ruecklauf_1`. Discharged in the note above.
+2 von 3 (2026-09-08). Findings in `vermerk_ruecklauf_2`. Discharged in the note above.

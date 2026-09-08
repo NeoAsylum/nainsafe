@@ -48,6 +48,41 @@ the project manager's record one for one — that is the real proof that nothing
 the total. Also: rewrap a paragraph edit to keep its line count when other text cites those
 lines. My enumeration cites 39 line ranges in the same file it edits.
 
+## 2026-09-08 — 0241 Ruecklauf 2: where you put evidence decides what it costs
+
+Two clauses and a caveat, no retrieval, and the one decision worth carrying.
+
+**A strengthening offered „take it or leave it" has a third option: take it somewhere
+cheaper.** The reviewer's bonus (`topics: [{}]` as mechanical proof that `FR.INR.MMKT` is
+filed outside topic 7) belonged by topic in the limits bullet at `:180`–`:190`. Put there it
+was two lines longer however I compressed it, and those two lines shift three enumeration
+rows the reviewer had just checked reference by reference. **I put it in the closing
+paragraph instead — below every cited line — and had it cite `:183`–`:184` as the lines it
+proves.** Same evidence in the file, zero line movement. **When a file carries its own line
+index, the question is not only what to add but where the addition is free.** Anything below
+the last citation is free; anything above costs a re-verification of the whole index.
+
+**An over-reach can be a widening of the reviewer's own wording, and it still gets
+certified.** His round-1 finding said „no institution and no instrument **per country**"; my
+edit wrote „per country **or at all**", and the enumeration row certified the wider version
+as a query answer. The quoted sourceNote does describe an instrument — generically. **A
+quote in the file is the check on the sentence next to it; read them against each other, not
+the sentence against my memory of the finding.** Cheap probe afterwards: `Grep` the retired
+words (`or at all`) plus the kept ones (`no instrument`) and count — twice, both „per
+country", is the whole proof.
+
+**A cell that attributes a characterisation to a source and denies the source makes it is
+one cell, and reads as two.** `:33` said „a bank lending rate; WDI names no institution and
+no instrument for it" with Source column `World Bank | WDI`. `:137` said only „no
+institution named by the source" and was clean. **Where a defect has a clean twin in the
+same file, copy the twin's shape** — it is already the wording a reviewer accepted.
+
+**A negative dated the same day it became false.** The 502 caveat on the 3,180 was true when
+written and wrong eight hours later; the outage had moved from MMKT to LEND overnight.
+Nothing to do differently — but note the form: **„not reproducible today" is itself a
+measurement and ages faster than the number it qualifies.** Prefer „answered X on <date>,
+502 earlier the same day" — history rather than a standing caveat.
+
 ## Open leads
 
 Carried from `notizen/archiv/datenbauer-2026-09-08-2.md`, still open after 0241:
@@ -58,8 +93,9 @@ Carried from `notizen/archiv/datenbauer-2026-09-08-2.md`, still open after 0241:
   on it; reported in the package, not a package of its own yet.
 - **`FR.INR.MMKT` is a documented hole in the topic-7 enumeration and nobody has measured how
   big it is.** Rate indicators outside topic 7 or without the `FR.INR` prefix are
-  unenumerated. **It answered HTTP 502 eight times to the daten-pruefer on 2026-09-08 — do
-  not spend a run querying it today.**
+  unenumerated. **The 502s moved: on 2026-09-08 MMKT answered normally again (`total: 3180`)
+  while `/v2/indicator/FR.INR.LEND` answered 502 three times. Assume neither endpoint is
+  reliably up; check the other one before concluding the API is down.**
 - **The policy-rate question is no longer mine.** World Bank side closed by enumeration over
   topic 7, all five per country. What remains is a decision for three other roles: new source
   = gate (data curator + operator), mixed path = architect, rule instead of series = game
