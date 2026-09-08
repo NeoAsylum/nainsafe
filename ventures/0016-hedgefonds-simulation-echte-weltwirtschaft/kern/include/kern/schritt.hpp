@@ -306,29 +306,51 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 ///   * jeder Abbruch aus `Schreiber` -- zweiter Schreibzugriff, Lesezugriff auf eine
 ///     noch ungeschriebene Adresse, verfehlte Sollmaske am Rundenende.
 ///
-/// **Drei weitere sind mit dem rechnenden Rumpf von Schritt 5 dazugekommen** (Paket
-/// 0197). Alle drei greifen erst, wenn die drei Schranken des Rahmens gehalten haben;
-/// die ersten beiden fuehren aus `kern::werte` heraus, der dritte aus
-/// `kern::festkomma`:
-///   * das Bruttoinlandsprodukt eines Landes taugt nicht als Nenner der
-///     Zustimmungsregel. Gelesen wird es mit `kern::werte::bip`, und die Schranke steht
-///     in `kern/src/schritt.cpp` vor der Rechnung, in `realeinkommenshub`. **Ihre
-///     Bedingung steht dort und nicht hier**: Ein Kopf, der eine bewegliche Tatsache
-///     wiederholt, wird falsch, sobald sie sich bewegt -- die Aussage ueber die eine
-///     bewegte Groesse weiter oben ist genau so falsch geworden.
+/// **Vier weitere sind mit dem rechnenden Rumpf von Schritt 5 dazugekommen** (Paket
+/// 0197; die Schranke vor der Summe hat Paket 0240 aus der letzten herausgeloest). Alle
+/// vier greifen erst, wenn die drei Schranken des Rahmens gehalten haben. **Wo eine
+/// Schranke steht, sagt ihr eigener Eintrag**, und ebenso, ob ein Zustand sie heute
+/// erreicht:
+///   * der Nenner der Zustimmungsregel. Gelesen wird er mit `kern::werte::bip`, und er
+///     bricht nacheinander auf zwei Weisen ab: in `bip` selbst, wenn die
+///     Wertschoepfungssumme den `i64` verlaesst (T7), und danach aus `kern::schritt`
+///     heraus, in `realeinkommenshub`, wenn der gelesene Wert die Nennerbedingung aus
+///     `spiel.md` nicht erfuellt. **Ihre Bedingungen stehen dort und nicht hier**: Ein
+///     Kopf, der eine bewegliche Tatsache wiederholt, wird falsch, sobald sie sich
+///     bewegt. Beide Schranken werden jede Runde gerechnet, fuer jedes Land.
+///   * die Summe der Zustimmungsregel verlaesst den `i64`, ehe die Klemme der Regel den
+///     Wert auf seine Schranke zurueckholen kann. Die Schranke steht seit Paket 0240 aus
+///     `kern::schritt` heraus vor der Addition, in `summe_der_regel_pruefen`, und faengt
+///     genau die Paare, an denen `festkomma::plus` dahinter abbraeche -- das `plus`
+///     dieser Regel kann seither nicht mehr abbrechen. Gerechnet wird die Vorbedingung
+///     jede Runde; erreicht wird ihr Abbruch von keinem Zustand, weil der additive Term
+///     ein Produkt mit dem Hub ist und der null bleibt, solange Schritt 3 vortraegt.
 ///   * jeder Ueberlauf in `kern::werte::schaden`. Dorthin fuehrt `politiklast` in
 ///     derselben Quelle, und nur fuer ein Instrument, dessen Stand sich in dieser Runde
 ///     bewegt hat. Solange Schritt 3 vortraegt, bewegt sich keiner, und dieser Weg wird
 ///     nie betreten.
-///   * jeder Ueberlauf ueber den `i64` hinaus in der Festkommarechnung der
-///     Zustimmungsregel selbst. Sie rechnet mit `kern::festkomma`, und dessen Strich-
-///     und Punktrechnung bricht nach T7 hart ab, statt umzubrechen. Dorthin fuehren in
-///     `kern/src/schritt.cpp` der Rumpf von Schritt 5 selbst und die beiden Hilfen, die
-///     er dafuer ruft -- `realeinkommenshub` und, aus ihm heraus, `politiklast`.
-///     **Anders als die beiden Eintraege davor wird dieser Weg heute begangen**, jede
-///     Runde: Aus demselben Grund, der `schaden` ungerechnet laesst, sind Last, Hub und
-///     Wirkung null, und weder ein Produkt mit der Null noch eine Summe mit ihr laeuft
-///     ueber.
+///   * jeder Ueberlauf ueber den `i64` hinaus in der **uebrigen** Festkommarechnung der
+///     Zustimmungsregel -- Vorzeichenwechsel, Punktrechnung, die Summe der Politiklast.
+///     Sie rechnet mit `kern::festkomma`, und dessen Strich- und Punktrechnung bricht
+///     nach T7 hart ab, statt umzubrechen. Dorthin fuehren in `kern/src/schritt.cpp` der
+///     Rumpf von Schritt 5 selbst und die beiden Hilfen, die er dafuer ruft --
+///     `realeinkommenshub` und, aus ihm heraus, `politiklast`. Rumpf und
+///     `realeinkommenshub` rechnen jede Runde und laufen nicht ueber, weil Last, Hub und
+///     Wirkung null sind; `politiklast` rechnet aus demselben Grund nicht, aus dem
+///     `schaden` ungerechnet bleibt.
+///
+/// **Was an dieser Aufzaehlung veraltet, und was daraus folgt** (Paket 0249): Nicht ihre
+/// Genauigkeit veraltet, sondern **wo** eine Schranke steht -- Paket 0240 hat eine von
+/// `kern::festkomma` nach `kern::schritt` gezogen, und dieser Kopf nannte danach den
+/// falschen Ort, ohne dass irgendetwas rot wurde. Prosa ist der Traeger fuer den
+/// **Grund** einer Schranke: warum sie keinen Ersatzwert bekommt und welcher Zustand
+/// ihren Weg heute unbetreten laesst. Sie ist nicht der Traeger dafuer, **welche**
+/// Schranke anschlaegt; das haelt das `Riegel`-Verzeichnis in
+/// `kern/test/schritt_probe.cpp` -- eine Kennung je Schranke, zu jeder in jedem Lauf
+/// eine angekommene Meldung, sonst faellt der Lauf. **Wer wissen will, welche Schranke
+/// heute wirklich anschlaegt, liest dort und nicht hier.** Und wer hier eine
+/// dazuschreibt, schreibt ihren Ort in ihren eigenen Eintrag, statt ihn einer Gruppe
+/// vorwegzustellen: Die Gruppenzeile, die das bisher tat, ist mit diesem Paket fort.
 [[nodiscard]] Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
                                      const Konstanten& konstanten, Modus modus);
 

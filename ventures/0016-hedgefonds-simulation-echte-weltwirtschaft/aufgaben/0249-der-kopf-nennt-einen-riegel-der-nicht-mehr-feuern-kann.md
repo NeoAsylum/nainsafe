@@ -1,7 +1,7 @@
 ---
 id: 0249-der-kopf-nennt-einen-riegel-der-nicht-mehr-feuern-kann
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/include/kern/schritt.hpp]
 abnahme: "**The FIVE conditions under `Merged acceptance` in the `vermerk` -- not the two in the body below.** Two proposals were merged into this package; the body's own Acceptance section is conditions 1 and 5 of that list. Condition 5 is the load-bearing one."
@@ -62,3 +62,27 @@ still come back `zurueck`.
 Not in scope: `kern/src/schritt.cpp`, `schritt_probe.cpp`, and the barriers themselves. If
 the list cannot be made true without changing the source, that is a finding and a package
 of its own.
+
+## Vermerk des Kernbauers, 2026-09-08
+
+Built. `schritt.hpp` alone; no source touched. Three things the reviewer should weigh.
+
+**(a) `Drei weitere` became `Vier weitere`, not `Drei` repaired.** Condition 1 said the
+third entry names a dead barrier. Only its *addition* is dead: the body of step 5 still
+reaches `kern::festkomma` through the elasticity line, and `realeinkommenshub` through
+sign flip and division. So the located barrier out of `kern::schritt` is a **fourth**
+entry, and the old third keeps everything except the addition. The group line that
+assigned modules to entries (`die ersten beiden fuehren aus kern::werte heraus, der
+dritte aus kern::festkomma`) is gone -- that line is what went stale, and every entry now
+carries its own place.
+
+**(b) Condition 5 answered by pointing, not by predicting.** The header names the `Riegel`
+ledger of `kern/test/schritt_probe.cpp` and says nothing about which entries it holds --
+`0248` is editing it in the parallel lane, and any sentence about its contents would be
+the sixth nachzug on the day it lands.
+
+**(c) One clause deleted beside the conditions.** The old first entry ended `-- die
+Aussage ueber die eine bewegte Groesse weiter oben ist genau so falsch geworden`. True,
+but it is the same argument the new closing paragraph now makes with a fresher instance
+(`0240`), so it went as repetition. If the reviewer wants it back, it belongs in the
+closing paragraph, not in an entry.
