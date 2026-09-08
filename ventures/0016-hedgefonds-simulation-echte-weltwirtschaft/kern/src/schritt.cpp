@@ -605,15 +605,43 @@ i64 politiklast(const Zustand& rundengrenze, const Schreiber& schreiber,
 /// fuer die Preise, die die Politik setzt. Deshalb steht es im Nenner, und deshalb kostet
 /// die Gegenkraft weder eine zweite Marktraeumung noch eine 311. Adresse.
 ///
-/// Ein Land ohne Wertschoepfung hat kein Realeinkommen, an dem sich eine Aenderung
-/// messen liesse. `mal_geteilt` bricht dann an seinem Nenner ab, statt eine Null zu
-/// erfinden -- nach T6 ist ein stiller Ersatzwert hier die schlechtere Antwort.
+/// **Die Bedingung an den Nenner steht vor der Rechnung und nicht in ihr** (Paket 0237).
+/// `spiel.md` nennt sie an der Regel selbst: "bip(l) > 0 is the denominator condition".
+/// `mal_geteilt` faengt davon allein die Null. Der Rest ist derselbe Fall, den
+/// `kern::werte::wert` am Wechselkurs schon aufgeschrieben hat -- dort steht der Grund im
+/// Wortlaut: "der **negative** Nenner ist der gefaehrlichere Fall, weil er das Vorzeichen
+/// jeder Bewertung drehte, ohne dass irgendetwas abbraeche". An dieser Regel hiesse das,
+/// dass eine Politiklast die Zustimmung **hebt**: Die Gegenkraft liefe verkehrt herum,
+/// und keine Zeile im Kern sagte es.
+///
+/// Kein Ersatzwert (T6). Ein Land ohne Wertschoepfung hat kein Realeinkommen, an dem sich
+/// eine Aenderung messen liesse; eine erfundene Null waere eine Zahl, die keine Pruefung
+/// bemerkt.
+///
+/// Die Schranke steht **vor** `politiklast`, weil sie eine Voraussetzung der Regel ist
+/// und keine Folge ihrer Summe: Auf einem Zustand, den `spiel.md` verbietet, soll der
+/// Abbruch die verbotene Groesse nennen und nicht irgendeine Zwischenrechnung, die auf
+/// dem Weg dorthin zuerst umfaellt.
 i64 realeinkommenshub(const Zustand& rundengrenze, const Schreiber& schreiber,
                       const Konstanten& konstanten, Gebiet land)
 {
+    const i64 inlandsprodukt = werte::bip(rundengrenze, land);
+    if (inlandsprodukt < 1) {
+        Meldung meldung;
+        meldung.text(
+            "kern::schritt -- Zustimmungsregel: bip(l) > 0 ist die Nennerbedingung aus "
+            "spiel.md, und hier ist bip(l) kleiner als 1. Der negative Nenner ist der "
+            "gefaehrlichere Fall, weil er das Vorzeichen jeder Bewertung drehte, ohne dass "
+            "irgendetwas abbraeche: Eine Politiklast hoebe die Zustimmung, statt sie zu "
+            "senken. Betroffen ist ");
+        meldung.adresse(zustand::stelle_politisch(land, PolitischeGroesse::Zustimmung));
+        meldung.text(", das Bruttoinlandsprodukt seines Landes ist ");
+        meldung.zahl(inlandsprodukt);
+        festkomma::abbruch(meldung.fertig());
+    }
+
     const i64 last = politiklast(rundengrenze, schreiber, konstanten, land);
-    return festkomma::mal_geteilt(festkomma::minus(0, last), ZEHNTAUSENDSTEL,
-                                  werte::bip(rundengrenze, land));
+    return festkomma::mal_geteilt(festkomma::minus(0, last), ZEHNTAUSENDSTEL, inlandsprodukt);
 }
 
 /// **Schritt 5 -- Reaktion.** Nach `spiel.md`: "Zustimmung, Regierungswechsel,

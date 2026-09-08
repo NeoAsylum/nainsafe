@@ -99,6 +99,14 @@
 //!     liesse alle vier stehen, die Regel klemmt alle vier auf ihre Schranke. Vier gegen
 //!     null, je Adresse mit Start- und Endwert ausgedruckt.
 //!
+//! **Paket 0237 -- der Nenner der Regel, und er aendert jede Ausgangslage.** Die
+//! Zustimmungsregel teilt durch das Bruttoinlandsprodukt, und `spiel.md` verlangt dafuer
+//! einen Nenner ueber null. Unter der reinen Musterbelegung war er in allen vier Laendern
+//! negativ; jede Runde dieser Datei hat also bis dahin auf einem Zustand gemessen, den
+//! der Entwurf verbietet, und blieb nur deshalb gruen, weil der Zaehler null war. Seither
+//! tragen die zwoelf Wertschoepfungsadressen einen positiven Wert -- `startwert` statt
+//! `musterwert` --, und eine eigene Probe haelt die Schranke von beiden Seiten.
+//!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
 
@@ -161,6 +169,34 @@ constexpr std::array<kern::zustand::Instrument, kern::zustand::INSTRUMENTE>
     INSTRUMENTE_DER_PROBE = {
         kern::zustand::Instrument::Leitzins, kern::zustand::Instrument::Zoll,
         kern::zustand::Instrument::Haushalt, kern::zustand::Instrument::Regulierung};
+
+/// Die drei Sektoren, in der Reihenfolge aus T15.
+constexpr std::array<kern::zustand::Sektor, kern::zustand::SEKTOREN> SEKTOREN_DER_PROBE = {
+    kern::zustand::Sektor::Landwirtschaft, kern::zustand::Sektor::Industrie,
+    kern::zustand::Sektor::Dienstleistungen};
+
+/// Die zwoelf Wertschoepfungsadressen der vier spielbaren Laender -- die Summanden, aus
+/// denen `kern::werte::bip` das Bruttoinlandsprodukt eines Landes bildet.
+///
+/// Gerechnet und nicht hingeschrieben, aus demselben Grund wie bei `PLATZ_RUNDE`: Ein
+/// Paket, das den Laenderblock verschoebe, traefe hier weiter dieselben Groessen.
+constexpr std::array<Index, kern::zustand::LAENDER * kern::zustand::SEKTOREN>
+wertschoepfungsplaetze()
+{
+    std::array<Index, kern::zustand::LAENDER * kern::zustand::SEKTOREN> plaetze{};
+    std::size_t n = 0;
+    for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
+        for (const kern::zustand::Sektor sektor : SEKTOREN_DER_PROBE) {
+            plaetze[n] = kern::zustand::stelle_sektorgroesse(
+                land, sektor, kern::zustand::SektorGroesse::Wertschoepfung);
+            ++n;
+        }
+    }
+    return plaetze;
+}
+
+constexpr std::array<Index, kern::zustand::LAENDER * kern::zustand::SEKTOREN>
+    WERTSCHOEPFUNGSPLAETZE = wertschoepfungsplaetze();
 
 /// Die vier Zustimmungsadressen, in der Laenderreihenfolge -- gerechnet und nicht
 /// hingeschrieben, aus demselben Grund wie bei `PLATZ_RUNDE`.
@@ -278,12 +314,14 @@ enum class Riegel : std::size_t {
     StartwertBinden,      ///< in `kern::zustand`: die Partie laeuft schon
     Spielmodus,           ///< in `kern::schritt`: der Modus ist in diesem Rahmen nicht gebaut
     Parametersatz,        ///< in `kern::schritt`: der Traeger gehoert nicht zu diesem Zustand
+    Nennerbedingung,      ///< in `kern::schritt`: der Nenner der Zustimmungsregel ist nicht positiv
     Anzahl,
 };
 
-constexpr std::array<Riegel, 6> ALLE_RIEGEL = {
+constexpr std::array<Riegel, 7> ALLE_RIEGEL = {
     Riegel::ObereRundenschranke, Riegel::RundeVorDerErsten, Riegel::StartwertSetzen,
-    Riegel::StartwertBinden,     Riegel::Spielmodus,        Riegel::Parametersatz};
+    Riegel::StartwertBinden,     Riegel::Spielmodus,        Riegel::Parametersatz,
+    Riegel::Nennerbedingung};
 
 // Kommt ein Riegel dazu und niemand traegt ihn hier nach, faellt es beim Uebersetzen auf
 // und nicht erst daran, dass die Vollzaehligkeitspruefung unten ihn nie sucht.
@@ -304,6 +342,8 @@ const char* riegelname(Riegel welcher)
         return "Modus spielmodus nicht gebaut";
     case Riegel::Parametersatz:
         return "Parametersatz gehoert nicht zum Zustand";
+    case Riegel::Nennerbedingung:
+        return "Nenner der Zustimmungsregel nicht positiv";
     case Riegel::Anzahl:
         break;
     }
@@ -507,6 +547,9 @@ u64 summe_von(const Zustand& welt)
 /// **beide Enden des `int64_t`** ab. Die Enden stehen bewusst drin: Eine Runde, die nur
 /// vortraegt, darf an ihnen nichts rechnen, und der Sanitizer aus ADR 0011 Massnahme 2
 /// saehe es, wenn doch.
+///
+/// Was davon wirklich in einer Ausgangslage steht, sagt `startwert` darunter: Seit Paket
+/// 0237 tragen zwoelf der 310 Adressen einen anderen Wert.
 i64 musterwert(Index platz)
 {
     constexpr std::array<i64, 8> muster = {0,
@@ -520,7 +563,58 @@ i64 musterwert(Index platz)
     return muster[platz % muster.size()];
 }
 
-/// Baut eine Ausgangslage mit Musterwerten auf allen 310 Adressen, `partie.runde` auf
+/// Was auf den zwoelf Wertschoepfungsadressen steht -- die Wahl, um die es in Paket 0237
+/// geht.
+///
+/// `Muster` ist die Belegung, mit der jede Runde dieser Datei bis zum 2026-09-08 lief:
+/// `musterwert` legt auf die zwoelf Adressen nur `0` und `-10.000`, also ist das
+/// Bruttoinlandsprodukt aller vier Laender negativ. `Positiv` ist die Belegung, die
+/// `spiel.md` an der Zustimmungsregel verlangt. `Muster` bleibt, aber nur noch als der
+/// Fall, an dem die Schranke anschlaegt.
+enum class Wertschoepfung {
+    Positiv,
+    Muster,
+};
+
+/// Der Wert, den eine Wertschoepfungsadresse in der positiven Belegung traegt.
+///
+/// **Positiv, und je Adresse verschieden.** Positiv, weil die Zustimmungsregel durch das
+/// Bruttoinlandsprodukt teilt und `spiel.md` dafuer einen Nenner ueber null verlangt;
+/// verschieden, weil vier gleiche Landessummen einen vertauschten Laenderblock nicht mehr
+/// zeigten. Die Groessenordnung ist die der Klasse 2 aus T5 und **keine Kalibrierung** --
+/// gemessen wird das Vorzeichen des Nenners und nicht seine Hoehe.
+i64 wertschoepfung_der_probe(Index platz)
+{
+    return 1'000'000 + static_cast<i64>(platz);
+}
+
+/// Ob `platz` eine der zwoelf Wertschoepfungsadressen ist.
+bool ist_wertschoepfung(Index platz)
+{
+    for (const Index eine : WERTSCHOEPFUNGSPLAETZE) {
+        if (eine == platz) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Der Startwert einer Adresse -- `musterwert`, ausser auf den zwoelf
+/// Wertschoepfungsadressen in der positiven Belegung.
+///
+/// **Eine Stelle und nicht zwei.** Zwei Bauarten derselben Ausgangslage waeren zwei
+/// Stellen, die auseinanderlaufen; die Handlage in
+/// `probe_zwei_runden_und_startwertriegel` fuellt ihre 310 Adressen deshalb aus derselben
+/// Funktion wie `ausgangslage`.
+i64 startwert(Index platz, Wertschoepfung wie)
+{
+    if (wie == Wertschoepfung::Positiv && ist_wertschoepfung(platz)) {
+        return wertschoepfung_der_probe(platz);
+    }
+    return musterwert(platz);
+}
+
+/// Baut eine Ausgangslage mit Startwerten auf allen 310 Adressen, `partie.runde` auf
 /// `rundennummer`, die Parameterpruefsumme passend zum Traeger dieser Probe und die vier
 /// Zustimmungen auf die uebergebenen Werte.
 ///
@@ -545,13 +639,20 @@ i64 musterwert(Index platz)
 /// kann, unterscheidet den gerechneten Rumpf vom vortragenden -- und dafuer braucht er
 /// **einen** Startwertzugang, denn ein zweiter bindet auf einer Lage mit gesetzter
 /// Rundennummer nicht mehr.
-Zustand ausgangslage_mit_zustimmung(i64 rundennummer,
-                                    const std::array<i64, kern::zustand::LAENDER>& zustimmung)
+///
+/// **Die vierte Belegung ist neu (Paket 0237) und betrifft jede Runde dieser Datei.** Die
+/// zwoelf Wertschoepfungsadressen tragen ihren Musterwert nur noch, wenn der Aufrufer es
+/// ausdruecklich verlangt. Der Grund steht an `Wertschoepfung`: Unter der Musterbelegung
+/// ist das Bruttoinlandsprodukt aller vier Laender negativ, und eine Probe der
+/// Zustimmungsregel auf einem Zustand, den `spiel.md` verbietet, misst nichts.
+Zustand ausgangslage_voll(i64 rundennummer,
+                          const std::array<i64, kern::zustand::LAENDER>& zustimmung,
+                          Wertschoepfung wie)
 {
     Zustand welt;
     Startbelegung zugang{welt};
     for (Index platz = 0; platz < FELDER; ++platz) {
-        zugang.setze(platz, musterwert(platz));
+        zugang.setze(platz, startwert(platz, wie));
     }
     for (std::size_t n = 0; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
         zugang.setze(ZUSTIMMUNGSPLAETZE[n], zustimmung[n]);
@@ -562,20 +663,36 @@ Zustand ausgangslage_mit_zustimmung(i64 rundennummer,
     return welt;
 }
 
-/// Die Musterwerte der vier Zustimmungsadressen -- die Belegung, die `ausgangslage`
-/// hatte, ehe sie frei setzbar wurde.
+/// Die Startwerte der vier Zustimmungsadressen -- die Belegung, die `ausgangslage`
+/// hatte, ehe sie frei setzbar wurde. Keine der vier ist eine Wertschoepfungsadresse,
+/// also sind es dieselben vier Zahlen wie vor Paket 0237.
 std::array<i64, kern::zustand::LAENDER> zustimmung_aus_mustern()
 {
     std::array<i64, kern::zustand::LAENDER> werte{};
     for (std::size_t n = 0; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
-        werte[n] = musterwert(ZUSTIMMUNGSPLAETZE[n]);
+        werte[n] = startwert(ZUSTIMMUNGSPLAETZE[n], Wertschoepfung::Positiv);
     }
     return werte;
+}
+
+Zustand ausgangslage_mit_zustimmung(i64 rundennummer,
+                                    const std::array<i64, kern::zustand::LAENDER>& zustimmung)
+{
+    return ausgangslage_voll(rundennummer, zustimmung, Wertschoepfung::Positiv);
 }
 
 Zustand ausgangslage(i64 rundennummer)
 {
     return ausgangslage_mit_zustimmung(rundennummer, zustimmung_aus_mustern());
+}
+
+/// Die Ausgangslage, die diese Datei vor Paket 0237 hatte: dieselbe Lage, aber mit dem
+/// Musterwert auf den zwoelf Wertschoepfungsadressen und damit mit einem negativen
+/// Bruttoinlandsprodukt in jedem der vier Laender. Sie hat genau einen Zweck -- die
+/// Gegenseite der neuen Schranke.
+Zustand ausgangslage_ohne_wertschoepfung(i64 rundennummer)
+{
+    return ausgangslage_voll(rundennummer, zustimmung_aus_mustern(), Wertschoepfung::Muster);
 }
 
 }  // namespace
@@ -608,7 +725,7 @@ void probe_maskengroesse()
 }
 
 // ---------------------------------------------------------------------------
-// Bedingung 4 -- die Kette hat 175 Glieder, und jedes ist ein Vortrag
+// Bedingung 4 -- die Kette hat 175 Glieder: 171 Vortraege und vier aus Gegenkraft 2
 // ---------------------------------------------------------------------------
 
 /// Geht alle Glieder durch. Statt je Glied eine eigene Meldung zu setzen -- das waeren
@@ -912,13 +1029,15 @@ void probe_zwei_runden_und_startwertriegel()
     Zustand welt;
     Startbelegung zugang{welt};
     for (Index platz = 0; platz < FELDER; ++platz) {
-        zugang.setze(platz, musterwert(platz));
+        zugang.setze(platz, startwert(platz, Wertschoepfung::Positiv));
     }
     zugang.setze(PLATZ_RUNDE, 0);
     // Diese Lage wird von Hand gebaut und nicht ueber `ausgangslage`, weil der Zugang
     // hier ueber die beiden Runden hinaus offen bleiben muss -- er ist der Gegenstand
     // der zweiten Haelfte. Die Parameterpruefsumme braucht sie trotzdem, und aus
-    // demselben Grund.
+    // demselben Grund. Die Feldwerte kommen aus `startwert` und nicht aus `musterwert`,
+    // damit sie die Nennerbedingung der Zustimmungsregel erfuellt wie jede andere Lage
+    // dieser Datei (Paket 0237); von Hand gebaut heisst nicht zweimal belegt.
     zugang.setze(PLATZ_PARAMETERSUMME,
                  kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
 
@@ -926,8 +1045,8 @@ void probe_zwei_runden_und_startwertriegel()
     // **hat** geschrieben. Ohne sie zeigten die Abbrueche auch dann dasselbe Bild, wenn
     // er von Anfang an wirkungslos gewesen waere.
     PRUEFE(welt.lies(PLATZ_RUNDE) == 0);
-    PRUEFE(welt.lies(0) == musterwert(0));
-    PRUEFE(welt.lies(FELDER - 1) == musterwert(FELDER - 1));
+    PRUEFE(welt.lies(0) == startwert(0, Wertschoepfung::Positiv));
+    PRUEFE(welt.lies(FELDER - 1) == startwert(FELDER - 1, Wertschoepfung::Positiv));
     PRUEFE(kern::zustand::vor_der_ersten_runde(welt));
 
     const Rundenergebnis erste =
@@ -1247,6 +1366,85 @@ void probe_zustimmung_klemmt_statt_vortrag()
     std::printf("  Zustimmung: %zu von 4 auf der Schranke der Regel, %zu von 4 stehen "
                 "geblieben -- ein Vortrag haette alle vier stehen lassen\n",
                 auf_der_schranke, stehen_geblieben);
+}
+
+// ---------------------------------------------------------------------------
+// Paket 0237 -- der Nenner der Zustimmungsregel, von beiden Seiten gemessen
+// ---------------------------------------------------------------------------
+//
+// `spiel.md` stellt an den Nenner der Zustimmungsregel eine Bedingung:
+// "bip(l) > 0 is the denominator condition". Bis zum 2026-09-08 hat sie in dieser Datei
+// keine einzige Runde erfuellt -- `musterwert` legt auf die zwoelf
+// Wertschoepfungsadressen nur `0` und `-10.000`, also war das Bruttoinlandsprodukt jedes
+// der vier Laender negativ. Gruen blieb es, weil `schritt_3_politik` vortraegt und der
+// Zaehler damit null ist: eine Division, deren Vorzeichen niemand sehen konnte. Eine
+// Probe einer Regel auf einem Zustand, den der Entwurf verbietet, misst nichts.
+//
+// Diese Probe misst die Schranke von beiden Seiten, und beide Male stehen die vier Zahlen
+// im Wortlaut da:
+//
+//   * Die Belegung, auf der jede andere Runde dieser Datei laeuft, erfuellt die Bedingung,
+//     und die Runde darauf laeuft durch.
+//   * Die alte Belegung verletzt sie, und die Runde bricht ab, statt still das Vorzeichen
+//     der Gegenkraft zu drehen. Ihre vier Zahlen sind zugleich der Beleg, dass der Fall
+//     wirklich vorlag und nicht bloss vorliegen konnte.
+//
+// **Die multiplizierende Haelfte der Regel bleibt ungemessen, und das ist eine Auskunft
+// und kein Versaeumnis.** `politiklast` ueberspringt `kern::werte::schaden`, solange sich
+// kein Instrumentenstand bewegt. Aus dieser Datei heraus kann ihn niemand bewegen, und
+// zwar unabhaengig von der Ausgangslage: Der Stand kommt aus `schritt_3_politik`, der
+// vortraegt, also ist `lies_neu` an jeder der 16 Adressen genau `lies_alt` -- welche
+// Startwerte die Lage auch traegt. `Aktionsbuendel` ist leer, und Schritt 2 entfaellt im
+// `weltlauf` ohnehin. Diese Messung gibt es erst, wenn Schritt 3 rechnet; dieses Paket
+// fasst Schritt 3 nicht an.
+
+/// Druckt die vier Bruttoinlandsprodukte einer Lage und gibt zurueck, wie viele davon
+/// die Nennerbedingung erfuellen. Gedruckt wird die erste der drei Adressen, aus denen
+/// `kern::werte::bip` die Summe eines Landes bildet -- sie nennt das Land und die
+/// Groesse, um die es geht.
+std::size_t bip_der_lage(const Zustand& welt, const char* welche)
+{
+    std::size_t positive = 0;
+    for (std::size_t n = 0; n < LAENDER_DER_PROBE.size(); ++n) {
+        const i64 inlandsprodukt = kern::werte::bip(welt, LAENDER_DER_PROBE[n]);
+        if (inlandsprodukt > 0) {
+            ++positive;
+        }
+        std::printf("  %s -- Summe ab %s: bip = %lld\n", welche,
+                    kern::zustand::index_zu_adresse(
+                        WERTSCHOEPFUNGSPLAETZE[n * kern::zustand::SEKTOREN]),
+                    static_cast<long long>(inlandsprodukt));
+    }
+    return positive;
+}
+
+void probe_nenner_der_zustimmungsregel()
+{
+    // Seite 1: die Belegung, auf der jede andere Probe dieser Datei laeuft.
+    const Zustand mit = ausgangslage(13);
+    PRUEFE(bip_der_lage(mit, "Ausgangslage") == kern::zustand::LAENDER);
+
+    // Und die Runde darauf laeuft durch. Diese Zeile steht **vor** dem Abbruch unten und
+    // nicht hinter ihm: Eine Schranke, die auch auf der erlaubten Lage anschluege, waere
+    // von der geprueften durch keinen Wurf zu unterscheiden.
+    const Rundenergebnis ergebnis =
+        kern::schritt::schritt(mit, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
+    PRUEFE(ergebnis.neuer_zustand.lies(PLATZ_RUNDE) == 14);
+
+    // Seite 2: dieselbe Lage mit dem Musterwert auf den zwoelf Adressen.
+    const Zustand ohne = ausgangslage_ohne_wertschoepfung(13);
+    PRUEFE(bip_der_lage(ohne, "Musterbelegung") == 0);
+
+    // Der Riegel nennt die Regel und das betroffene Land, nicht nur den Nenner: Ein
+    // Abbruch aus `mal_geteilt` sagte "Nenner null" und liesse offen, welche der drei
+    // Zeilen der Regel ihn ausgeloest hat -- und den negativen Nenner faenge er gar nicht.
+    const std::array<const char*, 2> kennzeichen = {
+        {"kern::schritt", "bip(l) > 0 ist die Nennerbedingung"}};
+    BRICHT_AB_MIT("Bruttoinlandsprodukt nicht positiv", Riegel::Nennerbedingung, kennzeichen,
+                  [&] {
+        static_cast<void>(
+            kern::schritt::schritt(ohne, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf));
+    });
 }
 
 // ---------------------------------------------------------------------------
@@ -1602,10 +1800,11 @@ int main()
     probe_rundennummer();
     probe_zustimmung_ohne_instrumentenschritt();
     probe_zustimmung_klemmt_statt_vortrag();
+    probe_nenner_der_zustimmungsregel();
     probe_parametersatz();
     probe_feldzahl();
 
-    // Zuletzt, denn sie liest ein, was die sechs Aufrufstellen oben hinterlassen haben.
+    // Zuletzt, denn sie liest ein, was die Aufrufstellen oben hinterlassen haben.
     probe_kennzeichen_eindeutig();
 
     if (fehlgeschlagen != 0) {
