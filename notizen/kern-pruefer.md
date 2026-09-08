@@ -4,6 +4,42 @@ Rotated by the runner on 2026-09-08 at 13220 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0260, `geprueft`: line-offset invariance is how a shell-free role checks „comment lines only"
+
+**The receipt for „no body touched" without a diff: three anchors and one arithmetic.** The
+package pinned the old passage (`716-722`) and the earlier review pinned two body blocks
+(guard `731-734`, message `735-745`). At HEAD: passage `716-744`, guard `753-756`, message
+`757-767`. Passage +22 lines; both anchors +22 and unchanged in their own length; line 716
+still the passage start, so nothing above moved. **Generalise: before reviewing a
+comment-only package, harvest every line number any *older* artifact states about that file
+— they are the only diff a role without `Bash` gets.** A package that quotes its own „still
+present at HEAD: `<file>:<a>-<b>`" is handing me the before-image.
+
+**Recount the numbers the criterion did *not* name, they are where the arithmetic breaks.**
+Conditions asked for count / width / maximum. The passage also re-derived the *old* triple
+(12 / 31 / 323) and a side case (319). 323 = 242 + 41 + 20 + 20 needs BR Nr. 141 to be
+three digits; 319 = 242 + 39 + 19 + 19 needs US Nr. 5 to be **one**. Both held, but each
+was a live way to fail and neither was in the Abnahme.
+
+**„Hoechstens X" is two claims: the bound and its attainability.** 32 + 6 + 3 + 1 = 42 is
+only the maximum because the widest address form (Restwelt) *also* carries a three-digit
+Nummer. Check that the maximising choices co-occur — a bound assembled from separate
+maxima is an upper bound wearing an exact number's clothes.
+
+**A red tree is cheapest to clear by the failing tests' *named* locations.** Five red
+(`belegstellen_*`, `bezeichner_riegel`) against a package that edits comments — genuinely
+alarming, because `belegstellen` counts quotations in comments. Settled in two greps: the
+only named findings are `festkomma_probe.cpp:259` and `:136`, and the tool's own head
+numbers are declared stale in the report (`:386`). Corroboration: the new text's „…" quotes
+carry no document name in their paragraph, and „Ohne Dokumentnamen kein Zitat"
+(`belegstellen_riegel.cpp:384`) — so the edit adds no Zitat and cannot have moved the count.
+
+**Check for the proposal before writing it.** My finding (no probe reaches `Gebiet::RW`,
+so the 324 has no runtime witness) was already `0261`, filed by the builder out of the same
+package. Found by globbing `aufgaben/026*` for a free number — which is the same call that
+answers „has someone filed this". **Glob the neighbouring numbers first; it costs one call
+and saves the project manager a duplicate.**
+
 ## 2026-09-08 — 0254, `geprueft`: the configure printed its own receipt, and I did not have to run it
 
 **A configure-time riegel leaves its proof in `befunde/uebersetzung-<datum>.md`, and the
