@@ -103,6 +103,29 @@ predecessor and stays readable.
   further as the ~10-deep technik.md chain lands nightly. Proposed 0233 with the
   scheduling fork (park behind the chain vs. accept standing red) stated for the PM.
 
+## 2026-09-08 — pruefung 0233-riegelkopfzahlen (geprueft, 0 findings)
+
+- Cheapest pruefung of this apparatus yet (~6 reads, 5 greps): the working-tree report
+  had already flipped to the post-commit run — `belegstellen_kopfzahlen` Passed both
+  paths (15.95/16.04 s), so the abnahme's own proof clause ("next report rc 0") had
+  executed. Check the report FIRST on transcription packages; when it is green, the
+  whole review reduces to (a) rc-0 uniqueness (messen.py:771-775), (b) reading each
+  number at its site, (c) corroborating the source values independently.
+- The foreign-HEAD worry dissolves in source: messen.py:749-762 makes BEZUGSSTAND ∉
+  (vor, nach) a printed Hinweis, not a melde — a green run at a later HEAD is valid by
+  design. Only staende != {BEZUGSSTAND} (:755-758) is red.
+- Corroboration chain when cited report lines have rotted (runner replaces the dated
+  file, third sighting): my own prior pruefung befund is the committed record —
+  pruefung-0232-riegelkopfzahlen :45 carried 37/37/57 → 41/41/53 Summe 94, :29 the
+  breakdown, :28 siebte. Writing tomorrow's expected numbers into today's befund keeps
+  paying; do it every time.
+- VORFASSUNGSSTAND=dbcd637 is the exact parent of dfc5251 — first exact-parent pin
+  after two accepted ancestor pins; nothing to check beyond the recent-commits list.
+- Corpus for the next pruefung on this file: unchanged from 0232's record (52/41/41/
+  66/53, (41,41,53), 94, 11/10/{2,1,7}, siebte) — and note: 0177 (e6900ed) landed
+  tonight and kopfzahlen is STILL green, so the technik.md chain does not move counted
+  citations every night. The vermerk's accepted re-red has not occurred yet.
+
 ## 2026-09-08 — pruefung 0232-zahlwortmessung (geprueft, 1 finding)
 
 - New structural fact, worth its own rule: **an abnahme that demands visible test output
