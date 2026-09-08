@@ -26,3 +26,26 @@ Also useful: the runner's uebersetzung report header lines ("10 Kernquelle(n) un
 Probe(n) geprueft") independently confirmed the sperre-gap claim of condition 3 without
 reading CMake logic twice.
 
+## 2026-09-08 — 0255 (21 hat_abgebrochen sites into the ledger): geprueft
+
+What worked: my own previous pruefung (0244, same file, same day) was the pre-state
+record — it had committed "21 hat_abgebrochen / 14 BRICHT_AB_MIT / 6-1-2-1-1-1-2" —
+so "no assertion lost" was checkable without git diff. Writing tomorrow's numbers into
+today's befund keeps paying; done again (see below).
+
+New pattern worth reusing: **riegel attribution needs no source read when the pair
+comparison ran green.** One-riegel-per-wording is exactly what auswerten's eigene/fremde
+halves enforce — lumping or splitting wordings goes red, and exact SOLLZAHLEN counts
+force all messages to arrive. Saved reading src/werte.cpp entirely (~72k tokens class
+of cost avoided).
+
+Freshness check for MERKE-style "record what a global holds" macros: walk the lines
+between producer and consumer and confirm they only *read* the global. Two distant
+sites (2198, 2229) were fine; a stray aborting call in between would have been the bug.
+
+Corpus for the next pruefung on werte_probe/kennzeichen: 23 riegel + Anzahl, SOLLZAHLEN
+23 entries sum 35 (14 via BRICHT_AB_MIT, 21 via MERKE), MELDUNGEN_MAX 64, ALLE_RIEGEL
+generated (riegelliste, :197-206), forget-net = two static_asserts :430-431, printed
+line says "vor Paket 0255 waren es 14 aus 7". Root ctest 27 (kennzeichen_riegel from
+0251 landed and passes), kern 13.
+
