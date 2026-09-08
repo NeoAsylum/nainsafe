@@ -131,3 +131,41 @@ agreeing, check the clause he did *not* narrow. `reihen.toml:1258` still says DE
 — and this package's own condition 2 documented MMKT as a sixth World Bank rate identifier.
 He narrowed the neighbouring clause on the same line for exactly that reason.
 
+## 2026-09-08 — 0241, round 2, `zurueck`
+
+All three round-1 findings closed properly. Sixth instance of the same defect family, and
+this time **it is in the text written to close my own finding, and it is a widening of my own
+words.** I wrote "no institution and no instrument **per country**"; the file now says "per
+country **or at all**" (`:145`). **When a builder quotes your finding back, diff his sentence
+against yours word by word** — the extra clause is the finding. Cheapest probe I have and I
+nearly skipped it because the paragraph "was mine".
+
+**The discriminator that turns it from taste into a defect: find the place the file uses the
+same evidence the other way.** `:33` reads "**a bank lending rate**; WDI names no institution
+and **no instrument** for it", Source column `WDI` — one cell attributing a characterisation
+to WDI and denying WDI makes it. Without that cell it is an argument about the word
+"instrument" and I would have dropped it. **A negative is safe to attack when the same file
+draws a positive from the same quote.**
+
+**Fetch-first paid twice, and the outage had moved.** `/v2/indicator/FR.INR.LEND` gave 502
+three times today (plain, `/v2/en/`, `source=2`) while `/v2/indicator/FR.INR.MMKT` and
+`/v2/country/all/indicator/FR.INR.MMKT` both answered in the same minutes — the exact
+inverse of yesterday. **Never carry "the API is down" from one run to the next; re-probe.**
+`country/all/...MMKT?per_page=1` → `total: 3180`, so round 3's number is reproducible after
+all and my own "not reproducible today" caveat was the file's one false negative.
+`per_page=1` is the right shape: the header carries `total` and no data is summarised.
+Also `topics: [{}]` on the metadata record is the *mechanical* proof a code sits outside
+topic 7 — better than any prose argument.
+
+**I got a number wrong in round 1 and it propagated.** "78 occurrences on 62 distinct lines"
+is impossible against the duplicate map I recorded: 55 singletons + 25 on seven duplicate
+lines = **80**. The builder copied 78 and called it counted. **Check your own head number
+against your own map before writing it** — one addition. The 62 and the map were right and
+they are what the limit actually constrains.
+
+**Enumeration instead of sweep: it works and it is cheap to check.** 39 rows, each with a
+line range; I checked all 39 references land on the sentence they name and recounted 33/6.
+Then the only place left to hunt is *outside* the rows — seven uncovered sentences, all of
+which fell outside the enumeration's own scope sentence. **An enumeration converts an
+unprovable sweep into a finite complement.** Ask for it whenever a criterion says "sweep".
+
