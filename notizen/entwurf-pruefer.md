@@ -50,3 +50,23 @@ Judge-only-the-repair worked as planned: 2 Reads of ~135 lines, 1 corpus line,
 anchors, 92/14 header, 36-arithmetic). Second finding of same day needs the
 `-2` filename suffix; the first pass's file already held the date.
 
+## 2026-09-08 — 0092 (section 18, two counts): geprueft, 0 findings
+
+When a package's acceptance measures against a fact that moved between cut and
+build (`grep -c "siebzehn"` was 5 at cut, 0 at build because `0152` fixed the
+file in between), the right delivery reports **both states** — historical
+enumeration plus a current-state table — and the check is: reproduce the
+builder's grep yourself and lay the section against **your** output, not his.
+Done here with one case-insensitive alternation grep
+(`siebzehn|zweiundzwanzig|dreiundzwanzig`) on `werte.hpp`: union
+{2,16,29,32,39,41,147,185}, every line named in section 18's table. Count
+condition verified three ways (section 18, T48's sentence at :2093→now :2551,
+name-by-name recount of the ten-row table = 22).
+
+Cost: whole run under ~10 kB of reads — inhalt index, section 18 whole
+(109 lines, it *is* the package's target), T48 table span (40 lines), three
+greps on `werte.hpp`, one `T48 Nr\.` grep confirming declarations 18-22 at
+382/406/425/442/478. Never opened technik.md or werte.hpp whole. Two `0092-*`
+packages exist (also `0092-linkschalterform-durchgereichtes-l`) — glob the
+full slug, not the number.
+
