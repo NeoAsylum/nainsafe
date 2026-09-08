@@ -83,14 +83,65 @@ Nothing to do differently — but note the form: **„not reproducible today" is
 measurement and ages faster than the number it qualifies.** Prefer „answered X on <date>,
 502 earlier the same day" — history rather than a standing caveat.
 
+## 2026-09-08 — 0252: the retrieval that settles a negative by refusing both sides
+
+One fetch, outcome 2 of three, and two things worth carrying.
+
+**Finding the codelist cost one extra fetch and would have cost a dozen guesses.**
+`structure/dataflow/IMF.STA/MFS_IR/9.0.0?references=all&detail=allstubs` returns 68 codelist
+IDs with versions and nothing else — from it `CL_MFS_IR_INDICATOR` 2.1.0 falls out by name,
+and the item query
+`structure/codelist/IMF.STA/CL_MFS_IR_INDICATOR/2.1.0/DISR_RT_PT_A_PT` then answers directly.
+**`detail=allstubs` is what makes the first fetch cheap** — the full reference graph of an IMF
+dataflow is enormous, the stub list is one page. Use this shape for any IMF code description.
+
+**A second fetch on the same URL is nearly free and is the check on the first.** The
+summarising model had returned a four-sentence „description" reading like a concatenation of
+component semantics (instrument, then rate, then percent, then ratio). I re-asked the same
+cached URL for the *element structure* — how many `Code` elements, is the description one
+element or several — and got: one code, one description element, that exact string. **Ask a
+retrieval how many things it found before quoting one of them.** Without that I would have
+quoted a sentence and guessed at its provenance.
+
+**The answer's shape is the useful part: the source declines the identification in both
+directions.** Not „it is the Selic", not „it is not" — it names a discount rate generically
+and identifies no instrument per country. So the denial gets retired *without* the opposite
+being confirmed, and way 2 is untouched: an answer that settles nothing about the policy-rate
+character costs way 2 nothing. **Write that explicitly.** A reviewer reading „the denial is
+gone" will otherwise assume the affirmation arrived.
+
+**Placement rule held for the third time, and it is now reflex.** Everything I added went
+below `:281`, under the last line the 39-row enumeration cites. In-place edits at `:31`,
+`:134`, `:223`, `:225`, `:231` each kept their line count — including flipping `33`/`6` to
+`34`/`5`, where equal digit width preserved the wrap. Anchors re-grepped after: 31, 134, 140,
+163, 195, 231, 280, all on their original lines. Citation count in `reihen.toml` 62 before,
+62 after.
+
+**Where I widened scope, and I want the pruefer to see it named.** Condition 2 named
+`reihen.toml:621`. A `Grep -o -n 'Selic'` over `daten/` found the identical denial at
+`:1258` too — same file, therefore mine — and at `deckungsbefund-1997.md:206`, which is not
+in my `dateien`. I scoped both `reihen.toml` sites and left the third, because the condition's
+stated reason is that the two files must not disagree, and leaving one of two clauses in the
+same file recreates exactly that. **Grep the claim across the directory before trusting a
+package's list of sites** — the package named the two it knew.
+
+**What I am unsure about, for the projektmanager:** the USA half-clauses („Fed
+discount-window rate", `:30`, `:134`, and both `reihen.toml` sites) are the same unsourced
+per-country identification, and my new paragraph two lines away now says the source makes
+none. I left them — condition 1 said „not more" — and named them in the file plus proposed
+`0253`. If the pruefer calls that a contradiction I created, he is not wrong; the alternative
+was scope creep in a package whose `vermerk` warned against it twice.
+
 ## Open leads
 
 Carried from `notizen/archiv/datenbauer-2026-09-08-2.md`, still open after 0241:
 
-- **„not the Selic" (`quellenbefund-leitzinspfad.md:31`, `:134`) is the one negative whose
-  evidence lives outside the file** — `reihen.toml:621` asserts it with no query either. One
-  fetch of the IMF code description per country would close it. Nothing in the result hangs
-  on it; reported in the package, not a package of its own yet.
+- **„not the Selic" is closed (0252, 2026-09-08).** The IMF codelist declines the
+  identification in both directions; the denial is retired at `quellenbefund-leitzinspfad.md:31`,
+  `:134`, `:231` and at `reihen.toml:621`, `:1258`. **What is left is the mirror image and it
+  is proposed as `0253`:** the USA „Fed discount-window rate" clauses in those same files, and
+  the retired Brazilian denial still standing whole in `deckungsbefund-1997.md:206`. No new
+  retrieval needed — the quote is in the befund's closing section.
 - **`FR.INR.MMKT` is a documented hole in the topic-7 enumeration and nobody has measured how
   big it is.** Rate indicators outside topic 7 or without the `FR.INR` prefix are
   unenumerated. **The 502s moved: on 2026-09-08 MMKT answered normally again (`total: 3180`)

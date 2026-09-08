@@ -28,7 +28,7 @@ endpoint itself is named alongside it.
 | Country | Source | Flow | Code | Years | What it measures | Policy rate? |
 |---|---|---|---|---|---|---|
 | USA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1950–2020, 71 obs | Fed discount-window rate | administered, not the target rate |
-| BRA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1997–2025, 29 obs | rediscount rate, **not the Selic** | administered, not the target rate |
+| BRA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1997–2025, 29 obs | a discount rate; the source names no instrument per country (below) | administered, not the target rate |
 | DEU | IMF | `MFS_IR` 9.0.0 | `S13BOND_RT_PT_A_PT` | 1957–**2017**, 61 obs | government bond yield | **no** — a market price |
 | CHN | World Bank | WDI | `FR.INR.LEND` | 1997–2021, 25 of 25 | a bank lending rate; no institution named by the source, and its terms differ by country (below) | **no** — a bank lending rate, not the policy instrument |
 
@@ -131,7 +131,7 @@ such rate:
 
 | Candidate | USA | DEU | CHN | BRA |
 |---|---|---|---|---|
-| `DISR_RT_PT_A_PT` | Fed discount-window rate | absent | absent | rediscount rate, not the Selic |
+| `DISR_RT_PT_A_PT` | Fed discount-window rate | absent | absent | a discount rate, not identified per country |
 | `S13BOND_RT_PT_A_PT` | govt bond yield | govt bond yield, ends 2017 | absent | absent |
 | `MMRT_RT_PT_A_PT` | money market rate | absent | absent | 1964–1981 only |
 | `FR.INR.LEND` | bank lending rate | absent | bank lending rate — no institution named by the source | bank lending rate |
@@ -220,15 +220,15 @@ enumeration below replaces the sweep this file's package first asked for.
 
 A sweep cannot be checked — you see what it found, never what it missed. This lists every
 sentence in the file that asserts an absence: of a row, a series, an identifier, a
-variable, or of policy character. **39 entries. 33 are the answer of a named query; the
-other 6 are readings, summaries or scope statements, and each of those rows says so.**
-Line numbers are of this file as of 2026-09-08 after Ruecklauf 1, unchanged by Ruecklauf 2.
+variable, or of policy character. **39 entries. 34 are the answer of a named query; the
+other 5 are readings, summaries or scope statements, and each of those rows says so.**
+Line numbers are of this file as of 2026-09-08, unchanged by Ruecklauf 2 and by package 0252.
 
 | Line | The negative | What answers it |
 |---|---|---|
 | 9 | no vetted source carries a policy rate for all four; no code queried here reaches all four | the whole table `:79`–`:93`; „queried here" is the scope, narrowed 2026-09-08 |
 | 30–33 | the „Policy rate?" column: none of the four candidates is the policy instrument — twice „administered, not the target rate", twice **no** | **not a query answer** — a reading of what each code measures, off the titles at `:79`–`:91` |
-| 31, 134 | BRA `DISR` is „not the Selic" | **not a query answer** — carried from `daten/reihen.toml` `[[widerspruch]] nr = 5` (`:621`); nothing fetched for it in this run |
+| 31, 134 | BRA `DISR` is a discount rate the source identifies for no single country | `structure/codelist/IMF.STA/CL_MFS_IR_INDICATOR/2.1.0/DISR_RT_PT_A_PT`, 2026-09-08. **New in 0252**, replacing a denial that the value is the Selic which no query stood behind; closing section |
 | 35–37 | no query in this run returned a policy rate for China | `MFS_IR/9.0.0/CHN.*.*` (`:82`) and the five WDI codes (`:85`–`:89`) |
 | 39–40 | DEU carries no value 2018–2021 | `DEU.S13BOND_RT_PT_A_PT.A`, 2026-09-08 |
 | 51–52 | USA `DISR` has no 2021 row | `USA.DISR_RT_PT_A_PT.A?format=sdmx-csv`, 2026-09-08 |
@@ -278,3 +278,40 @@ fetch of the same date strengthens `:183`–`:184`, which is asserted there and 
 line 60b (%)."`, `source: {id: 11, "Africa Development Indicators"}` and **`topics: [{}]`**
 — an empty topic list is mechanical proof that the code is filed outside topic 7, and IFS
 line 60b comes from the source rather than from this file.
+
+## Revision 2026-09-08, package 0252: the Selic denial is retired, not confirmed
+
+One retrieval, and it lands on the second of the three outcomes that package named in
+advance. The codelist behind the indicator dimension of `IMF.STA/MFS_IR` 9.0.0 is
+`CL_MFS_IR_INDICATOR` 2.1.0, read off
+`structure/dataflow/IMF.STA/MFS_IR/9.0.0?references=all`; the code itself from
+`https://api.imf.org/external/sdmx/3.0/structure/codelist/IMF.STA/CL_MFS_IR_INDICATOR/2.1.0/DISR_RT_PT_A_PT`,
+both retrieved 2026-09-08. The document carries one code, with one name and one
+description element:
+
+> Discount Rate, Percent per annum
+
+> The interest rate charged by central banks on loans to commercial banks. A measure that
+> expresses the frequency of occurrence of an event or phenomenon in relation to another
+> quantity. Expresses an annual rate or percentage, often used in financial contexts. A
+> ratio expressed as a fraction of 100.
+
+**The source describes a discount rate generically and identifies no instrument for any
+single country.** It therefore does not identify the Brazilian value as the Selic — and
+does not identify it against the Selic either. `:31` and `:134` now say what the answer
+supports and no more, which is the same move `:140`–`:150` made for `FR.INR.LEND`, one
+source further on. `daten/reihen.toml` carried the same denial twice, at `:621`
+(`[[widerspruch]] nr = 5`) and in series 9's `offen` list; both are scoped to match.
+
+**What this does not change.** The result line, the „Policy rate?" column and way 2 at
+`:163` all stand. An answer that declines the identification in both directions settles
+nothing about whether BRA `DISR` is the policy rate, so way 2 costs the countries it
+already cost. No observation count moved: this run queried structure, not data.
+
+**Out of scope of 0252, named so it does not read as an oversight.** The USA cells at
+`:30` and `:134` („Fed discount-window rate") and the matching USA half-clauses in
+`daten/reihen.toml:621` and `:1258` assert exactly the kind of per-country identification
+this retrieval declines to make, and `daten/deckungsbefund-1997.md:206` still carries the
+retired Brazilian denial in full. 0252 covered the Brazilian clause in two files;
+`deckungsbefund-1997.md` was not among its `dateien` at all. Proposed as
+`aufgaben/0253-disr-je-land-identifikation-nachziehen.md`.
