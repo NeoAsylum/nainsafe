@@ -2446,7 +2446,7 @@ call does not run at night.
 | 3 | determinism test | the same seed, mode and the same action sequence yield the same checksum — twice within the run, across save and load, and compared on every target platform | test developer |
 | 4 | regression corpus | stored games per T22 recompute bit-identically; in addition a checksum over the chain, so that a changed *justification* shows too; at least one game on a 1980 vintage with a base change (T8) | test developer |
 | 5 | break run | 10,000 games with the random bot: no crash, no overflow, no invariant violation, no chain overflow, no double write access and no mask violation (T18, T38, T39) | break tester |
-| 6 | **boundedness** | **200 rounds without a player**; if a quantity leaves its value range, there is a **ninth** feedback channel, and that is a finding. The channel table in `spiel.md` has counted **eight** since version 5 | break tester |
+| 6 | **boundedness** | **200 rounds in mode `weltlauf`** (T38) — that is what „ohne Spieler" means, decided in section 28; if a quantity leaves its value range, there is a **ninth** feedback channel, and that is a finding. The channel table in `spiel.md` has counted **eight** since version 5. **Bounds 5, 6 and 7 measure only the start assignment in this check**, see below | break tester |
 | 7 | the three measures | decision density, strategy diversity, optimum shift per the calculation rules in `spiel.md`, against the thresholds there: **0.4 per game third**; **three classes with one winner each at most 25 % apart**; **shift ≥ 0.4** | self-player |
 | 8 | backtest | in mode `weltlauf` (T38), `L_R(S+5) − n` reported series (today 31, of them `L_R(S+4) − n` = 27 target series) plus the trade block, error measures per T42, acceptance via **`3·L_R + (L_R − n) + 1` check subjects with tolerance `⌊L_R/2⌋`**, today **16 and 2**, per T37 | backtester |
 
@@ -2474,11 +2474,61 @@ the overflow bound does crash per T7, but only in `tsd_in_cent` and thus at a pl
 nobody looks for the cause; and a tariff level below −10,000 basis points turns the wedge
 factor of number 21 negative, which no reader of it notices — measured, section 23.
 
-**Check 6 runs past the end of the vintage window, and that needs a rule.**
+**Check 6 runs in mode `weltlauf`, and that decides three of its seven bounds away.**
+„200 Runden ohne Spieler" named no mode until now, and the two readings differ measurably
+(`befunde/beschraenktheit/bruch-2026-09-06.md`, findings 2 and 3). It is the `weltlauf`:
+that is the mode without a player (T38); it is the only one that runs today —
+`kern::schritt::schritt` aborts on `Modus::Spielmodus` because steps 2 and 6 have no
+package (`kern/src/schritt.cpp`, the `switch` over the mode); and a boundedness check
+whose inputs are constant after the window asks the sharper question — if a quantity runs
+away there, it is the model. The other reading is not wrong, it is dearer: it makes check
+6 unrunnable instead of blind, and it ties it to two unbuilt steps.
+
+**The price, and it does not go away once the six steps are built.** The target mask
+`weltlauf` writes 175 of the 310 addresses, the other 135 keep their start value (T38). Of
+the 101 addresses of the eight bounds, **65 lie outside it**: `markt.wert` (bound 5, 1
+address, block market basket), the 32 pressures and counter-pressures (bound 6, block
+instruments without level), the 32 fund shares and position tiers (bound 7, block fund).
+In check 6 these three bounds measure the **start assignment** and nothing else — in round
+200 those 65 carry the value of round 0, not because the model leaves them alone but
+because the mode does not touch them. Bound 6 and bound 7 are exactly the two whose column
+*why it is not mere cosmetics* speaks of an unbounded channel 8 and of shares above 100 %,
+and bound 5 of the overflow.
+
+**Where the three can break instead.** Check 2 evaluates the bounds in every round of every
+run, so 5, 6 and 7 break wherever a `spielmodus` game runs — a bot or a player places
+actions, and step 2 is dropped in the `weltlauf`. Among the eight checks that is check 1
+(unit tests, on a minimal state), check 4 (regression corpus), **check 5 (10,000 bot games,
+the broadest of them)** and check 7. **What none of them does is 200 rounds:** they run
+over `R` = 24. A runaway that needs a long horizon — in the fund block, in channel 8, in the
+basket value — is checked by nobody, and that is report 1 of section 28, not a rule here.
+
+**And the other reading would not have bought bound 6 in full either.** With an empty
+action bundle the 16 `druck` addresses never leave 0, because pressure arises solely
+through action 3 (section 7, point 1), and `gegendruck` is formed in step 5 from `hub` and
+from its own previous value (the counting table in section 10), so it moves only if an
+instrument moved — which without lobby pressure it does not. 16 of bound 6's 32 addresses
+stay at their start value in **both** readings.
+
+**Check 6 runs past the end of the vintage window, and that rule now has an owner.**
 The exogenous paths from T25 carry only R+1 support points. From round R+1 on they are
 **frozen at their last value**, not carried forward, and the run is marked
 `ueber_fenster`. Freezing is the sharper choice here: if a quantity runs away afterwards,
-it is the model and not the input. Cost: 200 world steps.
+it is the model and not the input. Cost: 200 world steps. At R = 24 the support points
+cover rounds 0 … 24, so rounds **25 … 200 are outside the window — 176 of 200**; the
+finding names 175 because it begins freezing one round later.
+
+| What | Where it arises | Responsible |
+|---|---|---|
+| **the freeze** | in `daten`, in the one accessor that answers „value of path P in round `t`": `t` enters the series as `min(t, R)`. Not at the caller — the second caller who forgets the clamp reads behind the end of the series, and that is exactly the failure the finding names | data builder |
+| **the mark `ueber_fenster`** | a property of the run, not of the state — the same construction as the mode in T38, and no 311th field. It is **derived**, `runde > R`, not latched by the accessor, so that a round which reads no path at all is marked too. `R` is available there: it arises on loading the vintage per T40 | data builder forms it; **break tester** carries it into the finding of check 6, beside the mask size that T38 already requires there |
+
+Neither exists today: there is no freezing and no marking in `kern/` or `daten/`, and the
+word occurs only in this file. That is without consequence only as long as the `daten` box
+of T13 is unbuilt — there are then no support points to run past. **Whoever feeds the
+target series in without building the rule with them gets a carry-forward into nothing or
+a read behind the end of the series.** By which route a path value reaches the round —
+through T10b's carrier or beside it — is not decided here; that is report 2 of section 28.
 
 **T31 — The regression corpus is never silently regenerated.** A deliberately changed
 model value turns check 4 red — that is the purpose. Renewal runs via a call of its own,
@@ -5118,3 +5168,49 @@ at the end. All fifteen new lines lie in T61 rule 5 (six) and in this section (n
 those two places the count is unchanged. A tool that counts **matches** instead of lines gives
 one more at either end, **49** today, because one line carries two of them. No number outside
 T61 has moved.
+
+## 28. Check 6 names its mode — Paket `0158`
+
+The decision and the two reports it produces. The rule itself stands where it is read, under
+T30 in section 9; this section carries only what does not belong in a rule.
+
+**Decided: check 6 is the `weltlauf`.** Three grounds, in the order of their weight —
+„ohne Spieler" is the definition of that mode (T38); it is the only mode that runs today;
+and constant inputs after the window make a runaway attributable to the model. The losing
+reading stands written beside it with its price, because a decision whose alternative is
+not stated cannot be reopened by anyone but its author.
+
+**What this package deliberately does not decide:** whether the `spielmodus` gets built,
+and when. That is a package of the project manager's, and the decision above is written so
+that it survives either answer — bounds 5, 6 and 7 stay outside check 6's reach in the
+`weltlauf` even after steps 2 and 6 exist.
+
+**Report 1 to the project manager — no check measures boundedness over a long horizon.**
+Bounds 5, 6 and 7 are reachable only in a `spielmodus` run, and every such run is `R` = 24
+rounds long (checks 1, 4, 5, 7). Check 6 is the only one with 200 rounds and is blind to
+exactly those three. So the question *does the fund block, channel 8 or the basket value run
+away over 200 rounds* is asked by nobody. Whether the answer is a second boundedness run in
+the `spielmodus`, a longer bot game in check 5, or the deliberate acceptance of the gap, is a
+package and not a sentence here. **The gap is named, not closed** — a green check-6 report
+today says nothing about these three bounds, and that sentence belongs in the report.
+
+**Report 2 to whoever builds the `daten` box — the route of a path value into the round is
+open.** T10b binds one carrier for the numbers of a round that are not addresses, and an
+exogenous path value at round `t` is such a number. Whether it travels in that carrier, whose
+`Runde(feld)` fields the round checksums against `partie.parameter_pruefsumme`, or beside it,
+is a signature question that T10b's own rule already governs (a `const` carrier needs no ADR,
+a removed or non-`const` argument does). It is not decided here, because this package may not
+widen `schritt`. What **is** decided here and binds that package: the clamp `min(t, R)` sits
+in the accessor, once, and not at each caller.
+
+**What is deliberately left standing.** The bounds table under T30 is untouched — the three
+affected rows keep their wording, because the blindness is a property of the check and not of
+the bound. T38's mask table, its 175/135 split and the eight bounds themselves are untouched.
+Check 5 keeps its 10,000 games and its `R` rounds; making it longer would be report 1's
+package, not this one.
+
+**The check this section can be held to.** `ueber_fenster` had two occurrences in this file
+before the run, both in it and none anywhere else in the venture, and after the run it has
+more — that is the point. The number that must hold instead: `grep -c 'ueber_fenster'` over
+`kern/`, `daten/` and `parameter.toml` gives **0** before and after; this package writes a
+rule, not code.

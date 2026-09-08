@@ -137,3 +137,74 @@ Abschnitt, nicht nur an der Stelle, die du änderst.** Genau dasselbe Muster war
   Klausel nachziehen; stehen lassen geht nicht.
 - **Kleinigkeit:** `ops/reserviert.txt` las am 2026-09-08 `frei`.
 
+## 2026-09-08 — Paket 0158, Prüfung 6 bekommt einen Modus und die Fensterregel einen Besitzer
+
+**Entschieden: Prüfung 6 ist der `weltlauf`.** Drei Edits — die Pflichtenzeile 6 unter T30,
+der Absatz zur Fensterregel (auf sechs Absätze plus eine Zwei-Zeilen-Tabelle erweitert),
+und ein neuer Abschnitt 28 für die zwei Meldungen. Kein Rücklauf, kein Prüfbefund vorher.
+
+### Der übertragbare Fund: den Vorteil der Gegenlesart *nachzählen*, nicht annehmen
+
+Der Befund stellt die Wahl als „blind gegen nicht lauffähig" hin: `weltlauf` erreicht 65 der
+101 Schrankenadressen nicht, `spielmodus` erreicht alle 310 — bricht aber heute ab. Klingt
+nach einem Tausch. **Ist es nicht: Ich habe nachgerechnet, was die Gegenlesart wirklich
+liefert.** Prüfung 6 spielt *ohne Spieler*, im `spielmodus` also mit leerem Aktionsbündel —
+und dann bleiben die 16 `druck`-Adressen auf 0, weil Druck laut Abschnitt 7 Punkt 1
+ausschliesslich durch Aktion 3 entsteht; `gegendruck` bildet Schritt 5 aus `hub` und dem
+eigenen Vorwert (Zähltabelle Abschnitt 10), bewegt sich also nur, wenn ein Instrument sich
+bewegt hat — ohne Lobbydruck tut es das nicht. **16 der 32 Adressen von Schranke 6 stehen in
+*beiden* Lesarten auf der Startbelegung.** Der Tausch ist damit kein Tausch, und die
+Entscheidung hängt nicht mehr an Geschmack.
+
+**Prüffrage für den nächsten Lauf, wenn ein Befund zwei Lesarten gegenüberstellt: rechne
+den behaupteten Gewinn der unterlegenen Lesart aus, bevor du ihn gegen ihren Preis
+abwägst.** Der Befund hatte ihn nur behauptet („alle sieben Schranken sind erreichbar"), und
+er war zu gross.
+
+### Die Zahl, an der ich vom Befund abweiche — 176 statt 175
+
+Der Befund sagt: Einfrieren ab Runde 26, also 175 von 200 Runden. Die Regel in `technik.md`
+sagt „ab Runde R+1", bei R = 24 also ab Runde 25 — **176 von 200**. Ich bin der Regel
+gefolgt und habe die 175 danebengeschrieben, mit dem Grund. `R = stuetzstellen − 1` = 24 bei
+25 Stützstellen; die decken die Runden 0 … 24, Runde 25 hat keine mehr.
+
+### Unsicher, damit der Projektmanager es sieht — vier Stellen
+
+1. **176 gegen 175.** Sind die 200 Runden als 0 … 199 gezählt, hat der Befund recht und ich
+   nicht. Ich habe beide Zahlen mit ihrer Herleitung hingeschrieben, statt eine zu wählen.
+2. **Der Modus von Prüfung 5 steht nirgends.** Meinen Satz „wo die drei stattdessen reissen
+   können" trägt eine Herleitung: ein Bot setzt Aktionen, und Schritt 2 entfällt im
+   `weltlauf` (T38) — also ist eine Botpartie `spielmodus`. `technik.md` sagt das nicht
+   ausdrücklich. Wird die Herleitung bestritten, verliert der Satz seine Aufzählung, nicht
+   seinen Punkt (Abnahme 1 verlangt nur *eine* andere Stelle).
+3. **Ich binde mit dem Klemmpunkt `min(t, R)` in `daten` ein Paket, das es nicht gibt.** Der
+   Kasten `daten` ist nicht gebaut. Abnahme 2 verlangt genau das („einen Ort, an dem sie
+   entsteht"), aber es ist eine Vorentscheidung über fremdes Gewerk. Wer sie für zu früh
+   hält, streicht die Tabellenzeile — die Rolle bleibt trotzdem benannt.
+4. **Abschnitt 28 ist streichbar.** Beide Abnahmebedingungen stehen vollständig in
+   Abschnitt 9. Abschnitt 28 trägt nur, was keine Regel ist: die zwei Meldungen, die nicht
+   getroffene Entscheidung über den `spielmodus`, das Liegengelassene. Derselbe Fall wie
+   Abschnitt 27 beim Vorlauf.
+
+### Fährten
+
+- **Neu, und es ist ein Widerspruch, nicht meiner:** `exogen_ab_runde = bruchjahr −
+  startjahr + 1` (T40, DE-Leitzins 1999 → Runde 3) macht 1997 zu Runde **1**. `R =
+  stuetzstellen − 1` und die Spieldrittel `1…⌊R/3⌋ … ⌊2R/3⌋+1…R` = 1-8/9-16/17-24 machen den
+  Startzustand zu Runde **0** und 1997 damit zu Runde 0. Beides zusammen geht nicht. Ich habe
+  es nicht angefasst — es ist weder T30 noch die Fensterregel —, aber es entscheidet, ob die
+  176 oder die 175 stimmt. **Das ist der Befund, den ich nicht gelöst habe.**
+- **Meldung 1 aus Abschnitt 28 ist ein Paketvorschlag:** Keine der acht Prüfungen misst
+  Beschränktheit über einen langen Horizont an Fonds, Kanal 8 und Korbwert. Prüfung 6 hat die
+  200 Runden und ist gegen die drei blind; alle `spielmodus`-Läufe haben die drei und laufen
+  R = 24 Runden. Entweder eine zweite Beschränktheitsprüfung, eine längere Botpartie in
+  Prüfung 5, oder die Lücke wird bewusst hingenommen.
+- **Unverändert gültig:** die Zählklausel in Abschnitt 27 zählt `T6[0-2]` über die ganze
+  Datei und steht selbst im gezählten Bereich. **Dieser Lauf hat sie nicht berührt** — ich
+  habe in keinem meiner drei Edits `T60`, `T61` oder `T62` geschrieben. Wer das nachprüft,
+  misst 48 Zeilen / 49 Treffer wie am Vorlauf.
+- **Der Vorgänger-Faden steht:** T15, T16 und die 310 zählen nicht in `L_R` — `0116` und
+  Bedingung 1 des Horizonts in Abschnitt 26.
+- `ueber_fenster` kommt in `kern/`, `daten/` und `parameter.toml` **null** Mal vor, vor und
+  nach diesem Lauf gemessen. Das ist die Zahl, an der Abschnitt 28 hängt.
+
