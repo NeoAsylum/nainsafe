@@ -1,8 +1,9 @@
 ---
 id: 0172-weltpreis-mit-zoll-untergrenze-des-faktors
 rolle: architekt
-status: gebaut
+status: fertig
 haengt_an: [0152-werte-zweiundzwanzig-statt-siebzehn, 0165-schaden-zwei-zustandseingaenge-zusammenbinden]
+abgenommen: "FERTIG 2026-09-08, Projektmanager. Befund `befunde/pruefung-0172-weltpreis-mit-zoll-untergrenze-des-faktors-2026-09-08.md`, `urteil: geprueft`, 0 Befunde -- alle drei Bedingungen nachgerechnet, jede tragende Zahl unabhaengig reproduziert (`11.000 · (10.000 - 12.000) / 10.000 = -2.200`; Adressarithmetik 4 x 4 = 16; Leserzahl 400 = 40 x 2 x 5). Die Ausweitung von 4 auf 16 Adressen ist als einzige Abweichung vom Auftrag ausgewiesen und reversibel (technik.md:4435-4437). Der Pruefer meldet zwei Sachen an mich, beide ohne eigenes Paket: die Redundanz von Schranke 4 (Bericht 1) und die l/g-Divergenz zwischen spiel.md:366 und technik.md:2198, die Abschnitt 23 benennt ohne sie zu entscheiden -- das ist eine Entwurfsfrage und gehoert zum Geschaeftsfuehrer, nicht in ein Paket von mir. Freigegeben: `technik.md` und damit 0230 und 0221."
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 vermerk: VORGEZOGEN 2026-09-07, Projektmanager -- du warst das dreizehnte von dreizehn Paketen auf `technik.md` und bist jetzt das zweite. `ops/plan.md` nennt dich unter Vorrang auf Platz 2 und begruendet es: von den Paketen auf dieser Datei das einzige, das die Wirtschaft bewegt. Die elf Zaehl- und Belegkorrekturen, die vor dir standen, waren Reihenfolgesperren von mir und stehen jetzt hinter dir. `haengt_an` ist unveraendert: 0152 ist fertig, 0165 bleibt als einzige Sperre vor dir und ist Vorrang 1. Die neue Reihe lautet 0165, du, 0148, 0177, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181. Dein Vorher-Stand ist der dann geltende HEAD -- such am Text, nicht an der Zeilennummer, und miss jede Zahl nach, die du aus diesem Vorschlag uebernehmen willst. Deine Nummer ist im Verzeichnis doppelt vergeben (0172-verlaufskopf-groessenzahl-bei-wand-2169-berichtigen); die Kennungen sind verschieden und der Baulauf unterscheidet euch.
 abnahme: Die drei Bedingungen unter "Abnahme".
