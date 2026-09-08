@@ -91,15 +91,21 @@ SCHWEBT = TMP + "/schwebt"
 #     allein die *relative* Angabe `X^`, deren Ziel beim Umschreiben der
 #     Geschichte wandert. Die Kennung wird deshalb einmal erfragt und danach
 #     genauso nachgerechnet wie zuvor.
-VORFASSUNGSSTAND = "d8e3bfb"
+#
+# Nachgezogen mit Paket 0232 von `d8e3bfb` auf den Stand, den der Lauf dieser
+# Berichtigung selbst verlaesst -- HEAD zu seinem Beginn. Das ist der Handgriff,
+# den Abschnitt C oben verlangt; er gehoert in jede Berichtigung, sonst misst
+# Teil A ab der uebernaechsten fremden Code statt der Berichtigung.
+VORFASSUNGSSTAND = "4d14905"
 HERKUNFTSPFAD = ("ventures/0016-hedgefonds-simulation-echte-weltwirtschaft"
                  "/werkzeuge/belegstellen/belegstellen_riegel.cpp")
 
 # Der Stand, gegen den die Zahlen im Kopfkommentar geschrieben sind. Er wird
 # abgedruckt und nicht geprueft: Ein fester Sollwert verfiele hier in Stunden.
-# Nicht derselbe wie oben, und das mit Absicht: Gemessen wurde im Nachtlauf auf
-# 7ebc1a9, geschrieben wird die Berichtigung auf dem Kind von d8e3bfb.
-BEZUGSSTAND = "7ebc1a9"
+# Nicht derselbe wie oben, und das mit Absicht: Gemessen wurde im Nachtlauf zum
+# 2026-09-08 auf d17b26d, geschrieben wird die Berichtigung auf dem Kind von
+# 4d14905.
+BEZUGSSTAND = "d17b26d"
 
 # Die Zaehlzeile der Selbsttests. Wird sie herausgenommen, verlieren die
 # Falltabellen ihre Abbruchwirkung, nicht ihre Meldung -- erst dadurch kommt ein
