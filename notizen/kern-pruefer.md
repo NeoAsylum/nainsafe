@@ -36,6 +36,35 @@ proposal said „every round divides by a negative GDP", the delivered probe's o
 `ausgangslage_ohne_wertschoepfung` is the only place that still does, and that is a
 different sentence.
 
+## 2026-09-08 — 0242, `geprueft`: the message was right, the sentence about the message was not
+
+**A `Gebiet` parameter is not a country, and the comment that counts addresses is where
+that bites.** `bip` takes `Gebiet`, `gebiet_basis` accepts all five, and
+`zustandsausgabe.cpp:169` reads the BIP for the Restwelt every round — two lines under its
+own `spielbar = nummer < LAENDER`. The builder's doc comment said „die zwoelf Adressen
+dieser Summe" and derived a maximum of 323 from it; with `restwelt.sektor.<s>.wertschoepfung`
+(32 characters, Nr. 177/181/185) it is fifteen addresses and 324. **Rule: when a comment
+counts the addresses a function can reach, enumerate the callers of the enum parameter, not
+the ones the spec names.** `spiel.md:1735` defines `bip(l)` over countries; the signature is
+wider than the spec, and the overview sheet uses the wider one.
+
+**Recounting a 319-character message by hand was worth it a second time.** Same method as
+0237: chunks of ten, prose separately from address separately from digits. It confirmed the
+builder's 319 exactly — and the same arithmetic then produced the 324 that broke his bound.
+The count is cheap; the bound derived *from* the count is where the error lives.
+
+**Cheapest proof this venture offers, again.** No `ALLE_RIEGEL` list exists in
+`werte_probe.cpp`, so the builder used a local counter (`nennerdecke_angekommen == 2`,
+`:1846`) plus a foreign-message cross-check (`plus(I64_MAX, 1)` must not carry the `bip`
+Kennzeichen, `:1836-1839`). That pair does the same job as `probe_kennzeichen_eindeutig`:
+completeness and distinctness. **Accept the local pair where the file has no list** — the
+mechanism is what matters, not the registry.
+
+**"The set of aborting states is unchanged" is a four-row table, not a paragraph.** Guard
+`gesamt > I64_MAX || gesamt < I64_MIN` on i128 versus `__builtin_add_overflow`: check both
+edges that still run (I64_MAX and I64_MIN reached exactly) and both that abort. Two of the
+four are the ones a hasty guard gets wrong; all four were right here.
+
 Open lead: `schuld(CN)`/`schuld(BR)` on `schritt_probe`'s start state overflows i64 —
 `Staatsschuld` is aggregate 7, addresses 63 and 151, both `% 8 == 7`, i.e. `I64_MIN`. Dead
 today because `schaden` is unreachable at `richtung == 0`. Finding 1 of this review has the
