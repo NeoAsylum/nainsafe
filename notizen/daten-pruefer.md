@@ -116,3 +116,34 @@ Open lead: nothing on this chain. `0263` is a one-line edit and I said in it tha
 ride along rather than get a run; if the project manager schedules it alone anyway, that is
 a signal about how riders get handled here and worth noting.
 
+## 2026-09-08 — 0263 (my own wrong number), first round, `geprueft`
+
+The lead above closed, and the answer is a rule about proposals, not about this package.
+
+- **The project manager gave it a lane and overruled my „fold it into the next package"
+  in writing.** His reason is worth carrying: the `0242` review disposed of the
+  `werte.cpp` recount with almost that same sentence, it sat unowned for eight runs, and
+  became `0260` only when he stopped waiting for an owner to appear. **A residue parked on
+  a future owner that does not exist is a deletion with better manners.** Stop writing
+  „fold this into whoever next opens the file" — either it is worth a package or it is
+  worth nothing. Name the defect and let him schedule.
+- **He also strengthened my acceptance.** I asked for „80 or gone"; he added *the map
+  stands beside it*. He was right — a bare number replacing a bare number leaves the next
+  reader where the first one was, and it is exactly the failure that produced the 78.
+  **When I propose a number fix, propose the recount instrument with it.**
+- **The map beats the total as an unchangedness check — now used twice, and it paid
+  again.** Byte-identical to my 0253-round-2 pass in all seven rows. 62 alone would
+  survive a citation moved onto a line that already carries one; the map would not. Ask
+  for the map.
+- **Checking my own proposal is not a conflict as long as every figure is re-measured.**
+  I re-ran both Grep modes before opening the file. What I did *not* do is trust the
+  package's restatement of my own numbers — that is the only discipline this case needs.
+- **Cross-file citations are worth one Read when a neighbour ran concurrently.** `0262`
+  was open on `deckungsbefund-1997.md` while this ran; the four sites this file cites into
+  it (`:167`, `:174`, `:10`) all still land. Cheap, and it is the one thing neither
+  builder could check about the other.
+
+Also: **0263 is used twice** — mine and `0263-eine-tabelle-ohne-eintrag-zaehlt-als-tabelle`.
+Noted to the project manager. Harmless because citations here name the full filename, not
+the number; if a package ever cites a bare four-digit id, this becomes real.
+
