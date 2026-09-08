@@ -4,6 +4,50 @@ Rotated by the runner on 2026-09-08 at 12820 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- the run on 0247 (the caller count of `festkomma::mal`)
+
+- 2026-09-08, **the lesson of the run** -- **I wrote this proposal myself, and my
+  diagnosis in it was wrong about half the defect.** `0247` said the block named five
+  functions while a match returns six sites in `werte.cpp`, and put that down to
+  `positionswert_aus` reaching `mal` twice. It does not: the six sites are six distinct
+  functions, and the sixth is **`werte::schaden`**, which the old block never named. So
+  the sentence "alle fuenf stehen in `kern::werte`" was false twice over -- one caller
+  missing *inside* the namespace, one *outside* it -- and I had only found the outside
+  one. **Re-measure the whole claim, not the part the proposal flagged.** A proposal is
+  a hypothesis even when you wrote it.
+- 2026-09-08 -- **Where sites and callers genuinely differ here, for whoever re-measures
+  next.** Not in `kern/src` -- there it is seven and seven. It is
+  `probe_zollkeil_rundet_zweimal` in `werte_probe` (two sites, one function) and
+  `positionswert_aus`'s second, indirect reach through `tsd_in_cent`. Both are named in
+  the block now, so the next count has the divergence in front of it instead of
+  rediscovering it.
+- 2026-09-08 -- **The old exclusion rule did not cover the case it had to.** It excluded
+  `festkomma_probe` because those calls "pruefen diese Funktion, statt sie zu benutzen".
+  `werte_probe` **uses** `mal` to compute the value it compares against, so that rule
+  lets it in while the headline number keeps it out. I narrowed the count to `kern/src`
+  and named both probes as the exclusion, rather than leaving a rule that silently
+  disagrees with its own number.
+- 2026-09-08, **the two-grep method, and it costs almost nothing.** `\bmal\s*\(` does not
+  match `mal_geteilt(` (the `_` blocks `\s*\(`) and cannot match inside `normal(` (no word
+  boundary), so it needs no post-filtering; German prose "... mal (" is the only false
+  positive and it reads as one. Then `\bmal\b` **without** the paren over the same tree
+  proves there is no non-call use hiding -- a function pointer, a template argument. Here
+  it turned up exactly one: `using festkomma::mal;` in `werte.cpp`. **Ripgrep has no
+  look-around**; `(?!...)` is rejected outright, so do the second grep wide and read it.
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** The stand `2ce13ce` is read off this session's git header, not
+  off a command I ran. I have no shell. If HEAD moved between that header and my edit, the
+  stand in the block is one commit stale; the seven callers are measured on the tree I read,
+  which is what the number actually rests on.
+  **(b)** I did **not** check whether `schaden`'s call existed at `f6731fe` on 2026-09-05.
+  So I cannot say whether the old block was wrong when written or went wrong later, and I
+  deliberately claim neither -- the block now states only what holds at my stand.
+  **(c)** I cannot compile. This run touches one doc comment, so nothing in it reaches the
+  compiler. `belegstellen_riegel` reads the whole tree: my text has no line-word followed by
+  two or more digits and none of the three heading words near a quoted name, so neither
+  condition can match. Checked by reading the riegel's rules from this logbook, not by
+  running it.
+
 ## 2026-09-08 -- the run on 0240 (the clamp behind an addition that aborts)
 
 Two carried-forward items the block further down does not have, and both held again here:

@@ -251,20 +251,37 @@ constexpr i64 minus(i64 a, i64 b)
 /// liegen dem Betrag nach unter 2^63, das Produkt also unter 2^126. Abbrechen kann
 /// allein die Verengung am Ende -- und sie bricht ab, statt zu kappen.
 ///
-/// **Heute mit fuenf Aufrufern, und alle fuenf stehen in `kern::werte`.** Selbst
-/// gemessen am 2026-09-05 auf dem Stand `f6731fe`, mit einem Mustervergleich ueber
-/// `kern/`, `pruefstand/` und `werkzeuge/` ausserhalb von `bau/` und `befunde/`. In
-/// `pruefstand/` und `werkzeuge/` steht kein Aufruf; die Aufrufe in `festkomma_probe`
-/// sind nicht mitgezaehlt, weil sie diese Funktion pruefen, statt sie zu benutzen.
+/// **Heute mit sieben Aufrufern in der Kernquelle, und einer davon steht ausserhalb
+/// von `kern::werte`.** Selbst gemessen am 2026-09-08 auf dem Stand `2ce13ce`, mit
+/// einem Mustervergleich ueber `kern/`, `pruefstand/` und `werkzeuge/` ausserhalb von
+/// `bau/` und `befunde/`.
 ///
-/// Welche Rechenarten dort ueber sie laufen: `tsd_in_cent` vervielfacht blank mit der
-/// Skalenzahl aus T5 -- der Fall, den die Begruendung oben schon nennt;
+/// **Gezaehlt sind aufrufende Funktionen, nicht Aufrufstellen**, und die beiden Zahlen
+/// gehen hier auseinander: `positionswert_aus` erreicht `mal` ein zweites Mal ueber
+/// `tsd_in_cent`, und in `werte_probe` stehen zwei Aufrufstellen in einer einzigen
+/// Probe. In `kern/src` fallen die beiden Einheiten zusammen -- sieben Stellen in
+/// sieben Funktionen. In `pruefstand/` und `werkzeuge/` steht kein Aufruf. Nicht
+/// mitgezaehlt sind die Proben, und beide sind hier genannt, damit die Ausnahme
+/// sichtbar bleibt: `festkomma_probe` prueft diese Funktion, statt sie zu benutzen,
+/// und `probe_zollkeil_rundet_zweimal` in `werte_probe` rechnet mit ihr den Wert aus,
+/// gegen den sie vergleicht.
+///
+/// Welche Rechenarten in `kern::werte` ueber sie laufen: `tsd_in_cent` vervielfacht
+/// blank mit der Skalenzahl aus T5 -- der Fall, den die Begruendung oben schon nennt;
 /// `lobbypunkte_aus_geld` bildet aus `lobbykosten` und `rabatt` den Nenner eines
-/// `mal_geteilt`; `positionswert_aus` vervielfacht die Stufenzahl mit dem Stufenwert;
-/// `korbbestand` und `fondsanteil` vervielfachen den Betrag der Stufenzahl mit
-/// `stufenweite`. Die letzten drei sind die fuenfte Rechenart aus T7 in Reinform --
-/// zwei `i64` mit Groessenbedeutung nach T5 --, die ersten beiden zeigen, dass 4.3
-/// auch dort greift, wo ein Faktor eine Skalen- oder Kalibrierzahl ist.
+/// `mal_geteilt`; `schaden` vervielfacht den Hub der Regulierung mit dem
+/// Parameterschluessel `regulierung_last` (T48); `positionswert_aus` vervielfacht die
+/// Stufenzahl mit dem Stufenwert; `korbbestand` und `fondsanteil` vervielfachen den
+/// Betrag der Stufenzahl mit `stufenweite`. Die letzten drei sind die fuenfte
+/// Rechenart aus T7 in Reinform -- zwei `i64` mit Groessenbedeutung nach T5 --, die
+/// drei davor zeigen, dass 4.3 auch dort greift, wo ein Faktor eine Skalen-,
+/// Kalibrier- oder Parameterzahl ist.
+///
+/// **Der siebte steht in `kern::schritt`**: `politiklast` vervielfacht die
+/// Schrittrichtung eines Instruments mit dessen Schadensbetrag, nimmt also einen
+/// Betrag mal ein Vorzeichen -- der einzige Aufruf, bei dem ein Faktor keine Groesse
+/// ist. Er kam mit dem rechnenden Rumpf von Schritt 5 (`0197`) und ist der Grund,
+/// warum der Satz oben nicht mehr `kern::werte` allein nennen kann.
 ///
 /// **Dass die Funktion hier steht und nicht bei ihrem ersten Aufrufer, haengt nicht
 /// an dieser Zahl.** Der Grund ist T6 und derselbe, den die Strichrechnung oben
