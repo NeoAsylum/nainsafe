@@ -14,9 +14,111 @@ ask whether the role owns the tools its own acceptance requires · before writin
 number lands in the report", ask where the number physically goes · never lock past the
 next link, and re-decide the one link every run · an already-`offen` package is not a
 vetted package — re-ask the tool question before it gets a lane · a residue with a named
-fix and no owner becomes a package; one with an owner-less *decision* does not.
+fix and no owner becomes a package; one with an owner-less *decision* does not · **lanes are
+scarce, nights are not** · **evidence never lives in a run summary.**
 
 ---
+
+## The chain-length rule was the wrong rule for five runs, and tonight the counter-case was cheap — 2026-09-08 (eighteenth run)
+
+Four packages stood startable on `technik.md`: `0092`, `0230`, `0236`, `0268`. **For five runs
+I gave that one lane to the package with the longest chain behind it — always `0092`
+(`0181` → `0226`).** Tonight I gave it to `0268`, which has no chain on `technik.md` at all.
+
+**The rule was measuring the wrong thing.** `0092`'s three links are all architekt packages on
+`technik.md`: three nights in **one** lane, in any order. Draining it makes the queue shorter
+and the factory no wider. `0268`'s successor — the build of
+`werkzeuge/multiplikation/multiplikationsriegel.cpp` — **falls out of that lane.** One
+architekt night buys a second lane that runs beside the queue from then on.
+
+**Chain length is not the quantity. Where the chain runs is.** Prefer the package whose
+successor lands in a *different* lane over the one with the longest chain in the *same* lane.
+This only bites when lanes are scarcer than nights, and tonight was the sharpest case I have
+measured: **three lanes against eight slots**, the lowest yet. It cost `0092` a fourth night
+since 2026-09-05, and I wrote that price into its Sperre rather than leaving it to be noticed.
+
+**Why I did not see it in five runs:** the chain heuristic is *right* whenever the successors
+sit in other lanes, and it never told me which case I was in, because I was counting links
+instead of asking where each link would run. A rule that gives the same answer for two
+different reasons stops being a measurement.
+
+## The clause I wrote myself was the only unverifiable one of the four
+
+`0266` came through `geprueft`, and the reviewer flagged a hole that is mine: my appended
+condition asked for the derivation method and its per-file result **in the run summary**. **Run
+summaries are not repo artifacts** — `ops/dashboard.html` logs the run, not its text — so half
+my own acceptance was invisible at review and the reviewer rederived the set himself to close it.
+
+I already carry *before writing „and the number lands in the report", ask where the number
+physically goes.* **This is that rule, and I broke it in the same run I wrote it.** The
+addition that makes it operative: the answer must be **a file the package writes, or a befund.**
+There is no third place. The rest of that appended derivation was the best thing I did last
+run — it corrected its own author, since the set is `0256`/`0262`, two and not the four I had
+claimed in the proposal.
+
+## Three residue cases now, and the third is the cheapest
+
+Last run I had two: named fix + no owner → package; owner-less *decision* → Geschäftsführer (or,
+after `0268`, → the role that owns it). **The third: named fix, an owner, and a file some open
+package already holds → a clause in that package.** `0264`'s residue (`alle_stuecke_in` demands
+*all* pieces; no case has a partially-overlapping multi-piece list, so any-piece matching would
+pass all twelve) went into `0270`'s acceptance as an eighth guard. **A package of its own could
+never have run beside `0270` anyway** — same file is the same lane — so the separate package
+would have bought nothing and cost a night. The test is not *is it big enough*, it is *does a
+lane already exist for it tonight*.
+
+## Offene Fährten — 2026-09-08, eighteenth run
+
+- **Four to `fertig`** (`0084`, `0264`, `0266`, `0267`), **none back. Every `gebaut` package had
+  a verdict, every verdict was `geprueft`, and all four were first attempts** — no Ruecklauf
+  anywhere tonight, which has not happened before. **Review is empty going in; tonight is Bau only.**
+- **Lanes tonight: three, against eight slots — the lowest I have measured.** `technik.md` →
+  `0268`; `werkzeuge/kennzeichen/kennzeichen_riegel.cpp` → `0269`; `kern/test/kennzeichen_probe.cpp`
+  → `0270`. **Five slots idle and I could not honestly fill one.** Every remaining `offen` package
+  is an architekt on `technik.md`; the datenbauer has nothing, because `0266`'s review found no
+  residue in `daten/`. I did not invent one.
+- **Both proposals accepted, both needed nothing rewritten — fourth run running.** `0269` and
+  `0270` each arrived with a narrowed green clause, `0269` with a bait *and* its silent twin.
+  **The green-clause wording problem is closed; I already dropped it last run and it stayed dropped.**
+- **`0270` arrived in German**, against `CLAUDE.md`'s rule that new `aufgaben/` files are English
+  from 2026-09-06. I did not rewrite it — a document that switches mid-way is unreadable — and
+  appended my clause in German to match. **First occurrence; if it recurs, it is a role-file item
+  for the operator, not a per-package correction.**
+- **The tool question for `0268`'s successor is already answered — I checked it tonight, because
+  my whole lane argument collapses if the successor is unbuildable.** T7 requires the new latch to
+  enter `FABRIK_MITGLIEDER` and carry an `add_test` line. **`FABRIK_MITGLIEDER` sits in
+  `ventures/0016-…/CMakeLists.txt` and `ventures/0016-…/werkzeugkette.cmake` — both inside
+  `ventures/**`, which the kernbauer may `Edit`.** Not a root file, no `agents/` path, no `Bash`.
+  The precedent is `0136-schlussriegel-nachbau-in-eigenes-mitglied`, a new tool directory as its own
+  member, `geprueft` 2026-09-05 — same shape, already survived a review. **Checked, not assumed:
+  the second lane is real and I did not spend a night on a promise I had not verified.**
+- **Check first next run:** (a) `0268` `fertig` → cut the multiplikationsriegel build for the
+  kernbauer; the tool question above is done, so the open part is only the cut itself. (b) `0268` `zurueck` → the lane reverts to `0092`,
+  and its Sperre already says so. (c) Did `0269` fire on `0270`'s three deliberately oversized
+  cases? Both were told about each other, as `0264`/`0267` were last night — and that pair came
+  through clean, which is why I paired them again. (d) `0270`'s escape hatch: **eight guards must
+  be accounted for, as cases or as head-comment entries with a reason.** A guard missing from both
+  is the only way that package fails its own acceptance.
+- **For the Geschäftsführer, one standing item, unchanged:** `belegstellen_wortabstand` and
+  `belegstellen_kopfzahlen` red at HEAD on the tool's **own** head comment measuring itself against
+  a moved `HEAD`. **No agent can read a commit, so no agent can write the value the check demands** —
+  structurally unreachable by the role that would repair it. Not a package. Told all three builders
+  tonight not to chase it. `RUECKLAUF_MAX` counting befunde rather than fault stands, seventh run.
+- **`ops/plan.md`, eleventh run:** Vorrang (0224, 0225, 0189, 0208-schritt, 0165, 0172-weltpreis)
+  **fully discharged**; „Der Engpass" still rests on `ops/reserviert.txt` holding `technik.md`, and
+  the file reads `# frei` — **twelfth run.** **The real bottleneck is unchanged and is not a lock:
+  six architekt packages on one file, one lane a night.** Not mine to edit. Reported, fifth time.
+- **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py`), `0003`
+  (ADR), `0157` (no execution tool, successor `0243`).
+- **Dormant:** clamp-first vs add-first deviation from `spiel.md`; `werte::schaden` → `schuld` for
+  CN/BR — still Geschäftsführer, because no *role* owns the start-state-vs-clamp judgement. **The
+  `0254` residue is closed:** `0264` opened `kern/CMakeLists.txt` and its review confirms the
+  collector at `:60` and the loop at `:381-387`; the stale error-message sentence was not the
+  subject and no longer has a package pointing at it. Dropping it.
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-third run in a row.**
+  Subtract 2 from every `gebaut` count.
+- **`high` was enough, thirty-second run.** The one real decision tonight — `0268` over `0092` —
+  turned on noticing that two chains sit in different lanes, not on thinking harder about either.
 
 ## Two reports quoted the same filename against each other, and only the source settled it — 2026-09-08 (seventeenth run)
 
