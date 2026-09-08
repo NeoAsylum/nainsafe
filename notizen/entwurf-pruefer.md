@@ -186,3 +186,55 @@ Worth keeping:
 - Open thread from the 0208 run still open (parameter.toml:297 head note "ueber diese
   Datei"); 0165 does not touch it.
 
+## 2026-09-08 — Pruefung 0196, zurueck, 3 findings
+
+First zurueck since 0224 run 1, and it is one sentence: T61's own intro (:4013) still
+says "decided solely by the three series with politikpfad" while the new rule 5 says
+"formed from two sorts of series". The builder rewrote the rule, the probe and the
+order, and never re-read the paragraph above rule 1.
+
+Worth keeping:
+- New check, cheap and it was the kill: after a rule rewrite, read the *section's own
+  intro* against the new rule. The blindness a package removes is usually codified
+  twice — once in the rule, once in the prose above it. One Read, before anything else.
+- "Der Vorspann vor 1" in an abnahme is ambiguous (document preamble vs. intro before
+  rule 1). Resolved via the packages it cites — grep "Vorspann" over aufgaben/ showed
+  0082/0084/0181 all bind on the document preamble. Resolve the anchor before judging
+  what the builder was allowed to touch; here it decided blocking vs. not.
+- Reconcile a stated count as lines AND as matches before calling it wrong: builder's
+  33→48 were grep -c line counts and reconciled exactly (32+7+9; matches 49, :4165
+  double since 0141); only his "grep -c gives 47" clause double-subtracted the double
+  line. The headline was right, the explanation inverted.
+- Third instance of the disclosed out-of-scope clause (section 26 "exactly when" →
+  "already when", declared :5107-5109). Recorded non-blocking, PM's weighing, same as
+  0221 finding 1 — the norm is now established, but it rides the finding-1 Ruecklauf.
+- Document preamble is now English ("numbered T1 through T53", :46) — a grep for
+  "durchnummeriert" hits only section 21's stale-language quote (:4164). Another
+  instance of the 0165 lesson; 0181/0226 territory, not a 0196 finding.
+
+## 2026-09-08 — Pruefung 0221, geprueft, 2 findings
+
+Architect's answer (L_R = 4 stays binding on spiel.md's own dated sentence, all counts
+as formulas with today's evaluation beside them, wave table for Nr. 5) holds; every
+formula evaluation reproduced (~12 greps, 7 small reads, neither spec opened whole).
+
+Worth keeping:
+- New check that paid immediately: when a package's defence rests on "spiel.md expressly
+  withheld the determination", grep the withholding sentence itself. All three quotes
+  existed verbatim and English at spiel.md:3325/:3330/:3333 — the corpus there is
+  already translated, so English-language quotes of a German-headed section are not a
+  language finding anymore. Check the target lines, not the section heading's language.
+- Finding 1 was the PM's own appended clause (every spiel.md quote dated): 1 of 3
+  quotes undated (technik.md:4924). Passed on the 0224-run-2 materiality standard —
+  quote verified current today, repair is one parenthesis — and said in the befund
+  that stricter weighing is the PM's call. Watch whether the PM accepts this a second
+  time; twice is a norm, once is a favour.
+- An abnahme can misstate a formula for the branch NOT taken: option (a) said
+  Sollreihen follow from L_R(S+3)−n, but that is the free-series count (23/41);
+  Sollreihen are L_R(S+4)−n (27/48). Routed to the PM as finding 2. On any two-branch
+  abnahme, also check the arithmetic of the branch the builder skipped.
+- Open thread: the date fix for technik.md:4924 is a named candidate for 0068 or the
+  next technik.md package; check it happened when either lands. Also 0068 itself now
+  has wave-2 markers waiting at :1649, :2786–2788, :3603 — its reviewer should find
+  counts-beside-counts, never struck words.
+
