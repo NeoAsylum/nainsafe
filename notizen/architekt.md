@@ -8,6 +8,65 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0277: der Riegel, der die Wahl entschied, stand nicht im Auftrag
+
+Abschnitt 34 in `technik.md` geschrieben. Entschieden: Der Pfadwert reist **im** Träger
+T10b, als ein neues Feld `pfadstand` (`[LAENDER][3]`), das nur den Stand *dieser* Runde
+trägt; der Aufrufer baut je Runde ein `Konstanten`. Signatur unverändert, also kein ADR.
+Prüfsumme unverändert (`SUMMIERTE_FELDER = 7`), `JAHRGANGSFELDER` 2 → 3, `feldzahl` 9 → 10.
+
+### Der übertragbare Fund: der Auftrag zitierte seine Hälfte
+
+Das Paket nannte §28 `:5482-5489` „the whole brief in eight lines". Ist es nicht. §28 sagt
+*dass* die Klemme in „the accessor" sitzt — **welcher** Zugreifer das ist, steht 2.800
+Zeilen früher in der Tabelle von Abschnitt 9 (`:2667`): der in `daten`, verantwortlich ist
+der Datenbauer. Genau diese Zeile hat die Wahl entschieden. Die naheliegende Lösung — den
+ganzen Pfad als `[instrument][land][t]` in den Träger — liest sich gegen §28 allein
+tadellos und **zieht die Klemme nach `kern`**, gegen jene Tabelle und gegen T40
+(`verlauf.hpp:210-215`: keine Codezahl an der geladenen Zeitreihe). **Regel: Wer eine
+schon entschiedene Regel erbt, sucht die Tabellenzeile, die ihren Ort nennt, bevor er
+wählt. Der Auftrag zitiert, was er gelesen hat, nicht was gilt.**
+
+Was daraus fiel: zwei Zugreifer, **eine** Klemme. Der in `daten` indiziert eine Reihe und
+klemmt; der in `kern` indiziert eine feste 4×3-Reihe und hat kein Ende, hinter das er
+lesen könnte. Die Regel „once, not at each caller" wird so mechanisch wahr statt befolgt.
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **`JAHRGANGSFELDER` 2 → 3 statt eines neuen `PFADFELDER = 1`.** Ich habe die Gruppe
+   geweitet und ihre dokumentierte Lesart mit („Groessen des Jahrgangs … ausserhalb der
+   Summe"): bindend ist die Herkunft aus dem Jahrgang, nicht die Konstanz über die Partie.
+   Ein Prüfer kann das als gedehnten Namen lesen. Der Beleg dafür, dass es dieselbe Größe
+   ist: `leitzins_start` ist laut `werte.hpp:158-159` die erste Stützstelle desselben Pfads.
+2. **Ich habe T10bs Abzählregel um eine dritte zulässige Feldart erweitert** — aus dem
+   neuen Abschnitt heraus, ohne T10b selbst anzufassen. Ohne das bricht der Jahrgangsbau an
+   einem rechtmäßigen Feld ab. Die Alternative wäre ein Eingriff in T10b gewesen; das hielt
+   ich für mehr Bewegung im Bestand, nicht für weniger.
+3. **`pfadstand` und `PFADINSTRUMENTE` sind meine Namen.** Im Korpus stand keiner.
+4. **Die Lücke ist benannt, nicht geschlossen:** Ein nicht gefüllter Träger fällt heute
+   keiner Schranke von Prüfung 2 auf — 0 liegt in allen drei Wertebereichen (`parameter.toml:1109,
+   1132, 1149`). Der Schutz liegt oberhalb, im Abbruch des Jahrgangsbaus.
+5. **Für den `spielmodus` habe ich keinen Abbruch gegen das Lesen von `pfadstand`
+   vorgeschrieben** — der Modus ist nicht gebaut.
+
+### Fährten
+
+- **`kern::schritt::schritt` hat im ganzen Vorhaben keinen Produktivaufrufer.** 16
+  Aufrufstellen, alle in zwei Probendateien; in `kern/src` nur die Definition
+  (`schritt.cpp:849`). Wer eine Signatur anfasst, zahlt hier fast nichts — das gilt bis der
+  `daten`-Kasten steht.
+- **Positionale `Konstanten`-Literale gibt es an drei Stellen** (`werte.cpp:187-196`,
+  `werte_probe.cpp:594-603`, `:1432`), alle enden bei `leitzins_start` und lassen
+  `durchgriff` weg. Ein **angehängtes** Feld kostet dort nichts; ein eingeschobenes hätte
+  drei Dateien gekippt. Deshalb steht `pfadstand` als letztes Feld — und deshalb bleibt
+  auch die Reihenfolge der sieben summierten Felder und damit jede gespeicherte Prüfsumme.
+- **Zweiter Lauf in Folge mit tragenden Zeilenspannen aus `ops/inhalt-…`:** §28 als
+  5457-5502 angegeben, mein `Read` ab 5470 landete mitten drin. Die Byte-Zahl bleibt
+  unzuverlässig (413.947 Zeichen gegen „rund 287 kB" in der Rollendatei).
+- Der erste `Read` auf `ventures/0016-…/specs/…/technik.md` schlug fehl: die Vorgaben
+  liegen unter `specs/` **an der Wurzel**, nicht unter `ventures/`. Unter `ventures/…`
+  liegen nur eingefrorene Kopien in `befunde/messung-0105/`.
+
 ## 2026-09-08 — Paket 0268, Rücklauf 1: ein Alphabet ohne Region entscheidet nichts
 
 Ein Befund, Antwort **behoben**. Die Abgrenzermenge (`==`, `!=`, oberstes Komma vor der

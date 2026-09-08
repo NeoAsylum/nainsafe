@@ -5929,3 +5929,170 @@ blind-spot paragraph, the two deliberate wrapping exceptions, and every file out
 `Grep` for `^\s*//.* \* ` gives 56, which is the by-kind comment count reached by a second
 pattern. 92 − 56 + 2 − 2 = **36**, and `schritt.cpp:405` is the single code line that
 `kern/src/schritt.cpp` contributes to it.
+
+## 34. Der Weg eines Pfadwerts in die Runde — Paket `0277`
+
+**What this answers, in one line.** Section 28 report 2 (`:5482-5489`) left open by which
+route an exogenous path value at round `t` reaches a round body. It travels **in** T10b's
+carrier, as one new field of `kern::werte::Konstanten` that holds the level of round `t`
+and no other; `schritt` keeps its four arguments and gets no fifth.
+
+### The route, written out
+
+The caller builds one `Konstanten` per round. Every other field of it is the same number
+in every round of a game; the new field carries, for round `t`, the level the three
+path-anchored instruments have in that round — already clamped, because the caller reads
+them through the `daten` accessor of section 9 (`:2667`).
+
+The field is declared **last**, after `durchgriff` (`werte.hpp:180-181`):
+
+```cpp
+/// Der Stand der drei pfadgestuetzten Instrumente in DIESER Runde, je spielbarem
+/// Land -- T5 Klasse 3. Groesse des Jahrgangs, keine Kalibriergroesse.
+std::array<std::array<zustand::i64, zustand::PFADINSTRUMENTE>, zustand::LAENDER>
+    pfadstand{};
+```
+
+with `inline constexpr std::size_t PFADINSTRUMENTE = 3;` beside `INSTRUMENTE`
+(`zustand.hpp:148`): the inner index **is** the value of `zustand::Instrument`, and the one
+instrument left out is the last of that enum, `Regulierung = 3`. Read in the core through
+one accessor in `kern::werte` that aborts for `Instrument::Regulierung` and for the rest
+of the world — the same deny-by-default that `werte.hpp:188-195` already writes down for
+`stelle_beteiligung` and `anleihekurs`.
+
+Step 3 then writes, per playable country and for those three instruments, that value into
+`stelle_instrument(land, i, Stand)` instead of carrying it forward, and keeps `vortrag`
+for the fourth. **No formula changes.** T48's twenty-two functions keep reading the state
+address; `anleihekurs` keeps reading `leitzins_start` as the fixed first support point
+(`werte.cpp:824`) and the current rate from the address.
+
+**Why this route and not the other two.**
+
+- *The whole path in the carrier* — an `[instrument][land][t]` array with its length —
+  would pull the freeze into `kern` and tie an array bound to the loaded time series. That
+  is against T40, whose reason `verlauf.hpp:210-215` writes out („ohne dass eine Zahl des
+  Codes an der geladenen Zeitreihe haengt"), and against section 9's table, which puts the
+  freeze in `daten` and names the data builder responsible. Rejected.
+- *A fifth `const` argument* is what T10b rejects in its own words: „A second struct beside
+  it is rejected: it would need a per-field copy between the two, and a field forgotten in
+  a copy is caught by nothing" (`:1138-1139`). Rejected.
+
+**No ADR, and not by exception.** No argument is added, removed or made non-`const`; the
+signature at `schritt.hpp:369-370` stays unchanged to the character. That is weaker than
+the `const`-carrier case section 28 already waves through (`:5486-5487`).
+
+**Determinism is untouched.** A save carries `jahrgang_id` and the action sequence, not the
+carrier (T22 `:1710-1712`). The path is a function of vintage, country, instrument and
+round, so the replaying driver rebuilds the same carrier, and `daten_pruefsumme` is what
+proves it is the same vintage.
+
+**Cost.** The carrier grows by `4 × 3 × 8` = 96 bytes and is still passed by `const&`; the
+driver does 12 clamped reads per round, at R = 20 thus 240 per game.
+
+### What the checksum does with it — the field stands beside the sum
+
+`partie.parameter_pruefsumme` keeps running over the seven key fields and nothing else
+(`schritt.hpp:133`). The reason is the one the two existing vintage fields already have:
+the sum proves that the *parameter set* belongs to this game and is compared in **every**
+round, so a field that legitimately carries a different number every round cannot be in
+it. What guards `pfadstand` instead is `daten_pruefsumme` at load (T22) together with
+`partie.jahrgang_id` — exactly the guard `leitzins_start` and `durchgriff` have today.
+
+The three numbers, written out because the `static_assert` at `schritt.hpp:271-277` goes
+red otherwise:
+
+| Constant | today | after |
+|---|---|---|
+| `SUMMIERTE_FELDER` (`schritt.hpp:264`) | 7 | **7, unchanged** |
+| `JAHRGANGSFELDER` (`schritt.hpp:269`) | 2 | **3** |
+| `feldzahl<Konstanten>` | 9 | **10** |
+
+`JAHRGANGSFELDER` is the right group, and its comment needs one widening: what binds its
+members is that their value comes from the vintage and therefore stands outside the
+parameter sum. Being constant over the game was a property of the first two, not a
+condition of the group — `leitzins_start` is itself „die erste Stuetzstelle des
+Politikpfads" (`werte.hpp:158-159`), and `pfadstand` is the same series at round `t`.
+
+**T10b's count-off rule gains a third admissible kind.** Today a carrier field „that is
+neither a `Runde(feld)` key nor a T23 vintage constant aborts" the vintage build
+(`:1149-1151`). `pfadstand` is neither: no key of `parameter.toml` corresponds to it. The
+third kind is *a field whose value comes from a path series of `reihen.toml`* — series 9,
+12, 13. It must not be counted as a `Runde(feld)` key, or the 51-key count-off (`:1153`)
+would go to 52 against a file that has 51.
+
+**Two further places carry the number 9 and go red with it**, and the successor package
+changes them in the same run: `kern/test/schritt_probe.cpp:1866`
+(`ohne_klammern::feldzahl<Konstanten> == 9`) and the prose that explains it at `:1719-1721`
+and `:1736-1738`. The seven-key table at `:1633-1639` is **not** touched — its entries are
+`i64` member pointers, and `pfadstand` is an array and outside the sum.
+
+### The clamp
+
+Not reopened. It sits „in the accessor, once, and not at each caller" (§28 `:5488-5489`),
+and section 9's table (`:2667`) says which accessor: the one in `daten` that answers „value
+of path P in round `t`", where `t` enters the series as `min(t, R)`. **Two accessors, one
+clamp** — the `daten` one indexes a series and clamps, the `kern` one indexes a fixed
+`LAENDER × PFADINSTRUMENTE` array and has no end to read past. The mark `ueber_fenster`
+stays derived and outside the state as that table put it; the core never learns of it, and
+this route is what keeps that true.
+
+### All four instruments, and where the round value comes from
+
+| Instrument | `zustand::Instrument` | Round value in the `weltlauf` |
+|---|---|---|
+| Policy rate | `Leitzins = 0` | series 9 per T61 (`:4348-4350`) → `pfadstand[l][0]` |
+| Tariff level | `Zoll = 1` | series 13 per T61 and §23 (`:5020-5021`) → `pfadstand[l][1]` |
+| Budget balance | `Haushalt = 2` | series 12 per T61 → `pfadstand[l][2]` |
+| Financial-market regulation | `Regulierung = 3` | **no series** (T61 `:4350`). Its value stands per T45 as `Parameter(schluessel)` in the address `land.<l>.instrument.regulierung.stand`, written once by the vintage build; step 3 carries it forward. **Not** in `pfadstand`. |
+
+The fourth is not an omission but the construction T26 already admits for a missing path:
+„no tariff path; the `weltlauf` runs with a constant tariff" (`:2038`). A fourth row filled
+from `parameter.toml` would give one quantity two masters — address and carrier — which is
+the error T45 `:1883-1886` is written against.
+
+### Reports
+
+1. **To the test developer — a zero-filled `pfadstand` in the `weltlauf` falls to no bound
+   of check 2.** Measured in `parameter.toml`: `instrument_min[leitzins] = -50` (`:1109`),
+   `instrument_min[zoll] = 0` (`:1132`), `instrument_min[haushalt] = -10000` (`:1149`) —
+   zero lies inside all three ranges, so bound 8 passes on a carrier nobody filled. The
+   guard is upstream and not in the core: the accessor either returns a support point or
+   the vintage build aborts at the gap (T45; T61 rule 1). Whether check 2 should gain a
+   bound against it is a package, not a sentence here.
+2. **The carrier's name is now narrower than its contract.** `Konstanten` holds a field
+   that changes every round. T10b already re-contracted it to „the numbers of a round that
+   are not addresses" (`:1136-1137`), so the contract fits and only the name does not. A
+   rename touches every call site and is **not** ordered here.
+3. **`kern::zustandsausgabe::uebersicht` takes the carrier** (`zustandsausgabe.cpp:198`)
+   and is unaffected by a trailing field. Whether the overview should show the round's path
+   level is G8's question and not this one.
+
+### What the successor package touches, and why it is one run
+
+`Grep` for `schritt::schritt(` over `kern/` gives **16 call sites in two files, all
+tests**: `kern/test/schritt_probe.cpp` — 15, at `:868, 965, 1012, 1017, 1069, 1071, 1102,
+1149, 1186, 1292, 1427, 1430, 1581, 1596, 1690` — and `kern/test/verlauf_probe.cpp:330`.
+**There is no production caller.** In `kern/src` the name stands only at the definition
+(`schritt.cpp:849`), and nowhere else in the venture outside the frozen copies under
+`befunde/`. The driver that fills the carrier per round does not exist yet and belongs to
+the `daten` box, not here.
+
+All 16 sites pass `KONSTANTEN_DER_PROBE`, which is value-initialised
+(`schritt_probe.cpp:310`, `verlauf_probe.cpp:120`), so a trailing field leaves them
+compiling and zero. The three positional literals — `werte.cpp:187-196`,
+`werte_probe.cpp:594-603` and `:1432` — end at `leitzins_start` and already omit
+`durchgriff`, so a trailing field leaves them compiling too. **Hence one run:** field,
+constant, accessor, the two counts, the two test numbers, and the body of
+`schritt_3_politik` (`schritt.cpp:509`).
+
+### Untouched, expressly
+
+`schritt`'s signature, `SUMMIERTE_FELDER`, the seven key fields and their declaration order,
+the checksum function and every stored `parameter_pruefsumme`, the clamp's place, the mark
+`ueber_fenster`, `parameter.toml`, `spiel.md`, `reihen.toml`, and sections 1 to 33.
+
+### The check this section can be held to
+
+`grep -c 'pfadstand'` over `kern/`, `daten/` and `parameter.toml` gives **0** before and
+after this package — it writes a rule, not code. After the successor it is greater than 0
+under `kern/` and still 0 in `parameter.toml`.
