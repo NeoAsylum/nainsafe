@@ -4,6 +4,53 @@ Rotated by the runner on 2026-09-08 at 13570 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- the run on 0248 (a ledger entry for a barrier no state reaches)
+
+My own proposal out of `0240`, back as a package. Delivered: a second category
+`RIEGEL_OHNE_ZUSTAND` in `schritt_probe.cpp`, exempt from the completeness half, checked
+against every foreign message, printed by name each run.
+
+- 2026-09-08, **the lesson of the run** -- **"unreachable" and "uncallable" are different
+  claims, and I had written the weaker one into my own proposal.** The package, the finding
+  and my logbook all said the barrier has no message *because no state reaches it*. True,
+  but not the binding reason: `summe_der_regel_pruefen` sits in the **anonymous namespace**
+  of `src/schritt.cpp` -- internal linkage. Even a probe that knew the exact arguments
+  could not name it. That changes the answer from "wait until step 3 computes" to "no probe
+  in this file can produce that message unless the source changes". **Before writing that a
+  case is untestable, check the linkage of the function, not only the reachability of the
+  state.** My own `0240` lesson -- "the unreachable case still fits in the probe, one layer
+  down" -- did not apply, and linkage is why. Fourth time I asked; first time the answer
+  was no.
+- 2026-09-08 -- **Split an invariant into its directions before declaring it unavailable.**
+  The uniqueness assurance reads as one sentence but is two: *my list fits no foreign
+  message*, and *no foreign list fits my message*. The first needs only the foreign
+  messages, which exist; the second needs mine, which cannot. So the delivery is not
+  "impossible, here is a comment" but a real check for one half plus the written price of
+  the other. **A half-checkable invariant is a check, not a note.**
+- 2026-09-08 -- **The new check is demonstrably not vacuous, and the proof was free.**
+  `"Zustimmungsregel"`, the first of the three Kennzeichen, also stands in the
+  `Nennerbedingung` message -- both riegel sit at the same rule. Shorten the list to that
+  one piece and the run goes red. Same shape as the positive control in `0240`: an
+  assurance that cannot fail on any input is worth nothing, so find the input on which it
+  would fail and write it at the source.
+- 2026-09-08 -- **A print that states a conclusion can be contradicted by its own run.** My
+  first per-entry line read "auf keine der N Meldungen passend" and printed
+  unconditionally -- on a violating run it would have said that while stderr said the
+  opposite. Changed to print the *count* of matched messages. The number cannot lie.
+- 2026-09-08 -- **An exemption needs its own lock, and the type system is the cheapest.** A
+  category exempt from completeness is an obvious escape: move a reachable riegel into it
+  and its missing message stops mattering. A separate enum (`RiegelOhneZustand`) shuts it --
+  `bricht_ab_mit` takes `Riegel`, so an aborting site cannot file under the exempt type
+  without being rewritten. Cost: one enum, no runtime check.
+- 2026-09-08, **what I am unsure about, for the project manager:** I cannot compile. The
+  newest shape in the file is `constexpr std::array<OhneZustand, 1>` holding a `std::span`
+  onto another `constexpr` array -- well-formed (static storage, non-explicit span
+  constructor), but if the build is red, look there first. Second: I routed the existing
+  `liste_passt` through the new `alle_stuecke_in` so both ledgers ask the identical
+  question. That is an edit to existing code in my own file and a reviewer may read it as
+  beside the package; the alternative was two copies of the condition the whole assurance
+  rests on -- the same trade as `ZUSTIMMUNG_AUSSERHALB` in `0240`.
+
 ## 2026-09-08 -- the run on 0249 (the head names a barrier that can no longer fire)
 
 - 2026-09-08, **the lesson of the run** -- **"This entry is dead" is almost never true of
@@ -59,7 +106,20 @@ predecessor and stays readable.
   `kern/include/kern/werte.hpp`; `belegstellen_riegel` reads the whole tree. Of the five
   `belegstellen_*` ctest entries **only `belegstellen_riegel` reads your files**, the
   other four are self-tests of that tool. Read the riegel that owns your target file
-  before you choose where a new declaration goes.
+  before you choose where a new declaration goes. Measured again 2026-09-08: of the ten
+  tree-reading ctest entries, exactly **two** read `kern/test/*.cpp` --
+  `belegstellen_riegel` and `bezeichner_riegel`.
+- **`bezeichner_riegel` is not a naming-convention check, and I believed it was.** It reads
+  every backticked span in **comments** under `kern/` and demands the name inside be
+  declared somewhere in `kern/` code -- a dead-reference check for doc comments. So
+  inventing a plausible identifier in a comment is what turns it red; SCREAMING_CASE
+  against PascalCase is not. Escapes worth knowing: a path or multi-word phrase in
+  backticks is never a candidate, and an immediately preceding `statt / kein / keine /
+  nicht / ohne / gegen / hiess / frueher` licenses a name that no longer exists.
+- **A ledger entry for a barrier no state reaches** lives in `RIEGEL_OHNE_ZUSTAND` in
+  `schritt_probe.cpp` (Paket 0248), with its own enum type so the exemption cannot be
+  borrowed. It keeps one half of the uniqueness assurance -- the list must fit no foreign
+  message -- and cannot have the other.
 - **A new abort message must be checked in both directions against
   `probe_kennzeichen_eindeutig`:** your Kennzeichen must match no foreign message, and no
   foreign list may match yours. And **grep the completeness half of the `Riegel` ledger

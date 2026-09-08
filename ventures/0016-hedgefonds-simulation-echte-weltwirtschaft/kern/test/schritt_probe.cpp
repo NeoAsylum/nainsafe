@@ -40,6 +40,12 @@
 //!      die erste schliesst den Ausweg, einen fremden Riegel einfach zum eigenen zu
 //!      erklaeren. Verglichen werden nur Dinge, die im selben Lauf entstehen -- kein
 //!      Wortlaut wandert in diese Datei, die Warnung gegen den Volltextvergleich bleibt.
+//!   2b. **Und die Riegel, die kein Zustand erreicht** (Paket 0248). Beide Haelften von 2a
+//!      setzen eine angekommene Meldung voraus; eine Schranke, vor die kein Zustand kommt,
+//!      liefert nie eine. Sie steht deshalb in einem zweiten Verzeichnis mit eigenem Typ,
+//!      ist von der Vollzaehligkeit ausgenommen und behaelt die erste Haelfte -- ihre Liste
+//!      darf auf keine fremde Meldung passen. Die zweite ist nicht zu haben; was das
+//!      kostet, steht am Aufzaehlungstyp und wird in jedem Lauf mitgedruckt.
 //!   3. **Der unabhaengige Erwartungswert.** Der Zustand nach der Runde wird nicht gegen
 //!      eine abgeschriebene Zahl gehalten, sondern gegen eine **zweite Bauart desselben
 //!      Zustands**: dieselbe Ausgangslage, ueber `zustand::Startbelegung` gebaut, nur mit
@@ -380,6 +386,105 @@ const char* riegelname(Riegel welcher)
     return "(kein Riegel)";
 }
 
+// ---------------------------------------------------------------------------
+// Paket 0248 -- die zweite Art Eintrag: ein Riegel, den kein Zustand erreicht
+// ---------------------------------------------------------------------------
+//
+// Die Vollzaehligkeitshaelfte weiter unten verlangt zu jedem Eintrag von `ALLE_RIEGEL` in
+// **jedem** Lauf eine angekommene Meldung. Fuer eine Schranke, vor die kein Zustand kommt,
+// ist das nicht erfuellbar, und beide naheliegenden Auswege sind falsch: Sie in
+// `ALLE_RIEGEL` einzutragen faerbt einen heilen Baum rot; sie ganz wegzulassen versteckt
+// sie vor genau der Pruefung, die es gibt, damit keine Schranke unbemerkt verschwindet.
+//
+// Deshalb ein zweites Verzeichnis mit **eigenem Aufzaehlungstyp**. Der eigene Typ ist die
+// Sperre gegen den bequemen Ausweg: Wer einen erreichbaren Riegel hierher schoebe, um die
+// Vollzaehligkeit zu umgehen, muesste zugleich seine Abbruchstelle umschreiben --
+// `bricht_ab_mit` nimmt `Riegel` entgegen und nicht diesen Typ, und eine Stelle, die
+// abbricht, kann ihre Meldung nicht ablegen, ohne einen `Riegel` zu nennen.
+//
+// **Was von der Eindeutigkeitszusicherung bleibt, ist eine Haelfte von zweien, und die
+// andere ist nicht erreichbar. Das ist gemessen und nicht geschaetzt:**
+//
+//   *Passt auf keine fremde* -- **bleibt, vollstaendig.** Diese Haelfte braucht nur die
+//   Liste des Eintrags und die Meldungen der anderen. Beides ist da. Verkuerzt jemand die
+//   Liste eines unerreichbaren Riegels auf ein Allerweltsstueck, passt sie sofort auf
+//   fremde Meldungen und der Lauf wird rot -- genau wie bei einem erreichbaren.
+//
+//   *Passt auf jede eigene* -- **faellt weg, und nicht aus Bequemlichkeit.** Sie braucht
+//   die eigene Meldung. Die entsteht in `summe_der_regel_pruefen`, und diese Funktion
+//   steht in `src/schritt.cpp` im namenlosen Namensbereich, hat also innere Bindung. Es
+//   fehlt nicht ein Zustand, der sie erreichte -- es fehlt jede Moeglichkeit, sie von hier
+//   aus zu nennen. Auch eine Probe, die die Argumente kennt, kann sie nicht rufen.
+//
+// **Der Preis, ausgeschrieben, weil ihn sonst niemand sieht:** Ohne die zweite Haelfte
+// faellt zweierlei nicht mehr auf. Erstens koennte eine **fremde** Liste so weit sein,
+// dass sie auch auf die Meldung des unerreichbaren Riegels passte; kein Paar prueft das,
+// weil es die Meldung nicht gibt. Zweitens rosten die Kennzeichen unten still: Formuliert
+// jemand die Meldung in `src/schritt.cpp` um, stimmt die Liste hier nicht mehr mit ihr
+// ueberein, und nichts wird rot. Beides endet an dem Tag, an dem Schritt 3 rechnet und der
+// Riegel erreichbar wird -- dann wandert er nach `ALLE_RIEGEL` und bekommt beide Haelften.
+//
+// **Der Ausweg, den es nicht gibt, damit ihn niemand zweimal sucht:** Die Meldung hier
+// nachzubauen -- denselben Wortlaut ein zweites Mal hinschreiben und die fremden Listen
+// dagegen halten -- ist genau der Volltextvergleich, gegen den `bricht_ab_mit` warnt, nur
+// in seiner schlechteren Form. Die Abschrift ist durch nichts an das Original gebunden;
+// sie truege eine Zusicherung ueber einen Text, den der Kern gar nicht wirft.
+enum class RiegelOhneZustand : std::size_t {
+    /// in `kern::schritt`: die Summe der Zustimmungsregel liegt ausserhalb von `i64`
+    SummeDerZustimmungsregel,
+    Anzahl,
+};
+
+/// Die Textstuecke, an denen die Meldung dieses Riegels zu erkennen **waere**.
+///
+/// **Dass die verbleibende Haelfte hier wirklich beisst, ist kein Zutrauen, sondern an
+/// diesem Eintrag ablesbar:** Das erste Stueck steht auch in der Meldung der
+/// `Nennerbedingung` -- beide Riegel sitzen an der Zustimmungsregel. Allein truege es
+/// nicht, und der Lauf wuerde rot. Erst die drei zusammen trennen die beiden. Wer die
+/// Liste kuerzt, sieht das sofort, und genau dafuer gibt es die Pruefung.
+constexpr std::array<const char*, 3> KENNZEICHEN_SUMME_DER_REGEL = {
+    "Zustimmungsregel", "klemmt erst hinter der Summe", "der additive Term"};
+
+/// Ein Eintrag des zweiten Verzeichnisses. `warum` steht daneben und wird ausgedruckt: Ein
+/// Riegel ohne Zustand ist eine Behauptung ueber die Erreichbarkeit, und wer sie im
+/// naechsten Lauf pruefen will, soll den Grund lesen koennen, ohne ihn zu suchen.
+struct OhneZustand {
+    RiegelOhneZustand riegel;
+    const char* name;
+    const char* warum;
+    Kennzeichen kennzeichen;
+};
+
+constexpr std::array<OhneZustand, 1> RIEGEL_OHNE_ZUSTAND = {{
+    {RiegelOhneZustand::SummeDerZustimmungsregel,
+     "Summe der Zustimmungsregel ausserhalb von i64",
+     "der additive Term ist ein Produkt mit dem Realeinkommenshub, und der bleibt null, "
+     "solange schritt_3_politik vortraegt",
+     KENNZEICHEN_SUMME_DER_REGEL},
+}};
+
+// Dasselbe Netz wie bei `ALLE_RIEGEL`: Kommt ein Eintrag dazu und niemand traegt ihn nach,
+// faellt es beim Uebersetzen auf und nicht daran, dass ihn nie jemand prueft.
+static_assert(RIEGEL_OHNE_ZUSTAND.size()
+              == static_cast<std::size_t>(RiegelOhneZustand::Anzahl));
+
+/// Ob der Eintrag an der n-ten Stelle auch den n-ten Riegel nennt.
+///
+/// Die Groessenpruefung darueber allein liesse zwei Eintraege desselben Riegels durch --
+/// die Zahl staende dann richtig da und ein Riegel fehlte trotzdem. Hier haengt die
+/// Zuordnung an der Stelle im Feld, und beides zusammen macht aus der Zahl eine Deckung.
+constexpr bool riegel_ohne_zustand_geordnet()
+{
+    for (std::size_t n = 0; n < RIEGEL_OHNE_ZUSTAND.size(); ++n) {
+        if (RIEGEL_OHNE_ZUSTAND[n].riegel != static_cast<RiegelOhneZustand>(n)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static_assert(riegel_ohne_zustand_geordnet());
+
 /// Was von einem Abbruch uebrig bleibt, nachdem der Fangblock zu ist.
 ///
 /// Die Meldung wird **abgeschrieben** und nicht gemerkt: `what()` zeigt in die Ausnahme,
@@ -455,20 +560,30 @@ void merke_meldung(Riegel welcher, const char* was, int zeile, Kennzeichen kennz
     ++angekommene_anzahl;
 }
 
-/// Ob **alle** Stuecke des Eintrags in `text` vorkommen -- dieselbe Frage, die
+/// Ob **alle** Stuecke einer Kennzeichenliste in `text` vorkommen -- dieselbe Frage, die
 /// `bricht_ab_mit` an der eigenen Meldung stellt, hier an einer fremden.
 ///
 /// Eine leere Liste passt auf jeden Text. Das ist gewollt und harmlos: Der leere Fall
-/// faellt schon an der Aufrufstelle auf, und ihn hier zusaetzlich durchzulassen ergaebe
-/// nur eine zweite Meldung ueber dieselbe Sache.
-bool liste_passt(const Angekommen& eintrag, const char* text)
+/// faellt schon an der Aufrufstelle auf -- bei einem erreichbaren Riegel in
+/// `bricht_ab_mit`, bei einem unerreichbaren in seiner eigenen Pruefung weiter unten --,
+/// und ihn hier zusaetzlich durchzulassen ergaebe nur eine zweite Meldung ueber dieselbe
+/// Sache.
+bool alle_stuecke_in(Kennzeichen kennzeichen, const char* text)
 {
-    for (std::size_t k = 0; k < eintrag.anzahl; ++k) {
-        if (!enthaelt(text, eintrag.kennzeichen[k])) {
+    for (const char* const stueck : kennzeichen) {
+        if (!enthaelt(text, stueck)) {
             return false;
         }
     }
     return true;
+}
+
+/// Dieselbe Frage fuer eine angekommene Meldung, deren Liste im Feld statt in einer Spanne
+/// liegt. Beide Verzeichnisse fragen damit **wortgleich** dasselbe -- zwei Fassungen der
+/// Bedingung waeren zwei Stellen, an denen sie auseinanderlaufen kann.
+bool liste_passt(const Angekommen& eintrag, const char* text)
+{
+    return alle_stuecke_in(Kennzeichen{eintrag.kennzeichen.data(), eintrag.anzahl}, text);
 }
 
 /// Fuehrt `tun` aus und sichert zu, dass **dieser** Riegel abgebrochen hat -- nicht
@@ -1440,13 +1555,15 @@ void probe_zustimmung_klemmt_statt_vortrag()
 // die Schranke, die die Klemme hinter der Addition geliefert haette -- 10.000 und 0. Der
 // Abbruch kostet also einen Wert, der nach der Regel nie ausserhalb des Wertebereichs lag.
 //
-// **Warum die Kennzeichenprobe diesen Abbruch nicht fuehrt.** Er kommt aus
-// `festkomma::plus` und nicht aus einem Riegel von `kern::schritt`; die Riegelliste oben
-// ist die der Runde, und ihre Vollzaehligkeitshaelfte verlangt zu jedem Eintrag eine
-// angekommene Meldung. Der verortete Abbruch, den `src/schritt.cpp` seit diesem Paket vor
-// die Addition stellt, ist aus keinem Zustand erreichbar -- genau das misst Haelfte 1. Als
-// Eintrag waere er ein Riegel, zu dem nie eine Meldung ankaeme, und die Probe wuerde rot.
-// Er gehoert in die Liste an dem Tag, an dem Schritt 3 rechnet.
+// **Wie die Kennzeichenprobe diesen Abbruch fuehrt.** Der Abbruch, den Haelfte 2 unten
+// ausloest, kommt aus `festkomma::plus` und ist gar kein Riegel von `kern::schritt`. Der
+// verortete Abbruch dagegen, den `src/schritt.cpp` seit diesem Paket vor die Addition
+// stellt, ist einer -- nur aus keinem Zustand erreichbar, genau das misst Haelfte 1. Bis
+// Paket 0248 stand er in keinem der Verzeichnisse, weil die Vollzaehligkeitshaelfte zu
+// jedem Eintrag eine angekommene Meldung verlangt und er nie eine liefert. Seither steht er
+// als erster Eintrag in `RIEGEL_OHNE_ZUSTAND`, dem zweiten Verzeichnis: ausgenommen von der
+// Vollzaehligkeit, geprueft gegen jede fremde Meldung. Er wandert nach `ALLE_RIEGEL` an dem
+// Tag, an dem Schritt 3 rechnet.
 
 /// Ein Ausgangswert, ein additiver Term und was aus beiden wird -- ausgeschrieben und
 /// nicht gerechnet, aus demselben Grund wie bei `ZUSTIMMUNG_SCHRANKE`.
@@ -1574,8 +1691,17 @@ void probe_klemme_hinter_der_summe()
     }
 
     // Zwei von zwoelf, und beide an einem Ende des Zahlbereichs. Die Zahl steht als
-    // Bedingung da und nicht nur im Ausdruck: Faellt sie, hat sich die Menge der
-    // abbrechenden Zustaende bewegt -- und genau das durfte dieses Paket nicht tun.
+    // Bedingung da und nicht nur im Ausdruck: Faellt sie, hat sich das Abbruchverhalten
+    // von `festkomma::plus` bewegt.
+    //
+    // **Sie sagt nichts darueber, ob die Menge der abbrechenden Zustaende gleich blieb**,
+    // und das stand hier bis Paket 0248 falsch. Die Schleife darueber ruft `plus`
+    // unmittelbar; sie laeuft gar nicht durch `kern::schritt`. Wer den verorteten Riegel
+    // enger zieht, laesst die Menge der abbrechenden Zustaende wachsen, ohne dass diese
+    // Zahl sich ruehrt. Getragen wird jene Aussage von Haelfte 1 oben und von
+    // `probe_zustimmung_klemmt_statt_vortrag`: Beide fahren Ausgangswerte an beiden Enden
+    // des Zahlbereichs durch `schritt` und verlangen, dass die Runde sie auf die Schranke
+    // bringt statt abzubrechen. Wird der Riegel enger, werden **die** rot.
     PRUEFE(abgebrochene == 2);
     PRUEFE(geklemmte == SUMMENFAELLE.size() - 2);
 
@@ -2018,6 +2144,12 @@ void probe_feldzahl()
 //
 // Der naheliegende Riegel waere "mindestens zwei Textstuecke je Liste" gewesen. Er taugt
 // nichts: Zwei nichtssagende Stuecke bestehen ihn.
+//
+// **Beide Haelften setzen eine angekommene Meldung voraus, und darum gibt es seit Paket
+// 0248 ein zweites Verzeichnis.** Ein Riegel, vor den kein Zustand kommt, liefert nie eine;
+// er steht in `RIEGEL_OHNE_ZUSTAND`, ist von der Vollzaehligkeit ausgenommen und behaelt
+// von den beiden Haelften die erste. Warum die zweite dort nicht zu haben ist und was das
+// kostet, steht oben am Aufzaehlungstyp und wird hier nicht wiederholt.
 
 void probe_kennzeichen_eindeutig()
 {
@@ -2083,17 +2215,64 @@ void probe_kennzeichen_eindeutig()
         }
     }
 
-    // Zwei Zaehlungen, die nicht null sein duerfen. Eine Schleife ueber null Paare laeuft
+    // Und die Riegel ohne Zustand (Paket 0248). Von der Vollzaehligkeit oben sind sie
+    // ausgenommen, indem sie nicht in `ALLE_RIEGEL` stehen; was von der Eindeutigkeit
+    // bleibt, ist die Haelfte, um die es dem Paket 0107 geht -- die Liste passt auf keine
+    // fremde Meldung. Warum die andere Haelfte fehlt, steht oben am Aufzaehlungstyp.
+    std::size_t ohne_zustand_paare = 0;
+    for (const OhneZustand& eintrag : RIEGEL_OHNE_ZUSTAND) {
+        // Ohne Kennzeichen passte die Liste auf jeden Text. Bei einem erreichbaren Riegel
+        // faengt `bricht_ab_mit` das ab; hier gibt es keine Aufrufstelle, die es taete.
+        if (eintrag.kennzeichen.empty()) {
+            std::fprintf(stderr,
+                         "FEHLGESCHLAGEN: der Riegel ohne Zustand \"%s\" nennt kein "
+                         "Kennzeichen; seine Liste passte damit auf jede Meldung\n",
+                         eintrag.name);
+            ++fehlgeschlagen;
+            ++verletzungen;
+            continue;
+        }
+
+        std::size_t getroffene = 0;
+        for (std::size_t i = 0; i < angekommene_anzahl; ++i) {
+            ++ohne_zustand_paare;
+            if (!alle_stuecke_in(eintrag.kennzeichen, angekommene[i].meldung.data())) {
+                continue;
+            }
+            ++getroffene;
+            std::fprintf(stderr,
+                         "FEHLGESCHLAGEN: die Kennzeichenliste des Riegels ohne Zustand "
+                         "\"%s\" kennzeichnet nicht: Sie passt auch auf die Meldung des "
+                         "Riegels \"%s\" (Stelle \"%s\").\n  fremde Meldung: \"%s\"\n",
+                         eintrag.name, riegelname(angekommene[i].riegel),
+                         angekommene[i].was, angekommene[i].meldung.data());
+            ++fehlgeschlagen;
+            ++verletzungen;
+        }
+
+        // Beim Namen genannt, in jedem Lauf: Ein Verzeichnis, das niemand ausdruckt, ist
+        // von einem leeren nicht zu unterscheiden. Gedruckt wird die getroffene Zahl und
+        // nicht die Behauptung, es sei keine -- ein Satz, den derselbe Lauf auf der
+        // Fehlerausgabe widerlegt, ist schlimmer als keiner.
+        std::printf("  Riegel ohne Zustand \"%s\": %zu Kennzeichen, passend auf %zu der %zu "
+                    "angekommenen Meldungen -- unerreichbar, weil %s\n",
+                    eintrag.name, eintrag.kennzeichen.size(), getroffene, angekommene_anzahl,
+                    eintrag.warum);
+    }
+
+    // Drei Zaehlungen, die nicht null sein duerfen. Eine Schleife ueber null Paare laeuft
     // gruen durch und misst nichts; das ist genau der Zustand, den dieses Paket abschafft,
     // und er darf nicht durch eine spaetere Umstellung zurueckkommen.
     PRUEFE(fremde_paare > 0);
     PRUEFE(eigene_paare > 0);
+    PRUEFE(ohne_zustand_paare > 0);
     PRUEFE(verletzungen == 0);
 
-    std::printf("  Kennzeichen: %zu Meldungen aus %zu Riegeln, %zu fremde und %zu eigene "
-                "Paare geprueft, %zu Verletzung(en)\n",
-                angekommene_anzahl, ALLE_RIEGEL.size(), fremde_paare, eigene_paare,
-                verletzungen);
+    std::printf("  Kennzeichen: %zu Meldungen aus %zu Riegeln mit Zustand, dazu %zu Riegel "
+                "ohne Zustand; %zu fremde, %zu eigene und %zu Paare ohne Zustand geprueft, "
+                "%zu Verletzung(en)\n",
+                angekommene_anzahl, ALLE_RIEGEL.size(), RIEGEL_OHNE_ZUSTAND.size(),
+                fremde_paare, eigene_paare, ohne_zustand_paare, verletzungen);
 }
 
 }  // namespace
