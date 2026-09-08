@@ -159,6 +159,35 @@
 //! Ob eine absichtlich leere Tabelle je legitim ist, entscheidet dann die Meldung an ihrer
 //! Stelle und keine Ausnahme hier -- dieselbe Doktrin wie bei den Nullpruefungen unten.
 //!
+//! **Und derselbe Boden noch eine Ebene tiefer: eine Tabelle muss so viele Eintraege
+//! hergeben, wie sie deklariert.** Die Frage nach der Leere ist die Frage nach der Null,
+//! und die Null trifft nur den Verlust **aller** Eintraege. Heute traegt jede der Tabellen
+//! im Baum genau einen -- deshalb fallen die beiden Fragen zusammen und **kann diese
+//! Schranke heute auf keiner Probe anschlagen**. Das ist der billige Zeitpunkt, sie zu
+//! bauen, und nicht der Grund, es zu lassen: Am Tag, an dem eine Aufzaehlung einen zweiten
+//! Riegel ohne Zustand bekommt, traegt eine Tabelle zwei, und von da an geht der Verlust
+//! eines von beiden still durch -- die Tabelle ist nicht leer, die Probe nicht stumm, keine
+//! Zahl unten null. Die Luecke ginge in demselben Lauf auf, der sie schafft.
+//!
+//! Die erwartete Zahl steht auch hier nicht im Programm: Sie ist das letzte Argument der
+//! spitzen Klammer vor dem Namen -- `std::array<T, 2> RIEGEL_OHNE_ZUSTAND = {` --, gelesen
+//! auf der Maske und damit weder aus einem Kommentar noch aus einer Zeichenkette. Was diese
+//! Zahl wert ist, macht die Probe selbst: Jede bindet ihre Tabelle mit einem
+//! `static_assert(RIEGEL_OHNE_ZUSTAND.size() == ...::Anzahl)` an ihre Aufzaehlung, also
+//! waechst die deklarierte Groesse mit der Aufzaehlung, ohne dass jemand hier nachzieht.
+//!
+//! **Steht dort keine lesbare Zahl, ist das kein Befund.** Wer den Typ hinter ein `using`
+//! legt oder die Groesse aus einer Konstanten holt, schreibt gueltiges C++; dann schuldet
+//! die Tabelle, was die Regel darueber verlangt -- einen Eintrag --, und nicht mehr. Eine
+//! Schranke, die auf jede Formaenderung rot wird, faerbt einen heilen Baum und wird
+//! abgeschaltet, ehe jemand lernt, wofuer sie stand. `knappe_tabellen` sammelt die Faelle;
+//! der Abbruch steht in `main` hinter dem der leeren Tabellen, beginnt mit `%zu gelesene
+//! Tabelle(n) geben weniger` und nennt zu jeder Probe die Zeile, die deklarierte und die
+//! gelesene Zahl. Drei Faelle des Selbsttests halten ihn fest: der Koeder -- zwei
+//! deklariert, einer gelesen, weil dem zweiten das Doppelpunktpaar fehlt --, derselbe Text
+//! mit beiden qualifiziert, auf dem geschwiegen werden muss, und derselbe Koeder mit der
+//! Groesse hinter einem `using`, auf dem ebenfalls geschwiegen werden muss.
+//!
 //! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
 //!
 //! Drei Falltabellen im Programm. Sie laufen vor dem ersten Lesen des Bestands; ein
@@ -179,9 +208,10 @@
 //! Rueckgabe: 0 kein Befund, 1 Befunde gefunden, 2 der Riegel selbst taugt nicht -- Aufruf-
 //! oder Lesefehler, ein verfehlter Fall des Selbsttests, eine rohe Zeichenkette, ein nicht
 //! lesbarer Eintrag, eine Probe, die den Namen der Tabelle im Code fuehrt und kein
-//! Verzeichnis hergibt, eine gelesene Tabelle ohne einen einzigen Eintrag, oder eine der
-//! Zahlen unten auf null: keine gelesene Probe, kein gefundenes Verzeichnis, kein Eintrag,
-//! kein Kennzeichen, keine Zeichenkette im Kern.
+//! Verzeichnis hergibt, eine gelesene Tabelle ohne einen einzigen Eintrag, eine gelesene
+//! Tabelle mit weniger Eintraegen als deklarierten, oder eine der Zahlen unten auf null:
+//! keine gelesene Probe, kein gefundenes Verzeichnis, kein Eintrag, kein Kennzeichen, keine
+//! Zeichenkette im Kern.
 //!
 //! Vorgaben: T4 (kein Gleitkomma -- hier trivial, es wird nichts gerechnet), ADR 0011
 //! (C++20, g++). Kein Zeiger, kein rohes Feld, jeder Zugriff ueber Index.
@@ -498,17 +528,27 @@ std::vector<std::size_t> finde_woerter(const Zerlegt& z, std::string_view name)
     return stellen;
 }
 
+/// Eine gefundene Zuweisung: wo der Name steht und wo seine Klammer aufgeht.
+///
+/// Beide Stellen und nicht bloss die Klammer. Was eine Tabelle ueber ihre eigene Groesse
+/// sagt, steht **vor** ihrem Namen, und wer von der Klammer aus dorthin zurueckliefe,
+/// schriebe die Regel `Name = {` ein zweites Mal hin. Zwei Fassungen derselben Regel
+/// koennen auseinanderlaufen; eine kann es nicht.
+struct Zuweisung {
+    std::size_t name = 0;  // erstes Zeichen des Namens
+    std::size_t auf = 0;   // die oeffnende geschweifte Klammer
+};
+
 /// Alle Stellen, an denen `name` als ganzes Wort steht und dahinter `= {` folgt -- also
-/// die Definitionen und nicht die Benutzungen. Zurueckgegeben wird der Index der
-/// oeffnenden Klammer.
+/// die Definitionen und nicht die Benutzungen.
 ///
 /// Die Wortgrenze wird nicht zweimal geschrieben: Nennung und Zuweisung sind dieselbe
 /// Suche mit einer Bedingung mehr, und der Boden vergleicht die beiden Zahlen. Zwei
 /// Fassungen derselben Regel koennten auseinanderlaufen, und dann verglichen sich zwei
 /// Zaehlungen, die verschiedene Dinge zaehlen.
-std::vector<std::size_t> finde_zuweisungen(const Zerlegt& z, std::string_view name)
+std::vector<Zuweisung> finde_zuweisungen(const Zerlegt& z, std::string_view name)
 {
-    std::vector<std::size_t>       stellen;
+    std::vector<Zuweisung>         stellen;
     const std::string&             m = z.maske;
     const std::vector<std::size_t> woerter = finde_woerter(z, name);
     for (std::size_t w = 0; w < woerter.size(); ++w) {
@@ -520,9 +560,103 @@ std::vector<std::size_t> finde_zuweisungen(const Zerlegt& z, std::string_view na
         if (j >= m.size() || m[j] != '{') {
             continue;
         }
-        stellen.push_back(j);
+        Zuweisung zw;
+        zw.name = woerter[w];
+        zw.auf = j;
+        stellen.push_back(zw);
     }
     return stellen;
+}
+
+/// Rueckwaerts ueber Leerraum: der kleinste Index `<= i`, ab dem bis `i` nur Leerraum steht.
+std::size_t vor_leerraum(std::string_view m, std::size_t i)
+{
+    while (i > 0 && ist_leerraum(m[i - 1])) {
+        --i;
+    }
+    return i;
+}
+
+/// Was eine Tabelle **ueber sich selbst** sagt: das letzte Argument der spitzen Klammer
+/// unmittelbar vor ihrem Namen. `std::array<T, 2> NAME = {` ergibt 2.
+///
+/// Die Erwartung kommt damit aus demselben Text wie der Bestand und nicht aus diesem
+/// Programm -- dieselbe Doktrin wie bei den beiden Boeden darueber. Eine Tabelle, die auf
+/// drei Eintraege waechst, bringt die Drei mit; hier ist nichts nachzuziehen.
+///
+/// **`NICHTS` heisst nicht null und ist kein Befund.** Wer den Typ hinter ein `using` legt
+/// oder die Groesse aus einer Konstanten holt, schreibt gueltiges C++; dann schuldet die
+/// Tabelle, was sie ohnehin schuldet -- einen Eintrag --, und nicht mehr. Eine Schranke,
+/// die auf jede Formaenderung rot wird, faerbt einen heilen Baum und wird abgeschaltet,
+/// ehe jemand lernt, wofuer sie stand.
+std::size_t deklarierte_groesse(std::string_view m, std::size_t name)
+{
+    const std::size_t hinter = vor_leerraum(m, name);
+    if (hinter == 0 || m[hinter - 1] != '>') {
+        return NICHTS;
+    }
+
+    // Rueckwaerts zur zugehoerigen oeffnenden Klammer, mit Tiefe: `std::array<A<B>, 2>`
+    // schliesst zweimal, ehe es einmal aufgeht.
+    const std::size_t zu = hinter - 1;
+    std::size_t       tiefe = 0;
+    std::size_t       auf = NICHTS;
+    for (std::size_t i = zu + 1; i > 0 && auf == NICHTS; --i) {
+        const char c = m[i - 1];
+        if (c == '>') {
+            ++tiefe;
+        } else if (c == '<' && tiefe > 0) {
+            --tiefe;
+            if (tiefe == 0) {
+                auf = i - 1;
+            }
+        }
+    }
+    if (auf == NICHTS) {
+        return NICHTS;
+    }
+
+    // Das letzte Argument der obersten Ebene. Ein Komma weiter innen trennt die Argumente
+    // eines eingebetteten Musters und nicht diese.
+    std::size_t letztes = auf + 1;
+    std::size_t innen = 0;
+    for (std::size_t i = auf + 1; i < zu; ++i) {
+        const char c = m[i];
+        if (c == '<' || c == '(' || c == '[' || c == '{') {
+            ++innen;
+        } else if (c == '>' || c == ')' || c == ']' || c == '}') {
+            if (innen > 0) {
+                --innen;
+            }
+        } else if (c == ',' && innen == 0) {
+            letztes = i + 1;
+        }
+    }
+    std::size_t a = letztes;
+    while (a < zu && ist_leerraum(m[a])) {
+        ++a;
+    }
+    std::size_t e = zu;
+    while (e > a && ist_leerraum(m[e - 1])) {
+        --e;
+    }
+    if (a >= e) {
+        return NICHTS;
+    }
+
+    std::size_t wert = 0;
+    for (std::size_t i = a; i < e; ++i) {
+        if (!ist_ziffer(m[i])) {
+            return NICHTS;
+        }
+        // Der Ueberlauf wird vorher gefangen und nicht hinterher gemessen: `NICHTS` ist der
+        // Wert fuer "nicht lesbar", und eine umgebrochene Zahl waere lesbar und falsch.
+        if (wert > (NICHTS - 9) / 10) {
+            return NICHTS;
+        }
+        wert = wert * 10 + static_cast<std::size_t>(m[i] - '0');
+    }
+    return wert;
 }
 
 /// Die zu `auf` gehoerende schliessende Klammer, oder `NICHTS`.
@@ -712,14 +846,21 @@ struct Benannt {
     std::string text;
 };
 
-/// Eine einzelne gelesene Tabelle: wo sie steht und wie viele Eintraege aus ihr kamen.
+/// Eine einzelne gelesene Tabelle: wo sie steht, was sie ueber sich selbst sagt und wie
+/// viele Eintraege aus ihr kamen.
 ///
 /// Die Zeile gehoert zur Tabelle und nicht zur Probe, weil eine Probe mehr als eine tragen
 /// darf. Es ist die Zeile der oeffnenden Klammer -- die Stelle, die `finde_zuweisungen`
 /// zurueckgibt, und damit die einzige, die ohne eine zweite Suche zu haben ist.
+///
+/// `deklariert` ist die Zahl aus der spitzen Klammer vor dem Namen oder `NICHTS`, wenn dort
+/// keine steht. Sie liegt neben `eintraege` und wird nicht mit ihr verrechnet: Die Frage,
+/// ob eine Tabelle weniger hergibt als sie traegt, stellt sich weiter unten -- hier stehen
+/// die beiden Zahlen, die sie beantworten, und die Meldung braucht ohnehin beide.
 struct Tabellenzahl {
     std::size_t zeile = 0;
     std::size_t eintraege = 0;
+    std::size_t deklariert = NICHTS;
 };
 
 /// Was eine einzelne Probe zum Bestand beigetragen hat.
@@ -791,8 +932,8 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
     zahlen.clear();
     zahlen.reserve(proben.size());
     for (std::size_t d = 0; d < zerlegt.size(); ++d) {
-        const Zerlegt&                 z = zerlegt[d];
-        const std::vector<std::size_t> tabellen = finde_zuweisungen(z, TABELLE);
+        const Zerlegt&               z = zerlegt[d];
+        const std::vector<Zuweisung> tabellen = finde_zuweisungen(z, TABELLE);
 
         Probenzahl zahl;
         zahl.name = proben[d].name;
@@ -801,7 +942,7 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
         const std::size_t zi = zahlen.size() - 1;
 
         for (std::size_t t = 0; t < tabellen.size(); ++t) {
-            const std::size_t auf = tabellen[t];
+            const std::size_t auf = tabellen[t].auf;
             const std::size_t zu = balanciert(z.maske, auf);
             if (zu == NICHTS) {
                 klage = "die Tabelle in " + proben[d].name + " schliesst ihre Klammer nicht.";
@@ -818,6 +959,7 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
             Tabellenzahl tz;
             tz.zeile = z.zeile[auf];
             tz.eintraege = gruppen.size();
+            tz.deklariert = deklarierte_groesse(z.maske, tabellen[t].name);
             zahlen[zi].tabellen.push_back(tz);
 
             for (std::size_t g = 0; g < gruppen.size(); ++g) {
@@ -881,15 +1023,15 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                             if (eigene != (runde == 0)) {
                                 continue;
                             }
-                            const std::vector<std::size_t> stellen =
+                            const std::vector<Zuweisung> stellen =
                                 finde_zuweisungen(zerlegt[q], listenname);
                             for (std::size_t s = 0; s < stellen.size(); ++s) {
-                                if (balanciert(zerlegt[q].maske, stellen[s]) == NICHTS) {
+                                if (balanciert(zerlegt[q].maske, stellen[s].auf) == NICHTS) {
                                     continue;
                                 }
                                 ++gefunden;
                                 quelle = q;
-                                stelle = stellen[s];
+                                stelle = stellen[s].auf;
                             }
                         }
                     }
@@ -974,7 +1116,8 @@ std::vector<std::size_t> stumme_proben(const std::vector<Probenzahl>& zahlen)
 
 /// Die Stelle einer Tabelle im Ergebnis von `lies_verzeichnisse` -- Probe und Tabelle darin.
 /// Zwei Indizes statt einer Kopie von Name und Zeile: Der Aufrufer hat die Zahlen ohnehin,
-/// und eine Kopie waere eine zweite Fassung derselben Angabe.
+/// und eine Kopie waere eine zweite Fassung derselben Angabe. Beide Boeden auf dieser Ebene
+/// geben sie zurueck; sie sagt, welche Tabelle gemeint ist, und nicht, was ihr fehlt.
 struct Leerstelle {
     std::size_t probe = 0;
     std::size_t tabelle = 0;
@@ -1014,6 +1157,45 @@ std::vector<Leerstelle> leere_tabellen(const std::vector<Probenzahl>& zahlen)
         }
     }
     return leer;
+}
+
+/// **Der Boden eine Ebene unter `leere_tabellen`:** die Tabellen, die eine Groesse
+/// deklarieren und weniger Eintraege hergeben, als sie deklarieren.
+///
+/// `leere_tabellen` fragt nach der Null, und die Null ist derselbe Fall wie der Verlust
+/// **aller** Eintraege. Heute traegt jede Tabelle im Baum genau einen, also fallen die
+/// beiden Fragen zusammen. Am Tag, an dem eine zweite Schranke ohne Zustand gefunden wird,
+/// traegt eine Tabelle zwei -- und von da an geht der Verlust des einen von beiden still
+/// durch: die Tabelle ist nicht leer, die Probe ist nicht stumm, keine Zahl unten faellt
+/// auf null. Der Riegel prueft dann die Haelfte seines Gegenstands und meldet gruen.
+///
+/// Gebaut, waehrend keine Tabelle ihn erreichen kann -- und das ist der billige Zeitpunkt,
+/// nicht der wertlose. Der Unterschied zu einer Pruefung, deren Gegenstand sich nicht
+/// bewegen *kann*, steht in den Proben selbst: Jede bindet ihre Tabelle mit einem
+/// `static_assert(RIEGEL_OHNE_ZUSTAND.size() == ... ::Anzahl)` an ihre Aufzaehlung. Waechst
+/// die Aufzaehlung, waechst die deklarierte Groesse mit -- ohne dass jemand hier etwas
+/// nachzieht, und in demselben Lauf, in dem die Luecke sonst aufginge.
+///
+/// **Die Richtung, in die er absichtlich nicht zu streng ist:** Eine Tabelle ohne lesbare
+/// Groesse (`NICHTS`) steht hier nie drin. Sie schuldet, was die heutige Regel verlangt --
+/// einen Eintrag, geprueft von `leere_tabellen` --, und keine Zahl darueber hinaus. Die
+/// andere Wahl waere eine Schranke, die an einer erlaubten Schreibweise rot wird.
+std::vector<Leerstelle> knappe_tabellen(const std::vector<Probenzahl>& zahlen)
+{
+    std::vector<Leerstelle> knapp;
+    for (std::size_t i = 0; i < zahlen.size(); ++i) {
+        for (std::size_t t = 0; t < zahlen[i].tabellen.size(); ++t) {
+            const Tabellenzahl& tz = zahlen[i].tabellen[t];
+            if (tz.deklariert == NICHTS || tz.eintraege >= tz.deklariert) {
+                continue;
+            }
+            Leerstelle k;
+            k.probe = i;
+            k.tabelle = t;
+            knapp.push_back(k);
+        }
+    }
+    return knapp;
 }
 
 /// Sammelt den Wortlaut des Kerns: jede Zeichenkette, ohne Kommentare und ohne
@@ -1168,6 +1350,7 @@ struct Tabellenfall {
     std::string_view erwartet;  // "Riegel=stueck;stueck", Eintraege mit '|' getrennt
     std::size_t      stumm;     // Proben, die den Namen im Code fuehren und nichts liefern
     std::size_t      leer;      // gelesene Tabellen, aus denen kein Eintrag kam
+    std::size_t      knapp;     // gelesene Tabellen, die weniger hergeben als sie deklarieren
 };
 
 constexpr std::string_view PROBE_BENANNT =
@@ -1184,35 +1367,35 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 16> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 19> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
-     "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0},
+     "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
     {"eingebettete Liste",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", {\"alpha\", \"beta\"}},\n"
      "}};\n",
-     "", true, "R::Eins=alpha;beta", 0, 0},
+     "", true, "R::Eins=alpha;beta", 0, 0, 0},
 
     {"zwei Eintraege, beide gelesen",
      "constexpr std::array<OhneZustand<R>, 2> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
      "    {R::Zwei, \"n\", \"w\", {\"beta\"}},\n"
      "}};\n",
-     "", true, "R::Eins=alpha|R::Zwei=beta", 0, 0},
+     "", true, "R::Eins=alpha|R::Zwei=beta", 0, 0, 0},
 
     {"Liste in einer anderen Probe",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", KZ_ANDERSWO},\n"
      "}};\n",
      "constexpr std::array<const char*, 1> KZ_ANDERSWO = {\"gamma\"};\n", true,
-     "R::Eins=gamma", 0, 0},
+     "R::Eins=gamma", 0, 0, 0},
 
     {"leere Liste wird gelesen und nicht uebergangen",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", {}},\n"
      "}};\n",
-     "", true, "R::Eins=", 0, 0},
+     "", true, "R::Eins=", 0, 0, 0},
 
     {"derselbe Listenname in zwei Proben ist keine Mehrdeutigkeit -- die eigene gilt",
      "constexpr std::array<const char*, 1> KZ_DOPPELT = {\"eigen\"};\n"
@@ -1220,26 +1403,26 @@ constexpr std::array<Tabellenfall, 16> TABELLENFAELLE = {{
      "    {R::Eins, \"n\", \"w\", KZ_DOPPELT},\n"
      "}};\n",
      "constexpr std::array<const char*, 1> KZ_DOPPELT = {\"fremd\"};\n", true,
-     "R::Eins=eigen", 0, 0},
+     "R::Eins=eigen", 0, 0, 0},
 
     {"zwei Felder in der Form einer Liste sind nicht lesbar",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", KZ_A, KZ_B},\n"
      "}};\n",
-     "", false, "", 0, 0},
+     "", false, "", 0, 0, 0},
 
     {"kein Feld in der Form einer Liste ist nicht lesbar",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\"},\n"
      "}};\n",
-     "", false, "", 0, 0},
+     "", false, "", 0, 0, 0},
 
     {"eine rohe Zeichenkette bricht ab, statt still danebenzulesen",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
      "}};\n"
      "const char* roh = R\"(x)\";\n",
-     "", false, "", 0, 0},
+     "", false, "", 0, 0, 0},
 
     // Die vier Faelle des Bodens. Der erste ist der, auf dem er fehlschlagen **muss**; die
     // drei danach sind die Eingaben, auf denen er schweigen muss, und ohne die er bloss
@@ -1247,30 +1430,35 @@ constexpr std::array<Tabellenfall, 16> TABELLENFAELLE = {{
     {"der Name steht im Code und keine Tabelle kommt heraus -- gemeldet",
      "constexpr auto RIEGEL_OHNE_ZUSTAND = verzeichnis_bauen();\n"
      "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n",
-     "", true, "", 1, 0},
+     "", true, "", 1, 0, 0},
 
     {"der Name steht nur im Kommentar -- nicht gemeldet, dort steht nie eine Tabelle",
-     "// siehe RIEGEL_OHNE_ZUSTAND in der Nachbarprobe\nint x = 1;\n", "", true, "", 0, 0},
+     "// siehe RIEGEL_OHNE_ZUSTAND in der Nachbarprobe\nint x = 1;\n", "", true, "", 0, 0, 0},
 
     {"der Name steht nur in einer Meldung -- nicht gemeldet, Code steht in keiner",
      "void melde() { fehler(\"kein Eintrag in RIEGEL_OHNE_ZUSTAND\"); }\n", "", true, "", 0,
-     0},
+     0, 0},
 
     {"eine zweite Probe ohne den Namen macht die erste nicht stumm",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
      "}};\n",
-     "int nebenan = 1;\n", true, "R::Eins=alpha", 0, 0},
+     "int nebenan = 1;\n", true, "R::Eins=alpha", 0, 0, 0},
 
     // Die Faelle des Bodens eine Ebene tiefer. Der erste ist der Koeder: eine Tabelle
     // steht da, sie wird gefunden und gezaehlt, und kein Eintrag kommt aus ihr, weil kein
     // Doppelpunktpaar darin steht -- genau das, was ein `using enum` in einer Probe
     // anrichtet. Er wird gemeldet, ohne dass die Probe stumm waere.
+    //
+    // Er ist zugleich knapp: Die Tabelle deklariert eine Eins und gibt null her. Die beiden
+    // Boeden schneiden sich hier mit Absicht -- die Null ist der Sonderfall, in dem "leer"
+    // und "weniger als deklariert" dasselbe meinen --, und in `main` schlaegt der aeltere
+    // zuerst an, weil seine Meldung die genauere ist.
     {"eine Tabelle ohne qualifizierten Namen darin -- gefunden, gezaehlt, leer, gemeldet",
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {Eins, \"n\", \"w\", {\"alpha\"}},\n"
      "}};\n",
-     "", true, "", 0, 1},
+     "", true, "", 0, 1, 1},
 
     // Derselbe Text mit den zwei Zeichen `R::` davor: Er muss schweigen. Ohne ihn waere
     // nicht gezeigt, dass die neue Schranke an der Leere haengt und nicht an der Tabelle.
@@ -1278,7 +1466,7 @@ constexpr std::array<Tabellenfall, 16> TABELLENFAELLE = {{
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
      "}};\n",
-     "", true, "R::Eins=alpha", 0, 0},
+     "", true, "R::Eins=alpha", 0, 0, 0},
 
     // Zwei Tabellen in **einer** Probe, davon eine leer. Der Fall steht so und nicht als
     // zwei Proben, weil er sonst nichts unterschiede: Eine Schranke, die je Probe fragt,
@@ -1291,7 +1479,42 @@ constexpr std::array<Tabellenfall, 16> TABELLENFAELLE = {{
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {Zwei, \"n\", \"w\", {\"beta\"}},\n"
      "}};\n",
-     "", true, "R::Eins=alpha", 0, 1},
+     "", true, "R::Eins=alpha", 0, 1, 1},
+
+    // Die Faelle des Bodens noch eine Ebene tiefer. Der Koeder: eine Tabelle, die eine Zwei
+    // deklariert und einen Eintrag hergibt, weil dem zweiten das Doppelpunktpaar fehlt. Sie
+    // ist **nicht leer** und ihre Probe **nicht stumm** -- keine der aelteren Schranken
+    // sieht sie, und sie ist genau das, was aus dem Baum wird, sobald eine Aufzaehlung
+    // zwei Riegel ohne Zustand fuehrt. Heute erreicht diese Eingabe keine Probe des Baums;
+    // sie steht hier, damit der Tag, an dem sie es tut, nicht der erste Tag der Schranke ist.
+    {"eine Tabelle deklariert zwei und gibt einen her -- gemeldet, ohne leer zu sein",
+     "constexpr std::array<OhneZustand<R>, 2> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
+     "    {Zwei, \"n\", \"w\", {\"beta\"}},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha", 0, 0, 1},
+
+    // Derselbe Text mit den zwei Zeichen `R::` vor dem zweiten Eintrag: Er muss schweigen.
+    // Ohne ihn waere nicht gezeigt, dass die Schranke am Abstand zwischen deklariert und
+    // gelesen haengt und nicht daran, dass eine Zwei dasteht.
+    {"dieselbe Tabelle, beide Eintraege qualifiziert -- nicht gemeldet",
+     "constexpr std::array<OhneZustand<R>, 2> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
+     "    {R::Zwei, \"n\", \"w\", {\"beta\"}},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha|R::Zwei=beta", 0, 0, 0},
+
+    // Und derselbe Koeder mit der Groesse hinter einem `using`: Er muss ebenfalls
+    // schweigen. Der Text ist bis auf die Form der Deklaration derselbe wie der Koeder --
+    // eine Zwei steht sogar noch da, nur nicht mehr vor dem Namen. Ein `using` ist
+    // gueltiges C++, und eine Schranke, die daran rot wird, faerbt einen heilen Baum.
+    {"die Groesse steht hinter einem `using` und ist nicht lesbar -- nicht gemeldet",
+     "using Tabelle = std::array<OhneZustand<R>, 2>;\n"
+     "constexpr Tabelle RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", {\"alpha\"}},\n"
+     "    {Zwei, \"n\", \"w\", {\"beta\"}},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha", 0, 0, 0},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)
@@ -1394,6 +1617,39 @@ std::size_t selbsttest_verzeichnis()
                              "nennen, an der jemand nachsieht; ohne Zeile nennt sie nur die "
                              "Datei.\n",
                              i + 1, std::string(fall.was).c_str(), p.name.c_str());
+                ++falsch;
+            }
+        }
+        const std::vector<Leerstelle> knapp = knappe_tabellen(zahlen);
+        if (knapp.size() != fall.knapp) {
+            std::fprintf(stderr,
+                         "Selbsttest Verzeichnis, Fall %zu verfehlt (%s).\n"
+                         "  knappe Tabellen: %zu erwartet %zu\n",
+                         i + 1, std::string(fall.was).c_str(), knapp.size(), fall.knapp);
+            ++falsch;
+        }
+        // Geprueft wird nicht nur, dass gemeldet wird, sondern womit: Die Meldung nennt
+        // Zeile, deklarierte und gelesene Zahl. Eine gemeldete Tabelle, die eine davon
+        // nicht traegt, waere eine Schranke, die den Leser an keine Stelle schickt.
+        for (std::size_t k = 0; k < knapp.size(); ++k) {
+            const Probenzahl& p = zahlen[knapp[k].probe];
+            if (knapp[k].tabelle >= p.tabellen.size()) {
+                std::fprintf(stderr,
+                             "Selbsttest Verzeichnis, Fall %zu (%s): die gemeldete knappe "
+                             "Tabelle in %s zeigt auf keine gelesene.\n",
+                             i + 1, std::string(fall.was).c_str(), p.name.c_str());
+                ++falsch;
+                continue;
+            }
+            const Tabellenzahl& tz = p.tabellen[knapp[k].tabelle];
+            if (tz.zeile == 0 || tz.deklariert == NICHTS || tz.eintraege >= tz.deklariert) {
+                std::fprintf(stderr,
+                             "Selbsttest Verzeichnis, Fall %zu (%s): die gemeldete knappe "
+                             "Tabelle in %s traegt Zeile %zu, deklariert %zu und gelesen "
+                             "%zu. Gemeldet wird nur, was eine Zeile, eine lesbare Groesse "
+                             "und weniger Eintraege als diese hat.\n",
+                             i + 1, std::string(fall.was).c_str(), p.name.c_str(), tz.zeile,
+                             tz.deklariert, tz.eintraege);
                 ++falsch;
             }
         }
@@ -1776,6 +2032,36 @@ int main(int argc, char** argv)
                      "steht hier neu; eine\nabsichtlich leere Tabelle wird an ihrer Stelle "
                      "begruendet und nicht hier ausgenommen.\n",
                      verzeichnisse, eintraege.size());
+        return 2;
+    }
+
+    // Und derselbe Boden noch eine Ebene tiefer, hinter dem der leeren Tabellen: Eine
+    // Tabelle, die zwei Eintraege deklariert und einen hergibt, ist nicht leer, ihre Probe
+    // ist nicht stumm, und keine der Zahlen darunter faellt auf null. Sie steht hinter der
+    // leeren, weil die Null beide Fragen bejaht und die aeltere Meldung die genauere ist --
+    // sie nennt das `using enum`, das der haeufigste Grund dafuer ist.
+    const std::vector<Leerstelle> knapp = knappe_tabellen(zahlen);
+    if (!knapp.empty()) {
+        std::fprintf(stderr,
+                     "\nkennzeichen_riegel: %zu gelesene Tabelle(n) geben weniger Eintraege "
+                     "her, als sie\ndeklarieren:\n",
+                     knapp.size());
+        for (std::size_t i = 0; i < knapp.size(); ++i) {
+            const Probenzahl&   p = zahlen[knapp[i].probe];
+            const Tabellenzahl& tz = p.tabellen[knapp[i].tabelle];
+            std::fprintf(stderr, "  %-40s Zeile %zu: %zu deklariert, %zu gelesen\n",
+                         p.name.c_str(), tz.zeile, tz.deklariert, tz.eintraege);
+        }
+        std::fprintf(stderr,
+                     "Die erwartete Zahl steht nicht in diesem Programm, sondern in der "
+                     "spitzen Klammer vor\ndem Namen der Tabelle -- und die haengt in jeder "
+                     "Probe an einem `static_assert` gegen die\nAufzaehlung, waechst also "
+                     "mit ihr. Ein Eintrag, den dieses Programm nicht mehr liest,\nnimmt "
+                     "seine Kennzeichen aus der Pruefung heraus, ohne dass eine Zahl auf "
+                     "null faellt: Der\nBestand ist dann ein Teilbestand, und den erkennt "
+                     "ohne diese Schranke niemand als Teil.\nEin Eintrag ist die innerste "
+                     "geschweifte Gruppe mit einem qualifizierten Namen darin;\nfehlt einem "
+                     "das Doppelpunktpaar, faellt genau er heraus.\n");
         return 2;
     }
 
