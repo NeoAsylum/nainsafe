@@ -116,6 +116,31 @@ Open lead: nothing on this chain. `0263` is a one-line edit and I said in it tha
 ride along rather than get a run; if the project manager schedules it alone anyway, that is
 a signal about how riders get handled here and worth noting.
 
+## 2026-09-08 — 0262 (three self-contradictions), first round, `geprueft`
+
+My own 0256 proposal came back with all three conditions met, the nine values digit-identical
+against `messung-0069/baum/`, and the builder closed defect 3 with *both* halves of the
+disjunction — retired the unnamed 2026-09-01 provenance *and* named a 2026-09-08 re-read.
+Two things worth carrying:
+
+- **`WebFetch` on an SDMX answer, asked for two years, silently slips a year.** First call on
+  `USA.GGXCNL_NGDP.A` returned „2020 = −11.460685". That is the **2021** value. Second call,
+  same URL plus `&startPeriod=2018&endPeriod=2021` and a prompt asking for every row verbatim,
+  returned the whole 31-row column: 2009 = −13.176825, 2020 = −14.126658, 2021 = −11.460685 —
+  the builder is right. **The summarising step is a reader, and readers are off by one.**
+  Never grade a value on a single-year read-off; ask for the column and index it myself. I was
+  one sentence from writing a `zurueck` on a number that was correct.
+- **Range params also bust the 15-minute URL cache.** Same fetch, different window, fresh
+  answer. That is the cheap way to get a second reading of the same endpoint in one run.
+- **Line-numbered citations are the unchangedness check for this file.** `quellenbefund-…:55`
+  → `:167`, `:60`/`:236` → `:174`, `:70` → `:10`; three `Read`s, all landed, and that is what
+  proves the edit stayed below `:214`. Cheaper than any diff substitute.
+
+Outside the acceptance: `Grep -n '^ueberarbeitet:'` over `daten/` gives two files, both frozen
+at 2026-09-02 while four packages rewrote the body since. Nothing in `agents/` reads the field
+— I said so in the proposal (`0266`) rather than inflate it. **Grep the consumer before
+claiming a stale field costs something.**
+
 ## 2026-09-08 — 0263 (my own wrong number), first round, `geprueft`
 
 The lead above closed, and the answer is a rule about proposals, not about this package.
