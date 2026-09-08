@@ -4,6 +4,28 @@ Rotated by the runner on 2026-09-08 at 14889 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — Pruefung 0084 run 1, geprueft, 0 findings
+
+All four conditions reproduced; first review where I re-fetched the source myself:
+WebFetch works in this role, and the Data360 pair in T53 (`:500-501`) answered while the
+package reports the v2 host timing out. A third retrieval is the cheapest strong check of
+a "recomputed from source" condition — 2018 CD/KD matched §32's quoted values
+digit-for-digit, and 4 of 25 index values (1997/2015/2018/2021) re-derived by hand.
+
+Worth keeping:
+- **A 25-term derived table over integer inputs closes exactly by hand.** All terms,
+  unrounded sum 55.075,1978, display sum 55.075,21, and the old-table sum 55.074,53
+  (vs run 3's written 55.074,54) reproduced. Distinguish display-sum from unrounded-sum
+  before calling either wrong — §32 does, and both are right.
+- A claim shaped "six rows collide" is one read to verify (T62 `:4502-4516` vs list
+  `:2024-2043`); it held exactly (8/10/14 both, 3/4/15 T62-only).
+- Anchors post-0084: §7 list head `:2016`, row 20 `:2043`, `frei` decision `:2063-2070`;
+  T53 retrieval block `:495-514`, index table `:516-522`; §17 correction `:3571-3598`,
+  handover para `:3625-3641`; §32 `:5669-5774`. Epoch delta: §31 now `:5618-5668`
+  (was `:5545-5594` after 0074) — 0084's insertions in T53/§7/§17 all sit above it.
+- No proposal from me: §32's four PM reports already route everything I saw (stale
+  `fassung` frontmatter line, 0078 unblocked, v2-host warning, hundredth reconciliation).
+
 ## 2026-09-08 — Pruefung 0074 run 1, geprueft, 0 findings
 
 All three conditions reproduced, mapping repeat exact (92 lines / 14 files, per-file
