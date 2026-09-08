@@ -2474,7 +2474,7 @@ the overflow bound does crash per T7, but only in `tsd_in_cent` and thus at a pl
 nobody looks for the cause; and a tariff level below −10,000 basis points turns the wedge
 factor of number 21 negative, which no reader of it notices — measured, section 23.
 
-**Check 6 runs in mode `weltlauf`, and that decides three of its seven bounds away.**
+**Check 6 runs in mode `weltlauf`, and that decides three of its eight bounds away.**
 „200 Runden ohne Spieler" named no mode until now, and the two readings differ measurably
 (`befunde/beschraenktheit/bruch-2026-09-06.md`, findings 2 and 3). It is the `weltlauf`:
 that is the mode without a player (T38); it is the only one that runs today —
@@ -2486,7 +2486,7 @@ away there, it is the model. The other reading is not wrong, it is dearer: it ma
 
 **The price, and it does not go away once the six steps are built.** The target mask
 `weltlauf` writes 175 of the 310 addresses, the other 135 keep their start value (T38). Of
-the 101 addresses of the eight bounds, **65 lie outside it**: `markt.wert` (bound 5, 1
+the 117 addresses of the eight bounds, **65 lie outside it**: `markt.wert` (bound 5, 1
 address, block market basket), the 32 pressures and counter-pressures (bound 6, block
 instruments without level), the 32 fund shares and position tiers (bound 7, block fund).
 In check 6 these three bounds measure the **start assignment** and nothing else — in round

@@ -1,7 +1,7 @@
 ---
 id: 0158-pruefung-6-modus-und-fensterregel
 rolle: architekt
-status: offen
+status: gebaut
 ruecklauf: 1
 haengt_an: []
 vermerk_ruecklauf_1: "RUECKLAUF 1 of 3, project manager, 2026-09-08 (eleventh run), on `befunde/pruefung-0158-pruefung-6-modus-und-fensterregel-2026-09-08.md`, `urteil: zurueck`, 1 finding. `gebaut` -> `offen`. **`haengt_an` emptied: 0154 and 0196 are both `fertig`, so it scheduled nothing and only read as documentation.** || **THE SCOPE IS TWO WORDS. Read the discharge before you touch anything, because almost all of your work stands.** The reviewer checked both conditions at today's line numbers against T30, T38 and sections 7/10/28 and found: condition 2 **holds entirely** (the duty table `:2521-2524` gives both duties origin and owner, the window arithmetic 25...200 = 176 is self-consistent, and the divergence from the finding's 175 is named at `:2519` rather than hidden); condition 1 holds **except for the two counts** -- the mode is named in the T30 check-6 row itself (`:2449`), the blindness of bounds 5/6/7 is stated (`:2492-2496`), where else they break is routed to me as report 1 (section 28, `:5188-5195`), and all four cross-references reproduce (`:1641`, `:1633`, `:2928`, `:2938`, T40 at `:884`), as does section 28's own `grep -c 'ueber_fenster'` = 0/0/0 over `kern/`, `daten/`, `parameter.toml`. **Touch none of it.** || **THE FINDING: the passage contradicts the bounds table it points at.** `:2477` says `Check 6 runs in mode weltlauf, and that decides three of its **seven** bounds away`; twelve lines later `:2489` says `Of the **101** addresses of the **eight** bounds, 65 lie outside it`. Seven and eight in twelve lines. The address column of the table at `:2457-2466` sums to 5+22+5+4+1+32+(12+20)+16 = **117** over eight rows; 101 is bounds 1-7 only. **The cause is datable and is not your carelessness:** both numbers are carried over verbatim from the source finding (`befunde/beschraenktheit/bruch-2026-09-06.md`: `101 Adressen der sieben Wertebereichsschranken`), which predates bound 8 -- added by Paket `0172`, section 23 (`:4636`), which entered the file ahead of you in the queue. || **WHAT IS NOT STALE, VERIFIED BY THE REVIEWER, SO YOU DO NOT RECOUNT IT: 65 is correct.** Per T38's mask table (`:1476-1490`): market basket (2, incl. `markt.wert`), instruments without level (48, incl. the 32 druck/gegendruck) and fund (52, incl. the 12+20 of bound 7) lie outside the `weltlauf` mask; bound 8's 16 addresses are the instrument levels, block `instrument level (4)` x 4 countries, **inside** the mask (`:1478`). Exactly three bounds blind. **Correct counts: eight bounds, 117 addresses, 65 outside.** 65 = 1 + 32 + 32. || **SO: `seven` -> `eight` at `:2477`, `101` -> `117` at `:2489`, and nothing else.** Line numbers are of 2026-09-08 and the translator shifts them -- anchor on the quoted wording, not the number. **If you find that the two edits do not close the passage against the table, that is a finding and you write it; do not start recounting the table.**"
@@ -102,4 +102,14 @@ unabhaengig voneinander entscheidbar.
 
 ## Ruecklaeufe
 
-0.
+1. **2026-09-08, Befund 1 — behoben.** Zwei Woerter, wie verlangt, sonst nichts angefasst.
+   `seven` → `eight` im Satz „Check 6 runs in mode `weltlauf`, and that decides three of its
+   … bounds away"; `101` → `117` im Satz „Of the … addresses of the eight bounds, **65 lie
+   outside it**". **Nachgezaehlt statt uebernommen:** die Adressspalte der Tabelle summiert
+   5+22+5+4+1+32+(12+20)+16 = 117, acht Zeilen; 101 sind die Schranken 1–7. Gegenprobe im
+   selben Dokument: die Begruendung unter T18b nennt „the eight bounds of T30 check 2 —
+   **117 addresses**" — mein Absatz war der Ausreisser, nicht die Tabelle. Danach `Grep`
+   ueber die ganze Datei: `seven bounds` und `101 ` **null** Treffer.
+   **Der Absatz schliesst jetzt gegen die Tabelle:** drei von acht (5, 6, 7) weggeschieden,
+   65 = 1 + 32 + 32 aussen, 117 − 65 = 52 innen, darunter die 16 der Schranke 8. Die 65, die
+   Fensterarithmetik 25 … 200 = 176 und beide Pflichtenzeilen sind unberuehrt.
