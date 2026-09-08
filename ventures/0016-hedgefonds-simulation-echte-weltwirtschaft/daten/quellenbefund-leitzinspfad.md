@@ -27,7 +27,7 @@ endpoint itself is named alongside it.
 
 | Country | Source | Flow | Code | Years | What it measures | Policy rate? |
 |---|---|---|---|---|---|---|
-| USA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1950–2020, 71 obs | Fed discount-window rate | administered, not the target rate |
+| USA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1950–2020, 71 obs | a discount rate; the source names no instrument per country (below) | administered, not the target rate |
 | BRA | IMF | `MFS_IR` 9.0.0 | `DISR_RT_PT_A_PT` | 1997–2025, 29 obs | a discount rate; the source names no instrument per country (below) | administered, not the target rate |
 | DEU | IMF | `MFS_IR` 9.0.0 | `S13BOND_RT_PT_A_PT` | 1957–**2017**, 61 obs | government bond yield | **no** — a market price |
 | CHN | World Bank | WDI | `FR.INR.LEND` | 1997–2021, 25 of 25 | a bank lending rate; no institution named by the source, and its terms differ by country (below) | **no** — a bank lending rate, not the policy instrument |
@@ -131,7 +131,7 @@ such rate:
 
 | Candidate | USA | DEU | CHN | BRA |
 |---|---|---|---|---|
-| `DISR_RT_PT_A_PT` | Fed discount-window rate | absent | absent | a discount rate, not identified per country |
+| `DISR_RT_PT_A_PT` | a discount rate, not identified per country | absent | absent | a discount rate, not identified per country |
 | `S13BOND_RT_PT_A_PT` | govt bond yield | govt bond yield, ends 2017 | absent | absent |
 | `MMRT_RT_PT_A_PT` | money market rate | absent | absent | 1964–1981 only |
 | `FR.INR.LEND` | bank lending rate | absent | bank lending rate — no institution named by the source | bank lending rate |
@@ -222,13 +222,13 @@ A sweep cannot be checked — you see what it found, never what it missed. This 
 sentence in the file that asserts an absence: of a row, a series, an identifier, a
 variable, or of policy character. **39 entries. 34 are the answer of a named query; the
 other 5 are readings, summaries or scope statements, and each of those rows says so.**
-Line numbers are of this file as of 2026-09-08, unchanged by Ruecklauf 2 and by package 0252.
+Line numbers are of this file as of 2026-09-08, unchanged by Ruecklauf 2 and by packages 0252 and 0253.
 
 | Line | The negative | What answers it |
 |---|---|---|
 | 9 | no vetted source carries a policy rate for all four; no code queried here reaches all four | the whole table `:79`–`:93`; „queried here" is the scope, narrowed 2026-09-08 |
-| 30–33 | the „Policy rate?" column: none of the four candidates is the policy instrument — twice „administered, not the target rate", twice **no** | **not a query answer** — a reading of what each code measures, off the titles at `:79`–`:91` |
-| 31, 134 | BRA `DISR` is a discount rate the source identifies for no single country | `structure/codelist/IMF.STA/CL_MFS_IR_INDICATOR/2.1.0/DISR_RT_PT_A_PT`, 2026-09-08. **New in 0252**, replacing a denial that the value is the Selic which no query stood behind; closing section |
+| 30–33 | the „Policy rate?" column: none of the four candidates is the policy instrument — twice „administered, not the target rate", twice **no** | **not a query answer** — a reading of what each code measures, off the titles at `:79`–`:91`. **Amended in 0253:** for the two `DISR` rows the reading now rests on the codelist sentence at `:294` („charged by central banks"), not on a per-country instrument name |
+| 30, 31, 134 | `DISR` is a discount rate the source identifies for no single country — USA and BRA alike | `structure/codelist/IMF.STA/CL_MFS_IR_INDICATOR/2.1.0/DISR_RT_PT_A_PT`, 2026-09-08. **New in 0252** for BRA, **widened to USA in 0253**; each replaces a per-country identification no query stood behind; closing section |
 | 35–37 | no query in this run returned a policy rate for China | `MFS_IR/9.0.0/CHN.*.*` (`:82`) and the five WDI codes (`:85`–`:89`) |
 | 39–40 | DEU carries no value 2018–2021 | `DEU.S13BOND_RT_PT_A_PT.A`, 2026-09-08 |
 | 51–52 | USA `DISR` has no 2021 row | `USA.DISR_RT_PT_A_PT.A?format=sdmx-csv`, 2026-09-08 |
@@ -314,4 +314,33 @@ already cost. No observation count moved: this run queried structure, not data.
 this retrieval declines to make, and `daten/deckungsbefund-1997.md:206` still carries the
 retired Brazilian denial in full. 0252 covered the Brazilian clause in two files;
 `deckungsbefund-1997.md` was not among its `dateien` at all. Proposed as
-`aufgaben/0253-disr-je-land-identifikation-nachziehen.md`.
+`aufgaben/0253-disr-je-land-identifikation-nachziehen.md` — and done there the same day,
+in the section below.
+
+## Revision 2026-09-08, package 0253: the USA identification goes the same way
+
+No new retrieval, and none needed: the codelist answer above says the same thing about
+every country. So the USA cell could not stay what it was — `:30` and `:134` named the Fed
+discount-window rate with no query behind it, two lines from a paragraph stating that the
+source names no instrument for any single country. Both cells now carry the wording of the
+BRA cells, and enumeration row `:231` covers three cells instead of two.
+
+`daten/reihen.toml` carried that half-clause twice, at `:621` (`[[widerspruch]] nr = 5`)
+and in series 9's `offen` list at `:1258`, each time inside the framing that `DISR`
+measures a different quantity per country. **That framing rested on the two instrument
+names and falls with them.** The source declines the identification in both directions, so
+whether the code measures the same quantity for the USA as for Brazil is now open rather
+than answered no. What was measured stays measured: DEU and CHN carry no observation, USA
+ends 2020, and the levels are far apart (USA 1997 = 5,00, BRA 1997 = 45,09). A distance
+between levels is measured; a difference of concept is not read off it.
+
+`daten/deckungsbefund-1997.md` point 1 carried the retired Selic denial whole, and with it
+„die richtigen Zahlen" — a claim that the USA values match the Fed discount window,
+measured against no named reference. Rewritten to the same shape; every value in it is
+unchanged, and the design question it hands to the spielentwerfer stays open.
+
+**What this does not change.** No observation count, no coverage verdict, no way at `:163`,
+and not the „Policy rate?" column: that column is a reading, row `:230` says so, and it now
+also says which sentence of the codelist the two `DISR` readings rest on. `reihen.toml`
+carried 62 lines with a `technik.md`/`spiel.md` citation before this package and carries 62
+after — 78 occurrences on the same 62 line numbers.

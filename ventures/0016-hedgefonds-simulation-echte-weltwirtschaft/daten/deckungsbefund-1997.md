@@ -200,12 +200,18 @@ Leitzins —, und er ist jetzt auch als Indiz entwertet: Die Kante, an der er ge
 
 **Zwei Dinge, die zur Entscheidung gehören und keine Deckungsfrage sind:**
 
-1. **`DISR` ist kein einheitlicher Begriff über Länder hinweg.** Für die USA ist es der
-   Diskontsatz des Fed-Diskontfensters (nachgerechnet: 1997 = 5,00, 2000 = 6,00,
-   2008 = 0,50, 2019 = 2,25, 2020 = 0,25 — die richtigen Zahlen), für Brasilien der
-   Rediskontsatz (1997 = 45,09, 2020 = 8,01), und der ist **nicht** die Selic. Eine
-   Sollreihe, die je Land eine andere Größe misst, misst im Rückvergleich je Land etwas
-   anderes. Das ist eine Entwurfsfrage, keine Datenfrage, und sie gehört dem Spielentwerfer.
+1. **Ob `DISR` über Länder hinweg dieselbe Größe misst, ist unbelegt.** Die Codeliste
+   `CL_MFS_IR_INDICATOR` 2.1.0 beschreibt den Code generisch („The interest rate charged by
+   central banks on loans to commercial banks.") und nennt für kein einzelnes Land ein
+   Instrument — sie weist die Werte weder als ein bestimmtes Instrument aus noch gegen
+   eines; abgerufen 2026-09-08, Wortlaut und Abfrage in
+   `daten/quellenbefund-leitzinspfad.md`. Abgelesen sind allein die Werte selbst (USA
+   1997 = 5,00, 2000 = 6,00, 2008 = 0,50, 2019 = 2,25, 2020 = 0,25; BRA 1997 = 45,09,
+   2020 = 8,01); ihr Abstand ist gemessen, ein Begriffsunterschied ist daraus nicht
+   abgelesen. Misst eine Sollreihe je Land etwas anderes, misst sie im Rückvergleich je
+   Land etwas anderes — die Frage bleibt damit offen. Entwurfsfrage, keine Datenfrage,
+   gehört dem Spielentwerfer. **Zurückgezogen in Paket 0253**, beide ohne Abfrage: der
+   Rediskontsatz, der „nicht die Selic" sei, und „die richtigen Zahlen" für die US-Werte.
 2. **Bei Fensterbeginn 2001 verliert Deutschland sein Zinsinstrument vollständig.**
    T23 Punkt 8 setzt für den deutschen Leitzins `exogen_ab = 1999`; nach T40 ist
    `exogen_ab_runde = bruchjahr − startjahr + 1`. Bei `startjahr = 1997` ergibt das Runde 3,
