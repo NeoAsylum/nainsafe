@@ -713,12 +713,34 @@ i64 korbbestand(const Zustand& z, const Konstanten& konst)
 /// fuer `teil == I64_MIN` selbst der Ueberlauf, den sie fangen soll. Die Summe zweier
 /// `i64` passt auf `i128` immer (ADR 0011, Massnahme 3).
 ///
-/// **Die Laenge ist gezaehlt, nicht geschaetzt.** In dem Fall, den der Befund nennt,
-/// misst die Meldung 319 Zeichen; ueber alle Zustaende, die sie erreichen kann,
-/// hoechstens 323. Die zwoelf Adressen dieser Summe tragen alle dieselbe Textform von 31
-/// Zeichen und unterscheiden sich nur in der Stellenzahl ihrer Nummer, und laenger als
-/// zwanzig Zeichen wird keine der beiden Zahlen. `meldung::MELDUNG_ZEICHEN_MAX` ist 511 --
-/// abgeschnitten wird hier nichts, und der Landesname am Ende geht nicht verloren.
+/// **Die Laenge ist gezaehlt, nicht geschaetzt.** Nachgezaehlt am 2026-09-08: Hier
+/// standen zwoelf Adressen, 31 Zeichen und hoechstens 323. Alle drei Zahlen zaehlten nur
+/// die vier Laender; `bip` nimmt aber ein `Gebiet`, und `stelle_sektorgroesse` bedient
+/// alle fuenf.
+///
+/// **Die Adressen.** Je Aufruf liest die Schleife drei, eine je Sektor; ueber die fuenf
+/// Gebiete sind das fuenfzehn verschiedene. In der Meldung stehen kann nur der zweite
+/// und der dritte Sektor -- die erste Teilsumme ist der Summand selbst und verlaesst
+/// `i64` nie --, also zehn davon.
+///
+/// **Der Adressteil.** Die Textform ist nicht fuer alle dieselbe: Die vier Laender
+/// tragen „land.XX.sektor.N.wertschoepfung" mit 31 Zeichen, die Restwelt
+/// „restwelt.sektor.N.wertschoepfung" mit 32. `Meldung::adresse` haengt daran " (Nr. "
+/// mit 6 Zeichen, die laufende Nummer und ")" mit einem; die groesste der zehn Nummern
+/// ist 185 und damit dreistellig. Hoechstens also 32 + 6 + 3 + 1 = 42 Zeichen.
+///
+/// **Der Rest.** Die feste Prosa bis einschliesslich „Ueberzaehlig ist " misst 215
+/// Zeichen, dazu " mit " mit 5 und "; die Summe davor war " mit 22 -- zusammen 242. Und
+/// laenger als 20 Zeichen wird keine der beiden Zahlen, `I64_MIN` ist genau so lang.
+/// Macht 242 + 42 + 20 + 20 = **324**, und die sind erreichbar: Wertschoepfung 1 und 2
+/// der Restwelt auf `I64_MIN`, dann bricht die zweite Adresse (Nr. 181) mit zwei
+/// zwanzigstelligen Zahlen ab. Zu den alten 323 fehlte genau das eine Zeichen, das die
+/// Restwelt breiter ist als ein Land.
+///
+/// `meldung::MELDUNG_ZEICHEN_MAX` ist 511, es bleiben 187 Zeichen Luft -- abgeschnitten
+/// wird hier nichts, und der Schluss aus Adresse, Summand und Zwischensumme kommt
+/// vollstaendig an. In dem Fall, den der Befund nennt, dreimal 2^62 in einem Land, misst
+/// die Meldung 242 + 39 + 19 + 19 = 319 Zeichen.
 /// `werte_probe` misst dieselbe Laenge zur Laufzeit nach.
 i64 bip(const Zustand& z, Gebiet land)
 {

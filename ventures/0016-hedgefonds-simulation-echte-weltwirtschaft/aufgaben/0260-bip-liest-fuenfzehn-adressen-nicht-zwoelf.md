@@ -1,7 +1,7 @@
 ---
 id: 0260-bip-liest-fuenfzehn-adressen-nicht-zwoelf
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp]
 abnahme: "The four conditions below. Comment lines only — every function body in `werte.cpp` stays byte-identical."
