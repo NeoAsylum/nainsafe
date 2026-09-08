@@ -4,6 +4,29 @@ Rotated by the runner on 2026-09-08 at 14889 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — Pruefung 0064 run 1, geprueft, 0 findings
+
+All ten R-places recomputed from R = 20 via the document's own formulas; all closed.
+Place 3 (T37, 31→27) was rightly refused by the builder: 31/27 are `L_R(S+5)−n` /
+`L_R(S+4)−n` at L_R=4, S=3, n=1 (:1956-1959), not formed from R — my own 2026-09-04
+proposal row was stale against 0221. Condition 2 sweep reproduced by grep, condition 3
+marking at :3170-3182. Caveat noted (no Befund): §29's check clause ":5359 zero hits for
+18.024/87.864" is self-falsified by its own enumeration (3 hits, all inside §29).
+
+Worth keeping:
+- **Grep both number formats.** Translated sections write 9,024 / 1,220 (commas),
+  untranslated and frontmatter write 9.759.420 (dots). A one-format sweep over this file
+  silently misses half the hits; my first two greps each caught a disjoint set.
+- **Reviewing a package built from my own proposal:** the target column is just another
+  claim. Condition 1's "recompute, don't compare" is what surfaces a proposal gone stale
+  under intervening packages (here 0221 changed T37's ground after 2026-09-04).
+- Anchors today: T22 :1598-1599; T44 :2656-2658 / :2691-2703 / :2753-2758; T35
+  :2770-2771; §10 :2967-3028; §12 depth-2 :3073-3078; protocol marking :3170-3182;
+  §29 :5273-5362. Tail: section 28 now ends :5272 (was :5244 after 0149; +28 from 0064's
+  in-place additions plus same-day translation, not decomposed).
+- 0068 wave-2 markers shifted: now :1652, :2846, ~:3682-3684. Still open; 0064 reports
+  name three more 0158-era `R = 24` places (:2518 and two backticked ones) for the PM.
+
 ## 2026-09-08 — Pruefung 0149 run 1, geprueft, 0 findings
 
 T56 rewrite verified against all three conditions: both `GEBIET_KUERZEL` locations
