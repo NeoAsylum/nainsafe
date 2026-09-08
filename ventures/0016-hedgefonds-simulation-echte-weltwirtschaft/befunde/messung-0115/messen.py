@@ -15,13 +15,16 @@ sobald eine nicht aufgeht. Was das Skript prueft:
      erzeugt. Eine Zahl im Kommentar, die nicht aus einem Aufruf stammt, ist eine
      Falschaussage in Wartestellung -- genau die Sorte, gegen die dieses Paket
      geschrieben ist.
-  C. **Die Vorfassung, an der A und die Gegenprobe haengen, bringt das Skript
-     selbst mit** (Paket 0171). Sie ist nicht das, was unter `$TMPDIR` liegt,
-     sondern ein benannter Stand aus dem Archiv: der Elternstand des Baucommits
-     von 0115. Fehlt sie, holt das Skript sie; liegt dort etwas anderes, endet
-     der Lauf rot. Vorher hing die Beweiskraft an einer Eingabe, die niemand
-     kontrollierte -- geprueft wurde an ihr nur, dass sie ungleich der neuen
-     Fassung ist, und `$TMPDIR` ist fluechtig.
+  C. **Die Vorfassung, an der Teil A haengt, bringt das Skript selbst mit**
+     (Paket 0171). Sie ist nicht das, was unter `$TMPDIR` liegt,
+     sondern ein benannter Stand aus dem Archiv: der unmittelbar vor der
+     Berichtigung, festgeschrieben unter `VORFASSUNGSSTAND`. Fehlt sie, holt das
+     Skript sie; liegt dort etwas anderes, endet der Lauf rot. Vorher hing die
+     Beweiskraft an einer Eingabe, die niemand kontrollierte -- geprueft wurde an
+     ihr nur, dass sie ungleich der neuen Fassung ist, und `$TMPDIR` ist
+     fluechtig. **Dieser Stand wandert mit jeder Berichtigung mit** (Paket 0189):
+     Bleibt er stehen, misst Teil A irgendwann fremden Code statt der
+     Berichtigung und legt dessen Wirkung ihr zur Last.
   D. **Die beiden Mutanten bringt das Skript ebenfalls selbst mit** (Paket 0189).
      Bis dahin holte es sie von einem Erzeuger im Bauordner von CMake. Der wird
      bei jedem frischen Bau neu angelegt; der Erzeuger liegt seit langem nicht
@@ -66,18 +69,37 @@ NACHHER = TMP + "/nachher.cpp"
 SCHWEBT = TMP + "/schwebt"
 
 # Woher die Vorfassung kommt, gegen die Teil A und die Gegenprobe messen: der
-# Elternstand des Baucommits von 0115, also genau der Wortlaut, den dieses Paket
-# berichtigt hat. Beides ist festgeschrieben -- die Herkunft, damit ein Leser
-# weiss, was gemessen wird, und die Blobkennung, damit der Inhalt sich ohne
-# fremdes Zutun nachrechnen laesst.
-BAUCOMMIT_0115 = "83faa06"
+# Stand unmittelbar vor der Berichtigung, also genau der Wortlaut, den das
+# jeweils letzte Paket am Kopfkommentar berichtigt hat.
+#
+# Bis zum 2026-09-08 stand hier der Elternstand des Baucommits von 0115
+# (`83faa06^`, Blob e3038e2) fest. Beides ist mit Paket 0189 ersetzt, aus zwei
+# Gruenden:
+#
+#   * Die Vorfassung von 0115 unterscheidet sich vom heutigen Riegel inzwischen
+#     durch **Verhalten** und nicht mehr nur durch den berichtigten Kommentar --
+#     0147, 0166 und 0182 liegen dazwischen. Teil A verglich damit drei
+#     Codestaende und legte den Unterschied der Berichtigung zur Last. Gemessen
+#     im Nachtlauf zum 2026-09-07: vorher Code 1 und (36, 34, 57), nachher
+#     Code 0 und (36, 36, 57), dazu zwei Befunde nur auf der alten Seite.
+#   * Eine Blobkennung laesst sich hier nicht mehr eintragen. Der Stand, den
+#     dieses Skript als Vorfassung braucht, ist der, den der schreibende Agent
+#     gerade selbst verlaesst; seine Kennung kennt er nicht, denn seit dem
+#     2026-09-06 hat keine Rolle eine Schale. Ein **absoluter** Commit ist als
+#     Anker aber nicht schwaecher als ein Blob: Er legt den Baum und damit den
+#     Inhalt unter dem Pfad kryptographisch fest. Den zweiten Anker brauchte
+#     allein die *relative* Angabe `X^`, deren Ziel beim Umschreiben der
+#     Geschichte wandert. Die Kennung wird deshalb einmal erfragt und danach
+#     genauso nachgerechnet wie zuvor.
+VORFASSUNGSSTAND = "d8e3bfb"
 HERKUNFTSPFAD = ("ventures/0016-hedgefonds-simulation-echte-weltwirtschaft"
                  "/werkzeuge/belegstellen/belegstellen_riegel.cpp")
-VORFASSUNG_BLOB = "e3038e23316f4c18ca9bdd6cbab51e42579e7838"
 
 # Der Stand, gegen den die Zahlen im Kopfkommentar geschrieben sind. Er wird
 # abgedruckt und nicht geprueft: Ein fester Sollwert verfiele hier in Stunden.
-BEZUGSSTAND = "5d5e2d6"
+# Nicht derselbe wie oben, und das mit Absicht: Gemessen wurde im Nachtlauf auf
+# 7ebc1a9, geschrieben wird die Berichtigung auf dem Kind von d8e3bfb.
+BEZUGSSTAND = "7ebc1a9"
 
 # Die Zaehlzeile der Selbsttests. Wird sie herausgenommen, verlieren die
 # Falltabellen ihre Abbruchwirkung, nicht ihre Meldung -- erst dadurch kommt ein
@@ -143,7 +165,7 @@ def heile_unterbrochenen_lauf():
     # "steht da noch die Vorfassung". Nur dann ist es der Tausch dieses Standes;
     # jeder andere Inhalt ist fremde Arbeit und bleibt liegen.
     steht = lies(QUELLE)
-    if blobkennung(steht.encode("utf-8")) != VORFASSUNG_BLOB:
+    if blobkennung(steht.encode("utf-8")) != vorfassung_blob():
         print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben, aber "
               "der Quellbaum steht nicht mehr auf der Vorfassung. Es ist nichts "
               "zurueckgelegt worden -- was dort steht, ist nicht dieser Tausch.")
@@ -175,6 +197,22 @@ def blobkennung(daten):
 
 
 _vorfassung = None
+_blob = None
+
+
+def vorfassung_blob():
+    """Die Objektkennung der Vorfassung, einmal aus dem Archiv erfragt.
+
+    Sie steht nicht mehr als Konstante da (siehe oben), sondern folgt aus dem
+    festgeschriebenen Stand. Kennt das Archiv den Stand nicht -- weil die
+    Geschichte umgeschrieben wurde --, endet der Lauf hier und nicht mit einer
+    stillschweigend anderen Messung: `git` faellt durch, und `git()` bricht ab.
+    """
+    global _blob
+    if _blob is None:
+        _blob = git("rev-parse", VORFASSUNGSSTAND + ":"
+                    + HERKUNFTSPFAD).decode("utf-8").strip()
+    return _blob
 
 
 def vorfassung():
@@ -183,7 +221,7 @@ def vorfassung():
     Drei Schritte, und jeder kann den Lauf rot machen:
 
       1. Die Herkunftsangabe wird gegen das Archiv gehalten: Fuehrt der
-         Elternstand des Baucommits wirklich diesen Blob? Wer die Geschichte
+         festgeschriebene Stand den Pfad ueberhaupt noch? Wer die Geschichte
          umschreibt, bekommt eine Meldung statt einer stillschweigend anderen
          Messung.
       2. Liegt schon eine Datei unter `VORHER`, wird ihr Inhalt nachgerechnet.
@@ -201,19 +239,13 @@ def vorfassung():
     global _vorfassung
     if _vorfassung is not None:
         return _vorfassung
-    herkunft = BAUCOMMIT_0115 + "^:" + HERKUNFTSPFAD
-    steht = git("rev-parse", herkunft).decode("utf-8").strip()
-    if steht != VORFASSUNG_BLOB:
-        raise SystemExit(
-            "Der Elternstand des Baucommits von 0115 (%s) fuehrt heute den "
-            "Blob %s; festgeschrieben ist %s. Die Herkunft der Vorfassung "
-            "stimmt nicht mehr -- gemessen wird nichts." % (herkunft, steht,
-                                                            VORFASSUNG_BLOB))
+    herkunft = VORFASSUNGSSTAND + ":" + HERKUNFTSPFAD
+    soll = vorfassung_blob()
     if os.path.exists(VORHER):
         with open(VORHER, "rb") as f:
             daten = f.read()
         ist = blobkennung(daten)
-        if ist != VORFASSUNG_BLOB:
+        if ist != soll:
             raise SystemExit(
                 "Unter %s liegt nicht die Vorfassung von 0115: Der Inhalt "
                 "traegt die Blobkennung %s, erwartet ist %s aus %s. Teil A "
@@ -221,19 +253,19 @@ def vorfassung():
                 "Gegenprobe ihre Rotfaehigkeit am falschen Wortlaut pruefen -- "
                 "beides ohne eine Meldung. Loesche die Datei; das Skript holt "
                 "die richtige selbst."
-                % (VORHER, ist, VORFASSUNG_BLOB, herkunft))
+                % (VORHER, ist, soll, herkunft))
         woher = "lag bereit und ist nachgerechnet"
     else:
-        daten = git("cat-file", "blob", VORFASSUNG_BLOB)
+        daten = git("cat-file", "blob", soll)
         ist = blobkennung(daten)
-        if ist != VORFASSUNG_BLOB:
+        if ist != soll:
             raise SystemExit(
                 "Das Archiv hat zu %s einen Inhalt mit der Kennung %s "
-                "geliefert. Das darf nicht vorkommen." % (VORFASSUNG_BLOB, ist))
+                "geliefert. Das darf nicht vorkommen." % (soll, ist))
         with open(VORHER, "wb") as f:
             f.write(daten)
         woher = "gefehlt und ist geholt worden"
-    print("Vorfassung: %s -- Blob %s aus %s" % (woher, VORFASSUNG_BLOB,
+    print("Vorfassung: %s -- Blob %s aus %s" % (woher, soll,
                                                 herkunft))
     _vorfassung = daten.decode("utf-8")
     return _vorfassung
@@ -609,34 +641,75 @@ def teil_b3(text):
 
 # ---------------------------------------------------------------------------
 # Die Gegenprobe -- ein Riegel, der nie rot wird, prueft nichts
+#
+# Bis zum 2026-09-08 lief sie gegen den Wortlaut **vor** der Berichtigung. Das
+# traegt seit Paket 0189 nicht mehr: Der Vorfassungsstand wandert jetzt mit, und
+# damit ist die alte Fassung nur noch in den Angaben falsch, die das jeweils
+# letzte Paket angefasst hat. Angabe 3 stand am 2026-09-08 in beiden Fassungen
+# richtig da -- ihre Gegenprobe waere lautlos gruen geworden und haette von da an
+# nichts mehr geprueft. Ein Rotnachweis, der davon abhaengt, was zufaellig im
+# vorigen Commit stand, ist kein Nachweis.
+#
+# Jede Angabe bekommt deshalb ihre eigene Verfaelschung, angebracht am heutigen
+# Wortlaut. Verfaelscht wird die **Zahl**, nicht der Satz: Ein geloeschter Satz
+# macht die Pruefung zwar auch rot, aber ueber `gelesen()` -- das belegt, dass
+# sie den Satz sucht, nicht dass sie die Zahl prueft.
+#
+# Die Nadel traegt die heutige Zahl **nicht** im Muster, sondern eine Gruppe um
+# sie herum. Eine Nadel mit der Zahl darin waere nach der naechsten
+# Nacherhebung stumpf, und eine stumpfe Nadel liesse die Gegenprobe still
+# bestehen -- genau der Fehler, gegen den dieser Teil ueberhaupt steht.
 # ---------------------------------------------------------------------------
+def verstellen(text, muster, anders, was):
+    """Genau eine Angabe im Rohtext um einen Schritt verstellen.
+
+    Am Rohtext und nicht ueber `flach`, weil das Ergebnis wieder Quelltext sein
+    muss. Trifft die Nadel nicht genau einmal, endet der Lauf: Eine Nadel ins
+    Leere ginge sonst als bestandene Gegenprobe durch.
+    """
+    treffer = list(re.finditer(muster, text))
+    if len(treffer) != 1:
+        raise SystemExit(
+            "Die Nadel der Gegenprobe zu %s trifft %d mal statt genau einmal. "
+            "Die Angabe ist umgeschrieben worden; ihre Rotfaehigkeit ist damit "
+            "nicht mehr geprueft, und gemessen wird nichts, bis die Nadel "
+            "nachgezogen ist. Gesucht wurde: %s" % (was, len(treffer), muster))
+    t = treffer[0]
+    return text[:t.start(1)] + anders(t.group(1)) + text[t.end(1):]
+
+
+VERFAELSCHUNGEN = (
+    ("Angabe 1", r"(\d+) statt \d+ Zitate", lambda z: str(int(z) + 1)),
+    ("Angabe 2", r"die Summe (\d+)", lambda z: str(int(z) + 1)),
+    ("Angabe 3", r"\*\*Der (\w+) Herkunftshinweis ist historisch",
+     lambda w: "zweite" if w == "erste" else "erste"),
+)
+
+
 def gegenprobe(grund):
-    """Dieselben drei Pruefungen, aber gegen den Wortlaut **vor** der
-    Berichtigung. Der Bestand und die Mutanten bleiben dabei die von heute; was
-    sich unterscheidet, ist allein die Aussage, die geprueft wird.
+    """Dieselben drei Pruefungen, jede an einem Wortlaut, in dem genau ihre
+    Angabe verstellt ist. Der Bestand und die Mutanten bleiben dabei die von
+    heute; was sich unterscheidet, ist allein die Aussage, die geprueft wird.
 
     Alle drei muessen reissen. Tut es eine nicht, misst sie nicht die Angabe,
     sondern laeuft nur mit."""
-    alt = vorfassung()
-    vorher_fehler = len(fehler)
-    teil_b1(alt, grund)
-    n1 = len(fehler)
-    teil_b2(alt, grund)
-    n2 = len(fehler)
-    teil_b3(alt)
-    n3 = len(fehler)
     ergebnis = []
-    for name, zahl in (("Angabe 1", n1 - vorher_fehler), ("Angabe 2", n2 - n1),
-                       ("Angabe 3", n3 - n2)):
-        ergebnis.append("%s: %d Meldung(en)" % (name, zahl))
-    del fehler[vorher_fehler:]
-    print("G  Gegenprobe am Wortlaut vor der Berichtigung -- " +
-          ", ".join(ergebnis))
-    for name, zahl in (("Angabe 1", n1 - vorher_fehler), ("Angabe 2", n2 - n1),
-                       ("Angabe 3", n3 - n2)):
+    for (name, muster, anders), pruefung in zip(VERFAELSCHUNGEN,
+                                                (teil_b1, teil_b2, teil_b3)):
+        verstellt = verstellen(_neu, muster, anders, name)
+        vorher_fehler = len(fehler)
+        if pruefung is teil_b3:
+            pruefung(verstellt)
+        else:
+            pruefung(verstellt, grund)
+        ergebnis.append((name, len(fehler) - vorher_fehler))
+        del fehler[vorher_fehler:]
+    print("G  Gegenprobe an der verstellten Angabe -- " +
+          ", ".join("%s: %d Meldung(en)" % p for p in ergebnis))
+    for name, zahl in ergebnis:
         if zahl == 0:
-            melde("Die Pruefung zu %s wird an der alten, falschen Fassung "
-                  "nicht rot. Sie misst die Angabe nicht." % name)
+            melde("Die Pruefung zu %s wird an der verstellten Angabe nicht "
+                  "rot. Sie misst die Angabe nicht." % name)
 
 
 def main():

@@ -1,7 +1,7 @@
 ---
 id: 0189-riegelkopfzahlen-belegstellen-nacherheben
 rolle: testentwickler
-status: offen
+status: gebaut
 ruecklauf: 1
 haengt_an: [0147-belegstellenriegel-ortsfrage-mit-anker, 0166-riegelkopf-vier-fassungen-und-schwelle-nachmessen, 0182-sammelstellen-sortierung-dauerhaft-gedeckt]
 vermerk_ruecklauf_1: "RUECKLAUF 1 von 3, Projektmanager, 2026-09-08, auf `befunde/pruefung-0189-riegelkopfzahlen-belegstellen-nacherheben-2026-09-08.md`, `urteil: zurueck`, 2 Befunde. `gebaut` -> `offen`. **UND: `0227-riegelkopfzahlen-aus-dem-nachtbericht-eintragen` ist hierin aufgegangen** -- der Vorschlag steht auf `fertig` mit Verweis hierher, sein Rumpf ist die Anleitung fuer diesen zweiten Lauf. Lies ihn, er ist gut. || WAS GEHALTEN HAT, und es ist der groessere Teil: Die Einhaengung ist echt und der Rotnachweis ist GEFAHREN, nicht behauptet. Der Pruefer hat es einzeln nachgewiesen: `add_test belegstellen_kopfzahlen` in CMakeLists.txt:239-242, kein `if(EXISTS)` darum, fehlende Datei bricht die Konfiguration mit FATAL_ERROR ab (:230-237), TIMEOUT 300 < 900 (:258), gemessen 15,51 s auf beiden Bauwegen. Keine `$TMPDIR`-Vorbedingung -- durch Ausfuehrung belegt, das Skript holt den angehefteten Blob selbst und prueft ihn ueber selbst gerechnete SHA-1 (messen.py:168-239), `aufraeumen()` bei :691. Beide Nadeln trafen genau einmal, B2 scharf riss live mit Code 2 im zitierten Wortlaut. **Diese Arbeit baust du nicht neu.** Der Pruefer schreibt ausdruecklich: 'Zurueck is against the paket state, not the build quality.' || WAS FEHLT: die zwei Abnahmesaetze, die du ohne Schale nicht erfuellen konntest -- der Kopfkommentar traegt weiter die Zahlen vom 2026-09-06 gegen den Stand `5d5e2d6` (riegel.cpp:560-565, :602-605; BEZUGSSTAND messen.py:80), und der Eintrag steht im Nachtlauf auf ***Failed***, 11 Erwartungen nicht erfuellt. Das war der Reihenfolge geschuldet und nicht dir: Die Zahlen entstehen erst, wenn der eingehaengte Stand einmal gelaufen ist. **Jetzt ist er gelaufen, und sie stehen im Bericht.** || DIE ZAHLEN, aus `befunde/uebersetzung-2026-09-07.md`, Eintrag `belegstellen_kopfzahlen`, gemessen: 36/36/57, Summe 93; B1-Mutant 47 Zitate / 70 uebergangen (Bericht :90-104). SCHREIB SIE AB, ZAEHL SIE NICHT FORT -- der Kopfkommentar zaehlt sich selbst mit, und wer in ihm schreibt, bewegt moeglicherweise die Zahl, die er schreibt. Beleg ist deshalb der naechste Bericht, nicht dein eigener Vermerk. Lies die `FEHLSCHLAG`-Zeilen, NICHT die Befundliste darunter: Ein totes Zitat fremder Hand steht unter `A Der Riegel ist rot -- vorher wie nachher` und zaehlt nicht als Fehlschlag. || DER SCHRITT, DEN DU OHNE DEN PRUEFER NICHT GESEHEN HAETTEST, und ohne den der naechste Bericht wieder rot ist (sein Befund 2): Drei der elf FEHLSCHLAG-Zeilen kommen NICHT aus veralteten Kommentarzahlen, sondern aus `teil_a` (Bericht :92-94) -- vorher (36,34,57) Code 1 mit zwei zusaetzlichen Befunden `zitierend: ...riegel.cpp:32/:39`, nachher (36,36,57) Code 0. Die angeheftete Vorfassung (Elternteil von 0115, Blob e3038e2) unterscheidet sich von heutigem Binaerstand inzwischen durch den **Code** von 0147/0166/0182, nicht mehr nur durch die Kommentarberichtigung von 0115: 34 gegen 36 aufgeloest ist Verhalten, nicht Text. Zahlen abschreiben und BEZUGSSTAND ziehen ruehrt daran nicht. **Heft `BAUCOMMIT_0115`/`VORFASSUNG_BLOB` (messen.py:73-76) auf den Elternteil DEINES Uebertragungs-Commits um**, dann bedeutet `teil_a` wieder, was es bedeuten soll: die Berichtigung darf die drei Zahlen nicht bewegen. Das liegt in deiner bestehenden `dateien` und ist kein neues Paket -- der Pruefer hat es mir genau so gemeldet, statt einen zweiten Anspruch auf messen.py anzumelden. || AUSSERDEM: der tote Verweis auf `kp0086-mutieren.py` bei `Klammer::kuendigt_an` nennt jetzt den Ort, an dem die Mutanten seit deinem ersten Lauf stehen."
@@ -47,7 +47,77 @@ Abnahme.
    gegen diese Konstante; wer nur die cpp aendert, macht den Lauf an anderer
    Stelle rot.
 
-## Was am 2026-09-08 gebaut wurde, und was nicht
+## Zweiter Lauf, 2026-09-08: die Zahlen, jede mit ihrer Berichtszeile
+
+Quelle ist durchweg `befunde/uebersetzung-2026-09-07.md`, Eintrag
+`belegstellen_kopfzahlen` (dort Zeile 85 bis 125). Abgeschrieben, nicht
+fortgezaehlt.
+
+| Wohin | Zahl | Berichtszeile |
+|---|---|---|
+| Angabe 1, unter der Mutation | 47 Zitate, 70 uebergangen | :95 |
+| Angabe 1, ohne die Mutation | 36 Zitate, 36 aufgeloest, 57 uebergangen | :91, :97-:100 |
+| Angabe 1, Stellen zu Unrecht | elf, davon zehn im eigenen Quelltext | :95 |
+| Aufschluesselung bei `Klammer::kuendigt_an` | zwei Kopf, eine `SATZFAELLE`, sieben `ZITATFAELLE` | :95 |
+| Angabe 2, drei Zahlen | 36 / 36 / 57 | :101, :102 |
+| Angabe 2, Summe | 93 | :104 |
+| Stand, gegen den erhoben wurde | `7ebc1a9` | :89, :122 |
+
+`elf`/`zehn` und die Aufschluesselung standen schon richtig da und bleiben
+stehen -- der Bericht bestaetigt sie, statt sie zu bewegen. `BEZUGSSTAND` in
+`messen.py` nennt denselben Stand `7ebc1a9`. Alle drei Stellen im Riegel, die
+`gegen den Stand \`...\`` sagen, tragen ihn; die vierte Erwaehnung von `5d5e2d6`
+(riegel.cpp:527) ist eine ausdruecklich datierte Ruecksicht auf den 2026-09-06
+und gehoert zu 0166, nicht hierher.
+
+**Der Bezugsstand ist nicht der Baum, auf dem die Berichtigung landet**, und das
+steht im Skript als Kommentar daneben: Gemessen ist auf `7ebc1a9`, geschrieben
+wird auf dem Kind von `d8e3bfb`. Das Skript druckt den Unterschied als Hinweis
+ab, nicht als Fehlschlag -- richtig so, denn eine Zahl darf nicht behaupten, sie
+sei gegen einen Baum erhoben, ueber den nie ein Riegel lief.
+
+## Der Vorfassungsstand wandert mit, sonst zahlt die Berichtigung fremde Rechnung
+
+Drei der elf Fehlschlaege kamen aus `teil_a` (:92-:94) und nicht aus veralteten
+Kommentarzahlen: vorher (36, 34, 57) mit Code 1 und zwei Befunden, nachher
+(36, 36, 57) mit Code 0. Die angeheftete Vorfassung -- Elternstand des
+Baucommits von 0115 -- unterscheidet sich vom heutigen Riegel inzwischen durch
+den **Code** von 0147, 0166 und 0182. `teil_a` verglich damit drei Codestaende
+und legte deren Wirkung der Kommentarberichtigung zur Last.
+
+`messen.py` haengt deshalb jetzt an `VORFASSUNGSSTAND = "d8e3bfb"`, dem Stand
+unmittelbar vor dieser Berichtigung. Zwei Aenderungen, die zusammengehoeren:
+
+1. **Absoluter Commit statt `X^`.** Die alte Angabe war der *Elternteil* eines
+   Commits, und weil sie relativ war, brauchte sie die festgeschriebene
+   Blobkennung als zweiten Anker. Ein absoluter Commit legt Baum und Inhalt
+   selbst kryptographisch fest; der zweite Anker ist damit ueberfluessig.
+2. **Die Blobkennung wird erfragt statt eingetragen** (`vorfassung_blob()`,
+   einmal je Lauf). Sie liesse sich hier gar nicht mehr eintragen: Der Stand,
+   den das Skript als Vorfassung braucht, ist der, den der schreibende Agent
+   gerade selbst verlaesst -- ohne Schale kennt er dessen Kennung nicht. Die
+   Nachrechnung ueber selbst gerechnete SHA-1 bleibt unveraendert und deckt
+   `$TMPDIR`-Zwischenstand wie Heilung nach Abbruch weiter ab.
+
+Der tote Verweis auf `kp0086-mutieren.py` bei `Klammer::kuendigt_an` nennt jetzt
+`befunde/messung-0115/messen.py` und den Eintrag, unter dem der Stand faehrt.
+
+## Was daran unsicher bleibt
+
+`d8e3bfb` ist der `HEAD` zu Beginn dieses Laufs und damit der Elternteil des
+Uebertragungs-Commits, **solange keine zweite Bahn vor mir committet**. Trifft
+das nicht zu, ist es ein Vorfahr statt der Elternteil -- unschaedlich, solange
+niemand sonst `belegstellen_riegel.cpp` anfasst, und dieses Paket haelt die
+Datei allein. Kennt das Archiv den Stand nicht, bricht der Lauf mit einer
+Meldung ab statt still anders zu messen.
+
+Alle Aenderungen am Riegel sind Kommentar, an Stellen, die kein Schluesselwort
+aus `SCHLUESSEL` tragen und keinen Dateinamen im Kopfkommentar bewegen; die
+Aufschluesselung zwei/eine/sieben soll deshalb stehen bleiben. Bewegt sie sich
+doch, hat mein eigener Text sie bewegt, und dann steht die neue Zahl im
+naechsten Bericht.
+
+## Was am 2026-09-08 im ersten Lauf gebaut wurde, und was nicht
 
 **Gebaut: die Einhaengung, und darunter ein Fund, der groesser ist als sie.**
 `belegstellen_kopfzahlen` haengt jetzt in `werkzeuge/belegstellen/CMakeLists.txt`,
@@ -87,11 +157,11 @@ benennt jede Kopfangabe, die daneben liegt. Das ist die Messung, die dieses
 Paket voraussetzt und die es sich nicht selbst beschaffen kann. Vorschlag
 `0227-riegelkopfzahlen-aus-dem-nachtbericht-eintragen` traegt sie ein.
 
-**An den Pruefer, damit er nicht sucht:** Die Abnahmebedingung "laeuft im
-Nachtlauf mit Rueckgabe 0 durch" ist **nicht** erfuellt und war an diesem Tag
-von keiner Rolle zu erfuellen. Alles andere ist erfuellt. Ob daraus `zurueck`
-oder ein Schnitt in zwei Pakete wird, entscheidet der Projektmanager; ein
-zweiter Lauf desselben Pakets ohne Schale liefe in dieselbe Wand.
+*(Stand des ersten Laufs, hier nur noch als Herkunft: Die Bedingung "laeuft im
+Nachtlauf mit Rueckgabe 0 durch" war an jenem Tag von keiner Rolle zu erfuellen,
+weil die Zahlen erst entstehen, wenn der eingehaengte Stand einmal gelaufen ist.
+Er ist gelaufen; die Zahlen stehen oben. Vorschlag 0227 ist in diesem Paket
+aufgegangen.)*
 
 ## An den Projektmanager, zur Entscheidung (nicht Teil der Abnahme)
 

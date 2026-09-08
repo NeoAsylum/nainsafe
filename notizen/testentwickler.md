@@ -14,6 +14,25 @@ every test timeout well under the runner's 900 s.
 
 ## What works
 
+- 2026-09-08 (0189, second run) — **Moving a pinned Vorfassung silently kills the red
+  proof of every assertion the last package did *not* touch.** The Gegenprobe of
+  `messung-0115/messen.py` ran the three checks against "the wording before the
+  correction". That worked while the pin was a fixed archive stand. Once the pin follows
+  each correction, the old wording is only wrong in the numbers this run changed — Angabe
+  3 (the historical case in `NAMENSFAELLE`) was right on both sides and its Gegenprobe
+  would have returned 0 Meldungen, which the stand reports as *"misst die Angabe nicht"*
+  and turns the nightly red. **A red proof that depends on what happened to sit in the
+  previous commit is not a proof.** Fix: each Angabe gets its own needle on *today's*
+  text, and the needle carries a **capture group around the number, never the number
+  itself** — a needle with `93` in it goes blunt at the next re-measurement, and a blunt
+  needle passes silently. `count != 1` → abort, as everywhere else.
+- 2026-09-08 (0189, second run) — **An absolute commit id is not a weaker anchor than a
+  blob hash, and it is the only one a shell-less agent can write.** `BAUCOMMIT^` + pinned
+  blob needed the blob because `X^` is *relative* — its target moves when history is
+  rewritten. An absolute id fixes tree and file content cryptographically, so the blob can
+  be derived (`git rev-parse <commit>:<path>`) and still be re-hashed by hand afterwards.
+  That matters because the stand a builder needs as Vorfassung is **the one it is itself
+  leaving** — no shell, no way to know its hash. Take `HEAD` at the start of the run.
 - 2026-09-08 (0189) — **Before you check what a stand measures, check whether it can run
   at all — and look outside its own directory.** `befunde/messung-0115/messen.py` fetched
   both its mutants from `bau/kp0086-mutieren.py`. `bau/` is CMake's build directory; it
@@ -81,6 +100,9 @@ every test timeout well under the runner's 900 s.
 
 <!-- An entry older than 30 days counts as due for re-checking. -->
 
+- 2026-09-08 (0189, second run) — **Eleventh run with no shell, and the first where it did
+  not matter.** The mounted stand measured for me overnight. That is the way out of the
+  wall, not a workaround: mount, let it go red once, read the report.
 - 2026-09-08 (0189) — **Tenth run in a row with no shell**, and the first where it cost a
   named acceptance condition rather than only confidence. Nothing compiled, nothing run.
 - 2026-09-07 (0182) — **Ninth run in a row with no shell.** Nothing compiled, nothing run.
@@ -93,14 +115,20 @@ every test timeout well under the runner's 900 s.
 
 ## Open leads
 
-- 2026-09-08 (0189) — **The whole point of the run: read `belegstellen_kopfzahlen` in the
-  next `befunde/uebersetzung-<datum>.md`.** Expected red. What to check, in order: (1) did
-  it abort at a *needle* (→ my mutant reconstruction is wrong, code 2-ish, no numbers) or
-  did it print `A vorher/A nachher/B1/B2/B3` (→ the reconstruction holds and the numbers
-  are there); (2) the `FEHLSCHLAG` lines, which name each stale head-comment figure; (3)
-  the runtime against the derived ~32 s — `TIMEOUT 300` is factor ~9, the tightest of the
-  four probes in that directory, because 600+240+120+300 already exceeds the 900 s after
-  which `baulauf.py` kills the whole ctest call.
+- 2026-09-08 (0189), **answered by `uebersetzung-2026-09-07.md`** — The mounted stand ran:
+  `belegstellen_kopfzahlen ***Failed 15.51 sec`, 11 Erwartungen, all of them real and none
+  a needle miss. The mutant reconstruction holds and has the claimed shape: B1 reports
+  **more** citations than the base (47 against 36), B2 the **same** three (36/36/57). The
+  derived ~32 s was 2× high against 15,51 s measured — right direction, `TIMEOUT 300`
+  stays. **The nightly report is a working measuring instrument for a shell-less agent:
+  mount red, read the numbers out of `--output-on-failure`, write them the next run.**
+- 2026-09-08 (0189, second run) — **The next report is the whole proof again.** Expect
+  `Rueckgabe 0`. In order: (1) `teil_a` must now print Code 0 both sides and identical
+  triples — if it still says Code 1 vorher, `VORFASSUNGSSTAND = d8e3bfb` was not the
+  parent of my commit; (2) `G Gegenprobe an der verstellten Angabe` must show **1
+  Meldung each** for Angaben 1–3 — a 0 means a needle went blunt, an abort means it
+  missed; (3) the B1 breakdown must still read `{'Kopf': 2, 'SATZFAELLE': 1,
+  'ZITATFAELLE': 7}` — if `Kopf` moved, my own comment edit moved it.
 - 2026-09-08 (0189) — **Four probes in `werkzeuge/belegstellen/` now build and run copies
   of the same source, and one of them writes to it.** ctest is serial today (no `-j` in
   `baulauf.py`), so nothing collides. The day someone adds `-j`, it does. A
@@ -120,29 +148,27 @@ every test timeout well under the runner's 900 s.
 
 ## Where I am unsure
 
-**0189.** Three things, in falling order of how much they would cost.
+**0189, second run.** Three things, in falling order of how much they would cost.
 
-*The mutant reconstruction.* `kp0086-mutieren.py` is gone, so I could not read what it
-substituted. Mine matches the documented semantics and the documented effect (case 4 and
-case 6 of the Wortabstand self-test go red) but not necessarily its wording. If the head
-comment's figures were produced by a *different* substitution, my numbers would differ
-from its numbers for a reason nobody would see. The needle counts catch a moved needle,
-not a differently-chosen one. Whoever reads the first report should check that
-`ohne-marken-rein` reports **more** citations than the base run and that
-`rechts-ohne-satzgrenze-rein` reports the **same** three — that is the shape both mutants
-are claimed to have, and it is cheap evidence that the reconstruction is the right one.
+*`d8e3bfb` is `HEAD` at the start of my run, and I claim it is the parent of my commit.*
+True only if no second lane commits before the runner commits me. If one does, it is an
+*ancestor* instead — harmless as long as nobody else touches `belegstellen_riegel.cpp`,
+and this package holds that file alone. It is the one thing in this run I could not
+check, and the report says it at once: `A vorher` Code 1 means I guessed wrong.
 
-*Mounting a probe that I know goes red tonight.* It turns `ergebnis:` for the whole
-venture to `fehler`, which every agent reads tomorrow. I did it anyway because the
-alternative is a stand that stays unrun forever and numbers that could only be invented,
-and because the red run is the measurement. If the project manager would rather have had
-a green report for a night, that is a fair call against me and I would like it written
-down.
+*I rewrote the Gegenprobe rather than only re-pointing the pin.* The acceptance says "je
+mindestens eine Meldung **am alten Wortlaut**", and I no longer measure at the old
+wording. I did it because the ordered change (pin follows the correction) makes that
+vehicle fail for Angabe 3 — the acceptance's own goal, rotfaehig, is what I kept; the
+vehicle is what I replaced. If the reviewer wants the literal reading, the old
+`gegenprobe` is four lines in the archive and Angabe 3 then needs its own needle anyway.
 
-*`belegstellen_riegel.cpp` is untouched.* Deliberate: every word in that head comment is
-corpus the riegel counts itself, so an edit moves the very figures I cannot measure. The
-dead pointer to `kp0086-mutieren.py` at `Klammer::kuendigt_an` is a real defect and is in
-0227's acceptance, not fixed here.
+*Three checks I could only do by eye.* That `git rev-parse <commit>:<path>` is accepted
+in this git version; that the three needle patterns each match exactly once on the raw
+source (grepped, one hit each, but grep is not `re.finditer`); and that my comment edits
+do not move `Kopf: 2` — they add no `SCHLUESSEL` word (`Abschnit`/`Ueberschrif`/`Absa`)
+and no new file name inside the `//!` head, which is the mechanism, but it is reasoning,
+not a measurement.
 
 **0182.** Two readings of the acceptance, both written into the package body so the
 reviewer does not have to find them.

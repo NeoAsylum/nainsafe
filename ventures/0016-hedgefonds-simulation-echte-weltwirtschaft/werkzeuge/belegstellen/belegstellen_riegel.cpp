@@ -557,10 +557,10 @@
 //!
 //!   1. *Nur ankuendigende Anfuehrungszeichen.* Mit Abstand zaehlen die typografischen
 //!      Anfuehrungen und die geklammerte Form, nicht Gegenstrich, Sternchen, einfaches
-//!      oder gerades Anfuehrungszeichen. Gemessen am 2026-09-06 gegen den Stand
-//!      `5d5e2d6` mit dem Mutanten `ohne-marken-rein`: ohne diese Trennung faengt der
+//!      oder gerades Anfuehrungszeichen. Gemessen am 2026-09-07 gegen den Stand
+//!      `7ebc1a9` mit dem Mutanten `ohne-marken-rein`: ohne diese Trennung faengt der
 //!      Riegel **elf Stellen zu Unrecht, zehn davon in seinem eigenen Quelltext** --
-//!      51 statt 40 Zitate, weiterhin nur 40 aufgeloest, 59 statt 47 Fundstellen. Die
+//!      47 statt 36 Zitate, weiterhin nur 36 aufgeloest, 70 statt 57 Fundstellen. Die
 //!      zehn liegen zu zweit in diesem Kopfkommentar, einmal in `SATZFAELLE` und
 //!      siebenmal in `ZITATFAELLE`; die elfte steht in `parameter.toml`.
 //!
@@ -599,10 +599,10 @@
 //! `ABSTANDSFAELLE`. Der Mutant `rechts-ohne-satzgrenze-rein` laesst ihn reissen und
 //! bricht mit Code 2 ab: rechts erwartet war kein Dateiname, gefunden wurde `spiel.md`.
 //!
-//! **Der Bestand misst diese Grenze nicht mehr mit.** Am 2026-09-06, gegen den Stand
-//! `5d5e2d6`, nennt derselbe Mutant genau dieselben drei Zahlen wie der unveraenderte
-//! Riegel -- 40 Zitate, 40 aufgeloest, 47 uebergangene Fundstellen, vorher wie nachher
-//! die Summe 87. Bis hierher stand an dieser Stelle, ohne die Grenze binde eine
+//! **Der Bestand misst diese Grenze nicht mehr mit.** Am 2026-09-07, gegen den Stand
+//! `7ebc1a9`, nennt derselbe Mutant genau dieselben drei Zahlen wie der unveraenderte
+//! Riegel -- 36 Zitate, 36 aufgeloest, 57 uebergangene Fundstellen, vorher wie nachher
+//! die Summe 93. Bis hierher stand an dieser Stelle, ohne die Grenze binde eine
 //! uebergangene Fundstelle einen weit entfernten Dateinamen an sich und werde zu
 //! Unrecht rot; das ist am 2026-09-06 am Baum nicht mehr zu sehen. Was sich zwischen
 //! den beiden Tagen bewegt hat, ist nicht nachgehalten -- der Fall in der Tabelle
@@ -1583,12 +1583,14 @@ struct Klammer {
     /// Name der elften Stelle noch eine Zeile weiter unten stand. Sie liegt
     /// ausserhalb dieser Datei, in der Parameterdatei des Vorhabens.
     ///
-    /// So gemessen am 2026-09-06 gegen den Stand `5d5e2d6`, mit dem Mutanten
-    /// `ohne-marken-rein` aus `kp0086-mutieren.py`. Er laesst den Selbsttest zum
-    /// Wortabstand reissen und braucht deshalb den Filter, der den Zaehlzeilen ihre
-    /// Abbruchwirkung nimmt -- sonst bricht der Lauf mit Code 2 ab, ehe der Bestand
-    /// gelesen ist, und liefert gar keine Zahl. Der vollstaendige Aufruf steht im
-    /// Rumpf des Arbeitspakets 0115.
+    /// So gemessen am 2026-09-07 gegen den Stand `7ebc1a9`, mit dem Mutanten
+    /// `ohne-marken-rein`. Er steht seit Paket 0189 als Textersetzung im Messstand
+    /// selbst, in `befunde/messung-0115/messen.py`; bis dahin nannte diese Stelle
+    /// einen Erzeuger im Bauordner von CMake, den es dort seit langem nicht mehr
+    /// gibt. Er laesst den Selbsttest zum Wortabstand reissen und braucht deshalb
+    /// den Filter, der den Zaehlzeilen ihre Abbruchwirkung nimmt -- sonst bricht
+    /// der Lauf mit Code 2 ab, ehe der Bestand gelesen ist, und liefert gar keine
+    /// Zahl. Gefahren wird er im Nachtlauf, als Eintrag `belegstellen_kopfzahlen`.
     ///
     /// Die Aufteilung waechst mit den Falltabellen und ist deshalb nachzumessen und
     /// nicht abzuschreiben; die Gesamtzahlen stehen im Kopf, mit demselben Stand.
