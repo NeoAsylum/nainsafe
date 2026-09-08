@@ -10,31 +10,42 @@
 //! ## Was dieser Kasten ist -- und was er ausdruecklich nicht ist
 //!
 //! Er ist der **Rahmen** der Runde: Signatur, Rueckgabewert, die feste Reihenfolge der
-//! sechs Schritte, die Rundenendpruefung. Er ist **keine gerechnete Welt**. Eine Runde
-//! im `weltlauf` traegt heute 174 der 175 Adressen ihrer Sollmaske unveraendert vor; die
-//! 175. ist `partie.runde`, und die zaehlt hoch. Danach steht dieselbe Welt noch einmal
-//! da, eine Runde weiter, mit 175 Ursachensaetzen, die genau das aussagen. Das ist der
-//! Zuschnitt des Arbeitspakets 0033 und keine Unfertigkeit: Die sechs Schritte der Runde
-//! sind sechs eigene Pakete, und dies ist die Buehne, auf der sie einzeln aufgestellt
-//! werden.
+//! sechs Schritte, die Rundenendpruefung. Er ist **keine fertig gerechnete Welt**: Von
+//! den sechs Schritten hat seit Paket 0197 einer einen rechnenden Rumpf, Schritt 5; die
+//! anderen fuenf tragen die Adressen ihrer Sollmaske vor. Danach steht dieselbe Welt
+//! noch einmal da, eine Runde weiter, mit 175 Ursachensaetzen, die sagen, wo jede Zahl
+//! herkommt. Das ist der Zuschnitt des Arbeitspakets 0033 und keine Unfertigkeit: Die
+//! sechs Schritte der Runde sind sechs eigene Pakete, und dies ist die Buehne, auf der
+//! sie einzeln aufgestellt werden.
 //!
-//! Eine Eigenschaft dieses Rahmens ist **auf Widerruf**, und sie ist es mit Absicht:
+//! **Die eine Eigenschaft, die dieser Rahmen "auf Widerruf" ausgewiesen hatte, ist
+//! widerrufen** -- und zwar dort, wo es vorgesehen war: in der Probe des ersten
+//! rechnenden Schritts (Paket 0197). Die Kette liegt nicht mehr durchgehend in
+//! aufsteigender Adressfolge, weil Schritt 5 seinen Block als Ganzes rechnet und nach
+//! der Adressrunde laeuft. **Ihre Gestalt steht deshalb nicht mehr hier, sondern wird in
+//! `test/schritt_probe.cpp` gemessen:** erst die Glieder der aufsteigenden Adressrunde,
+//! dann die vier Zustimmungen mit der Ursache `Gegenkraft`, diese vier untereinander
+//! wieder aufsteigend. Wer dem naechsten Schritt einen rechnenden Rumpf gibt, zieht sie
+//! dort nach und nicht hier.
 //!
-//!   * Die Kette liegt in **aufsteigender** Adressfolge. Das faellt, sobald ein Schritt
-//!     seinen Block als Ganzes rechnet statt Adresse fuer Adresse.
+//! **Am 2026-09-04 ist eine zweite Aussage widerrufen worden, und das gehoert hierher,
+//! weil an ihrer Stelle etwas anderes steht.** Bis dahin hiess es: Die Pruefsumme des
+//! Zustands aendert sich ueber eine Runde nicht. Seit Paket
+//! `0071-rundennummer-in-den-zustand` aendert sie sich. An ihrer Stelle steht die
+//! schwaechste Zusage, die der Rahmen halten kann und die ihm dafuer in **jedem**
+//! Zustand haelt: **Ueber eine Runde im `weltlauf` wird `partie.runde` anders** --
+//! Schritt 1 setzt sie auf die Nummer der Vorrunde plus eins, statt sie vorzutragen.
+//! Wie viele der 310 Groessen sich sonst noch bewegen, haengt seit Paket 0197 am
+//! Zustand; gezaehlt wird das nicht hier, sondern in `test/schritt_probe.cpp` gegen
+//! einen unabhaengig gebauten Erwartungszustand.
 //!
-//! Wer den ersten rechnenden Schritt baut, zieht diese Aussage in seiner Probe nach.
-//!
-//! **Die zweite ist am 2026-09-04 widerrufen worden, und das gehoert hierher, weil an
-//! ihrer Stelle etwas anderes steht.** Bis dahin hiess es: Die Pruefsumme des Zustands
-//! aendert sich ueber eine Runde nicht. Seit Paket `0071-rundennummer-in-den-zustand`
-//! aendert sie sich, und die Aussage an ihrer Stelle ist schaerfer als die alte: **Genau
-//! eine der 310 Groessen wird ueber eine Runde im `weltlauf` anders, naemlich
-//! `partie.runde`.** Der Widerruf ist keine Nachbesserung an 0033, sondern der Fall, fuer
-//! den es dort "auf Widerruf" hiess: Ein Zustand, den eine vollstaendige Runde Feld fuer
-//! Feld unveraendert laesst, ist von "keine Runde gelaufen" durch keinen Vergleich zu
-//! unterscheiden -- und genau diese Unterscheidung braucht der Startwertriegel aus Paket
-//! 0027, der sonst gegen die Runde des Kerns nie anschlaegt.
+//! Der Widerruf ist keine Nachbesserung an 0033, sondern der Fall, fuer den es dort "auf
+//! Widerruf" hiess: Ein Zustand, den eine vollstaendige Runde Feld fuer Feld unveraendert
+//! laesst, ist von "keine Runde gelaufen" durch keinen Vergleich zu unterscheiden -- und
+//! genau diese Unterscheidung braucht der Startwertriegel aus Paket 0027, der sonst gegen
+//! die Runde des Kerns nie anschlaegt. Sie haengt weiterhin allein an `partie.runde`: Der
+//! Zustand nach der Runde traegt eine groessere Rundennummer als der davor, und das gilt
+//! ohne jede Annahme darueber, was die sechs Schritte sonst rechnen.
 //!
 //! ## Der Modus
 //!
@@ -182,11 +193,20 @@ struct Rundenergebnis {
 //
 // Gezaehlt wird stattdessen, wie viele Stellen eine Aufbauliste des Verbunds annimmt.
 // Jede Stelle bekommt ihre **eigenen** geschweiften Klammern, und das ist kein
-// Schoenheitsgriff, sondern die Sperre gegen die Klammerauslassung: Ohne sie duerfte
-// eine Liste die vier Zahlen von `leitzins_start` einzeln hinschreiben, und der Zaehler
-// saehe einundzwanzig Stellen statt neun Feldern. Beides -- dass er zaehlt und dass er
-// Reihen nicht aufloest -- misst `test/schritt_probe.cpp` an eigens gebauten Verbunden
-// mit bekannter und verschiedener Feldzahl.
+// Schoenheitsgriff, sondern die Sperre gegen die Klammerauslassung: Ohne sie duerfte eine
+// Liste die Zahlen einer **rohen** Reihe einzeln hinschreiben, und der Zaehler saehe
+// deren Stellen statt eines Feldes. Gemessen wird das seit Paket 0233 in
+// `test/schritt_probe.cpp` an `ZahlUndRohreihe`: zwei Felder mit den Klammern, fuenf
+// ohne sie -- ein zweiter Zaehler ohne die Klammern steht dort neben dem hiesigen.
+//
+// **Und die Grenze der Aussage, aus derselben Messung:** Eine `std::array` ist von der
+// Auslassung nicht betroffen, weil der Platzhalter unten sich in sie umwandelt und die
+// Stelle damit belegt ist. `Konstanten` fuehrt heute nur solche Reihen und zaehlt mit
+// den Klammern wie ohne sie neun Felder. Die Sperre gilt also nicht dem Traeger von
+// heute, sondern dem von morgen -- dem ersten, der eine rohe Reihe bekommt.
+//
+// Beides -- dass der Zaehler zaehlt und dass er Reihen nicht aufloest -- misst dieselbe
+// Datei an eigens gebauten Verbunden mit bekannter und verschiedener Feldzahl.
 
 namespace feldzahl_intern {
 
@@ -285,6 +305,20 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 ///     Welt, die wie eine gerechnete aussieht.
 ///   * jeder Abbruch aus `Schreiber` -- zweiter Schreibzugriff, Lesezugriff auf eine
 ///     noch ungeschriebene Adresse, verfehlte Sollmaske am Rundenende.
+///
+/// **Zwei weitere sind mit dem rechnenden Rumpf von Schritt 5 dazugekommen** (Paket
+/// 0197). Beide fuehren aus `kern::werte` heraus und greifen erst, wenn die drei
+/// Schranken des Rahmens gehalten haben:
+///   * das Bruttoinlandsprodukt eines Landes taugt nicht als Nenner der
+///     Zustimmungsregel. Gelesen wird es mit `kern::werte::bip`, und die Schranke steht
+///     in `kern/src/schritt.cpp` vor der Rechnung, in `realeinkommenshub`. **Ihre
+///     Bedingung steht dort und nicht hier**: Ein Kopf, der eine bewegliche Tatsache
+///     wiederholt, wird falsch, sobald sie sich bewegt -- die Aussage ueber die eine
+///     bewegte Groesse weiter oben ist genau so falsch geworden.
+///   * jeder Ueberlauf in `kern::werte::schaden`. Dorthin fuehrt `politiklast` in
+///     derselben Quelle, und nur fuer ein Instrument, dessen Stand sich in dieser Runde
+///     bewegt hat. Solange Schritt 3 vortraegt, bewegt sich keiner, und dieser Weg wird
+///     nie betreten.
 [[nodiscard]] Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
                                      const Konstanten& konstanten, Modus modus);
 

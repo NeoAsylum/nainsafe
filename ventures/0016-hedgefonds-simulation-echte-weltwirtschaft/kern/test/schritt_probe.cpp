@@ -80,7 +80,10 @@
 //! `static_assert` auf der Zahl der Felder des Traegers. Was er wert ist, haengt daran,
 //! dass sein Zaehler wirklich zaehlt, und das ist keine Frage an den Traeger, sondern
 //! an eigens gebaute Verbunde mit bekannter und verschiedener Feldzahl. Sie stehen
-//! unten, jeder mit seiner ausgeschriebenen Zahl.
+//! unten, jeder mit seiner ausgeschriebenen Zahl. **Seit Paket 0233 steht daneben
+//! derselbe Zaehler ohne die Klammern je Stelle**: Was die Klammern verhindern, war bis
+//! dahin eine Behauptung in zwei Kommentaren, und sie traf auf den Verbund nicht zu, den
+//! sie nannte.
 //!
 //! **Paket 0197 -- die Zustimmung wird gerechnet.** Drei Stellen dieser Datei haengen
 //! daran, und sie sagen Verschiedenes:
@@ -116,6 +119,7 @@
 #include <cstdio>
 #include <span>
 #include <stdexcept>
+#include <utility>
 
 #include "kern/festkomma.hpp"
 #include "kern/pruefsumme.hpp"
@@ -1558,11 +1562,14 @@ void probe_parametersatz()
 //   * `KeinFeld` -- 0. Ein Zaehler, der immer mindestens eins sagt, faellt hier.
 //   * `EinFeld` -- 1. Ein Zaehler, der immer null sagt, faellt hier.
 //   * `ZweiFelder` -- 2.
-//   * `ZahlUndReihe` -- 2 und nicht 5. Das ist der Fall, an dem ein Zaehler ohne die
-//     Klammern je Stelle faellt: Die Klammerauslassung liesse ihn die vier Zahlen der
-//     Reihe einzeln zaehlen. Der Traeger fuehrt zwei solche Reihen, und an ihm waere
-//     der Unterschied 21 gegen 9 -- eine Zahl, die zu keiner der beiden Feldsorten
-//     mehr passt.
+//   * `ZahlUndReihe` -- 2. Eine Reihe ist ein Feld und nicht so viele Felder, wie sie
+//     Zahlen fuehrt.
+//   * `ZahlUndRohreihe` -- 2, und **dieser Fall traegt die Aussage ueber die Klammern
+//     je Stelle** (Paket 0233). Bis dahin stand sie an `ZahlUndReihe`, und dort war sie
+//     falsch: `Platzhalter` wandelt sich in jeden Typ um, auch in eine `std::array`,
+//     also nimmt jene Reihe eine einzige Stelle -- mit Klammern wie ohne. Eine **rohe**
+//     Reihe ist kein Umwandlungsziel, denn eine Umwandlungsfunktion kann kein Feld
+//     zurueckgeben; nur bei ihr kann die Klammerauslassung ueberhaupt einsetzen.
 //   * `NeunFelder` -- 9, die Gestalt des Traegers.
 //   * `ZehnFelder` -- 10, dieselbe Gestalt mit einem Feld mehr. Das ist der Fall, um
 //     dessentwillen es den Riegel gibt: Ein Traeger dieser Gestalt macht drueben rot.
@@ -1570,6 +1577,23 @@ void probe_parametersatz()
 // Sie stehen als `static_assert` da und nicht nur als Laufzeitvergleich -- ein Zaehler,
 // der erst beim Laufen zaehlt, koennte den Riegel drueben gar nicht tragen. Gedruckt
 // werden sie trotzdem, wie jede andere Zahl dieser Datei.
+//
+// **Was ein Zaehler ohne die Klammern je Stelle saehe, ist keine Aussage, solange sie
+// niemand rechnet -- also steht er daneben** (Paket 0233). `ohne_klammern` baut
+// dieselbe Aufbauliste als `Verbund{P...}` statt als `Verbund{{P}...}` und ist sonst
+// Zeichen fuer Zeichen der Zaehler des Kerns, bis hin zu seinem `Platzhalter`. Drei
+// weitere `static_assert` messen damit den Unterschied:
+//
+//   * `ZahlUndRohreihe` -- 5 statt 2. Die rohe Reihe zerfaellt in ihre vier Zahlen.
+//     Das ist die Auslassung, und sie ist der ganze Grund fuer die Klammern.
+//   * `ZahlUndReihe` -- 2, also unveraendert.
+//   * `kern::werte::Konstanten` -- 9, also ebenfalls unveraendert. Der Traeger fuehrt
+//     zwei Reihen, beide `std::array`; die Zahl einundzwanzig, die frueher hier und im
+//     Kopf drueben stand, kommt an keinem Zaehler dieses Baums heraus.
+//
+// **Die Klammern bleiben trotzdem, und jetzt aus einem gemessenen Grund:** Der Traeger
+// hat heute keine rohe Reihe. Bekommt er eine, zaehlte ein Zaehler ohne die Klammern
+// sie als vier Felder, und der Riegel drueben wuerde an einem richtigen Traeger rot.
 //
 // Was diese Probe **nicht** ist: ein Baum, in dem der Riegel wirklich zuschlaegt. Den
 // gibt es nicht, weil der Baulauf einen Baum uebersetzt und keine Abwandlung davon;
@@ -1596,6 +1620,20 @@ struct ZweiFelder {
 struct ZahlUndReihe {
     i64 eins = 0;
     std::array<i64, 4> zwei{};
+};
+
+/// Dieselbe Gestalt mit einer **rohen** Reihe -- der Fall, an dem die Klammern je Stelle
+/// haengen (Paket 0233).
+///
+/// **Eine rohe Reihe steht hier gegen die Hausregel, und sie ist der Gegenstand der
+/// Messung und keine Bequemlichkeit.** Gemessen wird nicht die Reihe, sondern wie eine
+/// Aufbauliste sie behandelt: In eine `std::array` wandelt sich `Platzhalter` um, in eine
+/// rohe Reihe nicht. Ein Verbund dieser Gestalt ist deshalb der einzige der sieben, an
+/// dem sich die Klammerauslassung zeigen kann. Der Kern selbst fuehrt keine rohe Reihe;
+/// dass er morgen eine fuehren koennte, ist der Grund, warum sie hier steht.
+struct ZahlUndRohreihe {
+    i64 eins = 0;
+    i64 zwei[4] = {};
 };
 
 /// Die Gestalt des Traegers: sieben Zahlen, eine Reihe, eine Reihe von Reihen. **Kein
@@ -1633,8 +1671,55 @@ static_assert(kern::schritt::feldzahl<EinFeld> == 1, "ein Feld ist ein Feld");
 static_assert(kern::schritt::feldzahl<ZweiFelder> == 2, "zwei Felder sind zwei Felder");
 static_assert(kern::schritt::feldzahl<ZahlUndReihe> == 2,
               "eine Reihe ist ein Feld und nicht so viele Felder, wie sie Zahlen fuehrt");
+static_assert(kern::schritt::feldzahl<ZahlUndRohreihe> == 2,
+              "auch eine rohe Reihe ist ein Feld, solange die Aufbauliste je Stelle "
+              "eigene Klammern setzt");
 static_assert(kern::schritt::feldzahl<NeunFelder> == 9, "neun Felder sind neun Felder");
 static_assert(kern::schritt::feldzahl<ZehnFelder> == 10, "zehn Felder sind zehn Felder");
+
+/// Der Zaehler des Kerns ohne die Klammern je Stelle -- die Gegenprobe zur Sperre.
+///
+/// Er steht in dieser Datei und nicht drueben: Gebraucht wird er allein, um zu messen,
+/// was die Klammern verhindern. Er benutzt denselben `Platzhalter` und dasselbe
+/// `FELDSUCHE_ENDE` wie das Vorbild -- zwei Abschriften waeren zwei Stellen, die
+/// auseinanderlaufen, und der Unterschied, den er zeigen soll, waere dann nicht mehr
+/// allein der der Klammern.
+namespace ohne_klammern {
+
+using kern::schritt::feldzahl_intern::FELDSUCHE_ENDE;
+using kern::schritt::feldzahl_intern::PlatzhalterAn;
+
+template <typename Verbund, std::size_t... Stelle>
+[[nodiscard]] consteval bool nimmt_stellen(std::index_sequence<Stelle...>) noexcept
+{
+    return requires { Verbund{PlatzhalterAn<Stelle>{}...}; };
+}
+
+template <typename Verbund, std::size_t Bisher = 0>
+[[nodiscard]] consteval std::size_t zaehle_felder() noexcept
+{
+    if constexpr (Bisher < FELDSUCHE_ENDE
+                  && nimmt_stellen<Verbund>(std::make_index_sequence<Bisher + 1>{})) {
+        return zaehle_felder<Verbund, Bisher + 1>();
+    } else {
+        return Bisher;
+    }
+}
+
+template <typename Verbund>
+inline constexpr std::size_t feldzahl = zaehle_felder<Verbund>();
+
+}  // namespace ohne_klammern
+
+static_assert(ohne_klammern::feldzahl<ZahlUndRohreihe> == 5,
+              "ohne die Klammern je Stelle zerfaellt die rohe Reihe in ihre vier Zahlen "
+              "-- das ist die Klammerauslassung, gegen die die Klammern stehen");
+static_assert(ohne_klammern::feldzahl<ZahlUndReihe> == 2,
+              "eine Reihe, in die sich der Platzhalter umwandelt, nimmt eine einzige "
+              "Stelle -- mit Klammern wie ohne");
+static_assert(ohne_klammern::feldzahl<kern::werte::Konstanten> == 9,
+              "der Traeger fuehrt zwei Reihen, beide std::array, und zaehlt deshalb auch "
+              "ohne die Klammern neun Felder und nicht einundzwanzig");
 
 /// Ein Verbund mit seiner ausgeschriebenen Feldzahl, fuer die gedruckte Fassung.
 struct Feldzahlfall {
@@ -1643,11 +1728,12 @@ struct Feldzahlfall {
     std::size_t gezaehlt;
 };
 
-constexpr std::array<Feldzahlfall, 6> FELDZAHLFAELLE = {{
+constexpr std::array<Feldzahlfall, 7> FELDZAHLFAELLE = {{
     {"KeinFeld", 0, kern::schritt::feldzahl<KeinFeld>},
     {"EinFeld", 1, kern::schritt::feldzahl<EinFeld>},
     {"ZweiFelder", 2, kern::schritt::feldzahl<ZweiFelder>},
     {"ZahlUndReihe", 2, kern::schritt::feldzahl<ZahlUndReihe>},
+    {"ZahlUndRohreihe", 2, kern::schritt::feldzahl<ZahlUndRohreihe>},
     {"NeunFelder", 9, kern::schritt::feldzahl<NeunFelder>},
     {"ZehnFelder", 10, kern::schritt::feldzahl<ZehnFelder>},
 }};
@@ -1682,6 +1768,15 @@ void probe_feldzahl()
                 stimmende, FELDZAHLFAELLE.size(),
                 kern::schritt::feldzahl<kern::werte::Konstanten>,
                 kern::schritt::SUMMIERTE_FELDER, kern::schritt::JAHRGANGSFELDER);
+
+    // Der Unterschied, den die Klammern je Stelle machen. Er steht oben als
+    // `static_assert`; hier steht er, weil diese Datei ausdruckt, was sie ausrechnet.
+    std::printf("  Klammern je Stelle: ohne sie zaehlt ZahlUndRohreihe %zu statt %zu; "
+                "ZahlUndReihe bleibt bei %zu und der Traeger bei %zu\n",
+                ohne_klammern::feldzahl<ZahlUndRohreihe>,
+                kern::schritt::feldzahl<ZahlUndRohreihe>,
+                ohne_klammern::feldzahl<ZahlUndReihe>,
+                ohne_klammern::feldzahl<kern::werte::Konstanten>);
 }
 
 // ---------------------------------------------------------------------------

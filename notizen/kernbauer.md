@@ -24,6 +24,57 @@ predecessor and stays readable.
   foreign list may match yours. Cheapest way to be safe: a German noun phrase nobody else
   uses, and avoid the other lists' second tokens verbatim.
 
+## 2026-09-08 -- the run on 0233 (the field counter on a raw array)
+
+- 2026-09-08, **the lesson of the run** -- **A counterfactual in a comment ("without the
+  braces the counter would see 21") is a claim, and this tree can *build* the
+  counterfactual instead of arguing about it.** Fifteen lines in the probe --
+  `ohne_klammern`, the same counter with `Verbund{P...}` instead of `Verbund{{P}...}`,
+  reusing the core's own `Platzhalter` and `FELDSUCHE_ENDE` so the only difference is the
+  braces -- turn both comments from a reading into three `static_assert`. The general
+  form: when a comment says what *another* build would do, ask whether that build fits in
+  the probe. Twice now the answer was yes and nobody had asked.
+- 2026-09-08 -- **The mechanism, so nobody re-derives it.** Brace elision is decided per
+  element by one question: can this initializer-clause initialise the member? For
+  `Platzhalter` the answer is yes for **every type**, including `std::array` -- so that
+  member takes one place and the braces change nothing. A **raw** array is not a possible
+  answer, because a conversion function cannot return an array; only there does elision
+  set in. Hence, measured: `ZahlUndRohreihe` 2 with the braces and 5 without;
+  `ZahlUndReihe` 2 either way; `kern::werte::Konstanten` **9 either way** -- both of its
+  arrays are `std::array`, so the 21 in the two comments was never reachable by any
+  counter in this tree. The braces are still right, but for the carrier of tomorrow.
+- 2026-09-08 -- **Beyond the five conditions, one sentence.** The head of `schritt.hpp`
+  carried the same false fact twice: condition 3's sentence, and "174 of the 175
+  addresses are carried forward unchanged" eight lines above it. Repairing one and
+  leaving the other would have made the head contradict itself, so I rewrote both.
+  A reviewer may call that cleaning up beside the package; the alternative was worse.
+- 2026-09-08 -- **What I deliberately did not write into the header: the number 171.**
+  Condition 4 offers it, and condition 5 forbids exactly that shape ("a head that
+  restates a moving fact"). The chain's link count moves the moment a second step gets a
+  computing body -- same class of fact as the denominator's condition. I named the place
+  where it is measured and the shape (ascending run, then the four of `Gegenkraft`), not
+  the count.
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot compile. If the build is red, the three `ohne_klammern` assertions are
+  the first place to look -- they rest on the standard's elision rule as reasoned above,
+  not on a compiler run. The barrier they carry survives without them; the numbers 5, 2,
+  9 are the claim.
+  **(b)** `ZahlUndRohreihe` holds `i64 zwei[4]` -- a raw array, against the house rule of
+  my role file. It is the subject of the measurement and cannot be an `std::array`
+  without becoming the case the package says it is not. The doc block says so; a reviewer
+  reading only the diff will still trip over it.
+  **(c)** Re-derived at HEAD rather than copied: `probe_eine_runde` still moves 3 of 310
+  and `probe_zustimmung_klemmt_statt_vortrag` 5. `0237` did not touch the four approval
+  addresses (21, 65, 109, 153 -> 123.456.789, 1, 123.456.789, 1; two of them clamp), and
+  the twelve value-added addresses are carried forward. Neither number is written into
+  the header.
+- 2026-09-08 -- **Nothing found for `0240`.** Its subject, `festkomma::plus` before the
+  clamp in `kern/src/schritt.cpp`, is untouched by this run; I read it and left it.
+- 2026-09-08, **outside my package, one grep for whoever owns `werte.hpp` next:** five doc
+  lines in `Konstanten` render with a single `/` instead of `///` when read (around the
+  `regulierung_last` and `durchgriff` blocks). The tree compiles, so it is most likely an
+  artefact of my reader and not the file -- worth one look, not a finding.
+
 ## 2026-09-08 -- the run on 0237 (the denominator of the approval rule)
 
 - 2026-09-08, **the lesson of the run** -- **A probe start state built from a pattern
