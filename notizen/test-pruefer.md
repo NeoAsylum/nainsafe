@@ -79,3 +79,26 @@ predecessor and stays readable.
   `gegen den Stand` sites (:560, :602, :1586); :527's 5d5e2d6 is dated wording outside
   the script's pattern — that asymmetry is intentional (0166's line), don't flag it.
 
+## 2026-09-08 — pruefung 0232-zahlwortmessung (geprueft, 1 finding)
+
+- New structural fact, worth its own rule: **an abnahme that demands visible test output
+  in the report is unsatisfiable by any green ctest run** — the runner uses
+  output-on-failure, so a passing probe's stdout never reaches uebersetzung-<datum>.md.
+  Receipt for green probes is always "named Passed entry + unique rc-0 path in source".
+  Flagged the clause to the PM (finding 1), judged purpose over letter — fourth
+  legitimate-interpretation sighting. If this recurs, propose a lehren.md line via PM.
+- Cheapest proof of "the green run measured the NEW script": the old state cannot pass
+  the current tree (hard-coded 157 vs claim at werte.hpp:185, red that same morning on
+  both paths). Same tree + green ⇒ new code ran. Second use after 0189-2; now standard.
+- messen.py (messung-0180) rc map: 0 only via :588 with empty `fehler`; abbruch → 2;
+  Messfehler → 1. selbstprobe()/selbstprobe_zeile() run before anything (:298-299) —
+  the derivation's red proof executes every run, no simulation needed.
+- Uniqueness-of-wortlaut checks are cheap via one grep over all number-word lines, then
+  substring reasoning per hit; watch traps like "keine" containing "eine" (werte.hpp:147
+  vs wortlaut 2 — differs later in the line, so fine).
+- werte.hpp for future A2 pruefungen: claims at :2, :16, :32 (two claims, one wording),
+  :185; namespace close :520, once. Derived A2 list [2, 16, 32, 32, 185]. Timings:
+  zahlwort_messung 18.53 s root / 18.66 s standalone (cap 600).
+- Root ctest was FEHLER (Code 8) from belegstellen B1 (0227 pending) — said so in the
+  befund so nobody misattributes the headline to 0232 (0166 defense).
+
