@@ -132,11 +132,11 @@ void pruefe(bool bedingung, const char* text, int zeile)
 // ---------------------------------------------------------------------------
 //
 // Bis zu diesem Paket standen hier zwei eigene Fassungen derselben Sache: elf Aufrufe
-// von `ERWARTE_ABBRUCH`, die allein pruefen, *dass* geworfen wurde, und sieben von
-// `ABBRUCH_MELDET`, das den Wortlaut von Hand nach einer einzelnen Nadel durchsuchte.
-// Der Apparat steht seit Paket 0244 in `kern/test/kennzeichen.hpp` und wird von
-// `schritt_probe` und `werte_probe` benutzt; die Begruendung beider Haelften der
-// Eindeutigkeit steht dort und wird hier nicht wiederholt.
+// von `ERWARTE_ABBRUCH`, die allein pruefen, *dass* geworfen wurde, und sieben eines
+// probeneigenen Makros, das den Wortlaut von Hand nach einer einzelnen Nadel
+// durchsuchte. Der Apparat steht seit Paket 0244 in `kern/test/kennzeichen.hpp` und
+// wird von `schritt_probe` und `werte_probe` benutzt; die Begruendung beider Haelften
+// der Eindeutigkeit steht dort und wird hier nicht wiederholt.
 //
 // **Neun Abbruchstellen, zehn Riegel und einer ohne Zustand.** Gezaehlt am 2026-09-08
 // auf dem Stand von `kern/include/kern/festkomma.hpp`; die Zeilennummern altern, die
@@ -255,13 +255,13 @@ constexpr std::array<const char*, 2> KZ_WURZEL_RADIKAND = {
 // ---------------------------------------------------------------------------
 //
 // `intern::potenz_i128` bricht ab, wenn ihr Zwischenwert die `i128`-Grenze
-// ueberschreitet. Erreichbar ist die Stelle nicht, und der Grund steht im Kopf selbst
-// (`festkomma.hpp`, Absatz "Ueberlauf" ueber `wurzel`): Die Funktion hat genau drei
-// Aufrufstellen, alle drei in `wurzel`, und dort ist der Startwert die kleinste
-// Zweierpotenz oberhalb der Wurzel. Mit `bitlaenge(x) <= 63` und
-// `n <= WURZEL_GRAD_MAX` bleibt `start^(n-1)` unter 2^95, und `r` wird nur kleiner --
-// die Grenze 2^127 kommt nicht in Reichweite. Ausserhalb von `wurzel` ruft niemand sie
-// (gemessen am 2026-09-08 ueber `kern/`, `pruefstand/` und `werkzeuge/`).
+// ueberschreitet. Erreichbar ist die Stelle nicht, und der Grund steht im Kopf von
+// `wurzel` selbst: Die Funktion hat genau drei Aufrufstellen, alle drei in `wurzel`,
+// und dort ist der Startwert die kleinste Zweierpotenz oberhalb der Wurzel. Mit
+// `bitlaenge(x) <= 63` und `n <= WURZEL_GRAD_MAX` bleibt `start^(n-1)` unter 2^95, und
+// `r` wird nur kleiner -- die Grenze 2^127 kommt nicht in Reichweite. Ausserhalb von
+// `wurzel` ruft niemand sie (gemessen am 2026-09-08 ueber `kern/`, `pruefstand/` und
+// `werkzeuge/`).
 //
 // Sie in `ALLE_RIEGEL` einzutragen faerbte einen heilen Baum rot; sie wegzulassen
 // versteckte sie vor der Pruefung, die es gibt, damit keine Schranke unbemerkt
