@@ -3701,6 +3701,12 @@ as such.
 
 ## 18. Paket `0043-t48-groessen-gegenkraft-5` — Umfang und die Meldung an den Projektmanager
 
+**Corrected on 2026-09-08, package `0092`: two counts, both in this section's own report.**
+The remainder count in acceptance condition 1 (twelve → **twenty-two**, T48's number) and
+the count of the „siebzehn" places in `werte.hpp` in the message below (three → **five**, and
+the file has moved on since — measured at commit `e5a8ce8`). The four acceptance conditions
+of `0043` are untouched by both; they were fulfilled and stay so.
+
 Four conditions, four places. Changed are **T48** (five quantities, the sector-wise form
 of number 11, the remainder table), **T50** (the sentence left open is closed),
 **section 10** (the cost line with its read table) and **section 12 point 3** (the gap is
@@ -3719,8 +3725,11 @@ would not have surfaced it.
 
 **The acceptance conditions, one by one:**
 
-1. **The name list leaves no remainder.** The collection, its assignment and the twelve
-   permitted remainders stand in T48. Two names in it are the awkward case and are
+1. **The name list leaves no remainder.** The collection, its assignment and the
+   **twenty-two** permitted remainders stand in T48. *(Twenty-two, not twelve as this
+   section said until 2026-09-08. T48 writes „the twenty-two names in the ten lines
+   below"; its table has ten rows and twenty-two names, `stufen` counted once for its two
+   arities — `technik.md:2555-2566`.)* Two names in it are the awkward case and are
    therefore listed explicitly: `wmz` and `preishub` still stand in `spiel.md`, but only
    in the counterexample with which the design demonstrates the discarded former version.
    Whoever takes them for prescriptions carries two dead quantities forward; whoever
@@ -3760,13 +3769,28 @@ mine.
 **Three places that follow from this, and none of them is mine.** All three are
 mechanical and none is a question:
 
-1. **`kern/include/kern/werte.hpp` says „siebzehn" in three places** — in the header line
-   (`//! kern::werte -- die siebzehn abgeleiteten Groessen aus T48`), in the paragraph on
-   the mechanical proof („Unten stehen siebzehn") and in the heading of the second block.
-   After this package it is twenty-two. That is core-builder work, and it is exactly the
-   proof T48 prescribes: whoever lays the header against the table finds the five missing
-   declarations. **As long as they are missing, the proof is not fulfilled** — the header
-   is thereby incomplete today, and not wrong.
+1. **`kern/include/kern/werte.hpp` — this message named three places and there were five;
+   the core builder has since carried them over.** On 2026-09-04 the file said „siebzehn"
+   in five lines, not three: besides the header line, the proof paragraph („Unten stehen
+   siebzehn") and the block heading, also in the T48 rule in the head's own wording and in
+   the reasoning for `Konstanten`; a sixth place carried the ordinal derived from the
+   seventeen (`Konstanten` ist keine achtzehnte Groesse). Evidence:
+   `befunde/pruefung-0043-t48-groessen-gegenkraft-5-2026-09-04.md`. Package **`0152`**
+   carried the number over on 2026-09-06
+   (`befunde/pruefung-0152-werte-zweiundzwanzig-statt-siebzehn-2026-09-06.md`).
+   **Measured at commit `e5a8ce8`, after the last write of this section:**
+
+   | `grep` in `werte.hpp` | lines | which |
+   |---|---:|---|
+   | `siebzehn` | **0** | — the number is carried over completely |
+   | `zweiundzwanzig`, ignoring case | **7** | 2 (header line), 16 (the T48 rule in the head's wording), 29 („Unten stehen zweiundzwanzig"), 32, 41 (reasoning for `Konstanten`), 147 (in the struct `Konstanten`), 185 (block heading) |
+   | `zweiundzwanzig`, case-sensitive | 6 | the same without line 32, which starts its sentence with a capital `Z` — the difference is the numeral, not a place |
+   | `dreiundzwanzig` | **2** | 32 („dreiundzwanzig Deklarationen"), 39 („keine dreiundzwanzigste Groesse") — both derived from the twenty-two |
+
+   The report's five lay at 2, 16, 28, 33 and 115; lines 32 and 147 were not among them.
+   The five declarations then missing are there: `T48 Nr. 18` to `Nr. 22` at `werte.hpp:382, 406, 425, 442, 478`.
+   Whether the twenty-two are otherwise complete is T48's mechanical proof and is measured
+   in the core builder's own package, not here.
 2. **The acceptance of package 0002** names the number seventeen verbatim. It was right
    at the time it was fulfilled: 0002 stood on `fertig` on 2026-09-04, before this
    package ran — the sequence the project manager ordered for that purpose has held.

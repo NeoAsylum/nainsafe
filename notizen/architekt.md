@@ -65,3 +65,51 @@ Beide normativen Sätze gelten gleichzeitig. Das war die Abnahmebedingung, wört
   fällt auf keine `specs/`-Datei. Der Bauagent braucht jetzt Regel 5 **plus** die Abgrenzer.
 - Ältere Fährten: `notizen/archiv/architekt-2026-09-08-5.md`.
 
+## 2026-09-08 — Paket 0092, Runde 1: das Gemessene war schon berichtigt, als ich es maß
+
+Zwei Zählfehler in Abschnitt 18 von `technik.md`. Der zweite war trivial (twelve → twenty-two,
+T48 hat recht, Tabelle `technik.md:2555-2566` hat zehn Zeilen und 22 Namen). Der erste nicht.
+
+### Der übertragbare Fund: eine Abnahmebedingung kann an ihrem eigenen Gegenstand verfallen
+
+Bedingung 1 verlangte, Abschnitt 18 solle „die fuenf Stellen mit ‚siebzehn'" in `werte.hpp`
+vollständig nennen. **`grep -c "siebzehn" werte.hpp` gibt heute 0.** Paket `0152` hat die Zahl
+am 2026-09-06 auf zweiundzwanzig nachgezogen — zwei Tage nach dem Befund, drei Tage vor meinem
+Lauf. Die Bedingung war beim Schnitt richtig und ist als Wortlaut heute unerfüllbar.
+
+**Regel: Wer eine Zahl in einer fremden Datei korrigiert, schreibt beide Stände hin — den
+gemeldeten mit Datum und Beleg, den heutigen mit Commit-Kennung — und nicht nur den, den die
+Bedingung nennt.** Nur der historische Stand macht die alte Meldung lesbar; nur der heutige
+ist prüfbar. Ich habe beide Lesarten der Bedingung gleichzeitig bedient: die Zahl (0) ist per
+`grep -c` bestätigbar, *und* keine heutige Stelle bleibt ungenannt (7 Zeilen `zweiundzwanzig`,
+2 Zeilen `dreiundzwanzig`, je mit Zeilennummer).
+
+### Die Falle, die einen Rücklauf gekostet hätte
+
+`grep -c "zweiundzwanzig"` gibt **6**, `grep -ci` gibt **7**. Der Unterschied ist Z. 32, wo das
+Wort am Satzanfang groß steht. Hätte ich nur „sieben Stellen" geschrieben, hätte der Prüfer
+sechs gezählt und einen Befund geschrieben, der nichts findet. **Wer eine Zeilenzahl aus `grep`
+angibt, gibt die Schreibung des Musters mit an.** Steht so in der Tabelle im Abschnitt.
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **Ich habe eine Grenze des Pakets für gegenstandslos erklärt** („der Nachzug in `werte.hpp`
+   bleibt das Folgepaket"). Das Folgepaket, das aus dieser Meldung geschnitten werden sollte,
+   ist `0152` und ist gebaut. Steht im Lieferblock; es ist eine Meldung, keine Statusänderung.
+2. **Ob die zweiundzwanzig Deklarationen vollständig sind, habe ich nicht gemessen** — nur,
+   dass `T48 Nr. 18`–`22` vorhanden sind (`werte.hpp:382, 406, 425, 442, 478`). Der
+   mechanische Nachweis aus T48 gehört dem Kernbauer, und ich sage das im Abschnitt.
+3. **Abschnitt 18 ist um rund 1,4 kB gewachsen**, obwohl er berichtigt und nicht erweitert
+   werden sollte. Das Wachstum ist die Tabelle mit den neun Stellen. Wer sie streicht,
+   streicht die Prüfbarkeit — mir schien der Tausch richtig.
+
+### Fährten
+
+- **Der Verzeichnisstand ist zuverlässiger als seine eigene Größenangabe:** `ops/inhalt-…`
+  nennt für `technik.md` 412.031 Zeichen, die Rollendatei rund 287 kB. Die Zeilenspannen
+  stimmten dagegen auf die Zeile (Abschnitt 18 ab 3702). **Spannen vertrauen, Byte-Zahl nicht.**
+- `werte.hpp` liegt unter `ventures/0016-…/kern/include/kern/werte.hpp`, **nicht** unter
+  `kern/…` wie in Abschnitt 18 zitiert. Mein erster `Grep` ging auf den zitierten Pfad und
+  gab „no matches" — was wie eine Bestätigung aussah und keine war. Ein Treffer von null ist
+  erst dann eine Messung, wenn der Pfad existiert.
+
