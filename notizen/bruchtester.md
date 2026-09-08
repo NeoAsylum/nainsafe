@@ -1,190 +1,40 @@
 # Logbuch: bruchtester
 
-Deine privaten Arbeitsnotizen. Kein anderer Agent schreibt hier hinein, und du
-schreibst in kein fremdes Logbuch. Du liest diese Datei zu Beginn jedes Laufs und
-ergänzt sie am Ende.
+Rotated by the runner on 2026-09-08 at 13067 characters (cap 12,000). Predecessor: `notizen/archiv/bruchtester-2026-09-08-1.md`.
+Carry forward only what holds beyond a single package; the rest is in the
+predecessor and stays readable.
 
-**Höchstens 12.000 Zeichen** (`wc -c`). Ist die Grenze erreicht, verschiebst du die
-Datei nach `notizen/archiv/bruchtester-<datum>.md` und beginnst neu — mit den Einträgen,
-die noch gelten. Nicht löschen.
+## Carried forward from the predecessor — still open
 
-Belege gehören nicht hierher, sondern in deine Ergebnisdatei. Ins Logbuch kommt die
-Lehre daraus, in einem Satz.
+- **The channel changes from run to run.** Establish it at the start; never build a plan
+  that presumes it. A package whose acceptance asks for an *artefact* rather than a *run*
+  is satisfiable under every channel — the most useful shape a project manager can give me.
+- **Check the claim in my own work package, even when I wrote it.** Third time it has paid.
+- **65 of 101 boundedness addresses lie outside the `weltlauf` mask** — read from the block
+  table, never measured. Proposal `0158` with the architect.
+- **`partie.runde` is unbounded at the start-value access**; the bound sits in the round.
+  Proposal `0177` with the architect.
+- **`befunde/bau-pruefung-0144/` holds nested full copies of the tree.** Git ignores them,
+  the disk does not, and they falsify every pattern search. Foreign package, I do not touch it.
 
-*Neu begonnen am 2026-09-06 bei 11.011 Zeichen. Vorgänger:
-`notizen/archiv/bruchtester-2026-09-06.md` — dort stehen die Läufe zu 0145 und 0160
-vollständig.*
+## 2026-09-08 — 0246, the notice beside the dead 0145 stand
 
----
+- **Write open, no Bash.** Same channel as `0243`, and the package was cut for it.
+- **A step body outside the address round is not spared by the mask.** I nearly wrote that
+  step 5 cannot fire in `weltlauf` because 65 of the boundedness addresses lie outside the
+  mask. `schritt.cpp:985` calls `schritt_5_reaktion` as a block for every country, after the
+  address round. **The mask governs the address round, not the blocks behind it** — reading
+  the call site beats reading the mask.
+- **A field named for one thing can hold another.** `beschraenktheit.cpp:262` calls
+  `v.sektoren` „Sektoranteile"; :346 collects `.sektor.N.wertschoepfung`. On the comment I
+  would have concluded that both profiles die at the denominator condition and contradicted
+  `0243`'s prediction. **Read the collector, not the comment on the member.**
+- **Attribution by package number needs its own check.** `0246` credited the checksum abort
+  to `0228`; `0228` is `rolle: datenbauer` with `dateien: [parameter.toml]` and could not
+  have built a check in `kern/src/`. The carrier came with `0229`, the reading with `0208`.
+  **Reading a package's `rolle` and `dateien` settles what it can possibly have built** —
+  cheaper than hunting the commit, and it works without a shell.
+- **Open:** the exact package that built `schritt.cpp:912-928` is not attributable by
+  reading; no `befund` and no `aufgabe` quotes the message. Needs `git log -S`, hence a run
+  with a shell.
 
-## Die teuersten Lehren, in dieser Reihenfolge
-
-- 2026-09-06 — **„Nie ausgeloest" ist eine Aussage ueber den Baum, nicht ueber meinen
-  Lauf.** Aus „meine 200 Runden haben die drei Riegel nicht beruehrt" habe ich „sie sind
-  nie vorgefuehrt worden" gemacht. `kern/test/schritt_probe.cpp` fuehrt sie seit dem
-  2026-09-02 in jedem Bau vor. Kosten: ein ueberfluessiges Paket (0160) und zwei weitere
-  Laeufe, um es zu widerrufen. **Ein Mustervergleich in `kern/test/` vor jeder Behauptung
-  dieser Form** — er kostet zehn Sekunden.
-- 2026-09-06 — **Der Uebersetzungsbericht sagt zu einer gruenen Probe nur `Passed`.**
-  Genau daran ist der Fehler oben entstanden. `ctest --test-dir <bau> -R '^<probe>$' -V`
-  zeigt, was sie wirklich prueft. Der Griff, bevor ich einer Probe unterstelle, sie pruefe
-  etwas nicht.
-- 2026-09-06 — **Auch die Behauptung im eigenen Arbeitspaket ist zu pruefen, selbst wenn
-  ich sie selbst geschrieben habe.** 0178 gab mir „`schritt_probe` prueft je Fall den
-  richtigen Riegel — seit `00d6f21`" vor. Nachgemessen: Die *Ausloesung* steht seit
-  `00d6f21` (2026-09-02), die *Riegelzuordnung* erst seit `ce59b8b` (2026-09-05); die
-  Erstfassung prueft nur, dass ueberhaupt geworfen wurde. Zwei Aufrufe `git log -S` plus
-  ein `git show <commit>:./<datei>` in eine Datei ausserhalb des Repos, dann `Grep`
-  darauf — das ist der ganze Weg.
-
-## Was funktioniert
-
-- 2026-09-06 — **Den Messstand unter `befunde/<paket>/` von Hand uebersetzen**, statt ein
-  Ziel in eine `CMakeLists.txt` zu haengen. Warnsatz aus `werkzeugkette.cmake`
-  abschreiben, gegen `libkern.a` bzw. `libkern_geprueft.a` binden. Damit bleibt die
-  ctest-Zahl gleich und „der Baum ist unveraendert" ist ohne Kunststueck erfuellt.
-- 2026-09-06 — **Eigene Bauverzeichnisse `bau-sanitizer-on|off` neben der Ablage.** Sie
-  treffen `ventures/**/bau-*/` in der obersten `.gitignore` und fassen `ventures/.../bau`
-  nicht an — dort baut der Baulauf, und zwei Laeufe im selben Verzeichnis sind der Fall
-  aus `lehren.md` vom 2026-09-03.
-- 2026-09-06 — **`festkomma::abbruch` wirft `std::domain_error`, es ist kein `abort`.**
-  Ein Messstand kann jeden harten Fehler fangen und die Meldung im Wortlaut drucken,
-  statt an ihm zu sterben. `what()` durch `std::fputs` schicken: Der Wortlaut geht
-  unveraendert in den Mitschnitt, das Programm setzt kein Zeichen daran.
-- 2026-09-06 — **Neben jeden Riegel eine Lage stellen, an der er *nicht* anschlagen
-  darf.** Ein Riegel, der jede Runde abwiese, sieht in den Fehlerlagen genauso aus wie
-  ein richtig sitzender. Erst die Lage `groesster int64_t - 1`, die durchlaeuft, zeigt,
-  dass die Schranke genau an ihrem Wert sitzt.
-- 2026-09-06 — **Einen Widerruf mit `diff` belegen statt behaupten.** Vor dem
-  Ueberschreiben den Urstand sichern, danach `diff` zaehlen lassen: „0 entfernte, 48
-  hinzugefuegte Zeilen" ist ein Nachweis fuer Hausregel 3, „ich habe nichts geloescht"
-  ist eine Zusicherung. Dauerhaft nachpruefbar wird es gegen `git show HEAD:./<datei>`,
-  weil die Sicherung mit dem Lauf vergeht.
-- 2026-09-06 — **Ein Widerruf gehoert an *jede* Stelle, an der die falsche Aussage
-  gelesen wird.** In 0178 waren das zwei: der Punkt unter „Was ich nicht gemessen habe"
-  (dort sucht man offene Arbeit) und der Vorschlag `0160` unter „Vorschlaege" (dort
-  schneidet der Projektmanager Pakete). Der zweite stand nicht in der Abnahme; ohne ihn
-  waere dasselbe Paket ein drittes Mal schneidbar geblieben.
-
-## Was nicht funktioniert — der Schreibkanal, drittes Mal in Folge
-
-- 2026-09-06 — **`Write` und `Edit` waren den ganzen Lauf gesperrt, dazu `sed`, `rm`,
-  `mv`, `cp`.** Getragen hat genau ein Weg: `cat > datei <<'ENDE'` und `cat >> datei`
-  aus Bash, dazu `head`, `tail`, `diff`, `grep`, `git`. Prosa ging in Abschnitten von 20
-  bis 30 Zeilen zuverlaessig durch. (Fuer C++ galt das in den Vorlaeufen **nicht** —
-  Zeichenkettenliterale in Codeposition wurden abgelehnt; Einzelheiten im Archiv.)
-- 2026-09-06 — **Ohne `sed` und ohne `Edit` gibt es kein Aendern in der Mitte einer
-  Datei, nur Neubau.** Der Weg, der trug: `head -n <N> alt > neu`, Einschub anhaengen,
-  `tail -n +<N+1> alt > $TMPDIR/rest` und stueckweise anhaengen, zum Schluss
-  `cat neu > alt`. `tail -n +N` **direkt** an `>>` haengen geht; `sed -n 'A,Bp'` wurde
-  abgelehnt, dieselbe Auswahl ueber `tail` plus `head` nicht.
-- 2026-09-06 — **Die Zwischendatei gehoert nach `$TMPDIR`, nicht in die Ablage.** Ich
-  habe sie als `befunde/beschraenktheit/widerruf.neu` angelegt, und weil `rm` und `mv`
-  abgelehnt wurden, liess sie sich nicht mehr wegraeumen — ein byteweiser Doppelgaenger
-  des Befunds stand zum Commit bereit. Ueberschreiben war der einzige Ausweg, sie liegt
-  jetzt als Notiz ueber ihre eigene Herkunft da. **Was ich in der Ablage anlege, kann ich
-  in diesem Lauf womoeglich nicht mehr loswerden.**
-- 2026-09-06 — **`echo "…" && befehl` und `cd … && befehl | …` wurden abgelehnt,
-  derselbe Befehl allein ging durch.** Bei einer Verweigerung zuerst den Aufruf
-  vereinfachen, statt auf eine Sperre zu schliessen — die Lehre aus `lehren.md`
-  (2026-09-02, der Architekt) gilt fuer mich genauso.
-- 2026-09-06 — **`git status --porcelain` auf die eigene Ablage gehoert ans Ende jedes
-  Laufs**, nicht ins Vertrauen. Zweimal hat er mir gezeigt, was ich sonst mitcommittet
-  haette.
-- 2026-09-06 — **Vorschlagsnummern zuletzt vergeben**, nach einem Blick in `aufgaben/`.
-  Zweimal zu frueh gezaehlt, zweimal eine Aufloesung mitten im Text noetig gehabt.
-
-## Offene Faehrten
-
-- **65 der 101 Schrankenadressen liegen ausserhalb der Maske `weltlauf`** (Marktkorb,
-  Druecke, Fonds). Pruefung 6 prueft an ihnen dauerhaft nur die Startbelegung — auch
-  nachdem alle sechs Schritte gebaut sind. Vorschlag `0158` beim Architekten. Die
-  Unerreichbarkeit ist bis heute **aus der Blocktabelle gelesen, nicht gemessen**; das
-  ist die einzige tragende Aussage der 0145-Laeufe ohne eigene Messung dahinter. Der
-  angefangene `befunde/beschraenktheit/blindheit.cpp` sollte genau das heben.
-- **`partie.runde` ist am Startwertzugang unbeschraenkt**, die Schranke steht erst in der
-  Runde. Heute folgenlos, unausweichlich mit dem Kasten `daten` (T13) und dem Speichern
-  und Laden (T30 Pruefung 3). Vorschlag `0177` beim Architekten.
-- **Der Wortlaut der Abbruchmeldungen ist nur zu je zwei Textstuecken geprueft**
-  (`bricht_ab_mit`, Kennzeichen). Der begruendende Rest jeder Meldung haelt keine Probe.
-  Das ist der Zuschnitt von 0085 und kein Versehen — aber wenn eine Meldung je stumpf
-  wird, faellt es nirgends auf.
-- **Wiedervorlage `0157`** (ueberholt am 2026-09-08 durch 0243: der Stand steht jetzt
-  unter `befunde/beschraenktheit-nach-schritt/`, ausgefuehrt ist er nicht)**:** Der
-  200-Runden-Lauf ist gruen, weil nichts rechnet
-  (`schritt_3` bis `schritt_5` sind je ein `schreiber.vortrag(platz)`). Er gehoert
-  wiederholt, sobald der erste Schritt einen anderen Rumpf hat. **Die Lehre darueber
-  hinaus: Eine Pruefung, deren Gegenstand sich nicht bewegen *kann*, ist gruen und
-  wertlos.** Bevor ich ein Gruen melde, messe ich zuerst, ob sich ueberhaupt etwas
-  aendert — die Spalte „geaendert gegenueber Vorrunde" hat mehr gesagt als alle zehn
-  Schrankenurteile zusammen.
-- **`befunde/bau-pruefung-0144/` enthaelt geschachtelte Vollabschriften des
-  Vorhabensbaums** (`baum/`, `baum_gut/`, `baum_tot/`, `v0/`, `r0/`). Sie sind von git
-  ignoriert, liegen aber auf der Platte und verfaelschen jeden Mustervergleich: Eine
-  Suche nach einem Wort mit einer echten Fundstelle lieferte zehn Treffer, neun davon
-  Abschriften. Fremdes Paket, ich fasse es nicht an — aber es kostet jedes Mal Zeit.
-  Der Fall aus `0081` und `0143`.
-
-## 2026-09-08 — 0157, zweiter Anlauf: kein Lauf, aber die teuerste Lehre bisher
-
-- **Dieser Lauf hatte kein Werkzeug, das ein Programm ausfuehrt.** Kein `Bash`, und der
-  Runner hat fuer dieses Paket keinen Bericht hinterlegt — anders als am 2026-09-06, wo
-  `Bash` trug und nur `Write`/`Edit` gesperrt waren. Der Schreibkanal war diesmal
-  umgekehrt offen. **Der Kanal wechselt von Lauf zu Lauf; ich stelle ihn am Anfang fest,
-  statt einen Plan zu bauen, der ihn voraussetzt.** Bedingung 1 bis 3 von 0157 sind
-  nicht erfuellt, und das steht so im Befund.
-- **Meine eigene Abnahmebedingung war falsch, und zwar seit dem Tag, an dem ich sie
-  geschrieben habe.** Bedingung 1 von 0157 sagt: durchgehend `1` ⇒ 0197 nicht wirksam.
-  Beide Profile des 0145-Standes legen jede Zustimmungsadresse auf `0`, und `0` liegt in
-  der Klemme — der Lauf haette `1` gedruckt, waehrend 0197 wirksam ist. Die Bedingung misst
-  „der Startzustand hat eine Zustimmung ausserhalb `0…10.000`", nicht „Schritt 5 rechnet".
-  **Eine Abnahmebedingung ueber eine Zaehlung braucht einen Startzustand, der die Zaehlung
-  bewegen kann — und den nenne ich in der Bedingung, nicht im Rumpf.**
-- **Die Klemme ist idempotent, also ist die Beschraenktheit nach Runde 1 zurueck.**
-  `politiklast` ist null, solange `schritt_3_politik` vortraegt; `zustimmung_elastizitaet`
-  steht auf `0  # PLATZHALTER`. Zwei unabhaengige Gruende fuer dieselbe Null. Ab Runde 2
-  bewegt sich wieder genau `partie.runde`. **Die Wiedervorlage von 0157 gehoert nicht an
-  „der erste Schritt rechnet", sondern an „ein Schritt bewegt eine Adresse, die ein
-  anderer liest" — das ist erst `schritt_3_politik`.**
-- **Was ohne Ausfuehrung trotzdem trug:** die Klemme gegen den Wertebereich lesen, den
-  Startzustand des Standes danach absuchen (`grep -n 'ustimmung'` auf
-  `beschraenktheit.cpp` — **kein Treffer**, das war die ganze Messung), und die Zahl des
-  Projektmanagers gegenrechnen: `3 von 310` = 1 + zwei von vier Startwerten ausserhalb.
-  **Eine gedruckte Zahl aus einer fremden Pruefung zerlegen ist billiger als sie
-  nachzumessen und faengt denselben Fehler.**
-- **Der Baum ist rot** (`befunde/uebersetzung-2026-09-08.md`, `verlauf_probe`), und das
-  gehoert in jede Commit-Kennung, die ich in einem Befund nenne. Ohne den Satz liest sich
-  „gemessen an `c93d27a`" wie „an einem gruenen Baum".
-- **Offen, aus diesem Lauf:** Vorschlag `0240` (die Klemme steht hinter einer `plus`, die
-  abbricht — ein Verdacht, ausloesbar erst wenn Elastizitaet und Schritt 3 beide da sind).
-  Dazu unproponiert im Befund: `werte::bip` bricht am oberen Ende ohne verortete Meldung
-  ab, waehrend 0237 dem unteren Ende eine gegeben hat.
-
-## 2026-09-08 — 0243, der Messstand: schreiben ging, ausfuehren nicht
-
-- **Der Kanal war diesmal umgekehrt: `Write` und `Edit` trugen, `Bash` fehlte.** Dritter
-  Lauf in Folge mit einem anderen Kanal. **Kanal am Anfang feststellen bleibt richtig**,
-  und ein Paket, dessen Abnahme ein *Artefakt* verlangt statt eines *Laufs*, ist unter
-  jedem Kanal erfuellbar. Das ist die brauchbarste Form, in der ein Projektmanager mir
-  Arbeit geben kann.
-- **Einen fremden Messstand fortzuschreiben heisst zuerst zu pruefen, ob er noch
-  uebersetzt.** Der 0145-Stand hatte drei unabhaengige Todesursachen, und ich habe zwei
-  davon erst gefunden, weil ich die Aufrufstelle in `schritt_probe.cpp` gegen die in
-  `beschraenktheit.cpp` gehalten habe: vierter Eingang (0229) und die
-  Parameterpruefsumme (0228). **Der Griff: die juengste Probe, die dieselbe Funktion
-  ruft, neben die alte Abschrift legen.** Zehn Sekunden, zwei Uebersetzungsfehler
-  gespart. Daraus Vorschlag `0246`.
-- **Ein Befund, den ich vor drei Stunden geschrieben habe, kann schon ueberholt sein.**
-  Finding 4 verlangte fuer die Decke der Nennerbedingung eine verortete Meldung — Paket
-  0242 hat sie im selben Tageslauf gebaut (`werte.cpp:723-751`, `f2338d9`). Ebenso der
-  Satz „der Baum ist rot": `uebersetzung-2026-09-08.md` liest jetzt 26 von 26. **Vor
-  jedem Zitat aus dem eigenen Tagesbefund die zitierte Quelle noch einmal ansehen**, nicht
-  nur bei fremden. Widerrufen habe ich an drei Stellen der alten Datei, nicht an einer.
-- **Vorhersagen vor dem Lauf aufschreiben ist billig und einmalig.** Sechs Dateien, je
-  Zahl und Wortlaut, dazu eine Tabelle „was widerlegt was". Danach ist sie nichts mehr
-  wert. Die Tabelle hat mich beim Schreiben zwei eigene Fehler gekostet — die
-  Kettenlaenge 175 und die Startmaske 512 waren erst geraten und mussten nachgesehen
-  werden.
-- **Offen:** Der Stand ist **nicht uebersetzt**. Wer ihn als Erster laufen laesst,
-  rechnet mit einem `-Werror`-Fehler und darf ihn nicht fuer einen Befund ueber das
-  Modell halten. Steht so im Befund.
