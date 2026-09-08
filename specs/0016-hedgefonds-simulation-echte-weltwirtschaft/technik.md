@@ -807,18 +807,84 @@ designates as the core's only computation site anyway.
 **The prescription holds for every multiplication, not for a list of places.** The world
 step already multiplies bare in the price mix (T28), plus `fondsanteil`, `anleihekurs`
 and `lobbypunkte_aus_geld` (T48, T50), and every new formula brings more; an enumeration
-would here be the form that silently goes wrong at the next addition. The proof is
-therefore a **mapping**, and I have carried it out once in this run:
-`grep -rn ' \* ' kern/src kern/include` yields **52 lines** today, and each falls into
-one of four admitted kinds — address arithmetic on `Index`/`std::size_t` (`zustand.hpp`,
-`zustand.cpp`), unsigned arithmetic in `zufall.hpp` and `pruefsumme.hpp` (the two
-exceptions below), an `i128` intermediate inside `festkomma.hpp`, or running text in a
-comment. A fifth kind — two `i64` with magnitude meaning per T5 — does **not** occur
-today, because `kern::werte` is not yet built; exactly there it arises. Such a hit
-outside `festkomma.hpp` is a finding. `kern/test` does not stand under the rule but
-checks it; six further hit lines come in there, of which two are real multiplications of
-the form `static_cast<i64>(platz) * 10`, with which a check builds itself its input
-values from a loop index.
+would here be the form that silently goes wrong at the next addition.
+
+**What enforces 4.3: `werkzeuge/multiplikation/multiplikationsriegel.cpp`, and it is not
+yet built.** *Decided in this version, package `0074`.* The latch reads every `.hpp` and
+`.cpp` under `kern/include` and `kern/src`, drops comment text, and holds every remaining
+binary `*` against **named rules**, first match wins — the construction of
+`werkzeuge/bezeichner/bezeichner_riegel.cpp` („jeder solche Fall faellt unter eine
+**benannte Regel**; eine Liste einzelner geduldeter Namen gaebe es nicht"):
+
+1. one operand is a **layout constant** declared `Index` or `std::size_t` in this header
+   set — the latch builds that name table from the declarations, it does not carry it;
+2. `sizeof(...)` on either side;
+3. an **unsigned** literal (`5ULL`, `8u`) or a named `u64` constant — the T11/T12
+   exception below;
+4. `static_cast<i128>` on both sides — the computation site of T6.
+
+Anything else is a **finding**, and that is the fifth kind: two `i64` with magnitude
+meaning per T5. Deny by default is the whole point; a rule reads the **declaration** the
+line names, never the line alone. It builds and runs like the four latches beside it —
+`CMakeLists.txt` with the `PROJECT_IS_TOP_LEVEL` block, the directory in
+`FABRIK_MITGLIEDER` of `../../CMakeLists.txt`, and
+`add_test(NAME multiplikationsriegel COMMAND multiplikationsriegel ${FABRIK_VORHABEN_WURZEL})`.
+It must read **both spellings**, `a * b` and `a*b`; see the blind spot below.
+
+**Why not a lock the compiler holds, and why not the plain text latch.** The lock is the
+better form and is not available: `#pragma GCC poison` takes **identifiers**, `*` is an
+operator, and `sperre.hpp` says so at its own end and expressly leaves the decision here.
+The type route — a magnitude type whose `operator*` is deleted — had to fall **before**
+`kern::werte`. It is built: `kern/src/werte.cpp`, signatures on `i64`
+(`constexpr i64 tsd_in_cent(i64 tausend_usd)`, `werte.cpp:131`), and T52 point 1 requires
+the `<cstdint>` types at every value that reaches a state address. Threading a wrapper
+through a finished module costs more than the risk it removes.
+
+The **plain** text latch — one that classifies a line out of itself — is rejected, and
+these three lines are the reason the operand type is not in the line:
+
+| Line | what stands there | why text alone does not reach |
+|---|---|---|
+| `zufall.hpp:166` | `z = (z ^ (z >> 30)) * SPLITMIX_FAKTOR_1;` | `SPLITMIX_FAKTOR_1` is a named `u64` — the line shows an identifier |
+| `zustand.cpp:840` | `ziel[i * pruefsumme::BYTES_JE_I64 + b]` | `BYTES_JE_I64` is `std::size_t` — same position |
+| `zustand.hpp:777` | `nummer < LAENDER ? nummer * LAND_FELDER : BASIS_RESTWELT` | address arithmetic on `Index`, textually not separable from `i64 * i64` |
+
+**The mapping, measured 2026-09-08 with `Grep`, pattern ` \* `, over `kern/src` and
+`kern/include`: 92 lines in 14 files.** The reference state is this list and not the sum,
+so that a later divergence names the file it comes from:
+
+| File | Lines | File | Lines |
+|---|---|---|---|
+| `include/kern/zustand.hpp` | 21 | `include/kern/pruefsumme.hpp` | 4 |
+| `include/kern/schritt.hpp` | 11 | `src/festkomma.cpp` | 3 |
+| `include/kern/verlauf.hpp` | 11 | `include/kern/schreiber.hpp` | 3 |
+| `include/kern/werte.hpp` | 10 | `src/schritt.cpp` | 2 |
+| `include/kern/festkomma.hpp` | 8 | `src/werte.cpp` | 2 |
+| `include/kern/zufall.hpp` | 8 | `src/zustand.cpp` | 1 |
+| `include/kern/zustandsausgabe.hpp` | 7 | `include/kern/sperre.hpp` | 1 |
+
+By kind: **56** running text in a comment, **28** address and dimension arithmetic on
+`Index`, `std::size_t` and layout constants, **4** unsigned (`zufall.hpp:166,167,277`,
+`pruefsumme.hpp:138`), **4** an `i128` intermediate in `festkomma.hpp`
+(`:99,161,292,356`). 56 + 28 + 4 + 4 = 92; no line falls outside.
+
+**The fifth kind occurs today, and that is the correction against the previous version.**
+It said the kind could not occur „because `kern::werte` is not yet built; exactly there it
+arises". `kern::werte` is built, and the kind arose exactly there — **at seven places, and
+all seven run through `mal`**: `werte.cpp:131` (`tsd_in_cent`, T50), `:151`, `:550`,
+`:684`, `:856`, `:1065`, and `schritt.cpp:596`. None of them shows up in the mapping,
+because `mal(a, b)` carries no `*`. **That is the state 4.3 wanted and not evidence that
+it is enforced:** seven of seven are right with nothing holding them, and the eighth is
+written by whoever does not read T7. It is the reason the latch above is prescribed rather
+than the mapping repeated.
+
+**The mapping has one blind spot, and it is measured empty.** ` \* ` does not see `a*b`.
+`Grep` for a `*` between two identifier characters, same date, same two directories, gives
+**two hits and neither is a multiplication**: `festkomma.cpp:91` inside an assertion text
+(`"a*b sprengt i64 ..."`) and `meldung.hpp:54` as emphasis in a comment (`Kern*quelle*`).
+
+`kern/test` does not stand under the rule but checks it: **83 lines** in 10 files on the
+same date, led by `werte_probe.cpp` (45) and `schritt_probe.cpp` (22).
 
 **The abort is an exception and no `std::abort`**, and that for two mechanical reasons:
 in compile-time evaluation a `throw` makes the expression no constant — a `static_assert`
@@ -5475,3 +5541,54 @@ together with the policy rate, and no place gives row 9 a target role.** Inside 
 the struck wording stands in the "before" column of the table above — that is the evidence,
 and it is why this clause says *outside this section* instead of repeating the mistake
 condition 4 had to correct in §29.
+
+## 31. Wodurch Massnahme 4.3 durchgesetzt wird — Paket `0074`
+
+**What this answers, in one line.** T7 measure 4.3 prescribed `mal(a, b)` and named nothing
+that enforces it; T7 now names `werkzeuge/multiplikation/multiplikationsriegel.cpp`, its
+four rules, its build and its test registration, and rejects the two alternatives with the
+measurement each fails on.
+
+**Scope.** One block, T7, and nothing else in this file. The measure itself is unchanged —
+it stands and is implemented with `0052`. No code: `kern/`, `werkzeuge/` and `kern::werte`
+belong to other packages.
+
+### Reports to the project manager
+
+1. **The enforcement path is named and does not yet run.** The latch needs a builder
+   package under `werkzeuge/`, and I may not commission one. Until it exists, T7 names a
+   mechanism that is a prescription — the same state §30 report 1 describes for check 8,
+   and the same family as the lesson of 2026-09-06 about a check whose subject cannot
+   move. The rule set is the deliverable; the rules read declarations, so the tool has to
+   collect the `Index`/`std::size_t` names from the header set instead of carrying a list.
+2. **`mal` had no callers when this package was written, and has seven today.** The
+   package (2026-09-04) argues from „null Aufrufer" and „der erste Aufrufer ist der
+   gefaehrliche": the cheap day was before `kern::werte`. `kern::werte` is built, the
+   seven call sites are listed in T7, and **all seven are right**. What expired is the
+   timing argument, not the gap — nothing held those seven, and nothing holds the eighth.
+   This is also why the type route is now the expensive one and the latch the cheap one.
+3. **§29's second check clause cannot be healed with the wording of the first, and I left
+   it standing.** Point 3 of the package note offered the heal *if* it works without
+   touching a number or an enumeration line. It does not: `Grep` for `1.464` and `9.024`
+   over this file hits the frontmatter key `partie`, section 10's table and recount row,
+   T40's example column, three places inside §29 — **and §30 report 4 at the line that
+   reports this very defect.** *Outside this section* therefore leaves the clause false,
+   by exactly one line, and that line is the report about it. §30 report 4 stays true and
+   is untouched; whoever owns §29 needs a scope, not a phrase.
+4. **The package's three example lines moved.** `zustand.hpp:753` is `:777` today;
+   `zufall.hpp:166` and `zustand.cpp:840` still hold. The table in T7 carries the current
+   lines.
+
+### Untouched, expressly
+
+Measure 4.3 itself, measures 1 to 3, the two deliberate wrapping exceptions (T11, T12),
+`sperre.hpp` and every file under `kern/`. §29 and §30 in full.
+
+### The check this section can be held to
+
+Repeat the mapping — `Grep`, pattern ` \* `, over `kern/src` and `kern/include` — and hold
+it against the per-file table in T7. The sum may differ, because `kern/src` and
+`kern/include` take foreign work; the table then names **which** file moved, and that is
+what the per-file form is for. `Grep` for `multiplikationsriegel` over this file gives hits
+only in T7 and in this section, and `Grep` for `mal(` over `kern/src` gives the seven call
+sites T7 lists.
