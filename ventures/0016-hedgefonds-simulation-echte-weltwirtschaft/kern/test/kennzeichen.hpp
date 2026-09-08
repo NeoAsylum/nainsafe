@@ -39,14 +39,47 @@
 //!     einen heilen Baum rot, sie wegzulassen versteckte sie vor der Pruefung, die es
 //!     gibt, damit keine Schranke unbemerkt verschwindet. Von der Eindeutigkeit bleibt
 //!     die erste Haelfte -- die Liste passt auf keine fremde Meldung --, die zweite
-//!     braucht eine eigene Meldung und ist ohne sie nicht zu haben. Beide Proben haben
-//!     einen solchen Fall; die Begruendung je Eintrag steht in `warum` und wird in jedem
-//!     Lauf gedruckt.
+//!     braucht eine eigene Meldung und ist ohne sie nicht zu haben. Die Begruendung je
+//!     Eintrag steht in `warum` und wird in jedem Lauf gedruckt.
 //!
 //! Der eigene Aufzaehlungstyp der zweiten Kategorie ist die Sperre gegen den bequemen
 //! Ausweg: Wer einen erreichbaren Riegel dorthin schoebe, um die Vollzaehligkeit zu
 //! umgehen, muesste zugleich seine Abbruchstelle umschreiben -- `Buch::bricht_ab_mit`
 //! nimmt den Typ der ersten Kategorie entgegen und keinen anderen.
+//!
+//! ## Die zweite Kategorie darf leer sein (Paket 0259)
+//!
+//! Bis zum 2026-09-08 verlangte die Auswertung unten die Zahl der Paare ohne Zustand
+//! unbedingt groesser null. Eine Probe, deren Riegel **alle erreichbar** sind, wurde damit
+//! rot -- nicht, weil ihr eine Schranke fehlte, sondern weil sie keine unerreichbare hat.
+//! Das ist die falsche Reihenfolge: Welcher Kategorie ein Riegel angehoert, entscheidet
+//! seine Erreichbarkeit und nicht ein Zaehler. Der Zaehler hat die Entscheidung einmal
+//! nachweislich gefuehrt -- in Paket 0257 blieb der Zwischenwertriegel der Potenzfunktion
+//! in der zweiten Kategorie, obwohl sein Abbruch provozierbar ist (Grundzahl 2, Hochzahl
+//! 200 feuert in der 126. Runde) und er in die erste, schaerfere gehoert haette.
+//!
+//! Was bleibt, bleibt: Ist das Verzeichnis **nicht leer**, ist die Zahl der Paare ohne
+//! Zustand unveraendert Bedingung -- eine Schleife ueber null Paare laeuft gruen durch und
+//! misst nichts. Ist es leer, wird der Fall in jedem Lauf gedruckt und nicht verschwiegen.
+//!
+//! **Was der Nachlass kostet, ausgeschrieben.** Genau eine Zusicherung geht verloren: Wer
+//! den letzten Eintrag einer nicht leeren Aufzaehlung entfernt, wurde bisher rot -- mit
+//! einer Meldung ueber einen Zaehler statt ueber den entfernten Eintrag, aber rot. Hier
+//! ist sie nicht zu ersetzen: Der Kopf sieht eine leere Spanne und kann nicht wissen, ob
+//! sie leer geboren oder leer geraeumt wurde. Wo die Aussage zu haben ist, ist ausserhalb
+//! -- am Quelltext der Probe, den der Kennzeichenriegel unter werkzeuge liest, und an der
+//! Uebersetzungszusicherung gegen den Anzahlwert, die jede Probe neben ihrer Aufzaehlung
+//! fuehrt.
+//!
+//! **Wer keinen unerreichbaren Riegel hat, fuehrt keine leere Tabelle, sondern gar keine**
+//! und uebergibt eine leere Spanne an der Bauzeile. Der Unterschied ist keiner des
+//! Geschmacks: Eine geschriebene Tabelle ohne Eintrag ist fuer den Kennzeichenriegel nicht
+//! von einer zu unterscheiden, die er nicht mehr zerlegen kann, und genau diese
+//! Ununterscheidbarkeit ist der Gegenstand von Paket 0263. Was eine solche Probe dennoch
+//! braucht, ist der Aufzaehlungstyp der zweiten Kategorie selbst -- er ist
+//! Schablonenparameter und hat keinen Vorgabewert, also bleibt eine leere Aufzaehlung je
+//! Probe stehen. Das waere ein eigenes Paket wert; die Sperre oben -- zwei Typen und nicht
+//! einer -- muss dabei stehen bleiben.
 //!
 //! ## Die Sperre gilt fuer diese Datei nicht -- gemessen, nicht vermutet
 //!
@@ -393,6 +426,17 @@ public:
         // indem sie in der ersten Kategorie gar nicht stehen; was von der Eindeutigkeit
         // bleibt, ist die erste Haelfte -- die Liste passt auf keine fremde Meldung.
         std::size_t ohne_zustand_paare = 0;
+        // Der leere Fall wird genannt und nicht uebergangen. Die Schleife darunter
+        // druckt eine Zeile je Eintrag; bei null Eintraegen druckte sie nichts, und ein
+        // ungenanntes leeres Verzeichnis ist von einem verlorenen nicht zu unterscheiden
+        // -- dieselbe Begruendung, aus der jeder Eintrag sein `warum` ausdruckt.
+        if (ohne_zustand_.empty()) {
+            std::printf("  Riegel ohne Zustand (%s): keiner eingetragen -- jeder Riegel "
+                        "dieser Probe ist aus einem Zustand erreichbar. Erlaubt seit "
+                        "Paket 0259; die Zaehlung der Paare ohne Zustand entfaellt damit "
+                        "und ist Bedingung, sobald ein Eintrag dasteht.\n",
+                        wessen_);
+        }
         for (const OhneZustand<O>& eintrag : ohne_zustand_) {
             // Ohne Kennzeichen passte die Liste auf jeden Text. Bei einem Riegel mit
             // Zustand faengt `bricht_ab_mit` das ab; hier gibt es keine Aufrufstelle,
@@ -437,12 +481,19 @@ public:
                         anzahl_, eintrag.warum);
         }
 
-        // Drei Zaehlungen, die nicht null sein duerfen. Eine Schleife ueber null Paare
-        // laeuft gruen durch und misst nichts; das ist genau der Zustand, den der Apparat
+        // Zaehlungen, die nicht null sein duerfen. Eine Schleife ueber null Paare laeuft
+        // gruen durch und misst nichts; das ist genau der Zustand, den der Apparat
         // abschafft, und er darf nicht durch eine spaetere Umstellung zurueckkommen.
         verlange(fremde_paare > 0, "fremde_paare > 0");
         verlange(eigene_paare > 0, "eigene_paare > 0");
-        verlange(ohne_zustand_paare > 0, "ohne_zustand_paare > 0");
+        // Die dritte nur, wenn es etwas zu zaehlen gibt. Unbedingt gestellt waere sie
+        // keine Aussage ueber die Probe, sondern die Forderung, dass sie einen
+        // unerreichbaren Riegel ueberhaupt habe -- die Begruendung steht im Kopf unter
+        // "Die zweite Kategorie darf leer sein". Bei nicht leerem Verzeichnis ist sie
+        // unveraendert Bedingung.
+        if (!ohne_zustand_.empty()) {
+            verlange(ohne_zustand_paare > 0, "ohne_zustand_paare > 0");
+        }
         verlange(verletzungen == 0, "verletzungen == 0");
 
         std::printf("  Kennzeichen (%s): %zu Meldungen aus %zu Riegeln mit Zustand, dazu "
