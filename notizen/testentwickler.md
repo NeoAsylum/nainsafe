@@ -16,6 +16,28 @@ check every L against every foreign M by hand before writing a line of code.**
 
 ## What works
 
+- 2026-09-08 (0257, festkomma_probe) — **The mechanism's three `verlange(... > 0)` lines
+  decide the shape of a probe's ledger before any wording does.** `auswerten` fails if
+  `ohne_zustand_paare == 0`, so a probe with an empty second category is red no matter how
+  good its lists are. That settled the one judgement call of this package: the abort in
+  `intern::potenz_i128` **could** have been provoked directly (`potenz_i128(2, 200)` fires
+  at the 126th round), which would have moved it into the first category and left the
+  second empty. `eigene_paare > 0` likewise forces at least one Riegel with two arrivals —
+  free here, six of ten have it. **Read the three counters first, then decide the
+  categories.**
+- 2026-09-08 (0257) — **One `abbruch` site is not one Riegel when its reason is an
+  argument.** `intern::nach_i64(wert, stelle)` is a single line and produces three wordings:
+  `teile_gerundet`, `mal_geteilt` and `mal` each pass their own name. Same rule as 0255's
+  `pruefe_handelssektor`, reached from the opposite direction — there the caller name went
+  in as text, here the whole reason does. Nine sites, ten Riegel, one of them unreachable:
+  the count only balances if you write the mapping out site by site.
+- 2026-09-08 (0257) — **A shared message tail is harmless as long as the first piece
+  carries a punctuation mark.** Eight of ten festkomma messages end in `ausserhalb von i64
+  (T7)`; all the separation sits in the first piece, and it works only because the name is
+  quoted **with its colon**: `"mal: Ergebnis"` is not in `"mal_geteilt: Ergebnis ..."`, and
+  `"potenz: Ergebnis"` is not in `"potenz_i128: ..."`. Drop the colon and both lists
+  collide in the same run. That is also the honest red proof of the `OhneZustand` entry:
+  shorten its list to `"potenz"` alone and it hits `PotenzErgebnis`, which arrives twice.
 - 2026-09-08 (0255, kennzeichen/werte_probe) — **When one helper builds many wordings, the
   Riegel is the wording and not the helper.** `pruefe_handelssektor` is a single `if` at
   three call sites, and it produces **four** distinct messages: caller name and reason go in
@@ -49,12 +71,32 @@ check every L against every foreign M by hand before writing a line of code.**
 
 <!-- An entry older than 30 days counts as due for re-checking. -->
 
-- 2026-09-08 — **Fifteenth run in a row without a shell, and the second where it cost real
-  certainty** (0244 was the first). Every one of the 16 new Riegel and all 21 expected
-  counts are derivations from `src/werte.cpp` and from the call sites, not measurements.
+- 2026-09-08 — **Sixteenth run in a row without a shell, and the third where it cost real
+  certainty** (0244, 0255 before it). Every one of the 16 new Riegel and all 21 expected
+  counts of 0255 — and the 10 Riegel and 17 counts of 0257 — are derivations from the
+  source and the call sites, not measurements.
+- 2026-09-08 (0257) — **A `Grep` for `potenz_i128` over the whole venture cost the price of
+  `befunde/` for one true line.** The answer (three call sites, all in `wurzel`) was in
+  `festkomma.hpp`; the other 20 kB were a `messung-0069` tree copy and two old findings.
+  `CLAUDE.md` says it and I did it anyway: **name the path, not the venture.**
 
 ## Open leads
 
+- 2026-09-08 (0257) — **What the next report should show for `festkomma_probe`:** 17
+  `Abbruch wie erwartet` lines, 10 `Riegel "..." : n Meldung(en), erwartet n` lines with
+  the counts 2,1,1,1,3,2,2,2,2,1, the summary line `17 Meldungen aus 10 Riegeln`, one
+  `Riegel ohne Zustand (festkomma)` line reading `2 Kennzeichen, passend auf 0 der 17`,
+  and a `Kennzeichen (festkomma)` line with **256 fremde, 16 eigene und 17 Paare ohne
+  Zustand**. A red on `kennzeichnet nicht` means two of my first pieces collide — the
+  report prints both wordings, copy them rather than re-derive. A red on `falscher Riegel`
+  means I mapped an abort path wrong; the four aborts I have **not** seen a wording from
+  in any green report are `teile_gerundet: Ergebnis`, `mal_geteilt: Ergebnis`,
+  `potenz: Ergebnis` and both `wurzel:` lines — they are read off the string literals in
+  `festkomma.hpp`, while `plus`/`minus`/`mal` were already asserted by the old needles.
+- 2026-09-08 (0257) — **Proposed `0259`** (`status: vorschlag`,
+  `kern/test/kennzeichen.hpp`): `verlange(ohne_zustand_paare > 0)` makes a non-empty second
+  category a condition for every probe that adopts the `Buch`, and the header nowhere says
+  so. Do not re-propose; if it is rejected, read the rejection first.
 - 2026-09-08 (0255) — **The next report is the whole proof, and here is its shape.** Expect
   `werte_probe` green with 35 `Abbruch wie erwartet` lines, 23 `Riegel "..." : n
   Meldung(en), erwartet n` lines, the summary `35 Meldungen aus 23 Riegeln ... vor Paket
@@ -90,6 +132,31 @@ check every L against every foreign M by hand before writing a line of code.**
   the day someone adds `-j`, they collide.
 
 ## Where I am unsure
+
+**0257.** Five soft spots, all cheap for the reviewer.
+
+1. **I ran nothing.** No compiler, no ctest. Ten Riegel, seventeen counts and every
+   Kennzeichen piece are copied out of `kern/include/kern/festkomma.hpp` by hand.
+2. **`SOLLZAHLEN` is more than the acceptance asks for.** The acceptance wants the
+   enumeration, the two lists and the dead macro gone; the exact count per Riegel is my
+   addition, copied from `werte_probe`. It does add a failure mode the acceptance does not
+   demand — a miscounted call site goes red on the count line — but the count is over call
+   sites in the same file and in the same eyeful, and without it five of the three `mal`
+   sites could be deleted silently.
+3. **One assertion is retired with the helper it guarded.**
+   `PRUEFE(!ABBRUCH_MELDET(plus(SUMMAND_PASST_OBEN, 1), "plus: Summe"))` asserted that the
+   text search answers `false` when nothing throws. `abbruchmeldung_enthaelt` is gone, and
+   the same property of `bricht_ab_mit` cannot be asserted without deliberately failing a
+   run. What it protected — that this call comes through with a value — is asserted three
+   lines above it and stays. The other two negative controls did **not** shrink: the
+   cross-product holds all ten lists against all seventeen messages, where they held two
+   needles against one.
+4. **`RiegelOhneZustand` could have been made reachable and I decided against it**
+   (reason under *What works*). A reviewer may hold that a probe should provoke
+   `intern::potenz_i128` directly rather than assert its unreachability.
+5. **`<stdexcept>` is gone from the includes.** Nothing in the file names
+   `std::domain_error` any more; the catch sits in `kennzeichen.hpp`, which includes it.
+   `kern/sperre.hpp` is still the last `#include`.
 
 **0255.** Four soft spots, all cheap for the reviewer.
 
