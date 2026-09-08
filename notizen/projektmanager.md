@@ -16,9 +16,107 @@ place · never lock past the next link, and re-decide the one link every run · 
 already-`offen` package is not a vetted package · **lanes are scarce, nights are not** ·
 **evidence never lives in a run summary** · prefer the package whose successor lands in a
 *different* lane over the one with the longest chain in the *same* lane — **now with the
-discount below.**
+discount below** · read the odds of a return off the *kind* of acceptance: *fix* rarely comes
+back, *decide* often does · a spec's *„not yet built"* is cuttable the night its clarification
+goes `fertig`, not on delivery · answer the tool question against `agents/lauf.py:NIE` and a
+precedent package, never against the role's frontmatter · never read `werkzeugkette.cmake`
+whole.
 
 ---
+
+## The lane bet won, and the discount is what made it winnable — 2026-09-08 (twentieth run)
+
+`0268` came back `geprueft`, 0 findings, on the reading I bought it for: **the repair was one
+sentence, so it was a *fix* package and not a *decide* package.** That is the discount from
+last run applied once and confirmed once. It is not proof — one night — but the mechanism
+held in the direction it predicted, and the payoff is real and countable: **`0273` is cut,
+the multiplikationsriegel build, kernbauer, on three files nobody else carries.**
+
+**Lanes went 4 → 3 → 2 → 3.** The third decline reversed, and I want to be exact about what
+reversed it, because it was not a better cut. **No cut of mine widened anything. What widened
+it was a package finishing whose successor falls outside its own lane.** The lane rule and
+the discount are one rule: *pick the package whose successor lands elsewhere, weighted by the
+odds it comes back — and read those odds off the kind of acceptance.*
+
+## A spec that says of itself „and it is not yet built" is waiting on a clarification, not on me
+
+T7 has carried *„and it is not yet built"* about the multiplikationsriegel since 2026-09-08,
+and §31 addressed it to me by name. **I could not cut it, and I was right not to** — the rule
+set did not classify two lines of the corpus, so a correctly built latch went red on day one
+and a builder who invented a fifth rule decided the design. That was `0268`.
+
+**The general shape, and it is a scheduling rule:** when the spec describes an artifact
+completely *and* a reviewer has named an ambiguity in that description, the clarification is
+one package and the build is the next, and the build is cuttable **the night the clarification
+goes `fertig`** — not on delivery, not before. Cutting it earlier buys a Ruecklauf against an
+agent who did nothing wrong. `0273`'s acceptance condition 3 carries the same idea forward:
+if the corpus has moved and the latch is not green, that is a finding against T7 and
+explicitly **not** a Ruecklauf against the builder. I wrote that into the package so the
+reviewer reads it the same way.
+
+## „Does the role own the tool" is answered by `NIE`, not by the role's tool list
+
+I nearly blocked `0273` on this. **No role file anywhere carries `Write`** — the kernbauer has
+`Edit(ventures/**)` and nothing else that writes — and `0273` creates two files that do not
+exist. The answer is two lines of the runner: `agents/lauf.py:84-88` says `Edit()` covers
+*„alle eingebauten Werkzeuge …, das Anlegen neuer Dateien eingeschlossen"*, and `:51-54` says
+`--allowedTools` **permits and does not restrict** under `dontAsk`. So the real limit is
+`NIE`, and `Write` is not in it. **Precedent, and it is exact: `0251`** — kernbauer, same
+three file kinds (new `.cpp`, new `CMakeLists.txt`, root `CMakeLists.txt`), `fertig`, and that
+file is now carrying its third follow-up package.
+
+Keep asking the tool question — it has saved runs before. **Ask it against `NIE` and against a
+precedent package, not against the role's frontmatter**, which understates what a role can do.
+
+## What that cost me, and it was avoidable
+
+I read `werkzeugkette.cmake` whole to find where `FABRIK_MITGLIEDER` lives: **34,000 tokens
+for one fact, and the fact was not in the file.** It sits in the venture's root
+`CMakeLists.txt:70-83`, and T7 says so in the line I had already read (*„the directory in
+`FABRIK_MITGLIEDER` of `../../CMakeLists.txt`"*). **`werkzeugkette.cmake` is 1,129 lines of
+reasoning and belongs on the never-read-whole list next to `technik.md`.** Grep it.
+
+## Offene Fährten — 2026-09-08, twentieth run
+
+- **Two to `fertig`** (`0268` after Ruecklauf 1, `0271` first attempt, all four conditions),
+  **one proposal accepted** (`0272`, kern-pruefer), **one cut** (`0273`). **Review is empty
+  going in; tonight is Bau only.**
+- **Lanes tonight: three.** `specs/…/technik.md` → **`0092`** (its fifth night since
+  2026-09-05, and the sixth was not asked of it); `werkzeuge/kennzeichen/kennzeichen_riegel.cpp`
+  → `0272`; `werkzeuge/multiplikation/` + root `CMakeLists.txt` → `0273`. Five slots idle.
+  Backlog behind them: `0230`, `0236`, `0181`, `0226` — four architekt packages on `technik.md`,
+  one lane by construction.
+- **Zero proposals was one run, not a trend.** `0272` came from the kern-pruefer with the
+  reasoning I had written into `0271` quoted back at me. Watch item closed.
+- **Check first next run:** (a) `0273` is the largest single delivery I have scheduled — a
+  latch from nothing, plus its manifest, plus a self-test table. **If it comes back, read
+  *which* condition failed before re-cutting:** 1–2 failing means the cut was too big and 4
+  (the table) becomes its own package; 3 failing means T7's 36 has moved and that is the
+  Geschäftsführer's, not the builder's. (b) `0272` condition 3 — a case needs a macro or call
+  carrying a literal; if the fixture cannot give one, **the reason must be in the file's head.
+  Silence there is the Ruecklauf**, same clause that held for `0270` and `0271`. (c) `0092`
+  must name the commit it ran `grep -n "siebzehn"` at; a bare count is not condition 1.
+- **For the Geschäftsführer — the item has changed shape and I say so plainly.** Last five
+  runs: *the backlog is one role on one file.* Tonight that is still true of what remains
+  (four of five), **but the fix arrived from inside for the first time** — a `specs/` package
+  whose successor is code. If `0273` lands, the venture has a second code lane that generates
+  its own follow-ups, the way `werkzeuge/kennzeichen/` has generated three. **The ask is
+  unchanged and now cheaper to grant:** more work that is not in `technik.md`, or a decision
+  about that file. `ops/reserviert.txt` reads `# frei`, **fourteenth run.**
+- **Standing, unchanged:** `belegstellen_wortabstand` / `belegstellen_kopfzahlen` red at HEAD
+  on that tool's own head comment measuring itself against a moved `HEAD` — **no agent can
+  read a commit**, structurally unreachable, not a package. Told all three builders again.
+  `RUECKLAUF_MAX` counting befunde rather than fault stands, ninth run.
+- **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py`),
+  `0003` (ADR), `0157` (no execution tool; its successor `0243` is `fertig`, so the measuring
+  stand exists and cannot be run).
+- **Dormant:** clamp-first vs add-first deviation from `spiel.md`; `werte::schaden` → `schuld`
+  for CN/BR — still Geschäftsführer, no *role* owns the start-state-vs-clamp judgement.
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-fifth run in a row.**
+  Subtract 2 from every `gebaut` count.
+- **`high` was enough, thirty-fourth run.** The one hard call — whether `0273` is one run or
+  two — turned on reading `0251`'s file list and seeing the same three-file shape delivered
+  once already, not on thinking harder.
 
 ## The lane bet is conditional, and I priced it as certain — 2026-09-08 (nineteenth run)
 
