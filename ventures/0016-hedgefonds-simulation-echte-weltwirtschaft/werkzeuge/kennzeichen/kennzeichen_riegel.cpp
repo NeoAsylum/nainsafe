@@ -85,15 +85,31 @@
 //! -- eine Zerlegung, die an einer unbekannten Schreibweise verrutscht und danach zu wenig
 //! findet -- ist die teuerste Fehlerart, die dieses Werkzeug haben kann.
 //!
-//! **Und was sie an einem Listenelement uebersieht, der dritte blinde Fleck:** Ein Element,
-//! das kein Zeichenkettenliteral ist -- eine Konstante, ein Aufruf --, hinterlaesst keine
-//! Marke. Eine **vollstaendige** Liste kann dieser Riegel deshalb als knapp melden:
-//! `{TEXT_A, "b"}` deklariert zwei und gibt eine Marke her, und `knappe_listen` unten sagt
-//! "2 deklariert, 1 gelesen", obwohl kein Stueck fehlt. **Das Urteil traegt trotzdem, nur
-//! der genannte Grund ist enger als die Ursache:** `gleiche_ab` prueft ein solches Element
-//! ebenfalls nie, sein Wortlaut ist also an den Kern genauso ungebunden wie der eines
-//! fehlenden Stuecks -- und diese Bindung ist der Gegenstand dieses Programms. Im Baum gibt
-//! es heute keine solche Liste; ein Fall des Selbsttests haelt das Verhalten mit seiner
+//! **Und was sie an einem Listenelement uebersieht, der dritte blinde Fleck. Er hat zwei
+//! Haelften, und sie fallen nach entgegengesetzten Seiten.**
+//!
+//! *Die erste: ein Element, in dem kein Zeichenkettenliteral steht* -- eine Konstante wie
+//! `TEXT_A` --, hinterlaesst keine Marke. Eine **vollstaendige** Liste kann dieser Riegel
+//! deshalb als knapp melden: `{TEXT_A, "b"}` deklariert zwei und gibt eine Marke her, und
+//! `knappe_listen` unten sagt "2 deklariert, 1 gelesen", obwohl kein Stueck fehlt. Diese
+//! Haelfte meldet **zu viel**, und sie ist die harmlose. **Das Urteil traegt trotzdem, nur
+//! der genannte Grund ist enger als die Ursache:** `gleiche_ab` bekommt ein solches Element
+//! ebenfalls nie zu sehen -- es steht in keiner Marke --, sein Wortlaut ist also an den Kern
+//! genauso ungebunden wie der eines fehlenden Stuecks, und diese Bindung ist der Gegenstand
+//! dieses Programms.
+//!
+//! *Die zweite: ein Element, das ein Literal **traegt*** -- ein Aufruf oder ein Makro wie
+//! `ERSTES("x")` --, hinterlaesst sehr wohl eine Marke, nur die falsche. `stuecke_aus` laeuft
+//! ueber die Marken zwischen den Klammern und kennt keine Elementgrenzen: `{ERSTES("x"), "b"}`
+//! deklariert zwei und gibt zwei Marken her, `knappe_listen` **schweigt**, und die Liste sieht
+//! vollstaendig aus. `gleiche_ab` uebergeht dieses Element dabei nicht -- es verlangt `"x"`
+//! irgendwo im Kern und haelt die Bindung damit fuer erbracht, waehrend der wirkliche
+//! Wortlaut des Elements ungebunden bleibt. **Diese Haelfte ist die stille und damit die
+//! gefaehrliche:** kein Befund an kaputter Bindung, also genau der stille Ausfall von oben --
+//! und nicht wie bei der ersten ein Befund zu viel an heilem Text.
+//!
+//! Im Baum steht am 2026-09-08 weder die eine noch die andere Form; alle drei aufgeloesten
+//! Listen tragen nur Literale. Je ein Fall des Selbsttests haelt beide Haelften mit ihrer
 //! Erwartung fest, damit der Tag, an dem eine entsteht, nicht der erste Tag dieser Frage ist.
 //!
 //! ## Wie ein Verzeichnis gelesen wird
@@ -1506,8 +1522,9 @@ struct Tabellenfall {
     // Feld auch an den **neunzehn** Faellen, die es auf der Vorgabe lassen, und nicht nur
     // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
     // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
-    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **sieben** Faelle,
-    // die es angeht, schreiben es aus; neunzehn und sieben sind die sechsundzwanzig Faelle
+    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **acht** Faelle,
+    // die es angeht, schreiben es aus -- darunter einer, der eine Null ausschreibt, weil bei
+    // ihm gerade die Null die Aussage ist; neunzehn und acht sind die siebenundzwanzig Faelle
     // der Tabelle.
     //
     // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
@@ -1534,7 +1551,7 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 26> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 27> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
      "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
@@ -1750,21 +1767,40 @@ constexpr std::array<Tabellenfall, 26> TABELLENFAELLE = {{
      "}};\n",
      "", true, "R::Eins=alpha;beta", 0, 0, 0, 0},
 
-    // Der dritte blinde Fleck der Zerlegung, und er steht hier, damit er nicht bloss im
-    // Kopf steht: Ein Element, das kein Zeichenkettenliteral ist, hinterlaesst keine Marke,
-    // also zaehlt `stuecke_aus` es nicht mit. Die Liste ist **vollstaendig** -- zwei
-    // deklariert, zwei Elemente da --, und wird trotzdem gemeldet. Anders als die vier
-    // Faelle darueber ist das keine Schranke, die anschlaegt, wo etwas fehlt, sondern die
-    // eine Stelle, an der ihre Meldung einen zu engen Grund nennt. **Das Urteil bleibt
-    // richtig:** `gleiche_ab` prueft `TEXT_A` ebenfalls nie, das Stueck ist also ungebunden.
-    // Erwartet wird beides -- die Meldung und das eine gelesene Stueck --, damit der
-    // geschriebene blinde Fleck nicht vom Code abdriften kann.
+    // **Die erste Haelfte des dritten blinden Flecks der Zerlegung**, und sie steht hier,
+    // damit sie nicht bloss im Kopf steht: Ein Element, in dem kein Zeichenkettenliteral
+    // steht, hinterlaesst keine Marke, also zaehlt `stuecke_aus` es nicht mit. Die Liste ist
+    // **vollstaendig** -- zwei deklariert, zwei Elemente da --, und wird trotzdem gemeldet.
+    // Bei den Faellen des Listenbodens darueber, auf denen die Schranke anschlaegt, fehlt
+    // jedesmal ein Stueck; hier fehlt keines, und die Meldung nennt einen zu engen Grund.
+    // **Das Urteil bleibt richtig:** `gleiche_ab` bekommt `TEXT_A` ebenfalls nie zu sehen,
+    // das Stueck ist also ungebunden. Erwartet wird beides -- die Meldung und das eine
+    // gelesene Stueck --, damit der geschriebene blinde Fleck nicht vom Code abdriften kann.
     {"ein Element ohne Zeichenkettenliteral -- vollstaendige Liste, dennoch gemeldet",
      "constexpr std::array<const char*, 2> KZ_MISCH = {TEXT_A, \"beta\"};\n"
      "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
      "    {R::Eins, \"n\", \"w\", KZ_MISCH},\n"
      "}};\n",
      "", true, "R::Eins=beta", 0, 0, 0, 1},
+
+    // **Die zweite Haelfte desselben blinden Flecks, und die gefaehrliche.** Das erste
+    // Element traegt sein Literal in einem Aufruf: Es hinterlaesst eine Marke, es stehen also
+    // zwei Marken gegen zwei deklarierte, und `knappe_listen` schweigt. Gemessen wird hier
+    // die **Stille** und der Wortlaut, den sie durchgehen laesst -- `alpha` steht als
+    // Kennzeichen da, obwohl das Element `ERSTES("alpha")` heisst, und `gleiche_ab` verlangt
+    // danach `alpha` irgendwo im Kern statt des wirklichen Wortlauts. Genau umgekehrt zum
+    // Fall darueber: dort ein Befund zuviel an heilem Text, hier keiner an kaputter Bindung.
+    //
+    // Die Null im letzten Feld ist deshalb ausgeschrieben und nicht der Vorgabe ueberlassen:
+    // Bei diesem Fall ist sie die Aussage. Lernt die Zerlegung eines Tages die Elementgrenze,
+    // bricht diese Erwartung -- und das ist die richtige Art zu brechen.
+    {"ein Element traegt sein Literal in einem Aufruf -- Marke da, Wortlaut falsch, nicht "
+     "gemeldet",
+     "constexpr std::array<const char*, 2> KZ_RUF = {ERSTES(\"alpha\"), \"beta\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_RUF},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha;beta", 0, 0, 0, 0},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)
