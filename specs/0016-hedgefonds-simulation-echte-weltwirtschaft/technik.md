@@ -1642,8 +1642,11 @@ vintage contains:
    from T18 could not name it in round 1. Only the four playable countries carry
    instruments (T15), hence 16 each and not 20 each. **This paragraph is a proof, not a
    provenance entry;**
-2. **Target series** for the 31 series from `spiel.md` plus the trade block over 40
-   flows, per series with the classification from T37;
+2. **Target series** for the `L_R(S+5) − n` reported series from `spiel.md` plus the trade
+   block over `(L_R+1)·L_R·(S−1)` flows — today **31** and **40** —, per series with the
+   classification from T37. The vintage carries all 31, because `gesetzt` and `abgeleitet`
+   are reported; **target series in the narrow sense are `L_R(S+4) − n` = 27** since the
+   cut of 2026-09-03. The wording belongs to `0068`, the count in `L_R` to section 26;
 3. **historical policy paths** for policy rate, tariff level and budget balance. The
    fourth lever, financial-market regulation, has no anchor and stands fixed in the
    `weltlauf` at its start value — which makes the oracle blind for this instrument, and
@@ -1843,9 +1846,12 @@ are counted and reported.
 
 Two thresholds:
 
-- **Check vintage 1997–2021:** `spiel.md` demands each of the 31 target series and each
-  of the 40 trade flows over **25 support points without filling**, that is
-  `gefuellt = 0`. A series that does not meet this is **not filled and not silently
+- **Check vintage 1997–2021:** `spiel.md` demands each of the `L_R(S+5) − n` reported
+  series — today **31**, of them `L_R(S+4) − n` = 27 target series since the cut of
+  2026-09-03 — and each of the `(L_R+1)·L_R·(S−1)` trade flows, today **40**, over
+  **25 support points without filling**, that is
+  `gefuellt = 0`. The window and the 25 are the follow-up of the same cut and belong to
+  `0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke`, not here. A series that does not meet this is **not filled and not silently
   adopted** but reported as a finding to the game designer, together with the two ways
   out that are theirs: strike the series or shorten the window. Per T40 the second
   choice costs only a number in the manifest.
@@ -1944,7 +1950,11 @@ So that the data builder can check the field „Source" per series. Source per `
 | 19 | Market-basket value and market return | 1 + 1 | thousand USD / bp | **none** | start value per T33, endogenous, no target | — |
 
 `NV.IND.MANF.ZS` (manufacturing) is per `spiel.md` **not** used and is therefore not
-listed here. The 31 target series are rows 1, 2, 8, 9, 10 and 11 (4+12+4+4+3+4); the
+listed here. The `L_R(S+5) − n` reported series are rows 1, 2, 8, 9, 10 and 11 — at
+`L_R = 4`, `S = 3`, `n = 1` that is 4+12+4+4+3+4 = **31**. Row 9 (policy rate, class
+`gesetzt`) has carried no target role since the cut of 2026-09-03, so `L_R(S+4) − n` =
+**27** of them are target series; the whole table above counts in `L_R = 4` and moves with
+the horizon in section 26, the wording of row 9 with `0068`. The
 trade block from row 14 comes in as a block of its own. The four quantities without a
 data anchor are rows 17, 18, 19 and the instrument financial-market regulation —
 exactly the four that `spiel.md` enumerates under „Die Grenze des Orakels".
@@ -2436,7 +2446,7 @@ call does not run at night.
 | 5 | break run | 10,000 games with the random bot: no crash, no overflow, no invariant violation, no chain overflow, no double write access and no mask violation (T18, T38, T39) | break tester |
 | 6 | **boundedness** | **200 rounds without a player**; if a quantity leaves its value range, there is a **ninth** feedback channel, and that is a finding. The channel table in `spiel.md` has counted **eight** since version 5 | break tester |
 | 7 | the three measures | decision density, strategy diversity, optimum shift per the calculation rules in `spiel.md`, against the thresholds there: **0.4 per game third**; **three classes with one winner each at most 25 % apart**; **shift ≥ 0.4** | self-player |
-| 8 | backtest | in mode `weltlauf` (T38), 31 target series plus the trade block, error measures per T42, acceptance via the **16 check subjects with tolerance 2** per T37 | backtester |
+| 8 | backtest | in mode `weltlauf` (T38), `L_R(S+5) − n` reported series (today 31, of them `L_R(S+4) − n` = 27 target series) plus the trade block, error measures per T42, acceptance via **`3·L_R + (L_R − n) + 1` check subjects with tolerance `⌊L_R/2⌋`**, today **16 and 2**, per T37 | backtester |
 
 **The eight value-range bounds that check 2 checks every round.** They follow from T5, T49
 and T51 and stand here together so that the test developer does not have to gather them
@@ -2735,29 +2745,47 @@ set to the historically actual values. The model's policy-rate series is thereby
 target series by construction; its error is zero and its directional accuracy one,
 without the model having achieved anything.
 
-| Class | Series | Count | Meaning |
+**Every count in this block is a formula in `L_R`, `S` and `n` (T59), no longer a digit —
+changed 2026-09-08, package `0221`.** `L_R` is the number of backtest countries, `S = 3`
+the sectors, `n = 1` while the numéraire country is a backtest country. Substituting
+today's `L_R = 4` returns every number this block carried before, digit for digit; that is
+the compatibility check, and it is why this change moves nothing today. **Which reading
+binds, and until when, stands in section 26** — it is `L_R = 4` and not the nine countries
+of `spiel.md`.
+
+| Class | Series | Count | today (`L_R = 4`) | Meaning |
+|---|---|---|---:|---|
+| `frei` | GDP (`L_R`), sector shares (`L_R·S`), consumer prices (`L_R`), exchange rate (`L_R − n`) | `L_R(S+3) − n`, of them `L_R(S+2) − n` independent, plus the trade block | 23 (19 independent) | checks the machine, decides the acceptance |
+| `gesetzt` | policy rate (`L_R`) | `L_R` | 4 | input of the run, error zero by construction; is reported, decides nothing |
+| `abgeleitet` | government debt ratio (`L_R`) | `L_R` | 4 | numerator follows the set budget balance, only the denominator is endogenous; is reported, decides nothing |
+
+**The acceptance runs over `3·L_R + (L_R − n) + 1` check subjects with tolerance
+`⌊L_R/2⌋`.** So set by `spiel.md`: version 3 wrote the two as the digits 16 and 2, the
+addendum of 2026-09-06 replaced them by exactly these two formulas: *"The number of check
+subjects and the tolerance stand from here on as formulas: `3·L_R + (L_R − n) + 1` and
+`⌊L_R/2⌋`"* (`spiel.md`, section *Was der Architekt neu rechnen muss*, table row **T37 /
+tolerance**, read 2026-09-08). At `L_R = 4` they give **16 and 2**, at `L_R = 7` **28 and
+3**. My query from
+version 2 is thereby answered and struck from section 12. The check subject is not the
+series but the quantity:
+
+| Check subject | Count | today | aggregated from |
 |---|---|---:|---|
-| `frei` | GDP (4), sector shares (12), consumer prices (4), exchange rate (3) | 23 (19 independent), plus the trade block | checks the machine, decides the acceptance |
-| `gesetzt` | policy rate (4) | 4 | input of the run, error zero by construction; is reported, decides nothing |
-| `abgeleitet` | government debt ratio (4) | 4 | numerator follows the set budget balance, only the denominator is endogenous; is reported, decides nothing |
-
-**The acceptance runs over 16 check subjects with tolerance 2**, so set by `spiel.md`
-version 3; my query from version 2 is thereby answered and struck from section 12. The
-check subject is not the series but the quantity:
-
-| Check subject | Count | aggregated from |
-|---|---:|---|
-| GDP per country | 4 | one series each |
-| sector structure per country | 4 | the country's three share series, **all three** must pass |
-| consumer prices per country | 4 | one series each |
-| exchange rate per country except USA | 3 | one series each |
-| trade block | 1 | 40 flows, median of the MAPE and median of the directional accuracy; the worst fifth is reported |
-| **Sum** | **16** | |
+| GDP per country | `L_R` | 4 | one series each |
+| sector structure per country | `L_R` | 4 | the country's `S` share series, **all of them** must pass |
+| consumer prices per country | `L_R` | 4 | one series each |
+| exchange rate per country except the numéraire | `L_R − n` | 3 | one series each |
+| trade block | `1` | 1 | `(L_R+1)·L_R·(S−1)` flows, today 40, median of the MAPE and median of the directional accuracy; the worst fifth is reported |
+| **Sum** | `3·L_R + (L_R − n) + 1` | **16** | |
 
 A check subject passes if it holds both thresholds that apply to it. The run is passed if
-at most two of the sixteen are breached; each breached one is named individually, with
-both numbers. Reported are all 31 series plus the 40 flows; the sixteen
-decide.
+at most `⌊L_R/2⌋` of them are breached — today two of sixteen —; each breached one is
+named individually, with both numbers. Reported are all `L_R(S+5) − n` series plus the
+flows, today **31**. **Of those 31, `L_R(S+4) − n` = 27 are target series** since the cut
+of 2026-09-03 (`spiel.md`, package `0054`: series 9 lost its target role and keeps its two
+others). The word "target series" for all 31 is the **second wave** and is deliberately
+not repaired here — it belongs to `0068-technikmd-reihe-9-ohne-sollrolle`; section 26 says
+why.
 
 **T42 — The three error measures, written out, because `spiel.md` puts numbers on them
 and does not compute them.** Everything in integers via `teile_gerundet` (T6). `S` is the
@@ -3559,7 +3587,9 @@ kind of trap this table is written against:
   change to the solution procedure.
 - **27 against 27.** The 27 target series grow with `L(S+4) − 1`, the 27 mask addresses per
   country from T38 with `4S + I + 11` — that is, not with `L` at all. At `L = 9` it is 62
-  against an unchanged 27.
+  against an unchanged 27. **Read the first formula in `L_R`, not in `L`** (T59 switches
+  exactly three rows of this table, and this is one of them): under the nine countries of
+  `spiel.md` it is `L_R = 7`, hence 48 target series, again against an unchanged 27.
 
 **Where the 27 target series come from, and why the series list says 31.** The count is taken
 against `daten/reihen.toml`, as of 2026-09-05: `sollreihen_gesamt = 27`, split across series 1
@@ -3570,7 +3600,11 @@ says 31 and counts series 9 (policy rate) with four target series; the series lo
 role in package `0054` (`sollreihen = 0`, empty `t37_klasse`), and the prose has not been
 pulled along. **That is no contradiction to this formula but the open work of package
 `0068-technikmd-reihe-9-ohne-sollrolle`**, which stands behind this package in the same file.
-I do not touch the passage; it belongs to that package.
+I do not touch the passage; it belongs to that package. **Addition of 2026-09-08, package
+`0221`:** the passage now carries the two counts beside each other — 31 reported,
+`L_R(S+4) − n` = 27 target series — because the same passage had to be read in `L_R` for
+the country count. The repair 0068 owes is the **wording** of row 9 and of the sentence
+below the series list, and it is untouched.
 
 ### T56 — The identity of a country remains a named enumeration
 
@@ -3776,30 +3810,55 @@ play-only country — is not a data procedure, see T60.
 `L = L_R + L_S` is the country count from T54. `n` is 1 if the numéraire country (today the
 USA) is a backtest country, otherwise 0; today `n = 1`.
 
-| Quantity | Formula | today (`L_R = 4`) | `L_R = 4`, `L_S = 5` | `L_R = 9` | Reference |
-|---|---|---:|---:|---:|---|
-| GDP per country | `L_R` | 4 | 4 | 9 | T37, series 1 |
-| Sector structure per country | `L_R` | 4 | 4 | 9 | T37, series 2 |
-| Consumer prices per country | `L_R` | 4 | 4 | 9 | T37, series 8 |
-| Exchange rate per country except the numéraire | `L_R − n` | 3 | 3 | 8 | T37, series 10 |
-| Trade block | `1` | 1 | 1 | 1 | T37, series 14 |
-| **Check subjects** | `3·L_R + (L_R − n) + 1` | **16** | **16** | **36** | T37 |
-| Flows in the trade block | `(L_R+1)·L_R·(S−1)` | 40 | 40 | 180 | series 14, `handelsblock_stroeme` |
-| free target series | `L_R(S+3) − n` | 23 | 23 | 53 | `zaehlregel_t37` |
-| derived target series | `L_R` | 4 | 4 | 9 | series 11 |
-| **Target series** | `L_R(S+4) − n` | **27** | **27** | **62** | T55, `sollreihen_gesamt` |
-| **Target mask `weltlauf`** | `L_R(4S+I+11) + (4S+10) + (L_R+1)L_R(S−1) + (S−1) + 3` | **175** | **175** | **450** | T38, T55 |
+| Quantity | Formula | today (`L_R = 4`) | `L_R = 4`, `L_S = 5` | `L_R = 7`, `L_S = 2` | `L_R = 9` | Reference |
+|---|---|---:|---:|---:|---:|---|
+| GDP per country | `L_R` | 4 | 4 | 7 | 9 | T37, series 1 |
+| Sector structure per country | `L_R` | 4 | 4 | 7 | 9 | T37, series 2 |
+| Consumer prices per country | `L_R` | 4 | 4 | 7 | 9 | T37, series 8 |
+| Exchange rate per country except the numéraire | `L_R − n` | 3 | 3 | 6 | 8 | T37, series 10 |
+| Trade block | `1` | 1 | 1 | 1 | 1 | T37, series 14 |
+| **Check subjects** | `3·L_R + (L_R − n) + 1` | **16** | **16** | **28** | **36** | T37 |
+| Tolerance | `⌊L_R/2⌋` | 2 | 2 | 3 | 4 | T37, Maß 4 |
+| Flows in the trade block | `(L_R+1)·L_R·(S−1)` | 40 | 40 | 112 | 180 | series 14, `handelsblock_stroeme` |
+| free target series | `L_R(S+3) − n` | 23 | 23 | 41 | 53 | `zaehlregel_t37` |
+| derived target series | `L_R` | 4 | 4 | 7 | 9 | series 11 |
+| **Target series** | `L_R(S+4) − n` | **27** | **27** | **48** | **62** | T55, `sollreihen_gesamt` |
+| reported series (target + `gesetzt`) | `L_R(S+5) − n` | 31 | 31 | 55 | 71 | T37, section 7 series list |
+| **Target mask `weltlauf`** | `L_R(4S+I+11) + (4S+10) + (L_R+1)L_R(S−1) + (S−1) + 3` | **175** | **175** | **328** | **450** | T38, T55 |
 
-**Recomputation in running text, every number substituted once by hand in this run.**
-Check subjects today `3·4 + (4−1) + 1 = 12 + 3 + 1 = 16`, with nine backtest countries
-`3·9 + 8 + 1 = 27 + 8 + 1 = 36`. Flows `5·4·2 = 40` and `10·9·2 = 180`. Free target series
-`4·6 − 1 = 23` and `9·6 − 1 = 53`, derived 4 and 9, together `4·7 − 1 = 27` and
-`9·7 − 1 = 62`. Target mask `4·27 + 22 + 40 + 2 + 3 = 175` and `9·27 + 22 + 180 + 2 + 3 = 450`.
+**Recomputation in running text, every number substituted once by hand.**
+Check subjects today `3·4 + (4−1) + 1 = 12 + 3 + 1 = 16`, with seven backtest countries
+`3·7 + 6 + 1 = 21 + 6 + 1 = 28`, with nine
+`3·9 + 8 + 1 = 27 + 8 + 1 = 36`. Tolerance `⌊4/2⌋ = 2`, `⌊7/2⌋ = 3`, `⌊9/2⌋ = 4`.
+Flows `5·4·2 = 40`, `8·7·2 = 112` and `10·9·2 = 180`. Free target series
+`4·6 − 1 = 23`, `7·6 − 1 = 41` and `9·6 − 1 = 53`, derived 4, 7 and 9, together
+`4·7 − 1 = 27`, `7·7 − 1 = 48` and `9·7 − 1 = 62`. Reported series `4·8 − 1 = 31`,
+`7·8 − 1 = 55` and `9·8 − 1 = 71`. Target mask `4·27 + 22 + 40 + 2 + 3 = 175`,
+`7·27 + 22 + 112 + 2 + 3 = 328` and `9·27 + 22 + 180 + 2 + 3 = 450`.
+
+**The column `L_R = 7, L_S = 2` is added on 2026-09-08 from package `0221` and is the one
+`spiel.md` asks for**, in its follow-up table for the architect: *"The table gains the
+column `L_R = 7, L_S = 2` — that is the choice made in this package. Check subjects 28,
+free target series 41, target series 48, flows in the trade block 112, target mask
+`weltlauf` 328"* (section *Was der Architekt neu rechnen muss*, entry **T59**, read
+2026-09-08). All five numbers are recomputed above from the formulas and agree; they are
+not copied. **The column is an expectation with a condition and not today's state** —
+Japan, India and Chile become backtest countries only if their policy rate is at stage 1
+or derivable without a free parameter, decided per T63 step 1 at retrieval. Section 26
+carries the horizon; the columns `L_R = 4` and `L_R = 9` stay, they are the edges.
+
+**Two rows are new here and are not from `spiel.md`.** *Tolerance* stood only in T37 and
+as a digit, and a table that carries the check-subject count without the tolerance invites
+exactly the split reading this package closes. *Reported series* is the row that names 31
+as a quantity of its own: 31 is the count of all reported series, 27 that of the target
+series, and the two were the same number until the cut of 2026-09-03 struck series 9. Both
+rows follow from formulas already standing here, neither adds a decision.
 
 **An additional play-only country leaves every row of this table unchanged**, because `L_S`
 appears in no formula — that is the column `L_R = 4, L_S = 5` against the column `today`, row
 by row the same number. It changes only when `L_R` changes; that is why the
-column `L_R = 9` stands beside it, in which every row moves that is meant to move.
+columns `L_R = 7` and `L_R = 9` stand beside it, in which every row moves that is meant to
+move.
 The brief text says at one point „Ein Spielland ändert die Zahl, nicht
 die Struktur"; the acceptance condition of the same package demands the opposite and is the
 sharper statement. The formula decides the point: the count hangs on `L_R`, a play-only
@@ -4000,7 +4059,11 @@ and the fund's assets in T47.
 class table word for word; the formula stands here and not there, so that
 `0068-technikmd-reihe-9-ohne-sollrolle` finds its reference point unchanged. That the
 row `gesetzt` in the class table of T37 has been empty since package 0054 is known and
-likewise belongs to 0068. Section 7, T55 and the numbers 310 and 740 remain standing: the
+likewise belongs to 0068. **Overtaken on 2026-09-08 by package `0221`, and the sentence
+stays as the record of what *this* section did:** T37 now carries the same formulas this
+section wrote, and 16 and 2 stand there as their evaluation at `L_R = 4`, not as digits.
+The reference point 0068 needs is thereby unchanged in **value** and changed in **form**;
+what 0068 owes is the wording of the `gesetzt` row, and that is untouched (section 26). Section 7, T55 and the numbers 310 and 740 remain standing: the
 extent of the state is just now in motion through the three layers in `spiel.md` and belongs
 to 0118/0119, and this section does not need it — its formulas count check subjects and
 target series, not addresses. `reihen.toml` is **not** changed; T61 describes a block that
@@ -4828,3 +4891,88 @@ as finding an error.
    parameter-set checksum and mandate status are in the class and carry no measured bound
    today. That is this package's cut, not an omission; whoever writes the package for one of
    them writes its bound with it.
+
+## 26. One reading of the country count — Paket `0221`
+
+**What this answers, in one line.** `spiel.md` decided nine countries on 2026-09-06
+(`L = 9`, `L_R = 7`, `L_S = 2`, `n = 1`); `technik.md` carried the four-country reading as
+digits — 16 check subjects, tolerance 2, 31 series — and named no horizon, so the two
+documents contradicted each other with neither saying so. Measured by the Datenbauer on
+2026-09-07 while building `0220`.
+
+### The reading is `L_R = 4`, and that is `spiel.md`'s own sentence
+
+Not because the nine are in doubt, but because the same addendum that decided them says:
+
+> *"I have not touched `technik.md`, and **no number in it is wrong today**: until 0116 has
+> written the address arithmetic parametrically and the data builder has built the vintage,
+> `L = 4`, `L_R = 4` and 310 continue to hold."*
+
+(`spiel.md`, section *Was der Architekt neu rechnen muss*, entry *Neu aus Paket 0118*, read
+2026-09-08.)
+
+**The horizon, named, because "until 0116" is not a date.** `L_R` leaves 4 when all three
+of these have happened, and not before:
+
+| # | Condition | whose | today |
+|---|---|---|---|
+| 1 | the address arithmetic stands parametrically in `L` — package `0116`, T54/T55 | architect | open |
+| 2 | the vintage is built for nine countries — 2,310 values, ten new licence points (T62) | data builder | open |
+| 3 | the class of Japan, India and Chile is **derived** at retrieval, per T61 rule 5 / T63 step 1, not assumed | data builder | open |
+
+Condition 3 is why 28 and 3 must not be written as digits today. `spiel.md` calls its own
+class assignment *"An expectation with a condition, not a determination"*: a country is a
+play-only country exactly when one of its three policy-path series carries `stufe = 4`. If
+`MFS_IR` comes up empty for one of the three, `L_R` is 6, the check subjects are
+`3·6 + 5 + 1 = 24` and not 28, and the tolerance stays 3. **A digit written today would be
+a determination `spiel.md` expressly withheld.**
+
+### Why a formula and not a second column of digits
+
+Because the count then has **one** place. T59 already counted in `L_R`, T37 counted in
+digits, and the two agreed only at `L_R = 4` with no mechanism to keep agreeing — that is
+how the divergence of 2026-09-06 could sit unnoticed for two days. From here every count of
+the backtest — check subjects, tolerance, free, derived, reported and target series, flows,
+target mask — stands as a formula in `L_R`, `S`, `I` and `n` in T59, and every other place
+carries either the same formula or its evaluation with the value of `L_R` written beside
+it. Moving `L_R` is then one substitution, not a search.
+
+### Which wave the numbers answer
+
+Two waves ran into the same numbers; this package answers **the first**.
+
+| Wave | what it says | answered here |
+|---|---|---|
+| 1 — the country count (`0118`, 2026-09-06) | `L_R` goes 4 → 7: check subjects 16 → 28, tolerance 2 → 3, target series 27 → 48, flows 40 → 112, target mask 175 → 328 | **yes** — as formulas, plus the `L_R = 7, L_S = 2` column in T59 |
+| 2 — series 9 without a target role (`0054`, 2026-09-03) | 31 was the count of the target series and is now that of the **reported** series; 27 are target series | **no** — marked at each place, repaired by `0068` |
+
+Wave 2 is marked and not repaired on purpose: `0068-technikmd-reihe-9-ohne-sollrolle` is
+open and holds it as its subject, and doing its work would leave its review nothing to
+check. What this package added at those places is a count beside a count, never a struck
+word.
+
+### What is deliberately left standing
+
+- **`daten/reihen.toml` is not touched.** Its follow-up is a Datenbauer package over
+  `zaehlung.pruefgegenstaende` (`gesamt = 16`, `toleranz = 2`, `beleg = "technik.md T37"`)
+  and `zaehlung.sollreihen_gesamt = 27`, plus the comment above each. Their `beleg` is this
+  block, so that file can only follow, never lead; and two files written by two roles under
+  one `dateien` list make both unplannable.
+- **The geometry stays at four.** The 310 and 740, `LAENDER·INSTRUMENTE = 16`, the
+  dimensions `4 + RW` in the series list of section 7 — all of that counts addresses, not
+  check subjects, and belongs to `0116`. `spiel.md` holds the 310 expressly in place until
+  then.
+- **The window 1997–2021 and the 25 support points** in T24 are the follow-up of the R cut
+  and belong to `0064`.
+- **The directional-accuracy addition** `spiel.md` asks for — form it only over the
+  transitions in which the target series moves — is **not** written into T42 here. It is
+  needed by a target series that never moves, and the only one named is the Saudi exchange
+  rate, which under the binding reading is not a target series at all. It falls due with
+  condition 1 above, and it is a threshold rule, not a count.
+
+### The check this section can be held to
+
+`Grep` for `16`, `2`, `31` and `27` in T37 and in section 7 finds each of them either as
+the evaluation of a named formula with `L_R = 4` beside it, or with the sentence that names
+the wave it belongs to. **No number of the nine-country reading stands in this file as
+today's state**, and no number of the four-country reading stands without its horizon.

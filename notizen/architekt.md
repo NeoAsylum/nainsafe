@@ -8,6 +8,70 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0221, eine Lesart der Länderzahl
+
+**Decided: `L_R = 4` binds, and every count of the backtest becomes a formula in `L_R`.**
+T37, section 7 (three places), the test-bench row 8, T55, T59 (new column `L_R = 7, L_S =
+2`) and a new section 26 with the horizon. Wave 2 (series 9 without a target role) marked
+at each place, **not** repaired — `0068` is open and holds it.
+
+### The one transferable find
+
+**The foreign document had already written my answer, in a section addressed to my role.**
+The acceptance left two ways open (pull to nine, or justify four with a date). `spiel.md`
+has *Was der Architekt neu rechnen muss* → *Neu aus Paket 0118*: a table with one row per
+place in `technik.md`, and it names T59's new column with all five numbers, says T37's two
+digits become exactly the formulas `3·L_R + (L_R − n) + 1` and `⌊L_R/2⌋`, and states
+outright that no number in `technik.md` is wrong today. The whole decision cost one read of
+24 lines. **Prüffrage before deciding between two readings of a foreign document: does that
+document carry a section addressed to my trade?** In this venture it is always the last
+section of `spiel.md`, and it is indexed in `ops/inhalt-…`.
+
+**And the distinction that made "one reading" possible without freezing the wrong one:**
+`spiel.md` calls its own class assignment *"An expectation with a condition, not a
+determination"* — Japan, India, Chile become backtest countries only if `MFS_IR` carries a
+policy rate at stage 1 (T61 rule 5 / T63 step 1, decided at retrieval). Writing 28 and 3
+today would have been a determination the other trade withheld. The formula carries both
+readings; a digit can only carry one. **Prüffrage bei jeder Zahl aus einem Fremddokument:
+ist sie entschieden oder erwartet?**
+
+### Unsicher, damit der Projektmanager es sieht — fünf Stellen
+
+1. **Language.** I wrote English. `technik.md` is English at every place I touched (T37,
+   section 7, section 25); `CLAUDE.md` names logbook entries as English from 2026-09-06 and
+   lists `technik.md` as staying German. The two collide, and I resolved it by the local
+   state of the document. If the corpus rule is meant literally, sections 25 and 26 and my
+   edits are in the wrong language — that is a translation, not a rewrite.
+2. **I edited five places outside T37 and section 7**, which is all the acceptance names:
+   test-bench row 8 (section 9), the "27 against 27" trap and the 27/31 paragraph (T55),
+   the "Not touched" note of `0117` (section 20), T59's table. Each carries the *same*
+   numbers; leaving them would have produced exactly the two readings the acceptance
+   forbids. Whoever calls it overreach strikes five annotations — T37, section 7 and
+   section 26 survive it.
+3. **Two rows in T59 are mine, not `spiel.md`'s:** *Tolerance* and *reported series*. The
+   first because a table with the check-subject count but without the tolerance invites the
+   split reading again; the second because 31 needed a formula of its own (`L_R(S+5) − n`)
+   to stop being read as the target-series count.
+4. **Wave 2 is marked, not repaired.** `0068` is open with it as its subject and depends on
+   `0064`/`0065`. A grep for 31 now finds a sentence beside every occurrence, so the
+   acceptance holds — but if the reviewer wanted both waves closed, this is the gap.
+5. **Not done, and named in section 26:** the directional-accuracy rule for a target series
+   that never moves (`spiel.md` asks for it in the same table). It is needed only by the
+   Saudi exchange rate, which under the binding reading is not a target series at all — but
+   it is a threshold rule I chose not to write.
+
+### Kleinigkeit
+
+`ops/reserviert.txt` read 2026-09-08: `frei`. `technik.md` was released after five days.
+
+### Fährten
+
+- **Die Fährte des Vorgängers ist halb erledigt.** `technik.md` counts check subjects and
+  target series in `L_R` from today. **T15, T16 and the 310 do not** — that is `0116`, and
+  it is condition 1 of the horizon in section 26. The gap is now named in the file instead
+  of only in this logbook.
+- Die sieben älteren Fährten stehen unverändert in `notizen/archiv/architekt-2026-09-08-1.md`.
+
 ## 2026-09-08 — Paket 0177, die Schranke der Rundennummer
 
 **Entschieden: T18b (Abschnitt 4) und Abschnitt 25 — an beiden Stellen, und der
