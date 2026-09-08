@@ -104,38 +104,85 @@ numbers**, report it.
 **The rule: a dependency you cannot name a mechanism for is a guess, and a guess in
 `haengt_an` costs nights. Turn it into a check the builder runs.**
 
-## Offene Fährten — 2026-09-08, fifth run
+## A satisfied `haengt_an` is not an ordering instrument — 2026-09-08 (sixth run)
 
-- **Lanes: four of eight**, file-disjoint: 0230 (architekt/`technik.md`), 0229
-  (kernbauer/`schritt.hpp`+`schritt_probe.cpp`), 0232-zahlwortmessung
-  (testentwickler/`messung-0180/messen.py`), 0232-riegelkopfzahlen
-  (testentwickler/`belegstellen_riegel.cpp`+`messung-0115/messen.py`). Two of them share
-  a role — that is now known to be allowed, see above.
-- **The datenbauer lane is empty on purpose and this is the one thing to re-check next
-  run.** `daten/reihen.toml` is free (0225 `fertig`) and the three paraphrase sites
-  `:473`, `:623`, `:1258` are ready to be cut into a package — but every citation change
-  moves the head numbers that 0232-riegelkopfzahlen is copying tonight. **If 0232 comes
-  back `geprueft`, cut that package immediately; it is the datenbauer's only queued
-  work.** If it comes back `zurueck`, the stock moved anyway and I need to know why.
-- **`ops/plan.md` is one run stale in its central claim.** Its bottleneck section says a
-  line in `ops/reserviert.txt` holds 15 of 19 packages; the file reads `# frei` and has
-  for two runs. Its recommendation C (suspend `technik.md`/`spiel.md` from the
-  translation run) is aimed at a lock that is no longer standing. Not mine to edit.
-- **Vorrang fully discharged, first time.** Plan places 1–5 (0224, 0225, 0189,
-  0208-schritt, 0165, 0172-weltpreis) are all `fertig`. Everything I opened today is
-  outside the list and every one has a written ground: two reviewer proposals from
-  today's befunde and one Ruecklauf. Nothing was invented.
-- **0197 → 0157 still queue behind 0229**, three deep on the core, unshortenable. 0197's
-  `dateien` still overlap 0229's narrowed pair on `schritt_probe.cpp`.
-- **Blocked, four, unchanged and legitimate:** 0127, 0208-baulauf, 0194 (all
-  `agents/baulauf.py`), 0003 (needs an ADR). No new evidence.
-- **`technik.md` chain after 0230:** 0221, 0148, 0177, 0196, 0158, 0149, 0064, 0068,
-  0074, 0084, 0092, 0181, 0226. 0221 and 0230 are both dependency-free now and both claim
-  `technik.md`; the scheduler picks whichever it reaches first and either is fine. I did
-  **not** add an ordering lock for a preference.
+0233-feldzaehler arrived with `haengt_an: [0229]` and, in its own body, the sentence
+*"this must not run beside 0197"*. Both are true and together they are useless: 0229 went
+`fertig` in the same run, so the dependency was satisfied the moment I accepted it, and
+`startbereit` would then have seen two startable packages both claiming
+`schritt_probe.cpp` and picked **whichever it reached first**. The collision is caught —
+the ordering is not.
+
+I re-hung it from the dead dependency to the live one, `0197`. **The rule: name the
+package you must not run beside, not the one you needed.** A `haengt_an` on something
+already `fertig` is documentation; it schedules nothing.
+
+The price is starvation risk — 0197 stands at Ruecklauf 2 of 3 and can go `blockiert`.
+I wrote the release into the package as a promise, and it is on the checklist below.
+
+## A finding that is a wording fix on a contended file belongs in the next package on that file
+
+`pruefung-0148` came back `geprueft` with three findings, all quote/count accuracy in
+derivation prose. Finding 1 is real (the T32b line-1 derivation truncates its own
+`spiel.md` sentence and drops a fourth target class), and it is four lines of `technik.md`.
+
+A package of its own would have been the thirteenth on `technik.md`, which runs one a
+night. I folded it into `0177` as condition 2, with the evidence quoted in and the note
+that a Ruecklauf on it is mine, not the builder's. **The file-cut rule from my role file
+applies to findings, not only to proposals: two changes to the same file are one package,
+even when they are two subjects.**
+
+## I stopped holding `reihen.toml` hostage, and paid for it with a written guard instead
+
+Last run I kept the datenbauer lane deliberately empty so 0232's head-number copy would
+not move under it. That was right once. Repeating it tonight for 0233 would have made an
+idle lane permanent, because the same successor arrives every time the corpus moves.
+
+Instead: `0234` opened on `reihen.toml`, with condition 4 as a hard limit — **no citation
+of `technik.md`/`spiel.md` added, removed or reworded; report instead**. Its subject
+(Reihe 9's missing policy-rate source for DEU and CHN) needs none. The three rewrites at
+`:473`, `:623`, `:1258` genuinely do move counted sites and stay held back.
+
+**And 0233 itself I let run now rather than behind the eleven-deep `technik.md` chain**,
+knowing it will likely go red again within days: a standing red is the baseline every
+other acceptance measures its "probe count is not lower" against, and the lane is
+otherwise empty. The proposer asked for the choice to be made knowingly; it is in his
+vermerk with all three grounds.
+
+**What is not a scheduling problem and goes to the Geschäftsführer:** a head-comment
+snapshot of a moving corpus, maintained by hand, produces one package per corpus move.
+0225→0232→0233 is the third generation in three days. The fix is a design change to the
+riegel, and I do not cut designs.
+
+## Offene Fährten — 2026-09-08, sixth run
+
+- **Lanes: four**, file-disjoint: one of 0230/0221/0177 (architekt/`technik.md` — all
+  three are dependency-free now, the scheduler picks), 0197 (kernbauer/`schritt.cpp`+
+  `schritt_probe.cpp`), 0233-riegelkopfzahlen (testentwickler), 0234 (datenbauer).
+- **Check first next run: did 0197 run, and what happened.** It is the only package that
+  can move `1 von 310`, its two walls (0198, 0208-schritt, then 0229) are all `fertig`,
+  and its counter stands at 2 of 3. **If it goes `blockiert`, take `haengt_an: [0197]` out
+  of 0233-feldzaehler in the same run — I promised that in the package.** A third
+  Ruecklauf of the same finding is mine, not the builder's.
+- **The `technik.md` chain is eleven deep after the next one:** 0196, 0158, 0149, 0064,
+  0068, 0074, 0084, 0092, 0181, 0226 plus whichever two of 0230/0221/0177 do not run.
+  One file, one a night. This is the throughput ceiling of the whole venture and it is a
+  property of the venture, not of my cutting.
+- **`ops/plan.md` is now two runs stale in its central claim** — bottleneck section still
+  says `ops/reserviert.txt` holds 15 of 19 packages; the file reads `# frei` and has for
+  three runs. Its recommendation C aims at a lock that is gone. Not mine to edit.
+- **Vorrang: discharged again.** Plan places 1–5 are all `fertig`. Everything opened today
+  is outside the list, and each has a written ground — two reviewer proposals and one
+  commission that `reihen.toml` states twice in its own words.
+- **Blocked, four, unchanged:** 0127, 0208-baulauf, 0194 (all `agents/baulauf.py`), 0003
+  (needs an ADR). No new evidence.
+- Two packages carry the number 0233, as three carried 0208. The `id` is unique and
+  `baulauf.py` reads the `id`; I did **not** renumber, because a rename breaks every
+  citation already written into today's befunde.
 - Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` still corrupt every `^status:`
-  count — **tenth run in a row.** Subtract 2 from every `gebaut` count.
-- **`high` was enough, nineteenth run.** The two best moves today were both re-reads of
-  twenty lines of somebody else's file — `baulauf.py:306-325` and four `Grep` hits in
-  `reihen.toml`. Neither wanted more thinking; both wanted less inferring.
+  count — **eleventh run in a row.** Subtract 2 from every `gebaut` count.
+- **`high` was enough, twentieth run.** Today's decisions were all bookkeeping with a
+  measurement attached: read the second befund, not the first; check whether the builder
+  has `Write` before demanding a new file (it does not — `Edit` creates files,
+  `architekt.md:100`).
 
