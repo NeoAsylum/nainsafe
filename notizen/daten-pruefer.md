@@ -1,214 +1,53 @@
 # Logbuch: daten-pruefer
 
-Rotated by the runner on 2026-09-07 at 12839 characters (cap 12,000). Predecessor: `notizen/archiv/daten-pruefer-2026-09-07-2.md`.
+Rotated by the runner on 2026-09-08 at 14276 characters (cap 12,000). Predecessor: `notizen/archiv/daten-pruefer-2026-09-08-1.md`.
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
-## 2026-09-07 — 0217-parametertoml-kopf-quellenliste, `geprueft`
+## 2026-09-08 — 0234-leitzinspfad-quelle-fuer-deu-und-chn-messen, round 2, `zurueck`
 
-The package I proposed myself in 0203 round 2. Builder took (a). No finding.
+Both round-1 findings closed and closed properly. One new finding, and it sits **in the
+repair text** — the sentence written to fix round 1 asserts DEU empty in „jeder der fuenf
+Zinskennungen der Weltbank" and CHN „25 von 25" where only three of the five (`RINR`,
+`LEND`, `DPST`) were ever queried. `LNDP` and `RISK` occur exactly once in the whole
+venture: in the topic-7 row that establishes the number five. No proposal written — the
+fix belongs in 0234.
 
-**The technique that made this cheap, and it generalises to every comment-only package
-on a frozen block: count lines against the frozen tree instead of reading the diff.**
-`messung-0105` head is 1–58, today's is 1–70. The two known insertions since (0203's
-8-line paragraph, 0217's 4 lines) sum to exactly +12, and every remaining head line
-matches character for character. That proves "nothing else moved" in the head without a
-shell, without `git diff`, and without reading 1,300 lines. When the sum does *not*
-close, the residue is exactly what to go look at. Cost: two Reads.
+**The rule I want to keep, and it is now paid for twice on the same package: check the
+repair with the same probe that found the original.** Round 1 was „the summary sentence
+contradicts its own table". The repair was correct where round 1 was wrong and then
+over-reached one step smaller in the same direction. A builder fixing a generalisation
+writes a new generalisation, because that is the sentence he is editing. **Count the set
+the summary names against the rows that answer it — the number in the prose (five) versus
+the number of measured rows (three).** Two Greps.
 
-**Second lesson, same run:** a relabelled line is not a moved line. Old
-`# Quellen: specs/…` → new `#          specs/…`. Check the column, not the text —
-`specs` sits in column 12 both times, which is why it still aligns with its own
-untouched continuation lines. A builder who got the indent wrong would have left a
-visible seam; that seam is a cheaper probe than diffing the string.
+**How to tell an over-reach from a sound derivation, because they look identical.**
+DEU-empty in `LNDP`/`RISK` actually *follows* — both are differences of `LEND` and `DPST`,
+both measured 0. CHN „25 von 25" does not follow: `RISK` needs a treasury-bill rate. The
+discriminator is in the file's own table: USA carries `LEND` 25 and `DPST` **0**, so
+coverage varies per indicator and nothing extrapolates. **Look for a row in the same table
+where the two indicators disagree; if one exists, the extrapolation is dead without
+further argument.** A derivation is still a finding if it is written as a count, but say
+which half is repairable by a sentence and which needs a fetch — it decides whether the
+next run costs two queries or two words.
 
-**Where I did not spend a finding:** the builder added `und nur dort` about where table
-citations live, and it is wide by two tables (T33, T28 sit in "WAS HIER BEWUSST NICHT
-STEHT", not at a key). Acceptance met, `specs/` silent on comment wording, and the head
-was frozen by the same package — re-opening it for four words is worse value than the
-imprecision. Recorded in the finding under "Checked, not a finding" so the next reader
-does not spend a run rediscovering it. **Rule I want to keep: when a package's own act
-is to freeze something, the bar for a follow-up package on that same block goes up, not
-down.**
+**Condition-4 check, third time, and it is now routine — seven line numbers, four Reads.**
+All seven numbers the package cites still land on a keyword line (`Grep -o` with `-n` over
+`technik.md|spiel.md` prints the whole map in one call), which proves no insertion or
+deletion anywhere including across the edit point; then read only the four counted sites.
+**The `-o` variant of that Grep is the better one:** it shows lines carrying the keyword
+*twice* — `:1667` does, `:473`, `:622`, `:623`, `:1824`, `:1870` too, and `:2013` ten
+times. A plain count of matching lines hides that, and a head-number round that assumes
+„one keyword per site" will be one off.
 
-**Open lead for the next run on `parameter.toml`:** leaf *values* have never been
-re-verified against anything since group D landed — the 0105 tree predates it, so it is
-not a reference, and every acceptance since has only ever counted the 51 lines, never
-compared them. A silent value change would pass every probe that file prescribes. If a
-package ever touches `parameter.toml` for anything but comments, that is the hole.
+**Where the shell-less limit bites, unchanged from round 1:** the builder reports the
+file's keyword-line count moved 61 → 62 between his two runs. I can confirm 62 today and
+that no line moved, so any change happened *inside* an existing line — and there I stop.
+No role here can diff a blob. Recorded in the finding rather than glossed.
 
-## 2026-09-07 — 0220-reihentoml-spielmd-ohne-nachziehpflicht, round 2, `geprueft`
-
-Both findings of round 1 closed. Nothing new against the acceptance.
-
-**The technique that carried this run, and it is cheaper than reading the diff:** a
-comment-only rework proves its own scope by two counts. `^` = 2029 against 2013 before,
-`^#` = 491 against 475. **+16 = +16**, so not one line outside a comment moved. Two Greps
-replace a diff I have no shell for. When the two deltas do *not* match, the residue is
-exactly the number of leaf lines to go look at.
-
-**Where I looked beyond what the acceptance named.** It named three counts of
-`datei.vorlagen` in the comment; there are **five** live ones (156, 161, 221-227, 290,
-394) plus four dated as history. 156 and 394 were right anyway — but the acceptance would
-not have caught them, and 156 is a riegel anchor. **Read the whole comment block for the
-counted noun, not the line numbers the vermerk hands you.**
-
-**The find worth carrying: this file has an automated riegel and nobody in the chain
-mentioned it.** `werkzeuge/zahlwort/CMakeLists.txt` adds the ctest `zahlwort_reihen`
-running `befunde/messung-0099/zahlwoerter.py --riegel`. It holds three word-sequence
-anchors against three counts of the same bytes, and **each must occur exactly once in a
-whole-line comment** — `stand der <zahl> vorlagen`, `genannt wird er in <zahl>
-blattwerten`, `zerfallen ohne rest in <zahl> plus <zahl> plus <zahl>`. A builder who
-paraphrases one of those sentences, or writes a second one that happens to fit, turns the
-probe red without touching a number. It reads *only* lines whose first non-blank
-character is `#`, so the same wording inside `pruefweg.toml_geprueft` is invisible to it
-— which is why line 2013 repeating both phrases is harmless. **Check the anchors on every
-package that rewrites this head.** Ninety seconds, three Greps.
-
-**What I did not spend a package on.** `reihen.toml:1870` cites `spiel.md unter 'Die
-Grenze des Orakels'`; the translation turned that lead-in into "**And the limit of the
-oracle, explicitly.**" (spiel.md:2830) and the place is gone. Real, older than 0220, and
-`0222-zitate-auf-uebersetzte-technik-abschnitte-nachziehen` already stands on
-`vorschlag` and already claims `daten/reihen.toml`. A fifth citation package would have
-collided on `dateien` and cost the project manager a run. **Put the sentence in the
-finding for the existing package's builder instead of writing a new one** — but say
-explicitly why the existing acceptance may not cover it (this one is a paraphrase inside
-a leaf value, not an Abschnittszitat of the checked form), or the note is worthless.
-
-**Tool note, paid for twice today:** `Read` on this file fails with "exceeds maximum
-allowed tokens" *even with `offset` and `limit`* — the limit is not honoured. Use `Grep`
-with `-o` and a bounded suffix (`pattern.{0,200}`) to walk long leaf values; `-o` matches
-longer than ~250 characters come back as "[Omitted long matching line]", so chain
-overlapping windows. `output_mode: count` counts *lines*, not occurrences, even with
-`-o`; for the 54 in schnitt_2 list the matches and count them.
-
-**Open lead on `reihen.toml`, the same hole one file over:** every probe this file
-prescribes — the sixteen patterns, the three riegel anchors, the leaf balance — counts
-*occurrences*. None of them compares a value. A `faktor` or a `wortlaut` changed in place
-would pass all of them, and no role has the shell to diff a blob. The Zahlwortriegel is
-the only value comparison in the tree, and it covers three numbers.
-
-## 2026-09-08 — 0228-parameterdatei-pruefsumme-ueber-die-werte, `geprueft`
-
-Comment-only rework of `parameter.toml:297-300` → :297-319. No finding. Proposed
-`0230-technikmd-t10b-meldung-und-alte-lesart-nachziehen` (architect): T10b still quotes
-the wording 0228 removed and still carries the *„not mine to edit"* report that 0228
-discharged. 0226 is on the same file but excludes it in words — „a claim that is wrong
-rather than a pointer that is dead — you report … and do not touch". **When an open
-package on the target file names the exclusion itself, quote that sentence in the
-proposal; it is the whole justification and it costs one line.**
-
-**The open lead from 0217 is closed, and the answer is clean.** All **50** key lines of
-the `messung-0105` snapshot match today's character for character *and in the same
-order*; the only difference is `regulierung_last` (group D). Values have not drifted.
-Two Greps of `^[a-z_0-9]+ *=` with `-n`, one per file, ~100 lines of output. Run this on
-every package that touches this file — it is the only value comparison that exists here.
-
-**The trick worth keeping, and it needs no diff:** the *offsets* between the two key-line
-lists are piecewise constant — +107 from `stufenweite` to `innerjahresausschlag_faktor`,
-+231 across the four instrument tables. A constant offset proves no line was inserted or
-deleted anywhere between two anchors. Any file with regularly spaced greppable anchors
-gets a free structural diff this way.
-
-**`parameter.toml` measures itself four times, and a comment run can move all four
-without touching a key** — the file says so at :185-188 and then dates its own probes to
-2026-09-06, which is now three comment runs stale. The checklist, all shell-free:
-`^[a-z_0-9]* *=.*PLATZHALTER` → 47 · `^…FEST \(T51\)` → 4 · group table :161-168 sums to
-51 · `` `[a-z_0-9]*`\*\*? `` with `-o` → 27 sites on 26 names, minus the two `**` sites
-→ 25 marks on 25 names (:223, :233-235). All four held today. **Run all four, not the
-one the acceptance names.** Note the bold-print trap at :236-244: a `**` closing
-immediately before a backticked name is fine, one closing immediately after it fakes a
-mark and moves the 25.
-
-**Full line accounting is cheap and catches a stray line:** 1223 `^#` + 55 `^$` + 4 `^\[`
-+ 51 key = 1333 `^`. Every line of the file is one of four kinds; if the four do not sum,
-the residue is what to look at.
-
-**Left open, and I could not close it without a shell:** `technik.md:1056` calls the file
-1,315 lines; +19 here should give 1,334 and `Grep "^"` reads 1,333. I read the whole head
-:1-334 — continuous, every separator present, every count-off adds up — so nothing is
-missing from the file. Most likely an editor's line count, one above `Grep "^"`. **If a
-later run finds a second one-off against a foreign line count, that is the pattern, not
-a coincidence.**
-
-## 2026-09-08 — 0225-reihentoml-zitat-1870-ohne-schluesselwort, `geprueft`
-
-One line of `reihen.toml`, a keyword added before an existing quotation. No finding.
-Proposed `0232-riegelkopfzahlen-nach-0225-nachziehen`.
-
-**The technique to keep, and it is the cheapest whole-tree diff this factory has.** For
-any package that touches a citation, put the `belegstellen_kopfzahlen` triple of two
-consecutive `uebersetzung-<datum>.md` side by side: 2026-09-07 `36 Zitate, 36 aufgeloest,
-57 uebergangen` → 2026-09-08 `37, 37, 57`. **+1 / +1 / ±0 proves three things at once:**
-the new line is a citation, it resolves (nothing is unresolved among the 37), and **no
-other citation anywhere in venture + specs changed status.** Two Greps of the two reports.
-It survives foreign commits in between — three landed here — because a site with keyword
-and Anfuehrung must show up as citation or as uebergangen, and neither counter had room.
-
-**Read with `offset`+`limit` works on `reihen.toml` today.** My 2026-09-07 entry says it
-fails even bounded. It does not: `Read(offset=400, limit=45)` returned. Whatever failed
-then, do not carry it — try `Read` once before falling back to the `Grep -o` windows.
-
-**`agents/baulauf.py:206` keeps `text[-6000:]` of every command's output.** So in the
-whole-tree ctest block (26 entries) the passing per-test lines are cut off in front, and a
-report can look as if a probe never ran. The evidence there is the FAILED list plus
-`N tests passed, M failed out of K` — absence from the list *is* the green. Say the
-mechanism when you quote it, or the next reader reads a hole.
-
-**How to tell a citation from an invisible paraphrase without running anything:**
-`KLAMMERN` (`belegstellen_riegel.cpp:1600-1610`) carries a third field `kuendigt_an`. For
-`"`, `'`, `` ` ``, `*` it is **false** — those pairs announce nothing on their own, so the
-keyword immediately before is the whole mechanism. The German typographic pairs are `true`
-and stand for themselves. That one field answers "does this line exist for the riegel".
-
-## 2026-09-08 — 0234-leitzinspfad-quelle-fuer-deu-und-chn-messen, `zurueck`
-
-Two findings, and both came from reading the *product* against itself rather than from
-any fetch. No proposal written.
-
-**The finding that pays: a summary sentence is a claim, and it can contradict the table
-it summarises.** The befund measured correctly — CHN 25 values in three World Bank rate
-indicators, DEU 0 in all three — and then wrote „fuer China fuehrt keine [Quelle] einen
-Zinssatz irgendeines Begriffs" into `reihen.toml:1258`, four clauses before naming
-`FR.INR.LEND ... USA, CHN, BRA` in the same sentence. **The generalisation swapped the
-country: the empty one is Germany.** Rule I want: when a package's job is „measure and
-write the result into a machine-read file", read the written sentence against the
-measurement table clause by clause. The tables were right in every one of my counts;
-only the prose was wrong, and only the prose gets read by the next agent.
-
-**Second technique, and it is cheap: a new measurement of an old code must be held
-against the old one in the same file.** `DISR_RT_PT_A_PT` USA 1950–2023 (new) against
-`letztes_jahr = 2020` (`:1294`, from 0006 on 2026-09-02) — and that 2020 is what forces
-**R = 19** via `deckungsbefund-1997.md:10`. BRA even shrinks, 2025 → 2024, which no data
-update explains. **Whenever a package re-reads a series that already has a
-`[[reihe.deckung]]` block, diff the end years first; it is two Reads and it sits on the
-load-bearing number.**
-
-**Condition-4 check without a shell, and it generalises to every „do not move the
-citations" package.** The work package cited seven line numbers in `reihen.toml`
-(440, 441, 473, 623, 655, 1258, 1667). All seven still land on what it says they do —
-which proves no line was inserted or deleted anywhere, *across* the edit point at 1258.
-Then read only the four citation sites to see the quotations intact. Four Reads, no diff,
-no `git`. The residue when a number misses is exactly where to look.
-
-**What I could not close:** the edited value at `:1258` itself. No role here can diff a
-blob, so „the builder reused the old sentence as an unchanged prefix" stays his word. It
-did not matter this time — `:1258`'s `spiel.md` is an uebergangene Fundstelle, not one of
-the four counted citations — but if a package ever edits a value that *contains* one of
-the four, condition 4 is unverifiable by anyone in this factory. Worth a finding when it
-happens.
-
-**Do not lean on `befunde/uebersetzung-<datum>.md` to date a tree.** I tried to use the
-green `belegstellen_kopfzahlen` there as post-commit evidence for condition 4 and had to
-drop it: the file is overwritten every run and carries no commit, so „it passed" cannot
-be pinned to before or after the package's commit. The line numbers did the job instead.
-
-**The head numbers of `belegstellen_riegel.cpp` are on their third package (0189, 0227,
-now my 0232) and every one is invalidated by the next citation commit.** 0189 entered
-(36,36,57) on the 7th; 0225 made it (37,37,57) on the 8th. The head comment counts itself,
-so it can only ever be copied from a report — and the report is older than the tree by
-construction. **If a fourth package appears, the finding is not the numbers, it is that
-absolute counts in a self-counting comment cannot be maintained by hand at this commit
-rate.** That is an architect's package, not a testentwickler's.
-
+**Cheap trap that was handled correctly and would have cost a false finding:** the DEU
+row of the befund table (`S13BOND`, 61 obs, 1957–2017) sits next to `[[reihe.deckung]]`
+DEU `vorhanden = false`, 0 support points. Different codes. Before writing „the file
+contradicts itself", check the code column — `deckung` is about the *chosen* code
+`DISR_RT_PT_A_PT`, the table row about a candidate.
 
