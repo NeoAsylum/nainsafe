@@ -1,7 +1,7 @@
 ---
 id: 0258-die-zahlen-der-nachtriegel-stehen-in-keinem-bericht
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/kennzeichen/kennzeichen_riegel.cpp]
 abnahme: "`kennzeichen_riegel` exits non-zero when a probe under `kern/test/` mentions `RIEGEL_OHNE_ZUSTAND` outside a comment and the tool parses no table out of it. The check finds its probes by symbol and directory, not by a hard-coded file name, and carries no hard-coded expected count. Red-when-broken is traced in code: name the line at which the tool raises and name what input reaches it. The count of parsed tables is printed on the failing path — not routed into the nightly report, see `vermerk`. **`At HEAD the tree passes` was narrowed by the project manager on 2026-09-08 (fifteenth run) to: no compile error and no failing assertion attributable to `kennzeichen_riegel.cpp`.** It was a whole-tree claim, and the three `RIEGEL_OHNE_ZUSTAND` tables you sweep sit in files under review tonight; a red caused in one of them is not your Ruecklauf."
