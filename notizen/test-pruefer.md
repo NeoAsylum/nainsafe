@@ -49,6 +49,23 @@ generated (riegelliste, :197-206), forget-net = two static_asserts :430-431, pri
 line says "vor Paket 0255 waren es 14 aus 7". Root ctest 27 (kennzeichen_riegel from
 0251 landed and passes), kern 13.
 
+## 2026-09-08 — 0261 (bip Restwelt case, length as equation): geprueft
+
+What worked: the three-number equation discharges itself at runtime — `erwartet == 324`
+pins the decomposition, `laenge == erwartet` pins it to reality, so a green run proves
+the copied prose constant (242) without reading `src/werte.cpp` at all. When a package
+turns a slack bound into an equality, check both directions can fail (prose drift vs
+width drift) — this one can, including a dedicated red-proof (RW address = BR + 1 char).
+
+Attribution again cheap via the report: the two red tests at HEAD are belegstellen-lane
+(head numbers + Bezugsstand 2f2f79f vs 6f2ec03); Zitate measured 41 = head 41, so the
+package's new comments added no citation — worth checking explicitly ever since 0257.
+
+Corpus update for werte_probe: still 23 riegel + Anzahl, SOLLZAHLEN sum **36** (was 35;
+BipsummeVerlaesstI64 2→3), `nennerdecke_angekommen == 3`, PlusOhneDarstellbareSumme has
+its single MERKE at :2351. Vermerk guardrails (0263) checked: RIEGEL_OHNE_ZUSTAND
+intact, no `using enum`, kennzeichen_riegel green.
+
 ## 2026-09-08 — 0257 (festkomma_probe onto Buch): zurueck
 
 The test mechanics were flawless — nine abbruch sites recounted, nach_i64's three
