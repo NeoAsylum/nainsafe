@@ -28,17 +28,31 @@
 //! der sechs Schritte steht daneben als benannte Liste (`SCHRITTFOLGE`, T9), damit ein
 //! Umstellen sichtbar wird.
 //!
-//! **Und das ist eine Eigenschaft des Rahmens, nicht der Architektur.** Wer Schritt 4
-//! baut, ersetzt den Rumpf von `schritt_4_wirtschaft` durch die Rechnung; die nimmt ihren
-//! Block als Ganzes, weil sie Eingangsgroessen braucht, und dann steigt die Kette nicht
-//! mehr auf. Genau dann soll sie es nicht mehr, und das Folgepaket zieht die Aussage nach.
+//! **Und das ist eine Eigenschaft des Rahmens, nicht der Architektur -- seit dem
+//! 2026-09-08 ist sie widerrufen.** Paket 0197 hat Schritt 5 den ersten rechnenden Rumpf
+//! gegeben, und der nimmt seinen Block als Ganzes: Die Zustimmung eines Landes liest den
+//! **neuen** Stand seiner vier Instrumente, und in der aufsteigenden Adressrunde kommt
+//! sie vor ihnen an. Die vier Zustimmungsadressen laufen deshalb nach der Adressrunde.
+//! Damit steigt die Kette nicht mehr durchgehend auf: 171 Glieder aufsteigend, danach die
+//! vier der Gegenkraft. `test/schritt_probe.cpp` zieht die Aussage nach und misst die
+//! neue Gestalt, statt sie abzuschreiben -- der Kopf `include/kern/schritt.hpp` hat den
+//! Widerruf ausdruecklich dorthin gelegt.
+//!
+//! Was der Widerruf **nicht** ist: eine Erlaubnis fuer Schritt 4. Dessen Marktraeumung
+//! wird denselben Weg gehen, wenn sie gebaut wird; heute traegt sie vor.
 //!
 //! Die zweite Aussage derselben Art -- die unveraenderte Pruefsumme -- ist seit Paket
 //! 0071 widerrufen: Schritt 1 **setzt** `partie.runde` auf die Nummer dieser Runde, statt
-//! sie vorzutragen. Genau eine der 310 Groessen aendert sich damit ueber eine Runde. Der
-//! Grund steht an `schritt_1_ansicht` weiter unten und in einem Satz hier: Ein Zustand,
-//! den eine vollstaendige Runde Feld fuer Feld unveraendert laesst, ist von "keine Runde
-//! gelaufen" durch keinen Vergleich zu unterscheiden.
+//! sie vorzutragen. Der Grund steht an `schritt_1_ansicht` weiter unten und in einem Satz
+//! hier: Ein Zustand, den eine vollstaendige Runde Feld fuer Feld unveraendert laesst,
+//! ist von "keine Runde gelaufen" durch keinen Vergleich zu unterscheiden.
+//!
+//! **Die Zahl, die 0071 daneben schrieb -- "genau eine der 310 Groessen" --, gilt seit
+//! dem 2026-09-08 nicht mehr.** Schritt 5 rechnet, und die Zustimmung eines Landes kann
+//! sich mitbewegen; wie viele Groessen eine Runde bewegt, haengt jetzt am Zustand und ist
+//! keine Konstante des Rahmens mehr. Der Kopf `include/kern/schritt.hpp` fuehrt die alte
+//! Zahl noch. Er steht nicht in der Dateiliste dieses Pakets und ist als eigener
+//! Vorschlag gemeldet (0235).
 
 #include <array>
 #include <cstddef>
@@ -48,6 +62,7 @@
 #include "kern/meldung.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/schritt.hpp"
+#include "kern/werte.hpp"
 #include "kern/zustand.hpp"
 
 #include "kern/sperre.hpp"  // T4: ab hier ist Gleitkomma ein Uebersetzungsfehler
@@ -403,11 +418,16 @@ static_assert(zaehle(Rundenschritt::Keiner) == schreiber::AUSSERHALB_WELTLAUF,
 //
 // **Das ist der Anschlussort fuer die Folgepakete.** Wer Schritt 4 baut, ersetzt den
 // Rumpf von `schritt_4_wirtschaft` und fasst nichts anderes an. Jede der sechs traegt
-// ihren Adressblock aus T38 im Kommentar; jede bekommt heute eine Adresse ihres Blocks
-// und traegt sie unveraendert vor -- mit **einer** Ausnahme, `partie.runde` in
-// Schritt 1, die seit Paket 0071 gesetzt wird statt vorgetragen.
+// ihren Adressblock aus T38 im Kommentar.
 //
-// `vortrag` ist genau dafuer da: "Eine Adresse, die sich nicht aendert, wird trotzdem
+// **Vier von ihnen bekommen eine Adresse, zwei nicht mehr.** Die Schritte 1, 3, 4 und 6
+// nehmen `(Schreiber&, Index)` und werden aus der Adressrunde gerufen; sie tragen ihre
+// Adresse vor -- mit einer Ausnahme, `partie.runde` in Schritt 1, die seit Paket 0071
+// gesetzt wird statt vorgetragen. Schritt 5 nimmt seit Paket 0197 seinen ganzen Block
+// und laeuft nach der Adressrunde, weil er den neuen Stand von Adressen liest, die hinter
+// seinen eigenen liegen. Schritt 2 hat im `weltlauf` keine Adresse.
+//
+// `vortrag` ist fuer die vier da: "Eine Adresse, die sich nicht aendert, wird trotzdem
 // geschrieben -- *unveraendert* ist eine Aussage und keine Luecke." Verzoegerung null,
 // Beitrag 1.000 Promille und `alt == neu` folgen daraus und stehen im `Schreiber`, nicht
 // hier.
@@ -498,6 +518,104 @@ void schritt_3_politik(Schreiber& schreiber, Index platz) { schreiber.vortrag(pl
 /// `spiel.md` eine Schleife steht: die Marktraeumung, mit fester Iterationszahl.
 void schritt_4_wirtschaft(Schreiber& schreiber, Index platz) { schreiber.vortrag(platz); }
 
+// ---------------------------------------------------------------------------
+// Gegenkraft 2 -- die Zustimmung, als Rechenvorschrift (Paket 0197)
+// ---------------------------------------------------------------------------
+//
+// Die Regel steht in `spiel.md` ausgeschrieben, seit Paket 0198 sie gefuellt hat. Ihre
+// drei Zeilen stehen hier im Wortlaut, damit die Rumpfe darunter sich an ihnen messen
+// lassen und niemand sie aus dem Programmtext zurueckuebersetzen muss:
+//
+//     politiklast(l) = Summe ueber die vier Instrumente i:
+//                        sgn( lies_neu(land.<l>.instrument.<i>.stand)
+//                           - lies_alt(land.<l>.instrument.<i>.stand) ) * schaden(l, i)
+//
+//     realeinkommenshub(l) = mal_geteilt( -politiklast(l), 10.000, bip(l) )
+//
+//     zustimmung_neu(l) = min( 10.000,
+//                              max( 0,
+//                                   lies_alt(land.<l>.zustimmung)
+//                                   + mal_geteilt( zustimmung_elastizitaet,
+//                                                  realeinkommenshub(l), 10.000 ) ) )
+//
+// **Woher die Mengen kommen, und die eine Stelle, an der diese Datei zwei Vorgaben
+// nebeneinander findet.** `spiel.md` sagt zur Regel: alles ausser dem Ausgangswert der
+// Zustimmung wird mit `lies_neu` gelesen. `werte::schaden` und `werte::bip` nehmen nach
+// T48 dagegen einen `Zustand`, und der einzige, den ein Rumpf hier hat, ist der am Ende
+// der Vorrunde -- der `Schreiber` gibt seinen erst nach der Maskenpruefung des
+// Rundenendes heraus, und da ist die Zustimmung noch nicht geschrieben. Heute fallen
+// beide Lesarten zusammen: `schritt_4_wirtschaft` traegt alle 152 Wirtschaftsadressen
+// unveraendert vor, also ist `lies_neu` dort Zahl fuer Zahl `lies_alt`. An dem Tag, an
+// dem Schritt 4 rechnet, fallen sie auseinander, und dann ist es keine Frage, die ein
+// Rumpf entscheiden darf. Sie ist als eigener Vorschlag gemeldet (0236).
+
+/// Die Skala der Anteile aus T5 Klasse 4 -- Zehntausendstel. Sie kommt in der Regel oben
+/// dreimal vor: als obere Schranke, als Faktor des Hubs und als Nenner der
+/// Elastizitaetszeile.
+constexpr i64 ZEHNTAUSENDSTEL = 10'000;
+
+/// Das Vorzeichen der Regel: die Richtung, in die sich ein Instrumentenstand ueber diese
+/// Runde bewegt hat -- minus eins, null oder plus eins.
+///
+/// **Verglichen und nicht subtrahiert.** Die Differenz zweier Staende kann nach T7 aus
+/// dem `i64` laufen; `festkomma::minus` braeche dann ab, und zwar an einer Stelle, an der
+/// die Regel nur das Vorzeichen wissen will. Der Vergleich gibt fuer jedes Paar dasselbe
+/// Vorzeichen, auch fuer die beiden Enden des Zahlbereichs.
+i64 schrittrichtung(const Schreiber& schreiber, Gebiet land, Instrument welches)
+{
+    const Index stand = zustand::stelle_instrument(land, welches, InstrumentFeld::Stand);
+    const i64 neu = schreiber.lies_neu(stand);
+    const i64 alt = schreiber.lies_alt(stand);
+    if (neu == alt) {
+        return 0;
+    }
+    return neu > alt ? 1 : -1;
+}
+
+/// `politiklast(l)` -- die vier Zeilen aus `spiel.md`, jede mit ihrem Vorzeichen.
+///
+/// **Ein Instrument, das sich nicht bewegt hat, traegt nichts bei, und sein `schaden`
+/// wird nicht gerechnet.** Das ist keine Abkuerzung der Regel, sondern ihre woertliche
+/// Lesart: Die Summe laeuft ueber Produkte, und ein Faktor null legt das Produkt fest,
+/// welchen Wert der andere auch haette. Gerechnet wuerde sonst der Preis eines
+/// Politikschritts, den niemand getan hat -- ueber `handelsvolumen`, `schuld` und
+/// `preishub_zoll`, die dafuer nicht gestellt sind.
+///
+/// Die Reihenfolge der vier Zeilen ist `INSTRUMENTE_ALLE` (T9) und nicht die Laufrichtung
+/// eines Feldes: Eine Summe haengt nicht von ihr ab, ein Abbruch in ihr schon.
+i64 politiklast(const Zustand& rundengrenze, const Schreiber& schreiber,
+                const Konstanten& konstanten, Gebiet land)
+{
+    i64 last = 0;
+    for (const Instrument welches : INSTRUMENTE_ALLE) {
+        const i64 richtung = schrittrichtung(schreiber, land, welches);
+        if (richtung == 0) {
+            continue;
+        }
+        const i64 zeile = werte::schaden(rundengrenze, schreiber, konstanten, land, welches);
+        last = festkomma::plus(last, festkomma::mal(richtung, zeile));
+    }
+    return last;
+}
+
+/// `realeinkommenshub(l)` -- die Aenderung des Realeinkommens in Zehntausendsteln.
+///
+/// **Der Bezug ist nicht die Vorrunde, sondern dieselbe Runde ohne Politikbewegung.**
+/// `bip(l)` ist dieser Gegenzustand: Es steht nach T5 in Klasse 2 und ist damit blind
+/// fuer die Preise, die die Politik setzt. Deshalb steht es im Nenner, und deshalb kostet
+/// die Gegenkraft weder eine zweite Marktraeumung noch eine 311. Adresse.
+///
+/// Ein Land ohne Wertschoepfung hat kein Realeinkommen, an dem sich eine Aenderung
+/// messen liesse. `mal_geteilt` bricht dann an seinem Nenner ab, statt eine Null zu
+/// erfinden -- nach T6 ist ein stiller Ersatzwert hier die schlechtere Antwort.
+i64 realeinkommenshub(const Zustand& rundengrenze, const Schreiber& schreiber,
+                      const Konstanten& konstanten, Gebiet land)
+{
+    const i64 last = politiklast(rundengrenze, schreiber, konstanten, land);
+    return festkomma::mal_geteilt(festkomma::minus(0, last), ZEHNTAUSENDSTEL,
+                                  werte::bip(rundengrenze, land));
+}
+
 /// **Schritt 5 -- Reaktion.** Nach `spiel.md`: "Zustimmung, Regierungswechsel,
 /// Aufsichtszaehler, Nachahmerzaehler, Anlegerbestand -- die fuenf Gegenkraefte rechnen
 /// ab."
@@ -509,29 +627,65 @@ void schritt_4_wirtschaft(Schreiber& schreiber, Index platz) { schreiber.vortrag
 /// Aufsichtszaehler, Einfluss, Restdauern, Nachahmerzaehler und Anlegerbestand liegen
 /// ausserhalb der Maske.
 ///
-/// **Der Rumpf traegt vor, und das ist seit dem 2026-09-08 kein Platzhalter mehr,
-/// sondern ein gemeldetes Hindernis.** Die Zustimmungsregel steht in `spiel.md`
-/// ausgeschrieben, seit Paket 0198 sie gefuellt hat; gebaut ist sie hier trotzdem nicht.
-/// Von den zwei Gruenden, die an dieser Stelle standen, ist einer weg und einer
-/// geblieben, und beide liegen ausserhalb dieser Funktion:
+/// **Dieser Rumpf rechnet, und er ist der erste der sechs, der es tut** (Paket 0197).
+/// Er nimmt seinen Block als Ganzes und laeuft nach der Adressrunde; die anderen fuenf
+/// bekommen weiter Adresse fuer Adresse. Der Grund ist die Adressordnung und keine
+/// Vorliebe: Die Regel liest `lies_neu` der vier Instrumentenstaende eines Landes, nach
+/// T39 ist `lies_neu` auf eine in dieser Runde noch nicht geschriebene Adresse ein harter
+/// Fehler, und in der aufsteigenden Runde kommt die Zustimmung eines Landes **vor**
+/// seinen Instrumentenstaenden an. `test/schritt_probe.cpp` misst diese Ordnung, statt
+/// sie aus T15 abzuschreiben, und zieht dort zugleich die Aussage ueber die aufsteigende
+/// Kette nach.
 ///
-///   1. **Der Weg des Koeffizienten in die Runde ist offen** -- Paket 0229.
-///      `zustimmung_elastizitaet` ist ein Feld von `Konstanten`, und `schritt` nimmt den
-///      Traeger nach T10b entgegen; damit ist auch `werte::schaden` aufrufbar, das die
-///      Regel als rechte Seite braucht und `const Konstanten&` verlangt. Was hier fehlt,
-///      ist der Rumpf, und der gehoert Paket 0197.
-///   2. **Die Zustimmung liegt in der Adressordnung vor den Instrumentenstaenden, die
-///      sie liest.** Die Regel nimmt `lies_neu` der vier Instrumentenstaende eines
-///      Landes; nach T39 ist `lies_neu` auf eine in dieser Runde noch nicht geschriebene
-///      Adresse ein harter Fehler. In der aufsteigenden Adressrunde kommt die Zustimmung
-///      des Landes **vor** ihnen an. Ein rechnender Rumpf an dieser Stelle braeche
-///      deshalb an seiner ersten Adresse ab -- Schritt 5 muss seinen Block als Ganzes
-///      nehmen und nach der Adressrunde laufen, und dann steigt die Kette nicht mehr auf.
-///      `test/schritt_probe.cpp` misst die Ordnung, statt sie aus T15 abzuschreiben.
+/// **Die Ursache ist `Gegenkraft{2}` und bleibt es auch, wenn die Zahl stehen bleibt.**
+/// Ein `Vortrag` waere die falsche Auskunft: Der Wert kommt aus der Regel und nicht aus
+/// seiner eigenen Adresse, auch dann, wenn die Regel ihn auf sich selbst abbildet.
+/// Verzoegerung null und Beitrag 1.000 Promille, weil Ursache und Wirkung in derselben
+/// Runde liegen und diese eine Ursache die Groesse vollstaendig erklaert.
 ///
-/// Solange der zweite Grund steht, ist der Vortrag die einzige wahre Aussage, die dieser
-/// Rumpf machen kann.
-void schritt_5_reaktion(Schreiber& schreiber, Index platz) { schreiber.vortrag(platz); }
+/// **Die beiden Schranken sind der Wertebereich der Klasse 4 und kein Verband ueber eine
+/// Luecke** -- `spiel.md` sagt es an der Regel selbst: null und hundert Prozent
+/// Zustimmung sind erreichbare Zustaende. Sie stehen deshalb hier und nicht in einer
+/// Ausnahmebehandlung.
+void schritt_5_reaktion(const Zustand& rundengrenze, Schreiber& schreiber,
+                        const Konstanten& konstanten)
+{
+    for (const Gebiet land : LAENDER_ALLE) {
+        const Index platz = zustand::stelle_politisch(land, PolitischeGroesse::Zustimmung);
+
+        const i64 hub = realeinkommenshub(rundengrenze, schreiber, konstanten, land);
+        const i64 wirkung =
+            festkomma::mal_geteilt(konstanten.zustimmung_elastizitaet, hub, ZEHNTAUSENDSTEL);
+        const i64 ungeklemmt = festkomma::plus(schreiber.lies_alt(platz), wirkung);
+
+        // `min(10.000, max(0, ...))`, in der Schachtelung der Vorgabe: erst die untere
+        // Schranke, dann die obere.
+        const i64 nicht_unter_null = ungeklemmt < 0 ? 0 : ungeklemmt;
+        const i64 zustimmung_neu =
+            nicht_unter_null > ZEHNTAUSENDSTEL ? ZEHNTAUSENDSTEL : nicht_unter_null;
+
+        schreiber.setze(platz, zustimmung_neu, Ursache::gegenkraft(2), 0, 1000);
+    }
+}
+
+/// Der Weg, den Schritt 5 seit Paket 0197 **nicht** mehr nimmt: die Weiche der
+/// Adressrunde.
+///
+/// Der Rumpf ist ein Abbruch und kein leerer Block, aus demselben Grund wie bei den
+/// Schritten 2 und 6: Eine Adresse, die hier ankommt, bedeutet, dass jemand die
+/// Auslassung in der Adressrunde entfernt hat -- und die Zustimmung wuerde dann zweimal
+/// geschrieben, einmal hier und einmal im Block. Der zweite Schreibzugriff waere nach T18
+/// ohnehin ein harter Fehler, nur naennte seine Meldung die Adresse und nicht den Grund.
+void schritt_5_nicht_adressweise(Index platz)
+{
+    Meldung meldung;
+    meldung.text(
+        "kern::schritt -- Schritt 5 (Reaktion) rechnet seinen Block als Ganzes nach der "
+        "Adressrunde und nimmt keine einzelne Adresse entgegen; wer hierher kommt, hat die "
+        "Auslassung in der Adressrunde entfernt. Angekommen ist ");
+    meldung.adresse(platz);
+    festkomma::abbruch(meldung.fertig());
+}
 
 /// **Schritt 6 -- Abrechnung.** Nach `spiel.md`: "Positionen bewertet, Hebel gegen den
 /// Innerjahresausschlag geprueft, Mandat geprueft, Kette als Diff gespeichert."
@@ -576,7 +730,7 @@ void fuehre_schritt_aus(Rundenschritt welcher, Schreiber& schreiber,
             schritt_4_wirtschaft(schreiber, platz);
             return;
         case Rundenschritt::Reaktion:
-            schritt_5_reaktion(schreiber, platz);
+            schritt_5_nicht_adressweise(platz);
             return;
         case Rundenschritt::Abrechnung:
             schritt_6_abrechnung(schreiber, platz);
@@ -721,9 +875,23 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
         if (!in_maske) {
             continue;  // T38: was ausserhalb liegt, behaelt seinen Startwert
         }
+        if (eigner == Rundenschritt::Reaktion) {
+            // Seit Paket 0197 laeuft Schritt 5 nicht mehr hier durch. Er liest den
+            // **neuen** Stand der Instrumente eines Landes, und die stehen in der
+            // aufsteigenden Ordnung hinter der Zustimmung -- ein Rumpf an dieser Stelle
+            // braeche nach T39 an seiner ersten Adresse ab. Seine vier Adressen bleiben
+            // deshalb hier liegen und werden unten geschrieben; dass keine liegen bleibt,
+            // haelt die Rundenendpruefung aus T38 fest und nicht diese Auslassung.
+            continue;
+        }
 
         fuehre_schritt_aus(eigner, rundenschreiber, aktionen, platz);
     }
+
+    // Schritt 5 -- Reaktion, als Block und nach der Adressrunde. Zu diesem Zeitpunkt sind
+    // die 171 uebrigen Adressen der Sollmaske geschrieben, also auch die 16
+    // Instrumentenstaende, die die Regel mit `lies_neu` liest.
+    schritt_5_reaktion(vorrunde, rundenschreiber, konstanten);
 
     // Die zweiseitige Rundenendpruefung aus T38 gehoert dem `Schreiber` und wird hier
     // nicht nachgebaut -- nur gerufen. Sie bricht hart ab, wenn eine Maskenadresse fehlt

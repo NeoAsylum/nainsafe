@@ -3,10 +3,16 @@
 //!
 //! Bedingung 6 von 0033 verlangte die *unveraenderte* Pruefsumme ueber eine Runde. Sie
 //! ist widerrufen -- 0033 hatte sie als "auf Widerruf" ausgewiesen --, und an ihrer
-//! Stelle steht die schaerfere Aussage: **Genau eine der 310 Groessen aendert sich,
-//! naemlich `partie.runde`.** Was die alte Fassung nicht leisten konnte, ist der Grund
+//! Stelle stand die schaerfere Aussage: genau eine der 310 Groessen aendert sich,
+//! naemlich `partie.runde`. Was die alte Fassung nicht leisten konnte, ist der Grund
 //! des Widerrufs: Ein Zustand, den eine vollstaendige Runde Feld fuer Feld unveraendert
 //! laesst, ist von "keine Runde gelaufen" durch keinen Vergleich zu unterscheiden.
+//!
+//! **Auch die Zahl eins ist seit Paket 0197 gefallen, und diesmal nicht durch einen
+//! Widerruf, sondern durch eine Rechnung.** Schritt 5 hat einen Rumpf; wie viele der 310
+//! Groessen eine Runde bewegt, haengt jetzt am Zustand. Diese Probe zaehlt sie deshalb
+//! nicht mehr gegen eine hingeschriebene Ziffer, sondern gegen einen **unabhaengig
+//! gebauten Erwartungszustand** -- die Zahl wird ausgedruckt und nicht behauptet.
 //!
 //! Die Aufteilung der Sollmaske auf die sechs Schritte ist in `src/schritt.cpp` schon
 //! als `static_assert` bewiesen (3 + 0 + 16 + 152 + 4 + 0 = 175). Diese Probe gibt es
@@ -76,11 +82,22 @@
 //! an eigens gebaute Verbunde mit bekannter und verschiedener Feldzahl. Sie stehen
 //! unten, jeder mit seiner ausgeschriebenen Zahl.
 //!
-//! **Paket 0197 -- die beiden Zahlen der Zustimmung.** Eine Probe misst, was den
-//! gerechneten Rumpf von Schritt 5 traegt: den bewegten Instrumentenschritt und die
-//! Adressordnung, die ihn aus der aufsteigenden Runde heraushaelt. Beides ohne den
-//! Koeffizienten, der seit Paket 0229 zwar einen Weg in die Runde hat, aber noch keinen
-//! Leser; die Begruendung steht dort.
+//! **Paket 0197 -- die Zustimmung wird gerechnet.** Drei Stellen dieser Datei haengen
+//! daran, und sie sagen Verschiedenes:
+//!
+//!   * Die Kettenprobe **zieht die Aussage ueber die aufsteigende Kette nach**, die
+//!     `include/kern/schritt.hpp` "auf Widerruf" ausgewiesen hat. Die Kette steigt nicht
+//!     mehr durchgehend auf: 171 Glieder aufsteigend und mit der Ursache `Vortrag`, dann
+//!     die vier Zustimmungen mit der Ursache `Gegenkraft`, ebenfalls aufsteigend. Beide
+//!     Haelften werden geprueft, und die zweite bricht ein Vortragen auf.
+//!   * Eine Probe misst die zwei Zahlen, an denen die Regel haengt -- den bewegten
+//!     Instrumentenschritt und die Adressordnung, die Schritt 5 aus der aufsteigenden
+//!     Runde heraushaelt. Sie braucht den Koeffizienten nicht und ist deshalb auch dann
+//!     falsifizierbar, wenn er auf null steht.
+//!   * Eine Probe **unterscheidet den gerechneten Rumpf vom vortragenden.** Sie startet
+//!     mit vier Zustimmungswerten ausserhalb des Wertebereichs der Klasse 4; ein Vortrag
+//!     liesse alle vier stehen, die Regel klemmt alle vier auf ihre Schranke. Vier gegen
+//!     null, je Adresse mit Start- und Endwert ausgedruckt.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -123,8 +140,9 @@ using kern::zustand::Zustand;
 
 using u64 = std::uint64_t;
 
-/// Der Platz von `partie.runde` -- die eine Adresse, die eine Runde seit Paket 0071
-/// aendert. Aus der Adressrechnung geholt und nicht als 306 hingeschrieben: Verschoebe
+/// Der Platz von `partie.runde` -- die Adresse, die **jede** Runde aendert, seit
+/// Paket 0071 sie setzt statt sie vorzutragen. Die einzige war sie bis Paket 0197.
+/// Aus der Adressrechnung geholt und nicht als 306 hingeschrieben: Verschoebe
 /// ein spaeteres Paket den Partieblock, prueft diese Datei weiter das richtige Feld.
 constexpr Index PLATZ_RUNDE = kern::zustand::stelle_partie(PartieFeld::Runde);
 
@@ -133,14 +151,83 @@ constexpr Index PLATZ_RUNDE = kern::zustand::stelle_partie(PartieFeld::Runde);
 constexpr Index PLATZ_PARAMETERSUMME =
     kern::zustand::stelle_partie(PartieFeld::ParameterPruefsumme);
 
+/// Die vier spielbaren Laender, in der Reihenfolge aus T15.
+constexpr std::array<kern::zustand::Gebiet, kern::zustand::LAENDER> LAENDER_DER_PROBE = {
+    kern::zustand::Gebiet::US, kern::zustand::Gebiet::CN, kern::zustand::Gebiet::DE,
+    kern::zustand::Gebiet::BR};
+
+/// Die vier Instrumente, in der Reihenfolge aus T15.
+constexpr std::array<kern::zustand::Instrument, kern::zustand::INSTRUMENTE>
+    INSTRUMENTE_DER_PROBE = {
+        kern::zustand::Instrument::Leitzins, kern::zustand::Instrument::Zoll,
+        kern::zustand::Instrument::Haushalt, kern::zustand::Instrument::Regulierung};
+
+/// Die vier Zustimmungsadressen, in der Laenderreihenfolge -- gerechnet und nicht
+/// hingeschrieben, aus demselben Grund wie bei `PLATZ_RUNDE`.
+constexpr std::array<Index, kern::zustand::LAENDER> zustimmungsplaetze()
+{
+    std::array<Index, kern::zustand::LAENDER> plaetze{};
+    for (std::size_t n = 0; n < LAENDER_DER_PROBE.size(); ++n) {
+        plaetze[n] = kern::zustand::stelle_politisch(
+            LAENDER_DER_PROBE[n], kern::zustand::PolitischeGroesse::Zustimmung);
+    }
+    return plaetze;
+}
+
+constexpr std::array<Index, kern::zustand::LAENDER> ZUSTIMMUNGSPLAETZE = zustimmungsplaetze();
+
+/// Dass die vier untereinander aufsteigen, traegt die Kettenprobe weiter unten: Sie
+/// verlangt die vier Schlussglieder in genau dieser Reihenfolge. Gerechnet statt
+/// angenommen, damit ein verschobener Laenderblock hier auffaellt und nicht dort.
+constexpr bool zustimmungsplaetze_steigen()
+{
+    for (std::size_t n = 1; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
+        if (ZUSTIMMUNGSPLAETZE[n] <= ZUSTIMMUNGSPLAETZE[n - 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static_assert(zustimmungsplaetze_steigen(),
+              "T15: die vier Laenderbloecke liegen aufsteigend, also auch ihre Zustimmungen");
+
+/// Die obere Schranke der Zustimmungsregel -- T5 Klasse 4, hundert Prozent.
+constexpr i64 ZUSTIMMUNG_OBEN = 10'000;
+
+/// `min(10.000, max(0, wert))` -- die beiden Schranken der Regel, hier ein zweites Mal
+/// und ohne den Kern.
+///
+/// **Sie sind nicht die ganze Regel, sondern ihr Rest, wenn der additive Term null ist.**
+/// Das ist er in jeder Runde dieser Datei, und zwar aus zwei Gruenden, die beide in
+/// `spiel.md` stehen: Bewegt sich kein Instrumentenstand, ist jedes Vorzeichen der
+/// Politiklast null, also die Last null, also der Realeinkommenshub null; und
+/// `zustimmung_elastizitaet` steht im Traeger dieser Probe ohnehin auf null. Wo diese
+/// Voraussetzung gilt, ist die Klemme der vollstaendige Erwartungswert -- und sie gilt,
+/// solange `schritt_3_politik` vortraegt.
+i64 geklemmt(i64 wert)
+{
+    if (wert < 0) {
+        return 0;
+    }
+    return wert > ZUSTIMMUNG_OBEN ? ZUSTIMMUNG_OBEN : wert;
+}
+
 /// Der Parametersatz, mit dem diese Probe jede Runde faehrt -- alle Felder auf ihrer
 /// Vorbelegung.
 ///
 /// **Ein voreingestellter Satz ist hier richtig und waere anderswo falsch.** Er rechnet
-/// nach T10b eine tote Welt; der Rahmen rechnet aber ohnehin nichts, er traegt vor. Was
-/// diese Datei prueft, ist die **Bindung** von Satz und Zustand, und die ist von der
-/// Kalibrierung unabhaengig. Ein erfundener Satz mit plausiblen Zahlen saehe an dieser
-/// Stelle wie eine Kalibrierung aus, die niemand beschlossen hat.
+/// nach T10b eine tote Welt, und genau die will diese Datei: Was sie prueft, ist die
+/// **Bindung** von Satz und Zustand und die Gestalt der Regel, nicht ihre Kalibrierung.
+/// Ein erfundener Satz mit plausiblen Zahlen saehe an dieser Stelle wie eine
+/// Kalibrierung aus, die niemand beschlossen hat.
+///
+/// **Fuer Schritt 5 heisst das etwas Bestimmtes** (Paket 0197): `zustimmung_elastizitaet`
+/// steht auf null, also ist der additive Term der Zustimmungsregel null, und was von ihr
+/// gemessen wird, sind ihre beiden Schranken. Das ist die Haelfte, die ohne eine
+/// beschlossene Kalibrierung ueberhaupt pruefbar ist -- die andere Haelfte braucht Zahlen,
+/// die noch niemand gesetzt hat, und eine Probe, die sie sich ausdenkt, misst die
+/// Erfindung.
 constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE{};
 
 int fehlgeschlagen = 0;
@@ -434,7 +521,8 @@ i64 musterwert(Index platz)
 }
 
 /// Baut eine Ausgangslage mit Musterwerten auf allen 310 Adressen, `partie.runde` auf
-/// `rundennummer` und die Parameterpruefsumme passend zum Traeger dieser Probe.
+/// `rundennummer`, die Parameterpruefsumme passend zum Traeger dieser Probe und die vier
+/// Zustimmungen auf die uebergebenen Werte.
 ///
 /// **Ein einziger Startwertzugang fuer alle 310 Adressen**, und die beiden Partiefelder
 /// zuletzt: Der Riegel aus Paket 0027 greift beim Binden und nicht bei jedem `setze` --
@@ -450,17 +538,44 @@ i64 musterwert(Index platz)
 /// Runde selbst benutzt: Zwei Abschriften derselben Summe waeren zwei Stellen, die
 /// auseinanderlaufen. Dass die Rechnung damit nicht sich selbst prueft, ist der Grund
 /// fuer `probe_parametersatz` weiter unten -- dort steht die Gegenseite.
-Zustand ausgangslage(i64 rundennummer)
+///
+/// **Die dritte Nachsetzung ist neu (Paket 0197) und traegt eine ganze Probe.** Seit
+/// Schritt 5 rechnet, ist der Startwert der vier Zustimmungen kein gleichgueltiger
+/// Musterwert mehr, sondern der Eingang der Regel. Ein Aufrufer, der sie frei setzen
+/// kann, unterscheidet den gerechneten Rumpf vom vortragenden -- und dafuer braucht er
+/// **einen** Startwertzugang, denn ein zweiter bindet auf einer Lage mit gesetzter
+/// Rundennummer nicht mehr.
+Zustand ausgangslage_mit_zustimmung(i64 rundennummer,
+                                    const std::array<i64, kern::zustand::LAENDER>& zustimmung)
 {
     Zustand welt;
     Startbelegung zugang{welt};
     for (Index platz = 0; platz < FELDER; ++platz) {
         zugang.setze(platz, musterwert(platz));
     }
+    for (std::size_t n = 0; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
+        zugang.setze(ZUSTIMMUNGSPLAETZE[n], zustimmung[n]);
+    }
     zugang.setze(kern::zustand::stelle_partie(PartieFeld::Runde), rundennummer);
     zugang.setze(PLATZ_PARAMETERSUMME,
                  kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
     return welt;
+}
+
+/// Die Musterwerte der vier Zustimmungsadressen -- die Belegung, die `ausgangslage`
+/// hatte, ehe sie frei setzbar wurde.
+std::array<i64, kern::zustand::LAENDER> zustimmung_aus_mustern()
+{
+    std::array<i64, kern::zustand::LAENDER> werte{};
+    for (std::size_t n = 0; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
+        werte[n] = musterwert(ZUSTIMMUNGSPLAETZE[n]);
+    }
+    return werte;
+}
+
+Zustand ausgangslage(i64 rundennummer)
+{
+    return ausgangslage_mit_zustimmung(rundennummer, zustimmung_aus_mustern());
 }
 
 }  // namespace
@@ -499,11 +614,35 @@ void probe_maskengroesse()
 /// Geht alle Glieder durch. Statt je Glied eine eigene Meldung zu setzen -- das waeren
 /// im Fehlerfall 175 -- merkt sich die Probe **das erste** verletzte Glied je Aussage
 /// und schreibt es hin. Eine Nummer ist ein Hinweis, ein Wall aus 175 Zeilen keiner.
+///
+/// **Hier steht der Widerruf, den `include/kern/schritt.hpp` angekuendigt hat** (Paket
+/// 0197). Bis dahin galt: Die Kette liegt in aufsteigender Adressfolge, und der Kopf hat
+/// dazugeschrieben, dass die Aussage faellt, sobald ein Schritt seinen Block als Ganzes
+/// rechnet -- nachzuziehen "in seiner Probe". Schritt 5 rechnet, und dies ist die Probe.
+///
+/// **Die Aussage wird nicht gestrichen, sondern geteilt**, und die neue ist die
+/// schaerfere von beiden: Die Kette zerfaellt in zwei Stuecke, und beide sind vollstaendig
+/// beschrieben.
+///
+///   * **Die ersten 171 Glieder** kommen aus der Adressrunde: aufsteigend, paarweise
+///     verschieden, jedes mit der Ursache `Vortrag` auf seine eigene Adresse.
+///   * **Die letzten vier** kommen aus dem Block von Schritt 5: die vier Zustimmungen in
+///     der Laenderreihenfolge, jede mit der Ursache `Gegenkraft` und der Nummer 2 aus
+///     `spiel.md`.
+///
+/// Eine blosse Streichung waere hier das Schlechtere gewesen. "Nicht mehr durchgehend
+/// aufsteigend" ist von "in beliebiger Reihenfolge" durch keine Messung zu unterscheiden,
+/// und genau der Unterschied macht den Rahmen von einer gerechneten Runde unterscheidbar.
 void probe_kette(const Kette& kette, i64 erwartete_runde)
 {
     PRUEFE(kette.laenge() == 175);
 
+    // Wo der Block von Schritt 5 anfaengt: hinter allem, was die Adressrunde geschrieben
+    // hat. Gerechnet aus der Laenderzahl und nicht als 171 hingeschrieben.
+    constexpr std::size_t VOR_DER_GEGENKRAFT = 175 - kern::zustand::LAENDER;
+
     constexpr std::size_t KEINS = 1000;  // liegt ausserhalb jeder moeglichen Gliednummer
+    std::size_t erstes_falsches_schlussglied = KEINS;
     std::size_t erste_falsche_art = KEINS;
     std::size_t erste_falsche_quelle = KEINS;
     std::size_t erste_falsche_runde = KEINS;
@@ -513,8 +652,9 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
     std::size_t erste_nicht_aufsteigende = KEINS;
     std::size_t erste_ausserhalb_maske = KEINS;
 
-    // Das eine Glied, das seit Paket 0071 einen anderen Wert traegt als vorher. Beides
-    // wird geprueft: dass es da ist, und dass es die richtigen beiden Zahlen nennt.
+    // Das Glied, das seit Paket 0071 einen anderen Wert traegt als vorher -- das einzige
+    // der Adressrunde, das es darf. Beides wird geprueft: dass es da ist, und dass es die
+    // richtigen beiden Zahlen nennt.
     bool rundenglied_gesehen = false;
     bool rundenglied_zaehlt_hoch = false;
 
@@ -524,18 +664,37 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
 
     for (std::size_t n = 0; n < kette.laenge(); ++n) {
         const Ursachensatz& satz = kette.eintrag(n);
+        const bool aus_schritt_5 = n >= VOR_DER_GEGENKRAFT;
 
-        if (satz.ursache.art() != UrsacheArt::Vortrag && erste_falsche_art == KEINS) {
-            erste_falsche_art = n;
+        if (aus_schritt_5) {
+            // Die vier Schlussglieder, jedes vollstaendig festgelegt: Ursache
+            // `Gegenkraft` mit der Nummer 2 aus `spiel.md`, auf genau der
+            // Zustimmungsadresse des Landes, das an dieser Stelle der Reihe steht.
+            // Zusammen mit der Laenge 175 sagt das zugleich, dass es diese vier Glieder
+            // ueberhaupt gibt -- eine Kette ohne sie waere zu kurz.
+            const std::size_t rang = n - VOR_DER_GEGENKRAFT;
+            const bool stimmt = satz.ursache.art() == UrsacheArt::Gegenkraft
+                                && satz.ursache.gegenkraftart() == 2
+                                && satz.ziel == ZUSTIMMUNGSPLAETZE[rang];
+            if (!stimmt && erstes_falsches_schlussglied == KEINS) {
+                erstes_falsches_schlussglied = n;
+            }
+        } else {
+            if (satz.ursache.art() != UrsacheArt::Vortrag && erste_falsche_art == KEINS) {
+                erste_falsche_art = n;
+            }
+            // Die 171 Glieder der Adressrunde nennen ihre **eigene** Adresse als
+            // Herkunft. Bei den 170 vorgetragenen ist das die Aussage "unveraendert";
+            // beim Glied von `partie.runde` ist es die Aussage "aus dem alten Wert dieser
+            // Adresse und aus nichts sonst" -- die Ursachenform nennt die Herkunft, nicht
+            // die Gleichheit.
+            if (satz.ursache.art() == UrsacheArt::Vortrag
+                && satz.ursache.vortragsadresse() != satz.ziel
+                && erste_falsche_quelle == KEINS) {
+                erste_falsche_quelle = n;
+            }
         }
-        // Alle 175 Glieder nennen ihre **eigene** Adresse als Herkunft. Bei den 174
-        // vorgetragenen ist das die Aussage "unveraendert"; beim Glied von
-        // `partie.runde` ist es die Aussage "aus dem alten Wert dieser Adresse und aus
-        // nichts sonst" -- die Ursachenform nennt die Herkunft, nicht die Gleichheit.
-        if (satz.ursache.art() == UrsacheArt::Vortrag
-            && satz.ursache.vortragsadresse() != satz.ziel && erste_falsche_quelle == KEINS) {
-            erste_falsche_quelle = n;
-        }
+
         if (satz.runde != erwartete_runde && erste_falsche_runde == KEINS) {
             erste_falsche_runde = n;
         }
@@ -553,22 +712,29 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
             rundenglied_gesehen = true;
             rundenglied_zaehlt_hoch =
                 satz.alt == erwartete_runde - 1 && satz.neu == erwartete_runde;
-        } else if (satz.alt != satz.neu && erste_wertaenderung == KEINS) {
-            // Alle uebrigen 174 Glieder tragen vor, und ein Vortrag aendert nichts.
+        } else if (!aus_schritt_5 && satz.alt != satz.neu && erste_wertaenderung == KEINS) {
+            // Die uebrigen 170 Glieder der Adressrunde tragen vor, und ein Vortrag
+            // aendert nichts. Fuer die vier aus Schritt 5 gilt das ausdruecklich nicht:
+            // Sie tragen den Wert, den die Regel gerechnet hat, gleich ob er sich bewegt
+            // hat oder nicht.
             erste_wertaenderung = n;
-        }
-        if (voriges_gibt_es && satz.ziel <= voriges_ziel && erste_nicht_aufsteigende == KEINS) {
-            // "aufsteigend" schliesst "paarweise verschieden" ein: `<=` faengt beides.
-            erste_nicht_aufsteigende = n;
         }
         if (!maske.steht(satz.ziel) && erste_ausserhalb_maske == KEINS) {
             erste_ausserhalb_maske = n;
         }
 
-        voriges_ziel = satz.ziel;
-        voriges_gibt_es = true;
+        if (!aus_schritt_5) {
+            if (voriges_gibt_es && satz.ziel <= voriges_ziel
+                && erste_nicht_aufsteigende == KEINS) {
+                // "aufsteigend" schliesst "paarweise verschieden" ein: `<=` faengt beides.
+                erste_nicht_aufsteigende = n;
+            }
+            voriges_ziel = satz.ziel;
+            voriges_gibt_es = true;
+        }
     }
 
+    PRUEFE(erstes_falsches_schlussglied == KEINS);
     PRUEFE(erste_falsche_art == KEINS);
     PRUEFE(erste_falsche_quelle == KEINS);
     PRUEFE(erste_falsche_runde == KEINS);
@@ -581,8 +747,10 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
     PRUEFE(rundenglied_zaehlt_hoch);
 
     // Und die Gegenrichtung: Jede Adresse der Maske kommt in der Kette vor. Zusammen mit
-    // "aufsteigend, paarweise verschieden" und der Laenge 175 ist die Kette damit genau
-    // die Maske -- nicht 175 beliebige Adressen, die zufaellig in ihr liegen.
+    // der Laenge 175 ist die Kette damit genau die Maske -- nicht 175 beliebige Adressen,
+    // die zufaellig in ihr liegen. Diese Zeile traegt seit Paket 0197 mehr als vorher:
+    // Sie ist es, die eine Doppelnennung zwischen den 171 aufsteigenden und den vier
+    // festgenagelten faengt, denn die beiden Stuecke werden getrennt geprueft.
     std::size_t fehlende = 0;
     std::size_t erste_fehlende = FELDER;
     for (Index platz = 0; platz < FELDER; ++platz) {
@@ -608,7 +776,7 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
 }
 
 // ---------------------------------------------------------------------------
-// Bedingungen 3, 4 und 6 -- eine Runde laeuft durch, und genau ein Feld bewegt sich
+// Bedingungen 3, 4 und 6 -- eine Runde laeuft durch, und der Zustand danach stimmt
 // ---------------------------------------------------------------------------
 
 /// Laesst eine Runde laufen und gibt den entstandenen Zustand zurueck.
@@ -624,10 +792,29 @@ Zustand probe_eine_runde(i64 vorrundennummer)
         kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
     const Zustand& nachher = ergebnis.neuer_zustand;
 
-    // Bedingung 6 in der Fassung von Paket 0071: **genau eine** der 310 Groessen aendert
-    // sich, und es ist `partie.runde`. Gezaehlt wird ueber alle 310, nicht an der einen
-    // erwarteten Stelle nachgesehen -- sonst pruefte die Zeile, was sie annimmt.
+    // Der unabhaengige Erwartungswert: dieselbe Ausgangslage, nur mit der Rundennummer
+    // dieser Runde **und den vier Zustimmungen auf ihrer Klemme**. Sie entsteht ueber
+    // `zustand::Startbelegung` und weiss von `kern::schritt` nichts -- damit haengt die
+    // Aussage nicht an derselben Rechnung, die sie pruefen soll.
+    //
+    // Bis Paket 0197 stand hier `ausgangslage(diese_runde)` unveraendert, denn eine Runde
+    // bewegte genau eine der 310 Groessen. Seit Schritt 5 rechnet, gehoert die Klemme in
+    // den Erwartungswert; warum sie hier die **ganze** Regel ist, steht an `geklemmt`.
+    std::array<i64, kern::zustand::LAENDER> erwartete_zustimmung = zustimmung_aus_mustern();
+    for (i64& wert : erwartete_zustimmung) {
+        wert = geklemmt(wert);
+    }
+    const Zustand erwartet = ausgangslage_mit_zustimmung(diese_runde, erwartete_zustimmung);
+    PRUEFE(nachher == erwartet);
+
+    // Wie viele der 310 Groessen sich bewegt haben. Gezaehlt wird ueber alle 310, nicht
+    // an den erwarteten Stellen nachgesehen -- sonst pruefte die Zeile, was sie annimmt.
+    //
+    // **Die Zahl wird nicht hingeschrieben, sondern gegen den Erwartungszustand
+    // gehalten.** Eine feste Ziffer haette den Rumpf nur bis zur naechsten Belegung von
+    // `musterwert` geprueft und danach den Musterwert gemessen statt die Regel.
     std::size_t geaenderte = 0;
+    std::size_t erwartete_aenderungen = 0;
     Index erste_geaenderte = FELDER;
     for (Index platz = 0; platz < FELDER; ++platz) {
         if (vorher.lies(platz) != nachher.lies(platz)) {
@@ -636,24 +823,19 @@ Zustand probe_eine_runde(i64 vorrundennummer)
                 erste_geaenderte = platz;
             }
         }
+        if (vorher.lies(platz) != erwartet.lies(platz)) {
+            ++erwartete_aenderungen;
+        }
     }
-    PRUEFE(geaenderte == 1);
-    PRUEFE(erste_geaenderte == PLATZ_RUNDE);
+    PRUEFE(geaenderte == erwartete_aenderungen);
     PRUEFE(vorher.lies(PLATZ_RUNDE) == vorrundennummer);
     PRUEFE(nachher.lies(PLATZ_RUNDE) == diese_runde);
-    if (geaenderte != 1) {
-        std::fprintf(stderr, "  %zu Groessen geaendert, erste: %zu (%s)\n", geaenderte,
-                     erste_geaenderte,
+    if (geaenderte != erwartete_aenderungen) {
+        std::fprintf(stderr, "  %zu Groessen geaendert statt %zu, erste: %zu (%s)\n", geaenderte,
+                     erwartete_aenderungen, erste_geaenderte,
                      erste_geaenderte < FELDER ? kern::zustand::index_zu_adresse(erste_geaenderte)
                                                : "keine");
     }
-
-    // Der unabhaengige Erwartungswert: dieselbe Ausgangslage, nur mit der Rundennummer
-    // dieser Runde. Sie entsteht ueber `zustand::Startbelegung` und weiss von
-    // `kern::schritt` nichts -- damit haengt die Aussage nicht an derselben Rechnung,
-    // die sie pruefen soll.
-    const Zustand erwartet = ausgangslage(diese_runde);
-    PRUEFE(nachher == erwartet);
 
     // Die Pruefsumme faellt jetzt, und das ist die widerrufene Bedingung 6 von 0033.
     // Beide Zahlen stehen darunter im Wortlaut; ohne sie waere der Widerruf ein stiller.
@@ -665,14 +847,16 @@ Zustand probe_eine_runde(i64 vorrundennummer)
     PRUEFE(summe_nachher == kern::zustand::pruefsumme_von(nachher));
 
     std::printf("  Vorrunde %lld -> Runde %lld: Pruefsumme %016llx vorher, %016llx nachher; "
-                "%zu von 310 Groessen geaendert (%s)\n",
+                "%zu von 310 Groessen geaendert, erste %s\n",
                 static_cast<long long>(vorrundennummer), static_cast<long long>(diese_runde),
                 static_cast<unsigned long long>(summe_vorher),
                 static_cast<unsigned long long>(summe_nachher), geaenderte,
-                kern::zustand::index_zu_adresse(PLATZ_RUNDE));
+                erste_geaenderte < FELDER ? kern::zustand::index_zu_adresse(erste_geaenderte)
+                                          : "keine");
 
     probe_kette(ergebnis.kette_dieser_runde, diese_runde);
-    std::printf("  Kette: %zu Glieder (erwartet 175), Runde %lld an jedem Glied\n",
+    std::printf("  Kette: %zu Glieder (erwartet 175), Runde %lld an jedem Glied; "
+                "171 aufsteigend aus der Adressrunde, danach 4 aus Gegenkraft 2\n",
                 ergebnis.kette_dieser_runde.laenge(), static_cast<long long>(diese_runde));
 
     return nachher;
@@ -794,9 +978,10 @@ void probe_zwei_runden_und_startwertriegel()
 // ---------------------------------------------------------------------------
 //
 // `schritt` ist eine reine Funktion ohne gezogene Zahlen. Zwei Aufrufe auf derselben
-// Ausgangslage muessen deshalb bis auf das letzte Kettenglied dasselbe liefern. Das ist
-// heute billig zu haben und wird teuer, sobald ein Schritt rechnet -- die Probe steht
-// hier, damit sie dann schon da ist.
+// Ausgangslage muessen deshalb bis auf das letzte Kettenglied dasselbe liefern. Bis zum
+// 2026-09-08 war das billig zu haben, weil kein Schritt rechnete; die Probe stand hier
+// fuer den Tag, an dem einer es tut. Der Tag ist da: Schritt 5 rechnet, und diese Zeilen
+// laufen jetzt ueber eine Rechnung statt ueber 175 Vortraege.
 
 void probe_zweimal_dasselbe()
 {
@@ -899,26 +1084,22 @@ void probe_rundennummer()
 //                        sgn( lies_neu(land.<l>.instrument.<i>.stand)
 //                           - lies_alt(land.<l>.instrument.<i>.stand) ) * schaden(l, i)
 //
-// und darueber `realeinkommenshub(l)` und die Zustimmung. Der Entwurf nennt den
-// Grenzfall selbst die Abnahme: Bewegt sich kein Instrumentenstand, ist jedes `sgn`
-// null, also `politiklast` null, also der Hub **genau** null -- fuer jeden Preis, jedes
-// Handelsvolumen und jede Schuldenquote.
+// und darueber der Realeinkommenshub und die Zustimmung. Der Entwurf nennt den
+// Grenzfall selbst die Abnahme: Bewegt sich kein Instrumentenstand, ist jedes
+// Vorzeichen null, also `politiklast` null, also der Hub **genau** null -- fuer jeden
+// Preis, jedes Handelsvolumen und jede Schuldenquote.
 //
 // Diese Probe misst die beiden Zahlen, an denen der gerechnete Rumpf haengt, und sie
-// misst sie **ohne** ihn: den Koeffizienten `zustimmung_elastizitaet` braucht keine der
-// beiden Aussagen. Was hier steht, ist deshalb heute schon falsifizierbar und bleibt es,
-// wenn Schritt 3 und Schritt 5 rechnen.
-
-/// Die vier spielbaren Laender, in der Reihenfolge aus T15.
-constexpr std::array<kern::zustand::Gebiet, kern::zustand::LAENDER> LAENDER_DER_PROBE = {
-    kern::zustand::Gebiet::US, kern::zustand::Gebiet::CN, kern::zustand::Gebiet::DE,
-    kern::zustand::Gebiet::BR};
-
-/// Die vier Instrumente, in der Reihenfolge aus T15.
-constexpr std::array<kern::zustand::Instrument, kern::zustand::INSTRUMENTE>
-    INSTRUMENTE_DER_PROBE = {
-        kern::zustand::Instrument::Leitzins, kern::zustand::Instrument::Zoll,
-        kern::zustand::Instrument::Haushalt, kern::zustand::Instrument::Regulierung};
+// braucht den Koeffizienten `zustimmung_elastizitaet` fuer keine ihrer Aussagen. Sie war
+// deshalb schon falsifizierbar, als es den Rumpf noch nicht gab, und bleibt es, wenn
+// Schritt 3 rechnet.
+//
+// **Was sie seit Paket 0197 nicht mehr sagt: dass sich ohne Instrumentenschritt keine
+// Zustimmung bewegt.** Der Satz war falsch, und der Rumpf hat es gezeigt: Die Regel
+// klemmt ihren Ausgangswert auf den Wertebereich der Klasse 4, und ein Startwert
+// ausserhalb bewegt sich dabei ohne jeden Instrumentenschritt. Was an seiner Stelle
+// steht, ist die schaerfere Aussage -- ohne Instrumentenschritt ist die Zustimmung
+// **genau** die Klemme ihres Ausgangswertes, Land fuer Land, und nicht bloss "unbewegt".
 
 void probe_zustimmung_ohne_instrumentenschritt()
 {
@@ -941,33 +1122,42 @@ void probe_zustimmung_ohne_instrumentenschritt()
         }
     }
 
-    // Zweite Zahl: wie viele der vier Zustimmungsadressen sich bewegt haben.
+    // Zweite Zahl: wie viele der vier Zustimmungen auf der Klemme ihres Ausgangswertes
+    // stehen -- und daneben, wie viele sich ueberhaupt bewegt haben. Die zweite Zahl wird
+    // ausgedruckt und nicht geprueft; sie ist die Groesse, die vor diesem Paket die
+    // Aussage trug, und sie steht hier, damit der Unterschied ablesbar bleibt.
     std::size_t bewegte_zustimmungen = 0;
-    for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
-        const Index platz = kern::zustand::stelle_politisch(
-            land, kern::zustand::PolitischeGroesse::Zustimmung);
+    std::size_t auf_der_klemme = 0;
+    for (std::size_t n = 0; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
+        const Index platz = ZUSTIMMUNGSPLAETZE[n];
         if (vorher.lies(platz) != nachher.lies(platz)) {
             ++bewegte_zustimmungen;
+        }
+        if (nachher.lies(platz) == geklemmt(vorher.lies(platz))) {
+            ++auf_der_klemme;
         }
     }
 
     // **Die Aussage aus `spiel.md`, als Bedingung und nicht als Behauptung ueber heute.**
-    // Ohne Instrumentenschritt kann sich keine Zustimmung bewegen. Umgekehrt sagt die
-    // Zeile nichts: Bewegt sich ein Instrument, darf sich Zustimmung bewegen und muss
-    // nicht -- der Hub kann nach der Rundungsregel aus T6 auf null fallen. Deshalb eine
-    // Implikation; eine Gleichsetzung waere an dem Tag falsch, an dem Schritt 3 rechnet.
-    PRUEFE(bewegte_instrumente != 0 || bewegte_zustimmungen == 0);
+    // Ohne Instrumentenschritt ist jeder additive Term null -- jedes Vorzeichen der
+    // Politiklast null, damit die Last null, damit der Hub null --, und uebrig bleibt die
+    // Klemme des Ausgangswertes. Umgekehrt sagt die Zeile nichts: Bewegt sich ein
+    // Instrument, darf die Zustimmung anders ausfallen und muss nicht -- der Hub kann nach
+    // der Rundungsregel aus T6 auf null fallen. Deshalb eine Implikation; eine
+    // Gleichsetzung waere an dem Tag falsch, an dem Schritt 3 rechnet.
+    PRUEFE(bewegte_instrumente != 0 || auf_der_klemme == kern::zustand::LAENDER);
 
-    // **Die Ordnungsaussage, und sie ist der Grund, warum Schritt 5 nicht in der
-    // aufsteigenden Adressrunde stehen bleiben kann.** Die Regel liest `lies_neu` der
+    // **Die Ordnungsaussage, und sie ist der Grund, warum Schritt 5 seit Paket 0197 nicht
+    // mehr in der aufsteigenden Adressrunde steht.** Die Regel liest `lies_neu` der
     // Instrumentenstaende; `lies_neu` auf eine in dieser Runde noch nicht geschriebene
     // Adresse ist nach T39 ein harter Fehler. Liegt die Zustimmung eines Landes **vor**
-    // seinen Instrumentenstaenden, kommt sie in der aufsteigenden Runde als erste an und
-    // findet den neuen Stand noch nicht vor.
+    // seinen Instrumentenstaenden, kaeme sie in der aufsteigenden Runde als erste an und
+    // faende den neuen Stand noch nicht vor. Alle 16 Paare liegen so.
     //
     // Gemessen und nicht aus T15 abgeschrieben. Faellt die Zeile eines Tages, ist das
-    // keine Verschlechterung, sondern die Nachricht, dass das Hindernis weg ist -- dann
-    // gehoert dieser Kommentar gestrichen und nicht die Adressordnung zurueckgedreht.
+    // keine Verschlechterung, sondern die Nachricht, dass ein spaeteres Paket den
+    // Laenderblock umgestellt hat -- dann steht der Grund fuer die Blockfassung neu zur
+    // Frage, und nicht die Adressordnung zur Rueckdrehung.
     std::size_t zustimmung_vor_instrument = 0;
     for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
         const Index zustimmung = kern::zustand::stelle_politisch(
@@ -983,8 +1173,80 @@ void probe_zustimmung_ohne_instrumentenschritt()
     PRUEFE(zustimmung_vor_instrument == 16);
 
     std::printf("  Instrumentenschritt: %zu von 16 Staenden bewegt, %zu von 4 Zustimmungen "
-                "bewegt; %zu von 16 Paaren haben die Zustimmung vor ihrem Instrumentenstand\n",
-                bewegte_instrumente, bewegte_zustimmungen, zustimmung_vor_instrument);
+                "bewegt, %zu von 4 auf der Klemme ihres Ausgangswertes; %zu von 16 Paaren "
+                "haben die Zustimmung vor ihrem Instrumentenstand\n",
+                bewegte_instrumente, bewegte_zustimmungen, auf_der_klemme,
+                zustimmung_vor_instrument);
+}
+
+// ---------------------------------------------------------------------------
+// Paket 0197 -- der gerechnete Rumpf, unterscheidbar vom vortragenden
+// ---------------------------------------------------------------------------
+//
+// **Diese Probe ist die tragende des Pakets, und sie ist es, weil sie den einen Fall
+// baut, in dem sich die beiden Rumpfe nicht gleich verhalten koennen.** Eine Zaehlung
+// bewegter Groessen leistet das nicht: Der Startzustand der uebrigen Proben legt auf zwei
+// der vier Zustimmungsadressen die Zahl 1, und die liegt im Wertebereich -- eine Klemme
+// laesst sie stehen, ein Vortrag ebenso.
+//
+// Hier liegen deshalb **alle vier** Ausgangswerte ausserhalb, zwei ueber der oberen und
+// zwei unter der unteren Schranke, darunter beide Enden des Zahlbereichs. Ein Vortrag
+// liesse alle vier stehen; die Regel bringt alle vier auf die Schranke, die `spiel.md`
+// nennt. Vier gegen null, und dazwischen liegt keine Auslegung.
+//
+// **Warum jeder additive Term in dieser Runde null ist**, mit den Worten des Entwurfs:
+// Bewegt sich kein Instrumentenstand, ist jedes Vorzeichen der Politiklast null, also die
+// Last null, also der Realeinkommenshub null -- "fuer jeden Preis, jedes Handelsvolumen
+// und jede Schuldenquote". `schritt_3_politik` traegt vor, also bewegt sich keiner. Dazu
+// steht `zustimmung_elastizitaet` im Traeger dieser Probe auf null, was denselben Term
+// ein zweites Mal loescht. Wer die vier Zahlen unten fuer die Wirtschaft haelt, liest die
+// Klemme; sie ist die ganze Bewegung dieser Runde.
+
+void probe_zustimmung_klemmt_statt_vortrag()
+{
+    // Vier Ausgangswerte, alle ausserhalb von null bis 10.000, und die erwartete Schranke
+    // je Land daneben. Ausgeschrieben statt gerechnet: Eine Erwartung, die aus derselben
+    // Klemme entsteht wie das Gepruefte, prueft nichts.
+    constexpr std::array<i64, kern::zustand::LAENDER> AUSSERHALB = {
+        {10'001, i64{-1}, kern::festkomma::I64_MAX, kern::festkomma::I64_MIN}};
+    constexpr std::array<i64, kern::zustand::LAENDER> SCHRANKE = {
+        {10'000, i64{0}, 10'000, i64{0}}};
+
+    constexpr i64 VORRUNDE = 5;
+    const Zustand vorher = ausgangslage_mit_zustimmung(VORRUNDE, AUSSERHALB);
+    const Rundenergebnis ergebnis =
+        kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
+    const Zustand& nachher = ergebnis.neuer_zustand;
+
+    std::size_t auf_der_schranke = 0;
+    std::size_t stehen_geblieben = 0;
+    for (std::size_t n = 0; n < ZUSTIMMUNGSPLAETZE.size(); ++n) {
+        const Index platz = ZUSTIMMUNGSPLAETZE[n];
+        const i64 start = vorher.lies(platz);
+        const i64 ende = nachher.lies(platz);
+        if (ende == SCHRANKE[n]) {
+            ++auf_der_schranke;
+        }
+        if (ende == start) {
+            ++stehen_geblieben;
+        }
+        std::printf("  %s: Start %lld -> nach der Runde %lld (Schranke der Regel %lld)\n",
+                    kern::zustand::index_zu_adresse(platz), static_cast<long long>(start),
+                    static_cast<long long>(ende), static_cast<long long>(SCHRANKE[n]));
+    }
+
+    // Die beiden Haelften der Unterscheidung. Die erste sagt, was die Regel rechnet; die
+    // zweite, dass ein Vortrag es nicht gewesen sein kann.
+    PRUEFE(auf_der_schranke == kern::zustand::LAENDER);
+    PRUEFE(stehen_geblieben == 0);
+
+    // Und die Kette sagt dasselbe aus der anderen Richtung: vier Schlussglieder mit der
+    // Ursache `Gegenkraft` und der Nummer 2, keines davon ein `Vortrag`.
+    probe_kette(ergebnis.kette_dieser_runde, VORRUNDE + 1);
+
+    std::printf("  Zustimmung: %zu von 4 auf der Schranke der Regel, %zu von 4 stehen "
+                "geblieben -- ein Vortrag haette alle vier stehen lassen\n",
+                auf_der_schranke, stehen_geblieben);
 }
 
 // ---------------------------------------------------------------------------
@@ -1339,6 +1601,7 @@ int main()
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
     probe_zustimmung_ohne_instrumentenschritt();
+    probe_zustimmung_klemmt_statt_vortrag();
     probe_parametersatz();
     probe_feldzahl();
 

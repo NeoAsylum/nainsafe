@@ -113,3 +113,56 @@ predecessor and stays readable.
   without a shell I could not tell a working one from one that accepts every arity, and
   a silently-accepting arity check reads like coverage.
 
+## 2026-09-08 -- the run on 0197 (step 5 got its body)
+
+- 2026-09-08, **the lesson of the run** -- **When a step leaves the address loop, the
+  work is not the step: it is every probe that measured the loop's shape.** The body of
+  `schritt_5_reaktion` is about thirty lines. What actually took the run was that three
+  standing assurances became false at once, all in the probe file: the chain is
+  ascending, exactly one of 310 quantities moves, and every one of the 175 links is a
+  `Vortrag`. Each had to be **replaced** rather than deleted -- "no longer ascending" is
+  indistinguishable from "in any order", so the new statement is 171 ascending plus four
+  pinned to named addresses in country order. **Before you touch a step body, grep your
+  probe file for the properties of the frame, not for the step.** They are the package.
+- 2026-09-08 -- **A start state built from a pattern function can make a clamp look like
+  a computation, and the project manager caught that before I did.** `musterwert` puts
+  123.456.789 on two of the four approval addresses and 1 on the other two, so a faithful
+  body clamps two and leaves two -- and a probe that counts moved quantities would have
+  gone green while measuring the pattern. The fix that actually distinguishes: a start
+  state where **all four** values lie outside the range, so a carrying body moves none and
+  the rule moves all four. **A discriminating probe needs a state in which the two
+  candidate behaviours cannot agree**; counting is not that, and the count only looked
+  like evidence because it happened to be non-zero.
+- 2026-09-08 -- **Check the denominator against the start state before you decide whether
+  the formula may be short-circuited.** The rule divides by `bip(l)`, and `mal_geteilt`
+  aborts on a zero denominator. I worked out by hand which addresses the three
+  `wertschoepfung` values sit on for each of the four countries (0/4/8, 44/48/52,
+  88/92/96, 132/136/140) and what the pattern puts there -- all four sums are non-zero,
+  so the round may compute the change honestly and needs no escape. Had one been zero I
+  would have had to choose between a probe that aborts and a body that invents a case.
+  **Two minutes of arithmetic decided a design question**; guessing would have cost a
+  Ruecklauf either way.
+- 2026-09-08 -- **The one place I did short-circuit, and why it is not the same thing:**
+  an instrument whose level did not move contributes `0 * schaden(l, i)`, and I skip the
+  factor rather than compute it. It is the literal reading of a sum over products, and it
+  matters because `schaden` reaches `handelsvolumen`, `schuld` and `preishub_zoll`, which
+  on a pattern state with both ends of the number range would abort long before their
+  value could matter. **A term that cannot influence the result must not be able to kill
+  the round.** A reviewer may still call this a deviation; it is written at the function.
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** `spiel.md` says the rule reads everything with `lies_neu`; T48 hands `schaden`
+  and `bip` a `Zustand`, and no body holds one of this round. I passed the previous
+  round's state and proposed `0236`. Today it changes no number -- step 4 carries forward
+  -- and the day it does, nothing in the tree turns red. That is the finding I would
+  attack first if I were the reviewer.
+  **(b)** I cannot compile. If the build is red, read these two first: the switch case for
+  `Rundenschritt::Reaktion` in `fuehre_schritt_aus` (it calls a plain `void` helper that
+  ends in `abbruch`, deliberately shaped like the cases for steps 2 and 6 so no
+  fallthrough analysis is involved), and `zustimmungsplaetze()` in the probe, a
+  `constexpr` function whose result feeds a `static_assert` about ascending addresses.
+  **(c)** `belegstellen_kopfzahlen` was **already red** when this run began, on both build
+  paths, over the head numbers of the citation tool -- not mine, and `0233` carries it.
+  Condition 4 says "not lower than at the start of your run", so it should not count
+  against this package; I add no citation and remove none, so the four green citation
+  tests should stay green.
+

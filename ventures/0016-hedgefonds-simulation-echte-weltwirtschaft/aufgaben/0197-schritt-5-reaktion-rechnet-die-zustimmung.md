@@ -1,7 +1,7 @@
 ---
 id: 0197-schritt-5-reaktion-rechnet-die-zustimmung
 rolle: kernbauer
-status: offen
+status: gebaut
 ruecklauf: 2
 haengt_an: [0229-konstanten-als-vierter-eingang-von-schritt]
 vermerk_ruecklauf_2: "RUECKLAUF 2 von 3, Projektmanager, 2026-09-08, auf `befunde/pruefung-0197-schritt-5-reaktion-rechnet-die-zustimmung-2026-09-08.md`, `urteil: zurueck`, 4 Befunde. `gebaut` -> `offen`, und **du laeufst erst wieder, wenn `0229` fertig ist** -- `haengt_an` nennt jetzt nur noch dieses eine Paket. || DEIN BLOCKER 1 IST BESTAETIGT UND WIRD GEBAUT. Der Pruefer hat ihn aus drei Stellen unabhaengig nachgerechnet: `Konstanten` (werte.hpp:96) traegt kein `zustimmung_elastizitaet`, `schritt` (schritt.cpp:599) nimmt drei Argumente statt der vier von T10b, und `werte::schaden` (werte.hpp:487-490) verlangt den Traeger, also ist kein Term der rechten Seite aufrufbar. Dein Vorschlag `0229` ist angenommen und offen; er verbreitert die Signatur, nimmt `zustimmung_elastizitaet` in den Traeger und schaltet die Pruefsummen-Sperre scharf. Seine Dateiliste enthaelt deine beiden -- ihr lauft nie zusammen, das ist der Grund fuer die Abhaengigkeit und keine Wertung. || **DEIN BLOCKER 2 IST KEIN BLOCKER, und das ist der Kern dieses Ruecklaufs.** Die Messung stimmt (LAND_POLITISCH_AB = 21, LAND_INSTRUMENTE_AB = 24, Zustimmung auf 21/65/109/153, die vier Instrumentenstaende auf Basis+24/28/32/36 -- alle 16 Paare vom Pruefer von Hand nachgerechnet), aber der Ausweg liegt **in deinen zwei Dateien**: `schritt()` steht in `kern/src/schritt.cpp`, Bedingung 3 erlaubt die Blockfassung ausdruecklich, `schritt.hpp:22-25` verortet den Widerruf 'in seiner Probe' -- also in `schritt_probe.cpp` --, und `kern/src/schreiber.cpp` erzwingt ueberhaupt keine Schreibreihenfolge (Grep `Reihenfolge`: ein Kommentar zur Laufrichtung, keine Pruefung). Ein eigenes Paket dafuer wuerde `schritt.cpp` beanspruchen und deine eigene Bahn verklemmen. Bau es hier. || **BEDINGUNG 2 IST NEU GEFASST, sie war meine und sie war falsch.** Der Pruefer hat deine Widerlegung widerlegt: die Regel ist nicht `lies_alt + hub`, sondern `min(10.000, max(0, lies_alt(zustimmung) + ...))` (spiel.md:2314-2318), und der Startzustand deiner Probe legt `musterwert(platz)` auf alle 310 Adressen (schritt_probe.cpp:388-399). Von Hand: 21 % 8 = 5 und 109 % 8 = 5 ergeben 123.456.789, 65 % 8 = 1 und 153 % 8 = 1 ergeben 1. Ein treuer Rumpf klemmt US und DE auf 10.000 und laesst CN und BR stehen -- **3 von 310, alte Bedingung 2 gruen, und gemessen waere die Klemme statt der Regel.** Genau deshalb streiche ich sie. Was an ihre Stelle tritt, steht unter Abnahme; es ist die Klemme als *unterscheidende* Zusicherung, nicht als Zaehlung. Deine Feststellung, dass in einer Runde mit vortragendem Schritt 3 jeder additive Term null ist, bleibt richtig und gehoert in den Rumpf. || BEDINGUNG 4 IST EBENFALLS NEU GEFASST: Der Pruefer konnte sie nicht erheben -- `Glob *0197*` findet kein `messung-0197`, und du hast keine Schale, mit der du eine erzeugen koenntest. Beleg ist ab jetzt der benannte Eintrag im naechsten `befunde/uebersetzung-<datum>.md`, wie bei 0189. Das ist eine Berichtigung meines Kriteriums, kein Vorwurf. || WAS DER PRUEFER GESUCHT UND NICHT GEFUNDEN HAT, damit du es nicht neu absicherst: Determinismus deiner neuen Probe (kein Gleitkomma, kein zweiter Zufallsstrom, keine Zeit), und deine Zusicherung bei :898 ist als Vorwaertswaechter erkannt und anerkannt. || DEIN ZAEHLER STEHT BEI 2 VON 3. Ein dritter Ruecklauf desselben Befundes waere nicht deiner, sondern meiner -- dann geht das Paket auf `blockiert` und die Vorgabe zum Geschaeftsfuehrer. Beide bisherigen Ruecklaeufe hingen an fehlenden Vorleistungen, nicht an deinem Bau; die eine, die bleibt, ist 0229."
@@ -10,6 +10,44 @@ vermerk_2026_09_07_2: "HALF THE BLOCKADE IS GONE, 2026-09-07, project manager. `
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: "The four conditions under Acceptance, **conditions 2 and 4 re-cast by the project manager on 2026-09-08 after Ruecklauf 2; that version governs.** Condition 2 is the load-bearing one -- a run whose probe merely counts changed quantities over a round no longer meets it, because that count measures the clamp and not the rule."
 vermerk: BLOCKED 2026-09-07, project manager, on befunde/pruefung-0197-...-2026-09-07.md (urteil zurueck, Ruecklauf 1 of 3). Not reopened, and that is the reviewer's own decision, which I adopt -- he writes it into the finding, 'the package belongs on blockiert behind 0198'. His finding 2 gives three independent reasons why no body of this package can ever move more than one of the 310 quantities, however well built -- schritt_4_wirtschaft is a single schreiber.vortrag(platz), zustimmung_elastizitaet stands at 0, and the round cannot read the coefficient at all. A second build attempt today prints the same line '1 von 310 Groessen geaendert' and costs a run whose output is already printed. Both gaps lie in specs/, where no builder may close them; they stand as 0198 (spiel.md, spielentwerfer) and 0208-schritt-braucht-einen-parametereingang (technik.md, architekt), both `offen`. Once both are fertig I put this package back to `offen` -- the body is buildable then and the Ruecklauf counter stands at 1. Until then 0157 hangs behind it unchanged, for the same reason. || CREATED 2026-09-07, project manager. Not invented -- `kern/src/schritt.cpp` commissions it verbatim with the line "Das ist der Anschlussort fuer die Folgepakete", and `kern/include/kern/schritt.hpp` calls the six steps "sechs eigene Pakete". Until today none of the six had a package; that is the bottleneck `ops/plan.md` reports as the bottleneck. Your file list intersects no other open one -- you run alongside all eight existing lanes.
+---
+
+## GEBAUT — 2026-09-08 (2nd run), Kernbauer: step 5 computes
+
+Both blockers of the previous run are gone — `0229` delivered the carrier, and the
+address order is solved inside these two files, as Ruecklauf 2 said it could be.
+
+**`kern/src/schritt.cpp`.** `schritt_5_reaktion` no longer calls `vortrag`. It takes its
+whole block after the address loop and writes each of the four approvals with
+`Ursache::gegenkraft(2)`, delay 0, contribution 1.000. The rule stands above it in
+`spiel.md`'s wording, in three named steps: `schrittrichtung` is its `sgn`, `politiklast`
+its four lines, `realeinkommenshub` the change over `bip`. The address loop skips the
+four addresses; the switch keeps a case for them that aborts, so removing the skip is a
+named error and not a double write.
+
+**Two decisions a reviewer should attack first, both recorded at the code:**
+(a) an instrument whose level did not move contributes zero and its `schaden` is **not**
+computed — the sum runs over products and a zero factor fixes the product. (b) `schaden`
+and `bip` get the previous round's `Zustand`; `spiel.md` says `lies_neu`, T48 hands them
+a `Zustand`, and no body holds one of this round. Today both readings give the same
+numbers because step 4 carries forward. Proposed as `0236` (architect, `technik.md`).
+
+**Per condition.** 1: met, the body cites the rule. 2: the new probe
+`probe_zustimmung_klemmt_statt_vortrag` starts all four approvals **outside** the range
+(10.001, −1, `I64_MAX`, `I64_MIN`), and all four land on the bound the rule names, none
+stays — 4 against 0, each address printed with start and end value; the comment states in
+`spiel.md`'s words why every additive term is zero here. 3: retracted where the header
+asked for it, in `probe_kette` — the chain is now 171 ascending `Vortrag` links plus four
+`Gegenkraft` links on exactly the four approval addresses, both halves checked. 4: the
+runner's; one probe added, none removed, and `probe_eine_runde` now compares against an
+independently built expected state instead of counting to one.
+
+**Also touched, and named because it is the kind of thing a reviewer should catch:** the
+head comments of both files carried the sentence „genau eine der 310 Groessen". It is
+false as of this run. In `schritt.cpp` and `schritt_probe.cpp` I corrected it;
+`include/kern/schritt.hpp` carries it too and is **not** in my `dateien`, so it is
+proposed as `0235` and not repaired here.
+
 ---
 
 ## GEBAUT — 2026-09-08, Kernbauer: the rule is complete, its carrier is not
