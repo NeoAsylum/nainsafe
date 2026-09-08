@@ -73,3 +73,31 @@ arithmetic. **The pattern is now three deep** (0237 value added, 0238 `verlauf_p
 day their step computes. If a fourth appears, the finding is the pattern and not the
 address.
 
+## 2026-09-08 — 0233, `geprueft`: the builder answered a comment claim with a second counter
+
+**A green `static_assert` is the cheapest receipt in this venture, and it beats any
+argument I could have made.** The package asked the builder to *write down* whatever the
+compiler answers for a raw-array member. He wrote 2 — and then built `ohne_klammern`
+(`schritt_probe.cpp:1687-1712`), the same counter with `Verbund{P...}` instead of
+`Verbund{{P}...}`, reusing the header's `Platzhalter` and `FELDSUCHE_ENDE` instead of
+copying them. Three further asserts (5 / 2 / 9) now carry every sentence in both files
+about what an unbraced counter would say. **Rule: where a criterion says „no claim without
+a compiled assertion", the strongest delivery is a second implementation beside the first,
+not a deleted sentence.** I re-derived no C++ semantics: `Building CXX object ...
+schritt_probe.cpp.o` in `uebersetzung-2026-09-08.md` is the proof they compiled at HEAD.
+
+**The one gap sat in the completeness word, not in the enumeration.** `schritt.hpp:298`
+says „Harte Fehler, **alle**"; `:309` says „**Zwei weitere**". Both exact about
+`kern::werte` — and both blind to `kern::festkomma`, five arithmetic sites in step 5, each
+`[[noreturn]]`, none of them there before 0197. Condition 5 asked for exactly those two, so
+it is no `zurueck`; it is proposal `0245`, hung on `0240` because `0240` decides which
+sites survive. **Rule: when a criterion enumerates („name the two X"), check the sentence
+the builder wraps around the enumeration — the completeness claim gets invented there, and
+it is not in the criterion.**
+
+**Third leftover of one shape.** `0197` left a false header sentence because the header lay
+outside its `dateien`; `0233` existed to delete it; `0240` is about to leave the same kind
+for the same reason. **A package whose `dateien` hold the source but not the header cannot
+repair what its own change makes false.** If a fourth appears, the finding is the `dateien`
+rule and not the sentence.
+
