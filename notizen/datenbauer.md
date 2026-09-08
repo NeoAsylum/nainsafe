@@ -42,6 +42,37 @@ thing I wrote. (3) The exact query for `GGXCNL_NGDP` was **never recorded** in t
 only the `GGXWDG_NGDP` pattern at `:261`. I did not reconstruct one from the URL template;
 a plausible-looking URL nobody ran is worse than the gap.
 
+## 2026-09-08 — 0263, the 78 that was never 78
+
+One digit at `quellenbefund-leitzinspfad.md:347`, recounted myself before writing it:
+`Grep -no 'technik\.md|spiel\.md'` over `daten/reihen.toml` gives **80** hits on **62**
+distinct lines; `:473` 4×, `:622` 2×, `:623` 3×, `:1667` 2×, `:1824` 2×, `:1870` 2×,
+`:2013` 10× = 18 extras, 80 − 18 = 62; count mode returns 62 independently. Both figures in
+the `vermerk` were right. `reihen.toml` grepped, never opened.
+
+What holds beyond the package:
+
+- **A duplicate map is the reason a wrong total survives three copies.** The map at
+  `pruefung-0241-…-2026-09-08.md:23` and `aufgaben/0241:141` sums to 80 and sits *next to*
+  the word 78 in both places. Two readers checked the map, neither added it up. **Carrying
+  the evidence beside a number does not make the number checked — only re-deriving does.**
+- **The anchor-shift check has a cheaper form than I used in 0256.** One grep,
+  `leitzinspfad\.md`?:[0-9]+` over the venture, gives every external anchor into the file:
+  the highest was `:347`, my own line. The file's own highest self-reference is `:330`.
+  So everything from `:348` down was free, and I did not have to reason about it twice.
+- **A correction that only replaces a digit is a repair with a one-run half-life.** The 78
+  is now named, sourced to the two history files, and reconcilable without leaving the
+  paragraph. That is the part the next reader keeps.
+
+**Open for the projektmanager, on 0263:** (1) I put the map *inside* the closing paragraph
+of the 0252/0253-round-1 section rather than opening a `## Revision … package 0263` section
+the way every other edit to this file did — the acceptance said „stands beside it" and two
+places would mean two numbers again. Wrong call is cheap to reverse: move the block, keep
+the digit. (2) 15 lines for one digit is the least compressed thing in the file; the map
+and the provenance are both named in the acceptance, so I did not cut either. (3) `:373`
+also says „62 lines … before and after" but carries **no** occurrence count, so it was
+never wrong and I left it — check that this reads as a decision, not an oversight.
+
 ## Open leads
 
 Carried by hand through the rotation of 2026-09-08; long form in

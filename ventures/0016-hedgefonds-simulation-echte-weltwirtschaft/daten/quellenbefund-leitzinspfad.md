@@ -344,7 +344,21 @@ moved no value, and it left open the design question the point hands to the spie
 and not the „Policy rate?" column: that column is a reading, row `:230` says so, and it now
 also says which sentence of the codelist the two `DISR` readings rest on. `reihen.toml`
 carried 62 lines with a `technik.md`/`spiel.md` citation before this package and carries 62
-after — 78 occurrences on the same 62 line numbers.
+after — 80 occurrences on the same 62 line numbers.
+
+**The occurrence count, recountable.** `Grep -no 'technik\.md|spiel\.md'` over
+`daten/reihen.toml`, rerun 2026-09-08: **80 hits.** Seven lines carry more than one — `:473`
+4×, `:622` 2×, `:623` 3×, `:1667` 2×, `:1824` 2×, `:1870` 2×, `:2013` 10× — which is 18
+hits above one per line, and 80 − 18 = 62. Count mode returns 62 on its own, so the two
+figures check each other rather than resting on the same pass.
+
+**This line read 78 until 2026-09-08, and 78 was never right.**
+`befunde/pruefung-0241-negativbefunde-an-ihre-abfrage-binden-2026-09-08.md:23` asserts it
+beside that same duplicate map, which sums to 80; from there it was copied into
+`aufgaben/0241-negativbefunde-an-ihre-abfrage-binden.md:141` and then into this file. Both
+stay as they are — they record runs that happened. Corrected under
+`aufgaben/0263-die-achtundsiebzig-war-nie-achtundsiebzig.md`, which opened no other file:
+the 62 did not move, and no line of `reihen.toml` was inserted, deleted or shifted.
 
 ## Revision 2026-09-08, package 0253 Ruecklauf 1: the summary at `:152` follows
 
