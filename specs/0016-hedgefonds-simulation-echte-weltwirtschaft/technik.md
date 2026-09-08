@@ -3669,7 +3669,9 @@ Four reasons, measured on 2026-09-05 and not presumed:
 
 1. **The enumeration already *is* the index.** `enum class Gebiet : std::uint8_t` carries the
    values 0 to 4, the address arithmetic computes exclusively with `LAENDER` and `GEBIETE`,
-   and the abbreviation table already exists: `GEBIET_KUERZEL` in `kern/src/zustand.cpp`. So
+   and the abbreviation table already exists — twice, see the end of this section:
+   `GEBIET_KUERZEL` in `kern/src/zustand.cpp` and a second one of the same name in
+   `kern/src/zustandsausgabe.cpp`. So
    there are not two procedures to choose between, but one index **with** a naming layer
    against the same index **without** it. The rebuild would put no calculation right that is
    wrong today.
@@ -3704,17 +3706,43 @@ and `STECKPLATZ_WAEHRUNG_ERSTER` as well as `STECKPLATZ_ANLEIHE_ERSTER` against
 breaks compilation instead of silently shifting an address. **Without these assertions the
 choice would be wrong** — they are the reason a hand-kept list remains admissible here.
 
-**For "the one place" to hold literally, one line must move.** `GEBIET_KUERZEL` sits
-today in `kern/src/zustand.cpp`, the enumeration in `kern/include/kern/zustand.hpp` — adding
-a country thus touches two files. The table belongs next to the enumeration in the header as
-a `constexpr std::array`, with `static_assert(GEBIET_KUERZEL.size() == GEBIETE)`. After that,
-the complete procedure for a further country in the core is: one value in `Gebiet` before
-`RW`, `RW` one higher, `LAENDER` one higher, one abbreviation in `GEBIET_KUERZEL`, `S + 2`
-values in `Steckplatz` — all in one file, all guarded by `static_assert`. The data work that
-falls due alongside is in `0141-pruefliste-fuenftes-land` and is the larger item.
+**For "the one place" to hold literally, two files must become one — the list stands twice
+today.** `GEBIET_KUERZEL` sits in `kern/src/zustand.cpp` for address building; a **second
+version of the same name with the same content** sits in `kern/src/zustandsausgabe.cpp`,
+whose comment there calls itself „Zweite Fassung derselben Liste" and names the reason: the
+first one is private and belongs to a foreign translation unit. A sixth region therefore
+needs an abbreviation in **both**. Nothing binds the two at translation time — both are
+declared with their size given as `GEBIETE`. What binds them is `zustandsausgabe_probe` at
+**run time**: it reads each region's abbreviation out of that region's own trade address
+(`handel.<von>.<nach>.<sektor>`) through `index_zu_adresse` and goes red as soon as one of
+the two lists is re-sorted. A missing sixth abbreviation is caught no earlier than there.
 
-Both — the assertions and the move — are **design, not execution**, and each needs a
-core-builder package. I write no code.
+**The table belongs next to the enumeration in the header, and then there is one of it.**
+With `GEBIET_KUERZEL` in `kern/include/kern/zustand.hpp` the reason for the copy — private,
+foreign file — falls away, and `zustandsausgabe.cpp` uses that table instead of repeating
+it. That is the way chosen here: consolidate, not keep twice. Whoever keeps the second
+version instead owes the country procedure an explicit second step, with the run-time probe
+as its only cover.
+
+**The assertion bites only with a derived size.** The form is
+`constexpr std::array GEBIET_KUERZEL = {…}` — class template argument deduction, no size in
+the type — with `static_assert(GEBIET_KUERZEL.size() == GEBIETE)` beside it. **Give the size
+instead, and the same line compares `GEBIETE` with `GEBIETE`: true by construction, unable
+to fail however few initialisers stand in the braces, and the sixth entry is
+value-initialised to a null pointer.** That is how one builds the very error it is meant to
+catch — `GEBIETE = 6`, `LAENDER = 5`, both abbreviation tables untouched. Derived, `.size()`
+is 5 against `GEBIETE` 6 and the build stops. (Whether the warning set flags the short
+initialiser list is not measured; the choice does not rest on it.)
+
+After that, the complete procedure for a further country in the core is: one value in
+`Gebiet` before `RW`, `RW` one higher, `LAENDER` one higher, one abbreviation in
+`GEBIET_KUERZEL`, `S + 2` values in `Steckplatz` — all in one file, all guarded by
+`static_assert`. **That sentence is the target, not today's state: it holds from the moment
+the second version is gone.** The data work that falls due alongside is in
+`0141-pruefliste-fuenftes-land` and is the larger item.
+
+Three things — the assertions, the move, and the removal of the second version — are
+**design, not execution**, and each needs a core-builder package. I write no code.
 
 ### T57 — What stays the same at `L = 5`
 

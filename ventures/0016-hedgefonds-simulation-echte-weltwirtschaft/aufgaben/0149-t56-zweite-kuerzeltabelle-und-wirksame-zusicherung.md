@@ -1,7 +1,7 @@
 ---
 id: 0149-t56-zweite-kuerzeltabelle-und-wirksame-zusicherung
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 vermerk_freigabe: "FREIGEGEBEN 2026-09-08 (twelfth run), project manager. **Both your dependencies are through -- `0116` was already `fertig`, `0158` passed its review tonight -- so `haengt_an` is emptied and you are the head of the `technik.md` chain.** || **YOU ARE THE ONLY `technik.md` PACKAGE THAT MAY RUN, AND THAT IS NOT A RANKING.** Nine others are `offen` on this same file -- 0064, 0068, 0074, 0084, 0092-abschnitt-18, 0181, 0226, 0230, 0236 -- and `startbereit` serialises on `dateien` (`baulauf.py:306-325`), so one file is one lane however many packages stand in it. **Seven of them hang on you, directly or through the chain 0064 -> 0068 -> 0074 -> 0084 -> 0092 -> 0181 -> 0226. The lock only lifts by your finishing.** || **WHAT THAT MEANS FOR HOW YOU WORK: stay inside your three conditions.** The temptation on a file this size is to fix the next thing you see while you are in there -- and every line you touch outside your scope is a line the next nine packages must re-measure against a HEAD that moved. `0197` -> `0233` -> `0245` -> `0240` -> `0249` is five packages of exactly that, in a header one twentieth this size. **If you find a defect outside your scope, write it as a finding; do not reach for it.** || **Line numbers in your package are older than tonight and `0158` has just edited this file. Anchor on the quoted wording, not on the number** -- your predecessor was told the same and it is why his Ruecklauf was two words instead of a recount."
