@@ -317,7 +317,11 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 ///     heraus, in `realeinkommenshub`, wenn der gelesene Wert die Nennerbedingung aus
 ///     `spiel.md` nicht erfuellt. **Ihre Bedingungen stehen dort und nicht hier**: Ein
 ///     Kopf, der eine bewegliche Tatsache wiederholt, wird falsch, sobald sie sich
-///     bewegt. Beide Schranken werden jede Runde gerechnet, fuer jedes Land.
+///     bewegt. Beide Schranken werden jede Runde gerechnet, fuer jedes Land, und dieser
+///     Eintrag ist der einzige der vier, dessen Abbruch ein Zustand auch **erreicht**:
+///     Ein Zustand, dessen Wertschoepfung nirgends positiv ist, faellt in die
+///     Nennerbedingung, und darum kommt zu ihrer Kennung in jedem gruenen Lauf eine
+///     Abbruchmeldung an.
 ///   * die Summe der Zustimmungsregel verlaesst den `i64`, ehe die Klemme der Regel den
 ///     Wert auf seine Schranke zurueckholen kann. Die Schranke steht seit Paket 0240 aus
 ///     `kern::schritt` heraus vor der Addition, in `summe_der_regel_pruefen`, und faengt
@@ -345,10 +349,17 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 /// falschen Ort, ohne dass irgendetwas rot wurde. Prosa ist der Traeger fuer den
 /// **Grund** einer Schranke: warum sie keinen Ersatzwert bekommt und welcher Zustand
 /// ihren Weg heute unbetreten laesst. Sie ist nicht der Traeger dafuer, **welche**
-/// Schranke anschlaegt; das haelt das `Riegel`-Verzeichnis in
-/// `kern/test/schritt_probe.cpp` -- eine Kennung je Schranke, zu jeder in jedem Lauf
-/// eine angekommene Meldung, sonst faellt der Lauf. **Wer wissen will, welche Schranke
-/// heute wirklich anschlaegt, liest dort und nicht hier.** Und wer hier eine
+/// Schranke anschlaegt; das halten die beiden `Riegel`-Verzeichnisse der Testschicht,
+/// und sie halten es verschieden stark: Zu jeder Kennung in `ALLE_RIEGEL` muss in jedem
+/// Lauf eine Abbruchmeldung ankommen, sonst faellt der Lauf; `RIEGEL_OHNE_ZUSTAND`
+/// fuehrt daneben die Schranken, die kein Zustand erreicht, und ist von dieser
+/// Vollzaehligkeit ausgenommen -- zu ihnen kommt nie eine Meldung an, und der Lauf faellt
+/// trotzdem nicht. Von den vier Eintraegen hier haben nur die beiden Abbrueche aus
+/// `kern::schritt` heraus dort ueberhaupt eine Kennung -- die Nennerbedingung im ersten
+/// Verzeichnis, die Schranke vor der Summe im zweiten --, waehrend die Schranken in
+/// `kern::werte` und `kern::festkomma` in keinem von beiden stehen. **Fuer diese beiden
+/// liest, wer wissen will, welche Schranke heute wirklich anschlaegt, dort und nicht
+/// hier; fuer die uebrigen antwortet nur die Quelle selbst.** Und wer hier eine
 /// dazuschreibt, schreibt ihren Ort in ihren eigenen Eintrag, statt ihn einer Gruppe
 /// vorwegzustellen: Die Gruppenzeile, die das bisher tat, ist mit diesem Paket fort.
 [[nodiscard]] Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,

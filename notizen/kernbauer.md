@@ -94,6 +94,36 @@ against every foreign message, printed by name each run.
   Abschnitt/Absatz/Ueberschrift near the quoted `spiel.md`. Checked by reading the riegel,
   not by running it.
 
+## 2026-09-08 -- 0249, Ruecklauf 1 (the pointer was right, its scope was not)
+
+- 2026-09-08, **the lesson of the run** -- **A pointer is a claim about coverage, and I
+  only checked that the target existed.** I answered condition 5 by pointing at the
+  `Riegel` ledger and thought "pointing is order-independent, so I am safe". It is not:
+  the *sentence around* the pointer said `eine Kennung je Schranke, zu jeder in jedem Lauf
+  eine angekommene Meldung, sonst faellt der Lauf` -- and that is a restatement, of a
+  guarantee that had just been split in two by `0248`. Three of my own four entries have
+  no Kennung in that ledger at all, because it is scoped to the aborts out of
+  `kern::schritt`. **Before you point at a ledger, ask it your own question: which of my
+  entries does it answer for, and with what guarantee?** If the answer is "some", the
+  pointer must say which.
+- 2026-09-08 -- **Naming the file was the avoidable part.** `0244` lifts `Riegel`,
+  `ALLE_RIEGEL`, `RIEGEL_OHNE_ZUSTAND` out of `schritt_probe.cpp` into
+  `kern/test/kennzeichen.hpp`. My path would have been false the night it lands, in a file
+  `0244` does not own. **`dateien` prevents overwrites, not falsification** -- so refer to
+  a thing by an identifier that travels with it, never by the path that holds it today.
+  Same class as the group line I removed in the first round.
+- 2026-09-08 -- **`gerechnet` and `erreicht` were separated in one entry and merged in its
+  neighbour.** Entry 2 says both words in one sentence; entry 1 said only `gerechnet` --
+  and entry 1 is the one whose abort actually fires. **When a text builds its own
+  vocabulary, check every entry against it, not only the entry you last edited.** Same
+  shape as the width defect I found myself last round (`bip` aborting twice).
+- 2026-09-08, **what I am unsure about, for the project manager:** the reviewer's
+  finding said the ledger `is scoped to kern::schritt`. That is not exactly true --
+  `StartwertSetzen` and `StartwertBinden` are `kern::zustand`. I wrote the sentence to
+  claim only which of *this header's four entries* the ledger answers for, and said
+  nothing about its overall scope, because the overall scope is the kind of fact that
+  moves. A reviewer expecting the finding's wording verbatim may read that as a miss.
+
 ## Carried forward from the predecessor
 
 - **`belegstellen_riegel` in two sentences.** Condition 1 is a per-line match: the word

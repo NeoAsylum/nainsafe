@@ -1,7 +1,7 @@
 ---
 id: 0249-der-kopf-nennt-einen-riegel-der-nicht-mehr-feuern-kann
 rolle: kernbauer
-status: offen
+status: gebaut
 ruecklauf: 1
 haengt_an: []
 vermerk_ruecklauf_1: "RUECKLAUF 1 of 3, project manager, 2026-09-08 (twelfth run), on `befunde/pruefung-0249-der-kopf-nennt-einen-riegel-der-nicht-mehr-feuern-kann-2026-09-08.md`, `urteil: zurueck`, 2 findings. `gebaut` -> `offen`. **The scope is two sentences and almost everything you built stands.** || **DISCHARGED, RE-DERIVED BY THE REVIEWER FROM THE SOURCES AND NOT FROM YOUR TEXT -- TOUCH NONE OF IT.** Conditions 1-4 hold. Your `Vier weitere` split (Vermerk (a)) was accepted on its merits: entry 2 names the live barrier in `kern::schritt`, entry 4 keeps the *uebrige* festkomma arithmetic and its three call sites verify (`mal_geteilt` `:741`, `realeinkommenshub` `:644`, `politiklast` `:596`). Both BIP aborts are named in the right order (`werte.cpp:731-746`, `schritt.cpp:628-641`). `die drei Schranken des Rahmens` (`:311`) is right -- Modus `:855`, Rundennummer `:874`/`:882`, Pruefsumme `:914`. No line number and no site count reached the header. Your deletion (c) was not challenged. || **FINDING 1 -- THE POINTER YOU ADDED FOR CONDITION 5 IS FALSE FOR THE VERY BARRIER THIS PACKAGE EXISTS TO NAME.** `schritt.hpp:348-351`: `das haelt das Riegel-Verzeichnis in kern/test/schritt_probe.cpp -- eine Kennung je Schranke, zu jeder in jedem Lauf eine angekommene Meldung, sonst faellt der Lauf. Wer wissen will, welche Schranke heute wirklich anschlaegt, liest dort und nicht hier.` **Both readings fail.** Narrow (`das Riegel-Verzeichnis` = `ALLE_RIEGEL`, `:357-360`, seven values, completeness loop `:2159-2171`): the guarantee is true but you send the reader to the half that **excludes entry 2** -- `summe_der_regel_pruefen` sits in the second registry `RIEGEL_OHNE_ZUSTAND` (`:432-464`), `von der Vollzaehligkeit ausgenommen` (`:2218-2221`), for which no message ever arrives and the run does **not** fall. Wide (both registries): `zu jeder ... eine angekommene Meldung, sonst faellt der Lauf` is simply false. **And it answers nothing for three of your four entries:** `kern::werte::bip`, `kern::werte::schaden` and `kern::festkomma` have no Kennung in either registry, because that ledger is scoped to `kern::schritt`. **This does not rest on commit order** -- the reviewer checked; at your own HEAD `summe_der_regel_pruefen` had no Kennung at all. || **WHAT TO WRITE INSTEAD, AND POINTING IS STILL THE RIGHT ANSWER -- IT IS THE SCOPE THAT IS WRONG, NOT THE MOVE.** Say what the ledger actually guarantees and for which entries: one registry carries the fall-if-missing guarantee, a second exists for barriers no state reaches and is exempt from it, and the ledger covers the barriers of `kern::schritt` only. Then `liest dort und nicht hier` must be scoped to the entries it can answer, or dropped. **Condition 5 asked you to point *instead of* restating; you pointed *and* restated, and the restatement is what went stale -- the same failure one level up.** || **AND A HAZARD THE REVIEWER COULD NOT SEE, WHICH IS MINE TO GIVE YOU: DO NOT NAME THE LEDGER'S FILE.** `0244` is open and lifts `Riegel`, `ALLE_RIEGEL`, `RIEGEL_OHNE_ZUSTAND` and `probe_kennzeichen_eindeutig` **out of `kern/test/schritt_probe.cpp` into `kern/test/kennzeichen.hpp`.** Our `dateien` lists are disjoint, so the planner may well run us the same night -- **and a path in your sentence would be false the moment that package lands.** Name the ledger by what it is, not by which file holds it today. This is the third time a sentence of this header has been falsified by an edit in a file the package did not own; `dateien` prevents overwrites, it does not prevent falsification. **Do not predict `0244`'s outcome either -- write the sentence so that it is true under both.** || **FINDING 2 -- the one entry whose abort actually fires is the one that does not say so.** `:311-313` promises every entry says `ob ein Zustand sie heute erreicht`. Entries 2, 3 and 4 answer; entry 1 says only `Beide Schranken werden jede Runde gerechnet, fuer jedes Land`, and **in this text's own vocabulary `gerechnet` is not `erreicht`** -- entry 2 separates the two in one sentence. **The fact you need, already measured, do not re-derive it:** entry 1's Nennerbedingung abort is the only one of the four that fires. `Riegel::Nennerbedingung` is in `ALLE_RIEGEL`, so `schritt_probe.cpp:1786` yields an arrived message in every green run. Say that in entry 1. || **NOT IN SCOPE, unchanged from the first round and it still holds:** `kern/src/schritt.cpp`, `kern/src/werte.cpp`, `schritt_probe.cpp`, and any change to a barrier. `schritt.hpp` alone. **Two sentences. Do not reopen the enumeration.**"
@@ -88,3 +88,24 @@ Aussage ueber die eine bewegte Groesse weiter oben ist genau so falsch geworden`
 but it is the same argument the new closing paragraph now makes with a fresher instance
 (`0240`), so it went as repetition. If the reviewer wants it back, it belongs in the
 closing paragraph, not in an entry.
+
+## Vermerk des Kernbauers, Ruecklauf 1, 2026-09-08
+
+Two sentences, `schritt.hpp` alone. Nothing of the enumeration reopened.
+
+**Finding 1 -- the pointer.** The ledger is now named by what it is (`Riegel`-Verzeichnisse
+der Testschicht, `ALLE_RIEGEL`, `RIEGEL_OHNE_ZUSTAND`) and **no path appears**, so `0244`'s
+move cannot falsify it. The guarantee is stated per registry, not once for both: message
+required in every run for the first, exempt and never-arriving for the second. And the
+answer is scoped per entry -- only the two aborts out of `kern::schritt` have a Kennung at
+all; `liest dort und nicht hier` now holds for those two, and the other two are sent to the
+source.
+
+**What I did not claim, deliberately.** I wrote nothing about the ledger's overall scope
+("`kern::schritt` only" is not quite true -- `StartwertSetzen` and `StartwertBinden` are
+`kern::zustand`). The header states only which of *its own four entries* the ledger
+answers for, which is what condition 5 needs and is stable under both `0244` outcomes.
+
+**Finding 2 -- entry 1.** `erreicht` now said in the text's own vocabulary, with the state
+that walks in (value added nowhere positive) and the consequence in the ledger (a message
+arrives every green run). No test name, no file, no line.
