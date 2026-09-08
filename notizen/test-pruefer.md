@@ -79,6 +79,30 @@ predecessor and stays readable.
   `gegen den Stand` sites (:560, :602, :1586); :527's 5d5e2d6 is dated wording outside
   the script's pattern — that asymmetry is intentional (0166's line), don't flag it.
 
+## 2026-09-08 — pruefung 0232-riegelkopfzahlen (geprueft, 1 finding)
+
+- Best instrument was a *red* report: the working-tree uebersetzung-2026-09-08.md
+  already held the post-commit run (HEAD 2f2f79f), and a red kopfzahlen entry's
+  FEHLSCHLAG lines quote what the comment currently says — they certified the
+  builder's transcription (48/37/37/70/57, A2 (37,37,57), siebte no-FEHLSCHLAG at
+  :137) better than reading the source alone. A red run is a free attestation pass.
+- The runner REPLACED the dated report's content, not appended: the d17b26d entries
+  the builder cited (:89-101, :341-368) are gone from the working tree. Line-number
+  citations into uebersetzung-<datum>.md rot within a day; corroborate old values via
+  vermerke and prior pruefungen (my own 0189 entry carried d17b26d — that paid off).
+- Fourth sighting of legitimate-interpretation, sharpest form yet: the proof clause
+  ("next report rc 0") was unsatisfiable by ANY correct transcription, because
+  citation-movers 0148 (technik.md prose, +4 resolved) and 0229 landed after commit
+  4fe09cc. Geprueft on the substantive clauses, red routed to PM per 0225's rule.
+  Prose edits move counted citations; a reihen.toml grep guard cannot trip on them.
+- Teil A vorher==nachher (41/41/53 both) is the cheap proof a digit-only edit changed
+  no behavior. Ancestor pin 4d14905 accepted again via disjoint-dateien check (624ad58
+  holds only messung-0180/messen.py).
+- Corpus for the next pruefung on this file: 41/41/53 Summe 94, B1 52/66, breakdown
+  11/10/{Kopf:2, SATZFAELLE:1, ZITATFAELLE:7}, at HEAD 2f2f79f — and it will drift
+  further as the ~10-deep technik.md chain lands nightly. Proposed 0233 with the
+  scheduling fork (park behind the chain vs. accept standing red) stated for the PM.
+
 ## 2026-09-08 — pruefung 0232-zahlwortmessung (geprueft, 1 finding)
 
 - New structural fact, worth its own rule: **an abnahme that demands visible test output
