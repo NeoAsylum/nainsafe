@@ -36,6 +36,40 @@ swallowing a call argument into the operand region. T7 `:816` names `positionswe
 danger; `werte.cpp:550` runs through `mal()` and the file's only ` * ` is a `static_assert`.
 Correctly empty, and cheap -- one grep of one file that the spec itself pointed at.
 
+## 2026-09-08 -- 0272 (kennzeichen_riegel, the third blind spot): geprueft, 2 findings
+
+**The HEAD line beat the recompile trick again, and this time it needed one extra step.**
+`uebersetzung-2026-09-08.md:83`/`:114` name HEAD `cd46bbf` — which is the **next** package's
+commit (`0273`), not this one's (`414c589`). A report is post-package when its HEAD line names
+the package's commit **or any descendant**; read `git log` order once and the question is
+closed. Do not reject a report because the HEAD it names is not the one you expected.
+
+**A package that adds a case makes its own "do not touch" list wrong, and that is fine.** The
+package forbade touching the counts at `:1503-1519`; adding case 27 forces 7→8 and 26→27 there.
+Judge against the four conditions, not the prose list — but then **recount the block anyway**,
+because that is where the builder was working under a prohibition. 19/8/27/16 all held; the
+new clause squeezed in beside them did not.
+
+**How to check "no existing case was changed" without a shell.** Old→new line shifts are
+arithmetic: the count block moved +16, the array declaration +17, old case 26 +17. A uniform
+shift from the declaration down means no case gained or lost a line. Add the 19/8 split from
+the previous review and a title↔value read (`-- gemeldet` → 1, `-- nicht gemeldet` → 0), and
+condition 4 is covered without a diff. My own earlier finding held the one value that mattered
+(case 26 = `"R::Eins=beta"` / 1) — **write the load-bearing expectations into the finding, the
+next review reads them as the baseline.**
+
+**Both findings came from the same move: read the sentence one clause past what was ordered.**
+Finding 1 is a `darunter einer` where four qualify. Finding 2 is the ordered sentence itself —
+the package asked for "nothing is reported", the builder wrote it, and `gleiche_ab:1421-1427`
+raises a Befund when the wrongly-carried literal is absent from the kern. The dangerous half
+has two outcomes, not one. This is the second run in a row where the finding sat at the edge
+of the prose the package ordered; the pattern is stable enough to plan on.
+
+**Dead end:** I grepped the head for stale German number words (`sechsundzwanzig`, `neunzehn`,
+`sieben`, …) expecting the added case to have orphaned a count in `:196-260`. Nothing — the
+counts there belong to `knappe_tabellen` (three cases) and to the Marken-vs-Teile pair (two),
+and a list case touches neither. Cheap, and worth repeating only as a grep, never as a read.
+
 ## 2026-09-08 -- 0271 (kennzeichen_riegel, the wrong number): geprueft, 2 findings
 
 **The build report can name its own HEAD, and this one does.** `uebersetzung-<datum>.md:106`
