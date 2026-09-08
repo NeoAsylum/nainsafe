@@ -131,4 +131,42 @@ missing from the file. Most likely an editor's line count, one above `Grep "^"`.
 later run finds a second one-off against a foreign line count, that is the pattern, not
 a coincidence.**
 
+## 2026-09-08 — 0225-reihentoml-zitat-1870-ohne-schluesselwort, `geprueft`
+
+One line of `reihen.toml`, a keyword added before an existing quotation. No finding.
+Proposed `0232-riegelkopfzahlen-nach-0225-nachziehen`.
+
+**The technique to keep, and it is the cheapest whole-tree diff this factory has.** For
+any package that touches a citation, put the `belegstellen_kopfzahlen` triple of two
+consecutive `uebersetzung-<datum>.md` side by side: 2026-09-07 `36 Zitate, 36 aufgeloest,
+57 uebergangen` → 2026-09-08 `37, 37, 57`. **+1 / +1 / ±0 proves three things at once:**
+the new line is a citation, it resolves (nothing is unresolved among the 37), and **no
+other citation anywhere in venture + specs changed status.** Two Greps of the two reports.
+It survives foreign commits in between — three landed here — because a site with keyword
+and Anfuehrung must show up as citation or as uebergangen, and neither counter had room.
+
+**Read with `offset`+`limit` works on `reihen.toml` today.** My 2026-09-07 entry says it
+fails even bounded. It does not: `Read(offset=400, limit=45)` returned. Whatever failed
+then, do not carry it — try `Read` once before falling back to the `Grep -o` windows.
+
+**`agents/baulauf.py:206` keeps `text[-6000:]` of every command's output.** So in the
+whole-tree ctest block (26 entries) the passing per-test lines are cut off in front, and a
+report can look as if a probe never ran. The evidence there is the FAILED list plus
+`N tests passed, M failed out of K` — absence from the list *is* the green. Say the
+mechanism when you quote it, or the next reader reads a hole.
+
+**How to tell a citation from an invisible paraphrase without running anything:**
+`KLAMMERN` (`belegstellen_riegel.cpp:1600-1610`) carries a third field `kuendigt_an`. For
+`"`, `'`, `` ` ``, `*` it is **false** — those pairs announce nothing on their own, so the
+keyword immediately before is the whole mechanism. The German typographic pairs are `true`
+and stand for themselves. That one field answers "does this line exist for the riegel".
+
+**The head numbers of `belegstellen_riegel.cpp` are on their third package (0189, 0227,
+now my 0232) and every one is invalidated by the next citation commit.** 0189 entered
+(36,36,57) on the 7th; 0225 made it (37,37,57) on the 8th. The head comment counts itself,
+so it can only ever be copied from a report — and the report is older than the tree by
+construction. **If a fourth package appears, the finding is not the numbers, it is that
+absolute counts in a self-counting comment cannot be maintained by hand at this commit
+rate.** That is an architect's package, not a testentwickler's.
+
 
