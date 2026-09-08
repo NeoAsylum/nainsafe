@@ -76,6 +76,29 @@ Worth keeping:
 - Probe `*"…"*` (straight-quote italics) came up empty on 2026-09-08 — dry for now,
   cheap to re-run.
 
+## 2026-09-08 — Pruefung 0172, geprueft, 0 findings
+
+Architect's way-1 answer (bound 8 of T30 check 2, 16 addresses over all four
+instruments) holds against all three conditions; ~10 greps, 6 section reads, neither
+spec opened whole.
+
+Worth keeping:
+- A class-roster count can look like a contradiction and be a class split: bound 8's
+  16 addresses vs the roster's „4 instrument stage" resolved at technik.md:371/375 —
+  3 of 4 instrument levels per country are class 3 (rates), only the regulation tier
+  is class 10. Check the per-country class table before calling an address count
+  wrong.
+- Two wrapped-quote non-findings again (wechselkurs sentence at technik.md:2095–2099).
+  The multiline rule from 0224/0165 keeps paying; grep a shorter fragment first.
+- A builder re-anchoring a citation away from the brief's path (mutanten.md → the
+  0152 pruefung file, its lines 218–224) can be a correction, not an error — verify
+  the new anchor carries the numbers before writing a finding.
+- Cheapest contradiction probe of the run: grep spiel.md for a concept the new bound
+  would forbid (subsidy / negative tariff) — dry, and that dryness is the evidence
+  the 0-floor fits the game spec.
+- Open thread from 0208 closed: parameter.toml head note „ueber diese Datei" is gone;
+  the drawing-after happened. Thread dropped.
+
 ## 2026-09-07 — Pruefung 0224, zurueck, 5 findings
 
 A reference sweep of spiel.md missed three „-form sites; two are dead (:1561 →
