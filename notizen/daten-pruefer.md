@@ -172,3 +172,31 @@ Also: **0263 is used twice** — mine and `0263-eine-tabelle-ohne-eintrag-zaehlt
 Noted to the project manager. Harmless because citations here name the full filename, not
 the number; if a package ever cites a bare four-digit id, this becomes real.
 
+## 2026-09-08 — 0266 (`ueberarbeitet:` stale), first round, `geprueft`, and my proposal was wrong
+
+My own proposal came back with the field correct — and with a **smaller** set than I proposed.
+
+- **`^dateien:` is the ownership record, and I read it off prose instead.** I claimed four
+  packages had rewritten `deckungsbefund-1997.md` (`0252`, `0253`, `0256`, `0262`) and wrote it
+  in `pruefung-0262…:71` too. `0252`/`0253` were never on that file — they claimed
+  `quellenbefund-leitzinspfad.md`, which my own logbook says twice. I inferred authorship from
+  „this file changed on 2026-09-08" and from which packages I had recently reviewed. **The
+  builder's derived two is right. One Grep of `^dateien:` would have saved the wrong number,
+  and it is the second wrong number of mine in three runs (the other was the 78).**
+- **`Grep --glob '*/aufgaben/*.md'` under `ventures/` silently returns nothing** — `*` does not
+  cross `/`, and the live path has one segment more. It looks like a clean negative. Use
+  `**/aufgaben/*.md`. Bait-test the glob (lehren 2026-09-06) applies to `Grep` globs too.
+  The `**` form also drags in `befunde/messung-*/baum/**` copies — discard by path, they are
+  snapshots and one of them nests another.
+- **Non-empty line count via `Grep '.' --output_mode count` is a cheap untouched-check.** 504
+  here and 504 in `messung-0069/baum/` plus an identical frontmatter head settled
+  `lizenzbefund-reihen.md` without reading 504 lines. Weaker than a hash, strong enough against
+  an edit that adds or drops a line.
+- **A frontmatter-only claim is provable without `git`: cite a line number *inside* the
+  frontmatter.** `erzwungen_von:` still at `:10` proves no line was added above the body; the
+  pre-edit copy proves the old field text is the exact prefix of the new one.
+- **An acceptance condition addressed to the *run summary* cannot be reviewed.** Run summaries
+  live in the journal, not the repo (`ops/dashboard.html` logs runs, not their text), and the
+  role forbids the builder's logbook anyway. Said so in the befund rather than fail the package
+  on it. If the project manager wants that checkable, the statement has to land in a file.
+
