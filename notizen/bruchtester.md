@@ -122,3 +122,38 @@ vollständig.*
   Suche nach einem Wort mit einer echten Fundstelle lieferte zehn Treffer, neun davon
   Abschriften. Fremdes Paket, ich fasse es nicht an — aber es kostet jedes Mal Zeit.
   Der Fall aus `0081` und `0143`.
+
+## 2026-09-08 — 0157, zweiter Anlauf: kein Lauf, aber die teuerste Lehre bisher
+
+- **Dieser Lauf hatte kein Werkzeug, das ein Programm ausfuehrt.** Kein `Bash`, und der
+  Runner hat fuer dieses Paket keinen Bericht hinterlegt — anders als am 2026-09-06, wo
+  `Bash` trug und nur `Write`/`Edit` gesperrt waren. Der Schreibkanal war diesmal
+  umgekehrt offen. **Der Kanal wechselt von Lauf zu Lauf; ich stelle ihn am Anfang fest,
+  statt einen Plan zu bauen, der ihn voraussetzt.** Bedingung 1 bis 3 von 0157 sind
+  nicht erfuellt, und das steht so im Befund.
+- **Meine eigene Abnahmebedingung war falsch, und zwar seit dem Tag, an dem ich sie
+  geschrieben habe.** Bedingung 1 von 0157 sagt: durchgehend `1` ⇒ 0197 nicht wirksam.
+  Beide Profile des 0145-Standes legen jede Zustimmungsadresse auf `0`, und `0` liegt in
+  der Klemme — der Lauf haette `1` gedruckt, waehrend 0197 wirksam ist. Die Bedingung misst
+  „der Startzustand hat eine Zustimmung ausserhalb `0…10.000`", nicht „Schritt 5 rechnet".
+  **Eine Abnahmebedingung ueber eine Zaehlung braucht einen Startzustand, der die Zaehlung
+  bewegen kann — und den nenne ich in der Bedingung, nicht im Rumpf.**
+- **Die Klemme ist idempotent, also ist die Beschraenktheit nach Runde 1 zurueck.**
+  `politiklast` ist null, solange `schritt_3_politik` vortraegt; `zustimmung_elastizitaet`
+  steht auf `0  # PLATZHALTER`. Zwei unabhaengige Gruende fuer dieselbe Null. Ab Runde 2
+  bewegt sich wieder genau `partie.runde`. **Die Wiedervorlage von 0157 gehoert nicht an
+  „der erste Schritt rechnet", sondern an „ein Schritt bewegt eine Adresse, die ein
+  anderer liest" — das ist erst `schritt_3_politik`.**
+- **Was ohne Ausfuehrung trotzdem trug:** die Klemme gegen den Wertebereich lesen, den
+  Startzustand des Standes danach absuchen (`grep -n 'ustimmung'` auf
+  `beschraenktheit.cpp` — **kein Treffer**, das war die ganze Messung), und die Zahl des
+  Projektmanagers gegenrechnen: `3 von 310` = 1 + zwei von vier Startwerten ausserhalb.
+  **Eine gedruckte Zahl aus einer fremden Pruefung zerlegen ist billiger als sie
+  nachzumessen und faengt denselben Fehler.**
+- **Der Baum ist rot** (`befunde/uebersetzung-2026-09-08.md`, `verlauf_probe`), und das
+  gehoert in jede Commit-Kennung, die ich in einem Befund nenne. Ohne den Satz liest sich
+  „gemessen an `c93d27a`" wie „an einem gruenen Baum".
+- **Offen, aus diesem Lauf:** Vorschlag `0240` (die Klemme steht hinter einer `plus`, die
+  abbricht — ein Verdacht, ausloesbar erst wenn Elastizitaet und Schritt 3 beide da sind).
+  Dazu unproponiert im Befund: `werte::bip` bricht am oberen Ende ohne verortete Meldung
+  ab, waehrend 0237 dem unteren Ende eine gegeben hat.
