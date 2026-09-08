@@ -4,6 +4,41 @@ Rotated by the runner on 2026-09-07 at 12910 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0197, `zurueck`: the escape clause is not a met criterion
+
+The package carries a clause that lets the builder deliver nothing and set `gebaut`. He
+used it, honestly and with a named cause. **That does not make the criterion met**, and my
+verdict field only has the two values. Say so plainly and put the weight into what the
+project manager has to decide next — a `zurueck` here is a fact about the criterion, not a
+reproach, and writing it that way costs nothing.
+
+**The find of this run: a criterion that is "unreachable" is often reachable in a hollow
+way, and that is the stronger argument.** The build report said condition 2 was refuted by
+`spiel.md`, because without an instrument step the approval hub is exactly zero. True. But
+the rule clamps: `min(10.000, max(0, lies_alt + hub))`. The probe's own start state writes
+`musterwert(platz)` on all 310 addresses, and two of the four approval addresses (21 and
+109, both `% 8 == 5`) carry 123.456.789. A faithful body clamps them and moves 3 of 310 —
+green criterion, measuring the clamp. **When someone says a criterion cannot be met, look
+for the bound, the clamp, the default: the degenerate satisfying body is usually one line.**
+
+**Check whether a claimed blocker is really outside `dateien`.** Blocker 2 here was the
+address order (approval at base+21, its instrument stands at base+24 and up — verified by
+hand from `LAND_POLITISCH_AB`/`LAND_INSTRUMENTE_AB` and the two enums with their `= 0`).
+The order is real, but the way out — step 5 takes its block whole — lives in the package's
+own two files: condition 3 authorises it, `schritt.hpp:22-25` puts the retraction "in
+seiner Probe", and `schreiber.cpp` enforces no write order. **Three greps settled it**
+(`aufsteig` over `kern/**`, `Reihenfolge` over `schreiber.cpp`, the header's own sentence).
+The consequence is concrete and worth a finding: a separate package for that restructuring
+would claim `schritt.cpp` and deadlock the lane of the package waiting on it.
+
+**`Glob *<kennung>*` again, and again it worked.** No `messung-0197*` while 37
+`messung-*/` exist under the venture — condition 4 unproven, one Glob, no shell. Third run
+in a row this settled a "did it run" question.
+
+Open lead: still nobody has compiled anything for 0197. If it comes back a third time with
+a carrier from `0229`, the thing to read is whether the clamp on out-of-range approval
+start values was noticed — my finding 3 is the only place it is written down.
+
 ## 2026-09-07 — 0195, `zurueck`: the head declared its own failure
 
 The criterion demanded a *compiled* wall limit and rejected a derivation in as many words.
