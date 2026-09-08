@@ -70,18 +70,31 @@
 //! Teilen ueberspannen. Wer sie einzeln nimmt, meldet einen Befund an einer Meldung, die
 //! vollstaendig da steht. Ein Fall des Selbsttests legt ein Stueck genau auf so eine Naht.
 //!
-//! **Was hier nicht verschmolzen wird, und das ist der ausgeschriebene blinde Fleck:** Eine
-//! Meldung, die aus mehreren getrennten Aufrufen zusammenwaechst -- der Kern hat dafuer
-//! einen Schreiber --, ist zur Uebersetzungszeit kein Text. Ein Kennzeichen, das die Grenze
+//! **Was hier nicht verschmolzen wird, und das ist der erste von drei ausgeschriebenen
+//! blinden Flecken:** Eine Meldung, die aus mehreren getrennten Aufrufen zusammenwaechst --
+//! der Kern hat dafuer einen Schreiber --, ist zur Uebersetzungszeit kein Text. Ein
+//! Kennzeichen, das die Grenze
 //! zwischen zwei solchen Aufrufen ueberspannt, meldet dieser Riegel als Befund, obwohl es
 //! zur Laufzeit passte. Das ist Absicht: Ein solches Stueck ist an keiner Stelle der Quelle
 //! ablesbar, also traegt es die Bindung nicht, um die es hier geht. Es kuerzer zu fassen
 //! kostet eine Zeile im Verzeichnis und stellt sie wieder her.
 //!
-//! **Rohe Zeichenketten kann diese Zerlegung nicht**, und sie schweigt darueber nicht: Trifft
-//! sie eine, bricht der Lauf mit Code 2 ab. Im Kern gibt es heute keine. Der stille Ausfall
+//! **Rohe Zeichenketten kann diese Zerlegung nicht** -- der zweite --, und sie schweigt
+//! darueber nicht: Trifft sie eine, bricht der Lauf mit Code 2 ab. Im Kern gibt es heute
+//! keine. Der stille Ausfall
 //! -- eine Zerlegung, die an einer unbekannten Schreibweise verrutscht und danach zu wenig
 //! findet -- ist die teuerste Fehlerart, die dieses Werkzeug haben kann.
+//!
+//! **Und was sie an einem Listenelement uebersieht, der dritte blinde Fleck:** Ein Element,
+//! das kein Zeichenkettenliteral ist -- eine Konstante, ein Aufruf --, hinterlaesst keine
+//! Marke. Eine **vollstaendige** Liste kann dieser Riegel deshalb als knapp melden:
+//! `{TEXT_A, "b"}` deklariert zwei und gibt eine Marke her, und `knappe_listen` unten sagt
+//! "2 deklariert, 1 gelesen", obwohl kein Stueck fehlt. **Das Urteil traegt trotzdem, nur
+//! der genannte Grund ist enger als die Ursache:** `gleiche_ab` prueft ein solches Element
+//! ebenfalls nie, sein Wortlaut ist also an den Kern genauso ungebunden wie der eines
+//! fehlenden Stuecks -- und diese Bindung ist der Gegenstand dieses Programms. Im Baum gibt
+//! es heute keine solche Liste; ein Fall des Selbsttests haelt das Verhalten mit seiner
+//! Erwartung fest, damit der Tag, an dem eine entsteht, nicht der erste Tag dieser Frage ist.
 //!
 //! ## Wie ein Verzeichnis gelesen wird
 //!
@@ -1490,10 +1503,20 @@ struct Tabellenfall {
     // Aufgeloeste benannte Listen, die weniger Stuecke hergeben als sie deklarieren.
     //
     // **Die Vorgabe ist die Erwartung und nicht ihre Abwesenheit:** Geprueft wird dieses
-    // Feld in jedem Fall der Tabelle, auch in den achtzehn, die es nicht angehen. Sie
-    // stehen unveraendert da, weil eine Hand voll `, 0` an achtzehn Stellen eine Aenderung
-    // waere, die kein Uebersetzer gegenliest -- und `{..., 0, 0, 0, 0}` sagt ohnehin nicht,
-    // welche Null welche ist. Die sechs Faelle, die es angeht, schreiben es aus.
+    // Feld auch an den **neunzehn** Faellen, die es auf der Vorgabe lassen, und nicht nur
+    // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
+    // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
+    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **sieben** Faelle,
+    // die es angeht, schreiben es aus; neunzehn und sieben sind die sechsundzwanzig Faelle
+    // der Tabelle.
+    //
+    // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
+    // beim naechsten Fall wieder falsch ist -- und dieses Programm ist das Werkzeug, dessen
+    // Regel es ist, Text und Code aneinander zu binden. Gezaehlt sind hier die Faelle, die
+    // das Feld auf der Vorgabe lassen. Die Pruefung erreichen davon nur **sechzehn**: Die
+    // drei Faelle mit `lesbar: false` brechen den Durchgang oben ab, ehe `knappe_listen`
+    // gerufen wird. Auf diesen dreien steht die Vorgabe da und misst nichts -- keine Luecke,
+    // sondern das, was `lesbar: false` bedeutet.
     std::size_t      listen_knapp = 0;
 };
 
@@ -1511,7 +1534,7 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 25> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 26> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
      "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
@@ -1726,6 +1749,22 @@ constexpr std::array<Tabellenfall, 25> TABELLENFAELLE = {{
      "    {R::Eins, \"n\", \"w\", KZ_VERSTECKT},\n"
      "}};\n",
      "", true, "R::Eins=alpha;beta", 0, 0, 0, 0},
+
+    // Der dritte blinde Fleck der Zerlegung, und er steht hier, damit er nicht bloss im
+    // Kopf steht: Ein Element, das kein Zeichenkettenliteral ist, hinterlaesst keine Marke,
+    // also zaehlt `stuecke_aus` es nicht mit. Die Liste ist **vollstaendig** -- zwei
+    // deklariert, zwei Elemente da --, und wird trotzdem gemeldet. Anders als die vier
+    // Faelle darueber ist das keine Schranke, die anschlaegt, wo etwas fehlt, sondern die
+    // eine Stelle, an der ihre Meldung einen zu engen Grund nennt. **Das Urteil bleibt
+    // richtig:** `gleiche_ab` prueft `TEXT_A` ebenfalls nie, das Stueck ist also ungebunden.
+    // Erwartet wird beides -- die Meldung und das eine gelesene Stueck --, damit der
+    // geschriebene blinde Fleck nicht vom Code abdriften kann.
+    {"ein Element ohne Zeichenkettenliteral -- vollstaendige Liste, dennoch gemeldet",
+     "constexpr std::array<const char*, 2> KZ_MISCH = {TEXT_A, \"beta\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_MISCH},\n"
+     "}};\n",
+     "", true, "R::Eins=beta", 0, 0, 0, 1},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)

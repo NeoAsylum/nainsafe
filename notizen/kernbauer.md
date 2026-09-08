@@ -126,3 +126,61 @@ every list in the tree already carries more than one piece.
   bar cannot see them. That is a fact about tonight, not a guarantee -- if `0270` introduces
   a `RIEGEL_OHNE_ZUSTAND` there, the bar reads it.
 
+## 2026-09-08 -- 0271 (the latch whose own rule is to say the number says the wrong one)
+
+Rework on `0269`'s two review findings, one file, no new function. Delivered in
+`kennzeichen_riegel.cpp`: the `listen_knapp` field comment recounted (**19** leave the field
+at its default, **7** write it out, 19 + 7 = 26) with the set named and the 16/3 split stated;
+the third blind spot written into the head beside the two existing ones, plus a numbering fix
+on both of those so "the written-out blind spot" does not stand singular in front of three;
+and one new `TABELLENFAELLE` case (25 -> 26) -- `{TEXT_A, "beta"}` declared two, one mark,
+reported knapp although the list is complete. Every number re-counted against the table at
+HEAD by grep, not from memory: 3 cases carry `lesbar: false`, 7 write the fourth initialiser.
+
+- 2026-09-08, **the lesson of the run** -- **A count in a comment decays at a rate set by the
+  container, not by the comment.** Eighteen was wrong under every reading (19 default, 16
+  reaching the check, 25 cases), and it went wrong because the sentence named a *number*
+  without naming the *set* -- so nobody, including the agents who edited the table after it,
+  could tell what to re-derive. My own `0269` entry called the defaulted rows "byte-identical,
+  untouched" and treated that as the win; it was, and the cost was that the sentence counting
+  them became the only thing that had to move and the only thing nobody looked at. General
+  form: **when you justify leaving N rows alone, the sentence naming N is now the load-bearing
+  part of that decision -- write the rule that produces N, not N.** Here: "the cases that leave
+  the field at its default", which anyone re-counts with one grep.
+- 2026-09-08 -- **The blind-spot list had a cardinality nobody was maintaining.** The first
+  one read "*der* ausgeschriebene blinde Fleck" -- definite singular -- while the paragraph
+  below it already described a second. Adding the third would have made the head contradict
+  itself in the same breath as it fixed a wrong count, in a file whose whole purpose is that
+  text and code agree. Fixing it cost six words. **A definite article is a count. When you add
+  the n-th of anything, read what the first one calls itself.**
+- 2026-09-08 -- **The case that proves a blind spot must be the one where the bar is *wrong*
+  and still right.** The obvious test would have been a short list with a non-literal, but
+  then it is knapp under both readings and shows nothing. The one that separates them is the
+  **complete** list -- two declared, two elements, one of them `TEXT_A` -- reported anyway.
+  Same shape as `0269`'s seam case. **A case both readings agree on documents nothing.**
+- 2026-09-08 -- **Line numbers do not belong in a comment of this file.** I nearly wrote
+  "aborts at `:1786`" for the `lesbar: false` cases -- exactly the drift that reddens
+  `belegstellen_kopfzahlen` every night. Wrote "the three cases with `lesbar: false`" instead:
+  grep-checkable, and it survives an inserted case. Same reason the numbers name their set.
+- 2026-09-08 -- **Checked before writing, so the next run need not re-check:**
+  `zahlwort_riegel` reads exactly one file, `kern/include/kern/werte.hpp` (its head comment),
+  so the spelled-out numerals I added here are out of its reach. And `belegstellen_riegel`
+  needs a keyword plus a quoted heading plus a document name in one paragraph; my quoted
+  `"2 deklariert, 1 gelesen"` has none of the three, so it creates no citation. **Neither tool
+  is a hazard for prose added under `werkzeuge/kennzeichen/`.**
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot compile. Riskiest edit by far is the array bound `25 -> 26` against the one
+  appended initialiser -- a miscount fails loudly at compile time, which is the good failure.
+  Second: the new case's escaped probe text, `{TEXT_A, \"beta\"}` inside a split literal.
+  Nothing else in the run is code.
+  **(b)** The package let me choose the set (19 or 16) and required both named numbers to add
+  up with the written-out ones to the table's case count. Only 19 does that (19 + 7 = 26;
+  16 + 7 = 23), so condition 1's own arithmetic forced the choice. I named 16 as well in the
+  second paragraph, because the reviewer who found this will look for it -- but a reviewer
+  holding to "the sentence names the set it counts" may read two sets in one comment as the
+  same disease in a new form. I think naming both *with their rules* is the cure; it is the
+  one call in this run I would defend rather than assert.
+  **(c)** I touched the two existing blind-spot paragraphs, which the package did not name.
+  Six words of numbering, no expectation moved -- but strictly outside "add the third".
+  Reported here rather than left silent.
+
