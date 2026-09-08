@@ -1420,7 +1420,9 @@ number, vintage id, parameter-set checksum, mandate status (T15; the last two ro
 T38's mask table). For `partie.runde` (address 307) the bound is
 `0 ≤ runde ≤ I64_MAX − 1`. The remaining 306 are checked by their reader and once per
 round by T30 check 2; **the entry does not repeat the eight bounds**. The derivation of
-that cut, the bounds of the other three and the consequence for T22 are in section 25.
+that cut and the consequence for T22 are in section 25; **the bounds of the other three it
+deliberately holds open** — it prescribes *that* they get one and leaves *which* to the
+package that touches them.
 
 **The check in `schritt` stays, and it is not the same check.** The round increments
 `partie.runde` itself: a round on `I64_MAX − 1` leaves `I64_MAX` behind, and the next one
@@ -4041,13 +4043,94 @@ nachgerechnet werden kann: Eingangsreihen, Rechenweg, Fenster, Luecken.
 4. **Target-series lock.** A series with `soll` in `rolle` and `stufe ≥ 2` aborts. Only
    rule 1 gives this lock teeth: without the mandatory block per series it would be effective
    only against whoever enters their estimate voluntarily.
-5. **Double bookkeeping over the class.** The manifest of the vintage carries
-   `rueckvergleichslaender = [...]` written out. From `reihen.toml` the same set follows
-   derived: a country is a play-only country exactly when **any** of its three
-   policy-path series carries `stufe = 4`. **If the two do not agree, the vintage build
-   aborts.** The derivation alone would be the more convenient construction and the wrong
-   one: it would let one row in a data series shift the foundation of the backtest without
-   it showing up anywhere. The lock from T60 is exactly this check.
+5. **Double bookkeeping over the class — and the class is formed from two sorts of series.**
+   The manifest of the vintage carries `rueckvergleichslaender = [...]` written out. From
+   `reihen.toml` the same set follows derived. **A country is a backtest country exactly when
+   all three conditions below hold, and a play-only country otherwise.** Each names the sort
+   of series it is measured in, because the three do not lie in the same block:
+
+   | | Condition | measured in | read from |
+   |---|---|---|---|
+   | **a** | none of its three `politikpfad` series carries `stufe = 4` | the policy-path series | `[[reihe.herkunft]]`, one block per country (rule 1) |
+   | **b** | each of its target series carries the whole window at stage 1 | the target series | rule 4, and `[[reihe.deckung]]` for this country |
+   | **c** | each of its target series with `t37_klasse = "frei"` moves in at least one transition | the target series | their values over the window |
+
+   **If derivation and manifest do not agree, the vintage build aborts.** The derivation alone
+   would be the more convenient construction and the wrong one: it would let one row in a data
+   series shift the foundation of the backtest without it showing up anywhere. The lock from
+   T60 is exactly this check.
+
+**a was the whole of this rule until package `0196`; b and c are added there.** The finding is
+the game designer's, from the run to `0118`: both grounds *„lie in the target series, and the
+class rule can see neither"*. **A country's target series are its `S + 4`** — `S + 3` for the
+numéraire country, whose exchange rate against USD is none —, so `L_R(S + 4) − n` in the
+vintage, 27 at `L_R = 4` (T37, T59). They are series 1, 2 (three of them), 8, 10 and 11.
+
+**On b — the stage stands once, the coverage stands per country.** A target series carries its
+origin block with `land = "alle"` (rule 1); its `stufe` therefore holds for all countries at
+once and is 1 by rule 4. Per country is the **coverage**: `[[reihe.deckung]]` must carry the
+`R + 1` support points of the window without a gap — the class *full, no filling* of T62, which
+marks exactly these five series with it. A country whose stage-1 source yields no value there,
+or not the whole window, has no target series there. Whether a substitute source may be brought
+in is a licence question, and for series 2 T62 conclusion 2 answers it: **there is none.** That
+is the older of the two grounds — it stood in T62 before this rule could see it.
+
+**On c — a constant target series breaks its check subject by construction.** Directional
+accuracy (T42) counts the transitions in which model and target series carry the same sign.
+Over a series constant across the window each of the `R` transitions carries direction zero,
+and an endogenously computed value practically never hits the exact zero. `spiel.md` names case
+and country: *„series 10 is **constant** for Saudi Arabia across all 21 support points"*
+(`spiel.md`, section *Welche neun Länder, welche Klasse, und was Weg A kostet*, subsection *The
+class per country, and what it hangs on*, read 2026-09-08). The condition runs over the `frei`
+target series alone, because only they form check subjects (T37); a constant `abgeleitet`
+series is reported and decides nothing, and a country excluded over it would be a country lost
+without a check protected.
+
+**And c falls away by itself where the model gains a rule.** It bites because the model
+computes the quantity freely — it holds no exchange rate. `spiel.md` keeps the peg open as the
+operator's decision; the `wechselkurs[l]` of a pegged country would simply not be written, the
+same construction as the shutdown in T58. Where an address is held that way, model and target
+series stand still together. **c therefore reads in full: constant over the window *and* the
+address compared against it is written in the `weltlauf`.**
+
+**Where the class is formed, and why the order is not free.** T62 footnote 1 makes the window
+requirement of these five series hold *„Only if the country becomes a backtest country"* and
+states that *„The target role arises with the class, not with the country"*. Read as a
+condition that is a circle: the role follows the class, and the class now follows the series
+that carry the role. Read as an order it is none, and the order is what this rule owes:
+
+1. origin and coverage blocks per rule 1;
+2. **the class per this rule**, over the *candidate* target series — the set the country would
+   carry as a backtest country, asked before it is one;
+3. the comparison against the manifest, and the abort;
+4. the roles from the class (T58, T62 footnote 1);
+5. rules 2, 3, 4.
+
+**Rule 4 thereby becomes a net behind a net:** after step 2 no country reaches step 5 with an
+estimated target series. It stays, because it is the invariant of T60 and not a filter, and an
+invariant that can no longer be breached is the cheapest kind.
+
+**What the build reports on divergence:** the country, both classes, and **which of a, b, c
+produced the derived one, with the series it was measured on**. Without that last half whoever
+reads an abort searches the policy paths — where in the cases b and c nothing is wrong. That is
+the whole of the finding this rule answers: *„The abort is right, the place is not."*
+
+**The probe, written out, because it is the case the rule was rewritten for.** Saudi Arabia,
+and `MFS_IR` lists a SAMA policy rate at stage 1 (T63 step 1; that retrieval is open and
+belongs to the data builder):
+
+| | old wording | this wording |
+|---|---|---|
+| a | satisfied — no `stufe = 4` | satisfied |
+| b | not asked | satisfied |
+| c | not asked | **fails**, series 10 |
+| derived class | backtest country | **play-only country** |
+| manifest (`spiel.md`, T58) | play-only country | play-only country |
+| the build | **aborts**, naming the policy paths | runs |
+
+The two bookkeepings agree, and they agree on the ground `spiel.md` gives. The probe decides
+nothing about Japan, India and Chile: their a hangs on the same retrieval, their b and c on the
+coverage of a vintage not yet built (section 26, conditions 2 and 3).
 
 The class thus stands written in one place and computed in a second, and the
 build halts where they diverge — the same construction as the second write access in T39
@@ -4772,12 +4855,13 @@ answers it; the derivation stands here.
 smallest `int64_t` go into the state without a word and are read back from it unchanged.
 The impossible round number is noticed one step later, in `kern::schritt::schritt`.
 
-**And `partie.runde` does not occur in this document at all** — measured 2026-09-08, zero
-hits before this section. Its bound stands twice in the core and nowhere in the specs:
-`kern/src/schreiber.cpp:206` (`welche_runde < 0`) and the two hard errors of `schritt.hpp`
-(negative, and largest `int64_t`). Two copies of one bound is the error type T39 closed for
-`landespreis` and T45 for the double provenance entry — except that here neither copy is
-the master, because there is none.
+**And `partie.runde` did not occur in this document at all before this package** — measured
+2026-09-08, zero hits before this section. Its bound stood twice in the core and nowhere in
+the specs: `kern/src/schreiber.cpp:206` (`welche_runde < 0`) and the two hard errors of
+`schritt.hpp` (negative, and largest `int64_t`). Two copies of one bound is the error type
+T39 closed for `landespreis` and T45 for the double provenance entry — except that here
+neither copy was the master, because there was none. **T18b is that master since `0177`**,
+and the two sentences above are the measurement, not the state.
 
 ### Why not "the entry checks everything"
 
@@ -4921,8 +5005,10 @@ of these have happened, and not before:
 | 3 | the class of Japan, India and Chile is **derived** at retrieval, per T61 rule 5 / T63 step 1, not assumed | data builder | open |
 
 Condition 3 is why 28 and 3 must not be written as digits today. `spiel.md` calls its own
-class assignment *"An expectation with a condition, not a determination"*: a country is a
-play-only country exactly when one of its three policy-path series carries `stufe = 4`. If
+class assignment *"An expectation with a condition, not a determination"* (`spiel.md`,
+section *Was der Architekt neu rechnen muss*, table row **T58 / classes**, read 2026-09-08):
+a country is a play-only country already when one of its three policy-path series carries
+`stufe = 4` — since package `0196` that is one of three grounds, not the only one. If
 `MFS_IR` comes up empty for one of the three, `L_R` is 6, the check subjects are
 `3·6 + 5 + 1 = 24` and not 28, and the tolerance stays 3. **A digit written today would be
 a determination `spiel.md` expressly withheld.**
@@ -4976,3 +5062,54 @@ word.
 the evaluation of a named formula with `L_R = 4` beside it, or with the sentence that names
 the wave it belongs to. **No number of the nine-country reading stands in this file as
 today's state**, and no number of the four-country reading stands without its horizon.
+
+## 27. The class is formed from two sorts of series — Paket `0196`
+
+**What this answers, in one line.** T61 rule 5 derived the country class from the three
+policy-path series alone; two grounds for exclusion lie in the **target series**, and the rule
+could see neither. Reported 2026-09-06 by the game designer in the run to `0118`, confirmed by
+the design reviewer, and left lying twice because both trades write elsewhere. The whole
+answer stands in T61 rule 5 and is not repeated here.
+
+**What was decided, and it is one thing.** Not *whether* the two grounds bind — `spiel.md`
+had already named both — but **where the class is formed**: before the target roles are
+assigned, over the candidate target series, in five ordered steps. T62 footnote 1 reads as a
+circle (the role follows the class, the class follows the series that carry the role) and
+dissolves into an order. That is the sentence the finding needed and neither of the two
+reporting trades could write.
+
+**Three reports, because they belong to other trades.**
+
+1. **To the game designer:** the open question *„Whether the class rule from T61 rule 5 sees
+   the exclusions that lie in the target series"* is answered and can be struck. Its own
+   sentence — *„Belongs to T61"* — is now redeemed.
+2. **To the game designer, second:** the addition to Maß 4 that `spiel.md` asks for
+   (directional accuracy only over the moving transitions) is by this rule no longer
+   **reachable**: after step 2 of the order no target series of a built vintage is constant
+   over the window. It remains right as the closing of a gap, and section 26 keeps it lying
+   for condition 1 there. It is not written into T42, here as little as there.
+3. **To the data builder:** `daten/reihen.toml` needs **no** new field. Condition c is
+   measured on the values, b on `[[reihe.deckung]]`, a on `[[reihe.herkunft]]` — all three
+   blocks exist. What is new is only that the vintage build reads the coverage of the target
+   series *before* it assigns the class.
+
+**What is deliberately left standing.** T62 conclusion 2 and T63 are unchanged: T63 step 3
+(stage 4 → play-only country) stays a sufficient condition and stays true; it was never an
+exclusive one. Rule 4 stays word for word, now unreachable. The class of a single country
+stays in `spiel.md`, and the retrieval that decides Japan, India and Chile stays the data
+builder's. The peg as a model quantity stays the operator's decision — condition c is written
+so that it stops firing on its own once the peg exists, and that is the only place where this
+section takes a future into account.
+
+**Four clauses outside T61 that this package moved, three of them named in its acceptance and
+the fourth caused by it.** Section 25's measurement paragraph and the T18b pointer are the two
+corrections from the review of `0177`; the `spiel.md` quote in section 26 got its read date
+from the review of `0221`. The fourth is mine and was not in the acceptance: section 26 stated
+the old rule 5 as *„exactly when"*, which this package makes false — it now reads „already
+when", with the ground count beside it. Whoever calls that overreach strikes half a sentence.
+
+**The check this section can be held to.** `T6[0-2]` on this file, measured with the same
+call before and after the run: **33** matches at the start, **48** at the end. All fifteen new
+ones lie in T61 rule 5 (six) and in this section (nine); outside those two places the count is
+unchanged. `grep -c` counts lines and therefore gives 47 today, because one line carries two
+matches. No number outside T61 has moved.
