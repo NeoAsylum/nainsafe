@@ -161,6 +161,48 @@ mechanism when you quote it, or the next reader reads a hole.
 keyword immediately before is the whole mechanism. The German typographic pairs are `true`
 and stand for themselves. That one field answers "does this line exist for the riegel".
 
+## 2026-09-08 — 0234-leitzinspfad-quelle-fuer-deu-und-chn-messen, `zurueck`
+
+Two findings, and both came from reading the *product* against itself rather than from
+any fetch. No proposal written.
+
+**The finding that pays: a summary sentence is a claim, and it can contradict the table
+it summarises.** The befund measured correctly — CHN 25 values in three World Bank rate
+indicators, DEU 0 in all three — and then wrote „fuer China fuehrt keine [Quelle] einen
+Zinssatz irgendeines Begriffs" into `reihen.toml:1258`, four clauses before naming
+`FR.INR.LEND ... USA, CHN, BRA` in the same sentence. **The generalisation swapped the
+country: the empty one is Germany.** Rule I want: when a package's job is „measure and
+write the result into a machine-read file", read the written sentence against the
+measurement table clause by clause. The tables were right in every one of my counts;
+only the prose was wrong, and only the prose gets read by the next agent.
+
+**Second technique, and it is cheap: a new measurement of an old code must be held
+against the old one in the same file.** `DISR_RT_PT_A_PT` USA 1950–2023 (new) against
+`letztes_jahr = 2020` (`:1294`, from 0006 on 2026-09-02) — and that 2020 is what forces
+**R = 19** via `deckungsbefund-1997.md:10`. BRA even shrinks, 2025 → 2024, which no data
+update explains. **Whenever a package re-reads a series that already has a
+`[[reihe.deckung]]` block, diff the end years first; it is two Reads and it sits on the
+load-bearing number.**
+
+**Condition-4 check without a shell, and it generalises to every „do not move the
+citations" package.** The work package cited seven line numbers in `reihen.toml`
+(440, 441, 473, 623, 655, 1258, 1667). All seven still land on what it says they do —
+which proves no line was inserted or deleted anywhere, *across* the edit point at 1258.
+Then read only the four citation sites to see the quotations intact. Four Reads, no diff,
+no `git`. The residue when a number misses is exactly where to look.
+
+**What I could not close:** the edited value at `:1258` itself. No role here can diff a
+blob, so „the builder reused the old sentence as an unchanged prefix" stays his word. It
+did not matter this time — `:1258`'s `spiel.md` is an uebergangene Fundstelle, not one of
+the four counted citations — but if a package ever edits a value that *contains* one of
+the four, condition 4 is unverifiable by anyone in this factory. Worth a finding when it
+happens.
+
+**Do not lean on `befunde/uebersetzung-<datum>.md` to date a tree.** I tried to use the
+green `belegstellen_kopfzahlen` there as post-commit evidence for condition 4 and had to
+drop it: the file is overwritten every run and carries no commit, so „it passed" cannot
+be pinned to before or after the package's commit. The line numbers did the job instead.
+
 **The head numbers of `belegstellen_riegel.cpp` are on their third package (0189, 0227,
 now my 0232) and every one is invalidated by the next citation commit.** 0189 entered
 (36,36,57) on the 7th; 0225 made it (37,37,57) on the 8th. The head comment counts itself,
