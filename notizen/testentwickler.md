@@ -15,6 +15,29 @@ another package can move is a snapshot, not an expectation.
 
 ## What works
 
+- 2026-09-08 (0244, kennzeichen.hpp) — **Before writing a Kennzeichen list, read the abort
+  in the source and take the pieces from the literal — then run the cross-product on paper.**
+  Fourteen sites, seven Riegel, and the two dangerous pairs were invisible from the probe:
+  `markt` outside the slot table dies with `"kern::werte -- unbekannter Steckplatz"`,
+  `positionswert` outside it dies with `"kern::zustand -- unbekannter Steckplatz"` — same
+  words, different namespace. Same shape for the two "spielbare Laender" barriers. **A list
+  of one piece would have passed the own-message half and collided on the foreign half in
+  the same run.** The habit that catches it: write the messages M1..Mn and the lists L1..Ln
+  down and check every L against every foreign M by hand. It took ten minutes and it is the
+  only part of this package I could verify without a compiler.
+- 2026-09-08 (0244) — **A shared test header can be templated on the probe's own enum and
+  still keep the fehlgeschlagen counter of the probe**: `Buch<R, O>` takes `int&` plus a
+  `const char* (*)(R)` name function. Passing the name function in beats relying on argument
+  lookup — the enum sits in the probe's anonymous namespace, where ADL happens to work today
+  and would be silently gone after the next rearrangement.
+- 2026-09-08 (0244) — **The belegstellen pattern for a line reference is the *word* for a
+  line plus at least two digits, not `datei.ext` plus a number.** My own earlier entry was
+  imprecise and cost me caution I did not need. What a new `.hpp` under `kern/` really must
+  avoid is (a) the word before two digits with a filename on the same line, (b) a section
+  keyword right before a quoted heading, and (c) a backticked identifier that is not
+  declared anywhere under `kern/` — CMake *variables* are the trap there, build *targets*
+  and probe names are established precedent and green.
+
 - 2026-09-08 (0238, verlaufprobe/nennerbedingung) — **A fixture built from "one sample
   value per address" does not sample: it hits the congruences of the address arithmetic.**
   `musterwert` cycles eight values with `platz % 8`; the twelve `wertschoepfung` addresses
@@ -76,6 +99,25 @@ another package can move is a snapshot, not an expectation.
 
 ## Open leads
 
+- 2026-09-08 (0244) — **Fourteenth run without a shell, and the first where it really cost
+  something.** Every one of the fourteen new Kennzeichen lists is a derivation from the
+  source text, not a measurement. The report of the next run is the whole proof: expect
+  `werte_probe` green with fourteen `Abbruch wie erwartet` lines, seven `Riegel "..." : n
+  Meldung(en), erwartet n` lines, one `Riegel ohne Zustand (werte)` line and one
+  `Kennzeichen (werte)` summary; `schritt_probe` the same shape with `(schritt)`. A red on
+  `falscher Riegel` means my reading of one abort path was wrong and the report names the
+  arrived wording — copy it, do not re-derive it.
+- 2026-09-08 (0244) — **Two proposals out of this run, and both name a measurement, not a
+  wish:** `0254` (the sperre riegel reads sources and probes, so a header under `test/` is in
+  no set — the first such header exists since this run) and `0255` (the twenty-one
+  `hat_abgebrochen` sites of `werte_probe.cpp` are in no ledger; deleting one of their call
+  sites turns nothing red). `0255` is mine to build if it is scheduled; the shape is written
+  in it — a `merke` entry point beside `bricht_ab_mit`, so the call sites keep their negative
+  assertions.
+- 2026-09-08 (0244) — **`0251` hangs on this package and reads the `RIEGEL_OHNE_ZUSTAND`
+  table.** I left both tables in the probes and moved only the entry type into the header, so
+  it now reads **two** tables. It is said in the package's Vermerk and in the run summary.
+
 - 2026-09-08 (0238) — **`partiestart()` in `verlauf_probe.cpp` carries the same defect,
   latent.** It fills all 310 addresses from `musterwert` too, so its four `bip` values are
   the same `-10.000 / -20.000 / -10.000 / -20.000`. It survives only because Bedingung 5
@@ -120,6 +162,23 @@ another package can move is a snapshot, not an expectation.
   the day someone adds `-j`, they collide.
 
 ## Where I am unsure
+
+**0244 (kennzeichen.hpp).** Four soft spots, all cheap for the reviewer.
+
+1. **I ran nothing.** Every Kennzeichen piece is copied out of `src/werte.cpp`,
+   `festkomma.hpp` and `zustand.hpp`; every expected count is derived from the call sites.
+2. **`anleihewert(z, konst, Gebiet::RW)` rests on argument evaluation order not mattering.**
+   `schuld(z, RW)` does not abort on that state, so whichever argument goes first, the abort
+   comes from `anleihekurs` and the wording is the land check. If `schuld` ever grows a land
+   check, this site becomes order-dependent.
+3. **The buffer moved from 16 to 32 messages.** It is a guard, not an assurance, but it is a
+   number I changed in a file two packages keep.
+4. **I did not convert the twenty-one `hat_abgebrochen` sites** and I did not remove
+   `probe_nennerdecke_vollzaehlig` from `0242`. Both would have meant giving up a check that
+   exists today. Written at the enum, in the Vermerk, and as proposal `0255` — but a reviewer
+   who reads the package's own opening ("two files express the same idea in two shapes") may
+   read it as an unfinished job. It is a deliberate stop, and I would rather be told I was
+   too cautious than have weakened a probe.
 
 **0238 (verlaufprobe/nennerbedingung).** Three soft spots, all cheap for the reviewer to
 check and none of which I could measure without a shell.

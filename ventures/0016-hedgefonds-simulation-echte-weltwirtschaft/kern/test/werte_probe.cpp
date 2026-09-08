@@ -22,6 +22,12 @@
 //!     dasselbe ergeben, ist die Zusage "eine Bewertung, nicht zwei".
 //!   * **Der Abbruch mit Positivkontrolle davor.** "Der Aufruf bricht ab" ist erst ein
 //!     Nachweis, wenn derselbe Aufruf mit einer heilen Zahl nachweislich gerechnet hat.
+//!     Und seit Paket 0244 sagt jede dieser Stellen auch, **welcher Riegel** abgebrochen
+//!     hat: an Textstuecken der Meldung, die ihn eindeutig machen. Vorher pruefte sie nur,
+//!     *dass* geworfen wurde -- eine Schranke, die doppelt gehalten wird, kann darunter
+//!     wegfallen, ohne dass etwas rot wird. Der Apparat dazu steht in
+//!     `kern/test/kennzeichen.hpp` und wird mit `schritt_probe` geteilt; die Riegel, ihre
+//!     Kennzeichen und die Zahl der Meldungen je Riegel stehen unten in dieser Datei.
 //!   * **Die verworfene Alternative als Zahl.** Wo eine Vorgabe zwischen zwei Formen
 //!     entscheidet, steht die andere Form daneben und liefert eine **andere** Zahl.
 //!     Sonst prueft die Zeile die Entscheidung nicht, sondern nur die Rechnung.
@@ -39,6 +45,8 @@
 #include "kern/schreiber.hpp"
 #include "kern/werte.hpp"
 #include "kern/zustand.hpp"
+
+#include "kennzeichen.hpp"
 
 #include "kern/sperre.hpp"  // T4: ab hier ist Gleitkomma ein Uebersetzungsfehler
 
@@ -98,17 +106,187 @@ void pruefe(bool bedingung, const char* text, int zeile)
     }
 }
 
-template <typename Aufruf>
-void erwarte_abbruch(Aufruf aufruf, const char* text, int zeile)
+// ---------------------------------------------------------------------------
+// Die Riegel dieser Probe -- Paket 0244
+// ---------------------------------------------------------------------------
+//
+// Bis zu diesem Paket standen hier vierzehn Aufrufe, die allein pruefen, *dass* geworfen
+// wurde. Das ist genau der Zustand, den Paket 0085 in `schritt_probe` abgeschafft hat:
+// Faellt der aeussere Riegel weg und wirft eine innere Bereichspruefung weiter, bleibt so
+// ein Aufruf gruen, und die Schranke ist unbemerkt fort. Der Apparat dagegen steht seit
+// diesem Paket in `kern/test/kennzeichen.hpp` und wird von beiden Proben benutzt; die
+// Begruendung beider Haelften der Eindeutigkeit steht dort und wird hier nicht wiederholt.
+//
+// **Eine Aufzaehlung je Schranke, nicht je Aufrufstelle.** Sechs Stellen sterben an
+// derselben Wechselkursschranke, zwei an derselben Landespruefung. Ohne eine Kennung je
+// Riegel meldete die Eindeutigkeitspruefung genau diese Paare sofort als Verletzung.
+//
+// **Und zwei Schranken, die gleich aussehen und es nicht sind:** Ein Steckplatz ausserhalb
+// der Tabelle bricht in `kern::werte` ab, wenn `markt` ihn nachschlaegt, und in
+// `kern::zustand`, wenn `positionswert` zuerst die Stufenzahl liest. Beide Meldungen
+// nennen einen unbekannten Steckplatz; erst der Namensraum trennt sie. Genau dafuer gibt
+// es die Kennzeichen, und beide Listen fuehren ihn deshalb mit.
+//
+// **Was hier nicht umgestellt ist, damit es niemand fuer erledigt haelt:** die
+// einundzwanzig Aufrufe von `hat_abgebrochen`. Sie nennen ihre Textstuecke schon heute an
+// der Aufrufstelle, und sie nennen sie in **beiden** Richtungen -- `PRUEFE(!enthaelt(...))`
+// haelt fest, welche Meldung gerade *nicht* ankommen darf. Das Verzeichnis kann nur die
+// positive Richtung. Sie hierher zu ziehen hiesse, die negative aufzugeben; das waere eine
+// abgeschwaechte Probe und kein Umbau. Wer beides will, braucht ein eigenes Paket.
+enum class Riegel : std::size_t {
+    WechselkursUnterEins,   ///< in `kern::werte::wert`: ein Nenner unter 1 drehte das Vorzeichen
+    NennerNullDerKursformel,  ///< in `kern::festkomma`: der Anleihekurs teilt durch null
+    GroesseNurBeiSpielbarenLaendern,  ///< in `kern::werte`: die Restwelt hat keinen Politikpfad
+    SkalengrenzeInCent,       ///< in `kern::festkomma`: der Faktor 100.000 verlaesst i64
+    SteckplatzAusserhalbDerTabelle,   ///< in `kern::werte`: die Steckplatztabelle kennt ihn nicht
+    SteckplatzAusserhalbDerAdressen,  ///< in `kern::zustand`: es gibt keine Positionsadresse
+    PositionNurAufSpielbarenLaendern,  ///< in `kern::zustand`: die Restwelt hat keinen Steckplatz
+    Anzahl,
+};
+
+constexpr std::array<Riegel, 7> ALLE_RIEGEL = {
+    Riegel::WechselkursUnterEins,
+    Riegel::NennerNullDerKursformel,
+    Riegel::GroesseNurBeiSpielbarenLaendern,
+    Riegel::SkalengrenzeInCent,
+    Riegel::SteckplatzAusserhalbDerTabelle,
+    Riegel::SteckplatzAusserhalbDerAdressen,
+    Riegel::PositionNurAufSpielbarenLaendern};
+
+// Kommt ein Riegel dazu und niemand traegt ihn hier nach, faellt es beim Uebersetzen auf
+// und nicht erst daran, dass die Vollzaehligkeitspruefung ihn nie sucht.
+static_assert(ALLE_RIEGEL.size() == static_cast<std::size_t>(Riegel::Anzahl));
+
+const char* riegelname(Riegel welcher)
 {
-    try {
-        aufruf();
-    } catch (const std::domain_error&) {
-        return;  // genau das war die Erwartung
+    switch (welcher) {
+    case Riegel::WechselkursUnterEins:
+        return "Wechselkurs unter 1";
+    case Riegel::NennerNullDerKursformel:
+        return "Nenner null in der Kursformel";
+    case Riegel::GroesseNurBeiSpielbarenLaendern:
+        return "Groesse nur bei spielbaren Laendern";
+    case Riegel::SkalengrenzeInCent:
+        return "Skalengrenze beim Uebergang in Cent";
+    case Riegel::SteckplatzAusserhalbDerTabelle:
+        return "Steckplatz ausserhalb der Steckplatztabelle";
+    case Riegel::SteckplatzAusserhalbDerAdressen:
+        return "Steckplatz ohne Positionsadresse";
+    case Riegel::PositionNurAufSpielbarenLaendern:
+        return "Position nur auf spielbaren Laendern";
+    case Riegel::Anzahl:
+        break;
     }
-    std::fprintf(stderr, "KEIN ABBRUCH Zeile %d: %s\n", zeile, text);
-    ++fehlgeschlagen;
+    return "(kein Riegel)";
 }
+
+// Die Kennzeichenlisten. Jede besteht aus Stuecken **ihrer eigenen** Meldung, und was sie
+// leisten, misst die Auswertung am Ende des Laufs: Die Liste passt auf jede Meldung ihres
+// Riegels und auf keine fremde. Zwei Stuecke je Liste sind kein Selbstzweck -- die beiden
+// Steckplatzlisten und die beiden Landeslisten unterscheiden sich allein am Namensraum,
+// und ein einzelnes Stueck daraus passte auf beide Meldungen.
+constexpr std::array<const char*, 2> KZ_WECHSELKURS = {"kern::werte::wert -- ",
+                                                       "wechselkurs unter 1"};
+constexpr std::array<const char*, 2> KZ_NENNER_NULL = {"mal_geteilt: Nenner null",
+                                                       "ein stiller Ersatzwert"};
+constexpr std::array<const char*, 2> KZ_SPIELBARE_LAENDER = {"kern::werte -- diese Groesse",
+                                                             "spielbaren Laendern"};
+constexpr std::array<const char*, 2> KZ_SKALENGRENZE = {"mal: Ergebnis ausserhalb von i64",
+                                                        "(T7)"};
+constexpr std::array<const char*, 2> KZ_STECKPLATZ_TABELLE = {"kern::werte -- ",
+                                                              "unbekannter Steckplatz"};
+constexpr std::array<const char*, 2> KZ_STECKPLATZ_ADRESSE = {"kern::zustand -- ",
+                                                              "unbekannter Steckplatz"};
+constexpr std::array<const char*, 2> KZ_POSITION_LAND = {"kern::zustand -- Positionen",
+                                                         "spielbaren Laendern"};
+
+// ---------------------------------------------------------------------------
+// Der Riegel, den kein Zustand erreicht -- die zweite Kategorie aus Paket 0248
+// ---------------------------------------------------------------------------
+//
+// Sie ist **nicht** eigen zu `kern::schritt`, und dieser Eintrag ist der Beleg. Hinter der
+// Fallunterscheidung ueber die Steckplatzart steht in `src/werte.cpp` ein Abbruch fuer die
+// unbekannte Art. Erreichbar ist er nicht: Die Aufzaehlung hat genau drei Werte, alle drei
+// sind behandelt, und die Art kommt nicht vom Aufrufer, sondern aus der festen
+// Steckplatztabelle des Kerns -- einen Platz ausserhalb faengt die Tabellenpruefung eine
+// Zeile darueber ab, und das ist der eigene Riegel `SteckplatzAusserhalbDerTabelle`.
+//
+// Ihn in `ALLE_RIEGEL` einzutragen faerbte einen heilen Baum rot; ihn wegzulassen
+// versteckte ihn vor der Pruefung, die es gibt, damit keine Schranke unbemerkt
+// verschwindet. Also die zweite Kategorie, ausgenommen von der Vollzaehligkeit und
+// geprueft gegen jede fremde Meldung.
+enum class RiegelOhneZustand : std::size_t {
+    /// in `kern::werte::markt`: die Steckplatzart ist keine der drei
+    UnbekannteSteckplatzart,
+    Anzahl,
+};
+
+/// Die Textstuecke, an denen die Meldung dieses Riegels zu erkennen **waere**.
+///
+/// Dass die verbleibende Haelfte hier wirklich beisst, ist an diesem Eintrag ablesbar: Das
+/// zweite Stueck allein truege nichts -- ein unbekannter Steckplatz steht in zwei fremden
+/// Meldungen. Erst der volle Name der Groesse trennt sie, und wer die Liste kuerzt, sieht
+/// das im selben Lauf.
+constexpr std::array<const char*, 2> KZ_STECKPLATZART = {"kern::werte::markt",
+                                                         "unbekannte Steckplatzart"};
+
+constexpr std::array<probe::kennzeichen::OhneZustand<RiegelOhneZustand>, 1>
+    RIEGEL_OHNE_ZUSTAND = {{
+        {RiegelOhneZustand::UnbekannteSteckplatzart,
+         "unbekannte Steckplatzart in kern::werte::markt",
+         "die Aufzaehlung hat drei Werte, alle drei sind behandelt, und die Art kommt aus "
+         "der festen Steckplatztabelle und nicht vom Aufrufer",
+         KZ_STECKPLATZART},
+    }};
+
+// Dasselbe Netz wie bei `ALLE_RIEGEL`: Kommt ein Eintrag dazu und niemand traegt ihn nach,
+// faellt es beim Uebersetzen auf und nicht daran, dass ihn nie jemand prueft.
+static_assert(RIEGEL_OHNE_ZUSTAND.size()
+              == static_cast<std::size_t>(RiegelOhneZustand::Anzahl));
+
+/// Wie viele Meldungen zu einem Riegel in einem heilen Lauf ankommen muessen -- die Zahl
+/// und nicht "mindestens eine".
+///
+/// Der Unterschied ist der Zweck: Die Vollzaehligkeitshaelfte des Verzeichnisses sieht nur,
+/// ob ein Riegel **ueberhaupt** gefeuert hat. Von den sechs Stellen an der
+/// Wechselkursschranke duerfte man damit fuenf streichen, ohne dass etwas rot wird. Die
+/// ausgeschriebene Zahl faengt das; sie steigt nur, wenn jemand sie mit der Aufrufstelle
+/// zusammen aendert.
+struct Sollzahl {
+    Riegel      riegel;
+    std::size_t meldungen;
+};
+
+constexpr std::array<Sollzahl, 7> SOLLZAHLEN = {{
+    {Riegel::WechselkursUnterEins, 6},
+    {Riegel::NennerNullDerKursformel, 1},
+    {Riegel::GroesseNurBeiSpielbarenLaendern, 2},
+    {Riegel::SkalengrenzeInCent, 1},
+    {Riegel::SteckplatzAusserhalbDerTabelle, 1},
+    {Riegel::SteckplatzAusserhalbDerAdressen, 1},
+    {Riegel::PositionNurAufSpielbarenLaendern, 2},
+}};
+
+/// Ob der Eintrag an der n-ten Stelle auch den n-ten Riegel nennt. Die Groessenpruefung
+/// darunter allein liesse zwei Eintraege desselben Riegels durch -- die Zahl staende dann
+/// richtig da und ein Riegel fehlte trotzdem.
+constexpr bool sollzahlen_geordnet()
+{
+    for (std::size_t n = 0; n < SOLLZAHLEN.size(); ++n) {
+        if (SOLLZAHLEN[n].riegel != static_cast<Riegel>(n)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+static_assert(SOLLZAHLEN.size() == static_cast<std::size_t>(Riegel::Anzahl));
+static_assert(sollzahlen_geordnet());
+
+/// Das Verzeichnis dieser Probe. Die Mechanik ist geteilt, die Werte sind es nicht.
+probe::kennzeichen::Buch<Riegel, RiegelOhneZustand> buch{"werte", fehlgeschlagen,
+                                                        ALLE_RIEGEL, &riegelname,
+                                                        RIEGEL_OHNE_ZUSTAND};
 
 /// Die drei Sektoren als Liste, damit die Grundbelegung ueber sie laufen kann.
 constexpr std::array<Sektor, SEKTOREN> SEKTORLISTE{
@@ -216,8 +394,15 @@ Meldung erwarteter_ausschnitt(const char* vorspann, i64 wert)
 }  // namespace
 
 #define PRUEFE(ausdruck) pruefe((ausdruck), #ausdruck, __LINE__)
-#define ERWARTE_ABBRUCH(ausdruck) \
-    erwarte_abbruch([&] { static_cast<void>(ausdruck); }, #ausdruck, __LINE__)
+
+/// Der Aufruf bricht ab, und zwar an **diesem** Riegel.
+///
+/// Reicht die Zeile der Aufrufstelle durch -- sonst naennte jede Fehlermeldung die eine
+/// Zeile in der Vorlage. Der Ausdruck steht zugleich als Text da: Er benennt die Stelle in
+/// jeder Meldung des Verzeichnisses, und niemand muss ihn ein zweites Mal hinschreiben.
+#define BRICHT_AB_MIT(riegel, kennzeichen, ausdruck)                    \
+    buch.bricht_ab_mit(#ausdruck, (riegel), (kennzeichen), __LINE__,    \
+                       [&] { static_cast<void>(ausdruck); })
 
 namespace {
 
@@ -308,16 +493,21 @@ void probe_wechselkursschranke()
 
     Rohling null;
     null.lege(stelle_aggregat(Gebiet::DE, Aggregat::Wechselkurs), 0);
-    ERWARTE_ABBRUCH(korbwert(null, Gebiet::DE, Sektor::Industrie));
+    BRICHT_AB_MIT(Riegel::WechselkursUnterEins, KZ_WECHSELKURS,
+                  korbwert(null, Gebiet::DE, Sektor::Industrie));
 
     Rohling negativ;
     negativ.lege(stelle_aggregat(Gebiet::DE, Aggregat::Wechselkurs), -10'000);
     negativ.lege(stelle_sektorgroesse(Gebiet::DE, Sektor::Industrie, SektorGroesse::Kapitalstock),
                  3);
     // Der eigentliche Fall: Ohne die Schranke braeche hier **nichts** ab, und der Korb
-    // haette ein umgedrehtes Vorzeichen.
-    ERWARTE_ABBRUCH(korbwert(negativ, Gebiet::DE, Sektor::Industrie));
-    ERWARTE_ABBRUCH(wert(negativ, 3, 10'000, Gebiet::DE));
+    // haette ein umgedrehtes Vorzeichen. Den Nenner null darueber faenge `mal_geteilt`
+    // ohnehin; nur der negative misst die Schranke selbst. Dass beide dieselbe Meldung
+    // bringen, ist die Aussage der Kennung: ein Riegel, drei Stellen.
+    BRICHT_AB_MIT(Riegel::WechselkursUnterEins, KZ_WECHSELKURS,
+                  korbwert(negativ, Gebiet::DE, Sektor::Industrie));
+    BRICHT_AB_MIT(Riegel::WechselkursUnterEins, KZ_WECHSELKURS,
+                  wert(negativ, 3, 10'000, Gebiet::DE));
 }
 
 // ---------------------------------------------------------------------------
@@ -335,9 +525,12 @@ void probe_leerer_steckplatz_rechnet_nicht()
 
     const Steckplatz platz = steckplatz_sektor(Gebiet::CN, Sektor::Landwirtschaft);
 
-    // Positivkontrolle: markt(p) wuerde auf diesem Zustand abbrechen.
-    ERWARTE_ABBRUCH(markt(r, K_GRUND, platz));
-    ERWARTE_ABBRUCH(stufenwert(r, K_GRUND, platz));
+    // Positivkontrolle: markt(p) wuerde auf diesem Zustand abbrechen -- und zwar an der
+    // Wechselkursschranke und an keiner anderen. Ein blosses "es hat geworfen" liesse hier
+    // offen, ob die Null unten von der Reihenfolge kommt oder von einem zweiten Riegel.
+    BRICHT_AB_MIT(Riegel::WechselkursUnterEins, KZ_WECHSELKURS, markt(r, K_GRUND, platz));
+    BRICHT_AB_MIT(Riegel::WechselkursUnterEins, KZ_WECHSELKURS,
+                  stufenwert(r, K_GRUND, platz));
 
     // Die Aussage: Bei stufen = 0 kommt trotzdem eine Null zurueck.
     PRUEFE(positionswert(r, K_GRUND, platz) == 0);
@@ -347,7 +540,8 @@ void probe_leerer_steckplatz_rechnet_nicht()
     Rohling belegt;
     belegt.lege(stelle_aggregat(Gebiet::CN, Aggregat::Wechselkurs), 0);
     belegt.lege(stelle_position(platz), 1);
-    ERWARTE_ABBRUCH(positionswert(belegt, K_GRUND, platz));
+    BRICHT_AB_MIT(Riegel::WechselkursUnterEins, KZ_WECHSELKURS,
+                  positionswert(belegt, K_GRUND, platz));
 }
 
 }  // namespace
@@ -591,11 +785,16 @@ void probe_bip_schuld_anleihekurs()
     // Die Schranke sitzt am Instrument, nicht am Kurs -- reisst der Politikpfad sie
     // trotzdem, ist der Nenner null und der Kurs ein Abbruch statt einer Zahl.
     r.lege(stelle_aggregat(Gebiet::US, Aggregat::Leitzins), -51);
-    ERWARTE_ABBRUCH(anleihekurs(z, konst, Gebiet::US));
+    BRICHT_AB_MIT(Riegel::NennerNullDerKursformel, KZ_NENNER_NULL,
+                  anleihekurs(z, konst, Gebiet::US));
 
-    // Die Restwelt hat keinen Politikpfad und deshalb keinen Anleihekurs.
-    ERWARTE_ABBRUCH(anleihekurs(z, konst, Gebiet::RW));
-    ERWARTE_ABBRUCH(anleihewert(z, konst, Gebiet::RW));
+    // Die Restwelt hat keinen Politikpfad und deshalb keinen Anleihekurs. Beide Stellen
+    // sterben an derselben Landespruefung; der Anleihewert kommt nur ueber den Kurs dorthin,
+    // und dass er nicht schon an der Schuld stirbt, sagt die gemeinsame Kennung.
+    BRICHT_AB_MIT(Riegel::GroesseNurBeiSpielbarenLaendern, KZ_SPIELBARE_LAENDER,
+                  anleihekurs(z, konst, Gebiet::RW));
+    BRICHT_AB_MIT(Riegel::GroesseNurBeiSpielbarenLaendern, KZ_SPIELBARE_LAENDER,
+                  anleihewert(z, konst, Gebiet::RW));
 }
 
 }  // namespace
@@ -696,7 +895,8 @@ void probe_ueberlauf_an_der_skalengrenze()
                   93'000'000'000'000);
     zu_gross.lege(stelle_beteiligung(Gebiet::US, Sektor::Industrie, BeteiligungsFeld::Anteil),
                   10'000);
-    ERWARTE_ABBRUCH(beteiligung_wert(zu_gross, K_GRUND, Gebiet::US, Sektor::Industrie));
+    BRICHT_AB_MIT(Riegel::SkalengrenzeInCent, KZ_SKALENGRENZE,
+                  beteiligung_wert(zu_gross, K_GRUND, Gebiet::US, Sektor::Industrie));
 }
 
 // ---------------------------------------------------------------------------
@@ -712,13 +912,23 @@ void probe_steckplatzraender()
     // wert -- die Formel ist dort ohne Wirkung, nicht ausgenommen.
     PRUEFE(positionswert(z, K_GRUND, steckplatz_waehrung(Gebiet::US)) == 0);
 
-    // Ein Platz ausserhalb der zwanzig ist ein Rechenfehler des Aufrufers.
-    ERWARTE_ABBRUCH(markt(z, K_GRUND, static_cast<Steckplatz>(STECKPLAETZE)));
-    ERWARTE_ABBRUCH(positionswert(z, K_GRUND, static_cast<Steckplatz>(STECKPLAETZE + 7)));
+    // Ein Platz ausserhalb der zwanzig ist ein Rechenfehler des Aufrufers -- und die beiden
+    // Groessen sterben an **verschiedenen** Riegeln: `markt` schlaegt zuerst in der
+    // Steckplatztabelle nach, `positionswert` liest zuerst die Stufenzahl und faellt damit
+    // schon an der Adressrechnung des Zustands. Bis zu diesem Paket war das nicht geprueft;
+    // beide Meldungen nennen einen unbekannten Steckplatz und unterscheiden sich allein im
+    // Namensraum.
+    BRICHT_AB_MIT(Riegel::SteckplatzAusserhalbDerTabelle, KZ_STECKPLATZ_TABELLE,
+                  markt(z, K_GRUND, static_cast<Steckplatz>(STECKPLAETZE)));
+    BRICHT_AB_MIT(Riegel::SteckplatzAusserhalbDerAdressen, KZ_STECKPLATZ_ADRESSE,
+                  positionswert(z, K_GRUND, static_cast<Steckplatz>(STECKPLAETZE + 7)));
 
-    // Beteiligungen gibt es nur an spielbaren Laendern.
-    ERWARTE_ABBRUCH(beteiligung_wert(z, K_GRUND, Gebiet::RW, Sektor::Industrie));
-    ERWARTE_ABBRUCH(fondsanteil(z, K_GRUND, Gebiet::RW, Sektor::Industrie));
+    // Beteiligungen gibt es nur an spielbaren Laendern. Beide Wege gehen ueber denselben
+    // Steckplatz und nicht ueber die Beteiligungsadresse -- auch das sagt erst die Kennung.
+    BRICHT_AB_MIT(Riegel::PositionNurAufSpielbarenLaendern, KZ_POSITION_LAND,
+                  beteiligung_wert(z, K_GRUND, Gebiet::RW, Sektor::Industrie));
+    BRICHT_AB_MIT(Riegel::PositionNurAufSpielbarenLaendern, KZ_POSITION_LAND,
+                  fondsanteil(z, K_GRUND, Gebiet::RW, Sektor::Industrie));
 
     // Der Korbwert dagegen besteht fuer alle fuenf Gebiete: Kapitalstock und
     // Sektorpreis hat auch die Restwelt.
@@ -1845,6 +2055,31 @@ void probe_bip_nennerdecke()
 /// damit die halbe Wertebereichsschranke, und eine Zaehlung mit `> 0` saehe das nicht.
 void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 2); }
 
+// ---------------------------------------------------------------------------
+// Paket 0244 -- die Vollzaehligkeit je Riegel, als Zahl
+// ---------------------------------------------------------------------------
+//
+// Der Zaehler waechst allein im Fangblock des Verzeichnisses: Was nicht abbricht, legt
+// keine Meldung ab. Geprueft wird die **genaue** Zahl und nicht "mindestens eine" -- die
+// Vollzaehligkeitshaelfte des Verzeichnisses sieht nur, ob ein Riegel ueberhaupt gefeuert
+// hat, und von den sechs Stellen an der Wechselkursschranke duerfte man damit fuenf
+// streichen, ohne dass etwas rot wird.
+//
+// Gedruckt wird je Riegel, was gezaehlt wurde, und daneben, was erwartet war. Eine
+// Zusicherung ohne ihre Zahl kostet den naechsten Lauf einen eigenen Bau.
+void probe_riegel_vollzaehlig()
+{
+    for (const Sollzahl& soll : SOLLZAHLEN) {
+        const std::size_t gezaehlt = buch.anzahl_zu(soll.riegel);
+        std::printf("  Riegel \"%s\": %zu Meldung(en), erwartet %zu\n",
+                    riegelname(soll.riegel), gezaehlt, soll.meldungen);
+        PRUEFE(gezaehlt == soll.meldungen);
+    }
+    std::printf("  Riegel mit Zustand (werte): %zu Meldungen aus %zu Riegeln, jede Zahl "
+                "einzeln geprueft\n",
+                buch.anzahl(), SOLLZAHLEN.size());
+}
+
 }  // namespace
 
 int main()
@@ -1892,6 +2127,13 @@ int main()
 
     // Zuletzt, denn sie liest ein, was der Aufruf darueber hinterlassen hat.
     probe_nennerdecke_vollzaehlig();
+
+    // Und ebenfalls zuletzt, aus demselben Grund: Beide lesen das Verzeichnis, das die
+    // Aufrufstellen oben gefuellt haben. `probe_riegel_vollzaehlig` haelt die Zahl je
+    // Riegel, `buch.auswerten` die Eindeutigkeit der Kennzeichen und den Riegel ohne
+    // Zustand (Paket 0107, Paket 0248, hierher gebracht von Paket 0244).
+    probe_riegel_vollzaehlig();
+    buch.auswerten();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);
