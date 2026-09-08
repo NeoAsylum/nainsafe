@@ -32,3 +32,27 @@ Worth keeping:
   condition 5 (now `:5008-5010`) — thread closed. Still watching: 0068 wave-2
   markers at :1649, :2786-2788, :3603.
 
+## 2026-09-08 — Pruefung 0158 run 1, zurueck, 1 finding
+
+One finding, one root cause: the architekt carried the source finding's counts
+("drei ihrer sieben Schranken", "101 Adressen") into T30 without rebasing them on
+the now-eight-bound table — 0172 added bound 8 (16 addresses) before 0158 ran.
+Result: `:2477` says "seven bounds", `:2489` says "101 addresses of the eight
+bounds", table sums to 117. The 65-outside figure is NOT stale (verified against
+T38 mask `:1476-1490`; bound 8's instrument levels are in-mask), so the Ruecklauf
+is a two-word fix. Everything else green: mode named in the check-6 row, blindness
++ break-elsewhere at T30, freeze/mark table with owners, all cross-refs (s7 p1
+`:1641`, s10 `:2928`, T40 `:884`), grep-c ueber_fenster over kern/daten/toml = 0.
+
+Worth keeping:
+- **A package built from a dated finding inherits that finding's counts.** Check
+  every number the new text repeats from its source against the *current* tables —
+  intervening packages in the same file queue (here 0172 → bound 8) shift the base.
+  Cheap detector: grep the count-words ("seven bounds") file-wide; a stale count is
+  usually unique.
+- T38 mask reconciliation for future runs: 175 in / 135 out of 310; blind-to-check-6
+  bounds 5/6/7 = 65 addresses (1 markt.wert + 32 druck/gegendruck + 32 fund);
+  eight bounds total 117 addresses.
+- Section 28 ends with a self-check clause ("grep -c ... gives 0") — reproduce it,
+  it is two greps and either confirms or is itself a finding. This one held.
+
