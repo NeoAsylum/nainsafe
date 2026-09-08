@@ -1,7 +1,7 @@
 ---
 id: 0241-negativbefunde-an-ihre-abfrage-binden
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/quellenbefund-leitzinspfad.md, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml]
 abnahme: The three conditions under Acceptance. Condition 1 is the load-bearing one and it is the criterion 0234 lacked.
@@ -67,6 +67,51 @@ reaches all four countries.
 
 No money and no sign-up — but you should need no endpoint at all. If you find you do, that
 is a sign you are re-doing round 3's work; say so instead.
+
+## Note by the datenbauer, 2026-09-08
+
+Built, **no retrieval at all** — every number below was already in the file, in the finding,
+or in `daten/einheitenbefund-pwt-baci.md`.
+
+**Condition 3, and the hard limit held by count.** `:623` now says the uniform-concept
+question is measured and answers no, and points at `daten/quellenbefund-leitzinspfad.md`.
+Both `spiel.md` citations on that line are byte-identical, `technik.md` untouched, no line
+inserted or deleted: the file's keyword count is **62 before and after** (`Grep -c` over
+`technik.md|spiel.md`). I avoided the word `ungemessen` in the new clause so a case-blind
+probe cannot read the correction as the old claim.
+
+**Condition 2** done as the reviewer worded it, both places, with the three MMKT fetches
+attributed to the daten-pruefer rather than claimed as mine.
+
+**Condition 1, the sweep — four places beyond the two named:**
+- The per-country table said CHN: „nothing found in any vetted source", while the same
+  file's coverage matrix carries CHN 25 of 25 in four `FR.INR` codes and `:112` named the
+  PBoC benchmark lending rate. That was the file contradicting itself, not just overreach.
+  The row now names `FR.INR.LEND` and stays „no" in the policy-rate column.
+- „The series does not exist" for CHN `DISR` was derived from the `CHN.*.*` wildcard and is
+  now written as the derivation it is; the single-code key was never fetched.
+- `MFS_FMP` „carries no interest rate for anyone" rested on one USA control.
+- **PWT is the weakest line in the file and now says so.** „No interest-rate variable" was
+  read off the landing page; the variable list is PDF-locked for this role
+  (`einheitenbefund-pwt-baci.md`, section 3). BACI goes the other way and is now *stronger*
+  than it read: its six columns are enumerated in that same befund, so „no interest rate"
+  there is proof, not impression.
+- The H1 said „no single code reaches all four at all". Condition 2 makes that *less*
+  supportable, not more — documenting `MMKT` as a live instance outside topic 7 is exactly
+  an admission that the code space was not enumerated. It now reads „no code queried here".
+  The result and `ergebnis:` are unchanged.
+
+**Two things I did outside the letter of the conditions, both reported rather than hidden:**
+1. `reihen.toml:1258` carried the same unqualified „keine einzige Kennung reicht ueber alle
+   vier". Left alone, the two files would disagree the moment the befund was narrowed.
+   Narrowed to „keine der dort abgefragten Kennungen", citation untouched, still 62.
+2. The endpoint template at the head of the befund now shows the per-country form with
+   `per_page`, which is what the 20 cells were counted from — the reviewer's first
+   Anmerkung. Whoever takes the template literally otherwise gets 50 of 100 rows.
+
+**Uncertain, for the project manager:** the H1 change is the one place where I narrowed a
+sentence the package called „proven". I read condition 1 as outranking it because condition
+2 is what undermined it. If that reading is wrong, the old wording is one edit away.
 
 ## Ruecklaeufe
 

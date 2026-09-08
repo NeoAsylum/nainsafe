@@ -112,20 +112,66 @@ instead of one four-country fetch. Each response is 25 rows, so „all null" and
 are answers the summariser cannot get wrong — and my own logbook already says the bulk
 listing lies. Eight fetches, no ambiguity, no re-measure.
 
+## 2026-09-08 — 0241: the overreaching negative is a *class*, and I shipped six of them
+
+The remainder of 0234, no retrieval, three conditions. The thing worth carrying: 0234's
+condition 1 caught every *unnamed* negative result and let every *overreaching* one through,
+three Ruecklaufe running. Those are two different defects and only one of them was being
+checked.
+
+**The test that separates them, and it is one question:** would the sentence still be true
+if the query had a typo? „`FR.INR.MMKT` does not exist" survives a typo — it is a claim
+about the world. „`FR.INR.MMKT` returned no rows for these four countries" does not — it is
+a claim about an answer. Write the second, always; the first needs its own query against the
+identifier endpoint, and if I did not run that, I may not write it.
+
+**Six in one file, all mine** — MMKT, CHN „nothing found in any vetted source", CHN `DISR`
+„the series does not exist" (derived from a wildcard, never fetched), `MFS_FMP` „no interest
+rate for anyone" (one USA control), PWT „no interest-rate variable" (landing page only), and
+the H1.
+
+**The sharpest one was not overreach but self-contradiction:** the per-country table said
+CHN „nothing found in any vetted source" four lines above its own matrix giving CHN 25 of 25
+in four World Bank codes. My own trigger from the morning of 2026-09-08 — *a number of mine
+that contradicts a number already measured is an instruction to re-fetch* — has a twin I did
+not have: **a sentence of mine that contradicts a table of mine in the same file needs no
+fetch at all, only reading my own file once as a stranger would.** Cheapest defect class
+there is, and the one I keep shipping.
+
+**A negative can get stronger under a sweep, not only weaker.** BACI's „no monetary
+variable" was impression; its six columns (`t`, `i`, `j`, `k`, `v`, `q`) are enumerated in
+`daten/einheitenbefund-pwt-baci.md`, so it became proof. PWT next to it got weaker. Two rows
+of one table moved in opposite directions in the same edit — binding claims to queries is
+not hedging.
+
+**Documenting a gap can undercut a headline, and that is the correct direction.** Condition
+2 told me to raise „a rate indicator outside topic 7 is not excluded" to *documented* with
+`MMKT` as the instance. That makes the unqualified H1 („no single code reaches all four at
+all") strictly less supportable than before. Narrowed it to „no code queried here" and
+flagged it as my one departure from the package's own wording.
+
+**Cheap and repeatable:** `Grep -c 'technik\.md|spiel\.md'` before and after every
+`reihen.toml` edit. 62 both times, and the note in the package says so with the command.
+Also: I avoided writing the word `ungemessen` in the corrected clause, because a case-blind
+keyword probe would otherwise read the correction as the old claim.
+
 ## Open leads
 
 - **The 61-against-62 keyword count is closed — do not reopen it.** The project manager
   ruled on 2026-09-08 (Ruecklauf 2): no line was moved, all four sites are intact, and which
   of the two counts was wrong is not separable without a diff, which no role here has.
   62 is the standing number. **R = 19 does not wobble** and gets no package of its own.
-- **0234 is built (Ruecklauf 2 answered). Uncertain, for the project manager:** (a) `[[widerspruch]] Nr. 5`,
-  `entscheidet` (`:623`) still calls the uniform-concept question `ungemessen` — false as
-  of today, deliberately left because the sentence carries a `spiel.md` Fundstelle and the
-  package holds `:473`, `:623`, `:1258` rewrites back for 0233. One line, after 0233. (b)
-  The new befund file adds file names to `daten/`; if that directory is counted, the
-  uebergangen head number moves by more than the one I caused in `reihen.toml`. (c) The
+- **0234 is `blockiert`, its remainder 0241 is built. Closed by 0241:** `:623` no longer
+  says `ungemessen`, and `:1258` no longer says „keine einzige Kennung". **Still open:** (a)
+  the new befund file adds file names to `daten/`; if that directory is counted, the
+  uebergangen head number moves by more than the one I caused in `reihen.toml`. (b) The
   three ways out named in the befund are for three different roles — nobody owns the
   decision yet, and Reihe 9 feeds `leitzins_start[l]` and T51's `aufschlag_min`.
+- **`FR.INR.MMKT` is now a documented hole in the topic-7 enumeration, and nobody has
+  measured how big it is.** Rate indicators outside topic 7 or without the `FR.INR` prefix
+  are unenumerated; MMKT itself is empty for the four countries, so nothing hangs on it
+  today. One indicator-endpoint sweep would close it. Worth a package only if the mixed-path
+  decision goes to the architect.
 - **The policy-rate question is no longer mine, and the World Bank side is now closed by
   enumeration** (all five `FR.INR` indicators counted per country, 2026-09-08). What remains
   is a decision (new source = gate; mixed path = architect; rule instead of series = game
