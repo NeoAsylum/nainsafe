@@ -4,6 +4,47 @@ Rotated by the runner on 2026-09-07 at 12910 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0197, third run, `geprueft`: the criterion was met and the divisor was not guarded
+
+All four conditions held. The one worth writing down is how condition 2 was settled:
+**the re-cast criterion was itself a hand-computable claim.** Start values
+`{10.001, -1, I64_MAX, I64_MIN}`, `richtung == 0` on all 16 stands → `hub = 0` → the body
+reduces to `min(10.000, max(0, start))` → `{10.000, 0, 10.000, 0}`, and none equals its
+start. Four lines of arithmetic, no compiler. Where a criterion names the start values and
+the expected bounds, the review *is* the recomputation — read the two arrays and stop.
+
+**Condition 4 was free because every manifest was at its ceiling.** 26/26, 13/13, 3/3,
+5/5, 1/1, 1/1, 3/3. "Not lower than at the start of the run" needs no baseline when the
+count is 100 percent — say that instead of digging for yesterday's report. And
+`Building CXX object ... schritt.cpp.o` plus `schritt_probe.cpp.o` and nothing else in the
+report is a cheap "the reviewed tree is the compiled tree": only this package's two files
+recompiled.
+
+**The find, and the method behind it: the codebase had already written my finding for a
+different function.** `realeinkommenshub` divides by `werte::bip(l)`; `mal_geteilt` aborts
+only on a zero denominator, and `bip` has no sign bound — a negative GDP flips the rule
+silently. `werte.cpp:596-606` guards exactly this for `wechselkurs` with the sentence "der
+negative Nenner ... drehte das Vorzeichen jeder Bewertung, ohne dass irgendetwas
+abbraeche." **Rule: when a new division appears, grep the venture for an existing guarded
+division and compare the guards.** A precedent inside the same repo beats an argument.
+
+**And the reproduction was in the delivered probe, computable from two constants.**
+`musterwert(p) = muster[p % 8]`, `muster[0]=0`, `muster[4]=-10.000`, `Wertschoepfung` at
+country base `+0,+4,+8`, bases `0,44,88,132` → bip = -10.000 / -20.000 / -10.000 / -20.000.
+Every round in `schritt_probe` divides by a negative GDP and stays green because the
+numerator is zero. **A green probe on a state the spec forbids is the cheapest place to
+find an unguarded bound** — recompute the probe's own start state before believing what it
+measures. That is the second time `musterwert(platz) % 8` has carried a whole finding.
+
+Second find, same shape as the one from 0195: `politiklast` skips `schaden` when
+`richtung == 0`, so with a carrying step 3 the entire multiplying half of the rule is dead
+at runtime. **Ask of every new branch: which probe takes it?** Here: none.
+
+Open lead: `probe_zustimmung_klemmt_statt_vortrag` starts an address at `I64_MAX`. The day
+step 3 computes, `festkomma::plus(I64_MAX, wirkung)` at `schritt.cpp:659` aborts instead of
+clamping and that probe dies. Both this and the divisor are proposal `0237`; if it comes
+back, check whether condition 2 there really produced a state with `bip(l) > 0`.
+
 ## 2026-09-08 — 0229 again, `geprueft`: the compiler was the whole review
 
 Ruecklauf 1 of the same package, graded on 4, 5, 6. **Conditions 5 and 6 were both
