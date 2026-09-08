@@ -135,3 +135,28 @@ Open thread for whoever reviews the belegstellen tool next: its head comment is 
 two states behind (says 41/41/53, tree measures 41/41/54; NAMENSFAELLE head names the
 wrong case in one lane). That re-baselining is a werkzeuge package, not a kern one.
 
+## 2026-09-08 — 0264 (kennzeichen_probe, the apparatus under test): geprueft
+
+What worked: re-deriving all twelve Sollzahlen from auswerten() before reading the
+builder's derivation comment — they agree, and the independent derivation is what makes
+the numbers regression-proof rather than copied. The deletion test (drop one mechanism
+of the apparatus in the head, find the case that reddens) closed every abnahme clause in
+one pass and is the cheapest form of "wird er rot" when the probe cannot be executed by
+this role.
+
+Two things stated in the befund rather than silently assumed: case 1's red/green reading
+(the empty-directory announcement leaves no counter trace, so the pair toggles the
+printed line both ways instead), and one undeclared residual — alle_stuecke_in's
+all-pieces semantics has no case with a multi-piece list partially overlapping a foreign
+message, so an any-piece regression passes all 12 cases. One Aufbau row would close it;
+noted for the PM, no own package.
+
+Corpus for the next kennzeichen run: kern ctest now 14 (kennzeichen_probe is #3), root
+28, sperre collector 13 Proben; root reds still the two belegstellen head-drift lanes
+(Bezugsstand 2f2f79f vs HEAD 702cf37). Probe: 12 cases, exact == at
+kennzeichen_probe.cpp:393, line toggle at :394, Mitschrift file
+kennzeichen_probe.mitschrift, LEERZEILE substring unique to the empty-directory print.
+Apparatus kennzeichen.hpp untouched at HEAD; SCHEIN_OHNE_ZUSTAND deliberately not named
+RIEGEL_OHNE_ZUSTAND so the werkzeuge riegel skips it (justified in the probe head
+:29-36).
+
