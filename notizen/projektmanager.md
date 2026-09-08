@@ -12,7 +12,9 @@ narrow `dateien` to what the package still needs · a satisfied `haengt_an` is i
 the package you must **not** run beside · an order that holds only because of how a number
 sorts is not an order · a package's `dateien` list is not its blast radius · a formula in
 an acceptance is a claim like any other · a fix that holds under every outcome of the
-pending review does not need to wait for it.
+pending review does not need to wait for it · ask whether the role owns the tools its own
+acceptance requires · a dependency that binds below the acceptance's resolution is a
+thrown-away lane · a sweep is unprovable, an enumeration is countable.
 
 ---
 
@@ -109,45 +111,94 @@ Both 0237 and 0238 were accepted on evidence that a **green tree by itself does 
 0234 round 1. This factory has no shell; it does have arithmetic on line numbers and
 registries with completeness halves. That is the toolkit.
 
-## Offene Fährten — 2026-09-08, ninth run
+## A proposer's dependency binds at one altitude; the acceptance may demand another — 2026-09-08 (tenth run)
 
-- **Lanes: five**, all file-disjoint, up from four: 0196 (architekt/`technik.md`, Ruecklauf 1),
-  0233-feldzaehler (kernbauer/`schritt.hpp`+`schritt_probe.cpp`, **released after three
-  nights, promised four times**), 0241 (datenbauer/`reihen.toml`+`quellenbefund`), 0242
-  (kernbauer/`werte.cpp`+`werte_probe.cpp`, new), 0243 (bruchtester/`befunde/…-nach-schritt/`,
-  new). **Two kernbauer packages side by side is fine** — `startbereit` serialises on
-  `dateien` alone, never on role.
-- **No review lane tonight**: nothing is `gebaut`. 0196 → `offen`, 0234 → `blockiert`,
-  0237/0238 → `fertig`. Reviews resume tomorrow.
-- **0196 wins the `technik.md` night by dependency, not by luck.** Startable there are only
-  0196, 0230 (its two `haengt_an` are through) and 0236 (empty); the other ten hang behind
-  0196 in one chain. `sorted()` then puts 0196 first anyway. Checked, not assumed.
-- **The standing promise did not fire:** nothing today cuts a computing body for
-  `schritt_4_wirtschaft`, so 0236 stays sorting last. 0240 is step 5's clamp, 0242 is `werte`.
-- **Check first next run:** (a) 0241 — if the *same species* appears a fourth time under the
-  new clause, the clause is wrong too and it goes to the operator, not into round 2. (b) 0243
-  must claim **no** measurement; a number reported as measured fails it outright, and it has
-  no reviewer to catch that (`bruchtester` is not in `baulauf.py:REVIEW` — its output *is* the
-  Befund, so I set `fertig` directly, precedent 0145). (c) 0242's hard limit — did the set of
-  aborting states really stay put, or did a threshold move?
-- **Two dormant overflows are written down and deliberately unpackaged:** `werte::schaden` →
-  `schuld` for CN/BR (`Staatsschuld` at `% 8 == 7`, i.e. `muster[7] = I64_MIN`), in 0237's
-  `vermerk_abnahme`; and 0240's clamp. Both are dead branches today. A package for a sleeping
-  overflow takes a lane from live work — but **the first builder who wakes one hits it before
-  the compiler tells him**, so it belongs in the package that will wake it.
-- **`ops/plan.md` is five runs stale** and now false in three places: the `reserviert.txt`
-  lock it calls the bottleneck is gone (`# frei`, six runs), „Das stehende Rot ist weg" went
-  false and true again inside one day, and its Vorrang list is discharged for the third run
-  running — all five entries `fertig`. **Third deviation from an empty Vorrang list; the
-  reason is in this logbook and in every package I opened.** Not mine to edit.
-- **Blocked, six now:** 0127, 0208-baulauf, 0194 (all `agents/baulauf.py`), 0003 (needs an
-  ADR), **0234** (my criterion, successor 0241), **0157** (no execution tool exists,
-  successor 0243). The last two are new and both are mine, not the builders'.
+0245 (kern-pruefer → kernbauer) hung **itself** on 0240, with a good-sounding argument: „0240
+decides what there is to name — if it moves the clamp in front of `schritt.cpp:687`, that site
+is gone." True, and **irrelevant to its own condition 2**, which forbids every line number and
+site count and asks for *module and path*. `kern::festkomma` reaches step 5 by two ways —
+`politiklast` (`:596`) and `realeinkommenshub` (`:644`, `:686`, `:687`). 0240 can touch at most
+one of the four sites. Under **every** outcome the module is still a source of hard aborts, so
+the header sentence is the same either way.
+
+**The rule: check the altitude at which the dependency binds against the altitude the
+acceptance demands.** A dependency that binds only below the acceptance's resolution is not a
+dependency, it is a lane thrown away. That was the whole gain of the night — a fourth build
+lane, on a night when `technik.md` again carried only one.
+
+The corollary I nearly missed: it is also worth reading *why the proposer expects to be
+blocked*. 0240's builder was told the repair choice comes back to me as a report, under the
+hard limit that **the set of aborting states may not change**. So 0240 almost certainly leaves
+`:687` aborting. The proposer knew that and still hung himself — being cautious about someone
+else's package is cheap for him and expensive for me.
+
+## The fifth question caught a second package, and this one before it ever ran
+
+0244 (kernbauer → testentwickler) proposed proving its completeness half with a mutant: „deleting
+any one abort site in `src/werte.cpp` makes `werte_probe` red." **Unreachable, four independent
+ways**, and I found it by asking the question 0157 taught me: (1) `agents/rollen/testentwickler.md:7-14`
+has no tool that executes a program; (2) the runner calls the compiler *after* the run, so no
+builder can build a mutant, read the red and revert inside one run; (3) the mutation stand exists
+but `werkzeuge/mutation/CMakeLists.txt:67` says **„Ausdruecklich kein `add_test`"** — a custom
+target, so it does not run at night either; (4) `src/werte.cpp` is not in its `dateien`.
+
+**Replaced with the form this factory can actually prove:** a counter incremented only inside
+the abort block plus a probe demanding the exact count — 0237's and 0242's shape. Twice now the
+toolkit answer has been the same. **Green-because-present and green-because-fired are different
+facts, and a registry with a completeness half is the only thing here that separates them.**
+
+## 0241: the clause was right, the sweep was not
+
+My ninth-run test was „if the same species appears a fourth time under the new clause, the clause
+is wrong too and it goes to the operator." It appeared, and the clause is **not** wrong. The
+discriminator, and it is worth keeping: in rounds 1–3 of 0234 the criterion could not *decide* —
+it separated named from unnamed and the defect slid sideways every time. Under the new clause the
+reviewer decided the **whole file**: eight negatives bound and listed by name, three failing, each
+with the exact sentence. A criterion that decides every case is working; a sweep that misses two
+sentences is incomplete work. Ruecklauf 1, not the operator.
+
+**What I changed is the method, not the criterion:** „sweep the whole file" is unprovable — you
+see what it found, never what it missed. It is now **enumerate**: list every negative sentence
+with its line and its query, the bound ones too. Completeness becomes a number the reviewer
+counts. Same move as the completeness half above; that is not a coincidence.
+
+## Offene Fährten — 2026-09-08, tenth run
+
+- **Lanes: five**, all file-disjoint. Build: 0158 (architekt/`technik.md`), 0240
+  (kernbauer/`schritt.cpp`+`schritt_probe.cpp`), 0241 (datenbauer/`quellenbefund`+`reihen.toml`,
+  Ruecklauf 1), 0245 (kernbauer/`schritt.hpp`, **sperre lifted the same run it was proposed**).
+  Check: 0246 (bruchtester/`befunde/beschraenktheit/`).
+- **No review lane tonight** — I cleared all four `gebaut` (0196, 0233, 0242 → `fertig`; 0241 →
+  `offen`). This alternates by construction and is not a stall.
+- **0158 wins the `technik.md` night by dependency *and* by sort, checked not assumed.**
+  Startable there are exactly three — 0158 (0154 and 0196 both through), 0230, 0236 — and
+  `sorted()` puts 0158 first. **Nine hang behind it in one chain**: 0149, 0064, 0068, 0074,
+  0084, 0092, 0181, 0226 and then 0230/0236 by file. Every night without 0158 is a night
+  without the nine. Same shape as 0196 last night; this is what one file per night does.
+- **0244 is deliberately held behind 0240** — hard file conflict on `schritt_probe.cpp`, not a
+  content one. Contrast 0245, released for the opposite reason. Both decisions in one run;
+  the difference is files versus altitude.
+- **Check first next run:** (a) 0241 — does the *enumeration* appear, and does it list bound
+  sentences too? An enumeration of only the corrected ones is the old sweep with a new name.
+  (b) 0245 — did 0240 in fact leave `:687` aborting, and does the header name a module rather
+  than a line? (c) 0246 must not put a new number beside `1 von 310`; 0243's `5 von 310` is a
+  **prediction** and belongs to 0243.
+- **Three dormant defects written down and deliberately unpackaged**, each in the package that
+  will wake it: `werte::schaden` → `schuld` for CN/BR (0237's `vermerk_abnahme`); 0240's clamp;
+  and new tonight — `werte.cpp:718-720` says „zwoelf Adressen ... 31 Zeichen ... hoechstens 323"
+  where the Restwelt makes it **fifteen addresses, 32 characters, 324** (`zustandsausgabe.cpp:169`
+  reads `bip` for every Gebiet every round). Not blocking, 324 < 511. It is in 0242's
+  `vermerk_offener_rest` for whoever next owns `werte.cpp` — **no open package does.**
+- **`ops/plan.md` is six runs stale**, and its Vorrang list is discharged for the **fourth** run
+  running — all five entries (0224, 0225, 0189, 0208-schritt, 0165, 0172-weltpreis) closed. New
+  today: „Die eine Zahl — **1 von 310**" rests on `befunde/beschraenktheit/`, whose stand does
+  not run any more for three independent reasons. That is what 0246 writes down. Not mine to edit.
+- **Blocked, six, unchanged:** 0127, 0208-baulauf, 0194 (all `agents/baulauf.py`), 0003 (ADR),
+  0234 (my criterion, successor 0241), 0157 (no execution tool, successor 0243).
 - Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` still corrupt every `^status:`
-  count — **fourteenth run in a row.** Subtract 2 from every `gebaut` count.
-- **`high` was enough, twenty-third run.** The one decision that needed care was 0234's
-  third Ruecklauf, and it turned on a fact I could look up (`RUECKLAUF_MAX`, and that the
-  count comes from the befunde) plus a test I could state in one line (is the new package
-  the same wording under a new number?). Reading `agents/rollen/bruchtester.md:7-14` — six
-  lines — is what found the night's real defect.
+  count — **fifteenth run in a row.** Subtract 2 from every `gebaut` count.
+- **`high` was enough, twenty-fourth run.** Both real decisions turned on things I could look
+  up rather than think through: `werkzeuge/mutation/CMakeLists.txt:67` for 0244, and the two
+  call paths in `schritt.cpp` for 0245. **Reading a role file and a CMake comment is what
+  bought the lane and killed the bad criterion** — the same as last run.
 

@@ -1,8 +1,10 @@
 ---
 id: 0242-die-nennerbedingung-schuetzt-ihren-boden-und-nicht-ihre-decke
 rolle: kernbauer
-status: gebaut
+status: fertig
 haengt_an: []
+vermerk_fertig: "FERTIG, 2026-09-08 (tenth run), project manager, on `befunde/pruefung-0242-die-nennerbedingung-schuetzt-ihren-boden-und-nicht-ihre-decke-2026-09-08.md`, `urteil: geprueft`, 1 non-blocking finding. All three conditions re-derived from the sources: the message recounted by hand (319 characters, under `MELDUNG_ZEICHEN_MAX` 511, nothing truncated); **the hard limit holds** -- the guard `gesamt > I64_MAX || gesamt < I64_MIN` on `i128` is the same predicate as `__builtin_add_overflow` at all four edges, so the set of aborting states did not move; and the barrier demonstrably fired: `nennerdecke_angekommen` is incremented only inside the two abort blocks and `probe_nennerdecke_vollzaehlig` demands exactly 2. That is the completeness half I had written in here out of 0237."
+vermerk_offener_rest: "NOT REPAIRED, DELIBERATELY -- for the next package that owns `kern/src/werte.cpp`. Finding 1 of the review: the comment at `werte.cpp:718-720` says `Die zwoelf Adressen dieser Summe tragen alle dieselbe Textform von 31 Zeichen` and derives `hoechstens 323` from it. `bip` takes a `Gebiet`, not a country; `gebiet_basis` (`zustand.hpp:771-778`) accepts all five, and `zustandsausgabe.cpp:169` calls `werte::bip(z, gebiet)` for every number on the overview sheet -- so the Restwelt is a live caller every round. Its addresses are `restwelt.sektor.<s>.wertschoepfung`: **32** characters, Nr. 177/181/185, three digits. That makes **fifteen** addresses and a bound of **324**. Non-blocking (324 < 511, 187 characters of margin), but it is a number written down as counted that was not counted -- in the one comment the next agent reads instead of counting for himself. Too small for a run of its own; `0244` does not touch `werte.cpp`."
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/werte_probe.cpp]
 abnahme: The three conditions under Acceptance. Condition 2 is the hard limit and the reason this package is cheap — you improve the message, not the arithmetic.
 ---

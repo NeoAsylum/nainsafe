@@ -32,30 +32,49 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  9%] Built target pruefstand
-[  9%] Built target pruefstand_geprueft
-[ 10%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
-[ 15%] Built target bezeichner_riegel
-[ 16%] Built target zahlwort_riegel
-[ 33%] Built target kern_geprueft
-[ 39%] Built target mutationstreiber
-[ 53%] Built target kern
-[ 56%] Built target vorrat_verfahren_probe
-[ 59%] Built target vorrat_probe
-[ 62%] Built target aktion_probe
-[ 65%] Built target vorrat_kernanker_probe
-[ 68%] Built target schranken_probe
-[ 71%] Built target pruefsumme_probe
-[ 74%] Built target schritt_probe
-[ 77%] Built target festkomma_probe
-[ 80%] Built target meldung_probe
-[ 81%] Building CXX object kern/CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
-[ 84%] Built target zufall_probe
-[ 87%] Built target schreiber_probe
-[ 90%] Built target werte_probe
-[ 93%] Built target zustand_probe
-[ 96%] Built target zustandsausgabe_probe
+[ 10%] Built target pruefstand_geprueft
+[ 10%] Built target bezeichner_riegel
+[ 12%] Built target pruefstand
+[ 15%] Built target mutationstreiber
+[ 16%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
+[ 19%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[ 19%] Building CXX object kern/CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
+[ 21%] Building CXX object kern/CMakeFiles/kern.dir/src/schritt.cpp.o
+[ 22%] Building CXX object kern/CMakeFiles/kern.dir/src/werte.cpp.o
+[ 25%] Built target zahlwort_riegel
+[ 28%] Built target vorrat_verfahren_probe
+[ 31%] Built target vorrat_probe
+[ 34%] Built target vorrat_kernanker_probe
+[ 36%] Linking CXX static library libkern.a
+[ 37%] Linking CXX static library libkern_geprueft.a
+[ 50%] Built target kern
+[ 62%] Built target kern_geprueft
+[ 63%] Linking CXX executable aktion_probe
+[ 65%] Linking CXX executable meldung_probe
+[ 66%] Linking CXX executable festkomma_probe
+[ 68%] Linking CXX executable pruefsumme_probe
+[ 69%] Building CXX object kern/CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+[ 71%] Linking CXX executable schranken_probe
+[ 72%] Building CXX object kern/CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
+[ 74%] Building CXX object kern/CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+[ 75%] Linking CXX executable zustand_probe
+[ 77%] Linking CXX executable schreiber_probe
+[ 78%] Linking CXX executable zufall_probe
+[ 80%] Linking CXX executable zustandsausgabe_probe
+[ 81%] Built target schranken_probe
+[ 83%] Built target zufall_probe
+[ 84%] Built target zustand_probe
+[ 86%] Built target schreiber_probe
+[ 89%] Built target aktion_probe
+[ 89%] Built target meldung_probe
+[ 90%] Built target pruefsumme_probe
+[ 92%] Built target festkomma_probe
+[ 93%] Built target zustandsausgabe_probe
+[ 95%] Linking CXX executable werte_probe
+[ 95%] Built target werte_probe
+[ 96%] Linking CXX executable schritt_probe
 [ 98%] Linking CXX executable verlauf_probe
+[ 98%] Built target schritt_probe
 [ 98%] Built target verlauf_probe
 [100%] Linking CXX executable belegstellen_riegel
 [100%] Built target belegstellen_riegel
@@ -78,7 +97,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  6: schreiber_probe
  6/26 Test  #6: schreiber_probe ..................   Passed    0.01 sec
       Start  7: schritt_probe
- 7/26 Test  #7: schritt_probe ....................   Passed    0.02 sec
+ 7/26 Test  #7: schritt_probe ....................   Passed    0.01 sec
       Start  8: verlauf_probe
  8/26 Test  #8: verlauf_probe ....................   Passed    0.02 sec
       Start  9: werte_probe
@@ -90,7 +109,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 12: zustandsausgabe_probe
 12/26 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 13: wandschranke
-13/26 Test #13: wandschranke .....................   Passed    0.43 sec
+13/26 Test #13: wandschranke .....................   Passed    0.44 sec
       Start 14: vorrat_kernanker_probe
 14/26 Test #14: vorrat_kernanker_probe ...........   Passed    0.01 sec
       Start 15: vorrat_probe
@@ -98,29 +117,29 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 16: vorrat_verfahren_probe
 16/26 Test #16: vorrat_verfahren_probe ...........   Passed    0.01 sec
       Start 17: belegstellen_riegel
-17/26 Test #17: belegstellen_riegel ..............   Passed    1.08 sec
+17/26 Test #17: belegstellen_riegel ..............   Passed    1.09 sec
       Start 18: belegstellen_messung
-18/26 Test #18: belegstellen_messung .............   Passed   31.04 sec
+18/26 Test #18: belegstellen_messung .............   Passed   31.08 sec
       Start 19: belegstellen_wortabstand
-19/26 Test #19: belegstellen_wortabstand .........   Passed   17.26 sec
+19/26 Test #19: belegstellen_wortabstand .........   Passed   17.21 sec
       Start 20: belegstellen_sammelordnung
-20/26 Test #20: belegstellen_sammelordnung .......   Passed    5.71 sec
+20/26 Test #20: belegstellen_sammelordnung .......   Passed    5.68 sec
       Start 21: belegstellen_kopfzahlen
-21/26 Test #21: belegstellen_kopfzahlen ..........   Passed   16.43 sec
+21/26 Test #21: belegstellen_kopfzahlen ..........   Passed   15.92 sec
       Start 22: bezeichner_riegel
 22/26 Test #22: bezeichner_riegel ................   Passed    0.40 sec
       Start 23: schlussriegel_nachbau
-23/26 Test #23: schlussriegel_nachbau ............   Passed    0.50 sec
+23/26 Test #23: schlussriegel_nachbau ............   Passed    0.51 sec
       Start 24: zahlwort_riegel
 24/26 Test #24: zahlwort_riegel ..................   Passed    0.04 sec
       Start 25: zahlwort_reihen
 25/26 Test #25: zahlwort_reihen ..................   Passed    0.13 sec
       Start 26: zahlwort_messung
-26/26 Test #26: zahlwort_messung .................   Passed   18.52 sec
+26/26 Test #26: zahlwort_messung .................   Passed   18.46 sec
 
 100% tests passed, 0 tests failed out of 26
 
-Total Test time (real) =  91.82 sec
+Total Test time (real) =  91.22 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -137,22 +156,41 @@ Total Test time (real) =  91.82 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
+[  4%] Building CXX object CMakeFiles/kern.dir/src/schritt.cpp.o
+[  4%] Building CXX object CMakeFiles/kern_geprueft.dir/src/schritt.cpp.o
+[  6%] Building CXX object CMakeFiles/kern_geprueft.dir/src/werte.cpp.o
+[  8%] Building CXX object CMakeFiles/kern.dir/src/werte.cpp.o
+[ 10%] Linking CXX static library libkern.a
+[ 28%] Built target kern
+[ 30%] Linking CXX static library libkern_geprueft.a
 [ 47%] Built target kern_geprueft
-[ 47%] Built target kern
-[ 52%] Built target pruefsumme_probe
-[ 56%] Built target meldung_probe
-[ 65%] Built target aktion_probe
-[ 65%] Built target schreiber_probe
-[ 69%] Built target schranken_probe
-[ 73%] Built target festkomma_probe
-[ 76%] Building CXX object CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
-[ 80%] Built target schritt_probe
-[ 89%] Built target zufall_probe
-[ 89%] Built target werte_probe
+[ 50%] Linking CXX executable meldung_probe
+[ 54%] Building CXX object CMakeFiles/schritt_probe.dir/test/schritt_probe.cpp.o
+[ 54%] Building CXX object CMakeFiles/werte_probe.dir/test/werte_probe.cpp.o
+[ 56%] Linking CXX executable zufall_probe
+[ 58%] Linking CXX executable pruefsumme_probe
+[ 60%] Linking CXX executable aktion_probe
+[ 65%] Linking CXX executable festkomma_probe
+[ 65%] Linking CXX executable schranken_probe
+[ 69%] Linking CXX executable zustandsausgabe_probe
+[ 69%] Linking CXX executable schreiber_probe
+[ 71%] Building CXX object CMakeFiles/verlauf_probe.dir/test/verlauf_probe.cpp.o
+[ 73%] Linking CXX executable zustand_probe
+[ 76%] Built target schreiber_probe
+[ 78%] Built target meldung_probe
+[ 80%] Built target schranken_probe
+[ 84%] Built target festkomma_probe
+[ 84%] Built target aktion_probe
+[ 86%] Built target zufall_probe
+[ 89%] Built target pruefsumme_probe
+[ 91%] Built target zustand_probe
 [ 93%] Built target zustandsausgabe_probe
-[ 97%] Built target zustand_probe
+[ 95%] Linking CXX executable werte_probe
+[ 95%] Built target werte_probe
+[ 97%] Linking CXX executable schritt_probe
 [100%] Linking CXX executable verlauf_probe
 [100%] Built target verlauf_probe
+[100%] Built target schritt_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -172,7 +210,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  6: schreiber_probe
  6/13 Test  #6: schreiber_probe ..................   Passed    0.01 sec
       Start  7: schritt_probe
- 7/13 Test  #7: schritt_probe ....................   Passed    0.02 sec
+ 7/13 Test  #7: schritt_probe ....................   Passed    0.01 sec
       Start  8: verlauf_probe
  8/13 Test  #8: verlauf_probe ....................   Passed    0.02 sec
       Start  9: werte_probe
@@ -180,7 +218,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 10: zufall_probe
 10/13 Test #10: zufall_probe .....................   Passed    0.01 sec
       Start 11: zustand_probe
-11/13 Test #11: zustand_probe ....................   Passed    0.02 sec
+11/13 Test #11: zustand_probe ....................   Passed    0.01 sec
       Start 12: zustandsausgabe_probe
 12/13 Test #12: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 13: wandschranke
@@ -188,7 +226,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 13
 
-Total Test time (real) =   0.66 sec
+Total Test time (real) =   0.65 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -204,8 +242,8 @@ Total Test time (real) =   0.66 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand_geprueft
 [ 50%] Built target pruefstand
+[ 50%] Built target pruefstand_geprueft
 [ 83%] Built target vorrat_kernanker_probe
 [ 83%] Built target vorrat_probe
 [100%] Built target vorrat_verfahren_probe
@@ -250,15 +288,15 @@ Total Test time (real) =   0.03 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
     Start 1: belegstellen_riegel
-1/5 Test #1: belegstellen_riegel ..............   Passed    1.06 sec
+1/5 Test #1: belegstellen_riegel ..............   Passed    1.05 sec
     Start 2: belegstellen_messung
-2/5 Test #2: belegstellen_messung .............   Passed   30.95 sec
+2/5 Test #2: belegstellen_messung .............   Passed   31.04 sec
     Start 3: belegstellen_wortabstand
-3/5 Test #3: belegstellen_wortabstand .........   Passed   17.39 sec
+3/5 Test #3: belegstellen_wortabstand .........   Passed   17.35 sec
     Start 4: belegstellen_sammelordnung
-4/5 Test #4: belegstellen_sammelordnung .......   Passed    5.80 sec
+4/5 Test #4: belegstellen_sammelordnung .......   Passed    5.71 sec
     Start 5: belegstellen_kopfzahlen
-5/5 Test #5: belegstellen_kopfzahlen ..........   Passed   15.92 sec
+5/5 Test #5: belegstellen_kopfzahlen ..........   Passed   15.96 sec
 
 100% tests passed, 0 tests failed out of 5
 
@@ -363,13 +401,13 @@ Total Test time (real) =   0.50 sec
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/zahlwort/bau
     Start 1: zahlwort_riegel
-1/3 Test #1: zahlwort_riegel ..................   Passed    0.04 sec
+1/3 Test #1: zahlwort_riegel ..................   Passed    0.05 sec
     Start 2: zahlwort_reihen
 2/3 Test #2: zahlwort_reihen ..................   Passed    0.13 sec
     Start 3: zahlwort_messung
-3/3 Test #3: zahlwort_messung .................   Passed   18.58 sec
+3/3 Test #3: zahlwort_messung .................   Passed   18.50 sec
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =  18.76 sec
+Total Test time (real) =  18.68 sec
 ```
