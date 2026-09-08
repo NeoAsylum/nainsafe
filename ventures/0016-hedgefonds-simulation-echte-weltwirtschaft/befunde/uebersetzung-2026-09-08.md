@@ -32,28 +32,28 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  1%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
-[  5%] Built target pruefstand_geprueft
+[  4%] Built target pruefstand
+[  7%] Built target bezeichner_riegel
+[  8%] Building CXX object werkzeuge/kennzeichen/CMakeFiles/kennzeichen_riegel.dir/kennzeichen_riegel.cpp.o
 [ 11%] Built target mutationstreiber
-[ 12%] Built target pruefstand
-[ 20%] Built target zahlwort_riegel
-[ 28%] Building CXX object werkzeuge/kennzeichen/CMakeFiles/kennzeichen_riegel.dir/kennzeichen_riegel.cpp.o
-[ 30%] Built target bezeichner_riegel
-[ 35%] Built target kern_geprueft
+[ 15%] Built target pruefstand_geprueft
+[ 18%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
+[ 32%] Built target kern_geprueft
+[ 35%] Built target zahlwort_riegel
 [ 51%] Built target kern
 [ 52%] Building CXX object kern/CMakeFiles/kennzeichen_probe.dir/test/kennzeichen_probe.cpp.o
-[ 55%] Built target vorrat_kernanker_probe
-[ 58%] Built target vorrat_verfahren_probe
+[ 55%] Built target vorrat_probe
+[ 58%] Built target vorrat_kernanker_probe
 [ 61%] Built target festkomma_probe
-[ 64%] Built target vorrat_probe
-[ 67%] Built target meldung_probe
-[ 70%] Built target pruefsumme_probe
-[ 75%] Built target schranken_probe
-[ 74%] Built target aktion_probe
+[ 68%] Built target meldung_probe
+[ 68%] Built target aktion_probe
+[ 70%] Built target vorrat_verfahren_probe
+[ 72%] Built target schranken_probe
+[ 78%] Built target schreiber_probe
 [ 78%] Built target verlauf_probe
 [ 81%] Built target schritt_probe
-[ 84%] Built target schreiber_probe
-[ 87%] Built target werte_probe
+[ 84%] Built target pruefsumme_probe
+[ 90%] Built target werte_probe
 [ 90%] Built target zufall_probe
 [ 92%] Built target zustand_probe
 [ 95%] Built target zustandsausgabe_probe
@@ -99,13 +99,13 @@ OK  die Schwelle fuenf faengt sie -- eine uebergangene Fundstelle mehr
 Messstand 0166: 3 Abweichung(en).
 
       Start 21: belegstellen_sammelordnung
-21/28 Test #21: belegstellen_sammelordnung .......   Passed    5.71 sec
+21/28 Test #21: belegstellen_sammelordnung .......   Passed    5.74 sec
       Start 22: belegstellen_kopfzahlen
-22/28 Test #22: belegstellen_kopfzahlen ..........***Failed   16.02 sec
+22/28 Test #22: belegstellen_kopfzahlen ..........***Failed   16.01 sec
 Vorfassung: gefehlt und ist geholt worden -- Blob ee8d0283558d485f3b3482f025ad18769bf414a5 aus dbcd637:ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp
 Vorhaben:    /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
 Uebersetzer: /usr/bin/c++
-Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: 702cf37
+Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: 7ec1e63
 A  vorher : Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
 A  nachher: Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
 B1 ohne-marken-rein: Code 1, 61 Zitate, 50 aufgeloest, 59 uebergangen; 11 Stellen zu Unrecht, davon 10 im eigenen Quelltext {'Kopf': 2, 'SATZFAELLE': 1, 'ZITATFAELLE': 7}
@@ -136,27 +136,27 @@ B2 rechts-ohne-satzgrenze-rein (scharf): Code 2, 1 Meldung(en)
 B3 NAMENSFAELLE: 8 Faelle, historisch ausgewiesen ist Nummer [7]; der Kopf nennt erste
   FEHLSCHLAG: Der Kopf nennt den erste Fall, historisch ausgewiesen ist der 7.
 G  Gegenprobe an der verstellten Angabe -- Angabe 1: 5 Meldung(en), Angabe 2: 2 Meldung(en), Angabe 3: 1 Meldung(en)
-HEAD am Ende: 702cf37
-Hinweis: HEAD steht auf 702cf37, gemessen und niedergeschrieben ist der Stand 2f2f79f. Die Zahlen sind damit aelter als der Baum.
+HEAD am Ende: 7ec1e63
+Hinweis: HEAD steht auf 7ec1e63, gemessen und niedergeschrieben ist der Stand 2f2f79f. Die Zahlen sind damit aelter als der Baum.
 
 8 Erwartung(en) nicht erfuellt.
 
       Start 23: bezeichner_riegel
 23/28 Test #23: bezeichner_riegel ................   Passed    0.44 sec
       Start 24: schlussriegel_nachbau
-24/28 Test #24: schlussriegel_nachbau ............   Passed    0.51 sec
+24/28 Test #24: schlussriegel_nachbau ............   Passed    0.52 sec
       Start 25: zahlwort_riegel
 25/28 Test #25: zahlwort_riegel ..................   Passed    0.05 sec
       Start 26: zahlwort_reihen
-26/28 Test #26: zahlwort_reihen ..................   Passed    0.13 sec
+26/28 Test #26: zahlwort_reihen ..................   Passed    0.14 sec
       Start 27: zahlwort_messung
-27/28 Test #27: zahlwort_messung .................   Passed   18.56 sec
+27/28 Test #27: zahlwort_messung .................   Passed   18.49 sec
       Start 28: kennzeichen_riegel
 28/28 Test #28: kennzeichen_riegel ...............   Passed    0.12 sec
 
 93% tests passed, 2 tests failed out of 28
 
-Total Test time (real) =  91.86 sec
+Total Test time (real) =  92.00 sec
 
 The following tests FAILED:
 	 20 - belegstellen_wortabstand (Failed)
@@ -178,21 +178,21 @@ Errors while running CTest
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 43%] Built target kern
 [ 45%] Built target kern_geprueft
-[ 47%] Building CXX object CMakeFiles/kennzeichen_probe.dir/test/kennzeichen_probe.cpp.o
-[ 56%] Built target schranken_probe
-[ 56%] Built target pruefsumme_probe
-[ 60%] Built target aktion_probe
+[ 45%] Built target kern
+[ 50%] Built target aktion_probe
+[ 54%] Built target schranken_probe
+[ 56%] Building CXX object CMakeFiles/kennzeichen_probe.dir/test/kennzeichen_probe.cpp.o
+[ 64%] Built target meldung_probe
+[ 64%] Built target schritt_probe
 [ 68%] Built target festkomma_probe
-[ 68%] Built target werte_probe
-[ 72%] Built target zufall_probe
-[ 77%] Built target meldung_probe
+[ 77%] Built target pruefsumme_probe
+[ 75%] Built target verlauf_probe
+[ 81%] Built target zufall_probe
 [ 85%] Built target schreiber_probe
-[ 85%] Built target verlauf_probe
-[ 89%] Built target schritt_probe
-[ 93%] Built target zustandsausgabe_probe
-[ 97%] Built target zustand_probe
+[ 89%] Built target zustand_probe
+[ 97%] Built target werte_probe
+[ 97%] Built target zustandsausgabe_probe
 [100%] Linking CXX executable kennzeichen_probe
 [100%] Built target kennzeichen_probe
 ```
@@ -206,7 +206,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start  2: festkomma_probe
  2/14 Test  #2: festkomma_probe ..................   Passed    0.01 sec
       Start  3: kennzeichen_probe
- 3/14 Test  #3: kennzeichen_probe ................   Passed    0.01 sec
+ 3/14 Test  #3: kennzeichen_probe ................   Passed    0.02 sec
       Start  4: meldung_probe
  4/14 Test  #4: meldung_probe ....................   Passed    0.01 sec
       Start  5: pruefsumme_probe
@@ -228,11 +228,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 13: zustandsausgabe_probe
 13/14 Test #13: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 14: wandschranke
-14/14 Test #14: wandschranke .....................   Passed    0.42 sec
+14/14 Test #14: wandschranke .....................   Passed    0.43 sec
 
 100% tests passed, 0 tests failed out of 14
 
-Total Test time (real) =   0.68 sec
+Total Test time (real) =   0.69 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -248,11 +248,11 @@ Total Test time (real) =   0.68 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Built target pruefstand
 [ 50%] Built target pruefstand_geprueft
+[ 50%] Built target pruefstand
+[ 83%] Built target vorrat_probe
+[ 83%] Built target vorrat_kernanker_probe
 [100%] Built target vorrat_verfahren_probe
-[100%] Built target vorrat_kernanker_probe
-[100%] Built target vorrat_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -268,7 +268,7 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =   0.04 sec
+Total Test time (real) =   0.03 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -335,13 +335,13 @@ OK  die Schwelle fuenf faengt sie -- eine uebergangene Fundstelle mehr
 Messstand 0166: 3 Abweichung(en).
 
     Start 4: belegstellen_sammelordnung
-4/5 Test #4: belegstellen_sammelordnung .......   Passed    5.73 sec
+4/5 Test #4: belegstellen_sammelordnung .......   Passed    5.76 sec
     Start 5: belegstellen_kopfzahlen
-5/5 Test #5: belegstellen_kopfzahlen ..........***Failed   16.02 sec
+5/5 Test #5: belegstellen_kopfzahlen ..........***Failed   16.08 sec
 Vorfassung: gefehlt und ist geholt worden -- Blob ee8d0283558d485f3b3482f025ad18769bf414a5 aus dbcd637:ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp
 Vorhaben:    /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
 Uebersetzer: /usr/bin/c++
-Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: 702cf37
+Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: 7ec1e63
 A  vorher : Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
 A  nachher: Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
 B1 ohne-marken-rein: Code 1, 61 Zitate, 50 aufgeloest, 59 uebergangen; 11 Stellen zu Unrecht, davon 10 im eigenen Quelltext {'Kopf': 2, 'SATZFAELLE': 1, 'ZITATFAELLE': 7}
@@ -372,15 +372,15 @@ B2 rechts-ohne-satzgrenze-rein (scharf): Code 2, 1 Meldung(en)
 B3 NAMENSFAELLE: 8 Faelle, historisch ausgewiesen ist Nummer [7]; der Kopf nennt erste
   FEHLSCHLAG: Der Kopf nennt den erste Fall, historisch ausgewiesen ist der 7.
 G  Gegenprobe an der verstellten Angabe -- Angabe 1: 5 Meldung(en), Angabe 2: 2 Meldung(en), Angabe 3: 1 Meldung(en)
-HEAD am Ende: 702cf37
-Hinweis: HEAD steht auf 702cf37, gemessen und niedergeschrieben ist der Stand 2f2f79f. Die Zahlen sind damit aelter als der Baum.
+HEAD am Ende: 7ec1e63
+Hinweis: HEAD steht auf 7ec1e63, gemessen und niedergeschrieben ist der Stand 2f2f79f. Die Zahlen sind damit aelter als der Baum.
 
 8 Erwartung(en) nicht erfuellt.
 
 
 60% tests passed, 2 tests failed out of 5
 
-Total Test time (real) =  71.41 sec
+Total Test time (real) =  71.57 sec
 
 The following tests FAILED:
 	  3 - belegstellen_wortabstand (Failed)
@@ -409,11 +409,11 @@ Errors while running CTest
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
     Start 1: bezeichner_riegel
-1/1 Test #1: bezeichner_riegel ................   Passed    0.44 sec
+1/1 Test #1: bezeichner_riegel ................   Passed    0.47 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.44 sec
+Total Test time (real) =   0.47 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -488,11 +488,11 @@ No tests were found!!!
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/bau
     Start 1: schlussriegel_nachbau
-1/1 Test #1: schlussriegel_nachbau ............   Passed    0.51 sec
+1/1 Test #1: schlussriegel_nachbau ............   Passed    0.50 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.51 sec
+Total Test time (real) =   0.50 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -520,9 +520,9 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
     Start 2: zahlwort_reihen
 2/3 Test #2: zahlwort_reihen ..................   Passed    0.13 sec
     Start 3: zahlwort_messung
-3/3 Test #3: zahlwort_messung .................   Passed   18.57 sec
+3/3 Test #3: zahlwort_messung .................   Passed   18.61 sec
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =  18.76 sec
+Total Test time (real) =  18.79 sec
 ```
