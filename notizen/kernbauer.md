@@ -4,6 +4,55 @@ Rotated by the runner on 2026-09-08 at 15370 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- 0263 (a table counted before it is understood)
+
+Delivered in `kennzeichen_riegel.cpp`: `Probenzahl::tabellen` turned from a counter into a
+`std::vector<Tabellenzahl>` (line + entry count per table), `leere_tabellen` beside
+`stumme_proben`, the abort in `main` between the stumm block and the three zero-checks,
+three new self-test cases (13 -> 16) and a `leer` column on all sixteen, and the
+present-tense count at `:32-33` deleted. Recounted at HEAD: three tables, each carrying
+exactly one `RiegelOhneZustand::…` entry, so the new set is empty.
+
+- 2026-09-08, **the lesson of the run** -- **A counter incremented before the work is a
+  claim about the work that the work cannot revoke.** `++tabellen` sat above
+  `eintragsgruppen`, so "3 Verzeichnisse" stayed true on a table the program no longer
+  understood. The fix was not another counter but **turning the counter into the rows it
+  was counting**: a `std::vector<Tabellenzahl>` yields `size()` for free and carries the
+  line the message needs, which a counter never could. General form: **when a count is
+  incremented at one point and the thing counted is finished at another, keep the rows, not
+  the number** -- the gap between the two points is exactly where a half-blind state hides.
+- 2026-09-08 -- **The bait pair proves the bar fires; only the two-tables-in-one-probe case
+  proves it fires on the right granularity.** Bait (table without `::`) and its silent twin
+  (the same text plus two characters) are both passed by a *probe*-granular check, which is
+  the wrong implementation this package exists to rule out. The third case -- one probe,
+  one full table and one empty -- is the only one that separates them. **When a package's
+  whole subject is a granularity, at least one case has to hold everything constant except
+  the granularity.**
+- 2026-09-08 -- **Deleting a number is cheaper than tracking it, and the argument survives
+  the deletion.** `:32-33` said "seither gibt es zwei Verzeichnisse statt einem"; the point
+  was *find by name, not by path*, and "seither steht das erste Verzeichnis nicht mehr
+  allein" carries it in past tense with nothing left to rot. I applied the same rule to my
+  own new text: the comment above the three new cases says "Die Faelle des Bodens" and not
+  "Die drei Faelle", so a fourth case costs no edit.
+- 2026-09-08 -- **Line 0 is a usable sentinel here because `zerlege` starts at 1.**
+  Confirmed at the assignment (`std::size_t zl = 1`) before writing a self-test clause that
+  faults a reported empty table carrying `zeile == 0`. Had lines been 0-based, that clause
+  would have failed on every case whose table sits on the first line -- which is all three
+  new ones.
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot compile. The riskiest edit is the sixteen aggregate initialisers of
+  `TABELLENFAELLE`, which all grew a trailing `, 0` -- and `{..., 0, 0}` does not say which
+  zero is which. Second place to look: `Probenzahl::tabellen` changed type, and its three
+  readers (`tabellen_zusammen`, `stumme_proben`, the new `leere_tabellen`) were all touched.
+  **(b)** The `0258`-written passage at `:129-133` described `tabellen` as a number, and my
+  change made those words false. I corrected them (`gleich null` -> `leer`) although that
+  passage is not named in my acceptance; a reviewer holding to the letter will call it an
+  unrequested edit. Leaving a comment my own change falsified seemed worse.
+  **(c)** The two-tables case writes `RIEGEL_OHNE_ZUSTAND = {{ … }}` twice in one probe
+  text, which would not compile as real C++. The tool reads text and never compiles a probe,
+  and no other case shape separates table- from probe-granularity -- but it is a text no
+  probe in the tree could ever be.
+
 ## 2026-09-08 -- 0258 (a floor that is a cross-check, not a number)
 
 Delivered in `kennzeichen_riegel.cpp`: `finde_woerter` split out of `finde_zuweisungen`,
