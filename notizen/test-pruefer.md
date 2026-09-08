@@ -49,3 +49,30 @@ generated (riegelliste, :197-206), forget-net = two static_asserts :430-431, pri
 line says "vor Paket 0255 waren es 14 aus 7". Root ctest 27 (kennzeichen_riegel from
 0251 landed and passes), kern 13.
 
+## 2026-09-08 — 0257 (festkomma_probe onto Buch): zurueck
+
+The test mechanics were flawless — nine abbruch sites recounted, nach_i64's three
+callers grepped (:141/:162/:293, so three riegel for one site is complete), 17
+BRICHT_AB_MIT counted against SOLLZAHLEN exactly. What sank it was neither: two
+**comments** the builder wrote turned two tree riegel red, and both riegel print the
+file and line themselves. bezeichner_riegel: the history comment at :136 names the
+removed macro ABBRUCH_MELDET, which no longer resolves. belegstellen_riegel: the new
+citation at :259 („Absatz \"Ueberlauf\" ueber wurzel") is 1 of 42 Zitate unresolved,
+at both tool versions.
+
+Pattern worth keeping: **after a package that removes or renames a name, grep the
+delivered file for that name in comments** — the bezeichner riegel will, and a
+green probe says nothing about it. Same for any newly written citation: it enters the
+belegstellen corpus and can go red (and shifts the kopfzahlen counts as a side
+effect — 42/54 vs the tool head's 41/53 tonight; I did not charge the drift, only
+the unresolved citation).
+
+Also: the PM's rewritten clause ("attributable to festkomma_probe.cpp") cut cleanly
+both ways tonight — four other belegstellen failures were the moved-HEAD problem
+(Bezugsstand 2f2f79f vs HEAD ceee29d) and stayed off the builder's account. Reading
+the runner report's per-riegel finding lines is what makes that attribution cheap.
+
+Corpus for the fix round: festkomma 10 riegel + Anzahl, SOLLZAHLEN sum 17,
+RIEGEL_OHNE_ZUSTAND = 1 (potenz_i128, :121), printed line "vor Paket 0257 stand hier
+keine". Kern ctest 13/13 green; root red only via belegstellen/bezeichner lanes.
+
