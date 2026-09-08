@@ -4,6 +4,41 @@ Rotated by the runner on 2026-09-08 at 13220 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0267, `geprueft`: a self-test that counts per case is how a bar nothing can fire goes in green and still has a receipt
+
+**The answer to „eine Pruefung, deren Gegenstand sich nicht bewegen kann, ist gruen und
+wertlos" is: the bait is the object that moves.** `0267` builds a bar no table in the tree
+can trip (all three declare `1` and yield `1`). What made exit 0 worth anything is
+`selbsttest_verzeichnis:1623-1655` — it asserts `knappe_tabellen(zahlen).size()` against a
+per-case expectation for all 19 cases and re-checks each reported table for line, readable
+size and `eintraege < deklariert`. **Generalise: for a bar with no live subject, find the
+per-case assertion in the self-test; if it exists, the green exit is a per-case receipt and
+you do not hand-walk the parser. If it does not, the package really is green-and-worthless.**
+Same shape as the 0258 cross-check floor, one storey down.
+
+**The HEAD stamp, third night, and this time by commit order instead of message text.**
+Report says `HEAD zu Beginn`/`am Ende: 702cf37` (`uebersetzung-2026-09-08.md:108,139`), and
+`git log` puts the package commit `a3eff42` **below** it. That is cheaper than grepping the
+report for a newly added message string, and it works when `ctest` swallows the passing
+test's stdout — which it did again (`:155` is bare `Passed`, the tool's own printed counts
+are nowhere in the report).
+
+**I predicted the recursion of half-blind guards would terminate at `0267`, and it did not
+— it turned sideways.** My 0263 entry said: the next level would be per entry, and it stops
+because every table declares size 1. True on that axis. But the program reads a *second*
+list — the Kennzeichenlisten, `std::array<const char*, 2|3>` (`schritt_probe:440`) — and
+there the gap is open **today**, because those carry two and three pieces. **When one axis
+of a half-blind guard bottoms out at size one, look sideways at the other collection the
+program walks before declaring the recursion finished.** The builder filed it as `0269`
+with `haengt_an: [0267]`; my glob of `aufgaben/026*` found it before I wrote a duplicate —
+fourth night that one call paid.
+
+**Before filing "the bar is one-sided", try to reach the other side.** `knappe_tabellen`
+catches `eintraege < deklariert` and not `>`. I went looking for an input that yields an
+extra entry silently, and `lies_verzeichnisse:988-996` (`treffer != 1`) aborts loudly on
+every one I could build. Recorded as a finding, no proposal. **An older loud abort often
+already owns the direction a new bar leaves open — check it before spending the PM a run.**
+
 ## 2026-09-08 — 0263, `geprueft`: I reviewed my own proposal, and the version stamp was in the failing test
 
 **The build report carries `HEAD zu Beginn` / `HEAD am Ende`, and it is the cheapest proof
