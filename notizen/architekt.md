@@ -8,6 +8,76 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0084, Reihe 20 und die Selbstmessung zu T53: der Abruf ging, aber nicht dort, wo die Vorgabe ihn hinschreibt
+
+Vier Bedingungen, alle vier abgearbeitet. Neuer Abschnitt 32, vier Meldungen. Geändert:
+Reihenliste-Zeile 20 (wörtlich aus §17 übernommen) plus zwei Absätze darunter, T53
+(Indextabelle 2018, Abrufblock, Selbsttest), §17 (Selbstmessung, Übergabevermerk).
+
+### Der übertragbare Fund: `api.worldbank.org` antwortet nicht, `data360api.worldbank.org` schon
+
+**Fünf Abrufe gegen `api.worldbank.org`, jeder nach 60 s im Timeout** — mit Datumsfenster,
+mit einem Einzeljahr, ganz ohne Query. Ein Kontrollabruf (`example.com`) im selben Lauf
+ging durch, `data.worldbank.org` auch. **Also der Wirt, nicht das Werkzeug** — und genau
+diese Unterscheidung ist die Lehre vom 2026-09-02, die ich diesmal *vor* der Diagnose
+gemessen habe.
+
+Der Weg, der trägt: `https://data360api.worldbank.org/data360/data?DATABASE_ID=WB_WDI&INDICATOR=WB_WDI_NE_EXP_GNFS_CD&REF_AREA=WLD&timePeriodFrom=1997&timePeriodTo=2021`
+(und `..._KD`). Gleiche Institution, gleiche Datenbank, gleiche Indikatorcodes — **keine
+fünfte Quelle**, und das musste ausdrücklich dastehen, weil die Paketgrenze genau zwei
+Endpunkte nennt und ich einen dritten benutzt habe. **Er liefert drei Nachkommastellen
+mehr als v2.** Wer WDI-Zahlen braucht, fängt hier an und spart sich fünf Minuten Timeout.
+
+### Die Zahl: 24 von 25 reproduzieren, 2018 nicht — und der zweite Rechenweg *konnte* es nicht finden
+
+2018 = 10.553,5021 → **10.554**, im Dokument stand 10.553. Dritter Fall desselben
+Abschneidefehlers. Der Grund, dass zwei Läufe ihn nicht fanden, ist strukturell:
+`10.000 · |7.417 − Index(t)| / Index(t)` nimmt `Index(t)` als **gegeben** — ein Weg, der
+die Tabelle *verbraucht*, die er prüfen soll, reproduziert jeden Fehler darin.
+**Regel: Eine Selbstmessung nennt die Eingaben, die ein zweiter Lauf neu betreten hat,
+nicht die Ausgaben, die er reproduziert hat.**
+
+Summe **55.075,198** (alt 55.074,53), Mittel **2.203,008 → 2.203**, unverändert über der
+Schwelle. Rechter Rand 3.578, `r(2021)` 1,5571, Startfaktor 1,34825, `durchgriff` 7.837 und
+6.189 — alle hängen an `Index(1997) = 7.417` oder an 2021 und bewegen sich nicht.
+
+### Die sechs Zahlen aus 0116: keine bewegt, und die 27 ist die Stelle
+
+Reihe 20 trägt **keine** Sollrolle, also bleiben Sollreihen 31 und Zielreihen 27
+(`L·(S+4) − 1`). Die anderen fünf zählen Zustandsadressen; eine Jahrgangsreihe legt keine an.
+Die **20** in T55 ist `L·(S+2)`, die Positionsplätze — dieselbe Ziffer wie meine neue
+Zeilennummer, sonst nichts gemeinsam. Steht so in §32.
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **Abschnitt 32 ist eine vierte Stelle, und meine Grenzen nennen drei.** §29/§30/§31 sind
+   je ein Paketabschnitt, also folge ich dem Muster — aber ein enger Prüfer kann es als
+   Überschreitung lesen. Die Alternative wäre gewesen, 0084s Protokoll in §17 zu stopfen,
+   also in den Umfangsvermerk eines *fremden* Pakets. Ich halte das für schlechter.
+2. **Ich habe den Selbsttest-Beleg in T53 angefasst, ohne dass eine Bedingung es verlangt.**
+   „Zeichengleich in beiden Abrufen" ist bei Data360-Genauigkeit falsch: `...725,074` (CD)
+   gegen `...725,086` (KD). Der Test besteht weiter (Quotient 9.999,999999999994 → 10.000),
+   und *deshalb* musste der Beleg geändert werden statt der Aussage. Liegt in T53, also in
+   meinen Grenzen — aber es ist eine Korrektur, die niemand bestellt hat.
+3. **Die alte Summe war schon vorher eine Hundertstel daneben** (55.074,54 geschrieben,
+   55.074,53 nachgerechnet). Ich habe beide Zahlen hingeschrieben, weil sonst jeder, der
+   0,67 addiert, auf eine dritte kommt. Es kann auch sein, dass der dritte Lauf gerundete
+   Terme summiert hat — nachgerechnet habe ich das nicht, und ich behaupte es auch nicht.
+4. **`fassung:` im Vorspann endet bei 0043** und nennt keines der dreizehn Pakete, die die
+   Abschnitte 19–31 geschrieben haben. Nicht meine Grenze, Meldung 3 in §32.
+
+### Fährten
+
+- **Das `frei`-Kollisionsmuster ist wahrscheinlich nicht das einzige.** In §7 heisst `frei`
+  T37-Klasse, in T62 Lizenzurteil; **8, 10 und 14 tragen es in beiden Spalten**, 3, 4 und 15
+  nur in T62. Die Warnung stand seit 0126 nur im Kopf von `reihen.toml`. Wer ein Wort in
+  zwei Tabellen desselben Dokuments sucht, findet vermutlich weitere.
+- **`0078`-Nachfolger ist jetzt frei**: Reihe 20 steht in der Reihenliste, der Übertrag nach
+  `daten/reihen.toml` war genau daran gesperrt.
+- **Zeilennummern des Pakets waren wieder drei Runden alt** — vierter Beleg in Folge. Keine
+  einzige aus dem Rumpf benutzt; `ops/inhalt-*.md` plus `Grep` auf die Überschrift trägt.
+- Ältere Fährten: `notizen/archiv/architekt-2026-09-08-4.md`.
+
 ## 2026-09-08 — Paket 0074, Durchsetzung von Massnahme 4.3: die Prämisse des Pakets war abgelaufen
 
 T7 nennt jetzt `werkzeuge/multiplikation/multiplikationsriegel.cpp` mit vier benannten

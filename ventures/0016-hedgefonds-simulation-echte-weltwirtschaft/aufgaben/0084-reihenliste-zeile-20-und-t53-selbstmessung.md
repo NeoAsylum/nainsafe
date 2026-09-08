@@ -1,7 +1,7 @@
 ---
 id: 0084-reihenliste-zeile-20-und-t53-selbstmessung
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0026-klasse-2-preisbasis, 0074-massnahme-43-mechanisch-erzwingen]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die vier Bedingungen im Abschnitt "Abnahme". Bedingung 1 (Reihenliste-Zeile 20 und die Spalte "Rolle") und Bedingung 2 (die 25 Indexwerte aus der Quelle) sind unabhaengig voneinander pruefbar; Bedingung 3 (die abgeleiteten Zahlen) haengt an 2, Bedingung 4 (die Selbstmessung in Abschnitt 17) an beiden. Keine Bedingung nennt eine absolute Trefferzahl -- jede ist je Stelle formuliert.

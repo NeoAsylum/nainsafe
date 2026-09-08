@@ -496,7 +496,22 @@ World Bank, their quotient is a USD export price index with basis 2015 = 10,000:
 https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.CD   "Exports of goods and services (current US$)"
 https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.KD   "Exports of goods and services (constant 2015 US$)"
                                                                      beide abgerufen 2026-09-04
+
+https://data360api.worldbank.org/data360/data?DATABASE_ID=WB_WDI&INDICATOR=WB_WDI_NE_EXP_GNFS_CD&REF_AREA=WLD
+https://data360api.worldbank.org/data360/data?DATABASE_ID=WB_WDI&INDICATOR=WB_WDI_NE_EXP_GNFS_KD&REF_AREA=WLD
+                                                                     beide abgerufen 2026-09-08
 ```
+
+**Two addresses for the same two series, and that is not a second source.** Same
+institution, same database (WDI), same two indicator codes, same territory `WLD` — it stays
+**source no. 1 from `daten.md`**, and no case for the data curator. The second pair is
+recorded because the first pair **did not answer on 2026-09-08**: five retrievals against
+`api.worldbank.org` — with the date window, with a single year, and without any query string
+— each ended after the 60-second timeout, while a control retrieval against another host in
+the same run succeeded. The host and not the tooling was the lock. Whoever re-measures these
+numbers starts at the second pair. It returns three decimal places more than the value the
+retrieval of 2026-09-04 recorded, and that matters in exactly one place — the self-test
+below.
 
 | Year | 97 | 98 | 99 | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
@@ -504,7 +519,7 @@ https://api.worldbank.org/v2/country/WLD/indicator/NE.EXP.GNFS.KD   "Exports of 
 
 | Year | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Index | 10,682 | 11,989 | 11,840 | 11,798 | 11,592 | **10,000** | 9,570 | 10,022 | 10,553 | 10,254 | 10,158 | 11,549 |
+| Index | 10,682 | 11,989 | 11,840 | 11,798 | 11,592 | **10,000** | 9,570 | 10,022 | **10,554** | 10,254 | 10,158 | 11,549 |
 
 A model that hits the quantities **error-free** starts on the BACI value of 1997 and runs
 on in real terms; the target series runs with the index. Its error per support point is
@@ -568,8 +583,14 @@ two are two questions to the same row.
 
 **A self-test that costs two lines and carries the whole mapping:**
 `preisindex_handel[2015] = 10.000` **exactly**. It holds not by convention but because the
-two series carry the same value in the base year (21,272,611,247,725.1 —
-character-identical in both retrievals). If it deviates, the two indicator codes do
+two series carry the same value in the base year. **The evidence for that was rewritten on
+2026-09-08, and it made the test sharper, not weaker.** The v2 endpoint returned
+21,272,611,247,725.1 for both, character-identical; the Data360 endpoint returns three more
+places and there the two differ in the sixteenth significant digit — 21,272,611,247,725.074
+(CD) against 21,272,611,247,725.086 (KD). The quotient is 9,999.999999999994 and rounds per
+T6 to **10,000**, so the test passes at either precision, and it has to be a rounding test
+and not an equality of digits: how many places arrive is a property of the endpoint, not of
+the data. If it deviates by more than the rounding, the two indicator codes do
 **not** carry the same basis, and the vintage build aborts instead of asserting a price
 basis it does not have. That is the same construction as the count-off checks from T45
 and T49: a promise that proves itself.
@@ -2019,6 +2040,7 @@ So that the data builder can check the field „Source" per series. Source per `
 | 17 | Sector prices | (4+RW) × 3 | index | **none** | endogenous, no target | — |
 | 18 | Approval | 4 | ten-thousandths | **none** | from `parameter.toml` | — |
 | 19 | Market-basket value and market return | 1 + 1 | thousand USD / bp | **none** | start value per T33, endogenous, no target | — |
+| 20 | Export price index of the world, from `NE.EXP.GNFS.CD` and `NE.EXP.GNFS.KD` | 1 | ten-thousandths, 2015 = 10,000 | WDI | conversion of the vintage per T53, **no target** | no |
 
 `NV.IND.MANF.ZS` (manufacturing) is per `spiel.md` **not** used and is therefore not
 listed here. The `L_R(S+5) − n` reported series are rows 1, 2, 8, 9, 10 and 11 — at
@@ -2030,6 +2052,27 @@ the horizon in section 26. The
 trade block from row 14 comes in as a block of its own. The four quantities without a
 data anchor are rows 17, 18, 19 and the instrument financial-market regulation —
 exactly the four that `spiel.md` enumerates under „Die Grenze des Orakels".
+
+**Row 20 is new since package `0084` and moves none of these counts.** It is a conversion
+quantity of the vintage per T53 and carries **no** target role, so the reported series stay
+rows 1, 2, 8, 9, 10 and 11 and stay **31**, the target series stay **27** = `L_R(S+4) − n`,
+the trade block stays row 14 alone, and the four quantities without a data anchor stay the
+four named above — row 20 has a source. Its number has nothing to do with the **20**
+position slots of T55 (`L·(S+2)`); the same digit stands in two tables for two things.
+
+**What `frei` means in the column „Role", decided here, because this file uses the word for
+two different things.** In this table `frei` is the **T37 class** of a target series — the
+row `frei` of the class table in section 9, *„checks the machine, decides the acceptance"* —
+and it is **no licence verdict**. The licence verdict stands in the column „License status"
+of T62 (section 21) and in `lizenzurteil` in `daten/reihen.toml`, and nowhere else. The
+collision is not hypothetical, and it is checkable in six rows: series **8, 10 and 14** carry
+`frei` in both columns and mean something different in each, and series **3, 4 and 15** carry
+`frei` in T62 while they are `start` here and therefore have no T37 class at all.
+**Whoever repairs a licence question in this column severs the tie to T37.** The warning was
+written on 2026-09-02 and has stood since package `0126` in the header of
+`daten/reihen.toml` (reading rule 1) — and until today in no line of this document. That gap
+was the open question this package inherited from `rueckstand.md`, and this paragraph is its
+answer.
 
 **And here stands the row whose absence made T46 necessary.** The column "Dimension" is
 to be read as it stands: row 8 carries **4**, not 4 + RW; rows 9, 11 and 12 carry **4**,
@@ -3523,8 +3566,36 @@ values: sum **55,074.54** ten-thousandths, mean **2,202.98** → 2,203, right ed
 **3,577.80** → 3,578, `r(2021) = 11.549/7.417 = 1,557098`, start factor
 `10.000/7.417 = 1,348254`. The two `durchgriff` cases reproduce via `H/N` as **7,836.99** →
 7,837 and **6,189.15** → 6,189, the sum as `15 + 15 + 40 + 1 = 71`, the `i64` headroom as
-2.8 · 10^17 against 9.2 · 10^18. **All numbers from T53 have thus been computed in two
-independent runs**, and none has changed.
+2.8 · 10^17 against 9.2 · 10^18.
+
+**What the two runs reached and what they did not — corrected 2026-09-08, package `0084`.**
+The sentence that stood here read *„All numbers from T53 have thus been computed in two
+independent runs"*, and it was one row too wide. The second path,
+`10.000 · |7.417 − Index(t)| / Index(t)`, takes `Index(t)` as **given**; it reproduces an
+error in the index table instead of finding one, and the second run's claim to have
+recomputed the 25 support points did not catch the one that was wrong. **The 25 index values
+had been computed once**, from the retrieval of 2026-09-04. Package `0084` retrieved both
+series anew on 2026-09-08 and recomputed all 25 from `10.000 · CD(t)/KD(t)`: **24 reproduce,
+one does not.** 2018 stood at 10,553 and is **10,554** — the exact value is 10,553.5021, it
+lies above the half and rounds up per T6, and it is the **third** case of this same error
+type in this file, after 3,577 → 3,578 and 1.5570 → 1.5571 in the second run.
+
+**What that moves, counted off against the derived numbers above.** The term for 2018
+goes from `10.000 · 3.136/10.553` = 2,971.6668 to `10.000 · 3.137/10.554` = 2,972.3328, and
+that is the whole of the difference. Sum **55,075.20** ten-thousandths (the third run wrote
+55,074.54; recomputing all 25 terms gives 55,074.53 for the old table, so the new sum is not
+the old plus 0.67 but a hundredth less — the mean 2,202.98 the third run wrote was right).
+Mean **2,203.008 → 2,203**, unchanged and still above the threshold 2,000. Right edge 2021
+**3,577.80 → 3,578**, `r(2021) = 1.5571`, start factor `10.000/7.417 = 1.34825` and the two
+`durchgriff` cases **7,837** and **6,189** all hang on `Index(1997) = 7.417` or on 2021 and
+are **unchanged**. The decision, the chosen way and the consequence for package 0002 are
+untouched.
+
+**What the file may be held to from here on, and it is two statements and not one.** The
+**derived** numbers of T53 are computed in two independent runs. The **25 index values** are
+computed in two independent **retrievals**, on 2026-09-04 and on 2026-09-08, the second
+against a different endpoint of the same source. Section 32 carries the recomputation term
+by term.
 
 **What the third run found nonetheless — one place, and it sits at the transition to
 `reihen.toml`.** T53 named only series 1 for `N`; per T23 point 1 the value added is
@@ -3551,12 +3622,14 @@ Maße, the cost calculations and the stack table. The third run touched none of 
 worked inside the six places enumerated above (T53, this section, the line `fassung`) and
 opened no seventh.
 
-**What belonged here and still does not stand here — the series list.** T53 names a new
-series of the vintage, and the series list in section 7 does not carry it. That is
-deliberate: condition 5 expressly takes the open questions from `rueckstand.md` points 6
+**What belonged here and was deliberately handed on — the series list. Collected on
+2026-09-08 by package `0084`; the series list in section 7 carries row 20 since then.** T53
+names a new series of the vintage, and this package did not enter it. That was deliberate:
+condition 5 expressly takes the open questions from `rueckstand.md` points 6
 and 7 out of this package, and one of them — the `frei` in the column "Role" — sits in
 exactly this table. Two packages on one table are the collision case the scoping is meant
-to avoid. **The row therefore stands here, ready for the next architect package:**
+to avoid. **The row stood here for the next architect package and was taken over from here
+unchanged:**
 
 | Nr | Quantity | Dimension | Model unit | Source | Role | Suspect |
 |---:|---|---|---|---|---|---|
@@ -5592,3 +5665,110 @@ it against the per-file table in T7. The sum may differ, because `kern/src` and
 what the per-file form is for. `Grep` for `multiplikationsriegel` over this file gives hits
 only in T7 and in this section, and `Grep` for `mal(` over `kern/src` gives the seven call
 sites T7 lists.
+
+## 32. Reihe 20 in der Reihenliste, und was die Selbstmessung zu T53 wirklich deckte — Paket `0084`
+
+**What this answers, in one line.** The series list in section 7 carries row 20; one of the
+25 index values in T53 was wrong and is corrected; the `frei` in the column „Role" is
+decided; and section 17 no longer claims a double computation for numbers that were computed
+once.
+
+**Scope: three places and no fourth.** The series list in section 7 (row 20 and two
+paragraphs under the table), T53 (index table, retrieval block, self-test paragraph) and
+section 17 (the self-measurement and the handover note on the series list). T5, the
+base-change paragraph, the preamble, T47, T48, T50 and the frontmatter are untouched. No
+code and no `daten/reihen.toml` — that transfer belongs to the data builder and is `0078`
+and its successor.
+
+### The 25 index values, retrieved anew and recomputed
+
+Source, both endpoints and the reason for the second address stand in T53.
+`Index(t) = teile_gerundet(10.000 · CD(t), KD(t))` with the T6 rounding, computed from the
+retrieval of 2026-09-08 and not read out of the table it was checking.
+
+**24 of 25 reproduce, one does not.** 2018:
+`10.000 · 25.213.271.645.387,152 / 23.890.905.014.631,023` = **10.553,5021** → **10,554**,
+where the table carried 10,553. It is the third case of the same error type in this file —
+a value above the half, truncated instead of rounded — after 3,577 → 3,578 and
+1.5570 → 1.5571 in the second run of `0026`. **The margin is thin in the digits and wide in
+the arithmetic:** 0.0021 above the half is 2 parts in 10 million of the quotient, and both
+retrievals carry far more precision than that, so the case is decided and not a coin toss.
+
+### Why the second computation path could not have found it
+
+`10.000 · |7.417 − Index(t)| / Index(t)` takes `Index(t)` as **given**. A path that consumes
+the table it is meant to check reproduces every error in it instead of finding one. That is
+the whole content of the correction in section 17, and the rule it leaves behind is not
+about arithmetic: **a self-measurement names the inputs a second run re-entered, not the
+outputs it reproduced.**
+
+### The derived numbers, term by term
+
+`10.000 · |7.417 − Index(t)| / Index(t)`, in ten-thousandths, over the 25 support points of
+the check vintage:
+
+| Year | 97 | 98 | 99 | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Term | 0 | 564.02 | 732.17 | 829.32 | 1,248.10 | 1,007.72 | 90.85 | 1,005.34 | 1,528.27 | 2,008.40 | 2,680.35 | 3,396.55 | 2,616.23 |
+
+| Year | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| Term | 3,056.54 | 3,813.50 | 3,735.64 | 3,713.34 | 3,601.62 | 2,583.00 | 2,249.74 | 2,599.28 | **2,972.33** | 2,766.73 | 2,698.37 | 3,577.80 |
+
+Sum of the unrounded terms **55,075.198** → **55,075.20**, mean **2,203.008** → **2,203**.
+Adding the two-place values in the table gives 55,075.21; that hundredth is the rounding of
+the display and not of the sum, and it is the same kind of hundredth as report 4 below.
+**Everything else hangs on `Index(1997) = 7.417` or on 2021 and is unchanged:** right edge
+3,578, `r(2021) = 1.5571`, start factor `10.000/7.417 = 1.34825`, the two `durchgriff` cases
+**7,837** and **6,189**, the sum `15 + 15 + 40 + 1 = 71` and the `i64` headroom. The
+decision, the chosen way, the price comparison and the consequence for package `0002` are
+untouched — 2,203 was and stays above the threshold 2,000.
+
+### The six numbers of section 19, measured and not assumed
+
+`0116`'s derivation chain in T55 writes **310, 175, 135, 40, 27 and 20** as formulas in `L`,
+`S` and `I`. **This package moves none of them, and the one that could have moved is the
+27.** Row 20 carries no target role, so the target series stay `L·(S+4) − 1` = **27** and the
+reported series stay `L_R(S+5) − n` = **31**; the other five count state addresses, and a
+series of the vintage creates none. The 20 in T55 is `L·(S+2)`, the position slots — the same
+digit as the new row number and nothing else in common. No formula in section 19 is touched.
+
+### Reports to the project manager
+
+1. **`api.worldbank.org` did not answer on 2026-09-08.** Five retrievals, each ended in the
+   60-second timeout; a control retrieval against another host in the same run succeeded, so
+   the host was the lock and not the tooling. T53 now carries the Data360 addresses beside
+   the v2 ones, same source, same indicator codes. Whoever plans a re-measurement of these
+   numbers should not plan it against the v2 host.
+2. **The transfer to `daten/reihen.toml` is unblocked.** `0078` expressly held row 20 out
+   because the series list did not carry it; it does now. Series 20 is a vintage series with
+   no target role, and that is the field the transfer has to get right.
+3. **The line `fassung` in the frontmatter stops at package `0043`.** It names 0011, 0026 and
+   0043 and none of the thirteen packages that wrote sections 19 to 31, nor this one. My
+   scope names three places and the frontmatter is not one of them, so I left it standing.
+   Whoever owns it needs a rule for when that line is written, not a catch-up run — the same
+   shape as the `partie` key reported in section 29.
+4. **The sum in section 17 was a hundredth off before this package touched it.** The third
+   run of `0026` wrote 55,074.54; recomputing all 25 terms of the old table gives 55,074.53.
+   Nothing hangs on it — the mean that run wrote was right — but a reader who adds the 0.67
+   of the 2018 correction to 55,074.54 lands on a number that is not the one now in
+   section 17.
+
+### Untouched, expressly
+
+T5 and the class-2 row, the base-change paragraph, the preamble, T47, T48, T50, T23, T42,
+the 310 addresses, the four Maße, the cost calculations, the stack table, the frontmatter,
+and sections 18 to 31 in full. In T53 the decision itself, the four-way comparison, the
+declared non-decision on series 3 and the residual quantity are unchanged; what changed
+there is one table cell, the retrieval block and the evidence under the self-test.
+
+### The check this section can be held to
+
+Retrieve `NE.EXP.GNFS.CD` and `NE.EXP.GNFS.KD` for `WLD`, 1997–2021, and recompute
+`teile_gerundet(10.000 · CD(t), KD(t))` for all 25 years against the index table in T53,
+then the 25 terms above and their sum. The index table carries **10,554** at 2018, and every
+remaining occurrence of the old value in this file — as `10,553` in the English prose form
+or as `10.553` in the German form the formula lines use — stands inside a sentence of
+section 17 or 32 that reports the correction, never in a table cell. `Grep` for `| 20 |` in section 7 gives the new row, and the
+three counts under that table — 31 reported series, 27 target series, four quantities
+without a data anchor — are the ones they were before it.
