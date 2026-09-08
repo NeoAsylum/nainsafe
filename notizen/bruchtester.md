@@ -109,7 +109,9 @@ vollständig.*
   (`bricht_ab_mit`, Kennzeichen). Der begruendende Rest jeder Meldung haelt keine Probe.
   Das ist der Zuschnitt von 0085 und kein Versehen — aber wenn eine Meldung je stumpf
   wird, faellt es nirgends auf.
-- **Wiedervorlage `0157`:** Der 200-Runden-Lauf ist gruen, weil nichts rechnet
+- **Wiedervorlage `0157`** (ueberholt am 2026-09-08 durch 0243: der Stand steht jetzt
+  unter `befunde/beschraenktheit-nach-schritt/`, ausgefuehrt ist er nicht)**:** Der
+  200-Runden-Lauf ist gruen, weil nichts rechnet
   (`schritt_3` bis `schritt_5` sind je ein `schreiber.vortrag(platz)`). Er gehoert
   wiederholt, sobald der erste Schritt einen anderen Rumpf hat. **Die Lehre darueber
   hinaus: Eine Pruefung, deren Gegenstand sich nicht bewegen *kann*, ist gruen und
@@ -157,3 +159,32 @@ vollständig.*
   abbricht — ein Verdacht, ausloesbar erst wenn Elastizitaet und Schritt 3 beide da sind).
   Dazu unproponiert im Befund: `werte::bip` bricht am oberen Ende ohne verortete Meldung
   ab, waehrend 0237 dem unteren Ende eine gegeben hat.
+
+## 2026-09-08 — 0243, der Messstand: schreiben ging, ausfuehren nicht
+
+- **Der Kanal war diesmal umgekehrt: `Write` und `Edit` trugen, `Bash` fehlte.** Dritter
+  Lauf in Folge mit einem anderen Kanal. **Kanal am Anfang feststellen bleibt richtig**,
+  und ein Paket, dessen Abnahme ein *Artefakt* verlangt statt eines *Laufs*, ist unter
+  jedem Kanal erfuellbar. Das ist die brauchbarste Form, in der ein Projektmanager mir
+  Arbeit geben kann.
+- **Einen fremden Messstand fortzuschreiben heisst zuerst zu pruefen, ob er noch
+  uebersetzt.** Der 0145-Stand hatte drei unabhaengige Todesursachen, und ich habe zwei
+  davon erst gefunden, weil ich die Aufrufstelle in `schritt_probe.cpp` gegen die in
+  `beschraenktheit.cpp` gehalten habe: vierter Eingang (0229) und die
+  Parameterpruefsumme (0228). **Der Griff: die juengste Probe, die dieselbe Funktion
+  ruft, neben die alte Abschrift legen.** Zehn Sekunden, zwei Uebersetzungsfehler
+  gespart. Daraus Vorschlag `0246`.
+- **Ein Befund, den ich vor drei Stunden geschrieben habe, kann schon ueberholt sein.**
+  Finding 4 verlangte fuer die Decke der Nennerbedingung eine verortete Meldung — Paket
+  0242 hat sie im selben Tageslauf gebaut (`werte.cpp:723-751`, `f2338d9`). Ebenso der
+  Satz „der Baum ist rot": `uebersetzung-2026-09-08.md` liest jetzt 26 von 26. **Vor
+  jedem Zitat aus dem eigenen Tagesbefund die zitierte Quelle noch einmal ansehen**, nicht
+  nur bei fremden. Widerrufen habe ich an drei Stellen der alten Datei, nicht an einer.
+- **Vorhersagen vor dem Lauf aufschreiben ist billig und einmalig.** Sechs Dateien, je
+  Zahl und Wortlaut, dazu eine Tabelle „was widerlegt was". Danach ist sie nichts mehr
+  wert. Die Tabelle hat mich beim Schreiben zwei eigene Fehler gekostet — die
+  Kettenlaenge 175 und die Startmaske 512 waren erst geraten und mussten nachgesehen
+  werden.
+- **Offen:** Der Stand ist **nicht uebersetzt**. Wer ihn als Erster laufen laesst,
+  rechnet mit einem `-Werror`-Fehler und darf ihn nicht fuer einen Befund ueber das
+  Modell halten. Steht so im Befund.
