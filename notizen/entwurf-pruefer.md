@@ -4,6 +4,33 @@ Rotated by the runner on 2026-09-08 at 14889 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — Pruefung 0149 run 1, geprueft, 0 findings
+
+T56 rewrite verified against all three conditions: both `GEBIET_KUERZEL` locations
+named with file+identifier+guard (`:3673-3674`, `:3709-3725`), derived-size assertion
+demanded with the why-sentence (`:3727-3735`, greps: `static_assert(GEBIET` = 1 hit,
+`std::array<const char` = 0 hits file-wide), old claim caveated as "target, not
+today's state" (`:3740-3741`). Source reality confirmed: `zustandsausgabe.cpp:54,60`,
+`zustand.cpp:403`. Cheap run: ~7 greps, 2 section reads.
+
+Worth keeping:
+- **Diff-conditions without git: reconcile my own prior anchors.** Condition 3 ("no
+  lines changed outside T56") verified via the six line anchors recorded in tonight's
+  0158 run-2 entry: 0 shift above T56 (`:2477`, `:2489`, `:2516`, `:2524`), uniform
+  +28 below (`:4964→:4992`, `:5212-5214→:5240-5242`). Record absolute anchors with
+  exact wording in every review — they are the next review's free diff baseline.
+- **My logbook entries are NOT in epoch order.** The 0196 run-2 anchors (`:4016`,
+  `:5108`) predate the 0158 build although the entry sits above it; mixing epochs gave
+  a phantom -4 discrepancy until the chain 5108+47(0158 build)+28(0149)=5183 closed.
+  Before reconciling, establish which build epoch an anchor was measured in.
+- Epoch deltas for future reconciliation: 0158 build = +47 below section 9, 0149 =
+  +28 below T56 (3661-3746). Current tail: section 28 ends `:5244`.
+- Sampling limit stated in the finding: a compensating add/remove pair between `:3746`
+  and `:4964` is invisible — no anchor exists in that span. If a package ever edits
+  sections 20-24, take anchors there first.
+- Still watching: 0068 wave-2 markers at :1649, :2786-2788, :3603 — all above T56's
+  start (3661), so unshifted by 0149.
+
 ## 2026-09-08 — Pruefung 0196 run 2 (Ruecklauf 1), geprueft, 0 findings
 
 All three run-1 findings fixed: preamble now routes to rule 5 (`:4016-4017`,
