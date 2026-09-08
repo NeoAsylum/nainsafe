@@ -67,3 +67,69 @@ inflate the `gebaut` count by two (`.paket.tmp`, `.kopf.tmp`) — subtract them.
 3. 0157 (`offen` behind blocked 0197) — did the PM set it `blockiert`? If not, it is a
    second case of the class and belongs in the plan as a class, not as an item.
 
+---
+
+## 2026-09-08, 17th run (second plan same day) — the lock fell by itself, and the queue emptied
+
+**The three checks from the 16th run all paid, and two flipped the plan.** `reserviert.txt`
+= `# frei`; 0208-schritt `fertig`; 0157 now `blockiert` (the PM did it). Every one of my
+five priorities landed inside a day, second run in a row. **Run the "next run" list first,
+literally — it is the cheapest signal in the repo.** Cost: three greps.
+
+**The withdrawal is the entry that matters.** I put the translation question to the
+operator twice; today its only remaining reason (the lock) was gone, so I withdrew it
+instead of re-arguing. *A question whose cause has disappeared must be visibly withdrawn,
+not silently dropped* — otherwise the operator spends his two hours on a dead item. Same
+paragraph, one sentence, no defence.
+
+**New best tool: `urteil:` across today's findings.** One grep, `^urteil:` over
+`befunde/*2026-09-08*`, 40 lines, and the whole day's review verdicts are in front of me.
+It found the sharpest item without reading a single package: `0189 ... urteil: zurueck`
+against a `fertig` package. That turned out to be run 1 of 2 (the `-2` file is `geprueft`)
+— **so always glob for the `-2`/`-3` variant before concluding anything from a verdict.**
+The dead end was worth it: chasing it found the real thing below.
+
+**The find of the day, and how it arrived.** `uebersetzung-2026-09-08.md` is *overwritten
+in place*. Two `geprueft` findings from today quote it as `ergebnis: ok` / "Passed";
+the file now reads `fehler` / `***Failed***`, and `git status` shows it modified in the
+working tree. Both reviewers were right when they wrote. **Whenever a finding's line
+numbers do not match the file it cites, suspect the file was rewritten, not the reviewer.**
+My first instinct was the reviewer had fabricated. That would have been a false accusation
+in a plan the operator reads.
+
+**Counting method that worked.** `Grep "^status: fertig"` with `output_mode:
+files_with_matches, head_limit: 0` prints `Found N files` as the first line of the
+persisted preview — an exact count for ~25 kB of output I never read. `head_limit: 1`
+does NOT give the total (it prints `Found 1 file`). Use `0`, read the preview header only.
+Totals today: 253 packages, 231 `fertig`, 4 `offen`, 3 `vorschlag`, 3 `gebaut`, 5
+`blockiert`. The two `.tmp` files still inflate `gebaut` — subtract them.
+
+**Where the bottleneck actually was, and why "which role owns the open list" found it.**
+Six of the seven open+proposed packages are `architekt` on `technik.md` — one lane. Then
+one grep, `^dateien:.*kern/src/schritt\.cpp`, returned 8 files, **none of them open or
+proposed**. That is the plan: the round's own source has no scheduled work. *Grep the
+backlog for the file that carries the one number; if nothing open touches it, that is the
+bottleneck, whatever else looks urgent.*
+
+**A loop I could only see by counting.** 0115, 0166, 0189, 0227, 0232, 0233 — six finished
+packages, same two files, all transcribing the belegstellen head numbers; red again this
+morning because "Die Zahlen sind damit aelter als der Baum". `Grep "^dateien:.*<file>"`
+counts a maintenance loop in one call (22 packages have touched that riegel). **A cluster
+of finished packages on one file is a loop until proven otherwise**, and the right move is
+to refuse the next one, not to schedule it.
+
+**I put two non-existent ids in the Vorrang.** The role says five Kennungen; the two things
+that matter most had no package. I named them as *neu anzulegen* with role and file rather
+than pad the list with plannable-but-pointless work. Watch whether the PM takes them or
+argues back — that is the test of whether this is allowed.
+
+### Next run, in this order
+
+1. **Does a `kernbauer` package on `kern/src/schritt.cpp` exist?** That was priority 1 and
+   it had to be created. If not, ask why in the plan — twice-unbuilt is a class, not an item.
+2. **Did the one number move?** 1 of 310, unchanged since the 14th plan. It cannot move
+   before step 3 computes; if it moves earlier, the measurement is wrong.
+3. **Is the nightly report still one file per day?** If yes, the overwrite problem stands
+   and every finding citing it decays. Check `git status` for `M .../uebersetzung-*.md`.
+4. 0208-baulauf — third plan running. If still `blockiert`, say the count, do not re-argue.
+

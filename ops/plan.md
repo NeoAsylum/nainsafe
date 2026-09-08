@@ -1,105 +1,104 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-08. Abgedeckt: seit 2026-09-07.
+Stand 2026-09-08, zweiter Plan an diesem Tag. Abgedeckt: seit heute früh.
 
 ## Wo das Vorhaben steht
 
-**Der Rückstand des letzten Plans ist abgeräumt.** 0198 (die Rechenvorschrift) ist `fertig`
-und geprüft, 0200 hat die zehn toten Zitate nachgezogen, 0197 und 0208-baulauf stehen auf
-`blockiert` statt auf `zurueck`. **Das stehende Rot ist weg:**
-`befunde/uebersetzung-2026-09-07.md` meldet `ergebnis: ok` — 25 von 25 Tests grün im
-Werkstattbaum, 13 von 13 im Kern, alle Werkzeugbäume grün. 196 Pakete: 169 fertig (+22),
-19 offen, **0 Vorschläge**, 1 gebaut, 5 blockiert; Spielraum 8.722 von 12.000 $ (Stand
-2026-09-06 05:00, zwei Tage alt), Geld bindet nicht.
+**Die Sperre ist gefallen und der Rückstand ist durchgelaufen.** `ops/reserviert.txt` sagt
+`# frei`; von 253 Paketen sind **231 fertig** (+62), 4 offen, 3 Vorschläge, 3 gebaut,
+5 blockiert. **Dafür ist der Riegel wieder rot:** `befunde/uebersetzung-2026-09-08.md`
+meldet `ergebnis: fehler` — 3 von 29 Proben im Werkstattbaum gefallen
+(`belegstellen_wortabstand`, `belegstellen_kopfzahlen`, `multiplikationsriegel`); Kern
+14/14 und Prüfstand 3/3 grün. Geld bindet nicht.
 
 ## Der Engpass
 
-**Eine Zeile in `ops/reserviert.txt` hält 15 der 19 offenen Pakete an.**
+**Schritt 3 reicht durch, und kein Paket im ganzen Bestand fasst ihn an.**
 
-Die Zeile lautet `specs/0016-.../technik.md` und wird vom Übersetzungslauf gesetzt.
-`baulauf.py:startbereit` zählt sie wie ein eingeplantes Paket: kein Paket, dessen
-`dateien:` diese Datei trifft, wird eingeplant. Betroffen sind **0208-schritt** (der Draht),
-0165, 0172-weltpreis, 0148, 0177, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181,
-0221.
+Der rechnende Rumpf von Schritt 5 steht seit 0197 (`fertig`): `realeinkommenshub`,
+`politiklast`, `werte::bip`, `werte::schaden`, vier Festkommastellen in
+`kern/src/schritt.cpp`. Er rechnet trotzdem nichts. Der Kern-Prüfer nennt den Grund im
+Wortlaut (`befunde/pruefung-0233-feldzaehler-an-einer-rohen-reihe-messen-2026-09-08.md`,
+Z. 75–77): „**step 3 carries forward, so `richtung == 0`, so `last = 0`, `hub = 0`,
+`wirkung = 0`**". Der Draht liegt, der Strom fehlt.
 
-Übrig bleiben **drei startbare Pakete** — 0189, 0224, 0225 —, und zwei davon räumen hinter
-dem Übersetzungslauf auf. (0157 steht auf `offen`, hängt aber an 0197, das `blockiert` ist.)
-
-Der Engpass ist damit zum ersten Mal **kein fehlender Beschluss, sondern eine Sperre.** Der
-Projektmanager hat seinen Teil getan: sein Vermerk auf 0208 nennt die Sperre im Wortlaut
-und stellt das Paket so, dass es anläuft, sobald sie fällt — „und dann ohne einen weiteren
-Lauf von mir".
+Gemessen: **kein offenes, kein vorgeschlagenes und kein blockiertes Paket trägt
+`kern/src/schritt.cpp` in `dateien:`.** Die Vorgaben dafür sind fertig — 0165 und
+0172-weltpreis stehen seit heute auf `fertig` —, und es hängt kein Baupaket an ihnen.
+Sechs der sieben offenen und vorgeschlagenen Pakete gehören dem **Architekten** und fassen
+`technik.md` an; sie laufen deshalb nur nacheinander, und keines bewegt die Runde.
 
 ## Was quer liegt
 
-- **Der Übersetzungslauf meldet alles fertig und hält die Datei trotzdem.**
-  `ops/uebersetzt.txt` führt alle 21 Abschnitte von `technik.md`, alle 15 von `spiel.md`,
-  alle 5 von `daten.md`; der Vorspann von `technik.md` liest bereits Englisch (Zeilen
-  1–31). Der Kopf von `reserviert.txt` sagt „**Leer, sobald er fertig ist.**" Er ist nicht
-  leer. Ob noch etwas aussteht oder die Zeile stehengeblieben ist, kann ich ohne Shell
-  nicht messen — beides endet in demselben Stillstand.
-- **Sieben der elf neuesten Pakete sind Nachlauf der Übersetzung** (0214-leitzins, 0220,
-  0221, 0222, 0223, 0224, 0225). Der Riegel ist heute grün, **weil sie gebaut wurden** —
-  nicht weil die Ursache weg wäre.
-- **Überschriften werden uneinheitlich umbenannt.** In `spiel.md` sind vier ersetzt („Die
-  Schleife" → „The loop", „Die Aktionen" → „The actions", „Der Zustand" → „The state", „Die
-  Spiellänge R" → „The game length R"), elf stehen weiter deutsch; in `technik.md` keine
-  einzige. Jede Umbenennung kostet ein Nachziehpaket.
-- **0182 steht auf `gebaut` mit `urteil: geprueft`** (2026-09-08). Ein Lauf des
-  Projektmanagers setzt es auf `fertig`. Heute der einzige Fall — gestern drei; die Lücke
-  schliesst sich.
-- Unverändert fortgeschrieben, nicht neu gefragt: `daten/roh/` gibt es nicht, `reihen.toml`
-  sagt weiter „**Sie enthaelt keine Datenzeile.**" Drei Pakete tragen die Nummer 0208, die
-  `id` ist eindeutig.
+- **Der Nachtbericht wird an Ort und Stelle überschrieben.** Zwei heutige
+  `geprueft`-Befunde zitieren `uebersetzung-2026-09-08.md` mit `ergebnis: ok` und
+  „`belegstellen_kopfzahlen` **Passed** … :123-124" (`pruefung-0189-…-2`, Z. 15;
+  `pruefung-0233-…`, Z. 15). Dieselbe Datei sagt jetzt `ergebnis: fehler` und
+  `***Failed***`. Beide Prüfer hatten recht, als sie schrieben; nachprüfbar ist keiner
+  mehr. Der Bericht braucht einen Namen je Lauf, nicht je Tag.
+- **Die Kopfzahlen des Belegstellenriegels sind eine Schleife.** Sechs Pakete, alle
+  `fertig`, alle auf dieselben zwei Dateien: 0115, 0166, 0189, 0227, 0232, 0233. Heute früh
+  wieder rot, und der Riegel sagt selbst warum: „**Die Zahlen sind damit aelter als der
+  Baum**" (Bezugsstand 2f2f79f, HEAD cd46bbf). Jeder Übertrag veraltet mit dem nächsten
+  Commit. **Ein siebtes Übertragungspaket löst das nicht.**
+- **`multiplikationsriegel` ist rot wie bestellt.** 0273 hat ihn gebaut, er findet sofort
+  zwei echte Stellen (`kern/include/kern/festkomma.hpp:99` und `:356`). Kein Rückschritt —
+  die Entscheidung darüber ist Vorschlag 0274.
+- **0092, 0272 und 0273 stehen `gebaut` mit `urteil: geprueft`.** Ein Lauf des
+  Projektmanagers macht sie `fertig`; allein 0092 löst 0181 und darüber 0226 — die halbe
+  offene Liste.
+- **Zwei Zahlen für dasselbe Maß:** `ops/portfolio.md` (Stand 2026-09-06) führt „0 von
+  310", gemessen ist seit 0071 **1 von 310**. Und zwei Pakete tragen die Nummer 0275.
 
 ## Was der Betreiber entscheiden muss
 
-Die Frage vom 2026-09-07 ist **unbeantwortet, nicht abgelehnt** — kein Commit ohne
-Rollenpräfix, und `CLAUDE.md` trägt weiter „**They stay German until someone translates
-them whole, which is not planned.**" Ich begründe sie nicht neu. **Sie hat sich aber
-verschoben, und deshalb ändere ich meine Empfehlung.**
+**Die Übersetzungsfrage vom 2026-09-07 ziehe ich zurück.** Ihr einziger verbliebener Grund
+war die Sperre, und die ist von selbst gefallen. Sie kostet dich nichts mehr.
 
-Damals war der Preis ein rotes Testergebnis. Heute ist es die Sperre: Übersetzungslauf und
-Baulauf wollen dieselben zwei Dokumente, und der Übersetzungslauf gewinnt, weil er eine
-Datei hält. Nur du kannst das entscheiden — `CLAUDE.md` und `agents/rollen/uebersetzer.md`
-sind für jeden Agenten unschreibbar. Keine Geldfrage.
+**Offen bleibt genau eine, und es ist dieselbe wie am 2026-09-07:
+`0208-baulauf-faehrt-beide-profile`.** Kein Agent darf `agents/**` schreiben —
+`agents/lauf.py:NIE` verbietet es global —, also kannst nur du das tun. Keine Geldfrage;
+der Preis ist Maschinenzeit: ein zweiter `cmake`/`ctest`-Durchgang je Manifest mit
+`-DFABRIK_SANITIZER=OFF`, zehn Manifeste, nachts.
 
-- **B (meine Empfehlung vom 2026-09-07)** — Überschrift erst umbenennen, wenn im selben
-  Lauf jedes Zitat darauf nachgezogen ist. Richtig, aber **rührt die Sperre nicht an.**
-- **C — `technik.md` und `spiel.md` vom Übersetzungslauf aussetzen**, bis die Runde
-  rechnet. Gibt beide Dateien frei; 15 Pakete werden startbar.
+- **A — so lassen.** Jede Abnahme mit der Formel „in beiden Bauprofilen" bleibt
+  unerfüllbar. Sie hat schon 0194 auf `blockiert` gekostet, obwohl der Prüfer alles
+  Übrige bestätigt.
+- **B — du fährst die Änderung selbst ein.** Vorbild ist Paket 0131.
 
-**Empfehlung jetzt C** (bisher B). Der Grund ist neu und kostet nichts: Der Lauf meldet für
-beide Dateien bereits **jeden** Abschnitt fertig. C nimmt ihm damit voraussichtlich keine
-Arbeit ab — es nimmt nur die Sperre weg. B bleibt richtig und kann danach folgen.
+**Empfehlung B.** Der Projektmanager nennt es den zehnten Fall dieser Art, und seit dem
+Shell-Verbot vom 2026-09-06 kann das OFF-Profil niemand mehr belegen: weder der Bauer noch
+der Prüfer, und der Nachtlauf fährt es nicht.
 
 ## Vorrang
 
-Solange die Sperre steht, sind nur die ersten beiden Punkte überhaupt einplanbar.
+Zwei der fünf Kennungen gibt es noch nicht; sie sind anzulegen. Das ist kein Versehen — der
+Bestand enthält für die beiden wichtigsten Dinge kein Paket.
 
-1. **0224** und **0225** — startbar, billig, schliessen den Nachlauf der Übersetzung.
-   Solange er offen ist, ist der grüne Riegel geliehen.
-2. **0189** — startbar; seine drei Abhängigkeiten (0147, 0166, 0182) sind durch.
-3. **0208-schritt-braucht-einen-parametereingang** — unverändert der Draht und Kopf der
-   Kette. **Keine Handlung nötig:** es läuft von selbst an, sobald `reserviert.txt` fällt.
-4. **0165** — Kopf der umgehängten Kette, direkt hinter dem Draht.
-5. **0172-weltpreis** — der Zollfaktor, Schritt 4; das einzige `technik.md`-Paket, das die
-   Wirtschaft bewegt.
+1. **Schritt 3 rechnen lassen** — *neu anzulegen*, Rolle `kernbauer`, Datei
+   `kern/src/schritt.cpp`, gegen die fertigen Vorgaben 0165 und 0172-weltpreis. Alles, was
+   diese Woche gebaut wurde, speist einen Rumpf, der mit null multipliziert.
+2. **0092-abschnitt-18-zwei-zaehlfehler** auf `fertig` — eine einzige Statusänderung, die
+   zwei der vier offenen Pakete freigibt.
+3. **0274** — entscheidet den Regelsatz aus T7 und ist der einzige Weg, eine der drei roten
+   Proben grün zu bekommen.
+4. **Kopfzahlen selbst erheben statt abschreiben** — *ebenfalls neu anzulegen*: der Riegel
+   soll seine drei Zahlen zur Laufzeit messen. Das bricht die Schleife aus sechs Paketen.
+   **Kein siebtes Übertragungspaket.**
+5. **0236**, dann **0230** — die einzigen offenen Pakete ohne offene Vorbedingung. Sie
+   fassen dieselbe Datei an und müssen nacheinander laufen.
 
-**Nicht einplanen:** 0157 steht auf `offen`, hängt aber am blockierten 0197 — es gehört
-ebenfalls auf `blockiert`, sonst zählt es als Rückstand, den niemand abarbeiten kann.
-0208-baulauf braucht einen anderen Schnitt oder den Betreiber — kein Agent darf `agents/`
-schreiben.
+**Nicht einplanen:** 0208-baulauf — es liegt beim Betreiber, siehe oben.
 
 ## Die eine Zahl
 
 **1 von 310** — unverändert seit dem 14. Plan (`partie.runde`). Der Apparat ist erneut
-gewachsen: 25 Tests im Werkstattbaum (vorher 20), 13 im Kern (vorher 12), acht Manifeste,
-407 geprüfte Schaltereinträge, alles grün — und die Runde rechnet weiterhin nichts.
+gewachsen: 29 Proben im Werkstattbaum (vorher 25), 14 im Kern (vorher 13), zehn Manifeste,
+462 geprüfte Schaltereinträge — und die Runde rechnet weiterhin nichts.
 
-**Neu ist, dass die eine Hälfte der Ursache weg ist.** 0198 ist `fertig`: die
-Rechenvorschrift für das Realeinkommen steht in `spiel.md` und wurde vom Entwurfsprüfer
-gegen T15/T27/T23/T48 nachgerechnet, jeder Name aufgelöst, jede Zahl unabhängig neu
-gerechnet. Die andere Hälfte ist der Weg — `schritt(zustand, aktionen, modus)` hat weiter
-kein Parameterargument —, und der Weg liegt hinter der Sperre. **Bewegt sich die Zahl,
-bevor 0208 `fertig` ist, stimmt die Messung nicht.**
+**Neu ist die Ursache, und sie ist zum ersten Mal genau.** Nicht mehr der fehlende Draht:
+den hat 0229 gelegt, 0197 hat den Rumpf angehängt, beide sind `fertig`. Was fehlt, ist die
+Null, die Schritt 3 in diesen Rumpf schiebt. Der Satz des Portfolio-Managers vom
+2026-09-06 gilt damit schärfer als damals: „**Die Fabrik baut den Prüfapparat einer
+Simulation, die noch nicht rechnet.**" **Bewegt sich die Zahl, ohne dass Schritt 3
+rechnet, stimmt die Messung nicht.**
