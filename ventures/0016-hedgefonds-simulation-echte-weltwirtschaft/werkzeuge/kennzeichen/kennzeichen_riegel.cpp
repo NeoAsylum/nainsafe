@@ -188,6 +188,43 @@
 //! mit beiden qualifiziert, auf dem geschwiegen werden muss, und derselbe Koeder mit der
 //! Groesse hinter einem `using`, auf dem ebenfalls geschwiegen werden muss.
 //!
+//! ## Derselbe Boden am anderen Ding: die Kennzeichenliste
+//!
+//! Die drei Boeden darueber stehen an der Probe, an der Tabelle und am Eintrag. Das zweite
+//! Ding, das dieses Programm liest, ist die **benannte Kennzeichenliste** --
+//! `std::array<const char*, 3> KENNZEICHEN_SUMME_DER_REGEL = {...}` --, und sie hat dieselbe
+//! Luecke eine Ebene hoeher. Verliert sie ein Stueck, ist der Eintrag nicht leer, also
+//! schweigt `gleiche_ab`; die Tabelle ist weder leer noch knapp; keine Zahl unten faellt auf
+//! null. Der Lauf bleibt gruen mit einer Zusicherung weniger, als der Bestand deklariert.
+//!
+//! **Gezaehlt werden Marken und keine Zeichenkettenteile, und daran haengt die ganze
+//! Schranke.** `zerlege` verschmilzt benachbarte Teile, weil die Sprache es tut, und der
+//! Kern schreibt seine Meldungen ueber mehrere Zeilen: `{"eine lange " "Meldung", "b"}` ist
+//! ein Feld mit **zwei** Elementen und ergibt zwei Marken. Wer je Teil zaehlt, kommt auf
+//! drei -- er zaehlt also **zu hoch** und uebersieht damit gerade die kurze Liste, um die es
+//! hier geht. Die Begruendung steht an der Zaehlstelle in `lies_verzeichnisse`, und zwei
+//! Faelle des Selbsttests halten sie: derselbe Text einmal als Drei deklariert, auf dem
+//! gemeldet werden **muss**, obwohl drei Teile dastehen, und einmal als Zwei, auf dem
+//! geschwiegen werden muss.
+//!
+//! Die erwartete Zahl kommt aus derselben Quelle wie bei der Tabelle -- `deklarierte_groesse`
+//! auf der Stelle des Namens -- und damit weder aus einem Kommentar noch aus einer
+//! Zeichenkette. Steht dort keine lesbare Zahl, weil die Groesse eine Konstante ist oder der
+//! Typ hinter einem `using` steht, ist das kein Befund: Dann schuldet die Liste, was die
+//! heutige Regel verlangt -- ein Stueck --, und das prueft `gleiche_ab` mit `leere_liste`.
+//! Eine **eingebettete** Liste deklariert ueberhaupt nichts und faellt unter dieselbe Regel.
+//!
+//! `knappe_listen` sammelt die Faelle; der Abbruch steht in `main` hinter dem der knappen
+//! Tabellen, beginnt mit `%zu gelesene Kennzeichenliste(n) geben weniger` und nennt Probe,
+//! Zeile, Namen, die deklarierte und die gelesene Zahl. Eine Liste, die null hergibt und
+//! mehr deklariert, faengt von jetzt an diese Schranke statt `leere_liste` -- die Null bejaht
+//! beide Fragen, und sie hier auszunehmen waere eine Bedingung, die spaeter falsch sein kann.
+//!
+//! **Zwei Eintraege duerfen dieselbe Liste nennen.** Dann ist es eine, und sie steht einmal
+//! in der Erhebung; verglichen wird die Stelle in der Maske und nicht Name oder Zeile, weil
+//! zwei Listen sich eine Zeile teilen koennen und eine Stelle nicht. Ein Bericht, der ein
+//! Ding zweimal auffuehrt, nennt eine Zahl, die es nicht gibt.
+//!
 //! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
 //!
 //! Drei Falltabellen im Programm. Sie laufen vor dem ersten Lesen des Bestands; ein
@@ -209,7 +246,8 @@
 //! oder Lesefehler, ein verfehlter Fall des Selbsttests, eine rohe Zeichenkette, ein nicht
 //! lesbarer Eintrag, eine Probe, die den Namen der Tabelle im Code fuehrt und kein
 //! Verzeichnis hergibt, eine gelesene Tabelle ohne einen einzigen Eintrag, eine gelesene
-//! Tabelle mit weniger Eintraegen als deklarierten, oder eine der Zahlen unten auf null:
+//! Tabelle mit weniger Eintraegen als deklarierten, eine benannte Kennzeichenliste mit
+//! weniger Stuecken als deklarierten, oder eine der Zahlen unten auf null:
 //! keine gelesene Probe, kein gefundenes Verzeichnis, kein Eintrag, kein Kennzeichen, keine
 //! Zeichenkette im Kern.
 //!
@@ -863,6 +901,32 @@ struct Tabellenzahl {
     std::size_t deklariert = NICHTS;
 };
 
+/// Eine einzelne aufgeloeste **benannte** Kennzeichenliste: wo sie steht, wie sie heisst,
+/// was sie ueber ihre Groesse sagt und wie viele Stuecke aus ihr kamen.
+///
+/// Sie traegt ihre Probe als Namen und nicht als Stelle in `zahlen`: Die Liste darf in einer
+/// anderen Probe stehen als der Eintrag, der sie nennt, und diese Probe kann in `zahlen`
+/// noch fehlen, wenn die Liste gelesen wird -- `lies_verzeichnisse` fuellt die Reihe erst im
+/// Lauf ueber die Proben. Eine Reihe, die sich selbst genuegt, kann nicht danebenzeigen.
+///
+/// `zeile` ist die Zeile des **Namens** und nicht die der Klammer: Dort steht die
+/// deklarierte Groesse, und genau die soll der Leser mit dem Inhalt vergleichen.
+///
+/// `stelle` ist die oeffnende Klammer auf der Maske und dient allein der Gleichheit: Zwei
+/// Eintraege duerfen dieselbe Liste nennen, und dann ist es eine. Name und Zeile taugen
+/// dafuer nicht -- zwei Listen koennen sich eine Zeile teilen, eine Stelle koennen sie nicht.
+///
+/// `deklariert` ist `NICHTS`, wenn dort keine lesbare Zahl steht. Das ist kein Befund,
+/// sondern die Rueckkehr zur Regel darueber; die Begruendung steht bei `deklarierte_groesse`.
+struct Listenzahl {
+    std::string probe;
+    std::string name;
+    std::size_t stelle = 0;
+    std::size_t zeile = 0;
+    std::size_t stuecke = 0;
+    std::size_t deklariert = NICHTS;
+};
+
 /// Was eine einzelne Probe zum Bestand beigetragen hat.
 ///
 /// `nennungen` sind alle Vorkommen des Tabellennamens im Code; `tabellen` traegt eine Reihe
@@ -913,8 +977,14 @@ constexpr std::string_view TABELLE = "RIEGEL_OHNE_ZUSTAND";
 /// gar nicht kennt. Erst dadurch ist die Reihe eine Erhebung und keine Trefferliste: Der
 /// Boden fragt nach den Proben, aus denen nichts kam, und die stehen in einer Trefferliste
 /// nicht drin.
+///
+/// `listen` bekommt zu jeder **aufgeloesten benannten** Liste einen Eintrag, und zu jeder
+/// genau einen. Nicht zu jeder Liste im Baum: Eine `std::array<const char*, 2>`, die kein
+/// Eintrag nennt, ist keine Kennzeichenliste, sondern irgendein Feld. Was sie zu einer
+/// macht, ist die Nennung -- also entsteht die Reihe dort, wo aufgeloest wird.
 bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>& eintraege,
-                        std::vector<Probenzahl>& zahlen, std::string& klage)
+                        std::vector<Probenzahl>& zahlen, std::vector<Listenzahl>& listen,
+                        std::string& klage)
 {
     std::vector<Zerlegt> zerlegt;
     zerlegt.reserve(proben.size());
@@ -931,6 +1001,7 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
 
     zahlen.clear();
     zahlen.reserve(proben.size());
+    listen.clear();
     for (std::size_t d = 0; d < zerlegt.size(); ++d) {
         const Zerlegt&               z = zerlegt[d];
         const std::vector<Zuweisung> tabellen = finde_zuweisungen(z, TABELLE);
@@ -1016,7 +1087,7 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     // die Frage ueberhaupt eine ueber den ganzen Baum.
                     std::size_t gefunden = 0;
                     std::size_t quelle = NICHTS;
-                    std::size_t stelle = NICHTS;
+                    Zuweisung   fund;
                     for (std::size_t runde = 0; runde < 2 && gefunden == 0; ++runde) {
                         for (std::size_t q = 0; q < zerlegt.size(); ++q) {
                             const bool eigene = (q == d);
@@ -1031,7 +1102,7 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                                 }
                                 ++gefunden;
                                 quelle = q;
-                                stelle = stellen[s].auf;
+                                fund = stellen[s];
                             }
                         }
                     }
@@ -1042,9 +1113,42 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                                 + " lesbare Liste(n); genau eine wird gebraucht.";
                         return false;
                     }
-                    const std::size_t listen_zu =
-                        balanciert(zerlegt[quelle].maske, stelle);
-                    stuecke_aus(zerlegt[quelle], stelle, listen_zu, e.kennzeichen);
+                    const Zerlegt&    liste = zerlegt[quelle];
+                    const std::size_t listen_zu = balanciert(liste.maske, fund.auf);
+                    const std::size_t vorher = e.kennzeichen.size();
+                    stuecke_aus(liste, fund.auf, listen_zu, e.kennzeichen);
+
+                    // **Hier wird gezaehlt, und hier steht die Lesart.** Gezaehlt werden die
+                    // Marken zwischen den Klammern, und eine Marke ist ein Element des
+                    // Feldes: `zerlege` verschmilzt benachbarte Zeichenkettenteile, weil die
+                    // Sprache es tut, also ergibt `{"a" "b", "c"}` zwei Marken und ist ein
+                    // Feld mit zwei Elementen. Der Kern schreibt seine Meldungen ueber
+                    // mehrere Zeilen -- das ist hier der Normalfall und keine Ausnahme.
+                    //
+                    // Wer stattdessen die Teile zaehlte, kaeme auf drei und laege damit
+                    // **zu hoch**. Die Schranke unten fragt nach `gelesen < deklariert`; eine
+                    // zu hohe Zahl meldet nichts, wo etwas fehlt. Der Fehler waere also nicht
+                    // ein roter Lauf an heilem Text, sondern ein gruener an kaputtem -- genau
+                    // das, wogegen diese Schranke steht.
+                    Listenzahl lz;
+                    lz.probe = proben[quelle].name;
+                    lz.name = listenname;
+                    lz.stelle = fund.auf;
+                    lz.zeile = liste.zeile[fund.name];
+                    lz.deklariert = deklarierte_groesse(liste.maske, fund.name);
+                    lz.stuecke = e.kennzeichen.size() - vorher;
+
+                    // Zwei Eintraege duerfen dieselbe Liste nennen; dann ist es eine, und
+                    // sie steht einmal in der Erhebung. Verglichen wird die Stelle auf der
+                    // Maske -- zwei Listen koennen sich eine Zeile teilen, eine Stelle
+                    // koennen sie nicht.
+                    bool schon = false;
+                    for (std::size_t l = 0; l < listen.size() && !schon; ++l) {
+                        schon = listen[l].stelle == lz.stelle && listen[l].probe == lz.probe;
+                    }
+                    if (!schon) {
+                        listen.push_back(lz);
+                    }
                 }
                 eintraege.push_back(e);
             }
@@ -1194,6 +1298,38 @@ std::vector<Leerstelle> knappe_tabellen(const std::vector<Probenzahl>& zahlen)
             k.tabelle = t;
             knapp.push_back(k);
         }
+    }
+    return knapp;
+}
+
+/// **Derselbe Boden am anderen Ding:** die benannten Kennzeichenlisten, die eine Groesse
+/// deklarieren und weniger Stuecke hergeben, als sie deklarieren.
+///
+/// Die drei Boeden darueber stehen an der Probe, an der Tabelle und am Eintrag; keiner von
+/// ihnen sieht die Liste. Verliert `KENNZEICHEN_SUMME_DER_REGEL` eines ihrer drei Stuecke,
+/// ist der Eintrag nicht leer -- `gleiche_ab` schweigt --, die Tabelle ist weder leer noch
+/// knapp, und keine der Zahlen in `main` faellt auf null. Der Lauf bleibt gruen und prueft
+/// eine Zusicherung weniger, als der Bestand deklariert. Der Unterschied zur Tabelle ist
+/// **nicht**, dass die Luecke erst morgen aufgeht: Gemessen am 2026-09-08 traegt jede der
+/// drei aufgeloesten Listen im Baum mehr als ein Stueck (3, 2, 2), also steht sie heute
+/// offen -- die Schranke ist erfuellt und nicht schlafend.
+///
+/// Zurueckgegeben werden Stellen in `listen` und keine Kopien: Der Aufrufer hat die Reihe,
+/// und eine Kopie waere eine zweite Fassung derselben Angabe.
+///
+/// **Die Richtung, in die er absichtlich nicht zu streng ist:** Eine Liste ohne lesbare
+/// Groesse (`NICHTS`) steht hier nie drin -- dieselbe Wahl und derselbe Grund wie bei
+/// `knappe_tabellen`. Eine eingebettete Liste erreicht diese Reihe gar nicht erst; sie
+/// deklariert nichts und schuldet deshalb nur, was `gleiche_ab` von ihr verlangt.
+std::vector<std::size_t> knappe_listen(const std::vector<Listenzahl>& listen)
+{
+    std::vector<std::size_t> knapp;
+    for (std::size_t i = 0; i < listen.size(); ++i) {
+        const Listenzahl& lz = listen[i];
+        if (lz.deklariert == NICHTS || lz.stuecke >= lz.deklariert) {
+            continue;
+        }
+        knapp.push_back(i);
     }
     return knapp;
 }
@@ -1351,6 +1487,14 @@ struct Tabellenfall {
     std::size_t      stumm;     // Proben, die den Namen im Code fuehren und nichts liefern
     std::size_t      leer;      // gelesene Tabellen, aus denen kein Eintrag kam
     std::size_t      knapp;     // gelesene Tabellen, die weniger hergeben als sie deklarieren
+    // Aufgeloeste benannte Listen, die weniger Stuecke hergeben als sie deklarieren.
+    //
+    // **Die Vorgabe ist die Erwartung und nicht ihre Abwesenheit:** Geprueft wird dieses
+    // Feld in jedem Fall der Tabelle, auch in den achtzehn, die es nicht angehen. Sie
+    // stehen unveraendert da, weil eine Hand voll `, 0` an achtzehn Stellen eine Aenderung
+    // waere, die kein Uebersetzer gegenliest -- und `{..., 0, 0, 0, 0}` sagt ohnehin nicht,
+    // welche Null welche ist. Die sechs Faelle, die es angeht, schreiben es aus.
+    std::size_t      listen_knapp = 0;
 };
 
 constexpr std::string_view PROBE_BENANNT =
@@ -1367,7 +1511,7 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 19> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 25> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
      "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
@@ -1515,6 +1659,73 @@ constexpr std::array<Tabellenfall, 19> TABELLENFAELLE = {{
      "    {Zwei, \"n\", \"w\", {\"beta\"}},\n"
      "}};\n",
      "", true, "R::Eins=alpha", 0, 0, 0},
+
+    // Die Faelle des Bodens am anderen Ding: der benannten Kennzeichenliste. Der Koeder --
+    // drei deklariert, zwei da. Die Tabelle ist voll, ihre Probe nicht stumm, der Eintrag
+    // nicht leer: **keine** der drei aelteren Schranken sieht ihn. Anders als bei der
+    // Tabelle ist das kein Fall von morgen -- am 2026-09-08 traegt jede der drei
+    // aufgeloesten Listen im Baum mehr als ein Stueck, also steht diese Luecke heute offen.
+    {"eine Liste deklariert drei und gibt zwei her -- gemeldet",
+     "constexpr std::array<const char*, 3> KZ_KURZ = {\"alpha\", \"beta\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_KURZ},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha;beta", 0, 0, 0, 1},
+
+    // Dieselbe Liste mit dem dritten Stueck: Sie muss schweigen. Ohne sie waere nicht
+    // gezeigt, dass die Schranke am Abstand haengt und nicht daran, dass eine Drei dasteht.
+    {"dieselbe Liste mit allen dreien -- nicht gemeldet",
+     "constexpr std::array<const char*, 3> KZ_KURZ = {\"alpha\", \"beta\", \"gamma\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_KURZ},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha;beta;gamma", 0, 0, 0, 0},
+
+    // **Die Naht, und an ihr haengt die Lesart.** Drei Teile stehen da, zwei Marken kommen
+    // heraus, weil die ersten beiden benachbart sind und die Sprache sie verschmilzt. Wer je
+    // Teil zaehlt, kommt auf drei, findet `3 >= 3` und schweigt -- die kurze Liste ginge
+    // gruen durch. Gemeldet wird sie allein unter der Lesart Marke = Element. Das ist der
+    // einzige Fall hier, der die beiden Lesarten trennt: Ein Fall, in dem beide melden,
+    // haette nichts gezeigt.
+    {"drei Teile, zwei Marken, drei deklariert -- gemeldet",
+     "constexpr std::array<const char*, 3> KZ_NAHT = {\"alpha\" \"beta\", \"gamma\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_NAHT},\n"
+     "}};\n",
+     "", true, "R::Eins=alphabeta;gamma", 0, 0, 0, 1},
+
+    // Derselbe Text als Zwei deklariert: Er muss schweigen. Eine Meldung ueber zwei Zeilen
+    // ist die normale Schreibweise des Kerns und keine kurze Liste; eine Schranke, die
+    // daran rot wird, faerbt einen heilen Baum.
+    {"drei Teile, zwei Marken, zwei deklariert -- nicht gemeldet",
+     "constexpr std::array<const char*, 2> KZ_NAHT = {\"alpha\" \"beta\", \"gamma\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_NAHT},\n"
+     "}};\n",
+     "", true, "R::Eins=alphabeta;gamma", 0, 0, 0, 0},
+
+    // Zwei Eintraege nennen dieselbe kurze Liste. Sie ist **eine**, und sie steht einmal im
+    // Bericht. Ohne diesen Fall zaehlte er ein Ding zweimal und nennte eine Zahl, die es
+    // nicht gibt. Die Tabelle deklariert zwei und gibt zwei her -- sie selbst ist nicht knapp.
+    {"zwei Eintraege, eine kurze Liste -- einmal gemeldet",
+     "constexpr std::array<const char*, 2> KZ_GETEILT = {\"alpha\"};\n"
+     "constexpr std::array<OhneZustand<R>, 2> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_GETEILT},\n"
+     "    {R::Zwei, \"n\", \"w\", KZ_GETEILT},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha|R::Zwei=alpha", 0, 0, 0, 1},
+
+    // Und die Groesse der Liste hinter einem `using`: nicht lesbar, also kein Befund. Der
+    // Text ist bis auf die Form der Deklaration derselbe wie der Koeder -- eine Drei steht
+    // sogar noch da, nur nicht mehr vor dem Namen. Die Liste schuldet dann, was die heutige
+    // Regel verlangt -- ein Stueck --, und das prueft `gleiche_ab`.
+    {"die Groesse der Liste steht hinter einem `using` -- nicht gemeldet",
+     "using Liste = std::array<const char*, 3>;\n"
+     "constexpr Liste KZ_VERSTECKT = {\"alpha\", \"beta\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_VERSTECKT},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha;beta", 0, 0, 0, 0},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)
@@ -1560,8 +1771,9 @@ std::size_t selbsttest_verzeichnis()
         const std::vector<Benannt> proben = als_proben(fall.probe, fall.zweite);
         std::vector<Eintrag>       eintraege;
         std::vector<Probenzahl>    zahlen;
+        std::vector<Listenzahl>    listen;
         std::string                klage;
-        const bool lesbar = lies_verzeichnisse(proben, eintraege, zahlen, klage);
+        const bool lesbar = lies_verzeichnisse(proben, eintraege, zahlen, listen, klage);
         if (lesbar != fall.lesbar) {
             std::fprintf(stderr,
                          "Selbsttest Verzeichnis, Fall %zu verfehlt (%s).\n"
@@ -1653,6 +1865,31 @@ std::size_t selbsttest_verzeichnis()
                 ++falsch;
             }
         }
+        const std::vector<std::size_t> listen_knapp = knappe_listen(listen);
+        if (listen_knapp.size() != fall.listen_knapp) {
+            std::fprintf(stderr,
+                         "Selbsttest Verzeichnis, Fall %zu verfehlt (%s).\n"
+                         "  knappe Listen: %zu erwartet %zu\n",
+                         i + 1, std::string(fall.was).c_str(), listen_knapp.size(),
+                         fall.listen_knapp);
+            ++falsch;
+        }
+        // Wieder nicht nur, dass gemeldet wird, sondern womit: Probe, Zeile, Name und beide
+        // Zahlen. Eine Meldung ohne eine davon schickt den Leser an keine Stelle.
+        for (std::size_t k = 0; k < listen_knapp.size(); ++k) {
+            const Listenzahl& lz = listen[listen_knapp[k]];
+            if (lz.probe.empty() || lz.name.empty() || lz.zeile == 0
+                || lz.deklariert == NICHTS || lz.stuecke >= lz.deklariert) {
+                std::fprintf(stderr,
+                             "Selbsttest Verzeichnis, Fall %zu (%s): die gemeldete knappe "
+                             "Liste traegt Probe '%s', Name '%s', Zeile %zu, deklariert %zu "
+                             "und gelesen %zu. Gemeldet wird nur, was Probe, Name, Zeile, "
+                             "eine lesbare Groesse und weniger Stuecke als diese hat.\n",
+                             i + 1, std::string(fall.was).c_str(), lz.probe.c_str(),
+                             lz.name.c_str(), lz.zeile, lz.deklariert, lz.stuecke);
+                ++falsch;
+            }
+        }
     }
     return falsch;
 }
@@ -1737,8 +1974,10 @@ std::size_t selbsttest_abgleich()
 
         std::vector<Eintrag>    eintraege;
         std::vector<Probenzahl> zahlen;
+        std::vector<Listenzahl> listen;
         std::string             lesefehler;
-        if (!lies_verzeichnisse(als_proben(probentext, ""), eintraege, zahlen, lesefehler)) {
+        if (!lies_verzeichnisse(als_proben(probentext, ""), eintraege, zahlen, listen,
+                                lesefehler)) {
             std::fprintf(stderr,
                          "Selbsttest Abgleich, Fall %zu (%s): das eigene Verzeichnis ist "
                          "nicht lesbar -- %s\n",
@@ -1953,7 +2192,8 @@ int main(int argc, char** argv)
 
     std::vector<Eintrag>    eintraege;
     std::vector<Probenzahl> zahlen;
-    if (!lies_verzeichnisse(proben, eintraege, zahlen, klage)) {
+    std::vector<Listenzahl> listen;
+    if (!lies_verzeichnisse(proben, eintraege, zahlen, listen, klage)) {
         std::fprintf(stderr,
                      "kennzeichen_riegel: %s\nEin Riegel, der seinen Gegenstand nicht mehr "
                      "versteht, hat keinen gruenen Zustand.\n",
@@ -2062,6 +2302,39 @@ int main(int argc, char** argv)
                      "ohne diese Schranke niemand als Teil.\nEin Eintrag ist die innerste "
                      "geschweifte Gruppe mit einem qualifizierten Namen darin;\nfehlt einem "
                      "das Doppelpunktpaar, faellt genau er heraus.\n");
+        return 2;
+    }
+
+    // Und derselbe Boden am anderen Ding, hinter dem der knappen Tabellen: Eine benannte
+    // Kennzeichenliste, die drei Stuecke deklariert und zwei hergibt, laesst den Eintrag
+    // nicht leer, die Tabelle nicht knapp, die Probe nicht stumm und keine Zahl darunter auf
+    // null fallen. Sie steht hinter den drei aelteren, weil deren Meldungen die groeberen
+    // Ursachen nennen: Eine Tabelle, die ihre Eintraege nicht mehr hergibt, macht jede Zahl
+    // ueber ihre Listen ohnehin gegenstandslos.
+    const std::vector<std::size_t> listen_knapp = knappe_listen(listen);
+    if (!listen_knapp.empty()) {
+        std::fprintf(stderr,
+                     "\nkennzeichen_riegel: %zu gelesene Kennzeichenliste(n) geben weniger "
+                     "Stuecke her,\nals sie deklarieren:\n",
+                     listen_knapp.size());
+        for (std::size_t i = 0; i < listen_knapp.size(); ++i) {
+            const Listenzahl& lz = listen[listen_knapp[i]];
+            std::fprintf(stderr, "  %-40s Zeile %zu: `%s`, %zu deklariert, %zu gelesen\n",
+                         lz.probe.c_str(), lz.zeile, lz.name.c_str(), lz.deklariert,
+                         lz.stuecke);
+        }
+        std::fprintf(stderr,
+                     "Aufgeloest wurden im ganzen Baum %zu benannte Liste(n).\nGezaehlt "
+                     "werden Marken und keine Zeichenkettenteile: Benachbarte Teile "
+                     "verschmelzen,\nweil die Sprache es tut, also ist `{\"eine lange \" "
+                     "\"Meldung\", \"b\"}` ein Feld mit zwei\nElementen. Die erwartete Zahl "
+                     "steht nicht in diesem Programm, sondern in der spitzen\nKlammer vor "
+                     "dem Namen der Liste. Ein Stueck, das dort fehlt, nimmt eine Zusicherung "
+                     "aus\nder Pruefung heraus, ohne dass eine Zahl auf null faellt -- und "
+                     "einen solchen Teilbestand\nerkennt ohne diese Schranke niemand als "
+                     "Teil. Entweder kommt das Stueck zurueck, oder die\ndeklarierte Groesse "
+                     "faellt mit ihm.\n",
+                     listen.size());
         return 2;
     }
 

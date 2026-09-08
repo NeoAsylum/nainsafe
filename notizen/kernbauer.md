@@ -62,3 +62,67 @@ set is empty -- and the bar is **satisfied, not dormant**: all three sizes parse
   foreign work. Per the package I report that rather than soften the bar -- but the red would
   land in my review, not in `0264`'s.
 
+## 2026-09-08 -- 0269 (a characteristic list that yields less than it carries)
+
+Same shape as `0267`, one object over: the **named** `KENNZEICHEN_*` list. Delivered in
+`kennzeichen_riegel.cpp`: `struct Listenzahl` (probe, name, mask position, line, pieces,
+declared), a fifth out-parameter `listen` on `lies_verzeichnisse` filled at the resolution
+site, `knappe_listen` as the new floor, the abort in `main` behind `knappe_tabellen`, and
+six self-test cases (19 -> 25). Recounted at HEAD: three resolved lists, 3/3, 2/2, 2/2 --
+the bar is satisfied, not dormant, and unlike `0267`'s it stands open **today**, because
+every list in the tree already carries more than one piece.
+
+- 2026-09-08, **the lesson of the run** -- **When you port a bar to a neighbouring object,
+  the counting rule is the work; the bar is the easy half.** For the table an entry was a
+  brace group and the count was unambiguous. For a list the unit is a *mark*, and `zerlege`
+  merges adjacent literals because the language does. The naive one-literal-one-element rule
+  counts **too high** -- and this bar asks `read < declared`, so too high means **silent on a
+  broken list**: a green run on damaged text, not a red one on healthy text. General form:
+  **before porting a threshold, work out which direction the wrong counting rule errs in. If
+  it errs toward silence, the naive rule does not merely misreport -- it deletes the bar.**
+  The one case that separates the two readings is the only one worth writing: three literals,
+  two marks, three declared. Under the correct reading it fires; under the naive one, `3 >= 3`
+  and nothing happens.
+- 2026-09-08 -- **A new expectation column with a default beats eighteen hand-edits I cannot
+  compile.** `Tabellenfall` grew `listen_knapp = 0` as a defaulted last member; the eighteen
+  rows it does not concern stay byte-identical, and the six that do write all nine fields.
+  My own note from `0267` said the nineteen trailing `, 0` were the riskiest edit of that run
+  -- `{..., 0, 0, 0, 0}` says even less than three zeros did. The default **is** the
+  expectation: the self-test checks the field on every case. **Aggregate NSDMI is how you add
+  an assertion to a table without touching rows that were already right.**
+- 2026-09-08 -- **`Zuweisung fund` replaced three parallel locals, it did not add a fourth.**
+  The resolution loop kept `quelle`/`stelle` beside `gefunden`; I needed the name position
+  too, and the honest move was to keep the whole `Zuweisung` the finder already returns
+  rather than carry a third index alongside. Same rule as `0267`: take the position out of
+  the finder. It reads better and it is one fewer thing that can drift.
+- 2026-09-08 -- **Two entries may name one list, and then it is one list.** Deduplicated on
+  (probe, mask position) -- exact identity, not a heuristic; name and line both fail, because
+  two lists can share a line. This is not an exception that weakens the bar: it cannot hide a
+  distinct list, and without it the header would print a count of objects that do not exist.
+  Case 24 holds it. **A report that counts one thing twice states a number that is false, and
+  this repo pays for false numbers.**
+- 2026-09-08 -- **The zero overlaps again, and again I did not buy disjointness.** A named
+  list declaring 2 and yielding 0 is now caught by `knappe_listen` (code 2) instead of
+  `gleiche_ab`'s `leere_liste` (code 1). Stated once in the head comment and left alone.
+  `leere_liste` stays reachable exactly where condition 2 puts it: embedded lists and
+  unreadable declarations. **An extra condition to keep two bars disjoint is a condition that
+  can be wrong later.**
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot compile. Riskiest edits, in order: the trailer `fprintf` in `main` embeds
+  `` `{"eine lange " "Meldung", "b"}` `` inside a split string literal -- escaping there is
+  the one place a slip would not be obvious by eye; then the argument lists of the four new
+  `fprintf` calls (I counted specifiers against arguments by hand, all match); then the
+  aggregate-init assumption that eight initialisers for a nine-member aggregate with a
+  trailing NSDMI is valid C++20. If that last one is wrong, all eighteen old rows fail at
+  once and loudly, which is the good failure.
+  **(b)** The line I report is the **name's** line, not the brace's -- `knappe_tabellen`
+  reports the brace's. Deliberate: the declared size stands before the name, so that is the
+  line the reader must reconcile with the contents. A reviewer holding to symmetry with the
+  table floor will call it an inconsistency. It is one; I think it is the right one.
+  **(c)** `0270` runs in the lane beside me on `kern/test/kennzeichen_probe.cpp` and builds
+  deliberately oversized lists. I checked: that file's table is deliberately **not** named
+  `RIEGEL_OHNE_ZUSTAND` (its own head comment, line 29), and its only mention of the name is
+  in a `//!` comment, which never reaches the mask. So its lists are never resolved and my
+  bar cannot see them. That is a fact about tonight, not a guarantee -- if `0270` introduces
+  a `RIEGEL_OHNE_ZUSTAND` there, the bar reads it.
+
