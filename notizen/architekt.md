@@ -8,6 +8,56 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0268, die zwei unklassifizierten Zeilen: die Antwort auf die zweite stand schon im Nachbarriegel
+
+Regel 5 (nur Ganzzahlliterale **und** in einer `static_assert`-Bedingung) für
+`schritt.cpp:405`, Leseregel (Inhalt von Zeichenketten- und Zeichenliteralen fällt mit dem
+Kommentartext heraus) für `festkomma.cpp:91`. Neuer Abschnitt 33, drei Meldungen. Geändert:
+drei Stellen im T7-Riegelblock plus §33. Tabelle, Regeln 1–4 und Zahlen unberührt.
+
+### Der übertragbare Fund: die Leseregel war keine Entscheidung, sondern eine Ablesung
+
+`bezeichner_riegel.cpp:228-233` sagt ausdrücklich, dass Zeichenketten **ungelesen in den
+Codeteil** wandern — damit eine Netzadresse in einer Zeichenkette keinen Kommentar erfindet.
+Der Zerleger kennt also beide Enden des Literals bereits (`:253-271`); der
+Multiplikationsriegel braucht nichts Neues, sondern dieselbe Grenze einen Schritt weiter.
+**Regel: Bevor du für einen neuen Riegel eine Lesart erfindest, lies den Zerleger des
+Nachbarriegels — die Grenze ist dort meist schon berechnet und nur anders verwendet.**
+
+### Die Zahl: 92 − 56 + 2 − 2 = 36, und die Gegenprobe ging mit einem zweiten Muster auf
+
+`^\s*//.* \* ` gibt **51 + 5 = 56** — genau die Kommentarzahl der Zuordnung, mit einem
+anderen Muster erreicht. Damit ist die Bezugsmenge des Riegels **36 Zeilen**, und die
+Aufteilung geht Datei für Datei auf: `zustand.hpp` 19, `verlauf.hpp` 3, `zustandsausgabe.hpp`
+3, `zustand.cpp`/`werte.cpp`/`schritt.cpp` je 1 = 28; `zufall.hpp` 3 + `pruefsumme.hpp` 1 = 4
+unsigned; `festkomma.hpp` 4 = i128. **Die eine Codezeile von `schritt.cpp` ist `:405`** — das
+belegt zugleich, dass sie in den 28 steckt, ohne dass ich die Tabelle anfassen musste.
+Findings heute: **null**, also `add_test` normal.
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **Regel 5 schreibt dem Riegel Zustand über Zeilen hinweg vor** (`static_assert(` … `;`).
+   Das ist mehr, als die vier Nachbarriegel je Regel brauchen — nötig, weil
+   `festkomma.cpp:90/91` genau so umbricht. Ein enger Prüfer kann es als Baukosten lesen, die
+   der Entwurf nicht rechtfertigt.
+2. **Ich habe das Operandenalphabet auf `+ - *` und Klammern begrenzt und `/` weggelassen.**
+   `static_assert(4 * 3 / 2 == 6)` fiele damit durch. Bewusst (deny by default), aber es ist
+   eine Härte, die niemand bestellt hat.
+3. **Die Aussage „green on its first day" ist eine Rechnung, kein Lauf.** Ich habe die 36
+   Zeilen nicht einzeln gegen die fünf Regeln gehalten, sondern die Mengen gegeneinander
+   geführt. Wer den Riegel baut, misst je Regel nach — das ist dieselbe offene Stelle wie
+   §31 Meldung 2.
+
+### Fährten
+
+- **`kern/test` trägt genau die zwei anderen Zeichenketten mit `*`** im ganzen Baum
+  (`zustandsausgabe_probe.cpp:289` `%.*s`, `zufall_probe.cpp:153` `xoshiro256**`). Wenn der
+  Riegel je auf `kern/test` ausgedehnt wird, trägt die heutige Leseregel beide — nachgemessen,
+  nicht vermutet.
+- **Die Zeilenangabe `:812-832` des Pakets war wieder veraltet** (T7 beginnt bei `:746`, der
+  Riegelblock bei `:833`) — fünfter Beleg in Folge. `ops/inhalt-*.md` plus `Grep` auf `T7`.
+- Ältere Fährten: `notizen/archiv/architekt-2026-09-08-4.md`.
+
 ## 2026-09-08 — Paket 0084, Reihe 20 und die Selbstmessung zu T53: der Abruf ging, aber nicht dort, wo die Vorgabe ihn hinschreibt
 
 Vier Bedingungen, alle vier abgearbeitet. Neuer Abschnitt 32, vier Meldungen. Geändert:

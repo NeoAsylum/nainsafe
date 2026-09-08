@@ -832,7 +832,8 @@ would here be the form that silently goes wrong at the next addition.
 
 **What enforces 4.3: `werkzeuge/multiplikation/multiplikationsriegel.cpp`, and it is not
 yet built.** *Decided in this version, package `0074`.* The latch reads every `.hpp` and
-`.cpp` under `kern/include` and `kern/src`, drops comment text, and holds every remaining
+`.cpp` under `kern/include` and `kern/src`, drops comment text **and the content of string
+and character literals** (the reading rule below), and holds every remaining
 binary `*` against **named rules**, first match wins — the construction of
 `werkzeuge/bezeichner/bezeichner_riegel.cpp` („jeder solche Fall faellt unter eine
 **benannte Regel**; eine Liste einzelner geduldeter Namen gaebe es nicht"):
@@ -842,7 +843,11 @@ binary `*` against **named rules**, first match wins — the construction of
 2. `sizeof(...)` on either side;
 3. an **unsigned** literal (`5ULL`, `8u`) or a named `u64` constant — the T11/T12
    exception below;
-4. `static_cast<i128>` on both sides — the computation site of T6.
+4. `static_cast<i128>` on both sides — the computation site of T6;
+5. **both operands are integer literals** — digits, the digit separator `'`, whitespace,
+   parentheses and `+ - *`, no identifier — **and** the `*` stands in the condition of a
+   `static_assert`. *Decided in this version, package `0268`;* section 33 says why both
+   halves are needed and why the operand alphabet ends there.
 
 Anything else is a **finding**, and that is the fifth kind: two `i64` with magnitude
 meaning per T5. Deny by default is the whole point; a rule reads the **declaration** the
@@ -851,6 +856,27 @@ line names, never the line alone. It builds and runs like the four latches besid
 `FABRIK_MITGLIEDER` of `../../CMakeLists.txt`, and
 `add_test(NAME multiplikationsriegel COMMAND multiplikationsriegel ${FABRIK_VORHABEN_WURZEL})`.
 It must read **both spellings**, `a * b` and `a*b`; see the blind spot below.
+
+**What the latch reads, before any rule applies.** Comment text falls out — and so does the
+**content** of every string and character literal, for the same reason: a `*` between
+quotation marks is data, not an operator. `festkomma.cpp:91` carries `"a*b sprengt i64 ..."`,
+the message of the `static_assert` one line above it, and `zufall_probe.cpp:153` would bring
+`xoshiro256**` along the day `kern/test` comes under the rule. The splitter of
+`bezeichner_riegel.cpp` already finds both ends of a literal (`:253-271`) and moves it
+**unread into the code part** on purpose (`:228-233`), so that a web address in a string
+invents no comment; this latch takes the same boundary one step further and drops what lies
+between the delimiters. The delimiters stay, so the operand structure of the line is
+unchanged. This is a rule of **reading**, not a tolerated name — it names a kind of text, no
+line and no file.
+
+**The reference quantity is the set the latch sees, and that is not the 92 lines of the
+mapping below.** The mapping is measured with ` \* ` alone; the latch reads both spellings,
+only the code part, and only after comment text and literal content are gone. Re-measured at
+HEAD on 2026-09-08 that set is **36 lines**: the 92 minus the 56 that are running text in a
+comment, plus the two narrow-spelling hits, which fall out again — `festkomma.cpp:91` as a
+string literal, `meldung.hpp:54` as comment text. **All 36 match a rule**, `schritt.cpp:405`
+under rule 5 and the other 35 under rules 1 to 4; the latch is therefore **green on its first
+day**, and `add_test` is registered as prescribed above and not deferred.
 
 **Why not a lock the compiler holds, and why not the plain text latch.** The lock is the
 better form and is not available: `#pragma GCC poison` takes **identifiers**, `*` is an
@@ -5772,3 +5798,85 @@ or as `10.553` in the German form the formula lines use — stands inside a sent
 section 17 or 32 that reports the correction, never in a table cell. `Grep` for `| 20 |` in section 7 gives the new row, and the
 three counts under that table — 31 reported series, 27 target series, four quantities
 without a data anchor — are the ones they were before it.
+
+## 33. Die zwei Zeilen, die der Regelsatz nicht erreichte — Paket `0268`
+
+**What this answers, in one line.** T7's latch had four rules and no reading rule, and two
+lines that stand in the corpus today matched neither; `schritt.cpp:405` now falls under a
+fifth **named rule**, `festkomma.cpp:91` under a stated rule of **reading**, and the latch
+runs green on its first day instead of red.
+
+**Two answers and not one, because the two cases are not the same question.** The first asks
+what the rule set **covers**, the second what the latch **reads** before any rule applies. A
+single sentence over both would have been the list of tolerated names that T7 rejects with
+`bezeichner_riegel`'s own wording.
+
+### `schritt.cpp:405` — rule 5, and why both halves of it are needed
+
+`static_assert(4 * (12 + 9 + 1) + 22 + 40 + 2 == 152, "T38: ...")` — a recount over plain
+literals at compile time. No operand is `Index` or `std::size_t` (1), no `sizeof` (2), no
+unsigned literal and no named `u64` (3), no `static_cast<i128>` (4).
+
+What justifies admitting it is not that literals are harmless — it is that **the line checks
+its own product**: the value is fixed when the line is written, it reaches no state address,
+and were it wrong the assertion computing it would fail the build. That is the heading of T7
+— never *silently* a wrong number — met by another mechanism. The justification carries only
+as far as both halves reach, and dropping either opens a hole:
+
+- **literals only**, without the `static_assert`, would admit `i64 x = 100'000 * 100'000;`.
+  The operands there are `int`, not `i64`; the product leaves the assertion, nothing checks
+  it, and the self-checking argument does not cover it.
+- **`static_assert` only**, without the literal alphabet, would admit any named operand in an
+  assertion condition and would restate rules 1 to 4 badly.
+
+**The latch carries one piece of state for this**, because a `static_assert` is already broken
+across lines in the corpus: `festkomma.cpp:90` holds the condition, `:91` the message. The
+state opens at `static_assert(` in the code part and closes at the next `;` — the same shape
+as `im_block` in `bezeichner_riegel.cpp:222`, and the `;` is unambiguous because the message
+is a string and its content is gone by then.
+
+**A character outside the operand alphabet is a finding, deliberately.**
+`static_assert(4 * 3 / 2 == 6)` would not match, because `/` is not in it. Deny by default
+means the next kind is decided in this document, not by whoever writes the line.
+
+### `festkomma.cpp:91` — reading, not a rule
+
+The line is the message of the `static_assert` above it, a string literal whose text happens
+to spell `a*b`. The rule set must not be widened for it: nothing there is a multiplication,
+so any rule admitting it would be admitting text. The reading rule stands in T7 above with
+its evidence — `bezeichner_riegel.cpp:228-233` moves literals **unread into the code part**
+on purpose, so the boundary the multiplication latch needs is already computed at
+`:253-271`.
+
+### Reports to the project manager
+
+1. **The latch is still only prescribed.** This package removed the reason it would go red on
+   day one; it did not build it. §31 report 1 stands unchanged, and the successor package
+   under `werkzeuge/multiplikation/` is what closes it.
+2. **The mapping's 28 and the latch's rule 1 are not the same 28.** The by-kind sentence
+   counts `schritt.cpp:405` under address and dimension arithmetic; under the rule set it is
+   the one line falling to rule 5. The table's numbers are out of scope for this package and
+   are untouched — but whoever builds the latch should expect 27 rule-1/2 matches there, not
+   28. My own logbook flagged this line on 2026-09-08 as a possible fifth kind before the
+   review found it.
+3. **`kern/test` is next in line for the same two questions.** It does not stand under the
+   rule and holds 83 ` \* ` lines; the two string literals with a `*` in the whole tree that
+   are *not* `festkomma.cpp:91` sit there (`zustandsausgabe_probe.cpp:289` `%.*s`,
+   `zufall_probe.cpp:153` `xoshiro256**`). Extending the latch to `kern/test` needs this
+   reading rule and no further one — that is the point of deciding it here.
+
+### Untouched, expressly
+
+Rules 1 to 4 in their wording, measure 4.3 and measures 1 to 3, the plain-text-latch table
+(`zufall.hpp:166`, `zustand.cpp:840`, `zustand.hpp:777`), the mapping table with its 92 lines
+in 14 files and its by-kind split, the `mal` paragraph and the seven fifth-kind sites, the
+blind-spot paragraph, the two deliberate wrapping exceptions, and every file outside this one
+— in particular the latch itself. Sections 18 to 32 in full.
+
+### The check this section can be held to
+
+`Grep` for ` \* ` over `kern/src` and `kern/include` gives 92 lines in 14 files; `Grep` for a
+`*` between two identifier characters gives two, `festkomma.cpp:91` and `meldung.hpp:54`;
+`Grep` for `^\s*//.* \* ` gives 56, which is the by-kind comment count reached by a second
+pattern. 92 − 56 + 2 − 2 = **36**, and `schritt.cpp:405` is the single code line that
+`kern/src/schritt.cpp` contributes to it.
