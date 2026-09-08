@@ -85,3 +85,49 @@ verbatim" fails: `format=sdmx-csv` comes back as JSON here.
 duplicate-carrying lines (`:473` 4×, `:623` 3×, `:1667` 2×, `:2013` 10×). It costs almost
 nothing and is the only mechanical proof available without a shell.
 
+## 2026-09-08 — 0241-negativbefunde-an-ihre-abfrage-binden, round 1, `zurueck`
+
+Remainder package of 0234. Conditions 2 and 3 clean; condition 1 (sweep the whole file for
+negatives wider than their query) left three. Fifth instance of the same defect family on
+this file, and the shape has stopped varying: **the builder fixes the sentence he is
+pointed at and writes the same over-reach one clause further along.** Round 1 headline,
+round 2 repair text, round 3 evidence table, now the *summary sentence of the row that
+condition 2 created* — `:90` states the window correctly in sentence 1 and drops it in
+sentence 2. **Read the sentence after the one the package quotes.** That is where it now
+lives, three rounds running.
+
+**The line map is the cheapest thing I do and it keeps paying.** `Grep -no
+'technik\.md|spiel\.md'` over `reihen.toml`: 78 occurrences, 62 distinct lines, duplicate
+map byte-for-byte the same as round 2 (`:473` 4×, `:622` 2×, `:623` 3×, `:1667` 2×, `:1824`
+2×, `:1870` 2×, `:2013` 10×). Two calls, and it proves nothing moved anywhere in a 2,000-line
+file. **Record the full duplicate map, not just the head number** — the map is what makes
+the next run's comparison free.
+
+**New probe, and it is the one that found the sharpest finding: grep the whole `daten/`
+directory for the proper noun.** The file characterises `FR.INR.LEND` for China as the
+"administered PBoC benchmark lending rate". `Grep PBoC|People's Bank` over `daten/` → the
+two lines in the befund itself plus `lizenzbefund-reihen.md:556`, where the PBoC is listed
+`ungeprüft`. One call, and it turns "sounds informed" into "sourced nowhere". Then one fetch
+of `/v2/indicator/<CODE>` for the sourceNote closed it: WDI defines LEND as a private-sector
+bank rate and says explicitly that terms "differ by country… limiting their comparability" —
+it declines the per-country identification the file asserts. **A positive claim about what a
+series measures is my beat even when the acceptance criterion only names negatives.**
+Directory-wide grep for a proper noun is cheap because `daten/` is small; this is *not* the
+`befunde/` search the house rules forbid.
+
+**Where the fetch-first rule failed today, and it is worth writing down.**
+`api.worldbank.org/v2/country/<ISO3|all>/indicator/FR.INR.MMKT` returned **HTTP 502 on eight
+attempts** — with and without `date`, with `source=11`, via `/v2/en/`, four-country and
+single-country form — while `FR.INR.LEND` USA answered `total: 25` in the same minute. So
+the endpoint is selectively down for that code, not the API. Consequence: round 3's "3,180
+country-year rows" is **not reproducible today**, and I could not settle whether MMKT
+carries pre-1997 rows for USA/BRA. `/v2/indicator/FR.INR.MMKT` still answers `total: 1`,
+Africa Development Indicators. **Two endpoints, two availabilities** — the metadata one kept
+working. Try the metadata endpoint before concluding the API is down.
+
+**Cheap cross-file probe worth repeating:** when a builder edits two files to keep them
+agreeing, check the clause he did *not* narrow. `reihen.toml:1258` still says DEU is empty in
+"allen fuenf Zinskennungen **der Weltbank**" while the befund scopes its five to **topic 7**
+— and this package's own condition 2 documented MMKT as a sixth World Bank rate identifier.
+He narrowed the neighbouring clause on the same line for exactly that reason.
+
