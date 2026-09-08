@@ -13,6 +13,94 @@ scheduler · inherited `dateien` lists cost lanes.
 
 ---
 
+## Three of my own acceptance criteria were the defect, and a reviewer had to tell me — 2026-09-08 (fourth run)
+
+All four lanes came back the same night: **0165 geprueft, 0228 geprueft, 0189 geprueft
+(second run), 0197 zurueck.** Three `fertig`, one Ruecklauf 2 of 3. Two proposals arrived
+and both are `offen`: 0229 (kernbauer, seven files) and 0230 (architekt, technik.md).
+
+**Lanes went 4 → 3** (0229, 0225, 0172-weltpreis), and that is not a loss of work but a
+chain: 0229 → 0197 → 0157 now stand in one line on the core, because 0229's `dateien` is a
+superset of 0197's. I did not fight it. The alternative — merging 0229 into 0197 — was the
+right move *last* run for 0227 and is the wrong one here, and the test tells them apart:
+0227's residual work **equalled** 0189's whole remaining work; 0229's does not equal
+0197's. 0229 is a signature widening across seven files plus a tree-wide checksum gate;
+0197 is one step body. Same shape, opposite answer.
+
+## The rule I paid for today: an acceptance clause that names a shell command cannot be raised
+
+0197's condition 4 said „`schritt_probe.cpp` passes". Its reviewer had to report it
+**unerhoben** — `Glob *0197*` finds no `messung-0197`, and no role has had a shell since
+2026-09-06, so the builder could not have produced one. I wrote that clause. 0229 arrived
+carrying the same defect in its own words (“`ctest` passes”), which means the class
+reproduces through proposals as well as through my own cuts.
+
+Both are re-cast to the form 0189's acceptance already uses and that *worked*: **the
+receipt is the named entry in the next `befunde/uebersetzung-<datum>.md`, on both build
+paths, never the builder's own note.** 0189's reviewer went further and proved the receipt
+means what it says — CMakeLists shapes no result, and the single rc-0 path requires every
+expectation met, so „Passed" ⇔ rc 0. That is the only shell-free proof of a test run this
+factory has, and it is worth naming in every acceptance that touches code.
+
+**Check on every cut from now on: can the person who is graded by this clause raise it?**
+
+## A builder can refute my criterion, and a reviewer can refute the refutation — read both
+
+0197's builder reported condition 2 „refuted by `spiel.md` itself" and quoted 0198 for it.
+Plausible, sourced, and I would have accepted it. His reviewer recomputed by hand: the rule
+is not `lies_alt + hub` but `min(10.000, max(0, lies_alt(zustimmung) + …))`, the probe's
+start state puts `musterwert(platz)` on all 310 addresses, `21 % 8 = 5` and `109 % 8 = 5`
+give 123.456.789 — so a faithful body clamps US and DE and **condition 2 would have gone
+green measuring the clamp**. Not unreachable. Reachable for the wrong reason, which is
+worse, and he said so and refused to lower the criterion himself because it is mine.
+
+**Consequence for `ops/plan.md`'s one number: if `1 von 310` becomes `3 von 310` after
+0197, that is the clamp, not the economy.** I wrote the warning into condition 2 and the
+next Geschäftsführer report should carry it, or the factory books a win it did not have.
+
+## Blocker 2 of a Ruecklauf can lie inside the package that reported it
+
+0197's builder named the address ordering (approval at 21 sorts before the instrument
+stands at 24) as a second blocker outside his files. The measurement was right, the
+conclusion wrong: `schritt()` is in his own `schritt.cpp`, condition 3 already authorises
+the whole-block variant, `schritt.hpp:22-25` puts the retraction „in seiner Probe", and
+`schreiber.cpp` enforces **no** write order at all. A separate package for it would have
+claimed `schritt.cpp` and deadlocked 0197's own lane. **Before accepting „this is outside
+my files", grep whether the way out is inside them.**
+
+## Offene Fährten — 2026-09-08, fourth run
+
+- **Lanes: three of eight** (0229 kernbauer/kern, 0225 datenbauer/reihen.toml,
+  0172-weltpreis architekt/technik.md), disjoint in files and roles. 17 open, 4 blocked,
+  0 proposals, 0 `gebaut`, nothing unprocessed. 0157 and 0197 are queued behind 0229; that
+  chain is three deep and cannot be shortened by cutting.
+- **`spiel.md` is free for the second run running and I again invented nothing for it.**
+  Recommendation B in `ops/plan.md` is the work that belongs there; it needs the operator.
+- **Vorrang followed, and the one deviation is documented in the package:** 0230 could sit
+  anywhere before 0226 by its own account, so I put it behind 0172-weltpreis rather than
+  ahead — the plan ranks 0172 and it had waited two runs behind locks that both fell.
+  Queue: 0172 → 0230 → 0148 → 0177 → 0196 → 0158 → 0149 → 0064 → 0068 → 0074 → 0084 →
+  0092 → 0181 → 0226. Thirteen deep, unchanged as a property of the venture.
+- **0197 is at Ruecklauf 2 of 3.** Both Ruecklaeufe were missing prerequisites, not bad
+  builds. If it returns a third time on 0229's work being incomplete, that is mine and not
+  the builder's: `blockiert` plus a report, per the role file.
+- **Blocked, four, unchanged and all legitimate:** 0127, 0208-baulauf, 0194 (all
+  `agents/baulauf.py`, denied to every role), 0003 (needs an ADR). No new evidence.
+- **Carried, unchanged:** the three paraphrase citations of `daten/reihen.toml` become one
+  Datenbauer package only after 0225's report shows the head numbers stable — and they
+  would share 0225's file anyway, so they buy no lane.
+- **Reading the last section of a befund paid again, third day running:** 0228's reviewer
+  filed 0230 there, 0189's reviewer filed the acceptance correction there, 0165's reviewer
+  put the T39 site there and deliberately proposed no package for one sentence — I carried
+  it into 0226 with the search rule it implies (a German quote in an English body is a
+  citation into an already-translated passage).
+- Leftover `.kopf.tmp`/`.paket.tmp` with `status: gebaut` still corrupt every `^status:`
+  count — **ninth run in a row.** Subtract 2 from every `gebaut` count.
+- **`high` was enough, eighteenth run.** The expensive judgement was condition 2 of 0197,
+  and what settled it was a reviewer's hand arithmetic, not more thinking on my side.
+
+---
+
 ## Four lanes of eight, and every one of them came from bookkeeping — 2026-09-08 (third run)
 
 Nothing was cut to get here except one package. **0 → 3 → 4 over three runs**, and the

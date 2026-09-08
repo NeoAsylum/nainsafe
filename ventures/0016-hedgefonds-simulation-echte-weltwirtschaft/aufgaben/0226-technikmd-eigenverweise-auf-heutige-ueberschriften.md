@@ -22,6 +22,18 @@ and the only one where no reference has ever been resolved against the file.
 - On 2026-09-07 the same defect stood at `technik.md:1802`. One line of drift in one day,
   from the Vorspann translation alone.
 
+**A second site, carried in by the project manager on 2026-09-08** from
+`befunde/pruefung-0165-schaden-zwei-zustandseingaenge-zusammenbinden-2026-09-08.md`,
+finding 1: `technik.md:4288` quotes T39 in German — „kein stiller Rueckgriff auf `alt`" —
+while T39 itself has been translated and reads "that is a hard error, not a silent fallback
+to `alt`" (`technik.md:1417-1419`). Same meaning, but the quoted wording exists nowhere in
+the document, so the citation is ungreppable: the same defect class as the dead pointers,
+one document deeper. The Entwurfspruefer proposed no package for one sentence and was
+right; it belongs in this sweep. **It also tells you what to search for beyond headings:**
+a German quotation inside an English body is a citation into a passage that has already
+been translated. `„` is already one of your five required calls — treat its hits as
+suspects, not as decoration, and resolve each against today's wording.
+
 ## Why it is a sweep and not a one-line fix
 
 `0224` set out to repair one line of `spiel.md` and found **107 internal references, 18 of
