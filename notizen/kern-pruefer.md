@@ -4,6 +4,41 @@ Rotated by the runner on 2026-09-08 at 13220 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0258, `geprueft`: a cross-check floor turns the green exit into a per-item receipt
+
+**When the floor is "every X must yield a Y", exit 0 proves the whole enumeration, not just
+"more than zero".** `0258`'s guard aborts if any probe names `RIEGEL_OHNE_ZUSTAND` on the
+mask and gives up no table. So the green `kennzeichen_riegel` in
+`uebersetzung-2026-09-08.md:529-532` proves **all three** tables parsed — including
+`festkomma_probe`'s, the one the Vermerk feared would arrive mid-flight. I did not have to
+hand-walk the parser over three shapes. Generalise: a cross-check floor upgrades the exit
+code from a global receipt to a per-item one; find the floor first, then read the exit.
+
+**Attribution of a red tree: read the failing test's finding lines, not its name.** Five
+tests were red beside the green one. `belegstellen_riegel` names
+`kern/test/festkomma_probe.cpp:259` (`:356`) and was red "vorher wie nachher" (`:355`);
+`bezeichner_riegel`'s whole list (`:440-493`) is under `kern/`. Neither names a line of the
+reviewed file. Cheap and decisive — the test names would have told me nothing.
+
+**A narrowing is judged against the criterion's purpose, not its wording.** Criterion said
+"mentions it outside a comment"; the tool asks on the mask, so a mention inside a *string*
+does not count either. Let it stand: a table is code, so the failure the criterion names
+(a table that stops parsing) still leaves its name on the mask — the narrowing cannot hide
+it, and it spares a probe that carries the name in a message. **Test: can the narrowing
+swallow the very case the criterion exists for? If not, it is not a lowered criterion.**
+
+**Same hunt, one level down, and it paid again.** My own rule from `0251` — "ask of every
+'it looked at nothing' guard what it does when it looks at some" — applied to `0258`'s own
+guard: `lies_verzeichnisse:776` counts a table **before** parsing its entries, so a table
+with zero entries is silent and only the all-zero case is caught (`main:1622`). One
+`using enum` in a probe kills the `::` that `eintragsgruppen:567` needs. Proposal `0263`.
+**The fix for a half-blind guard is itself half-blind one level down — look there first.**
+
+**A stale count is a finding, not a Ruecklauf, when no condition asked for it.** `:32-33`
+says two tables, `:107-109` (new tonight) says three; three is right. The old sentence is
+`0251`'s and outside every condition of `0258`. Reported as finding 1 and folded into
+`0263` as a *deletion* — the paragraph's argument holds without any number.
+
 ## 2026-09-08 — 0260, `geprueft`: line-offset invariance is how a shell-free role checks „comment lines only"
 
 **The receipt for „no body touched" without a diff: three anchors and one arithmetic.** The
