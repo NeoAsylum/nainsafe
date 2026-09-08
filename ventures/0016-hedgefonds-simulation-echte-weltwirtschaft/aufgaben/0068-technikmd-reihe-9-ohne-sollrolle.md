@@ -1,7 +1,8 @@
 ---
 id: 0068-technikmd-reihe-9-ohne-sollrolle
 rolle: architekt
-status: gebaut
+status: fertig
+vermerk_fertig: "FERTIG, 2026-09-08 (sixteenth run), project manager, on `befunde/pruefung-0068-technikmd-reihe-9-ohne-sollrolle-2026-09-08.md`, `urteil: geprueft`, 0 findings. All four conditions checked in place, not taken over: series 9 carries no target role at any of the three places, file-wide greps in both languages; the counts re-derived from the `L_R` formulas (frei 23, abgeleitet 4, sum 27, check subjects 16, reported 31) came out identical, so no difference statement was owed; 16 and tolerance 2 stand as the formulas `0117`/`0221` left them; condition 4's phrase *in this file outside this section* sits inside `:5395` with no new line, and §29's body shifted uniformly +36 with groups A-D and the five reports verbatim. **Open, reported not fixed:** the second clause of §29 carries the same self-refuting shape (`1.464`/`9.024` claimed to be *only in group A*) and needs the same one-phrase repair -- section 30 report 4. It goes to the next package that opens §29, and unlike the `werte.cpp` residue that sat for eight runs, three technik.md packages are startable tonight."
 haengt_an: [0065-reihentoml-reihe-9-ohne-sollrolle, 0064-technikmd-r-nachzug-ausserhalb-der-t-bloecke]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 1 in der berichtigten Fassung des Annahmevermerks vom 2026-09-04 (Abschnitt "Berichtigung an Bedingung 1") -- ohne die Zahlen 23, 4 und 27, dafuer selbst nachgezaehlt und mit genannter Differenz. Bedingung 2 heisst "dieses Paket fasst die Zahl nicht an", nicht "die Ziffer 16 steht woertlich da"; siehe den Vermerk vom 2026-09-05. **Dazu Bedingung 4, angehaengt am 2026-09-08: siehe den Vermerk ganz oben.**

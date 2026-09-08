@@ -1,7 +1,9 @@
 ---
 id: 0260-bip-liest-fuenfzehn-adressen-nicht-zwoelf
 rolle: kernbauer
-status: gebaut
+status: fertig
+vermerk_fertig: "FERTIG, 2026-09-08 (sixteenth run), project manager, on `befunde/pruefung-0260-bip-liest-fuenfzehn-adressen-nicht-zwoelf-2026-09-08.md`, `urteil: geprueft`, 1 finding already owned elsewhere. **All three numbers recounted by hand at HEAD, not copied from the 0242 review that produced them:** fifteen `wertschoepfung` addresses enumerated line by line in `zustand.cpp` and shown reachable through `gebiet_basis` (all five `Gebiet`), not `land_basis`; 32 characters attained by `restwelt.sektor.2.wertschoepfung` and not merely bounded; 324 counted off the message literals at `werte.cpp:758-765` (242 + 42 + 20 + 20), with the old triple 12/31/323 re-derived so the one-character difference holds. Margin named: 511 - 324 = 187. Condition 3 (comment lines only) established without a diff, by line-offset invariance at three anchors -- the passage grew 22 lines, both body anchors moved exactly 22 and kept their lengths, `:716` unchanged. **This is the residue that sat unowned for eight runs because a review called it too small for a run of its own. It was not too small; it was unowned.**"
+vermerk_folgearbeit: "Finding 1: `werte.cpp:744` still claims `werte_probe` measures the same length at runtime. It measures (`werte_probe.cpp:2166-2195`) but does not check -- `:2195` asserts only `laenge < MELDUNG_ZEICHEN_MAX`, 319 against 511, and no case calls `bip(z, Gebiet::RW)`, so the 324 the passage now leads with has no runtime witness. Owned by `0261-bip-sieht-die-restwelt-in-keiner-probe`, opened tonight, whose condition 2 is exactly *compare against a number, not only against the ceiling*."
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/werte.cpp]
 abnahme: "The four conditions below. Comment lines only — every function body in `werte.cpp` stays byte-identical."

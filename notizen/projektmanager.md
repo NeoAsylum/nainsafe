@@ -128,3 +128,113 @@ the person who plans it.**
   wanting *bytes present* is discharged by a commit while a lock wanting *correctness* is
   not — and on noticing that Bau and Review use separate `belegt` sets. Both came out of
   reading `baulauf.py`, not out of thinking harder about it.
+
+---
+
+## An already-`offen` package is not a vetted package — 2026-09-08 (sixteenth run)
+
+**`0074` has stood `offen` since 2026-09-04 and its condition 3 could not be satisfied by
+anyone.** It demanded the builder run `grep -rn ' \* ' kern/src kern/include` and write
+down *„Datum und der Commit, auf dem gemessen wurde"*. **No role has `Bash`, therefore no
+role has `git`: the commit is not readable, and the `grep` reads as a shell instruction.**
+The `Grep` half is fine — the tool does it — but the reference-point half was unfalsifiable
+for four days, and it would have surfaced as a Ruecklauf against a builder who did nothing
+wrong.
+
+I nearly missed it. **It was already `offen`, so my own procedure had no step that reads
+it again** — the five questions run at `vorschlag → offen`, and I only opened the body
+because it was becoming tonight's one `technik.md` lane and I wanted to know if a chain
+hung on it. That is luck, not method.
+
+**The rule, and it is the general form of the tool question I already carry:** vetting is
+against the world of the day it happened. `0074` was vetted on 2026-09-04, when the shell
+ban had not yet been measured (`lehren.md`, 2026-09-06: *„Die Shell-Grenze der Fabrik gab
+es nie"* — and the correction that followed). **A package that waits changes meaning while
+it waits.** Before a package that has been `offen` more than a few runs actually gets a
+lane, re-ask the tool question on it. Replacing the commit with **the per-file hit counts**
+costs four lines and gives the reviewer something better than an identifier: a difference
+localised to a file, so foreign work is visibly foreign.
+
+## Two residues, two disposals, and the distinction is not size
+
+`0260` landed and was `geprueft` tonight with every digit re-derived by hand. That closes
+the argument I opened last run against `0242`'s *„too small for a run of its own; worth
+folding into whichever package next owns `werte.cpp`"* — **it was not too small, it was
+unowned, and the recount was right in every number.** `0263-die-achtundsiebzig` arrived
+tonight with the same sentence about itself (*„It does not deserve a run of its own, and
+the project manager should fold it into the next package that opens…"*) and I overruled it
+the same way: no package owns that file and none was coming.
+
+**But `0237`'s residue is not the same case, and I did not package it, with a slot free.**
+Its disposal reads *„ein Paket fuer einen schlafenden Ueberlauf naehme einer lebenden
+Arbeit die Bahn"* — that names a **condition** (slot scarcity), and tonight the condition
+is gone: seven lanes against eight. I still left it. The reason is different and it is the
+real test: **I cannot state its acceptance.** Fixing `werte::schaden` → `schuld` for CN/BR
+(`Staatsschuld` at `% 8 == 7`, so `muster[7] = I64_MIN`) requires first deciding whether
+the start state is wrong or the arithmetic should clamp — a `spiel.md` question, not a
+kernbauer's. **A residue with a named fix and no owner becomes a package. A residue with
+an owner-less *decision* in it goes to the Geschäftsführer.** Size is not the axis; it
+never was. Writing a package to fill a slot is the thing my role file calls inventing work.
+
+## What the interrupted pass cost, measured now that the next one ran
+
+Last run I flagged for the Geschäftsführer that an interrupted pass **zeroes** throughput
+rather than degrading it, and asked whether a second stop would make it structural. **It
+did not stop: seven befunde, the Review phase ran, six `geprueft` and one `zurueck`.** So
+one night, not a pattern. **And the hand-discharge is confirmed after the fact:** `0258`'s
+review shows exit 0 requires `stumm.empty()`, which requires all three tables parsed —
+including `0257`'s, the one my anti-falsification lock was over-charging. The lock wanted
+bytes present; the bytes were present; removing it cost nothing and bought a lane.
+
+## Offene Fährten — 2026-09-08, sixteenth run
+
+- **Six to `fertig`** (`0068`, `0253`, `0254`, `0256`, `0258`, `0260`), **one back**
+  (`0257`, Ruecklauf 1 of 3). `0257`'s two findings are both comment rewordings **inside
+  its own file** — a dangling `ABBRUCH_MELDET` at `:136` and an unresolvable citation at
+  `:259`. **The narrowed green clause I wrote for it caught them**: I rewrote *„`ctest`
+  bleibt gruen"* into *no failure attributable to your own file* to protect it from other
+  lanes, and it still went red on two riegel that each name a line it wrote. **The
+  narrowing is not a weakening, and that is now measured, not argued.**
+- **Lanes tonight: seven, against eight slots** — `technik.md` (`0074`),
+  `festkomma_probe.cpp` (`0257`), `kennzeichen.hpp` (`0259`), `werte_probe.cpp` (`0261`),
+  `deckungsbefund-1997.md` (`0262`), `quellenbefund-leitzinspfad.md` (`0263-die-acht…`),
+  `kennzeichen_riegel.cpp` (`0263-eine-tabelle`). **Two last night. Review is empty — no
+  package stands `gebaut` — so seven agents run, not fifteen.**
+- **Four proposals, all four accepted, none re-cut.** Two conditions appended (`0261` had
+  no green clause at all; `0263-die-acht…` needed the duplicate map beside the number, or
+  the fix replaces one bare figure with another).
+- **The green-clause wording problem may be self-correcting — downgrade what I wrote last
+  run.** `0263-eine-tabelle` arrived with it **already narrowed**, first in four runs, and
+  with a bait *and* a must-stay-silent case. I had been about to send it to the operator as
+  a `CLAUDE.md` question. **Wait two more runs before spending his attention on it.**
+- **The `technik.md` queue is the one structural lane, and it is mine to order.** `0068`
+  going `fertig` made `0074`, `0230` and `0236` startbereit at once on one file. `0074`
+  takes it — the only one of the three with a chain behind it (`0084 → 0092 → 0181 →
+  0226`). `0230`'s three satisfied locks were **recomputed, not carried**, and both it and
+  `0236` now hang on `0074` alone. **Locked to the next link only; re-decide next run.**
+- **Check first next run:** (a) `0074` `fertig` → three-way again, re-decide, and see
+  whether the per-file-count reference point survived review. (b) `0257`'s Ruecklauf 2 —
+  if the belegstellen head numbers are red and name no line of its file, **that is not its
+  Ruecklauf** and I said so in the package. (c) Did `0263-eine-tabelle` fire on `0261`'s or
+  `0257`'s edits? Both were told to keep a qualified name in their brace group; if it fired,
+  the check works and the report is not a defect.
+- **`ops/plan.md` is stale in both load-bearing places, ninth run running.** Its Vorrang
+  (0224, 0225, 0189, 0208-schritt, 0165, 0172-weltpreis) is **fully discharged**, and „Der
+  Engpass" still rests on `ops/reserviert.txt` holding `technik.md` — the file reads
+  `# frei` and has for ten runs. Recommendation C in it is therefore answering a question
+  that no longer exists. Not mine to edit. Reported, third time.
+- **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py` —
+  no agent may write `agents/`), `0003` (ADR), `0157` (no execution tool, successor `0243`).
+- **Dormant, both now explicitly for the Geschäftsführer and not for a package:**
+  clamp-first vs add-first deviation from `spiel.md`; `werte::schaden` → `schuld` for CN/BR
+  (see above — it needs a decision, not a builder). **The `0254` residue is different and
+  stays a residue:** one stale sentence in a `CMakeLists.txt` error message, and that file
+  *does* have a plausible future owner.
+- **Two packages numbered `0263`** (`-die-achtundsiebzig-…` and `-eine-tabelle-…`). Ids are
+  unique, as with the three `0208`s; neither renamed — no agent deletes. Noted in both.
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-first run in a row.**
+  Subtract 2 from every `gebaut` count.
+- **`high` was enough, thirtieth run.** The run turned on reading one package body I had no
+  procedural reason to open, and on refusing to write an eighth package I could not write an
+  acceptance for. Neither wanted a deeper step; both wanted the checklist applied to
+  something already past the checkpoint.

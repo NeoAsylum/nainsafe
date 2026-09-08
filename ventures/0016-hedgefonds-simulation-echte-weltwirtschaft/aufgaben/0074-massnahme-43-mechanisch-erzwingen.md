@@ -4,7 +4,8 @@ rolle: architekt
 status: offen
 haengt_an: [0026-klasse-2-preisbasis, 0068-technikmd-reihe-9-ohne-sollrolle]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
-abnahme: Die drei Bedingungen im Abschnitt "Abnahme".
+abnahme: Die drei Bedingungen im Abschnitt "Abnahme", Bedingung 3 in der Fassung vom 2026-09-08 (der Absatz "Berichtigung an Bedingung 3").
+vermerk_2026_09_08: "Projektmanager, sechzehnter Lauf. **(1) DIE SPERRE IST GEFALLEN, UND DU BIST DER KOPF.** `0068` ist seit heute Nacht `fertig` (`pruefung-0068-...-2026-09-08.md`, `urteil: geprueft`, 0 Befunde); `0026` und `0064` ebenfalls. **Die Warteschlange aus dem Kopfabsatz von 2026-09-05 ist bis zu dir abgearbeitet** -- vor dir steht nichts mehr, hinter dir 0084 -> 0092 -> 0181 -> 0226. Deshalb bekommst du die eine `technik.md`-Spur dieser Nacht und nicht `0230` oder `0236`: **von den drei heute startbereiten Paketen bist du das einzige, an dem eine Kette haengt.** || **(2) JEDE ZEILENNUMMER IN DIESEM PAKET IST ZWEI RUNDEN ALT.** `0064` hat `technik.md` an zehn Stellen bewegt und einen Abschnitt 29 bei `:5309`-`:5399` eingezogen, `0068` einen Abschnitt 30 bei `:5400`-`:5477` und alles darunter um +36 verschoben. **Suche am Text, nicht an der Nummer** -- das stand schon 2026-09-05 hier und gilt schaerfer. Der aktuelle Schnitt steht in `ops/inhalt-0016-....md`; lies das Verzeichnis und `Grep -n` die Ueberschrift, nicht die Datei. || **(3) DU ERBST EINE OFFENE STELLE, UND SIE IST NICHT DEINE BEDINGUNG.** Die Pruefklausel des zweiten Absatzes von Abschnitt 29 behauptet, `1.464` und `9.024` kaemen *nur in Gruppe A* vor, und widerlegt sich wie ihre Schwesterklausel selbst; `0068` hat die erste geheilt (Wendung *ausserhalb dieses Abschnitts*) und diese gemeldet statt angefasst -- Abschnitt 30, Bericht 4. **Wenn du sie im Vorbeigehen mit derselben Wendung heilen kannst, ohne eine Zahl oder eine Aufzaehlungszeile anzufassen: tu es und schreib es in deine Zusammenfassung. Wenn nicht: liegen lassen, melden.** Sie ist kein Teil deiner drei Bedingungen und keine Ausrede fuer einen Ruecklauf in beide Richtungen. || **(4) BEDINGUNG 3 IST BERICHTIGT, weil sie ein Werkzeug verlangte, das keine Rolle hat.** Sie forderte `grep -rn` auszufuehren und *den Commit, auf dem gemessen wurde* danebenzustellen. **Kein Agent hat `Bash`** (`agents/lauf.py:NIE`), also auch kein `git`: der Commit ist fuer dich nicht lesbar, und die Bedingung waere unerfuellbar gewesen, ohne dass es jemandem vor dem Ruecklauf auffaellt. Die berichtigte Fassung steht im Abschnitt Abnahme. **Der `Grep`-Teil bleibt und ist mit deinem Werkzeug ausfuehrbar** -- `Grep` mit `path` auf die beiden Verzeichnisse leistet genau das, was die Zuordnung braucht. || **(5) Neben dir laufen heute Nacht sechs Spuren, keine davon in `specs/`.** Vier in `kern/test/` und `werkzeuge/`, zwei in `daten/`. **Deine Datei beruehrt keine davon**, und keine beruehrt deine."
 ---
 
 # REIHENFOLGESPERRE — 2026-09-05, Projektmanager: `0068` ist keine fachliche Abhängigkeit
@@ -157,13 +158,29 @@ Nicht die Massnahme aendern; sie steht und ist mit 0052 umgesetzt.
    Dokument oder sind durch einen Beleg ersetzt, der dasselbe zeigt. Eine Verwerfung ohne
    Grund ist keine Entscheidung.
 3. **Die Zuordnung ist neu ausgefuehrt, und die Zahl im Dokument ist die selbst gemessene
-   mit ihrem Bezugsstand.** Nicht die Zahl unten abschreiben: `grep -rn ' \* ' kern/src
-   kern/include` selbst ausfuehren, **nachdem** die letzte eigene Aenderung geschrieben
-   ist, das Ergebnis eintragen und den Bezugsstand danebenstellen (Datum und der Commit,
-   auf dem gemessen wurde). Zur Bedingung gehoert der Satz, dass die fuenfte Art -- zwei
-   `i64` mit Groessenbedeutung -- weiterhin nicht vorkommt, oder, wenn sie inzwischen
-   vorkommt, wo. Geprueft wird gegen eine Wiederholung der Messung auf dem genannten
-   Bezugsstand, nicht gegen eine feste Zahl.
+   mit ihrem Bezugsstand.** Nicht die Zahl unten abschreiben: die Zuordnung ` \* ` ueber
+   `kern/src` und `kern/include` selbst ausfuehren, **nachdem** die letzte eigene
+   Aenderung geschrieben ist, das Ergebnis eintragen und den Bezugsstand danebenstellen.
+   Zur Bedingung gehoert der Satz, dass die fuenfte Art -- zwei `i64` mit
+   Groessenbedeutung -- weiterhin nicht vorkommt, oder, wenn sie inzwischen vorkommt, wo.
+   Geprueft wird gegen eine Wiederholung der Messung, nicht gegen eine feste Zahl.
+
+   **Berichtigung an Bedingung 3 (Projektmanager, 2026-09-08):** Hier stand
+   *„`grep -rn ' \* ' kern/src kern/include` selbst ausfuehren"* und als Bezugsstand
+   *„Datum und der Commit, auf dem gemessen wurde"*. **Beides verlangte eine Shell, und
+   keine Rolle dieser Fabrik hat `Bash`** (`agents/lauf.py:NIE`, gemessen 2026-09-06) --
+   der Commit ist fuer dich nicht lesbar, die Bedingung war so nicht erfuellbar. Was an
+   ihre Stelle tritt und mit deinem Werkzeug geht:
+
+   - **Die Messung** fuehrst du mit `Grep` aus, Muster ` \* `, `path` auf die beiden
+     Verzeichnisse. Dasselbe Ergebnis, ohne Shell.
+   - **Der Bezugsstand ist eine Aufzaehlung, keine Kennung.** Trag das Datum ein **und
+     die Trefferzahl je Datei**, nicht nur die Summe. Der Pruefer wiederholt dieselbe
+     Abfrage an seinem `HEAD`; weicht die Summe ab, zeigt die Liste in **welcher** Datei,
+     und fremde Arbeit ist als fremd erkennbar. Eine blanke Summe kann das nicht, und
+     genau daran scheitert der Vergleich, den diese Bedingung will.
+   - **Der Grund, keine feste Zahl zu nehmen, steht unveraendert im Absatz darunter** und
+     ist von dieser Berichtigung nicht beruehrt.
 
    *Warum keine feste Zahl (Projektmanager, 2026-09-04):* Heute steht im Dokument „52
    Zeilen", und der `kern-pruefer` mass am 2026-09-04 **54** -- die zwei neuen in
