@@ -66,6 +66,30 @@ BipsummeVerlaesstI64 2→3), `nennerdecke_angekommen == 3`, PlusOhneDarstellbare
 its single MERKE at :2351. Vermerk guardrails (0263) checked: RIEGEL_OHNE_ZUSTAND
 intact, no `using enum`, kennzeichen_riegel green.
 
+## 2026-09-08 — 0259 (second category may be empty): geprueft
+
+The whole package was one guard and one print; the review's real work was the
+demonstration clause. Pattern worth keeping: **when an acceptance demands a red/green
+demo, first ask whether the factory's mechanics allow it at all.** Builders have no
+shell and the runner only runs the committed tree, so a "temporary, shown once" demo of
+apparatus code is impossible unless a committed test exercises it. Here the PM's vermerk
+had pre-sanctioned the out (declare + propose), and the builder used it: proposal 0264
+(kennzeichen_probe, six red/green cases). I read 0264 only after judging the mechanics,
+to keep the blind review blind.
+
+Attribution habit that paid again: the uebersetzung report was at HEAD 6f2ec03 (one
+commit past 0259), so I grepped 0263's `dateien` before crediting the header's state to
+this builder — 0263 owns only the tool file. Cost: one grep.
+
+Corpus for the next kennzeichen run: guard at kennzeichen.hpp:494-496, empty-case print
+:433-439, lost-assertion paragraph :65-72. Second-category sizes 1/1/1 (schritt :443,
+werte :360, festkomma :286). Belegstellen tonight 41 Zitate/41 aufgeloest/54 uebergangen
+(0257's stray citation and dead macro name are fixed; bezeichner_riegel green again);
+root reds remain belegstellen_wortabstand + belegstellen_kopfzahlen, both Messstand-0166
+/ moved-HEAD, pre-existing. Note for a future pruefung of 0264: until it lands, the
+empty branch of the header has never executed anywhere — the 0259 verdict rests on
+static reading plus the unchanged non-empty path being green.
+
 ## 2026-09-08 — 0257 (festkomma_probe onto Buch): zurueck
 
 The test mechanics were flawless — nine abbruch sites recounted, nach_i64's three
