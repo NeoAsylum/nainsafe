@@ -28,6 +28,9 @@
 //!     wegfallen, ohne dass etwas rot wird. Der Apparat dazu steht in
 //!     `kern/test/kennzeichen.hpp` und wird mit `schritt_probe` geteilt; die Riegel, ihre
 //!     Kennzeichen und die Zahl der Meldungen je Riegel stehen unten in dieser Datei.
+//!     Seit Paket 0255 gilt das fuer **jede** Abbruchstelle dieser Probe und nicht nur
+//!     fuer die, die das Verzeichnis selbst faengt: Wer seinen Wortlaut schon hat, gibt
+//!     ihn mit `MERKE` ab und behaelt jede eigene Zusicherung.
 //!   * **Die verworfene Alternative als Zahl.** Wo eine Vorgabe zwischen zwei Formen
 //!     entscheidet, steht die andere Form daneben und liefert eine **andere** Zahl.
 //!     Sonst prueft die Zeile die Entscheidung nicht, sondern nur die Rechnung.
@@ -107,7 +110,7 @@ void pruefe(bool bedingung, const char* text, int zeile)
 }
 
 // ---------------------------------------------------------------------------
-// Die Riegel dieser Probe -- Paket 0244
+// Die Riegel dieser Probe -- Paket 0244, vervollstaendigt von Paket 0255
 // ---------------------------------------------------------------------------
 //
 // Bis zu diesem Paket standen hier vierzehn Aufrufe, die allein pruefen, *dass* geworfen
@@ -127,12 +130,34 @@ void pruefe(bool bedingung, const char* text, int zeile)
 // nennen einen unbekannten Steckplatz; erst der Namensraum trennt sie. Genau dafuer gibt
 // es die Kennzeichen, und beide Listen fuehren ihn deshalb mit.
 //
-// **Was hier nicht umgestellt ist, damit es niemand fuer erledigt haelt:** die
-// einundzwanzig Aufrufe von `hat_abgebrochen`. Sie nennen ihre Textstuecke schon heute an
-// der Aufrufstelle, und sie nennen sie in **beiden** Richtungen -- `PRUEFE(!enthaelt(...))`
-// haelt fest, welche Meldung gerade *nicht* ankommen darf. Das Verzeichnis kann nur die
-// positive Richtung. Sie hierher zu ziehen hiesse, die negative aufzugeben; das waere eine
-// abgeschwaechte Probe und kein Umbau. Wer beides will, braucht ein eigenes Paket.
+// **Die einundzwanzig Aufrufe von `hat_abgebrochen` sind seit Paket 0255 dabei, und zwar
+// ohne dass eine ihrer Zusicherungen weggefallen waere.** Sie nennen ihre Textstuecke in
+// **beiden** Richtungen -- `PRUEFE(!enthaelt(...))` haelt fest, welche Meldung gerade
+// *nicht* ankommen darf --, und das Verzeichnis kann nur die positive. Sie deshalb auf
+// `BRICHT_AB_MIT` umzustellen haette die negative Richtung gekostet. Stattdessen gibt jede
+// Stelle den Wortlaut, den sie ohnehin schon gefangen hat, mit `MERKE` zusaetzlich ab: eine
+// Zeile mehr, keine Zeile weniger. Was sie dafuer bekommt, kann sie ueber sich selbst gar
+// nicht aussagen -- die Vollzaehligkeit ihres Riegels und den Vergleich ihrer Liste gegen
+// jede fremde Meldung dieses Laufs.
+//
+// **Was ein Riegel ist, entscheidet die Meldung und nicht die Funktion, die sie baut.**
+// `pruefe_handelssektor` ist **eine** Bedingung an drei Aufrufstellen und liefert trotzdem
+// vier verschiedene Wortlaute: Aufrufer und Grund gehen als Text hinein, und
+// `pruefe_landessektor` reicht denselben Grund unter zwei Namen weiter. Die Quelle will das
+// so und begruendet es an jeder der Stellen -- geprueft wird unter dem Namen der Groesse,
+// in der die Pruefung ausloest. Ein Verzeichnis, das die vier zu einem Riegel zusammenzoege,
+// muesste seine Liste auf den gemeinsamen Rest kuerzen -- und verloere genau die Trennung,
+// um derentwillen die Meldung den Namen traegt. Also ein Riegel je Wortlaut: zwei fuer
+// `keilhub`, zwei fuer `preishub_zoll`, zwei fuer `handelsvolumen`, zwei fuer
+// `weltpreis_mit_zoll`.
+//
+// **Zwei Riegel aus `kern::festkomma` stehen mit dazu**, und das ist eine Entscheidung und
+// kein Versehen: `plus` und `minus` brechen hier an Stellen ab, die diese Probe absichtlich
+// als **Gegenprobe** anlaeuft -- die Meldung des Kerns darf an dieser Stelle gerade nicht
+// kommen. Ihre Wortlaute gehoeren damit zum Alphabet, gegen das sich jede Liste von
+// `kern::werte` behaupten muss, und die Vollzaehligkeit sagt hier nichts ueber den Besitz
+// der Schranke, sondern ueber die Aufrufstelle in dieser Datei: Wer sie streicht, streicht
+// die Gegenprobe, und das faellt auf.
 enum class Riegel : std::size_t {
     WechselkursUnterEins,   ///< in `kern::werte::wert`: ein Nenner unter 1 drehte das Vorzeichen
     NennerNullDerKursformel,  ///< in `kern::festkomma`: der Anleihekurs teilt durch null
@@ -141,21 +166,44 @@ enum class Riegel : std::size_t {
     SteckplatzAusserhalbDerTabelle,   ///< in `kern::werte`: die Steckplatztabelle kennt ihn nicht
     SteckplatzAusserhalbDerAdressen,  ///< in `kern::zustand`: es gibt keine Positionsadresse
     PositionNurAufSpielbarenLaendern,  ///< in `kern::zustand`: die Restwelt hat keinen Steckplatz
+
+    // Ab hier Paket 0255 -- die Riegel hinter den Aufrufen von `hat_abgebrochen`.
+    HubOhneSkalenklasse,      ///< in `hubklasse`: die Kennung ist keines der vier Instrumente
+    HubNurBeiSpielbarenLaendern,   ///< in `kern::werte::hub`: die Restwelt hat kein Instrument
+    HubdifferenzOhneBetrag,        ///< in `kern::werte::hub`: der Betrag von I64_MIN fehlt
+    MinusOhneDarstellbareDifferenz,  ///< in `kern::festkomma`: die Differenz verlaesst i64
+    KeilhubNurBeiSpielbarenLaendern,   ///< in `pruefe_landessektor`, unter dem Namen `keilhub`
+    KeilhubNurBeiHandelbarenSektoren,  ///< in `pruefe_handelssektor`, ebenso
+    PreishubZollNurBeiSpielbarenLaendern,   ///< dieselbe Schranke, Name `preishub_zoll`
+    PreishubZollNurBeiHandelbarenSektoren,  ///< dieselbe Schranke, Name `preishub_zoll`
+    HandelsvolumenNurBeiHandelbarenSektoren,  ///< der dritte Sektor hat keine Handelszeile
+    HandelsvolumenUnbekanntesGebiet,   ///< in `handelsvolumen`: ein Gebiet ausserhalb der fuenf
+    WeltpreisMitZollUnbekanntesGebiet,        ///< in `weltpreis_mit_zoll`: ebenso, eigener Text
+    WeltpreisMitZollNurBeiHandelbarenSektoren,  ///< kein Weltpreis fuer den dritten Sektor
+    SchadenOhneSchadenszeile,        ///< in `schaden`: eine fuenfte Zeile gibt es nicht
+    SchadenNurBeiSpielbarenLaendern,  ///< in `schaden`: die Restwelt hat kein Instrument
+    BipsummeVerlaesstI64,   ///< in `kern::werte::bip`: die Decke der Nennerbedingung
+    PlusOhneDarstellbareSumme,  ///< in `kern::festkomma`: die Summe verlaesst i64
     Anzahl,
 };
 
-constexpr std::array<Riegel, 7> ALLE_RIEGEL = {
-    Riegel::WechselkursUnterEins,
-    Riegel::NennerNullDerKursformel,
-    Riegel::GroesseNurBeiSpielbarenLaendern,
-    Riegel::SkalengrenzeInCent,
-    Riegel::SteckplatzAusserhalbDerTabelle,
-    Riegel::SteckplatzAusserhalbDerAdressen,
-    Riegel::PositionNurAufSpielbarenLaendern};
+/// Alle Riegel der Reihe nach -- erzeugt und nicht abgeschrieben.
+///
+/// Bis Paket 0255 stand hier eine Namensliste neben der Aufzaehlung derselben Namen, und
+/// ein `static_assert` auf ihre Laenge fing das Vergessen. Bei sieben Eintraegen war das
+/// billig, bei dreiundzwanzig ist es die Verdopplung, gegen die diese Probe an anderer
+/// Stelle geschrieben wurde. Die erzeugte Liste kann nicht vergessen werden; was weiterhin
+/// nachgetragen werden **muss**, ist die Sollzahl weiter unten, und dort steht das Netz.
+constexpr std::array<Riegel, static_cast<std::size_t>(Riegel::Anzahl)> riegelliste()
+{
+    std::array<Riegel, static_cast<std::size_t>(Riegel::Anzahl)> liste{};
+    for (std::size_t n = 0; n < liste.size(); ++n) {
+        liste[n] = static_cast<Riegel>(n);
+    }
+    return liste;
+}
 
-// Kommt ein Riegel dazu und niemand traegt ihn hier nach, faellt es beim Uebersetzen auf
-// und nicht erst daran, dass die Vollzaehligkeitspruefung ihn nie sucht.
-static_assert(ALLE_RIEGEL.size() == static_cast<std::size_t>(Riegel::Anzahl));
+constexpr auto ALLE_RIEGEL = riegelliste();
 
 const char* riegelname(Riegel welcher)
 {
@@ -174,6 +222,38 @@ const char* riegelname(Riegel welcher)
         return "Steckplatz ohne Positionsadresse";
     case Riegel::PositionNurAufSpielbarenLaendern:
         return "Position nur auf spielbaren Laendern";
+    case Riegel::HubOhneSkalenklasse:
+        return "Instrumentenkennung ohne Skalenklasse (hub)";
+    case Riegel::HubNurBeiSpielbarenLaendern:
+        return "Hub nur bei spielbaren Laendern";
+    case Riegel::HubdifferenzOhneBetrag:
+        return "Hubdifferenz ohne darstellbaren Betrag";
+    case Riegel::MinusOhneDarstellbareDifferenz:
+        return "Differenz ausserhalb von i64 (minus)";
+    case Riegel::KeilhubNurBeiSpielbarenLaendern:
+        return "Keilhub nur bei spielbaren Laendern";
+    case Riegel::KeilhubNurBeiHandelbarenSektoren:
+        return "Keilhub nur bei handelbaren Sektoren";
+    case Riegel::PreishubZollNurBeiSpielbarenLaendern:
+        return "Preishub nur bei spielbaren Laendern";
+    case Riegel::PreishubZollNurBeiHandelbarenSektoren:
+        return "Preishub nur bei handelbaren Sektoren";
+    case Riegel::HandelsvolumenNurBeiHandelbarenSektoren:
+        return "Handelsvolumen nur bei handelbaren Sektoren";
+    case Riegel::HandelsvolumenUnbekanntesGebiet:
+        return "Handelsvolumen ohne bekanntes Gebiet";
+    case Riegel::WeltpreisMitZollUnbekanntesGebiet:
+        return "Weltpreis mit Zoll ohne bekanntes Gebiet";
+    case Riegel::WeltpreisMitZollNurBeiHandelbarenSektoren:
+        return "Weltpreis mit Zoll nur bei handelbaren Sektoren";
+    case Riegel::SchadenOhneSchadenszeile:
+        return "Instrumentenkennung ohne Schadenszeile";
+    case Riegel::SchadenNurBeiSpielbarenLaendern:
+        return "Lobbyschaden nur bei spielbaren Laendern";
+    case Riegel::BipsummeVerlaesstI64:
+        return "Wertschoepfungssumme verlaesst i64";
+    case Riegel::PlusOhneDarstellbareSumme:
+        return "Summe ausserhalb von i64 (plus)";
     case Riegel::Anzahl:
         break;
     }
@@ -199,6 +279,53 @@ constexpr std::array<const char*, 2> KZ_STECKPLATZ_ADRESSE = {"kern::zustand -- 
                                                               "unbekannter Steckplatz"};
 constexpr std::array<const char*, 2> KZ_POSITION_LAND = {"kern::zustand -- Positionen",
                                                          "spielbaren Laendern"};
+
+// Die Listen zu den Riegeln aus Paket 0255. Jede besteht aus zwei Stuecken, und die
+// Aufteilung ist ueberall dieselbe, weil die Gefahr ueberall dieselbe ist: das **erste**
+// Stueck nennt die Groesse samt ihrem Trennstrich, das **zweite** den Satzteil, der diese
+// Schranke von der naechsten derselben Groesse scheidet. Vier Schrankenpaare sehen einander
+// bis auf den Namen gleich -- `keilhub` und `preishub_zoll` teilen sich zwei Wortlaute,
+// `handelsvolumen` und `weltpreis_mit_zoll` je zwei weitere --, und zwei Sektorgruende
+// unterscheiden sich in vier Woertern ("den Zollkeil gibt es nur" gegen "den gibt es nur").
+// Ein einzelnes Stueck aus einer dieser Listen passte sofort auf eine fremde Meldung.
+constexpr std::array<const char*, 2> KZ_HUB_KLASSE = {
+    "kern::werte::hub -- zur Instrumentenkennung ", "keine Skalenklasse"};
+constexpr std::array<const char*, 2> KZ_HUB_LAND = {
+    "kern::werte::hub -- das Gebiet ",
+    "einen Hub gibt es nur bei den vier spielbaren Laendern"};
+constexpr std::array<const char*, 2> KZ_HUB_DIFFERENZ = {
+    "kern::werte::hub -- die Differenz ", "keinen in i64 darstellbaren Betrag"};
+constexpr std::array<const char*, 2> KZ_MINUS_DIFFERENZ = {
+    "minus: Differenz ausserhalb von i64", "(T7)"};
+constexpr std::array<const char*, 2> KZ_KEILHUB_LAND = {
+    "kern::werte::keilhub -- das Gebiet ", "ist kein spielbares Land"};
+constexpr std::array<const char*, 2> KZ_KEILHUB_SEKTOR = {
+    "kern::werte::keilhub -- der Sektor ",
+    "den Zollkeil gibt es nur fuer die handelbaren Sektoren"};
+constexpr std::array<const char*, 2> KZ_PREISHUB_LAND = {
+    "kern::werte::preishub_zoll -- das Gebiet ", "ist kein spielbares Land"};
+constexpr std::array<const char*, 2> KZ_PREISHUB_SEKTOR = {
+    "kern::werte::preishub_zoll -- der Sektor ",
+    "den Zollkeil gibt es nur fuer die handelbaren Sektoren"};
+constexpr std::array<const char*, 2> KZ_HANDELSVOLUMEN_SEKTOR = {
+    "kern::werte::handelsvolumen -- der Sektor ", "hat keine Handelszeile"};
+constexpr std::array<const char*, 2> KZ_HANDELSVOLUMEN_GEBIET = {
+    "kern::werte::handelsvolumen -- ", "unbekanntes Gebiet"};
+constexpr std::array<const char*, 2> KZ_WELTPREIS_GEBIET = {
+    "kern::werte::weltpreis_mit_zoll -- das Gebiet ", "T15 kennt fuenf"};
+constexpr std::array<const char*, 2> KZ_WELTPREIS_SEKTOR = {
+    "kern::werte::weltpreis_mit_zoll -- der Sektor ",
+    "traegt keinen Weltpreis; den gibt es nur"};
+constexpr std::array<const char*, 2> KZ_SCHADEN_ZEILE = {
+    "kern::werte::schaden -- zur Instrumentenkennung ", "keine der vier Schadenszeilen"};
+constexpr std::array<const char*, 2> KZ_SCHADEN_LAND = {
+    "kern::werte::schaden -- das Gebiet ",
+    "einen Lobbyschaden gibt es nur bei den vier spielbaren Laendern"};
+constexpr std::array<const char*, 2> KZ_BIPSUMME = {
+    "kern::werte::bip -- die Wertschoepfungssumme verlaesst i64",
+    "Nenner der Zustimmungsregel"};
+constexpr std::array<const char*, 2> KZ_PLUS_SUMME = {"plus: Summe ausserhalb von i64",
+                                                      "(T7)"};
 
 // ---------------------------------------------------------------------------
 // Der Riegel, den kein Zustand erreicht -- die zweite Kategorie aus Paket 0248
@@ -257,7 +384,7 @@ struct Sollzahl {
     std::size_t meldungen;
 };
 
-constexpr std::array<Sollzahl, 7> SOLLZAHLEN = {{
+constexpr std::array<Sollzahl, 23> SOLLZAHLEN = {{
     {Riegel::WechselkursUnterEins, 6},
     {Riegel::NennerNullDerKursformel, 1},
     {Riegel::GroesseNurBeiSpielbarenLaendern, 2},
@@ -265,6 +392,26 @@ constexpr std::array<Sollzahl, 7> SOLLZAHLEN = {{
     {Riegel::SteckplatzAusserhalbDerTabelle, 1},
     {Riegel::SteckplatzAusserhalbDerAdressen, 1},
     {Riegel::PositionNurAufSpielbarenLaendern, 2},
+
+    // Paket 0255. Die Zahl ist jeweils die der Aufrufstellen, und wo sie ueber eins steht,
+    // sagt der Nachsatz, welche es sind -- sonst waere beim naechsten Streichen einer
+    // Stelle nicht zu sehen, welche gefehlt hat.
+    {Riegel::HubOhneSkalenklasse, 1},
+    {Riegel::HubNurBeiSpielbarenLaendern, 1},
+    {Riegel::HubdifferenzOhneBetrag, 1},
+    {Riegel::MinusOhneDarstellbareDifferenz, 1},
+    {Riegel::KeilhubNurBeiSpielbarenLaendern, 1},
+    {Riegel::KeilhubNurBeiHandelbarenSektoren, 2},   // der dritte Sektor und die Null
+    {Riegel::PreishubZollNurBeiSpielbarenLaendern, 1},
+    {Riegel::PreishubZollNurBeiHandelbarenSektoren, 1},
+    {Riegel::HandelsvolumenNurBeiHandelbarenSektoren, 2},  // der dritte Sektor und die Null
+    {Riegel::HandelsvolumenUnbekanntesGebiet, 2},   // die zweistellige und die einstellige
+    {Riegel::WeltpreisMitZollUnbekanntesGebiet, 1},
+    {Riegel::WeltpreisMitZollNurBeiHandelbarenSektoren, 1},
+    {Riegel::SchadenOhneSchadenszeile, 1},
+    {Riegel::SchadenNurBeiSpielbarenLaendern, 2},   // die Zollzeile und die Zinszeile
+    {Riegel::BipsummeVerlaesstI64, 2},              // die obere und die untere Decke
+    {Riegel::PlusOhneDarstellbareSumme, 1},
 }};
 
 /// Ob der Eintrag an der n-ten Stelle auch den n-ten Riegel nennt. Die Groessenpruefung
@@ -403,6 +550,16 @@ Meldung erwarteter_ausschnitt(const char* vorspann, i64 wert)
 #define BRICHT_AB_MIT(riegel, kennzeichen, ausdruck)                    \
     buch.bricht_ab_mit(#ausdruck, (riegel), (kennzeichen), __LINE__,    \
                        [&] { static_cast<void>(ausdruck); })
+
+/// Reicht den Abbruch, den die Stelle eben selbst gefangen hat, an das Verzeichnis weiter
+/// (Paket 0255).
+///
+/// Steht unter den `PRUEFE`-Zeilen einer Stelle und ersetzt keine davon: Der Wortlaut in
+/// `letzte_meldung` ist derselbe, den sie gerade in beide Richtungen geprueft hat. `was`
+/// benennt die Stelle in jeder Meldung des Verzeichnisses; die Zeile geht mit, sonst
+/// naennte jeder Fehlschlag die eine Zeile in dieser Vorlage.
+#define MERKE(riegel, kennzeichen, was) \
+    buch.merke((riegel), (was), __LINE__, (kennzeichen), letzte_meldung.data())
 
 namespace {
 
@@ -1378,12 +1535,14 @@ void probe_hub_raender()
     PRUEFE(enthaelt(letzte_meldung.data(),
                     erwarteter_ausschnitt("Instrumentenkennung ", 9).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+    MERKE(Riegel::HubOhneSkalenklasse, KZ_HUB_KLASSE, "hub(s, DE, Instrument 9)");
 
     // Die Restwelt hat nach T15 keine Politikinstrumente.
     PRUEFE(hat_abgebrochen([&] { static_cast<void>(hub(s, Gebiet::RW, Instrument::Zoll)); }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::hub"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 4).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+    MERKE(Riegel::HubNurBeiSpielbarenLaendern, KZ_HUB_LAND, "hub(s, RW, Zoll)");
 }
 
 /// T48 Nr. 18 -- der Rand des Wertebereichs, und der Wert davor, der nicht abbricht.
@@ -1418,6 +1577,7 @@ void probe_hub_an_der_ueberlaufgrenze()
         PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::hub"));
         PRUEFE(enthaelt(letzte_meldung.data(),
                         erwarteter_ausschnitt("die Differenz ", I64_MIN).fertig()));
+        MERKE(Riegel::HubdifferenzOhneBetrag, KZ_HUB_DIFFERENZ, "hub(s, DE, Zoll) mit I64_MIN");
     }
 
     // Und der Fall daneben, der schon in der Strichrechnung stirbt: I64_MAX minus -1
@@ -1433,6 +1593,8 @@ void probe_hub_an_der_ueberlaufgrenze()
             [&] { static_cast<void>(hub(s, Gebiet::DE, Instrument::Zoll)); }));
         PRUEFE(enthaelt(letzte_meldung.data(), "minus"));
         PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+        MERKE(Riegel::MinusOhneDarstellbareDifferenz, KZ_MINUS_DIFFERENZ,
+              "hub(s, DE, Zoll) ueber die Ueberlaufgrenze von minus");
     }
 }
 
@@ -1564,6 +1726,8 @@ void probe_zollkeil_raender()
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 4).fertig()));
+    MERKE(Riegel::KeilhubNurBeiSpielbarenLaendern, KZ_KEILHUB_LAND,
+          "keilhub(s, RW, Landwirtschaft)");
 
     // Der dritte Sektor traegt keinen Weltpreis, und die Null liegt ausserhalb der
     // drei -- die Sektoren zaehlen ab eins. Beides faellt in dieselbe Bedingung.
@@ -1571,10 +1735,14 @@ void probe_zollkeil_raender()
         [&] { static_cast<void>(keilhub(s, Gebiet::DE, Sektor::Dienstleistungen)); }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
+    MERKE(Riegel::KeilhubNurBeiHandelbarenSektoren, KZ_KEILHUB_SEKTOR,
+          "keilhub(s, DE, Dienstleistungen)");
     PRUEFE(hat_abgebrochen(
         [&] { static_cast<void>(keilhub(s, Gebiet::DE, static_cast<Sektor>(0))); }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 0).fertig()));
+    MERKE(Riegel::KeilhubNurBeiHandelbarenSektoren, KZ_KEILHUB_SEKTOR,
+          "keilhub(s, DE, Sektor 0)");
 
     // Dieselben beiden Raender an Nr. 20 -- und dort nennt die Meldung ihren eigenen
     // Namen und nicht den der Groesse, die sie darunter aufruft.
@@ -1583,11 +1751,15 @@ void probe_zollkeil_raender()
     }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::preishub_zoll"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::keilhub"));
+    MERKE(Riegel::PreishubZollNurBeiSpielbarenLaendern, KZ_PREISHUB_LAND,
+          "preishub_zoll(s, K_ZOLL, RW, Landwirtschaft)");
     PRUEFE(hat_abgebrochen([&] {
         static_cast<void>(preishub_zoll(s, K_ZOLL, Gebiet::DE, Sektor::Dienstleistungen));
     }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::preishub_zoll"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
+    MERKE(Riegel::PreishubZollNurBeiHandelbarenSektoren, KZ_PREISHUB_SEKTOR,
+          "preishub_zoll(s, K_ZOLL, DE, Dienstleistungen)");
 }
 
 // ---------------------------------------------------------------------------
@@ -1639,12 +1811,16 @@ void probe_handelsvolumen_beide_stelligkeiten()
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+    MERKE(Riegel::HandelsvolumenNurBeiHandelbarenSektoren, KZ_HANDELSVOLUMEN_SEKTOR,
+          "handelsvolumen(z, DE, Dienstleistungen)");
 
     // Und die Null, die ausserhalb der drei liegt -- die Sektoren zaehlen ab eins.
     PRUEFE(hat_abgebrochen([&] {
         static_cast<void>(handelsvolumen(z, Gebiet::DE, static_cast<Sektor>(0)));
     }));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 0).fertig()));
+    MERKE(Riegel::HandelsvolumenNurBeiHandelbarenSektoren, KZ_HANDELSVOLUMEN_SEKTOR,
+          "handelsvolumen(z, DE, Sektor 0)");
 
     // Die Gebietspruefung steht in der zweistelligen Fassung und traegt damit auch die
     // einstellige, die sie aufruft.
@@ -1652,9 +1828,13 @@ void probe_handelsvolumen_beide_stelligkeiten()
         static_cast<void>(handelsvolumen(z, static_cast<Gebiet>(5), Sektor::Industrie));
     }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+    MERKE(Riegel::HandelsvolumenUnbekanntesGebiet, KZ_HANDELSVOLUMEN_GEBIET,
+          "handelsvolumen(z, Gebiet 5, Industrie)");
     PRUEFE(hat_abgebrochen(
         [&] { static_cast<void>(handelsvolumen(z, static_cast<Gebiet>(5))); }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+    MERKE(Riegel::HandelsvolumenUnbekanntesGebiet, KZ_HANDELSVOLUMEN_GEBIET,
+          "handelsvolumen(z, Gebiet 5)");
 }
 
 // ---------------------------------------------------------------------------
@@ -1701,6 +1881,8 @@ void probe_weltpreis_mit_zoll()
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::weltpreis_mit_zoll"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 5).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+    MERKE(Riegel::WeltpreisMitZollUnbekanntesGebiet, KZ_WELTPREIS_GEBIET,
+          "weltpreis_mit_zoll(z, Gebiet 5, Industrie)");
 
     // Der dritte Sektor traegt keinen Weltpreis. Auch hier meldet die Groesse und
     // nicht `stelle_weltpreis`, das dieselbe Bedingung eine Ebene tiefer prueft.
@@ -1710,6 +1892,8 @@ void probe_weltpreis_mit_zoll()
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::weltpreis_mit_zoll"));
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("der Sektor ", 3).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+    MERKE(Riegel::WeltpreisMitZollNurBeiHandelbarenSektoren, KZ_WELTPREIS_SEKTOR,
+          "weltpreis_mit_zoll(z, DE, Dienstleistungen)");
 }
 
 // ---------------------------------------------------------------------------
@@ -1882,6 +2066,8 @@ void probe_schaden_raender()
                     erwarteter_ausschnitt("Instrumentenkennung ", 9).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::zustand"));
+    MERKE(Riegel::SchadenOhneSchadenszeile, KZ_SCHADEN_ZEILE,
+          "schaden(z, s, K_ZOLL, DE, Instrument 9)");
 
     // Die Restwelt hat keine Politikinstrumente. Der Riegel steht **vor** der
     // Zollzeile, also nennt die Meldung nicht `preishub_zoll`.
@@ -1891,6 +2077,8 @@ void probe_schaden_raender()
     PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("das Gebiet ", 4).fertig()));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::preishub_zoll"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    MERKE(Riegel::SchadenNurBeiSpielbarenLaendern, KZ_SCHADEN_LAND,
+          "schaden(z, s, K_ZOLL, RW, Zoll)");
 
     // Dasselbe fuer eine Zeile ohne Sektorschleife -- sonst waere nur belegt, dass
     // eine der vier den Riegel vor sich hat.
@@ -1898,6 +2086,8 @@ void probe_schaden_raender()
         [&] { static_cast<void>(schaden(z, s, K_ZOLL, Gebiet::RW, Instrument::Leitzins)); }));
     PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::schaden"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::hub"));
+    MERKE(Riegel::SchadenNurBeiSpielbarenLaendern, KZ_SCHADEN_LAND,
+          "schaden(z, s, K_ZOLL, RW, Leitzins)");
 }
 
 // ---------------------------------------------------------------------------
@@ -2005,6 +2195,8 @@ void probe_bip_nennerdecke()
         PRUEFE(laenge < kern::meldung::MELDUNG_ZEICHEN_MAX);
         PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
 
+        MERKE(Riegel::BipsummeVerlaesstI64, KZ_BIPSUMME, "bip(z, US) ueber der oberen Decke");
+
         if (enthaelt(letzte_meldung.data(), "kern::werte::bip")) {
             ++nennerdecke_angekommen;
         }
@@ -2034,6 +2226,7 @@ void probe_bip_nennerdecke()
                         erwarteter_ausschnitt("die Summe davor war ", I64_MIN).fertig()));
         PRUEFE(!enthaelt(letzte_meldung.data(), "plus: Summe"));
         PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
+        MERKE(Riegel::BipsummeVerlaesstI64, KZ_BIPSUMME, "bip(z, DE) unter der unteren Decke");
 
         if (enthaelt(letzte_meldung.data(), "kern::werte::bip")) {
             ++nennerdecke_angekommen;
@@ -2047,6 +2240,11 @@ void probe_bip_nennerdecke()
     PRUEFE(enthaelt(letzte_meldung.data(), "plus: Summe"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "kern::werte::bip"));
     PRUEFE(!enthaelt(letzte_meldung.data(), "Nenner der Zustimmungsregel"));
+
+    // Und dieselbe Gegenrichtung, nun nicht mehr von Hand: Im Verzeichnis wird diese
+    // Meldung gegen **jede** der zweiundzwanzig anderen Listen gehalten und nicht nur
+    // gegen die drei Stuecke darueber.
+    MERKE(Riegel::PlusOhneDarstellbareSumme, KZ_PLUS_SUMME, "festkomma::plus(I64_MAX, 1)");
 }
 
 /// Hat der Riegel in diesem Lauf wirklich gefeuert -- beide Richtungen, beide Meldungen?
@@ -2058,6 +2256,10 @@ void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 2); }
 // ---------------------------------------------------------------------------
 // Paket 0244 -- die Vollzaehligkeit je Riegel, als Zahl
 // ---------------------------------------------------------------------------
+//
+// Paket 0255 hat die Tabelle von sieben auf dreiundzwanzig Riegel und von vierzehn auf
+// fuenfunddreissig Meldungen gebracht. Beide Zahlen stehen unten in der Ausgabe, damit
+// der naechste Lauf sie lesen und nicht ausrechnen muss.
 //
 // Der Zaehler waechst allein im Fangblock des Verzeichnisses: Was nicht abbricht, legt
 // keine Meldung ab. Geprueft wird die **genaue** Zahl und nicht "mindestens eine" -- die
@@ -2076,7 +2278,7 @@ void probe_riegel_vollzaehlig()
         PRUEFE(gezaehlt == soll.meldungen);
     }
     std::printf("  Riegel mit Zustand (werte): %zu Meldungen aus %zu Riegeln, jede Zahl "
-                "einzeln geprueft\n",
+                "einzeln geprueft; vor Paket 0255 waren es 14 aus 7\n",
                 buch.anzahl(), SOLLZAHLEN.size());
 }
 

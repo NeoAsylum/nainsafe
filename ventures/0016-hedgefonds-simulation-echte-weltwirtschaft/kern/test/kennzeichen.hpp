@@ -95,9 +95,10 @@ using Kennzeichen = std::span<const char* const>;
 ///
 /// `MELDUNGEN_MAX` ist eine Puffergrenze und keine Zusicherung: Sie faengt die Probe,
 /// die mehr Abbruchstellen bekommt, als das Verzeichnis fassen kann, statt still die
-/// uebrigen zu uebergehen. Sie steht auf 32, weil `werte_probe` allein vierzehn
-/// Meldungen ablegt und die Zahl bei jedem Paket waechst.
-constexpr std::size_t MELDUNGEN_MAX = 32;
+/// uebrigen zu uebergehen. Sie steht auf 64, weil `werte_probe` seit Paket 0255 allein
+/// fuenfunddreissig Meldungen ablegt -- vierzehn ueber `bricht_ab_mit`, einundzwanzig
+/// ueber `merke` -- und die Zahl bei jedem Paket waechst.
+constexpr std::size_t MELDUNGEN_MAX = 64;
 constexpr std::size_t MELDUNG_ZEICHEN = 512;
 constexpr std::size_t KENNZEICHEN_MAX = 8;
 
@@ -219,47 +220,15 @@ public:
     void bricht_ab_mit(const char* was, R welcher, Kennzeichen kennzeichen, int zeile,
                        Aufgabe tun)
     {
-        // Ohne Kennzeichen prueft der Aufruf wieder nur, *dass* geworfen wurde -- also
-        // genau das, was der Apparat abschafft. Er faellt lieber auf, als still zu
-        // verwaessern.
-        if (kennzeichen.empty()) {
-            std::fprintf(stderr,
-                         "FEHLGESCHLAGEN Zeile %d: %s -- kein Kennzeichen genannt; so "
-                         "prueft die Stelle nur, dass ueberhaupt geworfen wurde\n",
-                         zeile, was);
-            ++fehlgeschlagen_;
-        }
-
         // Alles am Wortlaut geschieht **innerhalb** des Fangblocks: `what()` zeigt in die
-        // Ausnahme, und die ist hinter der schliessenden Klammer fort.
+        // Ausnahme, und die ist hinter der schliessenden Klammer fort. Was danach kommt --
+        // ablegen, vergleichen, urteilen -- steht in `verzeichne` und nicht hier: Es ist
+        // dasselbe, was `merke` tut, und zwei Fassungen davon waeren zwei Gestalten
+        // desselben Eintrags.
         try {
             tun();
         } catch (const std::domain_error& fehler) {
-            const char* const angekommen = fehler.what();
-
-            // Abschreiben, bevor irgendetwas urteilt: Auch eine Stelle, die gleich als
-            // "falscher Riegel" rot wird, liefert eine Meldung, gegen die die anderen
-            // Listen gehalten werden. Die Zusicherung soll nicht davon abhaengen, ob der
-            // Rest dieser Stelle gerade in Ordnung ist.
-            merke_meldung(welcher, was, zeile, kennzeichen, angekommen);
-
-            const char* fehlendes = nullptr;
-            for (const char* const stueck : kennzeichen) {
-                if (!enthaelt(angekommen, stueck)) {
-                    fehlendes = stueck;
-                    break;
-                }
-            }
-            if (fehlendes == nullptr) {
-                std::printf("  Abbruch wie erwartet (%s): %s\n", was, angekommen);
-                return;
-            }
-            std::fprintf(stderr,
-                         "FEHLGESCHLAGEN Zeile %d: %s -- es hat abgebrochen, aber der "
-                         "falsche Riegel.\n  erwartetes Textstueck: \"%s\"\n  angekommene "
-                         "Meldung:   \"%s\"\n",
-                         zeile, was, fehlendes, angekommen);
-            ++fehlgeschlagen_;
+            verzeichne(welcher, was, zeile, kennzeichen, fehler.what());
             return;
         } catch (...) {
             std::fprintf(stderr,
@@ -278,9 +247,44 @@ public:
         ++fehlgeschlagen_;
     }
 
+    /// Legt eine Abbruchmeldung ab, die die Aufrufstelle **selbst** gefangen hat
+    /// (Paket 0255).
+    ///
+    /// Der zweite Eingang neben `bricht_ab_mit`, und er fuehrt auf dieselbe Ablage. Es
+    /// gibt ihn, weil es Stellen gibt, die ihren Abbruch nicht hergeben koennen: Sie
+    /// pruefen den Wortlaut in **beiden** Richtungen -- welches Stueck ankommen muss und
+    /// welches gerade *nicht* --, und die zweite Richtung kann das Verzeichnis nicht.
+    /// Solche Stellen an `bricht_ab_mit` zu uebergeben hiesse, die negative Zusicherung
+    /// aufzugeben; sie hier abzugeben kostet keine.
+    ///
+    /// Was sie gewinnen, sind die beiden Aussagen, die eine einzelne Stelle ueber sich
+    /// selbst gar nicht treffen kann: dass ihr Riegel in diesem Lauf ueberhaupt gefeuert
+    /// hat -- verschwindet die Aufrufstelle, faellt die Vollzaehligkeit auf -- und dass
+    /// ihre Liste auf keine der fremden Meldungen passt.
+    ///
+    /// **Ein leerer Wortlaut ist ein Fehlschlag und keine leere Ablage.** Er hiesse, dass
+    /// nichts angekommen ist; ein Eintrag daraus faerbte die Vollzaehligkeit dieses
+    /// Riegels gruen, ohne dass eine Schranke gefeuert haette -- genau das Loch, gegen
+    /// das das Verzeichnis steht.
+    void merke(R welcher, const char* was, int zeile, Kennzeichen kennzeichen,
+               const char* angekommen)
+    {
+        if (angekommen == nullptr || angekommen[0] == '\0') {
+            std::fprintf(stderr,
+                         "FEHLGESCHLAGEN Zeile %d: %s -- kein Wortlaut abzulegen; die "
+                         "Stelle hat nichts gefangen, und ein leerer Eintrag machte die "
+                         "Vollzaehligkeit dieses Riegels gruen\n",
+                         zeile, was);
+            ++fehlgeschlagen_;
+            return;
+        }
+        verzeichne(welcher, was, zeile, kennzeichen, angekommen);
+    }
+
     /// Wie viele Meldungen in diesem Lauf zu diesem Riegel angekommen sind.
     ///
-    /// Der Zaehler waechst allein im Fangblock von `bricht_ab_mit`. Eine Probe, die eine
+    /// Der Zaehler waechst allein in `verzeichne`, also an einer angekommenen Meldung und
+    /// gleichgueltig, ueber welchen der beiden Eingaenge sie kam. Eine Probe, die eine
     /// **genaue** Zahl je Riegel verlangt statt "mindestens eine", bekommt damit den
     /// Nachweis, dass keine Aufrufstelle stillschweigend verschwunden ist -- die
     /// Vollzaehligkeit unten sieht nur die letzte.
@@ -479,6 +483,55 @@ private:
             std::fprintf(stderr, "FEHLGESCHLAGEN (%s): %s\n", wessen_, text);
             ++fehlgeschlagen_;
         }
+    }
+
+    /// Die eine Ablage, auf die **beide** Eingaenge fuehren -- `bricht_ab_mit` aus seinem
+    /// Fangblock heraus, `merke` von einer Stelle, die selbst gefangen hat.
+    ///
+    /// Sie steht hier und nicht zweimal, weil sonst zwei Wege in dasselbe Buch zwei
+    /// Gestalten des Eintrags waeren: Was abgelegt wird, wogegen es verglichen wird und
+    /// was im Fehlerfall gedruckt wird, muss von der Herkunft des Wortlauts unabhaengig
+    /// sein -- sonst haengt die Schaerfe der Zusicherung daran, welchen Eingang eine
+    /// Stelle zufaellig benutzt.
+    ///
+    /// Abgeschrieben wird **vor** jedem Urteil: Auch eine Stelle, die gleich als
+    /// "falscher Riegel" rot wird, liefert eine Meldung, gegen die die anderen Listen
+    /// gehalten werden. Die Zusicherung soll nicht davon abhaengen, ob der Rest dieser
+    /// Stelle gerade in Ordnung ist.
+    void verzeichne(R welcher, const char* was, int zeile, Kennzeichen kennzeichen,
+                    const char* angekommen)
+    {
+        // Ohne Kennzeichen prueft die Stelle wieder nur, *dass* geworfen wurde -- also
+        // genau das, was der Apparat abschafft. Er faellt lieber auf, als still zu
+        // verwaessern. Gemeldet und trotzdem abgelegt: Die Meldung wird als fremde
+        // weiterhin gebraucht.
+        if (kennzeichen.empty()) {
+            std::fprintf(stderr,
+                         "FEHLGESCHLAGEN Zeile %d: %s -- kein Kennzeichen genannt; so "
+                         "prueft die Stelle nur, dass ueberhaupt geworfen wurde\n",
+                         zeile, was);
+            ++fehlgeschlagen_;
+        }
+
+        merke_meldung(welcher, was, zeile, kennzeichen, angekommen);
+
+        const char* fehlendes = nullptr;
+        for (const char* const stueck : kennzeichen) {
+            if (!enthaelt(angekommen, stueck)) {
+                fehlendes = stueck;
+                break;
+            }
+        }
+        if (fehlendes == nullptr) {
+            std::printf("  Abbruch wie erwartet (%s): %s\n", was, angekommen);
+            return;
+        }
+        std::fprintf(stderr,
+                     "FEHLGESCHLAGEN Zeile %d: %s -- es hat abgebrochen, aber der "
+                     "falsche Riegel.\n  erwartetes Textstueck: \"%s\"\n  angekommene "
+                     "Meldung:   \"%s\"\n",
+                     zeile, was, fehlendes, angekommen);
+        ++fehlgeschlagen_;
     }
 
     /// Legt eine angekommene Meldung fuer die Eindeutigkeitspruefung ab.
