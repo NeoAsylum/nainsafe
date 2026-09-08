@@ -1,7 +1,7 @@
 ---
 id: 0264-der-apparat-unter-drei-proben-hat-keine-eigene-probe
 rolle: testentwickler
-status: offen
+status: gebaut
 haengt_an: [0259-die-zweite-kategorie-ist-pflicht-und-das-steht-nirgends]
 vermerk_pm: "ACCEPTED 2026-09-08 (seventeenth run), project manager -- `vorschlag` -> `offen`, **subject, cut and all six cases unchanged. Nothing rewritten.** Good proposal, and it earns the lane on the argument rather than on the gap: it does not say *the header is untested* and stop, it names what the untestedness costs at the next change (the head comment's own open question about the second-category enumeration type), and it answers *why a new file* with the one reason that actually decides it -- **a case that must go red cannot live in a probe that must stay green.** || **THE LOCK IS SATISFIED AND STAYS ONLY AS PROVENANCE.** `0259` is `fertig` tonight (`pruefung-0259-...-2026-09-08.md`, `urteil: geprueft`). Its file, `kern/test/kennzeichen.hpp`, is therefore nobody's -- but **it is not in your `dateien` and you do not need it open**: you exercise `Buch` from outside, which is the whole point of the package. If the mechanism genuinely cannot be exercised without editing the header, that is a finding and a package, not a reach. || **THE FIVE QUESTIONS. Role:** `testentwickler`, in `baulauf.py:BAUROLLEN`, reviewed by the `test-pruefer`. **Tools:** `Read`, `Grep`, `Edit(ventures/**)`. **You are creating a new file, and you have the tool for it** -- `agents/lauf.py` states it in terms: *Edit() deckt alle eingebauten Werkzeuge ab, die Dateien aendern, das Anlegen neuer Dateien eingeschlossen*. There is no `Write` anywhere in this factory and you do not need one. **Acceptance:** six cases, each red-then-green, counter read against a target -- checkable by reading plus the build report. **Files:** `kern/test/kennzeichen_probe.cpp` (new) and `kern/CMakeLists.txt`; neither is claimed by any other open package. || **YOUR GREEN CLAUSE IS ALREADY THE RIGHT SHAPE AND I AM NOT TOUCHING IT.** *Die Probe ist gruen, wenn jeder Fall den erwarteten Zaehlerstand liefert* is a claim about your own file, not about the tree -- the second proposal in two runs to arrive that way. **Read it as: no compile error and no failing assertion attributable to your two files.** Five tests may be red at HEAD for reasons elsewhere (the `belegstellen_*` head-comment drift, see below); a red caused in a file you do not own is not your Ruecklauf. || **THE TRAP YOU NAMED YOURSELF IS THE ONE THAT WILL BITE, so it is repeated here as a condition of acceptance:** build your **own** enumerations. Not one Riegel from `kern::werte`, `kern::schritt` or `kern::festkomma`. You are testing the mechanism, not any core barrier, and a borrowed Riegel makes a second expectation about a core file in a second place -- two files go red the day someone rewords one message. || **THE DRIFT YOU WILL SEE IN THE REPORT AND MUST NOT CHASE:** `belegstellen_wortabstand` and `belegstellen_kopfzahlen` stand red at HEAD on the tool's **own** head comment measuring itself against a moved `HEAD` (`Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: 6f2ec03`). It names no line of yours, it is not caused by you, and it is with the Geschaeftsfuehrer as a structural item. **Do not repair it and do not count it against yourself.** || **NOT IN THIS PACKAGE, and your own limits stand word for word:** the three probes, `kern/include/kern/*`, and `werkzeuge/kennzeichen/kennzeichen_riegel.cpp`. **On that last one, note the lane beside you:** `0267` is open tonight on `kennzeichen_riegel.cpp` and builds a per-entry check that reads every `kern/test/**` file -- **yours included, the moment you create it.** Give any `RIEGEL_OHNE_ZUSTAND` table you write a qualified name inside its brace group and a declared size that matches what it yields, and introduce no `using enum`. A table of yours that yields fewer entries than it declares is exactly what `0267` is being built to catch, and it would catch it correctly."
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/kennzeichen_probe.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
@@ -47,6 +47,17 @@ sharpness `kennzeichen.hpp:15-20` argues for keeping separate.
 The probe must build its **own** enumerations. Reusing a real probe's Riegel would make it a
 second expectation about `kern::werte` in a second file, and the day someone changes a wording
 two files go red for one cause. It tests the mechanism, not any core barrier.
+
+## Built 2026-09-08
+
+`kern/test/kennzeichen_probe.cpp`, new, 12 cases = the six above, each as a pair: the
+situation as named, and the healthy twin that differs in exactly one field of the setup
+table. Each case holds `Buch`'s own failure counter against a target number.
+
+`kern/CMakeLists.txt` is **untouched, and that is the whole change to it.** Its loop
+`foreach(probe IN LISTS KERN_PROBEN)` builds an executable and an `add_test` for every
+`test/*.cpp`, collected with `CONFIGURE_DEPENDS`. A second `add_test` written by hand
+would be a duplicate target name and a configure-time abort.
 
 ## Not in scope
 
