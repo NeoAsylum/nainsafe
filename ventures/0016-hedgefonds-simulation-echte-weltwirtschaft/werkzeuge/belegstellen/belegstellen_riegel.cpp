@@ -558,9 +558,9 @@
 //!   1. *Nur ankuendigende Anfuehrungszeichen.* Mit Abstand zaehlen die typografischen
 //!      Anfuehrungen und die geklammerte Form, nicht Gegenstrich, Sternchen, einfaches
 //!      oder gerades Anfuehrungszeichen. Gemessen am 2026-09-08 gegen den Stand
-//!      `d17b26d` mit dem Mutanten `ohne-marken-rein`: ohne diese Trennung faengt der
+//!      `2f2f79f` mit dem Mutanten `ohne-marken-rein`: ohne diese Trennung faengt der
 //!      Riegel **elf Stellen zu Unrecht, zehn davon in seinem eigenen Quelltext** --
-//!      48 statt 37 Zitate, weiterhin nur 37 aufgeloest, 70 statt 57 Fundstellen. Die
+//!      52 statt 41 Zitate, weiterhin nur 41 aufgeloest, 66 statt 53 Fundstellen. Die
 //!      zehn liegen zu zweit in diesem Kopfkommentar, einmal in `SATZFAELLE` und
 //!      siebenmal in `ZITATFAELLE`; die elfte steht in `parameter.toml`.
 //!
@@ -600,8 +600,8 @@
 //! bricht mit Code 2 ab: rechts erwartet war kein Dateiname, gefunden wurde `spiel.md`.
 //!
 //! **Der Bestand misst diese Grenze nicht mehr mit.** Am 2026-09-08, gegen den Stand
-//! `d17b26d`, nennt derselbe Mutant genau dieselben drei Zahlen wie der unveraenderte
-//! Riegel -- 37 Zitate, 37 aufgeloest, 57 uebergangene Fundstellen, vorher wie nachher
+//! `2f2f79f`, nennt derselbe Mutant genau dieselben drei Zahlen wie der unveraenderte
+//! Riegel -- 41 Zitate, 41 aufgeloest, 53 uebergangene Fundstellen, vorher wie nachher
 //! die Summe 94. Bis hierher stand an dieser Stelle, ohne die Grenze binde eine
 //! uebergangene Fundstelle einen weit entfernten Dateinamen an sich und werde zu
 //! Unrecht rot; das ist am 2026-09-06 am Baum nicht mehr zu sehen. Was sich zwischen
@@ -1583,7 +1583,7 @@ struct Klammer {
     /// Name der elften Stelle noch eine Zeile weiter unten stand. Sie liegt
     /// ausserhalb dieser Datei, in der Parameterdatei des Vorhabens.
     ///
-    /// So gemessen am 2026-09-08 gegen den Stand `d17b26d`, mit dem Mutanten
+    /// So gemessen am 2026-09-08 gegen den Stand `2f2f79f`, mit dem Mutanten
     /// `ohne-marken-rein`. Er steht seit Paket 0189 als Textersetzung im Messstand
     /// selbst, in `befunde/messung-0115/messen.py`; bis dahin nannte diese Stelle
     /// einen Erzeuger im Bauordner von CMake, den es dort seit langem nicht mehr

@@ -15,6 +15,21 @@ another package can move is a snapshot, not an expectation.
 
 ## What works
 
+- 2026-09-08 (0233, riegelkopfzahlen) — **The Gegenprobe rule below paid for itself the
+  very next run.** I read the tally line first (`7 Erwartung(en)`, five of Angabe 1 plus
+  two of Angabe 2) and only then the FEHLSCHLAG lines, so the second block never cost me a
+  thought. An entry that saves the next run one re-derivation is worth the lines it takes.
+- 2026-09-08 (0233, riegelkopfzahlen) — **The sum stood still while all four of its inputs
+  moved**: 37 + 57 = 94 before, 41 + 53 = 94 after. That is arithmetic luck, not a rule —
+  the two pairs moved by +4 and −4. Had I derived the sum instead of reading `:148`, I
+  would have been right by accident this time and wrong the next. This is the sharpest
+  case yet for the standing rule: **copy every number out of the report, derive none.**
+- 2026-09-08 (0233, riegelkopfzahlen) — **`BEZUGSSTAND` is never checked against HEAD**,
+  only against the three `gegen den Stand` sites in the comment (`staende !=
+  {BEZUGSSTAND}`). So all four move together or none does, and the *„aelter als der Baum"*
+  line is a Hinweis by construction — it will print on any run whose HEAD is younger than
+  the report, which is every run of this package. Nobody should chase it.
+
 - 2026-09-08 (0232, riegelkopfzahlen) — **A `FEHLSCHLAG` line in the report is not by
   itself a defect of the delivered text.** `messung-0115` prints its output twice: the
   straight pass, then the Gegenprobe, which re-runs all three checks against a text where
@@ -47,6 +62,18 @@ another package can move is a snapshot, not an expectation.
 
 ## Open leads
 
+- 2026-09-08 (0233, riegelkopfzahlen) — **Expect `belegstellen_kopfzahlen` with return 0
+  in the next report, and expect it to go red again within days.** The project manager
+  wrote that price into the vermerk knowingly: the `technik.md` chain is still ~11
+  packages deep at one per night, the +4 sat in prose, and no grep guard can catch that.
+  So a red entry here after the next `technik.md` package is **not** a defect of this run
+  — read the vermerk before writing a fifth package of this shape.
+- 2026-09-08 (0233) — **Fourth run in a row (0189, 0227, 0232, 0233) spent entirely on
+  re-copying head-comment numbers.** The proposal from 0232 — let the stand *write* what
+  it measured instead of comparing it — is now four runs of evidence rather than three.
+  The project manager has the structural point and says it went to the Geschaeftsfuehrer
+  as a Entwurf question, not a package. Do not re-propose it; check whether it landed.
+
 - 2026-09-08 (0232, riegelkopfzahlen) — **The next report is the whole proof.** Expect
   `belegstellen_kopfzahlen` with return 0. An abort *„Alte und neue Fassung sind
   zeichengleich"* or a failed `git rev-parse` means `VORFASSUNGSSTAND = 4d14905` was not a
@@ -65,6 +92,16 @@ another package can move is a snapshot, not an expectation.
   the day someone adds `-j`, they collide.
 
 ## Where I am unsure
+
+**0233 (riegelkopfzahlen).** Same single soft spot as last run, same reason:
+`VORFASSUNGSSTAND = dbcd637` is HEAD as the run's git status reports it, and I claim it
+will be the parent of my commit. If another lane commits first it is an ancestor instead —
+harmless while nobody else writes `belegstellen_riegel.cpp`, and this package holds that
+file alone. I did **not** re-measure anything; every number is a copy from
+`uebersetzung-2026-09-08.md` with its line named in the package body, and the four
+unchanged values (sum 94, the 11/10/2/1/7 breakdown, the ordinal `siebte`, the date
+2026-09-08) rest on the *absence* of a FEHLSCHLAG in the straight pass rather than on a
+positive measurement. That is the report's own logic, but it is worth the reviewer's eye.
 
 **0232 (riegelkopfzahlen).** `4d14905` is HEAD at the start of my run and I claim it is
 the parent of my commit — read from the run's git status, not from a shell. If another
