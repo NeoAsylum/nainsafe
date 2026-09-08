@@ -112,6 +112,44 @@ the same idea (`ABBRUCH_MELDET` needles, `:273-290`) and no Riegel registry, whi
 only two carry a Kennung anywhere. `0244`'s stated purpose was exactly this duplication.
 **Before proposing: read `0244` and check whether festkomma_probe was excluded on purpose.**
 
+## 2026-09-08 — 0249 Ruecklauf 2, `geprueft`: the third try deleted instead of replacing, and that is why it held
+
+**A deletion is checkable in a way a rewrite is not.** Rounds 1 and 2 both died on a
+*replacement* clause -- pointer-plus-mechanism, then the mirrored negative. Round 3 removed
+the claim and left a refusal (`schritt.hpp:361-365`, „weder … noch"). Checking it took one
+`Grep` of `:346-368` for `kein`/`nirgends`: nothing left to falsify. **When a Vermerk says
+"delete, do not replace", verify by searching for the *shape* of the banned clause, not by
+re-reading the paragraph.**
+
+**Verify a "nie" against the type system, not against the world.** The head says of a
+`RIEGEL_OHNE_ZUSTAND` entry „zu ihnen kommt nie eine Meldung an". That could have been a
+contingent claim about reachability -- instead both entrances of `Buch` (`kennzeichen.hpp`
+`bricht_ab_mit:220`, `merke:269`) take the first-category type `R`, so an `O` value cannot
+be filed at all. **Structural impossibility beats a survey of call sites and does not go
+stale.** `0255` added the second entrance the same night and the sentence survived it.
+
+**Fifth night on commit order, and the first on which it cost nothing — because I checked
+the `dateien` of the later commits instead of their titles.** `0251`'s name („die
+Kennzeichen eines unerreichbaren Riegels koennen still rosten") reads like it edits
+`schritt_probe.cpp`'s `RIEGEL_OHNE_ZUSTAND`; its `dateien` is `werkzeuge/kennzeichen/`,
+three files, none of them a probe. One `Grep -n '^dateien:'` on the package settled it.
+**Cheapest possible ordering check: grep the later packages' `dateien`, not their diffs.**
+
+**Where I let an ambiguity stand instead of reporting it.** „genau solche Aussagen sind …
+schon viermal veraltet": under the narrow reading („Aussagen ueber Proben") the count is 2,
+under the wide one („ueber Dateien, die dieses Paket nicht schreibt") it is 4 -- and 4 is
+the project manager's own number from the round-2 Vermerk. My rule from round 1 says one
+failing reading of two is Geschmack. **Applied it, and a third Ruecklauf would have frozen
+the package on a count the PM supplied.**
+
+**Proposal written: `0257`, the festkomma_probe lead from last night, and the check paid
+off.** `0244:97-99` *did* exclude `festkomma_probe.cpp` on purpose -- „which checks the one
+abort that has no address to name". But `festkomma.hpp` has **nine** `abbruch` sites at HEAD
+(`:84`, `:121`, `:138`, `:158`, `:203`, `:219`, `:313`, `:345`, `:348`; my six from last
+night were already stale — `0247` moved them), and the macro covers seven. So the exclusion
+is a scope cut with a ground that no longer holds, not a decision. **An explicit exclusion
+is not a closed question: check whether its stated reason still covers the surface.**
+
 ## 2026-09-08 — 0251, `geprueft`: the exit code is the receipt a green ctest cannot hide
 
 **Turn the guard clauses into the proof of the number.** Condition 3 wanted a printed piece
