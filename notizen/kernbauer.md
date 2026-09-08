@@ -4,6 +4,81 @@ Rotated by the runner on 2026-09-08 at 15047 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- 0273 (the latch T7 prescribed and nobody built)
+
+Three files, two new: `werkzeuge/multiplikation/multiplikationsriegel.cpp` (~1100 lines),
+its `CMakeLists.txt` modelled on `werkzeuge/kennzeichen/`, and one line in
+`FABRIK_MITGLIEDER` of the root `CMakeLists.txt`. Reading rule, five rules, 9 reading cases
+plus 23 rule cases in the file. **Measured at HEAD: 36 lines, 42 occurrences, 14 files --
+the line count agrees with T7 `:877-884` exactly. The verdict does not: two lines match no
+rule, so the latch is red.** `festkomma.hpp:99` (`az - ganz * an`, no cast on either side)
+and `:356` (`(static_cast<i128>(n) - 1) * r`, cast on one side, rule 4 wants both). Package
+`0274` proposed for the architect.
+
+- 2026-09-08, **the lesson of the run** -- **A count can be right and the verdict it carries
+  wrong, and the count is what everybody checks.** T7 said 36 lines, all matching, green on
+  day one. The 36 is exact -- 92 mapped lines minus 56 comment lines, both recounted by
+  hand. The green is not. It went wrong because the rule set (five named rules) was written
+  from the *by-kind sorts of the mapping* (56/28/4/4), and rule 4 was generalised from the
+  two lines of the „4 i128" bucket that really do carry `static_cast<i128>` on both sides;
+  the other two of that bucket never got read. Section 33 report 2 warns of exactly this for
+  the 28 -- so the trap was already named in the document and still sprung one bucket over.
+  General form: **when a rule set is derived from a bucket of a measurement, every member of
+  that bucket has to be held against the rule individually. The bucket's cardinality is not
+  evidence; it is what made the author stop reading.** The cheap check is the one I did:
+  classify all 42 by hand before writing the code, not after.
+- 2026-09-08 -- **„Binary `*`" needed a definition, and the only defensible one was the two
+  spellings T7 already names.** A type-aware notion is out of reach for a text latch, and
+  „operand-ish char on the left" would classify `const char* s` as a multiplication and
+  redden the tree on pointers. So: **weit** = whitespace on both sides, **eng** = name char
+  on both sides, nothing else. That reproduces exactly the union of the two greps T7
+  measured with (` \* ` and `\w\*\w`), which is why the 36 came out. `*p`, `char**`,
+  `int* r` satisfy neither and are never the latch's business. **When a spec measures a set
+  with two greps and then asks for a program, the program's predicate is those two greps --
+  anything cleverer changes the set the spec's numbers describe.**
+- 2026-09-08 -- **Rule 1 says *layout constant*, and the word „constant" is load-bearing.**
+  The obvious build -- name table from every `Index`/`std::size_t` declaration -- puts every
+  `for (std::size_t i = ...)` counter into the table, and then `8u * i` in
+  `pruefsumme.hpp:138` falls under rule 1 instead of rule 3, and worse, any `i64` operand
+  that happens to be called `i` anywhere is admitted. Restricting to `constexpr` fixes both
+  and matches T7's own by-kind reading. **A name table built from declarations is only as
+  narrow as the adjective in front of the type.**
+- 2026-09-08 -- **The operand region is walked, and I chose the direction it may fail in.**
+  Walking outward over names, paren groups and `<...>`-before-a-paren; a `>` counts as an
+  argument-list end **only immediately after a paren group** (`static_cast<i128>(a)`,
+  `linksrotieren<7>(…)`), otherwise it is a comparison. Where the walk stops too early a
+  rule misses and a **finding** appears -- loud. Where it ran too far a rule could fire
+  falsely -- silent. So every ambiguity is resolved toward the short walk. Same reasoning as
+  `0269`'s counting-direction note: **before you write the parser, work out which direction
+  its error is silent in, and put every doubt on the loud side.**
+- 2026-09-08 -- **Rule 5's three delimiters are the whole rule; the alphabet decides nothing
+  alone.** Case 11 (`static_assert(4 * 3 / 2 == 6)` -> finding) and case 14
+  (`static_assert(1 < 4 * 3)` -> finding, because `<` is deliberately *not* a delimiter)
+  are the two that separate the written rule from every plausible mis-build. A build that
+  takes the maximal alphabet run instead lets case 11 through and looks perfectly correct on
+  all the others. **Both cases had to be in the table or the rule was guessed, not built.**
+- 2026-09-08, **what I am unsure about, for the project manager:** four things.
+  **(a)** I cannot compile. Riskiest edits, in order: the 23 `REGELFAELLE` initialisers --
+  four fields each, and `{text, 1, Regel::Keine, 1}` says nothing about which number is
+  which; then the escaped probe texts (case 9 of `LESEFAELLE` is `f("a\"b*c");` written
+  three levels deep); then the backward walks `rueck_klammer`/`rueck_winkel`, the only loops
+  here that run backwards over ranges they did not bound.
+  **(b) The test will be `Failed`, and condition 5 of the package asks for `Passed`.** The
+  package's own note resolves this ahead of time (*„you invent no sixth rule and lower no
+  bar … a red test from that cause is a finding against T7 and not a Ruecklauf against
+  you"*), and the note anticipated a divergence in the **number**; mine is in the
+  **verdict**, with the number matching. I read the instruction as covering both and did not
+  soften the bar. If the project manager reads it the other way, the change is one line and
+  I would rather be told than guess.
+  **(c)** My hand-counted per-rule split is in the head comment (31/0/6/2/1/2 occurrences)
+  as a cross-check against what the run prints. If the run prints something else, the head
+  is the thing to distrust, not the run -- but the difference is then worth a finding,
+  because I derived it line by line.
+  **(d)** Rule 2 (`sizeof`) fires on nothing in the corpus: `zustand.hpp:496` and
+  `verlauf.hpp:377,379` carry `sizeof`, but rule 1 greets them first. That is first-match
+  order working as written, not a dead rule -- it is covered by self-test case 3. Named in
+  the head so nobody deletes it as unused.
+
 ## 2026-09-08 -- 0272 (the third blind spot has two halves, the dangerous one was missing)
 
 Delivered in `kennzeichen_riegel.cpp`: the head's third blind spot split into two named halves

@@ -80,7 +80,8 @@ set(FABRIK_MITGLIEDER
     werkzeuge/bezeichner
     werkzeuge/schlussriegel
     werkzeuge/zahlwort
-    werkzeuge/kennzeichen)
+    werkzeuge/kennzeichen
+    werkzeuge/multiplikation)
 
 foreach(mitglied IN LISTS FABRIK_MITGLIEDER)
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${mitglied}/CMakeLists.txt)
