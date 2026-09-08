@@ -110,6 +110,16 @@
 //! tragen die zwoelf Wertschoepfungsadressen einen positiven Wert -- `startwert` statt
 //! `musterwert` --, und eine eigene Probe haelt die Schranke von beiden Seiten.
 //!
+//! **Paket 0240 -- die Klemme steht hinter der Summe, und der Verdacht bleibt einer.** Die
+//! Regel addiert, ehe sie klemmt, und die Addition bricht bei Ueberlauf ab. Diese Datei
+//! kann den Fall durch die Runde nicht herstellen, und das ist gemessen statt vermutet:
+//! Der additive Term ist ein Produkt mit dem Realeinkommenshub, und der ist null, solange
+//! `schritt_3_politik` vortraegt -- ein eigener Koeffizient im Parametersatz aendert daran
+//! nichts. Gemessen wird beides: dass der Koeffizient keine der 310 Adressen ausser der
+//! Parametersumme bewegt, und was aus den vier Ausgangswerten mit einem Term ungleich null
+//! wuerde. Der zweite Teil laeuft an `festkomma::plus` und nicht durch die Runde; warum,
+//! steht bei der Probe.
+//!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
 
@@ -234,6 +244,22 @@ static_assert(zustimmungsplaetze_steigen(),
 
 /// Die obere Schranke der Zustimmungsregel -- T5 Klasse 4, hundert Prozent.
 constexpr i64 ZUSTIMMUNG_OBEN = 10'000;
+
+/// Vier Ausgangswerte der Zustimmung, alle ausserhalb von null bis 10.000, und die
+/// Schranke daneben, auf der die Regel jeden von ihnen abliefert.
+///
+/// **Ausgeschrieben statt gerechnet:** Eine Erwartung, die aus derselben Klemme entsteht
+/// wie das Gepruefte, prueft nichts.
+///
+/// Sie stehen seit Paket 0240 hier statt in einer Probe, weil zwei sie brauchen: Paket
+/// 0197 misst an ihnen den gerechneten Rumpf gegen den vortragenden, Paket 0240 misst an
+/// denselben vier Zahlen, was aus ihnen wuerde, wenn der additive Term nicht null waere.
+/// Zwei Abschriften waeren zwei Stellen, die auseinanderlaufen -- und die Aussage des
+/// zweiten Pakets haengt daran, dass es dieselben vier Werte sind.
+constexpr std::array<i64, kern::zustand::LAENDER> ZUSTIMMUNG_AUSSERHALB = {
+    {10'001, i64{-1}, kern::festkomma::I64_MAX, kern::festkomma::I64_MIN}};
+constexpr std::array<i64, kern::zustand::LAENDER> ZUSTIMMUNG_SCHRANKE = {
+    {10'000, i64{0}, 10'000, i64{0}}};
 
 /// `min(10.000, max(0, wert))` -- die beiden Schranken der Regel, hier ein zweites Mal
 /// und ohne den Kern.
@@ -649,9 +675,16 @@ i64 startwert(Index platz, Wertschoepfung wie)
 /// ausdruecklich verlangt. Der Grund steht an `Wertschoepfung`: Unter der Musterbelegung
 /// ist das Bruttoinlandsprodukt aller vier Laender negativ, und eine Probe der
 /// Zustimmungsregel auf einem Zustand, den `spiel.md` verbietet, misst nichts.
+///
+/// **Der Parametersatz ist seit Paket 0240 ein Argument mit Vorbelegung.** Die Runde haelt
+/// ihre Summe gegen `partie.parameter_pruefsumme`; wer mit einem anderen Traeger fahren
+/// will, braucht deshalb eine Lage, die zu ihm gehoert -- sonst stirbt die Runde an der
+/// Bindung statt an dem, was gemessen werden soll. Die Vorbelegung haelt jede aeltere
+/// Aufrufstelle unveraendert.
 Zustand ausgangslage_voll(i64 rundennummer,
                           const std::array<i64, kern::zustand::LAENDER>& zustimmung,
-                          Wertschoepfung wie)
+                          Wertschoepfung wie,
+                          const kern::werte::Konstanten& satz = KONSTANTEN_DER_PROBE)
 {
     Zustand welt;
     Startbelegung zugang{welt};
@@ -662,8 +695,7 @@ Zustand ausgangslage_voll(i64 rundennummer,
         zugang.setze(ZUSTIMMUNGSPLAETZE[n], zustimmung[n]);
     }
     zugang.setze(kern::zustand::stelle_partie(PartieFeld::Runde), rundennummer);
-    zugang.setze(PLATZ_PARAMETERSUMME,
-                 kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
+    zugang.setze(PLATZ_PARAMETERSUMME, kern::schritt::parameter_pruefsumme(satz));
     return welt;
 }
 
@@ -680,9 +712,10 @@ std::array<i64, kern::zustand::LAENDER> zustimmung_aus_mustern()
 }
 
 Zustand ausgangslage_mit_zustimmung(i64 rundennummer,
-                                    const std::array<i64, kern::zustand::LAENDER>& zustimmung)
+                                    const std::array<i64, kern::zustand::LAENDER>& zustimmung,
+                                    const kern::werte::Konstanten& satz = KONSTANTEN_DER_PROBE)
 {
-    return ausgangslage_voll(rundennummer, zustimmung, Wertschoepfung::Positiv);
+    return ausgangslage_voll(rundennummer, zustimmung, Wertschoepfung::Positiv, satz);
 }
 
 Zustand ausgangslage(i64 rundennummer)
@@ -1327,16 +1360,12 @@ void probe_zustimmung_ohne_instrumentenschritt()
 
 void probe_zustimmung_klemmt_statt_vortrag()
 {
-    // Vier Ausgangswerte, alle ausserhalb von null bis 10.000, und die erwartete Schranke
-    // je Land daneben. Ausgeschrieben statt gerechnet: Eine Erwartung, die aus derselben
-    // Klemme entsteht wie das Gepruefte, prueft nichts.
-    constexpr std::array<i64, kern::zustand::LAENDER> AUSSERHALB = {
-        {10'001, i64{-1}, kern::festkomma::I64_MAX, kern::festkomma::I64_MIN}};
-    constexpr std::array<i64, kern::zustand::LAENDER> SCHRANKE = {
-        {10'000, i64{0}, 10'000, i64{0}}};
-
+    // Die vier Ausgangswerte und die erwartete Schranke je Land standen bis Paket 0240
+    // hier und stehen seither oben bei `ZUSTIMMUNG_AUSSERHALB` -- die Probe jenes Pakets
+    // braucht dieselben vier Zahlen, und ihre Aussage haengt daran, dass es dieselben
+    // sind. Ausgeschrieben sind sie dort wie hier.
     constexpr i64 VORRUNDE = 5;
-    const Zustand vorher = ausgangslage_mit_zustimmung(VORRUNDE, AUSSERHALB);
+    const Zustand vorher = ausgangslage_mit_zustimmung(VORRUNDE, ZUSTIMMUNG_AUSSERHALB);
     const Rundenergebnis ergebnis =
         kern::schritt::schritt(vorher, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf);
     const Zustand& nachher = ergebnis.neuer_zustand;
@@ -1347,7 +1376,7 @@ void probe_zustimmung_klemmt_statt_vortrag()
         const Index platz = ZUSTIMMUNGSPLAETZE[n];
         const i64 start = vorher.lies(platz);
         const i64 ende = nachher.lies(platz);
-        if (ende == SCHRANKE[n]) {
+        if (ende == ZUSTIMMUNG_SCHRANKE[n]) {
             ++auf_der_schranke;
         }
         if (ende == start) {
@@ -1355,7 +1384,8 @@ void probe_zustimmung_klemmt_statt_vortrag()
         }
         std::printf("  %s: Start %lld -> nach der Runde %lld (Schranke der Regel %lld)\n",
                     kern::zustand::index_zu_adresse(platz), static_cast<long long>(start),
-                    static_cast<long long>(ende), static_cast<long long>(SCHRANKE[n]));
+                    static_cast<long long>(ende),
+                    static_cast<long long>(ZUSTIMMUNG_SCHRANKE[n]));
     }
 
     // Die beiden Haelften der Unterscheidung. Die erste sagt, was die Regel rechnet; die
@@ -1370,6 +1400,189 @@ void probe_zustimmung_klemmt_statt_vortrag()
     std::printf("  Zustimmung: %zu von 4 auf der Schranke der Regel, %zu von 4 stehen "
                 "geblieben -- ein Vortrag haette alle vier stehen lassen\n",
                 auf_der_schranke, stehen_geblieben);
+}
+
+// ---------------------------------------------------------------------------
+// Paket 0240 -- die Klemme steht hinter einer Addition, die abbricht
+// ---------------------------------------------------------------------------
+//
+// `spiel.md` schreibt die Regel als
+// `min(10.000, max(0, lies_alt(...) + mal_geteilt(...)))`. Ueber den ganzen Zahlen ist die
+// innere Summe total; ueber `i64` ist sie es nicht, und `festkomma::plus` bricht nach T7
+// ab -- **vor** der Klemme, die genau solche Werte auf ihre Schranke zurueckholt. Gemeldet
+// hat es der Bruchtester als Befund 5 in
+// `befunde/beschraenktheit-nach-schritt/bruch-2026-09-08.md`.
+//
+// **Verlangt war, den Verdacht zu einem reproduzierten Befund zu machen: ein additiver
+// Term ungleich null auf einem Ausgangswert ausserhalb von null bis 10.000, gebaut ohne
+// auf `schritt_3_politik` zu warten. Das geht nicht, und warum es nicht geht, ist die
+// erste Haelfte dieser Probe.**
+//
+// Der vorgeschlagene Weg war, der Probe ihr eigenes `zustimmung_elastizitaet` mitzugeben
+// -- seit Paket 0229 ist der Parametersatz ein Eingang der Runde. Er traegt nicht, und der
+// Grund ist keine Kalibrierung, sondern Arithmetik: Der additive Term ist
+// `mal_geteilt(zustimmung_elastizitaet, realeinkommenshub(l), 10.000)`, und der Hub ist
+// null, solange sich kein Instrumentenstand bewegt. Ein Produkt mit dem Faktor null bleibt
+// null, welchen Koeffizienten jemand auch einsetzt. **Die zwei Bedingungen des Verdachts
+// sind also nicht zwei, sondern eine** -- der bewegte Instrumentenstand --, und sie ist
+// die, die dieses Paket nicht anfassen darf.
+//
+// Haelfte 1 misst das, statt es zu behaupten: dieselbe Ausgangslage, zweimal gefahren,
+// einmal mit dem Koeffizienten null und einmal mit dem groessten `int64_t`. Von den 310
+// Adressen unterscheidet sich danach genau eine, und es ist `partie.parameter_pruefsumme`
+// -- die Adresse, die den Koeffizienten selbst traegt. Die vier Zustimmungen stehen
+// gleich, obwohl ihre Ausgangswerte beide Enden des Zahlbereichs einschliessen.
+//
+// Haelfte 2 baut den Fall, den die Runde nicht hergibt, an der Stelle, an der er entsteht:
+// an der Addition selbst. Fuer jeden der vier Ausgangswerte und drei additive Terme steht
+// da, ob `festkomma::plus` abbricht und was die Regel ueber den ganzen Zahlen gaebe. Zwei
+// der zwoelf Faelle brechen ab, und in beiden ist der Wert, den die Regel verlangt, genau
+// die Schranke, die die Klemme hinter der Addition geliefert haette -- 10.000 und 0. Der
+// Abbruch kostet also einen Wert, der nach der Regel nie ausserhalb des Wertebereichs lag.
+//
+// **Warum die Kennzeichenprobe diesen Abbruch nicht fuehrt.** Er kommt aus
+// `festkomma::plus` und nicht aus einem Riegel von `kern::schritt`; die Riegelliste oben
+// ist die der Runde, und ihre Vollzaehligkeitshaelfte verlangt zu jedem Eintrag eine
+// angekommene Meldung. Der verortete Abbruch, den `src/schritt.cpp` seit diesem Paket vor
+// die Addition stellt, ist aus keinem Zustand erreichbar -- genau das misst Haelfte 1. Als
+// Eintrag waere er ein Riegel, zu dem nie eine Meldung ankaeme, und die Probe wuerde rot.
+// Er gehoert in die Liste an dem Tag, an dem Schritt 3 rechnet.
+
+/// Ein Ausgangswert, ein additiver Term und was aus beiden wird -- ausgeschrieben und
+/// nicht gerechnet, aus demselben Grund wie bei `ZUSTIMMUNG_SCHRANKE`.
+struct Summenfall {
+    i64 ausgangswert;
+    i64 wirkung;
+    /// Ob `festkomma::plus` auf diesem Paar abbricht.
+    bool bricht_ab;
+    /// Was `min(10.000, max(0, ausgangswert + wirkung))` ueber den ganzen Zahlen gibt --
+    /// auch dort, wo die Addition auf `i64` vorher abbricht.
+    i64 nach_der_regel;
+};
+
+/// Die vier Ausgangswerte aus `ZUSTIMMUNG_AUSSERHALB`, jeder mit drei additiven Termen:
+/// dem einzigen, den die Runde heute hergibt, und den beiden kleinsten, die sie nicht
+/// hergibt. Groessere Terme braucht es nicht -- an beiden Enden des Zahlbereichs reicht
+/// eins, und in der Mitte aendert eine groessere Zahl nichts an der Aussage.
+constexpr std::array<Summenfall, 12> SUMMENFAELLE = {{
+    {10'001, i64{0}, false, 10'000},
+    {10'001, i64{1}, false, 10'000},
+    {10'001, i64{-1}, false, 10'000},
+    {i64{-1}, i64{0}, false, i64{0}},
+    {i64{-1}, i64{1}, false, i64{0}},
+    {i64{-1}, i64{-1}, false, i64{0}},
+    {kern::festkomma::I64_MAX, i64{0}, false, 10'000},
+    {kern::festkomma::I64_MAX, i64{1}, true, 10'000},
+    {kern::festkomma::I64_MAX, i64{-1}, false, 10'000},
+    {kern::festkomma::I64_MIN, i64{0}, false, i64{0}},
+    {kern::festkomma::I64_MIN, i64{1}, false, i64{0}},
+    {kern::festkomma::I64_MIN, i64{-1}, true, i64{0}},
+}};
+
+void probe_klemme_hinter_der_summe()
+{
+    // -----------------------------------------------------------------------
+    // Haelfte 1: der Koeffizient ist kein zweiter Weg zum additiven Term.
+    // -----------------------------------------------------------------------
+    kern::werte::Konstanten grosser_koeffizient = KONSTANTEN_DER_PROBE;
+    grosser_koeffizient.zustimmung_elastizitaet = kern::festkomma::I64_MAX;
+
+    // Die Vorbedingung der Zaehlung unten, und sie steht als Pruefung da statt als
+    // Annahme: Fielen die beiden Summen zusammen, waeren die beiden Lagen Feld fuer Feld
+    // gleich, die Zaehlung ergaebe null -- und die Zeile darunter meldete den falschen
+    // Grund.
+    PRUEFE(kern::schritt::parameter_pruefsumme(grosser_koeffizient)
+           != kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
+
+    constexpr i64 VORRUNDE = 7;
+    const Zustand mit_null = ausgangslage_mit_zustimmung(VORRUNDE, ZUSTIMMUNG_AUSSERHALB);
+    const Zustand mit_gross =
+        ausgangslage_mit_zustimmung(VORRUNDE, ZUSTIMMUNG_AUSSERHALB, grosser_koeffizient);
+
+    const Zustand nach_null =
+        kern::schritt::schritt(mit_null, {}, KONSTANTEN_DER_PROBE, Modus::Weltlauf)
+            .neuer_zustand;
+    const Zustand nach_gross =
+        kern::schritt::schritt(mit_gross, {}, grosser_koeffizient, Modus::Weltlauf)
+            .neuer_zustand;
+
+    std::size_t verschiedene = 0;
+    bool nur_die_parametersumme = true;
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        if (nach_null.lies(platz) == nach_gross.lies(platz)) {
+            continue;
+        }
+        ++verschiedene;
+        if (platz != PLATZ_PARAMETERSUMME) {
+            nur_die_parametersumme = false;
+            std::fprintf(stderr, "  der Koeffizient bewegt %s\n",
+                         kern::zustand::index_zu_adresse(platz));
+        }
+    }
+    PRUEFE(verschiedene == 1);
+    PRUEFE(nur_die_parametersumme);
+
+    // Und dieselbe Aussage an den vier Adressen, um die es geht -- ohne sie truege die
+    // Zaehlung oben allein, und eine Zaehlung sagt nicht, *welche* Adresse gleich blieb.
+    std::size_t gleiche_zustimmungen = 0;
+    for (const Index platz : ZUSTIMMUNGSPLAETZE) {
+        if (nach_null.lies(platz) == nach_gross.lies(platz)) {
+            ++gleiche_zustimmungen;
+        }
+    }
+    PRUEFE(gleiche_zustimmungen == kern::zustand::LAENDER);
+
+    std::printf("  Koeffizient 0 gegen %lld: %zu von %zu Adressen verschieden -- die "
+                "Parametersumme, die ihn selbst traegt; %zu von 4 Zustimmungen gleich\n",
+                static_cast<long long>(grosser_koeffizient.zustimmung_elastizitaet),
+                verschiedene, static_cast<std::size_t>(FELDER), gleiche_zustimmungen);
+
+    // -----------------------------------------------------------------------
+    // Haelfte 2: was aus den vier Ausgangswerten wuerde, wenn der Term nicht null waere.
+    // -----------------------------------------------------------------------
+    std::size_t abgebrochene = 0;
+    std::size_t geklemmte = 0;
+    for (const Summenfall& fall : SUMMENFAELLE) {
+        bool hat_abgebrochen = false;
+        i64 nach_der_klemme = 0;
+        try {
+            nach_der_klemme =
+                geklemmt(kern::festkomma::plus(fall.ausgangswert, fall.wirkung));
+        } catch (const std::domain_error&) {
+            hat_abgebrochen = true;
+        }
+
+        PRUEFE(hat_abgebrochen == fall.bricht_ab);
+        if (hat_abgebrochen) {
+            ++abgebrochene;
+            std::printf("  Ausgangswert %lld, additiver Term %lld: die Addition bricht ab; "
+                        "die Regel ueber den ganzen Zahlen verlangt %lld\n",
+                        static_cast<long long>(fall.ausgangswert),
+                        static_cast<long long>(fall.wirkung),
+                        static_cast<long long>(fall.nach_der_regel));
+            continue;
+        }
+
+        ++geklemmte;
+        PRUEFE(nach_der_klemme == fall.nach_der_regel);
+        std::printf("  Ausgangswert %lld, additiver Term %lld: die Regel gibt %lld "
+                    "(erwartet %lld)\n",
+                    static_cast<long long>(fall.ausgangswert),
+                    static_cast<long long>(fall.wirkung),
+                    static_cast<long long>(nach_der_klemme),
+                    static_cast<long long>(fall.nach_der_regel));
+    }
+
+    // Zwei von zwoelf, und beide an einem Ende des Zahlbereichs. Die Zahl steht als
+    // Bedingung da und nicht nur im Ausdruck: Faellt sie, hat sich die Menge der
+    // abbrechenden Zustaende bewegt -- und genau das durfte dieses Paket nicht tun.
+    PRUEFE(abgebrochene == 2);
+    PRUEFE(geklemmte == SUMMENFAELLE.size() - 2);
+
+    std::printf("  Summe der Zustimmungsregel: %zu von %zu Faellen brechen ab, %zu kommen "
+                "bis zur Klemme; die beiden Abbrueche verlangten nach der Regel 10000 und "
+                "0, also Werte auf der Schranke\n",
+                abgebrochene, SUMMENFAELLE.size(), geklemmte);
 }
 
 // ---------------------------------------------------------------------------
@@ -1895,6 +2108,7 @@ int main()
     probe_rundennummer();
     probe_zustimmung_ohne_instrumentenschritt();
     probe_zustimmung_klemmt_statt_vortrag();
+    probe_klemme_hinter_der_summe();
     probe_nenner_der_zustimmungsregel();
     probe_parametersatz();
     probe_feldzahl();

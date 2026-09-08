@@ -1,7 +1,7 @@
 ---
 id: 0240-die-klemme-steht-hinter-einer-addition-die-abbricht
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0233-feldzaehler-an-einer-rohen-reihe-messen]
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/src/schritt.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/test/schritt_probe.cpp]
 abnahme: "Die drei Bedingungen unter „Abnahme\", **in der Fassung des `vermerk` -- Bedingung 1 ist geteilt und ihr entscheidender Zweig ist ausdruecklich nicht deiner.** Tragend ist Bedingung 2: der Verdacht wird zu einem reproduzierten Befund oder das Paket hat nichts geliefert."
@@ -64,3 +64,58 @@ review (0237), and neither is mine to choose.
 ## Ruecklaeufe
 
 0.
+
+## Vermerk des Kernbauers, 2026-09-08 (Bedingung 1c und der Befund zu Bedingung 2)
+
+**Bedingung 2 ist nicht erfuellbar, und das ist der Befund, nicht eine Ausrede.** Der
+angebotene Weg -- der Probe ihr eigenes `zustimmung_elastizitaet` mitgeben -- traegt
+nicht. Der additive Term ist `mal_geteilt(zustimmung_elastizitaet, realeinkommenshub(l),
+10.000)`; der Hub ist `mal_geteilt(-politiklast, 10.000, bip)` und **null**, solange
+`schritt_3_politik` vortraegt. Ein Produkt mit dem Faktor null bleibt null, welchen
+Koeffizienten der Parametersatz auch traegt. **Die „zwei Bedingungen" des Verdachts sind
+also eine**, naemlich der bewegte Instrumentenstand -- und der liegt ausserhalb dieses
+Pakets.
+
+Gemessen statt behauptet, in `probe_klemme_hinter_der_summe`: dieselbe Lage zweimal
+gefahren, Koeffizient `0` gegen `I64_MAX`. Von 310 Adressen unterscheidet sich genau eine,
+`partie.parameter_pruefsumme` -- die den Koeffizienten selbst traegt. Die vier
+Zustimmungen sind gleich.
+
+**Bedingung 3, als Zahl.** Die vier Startwerte, je mit dem additiven Term `0`, `+1`, `-1`;
+`vorher` und `nachher` sind identisch, weil die Menge der abbrechenden Zustaende sich
+nicht bewegen durfte:
+
+| Startwert | Term 0 | Term +1 | Term -1 |
+|---|---|---|---|
+| `10.001` | 10.000 | 10.000 | 10.000 |
+| `-1` | 0 | 0 | 0 |
+| `I64_MAX` | 10.000 | **Abbruch** | 10.000 |
+| `I64_MIN` | 0 | 0 | **Abbruch** |
+
+2 von 12 brechen ab, vorher wie nachher. In beiden Faellen verlangt die Regel ueber den
+ganzen Zahlen 10.000 bzw. 0 -- Werte auf der Schranke. Erreichbar ist heute allein die
+Spalte `Term 0`, also keiner der beiden Abbrueche.
+
+**Bedingung 1c -- welcher Weg die Formel erhaelt, und was er kostet.**
+
+* **Saettigende Addition in `festkomma.hpp`: erhaelt die Formel exakt.** Laeuft die Summe
+  ueber `I64_MAX`, ist sie ueber den ganzen Zahlen groesser als 10.000, und `min` gibt
+  10.000; die Saettigung gibt `I64_MAX`, und `min` gibt ebenfalls 10.000. Unter `I64_MIN`
+  ebenso gegen 0. **An dieser Regel** ist die Saettigung von der exakten Rechnung nicht zu
+  unterscheiden. Kosten: ein zweites Additionsprimitiv an der einzigen Rechenstelle des
+  Kerns, mit zwei Additionsbedeutungen -- abbrechen und saettigen --, zwischen denen jeder
+  kuenftige Aufrufer waehlen muss. Das ist der Preis, nicht die Zeilenzahl. Die Wahl gilt
+  nur dort, wo eine Klemme unmittelbar folgt; wo keine folgt, waere die Saettigung
+  derselbe stille Ersatzwert, gegen den T6 argumentiert.
+* **ADR-Weg (Abweichung von der Formel): erhaelt sie nicht.** Das Gegenbeispiel steht oben
+  im Rumpf -- `alt = -100, wirkung = +50` gibt nach `spiel.md` 0 und nach Klemme-zuerst
+  50.
+* **Eine Klemme auf `i128` in `schritt.cpp` ist kein dritter Weg**: Sie waere eine
+  gepruefte Addition ausserhalb `festkomma.hpp` und damit ein T6-Verstoss.
+
+Entschieden ist hier nichts.
+
+**Was ausserhalb der Dateiliste liegt und deshalb offen bleibt:** `include/kern/schritt.hpp`
+zaehlt die harten Fehler auf und kennt den neuen verorteten Abbruch nicht. Er ist heute
+unerreichbar, die Liste also nicht falsch, aber unvollstaendig. `schritt.hpp` gehoert zu
+Vorschlag 0235.

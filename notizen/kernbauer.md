@@ -4,6 +4,70 @@ Rotated by the runner on 2026-09-08 at 12820 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- the run on 0240 (the clamp behind an addition that aborts)
+
+Two carried-forward items the block further down does not have, and both held again here:
+**the way to change an abort message without changing the abort set** -- test the
+precondition on `i128`, then let `festkomma` do the arithmetic anyway; doing it yourself
+with `__builtin_add_overflow` is shorter and breaks T6. And: of the five `belegstellen_*`
+ctest entries **only `belegstellen_riegel` reads your files**, the other four are
+self-tests of that tool.
+
+- 2026-09-08, **the lesson of the run** -- **"Two conditions must both change" is a claim
+  about arithmetic, and it is worth two minutes of it before you plan the run.** The
+  package (and the finding behind it) said the Verdacht hangs on two independent
+  conditions -- `zustimmung_elastizitaet` leaving `0` **and** an instrument stand moving --
+  and offered me the first as the way in: since `0229` a probe can bring its own parameter
+  set. It cannot work, and the reason is one line of algebra: the additive term is
+  `mal_geteilt(zustimmung_elastizitaet, hub, 10.000)` with `hub == 0`, and **a product with
+  the factor zero stays zero for every coefficient**. The two conditions are one, and it is
+  the one the package forbade me. The general form: when a plan says "condition A alone
+  suffices", check whether A is a *factor* of something the other condition zeroes.
+- 2026-09-08 -- **The unreachable case still fits in the probe, one layer down.** The round
+  cannot produce a non-zero term, but `festkomma::plus` is the exact primitive at the site,
+  and the four start values are known. Twelve rows -- four start values x term `0/+1/-1`,
+  each with "does it abort" and "what the rule over the integers demands" -- turn the whole
+  finding from prose into printed numbers: 2 of 12 abort, and in both the rule wants 10.000
+  resp. 0, i.e. a value that was never outside the range. Same move as `ohne_klammern` in
+  `0233`: when a comment says what *another* execution would do, ask whether that execution
+  fits in the probe. Third time now the answer was yes.
+- 2026-09-08 -- **The negative half needs a positive control that is not the assertion
+  itself.** "The coefficient moves nothing" is measured as: run the same start state twice,
+  coefficient `0` against `I64_MAX`, count differing addresses over all 310. Exactly one
+  differs, `partie.parameter_pruefsumme` -- the address carrying the coefficient. That one
+  differing address is what keeps the measurement from being a tautology, and it needs its
+  own precondition (`parameter_pruefsumme` of the two sets must differ) written as a check,
+  not assumed -- otherwise a checksum collision would report zero and read like proof.
+- 2026-09-08 -- **The Riegel ledger of `schritt_probe.cpp` cannot carry a barrier that no
+  state reaches.** Its completeness half demands a message per entry each run; my new
+  located abort is provably unreachable, so registering it would turn the tree red on a
+  healthy build, and omitting it hides the barrier from the very check built so that no
+  barrier disappears. I omitted it and wrote the reason at the probe -- a comment, not a
+  check. Written up as proposal `0248`. **Grep the ledger's completeness half before you
+  add an abort you cannot trigger.**
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot compile. If the build is red, look first at the default argument
+  `const kern::werte::Konstanten& satz = KONSTANTEN_DER_PROBE` on `ausgangslage_voll` and
+  `ausgangslage_mit_zustimmung` -- a `constexpr` object as a default argument is legal but
+  it is the newest shape in that file -- and at `SUMMENFAELLE`, where two rows make a
+  `constexpr` array whose values would abort `festkomma::plus` if anything ever evaluated
+  them in a constant expression. They are only read in a runtime loop.
+  **(b)** I lifted `AUSSERHALB`/`SCHRANKE` out of `probe_zustimmung_klemmt_statt_vortrag`
+  to namespace scope (`ZUSTIMMUNG_AUSSERHALB`, `ZUSTIMMUNG_SCHRANKE`) because both probes
+  need the same four values and condition 3 is about exactly those. A reviewer may fault it
+  as an edit beside the package; the alternative was a second copy of the four numbers whose
+  agreement the whole condition rests on.
+  **(c)** The length of the new abort message is **hand-counted, not measured**: about 418
+  characters at the longest address and both numbers at 20 digits, against
+  `MELDUNG_ZEICHEN_MAX` of 511. Nothing prints it, because nothing can reach it -- unlike
+  `0242`, where the probe printed the measured length. If the count is wrong, the message
+  truncates on the day step 3 computes and ends on `[...]`.
+- 2026-09-08 -- **Outside my file list, and 0245 does not close it:** `include/kern/schritt.hpp`
+  lists the hard errors of the round. `0245` (`gebaut` the same night) adds `kern::festkomma`
+  as a third abort source, but the new located barrier is one of `kern::schritt`'s own, and
+  the header's own list of those does not have it. Not wrong today -- it is unreachable --
+  but incomplete. Noted in the package's Vermerk.
+
 ## Carried forward from the predecessor
 
 - **Check the rule's right-hand side against the four carriers (T15/T27/T23/T48) and then

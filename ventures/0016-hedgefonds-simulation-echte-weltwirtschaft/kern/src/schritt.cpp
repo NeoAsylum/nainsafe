@@ -644,6 +644,61 @@ i64 realeinkommenshub(const Zustand& rundengrenze, const Schreiber& schreiber,
     return festkomma::mal_geteilt(festkomma::minus(0, last), ZEHNTAUSENDSTEL, inlandsprodukt);
 }
 
+/// Die Bedingung an die **Summe** der Zustimmungsregel -- sie steht vor der Addition und
+/// nennt, was `festkomma::plus` nicht nennen kann (Paket 0240).
+///
+/// `spiel.md` schreibt die Regel als `min(10.000, max(0, lies_alt(...) + mal_geteilt(...)))`.
+/// Ueber den ganzen Zahlen ist diese Summe total: Was zu gross oder zu klein ausfaellt,
+/// holt die Klemme dahinter auf ihre Schranke zurueck. Ueber `i64` ist sie es nicht --
+/// `festkomma::plus` bricht nach T7 ab, und zwar **vor** der Klemme, die fuer genau solche
+/// Werte da ist. Gemeldet hat das der Bruchtester als Befund 5 in
+/// `befunde/beschraenktheit-nach-schritt/bruch-2026-09-08.md`.
+///
+/// **Diese Funktion behebt den Befund nicht, sie verortet ihn.** Die Menge der
+/// abbrechenden Zustaende bleibt dieselbe: Geprueft wird auf `i128` genau die Bedingung,
+/// die `__builtin_add_overflow` gleich darauf meldete, und die Addition laeuft danach
+/// trotzdem durch `festkomma::plus` -- eine gepruefte Addition ausserhalb jener Datei
+/// machte aus T6 einen Satz mit einer Ausnahme. Was sich aendert, ist allein die Meldung:
+/// `"plus: Summe ausserhalb von i64 (T7)"` nennt weder das Land noch die Adresse noch die
+/// beiden Zahlen, aus denen die Summe entstand.
+///
+/// **Die Reparatur ist eine Entscheidung und liegt ausserhalb dieses Pakets.** Sie braucht
+/// entweder eine saettigende Addition in `kern/include/kern/festkomma.hpp` -- ein neues
+/// Rechenprimitiv an der einzigen Rechenstelle des Kerns -- oder eine Abweichung von der
+/// Formel und damit einen ADR. Welcher der beiden Wege die Formel erhaelt, steht als
+/// Auskunft an den Projektmanager im Arbeitspaket
+/// `0240-die-klemme-steht-hinter-einer-addition-die-abbricht`.
+///
+/// **Heute erreicht kein Zustand diesen Abbruch**, und das ist gemessen statt gehofft: Der
+/// additive Term ist `mal_geteilt(zustimmung_elastizitaet, hub, 10.000)`, und `hub` ist
+/// null, solange `schritt_3_politik` vortraegt. Ein Produkt mit dem Faktor null bleibt
+/// null, welchen Koeffizienten der Parametersatz auch traegt -- der Koeffizient ist also
+/// kein zweiter Weg hierher, sondern gar keiner. `test/schritt_probe.cpp` misst beides:
+/// dass er nichts bewegt, und was aus den vier Ausgangswerten wuerde, wenn der Term nicht
+/// null waere.
+void summe_der_regel_pruefen(Index platz, i64 ausgangswert, i64 wirkung)
+{
+    const festkomma::i128 summe =
+        static_cast<festkomma::i128>(ausgangswert) + static_cast<festkomma::i128>(wirkung);
+    if (summe >= static_cast<festkomma::i128>(festkomma::I64_MIN)
+        && summe <= static_cast<festkomma::i128>(festkomma::I64_MAX)) {
+        return;
+    }
+
+    Meldung meldung;
+    meldung.text(
+        "kern::schritt -- Zustimmungsregel: min(10.000, max(0, lies_alt(...) + "
+        "mal_geteilt(...))) aus spiel.md klemmt erst hinter der Summe. Ueber den ganzen "
+        "Zahlen ist die Summe total, ueber i64 nicht: Sie bricht ab, ehe die Klemme den "
+        "Wert auf seine Schranke zurueckholt. Betroffen ist ");
+    meldung.adresse(platz);
+    meldung.text(", ihr Ausgangswert ist ");
+    meldung.zahl(ausgangswert);
+    meldung.text(" und der additive Term ");
+    meldung.zahl(wirkung);
+    festkomma::abbruch(meldung.fertig());
+}
+
 /// **Schritt 5 -- Reaktion.** Nach `spiel.md`: "Zustimmung, Regierungswechsel,
 /// Aufsichtszaehler, Nachahmerzaehler, Anlegerbestand -- die fuenf Gegenkraefte rechnen
 /// ab."
@@ -684,7 +739,15 @@ void schritt_5_reaktion(const Zustand& rundengrenze, Schreiber& schreiber,
         const i64 hub = realeinkommenshub(rundengrenze, schreiber, konstanten, land);
         const i64 wirkung =
             festkomma::mal_geteilt(konstanten.zustimmung_elastizitaet, hub, ZEHNTAUSENDSTEL);
-        const i64 ungeklemmt = festkomma::plus(schreiber.lies_alt(platz), wirkung);
+
+        // Die Bedingung an die Summe steht vor der Addition, aus demselben Grund, aus dem
+        // die Nennerbedingung vor ihrer Division steht: Bricht ein Zustand ab, soll die
+        // Meldung die verbotene Groesse nennen und nicht die Rechenart. Die Addition
+        // selbst bleibt bei `festkomma` (T6) -- gemessen wird zweimal dasselbe, und der
+        // Abbruch kommt vom ersten der beiden.
+        const i64 ausgangswert = schreiber.lies_alt(platz);
+        summe_der_regel_pruefen(platz, ausgangswert, wirkung);
+        const i64 ungeklemmt = festkomma::plus(ausgangswert, wirkung);
 
         // `min(10.000, max(0, ...))`, in der Schachtelung der Vorgabe: erst die untere
         // Schranke, dann die obere.
