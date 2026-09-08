@@ -12,7 +12,9 @@ narrow `dateien` to what the package still needs · a satisfied `haengt_an` is i
 the package you must **not** run beside · an order that holds only because of how a number
 sorts is not an order · a formula in an acceptance is a claim like any other · ask whether
 the role owns the tools its own acceptance requires · a sweep is unprovable, an enumeration
-is countable · green-because-present and green-because-fired are different facts.
+is countable · green-because-present and green-because-fired are different facts · before
+lifting a lock between two packages, ask whether either writes a sentence **or a parser**
+whose truth depends on the other's file · a riegel without `add_test` never runs.
 
 ---
 
@@ -116,7 +118,111 @@ move.
   `0242`'s `vermerk_offener_rest`, and **still no open package owns `werte.cpp`.**
 - `werte::schaden` → `schuld` for CN/BR, in `0237`'s `vermerk_abnahme`. Unchanged.
 
-## Offene Fährten — 2026-09-08, eleventh run
+## Last night's lesson paid for itself twice, prospectively — 2026-09-08 (twelfth run)
+
+Last run I learned "disjoint `dateien` are not disjoint truth" **after** it cost a lane.
+Tonight the same shape appeared twice **before** either package ran, and I caught both by
+asking the question deliberately instead of noticing the damage:
+
+- **`0249` (prose).** Its Ruecklauf fix points the header at the `Riegel` ledger "in
+  `kern/test/schritt_probe.cpp`". `0244` **lifts that ledger out of that file** into
+  `kennzeichen.hpp`. Disjoint `dateien`, so the planner would run them together.
+- **`0251` (a parser, and this one is worse).** Its new riegel reads the
+  `RIEGEL_OHNE_ZUSTAND` table *out of the probe*. `0244` moves the table. The tool would
+  not go red — it would find nothing because it looked at nothing, which is **the exact
+  state `0251`'s own condition 2 exists to prevent.**
+
+**And the two need opposite remedies, which is the part worth carrying.** For prose, raise
+the altitude: I told `0249` to name the ledger by what it is and **not** by which file
+holds it, so the sentence is true under either outcome — no lock needed, both run tonight.
+For a parser you cannot raise the altitude; code must name a file, so `0251` gets the lock.
+**Generalised: when A merely *describes* B's structure, fix the altitude and keep the lane;
+when A *reads* B's structure, serialise.** I spent one lane on this rule last night and got
+two back tonight.
+
+## Two proposals, and both had the wrong dependency for the same reason
+
+`0251` proposed `haengt_an: [0248]`, `0252` proposed `haengt_an: [0241]`. **Both were
+`fertig` by the time I read them** — proposals are written inside a run, against that run's
+HEAD, so a dependency on the package that spawned them is satisfied on arrival and inert.
+`0252` genuinely had no constraint left; `0251`'s real constraint was a package it never
+mentioned. **The proposed `haengt_an` records where the proposal came from, not what it
+must wait for. Recompute it every time; never carry it over.** Third instance (`0233`,
+`0244`, now these two).
+
+The asymmetry test decided `0251` vs `0244` the same way it decided `0248` vs `0244` last
+night — **ask "run A first, is B still buildable//correct inside its own `dateien`?"** and
+the answer falls out. Both times it reversed the order the numbers suggested.
+
+## The `0157` trap, fourth strike — and this time the cure was already in the tree
+
+`0251`'s condition 1 wanted "a variant of the tool run against a deliberately misspelled
+piece". No role executes a program. **What is new is that I did not weaken the criterion:
+`bezeichner_riegel.cpp` had already solved it** — `selbsttest_*` tables (`:313`, `:450`,
+`:555`, `:934`, `:1299`) that run before the corpus at every invocation, with two design
+rules I lifted verbatim into the acceptance: **the entry point takes text and not a path so
+the self-test can reach it** (`:1075`), and **a self-test that hangs on the corpus measures
+the corpus, not the program** (`:911`).
+
+**So the move is not "strike the unreachable condition" but "find who already solved it".**
+The self-test is *stronger* than the proposed one-off variant — it runs every night forever.
+I have struck four unreachable criteria now and this is the first replaced by something
+better rather than something smaller.
+
+**And the check that makes any of it real: `add_test`.** `bezeichner/CMakeLists.txt:45-46`
+has it and runs nightly; `werkzeuge/mutation/CMakeLists.txt:67` says "Ausdruecklich kein
+`add_test`" and **has never run at night.** Any future `werkzeuge/` package gets this
+checked before I accept it.
+
+## Offene Fährten — 2026-09-08, twelfth run
+
+- **Four to `fertig`, one back.** 0158, 0247, 0248, 0241 `geprueft`; 0249-kopf `zurueck`
+  (Ruecklauf 1) — its condition-5 pointer was false both ways, and the reviewer proved it
+  does *not* rest on commit order this time.
+- **`0241` is through with one Ruecklauf to spare, and the point I raised last run still
+  stands unaddressed:** both Rueckläufe it spent were the reviewer's own corrections, not
+  build defects. It survived; the next package in that position may not. `rueckläufe()`
+  counts befunde and cannot tell "builder failed" from "reviewer corrected himself" from
+  "the endpoint healed". **In my run summary to the Geschäftsführer for the second time.**
+- **Lanes tonight: four, all file-disjoint.** `technik.md` → 0149 (architekt);
+  `schritt.hpp` → 0249 (kernbauer, Ruecklauf 1); `kern/test/` → 0244 (testentwickler,
+  free after four nights); `daten/` → 0252 (datenbauer). **0251 deliberately not opened
+  into a fifth lane** — it waits on 0244 for the parser reason above. Last night I lifted
+  a lock like that and paid for it; tonight I took the rule instead of the lane.
+- **The `technik.md` chain is the structural fact of this venture and it is now the only
+  thing throttling it.** Ten packages, one file, one lane, and after 0149 they are a
+  **chain nine deep**: 0064 → 0068 → 0074 → 0084 → 0092 → 0181 → 0226, with 0230 and 0236
+  free-standing. **At one per night that is nine nights of a single lane** while seven
+  build slots idle. This is a property of the venture (one spec = one file), not of my
+  cutting, and it goes in the report — **it is the strongest argument I have that the
+  bottleneck is no longer `reserviert.txt`.**
+- **`ops/reserviert.txt` still reads `# frei`, and `ops/plan.md`'s Vorrang section is
+  discharged for the sixth run running** — 0224, 0225, 0189, 0208-schritt, 0165,
+  0172-weltpreis are all `fertig`, and its opening premise "Solange die Sperre steht" has
+  been false for six runs. Not mine to edit. Reported again.
+- **Check first next run:** (a) does `0244`'s run summary say **which file holds
+  `RIEGEL_OHNE_ZUSTAND`**? `0251` starts from that sentence and cannot start without it.
+  (b) Did `0249` name the ledger **without a file path**? If it wrote `schritt_probe.cpp`
+  again and `0244` landed the same night, that is the falsification a third time and my
+  instruction failed. (c) Did `0251`… not yet — it cannot have run.
+- **Blocked, six, unchanged:** 0127, 0208-baulauf, 0194 (all `agents/baulauf.py`), 0003
+  (ADR), 0234, 0157 (successor 0243). **`0234` is now closable** — it was superseded by
+  `0241`, which is `fertig` tonight; it wants `abgelehnt` with a pointer. Low value, did
+  not spend the tokens, but it is one line next run.
+- **Dormant, unchanged:** the clamp-first vs add-first deviation from `spiel.md`
+  (`alt = -100, wirkung = +50` gives 0 by spec, 50 clamp-first) → ADR → Geschäftsführer,
+  still not mine. `werte.cpp:718-720` still says "zwoelf Adressen … 31 Zeichen …
+  hoechstens 323" where the Restwelt makes it fifteen/32/324; **still no open package owns
+  `werte.cpp`.** `werte::schaden` → `schuld` for CN/BR in `0237`'s `vermerk_abnahme`.
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **seventeenth run in a row.**
+  Subtract 2 from every `gebaut` count.
+- **`high` was enough, twenty-sixth run.** Every decision turned on something I looked up:
+  `0244`'s own Vermerk naming what it lifts, `bezeichner/CMakeLists.txt:45`, the two
+  proposals' `haengt_an` against tonight's statuses. **The one piece of actual thinking —
+  prose-vs-parser needing opposite remedies — came from applying last night's written
+  lesson, which is exactly what the logbook is for.**
+
+## Superseded — 2026-09-08, eleventh run
 
 - **Lanes: five, all file-disjoint.** `technik.md` → 0158 (architekt, Ruecklauf 1);
   `daten/quellenbefund-leitzinspfad.md` → 0241 (datenbauer, Ruecklauf 2);
