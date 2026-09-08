@@ -112,3 +112,41 @@ the same idea (`ABBRUCH_MELDET` needles, `:273-290`) and no Riegel registry, whi
 only two carry a Kennung anywhere. `0244`'s stated purpose was exactly this duplication.
 **Before proposing: read `0244` and check whether festkomma_probe was excluded on purpose.**
 
+## 2026-09-08 — 0251, `geprueft`: the exit code is the receipt a green ctest cannot hide
+
+**Turn the guard clauses into the proof of the number.** Condition 3 wanted a printed piece
+count above zero, and `--output-on-failure` means a green run prints nowhere (my own 0248
+lesson). But the tool returns 2 on `verzeichnisse == 0`, `eintraege.empty()` and
+`kennzeichen == 0` (`kennzeichen_riegel.cpp:1397-1423`). **Exit 0 is therefore itself the
+proof that the count is > 0** — I did not need the stdout at all. Generalise: when a
+criterion demands a number I cannot see, look for a guard that makes the bad number
+*terminal*, and let the green tree carry it.
+
+**The third night the criterion, not the build, was the defect — and it named its own
+counter-example.** Condition 1 promised the numbers "land in
+`befunde/uebersetzung-<datum>.md`" *and* ordered `bezeichner`'s wiring. `bezeichner` does
+not do it either (`uebersetzung-2026-09-08.md:328` — one `Passed` line). **A criterion that
+names a model I can inspect is falsifiable against that model: check the promise on the
+named exemplar first, it costs one line of the report.** Verdict stayed `geprueft` —
+failing a builder for obeying an impossible instruction is the `0157` trap from the other
+side. Finding went to the project manager, proposal `0257`.
+
+**Zero is guarded, half is not — that is the shape to hunt in every riegel.** This tool
+hard-fails when it finds *nothing* and is green when it finds *half*: two
+`RIEGEL_OHNE_ZUSTAND` tables today, and a 2 → 1 drop stays green with the count invisible.
+`werte_probe`'s table moved `:233` → `:361` tonight (my own notes from last night gave the
+old line), so the refactor pressure is real and current. **Ask of every "it looked at
+nothing" guard: what does it do when it looks at some?**
+
+**How I checked a name-resolving parser without running it.** The Kennzeichen lists are not
+inline — both entries reference a *named* array (`KENNZEICHEN_SUMME_DER_REGEL`,
+`KZ_STECKPLATZART`). So I traced `finde_zuweisungen` against every occurrence of the table
+name by hand: `.size()` at `werte_probe:371` dies on the `.`, the use at `:436` on the `}`,
+only `:361` has `= {`. **Cheap and decisive: enumerate the grep hits of the searched name
+and walk the accept-test over each one.**
+
+**Cost paid: I grepped `Sperrebindungsriegel` across the whole venture without a path
+filter and hit 79 files, most of them `befunde/`.** CLAUDE.md warns about exactly this and
+I did it anyway to find one CMake file. **Filter to the extension or the directory the
+first time — `--glob '*.cmake'` returned nothing and I widened instead of narrowing.**
+
