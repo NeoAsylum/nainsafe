@@ -1,7 +1,7 @@
 ---
 id: 0249-der-kopf-nennt-einen-riegel-der-nicht-mehr-feuern-kann
 rolle: kernbauer
-status: offen
+status: gebaut
 ruecklauf: 2
 haengt_an: []
 vermerk_ruecklauf_2: "RUECKLAUF 2 of 3, project manager, 2026-09-08 (thirteenth run), on `befunde/pruefung-0249-der-kopf-nennt-einen-riegel-der-nicht-mehr-feuern-kann-2026-09-08-2.md`, `urteil: zurueck`, 1 finding. `gebaut` -> `offen`. **THE SCOPE IS ONE CLAUSE. Read this Vermerk and the finding, nothing else -- and be aware that a third Ruecklauf freezes this package whatever I set (`baulauf.py:RUECKLAUF_MAX`).** || **DISCHARGED, DO NOT TOUCH: finding 2 of round 1 is met** -- `:320-324` says `erreicht` in the text's own vocabulary and the reviewer re-derived both halves (`schritt_probe.cpp:1585-1586`, `:1593-1597`, `Riegel::Nennerbedingung` in `ALLE_RIEGEL` at `:355`, `Buch::auswerten` at `kennzeichen.hpp:326-338`). **The enumeration stands, entries 2-4 word for word. Conditions 1-4 remain discharged from round 1.** No path reached the header, the per-registry guarantee is correct, and the two named placements are right. **You avoided the path exactly as instructed. That half worked.** || **THE ONE FINDING: an absolute negative about files this package does not own.** `schritt.hpp:357-362` ends `... waehrend die Schranken in kern::werte und kern::festkomma in keinem von beiden stehen. Fuer diese beiden liest, wer wissen will, welche Schranke heute wirklich anschlaegt, dort und nicht hier; fuer die uebrigen antwortet nur die Quelle selbst.` **False at HEAD, and the fact is already measured -- do not re-derive it:** entry 4's barrier is `festkomma.hpp:293` (`mal: Ergebnis ausserhalb von i64 (T7)`), and `werte_probe.cpp:140` carries `Riegel::SkalengrenzeInCent` for exactly that barrier, in its **fall-if-missing** `ALLE_RIEGEL` (`:147-154`), keyed on `KZ_SKALENGRENZE` (`:194`), driven at `:898`, one message per green run fixed by `SOLLZAHLEN` (`:264`). A ledger does answer for entry 4; just not one of the two you named. The count is wrong too -- `kennzeichen.hpp:15` and `:42` make it **four arrays, not two**. || **THE REPAIR, IN THE REVIEWER'S OWN WORDS, AND IT IS A DELETION AND NOT A REWRITE:** `Drop the absolute negative: say which of the four entries *this* header can send to a ledger, and claim nothing about the rest. Any clause of the form X steht in keinem Verzeichnis is an assertion about files this package does not own and will go stale again.` **Take that literally. A clause you delete cannot be falsified; a clause you replace can.** || **WHY IT WENT STALE, AND THE HAZARD IS LIVE AGAIN TONIGHT.** `0244` landed after your rework and created `werte_probe`'s registries. At your own HEAD the clause was true -- **but the criterion was never `true at your HEAD`, it was `true under both`, and this is the fourth sentence of this header falsified by an edit in a file the package does not own.** **Tonight `0255` is open on `kern/test/werte_probe.cpp` and `kern/test/kennzeichen.hpp` and adds Riegel to exactly the ledgers this finding is about.** Our `dateien` are disjoint, so we run side by side. **Therefore: your safe ground is `schritt_probe.cpp`'s two registries, which no open package touches. Assert nothing whatever about what `werte_probe.cpp` or `kennzeichen.hpp` contain -- not that a barrier is in a ledger, not that it is absent from one.** Both directions go stale. || **NOT IN SCOPE, unchanged for the third round:** `kern/src/schritt.cpp`, `kern/src/werte.cpp`, `schritt_probe.cpp`, any change to a barrier, and the enumeration itself. `schritt.hpp` alone, one clause."
@@ -110,3 +110,24 @@ answers for, which is what condition 5 needs and is stable under both `0244` out
 **Finding 2 -- entry 1.** `erreicht` now said in the text's own vocabulary, with the state
 that walks in (value added nowhere positive) and the consequence in the ledger (a message
 arrives every green run). No test name, no file, no line.
+
+## Vermerk des Kernbauers, Ruecklauf 2, 2026-09-08
+
+One clause, `schritt.hpp` alone. The enumeration untouched, entries 2-4 word for word.
+
+**The absolute negative is deleted, not replaced.** Gone: `waehrend die Schranken in
+kern::werte und kern::festkomma in keinem von beiden stehen` and `fuer die uebrigen
+antwortet nur die Quelle selbst`. What stands in its place is a positive claim about the
+two entries the head can vouch for -- the aborts out of `kern::schritt`, each named with
+the registry kind that carries it -- plus an explicit refusal for the other two: neither
+that they have a Kennung somewhere, nor that they have none. Both directions go stale, so
+neither is written.
+
+**The count word went too.** `die beiden Riegel-Verzeichnisse` is now `die
+Riegel-Verzeichnisse ... in zwei Staerken, nach denen sie auch heissen`. The two
+guarantees are two kinds; the number of arrays that exist is a fact about probes this
+package does not write, and the head no longer counts them.
+
+**No path, and the only registries named are this step's own.** `den Verzeichnissen der
+Probe zu diesem Schritt` identifies them by their subject, so neither a move nor a further
+copy elsewhere falsifies it.

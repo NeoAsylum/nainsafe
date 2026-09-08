@@ -349,19 +349,23 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 /// falschen Ort, ohne dass irgendetwas rot wurde. Prosa ist der Traeger fuer den
 /// **Grund** einer Schranke: warum sie keinen Ersatzwert bekommt und welcher Zustand
 /// ihren Weg heute unbetreten laesst. Sie ist nicht der Traeger dafuer, **welche**
-/// Schranke anschlaegt; das halten die beiden `Riegel`-Verzeichnisse der Testschicht,
-/// und sie halten es verschieden stark: Zu jeder Kennung in `ALLE_RIEGEL` muss in jedem
-/// Lauf eine Abbruchmeldung ankommen, sonst faellt der Lauf; `RIEGEL_OHNE_ZUSTAND`
-/// fuehrt daneben die Schranken, die kein Zustand erreicht, und ist von dieser
-/// Vollzaehligkeit ausgenommen -- zu ihnen kommt nie eine Meldung an, und der Lauf faellt
-/// trotzdem nicht. Von den vier Eintraegen hier haben nur die beiden Abbrueche aus
-/// `kern::schritt` heraus dort ueberhaupt eine Kennung -- die Nennerbedingung im ersten
-/// Verzeichnis, die Schranke vor der Summe im zweiten --, waehrend die Schranken in
-/// `kern::werte` und `kern::festkomma` in keinem von beiden stehen. **Fuer diese beiden
-/// liest, wer wissen will, welche Schranke heute wirklich anschlaegt, dort und nicht
-/// hier; fuer die uebrigen antwortet nur die Quelle selbst.** Und wer hier eine
-/// dazuschreibt, schreibt ihren Ort in ihren eigenen Eintrag, statt ihn einer Gruppe
-/// vorwegzustellen: Die Gruppenzeile, die das bisher tat, ist mit diesem Paket fort.
+/// Schranke anschlaegt; das halten die `Riegel`-Verzeichnisse der Testschicht, und sie
+/// halten es in zwei Staerken, nach denen sie auch heissen: Zu jeder Kennung in einem
+/// `ALLE_RIEGEL` muss in jedem Lauf eine Abbruchmeldung ankommen, sonst faellt der Lauf;
+/// ein `RIEGEL_OHNE_ZUSTAND` fuehrt daneben die Schranken, die kein Zustand erreicht, und
+/// ist von dieser Vollzaehligkeit ausgenommen -- zu ihnen kommt nie eine Meldung an, und
+/// der Lauf faellt trotzdem nicht. **Wofuer dieser Kopf einsteht: Die beiden Abbrueche aus
+/// `kern::schritt` heraus haben in den Verzeichnissen der Probe zu diesem Schritt eine
+/// Kennung -- die Nennerbedingung in deren `ALLE_RIEGEL`, die Schranke vor der Summe in
+/// deren `RIEGEL_OHNE_ZUSTAND`. Fuer diese beiden liest, wer wissen will, welche Schranke
+/// heute wirklich anschlaegt, dort und nicht hier.** Ueber die beiden anderen Eintraege
+/// sagt dieser Kopf nichts: weder dass eine Schranke aus `kern::werte` oder
+/// `kern::festkomma` irgendwo eine Kennung hat, noch dass sie keine hat. Beide Richtungen
+/// waeren Aussagen ueber Proben, die dieses Paket nicht schreibt, und genau solche
+/// Aussagen sind an dieser Aufzaehlung schon viermal veraltet, ohne dass etwas rot wurde.
+/// Und wer hier eine Schranke dazuschreibt, schreibt ihren Ort in ihren eigenen Eintrag,
+/// statt ihn einer Gruppe vorwegzustellen: Die Gruppenzeile, die das bisher tat, ist mit
+/// diesem Paket fort.
 [[nodiscard]] Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
                                      const Konstanten& konstanten, Modus modus);
 
