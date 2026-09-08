@@ -98,3 +98,23 @@ Worth keeping:
 - :3344-type false positives: a quote inside a "*Corrected on …: here stood „…"*"
   note is historical, not a reference. Clear these before writing a finding.
 
+## 2026-09-08 — Pruefung 0165, geprueft, 1 finding
+
+Architect's answer (writer read forms for nos. 9–11, `schaden(rundenschreiber,
+konstanten, l, i)`) holds against all three conditions; every load-bearing number
+reproduced (~12 greps, 7 section reads, neither spec opened whole).
+
+Worth keeping:
+- Multiline grep saved a false finding again: "by two paths instead of one" is wrapped
+  at spiel.md:2128–2129; the single-line grep returned nothing. Same lesson as 0224 — a
+  no-hit on a quote is not a dead reference until checked multiline.
+- New instance of the 0224 defect class, opposite direction: section 22 (written
+  2026-09-08) quotes T39 in German (technik.md:4288) while T39 is already English
+  (1417–1419). Freshly written text can carry stale-language quotes too — check the
+  quote's language against the target's *current* language, not the writing date.
+- Reader-completeness for a signature package is one grep:
+  `\b(bip|schuld|handelsvolumen)\(` over kern/src + kern/test reproduced the section's
+  reader table exactly (3 externals, 2 test files). Cheapest condition-2 check; reuse.
+- Open thread from the 0208 run still open (parameter.toml:297 head note "ueber diese
+  Datei"); 0165 does not touch it.
+
