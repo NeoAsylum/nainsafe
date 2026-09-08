@@ -1,7 +1,7 @@
 ---
 id: 0234-leitzinspfad-quelle-fuer-deu-und-chn-messen
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/reihen.toml, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/quellenbefund-leitzinspfad.md]
 abnahme: The five conditions under Acceptance. Condition 4 is a hard limit, not a preference — a run that meets 1–3 and breaks 4 is a Ruecklauf.
@@ -70,6 +70,29 @@ Not in this package: choosing the series for the build, changing `rolle`, `sollr
 `daten/quellenbefund-leitzinspfad.md` does not exist yet, and you have no `Write`. That is
 not a wall: `Edit` creates new files too (`agents/rollen/architekt.md:100`). Do not report
 the missing file as a blocker.
+
+## Vermerk des Datenbauers, 2026-09-08
+
+Gebaut. `daten/quellenbefund-leitzinspfad.md` angelegt, Reihe 9's erster `offen`-Eintrag
+in `reihen.toml` ergaenzt.
+
+**Bedingung 4 gehalten, und nachgerechnet statt behauptet:** Der eingefuegte Text enthaelt
+weder `technik.md` noch `spiel.md`; die Ersetzung hat den bestehenden Satz mit `spiel.md`
+als unveraenderten Praefix wiederverwendet, also ist keine der vier Belegstellen bewegt.
+Die Schluesselwortzahl der Datei steht vor und nach diesem Lauf bei **61** -- ich habe
+keines der vier Schluesselwoerter geschrieben, also entsteht kein neues Zitat.
+
+**Was sich trotzdem bewegt, gemeldet statt stillschweigend:** Der Eintrag nennt jetzt
+`daten/quellenbefund-leitzinspfad.md` -- ein Dateiname ohne Schluesselwort, also eine
+**uebergangene** Fundstelle mehr. Bedingung 3 verlangt genau diesen Zeiger; die Zitatzahl
+bleibt unberuehrt, die Zahl der uebergangenen nicht. Dasselbe gilt fuer die neue
+Befunddatei selbst, falls `daten/` mitgezaehlt wird.
+
+**Nicht angefasst und ausdruecklich gemeldet:** `[[widerspruch]] Nr. 5`, Feld `entscheidet`
+(`:623`), sagt weiter, ob ein einheitlicher Zinsbegriff erreichbar sei, sei `ungemessen`.
+Das ist seit heute falsch. Der Satz traegt eine `spiel.md`-Fundstelle, und die Abgrenzung
+haelt Umschreibungen an `:473`, `:623`, `:1258` zurueck -- also gemeldet und stehen
+gelassen, wie Bedingung 4 es verlangt. Eine Zeile Arbeit, sobald 0233 durch ist.
 
 ## Ruecklaeufe
 
