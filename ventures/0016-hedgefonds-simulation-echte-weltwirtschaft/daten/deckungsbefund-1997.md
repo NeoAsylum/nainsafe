@@ -3,7 +3,7 @@ typ: deckungsbefund
 paket: 0006-deckung-pruefjahrgang-1997
 rolle: datenbauer
 datum: 2026-09-01
-ueberarbeitet: 2026-09-02 (Ruecklauf 1: Zusammenzug 27 -> 26, Einheiten Reihe 9 und 11)
+ueberarbeitet: 2026-09-02 (Ruecklauf 1: Zusammenzug 27 -> 26, Einheiten Reihe 9 und 11); 2026-09-08 (Paket 0256-die-richtigen-zahlen-fuer-weo-an-eine-abfrage-binden); 2026-09-08 (Paket 0262-punkt-zwei-und-drei-des-weo-nachweises-stimmen-nicht-mit-sich-selbst)
 gegenstand: 31 Sollreihen + Handelsblock, Fenster 1997-2021, Fuellung verboten (T24)
 ergebnis: Fenster 1997-2021 traegt nicht
 R: 19

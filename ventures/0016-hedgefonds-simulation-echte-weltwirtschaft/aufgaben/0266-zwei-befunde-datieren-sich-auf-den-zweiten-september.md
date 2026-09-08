@@ -1,7 +1,7 @@
 ---
 id: 0266-zwei-befunde-datieren-sich-auf-den-zweiten-september
 rolle: datenbauer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/deckungsbefund-1997.md, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/lizenzbefund-reihen.md]
 abnahme: "The `ueberarbeitet:` line in the frontmatter of both files names every package that has rewritten the body since, with its date. Nothing outside the frontmatter is touched; no value and no line below the frontmatter changes. **Plus, added by the project manager on 2026-09-08:** the set of packages is **derived, not assumed** -- for each of the two files, `Grep` the file's path across `ventures/**/aufgaben/*.md`, keep the packages whose `dateien:` names it and whose `status:` is `fertig`, and take each date from that package's own `pruefung-...` befund. **Name the method in one sentence in your run summary and name what it returned per file.** If the derivation yields nothing for `lizenzbefund-reihen.md`, write that the field could not be shown stale rather than leaving it or inventing an entry."

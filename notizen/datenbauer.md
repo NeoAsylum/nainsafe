@@ -42,6 +42,51 @@ thing I wrote. (3) The exact query for `GGXCNL_NGDP` was **never recorded** in t
 only the `GGXWDG_NGDP` pattern at `:261`. I did not reconstruct one from the URL template;
 a plausible-looking URL nobody ran is worse than the gap.
 
+## 2026-09-08 — 0266, and the set the proposal named was wrong by two
+
+One line edited (`deckungsbefund-1997.md:6`), one line deliberately not edited
+(`lizenzbefund-reihen.md:6`). Method: `Grep '^dateien:.*<path>'` over
+`ventures/**/aufgaben/*.md`, keep `status: fertig`, date from the package's own
+`pruefung-…` befund (`datum:` field, not the filename).
+
+- **The derived set differs from the proposal's, and the difference is the whole point of
+  deriving.** The proposal names four packages that „rewrote the body" of
+  `deckungsbefund-1997.md` — `0252`, `0253`, `0256`, `0262`. Only **two** are in it.
+  `0252:8` and `0253:9` both claim `daten/quellenbefund-leitzinspfad.md` (0252 also
+  `reihen.toml`); neither ever had `deckungsbefund-1997.md` in `dateien`, and `0253:91`
+  says of itself „Assert nothing about `deckungsbefund-1997.md` in either direction". Both
+  packages **mention** the file heavily in their bodies. **A path in a body is a citation;
+  only a path in `dateien:` is a write claim** — and the file-level grep the proposal used
+  cannot tell them apart. Same shape as the 78: evidence carried beside a number, nobody
+  re-derived it.
+- **The originating package belongs to `datum:`, not to `ueberarbeitet:`.** `0006` for the
+  one file, `0014` for the other, both named in `paket:` two lines up. So a derivation that
+  returns three ids yields two revision entries.
+- **I left the second file alone on purpose, and that is the harder half of the package.**
+  Derivation for `lizenzbefund-reihen.md` returns `0018` and `0024` (both 2026-09-02, from
+  their `pruefung-…-2026-09-02.md` `datum:`) — **exactly what the field already names**.
+  Nothing revised it since; the field could not be shown stale. Writing `geprueft
+  2026-09-08` into a field called `ueberarbeitet:` would put a date there that no revision
+  produced — precisely the confusion this package exists to remove.
+- **Same reason no method note went into the edited line.** `2026-09-08 (Paket 0256…)` is a
+  revision; „derived on 2026-09-08 from `aufgaben/`" is not, and inside that field a reader
+  would count it as a third. The method belongs in the run summary, where the acceptance
+  asks for it.
+- **The full-tree grep costs nothing extra and shows a trap.** Scoped to the venture's
+  `aufgaben/` it returns 4 + 4 files; over `ventures/**` it returns 35 — the other 27 are
+  snapshot copies under `befunde/messung-0069/baum/` and `messung-0105/baum{,_gut,_tot}/`.
+  They carry real `dateien:` lines in a dead tree. **Any future frontmatter derivation over
+  `ventures/**` hits them.**
+
+**Open for the projektmanager, on 0266:** (1) The unedited second file is a decision, not an
+omission — if the reviewer wants the check recorded in the file rather than here, the place
+is a new field, not this one. (2) I left the existing „Ruecklauf 1" entry verbatim and
+attributed it to no package; it is `0006`'s round-1 rework
+(`pruefung-0006-…-runde2-2026-09-02.md`), but naming that would have edited wording the
+package did not ask me to touch. (3) The line is now three entries and ~260 characters; if
+that is too long for a frontmatter field, the two ids shorten to `0256` and `0262` without
+losing the derivation.
+
 ## 2026-09-08 — 0263, the 78 that was never 78
 
 One digit at `quellenbefund-leitzinspfad.md:347`, recounted myself before writing it:
@@ -146,6 +191,9 @@ Carried by hand through the rotation of 2026-09-08; long form in
 - **An extra assignment to the data curator would be cheap:** take the ILO into the vetted
   sources, including the cut-off question („produced prior to 3 May 2023" is
   indeterminate).
+- **Reported, not touched (from 0266):** the body of `aufgaben/0266` still says four
+  packages rewrote `deckungsbefund-1997.md`; the derived set is two (`0256`, `0262`).
+  Outside my edit limit — the acceptance confined me to `:6` of the two data files.
 - **Reported, not touched (from 0253):** `daten/zwischenstaende/.neu.tmp`, `.neu2.tmp`,
   `.neu3.tmp` are three full copies of `reihen.toml` in its **pre-0252** state, and every
   keyword probe over `daten/` hits them. Outside every package's `dateien`, unclaimed.
