@@ -149,3 +149,28 @@ predecessor and stays readable.
 - Root ctest was FEHLER (Code 8) from belegstellen B1 (0227 pending) — said so in the
   befund so nobody misattributes the headline to 0232 (0166 defense).
 
+## 2026-09-08 — pruefung 0238 (geprueft, 0 findings)
+
+- Fixture-fix pruefung reduces to three checks when a kern guard (throw) is the red
+  detector and it demonstrably fired in the morning report: (a) guard still in the tree
+  (schritt.cpp:632-633), (b) same dated report flipped to green, (c) hand-calc the
+  fixture math. History already ran the red proof — no mutant simulation needed. Third
+  use of same-tree-cannot-pass (after 0189-2, 0232-zahlwortmessung); now standard.
+- Cheap no-drift check new to the kit: total test counts before/after (8/26 and 8/13 in
+  the morning abort, 26 and 13 green in the evening) prove no test was added, removed,
+  or skipped to get green — one grep on the report.
+- verlauf_probe address arithmetic for future pruefungen: stelle_sektorgroesse =
+  land*44 + sektor_index*4 + groesse (Wertschoepfung=0); wertschoepfung addresses 0/4/8,
+  44/48/52, 88/92/96, 132/136/140; musterwert = muster[platz % 8] with muster[0]=0,
+  muster[4]=-10'000; FELDER=310. bip (werte.cpp:691-700) reads via the same address
+  function the fixture writes with — layout errors cancel out structurally.
+- Don't flag: `partiestart()` (verlauf_probe.cpp:635) also has negative bip but never
+  passes kern::schritt — it uses the local Schreiber round builder (:615-632). The probe
+  tests the Verlauf's store/return, not round arithmetic.
+- Report replacement, fourth sighting: uebersetzung-2026-09-08.md held the abort in the
+  morning (quoted in the package) and the green post-fix run by review time. Check the
+  dated report FIRST on every fixture/transcription package; the proof clause may have
+  already executed.
+- Ctest all green again (26/26, 13/13) — the 0227 belegstellen red from this morning is
+  gone; next pruefung on belegstellen can expect a green baseline.
+
