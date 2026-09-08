@@ -62,6 +62,48 @@ predecessor and stays readable.
   calls `pruefsumme::Summe::nimm_i64` and converts `u64` to `i64` at compile time -- both
   legal since C++20, neither compiled by me), and the member-pointer array
   `SCHLUESSELFELDER` in `test/schritt_probe.cpp`.
+## 2026-09-08 -- the second run on 0229 (conditions 5 and 6)
+
+- 2026-09-08, **the lesson of the run** -- **The obvious field-count trick counts
+  initializer slots, not fields, and a carrier with an array member makes the two differ
+  by twelve.** `Konstanten` is 7 scalars plus `std::array<i64,4>` plus
+  `std::array<std::array<i64,2>,5>`. Brace elision lets an unbraced probe list spread 4
+  and 10 loose scalars into those two members, so the naive counter answers **21** where
+  the answer is **9** -- and 21 is still deterministic, still moves by one when a scalar
+  field is added, and would have passed a barrier written against it. The fix is one
+  character per slot: give every slot **its own** braces (`Verbund{{P}...}` instead of
+  `Verbund{P...}`), because a clause that begins with `{` disables elision for that
+  member. **Any arity check you write against a struct that contains an array is wrong
+  until you have proved it on a two-field type whose second field is an array of four.**
+  That type is `ZahlUndReihe` in the probe, and it exists only for this.
+- 2026-09-08 -- **A degenerate detector is caught by three types, not by one.** Always-0
+  dies on `EinFeld`, always-nonzero dies on `KeinFeld`, elision-blind dies on
+  `ZahlUndReihe`, and a hard-wired 9 dies on all of them plus `ZehnFelder`. Cheap: six
+  `static_assert`s over six empty structs. The package asked for exactly this in place of
+  a deliberately broken tree, and it is the better half of the trade -- it runs in every
+  build instead of once.
+- 2026-09-08 -- **`bezeichner_riegel` makes a backticked word in a comment a claim.**
+  I wrote ``steht auf `blockiert` `` about a package status and caught myself: it is a
+  well-formed identifier that the kern does not declare, and it would have survived only
+  on the weakest of the fourteen rules (rule 14, "the string appears nowhere in the kern's
+  code text"). **Do not backtick a word that is not a kern declaration** -- write it
+  plain. Same run, same file: the three citation keywords of `belegstellen_riegel`
+  (Abschnitt, Absatz, Ueberschrift) must not appear before a backticked name in a
+  paragraph that also names a file, or the riegel goes looking for a heading by that name.
+  I avoided all three words in new text rather than reason about each occurrence.
+- 2026-09-08, **what I am unsure about, for the project manager:** one thing, and it is
+  the whole build. The barrier stands on `requires { Verbund{{P}...}; }` reporting *too
+  many initializers* as an unsatisfied requirement rather than as a hard error. That is
+  the standard field-count idiom and C++20 says the failure is in the immediate context,
+  but **I cannot compile**, and if GCC 15.2 disagreed, every translation unit that
+  includes `schritt.hpp` would go red at once -- not just my two files. Second, smaller:
+  `PlatzhalterAn` is an alias template that ignores its parameter, used only to carry the
+  pack through the expansion. If the build is red, those are the two lines to read first.
+- 2026-09-08 -- **The old head comment had to change, and I changed it.** It said "Kein
+  Uebersetzer faengt das Versaeumnis", which my own barrier made false. It now names three
+  assurances and, in the third bullet, the one that still does not exist: nothing checks
+  that a new field was booked to the *right* one of the two counts. Writing the hole down
+  is cheaper than letting the next reader discover it.
 - 2026-09-08 -- **The hole I left is named and proposed, not hidden:** two transcriptions
   of the seven key fields catch an omission in one of them and nothing at all when a later
   package adds an eighth to neither. That is T10b's own argument against a second struct,

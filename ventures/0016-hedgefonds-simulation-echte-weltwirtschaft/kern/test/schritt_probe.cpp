@@ -69,6 +69,13 @@
 //! Jedes der sieben Schluesselfelder bewegt sie, und die beiden Jahrgangsgroessen
 //! bewegen sie nicht.
 //!
+//! **Und die Feldzahl selbst**, seit dem zweiten Lauf desselben Pakets. Die Feldprobe
+//! faengt ein vergessenes Feld, nie ein neues; dagegen steht drueben ein
+//! `static_assert` auf der Zahl der Felder des Traegers. Was er wert ist, haengt daran,
+//! dass sein Zaehler wirklich zaehlt, und das ist keine Frage an den Traeger, sondern
+//! an eigens gebaute Verbunde mit bekannter und verschiedener Feldzahl. Sie stehen
+//! unten, jeder mit seiner ausgeschriebenen Zahl.
+//!
 //! **Paket 0197 -- die beiden Zahlen der Zustimmung.** Eine Probe misst, was den
 //! gerechneten Rumpf von Schritt 5 traegt: den bewegten Instrumentenschritt und die
 //! Adressordnung, die ihn aus der aufsteigenden Runde heraushaelt. Beides ohne den
@@ -1075,6 +1082,149 @@ void probe_parametersatz()
 }
 
 // ---------------------------------------------------------------------------
+// Paket 0229 -- der Feldzaehler zaehlt Felder und nicht Zahlen
+// ---------------------------------------------------------------------------
+//
+// Die Probe darueber laesst eine Luecke ausdruecklich offen: ein Feld, das erst morgen
+// zum Traeger kommt und in keiner der beiden Abschriften steht. Seit diesem Paket steht
+// in `kern/include/kern/schritt.hpp` ein `static_assert` dagegen -- er haelt die
+// Feldzahl von `kern::werte::Konstanten` gegen `SUMMIERTE_FELDER` plus
+// `JAHRGANGSFELDER`. Kommt ein zehntes Feld dazu, uebersetzt der Kern nicht mehr.
+//
+// **Ein Zaehler, der immer dieselbe Zahl sagt, faengt nichts und sieht dabei genauso
+// aus.** Deshalb steht `feldzahl` hier gegen Verbunde, deren Feldzahl bekannt und
+// untereinander verschieden ist, und jede erwartete Zahl steht ausgeschrieben daneben:
+//
+//   * `KeinFeld` -- 0. Ein Zaehler, der immer mindestens eins sagt, faellt hier.
+//   * `EinFeld` -- 1. Ein Zaehler, der immer null sagt, faellt hier.
+//   * `ZweiFelder` -- 2.
+//   * `ZahlUndReihe` -- 2 und nicht 5. Das ist der Fall, an dem ein Zaehler ohne die
+//     Klammern je Stelle faellt: Die Klammerauslassung liesse ihn die vier Zahlen der
+//     Reihe einzeln zaehlen. Der Traeger fuehrt zwei solche Reihen, und an ihm waere
+//     der Unterschied 21 gegen 9 -- eine Zahl, die zu keiner der beiden Feldsorten
+//     mehr passt.
+//   * `NeunFelder` -- 9, die Gestalt des Traegers.
+//   * `ZehnFelder` -- 10, dieselbe Gestalt mit einem Feld mehr. Das ist der Fall, um
+//     dessentwillen es den Riegel gibt: Ein Traeger dieser Gestalt macht drueben rot.
+//
+// Sie stehen als `static_assert` da und nicht nur als Laufzeitvergleich -- ein Zaehler,
+// der erst beim Laufen zaehlt, koennte den Riegel drueben gar nicht tragen. Gedruckt
+// werden sie trotzdem, wie jede andere Zahl dieser Datei.
+//
+// Was diese Probe **nicht** ist: ein Baum, in dem der Riegel wirklich zuschlaegt. Den
+// gibt es nicht, weil der Baulauf einen Baum uebersetzt und keine Abwandlung davon;
+// das Paket sagt es, und das Arbeitspaket 0208 steht dafuer seit seinem Zuschnitt auf
+// blockiert. Hier ist der Zaehler gemessen und drueben seine Anwendung sichtbar --
+// zwei Nachweise statt eines, jeder fuer sich lesbar.
+
+/// Kein Feld.
+struct KeinFeld {
+};
+
+/// Ein Feld.
+struct EinFeld {
+    i64 eins = 0;
+};
+
+/// Zwei Felder.
+struct ZweiFelder {
+    i64 eins = 0;
+    i64 zwei = 0;
+};
+
+/// Zwei Felder, von denen das zweite eine Reihe aus vier Zahlen ist.
+struct ZahlUndReihe {
+    i64 eins = 0;
+    std::array<i64, 4> zwei{};
+};
+
+/// Die Gestalt des Traegers: sieben Zahlen, eine Reihe, eine Reihe von Reihen. **Kein
+/// Abbild** von `kern::werte::Konstanten` -- die Namen hier tragen keine Bedeutung,
+/// gemessen wird allein die Gestalt.
+struct NeunFelder {
+    i64 eins = 0;
+    i64 zwei = 0;
+    i64 drei = 0;
+    i64 vier = 0;
+    i64 fuenf = 0;
+    i64 sechs = 0;
+    i64 sieben = 0;
+    std::array<i64, 4> acht{};
+    std::array<std::array<i64, 2>, 5> neun{};
+};
+
+/// Dieselbe Gestalt mit einem Feld mehr -- der Traeger von morgen, an dem der Riegel
+/// zuschlaegt.
+struct ZehnFelder {
+    i64 eins = 0;
+    i64 zwei = 0;
+    i64 drei = 0;
+    i64 vier = 0;
+    i64 fuenf = 0;
+    i64 sechs = 0;
+    i64 sieben = 0;
+    i64 acht = 0;
+    std::array<i64, 4> neun{};
+    std::array<std::array<i64, 2>, 5> zehn{};
+};
+
+static_assert(kern::schritt::feldzahl<KeinFeld> == 0, "kein Feld sind null Felder");
+static_assert(kern::schritt::feldzahl<EinFeld> == 1, "ein Feld ist ein Feld");
+static_assert(kern::schritt::feldzahl<ZweiFelder> == 2, "zwei Felder sind zwei Felder");
+static_assert(kern::schritt::feldzahl<ZahlUndReihe> == 2,
+              "eine Reihe ist ein Feld und nicht so viele Felder, wie sie Zahlen fuehrt");
+static_assert(kern::schritt::feldzahl<NeunFelder> == 9, "neun Felder sind neun Felder");
+static_assert(kern::schritt::feldzahl<ZehnFelder> == 10, "zehn Felder sind zehn Felder");
+
+/// Ein Verbund mit seiner ausgeschriebenen Feldzahl, fuer die gedruckte Fassung.
+struct Feldzahlfall {
+    const char* was;
+    std::size_t erwartet;
+    std::size_t gezaehlt;
+};
+
+constexpr std::array<Feldzahlfall, 6> FELDZAHLFAELLE = {{
+    {"KeinFeld", 0, kern::schritt::feldzahl<KeinFeld>},
+    {"EinFeld", 1, kern::schritt::feldzahl<EinFeld>},
+    {"ZweiFelder", 2, kern::schritt::feldzahl<ZweiFelder>},
+    {"ZahlUndReihe", 2, kern::schritt::feldzahl<ZahlUndReihe>},
+    {"NeunFelder", 9, kern::schritt::feldzahl<NeunFelder>},
+    {"ZehnFelder", 10, kern::schritt::feldzahl<ZehnFelder>},
+}};
+
+void probe_feldzahl()
+{
+    std::size_t stimmende = 0;
+    for (const Feldzahlfall& fall : FELDZAHLFAELLE) {
+        if (fall.gezaehlt == fall.erwartet) {
+            ++stimmende;
+        } else {
+            std::fprintf(stderr,
+                         "FEHLGESCHLAGEN: %s traegt %zu Felder, der Zaehler sagt %zu\n",
+                         fall.was, fall.erwartet, fall.gezaehlt);
+            ++fehlgeschlagen;
+        }
+    }
+    PRUEFE(stimmende == FELDZAHLFAELLE.size());
+
+    // Und die Anwendung: der Traeger selbst, gegen die beiden Zahlen des Riegels und
+    // gegen die Liste oben in dieser Datei. Damit haengt die vierte Abschrift der
+    // sieben Felder an derselben Reihe wie die dritte -- wer eine der beiden
+    // hochzaehlt und die andere vergisst, wird hier rot statt drueben still.
+    PRUEFE(kern::schritt::feldzahl<kern::werte::Konstanten> == 9);
+    PRUEFE(kern::schritt::feldzahl<kern::werte::Konstanten>
+           == kern::schritt::SUMMIERTE_FELDER + kern::schritt::JAHRGANGSFELDER);
+    PRUEFE(SCHLUESSELFELDER.size() == kern::schritt::SUMMIERTE_FELDER);
+
+    std::printf("  Feldzahl: %zu von %zu Verbunden mit bekannter Feldzahl richtig "
+                "gezaehlt; der Traeger hat %zu Felder, %zu summierte und %zu des "
+                "Jahrgangs\n",
+                stimmende, FELDZAHLFAELLE.size(),
+                kern::schritt::feldzahl<kern::werte::Konstanten>,
+                kern::schritt::SUMMIERTE_FELDER, kern::schritt::JAHRGANGSFELDER);
+}
+
+// ---------------------------------------------------------------------------
 // Paket 0107 -- die Kennzeichen kennzeichnen wirklich
 // ---------------------------------------------------------------------------
 //
@@ -1190,6 +1340,7 @@ int main()
     probe_rundennummer();
     probe_zustimmung_ohne_instrumentenschritt();
     probe_parametersatz();
+    probe_feldzahl();
 
     // Zuletzt, denn sie liest ein, was die sechs Aufrufstellen oben hinterlassen haben.
     probe_kennzeichen_eindeutig();

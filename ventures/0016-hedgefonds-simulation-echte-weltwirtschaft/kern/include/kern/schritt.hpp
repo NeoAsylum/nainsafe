@@ -66,6 +66,9 @@
 //! (`kern::werte`), der **Verlauf** ueber mehrere Runden (nach T19 fuehrt ihn die
 //! Sitzung, nicht der Kern) und die **Datenschicht** (T13).
 
+#include <cstddef>
+#include <utility>
+
 #include "kern/pruefsumme.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/werte.hpp"
@@ -127,12 +130,22 @@ struct Rundenergebnis {
 /// `nimm_i64` zerlegt jeden Wert in acht Bytes in Little-Endian, auf jeder Maschine
 /// gleich.
 ///
-/// **Wer den Traeger um ein Schluesselfeld erweitert, ergaenzt hier eine Zeile.** Kein
-/// Uebersetzer faengt das Versaeumnis: Eine Summe ohne das neue Feld ist keine kaputte
-/// Zahl, sondern eine, die sich nur nicht mehr bewegt, wenn jenes Feld sich bewegt.
-/// Gemessen wird das in `test/schritt_probe.cpp`, wo dieselbe Liste ein zweites Mal
-/// steht und Feld fuer Feld gegen diese Rechnung gehalten wird -- das faengt ein
-/// **vergessenes** Feld, nicht ein **neues**.
+/// **Wer den Traeger um ein Schluesselfeld erweitert, ergaenzt hier eine Zeile.** Eine
+/// Summe ohne das neue Feld ist keine kaputte Zahl, sondern eine, die sich nur nicht
+/// mehr bewegt, wenn jenes Feld sich bewegt. Zwei Zusicherungen halten das, keine
+/// ersetzt die andere, und die dritte Frage bleibt offen:
+///
+///   * Dass ein Feld **dazugekommen** ist, faengt seit Paket 0229 der Riegel unter
+///     dieser Funktion. Er haelt die Feldzahl des Traegers gegen die Summe aus den
+///     sieben Aufrufen hier und den zwei Groessen des Jahrgangs; kommt ein zehntes
+///     Feld dazu, uebersetzt der Kern nicht mehr.
+///   * Dass ein Feld **vergessen** wurde, faengt `test/schritt_probe.cpp`: Dort steht
+///     dieselbe Liste ein zweites Mal und wird Feld fuer Feld gegen diese Rechnung
+///     gehalten.
+///   * Dass ein neues Feld der **richtigen** der beiden Sorten zugeschlagen wird,
+///     prueft nichts. Wer es als Groesse des Jahrgangs verbucht und nur die zweite Zahl
+///     hochzaehlt, kommt am Riegel vorbei. Das bleibt eine Lesung, und es steht hier,
+///     damit niemand mehr in die Zusicherung hineinliest, als sie traegt.
 ///
 /// Zurueck kommt ein `i64` und keine vorzeichenlose Zahl, weil der Platz dieser Summe
 /// eine Zustandsadresse ist und die 310 Adressen `i64` tragen. Die Umdeutung ist seit
@@ -150,6 +163,98 @@ struct Rundenergebnis {
     summe.nimm_i64(konstanten.zustimmung_elastizitaet);
     return static_cast<zustand::i64>(summe.wert());
 }
+
+// ---------------------------------------------------------------------------
+// Der Riegel gegen das zehnte Feld -- Paket 0229, aus dem Vorschlag 0231
+// ---------------------------------------------------------------------------
+//
+// Bis hierher war die Zusicherung eine Lesung: Wer den Traeger erweitert, ergaenzt oben
+// eine Zeile. Ab hier haelt sie der Uebersetzer, in der schwaecheren der beiden
+// denkbaren Fassungen und der einzigen, die die Sprache heute hergibt: **Der Traeger
+// hat genau so viele Felder, wie diese Datei glaubt.** Kommt eines dazu, ohne dass
+// jemand eine der beiden Zahlen unten nachzieht, uebersetzt der Kern nicht mehr.
+//
+// **Ohne `sizeof`, ohne Fuellbytes, ohne die Anordnung im Speicher.** T12 verbietet der
+// Summe, an der Speicheranordnung zu haengen. Ein Riegel zwei Zeilen daneben, der es
+// doch taete, waere derselbe Fehler an der ueberwachenden Stelle: Er spraenge bei einem
+// Ausrichtungsloch an, das keine Zahl bewegt, und schwiege bei einem Feld, das genau in
+// eines hineinpasst.
+//
+// Gezaehlt wird stattdessen, wie viele Stellen eine Aufbauliste des Verbunds annimmt.
+// Jede Stelle bekommt ihre **eigenen** geschweiften Klammern, und das ist kein
+// Schoenheitsgriff, sondern die Sperre gegen die Klammerauslassung: Ohne sie duerfte
+// eine Liste die vier Zahlen von `leitzins_start` einzeln hinschreiben, und der Zaehler
+// saehe einundzwanzig Stellen statt neun Feldern. Beides -- dass er zaehlt und dass er
+// Reihen nicht aufloest -- misst `test/schritt_probe.cpp` an eigens gebauten Verbunden
+// mit bekannter und verschiedener Feldzahl.
+
+namespace feldzahl_intern {
+
+/// Steht fuer irgendein Feld: Er wandelt sich in jeden Typ um, den die Stelle verlangt.
+///
+/// **Nur deklariert, nie definiert.** Gebraucht wird er allein in der unbewerteten
+/// Anforderung unten; ein Rumpf waere Programmtext, den nichts je ruft.
+struct Platzhalter {
+    template <typename Feld>
+    operator Feld() const noexcept;
+};
+
+/// Bindet einen `Platzhalter` an eine Stelle der Aufbauliste. Die Stellennummer wird
+/// gebraucht, um das Paket zu entfalten, und sonst zu nichts -- deshalb steht sie hier
+/// ohne Namen.
+template <std::size_t>
+using PlatzhalterAn = Platzhalter;
+
+/// Nimmt `Verbund` eine Aufbauliste mit genau so vielen Stellen, wie das Paket lang ist?
+template <typename Verbund, std::size_t... Stelle>
+[[nodiscard]] consteval bool nimmt_stellen(std::index_sequence<Stelle...>) noexcept
+{
+    return requires { Verbund{{PlatzhalterAn<Stelle>{}}...}; };
+}
+
+/// Hier endet die Suche. Ein Verbund mit mehr Feldern bekommt diese Zahl statt seiner
+/// eigenen -- also einen falschen Wert, an dem jeder Riegel unten rot wird, statt still
+/// durchzulassen. Die Alternative waere eine Instanziierung ohne Ende.
+inline constexpr std::size_t FELDSUCHE_ENDE = 32;
+
+template <typename Verbund, std::size_t Bisher = 0>
+[[nodiscard]] consteval std::size_t zaehle_felder() noexcept
+{
+    if constexpr (Bisher < FELDSUCHE_ENDE
+                  && nimmt_stellen<Verbund>(std::make_index_sequence<Bisher + 1>{})) {
+        return zaehle_felder<Verbund, Bisher + 1>();
+    } else {
+        return Bisher;
+    }
+}
+
+}  // namespace feldzahl_intern
+
+/// Die Zahl der Felder eines Verbunds, beim Uebersetzen gezaehlt.
+///
+/// Gilt fuer einen Verbund aus Zahlen und Reihen davon -- die Gestalt von `Konstanten`.
+/// Ein Feld, das sich aus **einer** Stelle nicht aufbauen laesst, wuerde zu klein
+/// gezaehlt; im Kern gibt es kein solches, und der Riegel unten stuende bei einem
+/// sofort rot.
+template <typename Verbund>
+inline constexpr std::size_t feldzahl = feldzahl_intern::zaehle_felder<Verbund>();
+
+/// Die sieben Schluesselfelder: so viele Aufrufe stehen in `parameter_pruefsumme`, und
+/// diese Zahl ist ihre vierte Abschrift -- die einzige, die der Uebersetzer haelt.
+inline constexpr std::size_t SUMMIERTE_FELDER = 7;
+
+/// `leitzins_start` und `durchgriff` -- die beiden Groessen des Jahrgangs, die nach T23
+/// ausserhalb der Summe liegen und deshalb nicht mitgezaehlt, sondern danebengezaehlt
+/// werden.
+inline constexpr std::size_t JAHRGANGSFELDER = 2;
+
+static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
+              "kern::werte::Konstanten traegt nicht mehr sieben summierte Felder und "
+              "zwei Groessen des Jahrgangs. Wer ein Schluesselfeld zulegt, nimmt es in "
+              "parameter_pruefsumme auf und zaehlt SUMMIERTE_FELDER hoch; wer eine "
+              "Groesse des Jahrgangs zulegt, zaehlt JAHRGANGSFELDER hoch. Ein Feld, das "
+              "in keiner der beiden Zahlen steht, ist ein Regler, den die Pruefsumme "
+              "nicht bewacht.");
 
 /// Eine Runde: aus dem Zustand am Ende der Vorrunde wird der dieser Runde.
 ///
