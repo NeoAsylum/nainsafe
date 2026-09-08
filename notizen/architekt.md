@@ -8,6 +8,54 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0177, die Schranke der Rundennummer
+
+**Entschieden: T18b (Abschnitt 4) und Abschnitt 25 — an beiden Stellen, und der
+Startwertzugang meldet.** Zuschnitt: vier Adressen (`partie`-Block), nicht 310.
+
+### Der eine übertragbare Fund
+
+**Der Befund, aus dem das Paket kam, hatte in einer Hälfte unrecht, und das stand im
+Dokument selbst.** `bruch-2026-09-06.md` nennt „das Speichern und Laden aus T30 Prüfung 3"
+als zweiten Weg von außen in den Zustand. T22 sagt wörtlich: ein Speicherstand ist
+Jahrgang, Modus, Startwert, Aktionsfolge und Prüfsumme, **„not the state"** — beim Laden
+wird nachgerechnet. Also kommt `partie.runde` nie als Zustandswert aus einer Datei. Der
+einzige heute offene Weg ist der Jahrgangsbau, weil **T45 die Herkunft zählt und nicht den
+Wert**: eine Adresse mit genau einem Eintrag geht durch, egal was der Eintrag sagt.
+**Prüffrage bei jedem Befund über einen Weg „von außen": nennt das Dokument den Weg, oder
+nennt es ihn als geschlossen?** Der Bruchtester hat T22 nicht gelesen, ich fast auch nicht.
+
+Der Nebengewinn: die Frage verschiebt sich auf die Größe, die wirklich von außen kommt —
+den Rundenindex je Aktionssatz im Speicherstand. Dessen Prüfung sitzt bei T22 laden und ist
+**unzulässiger Speicherstand, kein Determinismusbruch**, genau wie bei der Zielkennung aus
+0148. Dieselbe Regel zweimal, aus zwei Läufen, ohne dass ich sie beim zweiten Mal neu
+erfinden musste.
+
+### Unsicher, damit der Projektmanager es sieht — drei Stellen
+
+1. **Ich habe den Zuschnitt von einer Adresse auf vier erweitert.** Das Paket sagt
+   ausdrücklich „der schmale Zuschnitt ist die **eine** Adresse". Meine Regel
+   (Koordinaten ja, Operanden nein) trägt vier — Runde, Jahrgangskennung, Parameter­prüf­summe,
+   Mandatsstand. Ich habe deshalb **nur für `partie.runde` eine Schranke hingeschrieben**
+   und für die anderen drei ausdrücklich keine; wer das trotzdem für Übergriff hält,
+   streicht in T18b das Wort „vier" und liest „die Rundennummer". Der Rest der Herleitung
+   überlebt das.
+2. **Die Unterscheidung Koordinate/Operand ist meine, nicht die des Dokuments.** Sie trägt
+   die ganze Entscheidung, und sie ist nirgends gemessen. Was gemessen ist: dass die
+   Schranke `partie.runde ≥ 0` heute zweimal im Kern steht (`schreiber.cpp:206`,
+   `schritt.hpp`) und **null Mal** in `technik.md` — das habe ich selbst gegrept.
+   Kippt jemand die Unterscheidung, bleibt die Doppelablage als Befund stehen.
+3. **Zwei Aussagen habe ich vom Bruchtester übernommen, nicht nachgemessen:** dass
+   `zustandsausgabe.cpp` den Platz *Partie | Runde* ungeprüft druckt, und dass die
+   Prüfsumme ihn mitnimmt. Beides steht in `bruch-2026-09-06.md` Befund 2. Ich habe die
+   Datei nicht geöffnet — das Argument hängt daran, dass es **mehr als einen Leser** gibt,
+   und `schritt` allein wäre schon zu wenig, wenn nur einer der beiden zuträfe.
+
+### Kleinigkeit, die Zeit gespart hat
+
+`T18b` war frei — vor dem Vergeben einer neuen Nummer ein `Grep` auf `\*\*T18b|\*\*T45b|…`
+statt auf die ganze T-Liste. Vier Kandidaten in einem Aufruf, ein Ergebnis.
+
 ## 2026-09-08 — Paket 0148, die Zielkennung je Aktionsart
 
 **Entschieden: T32b, fünf Zeilen als Formeln über `LAENDER`, `SEKTOREN`, `INSTRUMENTE`

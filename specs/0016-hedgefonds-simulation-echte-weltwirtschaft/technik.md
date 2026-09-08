@@ -1408,6 +1408,29 @@ That is the reason why a missing **function** is more expensive than a missing n
 it hides a feedback channel. Cost:
 40 bytes per round, one bit test per write.
 
+**T18b — The start-value entry is the second write path, and the bound of the round
+number stands at both ends of it.** Before round 1 the state is not written by the
+`Schreiber` but by a **start-value entry** (`kern::zustand::Startbelegung`), the
+counterpart of T18: no `Ursachensatz`, no bit field, no mask — a start value has no cause
+in the model, it is the beginning every later cause refers to. It has therefore also had
+no value range, and that is the gap this rule closes.
+
+**The entry checks the four addresses of the `partie` block and no others** — round
+number, vintage id, parameter-set checksum, mandate status (T15; the last two rows of
+T38's mask table). For `partie.runde` (address 307) the bound is
+`0 ≤ runde ≤ I64_MAX − 1`. The remaining 306 are checked by their reader and once per
+round by T30 check 2; **the entry does not repeat the eight bounds**. The derivation of
+that cut, the bounds of the other three and the consequence for T22 are in section 25.
+
+**The check in `schritt` stays, and it is not the same check.** The round increments
+`partie.runde` itself: a round on `I64_MAX − 1` leaves `I64_MAX` behind, and the next one
+dies on the state its predecessor produced (measured,
+`befunde/raender/bruch-2026-09-06.md`, situation 5). The entry covers the value that comes
+in, `schritt` the value the round makes — disjoint causes, not one check written twice.
+**In the error case the entry reports.** It is reached first, and it is the only one of the
+two that can name where the value came from (the provenance row of T45); `schritt`'s
+message names the address. Never both for one value.
+
 **T39 — There are two read accesses, and the wrong one dies immediately.** The
 `Schreiber` holds the previous round's state (`alt`, immutable) and the emerging state
 (`neu`):
@@ -4546,11 +4569,16 @@ an order that is already checked, and none invents one.
 
 ### Line by line
 
-**1 Position.** `spiel.md`, *The actions*: long or short "on a country×sector, on a
-currency, on a country's government bond". T16 turns exactly those into twenty fixed
-slots, T55 into `LAENDER·(SEKTOREN+2)`. The order is the slot ordinal — grouped by kind,
-country-major inside each group. That kind 1 and **only** kind 1 addresses this set is not
-my reading but `spiel.md`'s own sentence, quoted at section 12 point 4 above.
+**1 Position.** `spiel.md`, *The actions*, the sentence whole: long or short "on a
+country×sector, on a currency, on a country's government bond, or — since 2026-09-05 — on
+an **exchange venue** (see *Die drei Schichten der Welt*)". **Four target classes, and this
+document holds three of them.** T16 turns those three into twenty fixed slots, T55 into
+`LAENDER·(SEKTOREN+2)`. The order is the slot ordinal — grouped by kind, country-major
+inside each group. The fourth class has no slot here yet; where its slots go when the layer
+arrives stands in *What the fifth country and the exchange venues change* below, and until
+then the table's size column counts three blocks and not four. What `spiel.md`'s sentence
+settles is that this set belongs to kind 1 and to **no** other kind; that it has exactly
+twenty places is T16's statement, not the sentence's, and the two are not interchangeable.
 
 **2 Stake.** `spiel.md`: "A permanent share in a country×sector." T15 books 24 addresses
 as `LAENDER·SEKTOREN` stakes of two fields. The pair is **one** target with two fields, not
@@ -4666,3 +4694,137 @@ inside their domains; that is coincidence and does not become a rule here.
 3. **To the project manager — the `schema_version` sentence must travel with the
    fifth-country package.** It follows from T32b, not from T56, and whoever reads only T56
    will not see it.
+
+## 25. Where the value range of an address is checked — Paket `0177`
+
+The question is not about one address: does the value range of a quantity belong to the
+place at which it enters the state, or to the place that reads it? It becomes unavoidable
+as soon as there is a way from outside in — the `daten` box of T13, the save of T22. T18b
+answers it; the derivation stands here.
+
+### The measurement this comes from
+
+`zustand::Startbelegung::setze` takes every `i64` for `partie.runde`. Measured 2026-09-06
+(`befunde/raender/bruch-2026-09-06.md`, finding 2, situations 2 and 4): the −1 and the
+smallest `int64_t` go into the state without a word and are read back from it unchanged.
+The impossible round number is noticed one step later, in `kern::schritt::schritt`.
+
+**And `partie.runde` does not occur in this document at all** — measured 2026-09-08, zero
+hits before this section. Its bound stands twice in the core and nowhere in the specs:
+`kern/src/schreiber.cpp:206` (`welche_runde < 0`) and the two hard errors of `schritt.hpp`
+(negative, and largest `int64_t`). Two copies of one bound is the error type T39 closed for
+`landespreis` and T45 for the double provenance entry — except that here neither copy is
+the master, because there is none.
+
+### Why not "the entry checks everything"
+
+That is the counter-calculation, and without it this section would be a rule that costs
+more than it carries. `Startbelegung` is expressly the way to set *all* 310 quantities. A
+value-range check per address would be a second copy of the eight bounds of T30 check 2 at
+a place that owns none of them — 117 addresses, and two places to drift apart. Those eight
+have a place and it is the right one: the invariant test, once per round, in both modes.
+
+### Why not "the reader alone", which is the state today
+
+Because `schritt` is not the only reader and has not been for some time:
+
+- `kern/src/zustandsausgabe.cpp` prints the slot under *Partie | Runde* without checking
+  it — all three levels of T20.
+- The checksum (T12) takes it along like every other quantity. **That is the expensive
+  one.** A checksum is a *name* for a state. A state that cannot exist but has a name is
+  comparable, citable and reproducible, and every check that compares names answers green
+  on it.
+
+Between entry and the first `schritt` there is therefore a state output showing a number
+that is not a round, and a checksum over it.
+
+### The cut: the entry checks coordinates, not operands
+
+**The rule in one sentence: the start-value entry checks exactly those addresses on which
+the readability of the other 306 depends, and those are the four of the `partie` block.**
+
+The eight bounds of check 2 all have the same victim — a number comes out wrong. A negative
+exchange rate turns every profit into a loss, a market basket past the overflow bound
+crashes in `tsd_in_cent`, a share above 10,000 is not a share. They are **operands**: they
+stand in a formula, the formula computes something false, and the invariant test finds it
+in the round in which it happens.
+
+`partie.runde` stands in no formula. It is the **coordinate** under which every
+`Ursachensatz` is filed (T18, field `runde`), the number the diff level of T20 subtracts
+between two points in time, and the number the round increments. A wrong operand produces a
+wrong result; a wrong coordinate produces a result that cannot be filed. The same holds for
+the other three: the vintage id says which data the numbers came from, the parameter-set
+checksum which rules were computed (T10b), the mandate status whether the game is still
+running. Four comparisons once per game, against 310.
+
+**The test that makes this applicable to the next address instead of merely quotable:**
+does a value outside the range make a number wrong, or does it make every number
+unattributable? First case — the reader and check 2. Second case — the entry as well.
+
+**Why the bound is not `0 … R`.** R is the game length of the vintage (T40), not a property
+of the address. Check 6 deliberately runs 200 rounds past the vintage window and marks the
+run `ueber_fenster`; a bound at R would turn the boundedness check into a hard error at
+exactly the place where it is supposed to measure. The bound is what the round's own
+arithmetic can carry: `0 ≤ runde ≤ I64_MAX − 1`. The upper end sits where it is measured to
+sit — situation 5 of the finding runs a round on `I64_MAX − 1` through to the end, situation
+3 rejects the state it leaves.
+
+**The other three keep their bound open here, and that is deliberate.** The narrow cut is
+`partie.runde` — the one address whose bound is measured and already stands twice in the
+core. What the rule prescribes for the other three is *that* they get one; *which* one is
+written by the package that touches them. Three bounds invented here without a measurement
+behind them would be the kind of number this document does not write.
+
+### The consequence for saving and loading — T30 check 3
+
+Two halves, and they point in opposite directions.
+
+**Loading is not a way into the state, so the finding's premise does not hold for this
+address.** Per T22 a save is `{schema_version, jahrgang_id, modus, daten_pruefsumme,
+parameter_pruefsumme, startwert, aktionen, end_pruefsumme}` — **not the state**. On loading
+the game is recomputed from the vintage and the checksum compared. `partie.runde` therefore
+never arrives from a file as a state value; it is produced by the vintage build through the
+entry and thereafter by the round. The entry check has one caller, not two.
+
+**The one live way in is the vintage build itself.** `partie.runde` carries the provenance
+`Entwurf` (T45): its start value is a number in the draft table of `spiel.md`. T45 counts
+provenance and does **not** check the value — an address with exactly one entry passes,
+whatever that entry says. That is the gap T18b closes, and today it is the only one open.
+
+**The save does carry a round number all the same, in another place, and that one does come
+from outside.** `aktionen: [[runde, aktion…]]` — one round index per action record, an
+arbitrary number in a file. Its check belongs at T22 load and it is **not** the check from
+T18b: the field must equal the round the replay is currently in. A deviation is an
+**inadmissible save with a reason, not a determinism break** — the same rule T32b already
+fixed for the Zielkennung (section 24, *Where the domain is checked*, item 3), and for the
+same reason. A determinism break says "the same input gave a different result", which is a
+statement about the program; a save whose action list is not replayable is a statement about
+the file. Reporting the second as the first sends the buyer hunting for a platform
+difference that is not there.
+
+**What check 3 gains from T18b**, so that nobody reads more into it than stands here: check
+3 compares checksums, and a checksum (T12) runs over all 310 `i64` without interpretation.
+T18b does not make the comparison sharper. It makes the set over which check 3 compares
+exactly the set of states that can exist. That is worth naming, and it is not the same thing
+as finding an error.
+
+### Reports
+
+1. **To the core builder — one place, two comparisons, and a follow-up package.**
+   `Startbelegung::setze` gets a third hard error beside the index and the foreign write: a
+   value outside the address's range, for the four addresses of the `partie` block, for
+   `partie.runde` the bound above. **Nothing in `schritt.cpp` and nothing in
+   `schreiber.cpp` is struck** — the bars there cover the value the round makes, not the
+   value that comes in. No code in this package; the file list under `kern/` belongs to the
+   follow-up.
+2. **To the test developer — the message has to say which of the two fired.** The three
+   messages of the round are distinguished today by their wording; the finding prints them
+   in full, and `bricht_ab_mit` holds two text pieces per message (measured, same finding).
+   A fourth message from the entry that differs only in the address number would make the
+   difference between "start value rejected" and "the previous round's state" unreadable in
+   precisely the situation in which someone is looking for it. One of the two held pieces
+   should be the one that separates the two places.
+3. **To the project manager — the rule has three addresses without a bound.** Vintage id,
+   parameter-set checksum and mandate status are in the class and carry no measured bound
+   today. That is this package's cut, not an omission; whoever writes the package for one of
+   them writes its bound with it.

@@ -1,7 +1,7 @@
 ---
 id: 0177-rundennummer-schranke-am-startwertzugang
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: [0148-zielkennung-je-aktionsart]
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 vermerk: UMGEHAENGT 2026-09-07, Projektmanager -- die Sperre vor dir ist 0148 statt 0149, und du stehst jetzt viertes statt sechstes auf `technik.md`. `ops/plan.md` nennt dich unter Vorrang auf Platz 4. Es bleibt eine Reihenfolgesperre, keine sachliche Abhaengigkeit -- du brauchst aus 0148 nichts. Die neue Reihe lautet 0165, 0172-weltpreis, 0148, du, 0196, 0158, 0149, 0064, 0068, 0074, 0084, 0092, 0181; der Vermerk unten nennt noch die alte.
@@ -68,6 +68,28 @@ schon heute an zwei Stellen im Code steht: in `schritt.cpp` (negativ und groesst
 
 Kein Code. Kein ADR ueber die Gleitkommasperre, kein neuer Riegel, keine Probe. Wer nach
 der Entscheidung baut, bekommt ein Folgepaket mit einer Dateiliste unter `kern/`.
+
+## Gebaut — 2026-09-08, Architekt
+
+**Bedingung 1: T18b** (section 4, after T18) und **Abschnitt 25** in `technik.md`.
+Antwort: **an beiden**, und **die Stelle im Fehlerfall ist der Startwertzugang**. Die
+beiden Riegel sind nicht derselbe Riegel zweimal, sondern zwei Ursachen: der Zugang deckt
+den Wert, der hereinkommt, `schritt` den Wert, den die Runde selbst erzeugt (Lage 5 des
+Befunds). Zuschnitt: der Zugang prueft die **vier** Adressen des `partie`-Blocks
+(Koordinaten), nicht die 310 — die acht Schranken aus T30 Pruefung 2 bleiben, wo sie sind.
+Schranke `0 ≤ partie.runde ≤ I64_MAX − 1`; nicht `0 … R`, weil Pruefung 6 absichtlich
+darueber hinauslaeuft. Folge fuer Speichern/Laden: `laden` ist nach T22 **kein** Weg in den
+Zustand (die Partie wird nachgerechnet) — der einzige heute offene Weg ist der
+Jahrgangsbau, weil T45 die Herkunft zaehlt und nicht den Wert. Der Rundenindex je
+Aktionssatz im Speicherstand kommt sehr wohl von aussen; er wird bei T22 laden geprueft und
+ist im Fehlerfall ein **unzulaessiger Speicherstand, kein Determinismusbruch**.
+
+**Bedingung 2: behoben.** Die Herleitung zu T32b Zeile 1 (Abschnitt 24) zitiert den Satz
+aus `spiel.md` jetzt ganz, mit allen vier Zielklassen samt Handelsstaette, und verweist
+fuer die vierte auf den Unterabschnitt weiter unten. Der Satz, der das gekuerzte Zitat als
+`spiel.md`s eigenen ausgab, steht nicht mehr da; an seiner Stelle steht, was der Satz
+belegt (die Zuordnung zu Art 1) und was T16 belegt (die zwanzig Plaetze). Tabellenzeile
+unangetastet.
 
 ## Ruecklaeufe
 
