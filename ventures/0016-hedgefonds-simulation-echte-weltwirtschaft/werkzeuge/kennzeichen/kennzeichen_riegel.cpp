@@ -104,13 +104,22 @@
 //! deklariert zwei und gibt zwei Marken her, `knappe_listen` **schweigt**, und die Liste sieht
 //! vollstaendig aus. `gleiche_ab` uebergeht dieses Element dabei nicht -- es verlangt `"x"`
 //! irgendwo im Kern und haelt die Bindung damit fuer erbracht, waehrend der wirkliche
-//! Wortlaut des Elements ungebunden bleibt. **Diese Haelfte ist die stille und damit die
-//! gefaehrliche:** kein Befund an kaputter Bindung, also genau der stille Ausfall von oben --
-//! und nicht wie bei der ersten ein Befund zu viel an heilem Text.
+//! Wortlaut des Elements ungebunden bleibt. **Diese Haelfte ist die gefaehrliche, und ihr
+//! Ausgang haengt danach an einem Zufall -- an dem `x`, das nicht der Wortlaut des Elements
+//! ist.** Steht `x` in irgendeiner Zeichenkette des Kerns, schweigt `gleiche_ab`: kein
+//! Befund an kaputter Bindung, genau der stille Ausfall von oben. Steht es dort nicht, kommt
+//! ein Befund -- aber er nennt in `stueck` das Argument `x`, das der Eintrag als Kennzeichen
+//! nie deklariert hat, an der Zeile des Elements; wer ihn liest, sucht ein Stueck, das so in
+//! keinem Verzeichnis steht. **Die Haelfte ist also nicht "still", sondern in beiden
+//! Ausgaengen ungebunden**; still ist sie nur, solange das getragene Literal zufaellig im
+//! Kern vorkommt. Anders als bei der ersten ist keiner der beiden Ausgaenge ein Befund zu
+//! viel an heilem Text.
 //!
 //! Im Baum steht am 2026-09-08 weder die eine noch die andere Form; alle drei aufgeloesten
-//! Listen tragen nur Literale. Je ein Fall des Selbsttests haelt beide Haelften mit ihrer
-//! Erwartung fest, damit der Tag, an dem eine entsteht, nicht der erste Tag dieser Frage ist.
+//! Listen tragen nur Literale. Faelle des Selbsttests halten beide Haelften mit ihrer
+//! Erwartung fest -- die erste und die **Stille** der zweiten an der Tabelle des
+//! Verzeichnisses, die **beiden Ausgaenge** der zweiten am Abgleich --, damit der Tag, an dem
+//! eine entsteht, nicht der erste Tag dieser Frage ist.
 //!
 //! ## Wie ein Verzeichnis gelesen wird
 //!
@@ -1523,9 +1532,14 @@ struct Tabellenfall {
     // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
     // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
     // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **acht** Faelle,
-    // die es angeht, schreiben es aus -- darunter einer, der eine Null ausschreibt, weil bei
-    // ihm gerade die Null die Aussage ist; neunzehn und acht sind die siebenundzwanzig Faelle
-    // der Tabelle.
+    // die es angeht -- es sind genau die acht mit einer **benannten** Liste --, schreiben es
+    // aus: **vier** eine Eins und **vier** eine Null. Die vier Einsen sind der Koeder des
+    // Listenbodens, die Naht, die geteilte Liste und das Element ohne Literal; die vier
+    // Nullen sind deren Gegenfaelle, bei denen gerade das Schweigen die Aussage ist -- die
+    // vier Faelle "dieselbe Liste mit allen dreien", "drei Teile, zwei Marken, zwei
+    // deklariert", "die Groesse der Liste steht hinter einem `using`" und "ein Element
+    // traegt sein Literal in einem Aufruf". Neunzehn und acht sind die siebenundzwanzig
+    // Faelle der Tabelle.
     //
     // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
     // beim naechsten Fall wieder falsch ist -- und dieses Programm ist das Werkzeug, dessen
@@ -2002,9 +2016,15 @@ struct Abgleichfall {
     std::string_view was;
     std::string_view kennzeichen;  // Inhalt der Liste, roh in den Probentext gesetzt
     std::size_t      befunde;
+    // Der Wortlaut, den ein Befund in `stueck` nennen muss. **Leer heisst nicht gemessen**
+    // und nicht "keiner": Bei den sechs ersten Faellen ist das gemeldete Stueck genau das,
+    // was im Verzeichnis steht, also traegt die Zahl schon die ganze Aussage. Geprueft wird
+    // das Feld dort, wo Verzeichniswortlaut und gemeldeter Wortlaut auseinanderfallen
+    // koennen -- und das ist genau die zweite Haelfte des dritten blinden Flecks.
+    std::string_view stueck = "";
 };
 
-constexpr std::array<Abgleichfall, 6> ABGLEICHFAELLE = {{
+constexpr std::array<Abgleichfall, 8> ABGLEICHFAELLE = {{
     {"jedes Stueck steht in der Meldung -- kein Befund",
      "\"Zustimmungsregel\", \"erst hinter der Summe\"", 0},
     {"ein Stueck ueberspannt die Naht zweier benachbarter Teile -- kein Befund",
@@ -2015,6 +2035,26 @@ constexpr std::array<Abgleichfall, 6> ABGLEICHFAELLE = {{
      "\"Zustimmungsrogel\", \"klemmt erst hinter dem Summe\"", 2},
     {"ein Stueck steht nur im Kommentar des Kerns -- ein Befund", "\"nur im Kommentar\"", 1},
     {"eine leere Liste bindet nichts -- ein Befund", "", 1},
+
+    // **Die zweite Haelfte des dritten blinden Flecks, an ihren beiden Ausgaengen.** Das
+    // Element heisst `ERSTES("...")`; gelesen wird davon allein das Argument, und ob ein Befund
+    // kommt, entscheidet danach der Kerntext und nicht der wirkliche Wortlaut des Elements.
+    // Beide Eintraege sind gleich kaputt gebunden -- der Unterschied ist allein, ob ihr
+    // getragenes Literal zufaellig im Kern steht. Deshalb das Paar: Ein einzelner Fall zeigte
+    // eine der beiden Ausgaben und liesse offen, dass sie an dieser Muenze haengt.
+    {"ein Aufruf traegt ein Literal, das im Kern steht -- kein Befund, obwohl der Wortlaut "
+     "des Elements ungebunden bleibt",
+     "ERSTES(\"Zustimmungsregel\")", 0},
+
+    // Der laute Ausgang derselben Bindung. Die Eins allein waere von Fall 3 nicht zu
+    // unterscheiden -- gemessen wird deshalb der **genannte Wortlaut**: `klemmt erst hinter
+    // dem Summe` ist das Argument des Aufrufs, und als Kennzeichen hat der Eintrag es nie
+    // deklariert. Ein Leser dieses Befundes sucht ein Stueck, das in keinem Verzeichnis
+    // steht. Lernt die Zerlegung eines Tages die Elementgrenze, bricht diese Erwartung --
+    // und das ist die richtige Art zu brechen.
+    {"ein Aufruf traegt ein danebengeschriebenes Literal -- ein Befund, der ein nie "
+     "deklariertes Stueck nennt",
+     "ERSTES(\"klemmt erst hinter dem Summe\")", 1, "klemmt erst hinter dem Summe"},
 }};
 
 std::size_t selbsttest_abgleich()
@@ -2067,6 +2107,29 @@ std::size_t selbsttest_abgleich()
                          "  Befunde: %zu erwartet %zu\n",
                          i + 1, std::string(fall.was).c_str(), befunde.size(), fall.befunde);
             ++falsch;
+        }
+        if (!fall.stueck.empty()) {
+            bool genannt = false;
+            for (std::size_t b = 0; b < befunde.size() && !genannt; ++b) {
+                if (befunde[b].stueck == std::string(fall.stueck)) {
+                    genannt = true;
+                }
+            }
+            if (!genannt) {
+                std::string gefunden;
+                for (std::size_t b = 0; b < befunde.size(); ++b) {
+                    if (b > 0) {
+                        gefunden += "|";
+                    }
+                    gefunden += befunde[b].stueck;
+                }
+                std::fprintf(stderr,
+                             "Selbsttest Abgleich, Fall %zu verfehlt (%s).\n"
+                             "  Kein Befund nennt das Stueck '%s'; genannt wurde '%s'\n",
+                             i + 1, std::string(fall.was).c_str(),
+                             std::string(fall.stueck).c_str(), gefunden.c_str());
+                ++falsch;
+            }
         }
     }
     return falsch;

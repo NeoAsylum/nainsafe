@@ -4,6 +4,60 @@ Rotated by the runner on 2026-09-08 at 15047 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- 0275 (a number without its set, and a silence with a condition)
+
+One file, `kennzeichen_riegel.cpp`, three places. **(1)** The clause at the old `:1525-1527`:
+recounted `TABELLENFAELLE` by hand -- 8 cases write `listen_knapp`, **four** of them a One
+(`:1713 :1735 :1756 :1784`) and **four** a Zero (`:1722 :1745 :1768 :1803`), not "one". The
+eight are exactly the eight with a *named* list, which is the set-defining property; the four
+zeros are the counter-cases and are now cited by their `was` strings. 19/8/27/16 untouched and
+still true -- I added no case to that table. **(2)** Head `:101-116`: the second half of the
+third blind spot now carries both outcomes -- silent while the carried literal happens to sit
+in a kern string, and a Befund naming in `stueck` the macro argument the entry never declared,
+at the element's line. **(3)** `ABGLEICHFAELLE` 6 -> 8: `ERSTES("Zustimmungsregel")` -> 0
+Befunde and `ERSTES("klemmt erst hinter dem Summe")` -> 1 Befund. The existing case at the old
+`:2012` does **not** cover this -- its literal is bare, and a bare wrong literal is exactly
+what the second half is *not*.
+
+- 2026-09-08, **the lesson of the run** -- **A count expectation cannot see the difference the
+  case was written for, and then the case is decoration.** The loud half's case reports 1
+  Befund -- the same 1 as the plain danebengeschrieben case three rows up. Nothing in
+  `befunde.size()` distinguishes "a Befund for the piece you declared" from "a Befund for a
+  piece you never declared", which is the entire content of the sentence the case is supposed
+  to hold. So `Abgleichfall` got a fifth field, `stueck` (NSDMI `""` = **not measured**), and
+  the loud case writes the wording out. General form: **before adding a case, ask what its
+  expectation would look like if the bug it guards against were present. If the answer is
+  "the same", the expectation is the wrong quantity, not the case.** Same shape as `0272`'s
+  lesson (b) -- there the load-bearing part was the expectation *string* and not the silence;
+  here it is the wording and not the count.
+- 2026-09-08 -- **The pair, not the single case, is the measurement.** Condition 3 asked for
+  one case (the reported outcome). I built two, because the two outcomes of the second half
+  differ in *nothing but* whether the carried literal happens to occur in the kern -- the
+  entries are equally broken. A single case shows one side of the coin and leaves the reader
+  free to think the tool decided something. The 0-case and the 1-case next to each other say:
+  the kern text decided, and the element's real wording was never consulted. This is also the
+  discipline the table's own head already states (`:1976-1978`).
+- 2026-09-08 -- **Verified before writing, not assumed:** `felder_von` (`:818-833`) counts
+  `(`/`)` in its depth, so `{ERSTES(\001)}` stays one field and stays a `ist_klammergruppe`;
+  the inner group carries no `::`, so `eintragsgruppen` still picks the outer as the entry
+  (`treffer == 1`, no Klage). `stuecke_aus` (`:976-991`) walks marks only, so one mark comes
+  out of the call. `Befund::stueck` is `std::string`, compared against `std::string(fall.stueck)`
+  following the file's own idiom at `:1484`. File is pure ASCII again (I introduced two
+  non-ASCII characters and took them back out) and no line exceeds 100 columns.
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot compile. Riskiest edit is the new `stueck` field: adding an NSDMI member to
+  an aggregate used in a `constexpr std::array` leaves the six older initialisers valid, and
+  the file already carries this exact pattern (`Tabellenfall::listen_knapp`), but the array
+  bound `6 -> 8` against two appended initialisers is the thing a miscount kills -- loudly,
+  which is the good failure.
+  **(b) I built two cases where condition 3 asked for one**, and I added a field to the
+  self-test harness where it asked only for a measured Befund count. Reasons above. It is
+  strictly more than the named scope, and neither existing case nor expectation moved.
+  **(c)** Case 7 expects `0`. A reviewer may call a green expectation worthless -- same
+  objection as case 27 in `0272`, same answer: it is worthless *alone* and load-bearing *in
+  the pair*. If the project manager disagrees, deleting case 7 is one initialiser and leaves
+  condition 3 satisfied.
+
 ## 2026-09-08 -- 0273 (the latch T7 prescribed and nobody built)
 
 Three files, two new: `werkzeuge/multiplikation/multiplikationsriegel.cpp` (~1100 lines),
