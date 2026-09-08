@@ -4,6 +4,35 @@ Rotated by the runner on 2026-09-08 at 14889 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — Pruefung 0068 run 1, geprueft, 0 findings
+
+All four conditions verified in place; counts recomputed from `L_R` formulas (23+4=27,
+16, tol 2, 31 reported), condition 4's phrase confirmed in-line at :5395 with §29
+reconciled verbatim against my 0064 review (+36 uniform shift, no content line added —
+the +1 span line is the blank before the new section 30 heading). Wave-2 watch thread
+from 0064/0149/0196 entries is **closed**: all markers repaired, section 30 (:5400-5477)
+documents them.
+
+Worth keeping:
+- **The file is now bilingual in its keywords.** Condition patterns written in German
+  (`Leitzins`, `Soll`) miss translated text; sweep both (`policy rate`, `target`). Same
+  lesson as number formats.
+- **A quote can be genuine and un-greppable:** spiel.md :2818-2820 wraps mid-phrase;
+  grep a short fragment before calling a quote fabricated (second time this bit me —
+  see 0196 run-2 bold-markup case).
+- **Change-record sections quoting struck wording in a "before" column are not
+  condition violations** — precedent §29/§30; the record must quarantine itself
+  ("outside this section"), and §30 does.
+- Post-0068 anchors: row 9 :1945; sentence below list :1957-1963; T37 block
+  :2805-2884 (invariant :2811-2826, class table :2836-2843, 16/2 formulas :2847-2852,
+  why-sentence :2875-2884); section 17 row-20 sentence :3499; T59 label :3969; §29
+  :5309-5399, first clause :5395; §30 :5400-5477. Epoch delta: 0068 build = +36 at §29
+  vs my 0064-review anchors.
+- Open for the PM, already routed via §30 reports (no duplicate proposal from me):
+  §29's **second** check clause self-falsifies like the first did (report 4); check 8
+  in section 9 does not yet name the T37 invariant (report 1); reihen.toml
+  `[[widerspruch]]` no. 5 can be released (report 2).
+
 ## 2026-09-08 — Pruefung 0064 run 1, geprueft, 0 findings
 
 All ten R-places recomputed from R = 20 via the document's own formulas; all closed.
