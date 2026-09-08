@@ -10,6 +10,70 @@ Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
 ---
 
+## 2026-09-08 — Paket 0172, die Untergrenze des Zollfaktors
+
+**Entschieden: Weg 1, und die Schranke ist allgemeiner als bestellt.** T30 Prüfung 2
+bekommt Schranke 8 `instrument_min[i] ≤ land.<l>.instrument.<i>.stand ≤
+instrument_max[i]`, 16 Adressen; Nr. 21 bekommt keine Zeile, seine Positivität folgt aus
+Schranke 2 (`welt.preis > 0`) und Schranke 8. Neuer Abschnitt 23, dazu vier kleine
+Änderungen an T30 und ein Zeiger bei T48 Nr. 21.
+
+### Unsicher, damit der Projektmanager es sieht — vier Stellen
+
+1. **Die Verbreiterung von 4 auf 16 Adressen ist der einzige Schritt über den Auftrag
+   hinaus.** Begründet im Abschnitt und dort auch als solcher benannt: T51 schreibt allen
+   **vier** Instrumenten einen Wertebereich vor, Prüfung 2 prüfte keinen. Eine Zollzeile
+   allein hätte dasselbe Loch für Leitzins, Haushalt und Regulierung offen gelassen und
+   dasselbe gekostet. Wer die Verbreiterung für falsch hält, streicht drei von sechzehn
+   Adressen — der bestellte Fall bleibt stehen.
+2. **Schranke 8 ist eine Prüfstandsschranke, kein Riegel im Lauf.** Sie hat genau den
+   Status der sieben vorhandenen. Ist die Kappung in Schritt 3 falsch gebaut, rechnet eine
+   ausgelieferte Partie weiter mit negativem Keil; rot wird es erst im Nachtlauf. Das
+   steht so im Abschnitt, ist aber die Stelle, an der ein Prüfer mehr verlangen kann.
+3. **Mein Satz zum `l`/`g`-Widerspruch hängt an einer eigenen früheren Entscheidung.**
+   Ich sage, die beiden Schreibweisen stimmen im *Wert* überein, solange
+   `zollstand(RW) = 0` gilt — und genau diese Null ist die Stelle aus Paket 0043, an der
+   Abschnitt 18 sagt, ich würde einem Prüfer widerspruchslos folgen. Fällt die Null,
+   fällt mein Satz mit. Entschieden habe ich den Widerspruch **nicht**; der Vorbehalt in
+   Abschnitt 18 ist unberührt, wie die Abnahme es verlangt.
+4. **Die obere Hälfte von Schranke 8 steht auf `PLATZHALTER`.** `instrument_max[zoll]` ist
+   nicht kalibriert, und `parameter.toml` merkt selbst an, dass ein zu enger Wert den
+   historischen Pfad aus dem Bereich treibt. Bis zur Kalibrierung kann Schranke 8 oben
+   falsch rot werden. Im Abschnitt gemeldet, unten kann sie es nie.
+
+### Was funktioniert — drei Funde mit Prüffrage
+
+- **Der Präzedenzfall im Auftrag sagte das Gegenteil dessen, wofür er zitiert war —
+  zweite Bestätigung.** Der Vorschlag nannte Nr. 1 (`wechselkurs[g] ≥ 1`) als Beispiel
+  für „die Größe bricht selbst ab". `technik.md` schreibt an der Rundungsstelle wörtlich
+  „is therefore an invariant (T30 check 2), **not an expectation**". Ein einziges `Grep`
+  auf den Begriff hat es gefunden. **Prüffrage bleibt: warum nimmt der Präzedenzfall
+  seine Form — aus demselben Grund wie ich?**
+- **Eine Kostenzahl im Auftrag ist eine Behauptung, und diese war um Faktor 400 daneben.**
+  Der Vorschlag rechnete Weg 2 mit „einem Aufruf je Marktraeumung". T28 sagt selbst
+  „within each bisection step come … the tariff wedge per territory": 40 Halbierungen × 2
+  Sektoren × 5 Gebiete = 400 je Runde, bei einem Eingang, der sich einmal je Runde
+  ändert. **Prüffrage vor jedem Kostenargument: steht der Aufruf in einer Schleife, die
+  die Vorgabe an anderer Stelle beziffert?**
+- **Der schärfste Schaden stand nicht im Auftrag: nicht der Wert kippt, sondern ein
+  Beweis.** Der Vorschlag argumentierte mit negativem Index und Nenner null. Wer die
+  Preismischung nach dem Weltpreis ableitet, sieht: T28 beweist die Zulässigkeit der
+  Halbierung aus zwei genannten Voraussetzungen und einer ungenannten
+  (`10.000 + zollstand ≥ 0`). Unterhalb davon liefert die Halbierung still einen
+  Nicht-Gleichgewichtspreis — deterministisch, also korpusfähig. **Prüffrage bei jedem
+  Wertebereichsloch: welcher *Beweis* im Dokument nennt die Voraussetzung, die dieser
+  Wert verletzt?**
+- **Die Zahl der Schranke stand schon in den Daten.** `instrument_min = 0  # FEST (T51)`
+  in `parameter.toml` war der Beleg, dass Weg 1 keine neue Zahl erfindet, sondern eine
+  vorhandene Vorschrift an die Stelle bringt, die sie prüft. Erster Griff bei jeder
+  Schrankenfrage: steht die Zahl schon in `parameter.toml`?
+
+### Was nicht funktioniert
+
+- **`Grep -C 6` über `kern/` kostete 19,7 kB in einem Zug** und wurde ausgelagert, für
+  eine Funktion, die ich danach mit einem `Read` von 40 Zeilen hatte. Bei Quelltext erst
+  die Zeilennummer holen (der Befund nannte sie), dann eng lesen.
+
 ## 2026-09-08 — Paket 0165, T48 Nr. 22, die zwei Zustandseingänge
 
 **Entschieden: Antwort 1, in verschärfter Form.** Nr. 9, 10, 11 bekommen je eine zweite
@@ -93,7 +157,11 @@ Steht bei T48 Nr. 22 und ausführlich in neuem Abschnitt 22.
   zweiundzwanzig (Kernbauer, in Abschnitt 18 gemeldet). Bis dahin ist der Nachweis aus T48
   unvollständig, nicht falsch.
 - **`zollstand(RW) = 0` ist abgeleitet, nicht belegt** (Paket 0043, Abschnitt 18). Hier
-  würde ich einem Prüfer widerspruchslos folgen.
+  würde ich einem Prüfer widerspruchslos folgen. **Seit 0172 hängt ein zweiter Satz
+  daran** (Abschnitt 23: `l` und `g` stimmen im Wert überein, *solange* die Null gilt).
+- **`spiel.md` schreibt Nr. 21 mit `l`, T48 mit `g`** — ein Widerspruch, kein Schweigen.
+  Das braucht ein Paket beim Spielentwerfer; ich habe ihn in Abschnitt 23 benannt und
+  ausdrücklich nicht entschieden.
 - **806 und 158 (T62)** hängen daran, dass ein Spielland seine sieben Nicht-Politik-Reihen
   nur im Startjahr braucht — folgt aus T58, steht nirgends als Datenvorschrift.
 - **Ob der Prüfjahrgang baubar ist, ist eine Behauptung** (25 Stützstellen, 40 Ströme ohne

@@ -2225,6 +2225,14 @@ not a choice between two sensible numbers but the only assignment with which the
 is total at all over its written domain ("per territory"). If the game designer considers
 it wrong, it is one line.
 
+**Number 21 does not check its factor, and that is decided rather than omitted — package
+`0172`, 2026-09-08.** `10.000 + zollstand(g)` is non-negative because `zollstand` is
+bounded at the instrument: T51 gives the tariff the range `0 … instrument_max[zoll]`, and
+since this package that bound is **bound 8 of T30 check 2**. With `welt.preis.<s> > 0`
+from bound 2 it follows that `weltpreis_mit_zoll(g, s) ≥ welt.preis.<s> > 0`, without a
+line in this function. The reasoning, the measured counter-case and the third premise of
+T28 that hangs on it stand in section 23.
+
 The four that until now stood nowhere:
 
 ```
@@ -2369,7 +2377,7 @@ call does not run at night.
 | # | Check | Subject | Responsible |
 |---:|---|---|---|
 | 1 | unit tests per effect chain | every arrow from `spiel.md` singly, on a minimal state: tariff up → imports down → price up → real income down → approval down. Plus the stock invariant from T43, checked for `k = 1` (five rounds) **and** `k = 3` (fifteen), so that the mix-up from finding 3 shows in the code too | test developer |
-| 2 | invariant test | sum of all trade balances including rest of world = 0; government debt(t) = government debt(t−1) − balance; **fund assets = cash + valued positions + valued stakes − leverage** (T47, against `fondsvermoegen()` and against a sum written out separately in the test, so that the test does not repeat the function under test); the three sector shares per territory sum to 10,000; no share outside 0…10,000; **the seven value-range bounds from T5/T49** (see below); every game result in one of the three bands from T34 | test developer |
+| 2 | invariant test | sum of all trade balances including rest of world = 0; government debt(t) = government debt(t−1) − balance; **fund assets = cash + valued positions + valued stakes − leverage** (T47, against `fondsvermoegen()` and against a sum written out separately in the test, so that the test does not repeat the function under test); the three sector shares per territory sum to 10,000; no share outside 0…10,000; **the eight value-range bounds from T5, T49 and T51** (see below); every game result in one of the three bands from T34 | test developer |
 | 3 | determinism test | the same seed, mode and the same action sequence yield the same checksum — twice within the run, across save and load, and compared on every target platform | test developer |
 | 4 | regression corpus | stored games per T22 recompute bit-identically; in addition a checksum over the chain, so that a changed *justification* shows too; at least one game on a 1980 vintage with a base change (T8) | test developer |
 | 5 | break run | 10,000 games with the random bot: no crash, no overflow, no invariant violation, no chain overflow, no double write access and no mask violation (T18, T38, T39) | break tester |
@@ -2377,7 +2385,7 @@ call does not run at night.
 | 7 | the three measures | decision density, strategy diversity, optimum shift per the calculation rules in `spiel.md`, against the thresholds there: **0.4 per game third**; **three classes with one winner each at most 25 % apart**; **shift ≥ 0.4** | self-player |
 | 8 | backtest | in mode `weltlauf` (T38), 31 target series plus the trade block, error measures per T42, acceptance via the **16 check subjects with tolerance 2** per T37 | backtester |
 
-**The seven value-range bounds that check 2 checks every round.** They follow from T5, T49
+**The eight value-range bounds that check 2 checks every round.** They follow from T5, T49
 and T51 and stand here together so that the test developer does not have to gather them
 from twelve table rows. Each is a **hard error**, not a report:
 
@@ -2390,14 +2398,16 @@ from twelve table rows. Each is a **hard error**, not a report:
 | 5 | `0 < markt.wert < 9,2 · 10^13` | 1 | denominator of `markt.rendite` and `marktanteil`, overflow bound of `tsd_in_cent` (T47) |
 | 6 | `0 ≤ druck, gegendruck ≤ druck_max` | 32 | class 9; without an upper bound, channel 8 is unbounded |
 | 7 | `0 ≤ fondsanteil(l, s) ≤ 10.000`, `\|stufen(p)\| ≤ stufen_max` | 12 + 20 | a share above 100 % is not a share; the admissibility check from T32 keeps it in bounds, the test checks that it does |
+| 8 | `instrument_min[i] ≤ land.<l>.instrument.<i>.stand ≤ instrument_max[i]` | 16 | T51 gives all four instruments a value range and step 3 caps against it — nothing checked the result. For the tariff `instrument_min[zoll]` is fixed at 0, and that is the premise T28's bisection uses without naming it (section 23) |
 
 Plus the **two equalities** from T49: `land.<L>.leitzins = land.<L>.instrument.leitzins.stand`
 and `land.<L>.haushaltssaldo = land.<L>.instrument.haushalt.stand`, per round and per country.
 
-Bounds 1 and 5 are the two that without a test would go wrong silently instead of loudly:
-a negative exchange rate turns every profit into a loss, and a market basket beyond the
-overflow bound does crash per T7, but only in `tsd_in_cent` and thus at a place where
-nobody looks for the cause.
+Bounds 1, 5 and 8 are the three that without a test would go wrong silently instead of
+loudly: a negative exchange rate turns every profit into a loss; a market basket beyond
+the overflow bound does crash per T7, but only in `tsd_in_cent` and thus at a place where
+nobody looks for the cause; and a tariff level below −10,000 basis points turns the wedge
+factor of number 21 negative, which no reader of it notices — measured, section 23.
 
 **Check 6 runs past the end of the vintage window, and that needs a rule.**
 The exogenous paths from T25 carry only R+1 support points. From round R+1 on they are
@@ -4365,3 +4375,122 @@ to `decisions/` has to copy it. I do not have it.*
    mask of T38 in both modes, so the read is satisfiable; whether the debt ratio is in fact
    written before step 5 in every mode is a property of the step order and not of this
    decision.
+
+## 23. Die Untergrenze des Zollfaktors — Paket `0172`
+
+**The decision: way 1, the bound sits at the instrument.** `zollstand` gets no new number
+and number 21 gets no abort. The value range T51 already prescribes for the instrument
+becomes **bound 8 of T30 check 2**, and the positivity of number 21 is *derived* from two
+bounds that are checked every round instead of being guarded a second time in the
+quantity itself.
+
+**The measured case, and what happens to it now.** From the review of package `0152`
+(`befunde/pruefung-0152-werte-zweiundzwanzig-statt-siebzehn-2026-09-06.md`, section
+*Ränder*), against an unchanged `werte.cpp`; both assertions hold, the run is green:
+
+```
+zollstand(DE) = -12'000, welt.preis.1 = 11'000  ->  weltpreis_mit_zoll = -2'200
+zollstand(DE) = -10'000, welt.preis.1 = 11'000  ->  weltpreis_mit_zoll =      0
+```
+
+Recomputed here as arithmetic and not taken over: `11.000 · (10.000 − 12.000) / 10.000 =
+−2.200` and `11.000 · 0 / 10.000 = 0`. Both states are, from this section on, a **hard
+error of check 2** in the round in which they arise, reported at the address
+`land.DE.instrument.zoll.stand` and not at number 21. Number 21 keeps computing them
+character for character as T48 writes it: a state that check 2 rejects does not need a
+second guard in each of its readers. Bound 8 has exactly the status of the seven existing
+ones and no more — where check 2 runs is T30's business and is unchanged here.
+
+**Why the bound sits at the instrument and not at the quantity — three reasons, and the
+second corrects the brief.**
+
+1. **It is already there, and only the check was missing.** Three places carry it today:
+   T51's table row (`0 … instrument_max[zoll]`), `parameter.toml` under
+   `[instrument.zoll]` (`instrument_min = 0  # FEST (T51)`), and the capping of step 3
+   (`stand = min(max(stand ± schritt, min), max)`). Only the third one *acts*, it acts in
+   `spielmodus` only, and it is a single line whose failure is invisible in the result —
+   which is the error kind check 2 exists for. This section therefore adds no number; it
+   moves an existing prescription to the one place that tests it.
+2. **The precedent way 2 rests on says the opposite of what it was cited for.** The
+   package brief names number 1, `wechselkurs[g] ≥ 1`, as the case in which the derived
+   quantity aborts by itself. It is not: the paragraph on the order of the roundings
+   (section 8, *Two value-range bounds belong with this*) writes „`wechselkurs[g] ≥ 1` is
+   therefore an invariant (T30 check 2), not an expectation", and for exactly the reason
+   that applies here — a sign flip that nothing notices. The one existing precedent for
+   this defect kind was decided the way this section decides it.
+3. **Cost, and it is a factor of 400.** T28 forms the tariff wedge **inside** each
+   bisection step, so the readers of number 21 are 40 bisections × 2 tradable sectors ×
+   5 territories = **400 per round**, not one per market clearing as the brief assumed.
+   `zollstand` is written in step 3 and stands fixed through the whole of step 4; a check
+   inside number 21 would repeat the identical comparison 400 times per round on an input
+   that changes once. Bound 8 costs 16 addresses × 2 comparisons per round.
+
+**Why the row is written over all four instruments and not over the tariff alone.** The
+brief asks for `zollstand ≥ 0`, which is 4 addresses. T51 prescribes a value range for
+**all four** instruments and says it holds in both modes; check 2 checked none of them.
+Writing the tariff row alone would leave the identical hole open for policy rate, budget
+and regulation and cost the same, because the bound is one comparison pair against
+`instrument_min[i]`/`instrument_max[i]`, which `parameter.toml` carries per instrument
+anyway. The generic form is therefore one row instead of four and no further decision:
+every one of the four ranges is already written in T51. **This is the one place where
+this section goes wider than its brief**; whoever considers the widening wrong strikes
+three of the sixteen addresses, and the case the package asked for stands unaffected.
+
+**What the bound buys beyond the sign: T28's admissibility proof has a third premise.**
+T28 proves the bisection admissible from two premises, both named there — `durchgriff`
+lies in 0 … 10.000, and `landespreis` stands fixed while the bisection runs. The third is
+not named. The derivative of the blended price with respect to the trial world price is
+
+```
+d preis / d welt.preis  =  durchgriff · (10.000 + zollstand(g))  /  10^8
+```
+
+and it is non-negative only for `zollstand(g) ≥ −10.000`. At exactly −10.000 that
+territory's sector price stops depending on the world price at all, and the excess
+function loses the strict part of its monotonicity; below it, that territory's excess
+*falls* in the world price while the others rise, and the bisection returns a price that
+is not a clearing price. It does so **silently**: T28 runs a fixed 40 steps and has no
+convergence test that could fail, so the wrong price is deterministic and reproducible,
+which is the property that would carry it into the regression corpus. That is the sharper
+statement of the damage than "an index becomes negative" — the gap does not hit a value,
+it hits a proof. Bound 8 makes the third premise as checked as the first.
+
+**The domain of number 21 stays open, and the two specifications are not merely silent
+but at odds.** The find belongs to the core reviewer, from the review of `0152`:
+`spiel.md` writes the formula as `weltpreis_mit_zoll(l, s)`, T48 as
+`weltpreis_mit_zoll(g, s)`. This section does not decide that; the reservation at the end
+of section 18 stands unchanged and is untouched. What can be said here at no cost:
+**the two spellings coincide in value as long as `zollstand(RW) = 0` stands.** The rest
+of world's row is then the identity `weltpreis_mit_zoll(RW, s) = welt.preis.<s>`, and the
+four-country reading needs exactly that number for the rest of world's price mix, because
+T28 blends over five territories (15 `landespreis` addresses per T39, the row in the
+`<G>` table of section 4). The wording differs, the number does not. Which of the two is
+binding is a question about `spiel.md` and thus the game designer's. Bound 8 does not
+hang on the answer: the tariff has 4 addresses either way, and the rest of world has no
+instrument address per T15.
+
+### Reports
+
+1. **To the test developer — check 2 grows by one bound**, and it is the only one of the
+   eight that runs over the instrument levels: 16 addresses, two comparisons each, against
+   `instrument_min[i]` and `instrument_max[i]` from `parameter.toml`. **Bound 4
+   (`leitzins[l] + aufschlag ≥ 1`) stays**, although it now follows from bound 8 together
+   with the parameter condition `instrument_min[leitzins] ≥ 1 − aufschlag`: a redundant
+   check is not thereby a wrong one, and striking it is its own package.
+2. **To the vintage build — the `weltlauf` is the mode in which this can actually
+   happen.** In `spielmodus` step 3's capping makes a negative tariff unreachable if it is
+   built correctly. In the `weltlauf` the instrument levels come from the historical path
+   (series 13, tariff level aggregated, WDI/WITS); T51 says the value range holds there
+   too and a path that leaves it is „a finding of the vintage build". Bound 8 checks the
+   state per round in both modes and therefore catches such a path as well; whether the
+   vintage build additionally checks it *before* the run stays where T51 put it. **The
+   upper half of the bound stands on a placeholder:** `instrument_max[zoll]` is marked
+   `PLATZHALTER` in `parameter.toml`, which notes there that too narrow a value lets the
+   historical path leave the range. Until calibration, a red bound 8 on the upper side is
+   a question to the parameter and not to the model; on the lower side it never is,
+   because `instrument_min[zoll]` is fixed.
+3. **To the core builder — no change in `kern/src`.** `weltpreis_mit_zoll`
+   (`kern/src/werte.cpp:903`) stays as it is, including its reservation comment, which
+   names the **domain** and not the value range and is therefore not closed by this
+   section. The core builder's work from this package is nil; the work is the test
+   developer's, item 1.
