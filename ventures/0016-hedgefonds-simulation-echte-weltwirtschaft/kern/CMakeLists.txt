@@ -59,6 +59,13 @@ file(GLOB KERN_KOEPFE  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/include/ker
 # gebaut wird.
 file(GLOB KERN_PROBEN  CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 
+# Die Koepfe unter `test/` -- ein **dritter** Sammler und nicht der Probensammler
+# erweitert (Paket 0254). Der Grund steht weiter unten in der Schleife ueber
+# `KERN_PROBEN`: Dieselbe Liste speist `add_executable`, ein Kopf darin wuerde sein
+# eigenes Programm. Diese Menge wird geprueft und nicht gebaut, und sie ist deshalb
+# eine eigene.
+file(GLOB KERN_PROBENKOEPFE CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test/*.hpp)
+
 # ---------------------------------------------------------------------------
 # Der Sperrebindungsriegel (Paket 0134)
 # ---------------------------------------------------------------------------
@@ -113,12 +120,23 @@ set(KERN_SPERRKOPF "kern/sperre.hpp")
 string(REPLACE "." "\\." KERN_SPERRKOPF_MUSTER "${KERN_SPERRKOPF}")
 set(KERN_SPERRKOPF_MUSTER "[\"<]${KERN_SPERRKOPF_MUSTER}[\">]")
 
+# Der Pfad zum Sperrkopf wird aus seinem Include-Namen gebildet und nicht ein zweites
+# Mal hingeschrieben: Die Vergiftungspruefung unten liest die Datei, und zwei Fassungen
+# desselben Pfades koennten auf zwei verschiedene Dateien zeigen.
+set(KERN_SPERRKOPF_DATEI "${CMAKE_CURRENT_SOURCE_DIR}/include/${KERN_SPERRKOPF}")
+
 # `CONFIGURE_DEPENDS` am Sammler oben bemerkt nur neue und verschwundene Dateien. Wer
 # die Include-Zeile aus einer **vorhandenen** Quelle entfernt, aendert die Dateiliste
 # nicht; ohne die folgende Zeile liefe der naechste Bau ohne neuen Konfigurationslauf
-# und damit ohne diesen Riegel. Sie gilt fuer beide Mengen.
+# und damit ohne diesen Riegel. Sie gilt fuer alle drei Mengen.
+#
+# Der Sperrkopf steht seit Paket 0254 mit darin, und zwar als **Inhalt** und nicht als
+# Vorhandensein: Aus ihm kommt die Liste der vergifteten Bezeichner. Ein zugelegter
+# Eintrag dort muss den naechsten Konfigurationslauf ausloesen, sonst wird gegen die
+# Liste von gestern geprueft.
 set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
-             ${KERN_QUELLEN} ${KERN_PROBEN})
+             ${KERN_QUELLEN} ${KERN_PROBEN} ${KERN_PROBENKOEPFE}
+             ${KERN_SPERRKOPF_DATEI})
 
 foreach(datei IN LISTS KERN_QUELLEN KERN_PROBEN)
   file(READ "${datei}" fabrik_inhalt)
@@ -168,18 +186,162 @@ foreach(datei IN LISTS KERN_QUELLEN KERN_PROBEN)
   endif()
 endforeach()
 
+# ---------------------------------------------------------------------------
+# Die Vergiftungspruefung der Probenkoepfe (Paket 0254)
+# ---------------------------------------------------------------------------
+#
+# **Was der Riegel darueber nicht sieht.** Seine beiden Sammler nehmen die Endung einer
+# Quelle, der dritte daneben nimmt allein die Koepfe unter `include/kern/` und wird von
+# ihm gar nicht gelesen. Ein Kopf unter `test/` stand damit in keiner Menge. Gemessen am
+# ersten seiner Art, dem Kennzeichenverzeichnis der Proben: Er bindet den Sperrkopf
+# nicht, nichts verlangte es, und nichts bemerkte es. Warum ein Kopf unter `test/` die
+# teurere Haelfte ist und nicht die billigere, steht in der Begruendung des Riegels
+# darueber und wird hier nicht wiederholt -- er nennt den Sollwert fuer jede Probe, die
+# ihn teilt.
+#
+# **Welche Zusicherung dieses Paket gekauft hat -- und welche nicht.** Nicht die des
+# Riegels darueber. Sie ist fuer einen Kopf unter `test/` nicht zu haben, und zwar aus
+# zwei Gruenden, die beide nicht an dieser Datei liegen: Die Vergiftung gilt ab ihrer
+# Stelle bis zum Ende der Uebersetzungseinheit, ein Kopf, den eine Probe vor den Koepfen
+# des Kerns einbindet, vergiftete diese also mit. Und ob der Sperrkopf zuletzt gebunden
+# ist, ist eine Eigenschaft des Einbindenden und nicht des Eingebundenen.
+#
+# Gekauft ist stattdessen die **Wirkung ohne den Mechanismus**: Ein Kopf unter `test/`
+# nennt keinen der Bezeichner, die der Sperrkopf vergiftet. Das ist dasselbe, was der
+# Vorverarbeiter einer Quelle zusichert, die ihn bindet -- nur am Text nachgewiesen
+# statt an der Uebersetzung.
+#
+# **Der Unterschied zwischen beidem, in beide Richtungen genannt, damit ihn niemand fuer
+# keinen haelt:**
+#
+#   * *Strenger als die Vergiftung.* Hier wird gelesen und nicht vorverarbeitet. Ein
+#     vergifteter Name in einem Kommentar oder hinter einem `#if 0` zaehlt mit. Das ist
+#     dieselbe Grobheit, die der Riegel darueber fuer sich schon erklaert, und sie faellt
+#     in die sichere Richtung: Sie meldet zu viel, nie zu wenig.
+#   * *Schwaecher als die Vergiftung.* Ein vergifteter Name, der erst aus einer
+#     Makroersetzung entsteht, steht nirgends im Text und kommt durch. Der Vorverarbeiter
+#     faenge ihn. Wer diese Luecke schliessen will, braucht eine Uebersetzung und damit
+#     ein anderes Verfahren als ein Konfigurationslauf.
+#
+# **Die Liste wird gelesen und nicht abgeschrieben.** Sie steht im Sperrkopf und dort
+# allein; eine zweite Fassung an dieser Stelle liefe mit dem naechsten Eintrag
+# auseinander und pruefte danach weniger -- gruen, wie jede abgeschriebene Liste. Gesucht
+# werden die Anweisungen selbst, am Zeilenanfang: Der Kopfkommentar derselben Datei nennt
+# dieselben drei Woerter, und ohne die Verankerung zaehlte er mit.
+#
+# **Findet die Suche keinen Bezeichner, bricht der Lauf ab.** Eine leere Liste liesse die
+# Schleife darunter ueber nichts laufen, und jeder Kopf kaeme durch: eine Zusicherung,
+# die auf keine Eingabe rot werden kann, ist keine. Aus demselben Grund steht in der
+# Meldung am Ende die **Zahl** der geprueften Paare und nicht der Satz, es sei geprueft
+# worden.
+#
+# **Rot, wenn gebrochen -- der Weg durch den Code, weil sich der Konfigurationslauf aus
+# keiner Rolle heraus starten laesst.** Der Sammler weiter oben legt jeden Kopf unter
+# `test/` in `KERN_PROBENKOEPFE`. Die Schleife darunter liest jeden davon und haelt ihn
+# gegen jeden Namen aus `KERN_VERGIFTET`. Trifft das Muster, ruft sie `message` mit
+# `FATAL_ERROR`, und damit endet der Konfigurationslauf sofort: Es entsteht kein
+# Bauverzeichnis, die `add_library`-Aufrufe darunter werden nie erreicht, `cmake --build`
+# und `ctest` laufen nicht an. Ein Kopf unter `test/`, der einen vergifteten Bezeichner
+# nennt, kommt also nicht bis zum Ende des Laufs -- und die Meldung mit den Zahlen, an
+# der ein gruener Lauf zu erkennen ist, steht hinter ihm.
+
+if(NOT EXISTS "${KERN_SPERRKOPF_DATEI}")
+  message(FATAL_ERROR
+    "Vergiftungspruefung der Probenkoepfe (T4, T7 Massnahme 4.2): der Sperrkopf fehlt, "
+    "gesucht wurde er unter ${KERN_SPERRKOPF_DATEI}. Aus ihm kommt die Liste der "
+    "vergifteten Bezeichner; ohne ihn pruefte die Schleife darunter gegen nichts und "
+    "liesse jeden Kopf unter test/ durch. Ist er umgezogen, gehoert der neue Pfad "
+    "hierher -- nicht diese Bedingung entfernt.")
+endif()
+
+file(READ "${KERN_SPERRKOPF_DATEI}" fabrik_sperrtext)
+
+# Die vorangestellte Zeilenschaltung faengt den Fall, dass die Anweisung schon in der
+# ersten Zeile steht -- derselbe Griff wie beim Riegel darueber.
+string(REGEX MATCHALL "\n[ \t]*#[ \t]*pragma[ \t]+GCC[ \t]+poison[ \t][^\n]*"
+       fabrik_vergiftungen "\n${fabrik_sperrtext}")
+
+set(KERN_VERGIFTET "")
+foreach(anweisung IN LISTS fabrik_vergiftungen)
+  # Geschrieben wird auf eine eigene Veraenderliche und nicht auf die der Schleife: Was
+  # eine Schleifenveraenderliche nach einer Zuweisung im Rumpf ist, gehoert zu den
+  # Dingen, die man nachschlagen muss, und hier steht nichts darauf.
+  set(fabrik_namensteil "${anweisung}")
+
+  # Ein Kommentar hinter der Anweisung traegt Woerter, die wie Bezeichner aussehen und
+  # keine sind. Er wird abgeschnitten, bevor gesammelt wird.
+  string(REGEX REPLACE "//.*$"   "" fabrik_namensteil "${fabrik_namensteil}")
+  string(REGEX REPLACE "/\\*.*$" "" fabrik_namensteil "${fabrik_namensteil}")
+  string(REGEX REPLACE "^[ \t\n]*#[ \t]*pragma[ \t]+GCC[ \t]+poison[ \t]+" ""
+         fabrik_namensteil "${fabrik_namensteil}")
+  string(REGEX MATCHALL "[A-Za-z_][A-Za-z0-9_]*" fabrik_namen "${fabrik_namensteil}")
+  list(APPEND KERN_VERGIFTET ${fabrik_namen})
+endforeach()
+
+list(LENGTH KERN_VERGIFTET fabrik_anzahl_vergiftet)
+if(fabrik_anzahl_vergiftet EQUAL 0)
+  message(FATAL_ERROR
+    "Vergiftungspruefung der Probenkoepfe (T4, T7 Massnahme 4.2): in "
+    "${KERN_SPERRKOPF_DATEI} steht keine einzige Vergiftungsanweisung, die sich lesen "
+    "laesst. Entweder ist die Sperre fort -- dann ist das der Fund --, oder die "
+    "Anweisungen sind umgeschrieben und dieser Lesevorgang zieht nach. Weitergelaufen "
+    "wird nicht: Eine Pruefung ueber eine leere Namensliste laesst jeden Kopf unter "
+    "test/ durch und meldet dabei gruen.")
+endif()
+list(REMOVE_DUPLICATES KERN_VERGIFTET)
+list(LENGTH KERN_VERGIFTET fabrik_anzahl_vergiftet)
+
+set(fabrik_probenkopf_paare 0)
+foreach(datei IN LISTS KERN_PROBENKOEPFE)
+  file(READ "${datei}" fabrik_inhalt)
+  file(RELATIVE_PATH fabrik_kurzname "${CMAKE_CURRENT_SOURCE_DIR}" "${datei}")
+
+  # Gesucht wird der **Name** und nicht die Zeichenfolge: Links und rechts von ihm muss
+  # ein Zeichen stehen, das kein Namenszeichen ist, damit `exp` nicht in `export` und
+  # `pow` nicht in `power` trifft. Gepolstert wird an beiden Enden, weil diesem Zeichen
+  # sonst ein Name in der ersten und in der letzten Zeile entginge.
+  set(fabrik_gepolstert "\n${fabrik_inhalt}\n")
+
+  foreach(name IN LISTS KERN_VERGIFTET)
+    math(EXPR fabrik_probenkopf_paare "${fabrik_probenkopf_paare} + 1")
+    if("${fabrik_gepolstert}" MATCHES "[^A-Za-z0-9_]${name}[^A-Za-z0-9_]")
+      message(FATAL_ERROR
+        "Vergiftungspruefung der Probenkoepfe (T4, T7 Massnahme 4.2): "
+        "'${fabrik_kurzname}' nennt `${name}` -- einen Bezeichner, den "
+        "\"${KERN_SPERRKOPF}\" vergiftet. Ein Kopf unter test/ kann den Sperrkopf nicht "
+        "binden: Er wird vor den Koepfen des Kerns eingebunden und vergiftete sie mit. "
+        "An die Stelle der Vergiftung tritt fuer ihn diese Pruefung, und sie verlangt "
+        "dasselbe. Was gerechnet werden muss, gehoert in den Kern und nicht in einen "
+        "Kopf, der den Sollwert der Proben nennt.")
+    endif()
+  endforeach()
+endforeach()
+
 # Die beiden Zahlen stehen in der Meldung und in keiner Abnahme: Sie sind eine Messung
 # mit Verfallsdatum, die mit jeder neuen Kernquelle und jeder neuen Probe steigt.
 #
 # **Getrennt** genannt, und das ist keine Kosmetik: Eine Summe verschweigt, wenn eine
-# der beiden Mengen leer bleibt. Ein Riegel, dem der zweite Sammler abhanden kaeme,
-# meldete dann weiter eine plausible Zahl und saehe aus wie einer, der beides prueft.
-list(LENGTH KERN_QUELLEN fabrik_anzahl_quellen)
-list(LENGTH KERN_PROBEN  fabrik_anzahl_proben)
+# der Mengen leer bleibt. Ein Riegel, dem der zweite Sammler abhanden kaeme, meldete dann
+# weiter eine plausible Zahl und saehe aus wie einer, der beides prueft.
+#
+# Seit Paket 0254 stehen zwei Zahlen mehr da, und beide aus diesem Grund: die Zahl der
+# Koepfe unter `test/` und die der geprueften Paare aus Kopf und vergiftetem Bezeichner.
+# Ein leerer Sammler und eine leere Namensliste sehen im Ergebnis gleich aus -- gruen --,
+# und genau daran ist das eine vom anderen zu unterscheiden. Die Paarzahl ist dabei die
+# einzige, die beides zugleich beantwortet: Sie ist null, sobald eine der beiden Mengen
+# leer ist. Kein Satz steht dort, der behauptet, es sei nichts gefunden worden -- der
+# Abbruch darueber hat das schon entschieden, und ein Satz, der es wiederholt, waere die
+# eine Aussage, die derselbe Lauf widerlegen koennte.
+list(LENGTH KERN_QUELLEN      fabrik_anzahl_quellen)
+list(LENGTH KERN_PROBEN       fabrik_anzahl_proben)
+list(LENGTH KERN_PROBENKOEPFE fabrik_anzahl_probenkoepfe)
 message(STATUS
   "Sperrebindungsriegel (T4, T7 Massnahme 4.2): ${fabrik_anzahl_quellen} Kernquelle(n) "
   "und ${fabrik_anzahl_proben} Probe(n) geprueft, jede bindet "
-  "\"${KERN_SPERRKOPF}\" als letzten #include.")
+  "\"${KERN_SPERRKOPF}\" als letzten #include. Dazu "
+  "${fabrik_anzahl_probenkoepfe} Kopf/Koepfe unter test/, die ihn nicht binden koennen, "
+  "gegen die ${fabrik_anzahl_vergiftet} dort vergifteten Bezeichner gehalten: "
+  "${fabrik_probenkopf_paare} Paar(e) geprueft.")
 
 add_library(kern STATIC ${KERN_QUELLEN} ${KERN_KOEPFE})
 target_include_directories(kern PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

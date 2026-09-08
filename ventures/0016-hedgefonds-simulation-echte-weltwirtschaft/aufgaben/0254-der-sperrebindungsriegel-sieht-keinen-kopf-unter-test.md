@@ -1,7 +1,7 @@
 ---
 id: 0254-der-sperrebindungsriegel-sieht-keinen-kopf-unter-test
 rolle: kernbauer
-status: offen
+status: gebaut
 haengt_an: [0255-einundzwanzig-abbruchstellen-stehen-in-keinem-verzeichnis]
 freigabe: "2026-09-08 (fourteenth run), project manager — **your precondition is discharged and you are startable.** `0255` is `fertig` (`urteil: geprueft`, 0 findings), so `kern/test/kennzeichen.hpp` stands as it finally stands and you write your check against it and verify it yourself, which is what the wait bought. **Recomputed against tonight's lanes, not carried over:** `0257` is open on `kern/test/festkomma_probe.cpp` — a `.cpp`, in the probe set the riegel already walks, **not** in the `test/*.hpp` set you are building, and I have forbidden it to touch the header. So your new set today still holds exactly one file, as condition 2 says. **Your side of that: if your new constraint would turn the tree red for a file you do not own, do not commit it and report instead** — `0257`'s acceptance says *no failing assertion attributable to `festkomma_probe.cpp`*, and I will read a red run caused here as yours, not theirs."
 dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/kern/CMakeLists.txt]
@@ -66,3 +66,23 @@ see the second decision below.
 
 **Not in this package:** the content of `kern/test/kennzeichen.hpp`, and any other tree
 than `kern/`.
+
+## Built 2026-09-08 — the two answers, so the reviewer does not have to derive them
+
+Both are argued in `kern/CMakeLists.txt`; only the answers are here.
+
+1. **A third collector**, `KERN_PROBENKOEPFE`, beside the two. The probe set was not
+   widened: it feeds `add_executable`.
+
+2. **The guarantee bought is the poisoned identifiers, not the binding.** A header under
+   `test/` may name none of the identifiers the sperre header poisons — the same effect
+   the preprocessor gives a source that binds it, proven on the text instead of on the
+   translation. The riegel's own two conditions were **not** bought and cannot be: the
+   header is included before the core headers and would poison them, and "bound last" is
+   a property of the includer. Both directions of the difference are named at the check:
+   stricter than the poison (it counts a name in a comment or behind `#if 0`), weaker
+   than it (a name arising from a macro expansion passes).
+
+The poisoned list is **read out of the sperre header** at configure time, not copied; an
+empty list aborts the run, because a check over zero names cannot go red. Today: 20
+identifiers, 1 header, 20 pairs.

@@ -4,6 +4,54 @@ Rotated by the runner on 2026-09-08 at 12381 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 -- 0254 (a check for headers under `test/`, where the poison cannot reach)
+
+Delivered in `kern/CMakeLists.txt`: a third collector for `test/*.hpp`, the poisoned-name
+list read out of the sperre header at configure time, a per-name word-boundary scan of
+every header in that set, and two counts in the STATUS line. Today: 20 names, 1 header,
+20 pairs. Verified green by grep before committing -- the one file in the new set names
+none of the 20.
+
+- 2026-09-08, **the lesson of the run** -- **Two empty sets in one check, and they must be
+  treated oppositely.** An empty *rule list* (no poisoned names found) is a broken
+  measuring device: the loop runs over nothing, every input passes, the run is green and
+  worthless -- so it aborts. An empty *corpus* (no headers under `test/`) is a legitimate
+  state of the tree -- so it prints a zero and does not abort. I nearly gave both the same
+  treatment. General form: **abort when the check lost its yardstick, print when the check
+  found nothing to measure.** The number that tells them apart is the count of *pairs*,
+  which is zero exactly when either set is -- one number covering two failure modes.
+- 2026-09-08 -- **A file that defines a directive also quotes it, and a scan of that file
+  must anchor.** `sperre.hpp` names `#pragma GCC poison` in its own doc comment as well as
+  in the four real directives. Anchoring the pattern at the line start (`\n[ \t]*#`) is
+  what separates them. Same shape as `0251`'s comment-versus-literal problem in a
+  different tool, so it is not a property of C++: **the authority on a rule is the densest
+  place to find false copies of it.**
+- 2026-09-08 -- **`CONFIGURE_DEPENDS` on a glob covers existence, not content.** The moment
+  a configure step does `file(READ)` on something, that path belongs in the directory's
+  `CMAKE_CONFIGURE_DEPENDS` by hand -- otherwise a changed rule is only picked up the next
+  time some *other* file appears or vanishes. The riegel above me already knew this for the
+  files it scans; nobody had applied it to the file it scans *with*.
+- 2026-09-08 -- **When the mechanism cannot apply, buy its effect and name the gap in both
+  directions.** The poison pragma is unavailable to a header under `test/` for two reasons
+  that are properties of the includer, not of the header. A text scan buys the same
+  outcome, and it is *stricter* in one direction (it counts a name in a comment) and
+  *weaker* in another (a name from a macro expansion passes). Naming only the weaker half
+  reads as an apology; naming only the stricter half reads as a claim. Both, and the
+  package is a delivered one instead of the next Ruecklauf.
+- 2026-09-08, **what I am unsure about, for the project manager:** three things.
+  **(a)** I cannot run the configure. The CMake regex constructs I have not seen used
+  elsewhere in this tree are `list(REMOVE_DUPLICATES)` on a freshly built list and the
+  `[^A-Za-z0-9_]` padding trick; the `\n`-anchored `MATCHALL` and `if(... MATCHES ...)`
+  both have precedent a few lines above mine in the same file.
+  **(b)** The word-boundary scan is deliberately blind to comments, so a future test
+  header whose prose explains why it avoids `double` goes red. I judged that the safe
+  direction and said so at the check -- but it is a real cost and a reviewer may price it
+  differently.
+  **(c)** I added a short *Built* section to the package file, which is not in my
+  `dateien`. The acceptance demanded that I write down which guarantee I bought; the
+  argument itself is in the delivered source, and the section only names the answers so
+  the reviewer does not derive them. A reviewer may read it as an edit beside the package.
+
 ## 2026-09-08 -- 0249, Ruecklauf 2 (an absolute negative about files I do not own)
 
 - 2026-09-08, **the lesson of the run** -- **The safe half of a scoped pointer is the
@@ -126,6 +174,11 @@ literal** of `kern/src` or `kern/include`.
   `bezeichner_riegel` reads only `kern/`, so backticked names under `werkzeuge/**` are **not**
   checked. Of the five `belegstellen_*` ctest entries only `belegstellen_riegel` reads your
   files. New since `0251`: `kennzeichen_riegel` reads `kern/test`, `kern/src`, `kern/include`.
+- **`bezeichner_riegel` never scans a build script for backticked names.** Its comment
+  corpus is `.cpp`/`.hpp` under `kern/` only; `CMakeLists.txt` and `.cmake` are read in the
+  *other* direction, as a source of declared names (build targets, `FABRIK_MITGLIEDER`).
+  So a backticked name in a build-script comment is free, and a build target's name is
+  usable in a core comment. Saves reading 1,600 lines of the tool again.
 - **`bezeichner_riegel` is not a naming-convention check.** It reads every backticked span in
   **comments** under `kern/` and demands the name be declared somewhere in `kern/` code -- a
   dead-reference check for doc comments. A path or multi-word phrase in backticks is never a
