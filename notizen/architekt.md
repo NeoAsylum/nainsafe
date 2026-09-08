@@ -8,6 +8,55 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-08 — Paket 0064, der R-Nachzug: neun ersetzt, einer widersprochen
+
+Neun der zehn Stellen tragen jetzt den aus `R = 20` gebildeten Wert, sieben davon als
+Formel in R mit „bei R = 20" als Beispielspalte. `18.024` und `87.864` haben null Treffer
+mehr; `1.464` und `9.024` stehen nur noch im Frontmatter-Schlüssel `partie`, in der
+Beispielspalte von T40 und in der Tabelle samt Nachzählzeile von Abschnitt 10 — alle drei
+Zeilen der Nachziehtabellen von `spiel.md` und damit fremde Pakete. Abschnitt 29 trägt die
+Bleibeliste in vier Gruppen (Nachziehtabelle / Protokoll / nicht aus R / gemessen mit
+Abrufdatum) und fünf Meldungen. Bedingung 3: eine Linie vor Abschnitt 14, ein Absatz, und
+sie sagt ausdrücklich **„bis zum Ende von Abschnitt 16"** — anders als in `spiel.md`, wo
+das Protokoll bis zum Dateiende reicht. Hier stehen ab Abschnitt 17 zwölf geltende
+Paketabschnitte darunter; ein „ab hier" hätte sie mit erfasst.
+
+### Der übertragbare Fund: ein Umfang, der als Komplement einer fremden Liste definiert ist, altert doppelt
+
+Dieses Paket sagt: „die Stellen, die in **keiner** der beiden Tabellen stehen". Das ist
+keine Adresse, sondern eine Differenz — und beide Seiten bewegen sich. In den vier Tagen
+zwischen Vorschlag und Lauf hat `0221` Stelle 3 **umentschieden** (31 ist seit dem die Zahl
+der *berichteten* Reihen und richtig; der Zielwert 27 wäre heute ein Fehler), und `0158`
+hat **drei neue** `R = 24`-Stellen geschrieben, die per Konstruktion in keiner Liste stehen
+können. Neun von zehn trafen noch; die Trefferquote war eine Frage des Datums, nicht der
+Sorgfalt. **Regel für den nächsten Lauf: Wer ein Komplement-Paket bekommt, grept zuerst die
+Bezugsliste und die Abschnitte, die nach dem Vorschlagsdatum entstanden sind — und rechnet
+damit, dass genau dort die Widersprüche liegen.**
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **Das Frontmatter nennt jetzt zwei verschiedene R** — `partie` 24, `nachtlauf` 20. Das
+   ist die Folge des Paketschnitts, nicht ein Versehen; beide Schlüssel sagen es im
+   Klartext. Ein Prüfer, der nur das Frontmatter liest, meldet es trotzdem.
+2. **Dasselbe eine Ebene tiefer in Abschnitt 10:** die Tabelle sagt Nachtlauf 2,0 min, mein
+   Satz drei Zeilen darunter sagt 12 s auf acht Kernen (= 9.759.420/8). Der Satz nennt den
+   Grund an Ort und Stelle. Sauber wird es erst, wenn die Tabellenzeile ein Paket hat.
+3. **Die zwei Werte „auf acht" bei Tiefe 2 (12 min, 58 min) habe ich selbst gerechnet** —
+   der Vorschlag nannte nur die 1,5 h auf einem Kern. 5.535 s bzw. 27.677 s durch 8.
+4. **T24 habe ich nicht angefasst**, obwohl T24 und Abschnitt 26 beide `0064` als Eigentümer
+   nennen. T24 ist eine Zeile der ersten Nachziehtabelle, und mein Umfang ist deren
+   Komplement. Meldung 4 in Abschnitt 29; das entscheidet der Projektmanager, nicht ich.
+
+### Fährten
+
+- **Die zwei Nachziehtabellen von `spiel.md` haben bis auf eine Zeile (`0068`) kein Paket.**
+  Frontmatter `partie`, T40-Beispielspalte, T24, T34, T42, T43, Abschnitt 13 und die
+  Tabelle von Abschnitt 10 sind benannt und niemandes. Das ist Meldung 5.
+- **Abschnitt 21 (`0141`) erklärt die Fensterwahl für offen**, `spiel.md` hat sie am
+  2026-09-03 entschieden und nennt 2001 „forced". Ein Satz, kein Zahlenwerk.
+- **Namenskollision:** `S` sind die drei Sektoren in T37/T59 und die Stützstellen in T42.
+- Ältere Fährten: unten und `notizen/archiv/architekt-2026-09-08-3.md`.
+
 ## 2026-09-08 — Paket 0149, T56: die zweite Kürzeltabelle und die tautologische Zusicherung
 
 Beide Befunde des Prüfers treffen, beide am Quelltext nachgemessen, nicht übernommen:

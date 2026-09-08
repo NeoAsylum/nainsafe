@@ -18,7 +18,7 @@ abgeleitet: 22 functions of the state in the core (17 up to 2026-09-03, plus the
 suchbot: target quantity B per T44 -- a static outcome forecast of the intermediate state, in the "überlebt" branch formula-identical to the outcome quantity of spiel.md, without a free parameter
 herkunft: each of the 310 addresses carries exactly one origin entry from five kinds; 136 data anchor, 150 design, 11 parameter, 2 manifest, 11 prescription (T45, T46) -- a gap or a second entry aborts the vintage build
 tick_planwert: 10 microseconds per world step (range 5 to 30) -- estimated, not measured; there is no core yet
-nachtlauf: 11.783.264 world steps, 2,0 minutes on one core at the plan value, 9,8 minutes in the unfavourable case
+nachtlauf: at R = 20 9.759.420 world steps, 1,6 minutes on one core at the plan value, 8,1 minutes in the unfavourable case (package 0064; the key `partie` above still stands on R = 24 and is caught up by its own package, see section 29)
 ---
 
 # The core is a pure integer function without a draw -- which makes determinism not a discipline but a property of the build profile.
@@ -1595,7 +1595,8 @@ parameter_pruefsumme, startwert, aktionen: [[runde, aktion…]], end_pruefsumme}
 loading, the game is recomputed and the checksum compared; if it deviates, the program
 reports a determinism break instead of playing on. Three wins at once: the buyer notices a
 determinism error first, the regression corpus **is** the save folder, and a file stays
-under two kilobytes. Cost: R world steps on loading, at R = 24 thus 0.24 milliseconds.
+under two kilobytes. Cost: R world steps on loading, at R = 20 and the plan value of 10 µs
+thus 0.20 milliseconds.
 
 ## 7. Datenschicht
 
@@ -2654,7 +2655,8 @@ B(z) =  r × 1.000                      das Mandat ist in Runde r erfüllt
 from `spiel.md`, only computed on `z` instead of on the game end.** In version 4 of this
 document the third line still carried the literal `25.000`; it now stands as a formula in
 R, because T40 tolerates no derived number as a literal and `(R+1) × 1.000` on a different
-vintage is simply not 25,000. At R = 24 it is 25,000, thus unchanged.
+vintage is simply not 25,000. At R = 20 it is **21,000** — the literal of version 4 would
+be wrong today, and that is the whole point of the formula.
 
 - `v(z) = teile_gerundet(max(0, schwelle_v − fondsvermoegen(z)) · 1.000, schwelle_v)` —
   missing assets in per mille of their threshold. `fondsvermoegen` is the function from
@@ -2686,14 +2688,19 @@ designer let the same reasoning apply one level up and **struck the cap entirely
 that both documents compute letter-identically in this branch, and the spot can no longer
 drift apart.
 
-The price stands in T40 and T34 and is twice a number (band end 27,000 → 28,000, gap
-boundary 27,001 → 28,001). The bound remains: `v ≤ 1.000` as long as the fund lives
+The price stands in T40 and T34 and is twice a number: the band end went from
+`(R+1) × 1.000 + 2.000` to `(R+1) × 1.000 + 3.000`, the lower edge of the gap above it
+one milli-round with it — at R = 20 thus 23,000 → 24,000 and 23,001 → 24,001. The bound
+remains: `v ≤ 1.000` as long as the fund lives
 (at `fondsvermoegen ≤ 0` way of dying 1 takes hold in the same round, T33 and T47; only
-the rounding reaches the 1,000), and `e ≤ 2.000`, thus `25.000 ≤ B ≤ 28.000` in the
-running case — above the band „mandate fulfilled" (up to 24,000) and below the death band
-(from 31,000). **From that follows a property a valuation must have and that cannot be
-seen in it: the bot never prefers death.** The worst running state stands at 28,000, the
-best death at 31,000. Despite the formula identity, `B` remains a **bot-internal**
+the rounding reaches the 1,000), and `e ≤ 2.000`, thus
+`(R+1) × 1.000 ≤ B ≤ (R+1) × 1.000 + 3.000` in the running case — at R = 20
+**`21.000 ≤ B ≤ 24.000`**, above the band „mandate fulfilled" (up to `R × 1.000`, at
+R = 20 thus 20,000) and below the death band (from 31,000, which per T40 does not hang on
+R). **From that follows a property a valuation must have and that cannot be
+seen in it: the bot never prefers death.** The worst running state stands at
+`(R+1) × 1.000 + 3.000`, the best death at 31,000 — at R = 20 that is 24,000 against
+31,000, and per T40 the two bands stay disjoint up to `R ≤ 26`. Despite the formula identity, `B` remains a **bot-internal**
 quantity: it is never reported as a game result, and the band check from T34 does not
 apply to it, because it stands on an intermediate state and not on a game end.
 
@@ -2744,10 +2751,11 @@ world step, thus a good **three percent** instead of three per mille. In the sea
 they occur 60 times per round, against 61 world steps — there too around three percent.
 The plan value of 10 µs has bandwidth up to 30, the reserve calculates with 50, and the
 shortcut on empty slots (T47) lowers the actual value further. The cost calculation
-`R × (1 + 60) = 1.464` stays unchanged — and exactly for this a static valuation is
-needed. A playout to round R per candidate would cost
-`60 · Σ(R+1−t) + R = 60 · 300 + 24 = 18.024` world steps per game, twelve times as much,
-and would overturn section 10.
+`R × (1 + 60)` — at R = 20 thus **1.220** world steps — stays unchanged in its form, and
+exactly for this a static valuation is needed. A playout to round R per candidate would
+cost `60 · Σ(R+1−t) + R`, with `Σ(R+1−t) = R(R+1)/2`, at R = 20 thus
+`60 · 210 + 20 = 12.620` world steps per game, **around ten times** as much
+(12.620 / 1.220 = 10,3), and would overturn section 10.
 
 **The three bots:**
 
@@ -2759,8 +2767,8 @@ and would overturn section 10.
 - **Suchbot(profil, kandidaten=60, tiefe=1)** — 60 candidates per T41, each computed one
   world step ahead and **statically valued per T44**; chosen is the smallest
   `B`, ties per T44 and never by order of discovery. There is no continuation by the
-  heuristic bot at depth 1. Cost per game `R × 61`, at R = 24 thus
-  **1,464** world steps.
+  heuristic bot at depth 1. Cost per game `R × 61`, at R = 20 thus
+  **1,220** world steps.
 
 **T36 — What the test bench hard-wires for Maß 2 and 3.**
 
@@ -2984,8 +2992,11 @@ backtest and regression stock:
 `11.519.040 + 240.000 + 200 + 24 + 24.000 = 11.783.264`. The two rows "1,000 games" are
 comparison values and do not enter the sum.
 
-Everything on **one** core. With eight cores the night run falls to around
-**15 seconds** at the plan value and to around **1.2 minutes** in the unfavourable case.
+Everything on **one** core. With eight cores the night run falls to an eighth: at R = 20
+(9,759,420 world steps) to around **12 seconds** at the plan value and to around
+**1.0 minute** in the unfavourable case. **The table above still stands on `R = 24`** —
+its catch-up is the row *Abschnitt 10, Laufzeitbudget* of the catch-up table in `spiel.md`
+and belongs to a package of its own, not to this one; section 29 says so.
 What is used to parallelise is per T3 open and immaterial for this document: bound per
 section 9 is that a run delivers the same result with one core and with thirty-two, not
 the means by which that is achieved.
@@ -3005,7 +3016,8 @@ shortened version, recompute the ten best sets with the full one.
 
 **The counter-calculation that carries the stack choice:** the same world step costs in
 Python between 0.75 and 3 milliseconds, that is 75 to 300 times as much. The night run
-would lie at **2.5 to 9.8 hours** on one core. It would then be not daily but
+would lie at **2.0 to 8.1 hours** on one core (9,759,420 world steps at R = 20 times 0.75
+and 3 milliseconds). It would then be not daily but
 occasional — and the calibration loop would be impossible even in the shortened version.
 That is the number the choice from T1 hangs on. It has become smaller through the shorter
 game, but the gap is the same: the factor decides, not the game length.
@@ -3058,11 +3070,12 @@ only costs space. What remains open:
   whether the division form explains the gap from the stack measurement.
 - **Whether the search bot at depth 1 is strong enough for Maß 2 to measure the game and
   not the bot.** *What* it searches for has been decided since T44 and has no free
-  parameter left; open is only *how far*. Recomputed for R = 24: depth 2 costs per game
-  `24 × (1 + 60 × 61) = 87.864`
-  instead of 1,464 world steps, Maß 2 and 3 together **664 million**, that is 1.8 hours
-  on one core and **around 14 minutes on eight** at the plan value, in the unfavourable
-  case 1.2 hours on eight. That does not burst the night run, it relocates it. Depth 2 is
+  parameter left; open is only *how far*. Recomputed for R = 20: depth 2 costs per game
+  `R × (1 + 60 × 61)`, that is `20 × 3.661 = 73.220`
+  instead of 1,220 world steps, Maß 2 and 3 together `3 × 126 × 20 × 73.220` =
+  **554 million**, that is 1.5 hours
+  on one core and **around 12 minutes on eight** at the plan value, in the unfavourable
+  case around 58 minutes on eight. That does not burst the night run, it relocates it. Depth 2 is
   thus not an exclusion but a decision the self-player may take if Maß 2 finds no winner
   in all three classes at depth 1.
 - **The numeric values of all thresholds and elasticities.** Per T27 they stand in the
@@ -3153,6 +3166,20 @@ and 13 for the third-party exception. Both resolve against data, not against cod
 number in the manifest and no second package. The vintage build therefore no longer has to
 be finished *before* the core, only before the first backtest — it stays in front anyway,
 because it can tip the venture and not merely delay it.
+
+---
+
+**From here to the end of section 16 no governing value stands any more — only the
+record.** Sections 14, 15 and 16 are dated workings-off of finished checks; their numbers
+stand on the state that held at the time of that check — `R = 24`, window 1997–2021, the
+three Maße 11,519,040 world steps, the night run 11,783,264 — and they are **not** carried
+forward. A record adapted to today proves nothing any more: one could no longer read off it
+what the checker saw then and what the architect answered then. **Whoever looks for the
+governing R reads T40 and section 10, not here.** The record ends with section 16; from
+section 17 on every section is the scope of a package and governs. Marked on 2026-09-08 by
+package `0064`, condition 3.
+
+---
 
 ## 14. Befundabarbeitung — die vier früheren Prüfungen
 
@@ -5242,3 +5269,94 @@ before the run, both in it and none anywhere else in the venture, and after the 
 more — that is the point. The number that must hold instead: `grep -c 'ueber_fenster'` over
 `kern/`, `daten/` and `parameter.toml` gives **0** before and after; this package writes a
 rule, not code.
+
+## 29. Der R-Nachzug ausserhalb der T-Blöcke — Paket `0064`
+
+**What this answers, in one line.** `spiel.md` cut `R` from 24 to 20 on 2026-09-03
+(package `0054`, window 2001–2021, 21 support points) and named the places in this file in
+two catch-up tables. Ten governing places stood in **neither** table; nine of them lie
+outside a T-block or in a T-block no table row names. Nine are substituted here, one is
+disputed.
+
+### The nine substitutions, each computed from `R = 20` and not scaled
+
+| # | Where | now stands | computed from |
+|---:|---|---|---|
+| 1 | frontmatter, key `nachtlauf` | 9,759,420 world steps, 1.6 / 8.1 min | `9.539.200 + 200.000 + 200 + 20 + 20.000`; times 10 and 50 µs |
+| 2 | T22, save cost | 0.20 ms | `R` world steps × 10 µs |
+| 4 | T44, third line of `B` | 21,000 | `(R+1) × 1.000` |
+| 5 | T44, band of the running case | `21.000 ≤ B ≤ 24.000`, mandate band to 20,000, gap edge 23,001 → 24,001 | `(R+1) × 1.000` + `e ≤ 2.000`, `R × 1.000`; death band 31,000 does not hang on R |
+| 6 | T44, cost note | 1,220 and `60 · 210 + 20 = 12.620`, ten times | `R × 61`; `Σ(R+1−t) = R(R+1)/2 = 210` |
+| 7 | search-bot bullet | 1,220 | `R × 61` |
+| 8 | section 10, eight cores | 12 s and 1.0 min | 9,759,420 ÷ 8 × 10 resp. 50 µs |
+| 9 | section 10, counter-calculation to Python | 2.0 to 8.1 hours | 9,759,420 × 0.75 and 3 ms |
+| 10 | section 12, depth 2 | `20 × 3.661 = 73.220`, 554 million, 1.5 h / 12 min / 58 min | `R × (1 + 60 × 61)`; `3 × 126 × 20 × 73.220 = 553.543.200` |
+
+Two numbers the proposal did not name and this run computed: depth 2 on eight cores is
+**12 minutes** at the plan value (5,535 s ÷ 8) and **58 minutes** in the unfavourable case
+(27,677 s ÷ 8), replacing 14 minutes and 1.2 hours.
+
+### Place 3 — disputed, not carried out
+
+The proposal wanted T37's sentence *„Berichtet werden alle 31 Reihen plus die 40 Ströme"*
+set to **27**. It stays at 31, on three grounds. **First:** since package `0221`
+(2026-09-08) the sentence counts the **reported** series and says so — 31 is
+`L_R(S+5) − n`, the target series are `L_R(S+4) − n` = 27 and stand named beside it in the
+same sentence. **Second:** neither number is formed from `R`; both are formed from `L_R`,
+`S` and `n`, so the R cut does not touch them. **Third:** the residual wording *„target
+series" for all 31* is expressly the property of `0068-technikmd-reihe-9-ohne-sollrolle`;
+section 26 assigns it there and says why. Writing 27 into that spot would take a review
+from `0068` and would contradict T59.
+
+### The second pass over every number — what stays, and why
+
+`Grep` over the whole file for `24`, `25`, `1.464`, `9.024`, `18.024`, `87.864`,
+`11.519.040`, `11.783.264`, `31` and `1997`. `18.024` and `87.864` have no occurrence left.
+Every remaining one falls into one of four groups:
+
+| Group | Reason | Where |
+|---|---|---|
+| **A — catch-up table of `spiel.md`, own package** | named in one of the two tables, thus deliberately not this package's | frontmatter key `partie` (1.464, R = 24); T40's example column „bei R = 24" (24,000 / 25,000…28,000 / thirds / 1,464 / 9,024 / `1999 − 1997 + 1`); T24 (25 support points, window); T42 (`S` = 25); T43 (24-round game); T34 range test (54,000); section 10's whole table **and** its recount row (24, 1,464, 9,024, 11,519,040, 11,783,264) and the calibration loop; section 13 (1997, 25, 31); the order-of-magnitude line `5 × 25 × 30` and `40 × 25 × 8`; „For the window 1997–2021 this is without consequence" in T40 and in section 12 point 1 |
+| **B — record or quote of an older version** | sections 14 to 16, marked under condition 3 above | §15 „R stays 24 … 11,519,040 … 11,783,264 … 25 support points"; §12's struck query „acceptance over 31 or 23 series"; T44 „in version 4 the third line still carried the literal `25.000`"; T8's Brazil passage („per `spiel.md` version 3 in the year 1997"); the shift 1995 → 1997 in T25 |
+| **C — not formed from R** | the R cut cannot move them | death band 31,000 (`30.000 + 1.000`, independent of R per T40); the 31 reported / 27 target series (formed from `L_R`, `S`, `n` — see place 3); 25 person addresses and the scale decomposition; 24 stake addresses (`2·L·S`); HS92 chapters 01–24 / 25–97; 24 `mal_geteilt` in `beteiligung_wert`; `3·6 + 5 + 1 = 24` check subjects at `L_R = 6`; the Maß-3 threshold 25 %; cross-references to sections 24 and 25; source-line counts; the commit time 05:24 |
+| **D — measured, with a retrieval date** | a re-measurement is a data job, not arithmetic in R | the trade-block price drift over „the 25 support points of the check vintage" (2,203 ten-thousandths) and the 1997 base of that index; `NE.EXP.GNFS.KD` for China, „the other 24 support points are `null`" (retrieved 2026-09-04); „Brazil from 1997" in the `FR.INR.LEND` case. Their window is the old one; whoever re-cuts it must query, not scale |
+
+### Five reports to the project manager — found, and expressly not touched
+
+1. **Three places carry R = 24 that arose after 2026-09-04 and stand in no list** — neither
+   in the two catch-up tables nor among the ten. All three from package `0158`: section 9
+   *„they run over `R` = 24"*, section 28 report 1 *„every such run is `R` = 24"*, and
+   section 9 *„At R = 24 the support points cover rounds 0 … 24, so rounds 25 … 200 are
+   outside the window — 176 of 200"*. At R = 20 the last one is rounds 0 … 20 and
+   **180 of 200**; the neighbouring 175/176 question stays as section 28 leaves it.
+2. **T34's two unreachable gaps** — *„24,001 … 24,999 and 28,001 … 30,999 at R = 24"* — are
+   formed from R, stand in neither table and in neither list. At R = 20 they are
+   20,001 … 20,999 and 24,001 … 30,999.
+3. **Section 21 declares a question open that `spiel.md` decided.** It writes *„The choice
+   between the two ways out … belongs to the game designer"* and *„This section does not
+   resolve the point"*. It was resolved on 2026-09-03: `spiel.md` frontmatter, *„R = 20
+   rounds, start state 2001, end state 2021, 21 support points"*, and the section *The
+   decision: R = 20, window 2001–2021, 21 support points*, which calls 2001 **forced**. The
+   section's two-column table stays useful; the sentence that the choice is open does not.
+4. **A scope contradiction over T24, and only the project manager can settle it.** T24 says
+   *„The window and the 25 are the follow-up of the same cut and belong to `0064`"*, and
+   section 26 repeats it. But T24 is a **row of the first catch-up table**, and this
+   package defines its scope as exactly the places that stand in neither table; condition 1
+   does not list T24. I have therefore not touched it. Whoever settles it moves one
+   sentence, not a number.
+5. **Most rows of the two catch-up tables have no package at all.** Only
+   `0068` holds one row. Section 10's table, the frontmatter key `partie`, T40's example
+   column, T34, T42, T43 and section 13 are named in `spiel.md` and owned by nobody. As long
+   as that is so, this file states two different `R` in its own frontmatter — key `partie`
+   24, key `nachtlauf` 20 — and that is visible on purpose.
+
+**And one name collision, noticed while counting and outside every scope here:** `S` means
+the three **sectors** in T37 and T59, and the **support points** (25, per the table above
+21) in T42. Two quantities, one letter, four hundred lines apart.
+
+### The check this section can be held to
+
+`Grep` for `18.024` and `87.864` in this file gives **zero** hits. `Grep` for `1.464` and
+`9.024` gives hits only in the frontmatter key `partie`, in T40's example column and in
+section 10's table and recount row — that is, exclusively in group A. Every hit of `24` and
+`25` outside those places falls into B, C or D above, or is one of the five reports.
