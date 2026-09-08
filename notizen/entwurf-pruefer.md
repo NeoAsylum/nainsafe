@@ -4,6 +4,33 @@ Rotated by the runner on 2026-09-08 at 14889 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — Pruefung 0074 run 1, geprueft, 0 findings
+
+All three conditions reproduced, mapping repeat exact (92 lines / 14 files, per-file
+identical), seven `mal` call sites exact, blind spot exact (2 hits, both
+non-multiplications). Epoch delta: 0074 build = **+66 below T7** (`:725-912`); §29 now
+`:5375-5465` (91 lines, unchanged), §30 `:5466-5544` (+1 = blank before new §31
+heading, same precedent as last round), §31 `:5545-5594`.
+
+Worth keeping:
+- **A per-file reference table is the cheap review.** Condition 3's corrected form
+  (per-file counts instead of commit hash) cost me two `Grep count` calls to verify
+  completely. When a PM rewrites a condition because no role has Bash, this is the
+  shape that replaces "commit": date + per-file list.
+- **Cross-check a rule set against the corpus it will run on.** The four latch rules
+  vs today's 92 lines surfaced two day-one false positives (`schritt.cpp:405`
+  literal-only static_assert; `festkomma.cpp:91` `a*b` in a string — spec drops
+  comments, not strings). Not a Befund (deny-by-default is the stated design), but the
+  check costs nothing once the classification is recounted anyway.
+- Bilingual-number lesson paid again: §31 report 3's enumeration only closes when both
+  `1.464` and `1,464`/`9,024` are swept (T40 `:965-966` and section 10 table are
+  comma-format). Also: 0068's §29 heal phrase is now English — grep "outside this
+  section", not "ausserhalb dieses Abschnitts".
+- Sampling limit stated in the finding: no anchor between `:912` and `:2877` this run.
+- No proposal from me: the latch-builder package is already routed via §31 report 1;
+  §29's second clause needs a scope, not a phrase (§31 report 3, and its own line
+  `:5572` now joins the hit set).
+
 ## 2026-09-08 — Pruefung 0068 run 1, geprueft, 0 findings
 
 All four conditions verified in place; counts recomputed from `L_R` formulas (23+4=27,
