@@ -1,7 +1,7 @@
 ---
 rolle: entwurf-pruefer
 takt: bedarf
-modell: fable
+modell: opus
 effort: xhigh
 timeout: 2400
 tools:

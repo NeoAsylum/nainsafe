@@ -32,7 +32,7 @@ from lauf import (TAGESGRENZE_USD, WOCHENGRENZE_USD, db, jetzt,  # noqa: E402
                   wochenverbrauch as lauf_wochenverbrauch,
                   kontingent_erschoepft as lauf_kontingent_erschoepft)
 
-GRENZE = 3800.0
+GRENZE = 80.0
 try:
     GRENZE = float(os.environ.get("FABRIK_TAGESZIEL", GRENZE))
 except ValueError:

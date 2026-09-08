@@ -201,7 +201,7 @@ ZEITFORMAT = "%Y-%m-%dT%H:%M:%S"
 #
 # Zu niedrig ist nicht die sichere Seite. Das Abo ist ein Festpreis: Ein nicht genutzter
 # Durchgang spart nichts, er verschenkt.
-TAGESGRENZE_USD = 4000.0
+TAGESGRENZE_USD = 90.0
 
 # Der Betreiber kann die **Tages**grenze fuer einen einzelnen Aufruf anheben:
 #
@@ -245,8 +245,34 @@ except ValueError:
 # figure is a sub-limit within it. Both calibrated to the 2026-09-06 readings
 # (90 / 56 percent); the umbrella now includes Fable spend, so 2.800 + 900 would
 # overshoot -- 3.400 is the umbrella at roughly 90 percent of what was observed.
-WOCHENGRENZE_USD = 3400.0
-FABLE_WOCHENGRENZE_USD = 900.0
+# **Neu geeicht am 2026-09-08, 14:17, an zwei Anzeigen gleichzeitig.** Der Betreiber
+# las ab: alle Modelle 58 Prozent, Fable 78 Prozent. Die Fabrik hatte im selben
+# Wochenfenster (Montag 08:00 UTC) 1.027,1 Dollar Gegenwert verbraucht, davon 355,0 auf
+# Fable-Rollen.
+#
+#     1.027,1 / 0,58  =  rund 1.771 Dollar sind 100 Prozent des Schirms
+#       355,0 / 0,78  =  rund   455 Dollar sind 100 Prozent der Fable-Teilgrenze
+#
+# Zwei unabhaengige Anzeigen auf derselben Stichprobe -- die erste Eichung dieser Art.
+# Die alten Werte (3.400 und 900) lagen beide beim Doppelten des wahren Kontingents.
+# Sie haetten **nie** ausgeloest: Anthropics eigene Grenze kommt zuerst, und dann bricht
+# ein Lauf mitten in der Arbeit ab, statt dass die Kette sauber anhaelt. Eine Bremse
+# hinter der Wand ist keine Bremse.
+#
+# **Und die Woche ist zu schnell weg.** 58 Prozent in 17 Prozent der Zeit, 870 Dollar am
+# Tag gegen 253, die gleichmaessig zur Verfuegung stuenden. Ohne Tagesbremse ist der
+# Rest bis zur 84-Prozent-Marke in dreizehn Stunden verbraucht und die Fabrik steht dann
+# von Mittwoch bis Montag. Deshalb steht die Tagesgrenze wieder auf einem Wert, der
+# rationiert: 461 Dollar bis zur Schirmbremse, 5,8 Tage, macht 79 am Tag.
+#
+# Das ist eine **umkehrbare** Entscheidung gegen eine unumkehrbare. Verbrauchtes
+# Kontingent kommt nicht zurueck; eine zu langsame Fabrik holt auf, sobald der Betreiber
+# die Zahl hochsetzt -- `FABRIK_TAGESGRENZE` als Umgebungsvariable, ohne Codeaenderung.
+#
+# Nachzueichen am 2026-09-13, wenn der 50-Prozent-Bonus endet: dann sinken beide
+# Hundertprozentwerte um ein Drittel, also Schirm auf rund 990 und Fable auf rund 300.
+WOCHENGRENZE_USD = 1488.0
+FABLE_WOCHENGRENZE_USD = 382.0
 
 
 def tagesverbrauch(verbindung) -> float:
