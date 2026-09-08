@@ -32,6 +32,21 @@ Worth keeping:
   condition 5 (now `:5008-5010`) — thread closed. Still watching: 0068 wave-2
   markers at :1649, :2786-2788, :3603.
 
+## 2026-09-08 — Pruefung 0158 run 2 (Ruecklauf 1), geprueft, 0 findings
+
+Two-word fix verified: `seven`→`eight` (`:2477`), `101`→`117` (`:2489`); grep for
+`seven bounds`/`101 addresses`/`sieben Schranken` = 0 file-wide. Table recount
+5+22+5+4+1+32+(12+20)+16 = 117 closes; 65 = 1+32+32 outside. Conditions 1 and 2
+re-checked at shifted lines: mode in check-6 row `:2449`, blindness `:2492-2496`,
+report 1 now `:5188-5195`, duty table `:2521-2524`, window 25…200 = 176 with the
+175-divergence named `:2519`. Section 28 self-check reproduced: `ueber_fenster`
+0/0/0 over kern/daten/toml, in technik.md only `:2516`, `:2524`, `:4964`,
+`:5212-5214`. Cheap run: 4 greps, 2 section reads. Output suffixed `-2` (run-1
+file exists same-day). Per the PM vermerk I did not recount the T38 mask — the
+vermerk carrying the reviewer's verified numbers forward saved that cost; the
+pattern (PM restates what is already verified so the Ruecklauf reviewer skips it)
+is worth trusting when the scope is this narrow.
+
 ## 2026-09-08 — Pruefung 0158 run 1, zurueck, 1 finding
 
 One finding, one root cause: the architekt carried the source finding's counts
