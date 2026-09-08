@@ -67,8 +67,10 @@ package.
 | WDI `FR.INR.RINR` (Real interest rate, %) | USA 25, CHN 25, BRA 25 of the years 1997–2021; **DEU 0** |
 | WDI `FR.INR.LEND` (Lending interest rate, %) | USA 25, CHN 25, BRA 25; **DEU 0** |
 | WDI `FR.INR.DPST` (Deposit interest rate, %) | CHN 25, BRA 25; **USA 0, DEU 0** |
+| WDI `FR.INR.LNDP` (Interest rate spread, lending rate minus deposit rate, %) | CHN 25, BRA 25; **USA 0, DEU 0**. Four single-country fetches, `total: 25` each, all 25 rows null for USA and DEU |
+| WDI `FR.INR.RISK` (Risk premium on lending, lending rate minus treasury bill rate, %) | USA 25, BRA 25; **CHN 0, DEU 0**. Four single-country fetches, `total: 25` each, all 25 rows null for CHN and DEU |
 | WDI `FR.INR.MMKT` | does not exist — `total: 0`, no such indicator |
-| WDI topic 7 (Financial Sector), `https://api.worldbank.org/v2/topic/7/indicator?format=json&per_page=500` | exactly five `FR.INR` indicators: `DPST`, `LEND`, `LNDP`, `RINR`, `RISK`. **None is a policy, discount or refinancing rate** |
+| WDI topic 7 (Financial Sector), `https://api.worldbank.org/v2/topic/7/indicator?format=json&per_page=500` | `total: 203`, `pages: 1` — the list is complete in one page, so the enumeration is not truncated. Exactly five `FR.INR` indicators: `DPST`, `LEND`, `LNDP`, `RINR`, `RISK`. **None is a policy, discount or refinancing rate** |
 | PWT 11.0, `https://www.rug.nl/ggdc/productivity/pwt/` | no interest-rate, policy-rate or central-bank-rate variable |
 | CEPII BACI, `https://www.cepii.fr/CEPII/en/bdd_modele/bdd_modele_item.asp?id=37` | bilateral trade flows by product only; no monetary variable |
 
@@ -79,8 +81,26 @@ One fetch failed and is recorded rather than retried into the ground: `FR.INR.LE
 
 **No — and the gap is worse than non-uniformity: no single code reaches all four countries
 at all.** The widest reach of any one code is three of four (`FR.INR.LEND`, `FR.INR.RINR`:
-USA, CHN, BRA, Germany empty), and neither is a policy instrument. Germany is empty in
-every World Bank rate indicator; China is absent from the IMF's entire interest-rate flow.
+USA, CHN, BRA, Germany empty), and neither is a policy instrument.
+
+Within the World Bank this is an enumeration, not a sample: topic 7 carries exactly five
+`FR.INR` indicators, and all five are now queried per country over 1997–2021 (retrieved
+2026-09-08). Non-null window years:
+
+| Code | USA | DEU | CHN | BRA |
+|---|---|---|---|---|
+| `FR.INR.RINR` | 25 | **0** | 25 | 25 |
+| `FR.INR.LEND` | 25 | **0** | 25 | 25 |
+| `FR.INR.DPST` | **0** | **0** | 25 | 25 |
+| `FR.INR.LNDP` | **0** | **0** | 25 | 25 |
+| `FR.INR.RISK` | 25 | **0** | **0** | 25 |
+
+Germany is empty in all five — counted per indicator, not derived from `LEND` and `DPST`.
+China is **not** the mirror image: it carries four of the five in full and is empty in
+`FR.INR.RISK` alone (lending rate less treasury-bill rate). Only Brazil carries all five.
+Neither newcomer is a rate level in any case — `LNDP` and `RISK` are differences of two
+rates, so neither is a policy-path candidate even where it is covered. On the IMF side
+China is absent from the entire interest-rate flow.
 
 What each candidate measures, per country:
 
@@ -120,6 +140,11 @@ Not decided here — this file measures. Three ways out, and each belongs to som
 - **Licence, not measured here and unchanged:** everything IMF-side inherits
   `lizenzurteil = unklar` — the licence text is unread after five attempts with HTTP 403
   (`daten/reihen.toml`, series 9, block `[[reihe.lizenzbeleg]]`). Not retried in this run.
+- **The World Bank enumeration is over topic 7, not over all of WDI.** Topic 7 (Financial
+  Sector) is complete and unpaginated (`total: 203`, `pages: 1`), so „exactly five
+  `FR.INR` indicators" is counted, not sampled. What is *not* excluded by measurement: a
+  rate indicator filed under some other topic or under a non-`FR.INR` prefix. WDI files
+  interest rates in topic 7, but that is a convention, not a proof.
 - **Not checked:** IMF flows other than `MFS_IR` and `MFS_FMP`, and whether China reports
   monetary statistics to the IMF at all outside interest rates. The dataflow list was read
   once and may be paginated.

@@ -73,14 +73,52 @@ empty country: `MFS_IR` is empty for CHN, the World Bank's five rate indicators 
 DEU, and each country is well covered in the other source. The wide claim was also strictly
 weaker evidence than the narrow one it replaced.
 
+## 2026-09-08 — 0234, Ruecklauf 2: three counts carried a claim about five
+
+The reviewer was right twice, and the second time was the expensive one.
+
+**The rule: a set claim needs a count per member, not per member you happened to fetch.**
+I wrote „Germany is empty in **all five** World Bank rate indicators, China carries 25 of 25
+there" off `RINR`, `LEND`, `DPST` — three. `LNDP` and `RISK` were never queried. Both halves
+looked safe by derivation, and one of them was: DEU empty in `LNDP`/`RISK` does follow from
+`LEND` = 0 and `DPST` = 0, since both are differences of measured rates. **The China half
+does not follow, and it was false.** Measured 2026-09-08, per country, 1997–2021:
+
+| Code | USA | DEU | CHN | BRA |
+|---|---|---|---|---|
+| `RINR` | 25 | 0 | 25 | 25 |
+| `LEND` | 25 | 0 | 25 | 25 |
+| `DPST` | 0 | 0 | 25 | 25 |
+| `LNDP` | 0 | 0 | 25 | 25 |
+| `RISK` | 25 | 0 | **0** | 25 |
+
+`RISK` is lending rate minus treasury-bill rate; China reports no treasury-bill rate to WDI.
+Only Brazil carries all five. The headline („no single code reaches all four") held and is
+only now *proven* — two of the five that could have refuted it were unmeasured.
+
+**Where the derivation trap sits, for next time:** the tempting move is to write the
+derivation as a count. It reads identically and it is a different kind of claim. If the
+sentence says a number, either fetch it or say „follows from", and say from what.
+
+**And unasked-for overreach closes cheap.** „Exactly five `FR.INR` indicators" rested on one
+read of topic 7 with no pagination check. One fetch: `total: 203`, `pages: 1` — complete,
+the enumeration is sound. What stays open and is now written down as a limit rather than
+glossed: an indicator under a different topic or without the `FR.INR` prefix. WDI files
+rates in topic 7 by convention, not by guarantee. **Checking my own load-bearing number
+before a reviewer does cost one fetch; the one I did not check cost a Ruecklauf.**
+
+**Method that worked and is worth repeating:** four single-country fetches per indicator
+instead of one four-country fetch. Each response is 25 rows, so „all null" and „25 of 25"
+are answers the summariser cannot get wrong — and my own logbook already says the bulk
+listing lies. Eight fetches, no ambiguity, no re-measure.
+
 ## Open leads
 
-- **`reihen.toml` keyword line count: 61 on the morning run, 62 in the afternoon**, and my
-  afternoon edit moved neither a keyword nor a line. Either something else touched the file
-  between the two runs or my first count was wrong; without a shell I cannot tell which.
-  Reported in the package. If the head-number round ever disagrees with a builder's count,
-  this is a candidate cause.
-- **0234 is built (Ruecklauf 1 answered). Uncertain, for the project manager:** (a) `[[widerspruch]] Nr. 5`,
+- **The 61-against-62 keyword count is closed — do not reopen it.** The project manager
+  ruled on 2026-09-08 (Ruecklauf 2): no line was moved, all four sites are intact, and which
+  of the two counts was wrong is not separable without a diff, which no role here has.
+  62 is the standing number. **R = 19 does not wobble** and gets no package of its own.
+- **0234 is built (Ruecklauf 2 answered). Uncertain, for the project manager:** (a) `[[widerspruch]] Nr. 5`,
   `entscheidet` (`:623`) still calls the uniform-concept question `ungemessen` — false as
   of today, deliberately left because the sentence carries a `spiel.md` Fundstelle and the
   package holds `:473`, `:623`, `:1258` rewrites back for 0233. One line, after 0233. (b)
@@ -88,8 +126,9 @@ weaker evidence than the narrow one it replaced.
   uebergangen head number moves by more than the one I caused in `reihen.toml`. (c) The
   three ways out named in the befund are for three different roles — nobody owns the
   decision yet, and Reihe 9 feeds `leitzins_start[l]` and T51's `aufschlag_min`.
-- **The policy-rate question is no longer mine.** It is measured; what remains is a
-  decision (new source = gate; mixed path = architect; rule instead of series = game
+- **The policy-rate question is no longer mine, and the World Bank side is now closed by
+  enumeration** (all five `FR.INR` indicators counted per country, 2026-09-08). What remains
+  is a decision (new source = gate; mixed path = architect; rule instead of series = game
   designer). Do not re-measure it — cite `daten/quellenbefund-leitzinspfad.md`.
 - **The IMF full text decides 11 of the 27 target series and 7 of the 16 test subjects.**
   One page fetch, on which four days and three roles have failed (HTTP 403). Operator.
