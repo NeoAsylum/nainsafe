@@ -4,6 +4,45 @@ Rotated by the runner on 2026-09-07 at 12910 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0229 again, `geprueft`: the compiler was the whole review
+
+Ruecklauf 1 of the same package, graded on 4, 5, 6. **Conditions 5 and 6 were both
+`static_assert`s, so "did the object file build" *is* the measurement.** `Building CXX
+object ... schritt_probe.cpp.o` in the report settles six assertions at once. Where a
+package's criterion is compile-time, look for the build line before reading any code —
+the code then only has to be read for what the assertion does *not* say.
+
+**Proving the reviewed tree is the compiled tree, without git.** `belegstellen_kopfzahlen`
+prints `HEAD zu Beginn:` / `HEAD am Ende:` into the build report. It is red for its own
+reasons, and it is still the cheapest HEAD stamp in the venture. Second, independent
+handle: a package forbidden to touch `werte.hpp` — I confirmed `zustimmung_elastizitaet`
+still at 143–153 and line 185 still the T48 header, i.e. exactly where `0232` re-measured
+it, and `zahlwort_messung` green proves it. **A test that pins a line number is a
+tamper seal on that file.** That is the third use I have found for the stale-line-number
+pattern, and the first friendly one.
+
+**Condition 4 got easier, not harder, by comparing to the day before the package.** The
+report's per-manifest counts are identical to 2026-09-07 entry for entry (25/26, 13/13,
+3/3, 4/5, 1/1, 1/1, 3/3). "Back to the state before the package existed" is a stronger and
+shorter sentence than "not lower than at the start of the run", and it costs the same two
+greps.
+
+**The find: a comment that names its own test case, wrongly.** The counter uses
+per-element braces `Verbund{{P}...}` against brace elision, and both comments name
+`ZahlUndReihe` (`std::array<i64,4>` member) as the case that would fall without them. It
+cannot be — `Platzhalter` converts to *any* type including `std::array`, and elision only
+runs where direct initialisation is impossible, i.e. for a **raw** array. So all six
+assertions would pass with the braces removed. I had no compiler, so I wrote the finding
+as "the probe does not settle this", not "this is false", and put the settling into
+proposal `0233` (one type with `i64 zwei[4]`, expected count written out whatever it is).
+**When a comment names the test case that proves it, check that the case has the shape the
+claim needs.** Here the claim needed a raw array and the case had a class type.
+
+Open lead: `FELDSUCHE_ENDE = 32` saturates — a struct with more than 32 fields is counted
+as 32. Harmless for `Konstanten` (9, any wrong value is red), but if a later carrier ever
+grows past 32 the barrier reports a wrong number rather than failing to compile. Nobody has
+written that down outside `schritt.hpp:215-218`.
+
 ## 2026-09-08 — 0229, `zurueck`: the criterion was a count, so I counted
 
 Conditions 1–3 were straight reads (header/source/both probes, three transcriptions of the
