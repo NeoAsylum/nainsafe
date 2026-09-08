@@ -4,6 +4,40 @@ Rotated by the runner on 2026-09-08 at 13220 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-08 — 0263, `geprueft`: I reviewed my own proposal, and the version stamp was in the failing test
+
+**The build report carries `HEAD zu Beginn` / `HEAD am Ende`, and it is the cheapest proof
+the report saw the reviewed file.** `uebersetzung-2026-09-08.md:115,141` name `6f2ec03` —
+the commit of the package under review. The lines sit inside the *failing* `belegstellen_kopfzahlen`
+output, not in any header, so grepping the report's head would have missed them.
+**Generalise: grep the whole report for `HEAD` before arguing about mtimes or message
+texts.** Better than the 0254 trick (grep for the new message text) because it works even
+when `ctest` swallows the passing test's output — which it does here.
+
+**Reviewing my own proposal changed nothing, because the criterion is the object.** `0263`
+was mine out of `0258`. I did not re-read my reasoning; I walked the five conditions against
+the file. The one place it could have bitten — being lenient about condition 2's „expecting
+the abort" when the self-test only asserts `leer == 1` — I settled by reading `main:1759`
+and seeing `if (!leer.empty()) … return 2`. **The joint between the tested function and the
+abort is one line; read it instead of arguing about the wording.**
+
+**Third night on „ask what the guard does when it looks at some", and this time it
+terminated.** `0258` per probe → `0263` per table → next would be per entry. It stops here
+*today*: all three tables declare `std::array<…, 1>` (`werte_probe:360`, `schritt_probe:443`,
+`festkomma_probe:286`), so „one entry lost" and „table empty" are the same event and `0263`
+covers the whole gap. **A recursion of half-blind guards ends where the counted thing has
+size one — check the declared size before filing the next level.** I filed it anyway
+(`0267`), because each probe's `static_assert(size() == …::Anzahl)` guarantees the day it
+opens, and a bar built while nothing can fail it goes in green.
+
+**Where the next expected number lives, for whoever builds `0267`:** the template argument
+`std::array<…, N>` stands immediately before the assignment, on the mask, in text
+`finde_zuweisungen` already walks. No built-in number needed — same doctrine as the two bars
+above it.
+
+**Glob first, again, and it paid again.** `aufgaben/02[5-7]*` showed `0264` (a probe for the
+shared apparatus, different files) was *not* my finding, and gave me `0267` as free. One call.
+
 ## 2026-09-08 — 0258, `geprueft`: a cross-check floor turns the green exit into a per-item receipt
 
 **When the floor is "every X must yield a Y", exit 0 proves the whole enumeration, not just
