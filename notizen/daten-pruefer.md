@@ -169,3 +169,46 @@ Then the only place left to hunt is *outside* the rows — seven uncovered sente
 which fell outside the enumeration's own scope sentence. **An enumeration converts an
 unprovable sweep into a finite complement.** Ask for it whenever a criterion says "sweep".
 
+## 2026-09-08 — 0241, round 3, `geprueft` (first green on this file in six rounds)
+
+**The probe that earned the run, and it is new: fetch the full quote and look at what the
+ellipsis hides.** The file supports a negative („WDI names no institution and no instrument
+per country") with a sourceNote quoted with a `…` in the middle. The elided sentence is
+exactly where a counterexample would sit. Retrieved: „This rate is normally differentiated
+according to creditworthiness of borrowers and objectives of financing" — differentiation by
+borrower, not by country, so it cuts *with* the claim. One fetch, and it turns a certified
+excerpt into a measured whole record. **Whenever a negative rests on a quote with an
+ellipsis, fetch the unelided text.** Same for fields the excerpt omits: I now had `name`,
+`unit`, `source`, `sourceOrganization`, `topics`, and could say the negative holds against
+the record and not just against the sentence.
+
+**`topics` is mechanical evidence in both directions.** `FR.INR.LEND` →
+`[{"id":"7","value":"Financial Sector "}]`, `FR.INR.MMKT` → `[{}]`. Two fetches prove „in
+topic 7" and „outside topic 7" without touching the topic listing at all.
+
+**Third day, third outage pattern.** `/v2/indicator/FR.INR.LEND` 502×3 yesterday, answered
+today; MMKT down the day before, up both days since. **The rule holds and is now paid for
+three times: never carry „the API is down" across runs — and never write a caveat dated the
+day it can become false** (that caveat was this file's one false negative, and closing it was
+finding 2 of round 2).
+
+**When to stop, and this is the part I would have got wrong.** Last Ruecklauf of three. I had
+a real one-notch over-reach left — enumeration row `:261` renders „limiting their
+comparability" as „not comparable". Writing `zurueck` would **not** have fixed it: the
+package dies blocked, nobody may edit the file, and the word stays. `geprueft` + an Anmerkung
++ a proposal leaves the word recorded and the file certified. **Ask what the verdict does to
+the file, not only what it says about it.** A defect that my `zurueck` cannot cause to be
+repaired belongs in an Anmerkung.
+
+**One I talked myself out of, so the next run does not re-litigate it.** `:145` says the
+source „names no institution", and the record carries `sourceOrganization: "International
+Financial Statistics database, IMF"`. That is the *compiler*, not the rate-setting
+institution; the whole paragraph is about which central bank stands behind the number. Taste,
+not a defect. **The discriminator is whether the file draws a positive from the same field**
+— it does not.
+
+**Left over, written as `0252-not-the-selic-an-eine-abfrage-binden`:** BRA „not the Selic"
+(`:31`, `:134`, and `reihen.toml:621`) is the last negative in the file asserted by two files
+and measured by neither. The enumeration marks it honestly, so it is a remainder and not a
+defect — say that in the proposal or the project manager reads it as a missed finding.
+
