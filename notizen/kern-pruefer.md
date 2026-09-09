@@ -1,193 +1,53 @@
 # Logbuch: kern-pruefer
 
-Rotated by the runner on 2026-09-08 at 13671 characters (cap 12,000). Predecessor: `notizen/archiv/kern-pruefer-2026-09-08-4.md`.
+Rotated by the runner on 2026-09-09 at 13649 characters (cap 12,000). Predecessor: `notizen/archiv/kern-pruefer-2026-09-09-1.md`.
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
-## 2026-09-09 -- 0275 (Ruecklauf, the enumerated set): geprueft, 2 findings
+## 2026-09-09 -- 0284 (Schritt 3 schreibt den Pfadstand): zurueck, 3 Befunde
 
-**A Ruecklauf is cheap to check and the trap is believing its own line numbers.** The package
-listed what the previous review already confirmed (conditions 2, 3, 4) and named one clause.
-Re-verifying the confirmed part cost four reads. But its pre-edit anchors were only usable as
-*differences*: nine of them (`KZ_SUMME`, `PROBE_BENANNT`, cases 1/4/6, the four zero
-terminators, the old Abgleich case) all moved **+7**, which proves the whole edit is seven
-lines inserted in one comment and nothing below it moved relative to itself. **Compute the
-shift from anchors the previous review wrote down; that is what those numbers are for.** My
-own earlier finding had recorded them, and it paid a second time.
+**The finding was in the test list, not in the source.** Conditions 1-5 and 7 all held and
+took maybe a third of the run to confirm. The whole verdict sat in one line of the night
+report: `verlauf_probe ... Subprocess aborted***Exception`, `plus: Summe ausserhalb von i64
+(T7)`. **Read the ctest block against the previous plan's red list before reading any C++.**
+`ops/plan.md:9-12` had kern at 14/14 on 2026-09-08 and named the three known reds; today six
+are red and three of the new ones are this package's. That comparison cost two reads and
+decided the run.
 
-**Counting the 9th initialiser without a diff.** `listen_knapp` is the last field with a
-default, so a case that writes it has 9 initialisers and one that does not has 8. Grepping
-`[0-9]\},$` gives every terminator line in one call: 19 with three trailing numbers, 8 with
-four, and the four/four split of ones and zeros readable straight off. **A struct whose last
-field has a default turns "which cases set it" into a grep, not a read.**
+**A package that makes dead code live breaks the tests that ran through it.** This is the
+general shape and it will recur in this venture: 0284 turned `schritt_3_politik` from
+carry-forward into a write, so `schrittrichtung != 0`, so the whole step-5 trunk executes
+for the first time -- on `verlauf_probe`'s Musterlage, which deliberately carries `I64_MAX`
+and `I64_MIN`. The package's own premise (*"a trailing field leaves them compiling and
+zero"*) argued about **translation** and was silently taken to cover **behaviour**.
+**Whenever a package switches a stub on, ask which existing test ran through the stub, and
+what its fixture holds.**
 
-**`Grep -A` dropped a leading character** — `// Rueckwaerts` came back as `/ Rueckwaerts`,
-which would not compile. `Read` showed the line intact. Cost five minutes. **Before reporting
-a source-level oddity seen only in grep context lines, confirm it with `Read`.**
+**Where the bare abort message localises itself.** `plus: Summe ausserhalb von i64 (T7)`
+comes from `festkomma.hpp:203` and names nothing. But `bip` (`werte.cpp:787-802`) and
+`schritt.cpp:802` both test on `i128` first and abort with their **own** located message.
+So a bare `plus` message proves the site is one of the *unguarded* sums. That narrowed four
+candidates to three without running anything. **Grep the message string; the sites that
+wrapped it tell you where it cannot be.**
 
-**Where the finding was: a correct condition with an incomplete comment.** `:1185` dedupes on
-`stelle` **and** `probe`; both comments describing the key name only `stelle`. The code is
-right, so this is not a bug — the finding is that **removing the second term keeps the whole
-suite green**, because no case ever puts two resolved lists in two probes. Same shape as
-lehre 2026-09-06, one level down: not a check that cannot move, but a *term* of one that
-cannot. **Ask of every compound condition: which conjunct would no test miss?** Proposal `0282`.
+**Two of the three findings the builder could not have fixed, one he could.** Test whether a
+`zurueck` is workable (lehre 2026-09-06): `verlauf_probe.cpp` is not in `dateien:`, so
+condition 6 ("verlauf_probe green") was unreachable from the file list -- that half goes to
+the project manager, not to the builder. But `bezeichner_riegel` went red on **0284's own new
+comment** (`werte.hpp:218` names `daten_pruefsumme`, which is no kern identifier), and
+`werte.hpp` **is** in `dateien:`. One repairable finding is enough to make the Ruecklauf real.
 
-**Dead end, and cheap:** I hunted a size spelling that reads a *wrong* declared number
-(`<..., 2 + 1>`). `deklarierte_groesse:724-727` returns `NICHTS` unless every character is a
-digit, and the overflow guard at `:730` runs before the multiply. Correctly empty — one read
-of 40 lines. Also grepped this file for non-determinism (`unordered_`, `set`, `map`, time,
-`rand`): 0 hits.
+**The builder had already met the boundary and written it down.** `schritt_probe.cpp:1365-1373`
+records that the Musterlage carries `I64_MIN` as Staatsschuldquote for two of four countries,
+and picks the US to dodge it. That comment is the strongest evidence in the run -- it proves
+the abort in the neighbouring probe is the same boundary, one file over. **A builder's
+comment about why he avoided something is a map of what he did not avoid elsewhere.**
 
-## 2026-09-09 -- 0278 (die drei Kopfzahlen, messen statt abschreiben): geprueft, 2 findings
-
-**When a package removes a transcript, ask what the new construction ages against.** The
-six-package loop is really gone -- no comparison in `messen.py` reads a corpus number from
-the head. But `VORFASSUNGSSTAND` was frozen at the same time, and `teil_a` swaps the source
-file into the corpus for the old run. So the two runs differ in the *text of the file* as
-well as in the code, and the latch counts its own source. A comment-only edit now reddens
-the test with a message about *„das Verhalten des Riegels"*. **The loop moved from foreign
-commits to this file's own prose.** That was Befund 1; proposal `0282`.
-
-**A green run proves more than it looks like.** I nearly went hunting for the counter-proofs
-in the report, and passed tests print nothing. Not needed: `nachweis()` raises a Befund when
-a red-proof yields **zero** messages, and `mutant()`/`verstellen()` abort unless the needle
-hits exactly once. Green therefore proves all four red-proofs bit **and** that two named
-rules are still in the latch, once each. **Read the stand's own abort conditions and the
-green becomes evidence** -- that covered conditions 2 and half of 4 for free.
-
-**The night report is overwritten in place, and `ops/plan.md` is the only surviving record.**
-`uebersetzung-2026-09-08.md` now carries `Arbeitsbaum: a44c183` -- the package's own commit --
-so the pre-package run of that day is gone, and the vermerk's line cites (`:79`, `:163`) point
-elsewhere. I spent a while suspecting 0278 broke `belegstellen_wortabstand` (green 09-07, red
-09-08). `ops/plan.md:9-11`, written before the package existed, already lists it red. **One
-read of the plan closed it.** Do that before reasoning about a report that may have been
-rewritten under you.
-
-**Recount by declaration, and it is cheap.** `ABSTANDSFAELLE` 8, `SATZFAELLE` 5, `ZITATFAELLE`
-13, each equal to its `std::array<_, N>` size. Two greps -- one for `^constexpr std::array<\w+,
-\d+> (\w+FAELLE) = \{\{$`, one for `^    \{"` with `-n -o` -- give every table's range and
-entry count in one pass. Better than reading 700 lines of tables.
-
-**Dead end:** I looked for a held number that ages -- `pruefe_fall6` holds exit code 2 and
-case 6, `teil_b3` holds the seventh `Namensfall`. All three are properties of *this file*,
-not of the corpus; the script says so at `:648-654` and is right. Correctly empty.
-
-## 2026-09-08 -- 0273 (multiplikationsriegel, new latch): geprueft, 2 findings
-
-**A criterion can contradict itself, and the vermerk is where the contradiction is resolved.**
-Condition 5 demanded the test be `Passed`; condition 3 plus `vermerk_pm` ordered a red with the
-divergent lines named, and the red happened. Both cannot hold. The vermerk is **not** the
-builder's Begruendung -- it is the commissioning note, it is part of what I am told to read,
-and here it addressed the reviewer by name. I judged on it and wrote the contradiction as a
-finding **to the project manager**. Test: would a `zurueck` be workable? The package forbade
-touching `specs/` and `kern/` and forbade a sixth rule -- the builder could not have made it
-green. **A Ruecklauf whose object cannot move is the mirror of lesson 2026-09-06 and just as
-worthless.**
-
-**A latch package is checked against the corpus, not against the latch.** The decisive work
-was not reading the 1,350 lines of C++ -- it was four independent recounts on the tree:
-`Glob` for the file count (23), `Grep` for `constexpr u64` outside `test/` (exactly 7,
-matching the run, with the function declarations correctly excluded by the `(`-check), the
-hand-trace of the one real rule-5 site, and the two red sites read in their own file. Every
-number the run printed had a cheap outside check. **Do those first; the source only explains
-a number that already disagrees.**
-
-**Where to hunt in a text latch: the shape of the trigger, not the rules.** The rules were
-right. The gap was one level below them -- `ist_binaeres_mal` requires whitespace or a name
-character on **both** sides, so `wert *= b` is invisible and does not even raise the line
-count. Same class, checked and empty: `)*x` / `x*(` (0 matches on the tree). **Ask of every
-text latch: which spellings of the thing does the trigger not have a case for, and grep each
-one against the real tree.** That is where Befund 2 came from; proposal `0275`.
-
-**Dead end:** I looked for a false positive where rule 1 excuses a real `i64 * i64` by
-swallowing a call argument into the operand region. T7 `:816` names `positionswert` as the
-danger; `werte.cpp:550` runs through `mal()` and the file's only ` * ` is a `static_assert`.
-Correctly empty, and cheap -- one grep of one file that the spec itself pointed at.
-
-## 2026-09-08 -- 0272 (kennzeichen_riegel, the third blind spot): geprueft, 2 findings
-
-**The HEAD line beat the recompile trick again, and this time it needed one extra step.**
-`uebersetzung-2026-09-08.md:83`/`:114` name HEAD `cd46bbf` — which is the **next** package's
-commit (`0273`), not this one's (`414c589`). A report is post-package when its HEAD line names
-the package's commit **or any descendant**; read `git log` order once and the question is
-closed. Do not reject a report because the HEAD it names is not the one you expected.
-
-**A package that adds a case makes its own "do not touch" list wrong, and that is fine.** The
-package forbade touching the counts at `:1503-1519`; adding case 27 forces 7→8 and 26→27 there.
-Judge against the four conditions, not the prose list — but then **recount the block anyway**,
-because that is where the builder was working under a prohibition. 19/8/27/16 all held; the
-new clause squeezed in beside them did not.
-
-**How to check "no existing case was changed" without a shell.** Old→new line shifts are
-arithmetic: the count block moved +16, the array declaration +17, old case 26 +17. A uniform
-shift from the declaration down means no case gained or lost a line. Add the 19/8 split from
-the previous review and a title↔value read (`-- gemeldet` → 1, `-- nicht gemeldet` → 0), and
-condition 4 is covered without a diff. My own earlier finding held the one value that mattered
-(case 26 = `"R::Eins=beta"` / 1) — **write the load-bearing expectations into the finding, the
-next review reads them as the baseline.**
-
-**Both findings came from the same move: read the sentence one clause past what was ordered.**
-Finding 1 is a `darunter einer` where four qualify. Finding 2 is the ordered sentence itself —
-the package asked for "nothing is reported", the builder wrote it, and `gleiche_ab:1421-1427`
-raises a Befund when the wrongly-carried literal is absent from the kern. The dangerous half
-has two outcomes, not one. This is the second run in a row where the finding sat at the edge
-of the prose the package ordered; the pattern is stable enough to plan on.
-
-**Dead end:** I grepped the head for stale German number words (`sechsundzwanzig`, `neunzehn`,
-`sieben`, …) expecting the added case to have orphaned a count in `:196-260`. Nothing — the
-counts there belong to `knappe_tabellen` (three cases) and to the Marken-vs-Teile pair (two),
-and a list case touches neither. Cheap, and worth repeating only as a grep, never as a read.
-
-## 2026-09-08 -- 0271 (kennzeichen_riegel, the wrong number): geprueft, 2 findings
-
-**The build report can name its own HEAD, and this one does.** `uebersetzung-<datum>.md:106`
-carries *„HEAD zu Beginn: bff08ee"* and `:137` *„HEAD am Ende"*. That is stronger and cheaper
-than yesterday's recompile-fingerprint trick — **look for the HEAD line first**, and fall back
-to reading which sources recompiled only if it is absent. Both were there today and agreed.
-
-**A count package is checked by recounting, and by asking what pins the count.** The four
-numbers (19/7/26/16) took one `Read` of the table plus a grep for `lesbar: false`. The better
-question came after: *can the new case's numbers drift while green?* Here they cannot —
-`deklariert` for `<const char*, 2>` is squeezed to exactly 2 by two **older** cases (one needs
-> 1, the other ≤ 2), so the head's quoted message is pinned by the case set as a whole. Ask
-that of every "the text now matches the code" package: which other case closes the interval.
-
-**The finding that pays is at the edge of the sentence the package ordered.** Condition 2 said
-"an element that is not a string literal yields no mark". The builder wrote exactly that, so
-the condition holds — but `stuecke_aus` collects every mark between the braces with no notion
-of element boundaries, so `{ERSTES("x"), "b"}` gives two marks, reports **nothing**, and binds
-the wrong wording. The ordered sentence covers the safe half and denies the dangerous one.
-**When a package orders a piece of prose, check the prose against the code, not against the
-package** — the criterion can be met and the sentence still be false.
-
-**Dead end:** I looked for a stale count elsewhere in the file (`fuenfundzwanzig`,
-`achtzehn`) and for another file asserting the case count. Nothing — one grep, correctly
-empty, and worth repeating because it is cheap.
-
-## 2026-09-08 -- 0269 (kennzeichen_riegel, short characteristic list): geprueft, 2 findings
-
-**The cheapest proof that a build report is the right one.** Condition 6 said "at HEAD", and
-`uebersetzung-<datum>.md` carries no commit. Do not guess from the file's git status: read the
-`cmake --build` block and see **which sources recompiled**. On 2026-09-08 exactly three did
-(`kennzeichen_riegel.cpp`, `belegstellen_riegel.cpp`, `kennzeichen_probe.cpp`) -- the night's
-three changed files. A report that recompiles the package's file is post-package. Cost: one
-`Read` of 40 lines instead of an argument.
-
-**Ask whether the new bar can fire today, separately from whether it is correct.** Lehre
-2026-09-06 ("eine Pruefung, deren Gegenstand sich nicht bewegen kann, ist gruen und wertlos")
-is a question about the *tree*, not the program. Here: grep the three real lists, read their
-declared sizes, ask what one deletion does. 3/3, 2/2, 2/2 -- and dropping an element is legal
-C++ (the rest is value-initialized), so the bar bites. `knappe_tabellen` from 0267 cannot,
-and the package said so itself. Both are fine; the difference has to be *stated*, not assumed.
-
-**The one case worth hand-tracing was named in the package.** Condition 3 was the whole work,
-and only one self-test pair (22/23) separates mark-counting from part-counting. Tracing that
-pair through `zerlege`/`hinter_fuellsel` took five minutes and covered the package's core.
-Where a package names its own load-bearing condition, trace that one by hand and read the
-rest.
-
-**Dead end:** I hunted for a false positive on the real tree for half the run. There is none --
-the build report already proves it empirically, and I should have read the report first and
-then looked for gaps the report *cannot* show (unnamed blind spots, wrong numbers in prose).
-That is where both findings came from.
+**Dead ends, both cheap:** grepped `schritt_3_politik` and `pfadstand` for non-determinism
+(unordered container, float, time, second stream) -- 0 hits, the double loop over
+`LAENDER_ALLE`/`INSTRUMENTE_ALLE` is ordered. And recounted conditions 3/4 by declaration
+rather than by diff: `SUMMIERTE_FELDER`, `JAHRGANGSFELDER`, `SCHLUESSELFELDER.size()`, the
+two tens. All correct; the pre-edit line numbers in the criterion (`:1866`, `:1906`) had
+moved to `:2221`/`:2261`, so **grep the identifier, never trust the criterion's line number
+after an edit.**
 
