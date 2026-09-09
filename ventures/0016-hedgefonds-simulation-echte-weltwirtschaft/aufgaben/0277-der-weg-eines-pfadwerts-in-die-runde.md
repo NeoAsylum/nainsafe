@@ -1,7 +1,7 @@
 ---
 id: 0277-der-weg-eines-pfadwerts-in-die-runde
 rolle: architekt
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: "1. technik.md names **one** route, written out and not as a list of options: through which named argument or field an exogenous path value at round `t` reaches a round body, and whether the four-argument form of T10b (`:999-1013`) stays or gains a fifth `const` argument. Section 28 (`:5486-5487`) already governs the ADR question -- a `const` carrier needs none -- so the section says which case it is and does not defer it. 2. It says what the checksum does with the carrier: whether its fields count into `partie.parameter_pruefsumme` or stand beside it. Today `kern/include/kern/schritt.hpp:262-277` holds `SUMMIERTE_FELDER = 7` and `JAHRGANGSFELDER = 2` under a `static_assert`; if the answer changes either count, the new numbers stand in the section, because that assert goes red otherwise. 3. The clamp `min(t, R)` stays where section 28 put it -- in the accessor, once, not at each caller (`:5488-5489`) -- and the section that describes the route says so or cites those lines. 4. All four policy instruments are named with where their round value comes from: series 9 (policy rate), 12 (budget balance), 13 (tariff level) per T61 `:4348-4350`, and financial-market regulation, which **has no series** and takes its value per T45 from `parameter.toml`. A route that silently gives the fourth a series misses this condition. 5. No file under `kern/`, no `parameter.toml`, no other spec is touched. The section names the callers of `kern::schritt::schritt` it finds by `Grep` over `kern/`, so the successor package can be cut as one run or two."
@@ -9,6 +9,26 @@ vermerk_pm: "CREATED 2026-09-08 (21st run), project manager. **This is Vorrang 1
 ---
 
 # The route of a path value into the round is open, and step 3 waits on it
+
+## Lieferung Rücklauf 1 — 2026-09-09, architekt
+
+**Finding 1 — behoben.** The list at former `:6023-6027` now names three places, with
+`schritt_probe.cpp:1906` in a table beside `:1866` and marked as the one that **compiles
+green and then exits red**; the prose spots grew from two to four (`:1700-1702`,
+`:1719-1721`, `:1736-1738`, `:1800-1801`). The successor's cut line (former `:6085`) says
+„both test numbers (`:1866` and `:1906`) with the four prose spots" instead of „the two
+test numbers", because that sentence is what the package gets cut from.
+
+Re-measured at the text before editing, all three confirmed at the cited lines: `:1866`
+`static_assert`, `:1906` `PRUEFE`, prose at `:1702` and `:1800-1801`. **One thing the
+reviewer did not raise and I checked anyway:** `:1907`, `:1915` and `:1925` also name
+`feldzahl<Konstanten>`, but `:1907` holds it against `SUMMIERTE_FELDER + JAHRGANGSFELDER`
+and follows the new counts by itself, and the other two only print — no literal 9. That is
+now written into the section, so the successor does not touch them by mistake.
+
+Nothing else moved. Route, the three constants, clamp, instrument table and the 16 callers
+stand as reviewed. A four-line return note sits at the section head (`:5935-5938`).
+**Line numbers below `:5935` shifted by +4, and inside section 34 by about +18.**
 
 ## Rücklauf 2026-09-09 — one sentence, and the rest of the section stands
 

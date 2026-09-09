@@ -5932,6 +5932,10 @@ pattern. 92 − 56 + 2 − 2 = **36**, and `schritt.cpp:405` is the single code 
 
 ## 34. Der Weg eines Pfadwerts in die Runde — Paket `0277`
 
+*Rücklauf 1 (2026-09-09): only the inventory of places carrying the field count changed —
+two became three, `schritt_probe.cpp:1906` named. Route, constants, clamp, instrument table
+and caller list stand as reviewed on 2026-09-08.*
+
 **What this answers, in one line.** Section 28 report 2 (`:5482-5489`) left open by which
 route an exogenous path value at round `t` reaches a round body. It travels **in** T10b's
 carrier, as one new field of `kern::werte::Konstanten` that holds the level of round `t`
@@ -6020,11 +6024,28 @@ third kind is *a field whose value comes from a path series of `reihen.toml`* �
 12, 13. It must not be counted as a `Runde(feld)` key, or the 51-key count-off (`:1153`)
 would go to 52 against a file that has 51.
 
-**Two further places carry the number 9 and go red with it**, and the successor package
-changes them in the same run: `kern/test/schritt_probe.cpp:1866`
-(`ohne_klammern::feldzahl<Konstanten> == 9`) and the prose that explains it at `:1719-1721`
-and `:1736-1738`. The seven-key table at `:1633-1639` is **not** touched — its entries are
-`i64` member pointers, and `pfadstand` is an array and outside the sum.
+**Three further places carry the number 9**, and the successor package changes all three in
+the same run. Two of them are executable, and they fail at different times:
+
+| Place in `kern/test/schritt_probe.cpp` | Form | At 10 |
+|---|---|---|
+| `:1866` | `static_assert(ohne_klammern::feldzahl<Konstanten> == 9)` | translation fails |
+| `:1906` | `PRUEFE(kern::schritt::feldzahl<Konstanten> == 9)` | **compiles green, probe exits red** |
+
+`:1906` is the copy that survives translation, and it stands there on purpose: its comment
+(`:1902-1905`) says „wer eine der beiden hochzaehlt und die andere vergisst, wird hier rot
+statt drueben still". A successor that fixes only the `static_assert` builds clean and then
+goes red at run time. Its neighbours need no change — `:1907` holds `feldzahl` against
+`SUMMIERTE_FELDER + JAHRGANGSFELDER` and follows the new counts by itself, `:1915` and
+`:1925` only print.
+
+The third place is the prose that explains them, false at **four** spots once the field
+exists: `:1700-1702` („Kommt ein zehntes Feld dazu, uebersetzt der Kern nicht mehr"),
+`:1719-1721` („`NeunFelder` -- 9, die Gestalt des Traegers"), `:1736-1738` and `:1800-1801`
+(„der Traeger von morgen, an dem der Riegel zuschlaegt"). With `pfadstand` the carrier's
+shape is `ZehnFelder` (`:1802-1813`), so that is no longer the shape at which the bolt
+strikes. The seven-key table at `:1633-1639` is **not** touched — its entries are `i64`
+member pointers, and `pfadstand` is an array and outside the sum.
 
 ### The clamp
 
@@ -6082,8 +6103,9 @@ All 16 sites pass `KONSTANTEN_DER_PROBE`, which is value-initialised
 compiling and zero. The three positional literals — `werte.cpp:187-196`,
 `werte_probe.cpp:594-603` and `:1432` — end at `leitzins_start` and already omit
 `durchgriff`, so a trailing field leaves them compiling too. **Hence one run:** field,
-constant, accessor, the two counts, the two test numbers, and the body of
-`schritt_3_politik` (`schritt.cpp:509`).
+constant, accessor, the two counts, **both** test numbers (`schritt_probe.cpp:1866` and
+`:1906`) with the four prose spots that explain them, and the body of `schritt_3_politik`
+(`schritt.cpp:509`).
 
 ### Untouched, expressly
 

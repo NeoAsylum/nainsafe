@@ -8,6 +8,55 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-09 — Paket 0277, Rücklauf 1: eine Abschrift, die den grünen Bau überlebt
+
+Ein Befund, Antwort **behoben**. Zwei Stellen → drei, `schritt_probe.cpp:1906` benannt, die
+Prosastellen von zwei auf vier. Drei Änderungen: der Absatz bei `:6023`, der Zuschnittsatz
+bei `:6085`, ein Rücklaufvermerk am Kopf. Route, Konstanten, Klemme, Instrumententabelle
+und die 16 Aufrufer unberührt — der Prüfer hatte sie ausdrücklich abgenommen.
+
+### Der übertragbare Fund: „geht rot" ist kein Ort, sondern zwei Zeitpunkte
+
+Ich habe die Abschriften der Feldzahl gesucht und `:1866` gefunden — einen `static_assert`.
+Danach habe ich aufgehört, weil ich nach *dem Riegel* suchte und der Riegel übersetzt.
+`:1906` ist dieselbe Zahl als `PRUEFE`, also **Laufzeit**: Ein Nachfolger, der nur den
+`static_assert` nachzieht, baut sauber und fällt erst beim Lauf. Genau dafür steht die
+Zeile da, ihr eigener Kommentar (`:1902-1905`) sagt es. **Regel: Wer die Stellen einer Zahl
+inventarisiert, partitioniert nach dem Zeitpunkt des Fehlschlags — Übersetzung und Lauf —
+und sucht beide Formen getrennt. Ein `Grep` nach dem Namen findet beide; ein `Grep` nach
+`static_assert` findet die halbe Menge und sieht vollständig aus.** Mein Muster war auf die
+Form geeicht, nicht auf die Zahl.
+
+Die Gegenprobe, die ich diesmal gemacht habe: derselbe `Grep` gab `:1907`, `:1915`, `:1925`
+dazu. Keine trägt eine 9 — `:1907` hält gegen `SUMMIERTE_FELDER + JAHRGANGSFELDER` und zieht
+sich selbst nach, die anderen drucken nur. **Das steht jetzt im Abschnitt**, damit der
+Nachfolger sie nicht „sicherheitshalber" anfasst. Eine Fundstelle abzuräumen ist so viel
+wert wie eine zu finden.
+
+### Unsicher, damit der Projektmanager es sieht
+
+1. **„Drei Stellen" zählt Prosa als eine Stelle**, obwohl es vier Spannen sind. Der Befund
+   sagt „three places, not two"; ich habe die Zahl übernommen und die vier Spannen einzeln
+   ausgeschrieben. Ein Prüfer kann die 3 gegen die 4 lesen — die Aufzählung trägt, die Zahl
+   ist eine Gruppierung.
+2. **Der Abschnitt ist um rund 1,1 kB gewachsen**, obwohl der Befund „one sentence" sagte.
+   Das Wachstum ist die Tabelle Übersetzung/Lauf und der Absatz über die drei Stellen, die
+   *nicht* angefasst werden. Ohne beides wiederholt der Nachfolger meinen Fehler.
+3. **Ich habe nicht gemessen, ob `ohne_klammern::feldzahl` bei `pfadstand` wirklich 10 gibt.**
+   Es ist eine `std::array`, also ein Umwandlungsziel, also eine Stelle mit Klammern wie
+   ohne — gerechnet, nicht gelaufen. Fällt das, ist `:1866` nicht 10, sondern 13.
+
+### Fährten
+
+- **Die Zeilenangaben des Prüfers stimmten auf die Zeile** (`:1866`, `:1906`, `:1702`,
+  `:1800-1801`, `:6023`, `:6085`). Zweiter Beleg für die Regel vom 2026-09-08: nicht die
+  Nummer ist unzuverlässig, sondern ihr Alter — diese waren einen Tag alt.
+- **Der Pfad heißt `kern/test/`, nicht `kern/tests/`.** Mein erster `Grep` ging auf `tests/`
+  und gab „Path does not exist" — diesmal ein ehrlicher Fehler, kein stilles „no matches"
+  wie am 2026-09-08 bei `werte.hpp`. Ein nicht existierender Pfad ist der freundlichere Irrtum.
+- Nach dieser Lieferung verschieben sich alle Zeilen unter `:5935` um +4, innerhalb von
+  Abschnitt 34 um rund +18. Wer aus dem Befund von gestern zitiert, misst nach.
+
 ## 2026-09-08 — Paket 0277: der Riegel, der die Wahl entschied, stand nicht im Auftrag
 
 Abschnitt 34 in `technik.md` geschrieben. Entschieden: Der Pfadwert reist **im** Träger
