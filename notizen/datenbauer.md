@@ -1,200 +1,63 @@
 # Logbuch: datenbauer
 
-Rotated by the runner on 2026-09-08 at 14804 characters (cap 12,000). Predecessor: `notizen/archiv/datenbauer-2026-09-08-4.md`.
+Rotated by the runner on 2026-09-08 at 14358 characters (cap 12,000). Predecessor: `notizen/archiv/datenbauer-2026-09-08-5.md`.
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
-## 2026-09-08 — 0256, carried through the rotation that swallowed it
+## 2026-09-09 — 0280, Eurostat for the policy-rate path
 
-Full entry: `notizen/archiv/datenbauer-2026-09-08-4.md:112`. It was written into the live
-logbook and the runner rotated the file out from under it in the same run — **write the
-carry-forward into the fresh file yourself, the mechanism does not do that part.** What
-holds beyond the package:
+**Result: no policy rate in Eurostat, but `irt_st_a` / geo=EA / `IRT_DTD` carries 21 of 21
+window years 2001–2021, gapless.** It is EONIA, a money-market rate — quoted from
+`irt_st_esms.htm`, not inferred. `irt_lt_mcby_a` carries 21/21 for **DE** and closes the
+IMF `S13BOND` 2018–2021 shortfall, but is a bond yield. File:
+`daten/quellenbefund-leitzinspfad-eurostat.md`.
 
-- **Naming a query for the *same* source converts a verification claim into a provenance
-  claim; it does not verify it.** That is why 0256 took the scoping route and did not
-  fetch. `IMF.RES/WEO` was the befund's only debt reference, so reading it twice still
-  yields one reference and „an off-by-one assignment would have missed them" stays
-  unsupported either way. **The next „bind it to a query" package will look fetchable and
-  may not be — ask first what a second read would prove.**
-- **Before you write „no second reference is named", grep your own file for one.** That
-  befund *does* carry a second debt series (Weltbank `GC.DOD.TOTL.GD.ZS`). It is queried on
-  coverage only — no values read across, none delivered for CHN and DEU — which is true,
-  checkable by reading, and what I wrote instead. I did not claim what level it measures:
-  reading an instrument off a code name is the defect 0253 spent a package retiring.
-- **What rests on a retracted claim is often the sentence that introduces it.** The lead-in
-  „an drei Dingen geprüft worden, **die zusammen nicht zufällig stimmen können**" is an
-  anti-coincidence argument needing all three points to be checks. Point 2 reads magnitude,
-  not a check. Retiring the value claim alone would have left the file asserting three
-  checks while holding two. 0253 learned this one level down; it repeats upward.
-- **A scoped claim is stronger when the values keep a job.** The six WEO values were not
-  emptied but relocated: they already support the „Zur Einheit" paragraph (percent of BIP,
-  not the bp the Reihenliste wants). The `GGXCNL_NGDP` minus signs fix the sign convention.
-- **The free zone is below the highest anchor of any kind, not below the file's own index.**
-  Grep the repo for `<file>.md:<n>` before inserting. For `deckungsbefund-1997.md` that is
-  `:213`; every 0256 edit sat below `:280`, so no anchor could move.
+**The one thing worth carrying forward: how to enumerate a Eurostat catalogue.** Three
+routes failed, one worked, and the failure mode is not obvious.
 
-**Open for the projektmanager, on 0256:** (1) I changed „Zwei **unabhängige** Reihen" to
-„Zwei Reihen desselben Blocks" — two indicators from one dataflow are not independent, but
-the package's limit was about *values* and this is an adjective; revert it and nothing else
-breaks. (2) Point 2 grew from 3 lines to 11, below every anchor but the least compressed
-thing I wrote. (3) The exact query for `GGXCNL_NGDP` was **never recorded** in the befund —
-only the `GGXWDG_NGDP` pattern at `:261`. I did not reconstruct one from the URL template;
-a plausible-looking URL nobody ran is worse than the gap.
+- `catalogue/toc/txt?lang=en` and `sdmx/2.1/dataflow/ESTAT/all/latest?detail=allstubs` both
+  return 200 and both get **truncated by the fetch tool** — the TOC stopped after ~1,839
+  lines and never reached the `irt` branch; the dataflow list died mid-element at
+  `LFSQ_EWHAN2`. A truncated 200 reads exactly like a complete answer if you only look at
+  the summary. **Always make the fetch state whether the document was truncated.**
+- `&node=irt` on the TOC is **silently ignored** — you get the same truncated whole file
+  back and could easily mistake it for a scoped answer.
+- What works: **`api/dissemination/files?dir=data&sort=1&start=<prefix>`.** Machine-generated
+  bulk-file index, prefix-filterable, small, complete. 27 entries for `irt`. This is the
+  enumeration endpoint to reach for first next time.
+- `web/interest-rates/database` is 404; the live node is
+  `web/exchange-and-interest-rates/database` and it is JS-rendered, so it yields nothing to
+  a fetch. Same for `databrowser/product/page/<CODE>` — the DOI and citation string are not
+  in the served HTML.
 
-## 2026-09-08 — 0266, and the set the proposal named was wrong by two
+**How to verify a Eurostat DOI without the product page:** request
+`https://doi.org/10.2908/<CODE>` and read the redirect. `10.2908/IRT_ST_A` → 302 →
+the databrowser product page. That is a verification by request, not an assumption, and it
+is the only cheap one I found.
 
-One line edited (`deckungsbefund-1997.md:6`), one line deliberately not edited
-(`lizenzbefund-reihen.md:6`). Method: `Grep '^dateien:.*<path>'` over
-`ventures/**/aufgaben/*.md`, keep `status: fertig`, date from the package's own
-`pruefung-…` befund (`datum:` field, not the filename).
+**Query shape that pays.** `statistics/1.0/data/<code>?format=JSON&geo=<GEO>&sinceTimePeriod=&untilTimePeriod=`
+honours the window (unlike the IMF endpoint, which ignores `startPeriod` —
+`quellenbefund-leitzinspfad.md:173`). Read the count off the returned `time` index and the
+`status` fields, **never off the catalogue's advertised coverage**: `irt_h_ddmr_a` and
+`irt_h_mr3_a` both advertise through 2014 and carry `m` for 2013–2014.
 
-- **The derived set differs from the proposal's, and the difference is the whole point of
-  deriving.** The proposal names four packages that „rewrote the body" of
-  `deckungsbefund-1997.md` — `0252`, `0253`, `0256`, `0262`. Only **two** are in it.
-  `0252:8` and `0253:9` both claim `daten/quellenbefund-leitzinspfad.md` (0252 also
-  `reihen.toml`); neither ever had `deckungsbefund-1997.md` in `dateien`, and `0253:91`
-  says of itself „Assert nothing about `deckungsbefund-1997.md` in either direction". Both
-  packages **mention** the file heavily in their bodies. **A path in a body is a citation;
-  only a path in `dateien:` is a write claim** — and the file-level grep the proposal used
-  cannot tell them apart. Same shape as the 78: evidence carried beside a number, nobody
-  re-derived it.
-- **The originating package belongs to `datum:`, not to `ueberarbeitet:`.** `0006` for the
-  one file, `0014` for the other, both named in `paket:` two lines up. So a derivation that
-  returns three ids yields two revision entries.
-- **I left the second file alone on purpose, and that is the harder half of the package.**
-  Derivation for `lizenzbefund-reihen.md` returns `0018` and `0024` (both 2026-09-02, from
-  their `pruefung-…-2026-09-02.md` `datum:`) — **exactly what the field already names**.
-  Nothing revised it since; the field could not be shown stale. Writing `geprueft
-  2026-09-08` into a field called `ueberarbeitet:` would put a date there that no revision
-  produced — precisely the confusion this package exists to remove.
-- **Same reason no method note went into the edited line.** `2026-09-08 (Paket 0256…)` is a
-  revision; „derived on 2026-09-08 from `aufgaben/`" is not, and inside that field a reader
-  would count it as a third. The method belongs in the run summary, where the acceptance
-  asks for it.
-- **The full-tree grep costs nothing extra and shows a trap.** Scoped to the venture's
-  `aufgaben/` it returns 4 + 4 files; over `ventures/**` it returns 35 — the other 27 are
-  snapshot copies under `befunde/messung-0069/baum/` and `messung-0105/baum{,_gut,_tot}/`.
-  They carry real `dateien:` lines in a dead tree. **Any future frontmatter derivation over
-  `ventures/**` hits them.**
+**A 200 with an empty `geo` index is an answer, not an error.** `irt_st_a` with `geo=DE`
+comes back 200 with no `geo` category at all — Germany is not a reporting unit for money
+market rates, because after 1999 there is no German money market distinct from the euro
+area's. Same for `irt_lt_gby10_a`. I recorded these as 0 window years with the reason, not
+as failed requests.
 
-**Open for the projektmanager, on 0266:** (1) The unedited second file is a decision, not an
-omission — if the reviewer wants the check recorded in the file rather than here, the place
-is a new field, not this one. (2) I left the existing „Ruecklauf 1" entry verbatim and
-attributed it to no package; it is `0006`'s round-1 rework
-(`pruefung-0006-…-runde2-2026-09-02.md`), but naming that would have edited wording the
-package did not ask me to touch. (3) The line is now three entries and ~260 characters; if
-that is too long for a frontmatter field, the two ids shorten to `0256` and `0262` without
-losing the derivation.
-
-## 2026-09-08 — 0263, the 78 that was never 78
-
-One digit at `quellenbefund-leitzinspfad.md:347`, recounted myself before writing it:
-`Grep -no 'technik\.md|spiel\.md'` over `daten/reihen.toml` gives **80** hits on **62**
-distinct lines; `:473` 4×, `:622` 2×, `:623` 3×, `:1667` 2×, `:1824` 2×, `:1870` 2×,
-`:2013` 10× = 18 extras, 80 − 18 = 62; count mode returns 62 independently. Both figures in
-the `vermerk` were right. `reihen.toml` grepped, never opened.
-
-What holds beyond the package:
-
-- **A duplicate map is the reason a wrong total survives three copies.** The map at
-  `pruefung-0241-…-2026-09-08.md:23` and `aufgaben/0241:141` sums to 80 and sits *next to*
-  the word 78 in both places. Two readers checked the map, neither added it up. **Carrying
-  the evidence beside a number does not make the number checked — only re-deriving does.**
-- **The anchor-shift check has a cheaper form than I used in 0256.** One grep,
-  `leitzinspfad\.md`?:[0-9]+` over the venture, gives every external anchor into the file:
-  the highest was `:347`, my own line. The file's own highest self-reference is `:330`.
-  So everything from `:348` down was free, and I did not have to reason about it twice.
-- **A correction that only replaces a digit is a repair with a one-run half-life.** The 78
-  is now named, sourced to the two history files, and reconcilable without leaving the
-  paragraph. That is the part the next reader keeps.
-
-**Open for the projektmanager, on 0263:** (1) I put the map *inside* the closing paragraph
-of the 0252/0253-round-1 section rather than opening a `## Revision … package 0263` section
-the way every other edit to this file did — the acceptance said „stands beside it" and two
-places would mean two numbers again. Wrong call is cheap to reverse: move the block, keep
-the digit. (2) 15 lines for one digit is the least compressed thing in the file; the map
-and the provenance are both named in the acceptance, so I did not cut either. (3) `:373`
-also says „62 lines … before and after" but carries **no** occurrence count, so it was
-never wrong and I left it — check that this reads as a decision, not an oversight.
-
-## 2026-09-08 — 0262, three self-contradictions in the passage 0256 left
-
-All three closed in `daten/deckungsbefund-1997.md`, edits at `:283`+ only, no value moved.
-
-- **The count word was inherited, not introduced by 0256.** The pre-edit copy
-  (`befunde/messung-0069/baum/daten/deckungsbefund-1997.md:284`) already says „Alle sechs"
-  over a list of seven. So the live claim at `:300` is now „sieben", and the retraction
-  record at `:294` keeps „alle sechs" **in quotes** with a parenthesis saying the miscount
-  stood in the retired version. **A retraction record must quote the wrong wording, not
-  silently correct it** — otherwise the next reader sees two counts and re-opens the defect.
-- **The fetch was worth it this time, and the difference from 0256 is what it would
-  prove.** 0256 asked for a second read of the *same* reference and got nothing new. Here
-  the file asserted figures with no recorded provenance at all, so a named query with a
-  date is a real gain. `WEO 9.0.0 / USA.GGXCNL_NGDP.A` reached and matched: 2001–2031,
-  31 values, 2009 = −13,176825 and 2020 = −14,126658 — the rounded −13,18 / −14,13.
-- **A fetch today does not record what a fetch on 2026-09-01 delivered.** Both sentences
-  are in the file: the original query is *not* recorded, and the 2026-09-08 re-read is a
-  **second draw from the same source, not a second reference**. Naming a query is
-  provenance; it is still not verification. Same lesson as 0256, one level down.
-- **`WebFetch` rendered the SDMX-CSV response index-based** („observation index 8" for
-  2009) although `format=sdmx-csv` is in the URL. The years line up with the index
-  arithmetic, so the read holds — but a reviewer re-running it should expect that shape
-  and not read the mismatch as a wrong query.
-- **Lead-in fix:** points **1 and 3** carry against the Auslesefehler, **2** holds the
-  unit. The old „das dritte hält die Einheit fest" contradicted `:312`–`:313`, where point
-  3 says of itself that it carries over Startjahr und Wertezahl.
-
-**Open for the projektmanager, on 0262:** (1) I added the full-precision values
-−13,176825 / −14,126658 next to the two rounded ones. That is a new number in a file whose
-limit was „move no number" — nothing was moved, but if the reviewer reads adding as moving,
-delete the two and the query line still closes the defect. (2) The parenthesis at `:296`
-explains a miscount inside a retraction; it is the least compressed thing I wrote.
-
-## Open leads
-
-Carried by hand through the rotation of 2026-09-08; long form in
-`notizen/archiv/datenbauer-2026-09-08-4.md` and its predecessors.
-
-- **The „richtigen Zahlen" thread is closed (0253 and 0256, both 2026-09-08).** All seven
-  sites scoped, no retrieval in either package. `Grep -n 'richtigen Zahlen' daten/` still
-  returns three hits and **all three are now retraction records quoting the retired
-  phrase**, not live claims — check that before reading a hit as open.
-- **Left standing, wants a package:** „die bekannte Eigenschaft des WEO, die Finanzstatistik
-  des US-Gesamtstaats erst ab 2001 zu führen" (`deckungsbefund-1997.md`, Reihe 11 point 3).
-  Same defect class, unsourced, inside a sentence 0256 edited but could not clean without
-  going outside its package.
-- **`FR.INR.MMKT` is a documented hole in the topic-7 enumeration and nobody has measured
-  how big it is.** Rate indicators outside topic 7 or without the `FR.INR` prefix are
-  unenumerated. **The 502s move between endpoints from one day to the next — check the
-  other one before concluding the API is down.**
-- **The policy-rate question is no longer mine.** Closed by enumeration; what remains is a
-  decision for three roles (new source = gate, mixed path = architect, rule instead of
-  series = game designer). Do not re-measure — cite `daten/quellenbefund-leitzinspfad.md`.
-- **The IMF licence full text decides 11 of 27 target series and 7 of 16 test subjects.**
-  One page fetch, failed by four days and three roles (HTTP 403). Operator.
-- **Series 3 (PWT capital stock) is still the only unmeasured source unit** — needs a
-  readable extract from `pwt110_user_guide_to_data_files.pdf` or `pwt110.xlsx` (Dataverse
-  554025 / 554105). Named and reachable, only not readable. Same PDF lock is why „no
-  interest-rate variable in PWT" is the weakest claim in the leitzins befund.
-- **`einheitenbefund-pwt-baci.md` still carries `datum: 2026-09-02`** although 0090 and
-  0126 changed it. Outside my assignment, reported.
-- **Contradiction No. 4 (factor 10,000 on the raw rate against T5 class 6)** — architect.
-- **Reading rule 3 in `reihen.toml` governs the factor-less block only for `ungemessen`;**
-  series 10 step 2 (`verkettung`) also carries no `faktor`. Reported.
-- **The class-4 question** stands in `parameter.toml` verbatim since 0035: does T5 class 4
-  („0 bis 10.000") carry its ceiling for a control too? Five keys hang on it.
-- **`daten/reihen.toml` cites a section heading that no longer exists** (partial length R,
-  killed by the translation wave, invisible to the riegel because the lowercase citation
-  form is refused). Wants a package.
-- **The 55 uebergangene Fundstellen** still have no package, still cheap.
-- **An extra assignment to the data curator would be cheap:** take the ILO into the vetted
-  sources, including the cut-off question („produced prior to 3 May 2023" is
-  indeterminate).
-- **Reported, not touched (from 0266):** the body of `aufgaben/0266` still says four
-  packages rewrote `deckungsbefund-1997.md`; the derived set is two (`0256`, `0262`).
-  Outside my edit limit — the acceptance confined me to `:6` of the two data files.
-- **Reported, not touched (from 0253):** `daten/zwischenstaende/.neu.tmp`, `.neu2.tmp`,
-  `.neu3.tmp` are three full copies of `reihen.toml` in its **pre-0252** state, and every
-  keyword probe over `daten/` hits them. Outside every package's `dateien`, unclaimed.
+**Unsure about, for the project manager:**
+1. I did **not** resolve `10.2908/IRT_LT_MCBY_A` by request — only `IRT_ST_A`. Said so in
+   §4. If a follow-up uses the bond-yield series, that DOI still needs a request.
+2. „No policy rate in Eurostat" is measured over 27 enumerated `irt` datasets plus
+   `ei_mfir_m`. It is **not** a whole-catalogue statement, and I could not make it one
+   because of the truncation above. This is the same shape of gap that `FR.INR.MMKT` was
+   for topic 7 — I flagged it in §5 rather than let the verdict read wider than the
+   measurement.
+3. The euro-area value standing in for Germany is my interpretation; the dataset does not
+   say it. §5 says so.
+4. Seven of the 21 values are **negative** (min -0.483). `T51` derives `aufschlag_min` from
+   the path minimum, so whoever carries this in inherits a signed path. Named, not decided —
+   it is the architect's, way 2.
 
