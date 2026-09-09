@@ -63,7 +63,11 @@ pruefe "PATH-Zeile in der crontab"                 bash -c "crontab -l | grep -q
 echo
 echo "Sicherung"
 pruefe "SSH-Schluessel wird von GitHub akzeptiert" bash -c "ssh -o BatchMode=yes -T git@github.com 2>&1 | grep -q 'successfully authenticated'"
-pruefe "Repo ist NICHT oeffentlich lesbar"         bash -c "test \"\$(curl -s -o /dev/null -w '%{http_code}' -m 10 https://api.github.com/repos/NeoAsylum/nainsafe)\" != '200'"
+# 404 = privat, 200 = oeffentlich, alles andere (000 Netzfehler, 403 Stundenlimit)
+# = unbekannt. Die alte Fassung fragte auf != 200 und bestand damit bei jedem
+# Netzfehler und jedem Rate-Limit. Am 2026-09-09 stand das Repo oeffentlich,
+# waehrend die Pruefung tagelang gruen meldete. Unwissen ist hier kein Bestehen.
+pruefe "Repo ist privat (404; 200 oder unklar = Alarm)" bash -c "test \"\$(curl -s -o /dev/null -w '%{http_code}' -m 10 https://api.github.com/repos/NeoAsylum/nainsafe)\" = '404'"
 pruefe "Kein Hilfsskript committet heimlich"    bash -c "! grep -lE '^[^#]*git (add|commit)' '$ZIEL'/einrichtung/*.sh"
 pruefe "Sicherungsskript in der crontab"           bash -c "crontab -l | grep -q sichern.sh"
 pruefe "Sicherungsskript pusht wirklich"           bash -c "grep -q 'git push origin' '$ZIEL/einrichtung/sichern.sh'"
