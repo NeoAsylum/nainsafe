@@ -144,3 +144,107 @@ to be read first and said so in the package.
   Subtract 2 from every `gebaut` count.
 - **`high` was enough, thirty-fifth run.** The hard call — that Vorrang 1 was uncuttable as
   written — turned on reading four signatures, not on thinking harder about them.
+
+---
+
+## The grep experiment paid, and it cost two calls — 2026-09-09 (22nd run)
+
+Last run I wrote: *„when a spec section ends in a report addressed to a role, grep it …
+write down what it costs."* Done. **Two `Grep -n` calls, about 25 lines back, both spec
+files.** Pattern: `(is open|not decided here|is a package|eigenes Paket|nicht
+entschieden|ist offen|bleibt offen|Nachfolgepaket|successor package)`.
+
+Yield: `technik.md:4499-4507` (= `0181`, already open), `:5473-5480` (**Report 1 to the
+project manager — no check measures boundedness over 200 rounds; bounds 5, 6, 7 are
+reachable only in a `spielmodus` run and check 6 is blind to them. Older than the report
+that became `0277`, still uncut, and it is a `technik.md` package, so it queues behind
+five others**), `spiel.md:1449-1454` (venue naming, 30 cells) and `spiel.md:3121-3132`.
+**Keep the habit; it is two calls and it finds work nobody scheduled.**
+
+## A befund may name an addressee the spec has already excused
+
+I was one edit from cutting a `spielentwerfer` package on `spiel.md` — a **free lane**,
+which is what I had been hunting all run. `daten/quellenbefund-leitzinspfad.md:167-169`
+offers way 3: *„Take the path out of the data … Game designer."* It reads like a package.
+
+**`spiel.md:3125-3126` had already answered it:** *„This is a **procurement question** and a
+follow-up package for the **data builder**, not a design question."* Cutting it would have
+re-proposed a settled question against the file that settled it.
+
+**The rule, and it is cheap:** a befund's „ways out" list is written by someone measuring
+one thing; it names addressees without asking whether the addressee already declined.
+**Before a way-out becomes a package, read the addressee's own file on the same question.**
+One grep, `spiel.md` for the subject, would have saved the cut either way — it did.
+
+## „Not reachable" covers what was queried, and 0234's list was short one lead
+
+Same paragraph, four lines on: *„Two leads … are only named here, **not checked**:
+**Eurostat** … covers the German — or rather the euro-area — side; **`FR.INR.LEND`** carries
+China gapless 1997–2021 but is a bank lending rate."*
+
+`grep -i eurostat daten/quellenbefund-leitzinspfad.md` → **zero hits.** `0234` queried IMF
+and the World Bank, concluded *„not reachable within the vetted sources"*, and that verdict
+has stood since 2026-09-08 as if it were exhaustive. Its own headline hedges — *„no code
+**queried here** reaches all four"* — and I read past that hedge for a day.
+
+**Generalisation, and it is the third variant of the same question:** I ask *does the role
+own the tool*, and *does the input exist*. Add: **when a measured finding closes a road,
+check its enumeration against the leads named elsewhere in the corpus.** A verdict is only
+as wide as its list of attempts, and the list is the part that is checkable. Became `0280`,
+datenbauer, one new file in `daten/` that nobody carries — **and it is the first non-spec,
+non-`werkzeuge` lane this backlog has had in a week.**
+
+Eurostat is **not** a gate: `daten.md` Nr. 7 carries its conditions in wording
+(`daten/lizenzbefund-reihen.md:248`). Way 1 of the same finding — BIS, ECB portal, national
+central banks — **is** one, and I wrote that boundary into the package rather than trusting
+the agent to find it.
+
+## Offene Fährten — 2026-09-09, 22nd run
+
+- **Both reviews came back `zurueck`, both on one clause, both after the reviewer confirmed
+  everything else by hand.** `0277`: conditions 1, 3, 4, 5 met, condition 2 names two places
+  that carry the 9 and there are **three** — the third (`schritt_probe.cpp:1906`) is the only
+  copy that survives a green compile. `0275-eine-zahl`: conditions 2, 3, 4 met — **he used
+  neither escape hatch and said which answer applied, which is what I asked for and what
+  three predecessors failed** — condition 1 replaced „eight, one of which" with „the eight
+  with a **named** list", and that set has **eleven** members.
+- **My discount for *decide* packages held.** `0277` is a decide package and came back; the
+  befund says „wrong decision in one clause", not „no decision", so the acceptance did its
+  job and the repair is one sentence. Do not widen condition 1 on the second pass.
+- **The set-versus-number defect is now three packages deep on one file** (`0272` Befund 1,
+  then `0275-eine-zahl`, „moved one clause left" in the reviewer's words). **Not yet
+  `blockiert`** — `RUECKLAUF_MAX` counts per package and this is return 1 — but the criterion
+  is the suspect, not the builder. **What I changed: the package now demands the set as an
+  *enumeration* (case numbers, line numbers), never as a property.** A property has to hold
+  over all 27 cases; that is where all three died. If it returns a second time on the same
+  clause, the file's head numbers need a runtime latch — the `0278` construction — not a
+  fourth transcription.
+- **Lanes tonight: three build, one review, against eight slots.** `technik.md` → `0277`;
+  `werkzeuge/kennzeichen/` → `0275-eine-zahl` (`0279` locked behind it); `daten/` → `0280`.
+  Review → `0278` (built late last night, no befund yet). **Still five idle, and the reason
+  is unchanged: seven of nine open packages are one file.**
+- **Check first next run:** (a) `0278`'s befund — condition 5 is an escape hatch and
+  **silence in the file's head about why it was used is the Ruecklauf**; condition 2 is the
+  dangerous one (a latch comparing its output with itself is the „grün und wertlos" lesson).
+  (b) `0280` is research and its failure mode is a verdict without the per-request trail —
+  **read the enumeration before the verdict**; `ergebnis: nicht erreichbar` with a full trail
+  is `fertig`. (c) `0279` condition 3: does the new case go red if the mechanism is removed?
+  If the head does not say which mechanism it kills, that is the return.
+- **For the Geschäftsführer — two items, and the second is new.** (1) Unchanged: the backlog
+  is one file, `ops/reserviert.txt` reads `# frei` for the **sixteenth** run. (2) **The plan
+  names one operator decision (`0208-baulauf`); there is a second and it sits on the critical
+  path.** Series 9 — the policy-rate path step 3 needs — has `deckung_urteil = "reisst"`
+  (`daten/reihen.toml:1256`), and `0234` measured it as not reachable inside the vetted
+  sources. Three ways out (`daten/quellenbefund-leitzinspfad.md:158-169`): a source outside
+  the four (**gate, operator**), a mixed path across three interest-rate concepts (architect,
+  and it moves `aufschlag_min` via T51), or the design route that `spiel.md:3125` already
+  declined. `0280` tests whether the vetted set can still answer Germany; **China has no
+  route inside it that measures a policy rate.** Even a finished `0277` plus its kernbauer
+  successor does not make the round compute if this stays open.
+- **Withdrawn:** nothing this run. **Standing:** `RUECKLAUF_MAX` counts befunde rather than
+  fault, eleventh run.
+- **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194`, `0003`, `0157`.
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-seventh run in a row.**
+  Subtract 2 from every `gebaut` count.
+- **`high` was enough, thirty-sixth run.** The two calls that mattered this run were a grep
+  and a `grep -i eurostat` over one file.

@@ -32,34 +32,32 @@ anderes behauptet, irrt.
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[  1%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
-[  2%] Building CXX object werkzeuge/kennzeichen/CMakeFiles/kennzeichen_riegel.dir/kennzeichen_riegel.cpp.o
-[ 12%] Built target pruefstand
-[  9%] Building CXX object werkzeuge/multiplikation/CMakeFiles/multiplikationsriegel.dir/multiplikationsriegel.cpp.o
-[ 12%] Built target pruefstand_geprueft
-[ 22%] Built target mutationstreiber
-[ 33%] Built target kern
-[ 36%] Built target zahlwort_riegel
-[ 38%] Built target bezeichner_riegel
-[ 51%] Built target kern_geprueft
-[ 55%] Built target vorrat_probe
-[ 56%] Built target kennzeichen_probe
-[ 59%] Built target schranken_probe
-[ 62%] Built target schreiber_probe
-[ 65%] Built target vorrat_kernanker_probe
-[ 70%] Built target zustandsausgabe_probe
-[ 70%] Built target schritt_probe
-[ 73%] Built target verlauf_probe
-[ 76%] Built target aktion_probe
-[ 79%] Built target meldung_probe
-[ 81%] Built target werte_probe
-[ 87%] Built target pruefsumme_probe
-[ 87%] Built target zufall_probe
-[ 93%] Built target zustand_probe
-[ 93%] Built target vorrat_verfahren_probe
-[ 95%] Built target festkomma_probe
-[ 97%] Linking CXX executable multiplikationsriegel
-[ 97%] Built target multiplikationsriegel
+[  4%] Built target pruefstand
+[  5%] Building CXX object werkzeuge/kennzeichen/CMakeFiles/kennzeichen_riegel.dir/kennzeichen_riegel.cpp.o
+[ 11%] Built target zahlwort_riegel
+[ 11%] Built target bezeichner_riegel
+[ 15%] Built target pruefstand_geprueft
+[ 30%] Built target kern_geprueft
+[ 33%] Built target mutationstreiber
+[ 34%] Building CXX object werkzeuge/belegstellen/CMakeFiles/belegstellen_riegel.dir/belegstellen_riegel.cpp.o
+[ 37%] Built target multiplikationsriegel
+[ 52%] Built target kern
+[ 55%] Built target aktion_probe
+[ 58%] Built target vorrat_verfahren_probe
+[ 61%] Built target meldung_probe
+[ 63%] Built target vorrat_kernanker_probe
+[ 66%] Built target vorrat_probe
+[ 69%] Built target pruefsumme_probe
+[ 72%] Built target schreiber_probe
+[ 75%] Built target schranken_probe
+[ 77%] Built target festkomma_probe
+[ 80%] Built target verlauf_probe
+[ 83%] Built target schritt_probe
+[ 86%] Built target kennzeichen_probe
+[ 88%] Built target zufall_probe
+[ 91%] Built target zustandsausgabe_probe
+[ 94%] Built target werte_probe
+[ 97%] Built target zustand_probe
 [ 98%] Linking CXX executable kennzeichen_riegel
 [ 98%] Built target kennzeichen_riegel
 [100%] Linking CXX executable belegstellen_riegel
@@ -69,63 +67,83 @@ anderes behauptet, irrt.
 ## `ctest --test-dir` -- FEHLER (Code 8)
 
 ```
-f faengt sie -- eine uebergangene Fundstelle mehr
+belegstellen_riegel ..............   Passed    1.22 sec
+      Start 19: belegstellen_messung
+19/29 Test #19: belegstellen_messung .............   Passed   31.26 sec
+      Start 20: belegstellen_wortabstand
+20/29 Test #20: belegstellen_wortabstand .........***Failed   17.37 sec
+Messstand 0166 -- die sechs Fassungen des Wortabstands
+Vorhaben:    /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
+Uebersetzer: /usr/bin/c++
+Arbeitsbaum: a44c183
+Schalter:    -std=c++20 -fwrapv -fno-fast-math -O2
+
+Teil 0 -- der Messstand selbst
+OK  Selbstprobe: alle sechs Zeilen werden gelesen und keine fremde dazu.
+OK  Selbstprobe: der Vergleich schweigt, wo alles stimmt.
+OK  Selbstprobe: eine falsche Zahl wird genau einmal und namentlich beanstandet.
+OK  Selbstprobe: eine fehlende Zeile wird beanstandet und nicht ueberlesen.
+OK  Selbstprobe: die Zahlenzeile des Riegels wird gelesen.
+OK  Selbstprobe: eine Ausgabe ohne Zahlenzeile gibt nichts her.
+OK  Selbstprobe: `einmal_ersetzen` haelt den Fall 'fehlt'.
+OK  Selbstprobe: `einmal_ersetzen` haelt den Fall 'zweimal'.
+OK  Selbstprobe: `einmal_ersetzen` haelt den Fall 'genau einmal'.
+OK  Selbstprobe: alle Nadeln treffen genau einmal.
+
+Teil 1 -- der Vorlauf: die Fassung vor 0166 und die danach
+[vorher ] Rueckgabe 0, Zahlen (50, 50, 45)
+[nachher] Rueckgabe 0, Zahlen (50, 50, 45)
+GLEICH  die drei Zahlen von Bedingung 2.
+
+Teil 2 -- die sechs Fassungen
+    ohne-abstand  Rueckgabe 0, Zahlen (49, 49, 44)  -- keine der beiden Lockerungen
+    nur-abstand   Rueckgabe 0, Zahlen (49, 49, 46)  -- nur der Wortabstand, die Suche nach rechts abgeschaltet
+    nur-rechts    Rueckgabe 0, Zahlen (49, 49, 44)  -- nur die Suche nach rechts, der Wortabstand abgeschaltet
+    beide         wortgleich mit riegel-nachher aus Teil 1 -- dieselbe Messung, nicht noch einmal uebersetzt.
+    beide         Rueckgabe 0, Zahlen (50, 50, 45)  -- die unveraenderte Fassung -- der Nullpunkt
+    abstand4      Rueckgabe 0, Zahlen (49, 49, 45)  -- Schwelle vier, sonst wie 'nur der Wortabstand'
+    abstand5      wortgleich mit nur-abstand -- dieselbe Messung, nicht noch einmal uebersetzt.
+    abstand5      Rueckgabe 0, Zahlen (49, 49, 46)  -- Schwelle fuenf, sonst wie 'nur der Wortabstand'
+
+Grundzahl (unveraenderte Fassung): (50, 50, 45)
+Unterschiede:
+    keine von beiden          (-1, -1, -1)
+    nur der Wortabstand       (-1, -1, 1)
+    nur die Suche nach rechts (-1, -1, -1)
+    beide                     (0, 0, 0)
+    Schwelle vier             (-1, -1, 0)
+    Schwelle fuenf            (-1, -1, 1)
+
+Teil 3 -- der Kopfkommentar gegen die Messung
+ROT die Zeile 'keine von beiden' sagt (-1, -1, 0), gemessen wurde (-1, -1, -1)
+ROT die Zeile 'nur die Suche nach rechts' sagt (-1, -1, 0), gemessen wurde (-1, -1, -1)
+OK  Rotnachweis: gegen den Kopf vor Paket 0166 haette dieser Vergleich 6 Beanstandung(en):
+      die Zeile 'keine von beiden' sagt (33, 33, 58), gemessen wurde (-1, -1, -1)
+      die Zeile 'nur der Wortabstand' sagt (33, 33, 59), gemessen wurde (-1, -1, 1)
+      die Zeile 'nur die Suche nach rechts' sagt (33, 33, 58), gemessen wurde (-1, -1, -1)
+
+Teil 4 -- die Aussage des Kopfes, an den gemessenen Zahlen nachgerechnet
+OK  keine Lockerung allein traegt ein Zitat
+OK  die Suche nach rechts allein aendert keine der drei Zahlen
+ROT die Schwelle vier faengt die Stelle nicht
+OK  die Schwelle fuenf faengt sie -- eine uebergangene Fundstelle mehr
 
 Messstand 0166: 3 Abweichung(en).
 
       Start 21: belegstellen_sammelordnung
-21/29 Test #21: belegstellen_sammelordnung .......   Passed    5.80 sec
+21/29 Test #21: belegstellen_sammelordnung .......   Passed    5.71 sec
       Start 22: belegstellen_kopfzahlen
-22/29 Test #22: belegstellen_kopfzahlen ..........***Failed   16.26 sec
-Vorfassung: gefehlt und ist geholt worden -- Blob ee8d0283558d485f3b3482f025ad18769bf414a5 aus dbcd637:ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp
-Vorhaben:    /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
-Uebersetzer: /usr/bin/c++
-Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: cd46bbf
-A  vorher : Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-A  nachher: Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-B1 ohne-marken-rein: Code 1, 61 Zitate, 50 aufgeloest, 59 uebergangen; 11 Stellen zu Unrecht, davon 10 im eigenen Quelltext {'Kopf': 2, 'SATZFAELLE': 1, 'ZITATFAELLE': 7}
-  FEHLSCHLAG: Der Kopfkommentar nennt 52 Zitate unter der Mutation, gemessen sind 61.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 Zitate ohne die Mutation, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 aufgeloeste Zitate, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 66 uebergangene Fundstellen unter der Mutation, gemessen sind 59.
-  FEHLSCHLAG: Der Kopfkommentar nennt 53 uebergangene Fundstellen ohne sie, gemessen sind 45.
-B2 rechts-ohne-satzgrenze-rein (entschaerft): Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-  FEHLSCHLAG: Angabe 2 nennt (41, 41, 53) als die Zahlen des unveraenderten Riegels, gemessen sind (50, 50, 45).
-  FEHLSCHLAG: Angabe 2 sagt, der Mutant nenne dieselben Zahlen; er nennt (50, 50, 45) statt (41, 41, 53).
-  FEHLSCHLAG: Angabe 2 nennt die Summe 94; Zitate plus uebergangene Fundstellen sind 95.
-B2 rechts-ohne-satzgrenze-rein (scharf): Code 2, 1 Meldung(en)
-     Selbsttest Abstand 6: rechts erwartet war kein Dateiname, gefunden wurde spiel.md.
-B3 NAMENSFAELLE: 8 Faelle, historisch ausgewiesen ist Nummer [7]; der Kopf nennt siebte
-
-B1 ohne-marken-rein: Code 1, 61 Zitate, 50 aufgeloest, 59 uebergangen; 11 Stellen zu Unrecht, davon 10 im eigenen Quelltext {'Kopf': 2, 'SATZFAELLE': 1, 'ZITATFAELLE': 7}
-  FEHLSCHLAG: Der Kopfkommentar nennt 53 Zitate unter der Mutation, gemessen sind 61.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 Zitate ohne die Mutation, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 aufgeloeste Zitate, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 66 uebergangene Fundstellen unter der Mutation, gemessen sind 59.
-  FEHLSCHLAG: Der Kopfkommentar nennt 53 uebergangene Fundstellen ohne sie, gemessen sind 45.
-B2 rechts-ohne-satzgrenze-rein (entschaerft): Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-  FEHLSCHLAG: Angabe 2 nennt (41, 41, 53) als die Zahlen des unveraenderten Riegels, gemessen sind (50, 50, 45).
-  FEHLSCHLAG: Angabe 2 sagt, der Mutant nenne dieselben Zahlen; er nennt (50, 50, 45) statt (41, 41, 53).
-B2 rechts-ohne-satzgrenze-rein (scharf): Code 2, 1 Meldung(en)
-     Selbsttest Abstand 6: rechts erwartet war kein Dateiname, gefunden wurde spiel.md.
-B3 NAMENSFAELLE: 8 Faelle, historisch ausgewiesen ist Nummer [7]; der Kopf nennt erste
-  FEHLSCHLAG: Der Kopf nennt den erste Fall, historisch ausgewiesen ist der 7.
-G  Gegenprobe an der verstellten Angabe -- Angabe 1: 5 Meldung(en), Angabe 2: 2 Meldung(en), Angabe 3: 1 Meldung(en)
-HEAD am Ende: cd46bbf
-Hinweis: HEAD steht auf cd46bbf, gemessen und niedergeschrieben ist der Stand 2f2f79f. Die Zahlen sind damit aelter als der Baum.
-
-8 Erwartung(en) nicht erfuellt.
-
+22/29 Test #22: belegstellen_kopfzahlen ..........   Passed   10.06 sec
       Start 23: bezeichner_riegel
 23/29 Test #23: bezeichner_riegel ................   Passed    0.46 sec
       Start 24: schlussriegel_nachbau
-24/29 Test #24: schlussriegel_nachbau ............   Passed    0.53 sec
+24/29 Test #24: schlussriegel_nachbau ............   Passed    0.50 sec
       Start 25: zahlwort_riegel
 25/29 Test #25: zahlwort_riegel ..................   Passed    0.05 sec
       Start 26: zahlwort_reihen
-26/29 Test #26: zahlwort_reihen ..................   Passed    0.14 sec
+26/29 Test #26: zahlwort_reihen ..................   Passed    0.13 sec
       Start 27: zahlwort_messung
-27/29 Test #27: zahlwort_messung .................   Passed   19.15 sec
+27/29 Test #27: zahlwort_messung .................   Passed   18.49 sec
       Start 28: kennzeichen_riegel
 28/29 Test #28: kennzeichen_riegel ...............   Passed    0.12 sec
       Start 29: multiplikationsriegel
@@ -154,13 +172,12 @@ konstanten, 7 in der der u64-Konstanten. Binaere `*` nach der Lesung:
   BEFUND   keine Regel -- zwei i64 mit Groessenbedeutung (T5)   2 Vorkommen in   2 Zeilen
 
 
-90% tests passed, 3 tests failed out of 29
+93% tests passed, 2 tests failed out of 29
 
-Total Test time (real) =  94.19 sec
+Total Test time (real) =  86.17 sec
 
 The following tests FAILED:
 	 20 - belegstellen_wortabstand (Failed)
-	 22 - belegstellen_kopfzahlen (Failed)
 	 29 - multiplikationsriegel (Failed)
 Errors while running CTest
 ```
@@ -179,21 +196,21 @@ Errors while running CTest
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 43%] Built target kern_geprueft
 [ 45%] Built target kern
-[ 60%] Built target schreiber_probe
-[ 62%] Built target meldung_probe
-[ 56%] Built target festkomma_probe
-[ 62%] Built target kennzeichen_probe
-[ 66%] Built target schritt_probe
-[ 70%] Built target schranken_probe
+[ 45%] Built target kern_geprueft
+[ 50%] Built target aktion_probe
+[ 54%] Built target kennzeichen_probe
+[ 60%] Built target meldung_probe
+[ 62%] Built target pruefsumme_probe
+[ 70%] Built target festkomma_probe
+[ 70%] Built target schreiber_probe
+[ 75%] Built target schranken_probe
 [ 79%] Built target verlauf_probe
-[ 79%] Built target werte_probe
-[ 83%] Built target pruefsumme_probe
-[ 87%] Built target zufall_probe
-[ 91%] Built target aktion_probe
-[ 95%] Built target zustand_probe
-[100%] Built target zustandsausgabe_probe
+[ 91%] Built target werte_probe
+[ 91%] Built target zufall_probe
+[ 91%] Built target schritt_probe
+[ 95%] Built target zustandsausgabe_probe
+[100%] Built target zustand_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -227,11 +244,11 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
       Start 13: zustandsausgabe_probe
 13/14 Test #13: zustandsausgabe_probe ............   Passed    0.09 sec
       Start 14: wandschranke
-14/14 Test #14: wandschranke .....................   Passed    0.44 sec
+14/14 Test #14: wandschranke .....................   Passed    0.43 sec
 
 100% tests passed, 0 tests failed out of 14
 
-Total Test time (real) =   0.70 sec
+Total Test time (real) =   0.69 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -249,9 +266,9 @@ Total Test time (real) =   0.70 sec
 ```
 [ 50%] Built target pruefstand_geprueft
 [ 50%] Built target pruefstand
-[ 83%] Built target vorrat_kernanker_probe
-[ 83%] Built target vorrat_probe
 [100%] Built target vorrat_verfahren_probe
+[100%] Built target vorrat_probe
+[100%] Built target vorrat_kernanker_probe
 ```
 
 ## `ctest --test-dir` -- ok (Code 0)
@@ -291,7 +308,30 @@ Total Test time (real) =   0.04 sec
 ## `ctest --test-dir` -- FEHLER (Code 8)
 
 ```
-inmal.
+Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/bau
+    Start 1: belegstellen_riegel
+1/5 Test #1: belegstellen_riegel ..............   Passed    1.20 sec
+    Start 2: belegstellen_messung
+2/5 Test #2: belegstellen_messung .............   Passed   31.09 sec
+    Start 3: belegstellen_wortabstand
+3/5 Test #3: belegstellen_wortabstand .........***Failed   17.46 sec
+Messstand 0166 -- die sechs Fassungen des Wortabstands
+Vorhaben:    /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
+Uebersetzer: /usr/bin/c++
+Arbeitsbaum: a44c183
+Schalter:    -std=c++20 -fwrapv -fno-fast-math -O2
+
+Teil 0 -- der Messstand selbst
+OK  Selbstprobe: alle sechs Zeilen werden gelesen und keine fremde dazu.
+OK  Selbstprobe: der Vergleich schweigt, wo alles stimmt.
+OK  Selbstprobe: eine falsche Zahl wird genau einmal und namentlich beanstandet.
+OK  Selbstprobe: eine fehlende Zeile wird beanstandet und nicht ueberlesen.
+OK  Selbstprobe: die Zahlenzeile des Riegels wird gelesen.
+OK  Selbstprobe: eine Ausgabe ohne Zahlenzeile gibt nichts her.
+OK  Selbstprobe: `einmal_ersetzen` haelt den Fall 'fehlt'.
+OK  Selbstprobe: `einmal_ersetzen` haelt den Fall 'zweimal'.
+OK  Selbstprobe: `einmal_ersetzen` haelt den Fall 'genau einmal'.
+OK  Selbstprobe: alle Nadeln treffen genau einmal.
 
 Teil 1 -- der Vorlauf: die Fassung vor 0166 und die danach
 [vorher ] Rueckgabe 0, Zahlen (50, 50, 45)
@@ -334,56 +374,16 @@ OK  die Schwelle fuenf faengt sie -- eine uebergangene Fundstelle mehr
 Messstand 0166: 3 Abweichung(en).
 
     Start 4: belegstellen_sammelordnung
-4/5 Test #4: belegstellen_sammelordnung .......   Passed    6.29 sec
+4/5 Test #4: belegstellen_sammelordnung .......   Passed    5.77 sec
     Start 5: belegstellen_kopfzahlen
-5/5 Test #5: belegstellen_kopfzahlen ..........***Failed   16.54 sec
-Vorfassung: gefehlt und ist geholt worden -- Blob ee8d0283558d485f3b3482f025ad18769bf414a5 aus dbcd637:ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/belegstellen/belegstellen_riegel.cpp
-Vorhaben:    /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft
-Uebersetzer: /usr/bin/c++
-Bezugsstand im Kommentar: 2f2f79f; HEAD zu Beginn: cd46bbf
-A  vorher : Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-A  nachher: Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-B1 ohne-marken-rein: Code 1, 61 Zitate, 50 aufgeloest, 59 uebergangen; 11 Stellen zu Unrecht, davon 10 im eigenen Quelltext {'Kopf': 2, 'SATZFAELLE': 1, 'ZITATFAELLE': 7}
-  FEHLSCHLAG: Der Kopfkommentar nennt 52 Zitate unter der Mutation, gemessen sind 61.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 Zitate ohne die Mutation, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 aufgeloeste Zitate, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 66 uebergangene Fundstellen unter der Mutation, gemessen sind 59.
-  FEHLSCHLAG: Der Kopfkommentar nennt 53 uebergangene Fundstellen ohne sie, gemessen sind 45.
-B2 rechts-ohne-satzgrenze-rein (entschaerft): Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-  FEHLSCHLAG: Angabe 2 nennt (41, 41, 53) als die Zahlen des unveraenderten Riegels, gemessen sind (50, 50, 45).
-  FEHLSCHLAG: Angabe 2 sagt, der Mutant nenne dieselben Zahlen; er nennt (50, 50, 45) statt (41, 41, 53).
-  FEHLSCHLAG: Angabe 2 nennt die Summe 94; Zitate plus uebergangene Fundstellen sind 95.
-B2 rechts-ohne-satzgrenze-rein (scharf): Code 2, 1 Meldung(en)
-     Selbsttest Abstand 6: rechts erwartet war kein Dateiname, gefunden wurde spiel.md.
-B3 NAMENSFAELLE: 8 Faelle, historisch ausgewiesen ist Nummer [7]; der Kopf nennt siebte
+5/5 Test #5: belegstellen_kopfzahlen ..........   Passed   10.08 sec
 
-B1 ohne-marken-rein: Code 1, 61 Zitate, 50 aufgeloest, 59 uebergangen; 11 Stellen zu Unrecht, davon 10 im eigenen Quelltext {'Kopf': 2, 'SATZFAELLE': 1, 'ZITATFAELLE': 7}
-  FEHLSCHLAG: Der Kopfkommentar nennt 53 Zitate unter der Mutation, gemessen sind 61.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 Zitate ohne die Mutation, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 41 aufgeloeste Zitate, gemessen sind 50.
-  FEHLSCHLAG: Der Kopfkommentar nennt 66 uebergangene Fundstellen unter der Mutation, gemessen sind 59.
-  FEHLSCHLAG: Der Kopfkommentar nennt 53 uebergangene Fundstellen ohne sie, gemessen sind 45.
-B2 rechts-ohne-satzgrenze-rein (entschaerft): Code 0, 50 Zitate, 50 aufgeloest, 45 uebergangen
-  FEHLSCHLAG: Angabe 2 nennt (41, 41, 53) als die Zahlen des unveraenderten Riegels, gemessen sind (50, 50, 45).
-  FEHLSCHLAG: Angabe 2 sagt, der Mutant nenne dieselben Zahlen; er nennt (50, 50, 45) statt (41, 41, 53).
-B2 rechts-ohne-satzgrenze-rein (scharf): Code 2, 1 Meldung(en)
-     Selbsttest Abstand 6: rechts erwartet war kein Dateiname, gefunden wurde spiel.md.
-B3 NAMENSFAELLE: 8 Faelle, historisch ausgewiesen ist Nummer [7]; der Kopf nennt erste
-  FEHLSCHLAG: Der Kopf nennt den erste Fall, historisch ausgewiesen ist der 7.
-G  Gegenprobe an der verstellten Angabe -- Angabe 1: 5 Meldung(en), Angabe 2: 2 Meldung(en), Angabe 3: 1 Meldung(en)
-HEAD am Ende: cd46bbf
-Hinweis: HEAD steht auf cd46bbf, gemessen und niedergeschrieben ist der Stand 2f2f79f. Die Zahlen sind damit aelter als der Baum.
+80% tests passed, 1 tests failed out of 5
 
-8 Erwartung(en) nicht erfuellt.
-
-
-60% tests passed, 2 tests failed out of 5
-
-Total Test time (real) =  73.92 sec
+Total Test time (real) =  65.60 sec
 
 The following tests FAILED:
 	  3 - belegstellen_wortabstand (Failed)
-	  5 - belegstellen_kopfzahlen (Failed)
 Errors while running CTest
 ```
 
@@ -393,7 +393,7 @@ Errors while running CTest
 -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
 -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
 -- Configuring done (0.0s)
--- Generating done (0.1s)
+-- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
 ```
 
@@ -408,11 +408,11 @@ Errors while running CTest
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/bezeichner/bau
     Start 1: bezeichner_riegel
-1/1 Test #1: bezeichner_riegel ................   Passed    0.46 sec
+1/1 Test #1: bezeichner_riegel ................   Passed    0.49 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.46 sec
+Total Test time (real) =   0.49 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -448,15 +448,9 @@ Total Test time (real) =   0.12 sec
 ## `cmake -S` -- ok (Code 0)
 
 ```
--- The CXX compiler identification is GNU 15.2.0
--- Detecting CXX compiler ABI info
--- Detecting CXX compiler ABI info - done
--- Check for working CXX compiler: /usr/bin/c++ - skipped
--- Detecting CXX compile features
--- Detecting CXX compile features - done
 -- Nullabhaengigkeitsriegel (T2): keines der Ziele aus FABRIK_NULLABHAENGIG (kern;kern_geprueft) liegt in diesem Baum -- nichts gelesen.
 -- Warnsatz-Schlussriegel im Profil FABRIK_SANITIZER=ON (wahr): 1 uebersetzende Ziele geprueft, alle mit Warnsatz und ohne Pauschalabschalter; dazu 0 Schnittstellenziele ohne Pauschalabschalter in ihrer Schnittstelle. Eingesammelt und gegen die Pauschalmuster gehalten: 19 Schaltereintraege.
--- Configuring done (0.2s)
+-- Configuring done (0.0s)
 -- Generating done (0.0s)
 -- Build files have been written to: /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/multiplikation/bau
 ```
@@ -464,8 +458,6 @@ Total Test time (real) =   0.12 sec
 ## `cmake --build` -- ok (Code 0)
 
 ```
-[ 50%] Building CXX object CMakeFiles/multiplikationsriegel.dir/multiplikationsriegel.cpp.o
-[100%] Linking CXX executable multiplikationsriegel
 [100%] Built target multiplikationsriegel
 ```
 
@@ -550,11 +542,11 @@ No tests were found!!!
 ```
 Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/schlussriegel/bau
     Start 1: schlussriegel_nachbau
-1/1 Test #1: schlussriegel_nachbau ............   Passed    0.52 sec
+1/1 Test #1: schlussriegel_nachbau ............   Passed    0.51 sec
 
 100% tests passed, 0 tests failed out of 1
 
-Total Test time (real) =   0.52 sec
+Total Test time (real) =   0.51 sec
 ```
 
 ## `cmake -S` -- ok (Code 0)
@@ -582,9 +574,9 @@ Test project /home/adria/fabrik/ventures/0016-hedgefonds-simulation-echte-weltwi
     Start 2: zahlwort_reihen
 2/3 Test #2: zahlwort_reihen ..................   Passed    0.13 sec
     Start 3: zahlwort_messung
-3/3 Test #3: zahlwort_messung .................   Passed   18.89 sec
+3/3 Test #3: zahlwort_messung .................   Passed   18.59 sec
 
 100% tests passed, 0 tests failed out of 3
 
-Total Test time (real) =  19.07 sec
+Total Test time (real) =  18.76 sec
 ```

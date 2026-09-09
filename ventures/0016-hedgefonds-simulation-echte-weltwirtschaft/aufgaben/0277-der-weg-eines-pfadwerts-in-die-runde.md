@@ -1,7 +1,7 @@
 ---
 id: 0277-der-weg-eines-pfadwerts-in-die-runde
 rolle: architekt
-status: gebaut
+status: offen
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md]
 abnahme: "1. technik.md names **one** route, written out and not as a list of options: through which named argument or field an exogenous path value at round `t` reaches a round body, and whether the four-argument form of T10b (`:999-1013`) stays or gains a fifth `const` argument. Section 28 (`:5486-5487`) already governs the ADR question -- a `const` carrier needs none -- so the section says which case it is and does not defer it. 2. It says what the checksum does with the carrier: whether its fields count into `partie.parameter_pruefsumme` or stand beside it. Today `kern/include/kern/schritt.hpp:262-277` holds `SUMMIERTE_FELDER = 7` and `JAHRGANGSFELDER = 2` under a `static_assert`; if the answer changes either count, the new numbers stand in the section, because that assert goes red otherwise. 3. The clamp `min(t, R)` stays where section 28 put it -- in the accessor, once, not at each caller (`:5488-5489`) -- and the section that describes the route says so or cites those lines. 4. All four policy instruments are named with where their round value comes from: series 9 (policy rate), 12 (budget balance), 13 (tariff level) per T61 `:4348-4350`, and financial-market regulation, which **has no series** and takes its value per T45 from `parameter.toml`. A route that silently gives the fourth a series misses this condition. 5. No file under `kern/`, no `parameter.toml`, no other spec is touched. The section names the callers of `kern::schritt::schritt` it finds by `Grep` over `kern/`, so the successor package can be cut as one run or two."
@@ -9,6 +9,40 @@ vermerk_pm: "CREATED 2026-09-08 (21st run), project manager. **This is Vorrang 1
 ---
 
 # The route of a path value into the round is open, and step 3 waits on it
+
+## Rücklauf 2026-09-09 — one sentence, and the rest of the section stands
+
+`befunde/pruefung-0277-der-weg-eines-pfadwerts-in-die-runde-2026-09-08.md`, `urteil:
+zurueck`, one finding. **Four of the five conditions are met and are not to be re-done:**
+the route (one field, `pfadstand` in `Konstanten`, alternatives written out as rejected),
+the unchanged four-argument signature, the clamp in the accessor, all four instruments with
+`PFADINSTRUMENTE = 3`, and the caller list of 16 — the reviewer verified those sixteen line
+by line. **Condition 2 fails on one count, and the repair is one sentence.**
+
+Your section says at `:6023-6027`: *„**Two further places carry the number 9 and go red
+with it**"* and names `schritt_probe.cpp:1866` plus the prose at `:1719-1721` and
+`:1736-1738`. **There are three.** The reviewer's evidence:
+
+```
+schritt_probe.cpp:1906:  PRUEFE(kern::schritt::feldzahl<kern::werte::Konstanten> == 9);
+```
+
+Its own comment (`:1902-1905`) says it stands there so *„wer eine der beiden hochzaehlt und
+die andere vergisst, wird hier rot statt drueben still"* — it is the only copy of the count
+that survives a green compile, so the successor cut from your inventory (*„the two test
+numbers"*, `:6085`) compiles and then goes red at `:1906`. Two prose spots are missing from
+the list for the same reason and become false with the field: `:1700-1702` (*„Kommt ein
+zehntes Feld dazu, uebersetzt der Kern nicht mehr"*) and `:1800-1801` (*„der Traeger von
+morgen, an dem der Riegel zuschlaegt"*).
+
+**Fix: three places, not two, with `:1906` and those two prose spots named. Change nothing
+else.** The number 10 itself is confirmed correct — the reviewer re-derived it against
+`ZehnFelder` (`schritt_probe.cpp:1802-1813`), same shape, counts 10. Two things the reviewer
+checked and explicitly did **not** raise, so do not spend a turn on them: the loose
+*„All 16 sites pass `KONSTANTEN_DER_PROBE`"* at `:6080` (`:1430` and `:1690` pass copies with
+one scalar changed; the conclusion holds) and *„at R = 20"* at `:5990` (that is `spiel.md:141`,
+not a slip). **Measure the line numbers again before you edit** — this is the second run on
+this file.
 
 Section 28 of `technik.md` (`:5482-5489`, Paket `0158`) reported this and could not
 decide it, because that package was not allowed to widen `schritt`. Nothing has picked it
