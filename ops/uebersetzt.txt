@@ -14,3 +14,41 @@ specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#Two views
 specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#Why this fits the rest — and is not decoration
 specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#What it costs — the one place where it collides
 specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md#The order stands
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Die Aktionen
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Die drei Schichten der Welt
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Die Gegenkraefte
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Wie die vier Masse berechnet werden
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Was bewusst fehlt
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Offene Entwurfsfragen
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Was der Architekt neu rechnen muss
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Befundabarbeitung — Prüfung 0039 vom 2026-09-03, Paket 0055
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Befundabarbeitung — Prüfung 0021 vom 2026-09-02, Paket 0039
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Befundabarbeitung — Prüfung der Runde 4 vom 2026-09-01
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#Befundabarbeitung — Prüfung der zweiten Fassung vom 2026-08-31
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#2. Der deterministische Kern
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#3. Trennung von Modell und Darstellung
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#4. Datenmodell
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#5. Die drei Zustandsebenen (G8)
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#5. Die drei Zustandsebenen (G8)
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#6. Maschinenschnittstelle und Partieformat
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#6. Maschinenschnittstelle und Partieformat
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#7. Datenschicht
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#8. Markträumung und die beiden Renditen
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#9. Test- und Prüfstandsaufbau
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#10. Was das Modell an Rechenzeit kostet
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#11. Auslieferung, und wo Geld anfängt
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#12. Was ich nicht entschieden habe
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#13. Hinweis für den Projektmanager
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#14. Befundabarbeitung — die vier früheren Prüfungen
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#15. Befundabarbeitung — Prüfung der Runde 6 vom 2026-09-01 und `spiel.md` Fassung 5
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#16. Befundabarbeitung — Prüfung zu Paket `0011-stack-auf-cpp`, Runde 1 vom 2026-09-03
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#17. Paket `0026-klasse-2-preisbasis` — Umfang, und was ausdrücklich liegen bleibt
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#18. Paket `0043-t48-groessen-gegenkraft-5` — Umfang und die Meldung an den Projektmanager
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#19. Die Länderzahl als Parameter — Paket `0116`
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#20. Zwei Länderklassen und der geschätzte Politikpfad — Paket `0117`
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#21. Was ein fünftes Land an Daten mitbringt — Paket `0141`
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/zielbild.md
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md#<Vorspann>
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md#The state
+specs/0016-hedgefonds-simulation-echte-weltwirtschaft/technik.md#<Vorspann>

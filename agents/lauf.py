@@ -895,9 +895,24 @@ def lauf(rolle: str, gegenstand: str | None = None) -> int:
         return fertig.returncode
 
     breit = schreibpfade(werkzeuge)
-    pfade = commitpfade(gegenstand, rolle, breit)
-    commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id, pfade)
+
+    # Rotieren VOR dem Commit. Bis zum 2026-09-09 lief es danach, und das hiess: Die
+    # Archivdatei entstand, nachdem der Commit seine Pfade schon festgelegt hatte, und
+    # keine spaetere `commitpfade()` nennt `notizen/archiv/`. 76 rotierte Logbuecher
+    # lagen dadurch unversioniert im Arbeitsbaum -- das aeltere Gedaechtnis von zehn
+    # Rollen, ohne Sicherung, waehrend die Anwendung selbst sauber gepusht war.
+    #
+    # Der Docstring begruendet das Nachher damit, dass der Agent in ein leeres Buch
+    # schreiben soll. Das bleibt gewahrt: Der Agent ist hier laengst fertig. Gemeint
+    # war "nach dem Lauf", nicht "nach dem Commit".
     rotiert = logbuch_rotieren(rolle)
+    pfade = commitpfade(gegenstand, rolle, breit)
+    if rotiert:
+        # Bewusst am `erlaubt`-Filter vorbei: Diese Datei hat der Laeufer geschrieben,
+        # nicht der Agent. Sie liegt ausserhalb jeder Rollen-Schreibgrenze und gehoert
+        # trotzdem in denselben Commit wie das gekuerzte Logbuch, aus dem sie stammt.
+        pfade = [*pfade, f"notizen/archiv/{rotiert}"]
+    commit_hash, anzahl, commit_fehler = committen(rolle, gegenstand, lauf_id, pfade)
     if rotiert:
         print(f"  Logbuch rotiert -> notizen/archiv/{rotiert}")
     tokens = nutzung.get("input_tokens", 0) + nutzung.get("output_tokens", 0)
