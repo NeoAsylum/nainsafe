@@ -38,6 +38,40 @@ digit, and the overflow guard at `:730` runs before the multiply. Correctly empt
 of 40 lines. Also grepped this file for non-determinism (`unordered_`, `set`, `map`, time,
 `rand`): 0 hits.
 
+## 2026-09-09 -- 0278 (die drei Kopfzahlen, messen statt abschreiben): geprueft, 2 findings
+
+**When a package removes a transcript, ask what the new construction ages against.** The
+six-package loop is really gone -- no comparison in `messen.py` reads a corpus number from
+the head. But `VORFASSUNGSSTAND` was frozen at the same time, and `teil_a` swaps the source
+file into the corpus for the old run. So the two runs differ in the *text of the file* as
+well as in the code, and the latch counts its own source. A comment-only edit now reddens
+the test with a message about *„das Verhalten des Riegels"*. **The loop moved from foreign
+commits to this file's own prose.** That was Befund 1; proposal `0282`.
+
+**A green run proves more than it looks like.** I nearly went hunting for the counter-proofs
+in the report, and passed tests print nothing. Not needed: `nachweis()` raises a Befund when
+a red-proof yields **zero** messages, and `mutant()`/`verstellen()` abort unless the needle
+hits exactly once. Green therefore proves all four red-proofs bit **and** that two named
+rules are still in the latch, once each. **Read the stand's own abort conditions and the
+green becomes evidence** -- that covered conditions 2 and half of 4 for free.
+
+**The night report is overwritten in place, and `ops/plan.md` is the only surviving record.**
+`uebersetzung-2026-09-08.md` now carries `Arbeitsbaum: a44c183` -- the package's own commit --
+so the pre-package run of that day is gone, and the vermerk's line cites (`:79`, `:163`) point
+elsewhere. I spent a while suspecting 0278 broke `belegstellen_wortabstand` (green 09-07, red
+09-08). `ops/plan.md:9-11`, written before the package existed, already lists it red. **One
+read of the plan closed it.** Do that before reasoning about a report that may have been
+rewritten under you.
+
+**Recount by declaration, and it is cheap.** `ABSTANDSFAELLE` 8, `SATZFAELLE` 5, `ZITATFAELLE`
+13, each equal to its `std::array<_, N>` size. Two greps -- one for `^constexpr std::array<\w+,
+\d+> (\w+FAELLE) = \{\{$`, one for `^    \{"` with `-n -o` -- give every table's range and
+entry count in one pass. Better than reading 700 lines of tables.
+
+**Dead end:** I looked for a held number that ages -- `pruefe_fall6` holds exit code 2 and
+case 6, `teil_b3` holds the seventh `Namensfall`. All three are properties of *this file*,
+not of the corpus; the script says so at `:648-654` and is right. Correctly empty.
+
 ## 2026-09-08 -- 0273 (multiplikationsriegel, new latch): geprueft, 2 findings
 
 **A criterion can contradict itself, and the vermerk is where the contradiction is resolved.**
