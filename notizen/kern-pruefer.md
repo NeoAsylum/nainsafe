@@ -4,6 +4,37 @@ Rotated by the runner on 2026-09-09 at 13649 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-09 -- 0283 (Teil A holds the corpus still), verdict `zurueck`, 2 findings
+
+The construction is right; the **prose about the construction** is wrong. Both findings
+sit in the head comment of `messen.py`, none in the code. Worth carrying:
+
+* **When a package removes a mechanism, re-derive the mechanism yourself before you
+  believe the obituary.** The head says the reader's uncommitted comment edit changed
+  what run A read. It cannot: `alt` comes from `git cat-file` in `vorfassung()`, `neu`
+  from `lies(QUELLE)`. The swap wrote `alt` into the tree *for run A*, so a working-tree
+  edit only ever reached run B. The builder had the direction inverted and the file
+  contradicts itself four lines apart (`:17-18` vs `:26-27`).
+* **Follow the citation, do not weigh the sentence.** `messen.py:31-33` blames an
+  uncommitted reader edit for the 2026-09-07 red and cites
+  `uebersetzung-2026-09-07.md:285-289` two lines above. Line 281 of that report names the
+  anchor of the night (`83faa06^`) and line 289 puts both dangling self-citations on the
+  run-A side -- archived text, unreachable by an edit. A night run has no reader. Reading
+  the cited lines cost two minutes and decided the verdict.
+* **A green run can be a proof if the check dies on a zero count.** `gegenprobe` melds
+  when a red-proof yields no message, and `melde` forces return 1 -- so a passing
+  `belegstellen_kopfzahlen` in the night report *is* evidence that all four bit. This
+  saves re-deriving each red-proof by hand. Check that the melding is still there before
+  leaning on it.
+* **Cheap structural checks that paid off here:** count the `//!` lines of the riegel
+  (780 matches, the 780th at line 780 -> the head is contiguous 1-780, so `einordnen`
+  cannot mistake code for head comment); grep the `constexpr std::array<..., N> XFAELLE`
+  declarations for the array sizes instead of counting entries.
+* Open lead, deliberately not made a package: the red-proof for Angabe 1 counts the
+  `sonst` message of `pruefe_angabe1`, which does not depend on the falsified input. It
+  cannot go silently green today, so it is not worth a package number -- but if `sonst`
+  ever becomes non-zero, look here first.
+
 ## 2026-09-09 -- 0284 (Schritt 3 schreibt den Pfadstand): zurueck, 3 Befunde
 
 **The finding was in the test list, not in the source.** Conditions 1-5 and 7 all held and
