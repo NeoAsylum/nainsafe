@@ -830,8 +830,9 @@ step already multiplies bare in the price mix (T28), plus `fondsanteil`, `anleih
 and `lobbypunkte_aus_geld` (T48, T50), and every new formula brings more; an enumeration
 would here be the form that silently goes wrong at the next addition.
 
-**What enforces 4.3: `werkzeuge/multiplikation/multiplikationsriegel.cpp`, and it is not
-yet built.** *Decided in this version, package `0074`.* The latch reads every `.hpp` and
+**What enforces 4.3: `werkzeuge/multiplikation/multiplikationsriegel.cpp`, and it has been
+built and running since 2026-09-08 (package `0273`).** *Decided in this version, package
+`0074`.* The latch reads every `.hpp` and
 `.cpp` under `kern/include` and `kern/src`, drops comment text **and the content of string
 and character literals** (the reading rule below), and holds every remaining
 binary `*` against **named rules**, first match wins — the construction of
@@ -843,7 +844,11 @@ binary `*` against **named rules**, first match wins — the construction of
 2. `sizeof(...)` on either side;
 3. an **unsigned** literal (`5ULL`, `8u`) or a named `u64` constant — the T11/T12
    exception below;
-4. `static_cast<i128>` on both sides — the computation site of T6;
+4. `static_cast<i128>` at the **head** of at least one of the two operand runs, and that run
+   carries no `?` — the computation site of T6. One side is enough because the usual
+   arithmetic conversions then make the other operand `i128` too, so the `*` is a 128-bit
+   multiplication and not the `i64 * i64` the measure exists to catch. *Widened in this
+   version, package `0274`;* section 35 derives the head condition and the `?`;
 5. **both operands are integer literals** — digits, the digit separator `'`, whitespace,
    parentheses and `+ - *`, no identifier — **and** the `*` stands in the condition of a
    `static_assert`. The region the alphabet is held against is the run around that `*`,
@@ -879,9 +884,27 @@ mapping below.** The mapping is measured with ` \* ` alone; the latch reads both
 only the code part, and only after comment text and literal content are gone. Re-measured at
 HEAD on 2026-09-08 that set is **36 lines**: the 92 minus the 56 that are running text in a
 comment, plus the two narrow-spelling hits, which fall out again — `festkomma.cpp:91` as a
-string literal, `meldung.hpp:54` as comment text. **All 36 match a rule**, `schritt.cpp:405`
-under rule 5 and the other 35 under rules 1 to 4; the latch is therefore **green on its first
-day**, and `add_test` is registered as prescribed above and not deferred.
+string literal, `meldung.hpp:54` as comment text. The built latch confirms the count on
+2026-09-09: *„42 Vorkommen in 36 Zeilen"* over 23 files.
+
+**35 of the 36 match a rule, and the 36th is `kern/include/kern/festkomma.hpp:99`.**
+`schritt.cpp:405` falls under rule 5; `kern/include/kern/festkomma.hpp:356` —
+`((static_cast<i128>(n) - 1) * r`, the cast at the head of the left run, the right side the
+bare `i128` local `r` — falls under rule 4 **as widened in this version**, and under rule 4
+as it read before this version it did not; the other 33 fall under rules 1 to 4 unchanged.
+Line `:99` is `const i128 rest = az - ganz * an;`, two bare `i128` locals with no cast on
+either side, and **no rule reaches it, deliberately**: textually it is `name * name`, which
+is the exact shape of the fifth kind, so no rule could admit it without admitting
+`i64 * i64`. It is answered at the source instead — with `ganz = az / an` one line above,
+`az - ganz * an` is `az % an` — by a successor package under `kern/`. Section 35 carries
+both derivations.
+
+**The latch is therefore red today, at those two lines**, and that is measured, not
+forecast: `befunde/uebersetzung-2026-09-09.md` books test 29 of 29 as failed and names
+`festkomma.hpp:99` and `:356`, as it did on 2026-09-08. It stands red at one line once the
+successor under `werkzeuge/multiplikation/` carries the widened rule 4, and green once `:99`
+loses its multiplication. `add_test` is registered as prescribed above and not deferred — a
+latch that is red exactly where this document says it is red is doing its work.
 
 **Why not a lock the compiler holds, and why not the plain text latch.** The lock is the
 better form and is not available: `#pragma GCC poison` takes **identifiers**, `*` is an
@@ -915,10 +938,17 @@ so that a later divergence names the file it comes from:
 | `include/kern/zufall.hpp` | 8 | `src/zustand.cpp` | 1 |
 | `include/kern/zustandsausgabe.hpp` | 7 | `include/kern/sperre.hpp` | 1 |
 
-By kind: **56** running text in a comment, **28** address and dimension arithmetic on
-`Index`, `std::size_t` and layout constants, **4** unsigned (`zufall.hpp:166,167,277`,
-`pruefsumme.hpp:138`), **4** an `i128` intermediate in `festkomma.hpp`
-(`:99,161,292,356`). 56 + 28 + 4 + 4 = 92; no line falls outside.
+By kind — and these four sorts sort the **mapping**, not the rule set, the same warning
+section 33 report 2 gives for the 28: **56** running text in a comment, **28** address and
+dimension arithmetic on `Index`, `std::size_t` and layout constants, **4** unsigned
+(`zufall.hpp:166,167,277`, `pruefsumme.hpp:138`), **4** an `i128` intermediate in
+`festkomma.hpp` (`:99,161,292,356`). 56 + 28 + 4 + 4 = 92; no line falls outside.
+
+**The last bucket is the one that misled, and it is why the latch ran red.** Its four lines
+are not four rule-4 matches. `:161` and `:292` carry the cast on both sides and were what
+rule 4 was written from; `:356` carries it on one side and needed rule 4 widened; `:99`
+carries none and falls under no rule at all. A sort of the mapping groups lines by what they
+*are*; a rule set decides what the latch *admits*, and the two were read as one.
 
 **The fifth kind occurs today, and that is the correction against the previous version.**
 It said the kind could not occur „because `kern::werte` is not yet built; exactly there it
@@ -5830,6 +5860,11 @@ without a data anchor — are the ones they were before it.
 
 ## 33. Die zwei Zeilen, die der Regelsatz nicht erreichte — Paket `0268`
 
+*Overtaken in one word (2026-09-09, package `0274`): the closing „runs green on its first
+day" below was right about the two lines this section treats and wrong about the latch. Two
+**other** lines matched no rule — `festkomma.hpp:99` and `:356` — and the latch ran red when
+it was built. Section 35 decides them; everything else in this section stands.*
+
 **What this answers, in one line.** T7's latch had four rules and no reading rule, and two
 lines that stand in the corpus today matched neither; `schritt.cpp:405` now falls under a
 fifth **named rule**, `festkomma.cpp:91` under a stated rule of **reading**, and the latch
@@ -6118,3 +6153,119 @@ the checksum function and every stored `parameter_pruefsumme`, the clamp's place
 `grep -c 'pfadstand'` over `kern/`, `daten/` and `parameter.toml` gives **0** before and
 after this package — it writes a rule, not code. After the successor it is greater than 0
 under `kern/` and still 0 in `parameter.toml`.
+
+## 35. Zwei Zeilen, die keine der fünf Regeln erreichte — Paket `0274`
+
+**What this answers, in one line.** T7 claimed all 36 lines the latch sees match a rule and
+that the latch is green on its first day; the latch is **red**, at `festkomma.hpp:99` and
+`:356`. The two are not the same case and are decided separately: `:356` falls under rule 4
+once rule 4 reads **one** side instead of two, and `:99` falls under no rule and loses its
+multiplication in `kern/` instead.
+
+**The measurement.** `befunde/uebersetzung-2026-09-09.md`: test 29 of 29 failed, 2 places,
+the same two as on 2026-09-08. The latch's own self-test passes (9 reading cases, 23 rule
+cases, „alle wie erwartet"), it read 23 files, built 84 layout-constant and 7 `u64` names,
+and counted *„42 Vorkommen in 36 Zeilen"*. The set, the count and the reading rule are
+right; only the verdict was wrong. This is a gap in the rule set, not a latch defect.
+
+### `:356` — rule 4 reads one side, and the language guarantees the rest
+
+The line is `const i128 naechst = ((static_cast<i128>(n) - 1) * r + …`. The left operand run
+carries `static_cast<i128>`, the right is the bare `i128` local `r`. Rule 4 demanded the cast
+on **both** sides and therefore missed it.
+
+**One side is enough, and not as a tolerance but as a consequence.** If either operand of a
+binary `*` has type `i128`, the usual arithmetic conversions convert the other to `i128`
+*before* the multiplication ([expr.arith.conv]). There is then no `i64 * i64` multiplication
+on the line at all — the product is formed in 128 bits, which is precisely what measure 4.3
+demands. The widened rule therefore admits nothing measure 4.3 forbids: the case it lets
+through cannot be the case the measure exists for.
+
+**Why the cast must stand at the head of the run.** „Carries the text `static_cast<i128>`
+somewhere" would be too weak, and line `:356` itself shows why calls appear inside operand
+runs: `ziel / intern::potenz_i128(r, n - 1)` sits on it. Were the cast inside a call's
+argument list — `f(static_cast<i128>(a)) * b` — the call's **return type** would govern, the
+text would still show a cast, and the multiplication could still be `i64 * i64`. So the rule
+reads the run's head: take the operand run beside the `*`, balance parentheses back to its
+start, strip enclosing parentheses **that are not a call's argument list** (a `(` immediately
+preceded by an identifier character is a call), and require the remainder to begin with
+`static_cast<i128>`.
+
+Held against the corpus: `:161` and `:292` (`static_cast<i128>(a) * static_cast<i128>(b)`)
+match on both runs. `:356` matches on the left run — its enclosing `(` is preceded by another
+`(`, not by a name, so it strips and the head is the cast. `f(static_cast<i128>(a)) * b` does
+not match: the `(` is preceded by `f`, nothing strips, and the head is `f`.
+
+**And the run may carry no `?`.** A conditional takes its type from its two branches, not
+from its head, so `static_cast<i128>(a) > 0 ? x : y` would pass the head test and prove
+nothing. One character, checked once. Measured 2026-09-09: exactly **one** line in the header
+set carries both a `?` and a `*` — `zustand.hpp:777`,
+`nummer < LAENDER ? nummer * LAND_FELDER : BASIS_RESTWELT` — and there the `?` stands
+*outside* both operand runs, which are `nummer` and `LAND_FELDER`. The condition costs no
+line today and keeps deny-by-default meaning what it says.
+
+### `:99` — no rule can reach it, and none should
+
+The line is `const i128 rest = az - ganz * an;`. Both operands are bare names, both `const
+i128` locals of the same function. **Textually it is `name * name` — the exact shape of the
+fifth kind**, two `i64` with magnitude meaning per T5, the thing the whole measure exists to
+catch. `stufen * stufenwert` (T48) is the same three tokens. No textual rule admits the one
+without admitting the other, and that is a proof and not a preference.
+
+**The name table that would work is the one this heading already rejects.** A rule „both
+operands are declared `i128`" needs a table like rule 1's — but rule 1's table is over
+**file-scope** layout constants: 84 globally unique names the latch reads flat out of 23
+files. `ganz`, `an` and `r` are **function-scope** locals. A flat table of such names would
+match wherever the same short name is an `i64` somewhere else; a scoped one means brace
+matching, shadowing and parameter lists — a parser, not a text latch. Nor would the table
+stay small: `Grep` for `i128 ` over the latch's remit (`kern/src`, `kern/include`) gives 25
+occurrences in 6 files — 20 in `festkomma.hpp` and 5 across `festkomma.cpp`, `verlauf.cpp`,
+`schritt.cpp`, `werte.cpp` and `zustandsausgabe.hpp`.
+
+**So the line changes instead, and it gets shorter.** With `ganz = az / an` one line above,
+`az - ganz * an` **is** `az % an`: for integral operands `(a/b)*b + a%b` equals `a` whenever
+the quotient `a/b` is representable ([expr.mul]), and here `az` and `an` are both `≥ 0`
+because both come from `betrag`, and `an != 0` by the function's stated precondition — so the
+quotient is representable and the identity is exact, in constant evaluation as at run time.
+The multiplication disappears rather than being decorated with a `static_cast<i128>` on a
+value that is already `i128`, which would be text written only to please a latch. The
+comment `0 <= rest < an, weil beide >= 0 sind` stays true word for word.
+
+**This is a `kernbauer` package and not this one.** It writes
+`kern/include/kern/festkomma.hpp`, which the architect may not touch.
+
+### What is now true, in order
+
+1. **Today:** latch red at `:99` and `:356`. T7 says so above and no longer claims green.
+2. **After the successor under `werkzeuge/multiplikation/`** carries the widened rule 4 and
+   its head comment: red at `:99` only.
+3. **After the successor under `kern/`** writes `az % an`: green, and the set the latch sees
+   drops from 36 lines to 35.
+
+### Reports to the project manager
+
+1. **Two successor packages, not one, and they are independent.** The latch package and the
+   `festkomma.hpp` package may run in either order; each removes one red line, and neither
+   depends on the other's result.
+2. **The rule set gains no sixth rule.** Widening rule 4 sufficed for `:356`, and `:99` is
+   answered in `kern/`. Five named rules, as before.
+3. **The package body cites `:5881-5886` for section 33 report 2; at HEAD that report stands
+   at `:5905-5910`.** The cited span is section 33's rule-5 derivation. The content of the
+   citation was right, the line numbers were older than the file.
+
+### Untouched, expressly
+
+Measures 1 to 3 and measures 4.1 and 4.2; rules 1, 2, 3 and 5 in their wording; the reading
+rule; the plain-text-latch table (`zufall.hpp:166`, `zustand.cpp:840`, `zustand.hpp:777`);
+the mapping table with its 92 lines in 14 files and its by-kind numbers; the `mal` paragraph
+and the seven fifth-kind sites; the blind-spot paragraph; the two deliberate wrapping
+exceptions; the latch itself and every file under `kern/` and `werkzeuge/`. Sections 1 to 34,
+except one dated forward-note at the head of section 33, whose closing sentence this package
+falsifies in one word.
+
+### The check this section can be held to
+
+`Grep` for `static_cast<i128>` over `kern/include/kern/festkomma.hpp` gives the casts of
+`:161`, `:292` and `:356` and none on `:99`. Until both successors land,
+`ctest -R multiplikationsriegel` fails and names exactly two lines; after the first it names
+one, after the second it passes and the latch reports 35 lines instead of 36.
