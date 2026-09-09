@@ -574,11 +574,21 @@
 //!      niemand nachgemessen. Dasselbe Mittel wie bei der Tabelle weiter oben:
 //!      Unterschiede statt Grundzahlen.
 //!
-//!      **Momentaufnahme vom 2026-09-08, vom Messstand nicht geprueft:** elf Stellen
-//!      zu Unrecht, zehn davon im eigenen Quelltext -- zu zweit in diesem
-//!      Kopfkommentar, einmal in `SATZFAELLE`, siebenmal in `ZITATFAELLE`; die elfte
-//!      steht in `parameter.toml`. Nachzumessen und nicht fortzuschreiben; der Aufruf,
-//!      der sie liefert, steht unter `Klammer::kuendigt_an`.
+//!      **Momentaufnahme vom 2026-09-08:** elf Stellen zu Unrecht, zehn davon im
+//!      eigenen Quelltext -- zu zweit in diesem Kopfkommentar, einmal in
+//!      `SATZFAELLE`, siebenmal in `ZITATFAELLE`; die elfte steht in
+//!      `parameter.toml`. Jede dieser Zahlen ist nachzumessen und nicht
+//!      fortzuschreiben; der Aufruf, der sie liefert, steht unter
+//!      `Klammer::kuendigt_an`.
+//!
+//!      **Wovon der Messstand genau eine Aussage haelt, und es ist keine der
+//!      Zahlen:** dass jeder Selbsttreffer entweder in diesem Kopfkommentar liegt
+//!      oder in einer Tabelle, deren Name auf `FAELLE` endet. Faellt einer daneben,
+//!      meldet `pruefe_angabe1` ihn. Geprueft ist damit die Gegend, nicht die
+//!      Aufteilung auf die Tabellen und erst recht nicht die Anzahl. Bis zum
+//!      2026-09-09 stand hier „vom Messstand nicht geprueft"; das trat mehr ab, als
+//!      der Stand hergibt, und schickte den Leser an `einordnen` vorbei
+//!      (Paket 0283).
 //!
 //!      **Wie diese Pruefung rot wird.** Verschwindet die Trennung aus dem
 //!      ausgelieferten Riegel, sind Riegel und Mutant dieselbe Fassung: Zitate und

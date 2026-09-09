@@ -5,12 +5,63 @@
 Kein Bericht: Jede Erwartung steht hier im Skript, und der Rueckgabewert ist 1,
 sobald eine nicht aufgeht. Was das Skript prueft:
 
-  A. **Der Vorher-Nachher-Riegel der Abnahme.** Die alte und die neue Fassung
-     laufen im *selben* Aufruf ueber den *selben* Baum, wenige Sekunden
-     auseinander, und muessen dieselben drei Zahlen von Bedingung 2 melden. Zwei
-     getrennte Laeufe wuerden die Drift des Baums mitmessen -- am 2026-09-05 ist
-     der Bestand einer Rolle waehrend ihres eigenen Laufs von 37 auf 40 Zitate
-     gewandert, von fremder Hand.
+  A. **Zwei Uebersetzungen, ein Bestand.** Die alte und die neue Fassung des
+     Riegels laufen im *selben* Aufruf ueber den *selben* Baum, wenige Sekunden
+     auseinander, und muessen dieselben drei Zahlen von Bedingung 2, denselben
+     Rueckgabewert und dieselbe Befundliste melden. Zwei getrennte Laeufe
+     wuerden die Drift des Baums mitmessen -- am 2026-09-05 ist der Bestand
+     einer Rolle waehrend ihres eigenen Laufs von 37 auf 40 Zitate gewandert,
+     von fremder Hand.
+
+     **Seit Paket 0283 steht der Bestand fuer beide Laeufe still, und das ist
+     der ganze Teil A.** Bis dahin stellte er den Quellbaum fuer die Dauer von
+     Lauf A auf die alte Fassung zurueck. Damit unterschieden sich die beiden
+     Laeufe im Code **und** im Bestand -- dieser Riegel zaehlt einen Bestand,
+     der seinen eigenen Quelltext enthaelt.
+
+     **Wie ein Leser damit das alte Rot erzeugt hat.** Ein Zitat im Sinn von
+     Bedingung 2 braucht eines der vier Schluesselwoerter aus `SCHLUESSEL` und
+     dahinter eine Ueberschrift, die es gibt. Der Kopfkommentar des Riegels
+     fuehrt solche Stellen selbst. Wer eine davon berichtigte -- nur den
+     Kommentar, keine Codezeile --, aenderte den Bestand, den Lauf A las, und
+     nicht den, den Lauf B las. Gemessen im Nachtlauf zum 2026-09-07: Code 1
+     gegen Code 0, (36, 34, 57) gegen (36, 36, 57), und der Unterschied waren
+     genau zwei Fundstellen im eigenen Kopfkommentar,
+     `belegstellen_riegel.cpp:32` und `:39`
+     (`befunde/uebersetzung-2026-09-07.md:285-289`). Die Meldung schob es auf
+     einen Commit dazwischen; getan hatte es die eigene, noch nicht eingecheckte
+     Kommentaraenderung des Lesers.
+
+     (Die vier Woerter stehen im Riegel aus demselben Grund als Oktalfolge da.
+     Hier duerfen sie ausgeschrieben stehen: Diese Datei liegt unter `befunde/`
+     und damit in `UNGELESENE_ORDNER` -- der Riegel liest sie nicht. Wer diesen
+     Stand einmal woandershin legt, muss das mitbedenken.)
+
+     **Warum das nicht mehr geht:** Dieser Stand schreibt `QUELLE` nicht mehr.
+     Beide Laeufe lesen den Baum, wie er liegt; eine Kommentaraenderung liegt
+     fuer beide gleich da und faellt aus dem Unterschied heraus. Die Stelle, an
+     der der Bestand festgelegt wird, ist die, an der nichts geschrieben wird --
+     sie steht in `teil_a` benannt, und dass er wirklich stillstand, sieht
+     `teil_a` danach nach.
+
+     **Was damit entfaellt, und wer es traegt.** Teil A war die einzige
+     Vorrichtung dieses Standes, die alten Kopftext gegen neuen Kopftext gemessen
+     hat: Ein Zitat, das im Kopfkommentar ins Leere zeigte, wurde als
+     Unterschied zwischen den beiden Laeufen sichtbar. Das deckt Teil A nicht
+     mehr ab. Gedeckt bleibt es dreifach:
+
+       * Ein Zitat im Kopfkommentar, das seine Ueberschrift nicht findet, macht
+         den `belegstellen_riegel` **selbst** rot -- er liest seinen eigenen
+         Quelltext mit, in jedem Nachtlauf und ohne diesen Stand. Genau das war
+         am 2026-09-07 der Code 1 der alten Fassung.
+       * Die Aussagen des Kopfes prueft Teil B, jede gegen eine eigene Messung:
+         `pruefe_angabe1`, `pruefe_angabe2`, `pruefe_fall6`, `teil_b3`.
+       * Die Tabelle der sechs Fassungen haelt `befunde/messung-0166/messen.py`
+         unter der Probe `belegstellen_wortabstand`.
+
+     Was Teil A seither misst, ist enger und dafuer wahr: ob sich das
+     **Verhalten** des Riegels zwischen dem festgeschriebenen Stand und heute
+     bewegt hat.
   B. **Die Aussagen des Kopfkommentars selbst**, jede als Beziehung zwischen
      zwei Laeufen desselben Aufrufs. Bis zum 2026-09-08 standen dort die drei
      Zahlen des Bestands als Abschrift, und dieser Stand hielt sie dagegen. Sechs
@@ -33,13 +84,17 @@ sobald eine nicht aufgeht. Was das Skript prueft:
 
      **Ab Paket 0278 wandert dieser Stand nicht mehr mit.** Bis dahin zog ihn
      jede Berichtigung des Kopfkommentars nach (Paket 0189), damit Teil A die
-     Wirkung der Berichtigung und nicht die fremden Code dazwischen misst. Es
+     Wirkung der Berichtigung und nicht den fremden Code dazwischen misst. Es
      gibt keine Berichtigung mehr, die er begleiten koennte: Die Zahlen stehen
-     nicht mehr im Kopf. Was Teil A seither misst, ist, ob sich das **Verhalten**
-     des Riegels zwischen dem festgeschriebenen Stand und heute bewegt hat. Wird
-     er rot, ist das keine Aussage ueber eine Berichtigung, sondern ueber einen
-     Commit dazwischen -- und der gehoert benannt, bevor jemand den Stand
-     weiterschiebt.
+     nicht mehr im Kopf.
+
+     **Und seit Paket 0283 heisst sein Rot, was die Meldung sagt.** Solange
+     Teil A den Quellbaum tauschte, konnte der Vergleich auch an der eigenen,
+     nicht eingecheckten Kommentaraenderung des Lesers rot werden, waehrend die
+     Meldung ihn nach einem fremden Commit suchen schickte (siehe A). Beide
+     Laeufe lesen jetzt denselben Bestand; bleibt ein Unterschied, ist er im
+     uebersetzten Code, und dann gehoert der Commit dazwischen benannt, bevor
+     jemand den Stand weiterschiebt.
   D. **Die beiden Mutanten bringt das Skript ebenfalls selbst mit** (Paket 0189).
      Bis dahin holte es sie von einem Erzeuger im Bauordner von CMake. Der wird
      bei jedem frischen Bau neu angelegt; der Erzeuger liegt seit langem nicht
@@ -48,9 +103,10 @@ sobald eine nicht aufgeht. Was das Skript prueft:
      nicht als Beschreibung, und jede Nadel muss genau einmal treffen.
 
 Gebaut wird ausschliesslich in `$TMPDIR`; was dort angelegt wurde, raeumt der
-Lauf am Ende selbst wieder weg. Der Quellbaum wird nur fuer die Dauer von Lauf A
-auf die alte Fassung zurueckgestellt und in jedem Fall wieder auf die neue
-gebracht -- auch dann, wenn der Lauf mittendrin abgeraeumt wird.
+Lauf am Ende selbst wieder weg. **In den Quellbaum schreibt dieser Stand nicht**
+-- seit Paket 0283 an keiner Stelle mehr. Damit sind auch das Tauschfenster, die
+Marke `SCHWEBT`, der Signalhandgriff und die Heilung eines unterbrochenen
+Vorlaufs entfallen: Sie gab es allein, damit der Tausch einen Abbruch ueberlebt.
 
 Aufruf:  python3 messen.py [--vorhaben <wurzel>] [--uebersetzer <pfad>]
 """
@@ -59,7 +115,6 @@ import hashlib
 import os
 import re
 import shutil
-import signal
 import subprocess
 import sys
 
@@ -77,15 +132,14 @@ REPO = os.path.dirname(os.path.dirname(W))
 UEBERSETZER = UEBERSETZER_VORGABE
 TMP = os.environ.get("TMPDIR", "/tmp") + "/k0115"
 VORHER = TMP + "/vorher.cpp"
-# Der Rueckweg fuer den Fall, dass der Lauf waehrend des Tauschs stirbt: der
-# Wortlaut, auf den der Quellbaum gehoert, und die Marke, die sagt, dass er
-# gerade nicht darauf steht.
-NACHHER = TMP + "/nachher.cpp"
-SCHWEBT = TMP + "/schwebt"
+# Hier standen bis zum 2026-09-09 `NACHHER` und `SCHWEBT` -- der Rueckweg und
+# die Marke fuer den Fall, dass der Lauf im Tauschfenster stirbt. Mit dem Tausch
+# sind sie entfallen (Paket 0283); dieser Stand schreibt nichts in den Quellbaum,
+# also gibt es nichts zurueckzulegen.
 
-# Woher die Vorfassung kommt, gegen die Teil A und die Gegenprobe messen: der
-# Stand unmittelbar vor der Berichtigung, also genau der Wortlaut, den das
-# jeweils letzte Paket am Kopfkommentar berichtigt hat.
+# Woher die Vorfassung kommt, aus der Teil A seine zweite Uebersetzung baut: ein
+# festgeschriebener Stand aus dem Archiv. Die Gegenprobe braucht sie seit Paket
+# 0278 nicht mehr -- sie verfaelscht die neue Fassung.
 #
 # Bis zum 2026-09-08 stand hier der Elternstand des Baucommits von 0115
 # (`83faa06^`, Blob e3038e2) fest. Beides ist mit Paket 0189 ersetzt, aus zwei
@@ -146,56 +200,12 @@ def lies(pfad):
     return open(pfad, encoding="utf-8").read()
 
 
-def schreib(pfad, text):
-    with open(pfad, "w", encoding="utf-8") as f:
-        f.write(text)
-
-
-def _notruf(signum, rahmen):        # noqa: ARG001 -- Signatur gibt das Modul vor
-    """Abgeraeumt werden, waehrend der Quellbaum getauscht ist.
-
-    Der Ruecktausch steht hier ein zweites Mal, weil er der einzige Handgriff
-    dieses Standes ist, dessen Ausbleiben etwas hinterlaesst: eine Quelldatei
-    von 3.600 Zeilen auf einem alten Wortlaut, die niemand angefasst zu haben
-    glaubt.
-    """
-    if os.path.exists(SCHWEBT):
-        schreib(QUELLE, lies(NACHHER))
-        os.remove(SCHWEBT)
-    sys.stderr.write("Abbruch durch Signal %d -- der Quellbaum steht wieder auf "
-                     "der neuen Fassung.\n" % signum)
-    sys.exit(1)
-
-
-def heile_unterbrochenen_lauf():
-    """Was ein abgeraeumter Vorlauf hinterlassen hat, vor dem ersten Messen.
-
-    Steht die Marke, ist der Vorlauf im Tauschfenster gestorben, ohne dass sein
-    Signalhandgriff noch lief -- abgeschossen oder der Rechner aus. Zurueckgelegt
-    wird **nur**, wenn der Quellbaum wirklich noch auf der alten Fassung steht:
-    Hat inzwischen jemand daran gearbeitet, waere das Zurueckschreiben kein
-    Heilen, sondern das Ueberschreiben fremder Arbeit.
-    """
-    if not os.path.exists(SCHWEBT):
-        return
-    os.remove(SCHWEBT)
-    if not os.path.exists(NACHHER):
-        print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben, und "
-              "der Rueckweg fehlt. Der Quellbaum ist von Hand nachzusehen.")
-        return
-    # Die Frage ist nicht "steht da etwas anderes als der Rueckweg", sondern
-    # "steht da noch die Vorfassung". Nur dann ist es der Tausch dieses Standes;
-    # jeder andere Inhalt ist fremde Arbeit und bleibt liegen.
-    steht = lies(QUELLE)
-    if blobkennung(steht.encode("utf-8")) != vorfassung_blob():
-        print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben, aber "
-              "der Quellbaum steht nicht mehr auf der Vorfassung. Es ist nichts "
-              "zurueckgelegt worden -- was dort steht, ist nicht dieser Tausch.")
-        return
-    schreib(QUELLE, lies(NACHHER))
-    print("HINWEIS: Ein frueherer Lauf ist im Tauschfenster gestorben und hat "
-          "den Quellbaum auf der alten Fassung stehen lassen. Er ist "
-          "zurueckgelegt; die Messung darunter laeuft auf der neuen.")
+# Hier stand bis zum 2026-09-09 ein `schreib(pfad, text)`. Es ist mit dem Tausch
+# entfallen und **absichtlich nicht durch etwas anderes ersetzt**: Der einzige
+# schreibende Aufruf dieses Standes steht seither in `vorfassung` und legt die
+# geholte Vorfassung unter `$TMPDIR` ab. Wer nachsehen will, ob dieser Stand den
+# Quellbaum anfasst, sucht nach einem Oeffnen im Schreibmodus -- es gibt genau
+# eines, und sein Ziel ist `VORHER`.
 
 
 def git(*teile):
@@ -238,7 +248,7 @@ def vorfassung_blob():
 
 
 def vorfassung():
-    """Der Wortlaut vor der Berichtigung, an seine Herkunft gebunden.
+    """Der Wortlaut des festgeschriebenen Standes, an seine Herkunft gebunden.
 
     Drei Schritte, und jeder kann den Lauf rot machen:
 
@@ -271,10 +281,9 @@ def vorfassung():
             raise SystemExit(
                 "Unter %s liegt nicht die Vorfassung von 0115: Der Inhalt "
                 "traegt die Blobkennung %s, erwartet ist %s aus %s. Teil A "
-                "wuerde gegen den falschen Stand vergleichen und die "
-                "Gegenprobe ihre Rotfaehigkeit am falschen Wortlaut pruefen -- "
-                "beides ohne eine Meldung. Loesche die Datei; das Skript holt "
-                "die richtige selbst."
+                "wuerde das Verhalten des Riegels gegen den falschen Stand "
+                "halten, und zwar ohne eine Meldung. Loesche die Datei; das "
+                "Skript holt die richtige selbst."
                 % (VORHER, ist, soll, herkunft))
         woher = "lag bereit und ist nachgerechnet"
     else:
@@ -388,40 +397,44 @@ def kopf():
 
 
 # ---------------------------------------------------------------------------
-# A -- vorher und nachher am selben Baum, im selben Aufruf
+# A -- zwei Uebersetzungen, ein Bestand: derselbe Baum, derselbe Aufruf, und
+#      zwischen den beiden Laeufen schreibt niemand
 # ---------------------------------------------------------------------------
 def teil_a(neu):
     alt = vorfassung()
     if alt == neu:
-        raise SystemExit("Alte und neue Fassung sind zeichengleich -- es gibt "
-                         "nichts zu messen.")
+        # Faengt zugleich den Rest eines Laufs von **vor** Paket 0283: Jener
+        # Stand tauschte den Quellbaum und konnte ihn, abgeschossen im
+        # Tauschfenster, auf der alten Fassung stehen lassen. Steht er dort,
+        # sind alt und neu zeichengleich, und der Lauf endet hier laut, statt
+        # unter lauter richtigen Zahlen den falschen Bestand zu messen.
+        raise SystemExit(
+            "Alte und neue Fassung sind zeichengleich -- es gibt nichts zu "
+            "messen. Steht der Quellbaum unter %s auf dem Stand %s, gehoert er "
+            "zurueckgesetzt." % (HERKUNFTSPFAD, VORFASSUNGSSTAND))
     bin_alt = bauen(alt, "vorher", False)
     bin_neu = bauen(neu, "nachher", False)
-    # Das Fenster, in dem der Quellbaum nicht auf der neuen Fassung steht. Es
-    # dauert einen Lauf des Riegels, rund eine Sekunde -- aber seit Paket 0189
-    # faehrt dieser Stand im Nachtlauf unter einer Zeitschranke, und ein Signal
-    # trifft ihn irgendwann genau hier. `finally` faengt die Ausnahme, nicht das
-    # Signal; deshalb zusaetzlich der Handgriff auf SIGTERM und die Marke, an
-    # der ein spaeterer Lauf den unterbrochenen erkennt.
-    schreib(NACHHER, neu)
-    schreib(SCHWEBT, "")
-    vorheriger = signal.signal(signal.SIGTERM, _notruf)
-    try:
-        schreib(QUELLE, alt)
-        code_a, aus_a, _ = laufen(bin_alt)
-        a = drei(aus_a, "der alten Fassung")
-        befunde_a = befundliste(aus_a)
-    finally:
-        schreib(QUELLE, neu)
-        signal.signal(signal.SIGTERM, vorheriger)
-        # Die Bedingung ist noetig: Kam das Signal mitten im Fenster, hat der
-        # Handgriff die Marke schon genommen, und ein blankes `os.remove`
-        # verdeckte hier den Abbruch mit einem Fehler ueber eine fehlende Datei.
-        if os.path.exists(SCHWEBT):
-            os.remove(SCHWEBT)
+    # **Hier wird der Bestand der beiden Laeufe festgelegt, und zwar dadurch,
+    # dass nichts geschrieben wird.** Beide lesen den Baum, wie er in diesem
+    # Augenblick liegt: dieselben Dateien, derselbe Kopfkommentar. Bis zum
+    # 2026-09-09 stand an dieser Stelle `schreib(QUELLE, alt)` samt Tauschfenster,
+    # Signalhandgriff und Ruecktausch -- und damit las Lauf A einen anderen
+    # Bestand als Lauf B. Der einzige Unterschied zwischen den beiden Laeufen ist
+    # jetzt der uebersetzte Code; siehe A im Kopf.
+    stand = lies(QUELLE)
+    code_a, aus_a, _ = laufen(bin_alt)
+    a = drei(aus_a, "der alten Fassung")
+    befunde_a = befundliste(aus_a)
     code_b, aus_b, _ = laufen(bin_neu)
     b = drei(aus_b, "der neuen Fassung")
     befunde_b = befundliste(aus_b)
+    # Nachgesehen statt behauptet. Deckt die Datei ab, die dieser Stand selbst
+    # bewegt hat und an der ein Leser arbeitet; fuer den uebrigen Baum tragen die
+    # wenigen Sekunden zwischen beiden Laeufen und der HEAD-Vergleich in `main`.
+    if lies(QUELLE) != stand:
+        melde("Die Quelldatei hat sich zwischen den beiden Laeufen von Teil A "
+              "geaendert. Die beiden Zahlenreihen sind damit ueber verschiedene "
+              "Bestaende erhoben und gehoeren neu erhoben.")
 
     print("A  vorher : Code %d, %d Zitate, %d aufgeloest, %d uebergangen"
           % ((code_a,) + a))
@@ -429,9 +442,10 @@ def teil_a(neu):
           % ((code_b,) + b))
     if a != b:
         melde("Zwischen dem festgeschriebenen Stand %s und heute hat sich das "
-              "Verhalten des Riegels bewegt: %s -> %s, gemessen im selben Aufruf "
-              "ueber denselben Baum. Welcher Commit dazwischen das getan hat, "
-              "gehoert benannt." % (VORFASSUNGSSTAND, a, b))
+              "Verhalten des Riegels bewegt: %s -> %s. Beide Laeufe gingen im "
+              "selben Aufruf ueber denselben Bestand -- der Unterschied liegt "
+              "im uebersetzten Code, nicht im Baum. Welcher Commit dazwischen "
+              "das getan hat, gehoert benannt." % (VORFASSUNGSSTAND, a, b))
     if code_a != code_b:
         melde("Derselbe Vergleich am Rueckgabewert: %d -> %d."
               % (code_a, code_b))
@@ -443,8 +457,9 @@ def teil_a(neu):
               % (sorted(set(befunde_a) - set(befunde_b)),
                  sorted(set(befunde_b) - set(befunde_a))))
     if code_b != 0:
-        # Kein Fehlschlag dieses Pakets, aber es gehoert abgedruckt: Der Baum
-        # war schon vor der Berichtigung rot, und zwar von fremder Hand.
+        # Kein Fehlschlag dieses Pakets, aber es gehoert abgedruckt: Der Riegel
+        # ist ueber diesem Baum rot, und beide Fassungen sehen dasselbe -- es
+        # liegt also am Bestand und nicht an einem Commit zwischen den beiden.
         print("A  Der Riegel ist rot -- vorher wie nachher (Code %d). Die "
               "Befunde stehen unten und gehoeren nicht zu 0115:" % code_b)
         for z in befunde_b:
@@ -830,11 +845,7 @@ def gegenprobe(grund, mess, m_rosg, code_roh, zeilen):
 def main():
     global _neu
     os.makedirs(TMP, exist_ok=True)
-    # Vor allem anderen: der Quellbaum. Ein Vorlauf, der im Tauschfenster
-    # gestorben ist, haette ihn auf der alten Fassung stehen lassen, und dann
-    # misst alles Weitere den falschen Wortlaut -- lautlos und ueberzeugend.
-    heile_unterbrochenen_lauf()
-    # Dann die Vorfassung, beschafft und an ihre Herkunft gebunden. Was danach
+    # Zuerst die Vorfassung, beschafft und an ihre Herkunft gebunden. Was danach
     # kommt, misst gegen sie -- eine falsche Eingabe hier macht jede Zahl weiter
     # unten wertlos, und zwar ebenfalls lautlos.
     vorfassung()
@@ -863,8 +874,16 @@ def main():
     # sobald HEAD von beiden abwich. Beides ist mit Paket 0278 entfallen: Der
     # Kommentar nennt keinen Commit mehr, weil er nichts mehr behauptet, was an
     # einem Commit haengt.
+    #
+    # Bis zum 2026-09-09 fragte die Zeile darunter, ob der Ruecktausch von Teil A
+    # gegriffen hat. Getauscht wird nicht mehr, und die Frage bleibt trotzdem
+    # sinnvoll -- sie faengt jetzt die fremde Hand: Ist die Quelldatei waehrend
+    # der Messung eine andere geworden, sind Teil A und Teil B ueber zwei
+    # verschiedene Bestaende erhoben.
     if lies(QUELLE) != neu:
-        melde("Die Quelldatei steht am Ende nicht auf der neuen Fassung.")
+        melde("Die Quelldatei hat sich waehrend der Messung geaendert. Dieser "
+              "Stand schreibt sie nicht -- es war eine fremde Hand, und die "
+              "Zahlen gehoeren neu erhoben.")
     # Der Arbeitsplatz wird geraeumt, sobald gemessen ist -- gleich, ob gruen
     # oder rot. Was zu sagen war, steht oben; unter `$TMPDIR` bleiben nur
     # Uebersetzungserzeugnisse. Nach einem Abbruch (SystemExit) laeuft diese
