@@ -1532,14 +1532,21 @@ struct Tabellenfall {
     // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
     // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
     // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **acht** Faelle,
-    // die es angeht -- es sind genau die acht mit einer **benannten** Liste --, schreiben es
-    // aus: **vier** eine Eins und **vier** eine Null. Die vier Einsen sind der Koeder des
-    // Listenbodens, die Naht, die geteilte Liste und das Element ohne Literal; die vier
-    // Nullen sind deren Gegenfaelle, bei denen gerade das Schweigen die Aussage ist -- die
-    // vier Faelle "dieselbe Liste mit allen dreien", "drei Teile, zwei Marken, zwei
-    // deklariert", "die Groesse der Liste steht hinter einem `using`" und "ein Element
-    // traegt sein Literal in einem Aufruf". Neunzehn und acht sind die siebenundzwanzig
-    // Faelle der Tabelle.
+    // die es angeht, sind die letzten acht der Tabelle -- **Fall 20 bis Fall 27** in der
+    // Zaehlung, mit der `selbsttest_verzeichnis` sie meldet --, und sie schreiben es aus:
+    // **vier** eine Eins (20, 22, 24, 26) und **vier** eine Null (21, 23, 25, 27).
+    // Die vier Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste und
+    // das Element ohne Literal; bei jeder der vier Nullen ist gerade das Schweigen die
+    // Aussage -- es sind "dieselbe Liste mit allen dreien", "drei Teile, zwei Marken,
+    // zwei deklariert", "die Groesse der Liste steht hinter einem `using`" und "ein
+    // Element traegt sein Literal in einem Aufruf". Neunzehn und acht sind die
+    // siebenundzwanzig Faelle der Tabelle.
+    //
+    // **Aufgezaehlt, nicht durch eine Eigenschaft benannt:** "die acht mit einer
+    // benannten Liste" waere falsch -- die Faelle 1, 4 und 6 fuehren ebenfalls eine
+    // (`KZ_SUMME`, `KZ_ANDERSWO`, `KZ_DOPPELT`) und lassen das Feld dennoch auf der
+    // Vorgabe. Eine Eigenschaft muss ueber alle siebenundzwanzig stimmen, eine
+    // Aufzaehlung nur ueber sich selbst.
     //
     // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
     // beim naechsten Fall wieder falsch ist -- und dieses Programm ist das Werkzeug, dessen

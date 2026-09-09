@@ -4,6 +4,49 @@ Rotated by the runner on 2026-09-08 at 15364 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-09 -- 0275, Ruecklauf (a number without its set)
+
+One clause, `kennzeichen_riegel.cpp:1534-1542` -> `:1534-1549`, comment only, no code line
+touched. The set of eight is now **enumerated** (Fall 20 bis Fall 27, ones 20/22/24/26,
+zeros 21/23/25/27) instead of named by the property „die acht mit einer benannten Liste",
+which is false — cases 1, 4 and 6 carry `KZ_SUMME`, `KZ_ANDERSWO`, `KZ_DOPPELT` and leave
+the field at the default. The pairing claim („die vier Nullen sind deren Gegenfaelle")
+is gone; what replaced it — „bei jeder der vier Nullen ist gerade das Schweigen die
+Aussage" — I checked against all four comments (now `:1736`, `:1758`, `:1779`, `:1807`),
+it holds for each. Conditions 2, 3, 4 untouched as the return demanded.
+
+- 2026-09-09, **the lesson of the run** -- **A property is a claim over the whole table;
+  an enumeration is a claim over itself.** Three returns on this same clause died the same
+  way: „genau die acht mit X" was written from the eight cases the writer was looking at,
+  never checked against the other nineteen. The fix that ends it is not a truer property
+  but the refusal to use one — and I wrote the refusal *into* the comment (the last
+  paragraph names the tempting false property and its three counter-examples), so the next
+  editor meets the trap before stepping in it. Same shape as 0278's rule: **state what you
+  can count on the spot, not what you would have to re-count everywhere.**
+- 2026-09-09 -- **The case numbers I chose are the ones a red run prints.** „Fall 20" is
+  only unambiguous because `selbsttest_verzeichnis` reports `Selbsttest Verzeichnis, Fall
+  %zu` with `i + 1` (now `:1875` ff.); I verified that before writing it and said so in the
+  comment. An enumeration in a head comment is worth much more when its numbering is the
+  same one the failure message uses — otherwise the reader has to count entries by hand,
+  which is the work I was supposed to remove.
+- 2026-09-09 -- **Checked the two things a comment-only edit can still break.** (a) No
+  internal anchor shifts: the file cites no `:NNNN` line numbers of its own (`Grep` for
+  `:(1[5-9]\d\d|2\d{3})` is empty), and the ABGLEICHFAELLE comment at now-`:2063` refers to
+  „Fall 3", not to a line — so my **+7 lines** move nothing that reads itself. (b) No new
+  Belegstellen-Fundstelle: `belegstellen_riegel` counts only at `Abschnitt`/`Ueberschrift`/
+  `Absatz` next to a name with an allowed extension (`ENDUNGEN`, `:797`); my added text
+  has neither keyword nor file name. **Before editing a comment in a file two other latches
+  read, check the latch trigger against the diff, not the diff's size** — same rule as
+  2026-09-08, now applied to a foreign latch.
+- 2026-09-09, **what I am unsure about, for the project manager:** two things. **(a)** I
+  cannot compile. The edit is inside a `//` comment block between two struct members
+  (`knapp` and `listen_knapp`); it contains no `*/`, no backslash at a line end, no
+  trigraph — nothing that ends a `//` comment early. Expected: `kennzeichen_riegel`
+  **Passed** unchanged, all 27 + 8 expectations as before. **(b)** The **+7 line shift**
+  moves every anchor below `:1542` in this file, including the ones the reviewer used last
+  time (cases 20–27, ABGLEICHFAELLE). The four counts 19/8/27/16, the four ones, the four
+  zeros and the three `lesbar: false` are unchanged in value; only their line numbers moved.
+
 ## 2026-09-08 -- 0278 (the three head numbers measure themselves)
 
 Three files. `belegstellen_riegel.cpp`: the three corpus numbers are out of the head
