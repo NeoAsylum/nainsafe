@@ -115,9 +115,26 @@
 //! Kern vorkommt. Anders als bei der ersten ist keiner der beiden Ausgaenge ein Befund zu
 //! viel an heilem Text.
 //!
-//! Im Baum steht am 2026-09-08 weder die eine noch die andere Form; alle drei aufgeloesten
-//! Listen tragen nur Literale. Faelle des Selbsttests halten beide Haelften mit ihrer
-//! Erwartung fest -- die erste und die **Stille** der zweiten an der Tabelle des
+//! *Und dieselbe zweite Haelfte traegt **zwei** Marken, sobald das Element zwei Literale
+//! traegt* -- `{VERBINDE("a", "b"), "c"}` deklariert drei und gibt aus **zwei** Elementen
+//! **drei** Marken her. Die Markenzahl liegt damit **zu hoch**, `3 >= 3` schweigt, und eine
+//! wirklich kurze Liste geht gruen durch: genau der gruene Lauf an kaputtem Text, gegen den
+//! die Zaehlstelle unten geschrieben ist, erreicht durch ein Aufrufargument. Wer nur Marken
+//! zaehlt, hat gegen diesen Fall nichts.
+//!
+//! **Deshalb zaehlt `Listenzahl` seit Paket 0279 zweierlei** -- die Marken **und** die
+//! Elemente, letztere mit `felder_von` an den Kommas der aeussersten Ebene der Liste --, und
+//! `knappe_listen` vergleicht die deklarierte Groesse mit der **kleineren** der beiden
+//! Zahlen. Die Marken fangen das Element ohne Literal, die Elemente fangen das Element mit
+//! zweien; keine der beiden Zahlen allein faengt beides, und die kleinere zu nehmen heisst,
+//! dass jede von beiden die deklarierte Groesse erreichen muss. Was auch danach ungebunden
+//! bleibt, ist der **Wortlaut** eines tragenden Elements -- die Zaehlung wird richtig, die
+//! Bindung nicht; dafuer stehen die beiden Ausgaenge am Abgleich.
+//!
+//! Im Baum steht am 2026-09-09 keine dieser Formen; alle drei aufgeloesten Listen tragen nur
+//! Literale, und bei jeder ist die Markenzahl gleich der Elementzahl (3, 2, 2). Faelle des
+//! Selbsttests halten sie mit ihrer Erwartung fest -- die erste Haelfte, die **Stille** der
+//! zweiten bei einer Marke und die **Meldung** der zweiten bei zwei Marken an der Tabelle des
 //! Verzeichnisses, die **beiden Ausgaenge** der zweiten am Abgleich --, damit der Tag, an dem
 //! eine entsteht, nicht der erste Tag dieser Frage ist.
 //!
@@ -245,6 +262,16 @@
 //! gemeldet werden **muss**, obwohl drei Teile dastehen, und einmal als Zwei, auf dem
 //! geschwiegen werden muss.
 //!
+//! **Auch die Markenzahl kann zu hoch liegen, und deshalb steht sie nicht allein.** Ein
+//! Element, das zwei Literale traegt -- `{VERBINDE("a", "b"), "c"}` --, gibt drei Marken aus
+//! zwei Elementen her; die Marke ist ein Element nur, solange ein Element hoechstens eine
+//! traegt. Daneben steht deshalb die **Elementzahl**: `felder_von` an den Kommas der
+//! aeussersten Ebene, dieselbe Zerlegung, die einen Eintrag in seine Felder trennt, auf die
+//! Liste angewandt. `hergegeben` nimmt die kleinere der beiden, und `knappe_listen` meldet,
+//! sobald **eine** von beiden unter der deklarierten Groesse liegt. Ein Fall des Selbsttests
+//! haelt es fest -- drei deklariert, zwei Elemente, drei Marken, gemeldet --, und er ist rot,
+//! sobald die Elementzahl wegfaellt oder die groessere der beiden Zahlen genommen wird.
+//!
 //! Die erwartete Zahl kommt aus derselben Quelle wie bei der Tabelle -- `deklarierte_groesse`
 //! auf der Stelle des Namens -- und damit weder aus einem Kommentar noch aus einer
 //! Zeichenkette. Steht dort keine lesbare Zahl, weil die Groesse eine Konstante ist oder der
@@ -254,8 +281,9 @@
 //!
 //! `knappe_listen` sammelt die Faelle; der Abbruch steht in `main` hinter dem der knappen
 //! Tabellen, beginnt mit `%zu gelesene Kennzeichenliste(n) geben weniger` und nennt Probe,
-//! Zeile, Namen, die deklarierte und die gelesene Zahl. Eine Liste, die null hergibt und
-//! mehr deklariert, faengt von jetzt an diese Schranke statt `leere_liste` -- die Null bejaht
+//! Zeile, Namen, die deklarierte Zahl und **beide** gelesenen -- Marken und Elemente --,
+//! damit an der Meldung ablesbar ist, welche von beiden zu knapp war. Eine Liste, die null
+//! hergibt und mehr deklariert, faengt diese Schranke statt `leere_liste` -- die Null bejaht
 //! beide Fragen, und sie hier auszunehmen waere eine Bedingung, die spaeter falsch sein kann.
 //!
 //! **Zwei Eintraege duerfen dieselbe Liste nennen.** Dann ist es eine, und sie steht einmal
@@ -285,7 +313,8 @@
 //! lesbarer Eintrag, eine Probe, die den Namen der Tabelle im Code fuehrt und kein
 //! Verzeichnis hergibt, eine gelesene Tabelle ohne einen einzigen Eintrag, eine gelesene
 //! Tabelle mit weniger Eintraegen als deklarierten, eine benannte Kennzeichenliste mit
-//! weniger Stuecken als deklarierten, oder eine der Zahlen unten auf null:
+//! weniger Marken **oder** weniger Elementen als deklarierten, oder eine der Zahlen unten
+//! auf null:
 //! keine gelesene Probe, kein gefundenes Verzeichnis, kein Eintrag, kein Kennzeichen, keine
 //! Zeichenkette im Kern.
 //!
@@ -956,14 +985,41 @@ struct Tabellenzahl {
 ///
 /// `deklariert` ist `NICHTS`, wenn dort keine lesbare Zahl steht. Das ist kein Befund,
 /// sondern die Rueckkehr zur Regel darueber; die Begruendung steht bei `deklarierte_groesse`.
+///
+/// **`stuecke` und `elemente` stehen nebeneinander, weil keines von beiden das andere
+/// ersetzt.** `stuecke` sind die Marken -- was `gleiche_ab` spaeter wirklich gegen den Kern
+/// haelt. `elemente` sind die Kommastellen der aeussersten Ebene -- was die Liste an Plaetzen
+/// besetzt. Sie fallen genau dann auseinander, wenn ein Element kein Literal traegt (Marken
+/// zu niedrig) oder mehr als eines (Marken zu hoch), und sie fallen nach entgegengesetzten
+/// Seiten. Verrechnet werden sie hier nicht: Die Frage, ob eine Liste weniger hergibt als sie
+/// traegt, stellt `knappe_listen`, und die Meldung braucht ohnehin beide Zahlen.
 struct Listenzahl {
     std::string probe;
     std::string name;
     std::size_t stelle = 0;
     std::size_t zeile = 0;
     std::size_t stuecke = 0;
+    std::size_t elemente = 0;
     std::size_t deklariert = NICHTS;
 };
+
+/// Was eine Liste hergibt: die **kleinere** der beiden Zahlen.
+///
+/// Die kleinere und nicht eine Summe oder ein Mittel, weil die Aussage eine Konjunktion ist:
+/// Jede der beiden Zahlen muss die deklarierte Groesse erreichen. Die groessere zu nehmen
+/// hiesse, dass die eine die andere deckt -- und genau das ist der Fehler, gegen den die
+/// Elementzahl steht: `{VERBINDE("a", "b"), "c"}` hat drei Marken und zwei Elemente, und die
+/// Drei deckt die Zwei.
+///
+/// Eine Stelle und nicht je einmal in `knappe_listen` und in der Nachfrage des Selbsttests,
+/// die dasselbe noch einmal fragt: Zwei Fassungen derselben Regel koennen auseinanderlaufen,
+/// eine kann es nicht -- dieselbe Doktrin wie bei `finde_zuweisungen` und `finde_woerter`.
+/// Die Meldung in `main` entscheidet nichts; sie druckt beide Zahlen roh aus, damit der
+/// Leser sieht, welche von beiden zu knapp war.
+std::size_t hergegeben(const Listenzahl& lz)
+{
+    return lz.stuecke < lz.elemente ? lz.stuecke : lz.elemente;
+}
 
 /// Was eine einzelne Probe zum Bestand beigetragen hat.
 ///
@@ -1156,18 +1212,34 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     const std::size_t vorher = e.kennzeichen.size();
                     stuecke_aus(liste, fund.auf, listen_zu, e.kennzeichen);
 
-                    // **Hier wird gezaehlt, und hier steht die Lesart.** Gezaehlt werden die
-                    // Marken zwischen den Klammern, und eine Marke ist ein Element des
-                    // Feldes: `zerlege` verschmilzt benachbarte Zeichenkettenteile, weil die
-                    // Sprache es tut, also ergibt `{"a" "b", "c"}` zwei Marken und ist ein
-                    // Feld mit zwei Elementen. Der Kern schreibt seine Meldungen ueber
-                    // mehrere Zeilen -- das ist hier der Normalfall und keine Ausnahme.
+                    // **Hier wird gezaehlt, und hier stehen die zwei Lesarten.** Gezaehlt
+                    // werden erstens die Marken zwischen den Klammern: `zerlege` verschmilzt
+                    // benachbarte Zeichenkettenteile, weil die Sprache es tut, also ergibt
+                    // `{"a" "b", "c"}` zwei Marken. Der Kern schreibt seine Meldungen ueber
+                    // mehrere Zeilen -- das ist hier der Normalfall und keine Ausnahme. Wer
+                    // stattdessen die Teile zaehlte, kaeme auf drei und laege damit **zu
+                    // hoch**. Die Schranke unten fragt nach `hergegeben < deklariert`; eine zu
+                    // hohe Zahl meldet nichts, wo etwas fehlt -- nicht ein roter Lauf an
+                    // heilem Text, sondern ein gruener an kaputtem.
                     //
-                    // Wer stattdessen die Teile zaehlte, kaeme auf drei und laege damit
-                    // **zu hoch**. Die Schranke unten fragt nach `gelesen < deklariert`; eine
-                    // zu hohe Zahl meldet nichts, wo etwas fehlt. Der Fehler waere also nicht
-                    // ein roter Lauf an heilem Text, sondern ein gruener an kaputtem -- genau
-                    // das, wogegen diese Schranke steht.
+                    // **Die Marke ist ein Element nur, solange ein Element hoechstens eine
+                    // traegt, und das ist keine Regel der Sprache.** `{VERBINDE("a", "b"),
+                    // "c"}` hat zwei Elemente und drei Marken; als Drei deklariert waere die
+                    // Liste kurz, und die Markenzahl allein faende `3 >= 3` und schwiege --
+                    // derselbe gruene Lauf an kaputtem Text, nur durch ein Aufrufargument
+                    // statt durch eine Naht erreicht. Die Elementgrenze ist deterministisch
+                    // ablesbar, und dieses Programm liest sie schon: `felder_von` trennt an
+                    // den Kommas der aeussersten Ebene, ueberspringt Kommas in Klammern und
+                    // wirft leere Felder weg, faellt also auf ein abschliessendes Komma nicht
+                    // herein. Zweitens gezaehlt wird deshalb die Elementzahl, mit derselben
+                    // Funktion, die den Eintrag oben in seine Felder trennt.
+                    //
+                    // Beide Zahlen bleiben stehen; verglichen wird mit `hergegeben` die
+                    // kleinere. Die Marken bleiben die Zahl, die `gleiche_ab` wirklich gegen
+                    // den Kern haelt -- ein Element ohne Literal ist ungebunden, und das
+                    // meldet nur sie. Die Elemente bleiben die Zahl, die die Plaetze zaehlt.
+                    // Was auch danach ungebunden bleibt, ist der **Wortlaut** eines tragenden
+                    // Elements; die Zaehlung wird richtig, die Bindung nicht.
                     Listenzahl lz;
                     lz.probe = proben[quelle].name;
                     lz.name = listenname;
@@ -1175,6 +1247,11 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     lz.zeile = liste.zeile[fund.name];
                     lz.deklariert = deklarierte_groesse(liste.maske, fund.name);
                     lz.stuecke = e.kennzeichen.size() - vorher;
+
+                    Gruppe listengruppe;
+                    listengruppe.auf = fund.auf;
+                    listengruppe.zu = listen_zu;
+                    lz.elemente = felder_von(liste.maske, listengruppe).size();
 
                     // Zwei Eintraege duerfen dieselbe Liste nennen; dann ist es eine, und
                     // sie steht einmal in der Erhebung. Verglichen wird die Stelle auf der
@@ -1341,7 +1418,7 @@ std::vector<Leerstelle> knappe_tabellen(const std::vector<Probenzahl>& zahlen)
 }
 
 /// **Derselbe Boden am anderen Ding:** die benannten Kennzeichenlisten, die eine Groesse
-/// deklarieren und weniger Stuecke hergeben, als sie deklarieren.
+/// deklarieren und weniger hergeben, als sie deklarieren -- an Marken oder an Elementen.
 ///
 /// Die drei Boeden darueber stehen an der Probe, an der Tabelle und am Eintrag; keiner von
 /// ihnen sieht die Liste. Verliert `KENNZEICHEN_SUMME_DER_REGEL` eines ihrer drei Stuecke,
@@ -1359,12 +1436,20 @@ std::vector<Leerstelle> knappe_tabellen(const std::vector<Probenzahl>& zahlen)
 /// Groesse (`NICHTS`) steht hier nie drin -- dieselbe Wahl und derselbe Grund wie bei
 /// `knappe_tabellen`. Eine eingebettete Liste erreicht diese Reihe gar nicht erst; sie
 /// deklariert nichts und schuldet deshalb nur, was `gleiche_ab` von ihr verlangt.
+///
+/// **Die Richtung, in die er seit Paket 0279 streng genug ist:** Verglichen wird nicht die
+/// Markenzahl, sondern `hergegeben` -- die kleinere von Marken und Elementen. Vorher deckte
+/// eine zu hohe Markenzahl eine kurze Liste zu: `{VERBINDE("a", "b"), "c"}` als Drei
+/// deklariert gab drei Marken aus zwei Elementen her, `3 >= 3`, und die fehlende Zeile ging
+/// gruen durch. Wer diese Schranke wieder auf `lz.stuecke` allein stellt oder die groessere
+/// der beiden Zahlen nimmt, macht den Fall wieder still; der letzte Fall der zweiten
+/// Falltabelle geht dann rot, und das ist seine Aufgabe.
 std::vector<std::size_t> knappe_listen(const std::vector<Listenzahl>& listen)
 {
     std::vector<std::size_t> knapp;
     for (std::size_t i = 0; i < listen.size(); ++i) {
         const Listenzahl& lz = listen[i];
-        if (lz.deklariert == NICHTS || lz.stuecke >= lz.deklariert) {
+        if (lz.deklariert == NICHTS || hergegeben(lz) >= lz.deklariert) {
             continue;
         }
         knapp.push_back(i);
@@ -1525,27 +1610,28 @@ struct Tabellenfall {
     std::size_t      stumm;     // Proben, die den Namen im Code fuehren und nichts liefern
     std::size_t      leer;      // gelesene Tabellen, aus denen kein Eintrag kam
     std::size_t      knapp;     // gelesene Tabellen, die weniger hergeben als sie deklarieren
-    // Aufgeloeste benannte Listen, die weniger Stuecke hergeben als sie deklarieren.
+    // Aufgeloeste benannte Listen, die weniger hergeben als sie deklarieren -- an Marken
+    // oder an Elementen.
     //
     // **Die Vorgabe ist die Erwartung und nicht ihre Abwesenheit:** Geprueft wird dieses
     // Feld auch an den **neunzehn** Faellen, die es auf der Vorgabe lassen, und nicht nur
     // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
     // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
-    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **acht** Faelle,
-    // die es angeht, sind die letzten acht der Tabelle -- **Fall 20 bis Fall 27** in der
+    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **neun** Faelle,
+    // die es angeht, sind die letzten neun der Tabelle -- **Fall 20 bis Fall 28** in der
     // Zaehlung, mit der `selbsttest_verzeichnis` sie meldet --, und sie schreiben es aus:
-    // **vier** eine Eins (20, 22, 24, 26) und **vier** eine Null (21, 23, 25, 27).
-    // Die vier Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste und
-    // das Element ohne Literal; bei jeder der vier Nullen ist gerade das Schweigen die
-    // Aussage -- es sind "dieselbe Liste mit allen dreien", "drei Teile, zwei Marken,
-    // zwei deklariert", "die Groesse der Liste steht hinter einem `using`" und "ein
-    // Element traegt sein Literal in einem Aufruf". Neunzehn und acht sind die
-    // siebenundzwanzig Faelle der Tabelle.
+    // **fuenf** eine Eins (20, 22, 24, 26, 28) und **vier** eine Null (21, 23, 25, 27).
+    // Die fuenf Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste,
+    // das Element ohne Literal und das Element mit zwei Literalen; bei jeder der vier
+    // Nullen ist gerade das Schweigen die Aussage -- es sind "dieselbe Liste mit allen
+    // dreien", "drei Teile, zwei Marken, zwei deklariert", "die Groesse der Liste steht
+    // hinter einem `using`" und "ein Element traegt sein Literal in einem Aufruf".
+    // Neunzehn und neun sind die achtundzwanzig Faelle der Tabelle.
     //
-    // **Aufgezaehlt, nicht durch eine Eigenschaft benannt:** "die acht mit einer
+    // **Aufgezaehlt, nicht durch eine Eigenschaft benannt:** "die neun mit einer
     // benannten Liste" waere falsch -- die Faelle 1, 4 und 6 fuehren ebenfalls eine
     // (`KZ_SUMME`, `KZ_ANDERSWO`, `KZ_DOPPELT`) und lassen das Feld dennoch auf der
-    // Vorgabe. Eine Eigenschaft muss ueber alle siebenundzwanzig stimmen, eine
+    // Vorgabe. Eine Eigenschaft muss ueber alle achtundzwanzig stimmen, eine
     // Aufzaehlung nur ueber sich selbst.
     //
     // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
@@ -1572,7 +1658,7 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 27> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 28> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
      "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
@@ -1765,7 +1851,8 @@ constexpr std::array<Tabellenfall, 27> TABELLENFAELLE = {{
      "}};\n",
      "", true, "R::Eins=alphabeta;gamma", 0, 0, 0, 0},
 
-    // Zwei Eintraege nennen dieselbe kurze Liste. Sie ist **eine**, und sie steht einmal im
+    // Zwei Eintraege nennen dieselbe kurze Liste -- **die geteilte Liste**, `KZ_GETEILT`, so
+    // genannt in der Aufzaehlung bei `listen_knapp`. Sie ist **eine**, und sie steht einmal im
     // Bericht. Ohne diesen Fall zaehlte er ein Ding zweimal und nennte eine Zahl, die es
     // nicht gibt. Die Tabelle deklariert zwei und gibt zwei her -- sie selbst ist nicht knapp.
     {"zwei Eintraege, eine kurze Liste -- einmal gemeldet",
@@ -1813,8 +1900,10 @@ constexpr std::array<Tabellenfall, 27> TABELLENFAELLE = {{
     // Fall darueber: dort ein Befund zuviel an heilem Text, hier keiner an kaputter Bindung.
     //
     // Die Null im letzten Feld ist deshalb ausgeschrieben und nicht der Vorgabe ueberlassen:
-    // Bei diesem Fall ist sie die Aussage. Lernt die Zerlegung eines Tages die Elementgrenze,
-    // bricht diese Erwartung -- und das ist die richtige Art zu brechen.
+    // Bei diesem Fall ist sie die Aussage. Lernt die **Zerlegung** eines Tages die
+    // Elementgrenze, bricht diese Erwartung -- und das ist die richtige Art zu brechen. Die
+    // Elementzahl in `Listenzahl` (Paket 0279) ist das nicht: `stuecke_aus` liest weiter
+    // Marken, und hier sind es zwei gegen zwei Elemente, also bleibt die Null.
     {"ein Element traegt sein Literal in einem Aufruf -- Marke da, Wortlaut falsch, nicht "
      "gemeldet",
      "constexpr std::array<const char*, 2> KZ_RUF = {ERSTES(\"alpha\"), \"beta\"};\n"
@@ -1822,6 +1911,31 @@ constexpr std::array<Tabellenfall, 27> TABELLENFAELLE = {{
      "    {R::Eins, \"n\", \"w\", KZ_RUF},\n"
      "}};\n",
      "", true, "R::Eins=alpha;beta", 0, 0, 0, 0},
+
+    // **Dasselbe Element mit zwei Literalen, und hier faellt die Markenzahl nach oben.**
+    // `VERBINDE("alpha", "beta")` ist **ein** Element und hinterlaesst **zwei** Marken; mit
+    // `"gamma"` daneben stehen zwei Elemente gegen drei Marken. Als Drei deklariert ist die
+    // Liste wirklich kurz -- ein Element fehlt --, und die Markenzahl allein faende
+    // `3 >= 3` und schwiege: ein gruener Lauf an kaputtem Text, erreicht durch ein
+    // Aufrufargument. Gemeldet wird er allein, weil `hergegeben` die **Elementzahl** zwei
+    // gegen die deklarierte Drei haelt.
+    //
+    // **Was dieser Fall toetet:** die Elementzahl in `Listenzahl` und das Minimum in
+    // `hergegeben`. Faellt eines von beiden weg -- oder nimmt `hergegeben` die groessere der
+    // zwei Zahlen --, kommt hier null statt eins heraus und der Fall geht rot.
+    //
+    // Er und Fall 26 sind das Paar, an dem die beiden Zahlen auseinanderfallen, und sie
+    // fallen nach entgegengesetzten Seiten: dort eine Marke gegen zwei Elemente, hier drei
+    // Marken gegen zwei Elemente. Keiner der beiden kann den anderen vertreten, und genau
+    // deshalb steht dort das Minimum und nicht eine der zwei Zahlen allein.
+    {"ein Element traegt zwei Literale -- drei Marken aus zwei Elementen, drei deklariert, "
+     "gemeldet",
+     "constexpr std::array<const char*, 3> KZ_RUF_ZWEI = {VERBINDE(\"alpha\", \"beta\"), "
+     "\"gamma\"};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_RUF_ZWEI},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha;beta;gamma", 0, 0, 0, 1},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)
@@ -1970,19 +2084,24 @@ std::size_t selbsttest_verzeichnis()
                          fall.listen_knapp);
             ++falsch;
         }
-        // Wieder nicht nur, dass gemeldet wird, sondern womit: Probe, Zeile, Name und beide
-        // Zahlen. Eine Meldung ohne eine davon schickt den Leser an keine Stelle.
+        // Wieder nicht nur, dass gemeldet wird, sondern womit: Probe, Zeile, Name und alle
+        // drei Zahlen. Eine Meldung ohne eine davon schickt den Leser an keine Stelle.
+        // Gefragt wird mit `hergegeben` und nicht mit `lz.stuecke`, weil sonst zwei
+        // Fassungen derselben Regel nebeneinanderstuenden -- eine in `knappe_listen`, eine
+        // hier -- und die Pruefung an dem Fall zerbraeche, den sie pruefen soll.
         for (std::size_t k = 0; k < listen_knapp.size(); ++k) {
             const Listenzahl& lz = listen[listen_knapp[k]];
             if (lz.probe.empty() || lz.name.empty() || lz.zeile == 0
-                || lz.deklariert == NICHTS || lz.stuecke >= lz.deklariert) {
+                || lz.deklariert == NICHTS || hergegeben(lz) >= lz.deklariert) {
                 std::fprintf(stderr,
                              "Selbsttest Verzeichnis, Fall %zu (%s): die gemeldete knappe "
-                             "Liste traegt Probe '%s', Name '%s', Zeile %zu, deklariert %zu "
-                             "und gelesen %zu. Gemeldet wird nur, was Probe, Name, Zeile, "
-                             "eine lesbare Groesse und weniger Stuecke als diese hat.\n",
+                             "Liste traegt Probe '%s', Name '%s', Zeile %zu, deklariert %zu, "
+                             "%zu Marke(n) und %zu Element(e). Gemeldet wird nur, was Probe, "
+                             "Name, Zeile, eine lesbare Groesse und von Marken oder Elementen "
+                             "weniger als diese hat.\n",
                              i + 1, std::string(fall.was).c_str(), lz.probe.c_str(),
-                             lz.name.c_str(), lz.zeile, lz.deklariert, lz.stuecke);
+                             lz.name.c_str(), lz.zeile, lz.deklariert, lz.stuecke,
+                             lz.elemente);
                 ++falsch;
             }
         }
@@ -2464,21 +2583,27 @@ int main(int argc, char** argv)
                      listen_knapp.size());
         for (std::size_t i = 0; i < listen_knapp.size(); ++i) {
             const Listenzahl& lz = listen[listen_knapp[i]];
-            std::fprintf(stderr, "  %-40s Zeile %zu: `%s`, %zu deklariert, %zu gelesen\n",
+            std::fprintf(stderr,
+                         "  %-40s Zeile %zu: `%s`, %zu deklariert, %zu Marke(n), %zu "
+                         "Element(e)\n",
                          lz.probe.c_str(), lz.zeile, lz.name.c_str(), lz.deklariert,
-                         lz.stuecke);
+                         lz.stuecke, lz.elemente);
         }
         std::fprintf(stderr,
-                     "Aufgeloest wurden im ganzen Baum %zu benannte Liste(n).\nGezaehlt "
-                     "werden Marken und keine Zeichenkettenteile: Benachbarte Teile "
-                     "verschmelzen,\nweil die Sprache es tut, also ist `{\"eine lange \" "
-                     "\"Meldung\", \"b\"}` ein Feld mit zwei\nElementen. Die erwartete Zahl "
-                     "steht nicht in diesem Programm, sondern in der spitzen\nKlammer vor "
-                     "dem Namen der Liste. Ein Stueck, das dort fehlt, nimmt eine Zusicherung "
-                     "aus\nder Pruefung heraus, ohne dass eine Zahl auf null faellt -- und "
-                     "einen solchen Teilbestand\nerkennt ohne diese Schranke niemand als "
-                     "Teil. Entweder kommt das Stueck zurueck, oder die\ndeklarierte Groesse "
-                     "faellt mit ihm.\n",
+                     "Aufgeloest wurden im ganzen Baum %zu benannte Liste(n).\nGezaehlt wird "
+                     "zweierlei, und die kleinere Zahl entscheidet. Marken statt "
+                     "Zeichenkettenteile:\nBenachbarte Teile verschmelzen, weil die Sprache "
+                     "es tut, also ist `{\"eine lange \" \"Meldung\",\n\"b\"}` ein Feld mit "
+                     "zwei Elementen. Und Elemente daneben, an den Kommas der aeussersten\n"
+                     "Ebene, weil ein Element mehr als eine Marke tragen kann: "
+                     "`{VERBINDE(\"a\", \"b\"), \"c\"}` hat\ndrei Marken und zwei Elemente, "
+                     "und ohne die zweite Zahl deckte die erste die fehlende\nZeile zu. Die "
+                     "erwartete Zahl steht nicht in diesem Programm, sondern in der spitzen\n"
+                     "Klammer vor dem Namen der Liste. Ein Stueck, das dort fehlt, nimmt eine "
+                     "Zusicherung aus\nder Pruefung heraus, ohne dass eine Zahl auf null "
+                     "faellt -- und einen solchen Teilbestand\nerkennt ohne diese Schranke "
+                     "niemand als Teil. Entweder kommt das Stueck zurueck, oder die\n"
+                     "deklarierte Groesse faellt mit ihm.\n",
                      listen.size());
         return 2;
     }
