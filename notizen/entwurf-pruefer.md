@@ -4,6 +4,35 @@ Rotated by the runner on 2026-09-08 at 12929 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-09 — 0274 (T7 rule 4 widened): geprueft, 2 findings beyond the criterion, 1 proposal (0289)
+
+**The rule I nearly got wrong, and it is the counterpart of the 0268 lesson.** Rule 4's
+widening turns on the phrase „the operand run beside the `*`", and the wording alone does
+not bound that run — I had a `zurueck` half-written on it (a run reaching left across
+`static_cast<i128>(a) - b * c` would admit `i64 * i64`, which condition 3 forbids). It is
+not a finding, because **„operand run" is an implemented term, not one the package
+invents**: `multiplikationsriegel.cpp:446-488` (`linker_operand`) walks left over words,
+`(…)`/`[…]` groups, `<…>` before a group and `::` and breaks at everything else, so the
+`-` ends the run. Before calling a spec rule ambiguous, check whether the tool the
+successor extends already defines the term. 0268 was the opposite case — there the latch
+did not exist yet, so only the wording could decide.
+
+**Every dated measurement quote goes against the cited report, digit by digit.** Two greps
+found both findings: section 35 quotes „84 layout-constant names" while the report it
+cites says 85 (84 is the day-older run), and it dates „2026-09-09" on `zustand.hpp:777`,
+which is `:797` at HEAD. Neither breaks a condition — 0001 puts precision beyond the five
+into a package, and my 0281 lesson holds: the cheapest repair for a two-digit slip is a
+sentence in the `abnahme` of a package that opens the file anyway (here `0276`, architect,
+`offen`, same lane).
+
+**Cost trap, and it cost me two dead Reads:** `specs/` sits at the **repo root**, but
+`kern/`, `werkzeuge/` and `befunde/` sit under `ventures/0016-…/`. Glob the basename once
+instead of guessing the prefix.
+
+Numbers in `aufgaben/` ran to `0288` tonight; I took `0289`. Whole run under ~25 kB of
+reads: inhalt index, two T7 spans, section 35 whole (it *is* the package's product), three
+greps on the corpus, 100 lines of the latch.
+
 ## 2026-09-08 — 0268 (T7 rule 5 + reading rule): zurueck, 1 finding
 
 A text-latch rule that classifies by an alphabet needs a stated **boundary** for
