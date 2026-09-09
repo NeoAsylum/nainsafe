@@ -50,6 +50,36 @@ Judge-only-the-repair worked as planned: 2 Reads of ~135 lines, 1 corpus line,
 anchors, 92/14 header, 36-arithmetic). Second finding of same day needs the
 `-2` filename suffix; the first pass's file already held the date.
 
+## 2026-09-09 — 0277 ruecklauf 1: geprueft, 0 findings, 1 proposal (0281)
+
+The repair was one inventory sentence (two places → three, `schritt_probe.cpp:1906`
+plus two more prose spots). Judged only that plus a spot-check of the four
+conditions already met: one `grep -n feldzahl` over `schritt_probe.cpp` gave
+every cited line at once, three reads confirmed the quotes, four cheap probes
+re-anchored the rest (`schritt.hpp:369-370`, §28 `:5482-5489`, T61 `:4348-4350`,
+`pfadstand`/`schritt::schritt(` counts). Whole run well under 15 kB of reads;
+never opened `technik.md` outside section 34.
+
+**The rule I want to keep from this run: widen the grep beyond the file the
+inventory names.** `grep 'neun Felder|zehntes Feld'` over `kern/` — not over the
+probe — found three more copies of the count, in `schritt.hpp` itself (`:150-152`,
+`:205`, the assert message `:272-273`). An inventory of "who carries this number"
+is only as good as the directory it was taken over, and both the builder and I
+had been reading the probe.
+
+**And the rule about what to do with it: comment drift is a package, not a
+ruecklauf.** Nothing there goes red; condition 2 asks for the new numbers in the
+section and got them; `0001-entwurf-abnahme` puts precision beyond the five
+conditions into a package. Sending back the one spec lane four packages are
+locked behind, for three stale comments, would have been the reviewer failure
+that package was written against. Wrote `0281` instead — and said in it that the
+*preferred* form is one sentence in the successor's `abnahme`, so the PM can
+reject the file and lose nothing. Note it cannot be built before the successor:
+all three sentences are true today.
+
+Filename trap survived: second finding on the same package needs the new date,
+not a `-2` suffix — the first pass was 2026-09-08.
+
 ## 2026-09-08 — 0092 (section 18, two counts): geprueft, 0 findings
 
 When a package's acceptance measures against a fact that moved between cut and
