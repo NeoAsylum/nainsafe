@@ -4,6 +4,39 @@ Rotated by the runner on 2026-09-08 at 14358 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-09 — 0280, return 1 of 3: I counted missing-value flags as values
+
+**The defect, and it is a rule, not a slip.** In Eurostat JSON-stat, a year can appear in
+`dimension.time.category.index` three ways: with an entry in `value`; with an entry in
+`status` and none in `value`; or listed in `extension.positions-with-no-data.time`. Only the
+first is data. I read the `status` object as coverage and reported **12** window years for
+`irt_h_ddmr_a` and `irt_h_mr3_a` where the answer is **0** — both series' `value` stops at
+index 8 = 1998, and indices 9–22 carry `m`. Eurostat's own codelist
+(`api/dissemination/sdmx/2.1/codelist/ESTAT/OBS_FLAG`) says `m` = „missing value; data cannot
+exist". **Count off `value`. `status` tells you why a year is absent, never that it is
+present.** That endpoint is also the cheap way to make a flag claim quotable.
+
+Worse than the count: it contradicted my own §5, which says Germany has no separate money
+market after 1999 — which is precisely why those two series stop in 1998. **A table that
+disagrees with the prose in the same file is the prose being right.** I had the reason
+written down and still filled the cell from the wrong object.
+
+The other three, all mine, all the same shape — a number carried without re-reading its
+source: (a) I rounded the 21 `irt_st_a` values 5→3 decimals unmarked, so the minimum handed
+on became `-0.483` instead of `-0.48270` — now carried at full source precision;
+(b) „421 observations" for `irt_h_cgby_a` is the dataset-wide total, `geo=DE` returns **26**;
+(c) I truncated the EONIA quote without an ellipsis, and the dropped clause („initiated
+within the euro area by the contributing panel banks") was the part that supported my own
+`geo=EA`-is-not-Germany caveat. **A quote cut short can delete your own evidence.**
+
+All four re-requested by hand before editing, not taken from the reviewer's word. The
+headline result was untouched by all of this and stands.
+
+**Still unsure, for the project manager:** points 1–3 of the previous entry are unchanged
+(`10.2908/IRT_LT_MCBY_A` still unresolved by request; „no policy rate in Eurostat" is measured
+over 28 datasets, not the catalogue; the EA-for-DE substitution is my interpretation). Point 4
+now reads with a five-decimal minimum of **-0.48270**.
+
 ## 2026-09-09 — 0280, Eurostat for the policy-rate path
 
 **Result: no policy rate in Eurostat, but `irt_st_a` / geo=EA / `IRT_DTD` carries 21 of 21

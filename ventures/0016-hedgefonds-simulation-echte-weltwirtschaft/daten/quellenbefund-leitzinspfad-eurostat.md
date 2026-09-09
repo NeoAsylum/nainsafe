@@ -49,15 +49,35 @@ carrying a non-null value.
 | 3 | `irt_lt_mcby_a` | EMU convergence criterion series - annual data | DE | 200 | **21 / 21** | — gapless, but a bond yield (§3) |
 | 4 | `irt_lt_gby10_a` | Government bond yields, 10 years' maturity - annual data | DE | 200 | **0** | `geo` not indexed for DE |
 | 5 | `irt_euryld_a` | Euro yield curves - annual data | EA | 200 | **18** | series starts 2004; 2001–2003 absent |
-| 6 | `irt_h_ddmr_a` | Day-to-day rates for euro area countries - annual data | DE | 200 | **12** | series ends 2014; 2013 and 2014 carry status `m` |
-| 7 | `irt_h_mr3_a` | 3-month rates for euro area countries - annual data | DE | 200 | **12** | series ends 2014; 2013 and 2014 carry status `m` |
+| 6 | `irt_h_ddmr_a` | Day-to-day rates for euro area countries - annual data | DE | 200 | **0** | data ends 1998; the whole window is `m`-flagged or unindexed (below) |
+| 7 | `irt_h_mr3_a` | 3-month rates for euro area countries - annual data | DE | 200 | **0** | data ends 1998; the whole window is `m`-flagged or unindexed (below) |
 | 8 | `irt_h_cgby_a` | Central government bond yields - annual data | DE | 200 | **0** | series runs 1973–1998, entirely before the window |
 | 9 | `irt_h_euryld_a` | Euro yield curves - annual data | EA | 200 | **4** | time index ends 2004 |
 | 10 | `ei_mfir_m` | Interest rates - monthly data | DE | 200 | n/a | probed `2020-01`–`2020-03` for its `indic` labels only (§3) |
 
 Rows 1 and 4 are answers, not absences of the quantity: the query returned 200 with an empty
-`geo` index. Row 8's series exists and carries 421 observations; **none** of them fall in the
-window.
+`geo` index. Row 8's series exists and carries **26 observations for `geo=DE`** (1973–1998,
+`time` index 0–25, first `9.34`, last `4.40`); **none** of them fall in the window. The 421
+observations named in an earlier draft of this file are the dataset-wide total across all
+reporting countries, not the German count.
+
+**Rows 6 and 7, re-requested 2026-09-09 with `sinceTimePeriod=1990` to see the whole series.**
+Both come back byte-identical in structure. `time` index runs `{"1990":0,…,"2014":24}`; `value`
+holds **9 entries at indices 0–8**, i.e. 1990–1998, last German value 1998 = `3.41321`
+(`irt_h_ddmr_a`) resp. `3.51907` (`irt_h_mr3_a`); `status` is
+`{"8":"d","9":"m","10":"m",…,"22":"m"}`; `extension.positions-with-no-data.time` is `[23,24]`.
+The window 2001–2021 therefore maps to indices 11–24: indices 11–22 (2001–2012) carry `m` and
+no value, indices 23–24 (2013–2014) are the no-data positions, and 2015–2021 are not in the
+index at all. **`m` is not a value.** Eurostat's own flag codelist
+(`api/dissemination/sdmx/2.1/codelist/ESTAT/OBS_FLAG`, retrieved 2026-09-09) names it:
+
+> `m` — „missing value; data cannot exist"
+
+so the count is **0**, not the 12 in-window `m` flags. The `d` on index 8 is „definition
+differs (see metadata)". These two are the only rows where a series stops before the window
+and Eurostat pads the index with `m`; rows 5 and 9 also start late or stop early, carry no `m`,
+and their counts stand. The correction agrees with §5: Germany has no separate money market
+after 1999, which is why both series stop in 1998.
 
 ## 3. What the found series measures — quoted, not inferred
 
@@ -75,7 +95,8 @@ what it is:**
 
 > „The rate is the EONIA (Euro OverNight Index Average), the effective overnight reference
 > rate for the euro, computed as a weighted average of all overnight unsecured lending
-> transactions in the interbank market"
+> transactions in the interbank market, initiated within the euro area by the contributing
+> panel banks."
 
 and on the supplier:
 
@@ -84,17 +105,24 @@ and on the supplier:
 
 So the concept is a **money-market rate**, the third of the four the package named — an
 interbank market price computed by the ECB, not set by it. The same file does not call it a
-policy rate anywhere. The 21 values, euro area, `IRT_DTD`, annual:
+policy rate anywhere. The 21 values, euro area, `IRT_DTD`, annual, **at the source's own
+precision of five decimals** — re-requested 2026-09-09, no rounding applied here:
 
-`2001: 4.387 · 2002: 3.287 · 2003: 2.318 · 2004: 2.049 · 2005: 2.088 · 2006: 2.834 ·
-2007: 3.866 · 2008: 3.870 · 2009: 0.708 · 2010: 0.438 · 2011: 0.871 · 2012: 0.229 ·
-2013: 0.089 · 2014: 0.094 · 2015: -0.108 · 2016: -0.320 · 2017: -0.355 · 2018: -0.363 ·
-2019: -0.392 · 2020: -0.462 · 2021: -0.483`
+`2001: 4.38720 · 2002: 3.28660 · 2003: 2.31770 · 2004: 2.04890 · 2005: 2.08780 ·
+2006: 2.83350 · 2007: 3.86630 · 2008: 3.86950 · 2009: 0.70790 · 2010: 0.43770 ·
+2011: 0.87100 · 2012: 0.22890 · 2013: 0.08900 · 2014: 0.09370 · 2015: -0.10780 ·
+2016: -0.32010 · 2017: -0.35480 · 2018: -0.36280 · 2019: -0.39180 · 2020: -0.46170 ·
+2021: -0.48270`
+
+No `status` entry and no `positions-with-no-data` on any of the 21 — hence gapless without a
+flag caveat, unlike rows 6 and 7.
 
 **Seven of the 21 are negative.** Whoever carries this into series 9 carries a signed path;
 `T51` computes `aufschlag_min` from the minimum of the path
-(`daten/quellenbefund-leitzinspfad.md:165-166`), and that minimum is **-0.483**, not a
-positive number. Not decided here.
+(`daten/quellenbefund-leitzinspfad.md:165-166`), and that minimum is **-0.48270** (2021), not
+a positive number. An earlier draft of this file gave the 21 values rounded to three decimals
+and named the minimum as `-0.483`; a follow-up that fixes the fixed-point scale must take the
+five-decimal figures above, not that rounding. Not decided here.
 
 Row 3, `irt_lt_mcby_a`, is also gapless for **Germany** over the window, and it is the same
 concept as the IMF's `S13BOND_RT_PT_A_PT` — a long-term government bond yield, a market
