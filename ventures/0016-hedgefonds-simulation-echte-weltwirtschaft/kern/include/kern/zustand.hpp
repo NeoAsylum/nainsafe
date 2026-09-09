@@ -147,6 +147,26 @@ enum class Instrument : std::uint8_t {
 
 inline constexpr std::size_t INSTRUMENTE = 4;
 
+/// Die drei Instrumente, deren Stand einer Runde aus einem Politikpfad kommt --
+/// Leitzins, Zoll, Haushalt.
+///
+/// Die Finanzmarktregulierung hat keine Reihe (T61) und ist deshalb nicht darunter; ihr
+/// Stand steht nach T45 in der Adresse und wird vorgetragen. Sie ist der **letzte** Wert
+/// der Aufzaehlung, und genau darauf ruht die Bauform des Pfadtraegers in
+/// `kern::werte::Konstanten`: Sein innerer Index **ist** der Wert von `Instrument`, also
+/// deckt der Bereich `0 ... PFADINSTRUMENTE-1` genau die drei mit Pfad ab. Wer ein
+/// fuenftes Instrument vor der Regulierung einschoebe, verschoebe sie von ihrem Platz --
+/// die beiden Zusicherungen darunter faengen das beim Uebersetzen, statt es dem
+/// Traeger zu ueberlassen.
+inline constexpr std::size_t PFADINSTRUMENTE = 3;
+
+static_assert(PFADINSTRUMENTE + 1 == INSTRUMENTE,
+              "T61: genau eines der vier Politikinstrumente hat keinen Politikpfad");
+static_assert(static_cast<std::size_t>(Instrument::Regulierung) == PFADINSTRUMENTE,
+              "das eine ohne Pfad ist die Regulierung, und sie steht am Ende der "
+              "Aufzaehlung. Steht sie woanders, zaehlt der innere Index eines "
+              "Pfadtraegers ein anderes Instrument, ohne dass etwas abbraeche");
+
 /// Die vier Groessen je Sektor, in der Reihenfolge aus T15.
 enum class SektorGroesse : std::uint8_t {
     Wertschoepfung = 0,

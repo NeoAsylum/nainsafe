@@ -506,7 +506,54 @@ void schritt_2_aktionen(Schreiber& schreiber, const Aktionsbuendel& aktionen, In
 /// `weltlauf`. Druck, Gegendruck und Restverzoegerung (12 je Land) liegen ausserhalb:
 /// Im `weltlauf` kommen die Politikinstrumente aus dem Jahrgang statt aus dem
 /// Lobbydruck (T38), es gibt also keinen Druck zu fuehren.
-void schritt_3_politik(Schreiber& schreiber, Index platz) { schreiber.vortrag(platz); }
+///
+/// **Und seit Paket 0284 holt dieser Rumpf sie da auch her.** Bis dahin trug er alle
+/// sechzehn Adressen vor -- der Satz "aus dem Jahrgang" stand in seinem Kommentar und in
+/// keiner Zeile darunter. Drei der vier Instrumente eines Landes haben eine Reihe des
+/// Jahrgangs (T61: Reihe 9, 13, 12); ihr Stand fuer **diese** Runde steht im Traeger, und
+/// dieser Rumpf setzt ihn. Das vierte, die Finanzmarktregulierung, hat keine Reihe, steht
+/// nach T45 in der Adresse und wird weiter vorgetragen.
+///
+/// **Die Ursache ist `Jahrgang` und nicht `Vortrag`**, und das gilt auch dann, wenn die
+/// Zahl sich nicht bewegt: Nach T18 nennt die Ursache die **Herkunft** des Wertes, und
+/// die ist die Sollreihe des Jahrgangs und nicht die eigene Adresse. Es ist derselbe
+/// Grund, aus dem Schritt 5 seine Zustimmung als `Gegenkraft{2}` schreibt, auch wenn die
+/// Regel den Wert auf sich selbst abbildet. Verzoegerung null und Beitrag 1.000 Promille,
+/// weil Ursache und Wirkung in derselben Runde liegen und diese eine Ursache die Groesse
+/// vollstaendig erklaert.
+///
+/// **Warum die Adresse rueckwaerts aufgeloest wird und nicht der Traeger vorwaerts.**
+/// Dieser Rumpf bekommt aus der Adressrunde eine der 310 Adressen und nicht ein Paar aus
+/// Land und Instrument. Er sucht das Paar deshalb dort, wo es entstanden ist -- in
+/// derselben Doppelschleife ueber `LAENDER_ALLE` und `INSTRUMENTE_ALLE`, aus der auch die
+/// Zuordnungstafel oben gebaut wird. Ein Rechenweg von der Adresse zurueck auf die beiden
+/// Kennungen waere eine zweite Abschrift der Blockarithmetik aus T15, und sie liefe still
+/// falsch, sobald jemand den Landesblock umstellt; diese Schleife folgt ihm.
+///
+/// **Kein `default`-Zweig am Ende und kein Abbruch:** Die sechzehn Adressen, die hier
+/// ankommen koennen, sind genau die, die `baue_zuordnung` diesem Schritt gegeben hat, und
+/// das ist dieselbe Schleife. Eine Adresse, die durch sie faellt, gaebe es nur, wenn
+/// Tafel und Suche auseinanderliefen -- und dann bliebe die Adresse ungeschrieben, was
+/// die Rundenendpruefung aus T38 mit ihrem eigenen Namen meldet. Ein Abbruch hier waere
+/// eine zweite Meldung fuer denselben Fall, und die schlechtere: Sie kaeme aus einem
+/// Schritt statt aus der Pruefung, die die Vollzaehligkeit fuehrt.
+void schritt_3_politik(Schreiber& schreiber, const Konstanten& konstanten, Index platz)
+{
+    for (const Gebiet land : LAENDER_ALLE) {
+        for (const Instrument welches : INSTRUMENTE_ALLE) {
+            if (zustand::stelle_instrument(land, welches, InstrumentFeld::Stand) != platz) {
+                continue;
+            }
+            if (welches == Instrument::Regulierung) {
+                schreiber.vortrag(platz);
+                return;
+            }
+            schreiber.setze(platz, werte::pfadstand(konstanten, land, welches),
+                            Ursache::jahrgang(), 0, 1000);
+            return;
+        }
+    }
+}
 
 /// **Schritt 4 -- Wirtschaft.** Nach `spiel.md`: "Produktion aus Kapitalstock und
 /// Produktivitaet, Handel zwischen den vier Laendern und der Restwelt, Preise,
@@ -669,13 +716,18 @@ i64 realeinkommenshub(const Zustand& rundengrenze, const Schreiber& schreiber,
 /// Auskunft an den Projektmanager im Arbeitspaket
 /// `0240-die-klemme-steht-hinter-einer-addition-die-abbricht`.
 ///
-/// **Heute erreicht kein Zustand diesen Abbruch**, und das ist gemessen statt gehofft: Der
-/// additive Term ist `mal_geteilt(zustimmung_elastizitaet, hub, 10.000)`, und `hub` ist
-/// null, solange `schritt_3_politik` vortraegt. Ein Produkt mit dem Faktor null bleibt
-/// null, welchen Koeffizienten der Parametersatz auch traegt -- der Koeffizient ist also
-/// kein zweiter Weg hierher, sondern gar keiner. `test/schritt_probe.cpp` misst beides:
-/// dass er nichts bewegt, und was aus den vier Ausgangswerten wuerde, wenn der Term nicht
-/// null waere.
+/// **Ob ein Zustand diesen Abbruch erreicht, ist seit Paket 0284 offen**, und der Weg
+/// dahin ist derselbe geblieben: Der additive Term ist ein `mal_geteilt` aus
+/// `zustimmung_elastizitaet`, `hub` und 10.000. Bis dahin war `hub` null, weil
+/// `schritt_3_politik` vortrug; ein Produkt mit null bleibt null, welchen Koeffizienten der
+/// Parametersatz auch traegt, und deshalb war der Koeffizient kein zweiter Weg hierher,
+/// sondern gar keiner. Schritt 3 schreibt jetzt den Pfadstand, `hub` kann von null
+/// verschieden sein, und damit haengt die Antwort an Zahlen, die erst der Jahrgangsbau
+/// liefert. **Was `test/schritt_probe.cpp` weiterhin misst**, ist die eine Haelfte, die
+/// ohne solche Zahlen pruefbar ist: dass der Koeffizient auf einem Traeger, dessen
+/// Pfadstand die Adressen nicht bewegt, keine der 310 Groessen ausser der Parametersumme
+/// ruehrt -- und daneben, was aus den vier Ausgangswerten wuerde, wenn der Term nicht
+/// null waere. Die andere Haelfte braucht einen geladenen Pfad und ist dort kein Fall.
 void summe_der_regel_pruefen(Index platz, i64 ausgangswert, i64 wirkung)
 {
     const festkomma::i128 summe =
@@ -804,8 +856,16 @@ void schritt_6_abrechnung(Schreiber& schreiber, Index platz)
 /// Die sechs Faelle stehen in der Reihenfolge aus `SCHRITTFOLGE`. Kein `default`: Ohne
 /// ihn meldet `-Wswitch` einen fehlenden Fall, und mit `-Werror` ist ein siebter Schritt
 /// damit ein Bauabbruch statt einer stillen Auslassung.
+///
+/// **Der Traeger kommt seit Paket 0284 mit durch, und er aendert keine Schnittstelle des
+/// Kastens.** Diese Weiche steht im namenlosen Namensraum; ihr Argument ist im Kopf
+/// nirgends sichtbar. `schritt` hat den Traeger ohnehin in der Hand -- die Runde haelt
+/// seine Pruefsumme gegen den Zustand --, und die Adressrunde reicht ihn von dort an den
+/// einen der sechs Schritte weiter, der ihn liest. Das ist dieselbe Bauform, in der
+/// Schritt 5 ihn seit Paket 0197 bekommt, nur eine Ebene tiefer.
 void fuehre_schritt_aus(Rundenschritt welcher, Schreiber& schreiber,
-                        const Aktionsbuendel& aktionen, Index platz)
+                        const Aktionsbuendel& aktionen, const Konstanten& konstanten,
+                        Index platz)
 {
     switch (welcher) {
         case Rundenschritt::Ansicht:
@@ -815,7 +875,7 @@ void fuehre_schritt_aus(Rundenschritt welcher, Schreiber& schreiber,
             schritt_2_aktionen(schreiber, aktionen, platz);
             return;
         case Rundenschritt::Politik:
-            schritt_3_politik(schreiber, platz);
+            schritt_3_politik(schreiber, konstanten, platz);
             return;
         case Rundenschritt::Wirtschaft:
             schritt_4_wirtschaft(schreiber, platz);
@@ -976,7 +1036,7 @@ Rundenergebnis schritt(const Zustand& vorrunde, const Aktionsbuendel& aktionen,
             continue;
         }
 
-        fuehre_schritt_aus(eigner, rundenschreiber, aktionen, platz);
+        fuehre_schritt_aus(eigner, rundenschreiber, aktionen, konstanten, platz);
     }
 
     // Schritt 5 -- Reaktion, als Block und nach der Adressrunde. Zu diesem Zeitpunkt sind

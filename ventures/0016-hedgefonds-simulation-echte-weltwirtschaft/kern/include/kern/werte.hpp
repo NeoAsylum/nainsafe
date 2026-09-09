@@ -29,12 +29,23 @@
 //! Unten stehen zweiundzwanzig, in der Reihenfolge der Tabelle aus T48 und mit deren
 //! laufender Nummer davor.
 //!
-//! **Zweiundzwanzig Groessen in dreiundzwanzig Deklarationen, und der Unterschied ist
-//! genau einer.** Nr. 11 traegt zwei Stelligkeiten -- `handelsvolumen(l, s)` und ihre
-//! Summe `handelsvolumen(l)` --; T48 nennt sie "nicht zwei Definitionen desselben
-//! Namens, sondern eine Definition und ihre Aggregation" und zaehlt sie als **eine**
-//! Groesse. Wer den Kopf gegen die Tabelle legt, zaehlt deshalb Nummern und nicht
-//! Zeilen; die beiden Fassungen stehen unter derselben Nummer nebeneinander.
+//! **Zweiundzwanzig Groessen in vierundzwanzig Deklarationen, und die Abweichung hat
+//! seit Paket 0284 zwei Gruende, die nichts miteinander zu tun haben.** Der erste:
+//! Nr. 11 traegt zwei Stelligkeiten -- `handelsvolumen(l, s)` und ihre Summe
+//! `handelsvolumen(l)` --; T48 nennt sie "nicht zwei Definitionen desselben Namens,
+//! sondern eine Definition und ihre Aggregation" und zaehlt sie als **eine** Groesse.
+//! Wer den Kopf gegen die Tabelle legt, zaehlt deshalb Nummern und nicht Zeilen; die
+//! beiden Fassungen stehen unter derselben Nummer nebeneinander.
+//!
+//! Der zweite ist `pfadstand` unten, und er ist von anderer Art: Diese Deklaration
+//! traegt ueberhaupt keine Nummer der Tabelle, weil sie keine abgeleitete Groesse
+//! liefert, sondern ein Feld des Traegers herausgibt. Der Entwurf zu Paket `0277`
+//! ordnet sie hierher an -- "read in the core through **one** accessor in `kern::werte`
+//! that aborts for `Instrument::Regulierung`" --, und damit ist der Satz aus T48, den
+//! dieser Kopf oben zitiert, um einen Fall reicher, als er geschrieben wurde. **Der
+//! Zahlwortriegel meldet sie**, und das ist richtig so: Er kennt nur Deklarationen mit
+//! Tabellennummer, und ob es eine dritte Sorte geben soll, ist eine Entwurfsfrage und
+//! kein Rumpf. Sie steht als Vorschlag `0286`.
 //!
 //! `Konstanten` ist keine dreiundzwanzigste Groesse, sondern der Traeger der Zahlen,
 //! die die Formeln aus T47 und T48 **neben** dem Zustand nennen. Ohne ihn muesste jede
@@ -78,13 +89,20 @@ namespace kern::werte {
 // Die Zahlen neben dem Zustand
 // ---------------------------------------------------------------------------
 
-/// Die Kalibrierwerte und die zwei Jahrgangskonstanten, die eine Runde neben den
+/// Die Kalibrierwerte und die drei Jahrgangskonstanten, die eine Runde neben den
 /// Zustandsadressen liest (T10b).
 ///
-/// **Die zwei sind `leitzins_start` und `durchgriff`**, beide nach T23 Punkt 5 eine
-/// Groesse des Jahrgangs; warum sie deshalb nicht in `parameter.toml` stehen, sagt
-/// der Kommentar an den beiden Feldern und nicht dieser hier. Die uebrigen sieben
-/// Felder sind Parameterschluessel nach T27.
+/// **Die drei sind `leitzins_start`, `durchgriff` und `pfadstand`**, alle nach T23
+/// Punkt 5 eine Groesse des Jahrgangs; warum sie deshalb nicht in `parameter.toml`
+/// stehen, sagt der Kommentar an den drei Feldern und nicht dieser hier. Die uebrigen
+/// sieben Felder sind Parameterschluessel nach T27.
+///
+/// **Was die drei bindet, ist die Herkunft und nicht die Bestaendigkeit** (Paket 0284).
+/// Die beiden ersten stehen ueber die ganze Partie fest, `pfadstand` traegt in jeder
+/// Runde eine andere Zahl. Gemeinsam ist ihnen, dass ihr Wert aus dem Jahrgang kommt
+/// und der Zustand von ihm nur `partie.jahrgang_id` fuehrt -- deshalb liegen alle drei
+/// ausserhalb der Pruefsumme, und deshalb ist Bestaendigkeit eine Eigenschaft der
+/// ersten beiden und keine Bedingung der Gruppe.
 ///
 /// **Die Trennung traegt eine Pruefung und ist deshalb keine Ordnungsfrage.** T10b
 /// laesst die Runde ihre Pruefsumme allein ueber die sieben Schluesselfelder bilden
@@ -179,7 +197,73 @@ struct Konstanten {
     /// Marktraeumung.
     std::array<std::array<zustand::i64, zustand::SEKTOREN_HANDELBAR>, zustand::GEBIETE>
         durchgriff{};
+
+    /// Der Stand der drei pfadgestuetzten Instrumente in **dieser** Runde, je spielbarem
+    /// Land -- T5 Klasse 3 (Basispunkte). Keine Kalibriergroesse.
+    ///
+    /// **Die dritte Jahrgangskonstante dieses Traegers** (Paket 0284): Der Wert kommt
+    /// nach T23 Punkt 5 aus den Pfadreihen des Jahrgangs -- Reihe 9 fuer den Leitzins,
+    /// Reihe 13 fuer den Zoll, Reihe 12 fuer den Haushalt -- und deshalb nicht aus
+    /// `parameter.toml`. Es entspricht dort keinem Eintrag, und das ist nachzaehlbar:
+    /// Wer es als `Runde(feld)` verbuchte, hoebe das Abzaehlen aus T10b von seinen
+    /// Eintraegen auf einen mehr -- gegen eine Datei, die den einen nicht hat.
+    ///
+    /// **Und der Unterschied zu den beiden ueber ihm, ausgeschrieben, weil er die
+    /// Pruefsumme betrifft:** `leitzins_start` und `durchgriff` tragen ueber die ganze
+    /// Partie dieselbe Zahl, dieses Feld in jeder Runde eine andere -- es ist die
+    /// Stuetzstelle des Politikpfads zur laufenden Runde, wo `leitzins_start` die erste
+    /// ist. Gerade deshalb darf es nicht in `parameter_pruefsumme`: Jene Summe wird in
+    /// **jeder** Runde gegen dieselbe Zustandsadresse gehalten, und ein Feld, das
+    /// zulaessig jede Runde springt, machte aus ihr eine Schranke, die in Runde zwei
+    /// reisst. Bewacht wird der Inhalt stattdessen von `daten_pruefsumme` beim Laden
+    /// (T22), zusammen mit `partie.jahrgang_id` -- genau die Bewachung, die die beiden
+    /// anderen auch haben.
+    ///
+    /// **Der innere Index ist der Wert von `zustand::Instrument`** und keine eigene
+    /// Ordnung. Die Regulierung steht nicht darin: Sie hat keine Reihe (T61), ihr Stand
+    /// steht nach T45 in der Adresse, und Schritt 3 traegt ihn vor. Ein vierter Platz,
+    /// aus `parameter.toml` gefuellt, gaebe einer Groesse zwei Herren -- Adresse und
+    /// Traeger --, und dagegen ist T45 geschrieben.
+    ///
+    /// Gelesen wird das Feld im Kern allein ueber `pfadstand` unten; die Klemme auf das
+    /// Ende der Reihe liegt beim Aufrufer, der es fuellt, und damit ausserhalb des Kerns
+    /// (T40).
+    std::array<std::array<zustand::i64, zustand::PFADINSTRUMENTE>, zustand::LAENDER>
+        pfadstand{};
 };
+
+// ---------------------------------------------------------------------------
+// Der eine Zugang zum Pfadtraeger -- Paket 0284
+// ---------------------------------------------------------------------------
+//
+// **Diese Funktion ist keine abgeleitete Groesse und traegt deshalb keine Nummer der
+// Tabelle.** Sie rechnet nichts; sie gibt ein Feld heraus und prueft dabei die beiden
+// Indizes, die der Traeger nicht selbst prueft. Warum sie hier steht und was der
+// Zahlwortriegel dazu meldet, sagt der Kopf dieser Datei.
+//
+// **Warum ueberhaupt ein Zugang und nicht der Feldzugriff.** `pfadstand` ist eine Reihe
+// fester Groesse ueber zwei Aufzaehlungen, und beide Indizes sind schmaler als der Typ,
+// aus dem sie kommen: die Laender schmaler als die Gebiete, die pfadgestuetzten
+// Instrumente schmaler als die Instrumente. Ein `konst.pfadstand[l][i]` an der
+// Aufrufstelle traefe bei der Restwelt und bei der Regulierung neben die Reihe, und
+// zwar still -- der Adressensanitizer sieht es im Nachtlauf, ein Kaeufer nicht. Deshalb
+// eine Stelle mit zwei Schranken statt einer Schranke je Aufrufstelle; es ist dieselbe
+// Bauform, die `stelle_beteiligung` und `anleihekurs` fuer die Restwelt schon haben.
+
+/// Der Stand, den dieses Instrument in dieser Runde bekommt -- aus dem Traeger und
+/// nicht aus dem Zustand.
+///
+/// **Bricht ab statt einen Ersatzwert zu bilden**, in beiden Richtungen und je mit
+/// eigener Meldung (T6):
+///
+///   * `Instrument::Regulierung` hat keinen Politikpfad (T61). Eine Null an ihrer
+///     Stelle waere die gefaehrlichere Antwort: Sie liegt im Wertebereich der Klasse 10
+///     und saehe wie ein beschlossener Rueckbau der Aufsicht aus.
+///   * Die Restwelt hat keine Instrumente (T15). Diese Schranke ist die von
+///     `land_nummer` in `src/werte.cpp`, im Wortlaut dieselbe wie bei `anleihekurs` --
+///     eine zweite mit eigenem Text waere ein zweiter Wortlaut fuer eine Bedingung.
+[[nodiscard]] zustand::i64 pfadstand(const Konstanten& konstanten, zustand::Gebiet land,
+                                     zustand::Instrument instrument);
 
 // ---------------------------------------------------------------------------
 // Die zweiundzwanzig Groessen aus T48, in der Reihenfolge seiner Tabelle

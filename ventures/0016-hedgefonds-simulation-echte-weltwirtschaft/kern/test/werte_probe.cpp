@@ -184,6 +184,9 @@ enum class Riegel : std::size_t {
     SchadenNurBeiSpielbarenLaendern,  ///< in `schaden`: die Restwelt hat kein Instrument
     BipsummeVerlaesstI64,   ///< in `kern::werte::bip`: die Decke der Nennerbedingung
     PlusOhneDarstellbareSumme,  ///< in `kern::festkomma`: die Summe verlaesst i64
+
+    // Ab hier Paket 0284 -- der Zugang zum Pfadtraeger.
+    PfadstandOhneReihe,  ///< in `kern::werte::pfadstand`: zu dieser Kennung gibt es keine Reihe
     Anzahl,
 };
 
@@ -254,6 +257,8 @@ const char* riegelname(Riegel welcher)
         return "Wertschoepfungssumme verlaesst i64";
     case Riegel::PlusOhneDarstellbareSumme:
         return "Summe ausserhalb von i64 (plus)";
+    case Riegel::PfadstandOhneReihe:
+        return "Instrumentenkennung ohne Reihe des Jahrgangs (pfadstand)";
     case Riegel::Anzahl:
         break;
     }
@@ -327,6 +332,13 @@ constexpr std::array<const char*, 2> KZ_BIPSUMME = {
 constexpr std::array<const char*, 2> KZ_PLUS_SUMME = {"plus: Summe ausserhalb von i64",
                                                       "(T7)"};
 
+// Die Liste zu Paket 0284, nach derselben Aufteilung: die Groesse samt Trennstrich, dann
+// der Satzteil, der diese Schranke von jeder anderen mit einer Instrumentenkennung
+// trennt. Das zweite Stueck allein truege nichts -- `hub` und `schaden` melden beide
+// ueber eine Instrumentenkennung, und der erste Halbsatz sieht dort fast gleich aus.
+constexpr std::array<const char*, 2> KZ_PFADSTAND_REIHE = {
+    "kern::werte::pfadstand -- zur Instrumentenkennung ", "keine Reihe des Jahrgangs"};
+
 // ---------------------------------------------------------------------------
 // Der Riegel, den kein Zustand erreicht -- die zweite Kategorie aus Paket 0248
 // ---------------------------------------------------------------------------
@@ -384,10 +396,13 @@ struct Sollzahl {
     std::size_t meldungen;
 };
 
-constexpr std::array<Sollzahl, 23> SOLLZAHLEN = {{
+constexpr std::array<Sollzahl, 24> SOLLZAHLEN = {{
     {Riegel::WechselkursUnterEins, 6},
     {Riegel::NennerNullDerKursformel, 1},
-    {Riegel::GroesseNurBeiSpielbarenLaendern, 2},
+    // Paket 0284 hat die dritte Stelle dazugelegt: 2 -> 3. Es sind der Anleihekurs, der
+    // Anleihewert und -- seit diesem Paket -- der Zugang zum Pfadtraeger; alle drei
+    // sterben an derselben Landespruefung in `land_nummer`.
+    {Riegel::GroesseNurBeiSpielbarenLaendern, 3},
     {Riegel::SkalengrenzeInCent, 1},
     {Riegel::SteckplatzAusserhalbDerTabelle, 1},
     {Riegel::SteckplatzAusserhalbDerAdressen, 1},
@@ -413,6 +428,9 @@ constexpr std::array<Sollzahl, 23> SOLLZAHLEN = {{
     // Paket 0261 hat die Restwelt dazugelegt: 2 -> 3.
     {Riegel::BipsummeVerlaesstI64, 3},   // obere Decke, untere Decke, untere in der Restwelt
     {Riegel::PlusOhneDarstellbareSumme, 1},
+
+    // Paket 0284.
+    {Riegel::PfadstandOhneReihe, 2},   // die Regulierung und eine Kennung ausserhalb der vier
 }};
 
 /// Ob der Eintrag an der n-ten Stelle auch den n-ten Riegel nennt. Die Groessenpruefung
@@ -578,6 +596,7 @@ using kern::werte::korbwert;
 using kern::werte::landespreis;
 using kern::werte::markt;
 using kern::werte::marktkorb;
+using kern::werte::pfadstand;
 using kern::werte::positionswert;
 using kern::werte::preishub_zoll;
 using kern::werte::schaden;
@@ -2363,6 +2382,75 @@ void probe_bip_nennerdecke()
 void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 3); }
 
 // ---------------------------------------------------------------------------
+// Paket 0284 -- der eine Zugang zum Pfadtraeger, und seine beiden Schranken
+// ---------------------------------------------------------------------------
+//
+// `kern::werte::pfadstand` rechnet nichts. Was an ihr zu pruefen ist, sind die zwei
+// Bereiche, die der Traeger selbst nicht prueft: Sein aeusserer Index laeuft ueber die
+// vier spielbaren Laender und nicht ueber die fuenf Gebiete, sein innerer ueber die drei
+// pfadgestuetzten Instrumente und nicht ueber die vier. Ohne diese Funktion stuende an
+// jeder Aufrufstelle ein `konst.pfadstand[l][i]`, das bei der Restwelt und bei der
+// Regulierung **still** neben die Reihe traefe.
+//
+// **Die Positivkontrolle steht voran und ist nicht geschenkt.** Sie legt je Land und
+// Instrument eine eigene Zahl in den Traeger und liest alle zwoelf zurueck. Eine
+// Zuordnung, die Land und Instrument vertauschte oder um eins verschoebe, bliebe an einer
+// einzigen Probezahl unsichtbar; zwoelf verschiedene fangen sie.
+
+void probe_pfadstand_zugang()
+{
+    Konstanten konst = K_GRUND;
+
+    // Zwoelf paarweise verschiedene Zahlen, in der Reihenfolge der beiden Schleifen
+    // durchgezaehlt. Gleiche Zahlen taugten nicht: Eine Zuordnung, die Land und
+    // Instrument vertauschte oder um eins verschoebe, bliebe an ihnen unsichtbar.
+    i64 naechste = 1;
+    for (std::size_t l = 0; l < LAENDER; ++l) {
+        for (std::size_t i = 0; i < kern::zustand::PFADINSTRUMENTE; ++i) {
+            konst.pfadstand[l][i] = naechste;
+            naechste = kern::festkomma::plus(naechste, 1);
+        }
+    }
+
+    // Und dieselbe Zaehlung noch einmal beim Lesen: Was der Zugang zurueckgibt, wird
+    // gegen die Zahl gehalten, die dieselbe Stelle der Reihenfolge traegt.
+    std::size_t getroffen = 0;
+    i64 erwartet = 1;
+    for (std::size_t l = 0; l < LAENDER; ++l) {
+        for (std::size_t i = 0; i < kern::zustand::PFADINSTRUMENTE; ++i) {
+            if (pfadstand(konst, static_cast<Gebiet>(l), static_cast<Instrument>(i))
+                == erwartet) {
+                ++getroffen;
+            }
+            erwartet = kern::festkomma::plus(erwartet, 1);
+        }
+    }
+    PRUEFE(getroffen == LAENDER * kern::zustand::PFADINSTRUMENTE);
+
+    // Schranke 1: die Regulierung. Sie ist ein gueltiges Instrument und hat trotzdem
+    // keine Reihe des Jahrgangs (T61) -- der Fall, den ein blosser Bereichstest auf die
+    // Aufzaehlung durchliesse.
+    BRICHT_AB_MIT(Riegel::PfadstandOhneReihe, KZ_PFADSTAND_REIHE,
+                  pfadstand(konst, Gebiet::DE, Instrument::Regulierung));
+
+    // Und dieselbe Schranke fuer eine Kennung ausserhalb der vier. Eine Meldung, kein
+    // zweiter Riegel: Der Grund ist derselbe, und ein Befund soll die Sache lesen und
+    // nicht die Grenzarithmetik.
+    BRICHT_AB_MIT(Riegel::PfadstandOhneReihe, KZ_PFADSTAND_REIHE,
+                  pfadstand(konst, Gebiet::DE, static_cast<Instrument>(9)));
+
+    // Schranke 2: die Restwelt hat keine Politikinstrumente (T15) und deshalb keinen
+    // Politikpfad. Der Wortlaut ist der von `land_nummer` und damit derselbe, an dem der
+    // Anleihekurs stirbt -- die gemeinsame Kennung sagt genau das.
+    BRICHT_AB_MIT(Riegel::GroesseNurBeiSpielbarenLaendern, KZ_SPIELBARE_LAENDER,
+                  pfadstand(konst, Gebiet::RW, Instrument::Leitzins));
+
+    std::printf("  Pfadstand: %zu von %zu Paaren aus Land und Instrument richtig "
+                "zugeordnet; Regulierung, Kennung 9 und Restwelt brechen ab\n",
+                getroffen, LAENDER * kern::zustand::PFADINSTRUMENTE);
+}
+
+// ---------------------------------------------------------------------------
 // Paket 0244 -- die Vollzaehligkeit je Riegel, als Zahl
 // ---------------------------------------------------------------------------
 //
@@ -2435,6 +2523,10 @@ int main()
 
     // Paket 0242 -- die Decke der Nennerbedingung, T48 Nr. 9.
     probe_bip_nennerdecke();
+
+    // Paket 0284 -- der eine Zugang zum Pfadtraeger. Keine Groesse aus T48, und deshalb
+    // steht sie hier fuer sich und nicht in einer der Gruppen darueber.
+    probe_pfadstand_zugang();
 
     // Zuletzt, denn sie liest ein, was der Aufruf darueber hinterlassen hat.
     probe_nennerdecke_vollzaehlig();

@@ -585,6 +585,40 @@ i64 anleihewert_zwei(const Zustand& mengen, const Zustand& kurse, const Konstant
 }  // namespace
 
 // ---------------------------------------------------------------------------
+// Der eine Zugang zum Pfadtraeger -- Paket 0284
+// ---------------------------------------------------------------------------
+
+i64 pfadstand(const Konstanten& konstanten, Gebiet land, Instrument instrument)
+{
+    // Die Instrumentenschranke steht **vor** der Landesschranke, und das ist keine
+    // Willkuer: `land_nummer` meldet unter dem Namen des Moduls und nicht unter dem
+    // dieser Groesse. Kaeme sie zuerst, truege ein Aufruf mit beiden Fehlern die
+    // allgemeinere der beiden Meldungen -- und die Regulierung, um die es dann geht,
+    // stuende in keinem Wort davon.
+    //
+    // Eine Bedingung fuer zwei Faelle: die Regulierung als Wert drei und jede Kennung
+    // ausserhalb der Aufzaehlung. Beide haben denselben Grund -- zu ihnen gibt es keine
+    // Reihe --, und beide sollen dieselbe Meldung bekommen, damit ein Befund die Sache
+    // nennt und nicht die Grenzarithmetik.
+    const std::size_t i = static_cast<std::size_t>(instrument);
+    if (i >= zustand::PFADINSTRUMENTE) {
+        Meldung text;
+        text.text("kern::werte::pfadstand -- zur Instrumentenkennung ");
+        text.zahl(static_cast<i64>(i));
+        text.text(" gehoert keine Reihe des Jahrgangs; einen Politikpfad haben allein die "
+                  "pfadgestuetzten Instrumente. Der Stand der Finanzmarktregulierung steht "
+                  "nach T45 in der Adresse und wird von Schritt 3 vorgetragen (T61).");
+        festkomma::abbruch(text.fertig());
+    }
+
+    // Das Land ueber `land_nummer` und nicht ueber eine eigene Pruefung: Die Restwelt
+    // hat keinen Politikpfad, das ist woertlich die Bedingung, unter der `anleihekurs`
+    // auf `leitzins_start` zugreift, und zwei Wortlaute fuer eine Bedingung waeren zwei
+    // Stellen, die auseinanderlaufen.
+    return konstanten.pfadstand[land_nummer(land)][i];
+}
+
+// ---------------------------------------------------------------------------
 // Die zweiundzwanzig Groessen aus T48
 // ---------------------------------------------------------------------------
 

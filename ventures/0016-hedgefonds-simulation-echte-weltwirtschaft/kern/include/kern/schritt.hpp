@@ -148,7 +148,7 @@ struct Rundenergebnis {
 ///
 ///   * Dass ein Feld **dazugekommen** ist, faengt seit Paket 0229 der Riegel unter
 ///     dieser Funktion. Er haelt die Feldzahl des Traegers gegen die Summe aus den
-///     sieben Aufrufen hier und den zwei Groessen des Jahrgangs; kommt ein zehntes
+///     sieben Aufrufen hier und den drei Groessen des Jahrgangs; kommt ein elftes
 ///     Feld dazu, uebersetzt der Kern nicht mehr.
 ///   * Dass ein Feld **vergessen** wurde, faengt `test/schritt_probe.cpp`: Dort steht
 ///     dieselbe Liste ein zweites Mal und wird Feld fuer Feld gegen diese Rechnung
@@ -202,7 +202,7 @@ struct Rundenergebnis {
 // **Und die Grenze der Aussage, aus derselben Messung:** Eine `std::array` ist von der
 // Auslassung nicht betroffen, weil der Platzhalter unten sich in sie umwandelt und die
 // Stelle damit belegt ist. `Konstanten` fuehrt heute nur solche Reihen und zaehlt mit
-// den Klammern wie ohne sie neun Felder. Die Sperre gilt also nicht dem Traeger von
+// den Klammern wie ohne sie zehn Felder. Die Sperre gilt also nicht dem Traeger von
 // heute, sondern dem von morgen -- dem ersten, der eine rohe Reihe bekommt.
 //
 // Beides -- dass der Zaehler zaehlt und dass er Reihen nicht aufloest -- misst dieselbe
@@ -263,14 +263,22 @@ inline constexpr std::size_t feldzahl = feldzahl_intern::zaehle_felder<Verbund>(
 /// diese Zahl ist ihre vierte Abschrift -- die einzige, die der Uebersetzer haelt.
 inline constexpr std::size_t SUMMIERTE_FELDER = 7;
 
-/// `leitzins_start` und `durchgriff` -- die beiden Groessen des Jahrgangs, die nach T23
-/// ausserhalb der Summe liegen und deshalb nicht mitgezaehlt, sondern danebengezaehlt
+/// `leitzins_start`, `durchgriff` und `pfadstand` -- die Groessen des Jahrgangs, die nach
+/// T23 ausserhalb der Summe liegen und deshalb nicht mitgezaehlt, sondern danebengezaehlt
 /// werden.
-inline constexpr std::size_t JAHRGANGSFELDER = 2;
+///
+/// **Was diese Gruppe bindet, ist die Herkunft des Wertes und nicht seine Bestaendigkeit**
+/// (Paket 0284). Bis dahin waren ihre beiden Mitglieder ueber die ganze Partie fest, und
+/// es lag nahe, das fuer die Bedingung zu halten; `pfadstand` traegt in jeder Runde eine
+/// andere Zahl und gehoert trotzdem hierher. Die Bedingung ist die, die den Ausschluss aus
+/// der Summe traegt: Der Wert kommt aus dem Jahrgang, und der Zustand fuehrt von ihm nur
+/// `partie.jahrgang_id` und keine Summe ueber seinen Inhalt -- es gaebe zu ihm nichts zu
+/// vergleichen. Bestaendigkeit war eine Eigenschaft der ersten beiden.
+inline constexpr std::size_t JAHRGANGSFELDER = 3;
 
 static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
               "kern::werte::Konstanten traegt nicht mehr sieben summierte Felder und "
-              "zwei Groessen des Jahrgangs. Wer ein Schluesselfeld zulegt, nimmt es in "
+              "drei Groessen des Jahrgangs. Wer ein Schluesselfeld zulegt, nimmt es in "
               "parameter_pruefsumme auf und zaehlt SUMMIERTE_FELDER hoch; wer eine "
               "Groesse des Jahrgangs zulegt, zaehlt JAHRGANGSFELDER hoch. Ein Feld, das "
               "in keiner der beiden Zahlen steht, ist ein Regler, den die Pruefsumme "
@@ -327,21 +335,29 @@ static_assert(feldzahl<Konstanten> == SUMMIERTE_FELDER + JAHRGANGSFELDER,
 ///     `kern::schritt` heraus vor der Addition, in `summe_der_regel_pruefen`, und faengt
 ///     genau die Paare, an denen `festkomma::plus` dahinter abbraeche -- das `plus`
 ///     dieser Regel kann seither nicht mehr abbrechen. Gerechnet wird die Vorbedingung
-///     jede Runde; erreicht wird ihr Abbruch von keinem Zustand, weil der additive Term
-///     ein Produkt mit dem Hub ist und der null bleibt, solange Schritt 3 vortraegt.
+///     jede Runde; ob ein Zustand ihren Abbruch erreicht, steht seit Paket 0284 anders da
+///     als vorher. Bis dahin trug diese Zeile ein "nein" und einen Grund: Der additive
+///     Term ist ein Produkt mit dem Hub, und der Hub blieb null, weil Schritt 3 vortrug.
+///     Schritt 3 schreibt jetzt den Pfadstand, der Hub kann von null verschieden sein,
+///     und damit ist die Frage offen statt beantwortet. **Offen und nicht beantwortet ist
+///     hier die richtige Auskunft** -- wer sie schloesse, muesste ueber die Pfadwerte
+///     eines Jahrgangs reden, die niemand geladen hat.
 ///   * jeder Ueberlauf in `kern::werte::schaden`. Dorthin fuehrt `politiklast` in
 ///     derselben Quelle, und nur fuer ein Instrument, dessen Stand sich in dieser Runde
-///     bewegt hat. Solange Schritt 3 vortraegt, bewegt sich keiner, und dieser Weg wird
-///     nie betreten.
+///     bewegt hat. Seit Paket 0284 bewegt Schritt 3 die drei pfadgestuetzten Staende
+///     jedes Landes, sobald der Traeger dort etwas anderes fuehrt als die Adresse -- der
+///     Weg wird also betreten, und das ist der Zweck jenes Pakets und keine Nebenwirkung.
 ///   * jeder Ueberlauf ueber den `i64` hinaus in der **uebrigen** Festkommarechnung der
 ///     Zustimmungsregel -- Vorzeichenwechsel, Punktrechnung, die Summe der Politiklast.
 ///     Sie rechnet mit `kern::festkomma`, und dessen Strich- und Punktrechnung bricht
 ///     nach T7 hart ab, statt umzubrechen. Dorthin fuehren in `kern/src/schritt.cpp` der
 ///     Rumpf von Schritt 5 selbst und die beiden Hilfen, die er dafuer ruft --
 ///     `realeinkommenshub` und, aus ihm heraus, `politiklast`. Rumpf und
-///     `realeinkommenshub` rechnen jede Runde und laufen nicht ueber, weil Last, Hub und
-///     Wirkung null sind; `politiklast` rechnet aus demselben Grund nicht, aus dem
-///     `schaden` ungerechnet bleibt.
+///     `realeinkommenshub` rechnen jede Runde; dass Last, Hub und Wirkung dabei null
+///     bleiben, war bis Paket 0284 eine Folge des vortragenden Schritts 3 und ist es seit
+///     ihm nicht mehr. `politiklast` summiert jetzt fuer jedes bewegte Instrument einen
+///     `schaden`, und dieser Eintrag sagt daher dasselbe wie der darueber: Der Weg wird
+///     betreten, wie weit er traegt, entscheiden die Zahlen des Jahrgangs.
 ///
 /// **Was an dieser Aufzaehlung veraltet, und was daraus folgt** (Paket 0249): Nicht ihre
 /// Genauigkeit veraltet, sondern **wo** eine Schranke steht -- Paket 0240 hat eine von

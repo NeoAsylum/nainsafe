@@ -124,12 +124,25 @@
 //! **Paket 0240 -- die Klemme steht hinter der Summe, und der Verdacht bleibt einer.** Die
 //! Regel addiert, ehe sie klemmt, und die Addition bricht bei Ueberlauf ab. Diese Datei
 //! kann den Fall durch die Runde nicht herstellen, und das ist gemessen statt vermutet:
-//! Der additive Term ist ein Produkt mit dem Realeinkommenshub, und der ist null, solange
-//! `schritt_3_politik` vortraegt -- ein eigener Koeffizient im Parametersatz aendert daran
-//! nichts. Gemessen wird beides: dass der Koeffizient keine der 310 Adressen ausser der
-//! Parametersumme bewegt, und was aus den vier Ausgangswerten mit einem Term ungleich null
-//! wuerde. Der zweite Teil laeuft an `festkomma::plus` und nicht durch die Runde; warum,
-//! steht bei der Probe.
+//! Der additive Term ist ein Produkt mit `zustimmung_elastizitaet`, und die steht in jedem
+//! Traeger dieser Datei auf null -- ein Hub ungleich null aendert daran nichts. Gemessen
+//! wird beides: dass der Koeffizient keine der 310 Adressen ausser der Parametersumme
+//! bewegt, und was aus den vier Ausgangswerten mit einem Term ungleich null wuerde. Der
+//! zweite Teil laeuft an `festkomma::plus` und nicht durch die Runde; warum, steht bei der
+//! Probe.
+//!
+//! **Paket 0284 -- Schritt 3 schreibt den Pfadstand, und diese Datei fuehrt seither zwei
+//! Traeger.** Der Schritt setzt je spielbarem Land den Stand der drei pfadgestuetzten
+//! Instrumente aus `Konstanten::pfadstand`, statt ihn vorzutragen; das vierte, die
+//! Regulierung, traegt er weiter vor. Der Traeger dieser Datei fuehrt auf jenen zwoelf
+//! Adressen genau den Musterwert, den die Ausgangslage dort schon hat -- damit bewegt
+//! keine der aelteren Proben einen Stand, und jede ihrer Zahlen bleibt die, die sie war.
+//! Der Grund steht bei `pfadstand_der_probe` und ist gemessen: Ein Pfadstand von null
+//! bewegte sechs Staende, und `politiklast` liefe damit in eine Zinszeile, deren
+//! Schuldenquote in der Musterlage der kleinste `int64_t` ist. Dass Schritt 3 wirklich
+//! **schreibt**, haengt deshalb an zwei Stellen -- an der Ursache `Jahrgang` der zwoelf
+//! Kettenglieder und an `probe_pfadstand_geht_in_die_runde`, die mit einem zweiten
+//! Traeger faehrt und rot wird, sobald der Rumpf wieder vortraegt.
 //!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
@@ -239,6 +252,66 @@ constexpr std::array<Index, kern::zustand::LAENDER> zustimmungsplaetze()
 
 constexpr std::array<Index, kern::zustand::LAENDER> ZUSTIMMUNGSPLAETZE = zustimmungsplaetze();
 
+/// Die zwoelf Adressen, die Schritt 3 seit Paket 0284 **setzt** statt sie vorzutragen:
+/// je spielbarem Land der Stand der drei pfadgestuetzten Instrumente.
+///
+/// Gerechnet aus derselben Doppelschleife, aus der `kern::schritt` sie schreibt, und
+/// nicht als Zahlenliste hingeschrieben -- aus demselben Grund wie bei `PLATZ_RUNDE`:
+/// Ein Paket, das den Laenderblock verschoebe, traefe hier weiter dieselben Groessen.
+/// Die Regulierung steht nicht darunter; ihr Stand hat keine Reihe (T61) und wird
+/// vorgetragen.
+constexpr std::array<Index, kern::zustand::LAENDER * kern::zustand::PFADINSTRUMENTE>
+pfadstandsplaetze()
+{
+    std::array<Index, kern::zustand::LAENDER * kern::zustand::PFADINSTRUMENTE> plaetze{};
+    std::size_t n = 0;
+    for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
+        for (std::size_t i = 0; i < kern::zustand::PFADINSTRUMENTE; ++i) {
+            plaetze[n] = kern::zustand::stelle_instrument(land, INSTRUMENTE_DER_PROBE[i],
+                                                          kern::zustand::InstrumentFeld::Stand);
+            ++n;
+        }
+    }
+    return plaetze;
+}
+
+constexpr std::array<Index, kern::zustand::LAENDER * kern::zustand::PFADINSTRUMENTE>
+    PFADSTANDSPLAETZE = pfadstandsplaetze();
+
+static_assert(PFADSTANDSPLAETZE.size() == 12,
+              "vier spielbare Laender mal drei pfadgestuetzten Instrumenten");
+
+/// Ob `platz` einer der zwoelf ist.
+constexpr bool ist_pfadstand(Index platz)
+{
+    for (const Index eine : PFADSTANDSPLAETZE) {
+        if (eine == platz) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/// Ob `platz` eine der vier Zustimmungsadressen ist -- gebraucht, wo eine Zaehlung ueber
+/// alle 310 die Adressen ausnehmen muss, die Schritt 5 schreibt.
+constexpr bool ist_zustimmung(Index platz)
+{
+    for (const Index eine : ZUSTIMMUNGSPLAETZE) {
+        if (eine == platz) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Die Regulierung gehoert nicht dazu, und das steht als Zusicherung da und nicht als
+// Absicht: Faende ein spaeteres Paket sie hier, waere die Halbseite von `probe_kette`
+// -- der vierte Stand traegt vor -- still leer.
+static_assert(!ist_pfadstand(kern::zustand::stelle_instrument(
+                  kern::zustand::Gebiet::US, kern::zustand::Instrument::Regulierung,
+                  kern::zustand::InstrumentFeld::Stand)),
+              "der vierte Instrumentenstand hat keine Reihe des Jahrgangs (T61)");
+
 /// Dass die vier untereinander aufsteigen, traegt die Kettenprobe weiter unten: Sie
 /// verlangt die vier Schlussglieder in genau dieser Reihenfolge. Gerechnet statt
 /// angenommen, damit ein verschobener Laenderblock hier auffaellt und nicht dort.
@@ -282,8 +355,15 @@ constexpr std::array<i64, kern::zustand::LAENDER> ZUSTIMMUNG_SCHRANKE = {
 /// `spiel.md` stehen: Bewegt sich kein Instrumentenstand, ist jedes Vorzeichen der
 /// Politiklast null, also die Last null, also der Realeinkommenshub null; und
 /// `zustimmung_elastizitaet` steht im Traeger dieser Probe ohnehin auf null. Wo diese
-/// Voraussetzung gilt, ist die Klemme der vollstaendige Erwartungswert -- und sie gilt,
-/// solange `schritt_3_politik` vortraegt.
+/// Voraussetzung gilt, ist die Klemme der vollstaendige Erwartungswert.
+///
+/// **Der erste der beiden Gruende hat sich mit Paket 0284 verschoben, der zweite nicht.**
+/// Bis dahin bewegte sich kein Instrumentenstand, weil `schritt_3_politik` vortrug; seither
+/// bewegt er sich nicht, weil der Traeger dieser Probe auf jeder der zwoelf pfadgestuetzten
+/// Adressen genau den Wert fuehrt, den die Ausgangslage dort schon hat
+/// (`pfadstand_der_probe`). Der zweite Grund -- der Koeffizient auf null -- traegt die
+/// Aussage ohnehin allein, und deshalb gilt sie auch in `probe_pfadstand_geht_in_die_runde`,
+/// wo ein Stand sich sehr wohl bewegt.
 i64 geklemmt(i64 wert)
 {
     if (wert < 0) {
@@ -292,8 +372,72 @@ i64 geklemmt(i64 wert)
     return wert > ZUSTIMMUNG_OBEN ? ZUSTIMMUNG_OBEN : wert;
 }
 
-/// Der Parametersatz, mit dem diese Probe jede Runde faehrt -- alle Felder auf ihrer
-/// Vorbelegung.
+/// Ein Musterwert je Adresse -- "beliebige Feldwerte" im Sinne von Bedingung 3.
+///
+/// Die acht Muster decken null, beide Vorzeichen, die Skala 10.000 aus `spiel.md` und
+/// **beide Enden des `int64_t`** ab. Die Enden stehen bewusst drin: Eine Runde, die nur
+/// vortraegt, darf an ihnen nichts rechnen, und der Sanitizer aus ADR 0011 Massnahme 2
+/// saehe es, wenn doch.
+///
+/// Was davon wirklich in einer Ausgangslage steht, sagt `startwert` weiter unten: Seit
+/// Paket 0237 tragen zwoelf der 310 Adressen einen anderen Wert.
+///
+/// **Sie steht seit Paket 0284 hier oben und ist `constexpr`**, weil der Parametersatz
+/// unter ihr sie braucht: Sein Pfadstand ist genau der Musterwert der Adressen, die
+/// Schritt 3 damit beschreibt, und eine zweite Abschrift der acht Muster waeren zwei
+/// Stellen, die auseinanderlaufen.
+constexpr i64 musterwert(Index platz)
+{
+    constexpr std::array<i64, 8> muster = {0,
+                                           1,
+                                           -1,
+                                           10'000,
+                                           -10'000,
+                                           123'456'789,
+                                           kern::festkomma::I64_MAX,
+                                           kern::festkomma::I64_MIN};
+    return muster[platz % muster.size()];
+}
+
+/// Der Pfadstand des Parametersatzes unten: je spielbarem Land und je pfadgestuetztem
+/// Instrument **genau der Musterwert, den die Ausgangslage auf dieselbe Adresse legt**.
+///
+/// **Das ist die tragende Wahl dieser Datei zu Paket 0284, und sie ist eine Entscheidung
+/// gegen den bequemeren Weg.** Seit Schritt 3 den Pfadstand schreibt, setzt er in jeder
+/// Runde zwoelf Adressen auf den Wert aus dem Traeger. Ein voreingestellter Traeger legte
+/// dort null -- und weil die Musterlage auf sechs dieser zwoelf Adressen `-10.000` traegt,
+/// bewegten sich sechs Instrumentenstaende in **jeder** Runde dieser Datei. Was daran
+/// haengt, ist nicht die Kette, sondern Schritt 5: `politiklast` ruft fuer jedes bewegte
+/// Instrument `kern::werte::schaden`, und dessen Zinszeile rechnet `schuld(l)` --
+/// `mal_geteilt(bip(l), staatsschuld(l), 10.000)` -- auf einer Lage, deren
+/// Staatsschuldquote bei zwei der vier Laender der kleinste `int64_t` ist. Das bricht ab,
+/// und zwar in `kern::festkomma` und nicht an einer Schranke, die diese Datei prueft.
+///
+/// **Der Pfadstand aus dem Musterwert loest das, ohne eine Messung aufzugeben.** Er
+/// bewegt keine Adresse, also bleibt jede Zaehlung dieser Datei die, die sie war, und die
+/// Aussage "ohne Instrumentenschritt ist die Zustimmung die Klemme ihres Ausgangswertes"
+/// wird weiter an einer Runde gemessen, in der wirklich kein Stand springt. Dass Schritt
+/// 3 den Wert **setzt** statt ihn vorzutragen, sieht man ihm trotzdem an: an der Ursache
+/// jedes der zwoelf Kettenglieder, die `probe_kette` einzeln festnagelt. Und der Fall, in
+/// dem der Traeger etwas anderes fuehrt als die Adresse, steht als eigene Probe da --
+/// `probe_pfadstand_geht_in_die_runde` mit ihrem eigenen Traeger.
+constexpr std::array<std::array<i64, kern::zustand::PFADINSTRUMENTE>, kern::zustand::LAENDER>
+pfadstand_der_probe()
+{
+    std::array<std::array<i64, kern::zustand::PFADINSTRUMENTE>, kern::zustand::LAENDER> stand{};
+    for (std::size_t l = 0; l < LAENDER_DER_PROBE.size(); ++l) {
+        for (std::size_t i = 0; i < kern::zustand::PFADINSTRUMENTE; ++i) {
+            stand[l][i] = musterwert(kern::zustand::stelle_instrument(
+                LAENDER_DER_PROBE[l], INSTRUMENTE_DER_PROBE[i],
+                kern::zustand::InstrumentFeld::Stand));
+        }
+    }
+    return stand;
+}
+
+/// Der Parametersatz, mit dem diese Probe jede Runde faehrt -- alle Schluesselfelder und
+/// beide bestaendigen Jahrgangsgroessen auf ihrer Vorbelegung, der Pfadstand aus dem
+/// Musterwert.
 ///
 /// **Ein voreingestellter Satz ist hier richtig und waere anderswo falsch.** Er rechnet
 /// nach T10b eine tote Welt, und genau die will diese Datei: Was sie prueft, ist die
@@ -301,13 +445,26 @@ i64 geklemmt(i64 wert)
 /// Ein erfundener Satz mit plausiblen Zahlen saehe an dieser Stelle wie eine
 /// Kalibrierung aus, die niemand beschlossen hat.
 ///
+/// **Der Pfadstand ist die eine Ausnahme, und er ist keine Kalibrierung**, sondern die
+/// Abschrift der Ausgangslage: Er traegt Adresse fuer Adresse den Wert, den die Lage dort
+/// ohnehin hat. Die Begruendung steht bei `pfadstand_der_probe`. Auf die Pruefsumme wirkt
+/// er nicht -- sie laeuft nach T10b ueber die sieben Schluesselfelder --, also bleibt
+/// jede Ausgangslage dieser Datei an denselben Traeger gebunden wie vorher.
+///
 /// **Fuer Schritt 5 heisst das etwas Bestimmtes** (Paket 0197): `zustimmung_elastizitaet`
 /// steht auf null, also ist der additive Term der Zustimmungsregel null, und was von ihr
 /// gemessen wird, sind ihre beiden Schranken. Das ist die Haelfte, die ohne eine
 /// beschlossene Kalibrierung ueberhaupt pruefbar ist -- die andere Haelfte braucht Zahlen,
 /// die noch niemand gesetzt hat, und eine Probe, die sie sich ausdenkt, misst die
 /// Erfindung.
-constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE{};
+constexpr kern::werte::Konstanten konstanten_der_probe()
+{
+    kern::werte::Konstanten satz{};
+    satz.pfadstand = pfadstand_der_probe();
+    return satz;
+}
+
+constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE = konstanten_der_probe();
 
 int fehlgeschlagen = 0;
 
@@ -416,8 +573,18 @@ const char* riegelname(Riegel welcher)
 // dass sie auch auf die Meldung des unerreichbaren Riegels passte; kein Paar prueft das,
 // weil es die Meldung nicht gibt. Zweitens rosten die Kennzeichen unten still: Formuliert
 // jemand die Meldung in `src/schritt.cpp` um, stimmt die Liste hier nicht mehr mit ihr
-// ueberein, und nichts wird rot. Beides endet an dem Tag, an dem Schritt 3 rechnet und der
-// Riegel erreichbar wird -- dann wandert er nach `ALLE_RIEGEL` und bekommt beide Haelften.
+// ueberein, und nichts wird rot. Beides endet an dem Tag, an dem der Riegel erreichbar
+// wird -- dann wandert er nach `ALLE_RIEGEL` und bekommt beide Haelften.
+//
+// **Dieser Tag ist mit Paket 0284 naeher gerueckt und nicht gekommen** (2026-09-09).
+// Schritt 3 rechnet seither, ein Instrumentenstand kann sich bewegen, und damit ist der
+// Realeinkommenshub nicht mehr von sich aus null -- der erste der beiden Gruende, aus
+// denen der additive Term verschwand, ist fort. Der zweite traegt weiter allein:
+// `zustimmung_elastizitaet` steht in jedem Traeger dieser Datei auf null, also ist das
+// Produkt null, welchen Hub die Runde auch rechnet. Erreichbar wuerde der Riegel erst
+// mit einem Traeger, der beides zugleich fuehrt -- einen Koeffizienten ungleich null und
+// einen Pfadstand, der die Adressen bewegt --, und dazu gehoerte ein Ausgangswert der
+// Zustimmung nahe an einem Ende des Zahlbereichs. Das ist ein Zuschnitt und kein Rumpf.
 //
 // **Der Ausweg, den es nicht gibt, damit ihn niemand zweimal sucht:** Die Meldung hier
 // nachzubauen -- denselben Wortlaut ein zweites Mal hinschreiben und die fremden Listen
@@ -443,8 +610,8 @@ constexpr std::array<const char*, 3> KENNZEICHEN_SUMME_DER_REGEL = {
 constexpr std::array<OhneZustand<RiegelOhneZustand>, 1> RIEGEL_OHNE_ZUSTAND = {{
     {RiegelOhneZustand::SummeDerZustimmungsregel,
      "Summe der Zustimmungsregel ausserhalb von i64",
-     "der additive Term ist ein Produkt mit dem Realeinkommenshub, und der bleibt null, "
-     "solange schritt_3_politik vortraegt",
+     "der additive Term ist ein Produkt mit zustimmung_elastizitaet, und die steht in "
+     "jedem Traeger dieser Datei auf null",
      KENNZEICHEN_SUMME_DER_REGEL},
 }};
 
@@ -491,28 +658,6 @@ u64 summe_von(const Zustand& welt)
     std::array<std::uint8_t, kern::zustand::BYTES> bytes{};
     kern::zustand::nach_bytes(welt, bytes);
     return kern::pruefsumme::fnv1a64(bytes);
-}
-
-/// Ein Musterwert je Adresse -- "beliebige Feldwerte" im Sinne von Bedingung 3.
-///
-/// Die acht Muster decken null, beide Vorzeichen, die Skala 10.000 aus `spiel.md` und
-/// **beide Enden des `int64_t`** ab. Die Enden stehen bewusst drin: Eine Runde, die nur
-/// vortraegt, darf an ihnen nichts rechnen, und der Sanitizer aus ADR 0011 Massnahme 2
-/// saehe es, wenn doch.
-///
-/// Was davon wirklich in einer Ausgangslage steht, sagt `startwert` darunter: Seit Paket
-/// 0237 tragen zwoelf der 310 Adressen einen anderen Wert.
-i64 musterwert(Index platz)
-{
-    constexpr std::array<i64, 8> muster = {0,
-                                           1,
-                                           -1,
-                                           10'000,
-                                           -10'000,
-                                           123'456'789,
-                                           kern::festkomma::I64_MAX,
-                                           kern::festkomma::I64_MIN};
-    return muster[platz % muster.size()];
 }
 
 /// Was auf den zwoelf Wertschoepfungsadressen steht -- die Wahl, um die es in Paket 0237
@@ -684,7 +829,8 @@ void probe_maskengroesse()
 }
 
 // ---------------------------------------------------------------------------
-// Bedingung 4 -- die Kette hat 175 Glieder: 171 Vortraege und vier aus Gegenkraft 2
+// Bedingung 4 -- die Kette hat 175 Glieder: 159 Vortraege, zwoelf aus dem Jahrgang
+// und vier aus Gegenkraft 2
 // ---------------------------------------------------------------------------
 
 /// Geht alle Glieder durch. Statt je Glied eine eigene Meldung zu setzen -- das waeren
@@ -701,7 +847,7 @@ void probe_maskengroesse()
 /// beschrieben.
 ///
 ///   * **Die ersten 171 Glieder** kommen aus der Adressrunde: aufsteigend, paarweise
-///     verschieden, jedes mit der Ursache `Vortrag` auf seine eigene Adresse.
+///     verschieden, jedes auf seine eigene Adresse.
 ///   * **Die letzten vier** kommen aus dem Block von Schritt 5: die vier Zustimmungen in
 ///     der Laenderreihenfolge, jede mit der Ursache `Gegenkraft` und der Nummer 2 aus
 ///     `spiel.md`.
@@ -709,6 +855,24 @@ void probe_maskengroesse()
 /// Eine blosse Streichung waere hier das Schlechtere gewesen. "Nicht mehr durchgehend
 /// aufsteigend" ist von "in beliebiger Reihenfolge" durch keine Messung zu unterscheiden,
 /// und genau der Unterschied macht den Rahmen von einer gerechneten Runde unterscheidbar.
+///
+/// **Und dieselbe Teilung noch einmal, eine Ebene tiefer** (Paket 0284): Die 171 Glieder
+/// der Adressrunde tragen nicht mehr alle dieselbe Ursache. Zwoelf von ihnen -- je
+/// spielbarem Land der Stand der drei pfadgestuetzten Instrumente -- kommen aus dem
+/// Traeger und nennen deshalb nach T18 den `Jahrgang` als Herkunft; die uebrigen 159
+/// nennen `Vortrag` auf ihre eigene Adresse.
+///
+/// **Gepruefte Adressen und keine gezaehlte Menge.** Die Probe rechnet die zwoelf
+/// Adressen aus derselben Doppelschleife aus, aus der `kern::schritt` sie schreibt, und
+/// verlangt fuer jedes Glied die Ursache, die zu **seiner** Adresse gehoert. Eine blosse
+/// Zaehlung "zwoelfmal Jahrgang" waere von einer Runde, die den Pfadstand auf die
+/// Restdauern schriebe, nicht zu unterscheiden -- und die Restdauern liegen im selben
+/// Landesblock.
+///
+/// **Der vierte Instrumentenstand steht ausdruecklich nicht darunter.** Die
+/// Finanzmarktregulierung hat keine Reihe des Jahrgangs (T61); ihr Glied traegt `Vortrag`
+/// wie die anderen 158, und das ist die Halbseite, an der ein Rumpf auffiele, der einfach
+/// alle sechzehn Staende setzte.
 void probe_kette(const Kette& kette, i64 erwartete_runde)
 {
     PRUEFE(kette.laenge() == 175);
@@ -727,6 +891,14 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
     std::size_t erste_wertaenderung = KEINS;
     std::size_t erste_nicht_aufsteigende = KEINS;
     std::size_t erste_ausserhalb_maske = KEINS;
+
+    // Wie viele Glieder der Adressrunde auf einer der zwoelf pfadgestuetzten Adressen
+    // liegen. Die Zahl kommt **nicht** an die Stelle der Adresspruefung darueber, sondern
+    // neben sie: Jene sagt, dass jedes Glied die richtige Ursache traegt, diese, dass es
+    // die zwoelf Glieder ueberhaupt gibt. Ohne die zweite waere eine Kette, in der
+    // Schritt 3 gar nichts schreibt, an der ersten nicht zu erkennen -- sie prueft nur
+    // vorhandene Glieder.
+    std::size_t glieder_aus_dem_pfad = 0;
 
     // Das Glied, das seit Paket 0071 einen anderen Wert traegt als vorher -- das einzige
     // der Adressrunde, das es darf. Beides wird geprueft: dass es da ist, und dass es die
@@ -756,11 +928,21 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
                 erstes_falsches_schlussglied = n;
             }
         } else {
-            if (satz.ursache.art() != UrsacheArt::Vortrag && erste_falsche_art == KEINS) {
+            // Die Ursache, die zu **dieser** Adresse gehoert: `Jahrgang` fuer die zwoelf
+            // pfadgestuetzten Instrumentenstaende, `Vortrag` fuer jede andere Adresse der
+            // Adressrunde. Die Menge kommt aus derselben Doppelschleife wie im Kern und
+            // nicht aus einer Zahl.
+            const bool aus_dem_pfad = ist_pfadstand(satz.ziel);
+            const UrsacheArt gefordert =
+                aus_dem_pfad ? UrsacheArt::Jahrgang : UrsacheArt::Vortrag;
+            if (satz.ursache.art() != gefordert && erste_falsche_art == KEINS) {
                 erste_falsche_art = n;
             }
-            // Die 171 Glieder der Adressrunde nennen ihre **eigene** Adresse als
-            // Herkunft. Bei den 170 vorgetragenen ist das die Aussage "unveraendert";
+            if (aus_dem_pfad) {
+                ++glieder_aus_dem_pfad;
+            }
+            // Die vorgetragenen Glieder der Adressrunde nennen ihre **eigene** Adresse als
+            // Herkunft. Bei den unveraenderten ist das die Aussage "unveraendert";
             // beim Glied von `partie.runde` ist es die Aussage "aus dem alten Wert dieser
             // Adresse und aus nichts sonst" -- die Ursachenform nennt die Herkunft, nicht
             // die Gleichheit.
@@ -789,10 +971,17 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
             rundenglied_zaehlt_hoch =
                 satz.alt == erwartete_runde - 1 && satz.neu == erwartete_runde;
         } else if (!aus_schritt_5 && satz.alt != satz.neu && erste_wertaenderung == KEINS) {
-            // Die uebrigen 170 Glieder der Adressrunde tragen vor, und ein Vortrag
-            // aendert nichts. Fuer die vier aus Schritt 5 gilt das ausdruecklich nicht:
-            // Sie tragen den Wert, den die Regel gerechnet hat, gleich ob er sich bewegt
-            // hat oder nicht.
+            // Die uebrigen 170 Glieder der Adressrunde bewegen ihren Wert nicht, und die
+            // zwoelf aus dem Pfad tun es aus einem anderen Grund als die 158 daneben:
+            // Jene tragen vor, diese **setzen** einen Wert, der in dieser Datei zufaellig
+            // derselbe ist -- der Traeger holt ihn aus `musterwert`, wie die Ausgangslage
+            // (`pfadstand_der_probe`). Die Zeile prueft damit hier keine Eigenschaft von
+            // Schritt 3, sondern die Bindung zwischen Traeger und Lage; dass Schritt 3
+            // einen **anderen** Wert wirklich hineinschreibt, misst
+            // `probe_pfadstand_geht_in_die_runde`.
+            //
+            // Fuer die vier aus Schritt 5 gilt das ausdruecklich nicht: Sie tragen den
+            // Wert, den die Regel gerechnet hat, gleich ob er sich bewegt hat oder nicht.
             erste_wertaenderung = n;
         }
         if (!maske.steht(satz.ziel) && erste_ausserhalb_maske == KEINS) {
@@ -821,6 +1010,7 @@ void probe_kette(const Kette& kette, i64 erwartete_runde)
     PRUEFE(erste_ausserhalb_maske == KEINS);
     PRUEFE(rundenglied_gesehen);
     PRUEFE(rundenglied_zaehlt_hoch);
+    PRUEFE(glieder_aus_dem_pfad == PFADSTANDSPLAETZE.size());
 
     // Und die Gegenrichtung: Jede Adresse der Maske kommt in der Kette vor. Zusammen mit
     // der Laenge 175 ist die Kette damit genau die Maske -- nicht 175 beliebige Adressen,
@@ -932,8 +1122,10 @@ Zustand probe_eine_runde(i64 vorrundennummer)
 
     probe_kette(ergebnis.kette_dieser_runde, diese_runde);
     std::printf("  Kette: %zu Glieder (erwartet 175), Runde %lld an jedem Glied; "
-                "171 aufsteigend aus der Adressrunde, danach 4 aus Gegenkraft 2\n",
-                ergebnis.kette_dieser_runde.laenge(), static_cast<long long>(diese_runde));
+                "171 aufsteigend aus der Adressrunde -- davon %zu mit der Ursache "
+                "Jahrgang --, danach 4 aus Gegenkraft 2\n",
+                ergebnis.kette_dieser_runde.laenge(), static_cast<long long>(diese_runde),
+                PFADSTANDSPLAETZE.size());
 
     return nachher;
 }
@@ -1152,6 +1344,145 @@ void probe_rundennummer()
 }
 
 // ---------------------------------------------------------------------------
+// Paket 0284 -- eine Zahl geht in den Traeger hinein und kommt aus der Adresse heraus
+// ---------------------------------------------------------------------------
+//
+// **Die eine Probe, die stirbt, wenn `schritt_3_politik` wieder `{ schreiber.vortrag
+// (platz); }` heisst.** Sie faehrt eine Runde mit einem Traeger, dessen Pfadstand fuer
+// ein Land eine **andere** Zahl fuehrt als die Adresse vor der Runde, und liest die
+// Adresse danach: Steht dort die Zahl aus dem Traeger, hat Schritt 3 sie geschrieben;
+// traegt er vor, steht dort der alte Musterwert, und `PRUEFE(nachher == PFADWERT)` ist
+// rot. Es ist die einzige Zeile dieser Datei, die von einem vortragenden Rumpf nicht
+// erfuellt werden kann.
+//
+// **Warum ein zweiter Traeger und nicht der von oben.** Der Traeger dieser Datei fuehrt
+// auf allen zwoelf pfadgestuetzten Adressen genau den Musterwert, den die Lage dort schon
+// hat -- absichtlich, die Begruendung steht bei `pfadstand_der_probe`. Eine Runde damit
+// ist von einer vortragenden am Zustand nicht zu unterscheiden; unterscheidbar wird sie
+// erst an der Ursache in der Kette, und die prueft `probe_kette`. Hier geht es um die
+// Zahl, also braucht es einen Traeger, der eine andere fuehrt.
+//
+// **Warum gerade die Vereinigten Staaten und der Leitzins.** Sobald sich ein Stand
+// bewegt, rechnet Schritt 5 `politiklast` und dafuer `kern::werte::schaden` -- fuer den
+// Leitzins ueber `schuld(l) = mal_geteilt(bip(l), staatsschuld(l), 10.000)`. Auf der
+// Musterlage traegt die Staatsschuldquote bei zwei der vier Laender den kleinsten
+// `int64_t`, und dort braeche jene Zeile in `kern::festkomma` ab -- an einer Schranke, die
+// diese Datei weder meint noch fuehrt. Die Vereinigten Staaten tragen dort `10.000`, also
+// hundert Prozent des Bruttoinlandsprodukts, und die Zeile rechnet durch. **Das ist kein
+// ausgesuchter Sonderfall, sondern die Grenze dieser Ausgangslage**, und sie ist hier
+// aufgeschrieben, damit der naechste sie nicht noch einmal messen muss.
+//
+// **Der additive Term bleibt trotzdem null**, denn `zustimmung_elastizitaet` steht in
+// diesem Traeger wie im anderen auf null. Die Zustimmung liegt deshalb auch hier auf der
+// Klemme ihres Ausgangswertes, und das prueft die Probe mit, weil es sonst so aussaehe,
+// als haette der bewegte Stand sie bewegt.
+
+/// Der Pfadwert, den diese Probe in den Traeger legt.
+///
+/// **Ausgesucht und nicht gerechnet**, damit sie im Fehlerfall wiedererkennbar ist: Sie
+/// gehoert keinem der acht Muster an, ist positiv und liegt in der Groessenordnung eines
+/// Leitzinses in Basispunkten (T5 Klasse 3). Was die Probe wirklich braucht, ist weniger
+/// als das und steht als Zusicherung unten statt als Annahme hier: dass sie vom Musterwert
+/// **der Zieladresse** verschieden ist.
+constexpr i64 PFADWERT_DER_PROBE = 275;
+
+void probe_pfadstand_geht_in_die_runde()
+{
+    constexpr kern::zustand::Gebiet LAND = kern::zustand::Gebiet::US;
+    constexpr Index ZIEL = kern::zustand::stelle_instrument(
+        LAND, kern::zustand::Instrument::Leitzins, kern::zustand::InstrumentFeld::Stand);
+    constexpr Index VIERTES = kern::zustand::stelle_instrument(
+        LAND, kern::zustand::Instrument::Regulierung, kern::zustand::InstrumentFeld::Stand);
+
+    // Die Vorbedingung der ganzen Probe, als Zusicherung und nicht als Annahme: Waere der
+    // Pfadwert der Musterwert der Zieladresse, liefen ein setzender und ein vortragender
+    // Rumpf auf dieselbe Zahl hinaus, und die Zeile unten waere gruen, ohne etwas zu
+    // sagen. Beim Uebersetzen geprueft, weil beide Zahlen beim Uebersetzen feststehen.
+    static_assert(musterwert(ZIEL) != PFADWERT_DER_PROBE,
+                  "sonst ist ein setzender Rumpf von einem vortragenden nicht zu "
+                  "unterscheiden");
+    static_assert(ist_pfadstand(ZIEL), "der Leitzins hat eine Reihe des Jahrgangs (T61)");
+    static_assert(!ist_pfadstand(VIERTES), "die Regulierung hat keine (T61)");
+
+    kern::werte::Konstanten mit_pfad = KONSTANTEN_DER_PROBE;
+    mit_pfad.pfadstand[static_cast<std::size_t>(LAND)]
+                      [static_cast<std::size_t>(kern::zustand::Instrument::Leitzins)] =
+        PFADWERT_DER_PROBE;
+
+    // Die Lage gehoert zu diesem Traeger, ohne dass sie neu gebaut werden muesste: Der
+    // Pfadstand liegt nach T10b ausserhalb der Pruefsumme, also ist sie dieselbe Zahl wie
+    // beim Traeger dieser Datei. Das steht als Pruefung da, denn faellt es, stirbt die
+    // Runde unten an der Bindung statt an dem, was gemessen werden soll.
+    PRUEFE(kern::schritt::parameter_pruefsumme(mit_pfad)
+           == kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
+
+    constexpr i64 VORRUNDE = 17;
+    const Zustand vorher = ausgangslage(VORRUNDE);
+    PRUEFE(vorher.lies(ZIEL) == musterwert(ZIEL));
+
+    const Rundenergebnis ergebnis =
+        kern::schritt::schritt(vorher, {}, mit_pfad, Modus::Weltlauf);
+    const Zustand& nachher = ergebnis.neuer_zustand;
+
+    // **Bedingung 1.** Die Zahl aus dem Traeger steht in der Adresse. Ein vortragender
+    // Rumpf laesst hier `musterwert(ZIEL)` stehen und wird rot.
+    PRUEFE(nachher.lies(ZIEL) == PFADWERT_DER_PROBE);
+
+    // **Bedingung 2.** Das vierte Instrument traegt vor -- vor der Runde wie danach
+    // derselbe Wert, und der ist der aus der Lage und nicht der aus dem Traeger.
+    PRUEFE(nachher.lies(VIERTES) == vorher.lies(VIERTES));
+
+    // Und die Gegenprobe zur Auswahl: **Genau eine** Adresse hat sich bewegt, und es ist
+    // die Zieladresse. Ohne sie saehe ein Rumpf, der den Pfadwert auf alle sechzehn
+    // Staende schriebe, hier genauso aus.
+    //
+    // Zwei Sorten Adresse bleiben ausgenommen, und beide bewegen sich aus einem Grund,
+    // den ein anderer Rumpf verantwortet: `partie.runde` zaehlt Schritt 1 hoch, und von
+    // den vier Zustimmungen holt Schritt 5 zwei auf ihre Schranke -- ihre Musterwerte
+    // liegen ausserhalb des Wertebereichs der Klasse 4. Beide stehen darunter mit ihrer
+    // eigenen Zusicherung, statt hier mitgezaehlt zu werden.
+    std::size_t bewegte = 0;
+    Index erste_bewegte = FELDER;
+    for (Index platz = 0; platz < FELDER; ++platz) {
+        if (platz == PLATZ_RUNDE || ist_zustimmung(platz)
+            || vorher.lies(platz) == nachher.lies(platz)) {
+            continue;
+        }
+        ++bewegte;
+        if (erste_bewegte == FELDER) {
+            erste_bewegte = platz;
+        }
+    }
+    PRUEFE(bewegte == 1);
+    PRUEFE(erste_bewegte == ZIEL);
+    PRUEFE(nachher.lies(PLATZ_RUNDE) == VORRUNDE + 1);
+
+    // Die Zustimmung liegt auf der Klemme ihres Ausgangswertes, obwohl ein Stand sich
+    // bewegt hat: Der additive Term ist ein Produkt mit `zustimmung_elastizitaet`, und
+    // die steht in diesem Traeger auf null. Das ist die Zusicherung fuer die eben
+    // ausgenommenen vier -- ohne sie bliebe offen, ob der bewegte Leitzins ueber
+    // `politiklast` doch eine Zustimmung verschoben hat.
+    std::size_t auf_der_klemme = 0;
+    for (const Index platz : ZUSTIMMUNGSPLAETZE) {
+        if (nachher.lies(platz) == geklemmt(vorher.lies(platz))) {
+            ++auf_der_klemme;
+        }
+    }
+    PRUEFE(auf_der_klemme == kern::zustand::LAENDER);
+
+    std::printf("  Pfadstand: %s traegt vor der Runde %lld, der Traeger %lld, nach der "
+                "Runde %lld; %s bleibt bei %lld; %zu Adresse(n) bewegt ausser "
+                "partie.runde und den vier Zustimmungen, %zu von 4 Zustimmungen auf der "
+                "Klemme\n",
+                kern::zustand::index_zu_adresse(ZIEL),
+                static_cast<long long>(vorher.lies(ZIEL)),
+                static_cast<long long>(PFADWERT_DER_PROBE),
+                static_cast<long long>(nachher.lies(ZIEL)),
+                kern::zustand::index_zu_adresse(VIERTES),
+                static_cast<long long>(nachher.lies(VIERTES)), bewegte, auf_der_klemme);
+}
+
+// ---------------------------------------------------------------------------
 // Paket 0197 -- was die Zustimmung im weltlauf bewegen koennte, und was nicht
 // ---------------------------------------------------------------------------
 //
@@ -1187,8 +1518,11 @@ void probe_zustimmung_ohne_instrumentenschritt()
     const Zustand& nachher = ergebnis.neuer_zustand;
 
     // Erste Zahl: wie viele der 16 Instrumentenstaende sich ueber die Runde bewegt haben.
-    // Heute null, weil `schritt_3_politik` vortraegt; die Zahl wird ungleich null an dem
-    // Tag, an dem Schritt 3 einen rechnenden Rumpf bekommt.
+    // Heute null -- nicht mehr, weil Schritt 3 vortruege (seit Paket 0284 tut er es
+    // nicht), sondern weil der Traeger dieser Probe auf den zwoelf pfadgestuetzten
+    // Adressen denselben Wert fuehrt, den die Lage dort schon hat. Die Zahl wird ungleich
+    // null, sobald ein Traeger etwas anderes fuehrt; `probe_pfadstand_geht_in_die_runde`
+    // ist der Fall.
     std::size_t bewegte_instrumente = 0;
     for (const kern::zustand::Gebiet land : LAENDER_DER_PROBE) {
         for (const kern::zustand::Instrument welches : INSTRUMENTE_DER_PROBE) {
@@ -1275,7 +1609,8 @@ void probe_zustimmung_ohne_instrumentenschritt()
 // **Warum jeder additive Term in dieser Runde null ist**, mit den Worten des Entwurfs:
 // Bewegt sich kein Instrumentenstand, ist jedes Vorzeichen der Politiklast null, also die
 // Last null, also der Realeinkommenshub null -- "fuer jeden Preis, jedes Handelsvolumen
-// und jede Schuldenquote". `schritt_3_politik` traegt vor, also bewegt sich keiner. Dazu
+// und jede Schuldenquote". Der Traeger dieser Probe fuehrt auf jeder pfadgestuetzten
+// Adresse den Wert, den die Lage dort schon hat, also bewegt Schritt 3 keinen. Dazu
 // steht `zustimmung_elastizitaet` im Traeger dieser Probe auf null, was denselben Term
 // ein zweites Mal loescht. Wer die vier Zahlen unten fuer die Wirtschaft haelt, liest die
 // Klemme; sie ist die ganze Bewegung dieser Runde.
@@ -1526,8 +1861,8 @@ void probe_klemme_hinter_der_summe()
 // "bip(l) > 0 is the denominator condition". Bis zum 2026-09-08 hat sie in dieser Datei
 // keine einzige Runde erfuellt -- `musterwert` legt auf die zwoelf
 // Wertschoepfungsadressen nur `0` und `-10.000`, also war das Bruttoinlandsprodukt jedes
-// der vier Laender negativ. Gruen blieb es, weil `schritt_3_politik` vortraegt und der
-// Zaehler damit null ist: eine Division, deren Vorzeichen niemand sehen konnte. Eine
+// der vier Laender negativ. Gruen blieb es, weil `schritt_3_politik` damals vortrug und
+// der Zaehler damit null war: eine Division, deren Vorzeichen niemand sehen konnte. Eine
 // Probe einer Regel auf einem Zustand, den der Entwurf verbietet, misst nichts.
 //
 // Diese Probe misst die Schranke von beiden Seiten, und beide Male stehen die vier Zahlen
@@ -1539,14 +1874,21 @@ void probe_klemme_hinter_der_summe()
 //     der Gegenkraft zu drehen. Ihre vier Zahlen sind zugleich der Beleg, dass der Fall
 //     wirklich vorlag und nicht bloss vorliegen konnte.
 //
-// **Die multiplizierende Haelfte der Regel bleibt ungemessen, und das ist eine Auskunft
-// und kein Versaeumnis.** `politiklast` ueberspringt `kern::werte::schaden`, solange sich
-// kein Instrumentenstand bewegt. Aus dieser Datei heraus kann ihn niemand bewegen, und
-// zwar unabhaengig von der Ausgangslage: Der Stand kommt aus `schritt_3_politik`, der
-// vortraegt, also ist `lies_neu` an jeder der 16 Adressen genau `lies_alt` -- welche
-// Startwerte die Lage auch traegt. `Aktionsbuendel` ist leer, und Schritt 2 entfaellt im
-// `weltlauf` ohnehin. Diese Messung gibt es erst, wenn Schritt 3 rechnet; dieses Paket
-// fasst Schritt 3 nicht an.
+// **Die multiplizierende Haelfte der Regel wird seit Paket 0284 betreten, und wie weit,
+// steht hier.** `politiklast` ueberspringt `kern::werte::schaden`, solange sich kein
+// Instrumentenstand bewegt. Bis zum 2026-09-09 konnte ihn aus dieser Datei heraus niemand
+// bewegen, und zwar unabhaengig von der Ausgangslage: Der Stand kam aus
+// `schritt_3_politik`, der vortrug, also war `lies_neu` an jeder der 16 Adressen genau
+// `lies_alt`. Seither entscheidet der **Traeger** darueber, und
+// `probe_pfadstand_geht_in_die_runde` bewegt einen Stand: Fuer jenes eine Paar aus Land
+// und Instrument wird `schaden` gerechnet und die Zinszeile aus T48 Nr. 22 durchlaufen.
+//
+// **Was weiterhin ungemessen bleibt, und warum es kein Versaeumnis ist:** die Zeilen der
+// drei anderen Instrumente und jede Wirkung der Last auf die Zustimmung. Die erste braucht
+// eine Ausgangslage, auf der `handelsvolumen` und `preishub_zoll` rechnen, statt an einem
+// Musterwert abzubrechen; die zweite braucht einen Koeffizienten, den niemand kalibriert
+// hat. Beides sind Zuschnitte und keine Zeilen -- und eine Probe, die sich die Zahlen
+// ausdenkt, misst die Erfindung.
 
 /// Druckt die vier Bruttoinlandsprodukte einer Lage und gibt zurueck, wie viele davon
 /// die Nennerbedingung erfuellen. Gedruckt wird die erste der drei Adressen, aus denen
@@ -1667,14 +2009,19 @@ void probe_parametersatz()
                      erstes_stummes);
     }
 
-    // Haelfte 2: die beiden Groessen des Jahrgangs bewegen sie nicht.
+    // Haelfte 2: die Groessen des Jahrgangs bewegen sie nicht. Seit Paket 0284 sind es
+    // drei; `pfadstand` steht mit dabei, und gerade er traegt die Aussage: Er ist der
+    // einzige der drei, der in **jeder** Runde eine andere Zahl fuehren darf, und die
+    // Summe wird in jeder Runde gegen dieselbe Zustandsadresse gehalten. Ginge er ein,
+    // riesse die Bindung in der zweiten Runde einer jeden Partie.
     kern::werte::Konstanten anderer_jahrgang = KONSTANTEN_DER_PROBE;
     anderer_jahrgang.leitzins_start[0] = 300;
     anderer_jahrgang.durchgriff[0][0] = 2'500;
+    anderer_jahrgang.pfadstand[0][0] = 4'711;
     PRUEFE(kern::schritt::parameter_pruefsumme(anderer_jahrgang) == grundsumme);
 
     std::printf("  Parametersumme %lld; %zu von %zu Schluesselfeldern bewegen sie, die "
-                "beiden Jahrgangsgroessen nicht\n",
+                "drei Jahrgangsgroessen nicht\n",
                 static_cast<long long>(grundsumme), bewegende_felder,
                 SCHLUESSELFELDER.size());
 
@@ -1699,7 +2046,7 @@ void probe_parametersatz()
 // zum Traeger kommt und in keiner der beiden Abschriften steht. Seit diesem Paket steht
 // in `kern/include/kern/schritt.hpp` ein `static_assert` dagegen -- er haelt die
 // Feldzahl von `kern::werte::Konstanten` gegen `SUMMIERTE_FELDER` plus
-// `JAHRGANGSFELDER`. Kommt ein zehntes Feld dazu, uebersetzt der Kern nicht mehr.
+// `JAHRGANGSFELDER`. Kommt ein elftes Feld dazu, uebersetzt der Kern nicht mehr.
 //
 // **Ein Zaehler, der immer dieselbe Zahl sagt, faengt nichts und sieht dabei genauso
 // aus.** Deshalb steht `feldzahl` hier gegen Verbunde, deren Feldzahl bekannt und
@@ -1716,9 +2063,15 @@ void probe_parametersatz()
 //     also nimmt jene Reihe eine einzige Stelle -- mit Klammern wie ohne. Eine **rohe**
 //     Reihe ist kein Umwandlungsziel, denn eine Umwandlungsfunktion kann kein Feld
 //     zurueckgeben; nur bei ihr kann die Klammerauslassung ueberhaupt einsetzen.
-//   * `NeunFelder` -- 9, die Gestalt des Traegers.
-//   * `ZehnFelder` -- 10, dieselbe Gestalt mit einem Feld mehr. Das ist der Fall, um
-//     dessentwillen es den Riegel gibt: Ein Traeger dieser Gestalt macht drueben rot.
+//   * `NeunFelder` -- 9, die Gestalt, die der Traeger bis Paket 0284 hatte.
+//   * `ZehnFelder` -- 10, dieselbe Gestalt mit einem Feld mehr, und seit Paket 0284 die
+//     Gestalt des Traegers selbst. Bis dahin war sie der Fall, um dessentwillen es den
+//     Riegel gibt -- der Traeger von morgen, an dem er zuschlaegt. Dieses Morgen war der
+//     2026-09-09: `pfadstand` ist das zehnte Feld, und der Riegel drueben haelt es nur,
+//     weil `JAHRGANGSFELDER` im selben Lauf von zwei auf drei ging. Die beiden Verbunde
+//     bleiben stehen, messen aber seither beide nur noch den **Zaehler** und nicht mehr
+//     den Sprung, den er faengt; der naechste, der diese Rolle traegt, hiesse
+//     `ElfFelder`.
 //
 // Sie stehen als `static_assert` da und nicht nur als Laufzeitvergleich -- ein Zaehler,
 // der erst beim Laufen zaehlt, koennte den Riegel drueben gar nicht tragen. Gedruckt
@@ -1733,9 +2086,9 @@ void probe_parametersatz()
 //   * `ZahlUndRohreihe` -- 5 statt 2. Die rohe Reihe zerfaellt in ihre vier Zahlen.
 //     Das ist die Auslassung, und sie ist der ganze Grund fuer die Klammern.
 //   * `ZahlUndReihe` -- 2, also unveraendert.
-//   * `kern::werte::Konstanten` -- 9, also ebenfalls unveraendert. Der Traeger fuehrt
-//     zwei Reihen, beide `std::array`; die Zahl einundzwanzig, die frueher hier und im
-//     Kopf drueben stand, kommt an keinem Zaehler dieses Baums heraus.
+//   * `kern::werte::Konstanten` -- 10, also ebenfalls unveraendert. Der Traeger fuehrt
+//     seit Paket 0284 drei Reihen, alle drei `std::array`; die Zahl dreiunddreissig, die
+//     ein Zaehler saehe, der sie aufloeste, kommt an keinem Zaehler dieses Baums heraus.
 //
 // **Die Klammern bleiben trotzdem, und jetzt aus einem gemessenen Grund:** Der Traeger
 // hat heute keine rohe Reihe. Bekommt er eine, zaehlte ein Zaehler ohne die Klammern
@@ -1782,9 +2135,9 @@ struct ZahlUndRohreihe {
     i64 zwei[4] = {};
 };
 
-/// Die Gestalt des Traegers: sieben Zahlen, eine Reihe, eine Reihe von Reihen. **Kein
-/// Abbild** von `kern::werte::Konstanten` -- die Namen hier tragen keine Bedeutung,
-/// gemessen wird allein die Gestalt.
+/// Die Gestalt, die der Traeger bis Paket 0284 hatte: sieben Zahlen, eine Reihe, eine
+/// Reihe von Reihen. **Kein Abbild** von `kern::werte::Konstanten` -- die Namen hier
+/// tragen keine Bedeutung, gemessen wird allein die Gestalt.
 struct NeunFelder {
     i64 eins = 0;
     i64 zwei = 0;
@@ -1797,8 +2150,10 @@ struct NeunFelder {
     std::array<std::array<i64, 2>, 5> neun{};
 };
 
-/// Dieselbe Gestalt mit einem Feld mehr -- der Traeger von morgen, an dem der Riegel
-/// zuschlaegt.
+/// Dieselbe Gestalt mit einem Feld mehr -- seit Paket 0284 die Gestalt des Traegers
+/// selbst und nicht mehr die von morgen. **Kein Abbild** von `kern::werte::Konstanten`,
+/// aus demselben Grund wie darueber: Die Namen tragen keine Bedeutung, und die dritte
+/// Reihe des Traegers hat andere Masse als die hier.
 struct ZehnFelder {
     i64 eins = 0;
     i64 zwei = 0;
@@ -1863,9 +2218,9 @@ static_assert(ohne_klammern::feldzahl<ZahlUndRohreihe> == 5,
 static_assert(ohne_klammern::feldzahl<ZahlUndReihe> == 2,
               "eine Reihe, in die sich der Platzhalter umwandelt, nimmt eine einzige "
               "Stelle -- mit Klammern wie ohne");
-static_assert(ohne_klammern::feldzahl<kern::werte::Konstanten> == 9,
-              "der Traeger fuehrt zwei Reihen, beide std::array, und zaehlt deshalb auch "
-              "ohne die Klammern neun Felder und nicht einundzwanzig");
+static_assert(ohne_klammern::feldzahl<kern::werte::Konstanten> == 10,
+              "der Traeger fuehrt drei Reihen, alle drei std::array, und zaehlt deshalb "
+              "auch ohne die Klammern zehn Felder und nicht dreiunddreissig");
 
 /// Ein Verbund mit seiner ausgeschriebenen Feldzahl, fuer die gedruckte Fassung.
 struct Feldzahlfall {
@@ -1903,7 +2258,7 @@ void probe_feldzahl()
     // gegen die Liste oben in dieser Datei. Damit haengt die vierte Abschrift der
     // sieben Felder an derselben Reihe wie die dritte -- wer eine der beiden
     // hochzaehlt und die andere vergisst, wird hier rot statt drueben still.
-    PRUEFE(kern::schritt::feldzahl<kern::werte::Konstanten> == 9);
+    PRUEFE(kern::schritt::feldzahl<kern::werte::Konstanten> == 10);
     PRUEFE(kern::schritt::feldzahl<kern::werte::Konstanten>
            == kern::schritt::SUMMIERTE_FELDER + kern::schritt::JAHRGANGSFELDER);
     PRUEFE(SCHLUESSELFELDER.size() == kern::schritt::SUMMIERTE_FELDER);
@@ -1935,6 +2290,7 @@ int main()
     probe_zweimal_dasselbe();
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
+    probe_pfadstand_geht_in_die_runde();
     probe_zustimmung_ohne_instrumentenschritt();
     probe_zustimmung_klemmt_statt_vortrag();
     probe_klemme_hinter_der_summe();
