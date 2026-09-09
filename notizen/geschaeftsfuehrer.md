@@ -133,3 +133,60 @@ argues back — that is the test of whether this is allowed.
    and every finding citing it decays. Check `git status` for `M .../uebersetzung-*.md`.
 4. 0208-baulauf — third plan running. If still `blockiert`, say the count, do not re-argue.
 
+---
+
+## 2026-09-09, 18th run — the round computes, and the bottleneck moved to a comment field
+
+**The "next run" list paid for the third time and all four checks landed.** 0284 exists
+(the PM took the *neu anzulegen* Vorrang 1 verbatim and named my plan in his `vermerk_pm`
+— **so a Vorrang entry without a package IS allowed and does get built**, question from the
+17th run answered). The number could not move (verlauf_probe died). The report is still
+one file per day. 0208 still `blockiert`. Four of five priorities landed in a day, third
+run in a row. **Run the list first, literally.** Cost: five greps.
+
+**The find of the day came from a `vermerk_blockiert`, not from a finding.** `0157`'s
+vermerk ends *"Gemeldet an den Geschaeftsfuehrer"* — a message addressed to my role sitting
+in a package frontmatter for a day, which no report, digest or status query surfaces.
+**Read the `vermerk_*` of every `blockiert` package, not just the priority-1 one.** There
+are five; that is five greps and it is where escalations to me actually land.
+
+**And it carried the bottleneck.** Inside that same vermerk, Befund 1: *"zwei unabhaengige
+Wege zur Null"* — step 3 carrying forward **and** `zustimmung_elastizitaet = 0`. I had been
+reporting the first as *the* cause for two plans. It was one of two. One `Read` of
+`parameter.toml:738-751` then gave the whole engpass in the file's own words, and one grep
+gave the size: **47 of 51 values carry `# PLATZHALTER`**, calibration method
+*"Kalibriert: Selbstspieler"*, and no package has named a Selbstspieler since 0150.
+*When a report says "two independent ways to X", never quote only the one you already
+knew — the other is the one nobody is working on.*
+
+**Method that produced the number: grep the value-line, not the word.** `PLATZHALTER` alone
+gives 49 (comments included); `^[a-z][a-z0-9_]* = .*PLATZHALTER` gives 47 and
+`^[a-z][a-z0-9_]* = ` gives 51. Two extra greps turn a raw count into a ratio, and the
+ratio is what the operator reads.
+
+**Duplicate ids are not a numbering nuisance, they are duplicated work.** I reported "two
+packages carry 0275" as a footnote on 2026-09-08. Today: `0275`/`0276` same slug
+(fertig/offen) and `0282`/`0283` same slug (fertig/gebaut, `urteil: zurueck`). The 0283
+pair already cost a builder run and a reviewer run on accepted work. **Glob the slug, not
+the number** — `Grep "^id:"` over `aufgaben/02[7-9]*` in one call shows both collisions
+side by side. Three on twenty numbers, growing.
+
+**The honest form of "the one number" was to say it is unmeasurable.** The measure went
+from `1 von 310` to nothing, because the package that made step 3 compute killed the only
+full-partie probe in the same commit. Reporting 0285's predicted 7 as if measured would
+have been the exact error `lehren.md` 2026-09-06 warns about. **A number whose instrument
+is red is not a number; say so and name the prediction as a prediction.**
+
+### Next run, in this order
+
+1. **`Grep "vermerk" ` over every `blockiert` package.** That is where escalations to this
+   role arrive. Today it was 0157; there are four others I did not read.
+2. **Did 0285 land and is `verlauf_probe` green?** Only then is the one number readable
+   again. Expect 7 of 310; if it reads 1, step 3 was reverted, if it reads 13, the carrier
+   is being filled by something and I need to find what.
+3. **0276 and 0283** — did the PM close them as doubles or build them again? If built
+   again, the duplicate-number defect is worth a plan section, not a bullet.
+4. 0208-baulauf — fourth plan. Count it, do not re-argue.
+5. **Watch whether Vorrang 3 (the 47 placeholders) gets a package.** It is the first time I
+   put a `spielentwerfer` item in the Vorrang; every previous one was kern/architekt.
+

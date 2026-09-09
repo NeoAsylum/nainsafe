@@ -1,104 +1,107 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-08, zweiter Plan an diesem Tag. Abgedeckt: seit heute früh.
+Stand 2026-09-09. Abgedeckt: seit dem zweiten Plan vom 2026-09-08.
 
 ## Wo das Vorhaben steht
 
-**Die Sperre ist gefallen und der Rückstand ist durchgelaufen.** `ops/reserviert.txt` sagt
-`# frei`; von 253 Paketen sind **231 fertig** (+62), 4 offen, 3 Vorschläge, 3 gebaut,
-5 blockiert. **Dafür ist der Riegel wieder rot:** `befunde/uebersetzung-2026-09-08.md`
-meldet `ergebnis: fehler` — 3 von 29 Proben im Werkstattbaum gefallen
-(`belegstellen_wortabstand`, `belegstellen_kopfzahlen`, `multiplikationsriegel`); Kern
-14/14 und Prüfstand 3/3 grün. Geld bindet nicht.
+**Schritt 3 rechnet.** Paket 0284 schreibt den Pfadstand in die Adressen, statt ihn
+vorzutragen; damit erreicht zum ersten Mal ein Rundenlauf `werte::schaden`. **Im selben
+Commit ist der Kern von 14/14 auf 13/14 gefallen:** `verlauf_probe` — die einzige Probe,
+die eine ganze Partie fährt — bricht in Runde 1 ab mit `plus: Summe ausserhalb von i64
+(T7)` (`befunde/uebersetzung-2026-09-09.md:308-310`). 270 Pakete, 240 fertig, 6 offen,
+6 Vorschläge, 5 gebaut, 5 blockiert; Werkstattbaum 6 von 29 rot (gestern 3). Geld bindet
+nicht.
 
 ## Der Engpass
 
-**Schritt 3 reicht durch, und kein Paket im ganzen Bestand fasst ihn an.**
+**`parameter.toml` trägt in 47 von 51 Werten `# PLATZHALTER`, und einer davon schaltet die
+Wirkungskette der Idee ab.**
 
-Der rechnende Rumpf von Schritt 5 steht seit 0197 (`fertig`): `realeinkommenshub`,
-`politiklast`, `werte::bip`, `werte::schaden`, vier Festkommastellen in
-`kern/src/schritt.cpp`. Er rechnet trotzdem nichts. Der Kern-Prüfer nennt den Grund im
-Wortlaut (`befunde/pruefung-0233-feldzaehler-an-einer-rohen-reihe-messen-2026-09-08.md`,
-Z. 75–77): „**step 3 carries forward, so `richtung == 0`, so `last = 0`, `hub = 0`,
-`wirkung = 0`**". Der Draht liegt, der Strom fehlt.
+`zustimmung_elastizitaet = 0  # PLATZHALTER` (`parameter.toml:746`). Der Kommentar
+darüber sagt selbst, was das kostet: „**Bei 0 ist Gegenkraft 2 aus, und mit ihr Kanal 2 --
+die Wirkungskette, die spiel.md ausdruecklich als 'die Wirkungskette der Idee'
+bezeichnet**" (`:743-745`). Als Eichverfahren steht dort „Kalibriert: Selbstspieler".
 
-Gemessen: **kein offenes, kein vorgeschlagenes und kein blockiertes Paket trägt
-`kern/src/schritt.cpp` in `dateien:`.** Die Vorgaben dafür sind fertig — 0165 und
-0172-weltpreis stehen seit heute auf `fertig` —, und es hängt kein Baupaket an ihnen.
-Sechs der sieben offenen und vorgeschlagenen Pakete gehören dem **Architekten** und fassen
-`technik.md` an; sie laufen deshalb nur nacheinander, und keines bewegt die Runde.
+Der Bruchtester hat zwei unabhängige Wege zur Null gemessen
+(`aufgaben/0157-…md:6`, Befund 1): Schritt 3 trägt nur vor — **den hat 0284 heute
+geschlossen** — und `zustimmung_elastizitaet = 0`. Der zweite ist mit den Mitteln der
+Fabrik nicht zu schließen: Den Selbstspieler gibt es nicht, seit 0150 nennt ihn kein Paket
+mehr, fünf der zehn Bau-Mitglieder (`daten`, `schnittstelle`, `konsole`, `oberflaeche`,
+`werkzeuge/aufbereitung`) sind „noch nicht gebaut" (`uebersetzung-2026-09-09.md:20-24`),
+und alle 16 Aufrufe von `schritt::schritt(` stehen in Proben — einen Aufrufer außerhalb
+der Tests hat der Kern nicht.
 
 ## Was quer liegt
 
-- **Der Nachtbericht wird an Ort und Stelle überschrieben.** Zwei heutige
-  `geprueft`-Befunde zitieren `uebersetzung-2026-09-08.md` mit `ergebnis: ok` und
-  „`belegstellen_kopfzahlen` **Passed** … :123-124" (`pruefung-0189-…-2`, Z. 15;
-  `pruefung-0233-…`, Z. 15). Dieselbe Datei sagt jetzt `ergebnis: fehler` und
-  `***Failed***`. Beide Prüfer hatten recht, als sie schrieben; nachprüfbar ist keiner
-  mehr. Der Bericht braucht einen Namen je Lauf, nicht je Tag.
-- **Die Kopfzahlen des Belegstellenriegels sind eine Schleife.** Sechs Pakete, alle
-  `fertig`, alle auf dieselben zwei Dateien: 0115, 0166, 0189, 0227, 0232, 0233. Heute früh
-  wieder rot, und der Riegel sagt selbst warum: „**Die Zahlen sind damit aelter als der
-  Baum**" (Bezugsstand 2f2f79f, HEAD cd46bbf). Jeder Übertrag veraltet mit dem nächsten
-  Commit. **Ein siebtes Übertragungspaket löst das nicht.**
-- **`multiplikationsriegel` ist rot wie bestellt.** 0273 hat ihn gebaut, er findet sofort
-  zwei echte Stellen (`kern/include/kern/festkomma.hpp:99` und `:356`). Kein Rückschritt —
-  die Entscheidung darüber ist Vorschlag 0274.
-- **0092, 0272 und 0273 stehen `gebaut` mit `urteil: geprueft`.** Ein Lauf des
-  Projektmanagers macht sie `fertig`; allein 0092 löst 0181 und darüber 0226 — die halbe
-  offene Liste.
-- **Zwei Zahlen für dasselbe Maß:** `ops/portfolio.md` (Stand 2026-09-06) führt „0 von
-  310", gemessen ist seit 0071 **1 von 310**. Und zwei Pakete tragen die Nummer 0275.
+- **Dieselbe Arbeit liegt zweimal im Bestand, unter zwei Nummern mit zwei Ständen.**
+  `0275-der-riegel-sieht-mal-gleich-nicht` ist `fertig`, `0276-…` mit identischem Titel ist
+  `offen`. `0282-teil-a-misst-den-text-und-nennt-es-verhalten` ist `fertig`, `0283-…` ist
+  `gebaut` und kam heute mit `urteil: zurueck` zurück — ein Bauer- und ein Prüferlauf für
+  bereits abgenommene Arbeit. Dazu tragen zwei verschiedene Pakete die Nummer 0289 und zwei
+  die Nummer 0275. **Drei Kollisionen auf zwanzig Nummern; am 2026-09-08 war es eine.**
+- **Die Schleife der Kopfzahlen ist gebrochen, und die nächste ihrer Art steht bereit.**
+  0278 lässt den Belegstellenriegel seine drei Zahlen selbst messen — `belegstellen_kopfzahlen`
+  ist grün. `zahlwort_riegel` und `zahlwort_messung` sind aus genau demselben Grund rot:
+  `werkzeuge/zahlwort/messen.py` hält den Text „Zweiundzwanzig Groessen in
+  dreiundzwanzig Deklarationen" fest, während `werte.hpp:32` „vierundzwanzig" liest
+  (`pruefung-0284-…-2026-09-09.md:81-85`). Vorschlag 0286 muss messen, nicht abschreiben.
+- **`bezeichner_riegel` ist rot durch einen Kommentar von 0284** (`werte.hpp:218`, der
+  Begriff `daten_pruefsumme` ist T22 und kein Kern-Bezeichner). Die Datei steht in
+  `dateien:` — ein Rücklauf behebt es.
+- **Die erste volle Partie wirft eine Meldung ohne Ort.** `politiklast`
+  (`schritt.cpp:643`) und `handelsvolumen` (`werte.cpp:834-835`) addieren durch ein blankes
+  `festkomma::plus`; `bip` (`werte.cpp:787-802`) zeigt den Hausstandard. Vorschlag 0288.
+- **Der Nachtbericht wird weiter an Ort und Stelle überschrieben** (`git status`:
+  `M …/uebersetzung-2026-09-09.md`). Der 0284-Befund zitiert ihn viermal mit Zeilennummer;
+  morgen früh stimmt keine davon. Zweiter Plan mit diesem Punkt.
+- **0274, 0279 und 0280 stehen `gebaut` mit `urteil: geprueft`.** Ein Lauf des
+  Projektmanagers macht sie `fertig`.
 
 ## Was der Betreiber entscheiden muss
 
-**Die Übersetzungsfrage vom 2026-09-07 ziehe ich zurück.** Ihr einziger verbliebener Grund
-war die Sperre, und die ist von selbst gefallen. Sie kostet dich nichts mehr.
-
-**Offen bleibt genau eine, und es ist dieselbe wie am 2026-09-07:
-`0208-baulauf-faehrt-beide-profile`.** Kein Agent darf `agents/**` schreiben —
-`agents/lauf.py:NIE` verbietet es global —, also kannst nur du das tun. Keine Geldfrage;
-der Preis ist Maschinenzeit: ein zweiter `cmake`/`ctest`-Durchgang je Manifest mit
+**Es steht dieselbe Frage an wie am 2026-09-07 und 2026-09-08 —
+`0208-baulauf-faehrt-beide-profile`, dritter Plan.** Kein Agent darf `agents/**` schreiben
+(`agents/lauf.py:NIE`), also kannst nur du das tun. Keine Geldfrage; der Preis ist
+Maschinenzeit: ein zweiter `cmake`/`ctest`-Durchgang je Manifest mit
 `-DFABRIK_SANITIZER=OFF`, zehn Manifeste, nachts.
 
 - **A — so lassen.** Jede Abnahme mit der Formel „in beiden Bauprofilen" bleibt
-  unerfüllbar. Sie hat schon 0194 auf `blockiert` gekostet, obwohl der Prüfer alles
-  Übrige bestätigt.
+  unerfüllbar; sie hat 0194 auf `blockiert` gekostet.
 - **B — du fährst die Änderung selbst ein.** Vorbild ist Paket 0131.
 
-**Empfehlung B.** Der Projektmanager nennt es den zehnten Fall dieser Art, und seit dem
-Shell-Verbot vom 2026-09-06 kann das OFF-Profil niemand mehr belegen: weder der Bauer noch
-der Prüfer, und der Nachtlauf fährt es nicht.
+**Empfehlung B, unverändert.** Neu ist nur, dass mir die Klasse ein zweites Mal von der
+Hand gemeldet wurde: `0157` schließt mit „**Aufzuloesen ist dieses Paket nicht von einem
+Agenten** … Gemeldet an den Geschaeftsfuehrer" — seine Bedingung verlangt einen Lauf über
+200 Runden, und seit dem Shell-Verbot vom 2026-09-06 kann keine Rolle ein Programm
+ausführen. **0157 selbst kostet dich nichts:** sein Nachfolger 0243 ist `fertig`, das Paket
+ist überholt, und es zu schließen ist Sache des Projektmanagers.
 
 ## Vorrang
 
-Zwei der fünf Kennungen gibt es noch nicht; sie sind anzulegen. Das ist kein Versehen — der
-Bestand enthält für die beiden wichtigsten Dinge kein Paket.
+1. **0285** — macht `verlauf_probe` wieder grün, eine Datei, Weg vollständig beschrieben.
+   Bis das steht, misst nichts im Bestand eine ganze Partie.
+2. **Rücklauf 0284** — eine Kommentarzeile in `werte.hpp:218`; sie holt `bezeichner_riegel`
+   zurück und schließt das größte Paket der Woche ab.
+3. **Wie die 47 Platzhalter zu ihren Werten kommen** — *neu anzulegen*, Rolle
+   `spielentwerfer`. „Kalibriert: Selbstspieler" steht in 47 Kommentaren und ist seit dem
+   2026-09-06 unerreichbar. Solange das offen ist, rechnet die Runde und trifft null.
+4. **0274, 0279, 0280 auf `fertig`** — ein Lauf des Projektmanagers, drei Pakete.
+5. **0286**, gebaut als **Messung, nicht als Übertragung** — genau der Zug, der 0278 heute
+   grün gemacht hat. Kein zweites Übertragungspaket dieser Art.
 
-1. **Schritt 3 rechnen lassen** — *neu anzulegen*, Rolle `kernbauer`, Datei
-   `kern/src/schritt.cpp`, gegen die fertigen Vorgaben 0165 und 0172-weltpreis. Alles, was
-   diese Woche gebaut wurde, speist einen Rumpf, der mit null multipliziert.
-2. **0092-abschnitt-18-zwei-zaehlfehler** auf `fertig` — eine einzige Statusänderung, die
-   zwei der vier offenen Pakete freigibt.
-3. **0274** — entscheidet den Regelsatz aus T7 und ist der einzige Weg, eine der drei roten
-   Proben grün zu bekommen.
-4. **Kopfzahlen selbst erheben statt abschreiben** — *ebenfalls neu anzulegen*: der Riegel
-   soll seine drei Zahlen zur Laufzeit messen. Das bricht die Schleife aus sechs Paketen.
-   **Kein siebtes Übertragungspaket.**
-5. **0236**, dann **0230** — die einzigen offenen Pakete ohne offene Vorbedingung. Sie
-   fassen dieselbe Datei an und müssen nacheinander laufen.
-
-**Nicht einplanen:** 0208-baulauf — es liegt beim Betreiber, siehe oben.
+**Nicht einplanen:** 0208 (Betreiber, siehe oben). **Vorher zu klären:** ob 0276 und 0283
+noch Arbeit sind oder Doppelgänger von 0275 und 0282.
 
 ## Die eine Zahl
 
-**1 von 310** — unverändert seit dem 14. Plan (`partie.runde`). Der Apparat ist erneut
-gewachsen: 29 Proben im Werkstattbaum (vorher 25), 14 im Kern (vorher 13), zehn Manifeste,
-462 geprüfte Schaltereinträge — und die Runde rechnet weiterhin nichts.
+**Nicht mehr messbar — und das ist Fortschritt.** Seit dem 14. Plan stand sie auf **1 von
+310**: eine Runde `weltlauf` bewegte genau `partie.runde`. 0284 hat Schritt 3 zum Schreiben
+gebracht und im selben Commit die einzige Probe getötet, die eine ganze Partie zählt.
 
-**Neu ist die Ursache, und sie ist zum ersten Mal genau.** Nicht mehr der fehlende Draht:
-den hat 0229 gelegt, 0197 hat den Rumpf angehängt, beide sind `fertig`. Was fehlt, ist die
-Null, die Schritt 3 in diesen Rumpf schiebt. Der Satz des Portfolio-Managers vom
-2026-09-06 gilt damit schärfer als damals: „**Die Fabrik baut den Prüfapparat einer
-Simulation, die noch nicht rechnet.**" **Bewegt sich die Zahl, ohne dass Schritt 3
-rechnet, stimmt die Messung nicht.**
+0285 sagt voraus, was danach herauskommt: sechs der zwölf pfadgestützten Instrumentenstände
+bewegen sich in Runde 1, also **7 von 310** (`aufgaben/0285-…md:19-21`). **Das ist eine
+Vorhersage, keine Messung**, und sie kommt zustande, indem Schritt 3 eine Null hineinschreibt,
+die niemand befüllt — der Treiber für `pfadstand` gehört in `daten` und ist nicht gebaut.
+Der Satz des Portfolio-Managers vom 2026-09-06 hält: „**Die Fabrik baut den Prüfapparat
+einer Simulation, die noch nicht rechnet.**" Sie rechnet jetzt. Sie trifft nur weiterhin
+null.
