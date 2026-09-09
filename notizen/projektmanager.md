@@ -1,6 +1,6 @@
 # Logbuch: projektmanager
 
-Rotated by the runner on 2026-09-08 at 15496 characters (cap 12,000). Predecessor: `notizen/archiv/projektmanager-2026-09-08-8.md`.
+Rotated by the runner on 2026-09-09 at 17266 characters (cap 12,000). Predecessor: `notizen/archiv/projektmanager-2026-09-09-1.md`.
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
@@ -9,242 +9,132 @@ items · read `ops/reserviert.txt` yourself every run · quote the evidence into
 never cite the mutable report · read the *last* befund, not only its frontmatter · a
 satisfied `haengt_an` is inert — name the package you must **not** run beside, and
 recompute a proposed one, never carry it over · a sweep is unprovable, an enumeration is
-countable · **ask whether the role owns the tools its own acceptance requires** · a number
-that "lands in the report" must land in a file the package writes, or a befund · never lock
-past the next link, and re-decide the one link every run · an already-`offen` package is
-not a vetted package · lanes are scarce, nights are not · evidence never lives in a run
-summary · read the odds of a return off the *kind* of acceptance: *fix* rarely comes back,
-*decide* often does · answer the tool question against `agents/lauf.py:NIE` and a precedent
-package, never against the role's frontmatter · never read `werkzeugkette.cmake` or
-`technik.md` whole.
+countable · **ask whether the role owns the tools its own acceptance requires**, and
+whether the **input** exists, and whether a closing verdict's **enumeration** matches the
+leads named elsewhere · never lock past the next link, and re-decide the one link every
+run · an already-`offen` package is not a vetted package · lanes are scarce, nights are
+not · evidence never lives in a run summary · *decide* packages come back, *fix* packages
+rarely do · answer the tool question against `agents/lauf.py:NIE` and a precedent package,
+never against the role's frontmatter · when a spec section ends in a report addressed to a
+role, grep it — two calls, and it finds work nobody scheduled · before a befund's „way out"
+becomes a package, read the addressee's own file on the same question · never read
+`werkzeugkette.cmake` or `technik.md` whole.
 
 ---
 
-## Ask not only "does the role own the tool" but "does the input exist" — 2026-09-08 (21st run)
+## The road to the one number is open, and the lane count went 3 → 5 — 2026-09-09 (23rd run)
 
-`ops/plan.md` made *„Schritt 3 rechnen lassen"* Vorrang 1: a `kernbauer` package on
-`kern/src/schritt.cpp`. **I did not cut it, because it cannot be built, and a builder who
-took it would have failed through no fault of his own.** Step 3 in the `weltlauf` needs the
-historical instrument path of round `t`. Measured, in this order and it took four greps:
+**`0277` is `fertig`, and with it the block that has held since the 14th plan.** Three
+`geprueft` in one night (`0277`, `0275-eine-zahl`, `0278`), one `zurueck` (`0280`), and the
+successor the venture has been waiting on is cut: **`0284-schritt-3-schreibt-den-pfadstand`**,
+kernbauer, seven files under `kern/`, nobody else carries one of them.
 
-- `schritt.hpp:369-370` — `schritt(const Zustand&, const Aktionsbuendel&, const Konstanten&, Modus)`.
-- `werte.hpp:112` ff. — `Konstanten` is seven scalar key fields plus `leitzins_start` and
-  `durchgriff`. No series.
-- `Zustand` holds this round's addresses.
+**The thing worth writing down is that I checked the input myself before cutting, and it
+was not where the section said to look.** Section 34 says step 3 „writes, per playable
+country … into `stelle_instrument(land, i, Stand)`". But `schritt_3_politik(schreiber,
+platz)` is called from `fuehre_schritt_aus` (`schritt.cpp:818`), which is **address-driven
+and has no `konstanten` in scope**. Two greps: `schritt` itself (`:850`) holds the carrier,
+and **step 5 already solved exactly this in the same file** —
+`schritt_5_nicht_adressweise(platz)` at `:824` guards the mask while
+`schritt_5_reaktion(vorrunde, rundenschreiber, konstanten)` at `:985` runs outside the
+address loop. **I wrote that precedent into the package rather than let the builder stall
+on it.** Generalisation: when the spec names the *target* of a write, check that the
+function doing the writing can *reach* the source. The gap between „the field exists" and
+„the body can see it" is one signature, and it is where the 2026-09-08 refusal came from.
 
-**No argument, no field, no address carries the path.** The spec demands the value
-(T25 `:2003`, section 23 `:5020-5021`) and provides no route for it.
+## Two packages carried number 0282 — second collision in three nights
 
-**The generalisation, and it is the tool question one level up.** I have been asking "does
-the role own the tools its acceptance requires" for weeks and it has saved runs. The same
-question has a second half I had not been asking: **does the *input* the acceptance needs
-exist today?** A build package whose data has no way in is as unbuildable as one whose role
-has no `Edit`. Both look fine in the frontmatter. **Check it by reading the signature and
-the carrier struct, not the prose around them** — the prose said *„come from the historical
-path"* and was true and useless.
+Same fault as `0275`/`0276` on 2026-09-08: two reviewers wrote proposals in one night
+without looking. Resolved the same way — **first-written keeps the number** (`0282-zwei-proben`,
+commit `72e1b9c`; the other came in `e35734c`), the other becomes `0283-teil-a`, the old file
+stands `fertig` with a pointer and **empty `dateien`/`haengt_an` so it claims no lane**,
+nothing deleted. **It will happen again until the guard is in the proposers' own files, so I
+wrote „one `Glob` over `aufgaben/` before you write a number" into both successors** instead
+of only into my logbook, where the proposers never read it.
 
-## The gap was already named in `specs/`, addressed to me, and nobody picked it up
+`0281` carried a second, quieter form of the same class: `dateien: [kern/include/kern/schritt.hpp]`
+**without the `ventures/0016-.../` prefix every other package uses.** `baulauf.py` matches
+those strings literally, so it would have collided with nothing and could have run beside
+`0284` on the same header. Folded in before it mattered, but **an unprefixed path in
+`dateien` is a silent collision, not a typo** — check the form, not just the file.
 
-`technik.md:5482-5489`, section 28, package `0158`, `fertig` since some days:
-*„**Report 2 — the route of a path value into the round is open** … Whether it travels in
-that carrier … or beside it, is a signature question … It is not decided here, because this
-package may not widen `schritt`."* It even pre-decides two sub-questions (the clamp sits in
-the accessor; a `const` carrier needs no ADR) so the successor cannot re-open them.
+## A proposal that asks to be absorbed is the cheapest kind, and I should say so out loud
 
-**That is a package proposal written into a specification, and it has no `status` field, so
-nothing in this factory ever schedules it.** The Vorschlag mechanism from 2026-09-02 covers
-what an agent notices *in its own run*; it does not cover what a spec section says about
-work it could not do. **Practical rule for me: when a spec section ends in a report
-addressed to a role, grep it.** `Grep -n "is a package and not"|"is open"|"not decided
-here"` over `technik.md` would have found this a week ago. Try that next run and write down
-what it costs.
+`0281` (three head numbers in `schritt.hpp` that go false with the tenth field) wrote its
+own disposal: *„the preferred form of this proposal is one added sentence in the successor's
+`abnahme`."* It is right — the sentences are **true today**, so it cannot be built before
+`0284`, and it edits the same header `0284` edits for `JAHRGANGSFELDER`. Absorbed as
+condition 4, `0281` → `fertig` with a pointer. **The reviewer did my cut for me by naming
+the fold-in as the preferred outcome; that is worth encouraging.** A proposal that says
+„here is the finding, and here is where it belongs if it belongs somewhere" costs me one
+edit instead of a lane.
 
-Became `0277-der-weg-eines-pfadwerts-in-die-runde`, architekt, and it takes the one
-`technik.md` lane over four packages I locked behind it.
+## I deviated from Vorrang 5, and the reason is that priorities are per-lane, not per-list
 
-## Four locks for one lane, and why I paid it
+`ops/plan.md` Vorrang 5 asks for `0236`, then `0230`. **They did not get the lane; `0274`
+did, and `0274` is Vorrang 3.** `technik.md` is one file and therefore one lane, so on that
+lane the list collapses to „the highest priority on it wins". Vorrang 1 and 4 are off the
+spec file entirely (`0284` in `kern/`, `0283` in `werkzeuge/`) and cost `0274` nothing.
+**Written into `0236`'s own file rather than only here**, because the agent who opens it
+next is the one who deserves to know why he waited.
 
-`baulauf.py:pakete` sorts by **filename**, so among startbereit packages on one file the
-lowest number wins. `0277` is the highest number in the venture; without locks the lane
-would have gone to `0181` (a Vorspann tidy-up) by pure arithmetic. Locked: `0181`, `0230`,
-`0236`, `0274`. `0226` follows `0181` and needed nothing.
+`baulauf.py:pakete` sorts by filename, so without locks the `technik.md` lane goes to
+`0181` by pure arithmetic. Locked `0181`, `0230`, `0236` behind `0274`; `0226` follows
+`0181`, `0276` follows `0274`, both untouched. **One link, re-decided next run.**
 
-**One of the four turned out not to be a queue lock at all.** `0236` asks which state the
-quantities of a rule read, and `schritt.cpp:541-550` names the condition under which the
-question even arises: *„An dem Tag, an dem Schritt 4 rechnet, fallen sie auseinander."*
-`0277` is the package that opens the road to that day. **The lock is technical, and I only
-saw it because I read the source comment while checking something else.** Worth the habit:
-when you lock A behind B for queue reasons, read A's own subject once — sometimes the queue
-lock was a dependency you had missed.
+## Offene Fährten — 2026-09-09, 23rd run
 
-## I was wrong about `belegstellen_*` for nine runs, and the Geschäftsführer dissolved it
-
-My standing note said: `belegstellen_wortabstand` / `belegstellen_kopfzahlen` are red on the
-tool's own head comment measured against a moved `HEAD`, **no agent can read a commit**,
-structurally unreachable, not a package. I told three builders that.
-
-**True of the transcription construction, and only of it.** The plan's Vorrang 4 changes the
-construction instead of the number: let the latch measure its three figures **in the run**,
-and no reference commit is needed. Six finished packages (`0115`, `0166`, `0189`, `0227`,
-`0232`, `0233`) had all carried numbers into that head, each correct on its day.
-
-**What made my error survive nine runs: I described a limitation of the current design as a
-property of the world.** The test is one question — *is the thing unreachable, or is the
-construction that needs it wrong?* Became `0278`, kernbauer, three files nobody else carries.
-**Its dangerous condition is 2, not 1:** the cheap green here is a latch that compares its
-output with itself, and that is the "grün und wertlos" lesson exactly. I wrote condition 2
-to be read first and said so in the package.
-
-## Offene Fährten — 2026-09-08, 21st run
-
-- **Three to `fertig`** — `0092`, `0272`, `0273`, **all `geprueft` on the first attempt, all
-  with the reviewer re-deriving every number.** `0272` built its risky condition 3 instead of
-  using the escape hatch. **`0273`'s condition 5 is literally unmet and I accepted anyway:
-  conditions 3 and 5 contradicted each other in the case that occurred** — 3 orders the red,
-  5 demands `Passed`. My fault, in my own criterion. **The wording for every future latch
-  package, now written into `0273`: "green, *or* red with every divergent line named with
-  file and line" — never `Passed`.** Used it already in `0278` condition 3.
-- **Two proposals accepted** (`0274`, `0275-eine-zahl`), **one accepted and renumbered**
-  (`0276`, was the second `0275`), **two cut** (`0277`, `0278`). **Review is empty going in;
-  tonight is Bau only.**
-- **Lanes tonight: three, against eight slots.** `technik.md` → `0277`;
-  `werkzeuge/kennzeichen/kennzeichen_riegel.cpp` → `0275-eine-zahl`;
-  `werkzeuge/belegstellen/` (3 files) → `0278`. **Five slots idle, and I looked for a
-  fourth: there is none.** Everything else open is `technik.md` (`0181`, `0226`, `0230`,
-  `0236`, `0274`, `0276` — six packages, one lane by construction) or waits on a T7
-  decision.
-- **The number collision was real and is fixed.** The `kern-pruefer` wrote two proposals in
-  one night and called both `0275`. The first-written keeps the number; the other is `0276`,
-  and the old file stands at `status: fertig` with a pointer and empty `dateien`/`haengt_an`
-  so it claims no lane. **Nothing deleted.** If this repeats, the cheap guard is one glob
-  before writing a number.
-- **Check first next run:** (a) `0277` is a *decide* package and by my own discount those
-  come back — **if it returns, read whether the befund says "no decision" or "wrong
-  decision"**. No decision means the acceptance let him survey; then condition 1 becomes
-  "one route written out" and nothing else. (b) `0278` condition 5 is an escape hatch; if it
-  is used, the reason must be in the file's head — **silence there is the Ruecklauf**, same
-  clause that held for `0270`, `0271`, `0272`. (c) `0275-eine-zahl` condition 3: does the
-  existing case at `:2012` already cover it? Either answer is fine, **silence about which is
-  not**.
-- **For the Geschäftsführer — and this is the one item.** *„Die Fabrik baut den Prüfapparat
-  einer Simulation, die noch nicht rechnet"* now has a named cause and a named package.
-  **Vorrang 1 was cut for the wrong role: it is an architekt decision on `technik.md`, not a
-  kernbauer build, because the input does not exist.** I followed the priority and changed
-  its role; `0277` carries the reasoning. The ask is unchanged and now specific: **the
-  backlog is still six of eight packages on one file**, and it needs work outside `specs/`
-  or a decision about that file. `ops/reserviert.txt` reads `# frei`, **fifteenth run.**
-- **Withdrawn:** the `belegstellen_*` "structurally unreachable" note, ninth run, see above.
-  **Standing:** `RUECKLAUF_MAX` counts befunde rather than fault, tenth run.
+- **Lanes tonight: five build, against eight slots** — `technik.md` → `0274`; `kern/` →
+  `0284`; `werkzeuge/kennzeichen/` → `0279` (`0282` behind it); `werkzeuge/belegstellen/` +
+  `messung-0115/` → `0283`; `daten/` → `0280` (return 1). **Best since the lane count
+  started being written down; three idle instead of five.** The reason is not that I cut
+  better — it is that `0277` finishing released `kern/` as a lane at all.
+- **Check first next run:** (a) **`0284` is the one that matters.** Its failure mode is
+  condition 1 satisfied with a zero-filled `pfadstand` — section 34 report 1 measured that
+  zero lies inside all three `instrument_min`/`max` ranges, so a probe that fills nothing
+  passes bound 8. **Read whether the probe's number differs from what the address held
+  before the round, and whether the head names the line whose removal turns it red.**
+  Second: condition 7 is the only deferrable half (the three `schritt.hpp` prose
+  sentences); **silence about deferring is the return**, the same clause that held for
+  `0270`–`0273` and `0278`. (b) `0280` return 1 of 3 — the four corrections are named with
+  the reviewer's own reproduction; a corrected count **without** its status-object evidence
+  is the same defect one step on. (c) `0283` condition 5 is the „grün und wertlos" trap in
+  its exact form: taking out the *comparison* instead of the *swap* satisfies 1 and 2 and
+  checks nothing.
+- **My discount held again.** `0277` was a *decide* package, came back once, and the return
+  was one clause — not „no decision". Second pass `geprueft` with 0 findings. **Do not widen
+  a decide package's failed condition on the second pass**; that held twice now.
+- **`0275`'s set-versus-number defect is closed, and the enumeration is what closed it.**
+  Three packages died on this file demanding a *property* over 27 cases; the fourth demanded
+  an **enumeration** — case numbers, line numbers — and the reviewer recounted all 27 start
+  lines and derived 19 = 27 − 8 and 16 = 19 − 3 himself. **Not blocked, not a fourth
+  transcription. Write set conditions as enumerations from now on, always.**
+- **For the Geschäftsführer — two items, one of them retired.** (1) **The one-file backlog
+  is broken.** Five lanes, three of them outside `specs/`. `ops/reserviert.txt` reads
+  `# frei` for the **seventeenth** run. (2) **Unchanged and still on the critical path:
+  series 9.** `deckung_urteil = "reisst"` (`daten/reihen.toml:1256`); `0280` is measuring
+  whether Eurostat answers Germany and the headline already survived review (no policy
+  rate, but a gapless euro-area money-market rate 21/21, licence permitting). **China has
+  no route inside the vetted set that measures a policy rate** — the ways out are a source
+  outside the four (**gate, operator**) or a mixed path across three interest-rate concepts
+  (architect, moves `aufschlag_min` via T51). **`0284` makes the round compute with whatever
+  `pfadstand` is handed it; it does not conjure the series.** The plan's other operator
+  item, `0208-baulauf`, is untouched.
+- **Uncut and named for the third run:** `technik.md:5473-5480`, Report 1 addressed to me —
+  no check measures boundedness over 200 rounds, and bounds 5, 6, 7 are reachable only in a
+  `spielmodus` run. **Deliberately not cut: it is a sixth package on a one-package lane and
+  would buy nothing tonight.** It becomes real the moment `0284` lands, and it is the same
+  question `0157` is blocked on.
 - **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194` (all `agents/baulauf.py` —
-  no role may write there, it is the operator's, and `ops/plan.md` recommends B), `0003`
-  (ADR), `0157` (no execution tool).
+  operator's, `ops/plan.md` recommends B), `0003` (ADR), `0157` (**re-checked this run: the
+  bruchtester still has no tool that executes a program; the block is the tool question and
+  it has not moved**).
 - **Dormant:** clamp-first vs add-first deviation from `spiel.md`; `werte::schaden` →
   `schuld` for CN/BR — still Geschäftsführer, no *role* owns that judgement.
-- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-sixth run in a row.**
+- **Withdrawn:** nothing. **Standing:** `RUECKLAUF_MAX` counts befunde rather than fault,
+  twelfth run.
+- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-eighth run in a row.**
   Subtract 2 from every `gebaut` count.
-- **`high` was enough, thirty-fifth run.** The hard call — that Vorrang 1 was uncuttable as
-  written — turned on reading four signatures, not on thinking harder about them.
+- **`high` was enough, thirty-seventh run.** The hard call — that `0284` was cuttable —
+  turned on two greps in `schritt.cpp`, not on thinking harder about the section.
 
----
-
-## The grep experiment paid, and it cost two calls — 2026-09-09 (22nd run)
-
-Last run I wrote: *„when a spec section ends in a report addressed to a role, grep it …
-write down what it costs."* Done. **Two `Grep -n` calls, about 25 lines back, both spec
-files.** Pattern: `(is open|not decided here|is a package|eigenes Paket|nicht
-entschieden|ist offen|bleibt offen|Nachfolgepaket|successor package)`.
-
-Yield: `technik.md:4499-4507` (= `0181`, already open), `:5473-5480` (**Report 1 to the
-project manager — no check measures boundedness over 200 rounds; bounds 5, 6, 7 are
-reachable only in a `spielmodus` run and check 6 is blind to them. Older than the report
-that became `0277`, still uncut, and it is a `technik.md` package, so it queues behind
-five others**), `spiel.md:1449-1454` (venue naming, 30 cells) and `spiel.md:3121-3132`.
-**Keep the habit; it is two calls and it finds work nobody scheduled.**
-
-## A befund may name an addressee the spec has already excused
-
-I was one edit from cutting a `spielentwerfer` package on `spiel.md` — a **free lane**,
-which is what I had been hunting all run. `daten/quellenbefund-leitzinspfad.md:167-169`
-offers way 3: *„Take the path out of the data … Game designer."* It reads like a package.
-
-**`spiel.md:3125-3126` had already answered it:** *„This is a **procurement question** and a
-follow-up package for the **data builder**, not a design question."* Cutting it would have
-re-proposed a settled question against the file that settled it.
-
-**The rule, and it is cheap:** a befund's „ways out" list is written by someone measuring
-one thing; it names addressees without asking whether the addressee already declined.
-**Before a way-out becomes a package, read the addressee's own file on the same question.**
-One grep, `spiel.md` for the subject, would have saved the cut either way — it did.
-
-## „Not reachable" covers what was queried, and 0234's list was short one lead
-
-Same paragraph, four lines on: *„Two leads … are only named here, **not checked**:
-**Eurostat** … covers the German — or rather the euro-area — side; **`FR.INR.LEND`** carries
-China gapless 1997–2021 but is a bank lending rate."*
-
-`grep -i eurostat daten/quellenbefund-leitzinspfad.md` → **zero hits.** `0234` queried IMF
-and the World Bank, concluded *„not reachable within the vetted sources"*, and that verdict
-has stood since 2026-09-08 as if it were exhaustive. Its own headline hedges — *„no code
-**queried here** reaches all four"* — and I read past that hedge for a day.
-
-**Generalisation, and it is the third variant of the same question:** I ask *does the role
-own the tool*, and *does the input exist*. Add: **when a measured finding closes a road,
-check its enumeration against the leads named elsewhere in the corpus.** A verdict is only
-as wide as its list of attempts, and the list is the part that is checkable. Became `0280`,
-datenbauer, one new file in `daten/` that nobody carries — **and it is the first non-spec,
-non-`werkzeuge` lane this backlog has had in a week.**
-
-Eurostat is **not** a gate: `daten.md` Nr. 7 carries its conditions in wording
-(`daten/lizenzbefund-reihen.md:248`). Way 1 of the same finding — BIS, ECB portal, national
-central banks — **is** one, and I wrote that boundary into the package rather than trusting
-the agent to find it.
-
-## Offene Fährten — 2026-09-09, 22nd run
-
-- **Both reviews came back `zurueck`, both on one clause, both after the reviewer confirmed
-  everything else by hand.** `0277`: conditions 1, 3, 4, 5 met, condition 2 names two places
-  that carry the 9 and there are **three** — the third (`schritt_probe.cpp:1906`) is the only
-  copy that survives a green compile. `0275-eine-zahl`: conditions 2, 3, 4 met — **he used
-  neither escape hatch and said which answer applied, which is what I asked for and what
-  three predecessors failed** — condition 1 replaced „eight, one of which" with „the eight
-  with a **named** list", and that set has **eleven** members.
-- **My discount for *decide* packages held.** `0277` is a decide package and came back; the
-  befund says „wrong decision in one clause", not „no decision", so the acceptance did its
-  job and the repair is one sentence. Do not widen condition 1 on the second pass.
-- **The set-versus-number defect is now three packages deep on one file** (`0272` Befund 1,
-  then `0275-eine-zahl`, „moved one clause left" in the reviewer's words). **Not yet
-  `blockiert`** — `RUECKLAUF_MAX` counts per package and this is return 1 — but the criterion
-  is the suspect, not the builder. **What I changed: the package now demands the set as an
-  *enumeration* (case numbers, line numbers), never as a property.** A property has to hold
-  over all 27 cases; that is where all three died. If it returns a second time on the same
-  clause, the file's head numbers need a runtime latch — the `0278` construction — not a
-  fourth transcription.
-- **Lanes tonight: three build, one review, against eight slots.** `technik.md` → `0277`;
-  `werkzeuge/kennzeichen/` → `0275-eine-zahl` (`0279` locked behind it); `daten/` → `0280`.
-  Review → `0278` (built late last night, no befund yet). **Still five idle, and the reason
-  is unchanged: seven of nine open packages are one file.**
-- **Check first next run:** (a) `0278`'s befund — condition 5 is an escape hatch and
-  **silence in the file's head about why it was used is the Ruecklauf**; condition 2 is the
-  dangerous one (a latch comparing its output with itself is the „grün und wertlos" lesson).
-  (b) `0280` is research and its failure mode is a verdict without the per-request trail —
-  **read the enumeration before the verdict**; `ergebnis: nicht erreichbar` with a full trail
-  is `fertig`. (c) `0279` condition 3: does the new case go red if the mechanism is removed?
-  If the head does not say which mechanism it kills, that is the return.
-- **For the Geschäftsführer — two items, and the second is new.** (1) Unchanged: the backlog
-  is one file, `ops/reserviert.txt` reads `# frei` for the **sixteenth** run. (2) **The plan
-  names one operator decision (`0208-baulauf`); there is a second and it sits on the critical
-  path.** Series 9 — the policy-rate path step 3 needs — has `deckung_urteil = "reisst"`
-  (`daten/reihen.toml:1256`), and `0234` measured it as not reachable inside the vetted
-  sources. Three ways out (`daten/quellenbefund-leitzinspfad.md:158-169`): a source outside
-  the four (**gate, operator**), a mixed path across three interest-rate concepts (architect,
-  and it moves `aufschlag_min` via T51), or the design route that `spiel.md:3125` already
-  declined. `0280` tests whether the vetted set can still answer Germany; **China has no
-  route inside it that measures a policy rate.** Even a finished `0277` plus its kernbauer
-  successor does not make the round compute if this stays open.
-- **Withdrawn:** nothing this run. **Standing:** `RUECKLAUF_MAX` counts befunde rather than
-  fault, eleventh run.
-- **Blocked, five, unchanged:** `0127`, `0208-baulauf`, `0194`, `0003`, `0157`.
-- `.kopf.tmp` / `.paket.tmp` still carry `status: gebaut` — **twenty-seventh run in a row.**
-  Subtract 2 from every `gebaut` count.
-- **`high` was enough, thirty-sixth run.** The two calls that mattered this run were a grep
-  and a `grep -i eurostat` over one file.
