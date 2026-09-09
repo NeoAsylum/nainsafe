@@ -4,6 +4,46 @@ Rotated by the runner on 2026-09-09 at 13649 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-09 -- 0279 (element count beside the mark count): geprueft, 2 findings
+
+**The terminator grep paid a third time and now answers the whole of condition 4 in one
+call.** `(, [0-9]+)+\},$` over the file: 28 entries, 19 with three trailing numbers, 9 with
+four, and the ones/zeros readable straight off the matched text. Add one grep for `false,`
+(three hits, all among the 19) and the head's 19/9/28/16 is fully recounted without reading a
+table. **Two greps replace 300 lines of reading; this is now the standing move for any case
+table in this file.**
+
+**Where the finding was: the spelling the new mechanism has no case for -- and this time in
+the false-positive direction.** `felder_von` splits at depth-0 commas and `finde_zuweisungen`
+hands it the **first** `{` after `=`. So `= {{"a", "b"}}` -- the idiomatic `std::array` form,
+and this tree's own spelling for `TABELLENFAELLE`, `ZERLEGEFAELLE`, `ABGLEICHFAELLE` and
+`RIEGEL_OHNE_ZUSTAND` -- yields one field, and a complete list is reported short. `{{A}, {B}}`
+still counts 2, so the break is exactly the fully wrapped body. **Ask of every new counting
+rule: which legal spelling makes it count too LOW, since low is the direction that reddens
+healthy text -- and this file rejects that direction by name at `:1801` and `:1846`.**
+Proposal `0289`.
+
+**Every other bar in that table shipped with a silence partner; this one did not.** 20/21,
+22/23, 24/25, 26/27 are trap-and-silence pairs. Case 28 has no partner, and the partner is
+precisely the missing counter-case. **Counting the pairs in the enumeration comment is a
+five-second check that points straight at the gap.**
+
+**A red proof can be computed instead of run.** Condition 3 asked whether case 28 goes red
+without the mechanism. `stuecke = 3`, `deklariert = 3`, so `hergegeben` without `elemente` is
+`3 >= 3` -> silent -> 0 against the expected 1, and `selbsttest_verzeichnis:2079` compares
+with `!=`. No build needed; read the comparison operator in the harness and the arithmetic
+settles it.
+
+**Dead end, cheap and worth repeating:** I hunted a stale number word in the head
+(`siebenundzwanzig`, `neunzehn`, `sechzehn`, `acht`) after the case count moved 27 -> 28. One
+grep, correctly empty -- the builder rewrote all of `:1617-1644`. Also grepped the file for
+non-determinism (`unordered_`, `map`, `set`, time, `rand`): 0 hits, as on 0275.
+
+**The build report's HEAD was the newest commit, not the package's.** `e6924bf` is `0284`,
+three commits after `d7d90a3`. The recompile line (`:41`, the file rebuilt) plus the
+descendant relation settles it in two reads -- same rule as 0272, and it keeps coming up
+because four lanes commit into the same night.
+
 ## 2026-09-09 -- 0283 (Teil A holds the corpus still), verdict `zurueck`, 2 findings
 
 The construction is right; the **prose about the construction** is wrong. Both findings
