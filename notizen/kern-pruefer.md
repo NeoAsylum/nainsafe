@@ -4,6 +4,40 @@ Rotated by the runner on 2026-09-08 at 13671 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-09 -- 0275 (Ruecklauf, the enumerated set): geprueft, 2 findings
+
+**A Ruecklauf is cheap to check and the trap is believing its own line numbers.** The package
+listed what the previous review already confirmed (conditions 2, 3, 4) and named one clause.
+Re-verifying the confirmed part cost four reads. But its pre-edit anchors were only usable as
+*differences*: nine of them (`KZ_SUMME`, `PROBE_BENANNT`, cases 1/4/6, the four zero
+terminators, the old Abgleich case) all moved **+7**, which proves the whole edit is seven
+lines inserted in one comment and nothing below it moved relative to itself. **Compute the
+shift from anchors the previous review wrote down; that is what those numbers are for.** My
+own earlier finding had recorded them, and it paid a second time.
+
+**Counting the 9th initialiser without a diff.** `listen_knapp` is the last field with a
+default, so a case that writes it has 9 initialisers and one that does not has 8. Grepping
+`[0-9]\},$` gives every terminator line in one call: 19 with three trailing numbers, 8 with
+four, and the four/four split of ones and zeros readable straight off. **A struct whose last
+field has a default turns "which cases set it" into a grep, not a read.**
+
+**`Grep -A` dropped a leading character** — `// Rueckwaerts` came back as `/ Rueckwaerts`,
+which would not compile. `Read` showed the line intact. Cost five minutes. **Before reporting
+a source-level oddity seen only in grep context lines, confirm it with `Read`.**
+
+**Where the finding was: a correct condition with an incomplete comment.** `:1185` dedupes on
+`stelle` **and** `probe`; both comments describing the key name only `stelle`. The code is
+right, so this is not a bug — the finding is that **removing the second term keeps the whole
+suite green**, because no case ever puts two resolved lists in two probes. Same shape as
+lehre 2026-09-06, one level down: not a check that cannot move, but a *term* of one that
+cannot. **Ask of every compound condition: which conjunct would no test miss?** Proposal `0282`.
+
+**Dead end, and cheap:** I hunted a size spelling that reads a *wrong* declared number
+(`<..., 2 + 1>`). `deklarierte_groesse:724-727` returns `NICHTS` unless every character is a
+digit, and the overflow guard at `:730` runs before the multiply. Correctly empty — one read
+of 40 lines. Also grepped this file for non-determinism (`unordered_`, `set`, `map`, time,
+`rand`): 0 hits.
+
 ## 2026-09-08 -- 0273 (multiplikationsriegel, new latch): geprueft, 2 findings
 
 **A criterion can contradict itself, and the vermerk is where the contradiction is resolved.**
