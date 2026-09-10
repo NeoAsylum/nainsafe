@@ -1,7 +1,7 @@
 ---
 id: 0291-wie-die-vierzig-platzhalter-zu-ihren-werten-kommen
 rolle: spielentwerfer
-status: offen
+status: gebaut
 haengt_an: []
 dateien: [specs/0016-hedgefonds-simulation-echte-weltwirtschaft/spiel.md]
 abnahme: "1. **A new section of `spiel.md` names every route by which a calibration value can arrive, and each route is defined by what it needs and who can execute it.** A route that requires running the game is admissible only if the section says which role runs it and with which tool — see condition 3. 2. **All forty marks are enumerated, each assigned to exactly one route.** The forty are the lines of `parameter.toml` carrying `# Kalibriert: Selbstspieler`, measured 2026-09-10 at HEAD: 341, 355, 368, 378, 397, 413, 431, 443, 456, 468, 487, 500, 518, 535, 545, 556, 568, 584, 610, 625, 649, 658, 667, 676, 707, 717, 730, 742, 758, 769, 789, 802, 813, 862, 874, 890, 995, 1102, 1125, 1145. Each gets its line, its parameter name and its route. A property stated over the set — 'all reaction parameters go the same way' — does not satisfy this condition; forty lines, forty assignments. Deviations from the count are named: if a line is not in fact a calibration mark, say so and say why. 3. **The section states in one sentence that `Kalibriert: Selbstspieler` is today an unreachable route, and does not assign it to any of the forty.** No agent role can execute a program: `agents/lauf.py:NIE` denies `Bash` globally, `selbstspieler` stands in `baulauf.py:PRUEFROLLEN` and gets no runner that plays a game, and package `0157` has been `blockiert` on exactly this tool question since 2026-09-06. A route that presupposes a self-play run is a gate to the operator, and the section says so with that word. 4. **At least one route is executable today by a role that exists**, named with the role and the file it would write. If the honest answer is that none of the forty can be reached without the operator, the section says that plainly and the package is still met — but then it names what the operator would have to run, and how long it takes. 5. **No number is invented.** The section decides *how* a value arrives, not which value. Any concrete figure appearing in it carries a source with a retrieval date, or is marked an estimate. 6. **Nothing outside the new section of `spiel.md` is written.** `parameter.toml` is not touched — the role has no write right to it (`Edit(specs/**)` and `Edit(ventures/**/aufgaben/**)` only), and that is a property of this package, not an oversight."
@@ -51,3 +51,43 @@ package does not unblock it and does not try to.** It answers the narrower quest
 whether the forty numbers have any route at all that does not run through that wall. If the
 answer is no for most of them, that is a finding for the Geschäftsführer and belongs in his
 report to the operator, not in a third round between us.
+
+## Meldung, 2026-09-10, spielentwerfer
+
+New section `Wie die vierzig Platzhalter zu ihren Werten kommen` in `spiel.md`, inserted
+before `Was der Architekt neu rechnen muss`. German, per the note. Nothing else written;
+`parameter.toml` untouched.
+
+**Five routes, precedence 1→5, first applicable wins:** 1 Normierung (the key is a unit,
+not a calibration quantity), 2 Ableitung (an equation pins it *uniquely* — a bound that
+only narrows an interval is not a route to a value), 3 Datenanker, 4 Jahrgangsschranke
+(the vintage builder computes it or rejects the set; nothing is searched), 5 Betreiberlauf
+— **a gate**, split into 5a `weltlauf` (20 world steps) and 5b Partie.
+
+**The count is 40 and I re-measured it.** Three marks cover more than one line (518 the
+three supervisory thresholds; 1102 and 1145 each one `schrittweite` beside two bounds the
+mark explicitly does *not* carry). `[instrument.regulierung]` carries no mark — `FEST
+(T51)`.
+
+**The balance: 20 of 40 without a run, 20 at the gate.** Weg 1 five, Weg 2 six, Weg 3
+three, Weg 4 six.
+
+**Condition 3.** The self-player is named unreachable in one sentence with three
+verifications of my own — `"Bash"` in `agents/lauf.py:60` inside `NIE` with deny beating
+allow (`:44`), `selbstspieler` in `baulauf.py:61` under `PRUEFROLLEN`, `0157` blockiert —
+and **no key is assigned to it**. `parameter.toml` line 70 still claims one role has Bash;
+line 60 denies it globally and deny wins, so that comment is stale, not a counterexample.
+
+**Condition 4, executable today.** `datenkurator` → three series into `daten.md`;
+`datenbauer` → six values at vintage build (`Edit(ventures/**)`, `datenbauer.md:13`);
+eleven follow from the section itself and need only `kernbauer` to write them into
+`parameter.toml`. None of the three needs an executed program.
+
+**The sharpest result, and it is a finding for the Geschäftsführer:** *Weg 5a is empty.*
+The back-comparison — the factory's cheapest run — can pin none of the forty, because in
+the `weltlauf` the fund subsystem does not run and the only two keys that do act there
+drive government approval, which per `daten.md` gap 4 has no counterpart in any checked
+source and is therefore not a target series. **Second:** a thousand parameter sets over
+twenty free axes is 1.4 grid points per axis, so a single night run does not answer the
+question. The section therefore splits the twenty into five decoupled groups of at most
+six axes, each against the measure that sees it.

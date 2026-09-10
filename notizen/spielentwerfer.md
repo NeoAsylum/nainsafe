@@ -4,6 +4,54 @@ Rotated by the runner on 2026-09-07 at 14796 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-10 — 0291, the routes for the forty placeholders
+
+Forty marks, forty assignments, five routes. Cost: seven `Grep` and six `Read` windows
+(parameter.toml 330-505, 505-605, 975-1025, 1085-1180; spiel.md 2725-2775, 3410-3441).
+I never opened either spec whole.
+
+What holds beyond this package:
+
+- **`parameter.toml`'s own `Scheitert daran:` block is the discriminator, and it is
+  already written for every key.** Where the failure mode is phrased in terms of one of
+  the four Maße, only a run can see the key. Where it is phrased as an inequality over
+  other keys, the key is derivable. I did not have to invent a taxonomy; I had to read
+  the failure clause and sort. Next time a package asks me to route parameters, that
+  clause is the first thing to grep, not the last.
+- **The strongest route is the one that removes the parameter instead of pinning it.**
+  Five of the forty are *units*, not calibration quantities: `druck_max` (class 9 is
+  *defined* as `0 … druck_max` and influence is a share of it, so the scale cancels),
+  `aufsicht_max` and `nachahmer_max` (counter, thresholds and tempo are jointly
+  scale-free), `stufenweite`, `startzustimmung` (no data anchor → the zero point is
+  free, only the distance to the change threshold acts). Calling those calibrated is a
+  category error. Look for the scale-free group first; it is cheaper than any route.
+- **A derivation that yields an interval is not a route to a value.** I nearly assigned
+  four keys to "Ableitung" on bounds like `regulierung_stufen <= R`. A bound belongs to
+  the gate run as a *search interval*, and saying so is worth more than a false green:
+  it turns an open search into a bounded one. Keep the distinction sharp — "unique or it
+  is not route 2".
+- **The mode a measure runs in decides what it can calibrate, and `weltlauf` sees almost
+  nothing.** The fund subsystem does not run there, so Maß 4 — the cheapest run in the
+  factory, 20 world steps — can pin **none** of the forty. `parameter.toml:999-1002`
+  had already reasoned exactly this for `regulierung_last`, one key at a time; the
+  general form was one grep away and nobody had written it down. When a package points
+  me at a measure as a likely route, check what the measure's *mode* switches off before
+  believing it.
+- **Dimension count beats runtime.** The document carries 26,5 h on one core for a
+  thousand parameter sets, and that number reads reassuring until you divide: twenty
+  free axes over a thousand sets is 1,4 points per axis. The useful design move was not
+  a faster run but decoupling the twenty into five groups of at most six.
+
+Unsure, for the PM: **three places where I decided rather than derived, and a reviewer
+may well disagree with any of them** — (a) the mandate's wealth threshold as
+`startkapital` × the growth of the best of the sixteen start markets, (b) the three
+supervisory thresholds as equal quarters of `aufsicht_max`, (c) `regulierung_stufen = R`.
+Each is defensible and each is a choice; I marked them as Entwurfssätze in the text so
+they are visible as choices and not smuggled in as arithmetic. Second: route 2 for
+`einfluss_glaettung` (802) depends on `verzoegerung_lobby` (649), which sits at the gate
+— a route with a foot in each camp. I named it rather than hide it, but if the checker
+wants strict disjointness, 802 belongs on 5b and the balance reads 19 to 21.
+
 ## 2026-09-08 — 0224 again, Rücklauf 1: the sweep had a shelf life of one day
 
 Five findings, all worked off; 2 further repairs (:1577, :3340), 5 sites carried with a

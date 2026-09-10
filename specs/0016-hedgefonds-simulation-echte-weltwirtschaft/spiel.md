@@ -3296,6 +3296,201 @@ vintage.
   sibling of the condition package 0039 left behind, and both are checked at vintage
   build.
 
+## Wie die vierzig Platzhalter zu ihren Werten kommen
+
+`parameter.toml` trägt an vierzig Stellen `# Kalibriert: Selbstspieler` (gezählt am
+2026-09-10 an HEAD; die Zeilen stehen unten). Seit Paket `0284` rechnet die Runde mit
+diesen vierzig Zahlen, statt sie mit null zu multiplizieren — die Marke ist damit keine
+Notiz mehr, sondern eine offene Rechnung.
+
+**Der Selbstspieler ist heute kein Weg: Keine Rolle dieser Fabrik kann ein Programm
+ausführen** — `"Bash"` steht in `agents/lauf.py:60` in `NIE`, und Deny sticht Allow
+(`lauf.py:44`); `selbstspieler` steht in `baulauf.py:61` unter `PRUEFROLLEN` und bekommt
+keinen Läufer, der eine Partie spielt; Paket `0157` ist seit dem 2026-09-06 genau an
+dieser Werkzeugfrage `blockiert`. **Keiner der vierzig Schlüssel ist deshalb unten dem
+Selbstspieler zugewiesen.** Was einen Lauf braucht, ist ein **Gate** an den Betreiber und
+steht als solches da.
+
+### Die fünf Wege
+
+Jeder Schlüssel nimmt den **ersten** Weg, der auf ihn zutrifft. Die Reihenfolge ist keine
+Geschmackssache: Jeder frühere Weg nimmt dem Modell einen Freiheitsgrad, ohne dass etwas
+laufen muss.
+
+| Weg | Was er braucht | Wer ihn geht | Wohin er schreibt |
+|---|---|---|---|
+| **1 Normierung** | nichts | dieser Abschnitt (spielentwerfer) entscheidet, `kernbauer` trägt ein | `spiel.md`, dann `parameter.toml` |
+| **2 Ableitung** | eine Gleichung über bereits festliegende Größen | dito | dito |
+| **3 Datenanker** | eine beschaffbare Reihe mit Quelle und Abrufdatum | `datenkurator` | `specs/…/daten.md`, dann `parameter.toml` |
+| **4 Jahrgangsschranke** | den gebauten Jahrgang | `datenbauer` (`Edit(ventures/**)`, `agents/rollen/datenbauer.md:13`) | Manifest, dann `parameter.toml` |
+| **5 Betreiberlauf** | ein ausgeführtes Programm | **niemand in dieser Fabrik — Gate an den Betreiber** | — |
+
+**Weg 1 — Normierung.** Der Schlüssel ist gar keine Kalibriergröße, sondern eine
+Maßeinheit: Es wirkt nur ein Verhältnis, und einer der Beteiligten ist frei wählbar. Ihn
+zu kalibrieren ist ein Kategorienfehler, kein offener Punkt. Was gewählt wird, ist
+**Auflösung, nicht Balance** — so groß, wie die Klasse und der Überlaufabstand von
+`mal_geteilt` es tragen.
+
+**Weg 2 — Ableitung.** Der Wert folgt eindeutig aus einer Gleichung über Größen, die schon
+feststehen. *Eindeutig* ist die Bedingung: Eine Gleichung, die nur ein Intervall
+einschränkt, ist kein Weg zu einem Wert — sie geht als Suchintervall an Weg 5.
+
+**Weg 3 — Datenanker.** Der Wert wird aus einer echten Reihe abgelesen. Wo `daten.md` eine
+Lücke nennt, ist dieser Weg **geschlossen**, nicht offen.
+
+**Weg 4 — Jahrgangsschranke.** Hier wird nichts gesucht. Der Jahrgangsbau rechnet die Zahl
+aus den eingebetteten Reihen aus oder weist einen unzulässigen Satz zurück; der Schlüssel
+trägt nur eine Bedingung. `parameter.toml:1102-1103` sagt das für die Instrumentengrenzen
+bereits wörtlich: „gegen den Jahrgang zu prüfen, nicht zu suchen".
+
+**Weg 5 — Betreiberlauf, Gate.** Zwei Größenordnungen, und sie sind zu trennen:
+**5a Weltlauf** — ein Rückvergleich kostet **20 Weltschritte** (*Was der Architekt neu
+rechnen muss*, Zeile „backtest, one `weltlauf`"); ein Gitter darüber ist praktisch
+kostenlos. **5b Partie** — nur die drei Partiemaße sehen den Schlüssel; der Nachtlauf
+kostet **9.759.420 Weltschritte**, tausend Parametersätze über den vollen Satz der Maße
+**9,54 Milliarden**, nach dem Planwert rund **26,5 Stunden auf einem Kern und 3,3 auf
+acht**.
+
+**5a ist leer, und das ist ein Befund.** Im `weltlauf` läuft das Fondssubsystem nicht
+(*Maß 4 — Rückvergleich*), die Instrumente sind exogen; von den vierzig wirken dort nur
+`zustimmung_elastizitaet` und `zustimmung_wechselschwelle` — und Zustimmung hat nach
+`daten.md` Lücke 4 **keine Entsprechung in einer der geprüften Quellen**, ist also keine
+Zielreihe und kann nicht gefittet werden. Der billigste Lauf der Fabrik kann keinen der
+vierzig Schlüssel stellen. Fällt die PWT-Beschaffung von Weg 3 aus, hält 5a genau zwei.
+
+### Die vierzig Marken, je eine Zuweisung
+
+| Zeile | Schlüssel | Weg | Woraus |
+|---:|---|:--:|---|
+| 341 | `stufenweite` | 1 | Einheit der Positionsgröße; nur ihr Verhältnis zu `startkapital` wirkt (`parameter.toml:584-586`). Feinste Stufe der Klasse 4. |
+| 355 | `stufen_max` | 2 | `stufen_max · stufenweite = 10.000` (`parameter.toml:357-359`): Volle Auslenkung eines Steckplatzes ist genau der ganze Markt, nie mehr. |
+| 368 | `ausstiegsabschlag` | 5b | Preis der Illiquidität; sichtbar nur an Klasse 2 von Maß 2. |
+| 378 | `zwangsabschlag` | 5b | *Wie viel* schlimmer der Zwangsverkauf ist, sieht nur Maß 3. Abgeleitete Untergrenze: `> 0`, sonst ist die zweite Aufsichtsschwelle folgenlos. |
+| 397 | `aufschlag` | 4 | `aufschlag >= 1 − min leitzins_pfad` (T51, `parameter.toml:386-388`). Der Jahrgangsbau rechnet `aufschlag_min` und weist Kleineres zurück. |
+| 413 | `lobbykosten` | 5b | Inhalt der Druckskala, nachdem `druck_max` Einheit ist. Maß 2, Klasse 3. |
+| 431 | `beteiligungsrabatt` | 5b | Entscheidet, ob Klasse 2 und 3 von Maß 2 zusammenfallen. |
+| 443 | `gegenlobby_satz` | 5b | Zweiter Inhalt der Druckskala; Gegenkraft 5. |
+| 456 | `druck_max` | 1 | Einheit: Klasse 9 ist als `0 … druck_max` *definiert*, Einfluss ist ein Anteil daran, die Skala kürzt sich. Auflösung, nicht Balance. |
+| 468 | `regulierung_stufen` | 2 | Höchstens ein Schritt je Runde (T51), also `= R = 20`: Die Skala hat genau so viele Stufen, wie eine Partie Runden hat — eine entschlossene Gegenkraft durchmisst sie in einer Partie, keine schneller. |
+| 487 | `schwelle_v` | 4 | Das Mandat ist so schwer wie die Wirklichkeit: Schwelle = `startkapital` mal dem Wachstum des besten der sechzehn Startmärkte über die 21 Stützstellen. Der Jahrgangsbau liefert den Faktor. |
+| 500 | `schwelle_e` | 2 | Entwurfssatz: Der Fonds muss **mehr als die Hälfte** des gesamten Lobbydrucks eines Landes stellen. In Klasse 4 ist das 5.001. |
+| 518 | `aufsicht_schwelle_1`, `_2`, `_3` | 2 | Mit `aufsicht_max` als Einheit bleibt nur das Muster: drei gleich weite Viertel, `s_i = i · aufsicht_max / 4`. Erfüllt `1 <= s1 < s2 < s3 <= aufsicht_max`. |
+| 535 | `aufsicht_max` | 1 | Einheit des Aufsichtszählers: Schwellen, Zähler und `aufsicht_tempo` sind gemeinsam skalenfrei; einer der vier ist frei. |
+| 545 | `nachahmer_tempo` | 5b | Trägt Maß 3 („was im ersten Drittel optimal war, ist im letzten abgegrast"). Nur die Partiemaße sehen es. |
+| 556 | `nachahmer_max` | 1 | Einheit des Nachahmerzählers, wie 535. |
+| 568 | `anlegerabzug_anteil` | 5b | Verteilt das Todesband; sichtbar an Maß 1 und 2. |
+| 584 | `startkapital` | 4 | Entwurfssatz: Der Fonds startet mit genau einer vollen Position (`stufen_max` Stufen) auf dem **mittleren** der sechzehn Startmarktwerte. Die sechzehn stehen im Manifest (`parameter.toml:346-348`). |
+| 610 | `startzustimmung` | 1 | Zustimmung hat keinen Datenanker (`daten.md` Lücke 4); ihr Nullpunkt ist frei. Es wirkt nur der **Abstand** zu `zustimmung_wechselschwelle`. Mitte der Klasse. |
+| 625 | `regulierung_start` | 2 | Der Startstand muss in beide Richtungen Platz lassen, sonst ist eine der beiden Bewegungsrichtungen tot: Mitte, `regulierung_stufen / 2`. |
+| 649 | `verzoegerung_lobby` | 5b | Kanal 8 verlangt eine Verzögerung, aber keine Rundenzahl; wie lang, sieht Maß 1 (Entscheidungsdichte). Abgeleitete Untergrenze `>= 1`. |
+| 658 | `marktverbot_dauer` | 5b | Länge der härtesten Strafe; Maß 3. |
+| 667 | `lobbykosten_dauer` | 5b | Nachwirkung des Regierungswechsels; Maß 3. Den Faktor 2 legt dieses Dokument fest, er ist kein Schlüssel. |
+| 676 | `regierungsdruck_dauer` | 5b | dito. |
+| 707 | `abschreibungsrate` | 3 | Jährlicher Abgang des Kapitalstocks — eine Standardgröße der Wachstumsrechnung. PWT 11.0 ist als Quelle für Kapitalstock bereits belegt (`daten.md:404`). |
+| 717 | `investitionsquote` | 3 | Anteil des Gewinns im Kapitalstock der Folgerunde; Gegenstück in der Bruttoanlageinvestitionsquote aus WDI/PWT (`daten.md:396,404`). |
+| 730 | `preisstoss` | 5b | Preiswirkung je Zehntausendstel bewegten Marktanteils. Ein Datenanker existiert in der Sache, ist aber in `daten.md` nicht beschafft — siehe offene Frage 3. |
+| 742 | `zustimmung_elastizitaet` | 5b | Weg 3 durch `daten.md` Lücke 4 geschlossen, Weg 5a durch dieselbe Lücke (keine Zielreihe). Bleibt die Partie. |
+| 758 | `zustimmung_wechselschwelle` | 3 | Die **Häufigkeit** von Regierungswechseln ist beobachtbar; `daten.md:469-472` bietet die Beschaffung (V-Dem o. ä.) ausdrücklich als kleinen Zusatzauftrag an. Der Abstand zur festgelegten `startzustimmung` folgt aus der Zielhäufigkeit. Scheitert die Beschaffung, fällt der Schlüssel auf 5b. |
+| 769 | `nachahmer_wirkung` | 5b | Inhalt der Nachahmerskala, nachdem `nachahmer_max` Einheit ist. |
+| 789 | `aufsicht_tempo` | 5b | Inhalt der Aufsichtsskala; entscheidet allein, wie schnell die Schwellen fallen. |
+| 802 | `einfluss_glaettung` | 2 | Zwei Zeitkonstanten desselben Kanals müssen übereinstimmen: Der geglättete Einfluss erreicht die halbe Sprungantwort nach `verzoegerung_lobby + 1` Runden. Eindeutig, sobald 649 steht — bis dahin **hängt dieser Weg an einem 5b-Wert**. |
+| 813 | `hebel_max` | 5b | Obergrenze des Hebels. Ein institutioneller Anker existiert (aufsichtsrechtliche Hebelgrenzen), ist aber nicht beschafft — offene Frage 3. |
+| 862 | `hebelaufschlag` | 5b | Aufschlag auf den Leitzins je 10.000 Sichtbarkeit; kein beschaffter Anker. |
+| 874 | `sichtbarkeit_schritt` | 5b | Preis von Aktion 5; Maß 1. |
+| 890 | `innerjahresausschlag_faktor` | 5b | Gewicht der historischen Schwankungsbreite. Weg 3 wäre eine unterjährige Preisreihe je Sektor — `daten.md` Lücke 2: Sektorpreise fehlen vollständig. Weg geschlossen. |
+| 995 | `regulierung_last` | 5b | `parameter.toml:999-1002` schließt Maß 4 für diesen Schlüssel selbst aus: „im Weltlauf ist er ohne Wirkung, weil das Instrument dort feststeht". |
+| 1102 | `schrittweite` [leitzins] | 4 | Entwurfssatz: Der Spieler kann ein Instrument über eine Partie so weit bewegen, wie die Geschichte es bewegt hat — `schrittweite = Spannweite des historischen Pfades / R`, aufgerundet. Der Jahrgangsbau hat die Spannweite. |
+| 1125 | `schrittweite` [zoll] | 4 | dito. Die offene Frage aus *Offene Entwurfsfragen* („für Singapur *und* bezahlbar") bleibt bestehen: Prüft der Jahrgangsbau sie als unerfüllbar, fällt dieser Schlüssel auf 5b. |
+| 1145 | `schrittweite` [haushalt] | 4 | dito. |
+
+**Vierzig Zeilen, vierzig Zuweisungen; die Zahl stimmt und weicht von der 47 des Plans
+ab.** Drei Marken decken je mehr als eine Zeile von `parameter.toml`: 518 die drei
+Aufsichtsschwellen, 1102 und 1145 je eine `schrittweite` neben zwei Grenzen, die die Marke
+ausdrücklich *nicht* trägt („die beiden Grenzen sind gegen den Jahrgang zu prüfen").
+`[instrument.regulierung]` trägt keine Marke — dort steht `FEST (T51)`, und
+`instrument_max` ist die zweite Kopie von `regulierung_stufen`.
+
+**Die Bilanz: 20 von 40 ohne Lauf, 20 am Gate.** Weg 1 fünf (341, 456, 535, 556, 610),
+Weg 2 sechs (355, 468, 500, 518, 625, 802), Weg 3 drei (707, 717, 758), Weg 4 sechs
+(397, 487, 584, 1102, 1125, 1145).
+
+### Was heute jemand tun kann, und was am Gate liegt
+
+**Heute ausführbar, ohne Betreiber:** Der **datenkurator** beschafft drei Reihen und trägt
+sie mit Quelle und Abrufdatum in `specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md`
+ein (Weg 3, Zeilen 707, 717, 758). Der **datenbauer** rechnet sechs Werte beim
+Jahrgangsbau aus und weist sie im Manifest aus (Weg 4). Elf Werte folgen aus diesem
+Abschnitt selbst und brauchen nur noch, dass der **kernbauer** sie in
+`ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml` schreibt und die
+Marke durch den Verweis auf diesen Abschnitt ersetzt (Weg 1 und 2). Keine dieser drei
+Rollen braucht ein ausgeführtes Programm.
+
+**Am Gate, und der Betreiber soll wissen, was er zusagt:** Zwanzig Schlüssel. Der
+Nachtlauf über tausend Parametersätze kostet nach diesem Dokument 9,54 Milliarden
+Weltschritte, rund 26,5 Stunden auf einem Kern und 3,3 auf acht. **Tausend Sätze über
+zwanzig Freiheitsgrade sind 1,4 Gitterpunkte je Achse** — das Gitter ist damit nicht die
+Methode, und ein einzelner Nachtlauf beantwortet die Frage nicht. Der Abschnitt zerlegt
+die zwanzig deshalb in fünf Gruppen, die über kein gemeinsames Maß gekoppelt sind, und
+jede wird gegen das Maß gestellt, das sie sieht:
+
+| Gruppe | Schlüssel | Maß |
+|---|---|---|
+| Druck und Lobby | 413, 431, 443, 649, 995 | Maß 2, Klasse 3 |
+| Aufsicht | 378, 658, 789, 874 | Maß 3, Gegenkraft 1 |
+| Nachahmer | 545, 769 | Maß 3 |
+| Fonds und Markt | 368, 568, 730, 813, 862, 890 | Maß 1, Maß 2 Klassen 1 und 2 |
+| Politik | 667, 676, 742 | Gegenkraft 2 |
+
+Fünf Suchen über höchstens sechs Achsen statt einer über zwanzig. Jede Gruppe trägt
+außerdem das Intervall, das Weg 2 an ihr schon abgeleitet hat — die Suche ist begrenzt,
+nicht offen. **Was der Betreiber ausführt, ist die verkürzte Nachtfassung** (63.200
+Weltschritte für Maß 1, 768.600 für Maß 2), einmal je Gruppe.
+
+### Die drei Klagen aus dem Marktprofil
+
+- **„consequences feel intangible"** — Weg 4 an 487, 584, 1102, 1125, 1145: Startkapital,
+  Mandatsschwelle und Hebelweite sind gegen echte Marktwerte und echte historische Pfade
+  gestellt. Der Spieler sieht am ersten Zug, was sein Geld auf einem echten Markt kauft,
+  und das Mandat ist genau so schwer wie der beste reale Markt derselben zwanzig Jahre.
+- **„socialism always bankrupts you"** — Weg 1 an 341, 456, 535, 556, 610: Fünf Regler,
+  die wie Balance aussahen, sind Maßeinheiten. Eine Strategie kann an einer Einheit nicht
+  scheitern; damit sind fünf Wege, auf denen eine dominante Strategie hätte entstehen
+  können, gar keine Wege mehr.
+- **„no dramatic setbacks", „surface level"** — die Gruppentabelle oben: Aufsicht,
+  Nachahmer und Politik bekommen eigene Suchen gegen Maß 3. Bisher wären sie in einem
+  gemeinsamen Gitter von den Fondsgrößen überstimmt worden, weil diese sechs Achsen die
+  Partiemaße dominieren.
+
+### Was dieser Abschnitt bewusst nicht tut
+
+Er nennt **keine Werte**. Er entscheidet, *wie* eine Zahl ankommt, nicht *welche*. Die
+einzigen Zahlen oben sind arithmetische Folgen der Entwurfssätze (`5.001` aus „mehr als
+die Hälfte", `R = 20` aus *The game length R*) und zitierte Laufzeiten aus diesem
+Dokument. Er ändert `parameter.toml` nicht — der spielentwerfer hat auf diese Datei kein
+Schreibrecht, und das ist so gewollt.
+
+### Was dieser Abschnitt offen lässt
+
+1. **802 hängt an 649.** Die Ableitung der Glättung ist eindeutig, sobald
+   `verzoegerung_lobby` steht — und der steht am Gate. Wer 802 vor dem Betreiberlauf
+   eintragen will, muss 649 vorher per Entwurfssatz festlegen; dieser Abschnitt tut es
+   nicht, weil Kanal 8 ohne Maß 1 keine Rundenzahl hergibt.
+2. **Zwei Beschaffungen, die `daten.md` selbst anbietet.** Trägt PWT 11.0 eine
+   Abschreibungsrate und eine Investitionsquote als eigene Variablen? Und ist eine
+   Wechselhäufigkeitsreihe (V-Dem o. ä.) unter tragfähiger Lizenz zu haben? Beides ist
+   Sache des datenkurators; ich behaupte keine Werte und keine Variablennamen. Fallen
+   beide aus, wandern 707 und 717 auf 5a und 758 auf 5b, und die Bilanz lautet 17 zu 23.
+3. **Vier Anker, die es in der Sache gibt und in `daten.md` nicht.** Marktwirkung von
+   Handelsvolumen (730), aufsichtsrechtliche Hebelgrenzen (813), Finanzierungsaufschläge
+   über dem Leitzins (862) und unterjährige Schwankungsbreite (890). Ob eine davon unter
+   tragfähiger Lizenz beschaffbar ist, ist nicht geprüft; solange nicht, stehen alle vier
+   auf 5b. Vier von zwanzig Gate-Schlüsseln — der Zusatzauftrag lohnt die Prüfung.
+4. **Die Marke selbst.** Zwanzig Kommentare in `parameter.toml` sagen weiter „Kalibriert:
+   Selbstspieler" über einen Schlüssel, der nun einen anderen Weg trägt, und zwanzig sagen
+   es über einen Weg, der ein Gate ist. Beide Fassungen gehören ersetzt — nicht durch
+   besseres Deutsch, sondern durch die Wegnummer und den Verweis hierher. Das ist ein Satz
+   je Zeile und ein Paket für den kernbauer.
+
 ## Was der Architekt neu rechnen muss
 
 Only so that it does not have to be searched for. Everything else in `technik.md` stays
