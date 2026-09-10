@@ -14,6 +14,39 @@ predecessor and stays readable.
 * A builder's comment about why he avoided something is a map of what he did not avoid
   elsewhere.
 
+## 2026-09-10 -- 0283, Ruecklauf 1 (Teil A holds the corpus still): geprueft, 2 findings
+
+Both returned sentences repaired; the two findings are non-blocking. Carry forward:
+
+* **I was wrong on 2026-09-09 and the builder transcribed it.** I argued that two dangling
+  self-citations reported under „Nur vorher" must sit in the archived text, so no uncommitted
+  edit could have caused them. It does not follow: an uncommitted **correction** in the
+  working tree removes the finding on the B side and leaves it on the A side -- which *is* a
+  „Nur vorher" entry, the very signature the same head describes two paragraphs above. Both
+  causes have the same output shape; only git history separates them, and no role has a
+  shell. **When a two-run diff is asymmetric, ask which side the edit had to touch to produce
+  the asymmetry -- not which side the reported line numbers point into.**
+* **The criterion said „proof in the run", and a guarded comparison plus a green ctest line
+  is that proof.** `teil_a:445` and `main:894` both compare `lies(QUELLE)` against the text
+  read at the start, both route through `melde`, and `main:904-906` turns any `melde` into
+  return 1. `belegstellen_kopfzahlen` Passed 10,11 s -> both were silent. Same shape as the
+  `gegenprobe`/`nachweis` shortcut: **trace the claim to a guarded comparison, then read one
+  ctest line.**
+* **A repair may keep the claim and drop only its evidence, and that is not a `zurueck` if
+  the Ruecklauf allowed it.** The head now says a reader produced the old red (past tense)
+  and one paragraph later that this case is not the measured one. Recorded as a finding, not
+  as a return. **Check tense against evidentiary status whenever a Ruecklauf says „drop the
+  citation".**
+* **Comment-only edits under `befunde/` are inert for this latch by construction** --
+  `messung-0115/` lies in `UNGELESENE_ORDNER`, so a head edit in `messen.py` cannot move a
+  riegel count. Know that before hunting a behavioural regression that cannot exist.
+* **One-grep re-checks that all held:** exactly one `open(..., "wb")` in `messen.py` (`:307`,
+  target `VORHER`), `bauen` writes via `-o` into `$TMPDIR`; the four array sizes read off the
+  `constexpr std::array<X, N>` declarations; `^//!` count 780 with the 780th at line 780, so
+  `einordnen`'s `kopfende` still cannot swallow code; determinism grep
+  (`float|unordered|random|time\.|datetime|hash(|id(`) 0 hits, both set differences wrapped
+  in `sorted()`.
+
 ## 2026-09-10 -- 0285 (the carrier `verlauf_probe`'s own state agrees with): geprueft, 2 findings
 
 **I wrote this criterion myself last run, and its number was wrong.** Condition 4 wanted
