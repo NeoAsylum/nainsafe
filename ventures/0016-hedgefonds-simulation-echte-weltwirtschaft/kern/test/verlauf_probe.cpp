@@ -110,14 +110,87 @@ constexpr Index PLATZ_RUNDE = kern::zustand::stelle_partie(PartieFeld::Runde);
 constexpr Index PLATZ_PARAMETERSUMME =
     kern::zustand::stelle_partie(PartieFeld::ParameterPruefsumme);
 
+/// Ein Musterwert je Adresse -- null, beide Vorzeichen, die Skala aus spiel.md und
+/// beide Enden des Ganzzahlbereichs.
+///
+/// **Sie steht seit Paket 0285 hier oben und ist `constexpr`**, weil der Parametersatz
+/// unter ihr sie braucht: Sein Pfadstand ist genau der Musterwert der Adressen, die
+/// Schritt 3 damit beschreibt. Eine zweite Abschrift der acht Muster waeren zwei
+/// Stellen, die auseinanderlaufen.
+constexpr i64 musterwert(Index platz)
+{
+    constexpr std::array<i64, 8> muster = {0,
+                                           1,
+                                           -1,
+                                           10'000,
+                                           -10'000,
+                                           123'456'789,
+                                           kern::festkomma::I64_MAX,
+                                           kern::festkomma::I64_MIN};
+    return muster[platz % muster.size()];
+}
+
+/// Der Pfadstand des Parametersatzes unten: je spielbarem Land und je pfadgestuetztem
+/// Instrument **genau der Musterwert, den `ausgangslage` auf dieselbe Adresse legt**.
+///
+/// **Warum der Traeger und nicht der Zustand** (Paket 0285). Seit Paket 0284 setzt
+/// `schritt_3_politik` den Stand der drei pfadgestuetzten Instrumente aus dem Traeger,
+/// statt ihn vorzutragen. Ein voreingestellter Traeger legte dort null -- und weil die
+/// Musterlage auf sechs der zwoelf Adressen `-10'000` traegt, bewegten sich sechs
+/// Instrumentenstaende in **jeder** Runde dieser Datei. Schritt 5 rechnet fuer jedes
+/// bewegte Instrument `kern::werte::schaden`, und dessen Zeilen greifen damit auf eine
+/// Lage zu, die an beiden Enden des Ganzzahlbereichs steht: Die Zollzeile summiert
+/// `handelsvolumen`, die Zinszeile rechnet ueber `schuld`, dessen Staatsschuldquote bei
+/// zwei der vier Laender der kleinste `int64_t` ist.
+///
+/// **Gemessen und nicht hergeleitet:** Im Baubericht vom 2026-09-09 bricht
+/// `verlauf_probe` in Runde 1 ab, im Wortlaut `plus: Summe ausserhalb von i64 (T7)` --
+/// die Zollzeile, denn der erste bewegte Stand der Musterlage ist der Zoll des ersten
+/// Landes. Die Zinszeile liegt hinter ihr und traegt denselben Fall.
+///
+/// **Die Gegenrichtung waere die falsche gewesen.** Die betroffenen Adressen anzuheben,
+/// wie es Paket 0238 mit den zwoelf Wertschoepfungen tat, hielte die Bewegung und
+/// versteckte den naechsten Ueberlauf statt des jetzigen. Diese Datei prueft den Verlauf
+/// und nicht die Rechnung einer Runde; ein Traeger, der keine Adresse bewegt, ist die
+/// kleinere Behauptung. Dass Schritt 3 den Stand **setzt** statt ihn vorzutragen, misst
+/// `schritt_probe.cpp` an der Ursache jedes Kettenglieds -- hier gehoert es nicht hin.
+constexpr std::array<std::array<i64, kern::zustand::PFADINSTRUMENTE>, LAENDER>
+pfadstand_der_probe()
+{
+    std::array<std::array<i64, kern::zustand::PFADINSTRUMENTE>, LAENDER> stand{};
+    for (std::size_t nummer = 0; nummer < LAENDER; ++nummer) {
+        for (std::size_t i = 0; i < kern::zustand::PFADINSTRUMENTE; ++i) {
+            stand[nummer][i] = musterwert(kern::zustand::stelle_instrument(
+                static_cast<Gebiet>(nummer), static_cast<Instrument>(i),
+                InstrumentFeld::Stand));
+        }
+    }
+    return stand;
+}
+
 /// Der Parametersatz, mit dem die Partie dieser Probe faehrt -- alle Felder auf ihrer
-/// Vorbelegung (T10b).
+/// Vorbelegung (T10b), der Pfadstand aus dem Musterwert.
 ///
 /// Diese Datei prueft den Verlauf und nicht die Rechnung einer Runde; welche Zahlen im
 /// Traeger stehen, ist ihr gleichgueltig. Wichtig ist allein, dass **derselbe** Satz
 /// ueber alle Runden der Partie laeuft und dass die Ausgangslage seine Pruefsumme
 /// traegt -- sonst braeche schon die erste Runde an der Schranke aus T10b ab.
-constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE{};
+///
+/// **Der Pfadstand ist die eine Ausnahme von der Vorbelegung, und er ist keine
+/// Kalibrierung**, sondern die Abschrift der Ausgangslage: Er traegt Adresse fuer
+/// Adresse den Wert, den `ausgangslage` dort ohnehin hinschreibt, also bewegt keine
+/// Runde dieser Datei einen Instrumentenstand. Die Begruendung steht bei
+/// `pfadstand_der_probe`. Auf die Pruefsumme wirkt er nicht -- sie laeuft nach T10b ueber
+/// die sieben Schluesselfelder --, also bleibt jede Ausgangslage dieser Datei an
+/// denselben Traeger gebunden wie vorher.
+constexpr kern::werte::Konstanten konstanten_der_probe()
+{
+    kern::werte::Konstanten satz{};
+    satz.pfadstand = pfadstand_der_probe();
+    return satz;
+}
+
+constexpr kern::werte::Konstanten KONSTANTEN_DER_PROBE = konstanten_der_probe();
 
 int fehlgeschlagen = 0;
 
@@ -205,21 +278,6 @@ bool ketten_gleich(const Kette& links, const Kette& rechts)
         }
     }
     return true;
-}
-
-/// Ein Musterwert je Adresse -- null, beide Vorzeichen, die Skala aus spiel.md und
-/// beide Enden des Ganzzahlbereichs.
-i64 musterwert(Index platz)
-{
-    constexpr std::array<i64, 8> muster = {0,
-                                           1,
-                                           -1,
-                                           10'000,
-                                           -10'000,
-                                           123'456'789,
-                                           kern::festkomma::I64_MAX,
-                                           kern::festkomma::I64_MIN};
-    return muster[platz % muster.size()];
 }
 
 /// Ein Ursachensatz, der sich von jedem anderen dieser Probe unterscheidet.
