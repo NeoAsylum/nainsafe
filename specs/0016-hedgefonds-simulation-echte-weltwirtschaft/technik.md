@@ -2564,13 +2564,20 @@ and its forms beside it. Why not a read access on the writer's state, which read
 `Zustand` forms have, and what it costs: section 22.
 
 **And what a `const Zustand&` argument of any quantity of this table means — decided
-2026-09-10, package `0236`.** It is a state at a **round boundary**: a round that is
-finished and whose two-sided mask check of T38 has passed. It is never the round that is
-running, and that is a property of the types and not a convention — the `Schreiber`
-releases its emerging state only through `rundenende()`, so no `Zustand` object holding a
-half-written round exists to be passed. **Which** boundary it is, the caller says and this
-table does not; **number 7 is the reason it must not**, for it takes two and their
-difference is the whole content of the quantity (T33).
+2026-09-10, package `0236`, clause corrected in its first review.** It is a **complete**
+state: every address the quantity's formula reads carries a value that nobody is still
+writing. Complete states come in three kinds, and the argument may be any of them — the
+**end of a finished round**, whose two-sided mask check of T38 has passed; the **start
+state of a vintage**, which the vintage build writes and T45 counts off address by
+address, not T38; or a state **built by hand in the test bench**, which has passed
+neither check (section 22, reader table: „states built by hand, without a round"). What
+it is **never** is the round that is running, and that half is a property of the types
+and not a convention — the `Schreiber` releases its emerging state only through
+`rundenende()`, so no `Zustand` object holding a half-written round exists to be passed.
+**Which** complete state it is, the caller says and this table does not; **number 7 is
+the reason it must not**, for it takes two and their difference is the whole content of
+the quantity — T33 point 2 values the vintage start basket as `marktkorb(start, start)`,
+before any round has run.
 
 **A quantity takes the `Schreiber` and not a `Zustand` wherever a rule of `spiel.md` fixes
 a reading per address — and that holds for both readings, not only for `lies_neu`.** T39
@@ -6409,8 +6416,9 @@ line of section 10 does not move.
 
 1. **Section 22's prescription is written and not built, and this section is unenforceable
    until it is.** Measured 2026-09-10: `kern/include/kern/werte.hpp` declares numbers 9, 10
-   and 11 only over `const zustand::Zustand&` (`:339`, `:344`, `:356`, `:367`) and number 22
-   as `schaden(const zustand::Zustand& z, …)` (`:599`). No package under `aufgaben/` carries
+   and 11 only over `const zustand::Zustand&` (`:342`, `:347`, `:359`, `:370`) and number 22
+   as `schaden(const zustand::Zustand& z, …)` (`:602`; re-measured 2026-09-10 after the
+   review — the five numbers stood 3 short, the file had moved, the claim was unchanged). No package under `aufgaben/` carries
    that build. It is **one** package: three writer forms, the changed number 22, the twelve
    call sites in `kern/test/werte_probe.cpp` that section 22 counted, and the `Zustand`
    argument of `schritt_5_reaktion` falls out of it.

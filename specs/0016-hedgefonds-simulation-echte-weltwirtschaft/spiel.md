@@ -3298,198 +3298,200 @@ vintage.
 
 ## Wie die vierzig Platzhalter zu ihren Werten kommen
 
-`parameter.toml` trägt an vierzig Stellen `# Kalibriert: Selbstspieler` (gezählt am
-2026-09-10 an HEAD; die Zeilen stehen unten). Seit Paket `0284` rechnet die Runde mit
-diesen vierzig Zahlen, statt sie mit null zu multiplizieren — die Marke ist damit keine
-Notiz mehr, sondern eine offene Rechnung.
+`parameter.toml` carries `# Kalibriert: Selbstspieler` at forty places (counted on
+2026-09-10 at HEAD; the lines are listed below). Since package `0284` the round computes
+with these forty numbers instead of multiplying them by zero — the mark is therefore no
+longer a note but an open bill.
 
-**Der Selbstspieler ist heute kein Weg: Keine Rolle dieser Fabrik kann ein Programm
-ausführen** — `"Bash"` steht in `agents/lauf.py:60` in `NIE`, und Deny sticht Allow
-(`lauf.py:44`); `selbstspieler` steht in `baulauf.py:61` unter `PRUEFROLLEN` und bekommt
-keinen Läufer, der eine Partie spielt; Paket `0157` ist seit dem 2026-09-06 genau an
-dieser Werkzeugfrage `blockiert`. **Keiner der vierzig Schlüssel ist deshalb unten dem
-Selbstspieler zugewiesen.** Was einen Lauf braucht, ist ein **Gate** an den Betreiber und
-steht als solches da.
+**The self-player is no path today: no role of this factory can execute a program** —
+`"Bash"` stands in `agents/lauf.py:60` in `NIE`, and deny prevails over allow
+(`lauf.py:44`); `selbstspieler` stands in `baulauf.py:61` under `PRUEFROLLEN` and gets no
+runner that plays a game; package `0157` has been `blockiert` on exactly this tooling
+question since 2026-09-06. **None of the forty keys is therefore assigned to the
+self-player below.** Whatever needs a run is a **gate** to the operator and stands listed
+as such.
 
 ### Die fünf Wege
 
-Jeder Schlüssel nimmt den **ersten** Weg, der auf ihn zutrifft. Die Reihenfolge ist keine
-Geschmackssache: Jeder frühere Weg nimmt dem Modell einen Freiheitsgrad, ohne dass etwas
-laufen muss.
+Each key takes the **first** path that applies to it. The order is not a matter of taste:
+every earlier path takes a degree of freedom away from the model without anything having
+to run.
 
-| Weg | Was er braucht | Wer ihn geht | Wohin er schreibt |
+| Path | What it needs | Who walks it | Where it writes |
 |---|---|---|---|
-| **1 Normierung** | nichts | dieser Abschnitt (spielentwerfer) entscheidet, `kernbauer` trägt ein | `spiel.md`, dann `parameter.toml` |
-| **2 Ableitung** | eine Gleichung über bereits festliegende Größen | dito | dito |
-| **3 Datenanker** | eine beschaffbare Reihe mit Quelle und Abrufdatum | `datenkurator` | `specs/…/daten.md`, dann `parameter.toml` |
-| **4 Jahrgangsschranke** | den gebauten Jahrgang | `datenbauer` (`Edit(ventures/**)`, `agents/rollen/datenbauer.md:13`) | Manifest, dann `parameter.toml` |
-| **5 Betreiberlauf** | ein ausgeführtes Programm | **niemand in dieser Fabrik — Gate an den Betreiber** | — |
+| **1 Normalization** | nothing | this section (spielentwerfer) decides, `kernbauer` enters it | `spiel.md`, then `parameter.toml` |
+| **2 Derivation** | an equation over quantities already fixed | ditto | ditto |
+| **3 Data anchor** | a procurable series with source and retrieval date | `datenkurator` | `specs/…/daten.md`, then `parameter.toml` |
+| **4 Vintage barrier** | the built vintage | `datenbauer` (`Edit(ventures/**)`, `agents/rollen/datenbauer.md:13`) | manifest, then `parameter.toml` |
+| **5 Operator run** | an executed program | **nobody in this factory — gate to the operator** | — |
 
-**Weg 1 — Normierung.** Der Schlüssel ist gar keine Kalibriergröße, sondern eine
-Maßeinheit: Es wirkt nur ein Verhältnis, und einer der Beteiligten ist frei wählbar. Ihn
-zu kalibrieren ist ein Kategorienfehler, kein offener Punkt. Was gewählt wird, ist
-**Auflösung, nicht Balance** — so groß, wie die Klasse und der Überlaufabstand von
-`mal_geteilt` es tragen.
+**Path 1 — normalization.** The key is not a calibration quantity at all but a unit of
+measure: only a ratio has effect, and one of the participants is freely choosable.
+Calibrating it is a category error, not an open point. What gets chosen is
+**resolution, not balance** — as large as the class and the overflow margin of
+`mal_geteilt` can carry.
 
-**Weg 2 — Ableitung.** Der Wert folgt eindeutig aus einer Gleichung über Größen, die schon
-feststehen. *Eindeutig* ist die Bedingung: Eine Gleichung, die nur ein Intervall
-einschränkt, ist kein Weg zu einem Wert — sie geht als Suchintervall an Weg 5.
+**Path 2 — derivation.** The value follows unambiguously from an equation over quantities
+that are already fixed. *Unambiguously* is the condition: an equation that merely narrows
+an interval is no path to a value — it goes to path 5 as a search interval.
 
-**Weg 3 — Datenanker.** Der Wert wird aus einer echten Reihe abgelesen. Wo `daten.md` eine
-Lücke nennt, ist dieser Weg **geschlossen**, nicht offen.
+**Path 3 — data anchor.** The value is read off a real series. Where `daten.md` names a
+gap, this path is **closed**, not open.
 
-**Weg 4 — Jahrgangsschranke.** Hier wird nichts gesucht. Der Jahrgangsbau rechnet die Zahl
-aus den eingebetteten Reihen aus oder weist einen unzulässigen Satz zurück; der Schlüssel
-trägt nur eine Bedingung. `parameter.toml:1102-1103` sagt das für die Instrumentengrenzen
-bereits wörtlich: „gegen den Jahrgang zu prüfen, nicht zu suchen".
+**Path 4 — vintage barrier.** Nothing is searched here. The vintage build computes the
+number from the embedded series or rejects an inadmissible set; the key carries only a
+condition. `parameter.toml:1102-1103` already says so verbatim for the instrument
+bounds: „gegen den Jahrgang zu prüfen, nicht zu suchen".
 
-**Weg 5 — Betreiberlauf, Gate.** Zwei Größenordnungen, und sie sind zu trennen:
-**5a Weltlauf** — ein Rückvergleich kostet **20 Weltschritte** (*Was der Architekt neu
-rechnen muss*, Zeile „backtest, one `weltlauf`"); ein Gitter darüber ist praktisch
-kostenlos. **5b Partie** — nur die drei Partiemaße sehen den Schlüssel; der Nachtlauf
-kostet **9.759.420 Weltschritte**, tausend Parametersätze über den vollen Satz der Maße
-**9,54 Milliarden**, nach dem Planwert rund **26,5 Stunden auf einem Kern und 3,3 auf
-acht**.
+**Path 5 — operator run, gate.** Two orders of magnitude, and they must be kept apart:
+**5a weltlauf** — a backtest costs **20 world steps** (*Was der Architekt neu
+rechnen muss*, line „backtest, one `weltlauf`"); a grid over that is practically free.
+**5b game** — only the three game measures see the key; the night run costs
+**9.759.420 world steps**, a thousand parameter sets over the full set of measures
+**9,54 billion**, by the plan value about **26,5 hours on one core and 3,3 on
+eight**.
 
-**5a ist leer, und das ist ein Befund.** Im `weltlauf` läuft das Fondssubsystem nicht
-(*Maß 4 — Rückvergleich*), die Instrumente sind exogen; von den vierzig wirken dort nur
-`zustimmung_elastizitaet` und `zustimmung_wechselschwelle` — und Zustimmung hat nach
-`daten.md` Lücke 4 **keine Entsprechung in einer der geprüften Quellen**, ist also keine
-Zielreihe und kann nicht gefittet werden. Der billigste Lauf der Fabrik kann keinen der
-vierzig Schlüssel stellen. Fällt die PWT-Beschaffung von Weg 3 aus, hält 5a genau zwei.
+**5a is empty, and that is a finding.** In the `weltlauf` the fund subsystem does not run
+(*Maß 4 — Rückvergleich*), the instruments are exogenous; of the forty, only
+`zustimmung_elastizitaet` and `zustimmung_wechselschwelle` act there — and approval has,
+per `daten.md` gap 4, **no counterpart in any of the checked sources**, so it is no
+target series and cannot be fitted. The cheapest run of the factory can set none of the
+forty keys. If the PWT procurement of path 3 falls through, 5a holds exactly two.
 
 ### Die vierzig Marken, je eine Zuweisung
 
-| Zeile | Schlüssel | Weg | Woraus |
+| Line | Key | Path | From what |
 |---:|---|:--:|---|
-| 341 | `stufenweite` | 1 | Einheit der Positionsgröße; nur ihr Verhältnis zu `startkapital` wirkt (`parameter.toml:584-586`). Feinste Stufe der Klasse 4. |
-| 355 | `stufen_max` | 2 | `stufen_max · stufenweite = 10.000` (`parameter.toml:357-359`): Volle Auslenkung eines Steckplatzes ist genau der ganze Markt, nie mehr. |
-| 368 | `ausstiegsabschlag` | 5b | Preis der Illiquidität; sichtbar nur an Klasse 2 von Maß 2. |
-| 378 | `zwangsabschlag` | 5b | *Wie viel* schlimmer der Zwangsverkauf ist, sieht nur Maß 3. Abgeleitete Untergrenze: `> 0`, sonst ist die zweite Aufsichtsschwelle folgenlos. |
-| 397 | `aufschlag` | 4 | `aufschlag >= 1 − min leitzins_pfad` (T51, `parameter.toml:386-388`). Der Jahrgangsbau rechnet `aufschlag_min` und weist Kleineres zurück. |
-| 413 | `lobbykosten` | 5b | Inhalt der Druckskala, nachdem `druck_max` Einheit ist. Maß 2, Klasse 3. |
-| 431 | `beteiligungsrabatt` | 5b | Entscheidet, ob Klasse 2 und 3 von Maß 2 zusammenfallen. |
-| 443 | `gegenlobby_satz` | 5b | Zweiter Inhalt der Druckskala; Gegenkraft 5. |
-| 456 | `druck_max` | 1 | Einheit: Klasse 9 ist als `0 … druck_max` *definiert*, Einfluss ist ein Anteil daran, die Skala kürzt sich. Auflösung, nicht Balance. |
-| 468 | `regulierung_stufen` | 2 | Höchstens ein Schritt je Runde (T51), also `= R = 20`: Die Skala hat genau so viele Stufen, wie eine Partie Runden hat — eine entschlossene Gegenkraft durchmisst sie in einer Partie, keine schneller. |
-| 487 | `schwelle_v` | 4 | Das Mandat ist so schwer wie die Wirklichkeit: Schwelle = `startkapital` mal dem Wachstum des besten der sechzehn Startmärkte über die 21 Stützstellen. Der Jahrgangsbau liefert den Faktor. |
-| 500 | `schwelle_e` | 2 | Entwurfssatz: Der Fonds muss **mehr als die Hälfte** des gesamten Lobbydrucks eines Landes stellen. In Klasse 4 ist das 5.001. |
-| 518 | `aufsicht_schwelle_1`, `_2`, `_3` | 2 | Mit `aufsicht_max` als Einheit bleibt nur das Muster: drei gleich weite Viertel, `s_i = i · aufsicht_max / 4`. Erfüllt `1 <= s1 < s2 < s3 <= aufsicht_max`. |
-| 535 | `aufsicht_max` | 1 | Einheit des Aufsichtszählers: Schwellen, Zähler und `aufsicht_tempo` sind gemeinsam skalenfrei; einer der vier ist frei. |
-| 545 | `nachahmer_tempo` | 5b | Trägt Maß 3 („was im ersten Drittel optimal war, ist im letzten abgegrast"). Nur die Partiemaße sehen es. |
-| 556 | `nachahmer_max` | 1 | Einheit des Nachahmerzählers, wie 535. |
-| 568 | `anlegerabzug_anteil` | 5b | Verteilt das Todesband; sichtbar an Maß 1 und 2. |
-| 584 | `startkapital` | 4 | Entwurfssatz: Der Fonds startet mit genau einer vollen Position (`stufen_max` Stufen) auf dem **mittleren** der sechzehn Startmarktwerte. Die sechzehn stehen im Manifest (`parameter.toml:346-348`). |
-| 610 | `startzustimmung` | 1 | Zustimmung hat keinen Datenanker (`daten.md` Lücke 4); ihr Nullpunkt ist frei. Es wirkt nur der **Abstand** zu `zustimmung_wechselschwelle`. Mitte der Klasse. |
-| 625 | `regulierung_start` | 2 | Der Startstand muss in beide Richtungen Platz lassen, sonst ist eine der beiden Bewegungsrichtungen tot: Mitte, `regulierung_stufen / 2`. |
-| 649 | `verzoegerung_lobby` | 5b | Kanal 8 verlangt eine Verzögerung, aber keine Rundenzahl; wie lang, sieht Maß 1 (Entscheidungsdichte). Abgeleitete Untergrenze `>= 1`. |
-| 658 | `marktverbot_dauer` | 5b | Länge der härtesten Strafe; Maß 3. |
-| 667 | `lobbykosten_dauer` | 5b | Nachwirkung des Regierungswechsels; Maß 3. Den Faktor 2 legt dieses Dokument fest, er ist kein Schlüssel. |
-| 676 | `regierungsdruck_dauer` | 5b | dito. |
-| 707 | `abschreibungsrate` | 3 | Jährlicher Abgang des Kapitalstocks — eine Standardgröße der Wachstumsrechnung. PWT 11.0 ist als Quelle für Kapitalstock bereits belegt (`daten.md:404`). |
-| 717 | `investitionsquote` | 3 | Anteil des Gewinns im Kapitalstock der Folgerunde; Gegenstück in der Bruttoanlageinvestitionsquote aus WDI/PWT (`daten.md:396,404`). |
-| 730 | `preisstoss` | 5b | Preiswirkung je Zehntausendstel bewegten Marktanteils. Ein Datenanker existiert in der Sache, ist aber in `daten.md` nicht beschafft — siehe offene Frage 3. |
-| 742 | `zustimmung_elastizitaet` | 5b | Weg 3 durch `daten.md` Lücke 4 geschlossen, Weg 5a durch dieselbe Lücke (keine Zielreihe). Bleibt die Partie. |
-| 758 | `zustimmung_wechselschwelle` | 3 | Die **Häufigkeit** von Regierungswechseln ist beobachtbar; `daten.md:469-472` bietet die Beschaffung (V-Dem o. ä.) ausdrücklich als kleinen Zusatzauftrag an. Der Abstand zur festgelegten `startzustimmung` folgt aus der Zielhäufigkeit. Scheitert die Beschaffung, fällt der Schlüssel auf 5b. |
-| 769 | `nachahmer_wirkung` | 5b | Inhalt der Nachahmerskala, nachdem `nachahmer_max` Einheit ist. |
-| 789 | `aufsicht_tempo` | 5b | Inhalt der Aufsichtsskala; entscheidet allein, wie schnell die Schwellen fallen. |
-| 802 | `einfluss_glaettung` | 2 | Zwei Zeitkonstanten desselben Kanals müssen übereinstimmen: Der geglättete Einfluss erreicht die halbe Sprungantwort nach `verzoegerung_lobby + 1` Runden. Eindeutig, sobald 649 steht — bis dahin **hängt dieser Weg an einem 5b-Wert**. |
-| 813 | `hebel_max` | 5b | Obergrenze des Hebels. Ein institutioneller Anker existiert (aufsichtsrechtliche Hebelgrenzen), ist aber nicht beschafft — offene Frage 3. |
-| 862 | `hebelaufschlag` | 5b | Aufschlag auf den Leitzins je 10.000 Sichtbarkeit; kein beschaffter Anker. |
-| 874 | `sichtbarkeit_schritt` | 5b | Preis von Aktion 5; Maß 1. |
-| 890 | `innerjahresausschlag_faktor` | 5b | Gewicht der historischen Schwankungsbreite. Weg 3 wäre eine unterjährige Preisreihe je Sektor — `daten.md` Lücke 2: Sektorpreise fehlen vollständig. Weg geschlossen. |
-| 995 | `regulierung_last` | 5b | `parameter.toml:999-1002` schließt Maß 4 für diesen Schlüssel selbst aus: „im Weltlauf ist er ohne Wirkung, weil das Instrument dort feststeht". |
-| 1102 | `schrittweite` [leitzins] | 4 | Entwurfssatz: Der Spieler kann ein Instrument über eine Partie so weit bewegen, wie die Geschichte es bewegt hat — `schrittweite = Spannweite des historischen Pfades / R`, aufgerundet. Der Jahrgangsbau hat die Spannweite. |
-| 1125 | `schrittweite` [zoll] | 4 | dito. Die offene Frage aus *Offene Entwurfsfragen* („für Singapur *und* bezahlbar") bleibt bestehen: Prüft der Jahrgangsbau sie als unerfüllbar, fällt dieser Schlüssel auf 5b. |
-| 1145 | `schrittweite` [haushalt] | 4 | dito. |
+| 341 | `stufenweite` | 1 | Unit of the position size; only its ratio to `startkapital` has effect (`parameter.toml:584-586`). Finest step of class 4. |
+| 355 | `stufen_max` | 2 | `stufen_max · stufenweite = 10.000` (`parameter.toml:357-359`): full deflection of one slot is exactly the whole market, never more. |
+| 368 | `ausstiegsabschlag` | 5b | Price of illiquidity; visible only at class 2 of Maß 2. |
+| 378 | `zwangsabschlag` | 5b | *How much* worse the forced sale is, only Maß 3 sees. Derived lower bound: `> 0`, otherwise the second supervision threshold has no consequence. |
+| 397 | `aufschlag` | 4 | `aufschlag >= 1 − min leitzins_pfad` (T51, `parameter.toml:386-388`). The vintage build computes `aufschlag_min` and rejects anything smaller. |
+| 413 | `lobbykosten` | 5b | Content of the pressure scale once `druck_max` is the unit. Maß 2, class 3. |
+| 431 | `beteiligungsrabatt` | 5b | Decides whether classes 2 and 3 of Maß 2 coincide. |
+| 443 | `gegenlobby_satz` | 5b | Second content of the pressure scale; counterforce 5. |
+| 456 | `druck_max` | 1 | Unit: class 9 is *defined* as `0 … druck_max`, influence is a share of it, the scale cancels out. Resolution, not balance. |
+| 468 | `regulierung_stufen` | 2 | At most one step per round (T51), hence `= R = 20`: the scale has exactly as many steps as a game has rounds — a determined counterforce traverses it in one game, none faster. |
+| 487 | `schwelle_v` | 4 | The mandate is as hard as reality: threshold = `startkapital` times the growth of the best of the sixteen start markets over the 21 support points. The vintage build supplies the factor. |
+| 500 | `schwelle_e` | 2 | Design stipulation: the fund must supply **more than half** of a country's total lobby pressure. In class 4 that is 5.001. |
+| 518 | `aufsicht_schwelle_1`, `_2`, `_3` | 2 | With `aufsicht_max` as the unit only the pattern remains: three equally wide quarters, `s_i = i · aufsicht_max / 4`. Satisfies `1 <= s1 < s2 < s3 <= aufsicht_max`. |
+| 535 | `aufsicht_max` | 1 | Unit of the supervision counter: thresholds, counter and `aufsicht_tempo` are jointly scale-free; one of the four is free. |
+| 545 | `nachahmer_tempo` | 5b | Carries Maß 3 („was im ersten Drittel optimal war, ist im letzten abgegrast"). Only the game measures see it. |
+| 556 | `nachahmer_max` | 1 | Unit of the imitator counter, like 535. |
+| 568 | `anlegerabzug_anteil` | 5b | Distributes the death band; visible at Maß 1 and 2. |
+| 584 | `startkapital` | 4 | Design stipulation: the fund starts with exactly one full position (`stufen_max` steps) on the **middle** one of the sixteen start-market values. The sixteen stand in the manifest (`parameter.toml:346-348`). |
+| 610 | `startzustimmung` | 1 | Approval has no data anchor (`daten.md` gap 4); its zero point is free. Only the **distance** to `zustimmung_wechselschwelle` has effect. Middle of the class. |
+| 625 | `regulierung_start` | 2 | The start level must leave room in both directions, otherwise one of the two directions of movement is dead: middle, `regulierung_stufen / 2`. |
+| 649 | `verzoegerung_lobby` | 5b | Channel 8 demands a delay but no round count; how long, Maß 1 sees (decision density). Derived lower bound `>= 1`. |
+| 658 | `marktverbot_dauer` | 5b | Length of the harshest punishment; Maß 3. |
+| 667 | `lobbykosten_dauer` | 5b | After-effect of the change of government; Maß 3. The factor 2 is fixed by this document, it is not a key. |
+| 676 | `regierungsdruck_dauer` | 5b | ditto. |
+| 707 | `abschreibungsrate` | 3 | Annual outflow of the capital stock — a standard quantity of growth accounting. PWT 11.0 is already established as a source for capital stock (`daten.md:404`). |
+| 717 | `investitionsquote` | 3 | Share of profit in the next round's capital stock; counterpart in the gross fixed capital formation rate from WDI/PWT (`daten.md:396,404`). |
+| 730 | `preisstoss` | 5b | Price effect per ten-thousandth of market share moved. A data anchor exists in substance but is not procured in `daten.md` — see open question 3. |
+| 742 | `zustimmung_elastizitaet` | 5b | Path 3 closed by `daten.md` gap 4, path 5a by the same gap (no target series). What remains is the game. |
+| 758 | `zustimmung_wechselschwelle` | 3 | The **frequency** of changes of government is observable; `daten.md:469-472` explicitly offers the procurement (V-Dem or similar) as a small add-on brief. The distance to the stipulated `startzustimmung` follows from the target frequency. If the procurement fails, the key falls to 5b. |
+| 769 | `nachahmer_wirkung` | 5b | Content of the imitator scale once `nachahmer_max` is the unit. |
+| 789 | `aufsicht_tempo` | 5b | Content of the supervision scale; alone decides how fast the thresholds fall. |
+| 802 | `einfluss_glaettung` | 2 | Two time constants of the same channel must agree: the smoothed influence reaches half the step response after `verzoegerung_lobby + 1` rounds. Unambiguous as soon as 649 stands — until then **this path hangs on a 5b value**. |
+| 813 | `hebel_max` | 5b | Upper bound of the leverage. An institutional anchor exists (supervisory leverage limits) but is not procured — open question 3. |
+| 862 | `hebelaufschlag` | 5b | Surcharge on the policy rate per 10.000 of visibility; no procured anchor. |
+| 874 | `sichtbarkeit_schritt` | 5b | Price of action 5; Maß 1. |
+| 890 | `innerjahresausschlag_faktor` | 5b | Weight of the historical fluctuation range. Path 3 would be an intra-year price series per sector — `daten.md` gap 2: sector prices are missing entirely. Path closed. |
+| 995 | `regulierung_last` | 5b | `parameter.toml:999-1002` itself rules out Maß 4 for this key: „im Weltlauf ist er ohne Wirkung, weil das Instrument dort feststeht". |
+| 1102 | `schrittweite` [leitzins] | 4 | Design stipulation: the player can move an instrument over one game as far as history has moved it — `schrittweite = Spannweite des historischen Pfades / R`, rounded up. The vintage build has the span. |
+| 1125 | `schrittweite` [zoll] | 4 | ditto. The open question from *Offene Entwurfsfragen* („für Singapur *und* bezahlbar") remains open: if the vintage build checks it as unsatisfiable, this key falls to 5b. |
+| 1145 | `schrittweite` [haushalt] | 4 | ditto. |
 
-**Vierzig Zeilen, vierzig Zuweisungen; die Zahl stimmt und weicht von der 47 des Plans
-ab.** Drei Marken decken je mehr als eine Zeile von `parameter.toml`: 518 die drei
-Aufsichtsschwellen, 1102 und 1145 je eine `schrittweite` neben zwei Grenzen, die die Marke
-ausdrücklich *nicht* trägt („die beiden Grenzen sind gegen den Jahrgang zu prüfen").
-`[instrument.regulierung]` trägt keine Marke — dort steht `FEST (T51)`, und
-`instrument_max` ist die zweite Kopie von `regulierung_stufen`.
+**Forty lines, forty assignments; the count is right and deviates from the 47 of the
+plan.** Three marks each cover more than one line of `parameter.toml`: 518 the three
+supervision thresholds, 1102 and 1145 each one `schrittweite` next to two bounds that the
+mark explicitly does *not* cover („die beiden Grenzen sind gegen den Jahrgang zu prüfen").
+`[instrument.regulierung]` carries no mark — there it says `FEST (T51)`, and
+`instrument_max` is the second copy of `regulierung_stufen`.
 
-**Die Bilanz: 20 von 40 ohne Lauf, 20 am Gate.** Weg 1 fünf (341, 456, 535, 556, 610),
-Weg 2 sechs (355, 468, 500, 518, 625, 802), Weg 3 drei (707, 717, 758), Weg 4 sechs
+**The tally: 20 of 40 without a run, 20 at the gate.** Path 1 five (341, 456, 535, 556,
+610), path 2 six (355, 468, 500, 518, 625, 802), path 3 three (707, 717, 758), path 4 six
 (397, 487, 584, 1102, 1125, 1145).
 
 ### Was heute jemand tun kann, und was am Gate liegt
 
-**Heute ausführbar, ohne Betreiber:** Der **datenkurator** beschafft drei Reihen und trägt
-sie mit Quelle und Abrufdatum in `specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md`
-ein (Weg 3, Zeilen 707, 717, 758). Der **datenbauer** rechnet sechs Werte beim
-Jahrgangsbau aus und weist sie im Manifest aus (Weg 4). Elf Werte folgen aus diesem
-Abschnitt selbst und brauchen nur noch, dass der **kernbauer** sie in
-`ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml` schreibt und die
-Marke durch den Verweis auf diesen Abschnitt ersetzt (Weg 1 und 2). Keine dieser drei
-Rollen braucht ein ausgeführtes Programm.
+**Executable today, without the operator:** The **datenkurator** procures three series
+and enters them with source and retrieval date in
+`specs/0016-hedgefonds-simulation-echte-weltwirtschaft/daten.md`
+(path 3, lines 707, 717, 758). The **datenbauer** computes six values during the
+vintage build and discloses them in the manifest (path 4). Eleven values follow from this
+section itself and only still need the **kernbauer** to write them into
+`ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/parameter.toml` and to replace
+the mark with the reference to this section (paths 1 and 2). None of these three
+roles needs an executed program.
 
-**Am Gate, und der Betreiber soll wissen, was er zusagt:** Zwanzig Schlüssel. Der
-Nachtlauf über tausend Parametersätze kostet nach diesem Dokument 9,54 Milliarden
-Weltschritte, rund 26,5 Stunden auf einem Kern und 3,3 auf acht. **Tausend Sätze über
-zwanzig Freiheitsgrade sind 1,4 Gitterpunkte je Achse** — das Gitter ist damit nicht die
-Methode, und ein einzelner Nachtlauf beantwortet die Frage nicht. Der Abschnitt zerlegt
-die zwanzig deshalb in fünf Gruppen, die über kein gemeinsames Maß gekoppelt sind, und
-jede wird gegen das Maß gestellt, das sie sieht:
+**At the gate, and the operator should know what he is committing to:** Twenty keys. The
+night run over a thousand parameter sets costs, per this document, 9,54 billion world
+steps, about 26,5 hours on one core and 3,3 on eight. **A thousand sets over twenty
+degrees of freedom are 1,4 grid points per axis** — the grid is therefore not the
+method, and a single night run does not answer the question. This section therefore
+splits the twenty into five groups that are coupled through no common measure, and
+each is put against the measure that sees it:
 
-| Gruppe | Schlüssel | Maß |
+| Group | Keys | Measure |
 |---|---|---|
-| Druck und Lobby | 413, 431, 443, 649, 995 | Maß 2, Klasse 3 |
-| Aufsicht | 378, 658, 789, 874 | Maß 3, Gegenkraft 1 |
-| Nachahmer | 545, 769 | Maß 3 |
-| Fonds und Markt | 368, 568, 730, 813, 862, 890 | Maß 1, Maß 2 Klassen 1 und 2 |
-| Politik | 667, 676, 742 | Gegenkraft 2 |
+| Pressure and lobby | 413, 431, 443, 649, 995 | Maß 2, class 3 |
+| Supervision | 378, 658, 789, 874 | Maß 3, counterforce 1 |
+| Imitators | 545, 769 | Maß 3 |
+| Fund and market | 368, 568, 730, 813, 862, 890 | Maß 1, Maß 2 classes 1 and 2 |
+| Politics | 667, 676, 742 | counterforce 2 |
 
-Fünf Suchen über höchstens sechs Achsen statt einer über zwanzig. Jede Gruppe trägt
-außerdem das Intervall, das Weg 2 an ihr schon abgeleitet hat — die Suche ist begrenzt,
-nicht offen. **Was der Betreiber ausführt, ist die verkürzte Nachtfassung** (63.200
-Weltschritte für Maß 1, 768.600 für Maß 2), einmal je Gruppe.
+Five searches over at most six axes instead of one over twenty. Each group additionally
+carries the interval that path 2 has already derived for it — the search is bounded,
+not open. **What the operator executes is the shortened night version** (63.200
+world steps for Maß 1, 768.600 for Maß 2), once per group.
 
 ### Die drei Klagen aus dem Marktprofil
 
-- **„consequences feel intangible"** — Weg 4 an 487, 584, 1102, 1125, 1145: Startkapital,
-  Mandatsschwelle und Hebelweite sind gegen echte Marktwerte und echte historische Pfade
-  gestellt. Der Spieler sieht am ersten Zug, was sein Geld auf einem echten Markt kauft,
-  und das Mandat ist genau so schwer wie der beste reale Markt derselben zwanzig Jahre.
-- **„socialism always bankrupts you"** — Weg 1 an 341, 456, 535, 556, 610: Fünf Regler,
-  die wie Balance aussahen, sind Maßeinheiten. Eine Strategie kann an einer Einheit nicht
-  scheitern; damit sind fünf Wege, auf denen eine dominante Strategie hätte entstehen
-  können, gar keine Wege mehr.
-- **„no dramatic setbacks", „surface level"** — die Gruppentabelle oben: Aufsicht,
-  Nachahmer und Politik bekommen eigene Suchen gegen Maß 3. Bisher wären sie in einem
-  gemeinsamen Gitter von den Fondsgrößen überstimmt worden, weil diese sechs Achsen die
-  Partiemaße dominieren.
+- **„consequences feel intangible"** — path 4 at 487, 584, 1102, 1125, 1145: start
+  capital, mandate threshold and lever width are put against real market values and real
+  historical paths. The player sees on the first move what his money buys on a real
+  market, and the mandate is exactly as hard as the best real market of the same twenty
+  years.
+- **„socialism always bankrupts you"** — path 1 at 341, 456, 535, 556, 610: five knobs
+  that looked like balance are units of measure. A strategy cannot fail at a unit;
+  with that, five paths on which a dominant strategy could have arisen are no paths
+  at all any more.
+- **„no dramatic setbacks", „surface level"** — the group table above: supervision,
+  imitators and politics get searches of their own against Maß 3. Until now they would
+  have been outvoted in a joint grid by the fund quantities, because those six axes
+  dominate the game measures.
 
 ### Was dieser Abschnitt bewusst nicht tut
 
-Er nennt **keine Werte**. Er entscheidet, *wie* eine Zahl ankommt, nicht *welche*. Die
-einzigen Zahlen oben sind arithmetische Folgen der Entwurfssätze (`5.001` aus „mehr als
-die Hälfte", `R = 20` aus *The game length R*) und zitierte Laufzeiten aus diesem
-Dokument. Er ändert `parameter.toml` nicht — der spielentwerfer hat auf diese Datei kein
-Schreibrecht, und das ist so gewollt.
+It names **no values**. It decides *how* a number arrives, not *which one*. The
+only numbers above are arithmetic consequences of the design stipulations (`5.001` from
+„mehr als die Hälfte", `R = 20` from *The game length R*) and quoted run times from this
+document. It does not change `parameter.toml` — the spielentwerfer has no write right on
+that file, and that is intended.
 
 ### Was dieser Abschnitt offen lässt
 
-1. **802 hängt an 649.** Die Ableitung der Glättung ist eindeutig, sobald
-   `verzoegerung_lobby` steht — und der steht am Gate. Wer 802 vor dem Betreiberlauf
-   eintragen will, muss 649 vorher per Entwurfssatz festlegen; dieser Abschnitt tut es
-   nicht, weil Kanal 8 ohne Maß 1 keine Rundenzahl hergibt.
-2. **Zwei Beschaffungen, die `daten.md` selbst anbietet.** Trägt PWT 11.0 eine
-   Abschreibungsrate und eine Investitionsquote als eigene Variablen? Und ist eine
-   Wechselhäufigkeitsreihe (V-Dem o. ä.) unter tragfähiger Lizenz zu haben? Beides ist
-   Sache des datenkurators; ich behaupte keine Werte und keine Variablennamen. Fallen
-   beide aus, wandern 707 und 717 auf 5a und 758 auf 5b, und die Bilanz lautet 17 zu 23.
-3. **Vier Anker, die es in der Sache gibt und in `daten.md` nicht.** Marktwirkung von
-   Handelsvolumen (730), aufsichtsrechtliche Hebelgrenzen (813), Finanzierungsaufschläge
-   über dem Leitzins (862) und unterjährige Schwankungsbreite (890). Ob eine davon unter
-   tragfähiger Lizenz beschaffbar ist, ist nicht geprüft; solange nicht, stehen alle vier
-   auf 5b. Vier von zwanzig Gate-Schlüsseln — der Zusatzauftrag lohnt die Prüfung.
-4. **Die Marke selbst.** Zwanzig Kommentare in `parameter.toml` sagen weiter „Kalibriert:
-   Selbstspieler" über einen Schlüssel, der nun einen anderen Weg trägt, und zwanzig sagen
-   es über einen Weg, der ein Gate ist. Beide Fassungen gehören ersetzt — nicht durch
-   besseres Deutsch, sondern durch die Wegnummer und den Verweis hierher. Das ist ein Satz
-   je Zeile und ein Paket für den kernbauer.
+1. **802 hangs on 649.** The derivation of the smoothing is unambiguous as soon as
+   `verzoegerung_lobby` stands — and that one stands at the gate. Whoever wants to enter
+   802 before the operator run must first fix 649 by design stipulation; this section
+   does not do it, because channel 8 yields no round count without Maß 1.
+2. **Two procurements that `daten.md` itself offers.** Does PWT 11.0 carry a
+   depreciation rate and an investment rate as variables of their own? And is a
+   change-frequency series (V-Dem or similar) to be had under a viable license? Both are
+   the datenkurator's business; I claim no values and no variable names. If both fall
+   through, 707 and 717 move to 5a and 758 to 5b, and the tally reads 17 to 23.
+3. **Four anchors that exist in substance and not in `daten.md`.** Market impact of
+   trading volume (730), supervisory leverage limits (813), funding surcharges above the
+   policy rate (862) and intra-year fluctuation range (890). Whether any of them can be
+   procured under a viable license is not checked; until it is, all four stand on 5b.
+   Four of twenty gate keys — the add-on brief is worth the check.
+4. **The mark itself.** Twenty comments in `parameter.toml` still say „Kalibriert:
+   Selbstspieler" about a key that now carries another path, and twenty say it about a
+   path that is a gate. Both wordings need replacing — not with better German, but with
+   the path number and the reference here. That is one sentence per line and one package
+   for the kernbauer.
 
 ## Was der Architekt neu rechnen muss
 
