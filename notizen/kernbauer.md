@@ -4,6 +4,39 @@ Rotated by the runner on 2026-09-10 at 13919 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-10 -- 0296 (the "zwanzig" in the head of PARTIERUNDEN)
+
+One file, `kern/test/verlauf_probe.cpp`, comment text only, three sites: the head of
+`PARTIERUNDEN` (`:369-381`), the file head's point 1 (`:9-10`), the counter-check comment
+(`:443`). No executable line moved.
+
+- 2026-09-10, **the lesson of the run** -- **A stale number is repaired by dating it or by
+  printing it, and here both were cheap, so I did both.** The `zwanzig` stays but is
+  attributed (*"vor Paket 0144 (gebaut am 2026-09-05) an der Partielaenge R"*), and the
+  sentence then points at the two places the run prints today's value (`main`'s first line,
+  Bedingung 1's last). Dating alone leaves the reader without the current number; printing
+  alone throws away the measurement that makes the argument more than a fear.
+- 2026-09-10 -- **The argument had to be lifted off the wall, not re-pinned to it.**
+  Condition 2 forbids the cheap "20 -> 26": the reasoning is now *"Ein Nachweis, der vor
+  der Wand haltmacht, ist von einem, der sie erreicht, nicht zu unterscheiden"* -- no
+  number in the load-bearing clause, so the next move of the wall cannot break it. Same
+  shape as the file's own rule at `:32-37`, applied to prose instead of to code.
+- 2026-09-10 -- **The package named one region; the claim lived in three** -- the same
+  thing `0282` taught me, and the grep took one call. `:9-10` said Bedingung 1 runs *"eine
+  Partie ueber vier Runden"* while `:17-19`, twelve lines below in the same head, says
+  *"und nicht mehr ueber vier Runden"*. A file that contradicts itself inside one comment
+  block is worse than either version. **When the package names a region, grep the claim
+  across the file you already hold in `dateien`.** The other five "vier" in the file are
+  four countries, four sums, four conditions -- true, untouched.
+- 2026-09-10, **what I am unsure about, for the project manager:** two things.
+  **(a) Scope.** Conditions 1-4 name only `:369-377`; the two extra sites are mine, argued
+  above and written into the package's GEBAUT section so the reviewer sees them without
+  diffing. If that reads as `Aufraeumen nebenbei`, the two edits are one word each and
+  revert independently of the head comment.
+  **(b) Nothing to compile.** Comments only, so condition 4 rests on `verlauf_probe` being
+  green at HEAD (`befunde/uebersetzung-2026-09-10.md:281`). A red `verlauf_probe` in the
+  next report would mean another package broke it, not this one.
+
 ## 2026-09-10 -- 0290 (rule 4 in the latch follows T7's widened wording)
 
 One file, `werkzeuge/multiplikation/multiplikationsriegel.cpp`. `traegt_i128_umdeutung` ->

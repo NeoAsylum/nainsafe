@@ -6,10 +6,10 @@
 //! Pruefung, die nur die durchgelaufene Haelfte ansieht. Geprueft werden deshalb beide
 //! Seiten derselben Grenze, und beide Laeufe drucken ihr Ergebnis ab.
 //!
-//!   1. **Der Verlauf gibt heraus, was er aufgenommen hat.** Eine Partie ueber vier
-//!      Runden ueber `kern::schritt::schritt`; je Runde wird die Kette aufgenommen und
-//!      danach mit der verglichen, die die Runde geliefert hat -- Glied fuer Glied und
-//!      Feld fuer Feld.
+//!   1. **Der Verlauf gibt heraus, was er aufgenommen hat.** Eine Partie ueber
+//!      `PARTIERUNDEN` Runden ueber `kern::schritt::schritt`; je Runde wird die Kette
+//!      aufgenommen und danach mit der verglichen, die die Runde geliefert hat -- Glied
+//!      fuer Glied und Feld fuer Feld.
 //!   2. **Die Aufnahmekapazitaet je Runde.** Genau an der Grenze laeuft es durch, eines
 //!      darueber bricht ab, und die Meldung nennt die Runde und die Kapazitaet.
 //!   3. **Die Kapazitaet ueber die Partie.** Dieselbe Zweiseitigkeit fuer die zweite
@@ -369,11 +369,16 @@ Zustand ausgangslage(i64 rundennummer)
 /// Wie viele Runden die Partie dieser Probe laeuft: die laengste Partielaenge, die T40
 /// zulaesst.
 ///
-/// **Das ist der tragende Teil der Abnahme von Paket 0144.** Vier Runden liefen auch
-/// gruen, als der Verlauf bei zwanzig abbrach -- ein Nachweis, der nur bis zwanzig
-/// zaehlt, ist von einem, der die Wand erreicht, nicht zu unterscheiden. Die Zahl kommt
-/// aus dem Kopf des Kastens und steht hier nicht abgeschrieben: Verschiebt T40 seine
-/// Wand, laeuft diese Probe von selbst bis dorthin mit.
+/// **Das ist der tragende Teil der Abnahme von Paket 0144.** Ein Nachweis, der vor der
+/// Wand haltmacht, ist von einem, der sie erreicht, nicht zu unterscheiden -- und das
+/// ist gemessen und nicht befuerchtet: Vier Runden liefen auch gruen, als der Verlauf
+/// schon bei zwanzig abbrach, weil seine Kapazitaet vor Paket 0144 (gebaut am
+/// 2026-09-05) an der Partielaenge R hing statt an der Wand aus T40. Diese zwanzig ist
+/// Geschichte und keine Kapazitaet von heute. Wo die Wand heute steht, sagt der Lauf und
+/// nicht dieser Satz: `main` druckt `PARTIELAENGE_HOECHSTENS` in seiner ersten Zeile,
+/// und die letzte Zeile zu Bedingung 1 nennt die Rundenzahl, die tatsaechlich lief. Die
+/// Zahl steht hier nicht abgeschrieben: Verschiebt T40 seine Wand, laeuft diese Probe
+/// von selbst bis dorthin mit.
 constexpr std::size_t PARTIERUNDEN = PARTIELAENGE_HOECHSTENS;
 
 void probe_partie()
@@ -435,7 +440,7 @@ void probe_partie()
 
     // Die Gegenprobe zur Zuordnung: Die Ketten zweier Runden sind **nicht** gleich.
     // Ohne sie waere "zeichengleich" oben von jeder beliebigen Zuordnung erfuellt, denn
-    // vier gleiche Ketten sind auch vertauscht noch gleich.
+    // lauter gleiche Ketten sind auch vertauscht noch gleich.
     for (std::size_t n = 1; n < PARTIERUNDEN; ++n) {
         pruefe(!ketten_gleich(verlauf.kette(n), geliefert[n - 1]),
                "die Kette einer Runde unterscheidet sich von der der Vorrunde", __LINE__);
