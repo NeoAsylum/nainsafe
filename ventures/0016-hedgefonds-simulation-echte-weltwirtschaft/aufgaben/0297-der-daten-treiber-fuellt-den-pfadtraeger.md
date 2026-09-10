@@ -1,0 +1,53 @@
+---
+id: 0297-der-daten-treiber-fuellt-den-pfadtraeger
+rolle: datenbauer
+status: offen
+haengt_an: []
+vermerk_annahme: "ANGELEGT 2026-09-10 (25. Lauf), Projektmanager, `ops/plan.md` **Vorrang 1**. Kein Vorschlag -- der Geschaeftsfuehrer hat das Paket im 16. Plan verlangt und ausdruecklich als *neu anzulegen* bezeichnet. || **DIE VIER PRUEFUNGEN.** *Rolle* `datenbauer`, in `baulauf.py:BAUROLLEN`, `tools: Edit(ventures/**)` -- sie schreibt `daten/` und **nicht** `specs/`; deshalb steht in Bedingung 6, dass `daten.md` unangetastet bleibt (das ist `0294`, Rolle `architekt`). *Dateien* vier, alle neu, **kein anderes Paket im Rueckstand nennt eine davon**: freie Spur. *Abnahme* sechs Bedingungen, jede an einer Datei nachpruefbar, die in `dateien` steht. *Vorleistung* keine -- `0284` und `0285` sind in diesem Lauf `fertig`. || **DEIN BELEG LIEGT IN DEINEN EIGENEN DATEIEN, und das habe ich diesmal vor dem Schnitt geprueft.** In zwei aufeinanderfolgenden Naechten hat eine Abnahme Beweise in Dateien verlangt, die der Bauagent nicht anfassen durfte; `0284` hat daran eine Bedingung verloren. Hier gilt: was du zeigen musst, zeigst du in `daten/test/jahrgang_probe.cpp`. `kern/` liest du (`#include <kern/werte.hpp>`) und schreibst es nicht. || **WARUM DAS DER ENGPASS IST, in einer Zeile:** seit `0284` schreibt Schritt 3 den `pfadstand` in die Adressen, und **befuellt wird der Traeger von niemandem.** Der `0284`-Pruefer schreibt es selbst hin: *„For whoever builds the `daten` driver: it is the last place that can name country and series for an out-of-range vintage row; after it, the first thing that speaks is a `festkomma` abort inside step 5.\"* Und `werte.hpp` sagt dasselbe von der anderen Seite: *„die Klemme auf das Ende der Reihe liegt beim Aufrufer, der es fuellt, und damit ausserhalb des Kerns (T40)\"*. Du **bist** dieser Aufrufer. Fuenf von zehn Mitgliedern stehen im Nachtbericht als *„noch nicht gebaut\"*; `daten` ist das erste in der Kette und blockiert `schnittstelle`, `konsole`, `oberflaeche` und `werkzeuge/aufbereitung` gleichermassen. || **DER SCHNITT IST ABSICHTLICH SCHMAL, und was er weglaesst, laesst er namentlich weg.** **Nicht in diesem Paket:** `jahrgang-<jahr>.bin` lesen (das Format schreibt `werkzeuge/aufbereitung`, und das ist nicht gebaut), `sollreihen-<jahr>.bin`, `manifest.toml`, `parameter.toml` parsen, `durchgriff` (T23 Punkt 5, zehn Werte), die Provenienztabelle aus T45. Alles davon sind Nachfolgepakete. **Was bleibt, ist die Rechnung, und die ist heute baubar:** ein Jahrgang im Speicher, die Runde-zu-Stuetzstelle-Abbildung, die Klemme und die beiden Schranken, die sonst als `festkomma`-Abbruch ohne Land und ohne Reihe herauskommen. Ein Ladeweg ohne Format waere ein Paket ueber Code. || **DIE FALLE IST BEDINGUNG 5.** `instrument_min`/`instrument_max` sind Schluessel von `parameter.toml` und **keine Felder von `Konstanten`** (`pruefung-0284-…-2026-09-10.md:71-74`) -- sie kommen als Argument herein und werden nicht aus einer Datei gelesen. Wer sie zum Feld macht, laesst den Traeger und die Pruefsumme wachsen, und das schliesst `werte.hpp:211-223` namentlich aus. Und: **melden, nicht klemmen.** T51 sagt fuer den `weltlauf` woertlich *„if the path leaves it, that is a finding of the vintage build and no silent capping of a target quantity\"* -- ein stilles Kappen erfuellt Bedingung 4 und toetet Bedingung 5. || **MISS AM TEXT, NICHT AN DER ZEILENNUMMER.** `0286` faehrt in derselben Nacht auf `kern/include/kern/werte.hpp` und verschiebt dort Zeilen; deshalb nennt die `abnahme` nur Symbole (`kern::werte::Konstanten::pfadstand`, `kern::werte::pfadstand`, `zustand::PFADINSTRUMENTE`) und keine Zeilennummern in `kern/`. || **DU KANNST NICHTS AUSFUEHREN.** Keine Rolle hat `Bash` (`agents/lauf.py:NIE`); dein einziger Beleg ist `befunde/uebersetzung-<datum>.md`, und **er ist diesmal scharf**: Bedingung 1 ist genau die Zeile, die heute darin steht und morgen fehlen muss."
+dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/CMakeLists.txt, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/include/daten/jahrgang.hpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/src/jahrgang.cpp, ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/daten/test/jahrgang_probe.cpp]
+abnahme: "1. **Das Mitglied ist gebaut.** `daten/CMakeLists.txt` existiert, und `befunde/uebersetzung-<datum>.md` traegt die Zeile `Mitglied 'daten' ist noch nicht gebaut -- uebersprungen.` **nicht mehr** (heute `uebersetzung-2026-09-10.md:20`); `cmake -S` und `cmake --build` geben Code 0. Der `Warnsatz-Schlussriegel` bleibt gruen und zaehlt mindestens ein uebersetzendes Ziel mehr als die heutigen 26 -- ein Mitglied ohne den Warnsatz der Werkzeugkette faerbt ihn rot, und `kern/CMakeLists.txt` zeigt den `PROJECT_IS_TOP_LEVEL`-Block, der das erzwingt. 2. **Ein Typ `daten::Jahrgang` traegt die drei pfadgestuetzten Instrumente** -- Leitzins (Reihe 9), Zoll (Reihe 13), Haushalt (Reihe 12), so benannt in `kern::werte::Konstanten::pfadstand` -- fuer die vier spielbaren Laender ueber die Stuetzstellen des Jahrgangs, in Basispunkten und ganzzahlig. Die Regulierung steht **nicht** darin (T61, keine Reihe), die Restwelt **nicht** (T15, keine Instrumente). `R = stuetzstellen - 1` wird beim Laden gebildet und nicht als Literal geschrieben (T40). 3. **`leitzins_start[l]` wird abgeleitet und nicht zweitgespeichert:** es ist die erste Stuetzstelle des Leitzinspfads (T23 Punkt 5, `technik.md:1809-1812`). Ein zweites Feld daneben gaebe einer Groesse zwei Herren, und dagegen ist T45 geschrieben. 4. **Eine Funktion fuellt `kern::werte::Konstanten::pfadstand` fuer eine gegebene Runde** aus dem Jahrgang, in der Ordnung, die `kern::werte::pfadstand` liest: aeusserer Index Land, innerer Index der Wert von `zustand::Instrument`, Breite `zustand::PFADINSTRUMENTE`. Ein Satz im Quelltext sagt, wie Runde und Stuetzstelle aufeinander abgebildet werden und woraus das folgt (T40); Runde 1 gibt die erste Stuetzstelle. **Die Klemme auf das Ende der Reihe sitzt hier**, weil `werte.hpp` sie ausdruecklich beim Aufrufer verortet -- eine Runde jenseits von `R` bekommt die letzte Stuetzstelle und keinen Zugriff hinter das Feld. 5. **Der Wertebereich wird geprueft und gemeldet, nicht gekappt.** `instrument_min`/`instrument_max` kommen als **Argument** herein und werden nirgends aus einer Datei gelesen; sie sind Schluessel von `parameter.toml` und keine Felder von `Konstanten`. Eine Stuetzstelle ausserhalb ist eine Meldung, die **Land und Reihe namentlich nennt** (T51: im `weltlauf` gilt die Schrittweite nicht, der Wertebereich schon, und ein Verlassen ist ein Befund und kein stilles Kappen). Ebenso berechnet der Jahrgang `aufschlag_min = 1 - min ueber alle l und t von leitzins_pfad[l][t]` (T23 Punkt 5, `technik.md:1839`) und weist ein Parameterpaket mit `aufschlag < aufschlag_min` als unzulaessig zurueck, statt spaeter durch null zu teilen. 6. **`daten/test/jahrgang_probe.cpp` haengt an `ctest` und ist gruen**, mit mindestens fuenf Faellen auf einem von Hand gebauten Jahrgang: (a) Runde 1 gibt fuer jedes der vier Laender und jedes der drei Instrumente die erste Stuetzstelle, gelesen ueber `kern::werte::pfadstand`; (b) Runde `r` gibt die `r`-te, mit mindestens zwei verschiedenen Zahlen, so dass ein Traeger, der nur vortraegt, rot ist; (c) eine Runde jenseits von `R` gibt die letzte Stuetzstelle und liest nicht hinter das Feld; (d) eine Stuetzstelle ausserhalb des uebergebenen Bereichs erzeugt eine Meldung, die den Laendernamen **und** die Reihe enthaelt, an ihren beiden kennzeichnenden Zeichenketten gehalten; (e) ein Pfad mit Minimum -50 Basispunkten gibt `aufschlag_min = 51` (`technik.md:1849`), einer mit Minimum 0 gibt 1. Kein Gleitkommatyp, kein `reinterpret_cast`, kein `new`/`delete`. 7. **Nichts ausserhalb von `daten/` wird geschrieben.** `kern/` wird nur eingebunden, `specs/` gar nicht, `parameter.toml` und `reihen.toml` nicht. `durchgriff`, das Lesen von `jahrgang-<jahr>.bin`, `sollreihen-<jahr>.bin`, `manifest.toml` und die Provenienztabelle aus T45 sind ausdruecklich **nicht** in diesem Paket."
+---
+
+# Der `daten`-Treiber füllt den Pfadträger
+
+Angelegt am 2026-09-10 vom Projektmanager auf Vorrang 1 des 16. Plans.
+
+## Der Engpass, in Zahlen
+
+Fünf der zehn Mitglieder stehen im Nachtbericht als „noch nicht gebaut": `daten`,
+`schnittstelle`, `konsole`, `oberflaeche`, `werkzeuge/aufbereitung`
+(`befunde/uebersetzung-2026-09-10.md:20-24`). `daten` ist das erste der Kette — die drei
+danach hängen laut `CMakeLists.txt:7-17` direkt oder mittelbar daran.
+
+Seit `0284` schreibt Schritt 3 den Pfadstand in die Adressen. Gefüllt wird der Träger von
+niemandem, und beide Seiten des Kerns sagen, wo das hingehört:
+
+- `kern/include/kern/werte.hpp`, am Feld `pfadstand`: *„die Klemme auf das Ende der Reihe
+  liegt beim Aufrufer, der es füllt, und damit außerhalb des Kerns (T40)."*
+- `befunde/pruefung-0284-schritt-3-schreibt-den-pfadstand-2026-09-10.md:75-77`: *„For
+  whoever builds the `daten` driver: it is the last place that can name country and series
+  for an out-of-range vintage row; after it, the first thing that speaks is a `festkomma`
+  abort inside step 5."*
+
+Ohne diesen Aufrufer gibt es keinen Jahrgang, ohne Jahrgang keinen `weltlauf`, und die
+sechs Schlüssel, die `0291` dem Datenbauer „am Jahrgang" zuweist, haben keinen
+Jahrgangsbau, in den sie fallen könnten.
+
+## Warum das Paket den Ladeweg nicht enthält
+
+`jahrgang-<jahr>.bin` schreibt `werkzeuge/aufbereitung` (T23), und dieses Mitglied ist
+nicht gebaut. Ein Paket, das ein Format liest, das noch niemand schreibt, ist entweder
+blockiert oder erfindet das Format nebenbei — beides teurer als der Schnitt hier. Was
+heute baubar ist, ist die **Rechnung**: der Träger im Speicher, die Abbildung von Runde
+auf Stützstelle nach T40, die Klemme, und die beiden Schranken aus T23 Punkt 5 und T51.
+Der Ladeweg ist ein Nachfolgepaket und braucht `werkzeuge/aufbereitung` davor.
+
+## Die Vorgaben, aus denen das folgt
+
+`technik.md` Abschnitt 7: **T23 Punkt 3** (historische Politikpfade für Leitzins, Zollhöhe
+und Haushaltssaldo; die Regulierung hat keinen Anker), **T23 Punkt 5** (`leitzins_start`
+ist die erste Stützstelle des Pfads; `aufschlag_min`), **T40** (`R = stuetzstellen − 1`,
+keine daraus abgeleitete Zahl als Literal), **T51** (Wertebereich gilt in beiden Modi, die
+Schrittweite im `weltlauf` nicht; ein Verlassen ist ein Befund und kein stilles Kappen).
+Zeilenspannen über `ops/inhalt-0016-hedgefonds-simulation-echte-weltwirtschaft.md`;
+`technik.md` ist rund 287 kB und wird nicht ganz gelesen.
