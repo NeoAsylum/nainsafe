@@ -3,11 +3,11 @@
 // Was er durchsetzt: Massnahme 4.3 aus T7. Jede blanke Multiplikation zweier `i64` mit
 // Groessenbedeutung (T5) soll durch `mal()` und den `__int128`-Waechter laufen. Ein
 // Schloss, das der Uebersetzer haelt, gibt es dafuer nicht -- `#pragma GCC poison` nimmt
-// **Bezeichner**, und `*` ist ein Operator (T7 `:886-888`). Bleibt ein Riegel ueber den
+// **Bezeichner**, und `*` ist ein Operator (T7 `:909-911`). Bleibt ein Riegel ueber den
 // Text.
 //
 // ---------------------------------------------------------------------------
-// Was gelesen wird, ehe eine Regel gilt (T7 `:865-875`)
+// Was gelesen wird, ehe eine Regel gilt (T7 `:870-880`)
 // ---------------------------------------------------------------------------
 //
 // Bestand: jede `.hpp` und `.cpp` unter `kern/include` und `kern/src` der uebergebenen
@@ -28,7 +28,7 @@
 // Welcher `*` ueberhaupt geprueft wird
 // ---------------------------------------------------------------------------
 //
-// **Beide Schreibweisen** (T7 `:863`), und nur diese beiden:
+// **Beide Schreibweisen** (T7 `:868`), und nur diese beiden:
 //
 //   weit -- Leerraum links **und** rechts:      `a * b`
 //   eng  -- Namenszeichen links **und** rechts: `a*b`
@@ -38,7 +38,7 @@
 // damit gar nicht erst Gegenstand. Die Gegenprobe steht als Fall in `REGELFAELLE`.
 //
 // ---------------------------------------------------------------------------
-// Die fuenf benannten Regeln, erste Uebereinstimmung gewinnt (T7 `:841-857`)
+// Die fuenf benannten Regeln, erste Uebereinstimmung gewinnt (T7 `:842-860`)
 // ---------------------------------------------------------------------------
 //
 //   1. Ein Operand ist eine **Layoutkonstante** -- `constexpr` und vom Typ `Index` oder
@@ -47,63 +47,82 @@
 //   2. `sizeof(...)` auf einer der beiden Seiten.
 //   3. Ein vorzeichenloses Literal (`5ULL`, `8u`) oder eine benannte `u64`-Konstante --
 //      dieselbe Namensliste, aus `constexpr u64`-Deklarationen gebaut.
-//   4. `static_cast<i128>` auf **beiden** Seiten -- die Rechenstelle aus T6.
+//   4. `static_cast<i128>` am **Kopf** wenigstens eines der beiden Operandenlaeufe, und
+//      dieser Lauf traegt kein `?` -- die Rechenstelle aus T6. **Eine** Seite genuegt:
+//      Traegt ein Operand den Typ `i128`, wandeln die ueblichen arithmetischen
+//      Umwandlungen den anderen vor der Multiplikation ebenfalls dorthin, und dann steht
+//      auf der Zeile gar keine `i64`-Multiplikation mehr -- genau der Fall, gegen den
+//      Massnahme 4.3 geschrieben ist. Warum am Kopf und warum ohne `?`, steht gleich
+//      darunter.
 //   5. Beide Operanden sind ganzzahlige Literale **und** der `*` steht in der Bedingung
 //      eines `static_assert`. Das Alphabet des Operandenbereichs: Ziffern, der Trenner
 //      `'`, Leerraum, Klammern und `+ - *`. Der Bereich reicht vom `*` bis zur naechsten
 //      **Grenze** -- `==`, `!=` oder das Komma auf oberster Ebene vor der Meldung --, sonst
 //      bis zur Klammer des `static_assert`. **Nur diese drei enden den Bereich** (T7
-//      `:847-855`); jedes andere Zeichen ausserhalb des Alphabets *innerhalb* des
+//      `:857-858`); jedes andere Zeichen ausserhalb des Alphabets *innerhalb* des
 //      Bereichs, `/` zum Beispiel, ist ein **Befund** und keine Grenze.
 //
 // Alles andere ist ein Befund -- die fuenfte Sorte, zwei `i64` mit Groessenbedeutung.
 // Ablehnung im Zweifel ist der ganze Zweck.
 //
 // ---------------------------------------------------------------------------
-// Die Messung am HEAD des 2026-09-08, und wo sie von T7 abweicht
+// Wie Regel 4 den Kopf eines Laufs liest -- Abschnitt 35 leitet beides her
+// ---------------------------------------------------------------------------
+//
+// Der Operandenlauf neben dem `*` wird leerraumbefreit; dann fallen umschliessende
+// Klammern, solange die oeffnende **keine** Argumentliste ist -- ein `(`, dem unmittelbar
+// ein Namenszeichen vorangeht, gehoert zu einem Aufruf. Was uebrig bleibt, muss mit
+// `static_cast<i128>` anfangen.
+//
+// **Warum am Kopf und nicht irgendwo im Lauf.** In einem Operandenlauf stehen Aufrufe --
+// `festkomma.hpp:356` traegt selbst einen. `f(static_cast<i128>(a)) * b` traegt den Text,
+// aber ueber den Typ entscheidet der **Rueckgabetyp** von `f`, und die Multiplikation
+// kann trotz des Textes `i64 * i64` sein.
+//
+// **Warum kein `?` im Lauf.** Ein Bedingungsausdruck nimmt seinen Typ aus den beiden
+// Zweigen und nicht aus seinem Kopf; `static_cast<i128>(a) > 0 ? x : y` bestuende die
+// Kopfprobe und bewiese nichts. Die Bedingung kostet heute keine Zeile: die einzige Zeile
+// des Bestands, die `?` und `*` traegt, ist `zustand.hpp:777`, und dort steht das `?`
+// ausserhalb beider Laeufe (gemessen zu Paket `0274` am 2026-09-09).
+//
+// ---------------------------------------------------------------------------
+// Die Messung am HEAD des 2026-09-08, und die eine Zeile, die uebrig bleibt
 // ---------------------------------------------------------------------------
 //
 // Die Zahl steht nicht hier fest, sondern wird bei jedem Lauf neu gerechnet und
 // ausgegeben. Von Hand nachgezaehlt wurde sie trotzdem, weil eine Zahl ohne Gegenprobe
 // nichts belegt: **36 Zeilen, 42 Vorkommen, in 14 Dateien** -- die 92 Zeilen der
-// Zuordnungstabelle in T7 `:904-921` minus die 56, die laufender Text in einem Kommentar
+// Zuordnungstabelle in T7 `:927-945` minus die 56, die laufender Text in einem Kommentar
 // sind; die beiden engen Treffer (`festkomma.cpp:91` als Zeichenkette,
 // `meldung.hpp:54` als Kommentar) fallen mit derselben Lesung heraus. Die Zeilenzahl
-// stimmt mit T7 `:877-884` ueberein.
+// stimmt mit T7 `:882-888` ueberein.
 //
-// **Der Ausgang stimmt nicht.** T7 `:882-884` sagt „All 36 match a rule" und der Riegel
-// sei „green on its first day". Er ist es nicht. Zwei Zeilen fallen unter keine der fuenf
-// Regeln, und beide stehen in derselben Datei:
+// **Der Riegel ist rot, und zwar an einer Zeile:**
 //
 //   `kern/include/kern/festkomma.hpp:99`
 //       const i128 rest = az - ganz * an;
-//       Beide Operanden sind `const i128`-Ortsgroessen. Kein `Index`, kein
+//       Beide Operanden sind blanke `const i128`-Ortsgroessen. Kein `Index`, kein
 //       `std::size_t` (1), kein `sizeof` (2), kein vorzeichenloses Literal und keine
 //       `u64`-Konstante (3), auf **keiner** Seite ein `static_cast<i128>` (4), kein
-//       `static_assert` (5). Diese Zeile faellt unter jeder Lesart von Regel 4 heraus,
-//       auch unter „auf einer Seite".
+//       `static_assert` (5). Textlich ist die Zeile `name * name` -- die Gestalt der
+//       fuenften Sorte. Keine Textregel erreicht sie, ohne `stufen * stufenwert`
+//       mitzunehmen, und T7 `:890-894` sagt das inzwischen selbst. Aufgeloest wird sie
+//       an der Quelle: mit `ganz = az / an` eine Zeile darueber **ist** `az - ganz * an`
+//       gleich `az % an`. Das ist ein Paket unter `kern/` und nicht dieses.
 //
-//   `kern/include/kern/festkomma.hpp:356`
-//       const i128 naechst = ((static_cast<i128>(n) - 1) * r + ziel / ...
-//       Links steht `static_cast<i128>`, rechts steht `r`. Regel 4 verlangt beide Seiten.
-//
-// Woher der Irrtum kommt, laesst sich benennen: T7 `:920-921` zaehlt beide Zeilen unter
-// die Sorte „4 an `i128` intermediate in `festkomma.hpp` (`:99,161,292,356`)" -- das ist
-// eine Sorte der **Zuordnungstabelle**, nicht der Regelsatz. Abschnitt 33 Meldung 2
-// (`technik.md:5881-5886`) warnt genau vor dieser Verwechslung, dort fuer die 28 der
-// Adressarithmetik. Hier ist es dieselbe Krankheit einen Eimer weiter.
-//
-// Der Riegel senkt deshalb keine Latte und erfindet keine sechste Regel (Paket 0273,
-// ausdruecklich): Er meldet beide Zeilen und geht rot. Das ist ein Befund gegen T7. Was
-// ihn aufloest, ist entweder eine Regel fuer die `i128`-Rechenstelle, die diese beiden
-// Formen benennt, oder ein Umbau der beiden Zeilen -- beides `specs/` beziehungsweise
-// `kern/`, beides ausserhalb dieses Pakets. Der Vorschlag dazu liegt als eigenes Paket.
+// Die zweite rote Zeile war `kern/include/kern/festkomma.hpp:356` --
+// `((static_cast<i128>(n) - 1) * r`. Der Cast steht am Kopf des linken Laufs, die
+// umschliessende Klammer ist keine Argumentliste, rechts steht das blanke `r`: seit der
+// Weitung von Regel 4 (Paket `0274`) faellt sie unter eine benannte Regel. Der Riegel
+// senkt dabei keine Latte und erfindet keine sechste Regel -- er folgt T7 und nicht
+// umgekehrt.
 //
 // Die von Hand nachgezaehlte Verteilung, zur Gegenprobe gegen die Ausgabe des Laufs:
 // Regel 1 -- 31 Vorkommen in 26 Zeilen; Regel 2 -- keines; Regel 3 -- 6 in 5 Zeilen;
-// Regel 4 -- 2 in 2 Zeilen; Regel 5 -- 1 (`schritt.cpp:405`); Befund -- 2 in 2 Zeilen.
-// Dass Regel 2 auf nichts trifft, ist kein Fehler: `zustand.hpp:496` und
-// `verlauf.hpp:377,379` tragen zwar `sizeof`, aber Regel 1 greift davor.
+// Regel 4 -- 3 in 3 Zeilen (`festkomma.hpp:161,292,356`); Regel 5 -- 1
+// (`schritt.cpp:405`); Befund -- 1 in 1 Zeile. Dass Regel 2 auf nichts trifft, ist kein
+// Fehler: `zustand.hpp:496` und `verlauf.hpp:377,379` tragen zwar `sizeof`, aber Regel 1
+// greift davor.
 //
 // ---------------------------------------------------------------------------
 // Die blinden Flecken, ausgeschrieben
@@ -411,7 +430,7 @@ std::size_t vor_winkel(const std::string& m, std::size_t auf)
 // Welcher `*` gehoert dem Riegel
 // ---------------------------------------------------------------------------
 
-/// Beide Schreibweisen aus T7 `:863` und keine dritte. Ein `*`, der links ein
+/// Beide Schreibweisen aus T7 `:868` und keine dritte. Ein `*`, der links ein
 /// Namenszeichen und rechts Leerraum hat, ist ein Zeiger und kein Operator.
 bool ist_binaeres_mal(const std::string& m, std::size_t i)
 {
@@ -614,8 +633,19 @@ bool traegt_vorzeichenlose_zahl(std::string_view b)
     return false;
 }
 
-bool traegt_i128_umdeutung(std::string_view b)
+/// Regel 4 nach T7 `:847-851`: `static_cast<i128>` am **Kopf** dieses Laufs, und der Lauf
+/// traegt kein `?`. Erst faellt der Leerraum -- diese Stelle gab es schon, und sie ist die
+/// richtige --, dann fallen umschliessende Klammern, solange die oeffnende **keine**
+/// Argumentliste ist: Ein `(`, dem unmittelbar ein Namenszeichen vorangeht, gehoert zu
+/// einem Aufruf, und ueber den Typ entscheidet dann dessen Rueckgabetyp und nicht der Text
+/// darin (`f(static_cast<i128>(a)) * b`). Am **ersten** Zeichen des Laufs kann so ein `(`
+/// nicht stehen, weil der Ruecklauf den Namen mit in den Lauf nimmt (`linker_operand`);
+/// die Probe traegt ab der zweiten Klammer, und sie steht ausgeschrieben da, weil T7 sie
+/// nennt und nicht ihre Folgerung.
+bool kopf_ist_i128_umdeutung(std::string_view b)
 {
+    static constexpr std::string_view UMDEUTUNG = "static_cast<i128>";
+
     std::string eng;
     eng.reserve(b.size());
     for (std::size_t i = 0; i < b.size(); ++i) {
@@ -623,7 +653,17 @@ bool traegt_i128_umdeutung(std::string_view b)
             eng.push_back(b[i]);
         }
     }
-    return eng.find("static_cast<i128>") != std::string::npos;
+    if (eng.find('?') != std::string::npos) {
+        return false;
+    }
+    std::size_t auf = 0;
+    std::size_t zu = eng.size();
+    while (auf + 1 < zu && eng[auf] == '(' && !(auf > 0 && ist_namenszeichen(eng[auf - 1]))
+           && vor_klammer(eng, auf) == zu - 1) {
+        ++auf;
+        --zu;
+    }
+    return std::string_view(eng).substr(auf, zu - auf).starts_with(UMDEUTUNG);
 }
 
 // ---------------------------------------------------------------------------
@@ -839,7 +879,7 @@ constexpr std::array<std::string_view, REGELN> REGELNAMEN = {
     "Regel 1  Layoutkonstante (Index, std::size_t)",
     "Regel 2  sizeof",
     "Regel 3  vorzeichenlos (Literal oder u64-Konstante)",
-    "Regel 4  static_cast<i128> auf beiden Seiten",
+    "Regel 4  static_cast<i128> am Kopf einer Seite, kein ?",
     "Regel 5  Literale in der Bedingung eines static_assert",
     "BEFUND   keine Regel -- zwei i64 mit Groessenbedeutung (T5)",
 };
@@ -865,7 +905,7 @@ Regel ordne_ein(const std::string& m, std::size_t stern, const Lage& lage)
         || traegt_namen(links, lage.vorzeichenlos) || traegt_namen(rechts, lage.vorzeichenlos)) {
         return Regel::Vorzeichenlos;
     }
-    if (traegt_i128_umdeutung(links) && traegt_i128_umdeutung(rechts)) {
+    if (kopf_ist_i128_umdeutung(links) || kopf_ist_i128_umdeutung(rechts)) {
         return Regel::I128;
     }
     const Behauptung* b = umgebende_behauptung(lage.behauptungen, stern);
@@ -947,15 +987,15 @@ struct Regelfall {
     std::size_t      befunde;  // wie viele unter gar keine Regel fallen
 };
 
-/// Dreiundzwanzig Faelle. Was jeder einzelne belegen soll, steht in T7 oder in Abschnitt
+/// Siebenundzwanzig Faelle. Was jeder einzelne belegen soll, steht in T7 oder in Abschnitt
 /// 33 und nicht in einer Erfindung dieses Riegels:
 ///
 ///   1,2   Regel 1, einmal am Namen und einmal in einer Klammergruppe (`zustand.hpp:874`).
 ///   3     Regel 2 -- im Bestand trifft sie auf nichts, weil Regel 1 davor greift.
 ///   4,5   Regel 3, beide Haelften: vorzeichenloses Literal und benannte `u64`-Konstante.
-///   6     Regel 4, die Form aus `festkomma.hpp:161,292`.
-///   7     Regel 4 mit `static_cast<i128>` auf **einer** Seite -- die Form aus
-///         `festkomma.hpp:356`, und ein Befund. Siehe den Kopf dieser Datei.
+///   6     Regel 4 mit dem Cast auf beiden Seiten -- die Form aus `festkomma.hpp:161,292`.
+///   7     Regel 4 mit dem Cast auf **einer** Seite. Bis zur Weitung von Regel 4 war das
+///         ein Befund; seither genuegt eine Seite, und der Fall haelt die Weitung fest.
 ///   8     Regel 5, `schritt.cpp:405` im Wortlaut.
 ///   9     Regel 5 ueber zwei Zeilen, mit `a*b` in der Meldung (`festkomma.cpp:90-91`).
 ///   10    Regel 5 hinter der Grenze `!=`.
@@ -975,7 +1015,17 @@ struct Regelfall {
 ///   22    Der Ziffertrenner eroeffnet keine Zeichenkonstante, und der `*` dahinter bleibt
 ///         sichtbar.
 ///   23    Ein `*` im Blockkommentar.
-constexpr std::array<Regelfall, 23> REGELFAELLE = {{
+///   24    Die Gestalt von `festkomma.hpp:356`: der Cast am Kopf des linken Laufs, davor
+///         eine umschliessende Klammer, die **keine** Argumentliste ist -- sie faellt ab,
+///         und der Kopf ist der Cast. Regel 4.
+///   25    Derselbe Cast in der Argumentliste eines Aufrufs -- **Befund**. Der Kopf des
+///         Laufs ist `f`, und ueber den Typ entscheidet dessen Rueckgabetyp.
+///   26    Der Cast am Kopf, aber ein `?` im Lauf -- **Befund**. Ein Bedingungsausdruck
+///         nimmt seinen Typ aus den Zweigen; ohne diese Probe faende die Kopfprobe hier
+///         nach dem Abstreifen der Klammer einen Treffer.
+///   27    Der Cast an einem **anderen** Glied desselben Ausdrucks -- **Befund**. Die
+///         beiden Laeufe neben dem `*` sind `b` und `c` und tragen ihn nicht.
+constexpr std::array<Regelfall, 27> REGELFAELLE = {{
     {"inline constexpr Index LAND_FELDER = 44;\nIndex a = nummer * LAND_FELDER;\n",
      1, Regel::Layout, 0},
     {"inline constexpr std::size_t GEBIETE = 5;\nstd::size_t b = v * (GEBIETE - 1);\n",
@@ -985,7 +1035,7 @@ constexpr std::array<Regelfall, 23> REGELFAELLE = {{
     {"inline constexpr u64 SPLITMIX_FAKTOR_1 = 1;\nu64 z = mix * SPLITMIX_FAKTOR_1;\n",
      1, Regel::Vorzeichenlos, 0},
     {"const i128 p = static_cast<i128>(a) * static_cast<i128>(b);\n", 1, Regel::I128, 0},
-    {"const i128 q = static_cast<i128>(n) * r;\n", 1, Regel::Keine, 1},
+    {"const i128 q = static_cast<i128>(n) * r;\n", 1, Regel::I128, 0},
     {"static_assert(4 * (12 + 9 + 1) + 22 + 40 + 2 == 152, \"T38\");\n", 1, Regel::Literal, 0},
     {"static_assert(2 * 3 == 6,\n              \"a*b\");\n", 1, Regel::Literal, 0},
     {"static_assert(7 != 2 * 4, \"z\");\n", 1, Regel::Literal, 0},
@@ -1003,6 +1053,10 @@ constexpr std::array<Regelfall, 23> REGELFAELLE = {{
     {"char c = '*';\ni64 y = 2;\n", 0, Regel::Keine, 0},
     {"i64 g = 1'000 * 2;\n", 1, Regel::Keine, 1},
     {"i64 x = /* 3 * 4 */ 5;\n", 0, Regel::Keine, 0},
+    {"const i128 s = ((static_cast<i128>(n) - 1) * r + z);\n", 1, Regel::I128, 0},
+    {"const i128 t = f(static_cast<i128>(a)) * b;\n", 1, Regel::Keine, 1},
+    {"const i128 u = (static_cast<i128>(a) > 0 ? x : y) * b;\n", 1, Regel::Keine, 1},
+    {"const i128 v = static_cast<i128>(a) - b * c;\n", 1, Regel::Keine, 1},
 }};
 
 std::size_t selbsttest_regeln()
@@ -1194,7 +1248,7 @@ std::size_t zeilen_zusammen(const std::vector<Stelle>& stellen, Regel nur)
     return zusammen;
 }
 
-/// Die Zahl aus T7 `:877-884`, gegen die der Lauf sich stellt. Sie steht hier als
+/// Die Zahl aus T7 `:882-888`, gegen die der Lauf sich stellt. Sie steht hier als
 /// **Vergleichswert** und nicht als Erwartung: Gemessen wird bei jedem Lauf neu.
 constexpr std::size_t T7_ZEILEN = 36;
 
@@ -1312,7 +1366,7 @@ int main(int argc, char** argv)
 
     if (zeilen != T7_ZEILEN) {
         std::fprintf(stdout,
-                     "\nT7 `:877-884` nennt %zu Zeilen, gemessen sind es %zu. Die Abweichung "
+                     "\nT7 `:882-888` nennt %zu Zeilen, gemessen sind es %zu. Die Abweichung "
                      "ist eine\nMeldung ueber T7 und keine ueber diesen Riegel; die Stellen "
                      "stehen unten.\n",
                      T7_ZEILEN, zeilen);

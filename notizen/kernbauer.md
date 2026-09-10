@@ -4,6 +4,58 @@ Rotated by the runner on 2026-09-10 at 13919 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-10 -- 0290 (rule 4 in the latch follows T7's widened wording)
+
+One file, `werkzeuge/multiplikation/multiplikationsriegel.cpp`. `traegt_i128_umdeutung` ->
+`kopf_ist_i128_umdeutung` (head test instead of `find(...) != npos`, plus the `?` veto),
+`ordne_ein` `&&` -> `||`, `REGELNAMEN[3]`, the head comment, `REGELFAELLE` 23 -> 27 and
+case 7 flipped from Befund to rule 4.
+
+- 2026-09-10, **the lesson of the run** -- **The `?` veto is what makes the head test safe,
+  and exactly one of the four new cases proves it.** Strip whitespace, strip enclosing
+  parentheses, read the head: `(static_cast<i128>(a) > 0 ? x : y) * b` **passes** that
+  test, because the enclosing `(` is preceded by nothing, falls off, and exposes the cast.
+  Case 26 is the only one of the 27 where the head test alone gives the wrong answer. The
+  other three new cases (`((static_cast<i128>(n) - 1) * r` -> rule 4;
+  `f(static_cast<i128>(a)) * b` and `static_cast<i128>(a) - b * c` -> Befund) are each
+  decided by the head test on its own.
+- 2026-09-10 -- **The „not an argument list" condition is vacuous at the first character
+  and load-bearing at the second.** T7 `:850-851` says a `(` preceded by an identifier
+  character is a call. Inside an operand run that can never hold at index 0, because
+  `linker_operand` `:474-483` walks the name into the run -- `f(...)` has head `f` and
+  nothing is stripped. I wrote the condition out anyway (`auf > 0 &&
+  ist_namenszeichen(eng[auf - 1])`), where it does work from the second strip onwards, so
+  a reviewer can hold the code against T7's sentence without re-deriving the walker.
+- 2026-09-10 -- **`technik.md` moved 36 lines under me while I was reading it.** Sections
+  30 to 36 all shifted +36 between two greps of the same run (33: 5861 -> 5897, 35:
+  6157 -> 6193); the insertion sits in section 29, and T7 (`:842-945`) did not move. I
+  re-verified every citation I wrote **after** the last edit. For the next run: **a line
+  number grepped at the start of a run is not a line number at the end of it.**
+- 2026-09-10 -- **Checked before writing: the neighbouring latch that reads this file.**
+  `belegstellen_riegel` reads all of `werkzeuge/` (`UNGELESENE_ORDNER` is only `bau` and
+  `befunde`), and `belegstellen_wortabstand` measures three counts over that corpus. A
+  Gliederungswort next to a number becomes an *uebergangene Fundstelle*. So I kept the
+  count of `Abschnitt` in this file at **four**: the new „Abschnitt 35" replaces the
+  removed „Abschnitt 33 Meldung 2", and a first draft of rule 4 saying „Der naechste
+  Abschnitt sagt ..." was rewritten to „steht gleich darunter".
+- 2026-09-10, **what I am unsure about, for the project manager:** three things.
+  **(a) Predicted numbers, so a divergence is visible instead of arguable.**
+  `multiplikationsriegel` **red**, exit 1, **one** place: `festkomma.hpp:99`. Self-test
+  „9 Faelle zur Lesung und 27 zu den Regeln, alle wie erwartet". 23 files, 42 Vorkommen in
+  36 Zeilen; Regel 1 31/26, Regel 2 0/0, Regel 3 6/5, Regel 4 **3/3**, Regel 5 1/1, BEFUND
+  **1/1**. A **green** run would mean I widened too far -- `:99` falls under no rule until
+  the `kern/` successor writes `az % an`.
+  **(b) How far I took the citation repair.** Condition 2 named three stale T7 spans; I
+  renumbered every T7 span in the head plus the two `:877-884` in the body (`T7_ZEILEN`
+  and the divergence message), because a half-renumbered file is worse than either end. I
+  did **not** touch the section-33 spans in the rule-5 case list (`:5836`, `:5839`,
+  `:5845`, `:5851`, `:5858-5861`, `:5862-5864`, all stale by about +100): rule 5 is out of
+  this package's scope, and section 33 is the part of `technik.md` that was moving
+  tonight. Worth its own package.
+  **(c) I cannot compile.** The one C++20 feature I added is
+  `std::string_view::starts_with`; the profile is `-std=c++20`, so it is available, but it
+  is the only line of mine that could fail to translate rather than fail a case.
+
 ## 2026-09-10 -- 0282 (two probes, one offset)
 
 One file, `werkzeuge/kennzeichen/kennzeichen_riegel.cpp`. Case 29 of `TABELLENFAELLE`
