@@ -287,9 +287,15 @@
 //! beide Fragen, und sie hier auszunehmen waere eine Bedingung, die spaeter falsch sein kann.
 //!
 //! **Zwei Eintraege duerfen dieselbe Liste nennen.** Dann ist es eine, und sie steht einmal
-//! in der Erhebung; verglichen wird die Stelle in der Maske und nicht Name oder Zeile, weil
-//! zwei Listen sich eine Zeile teilen koennen und eine Stelle nicht. Ein Bericht, der ein
-//! Ding zweimal auffuehrt, nennt eine Zahl, die es nicht gibt.
+//! in der Erhebung; verglichen wird das **Paar aus Probe und Stelle in der Maske** und nicht
+//! Name oder Zeile, weil zwei Listen sich eine Zeile teilen koennen. Eine Stelle koennen sie
+//! sich ebenso teilen: `stelle` ist ein Index in die Maske **einer** Probe, und jede zaehlt
+//! von null, also treffen zwei Listen in zwei Proben routinemaessig denselben. Die Stelle
+//! allein waere der falsche Schluessel. Ein Bericht, der ein Ding zweimal auffuehrt, nennt
+//! eine Zahl, die es nicht gibt; einer, der zwei Dinge fuer eines nimmt, verschweigt eines --
+//! und wenn das verschwiegene die kurze Liste ist, bleibt der Lauf gruen ueber einer Liste,
+//! die ein Stueck schuldet. Der letzte Fall des Selbsttests haelt es fest -- zwei Proben, eine
+//! Stelle, die kurze in der zweiten --, und er ist rot, sobald der Probenvergleich wegfaellt.
 //!
 //! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
 //!
@@ -979,9 +985,12 @@ struct Tabellenzahl {
 /// `zeile` ist die Zeile des **Namens** und nicht die der Klammer: Dort steht die
 /// deklarierte Groesse, und genau die soll der Leser mit dem Inhalt vergleichen.
 ///
-/// `stelle` ist die oeffnende Klammer auf der Maske und dient allein der Gleichheit: Zwei
-/// Eintraege duerfen dieselbe Liste nennen, und dann ist es eine. Name und Zeile taugen
-/// dafuer nicht -- zwei Listen koennen sich eine Zeile teilen, eine Stelle koennen sie nicht.
+/// `stelle` ist die oeffnende Klammer auf der Maske und traegt die Gleichheit **zusammen mit
+/// `probe`**, nicht allein: Zwei Eintraege duerfen dieselbe Liste nennen, und dann ist es
+/// eine. Name und Zeile taugen dafuer nicht -- zwei Listen koennen sich eine Zeile teilen.
+/// Die Stelle allein taugt ebenfalls nicht: Sie ist ein Index in die Maske **einer** Probe,
+/// und jede zaehlt von null, also tragen zwei Listen in zwei Proben regelmaessig dieselbe.
+/// Erst das Paar ist eindeutig, weil `probe` die Maske benennt, in die der Index zeigt.
 ///
 /// `deklariert` ist `NICHTS`, wenn dort keine lesbare Zahl steht. Das ist kein Befund,
 /// sondern die Rueckkehr zur Regel darueber; die Begruendung steht bei `deklarierte_groesse`.
@@ -1254,9 +1263,16 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     lz.elemente = felder_von(liste.maske, listengruppe).size();
 
                     // Zwei Eintraege duerfen dieselbe Liste nennen; dann ist es eine, und
-                    // sie steht einmal in der Erhebung. Verglichen wird die Stelle auf der
-                    // Maske -- zwei Listen koennen sich eine Zeile teilen, eine Stelle
-                    // koennen sie nicht.
+                    // sie steht einmal in der Erhebung. Verglichen wird das **Paar aus Probe
+                    // und Stelle auf der Maske** -- zwei Listen koennen sich eine Zeile
+                    // teilen, und eine Stelle koennen sie ebenso: `stelle` ist ein Index in
+                    // die Maske **einer** Probe, und jede beginnt bei null. Die Stelle allein
+                    // schluckte die zweite Liste, und ist die geschluckte die kurze, sieht
+                    // `knappe_listen` sie nicht -- keine Zahl faellt auf null, der Lauf bleibt
+                    // gruen ueber einer Liste, die ein Stueck schuldet. Genau der Ausgang,
+                    // gegen den die Zaehlung darueber steht. Der letzte Fall der zweiten
+                    // Falltabelle haelt das fest und geht rot, sobald der Probenvergleich
+                    // hier wegfaellt.
                     bool schon = false;
                     for (std::size_t l = 0; l < listen.size() && !schon; ++l) {
                         schon = listen[l].stelle == lz.stelle && listen[l].probe == lz.probe;
@@ -1617,21 +1633,22 @@ struct Tabellenfall {
     // Feld auch an den **neunzehn** Faellen, die es auf der Vorgabe lassen, und nicht nur
     // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
     // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
-    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **neun** Faelle,
-    // die es angeht, sind die letzten neun der Tabelle -- **Fall 20 bis Fall 28** in der
+    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **zehn** Faelle,
+    // die es angeht, sind die letzten zehn der Tabelle -- **Fall 20 bis Fall 29** in der
     // Zaehlung, mit der `selbsttest_verzeichnis` sie meldet --, und sie schreiben es aus:
-    // **fuenf** eine Eins (20, 22, 24, 26, 28) und **vier** eine Null (21, 23, 25, 27).
-    // Die fuenf Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste,
-    // das Element ohne Literal und das Element mit zwei Literalen; bei jeder der vier
-    // Nullen ist gerade das Schweigen die Aussage -- es sind "dieselbe Liste mit allen
-    // dreien", "drei Teile, zwei Marken, zwei deklariert", "die Groesse der Liste steht
-    // hinter einem `using`" und "ein Element traegt sein Literal in einem Aufruf".
-    // Neunzehn und neun sind die achtundzwanzig Faelle der Tabelle.
+    // **sechs** eine Eins (20, 22, 24, 26, 28, 29) und **vier** eine Null (21, 23, 25, 27).
+    // Die sechs Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste,
+    // das Element ohne Literal, das Element mit zwei Literalen und die zwei Proben auf
+    // derselben Stelle der Maske; bei jeder der vier Nullen ist gerade das Schweigen die
+    // Aussage -- es sind "dieselbe Liste mit allen dreien", "drei Teile, zwei Marken, zwei
+    // deklariert", "die Groesse der Liste steht hinter einem `using`" und "ein Element
+    // traegt sein Literal in einem Aufruf".
+    // Neunzehn und zehn sind die neunundzwanzig Faelle der Tabelle.
     //
-    // **Aufgezaehlt, nicht durch eine Eigenschaft benannt:** "die neun mit einer
+    // **Aufgezaehlt, nicht durch eine Eigenschaft benannt:** "die zehn mit einer
     // benannten Liste" waere falsch -- die Faelle 1, 4 und 6 fuehren ebenfalls eine
     // (`KZ_SUMME`, `KZ_ANDERSWO`, `KZ_DOPPELT`) und lassen das Feld dennoch auf der
-    // Vorgabe. Eine Eigenschaft muss ueber alle achtundzwanzig stimmen, eine
+    // Vorgabe. Eine Eigenschaft muss ueber alle neunundzwanzig stimmen, eine
     // Aufzaehlung nur ueber sich selbst.
     //
     // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
@@ -1658,7 +1675,7 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 28> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 29> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
      "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
@@ -1936,6 +1953,37 @@ constexpr std::array<Tabellenfall, 28> TABELLENFAELLE = {{
      "    {R::Eins, \"n\", \"w\", KZ_RUF_ZWEI},\n"
      "}};\n",
      "", true, "R::Eins=alpha;beta;gamma", 0, 0, 0, 1},
+
+    // **Zwei Proben, eine Stelle.** `stelle` ist ein Index in die Maske **einer** Probe, und
+    // jede zaehlt von null; zwei Listen in zwei Proben tragen deshalb regelmaessig dieselbe.
+    // Hier tun sie es mit Absicht: Die zwei Deklarationszeilen sind bis zur oeffnenden
+    // Klammer zeichenweise gleich lang -- `KZ_HIER` und `KZ_DORT` haben beide sieben Zeichen
+    // --, und vor der Klammer steht in keiner der beiden eine Zeichenkette, die die Maske
+    // gegen den Text verkuerzen koennte. Die Klammer liegt damit in beiden Masken auf
+    // demselben Index (nachgezaehlt 47; die Gleichheit haengt nicht an der Zahl, sondern an
+    // der gleichen Laenge der beiden Namen).
+    //
+    // Die zweite Probe traegt keine Tabelle -- sie ist deshalb nicht stumm, `nennungen` ist
+    // null. Der zweite Eintrag der ersten Probe nennt `KZ_DORT`, findet in der eigenen Probe
+    // keine Zuweisung und loest im zweiten Durchgang in `probe_b.cpp` auf; die Liste tritt
+    // also unter deren Namen und deren Stelle in die Erhebung.
+    //
+    // **Die Reihenfolge traegt den Fall, und deshalb steht sie so:** Der Eintrag mit der
+    // **vollen** Liste steht zuerst, also liegt sie zuerst in `listen`, und geschluckt wuerde
+    // die kurze. Umgekehrt geordnet waere der Fall mit und ohne Probenvergleich gruen und
+    // haette nichts gezeigt.
+    //
+    // **Was dieser Fall toetet:** `&& listen[l].probe == lz.probe` in der Entdoppelung.
+    // Faellt der Term weg, gilt `KZ_DORT` als schon erhoben, steht nicht in `listen`, und
+    // `knappe_listen` gibt null statt eins zurueck -- der Fall geht rot.
+    {"zwei Proben, eine Stelle auf der Maske -- die kurze Liste der zweiten wird gemeldet",
+     "constexpr std::array<const char*, 2> KZ_HIER = {\"alpha\", \"beta\"};\n"
+     "constexpr std::array<OhneZustand<R>, 2> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_HIER},\n"
+     "    {R::Zwei, \"n\", \"w\", KZ_DORT},\n"
+     "}};\n",
+     "constexpr std::array<const char*, 2> KZ_DORT = {\"gamma\"};\n", true,
+     "R::Eins=alpha;beta|R::Zwei=gamma", 0, 0, 0, 1},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)
