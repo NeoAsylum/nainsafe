@@ -122,3 +122,30 @@ two tens. All correct; the pre-edit line numbers in the criterion (`:1866`, `:19
 moved to `:2221`/`:2261`, so **grep the identifier, never trust the criterion's line number
 after an edit.**
 
+## 2026-09-10 -- 0282 (two probes, one offset): geprueft, 2 findings
+
+**A package that appends a case falsifies every sentence elsewhere that says "der letzte
+Fall".** 0282 appended case 29 to `TABELLENFAELLE`; `knappe_listen`'s head (`:1461`) still
+claims *„der letzte Fall der zweiten Falltabelle geht dann rot"* for a mutation that case 29
+survives -- that was 0279's red proof, and it now points at the wrong case. The file carries
+the identical sentence twice for two different cases. **One grep, `letzt(e|en|er) Fall`,
+finds all of them and cost seconds; run it on every package that appends to a case table.**
+Proposal `0293`, waiting on `0289` because that one appends again and breaks the next one.
+
+**A mask index can be settled without knowing what the tokeniser does.** Condition 1 hung on
+two lists in two probes hitting the same `stelle`. I counted 47 by hand -- but the argument
+that matters is that both declaration prefixes are character-identical and both identifiers
+seven long, so **any** deterministic transform gives the same index. Checking `zerlege`
+afterwards only confirmed it. **When a claim is about equality, compare the inputs, not the
+function.**
+
+**Third run, same two greps, condition 3 again in two calls:** `(, [0-9]+)+\},$` gives 29
+entries, 19 with three trailing numbers and 10 with four (1,0,1,0,1,0,1,0,1,1); `false,`
+gives the three `lesbar: false`. That is 19/10/29/16 and the six ones without reading a case.
+And the older nine still read 1,0,1,0,1,0,1,0 -- **the same pattern I wrote down at 0279 is
+what proves no existing expectation moved**, which is otherwise unprovable without a diff.
+
+**Dead ends:** non-determinism grep on this file (`unordered_`, `map`, `set`, `rand`, time)
+-- 0 hits for the third run in a row; it stays cheap but has never paid here. Stale number
+words after 28 -> 29 -- 0 hits, the run summary derives every count from `.size()`.
+
