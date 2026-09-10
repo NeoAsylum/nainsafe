@@ -144,6 +144,13 @@
 //! Kettenglieder und an `probe_pfadstand_geht_in_die_runde`, die mit einem zweiten
 //! Traeger faehrt und rot wird, sobald der Rumpf wieder vortraegt.
 //!
+//! **Paket 0288 -- die Decke der Politiklast, und damit ein dritter Traeger.** Seit ein
+//! Instrumentenstand sich bewegen kann, kann `politiklast` addieren, und ihre Summe ist
+//! ueber `i64` nicht total. `probe_decke_der_politiklast` bewegt deshalb **zwei** Staende
+//! eines Landes -- unter einem einzelnen ist die Summe der Summand selbst und kann nicht
+//! herausfallen -- und faehrt dieselbe Lage zweimal: einmal unter der Decke, wo die Runde
+//! durchlaeuft, und einmal darueber, wo sie mit der verorteten Meldung abbricht.
+//!
 //! Rueckgabe 0 heisst bestanden; jede fehlgeschlagene Pruefung steht mit Zeilennummer
 //! auf der Standardfehlerausgabe.
 
@@ -156,6 +163,7 @@
 #include <utility>
 
 #include "kern/festkomma.hpp"
+#include "kern/meldung.hpp"
 #include "kern/pruefsumme.hpp"
 #include "kern/schreiber.hpp"
 #include "kern/schritt.hpp"
@@ -503,13 +511,21 @@ enum class Riegel : std::size_t {
     Spielmodus,           ///< in `kern::schritt`: der Modus ist in diesem Rahmen nicht gebaut
     Parametersatz,        ///< in `kern::schritt`: der Traeger gehoert nicht zu diesem Zustand
     Nennerbedingung,      ///< in `kern::schritt`: der Nenner der Zustimmungsregel ist nicht positiv
+
+    /// in `kern::schritt`: die Summe der Politikzeilen verlaesst `i64` (Paket 0288)
+    ///
+    /// Der erste Riegel dieser Datei, den ein Zustand erst seit Paket 0284 erreicht: Vor
+    /// ihm trug Schritt 3 vor, kein Instrumentenstand bewegte sich, und `politiklast`
+    /// addierte nie mehr als eine Null. Er steht deshalb hier und nicht bei den Riegeln
+    /// ohne Zustand -- der Unterschied ist nicht der Rang, sondern die Erreichbarkeit.
+    LastDerPolitikzeilen,
     Anzahl,
 };
 
-constexpr std::array<Riegel, 7> ALLE_RIEGEL = {
+constexpr std::array<Riegel, 8> ALLE_RIEGEL = {
     Riegel::ObereRundenschranke, Riegel::RundeVorDerErsten, Riegel::StartwertSetzen,
     Riegel::StartwertBinden,     Riegel::Spielmodus,        Riegel::Parametersatz,
-    Riegel::Nennerbedingung};
+    Riegel::Nennerbedingung,     Riegel::LastDerPolitikzeilen};
 
 // Kommt ein Riegel dazu und niemand traegt ihn hier nach, faellt es beim Uebersetzen auf
 // und nicht erst daran, dass die Vollzaehligkeitspruefung unten ihn nie sucht.
@@ -532,6 +548,8 @@ const char* riegelname(Riegel welcher)
         return "Parametersatz gehoert nicht zum Zustand";
     case Riegel::Nennerbedingung:
         return "Nenner der Zustimmungsregel nicht positiv";
+    case Riegel::LastDerPolitikzeilen:
+        return "Summe der Politikzeilen verlaesst i64";
     case Riegel::Anzahl:
         break;
     }
@@ -1483,6 +1501,205 @@ void probe_pfadstand_geht_in_die_runde()
 }
 
 // ---------------------------------------------------------------------------
+// Paket 0288 -- die Decke der Politiklast, erreicht ueber zwei bewegte Staende
+// ---------------------------------------------------------------------------
+//
+// `politiklast` summiert vier Produkte aus Vorzeichen und Schadenszeile. Ueber `i64` ist
+// diese Summe nicht total, und bis zu diesem Paket brach sie in `festkomma::plus` ab --
+// mit "plus: Summe ausserhalb von i64 (T7)", also ohne Land, ohne Instrument, ohne
+// Adresse und ohne die beiden Zahlen. Seither steht die Bedingung als Vorbedingung davor
+// und nennt sie; die Menge der abbrechenden Zustaende ist dieselbe geblieben.
+//
+// **Warum diese Probe zwei bewegte Staende braucht.** Die erste Teilsumme ist der Summand
+// selbst und verlaesst `i64` nie, denn `last` ist davor null. Ein einzelnes bewegtes
+// Instrument -- wie in `probe_pfadstand_geht_in_die_runde` -- kann den Riegel deshalb
+// nicht erreichen, welchen Schaden seine Zeile auch traegt.
+//
+// **Die beiden Zeilen, und warum es gerade diese sind.** Bewegen kann ein Traeger nur die
+// drei pfadgestuetzten Instrumente. Die Zollzeile scheidet aus: Sie liest ueber
+// `preishub_zoll` einen Weltpreis, und auf der Musterlage braeche sie an einer Schranke
+// ab, die diese Datei weder meint noch fuehrt. Es bleiben Leitzins und Haushalt, und ihre
+// Mengen sind auf dieser Lage dieselbe Zahl: Die Staatsschuldquote der Vereinigten
+// Staaten steht auf 10.000 Basispunkten, also ist `schuld(US)` genau `bip(US)`.
+//
+// **Was die Probe rechnet und was sie glaubt.** Der Beitrag steht unten als `mal_geteilt`
+// da -- dieselbe Funktion, die T48 Nr. 22 im Kern benutzt --, und weil beide Zeilen
+// dieselbe Menge tragen, ist es einer fuer beide. Die Bedingung, um die es geht, steht als
+// Vergleich daneben: `beitrag > I64_MAX - beitrag`. Das ist die Bedingung, die der Riegel
+// prueft, hier ein zweites Mal und ausserhalb des Kerns gebildet; der Fall darueber ist
+// ihre Verneinung und laeuft durch.
+//
+// **Die Grenze dieses Paares, ausgeschrieben:** Es klammert die Decke, es nagelt sie nicht
+// auf eine Einheit fest. Der Pfadwert geht in Zehntausendsteln in die Zeile ein, ein
+// Schritt von eins im Pfadwert bewegt den Beitrag also um rund 300 -- die Summanden dieser
+// Summe sind gerechnete Groessen und keine Adressen. Wo die Decke auf eine Einheit genau
+// gemessen wird, ist `werte_probe` an der Handelssumme, deren acht Summanden einzeln
+// setzbar sind.
+
+using probe::kennzeichen::enthaelt;
+
+/// Ein erwartetes Stueck einer Abbruchmeldung: ein Textstueck und die Zahl dahinter, mit
+/// demselben Meldungsbau erzeugt, den der Kern selbst benutzt.
+///
+/// Erzeugt und nicht abgeschrieben: Eine abgeschriebene Erwartung kann von der Ausgabe
+/// abweichen, ohne dass es jemand merkt. Und der Vorspann gehoert dazu -- eine blosse Zahl
+/// steht in einer Meldung schnell auch in einer Vorgabenummer.
+kern::meldung::Meldung erwarteter_ausschnitt(const char* vorspann, i64 wert)
+{
+    kern::meldung::Meldung text;
+    text.text(vorspann);
+    text.zahl(wert);
+    return text;
+}
+
+/// Der Pfadwert, mit dem die Summe der beiden Zeilen **unter** der Decke bleibt.
+///
+/// Beide Zeilen rechnen `mal_geteilt(bip(US), pfadwert, 10.000)`, und `bip(US)` ist auf
+/// dieser Lage etwas ueber drei Millionen. Der Beitrag je Zeile ist damit rund
+/// 4,5 Trillionen und die Summe rund 9,0 Trillionen -- gut zwei Hundertstel unter dem
+/// groessten `int64_t`. Die Zahl ist ein Vielfaches von 10.000, damit die Zeile ohne
+/// Rundung aufgeht und der Beitrag im Wortlaut der Meldung wiederzuerkennen ist.
+constexpr i64 PFADWERT_UNTER_DER_DECKE = 15'000'000'000'000'000;
+
+/// Derselbe Weg eine Stufe hoeher: Der Beitrag je Zeile ist rund 6,0 Trillionen und passt
+/// einzeln noch, die Summe der beiden nicht mehr.
+constexpr i64 PFADWERT_UEBER_DER_DECKE = 20'000'000'000'000'000;
+
+/// Ein Traeger, der Leitzins und Haushalt eines Landes auf denselben Pfadwert setzt und
+/// das dritte pfadgestuetzte Instrument -- den Zoll -- auf seinem Musterwert laesst.
+kern::werte::Konstanten traeger_mit_zwei_schritten(kern::zustand::Gebiet land, i64 pfadwert)
+{
+    kern::werte::Konstanten satz = KONSTANTEN_DER_PROBE;
+    const std::size_t l = static_cast<std::size_t>(land);
+    satz.pfadstand[l][static_cast<std::size_t>(kern::zustand::Instrument::Leitzins)] = pfadwert;
+    satz.pfadstand[l][static_cast<std::size_t>(kern::zustand::Instrument::Haushalt)] = pfadwert;
+    return satz;
+}
+
+void probe_decke_der_politiklast()
+{
+    constexpr kern::zustand::Gebiet LAND = kern::zustand::Gebiet::US;
+    constexpr Index STAND_ZINS = kern::zustand::stelle_instrument(
+        LAND, kern::zustand::Instrument::Leitzins, kern::zustand::InstrumentFeld::Stand);
+    constexpr Index STAND_HAUSHALT = kern::zustand::stelle_instrument(
+        LAND, kern::zustand::Instrument::Haushalt, kern::zustand::InstrumentFeld::Stand);
+
+    // Die Vorbedingung der beiden Huebe, beim Uebersetzen geprueft: Steht auf den beiden
+    // Adressen die Null, ist der Hub der Pfadwert selbst und das Vorzeichen ein Plus.
+    // Verschoebe ein Paket den Laenderblock, faellt es hier auf und nicht an einer Zahl
+    // weiter unten, die dann nur nicht mehr stimmt.
+    static_assert(musterwert(STAND_ZINS) == 0, "sonst ist der Hub nicht der Pfadwert");
+    static_assert(musterwert(STAND_HAUSHALT) == 0, "sonst ist der Hub nicht der Pfadwert");
+    static_assert(ist_pfadstand(STAND_ZINS) && ist_pfadstand(STAND_HAUSHALT),
+                  "T61: beide haben eine Reihe des Jahrgangs, also setzt Schritt 3 sie");
+
+    constexpr i64 VORRUNDE = 23;
+    const Zustand vorher = ausgangslage(VORRUNDE);
+
+    // Die beiden Mengen aus T48 Nr. 22, aus der Lage gelesen statt angenommen. Die zweite
+    // Zeile ist die Aussage, auf der die Wahl der beiden Instrumente ruht.
+    const i64 inlandsprodukt = kern::werte::bip(vorher, LAND);
+    PRUEFE(kern::werte::schuld(vorher, LAND) == inlandsprodukt);
+    PRUEFE(inlandsprodukt > 0);
+
+    // -----------------------------------------------------------------------
+    // Seite 1: die Summe bleibt unter der Decke, und die Runde laeuft durch.
+    // -----------------------------------------------------------------------
+    {
+        const i64 beitrag = kern::festkomma::mal_geteilt(inlandsprodukt,
+                                                         PFADWERT_UNTER_DER_DECKE, 10'000);
+        PRUEFE(beitrag > 0);
+        PRUEFE(beitrag <= kern::festkomma::I64_MAX - beitrag);   // die Summe passt
+
+        const kern::werte::Konstanten traeger =
+            traeger_mit_zwei_schritten(LAND, PFADWERT_UNTER_DER_DECKE);
+        PRUEFE(kern::schritt::parameter_pruefsumme(traeger)
+               == kern::schritt::parameter_pruefsumme(KONSTANTEN_DER_PROBE));
+
+        const Rundenergebnis ergebnis =
+            kern::schritt::schritt(vorher, {}, traeger, Modus::Weltlauf);
+        const Zustand& nachher = ergebnis.neuer_zustand;
+
+        // Beide Staende sind wirklich gesetzt worden -- ohne diese beiden Zeilen liefe die
+        // Runde vielleicht nur deshalb durch, weil sich gar nichts bewegt hat.
+        PRUEFE(nachher.lies(STAND_ZINS) == PFADWERT_UNTER_DER_DECKE);
+        PRUEFE(nachher.lies(STAND_HAUSHALT) == PFADWERT_UNTER_DER_DECKE);
+
+        // Und die Zustimmung liegt auf der Klemme ihres Ausgangswertes: Der additive Term
+        // ist ein Produkt mit `zustimmung_elastizitaet`, und die steht in jedem Traeger
+        // dieser Datei auf null. Die Last bewegt sie also nicht, so gross sie auch ist.
+        std::size_t auf_der_klemme = 0;
+        for (const Index platz : ZUSTIMMUNGSPLAETZE) {
+            if (nachher.lies(platz) == geklemmt(vorher.lies(platz))) {
+                ++auf_der_klemme;
+            }
+        }
+        PRUEFE(auf_der_klemme == kern::zustand::LAENDER);
+
+        std::printf("  Politiklast: je Zeile %lld, Summe %lld, groesster int64_t %lld -- "
+                    "die Runde laeuft durch, %zu von 4 Zustimmungen auf der Klemme\n",
+                    static_cast<long long>(beitrag),
+                    static_cast<long long>(beitrag + beitrag),
+                    static_cast<long long>(kern::festkomma::I64_MAX), auf_der_klemme);
+    }
+
+    // -----------------------------------------------------------------------
+    // Seite 2: eine Stufe hoeher, und die zweite Teilsumme faellt heraus.
+    // -----------------------------------------------------------------------
+    {
+        const i64 beitrag = kern::festkomma::mal_geteilt(inlandsprodukt,
+                                                         PFADWERT_UEBER_DER_DECKE, 10'000);
+        PRUEFE(beitrag > 0);
+        PRUEFE(beitrag > kern::festkomma::I64_MAX - beitrag);   // die Summe passt nicht
+
+        const kern::werte::Konstanten traeger =
+            traeger_mit_zwei_schritten(LAND, PFADWERT_UEBER_DER_DECKE);
+        const std::array<const char*, 2> kennzeichen = {
+            {"kern::schritt::politiklast -- die Summe der Politikzeilen",
+             "Zaehler des Realeinkommenshubs"}};
+
+        // Selbst gefangen und nicht ueber `BRICHT_AB_MIT` abgegeben: Diese Stelle prueft
+        // den Wortlaut in **beiden** Richtungen -- welche Adresse er nennen muss und
+        // welche Meldung er gerade nicht mehr sein darf --, und die zweite Richtung kann
+        // das Verzeichnis nicht. Abgelegt wird er trotzdem, mit `merke`.
+        bool abgebrochen = false;
+        try {
+            static_cast<void>(kern::schritt::schritt(vorher, {}, traeger, Modus::Weltlauf));
+        } catch (const std::domain_error& fehler) {
+            abgebrochen = true;
+            const char* wortlaut = fehler.what();
+
+            PRUEFE(enthaelt(wortlaut, "kern::schritt::politiklast"));
+            PRUEFE(enthaelt(wortlaut, "Zaehler des Realeinkommenshubs"));
+
+            // Das Instrument, dessen Zeile die Summe reisst, ist das **zweite** von
+            // beiden: Der Leitzins steht in `INSTRUMENTE_ALLE` vor dem Haushalt, seine
+            // Teilsumme ist der Summand selbst und passt. Die Meldung weist damit
+            // zugleich die Reihenfolge der Summe aus.
+            PRUEFE(enthaelt(wortlaut, kern::zustand::index_zu_adresse(STAND_HAUSHALT)));
+            PRUEFE(!enthaelt(wortlaut, kern::zustand::index_zu_adresse(STAND_ZINS)));
+
+            PRUEFE(enthaelt(wortlaut,
+                            erwarteter_ausschnitt("Betroffen ist Gebiet ", 0).fertig()));
+            PRUEFE(enthaelt(wortlaut, erwarteter_ausschnitt(", Instrument ", 2).fertig()));
+            PRUEFE(enthaelt(wortlaut, erwarteter_ausschnitt("mit ", beitrag).fertig()));
+            PRUEFE(enthaelt(wortlaut,
+                            erwarteter_ausschnitt("die Summe davor war ", beitrag).fertig()));
+
+            // Und **nicht** die Meldung, die bis zu diesem Paket hier ankam. Das ist der
+            // ganze Unterschied, um den es geht.
+            PRUEFE(!enthaelt(wortlaut, "plus: Summe"));
+            PRUEFE(!enthaelt(wortlaut, kern::meldung::MARKE));
+
+            buch.merke(Riegel::LastDerPolitikzeilen,
+                       "politiklast(US) mit zwei bewegten Staenden ueber der Decke",
+                       __LINE__, kennzeichen, wortlaut);
+        }
+        PRUEFE(abgebrochen);
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Paket 0197 -- was die Zustimmung im weltlauf bewegen koennte, und was nicht
 // ---------------------------------------------------------------------------
 //
@@ -2291,6 +2508,7 @@ int main()
     probe_spielmodus_bricht_ab();
     probe_rundennummer();
     probe_pfadstand_geht_in_die_runde();
+    probe_decke_der_politiklast();
     probe_zustimmung_ohne_instrumentenschritt();
     probe_zustimmung_klemmt_statt_vortrag();
     probe_klemme_hinter_der_summe();

@@ -619,6 +619,59 @@ i64 schrittrichtung(const Schreiber& schreiber, Gebiet land, Instrument welches)
     return neu > alt ? 1 : -1;
 }
 
+/// Die Decke der **Politiklast** -- die Vorbedingung einer ihrer vier Teiladditionen
+/// (Paket 0288).
+///
+/// **Sie behebt nichts, sie verortet**, und zwar in derselben Bauart wie
+/// `summe_der_regel_pruefen` weiter unten und wie die Decke der Nennerbedingung an
+/// `kern::werte::bip`: Geprueft wird auf `i128` genau die Bedingung, an der
+/// `festkomma::plus` unmittelbar danach abbraeche, und in derselben Reihenfolge ueber
+/// dieselben vier Instrumente. Die Menge der abbrechenden Zustaende bleibt damit
+/// dieselbe; allein die Meldung ist eine andere. Bis zu diesem Paket kam hier
+/// "plus: Summe ausserhalb von i64 (T7)" an -- ohne Land, ohne Instrument, ohne Adresse
+/// und ohne die beiden Zahlen, aus denen die Summe entstand.
+///
+/// **Erreichbar ist der Abbruch seit Paket 0284**, das Schritt 3 den Pfadstand schreiben
+/// liess: Erst ein bewegter Instrumentenstand gibt `schrittrichtung` ein Vorzeichen
+/// ungleich null, und erst dann wird `kern::werte::schaden` ueberhaupt gerechnet. Die
+/// erste vollstaendige Partie danach brach mit dem unverorteten Wortlaut ab, und dem
+/// Pruefer jenes Pakets liess er sich keiner der beiden ungedeckten Summen zuordnen --
+/// das war der Befund, und nicht der Ueberlauf selbst.
+///
+/// **Die Addition bleibt bei `festkomma`** (T6). Warum die Vorbedingung auf `i128`
+/// prueft und nicht auf `i64`: `I64_MAX - beitrag` ist fuer `beitrag == I64_MIN` selbst
+/// der Ueberlauf, den sie fangen soll (ADR 0011, Massnahme 3).
+///
+/// **Die Adresse ist der Stand des Instruments und nicht der Beitrag selbst.** Der
+/// Beitrag ist ein Produkt aus Vorzeichen und Schadenszeile und hat keine eigene
+/// Adresse; die eine, die ihn erklaert, ist der Stand, dessen Bewegung ihn ueberhaupt
+/// in die Summe gebracht hat -- dieselbe, die `schrittrichtung` gelesen hat.
+void summe_der_last_pruefen(i64 last, i64 beitrag, Gebiet land, Instrument welches)
+{
+    const festkomma::i128 summe =
+        static_cast<festkomma::i128>(last) + static_cast<festkomma::i128>(beitrag);
+    if (summe >= static_cast<festkomma::i128>(festkomma::I64_MIN)
+        && summe <= static_cast<festkomma::i128>(festkomma::I64_MAX)) {
+        return;
+    }
+
+    Meldung meldung;
+    meldung.text("kern::schritt::politiklast -- die Summe der Politikzeilen verlaesst i64 "
+                 "(T7). Sie ist der Zaehler des Realeinkommenshubs; spiel.md summiert sie "
+                 "ueber die vier Instrumente eines Landes, und hier reisst eine "
+                 "Teilsumme. Betroffen ist Gebiet ");
+    meldung.zahl(static_cast<i64>(static_cast<std::uint8_t>(land)));
+    meldung.text(", Instrument ");
+    meldung.zahl(static_cast<i64>(static_cast<std::uint8_t>(welches)));
+    meldung.text(". Ueberzaehlig ist der Beitrag zu ");
+    meldung.adresse(zustand::stelle_instrument(land, welches, InstrumentFeld::Stand));
+    meldung.text(" mit ");
+    meldung.zahl(beitrag);
+    meldung.text("; die Summe davor war ");
+    meldung.zahl(last);
+    festkomma::abbruch(meldung.fertig());
+}
+
 /// `politiklast(l)` -- die vier Zeilen aus `spiel.md`, jede mit ihrem Vorzeichen.
 ///
 /// **Ein Instrument, das sich nicht bewegt hat, traegt nichts bei, und sein `schaden`
@@ -640,7 +693,13 @@ i64 politiklast(const Zustand& rundengrenze, const Schreiber& schreiber,
             continue;
         }
         const i64 zeile = werte::schaden(rundengrenze, schreiber, konstanten, land, welches);
-        last = festkomma::plus(last, festkomma::mal(richtung, zeile));
+
+        // Das Produkt steht in einer eigenen Zeile, damit die Decke darunter dieselbe
+        // Zahl prueft, die die Addition addiert -- und in derselben Ordnung wie vorher:
+        // `mal` bricht weiterhin vor der Addition ab, weil es ihr Argument ist.
+        const i64 beitrag = festkomma::mal(richtung, zeile);
+        summe_der_last_pruefen(last, beitrag, land, welches);
+        last = festkomma::plus(last, beitrag);
     }
     return last;
 }

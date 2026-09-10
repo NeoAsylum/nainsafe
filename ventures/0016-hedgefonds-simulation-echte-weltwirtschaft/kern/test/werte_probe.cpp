@@ -148,8 +148,8 @@ void pruefe(bool bedingung, const char* text, int zeile)
 // in der die Pruefung ausloest. Ein Verzeichnis, das die vier zu einem Riegel zusammenzoege,
 // muesste seine Liste auf den gemeinsamen Rest kuerzen -- und verloere genau die Trennung,
 // um derentwillen die Meldung den Namen traegt. Also ein Riegel je Wortlaut: zwei fuer
-// `keilhub`, zwei fuer `preishub_zoll`, zwei fuer `handelsvolumen`, zwei fuer
-// `weltpreis_mit_zoll`.
+// `keilhub`, zwei fuer `preishub_zoll`, drei fuer `handelsvolumen` -- seit Paket 0288 die
+// Decke seiner Summe dazu -- und zwei fuer `weltpreis_mit_zoll`.
 //
 // **Zwei Riegel aus `kern::festkomma` stehen mit dazu**, und das ist eine Entscheidung und
 // kein Versehen: `plus` und `minus` brechen hier an Stellen ab, die diese Probe absichtlich
@@ -187,6 +187,9 @@ enum class Riegel : std::size_t {
 
     // Ab hier Paket 0284 -- der Zugang zum Pfadtraeger.
     PfadstandOhneReihe,  ///< in `kern::werte::pfadstand`: zu dieser Kennung gibt es keine Reihe
+
+    // Ab hier Paket 0288 -- die zweite unverortete Summe des Kerns.
+    HandelssummeVerlaesstI64,  ///< in `kern::werte::handelsvolumen`: die Decke der Handelssumme
     Anzahl,
 };
 
@@ -259,6 +262,8 @@ const char* riegelname(Riegel welcher)
         return "Summe ausserhalb von i64 (plus)";
     case Riegel::PfadstandOhneReihe:
         return "Instrumentenkennung ohne Reihe des Jahrgangs (pfadstand)";
+    case Riegel::HandelssummeVerlaesstI64:
+        return "Handelssumme verlaesst i64";
     case Riegel::Anzahl:
         break;
     }
@@ -339,6 +344,15 @@ constexpr std::array<const char*, 2> KZ_PLUS_SUMME = {"plus: Summe ausserhalb vo
 constexpr std::array<const char*, 2> KZ_PFADSTAND_REIHE = {
     "kern::werte::pfadstand -- zur Instrumentenkennung ", "keine Reihe des Jahrgangs"};
 
+// Die Liste zu Paket 0288, und die Aufteilung ist hier nicht die uebliche: Das erste
+// Stueck nennt die Groesse **samt dem Satzanfang**, weil `KZ_HANDELSVOLUMEN_GEBIET` mit
+// "kern::werte::handelsvolumen -- " schon ein Stueck fuehrt, das auf jede Meldung dieser
+// Groesse passt. Das zweite trennt die Decke von der Deckenmeldung des Nenners: beide
+// sagen "verlaesst i64", und nur eine von beiden ist die Tiefe des Waehrungsmarktes.
+constexpr std::array<const char*, 2> KZ_HANDELSSUMME = {
+    "kern::werte::handelsvolumen -- die Summe der Handelszeilen",
+    "Tiefe des Waehrungsmarktes"};
+
 // ---------------------------------------------------------------------------
 // Der Riegel, den kein Zustand erreicht -- die zweite Kategorie aus Paket 0248
 // ---------------------------------------------------------------------------
@@ -396,7 +410,7 @@ struct Sollzahl {
     std::size_t meldungen;
 };
 
-constexpr std::array<Sollzahl, 24> SOLLZAHLEN = {{
+constexpr std::array<Sollzahl, 25> SOLLZAHLEN = {{
     {Riegel::WechselkursUnterEins, 6},
     {Riegel::NennerNullDerKursformel, 1},
     // Paket 0284 hat die dritte Stelle dazugelegt: 2 -> 3. Es sind der Anleihekurs, der
@@ -431,6 +445,10 @@ constexpr std::array<Sollzahl, 24> SOLLZAHLEN = {{
 
     // Paket 0284.
     {Riegel::PfadstandOhneReihe, 2},   // die Regulierung und eine Kennung ausserhalb der vier
+
+    // Paket 0288. Zwei Stellen, und es sind die beiden Enden des Zahlbereichs -- wer eine
+    // von ihnen streicht, streicht die halbe Decke.
+    {Riegel::HandelssummeVerlaesstI64, 2},   // obere Decke und untere Decke
 }};
 
 /// Ob der Eintrag an der n-ten Stelle auch den n-ten Riegel nennt. Die Groessenpruefung
@@ -2382,6 +2400,147 @@ void probe_bip_nennerdecke()
 void probe_nennerdecke_vollzaehlig() { PRUEFE(nennerdecke_angekommen == 3); }
 
 // ---------------------------------------------------------------------------
+// Paket 0288 -- die Decke der Handelssumme, T48 Nr. 11 zweistellig
+// ---------------------------------------------------------------------------
+//
+// Dieselbe Sache wie die Decke des Nenners darueber, an der zweiten unverorteten Summe des
+// Kerns: `handelsvolumen` addierte acht Handelszeilen durch `festkomma::plus`, und der
+// meldete "plus: Summe ausserhalb von i64 (T7)" -- ohne Gebiet, ohne Sektor, ohne Adresse.
+// Ueber die Zollzeile von `schaden` ist sie aus Schritt 5 erreichbar, und genau von dort
+// kam am 2026-09-09 ein solcher Wortlaut: Er liess sich weder ihr noch der Summe der
+// Politikzeilen zuordnen, und das war der Befund.
+//
+// **Gebaut wie die Nennerdecke: der Rand, der noch rechnet, und der Schritt daneben, der
+// abbricht -- an beiden Enden von `i64`.** Die Positivkontrolle ist hier keine Formsache.
+// Die acht Summanden sind Adressen, also einzeln setzbar, und damit ist der Rand auf eins
+// genau erreichbar: Eine Fassung, die eine Stelle zu frueh abbraeche, wird an ihm rot.
+// Dieselbe Schaerfe hat sonst nur die Nennerdecke; die Decke der Politiklast in
+// `schritt_probe` hat sie nicht, weil ihre Summanden gerechnete Groessen sind.
+//
+// **Warum die zweite Adresse des ersten Paares und nicht die erste.** Die erste
+// Teilsumme ist der Summand selbst und verlaesst `i64` nie -- `summe` ist davor null.
+// Genannt werden kann deshalb erst die Einfuhrzeile, und die Meldung weist damit
+// zugleich die Reihenfolge aus, in der `GEGENUEBER` gelesen wird.
+
+/// Wie oft die verortete Handelsdecke in diesem Lauf angekommen ist.
+///
+/// Dieselbe Aufgabe wie `nennerdecke_angekommen`, und sie ist auch hier nicht durch die
+/// Sollzahl im Verzeichnis erledigt: Die Sollzahl zaehlt, was **abgelegt** wurde, dieser
+/// Zaehler, was die beiden Aufrufstellen selbst gesehen haben.
+int handelsdecke_angekommen = 0;
+
+void probe_handelsdecke()
+{
+    // Die drei Adressen, die diese Probe belegt: das erste Paar der Zeile, die `GEGENUEBER`
+    // fuer die Vereinigten Staaten fuehrt, in beiden Richtungen -- und die Ausfuhr des
+    // zweiten Paares.
+    const Index aus_us_cn = stelle_handel(Gebiet::US, Gebiet::CN, Sektor::Landwirtschaft);
+    const Index ein_cn_us = stelle_handel(Gebiet::CN, Gebiet::US, Sektor::Landwirtschaft);
+    const Index aus_us_de = stelle_handel(Gebiet::US, Gebiet::DE, Sektor::Landwirtschaft);
+
+    // Positivkontrolle voran: Der Rand selbst rechnet. 2^62 plus 2^62 minus eins ist
+    // genau I64_MAX, die uebrigen sechs Adressen sind null.
+    {
+        Rohling r;
+        r.lege(aus_us_cn, ZWEI_HOCH_62);
+        r.lege(ein_cn_us, ZWEI_HOCH_62 - 1);
+        const Zustand& z = r;
+        PRUEFE(handelsvolumen(z, Gebiet::US, Sektor::Landwirtschaft) == I64_MAX);
+    }
+
+    // Eine Einheit weiter, und die zweite Teiladdition faellt aus `i64` heraus.
+    {
+        Rohling r;
+        r.lege(aus_us_cn, ZWEI_HOCH_62);
+        r.lege(ein_cn_us, ZWEI_HOCH_62);
+        const Zustand& z = r;
+        PRUEFE(hat_abgebrochen([&] {
+            static_cast<void>(handelsvolumen(z, Gebiet::US, Sektor::Landwirtschaft));
+        }));
+
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+        PRUEFE(enthaelt(letzte_meldung.data(), "Tiefe des Waehrungsmarktes"));
+        PRUEFE(enthaelt(letzte_meldung.data(), adressform(ein_cn_us).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), adressform(aus_us_cn).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("Betroffen ist Gebiet ", 0).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt(", Sektor ", 1).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("mit ", ZWEI_HOCH_62).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("die Summe davor war ", ZWEI_HOCH_62).fertig()));
+
+        // Und **nicht** die Meldung, die bis zu diesem Paket hier ankam. Das ist der
+        // ganze Unterschied, um den es geht.
+        PRUEFE(!enthaelt(letzte_meldung.data(), "plus: Summe"));
+
+        // Die Laenge gemessen statt behauptet. Die Marke am Ende einer abgeschnittenen
+        // Meldung waere hier teuer: Sie frisst genau den Schluss, um dessentwillen die
+        // Meldung gebaut wurde. Gedruckt wird die gezaehlte Hoechstlaenge aus
+        // `src/werte.cpp` daneben, damit der naechste Lauf beide Zahlen liest, statt die
+        // eine auszurechnen.
+        const std::size_t laenge = zeichenzahl(letzte_meldung.data());
+        std::printf("  Handelsdecke: %zu Zeichen, gezaehlt sind hoechstens 297, erlaubt "
+                    "sind %zu\n",
+                    laenge, kern::meldung::MELDUNG_ZEICHEN_MAX);
+        PRUEFE(laenge < kern::meldung::MELDUNG_ZEICHEN_MAX);
+        PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
+
+        MERKE(Riegel::HandelssummeVerlaesstI64, KZ_HANDELSSUMME,
+              "handelsvolumen(z, US, Landwirtschaft) ueber der oberen Decke");
+        if (enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen")) {
+            ++handelsdecke_angekommen;
+        }
+    }
+
+    // Das andere Ende, und wieder der rechnende Rand zuerst: minus 2^62 zweimal ist genau
+    // I64_MIN und noch darstellbar.
+    {
+        Rohling r;
+        r.lege(aus_us_cn, -ZWEI_HOCH_62);
+        r.lege(ein_cn_us, -ZWEI_HOCH_62);
+        const Zustand& z = r;
+        PRUEFE(handelsvolumen(z, Gebiet::US, Sektor::Landwirtschaft) == I64_MIN);
+    }
+
+    // Und eine Einheit weiter, diesmal am dritten Summanden: Die Zwischensumme steht auf
+    // I64_MIN, und die Ausfuhr des zweiten Paares traegt minus eins. Genannt wird deshalb
+    // die dritte Adresse, und die Meldung traegt die laengste Zahl, die sie tragen kann.
+    {
+        Rohling r;
+        r.lege(aus_us_cn, -ZWEI_HOCH_62);
+        r.lege(ein_cn_us, -ZWEI_HOCH_62);
+        r.lege(aus_us_de, -1);
+        const Zustand& z = r;
+        PRUEFE(hat_abgebrochen([&] {
+            static_cast<void>(handelsvolumen(z, Gebiet::US, Sektor::Landwirtschaft));
+        }));
+
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen"));
+        PRUEFE(enthaelt(letzte_meldung.data(), adressform(aus_us_de).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), adressform(ein_cn_us).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(), erwarteter_ausschnitt("mit ", -1).fertig()));
+        PRUEFE(enthaelt(letzte_meldung.data(),
+                        erwarteter_ausschnitt("die Summe davor war ", I64_MIN).fertig()));
+        PRUEFE(!enthaelt(letzte_meldung.data(), "plus: Summe"));
+        PRUEFE(!enthaelt(letzte_meldung.data(), kern::meldung::MARKE));
+
+        MERKE(Riegel::HandelssummeVerlaesstI64, KZ_HANDELSSUMME,
+              "handelsvolumen(z, US, Landwirtschaft) unter der unteren Decke");
+        if (enthaelt(letzte_meldung.data(), "kern::werte::handelsvolumen")) {
+            ++handelsdecke_angekommen;
+        }
+    }
+}
+
+/// Hat der Riegel in diesem Lauf beide Enden des Zahlbereichs gemeldet?
+///
+/// Zwei und nicht "mindestens eine", aus demselben Grund wie bei der Nennerdecke: Wer eine
+/// der beiden Richtungen streicht, streicht die halbe Wertebereichsschranke.
+void probe_handelsdecke_vollzaehlig() { PRUEFE(handelsdecke_angekommen == 2); }
+
+// ---------------------------------------------------------------------------
 // Paket 0284 -- der eine Zugang zum Pfadtraeger, und seine beiden Schranken
 // ---------------------------------------------------------------------------
 //
@@ -2528,8 +2687,14 @@ int main()
     // steht sie hier fuer sich und nicht in einer der Gruppen darueber.
     probe_pfadstand_zugang();
 
-    // Zuletzt, denn sie liest ein, was der Aufruf darueber hinterlassen hat.
+    // Paket 0288 -- die Decke der Handelssumme. Sie steht neben der Nennerdecke, weil es
+    // dieselbe Sache an der zweiten Summe ist, und nicht bei T48 Nr. 11 oben: Was dort
+    // gemessen wird, ist die Rechnung, hier die Wertebereichsschranke.
+    probe_handelsdecke();
+
+    // Zuletzt, denn sie lesen ein, was die Aufrufe darueber hinterlassen haben.
     probe_nennerdecke_vollzaehlig();
+    probe_handelsdecke_vollzaehlig();
 
     // Und ebenfalls zuletzt, aus demselben Grund: Beide lesen das Verzeichnis, das die
     // Aufrufstellen oben gefuellt haben. `probe_riegel_vollzaehlig` haelt die Zahl je

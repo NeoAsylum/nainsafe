@@ -438,6 +438,65 @@ void pruefe_landessektor(const char* groesse, Gebiet land, Sektor sektor)
                          "handelbaren Sektoren (T15, T48).");
 }
 
+/// Die Decke der Handelssumme -- die Vorbedingung einer der acht Teiladditionen von
+/// `handelsvolumen` (Paket 0288).
+///
+/// **Dieselbe Bauart wie die Decke der Nennerbedingung** an `bip` weiter unten (Paket
+/// 0242), und aus demselben Grund: Die Summe lief durch `festkomma::plus`, und der
+/// meldete "plus: Summe ausserhalb von i64 (T7)" -- ohne Gebiet, ohne Sektor, ohne
+/// Adresse und ohne die beiden Zahlen, aus denen die Summe entstand. Aufgefallen ist das
+/// dem Pruefer von Paket 0284: Eine vollstaendige Partie brach mit diesem Wortlaut ab,
+/// und er liess sich keiner der beiden ungedeckten Summen des Kerns zuordnen -- das war
+/// der Befund, und nicht der Ueberlauf selbst.
+///
+/// **Der Riegel verschiebt keine Schwelle.** Geprueft wird vor jeder Teiladdition genau
+/// die Bedingung, an der `plus` unmittelbar danach abbraeche, und in derselben
+/// Reihenfolge ueber dieselben acht Adressen. Die Menge der abbrechenden Zustaende ist
+/// deshalb dieselbe wie vorher; allein die Meldung ist eine andere.
+///
+/// **Die Addition bleibt in `festkomma`.** Eine zweite gepruefte Addition im Kern waere
+/// nach T6 der Satz mit der Ausnahme, den der eine Rechenort verhindert -- hier steht
+/// eine Vorbedingung, keine Rechnung.
+///
+/// Warum die Vorbedingung auf `i128` prueft und nicht auf `i64`: `I64_MAX - teil` ist
+/// fuer `teil == I64_MIN` selbst der Ueberlauf, den sie fangen soll. Die Summe zweier
+/// `i64` passt auf `i128` immer (ADR 0011, Massnahme 3).
+///
+/// **Die Laenge ist gezaehlt, nicht geschaetzt.** Die feste Prosa misst 176 Zeichen bis
+/// einschliesslich "Betroffen ist Gebiet " samt dessen Leerzeichen, dazu die
+/// Gebietsnummer mit einer Stelle, ", Sektor " mit 9 und die Sektornummer mit einer,
+/// ". Ueberzaehlig ist " mit 19, " mit " mit 5 und "; die Summe davor war " mit 22. Jede
+/// Handelsadresse traegt mit ihrer laufenden Nummer 24 Zeichen ("handel.US.CN.1
+/// (Nr. 198)") -- alle vierzig sind gleich breit --, und laenger als 20 Zeichen wird
+/// keine der beiden Zahlen: `I64_MIN` ist genau so lang. Macht hoechstens
+/// 176 + 1 + 9 + 1 + 19 + 24 + 5 + 20 + 22 + 20 = **297** von den 511, die
+/// `meldung::MELDUNG_ZEICHEN_MAX` erlaubt. Abgeschnitten wird hier nichts; `werte_probe`
+/// misst die Laenge zur Laufzeit nach und druckt sie neben diese Zahl.
+void pruefe_handelssumme(i64 summe, i64 teil, Index platz, Gebiet land, Sektor sektor)
+{
+    const festkomma::i128 gesamt =
+        static_cast<festkomma::i128>(summe) + static_cast<festkomma::i128>(teil);
+    if (gesamt <= static_cast<festkomma::i128>(festkomma::I64_MAX)
+        && gesamt >= static_cast<festkomma::i128>(festkomma::I64_MIN)) {
+        return;
+    }
+
+    Meldung text;
+    text.text("kern::werte::handelsvolumen -- die Summe der Handelszeilen verlaesst i64 "
+              "(T7). Sie ist die Tiefe des Waehrungsmarktes und zaehlt je Paar beide "
+              "Richtungen. Betroffen ist Gebiet ");
+    text.zahl(static_cast<i64>(static_cast<std::uint8_t>(land)));
+    text.text(", Sektor ");
+    text.zahl(static_cast<i64>(static_cast<std::uint8_t>(sektor)));
+    text.text(". Ueberzaehlig ist ");
+    text.adresse(platz);
+    text.text(" mit ");
+    text.zahl(teil);
+    text.text("; die Summe davor war ");
+    text.zahl(summe);
+    festkomma::abbruch(text.fertig());
+}
+
 // ---------------------------------------------------------------------------
 // T48 Nr. 18 -- die Klasse haengt am Instrument und nicht am Namen der Groesse
 // ---------------------------------------------------------------------------
@@ -831,8 +890,19 @@ i64 handelsvolumen(const Zustand& z, Gebiet land, Sektor sektor)
         // Beide Richtungen je Paar: Ausfuhr und Einfuhr. Wer nur eine zaehlte, haette
         // die halbe Tiefe des Waehrungsmarktes und ein Handelsvolumen, das sich bei
         // einem Zoll in die falsche Richtung bewegte.
-        summe = plus(summe, z.lies(zustand::stelle_handel(land, gegenueber, sektor)));
-        summe = plus(summe, z.lies(zustand::stelle_handel(gegenueber, land, sektor)));
+        //
+        // Vor jeder der beiden Teiladditionen steht ihre Decke (Paket 0288). Sie
+        // verschiebt keine Schwelle -- die Begruendung steht bei `pruefe_handelssumme`
+        // --, und die Addition selbst laeuft danach durch `festkomma::plus` wie vorher.
+        const Index ausfuhr = zustand::stelle_handel(land, gegenueber, sektor);
+        const i64 hin = z.lies(ausfuhr);
+        pruefe_handelssumme(summe, hin, ausfuhr, land, sektor);
+        summe = plus(summe, hin);
+
+        const Index einfuhr = zustand::stelle_handel(gegenueber, land, sektor);
+        const i64 her = z.lies(einfuhr);
+        pruefe_handelssumme(summe, her, einfuhr, land, sektor);
+        summe = plus(summe, her);
     }
     return summe;
 }
