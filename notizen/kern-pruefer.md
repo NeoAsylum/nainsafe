@@ -90,3 +90,39 @@ for.** Cost of that detour: about six greps -- it would have been two if I had s
 hits, as on 0275 and 0284; and the "second copy of the patterns" check done as one grep for
 `123'456'789`, which returns exactly the one line of the `muster` array. **Grep the rarest
 literal of a table to prove there is only one table.**
+
+## 2026-09-10 -- 0284, Ruecklauf 1 (Schritt 3 schreibt den Pfadstand): geprueft, 0 findings
+
+**A riegel that prints line numbers is a free `git diff` for a reviewer with no shell, and
+this is now my first move on every Ruecklauf.** `zahlwort_riegel` lists every anchor it
+found in `werte.hpp` with its line. Laid against yesterday's report: anchors 2..204
+identical, 265 -> 268, 269 -> 272, 586 -> 589. Three lines added between 204 and 265,
+nothing else in the file moved -- proved in two reads, and it is exactly the question a
+Ruecklauf review must answer ("did he fix only that?"). The blob hash in the same block
+(`9e24b723` -> `6d674ae9`) confirms the file changed at all. **Any riegel output with line
+numbers works this way: belegstellen, bezeichner, zahlwort.**
+
+**The cheap sibling: my own previous citations as a fingerprint.** `SUMMIERTE_FELDER` still
+at `schritt.hpp:264`, `JAHRGANGSFELDER` still at `:277`, `schritt_3_politik` still at
+`schritt.cpp:540-556` -- identical to my 2026-09-09 finding. Same symbol at the same line
+in a file that only moves by edits: the file did not move. Four greps replaced re-reading
+three files. **Cite line numbers generously in a finding; the next run measures against
+them.** (This is the flip side of "never trust a criterion's line number after an edit" --
+untrusted for navigation, decisive for comparison.)
+
+**Where a limit's number lives settles whether the core may hold it.** I nearly proposed
+that `werte::pfadstand` reject an out-of-range vintage value. One grep:
+`instrument_min`/`instrument_max` are keys of `parameter.toml`, not fields of `Konstanten`
+-- the core has no access without growing the carrier and the checksum. **Ask where a
+bound's number is stored before arguing that something should check it.**
+
+**Name the red you are not counting, or the next run re-opens it.** `zahlwort_riegel` is
+red on this package's own file (`werte.hpp:268`, the accessor carries no T48 number by
+design) and still not a finding: the riegel is under `werkzeuge/`, which condition 5
+forbids the builder to write. My predecessor said it in one half-sentence, and the PM's
+Ruecklauf then listed only the sibling `zahlwort_messung`. This time it got its own
+section.
+
+**The expected red that never came.** Condition 6 was narrowed to let `verlauf_probe` stay
+red; `0285` ran the same night and it is green. Check the current report before believing a
+criterion's forecast about another package's lane.
