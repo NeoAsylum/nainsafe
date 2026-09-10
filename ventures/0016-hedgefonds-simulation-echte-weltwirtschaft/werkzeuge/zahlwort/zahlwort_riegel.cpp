@@ -1,4 +1,5 @@
-//! # Der Zahlwortriegel -- Paket 0180, um Sorte 3 erweitert in Paket 0194
+//! # Der Zahlwortriegel -- Paket 0180, um Sorte 3 erweitert in Paket 0194, um die
+//! Zaehlmarke in Paket 0286
 //!
 //! `werte.hpp` traegt Saetze, die zaehlen, was unter ihnen steht. Sie stimmen, wenn sie
 //! geschrieben werden, und sie werden falsch, sobald ein Paket eine Deklaration
@@ -38,6 +39,44 @@
 //! Die Zaehlungen kommen aus dem Quelltext und nicht aus diesem Programm. Eine feste
 //! Sollzahl hier waere ein Messgeraet, das nur prueft, dass die Welt sich nicht bewegt
 //! -- und der Text duerfte still falsch werden, waehrend beide Seiten sich aendern.
+//!
+//! ## Die drei Faelle der Deklaration und die Zaehlmarke -- Paket 0286
+//!
+//! Bis 0286 kannte dieser Riegel genau eine zulaessige Deklaration: eine mit
+//! Nummer der Tabelle. Der Entwurf zu Paket 0277 hat eine zweite angeordnet -- einen
+//! Zugang, der ein Feld des Traegers herausgibt und nichts rechnet --, und 0284 hat sie
+//! gebaut. Sie ist keine abgeleitete Groesse, traegt also keine Nummer, und der Riegel
+//! meldete sie als Mangel. Der Mangel war richtig gestellt und falsch beantwortet: Der
+//! Vertrag des Moduls ist um einen Fall reicher geworden, und eine Pruefung, die den
+//! Vertrag bewacht, muss den Fall **ausdruecklich** lernen.
+//!
+//! Gelernt wird er an einer erklaerten **Zaehlmarke** im Dokumentationsblock, und ihr
+//! Wortlaut steht genau hier:
+//!
+//!     Zaehlmarke: keine Groesse aus T48
+//!
+//! Damit gibt es drei Faelle, und sie schliessen einander aus. "Sorte" heisst hier
+//! weiter die Sorte **Satz** von oben; die Faelle darunter sind Faelle der Deklaration:
+//!
+//!   * **Nummer und keine Marke** -- eine abgeleitete Groesse. Zaehlt in Sorte 1 und in
+//!     Sorte 3.
+//!   * **Marke und keine Nummer** -- ein Zugang wie `pfadstand`. Zaehlt allein in
+//!     Sorte 3; die Nummernmenge waechst nicht, Sorte 1 bleibt, wo sie war.
+//!   * **Weder noch** -- eine Deklaration, die ihre Nummer vergessen hat. Sie bleibt ein
+//!     Mangel, und das ist die Haelfte, fuer die dieser Riegel gebaut wurde.
+//!
+//! **Beides zugleich ist ebenfalls ein Mangel**, mit eigenem Wortlaut: Wer eine Nummer
+//! nennt und daneben erklaert, keine Groesse zu sein, widerspricht sich, und eine der
+//! beiden Angaben ist falsch. Ohne diesen Fall waere "traegt eine Marke" ein Weg,
+//! eine falsche Nummer stumm zu stellen.
+//!
+//! **Warum die Marke ein Wortlaut ist und nicht das Fehlen einer Nummer.** Der billige
+//! Weg zu einem gruenen Lauf waere gewesen, den Satz ueber die Deklaration umzuschreiben
+//! -- ein Kommentar, der `T48 Nr. 18` in einem Satz erwaehnt, der sagt "dies ist keine
+//! davon", befriedigt schon den Nummernsucher. Danach waere die naechste Deklaration,
+//! die ihre Nummer wirklich vergisst, von dieser nicht mehr zu unterscheiden. Die Marke
+//! muss deshalb **dastehen**; sie ist eine Aussage des Schreibers und kein Rueckschluss
+//! des Riegels.
 //!
 //! ## Was als Zahlbehauptung gilt, und warum die Unterscheidung tragend ist
 //!
@@ -83,9 +122,10 @@
 //!
 //!   * **Nur `werte.hpp`.** Was eine Zahl im Kommentar zaehlt, steht nirgends
 //!     maschinenlesbar; ein allgemeiner Riegel muesste es raten. Diese Datei ist die,
-//!     an der es zweimal weh getan hat. Wer den Riegel allgemein will, braucht zuerst
-//!     eine erklaerte Zaehlmarke im Kommentar -- das ist eine Entwurfsfrage und ein
-//!     anderes Paket.
+//!     an der es zweimal weh getan hat. Die erklaerte Zaehlmarke, die dieser Kopf
+//!     bis 0286 als Vorbedingung eines allgemeinen Riegels nannte, gibt es jetzt --
+//!     aber nur fuer die eine Sorte Satz dieser einen Datei. Der allgemeine Riegel
+//!     bleibt ein anderes Paket.
 //!   * **Nur der Plural "Groessen".** Der Singular kommt im Bestand in Wendungen vor,
 //!     die eine Zahl nennen und sie zugleich verneinen ("ist keine dreiundzwanzigste
 //!     Groesse"). Eine Verneinung maschinell zu lesen ist eine andere Aufgabe; der
@@ -141,7 +181,21 @@
 //! Richtungen: gruen nach rot, und rot nach weiter rot, aber gegen eine um eins hoehere
 //! Zaehlung.
 //!
-//! Der Mutant wird nur im Speicher gebildet; `werte.hpp` wird gelesen und nie
+//! ### Die zweite Probe: die Marke muss getragen sein -- Paket 0286
+//!
+//! Der Mutant oben bewegt eine Zahl. Die dritte Sorte Deklaration laesst sich damit
+//! nicht messen: Sie zeigt sich nicht an einer Zahl, sondern daran, dass ein Mangel
+//! **ausbleibt** -- und ein ausbleibender Mangel sieht genauso aus, wenn der Riegel die
+//! Marke gar nicht liest und jede Deklaration ohne Nummer entschuldigt.
+//!
+//! Deshalb ein zweiter Mutant, der die andere Richtung geht: Er **nimmt die Zaehlmarke
+//! aus dem Text** und verlangt genau einen Mangel mehr als vorher, bei unveraenderter
+//! Zahl der Deklarationen und unveraenderter Nummernmenge. Faellt er aus, endet der
+//! Riegel mit 2. Traegt der Pruefling gar keine Marke -- was ein richtiger Kopf sein
+//! darf --, hat diese Probe keinen Gegenstand; sie wird dann genannt und nicht
+//! bestanden.
+//!
+//! Beide Mutanten werden nur im Speicher gebildet; `werte.hpp` wird gelesen und nie
 //! geschrieben. Wer den roten Lauf selbst sehen will, ruft
 //! `zahlwort_riegel <wurzel> --bruch=stelligkeit` -- dann laeuft der ganze Riegel auf
 //! dem Mutanten, druckt seinen Nachlass und gibt **1**. Der Schalter verbiegt die
@@ -150,12 +204,13 @@
 //!
 //! ## Die drei Rueckgabewerte
 //!
-//!   * **2** -- der Selbsttest ist verfehlt, die Empfindlichkeitsprobe ist verfehlt,
+//!   * **2** -- der Selbsttest ist verfehlt, eine der beiden Proben ist verfehlt,
 //!     die Datei fehlt, oder der Riegel hat keinen Gegenstand (keine Deklaration, kein
 //!     Feld, keine Zahlbehauptung einer der drei Sorten). Das ist kein gruener Lauf,
 //!     sondern ein Messgeraet ohne Messung.
 //!   * **1** -- eine Behauptung weicht von ihrer Zaehlung ab, oder eine Deklaration
-//!     nennt keine Nummer der Tabelle, oder ein Feld faellt in keine der beiden Sorten.
+//!     traegt weder eine Nummer der Tabelle noch die Zaehlmarke (oder beides zugleich),
+//!     oder ein Feld faellt in keine der beiden Sorten.
 //!   * **0** -- jede Behauptung deckt sich mit ihrer Zaehlung.
 
 #include <array>
@@ -192,6 +247,16 @@ constexpr std::string_view BERUFUNG_SCHLUESSEL = "/// Schluessel ";
 
 /// Der Vorspann, hinter dem die laufende Nummer der Tabelle aus T48 steht.
 constexpr std::string_view VORSPANN_NUMMER = "T48 Nr. ";
+
+/// Die erklaerte Zaehlmarke des dritten Falls der Deklaration (Paket 0286). Sie steht im
+/// Dokumentationsblock der Deklaration und sagt ausdruecklich, dass diese keine
+/// abgeleitete Groesse liefert und deshalb keine Nummer der Tabelle traegt.
+///
+/// **Ein Wortlaut und kein Rueckschluss.** Der Riegel koennte eine solche Deklaration
+/// auch daran erkennen, dass ihr Kommentar eine Nummer verneint -- dann waere eine
+/// vergessene Nummer von einer erklaerten Ausnahme nicht mehr zu unterscheiden, und die
+/// Haelfte, fuer die dieser Riegel gebaut ist, waere weg. Die Marke muss dastehen.
+constexpr std::string_view ZAEHLMARKE = "Zaehlmarke: keine Groesse aus T48";
 
 /// Der Schalter, der den Rotnachweis von Hand fuehrt. Er steht hier neben den anderen
 /// Wortlauten und nicht in `main`, damit die Meldung, die ihn nennt, und die Stelle,
@@ -609,6 +674,12 @@ struct Zaehlung {
     /// Ein Mengentyp, weil Nr. 11 zweimal vorkommt und einmal zaehlt.
     std::set<std::size_t> nummern;
     std::size_t deklarationen = 0;
+    /// Wie viele der gezaehlten Deklarationen die erklaerte Zaehlmarke tragen. Die Zahl
+    /// steht neben `deklarationen` und nicht darin: Eine markierte Deklaration zaehlt in
+    /// Sorte 3 mit wie jede andere, und nur die Nummernzaehlung laesst sie aus. Gedruckt
+    /// wird sie, damit der Fall der Marke im Nachtbericht sichtbar ist und nicht bloss
+    /// nicht mehr meckert.
+    std::size_t marken = 0;
     std::vector<Feld> felder;
     std::vector<Feld> jahrgang;
     std::vector<Feld> schluessel;
@@ -824,12 +895,26 @@ Zaehlung zaehle(std::string_view text) {
             ++z.deklarationen;
             std::size_t gefunden = 0;
             nummern_aus(dok, z.nummern, gefunden);
-            if (gefunden == 0) {
+            const bool traegt_nummer = gefunden > 0;
+            const bool traegt_marke = dok.find(ZAEHLMARKE) != std::string::npos;
+            if (traegt_marke) {
+                ++z.marken;
+            }
+            // Dieselbe Bauform wie bei den Feldern eine Ebene tiefer: Die zulaessigen
+            // Faelle teilen die Deklarationen restlos und ueberschneidungsfrei. Genau
+            // eines von beidem muss dastehen -- eine Nummer der Tabelle oder die
+            // Zaehlmarke. Keines ist eine vergessene Nummer, beides ein Widerspruch;
+            // die zwei bekommen eigene Wortlaute, weil sie verschiedene Fehler sind und
+            // verschieden behoben werden.
+            if (traegt_nummer == traegt_marke) {
                 const std::string kopf = code.substr(0, code.find('('));
                 std::ostringstream m;
                 m << "Funktionsdeklaration '" << letzter_bezeichner(kopf)
-                  << "' ab Zeilennummer " << codezeile
-                  << " nennt keine Nummer der Tabelle -- sie faellt damit aus der Zaehlung";
+                  << "' ab Zeilennummer " << codezeile << " "
+                  << (traegt_marke ? "nennt eine Nummer der Tabelle und traegt zugleich "
+                                     "die Zaehlmarke -- eines von beidem ist falsch"
+                                   : "nennt keine Nummer der Tabelle und traegt keine "
+                                     "Zaehlmarke -- sie faellt damit aus der Zaehlung");
                 z.maengel.push_back(m.str());
             }
         }
@@ -1194,6 +1279,91 @@ Probe empfindlichkeitsprobe(std::string_view text, const Ergebnis& bestand) {
 }
 
 // ---------------------------------------------------------------------------
+// Der zweite Mutant und die Markenprobe -- Paket 0286
+// ---------------------------------------------------------------------------
+
+/// Der zweite Mutant dieses Riegels: **die Zaehlmarke wird aus dem Text genommen.**
+///
+/// Er misst die andere Haelfte als der erste. Der erste zeigt, dass die Zaehlung der
+/// Deklarationen einer weiteren Deklaration folgt; dieser zeigt, dass die Marke
+/// **getragen** werden muss und nicht bloss nicht im Weg steht. Ohne ihn liesse sich
+/// `traegt_marke` auf `true` festnageln: Jede Deklaration ohne Nummer waere still
+/// entschuldigt, der Riegel bliebe gruen, und die Haelfte, um derentwillen er gebaut
+/// wurde, waere weg -- ohne dass ein Fall risse.
+///
+/// Genommen wird der **erste** Wortlaut und nicht alle. Die Aussage der Probe ist "ein
+/// Mangel mehr als vorher", und die ist scharf, solange genau eine Marke faellt.
+///
+/// Gebildet wird nur eine Zeichenkette; `werte.hpp` wird gelesen und nie geschrieben.
+bool ohne_zaehlmarke(std::string_view text, std::string& hinein, std::string& warum) {
+    const std::size_t stelle = text.find(ZAEHLMARKE);
+    if (stelle == std::string_view::npos) {
+        warum = "im gelesenen Text steht keine Zaehlmarke";
+        return false;
+    }
+    std::string aus(text.substr(0, stelle));
+    // Ein Ersatz und keine Luecke: Die Zeile bleibt so lang und so lesbar wie vorher,
+    // und was faellt, ist allein der Wortlaut, an dem der Riegel die Marke erkennt.
+    aus += "ohne erklaerten Vermerk";
+    aus += std::string(text.substr(stelle + ZAEHLMARKE.size()));
+    hinein = aus;
+    return true;
+}
+
+/// `gegenstand` steht neben `bestanden`, weil die beiden verschiedene Dinge sagen: Ein
+/// Kopf, in dem jede Deklaration ihre Nummer traegt, ist richtig und hat fuer diese
+/// Probe trotzdem nichts herzugeben. Sie wird dann genannt und nicht bestanden -- eine
+/// Probe ohne Gegenstand als bestanden zu drucken, waere die Sorte gruener Lauf, gegen
+/// die dieses Programm geschrieben ist.
+struct Markenprobe {
+    bool gegenstand = false;
+    bool bestanden = false;
+    std::string warum;
+    std::size_t maengel_vorher = 0;
+    std::size_t maengel_nachher = 0;
+};
+
+Markenprobe markenprobe(std::string_view text, const Ergebnis& bestand) {
+    Markenprobe p;
+    p.maengel_vorher = bestand.zaehlung.maengel.size();
+    p.maengel_nachher = p.maengel_vorher;
+    if (bestand.zaehlung.marken == 0) {
+        p.warum = "der Pruefling traegt keine Zaehlmarke, es ist also keine zu nehmen";
+        return p;
+    }
+    p.gegenstand = true;
+    std::string mutant;
+    if (!ohne_zaehlmarke(text, mutant, p.warum)) {
+        return p;
+    }
+    const Ergebnis nach = pruefe(mutant);
+    p.maengel_nachher = nach.zaehlung.maengel.size();
+    if (!nach.zaehlung.brauchbar) {
+        p.warum = "der Mutant ist unbrauchbar: " + nach.zaehlung.warum;
+        return p;
+    }
+    if (nach.zaehlung.deklarationen != bestand.zaehlung.deklarationen
+        || nach.zaehlung.nummern.size() != bestand.zaehlung.nummern.size()) {
+        p.warum = "der Mutant bewegt eine der beiden Zaehlungen -- er soll allein die "
+                  "Marke nehmen und sonst nichts";
+        return p;
+    }
+    if (nach.zaehlung.marken + 1 != bestand.zaehlung.marken) {
+        p.warum = "der Mutant nimmt nicht genau eine Marke -- der Riegel liest ihren "
+                  "Wortlaut nicht dort, wo er ihn zu lesen glaubt";
+        return p;
+    }
+    if (p.maengel_nachher != p.maengel_vorher + 1) {
+        p.warum = "ohne die Marke steht nicht genau ein Mangel mehr da -- der Riegel "
+                  "laesst eine Deklaration ohne Nummer auch ohne erklaerte Marke durch, "
+                  "und die Marke ist damit keine Bedingung, sondern eine Verzierung";
+        return p;
+    }
+    p.bestanden = true;
+    return p;
+}
+
+// ---------------------------------------------------------------------------
 // Selbsttest, Tabelle 1: die Zerlegung in Woerter und Bloecke
 // ---------------------------------------------------------------------------
 
@@ -1422,6 +1592,7 @@ std::string zaehlbild(std::string_view text) {
     }
     std::ostringstream aus;
     aus << "nummern=" << z.nummern.size() << " dekl=" << z.deklarationen
+        << " marken=" << z.marken
         << " felder=" << z.felder.size() << " jahrgang=" << z.jahrgang.size()
         << " schluessel=" << z.schluessel.size() << " maengel=" << z.maengel.size();
     return aus.str();
@@ -1495,24 +1666,55 @@ constexpr std::string_view ZAEHLTEXT_NUMMER_IM_FELD =
     "[[nodiscard]] i64 wert(const Zustand& z);\n"
     "}  // namespace kern::werte\n";
 
-constexpr std::array<Zaehlfall, 7> ZAEHLFAELLE = {
+/// Der Fall der Marke, und daneben der mit Nummer -- damit er zugleich zeigt, dass die
+/// markierte Deklaration die Nummernzaehlung **nicht** hebt. Ein Text mit nur der
+/// markierten Deklaration liesse `nummern=0` offen: Das waere auch die Zahl eines
+/// Riegels, der die Marke gar nicht liest.
+constexpr std::string_view ZAEHLTEXT_MIT_MARKE =
+    "namespace kern::werte {\n"
+    "/// **T48 Nr. 1** -- die eine Groesse.\n"
+    "[[nodiscard]] i64 wert(const Zustand& z);\n"
+    "\n"
+    "/// **Zaehlmarke: keine Groesse aus T48** -- gibt ein Feld des Traegers heraus.\n"
+    "[[nodiscard]] i64 pfadstand(const Konstanten& k, Gebiet g, Instrument i);\n"
+    "}  // namespace kern::werte\n";
+
+/// Nummer und Marke an derselben Deklaration. Ohne diesen Fall waere die Marke ein Weg,
+/// eine falsche Nummer stumm zu stellen.
+constexpr std::string_view ZAEHLTEXT_MARKE_UND_NUMMER =
+    "namespace kern::werte {\n"
+    "/// **T48 Nr. 1** und zugleich **Zaehlmarke: keine Groesse aus T48**.\n"
+    "[[nodiscard]] i64 wert(const Zustand& z);\n"
+    "}  // namespace kern::werte\n";
+
+constexpr std::array<Zaehlfall, 9> ZAEHLFAELLE = {
     Zaehlfall{ZAEHLTEXT_EINFACH,
-              "nummern=2 dekl=2 felder=2 jahrgang=1 schluessel=1 maengel=0",
+              "nummern=2 dekl=2 marken=0 felder=2 jahrgang=1 schluessel=1 maengel=0",
               "zwei Nummern, zwei Felder, jede Sorte einmal"},
     Zaehlfall{ZAEHLTEXT_ZWEI_STELLIGKEITEN,
-              "nummern=1 dekl=2 felder=0 jahrgang=0 schluessel=0 maengel=0",
+              "nummern=1 dekl=2 marken=0 felder=0 jahrgang=0 schluessel=0 maengel=0",
               "gezaehlt werden Nummern und nicht Zeilen -- Nr. 11 traegt zwei Stelligkeiten"},
+    // Die drei Faelle der Deklaration nebeneinander, in der Reihenfolge des Kopfes: erst
+    // die Marke neben der Nummer, dann der Widerspruch, dann die vergessene Nummer.
+    Zaehlfall{ZAEHLTEXT_MIT_MARKE,
+              "nummern=1 dekl=2 marken=1 felder=0 jahrgang=0 schluessel=0 maengel=0",
+              "der Fall der Marke: sie zaehlt in Sorte 3 mit und hebt die "
+              "Nummernzaehlung nicht"},
+    Zaehlfall{ZAEHLTEXT_MARKE_UND_NUMMER,
+              "nummern=1 dekl=1 marken=1 felder=0 jahrgang=0 schluessel=0 maengel=1",
+              "Nummer und Marke zugleich sind ein Widerspruch und deshalb ein Mangel"},
     Zaehlfall{ZAEHLTEXT_OHNE_NUMMER,
-              "nummern=0 dekl=1 felder=0 jahrgang=0 schluessel=0 maengel=1",
-              "eine Deklaration ohne Nummer faellt aus der Zaehlung und ist deshalb ein Mangel"},
+              "nummern=0 dekl=1 marken=0 felder=0 jahrgang=0 schluessel=0 maengel=1",
+              "weder Nummer noch Marke: die vergessene Nummer bleibt ein Mangel -- das "
+              "ist die Haelfte, die die Marke nicht kosten darf"},
     Zaehlfall{ZAEHLTEXT_FELD_OHNE_SORTE,
-              "nummern=1 dekl=1 felder=1 jahrgang=0 schluessel=0 maengel=1",
+              "nummern=1 dekl=1 marken=0 felder=1 jahrgang=0 schluessel=0 maengel=1",
               "ein Feld ohne Berufung faellt aus der Zaehlung und ist deshalb ein Mangel"},
     Zaehlfall{ZAEHLTEXT_MEHRZEILIG,
-              "nummern=1 dekl=1 felder=1 jahrgang=1 schluessel=0 maengel=0",
+              "nummern=1 dekl=1 marken=0 felder=1 jahrgang=1 schluessel=0 maengel=0",
               "ein Feld und eine Deklaration ueber mehrere Zeilen"},
     Zaehlfall{ZAEHLTEXT_NUMMER_IM_FELD,
-              "nummern=1 dekl=1 felder=1 jahrgang=0 schluessel=1 maengel=0",
+              "nummern=1 dekl=1 marken=0 felder=1 jahrgang=0 schluessel=1 maengel=0",
               "eine Nummer im Feldkommentar hebt die Nummernzaehlung nicht"},
     Zaehlfall{"struct Konstanten {\n};\n",
               "unbrauchbar: kein Namensraum 'kern::werte' im Pruefling",
@@ -1806,9 +2008,9 @@ int main(int argc, char** argv) {
     }
 
     // ------------------------------------------------------------------
-    // Die Empfindlichkeitsprobe
+    // Die zwei Proben: die Empfindlichkeitsprobe und die Markenprobe
     // ------------------------------------------------------------------
-    // Sie laeuft nur am Bestand: Unter dem Schalter ist der gelesene Text schon der
+    // Beide laufen nur am Bestand: Unter dem Schalter ist der gelesene Text schon der
     // Mutant, und ein Mutant des Mutanten bewiese ueber den Bestand nichts.
     if (!bruch) {
         // `gelesen` und nicht `text`: Der Vergleich geht gegen `e`, und `e` ist aus
@@ -1836,6 +2038,34 @@ int main(int argc, char** argv) {
                      p.deklarationen_nachher, p.deklarationen_vorher,
                      p.bild_vorher.c_str(), p.bild_nachher.c_str(), argumente[1].c_str(),
                      std::string(BRUCHSCHALTER).c_str());
+
+        // Die zweite Probe, an der anderen Haelfte. Sie bricht nur ab, wenn sie einen
+        // Gegenstand hatte und ihn verfehlt hat; ein Kopf ohne Marke ist richtig und
+        // wird genannt, nicht beanstandet.
+        const Markenprobe mp = markenprobe(gelesen, e);
+        if (mp.gegenstand && !mp.bestanden) {
+            std::fprintf(stderr,
+                         "zahlwort_riegel: die Markenprobe ist verfehlt -- %s.\n\n"
+                         "Der Riegel zaehlt eine Deklaration mit erklaerter Zaehlmarke "
+                         "mit, ohne sie zu\nbeanstanden. Er zeigt aber nicht mehr, dass "
+                         "er die Marke wirklich liest -- und\ndamit ist nicht mehr zu "
+                         "unterscheiden, ob eine Deklaration ihre Nummer erklaert\nnicht "
+                         "traegt oder sie schlicht vergessen hat. Maengel am Bestand: "
+                         "%zu, am\nMutanten ohne die Marke: %zu.\n",
+                         mp.warum.c_str(), mp.maengel_vorher, mp.maengel_nachher);
+            return 2;
+        }
+        if (mp.gegenstand) {
+            std::fprintf(stdout,
+                         "zahlwort_riegel, Markenprobe: nimmt man die eine Zaehlmarke aus "
+                         "dem Text, steht\ngenau ein Mangel mehr da (%zu statt %zu) -- die "
+                         "Marke wird gelesen und nicht\nunterstellt. Die Zahl der "
+                         "Deklarationen und die der Nummern bleiben, wie sie sind.\n",
+                         mp.maengel_nachher, mp.maengel_vorher);
+        } else {
+            std::fprintf(stdout, "zahlwort_riegel, Markenprobe: ohne Gegenstand -- %s.\n",
+                         mp.warum.c_str());
+        }
     }
 
     // ------------------------------------------------------------------
@@ -1843,12 +2073,13 @@ int main(int argc, char** argv) {
     // ------------------------------------------------------------------
     std::fprintf(stdout,
                  "zahlwort_riegel: %s gelesen. %zu Nummern der Tabelle in %zu "
-                 "Funktionsdeklarationen;\n%zu Felder in %s, davon %zu Groessen des "
+                 "Funktionsdeklarationen,\n%zu davon mit Zaehlmarke statt Nummer;\n"
+                 "%zu Felder in %s, davon %zu Groessen des "
                  "Jahrgangs und %zu Parameterschluessel.\n%zu Fundstellen der drei Nomen, "
                  "davon %zu mit Zahlbehauptung (%zu zu den Groessen,\n%zu zu den "
                  "Jahrgangskonstanten, %zu zu den Deklarationen).\n",
                  std::string(PRUEFLING).c_str(), e.zaehlung.nummern.size(),
-                 e.zaehlung.deklarationen, e.zaehlung.felder.size(),
+                 e.zaehlung.deklarationen, e.zaehlung.marken, e.zaehlung.felder.size(),
                  std::string(TRAEGER).c_str(), e.zaehlung.jahrgang.size(),
                  e.zaehlung.schluessel.size(), e.funde.size(),
                  e.behauptungen_groessen + e.behauptungen_jahrgang

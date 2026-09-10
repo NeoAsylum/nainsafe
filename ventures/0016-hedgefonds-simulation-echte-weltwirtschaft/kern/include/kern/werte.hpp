@@ -43,9 +43,10 @@
 //! ordnet sie hierher an -- "read in the core through **one** accessor in `kern::werte`
 //! that aborts for `Instrument::Regulierung`" --, und damit ist der Satz aus T48, den
 //! dieser Kopf oben zitiert, um einen Fall reicher, als er geschrieben wurde. **Der
-//! Zahlwortriegel meldet sie**, und das ist richtig so: Er kennt nur Deklarationen mit
-//! Tabellennummer, und ob es eine dritte Sorte geben soll, ist eine Entwurfsfrage und
-//! kein Rumpf. Sie steht als Vorschlag `0286`.
+//! Zahlwortriegel meldete sie**, und das war richtig so, solange er nur Deklarationen mit
+//! Tabellennummer kannte. Paket `0286` hat die Entwurfsfrage beantwortet: Er kennt jetzt
+//! daneben eine Sorte mit erklaerter Zaehlmarke im Kommentar. `pfadstand` traegt diese
+//! Marke unten, und gezaehlt wird sie wie jede andere.
 //!
 //! `Konstanten` ist keine dreiundzwanzigste Groesse, sondern der Traeger der Zahlen,
 //! die die Formeln aus T47 und T48 **neben** dem Zustand nennen. Ohne ihn muesste jede
@@ -253,6 +254,10 @@ struct Konstanten {
 // eine Stelle mit zwei Schranken statt einer Schranke je Aufrufstelle; es ist dieselbe
 // Bauform, die `stelle_beteiligung` und `anleihekurs` fuer die Restwelt schon haben.
 
+/// **Zaehlmarke: keine Groesse aus T48** -- diese Deklaration liefert keine abgeleitete
+/// Groesse und traegt deshalb keine laufende Nummer der Tabelle. Der Zahlwortriegel
+/// liest genau diesen Wortlaut und zaehlt sie mit, statt sie zu beanstanden.
+///
 /// Der Stand, den dieses Instrument in dieser Runde bekommt -- aus dem Traeger und
 /// nicht aus dem Zustand.
 ///
