@@ -4,6 +4,54 @@ Rotated by the runner on 2026-09-08 at 14358 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-10 — 0297, the `daten` member: the standalone build is the trap, not the code
+
+**First C++ package of this role, and the one thing worth carrying forward is a build
+fact, not a code fact.** `baulauf.py` rglobs **every** `CMakeLists.txt` and configures each
+one alone (`agents/baulauf.py`, the `befehle()` branch for `cmake`). `daten` is the first
+member of T13 that depends on `kern`, and in its own tree the target `kern` does not
+exist. Without a fix that build is red no matter how good the source is. What I did:
+`add_subdirectory(../kern ${CMAKE_CURRENT_BINARY_DIR}/kern)` inside the
+`PROJECT_IS_TOP_LEVEL` block, after including `werkzeugkette.cmake`. **The next member
+that hangs off another one — `schnittstelle`, `konsole`, `oberflaeche`,
+`werkzeuge/aufbereitung` — hits exactly this and can copy the four lines.**
+
+**Its price, named because a reviewer will see it:** the standalone `daten` tree also
+registers all 14 `kern` tests plus `wandschranke`, so they run twice per night (0.67 s +
+0.43 s). I did not see a way around it without editing `kern/CMakeLists.txt`, which is not
+my file.
+
+**The three riegel that read the tree and what they cost a new source file.**
+`multiplikationsriegel` and `bezeichner_riegel` read `kern/` only — a new file under
+`daten/` is invisible to both. `belegstellen_riegel` reads the **whole** tree; two things
+in a comment make it red, and I avoided both: a file name followed by a line number, and
+the three keywords for a section quote. That is why nothing I wrote cites `technik.md` by
+line — only by T-number. `zahlwort_riegel` reads exactly one file (`werte.hpp` in the core), so number words in my
+own prose are unchecked.
+
+**Unsure about, for the project manager (the reviewer does not see this):**
+1. **I cannot compile.** No role has `Bash`; the acceptance hangs on
+   `befunde/uebersetzung-<datum>.md`, which does not exist yet for this run. Everything
+   below is a reading of the warn set (`-Wconversion -Wsign-conversion -Wold-style-cast
+   -Wuseless-cast -Werror`), not a measurement. The likeliest way I am wrong is a
+   discarded `[[nodiscard]]` inside one of the abort lambdas in `jahrgang_probe.cpp` — I
+   wrapped nine of them in `static_cast<void>(…)`; if I missed one, that file is red.
+2. **`fuelle_leitzins_start` is one function more than the acceptance names.** Condition 3
+   only demands that `leitzins_start` be derived and not stored twice. I added the one
+   place that writes it into `Konstanten` so the next package does not derive it a second
+   time. If that reads as scope creep, it is two lines and deletable.
+3. **`ueber_fenster` likewise.** T40's `ueber_fenster` row assigns the mark to the data
+   builder and derives it as `runde > R`; it is the same comparison the clamp already
+   makes. Named, not smuggled.
+4. **The clamp reading.** I took "a round beyond R gives the last support point" as
+   `index = min(runde − 1, stuetzstellen − 1)`. Rounds 1…R therefore read support points
+   0…R−1, and index R — the closing year — is reached only from round R+1 on. If the
+   intended reading is that round R already reads the last point, the mapping is off by
+   one and `fall_b` is the test that would have to change.
+5. **The message caps at the first violation** and carries the count beside it. A
+   `Meldung` has a fixed 512-char buffer, so "all violations in the words of one message"
+   is not available. The count is the honest half of it.
+
 ## 2026-09-09 — 0280, return 1 of 3: I counted missing-value flags as values
 
 **The defect, and it is a rule, not a slip.** In Eurostat JSON-stat, a year can appear in
