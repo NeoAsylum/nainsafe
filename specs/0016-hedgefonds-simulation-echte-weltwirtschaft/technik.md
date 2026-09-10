@@ -2251,6 +2251,13 @@ rule, in step 6 of the round and only in `spielmodus`:
    in basis points.
 4. Only afterwards is `markt.wert = marktkorb(neu, neu)` set.
 
+**Points 3 and 4 name a reading and therefore do not run over two `Zustand` arguments —
+decided 2026-09-10, package `0236`.** `neu` is the state emerging in this round, and in
+step 6 it exists as no `Zustand`; both calls run over the round's `Schreiber`, with one
+reading per side. The two-state form stays for the callers that have no round at all,
+above all the vintage build's `marktkorb(start, start)` of point 2. Reasoning, and what is
+and is not fixed about the shape: section 36.
+
 Quantity growth thus produces no spurious return. **`markt.wert` is never zero** — it is
 a sum of positive quantities times positive prices, and both value ranges are checked by
 the invariant test (T30 check 2). With that the division in point 3 never sees a zero
@@ -2555,6 +2562,35 @@ number 11: one definition, two routes to its addresses. The table therefore stil
 **twenty-three to twenty-six**, and whoever lays header against table counts a name once
 and its forms beside it. Why not a read access on the writer's state, which readers the
 `Zustand` forms have, and what it costs: section 22.
+
+**And what a `const Zustand&` argument of any quantity of this table means — decided
+2026-09-10, package `0236`.** It is a state at a **round boundary**: a round that is
+finished and whose two-sided mask check of T38 has passed. It is never the round that is
+running, and that is a property of the types and not a convention — the `Schreiber`
+releases its emerging state only through `rundenende()`, so no `Zustand` object holding a
+half-written round exists to be passed. **Which** boundary it is, the caller says and this
+table does not; **number 7 is the reason it must not**, for it takes two and their
+difference is the whole content of the quantity (T33).
+
+**A quantity takes the `Schreiber` and not a `Zustand` wherever a rule of `spiel.md` fixes
+a reading per address — and that holds for both readings, not only for `lies_neu`.** T39
+gives an address two read accesses; a bare `Zustand` can express neither, and number 13
+has carried the reason since it was built: *„Die Funktion nimmt deshalb den `Schreiber`
+und nicht einen `Zustand`: An einem blanken Zustand laesst sich der Unterschied nicht
+ausdruecken, und wer ihn nicht ausdruecken kann, trifft ihn frueher oder spaeter falsch"*
+(`kern/include/kern/werte.hpp:393-396`). Number 13 takes the writer for a `lies_alt` rule,
+numbers 18 to 20 for a `lies_neu` one, numbers 9 to 11 since section 22. **Inside a round
+the writer is the route; the `Zustand` forms are the route outside one** — valuation on a
+finished state, the three-level output of G8, the vintage build, the test bench. Which
+call sites those are, counted: section 22, the reader table.
+
+**The consequence for a round body, and it is what closes the conflict of package `0236`:
+no body of the round takes a `Zustand`.** The round has exactly one, `vorrunde`, and it
+belongs to the `Schreiber` constructed from it (T10b, T39); what a body wants from the
+previous round it reads as `lies_alt` out of that same object, number for number. A body
+that holds no `Zustand` cannot pass one to a quantity whose rule says `lies_neu` — the
+mistake becomes a compile error instead of a reading. The evidence, the two answers
+rejected, the same gap at number 7 and the two open build items: **section 36**.
 
 **Three quantities lie outside the core** and therefore do not stand in the table:
 `B(z)`, `v(z)` and `e(z)` from T44. They are test-bench quantities, belong to the
@@ -6269,3 +6305,127 @@ falsifies in one word.
 `:161`, `:292` and `:356` and none on `:99`. Until both successors land,
 `ctest -R multiplikationsriegel` fails and names exactly two lines; after the first it names
 one, after the second it passes and the latch reports 35 lines instead of 36.
+
+## 36. Which state a `Zustand` argument carries — Paket `0236`
+
+**What is decided and what is not.** Decided is what a `const Zustand&` argument of a T48
+quantity means and where such a form may be called. Not decided is any rule of `spiel.md`,
+any address, any class, any scale transition and any number: no formula changes, the
+twenty-two stay twenty-two, and 310 stays 310. The rule itself stands in T48; this section
+carries the evidence, the answers rejected and the reports.
+
+### The conflict, both sides quoted
+
+`spiel.md` writes at the approval rule of counterforce 2 (*Was Realeinkommen ist*): „**The
+reference of the change is therefore not the previous round but the same round without
+policy movement.** Everything is read with `lies_neu`; the only difference of the whole
+rule is taken over the instrument levels, inside `politiklast`." The rule's own starting
+value is the second exception and stands in its formula, `lies_alt(land.<l>.zustimmung)`.
+Everything else — `bip`, `schuld`, `handelsvolumen` and through them 56 addresses — is
+`lies_neu`.
+
+The built call site says the opposite in its own words (`kern/src/schritt.cpp:588-597`):
+*„`werte::schaden` und `werte::bip` nehmen nach T48 dagegen einen `Zustand`, und der
+einzige, den ein Rumpf hier hat, ist der am Ende der Vorrunde."* It passes `rundengrenze`
+to number 9 (`:675`) and to number 22 (`:642`).
+
+**Today both readings give the same numbers, and that is why nothing is red.** Measured
+2026-09-10: `schritt_4_wirtschaft` is `schreiber.vortrag(platz)` in one line
+(`kern/src/schritt.cpp:566`), so all 152 economy addresses are carried forward and
+`lies_neu` is `lies_alt` there, number for number. Package `0284` did not change that — it
+makes step 3 write the instrument levels from the vintage path, so `hub` and `politiklast`
+stop being nought and the damage rows compute; they compute out of the **previous round's**
+quantities, and no check can tell.
+
+### The answer, and why it is not one of the two the package offered
+
+The package asks whether the argument is the previous round or this round. **At the
+quantity that question has no answer, and that is the finding rather than an evasion:**
+number 7 takes two `Zustand`s and their difference is its whole content (T33), so any
+table-wide answer is either wrong for number 7 or kills it. What *is* decidable at the
+quantity is the other half of the question — whether it may take a `Zustand` at all — and
+that decides the case: a quantity whose `spiel.md` rule fixes a reading takes the writer,
+because a bare state cannot express a reading. The rule and its wording: T48.
+
+**`spiel.md` therefore stays literally true and needs no change.** The branch the package
+body opened for the other case — „the sentence in `spiel.md` is then not literally true …
+the deviation belongs written down where the rule stands" — does not arise, and there is
+no follow-up package for the game designer.
+
+### The three answers rejected
+
+1. **„The `Zustand` is the previous round."** It would make the built call site right and
+   `spiel.md` wrong on 56 addresses — the count-off is section 22's read table — and the
+   deviation would have to be carried in the game document. It buys a true sentence here
+   with a false one there.
+2. **„The `Zustand` is the state of this round."** It names no object. The writer publishes
+   only through `rundenende()`, after the two-sided mask check of T38, and in step 5 the
+   round is not over. Same reason section 22 gave for number 22.
+3. **„Give the `Schreiber` a read-only view on `neu`."** Rejected in section 22, *Why not a
+   read access on the writer's state*, and unchanged: a bare reference to `neu` reads past
+   the bit field, so an address not yet written yields its previous-round value silently —
+   the fallback T39 forbids in words, at the one place the order 4 → 5 has to hold.
+
+### Why the rule is a signature and not a discipline
+
+A rule that says „pass the right state" is obeyed by whoever remembers it. The same rule
+stated over signatures is obeyed by everyone: a body that holds no `Zustand` cannot pass
+one. The writer carries both readings (T39) and is constructed from `vorrunde`, so nothing
+is lost — `lies_alt` on the writer and a read on that state are the same number out of the
+same object.
+
+Today exactly one body takes a state, and only to feed numbers 9 and 22:
+`schritt_5_reaktion(const Zustand& rundengrenze, …)` (`kern/src/schritt.cpp:785`), through
+its two helpers `politiklast` (`:633`) and `realeinkommenshub` (`:672`). With the writer
+forms of section 22 built, the argument has no reader left and goes.
+
+**No ADR, by the touchstone section 22 applied to number 22.** T10's signature sentence
+`schritt(vorrunde, aktionen, konstanten, modus)` (T10b) is untouched and keeps its state;
+`schritt_5_reaktion` stands in no specification, it stands in `schritt.cpp` and was cut
+there by the build agent of `0197`.
+
+### The same gap at number 7, named rather than left for step 6
+
+T33 point 3 prescribes `W_neu = marktkorb(alt, neu)` — quantities `lies_alt`, prices
+`lies_neu` — and point 4 `markt.wert = marktkorb(neu, neu)`. Both run in step 6, and in
+step 6 `neu` exists as no `Zustand` for exactly the reason it does not in step 5. Number 7
+therefore needs the writer route as numbers 9 to 11 did. **Fixed here:** one reading per
+side out of one writer, quantity side `lies_alt`, price side `lies_neu`; the two-state form
+stays for callers without a round, above all `marktkorb(start, start)` of point 2.
+**Deliberately not fixed here:** the spelling of that form, and whether `korbwert`,
+`anleihewert`, `anleihekurs` and `wert` need writer forms of their own — that follows from
+the spelling and belongs to the package that chooses it. Deciding it today would be a
+decision made before it is needed; step 6 is `schreiber.vortrag(platz)`
+(`kern/src/schritt.cpp:842`).
+
+### Cost
+
+No new address, no new field, no new read, no target mask changed, no save format touched.
+The route changes and the count does not: each affected read gains the bit test `lies_neu`
+performs anyway, the order of magnitude T18 prices at „one bit test per write". The cost
+line of section 10 does not move.
+
+### Reports to the project manager
+
+1. **Section 22's prescription is written and not built, and this section is unenforceable
+   until it is.** Measured 2026-09-10: `kern/include/kern/werte.hpp` declares numbers 9, 10
+   and 11 only over `const zustand::Zustand&` (`:339`, `:344`, `:356`, `:367`) and number 22
+   as `schaden(const zustand::Zustand& z, …)` (`:599`). No package under `aufgaben/` carries
+   that build. It is **one** package: three writer forms, the changed number 22, the twelve
+   call sites in `kern/test/werte_probe.cpp` that section 22 counted, and the `Zustand`
+   argument of `schritt_5_reaktion` falls out of it.
+2. **Number 7 is a package of its own and it is not urgent** — it becomes urgent with the
+   first computing step 6, and step 6 carries forward today.
+3. **`spiel.md` carries three derived quantities that T48 does not:** `politiklast(l)`,
+   `realeinkommen(l)` and `realeinkommenshub(l)`, named as such in that document's own
+   catch-up table (*Was der Architekt neu rechnen muss*: „T48 counts **22** … **25**"). They
+   are built in `kern/src/schritt.cpp` and not in `kern::werte`, and the rule of this section
+   will apply to them the moment they enter the table. Outside this package's scope,
+   reported so that it is not found a third time.
+
+### The check this section can be held to
+
+`Grep` for `const Zustand&` over `kern/src/schritt.cpp` gives today exactly four lines:
+`:633`, `:672`, `:785` and `:909`. After the package of report 1 only `:909` remains —
+`schritt` itself, whose state is T10b's and belongs to the writer. One line, and it fails
+the moment a body takes a state again.
