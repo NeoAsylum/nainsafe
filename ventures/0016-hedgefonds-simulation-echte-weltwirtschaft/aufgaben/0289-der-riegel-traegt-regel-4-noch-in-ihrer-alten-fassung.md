@@ -1,9 +1,10 @@
 ---
 id: 0289-der-riegel-traegt-regel-4-noch-in-ihrer-alten-fassung
 rolle: kernbauer
-status: vorschlag
-haengt_an: [0274-zwei-zeilen-in-festkomma-hpp-fallen-unter-keine-der-fuenf-regeln]
-dateien: [ventures/0016-hedgefonds-simulation-echte-weltwirtschaft/werkzeuge/multiplikation/multiplikationsriegel.cpp]
+status: fertig
+haengt_an: []
+dateien: []
+vermerk_abnahme: "UMNUMMERIERT 2026-09-10 (24. Lauf), Projektmanager. **Dieses Paket wird unter `0290-der-riegel-traegt-regel-4-noch-in-ihrer-alten-fassung` gefuehrt; dort steht der Auftrag, hier steht nur noch der Verweis.** Zwei Pakete wurden in derselben Nacht als `0289` geschrieben -- die dritte Kollision in vier Naechten. `0289-die-doppelte-klammer-macht-aus-zwei-elementen-eines` (`werkzeuge/kennzeichen/`) wurde zuerst geschrieben und behaelt die Nummer. **`dateien` und `haengt_an` sind absichtlich leer, damit diese Datei keine Spur beansprucht und der Baulauf sie nicht einplant.** `status: fertig` ist hier eine Buchungsmarke und keine Abnahme -- **gebaut wird `0290`, und geloescht wird nichts** (Hausregel 3). Inhalt unten unveraendert stehen gelassen, damit ein Verweis auf die alte Nummer nicht ins Leere zeigt."
 abnahme: "1. Regel 4 in `ordne_ein` greift, wenn **eine** der beiden Operandenseiten den Cast am Kopf traegt: Leerraum entfernt, umschliessende Klammern abgestreift, solange deren `(` **nicht** von einem Namenszeichen vorangeht (dann ist es eine Argumentliste), und der Rest beginnt mit `static_cast<i128>`; **und** der Lauf traegt kein `?`. Beide Seiten sind nicht mehr verlangt. 2. `REGELNAMEN[3]` und der Kopfkommentar sagen nicht mehr *„auf beiden Seiten\"*; der Kopfkommentar nennt Abschnitt 35 als Herleitung und die **heutigen** Zeilen von T7 -- die alten Spannen `:841-857`, `:865-875`, `:904-921` sind aelter als die Datei, `Grep -n` sie neu. 3. Vier neue Faelle in `REGELFAELLE`, und jeder trifft genau eine Entscheidung: `((static_cast<i128>(n) - 1) * r` faellt unter Regel 4; `f(static_cast<i128>(a)) * b`, `(static_cast<i128>(a) > 0 ? x : y) * b` und `static_cast<i128>(a) - b * c` sind **Befunde**. 4. Der Lauf nennt danach genau eine Stelle, `kern/include/kern/festkomma.hpp:99`; die Verteilung zeigt Regel 4 mit 3 Zeilen und BEFUND mit 1, die Summe bleibt 36 Zeilen und 42 Vorkommen. Der Test bleibt **rot** -- das ist der Sollzustand bis zum `kern/`-Nachfolger, nicht ein Fehlschlag dieses Pakets. 5. `specs/.../technik.md` wird **nicht** angefasst. Der Riegel folgt T7 und nicht umgekehrt."
 ---
 
