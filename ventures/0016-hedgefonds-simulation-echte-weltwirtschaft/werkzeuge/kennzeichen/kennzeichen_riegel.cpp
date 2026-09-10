@@ -123,7 +123,7 @@
 //! zaehlt, hat gegen diesen Fall nichts.
 //!
 //! **Deshalb zaehlt `Listenzahl` seit Paket 0279 zweierlei** -- die Marken **und** die
-//! Elemente, letztere mit `felder_von` an den Kommas der aeussersten Ebene der Liste --, und
+//! Elemente, letztere mit `elemente_einer_liste` an den Kommas der aeussersten Ebene --, und
 //! `knappe_listen` vergleicht die deklarierte Groesse mit der **kleineren** der beiden
 //! Zahlen. Die Marken fangen das Element ohne Literal, die Elemente fangen das Element mit
 //! zweien; keine der beiden Zahlen allein faengt beides, und die kleinere zu nehmen heisst,
@@ -265,12 +265,17 @@
 //! **Auch die Markenzahl kann zu hoch liegen, und deshalb steht sie nicht allein.** Ein
 //! Element, das zwei Literale traegt -- `{VERBINDE("a", "b"), "c"}` --, gibt drei Marken aus
 //! zwei Elementen her; die Marke ist ein Element nur, solange ein Element hoechstens eine
-//! traegt. Daneben steht deshalb die **Elementzahl**: `felder_von` an den Kommas der
-//! aeussersten Ebene, dieselbe Zerlegung, die einen Eintrag in seine Felder trennt, auf die
-//! Liste angewandt. `hergegeben` nimmt die kleinere der beiden, und `knappe_listen` meldet,
-//! sobald **eine** von beiden unter der deklarierten Groesse liegt. Ein Fall des Selbsttests
-//! haelt es fest -- drei deklariert, zwei Elemente, drei Marken, gemeldet --, und er ist rot,
-//! sobald die Elementzahl wegfaellt oder die groessere der beiden Zahlen genommen wird.
+//! traegt. Daneben steht deshalb die **Elementzahl**: `elemente_einer_liste` an den Kommas
+//! der aeussersten Ebene, dieselbe Zerlegung, die einen Eintrag in seine Felder trennt, auf
+//! die Liste angewandt -- und vorher ein Klammerpaar abgeraeumt, das den ganzen Rumpf
+//! umschliesst und sonst nichts, weil `{{"a", "b"}}` sonst **ein** Feld ergaebe und eine
+//! vollstaendige Liste als knapp in den Bericht ginge. `hergegeben` nimmt die kleinere der
+//! beiden, und `knappe_listen` meldet, sobald **eine** von beiden unter der deklarierten
+//! Groesse liegt. Ein Fall des Selbsttests haelt es fest -- drei deklariert, zwei Elemente,
+//! drei Marken, gemeldet --, und er ist rot, sobald die Elementzahl wegfaellt oder die
+//! groessere der beiden Zahlen genommen wird; ein zweiter haelt die doppelte Klammer fest --
+//! zwei deklariert, zwei Elemente, nicht gemeldet -- und ist rot, sobald das Abraeumen
+//! wegfaellt.
 //!
 //! Die erwartete Zahl kommt aus derselben Quelle wie bei der Tabelle -- `deklarierte_groesse`
 //! auf der Stelle des Namens -- und damit weder aus einem Kommentar noch aus einer
@@ -294,8 +299,11 @@
 //! allein waere der falsche Schluessel. Ein Bericht, der ein Ding zweimal auffuehrt, nennt
 //! eine Zahl, die es nicht gibt; einer, der zwei Dinge fuer eines nimmt, verschweigt eines --
 //! und wenn das verschwiegene die kurze Liste ist, bleibt der Lauf gruen ueber einer Liste,
-//! die ein Stueck schuldet. Der letzte Fall des Selbsttests haelt es fest -- zwei Proben, eine
-//! Stelle, die kurze in der zweiten --, und er ist rot, sobald der Probenvergleich wegfaellt.
+//! die ein Stueck schuldet. Der Fall "zwei Proben, eine Stelle auf der Maske" der zweiten
+//! Falltabelle haelt es fest -- die kurze Liste steht in der zweiten Probe --, und er ist rot,
+//! sobald der Probenvergleich wegfaellt. **Am `was` genannt und nicht an seiner Stellung:**
+//! Der Selbsttest hat drei Falltabellen, sein letzter Fall ist der letzte des Abgleichs, und
+//! ein Verweis auf die Stellung ist bei jedem angehaengten Fall wieder falsch.
 //!
 //! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
 //!
@@ -914,6 +922,49 @@ bool ist_klammergruppe(std::string_view m, const Feld& f)
     return f.auf < f.zu && m[f.auf] == '{';
 }
 
+/// Die Elementzahl einer **Kennzeichenliste** -- `felder_von` mit der doppelten Klammer
+/// abgeraeumt.
+///
+/// `felder_von` allein zaehlt hier falsch, und zwar nach der teuren Seite. `finde_zuweisungen`
+/// setzt `auf` auf die **erste** Klammer hinter dem `=`; bei
+/// `std::array<const char*, 2> KZ = {{"a", "b"}}` hebt die zweite die Tiefe, ehe das Komma
+/// erreicht ist, das Komma trennt also nichts -- **ein** Feld, eine Zahl unter der
+/// deklarierten, und eine **vollstaendige** Liste geht als knapp in den Bericht. Das ist
+/// genau die Richtung, die dieses Programm an mehreren Stellen als disqualifizierend fuehrt:
+/// Eine Schranke, die auf eine gueltige Schreibweise rot wird, faerbt einen heilen Baum und
+/// wird abgeschaltet, ehe jemand lernt, wofuer sie stand. Am 2026-09-09 traegt keine Liste im
+/// Baum die doppelte Klammer -- aber jedes andere `std::array` hier ist so geschrieben
+/// (`TABELLENFAELLE = {{`, `ZERLEGEFAELLE = {{`, `ABGLEICHFAELLE = {{`,
+/// `RIEGEL_OHNE_ZUSTAND = {{`), also ist es die naheliegendste Aenderung ueberhaupt, und ihr
+/// Grund stuende in keiner Meldung.
+///
+/// **Abgeraeumt wird die Schreibweise und nicht jede Klammer:** nur ein Paar, das den ganzen
+/// Rumpf umschliesst und sonst nichts -- ein einziges Feld, das mit `{` beginnt und dessen
+/// eigene schliessende Klammer sein letztes Zeichen ist. `{{A}, {B}}` hat zwei Felder und
+/// bleibt bei zwei; `{{"a"}}` faellt auf eins und war vorher schon eins. Eine Schleife statt
+/// eines einzelnen Schrittes kostet nichts und nimmt keine Klammertiefe an; sie endet, weil
+/// jede Runde `auf` echt vergroessert.
+///
+/// Die Marken zaehlt `stuecke_aus` unveraendert weiter: Sie liegen zwischen den Klammern, und
+/// wie viele Klammern das sind, hat sie nie interessiert. Deshalb steht diese Funktion hier
+/// und nicht in `felder_von` -- ein Eintrag wird an derselben Regel in seine Felder getrennt
+/// wie vorher, und das Abraeumen gilt allein der Liste.
+std::size_t elemente_einer_liste(std::string_view m, const Gruppe& liste)
+{
+    Gruppe            g = liste;
+    std::vector<Feld> felder = felder_von(m, g);
+    while (felder.size() == 1 && ist_klammergruppe(m, felder[0])) {
+        const std::size_t innen_zu = balanciert(m, felder[0].auf);
+        if (innen_zu == NICHTS || innen_zu + 1 != felder[0].zu) {
+            break;
+        }
+        g.auf = felder[0].auf;
+        g.zu = innen_zu;
+        felder = felder_von(m, g);
+    }
+    return felder.size();
+}
+
 bool traegt_doppelpunktpaar(std::string_view m, const Feld& f)
 {
     const std::size_t p = m.find("::", f.auf);
@@ -1241,7 +1292,13 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     // den Kommas der aeussersten Ebene, ueberspringt Kommas in Klammern und
                     // wirft leere Felder weg, faellt also auf ein abschliessendes Komma nicht
                     // herein. Zweitens gezaehlt wird deshalb die Elementzahl, mit derselben
-                    // Funktion, die den Eintrag oben in seine Felder trennt.
+                    // Trennung, die den Eintrag oben in seine Felder trennt -- durch
+                    // `elemente_einer_liste`, das ihr ein Klammerpaar abraeumt, welches den
+                    // ganzen Rumpf umschliesst und sonst nichts. Ohne dieses Abraeumen faende
+                    // `{{"a", "b"}}` ein Feld statt zwei, und eine **vollstaendige** Liste
+                    // ginge als knapp in den Bericht: ein roter Lauf an heilem Text, an der
+                    // Schreibweise, mit der jedes andere `std::array` dieses Baums geschrieben
+                    // ist. Die Begruendung steht dort ausgeschrieben.
                     //
                     // Beide Zahlen bleiben stehen; verglichen wird mit `hergegeben` die
                     // kleinere. Die Marken bleiben die Zahl, die `gleiche_ab` wirklich gegen
@@ -1260,7 +1317,7 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     Gruppe listengruppe;
                     listengruppe.auf = fund.auf;
                     listengruppe.zu = listen_zu;
-                    lz.elemente = felder_von(liste.maske, listengruppe).size();
+                    lz.elemente = elemente_einer_liste(liste.maske, listengruppe);
 
                     // Zwei Eintraege duerfen dieselbe Liste nennen; dann ist es eine, und
                     // sie steht einmal in der Erhebung. Verglichen wird das **Paar aus Probe
@@ -1270,9 +1327,11 @@ bool lies_verzeichnisse(const std::vector<Benannt>& proben, std::vector<Eintrag>
                     // schluckte die zweite Liste, und ist die geschluckte die kurze, sieht
                     // `knappe_listen` sie nicht -- keine Zahl faellt auf null, der Lauf bleibt
                     // gruen ueber einer Liste, die ein Stueck schuldet. Genau der Ausgang,
-                    // gegen den die Zaehlung darueber steht. Der letzte Fall der zweiten
-                    // Falltabelle haelt das fest und geht rot, sobald der Probenvergleich
-                    // hier wegfaellt.
+                    // gegen den die Zaehlung darueber steht. Der Fall "zwei Proben, eine
+                    // Stelle auf der Maske" der zweiten Falltabelle haelt das fest und geht
+                    // rot, sobald der Probenvergleich hier wegfaellt. Genannt ist er am `was`
+                    // und nicht an seiner Stellung: Er war zweimal der letzte und ist es beim
+                    // naechsten angehaengten Fall nicht mehr.
                     bool schon = false;
                     for (std::size_t l = 0; l < listen.size() && !schon; ++l) {
                         schon = listen[l].stelle == lz.stelle && listen[l].probe == lz.probe;
@@ -1458,8 +1517,16 @@ std::vector<Leerstelle> knappe_tabellen(const std::vector<Probenzahl>& zahlen)
 /// eine zu hohe Markenzahl eine kurze Liste zu: `{VERBINDE("a", "b"), "c"}` als Drei
 /// deklariert gab drei Marken aus zwei Elementen her, `3 >= 3`, und die fehlende Zeile ging
 /// gruen durch. Wer diese Schranke wieder auf `lz.stuecke` allein stellt oder die groessere
-/// der beiden Zahlen nimmt, macht den Fall wieder still; der letzte Fall der zweiten
-/// Falltabelle geht dann rot, und das ist seine Aufgabe.
+/// der beiden Zahlen nimmt, macht den Fall wieder still; der Fall "ein Element traegt zwei
+/// Literale" der zweiten Falltabelle geht unter **beiden** Aenderungen rot -- drei Marken,
+/// zwei Elemente, drei deklariert --, und das ist seine Aufgabe. Unter der groesseren der
+/// beiden geht ausserdem "ein Element ohne Zeichenkettenliteral" rot: eine Marke gegen zwei
+/// Elemente, und die Zwei deckt die Zwei.
+///
+/// **Genannt sind sie am `was` und nicht an ihrer Stellung.** Der letzte Fall der Tabelle gibt
+/// eine Marke und ein Element gegen zwei deklarierte her, meldet also unter jeder der beiden
+/// Aenderungen weiter -- ein Verweis auf die Stellung war hier schon zweimal falsch, ohne dass
+/// sich an dieser Funktion etwas geaendert haette.
 std::vector<std::size_t> knappe_listen(const std::vector<Listenzahl>& listen)
 {
     std::vector<std::size_t> knapp;
@@ -1633,22 +1700,23 @@ struct Tabellenfall {
     // Feld auch an den **neunzehn** Faellen, die es auf der Vorgabe lassen, und nicht nur
     // an denen, die es angehen. Sie stehen unveraendert da, weil eine Hand voll `, 0` an
     // neunzehn Stellen eine Aenderung waere, die kein Uebersetzer gegenliest -- und
-    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **zehn** Faelle,
-    // die es angeht, sind die letzten zehn der Tabelle -- **Fall 20 bis Fall 29** in der
+    // `{..., 0, 0, 0, 0}` sagt ohnehin nicht, welche Null welche ist. Die **elf** Faelle,
+    // die es angeht, sind die letzten elf der Tabelle -- **Fall 20 bis Fall 30** in der
     // Zaehlung, mit der `selbsttest_verzeichnis` sie meldet --, und sie schreiben es aus:
-    // **sechs** eine Eins (20, 22, 24, 26, 28, 29) und **vier** eine Null (21, 23, 25, 27).
-    // Die sechs Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste,
+    // **sechs** eine Eins (20, 22, 24, 26, 28, 29) und **fuenf** eine Null (21, 23, 25, 27,
+    // 30). Die sechs Einsen sind der Koeder des Listenbodens, die Naht, die geteilte Liste,
     // das Element ohne Literal, das Element mit zwei Literalen und die zwei Proben auf
-    // derselben Stelle der Maske; bei jeder der vier Nullen ist gerade das Schweigen die
+    // derselben Stelle der Maske; bei jeder der fuenf Nullen ist gerade das Schweigen die
     // Aussage -- es sind "dieselbe Liste mit allen dreien", "drei Teile, zwei Marken, zwei
-    // deklariert", "die Groesse der Liste steht hinter einem `using`" und "ein Element
-    // traegt sein Literal in einem Aufruf".
-    // Neunzehn und zehn sind die neunundzwanzig Faelle der Tabelle.
+    // deklariert", "die Groesse der Liste steht hinter einem `using`", "ein Element
+    // traegt sein Literal in einem Aufruf" und "eine vollstaendige Liste in doppelter
+    // Klammer".
+    // Neunzehn und elf sind die dreissig Faelle der Tabelle.
     //
     // **Aufgezaehlt, nicht durch eine Eigenschaft benannt:** "die zehn mit einer
     // benannten Liste" waere falsch -- die Faelle 1, 4 und 6 fuehren ebenfalls eine
     // (`KZ_SUMME`, `KZ_ANDERSWO`, `KZ_DOPPELT`) und lassen das Feld dennoch auf der
-    // Vorgabe. Eine Eigenschaft muss ueber alle neunundzwanzig stimmen, eine
+    // Vorgabe. Eine Eigenschaft muss ueber alle dreissig stimmen, eine
     // Aufzaehlung nur ueber sich selbst.
     //
     // **Die Menge steht dabei und nicht bloss die Zahl**, weil eine Zahl ohne ihre Menge
@@ -1675,7 +1743,7 @@ constexpr std::string_view PROBE_BENANNT =
     "static_assert(RIEGEL_OHNE_ZUSTAND.size() == 1);\n"
     "}\n";
 
-constexpr std::array<Tabellenfall, 29> TABELLENFAELLE = {{
+constexpr std::array<Tabellenfall, 30> TABELLENFAELLE = {{
     {"benannte Liste in derselben Probe", PROBE_BENANNT, "", true,
      "RiegelOhneZustand::Summe=Zustimmungsregel;klemmt erst hinter der Summe", 0, 0, 0},
 
@@ -1984,6 +2052,35 @@ constexpr std::array<Tabellenfall, 29> TABELLENFAELLE = {{
      "}};\n",
      "constexpr std::array<const char*, 2> KZ_DORT = {\"gamma\"};\n", true,
      "R::Eins=alpha;beta|R::Zwei=gamma", 0, 0, 0, 1},
+
+    // **Die doppelte Klammer, und sie ist die Gegenprobe des Listenbodens.** Alle Faelle
+    // darueber, auf denen `knappe_listen` anschlaegt, sind Listen, denen wirklich etwas
+    // fehlt. Dieser ist der umgekehrte: `KZ_DOPPELKLAMMER` deklariert zwei und traegt zwei --
+    // sie ist **vollstaendig** --, nur ist sie in der Aggregatform `= {{...}}` geschrieben.
+    //
+    // **Was ihn heute rot macht:** `finde_zuweisungen` setzt `auf` auf die **erste** Klammer
+    // hinter dem `=`, die zweite hebt die Tiefe, ehe das Komma erreicht ist, und die
+    // Trennung an den Kommas der aeussersten Ebene liefert **ein** Feld. `elemente` waere
+    // eins gegen zwei Marken, `hergegeben` eins gegen zwei deklarierte, und die Erwartung
+    // `listen_knapp: 0` bekaeme eine Eins. Dieser Satz ist die Rotprobe: Faellt das Abraeumen
+    // in `elemente_einer_liste` weg, steht der Fall genau so wieder da.
+    //
+    // Er steht hier, obwohl am 2026-09-09 keine Kennzeichenliste im Baum die doppelte
+    // Klammer traegt -- die drei aufgeloesten haben 3, 2, 2 Elemente und der Lauf ist gruen.
+    // Sie ist aber die Schreibweise, in der **jedes andere** `std::array` dieses Baums steht,
+    // dieses Programm eingeschlossen (`TABELLENFAELLE = {{`, `ZERLEGEFAELLE = {{`,
+    // `ABGLEICHFAELLE = {{`, `RIEGEL_OHNE_ZUSTAND = {{`). Der Tag, an dem jemand eine Liste
+    // so schreibt wie die Datei daneben, faerbte sonst einen heilen Baum rot, und der Grund
+    // stuende in keiner Meldung.
+    //
+    // **Was er nicht deckt und deshalb hier nicht steht:** `{{A}, {B}}`. Dort sind es zwei
+    // Felder, das Abraeumen greift nicht, und die Zwei stand schon vorher da.
+    {"eine vollstaendige Liste in doppelter Klammer -- nicht gemeldet",
+     "constexpr std::array<const char*, 2> KZ_DOPPELKLAMMER = {{\"alpha\", \"beta\"}};\n"
+     "constexpr std::array<OhneZustand<R>, 1> RIEGEL_OHNE_ZUSTAND = {{\n"
+     "    {R::Eins, \"n\", \"w\", KZ_DOPPELKLAMMER},\n"
+     "}};\n",
+     "", true, "R::Eins=alpha;beta", 0, 0, 0, 0},
 }};
 
 std::string als_text(const std::vector<Eintrag>& eintraege)
