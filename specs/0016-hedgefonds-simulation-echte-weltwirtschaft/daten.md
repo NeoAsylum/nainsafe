@@ -3,7 +3,7 @@ typ: daten
 idee: 0016-hedgefonds-simulation-echte-weltwirtschaft
 erstellt: 2026-08-31
 quellen_geprueft: 13
-quellen_brauchbar: 6
+quellen_brauchbar: 6 unrestricted; no. 7 Eurostat additionally, but commercially only for EU and EFTA countries
 sperrfrage: geloest
 empfehlung: World Bank WDI (CC BY 4.0) as the core, IMF statistical data for interest rate, exchange rate and public finances, CEPII BACI (Etalab 2.0) for bilateral trade flows, Penn World Table 11.0 (CC BY 4.0) for productivity and price levels
 ---
@@ -220,9 +220,11 @@ WDI and IMF have the same quantities without a special rule". That ground is mea
 false for the one quantity the critical path hangs on.
 `daten/quellenbefund-leitzinspfad.md` (package `0234`, revised `0241`/`0252`/`0253`)
 measured for Germany over 1997-2021: **0** window years in all five `FR.INR` interest-rate
-indicators of WDI topic 7 (`DPST`, `LEND`, `LNDP`, `RINR`, `RISK`), and `FR.INR.MMKT`
-returns no row at all for the four measured countries; at the IMF, `MFS_IR/9.0.0/DEU.*.A`
-yields ten MFI bank rates plus `S13BOND` -- a bond yield ending 2017 -- and
+indicators of WDI topic 7 (`DPST`, `LEND`, `LNDP`, `RINR`, `RISK`), and `FR.INR.MMKT` --
+an identifier filed outside WDI carrying 3,180 country-year rows worldwide -- returns no
+row for the four measured countries **in 1997-2021, the only window queried for it**
+(ibid. `:183-190`, careful form `:188`); at the IMF, `MFS_IR/9.0.0/DEU.*.A` yields ten MFI
+bank rates plus `S13BOND` -- a bond yield ending 2017 -- and
 `DEU.DISR_RT_PT_A_PT.A` is empty. For most quantities the old sentence holds; for the
 interest-rate path it does not.
 
