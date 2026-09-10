@@ -23,14 +23,25 @@ sobald eine nicht aufgeht. Was das Skript prueft:
      Bedingung 2 braucht eines der vier Schluesselwoerter aus `SCHLUESSEL` und
      dahinter eine Ueberschrift, die es gibt. Der Kopfkommentar des Riegels
      fuehrt solche Stellen selbst. Wer eine davon berichtigte -- nur den
-     Kommentar, keine Codezeile --, aenderte den Bestand, den Lauf A las, und
-     nicht den, den Lauf B las. Gemessen im Nachtlauf zum 2026-09-07: Code 1
-     gegen Code 0, (36, 34, 57) gegen (36, 36, 57), und der Unterschied waren
-     genau zwei Fundstellen im eigenen Kopfkommentar,
+     Kommentar, keine Codezeile --, aenderte den Arbeitsbaum, und den las im
+     Tauschfenster allein **Lauf B**: Lauf A lief ueber den archivierten
+     Wortlaut aus `VORFASSUNGSSTAND`, den keine Aenderung im Arbeitsbaum
+     erreicht. Die berichtigte Stelle fiel damit auf der einen Seite weg und auf
+     der anderen nicht, der Vergleich wurde rot, und die Meldung schickte den
+     Leser nach einem fremden Commit statt zu seiner eigenen, noch nicht
+     eingecheckten Aenderung.
+
+     **Gemessen ist der Tausch, nicht dieser Fall.** Der Nachtlauf zum
+     2026-09-07 zeigt Teil A rot: Code 1 gegen Code 0, (36, 34, 57) gegen
+     (36, 36, 57), Unterschied genau zwei Fundstellen im eigenen Kopfkommentar,
      `belegstellen_riegel.cpp:32` und `:39`
-     (`befunde/uebersetzung-2026-09-07.md:285-289`). Die Meldung schob es auf
-     einen Commit dazwischen; getan hatte es die eigene, noch nicht eingecheckte
-     Kommentaraenderung des Lesers.
+     (`befunde/uebersetzung-2026-09-07.md:285-289`). Beide standen dort unter
+     *„Nur vorher"*, also im archivierten Text des damaligen Ankers `83faa06^`
+     (Blob e3038e2, ebd. :281) -- eine nicht eingecheckte Aenderung erreicht ihn
+     nicht. Ursache war in jener Nacht eingecheckte Geschichte zwischen Anker
+     und heute (0147, 0166, 0182; unten bei `VORFASSUNGSSTAND` mit denselben
+     Zahlen belegt), und *„Welcher Commit dazwischen"* war die richtige Antwort.
+     Beide Faelle haben dieselbe Wurzel: zwei Laeufe ueber zwei Bestaende.
 
      (Die vier Woerter stehen im Riegel aus demselben Grund als Oktalfolge da.
      Hier duerfen sie ausgeschrieben stehen: Diese Datei liegt unter `befunde/`
