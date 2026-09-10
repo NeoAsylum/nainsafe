@@ -215,9 +215,12 @@ struct Konstanten {
     /// ist. Gerade deshalb darf es nicht in `parameter_pruefsumme`: Jene Summe wird in
     /// **jeder** Runde gegen dieselbe Zustandsadresse gehalten, und ein Feld, das
     /// zulaessig jede Runde springt, machte aus ihr eine Schranke, die in Runde zwei
-    /// reisst. Bewacht wird der Inhalt stattdessen von `daten_pruefsumme` beim Laden
-    /// (T22), zusammen mit `partie.jahrgang_id` -- genau die Bewachung, die die beiden
-    /// anderen auch haben.
+    /// reisst. Bewacht wird der Inhalt stattdessen beim Laden von der Pruefsumme, die
+    /// T22 im Kopf der Partiedatei fuehrt -- dort „daten_pruefsumme" genannt, in
+    /// Anfuehrung und nicht in Rueckwaerts-Anfuehrung, weil es ein Feld jener Datei ist
+    /// und kein Name des Kerns: Der Kern liest keine Datei (T2) und kann den Namen
+    /// deshalb gar nicht tragen. Dazu kommt `partie.jahrgang_id` -- genau die
+    /// Bewachung, die die beiden anderen auch haben.
     ///
     /// **Der innere Index ist der Wert von `zustand::Instrument`** und keine eigene
     /// Ordnung. Die Regulierung steht nicht darin: Sie hat keine Reihe (T61), ihr Stand
