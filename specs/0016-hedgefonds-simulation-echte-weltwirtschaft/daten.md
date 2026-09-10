@@ -207,11 +207,32 @@ Switzerland as reporting country, Austrian trade data at the eight-digit CN leve
 co-publications carrying third-party copyright
 (ibid.).
 
-**Verdict:** the wrong source for a world model with twelve countries -- it drops out for
-precisely the large non-EU economies without which the product would be pointless. It
-would remain usable only for the model's EU countries, and there WDI and IMF have the
-same quantities without a special rule. **Do not plan it in.** This is the case the
-assignment warns about: a perfect-looking licence, a gap across half the world.
+**Verdict, and it is scoped, not blanket.** For the model's **non-EU/EFTA countries**
+Eurostat is locked -- commercial reuse is not permitted there, and that is the case the
+assignment warns about: a perfect-looking licence, a gap across half the world. **For the
+model's EU and EFTA countries a Eurostat series may be planned in**, under the conditions
+and in the attribution form at `:200-208`. It is source no. 7 with its conditions read in
+wording; using it there needs nothing further.
+
+**Corrected 2026-09-10 (package `0287`).** Until then this section carried a blanket
+„Do not plan it in", on the ground that the EU countries are covered anyway, „and there
+WDI and IMF have the same quantities without a special rule". That ground is measured
+false for the one quantity the critical path hangs on.
+`daten/quellenbefund-leitzinspfad.md` (package `0234`, revised `0241`/`0252`/`0253`)
+measured for Germany over 1997-2021: **0** window years in all five `FR.INR` interest-rate
+indicators of WDI topic 7 (`DPST`, `LEND`, `LNDP`, `RINR`, `RISK`), and `FR.INR.MMKT`
+returns no row at all for the four measured countries; at the IMF, `MFS_IR/9.0.0/DEU.*.A`
+yields ten MFI bank rates plus `S13BOND` -- a bond yield ending 2017 -- and
+`DEU.DISR_RT_PT_A_PT.A` is empty. For most quantities the old sentence holds; for the
+interest-rate path it does not.
+
+**What this verdict does not decide:** *whether* a Eurostat series is admissible for the
+EU countries is answered here, *which* one is not. Package `0280`
+(`daten/quellenbefund-leitzinspfad-eurostat.md`, 2026-09-09) found **no policy rate** at
+Eurostat -- `irt_st_a?geo=EA` is gapless over 21/21 window years 2001-2021 but a
+**euro-area money-market rate**, and `irt_lt_mcby_a?geo=DE` is gapless but a **bond
+yield**. What series 9 gets, and whether the answer lies outside the vetted sources and
+therefore behind a gate, is a separate decision.
 
 ### 8. OECD — **unresolved, do not plan in**
 

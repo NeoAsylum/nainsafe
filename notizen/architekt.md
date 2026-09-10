@@ -8,6 +8,66 @@ predecessor and stays readable.
 `Edit(notizen/architekt.md)` und kein `Edit(notizen/archiv/**)`. **An den Betreiber: eine
 Zeile in der Rollendatei macht die Archivregel ausführbar.***
 
+## 2026-09-10 — Package 0287: a section that contradicted itself
+
+Replaced `daten.md:210-214`. Licence part `:195-208` untouched, heading `:193` untouched,
+nothing outside section 7. The blanket „Do not plan it in" became a **scoped** verdict:
+non-EU/EFTA locked, EU/EFTA admissible under the conditions at `:200-208`. Plus a dated
+correction paragraph and a third one saying explicitly what is **not** decided (which
+series 9 gets).
+
+*From here on this logbook is English. CLAUDE.md names logbook entries in the English list;
+the German exception covers `spiel.md`, `technik.md`, toml comments and what the operator
+reads as a decision. My 2026-09-09 entry got that wrong and stays as written.*
+
+### The vermerk said German, the file is English
+
+The acceptance vermerk closes with „**`daten.md` IST EIN DEUTSCHES DOKUMENT und bleibt
+es**". It is not one any more: `daten.md` is English throughout (`:11` „Yes: Four sources
+permit…", `:39` „### 1. World Bank"), and `ops/inhalt-0016….md:31-35` lists all five
+section names in English. The translator got there first. **Rule: a language instruction in
+a vermerk is a claim about a file, and claims about files are checked against the file.**
+Costs one 40-line `Read`; CLAUDE.md settles it — the language follows the document.
+
+### Why corrected rather than annotated
+
+Condition 2 allowed both. Keep-and-put-the-measurement-beside-it would have left standing a
+sentence measured false for the critical path — and thereby **restored exactly the state
+condition 1 abolishes**: two paragraphs the reader weighs against each other. Taken
+together the two conditions leave only one way out.
+
+**The overreach I avoided:** „WDI and IMF have the same quantities without a special rule"
+is **true for most quantities** — GDP, population, trade all sit there. It is measured
+false only for the interest-rate path (`quellenbefund-leitzinspfad.md`: DEU 0/5 in the
+`FR.INR` codes of topic 7, `FR.INR.MMKT` no row, IMF `MFS_IR/DEU.*.A` only MFI rates plus
+`S13BOND` ending 2017). Striking it wholesale would have been a second false blanket. The
+sentence is now narrowed, not deleted.
+
+### Checked before assuming
+
+`Grep "Eurostat"` over `daten.md`: four hits, one of them outside section 7 — `:390`
+„Eurostat (locked for non-EU countries, no. 7)". That is compatible with the **new**
+verdict and was not entirely compatible with the old one. So condition 4 (nothing outside
+section 7) cost nothing — luck, not planning; otherwise I would have had to report it
+instead of changing it.
+
+### Unsure, so the project manager sees it
+
+1. **I did not touch the heading `:193`.** „**EU and EFTA countries only**" is compatible
+   with the new verdict — whereas siblings no. 8 and no. 9 carry their verdict in the
+   heading („do not plan in"). Whoever reads the section by headings gets a scope for no. 7,
+   not a verdict. I hold that to be right; a reviewer can read it as an incomplete
+   resolution.
+2. **The new text is about four times the old one** (~1,500 against ~370 characters). The
+   growth is evidence — codes, windows, file paths — and evidence is what CLAUDE.md forbids
+   cutting. It stays attackable.
+3. **I did not re-measure the Eurostat side**, only cited it (`0280`, checked twice). The
+   finding `…-2026-09-09-2.md:43-45` confirms row 3 and the quotation fidelity; that is
+   what I lean on.
+4. **`reihen.toml:1256` `deckung_urteil = "reisst"` still stands.** Intended (condition 4),
+   but it means: until the datenbauer follows up, the spec says „admissible" and the series
+   file says „tears". No contradiction, but an open thread.
+
 ## 2026-09-09 — Paket 0274: zwei rote Zeilen, zwei verschiedene Antworten
 
 Entschieden und getrennt, wie Bedingung 3 es verlangt: `festkomma.hpp:356` fällt unter
