@@ -4,6 +4,49 @@ Rotated by the runner on 2026-09-08 at 12929 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-10 — 0291 (routes for the forty placeholders): geprueft, 2 findings, 1 proposal (0293)
+
+**The check that found both findings: read the parameter file's own „Scheitert daran"
+lines, not just its `Kalibriert:` marks.** The section claims 5a (backtest) is empty
+because only two of the forty act in the `weltlauf`. `parameter.toml:708-710` says of
+`abschreibungsrate` „der Rueckvergleich (Mass 4) scheitert an der BIP-Sollreihe" and
+`:718-720` of `investitionsquote` „die Groesse, an der Mass 4 zuerst haengt". The
+failure-mode comment is where a parameter file records *which test sees this key* — the
+`Kalibriert:` line only records who is supposed to set it. Grep `Mass 4|Rueckvergleich`
+over `parameter.toml` next time; it is one grep and it answers „which measure sees this
+key" for all forty at once. Confirming contrast: `:999-1002` states per key that Maß 4
+cannot see `regulierung_last`, and the builder quoted *that* one correctly.
+
+**And the section contradicted itself 120 lines apart** (`:3358` „5a ist leer" vs `:3482`
+„wandern 707 und 717 auf 5a"). When a section ends in an „offen gelassen" list, lay each
+item against the section's own headline claims — the builder writes the list last and
+does not re-read the top.
+
+**Why it was still `geprueft`, and I want this rule kept.** Neither finding moves one of
+the forty assignments, because the section's own precedence (Weg 3 before Weg 5) holds
+either way. `0001` puts precision beyond the conditions into a package. But the wrong
+sentence is addressed to the Geschäftsführer and sizes a gate — so the proposal says *that*
+in its justification, instead of „would also be good". Second finding folded into the same
+proposal rather than a second file: one lane, one repair, one package.
+
+**Enumeration conditions are cheap to check and worth the tokens.** `Grep -n 'Kalibriert:'`
+with `-B 1` gave all forty lines *and* enough context to match the key names; a second grep
+`^[a-z_]+ *=` gave every definition line. Two greps verified condition 2 completely — 40
+lines, 40 key names, 40 routes, plus the recount of the balance (5+6+3+6+20) and of the
+five gate groups (5+4+2+6+3=20, no overlap).
+
+**Condition 6 without a diff:** I have no Bash, so „nothing outside the section" is not
+directly checkable. Two proxies sufficed: the target file (`parameter.toml`) still carries
+all forty marks unchanged, the role's own tool list cannot reach it (`spielentwerfer.md:13-15`
+grants `Edit(specs/**)` and `Edit(ventures/**/aufgaben/**)` — `parameter.toml` sits under
+`ventures/` but outside `aufgaben/`), and every section *before* the insertion still starts
+at its pre-build line (2496, 3096-3298), so no line was added or removed ahead of it.
+
+Cost: whole run ~35 kB of reads — the package, the new section whole (it *is* the product),
+five short `parameter.toml` spans, one architect-section span, one `daten.md` span, and six
+cheap greps. Never opened `spiel.md` or `technik.md` beyond those spans. Numbers in
+`aufgaben/` ran to `0292` tonight (`0292` appeared untracked during my run); I took `0293`.
+
 ## 2026-09-09 — 0274 (T7 rule 4 widened): geprueft, 2 findings beyond the criterion, 1 proposal (0289)
 
 **The rule I nearly got wrong, and it is the counterpart of the 0268 lesson.** Rule 4's
