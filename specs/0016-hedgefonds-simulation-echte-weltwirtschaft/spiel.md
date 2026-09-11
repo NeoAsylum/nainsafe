@@ -3341,7 +3341,7 @@ gap, this path is **closed**, not open.
 **Path 4 — vintage barrier.** Nothing is searched here. The vintage build computes the
 number from the embedded series or rejects an inadmissible set; the key carries only a
 condition. `parameter.toml:1102-1103` already says so verbatim for the instrument
-bounds: „gegen den Jahrgang zu prüfen, nicht zu suchen".
+bounds: „gegen den Jahrgang zu pruefen, nicht zu suchen".
 
 **Path 5 — operator run, gate.** Two orders of magnitude, and they must be kept apart:
 **5a weltlauf** — a backtest costs **20 world steps** (*Was der Architekt neu
@@ -3351,12 +3351,37 @@ rechnen muss*, line „backtest, one `weltlauf`"); a grid over that is practical
 **9,54 billion**, by the plan value about **26,5 hours on one core and 3,3 on
 eight**.
 
-**5a is empty, and that is a finding.** In the `weltlauf` the fund subsystem does not run
-(*Maß 4 — Rückvergleich*), the instruments are exogenous; of the forty, only
-`zustimmung_elastizitaet` and `zustimmung_wechselschwelle` act there — and approval has,
-per `daten.md` gap 4, **no counterpart in any of the checked sources**, so it is no
-target series and cannot be fitted. The cheapest run of the factory can set none of the
-forty keys. If the PWT procurement of path 3 falls through, 5a holds exactly two.
+**5a is not empty. Corrected on 2026-09-11; the version of 2026-09-10 said the
+opposite.** In the `weltlauf` the fund subsystem does not run (*Maß 4 — Rückvergleich*)
+and the instruments are exogenous, so of the eight fed-back channels only **1** (profit →
+investment → capital stock → production) and the head of **2** (burden → real income →
+approval → change of government, *Wo die Regel läuft, und was sie im Weltlauf tut*) are
+computed. **Five of the forty act there, not two:** `abschreibungsrate` (707) and
+`investitionsquote` (717) on channel 1, `startzustimmung` (610),
+`zustimmung_elastizitaet` (742) and `zustimmung_wechselschwelle` (758) on counterforce 2.
+
+**Of those five, two can be fitted, and `parameter.toml` says so in its own words.** The
+three approval keys are computed in the backtest and write nothing Maß 4 reads: approval
+is no target series (`daten.md` gap 4, **no counterpart in any of the checked sources**)
+and no check subject, and the change of government „writes nothing". The two
+capital-stock keys are the opposite case, and this is the sentence that was overlooked:
+`parameter.toml:708-710` says of `abschreibungsrate` that too large a value means
+„die Wirtschaft schrumpft in jeder Partie und der Rueckvergleich (Mass 4) scheitert an der BIP-Sollreihe",
+and `:718-720` says of `investitionsquote` that the pair decides whether the model grows
+or shrinks: „das ist die Groesse, an der Mass 4 zuerst haengt". GDP per
+backtest country **is** a target series and a check subject (level, MAPE ≤ 20 % over 21
+support points), and the twelve sector shares hang on the same channel.
+
+**So 5a is a two-axis fit against the `L_R` GDP paths, and it is nearly free.** One
+backtest is 20 world steps; ten thousand grid points are 200.000, **two percent of what a
+single parameter set costs over the game measures** (9.759.420). Two axes over ten
+thousand points is a hundred points per axis, against the 1,4 of the night run.
+
+**That 5a carries no assignment below is precedence, not impotence.** Path 3 precedes
+path 5, and both keys have a data anchor (PWT 11.0, capital stock), so both stand on 3.
+5a is their **named fallback** — and that is the sentence for the operator: should the
+procurement fail, these two do not join the night, they fall to a run of seconds. The
+26,5-hour night is twenty keys today and at worst twenty-one, never twenty-two.
 
 ### Die vierzig Marken, je eine Zuweisung
 
@@ -3404,9 +3429,22 @@ forty keys. If the PWT procurement of path 3 falls through, 5a holds exactly two
 | 1145 | `schrittweite` [haushalt] | 4 | ditto. |
 
 **Forty lines, forty assignments; the count is right and deviates from the 47 of the
-plan.** Three marks each cover more than one line of `parameter.toml`: 518 the three
-supervision thresholds, 1102 and 1145 each one `schrittweite` next to two bounds that the
-mark explicitly does *not* cover („die beiden Grenzen sind gegen den Jahrgang zu prüfen").
+plan.** **Four** marks, not three, stand above more than one key line of
+`parameter.toml`: 518 above the three supervision thresholds (524-526), and the three
+instrument marks 1102 (`[instrument.leitzins]`, keys 1108-1110), 1125
+(`[instrument.zoll]`, keys 1131-1133) and 1145 (`[instrument.haushalt]`, keys 1148-1150)
+each above one `schrittweite` and the two bounds beside it. Only **1102-1103** says of
+those bounds that the mark does not cover them:
+„die beiden Grenzen sind gegen den Jahrgang zu pruefen, nicht zu suchen".
+1125 and 1145 read „Kalibriert: Selbstspieler (`schrittweite`)" and nothing more. The
+rule holds for their bounds all the same, but it stands elsewhere in the block and not in
+the mark: at the tariff `instrument_min` is `FEST (T51)` (1132) and the failure clause
+1128-1129 says of `instrument_max`
+„der historische Pfad verlaesst den Bereich und der Jahrgangsbau meldet einen Befund";
+at the budget the block head 1136-1138 says
+„beide sind gegen den historischen Pfad zu pruefen".
+**Only 1102-1103 is quotable for the rule itself**, and `parameter.toml` writes these
+comments without umlauts — a quote with `ü` finds nothing there.
 `[instrument.regulierung]` carries no mark — there it says `FEST (T51)`, and
 `instrument_max` is the second copy of `regulierung_stufen`.
 
@@ -3426,8 +3464,9 @@ section itself and only still need the **kernbauer** to write them into
 the mark with the reference to this section (paths 1 and 2). None of these three
 roles needs an executed program.
 
-**At the gate, and the operator should know what he is committing to:** Twenty keys. The
-night run over a thousand parameter sets costs, per this document, 9,54 billion world
+**At the gate, and the operator should know what he is committing to:** Twenty keys, all
+twenty on **5b** — 5a carries none, because both keys it could fit have a data anchor and
+path 3 comes first. The night run over a thousand parameter sets costs, per this document, 9,54 billion world
 steps, about 26,5 hours on one core and 3,3 on eight. **A thousand sets over twenty
 degrees of freedom are 1,4 grid points per axis** — the grid is therefore not the
 method, and a single night run does not answer the question. This section therefore
@@ -3481,7 +3520,9 @@ that file, and that is intended.
    depreciation rate and an investment rate as variables of their own? And is a
    change-frequency series (V-Dem or similar) to be had under a viable license? Both are
    the datenkurator's business; I claim no values and no variable names. If both fall
-   through, 707 and 717 move to 5a and 758 to 5b, and the tally reads 17 to 23.
+   through, 707 and 717 move to 5a and 758 to 5b, and the tally reads 17 to 23 — **but
+   not to the same gate.** 21 of the 23 are the 26,5-hour night; the two capital-stock
+   keys are the 20-step backtest of 5a. The night grows by one key, not by three.
 3. **Four anchors that exist in substance and not in `daten.md`.** Market impact of
    trading volume (730), supervisory leverage limits (813), funding surcharges above the
    policy rate (862) and intra-year fluctuation range (890). Whether any of them can be
