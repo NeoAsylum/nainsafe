@@ -1,4 +1,26 @@
-//! Laufende Probe fuer `kern::aktion` -- die vier Bedingungen des Arbeitspakets 0146.
+//! Laufende Probe fuer `kern::aktion` -- die vier Bedingungen des Arbeitspakets 0146
+//! und die fuenf des Arbeitspakets 0300.
+//!
+//! ## Die fuenf aus 0300, in einem Satz je Stueck
+//!
+//!   5. **Die Liste einer Runde.** Neunzehn plus dreissig Angebote auf fuenfzig
+//!      Plaetzen, in der kanonischen Ordnung, jedes mit offener Stufe. Dazu die
+//!      Gegenprobe -- dieselbe Menge umgedreht steht **nicht** in der Ordnung -- und
+//!      der heutige Stand der beiden Argumente: Zwei verschiedene Zustaende ergeben
+//!      dieselbe Liste.
+//!   6. **Die fuenf Zielmengen aus T32b**, jede zweimal: einmal als heutige Zahl und
+//!      einmal aus den Konstanten des Zustands gerechnet. Ein fuenftes Land bewegt
+//!      beide Seiten zugleich; hielte man nur eine, waere die Probe entweder
+//!      handnachzufuehren oder eine Formel gegen sich selbst.
+//!   7. **Zwanzig Plaetze, neunzehn Angebote.** Aufgezaehlt und nicht gefegt: Jeder der
+//!      zwanzig Steckplaetze wird einzeln gefragt. Eine blosse Zaehlung bestuende auch
+//!      gegen eine Liste, die einen Platz doppelt und einen gar nicht anbietet.
+//!   8. **Die vier gebauten Bedingungen des Buendels**, jede mit ihrer Positivkontrolle
+//!      am Rand, der noch zulaessig ist -- und dazu die gemeldete Luecke als Fall statt
+//!      als Satz: Die Arten 1, 2 und 4 ziehen heute keine Kasse.
+//!   9. **Der Satz, mit dem T32 die Pruefung auf das Buendel legt** -- drei
+//!      Aufstockungen desselben Steckplatzes, jede fuer sich zulaessig. Und derselbe
+//!      Satz ohne das doppelte Ziel, damit die Anteilsskala ihn allein traegt.
 //!
 //! Die tragende ist Bedingung 2, und das Paket sagt auch, warum: Eine Ordnung, die
 //! sich als Nebenwirkung der Erzeugungsschleife ergibt, ist nicht dasselbe wie eine
@@ -52,6 +74,8 @@
 #include "kern/aktion.hpp"
 #include "kern/festkomma.hpp"
 #include "kern/meldung.hpp"
+#include "kern/werte.hpp"
+#include "kern/zustand.hpp"
 
 #include "kern/sperre.hpp"  // T4: ab hier ist Gleitkomma ein Uebersetzungsfehler
 
@@ -80,6 +104,43 @@ using kern::aktion::schluesselwert;
 using kern::aktion::ZIELKENNUNG_MAX;
 using kern::aktion::Zielkennung;
 using kern::aktion::zielkennung;
+
+// Paket 0300 -- die Liste einer Runde und die Pruefung des Buendels
+using kern::aktion::ANGEBOTE_HOECHSTENS;
+using kern::aktion::ANTEIL_HOECHSTENS;
+using kern::aktion::Buendel;
+using kern::aktion::buendel_einwand;
+using kern::aktion::buendel_zulaessig;
+using kern::aktion::BUENDEL_AKTIONEN_HOECHSTENS;
+using kern::aktion::BUENDEL_FASST;
+using kern::aktion::Einwand;
+using kern::aktion::EINWAENDE;
+using kern::aktion::einwand_name;
+using kern::aktion::kassenbedarf;
+using kern::aktion::STUFE_OFFEN;
+using kern::aktion::zielmenge;
+using kern::aktion::zulaessige_aktionen;
+using kern::aktion::Zulaessigkeitsliste;
+
+using kern::werte::fondsanteil;
+using kern::werte::Konstanten;
+
+using kern::zustand::BeteiligungsFeld;
+using kern::zustand::FondsGroesse;
+using kern::zustand::Gebiet;
+using kern::zustand::Index;
+using kern::zustand::INSTRUMENTE;
+using kern::zustand::LAENDER;
+using kern::zustand::Sektor;
+using kern::zustand::SEKTOREN;
+using kern::zustand::Startbelegung;
+using kern::zustand::Steckplatz;
+using kern::zustand::STECKPLAETZE;
+using kern::zustand::STECKPLAETZE_SPIELBAR;
+using kern::zustand::stelle_beteiligung;
+using kern::zustand::stelle_fonds;
+using kern::zustand::stelle_position;
+using kern::zustand::Zustand;
 
 int fehlgeschlagen = 0;
 
@@ -535,6 +596,461 @@ void probe_griffe_daneben()
     std::printf("    Laenge daneben: %s\n", letzte_meldung.data());
 }
 
+// ---------------------------------------------------------------------------
+// Paket 0300 -- der Zustand, den diese Proben brauchen
+// ---------------------------------------------------------------------------
+
+/// Ein Zustand samt dem einen Startwertzugang, der ihn fuellt -- dieselbe Bauart wie in
+/// der Werteprobe, und aus demselben Grund: Ein Zugang laesst sich an einen Zustand mit
+/// gelaufener Runde nicht mehr binden, also leben beide gemeinsam.
+///
+/// **Ohne Grundbelegung.** Die Werteprobe setzt Wechselkurse und Sektorpreise, weil ihre
+/// Formeln sonst an einer Bereichspruefung abbraechen. Die Pruefungen hier lesen genau
+/// drei Adressarten -- Kasse, Positionsstufe, Beteiligungsanteil -- und keine davon
+/// braucht einen Kurs. Ein voreingestellter Wert waere hier also nicht Vorsorge, sondern
+/// eine Zahl, die in keiner Rechnung vorkommt.
+class Rohling {
+public:
+    void lege(Index platz, i64 wert) { zugang_.setze(platz, wert); }
+
+    operator const Zustand&() const { return zustand_; }
+
+private:
+    Zustand       zustand_;
+    Startbelegung zugang_{zustand_};
+};
+
+/// Die Ordnungszahl eines Steckplatzes als Zielkennung der Art 1 (T32b, Art 1).
+[[nodiscard]] std::size_t platz_als_ziel(Steckplatz platz)
+{
+    return static_cast<std::size_t>(platz);
+}
+
+/// Haengt eine Aktion an ein Buendel. Passt sie nicht mehr hinein, ist das ein Fehler
+/// der Probe und nicht des Kerns -- er wird gemeldet und nicht verschwiegen.
+void lege_dazu(Buendel& buendel, Art art, std::size_t ziel, i64 stufe)
+{
+    if (buendel.anzahl >= buendel.eintrag.size()) {
+        std::fprintf(stderr, "FEHLGESCHLAGEN Zeile %d: das Buendel fasst nicht mehr\n",
+                     __LINE__);
+        ++fehlgeschlagen;
+        return;
+    }
+    buendel.eintrag[buendel.anzahl] = Aktion{art, zielkennung(ziel), stufe};
+    ++buendel.anzahl;
+}
+
+/// Wie oft die Liste ein Angebot der Art `art` mit der Zielkennung `ziel` traegt.
+[[nodiscard]] std::size_t wie_oft_angeboten(const Zulaessigkeitsliste& liste, Art art,
+                                            std::size_t ziel)
+{
+    std::size_t treffer = 0;
+    for (std::size_t k = 0; k < liste.anzahl; ++k) {
+        if (liste.eintrag[k].art == art
+            && static_cast<std::size_t>(liste.eintrag[k].ziel.wert) == ziel) {
+            ++treffer;
+        }
+    }
+    return treffer;
+}
+
+/// Der Parametersatz dieser Proben. **Eine einzige Zahl steht darin**, und sie ist so
+/// gewaehlt, dass sich die Anteilsskala von Hand nachrechnen laesst: Bei einer
+/// Stufenweite von 2.500 Zehntausendsteln sind vier Positionsstufen genau die ganze
+/// Skala. Der Wert ist kein Vorschlag zur Kalibrierung -- der steht in der
+/// Parameterdatei und ist dort als Platzhalter gekennzeichnet.
+[[nodiscard]] Konstanten probe_konstanten()
+{
+    Konstanten konst{};
+    konst.stufenweite = 2'500;
+    return konst;
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 5 -- die Liste einer Runde, ihre Laenge und ihre Ordnung
+// ---------------------------------------------------------------------------
+
+void probe_liste()
+{
+    const Konstanten konst = probe_konstanten();
+    Rohling          roh;
+
+    const Zulaessigkeitsliste liste = zulaessige_aktionen(roh, konst);
+
+    // Die Kapazitaet zaehlt Plaetze, die Laenge Moeglichkeiten (T32b): genau einer.
+    PRUEFE(liste.eintrag.size() == ANGEBOTE_HOECHSTENS);
+    PRUEFE(liste.anzahl + 1 == ANGEBOTE_HOECHSTENS);
+    std::printf("    %zu Angebote auf %zu Plaetzen\n", liste.anzahl, ANGEBOTE_HOECHSTENS);
+
+    PRUEFE(in_kanonischer_ordnung(liste.eintrag, liste.anzahl));
+
+    // Jeder Eintrag ist ein Angebot und keine Aktion: Art und Ziel, die Stufe offen.
+    for (std::size_t k = 0; k < liste.anzahl; ++k) {
+        PRUEFE(liste.eintrag[k].stufe == STUFE_OFFEN);
+    }
+
+    // Die Gegenprobe, die Bedingung 1 des Pakets verlangt: Dieselbe Menge in einer
+    // anderen Reihenfolge ist **nicht** in der kanonischen Ordnung. Ohne sie bestuende
+    // die Zusage oben auch gegen ein `in_kanonischer_ordnung`, das immer wahr sagt.
+    Zulaessigkeitsliste gedreht = liste;
+    for (std::size_t k = 0; k < liste.anzahl; ++k) {
+        gedreht.eintrag[k] = liste.eintrag[liste.anzahl - 1 - k];
+    }
+    PRUEFE(!in_kanonischer_ordnung(gedreht.eintrag, gedreht.anzahl));
+
+    // Und geordnet ist sie wieder dieselbe Folge -- Platz fuer Platz.
+    ordne(gedreht.eintrag, gedreht.anzahl);
+    PRUEFE(in_kanonischer_ordnung(gedreht.eintrag, gedreht.anzahl));
+    for (std::size_t k = 0; k < liste.anzahl; ++k) {
+        PRUEFE(gedreht.eintrag[k] == liste.eintrag[k]);
+    }
+
+    // **Der heutige Stand der beiden Argumente, festgehalten statt behauptet.** Keine
+    // Vorgabe laesst die Liste an einer Zahl des Zustands oder an einem Parameter
+    // haengen; der Kopf sagt das, und dieser Fall misst es. Wird die Liste eines Tages
+    // von einer Vorgabe her zustandsabhaengig, wird er rot -- und das ist der Zweck.
+    Rohling anders;
+    anders.lege(stelle_fonds(FondsGroesse::Kasse), 12'345);
+    anders.lege(stelle_position(Steckplatz::Sektor_CN_2), -7);
+    anders.lege(stelle_beteiligung(Gebiet::BR, Sektor::Industrie, BeteiligungsFeld::Anteil),
+                9'000);
+
+    Konstanten andere_konstanten{};
+    andere_konstanten.stufenweite = 9'999;
+
+    const Zulaessigkeitsliste zweite = zulaessige_aktionen(anders, andere_konstanten);
+    PRUEFE(zweite.anzahl == liste.anzahl);
+    for (std::size_t k = 0; k < liste.anzahl; ++k) {
+        PRUEFE(zweite.eintrag[k] == liste.eintrag[k]);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 6 -- die fuenf Zielmengen aus T32b
+// ---------------------------------------------------------------------------
+
+void probe_zielmengen()
+{
+    // Die heutigen Werte, und daneben dieselben Zahlen aus den Konstanten des Zustands.
+    // Beide Seiten stehen da, damit ein fuenftes Land sie **zugleich** bewegt: Wer nur
+    // die linke Seite hielte, muesste sie von Hand nachziehen, und wer nur die rechte
+    // hielte, pruefte eine Formel gegen sich selbst.
+    PRUEFE(zielmenge(Art::Position) == 20);
+    PRUEFE(zielmenge(Art::Beteiligung) == 12);
+    PRUEFE(zielmenge(Art::Lobbybudget) == 16);
+    PRUEFE(zielmenge(Art::Hebel) == 1);
+    PRUEFE(zielmenge(Art::Sichtbarkeit) == 1);
+
+    PRUEFE(zielmenge(Art::Position) == LAENDER * (SEKTOREN + 2));
+    PRUEFE(zielmenge(Art::Beteiligung) == LAENDER * SEKTOREN);
+    PRUEFE(zielmenge(Art::Lobbybudget) == LAENDER * INSTRUMENTE);
+
+    // Die Zielmenge der Art 1 ist die Steckplatzmenge aus T16 -- dieselbe Groesse, an
+    // zwei Stellen hergeleitet.
+    PRUEFE(zielmenge(Art::Position) == STECKPLAETZE);
+    PRUEFE(ANTEIL_HOECHSTENS == 10'000);
+
+    const Konstanten konst = probe_konstanten();
+    Rohling          roh;
+
+    const Zulaessigkeitsliste liste = zulaessige_aktionen(roh, konst);
+
+    // Je Art so viele Angebote wie Plaetze -- ausser bei der Art 1, der T16 einen Platz
+    // nimmt.
+    for (std::size_t k = 0; k < ARTEN; ++k) {
+        const Art art =
+            art_der_kennung(static_cast<i64>(ART_KENNUNG_ERSTE) + static_cast<i64>(k));
+
+        std::size_t gezaehlt = 0;
+        for (std::size_t e = 0; e < liste.anzahl; ++e) {
+            if (liste.eintrag[e].art == art) {
+                ++gezaehlt;
+            }
+        }
+
+        const std::size_t erwartet =
+            art == Art::Position ? zielmenge(art) - 1 : zielmenge(art);
+        pruefe(gezaehlt == erwartet, "je Art so viele Angebote wie T32b Plaetze nennt",
+               __LINE__);
+        std::printf("    %-13s %2zu Plaetze, %2zu Angebote\n", art_name(art),
+                    zielmenge(art), gezaehlt);
+    }
+
+    // Und eine Art, die keine ist, bekommt keine Zielmenge untergeschoben.
+    PRUEFE(hat_abgebrochen(
+        []() { static_cast<void>(zielmenge(static_cast<Art>(std::uint8_t{7}))); }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "T32b"));
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 7 -- zwanzig Plaetze, neunzehn Angebote
+// ---------------------------------------------------------------------------
+
+void probe_der_leere_platz()
+{
+    const Konstanten konst = probe_konstanten();
+    Rohling          roh;
+
+    const Zulaessigkeitsliste liste = zulaessige_aktionen(roh, konst);
+
+    // Der dauerhaft leere Platz, bei seiner Ordnungszahl genannt und nicht bei einer
+    // Zahl: T16 haelt ihn am Namen fest, und der Name traegt die Zahl.
+    const std::size_t leer = platz_als_ziel(Steckplatz::Waehrung_US);
+
+    PRUEFE(STECKPLAETZE_SPIELBAR + 1 == STECKPLAETZE);
+
+    // Aufgezaehlt und nicht gefegt: Jeder der zwanzig Plaetze wird einzeln gefragt, und
+    // von neunzehn wird genau ein Angebot verlangt. Eine blosse Zaehlung der Art-1-
+    // Eintraege bestuende auch gegen eine Liste, die einen Platz doppelt und einen gar
+    // nicht anbietet.
+    for (std::size_t p = 0; p < STECKPLAETZE; ++p) {
+        const std::size_t gezaehlt = wie_oft_angeboten(liste, Art::Position, p);
+        const std::size_t erwartet = p == leer ? 0 : 1;
+        pruefe(gezaehlt == erwartet,
+               "jeder Steckplatz ausser dem leeren steht genau einmal in der Liste",
+               __LINE__);
+    }
+
+    std::printf("    Steckplatz %zu (Waehrung USA) wird nicht angeboten, die uebrigen "
+                "%zu je einmal\n",
+                leer, STECKPLAETZE_SPIELBAR);
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 8 -- die vier gebauten Bedingungen des Buendels
+// ---------------------------------------------------------------------------
+
+void probe_buendel()
+{
+    const Konstanten konst = probe_konstanten();
+
+    Rohling roh;
+    roh.lege(stelle_fonds(FondsGroesse::Kasse), 1'000);
+
+    // --- mehr als drei Aktionen, und drei als Positivkontrolle am Rand -------------
+    {
+        Buendel drei;
+        lege_dazu(drei, Art::Lobbybudget, 0, 10);
+        lege_dazu(drei, Art::Lobbybudget, 1, 10);
+        lege_dazu(drei, Art::Lobbybudget, 2, 10);
+        PRUEFE(drei.anzahl == BUENDEL_AKTIONEN_HOECHSTENS);
+        PRUEFE(buendel_einwand(roh, konst, drei) == Einwand::Keiner);
+
+        Buendel vier = drei;
+        lege_dazu(vier, Art::Lobbybudget, 3, 10);
+        PRUEFE(vier.anzahl == BUENDEL_FASST);
+        PRUEFE(buendel_einwand(roh, konst, vier) == Einwand::ZuVieleAktionen);
+    }
+
+    // --- dasselbe Ziel zweimal -----------------------------------------------------
+    {
+        Buendel doppelt;
+        lege_dazu(doppelt, Art::Lobbybudget, 5, 10);
+        lege_dazu(doppelt, Art::Lobbybudget, 5, -20);
+        PRUEFE(buendel_einwand(roh, konst, doppelt) == Einwand::ZielDoppelt);
+
+        // Positivkontrolle: dieselbe **Zahl** bei verschiedener Art ist ein anderes
+        // Ziel. Eine Zielkennung ist der Platz in der Ordnung ihrer eigenen Art (T32b),
+        // und eine Pruefung, die nur die Zahl vergliche, verboete hier grundlos.
+        Buendel gemischt;
+        lege_dazu(gemischt, Art::Position, 5, 1);
+        lege_dazu(gemischt, Art::Lobbybudget, 5, 10);
+        PRUEFE(buendel_einwand(roh, konst, gemischt) == Einwand::Keiner);
+    }
+
+    // --- Kasse ueberzogen, und der Rand selbst noch nicht --------------------------
+    {
+        Buendel am_rand;
+        lege_dazu(am_rand, Art::Lobbybudget, 0, 1'000);
+        PRUEFE(kassenbedarf(am_rand.eintrag[0]) == 1'000);
+        PRUEFE(buendel_einwand(roh, konst, am_rand) == Einwand::Keiner);
+
+        Buendel einen_darueber;
+        lege_dazu(einen_darueber, Art::Lobbybudget, 0, 1'001);
+        PRUEFE(buendel_einwand(roh, konst, einen_darueber) == Einwand::KasseUeberzogen);
+
+        // Das Vorzeichen der Stufe ist nach T32b die Richtung und kein Rabatt.
+        Buendel gegenrichtung;
+        lege_dazu(gegenrichtung, Art::Lobbybudget, 0, -1'001);
+        PRUEFE(kassenbedarf(gegenrichtung.eintrag[0]) == 1'001);
+        PRUEFE(buendel_einwand(roh, konst, gegenrichtung) == Einwand::KasseUeberzogen);
+
+        // Zwei, die je einzeln durchgehen und zusammen nicht -- die Pruefung sitzt auf
+        // dem Buendel und nicht auf der Aktion.
+        Buendel eine_haelfte;
+        lege_dazu(eine_haelfte, Art::Lobbybudget, 0, 600);
+        PRUEFE(buendel_zulaessig(roh, konst, eine_haelfte));
+
+        Buendel beide_haelften;
+        lege_dazu(beide_haelften, Art::Lobbybudget, 0, 600);
+        lege_dazu(beide_haelften, Art::Lobbybudget, 1, 600);
+        PRUEFE(buendel_einwand(roh, konst, beide_haelften) == Einwand::KasseUeberzogen);
+
+        // **Die gemeldete Luecke, als Fall und nicht als Satz.** Die Arten 1, 2 und 4
+        // ziehen heute keine Kasse, weil keine Vorgabe einen Betrag nennt. Wer den
+        // Anspruch baut, macht diesen Fall rot -- und genau daran soll er auffallen.
+        Buendel ohne_anspruch;
+        lege_dazu(ohne_anspruch, Art::Hebel, 0, kern::festkomma::I64_MAX);
+        PRUEFE(kassenbedarf(ohne_anspruch.eintrag[0]) == 0);
+        PRUEFE(buendel_einwand(roh, konst, ohne_anspruch) == Einwand::Keiner);
+    }
+
+    // --- der Fondsanteil ueber der Anteilsskala ------------------------------------
+    {
+        // Bei einer Stufenweite von 2.500 sind vier Stufen genau die ganze Skala.
+        Buendel am_rand;
+        lege_dazu(am_rand, Art::Position, platz_als_ziel(Steckplatz::Sektor_US_1), 4);
+        PRUEFE(buendel_einwand(roh, konst, am_rand) == Einwand::Keiner);
+
+        Buendel einen_darueber;
+        lege_dazu(einen_darueber, Art::Position, platz_als_ziel(Steckplatz::Sektor_US_1),
+                  5);
+        PRUEFE(buendel_einwand(roh, konst, einen_darueber)
+               == Einwand::AnteilUeberDerSkala);
+
+        // Der Betrag zaehlt, nicht das Vorzeichen (T48 Nr. 14): Ein grosser Short bewegt
+        // den Markt so stark wie ein grosser Long.
+        Buendel kurze_seite;
+        lege_dazu(kurze_seite, Art::Position, platz_als_ziel(Steckplatz::Sektor_US_1), -5);
+        PRUEFE(buendel_einwand(roh, konst, kurze_seite) == Einwand::AnteilUeberDerSkala);
+
+        // Eine Position auf einem Waehrungsplatz traegt keinen Korbanteil und faellt
+        // deshalb in keine der zwoelf Rechnungen.
+        Buendel auf_waehrung;
+        lege_dazu(auf_waehrung, Art::Position, platz_als_ziel(Steckplatz::Waehrung_CN),
+                  1'000'000);
+        PRUEFE(buendel_einwand(roh, konst, auf_waehrung) == Einwand::Keiner);
+    }
+
+    // --- angeboten oder nicht: der leere Platz und eine Zahl jenseits ihrer Menge ---
+    {
+        Buendel auf_den_leeren;
+        lege_dazu(auf_den_leeren, Art::Position, platz_als_ziel(Steckplatz::Waehrung_US),
+                  1);
+        PRUEFE(buendel_einwand(roh, konst, auf_den_leeren) == Einwand::NichtAngeboten);
+
+        Buendel der_nachbar;
+        lege_dazu(der_nachbar, Art::Position, platz_als_ziel(Steckplatz::Waehrung_CN), 1);
+        PRUEFE(buendel_einwand(roh, konst, der_nachbar) == Einwand::Keiner);
+
+        // Die Arten 4 und 5 haben genau einen Platz, und der traegt die Null.
+        Buendel jenseits;
+        lege_dazu(jenseits, Art::Hebel, 1, 1);
+        PRUEFE(buendel_einwand(roh, konst, jenseits) == Einwand::NichtAngeboten);
+
+        Buendel der_eine_platz;
+        lege_dazu(der_eine_platz, Art::Sichtbarkeit, 0, 1);
+        PRUEFE(buendel_einwand(roh, konst, der_eine_platz) == Einwand::Keiner);
+    }
+
+    // --- die Laengenangabe jenseits der Kapazitaet ---------------------------------
+    {
+        Buendel zu_lang;
+        zu_lang.anzahl = BUENDEL_FASST + 1;
+        PRUEFE(hat_abgebrochen([&roh, &konst, &zu_lang]() {
+            static_cast<void>(buendel_einwand(roh, konst, zu_lang));
+        }));
+        PRUEFE(enthaelt(letzte_meldung.data(), "kern::aktion::buendel_einwand"));
+        std::printf("    Laenge daneben: %s\n", letzte_meldung.data());
+    }
+
+    // --- die Namen der Einwaende ---------------------------------------------------
+    for (std::size_t e = 0; e < EINWAENDE; ++e) {
+        const Einwand einwand = static_cast<Einwand>(static_cast<std::uint8_t>(e));
+        std::printf("    Einwand %zu: %s\n", e, einwand_name(einwand));
+    }
+    PRUEFE(hat_abgebrochen([]() {
+        static_cast<void>(einwand_name(static_cast<Einwand>(std::uint8_t{9})));
+    }));
+    PRUEFE(enthaelt(letzte_meldung.data(), "kern::aktion"));
+}
+
+// ---------------------------------------------------------------------------
+// Bedingung 9 -- der Satz, mit dem T32 die Pruefung auf das Buendel legt
+// ---------------------------------------------------------------------------
+
+void probe_der_satz_aus_t32()
+{
+    const Konstanten konst = probe_konstanten();
+    Rohling          roh;
+    roh.lege(stelle_fonds(FondsGroesse::Kasse), 1'000);
+
+    const std::size_t us_1 = platz_als_ziel(Steckplatz::Sektor_US_1);
+
+    // Drei Aufstockungen desselben Steckplatzes: jede fuer sich zulaessig ...
+    Buendel einzeln;
+    lege_dazu(einzeln, Art::Beteiligung, us_1, 4'000);
+    PRUEFE(buendel_zulaessig(roh, konst, einzeln));
+
+    // ... das Buendel nicht.
+    Buendel dreimal;
+    lege_dazu(dreimal, Art::Beteiligung, us_1, 4'000);
+    lege_dazu(dreimal, Art::Beteiligung, us_1, 4'000);
+    lege_dazu(dreimal, Art::Beteiligung, us_1, 4'000);
+    PRUEFE(!buendel_zulaessig(roh, konst, dreimal));
+
+    // Genannt wird der erste Einwand der festgelegten Reihenfolge, und das ist hier das
+    // doppelte Ziel. Die 12.000 laegen ebenso ueber der Skala; ein Buendel mit zwei
+    // Maengeln bekommt einen Grund genannt und nicht zwei.
+    PRUEFE(buendel_einwand(roh, konst, dreimal) == Einwand::ZielDoppelt);
+    std::printf("    drei Aufstockungen desselben Steckplatzes: %s\n",
+                einwand_name(buendel_einwand(roh, konst, dreimal)));
+
+    // **Derselbe Satz ohne das doppelte Ziel**, damit die Anteilsskala ihn allein traegt:
+    // Position und Beteiligung sind zwei verschiedene Ziele und derselbe Korb (T48
+    // Nr. 14). Jede der beiden allein ist zulaessig, zusammen sind sie es nicht.
+    Buendel nur_position;
+    lege_dazu(nur_position, Art::Position, us_1, 2);
+    PRUEFE(buendel_zulaessig(roh, konst, nur_position));
+
+    Buendel nur_beteiligung;
+    lege_dazu(nur_beteiligung, Art::Beteiligung, us_1, 5'001);
+    PRUEFE(buendel_zulaessig(roh, konst, nur_beteiligung));
+
+    Buendel beide;
+    lege_dazu(beide, Art::Position, us_1, 2);
+    lege_dazu(beide, Art::Beteiligung, us_1, 5'001);
+    PRUEFE(buendel_einwand(roh, konst, beide) == Einwand::AnteilUeberDerSkala);
+
+    // Und der Rand: 5.000 statt 5.001 gehen zusammen gerade noch durch.
+    Buendel beide_am_rand;
+    lege_dazu(beide_am_rand, Art::Position, us_1, 2);
+    lege_dazu(beide_am_rand, Art::Beteiligung, us_1, 5'000);
+    PRUEFE(buendel_einwand(roh, konst, beide_am_rand) == Einwand::Keiner);
+
+    // --- dieselbe Formel, gegen die Funktion des Kerns gehalten --------------------
+    //
+    // Die Skalenpruefung rechnet T48 Nr. 14 mit den Zahlen **nach** dem Buendel. Damit
+    // das keine zweite Fassung derselben Formel wird, steht hier ein Zustand, dessen
+    // Fondsanteil die Funktion des Kerns selbst nennt -- und daneben die beiden
+    // Buendel, die von dort aus nach oben und nach unten fuehren.
+    Rohling besetzt;
+    besetzt.lege(stelle_position(Steckplatz::Sektor_DE_2), -3);
+    besetzt.lege(
+        stelle_beteiligung(Gebiet::DE, Sektor::Industrie, BeteiligungsFeld::Anteil), 1'500);
+    PRUEFE(fondsanteil(besetzt, konst, Gebiet::DE, Sektor::Industrie) == 9'000);
+
+    const std::size_t de_2 = platz_als_ziel(Steckplatz::Sektor_DE_2);
+
+    // Eine Stufe **tiefer** in den Short: der Betrag waechst auf 4, der Anteil auf
+    // 11.500. Der Betrag liegt aussen, und eine Fortschreibung ueber die Summe der
+    // Betraege saehe das nicht.
+    Buendel tiefer;
+    lege_dazu(tiefer, Art::Position, de_2, -1);
+    PRUEFE(buendel_einwand(besetzt, konst, tiefer) == Einwand::AnteilUeberDerSkala);
+
+    // Eine Stufe zurueck: der Betrag faellt auf 2, der Anteil auf 6.500.
+    Buendel zurueck;
+    lege_dazu(zurueck, Art::Position, de_2, 1);
+    PRUEFE(buendel_einwand(besetzt, konst, zurueck) == Einwand::Keiner);
+
+    std::printf("    Fondsanteil DE Industrie vor dem Buendel: %lld\n",
+                static_cast<long long>(
+                    fondsanteil(besetzt, konst, Gebiet::DE, Sektor::Industrie)));
+    std::printf("    Die fuenfte Bedingung aus T32 ist nicht gebaut: der Groesse fuer "
+                "die Schranke der Stufenzahl fehlt das Feld im Parametersatz.\n");
+}
+
 }  // namespace
 
 int main()
@@ -547,6 +1063,17 @@ int main()
     probe_ordnungsgesetze();
     std::printf("Bedingung 4 -- die Griffe daneben:\n");
     probe_griffe_daneben();
+    std::printf("Bedingung 5 -- die Liste einer Runde und ihre Ordnung:\n");
+    probe_liste();
+    std::printf("Bedingung 6 -- die fuenf Zielmengen aus T32b:\n");
+    probe_zielmengen();
+    std::printf("Bedingung 7 -- zwanzig Plaetze, neunzehn Angebote:\n");
+    probe_der_leere_platz();
+    std::printf("Bedingung 8 -- die vier Bedingungen des Buendels:\n");
+    probe_buendel();
+    std::printf("Bedingung 9 -- der Satz, mit dem T32 die Pruefung auf das Buendel "
+                "legt:\n");
+    probe_der_satz_aus_t32();
 
     if (fehlgeschlagen != 0) {
         std::fprintf(stderr, "%d Pruefung(en) fehlgeschlagen\n", fehlgeschlagen);

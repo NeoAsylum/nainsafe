@@ -41,24 +41,25 @@
 //! Feldreihenfolge stuende und fiele mit der Reihenfolge der Zeilen, und genau das ist
 //! die Nebenwirkung, gegen die T32 geschrieben ist.
 //!
-//! ## Was hier nicht steht -- und eine Luecke, die gemeldet und nicht geraten ist
+//! ## Die Liste und die Buendelpruefung, und was von den frueheren Luecken bleibt
 //!
-//! **Die Zulaessigkeit eines Buendels gehoert nicht hierher.** Derselbe Steckplatz
-//! zweimal, Kasse ueberzogen, mehr als drei Aktionen, dazu die beiden Bedingungen aus
-//! der Anteilsskala -- das ist die zweite Haelfte von T32 und ein eigenes Paket auf
-//! denselben drei Dateien. Dieser Kasten ordnet; er entscheidet nicht, was in die Liste
-//! hineingehoert.
+//! Zwei Saetze standen hier, solange dieser Kasten nur ordnete. Beide sind mit ihrem
+//! Grund fortgefallen, und zwar nicht durch eine Meinung, sondern durch eine Vorgabe:
 //!
-//! **Der Wertebereich der Zielkennung je Aktionsart fehlt in den Vorgaben, und er wird
-//! hier nicht nachgeliefert.** T32 sagt, wonach sortiert wird, und dass die Zielkennung
-//! die feste Indexordnung aus T9 ist. Welche Menge sie je Art durchlaeuft, sagt weder
-//! T32 noch T9 noch der gebaute Kern -- fuer die Arten 4 und 5 fuehrt der Zustand
-//! ueberhaupt kein Ziel, sondern je eine einzelne Fondsgroesse. Eine hier
-//! hingeschriebene Zuordnung waere geraten, und eine geratene Ordnung bindet den
-//! Regressionsbestand, ohne dass jemand sie beschlossen haette. `Zielkennung` ist
-//! deshalb der Platz in einer T9-Ordnung und sonst nichts; welche Ordnung das je Art
-//! ist, gehoert in die Vorgabe und danach in ein Paket. Der Bericht zu diesem Lauf
-//! meldet die Luecke.
+//!   * **Der Wertebereich der Zielkennung je Aktionsart** fehlte in den Vorgaben und
+//!     durfte hier nicht geraten werden. T32b fuellt die Luecke: je Art die Menge, die
+//!     ihre Zielkennung durchlaeuft, und je Menge die Indexordnung aus T9, in der sie
+//!     laeuft. `zielmenge` rechnet die fuenf Groessen aus den Konstanten des Zustands
+//!     aus, statt sie hinzuschreiben -- ein fuenftes Land bewegt damit die Zahl und die
+//!     Zusicherung darueber zugleich.
+//!   * **Die Zulaessigkeit eines Buendels** gehoerte einem eigenen Paket, und dieses ist
+//!     es. Den Ort nennt T32b selbst: Geprueft wird der Wertebereich dort, wo die Liste
+//!     **erzeugt** wird, und erzeugt wird sie gegen den Zustand.
+//!
+//! **Zwei Luecken bleiben, beide gemeldet und keine geraten** -- ausgeschrieben stehen
+//! sie unten bei `buendel_einwand` und bei `kassenbedarf`: die fuenfte Bedingung aus
+//! T32, der die Groessenschranke der Stufenzahl als Parameterfeld fehlt, und der
+//! Kassenanspruch der Arten 1, 2 und 4, den keine Vorgabe beziffert.
 //!
 //! **Kein Eingriff in `kern::schritt`.** Der leere Aktionsbuendeltyp dort bleibt, wo er
 //! ist. Ihn durch diesen Typ zu ersetzen ist eine Entscheidung ueber die Signatur aus
@@ -70,6 +71,8 @@
 #include <cstdint>
 
 #include "kern/festkomma.hpp"
+#include "kern/werte.hpp"
+#include "kern/zustand.hpp"
 
 namespace kern::aktion {
 
@@ -404,5 +407,211 @@ template <std::size_t N>
 
 /// Der Name eines Ordnungsschluessels, wie ihn T32 fuehrt. Ein Wert daneben bricht ab.
 [[nodiscard]] const char* schluessel_name(Schluessel schluessel);
+
+// ---------------------------------------------------------------------------
+// T32b -- die fuenf Zielmengen, aus den Konstanten gerechnet
+// ---------------------------------------------------------------------------
+
+/// Wie viele Plaetze die Zielkennung der Art `art` durchlaeuft (T32b).
+///
+/// **Keine der fuenf Zahlen steht hier.** T32b nennt je Art eine Formel und daneben
+/// ihren heutigen Wert; gebaut ist die Formel. Der Grund steht in T32b selbst: Bei fuenf
+/// Laendern werden aus 20, 12 und 16 die Zahlen 25, 15 und 20, und eine hingeschriebene
+/// Zahl bliebe daneben stehen, ohne dass etwas abbraeche.
+///
+/// Die Arten 4 und 5 fuehren im Zustand kein Ziel, sondern je eine einzelne
+/// Fondsgroesse. Ihre Menge hat deshalb genau ein Element, und der Platz dieses
+/// Elements ist 0 -- nicht "ein beliebiger Wert". T32b sagt auch, warum: Jede Aktion
+/// wandert nach T22 in den Speicherstand und damit in die Pruefsumme, und ein
+/// ungelesenes Feld mit zwei moeglichen Werten machte aus einer Partie zwei Dateien.
+[[nodiscard]] constexpr std::size_t zielmenge(Art art)
+{
+    switch (art) {
+    case Art::Position:
+        // Die Positionssteckplaetze aus T16: Sektoren, Waehrungen, Anleihen.
+        return zustand::LAENDER * (zustand::SEKTOREN + 2);
+    case Art::Beteiligung:
+        return zustand::LAENDER * zustand::SEKTOREN;
+    case Art::Lobbybudget:
+        return zustand::LAENDER * zustand::INSTRUMENTE;
+    case Art::Hebel:
+    case Art::Sichtbarkeit:
+        return 1;
+    }
+    festkomma::abbruch("kern::aktion::zielmenge -- unbekannte Aktionsart; T32b nennt "
+                       "fuenf Zielmengen");
+}
+
+// Die Formel der Art 1 und die Steckplatzzahl aus T16 sind dieselbe Groesse, an zwei
+// Stellen hergeleitet. Der Zustand rechnet sie ueber die Blockanfaenge nach; hier steht
+// sie als Produkt. Laufen die beiden auseinander, uebersetzt dieser Kopf nicht mehr --
+// und das ist der Zweck, denn die Ordnung der Art 1 **ist** die Steckplatzordnung.
+static_assert(zielmenge(Art::Position) == zustand::STECKPLAETZE,
+              "T32b, erste der fuenf Arten: die Zielmenge der Position ist die "
+              "Steckplatzmenge aus T16");
+
+/// Wie viele Angebote die Liste einer Runde hoechstens traegt -- die Summe der fuenf
+/// Zielmengen.
+///
+/// **Das ist die Zahl der Plaetze und nicht die der Moeglichkeiten** (T32b). Der
+/// dauerhaft leere Waehrungsplatz der USA zaehlt hier mit und wird nie angeboten; die
+/// Liste einer Runde ist deshalb um genau eins kuerzer als diese Schranke. Beide Zahlen
+/// nebeneinander stehen zu lassen ist Absicht: Der Unterschied ist die Aussage.
+inline constexpr std::size_t ANGEBOTE_HOECHSTENS =
+    zielmenge(Art::Position) + zielmenge(Art::Beteiligung) + zielmenge(Art::Lobbybudget)
+    + zielmenge(Art::Hebel) + zielmenge(Art::Sichtbarkeit);
+
+/// Die Stufe, die ein Eintrag der Liste traegt.
+///
+/// **Die Liste zaehlt Ziele auf, keine Stufen.** T32 sagt, dass Mass 1 ohne
+/// Zuruecklegen aus der Liste der in dieser Runde zulaessigen Aktionen zieht, und dass
+/// nach Art, Zielkennung und Stufe sortiert wird -- es sagt nicht, welche Stufen die
+/// Liste anbietet. Aufzaehlen liesse sich das auch nicht: Der Wertebereich einer Stufe
+/// der Art 1 ist `-stufen_max ... +stufen_max`, und `stufen_max` fehlt im Kern (siehe
+/// `buendel_einwand`). Ein Eintrag ist deshalb das **Angebot** -- Art und Ziel -- und
+/// traegt an der Stelle der Stufe die Null. Wer aus einem Angebot eine Aktion macht,
+/// setzt die Stufe ein; `buendel_zulaessig` prueft danach das Buendel.
+inline constexpr i64 STUFE_OFFEN = 0;
+
+/// Die Liste der in einer Runde zulaessigen Angebote, in der kanonischen Ordnung.
+///
+/// Behaelter fester Groesse ohne Zuteilung, wie jeder Behaelter des Kerns. `anzahl` ist
+/// die Laenge, die Groesse des Feldes darueber die Kapazitaet; die beiden sind hier
+/// verschieden, und der Unterschied ist der leere Waehrungsplatz.
+struct Zulaessigkeitsliste {
+    std::array<Aktion, ANGEBOTE_HOECHSTENS> eintrag{};
+    std::size_t                             anzahl = 0;
+};
+
+/// Die in dieser Runde zulaessigen Angebote, gegen den Zustand zu Rundenbeginn gebaut.
+///
+/// **Einmal je Runde, nicht nach jeder gesetzten Aktion** (T32): Keine Aktion hat nach
+/// `spiel.md` einen Zeitpunkt innerhalb der Runde, und eine Liste, die sich zwischen
+/// zwei Steckplaetzen aenderte, fuehrte genau diesen Zeitpunkt ein.
+///
+/// **Die Ordnung ist gesetzt und nicht gelaufen.** Die Erzeugungsschleife laeuft zwar
+/// schon in der Rangfolge aus T32, aber die Ausgabe geht trotzdem durch `ordne`. Das ist
+/// der Unterschied, gegen den der ganze Kopf oben geschrieben ist: Waere die Ordnung
+/// das Ergebnis der Schleife, verschoebe ein Umbau der Schleife eine Messgroesse, ohne
+/// eine Regel zu aendern.
+///
+/// **Was die beiden Argumente heute tun, gemessen und nicht behauptet: nichts.** T32
+/// legt fest, wogegen die Liste gebaut wird, und T32b nennt die fuenf Zielmengen -- und
+/// keine der fuenf haengt an einer Zahl des Zustands oder an einem Parameter. Die
+/// einzige Ausnahme, die T16 macht, ist der leere Waehrungsplatz, und der ist eine
+/// Eigenschaft der Adressordnung und keines Standes. Die beiden Argumente stehen
+/// deshalb in der Signatur, weil T32 sie dort verlangt, und sie werden gelesen, sobald
+/// eine Vorgabe etwas nennt, das von ihnen abhaengt. Eine Probe haelt diesen Stand
+/// fest: Zwei verschiedene Zustaende ergeben heute dieselbe Liste.
+[[nodiscard]] Zulaessigkeitsliste zulaessige_aktionen(const zustand::Zustand& z,
+                                                      const werte::Konstanten& konst);
+
+// ---------------------------------------------------------------------------
+// T32 -- die Pruefung des Buendels
+// ---------------------------------------------------------------------------
+
+/// Wie viele Aktionen ein Buendel nach T32 hoechstens tragen darf.
+inline constexpr std::size_t BUENDEL_AKTIONEN_HOECHSTENS = 3;
+
+/// Wie viele ein Buendel **fasst** -- eine mehr, als es tragen darf.
+///
+/// Die beiden Zahlen auseinanderzuhalten ist kein Luxus: Waere die Kapazitaet die
+/// Regel, koennte ein zu grosses Buendel gar nicht erst entstehen, und die Bedingung
+/// "mehr als drei Aktionen" waere eine Zusage, die keine Eingabe je verletzt -- also
+/// eine Pruefung, die nicht rot werden kann. Die eine Reserve reicht, weil die Frage
+/// "mehr als drei?" mit dem vierten Eintrag beantwortet ist.
+inline constexpr std::size_t BUENDEL_FASST = BUENDEL_AKTIONEN_HOECHSTENS + 1;
+
+/// Die Aktionen einer Runde, als Wert fester Groesse.
+struct Buendel {
+    std::array<Aktion, BUENDEL_FASST> eintrag{};
+    std::size_t                       anzahl = 0;
+};
+
+/// Die Obergrenze der Anteilsskala aus T5 Klasse 4 -- Zehntausendstel.
+///
+/// T32: Eine Aktion 1 oder 2, nach der der Fondsanteil darueber laege, ist unzulaessig.
+/// Ein Anteil ueber hundert Prozent ist kein Anteil, und Gegenkraft 1 und der Preisstoss
+/// lesen genau diese Zahl.
+inline constexpr i64 ANTEIL_HOECHSTENS = 10'000;
+
+/// Warum ein Buendel unzulaessig ist -- oder dass es zulaessig ist.
+///
+/// Die Zahlen sind ausgeschrieben und werden nicht vom Uebersetzer vergeben, aus
+/// demselben Grund wie bei den Aktionsarten: Nach T21 weist die Maschinenschnittstelle
+/// einen Befehl mit einem Grund zurueck, und ein Grund, dessen Nummer sich beim
+/// Einschieben eines Eintrags verschiebt, ist in einer aufgezeichneten Sitzung ein
+/// anderer Grund als gestern.
+enum class Einwand : std::uint8_t {
+    Keiner              = 0,
+    ZuVieleAktionen     = 1,
+    NichtAngeboten      = 2,
+    ZielDoppelt         = 3,
+    KasseUeberzogen     = 4,
+    AnteilUeberDerSkala = 5,
+};
+
+/// Wie viele Einwaende es gibt, den leeren mitgezaehlt.
+inline constexpr std::size_t EINWAENDE = 6;
+
+static_assert(static_cast<std::size_t>(Einwand::AnteilUeberDerSkala) + 1 == EINWAENDE,
+              "die Kennungen der Einwaende sind luecklos, und EINWAENDE zaehlt sie");
+
+/// Der Kassenanspruch einer einzelnen Aktion, in Fondsgeld (T5 Klasse 1, US-Cent).
+///
+/// **Genau eine der fuenf Arten hat einen bezifferten Anspruch, und das ist der Stand
+/// der Vorgaben, nicht der des Baus:**
+///
+///   * **Art 3** -- die Stufe **ist** der Geldbetrag. T50 nennt den Uebergang von
+///     Fondsgeld in Lobbydruck mit Namen und sagt, dass er genau an dieser Aktion
+///     steht; was er hereinnimmt, sind Cent. Die Richtung ist nach T32b das Vorzeichen
+///     der Stufe und kein zweites Ziel, also kostet sie in beide Richtungen dasselbe,
+///     und der Anspruch ist der Betrag.
+///   * **Art 5** -- keine Vorgabe nennt bei ihr Geld. Anspruch null.
+///   * **Arten 1, 2 und 4** -- **die Luecke.** Was eine Positionsstufe, ein
+///     Beteiligungsanteil oder ein Hebelschritt an Kasse zieht, steht in keiner Vorgabe:
+///     T47 und T48 bewerten, was der Fonds **hat**, nicht was ein Schritt **kostet**,
+///     und die Beschreibung der drei Arten nennt keinen Betrag. Geraten wird hier
+///     nichts; ihr Anspruch ist heute null, und das ist die gemeldete Luecke und kein
+///     Ergebnis. Sie faellt in die nachgiebige Richtung -- eine ungebaute Schranke
+///     laesst durch, sie weist nicht ab.
+[[nodiscard]] i64 kassenbedarf(const Aktion& eintrag);
+
+/// Der Einwand gegen das Buendel `buendel`, gegen den Zustand zu Rundenbeginn.
+///
+/// **Die Reihenfolge der Pruefungen ist festgelegt und keine Nebenwirkung**, denn ein
+/// Buendel mit zwei Maengeln bekommt genau einen Grund genannt. Geprueft wird von der
+/// groebsten Form zur feinsten Rechnung: Zahl der Aktionen, dann ob jede ueberhaupt
+/// angeboten ist, dann dasselbe Ziel zweimal, dann die Kasse, zuletzt die Anteilsskala.
+///
+/// **Dasselbe Ziel zweimal heisst: dieselbe Art und dieselbe Zielkennung**, und die
+/// Stufe bleibt dabei ausser Betracht. Genau das ist der Fall, den T32 nennt -- drei
+/// Aufstockungen desselben Steckplatzes in einer Runde --, und er waere nicht zu fassen,
+/// wenn die Stufe mitzaehlte: Drei verschiedene Stufen sind drei verschiedene Aktionen.
+///
+/// **Die fuenfte Bedingung aus T32 ist nicht gebaut.** T32 nennt neben dem Fondsanteil
+/// eine zweite Bedingung aus der Anteilsskala: unzulaessig ist auch eine Aktion, nach
+/// der der Betrag der Stufenzahl eines Steckplatzes ueber `stufen_max` laege. Diese
+/// Groesse gibt es im Kern nicht -- `Konstanten` fuehrt sie nicht, und kein Kopf unter
+/// den Vorgaben des Kerns nennt sie. Sie steht in der Parameterdatei als Platzhalter und
+/// in den Vorgaben mit Klasse und Bedeutung; welchen Weg sie in den Kern nimmt, ist eine
+/// Entscheidung ueber `Konstanten` und damit ueber einen anderen Kasten. Ein hier
+/// hingeschriebener Wert waere eine Kalibrierung, die niemand beschlossen hat. Das
+/// Arbeitspaket zu diesem Lauf nennt die Fundstellen.
+[[nodiscard]] Einwand buendel_einwand(const zustand::Zustand& z,
+                                      const werte::Konstanten& konst,
+                                      const Buendel& buendel);
+
+/// Ob das Buendel zulaessig ist -- dieselbe Pruefung, ohne den Grund.
+///
+/// Sie laeuft ueber `buendel_einwand` und nicht daneben, aus demselben Grund, aus dem
+/// die Vergleichsoperatoren ueber `ordnungsvergleich` laufen: Zwei Fassungen derselben
+/// Entscheidung laufen auseinander, und die zweite ist die, der niemand zusieht.
+[[nodiscard]] bool buendel_zulaessig(const zustand::Zustand& z,
+                                     const werte::Konstanten& konst,
+                                     const Buendel& buendel);
+
+/// Der Name eines Einwands. Ein Wert daneben bricht ab.
+[[nodiscard]] const char* einwand_name(Einwand einwand);
 
 }  // namespace kern::aktion
