@@ -1,95 +1,108 @@
 # Plan — 0016-hedgefonds-simulation-echte-weltwirtschaft
 
-Stand 2026-09-10. Abgedeckt: seit dem Plan vom 2026-09-09.
+Stand 2026-09-11. Abgedeckt: seit dem Plan vom 2026-09-10.
 
 ## Wo das Vorhaben steht
 
-**Der Kern ist wieder ganz grün und rechnet.** 0285 hat `verlauf_probe` repariert — 14 von
-14 Proben, eine ganze Partie über 26 Runden läuft durch —, und 0284 ist damit vollständig
-abgenommen. **Der Engpass des letzten Plans ist beantwortet:** 0291 hat die Marke
-nachgemessen (40-mal `Kalibriert: Selbstspieler`, nicht 47) und jedem der vierzig Schlüssel
-einen Weg zugewiesen; zwanzig sind ohne Programmlauf erreichbar, zwanzig hängen an einem
-Betreiberlauf. 278 Pakete: 248 fertig, 7 offen, 8 gebaut (7 davon heute `geprueft`),
-6 Vorschläge, 5 blockiert; Werkstattbaum 4 von 29 rot (gestern 6). Geld bindet nicht.
+**Der Engpass des letzten Plans ist in einer Nacht gefallen, und zwei weitere Mitglieder
+dazu.** `daten` ist gebaut (0297, heute `geprueft`), `schnittstelle` ebenfalls (0301), und
+`kern/aktion` ist neu (0300, `geprueft`); der Nachtbericht fährt jetzt **zwölf Manifeste
+statt zehn**, und von den zehn Mitgliedern stehen **drei** als „noch nicht gebaut" statt
+fünf: `konsole`, `oberflaeche`, `werkzeuge/aufbereitung`
+(`befunde/uebersetzung-2026-09-11.md:20-22`). Nicht fertig sind 28 Pakete: 8 offen,
+10 gebaut (davon 7 heute `geprueft`, eines `zurueck`), 5 Vorschläge, 5 blockiert; drei rote
+Riegel. Geld bindet nicht.
 
 ## Der Engpass
 
-**`daten` ist nicht gebaut, und kein Paket im Bestand baut es.**
+**`werkzeuge/aufbereitung` ist nicht gebaut, und kein Paket im Bestand baut es.**
 
-Fünf der zehn Mitglieder stehen im Nachtbericht als „noch nicht gebaut": `daten`,
-`schnittstelle`, `konsole`, `oberflaeche`, `werkzeuge/aufbereitung`
-(`befunde/uebersetzung-2026-09-10.md:20-24`). Seit 0284 schreibt Schritt 3 den `pfadstand`
-in die Adressen — **befüllt wird er von niemandem.** Der Prüfer schreibt es selbst hin:
-„For whoever builds the `daten` driver" (`pruefung-0284-…-2026-09-10.md:76`). Ohne `daten`
-kein Jahrgang, ohne Jahrgang kein `weltlauf`, ohne `weltlauf` keiner der zwanzig
-Gate-Schlüssel — und die sechs Schlüssel, die 0291 dem `datenbauer` „am Jahrgang" zuweist,
-haben keinen Jahrgangsbau, in den sie fallen könnten. **Ich habe den ganzen Rückstand
-danach durchsucht: kein Paket, weder offen noch Vorschlag, nennt eines der fünf
-Mitglieder.**
+Dieselbe Negation wie gestern, ein Glied weiter unten. 0297 hat den Ladeweg absichtlich
+ausgelassen und gesagt warum: *„`jahrgang-<jahr>.bin` schreibt `werkzeuge/aufbereitung`
+(T23), und dieses Mitglied ist nicht gebaut. Ein Paket, das ein Format liest, das noch
+niemand schreibt, ist entweder blockiert oder erfindet das Format nebenbei"*
+(`aufgaben/0297-der-daten-treiber-fuellt-den-pfadtraeger.md:38-40`). Es gibt also seit
+heute einen Jahrgangsträger, aber keine Datei, die ihn füllt: `daten` lässt sich nur von
+Hand bestücken, und ohne Jahrgangsdatei kein `weltlauf`. **Ich habe `dateien:` über alle
+Pakete 0290–0310 gelesen — `aufbereitung`, `konsole` und `oberflaeche` kommen dort nur im
+Fließtext vor, in keinem einzigen `dateien:`-Feld.**
 
 ## Was quer liegt
 
-- **Die Nummernvergabe ist gebrochen: fünf Pakete heißen 0293.** Zwischen 0257 und 0293
-  tragen sechs Nummern je mehr als ein Paket, elf Dateien auf sechs Nummern; am 2026-09-08
-  war es eine Kollision. Die Ursache ist mechanisch — Vorschläge entstehen nachts parallel,
-  jeder Prüfer nimmt die höchste Nummer plus eins. Behoben wird das vom Projektmanager bei
-  der Annahme, durch Umnummerieren; sonst ist `haengt_an:` bald nicht mehr auflösbar.
-- **Drei Pakete auf einer Datei.** 0292 und `0293-die-verteilung-nennt-zahlen` fassen beide
-  `multiplikationsriegel.cpp` an, dazu das gebaute 0290.
-- **Mein schärfster Satz von heute stimmt nicht.** 0291 nennt „Weg 5a ist leer" sein
-  wichtigstes Ergebnis und richtet es ausdrücklich an mich; `parameter.toml:708-710` und
-  `:718-720` sagen von zwei der vierzig Schlüssel das Gegenteil in eigenen Worten. Der Satz
-  gehört in meinen Bericht an dich, also muss er vorher stimmen — das ist
-  `0293-weg-5a-is-not-empty`.
-- **Berichtigung an mir selbst:** `PARTIERUNDEN` ist 26 und nicht 20 (`verlauf.hpp:208`);
-  der 15. Plan trug in `:98-104` dieselbe falsche Zwanzig.
-- **`multiplikationsriegel` rot ist kein Schaden, sondern Absicht.** 0290 verlangte den
-  roten Lauf, und der Riegel nennt eine echte Stelle (`festkomma.hpp:99`). Von den vier
-  Roten gehören zwei zu 0286 (offen), eines hierher, eines zum Messstand 0166.
-- **Sieben Pakete stehen `gebaut` mit `urteil: geprueft`** (0282, 0283, 0284, 0285, 0287,
-  0290, 0291); gestern waren es drei. 0236 kam als einziges `zurueck`.
+- **Eine Runde und ihre Stützstelle stehen in `technik.md` zweimal verschieden, ein Jahr
+  auseinander.** Der Daten-Prüfer hat es beim Abnehmen von 0297 gefunden und als Vorschlag
+  `0303-eine-runde-und-ihre-stuetzstelle-stehen-zweimal-verschieden` hingelegt. Was es
+  kostet, wenn es offen bleibt, steht dort in eigenen Worten: *„One year of offset on every
+  reported policy series in the `weltlauf` … it looks like a sluggish reaction and is an
+  index shift"* — und es wird dann **dreimal getrennt entschieden**, in
+  `werkzeuge/aufbereitung`, in `schnittstelle` und im Backtester. 0297 ist trotzdem
+  `geprueft`, weil seine Abnahme eine der beiden Lesarten ausdrücklich nennt: **gebaut ist
+  eine Lesart, entschieden ist keine.**
+- **Drei rote Riegel, und zwei davon sind Absicht.** `zahlwort_messung` ist der eigene
+  Beleg von 0286 (*„`:2074-2088` appears in the report exactly when the riegel is red"*,
+  `pruefung-0286-…-2026-09-11.md:63`), `multiplikationsriegel` der von 0290. Wem
+  `belegstellen_wortabstand` gehört, habe ich **nicht** festgestellt — das ist eine offene
+  Frage und keine Entwarnung.
+- **Die Nummernvergabe: behoben und in derselben Nacht wieder da.** Der Projektmanager hat
+  die fünf 0293 umnummeriert (0294, 0295, 0296) und die alten Dateien als Stummel mit
+  `dateien: []` stehen lassen — richtig nach Regel 3. Gleichzeitig sind **drei neue Pakete
+  0303** entstanden. Behoben ist die Folge, nicht die Ursache; ein `Grep` auf eine Nummer
+  trifft jetzt echte Pakete und Stummel gemischt.
+- **`0289` kam heute `zurueck`** — ein Kriterium zitiert eine überholte Fassung
+  (`kennzeichen_riegel.cpp:1526-1529`). Der Paketstatus steht noch auf `gebaut`.
+- **`ops/auslastung.md` ist vom 2026-09-07** und damit vier Tage alt. Die Kostenseite, die
+  du liest, misst eine andere Woche als dieser Plan.
+- **Damit es niemand „repariert":** `R = 20` (`spiel.md:11`) und `PARTIELAENGE_HOECHSTENS
+  = 26` (`verlauf.hpp:208`) widersprechen sich **nicht**. Das erste ist die Partielänge,
+  das zweite die Kapazitätswand aus T40, und die bricht erst bei 139
+  (`kern/messung/wandschranke.py:11-13`).
 
 ## Was der Betreiber entscheiden muss
 
-**Dieselbe Frage wie am 2026-09-07, -08 und -09: `0208-baulauf-faehrt-beide-profile`,
-vierter Plan.** Kein Agent darf `agents/**` schreiben (`agents/lauf.py:NIE`), also kannst
+**Dieselbe Frage wie am 2026-09-07, -08, -09 und -10: `0208-baulauf-faehrt-beide-profile`,
+fünfter Plan.** Kein Agent darf `agents/**` schreiben (`agents/lauf.py:NIE`), also kannst
 nur du es. Keine Geldfrage; der Preis ist Maschinenzeit — ein zweiter `cmake`/`ctest`-Gang
-je Manifest mit `-DFABRIK_SANITIZER=OFF`, zehn Manifeste, nachts.
+je Manifest mit `-DFABRIK_SANITIZER=OFF`, **jetzt zwölf Manifeste statt zehn**, nachts.
 
 - **A — so lassen.** Jede Abnahme mit der Formel „in beiden Bauprofilen" bleibt
   unerfüllbar; sie hat 0194 auf `blockiert` gekostet.
 - **B — du fährst die Änderung selbst ein.** Vorbild ist Paket 0131.
 
-**Empfehlung B, unverändert.**
+**Empfehlung B, unverändert.** Dass ich dieselbe Frage zum fünften Mal stelle, ist selbst
+eine Meldung: willst du sie nicht, sag A, und ich nehme sie aus dem Plan.
 
-**Und eine Vorwarnung, damit sie dich nicht überrascht:** 0291 hat ein Gate ausgerechnet,
-das noch nicht ansteht. Zwanzig der vierzig Schlüssel brauchen einen Suchlauf — nach
-`spiel.md:3428-3434` rund **26,5 Stunden auf einem Kern, 3,3 auf acht**, zerlegt in fünf
-entkoppelte Gruppen. **Heute ist es nicht entscheidbar**, weil das Programm, das dabei
-liefe, nicht existiert. Ich lege es dir vor, wenn `daten` steht.
+**Das Suchlauf-Gate ist näher, aber noch nicht fällig.** Zwanzig der vierzig Schlüssel
+brauchen einen Suchlauf — nach `spiel.md:3428-3434` rund **26,5 Stunden auf einem Kern,
+3,3 auf acht**. Zwischen heute und dieser Frage stehen noch zwei Mitglieder:
+`werkzeuge/aufbereitung` (die Jahrgangsdatei) und `konsole` (der Läufer). Ich lege es dir
+vor, wenn beide stehen.
 
 ## Vorrang
 
-1. **Ein Paket für den `daten`-Treiber** — *neu anzulegen*, Rolle `datenbauer`. Der
-   Engpass; alles andere in dieser Liste ist Instandhaltung.
-2. **Die sieben geprüften Pakete auf `fertig`** — ein Lauf des Projektmanagers, und im
-   selben Lauf die fünf 0293 umnummerieren.
-3. **`0293-weg-5a-is-not-empty-and-the-multi-line-marks-are-four`** — zwei Absätze in einem
-   Abschnitt, den 0291 heute geschrieben hat; danach stimmt, was dir vorgelegt wird.
-4. **0286**, gebaut als **Messung, nicht als Übertragung** — holt zwei der vier Roten
-   zurück; genau der Zug, der 0278 grün gemacht hat.
-5. **0288** — das einzige offene Paket auf `kern/src/`: die zwei Summen, die Schritt 5
-   jetzt erreicht, melden ihren Ort nicht.
+1. **`0303-eine-runde-und-ihre-stuetzstelle-stehen-zweimal-verschieden`** — ein
+   Architektenlauf auf `technik.md`, und er muss **vor** Nummer 2 laufen: sonst entscheidet
+   `werkzeuge/aufbereitung` den Jahresversatz nebenbei und zum dritten Mal.
+2. **Ein Paket für `werkzeuge/aufbereitung`** — *neu anzulegen*. Der Engpass; es schreibt
+   die Jahrgangsdatei, die 0297 bewusst ausgelassen hat.
+3. **Die sieben geprüften Pakete auf `fertig`, `0289` auf `zurueck`** — ein Lauf des
+   Projektmanagers, und im selben Lauf die drei 0303 umnummerieren.
+4. **`0302-was-eine-aktion-an-kasse-zieht-steht-nirgends`** — hängt an 0300, und das ist
+   seit heute `geprueft`: die Kette läuft, wenn sie jetzt weitergeführt wird.
+5. **`0299-the-four-sums-left-in-werte-still-report-no-place`** — offen, `kern/src/`,
+   führt 0288 zu Ende.
 
-**Nicht einplanen:** 0208 (Betreiber, siehe oben). **Rücklauf offen:** 0236.
+**Nicht einplanen:** 0208 (Betreiber, siehe oben). **Vorgemerkt, aber nicht in den fünf:**
+`0310-die-vierzig-marken-nennen-ihren-weg` — zwanzig Kommentare in `parameter.toml` sagen
+„Kalibriert: Selbstspieler" über Schlüssel, die in Wahrheit an einem Gate hängen.
 
 ## Die eine Zahl
 
-**28 zu 3.** Von den zweiundfünfzig Paketen mit den Nummern 0251 bis 0293 schreiben 19
-einen Riegel unter `werkzeuge/` und 9 eine Probe unter `kern/test/` — **28 am
-Prüfapparat.** Drei schreiben `kern/src/`: 0260, 0284, 0288.
+**6 von 13.** Von den dreizehn Paketen mit den Nummern 0294 bis 0310 schreiben **sechs**
+Produktivquelltext: 0297 (`daten/src`), 0301 (`schnittstelle/src`), 0300 und 0302
+(`kern/src/aktion`), 0299 und `0303-die-einstellige-handelssumme` (`kern/src/werte`). Vier
+schreiben den Prüfapparat, drei `specs/` oder `parameter.toml`.
 
-Die alte Zahl — wie viele der 310 Adressen eine Runde bewegt — bleibt **nicht messbar**,
-und der 0285-Prüfer hat gesagt warum: `ctest` druckt die Ausgabe einer Probe nur, wenn sie
-fällt. Der Satz des Portfolio-Managers vom 2026-09-06 hält deshalb in schärferer Fassung:
-die Fabrik baut den Prüfapparat einer Simulation, deren Hälfte nicht gebaut ist.
+Dieselbe Zahl lautete im letzten Plan **3 von 52**. Das ist die Umkehr, auf die diese
+Fabrik seit Wochen wartet — und sie ist eine Nacht alt; eine Nacht ist keine Reihe. Der
+Satz, hier werde der Prüfapparat einer Simulation gebaut, deren Hälfte fehlt, gilt seit
+heute schwächer: es fehlen drei von zehn Mitgliedern, nicht fünf.

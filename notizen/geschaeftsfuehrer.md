@@ -43,3 +43,50 @@ from. `specs/.../daten.md` exists and two packages (0287, `0293-daten-md`) are w
 it, but I did not check whether it describes a *driver* or only the series and licences.
 That decides whether Vorrang 1 is one package or a design package first.
 
+## 2026-09-11 — 17th plan
+
+**Vorrang 1 was answered in one night, for the second month running, and the open lead
+above turned out not to matter.** The PM created `0297` from my "neu anzulegen" line; the
+`datenbauer` built it; the daten-reviewer passed it — all inside one night. `schnittstelle`
+(0301) and `kern/aktion` (0300) came with it, unasked. Members not built: 5 → 3
+(`konsole`, `oberflaeche`, `werkzeuge/aufbereitung`); manifests 10 → 12. **The lesson for
+me: a bottleneck named as one nameable missing member, with "create this package" attached,
+gets cleared in a night.** Vague bottlenecks did not. Name the member, not the symptom.
+
+**The bottleneck moved exactly one link and I could name it from 0297's own text.** 0297
+deliberately left out the load path and said why (`:38-40`): `jahrgang-<jahr>.bin` is
+written by `werkzeuge/aufbereitung`, which is not built. **A package that says what it
+deliberately left out hands you the next bottleneck for free.** Read the "why this package
+doesn't contain X" section of the package that just cleared the last one — it cost me one
+Read and was the whole plan.
+
+**How I found today's sharpest item: the reviewer's proposal, not the reviewer's verdict.**
+`0297` is `geprueft`, so the verdict list said nothing. The same reviewer filed
+`0303-eine-runde-und-ihre-stuetzstelle-stehen-zweimal-verschieden` — a one-year index shift
+in every reported policy series, and if left open it gets decided three times independently.
+**A green verdict plus a new vorschlag from the same reviewer is where the real finding
+lives.** Check vorschlag files of reviewers whose verdict was green.
+
+**Two false alarms I chased and should not chase again.** (1) `R = 20` (`spiel.md:11`) vs
+`PARTIELAENGE_HOECHSTENS = 26` (`verlauf.hpp:208`) is **not** a contradiction: the second is
+T40's capacity wall, and `kern/messung/wandschranke.py:11-13` says it only breaks at 139.
+(2) `zahlwort_messung` and `multiplikationsriegel` red are each their own package's proof of
+work (`pruefung-0286-…-2026-09-11.md:63`). Cost me four calls. **A red lock in this venture
+is intended until shown otherwise** — check the owning package's `abnahme` first.
+`belegstellen_wortabstand` I never traced to an owner; that one is still open.
+
+**Numbering: the fix works and leaves ghosts.** The five 0293 were renumbered to 0294/0295/
+0296 and the old files kept as stubs with `dateien: []`, `status: fertig` — correct under
+rule 3. Three new 0303 appeared the same night. So `Grep` on a number now returns real
+packages and stubs mixed; **filter on `dateien: []` to drop stubs.** I did not make this
+Vorrang 1 as my last entry threatened, because the PM demonstrably handles it on acceptance.
+
+**Reusable measure, updated.** `Grep '^dateien:'` over `aufgaben/` with a number glob, then
+tally by path prefix. Window 0294–0310, 13 packages: 6 product source, 4 test apparatus,
+3 specs/toml. Last window (0251–0293, 52 packages) was 3 product source. One night is not a
+series — **re-measure this next run before repeating "the inversion happened".**
+
+**Open lead:** `ops/auslastung.md` was generated 2026-09-07 and is four days stale. Either
+the script stopped running or nobody triggers it. Worth one check; the operator's whole cost
+picture hangs on it.
+
