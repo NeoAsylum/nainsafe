@@ -144,13 +144,16 @@
 //!
 //! ## Der Selbsttest, der bei jedem Aufruf mitlaeuft
 //!
-//! Fuenf Tabellen laufen **vor** dem ersten Lesen der Datei, und ein verfehlter Fall
+//! Sechs Tabellen laufen **vor** dem ersten Lesen der Datei, und ein verfehlter Fall
 //! bricht den Lauf mit Code 2 ab: die Zerlegung in Woerter und Bloecke, die Erkennung
-//! der Zahlbehauptung, der Schritt vom Behaupteten zum Urteil, die beiden Zaehlungen
-//! und -- als fuenfte -- die **Verdrahtung**: derselbe Weg, den der Ernstfall geht,
-//! aber auf Text statt auf einer Datei. Die vier ersten pruefen je einen Baustein; ohne
-//! die fuenfte liesse sich das Zusammensetzen auf "immer gruen" festnageln, ohne dass
-//! ein Fall risse.
+//! der Zahlbehauptung, der Schritt vom Behaupteten zum Urteil, die beiden Zaehlungen,
+//! die **Verdrahtung** -- derselbe Weg, den der Ernstfall geht, aber auf Text statt auf
+//! einer Datei -- und, seit Paket 0305, die **Markenprobe** auf ausgeschriebenen Texten.
+//! Die vier ersten pruefen je einen Baustein; ohne die fuenfte liesse sich das
+//! Zusammensetzen auf "immer gruen" festnageln, ohne dass ein Fall risse. Die sechste
+//! steht da, weil die Markenprobe bis 0305 allein aus `main` erreichbar war: Sie konnte
+//! nur an der einen gelesenen Datei reissen, und ob sie an einer anderen richtig lag,
+//! zeigte kein Fall.
 //!
 //! ## Die Empfindlichkeitsprobe -- der Rotnachweis laeuft mit, statt danebenzuliegen
 //!
@@ -194,6 +197,17 @@
 //! Riegel mit 2. Traegt der Pruefling gar keine Marke -- was ein richtiger Kopf sein
 //! darf --, hat diese Probe keinen Gegenstand; sie wird dann genannt und nicht
 //! bestanden.
+//!
+//! ### Wo der zweite Mutant zugreift -- Paket 0305
+//!
+//! Der Mutant nimmt die Marke in der Zeile, in der die Zaehlung sie **gezaehlt** hat --
+//! im Dokumentationsblock einer gezaehlten Deklaration --, und nicht die erste
+//! Fundstelle des Wortlautes in der Datei, weil dieser Kopf hier den Wortlaut weiter
+//! oben zitieren muss, um ihn zu erklaeren, damit keine Deklaration entschuldigt und
+//! folglich auch keinen Mangel abwendet: Wer die erste Fundstelle naehme, schnitte dem
+//! Kopf sein Zitat heraus, liesse die Marke der Deklaration stehen und faende danach
+//! genauso viele Maengel wie vorher -- rot auf einer Datei, in der jede Deklaration
+//! richtig steht.
 //!
 //! Beide Mutanten werden nur im Speicher gebildet; `werte.hpp` wird gelesen und nie
 //! geschrieben. Wer den roten Lauf selbst sehen will, ruft
@@ -680,6 +694,12 @@ struct Zaehlung {
     /// wird sie, damit der Fall der Marke im Nachtbericht sichtbar ist und nicht bloss
     /// nicht mehr meckert.
     std::size_t marken = 0;
+    /// Die Zeilennummern der Marken, die oben gezaehlt wurden -- je gezaehlter
+    /// Deklaration eine, in der Reihenfolge der Datei. Die Zahl allein sagt, **wie
+    /// viele** Marken zaehlen, und nicht **welche**; der zweite Mutant braucht das
+    /// zweite (Paket 0305). Ohne diese Liste muesste er den Wortlaut selbst suchen und
+    /// faende jede Erwaehnung -- auch die im Kopf, die nichts zaehlt.
+    std::vector<std::size_t> markenzeilen;
     std::vector<Feld> felder;
     std::vector<Feld> jahrgang;
     std::vector<Feld> schluessel;
@@ -842,6 +862,10 @@ Zaehlung zaehle(std::string_view text) {
     }
 
     std::string dok;
+    // Die Zeilennummern der Zeilen, aus denen `dok` gerade besteht. Sie werden
+    // mitgefuehrt und nicht nachtraeglich gesucht: `dok` ist eine Abschrift getrimmter
+    // Zeilen, und aus ihr ist nicht mehr abzulesen, wo die Zeile in der Datei stand.
+    std::vector<std::size_t> dokzeilen;
     std::vector<Zeilenstueck> anweisung;
     int tiefe = 0;
     for (std::size_t i = start + 1; i < zeilen.size(); ++i) {
@@ -850,12 +874,14 @@ Zaehlung zaehle(std::string_view text) {
             if (beginnt_mit(t, "///")) {
                 dok += t;
                 dok += "\n";
+                dokzeilen.push_back(i + 1);
                 continue;
             }
             if (t.empty() || ist_kommentarzeile(t)) {
                 // Ein gewoehnlicher Kommentar und eine Leerzeile beenden den
                 // Dokumentationsblock. Was danach kommt, hat ihn nicht mehr.
                 dok.clear();
+                dokzeilen.clear();
                 continue;
             }
             if (beginnt_mit(t, "}") && t.find("namespace") != std::string::npos) {
@@ -899,6 +925,18 @@ Zaehlung zaehle(std::string_view text) {
             const bool traegt_marke = dok.find(ZAEHLMARKE) != std::string::npos;
             if (traegt_marke) {
                 ++z.marken;
+                // Welche Zeile des Blockes die Marke traegt. `dok` haelt getrimmte
+                // Abschriften ganzer Zeilen, und der Wortlaut traegt keinen
+                // Zeilenumbruch -- ein Treffer in `dok` steht deshalb ganz in einer
+                // dieser Zeilen und ist dort wiederzufinden.
+                for (std::size_t k = 0; k < dokzeilen.size(); ++k) {
+                    const std::size_t nr = dokzeilen[k];
+                    if (nr > 0 && nr <= zeilen.size()
+                        && zeilen[nr - 1].find(ZAEHLMARKE) != std::string::npos) {
+                        z.markenzeilen.push_back(nr);
+                        break;
+                    }
+                }
             }
             // Dieselbe Bauform wie bei den Feldern eine Ebene tiefer: Die zulaessigen
             // Faelle teilen die Deklarationen restlos und ueberschneidungsfrei. Genau
@@ -921,6 +959,7 @@ Zaehlung zaehle(std::string_view text) {
 
         anweisung.clear();
         dok.clear();
+        dokzeilen.clear();
         tiefe = 0;
     }
     return z;
@@ -1291,14 +1330,37 @@ Probe empfindlichkeitsprobe(std::string_view text, const Ergebnis& bestand) {
 /// entschuldigt, der Riegel bliebe gruen, und die Haelfte, um derentwillen er gebaut
 /// wurde, waere weg -- ohne dass ein Fall risse.
 ///
-/// Genommen wird der **erste** Wortlaut und nicht alle. Die Aussage der Probe ist "ein
-/// Mangel mehr als vorher", und die ist scharf, solange genau eine Marke faellt.
+/// Genommen wird die Marke **einer benannten Zeile** und nicht die erste der Datei
+/// (Paket 0305). Die Zeile kommt aus der Zaehlung, die sie gezaehlt hat; wer stattdessen
+/// den ersten Wortlaut im Text naehme, faende jede Erwaehnung -- auch die im Kopf, die
+/// keine Deklaration entschuldigt und deshalb auch keinen Mangel abwenden kann. Die
+/// Aussage der Probe ist "ein Mangel mehr als vorher", und die ist scharf, solange genau
+/// die eine Marke faellt, die gezaehlt wurde.
 ///
 /// Gebildet wird nur eine Zeichenkette; `werte.hpp` wird gelesen und nie geschrieben.
-bool ohne_zaehlmarke(std::string_view text, std::string& hinein, std::string& warum) {
-    const std::size_t stelle = text.find(ZAEHLMARKE);
-    if (stelle == std::string_view::npos) {
-        warum = "im gelesenen Text steht keine Zaehlmarke";
+bool ohne_zaehlmarke(std::string_view text, std::size_t zeile, std::string& hinein,
+                     std::string& warum) {
+    if (zeile == 0) {
+        warum = "die Zaehlung nennt keine Zeile, in der eine gezaehlte Marke steht";
+        return false;
+    }
+    // Der Anfang der benannten Zeile. Gezaehlt wird wie in `zeilen_von`: ein Umbruch
+    // beendet eine Zeile, die erste traegt die Nummer 1.
+    std::size_t anfang = 0;
+    for (std::size_t n = 1; n < zeile; ++n) {
+        const std::size_t umbruch = text.find('\n', anfang);
+        if (umbruch == std::string_view::npos) {
+            warum = "die benannte Zeile der Marke liegt hinter dem Ende des Textes";
+            return false;
+        }
+        anfang = umbruch + 1;
+    }
+    const std::size_t ende = text.find('\n', anfang);
+    const std::size_t stelle = text.find(ZAEHLMARKE, anfang);
+    if (stelle == std::string_view::npos
+        || (ende != std::string_view::npos && stelle >= ende)) {
+        warum = "in der benannten Zeile steht die Zaehlmarke nicht -- die Zaehlung und "
+                "der Mutant lesen nicht denselben Text";
         return false;
     }
     std::string aus(text.substr(0, stelle));
@@ -1321,6 +1383,11 @@ struct Markenprobe {
     std::string warum;
     std::size_t maengel_vorher = 0;
     std::size_t maengel_nachher = 0;
+    /// Die Zeile, aus der der Mutant die Marke genommen hat. Sie steht hier, damit die
+    /// **Stelle** des Zugriffs eine Angabe ist, die man festhalten kann, und nicht bloss
+    /// sein Ergebnis: Genau daran -- an der ersten Fundstelle statt an der gezaehlten --
+    /// stand der Fehler, den Paket 0305 behoben hat.
+    std::size_t zeile = 0;
 };
 
 Markenprobe markenprobe(std::string_view text, const Ergebnis& bestand) {
@@ -1333,7 +1400,14 @@ Markenprobe markenprobe(std::string_view text, const Ergebnis& bestand) {
     }
     p.gegenstand = true;
     std::string mutant;
-    if (!ohne_zaehlmarke(text, mutant, p.warum)) {
+    // Die Zeile der ersten **gezaehlten** Marke, und nicht die erste Fundstelle des
+    // Wortlautes im Text (Paket 0305). Ist die Liste leer, obwohl `marken` nicht null
+    // ist, widersprechen sich zwei Zahlen derselben Zaehlung: `ohne_zaehlmarke` bekommt
+    // dann die 0 und sagt es, statt hier stumm in eine leere Liste zu greifen.
+    p.zeile = bestand.zaehlung.markenzeilen.empty()
+                  ? 0
+                  : bestand.zaehlung.markenzeilen.front();
+    if (!ohne_zaehlmarke(text, p.zeile, mutant, p.warum)) {
         return p;
     }
     const Ergebnis nach = pruefe(mutant);
@@ -1349,8 +1423,9 @@ Markenprobe markenprobe(std::string_view text, const Ergebnis& bestand) {
         return p;
     }
     if (nach.zaehlung.marken + 1 != bestand.zaehlung.marken) {
-        p.warum = "der Mutant nimmt nicht genau eine Marke -- der Riegel liest ihren "
-                  "Wortlaut nicht dort, wo er ihn zu lesen glaubt";
+        p.warum = "der Mutant nimmt nicht genau eine gezaehlte Marke -- der Wortlaut "
+                  "steht in demselben Dokumentationsblock ein zweites Mal, und die "
+                  "Deklaration bleibt entschuldigt";
         return p;
     }
     if (p.maengel_nachher != p.maengel_vorher + 1) {
@@ -1868,17 +1943,135 @@ std::size_t selbsttest_verdrahtung() {
     return verfehlt;
 }
 
+// ---------------------------------------------------------------------------
+// Selbsttest, Tabelle 6: die Markenprobe -- Paket 0305
+// ---------------------------------------------------------------------------
+//
+// Die Markenprobe war bis 0305 allein aus `main` erreichbar, und die fuenf Tabellen
+// darueber laufen alle, bevor die Datei gelesen wird. Keine von ihnen konnte an ihr
+// reissen -- eine Pruefung, deren Gegenstand sich nicht bewegen kann, ist gruen und
+// wertlos. Diese Tabelle ruft sie auf ausgeschriebenen Texten auf, und einer davon ist
+// genau der Text, an dem sie vor 0305 falsch rot wurde.
+
+struct Markenfall {
+    std::string_view text;
+    std::string_view erwartet;
+    std::string_view was;
+};
+
+std::string markenbild(std::string_view text) {
+    const Ergebnis e = pruefe(text);
+    const Markenprobe p = markenprobe(text, e);
+    std::ostringstream aus;
+    aus << "gegenstand=" << (p.gegenstand ? "ja" : "nein") << " bestanden="
+        << (p.bestanden ? "ja" : "nein") << " maengel=" << p.maengel_vorher << "->"
+        << p.maengel_nachher << " zeile=" << p.zeile;
+    return aus.str();
+}
+
+/// Der heutige Zuschnitt: eine markierte Deklaration, und der Wortlaut steht sonst
+/// nirgends. Ohne diesen Fall stuende nicht fest, dass die Probe an dem Text, den sie
+/// taeglich sieht, ueberhaupt etwas zu tun hat.
+constexpr std::string_view MARKENTEXT_HEUTE =
+    "namespace kern::werte {\n"
+    "/// **T48 Nr. 1** -- die eine Groesse.\n"
+    "[[nodiscard]] i64 wert(const Zustand& z);\n"
+    "\n"
+    "/// **Zaehlmarke: keine Groesse aus T48** -- gibt ein Feld des Traegers heraus.\n"
+    "[[nodiscard]] i64 pfadstand(const Konstanten& k, Gebiet g, Instrument i);\n"
+    "}  // namespace kern::werte\n";
+
+/// **Der Fall, der 0305 ausgeloest hat.** Derselbe Kopf, aber der Wortlaut steht ein
+/// zweites Mal -- oben im Modulkopf, als Zitat. Der Kopf zaehlt keine Deklaration, also
+/// entschuldigt sein Zitat auch keine: Nimmt der Mutant *es*, bleibt die Marke der
+/// Deklaration stehen, es steht kein Mangel mehr da als vorher, und der Riegel endet 2
+/// auf einer Datei, in der jede Deklaration richtig steht. Genau das tat er bis 0305.
+constexpr std::string_view MARKENTEXT_ZITAT_IM_KOPF =
+    "//! Der Wortlaut, hier zitiert: Zaehlmarke: keine Groesse aus T48.\n"
+    "//!\n"
+    "namespace kern::werte {\n"
+    "/// **T48 Nr. 1** -- die eine Groesse.\n"
+    "[[nodiscard]] i64 wert(const Zustand& z);\n"
+    "\n"
+    "/// **Zaehlmarke: keine Groesse aus T48** -- gibt ein Feld des Traegers heraus.\n"
+    "[[nodiscard]] i64 pfadstand(const Konstanten& k, Gebiet g, Instrument i);\n"
+    "}  // namespace kern::werte\n";
+
+/// Dasselbe eine Ebene naeher: Das Zitat steht **innerhalb** des Namensraumes, in einem
+/// gewoehnlichen Kommentar, der zu keinem Dokumentationsblock gehoert. Der Fall haelt
+/// die billige Ausweichloesung fest -- "such den Wortlaut erst hinter dem Namensraum"
+/// --, die an ihm genauso risse wie die alte.
+constexpr std::string_view MARKENTEXT_ZITAT_IM_NAMENSRAUM =
+    "namespace kern::werte {\n"
+    "/// **T48 Nr. 1** -- die eine Groesse.\n"
+    "[[nodiscard]] i64 wert(const Zustand& z);\n"
+    "\n"
+    "// Der Wortlaut, hier nur erwaehnt: Zaehlmarke: keine Groesse aus T48.\n"
+    "\n"
+    "/// **Zaehlmarke: keine Groesse aus T48** -- gibt ein Feld des Traegers heraus.\n"
+    "[[nodiscard]] i64 pfadstand(const Konstanten& k, Gebiet g, Instrument i);\n"
+    "}  // namespace kern::werte\n";
+
+/// Der Wortlaut steht **nur** im Kopf, keine Deklaration traegt ihn. Dann hat die Probe
+/// keinen Gegenstand: Sie wird genannt und nicht bestanden. Ohne diesen Fall waere
+/// "gegenstand" ein Feld, das niemals falsch ist -- und ein Riegel, der jede Erwaehnung
+/// fuer eine Marke haelt, bliebe hier unentdeckt.
+constexpr std::string_view MARKENTEXT_NUR_IM_KOPF =
+    "//! Der Wortlaut, hier zitiert: Zaehlmarke: keine Groesse aus T48.\n"
+    "//!\n"
+    "namespace kern::werte {\n"
+    "/// **T48 Nr. 1** -- die eine Groesse.\n"
+    "[[nodiscard]] i64 wert(const Zustand& z);\n"
+    "}  // namespace kern::werte\n";
+
+/// Die erwartete `zeile` steht mit in jedem Fall, und sie ist der eigentliche Gegenstand
+/// dieser Tabelle: Ob die Probe besteht, sagt nur, dass am Ende ein Mangel mehr dasteht;
+/// **wo** sie zugegriffen hat, sagt, ob sie es aus dem richtigen Grund tut. Die Faelle 2
+/// und 3 unterscheiden sich von Fall 1 allein in einer Erwaehnung des Wortlautes weiter
+/// oben -- an der `zeile` sieht man, dass der Mutant sie nicht angefasst hat.
+constexpr std::array<Markenfall, 4> MARKENFAELLE = {
+    Markenfall{MARKENTEXT_HEUTE, "gegenstand=ja bestanden=ja maengel=0->1 zeile=5",
+               "der heutige Zuschnitt: eine markierte Deklaration, und ohne ihre Marke "
+               "steht genau ein Mangel mehr da"},
+    Markenfall{MARKENTEXT_ZITAT_IM_KOPF, "gegenstand=ja bestanden=ja maengel=0->1 zeile=7",
+               "derselbe Kopf mit dem Wortlaut zusaetzlich als Zitat im Modulkopf -- der "
+               "Fall, an dem der Riegel bis 0305 mit 2 endete"},
+    Markenfall{MARKENTEXT_ZITAT_IM_NAMENSRAUM,
+               "gegenstand=ja bestanden=ja maengel=0->1 zeile=7",
+               "das Zitat im gewoehnlichen Kommentar innerhalb des Namensraumes -- der "
+               "Mutant sucht den Dokumentationsblock und nicht die naechste Fundstelle"},
+    Markenfall{MARKENTEXT_NUR_IM_KOPF, "gegenstand=nein bestanden=nein maengel=0->0 zeile=0",
+               "der Wortlaut nur im Kopf und an keiner Deklaration: kein Gegenstand, "
+               "also genannt und nicht bestanden"}};
+
+std::size_t selbsttest_markenprobe() {
+    std::size_t verfehlt = 0;
+    for (std::size_t i = 0; i < MARKENFAELLE.size(); ++i) {
+        const std::string ist = markenbild(MARKENFAELLE[i].text);
+        if (ist == MARKENFAELLE[i].erwartet) {
+            continue;
+        }
+        ++verfehlt;
+        std::fprintf(stderr,
+                     "Selbsttest Markenprobe, Fall %zu (%s):\n  erwartet [%s]\n"
+                     "  gefunden [%s]\n",
+                     i + 1, std::string(MARKENFAELLE[i].was).c_str(),
+                     std::string(MARKENFAELLE[i].erwartet).c_str(), ist.c_str());
+    }
+    return verfehlt;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
     // Der Selbsttest laeuft vor allem anderen und braucht kein Argument. Stimmt eine
-    // der fuenf Tabellen nicht, ist jede Zahl weiter unten wertlos.
+    // der sechs Tabellen nicht, ist jede Zahl weiter unten wertlos.
     const std::size_t verfehlt = selbsttest_bloecke() + selbsttest_behauptung()
                                  + selbsttest_urteil() + selbsttest_zaehlung()
-                                 + selbsttest_verdrahtung();
+                                 + selbsttest_verdrahtung() + selbsttest_markenprobe();
     const std::size_t faelle = BLOCKFAELLE.size() + BEHAUPTUNGSFAELLE.size()
                                + URTEILSFAELLE.size() + ZAEHLFAELLE.size()
-                               + VERDRAHTUNGSFAELLE.size();
+                               + VERDRAHTUNGSFAELLE.size() + MARKENFAELLE.size();
     if (verfehlt > 0) {
         std::fprintf(stderr,
                      "\nzahlwort_riegel: %zu von %zu Faellen des Selbsttests sind nicht wie "
@@ -1890,10 +2083,10 @@ int main(int argc, char** argv) {
     }
     std::fprintf(stdout,
                  "zahlwort_riegel, Selbsttest: %zu Faelle zur Zerlegung, %zu zur "
-                 "Zahlbehauptung,\n%zu zum Urteil, %zu zu den Zaehlungen und %zu zur "
-                 "Verdrahtung, alle wie erwartet.\n",
+                 "Zahlbehauptung,\n%zu zum Urteil, %zu zu den Zaehlungen, %zu zur "
+                 "Verdrahtung und %zu zur Markenprobe,\nalle wie erwartet.\n",
                  BLOCKFAELLE.size(), BEHAUPTUNGSFAELLE.size(), URTEILSFAELLE.size(),
-                 ZAEHLFAELLE.size(), VERDRAHTUNGSFAELLE.size());
+                 ZAEHLFAELLE.size(), VERDRAHTUNGSFAELLE.size(), MARKENFAELLE.size());
 
     const std::vector<std::string> argumente(argv, argv + argc);
     const bool bruch =
@@ -2057,11 +2250,12 @@ int main(int argc, char** argv) {
         }
         if (mp.gegenstand) {
             std::fprintf(stdout,
-                         "zahlwort_riegel, Markenprobe: nimmt man die eine Zaehlmarke aus "
-                         "dem Text, steht\ngenau ein Mangel mehr da (%zu statt %zu) -- die "
-                         "Marke wird gelesen und nicht\nunterstellt. Die Zahl der "
-                         "Deklarationen und die der Nummern bleiben, wie sie sind.\n",
-                         mp.maengel_nachher, mp.maengel_vorher);
+                         "zahlwort_riegel, Markenprobe: nimmt man die Zaehlmarke aus "
+                         "Zeilennummer %zu -- der\neinen, die gezaehlt wurde --, steht "
+                         "genau ein Mangel mehr da (%zu statt %zu):\ndie Marke wird "
+                         "gelesen und nicht unterstellt. Die Zahl der Deklarationen und "
+                         "die\nder Nummern bleiben, wie sie sind.\n",
+                         mp.zeile, mp.maengel_nachher, mp.maengel_vorher);
         } else {
             std::fprintf(stdout, "zahlwort_riegel, Markenprobe: ohne Gegenstand -- %s.\n",
                          mp.warum.c_str());
