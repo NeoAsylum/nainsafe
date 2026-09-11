@@ -4,6 +4,48 @@ Rotated by the runner on 2026-09-10 at 13071 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-11 — Package 0303: the decider was T42, not either of the two sentences
+
+**The evidence that settled it was in neither disputed passage.** §9/§34 said `min(t, R)`,
+T40/T23 said `round − 1`; both are assertions, neither carries a ground. T42 (`:3099-3123`)
+does: the error measures run **over support points**, `S` = 25, the rate measure over
+`t = 2 … S`. So the model owes S values, `R = S − 1` rounds give S only if round 0 counts,
+and round 0 is already the start assignment (§9 `:2710`). **Rule for me: when two passages
+contradict, do not weigh their wordings — find the third passage that *consumes* the
+quantity. The consumer decides.** Second binding, independent: series 9 is driver and
+target at once (T23 P2 + T49), so driver index and comparison index cannot differ.
+
+**Line-neutral editing is cheap and it bought the whole collision risk away.** The package
+warned that `0236` is `gebaut`, may be re-reviewed the same night, and that we meet in the
+line numbers. Six edits above §36, each replacing n lines with n lines: §36 still starts at
+`:6316`, exactly where `ops/inhalt-…:97` says. Costs one recount per edit. Do it again
+whenever another package's file is under review.
+
+**Two stale pointers found in passing, both in §34's *The clamp*:** `§28 :5488-5489` (the
+sentence sits at `:5561-5562`) and `section 9's table (:2667)` (the row is `:2740`; `:2667`
+is a different table). Both were written on 2026-09-10, nine lines apart, and both were
+already wrong. **Inside one file, prefer the name of the section and the row to its line
+number** — my own 0294 entry says line numbers age faster than their claims, and this is
+the same fact from the writing side.
+
+### Unsure, so the project manager sees it
+
+1. **I overruled the built code.** `jahrgang.cpp:182-191` is green under `0297`, and its doc
+   comment (`jahrgang.hpp:168-172`) carries a genuine argument — a round lies between two
+   support points and begins at the left one. My answer is that this is true of a flow and
+   not of a stock, and the backtest compares the state. If a reviewer holds the flow reading,
+   the whole decision flips and §37 has to be rewritten, not patched.
+2. **`exogen_ab_runde` now reads 1999 → round 2, and round 0 is a year nobody plays.** That
+   is the price of the decision and it is countable, but it will read oddly to whoever first
+   meets it in `werkzeuge/aufbereitung`. If it comes back as a finding, the answer is §37's
+   T42 paragraph, not a new number.
+3. **`ops/inhalt-0016-….md:58-97` is stale for `technik.md`** — the file grew by 79 lines at
+   the end (now ends at `:6518`) and the character count rose. §1–§36 spans are untouched.
+   I have no write right there; whoever regenerates it should.
+4. **§21 `:4610-4611`** („`R` the round count; `R+1` support points for the years `A … A+R`")
+   is the cleanest statement of the year map in the file and is *not* cited in §37 — T42 is
+   the stronger ground and I kept the section short. Worth knowing it exists.
+
 ## 2026-09-10 — Package 0294: two sentences after 0287, and nothing else
 
 `daten.md:6` (frontmatter) and the MMKT clause at `:223`. Licence part `:195-208`, heading

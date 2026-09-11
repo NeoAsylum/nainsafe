@@ -1046,7 +1046,7 @@ else arise at run time:
 | profit threshold Maß 2 | `E(p) ≤ R × 1.000` | 24,000 |
 | search-bot game | `R × (1 + 60)` | 1,464 |
 | cost of Maß 1 per seed | `30 · R(R+1)/2 + R` | 9,024 |
-| `exogen_ab_runde` per series | `bruchjahr − startjahr + 1` | DE policy rate: 1999 − 1997 + 1 = 3 |
+| `exogen_ab_runde` per series | `bruchjahr − startjahr` | DE policy rate: 1999 − 1997 = **2** (the start year is round 0, section 37) |
 
 **A bound belongs with this, because the result scale of `spiel.md` carries a genuine
 literal at one place** — the 30,000 from which the ways of dying count. The vintage build
@@ -1807,9 +1807,9 @@ vintage contains:
 4. **exogenous paths** per T25;
 5. **constants of the vintage**: **fourteen values** — `durchgriff[Gebiet][handelbarer
    Sektor]`, that is ten in ten-thousandths, and **`leitzins_start[l]`**, four in basis
-   points. The four are the first support point of the policy path from series 9, so no
+   points. The four are the first support point of series 9 — round 0, section 37 —, so no
    new data requirement; they stand here because `anleihekurs` needs them over the whole
-   game and a recourse to "the policy rate in round 1" would presuppose a state the
+   game and a recourse to "the policy rate at the start" would presuppose a state the
    state no longer has. Formation rule for `durchgriff` with `H` = exports plus imports
    of the sector in the start year (from BACI via the concordance in point 9) and
    `N` = its value added (from WDI):
@@ -1862,8 +1862,8 @@ vintage contains:
    against normalised;
 8. **breaks**: per series a field `exogen_ab` and a field `verkettet_ab`, both stored as
    a year and converted into a round per T40. For Germany the policy rate carries
-   `exogen_ab = 1999`, in the check vintage thus **round 3**, and the exchange-rate
-   series `verkettet_ab = 1999` with the irrevocable conversion rate;
+   `exogen_ab = 1999`, in the check vintage thus **round 2** (1997 is round 0, section 37),
+   and the exchange-rate series `verkettet_ab = 1999` with the irrevocable conversion rate;
 9. **the concordance HS92 → model sector**, as a table in the manifest and not in code
    (finding 12). Per `spiel.md` it reads: chapters **01–24 → sector 1 agriculture**,
    **25–97 → sector 2 industry**. The same table produces `H` from point 5, the trade
@@ -2737,7 +2737,7 @@ finding names 175 because it begins freezing one round later.
 
 | What | Where it arises | Responsible |
 |---|---|---|
-| **the freeze** | in `daten`, in the one accessor that answers „value of path P in round `t`": `t` enters the series as `min(t, R)`. Not at the caller — the second caller who forgets the clamp reads behind the end of the series, and that is exactly the failure the finding names | data builder |
+| **the freeze** | in `daten`, in the one accessor that answers „value of path P in round `t`": **`t` enters the series as `min(t, R)` — the support point index *is* the round number, and round 0 is the start assignment.** This row is the one place that map is written; section 37 carries its ground. Not at the caller — the second caller who forgets the clamp reads behind the end of the series, and that is exactly the failure the finding names | data builder |
 | **the mark `ueber_fenster`** | a property of the run, not of the state — the same construction as the mode in T38, and no 311th field. It is **derived**, `runde > R`, not latched by the accessor, so that a round which reads no path at all is marked too. `R` is available there: it arises on loading the vintage per T40 | data builder forms it; **break tester** carries it into the finding of check 6, beside the mask size that T38 already requires there |
 
 Neither exists today: there is no freezing and no marking in `kern/` or `daten/`, and the
@@ -5558,8 +5558,8 @@ exogenous path value at round `t` is such a number. Whether it travels in that c
 `Runde(feld)` fields the round checksums against `partie.parameter_pruefsumme`, or beside it,
 is a signature question that T10b's own rule already governs (a `const` carrier needs no ADR,
 a removed or non-`const` argument does). It is not decided here, because this package may not
-widen `schritt`. What **is** decided here and binds that package: the clamp `min(t, R)` sits
-in the accessor, once, and not at each caller.
+widen `schritt`. What **is** decided here and binds that package: the clamp sits in the
+accessor, once, and not at each caller. Which support point: T30, section 9, row *the freeze*.
 
 **What is deliberately left standing.** The bounds table under T30 is untouched — the three
 affected rows keep their wording, because the blindness is a property of the check and not of
@@ -6127,13 +6127,13 @@ member pointers, and `pfadstand` is an array and outside the sum.
 
 ### The clamp
 
-Not reopened. It sits „in the accessor, once, and not at each caller" (§28 `:5488-5489`),
-and section 9's table (`:2667`) says which accessor: the one in `daten` that answers „value
-of path P in round `t`", where `t` enters the series as `min(t, R)`. **Two accessors, one
-clamp** — the `daten` one indexes a series and clamps, the `kern` one indexes a fixed
-`LAENDER × PFADINSTRUMENTE` array and has no end to read past. The mark `ueber_fenster`
-stays derived and outside the state as that table put it; the core never learns of it, and
-this route is what keeps that true.
+Not reopened. It sits „in the accessor, once, and not at each caller" (§28, report 2), and
+the responsibility table under T30 in section 9, row *the freeze*, says which accessor and
+which support point: the one in `daten` that answers „value of path P in round `t`".
+**Two accessors, one clamp** — the `daten` one indexes a series and clamps, the `kern` one
+indexes a fixed `LAENDER × PFADINSTRUMENTE` array and has no end to read past. The mark
+`ueber_fenster` stays derived and outside the state as that table put it; the core never
+learns of it, and this route is what keeps that true.
 
 ### All four instruments, and where the round value comes from
 
@@ -6437,3 +6437,82 @@ line of section 10 does not move.
 `:633`, `:672`, `:785` and `:909`. After the package of report 1 only `:909` remains —
 `schritt` itself, whose state is T10b's and belongs to the writer. One line, and it fails
 the moment a body takes a state again.
+
+## 37. Which support point a round reads — Paket `0303`
+
+**What this answers, in one line.** The file carried two maps, one year apart: §9 and §34
+said `min(t, R)`, T40's derivation table and T23 point 8 said `index = round − 1`.
+**Decided: the support point index *is* the round number, and round 0 is the start
+assignment.** The rule stands **once**, in the responsibility table under T30 in section 9,
+row *the freeze*; this section is its ground, not a second copy — a builder who reads only
+section 9 has everything he needs.
+
+### The ground, and it is T42, not a preference
+
+T42 computes both error measures **over support points**, not over rounds: `S` is „the
+number of support points (25 in the check vintage)", the MAPE runs over `t ∈ V`, the rate
+measure over `t = 2 … S`. So the model owes one value **per support point — S of them, not
+R**. With `R = S − 1` (T40) the only trajectory with S entries is round 0 … round R, and
+round 0 is the start assignment this file already names elsewhere (§9: „in round 200 those
+65 carry the value of round 0"). Under `round − 1` the played rounds 1 … R yield R values,
+the last support point is reached by no round at all, and the rate measure at `t = S` reads
+a model value that does not exist.
+
+The second binding is that series 9 is **driver and target at once**: the policy rate is a
+reported series (T23 point 2), and T49 equates `land.<l>.leitzins` with the instrument
+stand of the **same** round (§9, the two equalities under the bounds table). In the
+`weltlauf` that stand comes from the path. Driver index and comparison index are therefore
+the same index by construction, and an offset between them is a backtest error the backtest
+cannot see — it looks like a sluggish model.
+
+**The losing argument, written out, because a decision whose alternative is unstated cannot
+be reopened.** `daten/include/daten/jahrgang.hpp:166-181` argues the other way and argues
+well: „eine Runde liegt … zwischen zwei Stuetzstellen und beginnt an der linken", so round
+`r` takes the left one. That is true of a **flow** over the interval. An instrument level is
+a **stock of the state**, and what the backtest compares is the state, which stands at the
+round's right end. Round 0 is then not a round but the state before the first one — which is
+what it already is everywhere else in this document.
+
+### Held against the three quantities
+
+| Quantity | Under the chosen map | Verdict |
+|---|---|---|
+| `leitzins_start[l]`, „the first support point" (T23 point 5) | the **round-0** value, the start assignment | holds. `anleihekurs` needs a fixed reference over the whole game, and in the `spielmodus` there is no path at all — the start assignment is what the instrument carries into round 1 |
+| the freeze („frozen at their **last value**", §9) with the mark `ueber_fenster = runde > R` | round R reads support point R, round R+1 reads R again | **the deciding one.** Mark and freeze coincide to the round. Under `round − 1` the mark is true at R+1 while the path still moves — measured on the probe vintage: round 5 → 540 with `ueber_fenster(5)` already true (finding 1 of the `0297` review) |
+| `exogen_ab_runde` (T40) | `bruchjahr − startjahr`; 1999 → round **2** | still countable off the window 1997–2021: 1997 is round 0, 1998 round 1, 1999 round 2 |
+
+§9's „At R = 24 the support points cover rounds 0 … 24" needed no change — it was already
+this reading, and its count 176 against the other one's 175 is the same one-round gap that
+decided the freeze.
+
+### The losing passages, corrected in this run
+
+| Place | was | is |
+|---|---|---|
+| T40, `exogen_ab_runde` row | `bruchjahr − startjahr + 1`, DE = 3 | the formula without the `+ 1`, DE = **2** |
+| T23 point 8 | „in the check vintage thus **round 3**" | „**round 2**", with the ground in brackets |
+| T23 point 5 | „a recourse to ‚the policy rate in round 1'" | „… at the start", and the first support point named as round 0 |
+| §28, report 2 | repeated the formula | keeps the **place** decision („in the accessor, once"), points at section 9 for the map |
+| §34, *The clamp* | repeated the formula, with the pointers `§28 :5488-5489` and `:2667`, **both stale** | points at §28 report 2 and at the T30 row by name, without line numbers |
+
+### Report to the project manager — yes, the code has to move
+
+**`daten/src/jahrgang.cpp:182-191` moves:** the offset `runde − 1` becomes `runde`, and the
+abort bound at `:184-187` goes from `runde < 1` to `runde < 0`, because round 0 is now a
+legal read and not a program error. With it the doc comment `jahrgang.hpp:166-181` (its
+justification is the losing argument above), and in `daten/test/jahrgang_probe.cpp` the
+expectations at `:194`, `:230-232`, `:245` and `:247-250` plus the block at `:353-360`,
+whose **claim** changes and not only its number: „Was `fuelle_pfadstand` in Runde 1 schreibt,
+ist dieselbe Zahl" as `leitzins_start` holds for **round 0** from now on, and round 3 gives
+530 instead of 520. **Nothing else under `daten/`:** `ueber_fenster` (`jahrgang.cpp:145`,
+`runde > runden()`) stays to the character — this decision is what makes it right —, and
+`leitzins_start` (`:203-206`, `:208-213`) stays, support point 0 still being the first.
+**Nothing under `kern/`:** `grep pfadstand` over `kern/` is 0 today (§34's own check).
+
+### The check this section can be held to
+
+Search `technik.md` for the clamp formula — `min` of `t` and `R`, written out. It stands on
+**two** lines: the rule in section 9's T30 table and the decision line of this section.
+Before this run it stood on three, none of which was a pointer, and two further places
+carried the opposite map. Nothing above section 36 changed its line count, so section 36
+sits at `:6316` as before.
