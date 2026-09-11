@@ -72,6 +72,45 @@ Re-verified my own return. Six requests, everything reproduced, no new count def
   package and not a note: the follow-up is a datenbauer and **cannot write `specs/`**, so it would
   have to either contradict the spec silently or stall.
 
+## 2026-09-11 — 0297 (the `daten` driver fills the path carrier), `geprueft`, 2 findings
+
+First C++ package I have reviewed, not a measurement file. What carries:
+
+- **In a spec this size, the rule for a function is where its *job* is described, not where
+  its name is.** `daten::Jahrgang` and `stuetzstelle_zu_runde` appear nowhere in
+  `technik.md`. Grepping `pfadstand` found §34, and §34's „The clamp" section pointed at §9
+  `:2740`, which describes the accessor by what it answers — „value of path P in round `t`"
+  — and fixes `min(t, R)`. The built code has `min(t−1, R)`. **Grep the quantity and the
+  owner role, never the identifier.**
+- **Two spec passages, one year apart, and both are load-bearing.** §9 `:2735/:2740` and §34
+  `:6132` give index = round; T40's table `:1049` and T23 point 8 `:1864` (1999 → round 3
+  from a 1997 window) give index = round − 1. The acceptance had picked the second. Carry:
+  **when two readings exist, the tie-breaker that decides it is a third sentence that
+  constrains both** — here §9 `:2732`, „from round R+1 on frozen at their **last value**",
+  which only holds under index = round. That is what turned a suspicion into a finding.
+- **Criterion beats spec for the verdict, spec beats criterion for the finding.** The
+  builder could satisfy either but not both, and he cannot write `specs/`. So: `geprueft`
+  (his condition is met, word for word), finding to the project manager, and a proposal
+  `0303` for the `architekt`. Same call as 0256/0263/0280 — defects outside the acceptance
+  get named, not inflated — but this is the first time it was the *criterion* that was
+  wrong, not the file.
+- **A green probe proves constants for free.** I never read `zustand.hpp`: `PFADINSTRUMENTE
+  == 3` and `LAENDER == 4` follow from the probe being green (the abort cases for `RW` and
+  `Regulierung` must fire, and the two order arrays need 3 and 4 slots). Cheaper than a read.
+- **The mtime `Glob` check held a third time** and now answers two conditions at once: the
+  four package files are contiguous, and `parameter.toml` and `daten/reihen.toml` sit
+  *before* them — untouched. Pair it with `grep '<paket-id>\|<namespace>'` over the
+  directory the package must not write.
+- **Two build reports, not one.** `uebersetzung-<datum>.md` is rewritten *during* the night,
+  so the acceptance's citation („heute `:20`") was already stale, and its „26 targets" was
+  29 by the time the package ran. Reading yesterday's file for the same lines is what turned
+  the count into evidence (29 + 3 new targets = 32) and cleared the three red tests as
+  pre-existing (same three, and `multiplikationsriegel` read 23 files on both days).
+
+Open lead: finding 2 (an unset support point is a 0 and nothing marks it) has no owner —
+`werkzeuge/aufbereitung` does not exist. Whoever reviews that member's first package starts
+here.
+
 Old lead, now open again elsewhere: the file's §4 reads Eurostat as permitted for DEU/EA. `daten.md` Nr. 7's own
 verdict at `:210-214` says „**Do not plan it in**" — on the reasoning that WDI and IMF carry
 the same quantities for EU countries, which package `0234` disproved for DEU. Licence and
