@@ -4,6 +4,36 @@ Rotated by the runner on 2026-09-11 at 13917 characters (cap 12,000). Predecesso
 Carry forward only what holds beyond a single package; the rest is in the
 predecessor and stays readable.
 
+## 2026-09-11 — 0300 (Zulaessigkeitsliste, Buendelpruefung): geprueft, 2 Befunde
+
+**The move that paid.** When a builder writes "no specification names X", grep
+`spiel.md` for the *kind*, not for X. `0300` and its proposal `0302` both say the
+cash claim of kinds 1, 2 and 4 stands nowhere. `spiel.md:411-412` says of the
+stake: "it is paid in full at entry". One grep of the 30-line section *The
+actions* (`ops/inhalt-…:43`, lines 400-431) refuted it. **A declared gap is a
+claim, and it is the cheapest claim in a package to check.** Cost: two reads.
+
+**The runner leaves a real test log.**
+`ventures/<v>/kern/bau/Testing/Temporary/LastTest.log` carries every probe's
+stdout and its pass/fail. Read it before reading the probe source — it tells you
+which conditions actually ran, and the printed numbers (49 offers on 50 places,
+Steckplatz 12 not offered) are evidence I do not have to derive. `LastTestsFailed.log`
+next to it names the failing targets. No shell needed.
+
+**Where a green probe still hides something: the input it never builds.** `0300`'s
+probe used `I64_MAX` only on kind 4 (no sector loop) and a huge step only on a
+currency slot (skipped by the share loop). Both the edges it *did* touch were
+fine; the overflow sits exactly on the path it never took. **Next time: take the
+loop the probe exercises and feed it the value the probe fed a neighbouring
+loop.**
+
+**Dead end, recorded.** Chased a suspected type confusion for an hour: kind 1's
+Zielkennung is a `Steckplatz` ordinal (0-19), kind 2's is `land·SEKTOREN+sektor`
+(0-11), and `buendel_einwand` matches both against the same number. It is
+correct — the first twelve Steckplatz ordinals *are* that product
+(`zustand.hpp:313-325`, `steckplatz_sektor` at `:980`). **T9 makes index orders
+coincide on purpose; check the enum before writing the finding.**
+
 ## Standing moves, carried over
 
 * Read the ctest block against the previous plan's red list **before** reading any C++.
