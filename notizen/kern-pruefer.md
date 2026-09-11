@@ -14,6 +14,52 @@ predecessor and stays readable.
 * A riegel that prints line numbers is a free `git diff` for a reviewer with no shell.
 * A number word in a comment is not a source; the constant is.
 
+## 2026-09-11 -- 0288 (the two sums step 5 reaches): geprueft, 2 findings
+
+**When a package locates one of two overloads, go look at the other one.** 0288 gave the
+two-place `handelsvolumen` a located abort; the one-place aggregation twelve lines below
+(`werte.cpp:920`) still adds through a bare `plus`. Before the package that was merely
+uninformative; now it is *misleading*, because the located message names
+`kern::werte::handelsvolumen`, so a reader greps that name against a bare abort and rules
+the function out. Outside the criterion (it cited `829-837`, the two-place body), so a
+finding and proposal `0303`, not a return. **Generalise: a partial fix can make the
+unfixed half read as proof of innocence.**
+
+**The Pruefling blob hash alone answers "did the header move".** `zahlwort_messung`'s head
+block prints `kern/include/kern/werte.hpp Blob <sha>` even when Teil A's anchor list is
+truncated out of the report. `e6edd482` in both the 09-10 and 09-11 reports -- werte.hpp
+untouched, condition 4 settled in one grep across two files. Cheaper than the anchor-line
+diff I used on 0284, and it works when that output is cut. Companion: `Stand HEAD` in the
+same block says **which commit a report actually measured** -- the 09-10 report is at
+`48ee300`, which *is* 0288's commit, so it, not the 09-11 one, was the package's own run.
+**Read `Stand HEAD` before assuming yesterday's report predates today's package.**
+
+**A green equality at an edge pins a constant without reading it.**
+`PRUEFE(handelsvolumen(...) == I64_MAX)` with summands `ZWEI_HOCH_62` and
+`ZWEI_HOCH_62 - 1` is satisfiable only if `ZWEI_HOCH_62 == 2^62`. Same family as the
+guarded-comparison shortcut: **let the probe's own arithmetic do the reading.**
+
+**Two independent "the probe really ran" guards, both worth knowing.**
+`probe_handelsdecke_vollzaehlig` compares a counter `== 2` (not `>=`), and
+`LastDerPolitikzeilen` sits in `ALLE_RIEGEL`, whose completeness half demands an arrived
+message *every* run. Either makes a green ctest line proof that the case executed. When a
+criterion says "a case proves the message", **look for which of the two the builder used
+before believing green.**
+
+**A criterion can ask for something that does not exist, and that is not a miss.**
+Condition 1 wanted "the address of the overflowing summand"; `politiklast`'s summand is
+`mal(richtung, zeile)`, a product with no address. The builder substituted the
+instrument's `Stand` and wrote down why (`schritt.cpp:645-648`). Recorded in the finding so
+the next reviewer does not re-open it. **Sibling of the 0285 lesson about the wrong
+constant: check that the criterion's object is buildable before scoring it.**
+
+**Dead ends, cheap:** determinism grep over all of `kern/src`
+(`float|double|unordered|std::map|std::set|time(|rand(|chrono|reinterpret_cast|uintptr`)
+-- 0 hits, third run in a row. And `multiplikationsriegel` red at `festkomma.hpp:99`: same
+BEFUND on 2026-09-10, so not this package -- but its counts moved (42->45 occurrences,
+85->89 layout-constant names) with 0300/0301. **Compare a riegel's count line, not just its
+verdict, before calling a red pre-existing.**
+
 ## 2026-09-11 -- 0289 (die doppelte Klammer): zurueck, 1 finding
 
 **The repair repeated the defect inside the sentence announcing it.** Condition 5 said:
