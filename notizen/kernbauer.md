@@ -75,3 +75,32 @@ condition functions.
   country-and-sector, where no duplicate masks it. If the share reason should win, the
   order is one line.
 
+## 2026-09-11 -- 0289, Ruecklauf 1 (one sentence, and only that sentence)
+
+One file, one hunk: `werkzeuge/kennzeichen/kennzeichen_riegel.cpp:1526-1529`, comment only.
+Everything the reviewer confirmed (conditions 1, 2, 3, 4, 5(b), 5(c)) untouched; no case,
+no expectation, no count moved. `:305` keeps its wording — the reviewer checked it and it
+is a statement about the self-test's three tables, not about one case's numbers.
+
+- 2026-09-11, **the lesson of the run** -- **A sentence that says "named by `was`, not by
+  position" can still carry a positional reference, and mine did.** The old wording named
+  „der letzte Fall der zweiten Falltabelle"; I replaced the phrase but kept the shape („der
+  letzte Fall der Tabelle") and the numbers of the case that *used* to be last — 1 mark, 1
+  element, 2 declared, which is case 29 (*„zwei Proben, eine Stelle auf der Maske"*). My own
+  condition 2 had appended case 30 in the same commit. **When a package both appends a case
+  and repairs references to "the last case", write the appending half first and then reread
+  every reference against the new table** — I repaired against the table I remembered.
+- 2026-09-11 -- **The dedup comment (`:1322-1334`) already had the right form, and I did not
+  reuse it.** It names the same case: *Der Fall "zwei Proben, eine Stelle auf der Maske" der
+  zweiten Falltabelle*. Two references in one file to one case should be copied, not
+  re-phrased; the re-phrasing is where the position crept back in. The new `:1526` now uses
+  that form.
+- 2026-09-11, **what I am unsure about, for the project manager:** one thing. The repaired
+  sentence now says the case *„taugt dafuer nicht"* — it keeps reporting under both
+  mutations (1 < 2 either way) and therefore stays green and witnesses neither. That is the
+  reading I took of what the sentence was for: it explains why the case one would reach for
+  by position is not a witness, while the real witnesses (case 28 for both, case 26 for the
+  maximum) stand two paragraphs above. If the sentence was meant to do something else, the
+  other accepted exit was to strike it, and striking it costs nothing that the paragraph
+  above does not already say.
+

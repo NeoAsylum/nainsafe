@@ -1523,10 +1523,11 @@ std::vector<Leerstelle> knappe_tabellen(const std::vector<Probenzahl>& zahlen)
 /// beiden geht ausserdem "ein Element ohne Zeichenkettenliteral" rot: eine Marke gegen zwei
 /// Elemente, und die Zwei deckt die Zwei.
 ///
-/// **Genannt sind sie am `was` und nicht an ihrer Stellung.** Der letzte Fall der Tabelle gibt
-/// eine Marke und ein Element gegen zwei deklarierte her, meldet also unter jeder der beiden
-/// Aenderungen weiter -- ein Verweis auf die Stellung war hier schon zweimal falsch, ohne dass
-/// sich an dieser Funktion etwas geaendert haette.
+/// **Genannt sind sie am `was` und nicht an ihrer Stellung.** Der Fall "zwei Proben, eine
+/// Stelle auf der Maske" derselben Tabelle taugt dafuer nicht: Er gibt eine Marke und ein
+/// Element gegen zwei deklarierte her und meldet deshalb unter jeder der beiden Aenderungen
+/// weiter -- ein Verweis auf die Stellung war hier schon zweimal falsch, ohne dass sich an
+/// dieser Funktion etwas geaendert haette.
 std::vector<std::size_t> knappe_listen(const std::vector<Listenzahl>& listen)
 {
     std::vector<std::size_t> knapp;
