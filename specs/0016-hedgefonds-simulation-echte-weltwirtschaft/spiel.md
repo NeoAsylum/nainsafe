@@ -744,11 +744,105 @@ two valuations for one basket, and T47 demands „eine Bewertung, nicht zwei". *
 function performs the conversion is the architect's business; that it stands at this spot
 and only there is design.**
 
+#### Was eine Aktion an Kasse zieht
+
+T32 hält ein Bündel gegen die Kasse zu Rundenbeginn; **womit** es gehalten wird, stand in
+keiner Vorgabe. Paket `0300` hat die Bedingung gebaut und für die Arten 1, 2 und 4 die Null
+gemeldet — die nachgiebige Richtung, an der heute drei größte Positionsstufen auf einem
+leeren Fonds vorbeikommen. Die Regel steht hier und nicht bei *The actions*, weil sie eine
+Bewertung ist und dieselben Größen braucht wie die vier Bewertungen darüber.
+
+**Das Vorzeichen, einmal für alle fünf.** Der Kassenanspruch ist **positiv**, wenn die
+Aktion der Kasse Geld nimmt, und **negativ**, wenn sie ihr welches bringt. Verglichen wird
+nach T32 die **Summe** der Ansprüche eines Bündels gegen den Kassenstand zu Rundenbeginn;
+eine negative Summe ist zulässig. Die Größe steht in Fondsgeld (T5 Klasse 1, US-Cent), im
+Kern heißt sie `kassenbedarf`.
+
+```
+Art 1 Position     stufe · stufenwert(p), in Fondsgeld -- das ist positionswert(p),
+                   gerechnet mit `stufen := stufe`
+Art 2 Beteiligung  der ungeminderte Wert des Anteils `stufe` am Korb (l,s), in Fondsgeld;
+                   0, wenn `stufe` negativ ist
+Art 3 Lobbybudget  der Betrag der Stufe
+Art 4 Hebel        − stufe
+Art 5 Sichtbarkeit 0
+```
+
+Die Stufe ist in allen fünf Zeilen die **Änderung**, die die Aktion an ihrem Ziel vornimmt,
+nicht der Stand danach — so hält es T32s fünfte Bedingung bereits, die die Stufe der Aktion
+auf die Stufenzahl des Zustands addiert. `markt(p)` in `stufenwert(p)` ist der Wert des
+Steckplatzes, gleich welcher Zielklasse er angehört: Korb, Anleihe, Währung oder
+Börsenplatz. Die neue Schicht braucht hier keine eigene Zeile.
+
+**Art 3 wird nicht neu entschieden.** T50 Übergang 2 nennt `lobbypunkte_aus_geld(cent,
+rabatt)` und bindet ihn an Aktion 3; was er hereinnimmt, sind Cent, also **ist** die Stufe
+der Geldbetrag. Die Richtung ist nach T32b das Vorzeichen und kein zweites Ziel, sie kostet
+in beide Richtungen dasselbe. Der Nachlass aus einer Beteiligung sitzt nach T50 am **Preis
+des Lobbypunktes** und nicht am Geld — der Anspruch von Art 3 hängt also nicht daran, ob der
+Fonds im betroffenen Sektor beteiligt ist.
+
+**Art 5 zieht nichts, und diese Null ist eine Antwort.** Sichtbarkeit wird nicht mit Geld
+bezahlt, sondern in den Gegenkräften: im Aufsichtszähler und in `hebelaufschlag`, der mit
+ihr steigt. Ein Kassenpreis daneben verlangte dasselbe zweimal und machte aus dem Verstärker
+eine Strategie — Maß 2 schließt Art 5 ausdrücklich aus dem Strategiekern aus.
+
+**(a) Zu welchem Preis: dem zu Rundenbeginn, vor dem Stoß, den der Einstieg selbst
+auslöst.** Das ist keine Wahl. Aktionen liegen in Schritt 2, Preise entstehen in Schritt 4,
+und „within a round no state quantity is written twice" — einen Preis nach dem Stoß gibt es
+in Schritt 2 nicht, und T32 bindet die Prüfung ohnehin an den Zustand zu Rundenbeginn. Der
+Stoß bleibt darum nicht folgenlos: Er trifft die Position, die der Fonds dann hält, und wird
+in Schritt 6 als Bewertungsverlust getragen — einmal, beim Einstieg wie beim Ausstieg, und
+nicht als Zuschlag auf den Anspruch. Wo er greift, ist offen; `preisstoss` hat heute keine
+Rechenvorschrift, und diese Entscheidung hängt nicht daran.
+
+**(b) Ein Short bringt Kasse, er zieht keine.** Der Anspruch trägt das Vorzeichen der Stufe
+und nicht ihren Betrag. Der Grund ist die Vermögensgleichung: Ein Schritt tauscht Kasse
+gegen Steckplatzwert, netto null — bei `stufe < 0` fällt `positionswert` um denselben
+Betrag, um den die Kasse steigt. Der Betrag statt des Vorzeichens ließe bei jedem Short Geld
+verschwinden, und die Bestandsprobe (T30, Prüfung 2) fiele darauf. Long und Short sind damit
+dieselbe Formel, wie es oben steht und wie Maß 2 es verlangt. Ein Ausstieg braucht keine
+eigene Regel; er ist derselbe Ausdruck mit umgekehrtem Vorzeichen, und der Gewinn steckt
+schon in der Bewertung. **Die Kassenbedingung ist deshalb nicht die Bremse des Shorts** —
+das sind die Anteilsskala aus T32 (`stufenweite`, `stufen_max`) und Todesart 1, die einen
+schiefgegangenen Short über das Fondsvermögen einholt.
+
+**(c) Der Hebel hat einen negativen Anspruch.** Aktion 4 ist Kreditaufnahme: `hebelstand`
+und Kasse steigen um denselben Betrag, `fondsvermoegen = Kasse + … − Hebel` bleibt im
+Augenblick der Aktion unverändert. Also `anspruch = − stufe`; ein Abbau (`stufe < 0`) zieht
+Kasse, weil er tilgt. Beide Größen stehen in T5 Klasse 1, es wird nichts umgerechnet.
+**Die Folge gehört dazu:** Die Kassenbedingung begrenzt den Hebel damit nicht, das tut
+allein `hebel_max`. Mehr als eine Hebelaktion je Bündel gibt es nicht, weil T32 dasselbe
+Ziel zweimal verbietet und die Zielmenge der Art 4 ein Element hat.
+
+**Art 2 zahlt den Abschlag beim Aufbau, und deshalb ist der Anspruch der ungeminderte
+Wert.** T47 bewertet die Beteiligung zum Ausstiegswert, also um `ausstiegsabschlag`
+gemindert, und zieht ihn beim gewöhnlichen Ausstieg nicht ein zweites Mal ab. Das trägt nur,
+wenn beim Aufbau der **volle** Korbanteil aus der Kasse geht: Die Differenz ist genau der
+Verlust, den der Abschlag benennt. Wer den geminderten Wert zahlte, hätte den Abschlag nie
+bezahlt. **Ein Ausstieg bringt in derselben Runde nichts in die Kasse** — die Beteiligung
+ist illiquide, der Ausstieg dauert zwei Runden, und ausgezahlt wird in Schritt 6; darum
+steht bei negativer Stufe die Null und nicht der negative Wert. Ein vierter Skalenübergang
+entsteht dabei nicht: Brutto- und Ausstiegswert sind dieselbe Bewertung mit verschiedenen
+Faktoren, und der Übergang in Fondsgeld bleibt der eine, den T50 an `beteiligung_wert`
+bindet. Ebenso bei Art 1 — der Anspruch **ist** `positionswert`, nur mit der Schrittzahl
+statt der Stufenzahl als Argument.
+
+**Was das an den beiden Lesestellen ändert.** T32 Bedingung 4 (`kern/src/aktion.cpp`, Paket
+`0300`) hält von hier an vier der fünf Arten mit einer Zahl statt mit einer Null. Für Maß 2
+**schrumpft** der erreichbare Raum gegenüber der heutigen Null, und er schrumpft ungleich:
+bei den beiden kapitalbindenden Familien 1 und 2, während Familie 3 gebunden bleibt wie
+bisher. Heute ist Geld für zwei der drei Familien umsonst — Maß 2 vergleicht seine drei
+Klassen also erst ab hier überhaupt. Er wächst an einer einzigen Stelle: Bündel, die sich
+über Art 4 oder über einen Verkauf selbst finanzieren, sind zulässig, auch wenn die Kasse zu
+Rundenbeginn sie nicht deckte. Eine neue Adresse entsteht nicht; der Anspruch ist eine
+Funktion des Zustands und der Aktion.
+
 #### No new address
 
 No quantity of this section is a state address. `korbwert`, `anleihewert`,
 `waehrungswert`, `stufenwert`, `korbbestand`, `anleihekurs`, `schuld`, `bip` and
-`handelsvolumen` are functions of the state; `stufenweite`, `aufschlag` and
+`handelsvolumen` are functions of the state, and so is the cash claim of an action — of the
+state and of the action; `stufenweite`, `aufschlag` and
 `leitzins_start` are parameters or, respectively, constants of the vintage. `marktanteil`
 is the only address that appears at all, and it already stands in T15.
 
